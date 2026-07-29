@@ -1,113 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA5B31578E
-	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 01:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D992D0C9D;
+	Wed, 29 Jul 2026 01:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785288633; cv=none; b=nx/D6zw719lEKRU3lzPwFu0t7a7CoQPQRp1OLa8AbsSTmChQH/UsUaMzxmX6o+NWF3Da0E1KOx+0VA60xthRBU9i8/C4YAiMXcP9fTf1m3CTf63IplBbeDDmi6XrmiP08INecOMM4tjHWG5a49VVo1k9JRlb/cYW9GVHLYiHaRc=
+	t=1785288908; cv=none; b=MD3x0v459npfyILuUnrK5j7slcXBfRmMM4S3p9k9qLaaF8yMZ8AkIryBxjQkv89tsbPca/QTchK6f+jmgRVm4OPvKhgFlMf6CF8R8fa7Zlw11+99tbB/GGqENbnZweRCICW9AOyxE12JOYYrPZeHQuNMXIOFNmAXLtz6z8P7ba8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785288633; c=relaxed/simple;
-	bh=PNk2g31F33/527wR9euDlUq6aquj/V9E3SeMvWGUdhQ=;
+	s=arc-20240116; t=1785288908; c=relaxed/simple;
+	bh=Hc8DhQm88xcW8/eXJZ5URAcu8rZsWT3ISd8BVbdRILo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IW/QZ3jbbcIAFJPQRP777FY+a0NV19+ugkw+I6ASL/lO/LiEo7VFGnzL2MNCneeV6pJSNdL5bU0uObBa2efg1aVUJF9cVL6N6UVsr6D1NOB6RPFBsWywEO5m2BpXGjzBSSsxE76Fgg/B0qav9WhPffrALOuyPGLfB1EFOAjQWw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=juSzYjZn; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=QfnnW7PZvBwKf6R6Si5qmNkjqD6NYmXqeFlKxSxZEEfjvgz9ky6mMMzeziJKnuhW5oZYuwlRJrTP4yqen9xsnSM0m0JVD1phaIHVklPq67uIHDAayyFG/T6TQ2gSWiXUQ8NzeTFL469W7H0SMJbasK7UeYG6DfbLCxKFExGuKTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrKrx2FZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="juSzYjZn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A623C1F000E9;
-	Wed, 29 Jul 2026 01:30:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrKrx2FZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584321F000E9;
+	Wed, 29 Jul 2026 01:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785288625;
-	bh=4Sb+rtkjwR08ZEdEzZSJZX4227ifUfKKoWB9ZoEfrno=;
+	s=k20260515; t=1785288906;
+	bh=lZlCSTBZkQE/4Nnq1N0VKXhxEqBkevmtns5kcgvU7iE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=juSzYjZn2Yo9yrkQ5eeKt9byjqm1sjy02d8TEnnE7WDFuabceaDRnC7B5XAmpKYj5
-	 xM9GXrHN7gTcKpIPp1bvQICgO78tLi/nMiXyDQyDWqXy8wH00ZxqYNv/vlcr+75a6E
-	 sZ1a7XxZByyLD5MTLfvyUTqX2BrCdlwGTwturtJCeyZWF3VC4I6WPHZXDGGpVNKv7c
-	 VIGPPIzo9gJxE/ULYVUynZGO5pKvektDOapZ5lhb8K4yAoIzQ3rXMxDxxQGi5+FhY3
-	 1JzcCXtrDMwSbJU0f49wbzkBFU2sNSGPSlWKTqTtKO4HaVerLy7qtfies2jmRKkai8
-	 XAD02eTaGVc6g==
+	b=UrKrx2FZYotrxAQh65Wq5ZDVUi+kWCC8f51edJjbG3nr8elc5WuavdIeZrmSjs0/v
+	 5jlu0nZpAfl3b/SC9hhoCvNOldVojUDl9QNeYl/yQYRSno0E6GpKceXjaJe2zvO37H
+	 ySUQaNnAgpSwN3yqb46geYPCV/P9mR9b2iUiY66Y8yDWvrL9PLGypBGg5bGi8XeTUd
+	 hJaG/+OPmj6w5B4o/M0Ndc0bZNfpWxOwAO9Nj2Tc9gfvxLgTxWddYWEn5RSfaQUXgf
+	 YKB1Z7NwExerpyAwy3hxLS3oF1lhYe3rzV2gOXFm5syVUby0OPiOMY3R1vanZExfvJ
+	 Mx0JAlvDy4j8A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] EDAC/fsl_ddr: use non devm for request_irq()
+Subject: Re: [PATCH 4/7] arm64: dts: imx8ulp-evk: rename vdevbuffer to
+ vdev0buffer
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Rosen Penev" <rosenp@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260729012320.616174-1-rosenp@gmail.com>
-References: <20260729012320.616174-1-rosenp@gmail.com>
+To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260729-rproc-dts-v1-4-368bca0b309f@nxp.com>
+References: <20260729-rproc-dts-v1-0-368bca0b309f@nxp.com>
+ <20260729-rproc-dts-v1-4-368bca0b309f@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 01:30:25 +0000
-Message-Id: <20260729013025.A623C1F000E9@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 01:35:05 +0000
+Message-Id: <20260729013506.584321F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Hardware state leak on error path in `fsl_mc_err_probe` can lead t=
-o an interrupt storm.
+- [High] An off-by-one error in address bounds checking incorrectly rejects=
+ memory translations that exactly fit within a region.
+- [Medium] DT ABI breakage and incomplete fix by renaming device tree nodes=
+ instead of fixing the driver.
 --
 
---- Patch [1]: [PATCH] EDAC/fsl_ddr: use non devm for request_irq() ---
-commit 8909bee5f3be8d2142784ef41571cbe3330c5c9a
-Author: Rosen Penev <rosenp@gmail.com>
+--- Patch [4]: [PATCH 4/7] arm64: dts: imx8ulp-evk: rename vdevbuffer to vd=
+ev0buffer ---
+commit 6ba801ee20ee0b1a91efe7b3138304a45163e3aa
+Author: Peng Fan <peng.fan@nxp.com>
 
-EDAC/fsl_ddr: use non devm for request_irq()
+arm64: dts: imx8ulp-evk: rename vdevbuffer to vdev0buffer
 
-This commit changes the driver to use request_irq() instead of
-devm_request_irq() so that the interrupt can be manually torn down before
-edac_mc_free(), avoiding a use-after-free on teardown.
+The imx_rproc driver expects the virtio buffer node to be named
+"vdev0buffer" to skip mapping the vdev buffer region. This patch
+renames the node to match what the driver expects.
 
-> diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-> index e4eaec0aa81d5..878d4a86a3c9c 100644
-> --- a/drivers/edac/fsl_ddr_edac.c
-> +++ b/drivers/edac/fsl_ddr_edac.c
-[ ... ]
-> @@ -623,7 +623,7 @@ int fsl_mc_err_probe(struct platform_device *op)
+> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/b=
+oot/dts/freescale/imx8ulp-evk.dts
+> index 5dea66c1e7aa0..48a3e40053299 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
+> @@ -67,7 +67,7 @@ vdev1vring1: vdev1vring1@aff18000 {
+>  			no-map;
+>  		};
 > =20
->  		/* register interrupts */
->  		pdata->irq =3D platform_get_irq(op, 0);
-> -		res =3D devm_request_irq(&op->dev, pdata->irq,
-> +		res =3D request_irq(pdata->irq,
->  				       fsl_mc_isr,
->  				       IRQF_SHARED,
->  				       "[EDAC] MC err", mci);
->  		if (res < 0) {
->  			pr_err("%s: Unable to request irq %d for FSL DDR DRAM ERR\n",
->  			       __func__, pdata->irq);
->  			res =3D -ENODEV;
->  			goto err2;
+> -		vdevbuffer: vdevbuffer@a8400000 {
+> +		vdev0buffer: vdev0buffer@a8400000 {
+
+[Severity: Medium]
+This is a pre-existing issue, but does renaming the node here break Device
+Tree ABI compatibility?
+
+Users running newer kernels with older DTBs will still experience the mappi=
+ng
+bug because the driver remains hardcoded to expect "vdev0buffer".
+Additionally, there are other in-tree boards (such as
+imx93-11x11-evk-common.dtsi) that still use "vdevbuffer".
+
+Should the underlying driver bug in imx_rproc_prepare() be fixed instead
+to support the legacy node name?
+
+drivers/remoteproc/imx_rproc.c:imx_rproc_prepare() {
+    ...
+    if (strstarts(res.name, "vdev0buffer"))
+    ...
+}
+
+>  			compatible =3D "shared-dma-pool";
+>  			reg =3D <0 0xa8400000 0 0x100000>;
+>  			no-map;
+
+[ ... ]
 
 [Severity: High]
-This is a pre-existing issue, but is it possible for this error path to lea=
-ve
-interrupts enabled in the hardware and cause an interrupt storm?
+This isn't a bug introduced by this patch, but while looking at the
+imx_rproc driver, is there an off-by-one error in the address bounds
+checking?
 
-Earlier in fsl_mc_err_probe(), the hardware state is modified by clearing
-FSL_MC_ERR_DISABLE and enabling interrupts in FSL_MC_ERR_INT_EN. If
-request_irq() fails here, the goto err2 path cleans up the software state w=
-ith
-edac_mc_del_mc() and edac_mc_free(), but it does not appear to revert these
-hardware registers.
+In imx_rproc_da_to_sys() and imx_rproc_da_to_va(), a strictly-less-than
+operator is used for the upper bound limit:
 
-Since the interrupt is requested with IRQF_SHARED, an unhandled interrupt
-storm from this device could cause the kernel IRQ core to permanently
-disable the shared IRQ line, potentially creating a denial of service for
-other devices sharing it.=20
+drivers/remoteproc/imx_rproc.c:imx_rproc_da_to_sys() {
+    ...
+    if (da >=3D att->da && da + len < att->da + att->size) {
+    ...
+}
 
-This path could easily be hit if platform_get_irq() returns -EPROBE_DEFER,
-since its return value is not explicitly checked for errors before being
-passed directly to request_irq().
+If a firmware segment request perfectly fills the remainder of the region
+(where da + len =3D=3D att->da + att->size), it appears this valid request
+evaluates to false and the translation gets wrongly rejected.
 
-Should the err2 path restore FSL_MC_ERR_DISABLE and disable FSL_MC_ERR_INT_=
-EN
-before returning?
-
-[ ... ]
+Could this cause valid firmware segments to fail to load, and should this
+check use <=3D instead?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729012320.6161=
-74-1-rosenp@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-rproc-dts-=
+v1-0-368bca0b309f@nxp.com?part=3D4
