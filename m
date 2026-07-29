@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CC5280331;
-	Wed, 29 Jul 2026 01:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106232D0C9D;
+	Wed, 29 Jul 2026 01:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785289021; cv=none; b=m3pMZqSwwCw35gWaH1tFOdT8d8NGezl7FVYAW2TszGHNJW5HHjpnqoNyjPcQc33lAqZiiFnIaQq7D9rJRKl35AilBYry7QsShVnTTrqPJ3bPP5vrzn6iVZWu/egbPQSNNcz6s/iiJ+hneoMqFACffHdZEZGnoRHqpDI/N9h/cJ8=
+	t=1785289027; cv=none; b=CyYXg/6wScn4g/JKMyrw8n0qK/xpbXC5TpMl0i3gf0CiqXuBOkLSNY62cMgUbIG9GLk3k1JDNLBe6boqUgcLc7i9NxZQrNZfwriWuQRzRnxrtAKbrT0R5Y/2oVB5D4DokicsFJiCSZgCUnhkn2vUxXv6KJ4xS2QjOpZJB3TVo1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785289021; c=relaxed/simple;
-	bh=BCAR6OvOdWgZzxqtf41SNV5DZkqVDA8m6Bt3LPRXVfs=;
+	s=arc-20240116; t=1785289027; c=relaxed/simple;
+	bh=qtQCaIpPFLHVxA0N/Z0ctspaKmHBbzS3SCdgjkINex8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PIb9z0FaUWkO4XyCl5rt61z4zUPzP83si7SO7UOl8IGXKvXTfXlvgv/0J6watncFsNbhsLKJA7hHe1hwlGa2qPcOubp8srromkKOeXN1RSY0Kmmj45dsVo+HQ0Jrz2bTMHpBfcf5fsa743Zs3xpAMYK8IzRqfNXyndwATsgleTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFkM9AFQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=noiiomz4opysIq/r2gvNVurEtGuDEg0MBzyDh8ZusGLmXeP9XmrTrEcQZi4Qg3agc+srX0h1gUcadvpgo9uEhECygMVDSGjGeC94ishAaC/Nrgink4yRbeMbSmvAo1r2aHJrIxvpaFhabKcs7uO4uYz/cJrK2q3ots7FtlWhInE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7sw5JUa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFkM9AFQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080EC1F000E9;
-	Wed, 29 Jul 2026 01:36:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7sw5JUa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5771F000E9;
+	Wed, 29 Jul 2026 01:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785289019;
-	bh=1aCZPjSzxbtGy8NEbEjQEnXdlEkAsjIKlbRvmczrGqo=;
+	s=k20260515; t=1785289025;
+	bh=l20p95C5/Qhk6MsYxIMqowshAq/EZndsJlGKyFeBdew=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AFkM9AFQzKTz8NKwW6tCjyWvoEztzITzcODALyV3tiKij7WgDdM37v8y3QxbouHss
-	 Cba2djaQ69Jc9ogfxg7WzmEpEIm7wbVg+YreP09sJfnanDQfI8XmaCGPSSbUDObQiu
-	 pFvfCm8ZeTBQE/lA8imD2mjSbS+xgtp6Rq3U5or8b9pXfmTl5wmyIY6pNzwI2vAH7j
-	 VXFWVns8Pm7rQ1tfZf5K09tG7QEuAbaypfN4wM4EudwMMWC8rhQmIUOt/SFd2JEqXY
-	 WhQRXa8T/0rRSOs106ycMIfqFA4UQLfwQaKQW8IAEBtffzmSfWbBvKYb6tuEfbj8YV
-	 bOUWW228KwbWQ==
+	b=W7sw5JUa3a91eRWZ/hnGy2i0TT/dd7ee/0fEUscnJUyvuiq9BHI8txbS2PAS4anG+
+	 MYgOJHVMv9lAEy+281tmanDHmVSqRMKffnGfuIxevbnVwQetVHoUzdTISeb2ina/6+
+	 M0ue6HCo4hMdyK9nLlaKih6S6Z+GFwdSv3Q8lZT5axL8TzqpepAVoEr58sf3eDHmvw
+	 1u67FEf+EVzu+gXU/EnPYgFWeGtu8xu6ay548djqTAn2EanmXvM6erYB/W3VkWTqFI
+	 oU1mN76F8M19/mzK+VdLAQdiDxHvQyk0WtONhn7YqX/O4ZPjYx2OyGsghnCCymp5eD
+	 u8M1y7Hscp3lA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/7] arm64: dts: imx8dxl-evk: rename vdevbuffer to
+Subject: Re: [PATCH 2/7] arm64: dts: imx8qm-mek: rename vdevbuffer to
  vdev0buffer
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260729-rproc-dts-v1-1-368bca0b309f@nxp.com>
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260729-rproc-dts-v1-2-368bca0b309f@nxp.com>
 References: <20260729-rproc-dts-v1-0-368bca0b309f@nxp.com>
- <20260729-rproc-dts-v1-1-368bca0b309f@nxp.com>
+ <20260729-rproc-dts-v1-2-368bca0b309f@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 01:36:58 +0000
-Message-Id: <20260729013659.080EC1F000E9@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 01:37:04 +0000
+Message-Id: <20260729013705.4C5771F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,80 +49,86 @@ Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Incomplete fix leaves vring and rsc_table nodes with generic names=
-, wasting memory and breaking attach mode.
-- [High] Incomplete fix across the subsystem: numerous other i.MX device tr=
-ees retain the broken vdevbuffer node name.
+- [High] The patch only renames the `vdev0buffer` node, missing identical n=
+ode-name string-matching bugs for the DSP vdev buffer, the vrings, and the =
+resource tables in the same file.
+- [High] The fix for the vdev buffer node name is strictly isolated to imx8=
+qm-mek, leaving numerous other i.MX device trees suffering from the exact s=
+ame bug.
 --
 
---- Patch [1]: [PATCH 1/7] arm64: dts: imx8dxl-evk: rename vdevbuffer to vd=
-ev0buffer ---
-commit e44444bca004c2c221c3822282c9e7af15531374
+--- Patch [2]: [PATCH 2/7] arm64: dts: imx8qm-mek: rename vdevbuffer to vde=
+v0buffer ---
+commit ce17c79a2ee7822b12884c5a6ce5b992a2195b5e
 Author: Peng Fan <peng.fan@nxp.com>
 
-arm64: dts: imx8dxl-evk: rename vdevbuffer to vdev0buffer
+arm64: dts: imx8qm-mek: rename vdevbuffer to vdev0buffer
 
-This commit renames the "vdevbuffer" node to "vdev0buffer" in the
-imx8dxl-evk device tree. This ensures the imx_rproc driver correctly skips
-mapping the vdev buffer region, avoiding an unnecessary duplicate mapping.
+This commit renames the vdevbuffer node to vdev0buffer in the imx8qm-mek
+device tree. This ensures the imx_rproc driver correctly identifies the node
+by name and skips mapping the vdev buffer region.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/b=
-oot/dts/freescale/imx8dxl-evk.dts
-> index 0ede0c7ed422c..6f79aaef2dbb7 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-
-[ ... ]
-
-> @@ -90,7 +90,7 @@ rsc_table: memory-rsc-table@900ff000 {
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/bo=
+ot/dts/freescale/imx8qm-mek.dts
+> index 9e49ac377162b..50aa1e3419651 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+> @@ -94,7 +94,7 @@ rsc_table1: memory@901ff000 {
 >  			no-map;
 >  		};
 > =20
-
-[Severity: High]
-This is a pre-existing issue, but does this fix leave the rsc_table and
-vring nodes with generic names that will also fail the driver's checks?
-
-Looking at drivers/remoteproc/imx_rproc.c:imx_rproc_addr_init(), it expects
-a specific node name prefix:
-
-	if (strstarts(res.name, "rsc-table"))
-		priv->rsc_table =3D priv->mem[b].cpu_addr;
-
-Because the node is named "memory-rsc-table", this check fails, leaving
-priv->rsc_table NULL and breaking imx_rproc_get_loaded_rsc_table().
-
-Similarly, if the vring nodes are named "memory0" and "memory" instead of
-"vdev0vring0" and "vdev0vring1", they are registered with those generic
-names by imx_rproc_prepare(). The remoteproc core's rproc_alloc_vring()
-then searches for "vdev0vring0", fails to find the carveout, and falls
-back to dynamic allocation, wasting the reserved memory regions.
-
-> -		vdevbuffer: memory-vdevbuffer@90400000 {
+> -		vdevbuffer: memory@90400000 {
 > +		vdev0buffer: vdev0buffer@90400000 {
 
 [Severity: High]
-This isn't a bug introduced by this patch, but are there other i.MX device
-trees that still retain the broken vdevbuffer node name?
+This is a pre-existing issue, but this patch only renames the vdev0buffer
+node, missing identical node-name string-matching bugs for the DSP vdev
+buffer, the vrings, and the resource tables in this same file.
 
-For instance, arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi still has:
+For example, rsc_table0 is named memory@900ff000:
 
-		vdevbuffer: memory-vdevbuffer@90400000 {
+arch/arm64/boot/dts/freescale/imx8qm-mek.dts:
+    rsc_table0: memory@900ff000 {
+        ...
 
-Since drivers/remoteproc/imx_rproc.c:imx_rproc_prepare() uses string matchi=
-ng
-to skip mapping the vdev buffer regions:
+This causes it to fail the strstarts() check for "rsc-table" in the driver:
 
-	if (strstarts(res.name, "vdev0buffer"))
-		continue;
+drivers/remoteproc/imx_rproc.c:imx_rproc_addr_init() {
+    ...
+    if (strstarts(res.name, "rsc-table"))
+        priv->rsc_table =3D priv->mem[b].cpu_addr;
+    ...
+}
 
-These other boards will still fail the check, causing redundant carveout
-registration and wasted memory.
+This completely breaks IPC/virtio initialization if the remote processor is
+attached in a running state, leaving priv->rsc_table as NULL.
 
-Should all affected boards (such as imx8qm-mek.dts and
-imx93-11x11-evk-common.dtsi) be updated to use the expected names, or
-could the driver be updated to rely on memory-region-names instead of
-node names?
+Similarly, vdev0vring0 and dsp_vdev0buffer are named memory@..., failing
+their respective strstarts() checks and causing them to be incorrectly
+mapped.
+
+Could these other nodes be renamed as well to fix the matching logic?
+
+[Severity: High]
+This is also a pre-existing issue, but the fix for the vdev buffer node name
+seems strictly isolated to imx8qm-mek, leaving numerous other i.MX device
+trees suffering from the exact same bug.
+
+For example, imx93-11x11-evk-common.dtsi uses vdevbuffer@a4020000:
+
+arch/arm64/boot/dts/freescale/imx93-11x11-evk-common.dtsi:
+    vdevbuffer: vdevbuffer@a4020000 {
+        ...
+
+And imx8qxp-mek.dts uses memory@900ff000 for the rsc_table.
+
+These boards will continue to experience unnecessary carveout mappings and
+broken resource table lookups because they fail the same strict strstarts()
+checks.
+
+Could this be addressed across all affected device trees, or perhaps the
+driver itself could be modified to match the existing generic names
+(e.g., matching "vdev" instead of exactly "vdev0buffer")?
 
 >  			compatible =3D "shared-dma-pool";
 >  			reg =3D <0 0x90400000 0 0x100000>;
@@ -130,4 +136,4 @@ node names?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-rproc-dts-=
-v1-0-368bca0b309f@nxp.com?part=3D1
+v1-0-368bca0b309f@nxp.com?part=3D2
