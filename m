@@ -1,118 +1,153 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD88144780C
-	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 10:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2828E446848
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 10:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785321800; cv=none; b=smEv+P33fVVKNMBbAVpNuwXPFDsumqoEOpWcNS6MD7R2YyeUs6qXLH02eZuj+A++xQM/44yAoq4IgYsHJFx4j2ty2Shy6kwCZuG8EvuMVF+TgcoUvBmE4NpZybqk821zoMlHJONIsUu/SLoy2hJ9S6QLA1Oq4rSHsSxCyspZ+ic=
+	t=1785321804; cv=none; b=X+tADa+gFKIQl4XQXLX0vWqCMVrHYPup8nnaZKdO9W/RDT5cQX/QLy4aKzZZ4HcUM64D85/7mMMTguiDOBN5aeDq0aI9zO29FQwh8ZZywOHUkN6DlCyHjz3JtKCbT8JwCAwBsZQ7JAZA5Lx84iYjz+LRrymzdndNXx4h0+xbjv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785321800; c=relaxed/simple;
-	bh=MRBEquwazNUlAGwzMhY/OE4bpc7D+tzpfAW60LveNps=;
+	s=arc-20240116; t=1785321804; c=relaxed/simple;
+	bh=Ql3ZuouDW+4y0mAMj/Tu39fdqvM8sX2CDoVgEhp2vrk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nskvGv7cxln93M7i09klgJnFUe42xUlAvB91kKrTUVJYxCEzdRhqI13h/owGhtbUM6v749v/o8WFbc7KcRYX/gV8a9RQI7PeLPAO9u6N6rAPL0e/2JWdijLeav/VkCAYlDLgPbO81PMNlW3o19bPKCANgVWV879CVU6S7e/f7hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OorWYBmG; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=i9bqwNYsfu4NNpVcPB3V8i9D1Rn9RE0mtgRx9KOEfN8dcXRjqNabTHdgdmWnQYyPPLkWtg8/3Pes1W2A3V6EL4BXTqOabzvhJdwvr0lfwKRs8Wg6Nk97wCE85ZTC7mvOi2VC2QvDzAXwKZOo5JyVLuSU/zXRMDJfB5mfRJKHYGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vczb0UDU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OorWYBmG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82561F000E9;
-	Wed, 29 Jul 2026 10:43:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vczb0UDU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375121F00A3F;
+	Wed, 29 Jul 2026 10:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785321794;
-	bh=E2Y+fG9IkaXKHCI0nlrG0153MRzHrmeLTEzAKROED94=;
+	s=k20260515; t=1785321796;
+	bh=BeCyCwQvZ0sD0W8m7RZhzzSnsJ2mgTInylSyZyi5NWw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OorWYBmGoE5zUPrI3sgz3K5qWqWirpxduDRenXVYFDuTAHDNPsNmp6JIWz9QhSrcc
-	 dWQ13W8uPBs/hfXK2wH4ef4QILezsCUekECU4FEc9D5BtwizeIc/fFdm4uRjPk6AAw
-	 IaQAP2ryPbwbsgCma84Oh33eui0TEFqKosrCyB/sd//NuSatSyucOUyxkM0gSO6Wvq
-	 pPbFmT9IL57yincr0MhwDA0Rg4myO50qOo3w3iT1BJvTLEHTdD2THOUYgQU/gsDNBy
-	 Du51g9U/5o1l8Y2eOe/psErJsVg+QJ9uUto7tfglzdUsoq/fgdAVj1s18zBaL1m5NW
-	 oGfm37v65KHGg==
+	b=Vczb0UDUWHf8QI9PLYb1eeq6v5SLutaZel3SyvXSF43ahEYUP3f4HHv6GtVdjztlR
+	 Ge+O/8Ct3pLcZ35YUMbFyzggZ9IP8Y8Rg8lFAnQuVoZfMUG9xQoqVC+JnKB8+TfG2C
+	 gpe6lUo6FxfQdW9ifWWeWNuYyzXipCG2ptudGVdg1deTVLtE7CUlPj6oH5eErlqf5D
+	 TZqKLSDhgpEDl4Aw3yT6VQjWybrFfmKX8cbOEI/IUNcbWD/rTtEld1lzpWSTpZ/7rs
+	 ISkdmpITdfE5UGvrOpTC6eUXlFWUnkSxiql3u00fZ1401ugaUwZ6BtF2+gEFb6SL3d
+	 faj334xsPx4VA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next 1/7] ptp: netc: use
- ioread64_lo_hi/iowrite64_lo_hi for 64-bit register access
+Subject: Re: [PATCH net-next 2/7] ptp: netc: remove unnecessary pcie_flr()
+ call in probe
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260728104548.3301214-2-wei.fang@oss.nxp.com>
+In-Reply-To: <20260728104548.3301214-3-wei.fang@oss.nxp.com>
 References: <20260728104548.3301214-1-wei.fang@oss.nxp.com>
- <20260728104548.3301214-2-wei.fang@oss.nxp.com>
+ <20260728104548.3301214-3-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 10:43:13 +0000
-Message-Id: <20260729104313.E82561F000E9@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 10:43:15 +0000
+Message-Id: <20260729104316.375121F00A3F@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The EXTTS event handler loop drains the hardware timestamp FIFO bu=
-t drops all but the latest event because the event is dispatched outside th=
-e loop.
+- [High] This problem wasn't introduced by this patch, but the driver fails=
+ to initialize NETC_TMR_TEMASK to 0 during probe, which can leave interrupt=
+s enabled from a previous kernel. Combined with the ISR masking logic, this=
+ causes unrecoverable interrupt wedging or storms.
+- [High] This problem wasn't introduced by this patch, but teardown orderin=
+g allows late IRQs to access a freed ptp_clock pointer, resulting in a use-=
+after-free vulnerability.
 --
 
---- Patch [1]: [PATCH net-next 1/7] ptp: netc: use ioread64_lo_hi/iowrite64=
-_lo_hi for 64-bit register access ---
-commit 3efd12fe5d16abdea087944988e6ffe114ea760a
+--- Patch [2]: [PATCH net-next 2/7] ptp: netc: remove unnecessary pcie_flr(=
+) call in probe ---
+commit fe3a9be0d4fb11cfd834174e67a7435d22d701a7
 Author: Wei Fang <wei.fang@nxp.com>
-ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi for 64-bit register access
+Date:   Tue Jul 28 10:45:43 2026 +0000
 
-This patch replaces the open-coded 64-bit register read/write sequences
-with ioread64_lo_hi() and iowrite64_lo_hi() helpers. It introduces two new
-macros netc_timer_rd64() and netc_timer_wr64() that wrap these helpers and
-uses them throughout the driver to reduce boilerplate.
+ptp: netc: remove unnecessary pcie_flr() call in probe
+
+This commit removes an unnecessary function level reset call from the NETC
+timer probe function. According to the reference manual, this reset is not
+applicable to the timer as a supporting function.
 
 > diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> index 683abcdff9ad6..072809ea7922c 100644
 > --- a/drivers/ptp/ptp_netc.c
 > +++ b/drivers/ptp/ptp_netc.c
-
-[ ... ]
-
-> @@ -497,22 +470,19 @@ static void netc_timer_handle_etts_event(struct net=
-c_timer *priv, int index,
->  					 bool update_event)
->  {
->  	struct ptp_clock_event event;
-> -	u32 etts_l =3D 0, etts_h =3D 0;
-> +	u64 etts =3D 0;
+> @@ -773,7 +773,6 @@ static int netc_timer_pci_probe(struct pci_dev *pdev)
+>  	if (!priv)
+>  		return -ENOMEM;
 > =20
-> -	while (netc_timer_rd(priv, NETC_TMR_STAT) & TMR_STAT_ETS_VLD(index)) {
-> -		etts_l =3D netc_timer_rd(priv, NETC_TMR_ETTS_L(index));
-> -		etts_h =3D netc_timer_rd(priv, NETC_TMR_ETTS_H(index));
-> -	}
-> +	while (netc_timer_rd(priv, NETC_TMR_STAT) & TMR_STAT_ETS_VLD(index))
-> +		etts =3D netc_timer_rd64(priv, NETC_TMR_ETTS_L(index));
-> =20
->  	/* Invalid time stamp */
-> -	if (!etts_l && !etts_h)
-> +	if (!etts)
->  		return;
-> =20
->  	if (update_event) {
->  		event.type =3D PTP_CLOCK_EXTTS;
->  		event.index =3D index;
-> -		event.timestamp =3D (u64)etts_h << 32;
-> -		event.timestamp |=3D etts_l;
-> +		event.timestamp =3D etts;
->  		ptp_clock_event(priv->clock, &event);
->  	}
->  }
+> -	pcie_flr(pdev);
+>  	err =3D pci_enable_device_mem(pdev);
+>  	if (err)
+>  		return dev_err_probe(dev, err, "Failed to enable device\n");
 
 [Severity: High]
-This is a pre-existing issue, but does this code drop all but the last
-external timestamp event?
+This isn't a bug introduced by this patch, but the driver fails to initiali=
+ze
+NETC_TMR_TEMASK to 0 during probe, which can leave interrupts enabled from a
+previous kernel. Combined with the ISR masking logic, could this cause
+unrecoverable interrupt wedging or storms?
 
-When the hardware queues multiple external timestamp events, the while loop
-in netc_timer_handle_etts_event() pops all valid timestamps from the hardwa=
-re
-into the local variable etts.
+For example, in a kexec scenario, if the previous kernel left hardware
+interrupts unmasked in NETC_TMR_TEMASK, the new kernel calls request_irq()
+before clearing the hardware mask:
 
-Because ptp_clock_event() is called only once outside the loop, aren't all
-prior events silently discarded?
+drivers/ptp/ptp_netc.c:netc_timer_probe() {
+    ...
+	err =3D netc_timer_init_msix_irq(priv);
+	if (err)
+		goto timer_pci_remove;
+
+	netc_timer_init(priv);
+    ...
+}
+
+The ISR reads NETC_TMR_TEVENT, masks it with the software shadow
+priv->tmr_emask (which is initialized to 0), and writes 0 back to the
+write-1-to-clear register:
+
+drivers/ptp/ptp_netc.c:netc_timer_isr() {
+    ...
+	tmr_event =3D netc_timer_rd(priv, NETC_TMR_TEVENT);
+	tmr_event &=3D priv->tmr_emask;
+	/* Clear interrupts status */
+	netc_timer_wr(priv, NETC_TMR_TEVENT, tmr_event);
+    ...
+}
+
+Because priv->tmr_emask is 0, tmr_event becomes 0, and writing 0 fails to
+clear the hardware interrupt state.
+
+[Severity: High]
+This is a pre-existing issue, but does the teardown ordering in
+netc_timer_remove() allow late IRQs to access a freed ptp_clock pointer,
+resulting in a use-after-free?
+
+In netc_timer_remove(), ptp_clock_unregister() is called before the MSI-X
+interrupt is freed or synchronized via netc_timer_free_msix_irq():
+
+drivers/ptp/ptp_netc.c:netc_timer_remove() {
+    ...
+	ptp_clock_unregister(priv->clock);
+	netc_timer_free_msix_irq(priv);
+    ...
+}
+
+If an interrupt is in-flight or arrives after ptp_clock_unregister() frees =
+the
+clock instance, the ISR dereferences the dangling priv->clock pointer:
+
+drivers/ptp/ptp_netc.c:netc_timer_isr() {
+    ...
+	if (tmr_event & TMR_TEVENT_PPEN_ALL) {
+		event.type =3D PTP_CLOCK_PPS;
+		ptp_clock_event(priv->clock, &event);
+	}
+    ...
+}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728104548.3301=
-214-1-wei.fang@oss.nxp.com?part=3D1
+214-1-wei.fang@oss.nxp.com?part=3D2
