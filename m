@@ -1,150 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA71436BE6;
-	Wed, 29 Jul 2026 07:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5FC43E091
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 08:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785311739; cv=none; b=p1rOQf5dtNwzrsUkH1GrdSVmP3tAJMcBlRm7g1oCXoKwz3OLWoLOogqDGpbVBYN/cpHH2rLUOYgM+iGQh5MA9QR1HyY7i8WPtL/9TBUc4umYNr9FR/9u5gj+AH5gRvVVHnnHn6hsJloKpAmc+Hydb4te5PsbjHDHo4DtOWsfe0Q=
+	t=1785312356; cv=none; b=W/b0R/zEJd5+2aPhQUi8iKWujShoq4szJZEwIp251GAWwCIn8nzAjo6Jt99iIwmXeSI20iSHJF3xF4qzXP4Y0b2qpbQgtI0SYMi8q9YkbPhyw/0O3ReYo01a0YLdazBvbDMwziU00wgZAgvL2d/f473kOi6mLLgHQDKUGd7Rs/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785311739; c=relaxed/simple;
-	bh=8kTcedMw7KPKMZG39PXPuGHcOoU8QbZa2TrBKI/9ZbA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hiVNA6en8ONiCZIBYyqtDU7zRPtE/gKG7gzsjn+aijE2se93uPNz5wbKK1bjHiqDuEXah4aLeZHBIYE6EC5YN41p7fW1KeXWrNt5Cu2dFPMjFTmRnPY/R+KpdfEXWdx7Usfl72zn5knYhuTC5082iNRGxQuDSKsmJrXummmgCnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QXFf2hLZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785312356; c=relaxed/simple;
+	bh=Z7foTjmsjGs37BB53UI25EWq9NlNn1+kCTT7vwTbdkA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uKycKwLFouSBEMHKSZ62NdwjeklS6TJplFAyPK8rR0FdhxMYccwf7dON0pkcFtvG7d8ZbssGNI9qbeqx9k63DoSq5Pso5FUsDcNr7Wdi6jR5/PXntRgZGA6YFJIQVzufguVrZ4ig5yC+7kESgy67wyRB52w2YF/FWSmP8dJ9iJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bVqCxwN9; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXFf2hLZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DE11F000E9;
-	Wed, 29 Jul 2026 07:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785311735;
-	bh=iBntEOqey5rms6EC+asOLAx9hgS+8OAEC0aGj6ReWZc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QXFf2hLZd8jNZi4JLfLPNALpoqPvdStq5o2mAMcofo+VNW0A0WT34XhONWdNnfjoj
-	 WG85pckd40/uax7wro8pW/h3vDkM93+G1WS4gLLJhdiLZexsH1QTksiCyytyNsfBQs
-	 ubyeShj+nEqaVAg3mMzUyra9exKUuVM7s2IKA47kNZIpZ+kYxprOCW1Bm7vdYdu4F0
-	 TFonZ7MvTdSDCU6E6qWBpGSa6+eBaiyWM2D/+I0bWrrupKtpRouP2GiUyZPlz1GwVh
-	 XkbfpNiZGe+0Imn1e1YZtYiCoN3sFAGVRJ2GAE+cRsT6/RMPmSAo8kSHNQu9k5XOE6
-	 nQz+BRi7z8X9w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/4] leds: pca9532: check return value in
- pca9532_setled()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: haibo.chen@oss.nxp.com
-Cc: linux-leds@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, lee@kernel.org
-In-Reply-To: <20260729-led-fix-v2-2-09ad218457bd@nxp.com>
-References: <20260729-led-fix-v2-0-09ad218457bd@nxp.com>
- <20260729-led-fix-v2-2-09ad218457bd@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 07:55:34 +0000
-Message-Id: <20260729075535.53DE11F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bVqCxwN9"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2DD541A12EE;
+	Wed, 29 Jul 2026 08:05:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EDDB36039A;
+	Wed, 29 Jul 2026 08:05:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6731D11C14A9A;
+	Wed, 29 Jul 2026 10:05:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785312340; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=2lOcs+UTw4dmBloNALI7qAVSlEXtyPQR37rH78D+i/o=;
+	b=bVqCxwN9tmkJZHooqpLflcnipllDTeApHDS43Wkq+JUrUrmHB/HNCQCE2xxH5DADd3i8HM
+	hZVA1yRYWaOXJbHVEJ2IR1rBBt6AiQLhy5UsKbEXE8Z/46D6VvGrxDMPpN6PVOCbGE2+U5
+	yux3fRBm5zIpf3jFTjbqZ2Je9KPoLe/f5XNg5G4luFUTfyV7398WnCLA19Fr1ahpEWnXL2
+	0LwRYpirYPLTESRKVq4AL882zx+tX5KfDsqGme9qulBjS0PAOc/h0ODF62KhUoRIIPWpxj
+	ubP6nKLSiWgYhw2v0wMjW5DACMWWLTaMqyvWUe8OytndfIaA2wpxQrqBkeXWlw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: han.xu@oss.nxp.com
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  imx@lists.linux.dev,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  Han Xu <han.xu@nxp.com>
+Subject: Re: [PATCH] mtd: rawnand: gpmi: add debugfs entry for BCH geometry
+In-Reply-To: <20260727-nand_debugfs-v1-1-7cba1ceab5ee@nxp.com> (han xu's
+	message of "Mon, 27 Jul 2026 16:09:08 -0500")
+References: <20260727-nand_debugfs-v1-1-7cba1ceab5ee@nxp.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Wed, 29 Jul 2026 10:05:36 +0200
+Message-ID: <87jyqenru7.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+Hi Han,
 
-New issues:
-- [Medium] The newly added error return values from `pca9532_setled()` and =
-`pca9532_gpio_set_value()` are ignored in the configuration and GPIO direct=
-ion paths.
-- [Low] The commit message violates the LED subsystem capitalization rule.
+On 27/07/2026 at 16:09:08 -05, han.xu@oss.nxp.com wrote:
 
-Pre-existing issues:
-- [High] Incorrect teardown ordering of a devm-managed input device and a c=
-ustom workqueue leads to a Use-After-Free during device removal.
---
-
---- Patch [2]: [PATCH v2 2/4] leds: pca9532: check return value in pca9532_=
-setled() ---
-commit 3e826891d5b6286d8b08ddc7c668e35465352554
-Author: Haibo Chen <haibo.chen@nxp.com>
-
-leds: pca9532: check return value in pca9532_setled()
-
-This commit updates pca9532_setled() to check the return value of
-i2c_smbus_read_byte_data(). By checking for read failures, it prevents
-writing bogus bitwise-modified negative error codes back to the device.
-
-> leds: pca9532: check return value in pca9532_setled()
-
-[Severity: Low]
-This isn't a bug, but the commit description after the subsystem prefix isn=
-'t=20
-capitalized. It should probably be "Check return value in pca9532_setled()".
-
-> diff --git a/drivers/leds/leds-pca9532.c b/drivers/leds/leds-pca9532.c
-> index e8ee17b8bd547..adfb5aa50e8e1 100644
-> --- a/drivers/leds/leds-pca9532.c
-> +++ b/drivers/leds/leds-pca9532.c
-[ ... ]
-> @@ -159,21 +159,29 @@ static int pca9532_setpwm(struct i2c_client *client=
-, int pwm)
+> From: Han Xu <han.xu@nxp.com>
+>
+> Export the BCH geometry parameters via debugfs to aid debugging and
+> provide the necessary information for legacy kobs-ng tool. The debugfs
+> directory "gpmi-nand" is created under the root debugfs tree, exposing:
+>
+> bch_geometry  - blob containing the struct bch_geometry fields
+> raw_mode      - flag indicating raw mode status
+>
+> The implementation is guarded with #ifdef CONFIG_DEBUG_FS to avoid
+> build failures when debugfs is disabled.
+>
+> Signed-off-by: Han Xu <han.xu@nxp.com>
+> ---
+>  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>
+> diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nan=
+d/raw/gpmi-nand/gpmi-nand.c
+> index c1f766cb225aa..3ceb8df7f8f93 100644
+> --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> @@ -7,6 +7,7 @@
+>   */
+>  #include <linux/cleanup.h>
+>  #include <linux/clk.h>
+> +#include <linux/debugfs.h>
+>  #include <linux/delay.h>
+>  #include <linux/slab.h>
+>  #include <linux/sched/task_stack.h>
+> @@ -732,6 +733,26 @@ static int common_nfc_set_geometry(struct gpmi_nand_=
+data *this)
+>  	return err;
 >  }
-> =20
->  /* Set LED routing */
-> -static void pca9532_setled(struct pca9532_led *led)
-> +static int pca9532_setled(struct pca9532_led *led)
+>=20=20
+> +#ifdef CONFIG_DEBUG_FS
+> +static struct debugfs_blob_wrapper dbg_bch_geo;
 
-[Severity: Medium]
-Since this function now returns an error code, do we also need to update
-other callers that still ignore it?=20
+Why do you use a static variable for that? This should be dynamically
+allocated otherwise if you ever have more than one device you'll have
+strange results.
 
-For example, pca9532_gpio_direction_input() calls pca9532_gpio_set_value()
-(which returns the error from pca9532_setled()), but the error is discarded:
+> +static void bch_create_debugfs(struct gpmi_nand_data *this)
+> +{
+> +	struct bch_geometry *bch_geo =3D &this->bch_geometry;
+> +	struct dentry *dbg_root;
+> +
+> +	dbg_root =3D debugfs_create_dir("gpmi-nand", NULL);
+> +	dbg_bch_geo.data =3D (void *)bch_geo;
+> +	dbg_bch_geo.size =3D sizeof(struct bch_geometry);
+> +	debugfs_create_blob("bch_geometry", 0444, dbg_root, &dbg_bch_geo);
+> +	/* create raw mode flag */
+> +	debugfs_create_file_full("raw_mode", 0444, dbg_root, NULL, NULL,
+> NULL);
 
-drivers/leds/leds-pca9532.c:pca9532_gpio_direction_input() {
-    ...
-    pca9532_gpio_set_value(gc, offset, 1);
-    return 0;
-}
+I am not sure about the _full suffix, bug debufs_create_file() is enough
+here, provided that you give a tangible variable to expose.
 
-Similarly, pca9532_configure() invokes pca9532_setled() during initializati=
-on
-without checking the result, which might leave the hardware in an undefined
-state if the I2C bus fails.
+> +}
+> +#else
+> +static void bch_create_debugfs(struct gpmi_nand_data *this)
+> +{
+> +}
+> +#endif /* CONFIG_DEBUG_FS */
+> +
+>  /* Configures the geometry for BCH.  */
+>  static int bch_set_geometry(struct gpmi_nand_data *this)
+>  {
+> @@ -2282,6 +2303,9 @@ static int gpmi_init_last(struct gpmi_nand_data *th=
+is)
+>  	if (ret)
+>  		return ret;
+>=20=20
+> +	/* save BCH geometry to debugfs if CONFIG_DEBUG_FS is enabled */
+> +	bch_create_debugfs(this);
 
-[ ... ]
-> @@ -257,9 +264,7 @@ static int pca9532_set_blink(struct led_classdev *led=
-_cdev,
->  	if (err)
->  		return err;
-> =20
-> -	pca9532_setled(led);
-> -
-> -	return 0;
-> +	return pca9532_setled(led);
->  }
-> =20
->  static int pca9532_event(struct input_dev *dev, unsigned int type,
+You need to call debugfs_remove_recursive() in the removal path.
 
-[Severity: High]
-This is a pre-existing issue, but can this event callback fire after the
-workqueue is cancelled during device removal, causing a use-after-free?
+> +
+>  	/* Init the nand_ecc_ctrl{} */
+>  	ecc->read_page	=3D gpmi_ecc_read_page;
+>  	ecc->write_page	=3D gpmi_ecc_write_page;
+>
+> ---
+> base-commit: f97bdc8ec1dc7b33781a702eeba55326c206be56
+> change-id: 20260727-nand_debugfs-74d6d6ba52df
+>
+> Best regards,
 
-During driver unbind, pca9532_remove() calls pca9532_destroy_devices()
-which manually cancels the work:
-
-drivers/leds/leds-pca9532.c:pca9532_destroy_devices() {
-    ...
-    cancel_work_sync(&data->work);
-    data->idev =3D NULL;
-    ...
-}
-
-However, because the input device is allocated with
-devm_input_allocate_device(), it remains active and registered until
-devres cleanup runs after .remove() finishes.=20
-
-If userspace injects an EV_SND event concurrently, the input core could
-invoke pca9532_event(), rescheduling the work item via
-schedule_work(&data->work). When the scheduled work executes later, the data
-structure will have already been freed by devres.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-led-fix-v2=
--0-09ad218457bd@nxp.com?part=3D2
+Thanks,
+Miqu=C3=A8l
