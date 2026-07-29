@@ -1,66 +1,87 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BA0476CE6
-	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 11:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E038347ECCF
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 12:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785325137; cv=none; b=rJS0pIGBspu5cBHFjGRhN5cx6C5soNg82QdEQtmBirIElW08gW68tJrQ2zaKdnbKeTpQsXfr5aGw5AoOqvlS70hyI+v/mrpDd/2zfJ1hhTVMyRQGhwhBmYCvwSJWkW6FWAwRFOb5d/y2qVlh53lbXVwZ+rWJRlKsOqafgmxYkv8=
+	t=1785327244; cv=none; b=tuoThWse1FnRbwA9x/oCXPumQL2T5qHn0qpp+2LnMe8iaGk2EE48uqMugCuGjJu7eoJUWEGm0qnZuYOkb9YfwgzN+2SodwM61vlDQpAg1Rf+hB3GnFzGETVsqQi0Z+d7UJ/QjAUtHVoI+mx2AZ+NQY6labzb/0VQcy93Eo58wmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785325137; c=relaxed/simple;
-	bh=+bl7W/DghJ2lNo8ihHQByUSlt3smL+/7HO/f5BD68Hc=;
+	s=arc-20240116; t=1785327244; c=relaxed/simple;
+	bh=G2rkEs8akPM2eJzvjsccdszXEL3DREHjcav6WAxVlpY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lu3QIEHzYAVVX02H5EgrfC3aQBe380rBWg54JQ2Yd+8AI7HQIRkBwxpyI7ds4EoLfbXP+GSPrLIXibm7PApDgXmA1Rz+y4UQr+64cEpvuyHO9dNSSseE4gcyyePBiAX3o8hRBTHvenPBR5Fd3io1+dH/HCMvpI9ZDRZvN2OrjNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Hl8nOEUk; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=U5SjyF2okzNrmb8DJ6f71LhxX82fFsIGoXs9R04cXkjh01LjyLo/KIEDtH4Wzk6ofYYjDhjELZnrkRHAUb2kVxs51F5Vl005Itb2OFHy0ZXU8xPHo2fQb7TbvSqHb6F199fU/FPiGk85gqNBdMfkyEyD678onNZ1YeMXj4WCU2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AgLNBW7f; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YXWjzKIc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hl8nOEUk"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4720f3bf164so1309469f8f.1
-        for <imx@lists.linux.dev>; Wed, 29 Jul 2026 04:38:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AgLNBW7f";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YXWjzKIc"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66TBvogU1929499
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 12:14:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	txP91yukZ1kQoDPyCm+pb6K7MyO5UEROTQQMIQ/rjYc=; b=AgLNBW7fwOpRdhYN
+	thPVmCuY+/NSDyCtQ+z9KZPZg/55tjnmjuJYW6zcgEgN1oosu2dU/PFnDCymNRBb
+	ADca1iwhuqr70L4NJt3+/bNZWcmYXNbK09xHQr8QDs7XMwdgHvn0SYGZtX6ElFLz
+	BPawdjjy7Kf2A/moIay0L9hoQa7k8e/ffdYz2iUdxJ4HnG8h+vFRQEqa0JMPKYQg
+	V8xZNYvTF8vfS1zduIUpXo9EQi50hdMtsqcuKr6Lrktscic/Bf3S9noR29nCS4hA
+	nSuyo/bQO5guSzVkCiE0gYAqI/Uo7z0+b5rQtPx8HSYBQjL0bQ6Qy8MUQ6bwy+Fq
+	ilHaZg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fqh3xg1y6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 12:14:00 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51cab6f7517so724661cf.0
+        for <imx@lists.linux.dev>; Wed, 29 Jul 2026 05:13:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785325133; x=1785929933; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5iX3sEVovVYi3DpvUrl6PGylYfhOnizJPhWXlTW0MXY=;
-        b=Hl8nOEUkd25VFh0f2IJNR29l4ZfX301FkAABlRvfNcYxlrgbd6oU4SG5kBszmGp+YN
-         n1LMPC+BZ9kraIzzzRYp/Hebb374i8qDCww/OzdNqQRwBYwg4gqwOooTW0uc1u2JpDAu
-         wOqvMN1kyBlqWbb6DNuiEuMz80tz/CPmICK3jYKHfeReKuRSlo+o63BBTd4x62FqSqMn
-         5rUCIyTwD1ySFjI0rbnkD/McsUTshpRdqrPOHvDhDdDJ2fCnWIPZSCwjwM3IBWH3s2Tw
-         cHWGirfviprW+HbiyJnDRU1mwSc8HUpuJu9ViHRR9OFnKcQ0Iy4UX28iJJaKDldYdhvZ
-         3w/w==
+        d=oss.qualcomm.com; s=google; t=1785327239; x=1785932039; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=txP91yukZ1kQoDPyCm+pb6K7MyO5UEROTQQMIQ/rjYc=;
+        b=YXWjzKIcymahvYxM0A8pmV4B6JAtjXb4ndBI8ClGcJCSHPAEooQ2cNzooZor0QKvfW
+         PHw8kTfCD/seKdmC16ZDtTN7xXEFOiaIj/T0y4ZmH7hnMBytGOWFwTkY6qL1zIvknNjY
+         bXDLkIwmr1+FSD+Hm8IHtTretnoI0N7TojvwHSjhVTS7AQ63Ufga2gnov+Q2w/MO1295
+         JVL+VF9ox1jAYheKC+uP1Du6RlBCvIY80RYZ8hGG6KGLhPvUJbm1CtJ7GuSIKPDh7zjY
+         Fl0rqKyRubBCzvUqnkDg1SsTTiZduaBbXVFVSz5J7CBEYaP7FgWDJ5EtNO0rAZcz639H
+         i4pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785325133; x=1785929933;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785327239; x=1785932039;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5iX3sEVovVYi3DpvUrl6PGylYfhOnizJPhWXlTW0MXY=;
-        b=jjEsyVGkrh0ekoqe3tTjmKHX4+dVzLkXMop2TlAT4mlyVO+u7NPmeDzlB0nImx4mw/
-         GSXbffUtbXrvLpZLXr4X3fJursXoCJFwWBa4A0pLJLkid9bieXpyTAxI79AVLotbKGNV
-         uujeL6Xps44YbG5VN14BgMp2fozm2o5JLk88W6rmC+UxjJmClhI4HsErZ60FGhzaw8ey
-         R0iMMye0gn/Ywdgwamz66fp51Y1SsHKsB+bsenh97pRZ/pRy+Vj0DC+bEf/ZtFa4qp3z
-         NSOb2KH398oOjwq9sHro1yMiTEA0LHbUQVY03fpm/8foF4qXQ9pGAxQAcyXNp8EhCFAw
-         ZbIA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqf2f+N/z3bgiqL4ku7H9OrszJhtsA/H7vhujbsJqA4pADt+cS0fIPlyLow85LhDvHSwyU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw93tg4GBVldVInAvDq35dUWhnYCs2Rx9awi6Rtnl1bXLBkRs+3
-	KPXxF/z7RWj/C1k0lr1llme9kq4USOUZD68aL5ulNuTkUl2BaPcWR7oO+XASxqy4TAc=
-X-Gm-Gg: AR+sD10VCPtgGYjetxBeSE5KgCcnPJmYfnFOJgZl8RqiBwhdlQUeibSbC4Hhsch/LAi
-	BFFDXDjyV7XZROCUF6lIm4aQWNTnTCVRwcG4QOEryZDfoesM2L7KpQO+n0oac2Mc+4QnHuoryM6
-	SX2nSuZnPMQxz07oyosh5u/HY6vsMbmxyazFRD+OXCxLxBOMghupF+KG1gPvfjjDtX8nNfWjPst
-	dSdNNYTLzaqNlcakwHUB44jNvL7baEhpQmOZXbf5PCdRNhsB2DhJY93QUIsodUDkRLK5TL7gfqa
-	EuzpSwXAQOU2vcqHzbK6XBO0kiSC6cwMRe1scH8ioZ7jHlx1YLjHN+jir5tUn5kbpDK1CZ/Q32P
-	XSrtfdQiT6kdKrWoOasYhZN6LOwxCNHSc9TEPcgKh68oaSEDpUGmkd0N7dYAxIrr4coI9l5pE1T
-	qbBjP7Qe3jt4dITI8yJEqqd9Nw8vUPSVUs2rSOPaF823ph7oJiauN9ON3ZbKI3PDHyL/U/NqM=
-X-Received: by 2002:a05:6000:2c05:b0:47f:9763:9864 with SMTP id ffacd0b85a97d-47fbabee850mr2432854f8f.19.1785325133163;
-        Wed, 29 Jul 2026 04:38:53 -0700 (PDT)
-Received: from [192.168.0.101] ([109.77.24.32])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0f039sm7702125f8f.18.2026.07.29.04.38.51
+        bh=txP91yukZ1kQoDPyCm+pb6K7MyO5UEROTQQMIQ/rjYc=;
+        b=Scmxs/EelJ4IspB/aP1P0QZlykvl0FXVHrXdLRj8NU/OH092Eat22DXYEIIloTRmF8
+         CbONtfE0fMNFqAz+e8DQFWnhPGdAY/TEvE2fry1kFQR97+eR+3UGeffao13O9bzqnOUu
+         UEQxBxxq1ar8MRGXGLvo85Ax8y+Ej3i8ExhCsDs2x01ttoDwC7pPWD2r89L0h8X3PTCP
+         coEnIVTv8eWaO8HunMTVpl6YiqESrWlYTyWGbD2aQyZP7YApnD2/Uh9glpRvpDG+59r8
+         Ch0a77bjPL/3xsoLkdiwGal8/ktlWriiV2Vol4gQ13TI8cLDtA6Mt6DxJSdlm9WMMDw7
+         Czzw==
+X-Forwarded-Encrypted: i=1; AHgh+RoEjAAMXxQRDZhdnLPXTyQ6auY1oPXrO52/OcyHbIm3GfSOQZGTyrajCloDZ2C++kf2qRg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnFdoEOvMfr5fYpyeDovWV9J9FrOBk/kSwKpKKkfs6pdT/xbtS
+	3dtrDqYhnG0ActlLqlpLfI9ifOzV17YFMUN2asT1CaSWqwKIgJy84HAz7qrmJ4yIhmblGUeUmGi
+	V+EIWPum/oCzFZCycIUsgnf8O3En9gQV/58viHMIDbyaZtSes6ryrz0s=
+X-Gm-Gg: AR+sD10WtOtuGrCahYvkLQcjSH1eKJZHs5g7xTGjCTShFM1SgOY8Uzle+2wa4R90wpH
+	VOE463+5HF8apOBikbLZdpCubUn9bM9hcnaafGCmUK2TOJOLed24/02AJzmGZT0gx5z1mg3kJyA
+	mS0/4tWaTxtgbhwXDT/Hss+npZ0GLyab/EtX+IA0J7z/ICjFuT3/50qACeYKk83HEQ/ryDlkgUV
+	I1aCFx5mt1UWwyx9CjuirOGjohpRU1Ql838VCxaoiaTDUKsA1PG048OkV9ijUUpJLPnYEpYRB51
+	xe/Om58SuPyUkcXg0QgSJa2JM37H0womEG34qhS4IxmxXBMDh7Dm11AOSNPmflCuFB4sff4p6B8
+	ZM0DkTmnijWZIAkMrHBF3yOK5
+X-Received: by 2002:a05:622a:aa46:20b0:51b:8543:cbbd with SMTP id d75a77b69052e-529d6f6db71mr44778611cf.1.1785327239007;
+        Wed, 29 Jul 2026 05:13:59 -0700 (PDT)
+X-Received: by 2002:a05:622a:aa46:20b0:51b:8543:cbbd with SMTP id d75a77b69052e-529d6f6db71mr44778141cf.1.1785327238610;
+        Wed, 29 Jul 2026 05:13:58 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1f83cdf452sm106406166b.14.2026.07.29.05.13.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jul 2026 04:38:52 -0700 (PDT)
-Message-ID: <f77aab11-0e1b-4962-9d53-0bb2fcd6486a@linaro.org>
-Date: Wed, 29 Jul 2026 12:38:50 +0100
+        Wed, 29 Jul 2026 05:13:57 -0700 (PDT)
+Message-ID: <df03eb18-6928-453e-971b-681875e9cb0d@oss.qualcomm.com>
+Date: Wed, 29 Jul 2026 14:13:55 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,94 +89,85 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] media: qcom: camss: use
- fwnode_graph_for_each_endpoint_scoped() to simplify code
-To: Frank.Li@oss.nxp.com, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Dafna Hirschfeld <dafna@fastmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Heiko Stuebner <heiko@sntech.de>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: driver-core@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
- Guoniu Zhou <guoniu.zhou@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-References: <20260625-fw_scoped-v3-0-ffd0868e498d@nxp.com>
- <20260625-fw_scoped-v3-4-ffd0868e498d@nxp.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-GB
-In-Reply-To: <20260625-fw_scoped-v3-4-ffd0868e498d@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: qcs6490-rubikpi3: Add IMX219
+ camera overlays
+To: Hongyang Zhao <hongyang.zhao@thundersoft.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc: Roger Shimizu <rosh@debian.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20260723-rubikpi-next-20260615-v2-0-47c5add80114@thundersoft.com>
+ <20260723-rubikpi-next-20260615-v2-2-47c5add80114@thundersoft.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260723-rubikpi-next-20260615-v2-2-47c5add80114@thundersoft.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDEwMSBTYWx0ZWRfXyJ6hE83OtJ2Z
+ XFiCj27JZ0kQz1/vdA/i529spDwpq6F24a4wJ8NaG74OtExxIWtzWN7TJPw39w1RY8FwTvwRf0M
+ 1d/djG7yk/2MfCLunlv8DWc1im2hsrA=
+X-Authority-Analysis: v=2.4 cv=Opl/DS/t c=1 sm=1 tr=0 ts=6a69ee88 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=Wdb1h0LgAAAA:8 a=cV_IwbTCVfHGfDX6aFIA:9 a=QEXdDO2ut3YA:10
+ a=kacYvNCVWA4VmyqE58fU:22 a=j5gyrzqu0rbr1vhfHjzO:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDEwMSBTYWx0ZWRfX/6EAHwVEsAsW
+ gDO7CLUPBW0JDaZdNgE85RiSq7VBa0lw4sLxUqJ8JtKmdjWbFliUA5h+v+vLz+4UybratopxZCC
+ I7M5+sP15rNAUAk7AreoPydOqEu5wC0fhyK09on8SFGxGP4oVUW7Zs3BkeU+JkJk9z2gRMg7cMG
+ oz+j97fNgZPIa0EbTU0TVrlzy4MnXlj/zaEJJk5P/zgsru+y3E4n2E/vIr6BZq9sTZGkVLCcc4p
+ XbVRqu/HkuVurR5lgL7pJMNPu+JJu+Ymom04y/t09glOSYD8B7epWrPaGpK8/EhvPqRanR2K3nD
+ MxaN0dup1S4kcRyLAFfA+Ee7mb7supD1AUWD/uHsWTo7t5AyFDTlrehlZFTdIQ8lIub+cfTSuol
+ Ko12CBqO+ofUXW7/lxplqSy5RnZ0PBmyZA/vswILCmExRV6duPN5NU69YEWML5t/u4V8tqprqv7
+ lbABCWyqzzNroAefRkA==
+X-Proofpoint-ORIG-GUID: TSfhlqZlTUMvceDy2kHNU87cRRIRNpqV
+X-Proofpoint-GUID: TSfhlqZlTUMvceDy2kHNU87cRRIRNpqV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_04,2026-07-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
+ adultscore=0 phishscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607290101
 
-On 25/06/2026 15:17, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On 7/22/26 6:12 PM, Hongyang Zhao wrote:
+> RUBIK Pi 3 ships without camera sensors, and its two connectors support
+> multiple modules. Keep module-specific nodes out of the base board DTS
+> and add per-connector overlays for Raspberry Pi Camera Module V2 IMX219
+> sensors.
 > 
-> Use fwnode_graph_for_each_endpoint_scoped() to simplify code.
+> CAM1 uses CCI1 and CSIPHY1, while CAM2 uses CCI0 and CSIPHY4. Each
+> overlay describes the 24 MHz sensor input clock and the three sensor
+> rails derived from the switched 3.3 V connector supply.
 > 
-> No functional changes.
+> Describe each connector CAMERA_GPIO signal as a privacy indicator LED
+> and associate it with the corresponding sensor. This lets the V4L2 core
+> control the LED while the sensor is streaming.
 > 
-> Reviewed-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
 > ---
-> change in v2
-> - fix typo simplify
-> - collect andy, gouniou and loic's review tags
-> ---
->   drivers/media/platform/qcom/camss/camss.c | 17 +++++------------
->   1 file changed, 5 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-> index 2123f6388e3d7..23f3cc30a15a5 100644
-> --- a/drivers/media/platform/qcom/camss/camss.c
-> +++ b/drivers/media/platform/qcom/camss/camss.c
-> @@ -4793,30 +4793,23 @@ static int camss_parse_endpoint_node(struct device *dev,
->   static int camss_parse_ports(struct camss *camss)
->   {
->   	struct device *dev = camss->dev;
-> -	struct fwnode_handle *fwnode = dev_fwnode(dev), *ep;
-> +	struct fwnode_handle *fwnode = dev_fwnode(dev);
->   	int ret;
->   
-> -	fwnode_graph_for_each_endpoint(fwnode, ep) {
-> +	fwnode_graph_for_each_endpoint_scoped(fwnode, ep) {
->   		struct camss_async_subdev *csd;
->   
->   		csd = v4l2_async_nf_add_fwnode_remote(&camss->notifier, ep,
->   						      typeof(*csd));
-> -		if (IS_ERR(csd)) {
-> -			ret = PTR_ERR(csd);
-> -			goto err_cleanup;
-> -		}
-> +		if (IS_ERR(csd))
-> +			return PTR_ERR(csd);
->   
->   		ret = camss_parse_endpoint_node(dev, ep, csd);
->   		if (ret < 0)
-> -			goto err_cleanup;
-> +			return ret;
->   	}
->   
->   	return 0;
-> -
-> -err_cleanup:
-> -	fwnode_handle_put(ep);
-> -
-> -	return ret;
->   }
->   
->   /*
-> 
-Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+
+[...]
+
+> +	/* The module enables its three sensor rails together through PWR_EN. */
+> +	vreg_cam2_pwr: regulator-camera2-pwr {
+> +		compatible = "regulator-fixed";
+> +
+> +		regulator-name = "vreg_camera2_pwr";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +
+> +		gpio = <&tlmm 58 GPIO_ACTIVE_HIGH>;
+
+Is this (and the other) regulator on the SBC, or on the module (with
+the PWR_EN pin just being an output to the module connector)?
+
+Konrad
