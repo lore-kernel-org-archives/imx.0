@@ -1,143 +1,124 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE89443CEFA
-	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 13:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082DC4963C8;
+	Wed, 29 Jul 2026 13:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785332504; cv=none; b=aVzOgf+Phs1RkBSo7InypPYSs/ENJR2UJBqMkqg0qPWnVuzmrHng2Y5BA41e1taNf/tknvmxOF8aZvLFjHNkgI+z4WPb/v1z9m+PbNtrIvurPt4i2xn/a0StIjkF4mRPtrn69Ax4kkx82+l3Ucrnxc9rlzQFD800UK4qCiyGF2Q=
+	t=1785333479; cv=none; b=RQdpwyYJEmlLfhM1qqEKFxyxgR2a9tnDKQapU2C6FEf5O4QuvTXP/I1XX7uxZYRq2hBV5DXO/NX36+38jMZk/J2NFfNlVFX9pllEbUA91VbwVGDGE/5mZ2y30ag/OivQR3MO76SaB022zUU14k8cUZnefTsnVjAYO2nbsynqx9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785332504; c=relaxed/simple;
-	bh=wqvQzBIEUOBkjgczOcqFwncWTHj4AiMlRa6SPSijrRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H19mlK63qKTWfxzc2YI76ImStIlvAYEeaq/RsfDYpslG8tu43u/KkP4IkVWGvi+pc6jlPYqjOSbqlFKyhURxg76L1+jvm936hYJVvgIJOG82jl5/c5DZZJuzYmEtqtcN4Pw9VTI6AFargX96esIbeVZiVrSNeysBvd+Mhw7QWrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lzZyWuW/; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785333479; c=relaxed/simple;
+	bh=kuDyRjhrPNyMKYVKvqeOj0baUYY06hEeS6lvk3MALCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fiOFWxkJS4rSUn/pqkVuk/ClwJqLQM+vc3km5exIIicuZD+X/UL7rdErTw2dabnayKPFCeaLiNnC0zZAk8rLaa46OThc3HdTxGyS0xBHn5pBPTY680ceUJjmzMuoUAdv78K1huxhgNFlMmlcXoM4WHeskqJeaIN+FlOufsrplt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bt+hF+Kd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lzZyWuW/"
-Message-ID: <59ecaa4e-f111-4dd4-914a-7704990ac58e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785332500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ri/Un0MEVq2R5X4SwViYnsBFp4cF+iTbRU5sEtCszTs=;
-	b=lzZyWuW/4KOletf2OQGRdK5gpRSxzpGcK7PXG6tHx6wV+i5jWAxhyIkDSdw5wYnC9al3YI
-	dAxDsynJHSa1alN2L8/flus0x/FSmMml1q26Bai3GR2vQz85cQm8DlV9ZahxWH/sxbFAbD
-	Jb3yyIOxY/QzPSPozyRoN0U27mlYuk8=
-Date: Wed, 29 Jul 2026 14:41:36 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bt+hF+Kd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1D61F00A3E;
+	Wed, 29 Jul 2026 13:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785333468;
+	bh=fYVkarbGTlgISBurccqc2jqkuYXw9q5Rk/awuWQnUDQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Bt+hF+KdOEUbsvd8Ebt+v3bsvf2lC1rPuBjvhOQtryDvrj0/6QwfoxSSMvEqoKL3N
+	 PLhUiSUCTzLYwsrs5wzQZe+Fp4I+JPksLt/KM71OyVdOt6kL3zqUrNjXOBLYcjwyOu
+	 E5ose4lx0hl6Twtbz2iBZ5zsigpeTclK3o3bP6JeRh0QREiWtqkEUu6WudW84QKbgm
+	 BzWPOT4VPfk0vfk72NQY7hJm43EjKGFJt2MMmGSJZ4nERu2gp4lN0GDRTREePNiz0y
+	 2Dg0cFqiZTkD1QoU3llLDLVyOLb6lhpyH7cjuC+Yi2NLXrjUxVey0el3O4GlbKG8Mt
+	 P2fIsGMuBvrUg==
+Date: Wed, 29 Jul 2026 15:57:39 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: hongxing.zhu@oss.nxp.com
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: Re: [PATCH v3] PCI: imx6: Update MPLLB bandwidth to improve i.MX95
+ Gen3 PCIe stability
+Message-ID: <jtpctss4hz3djqd4ukq634ujfk5jdud6c6r6apgo2syrsubqz2@jivsombtim3v>
+References: <20260714024107.4113926-1-hongxing.zhu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 6/7] net: dsa: netc: add PTP two-step
- timestamping support
-To: wei.fang@oss.nxp.com, richardcochran@gmail.com, vladimir.oltean@nxp.com,
- xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, andrew@lunn.ch,
- olteanv@gmail.com
-Cc: wei.fang@nxp.com, chleroy@kernel.org, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20260728104548.3301214-1-wei.fang@oss.nxp.com>
- <20260728104548.3301214-7-wei.fang@oss.nxp.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260728104548.3301214-7-wei.fang@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260714024107.4113926-1-hongxing.zhu@oss.nxp.com>
 
-On 28/07/2026 11:45, wei.fang@oss.nxp.com wrote:
-> From: Wei Fang <wei.fang@nxp.com>
+On Tue, Jul 14, 2026 at 10:41:07AM +0800, hongxing.zhu@oss.nxp.com wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
 > 
-> Add two-step TX timestamping and RX timestamping for the NETC switch.
-> One-step TX timestamping is not supported yet.
+> Bandwidth marginality was observed during i.MX95 Gen3 PCIe tests with
+> the default MPLLB_BANDWIDTH value. This margin degradation worsens
+> across voltage and temperature (VT) variations and different test
+> matrices, potentially causing link stability issues.
 > 
-> For RX, install ingress port filter table (IPFT) rules that redirect PTP
-> frames to the CPU port. Support L2, L4 over IPv4 and L4 over IPv6, for
-> both event and general messages, selected via the hwtstamp rx_filter.
-> The hardware prepends a To_Host subtype 1 tag carrying the 64-bit ingress
-> timestamp. The tagger extracts it into the skb control buffer, and
-> netc_port_rxtstamp() copies it into skb_hwtstamps().
+> Testing with MPLLB_BANDWIDTH value of 140 (0x8c) shows significant
+> improvement in bandwidth margins across all VT conditions and test
+> scenarios.
 > 
-> For two-step TX, clone the skb and allocate a 4-bit timestamp request ID,
-> then queue the clone on a per-port list. netc_xmit() emits a To_Port
-> subtype 2 tag carrying that ID. The hardware echoes the ID back in a
-> generated To_Host subtype 2 response frame together with the 64-bit
-> transmit timestamp. The tagger dispatches the ID and timestamp to the
-> switch driver through the twostep_tstamp_handler callback registered in
-> netc_tagger_data, which matches the queued clone and completes it via
-> skb_complete_tx_timestamp(), then frees the response skb. Non-PTP frames
-> keep using the To_Port subtype 0 tag on the xmit fast path.
+> Implement PHY register write helper function and configure:
+> - MPLLB_BW_OVRD_IN = 140 (0x8c) for improved bandwidth margin
+> - MPLLB_BW_OVRD_EN to enable the override
 > 
-> The two-step response frame carries no payload; its total length is only
-> 26 bytes (12 bytes of DMAC and SMAC plus a 14-byte switch tag). By the
-> time netc_rcv() sees it, skb->data already points 2 bytes into the switch
-> tag, past the TPID shared with the Ethernet header, so skb->len is only
-> 12. Since the tag pointer is at (skb->data - 2), the pskb_may_pull() check
-> must use NETC_TAG_MAX_LEN - 2 rather than NETC_TAG_MAX_LEN. Otherwise
-> pskb_may_pull() drops the response frame and breaks PTP synchronization.
+> This ensures robust PCIe Gen3 performance across all operating
+> conditions.
 > 
-> Add the To_Port subtype 2 and To_Host subtype 1/2 tag structures, extend
-> netc_xmit() to select the tag based on ptp_flag in the skb control buffer,
-> and add netc_connect()/netc_disconnect() to manage the per-switch
-> netc_tagger_data allocation. Grab the PTP timer's pci_dev in netc_setup()
-> so get_ts_info() can report its PHC index, and release it in the teardown
-> and error paths.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->   drivers/net/dsa/netc/Kconfig         |   1 +
->   drivers/net/dsa/netc/Makefile        |   3 +-
->   drivers/net/dsa/netc/netc_main.c     |  72 +++++
->   drivers/net/dsa/netc/netc_platform.c |   1 +
->   drivers/net/dsa/netc/netc_ptp.c      | 411 +++++++++++++++++++++++++++
->   drivers/net/dsa/netc/netc_switch.h   |  35 +++
->   include/linux/dsa/tag_netc.h         |  23 ++
->   net/dsa/tag_netc.c                   | 120 +++++++-
->   8 files changed, 658 insertions(+), 8 deletions(-)
->   create mode 100644 drivers/net/dsa/netc/netc_ptp.c
+> Changes in v3:
+> Regarding Frank's comments, refine naming consistency and clarity.
+> 
+> Changes in v2:
+> Update the register name and bit definitions.
+> Don't move IMX95_PCIE_PHY_CR_PARA_SEL settings.
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 53f3da6ab30d5..fadf14de10f7c 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -80,6 +80,17 @@
+>  #define IMX95_SID_MASK				GENMASK(5, 0)
+>  #define IMX95_MAX_LUT				32
+>  
+> +#define IMX95_PCIE_PHY_REG_ADDR			0x3008
+> +#define IMX95_PCIE_PHY_REG_EN			BIT(31)
+> +#define IMX95_PCIE_PHY_REG_ADDR_MASK		GENMASK(15, 0)
+> +#define IMX95_PCIE_PHY_REG_DATA			0x300c
+> +#define IMX95_PCIE_PHY_MPLLB_OVRD_IN		0x2004
+> +/* BIT(10): Override enable for mpllb_bandwidth[15:0] */
+> +#define IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN		0x400
 
-[...]
+Use BIT(10) please.
 
-> +int netc_get_ts_info(struct dsa_switch *ds, int port,
-> +		     struct kernel_ethtool_ts_info *info)
+> +/* Register offset: Override value for mpllb_bandwidth[15:0] */
+> +#define IMX95_PCIE_PHY_MPLLB_BW_IN		0x2005
+> +#define IMX95_PCIE_PHY_MPLLB_BW_VAL		0x8c
+
+Is it possible to define individual bits?
+
+> +
+>  #define IMX95_PCIE_RST_CTRL			0x3010
+>  #define IMX95_PCIE_COLD_RST			BIT(0)
+>  
+> @@ -269,6 +280,16 @@ static int imx95_pcie_select_ref_clk_src(struct imx_pcie *imx_pcie)
+>  	return 0;
+>  }
+>  
+> +static void imx95_pcie_phy_write(struct imx_pcie *imx_pcie, int addr, u16 data)
 > +{
-> +	struct netc_switch *priv = ds->priv;
-> +
-> +	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
-> +				SOF_TIMESTAMPING_RX_SOFTWARE |
-> +				SOF_TIMESTAMPING_SOFTWARE;
+> +	udelay(200);
 
-SOF_TIMESTAMPING_RX_SOFTWARE and SOF_TIMESTAMPING_SOFTWARE are available 
-by default, no need to add them.
+Why is this delay at the start of this function?
 
-the code doesn't have skb_tx_timestamp() calls, I wonder how is
-SOF_TIMESTAMPING_TX_SOFTWARE implemented?
+- Mani
 
-> +
-> +	info->phc_index = netc_get_phc_index(priv);
-> +	if (info->phc_index < 0)
-> +		return 0;
-> +
-> +	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
-> +				 SOF_TIMESTAMPING_RX_HARDWARE |
-> +				 SOF_TIMESTAMPING_RAW_HARDWARE;
-> +
-> +	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
-> +
-> +	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
-> +			   BIT(HWTSTAMP_FILTER_PTP_V2_EVENT) |
-> +			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
-> +			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_EVENT);
-> +
-> +	return 0;
-> +}
-
-
+-- 
+மணிவண்ணன் சதாசிவம்
