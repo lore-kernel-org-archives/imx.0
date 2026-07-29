@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269C6379C38
-	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 06:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6C3AA1BD
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 06:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785307654; cv=none; b=XUZUQhsfAVHKuQQo22qOFS/BhYf9e/87S9PYstC5fUQtOhlPcSAwQnJxpbMtsAbmd6vJtq+t45EDg32YI2Sk+gTMqw43lvWASg+qP2Z0lH2JenklXHTOBUDu4j2njY/Dk1pCwy/oJoVY/kp7MCJ7vNQCe1yIP+TNwuRtcW5LDd0=
+	t=1785307768; cv=none; b=UtIGM1N7AqzY1lneLummeWUgGSWEiDGRB0HJBRNe5I5vpOh7VnHMDf53L+5VgXnfq/GFLImxBTmnZMzVCaqHdFZaWou2Q0VLR+G8qQJk1mDlkIcfTMB5Ay2v4OO22Oy8f6tgFACM38wSahy8epY7/abPQd5dgl8ib4ln0aa+8V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785307654; c=relaxed/simple;
-	bh=MnDOo/mAdazPYcdITAUiubsP3IDC4UWjzsHU8/VXIaQ=;
+	s=arc-20240116; t=1785307768; c=relaxed/simple;
+	bh=VYHU+2eXCMfTHIki5jwjn941K4NBc5hLnLXZ06VkHd4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Edr88msmjRJKpWAwGqp/vXmx5Qmkl3GgB3MJXo6O2Tkq7jhMvBsQfo2f0D82QJe5wIk7wcpYMPRkCudtLIYTWBpEHq8tAFJElFvWZhyxPRHZLQgs29a/lRihB/8AlKU9yqkLMNnpXyCxRtswl53pBGFDDCZhifXgM8yj/aJJZuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7PSJc0d; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=q16QmO4Ga1IfJ62RAcov7CkJ5vkNKSZN9zQPQcL02ryEbBgbOtMcGKuxiexBmraJZM0KVl7okZ2vP8UoF5U92xGafPsnHEV9XParw6uEt207icssjeUAeACHLyRM2mowZVzq5MP81aPVPar5a6MR+c1UZNDBbV1XGytcViTqjIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jG0y84tz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7PSJc0d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8F41F000E9;
-	Wed, 29 Jul 2026 06:47:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jG0y84tz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F751F000E9;
+	Wed, 29 Jul 2026 06:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785307652;
-	bh=kzvLLWQWWWYvpjpHQI8WPcq5zaOYMxZaJrIgJ7DIBas=;
+	s=k20260515; t=1785307765;
+	bh=a5XST+XBsWG9hKzIlTdRSHZnzT9UyERw2f83xdwRgko=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U7PSJc0d/xznvHYkV6sIKoa/hl/GVCYQbGiwZTPklfYvaqbkjUt/gfA7euh8zT+L3
-	 6mzAAIBD0F3nAuQBh02RJCO0d1mBVSN+a0wO5JFwzf/k3b6vaLncEY0btcQbc3G0wT
-	 5RGfGq2atqel+iUpRE2wXcHno641LFCLlaeBG2ci5D3+OlnKEJl4YVGr1iBw4ZDnqL
-	 q5/nO7J5lM50r1nkW5PAKwdNkxWKMp25fOzsMYA7cjz7y+qO9xkGXakk6y7CqlGasK
-	 wU5plAVqC/YBGuZ3VKsK3dE71PxiCwgbrJS2N3CzOVSS4rXh/yI3x/N6Kyq5SCXg8x
-	 cFZ3JQCCN/yrA==
+	b=jG0y84tzKq6V7OyJI68Y+Dj9DM+vUzXtM5oBc32/ZVaaOdRpgSFNMNHrrxfdrXm3G
+	 YzQl75J9P06J6DRBoJr7VvEA82u47z5/Kh9pTeXzSXEVx2EzhCjQ3RsJsdP6J+RVPF
+	 +e43gB9+JrGeEhPHj1FywXyewmzqntjvxi3Zl0yIs+XHdBMWrS9O1kMdCTGGVvdFxP
+	 u/r9fcPPuO/GuHo/vjSFGSFT1DCXEVOrkYPAKyNSnOQptokZJ8gGCDBOecyiH9ufJ6
+	 Orvu2WRRuaQTjTJR6prEvlc6wwEKr72ozya0VRebNYa8naFRLqRHNFxY5631wdFf3T
+	 BrqY42l9ejzmA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 1/6] phy: fsl-imx8mq-usb: fix typec switch leak on
- probe error path
+Subject: Re: [PATCH v7 4/6] phy: fsl-imx8mq-usb: add control register regmap
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: neil.armstrong@linaro.org, imx@lists.linux.dev, vkoul@kernel.org, Frank.Li@kernel.org, olteanv@gmail.com, linux-phy@lists.infradead.org
-In-Reply-To: <20260729-imx8mp-usb-phy-improvement-v7-1-c385ee40ade6@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, vkoul@kernel.org, neil.armstrong@linaro.org, linux-phy@lists.infradead.org, olteanv@gmail.com
+In-Reply-To: <20260729-imx8mp-usb-phy-improvement-v7-4-c385ee40ade6@nxp.com>
 References: <20260729-imx8mp-usb-phy-improvement-v7-0-c385ee40ade6@nxp.com>
- <20260729-imx8mp-usb-phy-improvement-v7-1-c385ee40ade6@nxp.com>
+ <20260729-imx8mp-usb-phy-improvement-v7-4-c385ee40ade6@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 06:47:31 +0000
-Message-Id: <20260729064732.4B8F41F000E9@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 06:49:23 +0000
+Message-Id: <20260729064925.79F751F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,102 +46,72 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] A race condition during probe allows `imx_phy->tca` to be derefere=
-nced by a Type-C consumer before it is actually assigned, leading to a NULL=
- pointer dereference.
-- [High] If the PHY device is unbound via sysfs, devm-managed structures ar=
-e freed while Type-C consumers might still hold references to the switch, l=
-eading to a Use-After-Free.
+- [Medium] Incorrect error handling of pm_runtime_get_sync() treats a succe=
+ssful active state as a failure.
+- [Low] Missing Kconfig dependency for REGMAP_MMIO.
 --
 
---- Patch [1]: [PATCH v7 1/6] phy: fsl-imx8mq-usb: fix typec switch leak on=
- probe error path ---
-commit bdfb57c97d01c6ce3c92e388f5a6cf33401f0d53
-Author: Felix Gu <ustc.gu@gmail.com>
+--- Patch [4]: [PATCH v7 4/6] phy: fsl-imx8mq-usb: add control register reg=
+map ---
+commit 3be8b97176fdd5e159a3f1a8541ee32a8755658b
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-phy: fsl-imx8mq-usb: fix typec switch leak on probe error path
+phy: fsl-imx8mq-usb: add control register regmap
 
-This commit fixes a typec switch leak that occurs on the probe error path.
-It transitions the cleanup mechanism to use devm_add_action_or_reset(),
-ensuring the switch is properly unregistered on both probe failure and
-driver removal. The manual imx95_usb_phy_put_tca() cleanup is completely
-removed.
-
-Cc: stable@vger.kernel.org
+This commit adds a 32-bit MMIO control register regmap for on-chip access
+to the control registers inside the USB 3.0 femtoPHY. It exports these
+registers via debugfs to help with PHY diagnostic.
 
 > diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/fre=
 escale/phy-fsl-imx8mq-usb.c
-> index b05d80e849a14..9a33c06d6fc39 100644
+> index 74e665525ec48..83d5a44c40848 100644
 > --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
 > +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
 [ ... ]
-> @@ -266,17 +267,11 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct=
- platform_device *pdev,
->  	tca->orientation =3D TYPEC_ORIENTATION_NORMAL;
->  	tca->sw =3D tca_blk_get_typec_switch(pdev, imx_phy);
+> @@ -696,6 +708,13 @@ static int imx8mq_usb_phy_probe(struct platform_devi=
+ce *pdev)
+>  	if (IS_ERR(imx_phy->base))
+>  		return PTR_ERR(imx_phy->base);
+> =20
+> +	imx_phy->cr_regmap =3D devm_regmap_init_mmio(dev, imx_phy->base + PHY_C=
+RCTL,
+> +						   &imx_cr_regmap_config);
 
-[Severity: High]
-This is a pre-existing issue, but does this create a race condition where
-imx_phy->tca is dereferenced before it is assigned?
+[Severity: Low]
+Does this new regmap initialization require a Kconfig update?
 
-When tca_blk_get_typec_switch() calls typec_switch_register(), the switch
-device is immediately exposed to the system. A Type-C port controller could
-discover it and call typec_switch_set(), which triggers
-tca_blk_typec_switch_set().
+Since the driver now uses devm_regmap_init_mmio(), it depends on the MMIO
+regmap subsystem. However, PHY_FSL_IMX8MQ_USB in drivers/phy/freescale/Kcon=
+fig
+does not select REGMAP_MMIO.
 
-That callback reads imx_phy->tca:
+Could this lead to build failures (such as missing module or undefined
+reference to __devm_regmap_init_mmio_clk) in configurations where no other
+component selects REGMAP_MMIO?
 
-tca_blk_typec_switch_set() {
-    ...
-    struct tca_blk *tca =3D imx_phy->tca;
+> +	if (IS_ERR(imx_phy->cr_regmap)) {
+> +		dev_warn(dev, "Fail to init debug register regmap\n");
+> +		imx_phy->cr_regmap =3D NULL;
+> +	}
+> +
+[ ... ]
 
-    if (tca->orientation =3D=3D orientation)
-    ...
-}
+[Severity: Medium]
+Looking at the driver's unbind path in imx8mq_usb_phy_remove():
 
-However, imx_phy->tca is not assigned until imx95_usb_phy_get_tca()
-completes and returns to the probe function, leaving a window where the
-callback might dereference a NULL pointer.
+static void imx8mq_usb_phy_remove(struct platform_device *pdev)
+{
+	...
+	ret =3D pm_runtime_get_sync(dev);
+	if (ret)
+		dev_warn(dev, "failed to resume on remove: %d\n", ret);
 
-> -	return tca;
-> -}
-> -
-> -static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
-> -{
-> -	struct tca_blk *tca =3D imx_phy->tca;
-> -
-> -	if (!tca)
-> -		return;
-> +	ret =3D devm_add_action_or_reset(&pdev->dev, tca_blk_put_typec_switch, =
-tca->sw);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does relying on devm
-allocation for imx_phy and tca lead to a use-after-free if the device is
-unbound?
-
-When the PHY device is unbound via sysfs, devres automatically frees the
-imx_phy and tca structures. Although typec_switch_unregister() removes the
-switch from the system, Type-C consumers that already acquired references
-(holding a kref via typec_switch_get()) can still invoke the switch
-callback.
-
-If a consumer calls typec_switch_set() after unbind, it will trigger
-tca_blk_typec_switch_set(), which accesses the freed memory:
-
-tca_blk_typec_switch_set() {
-    struct imx8mq_usb_phy *imx_phy =3D typec_switch_get_drvdata(sw);
-    struct tca_blk *tca =3D imx_phy->tca;
-    ...
-}
-
-> -	tca_blk_put_typec_switch(tca->sw);
->  }
+According to the PM subsystem rules, pm_runtime_get_sync() returns 1 when t=
+he
+device is already active. Does checking if (ret) instead of if (ret < 0)
+treat this success condition as a failure, potentially causing a spurious
+kernel warning during driver unbind?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-imx8mp-usb=
--phy-improvement-v7-0-c385ee40ade6@nxp.com?part=3D1
+-phy-improvement-v7-0-c385ee40ade6@nxp.com?part=3D4
