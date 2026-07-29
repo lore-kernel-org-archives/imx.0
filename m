@@ -1,153 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2828E446848
-	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 10:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF2B445ADB
+	for <imx@lists.linux.dev>; Wed, 29 Jul 2026 10:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785321804; cv=none; b=X+tADa+gFKIQl4XQXLX0vWqCMVrHYPup8nnaZKdO9W/RDT5cQX/QLy4aKzZZ4HcUM64D85/7mMMTguiDOBN5aeDq0aI9zO29FQwh8ZZywOHUkN6DlCyHjz3JtKCbT8JwCAwBsZQ7JAZA5Lx84iYjz+LRrymzdndNXx4h0+xbjv0=
+	t=1785321807; cv=none; b=I76e1Sp9Vwj6cMq+USuzGKiaXbRLn71PZ+c1F9DzRgJOFgNLN19c2E/drZBbYjkd4Ffo/wVQ1jpgeg+1rCQLLR74FMoH8YAm31hGanVQIeBHpWYnPAVeb/STzUTTeHF88E9ruW15Z89A77Nzu5MKx+z/lEOYScwBam032L/fWg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785321804; c=relaxed/simple;
-	bh=Ql3ZuouDW+4y0mAMj/Tu39fdqvM8sX2CDoVgEhp2vrk=;
+	s=arc-20240116; t=1785321807; c=relaxed/simple;
+	bh=CelEy+zebNVQmdWBG1x2f5HkYzvxC0I075cFENgaH+M=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=i9bqwNYsfu4NNpVcPB3V8i9D1Rn9RE0mtgRx9KOEfN8dcXRjqNabTHdgdmWnQYyPPLkWtg8/3Pes1W2A3V6EL4BXTqOabzvhJdwvr0lfwKRs8Wg6Nk97wCE85ZTC7mvOi2VC2QvDzAXwKZOo5JyVLuSU/zXRMDJfB5mfRJKHYGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vczb0UDU; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=OAWoYqaqfyiSqOqjf49J+y0UHqhqSk1Dx4TfULuuT3G/2YvY5QjwlO8jGICnH0NtL5h5T8IrneLK1Y1p62asF5oKotPqEBrW6fiYzz+r2klGHS0ukMlPaqLlVHYMf3bCxrqT+ds8/Z2nVO3NEwLDKCnN1RAQp4Yc++7S2q6Dda4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1nuOjCE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vczb0UDU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375121F00A3F;
-	Wed, 29 Jul 2026 10:43:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1nuOjCE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB451F00A3D;
+	Wed, 29 Jul 2026 10:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785321796;
-	bh=BeCyCwQvZ0sD0W8m7RZhzzSnsJ2mgTInylSyZyi5NWw=;
+	s=k20260515; t=1785321795;
+	bh=3xdGB8ZiJM/keLiNRF3nUff5ZjsJP39s6+N/eSMt2DA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Vczb0UDUWHf8QI9PLYb1eeq6v5SLutaZel3SyvXSF43ahEYUP3f4HHv6GtVdjztlR
-	 Ge+O/8Ct3pLcZ35YUMbFyzggZ9IP8Y8Rg8lFAnQuVoZfMUG9xQoqVC+JnKB8+TfG2C
-	 gpe6lUo6FxfQdW9ifWWeWNuYyzXipCG2ptudGVdg1deTVLtE7CUlPj6oH5eErlqf5D
-	 TZqKLSDhgpEDl4Aw3yT6VQjWybrFfmKX8cbOEI/IUNcbWD/rTtEld1lzpWSTpZ/7rs
-	 ISkdmpITdfE5UGvrOpTC6eUXlFWUnkSxiql3u00fZ1401ugaUwZ6BtF2+gEFb6SL3d
-	 faj334xsPx4VA==
+	b=j1nuOjCEk1X7xhVjou2L4Ic0bcGdqNOvbTA2EfAunUxoqlkR89LIhxMMwVQWzaLxA
+	 pWvzxt9OgE01XTIvTm2TNdv4yMyIdqDwObcish/+TRg9n+3Zfz+MM+O39n04TPEJ0t
+	 hG2yVN9SsyjrOlKUO5InnhkyFMgye/aQwrQPt02EPmWO3nCKVYx0eGrm0GnzVhh3FX
+	 KtzAKZBcJjADz2Qw+rkkk+O9rl5At17dqfM3EhDuBxsIc6L/706tzHyPavujLmOuoO
+	 kTbSBgdhpj3UKC0j3KRUdHQY1MZqZG6Pj9Ok3/xfEqCxeX/Rt309fsJub+HqoxS+or
+	 PzxD0rdYb1tfQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next 2/7] ptp: netc: remove unnecessary pcie_flr()
- call in probe
+Subject: Re: [PATCH net-next 3/7] ptp: netc: export
+ netc_timer_get_current_time() for cross-driver use
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260728104548.3301214-3-wei.fang@oss.nxp.com>
+In-Reply-To: <20260728104548.3301214-4-wei.fang@oss.nxp.com>
 References: <20260728104548.3301214-1-wei.fang@oss.nxp.com>
- <20260728104548.3301214-3-wei.fang@oss.nxp.com>
+ <20260728104548.3301214-4-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 10:43:15 +0000
-Message-Id: <20260729104316.375121F00A3F@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 10:43:14 +0000
+Message-Id: <20260729104314.BEB451F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the driver fails=
- to initialize NETC_TMR_TEMASK to 0 during probe, which can leave interrupt=
-s enabled from a previous kernel. Combined with the ISR masking logic, this=
- causes unrecoverable interrupt wedging or storms.
-- [High] This problem wasn't introduced by this patch, but teardown orderin=
-g allows late IRQs to access a freed ptp_clock pointer, resulting in a use-=
-after-free vulnerability.
+- [Critical] Time-of-Check to Time-of-Use (TOCTOU) race condition in netc_t=
+imer_get_current_time() leads to Use-After-Free and invalid MMIO access dur=
+ing concurrent unbind.
+- [High] Premature publishing of driver data in netc_timer_pci_probe() caus=
+es netc_timer_get_current_time() to access uninitialized locks and hardware=
+ registers.
+- [Low] Build/linker error due to using IS_ENABLED() instead of IS_REACHABL=
+E() for an exported cross-driver symbol.
 --
 
---- Patch [2]: [PATCH net-next 2/7] ptp: netc: remove unnecessary pcie_flr(=
-) call in probe ---
-commit fe3a9be0d4fb11cfd834174e67a7435d22d701a7
+--- Patch [3]: [PATCH net-next 3/7] ptp: netc: export netc_timer_get_curren=
+t_time() for cross-driver use ---
+commit 397844577b2034cd8a6a870bc6609d9217d7fc38
 Author: Wei Fang <wei.fang@nxp.com>
-Date:   Tue Jul 28 10:45:43 2026 +0000
 
-ptp: netc: remove unnecessary pcie_flr() call in probe
+ptp: netc: export netc_timer_get_current_time() for cross-driver use
 
-This commit removes an unnecessary function level reset call from the NETC
-timer probe function. According to the reference manual, this reset is not
-applicable to the timer as a supporting function.
+This commit adds and exports netc_timer_get_current_time() to allow the NETC
+Switch driver to read the current PTP time from the NETC Timer. It also
+provides a stub declaration when the timer configuration is disabled.
 
 > diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-> index 683abcdff9ad6..072809ea7922c 100644
+> index 072809ea7922c..60e64542314b1 100644
 > --- a/drivers/ptp/ptp_netc.c
 > +++ b/drivers/ptp/ptp_netc.c
-> @@ -773,7 +773,6 @@ static int netc_timer_pci_probe(struct pci_dev *pdev)
->  	if (!priv)
->  		return -ENOMEM;
+
+[ ... ]
+
+> @@ -165,6 +165,23 @@ static u64 netc_timer_cur_time_read(struct netc_time=
+r *priv)
+>  	return netc_timer_rd64(priv, NETC_TMR_CUR_TIME_L);
+>  }
 > =20
-> -	pcie_flr(pdev);
->  	err =3D pci_enable_device_mem(pdev);
->  	if (err)
->  		return dev_err_probe(dev, err, "Failed to enable device\n");
+> +u64 netc_timer_get_current_time(struct pci_dev *pdev)
+> +{
+> +	struct netc_timer *priv =3D pci_get_drvdata(pdev);
 
 [Severity: High]
-This isn't a bug introduced by this patch, but the driver fails to initiali=
-ze
-NETC_TMR_TEMASK to 0 during probe, which can leave interrupts enabled from a
-previous kernel. Combined with the ISR masking logic, could this cause
-unrecoverable interrupt wedging or storms?
+Does this function assume the driver data is fully initialized if priv is
+not NULL?
 
-For example, in a kexec scenario, if the previous kernel left hardware
-interrupts unmasked in NETC_TMR_TEMASK, the new kernel calls request_irq()
-before clearing the hardware mask:
+In netc_timer_pci_probe(), pci_set_drvdata() is called before the spinlock
+is initialized in netc_timer_probe(). If a concurrent caller fetches the
+driver data here while the timer is still probing, could it attempt to
+acquire an uninitialized spinlock or read from unconfigured hardware?
 
-drivers/ptp/ptp_netc.c:netc_timer_probe() {
-    ...
-	err =3D netc_timer_init_msix_irq(priv);
-	if (err)
-		goto timer_pci_remove;
+> +	unsigned long flags;
+> +	u64 cur_time;
+> +
+> +	if (!priv)
+> +		return 0;
+> +
 
-	netc_timer_init(priv);
-    ...
-}
+[Severity: Critical]
+Is this lockless check sufficient to prevent a use-after-free if the timer
+driver is unbound concurrently?
 
-The ISR reads NETC_TMR_TEVENT, masks it with the software shadow
-priv->tmr_emask (which is initialized to 0), and writes 0 back to the
-write-1-to-clear register:
+If a concurrent thread unbinds the timer driver via sysfs right after this
+check passes, the driver's remove() callback could execute and unmap the
+MMIO region. The device core's devres cleanup would then free the priv
+pointer before clearing the driver data.
 
-drivers/ptp/ptp_netc.c:netc_timer_isr() {
-    ...
-	tmr_event =3D netc_timer_rd(priv, NETC_TMR_TEVENT);
-	tmr_event &=3D priv->tmr_emask;
-	/* Clear interrupts status */
-	netc_timer_wr(priv, NETC_TMR_TEVENT, tmr_event);
-    ...
-}
+Does this mean the caller could then attempt to acquire a freed spinlock
+and read from unmapped MMIO memory?
 
-Because priv->tmr_emask is 0, tmr_event becomes 0, and writing 0 fails to
-clear the hardware interrupt state.
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +	cur_time =3D netc_timer_cur_time_read(priv);
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	return cur_time;
+> +}
+> +EXPORT_SYMBOL_GPL(netc_timer_get_current_time);
 
-[Severity: High]
-This is a pre-existing issue, but does the teardown ordering in
-netc_timer_remove() allow late IRQs to access a freed ptp_clock pointer,
-resulting in a use-after-free?
+[ ... ]
 
-In netc_timer_remove(), ptp_clock_unregister() is called before the MSI-X
-interrupt is freed or synchronized via netc_timer_free_msix_irq():
+> diff --git a/include/linux/fsl/netc_global.h b/include/linux/fsl/netc_glo=
+bal.h
+> index 5b8ff528d3699..91441cb35bc28 100644
+> --- a/include/linux/fsl/netc_global.h
+> +++ b/include/linux/fsl/netc_global.h
+> @@ -22,4 +22,13 @@ static inline u64 netc_read64(void __iomem *reg)
+>  	return ioread64(reg);
+>  }
+> =20
+> +#if IS_ENABLED(CONFIG_PTP_NETC_V4_TIMER)
 
-drivers/ptp/ptp_netc.c:netc_timer_remove() {
-    ...
-	ptp_clock_unregister(priv->clock);
-	netc_timer_free_msix_irq(priv);
-    ...
-}
+[Severity: Low]
+Will this cause a linker error if the calling driver is built-in (=3Dy) but
+the timer driver is built as a module (=3Dm)?
 
-If an interrupt is in-flight or arrives after ptp_clock_unregister() frees =
-the
-clock instance, the ISR dereferences the dangling priv->clock pointer:
+Since IS_ENABLED() evaluates to true when the config is a module, the
+fallback stub won't be provided. The built-in caller would then be unable
+to resolve the modular symbol during linking.
 
-drivers/ptp/ptp_netc.c:netc_timer_isr() {
-    ...
-	if (tmr_event & TMR_TEVENT_PPEN_ALL) {
-		event.type =3D PTP_CLOCK_PPS;
-		ptp_clock_event(priv->clock, &event);
-	}
-    ...
-}
+Should this use IS_REACHABLE() instead?
+
+> +u64 netc_timer_get_current_time(struct pci_dev *timer_dev);
+> +#else
+> +static inline u64 netc_timer_get_current_time(struct pci_dev *timer_dev)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  #endif
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728104548.3301=
-214-1-wei.fang@oss.nxp.com?part=3D2
+214-1-wei.fang@oss.nxp.com?part=3D3
