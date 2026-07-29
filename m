@@ -1,124 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082DC4963C8;
-	Wed, 29 Jul 2026 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860CA4A33F2;
+	Wed, 29 Jul 2026 14:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785333479; cv=none; b=RQdpwyYJEmlLfhM1qqEKFxyxgR2a9tnDKQapU2C6FEf5O4QuvTXP/I1XX7uxZYRq2hBV5DXO/NX36+38jMZk/J2NFfNlVFX9pllEbUA91VbwVGDGE/5mZ2y30ag/OivQR3MO76SaB022zUU14k8cUZnefTsnVjAYO2nbsynqx9Y=
+	t=1785333948; cv=none; b=No28uZ0Nd/sLr73FDLiFXb4Sf156sNzCSlOQsHzkJQJ32bUhM1S/fyaXtKa0NOjhBH5QHZkMDn/S37B1yPWqAWBVtEsZVt+QUhM6fwqPn43j9TAD1KiYJMJXdI8pvNejHCaN8b2RvWDaoHAecYTI8PmX6wdiS/HuYApAx+v83Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785333479; c=relaxed/simple;
-	bh=kuDyRjhrPNyMKYVKvqeOj0baUYY06hEeS6lvk3MALCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fiOFWxkJS4rSUn/pqkVuk/ClwJqLQM+vc3km5exIIicuZD+X/UL7rdErTw2dabnayKPFCeaLiNnC0zZAk8rLaa46OThc3HdTxGyS0xBHn5pBPTY680ceUJjmzMuoUAdv78K1huxhgNFlMmlcXoM4WHeskqJeaIN+FlOufsrplt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bt+hF+Kd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785333948; c=relaxed/simple;
+	bh=B5FMELXRHEXTUYiede/BKz9/z6BMwNMYS+2PP59cEBk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=HzaE7EkeDZc++xWRgIsUa8T+a2u4Jp2EDEXRL85lryCvaIG8xvdgvk7EsG1d87Ir+tB99e3Fmr9hdSElwUcr0deejYwcqu7QLSPhf7oYG0VmNHEdINobElIF+i4MHBLPgy1o0KEaKPJxSssRzA7f2tO6z8oqxQ2oZNcRA5fIago=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLoNHcb1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bt+hF+Kd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1D61F00A3E;
-	Wed, 29 Jul 2026 13:57:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLoNHcb1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263131F000E9;
+	Wed, 29 Jul 2026 14:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785333468;
-	bh=fYVkarbGTlgISBurccqc2jqkuYXw9q5Rk/awuWQnUDQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Bt+hF+KdOEUbsvd8Ebt+v3bsvf2lC1rPuBjvhOQtryDvrj0/6QwfoxSSMvEqoKL3N
-	 PLhUiSUCTzLYwsrs5wzQZe+Fp4I+JPksLt/KM71OyVdOt6kL3zqUrNjXOBLYcjwyOu
-	 E5ose4lx0hl6Twtbz2iBZ5zsigpeTclK3o3bP6JeRh0QREiWtqkEUu6WudW84QKbgm
-	 BzWPOT4VPfk0vfk72NQY7hJm43EjKGFJt2MMmGSJZ4nERu2gp4lN0GDRTREePNiz0y
-	 2Dg0cFqiZTkD1QoU3llLDLVyOLb6lhpyH7cjuC+Yi2NLXrjUxVey0el3O4GlbKG8Mt
-	 P2fIsGMuBvrUg==
-Date: Wed, 29 Jul 2026 15:57:39 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v3] PCI: imx6: Update MPLLB bandwidth to improve i.MX95
- Gen3 PCIe stability
-Message-ID: <jtpctss4hz3djqd4ukq634ujfk5jdud6c6r6apgo2syrsubqz2@jivsombtim3v>
-References: <20260714024107.4113926-1-hongxing.zhu@oss.nxp.com>
+	s=k20260515; t=1785333947;
+	bh=jIhNIiEZkLt+dE+wo+L7k7sQuGFLBgh3nnH1ThQbofM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nLoNHcb1WC1PkLhg7gwniBPZOiK66aA+UolNNIQA4vvUmXv9QTqGE3ph6eoy1qPG1
+	 MxjXmMM48CS5rJzBRp4NgyRH4Nq/S3dtJgwXJYiEESwhglgx/unRuRiCBLBOIpGalO
+	 Zs24viMTrMvlBJ/Vpzc41ngcXshaVjp8jbILo4+98sG7Dqpb84HMpdsfgb6NfxLypb
+	 I63GGQTqpMEmer9tkzqR6BW3sZtZPaaVqpo0HHWjcD3txZBA1fghd+1A76QSi1/yps
+	 VAf1Gen0aDuKZ6H2b74FcCjs9svYhnyoS8inF4wNwoIupkGeKDysSge4LyOygsGoEN
+	 1JlpwJ5gaAx8g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 10/12] arm64: dts: imx8dxl-sr-som: fix reserved
+ memory node names for remoteproc
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260729-rproc-dts-v2-10-debbe0816202@nxp.com>
+References: <20260729-rproc-dts-v2-0-debbe0816202@nxp.com>
+ <20260729-rproc-dts-v2-10-debbe0816202@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 14:05:46 +0000
+Message-Id: <20260729140547.263131F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260714024107.4113926-1-hongxing.zhu@oss.nxp.com>
 
-On Tue, Jul 14, 2026 at 10:41:07AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
-> 
-> Bandwidth marginality was observed during i.MX95 Gen3 PCIe tests with
-> the default MPLLB_BANDWIDTH value. This margin degradation worsens
-> across voltage and temperature (VT) variations and different test
-> matrices, potentially causing link stability issues.
-> 
-> Testing with MPLLB_BANDWIDTH value of 140 (0x8c) shows significant
-> improvement in bandwidth margins across all VT conditions and test
-> scenarios.
-> 
-> Implement PHY register write helper function and configure:
-> - MPLLB_BW_OVRD_IN = 140 (0x8c) for improved bandwidth margin
-> - MPLLB_BW_OVRD_EN to enable the override
-> 
-> This ensures robust PCIe Gen3 performance across all operating
-> conditions.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
-> Changes in v3:
-> Regarding Frank's comments, refine naming consistency and clarity.
-> 
-> Changes in v2:
-> Update the register name and bit definitions.
-> Don't move IMX95_PCIE_PHY_CR_PARA_SEL settings.
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 53f3da6ab30d5..fadf14de10f7c 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -80,6 +80,17 @@
->  #define IMX95_SID_MASK				GENMASK(5, 0)
->  #define IMX95_MAX_LUT				32
->  
-> +#define IMX95_PCIE_PHY_REG_ADDR			0x3008
-> +#define IMX95_PCIE_PHY_REG_EN			BIT(31)
-> +#define IMX95_PCIE_PHY_REG_ADDR_MASK		GENMASK(15, 0)
-> +#define IMX95_PCIE_PHY_REG_DATA			0x300c
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_IN		0x2004
-> +/* BIT(10): Override enable for mpllb_bandwidth[15:0] */
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN		0x400
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The patch replaces generic Device Tree node names with non-generic,=
+ specific names (e.g., `vdev0vring0@90000000`) to satisfy hardcoded string =
+matching in the `imx_rproc` driver. This violates the DT specification rule=
+ that node names should be generic.
+--
 
-Use BIT(10) please.
+--- Patch [10]: [PATCH v2 10/12] arm64: dts: imx8dxl-sr-som: fix reserved m=
+emory node names for remoteproc ---
+commit 1d32457a00ef15e201f5eccc0be6be161bf05b59
+Author: Peng Fan <peng.fan@nxp.com>
 
-> +/* Register offset: Override value for mpllb_bandwidth[15:0] */
-> +#define IMX95_PCIE_PHY_MPLLB_BW_IN		0x2005
-> +#define IMX95_PCIE_PHY_MPLLB_BW_VAL		0x8c
+arm64: dts: imx8dxl-sr-som: fix reserved memory node names for remoteproc
 
-Is it possible to define individual bits?
+This patch renames reserved memory nodes in the device tree to use specific
+names like vdev0vring0 to satisfy hardcoded string matches in the imx_rproc
+driver.
 
-> +
->  #define IMX95_PCIE_RST_CTRL			0x3010
->  #define IMX95_PCIE_COLD_RST			BIT(0)
->  
-> @@ -269,6 +280,16 @@ static int imx95_pcie_select_ref_clk_src(struct imx_pcie *imx_pcie)
->  	return 0;
->  }
->  
-> +static void imx95_pcie_phy_write(struct imx_pcie *imx_pcie, int addr, u16 data)
-> +{
-> +	udelay(200);
+> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8dxl-sr-som.dtsi
+> --- a/arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi
 
-Why is this delay at the start of this function?
+[ ... ]
 
-- Mani
+> @@ -103,32 +103,32 @@ linux,cma {
+>  			linux,cma-default;
+>  		};
+> =20
+> -		vdev0vring0: memory0@90000000 {
+> +		vdev0vring0: vdev0vring0@90000000 {
 
--- 
-மணிவண்ணன் சதாசிவம்
+[Severity: Low]
+Does replacing generic node names with driver-specific names violate the
+Device Tree specification rule requiring generic node names?
+
+The specification states that node names should be generic (e.g., memory@..=
+.)
+and reflect the hardware class, not a specific driver or programming model.
+
+Could the imx_rproc driver be updated to use the standard memory-region-nam=
+es
+property to identify these regions, rather than working around the driver's
+expectations by introducing non-generic node names into the DTS?
+
+>  			reg =3D <0 0x90000000 0 0x8000>;
+>  			no-map;
+>  		};
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-rproc-dts-=
+v2-0-debbe0816202@nxp.com?part=3D10
