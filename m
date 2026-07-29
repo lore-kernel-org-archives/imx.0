@@ -1,143 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F49469831;
-	Wed, 29 Jul 2026 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960CC42C4F5;
+	Wed, 29 Jul 2026 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785344202; cv=none; b=e1f2FtyCbjIWK9xCa5VlP5idkFEwI4mz2hzlS4VIxYmprsqZpsBPzX36MKQrgKS7WV3dyjQe4ltAxCRNMJwAxSsEEQdqeGufC+aheMgxCGMg9hCk0Gcc6uZ6tlqkRLuZIDvnng5qBtvuFiO7WAJgkgUkyCw64qBpTcpvIOyLZlw=
+	t=1785344482; cv=none; b=LXqQ8wV5hxAEpaAH0oeP+F0OWA/bpVYmVeWTgaDenEBaUamqCxy1Vz4WIpHgSdeKZTZhascXjVtzoJMvMnjT6b9CCj9F663TcdfxwvtWbflkol/JsCwiIaNzY993NiWFyRe/wwwrksQHWmQwj00T8PCOMBcr9UdNUEFFpoSHOak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785344202; c=relaxed/simple;
-	bh=5z1KEIgaOrhPGXwYfMIWgzhF9UXsjWiT8/l/4mfvSmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=AByqofa5rCPzTCCZkbVViB/wxlbnu3Ar83yPMz0YGT2MKfwFZyY/dotoenuw3zZfRyRdbG6SxMJlZDReySIh6In//QWEX77fqq1o0dIpFfmHxeazQk6iZ4OqlMn8Zpe8HE8yL/PQqCFNcHX+302x2r16C6MLseSg/ZNi4c4j7+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aL5SNrAf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785344482; c=relaxed/simple;
+	bh=jkVy1fXASbJ3IbWGxSb4dJJpDFD5a7KWdX78Lz/ZGeo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TsOJK1evjBYp81S3sF9hNq7iPx9Bf0q9gGV5ETnIoM1kH4SvJ57Bw9v0u0VxTfHfPF+juuJKZwK5dJOLvs4OQemncgH7xEoYyyjB8nDjS/GDJ+Lv3F9Mb+gpUBrKW8IUOVyDhBE5PyCh7MBwTSE/+34XQjut4ue9dnDZIdCPFk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nv+igihF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aL5SNrAf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD11F000E9;
-	Wed, 29 Jul 2026 16:56:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nv+igihF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C301F000E9;
+	Wed, 29 Jul 2026 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785344197;
-	bh=Lg59M+bKmHrruSQn5i7qPKBmAeGYaoVMrN0VKxKzTrM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=aL5SNrAfl/7FBVwi4dqKjk5eVIxYFhTTVMqTdhNukNPwCC1CE6NCUyVWOdmSPr1h4
-	 mxgohzFil3hWRkr2d2y6PgHFl4imjHcwRV51eU6FGtKWWzpwn9I9/USNgr4/81s78i
-	 +msucwkWhkMJkVXerWWp2YCmxv8DkWwsaJTH4i5DAsmgFCxYVZFCe7QxixwEDpqKEU
-	 JId7ehyT/0W6maR37M05/Si74IFdIo0eBP7VugM3SgQD2DJgqDHfkWy1BH25PCH9m1
-	 MwLla81C94JbMiCqP0JR5bb95GJg3C+vEsQDNPWqkgCmWp3ALr1tl/TLgxjNbJx/ix
-	 xA8vLXZ6hw/Wg==
-Date: Wed, 29 Jul 2026 11:56:35 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: hongxing.zhu@oss.nxp.com
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v3] PCI: imx6: Update MPLLB bandwidth to improve i.MX95
- Gen3 PCIe stability
-Message-ID: <20260729165635.GA1450437@bhelgaas>
+	s=k20260515; t=1785344479;
+	bh=0qn9MseQaABDq0jzuTJTTFvGuBz93H8dXrHhwqUAhtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nv+igihFdvPZ39GrgKyFl313gXd3lhyix7DoUQnwNp2U9jPHWkV/0q5vBdIO5EE++
+	 8DyO7e3+EI9srapuB6lyiLLIvqgGtr+9tPCzWgN3QigGpQxsssVKIhYkTK1lHAQYoh
+	 EY9VOO1yRWp2Em1UAlrpjVSLas4CWmx4f7SdSG+3Dk67Op3DABx5/4TwH7fRkag1fg
+	 B1E0dOKNHtGHiKkkjjabdmtDqVfvl557P8pEpBpepyMFJCwNq3e6J5sx9jSW3fu3+0
+	 OqgZCXbEV+i8z+ft6CTnvEJn7JFU/1zT5W9hXrfgjRDvkjGB9Wen4S/1PQcOnHkYnW
+	 9Xw55k0exIdHw==
+Date: Wed, 29 Jul 2026 19:01:09 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Michal Gorlas <michal.gorlas@9elements.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI: imx6: enable ASPM L1 only iff CLKREQ# is supported
+Message-ID: <t2zu6bv4dqf5znpn5uypkoieltlrzlp4kskt6jwp46xgqajhjp@6g5kiwwn72a4>
+References: <20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260714024107.4113926-1-hongxing.zhu@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com>
 
-On Tue, Jul 14, 2026 at 10:41:07AM +0800, hongxing.zhu@oss.nxp.com wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
+On Sun, Jul 19, 2026 at 02:47:54AM +0200, Michal Gorlas wrote:
+> Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
+> states for devicetree platforms"), ASPM states are force enabled
+> on all devicetree platforms. This causes PCI devices on some iMX SoCs
+> (for e.g. iMX 8M Plus Kontron SMARC eval carrier) to enter L1 even
+> though CLKREQ# is not supported (and consequently supports-clkreq is
+> not set in pcie controller node of their DT), which causes the device to
+> never wake up from L1.
 > 
-> Bandwidth marginality was observed during i.MX95 Gen3 PCIe tests with
-> the default MPLLB_BANDWIDTH value. This margin degradation worsens
-> across voltage and temperature (VT) variations and different test
-> matrices, potentially causing link stability issues.
-
-What does "bandwidth marginality" mean?  And what does it mean to
-observe it?  I guess it must mean some measurable thing is close to
-being out of spec?
-
-> Testing with MPLLB_BANDWIDTH value of 140 (0x8c) shows significant
-> improvement in bandwidth margins across all VT conditions and test
-> scenarios.
+> Hence, disable L1 capability in the LINKCAP register if supports-clkreq
+> is not set in the DT explicitly.
 > 
-> Implement PHY register write helper function and configure:
-> - MPLLB_BW_OVRD_IN = 140 (0x8c) for improved bandwidth margin
-> - MPLLB_BW_OVRD_EN to enable the override
-
-AFAICT we don't know what MPLLB_BW_OVRD_IN was before, so we don't
-know whether this increases or decreases the value.  And we don't
-really even know what MPLLB_BW_OVRD_IN specifies.
-
-> This ensures robust PCIe Gen3 performance across all operating
-> conditions.
+> Note, the logic here is very similar to 613f3255a35a, only difference
+> is that leaving L0s enabled does not cause issues (at least
+> I never encountered them myself when testing on the device) as its
+> not dependent on CLKREQ# being physically there.
+> Since there is already a way of specifying its presence in the DT,
+> the driver should be aware and disable L1.
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+> Signed-off-by: Michal Gorlas <michal.gorlas@9elements.com>
 > ---
-> Changes in v3:
-> Regarding Frank's comments, refine naming consistency and clarity.
-> 
-> Changes in v2:
-> Update the register name and bit definitions.
-> Don't move IMX95_PCIE_PHY_CR_PARA_SEL settings.
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
+>  drivers/pci/controller/dwc/pci-imx6.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 53f3da6ab30d5..fadf14de10f7c 100644
+> index 98e1db751132..7471501fbf04 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -80,6 +80,17 @@
->  #define IMX95_SID_MASK				GENMASK(5, 0)
->  #define IMX95_MAX_LUT				32
->  
-> +#define IMX95_PCIE_PHY_REG_ADDR			0x3008
-> +#define IMX95_PCIE_PHY_REG_EN			BIT(31)
-> +#define IMX95_PCIE_PHY_REG_ADDR_MASK		GENMASK(15, 0)
-> +#define IMX95_PCIE_PHY_REG_DATA			0x300c
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_IN		0x2004
-> +/* BIT(10): Override enable for mpllb_bandwidth[15:0] */
-> +#define IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN		0x400
-> +/* Register offset: Override value for mpllb_bandwidth[15:0] */
-> +#define IMX95_PCIE_PHY_MPLLB_BW_IN		0x2005
-> +#define IMX95_PCIE_PHY_MPLLB_BW_VAL		0x8c
-> +
->  #define IMX95_PCIE_RST_CTRL			0x3010
->  #define IMX95_PCIE_COLD_RST			BIT(0)
->  
-> @@ -269,6 +280,16 @@ static int imx95_pcie_select_ref_clk_src(struct imx_pcie *imx_pcie)
->  	return 0;
+> @@ -1318,6 +1318,22 @@ static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
+>  	}
 >  }
 >  
-> +static void imx95_pcie_phy_write(struct imx_pcie *imx_pcie, int addr, u16 data)
+> +static void imx_pcie_disable_l1(struct dw_pcie *pci)
 > +{
-> +	udelay(200);
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_REG_ADDR,
-> +			   IMX95_PCIE_PHY_REG_EN, IMX95_PCIE_PHY_REG_EN);
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_REG_ADDR,
-> +			   IMX95_PCIE_PHY_REG_ADDR_MASK, addr);
-> +	regmap_write(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_REG_DATA, data);
+> +	u32 val;
+> +	u8 offset;
+> +
+> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +
+> +	dw_pcie_dbi_ro_wr_en(pci);
+> +
+> +	val = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+> +	val &= ~PCI_EXP_LNKCAP_ASPM_L1;
+> +	dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, val);
+> +
+> +	dw_pcie_dbi_ro_wr_dis(pci);
 > +}
 > +
->  static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+>  static int imx_pcie_host_init(struct dw_pcie_rp *pp)
 >  {
->  	/*
-> @@ -289,6 +310,11 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
->  			IMX95_PCIE_PHY_CR_PARA_SEL,
->  			IMX95_PCIE_PHY_CR_PARA_SEL);
+>  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> @@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
 >  
-> +	imx95_pcie_phy_write(imx_pcie, IMX95_PCIE_PHY_MPLLB_BW_IN,
-> +			     IMX95_PCIE_PHY_MPLLB_BW_VAL);
-> +	imx95_pcie_phy_write(imx_pcie, IMX95_PCIE_PHY_MPLLB_OVRD_IN,
-> +			     IMX95_PCIE_PHY_MPLLB_OVRD_BW_EN);
-> +
->  	return 0;
->  }
+>  	imx_setup_phy_mpll(imx_pcie);
 >  
-> -- 
-> 2.34.1
-> 
+> +	if (!imx_pcie->supports_clkreq)
+> +		imx_pcie_disable_l1(pci);
+
+Sashiko raised a valid issue here:
+https://patchwork.kernel.org/project/linux-pci/patch/20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com/#27076171
+
+IMX_PCIE_FLAG_BROKEN_SUSPEND is only set for i.MX6Q, but none of its DTs have
+'supports-clkreq' property. So this patch will impact them also and since they
+do not reinitialize the hardware fully in resume(), ASPM settings will reset to
+hardware default.
+
+It'd be good if NXP folks could share their thoughts on this!
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
