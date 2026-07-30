@@ -1,128 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f1.google.com (mail-wr2-f1.google.com [74.125.225.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA56B4248D7;
-	Thu, 30 Jul 2026 12:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A311642668B
+	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 12:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785413355; cv=none; b=bEaYmOfdgZKJBziwsYlcBnNUOArQEZ2bBDPaRDezL+ZYQiXU6HrqdXAh7YO6L6saQQqBMyYvCn6YndUHSuw+p4VMpJpyWxzBIHXkE+u7a2CbSx5mW6b2y+xVvizl6DNmzYBm8Qm1E2lO3zWcJVVd6vMzx7UWQ9LUPH/BGRpYLgA=
+	t=1785413675; cv=none; b=jfHCjx+LzrUwhj08SfGpVhMI3EWr5l/mpAXbOY2KPzd7284YGdwcrrRp+5WEEtVDtOAu9wV+9iAH0YiBwGRtmpQe2ttqtow1iA+lPSfc3zT072LE4f8430LVJ1ZxZmBFs9m9xLPTiOjNlqtzwQMGakWKDNFWq2RlijpPk4BWrJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785413355; c=relaxed/simple;
-	bh=ZvYUsM4e52yTkwCy0PNeaZyw5oO7MwAywxbhRwB79f0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Qv/uUE6UWtwDfiuD+D9BSrshrpBrKT1EmkEIM35xJcchjkq4UET/OoolrI2XqWSvvUErolAq74FHplKsT/VejFEPgQInOY9r6m76sath9zU/Bm1ucLRETG0bYPy5JlXRGG7AB7Qb4eoqGqfVtm4VqUn1Q7tAwZILGN6/NIuHWUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZL1tGeF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785413675; c=relaxed/simple;
+	bh=c747fqvNDgqVLoyxnKPVeIUVwA83B4m/ITNcnGHudIc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=uxD5dHlTjoxzQmt17q5zbc0GSlHN/vhX5nah94MP/ui17c++moOEsNqlbAqvEtg6jIlorMe9UwJFbd3E/xFkVXWdQEemotviwgikHmX5IR0LYGDWGWbNhVtZ/unuW2Mkk0gXI+Mf2HWnYe83XTIJYxTbzqZspzwqPtm4ckesNVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=RSFDhpPp; arc=none smtp.client-ip=74.125.225.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZL1tGeF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6441F000E9;
-	Thu, 30 Jul 2026 12:09:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785413354;
-	bh=kaxbb4hGIxen8PCLgFdLGDy/QkX3XGfhGMt8egYsPCA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=XZL1tGeFIup4XVQ5QJHQ0Rwt91LpypNnes9DTDM4JVhjHUmOx4F0DoLiQ0t0vfUO+
-	 zGSxp/o0/1igl6HlfM/WToSRFzDsW2WEs1clcOEhevrJlt3Eoxo/N5Qw7WKMoR+cWM
-	 9OPgFipM94aW40XNVtzKzQJzea/IvFEKQT6L6tyJO8KNkC04NoBFQmvUx/v+KS6+LC
-	 mKtvs+3Ksn3E0rz5MH8EWlyHNDIn9c84eB7J0yRPVHWPyrMywFtTU7aPfnHI4O3O8J
-	 ONONLp/V/NyBhYjIHs0jX1U+AzyC9df1FuS6JSITwfugzkLMrdm621T30gT5c8Z5DM
-	 W+qHiMbfgEVng==
-Date: Thu, 30 Jul 2026 07:09:13 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: dwc: Add suspend_poweroff flag for platforms
- with RC power loss
-Message-ID: <20260730120913.GA1497203@bhelgaas>
+	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="RSFDhpPp"
+Received: by mail-wr2-f1.google.com with SMTP id ffacd0b85a97d-46e747fbf36so797653f8f.0
+        for <imx@lists.linux.dev>; Thu, 30 Jul 2026 05:14:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1785413670; x=1786018470; darn=lists.linux.dev;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7eM/+djUdUKJLWwx0zayHVa8z9iYSo8gtg4+aGAkdTc=;
+        b=RSFDhpPpHe4OAEgOolT/Q6zSAN5wH/xr4CmCPZSSrwz77SG1ma98aQP2/uWxh1fdbI
+         lYc/uo9EFBCUW6/nrNWgUswhudIFpNuHuEk9XslmdGi37LnpYl5ZD0hnoZJGoUOm6RuJ
+         prvTpG66u5gX9PZc2YCJ3/fQavAuVXDKTZXgcaFedjfhunmzW7pm+F4uK3mEf+Ypoamk
+         qSnvZQYIZ0PgQXuHW2qoKSvDtnfCOKvAv5vh9TGytpqMW7vZnMbwldzEIyVn+1xjToso
+         jzb3rfNZT7fpAKnNJvPpghbwU+bcxYDp0Wywpx6r36SxJPSq4z+nxDjlz9yimJ7do3jM
+         s3jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785413670; x=1786018470;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7eM/+djUdUKJLWwx0zayHVa8z9iYSo8gtg4+aGAkdTc=;
+        b=qubNC4ExB3N81Wwsp9xigXIff0gyxbNg7SBjAN8um3561RRndGNBQ0vJH87FioIHqy
+         j1jl16EiviEDEl20OH8CPqKLqNONjh5hHts0GediH+RfpIgxlNPukJLYb20l7WE6D8G4
+         6yzLop4f7LNepUesWKXiLSU1r+920HGxZa1umffFAdJBZc/0MXL2bM05Bvvok+Rhlsfb
+         f96SbSooCzJQaeEdikUX0bbk4BG9zLO/ILTGOmoTUyrZZMg1e9kD1vhXaER6bHJUtYtR
+         3IeeyA+HOZA8pHi/ZMDURC+Vog/1g9vUUf0TfqUwL2A0gWPmpXjiDsmrIurwEApK2B8h
+         b/0A==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4rZ2vwgDsymPQvSLN3zO3u+vyOMpnaBKl8cXsHw1DNVC4oND+swQrsm8gIoHVgkjzdbY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyENNZKXO1BFDXiaKYiT+y9DPQwjqVnKiretDNuqvMjtZECT7jE
+	cixWe7BeIA85xd4aIMljTqx4eqnTUH6xa8t8dths7yoEHD/zKxS+RQBWLmhOew0BUA==
+X-Gm-Gg: AR+sD10iAMEY1ZVHTBskNQV/rkNXkOQ5kC6UjXJKoY9rcsLAwOOcETReUmKuGkbvC6T
+	LPPv+J329lWRjdFZdwrC2vbQIrHtfNPXtU5Ba8NLMH7wwmpwumdGIk0ErTAAwguvju1Km24Uobd
+	iizwlFPbGP9OxwbTJ61cYRc/S9/YYOfYyE6g+SUprEObHzVg5XUDwj2IISES/apklQrPEJKYu5J
+	qzi9QSLC3ImtMRjfuZvpLTzOPTYsWdBhDq36H/LUBGL/HvF1qYIDo9dIc5VbNziJDRw4JaPh8bG
+	t3f0yL840RTMzZcSCtPDCS+Xl1mpbg7XyG+0KQ2GSotlrVnwvNRgw229501yPUW1SJ5u2hn9HVE
+	y73ygWPA6YDMVq3fl/5Bs6YQZwIzMeqfgbhNelI5IHN8jhmk9hvS2DmwSdtHO6lkKsTkQ4JbOTS
+	g5TI1FPi0LvnDikdKuJH+XJQnuXkheiLZkvfKvkldwYuN0E7gIMfld33+lFQhAgRXBYw==
+X-Received: by 2002:a5d:59c3:0:b0:47f:9283:1fb3 with SMTP id ffacd0b85a97d-47fc806e48amr3531249f8f.0.1785413669775;
+        Thu, 30 Jul 2026 05:14:29 -0700 (PDT)
+Received: from localhost ([188.111.3.154])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc892cc54sm5743980f8f.21.2026.07.30.05.14.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jul 2026 05:14:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB12019096F2A9E8337F2A1BF9F8CC92@GV2PR04MB12019.eurprd04.prod.outlook.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 30 Jul 2026 14:14:27 +0200
+Message-Id: <DKBWBNP7VLCF.3FND2WKPV4NWU@9elements.com>
+Cc: "Lucas Stach" <l.stach@pengutronix.de>, "Lorenzo Pieralisi"
+ <lpieralisi@kernel.org>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Rob Herring" <robh@kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, <linux-pci@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] PCI: imx6: enable ASPM L1 only iff CLKREQ# is supported
+From: "Michal Gorlas" <michal.gorlas@9elements.com>
+To: "Manivannan Sadhasivam" <mani@kernel.org>, "Richard Zhu"
+ <hongxing.zhu@nxp.com>, "Frank Li" <Frank.Li@nxp.com>, "Michal Gorlas"
+ <michal.gorlas@9elements.com>
+X-Mailer: aerc 0.21.0
+References: <20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com>
+ <t2zu6bv4dqf5znpn5uypkoieltlrzlp4kskt6jwp46xgqajhjp@6g5kiwwn72a4>
+In-Reply-To: <t2zu6bv4dqf5znpn5uypkoieltlrzlp4kskt6jwp46xgqajhjp@6g5kiwwn72a4>
 
-On Thu, Jul 30, 2026 at 08:16:36AM +0000, Hongxing Zhu (OSS) wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: Thursday, July 30, 2026 6:30 AM
-> ...
-
-> > On Fri, Jul 17, 2026 at 03:41:21PM +0800, hongxing.zhu@oss.nxp.com wrote:
-> > > From: Richard Zhu <hongxing.zhu@nxp.com>
-> > >
-> > > Some platforms like i.MX power off their PCIe RC controllers during
-> > > system suspend, requiring full re-initialization on resume. These
-> > > platforms need to enter L2 state to properly notify endpoints before
-> > > power loss.
-> > >
-> > > According to PCIe base spec r7.0, sec 5.2, the system software should
-> > > transition the device into D3Hot before broadcasting the PME_Turn_Off
-> > > message to initiate L2 entry. However, some endpoint devices fail the
-> > > D3cold capability check in pci_host_common_d3cold_possible(), which
-> > > would normally prevent L2 entry.
-> > 
-> > Wakeup devices that don't support PME from D3cold will fail the
-> > D3cold capability check, but I don't think those are the problem
-> > you're solving.
-> > 
-> You're right.
-> 
-> > This appears to handle devices that are not in D3hot, and that's
-> > not a property of the endpoint; it's a property of its driver.  Is
-> > the problem here that some driver didn't put its device in D3hot?
-> > 
-> I observed some endpoint devices failing the D3cold capability
-> check, but I haven't identified the root cause.
-
-Seems like some instrumentation in pci_host_common_d3cold_possible()
-could tell us which devices/drivers are relevant.
-
-> > > For platforms where the RC loses power during suspend, L2 entry
-> > > is essential regardless of D3cold support, as the link will be
-> > > lost anyway.  Add a suspend_poweroff flag to force L2 entry in
-> > > such cases, and enable it for i.MX PCIe controllers.
-> > >
-> > > Note: This violates the spec requirement that devices be in
-> > > D3Hot before PME_Turn_Off, but is necessary for proper operation
-> > > on platforms with RC power loss during suspend.
-> > 
-> > If the device isn't in D3hot, it may still be active, and I think
-> > the PME_Turn_Off will abort any DMAs in progress, which doesn't
-> > sound like proper operation of the endpoint.
+On Wed Jul 29, 2026 at 7:01 PM CEST, Manivannan Sadhasivam wrote:
+> On Sun, Jul 19, 2026 at 02:47:54AM +0200, Michal Gorlas wrote:
+>> Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
+>> states for devicetree platforms"), ASPM states are force enabled
+>> on all devicetree platforms. This causes PCI devices on some iMX SoCs
+>> (for e.g. iMX 8M Plus Kontron SMARC eval carrier) to enter L1 even
+>> though CLKREQ# is not supported (and consequently supports-clkreq is
+>> not set in pcie controller node of their DT), which causes the device to
+>> never wake up from L1.
+>>=20
+>> Hence, disable L1 capability in the LINKCAP register if supports-clkreq
+>> is not set in the DT explicitly.
+>>=20
+>> Note, the logic here is very similar to 613f3255a35a, only difference
+>> is that leaving L0s enabled does not cause issues (at least
+>> I never encountered them myself when testing on the device) as its
+>> not dependent on CLKREQ# being physically there.
+>> Since there is already a way of specifying its presence in the DT,
+>> the driver should be aware and disable L1.
+>>=20
+>> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for d=
+evicetree platforms")
+>> Signed-off-by: Michal Gorlas <michal.gorlas@9elements.com>
+>> ---
+>>  drivers/pci/controller/dwc/pci-imx6.c | 19 +++++++++++++++++++
+>>  1 file changed, 19 insertions(+)
+>>=20
+>> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/control=
+ler/dwc/pci-imx6.c
+>> index 98e1db751132..7471501fbf04 100644
+>> --- a/drivers/pci/controller/dwc/pci-imx6.c
+>> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+>> @@ -1318,6 +1318,22 @@ static void imx_pcie_assert_perst(struct imx_pcie=
+ *imx_pcie, bool assert)
+>>  	}
+>>  }
+>> =20
+>> +static void imx_pcie_disable_l1(struct dw_pcie *pci)
+>> +{
+>> +	u32 val;
+>> +	u8 offset;
+>> +
+>> +	offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>> +
+>> +	dw_pcie_dbi_ro_wr_en(pci);
+>> +
+>> +	val =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+>> +	val &=3D ~PCI_EXP_LNKCAP_ASPM_L1;
+>> +	dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, val);
+>> +
+>> +	dw_pcie_dbi_ro_wr_dis(pci);
+>> +}
+>> +
+>>  static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+>>  {
+>>  	struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp);
+>> @@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *p=
+p)
+>> =20
+>>  	imx_setup_phy_mpll(imx_pcie);
+>> =20
+>> +	if (!imx_pcie->supports_clkreq)
+>> +		imx_pcie_disable_l1(pci);
 >
-> You're correct - this isn't ideal for endpoint operation. However,
-> on i.MX platforms, the RC controller will lose power during system
-> suspend regardless. Without sending PME_Turn_Off, endpoints would
-> have no notification before the link abruptly goes down.
+> Sashiko raised a valid issue here:
+> https://patchwork.kernel.org/project/linux-pci/patch/20260719-l1-conditio=
+nal-imx-v1-1-a55a57915c68@9elements.com/#27076171
+>
+> IMX_PCIE_FLAG_BROKEN_SUSPEND is only set for i.MX6Q, but none of its DTs =
+have
+> 'supports-clkreq' property. So this patch will impact them also and since=
+ they
+> do not reinitialize the hardware fully in resume(), ASPM settings will re=
+set to
+> hardware default.
 
-The PME_Turn_Off is some notification, but I don't think the endpoint
-can do DMA or MSI, so its driver won't be involved.  It may be able to
-do things internally, e.g., write caches to an SSD or transmit packets
-from its internal buffers.  But I think it might still lose power in
-the middle of operations like that, so it doesn't sound reliable.
+Right, for i.MX6Q, imx_pcie_disable_l1() could be called unconditionally
+in imx_pcie_resume_noirq() after the imx_check_flag(imx_pcie, IMX_PCIE_FLAG=
+_BROKEN_SUSPEND)
+block, something like:
 
-> This patch adds a flag to force L2 entry for such platforms,
-> choosing to notify endpoints (even if not ideal) rather than having
-> the link drop unexpectedly. I'm appreciated for suggestions if
-> there's a better approach to handle this scenario.
+@@ -1767,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *dev)
+                        return ret;
+                imx_pcie_deassert_core_reset(imx_pcie);
+                imx_pcie_assert_perst(imx_pcie, false);
++               imx_pcie_disable_l1(imx_pcie->pci);
 
-Mani recently added pci_suspend_retains_context(), and I think it
-returns "true" on i.MX.  But if the RC is powered off and all the
-devices need full re-initialization on resume, it sounds like it
-*should* return "false".
+                /*
+                 * Using PCIE_TEST_PD seems to disable MSI and powers down =
+the
+
+Though I do not have imx6q hw to test this, so it would be nice if NXP
+folks could give it a test.
+
+Best,
+Michal
