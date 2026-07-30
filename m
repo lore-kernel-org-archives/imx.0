@@ -1,112 +1,112 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from mail-m15588.qiye.163.com (mail-m15588.qiye.163.com [101.71.155.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9AC385539
-	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 06:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610DB3B14D7
+	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 07:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785391989; cv=none; b=QBoIJtYlq62rTBjsNpSES1JZRvQcH5lxKg5IHwtnyke5Y05zk6Ldw7j1AlvBUdCGSo9nRFFFmUlXW3avW2/TfymR57aDvfOYm6ut+SOl+X4c7aV+YLvGaS3v0xfQ29ehcYJU9jZdeIivubabfhabxBlZ2T6bqkWyLeO9cALtabs=
+	t=1785395283; cv=none; b=p4IJz5E0Kl3cRjI5wweHrswfF4CHwwQqwabfdCzTB4olXL7Z1bJOsA2u8MTocE+TNGb6FswWePU26oiN3KoDzjzK4QDPIrb89x3TpxiCxOwO2JQ1ze/esQy7tpwWa3+CCv6ZCkNzlCnTJR4S/qTd9+ba61cB1D+uSrbItWm1gvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785391989; c=relaxed/simple;
-	bh=oXwzlkQ5reAxnefWPDhQIUAXrMLkP6IQPSWG+fSVhik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kRPBXjI6G+mdU7HduvouhMaT6WZtdUcEFspSrcCV1jImIvCr4oTOciVqfETsfNU63Fx/FSuS968VxCr8mIksIrzOFMrfVG9mjGda5hPsCtnXRFzSVqG+yyyxZ1MACKaf0NL/BsjATbobMnbqy28d1UB2nyuQsajPIVhCaZh/VvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B2953201DCE;
-	Thu, 30 Jul 2026 08:12:47 +0200 (CEST)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1wpK0d-0020Cb-21;
-	Thu, 30 Jul 2026 08:12:47 +0200
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4142957698A;
-	Thu, 30 Jul 2026 06:12:47 +0000 (UTC)
-Date: Thu, 30 Jul 2026 08:12:46 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: haibo.chen@oss.nxp.com
-Cc: Vincent Mailhol <mailhol@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-can@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>, qijian.guo@nxp.com
-Subject: Re: [PATCH 1/3] phy: phy-can-transceiver: default silent GPIO to
- high during probe
-Message-ID: <20260730-debonair-artificial-meerkat-0a5ea2-mkl@pengutronix.de>
-References: <20260730-can-share-silent-v1-0-63fd603f943d@nxp.com>
- <20260730-can-share-silent-v1-1-63fd603f943d@nxp.com>
+	s=arc-20240116; t=1785395283; c=relaxed/simple;
+	bh=4Dl/vEDT9nrWPbJYDdBCfyanjVblmsxSZ1oBxI8vlsk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j8VbaeoLQc3gkfsKcX9OrNYHl/Zvdr6u4VRDdUXuEsnxft8d03+PlvhzrUnEvmaNllrmJlRJNqQQv9GFu4M9zDhjB1iryapKj0OEL2ODta3ryYuQ1ESice6GNGlnsSWQhS/8vhu2LvzWW/vQLrpcpRh2dyZ/ZbGvKHaoCmLTy3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com; spf=pass smtp.mailfrom=thundersoft.com; dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b=lUVes6gp; arc=none smtp.client-ip=101.71.155.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thundersoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b="lUVes6gp"
+Received: from tsdl-HP-EliteDesk-880-G6-Tower-PC.. (unknown [36.129.139.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 48229bf3b;
+	Thu, 30 Jul 2026 14:32:22 +0800 (GMT+08:00)
+From: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+To: konrad.dybcio@oss.qualcomm.com
+Cc: Frank.Li@nxp.com,
+	andersson@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	festevam@gmail.com,
+	hongyang.zhao@thundersoft.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	konradybcio@kernel.org,
+	krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	rosh@debian.org,
+	s.hauer@pengutronix.de
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: qcs6490-rubikpi3: Add IMX219 camera overlays
+Date: Thu, 30 Jul 2026 14:32:09 +0800
+Message-ID: <20260730063209.101985-1-hongyang.zhao@thundersoft.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <df03eb18-6928-453e-971b-681875e9cb0d@oss.qualcomm.com>
+References: <df03eb18-6928-453e-971b-681875e9cb0d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cv6imrgcjwgjm3dq"
-Content-Disposition: inline
-In-Reply-To: <20260730-can-share-silent-v1-1-63fd603f943d@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9fb1b95bc609d5kunm33851e72421b63
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSU5PVh0YHk1KSBlMTBpOSVYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlITVVKSUJVSkhCVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+DKIM-Signature: a=rsa-sha256;
+	b=lUVes6gpRtPahu70dav9JcaPDiXD8qCqZEDGGd7mIF6iazNQSF2SLuWFhbFiC5Qm0Ryx+45wRAaCgxbLQeOjxf0u/LIB/JhU7IB3+PQfWNBoW7W8c4w9AIa51hpdJaGWdMNlkKAFgjbdY69mrPNJCOvIuUwizcDTV59s0mrNGPk=; s=default; c=relaxed/relaxed; d=thundersoft.com; v=1;
+	bh=TeZJfMeEBUKgq5/BN6M8K1O5LEECpi0aBZRRrkDbOj0=;
+	h=date:mime-version:subject:message-id:from;
 
+Thanks for the review!
 
---cv6imrgcjwgjm3dq
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/3] phy: phy-can-transceiver: default silent GPIO to
- high during probe
-MIME-Version: 1.0
-
-On 30.07.2026 12:33:26, haibo.chen@oss.nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
+On 7/22/26 6:12 PM, Hongyang Zhao wrote:
+> > RUBIK Pi 3 ships without camera sensors, and its two connectors support
+> > multiple modules. Keep module-specific nodes out of the base board DTS
+> > and add per-connector overlays for Raspberry Pi Camera Module V2 IMX219
+> > sensors.
+> >
+> > CAM1 uses CCI1 and CSIPHY1, while CAM2 uses CCI0 and CSIPHY4. Each
+> > overlay describes the 24 MHz sensor input clock and the three sensor
+> > rails derived from the switched 3.3 V connector supply.
+> >
+> > Describe each connector CAMERA_GPIO signal as a privacy indicator LED
+> > and associate it with the corresponding sensor. This lets the V4L2 core
+> > control the LED while the sensor is streaming.
+> >
+> > Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+> > ---
 >
-> The silent pin of the CAN transceiver is active high, asserting it puts
-> the transceiver into silent (listen-only) mode where the transmitter is
-> disabled.
+> [...]
 >
-> At probe time, and before the PHY is powered on, the transceiver should
-> default to silent mode. This is the correct and lower-power state: the
-> transceiver should not actively drive the CAN bus until the PHY is
-> explicitly powered on. Requesting the silent GPIO as GPIOD_OUT_LOW leaves
-> the transceiver in normal mode by default, which is both incorrect and
-> wastes power.
+> > +	/* The module enables its three sensor rails together through PWR_EN. */
+> > +	vreg_cam2_pwr: regulator-camera2-pwr {
+> > +		compatible = "regulator-fixed";
+> > +
+> > +		regulator-name = "vreg_camera2_pwr";
+> > +		regulator-min-microvolt = <3300000>;
+> > +		regulator-max-microvolt = <3300000>;
+> > +
+> > +		gpio = <&tlmm 58 GPIO_ACTIVE_HIGH>;
 >
-> Request the silent GPIO as GPIOD_OUT_HIGH so the transceiver starts in
-> silent mode, and let the power_on/power_off callbacks manage the mode
-> afterwards.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> Is this (and the other) regulator on the SBC, or on the module (with
+> the PWR_EN pin just being an output to the module connector)?
 
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The per-camera power regulation is located on the camera module, not on
+the baseboard. The board-level VCC3V3_OUTPUT rail supplies both the
+40-pin header and the two camera connectors. On the baseboard, U1500
+only level-shifts the PWR_EN signals before routing them to the camera
+connectors; there is no dedicated per-camera regulator.
 
-regards,
-Marc
+The fixed-regulator node in the module-specific Device Tree overlay
+models the camera module's power domain controlled through the
+connector's PWR_EN signal.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Hardware Schematic:
+https://thundercomm.s3-accelerate.amazonaws.com/uploads/web/rubik-pi-3/RUBIKPI3-IOB-V02-RELEASE.pdf
 
---cv6imrgcjwgjm3dq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCamrrWwAKCRDMOmT6rpmt
-0u8cAP9IaDtkB+9JcxG6xg6iqgxUcAFmEOBlmqkqjP4MmECpEAD/Z7sg4KtbWKiz
-yFHLst8QIG+JGAxoKnUMPsx2stUMxws=
-=NLw1
------END PGP SIGNATURE-----
-
---cv6imrgcjwgjm3dq--
+Thanks,
+Hongyang
