@@ -1,108 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F7743E487;
-	Thu, 30 Jul 2026 14:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A973443BDCB;
+	Thu, 30 Jul 2026 14:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785421954; cv=none; b=UqGncMjpRI6C01T32jUZKWtGzdkQ0UGd+Z2KOZoG3OCxKpqeH+p4ZOEMHcGyGQFwEonce0Bo87V2zu8/diNYi2RyrdpZ3URmxI52lkI0gjdMtcS0DryPyCIQcJb0MQicsugbrRiI6+UxWtI0foJvQ89Q40wUnQPRpLUTA8fVj9g=
+	t=1785422270; cv=none; b=UXS/XsM0h3MfDo5ilXmt35liZ0E6lA6VCGuGQfd8X8XqQyAsH+9uil/7SYptwRjGm1B9SJQ4RyYCGEiPWVd4Lt4RugDdj+u6lwZbIDLxm/vQP49BC/Ze9i3XiyImCAFc/UIhpceJw15cLeyuGA8cNjQx0+I52C0I1pLQV0/v86k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785421954; c=relaxed/simple;
-	bh=H0j+ak7P6FxYM9YHOv0hMbYlD0vT/TA0Lb1Hxf9kcEc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nh1Kfl0j7GnPDiD3zi+O5wgN/WekZ8zXALtOUwXN15zbj14JfnbEdiyhl97c2q5GvzL2GF8Qv2wVh0lYu6+dkW2O2KT9kpU87V6UebvL/lK2djzDgZ4jIb6KG52mL0N/x0o2CQlS9T5RKRd7FCTSs5mRI6u226wrDsgNVllk+WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLd2ar1Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785422270; c=relaxed/simple;
+	bh=0jjN8oDmo4zbwa5dN36JkVZ5zd7O2p7rJIOWPtT+FVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k03geAJGdp0UfigiqRiExUnXdJB5wDploKyJJ9c7IkIhMRVxx1hChKNDftNg7KNMtrt8ghd3lx1T9MtJESkCPep82uoecXowHmNIs/w5W838eZQ0un4eq4kyYW1eN6E+fVGrTkfJw1nBuTycyDTAKgf36KDziyACUXUET429Yr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jjHa02Lr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLd2ar1Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371001F000E9;
-	Thu, 30 Jul 2026 14:32:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jjHa02Lr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC481F00A3A;
+	Thu, 30 Jul 2026 14:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785421953;
-	bh=t+KqEaNzWqHCuOVTuY3+paIJQew4PZqcIQjocemxxEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=oLd2ar1YcANx/v39ZEOsHMAKeGJB37F1/02y/fKFmJ6XQYsWJdJh9tl/mGC9hGmBG
-	 SWrgSy5TXEs4Kgok3N+WgWUcN1eI6dSkX1bWjltlH2r66ZZD/e6aBUr6uNRyQqY/oQ
-	 Np0BqiQci2IABAX0leuggEDVcqujNtD1S52Dl3YpcMF2rORw8V34saJNQMBHbg8eDI
-	 5S7wLwE+uoiuXmFFhLltufzbWe7imIaCSITX88M9JEeaVCKjOei+3DOop4FBgvKMsv
-	 /PwOMP5isyDWvXb0etseoPc9Pqd7GHCvDbj/4uWJwwvwNkyPM4+GFckF4IujuAkYJO
-	 +glDaZ48d75DQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wpRoE-0000000AZFl-2oEA;
-	Thu, 30 Jul 2026 14:32:30 +0000
-Date: Thu, 30 Jul 2026 15:32:30 +0100
-Message-ID: <86ecgkczup.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Frank Li <frank.li@nxp.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2] arm64: errata: Add NXP iMX8QM workaround for A53 cache coherency issue
-In-Reply-To: <20260730-imx8qm-cache-coherency-v2-1-5651aeb1af16@nxp.com>
-References: <20260730-imx8qm-cache-coherency-v2-1-5651aeb1af16@nxp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1785422269;
+	bh=0jjN8oDmo4zbwa5dN36JkVZ5zd7O2p7rJIOWPtT+FVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jjHa02LreQ7ZfcJ6aUnoYL6fyIQ3JULuAb3U15dPyJq96lxu7p90NtojdQOvuVJ8J
+	 q8xWJrY0uo91ERrsbQSMK4zp+QABLyy2NUEApT7jKbBegHa8vfJuwqdHEUzaQEgtRS
+	 dZZByzuneHT3uocDz4uWHbOSYQCRNv0F7V/zrDXoUhgtbznifhtRbAzPHccZ7gsuEJ
+	 TQTtET78mAUrKyQ51YndKq570tLzNzD480JVHOPmRl0d2z7xci5i5KcEQIbKywuO1O
+	 idx5SxgpZ0if9hU617b9WlWPUd3ornF3wtEVO8LKWksQvfZse66nYi7dc4WbKKHgVC
+	 9PTFb3y7n5iBA==
+Date: Thu, 30 Jul 2026 15:37:44 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jiawen Liu <1298662399@qq.com>
+Cc: Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] spi: nxp-fspi: fix runtime PM error handling
+Message-ID: <1a74a1f2-e6b2-4faa-b11d-2a1ba6cdf1c5@sirena.org.uk>
+References: <tencent_B3AF7EA2C812124397C0691BD0F0B7B87205@qq.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: peng.fan@oss.nxp.com, catalin.marinas@arm.com, will@kernel.org, corbet@lwn.net, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, mark.rutland@arm.com, iivanov@suse.de, francesco@dolcini.it, frank.li@nxp.com, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, imx@lists.linux.dev, peng.fan@nxp.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="k0ooVb+TC2kucGfX"
+Content-Disposition: inline
+In-Reply-To: <tencent_B3AF7EA2C812124397C0691BD0F0B7B87205@qq.com>
+X-Cookie: In specially marked packages only.
 
-On Thu, 30 Jul 2026 14:53:02 +0100,
-"Peng Fan (OSS)" <peng.fan@oss.nxp.com> wrote:
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 9a6c72a18672..734ccd7ec056 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -3032,6 +3032,11 @@ static __init int kvm_arm_init(void)
->  
->  	in_hyp_mode = is_kernel_in_hyp_mode();
->  
-> +	if (cpus_have_final_cap(ARM64_WORKAROUND_NXP_ERR050104)) {
-> +		kvm_info("KVM not supported on NXP iMX8QM (ERR050104)\n");
-> +		return -ENODEV;
-> +	}
-> +
->  	if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
->  	    cpus_have_final_cap(ARM64_WORKAROUND_1508412))
->  		kvm_info("Guests without required CPU erratum workarounds can deadlock system!\n" \
 
-I really dislike this sort of hacks in the KVM code.
+--k0ooVb+TC2kucGfX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Instead, please find a way to set 'kvm_mode' to KVM_MODE_NONE from
-your erratum handler, and KVM will gracefully disable itself, as if
-that was passed on the command line.
+On Tue, Jul 28, 2026 at 12:04:40PM +0400, Jiawen Liu wrote:
+> Hi,
+>=20
+> This series reworks the previous probe-failure fix for nxp-fspi to use
+> the newer runtime PM helpers, following the pattern used by spi-nxp-xspi.
 
-It shouldn't be too hard to do.
+This doesn't apply against current code, please check and resend.
 
-Thanks,
+--k0ooVb+TC2kucGfX
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	M.
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Without deviation from the norm, progress is not possible.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmprYbgACgkQJNaLcl1U
+h9AnUwf+NzMLZpNo11e6i6Xrnk8jB2TrN8AMF9lgDCFgsq0aa+scd/+9PwsflSgA
+kfmqVRFIMAb1ijqBjn04f/URbF8vZqVfcpUOBg7fymr41mQ+PakarwoWBVMGB1Xz
+WKd8GMydRl2uJgtr3zZRdCeFYbUXsoW4/tFdlz6rl2VpBvRrFpelj6GXN85PM2Ds
+nvbkKMBgq0sUh99REsLy+rkL84YVqre+tg+28WnPkWSG7NSzS8mxuot4vcc0un1j
+GmrKDVMrt6Px0V9xozfCozNZ1g0q30qtRxfr2F/wprNJmHHBjcqSAfKB9CO5tSs9
+LMt8sQetGN+E1SyMslKMW/BC7t653w==
+=y/uU
+-----END PGP SIGNATURE-----
+
+--k0ooVb+TC2kucGfX--
