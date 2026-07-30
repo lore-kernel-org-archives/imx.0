@@ -1,91 +1,155 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6754E358373;
-	Thu, 30 Jul 2026 15:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BE238B135;
+	Thu, 30 Jul 2026 16:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785426636; cv=none; b=odkPYrUUhWpANcdzaRNODCR9WGYB5dV35BnvoVTak7LBe002ZThF56sSXDHW4rLHwHmU621MLzhJucMEJnKPMdnNgKTH06Ar1qwj0dsJyLBLeqZByQvO/oZSyoO6q21HjSQtTyz9+4IwU2gO/m51JrEspmf6otkh9WKtuipApEU=
+	t=1785428370; cv=none; b=W13PH9IznoN/19v/EGX7Y0IUbfyV+Avi/4ZlM0wfc1H9nlZsuqcUSP3PzB5K2MJQYlU1NqQLJZKNWUHeWHP+L7Z38zze223kyd178hdTCrXLEnTpIbxCTuU/CxwJR2/P3Okk8vNkTQ6ILVWJ3qWHNEQMp8pmcV3LvCYBbAd+ESY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785426636; c=relaxed/simple;
-	bh=eEagDVNa74snUjVb+2QD9R1XSCdWxJ9S9H2GGmns5MQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rLShF1ufJrJV9MZ8IWBjl22G6c4Uxhn/MJRl6UFObHETVTjQhE5G4PMkYIpn6PYcymtP8X9/SOcHWW3758rHW9LZII9pM6KljFd/qHQ6MZ0kKDLwUne60NRefMWLGBb2fl1M+JdqFAFJL/nocnwjLHfB0X0o8Vz9E6qGZz3d3Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9bBYW55; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785428370; c=relaxed/simple;
+	bh=RYVKTX6h3fRrnmGf20lJS+F/Ek+0xZ9IanpkiG0PAk0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TdTWOijHQaWHsn0sSrT+Uc4t1m8hoBQPIz6t2cNSZFHiZu4wABIn901gQfW5XlUFtN6O5M7bfO9PGb9RqNImrho2+1vEQIJMyO6U40dZMOFQ+5Z8E5QnJ4Pi0ZlG89xW5UT0RTYcqYNIvBfvBug7Hr9O183x309euXpM2g7lcXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bq4xfnbh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9bBYW55"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66B11F00A3D;
-	Thu, 30 Jul 2026 15:50:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785426635;
-	bh=DFBbCu7MXNkrRdNdjcdS2i6Yb/YnpCSeqktE6bleyZU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=D9bBYW55Y1ChDJxkbaPBL8RyIyhV5I4WqDfHpePtZ5dM0kSxaexkhB+seG8NKC5br
-	 v+j771bvyHaKRGYj4DZjOtacrVqbDBCKUUcDJBdg04EmCbhZk3KusQ3KCEmn2Jx0pp
-	 iu00HxB9xxbQxXqbXj02KZHoap9J/N1CeTIr8KAtjFaDYBtlVvOPcYTTCi5ruyG3Ix
-	 lObOgSViSuKaTr3MJcSv5UduijtkF92fUvr5mKPEZwxWnhJARk2YcwKaR3J9PtR/uF
-	 Rmqt7wY1BPbcmB0tIRHqM9wLc6eRV89pHFHCCC9oItAMcDrS89Q+RIvK15HEiPH6Gj
-	 KxYJVNhFlkslw==
-From: Mark Brown <broonie@kernel.org>
-To: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- haibo.chen@oss.nxp.com
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>
-In-Reply-To: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
-References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
-Subject: Re: [PATCH v2 0/3] Few fix/improvement for spi-nxp-fspi
-Message-Id: <178541365553.81171.1972476944935498438.b4-ty@b4>
-Date: Thu, 30 Jul 2026 13:14:15 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bq4xfnbh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0D21F000E9;
+	Thu, 30 Jul 2026 16:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1785428369;
+	bh=4YV3RgJ3MIMo6yQVwYJ8dSAMBKSsBsm+yiCxLQER138=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bq4xfnbhQ8a3UjgNpgkxAVXuDHITCJGPG2M6IDdbZNT/Fw7ZZZ9D2nmaSxrSyatDu
+	 idkCH3EtKQirBpWp5RrW3XStHeDlHj9PRDgEPvWtPqsFq8ekpCZW4vNqHNGomb+P1h
+	 2kCOvDATVo8Cuez6y4VjDoPvCtD7Fbjj63jBviF0=
+Date: Thu, 30 Jul 2026 16:28:10 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] serial: core: do fallible allocations before the
+ console can be registered
+Message-ID: <2026073056-embargo-rejoicing-87c2@gregkh>
+References: <20260719221014.44354-1-kmehltretter@gmail.com>
+ <20260719221014.44354-2-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260719221014.44354-2-kmehltretter@gmail.com>
 
-On Tue, 28 Jul 2026 18:18:07 +0800, haibo.chen@oss.nxp.com wrote:
-> Few fix/improvement for spi-nxp-fspi
+On Mon, Jul 20, 2026 at 12:10:11AM +0200, Karl Mehltretter wrote:
+> serial_core_add_one_port() allocates uport->tty_groups after
+> uart_configure_port() has already registered the port's console. If
+> that allocation fails, the function returns -ENOMEM with the console
+> still registered, and the driver's probe error path then tears down
+> the port state the console callbacks depend on.
 > 
-> Patch 1 introduce per-SoC clock rate limits for both SDR and DTR modes
->         by adding max_sdr_rate and max_dtr_rate to nxp_fspi_devtype_data.
-> Patch 2 enter stop mode before reconfiguring MCR0 and DLL to follow
-> 	FlexSPI reference manual initialization sequence
-> Patch 3 propagate clock reconfig failures in nxp_fspi_select_mem()
+> Reproduced with fault injection on qemu's raspi1ap board. Failing the
+> tty_groups allocation during a PL011 sysfs bind makes
+> uart_add_one_port() return -ENOMEM. pl011_register_port() then clears
+> amba_ports[0], but ttyAMA0 remains registered as a console. The nbcon
+> printer thread dereferences the NULL entry and oopses:
 > 
-> [...]
+>   Unhandled fault: page domain fault (0x01b) at 0x00000178
+>   CPU: 0 UID: 0 PID: 43 Comm: pr/ttyAMA0 Not tainted 7.2.0-rc3+ #1
+>   PC is at pl011_console_write_thread+0x2c/0x168
+> 
+> This is not PL011-specific: the failing allocation is in serial core,
+> after uart_configure_port() has registered the console, so any console
+> UART driver is exposed. On i.MX the retained console references a
+> devm-allocated port that the failed probe frees, causing a
+> use-after-free. Reproduced on qemu's mcimx6ul-evk using the same
+> fail-nth harness under KASAN:
+> 
+>   BUG: KASAN: slab-use-after-free in imx_uart_console_write_thread+0x50/0x278
+>   Read of size 4 at addr c5246048 by task pr/ttymxc0/63
+>    imx_uart_console_write_thread from nbcon_emit_next_record+0x360/0x50c
+>    nbcon_emit_next_record from nbcon_emit_one+0x140/0x184
+>   Allocated by task 1:
+>    devm_kmalloc from imx_uart_probe+0x90/0xa5c
+>   Freed by task 1:
+>    devres_release_all from device_unbind_cleanup+0x38/0xdc
+>    device_unbind_cleanup from really_probe+0x2b4/0x388
+> 
+> The pre-existing kasprintf() failure path has a related problem: it
+> returns with state->uart_port already pointing at a port whose probe
+> is about to unwind and free it.
+> 
+> Reorder the function so the uport->name and uport->tty_groups
+> allocations both happen before the port is linked into the driver
+> state table and before uart_configure_port() registers the console:
+> 
+>  1. Allocate uport->name.
+>  2. Allocate the tty_groups array with room for three entries
+>     unconditionally (serial core group, optional driver group, NULL
+>     terminator). The optional group cannot be examined at this point:
+>     config_port() may only supply uport->attr_group during
+>     uart_configure_port(), e.g. 8250 sets it after autodetection.
+>  3. Only then link the port into the driver state table and run
+>     uart_configure_port().
+>  4. Fill in the optional attr_group slot afterwards.
+> 
+> A fail-nth sweep over the whole bind path on both boards left the
+> console unregistered after every failed bind and did not reproduce the
+> i.MX use-after-free.
+> 
+> Fixes: 266dcff03eed ("Serial: allow port drivers to have a default attribute group")
+> Fixes: f7048b15900f ("tty: serial_core: Add name field to uart_port struct")
+> Cc: stable@vger.kernel.org
 
-Applied to
+As this can only be duplicated with fault-injection, it really doesn't
+need to go to any stable kernels, right?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-Thanks!
 
-[1/3] spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate limits for all supported SoCs
-      https://git.kernel.org/broonie/spi/c/9c19d60fea9f
-[2/3] spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
-      https://git.kernel.org/broonie/spi/c/b4bde5cfff8e
-[3/3] spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
-      https://git.kernel.org/broonie/spi/c/b5902b977979
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  drivers/tty/serial/serial_core.c | 31 +++++++++++++++++--------------
+>  1 file changed, 17 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> index a530ad372b43..887b1dd80ad2 100644
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -3056,7 +3056,6 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
+>  	struct uart_state *state;
+>  	struct tty_port *port;
+>  	struct device *tty_dev;
+> -	int num_groups;
+>  
+>  	if (uport->line >= drv->nr)
+>  		return -EINVAL;
+> @@ -3068,6 +3067,23 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
+>  	if (state->uart_port)
+>  		return -EINVAL;
+>  
+> +	uport->name = kasprintf(GFP_KERNEL, "%s%u", drv->dev_name,
+> +				drv->tty_driver->name_base + uport->line);
+> +	if (!uport->name)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * uart_configure_port() may set uport->attr_group and register the
+> +	 * console. Allocate room for both groups and a NULL terminator first.
+> +	 */
+> +	uport->tty_groups = kzalloc_objs(*uport->tty_groups, 3);
+> +	if (!uport->tty_groups) {
+> +		kfree(uport->name);
+> +		uport->name = NULL;
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Why set this to NULL?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+thanks,
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+greg k-h
