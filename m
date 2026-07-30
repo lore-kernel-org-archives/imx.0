@@ -1,158 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2134A45C6E6;
-	Thu, 30 Jul 2026 16:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FF8446854
+	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 16:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785428379; cv=none; b=ZIQcDHo2bMXokd1lfaaCaZjwlwBdNKIY6AwwjjXtgQPNEK93a88Y7BJVcn78todS0hOFYuJ3rfikbAmlSA9FkELBgrsXqPItOBpsDtxm9jQhFNuUfxjecT2q+rWbidABeKNQ+BKKl8xCynpbpH5z0OPScMzR+Uzp6GYpYLudAKs=
+	t=1785429321; cv=none; b=fZl0pMXPYYwTU6D9cBiwUF/WuScj8YQA+mecPFq15IuiNnSA9qEIKUTTISj1seSM9/si1BEhCDRocapT1Vden6K3/7CzumnH92t9rU/cbwo/5v4UnixcrA64YXxRQ1qFlbQqHsSRSceFoo7p++wWSNVbRIiS+sTHNYCs66aTDp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785428379; c=relaxed/simple;
-	bh=0E5556cEF/86q9Nxt49YB9AoDYsqlnwRU7N3yXmGaXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Td+b4/fFDZGY6U0F4IAtXdeBExTgwMo3RL+O6lPzRuSzdBJxp06gtitzQZZAXe6kXwx6vgAfB++gQ/hEBobyXuDe9giurMdwjgVkLv9FokzQaEY2fEgtL8mqPoBfMywj7b1Nj9Mo4VDnh6/hsCXMq2fwAlC+vjm3YW2M6VWxC6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjb5XdHB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785429321; c=relaxed/simple;
+	bh=0bTfb/Ooe2V2jUcLmx5Y97xxWl4QvgtDbTIBdNYbIuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jHbJwfH4//JYPgXG0nt0RpmrgJgFHx7aeVeL3+RxYfMhbVUx8KtsNM7oe6f5GTgEVQbGtfHnLJyoLUNaCFB1edML7nkaF+VgpS3QOjkQ2jMqiXM6P0olBhLzpr3L8EKtPU0HBTfWn9804k7nXGQKArw8+SYuuX36+6y85Agb4hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P94CxHhb; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjb5XdHB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC9B1F000E9;
-	Thu, 30 Jul 2026 16:19:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1785428377;
-	bh=LBSRmBZqvSMofNWLtUeCzHkwk0Rv6M/cR5ZCysz+mVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=xjb5XdHB3bEwG5hD2Vgy9wHHpxY1Nx6jOh8fjWDWFq3wWJEZZjksW5khODV5MjOEa
-	 FTPmFjXrPLOXlVZLf48kCxK3POQBEbLgiH7H47ff4O55nKAwrtP6nwkRc+0xS3UMr+
-	 VLHA0eFpHXqraRbrgydIh6Lw3YUjbY3RPUxe77yI=
-Date: Thu, 30 Jul 2026 16:31:51 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P94CxHhb"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47de008b020so661883f8f.1
+        for <imx@lists.linux.dev>; Thu, 30 Jul 2026 09:35:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785429318; x=1786034118; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+U3DZ1HplugeFRpi+HpxktJDAxC1H6qsK7+9CLEzYsM=;
+        b=P94CxHhbQ4R5e15Ncb2DgFe4Qydqn4clwk/LQrWsbUqYu02ehgwEkC1XbQ7pIc844R
+         WgGcI7u8UNUUg1Qb9koVD7FoDaayUm2saXK2fqJ3RGJcWbM4CyfyrrSHozi2aA/Lgc72
+         PlcdMiG08vNzm5O4BwF7wxpU/SQNgMLVfn7kFAl4ccUiU8itVpTwCSfWwp3iApHNOMrF
+         Lydc2B138sToJka/WaGTsqa+b6n0srG+Fm858Ma/fT4zdlOYS90h3R9OdhLdRh8vEn7B
+         zRIeAO//bv1PMeYt1DZUpB/JQLPGhaXw4WFlyWA5XH3nhUTUE7k0mDS07FNoEHrUnIZ3
+         e/HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785429318; x=1786034118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+U3DZ1HplugeFRpi+HpxktJDAxC1H6qsK7+9CLEzYsM=;
+        b=DzfTW3uDL4NfKFr4CjpHBZWkkqc2qeNzxof09h8Ni8whcLJjslN880OEcmXGPs4EDV
+         x5nZQsUEqzmtIzxaFiGVk2JvC20yr7UnuJGllOcX/J/55XsXPkc4wciX1iSPtreK0cNR
+         2Pj+GiFvD/UVud9SNDys8VywKKVMJ3EgOrvFDVABD7nKdUWS/fXzLAhjq772g6Q6rsd4
+         2OrwBCQhzg104+anTSLVBTNRAsq2XiwJPBuseGt1Edl1673+J8fiwxmbFtgk4fB30KE8
+         0Cwbffqo0tNl29EKYShEC41snRNTd0uDw2ALMFlE1HBhNUmM2Io0/HpSzSuV0OvhEn7v
+         Dv9g==
+X-Forwarded-Encrypted: i=1; AHgh+RqztgsT8TYbqJvqpF5EdOBh6GUn11B8KLYePipeqgvn78MgzE8rbgweS7DKf6aUMFDGN9o=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxsxo3ChRnejYJbRjo0fvwZEKmgIhaoHxRYXKgoqnTiUjksHofH
+	++wmKitkOR6nuWP46u5vFa5WZ7KOvdqo/FHRwWu1ZKsBPUUPOVqWxM8l
+X-Gm-Gg: AR+sD13jayM4mLxwCBU9BbOc8UdT3DE/wNC6nacenXTwTPADIZTudpLcAarS1MuNzFW
+	xX7Q4gHjv3FEmL/3DJ5U8AKLR/ZeXjA26dGDE6QMH489PSBpy3Q7F7/UV4hKVxhO2LW0yO46BuA
+	or8hFCwfg81shxw8aZQo1F8T+Ikr4p9sNx6HHi/h+CVU+NHCxgRP/rcLK8eK6vynS2vCsNRBgxL
+	dRE21Do+jEf5spmrUN2PfAX2xjZoBKfsjsyT5IMf9Za6UQrbIZc4l3XK00ChkaiNKXT2BnZFG5f
+	+vzk5FYUnhA6+F4Gg8nynqmZLC/heQHKg/xPrehKBFAOuMi/kWxIqSnXudsKgmHgeRE4cNjg6LU
+	djwEBtZkLAyexBvIwoioOF8VusBC1zem6AoY57m+/FZino7Rfk6lKaai6idyJSXdzfdncUAeEe0
+	6MBkWzpHo/oHVdoxaUdbksA8ztsvRWrujxizXZjmIlNNX0TA3nJBFPQ698pvGnqSrzW3fg1LFdE
+	dWmRltcrEq+TA==
+X-Received: by 2002:a5d:5f48:0:b0:47f:9208:9e4 with SMTP id ffacd0b85a97d-47fcbdcbf32mr1850867f8f.31.1785429317752;
+        Thu, 30 Jul 2026 09:35:17 -0700 (PDT)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc892cdeasm7758445f8f.22.2026.07.30.09.35.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 09:35:17 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@oss.nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>
+Cc: linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifetime
-Message-ID: <2026073011-crock-utmost-6392@gregkh>
-References: <20260719221014.44354-1-kmehltretter@gmail.com>
- <20260719221014.44354-5-kmehltretter@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/4] Add RPROC support for the MX95-15x15-FRDM board
+Date: Thu, 30 Jul 2026 09:34:08 -0700
+Message-ID: <20260730163412.1145-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260719221014.44354-5-kmehltretter@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 20, 2026 at 12:10:14AM +0200, Karl Mehltretter wrote:
-> imx_uart_probe() publishes the port in imx_uart_ports[] before
-> uart_add_one_port(), because console setup during that call uses the
-> table. The entry is not cleared if adding the port fails or after
-> imx_uart_remove() removes it.
-> 
-> The port is devm-allocated, so a failed probe or unbind leaves the table
-> pointing at freed memory. A later registration of the shared console can
-> then dereference the stale entry. Reproduced on QEMU's mcimx6ul-evk by
-> unbinding a sibling UART, unbinding the console UART and rebinding the
-> sibling:
-> 
->   BUG: KASAN: slab-use-after-free in imx_uart_console_setup+0xd0/0x3d8
-> 
-> The entry must remain valid until uart_remove_one_port() unregisters the
-> console. Clearing it afterward without serialization still races a
-> sibling probe: the sibling can register the shared console using the
-> dying entry before it is cleared. The next console write then
-> dereferences NULL.
-> 
-> Use a driver-wide mutex to serialize table publication, port addition
-> and rollback with port removal and table clearing. Console callbacks
-> remain lockless because uart_add_one_port() may invoke setup while
-> probe holds the mutex.
-> 
-> The probe-failure path also relies on "serial: core: do fallible
-> allocations before the console can be registered", which moves the
-> uport->name and uport->tty_groups allocations before console
-> registration. Both changes should be backported together.
-> 
-> Fixes: dbff4e9ea2e8 ("IMX UART: remove statically initialized tables")
-> Fixes: 9f322ad064f9 ("imx: serial: handle initialisation failure correctly")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.org
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  drivers/tty/serial/imx.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 251a50c8aa38..def874f9cd00 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -22,6 +22,7 @@
->  #include <linux/clk.h>
->  #include <linux/delay.h>
->  #include <linux/ktime.h>
-> +#include <linux/mutex.h>
->  #include <linux/pinctrl/consumer.h>
->  #include <linux/rational.h>
->  #include <linux/slab.h>
-> @@ -2080,6 +2081,15 @@ static const struct uart_ops imx_uart_pops = {
->  
->  static struct imx_port *imx_uart_ports[UART_NR];
->  
-> +/*
-> + * Store the port in imx_uart_ports[] before uart_add_one_port() and clear
-> + * it only after uart_remove_one_port() returns. Console callbacks in both
-> + * calls use the table, so this mutex serializes these sequences between
-> + * sibling ports. Callbacks must not take it because uart_add_one_port()
-> + * may invoke setup while it is held.
-> + */
-> +static DEFINE_MUTEX(imx_uart_ports_lock);
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Again, LLMs love to write comments/text, be sane please.  This comment
-has nothing to do with the storing and such.
+Hi folks,
 
-> +
->  #if IS_ENABLED(CONFIG_SERIAL_IMX_CONSOLE)
->  static void imx_uart_console_putchar(struct uart_port *port, unsigned char ch)
->  {
-> @@ -2632,11 +2642,14 @@ static int imx_uart_probe(struct platform_device *pdev)
->  		}
->  	}
->  
-> -	imx_uart_ports[sport->port.line] = sport;
-> -
->  	platform_set_drvdata(pdev, sport);
->  
-> +	mutex_lock(&imx_uart_ports_lock);
+As you can see from the title, this series attempts to introduce/enable
+RPROC support for the MX95-15x15-FRDM board.
 
-guard()?
+For a while now, the imx_rproc driver has been using the reserved memory
+DT nodes as the carveout names, which would force DT writers to go against
+the DT specification's recommendation and use non-generic names (e.g.
+"vdev0vring0", "vdev0vring1", etc...). This series also tries to fix this
+issue by introducing the "memory-region-names" property and using it in
+the imx_rproc driver to figure out the carveout names. The driver will
+still allow the old way of doing things (i.e. no "memory-region-names"
+property) but a warning will now be printed since this should be
+discouraged.
 
-> +	imx_uart_ports[sport->port.line] = sport;
->  	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-> +	if (ret)
-> +		imx_uart_ports[sport->port.line] = NULL;
-> +	mutex_unlock(&imx_uart_ports_lock);
->  
->  err_clk:
->  	clk_disable_unprepare(sport->clk_ipg);
-> @@ -2647,8 +2660,12 @@ static int imx_uart_probe(struct platform_device *pdev)
->  static void imx_uart_remove(struct platform_device *pdev)
->  {
->  	struct imx_port *sport = platform_get_drvdata(pdev);
-> +	unsigned int line = sport->port.line;
+---
 
-Why are you reading this outside of the lock?
+Changes in v3:
 
->  
-> +	mutex_lock(&imx_uart_ports_lock);
+* kept the DT binding patch because it fixes the ABI problem pointed out
+by Frank. Modified the commit message to reflect this.
+* link to v2: https://lore.kernel.org/lkml/20260605113621.1479-1-laurentiumihalcea111@gmail.com/
 
-guard()?
+Changes in v2:
 
-thanks,
+* change commit message of binding patch to describe why it's needed
+* drop restrictions on the string names passed via "memory-region-names"
+* drop patch moving the CM7 node to the SoC DTSI. CM7 node is now added
+in the RPMSG DT overlay
+* rewrite commit message of patch removing some of the RMEM regions from
+the bord DTS - previous version was a stale version from first iterations
+of this series
+* change "micfil" node status from "disabled" to "reserved"
+* add check against rmem phandle count and string count mismatch
+* include "of_reserved_mem.h" in "imx_rproc.h" to avoid having to rely on
+the consumers including it
 
-greg k-h
+---
+
+Laurentiu Mihalcea (4):
+  dt-bindings: remoteproc: imx_rproc: document optional
+    "memory-region-names"
+  remoteproc: imx_rpoc: fix carveout name parsing
+  arm64: dts: freescale: imx95-15x15-frdm: remove some rmem regions
+  arm64: dts: freescale: add DT overlay for MX95-15x15-FRDM RPMSG usage
+
+ .../bindings/remoteproc/fsl,imx-rproc.yaml    |  4 ++
+ arch/arm64/boot/dts/freescale/Makefile        |  3 +
+ .../dts/freescale/imx95-15x15-frdm-rpmsg.dtso | 67 +++++++++++++++++++
+ .../boot/dts/freescale/imx95-15x15-frdm.dts   | 21 ------
+ drivers/remoteproc/imx_rproc.c                | 13 +++-
+ drivers/remoteproc/imx_rproc.h                | 21 ++++++
+ 6 files changed, 106 insertions(+), 23 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
+
+-- 
+2.53.0
+
