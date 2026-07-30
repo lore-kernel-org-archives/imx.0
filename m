@@ -1,179 +1,196 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569A83F9F45
-	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 09:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785402082; cv=fail; b=iLQL6bx2irPLhCeUuPN6qKvRWpPrHT87GAv24qrCo38bbIj59qDkJw0OCdXNyXlmIllkRoZCmpFdtH2WtGEew90uwkx7l5dZAIdi7/Ezx3wmTfZGT2X3SuiGoK7mn871t5DHSII3fIs6/TANdoT/a5l4m/Ca6JwHrYBQKfBgf70=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785402082; c=relaxed/simple;
-	bh=2IJVykOmnD6Jx4dmtIrUqQwd/CQg646CVkESAnfmGfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ngpQQP4JMuq98RapjSoB3avEppxS1teDArY+uDxiXlDZrOHewOs6Gg5myxW30LACjWh40QkPJYtf7dPwoQEBErTPgC6xJGz0vq0VVbslDlx6Hr9TDyWTlRnEEBFgGtoZuzYAsLg7cJe9t5J0dFXeBgYCdzwxUX3zkNAP+OpxB0Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kxPnzcGJ; arc=fail smtp.client-ip=52.101.65.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C77734C134
+	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 09:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785402286; cv=none; b=ltykuaawNtcoS8gL7aZ8Ct40rilgaRNndwgOl2cybuWJotiFgQ5b0v0g/xQCOgEgYwlZvOfbRqXe0k5cn99BedBQKhYfd0Kt/JDQTuij5lwkIv5oyYt7kVJsctnSbI9yTadQ2mH/WYloBHk0acUWt1m6JJiagVt/2utWaQFuY8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785402286; c=relaxed/simple;
+	bh=FnpUNmu/3A3bJcIhQuDM8nfzAXpcewIDLmWAVdI9IMM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=dqBytc/DzRzulPDoWP/ImNB9n/D7KYqBbFppmb760VPWNGomUPMwPIXHsNugmVvS85FN5HGN5JWUNpU2N2aNkyuacZEpR6ybLe8hyY8WTawhubLjzYMnCy/gCwq04+Y3N59NlY12fW37nC0D4fGwOqbNRWlk8tyCJeczzAy0oQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qr+CYu3P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kxPnzcGJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F3bfrEnt5rI+ysS4U9cpaZg3Yg6MpPPILA+a62dgj9cy2s6h5X08+xb93SgvRvGr4hK+w22+jR2Z4vh6PcYR2IM7gWDi/3K+xU31xAxKH4qKJHs4kbXJlnYDPf/rsts5T3t7iwEJWtuPJNCHMV/VMO8S9/Kn/sYTD8p9n4UAoq9SaqaMCdzgZiNJuSsP7NLg5h7RkflXTtYnjsOySI2IqnnVPEEUHnJbzmODXjYICb70LDyPQtGU+8VoaEVpkQioBxQlxlN1M/CGZEe8sYBB+/d0WLvwYvk6XQILsXkOo3HqxZ1K7LzXg27ltPTvPqaqPfQ86rPS7c59ZTfhln5CoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nK3fxoKKuamJeMbqD8OvdylnNIMC6gUQRUju9Y2xwD4=;
- b=ZOqmOJAabSDgcEsnuX20ODAqXl7vcoOHUv7iYk4yZGjEMadQKlEhLPcwCpr66qmQ9zqJ9ThW/VB4xRtiJBhWZiHOFinxLt7FezAjcQxV6KMekgf6h5tlxkNbdajzC0bVcJFbzG18y/FWBuScOXjMc/xvCe25yoGvdBtxKAcTLgQqqLmJ4LgVInc5WSw+fWxAO3FqsTAHWq991WWtBco84AbJ1w72VWvuuoUou5gdFoHsfsDj3YG1i/bmaJCenMrVU9jmK/apD9xhjJmtKhgiGBVNgtdB+kpXQKaatrDjmBKI+9AnUhIAKbEj5WTQ3nxIY7BAiB98M9YtV6TwBB6Kng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nK3fxoKKuamJeMbqD8OvdylnNIMC6gUQRUju9Y2xwD4=;
- b=kxPnzcGJW0nabf/pl3S36sCkC6B1s8PuUWjbpFP8YZw/HErRrLarEBVLV1xVrnTmH1rMs2ozpR4PLWYdPYzbcof4RNRhgZj32xVQV/fi3mJZZEE7/TEREhVbtQq1C8XjjGAabMhgZUJljld+Ba0oKIxGewdW3wsPtuVIxmpoOVZu9xlBbHRdLR+gwnT5v8LhhIF538p2T84RcxTC0OqTzCuD8ZX3SVOj4O7FvSwgh9hWlynKVkev05tUZuYXMS3OA1CCHdAgbuOZAlBclOJs3+xsom0hiQnF6/lRuoVGqTW+ImuQdRP6axMDlI9evoOwm+VBJhl41/2wxyNS50+exQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8096.eurprd04.prod.outlook.com (2603:10a6:102:1c7::19)
- by GV4PR04MB11776.eurprd04.prod.outlook.com (2603:10a6:150:2d7::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.14; Thu, 30 Jul
- 2026 09:01:17 +0000
-Received: from PAXPR04MB8096.eurprd04.prod.outlook.com
- ([fe80::68be:f721:5000:3f2d]) by PAXPR04MB8096.eurprd04.prod.outlook.com
- ([fe80::68be:f721:5000:3f2d%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 09:01:17 +0000
-From: hongxing.zhu@oss.nxp.com
-To: abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	bmasney@redhat.com,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: kernel@pengutronix.de,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [RESEND v1] clk: imx95-blk-ctl: Fix REFCLK rise-fall mismatch on i.MX95
-Date: Thu, 30 Jul 2026 17:04:47 +0800
-Message-Id: <20260730090447.271109-1-hongxing.zhu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR06CA0002.apcprd06.prod.outlook.com
- (2603:1096:4:186::10) To PAXPR04MB8096.eurprd04.prod.outlook.com
- (2603:10a6:102:1c7::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qr+CYu3P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD951F000E9;
+	Thu, 30 Jul 2026 09:04:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785402283;
+	bh=iY1TlW6zqczmttJ3vystQZf5zLNVwM926ot632reqNg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Qr+CYu3PV4IDStgWqma4DAXDrARz7Rt8z9OP76FBnq8A6tFeOBv0fikqyNT4SE6Je
+	 G4yP76UbQslg2NL+9ZX7AGXFeYZfv7uF/zBLvVZCBVQ21Rn6dHmOc1RI15UOm2Fpwq
+	 +m4i/1OHaTNiLQIxyoYYxC4K7RorMZNXHFNqYaQZchGpE0b0vk+fSCAuPYWax/mG4k
+	 jFTuYaQUepBXS1OxnW4jr2oYtI+iHEKK1IXpDUXzNvIT3zQqufnX+sb6ycQB0KPG8O
+	 0K2WGJmAvuFSCS0Qh2MYKPuRAVQ4qYLl5whI/FUplzZFbN+VxIU3VUoSIrW5vMQGwc
+	 FKMJXZN8Zdokw==
+From: sashiko-bot@kernel.org
+Subject: Re: [RESEND v1] clk: imx95-blk-ctl: Add func_out_en clock for
+ i.MX9x PCIe
+Reply-To: sashiko-reviews@lists.linux.dev
+To: hongxing.zhu@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260730085542.263025-1-hongxing.zhu@oss.nxp.com>
+References: <20260730085542.263025-1-hongxing.zhu@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 30 Jul 2026 09:04:42 +0000
+Message-Id: <20260730090442.CBD951F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8096:EE_|GV4PR04MB11776:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfde4967-9151-46bd-70bd-08deee191d9e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|19092799006|1800799024|376014|7416014|56012099006|10067099003|18002099003|6133799003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	tK9FoUpXFt+AzRnpBMPTsodjnMH5hCGwBeRJKwAgZyJiE1E/811+t4S7g8Fb0hxcSNoanmfgRypPC2JCxdhmBOsJmN7FuMGSHQi1K45XiLGI1aen6A6o14Uj7CoYdCy00ExqLE4IgCRDrInlKuhG6nygmRAg9Lts72uhR2ko5M64l28wvNRTh8webSqQPjSjo2Xhl95KBkpeNCBDH+sMopIoOiACHXs2CIWE1WOF1fy80GXUXS29p0QRJlh8jxiN5ytfDMElvMd8SGHwSODMpzFdBCvQp+qN4IaX2MUDsHRXo9QNNzv34pBD5zj+8jsHtLlqzAgNAV1Edi4F4tCs0yUJcwN3/R6Om2wrO6sORH6EKk6D+CX+q3m23s83+n2si1K7vq87cKyOqK1k+AZMOcEmeMHLFvGLumOheb0KRqachQ7PAkKRETfFoN5CgHp4YXLOWIr1Dw65ZR2s1d/TwVr2bgc3oFE3ztUCNkmvIYa8/ZUSg/qZ3yot8iirNSV/ihOUtza92iUSPv2Dnw9jEwpB3K0lr+Ik+YhsjSmOMppcwl9ocutIMVxT/I4g0OVXXOejqU+LNhKqntPcMNLLL6HBKptWBJiPMlEfox3szfIubKWALZBAhNcvsk4Q/rKn/zw0Lq/ZE1zanr5z9W6O3OoZ5r6C8FkMTksPRBRqv+0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8096.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(1800799024)(376014)(7416014)(56012099006)(10067099003)(18002099003)(6133799003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FOCTATESBUH2oBB6D9lwPbtP3TBFCyE1p020bE5lHJm61MrP39edknizjZR9?=
- =?us-ascii?Q?dheGFZ/1G1dVCzDi9Mdrw5ktsnQ+z2n1KyCNS5tNtiKjZqo9GHGtxm3TkipG?=
- =?us-ascii?Q?O3BWN5PmbSEvP208QITuZOAm/iijJ4BnDPxg9dc5iaHe8fxiY0ir+qUefKXg?=
- =?us-ascii?Q?KDk1CW7YN888XA78gMZ+hYkEbWzI+BPZWIJV++ohKSkgBRd1hR25HwN6jmU+?=
- =?us-ascii?Q?Ouo18B2yvZCd8qzkfQRK0hO+jh4s3SOmxpU0WxaRhtzepSH/EN9TKHsJEWU6?=
- =?us-ascii?Q?YZkaleCxfJZievINz8UyfIpdc1QaZqmKNU6XAXghXcQsDjKIsTQVwN2e6i+2?=
- =?us-ascii?Q?Tuz63yGhwc0ThWcTz1YdJ24jqwbvA3ihogNQDaku0zCVPSjQwNRzeDirW4Yy?=
- =?us-ascii?Q?/ecssEAswtwbs9ik/7PP4WANo75R7kDWZSkvJEls82wtfTxZJUpx2Ta0gmsj?=
- =?us-ascii?Q?2o/Sgna/Mf2dXYORLYQHniFOQs1yfHll4WvFuuj8eqJNFo42b9QAkeaMsCRa?=
- =?us-ascii?Q?xNSJvdztngA2okzj3vQvS8x3qoh9Pv/0jb9iIScnzcjHl7/7KbHvscFPlvd8?=
- =?us-ascii?Q?Dt5y94UeR+BTm5LRLMKZJsPVn6z0p3XTXpowAWFFLbz7Q3dBc023A64/OBLL?=
- =?us-ascii?Q?7S56YmC5uuwTZO0zjk/zSFuGa/KDGgqMxsbfpIXQHqdYh4BPECpR1RXvoDUL?=
- =?us-ascii?Q?4o8pdwzYVavN33Ea86+SuVSmyZEkW1zUUl7qmA4FRXFMDwCSefCB8iI2FWEP?=
- =?us-ascii?Q?6Uj/Aw2D2INKSSTh1E6BngQqeu83HF2dgMJR0OsH5rg0AN5bA/eWpSFBrNYm?=
- =?us-ascii?Q?YUTnzXpMi/MoYU8ftGB1txvYEoeFFFrMAtk6APZoCHrNqqom20mrFZWnsIOV?=
- =?us-ascii?Q?YySjvXpg22rJmTyOfLfczUVsWDE0QTPKFCzYwT0nyHHFWSQhqknoLopTbklm?=
- =?us-ascii?Q?wTU6gzLeC2C/YPa9FZQatJQd3b7N0QI6VDpzemibQ704oTmKsPZseUquyBsX?=
- =?us-ascii?Q?s29mGU8SromaLbwUdukCmZyp7tNH49vAU3rjRV35oNZIViELGlsLpSA6erwn?=
- =?us-ascii?Q?BXFDtr3r/My37MjxpPemhtlYhLt8eJIFNnND/SuWZny5GHvyWw6XEK+lV7U4?=
- =?us-ascii?Q?HyrE5oOuhYHybiC6n4d6u4zBqZaNmpsQV67ylvmEnaKlG+bEz0eJOhDc1pV+?=
- =?us-ascii?Q?bsar7nc0F+eOpM8sz5c4s5ni+PjupwWNyEUILth+4cm0R+DFHHLtSss3ad4H?=
- =?us-ascii?Q?CeKlXOk0SBH12NgxQ2pm1nOyL6lDVbdedcVfxuqvrS5Y3ahLSbYdTB9RQTMa?=
- =?us-ascii?Q?81+yqo3uNIByqYjNkvqgnZMvhlwa3GW+egDf8AH5BYzwbaTLroyozYlKE3y+?=
- =?us-ascii?Q?Aq7G5x0BpQMOywcofbc5ZTDWS3lRdpNyVYH7cAHz9ASsaDWTeYIPj1zbGcZw?=
- =?us-ascii?Q?AOX5yukF2K3Oby9bh60amUEoRkUDnMexDwFerh9GNF90rn/+E6j3KIJ3S6gF?=
- =?us-ascii?Q?67QhqjFzQ6qrhq/BsACkRNWkKLZ1eAW4ZmckexsP7rcl/ecyQARtu1LsX7na?=
- =?us-ascii?Q?jUMFtAf/2aNM8oVDpu0RUDuHGCd4xFy+K6DipUjEU+WHIQecUxq+J2TAXi1V?=
- =?us-ascii?Q?3H77lt4S3ZhMog1DbACDfw9MPE/Ps/r4cW/KG3H4t9cGBWzpsCUjBON+mdz9?=
- =?us-ascii?Q?DJ66XYoeOfvyyOOerGknnWNP/sh4SGmlMA4RwmmiyAWJVmSK7QcxYrNVsvgi?=
- =?us-ascii?Q?0J//2ZGt0WOtLD18Kk8Hi+jZ52gyv46REW65WQ3YvXy7S3mAPoOy?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfde4967-9151-46bd-70bd-08deee191d9e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8096.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 09:01:17.3490
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gxX3Gj0Z2TB+FqKLuUp7IIBgI+NzrGTjJORNo1kd8S/mBJQ63xTN6vE//cdj307nO0HBH7kApT9/D13UW78H0okf0B1AGHL8M+2FYubngnuYS3MfQ77MmdUYjC3+JVuy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11776
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-When the internal PLL is used as the PCIe reference clock source on i.MX95,
-a REFCLK rise-fall time mismatch is observed during PCIe Gen1 compliance
-testing with the Lfast IO analyzer.
+New issues:
+- [Medium] The newly added clock is named `func_out_en`, which is too gener=
+ic for the global Common Clock Framework (CCF) namespace.
 
-Fix this issue by configuring the IREF_TX field to 0xF (15), which adjusts
-the transmitter current reference to meet the PCIe specification timing
-requirements.
+Pre-existing issues:
+- [High] The driver lacks a `.remove` callback but does not suppress sysfs =
+unbinding, causing use-after-free and I/O page faults on unbind.
+- [High] The `netcmix_dev_data` specifies an incorrect `.clk_reg_offset`, c=
+orrupting Ethernet clock state on suspend/resume.
+--
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/clk/imx/clk-imx95-blk-ctl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+--- Patch [1]: [RESEND v1] clk: imx95-blk-ctl: Add func_out_en clock for i.=
+MX9x PCIe ---
+commit 5827f093c090c0f0800defab20d47c7314cbe3c9
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-index 1f9259f456079..bc6957299ceca 100644
---- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -44,6 +44,8 @@ struct imx95_blk_ctl_clk_dev_data {
- 	const char * const *parent_names;
- 	u32 num_parents;
- 	u32 reg;
-+	u32 reg_init_msk;
-+	u32 reg_init_val;
- 	u32 bit_idx;
- 	u32 bit_width;
- 	u32 clk_type;
-@@ -289,6 +291,8 @@ static const struct imx95_blk_ctl_clk_dev_data hsio_blk_ctl_clk_dev_data[] = {
- 		.parent_names = (const char *[]){ "func_out_en", },
- 		.num_parents = 1,
- 		.reg = 0,
-+		.reg_init_msk = GENMASK(10, 7),
-+		.reg_init_val = GENMASK(10, 7),
- 		.bit_idx = 6,
- 		.bit_width = 1,
- 		.type = CLK_GATE,
-@@ -410,6 +414,9 @@ static int imx95_bc_probe(struct platform_device *pdev)
- 		const struct imx95_blk_ctl_clk_dev_data *data = &bc->pdata->clk_dev_data[i];
- 		void __iomem *reg = base + data->reg;
- 
-+		if (data->reg_init_msk)
-+			writel((readl(reg) & ~data->reg_init_msk) | data->reg_init_val, reg);
-+
- 		if (data->type == CLK_MUX) {
- 			hws[i] = clk_hw_register_mux(dev, data->name, data->parent_names,
- 						     data->num_parents, data->flags, reg,
--- 
-2.34.1
+clk: imx95-blk-ctl: Add func_out_en clock for i.MX9x PCIe
 
+The patch adds a func_out_en clock gate that serves as the parent of the=20
+existing CREF_EN gate clock for i.MX9x PCIe, reducing unnecessary power=20
+consumption.
+
+> diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-im=
+x95-blk-ctl.c
+> index 56bed44719954..1f9259f456079 100644
+> --- a/drivers/clk/imx/clk-imx95-blk-ctl.c
+> +++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+
+[ ... ]
+
+> @@ -286,18 +286,28 @@ static const struct imx95_blk_ctl_dev_data netcmix_=
+dev_data =3D {
+
+[Severity: High]
+This is a pre-existing issue, but does netcmix_dev_data specify an
+incorrect .clk_reg_offset that could corrupt Ethernet clock state on
+suspend and resume?
+
+The clocks for netcmix_dev_data are all at offset 4:
+
+drivers/clk/imx/clk-imx95-blk-ctl.c:netxmix_clk_dev_data[] =3D {
+	[0] =3D {
+		...
+		.reg =3D 4,
+
+However, .clk_reg_offset is initialized to 0:
+
+drivers/clk/imx/clk-imx95-blk-ctl.c:netcmix_dev_data =3D {
+	.num_clks =3D ARRAY_SIZE(netxmix_clk_dev_data),
+	.clk_dev_data =3D netxmix_clk_dev_data,
+	.clk_reg_offset =3D 0,
+};
+
+This offset is used by the suspend and resume routines to save and restore
+the clock register state:
+
+drivers/clk/imx/clk-imx95-blk-ctl.c:imx95_bc_runtime_suspend() {
+	...
+	bc->clk_reg_restore =3D readl(bc->base + bc->pdata->clk_reg_offset);
+	...
+}
+
+Will this cause the driver to save and restore register 0 instead of
+register 4, causing Ethernet RMII clock muxes to lose their configured stat=
+e?
+
+>  static const struct imx95_blk_ctl_clk_dev_data hsio_blk_ctl_clk_dev_data=
+[] =3D {
+>  	[0] =3D {
+>  		.name =3D "hsio_blk_ctl_clk",
+> -		.parent_names =3D (const char *[]){ "hsio_pll", },
+> +		.parent_names =3D (const char *[]){ "func_out_en", },
+>  		.num_parents =3D 1,
+>  		.reg =3D 0,
+>  		.bit_idx =3D 6,
+>  		.bit_width =3D 1,
+>  		.type =3D CLK_GATE,
+>  		.flags =3D CLK_SET_RATE_PARENT,
+> +	},
+> +	[1] =3D {
+> +		.name =3D "func_out_en",
+
+[Severity: Medium]
+Will this name conflict with other clocks in the global Common Clock
+Framework (CCF) namespace?
+
+Because "func_out_en" lacks a subsystem or block-specific prefix
+(like "hsio_func_out_en"), it might cause namespace collisions if another
+hardware block registers a clock with the same generic name.
+
+> +		.parent_names =3D (const char *[]){ "hsio_pll", },
+> +		.num_parents =3D 1,
+> +		.reg =3D 0,
+> +		.bit_idx =3D 2,
+> +		.bit_width =3D 1,
+> +		.type =3D CLK_GATE,
+> +		.flags =3D CLK_SET_RATE_PARENT,
+>  	}
+>  };
+> =20
+>  static const struct imx95_blk_ctl_dev_data hsio_blk_ctl_dev_data =3D {
+> -	.num_clks =3D 1,
+> +	.num_clks =3D ARRAY_SIZE(hsio_blk_ctl_clk_dev_data),
+>  	.clk_dev_data =3D hsio_blk_ctl_clk_dev_data,
+>  	.clk_reg_offset =3D 0,
+>  };
+
+[Severity: High]
+This isn't a bug introduced by this patch, but could this driver cause a
+use-after-free and I/O page faults on unbind?
+
+The driver registers non-devm clock providers and clocks in imx95_bc_probe(=
+):
+
+drivers/clk/imx/clk-imx95-blk-ctl.c:imx95_bc_probe() {
+	...
+		} else {
+			hws[i] =3D clk_hw_register_gate(dev, data->name, data->parent_names[0],
+						      data->flags, reg, data->bit_idx,
+						      data->flags2, &bc->lock);
+		}
+	...
+	ret =3D of_clk_add_hw_provider(dev->of_node, of_clk_hw_onecell_get, clk_hw=
+_data);
+	...
+}
+
+However, it does not provide a .remove callback or suppress sysfs unbinding:
+
+drivers/clk/imx/clk-imx95-blk-ctl.c:imx95_bc_driver =3D {
+	.probe =3D imx95_bc_probe,
+	.driver =3D {
+		.name =3D "imx95-blk-ctl",
+		.of_match_table =3D imx95_bc_of_match,
+		.pm =3D &imx95_bc_pm_ops,
+	},
+};
+
+If the driver is unbound, devres will automatically free the driver state a=
+nd
+unmap I/O memory, but the clocks remain registered with CCF.  Will subseque=
+nt
+CCF operations access freed memory and unmapped registers?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260730085542.2630=
+25-1-hongxing.zhu@oss.nxp.com?part=3D1
