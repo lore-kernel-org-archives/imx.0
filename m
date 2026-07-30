@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BE238B135;
-	Thu, 30 Jul 2026 16:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2134A45C6E6;
+	Thu, 30 Jul 2026 16:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785428370; cv=none; b=W13PH9IznoN/19v/EGX7Y0IUbfyV+Avi/4ZlM0wfc1H9nlZsuqcUSP3PzB5K2MJQYlU1NqQLJZKNWUHeWHP+L7Z38zze223kyd178hdTCrXLEnTpIbxCTuU/CxwJR2/P3Okk8vNkTQ6ILVWJ3qWHNEQMp8pmcV3LvCYBbAd+ESY=
+	t=1785428379; cv=none; b=ZIQcDHo2bMXokd1lfaaCaZjwlwBdNKIY6AwwjjXtgQPNEK93a88Y7BJVcn78todS0hOFYuJ3rfikbAmlSA9FkELBgrsXqPItOBpsDtxm9jQhFNuUfxjecT2q+rWbidABeKNQ+BKKl8xCynpbpH5z0OPScMzR+Uzp6GYpYLudAKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785428370; c=relaxed/simple;
-	bh=RYVKTX6h3fRrnmGf20lJS+F/Ek+0xZ9IanpkiG0PAk0=;
+	s=arc-20240116; t=1785428379; c=relaxed/simple;
+	bh=0E5556cEF/86q9Nxt49YB9AoDYsqlnwRU7N3yXmGaXQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdTWOijHQaWHsn0sSrT+Uc4t1m8hoBQPIz6t2cNSZFHiZu4wABIn901gQfW5XlUFtN6O5M7bfO9PGb9RqNImrho2+1vEQIJMyO6U40dZMOFQ+5Z8E5QnJ4Pi0ZlG89xW5UT0RTYcqYNIvBfvBug7Hr9O183x309euXpM2g7lcXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bq4xfnbh; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Td+b4/fFDZGY6U0F4IAtXdeBExTgwMo3RL+O6lPzRuSzdBJxp06gtitzQZZAXe6kXwx6vgAfB++gQ/hEBobyXuDe9giurMdwjgVkLv9FokzQaEY2fEgtL8mqPoBfMywj7b1Nj9Mo4VDnh6/hsCXMq2fwAlC+vjm3YW2M6VWxC6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjb5XdHB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bq4xfnbh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0D21F000E9;
-	Thu, 30 Jul 2026 16:19:28 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjb5XdHB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC9B1F000E9;
+	Thu, 30 Jul 2026 16:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1785428369;
-	bh=4YV3RgJ3MIMo6yQVwYJ8dSAMBKSsBsm+yiCxLQER138=;
+	s=korg; t=1785428377;
+	bh=LBSRmBZqvSMofNWLtUeCzHkwk0Rv6M/cR5ZCysz+mVc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bq4xfnbhQ8a3UjgNpgkxAVXuDHITCJGPG2M6IDdbZNT/Fw7ZZZ9D2nmaSxrSyatDu
-	 idkCH3EtKQirBpWp5RrW3XStHeDlHj9PRDgEPvWtPqsFq8ekpCZW4vNqHNGomb+P1h
-	 2kCOvDATVo8Cuez6y4VjDoPvCtD7Fbjj63jBviF0=
-Date: Thu, 30 Jul 2026 16:28:10 +0200
+	b=xjb5XdHB3bEwG5hD2Vgy9wHHpxY1Nx6jOh8fjWDWFq3wWJEZZjksW5khODV5MjOEa
+	 FTPmFjXrPLOXlVZLf48kCxK3POQBEbLgiH7H47ff4O55nKAwrtP6nwkRc+0xS3UMr+
+	 VLHA0eFpHXqraRbrgydIh6Lw3YUjbY3RPUxe77yI=
+Date: Thu, 30 Jul 2026 16:31:51 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Karl Mehltretter <kmehltretter@gmail.com>
 Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
@@ -31,12 +31,12 @@ Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] serial: core: do fallible allocations before the
- console can be registered
-Message-ID: <2026073056-embargo-rejoicing-87c2@gregkh>
+	linux-arm-kernel@lists.infradead.org,
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifetime
+Message-ID: <2026073011-crock-utmost-6392@gregkh>
 References: <20260719221014.44354-1-kmehltretter@gmail.com>
- <20260719221014.44354-2-kmehltretter@gmail.com>
+ <20260719221014.44354-5-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,110 +45,113 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260719221014.44354-2-kmehltretter@gmail.com>
+In-Reply-To: <20260719221014.44354-5-kmehltretter@gmail.com>
 
-On Mon, Jul 20, 2026 at 12:10:11AM +0200, Karl Mehltretter wrote:
-> serial_core_add_one_port() allocates uport->tty_groups after
-> uart_configure_port() has already registered the port's console. If
-> that allocation fails, the function returns -ENOMEM with the console
-> still registered, and the driver's probe error path then tears down
-> the port state the console callbacks depend on.
+On Mon, Jul 20, 2026 at 12:10:14AM +0200, Karl Mehltretter wrote:
+> imx_uart_probe() publishes the port in imx_uart_ports[] before
+> uart_add_one_port(), because console setup during that call uses the
+> table. The entry is not cleared if adding the port fails or after
+> imx_uart_remove() removes it.
 > 
-> Reproduced with fault injection on qemu's raspi1ap board. Failing the
-> tty_groups allocation during a PL011 sysfs bind makes
-> uart_add_one_port() return -ENOMEM. pl011_register_port() then clears
-> amba_ports[0], but ttyAMA0 remains registered as a console. The nbcon
-> printer thread dereferences the NULL entry and oopses:
+> The port is devm-allocated, so a failed probe or unbind leaves the table
+> pointing at freed memory. A later registration of the shared console can
+> then dereference the stale entry. Reproduced on QEMU's mcimx6ul-evk by
+> unbinding a sibling UART, unbinding the console UART and rebinding the
+> sibling:
 > 
->   Unhandled fault: page domain fault (0x01b) at 0x00000178
->   CPU: 0 UID: 0 PID: 43 Comm: pr/ttyAMA0 Not tainted 7.2.0-rc3+ #1
->   PC is at pl011_console_write_thread+0x2c/0x168
+>   BUG: KASAN: slab-use-after-free in imx_uart_console_setup+0xd0/0x3d8
 > 
-> This is not PL011-specific: the failing allocation is in serial core,
-> after uart_configure_port() has registered the console, so any console
-> UART driver is exposed. On i.MX the retained console references a
-> devm-allocated port that the failed probe frees, causing a
-> use-after-free. Reproduced on qemu's mcimx6ul-evk using the same
-> fail-nth harness under KASAN:
+> The entry must remain valid until uart_remove_one_port() unregisters the
+> console. Clearing it afterward without serialization still races a
+> sibling probe: the sibling can register the shared console using the
+> dying entry before it is cleared. The next console write then
+> dereferences NULL.
 > 
->   BUG: KASAN: slab-use-after-free in imx_uart_console_write_thread+0x50/0x278
->   Read of size 4 at addr c5246048 by task pr/ttymxc0/63
->    imx_uart_console_write_thread from nbcon_emit_next_record+0x360/0x50c
->    nbcon_emit_next_record from nbcon_emit_one+0x140/0x184
->   Allocated by task 1:
->    devm_kmalloc from imx_uart_probe+0x90/0xa5c
->   Freed by task 1:
->    devres_release_all from device_unbind_cleanup+0x38/0xdc
->    device_unbind_cleanup from really_probe+0x2b4/0x388
+> Use a driver-wide mutex to serialize table publication, port addition
+> and rollback with port removal and table clearing. Console callbacks
+> remain lockless because uart_add_one_port() may invoke setup while
+> probe holds the mutex.
 > 
-> The pre-existing kasprintf() failure path has a related problem: it
-> returns with state->uart_port already pointing at a port whose probe
-> is about to unwind and free it.
+> The probe-failure path also relies on "serial: core: do fallible
+> allocations before the console can be registered", which moves the
+> uport->name and uport->tty_groups allocations before console
+> registration. Both changes should be backported together.
 > 
-> Reorder the function so the uport->name and uport->tty_groups
-> allocations both happen before the port is linked into the driver
-> state table and before uart_configure_port() registers the console:
-> 
->  1. Allocate uport->name.
->  2. Allocate the tty_groups array with room for three entries
->     unconditionally (serial core group, optional driver group, NULL
->     terminator). The optional group cannot be examined at this point:
->     config_port() may only supply uport->attr_group during
->     uart_configure_port(), e.g. 8250 sets it after autodetection.
->  3. Only then link the port into the driver state table and run
->     uart_configure_port().
->  4. Fill in the optional attr_group slot afterwards.
-> 
-> A fail-nth sweep over the whole bind path on both boards left the
-> console unregistered after every failed bind and did not reproduce the
-> i.MX use-after-free.
-> 
-> Fixes: 266dcff03eed ("Serial: allow port drivers to have a default attribute group")
-> Fixes: f7048b15900f ("tty: serial_core: Add name field to uart_port struct")
+> Fixes: dbff4e9ea2e8 ("IMX UART: remove statically initialized tables")
+> Fixes: 9f322ad064f9 ("imx: serial: handle initialisation failure correctly")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.org
 > Cc: stable@vger.kernel.org
-
-As this can only be duplicated with fault-injection, it really doesn't
-need to go to any stable kernels, right?
-
-
-
 > Assisted-by: Claude:claude-fable-5
 > Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 > ---
->  drivers/tty/serial/serial_core.c | 31 +++++++++++++++++--------------
->  1 file changed, 17 insertions(+), 14 deletions(-)
+>  drivers/tty/serial/imx.c | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> index a530ad372b43..887b1dd80ad2 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -3056,7 +3056,6 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
->  	struct uart_state *state;
->  	struct tty_port *port;
->  	struct device *tty_dev;
-> -	int num_groups;
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 251a50c8aa38..def874f9cd00 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/clk.h>
+>  #include <linux/delay.h>
+>  #include <linux/ktime.h>
+> +#include <linux/mutex.h>
+>  #include <linux/pinctrl/consumer.h>
+>  #include <linux/rational.h>
+>  #include <linux/slab.h>
+> @@ -2080,6 +2081,15 @@ static const struct uart_ops imx_uart_pops = {
 >  
->  	if (uport->line >= drv->nr)
->  		return -EINVAL;
-> @@ -3068,6 +3067,23 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
->  	if (state->uart_port)
->  		return -EINVAL;
+>  static struct imx_port *imx_uart_ports[UART_NR];
 >  
-> +	uport->name = kasprintf(GFP_KERNEL, "%s%u", drv->dev_name,
-> +				drv->tty_driver->name_base + uport->line);
-> +	if (!uport->name)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * uart_configure_port() may set uport->attr_group and register the
-> +	 * console. Allocate room for both groups and a NULL terminator first.
-> +	 */
-> +	uport->tty_groups = kzalloc_objs(*uport->tty_groups, 3);
-> +	if (!uport->tty_groups) {
-> +		kfree(uport->name);
-> +		uport->name = NULL;
+> +/*
+> + * Store the port in imx_uart_ports[] before uart_add_one_port() and clear
+> + * it only after uart_remove_one_port() returns. Console callbacks in both
+> + * calls use the table, so this mutex serializes these sequences between
+> + * sibling ports. Callbacks must not take it because uart_add_one_port()
+> + * may invoke setup while it is held.
+> + */
+> +static DEFINE_MUTEX(imx_uart_ports_lock);
 
-Why set this to NULL?
+Again, LLMs love to write comments/text, be sane please.  This comment
+has nothing to do with the storing and such.
+
+> +
+>  #if IS_ENABLED(CONFIG_SERIAL_IMX_CONSOLE)
+>  static void imx_uart_console_putchar(struct uart_port *port, unsigned char ch)
+>  {
+> @@ -2632,11 +2642,14 @@ static int imx_uart_probe(struct platform_device *pdev)
+>  		}
+>  	}
+>  
+> -	imx_uart_ports[sport->port.line] = sport;
+> -
+>  	platform_set_drvdata(pdev, sport);
+>  
+> +	mutex_lock(&imx_uart_ports_lock);
+
+guard()?
+
+> +	imx_uart_ports[sport->port.line] = sport;
+>  	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
+> +	if (ret)
+> +		imx_uart_ports[sport->port.line] = NULL;
+> +	mutex_unlock(&imx_uart_ports_lock);
+>  
+>  err_clk:
+>  	clk_disable_unprepare(sport->clk_ipg);
+> @@ -2647,8 +2660,12 @@ static int imx_uart_probe(struct platform_device *pdev)
+>  static void imx_uart_remove(struct platform_device *pdev)
+>  {
+>  	struct imx_port *sport = platform_get_drvdata(pdev);
+> +	unsigned int line = sport->port.line;
+
+Why are you reading this outside of the lock?
+
+>  
+> +	mutex_lock(&imx_uart_ports_lock);
+
+guard()?
 
 thanks,
 
