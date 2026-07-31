@@ -1,122 +1,171 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715DC3B7B66;
-	Fri, 31 Jul 2026 10:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F983C3789;
+	Fri, 31 Jul 2026 10:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785493832; cv=none; b=rNrHB8NizzpcIAiMPAVFBoPQcnpOP6UztZ/PNuiT+mYUOvyYwCB2S+2DMbCvvdV7mZhphXVszfM2NhgPacqQ8xmtnh+MzIQGC4qtjDXFlZrF078QnefFVoR4jYl3BduvqmsmEfkjtKIFItnK0O0GtMHjmSqMLCtWLwP6vu54U/8=
+	t=1785493879; cv=none; b=gttkVchHM/mR98Dkfr2n3fWb5O0y2mK+hiqh7p6REPbqTx2g7y0vQMi9UhbFzSht6HKkogwb8eryn8gH3YFU2LnMzhGTzDUaA1n/2Xm60evyKWlwZmxhw/uDgaQBIg97PIDc+hBxUH1NLf0k71nDIT+2qlRNm8VUq5Y1sNp5WKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785493832; c=relaxed/simple;
-	bh=uVmergoTWylFr2Uw2vAI4u8rIXft244541362EoLcKg=;
+	s=arc-20240116; t=1785493879; c=relaxed/simple;
+	bh=IC3ireqBsGWEK+cIfQL6mSXn4zKUpiRizS+9rPexqs4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ROUz0RK2hI61fz2MSpFzG5AauUJjjqYxJvTgEk0jwv5plDdani0840Nt7R7Iin7u8Te9R4M2Lqvb1psR2/pktY3rEb+DsM+dig89KkIgazv4xXfaFInfpTVZ5f9jmES857p7a+JdO8/mmeIxIpdXbb6ZlR/l0VkkoiZrLbgsWaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5FYpbxl; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=sW581i89NNLDlWjmxXBqdoUAYEU/CJ5MtVL3wgTQQxqHAMcfUvRAI6PX+mfGYRwdC02pFbMu8yiRncSFH8r1Z5KtvttFYuNn7T+hxBCotL91ymcHjIiE5zgZb1CNeXJZs6iGpVWiGjOmQGMfbqIALItqEDre9TOcOZU56HlftFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0xE0J4I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5FYpbxl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB581F00A3A;
-	Fri, 31 Jul 2026 10:30:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0xE0J4I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C871F000E9;
+	Fri, 31 Jul 2026 10:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785493819;
-	bh=6cMgcqCGqjp50nWT3F/7rUXq2znbQG+0MwA8SBTXNQo=;
+	s=k20260515; t=1785493859;
+	bh=9cnpHXNfb/HB/PG5lDmW5IElrZfF2Ajx8Jg8BP+iQnk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T5FYpbxlh4dj2JEaAcVltR84vy68F2CGJRzvMNeWRmR3Ltq+Sx7RGWEDy/cu3vX6b
-	 6hImdylkB5cslt1aWri2RIPAZU2rSt3zLYhi80bOiBoT0LW0cg+8swntuocLAWet7B
-	 v3J6YMP/U1hb0GUc/LujtU1le4SvnbzDj508xACh9Niw+7DUXkb3yHUysbakkzQsMd
-	 /9icsPlS3DduC+E9zH2RhgIbkI5QwFXDUIsuo/Mvu4qOPT2OAOnOROBBu3hR4dm5gS
-	 O92dp9IYZ1vtIYKCdNtdcDK2hdTTJpS0G5MMrui//LuCZpvqoUx4dBisGHDo8UBTUT
-	 iDNXpJG1lPmaw==
+	b=G0xE0J4IB0x6h9nNg+2EJczmwL5AHcVLlGD2aV7/KwePesO8Ort0mwr1vcVuGudSl
+	 HtHwiyqzwxB/zhdtsNZ3iFnAnSyCPeRprhL+o5WvqD9GOlq/Qs5fEv5s8ro+fUxdeS
+	 kJgB9hkXBPHZkBjRe5Py/kvd1iySIUKepDHuRKQKmpkI0MhbzCU2zzFgfJBm1dvPSf
+	 Nn2N7nWtweS7wSzcQHuhRii/WdCgNJ2zJD3R+gBwkUE2MI4GkhMZvlXiTWNCypSOm5
+	 fjhDMJQutE5HcFUInqbzGoPHyycYWQjf8XjS+x4fNNyJhxcYVlVnYuRBgkfDe6QfMJ
+	 xfywAYnljQ8CA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] regulator: pfuze100: add set_suspend_disable for
- LDO ops
+Subject: Re: [PATCH v2 1/3] regulator: core: use system_freezable_wq for
+ init complete work
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Joy Zou" <joy.zou@oss.nxp.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260731-b4-regulator-pf01-v2-2-a406c8737fdb@oss.nxp.com>
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260731-b4-regulator-pf01-v2-1-a406c8737fdb@oss.nxp.com>
 References: <20260731-b4-regulator-pf01-v2-0-a406c8737fdb@oss.nxp.com>
- <20260731-b4-regulator-pf01-v2-2-a406c8737fdb@oss.nxp.com>
+ <20260731-b4-regulator-pf01-v2-1-a406c8737fdb@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 10:30:18 +0000
-Message-Id: <20260731103018.ABB581F00A3A@smtp.kernel.org>
+Date: Fri, 31 Jul 2026 10:30:59 +0000
+Message-Id: <20260731103059.B0C871F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] The callback `pfuze100_ldo_set_suspend_disable` does not explici=
-tly clear the Low Power mode bit (`VGENxLPWR`), relying on the fragile assu=
-mption that the bootloader left it at its reset value of 0. If it is 1, the=
- LDO enters low-power mode instead of powering off.
+
+Pre-existing issues:
+- [High] regulator_unregister() uses flush_work() on a delayed_work, failin=
+g to cancel pending timers and leading to Use-After-Free.
+- [High] Delayed work 'oc_work' is never canceled on unbind in mt6363-regul=
+ator, risking timer list corruption or Use-After-Free.
+- [High] Delayed works 'sc_recovery_work' and 'ocp_recovery_work' are never=
+ canceled on unbind in qcom-labibb-regulator.
 --
 
---- Patch [2]: [PATCH v2 2/3] regulator: pfuze100: add set_suspend_disable =
-for LDO ops ---
-commit b5ef15eff59cfdbe79ee9305f34ea04f79252ea1
+--- Patch [1]: [PATCH v2 1/3] regulator: core: use system_freezable_wq for =
+init complete work ---
+commit 7f543933219647c14311f3aa93aefaa15b1b5acf
 Author: Joy Zou <joy.zou@oss.nxp.com>
 
-regulator: pfuze100: add set_suspend_disable for LDO ops
+regulator: core: use system_freezable_wq for init complete work
 
-This commit adds a set_suspend_disable callback to pfuze100_ldo_regulator_o=
-ps.
-This supports the regulator-off-in-suspend DTS property for the VGEN LDO
-regulators, allowing unused LDO regulators to be properly disabled during
-system suspend.
+This patch fixes a race condition between the delayed regulator init
+completion work and system suspend. By switching from system_wq to
+system_freezable_wq, the init work is now frozen during suspend,
+preventing it from running when the I2C adapter is already suspended.
 
-> diff --git a/drivers/regulator/pfuze100-regulator.c b/drivers/regulator/p=
-fuze100-regulator.c
-> index 7d56c22b5e400..d3a0e25055248 100644
-> --- a/drivers/regulator/pfuze100-regulator.c
-> +++ b/drivers/regulator/pfuze100-regulator.c
-
+> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+> index 2e61606fc1d05..6a4008f387b5e 100644
+> --- a/drivers/regulator/core.c
+> +++ b/drivers/regulator/core.c
 [ ... ]
-
-> @@ -158,6 +158,25 @@ static int pfuze100_set_ramp_delay(struct regulator_=
-dev *rdev, int ramp_delay)
->  	return ret;
->  }
+> @@ -6899,8 +6900,9 @@ static int __init regulator_init_complete(void)
+>  	 * we'd only do this on systems that need it, and a kernel
+>  	 * command line option might be useful.
+>  	 */
+> -	schedule_delayed_work(&regulator_init_complete_work,
+> -			      msecs_to_jiffies(30000));
+> +	queue_delayed_work(system_freezable_wq,
+> +			   &regulator_init_complete_work,
+> +			   msecs_to_jiffies(30000));
 > =20
-> +static int pfuze100_ldo_set_suspend_disable(struct regulator_dev *rdev)
-> +{
-> +	struct pfuze_chip *pfuze100 =3D rdev_get_drvdata(rdev);
-> +	int id =3D rdev_get_id(rdev);
-> +	struct pfuze_regulator *desc =3D &pfuze100->regulator_descs[id];
-> +
-> +	/*
-> +	 * Set the standby bit so the LDO output is turned off when the PMIC
-> +	 * receives a STANDBY event, using the per-regulator stby_reg/stby_mask
-> +	 * that describe the standby control for each LDO.
-> +	 *
-> +	 * The stby_mask only covers the VGENxSTBY bit. The VGENxLPWR stays at
-> +	 * its reset value of 0, so the LDO is switched off rather than put
-> +	 * into low-power mode.
-> +	 */
-> +	return regmap_update_bits(pfuze100->regmap, desc->stby_reg,
-> +				  desc->stby_mask, desc->stby_mask);
+>  	return 0;
+>  }
 
-[Severity: Medium]
-Will this sequence reliably turn off the regulator if the bootloader has
-previously set the VGENxLPWR bit to 1?
+[Severity: High]
+This isn't a bug introduced by this patch, but while reviewing the use of
+workqueues and timers in the regulator subsystem, I noticed that
+regulator_unregister() uses flush_work() on a delayed_work instead of
+cancel_delayed_work_sync():
 
-Since this only updates the VGENxSTBY bit defined in stby_mask, it relies on
-the VGENxLPWR bit remaining at its reset value of 0.
+drivers/regulator/core.c:regulator_unregister() {
+...
+	if (rdev->supply) {
+		regulator_unregister_notifier(rdev->supply,
+					      &rdev->supply_fwd_nb);
 
-If the bootloader modified this bit, does the LDO enter low-power mode
-instead of completely powering off during system suspend?
+		while (rdev->use_count--)
+			regulator_disable(rdev->supply);
+		regulator_put(rdev->supply);
+	}
 
-Could the VGENxLPWR bit be explicitly cleared here to guarantee the regulat=
-or
-turns off, similar to how it is handled in pfuze_power_off_prepare()?
+	flush_work(&rdev->disable_work.work);
+...
+}
 
-> +}
-> +
->  static const struct regulator_ops pfuze100_ldo_regulator_ops =3D {
->  	.enable =3D regulator_enable_regmap,
->  	.disable =3D regulator_disable_regmap,
+Because flush_work() returns immediately if the delayed_work timer is
+pending but not yet queued on a workqueue, this fails to cancel the pending
+timer.
+
+When the timer eventually expires, it dereferences the freed rdev memory.
+
+Can this lead to a use-after-free during hardware removal or module unloadi=
+ng?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but I also noticed missing
+teardown for delayed work in the mt6363-regulator driver:
+
+drivers/regulator/mt6363-regulator.c:mt6363_regulator_probe() {
+...
+		config.driver_data =3D info;
+		INIT_DELAYED_WORK(&info->oc_work, mt6363_oc_irq_enable_work);
+
+		rdev =3D devm_regulator_register(dev, &info->desc, &config);
+...
+}
+
+The delayed work 'oc_work' is initialized on a static array but is never
+canceled on unbind.
+
+If an overcurrent interrupt fires and schedules oc_work, and the device is
+unbound before the timer expires, the timer remains pending.
+
+If unbound and re-bound quickly, could the subsequent INIT_DELAYED_WORK()
+overwrite the active timer's list node and corrupt the timer tree?
+
+Or, if the module is unloaded, could the timer fire and execute code in
+unmapped memory, causing a use-after-free?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but there is a similar missing
+teardown issue in the qcom-labibb-regulator driver:
+
+drivers/regulator/qcom-labibb-regulator.c:qcom_labibb_regulator_probe() {
+...
+		INIT_DELAYED_WORK(&vreg->sc_recovery_work,
+				  qcom_labibb_sc_recovery_worker);
+
+		if (vreg->ocp_irq > 0)
+			INIT_DELAYED_WORK(&vreg->ocp_recovery_work,
+					  qcom_labibb_ocp_recovery_worker);
+...
+}
+
+The delayed works 'sc_recovery_work' and 'ocp_recovery_work' point to a
+devm-allocated structure.
+
+Since there is no devm action or explicit teardown to cancel these delayed
+works on unbind, devres will automatically free the vreg structure.
+
+If the device unbinds while these timers are active, will the timers expire
+and dereference the freed vreg pointer, causing a use-after-free?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731-b4-regulat=
-or-pf01-v2-0-a406c8737fdb@oss.nxp.com?part=3D2
+or-pf01-v2-0-a406c8737fdb@oss.nxp.com?part=3D1
