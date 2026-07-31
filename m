@@ -1,144 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1FB380FF1;
-	Fri, 31 Jul 2026 22:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8A33E0245;
+	Fri, 31 Jul 2026 23:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785538772; cv=none; b=BzLBh9gheqnOrtE8gplGiVYBSgDTSGLqHj28+2cGPTpxLfWSHYjtVYqjPtCJ9ZwD0ghkt/TJEGgMits7UXJuXQyIpsmIaiYBzUfTlj6Gt0DUSDnDdBDyPrXpbWfRO6bZ3f8497+spElQofPv3YIrVDnYz6Tc0JeD1UE0VJtNizQ=
+	t=1785540052; cv=none; b=GUUj25FvOjbkzMu6MpoIVSSJUCk9WQ2dY5eoiqe9MAu2IHmJ8Gq0JFhQ4ptgj5DmJx5oya7r7G3KXVMBMWrYBjar3OAfOLCgPDCUdg6zp/5XCMeQXzPDGlvAAmF9qBEs7MmXLYU5yCPQK7JhMCnYfn8vo5k3Igz1+DuUOODqP2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785538772; c=relaxed/simple;
-	bh=9YYJPQbrlMR9JjIk963U+j7eb4iwmaVP4OuLMavYfUo=;
+	s=arc-20240116; t=1785540052; c=relaxed/simple;
+	bh=U/9Yv45n+yTl+HXiF4bKi1PnabpimsQQpbyopaFT01Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cEaqHHl0VxGqZiUqr4iLh29wFfcmq/4zBnCEho/wn6VIEiR4rrq2MAtZT2uE/DYSRi56kh6iJBGtnOmmB5YJGcjvWKBR7dGDIq5vqW4vAmGE2p1yNM/vxQ9RR2N+qIBhKJSoSm5//X96ua/hajN9ls0YPS/Ehwa3tf48QLjyNrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS9G3Tec; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=NyLxVlblne9ZpKN3L/wUXC+qDLkk9OBEfBhZ+8vXsDVhE5xzKbDMTnknzoLbuHm35U58jkJkGTpyW0Jts2rj2NmsbMYf14yK5da3dRD7e0aIPP4WNH+hot1XGXiOsE0RBgNDZbxWWHX2nYVJbImFkQ59p0K3OwmTjm9pTMjJsPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=g5+AwHmF; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bS9G3Tec"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72EA1F00AC4;
-	Fri, 31 Jul 2026 22:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785538770;
-	bh=MfyPXuzHFrgeP1BY9ER7yd6RDg+vnAlA5a1UueZqk9w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bS9G3Tec/7Iy9FTjR8vc35fepxYxeZolPIHJV02pj2ppUGeoTRKcFKKGhRbqiSXew
-	 HsOvWKZBgUpMdQ/eyCcedegXjjYiRJwoWtzh61y7pDRek2U2DCufuxMLjYuCaDsRD/
-	 BPreSUDR6nrs8I/HbLH1ojemW4lQ3rlq1E/EpeW3aylLWZ/blntGAjantnwPuabuGd
-	 GnBywAxhFeSOEeLz0MQySmdvT6qj4wfTxvDMR3vjK7GAyVSDUjaVtaKu6j+txfsZTq
-	 EXoV9Rp/xNnSavV7kTsyHEVeIOUyVSX6W5j+3+zd5YL0q3iFt3WaFGvMJk/gFCOxNK
-	 sWLwJX8xX0c0w==
-Date: Fri, 31 Jul 2026 17:59:30 -0500
-From: Rob Herring <robh@kernel.org>
-To: shengjiu.wang@oss.nxp.com
-Cc: lgirdwood@gmail.com, broonie@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
-	tiwai@suse.com, linuxppc-dev@lists.ozlabs.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 1/4] dt-bindings: sound: fsl,imx-asrc: update port
- binding to support multiple pairs
-Message-ID: <20260731225930.GA2098187-robh@kernel.org>
-References: <20260720095450.1618747-1-shengjiu.wang@oss.nxp.com>
- <20260720095450.1618747-2-shengjiu.wang@oss.nxp.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="g5+AwHmF"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F1F9040E00B8;
+	Fri, 31 Jul 2026 23:20:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sJzj9oJgD8z3; Fri, 31 Jul 2026 23:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785540032; bh=nE/loPIfIGHulK7EYK3oGTaS2BuMx1WLwvyaaTRjU+A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g5+AwHmFTIgT2cGV3dieb9WNSyV1UY9mk6jR3bOhJxbPK023qqngYRoaLQCDgO34g
+	 yYTCY92RLYxLfShKanIwbw7UjaJyrqkk2wfj2d7ztnJvjhhUegDR290/PitBRCCN+K
+	 UcbE0IaheG1pC0ZpUVgbA4Von0sj2JB2TsMUV1UroZAZEPTgQjLdouu4ExcXyfe6FW
+	 2v/eacsoq4qMQouvD2iFVVWSYl4ZlNbTf+sFkvpbz6z+9aoHOHPfXzF5/qRoBo3cgv
+	 Kvzd6PWLz1jAp+ImYoRFGfh1xhrNy1Fg3WBOpnu7BFHdy5NhgJ6SSA+QnXpO6rhokw
+	 m91O6ud4xI+td6EHDfvcqADdVlsFP5hEmFVUP8h/PO20aTD6/z/F3lwauo1U2aMRW/
+	 19OHb/7b7JlWMzBmG922OelsISJSPRX4JbH4feXuM4OiQInEWN0XUksYXq4f0jRjAJ
+	 TNCu7FmT54wXt+xPtPscyBTJMLVQeUcrHMnLaS/Cj+CUHyL9NkgLtHKe1E6l/IWJHG
+	 MKQ8dusFzuFVQsfybTxPVytgOAEqHmr9rvwQjPq0n1yd/WvBkueJaWaAloCm3DWYC5
+	 zmWzqzgQ1HqAZweYC4dSHHGQj1td6OEbkq4ZPqy3pUVgrwhF3JY3KZ+7eTh8m+QJIq
+	 kc/6Md5KSkvDUqslXEtH2IuM=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5284240E0140;
+	Fri, 31 Jul 2026 23:20:19 +0000 (UTC)
+Date: Fri, 31 Jul 2026 16:20:15 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Rosen Penev <rosenp@gmail.com>, linux-edac@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>, Tony Luck <tony.luck@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	"open list:EDAC-FSL_DDR" <imx@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Subject: Re: [PATCH] EDAC: fsl_ddr: use devm_platform_ioremap_resource()
+Message-ID: <20260731232015.GDam0trw0zPrA7pw_3@fat_crate.local>
+References: <20260714234609.902367-1-rosenp@gmail.com>
+ <alhXciS9G_bGB2re@SMW015318>
+ <20260719155822.GAalz0Hj3XT97KkPOk@fat_crate.local>
+ <CAKxU2N-vMNR+ES2YYuJh+6XASmZ04cnFodb4kP4zRBW0mbEKaw@mail.gmail.com>
+ <20260728224059.GAamkv-4LJPspOw5ZV@fat_crate.local>
+ <amubjArdXOgTzNCX@SMW015318>
+ <20260731000407.GIamvmdwHRq_PSgyvc@fat_crate.local>
+ <amy45S6tBC4CjdWa@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260720095450.1618747-2-shengjiu.wang@oss.nxp.com>
+In-Reply-To: <amy45S6tBC4CjdWa@SMW015318>
 
-On Mon, Jul 20, 2026 at 05:54:47PM +0800, shengjiu.wang@oss.nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+On Fri, Jul 31, 2026 at 10:01:57AM -0500, Frank Li wrote:
+> There are too many pre-existing issues at recent review, we are trying to
+> clean up these, but it takes time. I am not sure this driver is in the front
+> of queue.
 > 
-> The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
-> The existing binding exposed only a single generic audio-graph port,
-> which cannot represent the individual pair endpoints.
-> 
-> Add a ports container that enumerates three named sub-ports:
->   port@0 -- pair A
->   port@1 -- pair B
->   port@2 -- pair C
-> 
-> Each sub-port references audio-graph-port.yaml as before.
-> 
-> For backwards compatibility, keep the old single port property but mark
-> it deprecated. A schema constraint (not: required: [port, ports]) ensures
-> that both forms cannot be used at the same time. Update the examples to
-> show both the new ports form and the deprecated port form.
-> 
-> No existing upstream DTS file for fsl,imx-asrc uses the previously
-> documented single 'port' node, so this change does not break any
-> in-tree device tree.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  .../bindings/sound/fsl,imx-asrc.yaml          | 78 +++++++++++++++++++
->  1 file changed, 78 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> index 608defc93c1e..18d252722aa8 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> @@ -78,9 +78,29 @@ properties:
->    power-domains:
->      maxItems: 1
->  
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +    properties:
-> +      port@0:
-> +        $ref: audio-graph-port.yaml#
-> +        unevaluatedProperties: false
-> +        description: port for pair A
-> +
-> +      port@1:
-> +        $ref: audio-graph-port.yaml#
-> +        unevaluatedProperties: false
-> +        description: port for pair B
-> +
-> +      port@2:
-> +        $ref: audio-graph-port.yaml#
-> +        unevaluatedProperties: false
-> +        description: port for pair C
-> +
->    port:
->      $ref: audio-graph-port.yaml#
->      unevaluatedProperties: false
-> +    deprecated: true
-> +    description: deprecated, use ports instead
->  
->    fsl,asrc-rate:
->      $ref: /schemas/types.yaml#/definitions/uint32
-> @@ -125,6 +145,10 @@ required:
->    - fsl,asrc-width
->  
->  allOf:
-> +  - not:
-> +      required:
-> +        - port
-> +        - ports
->    - $ref: dai-common.yaml#
->    - if:
->        properties:
-> @@ -188,3 +212,57 @@ examples:
->              };
->         };
->      };
-> +
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/clock/imx6qdl-clock.h>
-> +    asrc1: asrc@2034000 {
+> But I help will review if I see these patches.
 
-Drop unused label.
+Right, I doubt that anyone would jump at fixing those but we'll see. And yes,
+I'd appreciate review and testing.
 
-Presumably the existing example uses the deprecated 'port'. If so, just 
-modify it to use ports and drop the deprecated part.
+As to fixing those - I'll simply stop taking any new features to the driver
+until issues are fixed or addressed or commented on and hopefully, with a team
+effort, we'll get them sorted out.
 
-Rob
+:-)
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
