@@ -1,120 +1,100 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D51329D267
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 00:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785458690; cv=pass; b=ej2jjHZBFtWxN3IyxRLFhR2w/CgaB/MCl41/TqkLj9ZYsu1Vnq+YzXBkgnBnNnXvvN7Sv3TRaRAp7QA8NCTn1shGToifTRhBdXxfcs6MUAbalDOZDWtq3nDXXn3l9Vz0wLq3tX045gc7MNFYVcb4+hclMwQCRZ2ssP4UIuKRBXs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785458690; c=relaxed/simple;
-	bh=RmSPxtW+2H8QmEj+sRUMEzP5pT+izkC/Fv7T35kBDf4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GhrxUUche2dzM2q5Bt2rBdd8O2vTaM89uwf0s2orIly6faf2MeqG616IzTkI/Cp+cs9cu9fIitgbrHurD1EzPu7ljTlxW5FMpBhS7IsMMv2/BZE3B8/ac3RiKyrx6+6+cmYjWhohJaEisW6AF6JUzBNYB6lZ8LvnfFCjz8rmK/s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cbnLk6+B; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2CD175A64
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 01:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785460894; cv=none; b=EbAN/5vym+vCEjtxiLXCpPyWtKa2g+RB6ymwiy8zpl7Egt5ZZNMCFLNzcbaf/gRJRP0VP3Ke43ylwnX+wy+DJECV/1XLwSTl21Zx07+zFnvCY6Yiq/zlGeCpWg+W/pP+4ToPlNOBMZ/gMMeFr0Jpzv2XeVMrzOpt96bFQr8Jres=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785460894; c=relaxed/simple;
+	bh=+4rmNqUCv5cZ7pndOhXrQMHAQ4UxfWW+wlQP/2xHpmA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=StjcfHBya2bUZSSMUOdbYIb/wjhaVuPeCF0WHON8e8RaZBfFrSzshNJ7KcNaNrTnMvWsnOMMUT2jCw9GgA0utfDyyypJuKOtkCC/VyqVrCag/EpenT7NVWXF9JiihnNV7zJ2ADrENGO74yPhG1kKYGmmmZu6HCh9hZWVrBWXlm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gi2wK84m; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cbnLk6+B"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-69fc6a09b5aso722738a12.3
-        for <imx@lists.linux.dev>; Thu, 30 Jul 2026 17:44:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785458686; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bBylnmaqKqk5RcoHUHDgnAVAVc2X3Mza2zmtSN/gELfpUi+GHz6m+hvBbWblL0MNdy
-         QYLETWbiRz4AA0uxezSke6SaF7qmMVXasrx4yWFTHW+TSzqMENqGCV8U0ySu0YAe4/GP
-         i7n0aE9/bAFgE/ABwqNlqcbb7YOU0J6VQJ4qQxgWyx5jGOzwAzWdAcRX/nq0u/CYSWvS
-         kniEkES9vJU4yTmX6jfHA6+y8S9pQxq4uct1tLeR8w6tKji+y3BHxx9aboJQXZS1vSrV
-         hGlen2BRAalzKWeigECKCt9Xkbtbk7bdlhhtn/veyO6jWCw9nEc+ir3tCdjrMUT5/ErO
-         6Kog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hg0QOEkG4vYtInjORlmzxyaD1qxCibtY4OrHLFhf3HE=;
-        fh=ypqXhmK/XGat5Cj9lZPPX/+V6G1AjhJz7Mihl06ogv8=;
-        b=MNGcKgDlXqEfbog+g8dBg90sKaRW8hFZZM4ERkHrfNAsujAXjzsWUDmF2SQ/BqdYJ4
-         TpLP6L67cm0cLgoFNPgl/wGeqECkoc7CajBQn7waD4snLfYr3OsTFrvCD1R4r5luNgBC
-         qgZTnX8Jy9PA6CsGedx7MckW33wJd12z08Yl9jAs9zpPjU3UkDom90xVIrWzAh6LJaDI
-         hXXrMfnU30f09vB33fxZlPnCb2JipKLrmbVRLGD/qLmUhQ9YBgda1gsIiCJ+NUFNlbtJ
-         X7EHAUjgGX7NHfrvwbL8ke+52MuzcuNiMa9dQJj9Bs5cNrW9M3gUP0BOohMWHnRlHBJM
-         R21g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gi2wK84m"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso416642a91.0
+        for <imx@lists.linux.dev>; Thu, 30 Jul 2026 18:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785458686; x=1786063486; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hg0QOEkG4vYtInjORlmzxyaD1qxCibtY4OrHLFhf3HE=;
-        b=cbnLk6+BgGcJvaQDavHY4DiK/HpAmeMTepXq9cTaCLBI3RlX9GRLhlc+kM+OgFVh/K
-         AUNb4SsW4Vg7JJ6HBm9tglLbmou1TE+3HYu7eMq4ps2+zN7I8jdZYeCKk9iiommZOeES
-         fz1Hgv55Pq83lka/CrXkQsds3Ymp9dJg+ed8WNHAHoek060DytU2zhTXrp0eZbBBOlGB
-         7I6zZMRKF7WaWdI1DAsYMK9zqo5kINcwwycJG0AlbfOrX3YTZ8+AFBbWLZaRAel56lDs
-         kHcG+Prbt2k14JWifULhV1BPjm1acPKP8uOAx8pnMZ1AxL0NxrZMzjFSU9MlBCxVwbnI
-         eTMA==
+        d=gmail.com; s=20251104; t=1785460892; x=1786065692; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M0IyVD+1y/522lnq/7Lp1HsNfM3GsCs6wBHZ3/ZAaR0=;
+        b=Gi2wK84mmh7CpHuAO7Q5dHUrQxqdiCq1sBAU8NjmpDZ2ZoGXUCG8Qh5ucoobzC13ui
+         sX8jK8LV7TAUqopC7HgToA2/KSm51OpZPW8r2EsQ1LyuMvqN+bMZraRgBVcOcXJ2uOU8
+         gke7Sm5q/bVyTH/5R1Xoms0wg5PL5cn9r9LfZiXGM3sr1E8nGfzLSNsZPf2hVMGWvDms
+         yG8jlVDkVGK8mZwTN9uvgJvhBBSYklvCo2HNaqkIycIQD8rEbvOqowei/yHArMdRDZbm
+         bKWCow3eyyQMNaA7noUjvCWhltJRT+oh0xd6QZU6Krd8Q0zl0xaK+/v93iyD2ZN+XxQs
+         nPFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785458686; x=1786063486;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hg0QOEkG4vYtInjORlmzxyaD1qxCibtY4OrHLFhf3HE=;
-        b=qo734QP6kSswwmwjtbtHBNOFSUY4y+6IEoB1ewpVbtjnol+WelGHY/K4rLhd/vbtFr
-         YGYN7ae5px1HlCt9UWnNGe3ppfO3lC4yuVX95ADhVFsMQtTEx3AxH74fzMr90sunMcDb
-         j5rLmJKsiDIIiuj3yZ4bkXANnuC4r61/zmDYfk50bRBJub85xex+D6/Yz9kg7BbASefG
-         aSeETER5oShMpf3sVqpuY0BLNrjbJJAKAK+GGJHZcPqrGYC2IQvEM2vLkj7TASV/xGNS
-         oOz7gRNJJztfemFxmubMGbZwJRzUB3M8mNXQPNNoWZtO3t8EIqY0qGgywbFI++ZK0kj6
-         n5ug==
-X-Forwarded-Encrypted: i=1; AHgh+RrF8kanMT81FvgBO8lHHpkQZOyimBQJw8dkSOZkzekltGLY6ojtKy1q9J0Ua0P8uK7idAM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwX1JkuqJEP1AaSh95y/AP3Mi0rMPRhOsHrOxi+LMlB3e3MfREM
-	qfSaOO6uc9eTS0TQE20ryZ6cFLoMg6cZ4D6hEmrSGxoicoAQdokMyqWJQm1t6RdDugcS2UacU0J
-	aF3EX0qsi8GkuuXs+Fd2FvSgvYoKwQDamJJn/
-X-Gm-Gg: AR+sD10MHKkHcozDxeOVe7o9owv7F8za8tEzjIXeXLDERro70HyJZzWnVIkdRN5P4MJ
-	3bn2pPynkzUl5zM0/R8bmSy/q3mffuJW/iruvUONXEfT1akRw7Q4S6FbMMH2Ia68Ulrdc7+Yq7F
-	6nV2L/+Dl+15P/2TihxYfsXxMSoBngiQlB9kqH18aoHmRXG27j5zpmHCs5coF6m+xFD412e1qd9
-	Y44WYByRyqbAHiRnBn1Ybbx4W010/jH53+tJIc7MXZtp3Cp6Zy6WNn7lVpDYX25tmbXeu9cFeDX
-	G5pmWZsoAFbtwm4VjOmieCenX9RGCaQvsdLBIqHgQHmI+xEvkwFVCGQNBfgFn2TE6gvnuK8GIJN
-	n2bDoAhFri5jz3PhdhdSxPIB7ETkJhEjNb96+IwHk3dkQhVX2GvPUOsHoadbcoQ1NrMEfYFB8uz
-	LDHXBkShxJNEcTmn4Kxs/mRlrwNQnRF0Fnn//l/xyU3+RzzzSqqYDbzjg=
-X-Received: by 2002:a05:6402:2423:b0:6a0:923a:cfe7 with SMTP id
- 4fb4d7f45d1cf-6a098d2167dmr6769a12.37.1785458685636; Thu, 30 Jul 2026
- 17:44:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785460892; x=1786065692;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M0IyVD+1y/522lnq/7Lp1HsNfM3GsCs6wBHZ3/ZAaR0=;
+        b=Du6o415BsZQ9H8355ELlf/FaiEs06LZyvKne+V8icbiX6xUwUaZ61GjKckOb42KJma
+         pdGKjV35L/OCsy/WgvseoAx3lmd4PCCe5zcFZ9fV/ALt5Ycsu9gu1QaHazoWL/KIwlOG
+         vEETEKl4fL/49pZ397V4oWJVacyQIocSqQeAPFFCxd66kpV/1nzs1aF00+VbFh/j/Pqo
+         kSm+HN/8sd54eazJgMoQAYoZUzQ4OqquOamXRaACF0C5aslika9VL1nETiYUSEhYeTlh
+         MLJS2b73OTBWn3k0ptG+nmiRq7d7MVMo9xYmfqLb+ilbMi/biASeDEL3qua+ZLF8wlDA
+         zCfA==
+X-Forwarded-Encrypted: i=1; AHgh+RpcbhLrIZLBhSJ0vlT/bVViH31rKLwPJUQ/4Izj0UJDEDH1kS9R7ceTLp558WwnfSAeO7Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxl2tu6maCMRaG1SW4TrFEMdOejJ7uS/UBd1C7pKji8quuIGOE5
+	SgEthHAoMqtOzjSPT95OTtjbwp6G0+izza3OHGCP6jR1xDDHFS/ZETUZ
+X-Gm-Gg: AR+sD13Gcysi3c9iR5o4ckmDvToJAWn+AB7TmhqA4sEQshZHGreZo21hZjhBZr7gAcD
+	uo+YVHttEEXS5TrTKcXgv6B/+/PWKxkxY8+p2P6uWxbJCgZ0JGPgJKGeWvZNuOsUUDui6BceX0n
+	ODrP7N2B77jCSEPnQYNJT61kfoOCkMzA9Ez6GpObyTo8dyf+ZaDD89yfBXPiDKNNfRZnd8CK9yW
+	VgLK8BXqi6TBLRNvdUju8QUXpEgpJVQVV3retTeR/uCrb6ZzAMNMeZ1tdygPMUvmPgaL6nByGcl
+	siC5iLQ5Xx8f10lt9q+4KZWuRLlymg1V3XwX8/e/5X7rCx61qxxVA3viCVKUSh1AdYkmwggNkvh
+	v15vtWCQ8jtT7RB11i0HuE/PjXaxpeEvjnBFrBciSXb+UcyM4QPeNblfRf7e1sRS+jKbBd4HKkC
+	VbxHf+mKjvYuLxE3qcjwLO27HVJ+t9prBK47T+THty1qavB0dyeDGoJBvBKUoB7RgSQT9aanV24
+	yNax1u3G4yPTRZy3BqJeCpeuNxNwGL/9aFoyzsB3E0ymHtszXijbzW/24HCNFfQ3ABYbjztNild
+	V8gTS5eECg2qErqdwCvBkhfXAjhX3+Fc63/vXg==
+X-Received: by 2002:a17:90b:5188:b0:387:e0db:3d8d with SMTP id 98e67ed59e1d1-38fb14917afmr92506a91.40.1785460892423;
+        Thu, 30 Jul 2026 18:21:32 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e35])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38facf50124sm198867a91.3.2026.07.30.18.21.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 18:21:31 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-edac@vger.kernel.org
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	York Sun <york.sun@nxp.com>,
+	imx@lists.linux.dev (open list:EDAC-FSL_DDR),
+	linux-kernel@vger.kernel.org (open list),
+	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:Keyword:\b(?i:clang|llvm)\b)
+Subject: [PATCHv2 0/3] EDAC/fsl_ddr: some cleanups
+Date: Thu, 30 Jul 2026 18:21:27 -0700
+Message-ID: <20260731012130.1212640-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260729012320.616174-1-rosenp@gmail.com> <amucohB5GoaocIC4@SMW015318>
- <CAKxU2N9_wJt3qQ4rmGX89dmSpMKa-7zOuzDwrnxYbXrBNZ1nQg@mail.gmail.com> <20260731003650.GLamvuIgDKrojvA7Yr@fat_crate.local>
-In-Reply-To: <20260731003650.GLamvuIgDKrojvA7Yr@fat_crate.local>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Thu, 30 Jul 2026 17:44:34 -0700
-X-Gm-Features: AUfX_mxgQSCcsnyTFzeRTEP6B69fhRmRVOHrIZ4lirPD8ZJQL1uhaxN7k2m99dQ
-Message-ID: <CAKxU2N-GnnSqTPPSYwpXiNRNdP+qdJWf+ueaNQQWNKvXWag3wQ@mail.gmail.com>
-Subject: Re: [PATCH] EDAC/fsl_ddr: use non devm for request_irq()
-To: Borislav Petkov <bp@alien8.de>
-Cc: Frank Li <Frank.li@oss.nxp.com>, linux-edac@vger.kernel.org, 
-	Frank Li <Frank.Li@nxp.com>, Tony Luck <tony.luck@intel.com>, 
-	"open list:EDAC-FSL_DDR" <imx@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 30, 2026 at 5:37=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrot=
-e:
->
-> On Thu, Jul 30, 2026 at 05:16:11PM -0700, Rosen Penev wrote:
-> > > here already disable hardware irq. Just call
-> > > synchronize_irq() to make sure pending irq handled.
-> > AI disagrees with this suggestion:
->
-> How about you try to parse what AI says and verify it yourself?
-Makes sense to me.
+First one is a cleanup for devm_platform_ioremap_resource() and some bugs.
 
-The alternative is to use devm_add_action_or_reset for edac_mc_free.
-I'd rather not do that.
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+Others are issues flagged by sashiko.
+
+Rosen Penev (3):
+  EDAC/fsl_ddr: use devm_platform_ioremap_resource()
+  EDAC/fsl_ddr: use non devm for request_irq()
+  EDAC/fsl_ddr: restore MC error registers on probe failure
+
+ drivers/edac/fsl_ddr_edac.c | 56 ++++++++++++-------------------------
+ 1 file changed, 18 insertions(+), 38 deletions(-)
+
+-- 
+2.55.0
+
