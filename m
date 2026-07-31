@@ -1,221 +1,243 @@
 Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5419B446846
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 17:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BE244C4F8
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 17:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517893; cv=pass; b=JuyqnnQ4K2eiI6LwUIW321ei4M83BJMNXZSunEUDhohIrJmRCal5fV48o9P3l4f4OEqx9iL+LNgz/ydFf4gszpIuBdm8+8PRhjiQlENhReryW1J4BKf5Yvt7BbtnoC5Ejue3ipMXUnSRH9LrJ/vi8gUoXGlDZa0YwgGW4LrZjBE=
+	t=1785518083; cv=pass; b=DHKUTb7disxLjdStqS4qOMs92Z9dR+h1cW/0FpgtossDEWW8822z4MUfDPEDIVgo3Qp/JJhylkmJ2WZn0kJ10YCyUpF97vPap+oWXrLl5/2uBNn7utcxHsOc7epcItBj4r5fo6h9E3fnUJVbkcfgzw1YB3BUiiA5d7AxnBEsaiU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517893; c=relaxed/simple;
-	bh=Uhh8q41hmOlByjiX1nPXF362Jh+d49ZbfzvIl+Q5Sug=;
+	s=arc-20240116; t=1785518083; c=relaxed/simple;
+	bh=QesLJjfO+CQSI1uPEdZ3w/rry6iX1InymxI+UL8wQKs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BRNAWbWzRMkmf4I4y7qEfjae+g0AstFnWEa6HlmLPtt+yR8XyKa1btNb2GejesWWwBXnuWcxY9XJJ4DFQ6o3Bl3yqFafsVwH4EDeo91Z38IAAI+rSnnE9IoNNsLn6Tw3dG0fA8NsLH/dT5WXTG5o9MkLUj8mWUGRe16upObwlYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OtpSMuDD; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=UQ8joaWg26LVl2x9gR38Qu9/BKkw1x0u2TFdjJCp0TV133H2Ty5KBXJ6o3mnR2QaPHFUtfxc1wWVbcr2bwOGDn8rurhOxMtfByW4pxgvZgeDIyd9FxG5VFOfhAOBJOalpI2uOlhe5jnLmdOb4uZ/OSQNv/R8jPejFiPXNAelo7s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LQ8lf7SM; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OtpSMuDD"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a063d211ebso1806545a12.3
-        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 10:11:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785517890; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQ8lf7SM"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a08a2b7e5bso680138a12.1
+        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 10:14:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785518080; cv=none;
         d=google.com; s=arc-20260327;
-        b=nirmz5S6K8D5pUCOnVLqVsfM0CjCIYws9PKvKHCui9Hw19UlqiFC6OPPi4VURP6csu
-         Mjm00uwYockctOs8E0WaKp4SWa+39lyTur2l9sYsoHvbTDUrfl2YrTvnF497Q07RV3tB
-         DLN/7AlJvxrX9axi6Jmq/+YK6USSiOLucKeozN2SlKfrufZjzB3ccayA5tzTPajPyD69
-         1+UfEvzTo7hwDgqjS5bzf9y9UmttzaZHucwmlIG24B0U8fWGqBPbbmGXcJPBwfxjzft4
-         Epo29+jBSS8au+wCcJ+iHu1nbOmCMOeSCy7wRWVK2UAH1gQlQwqxtcWR8MIM1xYKQh8i
-         YQVQ==
+        b=bK7x/AKXBLC++xSZsvbHlgQ2KzHg+Z3OB3KRm0OFYqjc5XuEUEDxMHmI4AwYh1jDex
+         c/+pZLVlq4C5nefnltTZQcriVicJ9O42tE3ULoOPFq0phMQSdjL/u6Bw9+toFyq/7cq5
+         FOuouGgKY/PslstCnbKJyOZuOPqxIpbosNfj+WdhoWTBDi0EGU45r7Xz3lRtCD5wccTe
+         TdhOfTOdNkJdi98ncrTBAzrHQEr4YxWQn9StzKtP6TPcZ0wftZER/QAtaovNIa5Mv8Iz
+         5UjzUnnA8TTCN2WwZgbEDD/V7Gh2tJSrO7bqf4TZdH9iai39IKG9N5t7DOpLIaYf/vQK
+         GN3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tfzdRxKMzAqp/+9ZSx+vlyqKp24vqwGUERSU+Y5G+a0=;
-        fh=g3DYSSb6y8EzOA9iTQzgYqnUV2yG67DoVposxGaDeCE=;
-        b=WqVg2B060goyKdngX8KQMPyphVMYU5TmHJZDA3PpyPE2GV6sDyJrM+x3JRn+Xoe+4P
-         6WZpMN7AprdsZqu/FPYWtMSXCTq1tjWg35zuPdgW1MjBNKDsxovHOZNYqzWbKZVcxVL7
-         pVDj7/ctlxXlcx8XTvplpigXrh32EHMLZubHDRt+Y3cZFZrEensi8aswtFWqRaUbC5gv
-         IEzwM+bmC7XpMvw1CXYBNxAXy6bhcwvzGYtWKrrMwNrIPg/LydY79QDPq4aJnnAQ4/CN
-         kCFUxfoW3J12htWMs2WA9CoP+KpknF1eSblZigTEwuPD7o14op5Q08d8V+BbnwzhRK60
-         iqpg==;
+        bh=SHfwJhTJcZEKfM/V12t6FGxcs59B4/LW6Z/5dwS+YL8=;
+        fh=XVIFXcmoSOumSuhQrP+NlpsAiJD+LZlF5RxQjU49DPg=;
+        b=FotQBTAWTZP2X+SY83Yy0/d0/CqqX7H5prdM5CunEWXB9dfZLgzGFXfJ9SN9Gyl+Bz
+         JsxDDSon3qYa4NMtE58OkHysaMbH0Pt/hI3Lci2c8AHqIcKdaXddrGPTJctyzcpSNM9J
+         0o2pJ2a1oIr2+D9wcF7d4O0HSYE328aZwBmhRd58iJrDITe1ZeU+YqoYiywBCn5Igt3H
+         8vq4qKbK6BUDVq6IZhtaBz7ZG2fskvhgYpGafjuzHg1hg3QSo+HJXab9y+F1wTPZqQ8+
+         MlxrY091yyY1Pn6JMFAxIY2/CSCLW+MTyEnTrGYj2INg43xuIf4O1LFAzqYEtJ0z0tYn
+         t5TQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785517890; x=1786122690; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1785518080; x=1786122880; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tfzdRxKMzAqp/+9ZSx+vlyqKp24vqwGUERSU+Y5G+a0=;
-        b=OtpSMuDDjrzVWAbaAHn6Df0Lw8sJiR54gYbrm67EOccFO7sx/0T3uyROLldY9mhcTi
-         Y3/1yDmbdzRqeDUrNBjQxG7sYqDiKKaLnZcP47wOzyZeJjCUDhW1H0Px4O4+KAfu+cFZ
-         OYAA4HISNd2E6xh1FHoWTpBj9JIMQl1k4sK8/MkoterbTmuQekZki9lnjccD024k9qs7
-         vnyJMaPdhnsTJx87y0uJZmzbw8ndOAHs9y9BV3qgKqUE9ppjfo5ZTTgO2N3p8MA4mZYx
-         95YiAVAxV3I4ueZAZ7jvuIk3OcGbZEz+CYjXB+ONTP3zFRTfP3eXlfN2kzEVRLBWU22C
-         FKLw==
+        bh=SHfwJhTJcZEKfM/V12t6FGxcs59B4/LW6Z/5dwS+YL8=;
+        b=LQ8lf7SMoIeZD91Oez7N58UrD8JLKhs5V7YElaS16lryK04n2v360/W+BSkjI6cBSm
+         8FOTR/zQqGWP4xR+Q40cECeyjqmOuFAW7A2GqgixIT0yFLh78nocFo0JJa8E8lVn7bvX
+         7FIyf8XN+foplnCG/WtNOCjwJmEnQk7i7aDXGcQbLnixIMP4QZh3z/G8SHohVzznFS/+
+         ti57WryBlO2Ivfbj9H0nTrrx4K4nFisOMTfFJg2NTKfOixII+eq5qOC+C/rrtXiTzbs0
+         dyk3WFmmmxFFTQYSkm3aOfkbXLG/k/XYSPOYUK6hpzu06K2oseYK02qB/I8j29HkHp/I
+         HcdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785517890; x=1786122690;
+        d=1e100.net; s=20251104; t=1785518080; x=1786122880;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tfzdRxKMzAqp/+9ZSx+vlyqKp24vqwGUERSU+Y5G+a0=;
-        b=aoiJfdSIhXezdDU1pJ3qtQQndD+rwbMml2YpPkTqX6+lO0i437IqXKVkuhlcgiUVzz
-         k+pCe6h/Q7TJf+3PGW9Em98SqKwLJEiL6is29eJ9KxfhaoIawsgOObg/hAq3Z4Eq3H69
-         hlVMYiC3MsOvyJHCwq0Xq/jRcRvoyetMcBXuv0TBuReWchUFEuegp0BeJTSU9wmu66R2
-         wECVhuFC0ra+oSSpcyjeGehhXxotQoIbhJsH0n0NMIiyr66ps1+Km0q1l3rzArQh0FfU
-         A629BtuP2OYF4AXVr28Egi3bHwIagUXWAGoUJZtWwYUuCXog+lM8d8Iz5E4n+jA4iGub
-         FMCw==
-X-Forwarded-Encrypted: i=1; AHgh+RphwaidufErVNeZbyrcgVvpaYo8Tlj0FGk8WKJgVPlpm2BzjbnLNgaz5t96hWDmCWr8YWs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzmm16UhZtPxGFOIAdDex/XDF7qmUr9e++mH54oadsXm7MJ+2iX
-	7mDuB6COafR1Kau6xx10NiEivWlD0CE021axrLZW08kNAotN8NXAhCYTWXk/HwE32v3khiKizb7
-	ohPXQd0EG1Ta4Sxp9IrewjwWgZASORRVvMtfnGjue9A==
-X-Gm-Gg: AR+sD128y5ptmYxfE/zvje6OBOOEzObPgJw3hYgczTSLOVi/5XJQui5uOJeuzNsuufJ
-	t4qDns+MIXD2YzJFFiyCeVgTWjqeaw9+tzQp58TZsgjkjsHPnws+dGjpgU9rN/lVeNNinczoPX5
-	PLSsdbgGcTidgv+9pWi07Bdx+zchl7nb+4AaVlXyU6fgyi4fhWcvnEsgo1/CCIH53HEGEmb2vbi
-	j3fLLRp1UEXQusR918QDkkft3W6m3Yhc1IDawKoNbaIXRWVHU2lXBFWJ4UP3P5BYg2tP6OKoCqE
-	gftxMzbPDRy+voULLirjyfXlj3tpas2OiZoqpvihgipyQ+TTu3a7areCIeq9HOvf/iYbtHt7TiX
-	U8ta/NMfnfxNlNQ==
-X-Received: by 2002:a05:6402:449a:b0:697:de29:c802 with SMTP id
- 4fb4d7f45d1cf-6a0a7ccb364mr275774a12.18.1785517889487; Fri, 31 Jul 2026
- 10:11:29 -0700 (PDT)
+        bh=SHfwJhTJcZEKfM/V12t6FGxcs59B4/LW6Z/5dwS+YL8=;
+        b=ARSIXRLujXqHv0xePVQFyO6ffA2ZgsVRDfo5yUOWYX9FL9V+m5pRmUEbO31UQpWzZE
+         320OUo6xVqMg6NrNyx7b6H/9mbRmy0XLHocvIXqe6BCzLdC/T0SOKerO/HtMGoWDXz+4
+         EN0r1+Y4Rbg+PfsMsAfVZOZVQKoG6anmtBCnUVW5f27e1ErlxHMeb5CeX2Y2Hf3wfYEf
+         N2gzlT3ww0LzXOZUa/1+nXQvp/5nyLTforW1bxAHOyu9qC4bhjZkQMtcdRrlzjApNaCw
+         Ob5dMwxmioMYNJYUjlXt6JrFse6Y52qXAy63BIEOCVzadUNiPJsIFkf1XavWZPBWWtCO
+         BoxA==
+X-Forwarded-Encrypted: i=1; AHgh+RoqfFF8tmXlf2eHuXYkUzZbqD+GbW5ZdPYpqadOzsBIqR/h0PEvn5o2ZZ+qKI5ZEfw8vpA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YytCcYAgFb+AhOGG7Pf1Fwy7R1bUnuzX1907XJgcU22vAuFJStm
+	ySWlWLU41/vFtlm8tp078npQ/aZ5yH9T/d986z4VfJUi7jiWShRTM7529/fqV3U40Q79jW9M/m5
+	uNE5u3kQFiMXUH7MUWpUWiX/9AxRVWW4=
+X-Gm-Gg: AR+sD12iN6ANFSdmbBNoHyMihzNFFnOlOnNAm8IuQf7mZWSa3FJ3iS+KhS0uxVmyTel
+	WZLlzsvBL2REyiJidYFutSfHeIoaRSR2xyCfo1jK6Ge6W1GPVYSKpczw8DY0fmtfbbKhg7epyzB
+	0iCLlPSQSqYS6nuWTa6wTREeyZTdv53e4V/wsPuoEtn9MgLMOg0/yMtCsWut+FSAIZw8d5gOvIu
+	I11/ADy8p0kwoAq0mttYSlBYpuRn0kKU2lERxg9hVEgnHmnlps4Z1cJHhzTu/znncMaSd4VzNKE
+	pNglbym2VzBR9tQ6N5b4noQMFLS20RUm49hRnrugI8XmW91jOyCgoTh/zHoO9ybqydkcT73tCGv
+	TSahQNEpvRmxv5NBxh1dOI5ZC0vguk/DpMhLwbRjK8TtAt1j2rvZDHwY4Y5y+xmEezotJxiwzuk
+	bn5gd8HA6G5Bolzklv5ZWuKbk1e7mfsH9DGwS2JXUhOdUJK9KKlpUp/2F1k/LtO/4Dp7Iwg5It8
+	0qjSw==
+X-Received: by 2002:a05:6402:20c7:20b0:698:8857:9ff0 with SMTP id
+ 4fb4d7f45d1cf-6a09b1428f3mr1180287a12.16.1785518079567; Fri, 31 Jul 2026
+ 10:14:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260721204704.400781-1-shenwei.wang@oss.nxp.com>
-In-Reply-To: <20260721204704.400781-1-shenwei.wang@oss.nxp.com>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Fri, 31 Jul 2026 11:11:17 -0600
-X-Gm-Features: AUfX_mwyptmYyOf4p0ZyWTJXkdByXi3n4edVXueGHxTjG-w_nq_PAPMefUUmQKw
-Message-ID: <CANLsYkyJ=qOz_7x8igcwkiHsJQWP8JizB4-q5QV5gv-s+e6eVA@mail.gmail.com>
-Subject: Re: [PATCH v15 0/5] Enable Remote GPIO over RPMSG on i.MX Platform
-To: Shenwei Wang <shenwei.wang@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>, 
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, 
-	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, b-padhi@ti.com, Andrew Lunn <andrew@lunn.ch>
+References: <20260731012130.1212640-1-rosenp@gmail.com> <20260731012130.1212640-2-rosenp@gmail.com>
+ <amy5lCeSFyvmGixj@SMW015318>
+In-Reply-To: <amy5lCeSFyvmGixj@SMW015318>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Fri, 31 Jul 2026 10:14:26 -0700
+X-Gm-Features: AUfX_mzFrlXDrgTTIRJCLGV2of7qZMoZSDe2mpZqZ_ZmRsSrWJc1TipvLntE12k
+Message-ID: <CAKxU2N-dbMD-F8A16+KEkf8Hvq4=m2YO7X4jx7Q9zEfqGmbzkA@mail.gmail.com>
+Subject: Re: [PATCHv2 1/3] EDAC/fsl_ddr: use devm_platform_ioremap_resource()
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: linux-edac@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+	Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, York Sun <york.sun@nxp.com>, 
+	"open list:EDAC-FSL_DDR" <imx@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-I won't be able to review this patchset until the week starting August 17th=
-.
-
-On Tue, 21 Jul 2026 at 14:48, Shenwei Wang <shenwei.wang@oss.nxp.com> wrote=
-:
+On Fri, Jul 31, 2026 at 8:05=E2=80=AFAM Frank Li <Frank.li@oss.nxp.com> wro=
+te:
 >
-> Support the remote devices on the remote processor via the RPMSG bus on
-> i.MX platform.
+> On Thu, Jul 30, 2026 at 06:21:28PM -0700, Rosen Penev wrote:
+> > Replace the open-coded of_address_to_resource() plus devm_request_mem_r=
+egion()
+> > and devm_ioremap() sequence with devm_platform_ioremap_resource(), whic=
+h folds
+> > the resource lookup, region reservation and mapping into one step and r=
+eturns
+> > an ERR_PTR checked with IS_ERR()/PTR_ERR().
+> >
+> > Behaviorally equivalent with respect to region reservation: the driver
+> > already reserved the region, so the non-overlapping reg requirement was
+> > already satisfied. Drop the now-unused linux/of_address.h include.
+> >
+> > Remove devres stuff. Not needed. devm is already used.
+> >
+> > Fix a mistaken return code of -ENOMEM when PTR_ERR should be used.
+> >
+> > Assisted-by: opencode:hy3-free
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
 >
-> Changes in v15:
->  - Update Kconfig description per AndrewD and Julian's feedback
->  - Enable the GPIO driver even without a DT node per AndrewD's feedback
->  - Update gpio-rpmsg.rst per Mathieu=E2=80=99s feedback
->  - Code cleanup according the new gpio-rpmsg.rst and sashiko-bot's review
->    feedback
+> Need change log here.
 >
-> Changes in v14:
->  - Update gpio-rpmsg.rst per Mathieu=E2=80=99s feedback.
->  - Align the rpmsg-gpio driver with the revised gpio-rpmsg.rst.
->  - Modify rpmsg-core to enable prefix-based matching of RPMSG device IDs.
+> You missed my review-by and tested-by tags. If you delete it by some reas=
+on
+> like big changes, you should said here explicit.
+I changed some stuff yeah. I had them added but removed just in case.
 >
-> Changes in v13:
->  - drop the support for legacy NXP firmware.
->  - remove the fixed_up hooks from the rpmsg gpio driver.
->  - code cleanup.
+> Frank
 >
-> Changes in v12:
->  - Fixed the "underline" warning reported by Randy.
->
-> Changes in v11:
->  - Expand RPMSG for the first time per Shuah's review comment.
->
-> Changes in v10:
->  - Update gpio-rpmsg.rst according to Daniel Baluta's review comments.
->  - Add a kernel CONFIG for fixed up handlers and only enable it on
->    i.MX products.
->  - Fixed bugs reported by kernel test robot.
->
-> Changes in v9:
->  - Reuse the gpio-virtio design for command and IRQ type definitions.
->  - Remove msg_id, version, and vendor fields from the generic protocol.
->  - Add fixed-up handlers to support legacy firmware.
->
-> Changes in v8:
->  - Add "depends on REMOTEPROC" in Kconfig to fix the build error reported
->    by the kernel test robot.
->  - Move the .rst patch before the .yaml patch.
->  - Handle the "ngpios" DT property based on Andrew's feedback.
->
-> Changes in v7:
->  - Reworked the driver to use the rpmsg_driver framework instead of
->    platform_driver, based on feedback from Bjorn and Arnaud.
->  - Updated gpio-rpmsg.yaml and imx_rproc.yaml according to comments from
->    Rob and Arnaud.
->  - Further refinements to gpio-rpmsg.yaml per Arnaud's feedback.
->
-> Changes in v6:
->  - make the driver more generic with the actions below:
->      rename the driver file to gpio-rpmsg.c
->      remove the imx related info in the function and variable names
->      rename the imx_rpmsg.h to rpdev_info.h
->      create a gpio-rpmsg.yaml and refer it in imx_rproc.yaml
->  - update the gpio-rpmsg.rst according to the feedback from Andrew and
->    move the source file to driver-api/gpio
->  - fix the bug reported by Zhongqiu Han
->  - remove the I2C related info
->
-> Changes in v5:
->  - move the gpio-rpmsg.rst from admin-guide to staging directory after
->    discussion with Randy Dunlap.
->  - add include files with some code improvements per Bartosz's comments.
->
-> Changes in v4:
->  - add a documentation to describe the transport protocol per Andrew's
->    comments.
->  - add a new handler to get the gpio direction.
->
-> Changes in v3:
->  - fix various format issue and return value check per Peng 's review
->    comments.
->  - add the logic to also populate the subnodes which are not in the
->    device map per Arnaud's request. (in imx_rproc.c)
->  - update the yaml per Frank's review comments.
->
-> Changes in v2:
->  - re-implemented the gpio driver per Linus Walleij's feedback by using
->    GPIOLIB_IRQCHIP helper library.
->  - fix various format issue per Mathieu/Peng 's review comments.
->  - update the yaml doc per Rob's feedback
->
-> Shenwei Wang (5):
->   docs: driver-api: gpio: rpmsg gpio driver over rpmsg bus
->   dt-bindings: remoteproc: imx_rproc: Add "rpmsg" subnode support
->   rpmsg: core: match rpmsg device IDs by prefix
->   gpio: rpmsg: add generic rpmsg GPIO driver
->   arm64: dts: imx8ulp: Add rpmsg node under imx_rproc
->
->  .../devicetree/bindings/gpio/gpio-rpmsg.yaml  |  55 ++
->  .../bindings/remoteproc/fsl,imx-rproc.yaml    |  53 ++
->  Documentation/driver-api/gpio/gpio-rpmsg.rst  | 242 ++++++++
->  Documentation/driver-api/gpio/index.rst       |   1 +
->  arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  25 +
->  drivers/gpio/Kconfig                          |  17 +
->  drivers/gpio/Makefile                         |   1 +
->  drivers/gpio/gpio-rpmsg.c                     | 587 ++++++++++++++++++
->  drivers/rpmsg/rpmsg_core.c                    |   4 +-
->  9 files changed, 984 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-rpmsg.yam=
-l
->  create mode 100644 Documentation/driver-api/gpio/gpio-rpmsg.rst
->  create mode 100644 drivers/gpio/gpio-rpmsg.c
->
-> --
-> 2.43.0
->
+> >  drivers/edac/fsl_ddr_edac.c | 39 +++++++------------------------------
+> >  1 file changed, 7 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+> > index 2a545e5812e7..3745eec67335 100644
+> > --- a/drivers/edac/fsl_ddr_edac.c
+> > +++ b/drivers/edac/fsl_ddr_edac.c
+> > @@ -22,7 +22,6 @@
+> >  #include <linux/gfp.h>
+> >
+> >  #include <linux/of.h>
+> > -#include <linux/of_address.h>
+> >  #include "edac_module.h"
+> >  #include "fsl_ddr_edac.h"
+> >
+> > @@ -495,13 +494,14 @@ int fsl_mc_err_probe(struct platform_device *op)
+> >       struct mem_ctl_info *mci;
+> >       struct edac_mc_layer layers[2];
+> >       struct fsl_mc_pdata *pdata;
+> > -     struct resource r;
+> > +     void __iomem *mc_vbase;
+> >       u32 ecc_en_mask;
+> >       u32 sdram_ctl;
+> >       int res;
+> >
+> > -     if (!devres_open_group(&op->dev, fsl_mc_err_probe, GFP_KERNEL))
+> > -             return -ENOMEM;
+> > +     mc_vbase =3D devm_platform_ioremap_resource(op, 0);
+> > +     if (IS_ERR(mc_vbase))
+> > +             return PTR_ERR(mc_vbase);
+> >
+> >       layers[0].type =3D EDAC_MC_LAYER_CHIP_SELECT;
+> >       layers[0].size =3D 4;
+> > @@ -511,10 +511,8 @@ int fsl_mc_err_probe(struct platform_device *op)
+> >       layers[1].is_virt_csrow =3D false;
+> >       mci =3D edac_mc_alloc(edac_mc_idx, ARRAY_SIZE(layers), layers,
+> >                           sizeof(*pdata));
+> > -     if (!mci) {
+> > -             devres_release_group(&op->dev, fsl_mc_err_probe);
+> > +     if (!mci)
+> >               return -ENOMEM;
+> > -     }
+> >
+> >       pdata =3D mci->pvt_info;
+> >       pdata->name =3D "fsl_mc_err";
+> > @@ -531,33 +529,12 @@ int fsl_mc_err_probe(struct platform_device *op)
+> >        * Default is big endian.
+> >        */
+> >       pdata->little_endian =3D of_property_read_bool(op->dev.of_node, "=
+little-endian");
+> > -
+> > -     res =3D of_address_to_resource(op->dev.of_node, 0, &r);
+> > -     if (res) {
+> > -             pr_err("%s: Unable to get resource for MC err regs\n",
+> > -                    __func__);
+> > -             goto err;
+> > -     }
+> > -
+> > -     if (!devm_request_mem_region(&op->dev, r.start, resource_size(&r)=
+,
+> > -                                  pdata->name)) {
+> > -             pr_err("%s: Error while requesting mem region\n",
+> > -                    __func__);
+> > -             res =3D -EBUSY;
+> > -             goto err;
+> > -     }
+> > -
+> > -     pdata->mc_vbase =3D devm_ioremap(&op->dev, r.start, resource_size=
+(&r));
+> > -     if (!pdata->mc_vbase) {
+> > -             pr_err("%s: Unable to setup MC err regs\n", __func__);
+> > -             res =3D -ENOMEM;
+> > -             goto err;
+> > -     }
+> > +     pdata->mc_vbase =3D mc_vbase;
+> >
+> >       if (pdata->flag =3D=3D TYPE_IMX9) {
+> >               pdata->inject_vbase =3D devm_platform_ioremap_resource_by=
+name(op, "inject");
+> >               if (IS_ERR(pdata->inject_vbase)) {
+> > -                     res =3D -ENOMEM;
+> > +                     res =3D PTR_ERR(pdata->inject_vbase);
+> >                       goto err;
+> >               }
+> >       }
+> > @@ -637,7 +614,6 @@ int fsl_mc_err_probe(struct platform_device *op)
+> >                      pdata->irq);
+> >       }
+> >
+> > -     devres_remove_group(&op->dev, fsl_mc_err_probe);
+> >       edac_dbg(3, "success\n");
+> >       pr_info(EDAC_MOD_STR " MC err registered\n");
+> >
+> > @@ -646,7 +622,6 @@ int fsl_mc_err_probe(struct platform_device *op)
+> >  err2:
+> >       edac_mc_del_mc(&op->dev);
+> >  err:
+> > -     devres_release_group(&op->dev, fsl_mc_err_probe);
+> >       edac_mc_free(mci);
+> >       return res;
+> >  }
+> > --
+> > 2.55.0
+> >
+> >
