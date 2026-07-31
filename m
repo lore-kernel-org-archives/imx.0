@@ -1,243 +1,134 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BE244C4F8
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 17:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947B74534AE
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 17:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785518083; cv=pass; b=DHKUTb7disxLjdStqS4qOMs92Z9dR+h1cW/0FpgtossDEWW8822z4MUfDPEDIVgo3Qp/JJhylkmJ2WZn0kJ10YCyUpF97vPap+oWXrLl5/2uBNn7utcxHsOc7epcItBj4r5fo6h9E3fnUJVbkcfgzw1YB3BUiiA5d7AxnBEsaiU=
+	t=1785519235; cv=pass; b=FfmBrdC7XMAQen4gMgpOifikW0RTjExbBXQaOqYv0O4hqiGVM0LJv6CK4WofJathRkLjrt3gr4f6T/3MW+Yq7ZvAuCmgRrkBVG5gE8PrR6shDXMnH1OrIu6Q5uVUXMI+RiNlmg0QVao3k3ts36bMoPz07ubmAmBoOCn1veR5Z4U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785518083; c=relaxed/simple;
-	bh=QesLJjfO+CQSI1uPEdZ3w/rry6iX1InymxI+UL8wQKs=;
+	s=arc-20240116; t=1785519235; c=relaxed/simple;
+	bh=2GrMnRyqgn8yviiospUwkG7JcWQ9bwrkHGCB1AIyY1U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UQ8joaWg26LVl2x9gR38Qu9/BKkw1x0u2TFdjJCp0TV133H2Ty5KBXJ6o3mnR2QaPHFUtfxc1wWVbcr2bwOGDn8rurhOxMtfByW4pxgvZgeDIyd9FxG5VFOfhAOBJOalpI2uOlhe5jnLmdOb4uZ/OSQNv/R8jPejFiPXNAelo7s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LQ8lf7SM; arc=pass smtp.client-ip=209.85.208.41
+	 To:Cc:Content-Type; b=j4VKX5qzOcgcqrq+rRLVY2indfq0ZevZhC6ErnHjMZ7hY0zIEORLsHUEon0+9Ra3iIgX84tS46/VU+oI0qTJ8CAgCArLM1CUlx/ZzVUTXrNbKnyuLyOh8Vw0fbGSn98ITnGtjKHDgwsnYxgaiGpq38z4KUam4b/1YL7fakNDZxg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kK1Zad3G; arc=pass smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQ8lf7SM"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a08a2b7e5bso680138a12.1
-        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 10:14:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785518080; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kK1Zad3G"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a082b3671fso2064421a12.3
+        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 10:33:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785519229; cv=none;
         d=google.com; s=arc-20260327;
-        b=bK7x/AKXBLC++xSZsvbHlgQ2KzHg+Z3OB3KRm0OFYqjc5XuEUEDxMHmI4AwYh1jDex
-         c/+pZLVlq4C5nefnltTZQcriVicJ9O42tE3ULoOPFq0phMQSdjL/u6Bw9+toFyq/7cq5
-         FOuouGgKY/PslstCnbKJyOZuOPqxIpbosNfj+WdhoWTBDi0EGU45r7Xz3lRtCD5wccTe
-         TdhOfTOdNkJdi98ncrTBAzrHQEr4YxWQn9StzKtP6TPcZ0wftZER/QAtaovNIa5Mv8Iz
-         5UjzUnnA8TTCN2WwZgbEDD/V7Gh2tJSrO7bqf4TZdH9iai39IKG9N5t7DOpLIaYf/vQK
-         GN3Q==
+        b=fIwP7yZ3Yh1F6e88Kda3ARroDw5ADs1CuJmq9t8EBub7sYf+7AdNUTKwPJK2Wyp6ig
+         9xaF3HTi5leuEcCjD2jP7ms9fFo7anuax4SYo1i9YbHUEGIrTDMz8/6ghp0v/T3EjUZF
+         0FQQHXJg3OjzXR5FALtZPoO2v9Apqu9LGsx0E9EDQV8RjKYDRF8at5x06pG6GaFxuTa9
+         vplUKvjQ9cNg3+YX2Kn/4mXFFm8NX9JxcaQm461OuUU1Tuc0cO3ZzgzLswoCxMGnvxJE
+         SDyxrHEWUPIDJjeGb6tcGEcMGv4DhiUu47tydREts4Xy5LZoywIkTnDt2ykNHXGPBkE7
+         3FnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=SHfwJhTJcZEKfM/V12t6FGxcs59B4/LW6Z/5dwS+YL8=;
-        fh=XVIFXcmoSOumSuhQrP+NlpsAiJD+LZlF5RxQjU49DPg=;
-        b=FotQBTAWTZP2X+SY83Yy0/d0/CqqX7H5prdM5CunEWXB9dfZLgzGFXfJ9SN9Gyl+Bz
-         JsxDDSon3qYa4NMtE58OkHysaMbH0Pt/hI3Lci2c8AHqIcKdaXddrGPTJctyzcpSNM9J
-         0o2pJ2a1oIr2+D9wcF7d4O0HSYE328aZwBmhRd58iJrDITe1ZeU+YqoYiywBCn5Igt3H
-         8vq4qKbK6BUDVq6IZhtaBz7ZG2fskvhgYpGafjuzHg1hg3QSo+HJXab9y+F1wTPZqQ8+
-         MlxrY091yyY1Pn6JMFAxIY2/CSCLW+MTyEnTrGYj2INg43xuIf4O1LFAzqYEtJ0z0tYn
-         t5TQ==;
+        bh=PcmIIvcbB0qGHPWiDBHv4eEQq5GVkHmXinev6TD5uXU=;
+        fh=LoabO0j6xY4rPdY12cmEF967it4T5P7YJEMRYv12wRM=;
+        b=F62fX7pxD73JkG81+8497BsInYvXkitIP0bzButjxT+McJ665I9EYZuMpODrvOIpjt
+         QGdcX5hAAFxB95OoeKWu4LUOXEW/MefNJ6PjlwY1vzhoXmW/yWIo3SbRmTdozJXAJZaI
+         7rbYUreFyZ0tj8FqIxsyI8sKprl3bDsWXm63rzj9ekfzmpFmfoPQHGHcmfNoa1R28u4F
+         +E5YkJnzYLTQx7PAbiqFoly/AqKb2hpzEHClqU9i4XdXSOuuNlzE6Ao2pe17EICz8Utl
+         kGQj/P2tl8fUIcWeKu9/qgC8SoAS4nd571XPgvYpGHZVmILw9vfFioZB9RIN1YB4z7qj
+         DW3w==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785518080; x=1786122880; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1785519229; x=1786124029; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SHfwJhTJcZEKfM/V12t6FGxcs59B4/LW6Z/5dwS+YL8=;
-        b=LQ8lf7SMoIeZD91Oez7N58UrD8JLKhs5V7YElaS16lryK04n2v360/W+BSkjI6cBSm
-         8FOTR/zQqGWP4xR+Q40cECeyjqmOuFAW7A2GqgixIT0yFLh78nocFo0JJa8E8lVn7bvX
-         7FIyf8XN+foplnCG/WtNOCjwJmEnQk7i7aDXGcQbLnixIMP4QZh3z/G8SHohVzznFS/+
-         ti57WryBlO2Ivfbj9H0nTrrx4K4nFisOMTfFJg2NTKfOixII+eq5qOC+C/rrtXiTzbs0
-         dyk3WFmmmxFFTQYSkm3aOfkbXLG/k/XYSPOYUK6hpzu06K2oseYK02qB/I8j29HkHp/I
-         HcdQ==
+        bh=PcmIIvcbB0qGHPWiDBHv4eEQq5GVkHmXinev6TD5uXU=;
+        b=kK1Zad3GNCjQ5TYGmTRQQ7QhaDTBrShRZLZc5ZP6DHpqXYaNVT7I1Q40I2+WTei6xL
+         uugyHQBpBg0vbTKirnYbj4QRYrFyomAAsIeEK8scKMWzA5Yb8a8zFX5wsOc0hMpEO9HC
+         TmaOVALih7Mn5zJVsAkzGVYITUEwQi51n9ISkI0En4Z7DE+nuYu5xs6TbycOv4E33rws
+         SfEjIXpWHUiE0byreaVOXUp7IKTDfdVpZ90R2kg2BM+7MNGZQi4HDTvcPLqhew+WbiIJ
+         ZMtZfi9Adj2JYJYerlFIPeO86ZddLFs56Ph1+lN//DJxyNQ/Z1VnVpapBDprHuShUhBR
+         7yVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785518080; x=1786122880;
+        d=1e100.net; s=20251104; t=1785519229; x=1786124029;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SHfwJhTJcZEKfM/V12t6FGxcs59B4/LW6Z/5dwS+YL8=;
-        b=ARSIXRLujXqHv0xePVQFyO6ffA2ZgsVRDfo5yUOWYX9FL9V+m5pRmUEbO31UQpWzZE
-         320OUo6xVqMg6NrNyx7b6H/9mbRmy0XLHocvIXqe6BCzLdC/T0SOKerO/HtMGoWDXz+4
-         EN0r1+Y4Rbg+PfsMsAfVZOZVQKoG6anmtBCnUVW5f27e1ErlxHMeb5CeX2Y2Hf3wfYEf
-         N2gzlT3ww0LzXOZUa/1+nXQvp/5nyLTforW1bxAHOyu9qC4bhjZkQMtcdRrlzjApNaCw
-         Ob5dMwxmioMYNJYUjlXt6JrFse6Y52qXAy63BIEOCVzadUNiPJsIFkf1XavWZPBWWtCO
-         BoxA==
-X-Forwarded-Encrypted: i=1; AHgh+RoqfFF8tmXlf2eHuXYkUzZbqD+GbW5ZdPYpqadOzsBIqR/h0PEvn5o2ZZ+qKI5ZEfw8vpA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YytCcYAgFb+AhOGG7Pf1Fwy7R1bUnuzX1907XJgcU22vAuFJStm
-	ySWlWLU41/vFtlm8tp078npQ/aZ5yH9T/d986z4VfJUi7jiWShRTM7529/fqV3U40Q79jW9M/m5
-	uNE5u3kQFiMXUH7MUWpUWiX/9AxRVWW4=
-X-Gm-Gg: AR+sD12iN6ANFSdmbBNoHyMihzNFFnOlOnNAm8IuQf7mZWSa3FJ3iS+KhS0uxVmyTel
-	WZLlzsvBL2REyiJidYFutSfHeIoaRSR2xyCfo1jK6Ge6W1GPVYSKpczw8DY0fmtfbbKhg7epyzB
-	0iCLlPSQSqYS6nuWTa6wTREeyZTdv53e4V/wsPuoEtn9MgLMOg0/yMtCsWut+FSAIZw8d5gOvIu
-	I11/ADy8p0kwoAq0mttYSlBYpuRn0kKU2lERxg9hVEgnHmnlps4Z1cJHhzTu/znncMaSd4VzNKE
-	pNglbym2VzBR9tQ6N5b4noQMFLS20RUm49hRnrugI8XmW91jOyCgoTh/zHoO9ybqydkcT73tCGv
-	TSahQNEpvRmxv5NBxh1dOI5ZC0vguk/DpMhLwbRjK8TtAt1j2rvZDHwY4Y5y+xmEezotJxiwzuk
-	bn5gd8HA6G5Bolzklv5ZWuKbk1e7mfsH9DGwS2JXUhOdUJK9KKlpUp/2F1k/LtO/4Dp7Iwg5It8
-	0qjSw==
-X-Received: by 2002:a05:6402:20c7:20b0:698:8857:9ff0 with SMTP id
- 4fb4d7f45d1cf-6a09b1428f3mr1180287a12.16.1785518079567; Fri, 31 Jul 2026
- 10:14:39 -0700 (PDT)
+        bh=PcmIIvcbB0qGHPWiDBHv4eEQq5GVkHmXinev6TD5uXU=;
+        b=bmGcRN/BLxwqNbxJoASDuLyCA7uz+ybSuDFn43Q3OmZiNI2TOQ3GGmvyGn0om09N8x
+         evnPjBTJHL9k71yTDV8IVUtvMwrXRSSUpqhDaYtfKa4rTLLo6t2fRYm8P1+si68VNq5F
+         HtnUfO73aozagrRaEImQ2RNqaIao+qpuy7upmwx+wAMnk60eXux2YOfj+gWjhMNJ8foX
+         pzfcN2hcm9/hvN7GEsQVMqtR86MXIEUDabGo5hMpVkrX3igrxs/2k7hMwQnbQ2IDNj5B
+         xyTEC3K6PRTA62Zrpyhj+2GEM+gpTnSHzDAaGT9POKz/pYrYKdXAAW1rr+zuG6BGkn4R
+         HRxw==
+X-Forwarded-Encrypted: i=1; AHgh+RrEVKoYFAldINFjZid6mKmhWX++jYFnJ/BUSA2A6lMD2LSDiRlQlSnkg8kJ1Jni2DhZteo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yynixg14zeOb5RdElqBLf89htzEPl+Iax8aOm9KOgvgCGWeCPEU
+	Fy1ijuoXNgEv0F0wcphFszrJ2X8oAUadWDe2QXhClXrJyhjuDqy1WgX/iQ1jaVKWF+p5NqKSJhk
+	HoNIYnosga77caR9GwYpAlgCLzUiTqOk=
+X-Gm-Gg: AR+sD12GwFmxZHv/5Tk2kqQbAFom/06PqgCZ5UVoDM0JvrxJKR2XPnyXBN+lH3qFvQz
+	vvvBznyWSoZ9WgHWMj6WYQOXArsMZ+xvOWrWK6CgbY2vcLB+XudLHvRppVhfsABnr4ubwnbu/rZ
+	84RtiXdjyZx8Alm9QLI2qYeKZniqVOvtIEznAhgy6x2axWAIt9qrjrQfz1IcSSL0/WppKCmP2hj
+	vTHOeer+p3rwtD45Z1u0RFeDXISheRhKLDWcQhfmuZwMW7sjB3YSVdFDk/Ear9u6kGe0Yu4QOmN
+	WuM4GYoYF63Sz/sn5Qpq5bolrg+VWAtxkHrTIjRUfCCvCSIUrWScvYvVIP01YZ9y9tBvqJTn06y
+	2FXUezAgjZNkqKo6VKOkAp+7V3MlVNUu2mVVNyYIsMAwyy+H8bxY9uDouXFrUlXLg+M5a8KqFVj
+	s1hrpJ8MnpllQi0m1iCq9yiUTvwmRS9jGoRE2KuXocvBeIpVQDRW2TnWkBeLhyuvGl9Q==
+X-Received: by 2002:a05:6402:3882:b0:69e:2585:7e6 with SMTP id
+ 4fb4d7f45d1cf-6a0a7d0274emr358248a12.30.1785519228943; Fri, 31 Jul 2026
+ 10:33:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260731012130.1212640-1-rosenp@gmail.com> <20260731012130.1212640-2-rosenp@gmail.com>
- <amy5lCeSFyvmGixj@SMW015318>
-In-Reply-To: <amy5lCeSFyvmGixj@SMW015318>
+References: <20260729012320.616174-1-rosenp@gmail.com> <amucohB5GoaocIC4@SMW015318>
+ <CAKxU2N9_wJt3qQ4rmGX89dmSpMKa-7zOuzDwrnxYbXrBNZ1nQg@mail.gmail.com>
+ <20260731003650.GLamvuIgDKrojvA7Yr@fat_crate.local> <CAKxU2N-GnnSqTPPSYwpXiNRNdP+qdJWf+ueaNQQWNKvXWag3wQ@mail.gmail.com>
+ <amy7R6W5aJ58t6fy@SMW015318>
+In-Reply-To: <amy7R6W5aJ58t6fy@SMW015318>
 From: Rosen Penev <rosenp@gmail.com>
-Date: Fri, 31 Jul 2026 10:14:26 -0700
-X-Gm-Features: AUfX_mzFrlXDrgTTIRJCLGV2of7qZMoZSDe2mpZqZ_ZmRsSrWJc1TipvLntE12k
-Message-ID: <CAKxU2N-dbMD-F8A16+KEkf8Hvq4=m2YO7X4jx7Q9zEfqGmbzkA@mail.gmail.com>
-Subject: Re: [PATCHv2 1/3] EDAC/fsl_ddr: use devm_platform_ioremap_resource()
+Date: Fri, 31 Jul 2026 10:33:37 -0700
+X-Gm-Features: AUfX_myS_XgghhnEdjsO8mX4UIlPQBCy3ps5SVm87UE3VfhsoJ1tEnuNxGsp_tA
+Message-ID: <CAKxU2N-KCz2UAKY77fUb9G_ReV-yRJhZogcZkvL4N_N6nrGWnw@mail.gmail.com>
+Subject: Re: [PATCH] EDAC/fsl_ddr: use non devm for request_irq()
 To: Frank Li <Frank.li@oss.nxp.com>
-Cc: linux-edac@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
-	Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, York Sun <york.sun@nxp.com>, 
-	"open list:EDAC-FSL_DDR" <imx@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Cc: Borislav Petkov <bp@alien8.de>, linux-edac@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+	Tony Luck <tony.luck@intel.com>, "open list:EDAC-FSL_DDR" <imx@lists.linux.dev>, 
+	open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 31, 2026 at 8:05=E2=80=AFAM Frank Li <Frank.li@oss.nxp.com> wro=
+On Fri, Jul 31, 2026 at 8:12=E2=80=AFAM Frank Li <Frank.li@oss.nxp.com> wro=
 te:
 >
-> On Thu, Jul 30, 2026 at 06:21:28PM -0700, Rosen Penev wrote:
-> > Replace the open-coded of_address_to_resource() plus devm_request_mem_r=
-egion()
-> > and devm_ioremap() sequence with devm_platform_ioremap_resource(), whic=
-h folds
-> > the resource lookup, region reservation and mapping into one step and r=
-eturns
-> > an ERR_PTR checked with IS_ERR()/PTR_ERR().
+> On Thu, Jul 30, 2026 at 05:44:34PM -0700, Rosen Penev wrote:
+> > On Thu, Jul 30, 2026 at 5:37=E2=80=AFPM Borislav Petkov <bp@alien8.de> =
+wrote:
+> > >
+> > > On Thu, Jul 30, 2026 at 05:16:11PM -0700, Rosen Penev wrote:
+> > > > > here already disable hardware irq. Just call
+> > > > > synchronize_irq() to make sure pending irq handled.
+> > > > AI disagrees with this suggestion:
+> > >
+> > > How about you try to parse what AI says and verify it yourself?
+> > Makes sense to me.
 > >
-> > Behaviorally equivalent with respect to region reservation: the driver
-> > already reserved the region, so the non-overlapping reg requirement was
-> > already satisfied. Drop the now-unused linux/of_address.h include.
-> >
-> > Remove devres stuff. Not needed. devm is already used.
-> >
-> > Fix a mistaken return code of -ENOMEM when PTR_ERR should be used.
-> >
-> > Assisted-by: opencode:hy3-free
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
+> > The alternative is to use devm_add_action_or_reset for edac_mc_free.
+> > I'd rather not do that.
 >
-> Need change log here.
->
-> You missed my review-by and tested-by tags. If you delete it by some reas=
-on
-> like big changes, you should said here explicit.
-I changed some stuff yeah. I had them added but removed just in case.
+> This one should work, of add devm_edac_add*() version to simplufy probe a=
+nd
+> beanfit other EDAC driver.
+That's probably appropriate.
 >
 > Frank
 >
-> >  drivers/edac/fsl_ddr_edac.c | 39 +++++++------------------------------
-> >  1 file changed, 7 insertions(+), 32 deletions(-)
-> >
-> > diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-> > index 2a545e5812e7..3745eec67335 100644
-> > --- a/drivers/edac/fsl_ddr_edac.c
-> > +++ b/drivers/edac/fsl_ddr_edac.c
-> > @@ -22,7 +22,6 @@
-> >  #include <linux/gfp.h>
-> >
-> >  #include <linux/of.h>
-> > -#include <linux/of_address.h>
-> >  #include "edac_module.h"
-> >  #include "fsl_ddr_edac.h"
-> >
-> > @@ -495,13 +494,14 @@ int fsl_mc_err_probe(struct platform_device *op)
-> >       struct mem_ctl_info *mci;
-> >       struct edac_mc_layer layers[2];
-> >       struct fsl_mc_pdata *pdata;
-> > -     struct resource r;
-> > +     void __iomem *mc_vbase;
-> >       u32 ecc_en_mask;
-> >       u32 sdram_ctl;
-> >       int res;
-> >
-> > -     if (!devres_open_group(&op->dev, fsl_mc_err_probe, GFP_KERNEL))
-> > -             return -ENOMEM;
-> > +     mc_vbase =3D devm_platform_ioremap_resource(op, 0);
-> > +     if (IS_ERR(mc_vbase))
-> > +             return PTR_ERR(mc_vbase);
-> >
-> >       layers[0].type =3D EDAC_MC_LAYER_CHIP_SELECT;
-> >       layers[0].size =3D 4;
-> > @@ -511,10 +511,8 @@ int fsl_mc_err_probe(struct platform_device *op)
-> >       layers[1].is_virt_csrow =3D false;
-> >       mci =3D edac_mc_alloc(edac_mc_idx, ARRAY_SIZE(layers), layers,
-> >                           sizeof(*pdata));
-> > -     if (!mci) {
-> > -             devres_release_group(&op->dev, fsl_mc_err_probe);
-> > +     if (!mci)
-> >               return -ENOMEM;
-> > -     }
-> >
-> >       pdata =3D mci->pvt_info;
-> >       pdata->name =3D "fsl_mc_err";
-> > @@ -531,33 +529,12 @@ int fsl_mc_err_probe(struct platform_device *op)
-> >        * Default is big endian.
-> >        */
-> >       pdata->little_endian =3D of_property_read_bool(op->dev.of_node, "=
-little-endian");
-> > -
-> > -     res =3D of_address_to_resource(op->dev.of_node, 0, &r);
-> > -     if (res) {
-> > -             pr_err("%s: Unable to get resource for MC err regs\n",
-> > -                    __func__);
-> > -             goto err;
-> > -     }
-> > -
-> > -     if (!devm_request_mem_region(&op->dev, r.start, resource_size(&r)=
-,
-> > -                                  pdata->name)) {
-> > -             pr_err("%s: Error while requesting mem region\n",
-> > -                    __func__);
-> > -             res =3D -EBUSY;
-> > -             goto err;
-> > -     }
-> > -
-> > -     pdata->mc_vbase =3D devm_ioremap(&op->dev, r.start, resource_size=
-(&r));
-> > -     if (!pdata->mc_vbase) {
-> > -             pr_err("%s: Unable to setup MC err regs\n", __func__);
-> > -             res =3D -ENOMEM;
-> > -             goto err;
-> > -     }
-> > +     pdata->mc_vbase =3D mc_vbase;
-> >
-> >       if (pdata->flag =3D=3D TYPE_IMX9) {
-> >               pdata->inject_vbase =3D devm_platform_ioremap_resource_by=
-name(op, "inject");
-> >               if (IS_ERR(pdata->inject_vbase)) {
-> > -                     res =3D -ENOMEM;
-> > +                     res =3D PTR_ERR(pdata->inject_vbase);
-> >                       goto err;
-> >               }
-> >       }
-> > @@ -637,7 +614,6 @@ int fsl_mc_err_probe(struct platform_device *op)
-> >                      pdata->irq);
-> >       }
-> >
-> > -     devres_remove_group(&op->dev, fsl_mc_err_probe);
-> >       edac_dbg(3, "success\n");
-> >       pr_info(EDAC_MOD_STR " MC err registered\n");
-> >
-> > @@ -646,7 +622,6 @@ int fsl_mc_err_probe(struct platform_device *op)
-> >  err2:
-> >       edac_mc_del_mc(&op->dev);
-> >  err:
-> > -     devres_release_group(&op->dev, fsl_mc_err_probe);
-> >       edac_mc_free(mci);
-> >       return res;
-> >  }
-> > --
-> > 2.55.0
-> >
-> >
+> > >
+> > > --
+> > > Regards/Gruss,
+> > >     Boris.
+> > >
+> > > https://people.kernel.org/tglx/notes-about-netiquette
