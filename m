@@ -1,146 +1,155 @@
-Received: from mail-ej2-f3.google.com (mail-ej2-f3.google.com [74.125.228.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011058.outbound.protection.outlook.com [52.101.70.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6960243C045
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 15:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785511652; cv=none; b=Xmm9v0vPDiFF+m19WOz/+lR50dcZ2udhwai4Zdx9I1zMwZJkJzidnlb4oKplB1cOnlEdZaPrfVi8A83BVnYpz0f2GrCXAia+W7Y3VhQRiy6nfslPgUILaR7Urvb6XwexA2RC7mclsgbbR4IVgGGla7PJXk+kRBwuCcrP/uuAYeE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785511652; c=relaxed/simple;
-	bh=2HCELcOA3DJNbDsYTukshelLlc3dZazcD3VSOVDcQgU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=i+k8704Fp+SC7uVmGNskBV4j6xS7nYH6FvPilDygNVSp17j40+WrRy92TJircoFipR5IqWzCRDeBAMUrAOrfx789U5RKIAbJtO/UtQ4jSrr0TADnfSU9rL63b922R6/z1K/x/fT+QhL2eoAB7YDWCemXpw1AD8XKUqXhQ29jNzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=RJGi5CCU; arc=none smtp.client-ip=74.125.228.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B388942D751
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 15:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785511719; cv=fail; b=UWRjQxRsocv+u0PRu9oSOTIc40YsbjX4n6+KrHMM2klcaACoWqf04U3MFPMyU5eWrVftFHJlSNc14ylFhKt1W2DVnnR8HROBVrWSgntnPKZ1QbYVjg976crUzhcswi9ws4aDYC+UrIqxaDgV5YWi61i7RUV5evHS111Cl0P0FKk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785511719; c=relaxed/simple;
+	bh=0fF1n9QCDPqhI5Lvj6xE+AJcoPUWz7nN4jU8NSb1IL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CHtUxLK2EMvySCiqb43XkulYJc8liCjon8gLSq8Nv8ynPIOKzp4A5CUsLZzuIFFKCW/wGLU2BjkvS4IkWoV8ZfLLorjuVEWml+FKOYYryjFMBtXwBRNFlid6MJhqO+avQapOVm5ib3qnYRI9m/eUsfKM7qwuHYVdbfIlqLZBQoY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TU/ELSd4; arc=fail smtp.client-ip=52.101.70.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="RJGi5CCU"
-Received: by mail-ej2-f3.google.com with SMTP id a640c23a62f3a-c15e9a2f51aso57071866b.0
-        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 08:27:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1785511648; x=1786116448; darn=lists.linux.dev;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aaecu9LLR4tlERpL5fMxh+H29z5ZLQOadDtlIB8YJrI=;
-        b=RJGi5CCUnrvhctKSycX7BH/pyPAJmwxy7u3wQaJhHjThAVSA8NLoUUGY+xn3vV1R9p
-         h/uUxdNttst9HlJ+MxtSRr1XgskxM4MXKm8CGp25W1zHCiBk9wrmQnzJ1lPF0PgwDEN0
-         Bdve4wo+2MTry9804gLPS9Rwmu6t9DWL0Sh2VJQKOfNb6Fhcdbhb5DZYVniXbqXrRinW
-         cyuPOJk3uHhr6aTKro3MghbrY0/jhtABMRMxPH02r+WgTwI7vUnTc7H/cNfvVH7vTnmj
-         hT351bRTOxJbLeJ30XYGslm5HV7BeMhmEzclmg/ndKrDdMKLhxCp8PpPm1OG/aHoMaPJ
-         WXcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785511648; x=1786116448;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aaecu9LLR4tlERpL5fMxh+H29z5ZLQOadDtlIB8YJrI=;
-        b=VM/wsTmbYUMCXRnrSFhrzN/qxfWW0OkQGpFNnps1/K/aRjt1eohvqeSs535FK6I5j8
-         I4AOsk6k8dOaoCIwSGhj4Lq/6dKrhaNQW3Ed5SKzTQ24PBnWFaPV5C9Fw/Gw3VjoMFCe
-         hDTHbXBuQ+I7yetU1p8igs06zONjHJrclXkHTjbYkxs0pjfCCelJlJ+/E+TOD8STFedx
-         gCPrWNdseQ88U3zTJVqSukKQt1C9k0GZH5oDEX8tkp/ArgRHo8Ij8S+qQ7pomJE3qRx2
-         7G+kGm4pFrT0SELGV0Cc2l1fNCfMmUSUKpLoJaobJi2gbnH97ppt2K9Ky1UQl7b/PPHc
-         dZ/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RodZPCNpLTHQZhpvkGs8NWKNzG0bCg/qTvNiIs3u0EaMMUDf2FMmfh3ucqtabpWWEIBDIU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw12jJ7ojJke3g6s3k17WhfckHltIlswU8FQ1h0Xy9lujaq81gY
-	ebz5UrHCbe2RsbvkxmK1G3eRZ4doZqm87/U8wusSBHm65qGqzYaOn7wDEhviB7MtlA==
-X-Gm-Gg: AR+sD10q1Xs5MLAzRTlqYyB8JgfEtGIigFXcI0XPxZK9TXt887ruTtJiZpC6ShMMToQ
-	2NFqYpCEIrPriURAvx8A6F8YYLPn2N9sFNEQbEVsFljxb1c65Mq3ACMhpLouOjgKJ8cZBReUIcf
-	3DC3kEDf8NPc+r7gOd3MBZ8yC4zDP4FfvS3cEe9WAYQaLyCN5SepuuCw8JMQFUQsNyNQkiue/5r
-	kvHX8NS4ojY+A4zxIf95VcG5NWg35IYVC5bbcOcZLOea/Gj1EfN4s91J6nTT7p6ZvzOPlS2+10a
-	knUPzSCJeYi3DDCGZwWQSf9/n2KAZR57GnAcU2k4RhCuOXqrP/EDoZaiVL8qgm0J5H4lO4IadFk
-	AJm5TU1rpwxn60VVbD55dZK56F1sPeEfVB0VSzg9T9PCclAZ3ffMeeZY0n1rCAedZd7cWeU3zU2
-	1VycylOHI1vlZd+j+twVQXYdRidFJ0Gw++GAEdySTGgdp2v2jI3weynfBCPrGRCSeiEfeepQ==
-X-Received: by 2002:a17:906:1d08:b0:c16:1df9:6eda with SMTP id a640c23a62f3a-c1fe83796femr347266b.49.1785511648121;
-        Fri, 31 Jul 2026 08:27:28 -0700 (PDT)
-Received: from localhost ([2a02:908:1578:7a40:eb03:fa54:642b:57ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd46836dcsm186119166b.63.2026.07.31.08.27.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 08:27:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TU/ELSd4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FyqUl6lNxRgxcpcWuEdNOVoW1xZNCi2VK4Zs9Gl2oTi5X9tegIkZHv42l/KWlZtom+FtKOfisbT5ctPvqhZH5ZLhCeSxv34fjHbTLQRkx5ia4HNT9wuvBK1r3ENsGrRrcmewfNQNRWtUFejLZ9cuUIRGjIdYJW/CYXx3xXA3crdpiVUwRo3N6ZyAYXpK4KK3N6dxoowbZr2H08BjTG7lyddnh3IUgzS3uLsYxKwUV9lJfMYpXRJ/+T58+C5KphR6mxLjIcFxioa6iZ8TCtPzunk6MLihj/KpdWQGQ2miqj68+rSR51xdG1pDtdt0SQ3/gsdfiV/BfT2w0uNPQU4C3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cVQwd2qEgKjHAgU7Zi16NvRD9FWP06z/1zGikoEGa2k=;
+ b=i2ufJncx3XQhgozJspXsCZGQPWBlFbUq/4BFaHCilcljmUeGa/ED4hwtspVgSBpUZh4GhjzAbcYs4uisrSpeqB5i5Gq3TrZzeYdSQBhE7Ss11erxLSwh+APLRhgXU9350LXo1FQRQWf9vw2kVbqe/eDRFnZH0oq+TKnmVXKB/ErHna0fTi5kXxek4wg+g58x0bzj+mHESNeYmGuqurZLncuI6+6pjVk+UOnkjfwWEJvM391f5Kets/p0uTvYNAVAq30lKz3db3NVrW1TqaURBKiPYIIeJIMSDhzC7jLIEU05a92fmPHBuDcIE8G7+h05YwHS5Ah+2DTf+NoIaDoQKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cVQwd2qEgKjHAgU7Zi16NvRD9FWP06z/1zGikoEGa2k=;
+ b=TU/ELSd4CFZ1UnkDv2JwIXAQ8f3IgwfFcdgurVqqTrdnj8RFuCs8dseYuUXPr02SVAuojQnCrK4vIXGZpWNuj9H9bP+kHnmCfXNL8CGRcCdca4Xf2R4yKKYCZ6ID9e7qTkgxHexsbmT9Ngy2eLI/wPmIgmf5cmbxGLqKu2cW2ztIQDAo6Jpry1WdNtPo7vVbZzem/CAPQswKV28WJNLeZago7jiSo+J3Nn9dlBoH+FvwqH5kMzeFqVOYWdIi/4zfNyhoZTJ4K5VI9y7k6kPfdOBytGJps5VZ3prpB+SHGuPM9CmKeU+py15JBnfv17iLC9OpTIRrDXKlDDUtXihfog==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV1PR04MB10487.eurprd04.prod.outlook.com (2603:10a6:150:1cc::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 15:28:31 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
+ 15:28:31 +0000
+Date: Fri, 31 Jul 2026 10:28:21 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifetime
+Message-ID: <amy_Fe7hYtidlua5@SMW015318>
+References: <20260719221014.44354-1-kmehltretter@gmail.com>
+ <20260719221014.44354-5-kmehltretter@gmail.com>
+ <amufrR-1hop2pZOz@SMW015318>
+ <amyxxce6haNJBJ3G@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amyxxce6haNJBJ3G@gmail.com>
+X-ClientProxiedBy: PH2PEPF0000384B.namprd17.prod.outlook.com
+ (2603:10b6:518:1::68) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jul 2026 17:27:27 +0200
-Message-Id: <DKCV1YWVZSTC.I04OWIWKFTUV@9elements.com>
-Subject: Re: [PATCH v2] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is
- supported
-From: "Michal Gorlas" <michal.gorlas@9elements.com>
-To: <sashiko-reviews@lists.linux.dev>, "Michal Gorlas"
- <michal.gorlas@9elements.com>
-Cc: <linux-pci@vger.kernel.org>, <imx@lists.linux.dev>,
- <Frank.Li@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260731-l1-conditional-imx-v2-1-6016ee9148b2@9elements.com>
- <20260731135449.7A3B51F00A3A@smtp.kernel.org>
-In-Reply-To: <20260731135449.7A3B51F00A3A@smtp.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10487:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c18ca36-0b77-4ad8-09ed-08deef186098
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|19092799006|376014|7416014|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	geIP2OKogcNG7XaITlrnzDo3mHQPCpMv/35wKkwvK8n5yTK9HTe1ULj8qS6JJK4VMqout9j5igNwXJBhJPW8AWPNUwOUDjqBfA00HntNEkQPEXodB8Qz8A7Eozmb5pP8AaQN3nFnWHyR3brLcSEI10PuIpCD/r8YXa5UJulf9fMA/PdxfhJRYXRTXaUrn2y0lJN4VPDw3zyFCk8jkAoPz1VAhsH+cqnR2bNbm+zD6ep7P18/iITasYNLbw2LLyFNtJgQ+7oA7fzWwmj9skLUVThVwqZPwyYiT3BtXAmTJAGBOjPglBKEhf2PFGZQLpUh0rWe8cPjN5qJJ75on04U78GTZkAZCnWZdT2OcAxBpIYH8Hn3rGyZTzIxKSfuCsNzA/EW8c1+qtwomN83Q2EMBvXsrCpdRfPPOEsp6iM0t9ac5t/l7+hoY3XySfKY9PJj5CbI6IMoj8SRL1Wz0t6VVuOoGYHYbwaO4x+VgnjyJGhC4UjaEmU4wqMxr5iMIFO5jlnepdEAmjfbPodkaZYnMA61ajGCesuLudtz5qidb5ZtvKPFFRMmsPZlGNn1MKG3Fj1B1DZApkdfk8Rct8DY1oFNOCz1rmyTPo+5RwpZrk5nmFwEVUOI4oIs2N7lVcVCG9Yn4nbcZf+znnzPQRB5xuG3Cws6+rkJkXClRzdRWZU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(19092799006)(376014)(7416014)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6vitXt37InHseua3UgYlDYVbRuGr7xD+fWCUAqZc3Gg9uWKnJ93qjgz8Qibn?=
+ =?us-ascii?Q?Qa/40ZoxoyV0c8ZSYBlEMkm+6h121O0bNHYl+1X/rOPRIGqDRltzOIXxBnQD?=
+ =?us-ascii?Q?lMdVEO1C0HiCfP4gPsCQUvjLgBqf8FCcGdeo43VXzTQaoiqC+GpgSr+PTTjE?=
+ =?us-ascii?Q?ErUIEv0KzOk2CVOgS10Ex+nMOhxSp+y4+UFVbnZM4VpRze40OczfpXLrIocd?=
+ =?us-ascii?Q?BetgkYXe3qcP0O2lpxGUYXsHNHBLtefkXJjARQpl3MjTKXpYxLSuXvTNvOVk?=
+ =?us-ascii?Q?iva/ymHQEpSGZbqzgRHXQpFfcdL0CTe1IAIiCt1894t+thaTPDhxnvfKTuyR?=
+ =?us-ascii?Q?4AU0V55hI9JXe9rwnRQYZoTZ7ajQWCQ/P1aBH+2n3Evtf4rT9TWJtMFLfV6G?=
+ =?us-ascii?Q?CGbKohOIwELxhyCSUP6mGwPrrB+WYPIiUlovQeuG8QIywXWnlN9AOVJgRkPS?=
+ =?us-ascii?Q?HcAPUO3ZHsQiIO6QJ8AS5pee0+YoYAS08getlLKrdPtE8EQY1qqlxbnjAOk+?=
+ =?us-ascii?Q?b5UzPU9A4fQUhnDWxTIirK1HSN5LqdNcHrOHosh0EKm6Z3mBon5H2DDDFiLE?=
+ =?us-ascii?Q?RWPojwmbLzHI2Bhql0XTYHlTQIpTJJjoEACAfq6RC0Jd3IZzkiZIqwSSxNIE?=
+ =?us-ascii?Q?veL2zjnGNR+NlqxTt6K5eMasXvAuZlHtwH2b3dSmS+/g0LRrBJ6LS6r9JgX3?=
+ =?us-ascii?Q?XmsHv/blcJfpnQ/JD05VpXZAeqG80O3UBdB1zk6gdjdzfwagBOR8aS/84J5i?=
+ =?us-ascii?Q?XOENQqNjTtIVU611lUnpdNvFFq+vHVC1HF/VSLms5J3r395y0kJbGg75aCT1?=
+ =?us-ascii?Q?6MLsZmmHygVBvvt090BKDC2dtGsMljfQLRPxrpe4Hi+SWyrcQ3OtMLIhuYvV?=
+ =?us-ascii?Q?57tB9jxonrZvf+tanzpGn899xNu5OsdhlmDhfVPsnZi3O7N7QYuR7PCftIY2?=
+ =?us-ascii?Q?k5PD9+fev+dtnkEhDWbSjYODD/JbckgG4L9n8cHpNXhYbYv6wdA8NgriJtED?=
+ =?us-ascii?Q?SP3QZAugfTanbcK38gPEHqBkor94fMDvVTzo5dNsxVFLSOJSJSdCx1xxQIxr?=
+ =?us-ascii?Q?Xyy03GuwyWjPdeFHgK07aRyTtUDZb/n7WJCQqjR12CksAWol/Mw0RoDrDIyG?=
+ =?us-ascii?Q?Wb67S/DZNoBunWeLFSzhQJQXFMJ9nNaKBM1cV3uo7Y5/PBf3B2yvq0lLmlCk?=
+ =?us-ascii?Q?rc/ZzWqZMF5flI2feBTyQ+GWJR914B2PAgAn32+xxFGbHcx1t0pFGiftHuPj?=
+ =?us-ascii?Q?ijIvq6+sMXyNIoW3vIncwEAMWwVDRe2ox07E5sbBEswEIUgJOc011oHBbTpn?=
+ =?us-ascii?Q?yjORy8jDEaBw1OfV/ZGBz6hMVxvBhuhN1s44zKLjW5bOTpEZrfbRM49IhaF5?=
+ =?us-ascii?Q?BM5May2KNjG2BVUqQ660ObanvumVfhaZv3BHBZaHPRAyNz5xHGd80SbJJc0G?=
+ =?us-ascii?Q?oNyl3Bt7Hi02oZJCFO1ALxYk7i0h+/0+9T8yKq7Vf9er56wxShcTx0J736ht?=
+ =?us-ascii?Q?Osnv+ccpPCPeLKddE4X/rEVw+8qOaoJQ/1oGCt/InkiV7/MWwPHVN2WGBSo3?=
+ =?us-ascii?Q?Txa7IuF0x37o4y/SKBhmpphwPkUfe8M+hWh9rfddgPtiCUoKM9zYnSWHEBdu?=
+ =?us-ascii?Q?MPBPnfQ5dsXl/IvuvGPjOlfC8FW4sCeVklA/bjgAXj7WTTe2BaKJVWXrns56?=
+ =?us-ascii?Q?aiL6UtkXJztM8wb4Z1fRZFz2vjxAFR7GjNyQS8ZuptWWxJL1kBrpL5pgNah6?=
+ =?us-ascii?Q?LW7CQ8iKuaHPemFUK5LE0wRgEg0CmCowd6Mi/0AB0wiFlZz+S/x4?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c18ca36-0b77-4ad8-09ed-08deef186098
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 15:28:31.3782
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UgM0UVfvE3HcdydOflJabLxqf4UJnNXkdI4n3V9TH+jwQEZoXUqJL4JT7lPjyvHEKaQaBy3onUD2wu7/akhiesnLeqBYnXAuK6zuu6wtL90GjmQdfKG7OBnv8jbI9Tuc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10487
 
-On Fri Jul 31, 2026 at 3:54 PM CEST, sashiko-bot wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] ASPM L1 is conditionally disabled at boot but unconditionally =
-disabled upon resume, causing state inconsistency across power cycles.
-> --
+On Fri, Jul 31, 2026 at 04:40:21PM +0200, Karl Mehltretter wrote:
+> On Thu, Jul 30, 2026 at 02:02:05PM +0100, Frank Li wrote:
+> > imx_uart_remove()
+> > {
+> > 	imx_uart_ports[line] = NULL;
+> > 	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
+> > }
+> >
+> > Is above sequence to avoid use mutex?
+> >
 >
-> --- Patch [1]: [PATCH v2] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is s=
-upported ---
-> commit 7a899eb7e9f8116a0334832c7490e52f71ae751c
-> Author: Michal Gorlas <michal.gorlas@9elements.com>
+> I now tried this, but it doesn't work as-is:
 >
-> PCI: imx6: Enable ASPM L1 only iff CLKREQ# is supported
+> uart_add_one_port() may call imx_uart_console_setup(), so the entry
+> must be present before the call.
 >
-> This commit conditionally disables ASPM L1 capabilities in the LNKCAP
-> register if supports-clkreq is not set in the device tree. It also disabl=
-es
-> L1 during resume for platforms advertising IMX_PCIE_FLAG_BROKEN_SUSPEND.
+> uart_remove_one_port() unregisters the console. Clearing the entry first
+> causes its callbacks to dereference NULL.
 >
-> Link: https://patch.msgid.link/20260719-l1-conditional-imx-v1-1-a55a57915=
-c68@9elements.com
->
->> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/control=
-ler/dwc/pci-imx6.c
->> index 98e1db751132a..1fdcbcd2422e5 100644
->> --- a/drivers/pci/controller/dwc/pci-imx6.c
->> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> [ ... ]
->> @@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *p=
-p)
->> =20
->>  	imx_setup_phy_mpll(imx_pcie);
->> =20
->> +	if (!imx_pcie->supports_clkreq)
->> +		imx_pcie_disable_l1(pci);
->> +
->>  	return 0;
->> =20
->>  err_phy_off:
-> [ ... ]
->> @@ -1748,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *de=
-v)
->>  			return ret;
->>  		imx_pcie_deassert_core_reset(imx_pcie);
->>  		imx_pcie_assert_perst(imx_pcie, false);
->> +		imx_pcie_disable_l1(imx_pcie->pci);
->
-> [Severity: Medium]
-> Will this cause an inconsistent ASPM L1 state across power cycles?
->
-> During boot in imx_pcie_host_init(), imx_pcie_disable_l1() is only called=
- if
-> imx_pcie->supports_clkreq is false. However, during resume here in
-> imx_pcie_resume_noirq(), the L1 capability is disabled unconditionally fo=
-r
-> platforms with IMX_PCIE_FLAG_BROKEN_SUSPEND.
->
-> If a platform has supports_clkreq set to true, it would retain the L1
-> capability at boot, but lose it unconditionally after a suspend/resume cy=
-cle.
+> The mutex protects those sequences against sibling probes.
 
-Platforms that set IMX_PCIE_FLAG_BROKEN_SUSPEND (i.MX6Q) do not
-set supports-clkreq in their DTs. So no, such scenario won't occur.
+Okay
+
+Frank
+>
+> Thanks,
+> Karl
