@@ -1,182 +1,167 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D63437455
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 18:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8766B307AE3
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 18:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785521944; cv=none; b=UYVwMneimkxv8rRnmrM5lv7uAGiy7HOyZNrTKgowPvexcBx1rvkxucDCpyp67BqMh52jLDo7qfTuHolQ3KFwbVBX+UdDXrJ7pFHX00T1qv4CDqcPMdxS/yBgU5rAMfrRUavz317Hf/eu2UXCbDahgiTpqIY4LMKBmk/dL3iFSNs=
+	t=1785522957; cv=none; b=EST11kIRomZORPhJgdzAhhfKCeq/BY29UdtVzm2HaRoWEa6tEgD95hflPOjTBJAGMaNOPV3kCYnI0pJAuKMkdMP0fpyfSDK7IV5qLTgwM1GnmCjrOyQ/o0MWDASIOikFLbu1v7s8N1oNb69HenNByaBaX37oDTt9yoZ5hT4PAFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785521944; c=relaxed/simple;
-	bh=PsKOHHQKdkTPVr5CbgWuTRjCZmIzAuWQ/T5zBgCOXzw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o/ug9KrXxHa2mm+R/cfTs0yrJ6eMemweZo/TyykOuL83/Gs54Dc08JtZzm4ZUV6UD6wua/RcqMoWmoUl5kyz4iy0QyqvViFL9l94/021/abwlVMrhLQWt3hkvtEbrJVbAJdzKXt4Jf80Zw9TDLa3vcbMBKvs1dMgLkvkqyeqmoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZZJEfw8; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785522957; c=relaxed/simple;
+	bh=VnMuZAvZfxYFx+WG3iJPZ8ol8+VqZiGfwunIz6YIGgI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aHdJf8CwRFdwDBLjwoFKY8K5cBwIjHhvR+8MVqMqx0NafWvUwAVQJNjWjkKhyTGjUIy5OG/Jnlj/8GiG8rg1BIYh/SibUQS5PdEnaJN77149w83FrIfwkkczWK3AwpQI7pw0tJmR06wdmZAaLUGWZxqYZI2/Qryjf8cVrxKRYhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzBdyBWe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZZJEfw8"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f6609c657so676961f8f.2
-        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 11:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785521941; x=1786126741; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6m+8w0QVgGm8urXe/cU07WfU5xAZ+QJVFPsiFH0egMo=;
-        b=nZZJEfw8sj5wyNiQUc7RvjbV5uCm1AVHVxvbKAWPz9nURAMf0apO+1rFBHstUXfvJ8
-         zhmpV/DKv1xeIppMHybEt2M9iif2SzR/auFoyz06rUL/RHCxuMGsVdpg13Ar3f6juW0S
-         AUg+YfMzCKYD1I5QfJ+9SWgiSopy16LuMXrbKJSva6GiUruy16m5Vz49GiOkamlzznIL
-         84O7t99TOXxOQ6PhfI1JOktgoSXlEYs9/c3Rh04VdW0rZ1w1obPXh2VcyVwCSFakAyKo
-         +UpsgyU75Dl9E3gmtQ+nFZzFaehHTBtWBT5qNSbb3S1muIoFzOWv/XwmhsYPSBQqHzdf
-         gZGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785521941; x=1786126741;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6m+8w0QVgGm8urXe/cU07WfU5xAZ+QJVFPsiFH0egMo=;
-        b=Q+fwAMT9hw9mk4GV8Is4rOBT0xKIFHsxvjwPM5IIjtErDIi0gfIqMJmt5ipNV5PDWR
-         qttkRHvkrOvmg9TU41PIp2wE6mo1MT68gDliCm7ioybvaGIxxizwthVVdKM5VQBJZXPY
-         /bbPHcbuDonn0jqAEjIuYzetC/gOKJ+mMa4r1uVXUIazW55Z9wToTaAkNEWoY+fUCsOn
-         pQFkACmSgJsyK4zv0b/xWZU23PKdwZLSZNFzBXoR1UxDuyb8qSBSeDWrSInennerlL7u
-         63QNBLJfAq57HF9t7wG1cnZTJDFTBdikCIqRNONWT0SXk3NG4QhLtyBIoFdFilbkR+8T
-         +8AA==
-X-Forwarded-Encrypted: i=1; AHgh+RoV/iOWyzfZOumlluybQGizWBnCA3rInsG43AB+4Q+BRbzASf9sjKBZwzKWPWdUbl3lh0Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJGjUbD9BpmfLghqtcuI1gtzaRMD64ZXRPdiAP3LXvtZiyOWwk
-	qaN3gI1I75WC6DY6rmIVHlzCrRwf13yVWL+y+iK9S2TzS693uN/nomWe
-X-Gm-Gg: AR+sD134KfIRuoiWs7UtmpXEca2b3GX9uOALeDrylxifyntIio8UMkpNVyLLOENjwQ4
-	P2dXg3yMWGGGKDxiO8DIZiQDfjBCFGozJrLgGuqBxh/+maFiYDpp5oMosG+Lcvu4jDiebwGGZSZ
-	ouW8TixK7dmArvy0hCti3p9v+Wb2NtP9Qd4pweV7SUiWNmDOnHR9+SmQf9D2u3aO6NeCSJ2jDJW
-	zUX3HeN+6F7j93X4hfnzp0TI3z72Gqj3hNw3ykWZah5PJSKELFpMBD8Pz4v8HEWiRMhsgbHTJjR
-	7IBiyJGlqr+YCFxOskv4nFk6i+X3G4rMcdGq8sl4T8TByGln1sJxU+th7wtSeVZe9XkoxZS8KB4
-	SDchIK7D5hgF3kNs7lb04IzBEqkLlCO5Lc+t5Wseu7+MrPoJ6lwnSUHc0SuNb/1Sn/yP8ra2ZtV
-	nyn8vB/BHxVZn9/L6kDh2z2SaPiQ4kpRtURNpjU1MFPWiD3Oby02fRJIl3WvtF8tCiF5UqiuQb7
-	dZw+NXW3TDhoTEfBWqnDoBY5KWahR1FGyt7jhNeW8FqdBsYhvsvsPd9UIDIDfogqdTBr8j4qpVu
-	ydq69qJzJ345NXftpgmnHc3vej1/X2mzn3vq7bcJKLsSt++xB5W81sCYA8OaJptfwW5cxO7TPpS
-	elF8=
-X-Received: by 2002:a5d:5002:0:b0:473:823:1924 with SMTP id ffacd0b85a97d-47fd7314b2cmr986964f8f.39.1785521940802;
-        Fri, 31 Jul 2026 11:19:00 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-a8d0-bc01-6d31-3d12-3a11-d2d0.310.pool.telefonica.de. [2a02:3100:a8d0:bc01:6d31:3d12:3a11:d2d0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41d1756sm7293694f8f.4.2026.07.31.11.18.59
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 31 Jul 2026 11:19:00 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Sashiko <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 5/5] serial: imx: serialize imx_uart_ports[] lifetime
-Date: Fri, 31 Jul 2026 20:18:44 +0200
-Message-Id: <20260731181844.11330-6-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260731181844.11330-1-kmehltretter@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzBdyBWe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB791F00AC4;
+	Fri, 31 Jul 2026 18:35:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785522956;
+	bh=wdPx/QoIkXyXwp8++i7os62xb8vMri9FhcHj+cLJVzo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HzBdyBWeAOjRTGGTBbeiQ+dxJPT0X8oQM4wqxdU3cVhUuyV7k2jWQG5p4Vv+lOLPB
+	 95iSmuzryplx1eZWEiZzydf2BxIdDG2ZJr/COMlaqpUG8j3XA7mC6wIUa97SeLfuJI
+	 iRVGFENoVj8eoiklUneuCB/oK4gpmzY/1wKOa/bVUf9pERjwP503Pzo/FtBc57t+/M
+	 LOv6kqjrp8sa3nI9/Qi2GEQaTADfTblCvoZN52/T9NpklR/Dk9AkxtStEbuYaAJzQM
+	 8Ljb68HIxJoJNcZYhoxFzZsUCFYKAegBGw6tZ/sFH5c4aHwx0gUgqGN2Ch+6aGsik0
+	 bFxWp7cmQpJ7A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 5/5] serial: imx: serialize imx_uart_ports[] lifetime
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Karl Mehltretter" <kmehltretter@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260731181844.11330-6-kmehltretter@gmail.com>
 References: <20260731181844.11330-1-kmehltretter@gmail.com>
+ <20260731181844.11330-6-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 18:35:55 +0000
+Message-Id: <20260731183555.CFB791F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-imx_uart_probe() publishes its devm-allocated port in imx_uart_ports[]
-before uart_add_one_port() because console setup uses the table. The entry
-is not cleared when adding the port fails or after removal, leaving a
-dangling pointer.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-A sibling probe can register the shared console through that stale entry.
-This was reproduced under KASAN on QEMU mcimx6ul-evk by unbinding a
-sibling UART, unbinding the console UART and rebinding the sibling.
+New issues:
+- [Medium] Mixing goto-based error handling with scope-based cleanup helper=
+s (`scoped_guard`) in the same function.
 
-Keep the entry valid through uart_remove_one_port(), then clear it. Protect
-port addition and removal together with their table updates so sibling
-operations cannot interleave. Reject an occupied slot rather than
-clobbering an active port during a duplicate-line probe.
+Pre-existing issues:
+- [High] The `trigger_start_tx` and `trigger_stop_tx` hrtimers are never ex=
+plicitly canceled, leading to a potential Use-After-Free.
+- [High] The interrupt handlers are registered before the UART port's spinl=
+ock is initialized, exposing an uninitialized lock to concurrent execution.
+--
 
-Fixes: dbff4e9ea2e8 ("IMX UART: remove statically initialized tables")
-Fixes: 9f322ad064f9 ("imx: serial: handle initialisation failure correctly")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.org
-Link: https://lore.kernel.org/all/20260719222501.CB4CB1F000E9@smtp.kernel.org
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
-Backport note: the removal fix is self-contained. Complete probe-failure
-coverage also requires patch 1. With patch 1, all fallible allocations
-precede console registration, so rollback can safely clear the table.
-Without it, a late allocation failure (only reachable with fault
-injection) can leave the console registered after imx_uart_ports[] is
-cleared, turning the pre-existing use-after-free into a NULL
-dereference.
+--- Patch [5]: [PATCH v4 5/5] serial: imx: serialize imx_uart_ports[] lifet=
+ime ---
+commit e68620832979b5e6ab71402a28efa1b401b7be4c
+Author: Karl Mehltretter <kmehltretter@gmail.com>
 
- drivers/tty/serial/imx.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+serial: imx: serialize imx_uart_ports[] lifetime
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 251a50c8aa38..b0f34a6e7d4f 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -22,6 +22,7 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
-+#include <linux/mutex.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/rational.h>
- #include <linux/slab.h>
-@@ -2080,6 +2081,9 @@ static const struct uart_ops imx_uart_pops = {
- 
- static struct imx_port *imx_uart_ports[UART_NR];
- 
-+/* Held across uart_add/remove_one_port(); console callbacks must not take it. */
-+static DEFINE_MUTEX(imx_uart_ports_lock);
-+
- #if IS_ENABLED(CONFIG_SERIAL_IMX_CONSOLE)
- static void imx_uart_console_putchar(struct uart_port *port, unsigned char ch)
- {
-@@ -2632,11 +2636,19 @@ static int imx_uart_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	imx_uart_ports[sport->port.line] = sport;
--
- 	platform_set_drvdata(pdev, sport);
- 
--	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+	scoped_guard(mutex, &imx_uart_ports_lock) {
-+		if (imx_uart_ports[sport->port.line]) {
-+			ret = -EBUSY;
-+		} else {
-+			imx_uart_ports[sport->port.line] = sport;
-+			ret = uart_add_one_port(&imx_uart_uart_driver,
-+						&sport->port);
-+			if (ret)
-+				imx_uart_ports[sport->port.line] = NULL;
-+		}
-+	}
- 
- err_clk:
- 	clk_disable_unprepare(sport->clk_ipg);
-@@ -2648,7 +2660,9 @@ static void imx_uart_remove(struct platform_device *pdev)
- {
- 	struct imx_port *sport = platform_get_drvdata(pdev);
- 
-+	guard(mutex)(&imx_uart_ports_lock);
- 	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-+	imx_uart_ports[sport->port.line] = NULL;
- }
- 
- static void imx_uart_restore_context(struct imx_port *sport)
--- 
-2.53.0
+This patch protects port addition and removal with a mutex to prevent sibli=
+ng
+operations from interleaving. It keeps the imx_uart_ports[] entry valid
+through uart_remove_one_port() and clears it afterward, rejecting occupied
+slots during a duplicate-line probe rather than clobbering an active port.
+
+Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.o=
+rg
+Link: https://lore.kernel.org/all/20260719222501.CB4CB1F000E9@smtp.kernel.o=
+rg
+
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 251a50c8aa387..b0f34a6e7d4f8 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+
+[ ... ]
+
+> @@ -2632,11 +2636,19 @@ static int imx_uart_probe(struct platform_device =
+*pdev)
+>  		}
+>  	}
+> =20
+> -	imx_uart_ports[sport->port.line] =3D sport;
+> -
+>  	platform_set_drvdata(pdev, sport);
+> =20
+> -	ret =3D uart_add_one_port(&imx_uart_uart_driver, &sport->port);
+> +	scoped_guard(mutex, &imx_uart_ports_lock) {
+
+[Severity: Medium]
+Does this mix goto-based error handling and scope-based cleanup helpers in
+the same function?
+
+Looking at imx_uart_probe(), the function heavily relies on goto labels like
+goto err_clk for error cleanup. The cleanup subsystem guidelines expect that
+usage of goto and cleanup helpers are never mixed in the same routine, and
+that all resources should either be converted to scope-based cleanup or left
+unconverted.
+
+Should this function be converted entirely, or should this continue using
+standard mutex_lock/unlock to match the rest of the error handling?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a race condition
+with interrupt handlers being registered before the UART port's spinlock
+is initialized?
+
+Earlier in imx_uart_probe(), devm_request_irq() is called to request
+interrupts before uart_add_one_port() is called here. The sport structure
+is allocated via devm_kzalloc(), leaving sport->port.lock zero-initialized.
+The lock is not formally initialized until uart_add_one_port() runs.
+
+If a spurious interrupt or a pending interrupt from the bootloader triggers
+between devm_request_irq() and uart_add_one_port(), would the IRQ handler
+imx_uart_int() attempt to acquire an uninitialized lock, leading to a
+panic or lockdep crash?
+
+> +		if (imx_uart_ports[sport->port.line]) {
+> +			ret =3D -EBUSY;
+> +		} else {
+> +			imx_uart_ports[sport->port.line] =3D sport;
+> +			ret =3D uart_add_one_port(&imx_uart_uart_driver,
+> +						&sport->port);
+> +			if (ret)
+> +				imx_uart_ports[sport->port.line] =3D NULL;
+> +		}
+> +	}
+> =20
+>  err_clk:
+>  	clk_disable_unprepare(sport->clk_ipg);
+> @@ -2648,7 +2660,9 @@ static void imx_uart_remove(struct platform_device =
+*pdev)
+>  {
+>  	struct imx_port *sport =3D platform_get_drvdata(pdev);
+> =20
+> +	guard(mutex)(&imx_uart_ports_lock);
+>  	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
+
+[Severity: High]
+This is a pre-existing issue, but does driver removal leave active hrtimers
+running that could cause a use-after-free?
+
+During driver unbind, imx_uart_shutdown() waits for the hrtimer-driven state
+machine to finish using a simple timeout loop, but it doesn't explicitly ca=
+ll
+hrtimer_cancel() if it times out.
+
+Shortly after uart_remove_one_port() completes here, devres will free the
+sport memory. If either the trigger_start_tx or trigger_stop_tx hrtimers
+are still active, could they fire and dereference the freed sport structure?
+
+> +	imx_uart_ports[sport->port.line] =3D NULL;
+>  }
+> =20
+>  static void imx_uart_restore_context(struct imx_port *sport)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731181844.1133=
+0-1-kmehltretter@gmail.com?part=3D5
