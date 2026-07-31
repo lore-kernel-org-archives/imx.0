@@ -1,52 +1,70 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E62320A04
-	for <imx@lists.linux.dev>; Thu, 30 Jul 2026 23:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CAF288AD;
+	Fri, 31 Jul 2026 00:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785454154; cv=none; b=PR0nMlCi393Z2rjOmC8Yrbd4TiB/YpoRByjZTAXz0iiLeTMwXVyPoMRwtQI/LlYGmXdTED2HkZ476XZGqAe6ObNHkmvELjXHOvY8LMaaGfSfq9w1iOdbhyY3dOUkokis0FYEN5HnB5qSlPmYmwgdzLGSX1K1tv3qr2sFFsqPUBI=
+	t=1785456277; cv=none; b=nDHAfTwhmzwby+QTb28t06A2jhgEwQfUGVW14kcsP3brEmdN8tGCDTluaqV2WXHkAETf2d3bvm2Nw3E/ccuXF4c2hm7pgHq6K2djkowsHJPN5ksDDL2Yy6M6iaGwt/FHmEwE9zVDtQi//RyOy4FOdH6Mv9d8s0wDZZOdiAVYBOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785454154; c=relaxed/simple;
-	bh=TLEybU8RbQkyzN0WI44ggs/PpkN9LN5f3L7RTIkDaCE=;
+	s=arc-20240116; t=1785456277; c=relaxed/simple;
+	bh=BzIBgxbId4MsXTp3dv2dAiso1jhBqfp0i9lwzXiJbF0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jQf9xI9btPIYEjfKBtcXKQpXg//dso7Cw+W5rkDIK6asqaxgyIRCU10/bQHr3XWw1AlvwOrSUZ/MZnQ1bIK5gIQN/+NFa8t6egrpgjaNuctw7oD2+Y8bRmp0aObdn87EkDLpjbELXs9r48apalp7KWv5sxR+BKYeTp0zGvOdtQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=XPDvqptm; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=X8i4nVQbOGRzjJEm5GWyUYX+Ivc0quAAfaPVAE17SwxQt8ofDPgiSVwevsH/ZsxPfAcImY9p3vZ4Nf6E+ouoTrYiRP1bIyaXam7vN7155sRsziMQpZHJ3JRz1c6umx6EncG02mDW86Lsk4QIspQ2QQlcWmeKoKAlVOeoNAHtcpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=lI7R3JIu; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="XPDvqptm"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 15AF82E9;
-	Fri, 31 Jul 2026 01:28:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1785454082;
-	bh=TLEybU8RbQkyzN0WI44ggs/PpkN9LN5f3L7RTIkDaCE=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="lI7R3JIu"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1329340E00B8;
+	Fri, 31 Jul 2026 00:04:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 0B5_xJzjBJdo; Fri, 31 Jul 2026 00:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785456262; bh=WBuq/f+9nALLo4Zi7QAKrUaH/kj1W1dPJQbACcDyLnI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XPDvqptmjr2Vs3Mk9GJMVmgUOmiC1ccfBBdVutsxU42TDIh9rxHX/CZiI6ue0GgJ0
-	 uwy0M/Li+lNwmJwDdtDe/DTZ72PoemcjvBKc8EWokkIvkrKYftWw0CA9BiXJHjxAa9
-	 FIUWdBS8ByjtC7YJOp7Bmy/Trp0LdilrZHD6I0xc=
-Date: Fri, 31 Jul 2026 02:29:06 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Christian Hemp <c.hemp@phytec.de>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Robert Chiras <robert.chiras@nxp.com>
-Subject: Re: [PATCH v5 4/4] media: nxp: imx8-isi: Add additional 32-bit RGB
- format support
-Message-ID: <20260730232906.GD1600813@killaraus.ideasonboard.com>
-References: <20260728-isi-v5-0-1d22ab91602a@oss.nxp.com>
- <20260728-isi-v5-4-1d22ab91602a@oss.nxp.com>
+	b=lI7R3JIuil/u8lKmq0FyrpCFZGnjZ8C6Cp+CjteON8sF5GrMva1VsxBMp17oyAPcZ
+	 6+gj9MRMoGYX6irDLv9mVABWGzXg3bLw3H/zQH0tYkxKF6PJrudyDmTbsRG2qqbH82
+	 PNFR5xHarTJxkgRe/jW0VmFiQUGj6HYebZEz5jwt469GYoYaRnQCMBb3Onrmunl3Mm
+	 hdCtIQumSAe6D8D507AuiGp0usYbX9Rkp6Rl1DdNziW3SM1P6aioO2d8/kymZZacGk
+	 UsbVHWECgLhNDgxLpWm72BsbHOJPLOc8X+C+gnXG8DJbXRg3oju/5PzyR1fwvQNZwW
+	 GScFhFNdi76rNDSVJG2fGR+pkecjf6tH9odpVOBMvERSwWE7yDoaSJ0Ny2jHIUSimj
+	 wrwTd2Le28GKesjjRxcleo2+LrtxvvDCukytKumsmMvDq2lFJSh3Vepc1CQf7H90zp
+	 X53k9UrSR94eaOFBVORHJrNR0PfbO/OdGqjO/XfUGMotRg1G7SRVPXd2hkVNtmUEEn
+	 1S2ghBrGQ4jKvLuYPezBTa1yevMnezmHYgZWnzvBDZAmm26ZL3V3LkZeW3bFWPD0FK
+	 5oiU2FiqdhXnfj4n17/FEKnV0I4EQkvHyqjINR4O1cMDKNYYfR/v8ySouJXSDQ8a/j
+	 U7Kxuq8OCw1caorc03eDvgDU=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0016F40E01CE;
+	Fri, 31 Jul 2026 00:04:09 +0000 (UTC)
+Date: Thu, 30 Jul 2026 17:04:07 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Rosen Penev <rosenp@gmail.com>, linux-edac@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>, Tony Luck <tony.luck@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	"open list:EDAC-FSL_DDR" <imx@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Subject: Re: [PATCH] EDAC: fsl_ddr: use devm_platform_ioremap_resource()
+Message-ID: <20260731000407.GIamvmdwHRq_PSgyvc@fat_crate.local>
+References: <20260714234609.902367-1-rosenp@gmail.com>
+ <alhXciS9G_bGB2re@SMW015318>
+ <20260719155822.GAalz0Hj3XT97KkPOk@fat_crate.local>
+ <CAKxU2N-vMNR+ES2YYuJh+6XASmZ04cnFodb4kP4zRBW0mbEKaw@mail.gmail.com>
+ <20260728224059.GAamkv-4LJPspOw5ZV@fat_crate.local>
+ <amubjArdXOgTzNCX@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,99 +73,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260728-isi-v5-4-1d22ab91602a@oss.nxp.com>
+In-Reply-To: <amubjArdXOgTzNCX@SMW015318>
 
-On Tue, Jul 28, 2026 at 02:58:59PM +0800, Guoniu Zhou wrote:
-> Add support for additional 32-bit RGB pixel formats (BGRA32, RGBA32,
-> BGRX32, RGBX32, ARGB2101010).
+On Thu, Jul 30, 2026 at 01:44:28PM -0500, Frank Li wrote:
+> On Tue, Jul 28, 2026 at 03:40:59PM -0700, Borislav Petkov wrote:
+> > [You don't often get email from bp@alien8.de. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> >
+> > On Tue, Jul 28, 2026 at 03:08:25PM -0700, Rosen Penev wrote:
+> > > The unfortunate part of that is sashiko does not understand v2 patches
+> > > and whatnot. Meaning it will always complain about things fixed in
+> > > other patches.
+> >
+> > That's fine as long as we've replied to the patches and said why it is ok. LLM
+> > is just a tool, at least for now and how it is used with Sashiko.
+> >
+> > What is more important here is finding real hw to test it on. I'm hoping Frank
+> > on Cc will move...
 > 
-> Formats with alpha channel (BGRA32, RGBA32) only support capture as
-> ISI ignores alpha bits when reading from memory.
-> 
-> Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> Tested-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Thanks. 
 
-> ---
-> Changes in v3:
-> - Drop M2M_OUT for ABGR32/BGRA32/RGBA32 as ISI ignores alpha bits (Laurent)
-> - Remove Android requirements from commit message as alpha formats
->   cannot be used as M2M input (Laurent)
-> - Add Tested-by tag from Laurent Pinchart
-> 
-> Changes in v2:
-> - Add Reviewed-by tag from Frank Li
-> ---
->  .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 51 ++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> index a6e044056762..f45c2aae59ce 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> @@ -166,6 +166,57 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
->  		.color_planes	= 1,
->  		.depth		= { 32 },
->  		.encoding	= MXC_ISI_ENC_RGB,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
-> +		.fourcc		= V4L2_PIX_FMT_BGRA32,
-> +		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RGBA8888,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 32 },
-> +		.encoding	= MXC_ISI_ENC_RGB,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
-> +		.fourcc		= V4L2_PIX_FMT_RGBA32,
-> +		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_ABGR8888,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 32 },
-> +		.encoding	= MXC_ISI_ENC_RGB,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
-> +		.fourcc		= V4L2_PIX_FMT_BGRX32,
-> +		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_OUT
-> +				| MXC_ISI_VIDEO_M2M_CAP,
-> +		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_RGBX8,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RGBX888,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 32 },
-> +		.encoding	= MXC_ISI_ENC_RGB,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
-> +		.fourcc		= V4L2_PIX_FMT_RGBX32,
-> +		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_OUT
-> +				| MXC_ISI_VIDEO_M2M_CAP,
-> +		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_XBGR8,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_XBGR888,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 32 },
-> +		.encoding	= MXC_ISI_ENC_RGB,
-> +	}, {
-> +		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
-> +		.fourcc		= V4L2_PIX_FMT_ARGB2101010,
-> +		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_OUT
-> +				| MXC_ISI_VIDEO_M2M_CAP,
-> +		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_A2RGB10,
-> +		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_A2RGB10,
-> +		.mem_planes	= 1,
-> +		.color_planes	= 1,
-> +		.depth		= { 32 },
-> +		.encoding	= MXC_ISI_ENC_RGB,
->  	},
->  	/*
->  	 * RAW formats
+We have a bunch of Sashiko reported pre-existing issues:
+
+https://sashiko.dev/#/patchset/20260714234609.902367-1-rosenp%40gmail.com
+
+Who's taking care of those?
+
+Thx.
 
 -- 
-Regards,
+Regards/Gruss,
+    Boris.
 
-Laurent Pinchart
+https://people.kernel.org/tglx/notes-about-netiquette
