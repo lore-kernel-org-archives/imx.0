@@ -1,171 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F983C3789;
-	Fri, 31 Jul 2026 10:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4C741DE0D
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 12:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785493879; cv=none; b=gttkVchHM/mR98Dkfr2n3fWb5O0y2mK+hiqh7p6REPbqTx2g7y0vQMi9UhbFzSht6HKkogwb8eryn8gH3YFU2LnMzhGTzDUaA1n/2Xm60evyKWlwZmxhw/uDgaQBIg97PIDc+hBxUH1NLf0k71nDIT+2qlRNm8VUq5Y1sNp5WKM=
+	t=1785501455; cv=none; b=SU+/mORPA0SUVBn4IagaHoQy8Zs+kkfH6nuXk7EKiD1n2OUsR1livXVqMJmg+va4TjfohCfS0EbeoL1/eOGTtOsGWSc7C3WDLecgaNYVPo6twhepHA/JHh7D72hRkHGQFVaKyOVHF7ODYpAdX66k+V1+yFD9ibgCnhdU9vqeGlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785493879; c=relaxed/simple;
-	bh=IC3ireqBsGWEK+cIfQL6mSXn4zKUpiRizS+9rPexqs4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=sW581i89NNLDlWjmxXBqdoUAYEU/CJ5MtVL3wgTQQxqHAMcfUvRAI6PX+mfGYRwdC02pFbMu8yiRncSFH8r1Z5KtvttFYuNn7T+hxBCotL91ymcHjIiE5zgZb1CNeXJZs6iGpVWiGjOmQGMfbqIALItqEDre9TOcOZU56HlftFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0xE0J4I; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785501455; c=relaxed/simple;
+	bh=YqebT9clfnPMsC7yqrCtUYusj4Rz5asoem6l5jV5TlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oHx1RyZ0I+UyC0AZUY6nKTL/ciCYOsTMsPN3NQegPvpQkmh6iBtdWBBeotn/SP9LxwklhNiy+pFldvaWdK6terChE7d51ZkO7vRvWMVAx75hlYB6++m4juVoBA41DMvRpVgWZ0g9mKjJGK01WUR8eRw4vUiIrSERl3d0fZNbZ1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pk53CtJx; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0xE0J4I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C871F000E9;
-	Fri, 31 Jul 2026 10:30:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785493859;
-	bh=9cnpHXNfb/HB/PG5lDmW5IElrZfF2Ajx8Jg8BP+iQnk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G0xE0J4IB0x6h9nNg+2EJczmwL5AHcVLlGD2aV7/KwePesO8Ort0mwr1vcVuGudSl
-	 HtHwiyqzwxB/zhdtsNZ3iFnAnSyCPeRprhL+o5WvqD9GOlq/Qs5fEv5s8ro+fUxdeS
-	 kJgB9hkXBPHZkBjRe5Py/kvd1iySIUKepDHuRKQKmpkI0MhbzCU2zzFgfJBm1dvPSf
-	 Nn2N7nWtweS7wSzcQHuhRii/WdCgNJ2zJD3R+gBwkUE2MI4GkhMZvlXiTWNCypSOm5
-	 fjhDMJQutE5HcFUInqbzGoPHyycYWQjf8XjS+x4fNNyJhxcYVlVnYuRBgkfDe6QfMJ
-	 xfywAYnljQ8CA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] regulator: core: use system_freezable_wq for
- init complete work
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@oss.nxp.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20260731-b4-regulator-pf01-v2-1-a406c8737fdb@oss.nxp.com>
-References: <20260731-b4-regulator-pf01-v2-0-a406c8737fdb@oss.nxp.com>
- <20260731-b4-regulator-pf01-v2-1-a406c8737fdb@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 10:30:59 +0000
-Message-Id: <20260731103059.B0C871F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pk53CtJx"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a097f5ab95so938204a12.2
+        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 05:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785501450; x=1786106250; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zxJ+yA42EHLQdUzb/+RpNk8wZMGnUA7//ORKkd+D1IE=;
+        b=Pk53CtJx9YdhPw5KOHsv53nPpPlGON2G6Wu8C60ukyxEnhz6M6dr7azD/acuYWFKua
+         6KJZLdeuVabkN1ZNwzTsb/pLckXXbpJgG0EM1d9C2jeOsv5NQ2569uPTo5orFC8XLQdi
+         yHq/w6GZlw7yJw11iC/qZJPo8wO4NZb+NvXDPt6+cNJu5nZtPJiiDjG3g41xw0l8EAEs
+         cOH74SiHxBWiOotie2xfjRBrYuls5RGwWXt36jgV6ppTI33fYr3KXani0s+L6pqbcueA
+         VgIjtfpB27M1jlUKrZ3lAAoIX7bAw863Rd4vSVruo6Ndw12SaW5c6p5AB7zmGZvc0erU
+         nBqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785501450; x=1786106250;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zxJ+yA42EHLQdUzb/+RpNk8wZMGnUA7//ORKkd+D1IE=;
+        b=jORem0hzMvyXjODd+Y95FcqB3kqoxtXdN+VgJ2T2c4F8sHMN6zwviA4vUzVa74MXRG
+         3QElhfY/nNSlVCXGQX/9MiYFJauIk+saHpW1Pjlf4bvEFV+dMvggPC/wnBuexz/sYklp
+         1KNmuRjH1mn+mYALa8thVi619YQ2BTpWhXcqjYcgPCAWAHdYSRj5xfHMAgW3fkFoN1lK
+         GRvkdz7RF1fQZfR674zg53MkRbuY8xEWVWjUUGfAs8JB9HdDP0fG3N1OIisHNXMrleCM
+         MezhPH6XzZs5SsKA5dbWhty31VhiEFMqvrkoq7Jo+C7ft8yck2Mxt0g3KIK+b3dexs7s
+         19fg==
+X-Forwarded-Encrypted: i=1; AHgh+RrFfuxjgLQt1IymuTiVEWKReCTPPnTambeeO91OOkbQwGz/FDHuPg1XPdUpKjJz/y8bHPo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YybmTPvusbGhJ7AY2RPnqADfU30loqAxZ8GOyFqVM2J3qAiT0jg
+	33oNlntBRYcG5s3xoNjTVVOfxu4c1xVQnnTPg1M3HYzlHGcBLRsh3BPc
+X-Gm-Gg: AR+sD10hQBP1JhLy9QSe133Qrh1ND66+bV/I+5PlCgYW3yWsO4GWLLQQhvuhLklMk9l
+	wks6zLHU25hHBgsdsiGPfmujXGXItdcumbK2ZbsbXT1p/rZSrQsJki/Y3t7PgFRPVLOYDhepz10
+	betlCa49iJ3PWwEJsf83KoVGhQmd8y4LN9P68rfkEKqMNTxeecBlBtEem2dfuXoFiNi19ek02cN
+	huxBgueipLmYFlYU8Nb19pn2Q6qXrVp1fE70UQqxDNgF5uo1SSNxFW5twEOTLschVidbByjUsXs
+	zFcdbm9RjRokvtNuZrKpgRRX3SzzzjETBA85+pjZy7jo9Yez0BwIVWsQNA9U31GhK2a0zyVG5nv
+	RuVzdS1hZObA+TaDuDJTqQURKfYTzdX3PCDzm4bk6roEn2J+15Ysy0lmPVdI3Z8PFJRXriSYFK0
+	o23yrIJB3Cc8ZkQRxhxPlnBHSKHj8iBDpm7uwTZxPypE7dn4HWTJ+qXy7qwfRx4IK0x90bXw2Pe
+	RJ+yFV1xLqEfq15YQoPIdis3cr2JTpgo9fA2xdixuf/0S4n7XdW7z1jjkq1hmmViQ6B7lMNCz3D
+	8JN33oR/HvNw3m4JW7oyAtvnsyG6R13mulsoeJKb6mJShunxCbKSwm76EbEqoAls9lqLvwE=
+X-Received: by 2002:a05:6402:51c8:b0:6a0:1704:de29 with SMTP id 4fb4d7f45d1cf-6a098d07135mr979233a12.33.1785501450131;
+        Fri, 31 Jul 2026 05:37:30 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a8d0-bc01-6d31-3d12-3a11-d2d0.310.pool.telefonica.de. [2a02:3100:a8d0:bc01:6d31:3d12:3a11:d2d0])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a09c660febsm1308537a12.28.2026.07.31.05.37.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 05:37:29 -0700 (PDT)
+Date: Fri, 31 Jul 2026 14:37:28 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] serial: core: do fallible allocations before the
+ console can be registered
+Message-ID: <amyWRaZN2kSiv3YQ@gmail.com>
+References: <20260719221014.44354-1-kmehltretter@gmail.com>
+ <20260719221014.44354-2-kmehltretter@gmail.com>
+ <2026073056-embargo-rejoicing-87c2@gregkh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026073056-embargo-rejoicing-87c2@gregkh>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Thu, Jul 30, 2026 at 04:28:10PM +0100, Greg Kroah-Hartman wrote:
+> > Cc: stable@vger.kernel.org
+> 
+> As this can only be duplicated with fault-injection, it really doesn't
+> need to go to any stable kernels, right?
 
-Pre-existing issues:
-- [High] regulator_unregister() uses flush_work() on a delayed_work, failin=
-g to cancel pending timers and leading to Use-After-Free.
-- [High] Delayed work 'oc_work' is never canceled on unbind in mt6363-regul=
-ator, risking timer list corruption or Use-After-Free.
-- [High] Delayed works 'sc_recovery_work' and 'ocp_recovery_work' are never=
- canceled on unbind in qcom-labibb-regulator.
---
+Agreed, I'll drop it.
 
---- Patch [1]: [PATCH v2 1/3] regulator: core: use system_freezable_wq for =
-init complete work ---
-commit 7f543933219647c14311f3aa93aefaa15b1b5acf
-Author: Joy Zou <joy.zou@oss.nxp.com>
+> 
+> > +	if (!uport->tty_groups) {
+> > +		kfree(uport->name);
+> > +		uport->name = NULL;
+> 
+> Why set this to NULL?
+> 
 
-regulator: core: use system_freezable_wq for init complete work
+It's not necessary. I will remove it.
 
-This patch fixes a race condition between the delayed regulator init
-completion work and system suspend. By switching from system_wq to
-system_freezable_wq, the init work is now frozen during suspend,
-preventing it from running when the I2C adapter is already suspended.
-
-> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-> index 2e61606fc1d05..6a4008f387b5e 100644
-> --- a/drivers/regulator/core.c
-> +++ b/drivers/regulator/core.c
-[ ... ]
-> @@ -6899,8 +6900,9 @@ static int __init regulator_init_complete(void)
->  	 * we'd only do this on systems that need it, and a kernel
->  	 * command line option might be useful.
->  	 */
-> -	schedule_delayed_work(&regulator_init_complete_work,
-> -			      msecs_to_jiffies(30000));
-> +	queue_delayed_work(system_freezable_wq,
-> +			   &regulator_init_complete_work,
-> +			   msecs_to_jiffies(30000));
-> =20
->  	return 0;
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but while reviewing the use of
-workqueues and timers in the regulator subsystem, I noticed that
-regulator_unregister() uses flush_work() on a delayed_work instead of
-cancel_delayed_work_sync():
-
-drivers/regulator/core.c:regulator_unregister() {
-...
-	if (rdev->supply) {
-		regulator_unregister_notifier(rdev->supply,
-					      &rdev->supply_fwd_nb);
-
-		while (rdev->use_count--)
-			regulator_disable(rdev->supply);
-		regulator_put(rdev->supply);
-	}
-
-	flush_work(&rdev->disable_work.work);
-...
-}
-
-Because flush_work() returns immediately if the delayed_work timer is
-pending but not yet queued on a workqueue, this fails to cancel the pending
-timer.
-
-When the timer eventually expires, it dereferences the freed rdev memory.
-
-Can this lead to a use-after-free during hardware removal or module unloadi=
-ng?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but I also noticed missing
-teardown for delayed work in the mt6363-regulator driver:
-
-drivers/regulator/mt6363-regulator.c:mt6363_regulator_probe() {
-...
-		config.driver_data =3D info;
-		INIT_DELAYED_WORK(&info->oc_work, mt6363_oc_irq_enable_work);
-
-		rdev =3D devm_regulator_register(dev, &info->desc, &config);
-...
-}
-
-The delayed work 'oc_work' is initialized on a static array but is never
-canceled on unbind.
-
-If an overcurrent interrupt fires and schedules oc_work, and the device is
-unbound before the timer expires, the timer remains pending.
-
-If unbound and re-bound quickly, could the subsequent INIT_DELAYED_WORK()
-overwrite the active timer's list node and corrupt the timer tree?
-
-Or, if the module is unloaded, could the timer fire and execute code in
-unmapped memory, causing a use-after-free?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but there is a similar missing
-teardown issue in the qcom-labibb-regulator driver:
-
-drivers/regulator/qcom-labibb-regulator.c:qcom_labibb_regulator_probe() {
-...
-		INIT_DELAYED_WORK(&vreg->sc_recovery_work,
-				  qcom_labibb_sc_recovery_worker);
-
-		if (vreg->ocp_irq > 0)
-			INIT_DELAYED_WORK(&vreg->ocp_recovery_work,
-					  qcom_labibb_ocp_recovery_worker);
-...
-}
-
-The delayed works 'sc_recovery_work' and 'ocp_recovery_work' point to a
-devm-allocated structure.
-
-Since there is no devm action or explicit teardown to cancel these delayed
-works on unbind, devres will automatically free the vreg structure.
-
-If the device unbinds while these timers are active, will the timers expire
-and dereference the freed vreg pointer, causing a use-after-free?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731-b4-regulat=
-or-pf01-v2-0-a406c8737fdb@oss.nxp.com?part=3D1
+Thanks,
+Karl
