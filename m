@@ -1,137 +1,278 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010011.outbound.protection.outlook.com [52.101.84.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD35753E0B
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 01:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785461537; cv=none; b=CBlLl0qBNgLlGUcZgOrREAycDJsWXNAbP+gH21W4JsxskXlpLcfezQmg/zbgNxXaQjMyqqr2ftT2m9j0a5u1BCbXRXI/FhjatMKpl/jUF3xBFGTQJ4L1lxwXbHUxM4fMOYJkcWRlLp1EM4z0zytzeKoSovGX4A9PMlcZRV8OFxA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785461537; c=relaxed/simple;
-	bh=qFJ5FwXDmw4sDqWBJ6xXxn8YsyhcHmfMAlbGFVpiMwU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tqNSgN+nYXVp7/zzLIfBS+HNz4QANCY2yCrZulNXmwOe1v+buKXv1Lz9TDTcArkCCqxz1sh8sRuhNhopJdenoFI/U/9BYKQ8vg36TOKQ8CaKQRClCUKyrEjzB/ZD501lBGD6CAM+LvVZ0cznuE071DVmVktBz2Is+D2081Dm9+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOiDihQw; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DBB5B1EB
+	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 02:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785464811; cv=fail; b=GFj8dZpLZrL5DCoUzhzrbuQmgLjFMCQ4si8bsGV8pDC5+dnZHqDmkV6UaV3WEZX1wn8OMXF+UsECXK6JbMx4JCn8Id9yeX8wgd6QrgLDgshXtp5RfEdmmBz/zl5T/e4lKcbL9OviWPp50CAs/cxBZVoErJn0Qvo3q2IoCFNbC5k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785464811; c=relaxed/simple;
+	bh=Hgl3for+LMtFsu57+xqLM9ZPWYG3Rm2ndMVVBQFf56o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=B8n2T6dBCfMwul4Vz4PzIU1hnV8vhqS3W0Lb2rQWO4ihNYZucLvpoeNDcueKkSh9y1IMHEs+k6EMOHayUluekSTaLBs9U82+7hOZl5lnBfNuVZnijNsaaCm/m8V0YhHFa8VyIKv/zBohrdkbB9+bSrN4QGkHKr2CgqHPVGNKgJc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lE1E66Fz; arc=fail smtp.client-ip=52.101.84.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOiDihQw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5CA1F000E9;
-	Fri, 31 Jul 2026 01:32:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785461536;
-	bh=vX1Hv+GRhZgTA7XF4k6YSRQBBnl5buEFD767sgHEb5o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XOiDihQwzyPJNWVTLlZimCdbrAl2j3oet/zNoVeZ+xyfsH46hLG1lc86+JKrW9Mln
-	 dz1yWMRouiUfyEN6cQoJvQjxUR1ofFIOZfD+M7WJOOJyROnyWaA/vfdHHXDp48HIyg
-	 9wU9VjfdKEoAKfl6gKfgufSp2zNyblKJIDcXGUzfz2WW08ENxQ9ocuY6uvch4TZNJP
-	 3gi5vKOdf+TczaXNL6aPNqmm1nCcernr/8trJri/j4uzA1rTvlTML70yOd3L6+Kqmb
-	 AVXOqQDuGH4Rxz5/hKhJZ6Te3CWR37nYP1sZ2D6xEY5Cs4n0ymR7jkwOMIKik6lOAL
-	 dtKAqYIgn1pOw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv2 1/3] EDAC/fsl_ddr: use
- devm_platform_ioremap_resource()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Rosen Penev" <rosenp@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260731012130.1212640-2-rosenp@gmail.com>
-References: <20260731012130.1212640-1-rosenp@gmail.com>
- <20260731012130.1212640-2-rosenp@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lE1E66Fz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=izmKUQd1/qsU0JrNPxXVxvKHwj/wgGGLI7yOQzfdnJQD7ch70+IzGGqR3bze2yA46G9rih+ETIR9Hi+PEpyFy6kdem6H92N7FGJmpWFbwitThG0b2MJ3BYdUKi9zH/k3k3S7Y4wTZe9m/iUXpvq0EngB4slIqMYBjTLu+nOmow8g8aI10DcABFbLIhY/3cmLuzh69+HmGTSb5De/dxOlCLxMqMaTVA2Ip0/dtovVKdNF0bR8FDCaG0sSAGNuo3zVk5vfZwToOjEp1LCxdj1OJwAownAf2hnmR0Aqi/zZj9826aJ7Wpa3dPZ7rfJfl9Py36UxDrUmzEtWoEJwLerbzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Oa4X1NcDye2+f+9aIXZYQvC7A0B7efnrHqIJAkgrbOg=;
+ b=e3qwyX/hJ7coE5JKiUXwzt3ulq8rOZk04vxBokpKRY47nsQ3MvJt4eQJi9xeKarzsp9j4xtUe4T+3KM4zC4D/4lqU20dNHICQ0tBm7v82zmweYlOTcOOBGU+ejKlktbPdrL8BevDzXvczxUOsY2+qiU27yE719x2jy1TRkqPDhNSgcDWTfcwo3Cy8lHkjMzMt6eE2FKyGh6Bywum9S1TjG/HeZEUNegUp6lxXXEvvI9ZYMRARhySoAgD2h8GT30cTgBHaZXJTWFo7XNeupwCwL7PMZW0+XLP+cbfcpmB85BUCuhuxn6017Xl46DY3BYOFcrscx9HG1CQ+0OWvHm6ag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Oa4X1NcDye2+f+9aIXZYQvC7A0B7efnrHqIJAkgrbOg=;
+ b=lE1E66FzvWJCASjrYKZOlDwE5jvuioDK6IXul5LIJ1UymszfY1d77GHrsana738CRzfOs7J1+jB+dT00oEatXJ8Jn+QYofai8g3ZTHl9BwEJmBrY53PJg7Zc/hvWq16ae2eJ3yHFuDI5Xgfskxz37Wtk0xt4l4r30CwxpLs1CsVxihFC0vGlbn5rDspUyj/q7FeUiR2yqIVUbSTyrqJF5fru2km8lRlHV9SugcDQEOVAKVbXXScckGGHxcDFltubhXHaKUoZCafu93hr5yF5BoQ/+VnqRbOdjAK42oZs57g+0fCln2MfM9heL3+WeOn2wOTtbNkYqNmuYUlVPy8Epw==
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ (2603:10a6:150:30c::14) by AS8PR04MB8708.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 02:26:46 +0000
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe]) by GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe%4]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
+ 02:26:46 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Michal Gorlas <michal.gorlas@9elements.com>, Manivannan Sadhasivam
+	<mani@kernel.org>, Frank Li <frank.li@nxp.com>
+CC: Lucas Stach <l.stach@pengutronix.de>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?=
+	<kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, Bjorn Helgaas
+	<bhelgaas@google.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] PCI: imx6: enable ASPM L1 only iff CLKREQ# is supported
+Thread-Topic: [PATCH] PCI: imx6: enable ASPM L1 only iff CLKREQ# is supported
+Thread-Index: AQHdFxhLkFkgP6Yi4ke6cFtd7G/5sbaEyYOAgAFCOoCAAOwCsA==
+Date: Fri, 31 Jul 2026 02:26:46 +0000
+Message-ID:
+ <GV2PR04MB120190CB6FB05C023AC3246D58CC82@GV2PR04MB12019.eurprd04.prod.outlook.com>
+References: <20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com>
+ <t2zu6bv4dqf5znpn5uypkoieltlrzlp4kskt6jwp46xgqajhjp@6g5kiwwn72a4>
+ <DKBWBNP7VLCF.3FND2WKPV4NWU@9elements.com>
+In-Reply-To: <DKBWBNP7VLCF.3FND2WKPV4NWU@9elements.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12019:EE_|AS8PR04MB8708:EE_
+x-ms-office365-filtering-correlation-id: 794a1140-54d4-41fc-e7fc-08deeeab2b16
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|7416014|23010399003|366016|376014|38070700021|4133799003|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ LmdHn6IxuH9FvcK2KL8tHXvZVMfFIwYmfHUVcFVlvM9GjIeVk1e1cT7kRuoBiqqIirkieNKvnxA1eHxQWeZvU+GEsp4MVHcxJSSJPxJoybiLlMF/i1GW0FRx8x64C3f8Alhgh98MstcgDMpEPxOV5jZf7qtHo+aOFAlpNqSb5td+9xz1FL9hb++E0vxD0uINztYPmHC68uYvIrxaok4O237MCvmU7D05YP3bcAao9+LrxlDmHlAh6RL5q3IEkF0cXMt78eoBpi9EvC8cznJQsfIF4NX/CimUEHTad3lcLO3SQxWzxTiM7wpkU1EewiFndM8Y8QzUXHjeiY0GMZWlpxbsiIeCe7kexOxHNSUBHDmXNX+3uDBIM1W32M6gCKjpR5MZbjyne8n8SI4mjknrXn6UH9ogzoVwrEhN3HnxgsROkfkOx+ZdqYAswEvoLXDQfYY9QNWDsmjGTQZ2duH4YieUww2Q9IqiWoN0JPZyCu4NtPTpEV1Ed51cGW+70ljKn2Y2qT6UblZwCGBTbPuHFIUGqljLQKvj4s4c+tIlWtpq8Zh6lk0sU8F9RW4M8la3aKdR5DNDGglGb+TxXeQ2Ryx2Pw1qHb26pKpY/vh3XvTrHYSLwF/xUAHCsB6r5Do5H8WcrG2/jBDIVzIM42CpmliW57LclkP7LmKz1/xoA/I33xGs2Fck59dxY0LV+IHmtOJ/0/trsnFaaIbAejumlsEFQLTDCXA5/2oWQXx5u9Y=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12019.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(7416014)(23010399003)(366016)(376014)(38070700021)(4133799003)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-2?Q?eYz1UBm39wmv710m/yK9glnLaHM2/Cnop/wnxDVscnQjiKUwZPJ+qE5A0b?=
+ =?iso-8859-2?Q?A17bqhohjMZI06uusQm+wi0qJBp/dCfXCfr+H6n90klip8OvOHeR+R/NV4?=
+ =?iso-8859-2?Q?FWHwJXQV0wDmPCAFeTneDI7ZcQmzm4BN/1SrtbtE6LDXJqeBrUeEexTst+?=
+ =?iso-8859-2?Q?Tsw8mdPfrCyWD0jngMUKindHaf7ckMy1CdliftRAEYDd3GCqmmp+N91Bmi?=
+ =?iso-8859-2?Q?ra9i6OCg5X+JiwhDp/b3FMqA3nYylx4X8STyll3g4czGOUaqR1ZZ0R7GqY?=
+ =?iso-8859-2?Q?J+ohvWALZB9BCOLsyLTlPZkcBsERo07UNwGyWqFvZIq2fCnAWC8toJ84V3?=
+ =?iso-8859-2?Q?8j7zXE/+NC2MvCqba9SL8M5bFncHQcn+N6JA3w8sTevd0qh1YmGzKjUlXF?=
+ =?iso-8859-2?Q?xLOmgWjiBBOoQ48SQ7ghTQW7mQpmQ/0OwbXIyo++dGt5GB0HvANRSp64rO?=
+ =?iso-8859-2?Q?Wm0zv8Mi3c12V0f7K6Ak2hi24uxk8YkoQndtf+ggDTGlRBncXSi+04xjY2?=
+ =?iso-8859-2?Q?KSUIVvWPurVF0nyT5tqzyErfGU70IxVxujy9o54vfwZ++w+ZjwI5ggwdcb?=
+ =?iso-8859-2?Q?JGTm+FfsEy/bavirvYwO7R/5zQ4fdyMXzda2DLVLL2OlYYpDqS+BKChIV8?=
+ =?iso-8859-2?Q?WEQ3WkIZrQMU1pP/P800l3mTmrgjmRCQURluvepgBtHjwxKMgAaB7/HQ/K?=
+ =?iso-8859-2?Q?ZvcaxzggOMwy5sHQr5+laQXANIGThFydNEgGy4xkKJJns0QJzXQ6OmcuOP?=
+ =?iso-8859-2?Q?EmyvrfsJo56CnV/nWnMEqfRtLjDcyBOIPxMtMIlY0ava3ujkI7snQFXpOH?=
+ =?iso-8859-2?Q?7pLsekd8NCEWK+sI+ZS7FduIdF5xQacDol+9KnWwZDVNBMq+G+zmyFSkqd?=
+ =?iso-8859-2?Q?Az6ShwmMv4P6QaRf9KTFCcbnl+HvvPKxhE1EY2NsMWX5WOSDVFuFdi2SCH?=
+ =?iso-8859-2?Q?+I/PvKeQHQ5ZGspbJxQFJDuYc28ifTXALoQ3pUP5EGQh0XE1fvHb00AmIv?=
+ =?iso-8859-2?Q?RR6VtmTX2pa42VfUHFy57FFdTg3RqPt1BHItaERWkpPOdQjXKOC9fvCOV1?=
+ =?iso-8859-2?Q?xkxtacHDPoaKu09WuWKElxLMmNMauSAqknvnRo0y3PBM7ANoglJZjQSkY2?=
+ =?iso-8859-2?Q?5QUECoEwdZGHIMcTL2pN5H2rBRvhk+TwYvq+YU4F8QAOxzZ8LUPTX9DrC+?=
+ =?iso-8859-2?Q?KMq7LekqMJUCW8WZ9bWn6DltB8cI8C/FGzzGI6mzOrEYCy1rBHfVy539Gs?=
+ =?iso-8859-2?Q?HAm3ikj7U/lsGacSmiYpiL9KXu54Sa7IoO/2qRpV6OvloikBAyxNpDdWML?=
+ =?iso-8859-2?Q?XwSZDuMVD48vax1gnI6Yl5jc4r5QBcUH2dA0Kne7SJ8RLz0zdzzIw8OA2N?=
+ =?iso-8859-2?Q?URheuWDp3DW3WmWYKrc/a0+uDf46RHmBp8r6ZNM2TvfMO3LkM4AZ4Uc1KW?=
+ =?iso-8859-2?Q?X84q+Kp7OYLhQvrAbT6wt3rWh2T/gaCYhyNc8xiKoCjHsXNS340HSwypc8?=
+ =?iso-8859-2?Q?4QRAznla1ILXsePMZ1LwQUzCHtRX/K9QXKxCNZWftU+ZiRqTxXrYyF1P68?=
+ =?iso-8859-2?Q?Op9Q7OO4NN6ZCA2zaNj7gbJ33tRsm/17z6kLxTbrV6q8CzB6BLkr1HBeTX?=
+ =?iso-8859-2?Q?VjdMk6VbCtJovCn1OgEDcHryhShrzcWCnMvwcU2iD213qmaqtmr+kXTzU9?=
+ =?iso-8859-2?Q?xFwbkFfH0A1QZEoIDT4KV815s/mq72guDG1UFxZgG8c1Raf+4c/SVTEk4X?=
+ =?iso-8859-2?Q?UKRgx3ePXFnZVwHv1blJWrtqCjk2ReJuAwtXYb6gDNVaKk?=
+Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 01:32:15 +0000
-Message-Id: <20260731013215.DE5CA1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12019.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 794a1140-54d4-41fc-e7fc-08deeeab2b16
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2026 02:26:46.2754
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SOl/wfAQ5V8ZzpIguFxMfazGx91Czbq6amM++5XyN4gPo5CaL7UNm32nAJd4vTavnOK+ddn9SN9zhfni7dmGFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8708
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [High] Possible use-after-free in the interrupt handler during module rem=
-oval / driver unbind.
-- [High] Hardware interrupts are enabled before the IRQ handler is successf=
-ully registered, risking an unhandled interrupt storm if the IRQ request fa=
-ils.
---
 
---- Patch [1]: [PATCHv2 1/3] EDAC/fsl_ddr: use devm_platform_ioremap_resour=
-ce() ---
-commit 6f9b8e9cc4f802944da43deab8c11651f32e407d
-Author: Rosen Penev <rosenp@gmail.com>
 
-EDAC/fsl_ddr: use devm_platform_ioremap_resource()
+Best Regards
+Richard Zhu
 
-This commit replaces the open-coded of_address_to_resource() and
-devm_ioremap() sequences with devm_platform_ioremap_resource(). It
-also removes the explicit devres group management as devm is already
-used.
+> -----Original Message-----
+> From: Michal Gorlas <michal.gorlas@9elements.com>
+> Sent: Thursday, July 30, 2026 8:14 PM
+> To: Manivannan Sadhasivam <mani@kernel.org>; Hongxing Zhu
+> <hongxing.zhu@nxp.com>; Frank Li <frank.li@nxp.com>; Michal Gorlas
+> <michal.gorlas@9elements.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>; Lorenzo Pieralisi
+> <lpieralisi@kernel.org>; Krzysztof Wilczy=F1ski <kwilczynski@kernel.org>;=
+ Rob
+> Herring <robh@kernel.org>; Bjorn Helgaas <bhelgaas@google.com>; Sascha
+> Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; linux-
+> pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org; imx@lists.linu=
+x.dev;
+> linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH] PCI: imx6: enable ASPM L1 only iff CLKREQ# is suppor=
+ted
+>=20
+> [You don't often get email from michal.gorlas@9elements.com. Learn why th=
+is is
+> important at https://aka.ms/LearnAboutSenderIdentification ]
+>=20
+> On Wed Jul 29, 2026 at 7:01 PM CEST, Manivannan Sadhasivam wrote:
+> > On Sun, Jul 19, 2026 at 02:47:54AM +0200, Michal Gorlas wrote:
+> >> Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
+> >> states for devicetree platforms"), ASPM states are force enabled on
+> >> all devicetree platforms. This causes PCI devices on some iMX SoCs
+> >> (for e.g. iMX 8M Plus Kontron SMARC eval carrier) to enter L1 even
+> >> though CLKREQ# is not supported (and consequently supports-clkreq is
+> >> not set in pcie controller node of their DT), which causes the device
+> >> to never wake up from L1.
+> >>
+> >> Hence, disable L1 capability in the LINKCAP register if
+> >> supports-clkreq is not set in the DT explicitly.
+> >>
+> >> Note, the logic here is very similar to 613f3255a35a, only difference
+> >> is that leaving L0s enabled does not cause issues (at least I never
+> >> encountered them myself when testing on the device) as its not
+> >> dependent on CLKREQ# being physically there.
+> >> Since there is already a way of specifying its presence in the DT,
+> >> the driver should be aware and disable L1.
+> >>
+> >> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states
+> >> for devicetree platforms")
+> >> Signed-off-by: Michal Gorlas <michal.gorlas@9elements.com>
+> >> ---
+> >>  drivers/pci/controller/dwc/pci-imx6.c | 19 +++++++++++++++++++
+> >>  1 file changed, 19 insertions(+)
+> >>
+> >> diff --git a/drivers/pci/controller/dwc/pci-imx6.c
+> >> b/drivers/pci/controller/dwc/pci-imx6.c
+> >> index 98e1db751132..7471501fbf04 100644
+> >> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> >> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> >> @@ -1318,6 +1318,22 @@ static void imx_pcie_assert_perst(struct imx_pc=
+ie
+> *imx_pcie, bool assert)
+> >>      }
+> >>  }
+> >>
+> >> +static void imx_pcie_disable_l1(struct dw_pcie *pci) {
+> >> +    u32 val;
+> >> +    u8 offset;
+> >> +
+> >> +    offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> >> +
+> >> +    dw_pcie_dbi_ro_wr_en(pci);
+> >> +
+> >> +    val =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+> >> +    val &=3D ~PCI_EXP_LNKCAP_ASPM_L1;
+> >> +    dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, val);
+> >> +
+> >> +    dw_pcie_dbi_ro_wr_dis(pci);
+> >> +}
+> >> +
+> >>  static int imx_pcie_host_init(struct dw_pcie_rp *pp)  {
+> >>      struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp); @@ -1442,6 +1458,=
+9
+> >> @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+> >>
+> >>      imx_setup_phy_mpll(imx_pcie);
+> >>
+> >> +    if (!imx_pcie->supports_clkreq)
+> >> +            imx_pcie_disable_l1(pci);
+> >
+> > Sashiko raised a valid issue here:
+> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpat=
+c
+> > hwork.kernel.org%2Fproject%2Flinux-pci%2Fpatch%2F20260719-l1-condition
+> > al-imx-v1-1-
+> a55a57915c68%409elements.com%2F%2327076171&data=3D05%7C02%7C
+> >
+> hongxing.zhu%40nxp.com%7Cd76ee1c9a654445357a808deee341bb5%7C686ea
+> 1d3bc
+> >
+> 2b4c6fa92cd99c5c301635%7C0%7C0%7C639210104755924878%7CUnknown%
+> 7CTWFpbG
+> >
+> Zsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIk
+> FO
+> >
+> IjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DVV0FrH0p73aStM7N
+> TFfSwS
+> > C2zJywJ3qG3Hp9PcjLuq0%3D&reserved=3D0
+> >
+> > IMX_PCIE_FLAG_BROKEN_SUSPEND is only set for i.MX6Q, but none of its
+> > DTs have 'supports-clkreq' property. So this patch will impact them
+> > also and since they do not reinitialize the hardware fully in
+> > resume(), ASPM settings will reset to hardware default.
+>=20
+> Right, for i.MX6Q, imx_pcie_disable_l1() could be called unconditionally =
+in
+> imx_pcie_resume_noirq() after the imx_check_flag(imx_pcie,
+> IMX_PCIE_FLAG_BROKEN_SUSPEND) block, something like:
+>=20
+> @@ -1767,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *dev=
+)
+>                         return ret;
+>                 imx_pcie_deassert_core_reset(imx_pcie);
+>                 imx_pcie_assert_perst(imx_pcie, false);
+> +               imx_pcie_disable_l1(imx_pcie->pci);
+>=20
+>                 /*
+>                  * Using PCIE_TEST_PD seems to disable MSI and powers dow=
+n the
+>=20
+> Though I do not have imx6q hw to test this, so it would be nice if NXP fo=
+lks could
+> give it a test.
+With this change suggested by Sashiko.
+Tested on i.MX6Q Sabresd board. The ASPM L1 capability in the LNKCAP of i.M=
+X6Q
+PCIe is disabled as expected.
 
-> diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-> index e4eaec0aa81d5..4236e06d568e9 100644
-> --- a/drivers/edac/fsl_ddr_edac.c
-> +++ b/drivers/edac/fsl_ddr_edac.c
-[ ... ]
-> @@ -638,7 +615,6 @@ int fsl_mc_err_probe(struct platform_device *op)
->  		       pdata->irq);
->  	}
-> =20
-> -	devres_remove_group(&op->dev, fsl_mc_err_probe);
->  	edac_dbg(3, "success\n");
->  	pr_info(EDAC_MOD_STR " MC err registered\n");
-> =20
-> @@ -647,7 +623,6 @@ int fsl_mc_err_probe(struct platform_device *op)
->  err2:
->  	edac_mc_del_mc(&op->dev);
->  err:
-> -	devres_release_group(&op->dev, fsl_mc_err_probe);
->  	edac_mc_free(mci);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since we are relying on
-devm APIs here, is there a risk of a use-after-free during driver unbind?
-
-During module removal, fsl_mc_err_remove() manually frees the mci structure
-via edac_mc_free(mci). However, the shared interrupt handler fsl_mc_isr()
-is managed by devm_request_irq() and remains active until the driver core
-cleans up devm resources strictly after remove() returns.
-
-If another device sharing the same IRQ line triggers an interrupt in this
-window, the kernel will execute fsl_mc_isr(), which unconditionally
-dereferences the freed mci pointer:
-
-fsl_mc_isr(..., void *dev_id)
-{
-        struct mem_ctl_info *mci =3D dev_id;
-        struct fsl_mc_pdata *pdata =3D mci->pvt_info;
-        ...
-}
-
-Should the IRQ be explicitly freed in remove(), or registered with a non-de=
-vm
-API to ensure the handler is unregistered before mci is freed?
-
-[Severity: High]
-This is also a pre-existing issue, but does this error path leave the hardw=
-are
-interrupt enabled if devm_request_irq() fails?
-
-Earlier in fsl_mc_err_probe(), the hardware interrupt is explicitly enabled:
-
-        ddr_out32(pdata, FSL_MC_ERR_INT_EN, DDR_EIE_MBEE | DDR_EIE_SBEE);
-
-If devm_request_irq() fails (for example, due to -EPROBE_DEFER or resource
-constraints), the failure path jumps here to err2, which does not disable
-the hardware interrupt. If a memory error occurs and the controller asserts
-the IRQ line, the lack of a registered handler might cause an unhandled
-interrupt storm.
-
-Should the error path disable the interrupt before returning?
-
->  	return res;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731012130.1212=
-640-2-rosenp@gmail.com?part=3D1
+Tested-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
+>=20
+> Best,
+> Michal
