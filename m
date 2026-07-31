@@ -1,104 +1,114 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498DF288C96
-	for <imx@lists.linux.dev>; Fri, 31 Jul 2026 13:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E27930C60F;
+	Fri, 31 Jul 2026 13:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785506047; cv=none; b=f2HKbWGvth8k8s6SLcpgwyegs4MmCcBnnt4AsKwcPs55rJugoJ3dr6GiudBz1nx5Bu5DyXir/E9i/qamVE+AexDuXf0uMepfFffRb+VK3cvBN+vc4zT7s6H8s0TQvDEalfUPsfo3ud+jsDRX1cmjt6ELSv0zg1ce/IR/8G2d7i4=
+	t=1785506091; cv=none; b=IBcANmlKfAqN0sf2ew9HITAFkaEj9WKia4lL9mbBhd+DIivFmolDuSSlwlE5b+xX/o3EdqTeKWXpWTh7kd4VRN/Q5a+r0pSJ1eCq7clC21OKi3picApoduiTkrJQ5KRT74hx71zo+Neif37qqrTsuq6P/U7yU4RA0P62MnoMJJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785506047; c=relaxed/simple;
-	bh=XnSPYg57DRaO+9NQhcdSDefLNSu6VNnPlnWcrN68V94=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X0PY2VcPgHMjvqkW+JE2n9h19Q7EedXh8DgbQ9HkONWKi/F8sHfp2u9QIBmaE5Krgze0mrBL7dArnFUxEeg6EKFhWdG7vFMtX5K6/OrNNdbtyU/6ZaVMcWF9FxsiCYO+mQQISCEIyCFIlhb3KwcDYtzImK/XZD6LNEUGUDR3qLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QJqce+Ea; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785506091; c=relaxed/simple;
+	bh=igOgdqH13xbmDt6z3wbYSgUSPc3rXRUKpKV4vW1FRag=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cNW+4lf+VLSX6oGkxhNLANxR/wAMbr3KjSb/Fy++4NlM2xcVi88NYHf5HdZ8M/PaTrT36hlkuGpBiY4gelSUQ1zF7Wp4kGVhMZj2GjculAu9A//UhoBVsDUKb8QYrra5R6VCXU7rCTXWy2OXcT1DWhTp1omhq9GkE3dv+XtJRGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LeOtSHVU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QJqce+Ea"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c197eaaab00so160113066b.0
-        for <imx@lists.linux.dev>; Fri, 31 Jul 2026 06:54:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785506044; x=1786110844; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q07s+fTeCEbc39agdRyb/qs2zGQJBvKVPPRteZKniHY=;
-        b=QJqce+EaoEtAdzpS7ya4bh4RwHetDFKm4ZhCkD3KOn9aMhXsVB3Wl/rkP6c0gwGa5p
-         rOxh0mApi7uRL8zVC19bDpiyXPJICmzHQNzPzJh8MBXhJv3HR+2KqXZI920jJGoGRT69
-         wJLsuHxVcjO4cWGn+n7ENUYRFJsOoDIHZfPWqDMgCcJm6eaBTth9sfBDUs25fCKg355q
-         ub5BVSwEzJ5krlf7n/Mp7cQSMTdnFrcqHwo0yFs8Pk9DGKyA4Fh5zalZNWvkiPRg6u7A
-         q4Nkz4NGxL+zzDI8ozO9vgWCcdqDWFqgAw/vwo2rHj5zEN+4ERmwvycc6gQCzfo+TNag
-         U2SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785506044; x=1786110844;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q07s+fTeCEbc39agdRyb/qs2zGQJBvKVPPRteZKniHY=;
-        b=AjLOVybJycqroJ65i/WLw/ZUAhBsPbVeIR2LOyaRnXwAhYoVtC6LjVl10jO87jqpOe
-         ZxCSZM6BfS6lIi8VKAp4iFr5eGFkYALuCNi9DaJjTcvS+RI+1/gcsyPW5OnsEyMqnHAR
-         EKmRUYkV7VlHdUuDn8SZjnZpQr4sYxsTRy7Ih1bKAk9Wp8YwBGRnXq6P9xSRk+t8DPVw
-         9f9OrWM6lZ92nx5teqmL3pi0cfVykvLB+vhiMIcI37L0P0uhR2IgH6/sMLD6aePJu3O0
-         mw+Jxp60E1qN3UGLTHPD0EU5U5FaVL3cJphabE5n4GnwW26iCTKF8XzisYkchGFZMpMy
-         +6VQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoXFxJgVzbOn6523jWfsu1XvbedMWqUyo+7/XJiYmDrcyiYid6AtZltrdOdOTfLsLCuKuE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtuizC03ep2CuywsDhauiSKkMLl3Q7LWyBokTl3oZTuCF4MK8N
-	adHH90uLQmW0ZDK8Pd/pYvwGFgHbG9CPKVXhsZDftsBfEV97QaEgtmjs
-X-Gm-Gg: AR+sD10L1cWirDve+pN0G+Hx1smibfOFQvIZObxURy5LSy9qytmJ6gUDYYOlNfxYy8b
-	a/5qs5MmuZfv99r0UJKNEVfgOnGfKYBz5YMwdednch88t0AX0Y9mmwe1aIa8oWyjEzfLAw8wUIK
-	SBpwojjns7JA3oxYhE8fgjFmJ4H35akv7MMb676lDpZdZ8jg+ZSKQ5MAOTAjSZ/8K9UE7aLaqlM
-	ZjLNscmt/82MRKhim5HIGMT89OTwXxP0EiXiE0RweC6YnGR9S30CqGACGOcKqMnqfEcywmrawl4
-	UwXlo+3km6995gOScW4mZkQdEopM8b8UY89bney3Tp1d/7UBoZQWSVly4Ou3Nwm4HimcxgwCCzT
-	0gPNJSNstsU/Q6Z1zGlQX3VEdtkClGz+P7qfYyEOWCI87WOL1ovzBfkgvQq2I48NxKMOLhc4VmM
-	4+WMNO74JPydetbQtekviuGkdUda8psvWGCE2Yk1i5kf6NRuMkRhupjWeBAvUelT4nznY8YbtKK
-	QjCrzrZXW8oUSqgEDEIuZviEoF1Eu7A6cGFrdPd54WFT4sT07Yn0JN6fIW9DrTJVhVqxV25mCk0
-	Qi1L1wwT1hEGn6gcWIBI32+KpfzOzq3xnEd5tTAifwa1LDzV7RzJOnhvml0axymEEK1j20Y=
-X-Received: by 2002:a17:906:7945:b0:c19:fb6e:5fec with SMTP id a640c23a62f3a-c1fd23ccb41mr126779466b.18.1785506044262;
-        Fri, 31 Jul 2026 06:54:04 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a8d0-bc01-6d31-3d12-3a11-d2d0.310.pool.telefonica.de. [2a02:3100:a8d0:bc01:6d31:3d12:3a11:d2d0])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3ca3b53sm165306966b.24.2026.07.31.06.54.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 06:54:03 -0700 (PDT)
-Date: Fri, 31 Jul 2026 15:54:02 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] serial: imx: serialize imx_uart_ports[] lifetime
-Message-ID: <amynpoQscIXD0fu8@gmail.com>
-References: <20260719221014.44354-1-kmehltretter@gmail.com>
- <20260719221014.44354-5-kmehltretter@gmail.com>
- <2026073011-crock-utmost-6392@gregkh>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LeOtSHVU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3B51F00A3A;
+	Fri, 31 Jul 2026 13:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785506089;
+	bh=1ou3SE9h2uq0colfS48NXP1RZRwU5DtHH6TqX0zOlBQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LeOtSHVUClga111I7sggRAmdnEqTzjzhiWiQ3LDovZ2hb2vHLeLtdjVEzoDaX3ght
+	 Bj/KMa0fxleO7PU890DFPVjVe+6McB2oIMhV6w5ZtpqmTb3x4G73+TwZ/f7p1UfJLN
+	 CtObDG6+5lZOtzXoUwyio7vEJuN+xETZALwJ6PpqUVacxmdJ+3HWOvG2QXQ8qAXBZX
+	 sTAxBbe/gKqFmwF+fqQDpASEEAS9nuvVoqjtke6M/MPAK8TvkrABXqdWH9EqdttEjM
+	 id5UvjbEKhFtcJVc4J/+PgvLDs7oT10TR4SYIZ+jNtPnenymg8NLhVrf3S89+d8jM9
+	 ukXaq4MvOGjFQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is
+ supported
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Michal Gorlas" <michal.gorlas@9elements.com>
+Cc: linux-pci@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260731-l1-conditional-imx-v2-1-6016ee9148b2@9elements.com>
+References: <20260731-l1-conditional-imx-v2-1-6016ee9148b2@9elements.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 13:54:49 +0000
+Message-Id: <20260731135449.7A3B51F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026073011-crock-utmost-6392@gregkh>
 
-On Thu, Jul 30, 2026 at 04:31:51PM +0100, Greg Kroah-Hartman wrote:
-> >  
-> > +	mutex_lock(&imx_uart_ports_lock);
-> 
-> guard()?
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] ASPM L1 is conditionally disabled at boot but unconditionally di=
+sabled upon resume, causing state inconsistency across power cycles.
+--
 
-I'll use guards for v3.
+--- Patch [1]: [PATCH v2] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is sup=
+ported ---
+commit 7a899eb7e9f8116a0334832c7490e52f71ae751c
+Author: Michal Gorlas <michal.gorlas@9elements.com>
 
-> > +	unsigned int line = sport->port.line;
-> 
-> Why are you reading this outside of the lock?
-> 
+PCI: imx6: Enable ASPM L1 only iff CLKREQ# is supported
 
-Good question. The local variable is unnecessary. I'll remove it.
+This commit conditionally disables ASPM L1 capabilities in the LNKCAP
+register if supports-clkreq is not set in the device tree. It also disables
+L1 during resume for platforms advertising IMX_PCIE_FLAG_BROKEN_SUSPEND.
 
-Thanks,
-Karl
+Link: https://patch.msgid.link/20260719-l1-conditional-imx-v1-1-a55a57915c6=
+8@9elements.com
+
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 98e1db751132a..1fdcbcd2422e5 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+[ ... ]
+> @@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+> =20
+>  	imx_setup_phy_mpll(imx_pcie);
+> =20
+> +	if (!imx_pcie->supports_clkreq)
+> +		imx_pcie_disable_l1(pci);
+> +
+>  	return 0;
+> =20
+>  err_phy_off:
+[ ... ]
+> @@ -1748,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *dev)
+>  			return ret;
+>  		imx_pcie_deassert_core_reset(imx_pcie);
+>  		imx_pcie_assert_perst(imx_pcie, false);
+> +		imx_pcie_disable_l1(imx_pcie->pci);
+
+[Severity: Medium]
+Will this cause an inconsistent ASPM L1 state across power cycles?
+
+During boot in imx_pcie_host_init(), imx_pcie_disable_l1() is only called if
+imx_pcie->supports_clkreq is false. However, during resume here in
+imx_pcie_resume_noirq(), the L1 capability is disabled unconditionally for
+platforms with IMX_PCIE_FLAG_BROKEN_SUSPEND.
+
+If a platform has supports_clkreq set to true, it would retain the L1
+capability at boot, but lose it unconditionally after a suspend/resume cycl=
+e.
+
+Modifying the read-only Link Capabilities asymmetrically across power cycles
+can confuse the OS ASPM subsystem, which caches LNKCAP during enumeration.
+Should this also check for !imx_pcie->supports_clkreq before disabling L1
+during resume?
+
+> =20
+>  		/*
+>  		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731-l1-conditi=
+onal-imx-v2-1-6016ee9148b2@9elements.com?part=3D1
