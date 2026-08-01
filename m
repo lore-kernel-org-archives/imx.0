@@ -1,102 +1,137 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8A33E0245;
-	Fri, 31 Jul 2026 23:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16F92AE68;
+	Sat,  1 Aug 2026 00:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785540052; cv=none; b=GUUj25FvOjbkzMu6MpoIVSSJUCk9WQ2dY5eoiqe9MAu2IHmJ8Gq0JFhQ4ptgj5DmJx5oya7r7G3KXVMBMWrYBjar3OAfOLCgPDCUdg6zp/5XCMeQXzPDGlvAAmF9qBEs7MmXLYU5yCPQK7JhMCnYfn8vo5k3Igz1+DuUOODqP2Y=
+	t=1785544532; cv=none; b=GV+omTGbmQJ77alqo7t4GecDtOq1vos8l+tCkwE1GCGqzZV76bcKp+68HqAc9S3oWUa03KZa4HNtsVwKGFLBFRwBcST5RBoW6n/FIwq49uM3eNimvN3I9p+z6vhzZNV/nq5DjnfFlA8E0upMRqVGsJPw8w42Yhd22U9t+An0cA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785540052; c=relaxed/simple;
-	bh=U/9Yv45n+yTl+HXiF4bKi1PnabpimsQQpbyopaFT01Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NyLxVlblne9ZpKN3L/wUXC+qDLkk9OBEfBhZ+8vXsDVhE5xzKbDMTnknzoLbuHm35U58jkJkGTpyW0Jts2rj2NmsbMYf14yK5da3dRD7e0aIPP4WNH+hot1XGXiOsE0RBgNDZbxWWHX2nYVJbImFkQ59p0K3OwmTjm9pTMjJsPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=g5+AwHmF; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1785544532; c=relaxed/simple;
+	bh=itseQ9eyo+U13RMe2NfFN2wECX9AEXEE6b3i4uVupw8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bIA+XZMm3bx7Q/QDkqY3gqkVqVlImLBOoJ9K3SsXBeoWk02xB7glPNkSOfUNwJkj/Cn0WZ+NQDFyplSM5SeDTKYlP37LJovvw4gyexsnodmpSYReuTnbISPknM8+va709Oe8XUrNd/WdQFPHAWG4I5pnDc4ruXaiJLXl7NG5/BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBOALeTJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="g5+AwHmF"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F1F9040E00B8;
-	Fri, 31 Jul 2026 23:20:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id sJzj9oJgD8z3; Fri, 31 Jul 2026 23:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785540032; bh=nE/loPIfIGHulK7EYK3oGTaS2BuMx1WLwvyaaTRjU+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g5+AwHmFTIgT2cGV3dieb9WNSyV1UY9mk6jR3bOhJxbPK023qqngYRoaLQCDgO34g
-	 yYTCY92RLYxLfShKanIwbw7UjaJyrqkk2wfj2d7ztnJvjhhUegDR290/PitBRCCN+K
-	 UcbE0IaheG1pC0ZpUVgbA4Von0sj2JB2TsMUV1UroZAZEPTgQjLdouu4ExcXyfe6FW
-	 2v/eacsoq4qMQouvD2iFVVWSYl4ZlNbTf+sFkvpbz6z+9aoHOHPfXzF5/qRoBo3cgv
-	 Kvzd6PWLz1jAp+ImYoRFGfh1xhrNy1Fg3WBOpnu7BFHdy5NhgJ6SSA+QnXpO6rhokw
-	 m91O6ud4xI+td6EHDfvcqADdVlsFP5hEmFVUP8h/PO20aTD6/z/F3lwauo1U2aMRW/
-	 19OHb/7b7JlWMzBmG922OelsISJSPRX4JbH4feXuM4OiQInEWN0XUksYXq4f0jRjAJ
-	 TNCu7FmT54wXt+xPtPscyBTJMLVQeUcrHMnLaS/Cj+CUHyL9NkgLtHKe1E6l/IWJHG
-	 MKQ8dusFzuFVQsfybTxPVytgOAEqHmr9rvwQjPq0n1yd/WvBkueJaWaAloCm3DWYC5
-	 zmWzqzgQ1HqAZweYC4dSHHGQj1td6OEbkq4ZPqy3pUVgrwhF3JY3KZ+7eTh8m+QJIq
-	 kc/6Md5KSkvDUqslXEtH2IuM=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5284240E0140;
-	Fri, 31 Jul 2026 23:20:19 +0000 (UTC)
-Date: Fri, 31 Jul 2026 16:20:15 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Rosen Penev <rosenp@gmail.com>, linux-edac@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>, Tony Luck <tony.luck@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	"open list:EDAC-FSL_DDR" <imx@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
-Subject: Re: [PATCH] EDAC: fsl_ddr: use devm_platform_ioremap_resource()
-Message-ID: <20260731232015.GDam0trw0zPrA7pw_3@fat_crate.local>
-References: <20260714234609.902367-1-rosenp@gmail.com>
- <alhXciS9G_bGB2re@SMW015318>
- <20260719155822.GAalz0Hj3XT97KkPOk@fat_crate.local>
- <CAKxU2N-vMNR+ES2YYuJh+6XASmZ04cnFodb4kP4zRBW0mbEKaw@mail.gmail.com>
- <20260728224059.GAamkv-4LJPspOw5ZV@fat_crate.local>
- <amubjArdXOgTzNCX@SMW015318>
- <20260731000407.GIamvmdwHRq_PSgyvc@fat_crate.local>
- <amy45S6tBC4CjdWa@SMW015318>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBOALeTJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9015BC2BCF4;
+	Sat,  1 Aug 2026 00:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785544531;
+	bh=itseQ9eyo+U13RMe2NfFN2wECX9AEXEE6b3i4uVupw8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=FBOALeTJfhu6TbfaoawSiV44BzRVKc23y6wFn8jbPG9pYTXwNR7ibRvzi1X6cl8vU
+	 hLzwHbFLG2jdOqdUvh7tKrf9wjsGej9wp+ppcWubrPLdUnB4IFjwmVrwP7zSuOJsiZ
+	 TfcWjgwfJac3D0zdfcy6Pp/BfGegPT5INuZbOGrstGKEJEPyIQNNsZ+RZkzwSbpV4F
+	 WVvmeN2xFod8ds5GaXm2O8SNONn5qITIZkOXyGasiOKKllRQj0yHlYIKo+3nSqysFN
+	 b5JM+Wwa9hX55BeV7QaBkPhH6m3GMLdCWrPWkwMv7V+zbmmClgRqMfB+QO6TUGg2Nx
+	 R6fq0WNonLqgg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F630C55171;
+	Sat,  1 Aug 2026 00:35:31 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sat, 01 Aug 2026 02:35:20 +0200
+Subject: [PATCH 1/4] media: dt-bindings: dongwoon,dw9714: Example shouldn't
+ imply 1.8 V
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <amy45S6tBC4CjdWa@SMW015318>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260801-pp-pro-camera-v1-1-7b4d90788f9f@ixit.cz>
+References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
+In-Reply-To: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Ondrej Jirman <megi@xff.cz>, 
+ Olivier Benjamin <olivier.benjamin@bootlin.com>, 
+ Manuel Traut <manut@mecka.net>, 
+ Alexander Warnecke <awarnecke002@hotmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Martin Kepplinger <martin.kepplinger@puri.sm>, 
+ Shawn Guo <shawnguo@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ phone-devel@vger.kernel.org, imx@lists.linux.dev, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1376; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=sfBlyUIhGugdsRnaSHNhShuFZ0DGsHeOeRXQgKfVu9M=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqbT9RqSJZNqhResdsqnz0RhYvhHWQ77DYnIRl/
+ Ps/2ru4VpSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCam0/UQAKCRBgAj/E00kg
+ ckZpD/9/AsNbDL0qEmqEHmCublG5Nru0i0jH1IltGtLg1JiBS9qXYwT7VJsp1bHvCfebRKXTBMs
+ Yz6hsPICqGmpcKwVqisMWQLLFvtc9oKJuPqHCfP0IsPB2TErPXDME7fR/uSu4V5wLvoclp9lJ/0
+ leDx5sEc/BY4/RCCbR/gA/7fWXzrwstH1JAGz0jFRMpmLEfue5IW0SPSZE9TjtG670UxPQw4zXV
+ FWlwR+rB6YjMBa2Mqv0jh/rogANRjSma258zkZ0M4AMMHxxp4kAeJcPqUIU9iadNiK+diiTIutd
+ Ctul8mqc22FokHc4nUDpSSU6j0DMRFZmlFXdp/oki06idrCCofiYc+iHmKknX3o7ZLGZGidwome
+ 9lkjst6xJb5s90IUb7JzcB+gJ5t9G2+pUeCBh5l14626KLEEwm5SpGQFuEDunj5p1m97D2M1i6O
+ Lvoeha998AcBR9o7pzOm93bwJrBFfDMY/o3H6nA9jZpDRHrd47+EjHBNVm5/1DHdkzEABELKVKo
+ 3WnHDWivnImwpnKqD6ZO7U/krf1/ak7C2/fu/My9wOJUVrt2MwU2aHhQ5FLyEVOiqYhVLJqSCQR
+ kIG+KJ3flbfU97rmGk/iSqpg5Tm6shakMS9JR2SbHdnIDx+cVW8k76Inyr2p3h+w1jkl9c0cOXF
+ 0VAbWtXBsOQ7C0A==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Fri, Jul 31, 2026 at 10:01:57AM -0500, Frank Li wrote:
-> There are too many pre-existing issues at recent review, we are trying to
-> clean up these, but it takes time. I am not sure this driver is in the front
-> of queue.
-> 
-> But I help will review if I see these patches.
+From: David Heidelberg <david@ixit.cz>
 
-Right, I doubt that anyone would jump at fixing those but we'll see. And yes,
-I'd appreciate review and testing.
+The datasheet says VDD should be between 2.3 to 4.3V, usually around
+2.8V. Correct to prevent confusion and extend description.
 
-As to fixing those - I'll simply stop taking any new features to the driver
-until issues are fixed or addressed or commented on and hopefully, with a team
-effort, we'll get them sorted out.
+Fixes: 2a96b40f366a ("media: dt-bindings: dongwoon,dw9714: convert to dtschema")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-:-)
-
-Thx.
+diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+index 66229a3dc05d6..7f5aa098351dc 100644
+--- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+@@ -20,28 +20,28 @@ properties:
+   reg:
+     maxItems: 1
+ 
+   powerdown-gpios:
+     description:
+       XSD pin for shutdown (active low)
+ 
+   vcc-supply:
+-    description: VDD power supply
++    description: VDD power supply (2.3 to 4.3V)
+ 
+ required:
+   - compatible
+   - reg
+ 
+ additionalProperties: false
+ 
+ examples:
+   - |
+     i2c {
+         #address-cells = <1>;
+         #size-cells = <0>;
+ 
+         camera-lens@c {
+             compatible = "dongwoon,dw9714";
+             reg = <0x0c>;
+-            vcc-supply = <&reg_csi_1v8>;
++            vcc-supply = <&reg_vcm_2v8>;
+         };
+     };
 
 -- 
-Regards/Gruss,
-    Boris.
+2.53.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
