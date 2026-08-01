@@ -1,68 +1,68 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14F22D2381
-	for <imx@lists.linux.dev>; Sat,  1 Aug 2026 12:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A261331DDBB
+	for <imx@lists.linux.dev>; Sat,  1 Aug 2026 12:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785587413; cv=none; b=dEXPzvS8KVs7PURhthybTzsoDoWw/zKGlzXJRn2tBiF9SiC8Z6kD+UR9SEAAFcrshRo7gbX1zCS1qE2esu1vo/rzrjumdvWXEp7NRXemDa20K5pdLsPIjGde1DxHiXoABtNH/MlqXHJuQHTjZRCG60lcYNcXF/bVCT9P3pPinLY=
+	t=1785587421; cv=none; b=bed6vgrwHrVgiGwSb0Ph2bS/1LKRmSLPdS/u9vJhf6pG9LraV1el86gYtpMvtNiy9Oap0k21IBvhxGgsS9nMxZvJUS7sjGHozj4p8gBQRWhdZbYqhsNJ+pZ+bEJYvcoLcoFE/2H6P8YSed027dDwFnSSA2V4XqYk8Gow3hu7FxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785587413; c=relaxed/simple;
-	bh=44OfuOpRWkEpwE39qqs/5tw6fhh8iyUcWoHJyKnfJX8=;
+	s=arc-20240116; t=1785587421; c=relaxed/simple;
+	bh=EixTu8F/XmrqpGkUc1ZAKwt7Ik8fS3oCoez4NHHuAPA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KD9zwG4BH+eX47UoeapvJjVCyVloEiotaTUNY3n0Edn1Y+FXfN2QVSDMV1fOgC7aY4hNbfbewRMNvI4rZVyJcyA1fh6kXpXZcbY4Po2Q4VwdTIMLkClGQyCCx/xdQ9gnK6ujFUgxCQ7Rvl32YHQZge8yQY34tAUsRGrddkaOCcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AoLOqAD9; arc=none smtp.client-ip=209.85.216.43
+	 In-Reply-To:To:Cc; b=rT5HK0Ig7/ve5dn6kWSPvtYsVFax5EvZmXW2f+Vno6w4vYUgOA1tzM8fF9yRitK6zhNgGvi39v57P5sZFh4ssXpRhMPrX5KiY+cNG+w01WJpiB80RWFMkoSWfImgupA9P5g0pRwc7z+G/4K+YwHIzlLJCd78i+vULaeE1mAjwck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U8EeO9nv; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AoLOqAD9"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so1420660a91.2
-        for <imx@lists.linux.dev>; Sat, 01 Aug 2026 05:30:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U8EeO9nv"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c9e7391839cso1640595a12.0
+        for <imx@lists.linux.dev>; Sat, 01 Aug 2026 05:30:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785587411; x=1786192211; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1785587417; x=1786192217; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=f8RUZZ0a/rFvTsN1FZHwK89Bz0TUluu/ex7Jb2jpMwI=;
-        b=AoLOqAD9HazItTs6Ms13uY+v5cvrGzeWch67ct7yLBau4d6vMOWNL/5D1yKKVWK+Ud
-         C8tVrSiltFeytIVFbEKpI+MWCGC0gu+0JvNdKszx2GqP0L53A3O1+bSfKGccoaYfNJKG
-         kTTPR9kFDd/PI+sNlc9K40uiYy7jAKAxfpdm9P5VuCHUSLtKdn91oVI5iPnCC+VpA3Ez
-         nRZNb01fMkfcb2+b/aS00YP6LfMsahRMYa1q5r51lAGaq7YX6cnG0gF9fYbt7TLVjObT
-         sQqiw6WiN7yUx51M6znnrOv13ByZU9Zqmg/+0ZPnAd/s97f7/MLAP3UXb0UTKu8eAX8B
-         Wuyw==
+        bh=IZXu4hUthVdVMyzR8sBV5EnxrSahb+P4A553ME38qa0=;
+        b=U8EeO9nvwH6x4zdCdk+FEsNDVAMfnKT1OlQ5UsDNsoqLw1gOCxBkzsqx03VVj01atU
+         5HPhf1IreZi0ERrnaZfdjjgO7Y6PNUEioMWA9YUqr35zt+uiegeI+Qu7aL1FTbFpXEg/
+         9vP0383fxKy4kyS4YblQadgcJ7oE6lDyaDB2XaRklv7591NLhNcPmlscjmOJ3Zd830fv
+         BGqrNc5uu+u9z/wWfVSPTP4uzejND6QAWYuhhwdvoFB1BNNXjf6ps2UVkPyBENli7g1y
+         dwm3X9p4XsYh9wVKICTvrEqmqlHSo8gdeOjkkgFoZy2omASQM90hsms/0m/93mjKN1z2
+         v0zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785587411; x=1786192211;
+        d=1e100.net; s=20251104; t=1785587417; x=1786192217;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=f8RUZZ0a/rFvTsN1FZHwK89Bz0TUluu/ex7Jb2jpMwI=;
-        b=ZekmTQewcrtUtGzi/gHW3Ul8ZKKVkIK5GyLnMPjXUq83vpi9PBK6a0As8k5DbCYcLO
-         zTD5Z9wAQpsc9cPGFF9Thpjs/UAT8ajWXE6wr4AGPEBxDlr2VGcReibWEqaNDqkFmIH0
-         txflYUeoggW0bD1yAlPSAUAxxl5BqZRVwRx70GYHYJeFWm0mbgMvN5Hm8XYKstWzgOHv
-         BcU+zDGcdGEOeDVnjEK8wVS4YRbptgEnqKlXAhqhJoJhXMnwMOEgLRRngXaw4VjF66Qy
-         URVCoMC+PN5eEdnikiWIx3N6umATDaxhEZZlaYYdIAXrXMAIw5Ri6wvkxgLfVkP7EAv/
-         GsRg==
-X-Forwarded-Encrypted: i=1; AHgh+RrWNFa4qmOtTmTNsryIZvC7t55tkqIaMy+OV+KKxigDejX6SP7+UrL/GfSBAkl/yohOeY8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3r6o/5fJFce5m2lvaFUKyzUPIblV6N2CUeuXX3BtjTRXPQwDU
-	2IEJu6JzFrJIxuHPMrITuaqbQeLoKPFY4H+q/1tk2aActR4hsY6sNuQP
-X-Gm-Gg: AR+sD12CQQIIhthVQKrYAsb4QODJhxLdG9WeOkHGUZ9biPLV3YvCaK5b2QULOD0Fmmh
-	Vn/OXAcr7PRkMLJw7ljlJY6Cvit+6ysJvsk67PxccpIsJyW5h2A3+Urv9JVjrxveaoMEF9ZHioI
-	8olCfwpYb+66FfpdjCJlD9Sc+lF9HsAZ1g8Ntlo42WwWkmmKbJwuPef8keueh8zF8NmOzwytz5r
-	Ih8TyTKnWz1SW48GZ8ajOamWq4+eviDSWNf+wCoGGkgmmXkI9ZiDJnaz1VraJiOOsR6KIqZh3rG
-	eQhfSduhHEt+q3TXHC+OwlzHsjEuQDIlrLzn8odzrNFr7BWwQd11nUxFi7XnmxpyLRfvDDLGz5d
-	JFRQIqQmZJaCj1dh+1On1WtxY8syr9XW+DjNYiKc43KfRK1Qtd77WQxZTm/owLfJio4efdAjjQk
-	aAt7T/SSWRZDyJaZTX07Zwh3+/afu3wWYaVmaVNeXDRepQeRqtqKkL0DCtTbE7XSrFN65ccDKtJ
-	Q==
-X-Received: by 2002:a17:90b:17ca:b0:38e:59c2:cbc5 with SMTP id 98e67ed59e1d1-38fbc472132mr3131442a91.18.1785587410830;
-        Sat, 01 Aug 2026 05:30:10 -0700 (PDT)
+        bh=IZXu4hUthVdVMyzR8sBV5EnxrSahb+P4A553ME38qa0=;
+        b=VBwoi7PY9zOxV6+N/pJIy8dE7Uc0iu7K8vJjGylrwab3VfoUUdECONbyQzWZNR3xIP
+         MFj7qQt6IkUP5UUDT5+mHcbfs5K2XQGViaogIhxucYL/CzFCBe+8JJKOu0k3eerZnae/
+         jXrOQGWyLt2tds8zPwgygKQNQu8oJnCmGpCWCOg2HyJFgP1NqxOE8G+p3j8Y+fSg7yzf
+         kKbfymvwbjamkv8K4pIRz4l4lEv6M3Zq09Gv6wkHd255DZwHDfP6B177oedmU7x/xsOE
+         ob374n6+GCYtIvsX/vhlhjVP9z/9zIkwJ5kcSluQq0t2BFCVgweUaihU7d3p/Jp5YJLv
+         +uxQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rowy1s0p6VHCmu758qKMq8jILrz0hQJlQU/0WYH9EOTKUCk+B7nFhYv42ZckCZF2R9pYLk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzkju+yRd932lPQMYagcFZHcUNUQjiI1Iniw/BGjdsM+LtXRuHC
+	cCSpNAsQbEzgvethR2UXy2qtbTC3utphIGcGx5QE0IDUmEQrCXf3pA6u
+X-Gm-Gg: AR+sD11AegszXxq9X2fmXFO2NDbKOWOkFsM+xzlGaB6cgwYpFZzmiXd3aGta/bkQATN
+	NYvc8Sxqumo3tLL7qreVvIewPWMbOHPLrNno7wtt8WkCz8B6g/uDZSDEG3n2J8Q1XBfxtnIC0w5
+	lHPP/aS4rMyflIcNEQWeoITgCOgx1MYCM89YqnSXNM8mkiUBC236RiJ9qRFMplr6kE/HdDBLUdX
+	mr47oUj3kWWeQ2yz09c98lUsR0WgZbHXfuP4VegHkL3npautTKW1ZfN/8KhyerW+CJmDto21NXz
+	Nu1Bfh3Kk3On+qhC2Ml7NFWZUGVUjqBsJh7QmFZrtahDUbm+ISSrPuX6h54m9D7FIYBqL+4xBOE
+	qqAuYZ7eobzBelpcVa4TT5l/oB/5ISBCiT+suBfPUBUD7mtOA8bGmKVRuf71tsXhiqvGZyN+dbv
+	kam3Dsw2ckfshxrDRugZXMsRkZwiiq1/kVIlXc3gleVCRuJ5OzHx06Yc+JXwfWmI/1LkXd/uOsm
+	Ds=
+X-Received: by 2002:a05:6a20:d809:b0:3c4:2eb6:c3a0 with SMTP id adf61e73a8af0-3c92a63ad0bmr3140772637.30.1785587416840;
+        Sat, 01 Aug 2026 05:30:16 -0700 (PDT)
 Received: from [127.0.1.1] ([2404:f801:8028:3:9df5:1cd1:f108:c202])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e045022sm16174086eec.18.2026.08.01.05.30.05
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e045022sm16174086eec.18.2026.08.01.05.30.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 05:30:10 -0700 (PDT)
+        Sat, 01 Aug 2026 05:30:16 -0700 (PDT)
 From: Subasri S <subasris1210@gmail.com>
-Date: Sat, 01 Aug 2026 17:59:51 +0530
-Subject: [PATCH v2 2/3] usb: misc: Use %pe to print error pointers
+Date: Sat, 01 Aug 2026 17:59:52 +0530
+Subject: [PATCH v2 3/3] usb: typec: Use %pe to print error pointers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260801-usb-ptr_err_patchset-v2-2-1698e298c1e3@gmail.com>
+Message-Id: <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
 References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
 In-Reply-To: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
 To: Peter Chen <peter.chen@kernel.org>, 
@@ -88,105 +88,84 @@ Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev,
  linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
  Subasri S <subasris1210@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785587393; l=3558;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785587393; l=2871;
  i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=44OfuOpRWkEpwE39qqs/5tw6fhh8iyUcWoHJyKnfJX8=;
- b=TT73Eu2ymiE2sUt+275pzPgJnLbNlahPwI6ZFyNJ56z2bu3NfyqORVptbO5eyf0pSQGK3vZZN
- w27WafvA0koAljB6/mzo4JrJfu5+4nc2cFmixcor+YIUhAsL+un9F+x
+ bh=EixTu8F/XmrqpGkUc1ZAKwt7Ik8fS3oCoez4NHHuAPA=;
+ b=y9rlU0Bar73W/79icXHYY1Za1xqYHDFPlcRNAyzBdU9DLsdx5ZFdZAtAfdQnYCacrmDjy37bN
+ 67dNNmpkRFUB7JSMQ26Hj03dv6oZIIwgFS5fqDwVdYCNRhAPyYsGqab
 X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
  pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
 
 Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-error pointers in various drivers across usb subsystem.
-This prints symbolic error names (e.g.-ENOMEM) instead of
-errno numbers (e.g. -12), making error logs more readable.
+error pointers in various typec drivers. This prints symbolic
+error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
+making error logs more readable.
 
-Fix coccinelle reported warnings:
+Fix coccinelle reported warning:
 WARNING: Consider using %pe to print PTR_ERR()
 
 Compile tested only.
 
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 Signed-off-by: Subasri S <subasris1210@gmail.com>
 ---
- drivers/usb/atm/usbatm.c               | 4 ++--
- drivers/usb/core/hub.c                 | 3 +--
- drivers/usb/dwc2/pci.c                 | 3 +--
- drivers/usb/gadget/function/u_serial.c | 4 ++--
- drivers/usb/misc/usb3503.c             | 3 +--
- 5 files changed, 7 insertions(+), 10 deletions(-)
+ drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
+ drivers/usb/typec/tcpm/tcpm.c       | 2 +-
+ drivers/usb/typec/wusb3801.c        | 4 ++--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/atm/usbatm.c b/drivers/usb/atm/usbatm.c
-index 9600e1ec0993..c78caa1b57c9 100644
---- a/drivers/usb/atm/usbatm.c
-+++ b/drivers/usb/atm/usbatm.c
-@@ -979,8 +979,8 @@ static int usbatm_heavy_init(struct usbatm_data *instance)
- 	t = kthread_create(usbatm_do_heavy_init, instance, "%s",
- 			instance->driver->driver_name);
- 	if (IS_ERR(t)) {
--		usb_err(instance, "%s: failed to create kernel_thread (%ld)!\n",
--				__func__, PTR_ERR(t));
-+		usb_err(instance, "%s: failed to create kernel_thread (%pe)!\n",
-+				__func__, t);
- 		return PTR_ERR(t);
+diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
+index 985683fe49e9..b32f4c433de9 100644
+--- a/drivers/usb/typec/mux/pi3usb30532.c
++++ b/drivers/usb/typec/mux/pi3usb30532.c
+@@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+ 
+ 	pi->sw = typec_switch_register(dev, &sw_desc);
+ 	if (IS_ERR(pi->sw)) {
+-		dev_err(dev, "Error registering typec switch: %ld\n",
+-			PTR_ERR(pi->sw));
++		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
+ 		return PTR_ERR(pi->sw);
  	}
  
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 5262e11c12cd..8c750a93c350 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5671,8 +5671,7 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
- 			descr = usb_get_device_descriptor(udev);
- 			if (IS_ERR(descr)) {
- 				dev_dbg(&udev->dev,
--						"can't read device descriptor %ld\n",
--						PTR_ERR(descr));
-+						"can't read device descriptor %pe\n", descr);
- 			} else {
- 				if (descriptors_changed(udev, descr,
- 						udev->bos)) {
-diff --git a/drivers/usb/dwc2/pci.c b/drivers/usb/dwc2/pci.c
-index f3a1e4232a31..7ff9c4df941e 100644
---- a/drivers/usb/dwc2/pci.c
-+++ b/drivers/usb/dwc2/pci.c
-@@ -68,8 +68,7 @@ static int dwc2_pci_probe(struct pci_dev *pci,
- 
- 	phy = usb_phy_generic_register();
- 	if (IS_ERR(phy)) {
--		dev_err(dev, "error registering generic PHY (%ld)\n",
--			PTR_ERR(phy));
-+		dev_err(dev, "error registering generic PHY (%pe)\n", phy);
- 		return PTR_ERR(phy);
+@@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+ 	pi->mux = typec_mux_register(dev, &mux_desc);
+ 	if (IS_ERR(pi->mux)) {
+ 		typec_switch_unregister(pi->sw);
+-		dev_err(dev, "Error registering typec mux: %ld\n",
+-			PTR_ERR(pi->mux));
++		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
+ 		return PTR_ERR(pi->mux);
  	}
  
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-index cdd1dfc666c4..da31e5cea0a5 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1311,8 +1311,8 @@ int gserial_alloc_line_no_console(unsigned char *line_num)
- 	tty_dev = tty_port_register_device(&port->port,
- 			gs_tty_driver, port_num, NULL);
- 	if (IS_ERR(tty_dev)) {
--		pr_err("%s: failed to register tty for port %d, err %ld\n",
--				__func__, port_num, PTR_ERR(tty_dev));
-+		pr_err("%s: failed to register tty for port %d, err %pe\n",
-+				__func__, port_num, tty_dev);
- 
- 		ret = PTR_ERR(tty_dev);
- 		mutex_lock(&ports[port_num].lock);
-diff --git a/drivers/usb/misc/usb3503.c b/drivers/usb/misc/usb3503.c
-index 759770a13260..1160dc594b1c 100644
---- a/drivers/usb/misc/usb3503.c
-+++ b/drivers/usb/misc/usb3503.c
-@@ -202,8 +202,7 @@ static int usb3503_probe(struct usb3503 *hub)
- 
- 		hub->clk = devm_clk_get_optional(dev, "refclk");
- 		if (IS_ERR(hub->clk)) {
--			dev_err(dev, "unable to request refclk (%ld)\n",
--					PTR_ERR(hub->clk));
-+			dev_err(dev, "unable to request refclk (%pe)\n", hub->clk);
- 			return PTR_ERR(hub->clk);
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 89eec20a2064..ad10470ea73b 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
+ 			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
+ 		partner = typec_register_partner(port->typec_port, &port->partner_desc);
+ 		if (IS_ERR(partner)) {
+-			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
++			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
+ 			return;
  		}
  
+diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
+index 6062875fb04a..86d13ab41670 100644
+--- a/drivers/usb/typec/wusb3801.c
++++ b/drivers/usb/typec/wusb3801.c
+@@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
+ 		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
+ 			wusb3801->partner = typec_register_partner(port, &desc);
+ 			if (IS_ERR(wusb3801->partner))
+-				dev_err(dev, "Failed to register partner: %ld\n",
+-					PTR_ERR(wusb3801->partner));
++				dev_err(dev, "Failed to register partner: %pe\n",
++					wusb3801->partner);
+ 		}
+ 
+ 		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
 
 -- 
 2.43.0
