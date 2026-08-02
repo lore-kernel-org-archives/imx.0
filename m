@@ -1,147 +1,146 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazon11022093.outbound.protection.outlook.com [40.107.40.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFA83CCFBD
-	for <imx@lists.linux.dev>; Sat,  1 Aug 2026 21:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785619364; cv=none; b=ggKi7wmcVDAgGKOzy3w3eezqiWTvt7ywvhcnQjP4tToiTFhsulBdjsahg+YKNmkduL9B2kZ3rKH74oSBL1BpG2lvksviuWeUw8+TWVLqDjE3zWY973zBo6nKIE4IYeoD/RvRlBiNdMblm2uls9bZUEVNv0P/z8Ssku4W8plhZLE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785619364; c=relaxed/simple;
-	bh=8lVzvrdPHQXNjyV29fGvYBAe0DV03AGaIZ2hwuOhPr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I4SHvXeqI5TsV0wKMvBctwBeJiJXGR/G9evMS4NeUf+6sehbPigNxkQN3AOTQvdqD4+4X7PLoaj7zglZeTMRA889rxii1IFrDCvstyFRySfmzZTQcGIoKgeU7QSHBFaIi57czuf8yhMGsjhgQmyOVDWsCDCDSInUi6mQ+FvYy2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHqO9f6G; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHqO9f6G"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f904e80eeso1994357f8f.1
-        for <imx@lists.linux.dev>; Sat, 01 Aug 2026 14:22:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785619359; x=1786224159; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YItn9UN/FPZMLv/eaPs9b++UQIA6LNhw5J6n7UpAldo=;
-        b=ZHqO9f6Gr8AvnEQQM1ZqvSAfwJ2sqQ+ENgfCaQQE+Rjf2ObSUDfafIgr0F4OXlwowY
-         V97RhmRrf7RT/MvfUfUPbYhbyS7IhVhPK5WlrmnO17mw9HwZ1jhnJkKaYp+SdEoakMSu
-         Q8hTcERF//q2NNCbjyYn/Lt7K97squNxBG+Se3mmMoyhASMjEvbLwFl8RiLVulIuokcz
-         toQa3pPHCrvmK4xUIGTx0YMj5O9rp+q9Z4kJR6xo9kNTbmqhzphcETQOLKmZvekEhAxZ
-         WCq/y+1XP/o0wX5UUNaYW2U37WKmeUKvzpFepkOT51WwgPdvXAwzR7IHKYuaEGlG3asN
-         x7CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785619359; x=1786224159;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YItn9UN/FPZMLv/eaPs9b++UQIA6LNhw5J6n7UpAldo=;
-        b=axCSPutPRqJRLs0FS2+d2LK0SfJTorh6wiAv+4jdSjyv526VyWefWGZcDFCwUf7ISM
-         hypS7SBdPNMvJ7SgGDldb/7aDhm3dGD6zuyT0yye7b8wEFje/WMedzJwBYrEei64V0Kc
-         mBbu6EFi9begyvb2fGK1aq5fI2iqgHWP432t1R42cFghQYHfrTENfHlM7GnwQq3n1VU4
-         EgS3uioy17RuuxrkEGma8FdpXBB0NnEP5Y9oM85uGkT9KYAi3iR3BMGoBEITqEsubM+C
-         FdIsi3YpdL556kFr/mGddVX5QWKAJzoTF+MlNoKFvy9JJKmDNPXGxC0xEcjDsMBk1KK0
-         n8vA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr7YEVtsG2UAfKvmI893vEYX/VQXyU9/ZY9ZxheOyR3tQ90Er05lYRPVIaxn3ZGOuQPP6I=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxno4nKOtGrYvnaX+GuQIsm25qQy/QPleu+Jt2TMmhhEVeDfUTw
-	oM58x7OPIMoZhsWepi71kIfIALU/brZcwv5hfKrM9tXPxqdxk9Dqt9FG
-X-Gm-Gg: AR+sD13yJuuyttvMt5OXVLB0y/rpXGFyuOVu0kE7ONJyZ+kU2MA+ijH2DLJ+jpykMaY
-	cTVmZ9D/YtN8WfUHHe9xTpAxCVzRxP9gq7M509E5Lrx45wA4CCWNP46Gde6DzKGmBDdjkKOqc+y
-	DArYbmJmpwrn+uBIEikCCS1nJi9USy8cBfbUZEt+59EnbvM4ZnieKNID5u4mVCninXWXeJ9C2ZS
-	ZAHTe8VNLPrUlL49mZ7pq3At1BUBegfcOtrUl78GNhNh7q340/Pw86GFYOD/9c0mMjqLxk6eBek
-	oWrXxOIlRCWf5mmZhuLViBd1t9xXbhyV5NMFv8yjD64ThiX7GM7KFcOd4QWx4+dwzPTDOR+mwOW
-	z6aqkO6MkXxt+5d9OwOAyjg81VyFFL68r3dkIOEn/M43Rl0yPGeVy1C+Y/ohs0RWZ0DWhXbZx2Y
-	Pr8lBFLJxgsTjDhz8XnwknRFNMZiVU3WEZ/xELyU1gyFY7Wix8No1pGX9xYdaO70vlQe7UNnXeS
-	6k1NmsHTet/tDSiwpU6LByPrYq9X7UhWyWJFzqZIj3OMXNGyvAy
-X-Received: by 2002:a05:6000:1cc4:b0:47d:ee9d:90c8 with SMTP id ffacd0b85a97d-47fd72bbc55mr9339524f8f.3.1785619359188;
-        Sat, 01 Aug 2026 14:22:39 -0700 (PDT)
-Received: from nixos-office (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd45a1abfsm18102766f8f.37.2026.08.01.14.22.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 14:22:38 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-From: Julian Braha <julianbraha@gmail.com>
-To: florian.fainelli@broadcom.com,
-	rjui@broadcom.com,
-	sbranden@broadcom.com,
-	linux@armlinux.org.uk,
-	tglx@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	radu@rendec.net,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	arnd@arndb.de,
-	Julian Braha <julianbraha@gmail.com>
-Subject: [PATCH] irqchip: gic-v3: fix unmet dependency on ARM_PSCI_FW
-Date: Sat,  1 Aug 2026 22:22:35 +0100
-Message-ID: <20260801212235.2692694-1-julianbraha@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF28B1B85F8
+	for <imx@lists.linux.dev>; Sun,  2 Aug 2026 10:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.40.93
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785668131; cv=fail; b=L1TNhtb4PsLjvbVKZqr2C2vKz6qtN1j92oEOp/Qwn0e+N6I1iix7cwlq5YmxZJ6Vq/WEqEU9RmuAiWjBHXOreZADfakZNY8E14T0o0asGnIzClB7RrWh4b7yy2mWzFq8VGCIn31S9qRLhNTYpdKVXOL7GEqACLS7e+p+0u9WMgM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785668131; c=relaxed/simple;
+	bh=eX9GGqD5MKGudQ8LvFoWGZySxHvdndK2hSfrSkCfqAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=FOIn+h2jN8i6Fs3pabeF7z60VoL8oNLY8MDn6/Rg0EJCYJa4zoLrcwkKCr25GeOH2Z3mQIe4tQxv3ppqbcq7zQZDomxIpdXqDpg9+ZO6iHdFYvjFyWd1A0f+Q+BGuQ9xBcmUFeW+PHdpM5yzL05jUqn2CIYZUAlO26QaXv+/Ydk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=heitbaum.com; spf=pass smtp.mailfrom=heitbaum.com; arc=fail smtp.client-ip=40.107.40.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=heitbaum.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heitbaum.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tF0moSV093jkLs0C+5os2/Qar8izlHZjs80WW2GRgiWNfAIhDt4veE1v3vvNyTIXMJO0/pGBELOG0qFsoCf9qJvCU/hvUZ9Jns92JedcPfAMh+AMFeA7WJ+TodIYQr2+7MPC1O0nKuBpMv+KrZ8HiuHYhztxdGe0pefEsYXJk/4aw+3KPtJ6YtZrTAGRR2rpkNqsP/MBTjOUyZJuzTY1QyTmZK3hnwHrhq1q/kOcxtqshMBGqM16n8vgStuAVHlAYqY0ULnq9uOA4U0GzJCydcJ0byxvsjXvo4MJDvs6cnRjk3vV1fzzpRfjfUgCWTD2CXVCRlDu/eMc5+nC7o2vcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O8d4MflChzYxgs+16eeEucZVBN7Rozihw4bYXT1KIOE=;
+ b=aGUgxstWQf4pyCcg5dhgu0h3neYv0Wk3vA2U5kdJb8uWW9+wfkSuWPVE3IIE9nhtoE+X4HPAaUNGALIVkGKj2arazXnVEkrolUoHIxzPhXmzvBhKk3JS4lhzIPS8S2FYK4RsE7BWaqwrmIH3ERj2T64GcK4MKTo8YL56cf7sm9TxmnXqCWZBgCJIHSjXfWL0UUO3OO+D3J4Fi1SurkCbRuU8J2k4AyMJePqihnzjMqzC0IEtuB4HsdMKipVMjx0LOxhDEW0Cww2iE7gi3kz+WNTkVliO/d8EfZz4a0RLUHtHr0uft4dJhOELMA/ji7DsPX1+FyTzYdZA+us92aR6Ww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=heitbaum.com; dmarc=pass action=none header.from=heitbaum.com;
+ dkim=pass header.d=heitbaum.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=heitbaum.com;
+Received: from SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM (2603:10c6:10:279::22)
+ by SY3PPF7288964DF.AUSP282.PROD.OUTLOOK.COM (2603:10c6:18::31a) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Sun, 2 Aug
+ 2026 10:55:23 +0000
+Received: from SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::21b6:91f8:614d:1fdd]) by SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::21b6:91f8:614d:1fdd%4]) with mapi id 15.21.0270.016; Sun, 2 Aug 2026
+ 10:55:22 +0000
+Date: Sun, 2 Aug 2026 10:55:03 +0000
+From: Rudi Heitbaum <rudi@heitbaum.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, rudi@heitbaum.com
+Subject: [PATCH] PCI: imx6: Avoid dereferencing a NULL clock name
+Message-ID: <am8iBwJSEhYhWTqk@6cfee64030a6>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-ClientProxiedBy: MEWPR01CA0178.ausprd01.prod.outlook.com
+ (2603:10c6:220:1f2::14) To SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:279::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY7P282MB4909:EE_|SY3PPF7288964DF:EE_
+X-MS-Office365-Filtering-Correlation-Id: 027eb8da-24d1-4bd0-4778-08def0848d1b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|23010399003|366016|18002099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	AYw4At57J9no0rNxxrGEcoevQ4UEkyXbQ/iYm/tFEoec319icJJ2WwULlq8SekPcO8zO6D2iAW/F0uXyE/Y2LWCGQERKNSe6ghOiHk+myj7eegMnaMUv1gQrMIO7Q4DL3BhXAPK5wzIxRD/z3LCUPW9LkF59Gfd+AMmCdQWRv2s2CqgRE5Ai2tRgHqW5hFCwO5uGytIRqjVDqhLeSn/G2WgePwYyQnb28Ko3/8C5pC1a6s1Orw/lYOUtiOeDGTWUPvdbdu1wHGEzwc7o8aSwTiWOsbCxrZGuzUzoRj5NOBAPhbsKbgHGwF41Nz0T0hWigm7OTYYOC9dAB9gdmkQp2vqB3m8g8xPAiK0wHTCzVOZ78nbeHFCSRlEtUrSspbdbT4TKc+hlPrkuyfafmgtXV3EIWA8sasw5ZOEZXbQIMRG9FPrHiYI6YSbsAiR3NACfg9OzEmzSbCt7jQG59HxzFAR047eCnWYhkN07QvZrfGTcKyf4V77isaNDqtBjf59xLwkAOirSlJKB4J9YDB7ZUqQDEVjVRwJS6ILIkoD8y3jA7fH3Rv9b1Jc5AcvuR/N/jF2pTbRR9ldeXEyZU3mU3JTdPqbE+cFg2kEfOn9LVjBqCC26nvOthF3mdIBV3CSMluFpZbJ2ao7D5c1bVbfZNcZxR/1XuMBUHeNboeO/gaw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(23010399003)(366016)(18002099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5/3bnuCgIb7QERcFjxdnQFytsMG+egmGAaNqhfVpzg3j9WCRNwIbALZ/DumC?=
+ =?us-ascii?Q?ONs9PT5yZYklrupPSL5UiYOztthoKA0s+qpftEdZD1ZdUV9SlTBe5Mbq7LnZ?=
+ =?us-ascii?Q?5THzDcX4x6uG+Qjm1V0u0SA2cR7PS9jdlofrVE3tPIsee8Ylf53WleovGxgj?=
+ =?us-ascii?Q?dY1Xl3Z5nzJm86o4ZcPBTRxJ4hf09sbCtZ5In8UwnWF+zsVqVsd+JuGELoth?=
+ =?us-ascii?Q?wRpL6pFUc/FWypD9cYFYgZwmFt653o6Qaq6kQz08Kl7RpFWjb3DfxVhprQzL?=
+ =?us-ascii?Q?mVlv61R6R9TNWA/jYClgVri9f7ofR3sAx8nYoDX3ANPq1aIW+YGZ5HrMtViy?=
+ =?us-ascii?Q?O/LKdPSibfXZDXzy1sDUpSiKhsJ4gDgcNHgQMhviuke8+33bBsmjI6Z+4uCw?=
+ =?us-ascii?Q?Yc4r4dR3TxKZykLAcwDCWV3RTGRdAsH720qHTmKPcBVKAghlLmf9ec77ESI2?=
+ =?us-ascii?Q?xD+uFsixJVe8Jwk1sD8XWDdHYHxyKidDI1cVQo8MykETQZBc4nGR9RIyPI4P?=
+ =?us-ascii?Q?mpyCL/mNNW8i8evEgao4DuaJeq0QGvuRwHONzIZDxI43d+WEz+QxAdWKDAjS?=
+ =?us-ascii?Q?WZ0RKBgHspEtst5i7h0nV0ssjbjeAZ3uSjBkSbKn38hp+3wP78cr3sHFL4Rp?=
+ =?us-ascii?Q?YITuyE4mSIGR3T0JGvefhbHa3z3h7iAvK72MBE7oEhbPRyaQTt7t17HmjXAn?=
+ =?us-ascii?Q?kunsNmL1tlQAHhMZdI8bWSKvQe1kNINiXyNdsuZO/SLEqYjdxNfGZNfPaJmN?=
+ =?us-ascii?Q?Cw4ZZvBvTakpSgmhKtlLhyPxKtMNAq9IQTh5Md+C/XY83/IiQXFU+yxbd+8C?=
+ =?us-ascii?Q?xWSC8mNRk+YnhvtPa3X5lrYhsAfhjrA2dqK9Eg23bO5mb/DF0weJ5lKm2C3m?=
+ =?us-ascii?Q?e6csGsvTUBd9JWjaapmfVNvPmMj/BCip5EgJvwHb6QgxadZ8NkPVqTNjHYsw?=
+ =?us-ascii?Q?5YNsDWYtg3zlEUwcZ3+ebZzAJgjGUZA8QDqYnbygMX8At1admGEKUd8DHi5n?=
+ =?us-ascii?Q?AK5EatQglGGZpsYTSKSMXpsqe4GEIcI3d02nS56QwnOfIHgq288m2yFgopVW?=
+ =?us-ascii?Q?kEs9xz3pXigJT3xwHBJeBUUmA3+M07ShYBRtvVo+bDpWu5yTmMvdAtsd/Nm1?=
+ =?us-ascii?Q?nz/C62pTTV6A++TsRRfOsUtfMpJr7nuqSM8i64EjYELoLmoOws9MbWbLYYMu?=
+ =?us-ascii?Q?oPT1E+hp9T3cgWxQ4z+dUgda1L/+rz1gtGbldPy2srb1FptG6WupYsAlu4Xc?=
+ =?us-ascii?Q?+IQ3/IXl234pKWWeav3jDpE+DMS5MPmulRz/LoBKuxPiCR7Uel4pwb88MQbf?=
+ =?us-ascii?Q?w0YndYePmB2AW9EZfZ+J3Z6as3K3iZN5XcP9ygqW/T++ehGHtEScyIoUCdd0?=
+ =?us-ascii?Q?h/pvbZGA7kbn4vxE66LVMH0DAIKIaAOX0wMq9rWNuGOEJWNwYV/pKmL4KgLx?=
+ =?us-ascii?Q?DM81RSEk18pvWHYMgRJuWNd6moUZdqaZgzVDjp8GbGvQIU+EBSi1CCprYLqL?=
+ =?us-ascii?Q?YMcHUeq9fkXJaAFlmt7KKF06K8cMs4hI2muyY+8YBcRuSLpZjoxccCZBJUuD?=
+ =?us-ascii?Q?SPcYbqnhn8W56JxWGVF+WrKXxAoW5Szb1cYwfmjUnuw/RoQMz1ONsck7ye+2?=
+ =?us-ascii?Q?Ma4gswVh6ivsBqNrwQG6vLWZ8CY3Z5mzt+57qPzZRooo8HspUCoQp7/XG08S?=
+ =?us-ascii?Q?tLzZGd19rSp9NGf1nVB3CfJSNnKr/gY0PpUTOPtHW5SSj9Ej?=
+X-OriginatorOrg: heitbaum.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 027eb8da-24d1-4bd0-4778-08def0848d1b
+X-MS-Exchange-CrossTenant-AuthSource: SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2026 10:55:22.8306
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 35ffebb5-7282-4da6-8519-efab29b0108e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 73TsI54idim1caS3KWJPAYYsEy5Hxq6SWvGws85AMKFWFppEq1Vis0VYjnt5M07lIWChZfLxImUB0MzTjY7GlQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY3PPF7288964DF
 
-ARM_GIC_V3 selects HAVE_ARM_SMCCC_DISCOVERY without ensuring its
-dependency, ARM_PSCI_FW is met. However, ARM_PSCI_FW should be
-selected by the system type, so ARM_GIC_V3 should depend on ARM_PSCI_FW.
+of_clk_bulk_get() leaves clk_bulk_data::id as NULL for every clock that
+has no matching entry in "clock-names", which is legal: a node may list
+more "clocks" phandles than it names. The extref scan dereferences that
+id unconditionally, so such a node oopses during probe.
 
-Additionally, the systems that select ARM_GIC_V3 (ARCH_BRCMSTB and
-SOC_IMX8M) need to select its dependency, ARM_PSCI_FW, too.
+Check clk_bulk_data::id before dereferencing it.
 
-This unmet dependency was found by kconfirm, a static analysis tool for
-Kconfig.
-
-Fixes: 35727af2b15d ("irqchip/gicv3: Workaround for NVIDIA erratum T241-FABRIC-4")
-Signed-off-by: Julian Braha <julianbraha@gmail.com>
+Fixes: d8574ce57d76 ("PCI: imx6: Add external reference clock input mode support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
 ---
- arch/arm/mach-bcm/Kconfig | 1 +
- drivers/irqchip/Kconfig   | 1 +
- drivers/soc/imx/Kconfig   | 1 +
- 3 files changed, 3 insertions(+)
+ drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-bcm/Kconfig b/arch/arm/mach-bcm/Kconfig
-index 24bc6e18d806..ff7c161df1f1 100644
---- a/arch/arm/mach-bcm/Kconfig
-+++ b/arch/arm/mach-bcm/Kconfig
-@@ -184,6 +184,7 @@ config ARCH_BRCMSTB
- 	depends on ARCH_MULTI_V7
- 	select ARCH_HAS_RESET_CONTROLLER
- 	select ARM_AMBA
-+	select ARM_PSCI_FW
- 	select ARM_GIC
- 	select ARM_GIC_V3
- 	select ARM_ERRATA_798181 if SMP
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 20b77fbc51ee..726804295545 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -35,6 +35,7 @@ config GIC_NON_BANKED
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index f7389b5437df..dcdeba1856f7 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1831,7 +1831,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, imx_pcie->num_clks,
+ 				     "failed to get clocks\n");
+ 	for (i = 0; i < imx_pcie->num_clks; i++)
+-		if (strncmp(imx_pcie->clks[i].id, "extref", 6) == 0)
++		if (imx_pcie->clks[i].id &&
++		    strncmp(imx_pcie->clks[i].id, "extref", 6) == 0)
+ 			imx_pcie->enable_ext_refclk = true;
  
- config ARM_GIC_V3
- 	bool
-+	depends on ARM_PSCI_FW
- 	select IRQ_DOMAIN_HIERARCHY
- 	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
- 	select HAVE_ARM_SMCCC_DISCOVERY
-diff --git a/drivers/soc/imx/Kconfig b/drivers/soc/imx/Kconfig
-index 2a90ddd20104..9f0be8b66c4f 100644
---- a/drivers/soc/imx/Kconfig
-+++ b/drivers/soc/imx/Kconfig
-@@ -6,6 +6,7 @@ config SOC_IMX8M
- 	depends on ARCH_MXC || COMPILE_TEST
- 	default ARCH_MXC && ARM64
- 	select SOC_BUS
-+	select ARM_PSCI_FW if ARCH_MXC && ARCH_MULTI_V7
- 	select ARM_GIC_V3 if ARCH_MXC && ARCH_MULTI_V7
- 	help
- 	  If you say yes here you get support for the NXP i.MX8M family
+ 	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_PHYDRV)) {
 -- 
-2.55.0
+2.53.0
 
