@@ -1,86 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6FB305680;
-	Mon,  3 Aug 2026 14:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85832B10D;
+	Mon,  3 Aug 2026 15:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768856; cv=none; b=XQlqtKsR2CEV2/G2W7Whcgxy5ycqjNd1RCPIRaSJsmKy9f/P1h4QCynzOuLQpbf1TmWLGNB4oKI8ypCUXXLyVJ4js/WA7a2n64m6G+04/2rrIg1wWw8MMA4iGwK7tmWuFg3MQxwAoMaqqg5kEF8Ud2bWCty3nf5HMWHw4nPs83U=
+	t=1785771208; cv=none; b=MPTLAsBO2fEJc6XaPi5tvjl1xJolnORb/ijgp1mYbDHvrrj0iVT1TvJCEB6F1jMkGh1kyGgylRkeH6ZPOxlA7XQnU3UYBFQcIjqHMvwA+BFmBuJsDoSTvzD3+y8QY2cKFU+HlaYizp/oMoamY6CPUPenQAV5FkI7HXxAV0lkfPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768856; c=relaxed/simple;
-	bh=bn9DntWmYHX7rjqyF2E8Zl/GfronaN47+0YjZ0pG1R0=;
+	s=arc-20240116; t=1785771208; c=relaxed/simple;
+	bh=k5Kmssu1/Grg6vRwr4FEdR4G2wuL/JL16WzdSa0VqMg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEkqyuFG7n3nCg6U9ekK/PnwHRJPOaCVWkrjCHofyaIE+Sm5I4mSVe14Lw9BF7hBAlBUC+xEpr9Koz4BWbDzsAihDlPRGHU2RndBeGOV14o/JArLDceCtkUIM8kwYzhIMD3tNN+6b2MFz9O2lZl5WF9aImfRRZhmuntoNqG97sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNMCSboL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=FB/vx9YNneTdRZJQ8dkaK9klqNN5CqhFa5hUIYzEu5WLEVVTDd76P4Erds0u5kr2uHrwqXK74SEzdHKi+wiUlRb+tuJZJBWyaPNCNCA//IAw6pd3pAotpGq8nOarNKskph3ES1gJIJ1pMwebxvZIzI2FAMWeZRwNPWLSbmCvpY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FyFB74lh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNMCSboL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A471F000E9;
-	Mon,  3 Aug 2026 14:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1785768854;
-	bh=LWWMyiRyHQgnIeqT2FsVGOyXULdTvyWYrbxiNMTKbzc=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FyFB74lh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1651F00A3D;
+	Mon,  3 Aug 2026 15:33:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785771203;
+	bh=Vg0PctaQtBQrf+tl8AD8zggSqyHRuQxDtAbyWu+DxcE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fNMCSboL3Q4QfowHWSTQl4JGBKt7K2MpilPyyL7bcEHAJ9Nj8N/OlLUXPRngp3m9w
-	 e5ZCPSNNOmvz2UDmhRh7vDfrEaBgLlJVOr472RvCkZocJKhbOAHnLjJTXPhwpAeJDd
-	 mUggtZjIrCuWKohhfIobaJuy6Cuv1c3MMYitaG2s=
-Date: Mon, 3 Aug 2026 16:53:59 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] serial: imx: serialize imx_uart_ports[] lifetime
-Message-ID: <2026080341-agreeing-context-ca78@gregkh>
-References: <20260731181844.11330-1-kmehltretter@gmail.com>
- <20260731181844.11330-6-kmehltretter@gmail.com>
+	b=FyFB74lh75/iAlB/t5+krj7Omm8rH1vuVjxw1+YCRpRHUMKmXPL4EcwtWcV2wR9O0
+	 YF3lBtpPhs4cUGThZcEDwxQbeP3i5LvflOLC8CYQdNVSEmO590GT7Eh6e6P3oUKO+s
+	 PpeGBnCblW+YF85sSCi5gI+qElYNNMoU64rsldqWdPZ59BIo3Fv8NRVt5elR0tS12N
+	 R6ZCgkhZ5xWugaNq22hNVX4FIOMqKyWaKETl9sZBAw00t7qiS4wsgM7GL6rFFuUxFR
+	 lfHHyfRJPMT5GtZW/rwXOew3eohNRd3eG6xA3dj5/VANw8MVUakNDnfDfCtpz4gChT
+	 vi5lVejnRBhqQ==
+Date: Mon, 3 Aug 2026 17:33:12 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>, 
+	Frank Li <frank.li@nxp.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>
+Subject: Re: [PATCH v2] PCI: dwc: Add suspend_poweroff flag for platforms
+ with RC power loss
+Message-ID: <hyfto5fjcda4aaknwxxxx6wn6ej3tmbhzxaqykakubahw7xxjj@zxixpkhs7khh>
+References: <GV2PR04MB12019096F2A9E8337F2A1BF9F8CC92@GV2PR04MB12019.eurprd04.prod.outlook.com>
+ <20260730120913.GA1497203@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260731181844.11330-6-kmehltretter@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260730120913.GA1497203@bhelgaas>
 
-On Fri, Jul 31, 2026 at 08:18:44PM +0200, Karl Mehltretter wrote:
-> imx_uart_probe() publishes its devm-allocated port in imx_uart_ports[]
-> before uart_add_one_port() because console setup uses the table. The entry
-> is not cleared when adding the port fails or after removal, leaving a
-> dangling pointer.
+On Thu, Jul 30, 2026 at 07:09:13AM -0500, Bjorn Helgaas wrote:
+> On Thu, Jul 30, 2026 at 08:16:36AM +0000, Hongxing Zhu (OSS) wrote:
+> > > -----Original Message-----
+> > > From: Bjorn Helgaas <helgaas@kernel.org>
+> > > Sent: Thursday, July 30, 2026 6:30 AM
+> > ...
 > 
-> A sibling probe can register the shared console through that stale entry.
-> This was reproduced under KASAN on QEMU mcimx6ul-evk by unbinding a
-> sibling UART, unbinding the console UART and rebinding the sibling.
+> > > On Fri, Jul 17, 2026 at 03:41:21PM +0800, hongxing.zhu@oss.nxp.com wrote:
+> > > > From: Richard Zhu <hongxing.zhu@nxp.com>
+> > > >
+> > > > Some platforms like i.MX power off their PCIe RC controllers during
+> > > > system suspend, requiring full re-initialization on resume. These
+> > > > platforms need to enter L2 state to properly notify endpoints before
+> > > > power loss.
+> > > >
+> > > > According to PCIe base spec r7.0, sec 5.2, the system software should
+> > > > transition the device into D3Hot before broadcasting the PME_Turn_Off
+> > > > message to initiate L2 entry. However, some endpoint devices fail the
+> > > > D3cold capability check in pci_host_common_d3cold_possible(), which
+> > > > would normally prevent L2 entry.
+> > > 
+> > > Wakeup devices that don't support PME from D3cold will fail the
+> > > D3cold capability check, but I don't think those are the problem
+> > > you're solving.
+> > > 
+> > You're right.
+> > 
+> > > This appears to handle devices that are not in D3hot, and that's
+> > > not a property of the endpoint; it's a property of its driver.  Is
+> > > the problem here that some driver didn't put its device in D3hot?
+> > > 
+> > I observed some endpoint devices failing the D3cold capability
+> > check, but I haven't identified the root cause.
 > 
-> Keep the entry valid through uart_remove_one_port(), then clear it. Protect
-> port addition and removal together with their table updates so sibling
-> operations cannot interleave. Reject an occupied slot rather than
-> clobbering an active port during a duplicate-line probe.
+> Seems like some instrumentation in pci_host_common_d3cold_possible()
+> could tell us which devices/drivers are relevant.
 > 
-> Fixes: dbff4e9ea2e8 ("IMX UART: remove statically initialized tables")
-> Fixes: 9f322ad064f9 ("imx: serial: handle initialisation failure correctly")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/all/20260719162850.043B41F000E9@smtp.kernel.org
-> Link: https://lore.kernel.org/all/20260719222501.CB4CB1F000E9@smtp.kernel.org
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
-> Backport note: the removal fix is self-contained. Complete probe-failure
-> coverage also requires patch 1. With patch 1, all fallible allocations
-> precede console registration, so rollback can safely clear the table.
-> Without it, a late allocation failure (only reachable with fault
-> injection) can leave the console registered after imx_uart_ports[] is
-> cleared, turning the pre-existing use-after-free into a NULL
-> dereference.
+> > > > For platforms where the RC loses power during suspend, L2 entry
+> > > > is essential regardless of D3cold support, as the link will be
+> > > > lost anyway.  Add a suspend_poweroff flag to force L2 entry in
+> > > > such cases, and enable it for i.MX PCIe controllers.
+> > > >
+> > > > Note: This violates the spec requirement that devices be in
+> > > > D3Hot before PME_Turn_Off, but is necessary for proper operation
+> > > > on platforms with RC power loss during suspend.
+> > > 
+> > > If the device isn't in D3hot, it may still be active, and I think
+> > > the PME_Turn_Off will abort any DMAs in progress, which doesn't
+> > > sound like proper operation of the endpoint.
+> >
+> > You're correct - this isn't ideal for endpoint operation. However,
+> > on i.MX platforms, the RC controller will lose power during system
+> > suspend regardless. Without sending PME_Turn_Off, endpoints would
+> > have no notification before the link abruptly goes down.
+> 
+> The PME_Turn_Off is some notification, but I don't think the endpoint
+> can do DMA or MSI, so its driver won't be involved.  It may be able to
+> do things internally, e.g., write caches to an SSD or transmit packets
+> from its internal buffers.  But I think it might still lose power in
+> the middle of operations like that, so it doesn't sound reliable.
+> 
+> > This patch adds a flag to force L2 entry for such platforms,
+> > choosing to notify endpoints (even if not ideal) rather than having
+> > the link drop unexpectedly. I'm appreciated for suggestions if
+> > there's a better approach to handle this scenario.
+> 
+> Mani recently added pci_suspend_retains_context(), and I think it
+> returns "true" on i.MX.  But if the RC is powered off and all the
+> devices need full re-initialization on resume, it sounds like it
+> *should* return "false".
 
-None of these should probably be backported, so this should be ok :)
+Right. pci_suspend_retains_context() was added just for that purpose of telling
+client drivers to prepare for context loss. So if this API returns 'false', then
+they should not hold the device in D0.
 
-thanks,
+- Mani
 
-greg k-h
+-- 
+மணிவண்ணன் சதாசிவம்
