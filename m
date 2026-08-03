@@ -1,134 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85832B10D;
-	Mon,  3 Aug 2026 15:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EA4345CA1
+	for <imx@lists.linux.dev>; Mon,  3 Aug 2026 16:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785771208; cv=none; b=MPTLAsBO2fEJc6XaPi5tvjl1xJolnORb/ijgp1mYbDHvrrj0iVT1TvJCEB6F1jMkGh1kyGgylRkeH6ZPOxlA7XQnU3UYBFQcIjqHMvwA+BFmBuJsDoSTvzD3+y8QY2cKFU+HlaYizp/oMoamY6CPUPenQAV5FkI7HXxAV0lkfPw=
+	t=1785772930; cv=none; b=ULlld0KHEPDArtXaKR1f7zwWnc0GbLl3JUNelVTE5m+NjsbKq4PqdZPIMdFMrNJK3hFgXULi4o/4PrwlMN6FXb3gJ3qMAVTiX2/jGudYemaUDBqkXCWAPYdat+72piIruhQ2kRpMAYDKCxZm3971GL+QPcdK3xKjabl4d+uXCkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785771208; c=relaxed/simple;
-	bh=k5Kmssu1/Grg6vRwr4FEdR4G2wuL/JL16WzdSa0VqMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FB/vx9YNneTdRZJQ8dkaK9klqNN5CqhFa5hUIYzEu5WLEVVTDd76P4Erds0u5kr2uHrwqXK74SEzdHKi+wiUlRb+tuJZJBWyaPNCNCA//IAw6pd3pAotpGq8nOarNKskph3ES1gJIJ1pMwebxvZIzI2FAMWeZRwNPWLSbmCvpY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FyFB74lh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785772930; c=relaxed/simple;
+	bh=+g+S3z+R85NA2OgDud7z7Tewl32hJbS/FZavoTeM4JA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gx7xAmvnXoyS9vOM4Jy/X14gD4x8ZfrgpB2vjjrKQzGj6j3XFTTYw9xHGDUxgN19/YzlDScmCU0t7JBdZ2uEpLamWuSNCYmsp47PXA1XGAUi+O4W+F0aCFa02c148BXLrWbXeKd9JDeEYKfW7r976A968d/WfSsF3a6LJKj1DVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qv4iiAFE; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FyFB74lh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1651F00A3D;
-	Mon,  3 Aug 2026 15:33:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785771203;
-	bh=Vg0PctaQtBQrf+tl8AD8zggSqyHRuQxDtAbyWu+DxcE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FyFB74lh75/iAlB/t5+krj7Omm8rH1vuVjxw1+YCRpRHUMKmXPL4EcwtWcV2wR9O0
-	 YF3lBtpPhs4cUGThZcEDwxQbeP3i5LvflOLC8CYQdNVSEmO590GT7Eh6e6P3oUKO+s
-	 PpeGBnCblW+YF85sSCi5gI+qElYNNMoU64rsldqWdPZ59BIo3Fv8NRVt5elR0tS12N
-	 R6ZCgkhZ5xWugaNq22hNVX4FIOMqKyWaKETl9sZBAw00t7qiS4wsgM7GL6rFFuUxFR
-	 lfHHyfRJPMT5GtZW/rwXOew3eohNRd3eG6xA3dj5/VANw8MVUakNDnfDfCtpz4gChT
-	 vi5lVejnRBhqQ==
-Date: Mon, 3 Aug 2026 17:33:12 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>, 
-	Frank Li <frank.li@nxp.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: dwc: Add suspend_poweroff flag for platforms
- with RC power loss
-Message-ID: <hyfto5fjcda4aaknwxxxx6wn6ej3tmbhzxaqykakubahw7xxjj@zxixpkhs7khh>
-References: <GV2PR04MB12019096F2A9E8337F2A1BF9F8CC92@GV2PR04MB12019.eurprd04.prod.outlook.com>
- <20260730120913.GA1497203@bhelgaas>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qv4iiAFE"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7B0241A13CE;
+	Mon,  3 Aug 2026 16:02:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4FC7D6029B;
+	Mon,  3 Aug 2026 16:02:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75DE711C30D48;
+	Mon,  3 Aug 2026 18:02:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785772925; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=BNY/5TDYlBCYsVNRRmsCX0iAWr61b4r/o3mcDpI2qBk=;
+	b=qv4iiAFEUxTCbj+SSNaNi4jSbsJIY+0ZzB/9pDoD+IMIzoElHbHhm2oMUhYLyBWOqVX6lJ
+	6FZKqqniA/jL66r9og/vBeOlCOVPfiQQVHGCf3w1w59Tj6252bAYq+0U60uK6Yxi/VfC8v
+	WN7BxoMWlVMyctVF04UCjZ3oZdDdmXJZ+PZG3W0tfqNW6bPvURyUGcpOrVZpq6IamJ2PSK
+	Mu1/3vLSuDcQM+qcYDXv9eB+swSDqcQShrHqPGF3gX3Rt4DTA6m76ncmrvuglJGt6v5lj5
+	wcL/LkXMQBNqtvC97P/nejKahb2gK3OpEFvLPwL5CvWBcSWdQbD3QXbYoryghw==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Subject: [PATCH v8 0/2] dmaengine: fsl-edma: Scatter/gather improvements
+Date: Mon, 03 Aug 2026 18:01:59 +0200
+Message-Id: <20260803-fsl-edma-dyn-sg-v8-0-dc2b0317206d@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260730120913.GA1497203@bhelgaas>
+X-B4-Tracking: v=1; b=H4sIAHe7cGoC/23RTW7DIBAF4KtErEvFAOanq96j6sLAkFAldmVcq
+ 1HkuxfSSnGFl08aPp5mbiTjlDCTl8ONTLiknMahBPN0IP7UD0ekKZRMOOOKSW5ozGeK4dLTcB1
+ oPlKrmBaAQoeek/Lqc8KYvu/i2/tvzl/uA/1cmTpxSnkep+v9ywXq3J8uWKMvQBmVyNA75CEq9
+ erGcT6n4dmPF1L9hT+EjqlW4EVQSgrrQ5AgsRXERgBoBVEEa3owoHUX+h1BboV2R4ssgvGog+0
+ ceLSt0D0EzXgrdEUApY0G0zmUO4LaCLCzSVU7CHBWORRRQCvojbBz6UXXDizE6GSp4vl/YV3XH
+ 5N+VRZOAgAA
+X-Change-ID: 20260428-fsl-edma-dyn-sg-960731e37da2
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 30, 2026 at 07:09:13AM -0500, Bjorn Helgaas wrote:
-> On Thu, Jul 30, 2026 at 08:16:36AM +0000, Hongxing Zhu (OSS) wrote:
-> > > -----Original Message-----
-> > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > Sent: Thursday, July 30, 2026 6:30 AM
-> > ...
-> 
-> > > On Fri, Jul 17, 2026 at 03:41:21PM +0800, hongxing.zhu@oss.nxp.com wrote:
-> > > > From: Richard Zhu <hongxing.zhu@nxp.com>
-> > > >
-> > > > Some platforms like i.MX power off their PCIe RC controllers during
-> > > > system suspend, requiring full re-initialization on resume. These
-> > > > platforms need to enter L2 state to properly notify endpoints before
-> > > > power loss.
-> > > >
-> > > > According to PCIe base spec r7.0, sec 5.2, the system software should
-> > > > transition the device into D3Hot before broadcasting the PME_Turn_Off
-> > > > message to initiate L2 entry. However, some endpoint devices fail the
-> > > > D3cold capability check in pci_host_common_d3cold_possible(), which
-> > > > would normally prevent L2 entry.
-> > > 
-> > > Wakeup devices that don't support PME from D3cold will fail the
-> > > D3cold capability check, but I don't think those are the problem
-> > > you're solving.
-> > > 
-> > You're right.
-> > 
-> > > This appears to handle devices that are not in D3hot, and that's
-> > > not a property of the endpoint; it's a property of its driver.  Is
-> > > the problem here that some driver didn't put its device in D3hot?
-> > > 
-> > I observed some endpoint devices failing the D3cold capability
-> > check, but I haven't identified the root cause.
-> 
-> Seems like some instrumentation in pci_host_common_d3cold_possible()
-> could tell us which devices/drivers are relevant.
-> 
-> > > > For platforms where the RC loses power during suspend, L2 entry
-> > > > is essential regardless of D3cold support, as the link will be
-> > > > lost anyway.  Add a suspend_poweroff flag to force L2 entry in
-> > > > such cases, and enable it for i.MX PCIe controllers.
-> > > >
-> > > > Note: This violates the spec requirement that devices be in
-> > > > D3Hot before PME_Turn_Off, but is necessary for proper operation
-> > > > on platforms with RC power loss during suspend.
-> > > 
-> > > If the device isn't in D3hot, it may still be active, and I think
-> > > the PME_Turn_Off will abort any DMAs in progress, which doesn't
-> > > sound like proper operation of the endpoint.
-> >
-> > You're correct - this isn't ideal for endpoint operation. However,
-> > on i.MX platforms, the RC controller will lose power during system
-> > suspend regardless. Without sending PME_Turn_Off, endpoints would
-> > have no notification before the link abruptly goes down.
-> 
-> The PME_Turn_Off is some notification, but I don't think the endpoint
-> can do DMA or MSI, so its driver won't be involved.  It may be able to
-> do things internally, e.g., write caches to an SSD or transmit packets
-> from its internal buffers.  But I think it might still lose power in
-> the middle of operations like that, so it doesn't sound reliable.
-> 
-> > This patch adds a flag to force L2 entry for such platforms,
-> > choosing to notify endpoints (even if not ideal) rather than having
-> > the link drop unexpectedly. I'm appreciated for suggestions if
-> > there's a better approach to handle this scenario.
-> 
-> Mani recently added pci_suspend_retains_context(), and I think it
-> returns "true" on i.MX.  But if the RC is powered off and all the
-> devices need full re-initialization on resume, it sounds like it
-> *should* return "false".
+This series adds support for scatter/gather DMA transfers via dma_vec
+and dynamic descriptor chaining to the Freescale eDMA controller driver.
 
-Right. pci_suspend_retains_context() was added just for that purpose of telling
-client drivers to prepare for context loss. So if this API returns 'false', then
-they should not hold the device in D0.
+The first patch implements the .device_prep_peripheral_dma_vec() callback,
+enabling the DMA engine to accept an array of dma_vec structures. This
+callback supports both regular and cyclic transfer modes.
 
-- Mani
+The second patch introduces dynamic scatter/gather chaining, which allows
+multiple DMA descriptors to be linked together without stopping the channel.
+This optimization eliminates idle periods when back-to-back transfers are
+submitted, improving throughput and reducing latency. The implementation
+carefully preserves cyclic transfer semantics and respects hardware
+constraints on platforms with split register layouts.
 
--- 
-மணிவண்ணன் சதாசிவம்
+I tested it on the i.MX93. The dynamic scatter/gather chaining should
+work with other eDMA controller with split register layout.
+
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+Changes in v8:
+- Enforce that major channel linking in not used when linking a descriptor
+  in fsl_edma_link_sg() by checking all TCD, not just the first one.
+- Don't compare the descriptor link_sg_id with the CSR LINKCH field
+  if major channel linking is enabled, to avoid completing unfinished
+  descriptors in fsl_edma_tx_chan_handler().
+- Handle the completion of the last transaction of a linked SG chain if
+  the previous interrupt was missed by checking for the channel completion.
+- Add comments to clarify the assumptions I made.
+- Link to v7: https://patch.msgid.link/20260728-fsl-edma-dyn-sg-v7-0-10dffb4167c2@bootlin.com
+
+Changes in v7:
+- In fsl_edma_prep_peripheral_dma_vec(), make sure that CITER/BITER
+  values fit in their registers.
+- Add the identifier to all TCD of a linked transaction so that we can
+  always identify it when handling the end-of-transfer interrupt.
+- Handle missed/coalesced end-of-transfer interrupt even when the transfer
+  is completed.
+- Link to v6: https://patch.msgid.link/20260710-fsl-edma-dyn-sg-v6-0-831b96be3f31@bootlin.com
+
+Changes in v6:
+- Link DMA transactions in fsl_edma_issue_pending() when they are issued,
+  not when submitted.
+- Add an identifier to linked transactions to handle missed/coalesced
+  end-of-transfer interrupt.
+- Link to v5: https://patch.msgid.link/20260702-fsl-edma-dyn-sg-v5-0-16787185be49@bootlin.com
+
+Changes in v5:
+- Rebased on v7.2-rc1.
+- Add a call to dma_wmb() to ensure that dlast_sga is updated
+  before csr when linking scatter/gather transactions.
+- Don't update TCD registers if updating csr requires clearing the
+  channel DONE bit to avoid a status mismatch in fsl_edma_tx_chan_handler().
+- Link to v4: https://patch.msgid.link/20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com
+
+Changes in v4:
+- To keep transactions in order, link DMA transaction to the end of
+  submitted list first, only lookup the issued list is the submitted
+  list is empty.
+- Link to v3: https://patch.msgid.link/20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com
+
+Changes in v3:
+- Fix formatting errors reported by Frank Li.
+- Add fsl_edma_tx_submit() to link the DMA transactions
+  when they are submitted, not when they are prepared.
+- Link to v2: https://patch.msgid.link/20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com
+
+Changes in v2:
+- Drop the RFC prefix, as asked by Frank Li
+- No code change
+- Link to v1: https://patch.msgid.link/20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com
+
+To: Frank Li <Frank.Li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Frank Li <Frank.Li@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: dmaengine@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Benoît Monin (2):
+      dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+      dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+
+ drivers/dma/fsl-edma-common.c | 241 ++++++++++++++++++++++++++++++++++++++++--
+ drivers/dma/fsl-edma-common.h |   7 ++
+ drivers/dma/fsl-edma-main.c   |   2 +
+ drivers/dma/fsl-edma-trace.h  |   5 +
+ 4 files changed, 248 insertions(+), 7 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260428-fsl-edma-dyn-sg-960731e37da2
+
+Best regards,
+--  
+Benoît Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
