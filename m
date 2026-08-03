@@ -1,184 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013015.outbound.protection.outlook.com [40.107.162.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC3B2DB7B4
-	for <imx@lists.linux.dev>; Sun,  2 Aug 2026 22:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785710628; cv=none; b=KKvNQV+RWosB59RBvVCKZXOVRDv0/WfrYKNvpF6XAF6GS+ecBdsEV0CEyHT0i7GfsmH5slnEjXPk8Hs2SGUN8epGmVsJ58cqu9EcUyycHL3BcYSFa3H7EdwspUk+S4C/rWcsH6saP7IegAlmE5cGovPnj5KyWprrWRU866Sp9Hc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785710628; c=relaxed/simple;
-	bh=IYKOvH58uavX1hMiGBawqnDidbBc2YT6RZrZKiDmdsk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZQzjn0KwG6PuaFebymw4kT3+XBKnQzRY5p12PmQPnnPtsilNSZmkIvXTdEyRwZlgDFcfZ5PDCN9lC6gmkfdwOoISy/c7OwMvBo3pFPxd1qomf79WXnd4bhQHfLlNtpApWTxhSxkLZVtLId8pKa3ZHwi0P1Wb+HlbUp+eQYTTItM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iys6hm38; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1142E6CAB
+	for <imx@lists.linux.dev>; Mon,  3 Aug 2026 02:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785725690; cv=fail; b=ZmzLEHJo8fHJyzw+VnykJyoE6fWFZUR4yRuc9MSk6GAcC8nLHfZ3BBk8r0jgh44xKuux06CNogWv77oD4ZNsd5bS1+QEL7LuNDs2zuGfxBPV/lgast/cdtw6tUoLGqCMrZP+BLBFwUuWE+Xi0jL6MKTPhOg54rmiQ7LIv+WucRw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785725690; c=relaxed/simple;
+	bh=L+PYrdcNXIaVgQkh7aGA9Rok+rkn/uqvRlhCbmolIiY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DiEYHQJSsFkRGEFalreFUFVjJejFoY2q+FoE2YVctnepZCW2vr7lFARNmBYWMUpQOhCnWFoCkgOWlV68CewV1qMABv6eu6hI+FSgyvMRvPwkkPmXKrDBOF/KyFI+vWaVb1ly8Ic8V0m3AtbX83qXylcFxRKIE3BDGX6sJYzw2/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=hWeL3p8+; arc=fail smtp.client-ip=40.107.162.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iys6hm38"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6FF1F00A3A;
-	Sun,  2 Aug 2026 22:43:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785710627;
-	bh=Bq7/2CIwJ7RV/8omdwNxCYQfSUH3KZ8/bwvvjInVxhE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Iys6hm38THyhVHDxZvD19CPhDIHsKVLdQ76VBCm2Qair5nVX7l6q+BlfKsAyhBsRj
-	 zC7/sx3QZWY/R4wlkun7dThj8Whgx33dYBKP2IDJLowMRsNBhtyktWr9kf8pkFSEDc
-	 5CLSbOtbaYKu3X56CVOEilxSTUYCnaYCF6567DtYklhE1sysCT4I+1XC7Wr35XbvDf
-	 mgphIa0q/63P9jeqbUu9w+SRrwjGhyI3g7UcO7QR7k19NgFxe/Pzw9HAdvwAfv0GpH
-	 NUmYHdx6n6hJj9qo0/4I+mevk5AW6TZyLuUOaVUbXBfxdRrIIOZ2+1qWuB1qmNbmEh
-	 NbfnhQYtyD9ig==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1] hwrng: imx-rngc: Disable clock on registration
- failure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yuho Choi" <dbgh9129@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260802222259.577200-1-dbgh9129@gmail.com>
-References: <20260802222259.577200-1-dbgh9129@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="hWeL3p8+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TDCcgN3PjiMOCYuoIesgRVpbFPgQtzf/WI3b14zFwKhlHXGLoGH8KUJX1/Mpa2hnA+kgh8UcaR7CrMtUL2f//sMRyA9MkicqIFQqoblFsiF7kU2g7tL44KQ4oUEynxPdC+ecnpKJbtQiDeM3oX1CrSlhPC74AQ0HgtjroRlJo5urPE3R89Ib5EDD3cZlOG5y9Liq1BkuecKwO4BqtrLoifDhwkXXCbGeg8vT0ajrnV8Uzv9wKQHVko7KK0yFSKOes5r8hb8fNFhbuTFqmU82Yki9rToyYYIdPKNxnh7qcGXhX91nQewb1E/+WhN3PPusrp01WLoi5/qJwTDuH0Iv9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ciXyw7YzekjTIfAwQ0Bupr/xgs21WxSa1wfpPzmMo0c=;
+ b=NG6UaOwADFzgkPq1Lg4Hk8+ah0pVs3hlLIryPrhoy3yOw+XhsDzCwPMmA8RIKQKEorFgPSPBPWePNpVae8OOpbjprvWEP004nqz61gq1yH2NpYufNqfNFsref7l6/Lxl567ZRXHdI2Wx88Xoq6Yk2FqKdMbV9GVaoyP5hsbqR9/ZtmmxxEi8Vx24h9nnRZb1uGQBsZ9RJw4bY61T6iTo/VYudU0TmKID2CTwBg/sbvx82s8UkRIT6iz2QfqqqBvzw4SMtqHaqPnzdujtMjnqgp7f55T1HfBVrvfMGvTwLonM9+/7tJPIIWGrE0SJlNxD7DES1cC2+NsCMMLjEpelqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ciXyw7YzekjTIfAwQ0Bupr/xgs21WxSa1wfpPzmMo0c=;
+ b=hWeL3p8+x+CrHhDsa/kdXK7kUL+niG+Jf120bVOxZuwwETwqCEmIkW25ZPpBa3xlQSZowm/8lA9QOFwpTJgils8jiy95T00eMR+onTqP9GXZjmrsggNYfjeaVi9ZC+If4rVeFZCALAzkvCuddYrAX6FfHWbHF3iiBoKj9mRrLtv3SDjDXvsR9Kc1dWDEwbtxt0MKGz8L9IEr2fbNMf0hZhdDhB5fzRZPRZAk8Udhjjb4KEtRm9M17JBHIBt0WU2Qq3kDlmsFl1LZvm6iW/mP3T+nq261aINhxF++LsM4baSb8EVCS6J8puvqradqxYnu3Pv+Zs4nEb2vzPdkc7VD5w==
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ (2603:10a6:150:30c::14) by DBBPR04MB7818.eurprd04.prod.outlook.com
+ (2603:10a6:10:1f2::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
+ 2026 02:54:41 +0000
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe]) by GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe%4]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
+ 02:54:41 +0000
+From: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>, "Hongxing Zhu (OSS)"
+	<hongxing.zhu@oss.nxp.com>
+CC: Frank Li <frank.li@nxp.com>, "l.stach@pengutronix.de"
+	<l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "mani@kernel.org"
+	<mani@kernel.org>, "robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>
+Subject: RE: [PATCH v4] PCI: imx6: Update MPLLB bandwidth to improve i.MX95
+ Gen3 PCIe stability
+Thread-Topic: [PATCH v4] PCI: imx6: Update MPLLB bandwidth to improve i.MX95
+ Gen3 PCIe stability
+Thread-Index: AQHdIJj9kXekoOZ9KkmAiMY17p4A7LaHyuoAgAPapYA=
+Date: Mon, 3 Aug 2026 02:54:41 +0000
+Message-ID:
+ <GV2PR04MB1201947B1F1499D12C2532F3F8CD52@GV2PR04MB12019.eurprd04.prod.outlook.com>
+References: <20260731030546.850457-1-hongxing.zhu@oss.nxp.com>
+ <20260731160258.GA1571469@bhelgaas>
+In-Reply-To: <20260731160258.GA1571469@bhelgaas>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12019:EE_|DBBPR04MB7818:EE_
+x-ms-office365-filtering-correlation-id: 5eb6cfbd-0add-4106-9bbf-08def10a90ee
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|23010399003|366016|18002099003|22082099003|38070700021|3023799007|56012099006|11063799006|4143699003|10067099003;
+x-microsoft-antispam-message-info:
+ yISM8Dz13cTt4SoFKaLPcortBjo2IGIgG4pu/qn5e5V+sxilTrJ82GiaGmSPO0bKZc3Wrh5GU0finZDJ7cCzhjZin+Z+V9G0xpj1HpvuUKqZEbJshdLtUFUacreAtajmUItoTx3+9aNH6ljn6KMgTq5jVQ4MGaAtHv5qZ8oCwA6HqaQuK5pV+mod5bC0CtxC03fQJ8U4Qcdr3ZpxRsdmHF5R5t7kPL3OLNYc1tCY3f8aNXmt7IiklNk8Mqw/ie36IaOI6S09HtPEq10hUDo7sJaDU6rgxPOifZuQmgiHKk7lokQgPR+V+/DjYhzR/KkAJh3BrPmZb7FGlywYavqtUc/Kh4XqxHkHVi2s6zs1V9M4Jw0YyGwTvG+905ViY7T34rl7ColYjR8uf735BysyTZ5QkppIkoZiiKRa5Z6K6bT7KdKPvic9Uwb6aIFyovacWoOGzD4x652YFxyEUGJ28pWFCwrt7hwrUcSoMehgsXprFhAq3kAjEunFUEs7Bfd3ZCqthKXzdfadFta9Bqs8zgENpDG5HicYTXMb43g+zMZZbBFsUt+i9a/ffHv3T10o8V+tNq4BBYKUyQbLxz3lml0RtBS0MgkXtOj2/dTdMu8iSa1Ur+IwFbTMbd4dHB7P9EfNCQ/YgmQDZrk3WtqrgSDP9vT7J0ayCOvwUDUi7HSy+sin1UlyDTCtRcctnPH0l/hwehrvegtlfDfEcgoS22IS+086RsAEsYjhxo3OdAY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12019.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(38070700021)(3023799007)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Bn8zuzj9QUVt/+rYmDme+n1t+h9oPqWbFDwYxpgXBFfJv0xFqbAYgIL/SNZM?=
+ =?us-ascii?Q?jPsa6r0rSvIWVlAK3hz48IuKKUuJVPaDhGBc2f98uZ1L0U2dBoPHsI/NnQcV?=
+ =?us-ascii?Q?01NB2pojsLyfzAeXAn6DruhG+RMa7O6oInNFy0KU0qsqaai2fIwes0pXzo3E?=
+ =?us-ascii?Q?NitElNWM9kzE+3DULXXD8gr+O0aiiXqOFGHY2b+VE5rQicdX3slxgTJjE7Oh?=
+ =?us-ascii?Q?NRm6kPeFoAoPSF3uYAs8Z6Q5L7jBVPErQqlERlhCfxuwKd4j1Qa2fNZGdZq/?=
+ =?us-ascii?Q?4LYeEHDggBRJyVd8Enp+pxXPPB8Dre33cJc6xwPygt8NOlgSXXgvqooNJs8i?=
+ =?us-ascii?Q?5AYKtzUFEYsWg98zws48o6vKRiNCPTWLY/zmaE0uKJJhyhy+1UPdNv+JN7Mi?=
+ =?us-ascii?Q?aJhhRsaxyP6sB07Q4ftUEAnVDlVA7CU+l4lrFWu0bgDLpGS/kRq6K89t0UWF?=
+ =?us-ascii?Q?lzvHTpTTexlXEvYDvE1HKZM2WsWsrvr2UvP71ZTaaS7xczqBHJQBebFH22cv?=
+ =?us-ascii?Q?KdOVxzHVvtwOO2p2f4xYqBARmERY52pcACGy5d6w+7c6TlZc/WO+wMyWBsaS?=
+ =?us-ascii?Q?QsVMbvoIMadaaszJFw/A+6lOyjSV/4LwIYRhvNpMuKs+AD9oRnSKnWwYfcWm?=
+ =?us-ascii?Q?OMbaNYvSMFRii18+26ngpzzwucLk4r0une3pjaQe02gTLkCXAVCA7eR7KsCm?=
+ =?us-ascii?Q?C8yyvLbm+OiaDdNkTlrqVIYG/yRAU61A/hfQPbKL7YpwisTy8BLsT+Ogb0qh?=
+ =?us-ascii?Q?AdkpAZn/eoNBrewZdrvAj0y4aXqTV9fSGKka1WM63DHmN8ulLhYaIM26be5Y?=
+ =?us-ascii?Q?HB0/tv5DiguOiys+SaBolcFf665yLd7C5+9JKjHECgnDiiNSQMX8sUAH+nQ7?=
+ =?us-ascii?Q?7GEf57gqF5/znO9HHXsC+LEbgz7pT0SocmB1xwyFzyOlVu/2StIJqlMspBbp?=
+ =?us-ascii?Q?B2VIkMdZ1+ejR2KUSKf4O/7CTbV6SrnfZQi3P8ZhBEJ7XgH/c2Pyf8wc4xdW?=
+ =?us-ascii?Q?rnBBA2HCSvuTrUSXBFo1D07HjZ5ECJwIB2vnEjkZQMnhUWbAR6Y4W6cDEs9A?=
+ =?us-ascii?Q?AqaIIbY2k64vopC4QavhYxTXc6Y6z9y2UWPsJjZ3WAdTDXSf7nSLctmMAXsc?=
+ =?us-ascii?Q?l0aqrm9/1BvM959PJylqHPHRiZ/1q3OkiAjnaA8GeMvQIwMYcSWwtsfJTVFp?=
+ =?us-ascii?Q?wGtjAfCmfd7m5f9/vzKjPCk+2Xb7EtfLC3MXbmEftuIK0ZZBuEO4OyXqM8nQ?=
+ =?us-ascii?Q?PbHIe07tttJCPniwy2fvv6NJ4mmxP+aE1sAlcLYsQa3URw6fNk83HicM11L9?=
+ =?us-ascii?Q?lyX3muMKEJRn0wVy+Jn3uMDnWvD2Y7dp88j/9zhYhTpybe0wZYC/zTq3VwVg?=
+ =?us-ascii?Q?wJSZ29WvzfhEs8rGuMxmIYzU+hbI6shpwMLJFzXlDRRiiJAShrfWAjJhVMGE?=
+ =?us-ascii?Q?VEJEn5kpyDnnPVpmqUn6UNuJwaWMiVnzRGnLhEHD+hoItGk7P+1Cuy+6KXt4?=
+ =?us-ascii?Q?/Sh9KI8yraaW5Rx+MT8jlHkPP8A9EcSsCX9bhUwhRODVIYtAttIqOGqgpFVB?=
+ =?us-ascii?Q?kJgfUqGTN061fu5roerAwQ/CpAa3tVa8Vjik70NecZfOlT/lH53Lle4vSb+x?=
+ =?us-ascii?Q?WEitNoctK9j+fOLjCA1EMHBp1ZWQahZqroX5n7jQm0BuOfo1diEJ6i2jYBnH?=
+ =?us-ascii?Q?etCBr/6nZMN7M8KL2u1WPXxEyZAuHLn48ZajY8oWW79CAGirRIxWf13cDlAy?=
+ =?us-ascii?Q?2w4Re1TwxA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 02 Aug 2026 22:43:46 +0000
-Message-Id: <20260802224346.EB6FF1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12019.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5eb6cfbd-0add-4106-9bbf-08def10a90ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2026 02:54:41.6452
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qzV/1inzS7DvKavjXc7+8jt0P9I4SdqQu6JFiOW/C3gkwYoyYfclT3PQjHFMVw2lZ61XEeOMfArXkqFeA8GyeA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7818
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
+> -----Original Message-----
+> From: Bjorn Helgaas <helgaas@kernel.org>
+> Sent: Saturday, August 1, 2026 12:03 AM
+> To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
+> Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kerne=
+l.org;
+> kwilczynski@kernel.org; mani@kernel.org; robh@kernel.org;
+> bhelgaas@google.com; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> festevam@gmail.com; linux-pci@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; imx@lists.linux.dev; linux-kernel@vger.kernel=
+.org;
+> Hongxing Zhu <hongxing.zhu@nxp.com>
+> Subject: Re: [PATCH v4] PCI: imx6: Update MPLLB bandwidth to improve i.MX=
+95
+> Gen3 PCIe stability
+>=20
+> On Fri, Jul 31, 2026 at 11:05:46AM +0800, hongxing.zhu@oss.nxp.com wrote:
+> > From: Richard Zhu <hongxing.zhu@nxp.com>
+> >
+> > Bandwidth marginality was observed during i.MX95 Gen3 PCIe tests with
+> > the default MPLLB_BANDWIDTH value (120). This margin degradation
+> > worsens across voltage and temperature (VT) variations and different
+> > test matrices, potentially causing link stability issues.
+> >
+> > Testing with MPLLB_BANDWIDTH value of 140 (0x8c) shows significant
+> > improvement in bandwidth margins across all VT conditions and test
+> > scenarios.
+> >
+> > Implement PHY register write helper function and configure:
+> > - MPLLB_BW_OVRD_IN =3D 140 (0x8c) for improved bandwidth margin
+> > - MPLLB_BW_OVRD_EN to enable the override
+> >
+> > This ensures robust PCIe Gen3 performance across all operating
+> > conditions.
+>=20
+> Thanks for including the previous and new MPLLB_BANDWIDTH values.
+>=20
+> I'm fine with the patch, but I think "bandwidth marginality" is awkward w=
+ording
+> because "marginality" doesn't seem to be commonly used in this context.  =
+Maybe
+> something like:
+>=20
+>   We observed poor bandwidth margins during ...  The margins worsened
+>   across ...
+Understood. I'm totally fine with these updates.
+Thanks for your kind review.
 
-New issues:
-- [High] The error path for `devm_hwrng_register()` introduces a potential =
-double clock disable and PM state inconsistency by manually disabling the c=
-lock but leaving the runtime PM state as `RPM_ACTIVE`.
+Best Regards
+Richard Zhu
 
-Pre-existing issues:
-- [High] If `set_current_rng()` fails during `hwrng_register()`, the RNG is=
- left in `rng_list` but an error is returned, leading to a freed object rem=
-aining on the global list.
-- [High] Clock leaked on driver unbind due to an asynchronous `pm_runtime_p=
-ut()` being cancelled by `pm_runtime_disable()`.
-- [High] Unclocked hardware register access in the IRQ handler risks bus fa=
-ults.
-- [Medium] The device clock is permanently leaked if the device is successf=
-ully registered but not selected as the system's current RNG.
---
-
---- Patch [1]: [PATCH v1] hwrng: imx-rngc: Disable clock on registration fa=
-ilure ---
-commit b5aba9259f12063cf29726871d90c2519f6fb937
-Author: Yuho Choi <dbgh9129@gmail.com>
-
-hwrng: imx-rngc: Disable clock on registration failure
-   =20
-The RNGC clock is enabled manually before runtime PM is configured. If
-devm_hwrng_register() fails, probe returns without disabling the clock.
-The devm_pm_runtime_enable() cleanup only disables runtime PM and does not
-call imx_rngc_suspend().
-   =20
-Disable the clock before returning from this failure path.
-
-> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/i=
-mx-rngc.c
-> index 28c56c2d1bf6d..a2db26d7f790e 100644
-> --- a/drivers/char/hw_random/imx-rngc.c
-> +++ b/drivers/char/hw_random/imx-rngc.c
-> @@ -313,8 +313,10 @@ static int __init imx_rngc_probe(struct platform_dev=
-ice *pdev)
->  	devm_pm_runtime_enable(&pdev->dev);
-> =20
->  	ret =3D devm_hwrng_register(&pdev->dev, &rngc->rng);
-> -	if (ret)
-> +	if (ret) {
-> +		clk_disable_unprepare(rngc->clk);
->  		return dev_err_probe(&pdev->dev, ret, "hwrng registration failed\n");
-> +	}
-
-[Severity: High]
-Does this manual clock disable leave the PM state inconsistent or risk a do=
-uble
-disable?
-
-The device was previously set to RPM_ACTIVE and runtime PM was enabled. If
-runtime PM asynchronously suspends the device before this failure path is
-reached, imx_rngc_suspend() may have already disabled the clock. Additional=
-ly,
-leaving the PM state as RPM_ACTIVE while the hardware is powered down might
-require calling pm_runtime_disable() and pm_runtime_set_suspended() to
-synchronize the state.
-
-[Severity: Medium]
-This is a pre-existing issue, but does probe leak the clock if the device is
-successfully registered but not selected as the system's current RNG?
-
-Probe leaves the device in RPM_ACTIVE without queuing an autosuspend. If
-hwrng_register() completes successfully but does not select this RNG as act=
-ive,
-its .init callback (which normally performs a PM put) is never invoked, lea=
-ving
-the device stranded in RPM_ACTIVE and the clock permanently enabled.
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can a registration failure
-corrupt the global rng_list?
-
-If set_current_rng() fails during hwrng_register() because the RNG's .init
-callback returns an error:
-
-drivers/char/hw_random/core.c:hwrng_register() {
-    ...
-	list_add_tail(&rng->list, &rng_list);
-    ...
-		err =3D set_current_rng(rng);
-		if (err)
-			goto out_unlock;
-    ...
-out_unlock:
-	mutex_unlock(&rng_mutex);
-	return err;
-}
-
-The RNG is left in rng_list, but an error is returned. Devres will then free
-the struct hwrng memory, leaving a freed pointer on the global list.
-
-
-[Severity: High]
-This is a pre-existing issue, but does driver unbind leak the clock?
-
-During unbind, devm_hwrng_release() invokes the cleanup callback:
-
-drivers/char/hw_random/imx-rngc.c:imx_rngc_cleanup() {
-    ...
-	pm_runtime_put(rngc->dev);
-}
-
-This performs an asynchronous put. The devres stack then cleans up
-devm_pm_runtime_enable() by calling pm_runtime_disable(), which synchronous=
-ly
-cancels any pending async suspend work. Because imx_rngc_suspend() may never
-execute, the hardware can remain powered indefinitely.
-
-
-[Severity: High]
-This is a pre-existing issue, but can the IRQ handler trigger a bus fault by
-accessing unclocked hardware registers?
-
-drivers/char/hw_random/imx-rngc.c:imx_rngc_irq() {
-    ...
-	status =3D readl(rngc->base + RNGC_STATUS);
-	rngc->err_reg =3D readl(rngc->base + RNGC_ERROR);
-    ...
-}
-
-Because the driver configures autosuspend and does not mask the interrupt
-during runtime suspend, a spurious or delayed interrupt can fire concurrent=
-ly
-while the clock is disabled. Without synchronize_irq() in the suspend path =
-or
-pm_runtime_get_if_active() before register access, this causes a synchronous
-external abort.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260802222259.5772=
-00-1-dbgh9129@gmail.com?part=3D1
