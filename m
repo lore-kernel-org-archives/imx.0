@@ -1,155 +1,94 @@
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC5D35C183
-	for <imx@lists.linux.dev>; Mon,  3 Aug 2026 12:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D45384CEA;
+	Mon,  3 Aug 2026 13:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785761793; cv=none; b=acLYucwxdUf46V/kNCUWxizyAzxCudHK930xR+TMnmEewlAPlTiDMCkJ7F5mRuSb+PLMUBrwpygRFpZCQl17qkjC9gdFtq1lAhDWnpbbWC9PUjc8i2FFZl7MUJgN5Uir0j8iZZVRZVrHJ3q26ZuI4Q+3fkeF/P0sb2u0O6/JQFE=
+	t=1785763244; cv=none; b=hLeu65sNV6yTjkd0hy8mNd608ayRzYsnrpe9pf+5RLFn34W6pn9y1N6hH0IKCxkHBGdhsNFG8dO0Zax2C1mxfrpCic/osesubhsaCrJshqhTlzGAFDdf+ev8JeZLBXpuMk0yrQ0CSRbf0bddJKmXrNYcowZjMDsql29mQVac0Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785761793; c=relaxed/simple;
-	bh=Ir8txI41duHjjdUa1tYJv/Mb4slAcXRYTZiQjfKa4u0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BWKmc8dEQjp9rA22BH5n0spKJ9OYq2Kh1vOooH8+YyGkM6bxR+sqsD48u03U6on4mD5oTFxwMDT1bijMR2rb397jJqdd9shumv15KEUkLgDYYDslBjMOufKbmFgeon4+wowSrAa0nT+DN18J950ExbMGIyqQmxXFWcXsegtWjlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5c3a1d005c5so599054e0c.1
-        for <imx@lists.linux.dev>; Mon, 03 Aug 2026 05:56:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785761791; x=1786366591;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WGVqxVKLC2Gks94xayPEyUqyvnJiYIaVHNXa8plDaec=;
-        b=GKv1N9OEMayXwlF47phRGm/Cdsql4z9BZ60MzJfy+6k1LmsJRszyvPA74UrREiqtBT
-         ibUYZxPGGJ8wQwKCKXBJ89lwmqGs5mjCLRwnYkFWOhl50CJeK9JQykJsDdMYkdl7XAtl
-         xvuh0Le+D/Kb2fw2NVFdOxONpyMAXNQKbFTn42/adqqqDsyEHWSkqjtJvn5uI399XGCB
-         3+Pw4dPSdor4+SH+I4MqU7PGZhNI4Zu+ovcsKcanseT4sncY+vAWSamadn9KIcuSJh9s
-         UbN8fvbY89OT23pz7rcEf/i5IzwaRuudTkPiU7E8eU75KFkjnmMYLsTyzQeTSsdnpkfm
-         UlDQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpDRCUsxT9/4ZVEVkCRr5p2cKEAXyOrmK7VKYSuD+0QTmhIvAbVb5R5z9Bjgpnn85lnbnw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyRe6vlUoMatZkmFQfDxGXh7QmdPyamDsJ7nQBPmg7+rxtIdEXq
-	sqS6+wdRcm/Ca+bdmmOkNiqmCdIMCRZecEQuq2orQVsnkr5kNWh1bFmqWVgi4SYP
-X-Gm-Gg: AR+sD11HEvEUvLEhgmaIsPlPUzz5BJ7aS81OQxT4+3tPhz5M7WVycdPpBbfsqE4kHNU
-	q4LvyCp3ptIDKdUAo5qG/TlwjLAPAEytC6YHQezyDnsXFMuk0Rzc2rPWI6q6Ck3ni2cRWcIgfEI
-	vBwD5HTqV6q5kV+NPOg8cxzY06mbeV05DqK2eExd9bObY7LC2sawr31SwTWytI/Gel6Ibk4UPrd
-	p9QeFAKpZLfI9fEMBSeii4TUUrCIic6Dju6QrTMjmFsuUEIBrscQ9LYnkK6vKUE2F7o0ePtXEb5
-	+un8FOl/qBZXqBVjQXC308DBe9Urng8zEfgGwjeUCvMMXNkxsIcR8+rqXfSsWUcuCTGdpNtuD6q
-	LHzpKmZz7rHKef8yvu1CRdBgEct1C/PehjwlPdngposl2e7KSKEUb2LcoMLMIsr/HszsTGJ//pi
-	2NU328qt4zkGEdV/RgG2zrGEnDmPmApIIorjGF47aaCd+kmjqDUyO2sWyrYpYUuKYQbf7gRfh93
-	wGw8qHkhpd2l9zWXTzvYql6Hw==
-X-Received: by 2002:a05:6122:78a:b0:5bd:73b5:6d25 with SMTP id 71dfb90a1353d-5c3877687dcmr3050355e0c.5.1785761790776;
-        Mon, 03 Aug 2026 05:56:30 -0700 (PDT)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c37eb6befasm8610170e0c.8.2026.08.03.05.56.30
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Aug 2026 05:56:30 -0700 (PDT)
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-74d55dac06eso1885113137.3
-        for <imx@lists.linux.dev>; Mon, 03 Aug 2026 05:56:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RodeTaSdg2Hm6HW33ertw3MLudS0u2rpqB8RoZebs9oFE0Frv+X3CuPtwGJ4vLZih5gLv8=@lists.linux.dev
-X-Received: by 2002:a05:6102:6a83:b0:729:affa:70fd with SMTP id
- ada2fe7eead31-75b2295c6d6mr7103654137.8.1785761305110; Mon, 03 Aug 2026
- 05:48:25 -0700 (PDT)
+	s=arc-20240116; t=1785763244; c=relaxed/simple;
+	bh=33xivn7ZTdCpVt8nJ61HC5K0snDrz/jRiGI6PhzMIXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OaKJPyIi9appcXZ1xavk08CLUbbE/UKVmCBPPjxx22/wp/Yc1ZhqBQjakXSkuKVIql6rKA9CREHGSyLC+SV2FkUsvuyOespO4lYc7J+eIqPHlvMaWOG05jhpnBE2iTKuXp9aQgk42QHifvclrTdfiZHxDUz3yFxj7WRoiwGO8Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vfq5axvm; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vfq5axvm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E07D1F000E9;
+	Mon,  3 Aug 2026 13:20:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785763229;
+	bh=3M+77CTGWT0seKEmX9Zfc1rth1QKdujys104KTSchmI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Vfq5axvmY1KhznV2gq5kiytUJJeniPr2A/Ajx8fz6zb2nvfYzLPZjhI7QeU3UixN4
+	 y9lOczryuLku+M/a/oor4Ka+1NZqbs2XXi4XBQ2boha7PUm8WohKxujBn3ixNj4uFq
+	 SY+YKPk+1QhcDvHJhIAKJ7eDcCmwUpCOFZARGmYBpLktxYHtjZa/TtMg0La/6SApQp
+	 k326EE7waAC8w5lKL40ngoI8CouENFCKI6hhqZe7zjWeFbC6CSZdB+EmDAZJmHD1Lc
+	 j/AQvbJz+gHA6D9Cleisgf79uXmKwbAcuMnTekw4whv9lvzQQwV7knbB2b1SKNVaFl
+	 pzZdzim4Adaxg==
+Date: Mon, 3 Aug 2026 08:20:29 -0500
+From: Rob Herring <robh@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: shengjiu.wang@oss.nxp.com, conor+dt@kernel.org, Frank.Li@kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 2/4] dt-bindings: sound: fsl,easrc: add ports binding for
+ multiple contexts
+Message-ID: <20260803132029.GA2108420-robh@kernel.org>
+References: <20260720095450.1618747-1-shengjiu.wang@oss.nxp.com>
+ <20260720095450.1618747-3-shengjiu.wang@oss.nxp.com>
+ <20260720101654.3A46A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260720-drm_simple_encoder_init-v2-0-5020b630668a@gmail.com> <20260720-drm_simple_encoder_init-v2-10-5020b630668a@gmail.com>
-In-Reply-To: <20260720-drm_simple_encoder_init-v2-10-5020b630668a@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 3 Aug 2026 14:48:14 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUe0F06RE4ahWb9ERFq0_pnNy-qGZ5ewod+59x-RtU_FQ@mail.gmail.com>
-X-Gm-Features: AUfX_mz7dUNKx_CkXmX2bBiqeRWfQJXaKympC5b4Q722_mZANMq2M_rTZsMnNYo
-Message-ID: <CAMuHMdUe0F06RE4ahWb9ERFq0_pnNy-qGZ5ewod+59x-RtU_FQ@mail.gmail.com>
-Subject: Re: [PATCH v2 10/15] drm/renesas/shmobile: remove dependency on DRM
- simple helpers
-To: Diogo Silva <diogompaissilva@gmail.com>
-Cc: Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
-	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Michal Simek <michal.simek@amd.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Stefan Agner <stefan@agner.ch>, 
-	Alison Wang <alison.wang@nxp.com>, Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
-	David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
-	Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, 
-	Jyri Sarha <jyri.sarha@iki.fi>, Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Xinliang Liu <xinliang.liu@linaro.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu <yongqin.liu@linaro.org>, 
-	John Stultz <jstultz@google.com>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, dri-devel@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	virtualization@lists.linux.dev, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-amlogic@lists.infradead.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720101654.3A46A1F000E9@smtp.kernel.org>
 
-Hi Diogo,
+On Mon, Jul 20, 2026 at 10:16:52AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] The schema fails to restrict the `ports` container to the 4 supported contexts (ports 0-3), allowing invalid extraneous ports to silently pass validation.
+> --
+> 
+> --- Patch [2]: [PATCH 2/4] dt-bindings: sound: fsl,easrc: add ports binding for multiple contexts ---
+> commit 0461b121d300fd40233634f4b977c32906d647ce
+> Author: Shengjiu Wang <shengjiu.wang@nxp.com>
+> 
+> dt-bindings: sound: fsl,easrc: add ports binding for multiple contexts
+> 
+> The i.MX EASRC hardware supports up to four conversion contexts
+> (A, B, C, D). Add a ports container property to the binding to allow
+> each context to be represented as an individual audio-graph port.
+> 
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> > index d5727f8bfb0b5..0f579870110d9 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> > @@ -55,6 +55,29 @@ properties:
+> >        - const: imx/easrc/easrc-imx8mn.bin
+> >      description: The coefficient table for the filters
+> >  
+> > +  ports:
+> > +    $ref: /schemas/graph.yaml#/properties/ports
+> > +    properties:
+> > +      port@0:
+> > +        $ref: audio-graph-port.yaml#
+> > +        unevaluatedProperties: false
+> > +        description: port for context A
+> 
+> [Severity: Low]
+> Is this ports container missing a constraint to reject unsupported unit
+> addresses?
+> 
+> Since the inherited graph.yaml schema permits any port@.*, a device tree
+> defining port@4 or higher will currently pass dt-validate without an error,
+> even though the hardware only supports 4 contexts. 
+> 
+> Would adding patternProperties: "^port@[0-3]$" or unevaluatedProperties: false
+> to the ports block help catch invalid device tree configurations?
 
-On Mon, 20 Jul 2026 at 17:41, Diogo Silva <diogompaissilva@gmail.com> wrote:
-> The simple KMS helpers are deprecated because they only add an
-> intermediate layer between drivers and atomic modesetting.
->
-> Open-code drm_simple_encoder_init() by calling drm_encoder_init()
-> directly and providing driver-local drm_encoder_funcs.
->
-> Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+'additionalProperties: false' in 'ports' is what is needed here.
 
-Thanks for your patch!
-
-> --- a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-> +++ b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-
-> @@ -29,7 +30,6 @@
->  #include <drm/drm_modeset_helper_vtables.h>
->  #include <drm/drm_panel.h>
->  #include <drm/drm_probe_helper.h>
-> -#include <drm/drm_simple_kms_helper.h>
->  #include <drm/drm_vblank.h>
->
->  #include <video/videomode.h>
-> @@ -436,6 +436,10 @@ static const struct drm_encoder_helper_funcs encoder_helper_funcs = {
->         .mode_fixup = shmob_drm_encoder_mode_fixup,
->  };
->
-> +static const struct drm_encoder_funcs shmob_encoder_funcs = {
-
-Nit: shmob_drm_encoder_funcs?
-
-> +       .destroy = drm_encoder_cleanup,
-> +};
-> +
->  /* -----------------------------------------------------------------------------
->   * Encoder
->   */
-
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Rob
