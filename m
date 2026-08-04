@@ -1,180 +1,197 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013061.outbound.protection.outlook.com [52.101.83.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7134C439F68
-	for <imx@lists.linux.dev>; Tue,  4 Aug 2026 09:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785834747; cv=none; b=XVshpyyBUnH0ZmGSNbPLBaKwKLfrLZ1O0rIxbkIL4YR10XlkBvEzS58b04q3urR5iLzJpJt9yx2nZx0gyhc9dwWh0/S0xpRNaeow8LSnMUBjuCrvQMN7MCjI3gPalAWXz3KupPw+kRPGBxlOhbWmYn/oZqs/KMxt5OpQJE8In40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785834747; c=relaxed/simple;
-	bh=rA3ndTPXDRKlf1VX6Bg0uKtMubVbUgJkDdvtaNj4igc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=HRMZEzMSywG/cEjWvd9X9/L4SG4F6kFosIeUw1xHBPelLjReb11TydUpRGWBb1H7Vt8dSmBdVggTHThX9i6tKJ/1tWAjOYsSu2RSadUM7iyMMPNPMsEHuYKR20U842SmtJuSFgYQYEWL3EyTtXruL+XxnQwuc9fWcm4Us4S3mA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Yb9uSmGE; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE653F39D1
+	for <imx@lists.linux.dev>; Tue,  4 Aug 2026 09:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785837354; cv=fail; b=X0GuxIPYRhZaykUVU/LxtGd2Ipy54b7kdkdObXR0Xpy8AG58k5eVn3ZTwtEHVeNe6IdF0adZRZR9tebmuNAejw1TE76gYqLRRvzxgGHLjmpIfuWM/h5p7BmhQbrcXyHeGbHTyQ+muNrowKogN5c9UB/TcwiMwm4T9zs/WkcsrtM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785837354; c=relaxed/simple;
+	bh=IpyMwVq9zdonbQ9Ol2S3kHV5G+syP2cGlOHBersnA78=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Hxwgm+SXcCWvp31ZGFVhFF2cLpahZAOYD7xABn/OYW//iSgsTfZo5jAvLMeOtqHgBU2MaidoRdLh0LL/M7ukfZqnzewtceLTY2FCHOWOxOX8b6kDF5OSZnNFr0q6g4ir9kjKHtvF2P2GrpwDX4WSRXxky+rwIRuOh2u+QPWdYec=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qzlTiAh2; arc=fail smtp.client-ip=52.101.83.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Yb9uSmGE"
-Received: from [172.16.124.192] (ip-78-44-13-22.bb.vodafone.cz [78.44.13.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D059353400F7;
-	Tue, 04 Aug 2026 11:12:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1785834742;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wfzxdUNz5hU0FrJNe5i6lUnlVJ8GKKJNvBxqXSs0TCI=;
-	b=Yb9uSmGE0ah/7nH3FizhJeXyiqfu1R43yomBq+k5hC+fsLvtTCgkb/Jo/jLbq9Hs8nRC6X
-	23tpXNuSwosQx24cfAgtOgdtEcW9/MA7c05wI4lVjc+g/VUoZX5qckm85sGbRKfB3treR7
-	oSWoxsCZbKZuBMHA/UUpooMdxbHNyK0=
-Message-ID: <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
-Date: Tue, 4 Aug 2026 11:12:21 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qzlTiAh2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SPmf1P6qbPgysUQUMHQn8aL2fPUeNORG0HjVJ15HuR/yoQ4ciIz7qydL7PU2Q27c/b/YEOk/aciXRVNJUo6/kBE38nPwvNmXazR4DID0+pNaW80IDayoBkguxM9EH7ZNaN9YaE4/RpMfOo8Yf3k/jf1ypzWV4CHeo9I7deFtUu4Db1CUrE+JneUgXqeRxK4AzVqmw1C+dkVodOn43cqyaRrMax0ZCEBsnRdS8n7nbM7i2ECPnIgCvvfj1MDaH8mXLMOAcCoaC/fYDFbkqUqPsvcwMvoAmAs+wHxNtHSYnUIlkfMfaBbuTKMcou7MmaZ+yX3DAC1K08b5x9ifV9tjJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/oxjEhcd90sIwT8oacfo/mQ+G4Ay48k/aqmt/lOs02A=;
+ b=CIMq2BNpp1dkA3Dcrxs4T5SsgPIw1zd1gomOmHZ9x4CJNwantIzz3ZkU2tRS1hPfAtCdX+uIuPWWUDLEsZIFJjK7HJBXHS/k0U3OSgf5JfotPvuMjkMUOg4Q17fAv5DwQxON7RDoWUEckpTHK8AG+n9NtySEAZBJsYpbxfIXPirzPMFZ7hmfqwwxUXNrOrVHrX4iIQhdQQHXDDgyx+jwZVtCph1Zp4rlnZzlPyRk0CFgDzxTUem1gi3i82eiRzV+cgcUOD2S+Dv7GhNnlNlIXtlSP0Z1GpIw2ZGT87Jtpp8gEpjT3BgygvqW2R2f+fnLwJGXy4yS/5HRCtFviPhWmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/oxjEhcd90sIwT8oacfo/mQ+G4Ay48k/aqmt/lOs02A=;
+ b=qzlTiAh23qVz2VAgUpikbXEKuLXMGd6hFjv/weI2NsuKxrwETuoh2Aal52USDX/6BtgDGUZVZuGQZSFS3PP5Ry3sM22qLb/GqSZVxumot6L+ZmngmcXr5Z3MvgzLRIsGuRKaZGcoHI0TLKpKRJn20kzmN760icX4X81mG1DZMEMNqqbjFUs5COdUMSy4d6bDwsFx93VEAR8+0oYFW/Mh29fAfRxL7X23jc/D/3wWFvSif9nDv7qJuCygypHBJfIl+fawUxaXHJRtHnYaRz0fBJCv4j1M37iKtvesR2D5+X8WmbuVmvEgdErL0aJFzpjTjOXubidFeBN4RUvaPMjSVA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9351.eurprd04.prod.outlook.com (2603:10a6:102:2b6::17)
+ by DU0PR04MB9465.eurprd04.prod.outlook.com (2603:10a6:10:359::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
+ 2026 09:55:44 +0000
+Received: from PAXPR04MB9351.eurprd04.prod.outlook.com
+ ([fe80::1058:a430:52c1:5aa]) by PAXPR04MB9351.eurprd04.prod.outlook.com
+ ([fe80::1058:a430:52c1:5aa%6]) with mapi id 15.21.0270.016; Tue, 4 Aug 2026
+ 09:55:44 +0000
+From: shengjiu.wang@oss.nxp.com
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	shawnguo@kernel.org,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	nicoleotsuka@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linuxppc-dev@lists.ozlabs.org
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: [PATCH v3 0/5] ASoC: fsl_asrc/fsl_easrc: expose per-pair/context DAIs and fix DMA race
+Date: Tue,  4 Aug 2026 18:02:13 +0800
+Message-Id: <20260804100218.49587-1-shengjiu.wang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0029.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::16) To PAXPR04MB9351.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b6::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] arm64: dts: rockchip: rk3399-pinephone-pro: DW9714
- coil requires higher voltage
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Olivier Benjamin <olivier.benjamin@bootlin.com>,
- Manuel Traut <manut@mecka.net>, Alexander Warnecke
- <awarnecke002@hotmail.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- phone-devel@vger.kernel.org, imx@lists.linux.dev, stable@vger.kernel.org
-References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
- <20260801-pp-pro-camera-v1-2-7b4d90788f9f@ixit.cz>
- <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9351:EE_|DU0PR04MB9465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f696ea9-3d05-4f6b-77a4-08def20e8d00
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|376014|23010399003|1800799024|366016|18002099003|11063799006|56012099006|6133799003|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	TYyXzRtT8d+zsvr1ELUWXI0ubhfkkBNE7hRBe1Qu95T1VuolKSq1YIiMzDwkbKNAWh+iEbadiL/LYuZoXdqd+XFdM5qeMyx869xYWylTBNCJGQvkC49RFQbVVGoDV7D6scAoLr7keVhC0JcaET+Zuy1arw2OEFr/B2MKuz2Ni/TU/hDMosTyXbnkTvbqtFOHEYgETqYFtCdPFviIdDkjey9vsJm9S8Ag1rmYbgzrU/kKXtKaEaqkJo3rYJCljIpIBGLqZows78aVo2fOT5B/usCpRjiiReqL9m9m0Zb5BijZezPw1bBaIqI3yZ/Gs3YJEUaV7taZFcfwZ+p3vieYipsEmU1NoDAzuGnbtz5MEWhtBadJNIrZvI8BbVpoQKcuKLxi7O9Ys7B7x+khfGYMKUACItI11+V8F2EE7rISOUyCsSGo22Y3qYYeeq1DPy1GhGnbipOPAQ7ZZ6ADcPK9WZVNZYwAmbxtHLHLsekzZZ3Rogauka7PdPistG9lVOgNjupgGNHeO1b7poso4yn3zOxB307MXWGoKIjCnfuZH3DYqkuHn3WLiu7K5fYBWC3yaPLxkfXGLrs3fyEX+uOQ3vW4dUy15K6btoNHr6TbeewqvelSEkwoJkZYWxTi7ZUqurEaUICO+Ur9jutRR7zJu1Ubx9z267K6OJuZfAZrRP2FJGRXsYKIjERQSh9wU7oHrXFX65NLmhhB3wf92xZzPQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9351.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(23010399003)(1800799024)(366016)(18002099003)(11063799006)(56012099006)(6133799003)(10067099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tuXJCmw62UzpzsIidqQFkBBLH1tSAz8/2RGNVdmjtj3R6Ude7/Ch792h8PZW?=
+ =?us-ascii?Q?190nFD911bdiQWcB8OdakUKjKvtveYfuzWU40lDNHzDD0JwajXESRMICl4iz?=
+ =?us-ascii?Q?seL/V5kxBmFvLmWBNusos9kf0XylMi3gm8c7MpuB4M6W633rhw1ozlanOYBH?=
+ =?us-ascii?Q?q86+F8MglU3fsoBt6SX2tWX3vIHNo4uku+cJPRptB2tR9EYKxvzDciYOtYRD?=
+ =?us-ascii?Q?HGF9WDcShwoE+nb6xoKVyXDgCU+qMK615BlqSFqRZUAPWOkrv3zVf1/XZJWo?=
+ =?us-ascii?Q?9zFSx1ULcB0I6lC3c6mj9H3o9ScNDub+TSBqjaX8mT7+VBjMC5u4X6VAm7MG?=
+ =?us-ascii?Q?veU1r05caBLecVbGY/OmfD8AFyxixSVeQiLfVrHttd5Lv9Ss7FTjdDSvs7zp?=
+ =?us-ascii?Q?9kdnfcx6b4R/fEmACK8IPjUE3SmSztjBfNfbz3vtt9vPUh4eOHEypYg/wIKB?=
+ =?us-ascii?Q?rAl/vYh11LkydmUSpSPJZzou2Rn1bxuPvyCO2DcdQT1uElfMpY2x8XYBh0h0?=
+ =?us-ascii?Q?u8qb1Lse5mKudeyMxu9SvgopNmnE8sUznl+LrKuM1E1RHXeQ4Sm0mde2Uzvs?=
+ =?us-ascii?Q?NzuhqIlIXyuKuxafax0ckBAZVemzh+1+Qcsg4ScOTP0fVUiK6DIdWd2yS4zK?=
+ =?us-ascii?Q?ucTfqfu056hKbvTmB/Dg7J73U9x3/i9oZQUqy/4VArtX7R/MT5gePXyS138p?=
+ =?us-ascii?Q?4JRcPyPlGiH5FNQ9OY8sPUaEz3IoU771S05lrD+HY8E6wxd8EZwAV/gXI7wq?=
+ =?us-ascii?Q?XMcFonb6TkV5skxEcTzdPzALn4Cj9q7b5+y1s3qKBbnStLYXh/KHjktaPSOS?=
+ =?us-ascii?Q?JyqYFOBWO7V+y/1NvF5uZq9gTnlnUFyVeFs/eLq7zai5UERRJiXy7jxDMWCJ?=
+ =?us-ascii?Q?BICKpQpcp3inqb+Q6qDkOUezgZHFBB+AwMbeueGRr7MD06L+HlWnWf+im0yR?=
+ =?us-ascii?Q?x3whMoPKLWsZk9ZUr/cjW6EzwHYJorpL14y5ZiQKJi2yZws8ZXDMWIKfY2vL?=
+ =?us-ascii?Q?E2nYGXgh/7BrvcknhyGUFn/lOUcgvjSV9qPeGL8jFrt+8FUcel5gBQ6Xzwkb?=
+ =?us-ascii?Q?+wrwDrBD2shPz7JzICAq8ubHMjPf6/mqkV3coLjmqEuzJp9CcRREQxhS2kVB?=
+ =?us-ascii?Q?t9S0Y56szVC9AI3B3/6185FxhyVbXtc+Xr6eI2vD/XLklV29mYBMF7UN9USY?=
+ =?us-ascii?Q?xo0X0qh37Sg7g+YzICzsLU09CPS/Sc+U9kamwWyKsSh5pMLyhFarNliLzUva?=
+ =?us-ascii?Q?XCXH9LQCeNGXcxbDZLpQuEzpwtZ+gnnWSyIclqtiopFAQkxEglUJc/8TiPNP?=
+ =?us-ascii?Q?Y5Otyt5qvBUjlFbFnjBNlwKLHIEyxEMntZpGpV4c2jbsYYV0RrXjfjsVWYI/?=
+ =?us-ascii?Q?TE99KajRMvkFYMGvJ4GtHyzCnVRPWL2bHNcDu2du6r6T4VJeU7wVcyK2bYU5?=
+ =?us-ascii?Q?Y+76ds74CZF0XOIEL7CZilXurl6INToGphPm4nZaCpFqMckViHiyvA7pUqaJ?=
+ =?us-ascii?Q?xdoYzM4zhMHNGkdbEmUdLW30y0ujZ09h3dLZtN2QeYjIwXmtsienz1w/ThYO?=
+ =?us-ascii?Q?cVBwoS/RP5ay9MjUeKWGPtvPBjdGLYprgK0RSINt/spE+v9dGV6HQgUgWmwv?=
+ =?us-ascii?Q?MXROKEwWjvHXZjLlV6L/dYORl8hunIhUfJktQfeiGX/jEqful/sHfqu293xa?=
+ =?us-ascii?Q?Iui8GKiiiw99smIJ2glPZkRvBtMCiqAloSdM16UfsYJmyW+es24S8IR9aCrA?=
+ =?us-ascii?Q?2wWrfwlZEk1HVbDwKrLg4OWZ/phAmaNyTHYCtLxExLQOmZIgpZJB?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f696ea9-3d05-4f6b-77a4-08def20e8d00
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9351.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 09:55:44.4514
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5TXiRsWGGhFStqBifDQXneqzKR2uhpjolqye+9W7pMtb/rjtNHyXCmPssJTZvjXiptt2TLKRL2oDM07S4PNDAX5cAIzOGCela4VBhT+2jhrExUNh+LgTZYWO7eQCoK3R
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9465
 
-On 04/08/2026 09:39, Ondřej Jirman wrote:
-> Hi,
-> 
-> On Sat, Aug 01, 2026 at 02:35:21AM +0200, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> By datasheet the VDD (in-kernel named vcc) range is between 2.3 to 4.3 V.
->> Usually it's around 2.8 V. Here it matches the avdd2v8_dvp.
->>
->> Fixes: 9336eb829a18 ("arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->> index d46cdfe3f7849..bde35d9b2263e 100644
->> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->> @@ -473,17 +473,17 @@ wcam_out: endpoint {
->>   			};
->>   		};
->>   	};
->>   
->>   	wcam_lens: camera-lens@c {
->>   		compatible = "dongwoon,dw9714";
->>   		reg = <0x0c>;
->>   		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
->> -		vcc-supply = <&vcc1v8_dvp>;
->> +		vcc-supply = <&avdd2v8_dvp>;
-> 
-> This does not match reality, schematic says it's VCC2V8_DVP:
-> 
-> 	https://xff.cz/dl/tmp/6253a0465329df41.png
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Ahoj,
+This series extends the i.MX ASRC and EASRC drivers to expose one DAI
+per hardware conversion pair/context, allowing multiple independent
+conversion paths to be active simultaneously.
 
-thanks for spotting this, since I know you have the device, would be too much to 
-ask you to send standalone fix for PP Pro?
+Patches 1-2 update the DT bindings to add a ports container so each
+conversion path can be wired independently in the audio graph.  The old
+single port property is kept but marked deprecated.
 
-I would drop the change from the series.
+Patch 3 moves dma_params into struct fsl_asrc_pair so each pair owns its
+own copy, and registers it with the cpu DAI using per-direction setters in
+fsl_asrc_dma_startup().  This removes the per-DAI probe callbacks from
+fsl_asrc.c and fsl_easrc.c, which are no longer needed.
 
-David
+Patches 4-5 expose the individual DAIs: fsl_asrc registers three DAIs
+(asrc-0/1/2) and fsl_easrc registers four (easrc-0/1/2/3).  The first
+DAI in each driver retains the original generic stream names for
+backward compatibility with existing machine drivers.
 
-P.S. I noticed I didn't mark this series RFC. Too late.
+Changes since v2:
+- add ports example to original example case in yaml file as port is
+  deprecated 
+- remove the label in example.
 
-> 
-> regards,
-> 	o.
-> 
->>   	};
->>   
->>   	ucam: camera@36 {
->>   		compatible = "ovti,ov8858";
->>   		reg = <0x36>;
->>   		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
->>   		clock-names = "xvclk";
->>   		dovdd-supply = <&vcc1v8_dvp>;
->>
->> -- 
->> 2.53.0
->>
->>
+Changes since v1:
+- Patch 3 is new: moves dma_params into struct fsl_asrc_pair (one per pair)
+- Per-direction snd_soc_dai_dma_data_set_playback/capture used instead
+  of snd_soc_dai_init_dma_data to avoid clearing the other direction
+- dma_params_tx/rx removed from struct fsl_asrc; single dma_params per
+  pair suffices because each pair is unidirectional
+- per-DAI probe callbacks removed (startup now sets dma_data)
+- Cover letter and commit messages updated to reflect the above
+- DAI names changed: paira/pairb/pairc -> asrc-0/asrc-1/asrc-2,
+  ctxa/ctxb/ctxc/ctxd -> easrc-0/easrc-1/easrc-2/easrc-3; use index-based
+  naming consistent with port@N in the DT binding
+- Stream names changed: ASRCB/ASRCC/ASRCD -> ASRC1/ASRC2/ASRC3; align with
+  the index-based DAI names above
+- Binding port descriptions updated: pair A/B/C -> conversion path 0/1/2;
+  hardware-agnostic wording to match port@N numbering
+
+Shengjiu Wang (5):
+  ASoC: dt-bindings: fsl,imx-asrc: update port binding to support
+    multiple paths
+  ASoC: dt-bindings: fsl,easrc: add ports binding for multiple
+    conversion paths
+  ASoC: fsl_asrc/fsl_easrc: move DMA params into pair/context struct
+  ASoC: fsl_asrc: expose individual DAIs per conversion path
+  ASoC: fsl_easrc: expose individual DAIs per conversion path
+
+ .../devicetree/bindings/sound/fsl,easrc.yaml  |  45 +++++++
+ .../bindings/sound/fsl,imx-asrc.yaml          |  45 ++++++-
+ sound/soc/fsl/fsl_asrc.c                      | 100 +++++++++-----
+ sound/soc/fsl/fsl_asrc_common.h               |   7 +-
+ sound/soc/fsl/fsl_asrc_dma.c                  |  14 ++
+ sound/soc/fsl/fsl_easrc.c                     | 123 +++++++++++++-----
+ 6 files changed, 263 insertions(+), 71 deletions(-)
 
 -- 
-David Heidelberg
+2.34.1
 
