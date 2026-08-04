@@ -1,171 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D632E6BD;
-	Tue,  4 Aug 2026 18:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16F139B481
+	for <imx@lists.linux.dev>; Tue,  4 Aug 2026 19:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785867529; cv=none; b=rZer6mUx/WOfM9csj13DNaJeyb7Y0IG+96r6zppu+ZE6euAzROagWS/hQ+1+9YPbtzFvGK0p1Is6dL5KBICWFInmyuj32oVhgTXvSyA4bRlU10K+zwT5CDt77vtPIQDokv6osYBfXX414K8Vnwf/182Hv27fNtgTmjvQ1PA/JTE=
+	t=1785872628; cv=none; b=gvbhH4jsrxSHV+W5wtu+WNMkGq+xvW3NR9poIbXyg6JgejxpSb//lstfnnd2WtOXTBxYnP2paW4r6i04vds/ijjsSPl60rMe90KQ+f+HUWKD7hc8hl1DU1LsyJoTmxHWkP6JPc2hnjjzN2pZrNDJEWBXh3F6gv5iK1ir99w0ecc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785867529; c=relaxed/simple;
-	bh=LW2ITypd6tg5gKL3iF/5UMbxTReTj5ZF3A4KI8v9fl0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=NV+TLhNcXEZJP941YX4rF8CwC1oxpGMki1YCdWGVNzBEaAFT1AH8FIgHW9LrVkFbnjHxjNKLJJ7JplntqvHl9yrJW9DUef7KOuhdGacMsimGE+EbVLM/B13gvCeCMJBNp4fdbZrzFUrRDYQGK6dKSW/rXAAzxe+LTF2fDubOCNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3uYFMY1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785872628; c=relaxed/simple;
+	bh=VpQc8qfp9veoR00W6ImThqn1v33YFOWVIw8lQ9hq2es=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DCCKtuPr/aUS4HyikxNp+ikhgVPunnvvCfcdObjZYwE/cUFHtpyizq3NOHYQ0uwqNJ4+xUMrS31rtREZjIz1uGsC5dE2/IYdmI66juIX56AxyxqPZCFH3BXnohB03MoRqqMUmiVOyIB6g5KsD4GCAPH+eaaPKA8kiOQsAjEGQjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=MKVMA+GJ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3uYFMY1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C547A1F00A3A;
-	Tue,  4 Aug 2026 18:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785867528;
-	bh=HxUB6Z4K2mKjd5j2OvvjwhXSYwxJocB8Ks6X4koqnfs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=J3uYFMY1dmtijKe5ohxsAzFTRApS3sfdyCi5AMyHvUewsSjxGnsTOSQK+p+zzMz4y
-	 j8UXER1eACo3HzW/tcEkpJeWwqMbdyDuD3Di0hxYpM6W5h6bioMHPav2CJHMVH3dKe
-	 U24sdl47d0N6hTMqmlmDjyDCW2LH2fMXH2FBsG1G0ZZw5cK2tOrqFQErWVSZigf72j
-	 2Qv/qyWFPTuwvrs6cO397CcmsCl+RZM2J8fcuEsCYyQ8qW3RAyUu05pWpBJINK5WkD
-	 PjLyurGWHSexn5VMdtCC4vxU+9qIf0+UWGYwqrOey+UFVdoNy0RKMCr3IVQIf36Stp
-	 ordibkCsZqDqg==
-Date: Tue, 4 Aug 2026 13:18:46 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Frank Li <frank.li@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v2] PCI: dwc: Add suspend_poweroff flag for platforms
- with RC power loss
-Message-ID: <20260804181846.GA1846400@bhelgaas>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="MKVMA+GJ"
+Received: from [192.168.0.240] (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9D6291E2A;
+	Tue,  4 Aug 2026 21:42:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1785872551;
+	bh=VpQc8qfp9veoR00W6ImThqn1v33YFOWVIw8lQ9hq2es=;
+	h=From:Subject:Date:To:Cc:From;
+	b=MKVMA+GJ07Jfu1h8DOsXnqE30i8Mbkv5+7ii3cohjJ/3ncETcrhWtwxFEVHirSBH7
+	 MlKHkpXDHeq1kkXnx8lqPr+RI6NhqgrsNBt71W1xKREe3G49X3sKsqFmhYC0JyKMNp
+	 mssr57BWKwJrieJ116EgQxLrgeUhYmMTxpBIXf4k=
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Subject: [PATCH v4 0/7] dt-bindings: Orientation defines
+Date: Tue, 04 Aug 2026 20:43:27 +0100
+Message-Id: <20260804-kbingham-orientation-v4-0-336998dd63b4@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB12019D498722B4C8A94C2A1A28CD42@GV2PR04MB12019.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ6CMBBFr0JmbU2d1BZceQ/DooUBJoaWtIRoS
+ O9uJS5dvp+893dIFJkS3KodIm2cOPgC6lRBN1k/kuC+MKBELbWsxdOxHyc7i1A8v9q1CAKlHTo
+ 5ON1cDRR1iTTw68g+2sITpzXE9/Gy4Xf9BVH/D24opFDmYmpHDRqn7tyTTcG7YGN/7sIMbc75A
+ 73Xr1W/AAAA
+X-Change-ID: 20260608-kbingham-orientation-20afc0fb6957
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>, 
+ Matthias Fend <matthias.fend@emfend.at>, 
+ Mikhail Rudenko <mike.rudenko@gmail.com>, 
+ Daniel Scally <dan.scally@ideasonboard.com>, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+ Michael Riesch <michael.riesch@collabora.com>, 
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
+ Sylvain Petinot <sylvain.petinot@foss.st.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Paul Elder <paul.elder@ideasonboard.com>, 
+ Martin Kepplinger <martin.kepplinger@puri.sm>, 
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
+ Tommaso Merciai <tomm.merciai@gmail.com>, 
+ Svyatoslav Ryhel <clamor95@gmail.com>, 
+ Richard Acayan <mailingradian@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux@ew.tq-group.com, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-tegra@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ David Heidelberg <david@ixit.cz>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785872619; l=4772;
+ i=kieran.bingham@ideasonboard.com; s=20260204; h=from:subject:message-id;
+ bh=VpQc8qfp9veoR00W6ImThqn1v33YFOWVIw8lQ9hq2es=;
+ b=7SZI39Py8ffrjnJh1y+hbhPXUnOWY+ZaEQ9KftTGB56v0gDSekjQfN+0f3X93k5+YJyrHR9/v
+ 6RTih1fHC9hD9EvsNdHgSXZpfBshb35aOAVlwCQ6l78f3XdO0TqxsmD
+X-Developer-Key: i=kieran.bingham@ideasonboard.com; a=ed25519;
+ pk=IOxS2C6nWHNjLfkDR71Iesk904i6wJDfEERqV7hDBdY=
 
-On Tue, Aug 04, 2026 at 06:32:26AM +0000, Hongxing Zhu (OSS) wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <mani@kernel.org>
-> > Sent: Monday, August 3, 2026 11:33 PM
-> ...
+Add a new dt-bindings/media/video-interface-devices.h header that
+initially supports the Orientation types and convert existing users
+throughout the code base.
 
-> > On Thu, Jul 30, 2026 at 07:09:13AM -0500, Bjorn Helgaas wrote:
-> > > On Thu, Jul 30, 2026 at 08:16:36AM +0000, Hongxing Zhu (OSS) wrote:
-> > > > > -----Original Message-----
-> > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > Sent: Thursday, July 30, 2026 6:30 AM
-> > > > ...
-> > >
-> > > > > On Fri, Jul 17, 2026 at 03:41:21PM +0800, hongxing.zhu@oss.nxp.com
-> > wrote:
-> > > > > > From: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > > >
-> > > > > > Some platforms like i.MX power off their PCIe RC
-> > > > > > controllers during system suspend, requiring full
-> > > > > > re-initialization on resume. These platforms need to enter
-> > > > > > L2 state to properly notify endpoints before power loss.
-> > > > > >
-> > > > > > According to PCIe base spec r7.0, sec 5.2, the system
-> > > > > > software should transition the device into D3Hot before
-> > > > > > broadcasting the PME_Turn_Off message to initiate L2
-> > > > > > entry. However, some endpoint devices fail the D3cold
-> > > > > > capability check in pci_host_common_d3cold_possible(),
-> > > > > > which would normally prevent L2 entry.
-> > > > >
-> > > > > Wakeup devices that don't support PME from D3cold will fail
-> > > > > the D3cold capability check, but I don't think those are the
-> > > > > problem you're solving.
-> > > > >
-> > > > You're right.
-> > > >
-> > > > > This appears to handle devices that are not in D3hot, and
-> > > > > that's not a property of the endpoint; it's a property of
-> > > > > its driver.  Is the problem here that some driver didn't put
-> > > > > its device in D3hot?
-> > > > >
-> > > > I observed some endpoint devices failing the D3cold capability
-> > > > check, but I haven't identified the root cause.
-> > >
-> > > Seems like some instrumentation in
-> > > pci_host_common_d3cold_possible() could tell us which
-> > > devices/drivers are relevant.
-> > >
-> > > > > > For platforms where the RC loses power during suspend, L2
-> > > > > > entry is essential regardless of D3cold support, as the
-> > > > > > link will be lost anyway.  Add a suspend_poweroff flag to
-> > > > > > force L2 entry in such cases, and enable it for i.MX PCIe
-> > > > > > controllers.
-> > > > > >
-> > > > > > Note: This violates the spec requirement that devices be
-> > > > > > in D3Hot before PME_Turn_Off, but is necessary for proper
-> > > > > > operation on platforms with RC power loss during suspend.
-> > > > >
-> > > > > If the device isn't in D3hot, it may still be active, and I
-> > > > > think the PME_Turn_Off will abort any DMAs in progress,
-> > > > > which doesn't sound like proper operation of the endpoint.
-> > > >
-> > > > You're correct - this isn't ideal for endpoint operation.
-> > > > However, on i.MX platforms, the RC controller will lose power
-> > > > during system suspend regardless. Without sending
-> > > > PME_Turn_Off, endpoints would have no notification before the
-> > > > link abruptly goes down.
-> > >
-> > > The PME_Turn_Off is some notification, but I don't think the
-> > > endpoint can do DMA or MSI, so its driver won't be involved.  It
-> > > may be able to do things internally, e.g., write caches to an
-> > > SSD or transmit packets from its internal buffers.  But I think
-> > > it might still lose power in the middle of operations like that,
-> > > so it doesn't sound reliable.
-> > >
-> > > > This patch adds a flag to force L2 entry for such platforms,
-> > > > choosing to notify endpoints (even if not ideal) rather than
-> > > > having the link drop unexpectedly. I'm appreciated for
-> > > > suggestions if there's a better approach to handle this
-> > > > scenario.
-> > >
-> > > Mani recently added pci_suspend_retains_context(), and I think
-> > > it returns "true" on i.MX.  But if the RC is powered off and all
-> > > the devices need full re-initialization on resume, it sounds
-> > > like it *should* return "false".
-> > 
-> > Right. pci_suspend_retains_context() was added just for that
-> > purpose of telling client drivers to prepare for context loss. So
-> > if this API returns 'false', then they should not hold the device
-> > in D0.
->
-> Thanks for your comments.
-> 
-> If I update dw_pcie_suspend_noirq() to use
-> pci_suspend_retains_context() to determine whether to proceed with
-> L2 entry and RC power down. The new logic would be changed as below:
+v3 collects tags, and fixes the typo, but drops all hunks that do not
+apply on the media-next tree so that these changes can be merged. Once
+the core feature is accepted a second sweep will convert remaining (new)
+additions of the orientation field.
 
-I'm not suggesting using pci_suspend_retains_context() in
-dw_pcie_suspend_noirq().  pci_suspend_retains_context() is for
-endpoint drivers.
+v2:
+ - Now expands from the original v1 "dt-bindings: media: Add macros for
+   video interface devices" to update
+   Documentation/devicetree/bindings/media/video-interface-devices.yaml
+   and extend to actually change all users to the new types.
+ - Link to v2: https://lore.kernel.org/r/20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com
 
-I think pci_suspend_retains_context() should return 'false' on any
-platform where dw_pcie_suspend_noirq() is going to send PME_Turn_Off.
-Sending PME_Turn_Off means we intend to remove main power.  When main
-power is removed, devices will be in D3cold and they will not retain
-their internal context.
+v3:
+ - Fix the arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+   MEDIA_ORIENTATION_REAR to MEDIA_ORIENTATION_BACK
+   - Though this patch is dropped from this series to post the main
+     integration through the media tree.
+ - Drop (temporarily) changes to:
+    - arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+    - arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+    - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtso
+    - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtso
+ - Non applying changes will be re-posted after the core feature
+   lands in linux-next, or after those changes appear in media-next.
 
-If pci_suspend_retains_context() returns 'false' and
-pci_host_common_d3cold_possible() returns also returns 'false', it
-means some driver didn't put its device in D3hot when it should have.
+-v4:
+ - Rebased media-committers/next (v7.2-rc1)
+ - Reintroduced updates to:
+   - arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+   - arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+   - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtso
+   - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtso
+ - Squash header introduction and bindings updates
 
-In that case, I think you should either fix that driver so it *does*
-put the device in D3hot (based on pci_suspend_retains_context()), or
-just accept that you can't power off the RC.
+---
+Kieran Bingham (7):
+      dt-bindings: media: Add macros for video interface devices
+      dt-bindings: media: i2c: Utilise video-interface-devices enums
+      arm64: dts: freescale: Convert to new media orientation definitions
+      arm64: dts: qcom: Convert to new media orientation definitions
+      arm64: dts: renesas: Convert to new media orientation definitions
+      arm64: dts: rockchip: Convert to new media orientation definitions
+      ARM: tegra: Convert to new media orientation definitions
+
+ .../devicetree/bindings/media/i2c/hynix,hi846.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/ovti,ov08d10.yaml     |  3 ++-
+ .../devicetree/bindings/media/i2c/ovti,ov4689.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/ovti,ov5675.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/ovti,ov5693.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/ovti,ov64a40.yaml     |  3 ++-
+ .../devicetree/bindings/media/i2c/sony,imx111.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/sony,imx355.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/sony,imx415.yaml      |  3 ++-
+ .../devicetree/bindings/media/i2c/st,vd55g1.yaml        |  3 ++-
+ .../devicetree/bindings/media/i2c/st,vd56g3.yaml        |  3 ++-
+ .../devicetree/bindings/media/i2c/thine,thp7312.yaml    |  3 ++-
+ .../bindings/media/video-interface-devices.yaml         | 17 +++++++++++------
+ .../dts/nvidia/tegra30-asus-nexus7-grouper-common.dtsi  |  3 ++-
+ .../dts/nvidia/tegra30-asus-transformer-common.dtsi     |  3 ++-
+ arch/arm/boot/dts/nvidia/tegra30-lg-p895.dts            |  4 +++-
+ arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi             |  3 ++-
+ .../imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso          |  3 ++-
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi       |  3 ++-
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts      |  3 ++-
+ .../boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts     |  3 ++-
+ arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi      |  3 ++-
+ .../renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso |  3 ++-
+ .../renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso |  3 ++-
+ .../renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso |  3 ++-
+ .../renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso |  3 ++-
+ arch/arm64/boot/dts/rockchip/px30-pp1516.dtsi           |  3 ++-
+ .../dts/rockchip/px30-ringneck-haikou-video-demo.dtso   |  3 ++-
+ arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts   |  5 +++--
+ .../rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtso  |  3 ++-
+ .../rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtso  |  3 ++-
+ include/dt-bindings/media/video-interface-devices.h     | 13 +++++++++++++
+ 32 files changed, 86 insertions(+), 37 deletions(-)
+---
+base-commit: 31152f5b0f8719f92063b8c6196cd5e34106c73d
+change-id: 20260608-kbingham-orientation-20afc0fb6957
+
+Best regards,
+-- 
+Kieran Bingham <kieran.bingham@ideasonboard.com>
+
