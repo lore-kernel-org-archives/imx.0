@@ -1,127 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7674E483BEB;
-	Tue,  4 Aug 2026 17:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048073876A4;
+	Tue,  4 Aug 2026 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785864020; cv=none; b=G4yjxNxjMrM5orjVwlvTI/XuqLPuScEvOYcEZ/e9rSmZ5KmIZdZARnurg3Y0xWuuFrsBxFkHD/i2xU+YegNuFB47vYw9hoeuFG31L3e/c0tNABwvY3SCDg/v0BOOc6AiC19NXdv8QzYrR38M74dx7iKCAxpiz1y/I71pUEya4E4=
+	t=1785865571; cv=none; b=APVgt8xzl4hRyqBgdWsjQY3ZhYLtk83JUde5GShbCw7oJhi8Ne0xFmAKuEt2a4MNyFw3ZQruQ7SA93uUAKXf+eLq7kTwz6MslFKxVNgA4r1EPdgK+ek7tIjW0U/rRcCCjk/hxeLDcBt/JJg/cja8cJlH5ThMvIGgLN6KJX9zQ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785864020; c=relaxed/simple;
-	bh=yn9q/LQUUuTE73/CA/xqzXBtHuQ1kZpXfDRBwehXd/g=;
+	s=arc-20240116; t=1785865571; c=relaxed/simple;
+	bh=eGYhmUmW+9eyAUGozyzv9dl/k0f38xoXmrlBFQyv/zc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rsld9qNpCpKlAEqKasbrQaHDpnMzYGtArf7ZBObSbPM8kFPlazBKhzSGkSHgUs2iUN0Cluj24GirD3JYwbqTOXWF6rwy/dlJGsyLUj11AalCylvtAVUgugyl9b+WaTVFILZwzh+BIkOdoh41vLkxERX/ybG+XB1K5ClJ5p1/toM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSrJ+a2E; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=GjH8QrLplp2h9D56qJ4jz3apOWuQMon0c8juijqk/MhYBr2sxuIPCD5sVFj6d1nC16gBRy3yYmkg0NLqfB2g9e0s5Is4xK4kxXL7JK4KVWcJD1lFuWmKoQasJl6HaLP6uL9Nbm0LdaS4GfxlT0upGPElY2m3c5w4eEunfA12ozc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpIcTGmr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSrJ+a2E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3C51F000E9;
-	Tue,  4 Aug 2026 17:20:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpIcTGmr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09141F000E9;
+	Tue,  4 Aug 2026 17:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785864011;
-	bh=WESL2TVF/PZW3BVZnHuChAg7+wBXDd2q5pCQuz/jxwk=;
+	s=k20260515; t=1785865565;
+	bh=hQE5l7Z2aK1s5w0j+yjewR8FfG19dhow9urAj/rsXwg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DSrJ+a2E1VlK1dUrQ2ZWCxanePat7CgyrhEWJdC0K0GUaBjAveBWZX3G9hgG07Jo0
-	 H7gErs/goS48nvx4qpUAAAaP1DLUfLX8Y4yKBfEV3F7FThRVfnadZBYevETiiiJCiu
-	 7UjevMW3Njfc5OWv3SLR9fD0vtoXwoHy6NECnxrc84tFPzfa/OmRyN2EO0DFj3KKPB
-	 eSzoXiQGi8KiOO9Ud4A8GltmdH1C++p6VuptmIJQf4DVNfdnuB22eI2qah+HIoYhGo
-	 iuPWypbjIsIfBK4ABBz6bNzXvTN/iCmIEM9JiwMJAhSYkhq+KdNNdSblKL+UQ+yzfS
-	 KNfH3XW+m7UFw==
+	b=EpIcTGmrL3KYFAl32//sG74LAjhkAoZHSiul+RbokwhjhvWfiLgwg7ieMu4A/Du9E
+	 /eAnlcuB6LBnMPZkVTII9jMFKFODVzg7VCzHZujq7Z82jf9ZnC7hu9d1N2n+tm8rL8
+	 Jq6BSpB7YLOg02/KkxSb0UJkCOWq9xZEgkOfgcv3eN4h13HPRZ0wMXrzg+AigE+Flw
+	 DlwhHS7Ns01idpCYRsPXriLsoB3IIfFYHpKjXKfgJgOUS5WjCw3n7bRElAZk61QkOG
+	 Wp4edA+7/JEhr5zBtvoIVhdVpnqmBaMmRyh5y8SFvCjMRVlrnT1szKiiMD3dDezbak
+	 A+Zq+EyHE7cRw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 6/7] arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for
- Data Modul i.MX8M Mini and Plus eDM SBC
+Subject: Re: [PATCH v9 7/7] arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs
+ for Data Modul i.MX8M Mini and Plus eDM SBC
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Marek Vasut" <marex@nabladev.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260804162310.24374-6-marex@nabladev.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260804162310.24374-7-marex@nabladev.com>
 References: <20260804162310.24374-1-marex@nabladev.com>
- <20260804162310.24374-6-marex@nabladev.com>
+ <20260804162310.24374-7-marex@nabladev.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 17:20:10 +0000
-Message-Id: <20260804172010.CD3C51F000E9@smtp.kernel.org>
+Date: Tue, 04 Aug 2026 17:46:04 +0000
+Message-Id: <20260804174604.D09141F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Device Tree node collision and hardware I2C address conflict for i=
-o-expander@20 on i.MX8MP.
-- [High] Incorrect UART role configuration for RS485 on i.MX8MP.
+- [Low] DT Node Conflict / Duplicate Unit Address
 --
 
---- Patch [6]: [PATCH v9 6/7] arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for=
- Data Modul i.MX8M Mini and Plus eDM SBC ---
-commit a7ddf5cabeef2078bf36b166e42e85f54f0b7289
+--- Patch [7]: [PATCH v9 7/7] arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DT=
+Os for Data Modul i.MX8M Mini and Plus eDM SBC ---
+commit c5a51996123e2650a624a6ad09a9ec065dfa47f6
 Author: Marek Vasut <marex@nabladev.com>
 
-arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for Data Modul i.MX8M Mini and Pl=
-us eDM SBC
+arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs for Data Modul i.MX8M Mini =
+and Plus eDM SBC
 
-This commit adds a Device Tree overlay for the eDM-MOD-iMX8Mm-FIO1 feature
-connector expansion module. The adapter provides additional interfaces like
-UARTs, CAN, PWM Beeper, I2C, SPI, and GPIO, and can be optionally populated
-onto the eDM SBC.
+This commit adds Device Tree Overlays for the eDM-MOD-iMX8Mm-FIO1-Audio
+feature connector expansion module. The module provides an SGTL5000 codec,
+CAN, PWM, UARTs, and other IO for the Data Modul i.MX8M Mini and Plus
+eDM SBCs.
 
 > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-over=
-lay-edm-mod-imx8mm-fio1.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-mo=
-dul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi
+lay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mm-d=
+ata-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
 > new file mode 100644
-> index 0000000000000..905db21d57c21
+> index 0000000000000..88fa705ac2b67
 > --- /dev/null
 > +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm=
--mod-imx8mm-fio1.dtsi
+-mod-imx8mm-fio1-audio.dtso
 
 [ ... ]
 
-> +&i2c_feature {	/* Feature connector I2C */
+> @@ -0,0 +1,79 @@
+
+[ ... ]
+
+> +&spba2 {
 > +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
+> +	#size-cells =3D <1>;
 > +
-> +	gpio_feature: io-expander@20 {
-> +		compatible =3D "nxp,pca9554";
-> +		reg =3D <0x20>;
+> +	sai5clk: clock-controller@30050000 {	/* SAI5 */
 
-[Severity: High]
-Does this cause a device tree node collision on the i.MX8MP?
+[Severity: Low]
+Will this trigger unique_unit_address warnings during DT validation?
 
-When this shared FIO1 overlay is applied to the i.MX8MP baseboard, it
-appears this will overwrite the statically defined gpiolvds: io-expander@20
-node on the &i2c2 bus (aliased as &i2c_feature).
+The base imx8mm.dtsi already defines an sai@30050000 node inside spba2.
+Adding a sibling clock-controller@30050000 node creates two nodes with the
+same unit address. Even though the base sai node is disabled, this violates
+the DT specification that sibling nodes must have unique addresses.
 
-This would replace the LVDS GPIO line names and interrupt configurations wi=
-th
-the FIO1 configurations, potentially breaking the LVDS expander controls.
+Would it be better to override the existing &sai5 node directly, or
+explicitly delete it first with /delete-node/ &sai5?
 
-Also, does physically connecting the FIO1 expansion board to the i.MX8MP SBC
-cause a hardware I2C address collision at 0x20 on i2c2?
+> +		compatible =3D "fsl,imx8mm-sai-clock", "fsl,imx8mq-sai-clock";
 
 [ ... ]
 
-> +&uart1 {	/* J500/J501 */
-> +	status =3D "okay";
-> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-over=
+lay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mp-d=
+ata-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
+> new file mode 100644
+> index 0000000000000..4e2112355350f
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm=
+-mod-imx8mm-fio1-audio.dtso
+
+[ ... ]
+
+> @@ -0,0 +1,67 @@
+
+[ ... ]
+
+> +&spba5 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <1>;
 > +
-> +&uart2 {	/* RS485 J302/J303 */
-> +	linux,rs485-enabled-at-boot-time;
-> +	uart-has-rtscts;
-> +	status =3D "okay";
-> +};
+> +	sai5clk: clock-controller@30c50000 {
 
-[Severity: High]
-Are these UART role configurations correct for both i.MX8MM and i.MX8MP?
+[Severity: Low]
+Does this also conflict with the existing sai@30c50000 node in spba5
+defined in the base imx8mp.dtsi?
 
-The shared overlay hardcodes &uart2 as RS485 and &uart1 as standard UART,
-which is correct for i.MX8MM. However, the i.MX8MP baseboard appears to
-rely on &uart1 for RS485 and &uart2 for standard UART.
+Like the i.MX8MM overlay, this adds a clock-controller@30c50000 sibling
+node that shares a unit address with the existing sai node.
 
-Applying this shared overlay to i.MX8MP might improperly enable RS485 on
-&uart2, causing it to try to toggle RTS as RS485 transmit enable (breaking
-hardware flow control), while leaving the actual RS485 port (&uart1)
-misconfigured.
+Should this overlay override &sai5 directly or delete the existing node
+first to avoid DT validation warnings?
+
+> +		compatible =3D "fsl,imx8mp-sai-clock", "fsl,imx8mq-sai-clock";
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804162310.2437=
-4-1-marex@nabladev.com?part=3D6
+4-1-marex@nabladev.com?part=3D7
