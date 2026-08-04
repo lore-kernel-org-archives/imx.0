@@ -1,403 +1,151 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DB84756AD
-	for <imx@lists.linux.dev>; Tue,  4 Aug 2026 16:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B522B477285;
+	Tue,  4 Aug 2026 16:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785860635; cv=none; b=UNgo82tCYRey+utxX1WyBp+uv4VLgW7cd0VE749+6ZPsC6ukCq6CZ0UUCQJNRWaMgsxna6JP5T1sXWudUTM1oFMWW7GR+RfnLJYBlXvP4tPT/gfEunN+ewk0FidIb9p9FH/feprF+ofleBeNfxMHIkP3qigcckER+la5jKFz7rc=
+	t=1785861465; cv=none; b=OauGPsBhqu7Sv9KmNgpUkKe89oYdEsH4LrEYxA8lFRNXgNYPxjR77xBJeHCY/2DFnj7U5xtGDBtR3vlAoWYYWfiMmBBtOvK/VeZvRkGj1W0kghkzlvChCc1CNByMHsKZ8UVMDosWKSMZLUU1YczO1vvw8E6J4hxcJACkUSRSntc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785860635; c=relaxed/simple;
-	bh=OpV6L2KvPSSVO0imQLJt0nsZGLzMCdELXHRyZQdQ7ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dx9xu8GoX1J2R0OSZWTf1R9M/RqmbJJcdY/ZG9qTKSmtBeOdPAkrYek6+NLwmRPr7fANpYhJPEBRmxnFhfZq/nBjvjYpJfDnoSdnzjbGXvflc2vq3J606jP9AkHSlEx8if2Jw1q7jFFCK6gSZZTuz1KnHyGG1frFTYzmjNYF4cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=LoE4Eceb; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1785861465; c=relaxed/simple;
+	bh=FkjP6otm0o6yy7b/ktpjAfjxkpYkBuycKwY4tPhkXNU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WX4eivNoHZpVYnEjbRxv/4Tud7tkQE5q2xQor8hzR/g4crI5bGoOqu1U7k2lvBgbJSgD5pZ5o9VXNn0UE3VCT7PT6wVC5h23CnRWGAPjmqUGmPPX6FPhmLewigDHq3IBvgafV8K2oPEQsb76wYysuyxwMkrWF7+aqgKK9au1vvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WnW6V/V0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="LoE4Eceb"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C2107119551;
-	Tue, 04 Aug 2026 18:23:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1785860626; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6YB8G6p+hlDGiyvqXgp5IpTVh/FpxYVoXGe5FDLjuQ8=;
-	b=LoE4EcebhVzwR6SBVtyirAag+W9B4eTaULugTJf+zuUUihDN8uBHOmp/lrkbXMOB0N1zEF
-	9OXSpOoEAqQbJVUOGg4lP1J05H9geldL1vkePJmIq1wwblK+tihbfdysbAG8E0rrkf9sV+
-	1+k0RQZNQgbW7731Yp7GNBq8GU59TEHARVyTXKiiOxIj009luj7a82TF5QxRp12nBRK9bi
-	odqesMaLqMRWi0xeEPel0OY9hZbJsrAvVgBOY9RhUXN2qvkLI9Xfae6ugJtePTlT0oJs1F
-	/rWgMgPMhx7us7djoF2mFIWp9acU/CLM+sannLyXjiT0LuHuRH8l/JpJcC2bvw==
-From: Marek Vasut <marex@nabladev.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v9 7/7] arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
-Date: Tue,  4 Aug 2026 18:22:51 +0200
-Message-ID: <20260804162310.24374-7-marex@nabladev.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260804162310.24374-1-marex@nabladev.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WnW6V/V0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9751F000E9;
+	Tue,  4 Aug 2026 16:37:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785861446;
+	bh=5FkBxZTNITsbu/MDmQLfWF2iUrskB8LBvnw8UUCDDKo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WnW6V/V0I3eAOjykbdhhPfgnWf5adY2aJZSqiKE48+42RvvzC4XIrNiWLiCOOA9/6
+	 G4gdEd8ECYtBSIVLY5GtGijj7C45LPq2ORqEG7xE3br0jYhRRISj+O21+y//OM9eSt
+	 Ny2wx6g5JBatC/8gKdulvkVjVDhRoWMGaL2u3zpZH3G66CYChGJv5dOTCV2V0VnxBe
+	 ph+UPgLu7ufx/HkN63rQqruabPOFlOlXuBa5YwXHZEOtiOKu2D0T1gjmGEOhwTHOZ/
+	 mUxpyqO/Uq4J/KWZ7f+w77ycpy5r5dy0ubADqn+t246ywOEFViwuoVcL7+bEcpHP3X
+	 +3IeoExfbAWtg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 2/7] arm64: dts: imx8mm: imx8mp: Add LVDS DTOs for
+ Data Modul i.MX8M Mini and Plus eDM SBC
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marek Vasut" <marex@nabladev.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260804162310.24374-2-marex@nabladev.com>
 References: <20260804162310.24374-1-marex@nabladev.com>
+ <20260804162310.24374-2-marex@nabladev.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 04 Aug 2026 16:37:24 +0000
+Message-Id: <20260804163725.AF9751F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Add DT overlay for feature connector expansion module eDM-MOD-iMX8Mm-FIO1-Audio
-providing additional UARTs, CAN, PWM Beeper, I2C, SPI, GPIO breakout and
-SGTL5000 codec. This adapter can be optionally populated onto the eDM SBC.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] The G215HVN011 panel overlay hardcodes the backlight enable GPIO=
+, breaking the backlight functionality when used with the native i.MX8MP SB=
+C LVDS interface.
+- [Low] Mismatch between the mathematical comment and the actual assigned c=
+lock rate for the G156HCE-L01 panel.
+- [Low] The built-in i.MX8MP LVDS overlay inherits and incorrectly configur=
+es the external adapter's SoC pinctrls for its regulators.
+--
 
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
-V2: Deduplicate the DTOs further
-V3: New patch split from the original megapatch
-V4: Rebase on next-20260703, drop dependency links which have all landed now
-V5: No change
-V6: Move compatible and reg properties to the beginning of sgtl5000_fio: codec@a {} node
-V7: No change
-V8: Switch PCA9554 IRQ to GPIO1_8
-V9: No change
----
- arch/arm64/boot/dts/freescale/Makefile        | 12 +++
- ...sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi | 99 +++++++++++++++++++
- ...sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso | 79 +++++++++++++++
- ...sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso | 67 +++++++++++++
- 4 files changed, 257 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
+--- Patch [2]: [PATCH v9 2/7] arm64: dts: imx8mm: imx8mp: Add LVDS DTOs for=
+ Data Modul i.MX8M Mini and Plus eDM SBC ---
+commit 9eb4f5b623d7a9a7866c31e6663fe324b4e72663
+Author: Marek Vasut <marex@nabladev.com>
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index c23be9fc3a224..8800b35a63eb5 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -128,6 +128,10 @@ imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-dtbs := \
- 	imx8mm-data-modul-edm-sbc.dtb \
- 	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo
- 
-+imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio-dtbs := \
-+	imx8mm-data-modul-edm-sbc.dtb \
-+	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo
-+
- imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
- 	imx8mm-data-modul-edm-sbc.dtb \
- 	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
-@@ -169,6 +173,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-data-modul-edm-sbc.dtb \
- 			  imx8mm-data-modul-edm-sbc-overlay-cm4.dtbo \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtb \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo \
-+			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtb \
-+			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
- 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
-@@ -357,6 +363,10 @@ imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-dtbs := \
- 	imx8mp-data-modul-edm-sbc.dtb \
- 	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo
- 
-+imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio-dtbs := \
-+	imx8mp-data-modul-edm-sbc.dtb \
-+	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo
-+
- imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
- 	imx8mp-data-modul-edm-sbc.dtb \
- 	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
-@@ -442,6 +452,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb \
- 			  imx8mp-data-modul-edm-sbc-overlay-cm7.dtbo \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtb \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtbo \
-+			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtb \
-+			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtbo \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
- 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
-new file mode 100644
-index 0000000000000..8b38b5c228e0a
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2026 Marek Vasut
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+&{/} {
-+	can_osc: can-osc {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <20000000>;
-+	};
-+
-+	sound-fio {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "SGTL5000-FIO1";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&codec_dai_fio>;
-+		simple-audio-card,frame-master = <&codec_dai_fio>;
-+		simple-audio-card,widgets = "Headphone", "Headphone Jack";
-+		simple-audio-card,routing = "Headphone Jack", "HP_OUT";
-+
-+		simple-audio-card,cpu {
-+			sound-dai = <&sai2>;
-+		};
-+
-+		codec_dai_fio: simple-audio-card,codec {
-+			sound-dai = <&sgtl5000_fio>;
-+		};
-+	};
-+};
-+
-+&ecspi2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	can_fio: can@0 {
-+		compatible = "microchip,mcp2518fd";
-+		reg = <0>;
-+		clocks = <&can_osc>;
-+		spi-max-frequency = <10000000>;
-+	};
-+};
-+
-+&i2c_feature {	/* Feature connector I2C */
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	sgtl5000_fio: codec@a {
-+		compatible = "fsl,sgtl5000";
-+		reg = <0x0a>;
-+		#sound-dai-cells = <0>;
-+		clocks = <&sai5clk 1>;
-+		VDDA-supply = <&buck4_reg>;
-+		VDDD-supply = <&buck5_reg>;
-+		VDDIO-supply = <&buck4_reg>;
-+	};
-+
-+	gpio_feature: io-expander@20 {
-+		compatible = "nxp,pca9554";
-+		reg = <0x20>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+		#interrupt-cells = <2>;
-+		interrupt-controller;
-+		gpio-line-names =
-+			"GPI0", "GPI1", "GPI2", "GPI3",
-+			"GPO0", "GPO1", "GPO2", "GPO3";
-+	};
-+
-+	eeprom@50 {
-+		compatible = "atmel,24c32";
-+		reg = <0x50>;
-+		pagesize = <32>;
-+	};
-+};
-+
-+&sai2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai2>;
-+	assigned-clock-rates = <24576000>;
-+	fsl,sai-asynchronous;
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+};
-+
-+&uart2 {	/* RS422 J12 */
-+	linux,rs485-enabled-at-boot-time;
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+/* UART4 is blocked by RDC and used as CM4 console UART */
-+&uart4 {	/* UART to 1-Wire J5 */
-+	status = "disabled";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-new file mode 100644
-index 0000000000000..88fa705ac2b67
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-@@ -0,0 +1,79 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8mm-clock.h>
-+
-+#include "imx8mm-pinfunc.h"
-+#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi"
-+
-+&can_fio {
-+	interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
-+};
-+
-+&gpio_feature {
-+	interrupt-parent = <&gpio5>;
-+	interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
-+};
-+
-+&iomuxc {
-+	pinctrl_codec_mclk: codec-mclk_feature-grp {
-+		fsl,pins = <
-+			/* GPIO4_IO27 */
-+			MX8MM_IOMUXC_SAI2_MCLK_SAI5_MCLK		0x2
-+		>;
-+	};
-+
-+	pinctrl_sai2: sai2_feature-grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI2_RXC_SAI2_RX_BCLK		0x90
-+			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0		0x96
-+			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0		0x90
-+			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC		0x96
-+		>;
-+	};
-+};
-+
-+&pinctrl_hog_feature {
-+	fsl,pins = <
-+		/* GPIO5_IO03 */
-+		MX8MM_IOMUXC_SPDIF_TX_GPIO5_IO3				0x40000006
-+		/* GPIO5_IO04 */
-+		MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4				0x40000006
-+
-+		/* CAN_INT# */
-+		MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25			0x40000090
-+	>;
-+};
-+
-+&sai2 {
-+	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
-+	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-+	fsl,sai-bit-clock-swap;
-+};
-+
-+&spba2 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	sai5clk: clock-controller@30050000 {	/* SAI5 */
-+		compatible = "fsl,imx8mm-sai-clock", "fsl,imx8mq-sai-clock";
-+		reg = <0x30050000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&clk IMX8MM_CLK_SAI5_IPG>,
-+			 <&clk IMX8MM_CLK_SAI5_ROOT>;
-+		clock-names = "bus", "mclk1";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_codec_mclk>;
-+		assigned-clocks = <&clk IMX8MM_CLK_SAI5>,
-+				  <&clk IMX8MM_CLK_CLKOUT1_SEL>,
-+				  <&clk IMX8MM_CLK_CLKOUT2_SEL>;
-+		assigned-clock-parents = <&clk IMX8MM_CLK_24M>,
-+					 <&clk IMX8MM_CLK_24M>,
-+					 <&clk IMX8MM_CLK_24M>;
-+		assigned-clock-rates = <24000000>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-new file mode 100644
-index 0000000000000..4e2112355350f
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8mp-clock.h>
-+
-+#include "imx8mp-pinfunc.h"
-+#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi"
-+
-+&can_fio {
-+	interrupts-extended = <&gpio2 10 IRQ_TYPE_LEVEL_LOW>;
-+};
-+
-+&gpio_feature {
-+	interrupt-parent = <&gpio1>;
-+	interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
-+};
-+
-+&iomuxc {
-+	pinctrl_codec_mclk: codec-mclk_feature-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_MCLK__AUDIOMIX_SAI5_MCLK	0xd6
-+		>;
-+	};
-+
-+	sai2-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_TXFS__AUDIOMIX_SAI2_TX_SYNC	0xd6
-+			MX8MP_IOMUXC_SAI2_TXD0__AUDIOMIX_SAI2_TX_DATA00	0xd6
-+			MX8MP_IOMUXC_SAI2_TXC__AUDIOMIX_SAI2_TX_BCLK	0xd6
-+			MX8MP_IOMUXC_SAI2_RXD0__AUDIOMIX_SAI2_RX_DATA00	0xd6
-+		>;
-+	};
-+
-+	uart1-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__UART1_DCE_TX		0x49
-+			MX8MP_IOMUXC_SD1_CMD__UART1_DCE_RX		0x49
-+			MX8MP_IOMUXC_SD1_DATA1__UART1_DCE_CTS		0x49
-+		>;
-+	};
-+};
-+
-+&sai2 {
-+	assigned-clocks = <&clk IMX8MP_CLK_SAI2>;
-+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
-+};
-+
-+&spba5 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	sai5clk: clock-controller@30c50000 {
-+		compatible = "fsl,imx8mp-sai-clock", "fsl,imx8mq-sai-clock";
-+		reg = <0x30c50000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI5_IPG>,
-+			 <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI5_MCLK1>;
-+		clock-names = "bus", "mclk1";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_codec_mclk>;
-+		status = "okay";
-+	};
-+};
--- 
-2.53.0
+arm64: dts: imx8mm: imx8mp: Add LVDS DTOs for Data Modul i.MX8M Mini and Pl=
+us eDM SBC
 
+Add DT overlay for the DSI-to-LVDS adapter eDM-MOD-iMX8Mm-LVDS populated
+with Lontium LT9211 bridge. This adapter can be optionally populated onto
+the eDM SBC.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-over=
+lay-lvds-g215hvn011.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-=
+edm-sbc-overlay-lvds-g215hvn011.dtsi
+> new file mode 100644
+> index 0000000000000..3585170bd59dd
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvd=
+s-g215hvn011.dtsi
+
+[ ... ]
+
+> +&backlight {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_panel_backlight>;
+> +	enable-gpios =3D <&gpio3 0 GPIO_ACTIVE_HIGH>;
+
+[Severity: Medium]
+Does hardcoding enable-gpios here break the backlight for the native
+i.MX8MP SBC LVDS interface?
+
+Since the native LVDS overlay does not override this property, the driver
+will toggle the SoC GPIO3_IO00 instead of the correct I2C expander pin,
+which might leave the screen black.
+
+Could we abstract this using the reg_panel_bl node instead?
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-over=
+lay-edm-sbc-imx8mp-lvds-g156hce-l01.dtso b/arch/arm64/boot/dts/freescale/im=
+x8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g156hce-l01.dtso
+> new file mode 100644
+> index 0000000000000..86163d6ddd5c6
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm=
+-sbc-imx8mp-lvds-g156hce-l01.dtso
+
+[ ... ]
+
+> +&media_blk_ctrl {
+> +	/*
+> +	 * The G156HCE-L01 panel requires 141.86 MHz LVDS clock.
+> +	 * Set IMX8MP_VIDEO_PLL1 to 993.2 MHz , since 993.2 MHz / 7 =3D 141.86 =
+MHz .
+> +	 */
+> +	assigned-clock-rates =3D <500000000>, <200000000>,
+> +			       <0>, <0>, <500000000>, <993020000>;
+> +};
+
+[Severity: Low]
+Is there a typo in the comment here? It mentions 993.2 MHz, but the code
+configures 993020000 (993.02 MHz).
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-over=
+lay-edm-sbc-imx8mp-lvds.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-data-mo=
+dul-edm-sbc-overlay-edm-sbc-imx8mp-lvds.dtsi
+> new file mode 100644
+> index 0000000000000..95f4761869d75
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm=
+-sbc-imx8mp-lvds.dtsi
+
+[ ... ]
+
+> +&reg_panel_bl {
+> +	gpio =3D <&gpiowifi 0 0>;
+> +	vin-supply =3D <&reg_panel_bl_supply>;
+> +};
+> +
+> +&reg_panel_vcc {
+> +	enable-gpios =3D <&gpiowifi 4 0>;
+
+[Severity: Low]
+Since this native LVDS overlay routes the regulator GPIOs to the gpiowifi
+I2C expander, does it also need to delete the pinctrl-0 properties inherited
+from the base tree and external adapter include?
+
+Without /delete-property/ pinctrl-0; the regulators might still needlessly
+request and configure the SoC pins via pinctrl.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804162310.2437=
+4-1-marex@nabladev.com?part=3D2
