@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC3244781F;
-	Tue,  4 Aug 2026 10:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1BA4477FE;
+	Tue,  4 Aug 2026 10:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785838552; cv=none; b=hnLuCsGlSXTG7dm54412Ct+OoVz8+TMTdVz6HtaykHfRUeiAdOG5kLWX4qZCLerUqZ0f8QvvNOmTIrUEo1gaa4xySIcWL03O8FJp33Gn2TQa0ZUONiAslIIe9RqBWnCGSaUETtdZiA9R3JYGC87c9k1jdvU0hChwd9uWsQ6daEg=
+	t=1785838860; cv=none; b=tA2rtlvFOKawEae56xuBCsSFsfuZ126wV4BdxbwE8BMF3ooF1RfhlDuu/cPR+q+lCPwS5C3qVGUv5fIqfO7aKUnNwkV1pt+WtUmQdN3oXIqIQrwXUa0aM0Kb4U7iN1TJtzrtyXU5WN5xdxAPeFxq+TD7EpavyNVxA6Mffh18yWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785838552; c=relaxed/simple;
-	bh=QkMeeuC4aYR5NtBiPr/AMIuNa9VApNayAIEyaiJ06KM=;
+	s=arc-20240116; t=1785838860; c=relaxed/simple;
+	bh=OKIhwTY64GdqC+OHVzOdZZBJkSL2s8IgCRZLfRfX9Cg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KNmtYQ8Lc5KAb2HqDuudfPdlWHWNJP1oeHhKyg301oaB1gSZHiOdEQK/E4kzpxqNaQT7dt1aXLXdqTlWVbJrf1NpsWpRdPAGYlXnUDVrYlBM3Yq0lnTZCReSNa/sgs+QNW94LML+acbZWS9ta7pFDSF+/rOloLHBW2Q+S0NNrSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZoOA2+f; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=bAgRrnt6baSSc1Co0LOR/ndPh7FHHaZSogKiXyiZwmxs1bdlhSDQepkpP4tFM0DfPR039VoDJSLGR6OmsojKYQ1AGtMAEW/bmtQsS4Ix7fEPCbbgK9wU1hM1xPqvg51xg2spWZXVpONYISTySgGbqEK1KEdzJIt1WqPvfZr8/0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/o6qvBb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZoOA2+f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D6B1F000E9;
-	Tue,  4 Aug 2026 10:15:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/o6qvBb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAA21F000E9;
+	Tue,  4 Aug 2026 10:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785838550;
-	bh=eCCGPUMSRuzwX5Bohm2/D9leG449NdMwyDltjDfaB/0=;
+	s=k20260515; t=1785838859;
+	bh=FLncK/GljeD2xIL3+xX4wvAdLxa0dy53g0Zoy4mAwt8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RZoOA2+fY1W8K9Y4dP5PAljUIfwam/S0qNjMI47VNJPSfzjGdz0RJaD/N1qtqTAvY
-	 3mnszkX4NuymQij5m3jcWen/Smb9E0Pqoor7bt9zPGX/6pk0GQeOJxqO9cbLHEtJnJ
-	 J1a3ghzLSqot5Vy2TePhPXOqEE5kNKnX9QDdUx4ea6RQsM4zKQMw/E5oHFQ1XO07PK
-	 O4zRLcRXdEiAmUfm10Wdqw+HGVTcnI1W8YCS8SZk4JMsMRqtWq6X3eoA5p143F1qoD
-	 U3CdcJV8vzZu1+QLJNBqfHxHDBYlktgXerSCA5c5XerV30K8sUMU0L+4ncUNUs/UdX
-	 9QfKRvmejSShw==
+	b=I/o6qvBbcF1b1ntQhQmPigJF17qPgoFXb/Sw9C1gb9fL+0FUpWLxmiiSdltIK5g2V
+	 F2vQmnzooRgWwbqWLy6lkCMzf1JpN17BgnHv8+XBJz9YC0oiyfSfulYGhgSWWAhppL
+	 UXmznzlW6jZA111CM64roHdemn7muCwFMLyV+nCj1/SkQ6meajL92BNW1dwGesrQhl
+	 cJ0UTTg+NpPhgVyhPlc57TjrVGG0nqIXHQHKTMdvnM0ImoMjkSX4XkHkSEPvC3/pJZ
+	 SoFxd66lJYw7QrhTrYuLbUOapbQl5m/aYaeqAmZfHBCKPscFaHBHGJzLPMylB6FaU9
+	 rWk/SfGEtR4Pg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/5] ASoC: fsl_asrc/fsl_easrc: move DMA params into
- pair/context struct
+Subject: Re: [PATCH v3 4/5] ASoC: fsl_asrc: expose individual DAIs per
+ conversion path
 Reply-To: sashiko-reviews@lists.linux.dev
 To: shengjiu.wang@oss.nxp.com
-Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260804100218.49587-4-shengjiu.wang@oss.nxp.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
+In-Reply-To: <20260804100218.49587-5-shengjiu.wang@oss.nxp.com>
 References: <20260804100218.49587-1-shengjiu.wang@oss.nxp.com>
- <20260804100218.49587-4-shengjiu.wang@oss.nxp.com>
+ <20260804100218.49587-5-shengjiu.wang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 10:15:47 +0000
-Message-Id: <20260804101547.D4D6B1F000E9@smtp.kernel.org>
+Date: Tue, 04 Aug 2026 10:20:55 +0000
+Message-Id: <20260804102058.1AAA21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,119 +48,101 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
-New issues:
-- [Critical] Use-After-Free and Write-After-Free due to shared CPU DAI `dma=
-_data` being overwritten by concurrent substreams.
-
 Pre-existing issues:
-- [High] Failed `hw_params` requests cause `hw_free` to unconditionally rel=
-ease a stale pair index, potentially disabling another active stream's hard=
-ware context.
+- [High] Latent use-after-free / state corruption bug triggered by resource=
+ exhaustion: an hw_params error unconditionally releases a hardware pair ac=
+tively used by another stream.
+- [High] Changing Pair A's channel count via a DAI re-configuration instant=
+ly corrupts Pair B's active conversion.
 --
 
---- Patch [3]: [PATCH v3 3/5] ASoC: fsl_asrc/fsl_easrc: move DMA params int=
-o pair/context struct ---
-commit 4551053ba617a888e5b04cb058570e71617e9706
+--- Patch [4]: [PATCH v3 4/5] ASoC: fsl_asrc: expose individual DAIs per co=
+nversion path ---
+commit 958c34d5b39a813baf5b15d76b95e94f278f4bf9
 Author: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-ASoC: fsl_asrc/fsl_easrc: move DMA params into pair/context struct
+ASoC: fsl_asrc: expose individual DAIs per conversion path
 
-This patch moves the DMA parameters for transmit and receive paths from
-the shared fsl_asrc structure into the per-pair structure. This aims to
-prevent concurrent stream initializations from overwriting each other's
-addresses and maxburst values. Redundant per-DAI probe callbacks are
-removed as well.
+The patch replaces the single fsl_asrc_dai instance with an array of three
+DAI drivers. This allows up to three independent conversion paths to be
+active at the same time.
 
 > diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> index df4817ae91b18..2755ee57c6a17 100644
+> index 2755ee57c6a17..a5d6c4c1e9292 100644
 > --- a/sound/soc/fsl/fsl_asrc.c
 > +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -792,27 +792,76 @@ static const struct snd_soc_dai_ops fsl_asrc_dai_op=
+s =3D {
 [ ... ]
-> @@ -781,18 +781,7 @@ static int fsl_asrc_dai_trigger(struct snd_pcm_subst=
-ream *substream, int cmd,
->  	return 0;
->  }
-> =20
-> -static int fsl_asrc_dai_probe(struct snd_soc_dai *dai)
-> -{
-> -	struct fsl_asrc *asrc =3D snd_soc_dai_get_drvdata(dai);
-> -
-> -	snd_soc_dai_init_dma_data(dai, &asrc->dma_params_tx,
-> -				  &asrc->dma_params_rx);
-> -
-> -	return 0;
-> -}
-> -
->  static const struct snd_soc_dai_ops fsl_asrc_dai_ops =3D {
-> -	.probe		=3D fsl_asrc_dai_probe,
->  	.startup	=3D fsl_asrc_dai_startup,
->  	.hw_params	=3D fsl_asrc_dai_hw_params,
->  	.hw_free	=3D fsl_asrc_dai_hw_free,
+> -static struct snd_soc_dai_driver fsl_asrc_dai =3D {
+> -	.playback =3D {
+[ ... ]
+> +static struct snd_soc_dai_driver fsl_asrc_dai[] =3D {
+> +	{
+> +		.name =3D "asrc-0",
+[ ... ]
+> +	},
+> +	{
+> +		.name =3D "asrc-1",
+[ ... ]
+> +	},
+> +	{
+> +		.name =3D "asrc-2",
 
 [Severity: High]
-This is a pre-existing issue, but could a failure in fsl_asrc_dai_hw_params=
-()
-cause problems here in fsl_asrc_dai_hw_free()?
+This isn't a bug introduced by this patch, but exposing 3 independent DAIs
+allows multiple streams to run concurrently, making channel exhaustion and
+-EBUSY in hw_params trivially reachable.
 
-If fsl_asrc_request_pair() fails during hw_params (e.g. because no channels
-are available), the ALSA core automatically calls fsl_asrc_dai_hw_free() to
-clean up:
+If a stream fails inside fsl_asrc_dai_hw_params() due to exhaustion, does
+the cleanup path inadvertently disable another active stream?
 
-	if (pair)
-		fsl_asrc_release_pair(pair);
+Looking at fsl_asrc_dma_startup(), it requests a dummy pair and sets
+pair->index (usually to 0), but does not clear it when released:
 
-Since pair->index still retains the stale index of the dummy pair acquired
-and released earlier in fsl_asrc_dma_startup(), this unconditionally releas=
-es
-that index:
+sound/soc/fsl/fsl_asrc_dma.c:fsl_asrc_dma_startup() {
+    ...
+    ret =3D asrc->request_pair(1, pair);
+    ...
+    if (pair)
+        fsl_asrc_release_pair(pair);
+}
 
-	regmap_update_bits(asrc->regmap, REG_ASRCTR,
-			   ASRCTR_ASRCEi_MASK(index), 0);
+If hw_params subsequently fails, the ALSA core calls fsl_asrc_dai_hw_free():
 
-If another concurrent stream has since acquired that pair index, could this
-abruptly stop its hardware conversion and corrupt its state?
+sound/soc/fsl/fsl_asrc.c:fsl_asrc_dai_hw_free() {
+    ...
+    if (pair)
+        fsl_asrc_release_pair(pair);
+}
 
-> diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-> index 38f2b7c63133a..64d66420e7ada 100644
-> --- a/sound/soc/fsl/fsl_asrc_dma.c
-> +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> @@ -390,6 +390,20 @@ static int fsl_asrc_dma_startup(struct snd_soc_compo=
-nent *component,
-> =20
->  	runtime->private_data =3D pair;
-> =20
-> +	/*
-> +	 * Point the cpu DAI dma_data at the per-pair params so that
-> +	 * concurrent hw_params calls on different pairs each write to
-> +	 * their own struct and do not race on addr/maxburst.  Use the
-> +	 * per-direction setters so that a concurrent open of the other
-> +	 * direction on the same DAI does not NULL out its pointer.
-> +	 */
-> +	if (tx)
-> +		snd_soc_dai_dma_data_set_playback(snd_soc_rtd_to_cpu(rtd, 0),
-> +						  &pair->dma_params);
-> +	else
-> +		snd_soc_dai_dma_data_set_capture(snd_soc_rtd_to_cpu(rtd, 0),
-> +						 &pair->dma_params);
-> +
+Since pair->index is still 0 from the dummy request, wouldn't this blindly
+disable Pair A, setting asrc->pair[0] =3D NULL and corrupting the global
+channel_avail counter, even if Pair A is actively used by another DAI?
 
-[Severity: Critical]
-Does this code overwrite the shared CPU DAI's dma_data pointer with a
-per-substream dynamically allocated pointer?
 
-Since the CPU DAI is shared across multiple substreams, if this startup
-sequence fails later (e.g. no channels available) and kfree(pair) is called
-in the error path:
+[Severity: High]
+This is also a pre-existing issue, but allowing up to three independent
+conversion paths to be active at the same time appears to violate a hardware
+constraint regarding Pair B.
 
-	if (release_pair)
-		kfree(pair);
+The driver documentation notes that Pair B depends on Pair A:
 
-Could this leave the CPU DAI with a dangling pointer?
+sound/soc/fsl/fsl_asrc.c:fsl_asrc_request_pair()
+ * It assigns pair by the order of A->C->B because allocation of pair B,
+ * within range [ANCA, ANCA+ANCB-1], depends on the channels of pair A
 
-Similarly, when a stream is closed and fsl_asrc_dma_shutdown() calls
-kfree(pair), does it leave any remaining active streams with a dangling
-pointer in the shared DAI, leading to a use-after-free?
+If Pair A is stopped and restarted with a different channel count while
+Pair B is actively running, what prevents Pair B from being corrupted?
+
+When fsl_asrc_config_pair() updates REG_ASRCNCR to change the ANCA value for
+Pair A, won't Pair B's internal hardware channel offsets immediately shift
+and disrupt its active conversion?
+
+> +		.ops =3D &fsl_asrc_dai_ops,
+>  	},
+>  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804100218.4958=
-7-1-shengjiu.wang@oss.nxp.com?part=3D3
+7-1-shengjiu.wang@oss.nxp.com?part=3D4
