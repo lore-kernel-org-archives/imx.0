@@ -1,99 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1429D3E51CB;
-	Wed,  5 Aug 2026 08:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1392EB10
+	for <imx@lists.linux.dev>; Wed,  5 Aug 2026 10:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785917775; cv=none; b=J7sqh/XYctcecj1Y9GGtepDKibItfQPiUeKhVgMP4KEY06wKOAUSaJUb/rUXJunjRyqnyPxj3Q88fHT00EoNrL/S4gsKqdPIryNoR/ed+EpHA2u1sl8bGayA+FHRzujBkuUTZ8tYsoVKTrS44LQejEWzc6k0w8tOGpE4MPa4+DY=
+	t=1785926006; cv=none; b=ZI+0qWXJMog2meB8+z1yC0ebDrpBlA7eiLR0mdDBc7DNkRxpQJTHghzx7vHVAOjEvQPlKIdNgdxH/iYyXteanzaPQUgwZCTLEW0WLCQylOCrzEGQdb2GT7ok52PRUL3W9iKaUTl7ihZnp931O2Tyeb6wLMPlobz+coo/F6cpFOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785917775; c=relaxed/simple;
-	bh=g8mfj+opxBUcGYL5VblKPnIQXg+nXQei9hiW3eu+rzA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=G91Tlz7Qc1KkFYNsLCYSIMo8KdYBc1xPoPT6WoQQTZhd4U6afQi1j1302jU43uHChOTDZVgXxazNf2PqdsAGOFacw6hwPRS9b7bEizL8zZbuImI8RBai5VJDYHMQpLMtCucjUABt2NAcyt0aIDyoaSeLK0yh+GGZ9jRCcmbGbkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eng9k+qb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785926006; c=relaxed/simple;
+	bh=r5qwsUWnLAx6qNSAum77kEXblDytR48I5gUBXHYTE98=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K6DSgzHkhlh/5/FHM7hlL7kM+SiOcrhGUVcEbfraug6A/xuk56/yFH0CZ2+igTKs+Pg53TaRjgQzjdB3UlW6uyiQje4djSDSXLVr2MklqCrfjVkTF7x0PGTVxDCpt+AxAdZPapoN978jx6fLvBFfV+BgaN/VdKFzNoUQBALhfyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jRB4uI3k; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eng9k+qb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38D71F000E9;
-	Wed,  5 Aug 2026 08:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785917769;
-	bh=+g6SGaSlzbqk/JVsyJgf4X5jgfMYsrVProw/FkkcDNs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Eng9k+qbq+tiicu/A7ID63xn5c3UMK+gZTk/yw8gYGLeF4VCubDnmExJm9zMvfIor
-	 ZbGH7/jD1NojBOp1s6jpVNk9LOPs5/sYT3H9dmorYlO9aJkp2ADK226P2sI2Rfx8DF
-	 Nlf02b4z+1LcEXu0+hHGS3TUgn51b2t3HbZlzfA3McIBhtbWT863TG38S6nMJPdODd
-	 JyTflDOa1l8MIUpMynbyVlVYNnrEsViademmAcBZaioZlA+9zxhvYKTUZ/y870S/yg
-	 rVlBpcllf20IEg8uuJJGmXoo0cU2d6SW4ZzPNVJWSnrQfv4fhus6Xy4X0feBPLOZNs
-	 UskKU6SVXY7VA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v33 4/7] firmware: imx: device context dedicated to priv
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260805-imx-se-if-v33-4-212e32ff0295@nxp.com>
-References: <20260805-imx-se-if-v33-0-212e32ff0295@nxp.com>
- <20260805-imx-se-if-v33-4-212e32ff0295@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 08:16:07 +0000
-Message-Id: <20260805081608.F38D71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jRB4uI3k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785926004; x=1817462004;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r5qwsUWnLAx6qNSAum77kEXblDytR48I5gUBXHYTE98=;
+  b=jRB4uI3kihdXa8OG0C62JCixpG4o/PVRz4uljutuwJO4OnWD9dh0T/Lg
+   nm1mLp52t79WIFGYdZGNXU499y3in9NsO8xkjyXM7OINW54o2vlHElMo8
+   jrnlUI+reV8LH62/D4Ze5/GzLbKemI6MrzehYUeJyOopj1D5S8CwLeqhj
+   lA297CdIkV4WULYehNxPutQfS569RmHphoEWxhg7ypqIYX4H2Ki8W5zNj
+   IbncawB8Igy655Hw6bEUoVHdEywNQNblxSkjQt3kr7jfJgbdnzy9vPHQL
+   rkXABa2Q9lyZnY4eCoQ61ixIly2TEvOJdbvbtXrtKT4EnnEB3vzgduv/r
+   A==;
+X-CSE-ConnectionGUID: Ke6T0YjFShKoC9I2h51zWA==
+X-CSE-MsgGUID: AdBixOUAQMO4v6Girj9xAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="85472082"
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="85472082"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 03:33:21 -0700
+X-CSE-ConnectionGUID: DcO94oYKTiidRNjTevxnPw==
+X-CSE-MsgGUID: 2W8Jy5toSo60fRpSfzMhIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="291708770"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa002.jf.intel.com with ESMTP; 05 Aug 2026 03:33:20 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 9959899; Wed, 05 Aug 2026 12:33:18 +0200 (CEST)
+Date: Wed, 5 Aug 2026 12:33:18 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@oss.nxp.com>
+Cc: badhri@google.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2] usb: typec: tcpci: pass correct rx_type to
+ tcpm_pd_receive()
+Message-ID: <anMRbinFAZ668Rpm@black.igk.intel.com>
+References: <20260723104614.3717623-1-xu.yang_2@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723104614.3717623-1-xu.yang_2@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] DMA buffer UAF when `ele_msg_send_rcv()` times out in `ele_get=
-_info()`.
---
+On Thu, Jul 23, 2026 at 06:46:14PM +0800, Xu Yang wrote:
+> From: Xu Yang <xu.yang_2@nxp.com>
+> 
+> Previously, tcpci_irq() always passed TCPC_TX_SOP as the receive type
+> to tcpm_pd_receive(), ignoring the actual frame type reported by the
+> TCPC_RX_BUF_FRAME_TYPE register.
+> 
+> Cache the TCPC_RX_DETECT register value in rx_type_mask variable. When
+> a PD messageis received, read TCPC_RX_BUF_FRAME_TYPE register and handle
+> the message only if its frame type is enabled in mask.
+> 
+> The TCPC_RX_BUF_FRAME_TYPE register records the received message type,
+> which has a 1:1 mapping to enum tcpm_transmit_type.
+> 
+> Fixes: fb7ff25ae433 ("usb: typec: tcpm: add discover identity support for SOP'")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
---- Patch [4]: [PATCH v33 4/7] firmware: imx: device context dedicated to p=
-riv ---
-commit 27c9de28d615ebae1d88d019d8d364c4ca4999e1
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-firmware: imx: device context dedicated to priv
-
-Add priv_dev_ctx to prepare enabling misc-device context based send-receive
-path, to communicate with FW.
-
-No functionality change.
-
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
-le_base_msg.c
-> index 724f6e913ce79..b70e3ef88a168 100644
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-> @@ -71,8 +71,9 @@ int ele_get_info(struct se_if_priv *priv, struct ele_de=
-v_info *s_info)
->  	tx_msg->data[0] =3D upper_32_bits(get_info_addr);
->  	tx_msg->data[1] =3D lower_32_bits(get_info_addr);
->  	tx_msg->data[2] =3D sizeof(*s_info);
-> -	ret =3D ele_msg_send_rcv(priv, tx_msg, ELE_GET_INFO_REQ_MSG_SZ, rx_msg,
-> -			       ELE_GET_INFO_RSP_MSG_SZ);
+> ---
+> Changes in v2:
+>  - add fix tag
+>  - check return value when get RX SOP type
+>  - pass all possible RX message type to tcpm_pd_receive()
+>  - cache TCPC_RX_DETECT to filter out unallowed RX messages as suggested by Badhri
+> ---
+>  drivers/usb/typec/tcpm/tcpci.c | 12 +++++++++++-
+>  include/linux/usb/tcpci.h      |  1 +
+>  2 files changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+> index 7ac7000b2d13..6717ac914c6a 100644
+> --- a/drivers/usb/typec/tcpm/tcpci.c
+> +++ b/drivers/usb/typec/tcpm/tcpci.c
+> @@ -38,6 +38,7 @@ struct tcpci {
+>  
+>  	struct regmap *regmap;
+>  	unsigned int alert_mask;
+> +	unsigned int rx_type_mask;
+>  
+>  	bool controls_vbus;
+>  
+> @@ -488,6 +489,8 @@ static int tcpci_set_pd_rx(struct tcpc_dev *tcpc, bool enable)
+>  		if (tcpci->data->cable_comm_capable)
+>  			reg |= TCPC_RX_DETECT_SOP1;
+>  	}
 > +
-> +	ret =3D ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, ELE_GET_INFO_REQ_M=
-SG_SZ,
-> +			       rx_msg, ELE_GET_INFO_RSP_MSG_SZ);
->  	if (ret < 0) {
->  		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
+> +	tcpci->rx_type_mask = reg;
+>  	ret = regmap_write(tcpci->regmap, TCPC_RX_DETECT, reg);
+>  	if (ret < 0)
 >  		return ret;
+> @@ -749,6 +752,7 @@ irqreturn_t tcpci_irq(struct tcpci *tcpci)
+>  	if (status & TCPC_ALERT_RX_STATUS) {
+>  		struct pd_message msg;
+>  		unsigned int cnt, payload_cnt;
+> +		enum tcpm_transmit_type rx_type;
+>  		u16 header;
+>  
+>  		regmap_read(tcpci->regmap, TCPC_RX_BYTE_CNT, &cnt);
+> @@ -773,10 +777,16 @@ irqreturn_t tcpci_irq(struct tcpci *tcpci)
+>  			regmap_raw_read(tcpci->regmap, TCPC_RX_DATA,
+>  					&msg.payload, payload_cnt);
+>  
+> +		ret = regmap_read(tcpci->regmap, TCPC_RX_BUF_FRAME_TYPE, &rx_type);
+> +		if (ret)
+> +			return ret;
+> +
+>  		/* Read complete, clear RX status alert bit */
+>  		tcpci_write16(tcpci, TCPC_ALERT, TCPC_ALERT_RX_STATUS);
+>  
+> -		tcpm_pd_receive(tcpci->port, &msg, TCPC_TX_SOP);
+> +		rx_type &= TCPC_RX_BUF_FRAME_TYPE_MASK;
+> +		if (tcpci->rx_type_mask & BIT(rx_type))
+> +			tcpm_pd_receive(tcpci->port, &msg, rx_type);
+>  	}
+>  
+>  	if (tcpci->data->vbus_vsafe0v && (status & TCPC_ALERT_EXTENDED_STATUS)) {
+> diff --git a/include/linux/usb/tcpci.h b/include/linux/usb/tcpci.h
+> index f7f5cfbdef12..9b46a6bc762c 100644
+> --- a/include/linux/usb/tcpci.h
+> +++ b/include/linux/usb/tcpci.h
+> @@ -144,6 +144,7 @@
+>  #define TCPC_RX_BUF_FRAME_TYPE		0x31
+>  #define TCPC_RX_BUF_FRAME_TYPE_SOP	0
+>  #define TCPC_RX_BUF_FRAME_TYPE_SOP1	1
+> +#define TCPC_RX_BUF_FRAME_TYPE_MASK	GENMASK(2, 0)
+>  #define TCPC_RX_HDR			0x32
+>  #define TCPC_RX_DATA			0x34 /* through 0x4f */
+>  
+> -- 
+> 2.34.1
 
-[Severity: Critical]
-Does this code risk a DMA use-after-free if the firmware command times out?
-
-If ele_msg_send_rcv() times out and returns -ETIMEDOUT, the error path
-calls ele_get_info_cleanup(), which frees the DMA buffer back to the system.
-
-Since the firmware command was not aborted, if the firmware is delayed and
-responds later, it may complete the operation and perform a DMA write of the
-device info directly into the now-freed memory. This could cause silent mem=
-ory
-corruption of whichever subsystem reallocated the physical page.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805-imx-se-if-=
-v33-0-212e32ff0295@nxp.com?part=3D4
+-- 
+heikki
