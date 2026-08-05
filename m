@@ -1,234 +1,125 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85063DE43F
-	for <imx@lists.linux.dev>; Wed,  5 Aug 2026 06:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785913097; cv=pass; b=rxg5S7AO6NPNwMDDhrZUnjBvcCuflRRUOEzbiZrMeg+Vp5YEjU2Pl4Ru7FmyeWsPNFWn2bGu3FMfirQiBX+ngMpc6zrkKIgzyTybkeSCRzokm9+vziMo3S9Olgb4GjONyUbF9cur9eqXr1Na8+9sZX4iVqQ4GHTDEgF9u4fioWE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785913097; c=relaxed/simple;
-	bh=OsodnEMx+zgh9b3FFSBCG8xEUSroGixsC/QWoJUzxBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sDjrEKWg7n8j4S8IRLodk7bYWOcvKr+HvbNvHvB0siftVbYGOL9+BJwFrGeVz/K83TjfCbFyREb6EyFSzLoy1vYPI5VHvX2lv13B8iss7VzlwqPZRdyS6jEOKWFGpIgj9q/55qGEn9Onks70T/YYdUrKlUHRplAvw0MlvlL0XkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GI/mNdn9; arc=pass smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5F43DFC6A;
+	Wed,  5 Aug 2026 07:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785913520; cv=none; b=CQJHacc5x1YtzljAyfTb5EaoMUfrFlQS6WgTvwVEKzMDpIZQaZgB8/9ANxiP++VHez7Or8BzUhEwfupxuY5HBVmgYT1YgV1vCcv+qPuX1TjGqgydU87Ty7rQ6rXHyU8Xw1707ZSHMhfMCqP2AdGbdpHZGb3OUs5ley5eqMjtVlo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785913520; c=relaxed/simple;
+	bh=cZHgttMNvA1y2fj2Do64U3ZVIyenYk5QNX3QVFrcNpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rP4R7Hsw1CIsouYe31wZKRPY2cwXNbsb8CQLh7qVQjORIDPdgismFdYpuz8GbIrLla96Zbeh0uyo8cl1JATwIvevFJ8MxwtXmciBK32rVdvNFVLXpQNqwcDMdYvG/KxpwY3GwnltKMOhnO2W2JpgIT3kJZvwm8mceFHZRmF3kAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1eDJqeC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GI/mNdn9"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cfff5f88dbso9984535ad.3
-        for <imx@lists.linux.dev>; Tue, 04 Aug 2026 23:58:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785913093; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dVnE9B4tGIt7/4kb5vAf/g6nw9VvXxchCzjmmNugoyG0+u+isTqhNcb/xJOWSo/mFy
-         0NiOlVwacJDfZ2zL1ZWZjNjWvMai86VBIRW6z8gtf7+GewiO8JiyNkr6fAjBu7zFv2Hk
-         RD1NPXCe+aeHXCXxnE//osZG5IhqnNGa0tj4IOeht73p2ED3xpntXD7X6g0vlvfF3JWp
-         pLX75a0YyZpSYVK8U23LR0iLPKJq+ZA2w8+od0rxXa1pETCG7clAChltXA5fn7+AEuw+
-         s0l7y2fJzhAoYSSAImMbVDOZp4JMtP4pGoFCAvWmld44M6lfAJlPEKPrjqRGYt1CZX6P
-         Uhhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DS3y93XU+UV4dALPduKnv8HEZ3Qoa8U7PDzyKjP+lKM=;
-        fh=GzvDLYjsbu1EHd1z3JVsXkyj4S2QDPdVu59/JtlHiU8=;
-        b=CNxpaEmUc5SKpbtnYBCQjgaiHjVqiRhs4AFGRyqwwklREes15+upFo+t4vdATtfxD4
-         b6EvUCCwTxvxUCX2dwzOTmTYlO+sPvTe1c9T2WPIuQXkJcVGBMMmgAwqInLIOquPV6Bw
-         GH7FmhA1PQDT47dRUnsaRTy8fKZjaGEIFWcj5PDBWQnGvwl3Wgrw2y6RcYbPkKhKlM6i
-         TgvfdnDpA/ty+uBKeTrJ0J1mJBzt/q00gLT9Tusor67OGjgAxRDmLj3iBIn5B/OaY422
-         sO7o5rFXRZw7UG92/WWqU2BMGScEw9fU3EuPF61/dMRv6uaXMl5Q/Glf/SDvJ2B9dOwA
-         dJ8A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785913093; x=1786517893; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DS3y93XU+UV4dALPduKnv8HEZ3Qoa8U7PDzyKjP+lKM=;
-        b=GI/mNdn9W8lMnPevc/As6H2b6JzBpIc4sHSdkvjhYKTmfNISffz8AAK1hLZ2/sBR15
-         TFeqYJN9jZI5NPf1GVAtX81Ne2O0eIod1lAJ9MngxyvX8OnkS7UJ/gGvlMXalm/1zuKZ
-         cMDPoM2FV6o+xSbrJx0gUGhkzV/MRPTpMBnRtHiiaD0SDJNXKFg2Iaraw7K5xz00AVHM
-         1PMuqruFYgsm7Jt8LTWJySy4RDBibNXcP1ucfOxM5GnfcAf1wYhX5jJ9fcGxY7WNAoaa
-         o2CIDpdf2scxJQm4vD0yF/voCNY8wZwN5i5P89o4FXvAy/nnwVZgO/SKc56RAfxhOMIZ
-         VnWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785913093; x=1786517893;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DS3y93XU+UV4dALPduKnv8HEZ3Qoa8U7PDzyKjP+lKM=;
-        b=OK7ag5dI2VC9CFlhfOutuZbajaP/gR9L4V6Amoo6wZ1jmp7ipGZvDIlqTnUi4PqGCl
-         VkD4tGlROFatiSdBrFIjs6PtHTzhP5IOKgdHEU8d4nEeQHv5yDx0Nc2h3CXMo1TrV9u7
-         HUYp6VVuEu0tlUqssbA1mz0oMoyn3N922Ce560rle9LKNP01Dj/SJ914GKjZRcfWq71u
-         gVtvYgTQMnElL4LZW+nwQCzvIFBtqZYU/rmBuz6CtN1RNkN5V81PZ3A/8c3Bb17o7r0F
-         LjHQzLzcWnXoxLXVWJ6wsFpuY+ED85+HDnAsJh/OqnoglHMpHQGKyncUxoOt75w6tc8f
-         4WsA==
-X-Forwarded-Encrypted: i=1; AHgh+Ron1NMdIXSLGtseTx5sXisKECHcraZS7hoROw6LSGqZtGPI3gPhFIQJvFvg7T6AdbakwF0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEaiL2ybyz2PX8BjVELNK4hsV51b0URPqWiW496eZ99yx7BdbK
-	NZ+mh7BO1KMijbNiAco6dgOezVVk+2lo3Yi8Wfd+fOb0nEL7fu7bPh1oE6Pii6Rvf36o0kmuhjR
-	OWSmeTgrRBcR8yVB9jWps+oDMIPq6Lak=
-X-Gm-Gg: AR+sD13Mmdd/SqGCI5EYFC1WMzLOW+/vkcGhg433u6QfFvIDee6HY/V0NT3Lq5ctFk1
-	zcjSZr2UvrjbWbeF9b7xh1eCq9nDmaekiUtyQNovuS6VEXCNd8A4ovHbQRN64ezD6xbLct/EN6P
-	IXcfFv44SMiWmfljavBe3215qL/NWyqt+ELAJNBuiaTjwGX/c58sE/jBButPKRRP9pvUoAB54Ec
-	IDBW7IoLEITjTkUOV8EQmht3P7iZVvkylJURqgCpDP5AvTLlSRVdRjXqpRGbzcg50cNcLGvuetJ
-	Vm9W45mNlhnje61jhmPIP1suixx+ogIBpfnSUt4TrYEL
-X-Received: by 2002:a05:6a21:3a48:b0:3b4:61f:1fec with SMTP id
- adf61e73a8af0-3cb85df12ddmr5759243637.2.1785913093306; Tue, 04 Aug 2026
- 23:58:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1eDJqeC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8A61F00A3A;
+	Wed,  5 Aug 2026 07:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785913518;
+	bh=DoXf7tbT+GijFUb8lgA9KilXjWzwUEA0M4rKTFmRF+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m1eDJqeCdnafzhh5h3TF31h4Kx8ZVMOH4twLNGsfIT4KTU0H135BCRSBlXs6M5XFx
+	 bojlJfWNyiX6mEQsdfHshfxYVzEpOR3ULPvmyg7DbQitGTL/pcctkL2CLaSW8qTS4Y
+	 oRt85JYkTLtnVxo4LUQIvXqRFnnrn/o1hSRUnf91kuPGTRqR01FfubauOhniWOXthZ
+	 BYZc67/ae9as8G46mp1iy78FvQI2LbidzPAb6Mm14sD3soAp1tgXbm/GxJxzr9eofk
+	 q/ZGW9ZpAqZtTCA1fX12TVkixDwST8oEXozbT1rDYlExGuU8Ye8vPV+vG2rAMx44ln
+	 WbabuA10U4W5A==
+Date: Wed, 5 Aug 2026 09:05:15 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>, 
+	Matthias Fend <matthias.fend@emfend.at>, Mikhail Rudenko <mike.rudenko@gmail.com>, 
+	Daniel Scally <dan.scally@ideasonboard.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	Michael Riesch <michael.riesch@collabora.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
+	Sylvain Petinot <sylvain.petinot@foss.st.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Paul Elder <paul.elder@ideasonboard.com>, Martin Kepplinger <martin.kepplinger@puri.sm>, 
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>, Tommaso Merciai <tomm.merciai@gmail.com>, 
+	Svyatoslav Ryhel <clamor95@gmail.com>, Richard Acayan <mailingradian@gmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux@ew.tq-group.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	Conor Dooley <conor.dooley@microchip.com>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+	David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH v4 1/7] dt-bindings: media: Add macros for video
+ interface devices
+Message-ID: <anLgoTtDZQ38QzWM@orome>
+References: <20260804-kbingham-orientation-v4-0-336998dd63b4@ideasonboard.com>
+ <20260804-kbingham-orientation-v4-1-336998dd63b4@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260804100218.49587-1-shengjiu.wang@oss.nxp.com>
- <20260804100218.49587-2-shengjiu.wang@oss.nxp.com> <anH5i7y3JkB1moee@SMW015318>
-In-Reply-To: <anH5i7y3JkB1moee@SMW015318>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 5 Aug 2026 14:57:59 +0800
-X-Gm-Features: AUfX_mxtqJzMX_WVEhniuKHoKxDYIHB5iQVu-6lJu_NKLxZB1goSegJJZEResBc
-Message-ID: <CAA+D8ANCoc5qOUvTQPRNkvrfqAY3n6x_fbfUveP8Sfv+SL1NVw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] ASoC: dt-bindings: fsl,imx-asrc: update port
- binding to support multiple paths
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: shengjiu.wang@oss.nxp.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	shawnguo@kernel.org, linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
-	perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, 
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="j3q7nwjwirtsmzgs"
+Content-Disposition: inline
+In-Reply-To: <20260804-kbingham-orientation-v4-1-336998dd63b4@ideasonboard.com>
+
+
+--j3q7nwjwirtsmzgs
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 1/7] dt-bindings: media: Add macros for video
+ interface devices
+MIME-Version: 1.0
 
-On Tue, Aug 4, 2026 at 10:39=E2=80=AFPM Frank Li <Frank.li@oss.nxp.com> wro=
-te:
->
-> On Tue, Aug 04, 2026 at 06:02:14PM +0800, shengjiu.wang@oss.nxp.com wrote=
-:
-> > From: Shengjiu Wang <shengjiu.wang@nxp.com>
-> >
-> > The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
-> > The existing binding exposed only a single generic audio-graph port,
-> > which cannot represent independent conversion paths when multiple pairs
-> > are in use simultaneously.
-> >
-> > Add a ports container that enumerates up to three sub-ports, each
-> > representing an independent conversion path:
-> >   port@0 -- conversion path 0
-> >   port@1 -- conversion path 1
-> >   port@2 -- conversion path 2
-> >
-> > Each sub-port references audio-graph-port.yaml as before. Hardware pair=
-s
-> > are allocated dynamically at stream open time; each active stream
-> > direction (playback or capture) on a port consumes one hardware pair.
-> >
-> > For backwards compatibility, keep the old single port property but mark
-> > it deprecated. A schema constraint (not: required: [port, ports]) ensur=
-es
-> > that both forms cannot be used at the same time. The binding example is
-> > updated to show the preferred ports form.
-> >
-> > No existing upstream DTS file for fsl,imx-asrc uses the previously
-> > documented single 'port' node, so this change does not break any
-> > in-tree device tree.
->
-> if no existing upstream DTS file use it, you can direct replace with port=
-s
+On Tue, Aug 04, 2026 at 08:43:28PM +0100, Kieran Bingham wrote:
+> Add a new dt-bindings/media/video-interface-devices.h header that
+> defines macros corresponding to the orientation enumeration types from
+> media/video-interface-devices.yaml.
+>=20
+> Expand the documentation of the video-interface-devices orientation to
+> reference the new header which provides human readable defines for the
+> orientation enum, to help avoid hardcoding values in dts.
+>=20
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Acked-by: Michael Riesch <michael.riesch@collabora.com>
+> Reviewed-by: David Heidelberg <david@ixit.cz>
+> Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> ---
+>  .../bindings/media/video-interface-devices.yaml         | 17 +++++++++++=
+------
+>  include/dt-bindings/media/video-interface-devices.h     | 13 +++++++++++=
+++
+>  2 files changed, 24 insertions(+), 6 deletions(-)
 
-That is to avoid any downstream use of the 'port', so not directly replace =
-it.
+Reviewed-by: Thierry Reding <treding@nvidia.com>
 
-best regards
-Shengjiu Wang
+--j3q7nwjwirtsmzgs
+Content-Type: application/pgp-signature; name="signature.asc"
 
->
-> Frank
->
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../bindings/sound/fsl,imx-asrc.yaml          | 45 ++++++++++++++++---
-> >  1 file changed, 40 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml =
-b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> > index 608defc93c1e..67d2826eef3f 100644
-> > --- a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> > +++ b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> > @@ -78,9 +78,19 @@ properties:
-> >    power-domains:
-> >      maxItems: 1
-> >
-> > +  ports:
-> > +    $ref: /schemas/graph.yaml#/properties/ports
-> > +    patternProperties:
-> > +      "^port@[0-2]$":
-> > +        $ref: audio-graph-port.yaml#
-> > +        unevaluatedProperties: false
-> > +        description: port for an independent conversion path
-> > +
-> >    port:
-> >      $ref: audio-graph-port.yaml#
-> >      unevaluatedProperties: false
-> > +    deprecated: true
-> > +    description: deprecated, use ports instead
-> >
-> >    fsl,asrc-rate:
-> >      $ref: /schemas/types.yaml#/definitions/uint32
-> > @@ -125,6 +135,10 @@ required:
-> >    - fsl,asrc-width
-> >
-> >  allOf:
-> > +  - not:
-> > +      required:
-> > +        - port
-> > +        - ports
-> >    - $ref: dai-common.yaml#
-> >    - if:
-> >        properties:
-> > @@ -180,11 +194,32 @@ examples:
-> >          fsl,asrc-rate =3D <48000>;
-> >          fsl,asrc-width =3D <16>;
-> >
-> > -        port {
-> > -            playback-only;
-> > +        ports {
-> > +            #address-cells =3D <1>;
-> > +            #size-cells =3D <0>;
-> > +
-> > +            port@0 {
-> > +                reg =3D <0>;
-> > +                playback-only;
-> > +                endpoint {
-> > +                    remote-endpoint =3D <&fe00_ep>;
-> > +                };
-> > +            };
-> > +
-> > +            port@1 {
-> > +                reg =3D <1>;
-> > +                capture-only;
-> > +                endpoint {
-> > +                    remote-endpoint =3D <&fe01_ep>;
-> > +                };
-> > +            };
-> >
-> > -            asrc_endpoint: endpoint {
-> > -                remote-endpoint =3D <&fe00_ep>;
-> > +            port@2 {
-> > +                reg =3D <2>;
-> > +                capture-only;
-> > +                endpoint {
-> > +                    remote-endpoint =3D <&fe02_ep>;
-> > +                };
-> >              };
-> > -       };
-> > +        };
-> >      };
-> > --
-> > 2.34.1
-> >
-> >
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmpy4KsACgkQ3SOs138+
+s6FSixAAvF/nuWj8x0EsLtnIBtNApx4xw1S4zIAzPiQ7t5eq2zZYJWFAcZZJPLIJ
+pXoirHiAJCM3MfbvDqNag7+P3Qg31O0jWacsvMhuQCv1sJlZG8MmVbXxkma2/asj
+q1k0p5ODledgKBvIabnlCbEaomZUK+umsCNxBiabNCRuRbl3/Xkpd1+VdJW3cdML
+X2Zs2KoULb13xnF2LXMtH8IlUpnUpUMCPX3hX6BCJAxCTnIUq2P+rYKZAszJ7R8o
+ljbgmv/2odtHZ4o9LlrLUjAZqOJWZyZC+em9aYUu2ywfOHfYcq/gGebPo5yS9f5N
+gNVywyLAPqloKHrsE4qjD6fctMByN+PzuUBKJ1Wlc3dYjBp/hnWcMlqISrB4GYuc
+VAeUoX1A+aYK7/MHQsNOJ2EdkP/ROQkkySOazY2rRpGqkJ/P7PSSPQ1GhchzTun8
+ce2e0+HUhKpEUa1+dPE6cyaSnMlZR2DMkzT1muQAoZlXKHotNbMgUy010SzbYBzE
+Ejwg3UD4KM//QVHejyFg1TKolJyqEFIcyYtizWejLN2F4uyzY1MlA9768XrzuNNG
+mDM/YSoNMVBTJVeYM9js/FSqOpgxrPw0D4fd9EBbCF6qxvkEfkguNSx9iZlahGKh
+Q/N8W4rn+WXb+optFaVTZxwxtSD/7rIy3Iddo4ZCFdzO5gHirdQ=
+=qQ7c
+-----END PGP SIGNATURE-----
+
+--j3q7nwjwirtsmzgs--
