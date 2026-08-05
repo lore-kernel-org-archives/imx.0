@@ -1,211 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8749A19539F;
-	Wed,  5 Aug 2026 08:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1429D3E51CB;
+	Wed,  5 Aug 2026 08:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785917428; cv=none; b=cJcAVUkHwl+XESB7dh9SBPC4AVk6b9u9AyAa1GD/vPK4tS/Sy96qUnl9XhL/nZGPOLrL7OL6VLxX1537wAraa4WGb2AH7iBqGToNEQQYbBBjIis/m3iMlflIGG2ngE0FrRaGSZxZBg4nIjPaq9DYNhpzUIT6cfaRj9LUcHLeD+0=
+	t=1785917775; cv=none; b=J7sqh/XYctcecj1Y9GGtepDKibItfQPiUeKhVgMP4KEY06wKOAUSaJUb/rUXJunjRyqnyPxj3Q88fHT00EoNrL/S4gsKqdPIryNoR/ed+EpHA2u1sl8bGayA+FHRzujBkuUTZ8tYsoVKTrS44LQejEWzc6k0w8tOGpE4MPa4+DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785917428; c=relaxed/simple;
-	bh=bJeiINkMDzbXnJLTg0FruGkKvKW0bMIZQaRY7tAeGu0=;
+	s=arc-20240116; t=1785917775; c=relaxed/simple;
+	bh=g8mfj+opxBUcGYL5VblKPnIQXg+nXQei9hiW3eu+rzA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JqY2HmpGQWPDPh/x9wtg5momK0HBnwQJSrhi8jM+l/+qi3Rlz5ugai14V41B/NYotAEn7afpmAuwAka7gC/yVOrzSPqhXtUqUtvjvkFAeQOo9GTXDVRHdGVHjEDiCAzc090HlrEoU2DJAd8PMV8RKHfYTEJU6RgKO5cP8utcITc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m5ABGZbQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=G91Tlz7Qc1KkFYNsLCYSIMo8KdYBc1xPoPT6WoQQTZhd4U6afQi1j1302jU43uHChOTDZVgXxazNf2PqdsAGOFacw6hwPRS9b7bEizL8zZbuImI8RBai5VJDYHMQpLMtCucjUABt2NAcyt0aIDyoaSeLK0yh+GGZ9jRCcmbGbkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eng9k+qb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m5ABGZbQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7E01F00A3A;
-	Wed,  5 Aug 2026 08:10:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eng9k+qb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38D71F000E9;
+	Wed,  5 Aug 2026 08:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785917415;
-	bh=smds82rksUvig50t99S+WzAcpm+t1gkVHUo0m6JkEtw=;
+	s=k20260515; t=1785917769;
+	bh=+g6SGaSlzbqk/JVsyJgf4X5jgfMYsrVProw/FkkcDNs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=m5ABGZbQNBDSuiOeLGQ1hXJO68EyWOY49OUM0blud2pzYI9UPjB8Or6anyesgvfRH
-	 Jq7DRryAALiqej0qV10bH4kS328Fa7SHTUv9atcxX3UlNp4pznw7dJAFkftA1pZnMU
-	 d0i4UFgU2XT7+pGwlNU9xDn736W/Opu8gDtDyhqwOHc0gd1Dz+hm+spNTLuAx7tD6l
-	 y+5gJ8kwZTDw4aV9lveHnL2qUvpurZgjub6ScCzI+o+1J8l1AupXnHNoi4mrD+nIO2
-	 tLET8aOjMKfB7ziMKJCY4Ny9KQz+bgURwAWR87XwFeatBZmQL2YPY0kg6m7v81AToz
-	 n2ixt/2FUgIUw==
+	b=Eng9k+qbq+tiicu/A7ID63xn5c3UMK+gZTk/yw8gYGLeF4VCubDnmExJm9zMvfIor
+	 ZbGH7/jD1NojBOp1s6jpVNk9LOPs5/sYT3H9dmorYlO9aJkp2ADK226P2sI2Rfx8DF
+	 Nlf02b4z+1LcEXu0+hHGS3TUgn51b2t3HbZlzfA3McIBhtbWT863TG38S6nMJPdODd
+	 JyTflDOa1l8MIUpMynbyVlVYNnrEsViademmAcBZaioZlA+9zxhvYKTUZ/y870S/yg
+	 rVlBpcllf20IEg8uuJJGmXoo0cU2d6SW4ZzPNVJWSnrQfv4fhus6Xy4X0feBPLOZNs
+	 UskKU6SVXY7VA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v33 5/7] firmware: imx: adds miscdev
+Subject: Re: [PATCH v33 4/7] firmware: imx: device context dedicated to priv
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org
-In-Reply-To: <20260805-imx-se-if-v33-5-212e32ff0295@nxp.com>
+Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260805-imx-se-if-v33-4-212e32ff0295@nxp.com>
 References: <20260805-imx-se-if-v33-0-212e32ff0295@nxp.com>
- <20260805-imx-se-if-v33-5-212e32ff0295@nxp.com>
+ <20260805-imx-se-if-v33-4-212e32ff0295@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 08:10:14 +0000
-Message-Id: <20260805081014.BB7E01F00A3A@smtp.kernel.org>
+Date: Wed, 05 Aug 2026 08:16:07 +0000
+Message-Id: <20260805081608.F38D71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] Deadlock during unbind caused by `se_if_probe_cleanup()` block=
-ing on `se_if_cmd_lock` before waking the active transaction.
-- [High] Overwriting `dev_ctx->sess_hdl` and `dev_ctx->strg_hdl` on repeate=
-d open requests leaks previously opened firmware handles.
-- [High] Mixing `goto`-based error handling with `__free()` annotations vio=
-lates the cleanup subsystem guidelines.
-- [High] Valid firmware responses during teardown are misidentified as forc=
-ed wakeups, failing the teardown protocol and leaking DMA memory.
-- [High] Missing bounds check on firmware response payload allows out-of-bo=
-unds read of the allocated buffer in `fw_api_specific_ops`.
+- [Critical] DMA buffer UAF when `ele_msg_send_rcv()` times out in `ele_get=
+_info()`.
 --
 
---- Patch [5]: [PATCH v33 5/7] firmware: imx: adds miscdev ---
-commit 505332d25775977b34724dbd94f2b51249b86386
+--- Patch [4]: [PATCH v33 4/7] firmware: imx: device context dedicated to p=
+riv ---
+commit 27c9de28d615ebae1d88d019d8d364c4ca4999e1
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
-Subject: firmware: imx: adds miscdev
 
-This commit adds the character driver for the NXP secure-enclave
-communication interface. It enables userspace applications to exchange
-messages with the hardware IP, managing shared memory, command validation,
-and firmware status.
+firmware: imx: device context dedicated to priv
 
-Closes: https://sashiko.dev/#/patchset/20260121-imx-se-if-v32-0-c5222df51cc=
-2@nxp.com?part=3D5
+Add priv_dev_ctx to prepare enabling misc-device context based send-receive
+path, to communicate with FW.
 
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
-_common.c
-> --- a/drivers/firmware/imx/ele_common.c
-> +++ b/drivers/firmware/imx/ele_common.c
-[ ... ]
-> @@ -128,6 +178,26 @@ int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, st=
-ruct se_clbk_handle *se_clbk
->  		}
+No functionality change.
+
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
+le_base_msg.c
+> index 724f6e913ce79..b70e3ef88a168 100644
+> --- a/drivers/firmware/imx/ele_base_msg.c
+> +++ b/drivers/firmware/imx/ele_base_msg.c
+> @@ -71,8 +71,9 @@ int ele_get_info(struct se_if_priv *priv, struct ele_de=
+v_info *s_info)
+>  	tx_msg->data[0] =3D upper_32_bits(get_info_addr);
+>  	tx_msg->data[1] =3D lower_32_bits(get_info_addr);
+>  	tx_msg->data[2] =3D sizeof(*s_info);
+> -	ret =3D ele_msg_send_rcv(priv, tx_msg, ELE_GET_INFO_REQ_MSG_SZ, rx_msg,
+> -			       ELE_GET_INFO_RSP_MSG_SZ);
 > +
-> +		/*
-> +		 * A positive wait return normally means firmware delivered a
-> +		 * response. During teardown, se_if_probe_cleanup() forces this
-> +		 * wait to return via complete_all() without any real response.
-> +		 * If that happens the firmware may still be executing and could
-> +		 * DMA into the shared buffer later. Treat it as a failed
-> +		 * transaction and arm the circuit breaker so the shared memory
-> +		 * is quarantined (not freed) instead of being reclaimed while
-> +		 * the enclave might still write to it.
-> +		 */
-> +		if (is_rsp_wait_with_timeout && atomic_read(&priv->going_away)) {
-> +			spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
-> +			se_clbk_hdl->rx_msg =3D NULL;
-> +			se_mark_fw_busy(dev_ctx);
-> +			spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
-> +			ret =3D -ENODEV;
-> +			break;
-> +		}
-
-[Severity: High]
-Does this logic unintentionally intercept legitimate teardown responses?
-
-During se_if_probe_cleanup(), going_away is set to 1. The teardown path then
-calls cleanup_dev_ctx(), which sends graceful close commands via
-se_close_storage() and se_close_session(). These commands explicitly bypass
-the going_away check in ele_msg_send_rcv() so they can be sent.
-
-However, when the hardware replies, ele_msg_rcv() checks going_away and
-misidentifies the genuine wakeup as the forced unbind abort, failing the
-close operation and leaking the DMA memory.
-
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-[ ... ]
-> @@ -339,31 +709,116 @@ static void se_if_probe_cleanup(void *plat_dev)
->  	if (!priv)
->  		return;
-> =20
-> +	scoped_guard(mutex, &priv->se_if_cmd_lock) {
-> +		/*
-> +		 * Announce teardown before doing anything else. ele_msg_send_rcv()
-> +		 * checks going_away under se_if_cmd_lock and bails out instead of
-> +		 * arming a new transaction, and ele_msg_rcv() uses it to tell a
-> +		 * teardown-forced completion apart from a genuine firmware response.
-> +		 * This must be set before the complete_all() below so those checks
-> +		 * are not dead code.
-> +		 */
-> +		atomic_set(&priv->going_away, 1);
-> +		/*
-> +		 * Wake any ioctl thread blocked in ele_msg_rcv() before iterating the
-> +		 * device-context list. That waiter sleeps on this completion while
-> +		 * holding its dev_ctx->fops_lock, and cleanup_dev_ctx() below also
-> +		 * takes dev_ctx->fops_lock. Completing first lets the waiter make
-> +		 * progress and drop fops_lock, avoiding an unbind hang.
-> +		 */
-> +		complete_all(&priv->waiting_rsp_clbk_hdl.done);
-> +	}
+> +	ret =3D ele_msg_send_rcv(priv->priv_dev_ctx, tx_msg, ELE_GET_INFO_REQ_M=
+SG_SZ,
+> +			       rx_msg, ELE_GET_INFO_RSP_MSG_SZ);
+>  	if (ret < 0) {
+>  		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
+>  		return ret;
 
 [Severity: Critical]
-Could this lead to a deadlock during unbind?
+Does this code risk a DMA use-after-free if the firmware command times out?
 
-When an IOCTL calls ele_msg_send_rcv(), it holds se_if_cmd_lock across the
-blocking wait in ele_msg_rcv(). If the device unbinds concurrently,
-se_if_probe_cleanup() attempts to acquire the exact same se_if_cmd_lock
-before executing complete_all() to wake up the IOCTL thread.
+If ele_msg_send_rcv() times out and returns -ETIMEDOUT, the error path
+calls ele_get_info_cleanup(), which frees the DMA buffer back to the system.
 
-The unbind thread would block waiting for the lock, while the IOCTL thread
-won't release it until it is woken up.
-
-> diff --git a/drivers/firmware/imx/ele_fw_api.c b/drivers/firmware/imx/ele=
-_fw_api.c
-> --- a/drivers/firmware/imx/ele_fw_api.c
-> +++ b/drivers/firmware/imx/ele_fw_api.c
-[ ... ]
-> +void fw_api_specific_ops(struct se_if_device_ctx *dev_ctx, struct se_api=
-_msg *rx_msg)
-> +{
-> +	struct se_msg_hdr *header =3D &rx_msg->header;
-> +	struct se_if_priv *priv =3D dev_ctx->priv;
-> +
-> +	switch (header->command) {
-> +	case ELE_SESSION_OPEN_REQ:
-> +		dev_ctx->sess_hdl =3D rx_msg->data[1];
-> +		break;
-
-[Severity: High]
-What happens if userspace sends multiple ELE_SESSION_OPEN_REQ or
-ELE_STORAGE_OPEN_REQ ioctls on the same file descriptor?
-
-The new handle is directly assigned to dev_ctx->sess_hdl, overwriting any
-previous handle without closing it. Does this allow unprivileged userspace
-programs to exhaust firmware resources by leaking previous handles?
-
-[Severity: High]
-Is it safe to unconditionally read rx_msg->data[1] here?
-
-The rx_msg buffer is allocated using kzalloc based on the user-provided
-rx_buf_sz in se_ioctl_cmd_snd_rcv_rsp_handler(). If userspace provides an
-8-byte buffer size and the firmware responds with a truncated payload,
-would this read past the end of the allocation and leak adjacent kernel
-memory?
-
-[ ... ]
-> +int se_close_session(struct se_if_priv *priv, u32 session_hdl)
-> +{
-> +	struct se_api_msg *tx_msg __free(kfree) =3D NULL;
-> +	struct se_api_msg *rx_msg __free(kfree) =3D NULL;
-> +	int ret;
-> +
-> +	if (!priv || !priv->priv_dev_ctx) {
-> +		ret =3D -EINVAL;
-> +		goto exit;
-> +	}
-
-[Severity: High]
-Are there concerns with mixing goto-based error handling and scope-based
-cleanup here?
-
-The cleanup subsystem guidelines advise against using goto labels (like
-goto exit) in the same function as __free annotations, as it can create
-confusing ownership semantics and lead to double-free or resource leak bugs.
-The same pattern is present in se_close_storage(). Would returning
-directly be preferable?
+Since the firmware command was not aborted, if the firmware is delayed and
+responds later, it may complete the operation and perform a DMA write of the
+device info directly into the now-freed memory. This could cause silent mem=
+ory
+corruption of whichever subsystem reallocated the physical page.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805-imx-se-if-=
-v33-0-212e32ff0295@nxp.com?part=3D5
+v33-0-212e32ff0295@nxp.com?part=3D4
