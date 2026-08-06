@@ -1,65 +1,65 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179C2387363
-	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 06:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5BC2EEE7C
+	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 06:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785996467; cv=none; b=V0nCbCVk25XWC8ABu/zXEq29DyGUVV3vwwJJ5yDETNoKtXVaHELGrmz2UNBBMhdNIL7lU64ILk+vQHzNw2mHTkp+PgIzulntKskMDSsWf+O/zBBxZv937Zyl3GUll6JIK2ScOrcmuG+62kn30PvOJA+Sk3cP5tJ3cPOesk/qsrA=
+	t=1785996771; cv=none; b=DRhbr+8kJorJUxuKmb2MsOZdptWxZSC54FxbzmsuLClZpMLFWjttqRw2L6FJHq13TTjuVC1IVvAaIxkDZLTfy6nZySL9aa3r5agymtg/HyZuoI20mTkuwVRUvoE8ehXBN7eeYJVNhKXs3la7IMCyQ4RXbRBsMu5uqlU7GFxb3bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785996467; c=relaxed/simple;
-	bh=eZVbKbJlRy6iKFYcyypMSZExqhzl7Fd9PRmhKUenaOI=;
+	s=arc-20240116; t=1785996771; c=relaxed/simple;
+	bh=EKElwWAbTDWthMpKF+ZWvr/9mi2EhJADPAtIsbWv5rQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Px8eIZ9w6hP0Wz50x4pQkkOhj8WBeHpHHnT99Luirjq58SpYiYBpqs70/npcxABj1eyqaPvMBV8RbNMuDXGyqMm3MO4gIYSz38USWvDMLu0wbghyC/R7GyHP6QHfPeC6nJXjcmp8BW6ITnBIxxp9kOdpO1AMVhKA2XzTnBtA3L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C/hxiENv; arc=none smtp.client-ip=209.85.215.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=p8HcgCVwpag8gPHB4ml18UjTIYOsiH6B1imlVtLlrSkR/+e8ngeDSwedcgUwkBRmjo3pp52MC5NaIsXMTB3g+lYN7uC+/WLL5qYpfQwJAI7vd3X6mS/lrnj3tNUZdPi1YHzevZjXMwFkw9OpE6TrL8ClDvTwh20bP26SrY2QaxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ihdGJRJ+; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C/hxiENv"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-ca80d708489so439008a12.1
-        for <imx@lists.linux.dev>; Wed, 05 Aug 2026 23:07:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ihdGJRJ+"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2caed617615so24781325ad.3
+        for <imx@lists.linux.dev>; Wed, 05 Aug 2026 23:12:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785996462; x=1786601262; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1785996770; x=1786601570; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=mmocOSK9hgh5E+Lsrtu82Yd/W9gDMariJqutM9LyXaQ=;
-        b=C/hxiENv46VFEZqOX8UE0VkAuyp37Nr+h1YHF/pG5Wp+QY9vwmuBivVsuGtkiA+MEi
-         HwFK4gj9+SyMt9oZ3LQ6tGco4ICbBG/3ax2JiNkEyQTxEACb6BBBr3SFpxHfTeqYGEDw
-         AC+gcG1HC1g6G7IvYVh3LAuZ9uglFbSRximj4fXbhqgxYb7909UNJgTntBABkpki12k6
-         lv0F+oNCsXu76dzxG34idVZEZ4Z1/MvQ7K0Gb82tBl9a8d9O40Lflid+WTC53VYkBxeC
-         +TJTP1xz0xbEbMNPiabUcE0hveyoes0zNhWSSew+ebo+UbqHPu8qpLfYJ7yAAi1+5/xE
-         dHDA==
+        bh=N/Noaa1/5CoT0jOkbG3HQUWESYiE8Rvb0ack3Temr4U=;
+        b=ihdGJRJ+3UiDwq41ldFdI65IcvYpJx5yTqIEA4oMRUtBlXV4JHGkaPkViHmazcys2i
+         8wLH444w4fBKratUZfAoIthk9OIGqJm2zPRJQde2p9BNJtUoOWbRZOSekBY5uNv5riZH
+         uJQxd+l6EEHzfIbZHgCHaNzCpTrmDytucKxV5KsXgOfA7NSsK/8hfY+VQF0iddHOkSy/
+         EPaym1vHj+4ik7gbPJnDww1SdCQpuWIB8X0JBuR033aEcstnT7dR/ck9QUulsM32k7CV
+         fOEpnp43s20YllSioYRRoJEEtsDHtrz1qRcX/7+NsDwNErKPamLJUueXArVipBgzxEI/
+         xXcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785996462; x=1786601262;
+        d=1e100.net; s=20251104; t=1785996770; x=1786601570;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mmocOSK9hgh5E+Lsrtu82Yd/W9gDMariJqutM9LyXaQ=;
-        b=U/WkJ6+3ZndtaKKg12zhon50MfjoWi44BWdVEuFmMNdXoo7SgoIcgHwC7zrXt3DtXv
-         YU1OzXKtTNjarvccnkdh9ELslNtUZBwftAXacJnqOeaSvUgzKqBAtjVynRAiVdrp/R0o
-         v/e42YJw/KWdq3yQ/tlJjLhTdvHa4tp1A4Vs1VJ142Rnv1gRJtZBtyzEQ/w6Lsq8y+92
-         zrn4eOrHB8d4mee5d8PcV3r5TrBomvga3ffZC3YkLe4DCndexPrTFv0xdWXWMARSV5k3
-         m2yv+Ssxxk2VhWJEo1+YPdWhUBhE1qUtErVugFaYrIN+D0gGzRhGk7LYbCTnxjTcM8sc
-         fdWg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqjv7NFg/PHF0NyXojMIXyBP5AzdVMCKRS8KK3+H/9OYNXl+KY0osBQHTTLbFWsx+RBOKo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyo3JHNRJqqOg9o+JMY1CAYnBtsiPrKnmPTLThoSlp4C1eBnfK/
-	tiB384bTLUfk+QRSLft4HAEcOyi6UuWubWkjP3RFaOfF/uMwJEFdWyzgKvK5sAbLXHU=
-X-Gm-Gg: AR+sD10VbpPdgM05HjlHa96vbxaogqaoVwYM8FfeVmUSSTdmb/FLHR3YBv7QN2c8oAD
-	E8Bci5C5i37ybHtbgs1snF4EGQe72IwwP4/Z0i03KOHB8MsKyUFMzLbbgtAh2rEve3TZPH8Lt/B
-	9vPvoriz+RWMWUV8F1c00D8jmFqK8CfJ/tz7rEVuyEqKWOoStr37Qfhk5VUd9zkzURfElRgo43s
-	Mb6GkPrw0xndGlDroMzsznZrd99Xjfk7tHkMwAtf5l6Ju9TtWUJuJis54CeuAWNRSTIoikotita
-	/eQyjb6q9F2yw0Bry/LHUsoU3RBxbF3hUmZYhAU9MupP4XzhA2Bpfq//i/A0nbNCF3TzuJNTJfV
-	XvN36A99uo3VrEJlFXq/m4A3MIJg6x1kapXUuDQQKIPc4R48mduE+CLlPexgWztMDQroJbz0YOd
-	XnNiKRSaxauzGefkbJb8lK+tiYBly4X5xUxOaflquJ5APU2gLJzbjJMvIU22jV
-X-Received: by 2002:a05:6a21:178a:b0:3bf:a517:cdcd with SMTP id adf61e73a8af0-3cb9c1a3bb4mr5836488637.12.1785996462270;
-        Wed, 05 Aug 2026 23:07:42 -0700 (PDT)
+        bh=N/Noaa1/5CoT0jOkbG3HQUWESYiE8Rvb0ack3Temr4U=;
+        b=a0jZZ8xukvScPne6iX9o4vVgH3dj4YCbwP2ceYuTf7emZysWYS/Z0v52j0aiUfiXG1
+         8QJpDehyy9ZRxdzP+9Im3aa5iJXvtrY/grWLNiOzL04ueV+1kERJmCq4eoW9IjyW8CzE
+         bc952LT/SNH6E2AU5ViAucI2K4jCd1OYxS3TrsP25nhsOU+l9j7khEtK750IJoVC4zCR
+         oawSH9ozJQh2SkmxinKUctLmMfmAyt0sGPRAYGYZGt82lXqgfmNpKg+uyT0I2WpuyFME
+         XePAWUuVgaM5lvwGYNHpbkdnYoTH2N+FhwhznfuUYCWYDfNtO3MZLhvR9F+qM1uVz3sl
+         iWJw==
+X-Forwarded-Encrypted: i=1; AHgh+RqH9wggiCo7HoTpB082zSJpfjSD3c5SWQ+fyAMvH/PY8i1qUsPvXSVKvnqEXsLDGSmRdwk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKi0MHpnTKx2BDZ+n4LkO3iYSLCjjrxm2gPwY5e3zYKXmq4s8Q
+	HENW6pwk7YEuWaPaPkIyCKN3gQTvqp7+6Epi0KqX9TNua4RkPNnuYMfcgWGh3qOd10k=
+X-Gm-Gg: AR+sD11gVeQqijhGHao0vUiiYZdcfYSbEJG/ujDS9chOnAV+n8BclTlRXgvv9ZP6GCh
+	avM3QqzVaVnBARDaax0sRcYTLvcsaQmuwxYmhe4v+n+Xoq9160nNy98hoYkfTyTi4QAdxY9Y7j+
+	a5aYQl84zknIihek2k72HXVvo9uDxkkcqU0Gd1C3AeTQ/39y4VSZAqRR4oMfbRdrTwRkqbz6X23
+	OMxE2oVChSAiZUsNNd+ajHiolVUpYCrBwqWzvfPP9d9G0F5mw/xb6O8XckyY9QUI390DmrKx0LV
+	NYVfDjzcOEZTwgnr0SFLE+VG9mli5NM4a97RVRlHatJoC9UYm96mqHRnxGl2tO4Pof2/J6kQgyO
+	gXt4boCrOFvDT1L4gWXn2mGCJh+IVlwXT/qwEyC1UffXA+43BHEgSEsVpX1wajw13HIIXxk8BII
+	VTf8ODYYqI57TgNOcYquX46xo1wXTh5EYVY5kRonfHyCyuqJTeQZLmkSnfCJtq
+X-Received: by 2002:a05:6a20:430b:b0:3bf:9b3d:61bb with SMTP id adf61e73a8af0-3cb85ee779fmr14662992637.16.1785996769547;
+        Wed, 05 Aug 2026 23:12:49 -0700 (PDT)
 Received: from localhost ([122.172.82.94])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca908068sm20402627c88.12.2026.08.05.23.07.40
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315863fb350sm24210421eec.8.2026.08.05.23.12.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 23:07:41 -0700 (PDT)
-Date: Thu, 6 Aug 2026 11:37:38 +0530
+        Wed, 05 Aug 2026 23:12:48 -0700 (PDT)
+Date: Thu, 6 Aug 2026 11:42:46 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Karl Mehltretter <kmehltretter@gmail.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
@@ -67,10 +67,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Fabio Estevam <festevam@gmail.com>, Anson Huang <b20788@freescale.com>, linux-pm@vger.kernel.org, 
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: imx6q: fix out-of-bounds write when probed more
- than once
-Message-ID: <f3oyofuwnnygmazuduufjvvafqpgqxfnvnf6dcxfc63z2ozz6o@vxk7bozr2ctl>
-References: <20260806050239.90188-1-kmehltretter@gmail.com>
+Subject: Re: [PATCH] cpufreq: imx6q: fix devres accumulation across driver
+ rebind
+Message-ID: <xale3cobuizjnufkp2fkvxmq66dl2cmuoh6szd4d4vhwfcxizp@4kp2zcpu2ndw>
+References: <20260806050902.90550-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,38 +79,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260806050239.90188-1-kmehltretter@gmail.com>
+In-Reply-To: <20260806050902.90550-1-kmehltretter@gmail.com>
 
-On 06-08-26, 07:02, Karl Mehltretter wrote:
-> imx6_soc_volt is allocated fresh on every probe, sized to the number of
-> ARM OPPs:
+On 06-08-26, 07:09, Karl Mehltretter wrote:
+> imx6_soc_volt is allocated with devm_kcalloc(cpu_dev, ...), where cpu_dev
+> is the CPU device from get_cpu_device(0). That device is never unbound, so
+> its devres list is never released, and imx6q_cpufreq_remove() does not free
+> the array either. Every probe therefore adds an allocation that stays for
+> the lifetime of the system.
 > 
-> 	imx6_soc_volt = devm_kcalloc(cpu_dev, num, sizeof(*imx6_soc_volt),
-> 				     GFP_KERNEL);
+> Allocate against the platform device instead. Its devres is released when
+> the driver is unbound, which is exactly the lifetime the array wants:
+> imx6q_set_target() reads it, and nothing may reach that after
+> cpufreq_unregister_driver().
 > 
-> but it is filled through soc_opp_count, which has static storage and is
-> never reset. A second bind after an unbind keeps indexing from where the
-> first one stopped, and writes past the end of the new array.
+> That makes the array actually go away on unbind, so also clear the
+> file-scope pointer in remove and on the failed-probe path, rather than
+> leave it pointing at memory devres is about to release.
 > 
-> Unbinding and rebinding the driver on qemu's mcimx6ul-evk, under KASAN:
-> 
->   BUG: KASAN: slab-out-of-bounds in imx6q_cpufreq_probe+0x3b0/0xa34
->   Write of size 4 at addr c5e90480 by task binder/73
->    imx6q_cpufreq_probe from platform_probe+0x88/0xe4
->    platform_probe from really_probe+0x108/0x384
->    bind_store from kernfs_fop_write_iter+0x1b4/0x28c
-> 
-> The write lands one u32 past the end of the allocation.
-> 
-> soc_opp_count is only read a few lines below the loop that fills it, so it
-> never needed static storage. Make it a local.
+> Tested by rebinding the driver on qemu's mcimx6ul-evk.
 > 
 > Fixes: b4573d1d657a ("cpufreq: imx6q: correct VDDSOC/PU voltage scaling when cpufreq is changed")
 > Assisted-by: Claude:claude-opus-5
 > Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 > ---
->  drivers/cpufreq/imx6q-cpufreq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/cpufreq/imx6q-cpufreq.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
 Applied. Thanks.
 
