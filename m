@@ -1,164 +1,177 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49AD3E9C32
-	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 14:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AA53321A2
+	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 14:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025526; cv=none; b=qfGhc3BWfOrhvY1G6w7t2SDjxj6MoDrQ4EJJ9mPXIQTWf3mf/sCPT+rbkQVKew2Mr4a1FKDSnNppiDSguybfGDE21W/+GmKECMQ6Iqssc4xmr4fsOVsGNCO8VZ2ytxm7vunQs/hRROsYZvwL4WhvFf5KTGipKZC+t+IAA4XeELQ=
+	t=1786025940; cv=none; b=APdyNQO3giH0xuM+EO+OEI/5tz5+O3tFgMJdCvk8ihQa5wLXUWgvtZ/bcZYIGvTfLbsboiPYUhpSXNIzJiOdptcBqqjZMuXzFISGx0xADYZuKb+8KkCXIvMkRuip3XKPRMTsLzRJsGGNvQMZZZsk5FXSqd4nGN5KUeeqAXwuMOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025526; c=relaxed/simple;
-	bh=oIFZLgKvVdWRb4naDCDvsBD7Te5I9qLr1vHo4bzNbqQ=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=GqVPwMWEfazttxuBJjWhMcn6Z9lSj2bzbvJN7HxJM9tslHH9LY7OvwOMD4fyPIB8coY+a8azrW6cnCUqeAYb7XHMBwCDPe/8UHIyjBzLPzKPm67ww2eDqh0SjBK0de/pjLAVtMYRVylPnfclVVH6pAH3pf3M3Adtov0aZGl2hc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKY6E6Q7; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786025940; c=relaxed/simple;
+	bh=b6tGJgjbWseM7FlphtaARLIwHe4KRXa10wZMxOFBvWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dFLVFEp1WwErLt8Hn3tDHWnJ09v+Q9VYvPmnkIUNhp6Hrk+vk0tpsMGpZP62+iGfZAiqx5zypyfklD6W/aGoGNt1PibLJS5Vst1qbuy0ql3lJu3EAtcTVgqeB/gswO1DxWdOLD4HicCTiFsSm0NA45zOC450d9UsP2K02khRkpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=hfvsUE2U; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKY6E6Q7"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-81f3b227a4aso36136477b3.1
-        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 07:12:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786025524; x=1786630324; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aSW82hn/Az1oQv4R5HnyuZcVGEyW1WS4dZZfeeZQW+g=;
-        b=NKY6E6Q71yQjwOYMPnaTjNdy+sScDs3XJX3kipEMHHS/D3XYc4LvtRwihvX1p2mr7l
-         uoQo0/3oe15F2aoYqI8QOuwBi7Wv2hlVkZPCbERyH+jphiAp1YWrUxFQHRyZ/OqtE/dP
-         epQbcFT5NI1ZKiLlLNbd5wzp5G9RREUj0ai9OTESuQgbudYgqkHKaeAScsA520MtA8Ri
-         /JV/NaYHPKS4I3KBsXnw1YA4+N6QJujfQ0Yd26m9Nz9aYr0+KnPaebXWir5zBeZ8s/zm
-         h1WrH2A1PUmPwtuCJuwcCzFN20qjr1dI8259rad3N3pjQbf/44My9p0xM5Ywn8uukXg4
-         WPGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786025524; x=1786630324;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aSW82hn/Az1oQv4R5HnyuZcVGEyW1WS4dZZfeeZQW+g=;
-        b=TDozhBbtZgyi/KwDtN2/16yKL4F6WPEfmF9b63DAeWUnNpSocnKP73afJnrZOw389v
-         nZn0O1I6dMm6FLDUz7LJKTo6FDg2hrIzy8hyOqaPWYLAZwjeXe3b1FrV9AjZw2AuiFAU
-         Cxewmz2fqW4p8QSjRf8yiSVUhogH7N4obhreuqKmUcWSYmMg250NvNGACa5Dm4d8Fav4
-         yqkSOq17Vr63Iuz7bY9WzSu7nIX/CIz2sLwLCu1onpFrQsuFkXuDihqRXC0didmqOcAt
-         TM49lbUmv+M6k2/xsFR2bggsQyjmEb+N0supxpbSS8V00jvPe+b0qQSAbYs/QPRbOLqx
-         Ib1g==
-X-Gm-Message-State: AOJu0Yyng7YpdOjqH8Cc8czes+Ks8Bga5b4GjS9vSblpiRJ8v5BI0epv
-	klkS6/+pdXOGMY8jzkeppgJMHX9NtHy3aotQfqRzxlIMjEzA7gfcMUgNgbIgpA==
-X-Gm-Gg: AR+sD12hlEi6QFDlc11Xg659SrFiOJB4bi5brv9gGz6ZfCtbQJspMtDM6WpMJ9NbF2e
-	9g6npFhxjSknJ9lAfyFAVziBwLEfWbtwOcYxdW3m2xs3GtaYMRjqgTqcABohYueHMmgr5xC3cAH
-	W9LRSMfaGpboNk8gmX1lAZKa6ym7biPuq+Ble3I01cRa0evPQk06hU8J6BSwdLxdKpWSaSrttDC
-	4IHj64H8jJgmQFcNObpqlGJC+2KvrKn3v0J+umcMNna0x5X57C7kdch6vbMwAMDLCijtrFQBMYo
-	CGAGJJodzLuf1jixNNwtX+zz970cap2piJAiZexnTz1Re4ZvvXfPZma23Mx0nVVYgPNkSKkxEV+
-	sKlX1GzySH6abJP7jMunqDVS9lZDpsst4KvkBHTfvNAO2CUhiIM05LM+Q01safa5RryY2eCZK7J
-	1k5M6IURrdxsQS0DvOq1UZi66ue3G9CIMmBKlMYIQseKmWPOlfi9ZIzKTitsuUFpwpdlmZFRzrR
-	BuGL2zhstAOnSfIbQjfu7WuwaIusUG5XV3m
-X-Received: by 2002:a05:690c:c04:b0:804:a2d5:1e04 with SMTP id 00721157ae682-820222e54d2mr90939827b3.16.1786025523580;
-        Thu, 06 Aug 2026 07:12:03 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-820131db335sm39579797b3.3.2026.08.06.07.12.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 07:12:02 -0700 (PDT)
-Date: Thu, 06 Aug 2026 10:12:01 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Wei Fang <wei.fang@nxp.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>, 
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
- "Wei Fang (OSS)" <wei.fang@oss.nxp.com>, 
- "davem@davemloft.net" <davem@davemloft.net>, 
- "edumazet@google.com" <edumazet@google.com>, 
- "kuba@kernel.org" <kuba@kernel.org>, 
- "pabeni@redhat.com" <pabeni@redhat.com>, 
- "horms@kernel.org" <horms@kernel.org>, 
- "liuhangbin@gmail.com" <liuhangbin@gmail.com>, 
- "mst@redhat.com" <mst@redhat.com>, 
- "jasowangio@gmail.com" <jasowangio@gmail.com>, 
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
- "ast@kernel.org" <ast@kernel.org>, 
- "daniel@iogearbox.net" <daniel@iogearbox.net>, 
- "hawk@kernel.org" <hawk@kernel.org>, 
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>, 
- "sdf@fomichev.me" <sdf@fomichev.me>
-Message-ID: <willemdebruijn.kernel.1f5ad76837fbe@gmail.com>
-In-Reply-To: <GV2PR04MB1173961FAF524C3A3FB49204888D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260805105314.3882595-1-wei.fang@oss.nxp.com>
- <20260805105314.3882595-3-wei.fang@oss.nxp.com>
- <willemdebruijn.kernel.4a69732dc0a4@gmail.com>
- <GV2PR04MB11739F20D97C6507DB388951388D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
- <GV2PR04MB1173961FAF524C3A3FB49204888D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-Subject: RE: [PATCH net 2/2] net: tap: fix skb->protocol not updated after
- VLAN network header adjustment
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="hfvsUE2U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1786025934; bh=b6tGJgjbWseM7FlphtaARLIwHe4KRXa10wZMxOFBvWo=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=hfvsUE2U2fnm8isZGBZhasv9Exh8AzA5/wdep+DCpOAZUfJlytb89pnFX+BEV5dHo
+	 hsJUXMCTeaXxQw0KmF8+jgzbdq9VbYQRYiUgvkEzgLQMx2F+V582cYawsbpKGPXCpj
+	 zXYXArluPudj1uElf1TWmKIWdeMegs/rvjZQfplU=
+Date: Thu, 6 Aug 2026 16:18:53 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: David Heidelberg <david@ixit.cz>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
+	Manuel Traut <manut@mecka.net>, Alexander Warnecke <awarnecke002@hotmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org, 
+	imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] arm64: dts: rockchip: rk3399-pinephone-pro: DW9714
+ coil requires higher voltage
+Message-ID: <cluhol4kfk4mi3ybxfo52hyuepxuwfgrgv54vsvn3e7x43d3la@xfcodg4jlosv>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	David Heidelberg <david@ixit.cz>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
+	Manuel Traut <manut@mecka.net>, Alexander Warnecke <awarnecke002@hotmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org, 
+	imx@lists.linux.dev, stable@vger.kernel.org
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
+ <20260801-pp-pro-camera-v1-2-7b4d90788f9f@ixit.cz>
+ <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
+ <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
+ <galrq4ug3hhny2ivpylqwuztwv7vnqvm6sdhlu6pucxk6qy2mz@zxw4ckkxj2sh>
+ <dd2f19ac-a65e-4e53-aa2f-6f76c949366e@ixit.cz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dd2f19ac-a65e-4e53-aa2f-6f76c949366e@ixit.cz>
 
-Wei Fang wrote:
-> > > > --- a/drivers/net/tap.c
-> > > > +++ b/drivers/net/tap.c
-> > > > @@ -1081,9 +1081,15 @@ static int tap_get_user_xdp(struct tap_queue
-> > *q,
-> > > struct xdp_buff *xdp)
-> > > >  	}
-> > > >
-> > > >  	/* Move network header to the right position for VLAN tagged
-> > packets */
-> > > > -	if (eth_type_vlan(skb->protocol) &&
-> > > > -	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
-> > > > -		skb_set_network_header(skb, depth);
-> > > > +	if (eth_type_vlan(skb->protocol)) {
-> > > > +		__be16 proto = vlan_get_protocol_and_depth(skb,
-> > skb->protocol,
-> > > > +							   &depth);
-> > > > +
-> > > > +		if (proto != 0) {
-> > > > +			skb_set_network_header(skb, depth);
-> > > > +			skb->protocol = proto;
-> > > > +		}
-> > > > +	}
-> > >
-> > > Does the same apply to the same call in tap_get_user?
+On Thu, Aug 06, 2026 at 01:49:07PM +0200, David Heidelberg wrote:
+> On 06/08/2026 13:19, Ondřej Jirman wrote:
+> > Hi,
 > > 
-> > The situation of tap_get_user() is different, skb_probe_transport_header()
-> > is called before the VLAN adjustment block. So I think transport_header
-> > should be correct. The only concern is whether skb->protocol needs to be
-> > updated after calling skb_set_network_header().
+> > On Tue, Aug 04, 2026 at 11:12:21AM +0200, David Heidelberg wrote:
+> > > On 04/08/2026 09:39, Ondřej Jirman wrote:
+> > > > Hi,
+> > > > 
+> > > > On Sat, Aug 01, 2026 at 02:35:21AM +0200, David Heidelberg via B4 Relay wrote:
+> > > > > From: David Heidelberg <david@ixit.cz>
+> > > > > 
+> > > > > By datasheet the VDD (in-kernel named vcc) range is between 2.3 to 4.3 V.
+> > > > > Usually it's around 2.8 V. Here it matches the avdd2v8_dvp.
+> > > > > 
+> > > > > Fixes: 9336eb829a18 ("arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > > > > ---
+> > > > >    arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 +-
+> > > > >    1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+> > > > > index d46cdfe3f7849..bde35d9b2263e 100644
+> > > > > --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+> > > > > +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+> > > > > @@ -473,17 +473,17 @@ wcam_out: endpoint {
+> > > > >    			};
+> > > > >    		};
+> > > > >    	};
+> > > > >    	wcam_lens: camera-lens@c {
+> > > > >    		compatible = "dongwoon,dw9714";
+> > > > >    		reg = <0x0c>;
+> > > > >    		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
+> > > > > -		vcc-supply = <&vcc1v8_dvp>;
+> > > > > +		vcc-supply = <&avdd2v8_dvp>;
+> > > > 
+> > > > This does not match reality, schematic says it's VCC2V8_DVP:
+> > > > 
+> > > > 	https://xff.cz/dl/tmp/6253a0465329df41.png
+> > > 
+> > > Ahoj,
+> > > 
+> > > thanks for spotting this, since I know you have the device, would be too
+> > > much to ask you to send standalone fix for PP Pro?
+> > > 
+> > > I would drop the change from the series.
 > > 
-> > I'm not sure as I am not fairly familiar with the tap driver. I added this patch
-> > because Sashiko reported that the tap driver has the same issue as af_packet.
+> > Ok. Just for the reference, vcc1v8_dvp here feeds an enable pin for VCC2V8_DVP
+> > LDO regulator (which is supplied from VCC3V3_SYS and not described in DT, yet).
+> > So in practice enabling vcc1v8_dvp enables both VCC2V8_DVP and AVDD2V8_DVP and
+> > while DT does not describe the HW in detail, it describes the only regulator
+> > that is actually controllable and enables all needed power rails for the camera
+> > modules all by itself in proper order/timing.
 > > 
-> > >
-> > > And in general to other callers of vlan_get_protocol_and_depth,
-> > > including through wrapper skb_network_protocol?
-> > 
-> > I don't think this issue exists elsewhere. The issue arises because
-> > skb_probe_transport_header() is called after skb_set_network_header(), and
-> > at this point, skb->protocol and network_header are not synchronized ( In
-> > __skb_flow_dissect(), nhoff = skb_network_offset(skb) but proto is
-> > ETH_P_8021Q or ETH_P_8021AD)), causing skb_probe_transport_header() to
-> > fail to set transport_header correctly.
-> > 
-> > Perhaps the correct approach would be to restore the original `skb->protocol`
-> > value after `skb_probe_transport_header()`, maintaining consistency with the
-> > previous behavior; otherwise, it might introduce new issues.
+> > Not sure what's the DT maintainers idea here about whether DT has to describe
+> > every detail of power rails routing, or just what's pragmatic.
 > 
-> For AF_PACKET, it has been confirmed that skb->protocol does not need to be
-> restored to its initial value; otherwise, the egress tc flower for protocol ip will
-> not match the packet. A known issue is that the packets cannot match the egress
-> TC flower rules for protocol 802.1Q, but this issue exists before this series. This
-> is likely a limitation of using AF_PACKET to send packets.
+> My perception is that DT syntax should describe everything, except passive
+> components.
+> 
+> No additional GPIO is needed to enable VCC and AVDD?
 
-Actually this update of network header to start of the IP header may
-have been a mistake. If userspace inserts a VLAN packet, that is what
-should enter the stack.
+Yes, it's completely transparent. vcc1v8_dvp indirectly powers up all other
+camera sensor regulators.
 
-But for this specific issue: would it make sense to just move
-skb_probe_transport_header before that adjustment?
+Regards,
+	o.j.
+
+> Here, it seems to me that explanation like this in DT could cover it. But
+> I'm no authority here :)
+> 
+> David
+> 
+> > 
+> > Best regards,
+> > 	o.j.
+> > 
+> > > David
+> > > 
+> > > P.S. I noticed I didn't mark this series RFC. Too late.
+> > > 
+> > > > 
+> > > > regards,
+> > > > 	o.
+> > > > 
+> > > > >    	};
+> > > > >    	ucam: camera@36 {
+> > > > >    		compatible = "ovti,ov8858";
+> > > > >    		reg = <0x36>;
+> > > > >    		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
+> > > > >    		clock-names = "xvclk";
+> > > > >    		dovdd-supply = <&vcc1v8_dvp>;
+> > > > > 
+> > > > > -- 
+> > > > > 2.53.0
+> > > > > 
+> > > > > 
+> > > 
+> > > -- 
+> > > David Heidelberg
+> > > 
+> 
+> -- 
+> David Heidelberg
+> 
