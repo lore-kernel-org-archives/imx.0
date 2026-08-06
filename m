@@ -1,122 +1,167 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9DE4570C7;
-	Thu,  6 Aug 2026 11:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D043641BA8B;
+	Thu,  6 Aug 2026 11:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786014819; cv=none; b=DyFUT8CmqULPiDzvkh3d7z7SJgPQ8X1GfE3rjenbY6BtGvju928A+jmNAyMDRvUjUskkI+CDnJTNzIJs/VpfyAetT9Jyfl9w1beSysLLpbBhI//r/EehuoHhFUjbutLiDfSjKtH0cuq3C5VO7WYfXk/weHGWr+11P51VpZO9u40=
+	t=1786014929; cv=none; b=TQgUAZCUoGqi/bgK6RziiqbkcYP4Up1wroMxHTv8gFPg0ny6m9SXfEiHIbuKwctPwyII5YuUk8EiPSFFiJLID4w7Bfj9UiAavG28hAxHXBFx10Qqomm1xHf7DUQGrx7SvAVozzUUKH47L/4CF2f/lDZUkOoLRf8CTueVRrS+P1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786014819; c=relaxed/simple;
-	bh=j8F7xFEomXtVut2J/WkP+WL64rh2z/0xdkTredfEliA=;
+	s=arc-20240116; t=1786014929; c=relaxed/simple;
+	bh=dL/mp1wLOqRdHb88lJAFmK+cvIiwkzMc5V4LqSqCtCs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iR7ZZQ+KMo+CRjVCzo3NPNy24slVfrjhphlgeEf1P+0dmDDe2bVVAO5wS+q/GMr3zZc+k4gpPrnPLXUku5LO4oXMEgp8KIn9CkjKV5AmLYK/hgtkY5G90r63QIRWhpJLkJQGHV843LwFv8Qefong7AKm61pL229SeWRBfCMY2nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wy5waHCo; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Zhh4xG+cvY2q2vehXHKzdYLHxjy+oicS7GVY3yTsgxOw6ldCQSikSBQzxlIktoFCYztXXDb7V9UnGR3deluqd0lFUZBEQ0bndMf33LKZcSp14cQAmnDYkgKpPraGuxlB/ZgjtXiXs8gwO7yTguGgZxrEmNBfVAYozPLiYy/PUSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSCPgF8g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wy5waHCo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982571F000E9;
-	Thu,  6 Aug 2026 11:13:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSCPgF8g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B64D1F000E9;
+	Thu,  6 Aug 2026 11:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786014809;
-	bh=OcWrdYamQJ1FYepYcGOAA3gVhOI3VohuGRMzxJWsJR8=;
+	s=k20260515; t=1786014927;
+	bh=bYW2jB0IaiJmGyijAs2yoRv9PJGNDBx5Ivi6c6bTq6s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Wy5waHCoUhlOr9XLoyxBM+EQmIreRgrvU22bBwKnYBqZi0x1xTd1na1Nc/AfRRxXE
-	 dJYJ+IQsFJrPyPA/Ij7we6EibJ7Z7ZlBhsPRPYlWHRg1qNN2ZQAS1ldBSB6gW1JeIL
-	 /egNijRmCj2ItnTpu0EtEpKsT9vcwZvaEOaLUhxMQEPvuRX2ulDgaXuQBhoxFzXTS6
-	 NFo87I+lIzeCFkHPg5icK3butmQ/9cz7GRrnOIcEsGYc40rCz9QZkAGX4LdkVCIuHE
-	 BwXd1iNqthDGa0nig4Entm2jzlYuP+ZE596rzmaztfDW4STQMkppD0BIQy1HmTdgfT
-	 l85r4t/NWkkGA==
+	b=DSCPgF8g+psFpSFR94TjXz+jVF1XQRfhShtJK09+2LmewzqmyGYa/lvH6wNAZTxjk
+	 /GsBvA9KI42b0qda7F5S8Py0wkSxzkGGjSI5C+W9wAB4zLNR4JxYUinNYKiOORyVM2
+	 3bsanA1CLslso8BeL0U54xi2W+MZu3KObU/ehXbQEU0pK9WVe80l5zA+WuLUTh3BTP
+	 zujVjr/uWSPe9gk+WluXPIV+aQ0WVsMcQrlDgaP9cvDFKB5lzOIM7pL1UKwy6V4IYC
+	 uS6conoxCdRdxbE0DCxaM+YVJspB3EWnBGJwwLBY7nfTXaxqwrU3Z98vVnxoilk04P
+	 Ddqf/tkrBOUFQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v35 6/7] arm64: dts: imx8ulp: add secure enclave node
+Subject: Re: [PATCH v35 4/7] firmware: imx: device context dedicated to priv
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
-Cc: devicetree@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260806-imx-se-if-v35-6-11b25bb308ef@nxp.com>
+Cc: Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260806-imx-se-if-v35-4-11b25bb308ef@nxp.com>
 References: <20260806-imx-se-if-v35-0-11b25bb308ef@nxp.com>
- <20260806-imx-se-if-v35-6-11b25bb308ef@nxp.com>
+ <20260806-imx-se-if-v35-4-11b25bb308ef@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 06 Aug 2026 11:13:27 +0000
-Message-Id: <20260806111328.982571F000E9@smtp.kernel.org>
+Date: Thu, 06 Aug 2026 11:15:26 +0000
+Message-Id: <20260806111527.2B64D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] The newly added `hsm0` node lacks the mandatory `memory-region` =
-property, causing a `dtbs_check` validation failure. Additionally, the file=
- `imx8ulp-firmware.dtsi` referenced in the commit message is missing from t=
-he patch series.
+
+New issues:
+- [Medium] The `devname` string pointer is cached inside `clbk_rx_lock` but=
+ dereferenced after the lock is released and the completion is signaled, le=
+ading to a potential Use-After-Free.
+
+Pre-existing issues:
+- [High] Returning `-ERESTARTSYS` after a successful firmware transaction c=
+auses the VFS to silently retry the ioctl, leading to duplicate execution o=
+f non-idempotent firmware commands.
 --
 
---- Patch [6]: [PATCH v35 6/7] arm64: dts: imx8ulp: add secure enclave node=
- ---
-commit c890c3315c7900443e29c20509319084f32b21c7
+--- Patch [4]: [PATCH v35 4/7] firmware: imx: device context dedicated to p=
+riv ---
+commit df99e6bab818347c619050f003cdaa34c153bd90
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-arm64: dts: imx8ulp: add secure enclave node
+firmware: imx: device context dedicated to priv
 
-Add the EdgeLock Enclave (ELE) secure-enclave node to the i.MX8ULP SoC
-dtsi. The node is kept disabled so it does not impose a reserved-memory
-requirement on every board, and the commit message notes that boards can
-provide the memory-region by including imx8ulp-firmware.dtsi.
+Add priv_dev_ctx to prepare enabling misc-device context based send-receive
+path, to communicate with FW. No functionality change.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8ulp.dtsi
-> index c6d1bb9edf388..38233dd74ee33 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
+_common.c
+> index bc08ea2dcd87d..707fb69431baa 100644
+> --- a/drivers/firmware/imx/ele_common.c
+> +++ b/drivers/firmware/imx/ele_common.c
 
 [ ... ]
 
-> @@ -185,6 +185,14 @@ scmi_sensor: protocol@15 {
->  				#thermal-sensor-cells =3D <1>;
->  			};
->  		};
-> +
-> +		hsm0: secure-enclave {
-> +			compatible =3D "fsl,imx8ulp-se-ele-hsm";
-> +			mbox-names =3D "tx", "rx";
-> +			mboxes =3D <&s4muap 0 0>, <&s4muap 1 0>;
-> +			sram =3D <&sram0>;
-> +			status =3D "disabled";
-> +		};
+> @@ -214,7 +219,8 @@ int ele_msg_send_rcv(struct se_if_priv *priv, void *t=
+x_msg, int tx_msg_sz,
+>  		if (err > 0)
+>  			err =3D -ERESTARTSYS;
+
+[Severity: High]
+This is a pre-existing issue, but does returning -ERESTARTSYS after a
+successful firmware transaction cause problems with the VFS layer?
+
+If a signal is delivered to the process while waiting, ele_msg_rcv() catches
+it but waits uninterruptibly because the command is already in flight. Once
+the firmware successfully responds, ele_msg_rcv() returns the positive
+response size.
+
+However, in ele_msg_send_rcv(), seeing signal_rcvd is true causes the
+positive return value to be explicitly replaced with -ERESTARTSYS:
+
+		if (err > 0)
+			err =3D -ERESTARTSYS;
+
+Would this cause the VFS layer to automatically restart the syscall,
+leading to the same firmware command being issued a second time, which
+might be unsafe for non-idempotent operations like key generation?
+
+>  		priv->waiting_rsp_clbk_hdl.signal_rcvd =3D false;
+> -		dev_dbg(priv->dev, "Err[0x%x]:Interrupted by signal.", err);
+> +		dev_dbg(priv->dev, "%s: Err[0x%x]:Interrupted by signal.",
+> +			dev_ctx->devname, err);
+>  	}
+
+[ ... ]
+
+> @@ -296,13 +303,14 @@ void se_if_rx_callback(struct mbox_client *mbox_cl,=
+ void *msg)
+>  		 * Clamp the copy length to the pre-allocated receiver buffer (MAX_NVM=
+_MSG_LEN).
+>  		 */
+>  		se_clbk_hdl->rx_msg_sz =3D min_t(u32, rx_msg_sz, MAX_NVM_MSG_LEN);
+> +		devname =3D se_clbk_hdl->dev_ctx->devname;
+>  		memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
+>  		complete(&se_clbk_hdl->done);
+>  		spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
+>  		if (sz_mismatch)
+>  			dev_err(dev,
+> -				"CMD-RCVER NVM: hdr(0x%x) with different sz(%d !=3D %d).\n",
+> -				*(u32 *)header,
+> +				"%s: CMD-RCVER NVM: hdr(0x%x) with different sz(%d !=3D %d).\n",
+> +				devname, *(u32 *)header,
+>  				(header->size << 2), rx_msg_sz);
 
 [Severity: Medium]
-Will adding this node without a memory-region property cause a dtbs_check
-validation failure?
+Could this code trigger a use-after-free of the devname string when dynamic
+file descriptor lifetimes are fully implemented?
 
-According to Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml, the
-schema unconditionally enforces the memory-region requirement for this
-compatible string:
+In se_if_rx_callback(), the devname pointer is cached locally, but the lock
+is then dropped and complete() is called. This can wake up a waiting thread.
 
-  - if:
-      properties:
-        compatible:
-          contains:
-            enum:
-              - fsl,imx8ulp-se-ele-hsm
-              - fsl,imx93-se-ele-hsm
-    then:
-      required:
-        - memory-region
+If the waking thread immediately closes the file descriptor, could dev_ctx
+and its dynamically allocated devname string be freed before the dev_err()
+statement above finishes executing?
 
-Even though the node is disabled, it seems any board including this dtsi
-will fail device tree schema validation due to the missing required propert=
-y.
+[ ... ]
 
-Additionally, the commit message states:
+> @@ -337,14 +345,15 @@ void se_if_rx_callback(struct mbox_client *mbox_cl,=
+ void *msg)
+>  			sz_mismatch =3D true;
+> =20
+>  		se_clbk_hdl->rx_msg_sz =3D min(rx_msg_sz, exp_rx_msg_sz);
+> +		devname =3D se_clbk_hdl->dev_ctx->devname;
+>  		memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
+>  		complete(&se_clbk_hdl->done);
+>  		spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
+> =20
+>  		if (sz_mismatch)
+>  			dev_err(dev,
+> -				"Rsp to CMD: hdr(0x%x) with different sz(%d !=3D %d).\n",
+> -				*(u32 *)header,
+> +				"%s: Rsp to CMD: hdr(0x%x) with different sz(%d !=3D %d).\n",
+> +				devname, *(u32 *)header,
+>  				(header->size << 2), exp_rx_msg_sz);
 
-> Boards enable the enclave and provide its memory-region by including
-> imx8ulp-firmware.dtsi.
-
-Is there a missing patch in this series? The imx8ulp-firmware.dtsi file
-mentioned in the commit message does not appear to be included in this patch
-or currently present in the tree.
+[Severity: Medium]
+Does this branch also share the same potential use-after-free pattern as the
+cmd_tag handling branch above, if the waking thread frees dev_ctx before
+dev_err() completes?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806-imx-se-if-=
-v35-0-11b25bb308ef@nxp.com?part=3D6
+v35-0-11b25bb308ef@nxp.com?part=3D4
