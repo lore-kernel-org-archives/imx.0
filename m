@@ -1,212 +1,164 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A138433031
-	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 11:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49AD3E9C32
+	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 14:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786016960; cv=none; b=j886KSTrulHkx6IR6AutvVVDenSyRm6lEaPfHJdNg7TZYvh/3Pzyls9oTgivZSIoDgbiD5YHLirQRGQOjW7prNTUagtw69UWaTWqKQvA5ryw8WwQARclxnPwjvx6tpgsNU15S0BbUdgrc8fb07IQvf9x97VLz+smFx6lGVpO80w=
+	t=1786025526; cv=none; b=qfGhc3BWfOrhvY1G6w7t2SDjxj6MoDrQ4EJJ9mPXIQTWf3mf/sCPT+rbkQVKew2Mr4a1FKDSnNppiDSguybfGDE21W/+GmKECMQ6Iqssc4xmr4fsOVsGNCO8VZ2ytxm7vunQs/hRROsYZvwL4WhvFf5KTGipKZC+t+IAA4XeELQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786016960; c=relaxed/simple;
-	bh=wUd6BTz910GINwkFJ3oxFnudhEev1Ed6wapoS493qi8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Ms/UcNMfFQj2/GIZVrLGq6VAXTVcRvjRrMRUlRr/Qp5ZMzjvVzrpYbfgZ1wGdSPDVNS4YhPp6nJMOuhV0Pea9O5dvs79okMO6tIhBVyYkcWubSgRqDYGXdk9YIuuxcGF7hImEQ5BFEcRkVQ2eQfgNQJlrGp7qToLR4PtZsM415A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=HPOQ2qS4; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1786025526; c=relaxed/simple;
+	bh=oIFZLgKvVdWRb4naDCDvsBD7Te5I9qLr1vHo4bzNbqQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=GqVPwMWEfazttxuBJjWhMcn6Z9lSj2bzbvJN7HxJM9tslHH9LY7OvwOMD4fyPIB8coY+a8azrW6cnCUqeAYb7XHMBwCDPe/8UHIyjBzLPzKPm67ww2eDqh0SjBK0de/pjLAVtMYRVylPnfclVVH6pAH3pf3M3Adtov0aZGl2hc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKY6E6Q7; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="HPOQ2qS4"
-Received: from [10.13.80.162] (unknown [176.101.149.185])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id DB5DA5340316;
-	Thu, 06 Aug 2026 13:49:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1786016949;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/s3rnEvEi/wr4ErGlkJ4G8TE/5xsRmeGjRMpGNrPM6s=;
-	b=HPOQ2qS4tGHpMgL/fTwnEaea3KkRxWEnFwBh3/BGjpBGUi9zdkyGcQ/BGa6bd9cyAtm7i2
-	DbIYy2/B/wMoYO6y6Y/g6lg+N14jZ+aqO97FyG+aSDGwwg0RRiwetEdUYud2mHzS/Y7iDL
-	5vDIq5SNL/Wt9IiP0QU9VQuO3ae2kjw=
-Message-ID: <dd2f19ac-a65e-4e53-aa2f-6f76c949366e@ixit.cz>
-Date: Thu, 6 Aug 2026 13:49:07 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKY6E6Q7"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-81f3b227a4aso36136477b3.1
+        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 07:12:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786025524; x=1786630324; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aSW82hn/Az1oQv4R5HnyuZcVGEyW1WS4dZZfeeZQW+g=;
+        b=NKY6E6Q71yQjwOYMPnaTjNdy+sScDs3XJX3kipEMHHS/D3XYc4LvtRwihvX1p2mr7l
+         uoQo0/3oe15F2aoYqI8QOuwBi7Wv2hlVkZPCbERyH+jphiAp1YWrUxFQHRyZ/OqtE/dP
+         epQbcFT5NI1ZKiLlLNbd5wzp5G9RREUj0ai9OTESuQgbudYgqkHKaeAScsA520MtA8Ri
+         /JV/NaYHPKS4I3KBsXnw1YA4+N6QJujfQ0Yd26m9Nz9aYr0+KnPaebXWir5zBeZ8s/zm
+         h1WrH2A1PUmPwtuCJuwcCzFN20qjr1dI8259rad3N3pjQbf/44My9p0xM5Ywn8uukXg4
+         WPGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786025524; x=1786630324;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aSW82hn/Az1oQv4R5HnyuZcVGEyW1WS4dZZfeeZQW+g=;
+        b=TDozhBbtZgyi/KwDtN2/16yKL4F6WPEfmF9b63DAeWUnNpSocnKP73afJnrZOw389v
+         nZn0O1I6dMm6FLDUz7LJKTo6FDg2hrIzy8hyOqaPWYLAZwjeXe3b1FrV9AjZw2AuiFAU
+         Cxewmz2fqW4p8QSjRf8yiSVUhogH7N4obhreuqKmUcWSYmMg250NvNGACa5Dm4d8Fav4
+         yqkSOq17Vr63Iuz7bY9WzSu7nIX/CIz2sLwLCu1onpFrQsuFkXuDihqRXC0didmqOcAt
+         TM49lbUmv+M6k2/xsFR2bggsQyjmEb+N0supxpbSS8V00jvPe+b0qQSAbYs/QPRbOLqx
+         Ib1g==
+X-Gm-Message-State: AOJu0Yyng7YpdOjqH8Cc8czes+Ks8Bga5b4GjS9vSblpiRJ8v5BI0epv
+	klkS6/+pdXOGMY8jzkeppgJMHX9NtHy3aotQfqRzxlIMjEzA7gfcMUgNgbIgpA==
+X-Gm-Gg: AR+sD12hlEi6QFDlc11Xg659SrFiOJB4bi5brv9gGz6ZfCtbQJspMtDM6WpMJ9NbF2e
+	9g6npFhxjSknJ9lAfyFAVziBwLEfWbtwOcYxdW3m2xs3GtaYMRjqgTqcABohYueHMmgr5xC3cAH
+	W9LRSMfaGpboNk8gmX1lAZKa6ym7biPuq+Ble3I01cRa0evPQk06hU8J6BSwdLxdKpWSaSrttDC
+	4IHj64H8jJgmQFcNObpqlGJC+2KvrKn3v0J+umcMNna0x5X57C7kdch6vbMwAMDLCijtrFQBMYo
+	CGAGJJodzLuf1jixNNwtX+zz970cap2piJAiZexnTz1Re4ZvvXfPZma23Mx0nVVYgPNkSKkxEV+
+	sKlX1GzySH6abJP7jMunqDVS9lZDpsst4KvkBHTfvNAO2CUhiIM05LM+Q01safa5RryY2eCZK7J
+	1k5M6IURrdxsQS0DvOq1UZi66ue3G9CIMmBKlMYIQseKmWPOlfi9ZIzKTitsuUFpwpdlmZFRzrR
+	BuGL2zhstAOnSfIbQjfu7WuwaIusUG5XV3m
+X-Received: by 2002:a05:690c:c04:b0:804:a2d5:1e04 with SMTP id 00721157ae682-820222e54d2mr90939827b3.16.1786025523580;
+        Thu, 06 Aug 2026 07:12:03 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-820131db335sm39579797b3.3.2026.08.06.07.12.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 07:12:02 -0700 (PDT)
+Date: Thu, 06 Aug 2026 10:12:01 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Wei Fang <wei.fang@nxp.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+ "Wei Fang (OSS)" <wei.fang@oss.nxp.com>, 
+ "davem@davemloft.net" <davem@davemloft.net>, 
+ "edumazet@google.com" <edumazet@google.com>, 
+ "kuba@kernel.org" <kuba@kernel.org>, 
+ "pabeni@redhat.com" <pabeni@redhat.com>, 
+ "horms@kernel.org" <horms@kernel.org>, 
+ "liuhangbin@gmail.com" <liuhangbin@gmail.com>, 
+ "mst@redhat.com" <mst@redhat.com>, 
+ "jasowangio@gmail.com" <jasowangio@gmail.com>, 
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
+ "ast@kernel.org" <ast@kernel.org>, 
+ "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+ "hawk@kernel.org" <hawk@kernel.org>, 
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>, 
+ "sdf@fomichev.me" <sdf@fomichev.me>
+Message-ID: <willemdebruijn.kernel.1f5ad76837fbe@gmail.com>
+In-Reply-To: <GV2PR04MB1173961FAF524C3A3FB49204888D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260805105314.3882595-1-wei.fang@oss.nxp.com>
+ <20260805105314.3882595-3-wei.fang@oss.nxp.com>
+ <willemdebruijn.kernel.4a69732dc0a4@gmail.com>
+ <GV2PR04MB11739F20D97C6507DB388951388D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <GV2PR04MB1173961FAF524C3A3FB49204888D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+Subject: RE: [PATCH net 2/2] net: tap: fix skb->protocol not updated after
+ VLAN network header adjustment
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] arm64: dts: rockchip: rk3399-pinephone-pro: DW9714
- coil requires higher voltage
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Olivier Benjamin <olivier.benjamin@bootlin.com>,
- Manuel Traut <manut@mecka.net>, Alexander Warnecke
- <awarnecke002@hotmail.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- phone-devel@vger.kernel.org, imx@lists.linux.dev, stable@vger.kernel.org
-References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
- <20260801-pp-pro-camera-v1-2-7b4d90788f9f@ixit.cz>
- <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
- <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
- <galrq4ug3hhny2ivpylqwuztwv7vnqvm6sdhlu6pucxk6qy2mz@zxw4ckkxj2sh>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <galrq4ug3hhny2ivpylqwuztwv7vnqvm6sdhlu6pucxk6qy2mz@zxw4ckkxj2sh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On 06/08/2026 13:19, Ondřej Jirman wrote:
-> Hi,
+Wei Fang wrote:
+> > > > --- a/drivers/net/tap.c
+> > > > +++ b/drivers/net/tap.c
+> > > > @@ -1081,9 +1081,15 @@ static int tap_get_user_xdp(struct tap_queue
+> > *q,
+> > > struct xdp_buff *xdp)
+> > > >  	}
+> > > >
+> > > >  	/* Move network header to the right position for VLAN tagged
+> > packets */
+> > > > -	if (eth_type_vlan(skb->protocol) &&
+> > > > -	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+> > > > -		skb_set_network_header(skb, depth);
+> > > > +	if (eth_type_vlan(skb->protocol)) {
+> > > > +		__be16 proto = vlan_get_protocol_and_depth(skb,
+> > skb->protocol,
+> > > > +							   &depth);
+> > > > +
+> > > > +		if (proto != 0) {
+> > > > +			skb_set_network_header(skb, depth);
+> > > > +			skb->protocol = proto;
+> > > > +		}
+> > > > +	}
+> > >
+> > > Does the same apply to the same call in tap_get_user?
+> > 
+> > The situation of tap_get_user() is different, skb_probe_transport_header()
+> > is called before the VLAN adjustment block. So I think transport_header
+> > should be correct. The only concern is whether skb->protocol needs to be
+> > updated after calling skb_set_network_header().
+> > 
+> > I'm not sure as I am not fairly familiar with the tap driver. I added this patch
+> > because Sashiko reported that the tap driver has the same issue as af_packet.
+> > 
+> > >
+> > > And in general to other callers of vlan_get_protocol_and_depth,
+> > > including through wrapper skb_network_protocol?
+> > 
+> > I don't think this issue exists elsewhere. The issue arises because
+> > skb_probe_transport_header() is called after skb_set_network_header(), and
+> > at this point, skb->protocol and network_header are not synchronized ( In
+> > __skb_flow_dissect(), nhoff = skb_network_offset(skb) but proto is
+> > ETH_P_8021Q or ETH_P_8021AD)), causing skb_probe_transport_header() to
+> > fail to set transport_header correctly.
+> > 
+> > Perhaps the correct approach would be to restore the original `skb->protocol`
+> > value after `skb_probe_transport_header()`, maintaining consistency with the
+> > previous behavior; otherwise, it might introduce new issues.
 > 
-> On Tue, Aug 04, 2026 at 11:12:21AM +0200, David Heidelberg wrote:
->> On 04/08/2026 09:39, Ondřej Jirman wrote:
->>> Hi,
->>>
->>> On Sat, Aug 01, 2026 at 02:35:21AM +0200, David Heidelberg via B4 Relay wrote:
->>>> From: David Heidelberg <david@ixit.cz>
->>>>
->>>> By datasheet the VDD (in-kernel named vcc) range is between 2.3 to 4.3 V.
->>>> Usually it's around 2.8 V. Here it matches the avdd2v8_dvp.
->>>>
->>>> Fixes: 9336eb829a18 ("arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>>> ---
->>>>    arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->>>> index d46cdfe3f7849..bde35d9b2263e 100644
->>>> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->>>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->>>> @@ -473,17 +473,17 @@ wcam_out: endpoint {
->>>>    			};
->>>>    		};
->>>>    	};
->>>>    	wcam_lens: camera-lens@c {
->>>>    		compatible = "dongwoon,dw9714";
->>>>    		reg = <0x0c>;
->>>>    		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
->>>> -		vcc-supply = <&vcc1v8_dvp>;
->>>> +		vcc-supply = <&avdd2v8_dvp>;
->>>
->>> This does not match reality, schematic says it's VCC2V8_DVP:
->>>
->>> 	https://xff.cz/dl/tmp/6253a0465329df41.png
->>
->> Ahoj,
->>
->> thanks for spotting this, since I know you have the device, would be too
->> much to ask you to send standalone fix for PP Pro?
->>
->> I would drop the change from the series.
-> 
-> Ok. Just for the reference, vcc1v8_dvp here feeds an enable pin for VCC2V8_DVP
-> LDO regulator (which is supplied from VCC3V3_SYS and not described in DT, yet).
-> So in practice enabling vcc1v8_dvp enables both VCC2V8_DVP and AVDD2V8_DVP and
-> while DT does not describe the HW in detail, it describes the only regulator
-> that is actually controllable and enables all needed power rails for the camera
-> modules all by itself in proper order/timing.
-> 
-> Not sure what's the DT maintainers idea here about whether DT has to describe
-> every detail of power rails routing, or just what's pragmatic.
+> For AF_PACKET, it has been confirmed that skb->protocol does not need to be
+> restored to its initial value; otherwise, the egress tc flower for protocol ip will
+> not match the packet. A known issue is that the packets cannot match the egress
+> TC flower rules for protocol 802.1Q, but this issue exists before this series. This
+> is likely a limitation of using AF_PACKET to send packets.
 
-My perception is that DT syntax should describe everything, except passive 
-components.
+Actually this update of network header to start of the IP header may
+have been a mistake. If userspace inserts a VLAN packet, that is what
+should enter the stack.
 
-No additional GPIO is needed to enable VCC and AVDD?
-
-Here, it seems to me that explanation like this in DT could cover it. But I'm no 
-authority here :)
-
-David
-
-> 
-> Best regards,
-> 	o.j.
-> 
->> David
->>
->> P.S. I noticed I didn't mark this series RFC. Too late.
->>
->>>
->>> regards,
->>> 	o.
->>>
->>>>    	};
->>>>    	ucam: camera@36 {
->>>>    		compatible = "ovti,ov8858";
->>>>    		reg = <0x36>;
->>>>    		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
->>>>    		clock-names = "xvclk";
->>>>    		dovdd-supply = <&vcc1v8_dvp>;
->>>>
->>>> -- 
->>>> 2.53.0
->>>>
->>>>
->>
->> -- 
->> David Heidelberg
->>
-
--- 
-David Heidelberg
-
+But for this specific issue: would it make sense to just move
+skb_probe_transport_header before that adjustment?
