@@ -1,258 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAD0448B84;
-	Thu,  6 Aug 2026 11:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB343470E9B
+	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 11:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786015646; cv=none; b=kFKMwcKIjNbO/3SkeWd3hvsZK9smHZzypRkvjNaEZUA1LnJTBFIIYk1y0KqJgWCWqLf05P6XSbtZLQjPAvUiTz9KxPOEtNY+ZZ16gNO5x7x6EsyhGI2TrMHqNKeSRBDSqOYtlikddsEv6tAihTVc3QIBBVya1WuLzml5k6ffkSc=
+	t=1786016625; cv=none; b=YOq2sKqOsTNos5AiWwGnRJa2Zaumj1iETrTH5aqnxklSSC8jPdgRMcjuLYVvp7rjYeuxKn1UrOodKZ5bnSFef+uZBsttGeXj20vgPwXNxyc9dbGfigwa6PX8IBCLy50+qaYM4wuCBk6DTgc4HMY0sYc4eRAOB2ruj6Hte7wDa7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786015646; c=relaxed/simple;
-	bh=4t3lOL5zceQLkFGOq0ZDF8HAJPN3MR9VLcVx8TBU0Ys=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YPqc3+Zk4p1Sfbj5d7Ee4Xn7s3BsoU066fITQL+T3ChKmdmw+GGZZMJI4YLJPPDsHC9CdpmnX6b0lyvoZNHVYo4xbRhvKPt0KnH7O2LoWpe57Xys8PK+2J9IQi1gEKM7L/6wbiXo5EUwVLaWCpIdGDvmxGl0MyMdAV5S7/W6Q+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IH3sxusF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786016625; c=relaxed/simple;
+	bh=Vh3lESIeL6qTm46nCHD7WoUqzT6Ku3AruMEQsvI8yTw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jphuP1c/H9eZnuNhU54iTNrNLMWNtNK9E92tXy5IVGX+xN1KyXc8alUQ5DTn6ryPXLPGT3fe4CtnaAQo8Gx3pt3JBs3OmaFyau80ZURQjmkGt+QfO1B7Q5iNxlBGGVMWJ7ohyI78snglTPOTICzb8OyPfq5fHE2zFY6HdMvDOPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SO/+OpCc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=V4BPo7lw; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IH3sxusF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B351F000E9;
-	Thu,  6 Aug 2026 11:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786015644;
-	bh=obUbvbDJQpsu0FL/dBaUt+UxsmHRG5s3wWQlipHsa9U=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IH3sxusFSSIHa/wEPvE7QrzPdgI/LO1bTJgdmIOYrilssB4BzPzUA5cQNre79fra3
-	 xVg1w5rTBw62MzlL25Yc5/jg0+r2EEFB1xQDgQQleQ6eOfi3c5EqhgOUZbmXEU58XN
-	 iilk11ya4691RNWnyj+igAEYuqPlGpc6jbwxmS+fyab3IwNyCTQFzIVgcEtBwiKERk
-	 L7PWQvEIVLU+NY1wqm2mvzi6jHbJ5hiQpPbEpE+h1wYx3q8ANS9xELxNnd6Ud3fUKC
-	 Tb1uZvy5DioXKOg+eguHC+Wkm6zckt4ziLuEEdZGDbuO+9SrkHJpg9cwxHZFaaQVE7
-	 lag3Bwhgh+O7A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v35 5/7] firmware: imx: adds miscdev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260806-imx-se-if-v35-5-11b25bb308ef@nxp.com>
-References: <20260806-imx-se-if-v35-0-11b25bb308ef@nxp.com>
- <20260806-imx-se-if-v35-5-11b25bb308ef@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 06 Aug 2026 11:27:24 +0000
-Message-Id: <20260806112724.89B351F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SO/+OpCc";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="V4BPo7lw"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6769nkYC1871415
+	for <imx@lists.linux.dev>; Thu, 6 Aug 2026 11:43:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=PLJ+zO8fHCwqHnlO5zRh4H
+	AUmHBZQtEJHNPOmGYhT5U=; b=SO/+OpCcSdK54xgZgq0Wk3CutUMIkz3EFP9GWm
+	WBscpylzt7kRthiPAN8ECFEV4QaVGXADgpJ25hHzwfHnw7x3vP+wI5Ty5J/ke7i4
+	gIA1wQLCNisNh53As6UVFss1Igli1d3aUsUs+cuwFLp4GqxcD1RnsDrjvXebCHLs
+	2QMD/sBHwj951W9i/mgGsSU7M4J2mIiCK20DyMKegsq3sa+ZYUIWYqaoR8NwxMgK
+	oWLmqQ7zyflM46q28OWI2Q8vQrwFlEXK4Dtg6tfv918rp2bXd97RmWQ/vQ0ylxaP
+	vzEtlRhUu9FXgyzkc72bTz0bWdAF7+37ArzG+SKaTkIFLrDQ==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fvjud1w3u-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 06 Aug 2026 11:43:42 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c856470fe9fso1655475a12.2
+        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 04:43:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1786016622; x=1786621422; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=PLJ+zO8fHCwqHnlO5zRh4HAUmHBZQtEJHNPOmGYhT5U=;
+        b=V4BPo7lwkd5E9+Xmrwap12zejD2ZGhzwJhvpSBZRQP4S94jEAm9sVJhph0b6AJW9MO
+         Ws+F7Cm9K3lnzDXtEARLFOrmwsPEp4VO9nujLa/H3riVewAJ6IxGLXJsLbbzLIJMpmXl
+         N5wRT9m9PuhFynQMNtMQZ+7IFPy4fjjA3NiPBX6Skx4hWZOrfowffqtLQOyz6B5JeKo5
+         Mp7dlEh3LMu8GeGA39BoJLoK+Vj0yBbfKGMZ2rMQVLLBzTkqGoq56r6lHh14fGhVQTPo
+         1s0+F3AR436RcQ5UqPM8mpU/FwQikmQ1vTz45vd0FtM4rRds+cfIYBboBYpGOJ7x8bZ0
+         luBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786016622; x=1786621422;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=PLJ+zO8fHCwqHnlO5zRh4HAUmHBZQtEJHNPOmGYhT5U=;
+        b=ei5TsFZUoXLbwaus/R/zHAW0k4KejW7K7mbD9fR+455OtZOjGiRGyyx9HCXvz+zw7w
+         3v68r+zEI0/FSNLy4aWaKK18mSBFMiyjEYuzf16KJI+vWCMEHdjn5YDOiQiGRuV+8N6w
+         SYcuvB/gPH0GyV3WmdIEdHjjBQivRaox9A5JmkdYcEAAKhJMierRfzDIvr7liTsnNDsS
+         oVDKpS0O/zqRL8EHPbZJ810YlDVxcPk5Fl2qbroQFfuk2MR+Lt5zgsWZbkpdEbeOD3Mz
+         7lYBNrkfTKUmYOAB+tBJym6vpltrcDROrCPLoyHKxyrj5VABC2xzlTFJ9JPSyIAjsUre
+         AG5Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpcvpKui2fKqYVs/asLSphMF13Bjotg+xJDrXiVZcORQPNn8q2glci73PDxmTjZxyW5T4Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzmHOoQ0xKYN4ovXwhy+Kc5VmOALnJGlrEDmrTY3F13RWYQ5QXJ
+	yP1UM0iwbyD37aPjGFEkqt799GPLsLaUaXpWF4D51uICoc6eKBiHWs/Ca0eKqR3EOajfsBmHp9Y
+	pxjzdgdVj12W9ys7erkOrucRxwr4Xb/CXt9BV4lz4t/GrDbEy3wg7Qz0=
+X-Gm-Gg: AR+sD13gHQDrtzNELzKKi2hLNaB30GMYhFPxVEH2uKrQclCyroevra/LR4qEYImxoS7
+	IsUmQPV9ejSf1eKQMISHfBJPuaYuT/17pX0uSBwn3OmGCRntAHJ7py7cIRs0w72g44A4A7vNU5U
+	jya5ckibwXx+JzJE+TuoHbF6eG7C1jpu7nHTpppaGnC/C+zTWFdBZfYXAbbQA8UTdc+CeA4yAeh
+	GtIVQPpHQXDYv+jUMFwGAvwZ9C9/qgSKp8HUQ0dfZa8CgR4J3F5F+uRCSyi3yWV37VbkWC0oPiz
+	Cm+g7hjPPBMKOWDJNClKnIOv+aXkQJKNRrPTQo+rr8q8cuSUDP6dq6YugkTi+bjbBvTd0lglfLr
+	Th6f8YHO0t2jmYYq+NxMV8spjilM76Ks=
+X-Received: by 2002:a05:6a00:12d6:b0:84c:1cd2:142b with SMTP id d2e1a72fcca58-84f2e031769mr14671849b3a.9.1786016621596;
+        Thu, 06 Aug 2026 04:43:41 -0700 (PDT)
+X-Received: by 2002:a05:6a00:12d6:b0:84c:1cd2:142b with SMTP id d2e1a72fcca58-84f2e031769mr14671783b3a.9.1786016621100;
+        Thu, 06 Aug 2026 04:43:41 -0700 (PDT)
+Received: from hu-nihalkum-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f456b75dcsm1234756b3a.34.2026.08.06.04.43.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 04:43:40 -0700 (PDT)
+From: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+Subject: [PATCH v7 0/5] Add CAMSS and IMX577 sensor support for Shikra EVK
+Date: Thu, 06 Aug 2026 17:13:25 +0530
+Message-Id: <20260806-shikra-camss-review-v7-0-c7360fd6a5ac@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF1zdGoC/43STW7DIBAF4KtEXpeI4WfAWeUeVRcwQIPaxI1x3
+ FZR7l7iVEoWdtUN0kOab95izk2JfY6l2azOTR/HXHJ3qME8rRraucNrZDnU3AgukGuBrOzyW+8
+ YuX0p7DoRPxklTIiONKJv6uRHH1P+mtTnl1vu4/FU8eH22XhXIqNuv8/DZgWGQwpOJG2jVJq45
+ klJ3rYGfCBuKCAo9K65Wrtchq7/ngqPMGF/dhuBcYZKB0GWjHZmexzy+nhy79f16/pM7CjuFHI
+ 7T4lKkYNWok8goN12pcxQ8oECPU/JSlmwUllIyga+QKl/UKpSnrwGbsFI7RcofacMyHlKVyp4L
+ X0EHUilBQofKLFAYaUMKUyt916FmVZPv1dluV4mnA2eEBMP1sy0uVwuPwkyZOPDAgAA
+X-Change-ID: 20260526-shikra-camss-review-cf6f66ac566b
+To: Bryan O'Donoghue <bod@kernel.org>,
+        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        Suresh Vankadara <quic_svankada@quicinc.com>,
+        Vikram Sharma <vikram.sharma@oss.qualcomm.com>,
+        Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786016613; l=5187;
+ i=nihal.gupta@oss.qualcomm.com; s=20260608; h=from:subject:message-id;
+ bh=Vh3lESIeL6qTm46nCHD7WoUqzT6Ku3AruMEQsvI8yTw=;
+ b=o/36NYy1clh5A+c1LDaAFLnChOxBkD35/yG9f3IIy9r1utY+KY54c25j80XLIJn6NfqSceMos
+ 8+eVRPP2VIMAe5LJ7Uy5oMRAEkXBlw0EKcNuq90OQ5/MWUiIClsf8pY
+X-Developer-Key: i=nihal.gupta@oss.qualcomm.com; a=ed25519;
+ pk=DIbyFMNwqU/iMvU/0pCQp2wmRVgtHFBT3PcSu+A+Ncw=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA5MiBTYWx0ZWRfX13pogy3HzBdT
+ DQ88o3GmXJRcibYxSVsk/cGp+jLzxPG7nn8p95+lWH1dWFbiGFUcfLRB3B4hw3F4bbXDNS2ZpY+
+ JXt8FWhR4YGRUAqe/dMEbzFdRaNdwsv0tXOsaxZs4qSUzM/+plVVBIatdmhzwTQlck4wYFDMNXY
+ uz6Uhn4ZNYwb6UJqwdseQL/jEiuAoysRyqWvuC04TeQYNQiknzbnUepx2IdP9SUfKsUvoAqiLv4
+ 3rql9INodmwIbCZ9YrQvo9I8cmSN6P8Gl1lbxjk/dofL3Uxbjl0iE2FIgc3hd8n6sdJPrPcm+J0
+ CYFnAnviOm5nXYlAW4AsgynRkIuzEsgvSrRs+c6jYqU+IXPYIkVEzFXr+vBjp2qUDOLrjpGYoNz
+ r/rHoGwCXLRhq0K8WHp04Tbpm+ESZL+XJdccZzaZ9i0V/UhDVqM2/obNkI8sR83whtZ9NPw6Snw
+ OdzJMmtRvXVC6ScWV7Q==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA5MiBTYWx0ZWRfX7Pxis8TWnt/8
+ YNlJleW5Yr7vbM9E+dYtRnrnV46QQAJ71CfDm/Lg+UoThdVv+06Yd7HFvt4XL1E4Ydq4+i95A1W
+ KgzovqC7hTKthIhjJDo9zARUjp+OYLY=
+X-Proofpoint-GUID: PmTI993xjvzE2Frn6jVuB6j_KP3fHP9S
+X-Proofpoint-ORIG-GUID: PmTI993xjvzE2Frn6jVuB6j_KP3fHP9S
+X-Authority-Analysis: v=2.4 cv=DeInbPtW c=1 sm=1 tr=0 ts=6a74736e cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=E40xv7DK0V-5u9Ck0vwA:9 a=QEXdDO2ut3YA:10
+ a=bFCP_H2QrGi7Okbo017w:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ spamscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060092
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [Critical] The driver allows userspace to embed arbitrary DMA addresses i=
-n permitted firmware commands, enabling arbitrary physical memory overwrite.
-- [High] The `se_if_open_gate` structure can be accessed after it is freed =
-if an `open()` system call races with driver unbind.
-- [High] A concurrent `close()` racing with driver unbind causes a Use-Afte=
-r-Free on the mailbox channel `priv->tx_chan` due to premature unlinking.
-- [High] Firmware session and storage handles can be permanently leaked if =
-response validation or userspace memory copies fail, bypassing the tracking=
- of allocated handles.
-- [High] Signal interruption converts an interruptible wait into an unkilla=
-ble uninterruptible wait for up to 5000 seconds.
---
+Shikra EVK is based on the Qualcomm Shikra SoC.
+It lacks a camera sensor in its default configuration.
+This series adds CAMSS driver support, CCI definitions and enables
+the 22-pin IMX577 sensor via CSIPHY1 through device tree overlays.
 
---- Patch [5]: [PATCH v35 5/7] firmware: imx: adds miscdev ---
-commit a678d58783e842f1a853a0ba674864702cf30910
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
-Subject: firmware: imx: adds miscdev
+We have tested IMX577 Sensor on CCI1 with following commands:
+- media-ctl --reset
+- media-ctl -d /dev/media0 -V '"imx577 1-001a":0[fmt:SRGGB10/4056x3040 field:none]'
+- media-ctl -d /dev/media0 -V '"msm_csiphy1":0[fmt:SRGGB10/4056x3040]'
+- media-ctl -d /dev/media0 -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
+- media-ctl -d /dev/media0 -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
+- media-ctl -d /dev/media0 -l '"msm_csiphy1":1->"msm_csid0":0[1]'
+- media-ctl -d /dev/media0 -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+- yavta -B capture-mplane -c -I -n 5 -f SRGGB10P -s 4056x3040 -F /dev/video0
 
-This commit adds a character driver to communicate with the NXP secure
-enclave hardware. It provides an ioctl interface for userspace applications
-to send commands, manage shared memory, and restricts invalid or disallowed
-firmware commands.
+Used following tools for the sanity check of these changes.
+- make -j32 W=1
+- checkpatch.pl
+- make DT_CHECKER_FLAGS=-m W=1 DT_SCHEMA_FILES=i2c/qcom,i2c-cci.yaml dt_binding_check
+- make DT_CHECKER_FLAGS=-m DT_SCHEMA_FILES=media/qcom,qcm2290-camss.yaml dt_binding_check W=1
+- make CHECK_DTBS=y W=1 qcom/qrb2210-rb1-vision-mezzanine.dtb
+- make CHECK_DTBS=1 W=1 qcom/shikra-cqm-cqs-evk-imx577-camera.dtb
+- make CHECK_DTBS=1 W=1 qcom/shikra-iqs-evk-imx577-camera.dtb
+- make CHECK_DTBS=y W=1 dtbs
 
-Closes: https://sashiko.dev/#/patchset/20260805-imx-se-if-v34-0-7e4713d14e0=
-a@nxp.com?part=3D5
+Signed-off-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+---
+Changes in v7:
+- No changes in patches
+- Rebase on top of linux-next (20260805), fixing the conflicts.
+- Link to v6: https://lore.kernel.org/r/20260805-shikra-camss-review-v6-0-a8dbc66f0d87@oss.qualcomm.com
 
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
-le_base_msg.c
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-> @@ -15,13 +15,57 @@
-> =20
->  #define FW_DBG_DUMP_FIXED_STR		"ELE"
-> =20
-> +int ele_uapi_allowed_base_cmd(struct se_if_priv *priv,
-> +			      struct se_msg_hdr *header)
-> +{
-> +	switch (header->command) {
-> +	case ELE_PING_REQ: return 0;
-> +	case ELE_DEBUG_DUMP_REQ: return 0;
-> +	case ELE_OEM_AUTH_CONTAINER_REQ: return 0;
-> +	case ELE_OEM_VERIFY_IMAGE_REQ: return 0;
-> +	case ELE_OEM_REL_CONTAINER_REQ: return 0;
-> +	case ELE_FW_LIFE_CYCLE_REQ: return 0;
-> +	case ELE_READ_FUSE_REQ: return 0;
-> +	case ELE_GET_FW_VERS_REQ: return 0;
-> +	case ELE_RETURN_LIFE_CYCLE_REQ: return 0;
-> +	case ELE_GET_EVENT_REQ: return 0;
-> +	case ELE_COMMIT_REQ: return 0;
-> +	case ELE_GEN_KEY_BLOB_REQ: return 0;
-> +	case ELE_GET_FW_STATUS_REQ: return 0;
-> +	case ELE_XIP_DECRYPT_REQ: return 0;
-> +	case ELE_WRITE_FUSE: return 0;
-> +	case ELE_GET_INFO_REQ: return 0;
-> +	case ELE_DEV_ATTEST_REQ: return 0;
-> +	case ELE_WRITE_SHADOW_FUSE_REQ: return 0;
-> +	case ELE_READ_SHADOW_FUSE_REQ: return 0;
-> +	default:
-> +		return -EACCES;
-> +	}
-> +}
+Changes since last v6 RESEND:
+- No changes in patches
+- Drop dt-bindings: media: qcom: Add Shikra CAMSS compatible; already
+  picked by Bryan into media tree (now in linux-next as 32179a552b8e)
+- Rebase on top of linux-next (20260804)
+- Link to v6: https://lore.kernel.org/r/20260723-shikra-camss-review-v6-0-7c46f9bbb4db@oss.qualcomm.com
 
-[Severity: Critical]
-Does this allowlist permit userspace to embed arbitrary DMA addresses witho=
-ut
-kernel validation?
+Changes in v6:
+- Rebase on top of linux-next (20260721)
+- Sort CAMSS by unit-address numerically - sashiko
+- Collected Reviewed-by tag (Loic)
+- Link to v5: https://lore.kernel.org/r/20260713-shikra-camss-review-v5-0-db53be15dc4f@oss.qualcomm.com
 
-Commands like ELE_GET_INFO_REQ accept physical DMA addresses directly in
-their payloads. Because se_chk_tx_msg_hdr() only validates the command head=
-er
-against this list and performs no payload sanitization, could an unprivileg=
-ed
-user embed arbitrary physical addresses (e.g., kernel text) leading to the
-hardware enclave overwriting arbitrary memory?
+Changes in v5:
+- Rebase on top of linux-next (20260710)
+- Drop dependency on shikra-dt series; now in linux-next
+- Drop dependency on shikra-gcc-rpmcc-clks series; now in linux-next
+- TLMM pin entries roughly sorted by the pin index (Konrad)
+- Link to v4: https://lore.kernel.org/r/20260615-shikra-camss-review-v4-0-bcb51081735b@oss.qualcomm.com
 
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
-_common.c
-> --- a/drivers/firmware/imx/ele_common.c
-> +++ b/drivers/firmware/imx/ele_common.c
-[ ... ]
-> @@ -71,7 +122,7 @@ int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, stru=
-ct se_clbk_handle *se_clbk
-> +		if (ret =3D=3D -ERESTARTSYS) {
-> +			/*
-> +			 * Record that a signal was observed, then continue waiting non-
-> +			 * interruptibly until the response arrives or the timeout
-> +			 * expires. The caller can surface the interruption to userspace
-> +			 * after the protocol transaction is brought back to a
-> +			 * synchronized state.
-> +			 */
-> +			if (is_rsp_wait_with_timeout &&
-> +			    READ_ONCE(se_clbk_hdl->rx_msg)) {
-> +				WRITE_ONCE(se_clbk_hdl->signal_rcvd, true);
-> +				wait_uninterruptible =3D true;
-> +				continue;
-> +			}
-> +			break;
-> +		}
+Changes in v4:
+- Fix data-lanes numbering to start from 1 in all endpoints (Vladimir)
+  Missed in last rev.
+- Link to v3: https://lore.kernel.org/r/20260615-shikra-camss-review-v3-0-8183481f48d0@oss.qualcomm.com
 
-[Severity: High]
-Can this loop trap a process in an unkillable state for a very long time?
+Changes in v3:
+- Drop dt-bindings: i2c: qcom-cci: Document Shikra compatible; already
+  picked by Andi Shyti into her i2c tree (now in linux-next as e3a8f8329397)
+- Preserve blank line after compatible const in qcom,qcm2290-camss.yaml (Krzysztof)
+- Add blank line between iommus and power-domains in CAMSS node (Vladimir)
+- Move cam1_reset_default pinctrl state from board .dts files into the
+  mezzanine .dtso overlay files (Vladimir)
+- Collect Reviewed-by tags
+- Link to v2: https://lore.kernel.org/r/20260608-shikra-camss-review-v2-0-ca1936bf1219@oss.qualcomm.com
 
-If a process is interrupted by a signal while waiting in ele_msg_rcv(), the
-code converts the interruptible wait into an uninterruptible one by setting
-wait_uninterruptible =3D true. Given that SE_RCV_MSG_LONG_TIMEOUT_MS is 5000
-seconds, this could leave the task unkillable for over an hour, potentially
-triggering the kernel's hung task watchdog.
+Changes in v2:
+- Drop qcm2390_resources struct and CAMSS_2390 enum; use qcom,qcm2290-camss
+  as fallback compatible string since Shikra CAMSS is register-compatible
+  with QCM2290 (Loic, Bryan)
+- Use oneOf in iommus to describe all valid SID combinations: VFE-only
+  (Shikra) and VFE+CDM+OPE read+OPE write (QCM2290/Agatti); add
+  per-entry descriptions naming each SID (Krzysztof, Bryan)
+- Rename shikra-cqm-evk-imx577-camera overlay to
+  shikra-cqm-cqs-evk-imx577-camera, shared by both CQM and CQS EVK
+  boards which use the same PM4125 PMIC and camera supply rails (Bryan)
+- Add reset-gpios pinctrl state for IMX577 sensor (gpio33, cam1-reset-default-state)
+- Add comment in overlay DTS explaining absent regulators are powered
+  by the daughter board (Bryan)
+- Collect Reviewed-by tags
+- Add reset-gpios pinctrl state for IMX577 sensor.
+- Link to v1: https://lore.kernel.org/r/20260526-shikra-camss-review-v1-0-645d2c8c75a7@qti.qualcomm.com
 
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-[ ... ]
-> +static void dlink_n_cleanup_dev_ctx(struct se_if_device_ctx *dev_ctx, bo=
-ol is_fclose)
-> +{
-> +	struct se_if_priv *priv =3D dev_ctx->priv;
-> +
-> +	if (is_fclose) {
-> +		scoped_guard(mutex, &priv->modify_lock)
-> +			dlink_dev_ctx(dev_ctx);
-> +	}
-> +
-> +	cleanup_dev_ctx(dev_ctx, is_fclose);
-> +}
+---
+Nihal Kumar Gupta (5):
+      arm64: dts: qcom: shikra: Add CAMSS node
+      arm64: dts: qcom: shikra: Add CCI definitions
+      arm64: dts: qcom: shikra: Add pin configuration for mclks
+      arm64: dts: qcom: shikra-cqm-cqs-evk-imx577-camera: Add DT overlay
+      arm64: dts: qcom: shikra-iqs-evk-imx577-camera: Add DT overlay
 
-[Severity: High]
-Does unlinking dev_ctx before executing cleanup_dev_ctx() open a race
-condition during driver unbind?
+ arch/arm64/boot/dts/qcom/Makefile                  |   8 +
+ .../dts/qcom/shikra-cqm-cqs-evk-imx577-camera.dtso |  79 +++++++++
+ .../dts/qcom/shikra-iqs-evk-imx577-camera.dtso     |  79 +++++++++
+ arch/arm64/boot/dts/qcom/shikra.dtsi               | 197 +++++++++++++++++++++
+ 4 files changed, 363 insertions(+)
+---
+base-commit: 1701fda2f58e345c050f4309971bdc07cd6146ba
+change-id: 20260526-shikra-camss-review-cf6f66ac566b
 
-In se_if_probe_cleanup(), the unbind thread iterates over priv->dev_ctx_list
-to gracefully close contexts. By unlinking the context here before the
-cleanup completes, the unbind thread won't see it, won't block on fops_lock,
-and might call mbox_free_channel(priv->tx_chan) prematurely. This could cau=
-se
-the concurrent close thread to send on a freed channel in ele_msg_send().
+Best regards,
+-- 
+Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
 
-[ ... ]
-> +	rsp_status_err =3D
-> +		se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
-> +					cmd_snd_rcv_rsp_info.rx_buf_sz,
-> +					tx_msg->header.ver =3D=3D priv->if_defs->base_api_ver);
-> +
-> +	if (!rsp_status_err) {
-> +		err =3D se_dev_ctx_cpy_out_data(dev_ctx);
-> +		if (err < 0) {
-> +			se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_info);
-> +			return err;
-> +		}
-> +	}
-> +
-> +	/* Copy data from the buffer */
-> +	print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4, rx_msg,
-> +			     cmd_snd_rcv_rsp_info.rx_buf_sz, false);
-> +
-> +	if (copy_to_user(u64_to_user_ptr(cmd_snd_rcv_rsp_info.rx_buf), rx_msg,
-> +			 cmd_snd_rcv_rsp_info.rx_buf_sz)) {
-> +		dev_err(priv->dev, "%s: Failed to copy to user.", dev_ctx->devname);
-> +		err =3D -EFAULT;
-> +	}
-> +
-> +	cleanup_err =3D se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rc=
-v_rsp_info);
-> +
-> +	if (cleanup_err && !err)
-> +		err =3D cleanup_err;
-> +
-> +	if (!err && !rsp_status_err)
-> +		fw_api_specific_ops(dev_ctx, rx_msg);
-
-[Severity: High]
-Could this error handling sequence leak firmware session or storage handles?
-
-If the firmware successfully executes an ELE_SESSION_OPEN_REQ, it allocates=
- a
-handle. However, if a user submits an intentionally truncated rx_buf_sz
-(causing se_val_rsp_hdr_n_status() to fail) or a bad user pointer (causing
-copy_to_user() to fail), the function skips calling fw_api_specific_ops().
-This leaves the handle untracked by the kernel, preventing cleanup and
-leaking hardware resources.
-
-[ ... ]
-> +/* Open a character device. */
-> +static int se_if_fops_open(struct inode *nd, struct file *fp)
-> +{
-> +	struct miscdevice *miscdev =3D fp->private_data;
-> +	struct se_if_open_gate *gate;
-> +	struct se_if_device_ctx *misc_dev_ctx;
-> +	struct se_if_device_ctx *dev_ctx;
-> +	struct se_if_priv *priv;
-> +	int err =3D 0;
-> +
-> +	gate =3D container_of(miscdev, struct se_if_open_gate, miscdev);
-> +
-> +	if (!se_if_open_gate_get(gate))
-> +		return -ENODEV;
-
-[Severity: High]
-Is there a use-after-free risk if open() races with driver unbind?
-
-When the module unbinds, se_if_probe_cleanup() calls misc_deregister(),
-which does not fully synchronize with active open() calls. If the unbind
-thread drops the final reference to priv in se_if_priv_release(),
-se_if_open_gate_put() frees the gate object. A concurrent se_if_fops_open()
-might then attempt to access the refcount of this already freed gate pointe=
-r.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806-imx-se-if-=
-v35-0-11b25bb308ef@nxp.com?part=3D5
