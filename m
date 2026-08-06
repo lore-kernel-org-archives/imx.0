@@ -1,142 +1,121 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C168E369D7A
-	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 05:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6C138AC65
+	for <imx@lists.linux.dev>; Thu,  6 Aug 2026 05:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785992951; cv=none; b=fYTRcVEVGXiC7RJ3XurL8dvu/v90RGUTATqfVpGPEnUBXb6MFcxcGgKB5bepumauyJWhfR/wu5DvnnXcHruE/Nlakd/750T9LWW+yZ5LgJtIcDlhw/Wp1Lz8mMBFquqB6zmLaGrPiE5BEZllaoT6KsmkSjBpfKA8CIpN6kSR9dw=
+	t=1785993084; cv=none; b=IDbOPUBuZiZ7h+d1A4BnCakR2SI3lHa9ZkDMTk9Ao9/PAQLo3VI27SPAj83TuVsMvtbX84OSd8JPJwWFVT0tunzoA4IwLzB9++rlP7mJywLUJg+NEuwteg5h7BCs1TDB9aJUdwTF9n3OFBJ9tDdEY0Q7tZRCvuaCcVUqsT2N5pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785992951; c=relaxed/simple;
-	bh=oN4Rl3edB4mJV9TlJ8etemR3rqbOYTSNlcZJeSaUlcE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Huxoi7IsWWo/y1ME/4XeZsJnHnpHoS9ifeU0hjrNUzSjQGtIkgyF1Q53ktNOEP10n3+afqpJgitDp4+14SKPoZuo6g/aASU4LJRk5/CkvdUDfgNrn9w7TIz6OcAMc7LLV/OKkgj//o1LAPGlAs9UDOS+PYrWEM0Hup3aemramr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dquoDQIC; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785993084; c=relaxed/simple;
+	bh=zKh5XXhjWimtm9RNw9A/OOoWI9qqXlx7h6xUBbfdFEU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sBjFGR79Mo1DqQoSES2SJSHyWXFfCa0lEiwvFY/D9EvSfA3FnIR4fYZFSFrlO5htw/Lgo/lgmUh74tMEdMcXL2kb2iqVJ51gozeEPrEeye2MXFYgdmViAYVOnqxNSJK95qowHiZjHYrE1VG2y8tbdtPaLJ5LJNboZMmWk1Cc9nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpizJCBl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dquoDQIC"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47fdd674e17so1042729f8f.1
-        for <imx@lists.linux.dev>; Wed, 05 Aug 2026 22:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785992948; x=1786597748; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+oWKqgV2uBxAga3aUXb6pt+JmIGNx/LBE5DxnCPtLR8=;
-        b=dquoDQICam4NCYqjJK4mZHjnNJrZ5eEZGOcPWd28LNKmvv3Ls5JamQCsadZSqd0DDq
-         5IjGg73LnL0lvJK/PKRp+8TYMsqi9gwqNlgZ5NyNMns/tgOfMtq2jD5R9UblWQqsr7dD
-         0vZNh9xemzYkDXKcyL9mFkPfbegvbvWPaKxcoaTKYJUMfwf2oBYPgn0JEZe5UQzxfk4D
-         Avc070S/8iSU+cE9bNC9FcglkCOKXGAa+rNdrq9qmWBow5lQ9w4zxaUreYWiNOVpo/YK
-         gP6E23JZDzksCBgUEhrcXiTeLsV6Bcb+z/h74Gg53oTDPQ86Y4o//Dq/MN+xSvQAI+6b
-         FkHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785992948; x=1786597748;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+oWKqgV2uBxAga3aUXb6pt+JmIGNx/LBE5DxnCPtLR8=;
-        b=Uud/U1EsXNYvoKSvdxn3CKAR0VDmb6K4q8LgRtEiELIj1q7G7/cmElG7EcAfxBS4tV
-         Vpe8SsTFJWPOOMwGunvuF2XIyXskgmoeKOKG+/WTboTEyxRERgnKQPrsjmj0Cu+xlLSh
-         3fDjVlp5Fketv1KuZLOQ51mqz6AoYqIXZ9I5zG9DRKPRecTKa3BNCH6kjmXszgoUn/pz
-         Yt8DjocUOANOCcQaxLkplWM9x+q0p4nbgDYaY0MolOqjwrr8xmCnC5wL9S14xdwHY0Ao
-         vB9ekvP0wItZVWAOO/VmkrpaDZurg1yeueEQo9AnLFwKnNC9CJf9airoE68noDSyedot
-         Pw2w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6Q8ob0X22d3Ab/0vyoxipjSIekyhsW0w2iwMvXE4Vxmyv01FLJvaxZ+R2Ut9Pqr0tQDA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxe/DS1mnJUGpM6ZHsepaOIoiK8ROijTFzmFCT1vsLpilzn1j7p
-	F6cVMIF5BOH2JaS5oj+RTxJw6T6jmwOQUtrED7lc++GRgx3VKqm5/bl4
-X-Gm-Gg: AR+sD10DBs2JLTKbscg6CPQuaIBUTB0woOGYsUU20beT9Ic6YUa1ndwT3jY76OM8qgO
-	7E+BirfkVhzC/a9DqeTLF+cxyQb1deX7mSdF5hQfFB5IwReG8jcNcliKZLAC208bLUMGGVIAK7j
-	adSUQJiwvy3GziS13EiQFotqaB5MycB/+cW2k2paumG3wr6rA62001TsBEHCSkgbmOhMOsIJwxZ
-	dAbZLOs3xhuW/xSbCGP5PPPOervM9cx7rFP5jLLOakjCr7G5dX+aXhzE+7KFGnH/eiWxN1hFDW+
-	NQK36Nb5AMJkcqe9vg6CbcYXc5wutWpq6CKf7UJCEsnFk2KynJO32O3FzMjC2VLIYsvVLWNKsK9
-	jCCYfUKu400KoRA6oeg1bxPK2h3HohAbHfoz0cOFZ+DCxR+lvSIYIWiSccUWJB57XOS1nebfHdV
-	gxz7xEOU7HZhc2MfI69zY3Pkg5xQcKKqnwT0v2+RVrsCkEYQ35P82gvFOoH6jf63SrvnnplJJsL
-	bM0AcVk8MD8n2CDS0m5tIHpylHz8Kes+i61iPEQP1js+XnvLpOyf4eGcmOisuGr/KIy3PeXh7xZ
-	atna+ZBMAUMasDK0rf6yHBtAeUryMkpuUwRJG6K6etJPZrFMK3QjtlOyOV0J499Ldp4CuP2mi20
-	K7I2ulcce
-X-Received: by 2002:a05:6000:40da:b0:47f:93b6:8d06 with SMTP id ffacd0b85a97d-47fec482347mr19399636f8f.0.1785992947779;
-        Wed, 05 Aug 2026 22:09:07 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-adf9-2301-8c14-6be6-a9e6-a2d4.310.pool.telefonica.de. [2a02:3100:adf9:2301:8c14:6be6:a9e6:a2d4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b183b2sm3315505f8f.24.2026.08.05.22.09.06
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 05 Aug 2026 22:09:07 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Anson Huang <b20788@freescale.com>,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] cpufreq: imx6q: fix devres accumulation across driver rebind
-Date: Thu,  6 Aug 2026 07:09:02 +0200
-Message-Id: <20260806050902.90550-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpizJCBl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2BB1F000E9;
+	Thu,  6 Aug 2026 05:11:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785993083;
+	bh=szd8QgdcOaV0w6uY9EwHcGD+/6r788v5goUgUl4qiYY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MpizJCBlj2huS6JhYajp8leiNHp/WHjftLQL/3cst2wx5wYKxb69ek3NSvfbarrb+
+	 /syLqemiOOo5RpHjBvLlxlCG+zv/K3s0Kq8rh2Eb40jdwYAtXrhRcAa78dNmfjIwQd
+	 0JxONGJC0ZvovdxpcpGENCVNJoYYE8DR1Iu13/z2rz5UfZNd675Tm+D08LiLPSkqzo
+	 0jcqnkzgh3yP/vPOM7M+ZAT9o//RW12ZRN2K3l1DgEWiAp91mUbJqadudO/e2X4Cgu
+	 8ai82ycbIeaqVZlOkk+YONZiZMJLMaPOFsKHku6iJ1FHpFsaTpmQrClPB9dJuaeY55
+	 b+8PyiTQDxczw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] cpufreq: imx6q: fix out-of-bounds write when probed
+ more than once
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Karl Mehltretter" <kmehltretter@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260806050239.90188-1-kmehltretter@gmail.com>
+References: <20260806050239.90188-1-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 06 Aug 2026 05:11:22 +0000
+Message-Id: <20260806051122.BD2BB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-imx6_soc_volt is allocated with devm_kcalloc(cpu_dev, ...), where cpu_dev
-is the CPU device from get_cpu_device(0). That device is never unbound, so
-its devres list is never released, and imx6q_cpufreq_remove() does not free
-the array either. Every probe therefore adds an allocation that stays for
-the lifetime of the system.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Allocate against the platform device instead. Its devres is released when
-the driver is unbound, which is exactly the lifetime the array wants:
-imx6q_set_target() reads it, and nothing may reach that after
-cpufreq_unregister_driver().
+Pre-existing issues:
+- [High] Hardware clock state desynchronization and unhandled clock referen=
+ce leak on error path in `imx6q_set_target`.
+--
 
-That makes the array actually go away on unbind, so also clear the
-file-scope pointer in remove and on the failed-probe path, rather than
-leave it pointing at memory devres is about to release.
+--- Patch [1]: [PATCH] cpufreq: imx6q: fix out-of-bounds write when probed =
+more than once ---
+commit eaf7ff016f231691af46156c1e76ffcc234120eb
+Author: Karl Mehltretter <kmehltretter@gmail.com>
 
-Tested by rebinding the driver on qemu's mcimx6ul-evk.
+cpufreq: imx6q: fix out-of-bounds write when probed more than once
 
-Fixes: b4573d1d657a ("cpufreq: imx6q: correct VDDSOC/PU voltage scaling when cpufreq is changed")
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- drivers/cpufreq/imx6q-cpufreq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This commit fixes an out-of-bounds array write during probe caused by
+soc_opp_count retaining state across driver unbinds and rebinds. Moving
+soc_opp_count to a local variable ensures the array index resets properly
+on every initialization.
 
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index e93697d3edfd9..8110c95059e0e 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -400,7 +400,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Make imx6_soc_volt array's size same as arm opp number */
--	imx6_soc_volt = devm_kcalloc(cpu_dev, num, sizeof(*imx6_soc_volt),
-+	imx6_soc_volt = devm_kcalloc(&pdev->dev, num, sizeof(*imx6_soc_volt),
- 				     GFP_KERNEL);
- 	if (imx6_soc_volt == NULL) {
- 		ret = -ENOMEM;
-@@ -485,6 +485,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
- 	return 0;
- 
- free_freq_table:
-+	imx6_soc_volt = NULL;
- 	dev_pm_opp_free_cpufreq_table(cpu_dev, &freq_table);
- out_free_opp:
- 	dev_pm_opp_of_remove_table(cpu_dev);
-@@ -506,6 +507,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
- static void imx6q_cpufreq_remove(struct platform_device *pdev)
- {
- 	cpufreq_unregister_driver(&imx6q_cpufreq_driver);
-+	imx6_soc_volt = NULL;
- 	dev_pm_opp_free_cpufreq_table(cpu_dev, &freq_table);
- 	dev_pm_opp_of_remove_table(cpu_dev);
- 	regulator_put(arm_reg);
--- 
-2.53.0
+> diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpuf=
+req.c
+> index e93697d3edfd9..fe0453c9623fb 100644
+> --- a/drivers/cpufreq/imx6q-cpufreq.c
+> +++ b/drivers/cpufreq/imx6q-cpufreq.c
+> @@ -55,7 +55,6 @@ static unsigned int max_freq;
+>  static unsigned int transition_latency;
+> =20
+>  static u32 *imx6_soc_volt;
+> -static u32 soc_opp_count;
+> =20
+>  static int imx6q_set_target(struct cpufreq_policy *policy, unsigned int =
+index)
+>  {
 
+[Severity: High]
+This is a pre-existing issue, but does the error handling in
+imx6q_set_target() leave the hardware in an inconsistent state?
+
+When the cpufreq core calls imx6q_set_target(), it sets
+pll1_sys_temp_enabled and calls clk_prepare_enable() without checking
+its return value:
+
+	/* pll1_sys needs to be enabled for divider rate change to work. */
+	pll1_sys_temp_enabled =3D true;
+	clk_prepare_enable(clks[PLL1_SYS].clk);
+
+Then, if setting the new arm clock rate fails, it restores the old voltage:
+
+	/* Ensure the arm clock divider is what we expect */
+	ret =3D clk_set_rate(clks[ARM].clk, new_freq * 1000);
+	if (ret) {
+		int ret1;
+
+		dev_err(cpu_dev, "failed to set clock rate: %d\n", ret);
+		ret1 =3D regulator_set_voltage_tol(arm_reg, volt_old, 0);
+...
+		return ret;
+	}
+
+If scaling up to a higher frequency, volt_old is lower than the required
+voltage. Since the hardware clock tree (e.g. PLL1_SW) has already been
+reprogrammed and reparented to the new higher frequency earlier in the
+function, does restoring volt_old without rolling back the clock mux state
+cause a CPU undervolt and subsequent system crash?
+
+Also, does returning early from this error path leak the clk_prepare_enable=
+()
+reference since the clk_disable_unprepare() cleanup is skipped?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806050239.9018=
+8-1-kmehltretter@gmail.com?part=3D1
