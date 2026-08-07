@@ -1,122 +1,133 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FAF4503F5
-	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 06:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CE439B955
+	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 07:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786085821; cv=none; b=cPrde68ejmDQsdL51gITukZJ9q/PpFIaU380Tih5B/tqu6KodYpNCZWEpN6QwHs7kA/ijBa4HumkjkRy58vic2OfUX+EDjx6Aq+WrTQm8dCy8E4EVJrQu9G6N+Yo6qNkI3JvAYfoW5XcVPRi4XfP2Oll7jw23emxTfYyG+xgCx8=
+	t=1786086238; cv=none; b=JnJ2RRVmx/wxbFVGqlmuAOUeETZxP3hm2Zb0mF4w5QOLSOXynyJiS5+Hhq8l99hdgoPXajIBARUHuh7hZA6X8B5HftBAp15hnw5UAHvzhcI111tri+3+EMs1JNBYaPDnfd5uzwpBqYbISVvkUde8P4Zr36uGEP2BU9wk7WZtR44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786085821; c=relaxed/simple;
-	bh=tx2vu6tRfNOWOpgF2CyJw75B/ayEkTsq8oTxALj8YAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u91PX7wyMlbd0Rbeiz5ybM/+wWuwqyfJGzka7dBu8yiBVOFJT+0w16oLJ17cRuurUEVLLzHF7ZrNJZPZcy+OVV/Lw1yzxQjndUq4PsRZNXgrNX+l/UVt3qhnX3+lA9QGu4Tkuh64Hak1la+Sh1L2kx9+XkIOtYtqZI1V4E3g6HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e5u0og2/; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786086238; c=relaxed/simple;
+	bh=rV/fVk02S2beANOXdBuKjDnOGhe/RliF1zYayW9Zlo4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=oFyhWEyPbMGkmliW1bicIrYnSOv8EJmXeBk35MPcR1rqeLdv4CeIVhrNVoZZ+FiVKX+nkwOepXwPQvJTWZ5FNUDNyzV+9eWpUg/VSi/xMzCVzWH6f0qpluX7cacqJs5LXyuDtcJhGkVFrl9b1mnFAoIa45e1ilzlkyUKKaXuCvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEeuJIu5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e5u0og2/"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ceaf8a1265so44838135ad.2
-        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 23:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786085820; x=1786690620; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NEsRntJMT9GLMPPJGd/kwW2aUYHVVekfdk/685HavFM=;
-        b=e5u0og2/p1GNAgP4FsBBTxME7J8K44kkWwgL2UMDuezP91pf40h9PCv03I17udp7I1
-         lv6FJwumAAfPCRmY9Cc0roPJ4DKIOitY2ktjEeOlfduwwY3xNuDULsu+IYZUOG0rGTh+
-         260kAdqBSyAkWr590GIHwLUTTgCDj03oPZZA0ULMYgBixbm8VAuCsuJiV3iMkJOl+Ryl
-         QdKtxpoLi2mHBTcTiVCMpVvCUT3WnMMEkBCK4js9RzXd6e+mLxRG681aliaeSe8bkr5w
-         uj27X4F4CvdGI8bpOAgG/h7txYd92qfarLyzTAPFNQlGR79Pf3WQIA3EI2aJotnOR4fF
-         Iiyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786085820; x=1786690620;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NEsRntJMT9GLMPPJGd/kwW2aUYHVVekfdk/685HavFM=;
-        b=k+aN27AsOOQzuu509dVLApHVK6ZDgX4mUdkuAPDDrWmM3Ez0zapxuyfJJ+eeIpnvT+
-         6Xwk9mbGjtdzAJnMded3mGYzruWzRk8HdkEVwsnxKYkoJo4ER2cwQRTbW40HrqJeFPQK
-         VSRg0q23x9Mno/mdLQ1RlSuE06tVE5NQi7FFbeFrRZnalD1oPzm8WYagElcNzisJgAvc
-         QS69zDH/ylrs63BOAQ09T3OTbEygKr+lzEh2ylX9YH4tGZxr5n3xKDbR6JSV9JEUM4xh
-         T3mKQ6diEBhRMouS5KkqjipFWMdwQU02IonxfdcJcmiz+WOpc1q19vj3EO5fO1Qy9YJC
-         XvqQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpCP6g8u592/fxMIW1bRwwV7QNYUAcwB5LlguNZ5dhhjMN3CxPyJCrqvtN7EWP1rMVHSqA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxA/DtpoU/AZehNNwSKqJ/tP7UGyr/SxO0DtGU5BDA6UAwXg1m/
-	yy/hxuCsx5YDw0z6Zm3K8hIiFpP9+wjSejYd3oPmpgNzpkwjdsfFZ/85
-X-Gm-Gg: AR+sD130P44vL9D+aoQK28JvzXjCTf361xD+SgjSspOkGoYWmkBFAunNA1sDPDj7mX9
-	93UN/5PcDpp7SXkcl35ZVcCr4t9tURL6aVLXYX5iZvlVcT8BrU0ztSOgWBxrj/saT7PjBJlpCPp
-	45YStSmH4vjw2dOhjj//Zfq/0NiXovlqDGiJvZRy50pbY6rVjyoRvBJififlUv6VRnUbfxC/W4j
-	ffUmnnTUQaCHyrRlrURN8kH3uOu7MCvqSisduY3uNC7seRagICV4nShIYa/5gcpZGKSdurYi+BC
-	hDDnk/tzGRYHFpFf6V1/Td+IgfbzlJlt4Sq4sxO/MnGzZwsvOVFDaIE+n6ESZZ9Qrun6kg07Mg8
-	/iROTA9SLwJzUQR9FB4FAYnYNHiOGxaUW4GHnEyHW7zf9iuFt5pHIQNU0PZaP5vbqHUYv0NNFja
-	F2zVqBjdz1msSZWc6iPzKGwwV1VC4HHTp+vAm19FC0DdgU67rDbbC8+UuJXyEn+bJ/Vcnl6/qNJ
-	yH4xl8XR0HgfsuCJV5OU3UtRfoTXgvK9LoUegcec29uyEUEPQmL+VTdRnO/Y78sSfitqSTTBZSQ
-	kLj7GdIX/Y3yHos=
-X-Received: by 2002:a17:902:e84b:b0:2c9:b396:1a55 with SMTP id d9443c01a7336-2d0ca76a3bamr221579765ad.12.1786085819613;
-        Thu, 06 Aug 2026 23:56:59 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d14ccb0b2dsm4420185ad.3.2026.08.06.23.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 23:56:59 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-usb@vger.kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	bui duc phuc <phucduc.bui@gmail.com>,
-	Sashiko Bot <sashiko-bot@kernel.org>
-Subject: [PATCH v2 2/2] usb: chipidea: ci_hdrc_imx: Fix error handling when creating IRQ name
-Date: Fri,  7 Aug 2026 13:56:19 +0700
-Message-ID: <20260807065619.30604-2-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEeuJIu5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8C41F00A3A;
+	Fri,  7 Aug 2026 07:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786086234;
+	bh=LLGBA/cj2B3NtrIiBdkVAAvebULE4ZeRztAY7EVu49Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nEeuJIu5DePIJZ2s7UxgeXNqwyKTScuHsn7YeJ90KAMB5LLpQBXCiBbra+8FNZ6yp
+	 z6pCTBeBoiqNBKYTAeZURviEHw5FwqCtVRJYCkdcrae7wpzYxZqK0JJsITKAzm7bdv
+	 QaO7oeOw2JZGYV7DidbXFggaWvT0BIi//b4pZlx7fpoGoAK0PVkVg/ohVQrN2raKKh
+	 f3f7g2gVfraKgRfpjZADoTHx8HgSaIOjmM03tbEv6SvXTmVE19xSobkPeYgA5RrOY9
+	 /Ynu+6b5Fdaj5koyAOEs9sevAbhyQMCZAcY2gmCPEnGoID0bhE8p3UA5SzlsC2oWUV
+	 ITnpewSRtLFBA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/2] usb: chipidea: ci_hdrc_imx: Propagate errors
+ from optional IRQ lookup
+Reply-To: sashiko-reviews@lists.linux.dev
+To: phucduc.bui@gmail.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
 In-Reply-To: <20260807065619.30604-1-phucduc.bui@gmail.com>
 References: <20260807065619.30604-1-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 07 Aug 2026 07:03:52 +0000
+Message-Id: <20260807070353.CC8C41F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-devm_kasprintf() can fail when allocating the wakeup IRQ name. The error
-was logged with dev_err_probe(), but its return value was ignored and
-probe could continue with a successful return value.
+New issues:
+- [High] The newly added error path for `platform_get_irq_optional()` bypas=
+ses `usb_phy_shutdown()`, potentially leaking the PHY initialization.
 
-Store the error returned by dev_err_probe() in ret and jump to the error
-path to propagate the failure.
+Pre-existing issues:
+- [High] Pre-existing error handlers for IRQ allocation skip `usb_phy_shutd=
+own()`, potentially leaking the initialized PHY.
+--
 
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/20260806065755.C9F361F000E9@smtp.kernel.org/
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
+--- Patch [1]: [PATCH v2 1/2] usb: chipidea: ci_hdrc_imx: Propagate errors =
+from optional IRQ lookup ---
+commit 6c82c9cecd7d9e9567b9f2902520e1c741b42e44
+Author: bui duc phuc <phucduc.bui@gmail.com>
 
- drivers/usb/chipidea/ci_hdrc_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+usb: chipidea: ci_hdrc_imx: Propagate errors from optional IRQ lookup
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 7387c9903e80..ec2280ae82dc 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -532,7 +532,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	if (data->wakeup_irq > 0) {
- 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s:wakeup", pdata.name);
- 		if (!irq_name) {
--			dev_err_probe(dev, -ENOMEM, "failed to create irq_name\n");
-+			ret = dev_err_probe(dev, -ENOMEM, "failed to create irq_name\n");
- 			goto err_clk;
- 		}
- 
--- 
-2.43.0
+platform_get_irq_optional() returns a positive IRQ number on success or
+a negative error code on failure. For an optional IRQ, -ENXIO indicates
+that no IRQ is available, while other errors should be propagated.
 
+Link: https://lore.kernel.org/all/20260806065254.28204-1-phucduc.bui@gmail.=
+com/
+
+> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci=
+_hdrc_imx.c
+> index 56d2ba824a0b2..7387c9903e800 100644
+> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
+> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+> @@ -525,6 +525,10 @@ static int ci_hdrc_imx_probe(struct platform_device =
+*pdev)
+>  		data->supports_runtime_pm =3D true;
+> =20
+>  	data->wakeup_irq =3D platform_get_irq_optional(pdev, 1);
+> +	if (data->wakeup_irq < 0 && data->wakeup_irq !=3D -ENXIO) {
+> +		ret =3D data->wakeup_irq;
+> +		goto err_clk;
+> +	}
+
+[Severity: High]
+Does this jump skip the necessary cleanup for the USB PHY?
+
+If usb_phy_init() succeeded earlier in ci_hdrc_imx_probe() and
+platform_get_irq_optional() returns an error like -EPROBE_DEFER,
+jumping directly to err_clk bypasses the phy_shutdown label:
+
+ci_hdrc_imx_probe()
+...
+phy_shutdown:
+	if (data->override_phy_control)
+		usb_phy_shutdown(data->phy);
+err_clk:
+
+Can this leak the initialized PHY state, regulators, or clocks, especially
+since -EPROBE_DEFER can be hit multiple times? Should this be goto
+phy_shutdown instead?
+
+>  	if (data->wakeup_irq > 0) {
+>  		irq_name =3D devm_kasprintf(dev, GFP_KERNEL, "%s:wakeup", pdata.name);
+>  		if (!irq_name) {
+
+[Severity: High]
+This is a pre-existing issue, but do the error handlers for IRQ allocation
+also incorrectly skip the PHY shutdown?
+
+If devm_kasprintf() fails or if devm_request_threaded_irq() fails below:
+
+ci_hdrc_imx_probe()
+...
+		ret =3D devm_request_threaded_irq(dev, data->wakeup_irq,
+...
+		if (ret)
+			goto err_clk;
+
+The error paths jump to err_clk, missing the phy_shutdown cleanup.
+Could this lead to similar resource leaks if the USB PHY was successfully
+initialized earlier?
+
+> 			ret =3D dev_err_probe(dev, -ENOMEM, "failed to create irq_name\n");
+> 			goto err_clk;
+> 		}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807065619.3060=
+4-1-phucduc.bui@gmail.com?part=3D1
