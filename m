@@ -1,159 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC09F47141E
-	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 08:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492793B637A
+	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 09:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786091399; cv=none; b=IgVaxnnA6ZMY9En6hDMKBC9tjkJK0DV15oZUSpy28o/HYBoXL4EyUUowH76q2XdpO11KxEucgx2XiXBhprwI/ppkZUzrnaOqjjNZPVH3kUknWipm87qAyoUqDyRDGlVBf8L/e7L7WmPuljqNxjO23SeTVPrntJHFdrMbSgiR/+M=
+	t=1786093806; cv=none; b=BJt9kg0ropWrrOPRvaozeoY3Y6oCiKLmrtIKtOsYfLVA/xAYHWLMZ5Tn79kCIKjW3F/f+W5+UqDLb/wRgcpgLxmU1hhF9vR4rbbO8C439PHttNjNpDAazxXVuFadz0d+3+qPC8+nwlYxV0SvdgeZcv5ohShzKdNlhHTG2xq3dyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786091399; c=relaxed/simple;
-	bh=hoZFacPuTLYSm+UKpnWSuyHJEbNkDNezz+9KwZRwbag=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tuV0lYeooPnXxFQGiovisvvh23QkPUZEiUJ2jGECfrU3zEXeaDAb7DPEURwuXnI/ePr20jntk44rZ7t0DoO9KxCQ3fE6NxvskbpGFexXygygSJnljJl+l09WchPI/MYv3xE1cAYt67FKtNGoq7TKzMJIoufDeRVzIHxUAh6QOME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3otAtPn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786093806; c=relaxed/simple;
+	bh=fXE63t+reDfxE+sqDQQS8BlL8hfF9EAW6qlirdeQqlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I3WYO3khfy85BnCyuZ1yRxiV9aYebHnAK9BwuPllaCtRJTA9p2YvF9mJxMjSCVMSGPOVYk96qBO5GptAtBR8ycbzGRiznqifefKzkge7vgsFuIx7vaMteIY+sSMVZCCSn3ksfLAKk6fIbDHjazU4WnmM5D+mZSNfoxAoSY5Wsqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pe5VAVMN; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3otAtPn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A791F000E9;
-	Fri,  7 Aug 2026 08:29:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786091397;
-	bh=aVymmRkit+nA7ecwSxGmEFB924b/20/DPBVJdXQOBkE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F3otAtPnAHwvS5r8QSpOwvHuAPpua7QzR/7mCEWv6LBzUtLH6F4kvZCZAQXXM3i8K
-	 rUUNFpYijDFKQ6nhESoHidymsderaLXACzLv37Vh63sktV3KKSbFqmO57WiZhgZ2gl
-	 yTSTmRAN1L8A2mLqEjTWccFVNo0poKDUCQt5mCc6+HhL78GW5OVdsrgEXwah5k9FF4
-	 CrBhU58j76u5gEROodtwuwmZH2pPrsqN+kqfTzFAkoegs+NuSkQJniWDYfPyvpKxud
-	 De1x60dEfb8q+9gwZp4MjafQ2njSWzM5N83VVJ0y+bE9A0550J5IGRoF2rD46z5g/R
-	 RpUE80pLbmuXA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/4] irqchip/imx-irqsteer: Allow building as module
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Zhipeng.wang_1@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260807072346.1222389-5-Zhipeng.wang_1@oss.nxp.com>
-References: <20260807072346.1222389-1-Zhipeng.wang_1@oss.nxp.com>
- <20260807072346.1222389-5-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 07 Aug 2026 08:29:56 +0000
-Message-Id: <20260807082957.49A791F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pe5VAVMN"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-ca957432c7fso2974124a12.1
+        for <imx@lists.linux.dev>; Fri, 07 Aug 2026 02:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786093804; x=1786698604; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KIWGEh9Ufcm6qiadbjnDxFEVPk5jpDGnhvZvsj6Ps4M=;
+        b=pe5VAVMN6Db49AHd5FYgTLp64vP3kg26dbQ3z+EyhdJAPMjZOeRcP+BWjJuQJl4LxE
+         yp+YcU+SdktE4oGTfd26qnGUoeSj3s+wqYWN30HB/magh4qopLLspVi1fcsF8Gocm/0f
+         8NhidMxzTTVndLdcxwC8sfnJbotlRGC4gEZPB3/dmaKpNCWinHUV/W5d9++Uhuwp0LHi
+         SFmhJ+AxhcYxaxV9fJArK5lwubier+lI4XqK1XchWvYV/FlG+fNqgfXdr9tjQEctrmfn
+         x8J1ttTjkt+D4OEQVUvKNbQ6Lc8h+UDpV0Da3EM5cT/yeOzCtZRGtK+FK1g1y7CNikKm
+         WjNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786093804; x=1786698604;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KIWGEh9Ufcm6qiadbjnDxFEVPk5jpDGnhvZvsj6Ps4M=;
+        b=Slfddr12Qdmh3RqwobU+mwJZBNpBvTSHyt5adaw1DfG1pE/M+FTwkSyx7/RR5Wf4X0
+         d8zNQ/NG56Qi5oFDtDYiAp0mF3ifPDnpiug2V4+LI2ctbK5OZ2mLYBeGQ6gMMrzZwGQK
+         EIYVmDF8i45aitRETk6XI7Cm7AhlkdJyzAm8iam1dsa5aR+mhXh9zpi4zlw1g/HoZp14
+         x1UtSz9wf4lm747N+uWV7y+XNpbSj2PxqXJNmx1zMWO25NRUP/DPyPiYrmxqNHwm9waK
+         1cdf3Wn0WVftZ5mFOp8UX7MnRJp8KtOclITkdBl4VVh2ZPhRTmJv3EEPJyadeYvQ7qVm
+         +kEQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqdBkVcOiCn+wdOyujdQaswiiry9f3CGmhzB2mtvFx3oB3IMDObbP1SEDKeER+l/IbSCZM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6tljycdvBhGlM8rhXQxZdwXODFsbLxyNlsS8GzMnE4TuBsGj5
+	6oG+EdIRR872XurDuamC5L4Kz2dW+0UPskj2KB3x+jUJ+BzfQ1m5dA31
+X-Gm-Gg: AR+sD11JK+OoVujMGoP8IwV1eo6+a2FLdqJJPD1+uGm82aB3aLCqDRBB1ouM7gUkKaF
+	hL6akQkaKoYaiyX8elALA4r5/ZhK5E9LR77PqlXtVhuVUfeH6THCPbVdbptRmGpdyIzbydSAh1L
+	2r4qCFgElmlcrqNFoUq+h8SN0vnU3BDI4531tY9Mz7vuMwU/ANBbhcLTCNQzsn2X0NifIm9+1UZ
+	hKdRSzXbXUL8+uRtF9nLfeNfq6E10SRqBJZorxlOjYsJt7VOLSadvokmMMQvIYyJ2QUYpOg6tma
+	2E83BnAk8OwwpfQ7E0ynRdZovqmzM8H5XTT0jxLIKSNVH1n4nyg6N7juRxEpiN9UHSVuf2EYL86
+	SpjHW5jecAYguVxCYqurrW54sIZRr1i2AjrZftNuDMl47SI6xcKZjNAomsEzbBvOn+yuaGTWj4f
+	n7iDZN+97zqX9YHYTlajbBTODSJdQuTzUiEKcir9SPzhlsoMiVQbiGwCK9Eb8bfipHErg2k1DGr
+	0nQJXwLyIZZ6ZpA0dSHIHLmqXXXdAfbHHwvmBwJLeoI1ZEkZ9wfV8VWkuiaZENz3RT49qZcol5h
+	89r8
+X-Received: by 2002:a05:6a00:a116:b0:846:bc60:5bf7 with SMTP id d2e1a72fcca58-84f2dfcf7f5mr24182425b3a.6.1786093804529;
+        Fri, 07 Aug 2026 02:10:04 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a552859sm715908b3a.42.2026.08.07.02.09.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 02:10:03 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Jiri Slaby <jirislaby@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yenchia Chen <yenchia.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Zhiyong Tao <zhiyong.tao@mediatek.com>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Zong Jiang <quic_zongjian@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Aniket Randive <aniket.randive@oss.qualcomm.com>,
+	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
+	Anup Kulkarni <anup.kulkarni@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	bui duc phuc <phucduc.bui@gmail.com>
+Subject: [PATCH 1/3] serial: qcom-geni: Propagate errors from optional IRQ lookup
+Date: Fri,  7 Aug 2026 16:09:43 +0700
+Message-ID: <20260807090945.41690-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-New issues:
-- [High] Missing explicit runtime PM management in `remove()` causes a hard=
-ware access crash and a clock enable count underflow during devres cleanup.
+platform_get_irq_optional() returns a positive IRQ number on success or
+a negative error code on failure. For an optional IRQ, -ENXIO indicates
+that no IRQ is available, while other errors should be propagated.
 
-Pre-existing issues:
-- [High] The chained IRQ handler accesses hardware registers unconditionall=
-y without ensuring the device's clock is enabled, which can crash the syste=
-m on spurious interrupts.
---
+Propagate errors such as -EPROBE_DEFER and -EINVAL instead of continuing
+probe without the IRQ.
 
---- Patch [4]: [PATCH v3 4/4] irqchip/imx-irqsteer: Allow building as modul=
-e ---
-commit d2409da6cb54e5e7df533908b454c22db10f15a7
-Author: Jindong Yue <jindong.yue@nxp.com>
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+---
+ drivers/tty/serial/qcom_geni_serial.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-irqchip/imx-irqsteer: Allow building as module
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 7ead87b4eb65..240a6d67d847 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1883,8 +1883,13 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	uport->irq = irq;
+ 	uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_QCOM_GENI_CONSOLE);
+ 
+-	if (!data->console)
++	if (!data->console) {
+ 		port->wakeup_irq = platform_get_irq_optional(pdev, 1);
++		if (port->wakeup_irq < 0 && port->wakeup_irq != -ENXIO) {
++			ret = port->wakeup_irq;
++			goto error;
++		}
++	}
+ 
+ 	if (of_property_read_bool(pdev->dev.of_node, "rx-tx-swap"))
+ 		port->rx_tx_swap = true;
+-- 
+2.43.0
 
-Make the driver buildable as a module by turning the Kconfig symbol into
-a tristate and using module_platform_driver() instead of
-builtin_platform_driver(). Let the driver core own the clock and runtime PM
-lifetime so that remove() does not have to hand-balance them.
-
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index 0c9c99f1141a9..e62862617b8d1 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-
-[ ... ]
-
-> @@ -266,15 +260,22 @@ static int imx_irqsteer_probe(struct platform_devic=
-e *pdev)
-> =20
->  	platform_set_drvdata(pdev, data);
-> =20
-> -	pm_runtime_set_active(&pdev->dev);
-> -	pm_runtime_enable(&pdev->dev);
-> +	ret =3D devm_pm_runtime_set_active_enabled(&pdev->dev);
-> +	if (ret)
-> +		goto err_irq;
-
-[Severity: High]
-This is a pre-existing issue, but does the chained IRQ handler access hardw=
-are
-registers unconditionally without ensuring the device's clock is enabled?
-
-If no child interrupts are requested by client drivers, the irqsteer device
-drops its PM usage count to 0 and enters runtime suspend, disabling ipg_clk.
-However, the parent interrupt handler imx_irqsteer_irq_handler remains
-registered and active with the core IRQ subsystem.
-
-If a spurious interrupt arrives while the device is suspended, the handler
-executes and directly reads the CHANSTATUS register:
-
-drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_irq_handler() {
-	...
-	irqmap =3D readl_relaxed(data->regs + CHANSTATUS(idx, data->reg_num));
-	...
-}
-
-Accessing memory-mapped registers of an IP block with a gated interface clo=
-ck
-can trigger a hardware fault (external abort / bus fault).
-
-Should the handler use pm_runtime_get_if_active() to verify the power state
-before accessing hardware?
-
-[ ... ]
-
-> @@ -302,8 +303,6 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
->  						     hwirq));
-> =20
->  	irq_domain_remove(irqsteer_data->domain);
-> -
-> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
->  }
-
-[Severity: High]
-Does this change cause a hardware access crash during driver unbind?
-
-On driver unbind, the driver core drops its PM reference by calling
-pm_runtime_put_sync() before invoking the driver's remove callback. Since no
-children are holding PM references, the device suspends synchronously, and
-imx_irqsteer_suspend() disables ipg_clk.
-
-When imx_irqsteer_remove() executes, it writes to CHANMASK hardware registe=
-rs
-with a disabled clock, which can trigger a fatal bus fault:
-
-drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_remove() {
-	...
-	for (i =3D 0; i < irqsteer_data->reg_num; i++)
-		writel_relaxed(0, irqsteer_data->regs +
-			       CHANMASK(i, irqsteer_data->reg_num));
-	...
-}
-
-Additionally, devres teardown runs after remove() in LIFO order and unwinds
-devm_clk_get_enabled() by calling clk_disable_unprepare(). This decrements
-the already-zero clock enable count, throwing a WARN and corrupting the clo=
-ck
-tree.
-
-Should the driver explicitly wake the device in remove() (e.g., via
-pm_runtime_get_sync()) before accessing registers?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260807072346.1222=
-389-1-Zhipeng.wang_1@oss.nxp.com?part=3D4
