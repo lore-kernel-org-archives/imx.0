@@ -1,195 +1,211 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2317368D59
-	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 18:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0459E321F5F
+	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 19:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786128538; cv=pass; b=cDtxLeRBGSSgnlLhaeypgzXTdOUh6ubmicTsv40SK5bx3JxEkwrm0mpF+gocRpkYKGMeJSiGvpD/cIyIrDEMTEJVJ1XhJSUJsG6PODepGDukf3Z6xkKBUcONz783y/NtGarPomRUJl450xt7aAoJY+ZS7eqs+s9C6ZmsxQ3hmZE=
+	t=1786129329; cv=fail; b=qVjKGbJaPi6qqUgIu7tB7MezvYQEikKDzg1cG0iBTlqah8XZL2YfXsvEFwgmlqmKmfcO87nPo6wU9IwafO5edIi5mXpVSKl40vSikvc17SLIUkTBe3hZtSvXko2R+vOWdrgnipBIBFtaBoPCw2aGVpzER7+zXFu0GJm2IFTC+wE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786128538; c=relaxed/simple;
-	bh=K/AYQ0slGtGh2aGVAcbd5Ml309uD9bp7iupPakzq76U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cX+0RL4D8u3vHCAgyp7bRTelKIjiB1ptdM5rr0U4t7Dlw+3lwpEsPLI2PQL2+46op3A3XiKC8Tqk5ePoenaZZLxQv+pQsZNG/l7Bw1AltraU0hTnS+j6FeHvKi5qjWMDKglh8TaVzYKA1hxswFks0NQDaa061YoimrTUWYQF9F0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qSjTG8BP; arc=pass smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786129329; c=relaxed/simple;
+	bh=OqiK5GlvsyKBmSOkqToD+C02DeukbNV0IHoZw1yFAcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gsHYd8rzFaxWUNhyVO2P850FYBe8vqK20kQW8zUq/7Z1W3wgFF9qPPNNR9IKzc6wKFBbVeO+hvzBuvKdfaOu9S5ApO/a9FDNHE2TX5Cxg5Xlcd2+/ISKyD9sZ9DstKxOY7dIsO+n7xvo+AaZ2tIMB6V9cQLLtIQGtIcxor2NjAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sdxpekpG; arc=fail smtp.client-ip=52.101.72.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qSjTG8BP"
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-73a442f7cd3so2298706137.3
-        for <imx@lists.linux.dev>; Fri, 07 Aug 2026 11:48:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786128536; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jTllRJOM3kwFmXPnUmNvpi8rnqZryiQhke+Rx8jUhW4MdXl8T/XZsSAvaJB7I8IzCZ
-         WYvo8plgaKjTtcCs0ZQyG/RTPt+w5EQOy0gGEvilydfHXMRuqMuqRY9/JoMFbPrAm2zy
-         +czyhIQ8dxnLtwgXfLnBP1yA2bcXlXpF2ph+BaZxIneDIU6GzY+/EXzf2YxFlYUVdC16
-         E7FFLGwyUMQ0cDIaVXSq6J09PaaczK2jg9uiVyV1Sv77xgZk+TlKpzv5emvcJpOzVmI4
-         WbJerAhq9B6V2iCBDxbRz/uSuhPdeqinwOBrS4ddky7stOs+ugYAVMlEX+xUnqUJnnEf
-         WpMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KQbEMAEah3Uz8h1TWdBCzAeaWUqz5MbVi1G2fYGojfc=;
-        fh=IrX5my1Qd3E0LAOv60bxuPCBZPy1g9mSOoOM7tcdvO0=;
-        b=n3APglsB/Su7GlR4opBlyGm8IVIR4sdVsO+9cALAbZfo3+oqyL8mG63sWHfuJVNiI5
-         t1McawsmBXIs0/LY/tukLZ1YA3ji4qbuEkd91RPlMEI1yR24DzbL5AhA6AQwDX6hDr+G
-         5B+/yJE6OAA7zjtzzHauHAw48F3L3NeRSlfRIa8KHChAzkd4wR555ZT9sKEyPvTTmZVw
-         BzZawYItR6EuUd3aVAJM4sxbA9K+NrC+m4r2YWIwfatEKrvHm8Bil9TE9gQfF6jNM3a/
-         ndMXHoW1x3ZdPceLuvelW560PovkMNC6VRHZE8zYPvXs23j1sT1moNmNeKmQE8Zax2rS
-         9ijQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786128536; x=1786733336; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KQbEMAEah3Uz8h1TWdBCzAeaWUqz5MbVi1G2fYGojfc=;
-        b=qSjTG8BP+Kb/w15kYf5UmtzB0XfbhdX9O12x/MFKBxV7PqQsmMjh2k2GjEBYUDGfqO
-         V01Ud6Z6NSzwNpj3qA2HopkKtgCJKXjAxxWWT44H2fcAnQZlaeYbELlRpmDIniLHA/Lu
-         sPNIJDJJShMjM/rjV/2vKdzMNIIsAMoyPtf+tnKTF0uGArR/1aH4S0LW/wxMMN6pALJz
-         YSZBuDVEg/wBCRuX8IcJ/0gpXVMVMPOJslYOHTIazrgOleYxHOskQBKOKe6v7wYQelJl
-         wiJ+gHl3iopwSQiJeaNwBA0/b21luNBlHIVvQ07dZ8iSgwuH37ZZujwIgCpnPxiR0xE1
-         FNiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786128536; x=1786733336;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KQbEMAEah3Uz8h1TWdBCzAeaWUqz5MbVi1G2fYGojfc=;
-        b=X8ZwhoNLrhzw8/qHAb2kKmXpHOTaAxrai+2fit6CVOmo7sjX/W47GHDr9W/ckfCLEa
-         ypE5V3iDN+X5VbhpKmsCK1ScVs70V2FfRxyhSPISPpWKq8lOtbVXAlk9KEnP4QABsh4b
-         Qy8vSjwCw9XJFGDTs3u1w8m1GSHpYbcqXtt0JgsMJXmlz+Y4E0nITCEwx2sxZsOtWfaH
-         X7cA8TLQ6SoZHskf1T+6i2TcsnzjaW/ZvHlUB4Tt/ct5Nt5hjKEDeilscmJ5/8xKa96k
-         RV54Cj/boDbtlXO19fm9+uH2UEJOQJMhrBOiYsFaxe5NAm9bHahyMpqB6JEjBHx3Gvhm
-         PNYA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrjyug9T700c1Gy7ADymGPtgh7JBoDY9ALd+/S6bO+/6j1YRH6Srx0c9vzzUBA9s2+8P/4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxmh8y6T24+WygtdYPXcJCn4Ougoisv7ydJdzwy02PVQPNcykf3
-	sDM9FYqAzhhQvNudVj0a2lgxpU5mItUNdgaYpJHqC4INkGvrBo/6g/VtxKC3EMB8VMWZH1UADbG
-	7sUQQrnTbekmpifSGyuDJDzqU50Gq/t0=
-X-Gm-Gg: AR+sD11yuaXBpDRGN7uDjNRuAj9hAhuS723Gli9DecvgrQsgvjafPXVDgbAYiQEFYSh
-	nIGuU2koDRsK7YAm9IuZ/7BFUwtXO4FhQCVqk0o/cOnU0s3IsZqkrIoCVTT5a+ifg0R43Yn364v
-	4tGUll2C3B0UVMod3GSZuOZZQBcCRv0nzHb53taFSypvKg6K3jlT4KL+o8Ox9kq2EmxR7GX0/8o
-	gInJRPyCsUVWgj1/0g85aauK8qhKSzOabgU7npKZ1Wsgp/p7SqZgUR+z9OCVHvJE2ndLyO3oiP/
-	283Km5eJfnzAucgJgmaQg08FGRvMSs6+Tb8zl/MFZpgNLv4qmu9zyaN5An9DN50/nPX/6gsgyr9
-	TgKYqkKCCslgfPUZR3xGAYWRkiJQOJBM2bDlv196HtigW7eXCp5P1ioqlJeGxK1f3QX1pvws9jt
-	KmI9InW7OxJuAOsrP97ZJ/T0BsmhmML1pM8UgWSqyejvCuSPk=
-X-Received: by 2002:a05:6102:41a1:b0:73e:9fae:5845 with SMTP id
- ada2fe7eead31-764e1c5f6d2mr939262137.0.1786128535635; Fri, 07 Aug 2026
- 11:48:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sdxpekpG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VoFMvnFbENk6njebGmEJ2ye9i3y4q43nVlJoIKT0liO8U8d5lL8Nejg3P4VaFFMgCvC6AE9mULbqbBXhBx+JBZKvMhJlJY+ggZQsywWMh7469LWFfvKofSG03ikDs8HqKxg5OYG9wPjok1diTEWJnmdvRJ4ljTGEI8dhhU9J7HoUowXLauOzQipvMdk0wfzU4rwr3MIsEiW50ZgC7hIY4kSUk81g74+6hpKvKmB+HZh7PJbEY/cmrQXztZox77dIvJ6YC/Fj4VfSmtnD2otMH9xfhupcjhGGMzCQi8E4r66cpHW/9qBYn4Nokp9px/WxmhsRlprSrdf6mE6oYX2FcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zB6Af5OjLIhaBxGF8Jei4vtdXCnTfc/GgI9MvnBm98Q=;
+ b=kJJl3EfFHmsR6RMVgZUrfICvFE+sMkTUX4CSmVOBJykxx1t4Sd+5wvjPB7Op0FBTHrddYtxu/vVZIMwMiPid0C9HgKfoKZr5vxN/gObblEBkPZi6urhkf2AlahPtJldS/pz+PldOBACD/OnsfNO+5QbyLHvJ+Ys/dnxRhm0mXCKq/4QNC6f5ptVa96txpgds4ZcpolcggUQBt2IZW7ZutUBXGAz3pEuGSUkYkOoxOBSjNf7KlCzr91ACGyBUy+M7eBSRMTM7YXCUwsN+CR9/VtKnmJICNrTeX2U9QNOhbsVDhoffx272fbSaB9OtdgVNBAIUpa0wWWSTgpxfQZz33g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zB6Af5OjLIhaBxGF8Jei4vtdXCnTfc/GgI9MvnBm98Q=;
+ b=sdxpekpGnm0pEVDVboXs7cdjpA0WT27I95zAgC44k/0Ym/tu8Wwm0BLYUCwAycSnLWhtTYLNUYdC0dL+OE9/1HU0eNvqOT2AMrBM/TXctcQ3unSzrz9N8EBd/slXvuO+bjEBUj9JloJj8wTobF0cgwo4wr5zyg1UCxXEAQb0enIaeuJoBjxwl4evB4fnok4TeY2wUB0NHLxJ9OlfnLWq5a2dF/ean9GnxeJn4ndk7DonKQW+nqftuNiJV/DbbUAiaHJWFxP6vgczg+P5gHxEfpYwMAR6GkNQfxOtCYjNR+uh9SXf7442KOEHqj41/njF4l031sH1WMaYkWe4rZULDg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DU2PR04MB8695.eurprd04.prod.outlook.com (2603:10a6:10:2de::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.24; Fri, 7 Aug
+ 2026 19:02:03 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0292.018; Fri, 7 Aug 2026
+ 19:02:02 +0000
+Date: Fri, 7 Aug 2026 14:01:53 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Zhipeng.wang_1@oss.nxp.com
+Cc: Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jindong Yue <jindong.yue@nxp.com>, xuegang.liu@nxp.com,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/4] irqchip/imx-irqsteer: Fix error handling path in
+ probe()
+Message-ID: <anYroThNbI9hcU6z@SMW015318>
+References: <20260807072346.1222389-1-Zhipeng.wang_1@oss.nxp.com>
+ <20260807072346.1222389-2-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807072346.1222389-2-Zhipeng.wang_1@oss.nxp.com>
+X-ClientProxiedBy: PH7P223CA0023.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:510:338::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
- <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch> <CADvTj4rame1n8eQL2GUOaJHnOcR_cqNxzNYO+QeCLYDczEFeUA@mail.gmail.com>
- <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch> <CADvTj4qxGVw+PW2LeF-a3h1XfmirQZGfJA9-6Czt72XASbVLBQ@mail.gmail.com>
- <4aeebecb-81fe-4f09-9dfe-a3be2f778bb8@lunn.ch>
-In-Reply-To: <4aeebecb-81fe-4f09-9dfe-a3be2f778bb8@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 7 Aug 2026 12:48:43 -0600
-X-Gm-Features: AUfX_mzkWefaGr-yvRIWAT7-WpS4J20YFg4GvupbZl2AqZK75NjTjLSVgtv1IY8
-Message-ID: <CADvTj4qrYYA-e+9iJ+q4UaZteUjpypRa6HBSmwp-ajwPbwYERg@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device changes
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Ciprian Regus <ciprian.regus@analog.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Mark Einon <mark.einon@gmail.com>, 
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
-	Keyur Chudgar <keyur@os.amperecomputing.com>, Michael Chan <michael.chan@broadcom.com>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Wei Fang <wei.fang@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Timur Tabi <timur@kernel.org>, 
-	nic_swsd@realtek.com, Byungho An <bh74.an@samsung.com>, 
-	Steve Glendinning <steve.glendinning@shawell.net>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou <mengyuanlou@net-swift.com>, 
-	Thangaraj Samynathan <Thangaraj.S@microchip.com>, Sebastian Reichel <sre@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU2PR04MB8695:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b2a1f0f-e0e0-4b05-9bc2-08def4b65d8e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|19092799006|366016|1800799024|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	QXW3dABvvHZ1YTNx2qKQFqDNC9ug1HO1WeZv6MrpxFyUVybonZow63doLkzHjwSBCS0DT/CK8RxKBXE9+MH1j+2FRAf0CvHhu99QPJqOikMCDANPkKr7HsAOx9yDME5MaTHuh2V2GYfF0Xlbqk7AN7FlcKPgKhy9TICHd5xkbuBh1pSwxCSXkdbbzOB83S4mxgV+JfejyhoSRBM0XflHavFYsP+mqzYBoH4d6SfHB/dxluNiAOwlB5RDR6tUWyhXw+YYckdregu8xfr8LlwaAaKO7CwbOZp0r7bxKqgllIRIBjNHOYdZeL+1wUxagE5l6esXRBrhIBYXDigiMEDaFGQnKLGnRTkokS9hAKyOaZ56tQF+uZF4LGfG9gKFLi5aoinoPe2UgTsr4eIsCv28L8lIFq0D6bh84dECKpaK6Y5SG6rVQW/Q2oqVD//vgwS/uaKPiv/jZcyjVDagKwEq7H0wdy0+UazdMQ25ApYKiDGLaLs0sAHC47vx1rRVyo6GfUTi/WhemoAkf+YV3+ORSR3K9v23sqJZ042hK1ntoolW1o3XKf8dZbG5KACZbN/RSbNuw8y7Ll1PU1dbVq/Qgk8DiWF790y6ShfTCIQnVn1g3WERX40BS7BBxLKGRbqgae6VK0xHT49hB2jBVsxeMnbuOYo0Nknj/H8GobjPFlg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(19092799006)(366016)(1800799024)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?z4JM+Sov7QExCwXqHhv5uMuIqa58ju4TGhbQC8hFYr5zq5wOEsywvJWVWoQK?=
+ =?us-ascii?Q?GDVJZeMC3Az/NBTOSGmFT6mMwJrL9uPOUA+2+cvOSyEAEizrdLae5NuO/14n?=
+ =?us-ascii?Q?z0bZiol8eZyDufifq2d6PoLsPbuYFvf1iFkr7LUVxkL/k+I+6cKofnndpyEG?=
+ =?us-ascii?Q?e/lgtg4jU5FhMAQ7p3XQDLpF/OqOrJdnOqSDYa2vwcFi7ca7MdrljEeHFeW1?=
+ =?us-ascii?Q?qbmgWvCnRLXrWJdruPGQvZUmF8mMZoJuvoVW9V/Y4UhpL4pCO5zdgbmT2uMV?=
+ =?us-ascii?Q?jtSKcayAaioG/C/h4BlNuepkYLozJDbadNVCSR93a9IDEpaumhPLrq13izax?=
+ =?us-ascii?Q?XbUJtGtHXV5rLD3+a9245tUUL6AR8oa8hvXghoB56PPjSpydfCyes4vjAY4b?=
+ =?us-ascii?Q?R0otUnxcmeHdsqeYOd7LO1j2jidiEDCTyP8NJMGkHkSCQMpHEh1+utb6s3s3?=
+ =?us-ascii?Q?KhbGiwFyW4zslGej1JqOGAN2jzf5NPpQ/eFIVZy+0+KuzoIcfMhhGqfK8lLJ?=
+ =?us-ascii?Q?unihshIPdRiXg/RXSzImEQDsHdKU7JJv6uc8053cjxAm7sSYz13l7TgfmMQP?=
+ =?us-ascii?Q?8IRWE/gRPcbtoiMZckH51knXXdAut7Ax3PoeBWVff9qPAIJVJZ7T4jmLtVDg?=
+ =?us-ascii?Q?0sVwz3Dny37KgeQRhSb8Gn9HTN0ILSw66MUvmWhwhoNx1eDkYN/pkSVdt26f?=
+ =?us-ascii?Q?ZiAHeh6Z/+67k3JB4xfOX5u5Rdj4/d8qAs00ZSunZf109vY4eKm2MXebbrTB?=
+ =?us-ascii?Q?pDntXyW3VbdKqS9fEfSUbFIMvFAyceYa0f0NWuGLE+boAFSttdQshHyrzj6h?=
+ =?us-ascii?Q?4UQNsvvHJ4jjRu9befYhZepbjrIEoKNvyzY60MGt8PoCRDwRhc/ADm8cMAbE?=
+ =?us-ascii?Q?Pg1nrPSpP6zfVoYkp4fdEubx+tCTTXzOZ98h/t0YHwSInxDRymgBmyoceYbR?=
+ =?us-ascii?Q?DAX3QaBGouGPnC3ldlFADoU4o4+UmBM6BPq+Q4MvbWXU4zSWtXIf2Dfy2GR6?=
+ =?us-ascii?Q?l7MUtG20/wuPHRZWkOAP3+psiFk5lPHyGgbVqk5kq5OzqEEgrnVdgtI5ZtEz?=
+ =?us-ascii?Q?qmb62NRnakG0vX28d3F/tDRNxP4Y1ZUBHZW2U11PiaNoOY/oeMaUph98sOkk?=
+ =?us-ascii?Q?0Q/PqF7G07t4kEDnSuCp4DQ7OIvznjtMWkGHzzHkk75LF5/nVHpLTIUTi2Zj?=
+ =?us-ascii?Q?hXRAwb3JagqNIQRfkUkQNGG09B7bLjyOUHvNg0ylSVEV99wDu5Cyc1eS+Kpt?=
+ =?us-ascii?Q?Vw5k4V9D8NyqkGvVetwbX/IowwiPi0dPvxpCNwCwEeQZRTyNt9EccqB8Li8b?=
+ =?us-ascii?Q?he/YOXePEuRlsxLG8ohFbLvhDj6YO3vsMKa5F8YKDI8u2eC/ZrD9HObhinQO?=
+ =?us-ascii?Q?6urpf2Vs4/p9TTJa/CvfzVISx5t6qlEtrt/6qhldH3A5sfxGsFRccdQ/XX8i?=
+ =?us-ascii?Q?wQoXfcmHQ56BQAfvuEH8m5H6l6SZeBW+X59XR7YVXjEj7nRuCSTbjqIuGbrC?=
+ =?us-ascii?Q?sA0bgthd7+Vyi9aQL1acHU2+Mc2f7FQsuuYpNGqNJhp7W4rgpoLLBV0GtCgs?=
+ =?us-ascii?Q?ZeOv3lVapQ/DtNQavEoAz8Xk9SAJs8ab6Ai9J5mW/DCoYoal4bmDESOcj9+o?=
+ =?us-ascii?Q?VFX0/srrCHjT007UONXpD0kDVXeMdEbkgq0+xoGG4v/jdhWDfdNGbwxlqxnG?=
+ =?us-ascii?Q?kpZk2QIK+64n6m9+VE+NqAOsRGQvaCJnQei7Wer8QAbMwhWF26izSqzKl4f4?=
+ =?us-ascii?Q?oEcrFiV7p+T5GxSYzEqXqSpgEX9L1J6eTEtclMn1nrRnc66yYiaB?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b2a1f0f-e0e0-4b05-9bc2-08def4b65d8e
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 19:02:02.8585
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wz7umhfTmcfGPw9OP8aKoie8liBCd0DgBJrIlZ6DKWVuqYsmTWm4azRpsj0P+cJxm3B8vyLvELFz28J1Bf7yeznzrlHt2CKk3H/7ZARMS31Wf4p3XWWkJL2CdPp5uphG
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8695
 
-On Fri, Aug 7, 2026 at 11:15=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+On Fri, Aug 07, 2026 at 04:23:43PM +0900, Zhipeng.wang_1@oss.nxp.com wrote:
+> From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 >
-> > I guess it can also be used like this for live dt modification:
+> If the fsl,num-irqs sanity check rejects the value after the IRQ domain
+> has already been created, probe() jumps to a single label that only calls
+> clk_disable_unprepare(), leaving the freshly created IRQ domain leaked.
+> The domain-creation failure path shares the same label, which is correct
+> only because the domain is NULL there.
 >
-> A guess is not good enough. Give us a concrete, in kernel use cases.
-
-I searched the current tree for callers of the OF changeset and
-overlay APIs and for OF reconfiguration notifiers. I did not find a
-current in-tree path which adds or removes a child below an already
-registered MDIO bus.
-
-There are concrete existing kernel mechanisms and DT descriptions which
-could become users. lan966x_pci already applies an embedded DT overlay
-from a PCI driver, and the FPGA region code already coordinates
-in-kernel overlay application and removal. Mainline also ships overlays
-for TI J7 Ethernet expansion cards, NXP LS1028A QDS cards, and other
-boards which add PHY nodes below existing MDIO controllers.
-
-Those overlays are currently normally applied before Linux starts, so
-they are not present-day live MDIO users. If an in-kernel line-card,
-mezzanine, or FPGA manager applies one of these topologies after
-detecting hardware, adding or removing the PHY children below the
-persistent MDIO bus is exactly the operation this notifier supports.
-
-Likewise, a driver which identifies a PHY or retimer package from an
-EEPROM, NVMEM, or firmware and then enables the matching child nodes
-would use the same mechanism. The kernel already uses OF changesets for
-analogous late hardware selection in other subsystems.
-
-> > AFAIU the patches other than the last one are still relevant regardless
-> > since they are fixing a bunch of generic mdio safety issues in code tha=
-t
-> > has users since MDIO maps already change at runtime through non-OF
-> > paths(i.e. SFP insertion/removal).
+> Split the error path so that a failure after the domain has been created
+> removes it before disabling the clock, and a failure before that goes
+> straight to the clock cleanup.
 >
-> Fixes are fine, but please word the commit message around real things
-> that can happen in todays kernel. If it is a race condition, such bug
-> reports often show the call stack of the two racing threads.
+> Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts support")
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> ---
+> Changes in v3:
+>  - New patch, split out of the single v2 patch. Fixes the irq_domain
+>    leak on the probe() error path reported by Sashiko AI on v2.
+>
+>  drivers/irqchip/irq-imx-irqsteer.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 
-After auditing those paths, I would qualify that statement. SFP, AMD
-XGBE, and Airoha all modify the MDIO map at runtime, but their known
-paths use subsystem-local lifecycle ordering to serialize removal and
-attachment. I do not currently have evidence of a reachable race in
-those particular paths.
+I suggest create helper devm_irq_domain_create_leaner()
 
-They do demonstrate that the MDIO map cannot be treated as immutable.
-Its safety currently depends on every producer and consumer arranging
-compatible external serialization, while the MDIO APIs neither express
-nor enforce that lifetime contract.
+static inline struct irq_domain *
+devm_irq_domain_create_linear(struct fwnode_handle *fwnode,
+							  unsigned int size,
+							  const struct irq_domain_ops *ops,
+							  void *host_data)
+{
+	const struct irq_domain_info info = {
+		.fwnode		= fwnode,
+		.size		= size,
+		.hwirq_max	= size,
+		.ops		= ops,
+		.host_data	= host_data,
+	};
+	struct irq_domain *d = devm_irq_domain_instantiate(&info);
 
-I found more concrete current interleavings elsewhere. For example,
-PXA168 can scan and attach from ndo_open while its remove path
-unregisters and frees the MDIO bus before unregistering the netdev.
-BCM SF2 looks up and removes PHYs belonging to another MDIO provider and
-can observe that provider while registration and OF population are
-still in progress. GENET ACPI and Davinci also cross lookup, reference,
-and attachment lifetime boundaries.
+	return IS_ERR(d) ? NULL : d;
+}
 
-> Do you have a board with an SFP cage? Can you test your change.
+Then imx-irqsteer this devm version. So other drivers can get beneafit also
 
-I do not currently have an SFP-capable board.
+Frank
+
 
 >
->    Andrew
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+> index 87b07f517be3..a2f0629b22a3 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -241,13 +241,13 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+>  	if (!data->domain) {
+>  		dev_err(&pdev->dev, "failed to create IRQ domain\n");
+>  		ret = -ENOMEM;
+> -		goto out;
+> +		goto err_clk;
+>  	}
+>  	irq_domain_set_pm_device(data->domain, &pdev->dev);
+>
+>  	if (!data->irq_count || data->irq_count > CHAN_MAX_OUTPUT_INT) {
+>  		ret = -EINVAL;
+> -		goto out;
+> +		goto err_domain;
+>  	}
+>
+>  	for (i = 0; i < data->irq_count; i++) {
+> @@ -266,7 +266,10 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+>  	pm_runtime_enable(&pdev->dev);
+>
+>  	return 0;
+> -out:
+> +
+> +err_domain:
+> +	irq_domain_remove(data->domain);
+> +err_clk:
+>  	clk_disable_unprepare(data->ipg_clk);
+>  	return ret;
+>  }
+> --
+> 2.34.1
+>
+>
