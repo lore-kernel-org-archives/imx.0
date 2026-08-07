@@ -1,70 +1,71 @@
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ABD38D402
-	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 03:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B173A9856
+	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 03:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786074892; cv=none; b=NBh2SwXnypMCXpQtJfBEVT6C55y+8+mnAYfJbYvjpzb7vycOv89gYES+8IE1AQ2xNB5GksAzIHIkFYMqgtwjkvF+Cy/f23LeCPZebVsUx6to6iL0YQkyEzrCOh1Z5J1h5aY2/N1tWozAHJyKKXFDeK+PExAR/lBgzoiUGKMqdJk=
+	t=1786074896; cv=none; b=tgo5TwJua41XqV5OlNgIp4KnfQXzRtr8TP4vl5RYIrPAJAmBc1M9TR54/zyh7phlxoHjLaq2VeuPXCPk1qoi0VstWx6ECdausvRt96Z3qQTYfqvO/MWtr9vn7n8WWcJMXCiQYMPesjBkyW6+jJ04iuEvM82DyhHRVZCmFmZrBAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786074892; c=relaxed/simple;
-	bh=0sH4sURiae0LHASZoJFMCPq/NTJJVHw/k0CxfIhRpZo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LFWD2EDskLfU3SJqoM4rXrwz2WYMV6/4YYYQaF9Jl8rWsB3gxGTj1E7Ix/7LgAvxr7TvrgSik2bIKk+lDn/xPV1uotCUmnskmdNKJfhzorE0kZjN1tmKEQLcpUDmht/LoiJ/GVcBa5cZflolMtm+sFcjRigvm601uQnnw+jn6Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQ7jx/Wy; arc=none smtp.client-ip=209.85.210.45
+	s=arc-20240116; t=1786074896; c=relaxed/simple;
+	bh=YMYpQ6XFhM2cLP/3ZcZBUZKBv+hhpqEzcr8uR8DX0hI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=S4Xi5kmgUKm/Yne8Frgnw39VZOpruGmFD9Iltds8Sn7HAS4hvsd5qDW8p8ZMbY/l1bAY4lLkoZrctovd7McN8j6AUvsfB9VMpH+4pA2BW2VhFiSdeye3DdjWJCyz/uMtIIbXYt3hScZZ5Hs6s4uHqPaj2trBgXyif3qtloG7iwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTjb33QT; arc=none smtp.client-ip=209.85.161.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQ7jx/Wy"
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7ee37dc91f5so1905237a34.3
-        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 20:54:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTjb33QT"
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6ae9b721927so1559652eaf.0
+        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 20:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786074882; x=1786679682; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=t14qXgKevhPrX1GfuAl+ko962gn6h1nlXvsALSBC/vw=;
-        b=bQ7jx/WylVI7M4p1D1xkJ6i/eLj1u3uaHP7G8K7/ih6ocbvx9SWo1NH7+Lqu9VxE0J
-         1W8AMvDPSGpX3oaHx3ZmYuT4BuC8HcyhPf38WcqqZ6YjSxxwSzm2Qq16pFjIYAfjQCLB
-         /pNrxheOu8nndeU2kE5GeZtisl5SkAUunAuk9ggWbbL8+EIX0uAQf9Qg3LQtQOJtsboD
-         BzGJNB4MbG3DgTanfL9izBgvmnfMQhm3ZZnmD0jMhwvS9Vwowt4kSJXN2lq4/1Eh7t44
-         T4OFe/4/2oHqGagJmN1UQX7RoCFkpm8qz3Gbd0tQryAOH9m0/preVx+gVmnQ7Gc3d3Q6
-         W9Bw==
+        d=gmail.com; s=20251104; t=1786074890; x=1786679690; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mzaXaAGZuzZqDVtohWJRcwtoKOyfow4JWerY6rOg8/Q=;
+        b=BTjb33QTo+UOIIJyWGCzHYbr0Omt8veiFtnMMgPpKzWH5h1CVriYyJlhhwqFwXzJiT
+         /g/pFP68IJXwmmTpdA54ZOaceLD/q+1e9m3Yry/2JkMH4NP68DzoTJntNSVr+VQI9GiO
+         bKhXW9RPQx9YQLLrfSs/0i6HwEoeORwOQmE9DWmowycR9tZSMLUQmcBWsq4L24J7M17r
+         2CgSOIy66m2/50dB1xA+Kj3E8ZRJ5tXdebZ2g8o5l3a8/CuT/6eRMxHDAiE0aDGfGowg
+         W7RqCrg6ZV3QS+kE6LKXLOIvwLotzPYWkPGHrf9sbxSM4HeLBw36JHhTxk8svb4JP+wH
+         VG5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786074882; x=1786679682;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=t14qXgKevhPrX1GfuAl+ko962gn6h1nlXvsALSBC/vw=;
-        b=CQ5IJiAMaiST0h1nC3ZsKrNdC/NPf32CdMOcRifkyKoqlDYuHDtJtzPUXkySkCWCEO
-         3sbmGfwWcxULM9jptouR5Cv4rUqbAYqd+f6LL/ck7iW8yVqpJrhyieAvYmzdLO+RByED
-         xNnzIjerFOkig0p7k64cHEKXfLvlYlHgOoK8n9NfFe3fTFDr69eSNrMn2MHeflRJc+fm
-         sxnPCx67yC6wGU5VHir8Hq2MdsPq+iNOr0o9sVpMf58VMez6pw1XP0rWUjhsUOwn4BqV
-         D2CHl+Dnpfjzt7tXI3GFNxRHpXzWP/rnTNJs90yM5gBl6Yu+kSH+dfVZewqWPKA6CB58
-         BKMg==
-X-Forwarded-Encrypted: i=1; AHgh+RoedmHpAPoPyQUPjoIRcGm63/+RLZWe0F0vAEX7zpljaNdAb51TplOV4sPmbT2ZHkl452w=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyx+jkL2R+qFyHrvh5n7jyeGsHMoTfpVNk2uJeXr2GLmqMHhoo4
-	BTK5p7FLSIz5sgqQAA0ghYsowBZTfuLAiZDI7NLj1XA3UGBQ92mfCdJR
-X-Gm-Gg: AR+sD109FNk13z3lbILPja0c48i94i62RWAaaqWLlkuRKdHcqgJVKoHkCuo6KPF5HIH
-	sgzW9Gmy6ieUmmYgvp+kDZjQM1hS6PvnxvBP8UynP8QFysdvbeZwYzLZyUy5UsHKX52ekyFqPki
-	rxN8B/3XXZWCYCFmH/0bGJgEbQEKBVMBDq+m/lrT0ysUU49VLskQx6rn7rJsGHU17k5z4tTQTwx
-	stmFJwwA4MNi6GjB8JcqhiLh9MSgnNOybbgmua3O6xlpe/Xyhp5+91EcKwQX8stjK8Ia9BQ3sfN
-	SwnGiXulSQESir94eg3cxCV2ErAuS0TzWmIqEP8xeacy6Lbe1wFtr5MvyO0pJL/kV0x1m2umDAs
-	zCw6RSLs5t1LuWmUfm6E5ifvpN8/fJ+hurHhuXmXkvF2Z6FHj1QaVGhvgpx1zxtzRi8Ks0UnyWZ
-	5KsyYcDrQ7JFI19PiX7OfSrb0WIt7WXe2xLKOmYCOuUFNHK3T8zy/tYxuuvDTTc4DNXYj/5fDGn
-	Ah30b0a6WO6hoqp8+JGaYI2PzRut6AcWCw/o2SmFBqgGhlYOfKZDq/NJjF7i98dkDrtPL1GLxj7
-	S+BoojcqR8yb4DGVqku0azaP77XpWDBMRw026h5X5tLkqaFIMU/8ACDxM2mY+66NjxICeuT5Q7P
-	4N902nzw9PtfL1a47
-X-Received: by 2002:a05:6820:8590:20b0:6ae:a950:9faa with SMTP id 006d021491bc7-6aea950a10fmr5010366eaf.10.1786074881652;
-        Thu, 06 Aug 2026 20:54:41 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786074890; x=1786679690;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mzaXaAGZuzZqDVtohWJRcwtoKOyfow4JWerY6rOg8/Q=;
+        b=esjXOaKUj0FBkMONx4hBsheK7g7Y/wBPJCgHHtEKLm8nBR/36ewvvFMfYwzoVNrQhW
+         s52hJJ6cMiwUISgnKXCUXu/DWZIpQ5LLJNWVuAhOKpGbfhks9OHw6HFgM9TveaaPGid2
+         rDu8aLH8+qTGqlwv3ejTS0tsDTdn2wtUKviiixxKrgGOq3BS+V/8kVjht5d5N+Kv8Zli
+         1Y//GRhmTpVmPrjTbBOExe8DlPgSYq+bcoyuHG4bqbLwblXyl6uU5QJfRrNNumAvWbRz
+         /SfRhI1vz8em2GMjgkBppMNui+b42xxzKbGNL2FcJQcjfzlzH9zRBTGlv6tuwdKUeeep
+         aprg==
+X-Forwarded-Encrypted: i=1; AHgh+RoovGOs9TuVPD9w1sJfzoBrIZnvAkXhZcCB2yCKmVDG1QjGdEA+VeJwFJ5K1yRSvEBtPec=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy0LQieKL9dXjOVYRPNJGI0wA94G1JYKmlxCXB0raHFr3zN4DB4
+	/fCxnl/7cSxk+sn1cygWEbI+0Be3UBO+fXhHr85IJu+mj2B2b0gUFDoK
+X-Gm-Gg: AR+sD11cB5+gh1I+6S5m/a2ak6XzbyAgeIUHaedkQDxF8PKWCpQrX5i9iKoEsunbAMh
+	3ZrXG5yVIPoC9oZTnWD8prbZk9W5JFqMseMgvg1kYzMNf2CBA0IM8NPsTWK7GujxXye5Tws2+uG
+	mTGRPrlAm+vie4+Y0uoi0Rx/rSagIsgeCYbyi78+mW9SfpFAe3oEo0lFIXVu0tJ25cDtK+IJbzv
+	vlu7pfWDYDi9dxrK7yvHbI14q24TD35M0dw1POc/O3ZgcztZl6qhpgr+83QNmvfs7eP5wQN3GjE
+	ExJghpcPqoK5HjdpcLaWFXdjKDGmGWD3D9iCMt5Q1j1kDTSxvVv2O4ODV3DN6/KDL0uydoXWdZb
+	m8MSktzxd/5WdwENRKg36q8BiYyToCEIYuP4MXmIjzimf0QVsym96qzArgUAMMhYZvDHZEOpfFt
+	HKhfngv+cp8CCeJmjGLaVC+bqDhrPosvjA+FkPls583OXm3KIL8lSf44ahYQasLEkMm3rCNm6AQ
+	jxoBV3rD7uxAwlVP3g2sW7Fh7D2e5FBUIKmLy2LiG+dKNtJ7S+q3A9+0jjjJmkjro1hkaWQ+QE1
+	v9TiEEHQJT25MN+pdv44NUEZUSEWRmXScbhZ0shY4dgqRgLa44CTvfjaEP1l+4LQyp375Yujk+T
+	kfvKAAXFDDHsNCM2/
+X-Received: by 2002:a05:6820:81e:b0:6ae:871c:e3f2 with SMTP id 006d021491bc7-6ae970269a4mr9643139eaf.29.1786074889885;
+        Thu, 06 Aug 2026 20:54:49 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02bbc41bbsm1329339eaf.3.2026.08.06.20.54.39
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02bbc41bbsm1329339eaf.3.2026.08.06.20.54.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 20:54:41 -0700 (PDT)
+        Thu, 06 Aug 2026 20:54:49 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Subject: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device
+Date: Thu, 06 Aug 2026 21:54:23 -0600
+Subject: [PATCH net-next v4 4/4] net: mdio: support dynamic OF device
  changes
-Date: Thu, 06 Aug 2026 21:54:19 -0600
-Message-Id: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,12 +73,10 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OwQ6CMAwG4FcxO1szNkDw5HsYDzA6qHGbYZNAC
- O/uwAsnY9JL0/5fOzOPPaFnl8PMehzIk7OxSY8HprrKtgjUxJ4JLnJecAn+XRsKYBpy4DQ0k60
- MKRgElDzLuaqSrKxLFvOvHjWNm31jFgNYHAO7fyeReaAKK73uduSD66ftjUFsiT8uxuKgiyJNt
- ExE2pyvranoeVLObHcGuZeyX5KMUpJrqVRRyprjXlqW5QPvBs4UKAEAAA==
-X-Change-ID: 20260803-submit-mdio-of-dynamic-v2-90560ca159b9
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260806-submit-mdio-of-dynamic-v2-v4-4-4beb0c50d5ba@gmail.com>
+References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
+In-Reply-To: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
  Russell King <linux@armlinux.org.uk>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -122,230 +121,586 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-MDIO buses enumerate firmware children only when the bus is registered. A
-later devicetree overlay or status transition is ignored, unlike on I2C and
-SPI buses. Supporting live reconfiguration also means that population and
-removal can race address scanning, PHY attachment and bus teardown.
+MDIO buses enumerate firmware children only when the bus is registered.
+A later DT overlay or status transition is ignored, unlike I2C and SPI.
 
-This is generic OF_DYNAMIC support for MDIO buses. It contains no
-Allwinner H616 or X-Powers AC200/AC300-specific behavior and does not
-depend on either platform; H616 hardware was used only as the runtime
-test platform.
+Add an OF reconfiguration notifier. On addition, create fixed-address
+PHYs and generic MDIO devices, scan free addresses for legacy PHY nodes
+without reg, and recurse into Ethernet PHY packages. Track populated
+nodes so static enumeration, address scanning and notifier-driven
+enumeration cannot create duplicates. Walk every package child and report
+the first population error without undoing devices which may already have
+acquired consumers. Only scan nodes which omit reg; reject malformed fixed
+addresses instead of treating them as legacy addressless PHYs.
 
-Patch 1 fixes an existing lifetime bug exposed while auditing those races:
-PHY attach and detach paths cache the MDIO bus but read its owner after
-dropping their PHY device reference. Cache the owner before that lifetime
-boundary.
+Serialize static and notifier-driven population while allowing a PHY
+probe to enable another node on the same bus. Check the node's current
+state after taking that lock so an older notification cannot override a
+newer status change.
 
-Patch 2 factors fixed-address child registration and legacy PHY scanning
-into helpers shared by initial and dynamic population.
+On removal, refuse to unregister attached or in-flight PHYs and find the
+object by its OF node. This also covers PHYs found by address scanning.
+Treat all PHYs in a package as one removal scope, so removing one member
+cannot invalidate state used by an attached peer. Preflight overlay
+removal while it can still be refused; normal changeset errors are
+propagated so the caller can restore the previous state. Ignore unrelated
+nodes and MDIO buses which have already disappeared when the global
+overlay preflight walks a changeset.
 
-Patch 3 serializes MDIO device-map changes, reserves addresses while
-registration is in progress, publishes devices only after registration
-completes, and coordinates scans, attachment, removal and bus teardown.
-Firmware removal is exclusive with registration, scanning and other
-firmware changes. Map readers use RCU to acquire device references;
-mdiobus_get_phy() and the PHY iterators now return referenced PHYs, and all
-in-tree callers release or retain those references explicitly. Removed PHY
-generations can therefore be reclaimed when their actual users finish,
-without removing dynamic PHY deletion or accumulating retired objects until
-bus teardown. Attachment waits for another task's pending publication and
-defers same-task recursive attachment.
+Keep overlay preflight outside the global MDIO reconfiguration lock. The
+OF core invokes PRE_REMOVE while holding its own mutex, and an MDIO device
+probe running under the reconfiguration lock may apply an OF changeset.
+Use a per-bus removal transaction to block new registration and attachment
+while checking the map. Starting that exclusive transaction fails when
+another map operation is active, so refuse the overlay removal rather than
+waiting under the OF mutex; the caller can retry after that operation
+finishes.
 
-Patch 4 adds the OF reconfiguration notifier. It supports fixed-address
-PHYs and generic MDIO devices, scanned PHY addresses, and Ethernet PHY
-packages. It preflights overlay removal before firmware nodes disappear
-and refuses removal of attached or in-flight PHYs, including while another
-MDIO map operation is still completing.
-
-Strict checkpatch reports only its expected MAINTAINERS warning for the two
-required lookup-ownership updates in the obsolete AX88796 driver. Changed
-objects were build-tested with W=1 using x86_64 allmodconfig under GCC,
-arm64 defconfig under LLVM, native MIPS and SPARC configurations for
-architecture-specific callers, and minimal arm64 configurations covering
-CONFIG_OF_DYNAMIC=n and CONFIG_OF_DYNAMIC=y with CONFIG_OF_OVERLAY=n. No
-new compiler warning was emitted.
-
-Runtime testing used an Allwinner H616 board with AC300, booted from SD. A
-forced-ID test PHY completed 700 notifier-driven add/remove/re-add cycles.
-Every cycle raced standalone attachment against the interval between
-device_add() visibility and MDIO-map publication, held a referenced lookup
-across removal, verified that no core reference remained, released the last
-reference and re-added the same address. A generic MDIO device completed 150
-add/remove cycles. Removal of the attached AC300 PHY was rejected while its
-driver, carrier and traffic remained active. Testing also covered rejection
-of an out-of-range fixed address, removal of an unrelated non-MDIO overlay,
-20 complete MAC/MDIO teardown and recreation cycles, another PHY and generic
-MDIO stress run after bus recreation, and bidirectional link traffic. No
-refcount, RCU, use-after-free or lock warning occurred.
+Hold a core MDIO change transaction across discovery and registration so
+bus teardown cannot race the MDIO reads used to identify a PHY. Compile
+the notifier only with CONFIG_OF_DYNAMIC and the overlay preflight only
+with CONFIG_OF_OVERLAY.
 
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
-Changes in v4:
-- make PHY map lookups reference-counted and RCU-protected
-- update every in-tree mdiobus_get_phy() and PHY iterator caller for the
-  referenced lookup contract
-- reclaim dynamically removed PHY generations after their users release
-  them instead of retaining every generation until bus teardown
-- wait for concurrent map publication before attaching a PHY and defer
-  same-task recursive attachment
-- handle a missing VSC8584 base PHY without dereferencing NULL
-- use RCU-safe map access while checking a dynamic removal scope
-- Link to v3: https://patch.msgid.link/20260805-submit-mdio-of-dynamic-v2-v3-0-16f3cc893b0e@gmail.com
+Changes v3 -> v4:
+  - use the RCU-safe map access introduced by patch 3 while checking a
+    removal scope
 
-Changes in v3:
-- add a preparatory fix for MDIO bus-owner lifetime handling
-- make teardown take a device reference and honor removal ownership
-- use one checked callback for normal and dynamic internal removal
-- publish map entries only after device registration completes
-- route the remaining direct map reader through mdiobus_get_phy()
-- retire only PHY devices which have a borrowed-pointer lookup API
-- make firmware removal exclusive with registration, scanning and other
-  firmware changes
-- preserve existing error handling while propagating package population
-  conflicts
-- allow global overlay removal to ignore unrelated nodes and absent MDIO
-  buses
-- annotate the recursive notifier lock owner accesses for KCSAN
-- avoid an OF/MDIO lock inversion during overlay preflight
-- refuse overlay removal while another MDIO map change is active
-- propagate removal-transaction conflicts from the OF notifier
-- do not treat malformed fixed addresses as addressless PHYs
-- rebase onto current net-next
-- Link to v2: https://patch.msgid.link/20260803-submit-mdio-of-dynamic-v2-v2-0-f8841f3124d7@gmail.com
+Changes v2 -> v3:
+  - do not block overlays containing unrelated non-MDIO nodes
+  - do not block overlays whose MDIO bus is no longer present
+  - use READ_ONCE() and WRITE_ONCE() for recursive lock-owner accesses
+  - use the common checked MDIO device-removal callback
+  - avoid an OF/MDIO lock inversion during overlay preflight
+  - refuse overlay removal while another MDIO map change is active
+  - propagate removal-transaction conflicts from the OF notifier
+  - do not scan nodes with a malformed reg property
+  - treat a populated node associated with another MDIO bus as busy
 
-Changes in v2:
-- split the generic MDIO work from the ACx00 series
-- rebase onto current net-next
-- move touched declarations to function scope for netdev style
-- Link to v1: https://patch.msgid.link/20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com
-
-To: Andrew Lunn <andrew@lunn.ch>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-To: Russell King <linux@armlinux.org.uk>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Florian Fainelli <f.fainelli@gmail.com>
-To: Richard Cochran <richardcochran@gmail.com>
-To: Rob Herring <robh@kernel.org>
-To: Saravana Kannan <saravanak@kernel.org>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-To: Vladimir Oltean <olteanv@gmail.com>
-To: Ciprian Regus <ciprian.regus@analog.com>
-To: Andreas Larsson <andreas@gaisler.com>
-To: Mark Einon <mark.einon@gmail.com>
-To: Iyappan Subramanian <iyappan@os.amperecomputing.com>
-To: Keyur Chudgar <keyur@os.amperecomputing.com>
-To: Michael Chan <michael.chan@broadcom.com>
-To: Rafał Miłecki <rafal@milecki.pl>
-To: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-To: Doug Berger <opendmb@gmail.com>
-To: Pavan Chebbi <pavan.chebbi@broadcom.com>
-To: Théo Lebrun <theo.lebrun@bootlin.com>
-To: Conor Dooley <conor.dooley@microchip.com>
-To: Wei Fang <wei.fang@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-To: Jijie Shao <shaojijie@huawei.com>
-To: Jian Shen <shenjian15@huawei.com>
-To: Bryan Whitehead <bryan.whitehead@microchip.com>
-To: UNGLinuxDriver@microchip.com
-To: Vladimir Zapolskiy <vz@mleia.com>
-To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-To: Timur Tabi <timur@kernel.org>
-To: nic_swsd@realtek.com
-To: Byungho An <bh74.an@samsung.com>
-To: Steve Glendinning <steve.glendinning@shawell.net>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Roger Quadros <rogerq@kernel.org>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-To: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: Thangaraj Samynathan <Thangaraj.S@microchip.com>
-To: Sebastian Reichel <sre@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-omap@vger.kernel.org
-Cc: linux-usb@vger.kernel.org
-Cc: linux-pm@vger.kernel.org
-
+Changes v1 -> v2:
+  - split from the ACx00 series
+  - move the PHY declaration to function scope for netdev style
 ---
-James Hilliard (4):
-      net: phy: cache MDIO bus owner before dropping PHY reference
-      net: mdio: factor out OF child registration helpers
-      net: mdio: make device map changes hotplug-safe
-      net: mdio: support dynamic OF device changes
+ drivers/net/mdio/of_mdio.c | 454 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 445 insertions(+), 9 deletions(-)
 
- drivers/net/dsa/b53/b53_common.c                   |   9 +-
- drivers/net/ethernet/8390/ax88796.c                |   2 +
- drivers/net/ethernet/adi/adin1140.c                |   6 +-
- drivers/net/ethernet/aeroflex/greth.c              |   2 +
- drivers/net/ethernet/agere/et131x.c                |  10 +-
- drivers/net/ethernet/amd/au1000_eth.c              |  27 +-
- drivers/net/ethernet/apm/xgene-v2/mdio.c           |   8 +-
- drivers/net/ethernet/broadcom/b44.c                |   6 +
- drivers/net/ethernet/broadcom/bgmac-bcma.c         |   1 +
- drivers/net/ethernet/broadcom/genet/bcmmii.c       |   4 +
- drivers/net/ethernet/broadcom/sb1250-mac.c         |   8 +-
- drivers/net/ethernet/broadcom/tg3.c                |  32 +-
- drivers/net/ethernet/broadcom/tg3.h                |   1 +
- drivers/net/ethernet/cadence/macb_main.c           |   1 +
- drivers/net/ethernet/engleder/tsnep_main.c         |   4 +
- drivers/net/ethernet/ethoc.c                       |  14 +-
- drivers/net/ethernet/faraday/ftgmac100.c           |   8 +-
- drivers/net/ethernet/freescale/fec_main.c          |  14 +-
- drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c  |   8 +
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c    |  10 +-
- drivers/net/ethernet/lantiq_etop.c                 |   8 +-
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c |   2 +
- drivers/net/ethernet/microchip/lan743x_main.c      |   1 +
- drivers/net/ethernet/nxp/lpc_eth.c                 |  10 +-
- drivers/net/ethernet/oa_tc6.c                      |   3 +
- drivers/net/ethernet/qualcomm/emac/emac-phy.c      |   7 -
- drivers/net/ethernet/rdc/r6040.c                   |  10 +-
- drivers/net/ethernet/realtek/r8169_main.c          |  15 +-
- drivers/net/ethernet/samsung/sxgbe/sxgbe_mdio.c    |   1 +
- drivers/net/ethernet/smsc/smsc911x.c               |   6 +-
- drivers/net/ethernet/smsc/smsc9420.c               |  10 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   1 +
- drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c  |   2 +
- drivers/net/ethernet/tehuti/tn40_phy.c             |   5 +-
- drivers/net/ethernet/ti/davinci_emac.c             |  20 +-
- drivers/net/ethernet/toshiba/tc35815.c             |   8 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c      |   8 +
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c     |   8 +
- drivers/net/mdio/of_mdio.c                         | 514 +++++++++++++++++++--
- drivers/net/phy/mdio_bus.c                         |  46 +-
- drivers/net/phy/mdio_bus_provider.c                | 141 ++++--
- drivers/net/phy/mdio_device.c                      | 238 +++++++++-
- drivers/net/phy/mscc/mscc_ptp.c                    |  50 +-
- drivers/net/phy/phy_device.c                       | 151 ++++--
- drivers/net/phy/phylib-internal.h                  |   4 +-
- drivers/net/usb/asix_devices.c                     |   4 +
- drivers/net/usb/lan78xx.c                          |   7 +-
- drivers/net/usb/smsc95xx.c                         |   2 +
- drivers/power/reset/linkstation-poweroff.c         |   1 +
- include/linux/mdio.h                               |   4 +-
- include/linux/phy.h                                |  34 +-
- net/dsa/user.c                                     |  12 +-
- 52 files changed, 1239 insertions(+), 269 deletions(-)
----
-base-commit: a23b36233d4103def55dc8cf65698106d0bd1e62
-change-id: 20260803-submit-mdio-of-dynamic-v2-90560ca159b9
+diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+index 051e449bbe7c..7bd994cab5a0 100644
+--- a/drivers/net/mdio/of_mdio.c
++++ b/drivers/net/mdio/of_mdio.c
+@@ -13,6 +13,7 @@
+ #include <linux/fwnode_mdio.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/netdevice.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+@@ -20,6 +21,8 @@
+ #include <linux/of_net.h>
+ #include <linux/phy.h>
+ #include <linux/phy_fixed.h>
++#include <linux/sched.h>
++#include <linux/string.h>
+ 
+ #define DEFAULT_GPIO_RESET_DELAY	10	/* in microseconds */
+ 
+@@ -27,6 +30,52 @@ MODULE_AUTHOR("Grant Likely <grant.likely@secretlab.ca>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("OpenFirmware MDIO bus (Ethernet PHY) accessors");
+ 
++#if IS_ENABLED(CONFIG_OF_DYNAMIC)
++/*
++ * OF changes can nest when probing one MDIO device enables another node on
++ * the same bus. Serialize independent changes while allowing that nesting.
++ */
++static DEFINE_MUTEX(of_mdio_reconfig_mutex);
++static struct task_struct *of_mdio_reconfig_owner;
++static unsigned int of_mdio_reconfig_depth;
++
++static void of_mdio_reconfig_lock(void)
++{
++	if (!mutex_trylock(&of_mdio_reconfig_mutex)) {
++		if (READ_ONCE(of_mdio_reconfig_owner) == current) {
++			of_mdio_reconfig_depth++;
++			return;
++		}
++		mutex_lock(&of_mdio_reconfig_mutex);
++	}
++
++	WARN_ON_ONCE(READ_ONCE(of_mdio_reconfig_owner));
++	WARN_ON_ONCE(of_mdio_reconfig_depth);
++	WRITE_ONCE(of_mdio_reconfig_owner, current);
++	of_mdio_reconfig_depth = 1;
++}
++
++static void of_mdio_reconfig_unlock(void)
++{
++	WARN_ON_ONCE(READ_ONCE(of_mdio_reconfig_owner) != current);
++	WARN_ON_ONCE(!of_mdio_reconfig_depth);
++
++	if (--of_mdio_reconfig_depth)
++		return;
++
++	WRITE_ONCE(of_mdio_reconfig_owner, NULL);
++	mutex_unlock(&of_mdio_reconfig_mutex);
++}
++#else
++static inline void of_mdio_reconfig_lock(void)
++{
++}
++
++static inline void of_mdio_reconfig_unlock(void)
++{
++}
++#endif
++
+ /* Extract the clause 22 phy ID from the compatible string of the form
+  * ethernet-phy-idAAAA.BBBB */
+ static int of_get_phy_id(struct device_node *device, u32 *phy_id)
+@@ -80,10 +129,20 @@ static int of_mdiobus_register_device(struct mii_bus *mdio,
+ static int of_mdiobus_register_child(struct mii_bus *mdio,
+ 				     struct device_node *child, u32 addr)
+ {
++	int rc;
++
++	if (of_node_test_and_set_flag(child, OF_POPULATED))
++		return 0;
++
+ 	if (of_mdiobus_child_is_phy(child))
+-		return of_mdiobus_register_phy(mdio, child, addr);
++		rc = of_mdiobus_register_phy(mdio, child, addr);
++	else
++		rc = of_mdiobus_register_device(mdio, child, addr);
++
++	if (rc)
++		of_node_clear_flag(child, OF_POPULATED);
+ 
+-	return of_mdiobus_register_device(mdio, child, addr);
++	return rc;
+ }
+ 
+ /* The following is a list of PHY compatible strings which appear in
+@@ -255,13 +314,21 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ 	if (rc)
+ 		return rc;
+ 
++	of_mdio_reconfig_lock();
++	rc = mdiobus_device_change_begin(mdio, false);
++	if (rc) {
++		of_mdio_reconfig_unlock();
++		mdiobus_unregister(mdio);
++		return rc;
++	}
++
+ 	/* Loop over the child nodes and register a phy_device for each phy */
+ 	rc = __of_mdiobus_parse_phys(mdio, np, &scanphys);
+ 	if (rc)
+-		goto unregister;
++		goto out_change;
+ 
+ 	if (!scanphys)
+-		return 0;
++		goto out_change;
+ 
+ 	/* auto scan for PHYs with empty reg property */
+ 	for_each_available_child_of_node(np, child) {
+@@ -272,19 +339,388 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ 
+ 		rc = of_mdiobus_scan_phy(mdio, child);
+ 		if (rc && rc != -ENODEV)
+-			goto put_unregister;
++			goto put_child;
++		rc = 0;
+ 	}
+ 
+-	return 0;
++out_change:
++	mdiobus_device_change_end(mdio, false);
++	of_mdio_reconfig_unlock();
++	if (!rc)
++		return 0;
+ 
+-put_unregister:
+-	of_node_put(child);
+-unregister:
+ 	mdiobus_unregister(mdio);
+ 	return rc;
++
++put_child:
++	of_node_put(child);
++	goto out_change;
+ }
+ EXPORT_SYMBOL(__of_mdiobus_register);
+ 
++#if IS_ENABLED(CONFIG_OF_DYNAMIC)
++static bool of_mdiobus_node_is_available(struct device_node *node)
++{
++	return !of_node_check_flag(node, OF_DETACHED) &&
++	       of_device_is_available(node);
++}
++
++static int of_mdiobus_add_node(struct mii_bus *mdio,
++			       struct device_node *node)
++{
++	struct device_node *child;
++	int addr, rc, ret = 0;
++
++	if (!of_mdiobus_node_is_available(node))
++		return 0;
++
++	if (of_node_name_eq(node, "ethernet-phy-package")) {
++		if (!of_property_present(node, "reg"))
++			return 0;
++
++		for_each_available_child_of_node(node, child) {
++			rc = of_mdiobus_add_node(mdio, child);
++			if (rc && rc != -ENODEV && !ret)
++				ret = rc;
++		}
++
++		return ret;
++	}
++
++	addr = of_mdio_parse_addr(&mdio->dev, node);
++	if (addr < 0) {
++		if (of_property_present(node, "reg"))
++			return addr;
++
++		rc = of_mdiobus_scan_phy(mdio, node);
++	} else {
++		rc = of_mdiobus_register_child(mdio, node, addr);
++	}
++
++	if (rc == -ENODEV && addr >= 0)
++		dev_err(&mdio->dev,
++			"MDIO device at address %d is missing.\n", addr);
++
++	return rc;
++}
++
++static bool of_mdiobus_node_is_busy(struct mii_bus *mdio,
++				    struct device_node *node)
++{
++	struct mdio_device *mdiodev;
++	struct phy_device *phydev;
++	bool busy = false;
++
++	if (of_node_name_eq(node, "ethernet-phy-package")) {
++		for_each_child_of_node_scoped(node, child) {
++			if (of_mdiobus_node_is_busy(mdio, child))
++				return true;
++		}
++
++		return false;
++	}
++
++	if (!of_node_check_flag(node, OF_POPULATED))
++		return false;
++
++	mdiodev = of_mdio_find_device(node);
++	if (!mdiodev)
++		return true;
++	if (mdiodev->bus != mdio) {
++		put_device(&mdiodev->dev);
++		return true;
++	}
++
++	mutex_lock(&mdio->mdio_map_lock);
++	busy = rcu_access_pointer(mdio->mdio_map[mdiodev->addr]) != mdiodev ||
++	       (mdio->mdio_map_pending & BIT(mdiodev->addr));
++	if (mdiodev->flags & MDIO_DEVICE_FLAG_PHY) {
++		phydev = to_phy_device(&mdiodev->dev);
++		if (phydev->attached) {
++			busy = true;
++			dev_warn(&mdiodev->dev,
++				 "cannot remove an attached PHY; remove its consumer first\n");
++		}
++	}
++	mutex_unlock(&mdio->mdio_map_lock);
++	put_device(&mdiodev->dev);
++
++	return busy;
++}
++
++static struct device_node *
++of_mdiobus_get_removal_scope(struct device_node *node)
++{
++	struct device_node *parent;
++
++	if (of_node_name_eq(node, "ethernet-phy-package"))
++		return of_node_get(node);
++
++	parent = of_get_parent(node);
++	if (of_node_name_eq(parent, "ethernet-phy-package"))
++		return parent;
++
++	of_node_put(parent);
++	return of_node_get(node);
++}
++
++static int of_mdiobus_remove_node(struct mii_bus *mdio,
++				  struct device_node *node)
++{
++	struct mdio_device *mdiodev;
++	struct device_node *child;
++	int ret;
++
++	if (of_node_name_eq(node, "ethernet-phy-package")) {
++		for_each_child_of_node(node, child) {
++			ret = of_mdiobus_remove_node(mdio, child);
++			if (ret) {
++				of_node_put(child);
++				return ret;
++			}
++		}
++		return 0;
++	}
++
++	if (!of_node_check_flag(node, OF_POPULATED))
++		return 0;
++
++	/* The OF node lookup also covers PHYs found by address scanning. */
++	mdiodev = of_mdio_find_device(node);
++	if (!mdiodev)
++		return -EBUSY;
++	if (mdiodev->bus != mdio) {
++		put_device(&mdiodev->dev);
++		return -ENODEV;
++	}
++
++	ret = mdiodev->device_remove(mdiodev, true);
++	if (!ret)
++		mdiodev->device_free(mdiodev);
++	put_device(&mdiodev->dev);
++
++	return ret == -ENODEV ? 0 : ret;
++}
++
++static struct mii_bus *of_mdiobus_find_parent(struct device_node *node)
++{
++	struct device_node *parent, *bus_node;
++	struct mii_bus *mdio;
++
++	parent = of_get_parent(node);
++	if (!parent)
++		return NULL;
++
++	if (of_node_name_eq(parent, "ethernet-phy-package")) {
++		if (!of_device_is_available(parent) ||
++		    !of_property_present(parent, "reg")) {
++			of_node_put(parent);
++			return NULL;
++		}
++
++		bus_node = of_get_parent(parent);
++		of_node_put(parent);
++	} else {
++		bus_node = parent;
++	}
++
++	mdio = of_mdio_find_bus(bus_node);
++	of_node_put(bus_node);
++
++	return mdio;
++}
++
++#if IS_ENABLED(CONFIG_OF_OVERLAY)
++/* Overlay entry notifier errors cannot stop removal after the tree changed. */
++static bool of_mdiobus_live_node_is_busy(struct device_node *node)
++{
++	struct device_node *scope;
++	struct mii_bus *mdio;
++	bool busy;
++
++	scope = of_mdiobus_get_removal_scope(node);
++	mdio = of_mdiobus_find_parent(scope);
++	/* Non-MDIO nodes and buses already removed cannot block an overlay. */
++	if (!mdio) {
++		busy = false;
++		goto out_put_scope;
++	}
++
++	busy = true;
++	if (!mdiobus_device_change_begin(mdio, true)) {
++		busy = of_mdiobus_node_is_busy(mdio, scope);
++		mdiobus_device_change_end(mdio, true);
++	}
++	put_device(&mdio->dev);
++
++out_put_scope:
++	of_node_put(scope);
++	return busy;
++}
++
++static struct device_node *
++of_mdiobus_overlay_target_child(struct device_node *target,
++				struct device_node *overlay_child)
++{
++	const char *name = kbasename(overlay_child->full_name);
++	struct device_node *child;
++
++	for_each_child_of_node(target, child) {
++		if (!of_node_cmp(kbasename(child->full_name), name))
++			return child;
++	}
++
++	return NULL;
++}
++
++static bool of_mdiobus_overlay_node_is_busy(struct device_node *overlay,
++					    struct device_node *target,
++					    bool added)
++{
++	struct device_node *overlay_child, *target_child;
++	bool busy, child_added;
++
++	if ((added || of_property_present(overlay, "status")) &&
++	    of_mdiobus_live_node_is_busy(target))
++		return true;
++
++	for_each_child_of_node(overlay, overlay_child) {
++		target_child = of_mdiobus_overlay_target_child(target,
++							       overlay_child);
++		if (!target_child)
++			continue;
++
++		child_added = of_node_check_flag(target_child, OF_OVERLAY);
++		busy = of_mdiobus_overlay_node_is_busy(overlay_child,
++						       target_child, child_added);
++		of_node_put(target_child);
++		if (busy) {
++			of_node_put(overlay_child);
++			return true;
++		}
++	}
++
++	return false;
++}
++
++static int of_mdiobus_overlay_notify(struct notifier_block *nb,
++				     unsigned long action, void *arg)
++{
++	struct of_overlay_notify_data *nd = arg;
++	bool busy;
++
++	if (action != OF_OVERLAY_PRE_REMOVE)
++		return NOTIFY_OK;
++
++	busy = of_mdiobus_overlay_node_is_busy(nd->overlay, nd->target,
++					       false);
++
++	return busy ? notifier_from_errno(-EBUSY) : NOTIFY_OK;
++}
++
++static struct notifier_block of_mdio_overlay_notifier = {
++	.notifier_call = of_mdiobus_overlay_notify,
++};
++#endif
++
++static int of_mdiobus_notify(struct notifier_block *nb, unsigned long action,
++			     void *arg)
++{
++	struct of_reconfig_data *rd = arg;
++	struct device_node *scope;
++	struct mii_bus *mdio;
++	enum of_reconfig_change change;
++	bool removing;
++	int rc, ret = NOTIFY_OK;
++
++	of_mdio_reconfig_lock();
++	change = of_reconfig_get_state_change(action, rd);
++	switch (change) {
++	case OF_RECONFIG_CHANGE_ADD:
++		/* A newer change may have made this notification stale. */
++		if (!of_mdiobus_node_is_available(rd->dn))
++			goto out_unlock;
++		removing = false;
++		break;
++	case OF_RECONFIG_CHANGE_REMOVE:
++		/* A newer change may have made this notification stale. */
++		if (of_mdiobus_node_is_available(rd->dn))
++			goto out_unlock;
++		removing = true;
++		break;
++	default:
++		goto out_unlock;
++	}
++
++	mdio = of_mdiobus_find_parent(rd->dn);
++	if (!mdio)
++		goto out_unlock;
++
++	rc = mdiobus_device_change_begin(mdio, removing);
++	if (rc) {
++		if (!removing)
++			ret = notifier_from_errno(-EPROBE_DEFER);
++		else if (rc != -ENODEV)
++			ret = notifier_from_errno(rc);
++		goto out_put_mdio;
++	}
++
++	if (!removing) {
++		rc = of_mdiobus_add_node(mdio, rd->dn);
++	} else {
++		/* The node may already be detached from its parent hierarchy. */
++		scope = of_mdiobus_get_removal_scope(rd->dn);
++		if (of_mdiobus_node_is_busy(mdio, scope))
++			rc = -EBUSY;
++		else
++			rc = of_mdiobus_remove_node(mdio, rd->dn);
++		of_node_put(scope);
++	}
++
++	mdiobus_device_change_end(mdio, removing);
++	if (rc && (removing || rc != -ENODEV))
++		ret = notifier_from_errno(rc);
++
++out_put_mdio:
++	put_device(&mdio->dev);
++out_unlock:
++	of_mdio_reconfig_unlock();
++
++	return ret;
++}
++
++static struct notifier_block of_mdio_notifier = {
++	.notifier_call = of_mdiobus_notify,
++};
++
++static int __init of_mdio_init(void)
++{
++	int ret;
++
++	ret = of_reconfig_notifier_register(&of_mdio_notifier);
++	if (ret)
++		return ret;
++
++#if IS_ENABLED(CONFIG_OF_OVERLAY)
++	ret = of_overlay_notifier_register(&of_mdio_overlay_notifier);
++	if (ret)
++		of_reconfig_notifier_unregister(&of_mdio_notifier);
++#endif
++
++	return ret;
++}
++module_init(of_mdio_init);
++
++static void __exit of_mdio_exit(void)
++{
++#if IS_ENABLED(CONFIG_OF_OVERLAY)
++	of_overlay_notifier_unregister(&of_mdio_overlay_notifier);
++#endif
++	of_reconfig_notifier_unregister(&of_mdio_notifier);
++}
++module_exit(of_mdio_exit);
++#endif /* CONFIG_OF_DYNAMIC */
++
+ /**
+  * of_mdio_find_device - Given a device tree node, find the mdio_device
+  * @np: pointer to the mdio_device's device tree node
 
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+-- 
+2.53.0
 
