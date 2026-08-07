@@ -1,71 +1,71 @@
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEE13A1696
-	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 03:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8FA3A2551
+	for <imx@lists.linux.dev>; Fri,  7 Aug 2026 03:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786074886; cv=none; b=s1HIW98wwE3rSjd2V0tUEb18Kuklu1IL7zf5cLY+JajYsupZpgNVQLEyfRoCG4bXF8HnKLt9Xmd7Appko9hBI3GMNo8ne8dqSD2I4HnLCRRhYSulSohv85lD6K5B+IfVoOMd+xEY+6zhWirhOecM7xDqZd7uIMtdsjMVskS4XCI=
+	t=1786074888; cv=none; b=N9R+skVtTrmdpqdbafOKp4epCbXeB1OFOXw00HlKiMrL5i2DQUSsXdtOpTS20oW5xEmvyhTVqhxAv59zZdNNXCitZ1OJFeZfmXCEDH1/Lv8gNjolYVdVYMo+Yj8jN75EdHJC96FQBHt3ye7JkGtyNXiMBht32ix1RmXvgmZm7N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786074886; c=relaxed/simple;
-	bh=0+TjxDD3Jy9In/dYW3swTJjk2WwZ3m7x7rp80MwetQc=;
+	s=arc-20240116; t=1786074888; c=relaxed/simple;
+	bh=PTx1xmaBWvPevkP6ZbmwzZ7YY+06PmbkiJMfuow2Mow=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CmbMb505CMUdUzq5c7jk3euocW/NH5UIh2mqeI/HYo+m2DWJxHnn/5b6Fsdoh9PnpPIGhatIgEW15c9B1xUqFdB24U6lJ78+x0W/MwHi9XECnF9hyPLKccWmoQ/kaufI1ccS9yTsdTBH6KlPy6CMPAaWWR3sPENA/lkJI86t9U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gJckgvun; arc=none smtp.client-ip=209.85.160.53
+	 In-Reply-To:To:Cc; b=ZcmGwODDsanEQ5QCZzYcDbwi6KcIOg175R80CvQd3qplVSDVsgM5LaE4ATNuLq4vh8yZRBy69gVN7HpOc78cXVmIFMhm+czHt4iMqN1tgiLiAFCb7qKJX/Br3FDHonYuVhGRaed6e9GbBMDW3eXsg1eElhwkLRnRr3hj0ISw/EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HWMLTv9h; arc=none smtp.client-ip=209.85.161.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gJckgvun"
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-455ca262ccbso1649530fac.1
-        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 20:54:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWMLTv9h"
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6acb63301acso1302028eaf.0
+        for <imx@lists.linux.dev>; Thu, 06 Aug 2026 20:54:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786074883; x=1786679683; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1786074885; x=1786679685; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oG17fuSe5U2XTSseOTKToMBz/2cRmkeSjfgTvQP48IM=;
-        b=gJckgvunoVh/2Yr3bVT17yxDjhAsSxchBB5OEFB/juZPyobdrwI4UEdJR+iPJQMcrn
-         /lTG4+irKLiw9lR9b7Y1ZMaVaJsLWNkvpucwlVcXfX/GjUvgOu5zMd3iHnD6ILjzRHPl
-         UExscmvNESduNjMi6UTDdw3jlgArEoc36MvpB9LG+Hc3SFs48bS6Uo7wFIr7+8DvfaFb
-         jF+UFKOObBIBi6rdkq+wuAviI5KYbCH55+2Ht5Bg2kHN7YISj6FalI07X4cz/up5uqVe
-         bGSp8llDU7Q0OsuimROc2Cf2r+A5cTUMlFPygqDLbzTjCqeArQiPY/JcvA9sD8JmAiTm
-         Dz4g==
+        bh=387qnwbkMAAVcWYZO25x2XelYHqPuaJgYNRgF/uAO2o=;
+        b=HWMLTv9hNLAcmHyQ1kDj12svEnauA3cTEJ9yBzJt1fIeoSotKwyD30keoFrUAQFjEO
+         yPv1THAQDk8kKV8rLk6/DP4zs4FTRz/xoOyniYsfpJlaRh2AjGgBfVTNDCr0nszwKzbF
+         10se9JT++DcqIoR7fHPZbezRxMzQEQYq9K44vbJ9W1RfYYiMPeCXMh0uBvorMegchOWE
+         mWO4Vm+rWY+UmvoZESSo3FuBcl8c9ZM+1UUhqMCZspvCXTULX7rQZiHxa9FRbbAPV4e8
+         GLRvj4CAA+mYqUI+2hCSUWJId1fr+KzsUR509d8oRW6syAYosZ25d1S3g0GYcOY14rf9
+         03hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786074883; x=1786679683;
+        d=1e100.net; s=20251104; t=1786074885; x=1786679685;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oG17fuSe5U2XTSseOTKToMBz/2cRmkeSjfgTvQP48IM=;
-        b=bvxiHevh7UUSIz1cB87J/gxp/m3mEb/16iIz0E+vAsF7Sb7vnJXVW+QGGP2FQGqVk0
-         7ILqGyjdfTt6jNT3zJjjrNP1ZC0IBErxv1OF3de8TVT8rZCxAsJvmUOWXBcEhgjQhR+h
-         PuFyAmk5q7/DSPT580V0FOjrxEURgya1VB6GryU78viw2CAVWTV6VP8NdNdvaDtIEMsd
-         GEgUi5oSlzihRaS7t0jZ7zIi8h9tmfD2xbjUsN2coZ0z/Vsiha6pzX63QuSpEqNyF1rj
-         H1NGGygt/tDAMDf0BKwDKZ1hJd1BH4FEhF19qrj3+yX0xD/WdcDtCc0JM9Goa4S21Izl
-         Gv7Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rqg86dPCZWIENuzksIRUeKHq7LmYf8UqtNAhH9xmzdPFwOXMmVzTsQXstBKJ1xVlI+rHiE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YySydUdDVnkARDL8HZZbK9Ge0Rc4I3Pl2Dk4hHnB0NQcEjpDpz1
-	ythI41kaAmGrpDngD1JUQQg5X9tGY3BLg0x5Y5QfIko+Ow+auZyEnW81
-X-Gm-Gg: AR+sD11XkWlDctqeLg8sawla2XRWnkuIGLm14YQ6J5FLMDn9Imacpmdph7TaVXAnYuX
-	RO8heF6Kgv8Rwo4JphtduPIHkNIMFkYVv/m7HYXSWnDh6fR2ptMoQFnABv+43qOXOG2wiblO5fs
-	3z44lPaZk7TnvxjL97D0+QhS/2k3lmk7AZw+j7bi+vWQqptPIkI/cKTJuCnD8mq4F4ow+e3oKC+
-	Xx7UvJFQrCnM3lBhHrNQo/us65WqIXX7PLZogZp9W0Zk2O/FrGDVC+ziP0qA8f3SmIXHNFf1gyw
-	pca/8b+Sfq0nfVg6RM1RoLc9raWgCs4YXRfuJz9DYjKiVdaMtZUp96dHUpCn6vYOJYv/x3yveak
-	17Xn1rO1Mz4xAFuscN0dvQXruoHz/oc76SOQa/GkenMDZR4BHorL2ezlwApYBfnt0foWQ6hq1L5
-	9AdC0xDS/MDzTIycCPQRrCx5T9eaDbmQpSvAsEmtgkd05JNOvsyIgWgV/pFENxKvjcdw7p6oWjl
-	HnERPx8jPKl91rLkqpEfbgfioD2bwKSxn269ZgFWd2w4RYZPwDkIOnDmrwLuc88kEdBZFy1tscl
-	wlKhmKrboUxGxHTNmou88RIbcXWI49EWE5V5A1jjyFkP9C4CjSMhIEI3MYjxMletv+6JigPBcLb
-	1fvGifrAgKRKl2LQKDQ==
-X-Received: by 2002:a05:6820:987:b0:6aa:e573:9ce0 with SMTP id 006d021491bc7-6ae96d0b246mr11060312eaf.16.1786074883485;
-        Thu, 06 Aug 2026 20:54:43 -0700 (PDT)
+        bh=387qnwbkMAAVcWYZO25x2XelYHqPuaJgYNRgF/uAO2o=;
+        b=s0Lcj4Hrcy8LI/kYt62vAYfYIxtFvDtZvDgjCi6o0kt8xnsvlkXBqUOite6d2K42DQ
+         LaUFcRKQwVt02m8zs+Y9RMAuCGWPhm2zmI7FA5QYTJ9/cqREw7a4zb6z2PF+ZL9LnQpO
+         oyi+xTfe3XxbDHnX6ErJ0vmKXPvRjtKLvaNKolhZALvV+5weEQYY/606NWgnosZfuscz
+         U7xPfamJ/u7nTvgZ5x3o0Z/NxgucBpJsqu2opU+7gzR4sWdorzHrbcXWkuAiQF2tAu1Q
+         qrhDQOjbr3RtxgBTmBXWe5QGXdYIe0W/9wu0mIgrfoZ3pS7HhmMe4k5itmU91kYfz83+
+         mCSw==
+X-Forwarded-Encrypted: i=1; AHgh+RoIpgR2gB4snTXI/ptU+LSBXkuRuNDi/91iNKhaBcVEo9M3JqLWc/YGCM3fEek1oDxLo+E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzRUhhRx/fgyQeCxAZVMiTrau8yT3W1i+6q7C7z2UvUkPcVfiJg
+	F+ZYt7SBTaTwrZpGi/6iaGvN3UzEIChrt4itz5Uzlx+eRh9Gw384wveD
+X-Gm-Gg: AR+sD13rTKMipPUBW60XT9RNZB5+k1MF4Ix4wLrPhzXdGfqheozm2sVa7F4z+9XV33m
+	2vZCEaZEkoWD6r+jM90OVw2mk4dSN1TkMg02TFxB8HqBejcsg/OwbAalTp9d4LPAN3bqsa3c6y7
+	DHN9iK2B2vF/hvbBw3S3424QkmoP03AYRlBvvsNKpUc2igOBZ+UWPCmOb5DKDMuMvoskRqtw4sV
+	UbJSGSTJvE6MXhKgCFxFiC0/DFv/KBbybBlkYKTOGikkKPwQXCNWShfKAwwVU8mFeEDfjknlngS
+	2hQS/+DeSdZ/5J7cj6+5XdZHCxwc7zdz0os6ilA778QTKj5AXDue4939gDBCh9LD9TA3l4Ko4ep
+	hcw9pYcjVgcshbEw5Gkfhn4PLg+VqdLPmhpkzR2EZslulgwg1P/weLJvy0VoOjHP+DlNVebDkJQ
+	dnzMVQMG0BThbpHMtXyojLHZto25hDr3bhlm4AY1A0gR10xpMxbod2OPvEtJieI2bxHkxSP3lXn
+	zW9ZqEVuMjJ29ArE/O0uEpvetSTMyAE8+SDhLW0DXZ0mn7IS2d6YoYlPK6YEOA+LSqMdXAh3mlY
+	jYw65mTlEGomDlgq6TE2eKAl7Ngxg9fUyAJ11TuzIWY5KuN00qLcf1G5wJF1OI91YTa6AJOo4lW
+	d4clVr3GUOfm9uhW6JNeZKu6AoIg=
+X-Received: by 2002:a05:6820:c91:b0:6aa:e482:3ee3 with SMTP id 006d021491bc7-6b016c9eed1mr4663164eaf.8.1786074885511;
+        Thu, 06 Aug 2026 20:54:45 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02bbc41bbsm1329339eaf.3.2026.08.06.20.54.41
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02bbc41bbsm1329339eaf.3.2026.08.06.20.54.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 20:54:43 -0700 (PDT)
+        Thu, 06 Aug 2026 20:54:45 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Thu, 06 Aug 2026 21:54:20 -0600
-Subject: [PATCH net-next v4 1/4] net: phy: cache MDIO bus owner before
- dropping PHY reference
+Date: Thu, 06 Aug 2026 21:54:21 -0600
+Subject: [PATCH net-next v4 2/4] net: mdio: factor out OF child
+ registration helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-submit-mdio-of-dynamic-v2-v4-1-4beb0c50d5ba@gmail.com>
+Message-Id: <20260806-submit-mdio-of-dynamic-v2-v4-2-4beb0c50d5ba@gmail.com>
 References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
 In-Reply-To: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -121,85 +121,130 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-phy_attach_direct() and phy_detach() cache the MDIO bus pointer, drop their
-PHY device reference, and then read bus->owner. If the put releases the PHY
-during concurrent teardown, the cached pointer does not itself keep the
-parent bus alive.
+Live OF reconfiguration needs to create the same PHY and generic MDIO
+devices as initial bus population, including legacy PHY nodes that need
+address scanning.
 
-Cache the module pointer before dropping the PHY reference. The existing
-module reference protects the cached pointer whenever the MDIO bus and
-network device have different owners.
+Factor fixed-address child registration and PHY address scanning into
+helpers. The old scan loop also visited every free address for a child
+without a reg property even when the child was not a PHY. Reject that case
+before scanning while preserving enumeration of valid PHY and generic MDIO
+children.
 
-Fixes: ec988ad78ed6 ("phy: Don't increment MDIO bus refcount unless it's a different owner")
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/phy/phy_device.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 94b2e85e00a3..34d00f1ee483 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1752,7 +1752,7 @@ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
- int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 		      u32 flags, phy_interface_t interface)
+---
+Changes v1 -> v2:
+  - split from the ACx00 series without code changes
+---
+ drivers/net/mdio/of_mdio.c | 66 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+index b8d298c04d3f..051e449bbe7c 100644
+--- a/drivers/net/mdio/of_mdio.c
++++ b/drivers/net/mdio/of_mdio.c
+@@ -77,6 +77,15 @@ static int of_mdiobus_register_device(struct mii_bus *mdio,
+ 	return 0;
+ }
+ 
++static int of_mdiobus_register_child(struct mii_bus *mdio,
++				     struct device_node *child, u32 addr)
++{
++	if (of_mdiobus_child_is_phy(child))
++		return of_mdiobus_register_phy(mdio, child, addr);
++
++	return of_mdiobus_register_device(mdio, child, addr);
++}
++
+ /* The following is a list of PHY compatible strings which appear in
+  * some DTBs. The compatible string is never matched against a PHY
+  * driver, so is pointless. We only expect devices which are not PHYs
+@@ -136,6 +145,32 @@ bool of_mdiobus_child_is_phy(struct device_node *child)
+ }
+ EXPORT_SYMBOL(of_mdiobus_child_is_phy);
+ 
++static int of_mdiobus_scan_phy(struct mii_bus *mdio,
++			       struct device_node *child)
++{
++	int addr, rc;
++
++	if (!of_mdiobus_child_is_phy(child))
++		return -ENODEV;
++
++	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
++		if (mdiobus_is_registered_device(mdio, addr))
++			continue;
++
++		dev_info(&mdio->dev, "scan phy %pOFn at address %i\n",
++			 child, addr);
++
++		/* -ENODEV means that scanning should continue. */
++		rc = of_mdiobus_register_child(mdio, child, addr);
++		if (!rc)
++			return 0;
++		if (rc != -ENODEV)
++			return rc;
++	}
++
++	return -ENODEV;
++}
++
+ static int __of_mdiobus_parse_phys(struct mii_bus *mdio, struct device_node *np,
+ 				   bool *scanphys)
  {
--	struct mii_bus *bus = phydev->mdio.bus;
-+	struct module *bus_owner = phydev->mdio.bus->owner;
- 	struct device *d = &phydev->mdio.dev;
- 	struct module *ndev_owner = NULL;
- 	int err;
-@@ -1764,7 +1764,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	 */
- 	if (dev)
- 		ndev_owner = dev->dev.parent->driver->owner;
--	if (ndev_owner != bus->owner && !try_module_get(bus->owner)) {
-+	if (ndev_owner != bus_owner && !try_module_get(bus_owner)) {
- 		phydev_err(phydev, "failed to get the bus module\n");
- 		return -EIO;
+@@ -164,10 +199,7 @@ static int __of_mdiobus_parse_phys(struct mii_bus *mdio, struct device_node *np,
+ 			continue;
+ 		}
+ 
+-		if (of_mdiobus_child_is_phy(child))
+-			rc = of_mdiobus_register_phy(mdio, child, addr);
+-		else
+-			rc = of_mdiobus_register_device(mdio, child, addr);
++		rc = of_mdiobus_register_child(mdio, child, addr);
+ 
+ 		if (rc == -ENODEV)
+ 			dev_err(&mdio->dev,
+@@ -197,7 +229,7 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ {
+ 	struct device_node *child;
+ 	bool scanphys = false;
+-	int addr, rc;
++	int rc;
+ 
+ 	if (!np)
+ 		return __mdiobus_register(mdio, owner);
+@@ -238,27 +270,9 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ 		    of_node_name_eq(child, "ethernet-phy-package"))
+ 			continue;
+ 
+-		for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
+-			/* skip already registered PHYs */
+-			if (mdiobus_is_registered_device(mdio, addr))
+-				continue;
+-
+-			/* be noisy to encourage people to set reg property */
+-			dev_info(&mdio->dev, "scan phy %pOFn at address %i\n",
+-				 child, addr);
+-
+-			if (of_mdiobus_child_is_phy(child)) {
+-				/* -ENODEV is the return code that PHYLIB has
+-				 * standardized on to indicate that bus
+-				 * scanning should continue.
+-				 */
+-				rc = of_mdiobus_register_phy(mdio, child, addr);
+-				if (!rc)
+-					break;
+-				if (rc != -ENODEV)
+-					goto put_unregister;
+-			}
+-		}
++		rc = of_mdiobus_scan_phy(mdio, child);
++		if (rc && rc != -ENODEV)
++			goto put_unregister;
  	}
-@@ -1900,8 +1900,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	d->driver = NULL;
- error_put_device:
- 	put_device(d);
--	if (ndev_owner != bus->owner)
--		module_put(bus->owner);
-+	if (ndev_owner != bus_owner)
-+		module_put(bus_owner);
- 	return err;
- }
- EXPORT_SYMBOL(phy_attach_direct);
-@@ -1917,7 +1917,7 @@ void phy_detach(struct phy_device *phydev)
- {
- 	struct net_device *dev = phydev->attached_dev;
- 	struct module *ndev_owner = NULL;
--	struct mii_bus *bus;
-+	struct module *bus_owner;
  
- 	if (phydev->devlink) {
- 		device_link_del(phydev->devlink);
-@@ -1972,17 +1972,14 @@ void phy_detach(struct phy_device *phydev)
- 	/* Assert the reset signal */
- 	phy_device_reset(phydev, 1);
- 
--	/*
--	 * The phydev might go away on the put_device() below, so avoid
--	 * a use-after-free bug by reading the underlying bus first.
--	 */
--	bus = phydev->mdio.bus;
-+	/* The PHY and its parent bus may be released by put_device() below. */
-+	bus_owner = phydev->mdio.bus->owner;
- 
- 	put_device(&phydev->mdio.dev);
- 	if (dev)
- 		ndev_owner = dev->dev.parent->driver->owner;
--	if (ndev_owner != bus->owner)
--		module_put(bus->owner);
-+	if (ndev_owner != bus_owner)
-+		module_put(bus_owner);
- }
- EXPORT_SYMBOL(phy_detach);
- 
+ 	return 0;
 
 -- 
 2.53.0
