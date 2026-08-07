@@ -1,56 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBEB45198B;
-	Fri,  7 Aug 2026 21:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4803844A41D;
+	Fri,  7 Aug 2026 21:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786139008; cv=none; b=VieGbPOIhuHmx3/05Rfg846gWBhjEw2m/a5y3f/cLkjSTn9MI6xCTz+HgD/mZT+BZtZmJkV+nwcp6herI5x4qp+KyDYUyEENixZPw+Pw0NWePCC+loGIJ6DYHtFzGuK5AhuMFZCVJMG2itLVNxG7z4pihewKk07z0PKwT6Uxx/c=
+	t=1786139078; cv=none; b=pM+ME8kAB3iGwMqP4kva8Mm40iSroxa0p17bZ2Be5Zx/wmyYYnNtd1gfG58ZauyqGuIzf7F79PkcQH0hYwdbO59SS8fdGvUBHXd/mq6f3B9CiLVqBIlVjNhPZAq+nhKM0FoNGqXiRPIS+l2TP5enVAX0XOJX5mDEY9hvPG+sDz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786139008; c=relaxed/simple;
-	bh=LbszAPHy9MOq5OmMMZZaMs6hgSsRc86J5D/l6sfgmzc=;
+	s=arc-20240116; t=1786139078; c=relaxed/simple;
+	bh=ol85uVIw9FjGtEqEzjzld1zGzT5n2h1O0cbnCrk9zGg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jPDqepKNxPimA4c4JKUxhUvS1p85McYFeLEUVYtzOHi9/yUAbV7TkFtFFRnMKMsyr3GxhU62fpU4KClhR8iKyytC9oPFsmJbT04mhjTpZ929tCB5j1VRcEN60pUCLDDzSXq7PbJ1F8u/1mgmVNp30VNVDvTpELTIoQSFfX2WAMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCsmZMOR; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=mGrasslupVyNd6TmDuXaRHE2NXGLFyApJgriuNF87sRxacVwSEsd+EfXPpoMVYa04pCos/OCES72wJqVOYP+HptkpUdGU+QsRlIvFw0L/l8jf9DsctoOMHOen5wemC3UhMLKGfq3VJs3EyuY6Df7bt4bK5ZbAlPkPMobI57ccQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxyVmbv0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCsmZMOR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3AF1F000E9;
-	Fri,  7 Aug 2026 21:43:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxyVmbv0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68071F000E9;
+	Fri,  7 Aug 2026 21:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786139006;
-	bh=O0GWgFWa+KBYW+SsUAsbFeygA58QMJKApP/borqb9+I=;
+	s=k20260515; t=1786139076;
+	bh=Y/9ImKFoNMIcoQEcOSmOHrcaraP4OwByegPOmnFIMnE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FCsmZMORxswv2bDdmcWQFXbFXcIjplPP1RneiT0TWSZiPP8H0kubyXerByucctfk8
-	 FtIlCV4dr4M15leD5VGrIfr+wGoGA9cRwUF9v+3wfLmmW6mlSlUVf7MSGaA5HNFFj3
-	 PnEtyivYrP6jJvQeWzCUv0KUcGBFUj9LE6bim8hQoC1H/eQ+LRXMcYLLCfcy2vkQKD
-	 YeK6DWtGst5v2i3fobrRN38C8ZOZqZTmsdtCX3x5Q8+76XcaFeSTiA4D/PQXkFMb//
-	 GCfer1AOJQmHmTEIOfy/ja9FMLnssIPt8tUxvRvgztwx5p209uONfwwRPSk7Xcs9Xy
-	 KCKM7ZsYKkVUw==
-Date: Fri, 7 Aug 2026 16:43:25 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
+	b=dxyVmbv0H/ByiHbYR4KNac0YRew95e8AxTzHIrPSCeXrtaduLfP3oYh+0tgKEl7Hz
+	 UHbGtgO2+BpYOEufOgDr77bXh0F7XnAFO0ObnA+uxg9JSOofhqC1daY26giudThEyZ
+	 myNSyxBKxWlgOEbSYi8z2ZCAv+LvJl+JfKq7Q8u82/j5xCdfX/4OSHEot7KG+k/oNO
+	 ctSpozzl5LqDODS/SEhRzOTNVwEmm7tcuz2A1VOFlCU0Zb6Ny+9T5XeA9pYLAoFn/6
+	 rhSbF4YGFzJbpxpiMnXBW5H1cSfd6E1IJ8eDkFZZgMqVqdIlGl84bDZPd1NmMiqtPz
+	 kAzgLfxICI2Zg==
+Date: Fri, 7 Aug 2026 16:44:35 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Simona Vetter <simona@ffwll.ch>, Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Marek Vasut <marex@denx.de>,
+	devicetree@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org,
+	Stefan Agner <stefan@agner.ch>, Peng Fan <peng.fan@nxp.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Maxime Ripard <mripard@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: lcdif: Add endpoint bus-width
- property
-Message-ID: <20260807214325.GA2070489-robh@kernel.org>
-References: <20260723093813.180089-1-francesco@dolcini.it>
- <20260723093813.180089-2-francesco@dolcini.it>
- <amI3HKLECuZBHLs0@SMW015318>
+	imx@lists.linux.dev
+Subject: Re: [PATCH v3 2/4] dt-bindings: soc: imx-iomuxc-gpr: allow bridge@18
+ as child node
+Message-ID: <178613907482.2073714.15421440412830681192.robh@kernel.org>
+References: <20260723-arm_dts_ldb-v3-0-96c784b2b84f@nxp.com>
+ <20260723-arm_dts_ldb-v3-2-96c784b2b84f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,37 +54,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <amI3HKLECuZBHLs0@SMW015318>
+In-Reply-To: <20260723-arm_dts_ldb-v3-2-96c784b2b84f@nxp.com>
 
-On Thu, Jul 23, 2026 at 10:45:32AM -0500, Frank Li wrote:
-> On Thu, Jul 23, 2026 at 11:38:08AM +0200, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >
-> > The DPI output of the LCD interface can be configured with a bus width
-> > of 16, 18, or 24 bits. Introduce a bus-width property to the output
-> > endpoint, specifying the number of parallel RGB bits connected.
-> >
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > ---
-> > v2: use the common bus-width property instead of the legacy interface-pix-fmt
-> > ---
-> >  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > index 2dd0411ec651..6931f0ae3829 100644
-> > --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > @@ -71,6 +71,15 @@ properties:
-> >      $ref: /schemas/graph.yaml#/properties/port
-> >      description: The LCDIF output port
-> >
-> > +    properties:
-> > +      endpoint:
-> > +        $ref: /schemas/graph.yaml#/$defs/endpoint-base
+
+On Thu, 23 Jul 2026 15:14:16 -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> Is it better by use video-interfaces.yaml# ?
+> The legacy i.MX6SX (>15 year) SoC imx-iomuxc-gpr contains one LDB_CTRL
+> register. Allow the LVDS Display Bridge(LDB) child node under
+> imx-iomuxc-gpr.
+> 
+> Fix below CHECK_DTBS warnings:
+>   arch/arm/boot/dts/nxp/imx/imx6sx-nitrogen6sx.dtb: syscon@20e4000 (fsl,imx6sx-iomuxc-gpr): '#address-cells', '#size-cells', 'bridge@18' do not match any of the regexes: '^ipu[12]_csi[01]_mux$', '^pinctrl-[0-9]+$
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v3
+> - add ranges
+> 
+> changes in v2
+> - remote status = "disabled" in example
+> ---
+>  .../bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml       | 62 ++++++++++++++++++++++
+>  1 file changed, 62 insertions(+)
+> 
 
-Yes.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Rob
