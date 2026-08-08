@@ -1,136 +1,104 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4ED63375D5
-	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 15:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387437D124
+	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 20:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786203204; cv=none; b=hy64D42GSLZLMnYGuOYkyP3i9327CmhwZRKvoCi6T07d9xCWzWI9M1V0I0+ylJQZSKP9i6k4gYq02xoLfkekdYxDmmYxCQbHsPO/pEeMg/99TqjoN2TaMnQrLLT97LfImbSTKYeKstFvf8f7Txm8w9YGB7JDaqBNjZbxCD30oBg=
+	t=1786220703; cv=none; b=P3iG4KzL//yH8AzAmdImqJSoZ754wreFHUCZe3tJTnvgD4/3pP79kugynLAd2rRTmiLlQXD5LDwqzPrr7vGuN0MNKiEM/OtY18lTCnI/0psgcwnZOUif5Q8vs2qSfHlxfSKQ6idhLNfL9yNuzl6dpmdwQkdMvIu/bqS/RMal5zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786203204; c=relaxed/simple;
-	bh=n1KfjKfpUR15iqcsyI8AewdHHKTKixOybQJ7vGLbE4c=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=HwqvgcpGIm+LxUZciumltC3aNe3mp9r0ykgVgmlWGNPslXMoKBKgu50PkLxy0GfjIRLLMhXqMHredAa1trmDPD3+jNB0AG7Ev2CNadGqFdjhb8DRCronJ9ZNeguIG4AmJ1rxAHDee4nqb+ao1YclFhQ8WB4dTQVmm9M+FR2wFD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o7CrGkTO; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786220703; c=relaxed/simple;
+	bh=akIElZ664VnThhT/O583ioHadFcoj3UoY4fB8Adz9ys=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=txJwxpEG6zKWpiTp/FtuD/mcbFwBJtkWaOzHOw34HkF4yCAY2IjGTMXRVa/9c9ar75jy4XdTQcX93fiLLP1PRfUBy7Rl/ByPrO83XmjlK3Cs+4dG7jY0qIRUonknIpNAqKWTyx+QsXGXEHGjgUx7TDJIEOX/tuLCGZpIhsMy+DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Zk3RD5K5; arc=none smtp.client-ip=80.12.242.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o7CrGkTO"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-824af9535c8so8186797b3.1
-        for <imx@lists.linux.dev>; Sat, 08 Aug 2026 08:33:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786203201; x=1786808001; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=L+wa+H68v40Oc6TuXXsleyL0sXcMHjYANUloxiBM5MA=;
-        b=o7CrGkTO+otT4OozntrzWvp7fu86BvQdAg/NkEzFklIkcA7hPhXLf/09f7cCWf57lV
-         3VmE/nFN5I3JfK2fW2G1233karGTwGw52x0IqyYgleq5xZVy2x0eZthv9nzSEiCBUST9
-         cw4exmtrk+5Ln+685EWqbFYGKzRqMN8Nx1ISKeQkYyzvaVUxmZ/fYkI0mLYUL6GoY46+
-         Eo+PpmA6vhs0A5Dw3E11eLDxo16K7Xzrwp3i+QM4i/AhAb9Cv33KBIowEWmY8M2LABrk
-         keJ3Sk8TwsPBgvE1dzGK/1bqrfifr3muHRX8CgjCosul46UNMlF47Q/sTNez8O3NAxd0
-         eXpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786203201; x=1786808001;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L+wa+H68v40Oc6TuXXsleyL0sXcMHjYANUloxiBM5MA=;
-        b=jT3D3FEJ24IZqCH0amOe0lo1MMcCNjeefBRtUhDjTZWs9MrZd4cHFRGe8QbKLdLK3d
-         RnEAHRXVnXzOkKMlrrCQFrf1ZvHyXMy+JifVhJ2zVSqEu3d+9EHXsUC47ijpPLkn8s5l
-         bmS2nXtlOs9qGJgS7n9i7KfzmmtDcBgYZnTddm2Dv7ugWxHkKFy/cKI241YeR5GdlgYN
-         JPYjfZ1l8XefeMQ90AHcVhdhoBHzfg0JKqPCkYg/JRds+NO55Rko8f+pDFX4aNquSL4K
-         2StGCHmiQfez1W1hHEh3GX/K5280jqcn3AetWiPQLONY8PnyCL6wHuxY9+owbXJQTemQ
-         iiug==
-X-Forwarded-Encrypted: i=1; AHgh+Rp++LlYvKu1UsuQHVBLuHa70drg8wVaCYd65FX6TWPfvq0rzxbvmhUhCet+4b/eDEFKU9Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzw2tuCDAqWGIlqlWUfcCR79CvV6LZS4WD5Fq7rmDgi/tzg17eG
-	5MdWQxbAtZiJulu2umtZDdmEYrZORyeCv4DbziBr6HbjqcvAySqwnMmD
-X-Gm-Gg: AR+sD12y43bvFZgjoMZGHKw4PoXprT4zDYr3qpdanzmsMrxXIKyIDD0GrPTrVTH4hGB
-	ZG3otrTn2IRj6lOqTv3PgtskV1fAC/1GJNSavkxy77OVTvsCSOM47qjhV6hpcB+OaZcLxhNz8jM
-	jiqvTNuPeR6QRUbZGP2q7+6kjOssX69QIjGNNBHONovZYBbQ2ZGVzoJOGpRiyd/tFbyTeNs7bws
-	LSPDCjQG+hMdjL779iifusZZdwCZMBtcFyW4sEur1W8jpBFfJ5JPqPsIMaS3CBZEin8hsbuyxkl
-	7l0vLnMVVRRPTAqpokqLlQv7bIg6tK2aJKoHOoRl/W7Ro7+SXTvyO3sUhO7uM4ekjcM3jx3eDwI
-	Zp/c313kBHZHMXLTnDjHFMFBvmgS445LkNALACVD/zkmyjgtwUo10xjPrHWb+OvtKKmVHWfsRup
-	ljgbb5GXkswGgGVfsEQ0QoFbvBOKzme51G1yfL7jENIwMuNAf054k7tL8Y3YhJnZV6fRPUZ5jHl
-	3XmgbGpdmbGF/vh0ObtoDkBioKQf0mpoBs4JYFQVpuxMHA=
-X-Received: by 2002:a05:690c:b12:b0:81e:c998:9c9a with SMTP id 00721157ae682-820224daff1mr185323067b3.17.1786203200789;
-        Sat, 08 Aug 2026 08:33:20 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-823f079edb3sm27530177b3.14.2026.08.08.08.33.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 08:33:19 -0700 (PDT)
-Date: Sat, 08 Aug 2026 11:33:19 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: wei.fang@oss.nxp.com, 
- willemdebruijn.kernel@gmail.com, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- liuhangbin@gmail.com, 
- mst@redhat.com, 
- jasowangio@gmail.com, 
- andrew+netdev@lunn.ch, 
- ast@kernel.org, 
- daniel@iogearbox.net, 
- hawk@kernel.org, 
- john.fastabend@gmail.com, 
- sdf@fomichev.me
-Cc: wei.fang@nxp.com, 
- imx@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.13efaee8c6042@gmail.com>
-In-Reply-To: <20260807063405.688780-3-wei.fang@oss.nxp.com>
-References: <20260807063405.688780-1-wei.fang@oss.nxp.com>
- <20260807063405.688780-3-wei.fang@oss.nxp.com>
-Subject: Re: [PATCH v2 net 2/2] net: tap: fix wrong transport_header when
- sending VLAN-tagged frame
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Zk3RD5K5"
+Received: from device-101.home ([10.64.95.115])
+	by smtp.orange.fr with ESMTP
+	id sna7wpWZEnxUDsna7w4tcG; Sat, 08 Aug 2026 22:23:47 +0200
+Received: from device-101.home ([IPv6:2a01:cb10:785:b00:6128:9b8c:c203:905])
+	by smtp.orange.fr with ESMTPSA
+	id snZww80X0VmS1snZwwkz1T; Sat, 08 Aug 2026 22:23:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1786220619;
+	bh=Ll+F6nXFSqpVhu4IsFAP7UVPO/qt/IPQf17t5zCa43c=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=Zk3RD5K55BZ+T/D1ZOwUQvj5+2diY/4gCOhQ+FoOAgQ8Y3bVrLwYB9qldsbSVqSHe
+	 prxaEo1Y0kJYxP6yq/lS7tfMbS6r6UcxM2oufRHpBHpZqQSSaOd97onbJyBX2UzJcI
+	 YreeOTlxvlC6hCbT/u5Npm+ifZGQpdf4/WbDN5lSxf40sb2a49ze9bleflMDhSlw9S
+	 ORqumwfWEE9XyVoSracsePste0lrlBlj9rifV0uZNMqn1A2WvtTy78/CZC8UTSFlN3
+	 lPQg5x/r0MOY0e5ftefHf1BQUHDTXLK4+YC4BDpIDDCIxFq3LTd0tsuCFSZpUu/II2
+	 poi7Xo7OI2BhA==
+X-ME-Helo: device-101.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 08 Aug 2026 22:23:39 +0200
+X-ME-IP: 2a01:cb10:785:b00:6128:9b8c:c203:905
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] thermal/drivers/imx9: Constify struct thermal_zone_device_ops
+Date: Sat,  8 Aug 2026 22:23:33 +0200
+Message-ID: <5cce9ea713edcf2aa3c0efd5d31e9d9fd9f40a88.1786220585.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-wei.fang@ wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> In tap_get_user_xdp(), when processing a VLAN-tagged frame (e.g.
-> ETH_P_8021Q), skb_set_network_header() is called first to advance
-> network_header past the VLAN tag to the inner protocol header.
-> skb_probe_transport_header() is then called with skb->protocol still
-> set to ETH_P_8021Q, while nhoff (derived from skb_network_offset())
-> already points past the VLAN tag to the inner protocol header.
-> 
-> In __skb_flow_dissect(), proto is initialized to ETH_P_8021Q and nhoff
-> points past the VLAN tag. When the dissector hits case ETH_P_8021Q, it
-> reads a struct vlan_hdr at the current nhoff via __skb_header_pointer(),
-> but that offset contains the inner protocol header (e.g. an IP header).
-> The bytes are misinterpreted as a VLAN header, yielding a garbage
-> encapsulated EtherType that matches no known protocol. The dissector
-> returns false, so skb_probe_transport_header() never calls
-> skb_set_transport_header(), leaving transport_header at its uninitialized
-> sentinel value (~0U).
-> 
-> Move skb_set_network_header() to after skb_probe_transport_header(). At
-> the time skb_probe_transport_header() is called, network_header still
-> points to the VLAN header (offset ETH_HLEN), so nhoff is correct and the
-> flow dissector can parse the VLAN header, extract the inner EtherType,
-> and advance nhoff to the inner protocol header, allowing transport_header
-> to be set correctly.
-> 
-> Fixes: 8c76e77f9069 ("tap: call skb_probe_transport_header after setting skb->dev")
-> Assisted-by: WChat:claude-opus-4-8
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+'struct thermal_zone_device_ops' is not modified in this driver.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Constifying this structure moves some data to a read-only section, so
+increases overall security, especially when the structure holds some
+function pointers.
 
-Only if respinning: include the explanation why tap_get_user does not
-need this, only tap_get_user_xdp.
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+   8567	   2144	      0	  10711	   29d7	drivers/thermal/imx91_thermal.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+   8695	   2016	      0	  10711	   29d7	drivers/thermal/imx91_thermal.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+---
+ drivers/thermal/imx91_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/thermal/imx91_thermal.c b/drivers/thermal/imx91_thermal.c
+index 25915bb702be..892a25440e06 100644
+--- a/drivers/thermal/imx91_thermal.c
++++ b/drivers/thermal/imx91_thermal.c
+@@ -225,7 +225,7 @@ static int imx91_tmu_change_mode(struct thermal_zone_device *tz, enum thermal_de
+ 	return 0;
+ }
+ 
+-static struct thermal_zone_device_ops tmu_tz_ops = {
++static const struct thermal_zone_device_ops tmu_tz_ops = {
+ 	.get_temp = imx91_tmu_get_temp,
+ 	.change_mode = imx91_tmu_change_mode,
+ 	.set_trips = imx91_tmu_set_trips,
+-- 
+2.55.0
+
