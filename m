@@ -1,175 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17EA32A3EC
-	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 08:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F129233F8BE
+	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 08:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786176802; cv=none; b=Pw1/Egf3pojsinCsZxm2sln6n3zGlq17W514LQs0+0yXp2qLa35PPvk4ZN6N4fxOF03yohFKubcd3o6f06ZGABfM57CYS/aqh40MvtSw9mQtPKrPtCE4pooG7G3y2wHlguo9YhAWyzsi8mIiO+6lEIvCD0FJ79ZLYXjsMUW+5bQ=
+	t=1786177915; cv=none; b=aviSqsPkeQQE5IHwMOlzNkA/A0Rt5lNusEhpPR7DXW7QXLBsXLV1G8B275nYENYABdAB1/5eyOPMRk33A0pCUsroojQYxlhIjrSUoKkDkjJVgTlhjuQkhPYMkYJoQguuCkF2lDHDVHTae/ccmCNueSf8ysyLyELlCopHHQVo+rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786176802; c=relaxed/simple;
-	bh=0iOtoGnUSUjvt2LKf93Dwrwi1dtxs/VPwdcult4HWUI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MBbEZb8opRNO3McjQ9S8ZQH+54+hTygb7ZJC7axLYoPMUOBxSri8hUYUvPGRvuAJwsB1VSpwpjnfdScs5ZwdbQU1ykbjP27GfGTvmngmnwviJhYMH92VKCuXpJW483Td4LUJRDgD9BKwCCVxKEbaXpUabo7z0iJk6yOlzlHDRNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dw0QHRK7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786177915; c=relaxed/simple;
+	bh=db+z0vzvh2BQdKuvYbDdNDQvp3bZssbayao5QvGWyjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nrNY3Dc7W0Ov9d0LnI7XHPvDzyIWwQ56nivqRrHQwUz0bdUNKNNWeeCQk4NEeAtT8TtDjM5kZLx4C6oICGEihPfFqUYXsv5reTncCrGFeGRSDtiOrFSzSvv7algKlGacGLmwi6B3akzy+5aOFlKMi2IOncheZ2tswKBSTFnyv3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nc5vC5L+; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dw0QHRK7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368121F000E9;
-	Sat,  8 Aug 2026 08:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786176800;
-	bh=3lBRxUrEG7zO4LWvl4PDAJBlRl0+c+JP5cyDflU06j8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dw0QHRK75ro9VcLTAIDdy47Ic+iCzpF3M8W28U/EzIzkk0JQ8gQKRSclmghHCbtEp
-	 0BA6vaV+8MnaTCLRe2dA/DK+hIhBsn+RbPi9sGKZhMwAt5KUpKIRCeoOBCDhTu1XtN
-	 AmF2GUGx2mMjoNChzzC9dLYSrAlVpdjqjjVv7S6Z9ySoLOQ5/2SlQAEkKxcOf56zR3
-	 ++wI0CNProoZpRcVUdM4G55D+uMK2aZ/g1eBpiklcwsfNjynhUasVaGnCKOgR5fL3h
-	 BsTQpmpm5KtVwfh9aqXOzplz3At4kxZD6hopJ6AjpFCwkXY1czkcP8WQYW9JDUuFt2
-	 BnfziWrUOZBWg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] clk: imx: imx8qxp-lpcg: fix runtime PM cleanup on error
- path
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guangshuo Li" <lgs201920130244@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260808080215.2669452-1-lgs201920130244@gmail.com>
-References: <20260808080215.2669452-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 08 Aug 2026 08:13:19 +0000
-Message-Id: <20260808081320.368121F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nc5vC5L+"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so293820a91.0
+        for <imx@lists.linux.dev>; Sat, 08 Aug 2026 01:31:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786177913; x=1786782713; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VKPZin59jcLEgsj7vGd6U8AiKKUkanMgykS2/LGEdhs=;
+        b=Nc5vC5L+pqCGmW5sIHt6/6DnW9Vt/+c5p/immyAwN4LZrKz5sBC0P459ov0R50CKgS
+         KK1KBIsRwM7iPqVlgIDsZqwgt/JcLrtHUca41HSa3lbze/Zy1LIwEtp239zqAqAM0+ZC
+         Auo1ECBg9bxuK/Es+icMbc3l6aIS2dgGw2FHB2ZrlcQ+f3hD4mwh9gLE4UG/idUDtvJK
+         THEOsrREfVK0QpWA35wf9HEzBeQRePsiPifuc2l5nTHb+w3cGvOXUtPvFVGK5n9r1TBR
+         nHi947C/2f/XQsPlwHatlvju/bdg7qh45xgq7IVTSt0tCp90ohdmI8hYyzBIPBo/w2Fe
+         xwpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786177913; x=1786782713;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VKPZin59jcLEgsj7vGd6U8AiKKUkanMgykS2/LGEdhs=;
+        b=PyEfkDA3zLvp35vgy+gKqKWa5xomS4aJA2NQE/DXK+tr4QlYuHxOL5b7FAEIiDQQL2
+         GL6ymJHuvo6KkZz2b4GNFI7jQ9uFekiTZt7ESZFyUq4QCJqqA4AGnEHD0UytCHT7hw+o
+         +LeO2OarPN3u8aZyuvFnYngebBg7usrL36dwOiQcENVI48MMeYaNts2ufyyWZ+LF9DC1
+         kfsgbH/Bgug6s+8wptDW4Ev/FR8tFPZYSlAcb3awoASJkr9ORiqVMd3HGLStCNcZWqb0
+         rYQGW72g+3C29dQImsqCMil7iWjzqIjOgXYQ3Ux9cSI5yqsvoPEN04P3/Q1qg8/9rPOD
+         4A8Q==
+X-Forwarded-Encrypted: i=1; AHgh+RplTi5bvgxAlxY3LaKl/VtY4MGWIJRfpcD9RV0zoXHEaUN7NrDbGwQeWtX9l/chyu3ZIhY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyQPUw3AXlsVHVMgETLcLRhBILcke0YH+zCmbI+dY7BL9SMqED7
+	DTvpY9/wRwrFTfnuM8Xocb6KvA3oNI8RMf6HAqSbxmsRUfCHuhABw7TB
+X-Gm-Gg: AR+sD116FRFr+6lQDrElc7AfeZmTDObVwDek6gjP7Kmw6Ctfqm64/c4NLjK6jF06sKG
+	DGtn97oV0pJ8IE/WExDM/MZOtWadeE9DkVpbCLXhwYKR5TvV2YPg98vE2urA9x7335l9nzkk7c9
+	2lqCzfrqA5UR8V3jUVJTpiFQ/xEBKoN6wgNi/QyuTxtg2rfdmYHdCo9bpbuEK8sp/uXVmPFG8lC
+	1xHy0d00Q9dvpx9Z3ncwCCF31I8YSx0/dcPb8lMMup1HooPL9YI5xgpwMvhmxHfBRd+xrG7zsI+
+	Lg+vwlf4Ys/68xK/ljd7QNMmHrhSrzEZzGqkAueJHMIdYu4EdHCSl6C1gFMOAmFha1/Nhrlfgrq
+	Ug4WY4jyRamTX5TXjM8UOvNrZjLpMFo9VMSMXsRXcfCUS8Zs1NTS+I5/+j6rjabN1+NRY4XuvWX
+	jjCr8KP8PitjmhooI9EsK5OBLHKhWUKwd5QjBYF+IuUkc=
+X-Received: by 2002:a17:90b:1d4f:b0:38f:7f60:ba35 with SMTP id 98e67ed59e1d1-3903c5381d6mr27967961a91.5.1786177913049;
+        Sat, 08 Aug 2026 01:31:53 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1000::f280])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085de9f6asm7623040a91.7.2026.08.08.01.31.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 01:31:52 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] clk: imx: scu: fix autosuspend cleanup on probe failure
+Date: Sat,  8 Aug 2026 16:29:33 +0800
+Message-ID: <20260808082933.2692878-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+imx_clk_scu_probe() calls pm_runtime_use_autosuspend() for non-CPU
+clocks, but its probe failure paths do not call the matching
+pm_runtime_dont_use_autosuspend() before disabling runtime PM.
 
-Pre-existing issues:
-- [Critical] Missing bounds check on `count` leads to a severe stack buffer=
- overflow when reading device tree properties.
-- [High] System suspend causes a NULL pointer dereference or Use-After-Free=
- when the driver uses the legacy device tree binding or fails parsing.
-- [High] Duplicate indices in the `clock-indices` device tree property lead=
- to a double-free and potential invalid pointer dereference on the error pa=
-th.
---
+If the autosuspend delay is set to a negative value while autosuspend
+is enabled, the runtime PM core increments usage_count to prevent
+runtime suspend. Without calling pm_runtime_dont_use_autosuspend()
+during cleanup, this reference is not dropped and usage_count remains
+unbalanced.
 
---- Patch [1]: [PATCH] clk: imx: imx8qxp-lpcg: fix runtime PM cleanup on er=
-ror path ---
-commit 662987daf90805747f064d71045351ad4f076ebd
-Author: Guangshuo Li <lgs201920130244@gmail.com>
+Add the missing pm_runtime_dont_use_autosuspend() calls to the probe
+failure paths before disabling runtime PM.
 
-clk: imx: imx8qxp-lpcg: fix runtime PM cleanup on error path
+This issue was found by manual code inspection.
 
-This commit fixes the error path of imx_lpcg_parse_clks_from_dt to properly
-undo the runtime PM configurations. It ensures autosuspend is disabled and =
-the
-usage counter is correctly dropped on registration failure.
+Fixes: 78edeb080330 ("clk: imx: scu: add runtime pm support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/clk/imx/clk-scu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx=
-8qxp-lpcg.c
-> index f0cf6cf918992..fa79d52cbb36e 100644
-> --- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
-> +++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
-> @@ -277,8 +277,9 @@ static int imx_lpcg_parse_clks_from_dt(struct platfor=
-m_device *pdev,
->  		if (clk_hws[idx])
->  			imx_clk_lpcg_scu_unregister(clk_hws[idx]);
->  	}
+diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+index 9b33df9967ec..6d29fcc2306d 100644
+--- a/drivers/clk/imx/clk-scu.c
++++ b/drivers/clk/imx/clk-scu.c
+@@ -542,6 +542,7 @@ static int imx_clk_scu_probe(struct platform_device *pdev)
+ 		ret = pm_runtime_resume_and_get(dev);
+ 		if (ret) {
+ 			pm_genpd_remove_device(dev);
++			pm_runtime_dont_use_autosuspend(dev);
+ 			pm_runtime_disable(dev);
+ 			return ret;
+ 		}
+@@ -550,6 +551,9 @@ static int imx_clk_scu_probe(struct platform_device *pdev)
+ 	hw = __imx_clk_scu(dev, clk->name, clk->parents, clk->num_parents,
+ 			   clk->rsrc, clk->clk_type);
+ 	if (IS_ERR(hw)) {
++		if (!(clk->rsrc == IMX_SC_R_A35 || clk->rsrc == IMX_SC_R_A53 ||
++		      clk->rsrc == IMX_SC_R_A72))
++			pm_runtime_dont_use_autosuspend(dev);
+ 		pm_runtime_disable(dev);
+ 		return PTR_ERR(hw);
+ 	}
+-- 
+2.43.0
 
-[Severity: High]
-This is a pre-existing issue, but does this teardown loop properly handle
-duplicate indices in the clock-indices device tree property?
-
-If the device tree contains duplicate values in clock-indices, the second
-clock unconditionally overwrites the first in clk_hws[idx] during registrat=
-ion:
-
-	clk_hws[idx] =3D imx_clk_lpcg_scu_dev(&pdev->dev, output_names[i],
-					    parent_names[i], 0, base,
-					    bit_offset[i], false);
-
-If an error occurs on a subsequent clock registration, the teardown loop
-iterates backward and calls imx_clk_lpcg_scu_unregister() on clk_hws[idx].
-Because clk_hws[idx] is never nulled out after unregistration, when the loop
-encounters the duplicate index again, could it call kfree() on the
-already-freed pointer, leading to a double-free?
-
-Furthermore, if the failed registration itself returned an ERR_PTR that
-overwrote a duplicate index, would the loop pass the ERR_PTR to
-imx_clk_lpcg_scu_unregister() and crash the system?
-
-> -
-> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
-> +	pm_runtime_put_noidle(&pdev->dev);
-> =20
->  	return ret;
->  }
-
-While reviewing this code, I noticed a few other pre-existing issues in
-the surrounding code.
-
-[Severity: Critical]
-This is a pre-existing issue, but does this function properly validate the
-count retrieved from the device tree before using it to populate stack arra=
-ys?
-
-imx_lpcg_parse_clks_from_dt() retrieves the number of elements into count:
-
-	count =3D of_property_count_u32_elems(np, "clock-indices");
-
-It then uses count to populate statically sized stack arrays (bit_offset,
-parent_names, and output_names) of size IMX_LPCG_MAX_CLKS:
-
-	ret =3D of_property_read_u32_array(np, "clock-indices", bit_offset,
-					 count);
-	...
-	ret =3D of_clk_parent_fill(np, parent_names, count);
-	...
-	ret =3D of_property_read_string_array(np, "clock-output-names",
-					    output_names, count);
-
-If a device tree provides more than IMX_LPCG_MAX_CLKS elements, will this
-overflow these stack allocations?
-
-[Severity: High]
-This is a pre-existing issue, but does system suspend cause a NULL pointer
-dereference or Use-After-Free when the driver uses the legacy device tree
-binding or fails parsing?
-
-If the driver falls back to legacy device tree parsing, clocks are
-registered using imx_clk_lpcg_scu() which passes dev =3D NULL. This leaves =
-the
-device drvdata unset:
-
-drivers/clk/imx/clk-lpcg-scu.c:__imx_clk_lpcg_scu() {
-	...
-	if (dev)
-		dev_set_drvdata(dev, clk);
-	...
-}
-
-Alternatively, if imx_lpcg_parse_clks_from_dt() successfully registers one
-clock but fails on a subsequent one, the error path unregisters and frees t=
-he
-clock without clearing drvdata, leaving a dangling pointer.
-
-When the system suspends, imx_clk_lpcg_scu_suspend() retrieves this NULL or
-dangling pointer via dev_get_drvdata(dev) and dereferences it:
-
-drivers/clk/imx/clk-lpcg-scu.c:imx_clk_lpcg_scu_suspend() {
-	...
-	if (!strncmp("hdmi_lpcg", clk_hw_get_name(&clk->hw), strlen("hdmi_lpcg")))
-	...
-}
-
-Can this lead to a panic during system suspend on systems using the legacy
-binding or when encountering a malformed DT?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260808080215.2669=
-452-1-lgs201920130244@gmail.com?part=3D1
