@@ -1,151 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07843FB067
-	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 12:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FCF221FB6
+	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 15:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786192583; cv=none; b=Vx2jGBGJJg3glUXZ8CIA5QZ+AqR7ILq+/tee56/uFyfx+ZWbOwvFgxlgKv/aL8oQrqKdLxbdhu+jGDSgGqzX1ZgfRrQuWH5hZqsN2DA/rv0U0mBcQ6mIvUKdieKe5D0ZkZxI2X5LmeBHRxYoLaofrBVD4jmD2dQAFufQPZceDto=
+	t=1786203129; cv=none; b=EjHooRe3zPxAMEf4v7pXbNo3IRCGhADNfrReeMiM+74tn1FiaDcXvM40KSZFX4eEoEE+5d2Nf9ETV3DOWzEAZpKA+FLROcYwX6hTj548BsJf0z3ukrd1tX8HI4nzqgq04dXcbIQw3IfoBI61eKqGhqQKNU/ncDMUIkxsuGrzK2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786192583; c=relaxed/simple;
-	bh=ZO2Lk8qticPBYODBCVNAP0g3pMR6bJEhWB7/+kspiYk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jmCzv5kFuTaj7E+8E04sHv6HWl1OLC5WtRvRzToUV/tpNvSHCbsaUUNcqBMCEO5fF+ROUgiJwJAf5iBqX3e4wvSV1aDq5BuScO8+7GzaCE/K2E3hq05nXq1MzszDXZRd4LUJerAwN5bpOOvUaNtKi4Fv/ktWhraC7Z03F44oQJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7O44FPJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786203129; c=relaxed/simple;
+	bh=avg/jQxBOIQlx57U/8c51C+uOom6aQtP9E7HIUCJewM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=MTiOw/sNT6DMP+IBzDcKje1w76nvIQls5PpG+D4/g/fljKIKLbu7G39SmIKzvn0qdCKbHt0e3zUZVBPdRbLhbv69vZRS4Q5P3JMAlHmXJfnUAEvKt/JhZSVL4QCFvTf7daTR5IUdEw8gRH86/bcdgHq0w2xnEwvW06tFBx9/5Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JrCwrHap; arc=none smtp.client-ip=74.125.224.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7O44FPJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27FE1F000E9;
-	Sat,  8 Aug 2026 12:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786192572;
-	bh=XqzHzxTClGx0Q5x9+gP9AH6+y77X+N4qlUwY+fX+ZNE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=h7O44FPJzvJX3BmI+IjIK9hnHXyPyXMNGcA+l++76j+staiMxK8IilzodJJ6K8+iV
-	 iIUmsxwZfKs+4Zlb6j7JuE4jA2GcnlADT5SQnQqJ5u/6+xFwtv3Wan4smp4I4NNwyM
-	 HPdIRn+0+RrnF+qVhHADSDs9yVNUtTCGfwCaq+gfiy9VF0hPykGUwQjAVQBnRLcCDN
-	 6NYmOtzbtNyg3D4EURQUL2sNJFUjgB1gWM0oUk/8KL1uFT0rWqOvpFyid0yiguHf40
-	 7sGmocOZTadVbr3XTQwn+ZB24lAGuxm9x2qdKeVEctpU359MhPf8SRzBHNXEZCLUkb
-	 JQpMrmQ8I0aQw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] drm/imx: dcss: fix autosuspend cleanup during teardown
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guangshuo Li" <lgs201920130244@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, dri-devel@lists.freedesktop.org
-In-Reply-To: <20260808122354.2825209-1-lgs201920130244@gmail.com>
-References: <20260808122354.2825209-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 08 Aug 2026 12:36:11 +0000
-Message-Id: <20260808123611.D27FE1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JrCwrHap"
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-66807ba2f0fso739185d50.3
+        for <imx@lists.linux.dev>; Sat, 08 Aug 2026 08:32:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786203127; x=1786807927; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=v+UUcaMhlc8IxxN5aJcZYdqNcrd7TqnKbW0pUSKDh7E=;
+        b=JrCwrHapN9qBy1yso9yH4DH9j4NRiGcJzHfVJcnZiVyc73GLtjofyXJyq/dZVpsnEB
+         MuDLZFwbG3qc7iMylknqAdNDK4UltcWOeJxTD8ZknL02MsiX8424N2xmB+dVcWDinZ+z
+         gk6bq0gIeCf3xmjFho59uQaf9RodF+UymdqT20TQubOcZ3JLqaWaS3KkVZm+63aIDsZt
+         lqy46OgV4sZnyQi/aTrG/iMVh4sTK9EZEBKVZenplcnlhAVJjJXTjBD3SY/DhNijL+Zl
+         E0OC0aQOqhH+mQ6ZyU80kZT8Vq9F9FE2D0sjrblDnXkca9yXyKLJth3fyn9Z/79Rvt3s
+         cgIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786203127; x=1786807927;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v+UUcaMhlc8IxxN5aJcZYdqNcrd7TqnKbW0pUSKDh7E=;
+        b=bPXPHF3GS7GWDa0GdCV2vaxwrJxLh4L21dZIOXgqPsf2MribNKVjcHIYpMIqy/bLzK
+         CWBj5mQR2W1Wu2GZ4mn1lPJuUGCsjegQgrUZLTIOhkbjQWXOwxMmw5OsfeNKKf4NjT6W
+         Nch5Jng72w4QzNE55lBhZlc+aP1/N2W6Y0RR3j0b7ZShWlpEyxrFcfmCttzkUg2Qpfpp
+         Pr5NMnCiaKMxIy55ygT8bFvyHCZBLp2/eRiN2PL7J5DQhP+eXjWFbiV/9Zs/a5SWx98e
+         m1jP8QdyCrWA4QPljHd758KCgzYxnFmcxKrbA99G7ANQR0m1jjIinwjPcPi5WD4I3ajt
+         ffMA==
+X-Forwarded-Encrypted: i=1; AHgh+RpvaQRinPX9NwgU7bl+vDLO25jXWtLOL7Y8kCM6V3RsyEqu9m7ozBeVEUf8YcQlshBwxes=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOvKp0TRmBsDWgHrPk+GhLMmslSh8gQCTeIxcWjOpmMWrxhoJn
+	RhaXFBIrEsg+R/DSv+3vTyNcX8fbo93bUUXjjYBnSolIObXadkLsRcpH
+X-Gm-Gg: AR+sD11OvuL0okdlnx/Ssul4uoSYuGox2/yNBYTZrrBi8tyLmx/ca96Wcyi+rCahdSh
+	nCRT8VPCailvAIPz93W558FO/hspMvRgbr9vtHPTCwxCYUcLZ16UJvVMEQNBeSui7uPY7SzD22j
+	WZoq5JJjy+4onLJ9sN8+x9G8LmVKkKiwKxq+hNrUPArUvqewpc/7si9IbNezRWLS7o4IZqYsX5R
+	E4kmAE1xs9tCn4Gxms15F8a7G7t0REHEMTiqSKhSCv8E75l98t7sOTRmrc2bhSG/EMMWBDcAGuj
+	dEnYfowG/vazZRF8Jj6YJaVJj0QVwX3lRRPQ5fC76+xHSyLZPcTTIw80WazydSR0EiaaRK04N5r
+	pR5pwrxVJmYgUueQy6IzAI+TIx1J55G2dDvkQ+iElItAHhbJhe1/nzYlfXmtcwnRN0xH/5wDwRf
+	xW8ffDiwtcdy4fchPiNpdoS3sJtXdxE+lgzR68ScWsBeGInAEW1sLWtqKcLsl2CU54XjRbNizfN
+	Sq9PYiIkEmNbqfgySNu1CW/EkXJFO4Ro7/vwgcsMDwK9MU=
+X-Received: by 2002:a05:690e:1504:b0:667:c3f6:3810 with SMTP id 956f58d0204a3-66ad73a7c6amr4278650d50.49.1786203126984;
+        Sat, 08 Aug 2026 08:32:06 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66acad51b8csm3171220d50.8.2026.08.08.08.32.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 08:32:05 -0700 (PDT)
+Date: Sat, 08 Aug 2026 11:32:05 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: wei.fang@oss.nxp.com, 
+ willemdebruijn.kernel@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ liuhangbin@gmail.com, 
+ mst@redhat.com, 
+ jasowangio@gmail.com, 
+ andrew+netdev@lunn.ch, 
+ ast@kernel.org, 
+ daniel@iogearbox.net, 
+ hawk@kernel.org, 
+ john.fastabend@gmail.com, 
+ sdf@fomichev.me, 
+ liuhangbin@gmail.com
+Cc: wei.fang@nxp.com, 
+ imx@lists.linux.dev, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.7f71161e0a6b@gmail.com>
+In-Reply-To: <20260807063405.688780-2-wei.fang@oss.nxp.com>
+References: <20260807063405.688780-1-wei.fang@oss.nxp.com>
+ <20260807063405.688780-2-wei.fang@oss.nxp.com>
+Subject: Re: [PATCH v2 net 1/2] net: packet: fix wrong transport_header when
+ sending VLAN-tagged frame
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+wei.fang@ wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> In packet_parse_headers(), when processing a VLAN-tagged frame,
+> skb_set_network_header() is called to advance network_header past the
+> VLAN tag to the inner protocol header. skb_probe_transport_header() is
+> then called with skb->protocol still set to the outer VLAN EtherType
+> (e.g. ETH_P_8021Q), while nhoff (derived from skb_network_offset())
+> already points past the VLAN tag to the inner protocol header.
+> 
+> In __skb_flow_dissect(), proto is initialized to ETH_P_8021Q and nhoff
+> points past the VLAN tag. When the dissector hits case ETH_P_8021Q, it
+> reads a struct vlan_hdr at nhoff via __skb_header_pointer(), but that
+> offset contains the inner protocol header (e.g. an IP header). The bytes
+> are misinterpreted as a VLAN header, yielding a garbage encapsulated
+> EtherType that matches no known protocol. The dissector returns false,
+> so skb_probe_transport_header() never calls skb_set_transport_header(),
+> leaving transport_header at its uninitialized sentinel value (~0U).
 
-New issues:
-- [High] Double Hardware Suspend / Clock Disable caused by synchronous rpm_=
-idle.
+Not for this patch, but: having a mismatched skb->protocol and
+network header offset is asking for trouble anyway.
 
-Pre-existing issues:
-- [High] TOCTOU Race Condition during driver teardown.
-- [High] Hardware register access while runtime suspended leads to system c=
-rash.
---
+The blamed commit states that this block is here for GSO packets, and
+the mismatch will by fixed up when skb->protocol is updated in
+virtio_net_hdr_set_proto. But that only updates GSO packets, while
+this block affects all VLAN tagged packets. Both GSO and non-GSO
+should be treated similarly throughout the stack. One approach is
+setting skb->protocol here. But that does mess with anything matching
+VLAN packets. There does not seem to be a perfect solution..
 
---- Patch [1]: [PATCH] drm/imx: dcss: fix autosuspend cleanup during teardo=
-wn ---
-commit 57aed202fd27fa66b9bc5448a0fe4df074c91e5c
-Author: Guangshuo Li <lgs201920130244@gmail.com>
+> Move skb_probe_transport_header() to before skb_set_network_header(). At
+> the time skb_probe_transport_header() is called, network_header still
+> points to the VLAN header, so nhoff correctly points to the VLAN header.
+> The flow dissector can then parse the VLAN header, extract the inner
+> EtherType, and advance nhoff to the inner protocol header, allowing
+> transport_header to be set correctly.
+> 
+> Fixes: dfed913e8b55 ("net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO")
+> Assisted-by: WChat:claude-opus-4-8
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-drm/imx: dcss: fix autosuspend cleanup during teardown
-
-This patch adds a missing pm_runtime_dont_use_autosuspend() call during
-driver teardown before disabling runtime PM. This ensures the usage count
-remains balanced if the autosuspend delay is set to a negative value while
-enabled.
-
-> diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.c b/drivers/gpu/drm/imx/dc=
-ss/dcss-dev.c
-> index 7fd0c4c14205d..51398852cdc2b 100644
-> --- a/drivers/gpu/drm/imx/dcss/dcss-dev.c
-> +++ b/drivers/gpu/drm/imx/dcss/dcss-dev.c
-> @@ -234,6 +234,7 @@ void dcss_dev_destroy(struct dcss_dev *dcss)
->  {
->  	if (!pm_runtime_suspended(dcss->dev)) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this check have a race
-condition with the PM worker?
-
-If the autosuspend timer expires exactly when dcss_dev_destroy() is called,
-is it possible for the PM worker thread to execute dcss_dev_runtime_suspend=
-()
-concurrently with this block? Both paths would call dcss_ctxld_suspend()
-and dcss_clocks_disable() at the same time.
-
-Should pm_runtime_disable() be called before this check to wait for pending
-transitions and prevent new ones?
-
->  		dcss_ctxld_suspend(dcss->ctxld);
->  		dcss_clocks_disable(dcss);
->  	}
-> =20
->  	of_node_put(dcss->of_port);
-> =20
-> +	pm_runtime_dont_use_autosuspend(dcss->dev);
-
-[Severity: High]
-Could this newly added call trigger a double hardware suspend and clock
-disable?
-
-If the device is active during teardown (e.g., the autosuspend delay hasn't
-expired), the code above manually executes dcss_ctxld_suspend() and
-dcss_clocks_disable(). When pm_runtime_dont_use_autosuspend() is then
-called, it drops the autosuspend flag and synchronously calls rpm_idle().
-
-Because the usage count is 0 and the device is still marked RPM_ACTIVE,
-this will synchronously invoke the driver's runtime suspend callback:
-
-dcss_dev_destroy()
-  pm_runtime_dont_use_autosuspend()
-    rpm_idle()
-      dcss_dev_runtime_suspend()
-        dcss_clocks_disable()
-
-This causes a second clock disable and suspend. Should this call be moved
-after pm_runtime_disable(), where disable_depth > 0 would safely prevent the
-PM callbacks from executing?
-
->  	pm_runtime_disable(dcss->dev);
-> =20
->  	dcss_submodules_stop(dcss);
-
-[Severity: High]
-This is a pre-existing issue, but can this call cause a bus fault if the
-device was already runtime suspended?
-
-If dcss_dev_destroy() is called when the device is runtime suspended,
-the manual dcss_clocks_disable() above is skipped. dcss_submodules_stop()
-is then unconditionally called, which executes submodule exit functions lik=
-e:
-
-dcss_submodules_stop()
-  dcss_scaler_exit()
-    dcss_writel(0, ch->base_reg + DCSS_SCALER_CTRL);
-
-Since dcss_submodules_stop() only calls dcss_clocks_enable() but doesn't
-power on the PM domain, doesn't writing to these MMIO registers cause a
-synchronous external abort?
-
-> =20
->  	dcss_clks_release(dcss);
->  }
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260808122354.2825=
-209-1-lgs201920130244@gmail.com?part=3D1
+Reviewed-by: Willem de Bruijn <willemb@google.com>
