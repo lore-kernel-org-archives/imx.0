@@ -1,66 +1,64 @@
-Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazon11022119.outbound.protection.outlook.com [40.107.40.119])
+Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazon11021101.outbound.protection.outlook.com [40.107.39.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550E537C927;
-	Sat,  8 Aug 2026 10:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.40.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3513C8196
+	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 10:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.39.101
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786183869; cv=fail; b=iecwcu88GMsDk9adiag5m8bpcM7q3owizQtIouTHk0ujhQQZvjjNZIVCX3L9UTJ+z2hWf/An22cQu36nJ67U4jovc/kJVRfXo1l7lGZQWwiAGIUzMIbww25FIcpm4kId0ueAsFDoaJQd1miIDvbjuTNryxf4Dwh32QR/0QuEnVE=
+	t=1786183954; cv=fail; b=mR4NtngiGEYMchV3j7loek1/o0tJHnZq2zyJcNzittqi2Kjdan+T9TLmdGnoBwu5D79pRqMczqLhhHGoGcUof8XBWmXADPtknJI1eHI1vmDwYTZQfxKVdm2KEIa5TKPPsRR+ZDrNt0ugzc0UBpszx6VrwPegFqWhIT+S6kYUB6A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786183869; c=relaxed/simple;
-	bh=pUqbpG5KWMz71dZkOYpqOfWx+EZSJT+D67eBY/aDlHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QABlv6cXuYGmUxlaUaqLTa5hBMT0yHV88TlEDz4mPq2UTsZVbX9IYhpwdaPJO6ED/n/sjBHbyn93UHYPK5lBBCmPKIkTwWw13g4wQZB/8kaUmAsUbMYfIAM0WL5r56GeeJ4llwX5ZiJApmx4GDTT5a33Fi6Dr0mSFJ9gVpjGKBs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=heitbaum.com; spf=pass smtp.mailfrom=heitbaum.com; dkim=fail (2048-bit key) header.d=heitbaum.com header.i=@heitbaum.com header.b=Wt0ByPTh reason="signature verification failed"; arc=fail smtp.client-ip=40.107.40.119
+	s=arc-20240116; t=1786183954; c=relaxed/simple;
+	bh=F9wkmXzxTmPX+Uw1TRiA9fsfJXCuZUIrOL3BrmYY890=;
+	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=QQknPYZaZoBoU4VAfs6RKCxrsz6mcGOxCCj/tp7uTp2rrez7lDo4vbvZLkWko1btQCk/Ht/Gx5Zmmfz68aE1ofJ97hjWcVYjbT4MJhXjZnLAIL1h6HNY88+y8VjE3/i/XDSkiHNmCYvG2gaAKbqixUg7uPPs8MjStUp5q8iU3Uk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=heitbaum.com; spf=pass smtp.mailfrom=heitbaum.com; dkim=pass (2048-bit key) header.d=heitbaum.com header.i=@heitbaum.com header.b=a+BY9KcV; arc=fail smtp.client-ip=40.107.39.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=heitbaum.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heitbaum.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=heitbaum.com header.i=@heitbaum.com header.b="Wt0ByPTh"
+	dkim=pass (2048-bit key) header.d=heitbaum.com header.i=@heitbaum.com header.b="a+BY9KcV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dfmybVYw5BRfafQZdvnMVsK68h3Gw20ps0Fsu6V8oVPeUGaF28FIVPSSOio195RkLxLoHi9ZTfGLG4i+jgRYvpolVeGzT1V15NHAgyy/UTGe64FRZrcIuCimiv/YrGDd2C1W5NfA++N6ZHXaVTvckdMaQ0SOha0pjbkPD71E6MP2AWKP992kYOHxE0X23GD0/q5iF++N/2/6iaO5CwZAQJZjE+roCDk9M5oJcfljoCthLqW/RZaVQEItFlU/ktMJJ0UFR1sbYFbFXkpODSifoa0XqlQoDwXUv6eFPR7jxTPXh4/071u3pCnelivBDyl23BLvX9COoN6pN2oRZEJ7PA==
+ b=e2jSJIqN+so4iS+4VO/5xRHQ5Th2RF+TwLyCKkANrl8r208sN6zf7yariLrCuSrRxlyLEvR1AUnVvWfUy/3XKld+kXB9AL7YXMDJHDAl0s6w/kR0zOU4/90NblyxLKDPWJ2uSmb9WAg7kFmxduiY49381f8qTK9u4TJPWvKlZ8x34dBgVA9yl0vhALqQV77REW4DA372GXBowRZrG8uVxdn8hoc6Mg9oq9ApoW4zfHm4tWneKJw/KavyuQHEXycU3lfRzFHv0bSCO7lLVB8cv/GFCptF8uE58o8D3vRpO55+Rz2HR3UAE2Kb4hBothAYEbtCU50F2LoxXL0zTM69cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VlXIXDill9WGQ+9XenGRTiGI5bUPeXw/Ch7CHsOwgYY=;
- b=omp9/QEXufADqi3PAGlf/wCgFfG8lVduZ5mxRW8Zp0mDuUId2XvqU4IkGHRiDkIXFp6lOQL6P+yna3tFApUQGNxqzPUDExjv4GYR75s/QeXQ9YzBE/tkJsMMd3gr10j7jXlk5fxI9uYvLmU0q92tuy9S2cldKq8fgAVgTqq6jL+2I5X9Ot6SK28b0AJ9SP/7lhUWECRfo9+Y/dIrS5qFTTayYefonoJLLfyHOkMU6JMdL/WlddiD2403RrvQYk7tbureTOOgamRLz7CbG+sxgeNiSA7by3knffMtcFrQC2hCOTyBLJrQ+bxcgYsdo3pitavt7GuUxnw3KHGOlQbcbg==
+ bh=byQElWd0dqmfkIPPdd/EOo3f1xrNH62cGFEBPTMTSZY=;
+ b=eHO1wgX2DDFVMvNukoiQPGJF4VxHjGu9t6FEe7AY8xDxUZAdjcDKItvh1vIdvIJ7ZSkE10qw4cTRc5O1f+tx4TdCfB4hGm6mmUmNJ+HYhuUDk6nEtjW4hIf81xu2NArZGruoEe+C40LIay6zlop6e9FCHulK9P86RZIzvYueUKwj/iYQQcsshNu7JYN6hmPLBdeu680zE5jn37vNBQB5fITd+o8II5UADq134ej8+dbs2y5ZwbMcK4oX/RTa/S94nKSDXLnnmTN8ZxQb36M6b4YbvM1wsHGouUQh3ilJvc4aaYNELGR7iVmeqaP7eDKFmDd5LKIh+ZX28zgRop8HDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=heitbaum.com; dmarc=pass action=none header.from=heitbaum.com;
  dkim=pass header.d=heitbaum.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heitbaum.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VlXIXDill9WGQ+9XenGRTiGI5bUPeXw/Ch7CHsOwgYY=;
- b=Wt0ByPThvgC4BVEF/fXERNAZ38smToe7SUVMFdUd94IB6XjqZfHegu9hMMz60H7EUOdFClCLZtAmBnO+W1a2/CZ6k2l8onxmiu+ae9/o3N5mLfQWs8V7HGa7Riyl4a1YRK/Rl3L/xy9teYJvwrdgCnVl7x4F7wRe41UsnK0bMwSdseB84kBoV9zx8DkPdeTlBmFe8lGd6MutX+cAbMeioisQor5zFfJtLRs7DeeWDYzoeR2dnDa3+ZmsM8LhyqB+YkkazdQCIgonq52pTkzG+CUZCBxsW2oR7jeeWzbNsPPMg6AfG6R99Z9fjZzFWtJCgxKTY5Y6AQN3w/A2k5mqmw==
+ bh=byQElWd0dqmfkIPPdd/EOo3f1xrNH62cGFEBPTMTSZY=;
+ b=a+BY9KcVqzvXL/FGfl/SBCnndS6u5DLescAx32/YxsQTuk97YOsTqbH/ePopFndbxuXGtJzU3ZbFMavQ9WLXbhO7Dzel96W92CMfMtwPYjMTG3kxI5sB7XDy0wUCAWVh73SZ1om+g3oN7Qf/AI0TgYw9waIqnr+FM9ah0R+4r8SNFeYQc7fTXWmhm89REcHLd6fdEo1We+bE+nFNEn6gbQcKeKMhXvKENwJM0SjSWzCWoWmfAnQx7nnBV3uUnwFXpH0SXYMyIX2PMOk8nzoJsws/InpXmh0gGpS2kL7Q6eKBtWW4CF71gdITDEIrqHjz4RnKabOj6SDX0meSmk3WLA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=heitbaum.com;
 Received: from SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM (2603:10c6:10:279::22)
  by SYBP282MB4053.AUSP282.PROD.OUTLOOK.COM (2603:10c6:10:1a4::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Sat, 8 Aug
- 2026 10:10:55 +0000
+ 2026 10:12:25 +0000
 Received: from SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
  ([fe80::21b6:91f8:614d:1fdd]) by SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
  ([fe80::21b6:91f8:614d:1fdd%4]) with mapi id 15.21.0292.024; Sat, 8 Aug 2026
- 10:10:54 +0000
-Date: Sat, 8 Aug 2026 10:10:37 +0000
+ 10:12:25 +0000
+Date: Sat, 8 Aug 2026 10:12:11 +0000
 From: Rudi Heitbaum <rudi@heitbaum.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: sashiko-reviews@lists.linux.dev, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, conor+dt@kernel.org,
-	Frank.Li@kernel.org, robh@kernel.org
-Subject: Re: [PATCH 5/5] arm64: dts: imx8mq-phanbell: Enable the rt5645
- analog audio
-Message-ID: <ancAndEEWUAtkCWE@b179574a4811>
-References: <cover.1786107925.git.rudi@heitbaum.com>
- <54ab90ba6c05b38c6561e0ea732d487da9443f1e.1786107926.git.rudi@heitbaum.com>
- <20260807141524.179AB1F00A3A@smtp.kernel.org>
- <anYQnd1jW2ecFq_n@SMW015318>
-Content-Type: text/plain; charset=iso-8859-1
+To: imx@lists.linux.dev
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	rudi@heitbaum.com
+Subject: [PATCH v2 0/5] arm64: dts: imx8mq-phanbell: Google Coral Dev Board
+ enablement
+Message-ID: <cover.1786177290.git.rudi@heitbaum.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <anYQnd1jW2ecFq_n@SMW015318>
-X-ClientProxiedBy: MEVPR01CA0022.ausprd01.prod.outlook.com
- (2603:10c6:220:205::19) To SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
+X-ClientProxiedBy: MEWPR01CA0044.ausprd01.prod.outlook.com
+ (2603:10c6:220:1e5::19) To SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
  (2603:10c6:10:279::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,185 +68,112 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SY7P282MB4909:EE_|SYBP282MB4053:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4c17b5b-745d-458a-26e7-08def535555c
+X-MS-Office365-Filtering-Correlation-Id: decddacd-9e7f-4be5-d9a0-08def5358b57
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|18002099003|22082099003|10067099003|56012099006|4143699003|3023799007;
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|18002099003|10067099003|56012099006|5023799004|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	39MkJp/lpbOobVxgphm2xXlX/W0R9prosZSkiZUBTcWuwXXTF5B5HOxHOgKIZ4ff+9wgO+3xImwhiF5ZzbidI/zlMtrY3ODCQJhGlPF5FrzIC8J0s3N/VpWK+EKqUd2Gogkg0fAd+LjbiuPrBRRJDbtti9TJBgT5GqCbD34mNOXptebUj7QXErfg4YFVT5U469pMr45Sp6TU8n3EHnyGsj4BjmAGrztcjJpgci5grd4Zr+hcHyKoHkSzv4hZWBSoaK9CACmi9QsePJ8Ldnq6h7RBZz4iLDZZq/YZelOIKRjySeKcGAw3G0gu6KWncHpnJA5A/wOlmUm9xI+oLkpbawDEAsoYj36p8cpnsi7VpZ4VqG+zQeGa3f4yo6D5hEBZTFJupbvyFEGpNeYSIaG/uj0s3UPWc2BI/DU6m+Yalh2gXechnKCPHkpD3MAHBE8/MZnQAZxfDTNR2RSj5Tt3ch81tn9Y5R+KYKolZA3ByPTw24vBIzxwSxhCTKyWSYvPOW2HX7N9vpofFsrdPxGhd6wp+2LnhxNJj2APkzk2BKIa03cko//ISWXl+AjZWfZwsbDUFF361mTIBNKr1b12kC4uXTPDr2IYSv8uB3Drs8Y=
+	6fJruokieYQaz3lmKceGIBwTBqAuWw2ocMGfX2O2jsTYGIUGaOPMMTFWYIQ0a2I2SH1ZIaOXSHZb4E85eyZ+k1JXqdCI1lzN7tBLOGPnMQsL71bJSY5qVVF3mqry4juS5K5SRuvI1ovRJ0jMomTMDayJHAth4krKqGSFNc1EOPZqYpGDHiALdvBaEV7NWZw4Ny22pnQp0AFB6BaFtX51h3Q+NHiiU/vDIVFHJp6wSwB7/cwIf78YD+uLjrfGxcIomspHmOSv9mY/PMhWx0wviD4fW36HQLZcL/pvftioKm5Oy3b05J3JjTxKmY4LmmFiiwktqLkugZou4b1N9osyRjDg++WKEABM07nZCErUazzPSOb1N42DMuMLp/97CxYLw7KtvqCQ0FIMgqGYnjyx/t1kBdO1qPNOpek+78K7P9VuaFKir4zQVMOozHuQQdzl8Lz2v89eLQerDKmHpvPhH/7FHut1TdtaIhlkt2UcKwVpHy+YI2Z8GZPvSHh7BEDDTK2ibR1p5R08bdbVn7yI+pRm5k9mMXIfXGEqsXNTbAo3BDh7SF9HSJW0y2pzIdgxKtKG9GKq56jLvqRqM57s9AziYXr7aDrsCnBE4ZfjE7ONwWZ0dSuGcBS9lsnNXidtBV2Lyv8CVNpmiemqePDxBO/xT58Qq0XzF8IyUjywoTc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(18002099003)(22082099003)(10067099003)(56012099006)(4143699003)(3023799007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(18002099003)(10067099003)(56012099006)(5023799004)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?DAJXE9tb2n4jUOttwp3ecn4ODrjKXERNJlEHBYo2+L8ni8mUYgLmJmybpL?=
- =?iso-8859-1?Q?9SKBHj4Q9iWI/Yw42X4SdIbqaKnwoGHzewKblnMzHmO2UjzNfrf9wSF61O?=
- =?iso-8859-1?Q?jX0IpGhO+sx59+/TncYMv2GUtQp634czFPiV5ifzSs1Z3BCQ+h1fJBSjoP?=
- =?iso-8859-1?Q?Ru4MmkK2A+M3nxmwvE/pt3pvT73Vupzv38pGymJRTzEO5Wn6XJvuMTqCgp?=
- =?iso-8859-1?Q?s3L/uGocf2AGmu+ZYehhuWgaq99FfzCL+ujHWJLraPgo6xIsl0VlW6gaCy?=
- =?iso-8859-1?Q?6pCUe8kHyl5breA017ULdFPFCxXK1uID+fW/wcGLwIDsGHXhA/fGfyO98w?=
- =?iso-8859-1?Q?IbEkTGdedHItN5GhBm3GmrwIk/bbwoijZA9xHvy9/TNSBWStc3GBPSrGBO?=
- =?iso-8859-1?Q?2SJ3zvyx8c9YdKAROHuRrPMz3OddeTV0vwvrZE4tzuOM8WtBNOscK+UHSO?=
- =?iso-8859-1?Q?Fhi6q+TtAXFS9JO3ODxpv693l9wVKoqutFsWA2qqsjcSgGRxUHMY0cFrOF?=
- =?iso-8859-1?Q?uU1V2Qa8JEFd0LRmFnB4mcwyF7KLtUrp0EPlDZAzA1SKSBVo+e0px/dCKc?=
- =?iso-8859-1?Q?ivyhSWA36MhXlNPtORqoQadPA0yeJudJ+eWw6ta+juUaUvcQmB4vjtv01O?=
- =?iso-8859-1?Q?k8e5/ja2H6LZTtrMCjhWVMJaMtJ6o+zCSU0hub5WpNQHtamvKPwSmuWvO+?=
- =?iso-8859-1?Q?nB3sL3qqkHfszXpOvON6OTI6ZWDp/6pyebo2u1dxGIjw86R7AlU3b+Surh?=
- =?iso-8859-1?Q?IVawmZ15fOEBzfCG8zNpiWBvqSdF288cLZ+kf+sEDi0KnfmIEJntrRE+vV?=
- =?iso-8859-1?Q?HgD9/mv4nYc+q9mOX5lvV57JgMlvc2jhNrE7T5sUDyGJIDvi5oxG1oztpW?=
- =?iso-8859-1?Q?Bpx9Or1MZnWtCOLPolaNGq1vKzFKQmkW+BiThP+yzxep64jEqS7hvPzWdm?=
- =?iso-8859-1?Q?MmEv4Z23mPAFgBz3MVWWfxnNFzdgqRJhYrdTdwHq52llbDY7QMXxhc7H6a?=
- =?iso-8859-1?Q?CxV4hgbZ6IM0vJVRBPkgCtohd3H+Hy7Y0gRdb7DgZKNtoD8I9Ri2vQOdRt?=
- =?iso-8859-1?Q?Nw7Uh/HyrTj/QFziXUA1Sd4bVe3KxI5wTeY7tDssFPtTxyMPkuSHTg8n9z?=
- =?iso-8859-1?Q?P8w1QXyiwGKD6UVco9fKP489WkMUTWZ/rla/Bq3R28pllZACGbmfYrUOkl?=
- =?iso-8859-1?Q?PvfCLBcCw6PQbX4gYDY0h4stqa7HlpXN2yvpyNHaPTJ500rwoBQ86mhSxQ?=
- =?iso-8859-1?Q?34gjBTVQutjzIBVEHk+D7SvmGH5yQVUHtNxFqnw0dOwHR92o9i/FUyntRW?=
- =?iso-8859-1?Q?2tHTjLHA9/Pntcx09hmI1+5RFuFnbus5Pr5+g4v5YCFhTtBizmiIB4b586?=
- =?iso-8859-1?Q?U+HEe8oJw+8KYXhR61EVV+DFtvG/kIHfVaGqaRVfUtuspkR7J938/A/iLn?=
- =?iso-8859-1?Q?+pIk8lgy85Z9TJ8FFkmsEbrg/2bKRgVL2NdpPKP7IWPmelFs5ozwVCl/Lh?=
- =?iso-8859-1?Q?BGp39QKHhEPElG/8DZQhWhxj8nJXpFUdMQPP+LMefxLEkgUnLbzvgOXMbB?=
- =?iso-8859-1?Q?KPL17OsQ5sL4SQ0tfA22Pkadm+c1/7KtBezmJ/bwiX3jYIF+j+I3Fu09wM?=
- =?iso-8859-1?Q?nVnn4vaj+ZQvuH3lip2Hqrtmjn5OqxttnEcbeLXJI/c3RiILCCGgCJN/Zc?=
- =?iso-8859-1?Q?SwwpKgyn4xvMv7+GHl9Q8U+MVd1oFhqKW+5bTJhFHDuJa+PUUvlmYWmScf?=
- =?iso-8859-1?Q?3vLz3YN8Nyc/8qF7GADiLbWLp7zaIEg5gCvHW+GwG7DaJI?=
+	=?us-ascii?Q?HbVoDoxmhQGk//nmqVuuRXevtVbqaiJ2/fFOxbVhj1zJAKowamvuAw0HXqfu?=
+ =?us-ascii?Q?12YGz7vCt0VSE0UPX7C0LTEU/q6rNMh83Q7fgRIoJvGVilgXuhtkXg9n9dwl?=
+ =?us-ascii?Q?sLXoDHIlsmNXp/cuQchuFuxBkKv206Um1dTwZl4F3lNagofeKHOUF8+KbhOq?=
+ =?us-ascii?Q?nfuON4dmsGoFAzRImTsI5MDoflC9KCBj6uhWowVCk1ci6ZzAc8yAS4mMOtMv?=
+ =?us-ascii?Q?fHQlLwsXislL1cabfw8TQD0bm05id85ZYCLGEMwlgcua2wkc5Ioldngc1qk8?=
+ =?us-ascii?Q?Tw4+NQ2Z3m4k9GiRKCttw+NtKM2HzQDB/3xjt9hGoYO13Xqtddkh1gjrqSNb?=
+ =?us-ascii?Q?+tHoa3dmmKzsczRQPk/cV023HqiiemJEr5d6RQph/qYaNFVbVrphlk+jN94m?=
+ =?us-ascii?Q?JnyhE5qs7ROnsVLYwWhr0ZWYvhIILNVIRj5h3OpFcmnWrkz3L3VBt2jQ/m7I?=
+ =?us-ascii?Q?Dxso58gqHx1IBNv8FEzZBBPSYtPAWoQkMXPDAOh8o79inA4IVhbB3fFDXUrt?=
+ =?us-ascii?Q?OQi2GuI501YQO5QkJzb6+LHBLSGDC39WHfpthYLlp68MhDo32kOYLPQ5Cozl?=
+ =?us-ascii?Q?lrw5qYyuosoXfNcRzeZmn+Q9WLsPPjgxqabqgsPdkPnN9lUb9Em93wBuuiKg?=
+ =?us-ascii?Q?opGJhl1hKVHUdplevH80DAlZRbXYZzhgMIQ1o6JK+B1tn+iYzAqaidp/7m/D?=
+ =?us-ascii?Q?p3N9dRhAKl5XsbKJKCSKGVmbAeTiHRH9hyBjBZAyayaoSwUS/Vwm/6WNLKjM?=
+ =?us-ascii?Q?P9jmi1ReruG0I2SAtNft9VmigHxsfDLDtST4/svn688Q+BAl8FoHh43m8I1V?=
+ =?us-ascii?Q?XhiKpIV92ma41E0GfEyHUqCgWMsQwai4Yq5G/oHs5jIV7ez+rvt6MxDjGQ5n?=
+ =?us-ascii?Q?jaNBi3bj7d+UzEO7xPruYqG0W7GZemAER6XE8tH4ReupD6cGZpW3BY2yxgUz?=
+ =?us-ascii?Q?4a6JnRcPWi50pTSP8xJFOwYO1L4B09s8IfZVYvcH4SkaVsSE6w+EhiR7GDJ4?=
+ =?us-ascii?Q?+WfAST4RUiu8/lrRIMpuo2zb2N/QSsG7VEiE6uLSZpWa0pShNU8sq8+BM0r8?=
+ =?us-ascii?Q?wUjzkMnV2KDkEdYuJCBac61H7sl6nF2l6Ezh1phUm+wKIS5SQc3PNgeNaph9?=
+ =?us-ascii?Q?o11eefdtQfZxOylCWcYrQNJx2DKi/kaYPoOws/XEEQ66j/qmQXkEOCZsut7B?=
+ =?us-ascii?Q?NDwNb+wQlFbDOkd4cQ6fOYh3EuzJfEMBsQuvaM6C7s62ma1u+09LJWd865Jn?=
+ =?us-ascii?Q?1jqEx27ZvVL2dUNdrpZXveJcRp4Tq8sZUU8h29Bp31ITudnElL3bW3Ys8d6P?=
+ =?us-ascii?Q?ojL+yBv+VoYgyYpXEM18Hao5XCcF1yGE5IzIQjx9/IGtKREtqnPWYKBgc1er?=
+ =?us-ascii?Q?w4KBQF9ZABVK5iHCndt4kwJQtjYd1P76O8Hgx+tUpLrYFbsaneiEz7jgc189?=
+ =?us-ascii?Q?wmEUMj4AzXK9OpyvBlPmHfkL2aqQ19zhErrNkiIEv6gvSivPWN5l0b74xMm1?=
+ =?us-ascii?Q?mmt/PHnRsK80w2Lubhn1cRqvalwj0o+fhLy2gjkKcBYqW8lB9F2Yj7gTq1xj?=
+ =?us-ascii?Q?f2Bcyrl5HZ6xxJmuJ+4gd+c5PLROix3NyGfTd0zHyo/lZLZHOl5A0sM5lFsH?=
+ =?us-ascii?Q?zgRJv2OhC20kQMyrAgvDJfWdjQFJPUesdKr2e5EGaSPYcljUj6dKZgTF9fD1?=
+ =?us-ascii?Q?PAu+qSsK+KmWaWgSCjMm05lLLBav5LFCi50cWNXqNB1ay0gV?=
 X-OriginatorOrg: heitbaum.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4c17b5b-745d-458a-26e7-08def535555c
+X-MS-Exchange-CrossTenant-Network-Message-Id: decddacd-9e7f-4be5-d9a0-08def5358b57
 X-MS-Exchange-CrossTenant-AuthSource: SY7P282MB4909.AUSP282.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2026 10:10:54.8473
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2026 10:12:25.3746
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 35ffebb5-7282-4da6-8519-efab29b0108e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bYS5BfUNmIDdSe6ax2i6Wq6JUekKP76t0fIBauM0cPFDVBA21eiMantz9Qz0hLmkgLVFsjdAqxBvKWUu/dTd8A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7W3OUypGzn/g7eiceX7KF9vd6r+wCPryZ7V1HkBY1PFCqRkVaXvDwT7dfXGm9oYV7d8eH5cirXC8L1cj1jYqHw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SYBP282MB4053
 
-On Fri, Aug 07, 2026 at 12:06:37PM -0500, Frank Li wrote:
-> On Fri, Aug 07, 2026 at 02:15:22PM +0000, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> > - [High] Incomplete DAPM routing for the external Headphone Microphone breaks headset recording.
-> > - [High] Using `system-clock-direction-out` without an explicit clock misconfigures the Audio PLL and breaks audio playback.
-> > - [Low] Missing required regulator supply properties `avdd-supply` and `cpvdd-supply` in the `rt5645` codec node.
-> > --
-> >
-> > --- Patch [5]: [PATCH 5/5] arm64: dts: imx8mq-phanbell: Enable the rt5645 analog audio ---
-> > commit c3b167f1c120ceab271f952ec9169de906983534
-> > Author: Rudi Heitbaum <rudi@heitbaum.com>
-> >
-> > arm64: dts: imx8mq-phanbell: Enable the rt5645 analog audio
-> >
-> > The board has an rt5645 on i2c3 driving the 3.5 mm headphone jack, its
-> > microphone and two on-board DMICs, fed by sai2.
-> >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mq-phanbell.dts b/arch/arm64/boot/dts/freescale/imx8mq-phanbell.dts
-> > > index 2d134eefb7659..b819e644fa54e 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mq-phanbell.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mq-phanbell.dts
-> > > @@ -46,6 +46,41 @@ fan: gpio-fan {
-> > >  		pinctrl-0 = <&pinctrl_gpio_fan>;
-> > >  		status = "okay";
-> > >  	};
-> > > +
-> > > +	sound-analog {
-> > > +		compatible = "simple-audio-card";
-> >
-> > [ ... ]
-> >
-> > > +		simple-audio-card,routing = "Headphone Jack", "HPOL",
-> > > +					    "Headphone Jack", "HPOR",
-> > > +					    "Headphone Mic", "micbias1",
-> > > +					    "DMIC L1", "Internal Mic",
-> > > +					    "DMIC R1", "Internal Mic";
-> >
-> > [Severity: High]
-> > Is there a missing route here to connect Headphone Mic to a codec input pin,
-> > such as IN1P or IN2P?
-> >
-> > Without this route, will ALSA DAPM see the microphone as a dead end, failing
-> > to power up the codec's ADC and breaking headset microphone recording?
+imx8mq-phanbell.dts describes very little of the Google Coral Dev Board
+beyond the essentials. This series fixes two defects that affect the board
+as it stands today, then adds the i2c buses, the 32 kHz reference clock pad
+and the analog audio.
 
-Headphone Mic route - added in v2 as "IN1P", "Headphone Mic". The jack
-is a TRRS part wired to CTIA from the datasheet.
+Patches 1 and 2 are bug fixes and stand on their own:
 
-> > > +
-> > > +		/*
-> > > +		 * 32 bit slots regardless of the sample width. sai2 divides its
-> > > +		 * 24.576 MHz root by an even integer only, so a 24 bit frame at
-> > > +		 * 48 kHz would ask for 2.304 MHz, a ratio of 10.67.
-> > > +		 */
-> > > +		sound_analog_cpu: simple-audio-card,cpu {
-> > > +			sound-dai = <&sai2>;
-> > > +			system-clock-direction-out;
-> >
-> > [Severity: High]
-> > By specifying system-clock-direction-out here without an explicit clocks or
-> > system-clock-frequency property, does this cause simple-card to fall back to
-> > the child node's first clock (IMX8MQ_CLK_SAI2_IPG at 133MHz)?
-> 
-> Is it true?
+  - BUCK3 feeds the GPU rail and is the only regulator on the board that is
+    neither always-on nor claimed by a consumer, so the regulator core
+    switches it off when it finishes initialising and the board dies about
+    thirty seconds into the boot.
 
-system-clock-direction-out without a clocks property - the fallback is real,
-but the conclusion is not, and the suggested fix is what breaks playback.
+  - The cpu_alert1 cooling map hardcodes an upper state of 2, which does
+    not exist on a part whose speed grade provides only two operating
+    points. The bind is rejected with -EINVAL and the trip ends up with no
+    cooling device at all.
 
-Falling back to the DAI node's first clock, the IPG clock, sets that as the
-system clock once at card init. It is replaced at hw_params with
-rate * mclk-fs before any stream starts, so the init-time value never
-reaches a running stream.
+Patches 3 to 5 are enablement. Patch 5 needs 588852647b81 ("ASoC: rt5645:
+Make the Kconfig symbol user selectable"), which is in mainline as of
+v7.2-rc7; without it SND_SOC_RT5645 has no prompt and the codec driver
+cannot be enabled.
 
-I tested both ways on the board. With no clocks property, 44.1 kHz and
-48 kHz both play natively. With clocks = <&clk IMX8MQ_CLK_SAI2_ROOT> on the
-cpu dai, the mclk never moves to the 11.025 kHz PLL family and 44.1 kHz
-fails in hw_params.
+Producing sound from the analog card also needs "ASoC: rt5645: Perform the
+initial jack detect at probe", posted separately to ASoC. Nothing performs
+the initial jack detect for a card described with simple-audio-card, so a
+headphone already in the socket at boot is never noticed and the output is
+silent. That is a codec driver fix rather than a devicetree one, hence the
+separate posting.
 
-So I have left the property out, and said why in the v2 commit message.
- 
-> >
-> > If so, simple_init_dai() will set the Audio PLL to 133MHz during probe.
-> > Because fsl_sai_set_dai_sysclk() blocks clock changes once playback starts
-> > (when sai->mclk_streams > 0), the PLL remains stuck at 133MHz.
-> >
-> > Will this cause fsl_sai_hw_params() to fail to derive valid BCLK dividers
-> > from 133MHz, breaking audio playback completely?
-> >
-> > > +			dai-tdm-slot-num = <2>;
-> > > +			dai-tdm-slot-width = <32>;
-> > > +		};
-> >
-> > [ ... ]
-> >
-> > > @@ -272,6 +307,18 @@ &i2c3 {
-> > >  	pinctrl-names = "default";
-> > >  	pinctrl-0 = <&pinctrl_i2c3>;
-> > >  	status = "okay";
-> > > +
-> > > +	rt5645: audio-codec@1a {
-> > > +		compatible = "realtek,rt5645";
-> > > +		reg = <0x1a>;
-> > > +		pinctrl-names = "default";
-> >
-> > [Severity: Low]
-> > Are the avdd-supply and cpvdd-supply properties required for this codec node?
-> >
-> > Will omitting them cause device tree schema validation (dtbs_check) to fail?
+Deliberately not included: pcie0 and pcie1 need the i.MX8MQ PCIe REF_CLK
+source selection to be made conditional, which is a separate series still
+in review, and the Bluetooth half of the QCA6174 depends on that in turn.
 
-avdd-supply/cpvdd-supply - correct, both are in the binding's required
-list, so dtbs_check did fail. v2 adds them and the fixed regulator they
-need. CHECK_DTBS is clean now.
+Tested on a Coral Dev Board on 7.2-rc6: buck3 stays up and the board boots
+reliably, both thermal trips bind and throttling engages, the codec probes
+on i2c3, and the headphone jack plays 44.1 kHz and 48 kHz.
 
-> Please check this also
-> 
-> Frank
+v2:
+ - patch 5: add avdd-supply/cpvdd-supply and the fixed regulator they need
+ - patch 5: route "Headphone Mic" to IN1P
+ - patches 1-4 unchanged
 
-Hi Frank,
+Rudi Heitbaum (5):
+  arm64: dts: imx8mq-phanbell: Keep the GPU rail on
+  arm64: dts: imx8mq-phanbell: Do not hardcode a cooling state that may
+    not exist
+  arm64: dts: imx8mq-phanbell: Enable i2c2 and i2c3
+  arm64: dts: imx8mq-phanbell: Mux the 32 kHz reference clock pad
+  arm64: dts: imx8mq-phanbell: Enable the rt5645 analog audio
 
-Thanks for the review. I have posted a v2 including these fixes and explanation.
+ .../boot/dts/freescale/imx8mq-phanbell.dts    | 135 +++++++++++++++++-
+ 1 file changed, 134 insertions(+), 1 deletion(-)
 
-Regards
-Rudi
+base-commit: 075b74841bd0065a3bda3440873c747938e69b68
+-- 
+2.53.0
 
-> > > +		pinctrl-0 = <&pinctrl_hp_det>;
-> > > +		#sound-dai-cells = <0>;
-> > > +		interrupt-parent = <&gpio5>;
-> >
-> > --
-> > Sashiko AI review · https://sashiko.dev/#/patchset/cover.1786107925.git.rudi@heitbaum.com?part=5
