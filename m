@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740FE145A1F
-	for <imx@lists.linux.dev>; Sat,  8 Aug 2026 20:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504917083C
+	for <imx@lists.linux.dev>; Sun,  9 Aug 2026 03:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786221161; cv=none; b=mZILft1pW2wuHJZZWWBkEnAxBsggTa/Kzm+g3CvBOtFceDp82Y74ZflwEY/6WlUSHCfIALugW89lWsLK5Paj0l2dje1lJij4wSpnaWwMVKikDHNY6RKajyoFPs0lqNeY5Ey9izZYpTyspCURryjzZ9pi3ZXRpMa+5LKqp+Bl/ec=
+	t=1786245546; cv=none; b=egJlQd35lpcjIAtxMAdovbAO9WP0wtp6urlumhMl9nP30s4XtKHeSNjreROQIW1fQvZil7JOVV1X7HDmSUDKDu+AnWR/t4EJqmXO1NMZT5rLOrB3abd9evs9v8DBxd8JtCuzLIHdlisM5OLhusLWePCEwKgpBiDsglXZt2Ddgmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786221161; c=relaxed/simple;
-	bh=PKBKe2JHM8VZS4THu/7LbGHQYSPJuZuIiHZbqHgPPTQ=;
+	s=arc-20240116; t=1786245546; c=relaxed/simple;
+	bh=yLxycZe8KDJoq77aVsWxea3KStPhk9c0hDBlR6RQNS0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WaoAvRnSt/wK+bCUChgfFM/8mgrV6+FJQmW4ZiHc40g1AoBwZgW3M3KBrQYSIrCLVQqBfcVHtxZ/f2Aoyecq7/Z2IbYYp6VotsUYUnCinrtWY7A8t644kciVCVAYAKEsiLAHwmzIJvbwWecz/tvL5656fDZdF4tEPjAn1+tltjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HE6eE68J; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=EnK53RCqV4RpF0T0pYR9Qt6lITZGYaPlVOXhUvROCksahcJlzKpfIJDMdxf7P5UW367vLmvz3QHfj8JGAdZdDOQg7RbbmSWbSCANp52d15f7/n3g6hx6OiG6UMttjmDqMRNnJvVFhhbLpmyxVGr1gZQnGCIdQLDOPXMm1fiBbFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Enfc5fxs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HE6eE68J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58031F000E9;
-	Sat,  8 Aug 2026 20:32:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Enfc5fxs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B581F000E9;
+	Sun,  9 Aug 2026 03:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786221160;
-	bh=8tRDmk4vSKgCn4deVTbo1VoDtZxcEgDO0nSLyoogaj4=;
+	s=k20260515; t=1786245544;
+	bh=D7w3I5b3xoraXutig+Iso4ZOFrS+UzvAgdTt1l6+CHg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HE6eE68JA6oQ2fLLVmVM5o5YxRcabedDWrOudFnKCPl0r+Nd76e0rs5uoHUB+ab24
-	 vZMEZCGpkf3qIk2haN016ewuCZhencDEVQzZrXGN5Ln717NZso7d3KyPsudHntLO/q
-	 R5NfVkVvAab1clzYvjNeJKzvUlcHlopedYb1Bt/x2ephRvs4ii50T6qouoCagM7Ls4
-	 RGSXoRgn7RfT5yp1jFg0b8oJcMR3Wif7rHQ1JS711Y7rH+ZgopYG0EVCADcjb+p6K4
-	 rbIj7TM9FkQ0Y2LiGQhlrmvilTLgVzI7ftr1lXvZBdfKypByBcpeemIqLqgblaB9ep
-	 S/A0HvuVitIPA==
+	b=Enfc5fxs/TiAcQ/+GEbHaTi8ZGrY5M+IhQmuk/H12OCaB6+YhmZrkhOkoOSwQbxJF
+	 cign0YIwQCuEADUPVemXqmrhKws6gJFOhONmvF6huU+9VSxEuvltoKzdsFx0fk3PzE
+	 f9W7dfNoUybZHqyUmGLZ8LEvNQ+s0m9+ml06GTuqBLHTnXANHECQyoMzn7mVoEoRhU
+	 VL6a03DfqqPBKAxa+K19jEW8M3CEKmBxRjJklMXZYsApcEQpNizjt2zC2TodSktnDW
+	 4u6JUoXz+iNllVrRbakL2MG85mXBV8KjtxRg1RbR01yLlwxJPrss7oQ/iyw9pVltYP
+	 pei2SZjFyA2SA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] thermal/drivers/imx9: Constify struct
- thermal_zone_device_ops
+Subject: Re: [PATCH v2 net-next 3/7] ptp: netc: export
+ netc_timer_get_current_time() for cross-driver use
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christophe JAILLET" <christophe.jaillet@wanadoo.fr>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <5cce9ea713edcf2aa3c0efd5d31e9d9fd9f40a88.1786220585.git.christophe.jaillet@wanadoo.fr>
-References: <5cce9ea713edcf2aa3c0efd5d31e9d9fd9f40a88.1786220585.git.christophe.jaillet@wanadoo.fr>
+To: wei.fang@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260808032146.2335723-5-wei.fang@oss.nxp.com>
+References: <20260808032146.2335723-1-wei.fang@oss.nxp.com>
+ <20260808032146.2335723-5-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 08 Aug 2026 20:32:39 +0000
-Message-Id: <20260808203239.C58031F000E9@smtp.kernel.org>
+Date: Sun, 09 Aug 2026 03:19:04 +0000
+Message-Id: <20260809031904.90B581F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,68 +47,96 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Unsafe asynchronous `pm_runtime_get()` used immediately prior to d=
-evice register access.
+- [High] The exported function `netc_timer_get_current_time()` assumes any =
+non-NULL driver data belongs to the `ptp_netc` driver, leading to type conf=
+usion and memory corruption if a different driver is bound to the device.
 --
 
---- Patch [1]: [PATCH] thermal/drivers/imx9: Constify struct thermal_zone_d=
-evice_ops ---
-commit a5aeff30f3e13d6747636801e7e678ac7b06d113
-Author: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+--- Patch [3]: [PATCH v2 net-next 3/7] ptp: netc: export netc_timer_get_cur=
+rent_time() for cross-driver use ---
+commit fe6f3ab81e37c2bfadc0b000bbb64a980c0130de
+Author: Wei Fang <wei.fang@nxp.com>
 
-thermal/drivers/imx9: Constify struct thermal_zone_device_ops
+ptp: netc: export netc_timer_get_current_time() for cross-driver use
 
-Constify the thermal_zone_device_ops structure since it is not modified in
-the driver. This moves the data to a read-only section, improving overall
-security by protecting the function pointers.
+This commit exports netc_timer_get_current_time() so the NETC Switch driver
+can obtain the PTP time from its associated NETC Timer PCIe function. It us=
+es
+device_lock() to serialize against unbinds while reading the timer registers
+via the timer driver's private data.
 
-> diff --git a/drivers/thermal/imx91_thermal.c b/drivers/thermal/imx91_ther=
-mal.c
-> index 25915bb702bea..892a25440e06e 100644
-> --- a/drivers/thermal/imx91_thermal.c
-> +++ b/drivers/thermal/imx91_thermal.c
-> @@ -225,7 +225,7 @@ static int imx91_tmu_change_mode(struct thermal_zone_=
-device *tz, enum thermal_de
->  	return 0;
+> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> index d33c49c86ac44..27f85818d6a8a 100644
+> --- a/drivers/ptp/ptp_netc.c
+> +++ b/drivers/ptp/ptp_netc.c
+
+[ ... ]
+
+> @@ -165,6 +165,47 @@ static u64 netc_timer_cur_time_read(struct netc_time=
+r *priv)
+>  	return netc_timer_rd64(priv, NETC_TMR_CUR_TIME_L);
 >  }
 > =20
-> -static struct thermal_zone_device_ops tmu_tz_ops =3D {
-> +static const struct thermal_zone_device_ops tmu_tz_ops =3D {
->  	.get_temp =3D imx91_tmu_get_temp,
->  	.change_mode =3D imx91_tmu_change_mode,
+> +/**
+> + * netc_timer_get_current_time - read the current PTP time from the NETC=
+ Timer
+> + * @pdev: PCI device of the NETC Timer
+> + *
+> + * Reads the 64-bit current time register (TMR_CUR_TIME) from the NETC T=
+imer
+> + * device associated with @pdev. Returns 0 if the Timer driver has not y=
+et
+> + * probed or has already been removed.
+> + *
+> + * Context: Process context only. Acquires the device mutex via device_l=
+ock(),
+> + *          which may sleep. Must not be called from atomic context, sof=
+tirq,
+> + *          BH, or while holding a spinlock.
+> + *
+> + * Return: Current PTP time in nanoseconds, or 0 if the timer is unavail=
+able.
+> + */
+> +u64 netc_timer_get_current_time(struct pci_dev *pdev)
+> +{
+> +	struct netc_timer *priv;
+> +	unsigned long flags;
+> +	u64 cur_time =3D 0;
+> +
+> +	/* Serialize against driver unbind: the remove() callback runs under
+> +	 * the device lock, so holding it here ensures that priv remains valid
+> +	 * for the entire duration of the register read.
+> +	 */
+> +	device_lock(&pdev->dev);
+> +
+> +	priv =3D pci_get_drvdata(pdev);
+> +	if (!priv)
+> +		goto unlock_device;
+> +
+> +	spin_lock_irqsave(&priv->lock, flags);
 
 [Severity: High]
-This is a pre-existing issue, but I noticed a potential problem with the
-imx91_tmu_change_mode function referenced here.
+If a privileged user unbinds the ptp_netc driver from this PCI device via
+sysfs and binds a different driver (like vfio-pci), won't pci_get_drvdata()
+return the new driver's private data structure instead of struct netc_timer?
 
-Can this result in a bus fault if the device clocks are not yet enabled?
+Could this cause type confusion and memory corruption when subsequently
+accessing priv->lock and priv->base during the register read?
 
-Looking at imx91_tmu_change_mode(), it uses the asynchronous
-pm_runtime_get():
+Would it be safer to verify that pdev->driver is actually the netc_timer_dr=
+iver
+before dereferencing the driver data?
 
-drivers/thermal/imx91_thermal.c:imx91_tmu_change_mode() {
-	if (mode =3D=3D THERMAL_DEVICE_ENABLED) {
-		ret =3D pm_runtime_get(tmu->dev);
-		if (ret < 0)
-			return ret;
-
-		writel_relaxed(IMX91_TMU_CTRL0_THR1_IE | IMX91_TMU_CTRL0_THR1_MASK,
-			       tmu->base + IMX91_TMU_CTRL0 + REG_CLR);
-...
-}
-
-Because pm_runtime_get() queues an asynchronous resume and returns
-immediately, writel_relaxed() could access memory-mapped registers before
-the PM workqueue has completed the resume and enabled the device's clocks.
-
-Should this use pm_runtime_resume_and_get() instead to ensure the device
-is synchronously resumed before register access?
-
->  	.set_trips =3D imx91_tmu_set_trips,
->  };
+> +	cur_time =3D netc_timer_cur_time_read(priv);
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +unlock_device:
+> +	device_unlock(&pdev->dev);
+> +
+> +	return cur_time;
+> +}
+> +EXPORT_SYMBOL_GPL(netc_timer_get_current_time);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/5cce9ea713edcf2aa3c=
-0efd5d31e9d9fd9f40a88.1786220585.git.christophe.jaillet@wanadoo.fr?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260808032146.2335=
+723-1-wei.fang@oss.nxp.com?part=3D3
