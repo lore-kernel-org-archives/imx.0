@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD4D255F28
-	for <imx@lists.linux.dev>; Sun,  9 Aug 2026 03:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FE119F115
+	for <imx@lists.linux.dev>; Sun,  9 Aug 2026 03:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786245549; cv=none; b=vDU1dnVMKBPzQX/DjmyJxagPVVO60TpIxg9orASLMnpSmNGn8phd0ko9qYLOvj5YepqgRlYxU3atd0IKLyz5ehTHdvWGgNpCDxM9Y+CvLIETpYwpubPDVmE421JIYbtQDRMbUidy97ZIOOmyYwUXf9C8fcHDUUxdithTFykw/0g=
+	t=1786245549; cv=none; b=qh2g5bzCpq6DHLGPFPuuItrwsA4aGEunnWn90XUXonjx7qOX6wGazryzNQezal5udlsvsK1eFZmNNDSinQZ/LymrrxNJ+pqa2u0nn4Pp1vdLjSaADw8SUW9JFU9gKFcUUIBgPrC/eirkM5fj+geyF4MHIaZY1j7qsF1KB/igOro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786245549; c=relaxed/simple;
-	bh=RpbujLUIiqjYn/n51zYlTeCr9V9dPPY5j9kHe6Y7V5U=;
+	bh=r7G0JT2eGDbj+8Yd0QCpoHi/pv4OTNUhFzMmpRffM6k=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=T38Pc8orqQuk1jqxKyo5CuOV3ghwFskvfdtexHi9kaC9+GIsaMmiI0roLQj2dRJD2dmEvdMQBHmZbwg7NL8sBl23UEas5wbHUpoeQZzw59qqRs881BefhTrkpu1NABDyIaKyv7OVq/CZ7iBwK9UuF/elRRefOEqvDTeg2FXS8Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZRA1Wov8; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=MNBySAvV+c6Bk5KQz9zI+DE/XuVxaX4L9IkDYCCXEUZR3p/VYwK0gXiVKylxuFxW225je+buxk6jp1R9ztc565sMUTsLgiYiuEu4Qxp7hWZvzju0YWmrW6vZ4CKlOWSmE06f9P38AwTrFBqxr5FcM3Gem74Nu11A/1sNie8NPpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8bWyYJe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZRA1Wov8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888511F00A3D;
-	Sun,  9 Aug 2026 03:19:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8bWyYJe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EBF1F00A3A;
+	Sun,  9 Aug 2026 03:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786245547;
-	bh=1Xay08xCdb0XYOkwJ5Quk4mXcTa28YFokpFlFGHAio0=;
+	s=k20260515; t=1786245548;
+	bh=ONCoyR7TFjERJInjuxMQeUtOoUB+vm7VxLXffePDnb0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZRA1Wov83jQRxgN5LML0fjoebJfxvcdMsgeGfebRmRrVVhlPVQnZXmjgT4X1IylwT
-	 Z7XufymI/THuxILlYaCm9pOFuNnCkliZj4b9ElHnmQLd4aZKH9GdUFQmRyiNLVbLo7
-	 LIqnscUStj5KPK7Z8jsMhETkbK1kTxCBdsOSTcjt1grqkM/J8ErCmpG50HOP/C+9ru
-	 x7ICzmaO59GyFrDUJjmQuJ94SefawNxRVslninRjuUgV+Qs/7Gyevw5SOt45m4Z0lo
-	 QURFDPJt0QOcBzhzfJh+17Ui8ZNdKkresf4gsBjn/nf3jCQzPpIsLCDcOwd7o4JwN2
-	 bcGmGk5fTrfWA==
+	b=L8bWyYJe/komECwPwlpQCmSD8hbuAxRjZxvFzkudLy+yuSaYzp2LudRL7NxZCtK29
+	 bpzRHPSw3vZ18RXbKmrcWw26I1UT3YsK2ewBBkS9vhC1OPMmB5MjjCxHOBmAcwfij/
+	 yuT/sFhtOje+qza1nmq5vTLkSdu2dSO+G1crfBQTg2IPuVC3c0/+TslGPxOn6vsrom
+	 Ul50wt75KBfqtQEVSgFvTkcWbjU1ekGy/Wgww6NU9/lHerC6sUVZMIOXobMIXQf7rS
+	 dxQuDnwi2DNykvpgQaUL07kFdshElhnRCx91ZZj9Ni0VPNZU/8XDwUsoa7a4DKVHfx
+	 IaulQwZaFnd+A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net-next 6/7] net: dsa: netc: add PTP two-step
- timestamping support
+Subject: Re: [PATCH v2 net-next 2/7] ptp: netc: remove unnecessary
+ pcie_flr() call in probe
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260808032146.2335723-8-wei.fang@oss.nxp.com>
+In-Reply-To: <20260808032146.2335723-4-wei.fang@oss.nxp.com>
 References: <20260808032146.2335723-1-wei.fang@oss.nxp.com>
- <20260808032146.2335723-8-wei.fang@oss.nxp.com>
+ <20260808032146.2335723-4-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Sun, 09 Aug 2026 03:19:07 +0000
-Message-Id: <20260809031907.888511F00A3D@smtp.kernel.org>
+Message-Id: <20260809031908.46EBF1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,91 +47,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Lazy garbage collection of timed-out TX SKBs permanently leaks soc=
-kets and network namespaces.
+
+Pre-existing issues:
+- [High] Disabling a PEROUT channel that is already disabled incorrectly fr=
+ees alarm ID 0.
 --
 
---- Patch [6]: [PATCH v2 net-next 6/7] net: dsa: netc: add PTP two-step tim=
-estamping support ---
-commit b5b95ff6c72f97e31680784516eda771a0e7104f
+--- Patch [2]: [PATCH v2 net-next 2/7] ptp: netc: remove unnecessary pcie_f=
+lr() call in probe ---
+commit e70feff8e69f873b89699e822c09a88a2517534c
 Author: Wei Fang <wei.fang@nxp.com>
-Date:   Sat Aug 8 03:21:45 2026 +0000
 
-    net: dsa: netc: add PTP two-step timestamping support
+ptp: netc: remove unnecessary pcie_flr() call in probe
+   =20
+According to the NETC reference manual, function level reset is not
+applicable to the timer as a supporting function. Remove the pcie_flr()
+call from netc_timer_pci_probe() as it has no effect.
 
-This commit adds two-step TX timestamping and RX timestamping support for t=
-he
-NETC switch. It installs ingress port filter table rules to redirect RX PTP
-frames to the CPU port and handles TX timestamp requests and responses via
-switch tags.
-
-> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_=
-ptp.c
-> new file mode 100644
-> index 0000000000000..1384a6f31d1c1
-> --- /dev/null
-> +++ b/drivers/net/dsa/netc/netc_ptp.c
-
-[ ... ]
-
-> @@ -0,0 +1,454 @@
-
-[ ... ]
-
-> +static void netc_port_txtstamp_twostep(struct netc_port *np,
-> +				       struct sk_buff *nskb)
-> +{
-> +	DECLARE_BITMAP(ts_req_id_bitmap, NETC_NUM_TS_REQ_ID);
-> +	struct sk_buff *clone =3D skb_clone_sk(nskb);
-> +	struct netc_switch *priv =3D np->switch_priv;
-> +	struct sk_buff_head free_list;
-> +	struct sk_buff *skb, *skb_tmp;
-> +	unsigned long ts_req_id;
-> +	int err =3D 0;
-> +
-> +	if (unlikely(!clone))
-> +		return;
-> +
-> +	bitmap_zero(ts_req_id_bitmap, NETC_NUM_TS_REQ_ID);
-> +	__skb_queue_head_init(&free_list);
-> +	spin_lock_bh(&np->tstamp_lock);
-> +
-> +	skb_queue_walk_safe(&np->skb_txtstamp_queue, skb, skb_tmp) {
-> +		if (time_before(NETC_SKB_CB(skb)->ptp_tx_time +
-> +				NETC_TXTSTAMP_TIMEOUT, jiffies)) {
+> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> index 0e0972596d880..d33c49c86ac44 100644
+> --- a/drivers/ptp/ptp_netc.c
+> +++ b/drivers/ptp/ptp_netc.c
+> @@ -774,7 +774,6 @@ static int netc_timer_pci_probe(struct pci_dev *pdev)
+>  	if (!priv)
+>  		return -ENOMEM;
+> =20
+> -	pcie_flr(pdev);
+>  	err =3D pci_enable_device_mem(pdev);
+>  	if (err)
+>  		return dev_err_probe(dev, err, "Failed to enable device\n");
 
 [Severity: High]
-Does this lazy garbage collection of timed-out TX SKBs permanently leak soc=
-kets
-and network namespaces?
+This is a pre-existing issue, but does disabling a PEROUT channel that is
+already disabled incorrectly free alarm ID 0?
 
-When a frame requests a two-step hardware TX timestamp, skb_clone_sk() is u=
-sed,
-which takes a reference on the socket. If the frame is dropped in software
-(e.g., due to qdisc drops or congestion) before reaching the hardware, the
-hardware never generates a timestamp response, and the clone remains in
-np->skb_txtstamp_queue.
+drivers/ptp/ptp_netc.c:net_timer_enable_perout() {
+...
+	} else {
+		netc_timer_disable_periodic_pulse(priv, channel);
+		priv->fs_alarm_bitmap &=3D ~BIT(pp->alarm_id);
+		memset(pp, 0, sizeof(*pp));
+	}
+...
+}
 
-Because the driver only lazily checks for timed-out SKBs here when a new PTP
-packet is transmitted, the queue will not be purged if the application stops
-transmitting or closes the socket. The stranded clone holds a reference to =
-the
-socket indefinitely, which in turn prevents the associated network namespace
-from being destroyed.
+If a userspace process calls ioctl(PTP_PEROUT_REQUEST) with a channel index=
+ but
+period =3D 0 (which implies on =3D 0), and the channel is already disabled,=
+ the code
+proceeds to this else block without verifying its state.
 
-> +			dev_dbg_ratelimited(priv->dev,
-> +					    "Port %d ts_req_id %u which seems lost\n",
-> +					    np->dp->index, NETC_SKB_CB(skb)->ts_req_id);
-> +
-> +			__skb_unlink(skb, &np->skb_txtstamp_queue);
-> +			__skb_queue_tail(&free_list, skb);
-> +		} else {
-> +			__set_bit(NETC_SKB_CB(skb)->ts_req_id, ts_req_id_bitmap);
-> +		}
-> +	}
+Since the channel's struct netc_pp was previously zeroed, pp->alarm_id eval=
+uates
+to 0. The driver then executes priv->fs_alarm_bitmap &=3D ~BIT(0), silently
+revoking the allocation of alarm 0 from whichever channel is actively using=
+ it.
 
-[ ... ]
+Could this cause two channels to conflict over the same hardware alarm
+configuration and corrupt their output signals?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260808032146.2335=
-723-1-wei.fang@oss.nxp.com?part=3D6
+723-1-wei.fang@oss.nxp.com?part=3D2
