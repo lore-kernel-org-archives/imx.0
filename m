@@ -1,95 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08207345CAB;
-	Mon, 10 Aug 2026 07:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983D439D6EF;
+	Mon, 10 Aug 2026 07:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786346074; cv=none; b=mfhYOiwIsk5lpPIT/Rg7Hn5fkgb0bDV9rFjHQynAZ+AxXRpfkYRizNDGBl4W7n1mvmCvdvzrasRBN1ubngZwgCfHdbcp9cv8bde/1xeT2XKuU9fwPIMXAlPDEyjwHFNSnAn/yIDZFEan27rc4zuvu3vnpZLlBE3fXtBS2WnkIEQ=
+	t=1786346869; cv=none; b=r7dXvah96kYqMTiUNIKt6301Spr7BPDYNCfPbSKdzCmyoyDf2g1LBte8p8CvPstmrwN2hEW/BKm7Y15kzAl+bkQCRtAdjTEmURG0k46OlGtAEYGkRBOfZ89ASCh8Zc1BV1vUvj2+Icemtf+qclq+KAh6U1E/TPFQnTR/S1ljFHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786346074; c=relaxed/simple;
-	bh=r6CYbGhTQXwwrEb0UaMVKgECCiYs01A61nw9eChuU7w=;
+	s=arc-20240116; t=1786346869; c=relaxed/simple;
+	bh=xQLhwS8wv9sFqYFOv/TIN/5z4j31qZTJrUsswVUaMwY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tOJvzYGoj85FaqgHN5yBJ12ORWSGsfxIYozAYRlbREtRA7JsX9gQxvvH1Mg9qDSk2XQQyo8BbHkIvGD7qXUm6+ssG3lth5cLyp/He8sZN45i5YJ/OrTZu5uDy4gnY6V54dkoiFd6928kjPNuy8BZsn5yYkJatZf2qXvnyxQSKic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7ronXcd; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=XdCkw5kDLxb19XNJhMqxRzSI0KULX/soQ1RrLCUHnZVyAJEt599yFvS4/ZPNPbe+MtIACY3eOoDLT6O0X8OBVz2JnaRfwOC9EzSKuSfW0JoPZjAUMs3qOL6nfxF5fJDUg/DRwHkkjC08JkGtDII4nsG6sRikBxzDW7VfdiAheD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FG75gnP7; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7ronXcd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1DD1F000E9;
-	Mon, 10 Aug 2026 07:14:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786346072;
-	bh=3tNAkI5vPOVX8HetVxMd0XhWn0MZflkc+mnZkRCDPdI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X7ronXcdvcEuXosufT2+KbF+82VRzRQueYNYrv0YC5Isef6VGJZAU5v3WP6mwLZcq
-	 5GQAxziFxT6+xFMhaN4tm8zVRzhlzet+1skX2m34LVhRnoewm+q3XqAK8hz1sMPq86
-	 aE+SAHptjsCt5rJraZByYq5DR5iv+B1azs+6wbgX+BXdY+TU+DayG1YwlPTaX0n+vG
-	 4uy8yPi2Gtrotr/TgpmFSXtNyc64OFkG3BA0jV7aZp1nZcJJ/raqSuvQWiPcU3VBss
-	 aAORSjvJcAjsjvkq9T6s4sLCOIseteyYPwrhlB4fCfFnA5FfFPlTXp152Bv7UixqiD
-	 7AUL3GPkpqpUw==
-Date: Mon, 10 Aug 2026 09:14:28 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: shengjiu.wang@oss.nxp.com
-Cc: lgirdwood@gmail.com, broonie@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com, 
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v3 1/5] ASoC: dt-bindings: fsl,imx-asrc: update port
- binding to support multiple paths
-Message-ID: <20260810-normal-cuscus-of-argument-4b230b@quoll>
-References: <20260804100218.49587-1-shengjiu.wang@oss.nxp.com>
- <20260804100218.49587-2-shengjiu.wang@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FG75gnP7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786346867; x=1817882867;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xQLhwS8wv9sFqYFOv/TIN/5z4j31qZTJrUsswVUaMwY=;
+  b=FG75gnP7rW6eu0m595W1Sd3oeT2R0aMzbWX9W1zCQFqsMlKA0CcV9kUj
+   AXzCPoGefjFBqElLD2PjL6EqoJIU+XbHvzR2/eTE+vHvm4BphqQ3W/qoa
+   tz2qar7gTfUEMaP5/kVdO3QtzKedH5bjaT9Wvnb+Q3GkfKvS6EzvyKJ+E
+   kyo42KMBbf3YwsYX2Q8LQKVHwv3SwcrqTaEK+fFfNvLNo9ByX87PWYfSY
+   1itkPPUM0zC3/BoDwTQX+0Ks5czmbtP20m6KbO/LFc8V5kKFLCS9YFuMl
+   Kw+mvolaiDB6+p5DN9c354GC4dBh7619x93dCQdQI3Jj+r+cA6JOV/eEr
+   w==;
+X-CSE-ConnectionGUID: HBsIvXuhTReYhDSt5i7FLQ==
+X-CSE-MsgGUID: dr2RfRXvRze42o4ob0snaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="112400366"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
+   d="scan'208";a="112400366"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 00:27:46 -0700
+X-CSE-ConnectionGUID: fVqcRD4QTWCn0dQ6j9/S5A==
+X-CSE-MsgGUID: 7ZXTFfZuQhmUulcEeVHcvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
+   d="scan'208";a="263584571"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.99])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 00:27:36 -0700
+Date: Mon, 10 Aug 2026 10:27:33 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Link Mauve <linkmauve@linkmauve.fr>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev, imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] nvmem: migrate to const void * in reg_write
+Message-ID: <anl9ZRM0REenBK8t@ashevche-desk.local>
+References: <20260726131724.15299-1-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260804100218.49587-2-shengjiu.wang@oss.nxp.com>
+In-Reply-To: <20260726131724.15299-1-linkmauve@linkmauve.fr>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Aug 04, 2026 at 06:02:14PM +0800, shengjiu.wang@oss.nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+On Sun, Jul 26, 2026 at 03:17:18PM +0200, Link Mauve wrote:
+> This callback used to take a mutable void * for no reason, which causes
+> the compiler to be unaware that the val buffer should never be modified
+> by the callback.
 > 
-> The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
-
-Which SoC? Did you read this binding you are changing?
-
-> The existing binding exposed only a single generic audio-graph port,
-> which cannot represent independent conversion paths when multiple pairs
-> are in use simultaneously.
+> This was found while drafting the nvmem-provider Rust abstraction.
 > 
-> Add a ports container that enumerates up to three sub-ports, each
-> representing an independent conversion path:
->   port@0 -- conversion path 0
->   port@1 -- conversion path 1
->   port@2 -- conversion path 2
-> 
-> Each sub-port references audio-graph-port.yaml as before. Hardware pairs
-> are allocated dynamically at stream open time; each active stream
-> direction (playback or capture) on a port consumes one hardware pair.
-> 
-> For backwards compatibility, keep the old single port property but mark
+> Thanks to the guidance of Andy Shevchenko, this now introduces a new
+> callback and deprecates the existing one, with the goal of renaming the
+> new one into the old one once no user remains in the kernel.
 
-Why? Did the old hardware change that it has more ports/paths?
+LGTM now, FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-> it deprecated. A schema constraint (not: required: [port, ports]) ensures
-> that both forms cannot be used at the same time. The binding example is
-> updated to show the preferred ports form.
-> 
-> No existing upstream DTS file for fsl,imx-asrc uses the previously
-> documented single 'port' node, so this change does not break any
-> in-tree device tree.
+But I think you also need to provide a road map of finishing this job (the best
+is to provide a continuation in some of yours public Git trees to point out).
 
-Does it break other users of this binding?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Why mentioning upstream in the first place? Either this change breaks
-ABI or not, explain that.
-
-
-Best regards,
-Krzysztof
 
