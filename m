@@ -1,159 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CA038758D;
-	Mon, 10 Aug 2026 18:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA82B43710B;
+	Mon, 10 Aug 2026 18:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786386438; cv=none; b=KX4f07he+0DS/sSKyVE5mPi+Y6vrdDMVyEzpBYLwyAjQdkNYm39Iyvt10L6hDHpJkyTyRP7HRKfIg6FeSm7RvgweFhMZ9yjiCP1lOy6Cztd+j+FSGFXkG4sdkOR8m4YpyDznUhYQ7bWXrU8MU/quxO9eMRlK6rpxvs1zzE/JhS4=
+	t=1786386649; cv=none; b=Acv3iFLaZGi5T2fd/7w1NdO9SuNb+0ftoWMWbbLiNttp1gze7Rsz92I3mrI1N7PLL5kPdgAn/oDtGWaM89hfE4dS7lommc0NshzLXX4MRZUtr01IiqHj5BVWSKkgDgwUPhSJRA1AA1Y32UnP3m+dLe5XKUICrfhLqzCV8I4L0ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786386438; c=relaxed/simple;
-	bh=Trzq/A6TDBBYNMdTbFVtbRQmNnjaQky7Gs/Jb3IVAm8=;
+	s=arc-20240116; t=1786386649; c=relaxed/simple;
+	bh=3MTznWCBHcuD28TJVXemw0xZGW/L27e1+DqmNPRzul8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SQl+zuzQbQA92QMnQgbjPT/1nIvVBOJojoCKTdUTD0rIRssDIW7N8IJ8zY75uNfc/O3zv+JWWmGiaFY8o22/9qjlMlebt3blvulzkxJ/gQqiET/LUwoAfUR5bcU89VGl6dbxQXST2pPf2Wi8yW6/jGolzQ8VE3Uj6zDTtHobkaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UezxeJvC; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=oIuORGdgSWKL2cAx1QZ717bTpzvfi8F9/NUPMxacDLD+o3ZRYm3N/XyOxYnGC98VAOOPnHc/jOgV6h3VHbWzT1t/ZOL0S+8EiMsE3gT5ixxajm85quhWWLotm4CiI+NICm6iQeUrZhudnCDP+kC8t5uMMGcAPKqimwDfBYT2blo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZC4SdcP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UezxeJvC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC14D1F000E9;
-	Mon, 10 Aug 2026 18:27:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZC4SdcP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDBF1F000E9;
+	Mon, 10 Aug 2026 18:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786386437;
-	bh=LtG/rEnkaVf0pRypD+zveZZn219o5vvfAplNI3WC1Jc=;
+	s=k20260515; t=1786386648;
+	bh=Wdb8s0ReChtry1TvBeLFzaW/OTCXpDHpqN8sXotSyys=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UezxeJvCuzfYmYc6HbT5d0H+g7xrEXxE2DFPHLP/ga0MedxdlFeHH5f1mNQVvhnoY
-	 zdJQa5/zIufJu3aDIeU5er9D48zA+BGstFjzxr3wIMXAuqWZvRb/ERsBmOSXFvGfwQ
-	 h6pxbPOX3zBW++2PVl9KaaO9t6NJKJv+BmzPXsYFYnB3p0+cgT4Y6eLxxUUsuycAfj
-	 qNiNrs47YxP2LfoSgQbHEIgNRBCz8r140td53FA/hm6AVozQlwb/zyqRbo+HnqhHam
-	 LYE8S+bwtOEnpeN76y9HWmebL0Aho/S43jKBBubfs5BlbWsdWf3NQSGZGhrpWocp3U
-	 GXIhiS6OZ72hQ==
+	b=NZC4SdcPR9sJcXWtEn1inmGJZKHGem/KCKbKYh44DpzVwSkrCirNAu0UEKD//Xi1I
+	 CmR2l33oS6OyHDAiV4gs4rXLVsY20zrlmyCGlTLi1+sxLd76E1vU+j9KYzYQoxaNKy
+	 cFa5ZAz/kYA6endnAF+oNqG/pIJ1sV6gdTZgmuYrt0INuH0DS1w7IymhufUfLvZOpl
+	 24OFzXIkyfS0QY3qbuBwxqDPZxSGs+lAznMyouxLxs3B7Iw3dnCUhhAZBri8EuDV1g
+	 AU/SvO8qhS7/z75z7fRPH1W90q9zfkwOaXbfd2BCJ5gQ75E8In2pX36Pc9cr4tnkZf
+	 Bpgh+DjtBRSnQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 13/34] dmaengine: mxs-dma: use dmaengine BH
- scheduling
+Subject: Re: [PATCH v3 01/34] dmaengine: add tasklet-backed channel BH
+ helpers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Allen Pais" <allen.lkml@gmail.com>
-Cc: Frank.Li@kernel.org, vkoul@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <3dec314c8878181bbf9bd8bdf6d222c435643fc0.1786384168.git.allen.lkml@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org, vkoul@kernel.org, linux-sunxi@lists.linux.dev
+In-Reply-To: <2c62c39cafc0df59eb5381d3da82b1616a58fa20.1786384168.git.allen.lkml@gmail.com>
 References: <cover.1785183549.git.allen.lkml@gmail.com>
  <cover.1786384168.git.allen.lkml@gmail.com>
- <3dec314c8878181bbf9bd8bdf6d222c435643fc0.1786384168.git.allen.lkml@gmail.com>
+ <2c62c39cafc0df59eb5381d3da82b1616a58fa20.1786384168.git.allen.lkml@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 10 Aug 2026 18:27:15 +0000
-Message-Id: <20260810182716.DC14D1F000E9@smtp.kernel.org>
+Date: Mon, 10 Aug 2026 18:30:46 +0000
+Message-Id: <20260810183047.DBDBF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The driver does not kill the deferred bottom-half work during chan=
-nel teardown or error paths, nor does it provide a device_synchronize callb=
-ack, leading to a potential use-after-free.
-- [High] Requesting the IRQ before enabling the device clock can result in =
-a synchronous external abort and bus hang.
+- [High] Use-After-Free due to channel bottom-half (tasklet) being killed b=
+efore hardware interrupts are disabled and synchronized during device remov=
+al.
 --
 
---- Patch [13]: [PATCH v3 13/34] dmaengine: mxs-dma: use dmaengine BH sched=
-uling ---
-commit 84e84c7d902dd9157e789fe8d760954306bc43d6
+--- Patch [1]: [PATCH v3 01/34] dmaengine: add tasklet-backed channel BH he=
+lpers ---
+commit 552ba608049b66637e1d6db5b616db6c9c33204d
 Author: Allen Pais <allen.lkml@gmail.com>
-dmaengine: mxs-dma: use dmaengine BH scheduling
 
-Replace the per-channel tasklet with the shared dmaengine BH helper.
-The handler continues to run in softirq context while dmaengine owns
-the common scheduling and teardown mechanism.
+dmaengine: add tasklet-backed channel BH helpers
 
-> diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
-> index 7acb3d29dad30..149ac402f7b4b 100644
-> --- a/drivers/dma/mxs-dma.c
-> +++ b/drivers/dma/mxs-dma.c
-[ ... ]
-> @@ -386,8 +385,8 @@ static irqreturn_t mxs_dma_int_handler(int irq, void =
-*dev_id)
->  		dma_cookie_complete(&mxs_chan->desc);
+This commit introduces backend-independent helpers to initialize, schedule,
+and kill channel bottom halves. It converts virt-dma and updates various
+drivers to use the new API instead of directly overriding or killing
+tasklets.
+
+> diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-=
+cqdma.c
+> --- a/drivers/dma/mediatek/mtk-cqdma.c
+> +++ b/drivers/dma/mediatek/mtk-cqdma.c
+> @@ -895,7 +895,7 @@ static void mtk_cqdma_remove(struct platform_device *=
+pdev)
+>  		vc =3D &cqdma->vc[i];
+> =20
+>  		list_del(&vc->vc.chan.device_node);
+> -		tasklet_kill(&vc->vc.task);
+> +		dmaengine_kill_bh(&vc->vc.chan);
 >  	}
 > =20
-> -	/* schedule tasklet on this channel */
-> -	tasklet_schedule(&mxs_chan->tasklet);
-> +	/* schedule BH on this channel */
-> +	dmaengine_schedule_bh(&mxs_chan->chan);
+>  	/* disable interrupt */
+
+[Severity: High]
+This is a pre-existing issue, but could this teardown sequence result in a
+use-after-free?
+
+In mtk_cqdma_remove(), the channel bottom-halves are killed before the
+physical channel interrupts are masked and synchronized. If an interrupt fi=
+res
+within this window, the interrupt handler processes descriptors and can
+reschedule the BH via dmaengine_schedule_bh().=20
+
+Since the device is being removed, devres will subsequently free the channel
+memory, potentially causing the recently scheduled BH to execute on freed
+memory.
+
+[ ... ]
+
+> diff --git a/drivers/dma/mediatek/mtk-hsdma.c b/drivers/dma/mediatek/mtk-=
+hsdma.c
+> --- a/drivers/dma/mediatek/mtk-hsdma.c
+> +++ b/drivers/dma/mediatek/mtk-hsdma.c
+> @@ -1020,7 +1020,7 @@ static void mtk_hsdma_remove(struct platform_device=
+ *pdev)
+>  		vc =3D &hsdma->vc[i];
 > =20
->  	return IRQ_HANDLED;
+>  		list_del(&vc->vc.chan.device_node);
+> -		tasklet_kill(&vc->vc.task);
+> +		dmaengine_kill_bh(&vc->vc.chan);
+>  	}
+> =20
+>  	/* Disable DMA interrupt */
+
+[Severity: High]
+This is a pre-existing issue, but is it safe to kill the BH here before
+disabling and synchronizing the DMA interrupts?=20
+
+Similar to mtk_cqdma_remove() above, this opens a window where an incoming
+interrupt in mtk_hsdma_remove() can reschedule the BH just before the device
+is torn down.
+
+[ ... ]
+
+> diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
+> --- a/drivers/dma/pxa_dma.c
+> +++ b/drivers/dma/pxa_dma.c
+> @@ -1215,7 +1215,7 @@ static void pxad_free_channels(struct dma_device *d=
+madev)
+>  	list_for_each_entry_safe(c, cn, &dmadev->channels,
+>  				 vc.chan.device_node) {
+>  		list_del(&c->vc.chan.device_node);
+> -		tasklet_kill(&c->vc.task);
+> +		dmaengine_kill_bh(&c->vc.chan);
+>  	}
 >  }
 
 [Severity: High]
-This is a pre-existing issue, but since the driver is moving to the BH
-mechanism, should we also ensure the scheduled work is properly flushed dur=
-ing
-teardown and error paths?
+This is a pre-existing issue, but does pxad_free_channels() suffer from a
+similar race?=20
 
-Looking at mxs_dma_alloc_chan_resources(), if clk_prepare_enable() fails,
-the error path frees the IRQ and the channel ccw structure:
+This function is called from pxad_remove(). The driver relies entirely on
+devres to free the IRQ after the remove function returns, meaning interrupts
+remain fully active during and after the BH is killed.=20
 
-mxs_dma_alloc_chan_resources() {
-    ...
-err_clk:
-    free_irq(mxs_chan->chan_irq, mxs_dma);
-err_irq:
-    dma_free_coherent(mxs_dma->dma_device.dev, CCW_BLOCK_SIZE,
-            mxs_chan->ccw, mxs_chan->ccw_phys);
-    ...
-}
-
-Because free_irq() waits for the hardirq handler but not the scheduled
-workqueue, if an early interrupt schedules the BH work, can the workqueue
-execute after the channel resources have been freed, leading to a
-use-after-free?
-
-Similarly, mxs_dma_free_chan_resources() frees channel resources without
-calling dmaengine_kill_bh(). The driver also lacks a device_synchronize
-callback, which makes dmaengine_terminate_sync() a no-op.
-
-Should we add dmaengine_kill_bh() and a synchronization callback to prevent
-the scheduled work from running after the client frees the channel?
-
-[ ... ]
-> @@ -781,7 +780,7 @@ static int mxs_dma_probe(struct platform_device *pdev)
->  		mxs_chan->chan.device =3D &mxs_dma->dma_device;
->  		dma_cookie_init(&mxs_chan->chan);
-> =20
-> -		tasklet_setup(&mxs_chan->tasklet, mxs_dma_tasklet);
-> +		dmaengine_init_bh(&mxs_chan->chan, mxs_dma_tasklet);
-> =20
-> =20
->  		/* Add the channel to mxs_chan list */
-
-[Severity: High]
-This isn't a bug introduced by this patch, but I wanted to ask about the
-initialization ordering which can trigger the interrupt handler early.
-
-When a channel is allocated in mxs_dma_alloc_chan_resources(), the IRQ is
-requested before the clock is enabled:
-
-mxs_dma_alloc_chan_resources() {
-    ...
-    ret =3D request_irq(mxs_chan->chan_irq, mxs_dma_int_handler,
-              0, "mxs-dma", mxs_dma);
-    if (ret)
-        goto err_irq;
-
-    ret =3D clk_prepare_enable(mxs_dma->clk);
-    ...
-}
-
-If an interrupt line is asserted early (for example, from a previously
-aborted transaction where the client didn't call terminate_all),
-mxs_dma_int_handler() will fire immediately. It then performs an MMIO read
-on the memory-mapped controller registers (mxs_dma->base + HW_APBHX_CTRL1).
-
-Since accessing device registers with a disabled clock results in a bus hang
-on this platform, would it be safer to enable the clock before requesting
-the IRQ to prevent a synchronous external abort?
+A triggered interrupt could reschedule the BH right before devres tears down
+the channel structures.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1786384168.gi=
-t.allen.lkml@gmail.com?part=3D13
+t.allen.lkml@gmail.com?part=3D1
