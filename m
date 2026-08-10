@@ -1,96 +1,124 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE033EFD24;
-	Mon, 10 Aug 2026 15:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610E1417D97
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 15:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786374343; cv=none; b=Nh2TuYJHxBQnrIPEfP/X+OlKTAINwuzky52L1CRq68kJ3IqwS6E2qwM1yk7AfOUKfOKLYmInEQfDfhNAA+5dkUBE+AgMci65Acdrb+mNOPnolNs6fo3Un5EAZ74V6EsAnmg9HcIwOBFHnl8WKC3ukiGeHn01teI0OqUhupn5Kww=
+	t=1786375326; cv=none; b=bcFMBLqzq1JLmS3tvqA7jpVeZMIm/jDIIU06dR6NSSHmMrCzQfJWTa8aF8Eyi5km2HPLFwqgH0tFfKg+mdCBQQly82TFRJQfWN5voL3Gdz6rWDkaGgkeCxrHfQQ3mhlNROCXnqozOciUQ4vx4tCMoZCH8gA/Y55XZdIk+CqHoWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786374343; c=relaxed/simple;
-	bh=9hocbGktqstTMjPnIEb61JAFPnzqOpAsoX7EfvB6d88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ati98uIfwsy/nzrTElhP/MhqlRHFUhDsDFJzMGiUZGhgp7GLi4apwQV28LL6rJuk/FRGOufL8o1+fO2hdxUGSJKWghprUWWlx0GR5ysQBKYh/OHRW1g02coIY8xw/LBP9Ere5mihp9nGFO4/tnRhVSxwiRFITFOD1BWYBCLV9EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=RANKzl0r; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1786375326; c=relaxed/simple;
+	bh=Rx5Z9281VmqPEElsytrSVtNHldYWbp/Xg08yI3mJiMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J3kRcgRtRuWiDA8EAn8PSE8VljIYrffg7rjgxIcaL4y18nJe5R7UH0di60Drxp2EqHJTzqe1kN4z8B+/KNuqTq4gSN+IQFo1A4AVLTVqJ+H/TOj5+zryTebCoKZhgBfIb/mMmW3IYU86T9b3fRmEJU4dQyjJwWQZWorfikZjGA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPyHtlnw; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="RANKzl0r"
-Received: from francesco-nb (93-35-5-212.ip52.fastwebnet.it [93.35.5.212])
-	by mail11.truemail.it (Postfix) with ESMTPA id 75AAD1F83F;
-	Mon, 10 Aug 2026 16:51:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786373515;
-	bh=8xOWdWttJ5lEYJAi21opwk9aDpKJg8EeQXY1WVzHESc=; h=From:To:Subject;
-	b=RANKzl0rwIbXN++I6LA8Rlhna7AgTZYi8AbfcmaILTUXvORdWCRcBx64ECxagA2MJ
-	 BspMT1vAvOBmCSw9kdnSnrJaEueE+vt1by7Gf1gGafC4T1t6wa25e/eoHBZzLynsDJ
-	 yxBALaK8zAkLmDzyi47NQZ3/I7RSGTz9FH1ILF+uxfsaR39QgUp4Ia9XEYi+RGPtA1
-	 a7B+okTo48bYkaP4jR4Y8etBFO4y3M2uAWqcoY5uTTiUwGclz34pcaj496Uy04uXMq
-	 IRZu4UHuTQOkdRZ4MNVsjBefRn9kVgLio9jjwQ5q/Q6ZlIA3d0KqpZBSwKxBUobFUB
-	 LUDheqXSoUyvg==
-Date: Mon, 10 Aug 2026 16:51:49 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPyHtlnw"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49954b88fffso21753385e9.0
+        for <imx@lists.linux.dev>; Mon, 10 Aug 2026 08:22:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786375322; x=1786980122; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=svU6xwFGf/9QtbbQSKtklx6ByIpuWbpg6lXD+wNFaQY=;
+        b=jPyHtlnwIaXBzd/TxYpHijxjYR6c7wQ3TpQGIeHXMnBnkLzL796ndL9CqmWQq6SEx5
+         m7IK6OW1xa8LQxMh3mF/5GJ80xnLA7XKUja/JJwFUGouZKBa5v1cm4oTzcld/YIlxJm2
+         psZl/1lw9PQVLdksS4JayY1Q8LcfEzIa1ZXQqkvKghBOYowGAUHySTrfQmoXor9URBi4
+         jlSfsO9/awpYQ0xWLP6tIEzap8m0k5sEyaOhB3QG0PQkhuz2AuXTS4WQDYJCimvePgdA
+         iw6JbEAah64Z02fONUGm8Xm2t3u5ChY8uB6CPpzUNhuuh1Xf39vxEqzEMceJNZR+oHXv
+         vIBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786375322; x=1786980122;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=svU6xwFGf/9QtbbQSKtklx6ByIpuWbpg6lXD+wNFaQY=;
+        b=BQsBgz4G7Pr68WoqTYf2E6srnvwqQthgV2WblZ0nKeN63CgnqXblZuK/S8EGj418pW
+         FSfjc6YNx6ZR6mrEO+tnJz1EFZj4SRrCtLHHNmFpTU2lU6w5CqtOYcZ4ACx+Gi/endKt
+         pR6stWlJURQOEOhVIJJ/S/LJ72H3NsL77NulQBfu9dpyyl289FS/M4pjntd5h/pl+BPI
+         iGwKcYaE0ftBbpFgV6bg94nEeb0sE6YGoyiJJ4BTw5+eP9Dc3sQHR9Agi1mLTg993+Ir
+         snlQtZx5n8w4egdPHRhduAXqzJBLPL7WbaBOLLuxSZ/pSJBto0hBdd7BixW/9JU2l9u4
+         OdDw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3/YNeKkNmGNqlqagjw3L6JhGGKiMtluDTuk1dbUECcYZqA31f9GTVo72KPk1kGGDZ1lY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzwR7T30EHkh1pUVbzp2U+r64fH8hPOOU6fSazkVugcEJ16HZBN
+	f9Ikgc+nDptuS92K5SQ6NlUxOT/1nNH9whmkxBkQZrIrMtyXN8yjuu6T
+X-Gm-Gg: AR+sD12dTNpyMQkT2zBUb0gPcBOVLr9kX6KvX0afxM5GvUkilKW2w+P3u4maNKFQvfJ
+	DFyoCHvYMl+7cVylajYWbEGz+glG/LuJbN3t7r590BNquli8AqLOykH4y7pIURzJn8Fvt/gUuco
+	+GSb0xa/6nD2l74FC72BFsTGfOI3CBnP+l2yuDMmLv7X9T3Kjtl4lwjWYlW5s9dXId2Sgiu6mpr
+	GDszu1WLMRhOhPofNlr59jNvWEtyxB+oa1M1/AiGmfLFX9gg80DRRgta6dJU5H70DpdidhHi3dU
+	pJQzaFtP6CNi7v8LhGMo3nBWFsbBVCL4Ek+LEhJEQdZgoHyb2Wo1r+oFOTPMlYJECmWZAbcEq1k
+	+sDNZOKiBlVCfXzJTeFyLpEsAidTdJKc4ZQ5JjC9c7I+bEFJo4Db8/eJ1u1JUmIjeqCA6mXgEQ3
+	iKMrWZrePqAxGzljiIE2ivi1CWD4nQJruPMZULprTb5yZDKlJa4TItLADjvSfIHzIGrnY=
+X-Received: by 2002:a05:600c:4e93:b0:499:49f3:77b1 with SMTP id 5b1f17b1804b1-4996193f165mr287140375e9.3.1786375321792;
+        Mon, 10 Aug 2026 08:22:01 -0700 (PDT)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499740a70c3sm99255e9.3.2026.08.10.08.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 08:22:01 -0700 (PDT)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Stefan Agner <stefan@agner.ch>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
 	Francesco Dolcini <francesco@dolcini.it>,
-	Frank Li <frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev, imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>, Steffen Eiden <seiden@linux.ibm.com>
-Subject: Re: [PATCH v3] arm64: errata: Add NXP iMX8QM workaround for A53
- cache coherency issue
-Message-ID: <20260810145149.GA81453@francesco-nb>
-References: <20260803-imx8qm-cache-coherency-v3-1-c518d0da3d3b@nxp.com>
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: dts: vf500: describe the Cortex-A5 L1 caches
+Date: Mon, 10 Aug 2026 17:22:00 +0200
+Message-ID: <20260810152200.3230971-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803-imx8qm-cache-coherency-v3-1-c518d0da3d3b@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hello Peng,
-thanks for the patch, very much appreciated.
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-On Mon, Aug 03, 2026 at 04:54:44PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> According to NXP errata document IMX8_1N94W[1], the i.MX8QuadMax SoC
-> suffers from a cache coherency issue (ERR050104). The upper bits, above
-> bit 35, of the ARADDR and ACADDR buses within the Arm A53 subsystem
-> have been incorrectly connected. This causes some TLBI and IC
-> maintenance operations exchanged between the A53 and A72 core clusters
-> to be corrupted.
+The cpu node carries no cache properties, so cacheinfo has nothing to
+build the hierarchy from and gives up at boot:
 
-...
+  cacheinfo: Unable to detect cache hierarchy for CPU 0
 
-> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-> index 5db8f0619e4b..4ba68c1f29b2 100644
-> --- a/arch/arm64/kernel/cpu_errata.c
-> +++ b/arch/arm64/kernel/cpu_errata.c
-> @@ -200,6 +202,28 @@ cpu_enable_cache_maint_trap(const struct arm64_cpu_capabilities *__unused)
->  	sysreg_clear_set(sctlr_el1, SCTLR_EL1_UCI, 0);
->  }
->  
-> +#ifdef CONFIG_NXP_IMX8QM_ERRATUM_ERR050104
-> +static bool
-> +is_imx8qm_soc(const struct arm64_cpu_capabilities *entry, int scope)
-> +{
-> +	WARN_ON(preemptible());
-> +
-> +	return of_machine_is_compatible("fsl,imx8qm");
+The level and the type of the two L1 caches come from CLIDR and CCSIDR,
+but the geometry does not, so /sys/devices/system/cpu/cpu0/cache is left
+without a size, a line size or a set count.
 
-fsl,imx8qp is also affected, please adjust
+Fill them in from the Vybrid reference manual (NXP VFXXXRM), table 2-4
+"Platform modules": the A5 has a 2 way set associative 32 KB instruction
+cache and a 4 way set associative 32 KB data cache, both with a 32 byte
+line, so 512 and 256 sets.
 
+Tested on a Colibri VF50. The warning is gone and sysfs now reports both
+caches with the geometry above.
 
-Francesco
+Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
+---
+ arch/arm/boot/dts/nxp/vf/vf500.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/boot/dts/nxp/vf/vf500.dtsi b/arch/arm/boot/dts/nxp/vf/vf500.dtsi
+index 71ccdaa..a73e9a8 100644
+--- a/arch/arm/boot/dts/nxp/vf/vf500.dtsi
++++ b/arch/arm/boot/dts/nxp/vf/vf500.dtsi
+@@ -18,6 +18,12 @@
+ 		a5_cpu: cpu@0 {
+ 			compatible = "arm,cortex-a5";
+ 			device_type = "cpu";
++			d-cache-line-size = <32>;
++			d-cache-sets = <256>;
++			d-cache-size = <0x8000>;
++			i-cache-line-size = <32>;
++			i-cache-sets = <512>;
++			i-cache-size = <0x8000>;
+ 			reg = <0x0>;
+ 		};
+ 	};
+-- 
+2.54.0
 
