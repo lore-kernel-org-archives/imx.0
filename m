@@ -1,51 +1,53 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D67416872
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A7F412270
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786373634; cv=none; b=qTwX97WEmP1eXtXlpAGYgqskUOQaKWAXmgfoHd0vQiLsMu1CYa5/8cfqWVft+31AchNzsiC+QNEFJ7j9UWLoec5l+AwovqqB2YaVNcB0caTOMkHOG63GkaYjFpbp88Q6G6Nb0aPwox5+dHuqwaLK8ruBVCTiGpMLZronLn+OWw8=
+	t=1786373883; cv=none; b=EzuUMRxpWFyzU6raeIDLihORkCkqnMufxodNoGDIzKmFsyZlOUlmkwpfQyEITXOatrZwSqA2zdEDc8KfZpfhd2b6WZ60wVsZAoDXbZa1R1gjwF5Ndmt3+E4JCiq+rt86QjCRSkY07U7bBnvhe98cv5ouZLqJMVB4BHaAsj5K38U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786373634; c=relaxed/simple;
-	bh=B9LQgQMizP+fya2lUXNzY3fLDpvw1cVEV7tcGkNgAKc=;
+	s=arc-20240116; t=1786373883; c=relaxed/simple;
+	bh=Z+BxUGP0v5KLo0GZ0KERARfFywosbwzNXpW+Pln9l+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k2iK2rsYB14O7rKNhSikbjCRrIRAi3qGK6JpSzJMhtWiMVH1JbYi9hQCEHIPUoDDfBMuSJ5WoTvxtK9Q77TibDEWpSuQMTDO6r0aO3ghvPl3K9yIKTkyKt26MRhX8CXdP0vAYg5agfQdsrvdee6+Xq7Gc88pgCkvmd6Kp3GtPNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=D75cIULQ; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=eE+rdZ8pj9BRnwMq9Jm7ZNxJqauQR8wW1eiRZmbs3tP5EIKl71vq+B/m7BcH83Pk7L7ahlhQvFj3PtkWlJyL0rk+I8RxZ1ZmapfknQiLkCJ7x1btz17k8QXizyhGe9x9+wEOsLKV3UMxdwP0SyK3dCtelhWSs8rAN+ADAuYRcCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=wqPpHJvg; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="D75cIULQ"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="wqPpHJvg"
 Received: from francesco-nb (93-35-5-212.ip52.fastwebnet.it [93.35.5.212])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5FD451F984;
-	Mon, 10 Aug 2026 16:53:48 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 27EF71F984;
+	Mon, 10 Aug 2026 16:57:57 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786373629;
-	bh=MBAEe+UU9sXt1mvWPEutfdPd4IyZkVpv9j0uHiyaduk=; h=From:To:Subject;
-	b=D75cIULQ0Rp3v1r6vpLPeYGJO9yd7yOg0JwOVTpZOUo9s7BNTQxXZsID72rXGPmnK
-	 PSct2MRsC/CbqERvtCHgT1+XGTC9Sltogr0RccCVTTQchnZRdANhrYREUI0e3OKsWz
-	 uL+W1VCh/SQ8L3ZAafBIvp9JDMMdw+5f6A015pgZk3lih0jWIz4QIW0o7jnO/AKuMo
-	 gvS15TFZHBoJuSyoL1fWx++YPplmef0KeaHJU/DCig8KTeaJeLPn6llsC3naRzJits
-	 upBsMzju5GjriFbRU2A3iIZMyn18soM/pV9rMPnVSabfJA60W/bvLL/O/SmO621vlX
-	 /A4wMJ0xfhaFg==
-Date: Mon, 10 Aug 2026 16:53:46 +0200
+	s=default; t=1786373878;
+	bh=2VFa4gkN/MC1afzYI4GdGQGF4nVMqhTx+VvOx02Ma4I=; h=From:To:Subject;
+	b=wqPpHJvguCOWz3azxcTJkLu8IeT87b6wUKuwgFapNDK2YwwNQkL5yZ05OpxhfSVH6
+	 PTBkjeP8cfyKFzkC8B5HDUSMsLWMyfRQJnLbmwo11qUAqbSdK2CxZllX3nMt+Z0qQ6
+	 qQIA9mm/kinVPTo3xq3MUEWnTLjYPcEvmkZxWhJnQsiwhzzsz03ScOWg/LOPvWqIah
+	 RNB/pmgMVk1TzyWMc1wGy8bU+S2vmyq8mAiIW/H2IsKVTpVOpAe00Oj7elugN9gbuG
+	 gTviMJjto/TXsUV9hD/juwCqlGKY5GiOPVHwIQK9rr8io2Ag6BBjpHQHWV01Q9BqS5
+	 aZRruV3M65/vQ==
+Date: Mon, 10 Aug 2026 16:57:55 +0200
 From: Francesco Dolcini <francesco@dolcini.it>
-To: Frank.Li@oss.nxp.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@oss.nxp.com>,
 	Francesco Dolcini <francesco@dolcini.it>,
-	Frank Li <Frank.Li@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] ARM: dts: imx7d-colibri-emmc: Add Toradex
- Displays 7" Parallel
-Message-ID: <20260810145346.GB81453@francesco-nb>
-References: <20260723105225.194366-1-francesco@dolcini.it>
- <178604616242.431490.2877142775301570674.b4-ty@b4>
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] arm64: dts: freescale: add DT overlay for
+ MX95-15x15-FRDM RPMSG usage
+Message-ID: <20260810145755.GC81453@francesco-nb>
+References: <20260730163412.1145-1-laurentiumihalcea111@gmail.com>
+ <20260730163412.1145-5-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,33 +56,77 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178604616242.431490.2877142775301570674.b4-ty@b4>
+In-Reply-To: <20260730163412.1145-5-laurentiumihalcea111@gmail.com>
 
-Hello Frank,
+On Thu, Jul 30, 2026 at 09:34:12AM -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> 
+> Add RPMSG DT overlay for the MX95-15x15-FRDM board. This overlay is meant
+> to be used with the mx95evkrpmsg system manager configuration for
+> remoteproc and audio over rpmsg-usecases.
+> 
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |  3 +
+>  .../dts/freescale/imx95-15x15-frdm-rpmsg.dtso | 67 +++++++++++++++++++
+>  2 files changed, 70 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 95ae85ab4adf..3f98132f5a32 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -707,6 +707,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx943-evk-sdwifi.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-ab2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-frdm.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-frdm-rpmsg.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-frdm-pro.dtb
+> @@ -729,6 +730,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-mallow.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-yavia.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-zinnia.dtb
+>  
+> +imx95-15x15-frdm-rpmsg-dtbs = imx95-15x15-frdm.dtb imx95-15x15-frdm-rpmsg.dtbo
+> +
+>  imx95-15x15-evk-pcie-dtbs += imx95-15x15-evk.dtb imx-m2-pcie.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk-pcie.dtb
+>  
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
+> new file mode 100644
+> index 000000000000..bc02864c6f88
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
+> @@ -0,0 +1,67 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2026 NXP
+> + *
+> + * This DT overlay is meant to be used alongside the mx95evkrpmsg SM
+> + * configuration for remoteproc and audio over rpmsg.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&{/} {
+> +	remoteproc-cm7 {
+> +		compatible = "fsl,imx95-cm7";
+> +		mboxes = <&mu7 0 1>, <&mu7 1 1>, <&mu7 3 1>;
+> +		mbox-names = "tx", "rx", "rxdb";
+> +		memory-region = <&vdev0buffer>, <&vdev0vring0>,
+> +				<&vdev0vring1>, <&rsc_table>;
+> +		memory-region-names = "vdev0buffer", "vdev0vring0",
+> +				      "vdev0vring1", "rsc-table";
+> +	};
 
-On Thu, Aug 06, 2026 at 03:56:41PM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> 
-> On Thu, 23 Jul 2026 12:52:16 +0200, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >
-> > This series adds device tree overlays to support the Toradex 7" DPI displays to
-> > the Toradex Colibri iMX7 SoM (eMMC variant).
-> >
-> > Francesco Dolcini (3):
-> >   ARM: dts: imx7d-colibri-emmc: Add Toradex Capacitive Touch Display 7"
-> >     Parallel
-> >   ARM: dts: imx7d-colibri-emmc: Add Toradex Capacitive Touch Display 7"
-> >     Parallel with Touch Adapter
-> >   ARM: dts: imx7d-colibri-emmc: Add Toradex Resistive Touch Display 7"
-> >     Parallel
-> >
-> > [...]
-> 
-> Applied to imx/dt-indend, thanks!
+should we have a common dtsi, instead of having an overlay for each
+board? something like arch/arm64/boot/dts/ti/k3-am62-ti-ipc-firmware.dtsi ?
 
-What's the status of this? I do not see them in linux-next.
+the goal would be to avoid duplication, and to have the functionality
+just working out of the box for all the boards that opt in for it.
 
 Francesco
 
