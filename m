@@ -1,105 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F973F9F45
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 15:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE033EFD24;
+	Mon, 10 Aug 2026 15:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786374144; cv=none; b=ZliuwigDqS+jot2CpA5wiN1Isv3wBMDi5u3vtUrd6/nS3otEfwcgatFJXLUTxMr2lv3uLnQPefhfygVAmbKi9QzJ6PpxoiYPRCkjzuI6wrsG2AfMMUunawdshwxcsoz/OYAe9+ip5h++cSO6fMrt+/Umn6ATj6YB4z68DJvGSZY=
+	t=1786374343; cv=none; b=Nh2TuYJHxBQnrIPEfP/X+OlKTAINwuzky52L1CRq68kJ3IqwS6E2qwM1yk7AfOUKfOKLYmInEQfDfhNAA+5dkUBE+AgMci65Acdrb+mNOPnolNs6fo3Un5EAZ74V6EsAnmg9HcIwOBFHnl8WKC3ukiGeHn01teI0OqUhupn5Kww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786374144; c=relaxed/simple;
-	bh=0p6Q8mPngRpndZ0inyj9gZOX/JAqZuONXoEsxg3LEp8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VhYTNmrIVRfeIfn1+jtdHDmA2qQw1oZwYBBRnrmrUBPenDx7D8yKbIqOd8la1DlsCkYOwL2tybZUVr6jHpwql9SLzCysW2nNbjoNtMc2A2FZJciP295x94V+ADFcUxx3HzIMoAGj1IywWvPDRYv5wS5JH5IcZ2BMsnt6hw/Isjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXJL9lal; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786374343; c=relaxed/simple;
+	bh=9hocbGktqstTMjPnIEb61JAFPnzqOpAsoX7EfvB6d88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ati98uIfwsy/nzrTElhP/MhqlRHFUhDsDFJzMGiUZGhgp7GLi4apwQV28LL6rJuk/FRGOufL8o1+fO2hdxUGSJKWghprUWWlx0GR5ysQBKYh/OHRW1g02coIY8xw/LBP9Ere5mihp9nGFO4/tnRhVSxwiRFITFOD1BWYBCLV9EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=RANKzl0r; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXJL9lal"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F301F00A3D;
-	Mon, 10 Aug 2026 15:02:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786374142;
-	bh=lSUxke8DpL6AHLnr3xW6roBkc2fszgvn0DLFtdKHWIc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FXJL9lalsNgEcJMMtcXMZPbJ5s4U3jljvHuOJXiIalVU6drQIVyh2fkCQgo2tRJP4
-	 DBOD8q9JKzLIuBUQvHbfy9PdTP+XjyrZ5hcWOUYVgl+WpCRYh7Bf6UxTLgVyynrQYG
-	 QEOBSpqeqY7CihJ2yF1wXOayL4/xVgHNP0aEaUpCHnOJ6hcKNTXrAWuSzrAzT+wsj1
-	 PrLmHbocHoPs2tmAaMNPtqmvvofQBXck/qCWkmchdYr6YlEkBs0JVA0Lc+2dya8AaF
-	 3dNDPSjOzAeMEdm+3uyOYRmrzyrt+2bf6T3Iawi1b9lclq9OloX9qoOfyl05+OhPFv
-	 fCtS3IjAVss6w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] drm/imx: ipuv3-plane: add the pixel blend mode
- property
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
-Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260810-imx53-fix-hdmi-v1-2-fff9b1b17f25@oss.qualcomm.com>
-References: <20260810-imx53-fix-hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com>
- <20260810-imx53-fix-hdmi-v1-2-fff9b1b17f25@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 10 Aug 2026 15:02:21 +0000
-Message-Id: <20260810150222.54F301F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="RANKzl0r"
+Received: from francesco-nb (93-35-5-212.ip52.fastwebnet.it [93.35.5.212])
+	by mail11.truemail.it (Postfix) with ESMTPA id 75AAD1F83F;
+	Mon, 10 Aug 2026 16:51:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1786373515;
+	bh=8xOWdWttJ5lEYJAi21opwk9aDpKJg8EeQXY1WVzHESc=; h=From:To:Subject;
+	b=RANKzl0rwIbXN++I6LA8Rlhna7AgTZYi8AbfcmaILTUXvORdWCRcBx64ECxagA2MJ
+	 BspMT1vAvOBmCSw9kdnSnrJaEueE+vt1by7Gf1gGafC4T1t6wa25e/eoHBZzLynsDJ
+	 yxBALaK8zAkLmDzyi47NQZ3/I7RSGTz9FH1ILF+uxfsaR39QgUp4Ia9XEYi+RGPtA1
+	 a7B+okTo48bYkaP4jR4Y8etBFO4y3M2uAWqcoY5uTTiUwGclz34pcaj496Uy04uXMq
+	 IRZu4UHuTQOkdRZ4MNVsjBefRn9kVgLio9jjwQ5q/Q6ZlIA3d0KqpZBSwKxBUobFUB
+	 LUDheqXSoUyvg==
+Date: Mon, 10 Aug 2026 16:51:49 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Frank Li <frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>, Steffen Eiden <seiden@linux.ibm.com>
+Subject: Re: [PATCH v3] arm64: errata: Add NXP iMX8QM workaround for A53
+ cache coherency issue
+Message-ID: <20260810145149.GA81453@francesco-nb>
+References: <20260803-imx8qm-cache-coherency-v3-1-c518d0da3d3b@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803-imx8qm-cache-coherency-v3-1-c518d0da3d3b@nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hello Peng,
+thanks for the patch, very much appreciated.
 
-Pre-existing issues:
-- [High] Plane atomic update callback calls functions that acquire a sleepi=
-ng lock (mutex).
---
+On Mon, Aug 03, 2026 at 04:54:44PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> According to NXP errata document IMX8_1N94W[1], the i.MX8QuadMax SoC
+> suffers from a cache coherency issue (ERR050104). The upper bits, above
+> bit 35, of the ARADDR and ACADDR buses within the Arm A53 subsystem
+> have been incorrectly connected. This causes some TLBI and IC
+> maintenance operations exchanged between the A53 and A72 core clusters
+> to be corrupted.
 
---- Patch [2]: [PATCH 2/4] drm/imx: ipuv3-plane: add the pixel blend mode p=
-roperty ---
-commit 166d0e9ef492a9f6b268953776bb8c6c929a2acc
-Author: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+...
 
-drm/imx: ipuv3-plane: add the pixel blend mode property
+> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+> index 5db8f0619e4b..4ba68c1f29b2 100644
+> --- a/arch/arm64/kernel/cpu_errata.c
+> +++ b/arch/arm64/kernel/cpu_errata.c
+> @@ -200,6 +202,28 @@ cpu_enable_cache_maint_trap(const struct arm64_cpu_capabilities *__unused)
+>  	sysreg_clear_set(sctlr_el1, SCTLR_EL1_UCI, 0);
+>  }
+>  
+> +#ifdef CONFIG_NXP_IMX8QM_ERRATUM_ERR050104
+> +static bool
+> +is_imx8qm_soc(const struct arm64_cpu_capabilities *entry, int scope)
+> +{
+> +	WARN_ON(preemptible());
+> +
+> +	return of_machine_is_compatible("fsl,imx8qm");
 
-This commit adds a pixel blend mode property to IPUv3 planes. It configures
-the planes to support coverage or none based on whether they are part of a
-DP flow, and uses this blend mode to decide between global and per-pixel
-alpha during plane updates.
+fsl,imx8qp is also affected, please adjust
 
-> diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/im=
-x/ipuv3/ipuv3-plane.c
-> index a0fd39eebbbc2..bde5892264f4a 100644
-> --- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-> +++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
 
-[ ... ]
+Francesco
 
-> @@ -593,8 +621,8 @@ static void ipu_plane_atomic_update(struct drm_plane =
-*plane,
->  	case IPU_DP_FLOW_SYNC_BG:
->  		if (new_state->normalized_zpos =3D=3D 1) {
->  			ipu_dp_set_global_alpha(ipu_plane->dp,
-> -						!fb->format->has_alpha, 0xff,
-> -						true);
-> +						!ipu_plane_use_pixel_alpha(new_state),
-> +						0xff, true);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is it safe to call
-ipu_dp_set_global_alpha() from the atomic update callback?
-
-The DRM core invokes ipu_plane_atomic_update() in an atomic context
-where sleeping is forbidden. However, ipu_dp_set_global_alpha()
-unconditionally acquires a sleeping lock:
-
-drivers/gpu/ipu-v3/ipu-dp.c:ipu_dp_set_global_alpha() {
-	...
-	mutex_lock(&priv->mutex);
-	...
-}
-
-Could this trigger kernel warnings or deadlocks if the thread is scheduled
-out while executing in a non-blocking DRM atomic commit phase?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260810-imx53-fix-=
-hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com?part=3D2
