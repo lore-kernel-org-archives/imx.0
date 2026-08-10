@@ -1,69 +1,70 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013000.outbound.protection.outlook.com [52.101.72.0])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551B83DC4B7
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 12:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397FC3DA5CC
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 12:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786366588; cv=fail; b=WqaeAUdOh+A6PwTzW/sa0ne6rnuX4fjzGu2cm+ptxwoQQ/trX297NJdNGEJrPOHS7xriIW3YgqjhT1ony8ZQSoz/wucSeLtb0g5wQbNhlqakgvw0bt1dRwVlrpoZPfkDyZlN3ocT5s/ShvJs1UXOUpeB8YW/NBupKKaiDIEEpOM=
+	t=1786366776; cv=fail; b=RLbmERVvVEUEjUoI5CjDwCjT7EC0Ke5ePMKR8SVDe87Pl64oPYBiEwB5MAc4MBCtjobSbzldIFD8jwXiBStWRRemWWVRlRwMrBmgs9BLR71bANr70bi3Xnasd5r6LLF6CYFLyulnFA3U7xUaKnBBgWno0NssyY5h7kwKrGqRNPI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786366588; c=relaxed/simple;
-	bh=zUmuBJSWmJrzWjm1RpYrVJPiKb7jvCrFlvyAjKyJDDM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Of9Y6+ZvMXwSgY89/n16b6IyFa/v5GMcm1+9A51B9jlAvwOVmBn+Aze5GzhCkrLYj6v/PGVhedUKcY0wHWnqFgKvKr84SGGovdi1aL8sAIHZ7Kc9GdbcTWidKD7cMxfd3VeC+U4V3zwCjo2ijorMNAEANcrPXnzY3OQCuyrbr8c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ddz5CYjW; arc=fail smtp.client-ip=52.101.72.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1786366776; c=relaxed/simple;
+	bh=ZXT1PWgSc4cXUogtsap4Ne3XpqQKDpEj0zBd+l/2LZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BM9ujjz9mLcz/IdxUZ45fV9G1hvmLbC4HRzXooOfODP1YO0CJKECBCmpz89EcQvYwfAVkKjfzl+Qted/xZDKnwzwfNKO0+fwcSjzX2Z6IcZq+ZqUoPDNVqPIUaPhuTbUDalc+9bjyqVNm5Pv064OQ9T1rmBI6zjB+GBvGp7vP2o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ohB41OwK; arc=fail smtp.client-ip=40.107.159.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ddz5CYjW"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ohB41OwK"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o2M54i+3kQmr2bywZit/G6vqU5DaOJnDk/qOXphzW+ftUWY5n5mFYx7nTFDorOUA/j1d82Cgi6XOgnBDV5rIjX9FoeFIiwJNBS6rmDJnt0v/N4rlVw+pdBZDW4xga53HCRwQscE54K0SYCRk3L4/HqsJwJroiqem+Nr+p8eLOb+OiNt5OJG3Fmm6cqAq3WBdroKkEcRkglyKf2JtbF4BXFIuxhjq12dADX5/FsHOyOGerRmAOSEFAbH3XmhPipkc1twXHPXV9FVhCQWzZr1RMEhn5uqcWQjaV9YwFqVISKAdArrEal0VzC6Vpy2K4Vw3iSCbifZPgciA/G0YVcIcNg==
+ b=v5PpnjVlh8NFgOXR+vVhLkkPnjhzDRdXiF1p7G92+xl7Sk/Fm2eya/zMjPdaVf/OU2XG9TRr98kp8q8ynuZxt6n2gZcEd9wju+rADyWXoqyY2uxNndphOTINuxGEAjdRyBEv3pjJ5ECWM2i6pE2U1t4AjNjda8sUusApIBuMsjfqMJNXksvILUldhoyIXstnRfVvLsG/HSLkac0Pm3Q1ahz83ogfhB7O3LhfYY1g1JV2Ml90BBjHy20QTL5Uv1CsrJEy/1NKL1wostX3FnIeKIZ1F5uN3j4FQVEb+4HY04x+Ppkwszrm6DFHN2QjVnsX3J24E4ByifsjWnlfe5vNFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ErmtvoIKr0Gb0FRAMPkh6e1WzT73SKy9RPSlt22Nzk8=;
- b=HrE2NI2pIsbpaex4BQDNwXAjM0bDaUfuE9F+I557NzdiHU6cH9A/ufOcCdNgYKekrkvkr5B4xZ3KbbKKvKu6ua0L0VFomKxr5p8zTIk8FLj/y7LA4yUm2Fd5QXHW5rVzshScTesD+86p16gJR/oetgzOMT/mpXbBhD/Nu258tV7nsaJEPgXELJLIMU8oC83WPT88J0LwCGtgsudsV2ofbfrNsF7j6B2ladKuJnKXIpZgecwUUGY8N6fU7qI97RHk//PUqLcyP15J6OFhQ1sH0KVCSpZcYoAYDvlmrlA74VKUOgQl6ZXGMFAYcoXzxF39VF6HBIMChf6vwfLf0M+C7A==
+ bh=rZTjlriJNovbGFgS9HkWbfhtaAG34L0csh/r7kxJL48=;
+ b=HZRdR/gNXL6lJeSP5L93F0NQx6m8I4Lme9BXSw+axwZh+AOtBcUh18gK7QZoTOSQL7qar/8V1WKmZJKNGbb0yG/olEaycQL6lwmztGwfhFRrD2/ZWbWqyjA9SOcfn8NK2bMkOFmc+ZU1ICov+Tsi0QXoD5MNQJQfKyF8N/QfoYlGo/U94KZErSEqinsaNT8S85eic/mOmcu2pvU8/DpJWu7gJ8/xEJyKhbzGVDRJGll82OHLNclvi6/nL0vtBb9mth4aY//Ds34bqJvId5Rc505RqkDET2dBw2ubrhUQ5WYVS+1O4MaqWT34Gt56Ud+mO5f9D3Z7LsiJLSdLTamlxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ErmtvoIKr0Gb0FRAMPkh6e1WzT73SKy9RPSlt22Nzk8=;
- b=Ddz5CYjWZNh/GWTz0IoEw3JNezYUZMxP6ilvSjf7+a0j8l89l/yndr6METHRvyEz0lBoXH8x8blVM9EuMgyBRhUUypMCSv7fwvK4fupwREm9MjiLGMCLE3I4VyyWCPRFYE6ynYPYP8D4WaUq6+W1flLSDclWEx91tZWeJ5qLjTZPC0CjXUZ3fth5a2aDfX7C5ynsIDXOmE9UcxCX/qeBDTKkNIk2HyJuvL/hlb3CCOaTjiNpJ+mz+xZbGMnntRJ5nHyp7Ehe54voDUY0VvZQTCUUjnRuWUTD1dq/U5IwJ75MBLuhmr/B9N0gNGuBs5RO/J614fULgo/qb6lzNRc9Yw==
+ bh=rZTjlriJNovbGFgS9HkWbfhtaAG34L0csh/r7kxJL48=;
+ b=ohB41OwK9bvBJNLRJoFm/cHwP5FdIPO9QtrPE+WmKSNeQlg3tCMUSK1BAwN5+/HE+RR9JTyrnr7oz5z+N6NMyD/J92a7TcKK455LKiXWjQpTj4493U5b6amLXr1zwtruwN7XzEAV91D6SPutS7ykDmPBIiD0kpf957KJl00brwxGYBZ2ZiMOVd/BNet2Pkdh/m6GeBpqzuQp8mSm77/0vhbBkRLi5oLHhBtKZ2d/Z+uYfF4Mh2iw1LvwY8QFdiYpKQ3Ou38K+NXHV2CIDUH3nnCRPSdUqqFbHqZSlO8DU4aJnglRWb54RFBT8/Ax378XDBuahTgghEP5J9QWg6cSvg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by DBAPR04MB7205.eurprd04.prod.outlook.com (2603:10a6:10:1b3::8) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by AM9PR04MB8841.eurprd04.prod.outlook.com (2603:10a6:20b:408::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 12:56:22 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 12:56:22 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: linux-usb@vger.kernel.org
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	JC Kuo <jckuo@nvidia.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH v9 3/3] usb: gadget: tegra-xudc: avoid direct dereference of phy->dev.of_node
-Date: Mon, 10 Aug 2026 15:56:14 +0300
-Message-Id: <20260810125614.441667-4-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260810125614.441667-1-vladimir.oltean@nxp.com>
-References: <20260810125614.441667-1-vladimir.oltean@nxp.com>
+ 2026 12:59:31 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
+ 12:59:31 +0000
+Date: Mon, 10 Aug 2026 21:03:24 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] clk: imx: scu: fix autosuspend cleanup on probe failure
+Message-ID: <annMHHQGlxTgzRkp@shlinux89>
+References: <20260808082933.2692878-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0044.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c7::8) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+In-Reply-To: <20260808082933.2692878-1-lgs201920130244@gmail.com>
+X-ClientProxiedBy: SI2PR01CA0008.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::10) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,173 +72,174 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|DBAPR04MB7205:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd1f93d2-96e5-4ef7-c536-08def6dec760
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AM9PR04MB8841:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8624262-e484-405c-ec2f-08def6df3843
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006|3023799007;
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	umBZDihbgLdI4DVZchTLme6hX4nL0i95SCdAxd9LckmuzQglEheAqKCh8qNQ04CMyYqZIaShcvRi8BC0QjMeAC31ktArgwZ5DmbvfckUOfjAK4zIbOK8eQgD0irvnO/Yc1cZZJ00Mk6TYtjjWUrOO2IB1KwTSr0NCD2n70M7ufQvd9/qrZh3BoY6d3VnpHEW+lFUYk+YVlSCXupfwXwTnBp+8aT+pLxgTKGaniNAxdr1rXLni7gGBsg3K4w65pkkIHWRFWwDcz//Nre7nndgCeqXI/bz+jvztxer+zWxW/SXXLO2ws0KuWjPA+h2kldHJjH1p2wx1Uk9DPSrvhGDG31vQEItVEecAvBgdaZOVEiJM3x8+N+ntY5lCSrM4g6ETN8c3DPJvfREL0ufipNTLkvM2tq3aKNw3+QQada3LFWEj9w5H4oQaShFj64LdSF8D56U2r1sIDYsRebgnjuVDIU0FVscwRTf7QynlTZonoyXbeXyG4fWUX5N16JgKUk3yqnhefRlO9vEYNTRQJobaruBwh2ii0i3cXILcoHJ66VnVS8/C8bPlKcyAtshKHJwDOP7gh8VSZMq9Jh4JgIgQ75QZrFQtIwDVyrs2TPobLfNsQiu94aiE1yGn1tMqtqZpsy7Ht6NF0VniR27ps6/bhyEZWUoisMakK4yh9imAjA=
+	MUQI7IjHJQrfegaPT/UxXHHcaA28JJjmlHzG/LSzoS4tGeg0GorW97vzP6DKQI2aKIIAySD8n/lER1299MCIxyyDGq42hJXHTCypW/nboXW4E0h+I3InxDS0eSe3nr7q0HzzhkE9oSuZoAGSme9wwPXSiOZhqc5mVtmJPXPUlBMXpXi3PD5lZUgkWrGTvp4Ol2CYhIUuPkoMigLlv+smntZ0itO8l6u4kwuWSZsixG1jBCf3dwLPBWYov2lmaXYCMwb2JkztgZTrIljn6c9cqylPDrBOdLjqteWw93owVp22GPyd9+Ro9O+FYU1Pxqe9YJAQIv0JBIVmEoeksc95TdqsU2lWigTdpsfPcf3OpKk5oYsm/9YCvf+WJgoiF3Sh2btpZqBrM5FV3piaAfGCb/RxjsM8jCIETyoVD7WPEsULkPhY6cREbMpGDrut6Yy4NP+0CW14WD6AmzOSM15YIruCCASkc/xbto/Qckvtu9YS/bm0AKNFOgplZ16W29ovPJRnlGjX5cw9zu+HM4TqtD7Ap0GHdpEbzW9vqvV2yGHqjXj8WUq8yVEaCWTyrcppX7swxdUk0ovo/o+UmTQRPynySIfX0zaTfLl6HPS2FyW9VeA5QZ9/a1+ox7PNHPVzO3ekgCfLk5II6P7Ls7upaoaLVCGNgHmO7BRgr2O8AsA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JQ9X498LuSlLnS7oWtuOjyPA9s5wmekhAW/FMHrjknYPylkVvS24UDmI8Gs/?=
- =?us-ascii?Q?6k3d0FZIS3CDi/hmzZdHFY0FV5h19woY7Fokk09ELCF8o4jIGZY/NuS/OQPZ?=
- =?us-ascii?Q?+aOmvGIbqtnip+zIRWgiqQKtEH94l9/t/mzQkbjp6j7WCjk+D1rZN/5z/p+W?=
- =?us-ascii?Q?KBDBFty/WScxjJ2RB3Bpdke8wW0EbYspxgOttpBuWRI0HgzruoOYL1RiRCyy?=
- =?us-ascii?Q?1bP/pDPtuO+IHOEUZEbBWReIhX5RhyKtam/J+WX7AStESW6XMd4YbQvK/XqD?=
- =?us-ascii?Q?7d4fK77BZNcu8oAKMF10uL44SQMO1fhL6nv43low0/mdLHvR+D5wZ24uqM36?=
- =?us-ascii?Q?gkGGua2zXAbnQT6LtC5SJBKgnv7PXQaM4gHa7fgcYYB/exQUrPKBrBBuH/Dl?=
- =?us-ascii?Q?+Bv4Z+c3ReldOwIiGiPBFEJMRMAPyVzeDAjL+Ypq7dtp01GVzXEdbRkOo15h?=
- =?us-ascii?Q?+q2ZBfbVy9ryo3Ot6g+wnhgXU8aHWrMWhXGHT1xpywkwjbf2aUFN0PT49G/q?=
- =?us-ascii?Q?gUNDUHXnSsfyeDKA5Y0tJQ/cvwZnVVxo260kwqtgN/IFrPwB4GUW5goL855M?=
- =?us-ascii?Q?NmwnTM892m4G7X0DlIc+kLb7R0rs3EyFG0gfNWLi8mRk8DL8jQCnACyg9jCC?=
- =?us-ascii?Q?GSHd1lg5Pj9jEFjdJx8BMd9Rt5/wYT0wENWaX3dx7PngKmfwFbLy4jOYqlTW?=
- =?us-ascii?Q?/86uct/z74XXQrTL/Fj5/ZjUOMu9jyi6U3xZYiXOBs1sE/sz5+D+7/8M2LFy?=
- =?us-ascii?Q?EJB2XrJ2IA7eYRGFXTKx5+WeADjy+K9vI4Zg6qIJo1ESsc3BlHi00F2daaKy?=
- =?us-ascii?Q?KeTgBNwMCS2whObHuTQ1qB5ySz1IPA1YmcZTvoEORtAN0jVfysCp3OqxWKmD?=
- =?us-ascii?Q?LR33dvmpNf28jSNe3SylYR8/NXvx21rm8yFIswF35Rtevn0jNRscAnX31+GG?=
- =?us-ascii?Q?/roSo4wKzjHXr5utQZxgMdfeiDQRapqFeALc117VK6qEo3/v9D5u3Pz2hdJG?=
- =?us-ascii?Q?s3P+ogsdk3Q9e+U/Zjsc3p7VlAY1kd2adhO4uJw84Hm9HE8OVmWdf9GfJugE?=
- =?us-ascii?Q?sMKZq7kgUW7zG7wiINl8/WnRCCctrbXb3/6wTR3Z2mPO2ZpsC3RoOyXO1nKO?=
- =?us-ascii?Q?S3kk4W/F05jjwNrSoC+86LKOpprQD2+52KExMygUlKq8S7FJF3z1RIx4x+NL?=
- =?us-ascii?Q?KG9mfAOgyjB9zlApn8fNRnezKRFyl9iBx6VWmASovZvVmKGL3e7neIAZ0kyS?=
- =?us-ascii?Q?91EyPuhIA1qnbTtJASOyTtvCcmOkk4BP0jEXuAPHaV+6hOFb5mbVQvG2mGOB?=
- =?us-ascii?Q?/6fRNrsz/PYCYAY39qcoNOXB9PWYDnepW7ifUxbwaKImQFHJy/7l05o94BZX?=
- =?us-ascii?Q?GCT8VhnDsFWbtCwLUOL1AykK3A1p+gTFESZgm1EPQRfFtR6r0VnpFAuIHkrb?=
- =?us-ascii?Q?fJaeQFo62YU0OsZwRJSYYVvl8EaiqCoxmM1AQBESFuuuJCWt+2EZvnwXu58W?=
- =?us-ascii?Q?cR1IJfJxPSlwXsp6ES7SoiQHdT4nhpLrLsm6Glh1ES6CoIITQIAe7dK4tG2m?=
- =?us-ascii?Q?Mu+ElsnuYMgMn3NsCgIQPCq9q7E3qQTfYP+creWsN1o6hrlppOgtutWtER5Z?=
- =?us-ascii?Q?aYBIVN0FebSNnJH1y6aEcr9mpBWTUVjIl8rpcSU1B0ssqsO/pajAm5W3Y1VB?=
- =?us-ascii?Q?9pMDT3+taM8kpyqr8faVPzr0YLMjTcpiTBsJV0QIdG3mrr2RJehhBAuTXzwS?=
- =?us-ascii?Q?kahNWFCzEw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd1f93d2-96e5-4ef7-c536-08def6dec760
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+	=?utf-8?B?QmFySEtueS9PYUsxUW5tUHc5eVFiWXI4azI1c0VzQ2tDMU55WE1PNHZRYTNQ?=
+ =?utf-8?B?c3NmRzd2S01XWFRZai9wbGNTclNCczdwRG9HMUdpNkNlQWJjb3o5bWFuN2No?=
+ =?utf-8?B?TGFZRDM1b0tGL1p6N3pVbktHbXRiZmkwRVNhajVlSUhFdkIwL3VUZ1Y2ZU8z?=
+ =?utf-8?B?dXRMZ2JNNXVCY0h0MkZJU1Z4VEdrQ0VQUDBtUHlrcXoySDRTdHlIL01hTGdu?=
+ =?utf-8?B?VzcyYUhSMWhmZHV2UG1qcGNwZFRtL3UxaHM1dXlHSUxwVjZZUTR5SlZNZkZq?=
+ =?utf-8?B?ZHFudWtiVC9Pb1pEOG10ZWZCM0w0UW84ZVdtMHU2eEhJaElHZmMrY1FoV09i?=
+ =?utf-8?B?NHpwZXU5Q0NCRDI1Nnd4MGRaYlRJQktIY05mMzJmTkc1M2U5N2JweDFnTzd6?=
+ =?utf-8?B?L1NGT01VMnp0SitUS3pMdjNRRmw0RmM4MDd2L2dkRXVrbmhVb0VwbFA1OGpk?=
+ =?utf-8?B?RHhHaDFaamRnOUN5Vm41ejFpVkxNS2d6Rlk5VGt5dXVHOFk5YkN4dkVKYWYr?=
+ =?utf-8?B?V2g0V29mY0dlSG15VmVsTUc0YjA5dXVPS0tnQWRObFZpTTF1bGhQblM3Tyt5?=
+ =?utf-8?B?NnpBTmVMdmRITkVpaHgwOU9aaDJDdHNUZitCcHc3UFZ0M1lhTU8xWktqV0Vr?=
+ =?utf-8?B?L2FybnNwc0dVVTNYamxYQUM2ZTRRMjl2VUdSWmtaTHozWVg3dmoxd1lnZ21y?=
+ =?utf-8?B?RkdDcmhvcy9zek1GRVBSTkp1dE1KYkUzUTdxT0RqRUw1eEtNY2lhQmU1MUtk?=
+ =?utf-8?B?cGlCNWdsdFh5TGxFbXhPYS9GSTVVa2c5WDNZVml4Yk51eWdHL29KT1M4MGlk?=
+ =?utf-8?B?RVJTVFZtQ3p6d1FEL28rYjBXR1BObkdLTDYzZUkzeGhYOER4MEFiMi9aSHgw?=
+ =?utf-8?B?MTJqV0J3MFE0SkIvOGFVRklXTXdzenl1c2pvRFdxeTBNQk1mRDMzakVSbUlI?=
+ =?utf-8?B?bmhxUDNXbk5jQUdLREdxZG9PYlR1K3BiOWpsa2dPSWJCVm1PZE5CQVZ1TjBY?=
+ =?utf-8?B?ZWVQNDFWS3dQcHoyTzRZT21CNFQ1Z2tueHRiSk9hSXphQ2p1WWE5WWZoL1gw?=
+ =?utf-8?B?TVY3dDQ3YTRRekxzaUZobm40dTJONUsyMlpwMGZnVklvTEFxZHZGSmd5S0F2?=
+ =?utf-8?B?SHdHNzE4K0dTTHprMHVibWdWUEc2djd3bCsxNklTYnZkU1k4cTZDUkM3Vk9Y?=
+ =?utf-8?B?NWFHeFFHNGpMdkdmZ2g5OHVQeG9aeXJtTGdLVnhBNTJ3UklDbXdXY0ZjU2My?=
+ =?utf-8?B?Y21Dejlrei9pRitNZ0ZYdDB3LzNnNyswRTlVOFBXbDVYV3VlR2h3bkRRK0pt?=
+ =?utf-8?B?bkRtcHNMZnhlT3l1K3ZNZnRZUngxZ0haaXFDRjlrR3V5ek1UQjAwZ2pRREsx?=
+ =?utf-8?B?S0paU0l0SEwrb2FRZFBvUWVWVXBjWnViMHlMcFJ1d0luZFF2VkVNM1Z0NFZM?=
+ =?utf-8?B?a3JTekExMDROQTY2cGp3N0J2eEppK2RtU0U1QVZmem5ZcFc5ZzhCZitRWHlT?=
+ =?utf-8?B?RFFuYVZhRXdPYUs5QUNQWGljRStBak1BaTQxSFhJUElVT1kxR2ZpOHp0Rkcw?=
+ =?utf-8?B?S0czUDBFNTk5U2tFWmZ5TVJRdU81bWlETU8vL2NiUUVsRXRsbElmY2Vra2Mx?=
+ =?utf-8?B?K1FrWldKWG5Id2Jab3pLb205MVBYeFZlYnVtcjdjb0E2d0lNNWl1TWVnM2NW?=
+ =?utf-8?B?aUJNekhrMGhEbC8yc2NWcG1Ec0lzQ3JUby91dkVpc3BkbC9LVWp1RFV3Qm11?=
+ =?utf-8?B?bmwySE01MldxT3loWWdkbDhlYkVYTzFmUzV3RjJUY2M4ZzB1bnZKMWFVL3k3?=
+ =?utf-8?B?K1hJOWd5YXlwODcxOVg2NlZ2eFBLdi9wQjVTQ2FuWWZjRzRVUmM0b1JkYUdy?=
+ =?utf-8?B?UkFoSU8xZHArK3ZaMmRrcnFTS0VneDllK1V6TTlXeWttbUFKL1FCRVl6bUF0?=
+ =?utf-8?B?L0g1MVpjMGVCUFUxK2NSVDFtVjYzTVkwQ1NIUnB3V0M0S3U0dkJzcUY1OVdT?=
+ =?utf-8?B?RGMvUEI1VW1BVmxuVnpSbEV6R1BheTN1c0MvV0FRMW1HN0RUMHVBR2JmeDgx?=
+ =?utf-8?B?Z3BZcjB3OHJMZk5taWl2YWNXeUZCcWVqT1llbzBtNk5YL3ZmVGw5ZFZ0ME9Q?=
+ =?utf-8?B?MjFKaTNHRUlyUkpKc2pLNmVpdlB5aE4zdFdTRXNqNkhISnlpeGo5VHlmQUZr?=
+ =?utf-8?B?V2x5SWwvby8rK3RWaTQ0VnBqRXE1eW5HTDg3di9QbjJNNUVZUnREdHhWUmJz?=
+ =?utf-8?B?dDRXQWJJR2hnZ3ZFazJ2cTlnS2s3bXNtR2orYm9Lc3QvWERBNTZHckh2MlZt?=
+ =?utf-8?B?enUwaDd2cEN4b1NQZ2dhQjZUbjZIQkRuNkN4blRsUm51RXJYZ04xeldsbG53?=
+ =?utf-8?Q?bn9RVcgOKRA/HsXLgFlqEluEKhJetgLnz7FSR?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8624262-e484-405c-ec2f-08def6df3843
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 12:56:22.2335
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 12:59:31.8342
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y0Ig2NlDpont/dj2zdUDI0Yru0V8+EVWyEuCvT4lDOfyDEpDtkdBWTCwRmLHTPf1T6TGg9qVonugHpKb9bFwoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7205
+X-MS-Exchange-CrossTenant-UserPrincipalName: 70gbiBnPX5XlbNd8V9c3elEbfW8rRGrfMTI6Q1+HRYHgv5Rpqz5cSghbr2NoyxUEwQ3qOWvxogXTE0shE2haigxqGu80lMx3ygTr49QWRiMLxODe8wNyWHEk9LPXDJQV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8841
 
-In a somewhat similar situation as the Tegra USB host controller driver,
-the Tegra XUDC driver for USB gadget mode needs to get to a struct
-usb_phy that sits behind the same OF node as the Generic PHY. It does
-that directly, which will no longer be possible. The PHY provider is
-also the xusb padctl driver.
+Hi,
 
-The rework here is also to implement a parallel OF node lookup path
-based on the "phys" phandle and the #phy-cells of the padctl provider.
+On Sat, Aug 08, 2026 at 04:29:33PM +0800, Guangshuo Li wrote:
+>imx_clk_scu_probe() calls pm_runtime_use_autosuspend() for non-CPU
+>clocks, but its probe failure paths do not call the matching
+>pm_runtime_dont_use_autosuspend() before disabling runtime PM.
+>
+>If the autosuspend delay is set to a negative value while autosuspend
+>is enabled, the runtime PM core increments usage_count to prevent
+>runtime suspend. Without calling pm_runtime_dont_use_autosuspend()
+>during cleanup, this reference is not dropped and usage_count remains
+>unbalanced.
+>
+>Add the missing pm_runtime_dont_use_autosuspend() calls to the probe
+>failure paths before disabling runtime PM.
+>
+>This issue was found by manual code inspection.
+>
+>Fixes: 78edeb080330 ("clk: imx: scu: add runtime pm support")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+>---
+> drivers/clk/imx/clk-scu.c | 4 ++++
+> 1 file changed, 4 insertions(+)
+>
+>diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+>index 9b33df9967ec..6d29fcc2306d 100644
+>--- a/drivers/clk/imx/clk-scu.c
+>+++ b/drivers/clk/imx/clk-scu.c
+>@@ -542,6 +542,7 @@ static int imx_clk_scu_probe(struct platform_device *pdev)
+> 		ret = pm_runtime_resume_and_get(dev);
+> 		if (ret) {
+> 			pm_genpd_remove_device(dev);
+>+			pm_runtime_dont_use_autosuspend(dev);
+> 			pm_runtime_disable(dev);
+> 			return ret;
+> 		}
+>@@ -550,6 +551,9 @@ static int imx_clk_scu_probe(struct platform_device *pdev)
+> 	hw = __imx_clk_scu(dev, clk->name, clk->parents, clk->num_parents,
+> 			   clk->rsrc, clk->clk_type);
+> 	if (IS_ERR(hw)) {
+>+		if (!(clk->rsrc == IMX_SC_R_A35 || clk->rsrc == IMX_SC_R_A53 ||
+>+		      clk->rsrc == IMX_SC_R_A72))
+>+			pm_runtime_dont_use_autosuspend(dev);
+> 		pm_runtime_disable(dev);
+> 		return PTR_ERR(hw);
 
-Some further notes:
-- create a local "usbphy" variable to hold the devm_usb_get_phy_by_node()
-  output. This makes the error checks more obvious (avoids keeping an
-  error-encoded pointer in xudc->usbphy[i] even temporarily).
-- the "if (IS_ERR(utmi_phy)) .. else if (utmi_phy) .. else if (!utmi_phy)"
-  pattern can be simplified, considering that neither the IS_ERR() nor
-  the NULL case continue execution in the current block. Therefore, we
-  can move the case where the "utmi_phy" is a valid pointer outside the
-  "if" checks, and this reduces the code indentation level.
+This is not complete fix. I just write one, see below:
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: JC Kuo <jckuo@nvidia.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
+imx_clk_scu_probe() sets up runtime PM for non-CPU clocks by calling
+pm_runtime_use_autosuspend(), pm_runtime_enable(), and
+pm_runtime_resume_and_get(). The probe failure paths do not properly
+undo these operations:
 
-v8->v9: none
-v7->v8:
-- remove duplicated variable "err" which shadows existing one
-- stop execution on of_property_match_string() and
-  of_parse_phandle_with_args() errors, instead of silently continuing
-v5->v7: none
-v4->v5: patch is new
----
- drivers/usb/gadget/udc/tegra-xudc.c | 43 +++++++++++++++++++++--------
- 1 file changed, 32 insertions(+), 11 deletions(-)
+1. When pm_runtime_resume_and_get() fails, pm_runtime_dont_use_autosuspend()
+   is not called before pm_runtime_disable(), leaving the autosuspend
+   setting unbalanced.
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index e9d33be02866..f93e0a5651ab 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3494,6 +3494,7 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
- 
- static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
- {
-+	struct device_node *np = dev_of_node(xudc->dev);
- 	int err = 0, usb3_companion_port;
- 	unsigned int i, j;
- 
-@@ -3515,7 +3516,10 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
- 	xudc->vbus_nb.notifier_call = tegra_xudc_vbus_notify;
- 
- 	for (i = 0; i < xudc->soc->num_phys; i++) {
-+		struct of_phandle_args args;
- 		char phy_name[] = "usb.-.";
-+		struct usb_phy *usbphy;
-+		int index;
- 
- 		/* Get USB2 phy */
- 		snprintf(phy_name, sizeof(phy_name), "usb2-%d", i);
-@@ -3525,22 +3529,39 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
- 			dev_err_probe(xudc->dev, err,
- 				"failed to get PHY for phy-name usb2-%d\n", i);
- 			goto clean_up;
--		} else if (xudc->utmi_phy[i]) {
--			/* Get usb-phy, if utmi phy is available */
--			xudc->usbphy[i] = devm_usb_get_phy_by_node(xudc->dev,
--						xudc->utmi_phy[i]->dev.of_node,
--						NULL);
--			if (IS_ERR(xudc->usbphy[i])) {
--				err = PTR_ERR(xudc->usbphy[i]);
--				dev_err_probe(xudc->dev, err,
--					      "failed to get usbphy-%d\n", i);
--				goto clean_up;
--			}
- 		} else if (!xudc->utmi_phy[i]) {
- 			/* if utmi phy is not available, ignore USB3 phy get */
- 			continue;
- 		}
- 
-+		index = of_property_match_string(np, "phy-names", phy_name);
-+		if (index < 0) {
-+			dev_err(xudc->dev,
-+				"no \"phy-names\" entry for \"%s\": %pe\n",
-+				phy_name, ERR_PTR(index));
-+			goto clean_up;
-+		}
-+
-+		err = of_parse_phandle_with_args(np, "phys", "#phy-cells",
-+						 index, &args);
-+		if (err) {
-+			dev_err(xudc->dev,
-+				"failed to follow \"%s\" reference\n: %pe\n",
-+				phy_name, ERR_PTR(err));
-+			goto clean_up;
-+		}
-+
-+		/* Get usb-phy, if utmi phy is available */
-+		usbphy = devm_usb_get_phy_by_node(xudc->dev, args.np, NULL);
-+		of_node_put(args.np);
-+		if (IS_ERR(usbphy)) {
-+			err = PTR_ERR(usbphy);
-+			dev_err_probe(xudc->dev, err,
-+				      "failed to get usbphy-%d\n", i);
-+			goto clean_up;
-+		}
-+		xudc->usbphy[i] = usbphy;
-+
- 		/* Get USB3 phy */
- 		usb3_companion_port = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
- 		if (usb3_companion_port < 0)
--- 
-2.34.1
+2. When __imx_clk_scu() fails, pm_runtime_disable() is called
+   unconditionally even for CPU clocks, which never had pm_runtime_enable()
+   called, causing an unbalanced disable depth. For non-CPU clocks,
+   neither pm_runtime_put_noidle() nor pm_runtime_dont_use_autosuspend()
+   are called, leaving both the usage count and autosuspend setting
+   unbalanced.
 
+Fix the first path by adding pm_runtime_dont_use_autosuspend() before
+pm_runtime_disable(). Fix the second path by guarding all three cleanup
+calls — pm_runtime_put_noidle(), pm_runtime_dont_use_autosuspend(), and
+pm_runtime_disable() — with the non-CPU clock check.
+
+Fixes: 78edeb080330 ("clk: imx: scu: add runtime pm support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+
+diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+index 9b33df9967ece..63ab4801ddaa7 100644
+--- a/drivers/clk/imx/clk-scu.c
++++ b/drivers/clk/imx/clk-scu.c
+@@ -542,6 +542,7 @@ static int imx_clk_scu_probe(struct platform_device *pdev)
+                ret = pm_runtime_resume_and_get(dev);
+                if (ret) {
+                        pm_genpd_remove_device(dev);
++                       pm_runtime_dont_use_autosuspend(dev);
+                        pm_runtime_disable(dev);
+                        return ret;
+                }
+@@ -550,7 +551,12 @@ static int imx_clk_scu_probe(struct platform_device *pdev)
+        hw = __imx_clk_scu(dev, clk->name, clk->parents, clk->num_parents,
+                           clk->rsrc, clk->clk_type);
+        if (IS_ERR(hw)) {
+-               pm_runtime_disable(dev);
++               if (!((clk->rsrc == IMX_SC_R_A35) || (clk->rsrc == IMX_SC_R_A53) ||
++                   (clk->rsrc == IMX_SC_R_A72))) {
++                       pm_runtime_put_noidle(dev);
++                       pm_runtime_dont_use_autosuspend(dev);
++                       pm_runtime_disable(dev);
++               }
+                return PTR_ERR(hw);
+        }
+
+
+Regards,
+Peng
+
+> 	}
+>-- 
+>2.43.0
+>
