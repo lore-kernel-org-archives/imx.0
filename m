@@ -1,118 +1,159 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D4938758D
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 18:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CA038758D;
+	Mon, 10 Aug 2026 18:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786386398; cv=none; b=r/wDqsLlo9rDm/re0uCO0KE0Sqmvf6vEWC8DJolb1K7lmrjz/qjTPyQnHZHXL/CY5FhDawUwiIWwH65yHwMeWFgrTyPkM8GLA4BWVSuqMG4po9fIfVHulag7HqkkwhFXzuMlK6e+0DmHN9JaPG9+gvIZDMharbnGxsJOzat7R/E=
+	t=1786386438; cv=none; b=KX4f07he+0DS/sSKyVE5mPi+Y6vrdDMVyEzpBYLwyAjQdkNYm39Iyvt10L6hDHpJkyTyRP7HRKfIg6FeSm7RvgweFhMZ9yjiCP1lOy6Cztd+j+FSGFXkG4sdkOR8m4YpyDznUhYQ7bWXrU8MU/quxO9eMRlK6rpxvs1zzE/JhS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786386398; c=relaxed/simple;
-	bh=uckYMfA+3rj5zvRzcktnwG8O/XsnyeXAICZ5/FhxyPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckhhx2UmjolZYKVbfpAnPXaINY03jRPyDQGjuMNzboZTF+AGja1ADRho+zfLjx544mtTIg0OsTArNxt4QhRiXQRptGTzwZUl1LA5tBkNH1H6mNBzDxJJHPdT7Ha8Ia+CrCdLgfIH0sP0qi0pqttLDv1KgecgMm5I1tGhgz5i+kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J7TgSE5g; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786386438; c=relaxed/simple;
+	bh=Trzq/A6TDBBYNMdTbFVtbRQmNnjaQky7Gs/Jb3IVAm8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SQl+zuzQbQA92QMnQgbjPT/1nIvVBOJojoCKTdUTD0rIRssDIW7N8IJ8zY75uNfc/O3zv+JWWmGiaFY8o22/9qjlMlebt3blvulzkxJ/gQqiET/LUwoAfUR5bcU89VGl6dbxQXST2pPf2Wi8yW6/jGolzQ8VE3Uj6zDTtHobkaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UezxeJvC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J7TgSE5g"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-848643382fcso2059012b3a.1
-        for <imx@lists.linux.dev>; Mon, 10 Aug 2026 11:26:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786386396; x=1786991196; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kImCXwl4S/l00e8WQ0YV3wOiF3iZg+3YUcCfhwwyF/0=;
-        b=J7TgSE5gBYOdRPGpQuJqEohqtCoAIcEdSZjjlEjP1uNzUgKpyRAblrv+39wJyjCCW6
-         Hz8TmGH8K6ha50gmzUbaIz87bhoXy/rV9NKAiXIqKw1EgAiwYrvaDidVbXrH0mwtPR8u
-         fVWW9i4GMj+IjCQa5BSXiQ28VRF9nkeHH1bR8qsQkdAse3SWZb+CRpvso4zOVxpAY4qk
-         am2dQ8EmIQxMQe8dWgZ56F+Q2y79ZH7aNb5ZHjhtGSUg1GAbAL9SZ2xFhDZFEq9z2kSS
-         LpLzGbU/dipC/BdiFGyW51ZoEgF8bl3eKa91G8hG2SWCbTQe8RXDCPDBo/gMK8/vxLQe
-         jlaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786386396; x=1786991196;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kImCXwl4S/l00e8WQ0YV3wOiF3iZg+3YUcCfhwwyF/0=;
-        b=WpfvHv5daB5fO6gTxhZy1sqi+5WDwhhZtmDwZiipc9o5XEZN8Y1g0LJzFjhPkn5slh
-         yetOuUSOOqG4cAhPw4CNAgTxkR5Mfj0P1FvvGR46Ot900h0YJh/PL3+AntOyzSD9Cx8n
-         7K6gwCTeVexK1VySmWMr8GCyBYumPiKcLVBOu33EE4+vjm+o/5VF4rlNKN2JwTl6WkMK
-         qwwrVZQpUyhGJ2+d1IGkVVdzhZVR1I8JJezE7/zGLOo7Mzql27gQQSz4bXaVlwaiIdKa
-         AsZLP1iY3j3NwaVxMYyUfHlGTmyIVkuL0cGhfgqtsc7thx+IzqD2kl0EjxSJG+WWABVz
-         vC/A==
-X-Forwarded-Encrypted: i=1; AHgh+RqtgedmATrgsJhfisYnAtGV+VEjQ5lVqPuis7VitKFshoAgty9JC0hNC0V4kU6dxcrbNwk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6uQmtfh+hT0FSu8mN0qgGFb3+GuJKNQDjV8ynGM0IHmwuJ2Tj
-	45XfweYvev7gVSjbY2LeUzlSSJKViiwwaKK/B1VyTdQtKCBXwJRGVW8d
-X-Gm-Gg: AR+sD118P/hfDgbx1CviiOzJwbCT0o6+BrdmDzRIBt21ut1myfnmzGI+yPzAyi0raFw
-	m8rtfTU+hZcPW/AogHNjg7Q6a9dkjAgoMmhYxtfunH/Wn35iF3heX2W85aW7Ygb6MEQ/pYcxvyj
-	D7JMpgbel3OPgOhSKbT63DEWL36d8Pyvg+LB7xA1ye+mb0az4tw3slap9ZZMSloY6dhQLh75W9v
-	3fzhXr5mAkLE4qW5pSsW4jn4wOhpFO5hm5DabwMAU/YJG4RWLBLY0QyjayGaAWATEy/h6YsLpIo
-	jOdeBj+dYt/7JmO83q/91OuhgNDbbHmBhuEBKGurDJ/Uq4BgcEsBeiNFbmIUZe9uFYFpSm5sWkh
-	CIjmO2nuXntHUfTMKtqWtcJsspDV5PM0JO7owxekZhHh35ScUsqEtMOxL+mSp2DtgZ4oLwf96tS
-	TQ1SFkhbGNYbcV9IMhzLAs+Tq0xUFVMnu+IDmytrznGqn5b0qTZ68lGVTZIYoSTiBLaJU=
-X-Received: by 2002:a05:6a00:6c82:b0:847:5ec6:3afe with SMTP id d2e1a72fcca58-84f2e0588demr52646678b3a.31.1786386396492;
-        Mon, 10 Aug 2026 11:26:36 -0700 (PDT)
-Received: from leonardoc-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a3cadf2sm4377478b3a.22.2026.08.10.11.26.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 11:26:36 -0700 (PDT)
-Date: Mon, 10 Aug 2026 15:26:29 -0300
-From: Leonardo Costa <leoreis.costa@gmail.com>
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "leonardo.costa@toradex.com" <leonardo.costa@toradex.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, Sherry Sun <sherry.sun@nxp.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
-Message-ID: <3hxiy6aaiagt5zunntpidaeqc4or4wrebf7mu7asvyyibqmvo2@xhvasdqp64rw>
-References: <20260629143439.361560-1-leoreis.costa@gmail.com>
- <20260715234736.GA288957@bhelgaas>
- <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
- <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UezxeJvC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC14D1F000E9;
+	Mon, 10 Aug 2026 18:27:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786386437;
+	bh=LtG/rEnkaVf0pRypD+zveZZn219o5vvfAplNI3WC1Jc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UezxeJvCuzfYmYc6HbT5d0H+g7xrEXxE2DFPHLP/ga0MedxdlFeHH5f1mNQVvhnoY
+	 zdJQa5/zIufJu3aDIeU5er9D48zA+BGstFjzxr3wIMXAuqWZvRb/ERsBmOSXFvGfwQ
+	 h6pxbPOX3zBW++2PVl9KaaO9t6NJKJv+BmzPXsYFYnB3p0+cgT4Y6eLxxUUsuycAfj
+	 qNiNrs47YxP2LfoSgQbHEIgNRBCz8r140td53FA/hm6AVozQlwb/zyqRbo+HnqhHam
+	 LYE8S+bwtOEnpeN76y9HWmebL0Aho/S43jKBBubfs5BlbWsdWf3NQSGZGhrpWocp3U
+	 GXIhiS6OZ72hQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 13/34] dmaengine: mxs-dma: use dmaengine BH
+ scheduling
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Allen Pais" <allen.lkml@gmail.com>
+Cc: Frank.Li@kernel.org, vkoul@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <3dec314c8878181bbf9bd8bdf6d222c435643fc0.1786384168.git.allen.lkml@gmail.com>
+References: <cover.1785183549.git.allen.lkml@gmail.com>
+ <cover.1786384168.git.allen.lkml@gmail.com>
+ <3dec314c8878181bbf9bd8bdf6d222c435643fc0.1786384168.git.allen.lkml@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 10 Aug 2026 18:27:15 +0000
+Message-Id: <20260810182716.DC14D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
 
-On Thu, Jul 16, 2026 at 02:09:19PM -0300, Leonardo Costa wrote:
-> On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
-> > Hi Leonardo,
-> > 
-> > Would you be able to test this patch on your affected boards? Your testing
-> > would help expedite the merge process and ensure the fix resolves the boot
-> > issue you're experiencing.
-> > 
-> > Best Regards
-> > Richard Zhu
-> 
-> Hi Richard,
-> 
-> Sorry for taking long to respond, I was caught up with something. I
-> tested the patch and it solved the issue. I sent a Tested-by tag there.
-> Thanks for looking into this!
-> 
-> Best Regards
-> Leonardo
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Hi Richard,
+Pre-existing issues:
+- [High] The driver does not kill the deferred bottom-half work during chan=
+nel teardown or error paths, nor does it provide a device_synchronize callb=
+ack, leading to a potential use-after-free.
+- [High] Requesting the IRQ before enabling the device clock can result in =
+a synchronous external abort and bus hang.
+--
 
-That patch might have introduced/exposed a second regression where PCI
-devices are not linked properly during the initialization. Sorry for not 
-catching this before, as I didn't have any device connected during the
-previous test.
+--- Patch [13]: [PATCH v3 13/34] dmaengine: mxs-dma: use dmaengine BH sched=
+uling ---
+commit 84e84c7d902dd9157e789fe8d760954306bc43d6
+Author: Allen Pais <allen.lkml@gmail.com>
+dmaengine: mxs-dma: use dmaengine BH scheduling
 
-Link: https://lore.kernel.org/all/bl7i3obu2clzsgeoct2a4mtfhv6typcjdqmgneropf3hpgwve6@n2m5uhlduw57/T/#u
+Replace the per-channel tasklet with the shared dmaengine BH helper.
+The handler continues to run in softirq context while dmaengine owns
+the common scheduling and teardown mechanism.
+
+> diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
+> index 7acb3d29dad30..149ac402f7b4b 100644
+> --- a/drivers/dma/mxs-dma.c
+> +++ b/drivers/dma/mxs-dma.c
+[ ... ]
+> @@ -386,8 +385,8 @@ static irqreturn_t mxs_dma_int_handler(int irq, void =
+*dev_id)
+>  		dma_cookie_complete(&mxs_chan->desc);
+>  	}
+> =20
+> -	/* schedule tasklet on this channel */
+> -	tasklet_schedule(&mxs_chan->tasklet);
+> +	/* schedule BH on this channel */
+> +	dmaengine_schedule_bh(&mxs_chan->chan);
+> =20
+>  	return IRQ_HANDLED;
+>  }
+
+[Severity: High]
+This is a pre-existing issue, but since the driver is moving to the BH
+mechanism, should we also ensure the scheduled work is properly flushed dur=
+ing
+teardown and error paths?
+
+Looking at mxs_dma_alloc_chan_resources(), if clk_prepare_enable() fails,
+the error path frees the IRQ and the channel ccw structure:
+
+mxs_dma_alloc_chan_resources() {
+    ...
+err_clk:
+    free_irq(mxs_chan->chan_irq, mxs_dma);
+err_irq:
+    dma_free_coherent(mxs_dma->dma_device.dev, CCW_BLOCK_SIZE,
+            mxs_chan->ccw, mxs_chan->ccw_phys);
+    ...
+}
+
+Because free_irq() waits for the hardirq handler but not the scheduled
+workqueue, if an early interrupt schedules the BH work, can the workqueue
+execute after the channel resources have been freed, leading to a
+use-after-free?
+
+Similarly, mxs_dma_free_chan_resources() frees channel resources without
+calling dmaengine_kill_bh(). The driver also lacks a device_synchronize
+callback, which makes dmaengine_terminate_sync() a no-op.
+
+Should we add dmaengine_kill_bh() and a synchronization callback to prevent
+the scheduled work from running after the client frees the channel?
+
+[ ... ]
+> @@ -781,7 +780,7 @@ static int mxs_dma_probe(struct platform_device *pdev)
+>  		mxs_chan->chan.device =3D &mxs_dma->dma_device;
+>  		dma_cookie_init(&mxs_chan->chan);
+> =20
+> -		tasklet_setup(&mxs_chan->tasklet, mxs_dma_tasklet);
+> +		dmaengine_init_bh(&mxs_chan->chan, mxs_dma_tasklet);
+> =20
+> =20
+>  		/* Add the channel to mxs_chan list */
+
+[Severity: High]
+This isn't a bug introduced by this patch, but I wanted to ask about the
+initialization ordering which can trigger the interrupt handler early.
+
+When a channel is allocated in mxs_dma_alloc_chan_resources(), the IRQ is
+requested before the clock is enabled:
+
+mxs_dma_alloc_chan_resources() {
+    ...
+    ret =3D request_irq(mxs_chan->chan_irq, mxs_dma_int_handler,
+              0, "mxs-dma", mxs_dma);
+    if (ret)
+        goto err_irq;
+
+    ret =3D clk_prepare_enable(mxs_dma->clk);
+    ...
+}
+
+If an interrupt line is asserted early (for example, from a previously
+aborted transaction where the client didn't call terminate_all),
+mxs_dma_int_handler() will fire immediately. It then performs an MMIO read
+on the memory-mapped controller registers (mxs_dma->base + HW_APBHX_CTRL1).
+
+Since accessing device registers with a disabled clock results in a bus hang
+on this platform, would it be safer to enable the clock before requesting
+the IRQ to prevent a synchronous external abort?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1786384168.gi=
+t.allen.lkml@gmail.com?part=3D13
