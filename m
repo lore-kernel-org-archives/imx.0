@@ -1,86 +1,89 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD1640A928
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6AD413D99
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786373515; cv=none; b=u1pYSudGfsNjZ3ZKHrgh56UQaTzNA3acyGrkBZtAnIczAUlePC2kHlImaJAgR9VZD45byBVBvcZED7HDdMVSRWgLJ040aIoTf131oArBxlt5N6j4QUsBQzsY4n0NYFp87K50nZVNyUzwpC15WpGd6I+cSJgCJ8zV1JxoBnyYs2Q=
+	t=1786373517; cv=none; b=LqmNQoCIAz+RopiHLxdDDEro2mJ9ZAtfP+VIe67YFF6A3ohgJfJxRr3UsJKXtc1gAq8/ZO5eEEWrMhTNLzApcPLsvn208O2Wnv9+2w/W/J4Ei/dD4KhdMGKYZ5TXevv/3dgY5L0FIU56CVhGplkPjDhk0uQDtqQFbPdW0+puQmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786373515; c=relaxed/simple;
-	bh=n0QwEGmm9QPFYqEaWEPfuhWwBfoE4E6XocGYB82nrkY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=H2LlxRzCt+dQgtN89kFNISf+Hovw6RjornG6m0klKzUkmCx0bJtknssJ9fqTOHN5s5UiTWwq2KoIyt5jN1wyI7wKrbp377SisB0JoumA/PbbgI2Ei2hD2G8xqvcObzxLEeT+2m2/GEFfnKTDaiehCaLaNZsHTmFqGsUgsrxfT0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XpAMESP9; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=X5m2tZxP; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1786373517; c=relaxed/simple;
+	bh=4QNydV7spsaEfA/iL4Q6QeiitR6lJ+BPeYG4Ij6Ga+0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=UznGP0jy4bW4zVjHgRcAGpPDpW5HQd+rG6AvZiTFBwgJcNeLcULKr9G5z+PAI9575Wq1utWFgMr2MSvmqKa6epuYks0Oz+QXaZSC7WDp3cwCCIMHCdoii4MMlN8g39cxJMZB6WvAlrXI71Vk1SlWuDJ2SNzZw50BtjmTbrHKzTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RVQ1ypgp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TC/wJTf5; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XpAMESP9";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="X5m2tZxP"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67ACj6FA915867
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:51:51 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RVQ1ypgp";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TC/wJTf5"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67ACj9Lm1308574
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:51:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=zxqhJG+46XP4U4QelHuaFo
-	OC2P3agnUHF42PXfBS3WI=; b=XpAMESP9n908IPHu947b12Bsdz2BREv7xJjkq1
-	M3rZwDXCp+FBLV6Rm2JhQit7XzeMRbZZXKBnaUclwygxoW05+JAvYfXfNx91QFfH
-	vkyIp+V9uTqlbwYvsxxuW/Ix5pKVIEWE7qiH7mYbdDswT38uLhE2mV2e+aJAzZ6y
-	DttSM2tMJFt88pLUsq9da1UE+m5ryWqDgejk7jQbAMEuhJZYCU6bT1ymKexbq+xg
-	SAFmlcdSPjPys1GXycjAkLH49vgJJmWq8KSg/iaSVHaBpxWZhUGT+JvzAKnnasNR
-	OkHHKU+IzF6EE5Jhf74bitMEAJA3NIV/GCxgr2CaPTDUe16w==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fy8v921m1-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	gTJShaQ8ly4nCUgfAoU7CUotG9qknpirLcGSxiDk/hs=; b=RVQ1ypgp1BFX3scU
+	OT8O+riaE4uKn+q9KFborw84tavN8QSApDN8x2eRpiIOghrkb2ntcXm+05j69IcK
+	8rJv7zuF20n5XQpIvlu7SXMHz+3Yz2OipjwZVCGD4QIC61fWtcDmY9hwwz0oX/El
+	UsvHaZ0nV6GGhgGz92PMrUzyATC87tcqln32NwrwP4zt/gqHDJN4d3PgtzlO/9eY
+	LkTExkVvxFBGHi8OB5hpxq4KbPb3hQI2Ixjny8yme8MU7U0Wpdhlw4HD3cei3O/g
+	8pUDUCm/XtnNqdQIwABalCd0Bsc543e4yy5OQuNmWYfK8gI0AA9GknCy39NYMjjr
+	iQa4sA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fyccqs63x-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:51:51 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c1a9764f0so19682711cf.1
-        for <imx@lists.linux.dev>; Mon, 10 Aug 2026 07:51:51 -0700 (PDT)
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:51:55 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52d28f8737eso38499451cf.2
+        for <imx@lists.linux.dev>; Mon, 10 Aug 2026 07:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1786373510; x=1786978310; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=zxqhJG+46XP4U4QelHuaFoOC2P3agnUHF42PXfBS3WI=;
-        b=X5m2tZxP6DYu3R9MYJOOopJs8LUZZegGnO66pQnHZyXF0yhpKAE73fLd0mbmBIMB47
-         7AozbFfigZf87eYAPuWSMGlIGl8rjI9UNADBx3Tww6HbNV9/fU+K0vs/Alx/130LDnU/
-         EXHNKFqWuF404c5n/7jz+cy05vzW0IMX0yirfPu8g/9JxxF3SWlhdyb7raGYOPJFkTyf
-         IqPQRAUsuPfYOT8JI3knWDwgb0kjFEd9X5NEnbWE/ERFme1k76vv0L0ahpKMqOr1c2bk
-         dr2zqoDnhOA+A7Xgog2CHtDd0mJqorY6IfycxE5joarDaeNT/jrexfOPjUO4qpaHUQUb
-         a0kQ==
+        d=oss.qualcomm.com; s=google; t=1786373514; x=1786978314; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gTJShaQ8ly4nCUgfAoU7CUotG9qknpirLcGSxiDk/hs=;
+        b=TC/wJTf5gYnV9hblaaVz+xEDaEInsS82c9SBDc1JTi8nr4tjHpf/hLniYmSE+touOF
+         4eQchKo9pYSWZuTt/pF0o8sjAfMYtMf9VzdwyDApyhplhS9SH2naoCOYTIHdW2fdOdFl
+         nsdTCbGxd63u8BcZebFL97uKASAhg1LapJjHLGlgVRYFRTyqQJ1T4BgHcvb0BRFQix8U
+         PQ7Lwgs870xzIRd7xjwCVv4utg11rT9zQN+GmjSwuE28SSOw7cdarNXcxT6Njcrt2fzu
+         SSp6SCGEDY3lY9oDPCcmXl2XTG6IFP7+d5J2GHpshWHLGAhQskkRJee7rCXgonqjBx3e
+         BhnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786373510; x=1786978310;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=zxqhJG+46XP4U4QelHuaFoOC2P3agnUHF42PXfBS3WI=;
-        b=jbSZdolvVOFFsRcgX6vFzjMfYCv+3NCs8pkvyTkunUuTZ4Dd4y+E9O3QCmFBE/AO2w
-         YaBt6L0lE2eFc/DwKX0uEENVawCpkC0tAEL5Ny+F1/mv9iFAY3sHayu7iMJy2pfaYH/X
-         O23bU7dZKqIgYltHn1QYg7dxtmMoZfSg6lRzE4BDA3MyU8UofAdo6W0gqL0bnNCm+8h2
-         110OSzEBqf8GldwA1NwH1koMWeHi9D29O3N0+h0kl+s7RlKCZKat2nb5soB8RQNlgF07
-         7o2psOFcJjLTucnRqedFJ3fBS4RwBa6izY1Slp4ied3G386Ctteb5cF9f/jSabqGr8i/
-         esMw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+maZF1epqmzPIz6Ur8t3PkDZQgX567uAVk78N3Hk4OlTdghF6Nym/zsK0IDh0rpsYhU8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwVKxBjTUTiWZYajxRnne9d+ZGqx/8xRiZLyX7wc2gT+OLxVDCT
-	E8JwwJDCOyJacPcOh0wsGxnyuHljfuB934d2Z/pzQlGXmupxXKy7098gUR/IQrdw4NPfRC/mmgz
-	/9Je7wSfZh700sBmJ3qo4mOLv6LTzR+MB6AmbNVg6W87xOW5oLlitCs4=
-X-Gm-Gg: AR+sD10e7VNA7WD7ag4IJhcB8UkmeU6IT0XKh8jZ3igSPMDixkj1Ciima3EMPgLGUIX
-	BWsmdH6qZnHEvzEHEoBHXYMMuUCvfU/KfvmgQHxJTbmPF7IPTWN/qpCiUpIWt8zeG5mK82niuQO
-	ZBzYpz1VdU5fpT0sCrs0jJIeTR+DfYjuO6GaAqHS2ELiyHki6jOOMwAq5zIZYJUsC8FEeJ4IxwQ
-	2Wg/hcbxPNVSEIZ6NLtHAru6g8JKShaJ5NNMHFp75GfCx1lTfoqSqT8uMs2KbpI+ciDamWvp8im
-	Q+LmTv+xYQKuawQrmHVwaWX8Gsa1rYo3Pkr3iUZgpkuz+KAmnZuVqgFoyzkHYvUgvMQmKUbwmTc
-	Icw87az5f/0sDEa7qCw+i+ohNmZJvyfOtBZYcuDBwlS+EZpFKPcYyWT5b+JLWHVH+L7igw4JZeR
-	E/MptN4VWLhQGkDQ==
-X-Received: by 2002:ac8:5907:0:b0:51a:8f3a:13b9 with SMTP id d75a77b69052e-52d20960822mr231816031cf.16.1786373510477;
-        Mon, 10 Aug 2026 07:51:50 -0700 (PDT)
-X-Received: by 2002:ac8:5907:0:b0:51a:8f3a:13b9 with SMTP id d75a77b69052e-52d20960822mr231815361cf.16.1786373509999;
-        Mon, 10 Aug 2026 07:51:49 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786373514; x=1786978314;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gTJShaQ8ly4nCUgfAoU7CUotG9qknpirLcGSxiDk/hs=;
+        b=NtS1PgykLjd4CuuzflpX4fR054vmlBrOWCDdQx+OlhcR/WF04Z1Eflk4rpbf2uclUm
+         bzSHv6wWMvAv2rrax7TEdP6XJ3zWKCiPtBz9kkjw6QDm7mJ72oa42Xc1JOHYvPdfYeBq
+         RxTFK58eyicpeKaJ4MfcSWzMBeNkQZWkU1cX+QAbh9krCaSu5hEi8wrdqS0dAalxHzrv
+         PlBD3OGYeRRfdQfqZiYGAI12QtSlfHe7GXIbKVlFF9/gf1Dv7IWQlGfXEcvX9JqlOwAp
+         pHU6uVhDf3EeFoLduigsQX82rGoE+1UMHH5wEmxyuDjdSpFvqIQSYUOSU4z2FRn9rJsS
+         CboQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqZh85UhPi4iKLE0MBGQNsx1tDEXy/GLBjjRW/dDiwJ7CofWrMGyR32jZVMzsM2AI+e8CQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzht49KxgFuScE08ECgs5qgX6/j2BGDYFX3hXQJELVghMd4X4x1
+	a5erSMRK6KUVX62X1WsEBKMXf6gGCkX59RRYrU+/+sRLyPAp5WMNzN0+NwPNfzPgFDyQNwy2xXA
+	Pt5jGzd6fs4vQeoWdNpIhRCCvpmGzl1klfQgpL4bj35HBZVD/4bZYNWY=
+X-Gm-Gg: AR+sD10ZSPtKH0ZKJFAFeno1v/0GuBza9wV3AxRgTiZ4VKp+2vgYHzit2EY2gT1MrCQ
+	Rb8wvYa1nKb9RH6VzwFErRcoR9a0mE7RcUGEu/tOn6yloRBHfvFD4aEOGD+ba0TbuyxTQaosKEV
+	0n7Tl5zfLp7PaUG+XfM0ffhUS9x3G8ZR+j9C/0H9a+Nj0KVhUBY/9F5PBwD+skDiss6OgWWDCqY
+	Z7q4oRBhnA/9tDV3bPfg+/WBKosStAW62D8eUu4Lg5QhohBTUuvZ5m3t9ERrMUIiyeGEqcsnj1W
+	/Ow1zqX6qJ0uUhZboQ7llCCjBnp6NQjj8rWqdWirJz5SpywteI8OB+8ILbKYKfwAKT3Dsdq5ewh
+	mXCj0ECw+dCLa1yBHtJhzktVUDFacxBQvN8IywbD4XJVbWsdh2gRIO6QcOpl0L4goJatSJsrmYh
+	g/FI4OQeXgneGMcQ==
+X-Received: by 2002:a05:622a:58c4:b0:51c:1ff:2512 with SMTP id d75a77b69052e-52d20a50c50mr250088851cf.33.1786373514108;
+        Mon, 10 Aug 2026 07:51:54 -0700 (PDT)
+X-Received: by 2002:a05:622a:58c4:b0:51c:1ff:2512 with SMTP id d75a77b69052e-52d20a50c50mr250088001cf.33.1786373513541;
+        Mon, 10 Aug 2026 07:51:53 -0700 (PDT)
 Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39fddd6a796sm22489661fa.36.2026.08.10.07.51.47
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39fddd6a796sm22489661fa.36.2026.08.10.07.51.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 07:51:48 -0700 (PDT)
+        Mon, 10 Aug 2026 07:51:52 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 0/4] drm/imx: fix TVE / HDMI coexistence
-Date: Mon, 10 Aug 2026 17:51:45 +0300
-Message-Id: <20260810-imx53-fix-hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com>
+Date: Mon, 10 Aug 2026 17:51:47 +0300
+Subject: [PATCH 2/4] drm/imx: ipuv3-plane: add the pixel blend mode
+ property
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,10 +92,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIHleWoC/yXMyw5AMBCF4VeRWZukraC8iligg5G4pEWaiHdXL
- L+cnP8CR5bJQRldYOlkx+sSIOMIurFZBkI2waCEyoSWAnn2aYI9exzNzCgSqQqTFzrLNYTTZil
- sX7Cqf7ujnajb3wrc9wN7Z1CJcgAAAA==
-X-Change-ID: 20260810-imx53-fix-hdmi-03129d798678
+Message-Id: <20260810-imx53-fix-hdmi-v1-2-fff9b1b17f25@oss.qualcomm.com>
+References: <20260810-imx53-fix-hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com>
+In-Reply-To: <20260810-imx53-fix-hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com>
 To: Philipp Zabel <p.zabel@pengutronix.de>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
@@ -105,72 +107,157 @@ To: Philipp Zabel <p.zabel@pengutronix.de>,
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1181;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4122;
  i=dmitry.baryshkov@oss.qualcomm.com; h=from:subject:message-id;
- bh=n0QwEGmm9QPFYqEaWEPfuhWwBfoE4E6XocGYB82nrkY=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBqeeWD0drxB6zJyouBN6QZVzN8RjwVSKS4JXKly
- Mt49RWAqPCJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCannlgwAKCRCLPIo+Aiko
- 1Y9jB/43j39n7WjjoMAQDWUq589TaOBcT8q1aNzDUtM3ol5l786d/QI0TGEFznYALxKC97mF56N
- Kug2nJmXQf/kJM90Hp/mhuIZHbvRTFtQGm7t2TspzdZ+9+CUVQVEw2D/Avr6u24qwjgkp+Iegky
- 7c5+9hXHjOC9vMYPo3Z3v47TZCKp9g7eD8AxFloZlpaFVg5BDLKI3zaUTj/zYTHkytQVTWLM034
- RMtR31LoM8xSE4MA7+lhJT9Omo8cDnfNb28GJePn/vECpbvX7Gcr1We0e8q0+ixsQO+UEI6iOZY
- huAzUDgnPWuQzxRI/HFK0w+1nPR+QA0fNkmtRF9B+edPkoJP
+ bh=4QNydV7spsaEfA/iL4Q6QeiitR6lJ+BPeYG4Ij6Ga+0=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBqeeWDajN8HOrxXriFLb5kPXKQed7DBCYPlTJEJ
+ 6eIFR+YSEGJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCannlgwAKCRCLPIo+Aiko
+ 1WDVCACsjxkK997hWtj+NXAjCYxxBz2W6w7JaFqnwMTnQ/6a7fuwFDQ/RDQt/KSf0OCi2oUXplT
+ o0PnrMFfRFPX25OQ9sxayIMVGb6M6261clcl9AQbWCBRf6vXz36soQ85Ip9v0Gxct33+c7IQ3Bd
+ T4QLf6tDW4GDzwdFAlizX/BwMnM1k/7zjHyFa2W/MdTkm4TNJbmRzRzeO+V0b3GtLikKxebyiQZ
+ t9GIeGES4E+xy3S7VSDpw0F9/ZVmEKhBA8HRTYl3QBmR6hQEsVakMphFpuqW1Nl5SJd3CphA32T
+ V94et7o/IiGBQPQYmnDf0RZBiz4tmOooj6n8LGfkK56WHvkn
 X-Developer-Key: i=dmitry.baryshkov@oss.qualcomm.com; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDEyOCBTYWx0ZWRfX8BM+Ia80ZMjE
- J9OcZ9S6EjFmlXCOutDcBpwWBtnjHlSbjE69FvUYJUIF5i0hB/SR27FW/RZZpAmt4+QL7IClK0Y
- OMSBA4R8j5P+SISarrXAVz1jhsxjoAI=
-X-Proofpoint-ORIG-GUID: mqx-nL-cJkjzMhsD8-PiO7ylzFhrsbYF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDEyOCBTYWx0ZWRfXxCcUO1sneMWa
- HwqKtD9GLdErP3qjuVSXCqtx1d2kMZJqhaz1eQlSJh6+69bl0DgqNVU+4iYpJR+Joa0GEJsbcUk
- 9q76X+1djMEv8WhG4tsX31vqT17TnhOm+Lj4aEra8IC0xJB1M1pHQ6eGptyyBPZR8+BnPw0ZYTA
- dhCHFpAUOftXcAMYiXVsbrwip1TcaYRimUQVn+2HY1aO+s1UmyxubkQtRswfsorB6NA3UzjwiAF
- xv+PVszNbqpGqyfiWzF4cpXbadfAxA7UiBtTbMXc6Xm3JVJPIU7MfdRggd90TW5ebrhaXdMCR3W
- 6paLfoDOcb0pRIAsvq8TW4RMQUj51vKIG+WKzgNVf71/HMQPJeMtZmBYKfiZ0lEGClU6V2DOujN
- IQx95psEp3PhUEEIbLuKa4bc6gojB3Hze5/bHIcOZ/0mwLvpBhWKv4i6To3H/TD7eo9z2YkCXKR
- 7PkZNmzxdxz+atV433A==
-X-Authority-Analysis: v=2.4 cv=T5m8ifKQ c=1 sm=1 tr=0 ts=6a79e587 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+X-Proofpoint-GUID: 1CPk73w3VVb30r0vNQCnnyqLDRxynHSS
+X-Proofpoint-ORIG-GUID: 1CPk73w3VVb30r0vNQCnnyqLDRxynHSS
+X-Authority-Analysis: v=2.4 cv=WNVPmHsR c=1 sm=1 tr=0 ts=6a79e58b cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8
- a=qhRTTLL9oDwathZehP0A:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-GUID: mqx-nL-cJkjzMhsD8-PiO7ylzFhrsbYF
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8
+ a=5XQbaQfSCqgvYuQxrhgA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDEyOCBTYWx0ZWRfX92IGsnrX5Ar8
+ 8frJts3CbM0Q3QxKQL7H91pE7CGpEkcA+DheUlsGim4sKkhMWwRX40Ym/VNDVX2AaTgsVYmLYKp
+ K4GA1QyV+GKkUoYbJ5pU8IHZg1YxKIb9MS+Mtcr/vPmbj2LR1TcDByR6VwOU5ngENE9CxguzJBZ
+ RdydEGSvPLWx6otpTjaIV1d2mfFo69BRtmQMoLsVpISl5FazuQF4CzEOsaBssftyVa5dK29T7Yd
+ iUolP/7TYjgFLDV2fTXd46sFpgL+LeqjrEbLyCOSQZYv9gH/5docaLedM9BFv6Nn2bFf7YO8bN9
+ jknVIHHvU79KQFgoE0JuIchFmFgHGrcIqNwEdFDA/zgwkiZAF4n7i2FFbBGeF5qDf3isdzIwAwC
+ RuzAmUdKJHMkY1DNw7Het3WTHl0VtapNGppBE33DmQqfU6X5x8mA3kv4aWChlzt0dgj/zB6q7p5
+ pirokQxD3FEJ1tMi5jw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDEyOCBTYWx0ZWRfX61Q3abbyi5El
+ sWcqfqnpNYZ2nzsOFwEOIJ/vRZuIX4hOb72vaX65JrUYsCF5R3EfFgXnLnxnYg2Y1aYWZcoA8VW
+ r5VwRwf5ugbVJd86TNWoysy1kAezIMk=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-10_03,2026-08-07_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0 priorityscore=1501
+ impostorscore=0 phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100128
 
-Testing MCIMXHDMICARD on IMX53 QSRB platform revealed that the HDMI
-output is broken. The TVE output (even unconnected) forces the PLL4
-frequency, breaking the frequency selected for the HDMI output. Fix
-those issue, making TVE stop grabbing the PLL4 frequency (by correctly
-reporting if it is unconnected).
+All three IPUv3 planes advertise formats with an alpha channel, but none
+of them ever created the "pixel blend mode" property, so userspace has no
+way to learn how that alpha is interpreted. drm_mode_config_validate()
+points this out once per plane at every boot:
 
-While we are at it, fix two plane-related issues, which are now reported
-by DRM.
+  WARNING: drivers/gpu/drm/drm_mode_config.c:872 at drm_mode_config_validate
+  [PLANE:35:plane-0] pixel format with alpha exposed but blend mode not setup
 
+The DP blends the foreground over the background as
+fg * alpha + bg * (1 - alpha), i.e. it consumes coverage alpha and has no
+premultiplied mode. Planes that are not part of a DP flow have nothing to
+blend against and ignore alpha entirely.
+
+Create the property accordingly: PIXEL_NONE and COVERAGE for the DP
+planes, PIXEL_NONE alone for the rest, and honour the resulting blend
+mode when deciding between global and per-pixel alpha.
+__drm_atomic_helper_plane_reset() defaults pixel_blend_mode to
+PREMULTI unconditionally, so override it in the driver reset.
+
+Fixes: e6245fc78b65 ("imx-drm: ipuv3-plane: allow local alpha in ipu_plane_mode_set()")
+Assisted-by: Claude:claude-opus-5
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 ---
-Dmitry Baryshkov (4):
-      drm/imx: ipuv3-plane: do not advertise separate alpha formats on DC planes
-      drm/imx: ipuv3-plane: add the pixel blend mode property
-      drm/imx: imx-tve: probe DDC before claiming the connector is connected
-      gpu: ipu-v3: di: report an unattainable pixel clock
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 43 +++++++++++++++++++++++++++++----
+ 1 file changed, 38 insertions(+), 5 deletions(-)
 
- drivers/gpu/drm/imx/ipuv3/imx-tve.c     |  1 +
- drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 49 +++++++++++++++++++++++++--------
- drivers/gpu/ipu-v3/ipu-di.c             | 16 +++++++++++
- 3 files changed, 55 insertions(+), 11 deletions(-)
----
-base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
-change-id: 20260810-imx53-fix-hdmi-03129d798678
+diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+index a0fd39eebbbc..bde5892264f4 100644
+--- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
++++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+@@ -291,8 +291,32 @@ void ipu_plane_disable_deferred(struct drm_plane *plane)
+ 	}
+ }
+ 
++static unsigned int ipu_plane_blend_modes(int dp_flow)
++{
++	if (dp_flow == IPU_DP_FLOW_SYNC_BG || dp_flow == IPU_DP_FLOW_SYNC_FG)
++		return BIT(DRM_MODE_BLEND_PIXEL_NONE) |
++		       BIT(DRM_MODE_BLEND_COVERAGE);
++
++	return BIT(DRM_MODE_BLEND_PIXEL_NONE);
++}
++
++static unsigned int ipu_plane_default_blend_mode(int dp_flow)
++{
++	if (dp_flow == IPU_DP_FLOW_SYNC_BG || dp_flow == IPU_DP_FLOW_SYNC_FG)
++		return DRM_MODE_BLEND_COVERAGE;
++
++	return DRM_MODE_BLEND_PIXEL_NONE;
++}
++
++static bool ipu_plane_use_pixel_alpha(struct drm_plane_state *state)
++{
++	return state->fb->format->has_alpha &&
++	       state->pixel_blend_mode != DRM_MODE_BLEND_PIXEL_NONE;
++}
++
+ static void ipu_plane_state_reset(struct drm_plane *plane)
+ {
++	struct ipu_plane *ipu_plane = to_ipu_plane(plane);
+ 	struct ipu_plane_state *ipu_state;
+ 
+ 	if (plane->state) {
+@@ -304,8 +328,12 @@ static void ipu_plane_state_reset(struct drm_plane *plane)
+ 
+ 	ipu_state = kzalloc_obj(*ipu_state);
+ 
+-	if (ipu_state)
++	if (ipu_state) {
+ 		__drm_atomic_helper_plane_reset(plane, &ipu_state->base);
++		/* the helper defaults to premultiplied, which the DP lacks */
++		ipu_state->base.pixel_blend_mode =
++			ipu_plane_default_blend_mode(ipu_plane->dp_flow);
++	}
+ }
+ 
+ static struct drm_plane_state *
+@@ -593,8 +621,8 @@ static void ipu_plane_atomic_update(struct drm_plane *plane,
+ 	case IPU_DP_FLOW_SYNC_BG:
+ 		if (new_state->normalized_zpos == 1) {
+ 			ipu_dp_set_global_alpha(ipu_plane->dp,
+-						!fb->format->has_alpha, 0xff,
+-						true);
++						!ipu_plane_use_pixel_alpha(new_state),
++						0xff, true);
+ 		} else {
+ 			ipu_dp_set_global_alpha(ipu_plane->dp, true, 0, true);
+ 		}
+@@ -602,8 +630,8 @@ static void ipu_plane_atomic_update(struct drm_plane *plane,
+ 	case IPU_DP_FLOW_SYNC_FG:
+ 		if (new_state->normalized_zpos == 1) {
+ 			ipu_dp_set_global_alpha(ipu_plane->dp,
+-						!fb->format->has_alpha, 0xff,
+-						false);
++						!ipu_plane_use_pixel_alpha(new_state),
++						0xff, false);
+ 		}
+ 		break;
+ 	}
+@@ -930,6 +958,11 @@ struct ipu_plane *ipu_plane_init(struct drm_device *dev, struct ipu_soc *ipu,
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
++	ret = drm_plane_create_blend_mode_property(&ipu_plane->base,
++						   ipu_plane_blend_modes(dp));
++	if (ret)
++		return ERR_PTR(ret);
++
+ 	ret = drm_plane_create_color_properties(&ipu_plane->base,
+ 			BIT(DRM_COLOR_YCBCR_BT601) |
+ 			BIT(DRM_COLOR_YCBCR_BT709),
 
-Best regards,
---  
-With best wishes
-Dmitry
+-- 
+2.47.3
 
