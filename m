@@ -1,132 +1,134 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A7F412270
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 14:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226663C0A08
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 15:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786373883; cv=none; b=EzuUMRxpWFyzU6raeIDLihORkCkqnMufxodNoGDIzKmFsyZlOUlmkwpfQyEITXOatrZwSqA2zdEDc8KfZpfhd2b6WZ60wVsZAoDXbZa1R1gjwF5Ndmt3+E4JCiq+rt86QjCRSkY07U7bBnvhe98cv5ouZLqJMVB4BHaAsj5K38U=
+	t=1786374113; cv=none; b=HK4ahO2KmmIP/xaCa0YdoRy/U4QePK/bVHD2Mt3WetAYViUrMtUDL+WxY6J2D4IezPjJxc+96bpOov3T/mhHu0lk05tSTYbTuK2opUzjoYWoWhXfD1dzx7PGsAvOvPOFKr6H71B0agx+YNZDaSwUtoZa9hMGFZzoedVi3VP3Vx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786373883; c=relaxed/simple;
-	bh=Z+BxUGP0v5KLo0GZ0KERARfFywosbwzNXpW+Pln9l+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eE+rdZ8pj9BRnwMq9Jm7ZNxJqauQR8wW1eiRZmbs3tP5EIKl71vq+B/m7BcH83Pk7L7ahlhQvFj3PtkWlJyL0rk+I8RxZ1ZmapfknQiLkCJ7x1btz17k8QXizyhGe9x9+wEOsLKV3UMxdwP0SyK3dCtelhWSs8rAN+ADAuYRcCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=wqPpHJvg; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1786374113; c=relaxed/simple;
+	bh=k470MilQ+jzENu9ouAgut3D2jkQy0ifgrcJM+MitaIU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MmsyUqW2cn6NjnOJuyJgpnjUVykM2BNt8bPJaC3Hc56Wu1QwryzuNac3gp1qCPO43WnAmbT8s8c4q1G3gqDAk3ZseehgOjeHaDk5+PhOuMfsbIJDIGblztaN3Ynfa1/sNprk0RxMrd7XdTVkz1XJz9Jbz23y8AXAQJJNtxYuLm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKmyUTUl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="wqPpHJvg"
-Received: from francesco-nb (93-35-5-212.ip52.fastwebnet.it [93.35.5.212])
-	by mail11.truemail.it (Postfix) with ESMTPA id 27EF71F984;
-	Mon, 10 Aug 2026 16:57:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786373878;
-	bh=2VFa4gkN/MC1afzYI4GdGQGF4nVMqhTx+VvOx02Ma4I=; h=From:To:Subject;
-	b=wqPpHJvguCOWz3azxcTJkLu8IeT87b6wUKuwgFapNDK2YwwNQkL5yZ05OpxhfSVH6
-	 PTBkjeP8cfyKFzkC8B5HDUSMsLWMyfRQJnLbmwo11qUAqbSdK2CxZllX3nMt+Z0qQ6
-	 qQIA9mm/kinVPTo3xq3MUEWnTLjYPcEvmkZxWhJnQsiwhzzsz03ScOWg/LOPvWqIah
-	 RNB/pmgMVk1TzyWMc1wGy8bU+S2vmyq8mAiIW/H2IsKVTpVOpAe00Oj7elugN9gbuG
-	 gTviMJjto/TXsUV9hD/juwCqlGKY5GiOPVHwIQK9rr8io2Ag6BBjpHQHWV01Q9BqS5
-	 aZRruV3M65/vQ==
-Date: Mon, 10 Aug 2026 16:57:55 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@oss.nxp.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] arm64: dts: freescale: add DT overlay for
- MX95-15x15-FRDM RPMSG usage
-Message-ID: <20260810145755.GC81453@francesco-nb>
-References: <20260730163412.1145-1-laurentiumihalcea111@gmail.com>
- <20260730163412.1145-5-laurentiumihalcea111@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKmyUTUl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0131F000E9;
+	Mon, 10 Aug 2026 15:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786374111;
+	bh=YShLWpcwCs6MJSLzKT73D+ZIPEOHNOp2B3e9gM9+pgE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mKmyUTUl5Vi9dUS2PwSCTwhNjkjeHCdZG326Ojxea/DFBX3QETG7EM9Jhtyym5Wdi
+	 8R2SLBk6lxlbcnUe9efyvTqcVyxwcad9x8wU6YdYsWjB+1o1TY8sKcBygzsUDcylUl
+	 gSDDgSgun1MudarEs+0UKF3WIHggRdXYrEP78WqoHC8eswlhK2dW9j0pMa5G6b4aYk
+	 37EQno4Axa9blVjXqSjyknUYrVzQtrlixUcM18PJQZQZ+J8sYnhqH7tvwC+2Lh7gfq
+	 EZ1Z9rqxW8loSSLIzdx7dgYqvxPyYMqDQzVc9sfruyyjdjUZcyZ5H3O+JCLvUQ1Mz+
+	 pY6qISD1pXxrw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/4] drm/imx: imx-tve: probe DDC before claiming the
+ connector is connected
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260810-imx53-fix-hdmi-v1-3-fff9b1b17f25@oss.qualcomm.com>
+References: <20260810-imx53-fix-hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com>
+ <20260810-imx53-fix-hdmi-v1-3-fff9b1b17f25@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 10 Aug 2026 15:01:50 +0000
+Message-Id: <20260810150151.7E0131F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730163412.1145-5-laurentiumihalcea111@gmail.com>
 
-On Thu, Jul 30, 2026 at 09:34:12AM -0700, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add RPMSG DT overlay for the MX95-15x15-FRDM board. This overlay is meant
-> to be used with the mx95evkrpmsg system manager configuration for
-> remoteproc and audio over rpmsg-usecases.
-> 
-> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/Makefile        |  3 +
->  .../dts/freescale/imx95-15x15-frdm-rpmsg.dtso | 67 +++++++++++++++++++
->  2 files changed, 70 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index 95ae85ab4adf..3f98132f5a32 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -707,6 +707,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx943-evk-sdwifi.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-ab2.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-frdm.dtb
-> +dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-frdm-rpmsg.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-frdm-pro.dtb
-> @@ -729,6 +730,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-mallow.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-yavia.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-zinnia.dtb
->  
-> +imx95-15x15-frdm-rpmsg-dtbs = imx95-15x15-frdm.dtb imx95-15x15-frdm-rpmsg.dtbo
-> +
->  imx95-15x15-evk-pcie-dtbs += imx95-15x15-evk.dtb imx-m2-pcie.dtbo
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk-pcie.dtb
->  
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-> new file mode 100644
-> index 000000000000..bc02864c6f88
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm-rpmsg.dtso
-> @@ -0,0 +1,67 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2026 NXP
-> + *
-> + * This DT overlay is meant to be used alongside the mx95evkrpmsg SM
-> + * configuration for remoteproc and audio over rpmsg.
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&{/} {
-> +	remoteproc-cm7 {
-> +		compatible = "fsl,imx95-cm7";
-> +		mboxes = <&mu7 0 1>, <&mu7 1 1>, <&mu7 3 1>;
-> +		mbox-names = "tx", "rx", "rxdb";
-> +		memory-region = <&vdev0buffer>, <&vdev0vring0>,
-> +				<&vdev0vring1>, <&rsc_table>;
-> +		memory-region-names = "vdev0buffer", "vdev0vring0",
-> +				      "vdev0vring1", "rsc-table";
-> +	};
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-should we have a common dtsi, instead of having an overlay for each
-board? something like arch/arm64/boot/dts/ti/k3-am62-ti-ipc-firmware.dtsi ?
+New issues:
+- [Medium] Missing polling configuration for dynamic hotplug detection.
 
-the goal would be to avoid duplication, and to have the functionality
-just working out of the box for all the boards that opt in for it.
+Pre-existing issues:
+- [High] Missing -EPROBE_DEFER handling undermines the intended fix under n=
+ormal probe ordering.
+--
 
-Francesco
+--- Patch [3]: [PATCH 3/4] drm/imx: imx-tve: probe DDC before claiming the =
+connector is connected ---
+commit 496cfa19c398d86d2f77e8a07cbe96a51f14ca0a
+Author: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
+drm/imx: imx-tve: probe DDC before claiming the connector is connected
+
+This commit adds a detect_ctx hook to the TVE connector using the DDC bus to
+detect whether a monitor is attached. It aims to fix a CRTC timeout issue
+caused by unconditionally lighting up the VGA output when nothing is
+connected.
+
+> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ip=
+uv3/imx-tve.c
+> index e861b8b9d8fa8..11ac69561eb81 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+> +++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+> @@ -322,6 +322,7 @@ static const struct drm_connector_funcs imx_tve_conne=
+ctor_funcs =3D {
+>  static const struct drm_connector_helper_funcs imx_tve_connector_helper_=
+funcs =3D {
+>  	.get_modes =3D imx_tve_connector_get_modes,
+>  	.mode_valid =3D imx_tve_connector_mode_valid,
+> +	.detect_ctx =3D drm_connector_helper_detect_from_ddc,
+
+[Severity: Medium]
+Since this adds dynamic detection through the detect_ctx callback, shouldn't
+we also configure the connector polling flags in imx_tve_bind()?
+
+It looks like the connector is initialized here:
+
+imx_tve_bind() {
+    ...
+    ret =3D drm_connector_init_with_ddc(drm, connector,
+                                      &imx_tve_connector_funcs,
+                                      DRM_MODE_CONNECTOR_VGA, tve->ddc);
+    ...
+}
+
+Without setting connector->polled =3D DRM_CONNECTOR_POLL_CONNECT |
+DRM_CONNECTOR_POLL_DISCONNECT, the DRM core's periodic poll worker will
+ignore this connector. Will this prevent dynamic detection if a user plugs
+in a monitor after boot?
+
+[Severity: High]
+This is a pre-existing issue, but could probe ordering undermine this fix?
+
+The patch relies on tve->ddc being initialized to accurately report the
+connector status. However, imx_tve_probe() does not currently handle probe
+deferral:
+
+imx_tve_probe() {
+    ...
+    tve->ddc =3D of_find_i2c_adapter_by_node(ddc_node);
+    of_node_put(ddc_node);
+    if (tve->ddc) {
+    ...
+}
+
+If the I2C driver hasn't probed yet, tve->ddc will be left as NULL instead
+of returning -EPROBE_DEFER.
+
+If detect_ctx is later called with a NULL DDC adapter,
+drm_connector_helper_detect_from_ddc() will return connector_status_unknown.
+Because the DRM core treats unknown as connected when fallback modes are
+involved, does this mean the CRTC timeout bug will reoccur whenever the I2C
+driver probes after imx-tve?
+
+>  };
+> =20
+>  static const struct drm_encoder_helper_funcs imx_tve_encoder_helper_func=
+s =3D {
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260810-imx53-fix-=
+hdmi-v1-0-fff9b1b17f25@oss.qualcomm.com?part=3D3
