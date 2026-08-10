@@ -1,30 +1,31 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE273435518
-	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 18:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543AA4322FF
+	for <imx@lists.linux.dev>; Mon, 10 Aug 2026 18:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786385171; cv=none; b=ajvL29H1RS9BMwjkyy4yBeFZLPYkfsWk7GHGMDNsqLPxpeOCAzXwWIsovELlyp68m9sjZwj+IDyzhKon1Jaqu7g72Ln4JLDERuT2xYHAo+Pc329xwWShApT4zsRGhpsc6vO3sF7RrrKyMhTb4VgWkloozuLUXFmfDbGSGM1cUCs=
+	t=1786385176; cv=none; b=oOdozfoKyjEnQJ9F3XbaYBY1T4xVTene50WkJeb6SZ0HjyTl8ASUhXZ+j6a1krDNei3P3sHnpWga8XGKrCcnfFfR0fkB3tAWtF0KsR8MPi0RFYSkqqjJ61YdJP/KSOc53d+PMX6irX9of49wMGk5IbF0XrvexC6BaTyppcjiBtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786385171; c=relaxed/simple;
-	bh=fZfGjCDyeRuGCB+CDHOTq5rehhGrNjqpUUeBXf/FSfk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QDguSV7y/nevQ4t4nDXm2MMOcDJWod7WP7n/rF6ufgDtO5N9ZhBC9fSsxheTygyQzo8LlzkmMKvuja8nSwtuk4YwVorlYqT7CsOvAAvzqFUM2yv3mdzouE+m8pf7eVcqw+wo5BuUGpwgQrZvfvXYUcbIr40/H4a/RJnB1pEWUXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AAWos9AW; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1786385176; c=relaxed/simple;
+	bh=RjZzlaebzxRzYkIyzsrEy+VoPDIAk3bf2qODIVtd/x0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C+d9Ksz/48Q2k/WSJud1C9qxWLj2bw4y4LJshb8YEsvQ4XQJaiQJT2ppqQ5D3tP7X5zMHfeR8GgoJu5Z1q1xunSe2KYy6X/AMSRCxOvtGoPt2mZ+u6lSIqSD1VETGW3CNqeKzvCG4DcmOZMld0bIzeHOiLsgZxBOcVrUTbWNlnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=b+rPujPd; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AAWos9AW"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="b+rPujPd"
 Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E38B812F;
-	Mon, 10 Aug 2026 20:04:51 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9F34D1D98;
+	Mon, 10 Aug 2026 20:04:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1786385092;
-	bh=fZfGjCDyeRuGCB+CDHOTq5rehhGrNjqpUUeBXf/FSfk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AAWos9AWJQYvy6XpYkoqKeAQHbbKmyySMG5nYa39G98fkWckp4bLHvPTb7BKsEKGG
-	 M+qAJ675SM5Hr3M999dL328msOZETj09bLB6VNe6GP6mTNtBnKMIAnSA2nUz+d4Zg9
-	 KglQculHqdN2L2RJw5PG8ih4b5Dof0+axbByzgPg=
+	s=mail; t=1786385099;
+	bh=RjZzlaebzxRzYkIyzsrEy+VoPDIAk3bf2qODIVtd/x0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b+rPujPdKwdRwtbpP0WA2ymMtesh1qRg9SQztYNWQ49SGh/cZ48/ce8/rnxklYuE2
+	 kMqS2QWmD6fooACJ0tmP6MwKc5xcZ+BsZvV9PQ+0Wn/vn8qh72q7kQBPZOkyhcOPND
+	 KNlazpHZ8pUH4Umy45KT1P5PkaOivEw9k/DNZK7E=
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: devicetree@vger.kernel.org,
@@ -33,23 +34,17 @@ Cc: devicetree@vger.kernel.org,
 	Conor Dooley <conor+dt@kernel.org>,
 	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
 	Sakari Ailus <sakari.ailus@iki.fi>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Fabio Estevam <festevam@gmail.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Roger Quadros <rogerq@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	imx@lists.linux.dev,
-	linux-omap@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: [PATCH v3 0/7] ARM: dts: Replace clock-frequency in camera sensor nodes
-Date: Mon, 10 Aug 2026 21:05:57 +0300
-Message-ID: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev
+Subject: [PATCH v3 6/7] ARM: dts: nxp: imx6qdl-pico: Replace clock-frequency in camera sensor node
+Date: Mon, 10 Aug 2026 21:06:03 +0300
+Message-ID: <20260810180604.3034255-7-laurent.pinchart@ideasonboard.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
+References: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,56 +53,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The clock-frequency for camera sensors has been deprecated in favour of
+the assigned-clocks and assigned-clock-rates properties. Replace it in
+the device tree.
 
-This patch series contains the leftovers from "[PATCH v2 00/72] media:
-i2c: Reduce cargo-cult" ([1]). All driver patches have been merged, but
-DT changes for ARM platforms were postponed to the next kernel release
-and ended up being forgotten.
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+Changes since v1:
 
-To refresh everybody's memory, a large number of camera sensor drivers
-directly use the "clock-frequency" property to retrieve the effective or
-desired external clock rate. This is standard behaviour on ACPI
-platforms that don't implement MIPI DisCo for Imaging, but usage of the
-property has leaked to OF-based platforms, due to a combination of
-historical reasons (using "clock-frequency" was initially considered
-right until before the introduction of "assigned-clock-rates") and plain
-cargo-cult.
+- Drop added blank line
+---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Two series of driver patches that replace manual handling of the clock
-frequency in camera sensor drivers have been merged. The clock-frequency
-property is now deprecated, in favour of assigned-clock-rates. This
-patch series replaces the last users of clock-frequency. This aligns the
-DT bindings and device tree sources to the current recommended practice.
-
-[1] https://lore.kernel.org/linux-media/20250812214620.30425-1-laurent.pinchart@ideasonboard.com
-
-Laurent Pinchart (7):
-  ARM: dts: samsung: exynos4210-i9100: Replace clock-frequency in camera
-    sensor node
-  ARM: dts: samsung: exynos4412-midas: Replace clock-frequency in camera
-    sensor node
-  ARM: dts: ti: omap3-n950: Replace clock-frequency in camera sensor
-    node
-  ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
-  ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor
-    node
-  ARM: dts: nxp: imx6qdl-pico: Replace clock-frequency in camera sensor
-    node
-  ARM: dts: nxp: imx6qdl-wandboard: Replace clock-frequency in camera
-    sensor node
-
- arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi      | 4 +++-
- arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi | 4 +++-
- arch/arm/boot/dts/samsung/exynos4210-i9100.dts   | 5 ++++-
- arch/arm/boot/dts/samsung/exynos4412-midas.dtsi  | 5 ++++-
- arch/arm/boot/dts/ti/omap/omap3-n9.dts           | 5 ++++-
- arch/arm/boot/dts/ti/omap/omap3-n900.dts         | 3 ++-
- arch/arm/boot/dts/ti/omap/omap3-n950.dts         | 5 ++++-
- 7 files changed, 24 insertions(+), 7 deletions(-)
-
-
-base-commit: 56c29fa3ee666197516a231e75aed789ae9c530d
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi
+index ca4cb986efbc..0cc05d084f9b 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi
+@@ -233,7 +233,9 @@ camera@3c {
+ 		pinctrl-0 = <&pinctrl_ov5645>;
+ 		reg = <0x3c>;
+ 		clocks = <&clks IMX6QDL_CLK_CKO2>;
+-		clock-frequency = <24000000>;
++		assigned-clocks = <&clks IMX6QDL_CLK_CKO2>;
++		assigned-clock-rates = <24000000>;
++
+ 		vdddo-supply = <&reg_1p8v>;
+ 		vdda-supply = <&reg_2p8v>;
+ 		vddd-supply = <&reg_1p5v>;
 -- 
 Regards,
 
