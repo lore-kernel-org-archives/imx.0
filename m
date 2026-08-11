@@ -1,45 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B0930566B;
-	Tue, 11 Aug 2026 21:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B2338BF72;
+	Tue, 11 Aug 2026 22:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786484943; cv=none; b=QhrGwYG7pR28rE6GekzHCCSkmgZ2iIkfOtwxNzx9TVoSbp/s2TdouhvzELX/loGGT1FYICUHrAAoSwVsq3AlLu29l+OQMOKa1Ev0Jv+Sk8k0ZY8UP24YxpxMmVR2gH4jMs4yjQP8JLRHuKFeLsf3gBzLs6rQf+6+HYBbrdQBi3o=
+	t=1786487787; cv=none; b=bydltjQZjtQCzslXAZS92MwzlWxDtt/8WEdyjWxJqRr1rl4g+pEUAWEiXYYJmPRon7TZpDPlyDF8XMOtZGFHCYMuBBK3uVGJW932OpLg7vLo1CXZfSFPa8LeP0Ea1zNLpTAlQb4ErE6omHL705D7uC0brAxMQnE4EfD1c/Nj228=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786484943; c=relaxed/simple;
-	bh=uKQMt6+SE2ZF5aqnMiLFGwt0Tm8Sg7up0mLVgeB2w5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=b5UlQbBw5I21k7FRGD1OJxHB4EpPqg1MaAyGcO/G3Bx6M0f58q+ZquohZoJ2ujeq2rMYqknXy1Yct2c6XHXoAMasMhuwXYtk+WNFNHLcTX+I1W45Q4zQeiAIAJOoFY7XqxxhHkI7gRaX+RSU8cum8eFvlFCBqsPqxt966DaBl20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lwEC3WWH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786487787; c=relaxed/simple;
+	bh=hLXlO8OGbf3XJSbiWuF+iEt1Mq+7LeGJsBLgoIAggdw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lBMEFOK3CPjYDDz+iO7aTCuWN8cNNplT8tdCk4PbYKfvvmVUWZTvX9tWny1BzptnK5kkT1BJtmTkt3nkpL/a5F5r+/pz5lBzPCz4gWf4bn9FH3Mxy4kR5JUrG19KvlyB051rlwlOktdpwReMgzpZzTwdpZRi0wMYxxFOvueIfjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NyQYYuvm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lwEC3WWH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209A71F000E9;
-	Tue, 11 Aug 2026 21:49:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NyQYYuvm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0B11F000E9;
+	Tue, 11 Aug 2026 22:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786484942;
-	bh=B0X6XgAAAhF113rxevrEnj0y6G30X+VD38KOAafz1OM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=lwEC3WWHEQGp0yk5pVCvSu2dvNiQss7sYpsE3idAKf0KzdjtaDZWhYvKYqw8nLF0P
-	 QEyD6V6EofaEHC/iNXhyKxA7T3YVu5pjcc1WUX311W3d8AW75Mtjhg11vL0CX2mTUj
-	 ngGaB9jWe3sL2m9mCs0xf1ch80+mYKMfLs5e1p0/kK7QjM6cYeFCLqaQKmVtwLmObv
-	 l84skZmivfPK0UZYK1DtX75+sygQ9UWLjG6muqhNuO72EvwUWdg8snaGtm4TjliBfA
-	 WVZpNLFnn4v8qmYKu1B/FINCQqE7giW3hsPjL+R4zxMai/rMe5Tmb3aq0nJJ0gOC83
-	 z1FXacHYaWRAw==
-Date: Tue, 11 Aug 2026 16:49:00 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Leonardo Costa <leoreis.costa@gmail.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	regressions@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, leonardo.costa@toradex.com,
-	francesco@dolcini.it, Sherry Sun <sherry.sun@nxp.com>
-Subject: Re: [REGRESSION] mainline/master: PCI link creation fails on Apalis
- iMX6
-Message-ID: <20260811214900.GA763236@bhelgaas>
+	s=k20260515; t=1786487786;
+	bh=SOjRDT0QyUmvcbxdw+hgxoVn/f53/4hB1akmWL7rRCE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NyQYYuvmiglFEplEmbzildxSn+OSKqkPuV0e5r1r62O8++csG0c5Bxcov9p5QSOsU
+	 WYbv8w0keVxp02RgfiNSsazE6AYbQj0wHXNX3bh1svOOJqxxymx27EuPaFHQTM90k5
+	 vD4VyHR/J3ZV63GTFeJBM87dY4+a79XFX5jI1bmh3McSFTxDOw9sEgp8qAoKxU4Ct8
+	 cQUsCxb6yA6d073R907SiyNWhS/avujM7EGJ6h0Tlc7OXKxI6Xh+uJOjocI2cRzdTe
+	 yp37UY2pntrSqcPsmF9g0AqWy4VoUlajjpTEl9wqDBEAqapkeOfsc4SHGeY7zT/Sts
+	 PKiWw6H+6f7rg==
+Date: Tue, 11 Aug 2026 15:36:22 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: andersson@kernel.org, konradybcio@kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2] soc: qcom: ubwc: Fix link error when QCOM_SMEM=n
+Message-ID: <20260811223622.GA934543@ax162>
+References: <20260811151905.311267-1-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,56 +43,75 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bl7i3obu2clzsgeoct2a4mtfhv6typcjdqmgneropf3hpgwve6@n2m5uhlduw57>
+In-Reply-To: <20260811151905.311267-1-daniel.baluta@nxp.com>
 
-[+cc Sherry]
-
-On Mon, Aug 10, 2026 at 02:54:45PM -0300, Leonardo Costa wrote:
-> Hello,
+On Tue, Aug 11, 2026 at 06:19:05PM +0300, Daniel Baluta wrote:
+> DRM_MSM unconditionally selects QCOM_UBWC_CONFIG, which calls SMEM APIs,
+> causing a link error on non-Qcom platforms (e.g. SOC_IMX5):
 > 
-> We are seeing a regression on Apalis iMX6 where connected PCI device
-> links fail to come up at initialization, as shown below. The issue is
-> not on the devices' physical connection, as they worked properly on v7.1
-> and are working on other stable kernel versions.
+>   arm-linux-gnueabihf-ld: ubwc_config.c:(.text+0x2c): undefined
+>       reference to 'qcom_smem_is_available'
+>   arm-linux-gnueabihf-ld: ubwc_config.c:(.text+0x4c): undefined
+>       reference to 'qcom_smem_dram_get_hbb'
 > 
->     [    0.154243] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
->     [    0.154400] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
->     [    0.154439] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
->     [    0.154553] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
->     [    0.356072] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
->     [    0.356181] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
->     [    1.364757] imx6q-pcie 1ffc000.pcie: Link failed to come up. LTSSM: POLL_CONFIG
->     [    1.365056] imx6q-pcie 1ffc000.pcie: probe with driver imx6q-pcie failed with error -110
+> Relax the selection of QCOM_UBWC_CONFIG to ARCH_QCOM only and make QCOM_UBWC_CONFIG
+> depend on QCOM_SMEM make the requirement explicit.
 > 
-> Complete logs: https://paste.debian.net/hidden/f08cdf68
+> Fixes: 1b445022d1d0 ("soc: qcom: ubwc: Get HBB from SMEM")
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+> Changes since v1:
+> - (addressed feedback from Dmitry) replace adding static inline stubs with preparing a better config
+>   dependecies so that we use the qcom_smem symbols only on QCOM platforms.
+> - Link to v1: https://lore.kernel.org/imx/sy2ulk536ryakhy6fdnqr4asvzvufqk3dlo2awdrfomulyf4n4@qtp4qoazqmhj/T/#t
 > 
-> This may have been caused by commit [1], which was introduced to solve
-> an issue where the Apalis iMX6 module wasn't booting, and this second
-> regression went unnoticed since then.
+>  drivers/gpu/drm/msm/Kconfig | 2 +-
+>  drivers/soc/qcom/Kconfig    | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 > 
-> Is it possible for all PCI changes to be reverted back to how they were
-> in v7.1 before the next release?
+> diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
+> index 09469d56513b0..ab3844521255e 100644
+> --- a/drivers/gpu/drm/msm/Kconfig
+> +++ b/drivers/gpu/drm/msm/Kconfig
+> @@ -22,7 +22,7 @@ config DRM_MSM
+>  	select TMPFS
+>  	select QCOM_SCM
+>  	select QCOM_PAS
+> -	select QCOM_UBWC_CONFIG
+> +	select QCOM_UBWC_CONFIG if ARCH_QCOM
+>  	select WANT_DEV_COREDUMP
+>  	select SND_SOC_HDMI_CODEC if SND_SOC
+>  	select SYNC_FILE
+> diff --git a/drivers/soc/qcom/Kconfig b/drivers/soc/qcom/Kconfig
+> index fd4d4ecd2df0f..e0629e9328c87 100644
+> --- a/drivers/soc/qcom/Kconfig
+> +++ b/drivers/soc/qcom/Kconfig
+> @@ -321,6 +321,7 @@ config QCOM_QMI_HELPERS
+>  
+>  config QCOM_UBWC_CONFIG
+>  	tristate
+> +	depends on QCOM_SMEM
+>  	help
+>  	  Most Qualcomm SoCs feature a number of Universal Bandwidth Compression
+>  	  (UBWC) engines across various IP blocks, which need to be initialized
+> -- 
+> 2.45.2
+> 
 
-It's *possible*, but it's tight and it would be a lot to revert.  I
-think all these have been added since v7.1:
+This does not fully fix the issue. ARCH_QCOM=y and QCOM_SMEM=n will
+still trigger the issue because select does not respect dependencies:
 
-  aad953fb4eed ("PCI: imx6: Fix IMX6SX_GPR12_PCIE_TEST_POWERDOWN handling")
-  610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-  250eea5c06f5 ("PCI: imx6: Parse 'reset-gpios' in Root Port nodes")
-  0c26b1c34d12 ("PCI: imx6: Configure REF_USE_PAD before PHY reset for i.MX95")
-  9dda3f83ba67 ("PCI: imx6: Assert ref_clk_en after reference clock stabilizes on i.MX95")
-  85c1fcfa740d ("PCI: imx6: Integrate new pwrctrl API")
-  d4b52f83f198 ("of: Add convenience wrappers for of_map_id()")
-  f71f07bee9b5 ("of: Factor arguments passed to of_map_id() into a struct")
-  3567bcf0e985 ("PCI: host-generic: Move legacy DT binding fallback decision to caller of pci_host_common_parse_ports()")
-  2c5768344f88 ("PCI: imx6: Move pci_pwrctrl_create_devices() to imx_pcie_probe()")
-  f26b1c697a2b ("PCI: imx6: Add 'skip_pwrctrl_off' flag support")
-  c2b9620359b7 ("PCI: imx6: Add runtime PM support for i.MX95")
-  7678e81498e2 ("PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper PHY power sequencing")
+  $ echo CONFIG_QCOM_SMEM=n >kernel/configs/no_smem.config
 
-I'm hoping Richard and Sherry can resolve this issue.  I guess maybe
-the config details needed to reproduce it are in
-https://lore.kernel.org/all/20260811063752.GA7332@francesco-nb ?
+  $ make -skj"$(nproc)" ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- mrproper defconfig no_smem.config all
+  WARNING: unmet direct dependencies detected for QCOM_UBWC_CONFIG
+    Depends on [n]: QCOM_SMEM [=n]
+    Selected by [m]:
+    - DRM_MSM [=m] && HAS_IOMEM [=y] && DRM [=y] && (ARCH_QCOM [=y] || SOC_IMX5 [=y] || COMPILE_TEST [=n]) && COMMON_CLK [=y] && IOMMU_SUPPORT [=y] && OF [=y] && (QCOM_AOSS_QMP [=y] || QCOM_AOSS_QMP [=y]=n [=n]) && (QCOM_OCMEM [=m] || QCOM_OCMEM [=m]=n [=n]) && (QCOM_LLCC [=m] || QCOM_LLCC [=m]=n [=n]) && (QCOM_COMMAND_DB [=m] || QCOM_COMMAND_DB [=m]=n [=n]) && PM [=y] && ARCH_QCOM [=y]
+  ERROR: modpost: drivers/soc/qcom/ubwc_config.ko: symbol 'qcom_smem_is_available' undefined!
+  ERROR: modpost: drivers/soc/qcom/ubwc_config.ko: symbol 'qcom_smem_dram_get_hbb' undefined!
+  ...
 
-> [1] 7678e81498e2 ("PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper PHY power sequencing")
-> Link: https://lore.kernel.org/all/20260629143439.361560-1-leoreis.costa@gmail.com/
+-- 
+Cheers,
+Nathan
