@@ -1,232 +1,108 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55279407582;
-	Tue, 11 Aug 2026 06:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E39D397332
+	for <imx@lists.linux.dev>; Tue, 11 Aug 2026 07:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786430294; cv=none; b=DRzF6I49Fx4YYKVn2hww7E52CxBl/LESvIL9O134r4hl3UvsCPn+jf93yb0STNK/X8YY9V8uFQneEcK00zeSHHe+9VWjVp7vyhJsXm3vzmrW5b0ISP5jmSaxNTJGFsQYGtccBy9T+TOxt7PF7qX7/744c2v5HxxI16Jk9vPrHaU=
+	t=1786433399; cv=none; b=dYa/375EqO6Pk/S946xhnVZuMW9Qe9sn15zK38wCmc+VMc5LeDPUOsOkIJoiUicKW0blqBX1YKdsZhebwpFxjSUZfm3o5e3yWU+f5LQS6w5glaRWPpYzjVpul2gerVA424qm5LoWwgRw0X1c9aCDP3Xo/LMz5TBFLd45wcNvUus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786430294; c=relaxed/simple;
-	bh=KrmseUJs+he1fokqoK+ierlL/CGpwzoasSMq+YQNgwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pGvccgQr8F5P8jYUZAJjYIjHebWfqsRc5owd75XFAFsalj1U2ULJ6NHsOhLvXkhR1CVtBF4XNFpWoh8xNE4xFJ1ZEWswwN7xp4VecBKOJYYpipnAgfTxoRZvOwka/Sm5ExS7icVyvFCHMxZtIslrcjStuIB/Mg7sHkoCf+eRnJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=L6AUW32F; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1786433399; c=relaxed/simple;
+	bh=zoyXTz6LC1R6AOMtwoPutKdVQy/F8bioEUJwUg52RjA=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kc+BCHShEmBGPnYRebAv7hEkkMoaiipOC2QqRIN2fDz9gho0ePjJ5O9BJIHGP5BEhgIQ3ksma3rwLHOr2sS1eZR/UL32Kb8Dm9M84b800LTzVRoxAkIyuDJzvmRAaO2ZxDUwt7LxGqrfALnSQs2HQUJvP7qPsCMRiXhOBeBIffY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h9MJlD/T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="L6AUW32F"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id E5A431FD34;
-	Tue, 11 Aug 2026 08:37:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786430278;
-	bh=bxQ/JVN7kCxCQB3HdoijyIyqrXUmPIZpcFd1H63BlNI=; h=From:To:Subject;
-	b=L6AUW32FPrvIWnJ7D/WMO9AtzxEho4sGdj88qzGzFFjbjNO+jq4JwpO09+GDKkTrc
-	 aEm2zGMnTaKsdDteXL9b6lRC7bLL/kaduvJYH8XHaWS71DnrxzWmnXXk5Y047nT2aA
-	 rS+lZ9DbEECJdOfX8f5UBH2Ox1bpzfbj8UedIv97SzItyuM82Ra6JlbNOf4MHQ3dG2
-	 IuVzDx7kLBLQbCzbsCb2iyhEsAtiIQFjBkf/r2KeN7lU5g/E9r+3xfKHpzKM480RPj
-	 gFeShsQmLB0gaC8gYnpBckHhvQNtl/kkINzrjxLmFOOhOMS2/4Sw2WgXusxWe/bym1
-	 edIWB8GeZDjcA==
-Date: Tue, 11 Aug 2026 08:37:52 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: Leonardo Costa <leoreis.costa@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"leonardo.costa@toradex.com" <leonardo.costa@toradex.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
-Message-ID: <20260811063752.GA7332@francesco-nb>
-References: <20260629143439.361560-1-leoreis.costa@gmail.com>
- <20260715234736.GA288957@bhelgaas>
- <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
- <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
- <3hxiy6aaiagt5zunntpidaeqc4or4wrebf7mu7asvyyibqmvo2@xhvasdqp64rw>
- <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h9MJlD/T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F6A1F00ACA
+	for <imx@lists.linux.dev>; Tue, 11 Aug 2026 07:29:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786433398;
+	bh=umesvR1teUL1fcs6zCQaA4uwUSphr0DcLDjBnMFX9JE=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=h9MJlD/TMbk1yYwxU1auxF3+RTiscFC8LEVkGOBR3L0L5NnHKaO35NeHFQbkMq7+X
+	 KpjM6059ZumPxL3YaJJ58W+d2plUYv4UhsRjmuO8c3PXeMRGCo+WjQwVyHS+HdmnaK
+	 LESbW/tUZTbeRqV6Rk3F3JSfA/7Urk1eaIb/1Ty0XHB5rNkIVSx2kwVbMo1mRDUDw3
+	 8o759Z3P0QB95srqkPVsv9lYLOwLewOTKZjSmDHfT2kiJ1N12/qyE9e8ikWarOH8nB
+	 VB9Z+UoNQoVli6ZzDwo80aAOEb2AsdwLNGx6T1wTP/5l3SSeem4O5GSgqDCWkq7rGM
+	 zcHmD5JC4udtQ==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b2a22c52c1so2699721e87.3
+        for <imx@lists.linux.dev>; Tue, 11 Aug 2026 00:29:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqugSWQJRfM2nLis3hbrv2h5qAVEhfiJt2a84AYboM2hZWimnRrb9t86UAEXfS9aDCGF+I=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8FqAlI9S1dne1bpXoLHiUhNwqHPhZlFHrUqcC/+Agsg3U0hDB
+	Tvz5lmZIPMmDCT5a/sgWSdhFmhoo/Q8THLs/LHq5wLOHPq0w/6ERNKz+OCqk+8DkKdlQmf28ZEY
+	MRZCHBXkFu5A6eKKiZPvxFtsN5giFuw2w35gY1jDqsA==
+X-Received: by 2002:a05:6512:3096:b0:5b1:5451:d969 with SMTP id
+ 2adb3069b0e04-5b448649002mr229675e87.25.1786433396689; Tue, 11 Aug 2026
+ 00:29:56 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 11 Aug 2026 00:29:55 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 11 Aug 2026 00:29:55 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260810213456.1268831-1-marex@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+References: <20260810213456.1268831-1-marex@nabladev.com>
+Date: Tue, 11 Aug 2026 00:29:55 -0700
+X-Gmail-Original-Message-ID: <CAMRc=MfnU5mJHsoJee-8-xy3e7vXE5yORfZRN9=Wom2-+ZocUQ@mail.gmail.com>
+X-Gm-Features: AUfX_mw3-GSxONxlPDeIuQSCzqxdWbLCCFW-DmbFUzmLFDfvwVGs6ZIrWEPCMBI
+Message-ID: <CAMRc=MfnU5mJHsoJee-8-xy3e7vXE5yORfZRN9=Wom2-+ZocUQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: Select HAVE_SHARED_GPIOS for ARCH_MXC
+To: Marek Vasut <marex@nabladev.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Fedor Ross <fedor.ross@ifm.com>, Frank Li <Frank.Li@nxp.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh@kernel.org>, Will Deacon <will@kernel.org>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Aug 11, 2026 at 12:47:18AM +0000, Hongxing Zhu (OSS) wrote:
-> > -----Original Message-----
-> > From: Leonardo Costa <leoreis.costa@gmail.com>
-> > Sent: Tuesday, August 11, 2026 2:26 AM
-> > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
-> > Cc: Bjorn Helgaas <helgaas@kernel.org>; robh@kernel.org;
-> > krzk+dt@kernel.org; conor+dt@kernel.org; Frank Li <frank.li@nxp.com>;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > leonardo.costa@toradex.com; devicetree@vger.kernel.org;
-> > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; linux-
-> > kernel@vger.kernel.org; regressions@lists.linux.dev; Sherry Sun
-> > <sherry.sun@nxp.com>; Manivannan Sadhasivam <mani@kernel.org>;
-> > Hongxing Zhu <hongxing.zhu@nxp.com>; linux-pci@vger.kernel.org
-> > Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
-> > 
-> > On Thu, Jul 16, 2026 at 02:09:19PM -0300, Leonardo Costa wrote:
-> > > On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
-> > > > Hi Leonardo,
-> > > >
-> > > > Would you be able to test this patch on your affected boards? Your
-> > > > testing would help expedite the merge process and ensure the fix
-> > > > resolves the boot issue you're experiencing.
-> > > >
-> > > > Best Regards
-> > > > Richard Zhu
-> > >
-> > > Hi Richard,
-> > >
-> > > Sorry for taking long to respond, I was caught up with something. I
-> > > tested the patch and it solved the issue. I sent a Tested-by tag there.
-> > > Thanks for looking into this!
-> > >
-> > > Best Regards
-> > > Leonardo
-> > 
-> > Hi Richard,
-> > 
-> > That patch might have introduced/exposed a second regression where PCI
-> > devices are not linked properly during the initialization. Sorry for not catching
-> > this before, as I didn't have any device connected during the previous test.
-> Hi Leonardo:
-> Sorry to hear about that.
-> I did test commit 7678e81498e2 with one Intel NIC (82574L) connected, and I've
-> double-checked today based on v7.2-rc7. The PCIe link can be set up properly
-> on the i.MX6Q Sabresd board in my testing.
-> 
-> Here are the logs:
-> root@imx6qpdlsolox:~# lspci
-> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> 01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
-> root@imx6qpdlsolox:~# uname -a
-> Linux imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
-> root@imx6qpdlsolox:~# dmesg | grep pci
-> [    0.256138] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
-> [    0.256307] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
-> [    0.256339] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
-> [    0.256434] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
-> [    0.458388] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
-> [    0.458492] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
-> [    0.555294] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
-> [    0.555783] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
-> ...
-> 
-> The following endpoint devices also yielded the same results.
-> root@imx6qpdlsolox:~# lspci
-> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> 01:00.0 Network controller: Qualcomm Atheros AR9287 Wireless Network Adapter (PCI-Express) (rev 01)
-> root@imx6qpdlsolox:~# uname -a
-> Linux imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
-> ...
-> 
-> root@imx6qpdlsolox:~# lspci
-> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> 01:00.0 USB controller: NEC Corporation uPD720200 USB 3.0 Host Controller (rev 04)
-> root@imx6qpdlsolox:~# uname -a
-> Linux imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
-> 
-> Could you provide more details of your hardware setup (board, connected
-> devices, PERST# present or not)?
-> This may help us identify if there's a specific scenario that triggers the
-> regression you're experiencing.
+On Mon, 10 Aug 2026 23:34:38 +0200, Marek Vasut <marex@nabladev.com> said:
+> Some NXP i.MX platforms use shared GPIOs. Enable support for them by
+> selecting the Kconfig switch provided by GPIOLIB.
+>
+> Signed-off-by: Marek Vasut <marex@nabladev.com>
+> ---
+> Cc: Bartosz Golaszewski <brgl@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Fedor Ross <fedor.ross@ifm.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  arch/arm64/Kconfig.platforms | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+> index d2acfac730037..bc279b864d3cb 100644
+> --- a/arch/arm64/Kconfig.platforms
+> +++ b/arch/arm64/Kconfig.platforms
+> @@ -275,6 +275,7 @@ config ARCH_MXC
+>  	bool "NXP i.MX SoC family"
+>  	select ARM64_ERRATUM_843419
+>  	select ARM64_ERRATUM_845719 if COMPAT
+> +	select HAVE_SHARED_GPIOS
+>  	select IMX_GPCV2
+>  	select IMX_GPCV2_PM_DOMAINS
+>  	select PM
+> --
+> 2.53.0
+>
+>
 
-It's an apalis imx6, as reported already in this email thread.
-The DT is in Linux, you can check
-arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts every details
-about PERST# and more.
-
-This is the device connected:
-
-00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller (rev 02)
-
-01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller (rev 02) (prog-if 01 [AHCI 1.0])
-	Subsystem: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller
-	Flags: bus master, fast devsel, latency 0, IRQ 308
-	I/O ports at 1020 [size=8]
-	I/O ports at 1030 [size=4]
-	I/O ports at 1028 [size=8]
-	I/O ports at 1034 [size=4]
-	I/O ports at 1000 [size=32]
-	Memory at 01100000 (32-bit, non-prefetchable) [size=512]
-	Expansion ROM at 01200000 [virtual] [disabled] [size=64K]
-	Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit-
-	Capabilities: [78] Power Management version 3
-	Capabilities: [80] Express Legacy Endpoint, IntMsgNum 0
-	Capabilities: [100] Virtual Channel
-	Kernel driver in use: ahci
-	Kernel modules: ahci
-
-
-These are some working logs from a 6.6.151 kernel
-
-[    0.233058] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
-[    0.233112] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
-[    0.233144] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
-[    0.465779] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
-[    0.564230] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
-[    0.564249] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
-[    0.564259] imx6q-pcie 1ffc000.pcie: Link up, Gen1
-[    0.564272] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
-[    0.564778] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
-[    0.564795] pci_bus 0000:00: root bus resource [bus 00-ff]
-[    0.564809] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
-[    0.564821] pci_bus 0000:00: root bus resource [mem 0x01000000-0x01efffff]
-[    0.564864] pci 0000:00:00.0: [16c3:abcd] type 01 class 0x060400
-[    0.564886] pci 0000:00:00.0: BAR 0 [mem 0x00000000-0x000fffff]
-[    0.564905] pci 0000:00:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-[    0.564917] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-[    0.564931] pci 0000:00:00.0:   bridge window [io  0x0000-0x0fff]
-[    0.564943] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
-[    0.564957] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff pref]
-[    0.565405] pci 0000:00:00.0: Limiting cfg_size to 512
-[    0.565455] pci 0000:00:00.0: supports D1
-[    0.565465] pci 0000:00:00.0: PME# supported from D0 D1 D3hot D3cold
-[    0.574310] pci 0000:01:00.0: [1b21:0612] type 00 class 0x010601
-[    0.574458] pci 0000:01:00.0: BAR 0 [io  0x0000-0x0007]
-[    0.574541] pci 0000:01:00.0: BAR 1 [io  0x0000-0x0003]
-[    0.574616] pci 0000:01:00.0: BAR 2 [io  0x0000-0x0007]
-[    0.574774] pci 0000:01:00.0: BAR 3 [io  0x0000-0x0003]
-[    0.574854] pci 0000:01:00.0: BAR 4 [io  0x0000-0x001f]
-[    0.574925] pci 0000:01:00.0: BAR 5 [mem 0x00000000-0x000001ff]
-[    0.575001] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-[    0.575765] pci 0000:01:00.0: 2.000 Gb/s available PCIe bandwidth, limited by 2.5 GT/s PCIe x1 link at 0000:00:00.0 (capable of 4.000 Gb/s with 5.0 GT/s PCIe x1 link)
-[    0.576808] pci 0000:00:00.0: BAR 0 [mem 0x01000000-0x010fffff]: assigned
-[    0.576860] pci 0000:00:00.0: bridge window [mem 0x01100000-0x011fffff]: assigned
-[    0.576895] pci 0000:00:00.0: bridge window [mem 0x01200000-0x012fffff pref]: assigned
-[    0.576928] pci 0000:00:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
-[    0.576958] pci 0000:00:00.0: bridge window [io  0x1000-0x1fff]: assigned
-[    0.577000] pci 0000:01:00.0: ROM [mem 0x01200000-0x0120ffff pref]: assigned
-[    0.577033] pci 0000:01:00.0: BAR 5 [mem 0x01100000-0x011001ff]: assigned
-[    0.577087] pci 0000:01:00.0: BAR 4 [io  0x1000-0x101f]: assigned
-[    0.577212] pci 0000:01:00.0: BAR 0 [io  0x1020-0x1027]: assigned
-[    0.577273] pci 0000:01:00.0: BAR 2 [io  0x1028-0x102f]: assigned
-[    0.577326] pci 0000:01:00.0: BAR 1 [io  0x1030-0x1033]: assigned
-[    0.577377] pci 0000:01:00.0: BAR 3 [io  0x1034-0x1037]: assigned
-[    0.577429] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-[    0.577460] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
-[    0.577491] pci 0000:00:00.0:   bridge window [mem 0x01100000-0x011fffff]
-[    0.577520] pci 0000:00:00.0:   bridge window [mem 0x01200000-0x012fffff pref]
-[    0.579109] pcieport 0000:00:00.0: PME: Signaling with IRQ 291
-[    0.580323] pcieport 0000:00:00.0: AER: enabled with IRQ 291
-
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
