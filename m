@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962E637AA64;
-	Tue, 11 Aug 2026 05:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A688037D101;
+	Tue, 11 Aug 2026 05:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786427059; cv=none; b=dna/A7DZc0YFgsAtfQVEVZXHNIETPbU5YsAcuOvvaKHo6KbeSp9cjSJNbgJ9vFSK89Jsv02D/sDJvfs7uuRKGZomYG28OVR7+NA/wbbyEtbcNMyEbOZ90y545VJLAZPqDJGH5dQXAvJWDIvgjlHIjdu3RsBURTQ2tBjSVHAHSp4=
+	t=1786427101; cv=none; b=lVccSYwyErzV4M0wgWP9Xe4iXIWfFh+ZVPw6GEUOU1auUgt4CupJJKvrWYkj8+Uf5JQ4ov5hi8RO7NKtbsNWWBbCojUk0WP/Vc4Ge68xson9s50gy0RF7EmLv3OoejQI0ii1Kj17onDkslgKTPdED1NqhRRbCLth411355wTcbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786427059; c=relaxed/simple;
-	bh=97yy3ydI6y4dlWve6g1ByLxygnDJ7Te37wYwFW0tPSM=;
+	s=arc-20240116; t=1786427101; c=relaxed/simple;
+	bh=epg4ADhxmy7qprwB9i8HZukGAf1VdXM/6hYBibJ5oxI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S8gPdoSTxQ6xAwFJbVdghPqPNu6c6rxLAbA5W2hLUZ1O24x+dHH/OmCrJW8pxxqw3EPgz31ODPVeCHxBnUkv/rDq0JB+gnF0PsaGq9dHzG8CZ68jRfetWy3CH8zzjOqUVIc3WwRYKad2b0MfMqk7Kg9ALekR+LmtHI+K+VBmcAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQFm3fgr; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=VTCgZpivEwYHK4nHSUfHB1r4IKebxlCoxA2ckzJmV0LV4vmaW8Ant1rZdPY3k9cVkwdDoK8n82+5UiA/HDB9aSDNkmj2aYQ35YuQGe7fKaBNoD4gYArLDILiHkmjf8sWxdoUtXLKcQ8k9bbbq80MhkHymTR5L8+njR9bocicEmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezmmLbMW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQFm3fgr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5C01F000E9;
-	Tue, 11 Aug 2026 05:44:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezmmLbMW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2CE1F000E9;
+	Tue, 11 Aug 2026 05:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786427058;
-	bh=N7P4L5tJ88+N+LleowMyQZT4Dw0kQrcA98X8789RllA=;
+	s=k20260515; t=1786427099;
+	bh=GcCRuQu47XbS/YabNwNF7zEFiZjwtTPut+beTDpS0dc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JQFm3fgrJsbXaRc84rFczQxh8b+Sx1F2AXFckHiiDHGDpipU6Fz+dUsxfJC7ZyZX6
-	 y34AELS4FEDBUDkBVBe9dAkdJzXTjLdHGmzxJFlmnkdlKFsw2ylnT0jLeU/S3DqzGs
-	 PCz0mcG+RoEsmAlkbtcZnfWutDcmIIYWhgQrL92uzwfI8SNKzk557fhNz6m88ewjhV
-	 vQqTZ5Sox6RrLTBoMYmmxhnrb7QyXD1jnuZn6x2fMcf+7+/meSjQw+vA6ZV+pzwBe4
-	 wijEGIuqT4EOCeSJ0jCvNNIFTteR6YsfCzWyIEYksPYDfdDVLwjKHT4i1DT7a0yH5W
-	 v9llI3c+BpFdg==
-Message-ID: <371f3842-1d01-4e57-86b8-04bf1a0dd53f@kernel.org>
-Date: Tue, 11 Aug 2026 07:44:08 +0200
+	b=ezmmLbMWtbTQ10MqU7kjAysMd36nQLrQhc1zGs7TwsT6ee9sTrc5hzZF36tqemNxP
+	 f8Cjha/6JeZViNIRVricIFAP7WI+CtYHe7Ei1J9agThhTb52YcRx1/ZVMh+fGScG+J
+	 beE7eNA8SzUqSHxBeFZ+qkKM9+6vwaY0DGAIGuTiTYINeMlhbA9w2OnHyafrvrSY8k
+	 Cwbcv/yrvnjC+Q091v6uhJSR0SGsWfrU+mkaJfskaHrb9AF+iwIMxkLrhzkrAz5P5m
+	 rPfwUi+PNSJLUo4ja5bMlRdh55XgS0jupQ8ihj+HU0t+bb8iLV1fQPLKYVhZ/gMls4
+	 xktpa0syUJjWA==
+Message-ID: <dc40dcae-3017-4e61-8c6d-7e6127e4ee77@kernel.org>
+Date: Tue, 11 Aug 2026 07:44:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,20 +37,19 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/5] ASoC: dt-bindings: fsl,imx-asrc: update port
  binding to support multiple paths
-To: Frank Li <Frank.li@oss.nxp.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
 Cc: shengjiu.wang@oss.nxp.com, lgirdwood@gmail.com, broonie@kernel.org,
  robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
  s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
  shawnguo@kernel.org, linux-sound@vger.kernel.org,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com,
- perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org,
- Shengjiu Wang <shengjiu.wang@nxp.com>
+ Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com,
+ linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>
 References: <20260804100218.49587-1-shengjiu.wang@oss.nxp.com>
  <20260804100218.49587-2-shengjiu.wang@oss.nxp.com>
- <anH5i7y3JkB1moee@SMW015318> <20260810-magic-olive-gecko-5e8a36@quoll>
- <anohg7YCylTQ47pk@SMW015318>
+ <20260810-normal-cuscus-of-argument-4b230b@quoll>
+ <CAA+D8AM9s7EX-G246Hf2=DOx5q2qXWg_MjUCaoJ8RggOjp+5cQ@mail.gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -96,47 +95,71 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <anohg7YCylTQ47pk@SMW015318>
+In-Reply-To: <CAA+D8AM9s7EX-G246Hf2=DOx5q2qXWg_MjUCaoJ8RggOjp+5cQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/08/2026 21:07, Frank Li wrote:
-> On Mon, Aug 10, 2026 at 09:12:20AM +0200, Krzysztof Kozlowski wrote:
->> On Tue, Aug 04, 2026 at 09:39:07AM -0500, Frank Li wrote:
->>> On Tue, Aug 04, 2026 at 06:02:14PM +0800, shengjiu.wang@oss.nxp.com wrote:
->>>> From: Shengjiu Wang <shengjiu.wang@nxp.com>
->>>>
->>>> The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
->>>> The existing binding exposed only a single generic audio-graph port,
->>>> which cannot represent independent conversion paths when multiple pairs
->>>> are in use simultaneously.
->>>>
->>>> Add a ports container that enumerates up to three sub-ports, each
->>>> representing an independent conversion path:
->>>>   port@0 -- conversion path 0
->>>>   port@1 -- conversion path 1
->>>>   port@2 -- conversion path 2
->>>>
->>>> Each sub-port references audio-graph-port.yaml as before. Hardware pairs
->>>> are allocated dynamically at stream open time; each active stream
->>>> direction (playback or capture) on a port consumes one hardware pair.
->>>>
->>>> For backwards compatibility, keep the old single port property but mark
->>>> it deprecated. A schema constraint (not: required: [port, ports]) ensures
->>>> that both forms cannot be used at the same time. The binding example is
->>>> updated to show the preferred ports form.
->>>>
->>>> No existing upstream DTS file for fsl,imx-asrc uses the previously
->>>> documented single 'port' node, so this change does not break any
->>>> in-tree device tree.
->>>
->>> if no existing upstream DTS file use it, you can direct replace with ports
+On 11/08/2026 04:28, Shengjiu Wang wrote:
+> On Mon, Aug 10, 2026 at 3:14 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >>
->> And what about all other users of this binding?
+>> On Tue, Aug 04, 2026 at 06:02:14PM +0800, shengjiu.wang@oss.nxp.com wrote:
+>>> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+>>>
+>>> The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
+>>
+>> Which SoC? Did you read this binding you are changing?
 > 
-> Kernel is that only known user. Uboot don't use this part.
+> The i.MX35 ASRC (the original) already supports three conversion pairs
+> (A, B, C).
+> All subsequent SoCs that reuse this IP -- including i.MX53, i.MX8QM, i.MX8QXP,
+> i.MX952, share the same three-pair hardware. This binding covers all of them.
+> 
+>>
+>>> The existing binding exposed only a single generic audio-graph port,
+>>> which cannot represent independent conversion paths when multiple pairs
+>>> are in use simultaneously.
+>>>
+>>> Add a ports container that enumerates up to three sub-ports, each
+>>> representing an independent conversion path:
+>>>   port@0 -- conversion path 0
+>>>   port@1 -- conversion path 1
+>>>   port@2 -- conversion path 2
+>>>
+>>> Each sub-port references audio-graph-port.yaml as before. Hardware pairs
+>>> are allocated dynamically at stream open time; each active stream
+>>> direction (playback or capture) on a port consumes one hardware pair.
+>>>
+>>> For backwards compatibility, keep the old single port property but mark
+>>
+>> Why? Did the old hardware change that it has more ports/paths?
+> 
+> The hardware has always supported three pairs; the original binding simply
+> did not expose them all. This patch corrects the binding to match what the
+> hardware has always been capable of.
+> 
+>>
+>>> it deprecated. A schema constraint (not: required: [port, ports]) ensures
+>>> that both forms cannot be used at the same time. The binding example is
+>>> updated to show the preferred ports form.
+>>>
+>>> No existing upstream DTS file for fsl,imx-asrc uses the previously
+>>> documented single 'port' node, so this change does not break any
+>>> in-tree device tree.
+>>
+>> Does it break other users of this binding?
+> 
+> No. The existing single 'port' property is kept and marked deprecated
+> so that any out-of-tree device tree still works without modification.
+> The new 'ports' form is additive only.
+> 
+>>
+>> Why mentioning upstream in the first place? Either this change breaks
+>> ABI or not, explain that.
+> 
+> The deprecated 'port' property is retained, so this change is fully backwards
+> compatible and does not break ABI.
 
-So other kernels will get broken?
+So why? Drop redundant parts.
 
 Best regards,
 Krzysztof
