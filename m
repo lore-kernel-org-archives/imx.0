@@ -1,165 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A688037D101;
-	Tue, 11 Aug 2026 05:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55279407582;
+	Tue, 11 Aug 2026 06:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786427101; cv=none; b=lVccSYwyErzV4M0wgWP9Xe4iXIWfFh+ZVPw6GEUOU1auUgt4CupJJKvrWYkj8+Uf5JQ4ov5hi8RO7NKtbsNWWBbCojUk0WP/Vc4Ge68xson9s50gy0RF7EmLv3OoejQI0ii1Kj17onDkslgKTPdED1NqhRRbCLth411355wTcbI=
+	t=1786430294; cv=none; b=DRzF6I49Fx4YYKVn2hww7E52CxBl/LESvIL9O134r4hl3UvsCPn+jf93yb0STNK/X8YY9V8uFQneEcK00zeSHHe+9VWjVp7vyhJsXm3vzmrW5b0ISP5jmSaxNTJGFsQYGtccBy9T+TOxt7PF7qX7/744c2v5HxxI16Jk9vPrHaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786427101; c=relaxed/simple;
-	bh=epg4ADhxmy7qprwB9i8HZukGAf1VdXM/6hYBibJ5oxI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VTCgZpivEwYHK4nHSUfHB1r4IKebxlCoxA2ckzJmV0LV4vmaW8Ant1rZdPY3k9cVkwdDoK8n82+5UiA/HDB9aSDNkmj2aYQ35YuQGe7fKaBNoD4gYArLDILiHkmjf8sWxdoUtXLKcQ8k9bbbq80MhkHymTR5L8+njR9bocicEmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezmmLbMW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786430294; c=relaxed/simple;
+	bh=KrmseUJs+he1fokqoK+ierlL/CGpwzoasSMq+YQNgwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pGvccgQr8F5P8jYUZAJjYIjHebWfqsRc5owd75XFAFsalj1U2ULJ6NHsOhLvXkhR1CVtBF4XNFpWoh8xNE4xFJ1ZEWswwN7xp4VecBKOJYYpipnAgfTxoRZvOwka/Sm5ExS7icVyvFCHMxZtIslrcjStuIB/Mg7sHkoCf+eRnJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=L6AUW32F; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezmmLbMW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2CE1F000E9;
-	Tue, 11 Aug 2026 05:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786427099;
-	bh=GcCRuQu47XbS/YabNwNF7zEFiZjwtTPut+beTDpS0dc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ezmmLbMWtbTQ10MqU7kjAysMd36nQLrQhc1zGs7TwsT6ee9sTrc5hzZF36tqemNxP
-	 f8Cjha/6JeZViNIRVricIFAP7WI+CtYHe7Ei1J9agThhTb52YcRx1/ZVMh+fGScG+J
-	 beE7eNA8SzUqSHxBeFZ+qkKM9+6vwaY0DGAIGuTiTYINeMlhbA9w2OnHyafrvrSY8k
-	 Cwbcv/yrvnjC+Q091v6uhJSR0SGsWfrU+mkaJfskaHrb9AF+iwIMxkLrhzkrAz5P5m
-	 rPfwUi+PNSJLUo4ja5bMlRdh55XgS0jupQ8ihj+HU0t+bb8iLV1fQPLKYVhZ/gMls4
-	 xktpa0syUJjWA==
-Message-ID: <dc40dcae-3017-4e61-8c6d-7e6127e4ee77@kernel.org>
-Date: Tue, 11 Aug 2026 07:44:48 +0200
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="L6AUW32F"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id E5A431FD34;
+	Tue, 11 Aug 2026 08:37:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1786430278;
+	bh=bxQ/JVN7kCxCQB3HdoijyIyqrXUmPIZpcFd1H63BlNI=; h=From:To:Subject;
+	b=L6AUW32FPrvIWnJ7D/WMO9AtzxEho4sGdj88qzGzFFjbjNO+jq4JwpO09+GDKkTrc
+	 aEm2zGMnTaKsdDteXL9b6lRC7bLL/kaduvJYH8XHaWS71DnrxzWmnXXk5Y047nT2aA
+	 rS+lZ9DbEECJdOfX8f5UBH2Ox1bpzfbj8UedIv97SzItyuM82Ra6JlbNOf4MHQ3dG2
+	 IuVzDx7kLBLQbCzbsCb2iyhEsAtiIQFjBkf/r2KeN7lU5g/E9r+3xfKHpzKM480RPj
+	 gFeShsQmLB0gaC8gYnpBckHhvQNtl/kkINzrjxLmFOOhOMS2/4Sw2WgXusxWe/bym1
+	 edIWB8GeZDjcA==
+Date: Tue, 11 Aug 2026 08:37:52 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
+Cc: Leonardo Costa <leoreis.costa@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"leonardo.costa@toradex.com" <leonardo.costa@toradex.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Hongxing Zhu <hongxing.zhu@nxp.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
+Message-ID: <20260811063752.GA7332@francesco-nb>
+References: <20260629143439.361560-1-leoreis.costa@gmail.com>
+ <20260715234736.GA288957@bhelgaas>
+ <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
+ <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
+ <3hxiy6aaiagt5zunntpidaeqc4or4wrebf7mu7asvyyibqmvo2@xhvasdqp64rw>
+ <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] ASoC: dt-bindings: fsl,imx-asrc: update port
- binding to support multiple paths
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: shengjiu.wang@oss.nxp.com, lgirdwood@gmail.com, broonie@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- shawnguo@kernel.org, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com,
- linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-References: <20260804100218.49587-1-shengjiu.wang@oss.nxp.com>
- <20260804100218.49587-2-shengjiu.wang@oss.nxp.com>
- <20260810-normal-cuscus-of-argument-4b230b@quoll>
- <CAA+D8AM9s7EX-G246Hf2=DOx5q2qXWg_MjUCaoJ8RggOjp+5cQ@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <CAA+D8AM9s7EX-G246Hf2=DOx5q2qXWg_MjUCaoJ8RggOjp+5cQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
 
-On 11/08/2026 04:28, Shengjiu Wang wrote:
-> On Mon, Aug 10, 2026 at 3:14 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On Tue, Aug 04, 2026 at 06:02:14PM +0800, shengjiu.wang@oss.nxp.com wrote:
->>> From: Shengjiu Wang <shengjiu.wang@nxp.com>
->>>
->>> The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
->>
->> Which SoC? Did you read this binding you are changing?
+On Tue, Aug 11, 2026 at 12:47:18AM +0000, Hongxing Zhu (OSS) wrote:
+> > -----Original Message-----
+> > From: Leonardo Costa <leoreis.costa@gmail.com>
+> > Sent: Tuesday, August 11, 2026 2:26 AM
+> > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
+> > Cc: Bjorn Helgaas <helgaas@kernel.org>; robh@kernel.org;
+> > krzk+dt@kernel.org; conor+dt@kernel.org; Frank Li <frank.li@nxp.com>;
+> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
+> > leonardo.costa@toradex.com; devicetree@vger.kernel.org;
+> > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; linux-
+> > kernel@vger.kernel.org; regressions@lists.linux.dev; Sherry Sun
+> > <sherry.sun@nxp.com>; Manivannan Sadhasivam <mani@kernel.org>;
+> > Hongxing Zhu <hongxing.zhu@nxp.com>; linux-pci@vger.kernel.org
+> > Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
+> > 
+> > On Thu, Jul 16, 2026 at 02:09:19PM -0300, Leonardo Costa wrote:
+> > > On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
+> > > > Hi Leonardo,
+> > > >
+> > > > Would you be able to test this patch on your affected boards? Your
+> > > > testing would help expedite the merge process and ensure the fix
+> > > > resolves the boot issue you're experiencing.
+> > > >
+> > > > Best Regards
+> > > > Richard Zhu
+> > >
+> > > Hi Richard,
+> > >
+> > > Sorry for taking long to respond, I was caught up with something. I
+> > > tested the patch and it solved the issue. I sent a Tested-by tag there.
+> > > Thanks for looking into this!
+> > >
+> > > Best Regards
+> > > Leonardo
+> > 
+> > Hi Richard,
+> > 
+> > That patch might have introduced/exposed a second regression where PCI
+> > devices are not linked properly during the initialization. Sorry for not catching
+> > this before, as I didn't have any device connected during the previous test.
+> Hi Leonardo:
+> Sorry to hear about that.
+> I did test commit 7678e81498e2 with one Intel NIC (82574L) connected, and I've
+> double-checked today based on v7.2-rc7. The PCIe link can be set up properly
+> on the i.MX6Q Sabresd board in my testing.
 > 
-> The i.MX35 ASRC (the original) already supports three conversion pairs
-> (A, B, C).
-> All subsequent SoCs that reuse this IP -- including i.MX53, i.MX8QM, i.MX8QXP,
-> i.MX952, share the same three-pair hardware. This binding covers all of them.
+> Here are the logs:
+> root@imx6qpdlsolox:~# lspci
+> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> 01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+> root@imx6qpdlsolox:~# uname -a
+> Linux imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
+> root@imx6qpdlsolox:~# dmesg | grep pci
+> [    0.256138] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+> [    0.256307] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
+> [    0.256339] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
+> [    0.256434] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
+> [    0.458388] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
+> [    0.458492] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+> [    0.555294] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
+> [    0.555783] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+> ...
 > 
->>
->>> The existing binding exposed only a single generic audio-graph port,
->>> which cannot represent independent conversion paths when multiple pairs
->>> are in use simultaneously.
->>>
->>> Add a ports container that enumerates up to three sub-ports, each
->>> representing an independent conversion path:
->>>   port@0 -- conversion path 0
->>>   port@1 -- conversion path 1
->>>   port@2 -- conversion path 2
->>>
->>> Each sub-port references audio-graph-port.yaml as before. Hardware pairs
->>> are allocated dynamically at stream open time; each active stream
->>> direction (playback or capture) on a port consumes one hardware pair.
->>>
->>> For backwards compatibility, keep the old single port property but mark
->>
->> Why? Did the old hardware change that it has more ports/paths?
+> The following endpoint devices also yielded the same results.
+> root@imx6qpdlsolox:~# lspci
+> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> 01:00.0 Network controller: Qualcomm Atheros AR9287 Wireless Network Adapter (PCI-Express) (rev 01)
+> root@imx6qpdlsolox:~# uname -a
+> Linux imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
+> ...
 > 
-> The hardware has always supported three pairs; the original binding simply
-> did not expose them all. This patch corrects the binding to match what the
-> hardware has always been capable of.
+> root@imx6qpdlsolox:~# lspci
+> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> 01:00.0 USB controller: NEC Corporation uPD720200 USB 3.0 Host Controller (rev 04)
+> root@imx6qpdlsolox:~# uname -a
+> Linux imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
 > 
->>
->>> it deprecated. A schema constraint (not: required: [port, ports]) ensures
->>> that both forms cannot be used at the same time. The binding example is
->>> updated to show the preferred ports form.
->>>
->>> No existing upstream DTS file for fsl,imx-asrc uses the previously
->>> documented single 'port' node, so this change does not break any
->>> in-tree device tree.
->>
->> Does it break other users of this binding?
-> 
-> No. The existing single 'port' property is kept and marked deprecated
-> so that any out-of-tree device tree still works without modification.
-> The new 'ports' form is additive only.
-> 
->>
->> Why mentioning upstream in the first place? Either this change breaks
->> ABI or not, explain that.
-> 
-> The deprecated 'port' property is retained, so this change is fully backwards
-> compatible and does not break ABI.
+> Could you provide more details of your hardware setup (board, connected
+> devices, PERST# present or not)?
+> This may help us identify if there's a specific scenario that triggers the
+> regression you're experiencing.
 
-So why? Drop redundant parts.
+It's an apalis imx6, as reported already in this email thread.
+The DT is in Linux, you can check
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts every details
+about PERST# and more.
 
-Best regards,
-Krzysztof
+This is the device connected:
+
+00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller (rev 02)
+
+01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller (rev 02) (prog-if 01 [AHCI 1.0])
+	Subsystem: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 308
+	I/O ports at 1020 [size=8]
+	I/O ports at 1030 [size=4]
+	I/O ports at 1028 [size=8]
+	I/O ports at 1034 [size=4]
+	I/O ports at 1000 [size=32]
+	Memory at 01100000 (32-bit, non-prefetchable) [size=512]
+	Expansion ROM at 01200000 [virtual] [disabled] [size=64K]
+	Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [78] Power Management version 3
+	Capabilities: [80] Express Legacy Endpoint, IntMsgNum 0
+	Capabilities: [100] Virtual Channel
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+
+These are some working logs from a 6.6.151 kernel
+
+[    0.233058] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+[    0.233112] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
+[    0.233144] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
+[    0.465779] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
+[    0.564230] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
+[    0.564249] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+[    0.564259] imx6q-pcie 1ffc000.pcie: Link up, Gen1
+[    0.564272] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
+[    0.564778] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+[    0.564795] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    0.564809] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+[    0.564821] pci_bus 0000:00: root bus resource [mem 0x01000000-0x01efffff]
+[    0.564864] pci 0000:00:00.0: [16c3:abcd] type 01 class 0x060400
+[    0.564886] pci 0000:00:00.0: BAR 0 [mem 0x00000000-0x000fffff]
+[    0.564905] pci 0000:00:00.0: ROM [mem 0x00000000-0x0000ffff pref]
+[    0.564917] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
+[    0.564931] pci 0000:00:00.0:   bridge window [io  0x0000-0x0fff]
+[    0.564943] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+[    0.564957] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff pref]
+[    0.565405] pci 0000:00:00.0: Limiting cfg_size to 512
+[    0.565455] pci 0000:00:00.0: supports D1
+[    0.565465] pci 0000:00:00.0: PME# supported from D0 D1 D3hot D3cold
+[    0.574310] pci 0000:01:00.0: [1b21:0612] type 00 class 0x010601
+[    0.574458] pci 0000:01:00.0: BAR 0 [io  0x0000-0x0007]
+[    0.574541] pci 0000:01:00.0: BAR 1 [io  0x0000-0x0003]
+[    0.574616] pci 0000:01:00.0: BAR 2 [io  0x0000-0x0007]
+[    0.574774] pci 0000:01:00.0: BAR 3 [io  0x0000-0x0003]
+[    0.574854] pci 0000:01:00.0: BAR 4 [io  0x0000-0x001f]
+[    0.574925] pci 0000:01:00.0: BAR 5 [mem 0x00000000-0x000001ff]
+[    0.575001] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
+[    0.575765] pci 0000:01:00.0: 2.000 Gb/s available PCIe bandwidth, limited by 2.5 GT/s PCIe x1 link at 0000:00:00.0 (capable of 4.000 Gb/s with 5.0 GT/s PCIe x1 link)
+[    0.576808] pci 0000:00:00.0: BAR 0 [mem 0x01000000-0x010fffff]: assigned
+[    0.576860] pci 0000:00:00.0: bridge window [mem 0x01100000-0x011fffff]: assigned
+[    0.576895] pci 0000:00:00.0: bridge window [mem 0x01200000-0x012fffff pref]: assigned
+[    0.576928] pci 0000:00:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
+[    0.576958] pci 0000:00:00.0: bridge window [io  0x1000-0x1fff]: assigned
+[    0.577000] pci 0000:01:00.0: ROM [mem 0x01200000-0x0120ffff pref]: assigned
+[    0.577033] pci 0000:01:00.0: BAR 5 [mem 0x01100000-0x011001ff]: assigned
+[    0.577087] pci 0000:01:00.0: BAR 4 [io  0x1000-0x101f]: assigned
+[    0.577212] pci 0000:01:00.0: BAR 0 [io  0x1020-0x1027]: assigned
+[    0.577273] pci 0000:01:00.0: BAR 2 [io  0x1028-0x102f]: assigned
+[    0.577326] pci 0000:01:00.0: BAR 1 [io  0x1030-0x1033]: assigned
+[    0.577377] pci 0000:01:00.0: BAR 3 [io  0x1034-0x1037]: assigned
+[    0.577429] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
+[    0.577460] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
+[    0.577491] pci 0000:00:00.0:   bridge window [mem 0x01100000-0x011fffff]
+[    0.577520] pci 0000:00:00.0:   bridge window [mem 0x01200000-0x012fffff pref]
+[    0.579109] pcieport 0000:00:00.0: PME: Signaling with IRQ 291
+[    0.580323] pcieport 0000:00:00.0: AER: enabled with IRQ 291
+
