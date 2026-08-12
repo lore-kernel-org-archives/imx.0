@@ -1,124 +1,65 @@
-Received: from mail-m49217.qiye.163.com (mail-m49217.qiye.163.com [45.254.49.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1F838A733
-	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 03:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77257270EC3;
+	Wed, 12 Aug 2026 05:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786505937; cv=none; b=GxprnuoA+22sKoJ36mRYWCzenTrW3qV30++8MS60l58siTqCFav2vBKRYT7QMeCx+KZJh6VDSmX1N4z6hQJwikgxPNMazzdd2kMb2iCZbOKktbpnjXPKdnl+uC2FsGa0Rnd5i4/bdgBWd6wJOnWFZsQZE5+yQ2ZPMmAJXCk50i4=
+	t=1786513593; cv=none; b=mVj+HKfE/3PQOnTo5B6Xw2pQeF5nnZt+ngOESInE2jWZd6BqmsWUiKIyxgJamHsxpzz/07PvkbPkIEjyiwcRuypflD9bCvMd6UK9ghRYg/3UBR2bl6scw/TSNLWx92NV4hlTXyKCEFYqZfIHTrFRtQOGulO6PShy2kJjX9AFJOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786505937; c=relaxed/simple;
-	bh=4AUkVZdED8INaKxYXi8vIBzZp+pos8MPvKlYMVmdfpw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ifos6pCyR04ZvsJoEghdWh2JH7R5sjqIU9iMcZjFkgvx8U/ZBGKpvm7UjqwRlnV13PbuvxtAG9JgjkjfkjqGJpCu0EJX4e1sRgFWtXiIYYSTpvC5CPZ/XkiwP/aQgWgYSJ4kpHwuYaOrZsuo5/4JoiEdDuZjXHIfaRKXVkecR78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com; spf=pass smtp.mailfrom=thundersoft.com; dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b=gdTFfhtS; arc=none smtp.client-ip=45.254.49.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thundersoft.com
+	s=arc-20240116; t=1786513593; c=relaxed/simple;
+	bh=N++5Z5KdPe5M4c462tftlfQsAVaWMcAMvDxRM9CrRbs=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=XqH6oRfJXiqvyd6VaD4te/xyzYpbmklFaWobuErMUKp68krwQrMLMK3zLf63r0FL6+t52S3LkWGFPauNNH6uTbKEZc6iDym8/KoDoveq5asDf7yPBq6DhfvtTnXeiDfmMPDrISfsw5GRNtARVtQzQpVlddHsuvYQcEFNPpEw3qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AihuxvCI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b="gdTFfhtS"
-Received: from [127.0.1.1] (unknown [36.129.139.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 49a56c4b7;
-	Wed, 12 Aug 2026 10:23:15 +0800 (GMT+08:00)
-From: Hongyang Zhao <hongyang.zhao@thundersoft.com>
-Date: Wed, 12 Aug 2026 10:22:38 +0800
-Subject: [PATCH v3 1/2] arm64: dts: qcom: qcs6490-rubikpi3: Add 3.3 V
- output supply
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AihuxvCI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3ED1F000E9;
+	Wed, 12 Aug 2026 05:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786513592;
+	bh=SGSApCPRMb3TnDF5cL9PHxP3javPP2KI/QwBzAazsso=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date;
+	b=AihuxvCIi6PZo50ZKE+UV0N75dHj2XCEHfdjJrO98jtm03YAPs21x8sUkrqKr8v7Z
+	 IhwYjFYquzq1uvXuFuk/typVGRwrgdpOfPnDsRud0kn6FxHtGo2Q343cup3qC9RKbx
+	 logJH33s5RJTmLJjF7wgic0IPnfSzt5boaKVUkWODerD5F6Fap7wtk5TDD7bgQ1xMI
+	 JKNz2TmQ527aHA+JnbnbwkVnTIKysMG4CW7+l2v4HMszmwbam4FeH3NAEhXNylewRu
+	 NoKyUjLG9XcHJyjGQY/FSS3HDR2gkIWT3vwTpcYHr1ZhILSupuPpbwUgS1C6TmIYMI
+	 25GwB5shhToKg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-rubikpi-next-20260615-v3-1-06e21232d8e4@thundersoft.com>
-References: <20260812-rubikpi-next-20260615-v3-0-06e21232d8e4@thundersoft.com>
-In-Reply-To: <20260812-rubikpi-next-20260615-v3-0-06e21232d8e4@thundersoft.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Roger Shimizu <rosh@debian.org>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Hongyang Zhao <hongyang.zhao@thundersoft.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786501394; l=1688;
- i=hongyang.zhao@thundersoft.com; s=20260127; h=from:subject:message-id;
- bh=4AUkVZdED8INaKxYXi8vIBzZp+pos8MPvKlYMVmdfpw=;
- b=olDCzWoPw1qOj+rvq7y1J+YcWz4J6V3EMdvfgrf0OIkb/PiyN7l6OOOM0HZ+hPL7AJDnwX8Zy
- tCtl9HhN0qNAhEOTFM2dfghvWPMxdVLosYXfbRzTQdQenpkXiVEgQHv
-X-Developer-Key: i=hongyang.zhao@thundersoft.com; a=ed25519;
- pk=D9yL5W9Zj0lPBDAq9gzY++1849VlXuTWAkROzZ88J/4=
-X-HM-Tid: 0a9ff3c7f48f09d5kunm2a4e641d37f494
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGhhKVk0dQkpISR5LThkeHVYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlITVVKSUJVSkhCVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09LVUpLS1VLWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=gdTFfhtSZs1rFItb+RETNpXpg/EtDqIk+5ctIxKNYFnpOCVOdFkXF7YycykygZzS23ZPgvZgCrrSJsnFPnGL5F1F5nSGTyJaP9nei6uGIFUjThxBLroXhoVA2d4NaNF0fRnsbdKcB1TAeAUuOXc1OJvKAL5S2OAxcNp4UjbgJGs=; c=relaxed/relaxed; s=default; d=thundersoft.com; v=1;
-	bh=KWMwlHvU9gSi7icyvD9gEKtDUM9vFD6hRmzH2Pd6GIg=;
-	h=date:mime-version:subject:message-id:from;
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260804115610.126049-1-abel.vesa@oss.qualcomm.com>
+References: <20260804115610.126049-1-abel.vesa@oss.qualcomm.com>
+Subject: Re: [GIT PULL] clk: imx: Updates for v7.3
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>, linux-clk@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Abel Vesa <abel.vesa@oss.qualcomm.com>, Mike Turquette <mturquette@baylibre.com>
+Date: Tue, 11 Aug 2026 22:46:30 -0700
+Message-ID: <178651359011.5862.5213879268997098861@lazor>
+User-Agent: alot/0.12
 
-Describe the GPIO-controlled VCC3V3_OUTPUT rail. This board-level rail
-supplies the two camera connectors and the 40-pin expansion header.
+Quoting Abel Vesa (2026-08-04 04:56:10)
+> The following changes since commit dc59e4fea9d83f03bad6bddf3fa2e524917774=
+82:
+>=20
+>   Linux 7.2-rc1 (2026-06-28 12:01:31 -0700)
+>=20
+> are available in the Git repository at:
+>=20
+>   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/=
+clk-imx-7.3
+>=20
+> for you to fetch changes up to 39ec460b56b26319d1f31b459e8be7ea34ae9c67:
+>=20
+>   clk: imx95-blk-ctl: Fix REFCLK rise-fall mismatch on i.MX95 (2026-07-30=
+ 17:12:57 +0300)
+>=20
+> ----------------------------------------------------------------
 
-Keep the rail enabled because expansion-header consumers are not
-represented in the Device Tree.
-
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
----
- .../boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts | 23 ++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts b/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
-index 13e8e62f6205..0f21777c480b 100644
---- a/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
-+++ b/arch/arm64/boot/dts/qcom/qcs6490-thundercomm-rubikpi3.dts
-@@ -214,6 +214,22 @@ vreg_usbhub_rest_1v8: regulator-usbhub-rest-1v8 {
- 		regulator-boot-on;
- 	};
- 
-+	vreg_vcc3v3_output: regulator-vcc3v3-output {
-+		compatible = "regulator-fixed";
-+
-+		regulator-name = "vcc3v3_output";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+
-+		gpio = <&tlmm 14 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-0 = <&vcc3v3_output_en>;
-+		pinctrl-names = "default";
-+
-+		regulator-always-on;
-+	};
-+
- 	vph_pwr: regulator-vph-pwr {
- 		compatible = "regulator-fixed";
- 
-@@ -1251,6 +1267,13 @@ usb_eth_power: usb-eth-power-state {
- 		bias-disable;
- 	};
- 
-+	vcc3v3_output_en: vcc3v3-output-en-state {
-+		pins = "gpio14";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-disable;
-+	};
-+
- 	wifi_reset_active: wifi-reset-active-state {
- 		pins = "gpio16";
- 		function = "gpio";
-
--- 
-2.43.0
-
+Thanks. Pulled into clk-next
