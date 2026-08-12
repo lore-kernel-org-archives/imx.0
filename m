@@ -1,246 +1,196 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010000.outbound.protection.outlook.com [52.101.84.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF9331B80D;
-	Wed, 12 Aug 2026 06:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786517665; cv=none; b=ZeWFFqFJHhk+/hXsJx2bE8JjIG1cyTI0Fq4BGAaUn3riByjy0nkJu+seqo6IHa2czBnZLZ4Ac9Crxgb9NeeWR3fY4Ck1Ip1KrSiNbBays+fpYfr7UmaWzKxwWt/RCT3upM/ndzhdXRan8jnFTQoPueSb1dSQEfmgoy13y7xa0UA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786517665; c=relaxed/simple;
-	bh=cgGjsx1To54vHWxSHVCbCt6UiwKkcdepoNf0HAf8E78=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ndkKcOMSZ6C56F02SZxoiw+MEbVT39w3DK6xOPxFcXkISd8AvOKdX+JlBsNgmqTdQNIPTIUo3V0/sk5ZQqrM6L6oN6DrlyBr2UIjoOyXlCgV/biKpltlMz7S6OOOWJBcGgnnFV+Adbi5saMupws6D//mRcaKApRJ8G0VhEtzKf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=0QXGYR9X; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B113FDBF5
+	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 09:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786526392; cv=fail; b=Ufd7AtlvEyF40zgm5PCDalfwYU/2Cl8+LtmFma/7LCc+jCYme2sNLowHeUiquyYmCfyA6LJmFDmm5qhMQtT+bsIcZfuizMbBeCG6ocL9MZON7LBwgi+8lcFajdVco+zGLn6k3oqCRKmkDa10zhsx9FB0FT2ha3AQYmr9dUKWzy0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786526392; c=relaxed/simple;
+	bh=QbWUCnhXTQxRVsqkl5WYglVZOa2U0SdsgaGY217H7A0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pVvOox4oxHCMobUEx0gyxiqiqU1xDVhesOOcdUgT8apRvK1TM1jVs8w/7dcB9GzM+ksyqhwnfwZin4040gpw+dV7NPgjVJo2aPNQW+SYitMF2wevlUOVCYsXo3bDuveVMsvcntwzD5JZgiTbPXt6E5n+muOkwMG7WiBvGuezyOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KJEzTbdv; arc=fail smtp.client-ip=52.101.84.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="0QXGYR9X"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id DF5621F8D7;
-	Wed, 12 Aug 2026 08:54:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786517654;
-	bh=K39uuHk/UNMQZhBdj5TasfypJyUYUsGh0yflU9COlDk=;
-	h=Received:From:To:Subject;
-	b=0QXGYR9XVy2tWfcdw0C2Imm7v+w5+A75aA0Iqha1YYOZTrrv/nIPiOLGIgD8lKxgg
-	 teTdD1LVChyu+Nv3WjTM0GIy6e/MtU2YA3TyvLrOI3FT0TSEYcmDYb3qaIsmjnFXHm
-	 kj6A2ehTMP1JL58s0DQX2U1FS4kJTzrAFQ8Br3KtKX7NSdahlTGLiIBJT1pUYlVqeQ
-	 WfLX/CXkMD7FX5zvFomll+iKaom+4ZH4IpW4lVRrh4ECfEQncCwr3Pm+ePuPvc+nq3
-	 94LWq627pKscK9iPabVWAX989jSdeawsFxzmiUJYZLKIigB18A5RsecIDB73PFR2xh
-	 vjazWyZj6fZzA==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 931E47FB68; Wed, 12 Aug 2026 08:54:13 +0200 (CEST)
-Date: Wed, 12 Aug 2026 08:54:13 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	"Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>,
-	Leonardo Costa <leoreis.costa@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"leonardo.costa@toradex.com" <leonardo.costa@toradex.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
-Message-ID: <anwYlX0uC1nFCxnp@gaggiata.pivistrello.it>
-References: <20260629143439.361560-1-leoreis.costa@gmail.com>
- <20260715234736.GA288957@bhelgaas>
- <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
- <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
- <3hxiy6aaiagt5zunntpidaeqc4or4wrebf7mu7asvyyibqmvo2@xhvasdqp64rw>
- <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
- <20260811063752.GA7332@francesco-nb>
- <GV2PR04MB12019BC21C743E1BEF1BE8F4C8CDC2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KJEzTbdv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P82TsS3RIMSOJEldU2PZflHsPjjgxOWr4W2hUiAQbLiKmzzTS/Ml7mfbsM4aF48U9XGwQ+b1Z0Pdm48C03xiXa3CZNKiuQKu5LKRpkLn+9sB4IUJWPbu8oGbjIbzpoXJs6/KAuHYz24ykOx0wtIJJHlwzPzYUhPgn16ghs8T+GrJIWZRAt7EjxsJsv1gZ6q6Lq85559n0doQCmS5NDeM83U678JJ3ouimpWEvbfsCJNoKC29nH+1lEJOLGLSwdF0VndBRliBmy5LjuA8RghbohtDWeen7Fzk8orDY0/rjepZS+hfmSmI266fswMuX+TypqcG0mAYz4kE05nG/KLr/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QbWUCnhXTQxRVsqkl5WYglVZOa2U0SdsgaGY217H7A0=;
+ b=nEErdU7h0iCZYOt1xw+gLqiWH3jD115eTcj4wNZHUwTEC8vzHo41IiHmib0ooDgPceFNDQi2Hlmc4t+5Ts0miqjunxY3q46v0eCuVsUQQh+aVs4DWgcTFBNpdxdpjtKasfPkkWEfBT/uuERQHg7MsawdAyMgo4iWNwH336f25hQfaSVd0NOInr/eSanhL4A4KY8mi4IV6dqAFYx7w+WzCgJwG61TZy8J4QBc/CkjE1vbZsDy0q8CHa7D7OmdovxZLRM6FEZKRjfW4dk+qkVZAfJO18J2J+CM4efUaRUfb8ZmUTf+XXbrYK1+Hz2Im7hEeysGJZvALsCMW4IwJmqGBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QbWUCnhXTQxRVsqkl5WYglVZOa2U0SdsgaGY217H7A0=;
+ b=KJEzTbdvFSDZSXo3jDDIE56LOr0klfxiGbAS7IwkDwVeMqpCHDjWTV5KoG0SWxoEbEyUgmiGO6/nGphENVU7t4SsGnPcBn48g+nNhkTXur3n7JNQUX7JA4IAbLD+Uqn4SahP/Q64QSmrQKqkStV66t8gKFUP3ig9QnFBfiW4GwSfraAaupypnclX9/UDsXgdCEkKsr/D+WiDAITLWuFOdNAV0GrQs4D3PWdXJPTxHbA6udwWvv+PDQ9D39p1wxVSpQyAYhIdlonnb5jdkypy87pL2bKBVTM5+7r18eqD7ioKeu7xAkIQ4r6taCpBWzGnYyRD6q/lKdfsbEMAWNeoWg==
+Received: from MRWPR04MB12277.eurprd04.prod.outlook.com (2603:10a6:501:81::19)
+ by AM9PR04MB8569.eurprd04.prod.outlook.com (2603:10a6:20b:434::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
+ 2026 09:19:46 +0000
+Received: from MRWPR04MB12277.eurprd04.prod.outlook.com
+ ([fe80::b242:b18e:8fa3:56f]) by MRWPR04MB12277.eurprd04.prod.outlook.com
+ ([fe80::b242:b18e:8fa3:56f%3]) with mapi id 15.21.0315.008; Wed, 12 Aug 2026
+ 09:19:46 +0000
+From: Jiafei Pan <jiafei.pan@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "andersson@kernel.org" <andersson@kernel.org>,
+	"mathieu.poirier@linaro.org" <mathieu.poirier@linaro.org>, Peng Fan
+	<peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Z.Q. Hou" <zhiqiang.hou@nxp.com>, Mingkai Hu
+	<mingkai.hu@nxp.com>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, Jiafei Pan <jiafei.pan@nxp.com>
+Subject: Re: [PATCH v3 1/4] dt-bindings: remoteproc: add imx-rproc-psci
+Thread-Topic: [PATCH v3 1/4] dt-bindings: remoteproc: add imx-rproc-psci
+Thread-Index: AQHdKju3n9+gWoLR30aPfO35H8veRA==
+Date: Wed, 12 Aug 2026 09:19:46 +0000
+Message-ID:
+ <MRWPR04MB1227740CFAD4D4AAF1758F8A48ADC2@MRWPR04MB12277.eurprd04.prod.outlook.com>
+References: <20260511023928.39640-1-Jiafei.Pan@nxp.com>
+ <20260511023928.39640-2-Jiafei.Pan@nxp.com>
+ <20260514-omniscient-futuristic-macaque-af0718@quoll>
+In-Reply-To: <20260514-omniscient-futuristic-macaque-af0718@quoll>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-08-12T09:05:17.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRWPR04MB12277:EE_|AM9PR04MB8569:EE_
+x-ms-office365-filtering-correlation-id: 7a4fa805-12f6-4eae-b217-08def852da16
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|19092799006|23010399003|366016|1800799024|56012099006|10067099003|11063799006|3023799007|4143699003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ 5LiFioutdPby6NJzWi1XvGc3gBGRLolrZy3qbpw4MfiuUvtLNwcrw6YTauI3+28HBtQoxXI5HKg31nTyproNWKEsZvtN0LpBzt07zVflg0dRzNfsR4nJEW+tA3YudRU+tHaV9cdrPU23swuL+Fw8xpLXlBtUIYvaiy59rfQ7YuSoKpUZErfuVa92z4632mG5T34bvEivovPiSdbt9vrTkelYSuMTwcKP5Ct2Llwi76H0fY1i9l9//6uJrolBH6di5W5nR1O8lQEs0kvsULdQHxfYC2IQicUX8c0yg726iuvtZTXOQ4uPaYOoYgAjjb9aGTgn6fxg/hJ7lbpAN2SHL/3OGrhiQUK/Hkf7/HiLzriv9eDEHEnj2U9f5YkUI0WmaOos5QB3LQeDYBLCfPWskzDqw3YLux0/MsCL98zzwLZQ5ViXLL/n2sR+ZkjOgbVey+KAwFVp21U2ZUsfAZxKGc+EF6zxNDNIe0FjAOgpvhyrpwH1opv6t8qJYllkh9Tqc5tsfhbisv7B5vURBFr8sdUmaCvAzY5siT3e6fiy25p6bu42moHVIrNsu02dhsPfaFaXKTcUiFXRLMFm3Jdsrz+2NWesl3i7ngGCNIfoE8fQPbC6aW7KLpfmmV5akn3nKEAjwoH3CyG58QN92nXHp3fktn51RVKhre8WtBJ1t0C04yK4SYSJW1JJ36pgTUpPQEA2jU5r0spgAyfSvS6EQuvFejcynfS7AvEOOkMMrZc=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12277.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(23010399003)(366016)(1800799024)(56012099006)(10067099003)(11063799006)(3023799007)(4143699003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?UXBnMFhBNzZ1VWh6WVNaMGJ6S2pueW9LVW1PM2t2RHJKQ1JsOEZvQ3k5dGh0?=
+ =?utf-8?B?MFJrV3NWTEhndEZUNTlja2ZOQXJlR1ZBb2NPZU4rY2FPb1dFb0lLSHFhemQz?=
+ =?utf-8?B?aTh2cWxlM3BJV2dHbCsrRW1iSUdLZFVlcG5kbUVFTzJoNUt2REtnNXhDOUZz?=
+ =?utf-8?B?WFQza09IVzhrSzk2cDkzRkZtM1JLd3R5RGlXczZwL1pGd2ZpZnlxWXZCQy9X?=
+ =?utf-8?B?TUZYcExYV3p4OXYxUmdoRDFnRm12a0lUOExScUFvOXNxS2grdENKTVpFR1NE?=
+ =?utf-8?B?V0FacDUxUXR2dDdxZndlQy9vRFRTODB4ODh1NXdaQWdVTXZ2MUpodFQ0TjZh?=
+ =?utf-8?B?Tkk3aWllZkNabnFvemtOYTVJL0cySzBFTld4bDZYaVl1Y0NKbDIzKzYycVF6?=
+ =?utf-8?B?bWM0d1BqdkFYU0hVLzZiakJBdVhKMEd0VTh5WDlad0VXcGNwbUEyYnpSRmxy?=
+ =?utf-8?B?QVdBeVlkNWlFa2FBVGZCb003WU12QXViODRxTjNZSWNqMEIrVFlKWXIvdkdi?=
+ =?utf-8?B?aE9IMThiSld4ZkpHOGhzRDNnU1d3ODdYT3Bmd3dRWmo1S2RxOTB3N0pGUDRG?=
+ =?utf-8?B?djM4SWxEREsrbVEzdDk2cnV2UlVGaTV4S3krNk4yQXdaZWZWcXIwMitadVFx?=
+ =?utf-8?B?dkQwanN0b3U4aDE2RlgvbWwxQno1VU05dUx0RVZKeVJiWEZmK0lrNWhNa01Z?=
+ =?utf-8?B?SU1WbE5QVHJuQ1VxWncySlhpZWRTdzhoSTNwUG1JZjhwTTBjY05lUTVHRlQv?=
+ =?utf-8?B?VFRnMVI0UWJOMWVDWE5UYVMwcUlrU1FJbkZaTFhSaTZ6QWgrRS9tWCtCQzdI?=
+ =?utf-8?B?OUtFTGNTS2gvNmlpditjaFdicUNtK1JNZ1JGbzc4VFhkSnNyMlNGTjI1OWxR?=
+ =?utf-8?B?WkRZeUxwTGZVSzRibE4wVnQyeVZHaDBVSHh2ZFFxSlR1c2t3dXdvUzk5Uk5E?=
+ =?utf-8?B?QUVqVG9lVnYxV2NESjRoUWpyREpJVFc1N2h1NWJCQlpvWmVqSklHMW1yYTFO?=
+ =?utf-8?B?WW95bm9QVTk3ZVluVWx1QWh5MFVkWHoxTlhMWWpFZ29CWTFNN2hEelUxMXFO?=
+ =?utf-8?B?cEhMOWp4cnpac0lMY3VZc1BGNnB4NjFLNFlaNEJ5TklmQXhyNDNIdi9LRHBw?=
+ =?utf-8?B?N0t3TlBUMUpKM0s4RFRKcmF6ckhJelJOeWtsdEhJMFVRZkRVTWU1ZmVhU0Iy?=
+ =?utf-8?B?ZHBwU2xtcTIvdUVkeEYxR0MzNXVuQnNZVG5jU2Z0VXlxejR5WFA1QWV0R2tD?=
+ =?utf-8?B?Q0pFRkphTlRwUE80dUtXTFJrRGYzcmRKV0kraEc3dk8vOGhjQmhWV0wzck04?=
+ =?utf-8?B?bkZPdVZHMkhUbEJBWVNMa0VPTjFicjRQYXlzZUpaYUVzSWtKK1VnZjlUV0xq?=
+ =?utf-8?B?MFFvazl6KzVLbXVCZmp6UWJPOHBDazkrVE5talRyTVFXK2Z4cWo5cG9Nc3RN?=
+ =?utf-8?B?OWxvMDA0MEZKMTVrSExyOGRzbDNoWGNjN3JnTzJTYldzc3VxdDdEK0hQVUZx?=
+ =?utf-8?B?MVlUdlRqZmZLTDJ6UGZ6S2FsQldoVE5qaWliZ0h3bE9jYjVJTFVESGRzaTVY?=
+ =?utf-8?B?OUpJR2N2NitkZGpFOWRnL2U3YWYyQ3loYmt6a0pRNTJjM085TUF0NVFXSXFD?=
+ =?utf-8?B?REt1TlkwMjltZnkvd0tPTXhSbXVLb0FiWURTdHI3WXBuZTJyY3NXTzF3blRo?=
+ =?utf-8?B?SlE4dWM4OUFKcU5zZGpFR0xXV1lVQUZ5YTZFWHAwYm9WQ3ppTklQMGpFYW5W?=
+ =?utf-8?B?VUtCWW5VWDgxUEhsL2pDZDI4WE5yYjF1OGJmWG1hZjVyMExBMkFGdEZJcDdO?=
+ =?utf-8?B?eWl0YTFzUHNaWHFYcnpoR0VvNm1ueTZ6eVlkZHBuR08vQnhwN2srZFM2bmdP?=
+ =?utf-8?B?dlFYM0hIdVdVTklaK2dCL1BuSXIwSHJqUEdQS01WL0RXalV0dCs3cGhXWVZa?=
+ =?utf-8?B?NzdhK0UyT0cyYjl6SkVEL3BRTmtxSk4yUHR3OGs3aW52ejdtRGkyK1laWUlO?=
+ =?utf-8?B?UTVuYUpFRGFoVWU0eGgwaXhKamdaMUZ4aFBwUUpRSEpkWVZvOHhBRUQra29v?=
+ =?utf-8?B?Y1F3SkN3RGl0azlkSlBXTlNIeWR1SVR2dlRidFJmcFV1QnZBZGJBc2FwU0lV?=
+ =?utf-8?B?aldKVC9SVmRoSTJRVW1LN2U2K0hVOHZ2T01JL3RsODR4ZEtJOE54YzNOM0du?=
+ =?utf-8?B?RWNUZE9TM29vTU1IeEdlSnd5b3FkN2pkQm5ZOXJoRjJBS000T3YwU0lqTTRX?=
+ =?utf-8?B?V1FZdTlqcnJvQXJ6VTI5SFhxNHBCaWNQaWJyMnd1QU1mUEloWFJXMXBCR1h4?=
+ =?utf-8?Q?RWXD3f+PzhpvCi+u04?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB12019BC21C743E1BEF1BE8F4C8CDC2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12277.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a4fa805-12f6-4eae-b217-08def852da16
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2026 09:19:46.2715
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WVpXx6UiKXJ27ooVAmr0EArSZ2cMdounz5zWqDFo9RyzR4NsoMny8ca5JCLQPeIXhYgeU8alPsjMtioIZt+58w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8569
 
-On Wed, Aug 12, 2026 at 06:22:57AM +0000, Hongxing Zhu wrote:
-> 
-> NXP Confidential
-> > -----Original Message-----
-> > From: Francesco Dolcini <francesco@dolcini.it>
-> > Sent: Tuesday, August 11, 2026 2:38 PM
-> > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
-> > Cc: Leonardo Costa <leoreis.costa@gmail.com>; Bjorn Helgaas
-> > <helgaas@kernel.org>; robh@kernel.org; krzk+dt@kernel.org;
-> > conor+dt@kernel.org; Frank Li <frank.li@nxp.com>; s.hauer@pengutronix.de;
-> > kernel@pengutronix.de; festevam@gmail.com; leonardo.costa@toradex.com;
-> > devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> > kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
-> > regressions@lists.linux.dev; Sherry Sun <sherry.sun@nxp.com>; Manivannan
-> > Sadhasivam <mani@kernel.org>; Hongxing Zhu <hongxing.zhu@nxp.com>;
-> > linux-pci@vger.kernel.org
-> > Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
-> >
-> > On Tue, Aug 11, 2026 at 12:47:18AM +0000, Hongxing Zhu (OSS) wrote:
-> > > > -----Original Message-----
-> > > > From: Leonardo Costa <leoreis.costa@gmail.com>
-> > > > Sent: Tuesday, August 11, 2026 2:26 AM
-> > > > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
-> > > > Cc: Bjorn Helgaas <helgaas@kernel.org>; robh@kernel.org;
-> > > > krzk+dt@kernel.org; conor+dt@kernel.org; Frank Li
-> > > > krzk+<frank.li@nxp.com>;
-> > > > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > > > leonardo.costa@toradex.com; devicetree@vger.kernel.org;
-> > > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; linux-
-> > > > kernel@vger.kernel.org; regressions@lists.linux.dev; Sherry Sun
-> > > > <sherry.sun@nxp.com>; Manivannan Sadhasivam <mani@kernel.org>;
-> > > > Hongxing Zhu <hongxing.zhu@nxp.com>; linux-pci@vger.kernel.org
-> > > > Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer
-> > > > boots
-> > > >
-> > > > On Thu, Jul 16, 2026 at 02:09:19PM -0300, Leonardo Costa wrote:
-> > > > > On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
-> > > > > > Hi Leonardo,
-> > > > > >
-> > > > > > Would you be able to test this patch on your affected boards?
-> > > > > > Your testing would help expedite the merge process and ensure
-> > > > > > the fix resolves the boot issue you're experiencing.
-> > > > > >
-> > > > > > Best Regards
-> > > > > > Richard Zhu
-> > > > >
-> > > > > Hi Richard,
-> > > > >
-> > > > > Sorry for taking long to respond, I was caught up with something.
-> > > > > I tested the patch and it solved the issue. I sent a Tested-by tag there.
-> > > > > Thanks for looking into this!
-> > > > >
-> > > > > Best Regards
-> > > > > Leonardo
-> > > >
-> > > > Hi Richard,
-> > > >
-> > > > That patch might have introduced/exposed a second regression where
-> > > > PCI devices are not linked properly during the initialization. Sorry
-> > > > for not catching this before, as I didn't have any device connected during
-> > the previous test.
-> > > Hi Leonardo:
-> > > Sorry to hear about that.
-> > > I did test commit 7678e81498e2 with one Intel NIC (82574L) connected,
-> > > and I've double-checked today based on v7.2-rc7. The PCIe link can be
-> > > set up properly on the i.MX6Q Sabresd board in my testing.
-> > >
-> > > Here are the logs:
-> > > root@imx6qpdlsolox:~# lspci
-> > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> > > 01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network
-> > > Connection root@imx6qpdlsolox:~# uname -a Linux imx6qpdlsolox
-> > > 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
-> > > root@imx6qpdlsolox:~# dmesg | grep pci
-> > > [    0.256138] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
-> > > [    0.256307] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff ->
-> > 0x0000000000
-> > > [    0.256339] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -
-> > > 0x0001000000
-> > > [    0.256434] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu
-> > 0x01f00000
-> > > [    0.458388] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K,
-> > limit 4G
-> > > [    0.458492] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
-> > > [    0.555294] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
-> > > [    0.555783] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
-> > > ...
-> > >
-> > > The following endpoint devices also yielded the same results.
-> > > root@imx6qpdlsolox:~# lspci
-> > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> > > 01:00.0 Network controller: Qualcomm Atheros AR9287 Wireless Network
-> > > Adapter (PCI-Express) (rev 01) root@imx6qpdlsolox:~# uname -a Linux
-> > > imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l
-> > > GNU/Linux ...
-> > >
-> > > root@imx6qpdlsolox:~# lspci
-> > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> > > 01:00.0 USB controller: NEC Corporation uPD720200 USB 3.0 Host
-> > > Controller (rev 04) root@imx6qpdlsolox:~# uname -a Linux imx6qpdlsolox
-> > > 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
-> > >
-> > > Could you provide more details of your hardware setup (board,
-> > > connected devices, PERST# present or not)?
-> > > This may help us identify if there's a specific scenario that triggers
-> > > the regression you're experiencing.
-> >
-> > It's an apalis imx6, as reported already in this email thread.
-> > The DT is in Linux, you can check
-> > arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts every details about
-> > PERST# and more.
-> >
-> > This is the device connected:
-> >
-> > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> > 01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial
-> > ATA Controller (rev 02)
-> >
-> > 01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial
-> > ATA Controller (rev 02) (prog-if 01 [AHCI 1.0])
-> >       Subsystem: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA
-> > Controller
-> >       Flags: bus master, fast devsel, latency 0, IRQ 308
-> >       I/O ports at 1020 [size=8]
-> >       I/O ports at 1030 [size=4]
-> >       I/O ports at 1028 [size=8]
-> >       I/O ports at 1034 [size=4]
-> >       I/O ports at 1000 [size=32]
-> >       Memory at 01100000 (32-bit, non-prefetchable) [size=512]
-> >       Expansion ROM at 01200000 [virtual] [disabled] [size=64K]
-> >       Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit-
-> >       Capabilities: [78] Power Management version 3
-> >       Capabilities: [80] Express Legacy Endpoint, IntMsgNum 0
-> >       Capabilities: [100] Virtual Channel
-> >       Kernel driver in use: ahci
-> >       Kernel modules: ahci
-> >
-
-I just did one additional test, trying to help out Leonardo.
-
-Unfortunately I do not have the same PCIe card available, so I tested with a
-
-01:00.0 Network controller: Intel Corporation Wireless 7260 (rev 73)
-	Subsystem: Intel Corporation Dual Band Wireless-AC 7260 [Wilkins Peak 2]
-	Flags: fast devsel
-	Memory at 01100000 (64-bit, non-prefetchable) [disabled] [size=8K]
-	Capabilities: [c8] Power Management version 3
-	Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
-	Capabilities: [40] Express Endpoint, IntMsgNum 0
-	Capabilities: [100] Advanced Error Reporting
-	Capabilities: [140] Device Serial Number ac-7b-a1-ff-ff-4e-a1-d8
-	Capabilities: [14c] Latency Tolerance Reporting
-	Capabilities: [154] Vendor Specific Information: ID=cafe Rev=1 Len=014 <?>
-
-no wi-fi driver is loaded (but this seems unrelevant for the issue here), but
-the card is detected with the current mainline Linux 7.2.0-rc7+. I tested the
-apalis SoM on both the eval carrier board and on ixora v1.2.
-
-Same kernel config as the one failing.
-
-So, unless I did some mistake in my manual test, the issue is related to the specific
-PCIe card or some other subtle difference I cannot see yet.
-
-For the record, the failure was detected by our CI/CD, and it is systematically
-reproduced on multiple hardware boards.
-
-Leonardo: any chance you can test with the same PCIe board that is failing?
-
-Francesco
-
+DQpOWFAgQ29uZmlkZW50aWFsDQpPbiBXZWQsIE1heSAxNCwgMjAyNiBhdCAxMTozODoxM0FNICsw
+MDAwLCBLcnp5c3p0b2YgS296bG93c2tpIHdyb3RlOg0KPiA+ICtkZXNjcmlwdGlvbjoNCj4gPiAr
+ICBUaGlzIGJpbmRpbmcgcHJvdmlkZXMgc3VwcG9ydCBmb3IgbWFuYWdpbmcgQ29ydGV4LUEgY29y
+ZXMgYXMgcmVtb3RlDQo+ID4gKyAgcHJvY2Vzc29ycyBvbiBpLk1YIHBsYXRmb3JtcyB1c2luZyB0
+aGUgUFNDSSAoUG93ZXIgU3RhdGUgQ29vcmRpbmF0aW9uDQo+ID4gKyAgSW50ZXJmYWNlKSBmb3Ig
+Q1BVIHBvd2VyIG1hbmFnZW1lbnQgb3BlcmF0aW9ucy4gVGhpcyBhbGxvd3Mgc2luZ2xlDQo+ID4g
+KyAgQ29ydGV4LUEgY29yZSBvciBtdWx0aXBsZSBDb3J0ZXgtQSBjb3JlcyB0byBiZSBjb250cm9s
+bGVkIGJ5IExpbnV4IGFzDQo+ID4gKyAgYSByZW1vdGUgcHJvY2Vzc29yLCBlbmFibGluZyB0aGVt
+IHRvIHJ1biBSVE9TIG9yIGJhcmUtbWV0YWwgYXBwbGljYXRpb25zLg0KPg0KPiBEZXNjcmliZSB0
+aGUgaGFyZHdhcmUsIG5vdCB0aGUgYmluZGluZy4NCg0KV2lsbCBmaXguIFVwZGF0ZWQgdG8gZGVz
+Y3JpYmUgdGhlIGhhcmR3YXJlOg0KDQogIE5YUCBpLk1YIFNvQ3MgaW50ZWdyYXRlIG11bHRpcGxl
+IENvcnRleC1BIGNvcmVzLiBPbiBjZXJ0YWluIGkuTVgNCiAgcGxhdGZvcm1zLCBvbmUgb3IgbW9y
+ZSBvZiB0aGVzZSBjb3JlcyBjYW4gYmUgb2ZmbG9hZGVkIHRvIHJ1biBSVE9TDQogIG9yIGJhcmUt
+bWV0YWwgZmlybXdhcmUgYXMgYSByZW1vdGUgcHJvY2Vzc29yLCB3aGlsZSB0aGUgcmVtYWluaW5n
+DQogIGNvcmVzIHJ1biBMaW51eC4gVGhlIGNvcmVzIGFyZSBwb3dlcmVkIG9uIGFuZCBvZmYgdmlh
+IFBTQ0kgKFBvd2VyDQogIFN0YXRlIENvb3JkaW5hdGlvbiBJbnRlcmZhY2UpIENQVV9PTi9DUFVf
+T0ZGIGNhbGxzIHRvIHRoZSBmaXJtd2FyZS4NCg0KPiA+ICsgIGNvbXBhdGlibGU6DQo+ID4gKyAg
+ICBjb25zdDogZnNsLGlteC1ycHJvYy1wc2NpDQo+DQo+IFdoeSBpc24ndCB0aGUgY29tcGF0aWJs
+ZSBzcGVjaWZpYz8NCg0KV2lsbCBmaXguIFVwZGF0ZWQgdG8gdXNlIGEgU29DLXNwZWNpZmljIGNv
+bXBhdGlibGUgd2l0aCBhIGdlbmVyaWMNCmZhbGxiYWNrOg0KDQogIGNvbXBhdGlibGU6DQogICAg
+LSBpdGVtczoNCiAgICAgIC0gZW51bToNCiAgICAgICAgICAtIGZzbCxpbXg5My1jYTUzLXJwcm9j
+LQ0KICAgICAgLSBjb25zdDogZnNsLGlteC1ycHJvYy1wc2NpDQoNCj4gPiArICBmc2wsY3B1cy1t
+YXNrOg0KPiA+ICsgICAgJHJlZjogL3NjaGVtYXMvdHlwZXMueWFtbCMvZGVmaW5pdGlvbnMvdWlu
+dDMyDQo+ID4gKyAgICBkZXNjcmlwdGlvbjoNCj4gPiArICAgICAgQml0bWFzayBpbmRpY2F0aW5n
+IHdoaWNoIENQVSBjb3JlcyBhcmUgYXNzaWduZWQgdG8gdGhpcyByZW1vdGUNCj4gPiArICAgICAg
+cHJvY2Vzc29yIGluc3RhbmNlLiBFYWNoIGJpdCByZXByZXNlbnRzIGEgQ1BVIGNvcmUsIHdoZXJl
+IGJpdCBODQo+ID4gKyAgICAgIGNvcnJlc3BvbmRzIHRvIENQVSBOLiBGb3IgZXhhbXBsZSwgMHgy
+ICgwYjEwKSBhc3NpZ25zIENQVSBjb3JlIDEsDQo+ID4gKyAgICAgIHdoaWxlIDB4NiAoMGIxMTAp
+IGFzc2lnbnMgQ1BVIGNvcmVzIDEgYW5kIDIuDQo+DQo+IFNvIHlvdSBwYXJ0aXRpb24gZXhpc3Rp
+bmcgQ29ydGV4LUEgY29yZXM/IE9yIGhvdyBleGFjdGx5PyBXaHkgaXNuJ3QgdGhpcw0KPiBkZWR1
+Y2libGUgZnJvbSB0aGUgY29tcGF0aWJsZSAoSSBhc3N1bWUgeW91IHJlYWQgY2FyZWZ1bGx5IHdy
+aXRpbmcNCj4gYmluZGluZ3MpPw0KDQpZZXMsIHdlIHBhcnRpdGlvbiBleGlzdGluZyBDb3J0ZXgt
+QSBjb3Jlcy4gT24gaS5NWDkzIGZvciBleGFtcGxlLA0KdGhlcmUgYXJlIDIgQ29ydGV4LUE1NSBj
+b3Jlcy4gQ29yZSAwIHJ1bnMgTGludXggYXMgdGhlIHByaW1hcnkgT1MsDQp3aGlsZSBjb3JlIDEg
+KG9yIGFueSBzdWJzZXQgb2YgdGhlIHJlbWFpbmluZyBjb3JlcyBvbiBTb0NzIHdpdGggbW9yZQ0K
+Y29yZXMsIGUuZy4gNHggQTU1KSBjYW4gYmUgYXNzaWduZWQgdG8gYSByZW1vdGVwcm9jIGluc3Rh
+bmNlIHRvIHJ1bg0KUlRPUyBvciBiYXJlLW1ldGFsIGZpcm13YXJlLg0KDQpUaGUgcmVhc29uIGZz
+bCxjcHVzLW1hc2sgY2Fubm90IGJlIGRlZHVjZWQgZnJvbSB0aGUgY29tcGF0aWJsZSBpcw0KdGhh
+dCB0aGUgYXNzaWdubWVudCBpcyBmbGV4aWJsZSBhbmQgYm9hcmQvdXNlLWNhc2Ugc3BlY2lmaWMu
+IE9uIGENCjQtY29yZSBTb0MsIHRoZSB1c2VyIG1heSBhc3NpZ24gY29yZSAxIG9ubHksIGNvcmVz
+IDErMiwgY29yZXMgMiszLA0Kb3IgYWxsIG5vbi1wcmltYXJ5IGNvcmVzIHRvIG9uZSBvciBtb3Jl
+IHJlbW90ZXByb2MgaW5zdGFuY2VzLiBUaGlzDQpydW50aW1lIGZsZXhpYmlsaXR5IGNhbm5vdCBi
+ZSBlbmNvZGVkIGluIHRoZSBjb21wYXRpYmxlIHN0cmluZy4NCg0KV2UgY29uc2lkZXJlZCB1c2lu
+ZyBhIGBjcHVzYCBwaGFuZGxlIGxpc3QgaW5zdGVhZCwgYnV0IHRoZSBDUFUgbm9kZXMNCmluIHRo
+ZSBEVCBhcmUgYWxyZWFkeSBjbGFpbWVkIGJ5IHRoZSBMaW51eCBDUFUgdG9wb2xvZ3kgYW5kIGRv
+IG5vdA0KbmF0dXJhbGx5IHJlcHJlc2VudCAicmVtb3RlIHByb2Nlc3NvciIgYXNzaWdubWVudHMu
+IFRoZSBiaXRtYXNrDQphcHByb2FjaCBkaXJlY3RseSBtYXBzIHRvIHRoZSBQU0NJIENQVV9PTi9D
+UFVfT0ZGIE1QSURSLWJhc2VkDQppbnRlcmZhY2UgdXNlZCBieSB0aGUgZmlybXdhcmUuDQoNCj4g
+PiArICAgICAgICByZW1vdGVwcm9jLWNhNTUtMSB7DQo+DQo+IEltcGxlbWVudCBwcmV2aW91cyBj
+b21tZW50cy4NCg0KV2lsbCBmaXggdGhlIGV4YW1wbGUgbm9kZSBuYW1lIHRvIGZvbGxvdyBEVCBu
+YW1pbmcgY29udmVudGlvbnMuDQoNCkJlc3QgcmVnYXJkcywNCkppYWZlaQ0K
