@@ -1,183 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8065D358399;
-	Wed, 12 Aug 2026 10:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABC7358399
+	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 10:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786528987; cv=none; b=VcLksElZVVVSpdpeS5P4XLc1XsfDEw0m1CUXkTD7YLxSWxPHhyf9KXc43Me2F1aJ6OAnSaEA+ojapr7m7s8FHTh7wfQhyO4RdW1Wzz+kn7iedAEt6x7+YveKELa6A52oDr8Ky+DXz/4Adv06Ry1MYBU3TC0XelaqG/dgrXAUqyU=
+	t=1786529687; cv=none; b=Uc+UB6u1DHXRi3qZCRjZvv3qtTGHRnNpAt/2th8pTDSDdfTF70Lcr+4iO74EMhQ4SMa/lB/Oq+OIHEz+LMFitjcWeMAIFyvfi9tCB8+81Hz7NgENYbg3a1QYETp0hbvsW8BGI8aFzWFlSpc/3Wr2apFQZu7ed/7JuGaIWDiSdgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786528987; c=relaxed/simple;
-	bh=wssolmgJd/cBFSr8Zocs0/SA81bRmq+iJzXTmINeuoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZOr9TJ5/U2OSlH7FQwfGbyM8EmQaQZgMIaE5XOdmZb5wUTq6i76OYiN2qkCQM40pDlKsrtNj4vtfaa4T45vj/7sinZUnvAmIzr3Wh/I7IIfPJLQjmNRTd1XOaqY3jX69efg1UYbpQuJ6I+n7Xm2zvMx5E4VGa+SmnvJOcRhE4o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z8F/fftD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786529687; c=relaxed/simple;
+	bh=oEXbhprboarVKGeFczIsGRUibvpUIcZwpj9JQYo+kYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fm+mkhxCB55lwsiTFCKII14aoDBROS2ZgWQUCQnTp6625wXCDslekQD56MitemrsHbsbPIf9MlrJONfCPlVz8VIfSTShRM9iLT/gQAeQlv77X8G0wqi0ZkXhbUks04npq/jLr5FA7AxbYlVglMTsoK2zBqiiIUy74/Zx6NluUE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UycYKmTW; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z8F/fftD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CA31F000E9;
-	Wed, 12 Aug 2026 10:03:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786528986;
-	bh=VUCfF1UAtrr5Sz4037NGCH3ZcjKNMv5UJ6wXb/uvgGE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Z8F/fftDf17dt8VMfG82K31UoEYpifag2Gyi7U0w7Yuwig7vvuUyhvkOCdpBvnFFX
-	 dkedhhx8vCot3G+jTLeTXk2hvnWTyGTkefYL1SvjktZE0RELs5p95FVPnhjrEk9r8j
-	 J1gtfw1ED2MDkEF3tMiBBGt0OygTcnEtrKStDFWAoRz6I1QpcPT466wvD6RjipjTWL
-	 2eOB+YWwPkh9Rcv7Tm2JKb1IwZs5Ug5+sJyx1eAFCq8ib3OsxpqRuXB/xQNO0bZVbF
-	 MSxftiofDrGViSeKOocIxOZH0eeOQ9sa2/7tjjo6VhrAy+9IrV/HSpmGTBoSlIvWgb
-	 G/eQ0rqSOmXZA==
-Message-ID: <9557331b-8d7e-4235-93c5-f8b799df6fff@kernel.org>
-Date: Wed, 12 Aug 2026 12:02:58 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UycYKmTW"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ccf2360620so7794115ad.3
+        for <imx@lists.linux.dev>; Wed, 12 Aug 2026 03:14:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786529684; x=1787134484; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fPGGnxaxxccJgS63KzDljJ/qLjaATjo4V3Bm6nOUhog=;
+        b=UycYKmTWgHjA3GFB3ygu/l0icqfPHQHwWJM8igtUJhN9EA1eGA47g9x1qw8OcTPIT7
+         +v8NkCo4Ada/mUj0o+kOaXtGrFN6i3Tj4o2E6E61NN/Ms9j/WWDmqyB6hqEIwQVEmSFe
+         KWHa+1PuHC2UyF2C2nxFb5vmz3aR4dvGkfSKhQOklL+KDxknb3Uo0c2atp33+PhvlZfg
+         oHmveekhJUE90fhFHzr75OZPkWHoUvi4b2Q/HsKV8hdnmGV/7HoXjMuEAbWC04cuNWEM
+         GhWxubFtysb4Q9SDl4C1dJU/UmCym1/k5PKMkHGZFZ+Wf136jRbggKtweEtQbNMBzkDN
+         orGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786529684; x=1787134484;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fPGGnxaxxccJgS63KzDljJ/qLjaATjo4V3Bm6nOUhog=;
+        b=XBnvcxtO/na/LoG+tVHsS0TsCS/Y6JBfHm02SEDbuvHS+eqBoywrO9/NkF9/dn4ePl
+         aTNTIuG8PYkIxVZwWHb9hLessBlcHbR+FsNL2/u+26pxCZLCQbFMUeHkWOECJ4os8GfU
+         Z5BRz62tSy6ecDXacLKSBLiZA3yjIOKdKh2erUY701qLVnFQQJGZPj5OtVFo/IaKRZo9
+         e/gkmJHeN9MlF7u0d7n85DSqL0CHEHvFJo6+OJ3eA5CF7Gw0ipu0HwNQpY4b+EVbtFhl
+         8Lf/MdFhfF+bkcgMq9Lerk7BiO8JHQhF5E9eB7SU/wN0ccXiD5LmvMRYxfs2zHuuHJLu
+         fvqw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+Nd8MNW9l35uKNjBIVtNf3bLaf52PhddwByeBSSf177SKUY7fo5kDfduweknksMOxmQE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOlJJa9yWvWZRMrt+pqSMpNDG3Dy5kSZqrTigPk8Wwp+3y5U0v
+	1IDyV2MxgIAle0HsQkNtUnbDysqnQvXp+bzgyO6Y7I/nLmHg0ToCf/Ds
+X-Gm-Gg: AR+sD12hgQI4k+ttO3UhKS74Z7015lABWe8l5LxjjZTk0AP4IJjvZ4ws7YXB+3KoEAs
+	xjQHhvA+U7pqHODDFLESc+Gji11lQbRKT4WQmY9Wg0C6fA1Qo+OnEhOaCgQuIiuoyjBntP6iho+
+	MXXGORWBBbfU0Q55ME+gqF9SG3lBE9r2Ujj3QW5lusRoILhoR70e5mO4cLO/q3aL0d7AAZQqUl1
+	lAjVFT7TSIlMWuX8s6oPKx+zrL3M6leID/ETukrUP4S3DAiwk/StQW0ubmXhuijGJOVvmDdle2J
+	N/Xvt3XPdBhZMQ3THikRvKv/XxEuVR6nqIgzj5JJSyfL7Ywe19kRI2dyoCMNkj8er8i2mAXOhn3
+	wepJCInf5YRlSAK/YXMahQXnpxUgJnXSU+hnk11XjgGcAX1uxQwHKgbfHGKDOdiUY8uUJYkq8F0
+	1mO0XHUPv+c+Wlzf0l5MTA1DQ8yfRinlrJerVQlKHQt0QO9n5gNGP4GtSF7c/AQlUqqs1eGqHkd
+	hk25IRYU3ivHslo6sFcKXCciRiNeE1p/4g+YEy395yMW/jeB9q7gvIP+MD0jrqDJN88qrqBW+57
+	h//C
+X-Received: by 2002:a17:903:11c6:b0:2d2:da8e:9017 with SMTP id d9443c01a7336-2d3452f5c1cmr45156165ad.8.1786529684542;
+        Wed, 12 Aug 2026 03:14:44 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d35219d91dsm4159645ad.51.2026.08.12.03.14.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 03:14:44 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Frank Li <Frank.Li@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bui duc phuc <phucduc.bui@gmail.com>
+Subject: [PATCH 0/3] ASoC: mxs: Improve probe error handling
+Date: Wed, 12 Aug 2026 17:14:15 +0700
+Message-ID: <20260812101418.37966-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] dt-bindings: remoteproc: add imx-rproc-psci
-To: Jiafei Pan <jiafei.pan@nxp.com>
-Cc: "andersson@kernel.org" <andersson@kernel.org>,
- "mathieu.poirier@linaro.org" <mathieu.poirier@linaro.org>,
- Peng Fan <peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Z.Q. Hou" <zhiqiang.hou@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <20260511023928.39640-1-Jiafei.Pan@nxp.com>
- <20260511023928.39640-2-Jiafei.Pan@nxp.com>
- <20260514-omniscient-futuristic-macaque-af0718@quoll>
- <MRWPR04MB1227740CFAD4D4AAF1758F8A48ADC2@MRWPR04MB12277.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <MRWPR04MB1227740CFAD4D4AAF1758F8A48ADC2@MRWPR04MB12277.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/08/2026 11:19, Jiafei Pan wrote:
-> 
-> NXP Confidential
-> On Wed, May 14, 2026 at 11:38:13AM +0000, Krzysztof Kozlowski wrote:
->>> +description:
->>> +  This binding provides support for managing Cortex-A cores as remote
->>> +  processors on i.MX platforms using the PSCI (Power State Coordination
->>> +  Interface) for CPU power management operations. This allows single
->>> +  Cortex-A core or multiple Cortex-A cores to be controlled by Linux as
->>> +  a remote processor, enabling them to run RTOS or bare-metal applications.
->>
->> Describe the hardware, not the binding.
-> 
-> Will fix. Updated to describe the hardware:
-> 
->   NXP i.MX SoCs integrate multiple Cortex-A cores. On certain i.MX
->   platforms, one or more of these cores can be offloaded to run RTOS
->   or bare-metal firmware as a remote processor, while the remaining
->   cores run Linux. The cores are powered on and off via PSCI (Power
->   State Coordination Interface) CPU_ON/CPU_OFF calls to the firmware.
-> 
->>> +  compatible:
->>> +    const: fsl,imx-rproc-psci
->>
->> Why isn't the compatible specific?
-> 
-> Will fix. Updated to use a SoC-specific compatible with a generic
-> fallback:
-> 
->   compatible:
->     - items:
->       - enum:
->           - fsl,imx93-ca53-rproc-
->       - const: fsl,imx-rproc-psci
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-Don't do generic fallbacks. Works poor, as visible in multiple cases now.
+Hi all,
 
+This series improves probe error handling in the MXS ASoC drivers.
+Use dev_err_probe() where appropriate and remove redundant dev_err() calls
+when the corresponding errors are already reported by the called functions
+or further down the call chain.
 
-> 
->>> +  fsl,cpus-mask:
->>> +    $ref: /schemas/types.yaml#/definitions/uint32
->>> +    description:
->>> +      Bitmask indicating which CPU cores are assigned to this remote
->>> +      processor instance. Each bit represents a CPU core, where bit N
->>> +      corresponds to CPU N. For example, 0x2 (0b10) assigns CPU core 1,
->>> +      while 0x6 (0b110) assigns CPU cores 1 and 2.
->>
->> So you partition existing Cortex-A cores? Or how exactly? Why isn't this
->> deducible from the compatible (I assume you read carefully writing
->> bindings)?
-> 
-> Yes, we partition existing Cortex-A cores. On i.MX93 for example,
-> there are 2 Cortex-A55 cores. Core 0 runs Linux as the primary OS,
-> while core 1 (or any subset of the remaining cores on SoCs with more
-> cores, e.g. 4x A55) can be assigned to a remoteproc instance to run
-> RTOS or bare-metal firmware.
-> 
-> The reason fsl,cpus-mask cannot be deduced from the compatible is
-> that the assignment is flexible and board/use-case specific. On a
-> 4-core SoC, the user may assign core 1 only, cores 1+2, cores 2+3,
-> or all non-primary cores to one or more remoteproc instances. This
-> runtime flexibility cannot be encoded in the compatible string.
-> 
-> We considered using a `cpus` phandle list instead, but the CPU nodes
-> in the DT are already claimed by the Linux CPU topology and do not
-> naturally represent "remote processor" assignments. The bitmask
-> approach directly maps to the PSCI CPU_ON/CPU_OFF MPIDR-based
-> interface used by the firmware.
-You replied three months after my comment. Well, you have such right but
-so you know entire context is gone and I am not going to put my time to
-read the binding again.
+Compile-tested only.
 
-Just for you know - if you partition the cpus, they are gone from the
-cpus list as well. Not sure how this affects the bitmask but remember to
-model only available CPUs properly in DT.
+Best regards, 
+Phuc
 
-Best regards,
-Krzysztof
+bui duc phuc (3):
+  ASoC: mxs-saif: Use dev_err_probe() for error handling
+  ASoC: mxs-saif: Drop redundant probe error messages
+  ASoC: mxs-sgtl5000: Drop redundant probe error messages
+
+ sound/soc/mxs/mxs-saif.c     | 21 ++++++---------------
+ sound/soc/mxs/mxs-sgtl5000.c |  2 --
+ 2 files changed, 6 insertions(+), 17 deletions(-)
+
+-- 
+2.43.0
+
