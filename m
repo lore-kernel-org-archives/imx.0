@@ -1,196 +1,452 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010000.outbound.protection.outlook.com [52.101.84.0])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010047.outbound.protection.outlook.com [52.101.84.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B113FDBF5
-	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 09:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54603402BA1
+	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 09:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786526392; cv=fail; b=Ufd7AtlvEyF40zgm5PCDalfwYU/2Cl8+LtmFma/7LCc+jCYme2sNLowHeUiquyYmCfyA6LJmFDmm5qhMQtT+bsIcZfuizMbBeCG6ocL9MZON7LBwgi+8lcFajdVco+zGLn6k3oqCRKmkDa10zhsx9FB0FT2ha3AQYmr9dUKWzy0=
+	t=1786526433; cv=fail; b=aclVaFonFhTGpb2grIw8zilWHxSUeNt99Yow+yo1ICL3knchdx0Mh+JrrJxflICmVle3l21q9CQ54I//DySOjHokKVuvjKMM6iwXHcMht29LKu3uaXaX3vNir6DuNMiTTIdyy1hwSMRfoNYwE3/Atjs5fkYNfNgs/OB48yFUHy0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786526392; c=relaxed/simple;
-	bh=QbWUCnhXTQxRVsqkl5WYglVZOa2U0SdsgaGY217H7A0=;
+	s=arc-20240116; t=1786526433; c=relaxed/simple;
+	bh=gbhY2giD4W+5mEJp+Y22BWU2Lm82lhGKCfE63loNnnQ=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pVvOox4oxHCMobUEx0gyxiqiqU1xDVhesOOcdUgT8apRvK1TM1jVs8w/7dcB9GzM+ksyqhwnfwZin4040gpw+dV7NPgjVJo2aPNQW+SYitMF2wevlUOVCYsXo3bDuveVMsvcntwzD5JZgiTbPXt6E5n+muOkwMG7WiBvGuezyOo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KJEzTbdv; arc=fail smtp.client-ip=52.101.84.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=oFl65+nlHHUrKvPSvevZjIA/OXVIdXOwxDeqGq7vZRH+Mrae1Mj/dl/nO/1luUCmfynbro/AHiXwkyg7Mx9eTRhFjPXEz+wiZG7ZZ/TZG3cabquyPDo5prOwBOuSCDvz0gZh3vwaNth0UMcmJfyEu8Sd88Mj6wJBB7usQcQ/epw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MS8Ae4ug; arc=fail smtp.client-ip=52.101.84.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KJEzTbdv"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MS8Ae4ug"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P82TsS3RIMSOJEldU2PZflHsPjjgxOWr4W2hUiAQbLiKmzzTS/Ml7mfbsM4aF48U9XGwQ+b1Z0Pdm48C03xiXa3CZNKiuQKu5LKRpkLn+9sB4IUJWPbu8oGbjIbzpoXJs6/KAuHYz24ykOx0wtIJJHlwzPzYUhPgn16ghs8T+GrJIWZRAt7EjxsJsv1gZ6q6Lq85559n0doQCmS5NDeM83U678JJ3ouimpWEvbfsCJNoKC29nH+1lEJOLGLSwdF0VndBRliBmy5LjuA8RghbohtDWeen7Fzk8orDY0/rjepZS+hfmSmI266fswMuX+TypqcG0mAYz4kE05nG/KLr/Q==
+ b=bvAPEuA7ipRV9habtZ6j/WmW3qejou4wlKaehk+6pgJEGgM7qI4s43S1Rjqu1gH6vSfCqJfeM1/w0hUi6FYLkrwWHPnptz90Nme+5fh3Qk481+ZKw3tElFRPiEn3kTuRRuYHt/sMewLwUrqszBJfd6onLAbQV+HNrWyC0fv4ngYstXB70PKzQMXb2hsQSTglEpRM7RP+/GAORf713fPzh0L+IrqROw7Ldw51Ky8VuGBmeTsndni3AnaIponOdn56uOw8o1avx56KAr5Rtf+i8lZdT93cBj6lpVyM+4E8ew2FS09lFA0znDnTls4XJEtcOMAUA2gds6BijMZdxlWGuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QbWUCnhXTQxRVsqkl5WYglVZOa2U0SdsgaGY217H7A0=;
- b=nEErdU7h0iCZYOt1xw+gLqiWH3jD115eTcj4wNZHUwTEC8vzHo41IiHmib0ooDgPceFNDQi2Hlmc4t+5Ts0miqjunxY3q46v0eCuVsUQQh+aVs4DWgcTFBNpdxdpjtKasfPkkWEfBT/uuERQHg7MsawdAyMgo4iWNwH336f25hQfaSVd0NOInr/eSanhL4A4KY8mi4IV6dqAFYx7w+WzCgJwG61TZy8J4QBc/CkjE1vbZsDy0q8CHa7D7OmdovxZLRM6FEZKRjfW4dk+qkVZAfJO18J2J+CM4efUaRUfb8ZmUTf+XXbrYK1+Hz2Im7hEeysGJZvALsCMW4IwJmqGBQ==
+ bh=4g/ZoYLzWMIbz86SHBpapBS7aDCVI1Z1+BvFw6sunQI=;
+ b=GesEV6VoKEf7YWaY9uV7Z6N9OH2cmW5btkF7vb3JzlZfVp4ZUAV3O0eWn2wQDZkid0iOdRKRUqOsrlEZFOYKs8YudQcgWS+pf2NP9OzzWMeBefHIXUp9zr+6QE8l3ZZMkzTZdb+4PZzOxWwwSNtW3ZPCHlNk6GimBcuXEL29JaQ5tva5jA2tczuVMYXhCtsKCHzmK3jTsL0IJXwLDps9RTNMAqQEVVLm3I/hGhcC4XNCXhz/Ahd+SunfkM1nmcXRjP/0CksyoM6p2UV29kc1XTBeOZJDes9J8YPG0lq609ToKR+7aJndJjJ7raL9YsYO4c174Ix7fnS38lH6C2D97w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QbWUCnhXTQxRVsqkl5WYglVZOa2U0SdsgaGY217H7A0=;
- b=KJEzTbdvFSDZSXo3jDDIE56LOr0klfxiGbAS7IwkDwVeMqpCHDjWTV5KoG0SWxoEbEyUgmiGO6/nGphENVU7t4SsGnPcBn48g+nNhkTXur3n7JNQUX7JA4IAbLD+Uqn4SahP/Q64QSmrQKqkStV66t8gKFUP3ig9QnFBfiW4GwSfraAaupypnclX9/UDsXgdCEkKsr/D+WiDAITLWuFOdNAV0GrQs4D3PWdXJPTxHbA6udwWvv+PDQ9D39p1wxVSpQyAYhIdlonnb5jdkypy87pL2bKBVTM5+7r18eqD7ioKeu7xAkIQ4r6taCpBWzGnYyRD6q/lKdfsbEMAWNeoWg==
-Received: from MRWPR04MB12277.eurprd04.prod.outlook.com (2603:10a6:501:81::19)
- by AM9PR04MB8569.eurprd04.prod.outlook.com (2603:10a6:20b:434::21) with
+ bh=4g/ZoYLzWMIbz86SHBpapBS7aDCVI1Z1+BvFw6sunQI=;
+ b=MS8Ae4ug1LHp7hStRatarhRDy5hQomIbiTMFBvMw3G9tuoDm2ebY5NtH9Wj7sIX28baqatOBPtUhUlKSUgqZ9xEOKSyJY80I0er1F7+vmGwBAqxi5bUb0xhvFpX0KKbcMn62GZSy7HUPp6ettrLC2UAYFJUgEeabfJa87J/9eETYVwKH9O8rLf2c+aCDKEgMmOgbVhErUmDYrT9+SclXtxZ5XFAUC4x8r48Seu07D4CytxroEkXuvihMW9OfvHugMN+LGddjZWmaQZ3gsPoB0SLODIPAGQwQGLrWIHl+h9vsc8fCZmOXJW0WQrur3GTQxzLETzy8Lx4ieREoDylB3w==
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
+ by DU4PR04MB10647.eurprd04.prod.outlook.com (2603:10a6:10:589::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
- 2026 09:19:46 +0000
-Received: from MRWPR04MB12277.eurprd04.prod.outlook.com
- ([fe80::b242:b18e:8fa3:56f]) by MRWPR04MB12277.eurprd04.prod.outlook.com
- ([fe80::b242:b18e:8fa3:56f%3]) with mapi id 15.21.0315.008; Wed, 12 Aug 2026
- 09:19:46 +0000
-From: Jiafei Pan <jiafei.pan@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: "andersson@kernel.org" <andersson@kernel.org>,
-	"mathieu.poirier@linaro.org" <mathieu.poirier@linaro.org>, Peng Fan
-	<peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Wed, 12 Aug
+ 2026 09:20:26 +0000
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0315.012; Wed, 12 Aug 2026
+ 09:20:25 +0000
+From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+To: Vincent Jardin <vjardin@free.fr>, "Carlos Song (OSS)"
+	<carlos.song@oss.nxp.com>
+CC: Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Andi Shyti <andi.shyti@kernel.org>, Frank Li
+	<frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, "linux-i2c@vger.kernel.org"
+	<linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Z.Q. Hou" <zhiqiang.hou@nxp.com>, Mingkai Hu
-	<mingkai.hu@nxp.com>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, Jiafei Pan <jiafei.pan@nxp.com>
-Subject: Re: [PATCH v3 1/4] dt-bindings: remoteproc: add imx-rproc-psci
-Thread-Topic: [PATCH v3 1/4] dt-bindings: remoteproc: add imx-rproc-psci
-Thread-Index: AQHdKju3n9+gWoLR30aPfO35H8veRA==
-Date: Wed, 12 Aug 2026 09:19:46 +0000
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
+Thread-Topic: [PATCH] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
+Thread-Index: AQHdJfRDYby9FhUcyEqAFsrecrVSM7aYpdlggAFKVQCAACqlcA==
+Date: Wed, 12 Aug 2026 09:20:25 +0000
 Message-ID:
- <MRWPR04MB1227740CFAD4D4AAF1758F8A48ADC2@MRWPR04MB12277.eurprd04.prod.outlook.com>
-References: <20260511023928.39640-1-Jiafei.Pan@nxp.com>
- <20260511023928.39640-2-Jiafei.Pan@nxp.com>
- <20260514-omniscient-futuristic-macaque-af0718@quoll>
-In-Reply-To: <20260514-omniscient-futuristic-macaque-af0718@quoll>
+ <AM0PR04MB680259939B7ED9AF5BA5957BE8DC2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+References:
+ <20260807-for-upstream-i2c-imx-lx2160-reverse-v1-1-f276ce8cb660@free.fr>
+ <AM0PR04MB6802658862C4E2ED8628FFA8E8DD2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+ <anwI6qnsikPrd80W@L30177.local>
+In-Reply-To: <anwI6qnsikPrd80W@L30177.local>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-08-12T09:05:17.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
- Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRWPR04MB12277:EE_|AM9PR04MB8569:EE_
-x-ms-office365-filtering-correlation-id: 7a4fa805-12f6-4eae-b217-08def852da16
+x-ms-traffictypediagnostic: AM0PR04MB6802:EE_|DU4PR04MB10647:EE_
+x-ms-office365-filtering-correlation-id: 47a58bd5-5a92-47aa-2341-08def852f1ad
+x-ms-exchange-sharedmailbox-routingagent-processed: True
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|19092799006|23010399003|366016|1800799024|56012099006|10067099003|11063799006|3023799007|4143699003|22082099003|18002099003|38070700021;
+ BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|19092799006|3023799007|6133799003|10067099003|56012099006|5023799004|11063799006|4143699003|22082099003|18002099003|38070700021|15866825006|41080700001;
 x-microsoft-antispam-message-info:
- 5LiFioutdPby6NJzWi1XvGc3gBGRLolrZy3qbpw4MfiuUvtLNwcrw6YTauI3+28HBtQoxXI5HKg31nTyproNWKEsZvtN0LpBzt07zVflg0dRzNfsR4nJEW+tA3YudRU+tHaV9cdrPU23swuL+Fw8xpLXlBtUIYvaiy59rfQ7YuSoKpUZErfuVa92z4632mG5T34bvEivovPiSdbt9vrTkelYSuMTwcKP5Ct2Llwi76H0fY1i9l9//6uJrolBH6di5W5nR1O8lQEs0kvsULdQHxfYC2IQicUX8c0yg726iuvtZTXOQ4uPaYOoYgAjjb9aGTgn6fxg/hJ7lbpAN2SHL/3OGrhiQUK/Hkf7/HiLzriv9eDEHEnj2U9f5YkUI0WmaOos5QB3LQeDYBLCfPWskzDqw3YLux0/MsCL98zzwLZQ5ViXLL/n2sR+ZkjOgbVey+KAwFVp21U2ZUsfAZxKGc+EF6zxNDNIe0FjAOgpvhyrpwH1opv6t8qJYllkh9Tqc5tsfhbisv7B5vURBFr8sdUmaCvAzY5siT3e6fiy25p6bu42moHVIrNsu02dhsPfaFaXKTcUiFXRLMFm3Jdsrz+2NWesl3i7ngGCNIfoE8fQPbC6aW7KLpfmmV5akn3nKEAjwoH3CyG58QN92nXHp3fktn51RVKhre8WtBJ1t0C04yK4SYSJW1JJ36pgTUpPQEA2jU5r0spgAyfSvS6EQuvFejcynfS7AvEOOkMMrZc=
+ g9K2+cMId8LDfwuSYQJCV2wlb3RCJnSJsvDZmucjbmlYmfyVVv4lPsGpbjzCQCF550UV6nTGS1RZimaAu7N4qJ0xI57OCzzlC2axgq9rZgDjdvmoguvb7fEuaNxpwk7o6KH8D9yOzsTu2dAJbHgRScIJ9kvSFMUl7XaTPngG+1c5W1gmhTL/SdHSxIMSXp0CfC/0cwy8/PmiUnjL9UVhTTeiShX6+yZPdurr5YRsDrbDRpSgAI/Y292NroDRfnRaV6xCAmdjljfpp7H8Zi5qiFfBRUZ+WRu0Wjwq3fNaaDXSWLPlCe+bxRDs6M7c0wrD38Ig8Ft7vxlX+SGTCeXLE1kDflvmdD59TKhqKxH7IxBMG3SsSbrRJhli3VgtAVa3PtviZDyW2wLMfJ39SO9aW4iFqqTdAhlPEmTZU6EYbMo0w5b+aOx0HpM6koD+8Q1I2FrY4Tjp9E2cAw8xDPI1wdZ8AgAWMW1NS3A44zJoulGWYUrS1iGC3WpOWJrcbFCKx28wXAeDuv0BTggm/mFYieAFdkqtiC8a5QPeJgk/RLI1SxUTz0hx+D4YZyU+gwwD6HyO+Re+FeF92yXGF5qMoZ6ssYFRHQMopnTwnSEz62bzqkC7HRLgBRUxYgFH/odvDmonetcrAwQWhyNth/8hwXpK6oNsugrFmf1FAc3Ja15qJSVNXG3cn19iqdqRtC5NRB+SgNJVh9KPJD3cgSggv9xOOQtdF+UI5piXiwYDaBcRS/faRh9OqXBs75i7FycVePEFFPIwUJLjrFJOJu5vD/O25sk4xaqPnU/OQXXTbqM=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12277.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(23010399003)(366016)(1800799024)(56012099006)(10067099003)(11063799006)(3023799007)(4143699003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(19092799006)(3023799007)(6133799003)(10067099003)(56012099006)(5023799004)(11063799006)(4143699003)(22082099003)(18002099003)(38070700021)(15866825006)(41080700001);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?UXBnMFhBNzZ1VWh6WVNaMGJ6S2pueW9LVW1PM2t2RHJKQ1JsOEZvQ3k5dGh0?=
- =?utf-8?B?MFJrV3NWTEhndEZUNTlja2ZOQXJlR1ZBb2NPZU4rY2FPb1dFb0lLSHFhemQz?=
- =?utf-8?B?aTh2cWxlM3BJV2dHbCsrRW1iSUdLZFVlcG5kbUVFTzJoNUt2REtnNXhDOUZz?=
- =?utf-8?B?WFQza09IVzhrSzk2cDkzRkZtM1JLd3R5RGlXczZwL1pGd2ZpZnlxWXZCQy9X?=
- =?utf-8?B?TUZYcExYV3p4OXYxUmdoRDFnRm12a0lUOExScUFvOXNxS2grdENKTVpFR1NE?=
- =?utf-8?B?V0FacDUxUXR2dDdxZndlQy9vRFRTODB4ODh1NXdaQWdVTXZ2MUpodFQ0TjZh?=
- =?utf-8?B?Tkk3aWllZkNabnFvemtOYTVJL0cySzBFTld4bDZYaVl1Y0NKbDIzKzYycVF6?=
- =?utf-8?B?bWM0d1BqdkFYU0hVLzZiakJBdVhKMEd0VTh5WDlad0VXcGNwbUEyYnpSRmxy?=
- =?utf-8?B?QVdBeVlkNWlFa2FBVGZCb003WU12QXViODRxTjNZSWNqMEIrVFlKWXIvdkdi?=
- =?utf-8?B?aE9IMThiSld4ZkpHOGhzRDNnU1d3ODdYT3Bmd3dRWmo1S2RxOTB3N0pGUDRG?=
- =?utf-8?B?djM4SWxEREsrbVEzdDk2cnV2UlVGaTV4S3krNk4yQXdaZWZWcXIwMitadVFx?=
- =?utf-8?B?dkQwanN0b3U4aDE2RlgvbWwxQno1VU05dUx0RVZKeVJiWEZmK0lrNWhNa01Z?=
- =?utf-8?B?SU1WbE5QVHJuQ1VxWncySlhpZWRTdzhoSTNwUG1JZjhwTTBjY05lUTVHRlQv?=
- =?utf-8?B?VFRnMVI0UWJOMWVDWE5UYVMwcUlrU1FJbkZaTFhSaTZ6QWgrRS9tWCtCQzdI?=
- =?utf-8?B?OUtFTGNTS2gvNmlpditjaFdicUNtK1JNZ1JGbzc4VFhkSnNyMlNGTjI1OWxR?=
- =?utf-8?B?WkRZeUxwTGZVSzRibE4wVnQyeVZHaDBVSHh2ZFFxSlR1c2t3dXdvUzk5Uk5E?=
- =?utf-8?B?QUVqVG9lVnYxV2NESjRoUWpyREpJVFc1N2h1NWJCQlpvWmVqSklHMW1yYTFO?=
- =?utf-8?B?WW95bm9QVTk3ZVluVWx1QWh5MFVkWHoxTlhMWWpFZ29CWTFNN2hEelUxMXFO?=
- =?utf-8?B?cEhMOWp4cnpac0lMY3VZc1BGNnB4NjFLNFlaNEJ5TklmQXhyNDNIdi9LRHBw?=
- =?utf-8?B?N0t3TlBUMUpKM0s4RFRKcmF6ckhJelJOeWtsdEhJMFVRZkRVTWU1ZmVhU0Iy?=
- =?utf-8?B?ZHBwU2xtcTIvdUVkeEYxR0MzNXVuQnNZVG5jU2Z0VXlxejR5WFA1QWV0R2tD?=
- =?utf-8?B?Q0pFRkphTlRwUE80dUtXTFJrRGYzcmRKV0kraEc3dk8vOGhjQmhWV0wzck04?=
- =?utf-8?B?bkZPdVZHMkhUbEJBWVNMa0VPTjFicjRQYXlzZUpaYUVzSWtKK1VnZjlUV0xq?=
- =?utf-8?B?MFFvazl6KzVLbXVCZmp6UWJPOHBDazkrVE5talRyTVFXK2Z4cWo5cG9Nc3RN?=
- =?utf-8?B?OWxvMDA0MEZKMTVrSExyOGRzbDNoWGNjN3JnTzJTYldzc3VxdDdEK0hQVUZx?=
- =?utf-8?B?MVlUdlRqZmZLTDJ6UGZ6S2FsQldoVE5qaWliZ0h3bE9jYjVJTFVESGRzaTVY?=
- =?utf-8?B?OUpJR2N2NitkZGpFOWRnL2U3YWYyQ3loYmt6a0pRNTJjM085TUF0NVFXSXFD?=
- =?utf-8?B?REt1TlkwMjltZnkvd0tPTXhSbXVLb0FiWURTdHI3WXBuZTJyY3NXTzF3blRo?=
- =?utf-8?B?SlE4dWM4OUFKcU5zZGpFR0xXV1lVQUZ5YTZFWHAwYm9WQ3ppTklQMGpFYW5W?=
- =?utf-8?B?VUtCWW5VWDgxUEhsL2pDZDI4WE5yYjF1OGJmWG1hZjVyMExBMkFGdEZJcDdO?=
- =?utf-8?B?eWl0YTFzUHNaWHFYcnpoR0VvNm1ueTZ6eVlkZHBuR08vQnhwN2srZFM2bmdP?=
- =?utf-8?B?dlFYM0hIdVdVTklaK2dCL1BuSXIwSHJqUEdQS01WL0RXalV0dCs3cGhXWVZa?=
- =?utf-8?B?NzdhK0UyT0cyYjl6SkVEL3BRTmtxSk4yUHR3OGs3aW52ejdtRGkyK1laWUlO?=
- =?utf-8?B?UTVuYUpFRGFoVWU0eGgwaXhKamdaMUZ4aFBwUUpRSEpkWVZvOHhBRUQra29v?=
- =?utf-8?B?Y1F3SkN3RGl0azlkSlBXTlNIeWR1SVR2dlRidFJmcFV1QnZBZGJBc2FwU0lV?=
- =?utf-8?B?aldKVC9SVmRoSTJRVW1LN2U2K0hVOHZ2T01JL3RsODR4ZEtJOE54YzNOM0du?=
- =?utf-8?B?RWNUZE9TM29vTU1IeEdlSnd5b3FkN2pkQm5ZOXJoRjJBS000T3YwU0lqTTRX?=
- =?utf-8?B?V1FZdTlqcnJvQXJ6VTI5SFhxNHBCaWNQaWJyMnd1QU1mUEloWFJXMXBCR1h4?=
- =?utf-8?Q?RWXD3f+PzhpvCi+u04?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ =?us-ascii?Q?HyV3Vs7mAJx0VibP78Ha3ddpzywsFww3dNkoZ50X5mNYcITwGVJ1z5HdsW1h?=
+ =?us-ascii?Q?DYa4ed4YJX8Yfoom1VGjHWKP4rduzyGdLyqEmrD1tzZKUh+3hCOW7ICWl4Rn?=
+ =?us-ascii?Q?qAhwWtHt7RFrdUX62z/bPWVrCV+s711pypZzyDB8Ld9FgQpQffDF4jjhmBc/?=
+ =?us-ascii?Q?FLtUq7Xb3NGBH7o2DylXt4v1pyJgCzD30hv0Kxias0TtVFDDcp430ydYzcRR?=
+ =?us-ascii?Q?akdkH0iziIYM53BxVDVbcGnApu+OlPTO2cMT2RN6xMcS5AOjsWBniGuekhT6?=
+ =?us-ascii?Q?CO9neNfgP3Iq54quDyw3zgTWOeeQlEqRkf8qgWKXQD4dcKJMn0X6VQyMcmXj?=
+ =?us-ascii?Q?r/6dqHsb3wXfF0izirVhCAkYkIFWuV4lhb02M4Ri+VKatQWVsQtJ7DLNqtcR?=
+ =?us-ascii?Q?YXxdbkVy4PV37Tgr76lIDv2NkzclvmxYfA3gK8xFagtWrAAGlwOpxBrP7a8m?=
+ =?us-ascii?Q?sVa8awbAYOJhazis7s2xJYcEjC15hyDwN3qYGndFH6DmYQLFx56ZycxAcYr0?=
+ =?us-ascii?Q?1hg2uwlqD0Azo9HZW+JDZeI9JTGtg6dsvQZeK7YBJC8gtf/jVHfNXo0/DqRC?=
+ =?us-ascii?Q?kGeLNX8iqo+6mwbMOnHltWGaPBpY6xfXS2NE3hxoLJH6Q8yN83pjYf9U+L1N?=
+ =?us-ascii?Q?DD+STJ+POnrNkVCOlJtEVuXjDEbCj6F3GnIUiEVflbffOFmBZ1F1mIejNkwP?=
+ =?us-ascii?Q?Ex6CNDcUqpbry6lCamhZnEc4GW2PDYfZJ6MsZRN64LIyE5sBfh06EFjXJrHI?=
+ =?us-ascii?Q?OzP1nf/aRCTYHeHl/vVvSz4CpbmrrYCG2wm1g+EtVQ5Y6JPJXJP5w6pwAMCo?=
+ =?us-ascii?Q?9c5zFeLs2ONlda1Pn7QcxPufzPQd8WFoWNJ8IPz/GSdm8MoAKM2UBiBcZJiK?=
+ =?us-ascii?Q?gDd3a63LyN4xvCHLNAe0lwS2x31YUccZ8KQ3wUdZak9N0/sVsmsy1isdKyNd?=
+ =?us-ascii?Q?Ch6Vd8bAdrYc3lZ4amR4kScP4FtwimwAS7pt4FV2diRF+P12K0eFAhH3LZd5?=
+ =?us-ascii?Q?bTfrhf7QQW7vt2HMd7O1Oc3EgwN7YRJyUWwrV9dlkNZAAXmLyZ3GE1IB8//P?=
+ =?us-ascii?Q?UtVm6uJh8ELu7ybbPoO8wZLP5jvF+mPVtOORMNknDbyRcbUd4OwT0DdONddI?=
+ =?us-ascii?Q?z7EslD1JMnCkQLS4vAoCfOvCAc0K/DHxEhJuM8NiB/sGINGZVJ54r8IvvlX2?=
+ =?us-ascii?Q?D3f5cpZcuMRZ7TV2EW4p3n5j+jVcfCKbahIQGwKe5veFfE0gC8vwomLWE3Kv?=
+ =?us-ascii?Q?dtsgLbA5+2tU5jhpuNEHqE9fcQ4HFnfnnZHMTP0aGU81O1GX5YqrSG1Fo3k/?=
+ =?us-ascii?Q?F1+kZbRb1cXHtxTWChl81aNbvJI9yqJI9ff3nOOi419INJeVCFfJe6S3Q4Dj?=
+ =?us-ascii?Q?ad5s6Z7LvPPKtXdix05YWFqZ8Esw1pQ9o+aEUkks5tdsLHyt0EtgHQRo7rS1?=
+ =?us-ascii?Q?GTXLLpirhsLDp9s/TmBfos/Kuv4YLZGa2RjGupJlqJxAgCIkQcpQ2/lokUm5?=
+ =?us-ascii?Q?ytVS1Ub66wi2+IuI/agul2yrlxA8fYsh0jU3HUJ8AuuFj0dFcxhb4InDw/Kj?=
+ =?us-ascii?Q?XcWKcZTJw79WQddkkYms7aUvkRAKwoEHjiDo8B1GHkAOGfKtOM6hpDj/o02x?=
+ =?us-ascii?Q?meqIf1L2nJ/IIGatLVgPsbBUJVJJgh3ycqlq6zFY0evaVYLz8FYalHSyiAJC?=
+ =?us-ascii?Q?iY8hPPByMp00SHGDcm06gZlqW/WT5jAioJIr62mllaMm2hSfO18AmpIxNipq?=
+ =?us-ascii?Q?iKASCj9B/Q=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-OriginatorOrg: oss.nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12277.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a4fa805-12f6-4eae-b217-08def852da16
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2026 09:19:46.2715
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47a58bd5-5a92-47aa-2341-08def852f1ad
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2026 09:20:25.8681
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WVpXx6UiKXJ27ooVAmr0EArSZ2cMdounz5zWqDFo9RyzR4NsoMny8ca5JCLQPeIXhYgeU8alPsjMtioIZt+58w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8569
+X-MS-Exchange-CrossTenant-userprincipalname: 0h10r1aFBcQYm81Y5IGGKz9AJ8TiY9ULU2vAjgAuYrZwu8eDhT+kQ8rJG5i4UNaMntZn+uJesTfnZN5WcnyCqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10647
 
-DQpOWFAgQ29uZmlkZW50aWFsDQpPbiBXZWQsIE1heSAxNCwgMjAyNiBhdCAxMTozODoxM0FNICsw
-MDAwLCBLcnp5c3p0b2YgS296bG93c2tpIHdyb3RlOg0KPiA+ICtkZXNjcmlwdGlvbjoNCj4gPiAr
-ICBUaGlzIGJpbmRpbmcgcHJvdmlkZXMgc3VwcG9ydCBmb3IgbWFuYWdpbmcgQ29ydGV4LUEgY29y
-ZXMgYXMgcmVtb3RlDQo+ID4gKyAgcHJvY2Vzc29ycyBvbiBpLk1YIHBsYXRmb3JtcyB1c2luZyB0
-aGUgUFNDSSAoUG93ZXIgU3RhdGUgQ29vcmRpbmF0aW9uDQo+ID4gKyAgSW50ZXJmYWNlKSBmb3Ig
-Q1BVIHBvd2VyIG1hbmFnZW1lbnQgb3BlcmF0aW9ucy4gVGhpcyBhbGxvd3Mgc2luZ2xlDQo+ID4g
-KyAgQ29ydGV4LUEgY29yZSBvciBtdWx0aXBsZSBDb3J0ZXgtQSBjb3JlcyB0byBiZSBjb250cm9s
-bGVkIGJ5IExpbnV4IGFzDQo+ID4gKyAgYSByZW1vdGUgcHJvY2Vzc29yLCBlbmFibGluZyB0aGVt
-IHRvIHJ1biBSVE9TIG9yIGJhcmUtbWV0YWwgYXBwbGljYXRpb25zLg0KPg0KPiBEZXNjcmliZSB0
-aGUgaGFyZHdhcmUsIG5vdCB0aGUgYmluZGluZy4NCg0KV2lsbCBmaXguIFVwZGF0ZWQgdG8gZGVz
-Y3JpYmUgdGhlIGhhcmR3YXJlOg0KDQogIE5YUCBpLk1YIFNvQ3MgaW50ZWdyYXRlIG11bHRpcGxl
-IENvcnRleC1BIGNvcmVzLiBPbiBjZXJ0YWluIGkuTVgNCiAgcGxhdGZvcm1zLCBvbmUgb3IgbW9y
-ZSBvZiB0aGVzZSBjb3JlcyBjYW4gYmUgb2ZmbG9hZGVkIHRvIHJ1biBSVE9TDQogIG9yIGJhcmUt
-bWV0YWwgZmlybXdhcmUgYXMgYSByZW1vdGUgcHJvY2Vzc29yLCB3aGlsZSB0aGUgcmVtYWluaW5n
-DQogIGNvcmVzIHJ1biBMaW51eC4gVGhlIGNvcmVzIGFyZSBwb3dlcmVkIG9uIGFuZCBvZmYgdmlh
-IFBTQ0kgKFBvd2VyDQogIFN0YXRlIENvb3JkaW5hdGlvbiBJbnRlcmZhY2UpIENQVV9PTi9DUFVf
-T0ZGIGNhbGxzIHRvIHRoZSBmaXJtd2FyZS4NCg0KPiA+ICsgIGNvbXBhdGlibGU6DQo+ID4gKyAg
-ICBjb25zdDogZnNsLGlteC1ycHJvYy1wc2NpDQo+DQo+IFdoeSBpc24ndCB0aGUgY29tcGF0aWJs
-ZSBzcGVjaWZpYz8NCg0KV2lsbCBmaXguIFVwZGF0ZWQgdG8gdXNlIGEgU29DLXNwZWNpZmljIGNv
-bXBhdGlibGUgd2l0aCBhIGdlbmVyaWMNCmZhbGxiYWNrOg0KDQogIGNvbXBhdGlibGU6DQogICAg
-LSBpdGVtczoNCiAgICAgIC0gZW51bToNCiAgICAgICAgICAtIGZzbCxpbXg5My1jYTUzLXJwcm9j
-LQ0KICAgICAgLSBjb25zdDogZnNsLGlteC1ycHJvYy1wc2NpDQoNCj4gPiArICBmc2wsY3B1cy1t
-YXNrOg0KPiA+ICsgICAgJHJlZjogL3NjaGVtYXMvdHlwZXMueWFtbCMvZGVmaW5pdGlvbnMvdWlu
-dDMyDQo+ID4gKyAgICBkZXNjcmlwdGlvbjoNCj4gPiArICAgICAgQml0bWFzayBpbmRpY2F0aW5n
-IHdoaWNoIENQVSBjb3JlcyBhcmUgYXNzaWduZWQgdG8gdGhpcyByZW1vdGUNCj4gPiArICAgICAg
-cHJvY2Vzc29yIGluc3RhbmNlLiBFYWNoIGJpdCByZXByZXNlbnRzIGEgQ1BVIGNvcmUsIHdoZXJl
-IGJpdCBODQo+ID4gKyAgICAgIGNvcnJlc3BvbmRzIHRvIENQVSBOLiBGb3IgZXhhbXBsZSwgMHgy
-ICgwYjEwKSBhc3NpZ25zIENQVSBjb3JlIDEsDQo+ID4gKyAgICAgIHdoaWxlIDB4NiAoMGIxMTAp
-IGFzc2lnbnMgQ1BVIGNvcmVzIDEgYW5kIDIuDQo+DQo+IFNvIHlvdSBwYXJ0aXRpb24gZXhpc3Rp
-bmcgQ29ydGV4LUEgY29yZXM/IE9yIGhvdyBleGFjdGx5PyBXaHkgaXNuJ3QgdGhpcw0KPiBkZWR1
-Y2libGUgZnJvbSB0aGUgY29tcGF0aWJsZSAoSSBhc3N1bWUgeW91IHJlYWQgY2FyZWZ1bGx5IHdy
-aXRpbmcNCj4gYmluZGluZ3MpPw0KDQpZZXMsIHdlIHBhcnRpdGlvbiBleGlzdGluZyBDb3J0ZXgt
-QSBjb3Jlcy4gT24gaS5NWDkzIGZvciBleGFtcGxlLA0KdGhlcmUgYXJlIDIgQ29ydGV4LUE1NSBj
-b3Jlcy4gQ29yZSAwIHJ1bnMgTGludXggYXMgdGhlIHByaW1hcnkgT1MsDQp3aGlsZSBjb3JlIDEg
-KG9yIGFueSBzdWJzZXQgb2YgdGhlIHJlbWFpbmluZyBjb3JlcyBvbiBTb0NzIHdpdGggbW9yZQ0K
-Y29yZXMsIGUuZy4gNHggQTU1KSBjYW4gYmUgYXNzaWduZWQgdG8gYSByZW1vdGVwcm9jIGluc3Rh
-bmNlIHRvIHJ1bg0KUlRPUyBvciBiYXJlLW1ldGFsIGZpcm13YXJlLg0KDQpUaGUgcmVhc29uIGZz
-bCxjcHVzLW1hc2sgY2Fubm90IGJlIGRlZHVjZWQgZnJvbSB0aGUgY29tcGF0aWJsZSBpcw0KdGhh
-dCB0aGUgYXNzaWdubWVudCBpcyBmbGV4aWJsZSBhbmQgYm9hcmQvdXNlLWNhc2Ugc3BlY2lmaWMu
-IE9uIGENCjQtY29yZSBTb0MsIHRoZSB1c2VyIG1heSBhc3NpZ24gY29yZSAxIG9ubHksIGNvcmVz
-IDErMiwgY29yZXMgMiszLA0Kb3IgYWxsIG5vbi1wcmltYXJ5IGNvcmVzIHRvIG9uZSBvciBtb3Jl
-IHJlbW90ZXByb2MgaW5zdGFuY2VzLiBUaGlzDQpydW50aW1lIGZsZXhpYmlsaXR5IGNhbm5vdCBi
-ZSBlbmNvZGVkIGluIHRoZSBjb21wYXRpYmxlIHN0cmluZy4NCg0KV2UgY29uc2lkZXJlZCB1c2lu
-ZyBhIGBjcHVzYCBwaGFuZGxlIGxpc3QgaW5zdGVhZCwgYnV0IHRoZSBDUFUgbm9kZXMNCmluIHRo
-ZSBEVCBhcmUgYWxyZWFkeSBjbGFpbWVkIGJ5IHRoZSBMaW51eCBDUFUgdG9wb2xvZ3kgYW5kIGRv
-IG5vdA0KbmF0dXJhbGx5IHJlcHJlc2VudCAicmVtb3RlIHByb2Nlc3NvciIgYXNzaWdubWVudHMu
-IFRoZSBiaXRtYXNrDQphcHByb2FjaCBkaXJlY3RseSBtYXBzIHRvIHRoZSBQU0NJIENQVV9PTi9D
-UFVfT0ZGIE1QSURSLWJhc2VkDQppbnRlcmZhY2UgdXNlZCBieSB0aGUgZmlybXdhcmUuDQoNCj4g
-PiArICAgICAgICByZW1vdGVwcm9jLWNhNTUtMSB7DQo+DQo+IEltcGxlbWVudCBwcmV2aW91cyBj
-b21tZW50cy4NCg0KV2lsbCBmaXggdGhlIGV4YW1wbGUgbm9kZSBuYW1lIHRvIGZvbGxvdyBEVCBu
-YW1pbmcgY29udmVudGlvbnMuDQoNCkJlc3QgcmVnYXJkcywNCkppYWZlaQ0K
+
+
+> -----Original Message-----
+> From: Vincent Jardin <vjardin@free.fr>
+> Sent: Wednesday, August 12, 2026 1:47 PM
+> To: Carlos Song (OSS) <carlos.song@oss.nxp.com>
+> Cc: Oleksij Rempel <o.rempel@pengutronix.de>; Pengutronix Kernel Team
+> <kernel@pengutronix.de>; Andi Shyti <andi.shyti@kernel.org>; Frank Li
+> <frank.li@nxp.com>; Sascha Hauer <s.hauer@pengutronix.de>; Fabio
+> Estevam <festevam@gmail.com>; linux-i2c@vger.kernel.org;
+> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
+> linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH] i2c: imx: add I2C_M_REV_DIR_ADDR and
+> I2C_M_NOSTART
+>=20
+> Hi Carlos,
+>=20
+> Thanks a lot for the review, and no problem for the delay.
+>=20
+> > This is a such rare i2c frame design in the Realtek RTL8366SE SMI read
+> > frame, right?
+>=20
+> It is rare, but I have been inspired for I2C_M_REV_DIR_ADDR by the source=
+ of
+> two client drivers that use it.
+>=20
+> Note that I2C_M_NOSTART is not rare at all. It is what regmap uses for a =
+real
+> gather write. regmap_i2c_gather_write() opens with
+>=20
+>         if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_NOSTART))
+>                 return -ENOTSUPP;
+>=20
+> FYI, some clients that need REV_DIR_ADDR and NOSTART,
+>=20
+>   drivers/input/joystick/as5011.c
+>   drivers/video/fbdev/matrox/matroxfb_maven.c
+>=20
+> both build the identical 2-message pattern,
+>=20
+>   i2c_check_functionality(adapter,
+>                                 I2C_FUNC_NOSTART |
+>                                 I2C_FUNC_PROTOCOL_MANGLING)
+>=20
+> I do not have those devices, so I did not check it beside code readings.
+>=20
+> Some clients that need NOSTART alone,
+>=20
+>   drivers/base/regmap/regmap-i2c.c
+>   drivers/infiniband/hw/hfi1/qsfp.c
+>   drivers/gpu/drm/i915/display/dvo_ivch.c
+>=20
+> About the i2c masters, that use I2C_M_REV_DIR_ADDR in code,
+>=20
+>   drivers/i2c/algos/i2c-algo-bit.c
+>   drivers/i2c/algos/i2c-algo-pcf.c
+>   drivers/i2c/busses/i2c-s3c2410.c <- the model I did investigate
+>   drivers/i2c/busses/i2c-tegra-bpmp.c
+>   drivers/media/pci/cobalt/cobalt-i2c.c
+>=20
+> So a taxnonomy can be,
+>=20
+>   adapter            REV_DIR impl   MANGLING adv   NOSTART adv
+> usable
+>   i2c-algo-bit           yes            yes            yes
+> yes
+>   i2c-algo-pcf           yes            yes            no
+> no
+>   i2c-s3c2410            yes            yes            yes
+> yes
+>   i2c-tegra-bpmp         yes            yes            yes
+> yes
+>   cobalt-i2c             yes         (private adapter, not exposed)
+>   i2c-brcmstb            no             yes            yes
+> no
+>   i2c-pxa                no             yes            yes
+> no
+>   i2c-tegra              no             yes         yes (cond)
+> no
+>   i2c-imx (this patch)   yes            yes            yes
+> yes
+>=20
+> > Is Realtek RTL8366SE SMI driver upstream? Can I found the driver?
+>=20
+> Not yet, and I cannot point you at a tree today. It is Realtek's "Unmanag=
+ed
+> Switch" DSA driver, which is not public yet.
+>=20
+> What I can share is the message construction, which is the part you asked
+> about and is not Realtek-specific.
+>=20
+>         static int as5011_i2c_read(struct i2c_client *client,
+>                                    uint8_t aregaddr, signed char
+> *value)
+>         {
+>                 uint8_t data[2] =3D { aregaddr };
+>                 struct i2c_msg msg_set[2] =3D {
+>                         {
+>                                 .addr =3D client->addr,
+>                                 .flags =3D I2C_M_REV_DIR_ADDR,
+>                                 .len =3D 1,
+>                                 .buf =3D (uint8_t *)data
+>                         },
+>                         {
+>                                 .addr =3D client->addr,
+>                                 .flags =3D I2C_M_RD |
+> I2C_M_NOSTART,
+>                                 .len =3D 1,
+>                                 .buf =3D (uint8_t *)data
+>                         }
+>                 };
+>                 int error;
+>=20
+>                 error =3D i2c_transfer(client->adapter, msg_set, 2);
+>                 if (error < 0)
+>                         return error;
+>=20
+>                 *value =3D data[0] & 0x80 ? -1 * (1 + ~data[0]) : data[0]=
+;
+>                 return 0;
+>         }
+>=20
+> And the Realtek accessor, which is the same two messages with a 2-byte
+> register and 2-byte data instead of 1 and 1:
+>=20
+>         u8 ra[2]   =3D { reg & 0xff, (reg >> 8) & 0xff };
+>         u8 data[2] =3D { 0xff, 0xff };
+>         struct i2c_msg msgs[2] =3D {
+>                 {
+>                         .addr  =3D client->addr,
+>                         .flags =3D I2C_M_REV_DIR_ADDR,
+>                         .len   =3D sizeof(ra),
+>                         .buf   =3D ra,
+>                 }, {
+>                         .addr  =3D client->addr,
+>                         .flags =3D I2C_M_RD | I2C_M_NOSTART,
+>                         .len   =3D sizeof(data),
+>                         .buf   =3D data,
+>                 },
+>         };
+>=20
+>         ret =3D i2c_transfer(client->adapter, msgs, 2);
+>         if (ret !=3D 2)
+>                 return ret < 0 ? ret : -EIO;
+>=20
+>         *val =3D data[0] | (data[1] << 8);
+>=20
+> msgs[0] is a write message carrying I2C_M_REV_DIR_ADDR, so the address
+> byte goes out with the read bit set while the master keeps transmitting t=
+he
+> two register-address bytes. msgs[1] is the read half with I2C_M_NOSTART, =
+so
+> no repeated start is emitted and the controller simply turns the bus arou=
+nd.
+> Writes are an ordinary unflagged 4-byte write and need nothing from this
+> patch.
+>=20
+> > ... Have you test this i2c-imx feature in your LS board with RTL8366SE?
+>=20
+> Yes, on an LX2160A board carrying four RTL8366SE-CG. Two are strapped to
+> the chip's 2-wire "EEPROM SMI" mode and hang off hardware i2c-imx
+> controllers; the other two are on MDIO, for both the same switch register=
+s are
+> reachable both ways and should answer the same values.
+>=20
+> First, the failure on an unpatched kernel, which is reproducible with not=
+hing
+> but i2ctools and is I think the clearest way to see the problem.
+> These two commands are byte-identical:
+>=20
+>         # i2ctransfer -y -f -a 1 w2@0x7c 0x00 0x13 r4@0x7c
+>         0xff 0xff 0x00 0x00
+>         # i2ctransfer -y -f -a 1 r6@0x7c        # no preceding write at a=
+ll
+>         0xff 0xff 0x00 0x00 0x00 0x00
+>=20
+> Then, with this patch both chips answer correctly. For testing this patch=
+, I did
+> use the following that I have just pushed to help, for the record:
+>=20
+>         https://github.com/vjardin/smi-probe
+>=20
+>         # smi-probe -t i2c -b /dev/i2c-1 -a 0x7c id
+>         chip_num    0x6980  CHIP_RTL8367E (inside RTL8366SE-CG)
+>         chip_ver    0x0030
+>         svlan_tpid  0x88a8  reset default, as expected
+>=20
+>         # smi-probe -t i2c -b /dev/i2c-1 -a 0x7c rd 0x1300
+>         reg 0x1300 =3D 0x6980
+>         # smi-probe -t i2c -b /dev/i2c-1 -a 0x7c rd 0x1202
+>         reg 0x1202 =3D 0x88a8
+>=20
+>         # smi-probe -t i2c -b /dev/i2c-2 -a 0x5c rd 0x1202 # U19, IIC3
+>         reg 0x1202 =3D 0x88a8
+>         # smi-probe -t mdio -b 0x8b97000 -a 0x1a rd 0x1202 # MDIO
+> control
+>         reg 0x1202 =3D 0x88a8
+>=20
+> Then it binds as a DSA switch and enumerates its four user ports:
+>=20
+>         realtek-US-switch-dsa-i2c 2-005c: RTK DSA unit 0 (EEPROM SMI,
+> addr 0x5c)
+>=20
+> I have many other i2c devices on this board, no regression.
+>=20
+> Thanks again for your review,
+>   Vincent
+
+
+Hi, Vincent
+
+Thank you very much for such clear instructions. That helps lot to understa=
+nd what happened.
+Follow this, I also spend some time to learn and understand this case.
+
+1. Why need I2C_M_REV_DIR_ADDR but not directly read?
+The msg with I2C_M_REV_DIR_ADDR is a write msg in fact, it is a write messa=
+ge, master write data and target ack,
+only w bit is toggled to r bit.
+Because the device don't follow the standard I2C spec, it need this special=
+ frame to write:
+[1] S + addr + r + [ACK] + data +[ACK] + data...
+Yes, not wrong, a read bit on bus but it is a write msg for this device.
+
+But the standard spec write msg is
+[2] S + addr + w +[ACK] +data + [ACK] +data
+So add this I2C_M_REV_DIR_ADDR flag to make this write msg w bit is changed=
+ to r bit, msg [2] become msg [1] so the device worked.
+Only change the r/w bit, other data flow keep write logic.
+
+2. What I2C_M_NOSTART is doing?
+It help skip the msg repeat start header, next msg start from data. If the =
+first msg setting this flag, it should be unsupported(so you add a loop che=
+ck to make sure the first msg without I2C_M_NOSTART flag).
+
+3. The msg with I2C_M_NOSTART should keep the same direction with pre msg?
+No, not need. For example, RTL8366SE frame:
+
+(1){S Addr Rd [A] reg[7:0] [A] reg[15:8] [A]} (2){ [data[7:0]] A [data[15:8=
+]] NA} P
+
+For (1):
+{S Addr Wr [A] reg[7:0] [A] reg[15:8] [A] is a write msg and "change the Wr=
+ bit to Rd bit" by I2C_M_REV_DIR_ADDR.
+So i2c bus signal is
+{S Addr Rd [A] reg[7:0] [A] reg[15:8] [A]}
+
+For (2):
+{Rs Addr Rd [A] [data[7:0]] A [data[15:8]] NA} is a read msg and "skip the =
+{Rs Addr Rd [A]}" by I2C_M_NOSTART.
+So i2c bus signal is [data[7:0]] A [data[15:8]] NA.
+
+This is a write msg then a read msg. So you add the I2C_M_NOSTART flag hand=
+le in these 4 path: atomic read/irq read/atomic write/irq write.
+Do I understand right?
+
+
+About code, Could this part of the code be improved? Of course, that's a ma=
+tter of personal preference.
+
+@@ -1583,6 +1622,27 @@ static int i2c_imx_xfer_common(struct i2c_adapter *a=
+dapter,
+        struct imx_i2c_struct *i2c_imx =3D i2c_get_adapdata(adapter);
+        int use_dma =3D 0;
+=20
++       for (i =3D 0; i < num; i++) {
++               /*
++                * I2C_FUNC_PROTOCOL_MANGLING is advertised for
++                * I2C_M_REV_DIR_ADDR only; reject the flags it also covers=
+ but
++                * that this driver does not implement, rather than silentl=
+y
++                * transferring something the caller did not ask for.
++                */
++               if (msgs[i].flags & (I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK |
++                                    I2C_M_STOP))
++                       return -EOPNOTSUPP;
++
++               if (!(msgs[i].flags & I2C_M_NOSTART))
++                       continue;
++
++               /* Nothing to continue from, and a zero-length continuation
++                * would leave the controller with no byte to clock.
++                */
++               if (i =3D=3D 0 || msgs[i].len =3D=3D 0)
++                       return -EOPNOTSUPP;
++       }
++
+        /* Start I2C transfer */
+        result =3D i2c_imx_start(i2c_imx, atomic);
+        if (result) {
+
+
+I prefer this:
+1. Do a single function for this check.
+static int i2c_imx_check_msgs()
+2. Add macro definition.
+#define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
+	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
+3. drop continue and use:
+		/* NOSTART-specific sanity checks. */
+		if (msgs[i].flags & I2C_M_NOSTART) {
+			/*
+			 * NOSTART continues an already open frame. The first
+			 * message has nothing to continue from, and a
+			 * zero-length continuation leaves the controller with
+			 * no byte to clock.
+			 */
+			if (i =3D=3D 0 || msgs[i].len =3D=3D 0)
+				return -EOPNOTSUPP;
+		}
+
+It is up to you. All in all, I think this patch is nice for me and thank yo=
+u again for the improvements.
+
+Carlos Song
+
