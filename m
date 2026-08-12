@@ -1,43 +1,54 @@
-Received: from smtp6-g21.free.fr (smtp6-g21.free.fr [212.27.42.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0CC37E5CA;
-	Wed, 12 Aug 2026 19:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.6
+Received: from smtpfb2-g21.free.fr (smtpfb2-g21.free.fr [212.27.42.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7286F379C5A
+	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 19:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786563861; cv=none; b=gHhpEwdaAurr6FKXPwIN1t0ozx0McGARYsyOt5fjlB7QpUPWeyOp9JdO3Hssq+nvummmeK3M9GJebO3U5U9ZzyaNSIrVT5lI9Ld2o5vUYlQ57m9htcn0TG9dQm1XnRCTtnqUzdoZJbTHBODbiW2ofcRtEDTWFu7FeVVapGTqi0Y=
+	t=1786563870; cv=none; b=Zt0WPForWI1XctkZLdUY3vlKQTTMEb72qZRnyvHF5JPO2cDs0eOuyKzTRGLTmjlmeNeUN+O/CcIV1Y2rdPsoOoKHez3XAROUE54JOnw+Otu684949KwtY1+HBSOMyHaGMng9A1+vUjpZn2I7QJU9jGaVMGvBRLh+z6r3n68EcuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786563861; c=relaxed/simple;
-	bh=bQWLPAxpNZTOvy3Y+tcPydVvEwDj5MG8HRGA4E3mhPw=;
+	s=arc-20240116; t=1786563870; c=relaxed/simple;
+	bh=Gh9v9arV+AA5L9lbrpbqXH67R8Y8ZcLwr29YLXWFfVQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eBjlvOrpEvNjytZCcf1o65FHYYXz31W4ukOz8fEG/v5vKh5uIXXajq3YOFQW+yLw8dbzuij+ehx3QSPLekOQtOaXWmxOLEQHDpr/WG9XHAKSHu8sQBoJ3tM+sT+T5IFseBkRhpIfDa49RXxr9kvbkt3KD5UqVVdSyiHHxdwubMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=m6a1LpNV; arc=none smtp.client-ip=212.27.42.6
+	 Content-Type:Content-Disposition:In-Reply-To; b=e2OSTsYQg1YjG3SXADa3JaoWtxLtQp7l7H3clov2YlwiFRTWejnHkaD00V8G/RP/WgG0YczMardPDmdLIayS2kyfI3dKkfX+URlquNtsb+N/zOqtEK6BaRn2It9iLhCmuovxviNDGsOdBCH5pi+L+F+s43yHzR2B3qpXYHLS6eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=Qmp7I944; arc=none smtp.client-ip=212.27.42.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="m6a1LpNV"
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="Qmp7I944"
+Received: from smtp6-g21.free.fr (smtp6-g21.free.fr [212.27.42.6])
+	by smtpfb2-g21.free.fr (Postfix) with ESMTP id 91CC04C5A0
+	for <imx@lists.linux.dev>; Wed, 12 Aug 2026 21:37:15 +0200 (CEST)
 Received: from L30177.local (unknown [IPv6:2a01:e0a:ac2:22b0:f846:40e6:d9d0:ef5a])
 	(Authenticated sender: vjardin@free.fr)
-	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 6748F78035E;
-	Wed, 12 Aug 2026 21:44:14 +0200 (CEST)
+	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 17475780368;
+	Wed, 12 Aug 2026 21:36:57 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1786563856;
-	bh=bQWLPAxpNZTOvy3Y+tcPydVvEwDj5MG8HRGA4E3mhPw=;
+	s=smtp-20201208; t=1786563428;
+	bh=Gh9v9arV+AA5L9lbrpbqXH67R8Y8ZcLwr29YLXWFfVQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m6a1LpNVczu6+eKchNswANMGeO5vS9mE26nKA1Gvz/KQrpJdqm6vLaM0yJsBJMfuw
-	 YsivR8uWf/O6MlL3KldMheQTEwW9lx/1jtiwqiqJwCzxqqGers5kuSar8BdEKIC9Xg
-	 2i8fxLDxnDBrO7yEF2aPVYepMXXC2dglguFV5M1kzWOXSWj2xp5oDdY2nzPvzPVTyi
-	 j9CN917NGrcy5dMLbp2+FWHsAyREyBi6gHSreXT2U+5DKvYLbYd6oakXBuyCM61XJZ
-	 r6nVpme9zdR04I1vig/1VmbOWAqdhvJDFrtQtCjqoerV8//MQzymhFi6kXCfqS+4PL
-	 OFzYRJgDyYtzw==
-Date: Wed, 12 Aug 2026 21:44:13 +0200
+	b=Qmp7I944J+iQHWP4pbdlxSrc0gSEXFqR9BlLSTuthMW8y6UUa4NoXTjqWaC9fiD0R
+	 t3Z2nQiHuL3pkUrKvpVHp9iX2n4Ka2riv+KN00edPBUneNQesRBTDtLA6X8jX8FcFO
+	 cHTxImLGeZHtIAYcfIdZf/0hvucldnI0EZQlpRGZsTBi+wW+IEAEIrnPrkLiZQsMpj
+	 iKxV6y1jesTqRSGDWaRM8lXHe7uIHEZi9CK8Sx8wVfG1LGlBuKmK51zSebzdDfTunO
+	 7xM5CL2rkGpt8e4qVMDT+0RKJ0WzG/5zAJi/Bo3IDVb4Fok/nwujm0Kkl1gXVrXmdD
+	 bRjviZ4/zz9Tw==
+Date: Wed, 12 Aug 2026 21:36:55 +0200
 From: Vincent Jardin <vjardin@free.fr>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
-Message-ID: <anzNDV8BmdbHArWO@L30177.local>
-References: <20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr>
- <20260812193031.CD8AC1F000E9@smtp.kernel.org>
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Frank Li <frank.li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
+Message-ID: <anzLV--D6z-QB_iF@L30177.local>
+References: <20260807-for-upstream-i2c-imx-lx2160-reverse-v1-1-f276ce8cb660@free.fr>
+ <AM0PR04MB6802658862C4E2ED8628FFA8E8DD2@AM0PR04MB6802.eurprd04.prod.outlook.com>
+ <anwI6qnsikPrd80W@L30177.local>
+ <AM0PR04MB680259939B7ED9AF5BA5957BE8DC2@AM0PR04MB6802.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,19 +57,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260812193031.CD8AC1F000E9@smtp.kernel.org>
+In-Reply-To: <AM0PR04MB680259939B7ED9AF5BA5957BE8DC2@AM0PR04MB6802.eurprd04.prod.outlook.com>
 
-Hi M. Bot,
+Hi Carlos,
 
-> [Severity: Critical]
-> This is a pre-existing issue, but does a 0-length standard I2C read cause an
-> integer underflow here?
-  ...
-> [Severity: High]
-> This isn't a bug introduced by this patch, but do the error paths after this
-> timeout leak DMA mappings?
+> Do I understand right?
 
-Yes, both are preexisting, you are right but they are not the purpose of this serie/thread.
+Yes
 
-Best regards,
+> Only change the r/w bit, other data flow keep write logic.
+
+Yes
+
+> About code, Could this part of the code be improved?
+
+Yes, done into v2 per your suggestion. I did squeeze a bit the comments.
+
+See, https://lore.kernel.org/r/20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr
+
+If you are fine with it, your/NXP Reviewed by or Ack would be very welcomed ;)
+
+best regards,
   Vincent
