@@ -1,116 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032AE480955;
-	Thu, 13 Aug 2026 14:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08122F3C3D;
+	Thu, 13 Aug 2026 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786630438; cv=none; b=rGT9I4WJwEA8qfpKLbXW7ySMoapPzofMZJw4T/ZIs9c1MoZl1E4O2SJqmKi7EuiCPbu84FN6mEBWdoA+ojhQpuV5dn2fJhuKk/OtAEX0S3y/gM5Hos0sJoU0wV53ioC4WzkgLzW2WRAYN2oSndOgMIhxYyzveBLiQNu1+hCBp8c=
+	t=1786630613; cv=none; b=DkDr93TxA0Ts5KpAOKlRgnIuNiv3FGZQVr7O1akJg1I7r519KIFM+GmIpTQYyO8JwllGEp54dszqDGodnEAQHTSvzhdciLZqrBEYvuMfAcV1l9OkFu1nq1OKZq/RPOQWXBBa47x7kV4vnMemZ6H/9nkn9utLYj8mXDzyCidQrmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786630438; c=relaxed/simple;
-	bh=Eu/Wc8Z8YklXfcOwVUMafJhK6o32zLtJq1abNAJMx54=;
+	s=arc-20240116; t=1786630613; c=relaxed/simple;
+	bh=658axMGY3vsvYdjNcOU/t2KT0eoGy2po0oWWjRJN/7Q=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lUc0PGDLHEevGRMGP2P+afj78nHaPG+OFHWgwRrmIx+k0m1R4222qX8qsYsHEC/ZT8zRUrhJClT42SYAiDmOOFLyGOf1rv9KnZh6KPGh771X6MbGBf6GNf7mp7oTECj+8zKGZgYthcAlr/WLtVgf4V++bo8phb8nZwqXi+zIlgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAb+ysex; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=K0duFex1PZhHUKX5oBLeqQrzBLvLCMzbES8ozzYbkjqjF2e0cChQ/1w1cA1rrzC6WTu1E6tlRd8Av9udWbhfVQuis3OWG78t/iS6LZZInoti1X7HWOb9kC6cxe3xnX3nSRPzsrRw7OHUm1pBIQ/02dALhghUulHjXFfN4YrRGXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXbWL+lk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAb+ysex"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1221D1F000E9;
-	Thu, 13 Aug 2026 14:13:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXbWL+lk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE92D1F000E9;
+	Thu, 13 Aug 2026 14:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786630436;
-	bh=NZNoADXhFw+9O9IxP2fTYV1zJAmNyfefsNizDKMPUwQ=;
+	s=k20260515; t=1786630612;
+	bh=Tsnbkio/x4potGdcfuFjdN+gr312Jn2rZuVkRTjkJuI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bAb+ysex1v5Z4WfrH19je176j+ZIKKuMc07D8HKpoWJoYQy+o69jutfPwW/ZuhsTO
-	 iIJiSOKCI89sEGV++ort5DlfDhsYt8CZQLDYl/lCvIr9SI09tPzzzlR2RcEbTIq3nZ
-	 AvP0tlEGbX8Qz87+1+JEzPILDs/3viqOvVDcx2R82n8/ERGo3OcIeFe6U8KobdWWlG
-	 NBZIHFKT0IlZFhoqJor0KaaaELCW84voUM9+cztSXRD1lXRZThiVerLhTJ7oDCxweo
-	 d0avBtgnHY36KIS64nfe2W+kFEdXQChr5kzhc0MAYK5XUrMGrEt68bpuP1Rrb6wE5e
-	 ztLAU28ej23ug==
+	b=lXbWL+lkLBG1gF37YOgLIWBqOqVzt19ov+cO8QIptSynW/adFftjObHdHTtfD0jJg
+	 5lo/+0+zau1K6m14TorYRZFgBVLqZ6VWbeBzT04YS9W65Du48sW3uVCmL0hiy34w/d
+	 wpSa6TmRuveQyLAw42A9HKrpST6xgUUl6vdmnNfcDt8VqHr1VqPxEcm5oX8QC/+3LV
+	 EsEit0H/xG4U4+x7PfGcaGruYmb++uoHKeLdiitfmDd+a16WAoZBSoCRnENbUWX4LF
+	 Ci5ftt9pFcyVEOqYGTeVdcQyGpJ6Kq+MMnRgHdovuBUgnANLfW8nA4SggnDMyQPCk9
+	 wZi3Y02yLQQNg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/4] dt-bindings: arm: fsl: add the Colibri VF50 and
- VF61 on Iris
+Subject: Re: [PATCH v3 4/4] ARM: dts: vf: add Iris carrier board support for
+ Colibri VF50 and VF61
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Mehmet Fide" <mehmet.fide@gmail.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260813140600.1824949-4-mehmet.fide@gmail.com>
+Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260813140600.1824949-5-mehmet.fide@gmail.com>
 References: <20260813140600.1824949-1-mehmet.fide@gmail.com>
- <20260813140600.1824949-4-mehmet.fide@gmail.com>
+ <20260813140600.1824949-5-mehmet.fide@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 14:13:55 +0000
-Message-Id: <20260813141356.1221D1F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 14:16:51 +0000
+Message-Id: <20260813141651.DE92D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Low] Inconsistent compatible string naming due to mismatched hyphen.
+- [Medium] The `&gpio2` node unconditionally overwrites `pinctrl-0`, destro=
+ying the base GPIO configuration inherited from `vf-colibri.dtsi`.
+- [Medium] The commit message claims to describe PWM support for the carrie=
+r board, but the PWM nodes are completely missing from the device tree addi=
+tions.
 --
 
---- Patch [3]: [PATCH v3 3/4] dt-bindings: arm: fsl: add the Colibri VF50 a=
-nd VF61 on Iris ---
-commit 04c8812c4587059c616ac3a5abaa28f6f14d974a
+--- Patch [4]: [PATCH v3 4/4] ARM: dts: vf: add Iris carrier board support =
+for Colibri VF50 and VF61 ---
+commit 30782cd9b9ebbf78c0851af32f14e744e591610e
 Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
+ARM: dts: vf: add Iris carrier board support for Colibri VF50 and VF61
 
-This commit extends the evaluation board entries to include compatible
-strings for the Toradex Colibri VF50 and VF61 modules on the Iris carrier
-board.
+The Iris is a small off-the-shelf carrier board for the Colibri family. Thi=
+s=20
+adds the device tree descriptions for the board's peripherals.
 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 86876311ec59a..6f95c17b363c0 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1705,9 +1705,11 @@ properties:
->                - fsl,vf610
->                - fsl,vf610m4
-> =20
-> -      - description: Toradex Colibri VF50 Module on Colibri Evaluation B=
-oard
-> +      - description: Toradex Colibri VF50 Module on a carrier board
->          items:
-> -          - const: toradex,vf500-colibri_vf50-on-eval
-> +          - enum:
-> +              - toradex,vf500-colibri_vf50-on-eval
-> +              - toradex,vf500-colibri-vf50-on-iris
+> The Iris is a small off-the-shelf carrier board for the Colibri
+> family. Describe what the board itself provides: Ethernet, one USB
+> host and one OTG port, the pin header UARTs, i2c with the carrier
+> RTC on it, PWM, SPI and the microSD slot. The host port gets its
 
-[Severity: Low]
-This isn't a bug, but should this compatible string use an underscore for
-colibri_vf50 to match the base module name?
+[Severity: Medium]
+The commit message mentions adding support for PWM, but it appears the &pwm0
+and &pwm1 nodes were not enabled in the device tree additions. Are the PWM
+controller nodes missing from this patch?
 
-The new string uses a hyphen, whereas the existing eval board compatible
-uses toradex,vf500-colibri_vf50-on-eval. Could this inconsistency cause
-confusion when parsing or authoring device trees?
-
->            - const: toradex,vf500-colibri_vf50
->            - const: fsl,vf500
+> diff --git a/arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi b/arch/arm/boo=
+t/dts/nxp/vf/vf-colibri-iris.dtsi
+> new file mode 100644
+> index 0000000000000..bbd0dd76c33c0
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi
 
 [ ... ]
 
-> -      - description: Toradex Colibri VF61 Module on Colibri Evaluation B=
-oard
-> +      - description: Toradex Colibri VF61 Module on a carrier board
->          items:
-> -          - const: toradex,vf610-colibri_vf61-on-eval
-> +          - enum:
-> +              - toradex,vf610-colibri_vf61-on-eval
-> +              - toradex,vf610-colibri-vf61-on-iris
+> +&gpio2 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_iris_uart25_tx_on>;
 
-[Severity: Low]
-Does this compatible string also have a mismatched hyphen instead of an
-underscore for the colibri_vf61 base module?
+[Severity: Medium]
+Does this unconditionally overwrite the pinctrl-0 configuration inherited f=
+rom
+vf-colibri.dtsi?
 
-Like the VF50 entry above, maintaining the exact base module string as a
-prefix would stay consistent with toradex,vf610-colibri_vf61-on-eval.
+It seems this would drop the base configuration (like pinctrl_gpio_ext) ins=
+tead
+of appending to it, which might leave the EXT_IO_0..2 pins in an indetermin=
+ate=20
+mux and bias state. Could this be changed to append to the existing pinctrl=
+-0=20
+list?
 
->            - const: toradex,vf610-colibri_vf61
->            - const: fsl,vf610
+> +
+> +	uart25-tx-on-hog {
+> +		gpio-hog;
+> +		gpios =3D <2 GPIO_ACTIVE_HIGH>;	/* SODIMM 104 */
+> +		output-high;
+> +	};
+> +};
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813140600.1824=
-949-1-mehmet.fide@gmail.com?part=3D3
+949-1-mehmet.fide@gmail.com?part=3D4
