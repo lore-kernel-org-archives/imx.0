@@ -1,94 +1,116 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561CF3D6690
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 09:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6393EB0F0;
+	Thu, 13 Aug 2026 09:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786613334; cv=none; b=jqtkzFkphc6fd+bfu765rC8wc2BCt3y8yNnvNhbA2I7LQizl+zOcY5RbBCwxtjT7zckrqx38adVJMy8qgNW+8vJCWOLEVEqsXyjdCJBkm937Eo6JdO10Ug3xXukVz61inFu3kjXPu/RHFbaTHzrY4Ayv78mBQJ/FiBMhBCU9dHM=
+	t=1786613942; cv=none; b=j/j5XR3s3ZKCPl9Zb6xtvopvgDmp3AKnkIF41SSFmdUCOjLo3WFP/j49gF1ok1wWduw7rN2u4+lrk2P1O1y3mzaaZheAJ3ZCDm/CJ8Q5QfoLwHeOyoEN6dI2+k5UWKgh045LsS/gob6grRKWnYJyPyRJUJPthSLB8txxkZv5zPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786613334; c=relaxed/simple;
-	bh=z+8F8eDNzKbFCSY2BG5dcuGU9parwTszYKX3j9tUbH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtqgJ3faS5TIMH+7FoNsOjmonHYnKctvOKJaH/7B0M3uxGLaD61/0wTnNV1ftqhnl6VcVyBAQI96QXe+gAahxMC/5xwgj9s1Nt7qstzhzrc1YWmB34wFcKp46mmXJ6RUdyp6h/Mm/kXlAdTwsnBolBqecNl3n+gASPNjiIcaMcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Z/h3p0rm; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1786613942; c=relaxed/simple;
+	bh=ewbuU97FQIy+8aP3osZjDHmI3lWlruIsNWO1FP7n/t8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=RpEuoRB7w83xykaizBSeaebYPJznxdbaZBsVNXFx47vyG4y6kdl4eP1nz22l/aZaVl0F2iA9wrPMSo4UdO+tJZp6jCIDFlElCqWMUkMQsiLw8glm6uVG+hyCplTamZjEtduiHGuMiJAUq8U1+KI5I5ftMfRzkVxEJXCVnsR/zZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6ikwu29; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Z/h3p0rm"
-Received: from francesco-nb.. (2-224-16-253.ip168.fastwebnet.it [2.224.16.253])
-	by mail11.truemail.it (Postfix) with ESMTPA id 3C56822BB4;
-	Thu, 13 Aug 2026 11:28:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786613331;
-	bh=8oRtz8j6WHCmwH9XsaEurPP37uBVzs7lIGw+sWlvKGA=; h=From:To:Subject;
-	b=Z/h3p0rmyvxuZ60Dah646UY+0Tml/Zi5m0e44X9cjel+PlXVyDEBZK1lmds5b3X4P
-	 U5TMnTT7lWTQAZdcUiL9RffBrzPBEBbzaBncSDP0gFcRmffiilWG3FTYikmuHMNZFk
-	 ptkHN2oaAYZXY64uSmNMbW4ZR8AXRubLgsrQvCxHJ6S4Hf+BumnYoUrWBLtKchjrgG
-	 JAdny/lJh7xONMU7dEVjAPbR0UpAqmC4fVfcjlCZ2RRaUAOOywTlesW6MeuSSfQkcf
-	 S3OMZyw38PqKYSxKLL9RrHSppzXAJNqFDI37r7sEIRdCWyNOd/s1wGFO3E+KrpueDZ
-	 h34n+0CWv7E7A==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 4/4] ARM: dts: imx7-colibri: Set LCDIF bus-width
-Date: Thu, 13 Aug 2026 11:28:34 +0200
-Message-ID: <20260813092836.38367-5-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260813092836.38367-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6ikwu29"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133C91F000E9;
+	Thu, 13 Aug 2026 09:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786613940;
+	bh=A6nYTQKAuW8Ug06FtQ7eQLKH92ijsXIk+6c5ah8IXAE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=E6ikwu29wzZ8gMKYtr3qcUQErGyw/wvshGuk9yTfkrurp7flbXtmK5sY1XqUmcB1s
+	 lTuwYb/p2GRU/uzpofrPQBqaGIrt0wdTCKNDxZLJQXyuG6yAmXRSRpVX7mnaftzm1K
+	 3kr/k7/G6zqipl3JOFXAHmTZNY64I1eoKk+WacIVbVHerXXqhkW9F7biv6NXelrH2c
+	 JEfYs8z1dpUtIx4FbqAtr1okwAujZiG0hsIGpcJYhKAI9kZZLb5mhs9MGS0UfezPEV
+	 0ccf4YKy9uDO1UrJgs7Jo5AylB2dvXSx+czmDEBdW1/TsmXQoozKc4d+/K705vUpCU
+	 GNnBWMcA2Q8cQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 1/4] dt-bindings: lcdif: Add endpoint bus-width
+ property
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Francesco Dolcini" <francesco@dolcini.it>
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+In-Reply-To: <20260813092836.38367-2-francesco@dolcini.it>
 References: <20260813092836.38367-1-francesco@dolcini.it>
+ <20260813092836.38367-2-francesco@dolcini.it>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 09:38:59 +0000
+Message-Id: <20260813093900.133C91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The newly added endpoint constraints (including `bus-width`, `vi=
+deo-interfaces.yaml` inclusion, and `unevaluatedProperties: false`) are app=
+lied using an exact string match for `endpoint`. This silently bypasses val=
+idation for indexed nodes like `endpoint@1` or `endpoint@2`, which are acti=
+vely used by multi-endpoint configurations.
+--
 
-The lcd DPI interface on colibri imx7 uses a 18-bit width bus, set
-the bus-width property accordingly.
+--- Patch [1]: [PATCH v4 1/4] dt-bindings: lcdif: Add endpoint bus-width pr=
+operty ---
+commit e694f44914c3b2ddcaf755532413ffea7e676ef7
+Author: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-v4: no changes
-v3: no changes
-v2: use the common bus-width property instead of the legacy interface-pix-fmt
----
- arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+dt-bindings: lcdif: Add endpoint bus-width property
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
-index 8666dcd7fe97..c4088d3c5ab1 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
-@@ -537,6 +537,7 @@ &lcdif {
- 
- 	port {
- 		lcdif_out: endpoint {
-+			bus-width = <18>;
- 			remote-endpoint = <&lcd_panel_in>;
- 		};
- 	};
--- 
-2.47.3
+The DPI output of the LCD interface can be configured with a bus width
+of 16, 18, or 24 bits. This introduces a bus-width property to the output
+endpoint to specify the number of parallel RGB bits connected.
 
+> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/D=
+ocumentation/devicetree/bindings/display/fsl,lcdif.yaml
+> index 2dd0411ec6516..89cea0c14cf1d 100644
+> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> @@ -68,9 +68,19 @@ properties:
+>      maxItems: 1
+> =20
+>    port:
+> -    $ref: /schemas/graph.yaml#/properties/port
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    unevaluatedProperties: false
+>      description: The LCDIF output port
+> =20
+> +    properties:
+> +      endpoint:
+
+[Severity: Medium]
+Will this strict property match cause a regression in validation for indexed
+endpoints?
+
+By using an exact string match for endpoint under the properties block, this
+schema appears to silently bypass validation for multi-endpoint configurati=
+ons
+that use indexed nodes like endpoint@1 or endpoint@2.
+
+Because these indexed nodes are matched and evaluated by the
+^endpoint(@[0-9a-f]+)?$ pattern from /schemas/graph.yaml#/$defs/port-base,
+they will satisfy the parent port node's unevaluatedProperties: false check.
+However, any invalid properties or incorrect bus-width values inside those
+indexed endpoint nodes will be ignored by this new schema block.
+
+Should this use patternProperties with "^endpoint(@[0-9a-f]+)?$" instead of
+an exact properties match to ensure all endpoints are properly validated?
+
+> +        $ref: /schemas/media/video-interfaces.yaml
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          bus-width:
+> +            enum: [ 16, 18, 24 ]
+> +
+>    display:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+>      description: phandle to display panel
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813092836.3836=
+7-1-francesco@dolcini.it?part=3D1
