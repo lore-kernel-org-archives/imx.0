@@ -1,137 +1,116 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD74D481A8B
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 14:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032AE480955;
+	Thu, 13 Aug 2026 14:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786629970; cv=none; b=KuIhFV8kOoxecd5RMzYBrgRYrWZuxfWjJ7RCyP09Ng9zY13VwrF/6Uv3o+P/4gOiqpRcQLLIoBHfY6f8m55t55a7m65WaD5nAgF9AA7K5BVT4R13a5ndSkf7DGLH3TiHk4JALF5HMiB8nfu5CN6Hrv7YXQfJmtZ9uZLh2fleWIA=
+	t=1786630438; cv=none; b=rGT9I4WJwEA8qfpKLbXW7ySMoapPzofMZJw4T/ZIs9c1MoZl1E4O2SJqmKi7EuiCPbu84FN6mEBWdoA+ojhQpuV5dn2fJhuKk/OtAEX0S3y/gM5Hos0sJoU0wV53ioC4WzkgLzW2WRAYN2oSndOgMIhxYyzveBLiQNu1+hCBp8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786629970; c=relaxed/simple;
-	bh=ZQgiNiqYgsBrWLZgSSsY8QzFfXicVpacPgeKKriczcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRaSqECHNIE1qTVDgsUTtgC20bbrMGMpiTBKVO+PGwqWxx5tz2zJd6kLpBTyfmAGPixbEUWS/WdX9//h6nav5JnKzoIWH3Gi+hxUW05hYcJejodN+Nj1OjwWJBcOLUdwBs69T6tnt6MoHfLbchbHu9c/by/sxK4NFCt4y4SJYLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jshyzOUb; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786630438; c=relaxed/simple;
+	bh=Eu/Wc8Z8YklXfcOwVUMafJhK6o32zLtJq1abNAJMx54=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=lUc0PGDLHEevGRMGP2P+afj78nHaPG+OFHWgwRrmIx+k0m1R4222qX8qsYsHEC/ZT8zRUrhJClT42SYAiDmOOFLyGOf1rv9KnZh6KPGh771X6MbGBf6GNf7mp7oTECj+8zKGZgYthcAlr/WLtVgf4V++bo8phb8nZwqXi+zIlgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAb+ysex; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jshyzOUb"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47fd66a094eso846953f8f.3
-        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 07:06:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786629965; x=1787234765; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6wNKUrjtVLeG944flpny8Q6wVXCAuoMBESObIQ6TAV0=;
-        b=jshyzOUbIZDxeEf3AYDqMQBUzmz00BHVCzwapr3r1ppyNLa046xvu9JfaoiblS2L43
-         XEkan4JCxlye/TqQ2XZnKh0EwxHLi5Bjk5hg5+BPRbNyiM8RgvyZwEW0Ka6ayjVmUZ2O
-         7CSM8o+mne2+ZXmw5fO/Gv/FQcunvcMgSxkrmY47qfGx5mfpNjvgw0ECKZq0WxDh3FK7
-         ALi/9DQ1j/BDftKOgu5o/xPLbXzkLFhpY1QBdNMNs0YkZZjS7A5n8x/EWadNmq3NCZMA
-         KZl7GVgUSRHOTXt07fqnAsvhMXRaDNLJV6Z+G7SlhaGDK4HjpCxgZaWnGOT1+XzaGK+w
-         xRTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786629965; x=1787234765;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6wNKUrjtVLeG944flpny8Q6wVXCAuoMBESObIQ6TAV0=;
-        b=Eay0JMDV2EwgllwaVaM+BzQEMr+Facaln+WvalBR0El2KdT+Mbpy2H+u2HTzX2bbK4
-         pMkaTBggAj8LttQXpb/veoHm6+vhi0JC2fvlFeyCXyYUKTRcjRB2Kj4JrZs1e7UhKGJx
-         G5Q98z3nt02L/fz1wQkq1MFQPQo9P2CgW5lU9WR8nYgg8QI6oIxmv5hqnqEZ6NPzF4KF
-         RXeT2mhZCyhLS5iqnaw2PfSJHyyFpIPiZHQIPPTOkYzLSGMf/vkUpWan5zSk60CxDLgk
-         fbGSXBXso2Xd63ippDGhubLzNbtFcGzjWAAThKZsMocv/EIxLsQ4djcgTfd0AHELvlwN
-         Kmpg==
-X-Forwarded-Encrypted: i=1; AHgh+RqPyllsPX0JDj2HBvrRLF1hR2ttwMVR/lUNYEEKBFe5yIwhOvbWDzn5zDylOFnkEUnLm6g=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzfFcEmDp5SNRS3fC0Eu+u5Rrv4D+0nyJ+RRLMpsxEQF5DaXuvR
-	jS5tfpFDNRdVTNhOE4yg+Mg6k0pj4rqXQAcRSBaDO932DU+U5mPvfINY
-X-Gm-Gg: AR+sD116ODo2hdcu2DSHNX7IscQ51UpvmCKvWYn8NeU7DRvgBXYbOCT9i61clmb8aIT
-	Dq883UlXqym2lXFGxsoWPhNE3GiR2HV7NJTsTBOk1YXofj7CzBpNab1l0STksxoYlAm1XhK8RnL
-	Fv5LkncG/CQo0EvkpQz0q7v8O2/AN0McUqo2msYnMhrpBGt1kr8qDxMQOALRhZ/nDDhYL5RHgss
-	u4XRsCMLbZhxNDWbj3j9dffynq9SJfASJ/TFC6lcUlT+9Jucm0PbVIhCnCNodSwskdOXd32xdMw
-	mUJArzbrKkIKg05KncWGyyNBgYDBN6iovozynAwCm3YzdjgDGBBDZ0rkAKD8mAg8Jj8eWrDUbeY
-	JyHi2tlH8SOQOiRnM3qrGJLXAYTOsy2GTRUmOJ5656Kfge7WTQvUpCAuwY87jLRMEliRnbMXQX8
-	Ph2TYGBx4TT6BWZoqDk77zSJZDA5BPMzyw4dnZmh2M2w4ImRdpL93Xp2TUIfijSC+Cy7FflFe9v
-	dC6
-X-Received: by 2002:a05:6000:430d:b0:481:568e:d6ed with SMTP id ffacd0b85a97d-48159ee5201mr8885423f8f.15.1786629964824;
-        Thu, 13 Aug 2026 07:06:04 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af191sm6690190f8f.19.2026.08.13.07.06.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 07:06:04 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: [PATCH v3 3/4] dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
-Date: Thu, 13 Aug 2026 16:05:59 +0200
-Message-ID: <20260813140600.1824949-4-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260813140600.1824949-1-mehmet.fide@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAb+ysex"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1221D1F000E9;
+	Thu, 13 Aug 2026 14:13:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786630436;
+	bh=NZNoADXhFw+9O9IxP2fTYV1zJAmNyfefsNizDKMPUwQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bAb+ysex1v5Z4WfrH19je176j+ZIKKuMc07D8HKpoWJoYQy+o69jutfPwW/ZuhsTO
+	 iIJiSOKCI89sEGV++ort5DlfDhsYt8CZQLDYl/lCvIr9SI09tPzzzlR2RcEbTIq3nZ
+	 AvP0tlEGbX8Qz87+1+JEzPILDs/3viqOvVDcx2R82n8/ERGo3OcIeFe6U8KobdWWlG
+	 NBZIHFKT0IlZFhoqJor0KaaaELCW84voUM9+cztSXRD1lXRZThiVerLhTJ7oDCxweo
+	 d0avBtgnHY36KIS64nfe2W+kFEdXQChr5kzhc0MAYK5XUrMGrEt68bpuP1Rrb6wE5e
+	 ztLAU28ej23ug==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/4] dt-bindings: arm: fsl: add the Colibri VF50 and
+ VF61 on Iris
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mehmet Fide" <mehmet.fide@gmail.com>
+Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260813140600.1824949-4-mehmet.fide@gmail.com>
 References: <20260813140600.1824949-1-mehmet.fide@gmail.com>
+ <20260813140600.1824949-4-mehmet.fide@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 14:13:55 +0000
+Message-Id: <20260813141356.1221D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Inconsistent compatible string naming due to mismatched hyphen.
+--
 
-The Iris is a small off-the-shelf carrier board for the Colibri
-family. Extend the evaluation board entries with the compatibles for
-a Colibri VF50 or VF61 sitting on it.
+--- Patch [3]: [PATCH v3 3/4] dt-bindings: arm: fsl: add the Colibri VF50 a=
+nd VF61 on Iris ---
+commit 04c8812c4587059c616ac3a5abaa28f6f14d974a
+Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
----
- Documentation/devicetree/bindings/arm/fsl.yaml | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 86876311ec59..6f95c17b363c 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1705,9 +1705,11 @@ properties:
-               - fsl,vf610
-               - fsl,vf610m4
- 
--      - description: Toradex Colibri VF50 Module on Colibri Evaluation Board
-+      - description: Toradex Colibri VF50 Module on a carrier board
-         items:
--          - const: toradex,vf500-colibri_vf50-on-eval
-+          - enum:
-+              - toradex,vf500-colibri_vf50-on-eval
-+              - toradex,vf500-colibri-vf50-on-iris
-           - const: toradex,vf500-colibri_vf50
-           - const: fsl,vf500
- 
-@@ -1719,9 +1721,11 @@ properties:
-               - phytec,vf610-cosmic       # PHYTEC Cosmic/Cosmic+ Board
-           - const: fsl,vf610
- 
--      - description: Toradex Colibri VF61 Module on Colibri Evaluation Board
-+      - description: Toradex Colibri VF61 Module on a carrier board
-         items:
--          - const: toradex,vf610-colibri_vf61-on-eval
-+          - enum:
-+              - toradex,vf610-colibri_vf61-on-eval
-+              - toradex,vf610-colibri-vf61-on-iris
-           - const: toradex,vf610-colibri_vf61
-           - const: fsl,vf610
- 
--- 
-2.54.0
+This commit extends the evaluation board entries to include compatible
+strings for the Toradex Colibri VF50 and VF61 modules on the Iris carrier
+board.
 
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
+on/devicetree/bindings/arm/fsl.yaml
+> index 86876311ec59a..6f95c17b363c0 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1705,9 +1705,11 @@ properties:
+>                - fsl,vf610
+>                - fsl,vf610m4
+> =20
+> -      - description: Toradex Colibri VF50 Module on Colibri Evaluation B=
+oard
+> +      - description: Toradex Colibri VF50 Module on a carrier board
+>          items:
+> -          - const: toradex,vf500-colibri_vf50-on-eval
+> +          - enum:
+> +              - toradex,vf500-colibri_vf50-on-eval
+> +              - toradex,vf500-colibri-vf50-on-iris
+
+[Severity: Low]
+This isn't a bug, but should this compatible string use an underscore for
+colibri_vf50 to match the base module name?
+
+The new string uses a hyphen, whereas the existing eval board compatible
+uses toradex,vf500-colibri_vf50-on-eval. Could this inconsistency cause
+confusion when parsing or authoring device trees?
+
+>            - const: toradex,vf500-colibri_vf50
+>            - const: fsl,vf500
+
+[ ... ]
+
+> -      - description: Toradex Colibri VF61 Module on Colibri Evaluation B=
+oard
+> +      - description: Toradex Colibri VF61 Module on a carrier board
+>          items:
+> -          - const: toradex,vf610-colibri_vf61-on-eval
+> +          - enum:
+> +              - toradex,vf610-colibri_vf61-on-eval
+> +              - toradex,vf610-colibri-vf61-on-iris
+
+[Severity: Low]
+Does this compatible string also have a mismatched hyphen instead of an
+underscore for the colibri_vf61 base module?
+
+Like the VF50 entry above, maintaining the exact base module string as a
+prefix would stay consistent with toradex,vf610-colibri_vf61-on-eval.
+
+>            - const: toradex,vf610-colibri_vf61
+>            - const: fsl,vf610
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813140600.1824=
+949-1-mehmet.fide@gmail.com?part=3D3
