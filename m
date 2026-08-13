@@ -1,157 +1,110 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4323B7B79;
-	Thu, 13 Aug 2026 09:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415943385A1
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 09:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786613213; cv=none; b=PrO56EjQViz9kZxswrEh3ge8uKnteBm0EAgsn/uyF1h8PBhb7FvhHE9OaUwGJTaKD7p/NISzxfSK5DciWT1kOVBtcI6IuBh0DZx45QXPZXKCeKkxwJPH6906e76CNBBWW1SIhRQyYydFVRaQ+BcB3gX29FYjxdqR2eX2Zz+5hNY=
+	t=1786613329; cv=none; b=DufISbieS2q+KI25r0wIm/BYEpLIWRs0NHR1a/7sDbmqovriL2CVt4APzRsnG0UmZtzF3s8ga3hn9LaWPZGHH9oEVi/naQtgYlfspNOM3h1T7CE7EYxYOs/Gr62HGX+BvnS+cH9mdWRPLXFC/B3BBByLVsyi8+jbw1ANqiCoYbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786613213; c=relaxed/simple;
-	bh=Z6v38tsb1CcOWA/5O8PCVvA+QbpJ3yaT73L5yIVeGoI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qPP7ZKozt4APAoIGdZS8bAzinwvmDjPYSxlBeZCB801QKUT6akSOultWMBpHjJCFP3yFbXdplLvzozVmM1uM/pYvR7I8Cn8AtYsi5xXIzOckQx3e33GeRK1tOsG6vR3ZITx9U/nlUC8ho1L0Wja0+vXG8EI9j1PvuI3d4mvEWc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=nKP72OPT; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1786613329; c=relaxed/simple;
+	bh=+qi1zlRj7Ikdo/3mx2szDpc0e9Ae0hPP2fwJ6bzSfJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=igbN2eA8qe9j8cuDZz3GcEaUEeaYJGC+V28dEzjvtxtnRkXwWQmCxoKPK1S+85i0cbFFI0EGWN0zUz6btWNuyKUZ3LkceCnDJh+nYX0PW/TWGzvUfnDmnBvd2JPK7ylqk/Pge1vEbIVQ2VgvHidMHgPech5dGC7XloLXD/MOBDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=BqFAE/+f; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="nKP72OPT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=IPz+pRNv6M2Bl3l0XU+3yKO/cuTqG+5OunpOwazZoio=; b=nKP72OPTQMRqcB57kmWSrGWTPj
-	esmryEFUibscPV2WL4LQE/LUfZ7EGKiutgMKBrrTAw5Pq3Uc8DXXtwU79wtvhDpTm1AA/nnzyw/RE
-	1qNnrFopYMghltvOCStmG6zSNtEts0rTgQXJtWJICX88j4x0JJt9Cao1vKCerX8ilg7PVrjDlqs6B
-	3Y5xoCiRLZ75fZWuKzkUE0an5ELxFy1MgnIYvk1CwTA9oWDP3JbCFVZ8VzIbsbS/Fr8cBq0enY7QK
-	i904iLYNM0Gv0aQ7CXWk6fUBbSX8pjk5tiIhU1Q5ajJ2wPMXxXJR3dd9SJg805E52gv57qEfwGwLX
-	Us7ErV7g==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wuROI-000EhZ-0C;
-	Thu, 13 Aug 2026 11:06:22 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wuROH-000CPn-1b;
-	Thu, 13 Aug 2026 11:06:21 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Francesco Dolcini <francesco@dolcini.it>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject:
- Re: [PATCH v3 1/4] dt-bindings: lcdif: Add endpoint bus-width property
-Date: Thu, 13 Aug 2026 11:06:20 +0200
-Message-ID: <4870648.tdWV9SEqCh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <cf1e1514-fb92-46cd-95a3-9c857bf08f66@kernel.org>
-References:
- <20260812132954.148571-1-francesco@dolcini.it> <7661119.LvFx2qVVIh@steina-w>
- <cf1e1514-fb92-46cd-95a3-9c857bf08f66@kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="BqFAE/+f"
+Received: from francesco-nb.. (2-224-16-253.ip168.fastwebnet.it [2.224.16.253])
+	by mail11.truemail.it (Postfix) with ESMTPA id D154F22BAB;
+	Thu, 13 Aug 2026 11:28:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1786613325;
+	bh=sz2GhH9CorHZJAm1J5Dom7Bt4omfMF6eFOTXBf/ebF8=; h=From:To:Subject;
+	b=BqFAE/+fkKTb78o7jZ4tie+P3k7tEu1xQh07b86U7VnWI6/rXAu3EUlmZKlt7cWjl
+	 2lyE3qSb3SvbvylX8ClXA08rMVEQGc84jZz4reJbXjCgD3bzd+A9BM0IoYuD+fVR1Z
+	 iowGGy+Mh/iBuVViO15kU74vFAtLAwZmbJrlHuiLjw0nWX4OFEZY6NU3cNAashGm8S
+	 1M5FIXh/mERE3zGoLrG4yYLXlpBa+rmeQ0f+RU8lztIV03GPaU3HDLXd45HuukuDsZ
+	 9Q8JTMbUXZiE4Y00mccoS/0orUXeeb/wrmO5WiM342vBXMG2C/46eSzcfKFosWz9Rm
+	 qTey1Lf7KcJJQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Marek Vasut <marex@denx.de>,
+	Stefan Agner <stefan@agner.ch>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/4] drm: mxsfb: Support LCDIF interface bus width
+Date: Thu, 13 Aug 2026 11:28:30 +0200
+Message-ID: <20260813092836.38367-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28091/Thu Aug 13 08:25:54 2026)
+Content-Transfer-Encoding: 8bit
 
-Am Donnerstag, 13. August 2026, 11:03:06 CEST schrieb Krzysztof Kozlowski:
-> On 13/08/2026 10:56, Alexander Stein wrote:
-> > Am Donnerstag, 13. August 2026, 10:34:02 CEST schrieb Francesco Dolcini:
-> >> On Thu, Aug 13, 2026 at 10:10:43AM +0200, Krzysztof Kozlowski wrote:
-> >>> On Wed, Aug 12, 2026 at 03:29:49PM +0200, Francesco Dolcini wrote:
-> >>>> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >>>>
-> >>>> The DPI output of the LCD interface can be configured with a bus wid=
-th
-> >>>> of 16, 18, or 24 bits. Introduce a bus-width property to the output
-> >>>> endpoint, specifying the number of parallel RGB bits connected.
-> >>>>
-> >>>> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >>>> ---
-> >>>> v3: use video-interfaces.yaml
-> >>>> v2: use the common bus-width property instead of the legacy interfac=
-e-pix-fmt
-> >>>> ---
-> >>>>  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 9 ++++++=
-+++
-> >>>>  1 file changed, 9 insertions(+)
-> >>>>
-> >>>> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yam=
-l b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> >>>> index 2dd0411ec651..1f3daf002707 100644
-> >>>> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> >>>> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> >>>> @@ -71,6 +71,15 @@ properties:
-> >>>>      $ref: /schemas/graph.yaml#/properties/port
-> >>>>      description: The LCDIF output port
-> >>>> =20
-> >>>> +    properties:
-> >>>> +      endpoint:
-> >>>> +        $ref: /schemas/media/video-interfaces.yaml
-> >>>
-> >>> This won't work, you need to test your DTS. The port schema does not
-> >>> allow video-interfaces properties. You need port-base, like in every
-> >>> other case.
-> >>
-> >> Thanks for the review Krzysztof
-> >>
-> >> Given my testing was not ok, and I am not sure what I did wrong exactly
-> >> on my tests, is this the change I should do?
->=20
-> Yes
->=20
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml =
-b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> >> index 1f3daf002707..89cea0c14cf1 100644
-> >> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> >> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> >> @@ -68,7 +68,8 @@ properties:
-> >>      maxItems: 1
-> >> =20
-> >>    port:
-> >> -    $ref: /schemas/graph.yaml#/properties/port
-> >> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> >> +    unevaluatedProperties: false
-> >>      description: The LCDIF output port
-> >=20
-> > With that change:
-> > Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
-> Please do not. Build testing is not testing (in the meaning of
-> "Tested-by" tag), otherwise where is Rob's tested-by tag for all the
-> patches he build tested?
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Well, I tested this on actual hardware, see patch 2. But then this
-is irrelevant for for dt-bindings. So let's go with:
-Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+The width of the physical LCDIF output bus can differ from the input bus
+format advertised by the downstream panel or bridge.
 
-Thanks and best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Such a distinction is required when the LCDIF bus width does not match the
+width of the downstream display interface. For example, an 18-bit or
+16-bit LCDIF bus can drive a 24-bit display by wiring the available color
+bits to the appropriate display inputs. Configuring LCDIF solely from the
+display's 24-bit format in this case selects the wrong LCD_DATABUS_WIDTH
+mode, changing the color-bit assignment on the LCD_DATA pins and resulting
+in incorrect colors.
 
+Use the common OF graph endpoint bus-width property to describe the width
+of the physical LCDIF output bus. Make the mxsfb driver derive the
+corresponding media bus format from this property and use it in preference
+to the format reported by the downstream display. When the property is
+absent, the existing behavior is preserved.
+
+Set the endpoint bus width for the Colibri iMX6ULL and Colibri iMX7 boards,
+which route an 18-bit LCD interface.
+
+v4:
+ - use /schemas/graph.yaml#/$defs/port-base
+ - add r-b and t-b tags
+v3: https://lore.kernel.org/all/20260812132954.148571-1-francesco@dolcini.it/
+ - use video-interfaces.yaml
+v2: https://lore.kernel.org/all/20260723093813.180089-1-francesco@dolcini.it/
+ - use the common bus-width property instead of the legacy interface-pix-fmt
+v1: https://lore.kernel.org/all/20260717121847.488148-1-francesco@dolcini.it/
+
+Francesco Dolcini (4):
+  dt-bindings: lcdif: Add endpoint bus-width property
+  drm: mxsfb: Add optional DPI output bus-width configuration
+  ARM: dts: imx6ull-colibri: Set LCDIF bus-width
+  ARM: dts: imx7-colibri: Set LCDIF bus-width
+
+ .../bindings/display/fsl,lcdif.yaml           | 12 +++++++++-
+ .../arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi |  1 +
+ arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi   |  1 +
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c             | 24 +++++++++++++++++++
+ drivers/gpu/drm/mxsfb/mxsfb_drv.h             |  2 ++
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c             | 12 ++++++++++
+ 6 files changed, 51 insertions(+), 1 deletion(-)
+
+-- 
+2.47.3
 
