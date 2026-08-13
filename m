@@ -1,48 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C5043F4A3;
-	Thu, 13 Aug 2026 08:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C4E2C0296;
+	Thu, 13 Aug 2026 08:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786608666; cv=none; b=ABhQ0UtDFV4x614pv2YF/8VO2xMUP7D/VUrASaUuSrn8GynAdSO71TB3fVT/7CIyutNbbOhmdKczlC/iTzB/qR3ZCQTU43ZcTSC7Qwdx+hvQX0d6Wcq9IH8PjfSh/Z5P5TB4Eim6o5FdFHv9DNBQYqAqUS4uMUyh1A9vC3PQqf0=
+	t=1786609327; cv=none; b=QYL7wjzEZ8b6HA5VVViNb/6avmFgakffKx5m5gR2yitA71N7CyQRMSkhuHVKpI0w20ROvH3PRT/IgYuOlRnhU6qawj3E1TB747TDzfpUBj9kDHqykdejnlYfjQ97IDt11ej7zz3iB1OVBahIzdw8hMaBXbdjxw74yluOIkyQjVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786608666; c=relaxed/simple;
-	bh=9myTtBaXeHJDR0E/gmFXDtQRnDrIuFEcAlDD0u0F80Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=By/tn66kPjvJhhxkszyE6kd4I5InRDSUyTkHWSWq2yp6O8iHuG9suCc4yGdYeJQhSqZimK8MtnfPZhP+dmlpJwy5bmnsVwwIyn3irkzvhlms/Zxp6cS7IrtdeVVYKkV8EGsaP+jHlbCbcuybf/nzyISXDxCVPIro/SVsR2rxIQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjWZhFXR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786609327; c=relaxed/simple;
+	bh=WgRRDaoWPZwOJuVMjX7/03GgTdkqCeXOBG68VI6CWMI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mdmucoFn4itFxPkdT/Jij64Hw7rihGqsUevR0PZBGr9w7usaEv3unm/ImaDnugFhLCyt8KcqKuR+GBkANr/TSeOvWln7BUj1dwh1ivmDrFPi5SSz/y0FJLtjBrK814eycmpdwH98JCUpRXvkGJ7tzlubzPQmfZIjYg67RonOAKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eD96uLUc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y3ptXPA5; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjWZhFXR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0411F000E9;
-	Thu, 13 Aug 2026 08:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786608654;
-	bh=LAbJLZQ6tRw+3JpuTTlFStB7YRIx6psZDSrH5XlcvdI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CjWZhFXRdNo09EhhkbEYURxbkgpci1IzSja/nd9HBfkBVZ0l/tt8HtzQUzID8buL+
-	 sbmudUpL1K4Up5L9VmIjxL/LLI0Y+B3j3Q8FZhMcVnqiFh9F/TGatzVl2kZo4UCYkJ
-	 Wt7eVJVPmzTlNH34yTN41/GJwHHqlguYuwkTtEliHjFxTfmTTEUM3G/0/AIWSC4o1f
-	 jfYcFOyMiSYwgsn4k/su3ByKc3aRrTNDuJpfG9fe5wZbeH0tvSfEoTCebNftttmfTe
-	 OVYZIvgdnhzHarOUWFThup8oGhuKfAZAQ/FPewd9ZUMeHUt77EDHCiRH+bOw47ZLDW
-	 jPxftFuGAqIDA==
-Date: Thu, 13 Aug 2026 10:10:43 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: lcdif: Add endpoint bus-width
- property
-Message-ID: <20260813-classy-boa-of-apotheosis-57207e@quoll>
-References: <20260812132954.148571-1-francesco@dolcini.it>
- <20260812132954.148571-2-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eD96uLUc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y3ptXPA5"
+Date: Thu, 13 Aug 2026 10:22:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1786609324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bnFio1oNNrm91Jw4PTtNlaJV8syzqd0jiUAgXBq7K3U=;
+	b=eD96uLUciE8j2GP/q4QeItW5OshyUxrCgZupSZvzlDVdpsPxWU85h6hJgZKrB1Ky/U8urP
+	VlxOJngoFCNBCVGoLwlHK8tLAeSMAqAw9Jo7gIb2VAJ6f9WNg3jmOPq6/9ffbdpAvPIPxz
+	EXyMBaA9yjmv52alX57wgmIryq0frLHKY6Ms3bNUoDp+ti15ZxCxwjd+t8iroYVyGxFOwE
+	0kxWY0XeK9YnGI2jBJOa4yejen99R1qfO6KMLPBgfJ7pAdA1S3oauMWBgzHvTnI4Hk9UhK
+	seqSwHDybl1N0TJaBZdQW7OKPuhHUi/yzMvRmDPRxDR9JeQYVWTXnjg6IbcanA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1786609324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bnFio1oNNrm91Jw4PTtNlaJV8syzqd0jiUAgXBq7K3U=;
+	b=y3ptXPA5Lo3wMSLHcgJ/kGZiDctoIQm8sXXnCRX+BOuwbubQh9IBV4PZZ11vLNFWeqaWTI
+	M7h8yC7HygwGtqDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>, Peng Fan <peng.fan@nxp.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH REPOST REPOST v6] remoteproc: imx_rproc: Invoke the callback
+ directly
+Message-ID: <20260813-imx_mbox_rproc-v6-1-6903a93b0456@linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,39 +62,183 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260812132954.148571-2-francesco@dolcini.it>
+Content-Transfer-Encoding: quoted-printable
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOTW6DMBAF4Ksgr+vIY+Mfsuo9qigyZtxYKjgxB
+ BFF3L0OWSQqdPlGM9+8O+kxBezJvriThGPoQ+xyUB8FcSfbfSMNTc6EM66Y5BUN7XRs6zgd0zl
+ FR3UjgXtpldeG5KNzQh+mBfw6PHPCyzW7w3NIatsjdbFtw7AvRr3jNDlNHrun0A8x3ZYuIyzL/
+ 70dgTJaG++dUAiA8vMndNchxS5MuwYXbuQvQjGxIngmLGOyapyoVWW3CPFGgF4RIhNaV6UB4A1
+ 6t0WUL0JvtCgpUKVrYFIxaxRsEfKN4LAi5IMQRlnuvJG8/EvM8/wLYGsYQegBAAA=
+X-Change-ID: 20260529-imx_mbox_rproc-7d512f5a6f78
 
-On Wed, Aug 12, 2026 at 03:29:49PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> The DPI output of the LCD interface can be configured with a bus width
-> of 16, 18, or 24 bits. Introduce a bus-width property to the output
-> endpoint, specifying the number of parallel RGB bits connected.
-> 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
-> v3: use video-interfaces.yaml
-> v2: use the common bus-width property instead of the legacy interface-pix-fmt
-> ---
->  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> index 2dd0411ec651..1f3daf002707 100644
-> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> @@ -71,6 +71,15 @@ properties:
->      $ref: /schemas/graph.yaml#/properties/port
->      description: The LCDIF output port
->  
-> +    properties:
-> +      endpoint:
-> +        $ref: /schemas/media/video-interfaces.yaml
+The imx-mailbox driver moved the callback invocation into the threaded
+IRQ handler. This means the callback is invoked in preemptible context
+and there is no need to schedule the kworker for the
+imx_rproc_notified_idr_cb() invocation.
 
-This won't work, you need to test your DTS. The port schema does not
-allow video-interfaces properties. You need port-base, like in every
-other case.
+This was tested with the rpmsg-tty driver on imx93.
+
+Remove the workqueue handling and invoke the imx_rproc_notified_idr_cb()
+callback directly.
+
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+The imx's remoteproc driver uses a kworker from its mailbox callback to
+complete the request. The reason is that the imx mailbox driver invokes
+the callback from its interrupt handler and the remoteproc callback (at
+least the rpmsg-tty) requires a preemptible context.
+
+This works but is problematic in a PREEMPT_RT environment where the
+latency of the invocation is important. By scheduling a kworker the
+high task priority from the threaded handler is lost and the kworker
+competes for CPU ressources with every SCHED_OTHER task in the system.
+This can lead to long delays on a busy system with other RT threads
+which are less important than the completion of this request.
+
+Looking over other mailbox driver, like the arm_mhu for instance, they
+use a threaded interrupt handler to invoke the callback. This avoids the
+kworker detour.
+
+The here suggested change utilises a threaded interrupt to invoke the
+callback. The primary handler mask the interrupt source so that the
+handler can run without getting interrupted by the interrupt again.
+Doing so avoids marking the interrupt IRQF_ONESHOT so that in a
+shared-interrupt environment the other interrupt can still fire while
+the first is masked.
+
+The first four patches are result of the sashiko review. Does not look
+critical.
+
+This change was tested on a im93 board with rpmsg-tty driver.
+
+v5=E2=80=A6v6: https://patch.msgid.link/20260721-imx_mbox_rproc-v5-1-6386a2=
+cf8524@linutronix.de
+  - Repost. Adding Greg and akpm, hoping someone will apply it.
+
+v4=E2=80=A6v5: https://lore.kernel.org/all/20260703-imx_mbox_rproc-v4-1-67b=
+10560a861@linutronix.de/
+  - Repost
+
+v3=E2=80=A6v4: https://lore.kernel.org/r/20260617-imx_mbox_rproc-v3-0-77948=
+112defc@linutronix.de
+  - The mailbox bits are part of v7.2-rc1. This is just a repost of the
+    imx_rproc driver which is left.
+
+v2=E2=80=A6v3: https://lore.kernel.org/r/20260603-imx_mbox_rproc-v2-0-a0059=
+dc3b69a@linutronix.de
+  - Forward the error in imx_mu_generic_tx() to the caller (new patch
+    #1)
+  - Extend the patch description a bit for for "Start splitting the IRQ
+    handler" to briefly explain why callbacks are moved to the threaded
+    handler.
+  - Drop imx_mu_con_priv::pending. The primary handler wakes its
+    threaded handler. Once the handler is woken, the pending flag must
+    be set and there is no need to set/ clear it.
+  - Avoid the double clk_disable_unprepare() if
+    devm_mbox_controller_register() fails.
+
+v1=E2=80=A6v2: https://lore.kernel.org/r/20260529-imx_mbox_rproc-v1-0-b8ffc=
+36e11e5@linutronix.de
+  - Using correct register to enable RXDB event.
+  - Update commit description for the "threaded interrupt", "unmasks the
+    interrupt" =3D> "masks the interrupt event".
+  - Add a shutdown field so that the interrupt does not unmask the
+    interrupt if it has been already disabled because the channel is
+    about to be shutdown.  A possible race mentioned by sashiko.
+  - Use devm_pm_runtime_enable(). This should avoid a possible race
+    sashiko mentioned.
+  - Use devm_of_platform_populate().
+---
+ drivers/remoteproc/imx_rproc.c | 33 +--------------------------------
+ 1 file changed, 1 insertion(+), 32 deletions(-)
+
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 7662ebd9d2f49..e18ae33a5cf85 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -24,7 +24,6 @@
+ #include <linux/regmap.h>
+ #include <linux/remoteproc.h>
+ #include <linux/scmi_imx_protocol.h>
+-#include <linux/workqueue.h>
+=20
+ #include "imx_rproc.h"
+ #include "remoteproc_internal.h"
+@@ -115,8 +114,6 @@ struct imx_rproc {
+ 	struct mbox_client		cl;
+ 	struct mbox_chan		*tx_ch;
+ 	struct mbox_chan		*rx_ch;
+-	struct work_struct		rproc_work;
+-	struct workqueue_struct		*workqueue;
+ 	void __iomem			*rsc_table;
+ 	struct imx_sc_ipc		*ipc_handle;
+ 	struct notifier_block		rproc_nb;
+@@ -892,21 +889,11 @@ static int imx_rproc_notified_idr_cb(int id, void *pt=
+r, void *data)
+ 	return 0;
+ }
+=20
+-static void imx_rproc_vq_work(struct work_struct *work)
+-{
+-	struct imx_rproc *priv =3D container_of(work, struct imx_rproc,
+-					      rproc_work);
+-	struct rproc *rproc =3D priv->rproc;
+-
+-	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+-}
+-
+ static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
+ {
+ 	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
+-	struct imx_rproc *priv =3D rproc->priv;
+=20
+-	queue_work(priv->workqueue, &priv->rproc_work);
++	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+ }
+=20
+ static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
+@@ -1271,13 +1258,6 @@ static int imx_rproc_sys_off_handler(struct sys_off_=
+data *data)
+ 	return NOTIFY_DONE;
+ }
+=20
+-static void imx_rproc_destroy_workqueue(void *data)
+-{
+-	struct workqueue_struct *workqueue =3D data;
+-
+-	destroy_workqueue(workqueue);
+-}
+-
+ static int imx_rproc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev =3D &pdev->dev;
+@@ -1305,17 +1285,6 @@ static int imx_rproc_probe(struct platform_device *p=
+dev)
+ 		priv->ops =3D dcfg->ops;
+=20
+ 	dev_set_drvdata(dev, rproc);
+-	priv->workqueue =3D create_workqueue(dev_name(dev));
+-	if (!priv->workqueue) {
+-		dev_err(dev, "cannot create workqueue\n");
+-		return -ENOMEM;
+-	}
+-
+-	ret =3D devm_add_action_or_reset(dev, imx_rproc_destroy_workqueue, priv->=
+workqueue);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to add devm destroy workqueue act=
+ion\n");
+-
+-	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
+=20
+ 	ret =3D imx_rproc_xtr_mbox_init(rproc, true);
+ 	if (ret)
+
+---
+base-commit: 2ee859ebf156157609f71060ae472711c8cbc326
+change-id: 20260529-imx_mbox_rproc-7d512f5a6f78
 
 Best regards,
-Krzysztof
-
+-- =20
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
