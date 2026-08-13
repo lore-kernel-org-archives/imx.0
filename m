@@ -1,63 +1,62 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0550480320
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 13:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E806B47F2F6
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 13:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786628096; cv=none; b=tEPOEQ2D+mDU+KLdLQ3jbBfD2UtQ9a56Ywew9fR13Y/erCTgXJYdyHkJ3J/I6Gt97+af//RE8JakWIWO25RhmW+dAPvwN9blIq1zJZLzbShQdxzVnT2O6dJlmvh1WIKVW7cm0u9Opdd1UDvUftuQKnhCXW6nC+8riy3ZGmsetD4=
+	t=1786628104; cv=none; b=efEW/mibyh7PDZEVDQ+B0/c0txjSIhwxHnXJaNyiLM3/dm0ME/4h2ZDUFi4Ul3nPvWlzWzVVSAO30c3qtfIfJ9kmBoaGUZ2bsiTye+pdSmIXdhVjWNq6F0ZGjmsSLmfWP69FCgKFlk3BP/dWvWeBsG/uJgRVMsriln3mqGmHHg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786628096; c=relaxed/simple;
-	bh=tcWGcZuZwcYpU4WzmQxEA0aipo99WwRl2r9Ygz+Zz1c=;
+	s=arc-20240116; t=1786628104; c=relaxed/simple;
+	bh=zZoKzN8tl/pLMaQsHBiSwOGEOXk0cIHPZ4G0xdfxhGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouVSyaa1ulZZWBffESrCjGHdLo7fl2TYC3u3Sz4p42/10dpSBwjtCbeBmS7pN7/koL1NiNOws6Ify7rhiz9Ss+0OELdlCWle9desru4tKqyaPTinnoxJzcp5k/dWmzxw0wsStHP2lcgIgRBevcxrmjfSooWZLYHDt/sQRYSNb2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGoVnYFH; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=BcabYdMEV1+o1MYpfb8S6rzKexSw4yzvpRfEVNGsb/ZotxITaLslIBPW7GKibxpUx2ENgezUT64VwLFzibA8YEaFjdwqTiBntYIyHZsjtFefu+0x5opOLgMTFSNftTPO4Aqid4piz5ytXvnC8FuavjQG34mYCn7jLOEIlxnnUpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzQKnLtk; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGoVnYFH"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cab973140bso12210345ad.3
-        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 06:34:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzQKnLtk"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso1380885a12.2
+        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 06:35:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786628094; x=1787232894; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1786628102; x=1787232902; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=76pkAusEOm/VkUOJ6R3g1tJxf2NW1RkLVmy3ipv7D0g=;
-        b=DGoVnYFHkvd70cCPV1Htc1YrfLMpEurFoPANM3QiPu2fL6dEXuEeaX+0G96PBhgsL8
-         KSwNU7yGzmK1Gr5xA6uv1GnThm9yk+5OdTHowXcAcpG9d/xkn5OkxwZ+NpbUnoFMDo6Z
-         GlhBdP0eGEXTJQrv8kpnRyOJs9So9En/Oee8mfQXYQkRy37wa77soemuo4ccY0s8GJLm
-         EZC66SOaXtnAGbR7339rNz1iwLIjkHr1zZNovpIetQMfNqbi8vqr3Iwkk9xFqOhY8LK2
-         03nDhOa2Enlf4LGjoQ8JjmI3Fe7GWfu/X3ymLcLtYFe998DtsYVYmuxPMZ4j4lAI44do
-         T6Ww==
+        bh=TpCX0meP81IgLMRKrMih3dFzB8TrFYkEOwnV4YJCCJ4=;
+        b=dzQKnLtkmhT18/S3KBqNseMhBfLOX+8C19msnZg19bQ7CCiWEPZstGroaHaXig8HWq
+         q3Lcq6YTgU7bpiPHhVu75pALPYo+UUXPCxz5r9PcjGsir75D8nSlWUkIRjYljT4VTZv0
+         aPGOQhwXbVMQBV5xSBb50yLUCh9ehXvVkWAf2V41Y1/3A7yZTSGfhQFlFCKHynYsOzX6
+         rf3RE1lJ/77Ky1WC6AjH9mUAVjLPbTZfVv5h2oibqR6qp7dE54YJmy8LA/tjeLcMdHkU
+         FmIt7q25oruXEjdw5rKqhRY+y9NU2SvWlWcGPyxO/lQhQrEhavhu45beNDVzz25vf6vN
+         /oyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786628094; x=1787232894;
+        d=1e100.net; s=20251104; t=1786628102; x=1787232902;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=76pkAusEOm/VkUOJ6R3g1tJxf2NW1RkLVmy3ipv7D0g=;
-        b=Xr0+zMUAyXIy8D+jxUTl04z4TSJd0MI+sys7UPNfrId6L+Df2U2MWh0alyryIYzzd3
-         A+XNhncchuPNqPLMG8iaJWIrNsDv4jPX+tT5wyiu5XZQ6mIQ1WGrRRqeegntq8fXHssl
-         lQnZNXmKLYqH2/FsYGm9gfXC1NNWwIDHZygf6UmZAfUjocjK4+t/+rXQ6BuLbZnGal74
-         JYJkBQnLXACPYBpYROPl+BCAmQKPvivUToAFuKsH4sppoBFWs/Ia9002UkW95tWfWvqB
-         7OI7DXW+5otLQOzytkjOWF1YAP33/M3w5R2pzyi13EreyEHC8hYF4bybt2pE0e7FqHOV
-         SlJg==
-X-Gm-Message-State: AOJu0YzrCswUMuxYEuxH+m1INKtZE+vsNGmHHHeUz/1aW1e87B+qr6FK
-	N0GM8dHngaAd3WbpaMZd6hazHclcZDwu1pSFjgDmQWq4AlQbVqxSlaQk
-X-Gm-Gg: AR+sD11/gf/unfI/V92GUxYaI3C2N2n2ZCc+VmgaRvBdVnH5p5ZJBngNQNV5X+aA4BD
-	WfiixDFx9Uy+Ba01D/NUUSKW0tImTKLAfnF3jg9FyIefYiRMXp1ub6kmYfFyUUaJxRQrGki3t0w
-	rPVuTMRZTLRjVN+Mdx8cq/rMfl6rp0fCACTO5GkRiNt1/IzQXGUDv7ydz7UkWBv67ZEtZ24Ha9w
-	Bm6FmGS7fNwDmiHxNxUHcewmK0tiEg0liFUemfOtW7FkfXxkTkujhFWLOLxIrK0+CNGIHye7Fzf
-	EJWoadR8+RspgZ1yVvVv/ZIjkLpbx+Z+BB+r2AXTEOq7DSxTFhEQs0OONFB8DJy0UYCfuc+7zoD
-	MthCGFwj34QuZtKbywn3Th2voNPi3fpRBZLq7n28rKqOu6n8BqGYAUR8sUaeAEjWHAhvBBeVeae
-	JP3KL80kMh9UGcJe/tJhSzmGcmYOldGZTeAVQEUk6vGaSFy1zXgQkGVMUbOMRSdTTt0fiGFqqjG
-	2IY0A4=
-X-Received: by 2002:a17:902:cece:b0:2d1:1a18:4d0a with SMTP id d9443c01a7336-2d37d695848mr54856575ad.9.1786628093944;
-        Thu, 13 Aug 2026 06:34:53 -0700 (PDT)
+        bh=TpCX0meP81IgLMRKrMih3dFzB8TrFYkEOwnV4YJCCJ4=;
+        b=JfBpDBNobpB2PH7rfTSGDfuJLtE5XlgVdd4gOFHSf2dw6bwSkrwChmlTTr8C5uRpIY
+         L8SG53b2nbW/PhZbuiQt8UuzwaUkJKTW+u1qgRQ47IwNrlZ/q21VZ4XY3YwGz7HJ2PQm
+         qTu3zmTyEjme19XqaufIt44RqyQYEsFtRycfwOdTobADHFy9n6mv4iozF7lbnmP06uXo
+         oPYQazMVZHafBsIrvHLb6T6j8RAdIZdkXIfFl46QhNIIz1bJOyhKEdbLx24noouELpiT
+         UgkyG/GZVNDjE4XFomuZZQOQAkKFx5c6OGydZrhb4Aa0WTx6XVzPpRg/Un//27Ss/Kw5
+         zpdg==
+X-Gm-Message-State: AOJu0Ywce5rftsPHNAclA+ARUJfatUxV59/XeYZfyjD+UBZDJre34V+q
+	CDXJf2Rz2IBOykr2GNZi7YzB3+kI54+assYczczz2+esX57HmGuXuLVl
+X-Gm-Gg: AR+sD11IItukG2N0Bza1h71wziU4T1U1Mja1huq6TTld+WqM6aLiwZTP7Kn7LFAhTnY
+	BTDHx4uu7DAeLo2mo4SSqAZ7e7cudI8bbe9j27FenNZWfXux7p0LQK3EJciz901guiwSLTD/k9+
+	SZg2QQjX6vrmZ8VkDk9gHjFDG+JfwWrtKRcAaWezQFMnxDbJO5Lr+a5agr4gHsVWCih9UvNoxQ8
+	WaqYBuKeJrq4UlBJK4NneGd/0V2PY2JeHYywmcQoYX4UaO1/9flp1HbVkC3W0mkbmGjHcnubaeH
+	lm8i0Md8EwWSnbeVwFZNACpkh6il2cnqZzQt/cJnfIT4Km5Amd6QrbDc4P2BvkeNTxB+ghnrZOQ
+	pWQ2mAo6KqUiHv327XgpLJ5h3HBERODXzRpkIIEEOewFIiYEAlPh4WjBzh5L0ELo+Db6ctN/gqb
+	vbDi9n4LgEDDaV6qbDg0xxLCqMxQytrqOCa2uTSzu8A+3pMMXTh73dlnWfCS8ocJbxVFY=
+X-Received: by 2002:a05:6a20:2d26:b0:3c4:3672:ba6 with SMTP id adf61e73a8af0-3cc5539719bmr7639940637.22.1786628101706;
+        Thu, 13 Aug 2026 06:35:01 -0700 (PDT)
 Received: from leonardoc-nb ([179.160.38.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31ebc75d891sm8447990eec.5.2026.08.13.06.34.50
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31ebc75d891sm8447990eec.5.2026.08.13.06.34.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 06:34:53 -0700 (PDT)
+        Thu, 13 Aug 2026 06:35:00 -0700 (PDT)
 From: Leonardo Costa <leoreis.costa@gmail.com>
 To: Frank.Li@nxp.com,
 	s.hauer@pengutronix.de,
@@ -71,9 +70,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Leonardo Costa <leonardo.costa@toradex.com>
-Subject: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex Capacitive Touch Display 10.1" LVDS V2
-Date: Thu, 13 Aug 2026 10:33:33 -0300
-Message-ID: <20260813133335.1941580-5-leoreis.costa@gmail.com>
+Subject: [PATCH 5/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex DSI to LVDS adapter with the 10.1" V2 display
+Date: Thu, 13 Aug 2026 10:33:34 -0300
+Message-ID: <20260813133335.1941580-6-leoreis.costa@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260813133335.1941580-1-leoreis.costa@gmail.com>
 References: <20260813133335.1941580-1-leoreis.costa@gmail.com>
@@ -87,92 +86,93 @@ Content-Transfer-Encoding: 8bit
 
 From: Leonardo Costa <leonardo.costa@toradex.com>
 
-Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
-LVDS V2 connected via Verdin iMX8M Plus LCDIF on carrier boards exposing
-LVDS interface (e.g., Mallow). The panel is an Opto Logic
-SCX1001511GGC49 10.1" WXGA TFT LCD and the touch input is provided by an
-ILITEK ILI251x capacitive touch controller.
+Add a device tree overlay for the Toradex DSI to LVDS Adapter with the
+Toradex Capacitive Touch Display 10.1" LVDS V2. The adapter connects to the
+Verdin DSI_1 interface. It is based on the Texas Instruments SN65DSI84
+DSI-to-LVDS bridge and drives an Opto Logic SCX1001511GGC49 10.1" WXGA TFT
+LCD LVDS panel. Touch input is provided by an ILITEK ILI251x capacitive
+touch controller.
 
+Link: https://developer.toradex.com/hardware/accessories/add-ons/dsi-lvds-adapter
 Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
 Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
 ---
  arch/arm64/boot/dts/freescale/Makefile        |   5 +
- ...verdin-panel-cap-touch-10inch-lvds-v2.dtso | 118 ++++++++++++++++++
- 2 files changed, 123 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
+ ...dsi-to-lvds-v2-panel-cap-touch-10inch.dtso | 129 ++++++++++++++++++
+ 2 files changed, 134 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-verdin-dsi-to-lvds-v2-panel-cap-touch-10inch.dtso
 
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 37ae0954d02f..2bfed5ac66ac 100644
+index 2bfed5ac66ac..236bfb6a1e19 100644
 --- a/arch/arm64/boot/dts/freescale/Makefile
 +++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -517,6 +517,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-mallow.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-yavia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-zinnia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-panel-cap-touch-10inch-lvds.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtbo
+@@ -510,6 +510,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw75xx-2x.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw82xx-2x.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-dev-mezzanine-panel-cap-touch-10inch-lvds.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-dsi-to-lvds-panel-cap-touch-10inch.dtbo
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-dsi-to-lvds-v2-panel-cap-touch-10inch.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dahlia.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-ivy.dtb
+@@ -521,6 +522,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtbo
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dahlia.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev-dsi-to-lvds-panel-cap-touch-10inch.dtb
-@@ -524,6 +525,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev-mezzanine-panel-cap-touch-10inc
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev-dsi-to-lvds-v2-panel-cap-touch-10inch.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev-mezzanine-panel-cap-touch-10inch-lvds.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-ivy.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-mallow.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-mallow-panel-cap-touch-10inch-lvds.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-mallow-panel-cap-touch-10inch-lvds-v2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-yavia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-zinnia.dtb
- 
-@@ -536,6 +538,9 @@ imx8mp-verdin-wifi-dev-mezzanine-panel-cap-touch-10inch-lvds-dtbs := \
- imx8mp-verdin-wifi-mallow-panel-cap-touch-10inch-lvds-dtbs := \
- 	imx8mp-verdin-wifi-mallow.dtb \
- 	imx8mp-verdin-panel-cap-touch-10inch-lvds.dtbo
-+imx8mp-verdin-wifi-mallow-panel-cap-touch-10inch-lvds-v2-dtbs := \
-+	imx8mp-verdin-wifi-mallow.dtb \
-+	imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtbo
- 
- imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0-dtbs += imx8mp-evk.dtb imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtbo
- imx8mp-evk-lvds0-imx-lvds-hdmi-dtbs += imx8mp-evk.dtb imx8mp-evk-lvds0-imx-lvds-hdmi.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
+@@ -532,6 +534,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-zinnia.dtb
+ imx8mp-verdin-wifi-dev-dsi-to-lvds-panel-cap-touch-10inch-dtbs := \
+ 	imx8mp-verdin-wifi-dev.dtb \
+ 	imx8mp-verdin-dsi-to-lvds-panel-cap-touch-10inch.dtbo
++imx8mp-verdin-wifi-dev-dsi-to-lvds-v2-panel-cap-touch-10inch-dtbs := \
++	imx8mp-verdin-wifi-dev.dtb \
++	imx8mp-verdin-dsi-to-lvds-v2-panel-cap-touch-10inch.dtbo
+ imx8mp-verdin-wifi-dev-mezzanine-panel-cap-touch-10inch-lvds-dtbs := \
+ 	imx8mp-verdin-wifi-dev.dtb \
+ 	imx8mp-verdin-dev-mezzanine-panel-cap-touch-10inch-lvds.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dsi-to-lvds-v2-panel-cap-touch-10inch.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dsi-to-lvds-v2-panel-cap-touch-10inch.dtso
 new file mode 100644
-index 000000000000..6b0c1a10ae2a
+index 000000000000..32828e9bc534
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
-@@ -0,0 +1,118 @@
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dsi-to-lvds-v2-panel-cap-touch-10inch.dtso
+@@ -0,0 +1,129 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/*
 + * Copyright (c) Toradex
 + *
-+ * Toradex Capacitive Touch Display 10.1" V2 connected via Verdin iMX8M Plus
-+ * LCDIF on carrier boards with a Toradex standard LVDS display connector
-+ * (e.g., Mallow).
++ * Toradex DSI to LVDS Adapter on Verdin DSI_1 with Capacitive Touch Display
++ * 10.1" V2, used on Dahlia (X17) and Development Board (X48) that expose DSI_1
++ * via a Samtec LSS-130 connector.
 + *
 + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
 + * https://www.toradex.com/accessories/capacitive-touch-display-10.1-inch-lvds
++ * https://developer.toradex.com/hardware/accessories/add-ons/dsi-lvds-adapter
++ * https://www.toradex.com/accessories/verdin-dsi-to-lvds-adapter
 + */
 +
 +/dts-v1/;
 +/plugin/;
 +
-+#include <dt-bindings/clock/imx8mp-clock.h>
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/interrupt-controller/irq.h>
 +
-+#include "imx8mp-pinfunc.h"
-+
 +&{/} {
-+	panel-lvds-native {
++	panel-lvds-bridge {
 +		compatible = "optologic,scx1001511ggc49", "panel-lvds";
 +		backlight = <&backlight>;
 +		data-mapping = "vesa-24";
-+		power-supply = <&reg_3p3v>;
++		power-supply = <&reg_dsi_lvds>;
 +		height-mm = <136>;
 +		width-mm = <217>;
 +
 +		panel-timing {
-+			clock-frequency = <64500000>;
++			clock-frequency = <70000000>;
 +			hactive = <1280>;
-+			hback-porch = <20>;
-+			hfront-porch = <20>;
-+			hsync-len = <2>;
++			hback-porch = <55>;
++			hfront-porch = <55>;
++			hsync-len = <45>;
 +			vactive = <800>;
 +			vback-porch = <5>;
 +			vfront-porch = <5>;
@@ -184,21 +184,30 @@ index 000000000000..6b0c1a10ae2a
 +		};
 +
 +		port {
-+			panel_lvds_native_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
++			panel_lvds_bridge_in: endpoint {
++				remote-endpoint = <&dsi_lvds_bridge_out>;
 +			};
 +		};
++	};
++
++	reg_dsi_lvds: regulator-dsi-lvds {
++		compatible = "regulator-fixed";
++		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
++		gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		regulator-boot-on;
++		regulator-name = "DSI_1_PWR_EN";
 +	};
 +};
 +
 +&backlight {
-+	/* Verdin PWM_2 (SODIMM 16) */
-+	pwms = <&pwm2 0 6666667 0>;
++	/* Verdin PWM_3_DSI (SODIMM 19) - PWM_3_DSI_LVDS */
++	pwms = <&pwm3 0 6666667 0>;
 +
 +	status = "okay";
 +};
 +
-+&i2c2 {
++&i2c4 {
 +	#address-cells = <1>;
 +	#size-cells = <0>;
 +
@@ -206,39 +215,23 @@ index 000000000000..6b0c1a10ae2a
 +		compatible = "ilitek,ili251x";
 +		reg = <0x41>;
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio>,
-+			    <&pinctrl_i2s_2_sync_gpio>;
-+		/* Verdin I2S_2_SYNC as GPIO (SODIMM 44) */
++		pinctrl-0 = <&pinctrl_gpio_9_dsi>,
++			    <&pinctrl_i2s_2_bclk_touch_reset>;
++		/* Verdin GPIO_9_DSI (SODIMM 17) - TOUCH_INT# */
++		/* Rising edge avoids spurious interrupts from the noisy falling edge. */
 +		interrupt-parent = <&gpio4>;
-+		interrupts = <31 IRQ_TYPE_EDGE_RISING>;
-+		/* Verdin I2S_2_D_IN as GPIO (SODIMM 48) */
-+		reset-gpios = <&gpio4 30 GPIO_ACTIVE_LOW>;
++		interrupts = <25 IRQ_TYPE_EDGE_RISING>;
++		/* Verdin I2S_2_BCLK (SODIMM 42) - TOUCH_RESET# */
++		reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
 +	};
 +};
 +
-+&iomuxc {
-+	pinctrl_i2s_2_d_in_gpio: gpio4io30grp {
-+		fsl,pins = <MX8MP_IOMUXC_SAI3_RXD__GPIO4_IO30 0x1c4>;	/* SODIMM 48 */
-+	};
-+
-+	pinctrl_i2s_2_sync_gpio: gpio4io31grp {
-+		fsl,pins = <MX8MP_IOMUXC_SAI3_TXFS__GPIO4_IO31 0x184>;	/* SODIMM 44 */
-+	};
-+};
-+
-+&lcdif2 {
++&lcdif1 {
 +	status = "okay";
 +};
 +
-+&lvds_bridge {
-+	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
-+			  <&clk IMX8MP_VIDEO_PLL1>;
-+	/*
-+	 * This display uses 64.5 MHz pixel clock, so IMX8MP_VIDEO_PLL1 needs
-+	 * to be 7 times 64.5MHz, or 451.5 MHz as the internal divider will
-+	 * always divide the output LVDS clock by 7.
-+	 */
-+	assigned-clock-rates = <0>, <451500000>;
++&lvds_ti_sn65dsi84 {
++	vcc-supply = <&reg_dsi_lvds>;
 +
 +	status = "okay";
 +
@@ -246,12 +239,31 @@ index 000000000000..6b0c1a10ae2a
 +		#address-cells = <1>;
 +		#size-cells = <0>;
 +
-+		port@1 {
-+			reg = <1>;
++		port@0 {
++			reg = <0>;
 +
-+			ldb_lvds_ch0: endpoint {
-+				remote-endpoint = <&panel_lvds_native_in>;
++			dsi_lvds_bridge_in: endpoint {
++				data-lanes = <1 2 3 4>;
++				remote-endpoint = <&mipi_dsi_out>;
++			};
++		};
++
++		port@2 {
++			reg = <2>;
++
++			dsi_lvds_bridge_out: endpoint {
++				remote-endpoint = <&panel_lvds_bridge_in>;
 +			};
 +		};
 +	};
++};
++
++&mipi_dsi {
++	samsung,esc-clock-frequency = <16000000>;
++
++	status = "okay";
++};
++
++&mipi_dsi_out {
++	remote-endpoint = <&dsi_lvds_bridge_in>;
 +};
