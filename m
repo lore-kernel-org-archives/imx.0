@@ -1,99 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E04A483803;
-	Thu, 13 Aug 2026 14:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB28404BFF;
+	Thu, 13 Aug 2026 14:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786630760; cv=none; b=MHzxzikMs3eYu4KPqaPiLvH09nQiWwx/9c7zpqz8mg6CSx12lbfuPyAJJV+wIIvd83Xs6vyIRV1RV3IfVSVNQbFYsJHubhDtsBIXWKuu3lFu57G1IGoRHIVesZiHYmZM0rFs5HIWIRH8SpDllZYLFYsQvUv44H33+xe1/WWCMz4=
+	t=1786631265; cv=none; b=fudzMHu+dKu5PCG1Yubmsl5jo2gXFylZvf9MrqArKYeXN4Ts0D9Hk6r/l5CWa611g40vudWbtKzbK8YoUrI5JYEXqKwqhxin9JmxvIyyxoUmbsISl7puEDWVlDic/aXpfM8wRguh+D2F5Ar3GkEAKPeZv5iqEa082GHK34mjbSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786630760; c=relaxed/simple;
-	bh=WySSisgcjpeVBL9eG9AmIIiwZ4liW2jiLuJScN+p0e0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KcRzqv8yjgwXmZQVUjlQa3aNTC+Yi5PYChcumPktddVQtnw29nocTBjaiYN8RkM0AhUo44/StKlO+atEe22rmTpGP4Ey2DMAwRbJPfUnk/sDbt7tE50UTIp+ZLWljDnWiF4Ff/vcvLrNhHwz3tBytL+L/qSLDiTlyr3O9LroBeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5Fygg9Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786631265; c=relaxed/simple;
+	bh=hd+L0mYZvzPs4cKVM/7p2DIgqwhiCw0qUdr4O3xl84g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WUgsFIQ4LAxyyVQHGqrjfcIBM5i2fBaBjPP+u+dLZL8avQ/9jM2pYeIMxUH8ZUzhgQQ2zI/cCfLw3cZZ1ru2IZ5r234kefSYRXogYGkg5NgFBHjD4iL4yStDI2Ybmo88sv3URVDz7YstjLvGAFDIUA95tjndDtMJHwxIl+loIX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=YvRM9zTV; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5Fygg9Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103531F000E9;
-	Thu, 13 Aug 2026 14:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786630756;
-	bh=l4x2nI/OM1EHRjmdNrc5N6c/xC3t0bmLbBKZt7oG+KI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G5Fygg9YGPpgk2RgVNQUHlk751qzbPeNo5LD35lL/wHeA4a0c/lF1zQ7Sx226duwF
-	 3qilsGQGvn9ry1KRG3Uprl8jYK1urqLaNkBzS6LgyMCc0XMcIuZYXgcJoUL5cmq7IX
-	 nShMayrj6SMZSy6oYZTYyoiCimikvBWuVDQKBggdw3mVrHM92IcOTkcaTZAQJwnPJi
-	 Q8LvWHu7enuQZ2kf3bceJeW6RGUkMGNI74kWv/JjgPlF8kLQPCHihMsyngf1va5DZQ
-	 zt3MGz/AiVIY0T+1Mr2Jn3WSAsQwuj/X9zxvqPekfVD4YFgBBDzqT1HxP44vch/vo8
-	 hQz31rRg2ERDw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex
- Capacitive Touch Display 10.1" LVDS V2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Leonardo Costa" <leoreis.costa@gmail.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260813133335.1941580-5-leoreis.costa@gmail.com>
-References: <20260813133335.1941580-1-leoreis.costa@gmail.com>
- <20260813133335.1941580-5-leoreis.costa@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 14:19:15 +0000
-Message-Id: <20260813141916.103531F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="YvRM9zTV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=iNGDZlCrHiFTCzdw+CSSzOiqmmvzD8ML9pvOKdh9/cM=; b=YvRM9zTV9ZcscWwXiCO9YxPFxd
+	BH7j0VYB0gT+hWK7jTWLnjoE8b1DsVx2U+u5XwwqircyYE/dTqetAJI1LM8ugsK/mmyB29OBre4Pw
+	1G0Sa/BiRHHvZZ3ytN+GDSu/QLycVHNO46V4XwmWUlwssqTBCzCsKVQuyLZaf7tk84qBlHauQQlNU
+	Lf4RGTUHxkoVMyeN5y4o1TUYbVsqVLS6iCYMbpLSvqesMdCmFIZo3f2FAgp5VSK49L18tgDxPzDM0
+	wmjx2PmBIWOCx0j6ArRrEwnWkbsNd9XC+n+JPDXYRskR151p6+CepnNFfLOvqXxxWopns2BjeuxJv
+	ovlHqiWw==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wuVys-000GMn-2p;
+	Thu, 13 Aug 2026 16:00:27 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wuVyt-0006wh-22;
+	Thu, 13 Aug 2026 16:00:26 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ Frank.Li@kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] ARM: dts: mba6ulx: Add USB hub node
+Date: Thu, 13 Aug 2026 16:00:26 +0200
+Message-ID: <5266525.iZASKD2KPV@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260813125222.BDA121F000E9@smtp.kernel.org>
+References:
+ <20260813121250.3993187-1-alexander.stein@ew.tq-group.com>
+ <20260813121250.3993187-3-alexander.stein@ew.tq-group.com>
+ <20260813125222.BDA121F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28091/Thu Aug 13 08:25:54 2026)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The device tree overlay uses an undocumented vendor prefix `optolog=
-ic` and compatible string `optologic,scx1001511ggc49`.
---
+Am Donnerstag, 13. August 2026, 14:52:22 CEST schrieb sashiko-bot@kernel.or=
+g:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [High] I2C GPIO expander used as reset-gpios for onboard_usb_dev causes=
+ PM phase mismatch, breaking reset timing during resume.
+> --
+>=20
+> --- Patch [2]: [PATCH 2/2] ARM: dts: mba6ulx: Add USB hub node ---
+> commit 52d9db850f98165215d9ab4ba1bee0bd2993c73e
+> Author: Alexander Stein <alexander.stein@ew.tq-group.com>
+>=20
+> ARM: dts: mba6ulx: Add USB hub node
+>=20
+> This commit replaces a fixed regulator previously used for USB hub reset =
+with
+> a proper onboard USB hub device node that utilizes reset-gpios.
+>=20
+> > diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts=
+/nxp/imx/mba6ulx.dtsi
+> > index 244376b38835a..322fbd82531e6 100644
+> > --- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
+> > +++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
+>=20
+> [ ... ]
+>=20
+> > @@ -379,10 +369,18 @@ &usbotg1 {
+> >  /* 7-port usb hub */
+> >  /* id, pwr, oc pins not connected */
+> >  &usbotg2 {
+> > +	#address-cells =3D <1>;
+> > +	#size-cells =3D <0>;
+> >  	disable-over-current;
+> > -	vbus-supply =3D <&reg_otg2vbus_5v0>;
+> >  	dr_mode =3D "host";
+> >  	status =3D "okay";
+> > +
+> > +	hub_2_0: hub@1 {
+> > +		compatible =3D "usb424,2517";
+> > +		reg =3D <1>;
+> > +		reset-gpios =3D <&expander_out1 0 GPIO_ACTIVE_LOW>;
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>=20
+> [Severity: High]
+> Does using an I2C GPIO expander for the onboard USB hub reset cause a PM =
+phase
+> mismatch during system suspend and resume?
+>=20
+> The onboard_usb_dev driver uses suspend_late() and resume_early() power
+> management operations, while standard I2C GPIO expanders typically use no=
+rmal
+> suspend() and resume() operations.
+>=20
+> During system suspend, the expander suspends first (in the suspend phase)=
+ and
+> puts its regmap into cache_only mode. When the hub driver suspends later =
+in
+> suspend_late(), its reset GPIO assertion is merely cached.
+>=20
+> During system resume, the hub driver attempts to deassert the reset in
+> resume_early() and waits for power_on_delay_us. Because the expander is
+> still in cache_only mode, the physical pin remains unchanged.=20
+>=20
+> Later, during the normal resume phase, the expander finally syncs its cac=
+he
+> to hardware and physically deasserts the reset pin. This entirely bypasse=
+s the
+> hub driver's power_on_delay_us wait and causes a race with the USB host
+> controller, which could result in enumeration failures upon wake.
 
---- Patch [4]: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Torade=
-x Capacitive Touch Display 10.1" LVDS V2 ---
-commit ae998202e5daf5ce215671d831b6ffc33e8604ec
-Author: Leonardo Costa <leonardo.costa@toradex.com>
+Mh, my platform doesn't support system suspend/wakeup (yet?).
+So there is nothing I could test here.
+On the other hand this sounds like a generic problem other if not all
+platforms affected as well if the reset is attached to a GPIO expander.
 
-arm64: dts: freescale: imx8mp-verdin: Add Toradex Capacitive Touch Display =
-10.1" LVDS V2
-   =20
-This commit adds a device tree overlay for the Toradex Capacitive Touch
-Display 10.1" LVDS V2. The display is connected via Verdin iMX8M Plus LCDIF
-and features an Opto Logic TFT LCD with an ILITEK capacitive touch controll=
-er.
+Any suggestion?
 
-Link: https://developer.toradex.com/hardware/accessories/displays/capacitiv=
-e-touch-display-101inch-lvds
+Best regards,
+Alexander
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-=
-10inch-lvds-v2.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap=
--touch-10inch-lvds-v2.dtso
-> new file mode 100644
-> index 0000000000000..6b0c1a10ae2a9
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-=
-lvds-v2.dtso
+> > +		vdd-supply =3D <&reg_mba6ul_3v3>;
+> > +	};
+> >  };
+>=20
+>=20
 
-[ ... ]
 
-> +&{/} {
-> +	panel-lvds-native {
-> +		compatible =3D "optologic,scx1001511ggc49", "panel-lvds";
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-[Severity: Low]
-Does this code introduce an undocumented vendor prefix and compatible strin=
-g?
-The prefix `optologic` and compatible string `optologic,scx1001511ggc49`
-appear to be completely missing from `Documentation/devicetree/bindings/`,
-which will cause the Device Tree binding checker to emit warnings when
-validating the DT with `make dtbs_check`.
 
-> +		backlight =3D <&backlight>;
-> +		data-mapping =3D "vesa-24";
-> +		power-supply =3D <&reg_3p3v>;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813133335.1941=
-580-1-leoreis.costa@gmail.com?part=3D4
