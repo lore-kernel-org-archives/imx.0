@@ -1,116 +1,114 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC19368D47
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 08:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C119395DBF;
+	Thu, 13 Aug 2026 08:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786610053; cv=none; b=AnkaTIZZATsGqoiqzJ2wcCS+Mo+dF5sELN6FbFxhMdB8uwH4cSykqTcvQ/FRcxDuDnxC6mSD/619EdiDsgkDTr8XOG5MCPLsRbUu3wQEYy7+lBsFV35FQcN3JWuL5vaZLxpzYJ41CyqSuFySr5fIi/aQuT9gQc5a0TdcnrgTqH0=
+	t=1786610094; cv=none; b=I7YEneYUtwSYM/80+BmIcbZZOyMs/Ptb+619uFdCYchs/Ef1gf11bldzTJZuMW8JixHlDwIRsQDg2/PTEC9Ka9v3jMo9bl65rUH04ES8nZ/Vryj4PbgUu3n+IWOeVSNve8CdgMaPzQVrOYdhC/GAht/cYnCp5orz3OQ/CU5DMIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786610053; c=relaxed/simple;
-	bh=cJtrkwAE0/AwMlXE6GA9kcDCZyY31mzHywb9HBVFi3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u0Z+DOLAboqU1r+p6kMH9r5cTiv0OboEVf759+lrwyhqorzm8QnSogH/xkaYSUSj8Jfpn0U4a+AcNMIozGe+Zr22pnQVNtYCChlsZQ4QKB758UeMiJE70efnPziAn5vtCu2AQ0ilo5z3uD9vRpBtBgsWzrrGjCgBRl4PErgAMWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=xSZV/gXq; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1786610094; c=relaxed/simple;
+	bh=d4Y1pRCOkgrzl2rVFDGa7BoEpu2xOktPf3qmSqYxoOY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=H6TXanrk3G2Mxq2I6edRA6q+dUBfZLEfpuXA9vY/5BJV1ELGekzUztk6LLF59WuU1Wzp+eJYVdzo0tDCPC1k/mxGZXeHjkgCNYsBwSZLkjyWRhMsTIpR6+8+176oD9yQ3Y6uWoYQQFh9hDmR/bC36wYs3HraTjJQcAes5haPgSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhqDz2dJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="xSZV/gXq"
-Received: from francesco-nb (2-224-16-253.ip168.fastwebnet.it [2.224.16.253])
-	by mail11.truemail.it (Postfix) with ESMTPA id 9B75A1FBAF;
-	Thu, 13 Aug 2026 10:34:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1786610048;
-	bh=7xjwtghHlk2Hu/nCWdg14GhhhCsWUBT8CAjn3KZOlQw=; h=From:To:Subject;
-	b=xSZV/gXq/gh8q2vWa5+5RNpYaKm3SwFJk4OPD+WwW369+8GoL/OPto8pRtiw4b2Of
-	 1Zr24iWHmsCq5Rpat/hVjDBxXNuBhVSG6E7/MvpthNTYzA8cPOXGpdd34EilgikuDE
-	 qLdnwGvy96m/EU2gXKX5rLjkm1cCglHczpO4oITcL/+g5EPpkTV9ZOcEr3CX53Q3mA
-	 sp5RmTD5Q5X+HTt7g+XT4sPbRYfxUkU87Q8IqluXor+lSZmPAPJ1XuByRX4EglUgin
-	 kgRb5SHcLfBGp5z57/mwd5zIuYIHW7LzOg5v23/B1VnmuE4FfizlwL8MuTaiVSc6H4
-	 oDsPeIf8SL8/Q==
-Date: Thu, 13 Aug 2026 10:34:02 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: lcdif: Add endpoint bus-width
- property
-Message-ID: <20260813083402.GA19687@francesco-nb>
-References: <20260812132954.148571-1-francesco@dolcini.it>
- <20260812132954.148571-2-francesco@dolcini.it>
- <20260813-classy-boa-of-apotheosis-57207e@quoll>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhqDz2dJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1198C1F00A3A;
+	Thu, 13 Aug 2026 08:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786610091;
+	bh=EWC6iWF53re0j19Fqwj2lhYURooG28lfk3Al/oHtj6I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hhqDz2dJnOcic/b6V8+EiQMOnn8oS+xWgoYDiIS+rPLXBQhIuV9Mntk9lUXtTGDvj
+	 t8pOqqbPMXN901nQ4MTB06fxYmA/QLQf/QcTEUDSacd0FUlHTH6EL+NgegL1WQqCoS
+	 cHfdofWiUBAuTW2Vt8vNKimSWyhvtMWQwO6OcVXCnqs5UkRKIR9i7BKxuW9o1jtYe+
+	 lOYcRitcyHCQ/GeY/tTV2bHtoB718NoetyHmmpTBmOvzAzmnlQXgJ5NC+Kzju3gwmM
+	 ezXdX4cxa1auU2ruyQb/ed3ZB/rW5hA8yPR9eK9wS9xQu68LG0YPiD/5DQ7Ubi6Hnn
+	 MGGBaf0JZHBXQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH REPOST REPOST v6] remoteproc: imx_rproc: Invoke the
+ callback directly
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
+Cc: linux-rt-devel@lists.linux.dev, Frank.Li@kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20260813-imx_mbox_rproc-v6-1-6903a93b0456@linutronix.de>
+References: <20260813-imx_mbox_rproc-v6-1-6903a93b0456@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 13 Aug 2026 08:34:50 +0000
+Message-Id: <20260813083451.1198C1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813-classy-boa-of-apotheosis-57207e@quoll>
 
-On Thu, Aug 13, 2026 at 10:10:43AM +0200, Krzysztof Kozlowski wrote:
-> On Wed, Aug 12, 2026 at 03:29:49PM +0200, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > 
-> > The DPI output of the LCD interface can be configured with a bus width
-> > of 16, 18, or 24 bits. Introduce a bus-width property to the output
-> > endpoint, specifying the number of parallel RGB bits connected.
-> > 
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > ---
-> > v3: use video-interfaces.yaml
-> > v2: use the common bus-width property instead of the legacy interface-pix-fmt
-> > ---
-> >  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > index 2dd0411ec651..1f3daf002707 100644
-> > --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> > @@ -71,6 +71,15 @@ properties:
-> >      $ref: /schemas/graph.yaml#/properties/port
-> >      description: The LCDIF output port
-> >  
-> > +    properties:
-> > +      endpoint:
-> > +        $ref: /schemas/media/video-interfaces.yaml
-> 
-> This won't work, you need to test your DTS. The port schema does not
-> allow video-interfaces properties. You need port-base, like in every
-> other case.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Thanks for the review Krzysztof
+Pre-existing issues:
+- [High] Missing RCU read lock around `idr_for_each()` traversal of `notify=
+ids` leading to potential Use-After-Free.
+--
 
-Given my testing was not ok, and I am not sure what I did wrong exactly
-on my tests, is this the change I should do?
+--- Patch [1]: [PATCH REPOST REPOST v6] remoteproc: imx_rproc: Invoke the c=
+allback directly ---
+commit d2ef12e25a967a32f7b650f21d89c9b5c07eccf3
+Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-index 1f3daf002707..89cea0c14cf1 100644
---- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-+++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-@@ -68,7 +68,8 @@ properties:
-     maxItems: 1
- 
-   port:
--    $ref: /schemas/graph.yaml#/properties/port
-+    $ref: /schemas/graph.yaml#/$defs/port-base
-+    unevaluatedProperties: false
-     description: The LCDIF output port
+remoteproc: imx_rproc: Invoke the callback directly
 
+This commit removes the workqueue in the imx_rproc driver and invokes
+the mailbox callback directly. It takes advantage of the imx-mailbox
+driver moving callback invocation into its preemptible threaded IRQ handler.
+
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rpro=
+c.c
+> index 7662ebd9d2f49..e18ae33a5cf85 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+
+[ ... ]
+
+> @@ -892,21 +889,11 @@ static int imx_rproc_notified_idr_cb(int id, void *=
+ptr, void *data)
+>  	return 0;
+>  }
+> =20
+> -static void imx_rproc_vq_work(struct work_struct *work)
+> -{
+> -	struct imx_rproc *priv =3D container_of(work, struct imx_rproc,
+> -					      rproc_work);
+> -	struct rproc *rproc =3D priv->rproc;
+> -
+> -	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+> -}
+> -
+>  static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
+>  {
+>  	struct rproc *rproc =3D dev_get_drvdata(cl->dev);
+> -	struct imx_rproc *priv =3D rproc->priv;
+> =20
+> -	queue_work(priv->workqueue, &priv->rproc_work);
+> +	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
+
+[Severity: High]
+This is a pre-existing issue, but since this callback is executed in a
+preemptible context (now a threaded IRQ instead of a workqueue), does this
+idr_for_each() call need rcu_read_lock() protection?
+
+If a concurrent rproc_shutdown() calls rproc_free_vring() and removes nodes
+from the IDR via idr_remove(), could the threaded IRQ be preempted during
+this idr_for_each() traversal, allowing an RCU grace period to elapse?
+
+If that sequence occurs, could the IDR traversal access freed memory when
+the handler resumes?
+
+>  }
+> =20
+>  static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813-imx_mbox_r=
+proc-v6-1-6903a93b0456@linutronix.de?part=3D1
