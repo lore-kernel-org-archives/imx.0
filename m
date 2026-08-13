@@ -1,94 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007E5411FB8;
-	Thu, 13 Aug 2026 06:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C95F39099E;
+	Thu, 13 Aug 2026 06:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786601203; cv=none; b=Q7H2PQDiXbKtXMcMxbd4Ta9z/PYQsBgFaLELID3hsjLHUHksZUffzpdmxHdjS6YJ2JJUY7zRSVuBYb8GAYvUyaodHSlc4WAYnroUyInLWE87RrQcZY+C+BosPeHaN6mEKK8Kp+cBbE+XZs3tWqJlGh8bJJd+OnOABPw98AZpX/E=
+	t=1786603179; cv=none; b=dVez+l2Xb+3hRh0hIHwRHd1z9qksgSkIbT43XLGQSAYSdyKfKlM86H5/JihsMyy+blRUk266H2P6KCtIxwsC0p8h0dEQFK+Lf3B7lhrwkN+ZDwYcY38JXCdxUwg9NteSYW+UF4YsffYwdaWEN/A8J3ljcLSIVsUrKJZ5XaYK+rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786601203; c=relaxed/simple;
-	bh=q4VOCvN9so/bl5JTL2R3NK0NEV3t15qu4E+uHTJMXmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HYCB7noDxK6PtSW1txhARE5nb/SbZnSeiJU8dkS+qfeHv5AvpL6tzN12cXN8bZB4lhc3Zi+xkVTqGHhC6Vgq0+8J77W/7E4NJ1RXlpLKNkKrABxjVKqCZO0AVsb9mYg/CXRqgXH3ImhoWq62YAzTysWJeOAYJvK8PQdF/Gf7MZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WepnVrP8; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WepnVrP8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2EA1F000E9;
-	Thu, 13 Aug 2026 06:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786601201;
-	bh=2bRU4db2xtFcGOhDIJOKkQ4ShBGU9e2BMEUZzod3loM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WepnVrP8FwDHztG5a+pL5+vdR+Cg8T4y90PcZBh/rlnZNWLRLfnDWWRxVJvS0+crZ
-	 lh7fpDVlbqh/6qvpmhacKyRBEAArsqvbDDRNZsTZ84+InSYC+LQE/2ApqTgrggsNhH
-	 YhxB5J0+AVZSQsk4LoO4+RjU9GDi4VJ7LjJUaYY3sLwr0c5vz/7/bRPur4asCQDR1r
-	 cNVYLKjWL4z4LWF+Z0JghcCDVi9WN26c7VGLvxJXgFSrnHhF5fGl1dbGiWnRcm8sU1
-	 SI1/W2qha+159VhpFETiKxPs27GXkyYyN7ajSyXNSy7VOA36iIT+UpNy1PI2kQZa1m
-	 WhxFEX5ERcXyQ==
-Date: Thu, 13 Aug 2026 08:06:31 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hans Zhang <18255117159@163.com>
-Cc: bhelgaas@google.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
-	jingoohan1@gmail.com, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-amlogic@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	spacemit@lists.linux.dev, linux-tegra@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 02/16] PCI: dwc: Use cached PCIe capability offset in
- core
-Message-ID: <ps2qzgcb5lixkoqz2xbofdurkgmsiojg7e5ueqfdhyissqvzf2@tuderrjgzg6b>
-References: <20260720150619.24733-1-18255117159@163.com>
- <20260720150619.24733-3-18255117159@163.com>
+	s=arc-20240116; t=1786603179; c=relaxed/simple;
+	bh=jTft3gHkavhRXCTqtrN4Nh4JvZFuvxWgTvKWmxvwc7s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Cuy63F4ZCrBKnAuhVHjJPVwLFqWZgco5DNsV0W3+uXura/QOnP8SNpoE3H3vysu5gj729jEXeZI9lE7Di56mGYcDZZKkBHx5U0k021gCXXFr3xCq6zQFT6rKrQcwEw1YyhkJmMHqd3JV4Fhh8/QAGW7uiCaATYvifunHUjrladw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EF91F000E9;
+	Thu, 13 Aug 2026 06:39:27 +0000 (UTC)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+To: linux-pci@vger.kernel.org, 
+ Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Anand Moon <linux.amoon@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Frank Li <Frank.Li@nxp.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Heiko Stuebner <heiko@sntech.de>, Jesper Nilsson <jesper.nilsson@axis.com>, 
+ Jingoo Han <jingoohan1@gmail.com>, Koichiro Den <den@valinux.co.jp>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, 
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>, 
+ Niklas Cassel <cassel@kernel.org>, Qianfeng Rong <rongqianfeng@vivo.com>, 
+ Qiang Yu <qiang.yu@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, 
+ Roy Zang <roy.zang@nxp.com>, Shawn Lin <shawn.lin@rock-chips.com>, 
+ Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Srikanth Thokala <srikanth.thokala@intel.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Yuho Choi <dbgh9129@gmail.com>, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-rockchip@lists.infradead.org
+In-Reply-To: <20260728012548.465139-1-marek.vasut+renesas@mailbox.org>
+References: <20260728012548.465139-1-marek.vasut+renesas@mailbox.org>
+Subject: Re: [PATCH 0/2] PCI: dwc: Handle return value from endpoint
+ .init/.preinit callbacks
+Message-Id: <178660316742.413588.14087680266052241971.b4-ty@b4>
+Date: Thu, 13 Aug 2026 08:39:27 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260720150619.24733-3-18255117159@163.com>
+X-Mailer: b4 0.15.2
 
-On Mon, Jul 20, 2026 at 11:06:05PM +0800, Hans Zhang wrote:
-> Modify the DWC core functions to use the cached pcie_cap offset instead
-> of calling dw_pcie_find_capability() each time.
+
+On Tue, 28 Jul 2026 03:24:23 +0200, Marek Vasut wrote:
+> This is a trivial preparatory change which allows checking
+> the struct dw_pcie_ep_ops .init/.pre_init return values.
 > 
-> In the DWC core, dw_pcie_find_capability() is called at several locations:
-> - dw_pcie_ep_init_non_sticky_registers()
-> - dw_pcie_wait_for_link()
-> - dw_pcie_link_set_max_speed()
-> - dw_pcie_link_get_max_link_width()
-> - dw_pcie_link_set_max_link_width()
+> Currently only the Layerscape PCIe controller benefits from this as
+> its ls_pcie_ep_init() may fail in dw_pcie_ep_get_func_from_ep() call,
+> but the Renesas R-Car Gen5 will benefit from this next.
 > 
-> The cached offset is initialized after hardware is ready:
-> - In host mode: dw_pcie_host_init() calls pp->ops->host_init() (enables
->   clocks/resets), then dw_pcie_get_pcie_cap() caches the offset.
-> - In endpoint mode: the core no longer caches automatically. Instead,
->   drivers must call dw_pcie_get_pcie_cap() after hardware is enabled
->   (e.g., after PERST# deassert).
+> [...]
 
-But you didn't modify all DWC EP drivers to call dw_pcie_get_pcie_cap(). This
-can lead to pcie_cap being 0.
+Applied, thanks!
 
-> dw_pcie_ep_init_non_sticky_registers()
->   is called after that point, so it can safely use pci->pcie_cap.
-> 
-> dw_pcie_ep_init_non_sticky_registers() now assumes pci->pcie_cap is
-> valid. if not, it prints a warning and skips the operation.
+[1/2] PCI: dwc: Handle return value from endpoint .init callback
+      commit: face365457413173d4ef4baf887e93b3e3edd805
+[2/2] PCI: dwc: Handle return value from endpoint .pre_init callback
+      commit: c1366b72ad4e87be60b57b74635a3a0bc58d2b0b
 
-Where is this warning printed?
-
-These are already pointed out by Sashiko. You should go really go through all of
-them (not the pre-existing issues) and comment whether the issues are valid or
-false positive. For a series touching many controller drivers, this is necessary
-to avoid introducing regressions.
-
-I'm not going to merge this series until you fix the real issues Sashiko
-reported or mark them as false positive if not valid.
-
-- Mani
-
+Best regards,
 -- 
 மணிவண்ணன் சதாசிவம்
+
+
