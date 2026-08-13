@@ -1,120 +1,307 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD0F35677D;
-	Thu, 13 Aug 2026 07:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43125360EC5
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 07:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786605274; cv=none; b=mZhZmYaN5IBNGYgdzIvb9ZBV2twhvbsj2i5bWriBcHu8HH20IyqA4EyQtiXE15AALUGQ8peMNuakDCDAsrgQGAr+/SuFJSjnAvBObFitqW+HORDjG4Y44H5og3f/y/YI7Oez+HF/WVvNrIxdYxPnVU6fZdLmdBkR+tj/DlD/3j0=
+	t=1786606447; cv=none; b=HF95L1tO44u/6DFaj99GIHWNIvZFuKACMmrF8cZ8oiBjxgJSx/OsErYIUnOfN3JYe5cHWtzI2T0sT1cFbxa7eRVu5xFzhiNoNRksk070xb6/5SBAx2kymys6Dt8+1+AZ07ewe8atZ3c7uEzzYr7OqxRRbgtkehI26dSwxiNNCK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786605274; c=relaxed/simple;
-	bh=WFn4/56qD31+Nm2nvIptWxIoRCBxnMNo4Xlp13NIjXU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FvUfruNCsTX1hc5rIAAW500I+JBTBsL3SHKbsT7vOo7yNEtdjQ5D541B3d3mjETzsuNe1ORqr7+REwO6tvGoHQD7Ujz4U4/99bG6TTIdMwiEMoE7A9XuigyGOb7BU11U6Fsu2iFGZNGr1roty8iMKFMYK7EgiHuCBiDc3MLL13s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eActJrwR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786606447; c=relaxed/simple;
+	bh=XnpRpUcjV+SwhssoG64/pVM4fLCQfD7X+rQPr7zKOCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUtMVheFkuqkr+npE9BJ5Dc3mJySybjnjvA4e7kwsXGF1uCU/zKkmQwLnmTn2SFsl7h+U2QHPYXnyT85WtWX83JlTaJvENOrXe023WuRe8ZiWYKej2/37Sd3FYxkguuToRxlbuVtGcW2s9IWwf25X6QpZPSxh8RBkk+8LYbUqe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AEec6IwJ; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eActJrwR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553991F000E9;
-	Thu, 13 Aug 2026 07:14:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786605273;
-	bh=szEJWO9bin1FzsdCPw5O7PwHy3mXnjRGfBGCkTiysYc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eActJrwRa7SYnn5lmRhECM782sIK5wbj3F8uX7Tly5e334yaJmncpfJIXVfM0Jpyj
-	 aw82IdoPtJvPpEJQIsj33NtJC2JUFSeFiW2tKng4jzrwkrLpKBo8eq2imgB9FcNxbe
-	 2M9P4c/Uq8wWL72i7xLp1QJYH8j9yGVImTIGrmnZ2vQPpuXURYC53KkX7RS8Xzu8fv
-	 UQtWBoVbh79WC/uaDdcqbbyb6WN3pylzOoTjgQQG1kHqIaUwccwl0AeNZCvDqyag1a
-	 ABP2X2Z3ASoWUxTZfGxEGbVACbmY0b//9OA4XLQr2nKUgy/tTfOV4PkUyqiT086TFr
-	 vPV5ceyUk9s/g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/5] ASoC: fsl_asrc: expose individual DAIs per
- conversion path
-Reply-To: sashiko-reviews@lists.linux.dev
-To: shengjiu.wang@oss.nxp.com
-Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260813070020.719810-5-shengjiu.wang@oss.nxp.com>
-References: <20260813070020.719810-1-shengjiu.wang@oss.nxp.com>
- <20260813070020.719810-5-shengjiu.wang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 07:14:32 +0000
-Message-Id: <20260813071433.553991F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AEec6IwJ"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-495437bb891so5457275e9.1
+        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 00:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786606443; x=1787211243; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OGfHdF5zxh45WiCN9Yf2JdXz9PpfwZ4K8R4uurHSBm8=;
+        b=AEec6IwJ8NmTCyKyf0J0J0nYzoX+4QhgzqIHdTg50LVWwZ9DYtoFf9TlNe60J+0fez
+         nJO5eBlZbOnanCAL9DOqhhSgKS26TmYKumRAgoz/qHRst3mk7QJUMfo9jQWakdWwb+Lu
+         iqXNuGADbdDXqK1u+hFxYDpq4dtajWlbcivzo+Lruz/DkyefjXdglSh1PGXoumskgVE9
+         zi6KYOK+yhwBKknK5nMB2y3SYh/NDtm8hZrR9d5cwG44rlg1wUnc54jW/IbwRmEW4ZOT
+         IZFBi9KMOp3s4lKgp/Hzz9dlZF7prxSSOtV1LN67ABKHJ148mA5uQ66dxtqSNcrj4GEX
+         m+fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786606443; x=1787211243;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OGfHdF5zxh45WiCN9Yf2JdXz9PpfwZ4K8R4uurHSBm8=;
+        b=dgTO9H+xYPOqcvq6oxE80hc0CsnCZ5fY9+fAaPsSZQfD5dOfylH9oJOy7sUZPfYf5U
+         CFpJe2Mi41iNw7SX5L3ias2MFgq6YzDmUMTtp3osua0Ao3DU/a82G3RH6dduwtViX7Qh
+         7LOCXF1KCNbFVbRu8jzWJT/oT+KjdkUXkFfDxcCC+EUm2zJgOHE3xeCZa4+s7UBz+pSZ
+         QnOf3ISZ3xPaXpAEBuMLghxxo9NoVs3QbwgZ6T6bOf5tTe9mKM1pmHPaYWaPHhRPqoY0
+         F2L8uhsUtMNRqbS8YSpK7Z+ni8YOk9isUDjioo8kaa8fIemuKsb00bfqfkm0COaICS7P
+         81sQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrdbKMEKPop/JJlpal3ZWkqg2gFxMOLNGIRHKjNbfYQAmqGiuaLSIAo0bA9cet7Yi6g5i0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyvY/eG07KIX55t6L5Q+XERyncy1rEa2YDidZss+xWGXK8PMthv
+	Mssfyn3r7c8HLFSlGNwNwgn/Mdeyog2VaKvh/OgTty2VPwegwEdj8Ix/
+X-Gm-Gg: AR+sD10Y46zxWfw0Ke6G0oZu/oJezi8nK36YIG8hN7yjCszJEc+opwbNrlXv6TuqsdK
+	BjdZC7b00Rh61bQtSxuQhlivF7TsoiE/5nH75z5MpbXCvWV/jEjxmURYRduykUe3bBo2UaWSPrJ
+	BkaQ4u9P4aWHORY6fmwXGsK5+xCHHZ98n9t9En+de1WKxpNN6C8BGOjfQ+Ka+Y5c5QYLLomeCIz
+	g9tBdZlKO3BNIDklryMojArPO4onu/2rMFetT5YG2z77XIGVu2jUF2Kfps8j69fTNZG+5ZUrt/E
+	Jl+ommV2D4VL1yMogDuej+UPkKTTKdCMJ87DpRuNdAKBX+5hhdlFJiuoEI45WqCnLwriBHW7mrf
+	hbEd9Y1QAE6Vg+tYPnTv1jgBhRDXAVW/BH0CECnGCfu7O1vscfed+vh23S0DmzkTk3ZBkC8bhe5
+	my5yPyXmMrjuM+QU4a9SwrhoQkzy133m5Uc2bbEWNApQGUsNyKz+wGqalpWEbrMt9yQVaVwCEW2
+	JPjK9ykIljWOeVuVXVfoxhrp52ZeXcrSU5mNICbXBMPt6w1+G7PU2PEPygnhIf8uHn+KS2c68Yk
+	UclxRZ20ZTiwavQ0HbMBeR3NA8p0TZiNlBg=
+X-Received: by 2002:a05:600c:c87:b0:499:810b:6f57 with SMTP id 5b1f17b1804b1-49982200fa5mr26972705e9.4.1786606443134;
+        Thu, 13 Aug 2026 00:34:03 -0700 (PDT)
+Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981de6a05sm67287465e9.1.2026.08.13.00.34.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 00:34:02 -0700 (PDT)
+Date: Thu, 13 Aug 2026 09:34:01 +0200
+From: Franz Schnyder <fra.schnyder@gmail.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Hongxing Zhu <hongxing.zhu@nxp.com>, 
+	"Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>, Leonardo Costa <leoreis.costa@gmail.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"leonardo.costa@toradex.com" <leonardo.costa@toradex.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, Sherry Sun <sherry.sun@nxp.com>, 
+	Manivannan Sadhasivam <mani@kernel.org>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
+Message-ID: <t65y5d54axtksbfs7r4olcefqhwm6m4dz3njgnrnf7fcotj74i@o7avoznlafbj>
+References: <20260629143439.361560-1-leoreis.costa@gmail.com>
+ <20260715234736.GA288957@bhelgaas>
+ <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
+ <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
+ <3hxiy6aaiagt5zunntpidaeqc4or4wrebf7mu7asvyyibqmvo2@xhvasdqp64rw>
+ <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+ <20260811063752.GA7332@francesco-nb>
+ <GV2PR04MB12019BC21C743E1BEF1BE8F4C8CDC2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+ <anwYlX0uC1nFCxnp@gaggiata.pivistrello.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anwYlX0uC1nFCxnp@gaggiata.pivistrello.it>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, Aug 12, 2026 at 08:54:13AM +0200, Francesco Dolcini wrote:
+> On Wed, Aug 12, 2026 at 06:22:57AM +0000, Hongxing Zhu wrote:
+> > 
+> > NXP Confidential
+> > > -----Original Message-----
+> > > From: Francesco Dolcini <francesco@dolcini.it>
+> > > Sent: Tuesday, August 11, 2026 2:38 PM
+> > > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
+> > > Cc: Leonardo Costa <leoreis.costa@gmail.com>; Bjorn Helgaas
+> > > <helgaas@kernel.org>; robh@kernel.org; krzk+dt@kernel.org;
+> > > conor+dt@kernel.org; Frank Li <frank.li@nxp.com>; s.hauer@pengutronix.de;
+> > > kernel@pengutronix.de; festevam@gmail.com; leonardo.costa@toradex.com;
+> > > devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> > > kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+> > > regressions@lists.linux.dev; Sherry Sun <sherry.sun@nxp.com>; Manivannan
+> > > Sadhasivam <mani@kernel.org>; Hongxing Zhu <hongxing.zhu@nxp.com>;
+> > > linux-pci@vger.kernel.org
+> > > Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
+> > >
+> > > On Tue, Aug 11, 2026 at 12:47:18AM +0000, Hongxing Zhu (OSS) wrote:
+> > > > > -----Original Message-----
+> > > > > From: Leonardo Costa <leoreis.costa@gmail.com>
+> > > > > Sent: Tuesday, August 11, 2026 2:26 AM
+> > > > > To: Hongxing Zhu (OSS) <hongxing.zhu@oss.nxp.com>
+> > > > > Cc: Bjorn Helgaas <helgaas@kernel.org>; robh@kernel.org;
+> > > > > krzk+dt@kernel.org; conor+dt@kernel.org; Frank Li
+> > > > > krzk+<frank.li@nxp.com>;
+> > > > > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
+> > > > > leonardo.costa@toradex.com; devicetree@vger.kernel.org;
+> > > > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; linux-
+> > > > > kernel@vger.kernel.org; regressions@lists.linux.dev; Sherry Sun
+> > > > > <sherry.sun@nxp.com>; Manivannan Sadhasivam <mani@kernel.org>;
+> > > > > Hongxing Zhu <hongxing.zhu@nxp.com>; linux-pci@vger.kernel.org
+> > > > > Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer
+> > > > > boots
+> > > > >
+> > > > > On Thu, Jul 16, 2026 at 02:09:19PM -0300, Leonardo Costa wrote:
+> > > > > > On Thu, Jul 16, 2026 at 02:15:42AM +0000, Hongxing Zhu (OSS) wrote:
+> > > > > > > Hi Leonardo,
+> > > > > > >
+> > > > > > > Would you be able to test this patch on your affected boards?
+> > > > > > > Your testing would help expedite the merge process and ensure
+> > > > > > > the fix resolves the boot issue you're experiencing.
+> > > > > > >
+> > > > > > > Best Regards
+> > > > > > > Richard Zhu
+> > > > > >
+> > > > > > Hi Richard,
+> > > > > >
+> > > > > > Sorry for taking long to respond, I was caught up with something.
+> > > > > > I tested the patch and it solved the issue. I sent a Tested-by tag there.
+> > > > > > Thanks for looking into this!
+> > > > > >
+> > > > > > Best Regards
+> > > > > > Leonardo
+> > > > >
+> > > > > Hi Richard,
+> > > > >
+> > > > > That patch might have introduced/exposed a second regression where
+> > > > > PCI devices are not linked properly during the initialization. Sorry
+> > > > > for not catching this before, as I didn't have any device connected during
+> > > the previous test.
+> > > > Hi Leonardo:
+> > > > Sorry to hear about that.
+> > > > I did test commit 7678e81498e2 with one Intel NIC (82574L) connected,
+> > > > and I've double-checked today based on v7.2-rc7. The PCIe link can be
+> > > > set up properly on the i.MX6Q Sabresd board in my testing.
+> > > >
+> > > > Here are the logs:
+> > > > root@imx6qpdlsolox:~# lspci
+> > > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > > > 01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network
+> > > > Connection root@imx6qpdlsolox:~# uname -a Linux imx6qpdlsolox
+> > > > 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
+> > > > root@imx6qpdlsolox:~# dmesg | grep pci
+> > > > [    0.256138] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+> > > > [    0.256307] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff ->
+> > > 0x0000000000
+> > > > [    0.256339] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -
+> > > > 0x0001000000
+> > > > [    0.256434] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu
+> > > 0x01f00000
+> > > > [    0.458388] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K,
+> > > limit 4G
+> > > > [    0.458492] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+> > > > [    0.555294] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
+> > > > [    0.555783] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+> > > > ...
+> > > >
+> > > > The following endpoint devices also yielded the same results.
+> > > > root@imx6qpdlsolox:~# lspci
+> > > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > > > 01:00.0 Network controller: Qualcomm Atheros AR9287 Wireless Network
+> > > > Adapter (PCI-Express) (rev 01) root@imx6qpdlsolox:~# uname -a Linux
+> > > > imx6qpdlsolox 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l
+> > > > GNU/Linux ...
+> > > >
+> > > > root@imx6qpdlsolox:~# lspci
+> > > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > > > 01:00.0 USB controller: NEC Corporation uPD720200 USB 3.0 Host
+> > > > Controller (rev 04) root@imx6qpdlsolox:~# uname -a Linux imx6qpdlsolox
+> > > > 7.2.0-rc7 #30 SMP Tue Aug 11 00:21:26 UTC 2026 armv7l GNU/Linux
+> > > >
+> > > > Could you provide more details of your hardware setup (board,
+> > > > connected devices, PERST# present or not)?
+> > > > This may help us identify if there's a specific scenario that triggers
+> > > > the regression you're experiencing.
+> > >
+> > > It's an apalis imx6, as reported already in this email thread.
+> > > The DT is in Linux, you can check
+> > > arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts every details about
+> > > PERST# and more.
+> > >
+> > > This is the device connected:
+> > >
+> > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > > 01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial
+> > > ATA Controller (rev 02)
+> > >
+> > > 01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial
+> > > ATA Controller (rev 02) (prog-if 01 [AHCI 1.0])
+> > >       Subsystem: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA
+> > > Controller
+> > >       Flags: bus master, fast devsel, latency 0, IRQ 308
+> > >       I/O ports at 1020 [size=8]
+> > >       I/O ports at 1030 [size=4]
+> > >       I/O ports at 1028 [size=8]
+> > >       I/O ports at 1034 [size=4]
+> > >       I/O ports at 1000 [size=32]
+> > >       Memory at 01100000 (32-bit, non-prefetchable) [size=512]
+> > >       Expansion ROM at 01200000 [virtual] [disabled] [size=64K]
+> > >       Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit-
+> > >       Capabilities: [78] Power Management version 3
+> > >       Capabilities: [80] Express Legacy Endpoint, IntMsgNum 0
+> > >       Capabilities: [100] Virtual Channel
+> > >       Kernel driver in use: ahci
+> > >       Kernel modules: ahci
+> > >
+> 
+> I just did one additional test, trying to help out Leonardo.
+> 
+> Unfortunately I do not have the same PCIe card available, so I tested with a
+> 
+> 01:00.0 Network controller: Intel Corporation Wireless 7260 (rev 73)
+> 	Subsystem: Intel Corporation Dual Band Wireless-AC 7260 [Wilkins Peak 2]
+> 	Flags: fast devsel
+> 	Memory at 01100000 (64-bit, non-prefetchable) [disabled] [size=8K]
+> 	Capabilities: [c8] Power Management version 3
+> 	Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+> 	Capabilities: [40] Express Endpoint, IntMsgNum 0
+> 	Capabilities: [100] Advanced Error Reporting
+> 	Capabilities: [140] Device Serial Number ac-7b-a1-ff-ff-4e-a1-d8
+> 	Capabilities: [14c] Latency Tolerance Reporting
+> 	Capabilities: [154] Vendor Specific Information: ID=cafe Rev=1 Len=014 <?>
+> 
+> no wi-fi driver is loaded (but this seems unrelevant for the issue here), but
+> the card is detected with the current mainline Linux 7.2.0-rc7+. I tested the
+> apalis SoM on both the eval carrier board and on ixora v1.2.
+> 
+> Same kernel config as the one failing.
+> 
+> So, unless I did some mistake in my manual test, the issue is related to the specific
+> PCIe card or some other subtle difference I cannot see yet.
+> 
+> For the record, the failure was detected by our CI/CD, and it is systematically
+> reproduced on multiple hardware boards.
+> 
+> Leonardo: any chance you can test with the same PCIe board that is failing?
 
-Pre-existing issues:
-- [High] ASoC component is unregistered via devres after hardware clocks ar=
-e disabled in remove(), leading to system hangs if an active stream is term=
-inated during driver unbind.
---
+Hi all,
 
---- Patch [4]: [PATCH v4 4/5] ASoC: fsl_asrc: expose individual DAIs per co=
-nversion path ---
-commit c1765b1c3c3716b7c2b1c94ee1d7914bfa585bff
-Author: Shengjiu Wang <shengjiu.wang@nxp.com>
+I reproduced the issue on my setup (eval board + same PCIe card as in our CI/CD).
 
-ASoC: fsl_asrc: expose individual DAIs per conversion path
+root@apalis-imx6-11486042:~# lspci
+root@apalis-imx6-11486042:~# dmesg | grep pcie
+[    0.162860] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+[    0.162974] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
+[    0.163043] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
+[    0.163193] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
+[    0.505056] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
+[    0.505230] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+[    1.508173] imx6q-pcie 1ffc000.pcie: Link failed to come up. LTSSM: POLL_CONFIG
+[    1.508314] imx6q-pcie 1ffc000.pcie: probe with driver imx6q-pcie failed with error -110
 
-This commit replaces the single fsl_asrc_dai instance with an array of
-three DAI drivers to allow multiple independent conversion paths to be
-used simultaneously. It updates the probe function to register all three
-DAIs.
+After applying the new sequence proposed by Zhu, the PCIe card comes up.
 
-> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> index 2755ee57c6a17..a5d6c4c1e9292 100644
-> --- a/sound/soc/fsl/fsl_asrc.c
-> +++ b/sound/soc/fsl/fsl_asrc.c
+root@apalis-imx6-11486042:~# lspci
+00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller (rev 02)
+root@apalis-imx6-11486042:~# dmesg | grep pcie
+[    0.162515] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+[    0.162636] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
+[    0.162702] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
+[    0.162828] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
+[    0.488893] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
+[    0.489033] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+[    0.591333] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
+[    0.591967] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+[    0.602947] pcieport 0000:00:00.0: PME: Signaling with IRQ 291
+[    0.603534] pcieport 0000:00:00.0: AER: enabled with IRQ 291
 
-[ ... ]
+I'm completely out of the loop on this whole issue and I only helped out
+to test the patch. However, I wanted to add that before applying Zhu's 
+proposed sequence, I could only reproduce the issue by power cycling the
+module, as rebooting alone did not trigger the issue.
 
-> @@ -1393,7 +1442,7 @@ static int fsl_asrc_probe(struct platform_device *p=
-dev)
->  		goto err_pm_get_sync;
-> =20
->  	ret =3D devm_snd_soc_register_component(&pdev->dev, &fsl_asrc_component,
-> -					      &fsl_asrc_dai, 1);
-> +					      fsl_asrc_dai, ARRAY_SIZE(fsl_asrc_dai));
+kind regards
 
-[Severity: High]
-This is a pre-existing issue, but does using devres to register the ASoC
-component cause a race condition during driver unbind?
-
-Since the component is registered with devm_snd_soc_register_component(),
-it won't be unregistered until the devres release phase, which happens
-after fsl_asrc_remove() finishes.
-
-If an ALSA stream is active during unbind, fsl_asrc_remove() gates the
-ASRC IPG and MEM clocks:
-
-fsl_asrc_remove() {
-	...
-	pm_runtime_disable(&pdev->dev);
-	if (!pm_runtime_status_suspended(&pdev->dev))
-		fsl_asrc_runtime_suspend(&pdev->dev);
-}
-
-During the window between fsl_asrc_remove() completing and the devres
-release phase unregistering the component, the PCM streams and DMA
-channels are still active.
-
-Can the DMA controller attempt to access the clock-gated ASRC FIFOs
-during this window, resulting in a synchronous bus fault or asynchronous
-external abort?
-
-Would it be safer to use snd_soc_register_component() here instead, and
-manually call snd_soc_unregister_component() early in fsl_asrc_remove()
-before gating the hardware clocks?
-
->  	if (ret) {
->  		dev_err(&pdev->dev, "failed to register ASoC DAI\n");
->  		goto err_pm_get_sync;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813070020.7198=
-10-1-shengjiu.wang@oss.nxp.com?part=3D4
+Franz
