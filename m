@@ -1,63 +1,63 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EB7314B8F
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 19:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4DA2475D0
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 19:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786648527; cv=none; b=VefNUFvTJViDJ7LLehE97NPG/0ZXd1cuxszOBfChz19X+UFxcnqTZjCvLruiUN+bfSj8AOQFTpNgsF8xAKcllZekAciXVHNlRU4sIuOEJJxUGoTssb6jukSZvre63QmCsgznSfBzE2pmHxlUM09IVJb11++yr08SN0VPoYkanFA=
+	t=1786649862; cv=none; b=ikBePrFRmQoIs2/LlmM3XzDCjWM9k04LBoB8kOD95jXiVneZzqXq7RgHFwYclapAMF2UsIov/7JMvJkHR+wPSK0K8gE5zPY9D6yKWioEtK1IefxC0qDgjAouUvcuZQONYQIv+UDwBgf0O0fAr437vJBiocqcprngyfvycmORvDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786648527; c=relaxed/simple;
-	bh=XTeaCcEc2SN8BtA8kLHMieDCplCMiP8uY0kYtrEqg4s=;
+	s=arc-20240116; t=1786649862; c=relaxed/simple;
+	bh=omqIZSFkWVF2X6+aL5ujgWk54LbjoA8G5ZfVjBIfeRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITnk8AVSUJkMIh8bjwU9Qv8P8VZsEWIDqPOh2K0zZZMTtWbRE/irWxFOsOON9furVQTkj9WOdarSD669+WoWBZyrFa3KTNzE7WvATZxL5W1t8gaH5urFXjEgTGRbvVUWW4c/vlcWj7zZAOykGFqo6d5AOnQSfLhkRZRnF7RYZaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BK03QTZg; arc=none smtp.client-ip=209.85.221.44
+	 MIME-Version; b=JVlFCRkfcViJ7S7+Ks5EDGbVb5cFKp+kppnwcxbjaVocrLZFO8nc7BZiCC3xpFnU8n8vW/VzPObFA6A5UmVfjQ9xSZlUQsQSP4FXZzxJcpG18agn0wPmnKYD9MUv14LRXmD3VW/i5slwma0FZLzvlG29Mm6cL1hhiYUfDf+58T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WDDqkRlz; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BK03QTZg"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47f93b2fe4cso113210f8f.0
-        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 12:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WDDqkRlz"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47362928f65so181365f8f.2
+        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 12:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786648524; x=1787253324; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1786649858; x=1787254658; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XTeaCcEc2SN8BtA8kLHMieDCplCMiP8uY0kYtrEqg4s=;
-        b=BK03QTZgm6AEQuSoJuBlwSyEt2m9BS86QB/lhkZQaCCmfWjCfhhALqDrhX55Be62er
-         o5FR/K88/Xn2HSDKryosv+CfDWU8ecjVlC3MLQ3JNmdUOywSdKWAiAJs3PjBIRxyMQiC
-         +Al2quheg/IhMaiRKm80Sq7/yosERIMZ1LcNx81neI0/BEIhEwxkXC/H09gsVXS964ec
-         kXdKMli8wKElZsCWxy/N2Io44e5hQBv5mrlMGn+YdO1sgAYMnqeqfSm1cuA+TwkbndA2
-         GkoTzvm7oTNP9V72muJa27xXAzVbnmAGPmMGMfgQbjG0PvnXtEbcZwjJfrR65W4d/h8j
-         PPbw==
+        bh=51c7EGTXWgCerge/+6g5NVFzyP7AuWBklS9kpsuyY74=;
+        b=WDDqkRlzrAl9IqY76xKUuUhBpK5ayAfIWRkRw+18hBDso1qZx/8UMqyweccVFCI3LK
+         3CFOVMHa1nWCzF2NFuiacScgry+id60Q6HCzVp+jGMm9iS957yUn26Nwes3EU5zBRWLJ
+         c8rq1SaulCNxJ5AQBImuLcbVxJpb9a2j+WblimsD4tjFVoktjBLU2YbBrVTGQRFpj3Yv
+         y2hYn/k0+1kFNOziIjSoTZpRkUM9x0206FKO+Vim75jOmVA71LLSB1Y88zbWXRMUxwMJ
+         /AQzXCK7+e00p5jlEK4WmekJsqzfS+7Pa8F1KS7AAwi+jfGd/++RgOuS6Pix2EinodHh
+         VZrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786648524; x=1787253324;
+        d=1e100.net; s=20251104; t=1786649858; x=1787254658;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XTeaCcEc2SN8BtA8kLHMieDCplCMiP8uY0kYtrEqg4s=;
-        b=fhj72RdbC3BnXJZKUZrSxH8SMYdyNL+SvfwP5cezyQ0+RsgRnVDGxTRsBE9M/F//LX
-         xNwM9ErND3A7y/RL/0oDPj4Dl9KAHV70oRRhwK0I9YlJUNJ6GwW+fas+QTokS2KejfoU
-         neKPZxAsDczw64CCk0puwlMH5egipoM6MaGdzV8JdUF/U+sh8dHFBgNAaqyFO1VdNsYZ
-         JsJ9SWA7VuvdbI16W0pIxOqWs2FS73hkWDFSThXJXE2KgSY4kBRbnnk9Nddf3atcMNy1
-         /Pr/2MVdioeRZOVk6zilQ5W65IIDdWme7RMFCPstrw9mQ0bB8gn3KitJhqXGUkIWAdW+
-         4VRg==
-X-Forwarded-Encrypted: i=1; AHgh+RpQM584XXKn4fH78xwRzsVLaRMyEXLOZvqDAWAxxR614eLijPDqwmteDAXDlnxYQn3Cy9s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwPyrFrT+EdrNLSFtNKSG0EUOkDMuRn+PHLZ8xOQnQsQIEigTYA
-	LvgnfJL6TD8TILnrOo3bvVwvjecjsd9/Wv3aXDTAXRVZyef4K9zrV3wS
-X-Gm-Gg: AR+sD12QpfQvG7ldlcpu8vbkc8ANnzK6W9rjPi4uD4iXUgD8mi0kq/JM8LCRCXVCp7X
-	7r6ukFHJKKS87vNqEVFZwuzuEnZmTPWddBKCVz1Uh0eCZ8GsDZAwspjX+CMkDDHe6K0oGYhVwks
-	bSVZhNXR+deQLPmN+3uEJb0C469PJ6zLRQ6JFR1K6DajFs8keghS0w9Y+1COKlr0ntH04YJYTaV
-	JyBA4Oib8zAxG2uiYsn+y/WTGYENoJRvN1QlNtaYubO9CBVZnAPX+SnHElSOU+fzTCQ50EsfQBJ
-	AKdvGZjknWfvZhFWQKC1q6m0+KwtsrE0sF7HPiRX/XgbC88gT9pPlpqLwQOaIZ4tQuj6pIBRjIt
-	w5XZs9A+Mi3sR8eH/wHC+WZdfUrvaYvdlGh0fEGpb1DAJNVbL1m0Zvs1WChQ+exbhkQOpeFkvr4
-	dB37oSWy1aY5xCF0jrVaB7m27aoyy9iAq9dKtmFQsv13quuSXgo0DFi3Ge2o/kYueT+A==
-X-Received: by 2002:a05:6000:38a:b0:481:5276:e4e3 with SMTP id ffacd0b85a97d-48160748b69mr654934f8f.19.1786648524165;
-        Thu, 13 Aug 2026 12:15:24 -0700 (PDT)
+        bh=51c7EGTXWgCerge/+6g5NVFzyP7AuWBklS9kpsuyY74=;
+        b=jfHBQGUTk+fLfF5JumQcFYUwsBJPx35o1QNAvC8PvwB009PwABQAz2xkLz6LzMndNX
+         YkLyS/uOeXuekmf7c3LM+u8WceH6WHitJ+NZ89op2fIXAswsgeCNm3scTGlKbJnE35rQ
+         h9kZPY5bVYu6Gr/UkmZGXa21I2XQl9E74MKj1EvhuDcJjqKZ3DOf19wYEMpUQmAsqPl2
+         yDW9QzNXnk1pd+HPhFSNx73xunpRxB6x1bOzSuRODj2zjEODYjGhlZAs/JFw2uKhcD9N
+         oF6+SY0yZ5FbjmC3sK8fiOn35pkW3iOnWkFP3iANfbfd16jDVzJ3lbA917EBRTd9xnrs
+         54dQ==
+X-Forwarded-Encrypted: i=1; AHgh+RosgsGg/Ta7hb7HPTsIVOdr7dK8UASjXFK0hAkcJR3pY9AkoqxLOQX0XQTQEwMKnS2+b7o=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9AbAsjUqNNwIwX0LcP+JwoCKm8OXvOJFlaRMDqEfBe+I5SdVL
+	7aqQZsH5pg4WfUY/68UQyvUtw2WRhkPzJwDv/+sT5KDFS1l7ynBT7h+x
+X-Gm-Gg: AR+sD12KkjIbDW0LYrXdpdClnr6bC4SF6v1lOg2iCN4AmyVe6EjJnyR0NKTn8htPBrh
+	u5f1zYcSUPJ186f2QIR2/RYPxJnReWGSoGITqq3IWGotIGhMrs+cI0slCYpHZGcR3nnwCcTJ9KB
+	rvGNOpMwvG9rVMUGYLKsGwOTkx4bv2G4KQ67yOFcK/UNrAJbKjkxrIRTtNrODhD2u7klzHpz+Lq
+	EqD8zIyBgSTZ/4O1zS1S70w0tVCF388KKLxxa32nmVLRx9/HWZf0SsyJi4HSk1vD0GqyTvZW7Ta
+	oU4YUE2gdQm9JDBZNo5o1MonVUao25o3zRiDpTrMyUHipYB0h3T5DnF5Wfax10TAGfmi1DEa6xv
+	6XXNrEhZKMXFUpyC0VNfEI/KNSRL8K2bFk/ZYTZCgJHMH1jrWXBIq36Hw8Ahma6p6sdg0471QbO
+	RcqlF0RAo/RXiHpN1fy6fOwnCAwrs8uMQhRiDDq6QgEbP94XXqp0JEvB2WA41OGOx5cg==
+X-Received: by 2002:a05:6000:4a05:b0:45e:f8d0:d22c with SMTP id ffacd0b85a97d-48160761e84mr778789f8f.25.1786649858491;
+        Thu, 13 Aug 2026 12:37:38 -0700 (PDT)
 Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f200752sm1618261f8f.1.2026.08.13.12.15.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b1a91sm1727273f8f.21.2026.08.13.12.37.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 12:15:23 -0700 (PDT)
+        Thu, 13 Aug 2026 12:37:37 -0700 (PDT)
 From: Mehmet Fide <mehmet.fide@gmail.com>
 To: Fabio Estevam <festevam@gmail.com>
 Cc: Shawn Guo <shawnguo@kernel.org>,
@@ -75,8 +75,8 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Mehmet Fide <mehmet.fide@screeningeagle.com>
 Subject: Re: [PATCH v4 0/4] ARM: dts: vf: Iris carrier board for the Colibri VF50 and VF61
-Date: Thu, 13 Aug 2026 21:15:22 +0200
-Message-ID: <20260813191522.2334974-1-mehmet.fide@gmail.com>
+Date: Thu, 13 Aug 2026 21:37:37 +0200
+Message-ID: <20260813193737.2346630-1-mehmet.fide@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <CAOMZO5BwLCRd_cTV82J0KgPfSF6_kUKiSUbG-SKxNxiNu0VKOg@mail.gmail.com>
 References: <CAOMZO5BwLCRd_cTV82J0KgPfSF6_kUKiSUbG-SKxNxiNu0VKOg@mail.gmail.com>
@@ -90,26 +90,20 @@ Content-Transfer-Encoding: 8bit
 
 From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-Hi Fabio,
+A correction on the gpiolib warning I mentioned: it is not a gpio-vf610
+matter after all, so no driver patch from me.
 
-> What about the latest mainline kernel, 7.2-rc7?
+Half of it is already fixed: d761c7e38a00 ("gpiolib: Check
+gc->get_direction() before calling gpiod_get_direction()") in the GPIO
+tree covers the debugfs dump path. The remaining backtrace comes
+through the i2c generic GPIO bus recovery, which calls
+gpiod_get_direction() on any controller without .get_direction(), and
+for that I have sent a gpiolib patch:
 
-The series is based on it, the base-commit in the cover letter
-(3d6d817622b0) is 7.2-rc7; the 6.18 mentioned there is the LTS our
-reference image runs.
+  https://lore.kernel.org/all/20260813193715.2346477-1-mehmet.fide@gmail.com/
 
-To make sure, I have now also boot tested exactly this combination on
-the hardware: 7.2-rc7 (multi_v7_defconfig) plus this series on the
-Colibri VF50 on an Iris boots to login, with Ethernet up, both PWM
-chips registering, the microSD slot, all three UARTs, the carrier RTC
-probing, the SODIMM gpio names in place, the EXT_IO pin group applied
-and both transceiver hogs holding their pins.
-
-One thing unrelated to this series showed up on the way: gpio-vf610
-has no get_direction callback, and the gpiolib in 7.2-rc7 now WARNs on
-every gpiod_get_direction() call because of that, so the boot log
-carries a number of identical gpiolib.c:431 backtraces on any Vybrid
-board. I will send a small gpio-vf610 patch for it separately.
+With both in place, 7.2-rc7 plus this series boots the Colibri VF50 on
+the Iris with a clean log.
 
 Thanks,
 Mehmet
