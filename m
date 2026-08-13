@@ -1,175 +1,134 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F5736215D
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 07:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6634137A7;
+	Thu, 13 Aug 2026 07:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786606546; cv=none; b=dtCy4nKsmPUh0jqcvI/6W2547+MqBHj0iv/BAukqkPiy544ft2ksLokf9GL64zQCD+HPq1izQ1OldU7aiwFwonah6mq9JHQmME6RfI3LR2ow5nWlvWrH7Nr1U51wolkdOracDbx+Ns7Tx2Wpeg+qN6kCC0R4oZcvPv/q66XSIjA=
+	t=1786607232; cv=none; b=FAZiZTMtSH9yn/terHFK/B3ALCq2NA30h8PuzYSMbNFNNGq0wGLUorVFLeOI96xkRWKKb4DUQbTar2umlIM+ctGBahwP5yz1/W8cXIxiKLrVYtAtJk4g3ymdgKqHVt9paafq9MBEiiQ7a5XuEozZ7Io9GnYvuiF3ykqmFHfCrpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786606546; c=relaxed/simple;
-	bh=OOWzDX1YKMNMoQ5LC/5VE22Nw4ov3tCVcxDaDB2Mvzs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=SIm4qcZVqqlB1eTRLK6jYrfuxUbmuN+dtgj6HzJ5HntvVSr+7mrCoahmzD/IQxLHoFB0pqgRnUrSibn5GNxwZy/YAdljbE5TpfREeZFs0DXC6UDKcyCqjvLa4DKLlE1TQSSORzOGaCiVf2lrug4n1O8bgRs2MXiGB5ij83fgrGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FO62sadG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786607232; c=relaxed/simple;
+	bh=khXOj1GPuk9ZwhVgivJ1J/LF08RPSkKG4ZbKUPwNJhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=As1bUr6XWI0tdZtwOo8NGE5VqatY3Bn4NpMpbn/tIgFqz3uR1LOyuvK9M258ia7m1QQi9QWIUu9lQvxnlYiylZbYetqQAzYsmEj4zSF53jKDvysoPyKjlOybdXkFjjcwpIiJ7sQBzfkdboz8JSLHHaq5hbG7VBzq/3FsDHVMqVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Gru5+8zY; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FO62sadG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786606543;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JN2pldkYM0RMPQtKgx5//Z+4qj7wz5yY5RCZ6A/tGpk=;
-	b=FO62sadGbj6D5gjveynFdWw/AqzHTAIzfRp19q+3Y6hl0LrxYQq8gEZYWBJEgJLeUz9YKA
-	rmpw7NFeeee/AELcpH2ny/I6hMSTWrSSVvhqU2KVO9hRwgEkV0skhswOw8/0BUv4p2GA36
-	mIQRK8ZUtj2mJq02+55xZOYYlViB6L0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-3TaJT0HaMd-2eE2_sIyO2Q-1; Thu, 13 Aug 2026 03:35:42 -0400
-X-MC-Unique: 3TaJT0HaMd-2eE2_sIyO2Q-1
-X-Mimecast-MFC-AGG-ID: 3TaJT0HaMd-2eE2_sIyO2Q_1786606541
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4955d314945so1764245e9.0
-        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 00:35:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786606541; x=1787211341;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=JN2pldkYM0RMPQtKgx5//Z+4qj7wz5yY5RCZ6A/tGpk=;
-        b=UfXI+Fik8YTN/AOVtJ22KzxrR0d8UwikgST1yqdHk7lu+OfzVC0JyCeQpswAtVQ2Yz
-         Fi9lEHtL/kJszAPEGRewQ3lzG6fJgmlCaM4FCwVRpY1hYmsNPU+tUBBKtFCM/zYi5BgJ
-         96lcNr0bgy6tBRwpywykAUDAslU32ynQXYDOFBgZhahHHaOx/aExQbBXOjGl0AefHNC1
-         mx8LAUo5HU9Wk7TR2JPAw8G1GIKJQu/RCeTcEzhy44S7vm0InrvkIcfQ+KmZjPTVxCPc
-         0QC1j7rZkU8Df2PvWjI2WcrBX3PxIak32Gva//VaOUv48EQFyk0D31iwKWzAG8rFSGbu
-         oeyQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2+DpKD8Nr3OXuEsTuJ1PgDtw1BYxCT5aloUpHUX7S1T2j+OuO7FX73cb9I6WSl3MhSoA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwkMkVYMDZPSvD+24SPWEFSJ30LnsILfab3lS9H3LFyIC6zuyVE
-	AGAG4CSKTJemedXnkrX1RSMirr3xDGELTcx8ltdM19fuAv8hTd1291uNg7NKaNLfoMUa/jerQDX
-	rIDx8qKrrqNq4MOAtipXzLKv9Yoew5U5NL+t10l5QzGPrMkWMya3heA==
-X-Gm-Gg: AR+sD115U2isvc7khCGc2ExZE32kcPTlnK+Iys0+7yrL076tBEOmi1AfaLgtRzuEM9A
-	KVZx3NULpTAqjwfYV9Dot8f6PTfPdgbue/GpIDebqSITENzvIdCVqamJWfrzt44I6ntM0SDdyyD
-	g8HEIZ+BL5BNVLShchGASO5x6bDY6t5WFFgMFGEuJzU99KQ+icnjEdXJTjl4ujIhYzUjymVOpJW
-	KFG0+a4OwMC1Rm/EbPb2q9I9PRHGlYavLi08yJvPlUQcFp4DvxhlyjIvBJzb//PjOTCjd2dIk8I
-	8LCgQ1BbCXQDQhcpcSqMrR/Ch7xbXkP95HcoLe5G6KvKZ6m2DcRmR1jHt+fABIBlHsl5Cqt9
-X-Received: by 2002:a05:600c:19d1:b0:493:bb6b:5bb5 with SMTP id 5b1f17b1804b1-499821f2a66mr36070085e9.13.1786606540854;
-        Thu, 13 Aug 2026 00:35:40 -0700 (PDT)
-X-Received: by 2002:a05:600c:19d1:b0:493:bb6b:5bb5 with SMTP id 5b1f17b1804b1-499821f2a66mr36069425e9.13.1786606540475;
-        Thu, 13 Aug 2026 00:35:40 -0700 (PDT)
-Received: from [192.168.0.9] ([47.64.115.27])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981d9613fsm105709945e9.0.2026.08.13.00.35.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Aug 2026 00:35:39 -0700 (PDT)
-Message-ID: <b82da069-b76c-47f6-bf8e-f47701cb318e@redhat.com>
-Date: Thu, 13 Aug 2026 09:35:38 +0200
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Gru5+8zY"
+Received: from francesco-nb (2-224-16-253.ip168.fastwebnet.it [2.224.16.253])
+	by mail11.truemail.it (Postfix) with ESMTPA id 2B1391F952;
+	Thu, 13 Aug 2026 09:46:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1786607219;
+	bh=OasgZ2lwasgL8zJh7tgHLLPMWzK9RGYBY8M5hc2VuyU=; h=From:To:Subject;
+	b=Gru5+8zYKMLdaNoPB+Z1nflAJYTs7HqUDNQcbOosHwbUAK0KJX+Y0tNRdrmqBgxfE
+	 LiArpKa00xOVApQi9ab1f2mDYTblFoxOeoGNUf+4O9M2tYYL4wTYZblLjvPwdXFN9H
+	 D63jAoT4hg8+34KIArn7TJt0XP3NHyBHgHfBS5lacSs3QdcuouFaIjqRqokHDCutXR
+	 oTHMF0HIAeVEjS+cn7gJOzyrmmo9Pwce2MZIeMviV26KiqaIZD/S/401aDKffjHw9Y
+	 ssUhwqk9OthZ4vxhAxT1wZp7oGGaVEpuKr7Ywf/jR0Ge3UvIUHyupzKNIWSIjQ1b1D
+	 xkqWViq6xoH5w==
+Date: Thu, 13 Aug 2026 09:46:53 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Franz Schnyder <fra.schnyder@gmail.com>,
+	Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	"Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>,
+	Leonardo Costa <leoreis.costa@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"leonardo.costa@toradex.com" <leonardo.costa@toradex.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [REGRESSION] mainline/master: Apalis iMX6 no longer boots
+Message-ID: <20260813074653.GA11024@francesco-nb>
+References: <20260629143439.361560-1-leoreis.costa@gmail.com>
+ <20260715234736.GA288957@bhelgaas>
+ <VI0PR04MB1200862BE9B7C137EC7C18AF18CC72@VI0PR04MB12008.eurprd04.prod.outlook.com>
+ <i6x6wpua7wlwmdq3hitoo53wkptgp62tvegmkabcru3d54eqg3@yk4eehwaarn2>
+ <3hxiy6aaiagt5zunntpidaeqc4or4wrebf7mu7asvyyibqmvo2@xhvasdqp64rw>
+ <GV2PR04MB12019BD5B14FA63CDFCC2015B8CDD2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+ <20260811063752.GA7332@francesco-nb>
+ <GV2PR04MB12019BC21C743E1BEF1BE8F4C8CDC2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+ <anwYlX0uC1nFCxnp@gaggiata.pivistrello.it>
+ <t65y5d54axtksbfs7r4olcefqhwm6m4dz3njgnrnf7fcotj74i@o7avoznlafbj>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: imx: Replace __ASSEMBLY__ with __ASSEMBLER__ in
- header file
-From: Thomas Huth <thuth@redhat.com>
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260619122448.188046-1-thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20260619122448.188046-1-thuth@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WKYDJ1DdkcxnCpbeda4yDaCdSqzSq3lfvvYRZubekFk_1786606541
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <t65y5d54axtksbfs7r4olcefqhwm6m4dz3njgnrnf7fcotj74i@o7avoznlafbj>
 
-On 19/06/2026 14.24, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
+On Thu, Aug 13, 2026 at 09:34:01AM +0200, Franz Schnyder wrote:
+> On Wed, Aug 12, 2026 at 08:54:13AM +0200, Francesco Dolcini wrote:
+> > So, unless I did some mistake in my manual test, the issue is related to the specific
+> > PCIe card or some other subtle difference I cannot see yet.
+> > 
+> > For the record, the failure was detected by our CI/CD, and it is systematically
+> > reproduced on multiple hardware boards.
+> > 
+> > Leonardo: any chance you can test with the same PCIe board that is failing?
 > 
-> While the GCC and Clang compilers already define __ASSEMBLER__
-> automatically when compiling assembly code, __ASSEMBLY__ is a
-> macro that only gets defined by the Makefiles in the kernel.
-> This can be very confusing when switching between userspace
-> and kernelspace coding, or when dealing with uapi headers that
-> rather should use __ASSEMBLER__ instead. So let's standardize now
-> on the __ASSEMBLER__ macro that is provided by the compilers.
+> I reproduced the issue on my setup (eval board + same PCIe card as in our CI/CD).
 > 
-> This is a completely mechanical patch (done with a simple "sed -i"
-> statement).
+> root@apalis-imx6-11486042:~# lspci
+> root@apalis-imx6-11486042:~# dmesg | grep pcie
+> [    0.162860] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+> [    0.162974] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
+> [    0.163043] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
+> [    0.163193] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
+> [    0.505056] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
+> [    0.505230] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+> [    1.508173] imx6q-pcie 1ffc000.pcie: Link failed to come up. LTSSM: POLL_CONFIG
+> [    1.508314] imx6q-pcie 1ffc000.pcie: probe with driver imx6q-pcie failed with error -110
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   Note: This patch has been split from an earlier bigger patch of
->   mine to ease reviewing.
+> After applying the new sequence proposed by Zhu, the PCIe card comes up.
 > 
->   include/soc/imx/cpu.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> root@apalis-imx6-11486042:~# lspci
+> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> 01:00.0 SATA controller: ASMedia Technology Inc. ASM1061/ASM1062 Serial ATA Controller (rev 02)
+> root@apalis-imx6-11486042:~# dmesg | grep pcie
+> [    0.162515] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
+> [    0.162636] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
+> [    0.162702] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
+> [    0.162828] imx6q-pcie 1ffc000.pcie: config reg[1] 0x01f00000 == cpu 0x01f00000
+> [    0.488893] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
+> [    0.489033] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
+> [    0.591333] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
+> [    0.591967] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+> [    0.602947] pcieport 0000:00:00.0: PME: Signaling with IRQ 291
+> [    0.603534] pcieport 0000:00:00.0: AER: enabled with IRQ 291
 > 
-> diff --git a/include/soc/imx/cpu.h b/include/soc/imx/cpu.h
-> index 0bf610acafd06..8c53150acd76e 100644
-> --- a/include/soc/imx/cpu.h
-> +++ b/include/soc/imx/cpu.h
-> @@ -30,7 +30,7 @@
->   #define MXC_CPU_VF600		0x600
->   #define MXC_CPU_VF610		(MXC_CPU_VF600 | MXC_CPU_VFx10)
->   
-> -#ifndef __ASSEMBLY__
-> +#ifndef __ASSEMBLER__
->   extern unsigned int __mxc_cpu_type;
->   #endif
->   
+> I'm completely out of the loop on this whole issue and I only helped out
+> to test the patch. However, I wanted to add that before applying Zhu's 
+> proposed sequence, I could only reproduce the issue by power cycling the
+> module, as rebooting alone did not trigger the issue.
 
-Friendly ping!
+Interesting. This might explain why I couldn’t reproduce the issue in my
+setup, rather than the difference being caused by the specific PCIe
+card.
 
-Could anybody please pick this up? Thanks!
+Franz: thanks for the test.
 
-  Thomas
+Richard: will you submit a formal patch, so we try to finally fix this
+issue?  I guess it's now too late for 7.2, so be sure to cc:stable and
+have a fixes tag.
+
+Francesco
 
