@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7F47ACF2;
-	Thu, 13 Aug 2026 12:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FEE3A872C;
+	Thu, 13 Aug 2026 12:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786625493; cv=none; b=CDU6Pa4c+OdKE+2uEJqhjYFh062QgvGX3lzglrMUp/vITBq7dOSHMLsh4MUHCOOdaknILfQaYkxboJvoYyxM9hYI8TFp68TDzqbJaG9tiGxv9xCXK/yy899OuhD64PMvJazf+Vdi+mCY/s3cSBK1mwhfgmC/amS+7idyITym3g4=
+	t=1786625544; cv=none; b=OrxjLF+/BkxLI4bttr0CY1HQGRZFIrkSII00SzkSWOGK3cDBpkngIfa/L08vDLTsTQmqnmqFjsJsl0Eu5lENTQHr4GnhIrlMGfWryQlYquyfhBOdJL7WA1Q5ac6TmoqApy5A79TeQ/ANmpu+jsrbhDjnIBnqTO2w2PG8EmjbjaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786625493; c=relaxed/simple;
-	bh=7RUpOEs5VM0Y6TdNlAzmXZekGPh9eEGRx5arh/HMmyM=;
+	s=arc-20240116; t=1786625544; c=relaxed/simple;
+	bh=QYY2ie7zYEWaAwejEnDa3/Fa/F4ZSbe1MI8fpQByjDU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h5DI22pPj1oXmMmp5s/kzvNHDwUsx+5C89fXjM6jCcVzpwsiVwK9WpN0PPZ3S7roOIEElHojkRhtd/anY+N1ld10XoiUBw0a5/icVHJpUs+KSQplOfVs7mvC+FyFvlYwmg/WpJaAsrRQBZtZFaHdTaOC/dwaF8RNCxwrQycyCa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr0khjS8; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=q9oiTYZQOozptbggrtIP3bmN0jxOXPS0T7w/YuY3e6sH6vQ/+YpooQFLpha6ic6X5xAMVmSuR07XyJ6Zd0rItN9n03pO7plxEoawmDnv0vES4R0win3TU3Bi8fGxTM9P/GI075tvQsl0uu7eeexVLISs5E4qf+lK0Tw2XYiQDJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edKsLw8d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr0khjS8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76481F000E9;
-	Thu, 13 Aug 2026 12:51:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edKsLw8d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA121F000E9;
+	Thu, 13 Aug 2026 12:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786625492;
-	bh=XCYdwxsmVJnMKoCibV6/1wBZWyWt0XBcwgGOIVfgO58=;
+	s=k20260515; t=1786625543;
+	bh=fzZppP5cHZpR/ePSPovywfIqHUyD/7/zmmCnua6V1OI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gr0khjS8rh9eMfKc74O0v34HSa4dXn38SBDBG/X1lvzC+fUKvO/wtCQBFSWmauXg+
-	 m4UF/Ihqg/pjbKEtQNGLbr4q2aN09KCsaJAzU+gEPg6jguzs60hTiIwEsrQ447vio7
-	 G/j7COhZUsScotko+GLjYFVUg0KttwEUYkGzyhqnPNENjAZcce7wp6O2WGY0cLIVbY
-	 07myj8dKzU+LvdVV4H5p/kTHbBJMv7Xl3XT9P1Z8SE6JMzaYWZoUvf2zB2FJsSmJYV
-	 9PTjeVr0OloYjvJ0ZrCNtnqxplIsYA3PVJPlezNuF13BmWvyV6K+upylb9Za/aicX9
-	 tuMYxBinWtAxA==
+	b=edKsLw8dpSo0BzZdkIhXxIbTErpAhoL3dUiQMoSwKgGmK+cOI84mBBDXtIQcJWDl5
+	 ok8/Whwgk/T+/LN7D+B/2lxIyfH2xcL6uP4IeTbK6lGJIPnjuSreWRBxcY7F3vbuMu
+	 ECHkRcHhPNoM9Vpqzb39dnOHXGQlArVu0MfPOpsCPlHyN6Q4c+03ZEd0OKYyslJ8Pz
+	 f99nI49F+XEOSz2JhZf+cJNmlGSAv827VtCn0wiKW5gptoWi3cDdFpt0nIlR7WHylR
+	 dk0WKKxtgAlvsSYbsikdgkReBuIZXklg/dS0Oy/TtwRm6AioQgs/tkGKxsD74uBshx
+	 jIEJkA4t/tyuw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] ARM: dts: mba6ulx: Add Ethernet PHY interrupt
- support
+Subject: Re: [PATCH 2/2] ARM: dts: mba6ulx: Add USB hub node
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260813121250.3993187-2-alexander.stein@ew.tq-group.com>
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260813121250.3993187-3-alexander.stein@ew.tq-group.com>
 References: <20260813121250.3993187-1-alexander.stein@ew.tq-group.com>
- <20260813121250.3993187-2-alexander.stein@ew.tq-group.com>
+ <20260813121250.3993187-3-alexander.stein@ew.tq-group.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 12:51:31 +0000
-Message-Id: <20260813125131.A76481F000E9@smtp.kernel.org>
+Date: Thu, 13 Aug 2026 12:52:22 +0000
+Message-Id: <20260813125222.BDA121F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,68 +46,74 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Leftover `gpio-hog` nodes (`enet1_int-hog` and `enet2_int-hog`) =
-for Ethernet PHY interrupt pins double-book GPIO resources.
+- [High] I2C GPIO expander used as reset-gpios for onboard_usb_dev causes P=
+M phase mismatch, breaking reset timing during resume.
 --
 
---- Patch [1]: [PATCH 1/2] ARM: dts: mba6ulx: Add Ethernet PHY interrupt su=
-pport ---
-commit b452753cee9dad50d404387319c21ed7231c45d2
+--- Patch [2]: [PATCH 2/2] ARM: dts: mba6ulx: Add USB hub node ---
+commit 52d9db850f98165215d9ab4ba1bee0bd2993c73e
 Author: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-ARM: dts: mba6ulx: Add Ethernet PHY interrupt support
+ARM: dts: mba6ulx: Add USB hub node
 
-This commit adds interrupt-parent and interrupts properties to the ethphy0
-and ethphy1 nodes in the device tree. It configures the Ethernet PHYs to
-use level-low interrupts provided by the GPIO expander.
+This commit replaces a fixed regulator previously used for USB hub reset wi=
+th
+a proper onboard USB hub device node that utilizes reset-gpios.
 
 > diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts/n=
 xp/imx/mba6ulx.dtsi
+> index 244376b38835a..322fbd82531e6 100644
 > --- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
 > +++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> @@ -214,6 +214,8 @@ ethphy0: ethernet-phy@0 {
->  			clocks =3D <&clks IMX6UL_CLK_ENET_REF>;
->  			reg =3D <0>;
->  			max-speed =3D <100>;
-> +			interrupt-parent =3D <&expander_in0>;
-> +			interrupts =3D <6 IRQ_TYPE_LEVEL_LOW>;
 
-[Severity: Medium]
-Will this conflict with the existing enet1_int-hog in the expander_in0 node?
+[ ... ]
 
-Further down in this file, expander_in0 still defines these pins as
-gpio-hogs:
+> @@ -379,10 +369,18 @@ &usbotg1 {
+>  /* 7-port usb hub */
+>  /* id, pwr, oc pins not connected */
+>  &usbotg2 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+>  	disable-over-current;
+> -	vbus-supply =3D <&reg_otg2vbus_5v0>;
+>  	dr_mode =3D "host";
+>  	status =3D "okay";
+> +
+> +	hub_2_0: hub@1 {
+> +		compatible =3D "usb424,2517";
+> +		reg =3D <1>;
+> +		reset-gpios =3D <&expander_out1 0 GPIO_ACTIVE_LOW>;
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-		enet1_int-hog {
-			gpio-hog;
-			gpios =3D <6 0>;
-			input;
-		};
+[Severity: High]
+Does using an I2C GPIO expander for the onboard USB hub reset cause a PM ph=
+ase
+mismatch during system suspend and resume?
 
-		enet2_int-hog {
-			gpio-hog;
-			gpios =3D <7 0>;
-			input;
-		};
+The onboard_usb_dev driver uses suspend_late() and resume_early() power
+management operations, while standard I2C GPIO expanders typically use norm=
+al
+suspend() and resume() operations.
 
-Does leaving these redundant gpio-hog nodes in place cause the device tree
-to claim the same hardware resource twice? This might result in a resource
-ownership conflict between the GPIO and IRQ subsystems, potentially causing
-the IRQ request to fail and fall back to polling.
+During system suspend, the expander suspends first (in the suspend phase) a=
+nd
+puts its regmap into cache_only mode. When the hub driver suspends later in
+suspend_late(), its reset GPIO assertion is merely cached.
 
->  		};
-> =20
->  		ethphy1: ethernet-phy@1 {
->  			compatible =3D "ethernet-phy-ieee802.3-c22";
->  			clocks =3D <&clks IMX6UL_CLK_ENET2_REF_125M>;
->  			reg =3D <1>;
->  			max-speed =3D <100>;
-> +			interrupt-parent =3D <&expander_in0>;
-> +			interrupts =3D <7 IRQ_TYPE_LEVEL_LOW>;
->  		};
->  	};
+During system resume, the hub driver attempts to deassert the reset in
+resume_early() and waits for power_on_delay_us. Because the expander is
+still in cache_only mode, the physical pin remains unchanged.=20
+
+Later, during the normal resume phase, the expander finally syncs its cache
+to hardware and physically deasserts the reset pin. This entirely bypasses =
+the
+hub driver's power_on_delay_us wait and causes a race with the USB host
+controller, which could result in enumeration failures upon wake.
+
+> +		vdd-supply =3D <&reg_mba6ul_3v3>;
+> +	};
 >  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260813121250.3993=
-187-1-alexander.stein@ew.tq-group.com?part=3D1
+187-1-alexander.stein@ew.tq-group.com?part=3D2
