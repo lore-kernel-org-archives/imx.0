@@ -1,118 +1,133 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E272548A8A3
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 15:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CDF368296
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 15:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786635821; cv=none; b=osgKsf1pAtb5gbhf+rESs8tYFVzrBgK/VbKpPO7lAmWzFVgXBbFSrai1z1cTo4TpyzdIWuiy30jwSoU57/m5BM3jljmhPhBmPMzC7NPwWoxQ3jImOLS5tNU8yn6jEjJWgpME22yKBcgJTohIkq/02qeDJ1ylzlyxkt+PIhss/i0=
+	t=1786636083; cv=none; b=UhQG+iKIlZC89IsJ1AFiyIw3K009LpWQ5G5c9QUwHZTJXahJr/K1zweccnlGxXuqm7qHgmha3Ve6gATeqjIyztJRtnj+Cwp7bcrjOkLf3mITGHMpH3nhXj8EWM7OGZs1aaA+yLVp2G25ln98M3/eWCRvpe2hKFCd81s6Ifsr5nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786635821; c=relaxed/simple;
-	bh=yfRkCuS35PVDJtQH6LGNo0eJraVDhj9aLz4NwrcJT3M=;
+	s=arc-20240116; t=1786636083; c=relaxed/simple;
+	bh=/E0SubGOI81IPyIwUykkQsP6Ke0hxLpTzwIAs4x/vNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6Jga929EniRZkayTesx0IM+0OEiTRnJXpqgPc1RYqZoVgAEOo2CIy1+KBnEz0dXbZrORKDl38a1Jx10EiHQfZblptn7m1aI96ZbPZ5RR3K2DXn6u+TxiwiWmwqyFpzMRCh2i6iCsz8IyVrPmrs/X03CnfeKDtDQ9O7Lhl1/rYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kw1wNVVW; arc=none smtp.client-ip=209.85.216.42
+	 Content-Type:Content-Disposition:In-Reply-To; b=jt+wUzQ8cIH9FMoxdH8OG5QIsgioZdRriOdlEewLc6S2ssq/wtCRl1eS9S2OHMlsRUe/lgBPtmPZRXwAamCnsV1OfEuelikWQc6fW0QyiAH9o8PkoGu5gBCwT/yQ276apzdklSM9mco3xYHvmvKsSpwpurtyqgiDop0W42n/8Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fPNie1fB; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kw1wNVVW"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so3188297a91.1
-        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 08:43:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fPNie1fB"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3900e39d935so993374a91.0
+        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 08:48:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786635818; x=1787240618; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JjmvO0/8z0Ky0cbqYz65H+qVZdA1pLokllKhuMy7Skk=;
-        b=kw1wNVVWqTfiz1geR44xhWHVbD6Z307Dsv29H2feaqVec4cfsrzXzz+0nGyB1lrj0M
-         +wH94UOrdgaGw173agLcVIgKV/ab7xQmOERo3kZizuiwBlSdqLweqb4f/DWeK9XgZFkw
-         L9YmVHnkrghiOre7JtWv/w2dGTpXrnnUCngaVqUus8HVQfIseHr1+hzaJGhah+xlK0yT
-         vt+Oh0EJ2ASGatLOkvq0XIt+VAfvVFUMuovWdfY6W6zoqgsuHZKXPRoHgohft+9qwbXI
-         djiRaoWgcl1Yjs9h5rYhLn0wBilrZoI1RfbP6s0XMAut9gAyhoDIr9eZ2tgOzwyDyCGD
-         zr8w==
+        d=gmail.com; s=20251104; t=1786636079; x=1787240879; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Nns/NScm0vqMpTyGameGuxqrFfJTWu3YR2M4cTpXgEc=;
+        b=fPNie1fBulvDNcn1UEeKjOcSn7sqU+Z/tVCV/VlDD8Qj+gZLSEj45XSTK8nQu9vfdm
+         NTbMM912mgT1Yj7DXryHj1Uoy6d4viwVM2+RGoMRDGiyoewcwNvj5gx/hQXv3Ji4V4L4
+         uUuWV6Id6FCZqtTc+XRLUWreWFmyAsB4iqq7Y79KweOenLg2emDiPQG2XqIrV72jUVv9
+         XdxWOmF7DRmqeBjc1UwxqoFbr2wR/lI+OfbGeWHgmTm0OQtdLPYMxy6SEyCcL3qWpzpl
+         lSGdQ5m/WQNpX3uOb/4EiWzUCm4kOYVxwtM2gR4/W7iYSmVrlJX3gE8fUW+puWMPYWDQ
+         ugEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786635818; x=1787240618;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JjmvO0/8z0Ky0cbqYz65H+qVZdA1pLokllKhuMy7Skk=;
-        b=Rht+OdPheCM3BMAeVCcJMk9CrtnP/i2MsKvxJC5GYCWK8cb/ZvjjJ+nDydtXUD8Q/s
-         u9cBTW6/uyMakN5ezqWQ2k4+zM0yN0oeCHP5nS9GqduT8nDTrmpl2WWvUie4J5soypv7
-         kM+kPtdOPVyFpXOxi06mIcp5ldE0whngBh+GPpBr77D2KoqokBjdCLku2WAA2Pf98nWb
-         0/qq1VLH5QsCuPO/rGN1WliuYodQQmOM0N98u01fwLU65s09W/M+YFcNPDRW/4jv8yn5
-         cx/uWCi2gPjVJgte2SnJuy93cMccuVe/nA1z0/nEVz+EvwGvrzqJu5n7pjHPm9OGtZBJ
-         L2qA==
-X-Forwarded-Encrypted: i=1; AHgh+RrCgGCQ+8X92HyCOxcGDnuOy6G+6RpVqDaIP3W7Fpq0mRm6roXWxcYl0oE2I2MUSGpne7E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzGtH4RasW2bKRrd4dtvztNRZue81zXLgLcQwHCZyxI6qy3I0vl
-	wzTsk/vNAjefjCQiwgGmyBHOmC2Ab3GPEXohijNX88H8CkO8ZwfMrGe6
-X-Gm-Gg: AR+sD102OwuleKiH318w80VLx40VB4xnItyc2tosGodHn4DT12b6Ua3oMrvos6XaOXC
-	K3AdaHuuns1b4qmarHv5RKNiBCtMxLOZ8xcMdtMZjVvdzU9jTPVlasnXI693dycDEeProfrucRR
-	H9uO6sTF9UucmLzFaijrs4BQCnYmPvByqKjc3j5V8ysmomFlleosp/VPL/wmFqfQhqqsRqUM4Z/
-	y7waPYCTH7DyqnCRPu22gkgnbxtJbISNxeTQ3QqDnkxVnbjP3eXRa7M3v1ytTnXGJJawkjsen7L
-	ZCIjReXeiaQ2NK/hbb//IEXFkFKB6G0QiFqUIJduXn1g29AkWQ7YIn35II59RyySsvdPDhRSDU6
-	bHSVjxw6BbWm6FvaCE+I7Vrb6ezL4lJhWY4668W+/1gIsjj2ID3e3Zp3ba0npYbBUWTCe3IKTV+
-	D+1mGpYlNALLuXok1zP+R63Sj54iMQwt2NvGSQDZ4tLGDIGBYiHe00DvEtoBM2mjerAzs=
-X-Received: by 2002:a17:90b:3843:b0:38e:1497:af5b with SMTP id 98e67ed59e1d1-3931dffc226mr7907538a91.1.1786635817974;
-        Thu, 13 Aug 2026 08:43:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786636079; x=1787240879;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Nns/NScm0vqMpTyGameGuxqrFfJTWu3YR2M4cTpXgEc=;
+        b=SMAIoFwBE7IByUBPCRfdP2peZMhqcc7SOAAulcJxZtkpF6y/L8OxJyfupOyrxd5nzp
+         UmxmjvcbR2Qr7mjWpfzTo/ffzIf7OAaZsCxs/jexgCTvECxrL/j2Eil2Y1kqECCpCKxi
+         SdACuiKlWoZAsk6WoadbmSSLVs++M5T9oVDI0YHY/Fd9Ft248lWWuRyQZeF2IuJZwaAz
+         S8XlYUNao4I/GW/oDc+mOtwYokBD0EzpUzOPQDMoJWGOeF6w1gpe0kF5hHQjBl/1L5I7
+         iCGoye2YqJ0cFiYvvr4epU0ZF/Cm+zXjLJx9siYjPV25jKVJlLrue8yPZEnREavGFuQi
+         db3w==
+X-Forwarded-Encrypted: i=1; AHgh+RoHSNLBFxy8ZkMPC9LAP2hl0PveUz2O4IP4DSQal1LzovgIQuEkZTVbB/6kDUG8o2MzW54=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxXgR7l01Ordl0Ba1V5RKG/O0NlBwVdaoe2tiIZaFjx8CIaQ5Jd
+	3+vFKr+IBvtGudGkRBjdsdQ7D4AYjWvY+KlnlM/KCS10UdawlxPx0GJ2vtNYnSuwxfQ=
+X-Gm-Gg: AR+sD13RfDy2W5TPsYKgkGJT7lrn+jh6ZbOhYaYhPoIhiZllE6TLR5U34fWrCYtFV8w
+	mftBgsH9K7T0I4Y16GUjI2qPDlvf8UA5QFKulC6wSNnrkdRGOH6K62Y4kGbdjOmNSQ1mcbDz9oA
+	zn8jDeyzE2mT2zcqGHdkI842C/wIa/0ql+QwRbXceeIQwqyYtoo6kJOgLamq5SVAOQ1G2noY34R
+	tJRQK64LVm9wadNbO6+rqPniJ4eS2mHYOrSoWrROSSFlAh4DspFehgs8zkDwQ/yfnoWiRx+YV63
+	yLEy36f9lOe2rl9FefOIhLMGDlVnBaHmji9d95AeB5QM+S+KPT0epJvIupUsW9YWVvwb76i68Df
+	DstvpPhldGOW6wTzVxQhk3vdpxh7TBKjrxaodBTKgVfeCW+sJ+iAkWdssJHxxya5z84HbEEmSf3
+	tk4OkYwxp8odsq3VBbD25hPz3mC8luSW+xznukOIpOmk6ky5vAo/fYrKFktmlVrH+z9+c=
+X-Received: by 2002:a17:90b:48c7:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-3931e298447mr8642971a91.14.1786636079339;
+        Thu, 13 Aug 2026 08:47:59 -0700 (PDT)
 Received: from leonardoc-nb ([179.160.38.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931dadc0f4sm1600312a91.2.2026.08.13.08.43.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931f2a7d9bsm3441973a91.8.2026.08.13.08.47.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 08:43:36 -0700 (PDT)
-Date: Thu, 13 Aug 2026 12:43:29 -0300
+        Thu, 13 Aug 2026 08:47:58 -0700 (PDT)
+Date: Thu, 13 Aug 2026 12:47:54 -0300
 From: Leonardo Costa <leoreis.costa@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Leonardo Costa <leonardo.costa@toradex.com>
-Subject: Re: [PATCH 6/6] arm64: dts: freescale: imx8mp-verdin: Add Mezzanine
- with Toradex Display 10.1" LVDS V2
-Message-ID: <rglymw6p4c65yoqz3pjn6e6nq7cil2fa7m7dqghshgdpavby7d@kyza3ceavq6z>
+To: sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, 
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex
+ Capacitive Touch Display 10.1" LVDS V2
+Message-ID: <tfw352zb7gtx7mjg4nqcgjojsesppbwhl76s4hc44gjexgkrdu@sw5tbvwanyan>
 References: <20260813133335.1941580-1-leoreis.costa@gmail.com>
- <20260813133335.1941580-7-leoreis.costa@gmail.com>
- <an3brO5COdw_F76m@SMW015318>
+ <20260813133335.1941580-5-leoreis.costa@gmail.com>
+ <20260813141916.103531F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <an3brO5COdw_F76m@SMW015318>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260813141916.103531F000E9@smtp.kernel.org>
 
-On Thu, Aug 13, 2026 at 09:58:52AM -0500, Frank Li wrote:
-> On Thu, Aug 13, 2026 at 10:33:35AM -0300, Leonardo Costa wrote:
-> > From: Leonardo Costa <leonardo.costa@toradex.com>
-> >
-> > Add a device tree overlay enabling the Toradex Capacitive Touch Display
-> > 10.1" LVDS V2 on the Verdin Development Board with Verdin iMX8M Plus
-> > Mezzanine expansion board. The panel connects via the i.MX8M Plus LCDIF
-> > on the Mezzanine LVDS interface (J10). The panel is an Opto Logic
-> > SCX1001511GGC49 10.1" WXGA TFT LCD LVDS and the touch input is provided
-> > by an ILITEK ILI251x capacitive touch controller.
-> >
-> > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> > Link: https://developer.toradex.com/hardware/verdin-som-family/add-ons/verdin-imx8m-plus-mezzanine
-> > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
-> > ---
+On Thu, Aug 13, 2026 at 02:19:15PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] The device tree overlay uses an undocumented vendor prefix `optologic` and compatible string `optologic,scx1001511ggc49`.
+> --
 > 
-> what's difference with Add Toradex Capacitive Touch Display 10.1" LVDS V2
+> --- Patch [4]: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex Capacitive Touch Display 10.1" LVDS V2 ---
+> commit ae998202e5daf5ce215671d831b6ffc33e8604ec
+> Author: Leonardo Costa <leonardo.costa@toradex.com>
 > 
-> why not share one dtso?
+> arm64: dts: freescale: imx8mp-verdin: Add Toradex Capacitive Touch Display 10.1" LVDS V2
+>     
+> This commit adds a device tree overlay for the Toradex Capacitive Touch
+> Display 10.1" LVDS V2. The display is connected via Verdin iMX8M Plus LCDIF
+> and features an Opto Logic TFT LCD with an ILITEK capacitive touch controller.
 > 
-> Frank
+> Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
+> 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
+> > new file mode 100644
+> > index 0000000000000..6b0c1a10ae2a9
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
+> 
+> [ ... ]
+> 
+> > +&{/} {
+> > +	panel-lvds-native {
+> > +		compatible = "optologic,scx1001511ggc49", "panel-lvds";
+> 
+> [Severity: Low]
+> Does this code introduce an undocumented vendor prefix and compatible string?
+> The prefix `optologic` and compatible string `optologic,scx1001511ggc49`
+> appear to be completely missing from `Documentation/devicetree/bindings/`,
+> which will cause the Device Tree binding checker to emit warnings when
+> validating the DT with `make dtbs_check`.
+> 
+> > +		backlight = <&backlight>;
+> > +		data-mapping = "vesa-24";
+> > +		power-supply = <&reg_3p3v>;
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260813133335.1941580-1-leoreis.costa@gmail.com?part=4
 
-Hi Frank,
+As specified in the cover letter, these patches should be applied after
+another series:
 
-There are two main differences:
+- https://lore.kernel.org/linux-arm-kernel/20260623195741.495734-1-leoreis.costa@gmail.com/T/#t
 
-1. The mezzanine one uses different backlight controll pins, so here we
-use the 'backlight-mezzanine' node, instead of the 'backlight' one, used
-in the one without the mezzanine.
-
-2. The touchscreen GPIO and interrupt pins are also different with the
-mezzanine board.
-
-Leonardo
+This series adds the compatible binding strings, and is currently in
+linux-next.
