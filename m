@@ -1,148 +1,130 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1CB4A21;
-	Thu, 13 Aug 2026 13:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2861481664
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 14:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786629369; cv=none; b=DQk0T3TK8gbkR0ZHLpz2R3j7dnsQtXvlwHwB+sWxrQ44u1IPOUiIUEfXWU3fA8IdUieB/DAKngsAvGSpxyCmSakiSeNrHu3wGSKA4xYe/PZlpY9I4Z8C4Yr6+57Fm9FoQY4HO/tRrwu9rMqB7XVgl5FflTWq8V3QbsPYNbLPSik=
+	t=1786629966; cv=none; b=tXRHh+4H7dGD3+4T1t+ut0XXFWLRJzl1BNKpkhN5aTq/AxboOSa8vvGuSyoLGvfgHa8Ayn39G0nPj7cvvfFQ9HJtlmzSa9yeGRh6AbtceUaBAM/+0JS8iIacQi/GYEAVbEMFFFi3+ofQ13warXhue1qzj6W3YnNeIN1VgUs+8e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786629369; c=relaxed/simple;
-	bh=yWYTw39zIbgcmSbmey890cc9ZgRI1QY1zthecXTEb1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VK0Ja5U2ynRUA7EWgQIELv4sh2SyZFzckdb7TGwnE/5IuIBzviVsDtC4XryV+jnPs+W7ETTx2sk6ps5DuW+vKcZCq7zbgNsF9F9vdiBXWtXOurrfWFuWItNZGMZMhSo3suw3WWe1kQAcq5Jpaa+ZumTJaRg28n2F6QNbfcRs2a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mpyTWxKn; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1786629966; c=relaxed/simple;
+	bh=ah1cDBDIZ8iXgmzLNyPQB+ryhZ7bXr1UEe22NH6a8So=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g/sHjSq0BvJekJG8RsCGBK/j0Q/F297NirbyAMnG5UANZ4kv6Ma6mNsUBsAjefN9tlFowP9/feeGKU9VfgVgOVk4pmSP7xYqVl5Ff4CV01jzjqcjKxNWGKgaf8rs1dpaWgOFrTVRg0E6RGVYZhPdctWeA0q8wsuBI33WGPlMk3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RM41rrqd; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mpyTWxKn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=2ZUinKNyUo3XcfxWkaOsI90dMllxe5U/OvSncOxGsEI=; b=mpyTWxKn7N8lX2KifH7f0/03MF
-	ZzV2U+sfAyHwiuG7BznZWgCWbu8BUkmXS5BrlXVMr7aoJfTuE7FovtIeweMjYBO0krFrgOk/3iU16
-	EtYymcwuYLKMGuFjYjhzHp9bZAtPZTNevssVqSG+c4Km/NS/qqAkfVK3ShMavsmUJj8GFRhl0+0cf
-	EdV+9wrO2HYJcHidH79suapxmmGvrtf0g6F79sWYZy5LT3S/6e5kSmRK4dMSxYt+AZBFc7aNUVcg9
-	Y5wTzI2leuZVC8DInw9ezD17yU1TC268FwdLtGH5bdbjeOvKh4Ak3AmHBhds+rGHXaBQLmTykUISH
-	wbS6tJMA==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wuVTb-00093P-0b;
-	Thu, 13 Aug 2026 15:28:07 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wuVSW-000Lcu-0L;
-	Thu, 13 Aug 2026 15:28:07 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org,
- robh@kernel.org, Frank.Li@kernel.org
-Subject: Re: [PATCH 1/2] ARM: dts: mba6ulx: Add Ethernet PHY interrupt support
-Date: Thu, 13 Aug 2026 15:28:06 +0200
-Message-ID: <6338721.44csPzL39Z@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260813125131.A76481F000E9@smtp.kernel.org>
-References:
- <20260813121250.3993187-1-alexander.stein@ew.tq-group.com>
- <20260813121250.3993187-2-alexander.stein@ew.tq-group.com>
- <20260813125131.A76481F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RM41rrqd"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4956242332dso19745575e9.2
+        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 07:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786629962; x=1787234762; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=USvILuDtTiPA6dYavysHHB08OaS594TOWNHKjjfu0XQ=;
+        b=RM41rrqdatpTWxHay9ABChwP6Zc2IVs2SGAyfet47iOgPBeFsIvt1W9FLOiiyLQnjn
+         naKL73yN9YSlzvUZRdnTTr6mCGxBOgxEV6YCT9hbHsmhLnbNKFJEDmnuNZEExI5SwEEO
+         TErx6zT6ZsgY+yP/Iv14JKPxsn2mUL0BovJ8TWlS0AB7Nz7ZVZU+ySvfvnuYYtXAK9SY
+         6Lq2WIMNMF0BK8rvBt2PV05mu2J6RkAfPWDF3U2dazu1pY/3JzZ6A+y+OnPcvwYVs05t
+         lRmIZhFOR6U+mh/+t1MFbWON8RaFQH0X2Vj//6BNjR+y9gSoR3JvgSLy+9rK8DH+rWWw
+         iDsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786629962; x=1787234762;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=USvILuDtTiPA6dYavysHHB08OaS594TOWNHKjjfu0XQ=;
+        b=dPPPEOQTW036Gdtp6vVJQM/52qVwt/qxVLLB4OfGi/QBPtLdfVtyU5x+MHaRHwZR8z
+         EdiTWlrlXYdsKoLzGgwntitx/PSezZYcuYbNlzNvzPtrIQxwMgUd49qiZODWXjO32atJ
+         tRcoREOtGPBsklCuPXDl+B+hQneSQahMoOLSSdz1UfSJdnAsP3iQcNyeXKPRf7+R3F8s
+         MzOkKDNDEFbYv8scZzUUw4C0VjxeEjtY4l9FF9Rm0/Uhj2+7RLcEk1eCNilkvtAc+uYF
+         CleQk863oMUor7VsjC1Q1WZEzjvgSJSr9ectXouuuYyMnfpN5FwmCxk4rXY0//9D5CJo
+         hCWg==
+X-Forwarded-Encrypted: i=1; AHgh+RpvYVIlm9mNQZZGrbw6S7RLZuG/i9+CMWmbF7R7W7CS8tZ3iMYrhqR5WUCjlMwuyr7k7ys=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXQpk3jRQOAT/hvNKN92SfB7Kx4uCIXJT4A2WQeO9+NrhvM19P
+	8v6+UkLczr88zT4ec9uhDTtYZeGLXQNTPeAOFtVdGxcG6L7Nwfn3md8Z
+X-Gm-Gg: AR+sD11Sdm1u+qqjXwmB/IdorRHRgdHAzSrkTE8QLLV83lXdNhubpbo8K0DbLQhS71k
+	f7uVgx59axVgmN6I4Ntt0+qbo/eyu+yKrQQII2tXsu3kzUefWWVC42vxPTbyaczK8+sm3DM/ooU
+	LzP3pRmVcmPIibmPyIJaNETzYqZ62gLFmK4nTFPBY1bHw/tP47C3zSc85IPYsd17DM7XCz3AGH2
+	quppnQi463fdXB+hZKSi13BtmZ0gVzreHN6OonBmvIAgKP+wWt8a7szJAfu1fFo7+tk0zWWTh9+
+	AJaqCNBcY0pxFTcHNPyEGzlaX/S3t/uhc6Ub60ZC+vMtdeMLv+CMilZqFb+ZLMz4AwDJcY7KlJK
+	p65qGkw0Y98ZNzq81Wo/5NTqP0O8r4WlYEa84lligocRUG8rdJfXVnZL1EWn+/AQCJwGMMaSaaE
+	vub3uk5IWywLk508u3sc1e6rfBUcX+sNiQczUL3LioLNoMlFJewT0XuzWDDWU34OZZhQ==
+X-Received: by 2002:a05:600c:1c25:b0:499:726c:d658 with SMTP id 5b1f17b1804b1-499821d91d9mr57412055e9.19.1786629961887;
+        Thu, 13 Aug 2026 07:06:01 -0700 (PDT)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af191sm6690190f8f.19.2026.08.13.07.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 07:06:01 -0700 (PDT)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Agner <stefan@agner.ch>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>
+Subject: [PATCH v3 0/4] ARM: dts: vf: Iris carrier board for the Colibri VF50 and VF61
+Date: Thu, 13 Aug 2026 16:05:56 +0200
+Message-ID: <20260813140600.1824949-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28091/Thu Aug 13 08:25:54 2026)
+Content-Transfer-Encoding: 8bit
 
-Am Donnerstag, 13. August 2026, 14:51:31 CEST schrieb sashiko-bot@kernel.or=
-g:
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] Leftover `gpio-hog` nodes (`enet1_int-hog` and `enet2_int-hog`=
-) for Ethernet PHY interrupt pins double-book GPIO resources.
-> --
->=20
-> --- Patch [1]: [PATCH 1/2] ARM: dts: mba6ulx: Add Ethernet PHY interrupt =
-support ---
-> commit b452753cee9dad50d404387319c21ed7231c45d2
-> Author: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
-> ARM: dts: mba6ulx: Add Ethernet PHY interrupt support
->=20
-> This commit adds interrupt-parent and interrupts properties to the ethphy0
-> and ethphy1 nodes in the device tree. It configures the Ethernet PHYs to
-> use level-low interrupts provided by the GPIO expander.
->=20
-> > diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts=
-/nxp/imx/mba6ulx.dtsi
-> > --- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> > @@ -214,6 +214,8 @@ ethphy0: ethernet-phy@0 {
-> >  			clocks =3D <&clks IMX6UL_CLK_ENET_REF>;
-> >  			reg =3D <0>;
-> >  			max-speed =3D <100>;
-> > +			interrupt-parent =3D <&expander_in0>;
-> > +			interrupts =3D <6 IRQ_TYPE_LEVEL_LOW>;
->=20
-> [Severity: Medium]
-> Will this conflict with the existing enet1_int-hog in the expander_in0 no=
-de?
->=20
-> Further down in this file, expander_in0 still defines these pins as
-> gpio-hogs:
->=20
-> 		enet1_int-hog {
-> 			gpio-hog;
-> 			gpios =3D <6 0>;
-> 			input;
-> 		};
->=20
-> 		enet2_int-hog {
-> 			gpio-hog;
-> 			gpios =3D <7 0>;
-> 			input;
-> 		};
->=20
-> Does leaving these redundant gpio-hog nodes in place cause the device tree
-> to claim the same hardware resource twice? This might result in a resource
-> ownership conflict between the GPIO and IRQ subsystems, potentially causi=
-ng
-> the IRQ request to fail and fall back to polling.
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-Because drivers/gpio/gpio-pca953x.c does use GPIOCHIP_IRQ_RESOURCE_HELPERS
-these hogs are actually redundant. Will remove in v2.
+This adds a device tree for the Toradex Iris carrier board carrying the
+Vybrid Colibri modules, plus two small preparatory patches for the
+module-level dtsi that the i.MX Colibri variants already had.
 
-Best regards
-Alexander
+Everything was tested on a Colibri VF50 on an Iris V1.1 running 6.18:
+Ethernet, USB host and OTG, all three UARTs, i2c with the carrier RTC,
+SPI, the microSD slot and the RS232 transceiver hogs.
 
-> >  		};
-> > =20
-> >  		ethphy1: ethernet-phy@1 {
-> >  			compatible =3D "ethernet-phy-ieee802.3-c22";
-> >  			clocks =3D <&clks IMX6UL_CLK_ENET2_REF_125M>;
-> >  			reg =3D <1>;
-> >  			max-speed =3D <100>;
-> > +			interrupt-parent =3D <&expander_in0>;
-> > +			interrupts =3D <7 IRQ_TYPE_LEVEL_LOW>;
-> >  		};
-> >  	};
-> >  };
->=20
->=20
+Changes in v3, following Krzysztof's review:
+- fold the Iris compatibles into the existing -on-eval enum entries
+  instead of adding standalone entries
+- use hyphens in the newly introduced compatibles
+  (toradex,vf500-colibri-vf50-on-iris, toradex,vf610-colibri-vf61-on-iris)
+- drop the fixed 5V regulator that only fed the VBUS regulator
+- sent as a fresh thread instead of in reply to v2
+
+Changes in v2:
+- add the dt-bindings patch for the new compatibles
+- describe the USB host VBUS regulator instead of hogging USBH_PEN
+
+Mehmet Fide (4):
+  ARM: dts: vf-colibri: apply the EXT_IO pin group
+  ARM: dts: vf-colibri: name the SODIMM gpio lines
+  dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
+  ARM: dts: vf: add Iris carrier board support for Colibri VF50 and VF61
+
+ .../devicetree/bindings/arm/fsl.yaml          |  12 +-
+ arch/arm/boot/dts/nxp/vf/Makefile             |   2 +
+ arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi | 117 ++++++++++++++
+ arch/arm/boot/dts/nxp/vf/vf-colibri.dtsi      | 153 ++++++++++++++++++
+ .../boot/dts/nxp/vf/vf500-colibri-iris.dts    |  14 ++
+ .../boot/dts/nxp/vf/vf610-colibri-iris.dts    |  14 ++
+ 6 files changed, 308 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/vf/vf500-colibri-iris.dts
+ create mode 100644 arch/arm/boot/dts/nxp/vf/vf610-colibri-iris.dts
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+base-commit: 3d6d817622b0a9721e3cc404df3469171582be13
+-- 
+2.54.0
 
