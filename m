@@ -1,132 +1,122 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4885438487;
-	Thu, 13 Aug 2026 11:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6483476CF3;
+	Thu, 13 Aug 2026 12:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786622167; cv=none; b=OyVJBOh6RZRbhpjOxVaVBqMWItjJybOFB4VLJIkneT4tKskr+HNcpo3sDoL3CQx3KUTL3P77WItfgyOmNxu+ypp8L7C6kAYZtLda4iNUtQqiObVzQE885jO6uRj47oH4AR0w01PiyTnXU8S4wSW2RifO0EEjreiCTQm+XuccRrY=
+	t=1786624946; cv=none; b=RkZWw4sToVNROFInOmxDyMpgSj0QuVW2Uqw9skBdekPVGh1yU5JL+ECHxkb6Ld/VmeR/wRESPcmK8Z4B0ABUoDc0XK/sexYIHtY4J6FBaPLf6fjveiEFQo7cyVppe9cJihmWeGvDHaNScfu3n2UM/BoMnrXcfCg1ZkZuXPlUoiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786622167; c=relaxed/simple;
-	bh=Uk7Il3FE65wXGCnqql8rYhFHiqw9lCRFg5eIkwXXd2E=;
+	s=arc-20240116; t=1786624946; c=relaxed/simple;
+	bh=IziNnZNk7z+jo8WWgFO+jaaBCuHRlXBQ++5+VFAUVY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nJyJr42ZrNm5xDLTfs8xFwc06XEWcJHxB3j1j8Birxc5tV/GfhGwgSVdPaEzHswGVI8QWhLqCAN39fYm9QR3STxm8JTYeYJIf6LOuEfPXBH/dsghQH6mdN00I8Av54ZLcNGDkdL0refnCzG4Twv658NMdX+FspgXUIT72cZPhZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=WIdOMCWu; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version; b=Cqxl9vZZIg1ODwyALclUZ2QG+RpXXUdKGle4zzwfWdNj4zFYnjIrkGwmWy96VL65mLWyYvycISUyAX0um+Z5aba+xl/elzcOIJ0PrTopNRlxKEWHkrF6JjXIZI90QP08Cth7S+nqwR4t6v4QssB/BhNiLcLkY0E2I6qX4EprXUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=fdXYo5B0; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="WIdOMCWu"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="fdXYo5B0"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=jV+fr1YQSYU+Nk0tUAwhRpsmVLUxLPPUsySQv1/P7jU=; b=WIdOMCWuTO4eLAyYs6Kf6uR2Zv
-	Va89VhI+u9Dmu+cns7ATJDSn8UUqS+X3ZyihRtem3zTW74T96FVdWpmHSRVoME+79JG7AHVdiJYFu
-	a2zXUhIY4lTDLxpiAjlhfDQql1yI2Zo+/KewKwFDmJ4MbuqKk2CgXAvpW2YLvVAIgcWnx6aAS55mM
-	5OQr03rFN28yNM+2SkzuflKkewUehcJ4kSzhE6It/HC3EBRS4OdsQR70b8+H0aQzUYnyCyba1GnVK
-	Te/Gv4yskbCkmumZOWGkuliITOOdONnuyra4rqfhpGoVfmsObkermgEpIWG8t0vS2vuIZuDDtj5U4
-	DX9uyiBQ==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
+	bh=c+VeLjO2DwFBf6rQsy8olsg3EAsIDvKkOvaB8/Zphig=; b=fdXYo5B05QUYmO2FSc7a5QyqLd
+	NTmvkskK6jev/tYpRFQ0RGjzuMfGWd1Y21fSR3X2nYSYRHyInyJOJB/lJZ+tKLPBcN59zFRM8DEhf
+	HfJxkhb6I1HNndVy6UShwz+X29+SY/ZvflkgZWDjn+RiPWq5uSUB3fHr7biYYPmPBadqSeTHNqIUV
+	GKfpV0Q53bNxIxmljRKGt5zUN/pPtf1Of2rDWLXGWVpaku2t4mrqyHCpm8v1nBpD8voqDv012WMnb
+	KLYPe6/WeJl7cIrLaiHmCiFj7V/QqlwFU6hQn3NPfNaUIZiE8xYGKvP9GorrmcCBUoQYBZdNsMUww
+	1qfr8VRA==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wuTgX-0002Fs-1v;
-	Thu, 13 Aug 2026 13:33:22 +0200
+	id 1wuUIu-000BXJ-34;
+	Thu, 13 Aug 2026 14:13:01 +0200
 Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wuTgW-000HCm-1a;
-	Thu, 13 Aug 2026 13:33:21 +0200
+	id 1wuUIv-0005zb-1I;
+	Thu, 13 Aug 2026 14:13:00 +0200
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- Francesco Dolcini <francesco@dolcini.it>
-Subject:
- Re: [PATCH v4 1/4] dt-bindings: lcdif: Add endpoint bus-width property
-Date: Thu, 13 Aug 2026 13:33:20 +0200
-Message-ID: <16977374.uLZWGnKmhe@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260813092836.38367-2-francesco@dolcini.it>
-References:
- <20260813092836.38367-1-francesco@dolcini.it>
- <20260813092836.38367-2-francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] ARM: dts: mba6ulx: Add USB hub node
+Date: Thu, 13 Aug 2026 14:12:46 +0200
+Message-ID: <20260813121250.3993187-3-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260813121250.3993187-1-alexander.stein@ew.tq-group.com>
+References: <20260813121250.3993187-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/28091/Thu Aug 13 08:25:54 2026)
 
-Am Donnerstag, 13. August 2026, 11:28:31 CEST schrieb Francesco Dolcini:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->=20
-> The DPI output of the LCD interface can be configured with a bus width
-> of 16, 18, or 24 bits. Introduce a bus-width property to the output
-> endpoint, specifying the number of parallel RGB bits connected.
->=20
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Instead of handling the USB hub reset using a regulator, add a proper
+on-board USB hub device with reset-gpios set.
 
-Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-> ---
-> v4: use /schemas/graph.yaml#/$defs/port-base
-> v3: use video-interfaces.yaml
-> v2: use the common bus-width property instead of the legacy interface-pix=
-=2Dfmt
-> ---
->  .../devicetree/bindings/display/fsl,lcdif.yaml       | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/D=
-ocumentation/devicetree/bindings/display/fsl,lcdif.yaml
-> index 2dd0411ec651..89cea0c14cf1 100644
-> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> @@ -68,9 +68,19 @@ properties:
->      maxItems: 1
-> =20
->    port:
-> -    $ref: /schemas/graph.yaml#/properties/port
-> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> +    unevaluatedProperties: false
->      description: The LCDIF output port
-> =20
-> +    properties:
-> +      endpoint:
-> +        $ref: /schemas/media/video-interfaces.yaml
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          bus-width:
-> +            enum: [ 16, 18, 24 ]
-> +
->    display:
->      $ref: /schemas/types.yaml#/definitions/phandle
->      description: phandle to display panel
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
+index dea473f660f91..2327528b402f3 100644
+--- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
+@@ -133,16 +133,6 @@ reg_mpcie: regulator-mpcie-3v3 {
+ 		vin-supply = <&reg_mba6ul_3v3>;
+ 	};
+ 
+-	reg_otg2vbus_5v0: regulator-otg2-vbus-5v0 {
+-		compatible = "regulator-fixed";
+-		gpio = <&expander_out1 0 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-name = "otg2-vbus-supply-5v0";
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-		vin-supply = <&reg_mpcie>;
+-	};
+-
+ 	reserved-memory {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -407,10 +397,18 @@ &usbotg1 {
+ /* 7-port usb hub */
+ /* id, pwr, oc pins not connected */
+ &usbotg2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
+ 	disable-over-current;
+-	vbus-supply = <&reg_otg2vbus_5v0>;
+ 	dr_mode = "host";
+ 	status = "okay";
++
++	hub_2_0: hub@1 {
++		compatible = "usb424,2517";
++		reg = <1>;
++		reset-gpios = <&expander_out1 0 GPIO_ACTIVE_LOW>;
++		vdd-supply = <&reg_mba6ul_3v3>;
++	};
+ };
+ 
+ &usdhc1 {
+-- 
+2.55.0
 
