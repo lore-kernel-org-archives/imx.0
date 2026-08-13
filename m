@@ -1,45 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CEA3382EC;
-	Thu, 13 Aug 2026 09:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D689A3B5847;
+	Thu, 13 Aug 2026 09:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786611798; cv=none; b=OX9QVhGunUXwMt+qfGue57hb2vsfsjIae2Bfrlz1xUaG/R4QRqyb+2k71nMCuYF4noJKlcE0dUf1U5KUBer15nW3MPvb2MCacKH1uTHSj5rd2kiDgEXOP6Qt6G5iLs8ZuouVFQTXWFVTFLl219CLGURWBP/gR8PDGaw6IA/zGHs=
+	t=1786613183; cv=none; b=WqVjAhl8Qmi63C6VjUlSWBcLUUxqmg2WnPxGfWnY3OREwx14TJFL5CiO76ghtY7wZ3HliWKO+jgLZPizJHRxxkbezhQKgFen3w6R1TUySCG/ESbn75pzTRFC2ENtJnehUenhoUvjc/DYYqq6epCpdaUBhfIa/GkUDhhE7pArp34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786611798; c=relaxed/simple;
-	bh=ASUl725W4Q4DWrQQw4kPCv74EVhOJUa0nFeZmfx4frw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ce2A9f6tBXBqK5trFO3wVLUlnEanLW38zXC1icclrFLrGo6v3GtKysRFApzZ/mJV2o4IUCvumMPiGtZAzxVAbokL36F4LfA70FvXwX7wVfSU3iDxtEerlcx2cDSr6EcQSmONacG9cZ0ID8otytxdIphyWjIYf48BbqigXdQ1lok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ht27A/7P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786613183; c=relaxed/simple;
+	bh=OJg286iu0qYAAr4kx4ggHrhT7nJqXK85IwiMmTzM3yM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X8/xxlN2pDs5rOR0LGe34lqrt/cPZpd9ljMS3XdMihZISat0MRz0nUtJOC0+cn0WY91glskZrWeU+9BssfCHYUUv/W/kQdggxxH4eK7SU0YqXkrpaFXxIBbwWKmx3UIZGycUtDlfEiH07fiNDCPuXsJ7wLMsblBwkzZrN9//t/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=nykcABIS; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ht27A/7P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDD51F000E9;
-	Thu, 13 Aug 2026 09:03:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786611797;
-	bh=LIUCyI1DmaIJkYpbNrBXxcSosIT/TqoljgTn7CMHNp0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ht27A/7P5ZRM0WD78BiwoVAkJUPSuCeoGk/qSh0fAfqEDbt6ctl9oMyLiVF+Hun6i
-	 XBqb5L1d73+0Cn+G1v0VIGTcNlz5xvFMWiWsCohYJVc4/XJc8Xh7l6sUzxw7R/PAjt
-	 Y6RtJsaWMb1C++ybFL5QSiIfsymIDEOnqI9nwfaqg/uK5YXCY2vrYQJeNgtXJ1q1vv
-	 8OXR8rI41EOJsFLvcm8diDqtBsp0ZxlQwm6Tc+h1kTRZUQIBa701J1lUls8D3fM7MG
-	 nqW1qR8oD9I9Mnj5MU89/8czjzmiUK5gxy93eSDIn+Ph79+rwLbYJd9/1sBkxDSaI+
-	 eM12gI05bVh0w==
-Message-ID: <cf1e1514-fb92-46cd-95a3-9c857bf08f66@kernel.org>
-Date: Thu, 13 Aug 2026 11:03:06 +0200
-Precedence: bulk
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] dt-bindings: lcdif: Add endpoint bus-width
- property
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Francesco Dolcini <francesco@dolcini.it>
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="nykcABIS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=eGx9tTiQdOBn7DN5qCJ32D8R2TduRxZShtLtOWV9bwk=; b=nykcABISTLy7A0Km0vFoKMmp19
+	J7uanBGGFGeQ/YS+/ctlTFzX1jh/KIBrD9/DPU2QL0O1Pt1VXIxeeN2N+UrRJvoX3oHUlWG4uLvBj
+	JUW0l2NlEMJq0uzH3Gj0bXVWTzZBeFKMqM9SFzs25PQLNc/bXhFcFbszPCaZF/4R7SiS/JoV1RzHb
+	c/rfahjyRodt/Ze43t5JkBfUdsSA48voxaebMePchMSuyGOGpiCmKtpjD5y+jLz8k0Z6SPkzS0Fc+
+	c6WeypKvIQ2AYr7dtUq5LKxcw6gvXEehMwUrfDtbx2qx7U0ssyyc8S1QVihjIagKJx2EsViWht2c1
+	vO1fJrGQ==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wuRBz-000BKa-2p;
+	Thu, 13 Aug 2026 10:53:40 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1wuRBz-0004dI-17;
+	Thu, 13 Aug 2026 10:53:39 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
@@ -47,124 +48,173 @@ Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
  Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Fabio Estevam <festevam@gmail.com>, Francesco Dolcini <francesco@dolcini.it>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
  dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org
-References: <20260812132954.148571-1-francesco@dolcini.it>
- <20260813-classy-boa-of-apotheosis-57207e@quoll>
- <20260813083402.GA19687@francesco-nb> <7661119.LvFx2qVVIh@steina-w>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <7661119.LvFx2qVVIh@steina-w>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject:
+ Re: [PATCH v3 2/4] drm: mxsfb: Add optional DPI output bus-width
+ configuration
+Date: Thu, 13 Aug 2026 10:53:38 +0200
+Message-ID: <9200378.lOV4Wx5bFT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260812132954.148571-3-francesco@dolcini.it>
+References:
+ <20260812132954.148571-1-francesco@dolcini.it>
+ <20260812132954.148571-3-francesco@dolcini.it>
+Precedence: bulk
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28091/Thu Aug 13 08:25:54 2026)
 
-On 13/08/2026 10:56, Alexander Stein wrote:
-> Am Donnerstag, 13. August 2026, 10:34:02 CEST schrieb Francesco Dolcini:
->> On Thu, Aug 13, 2026 at 10:10:43AM +0200, Krzysztof Kozlowski wrote:
->>> On Wed, Aug 12, 2026 at 03:29:49PM +0200, Francesco Dolcini wrote:
->>>> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->>>>
->>>> The DPI output of the LCD interface can be configured with a bus width
->>>> of 16, 18, or 24 bits. Introduce a bus-width property to the output
->>>> endpoint, specifying the number of parallel RGB bits connected.
->>>>
->>>> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
->>>> ---
->>>> v3: use video-interfaces.yaml
->>>> v2: use the common bus-width property instead of the legacy interface-pix-fmt
->>>> ---
->>>>  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 9 +++++++++
->>>>  1 file changed, 9 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
->>>> index 2dd0411ec651..1f3daf002707 100644
->>>> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
->>>> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
->>>> @@ -71,6 +71,15 @@ properties:
->>>>      $ref: /schemas/graph.yaml#/properties/port
->>>>      description: The LCDIF output port
->>>>  
->>>> +    properties:
->>>> +      endpoint:
->>>> +        $ref: /schemas/media/video-interfaces.yaml
->>>
->>> This won't work, you need to test your DTS. The port schema does not
->>> allow video-interfaces properties. You need port-base, like in every
->>> other case.
->>
->> Thanks for the review Krzysztof
->>
->> Given my testing was not ok, and I am not sure what I did wrong exactly
->> on my tests, is this the change I should do?
+Am Mittwoch, 12. August 2026, 15:29:50 CEST schrieb Francesco Dolcini:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+>=20
+> LCDIF programs LCD_DATABUS_WIDTH from the selected media bus format. The
+> format reported by the downstream panel or bridge describes the display
+> input, but it does not describe how the LCDIF data pins are physically
+> wired on the board.
+>=20
+> These can differ. For example, a 16-bit LCDIF bus can be connected to a
+> 24-bit display by wiring the available color bits to the corresponding
+> display inputs. In that case, using the display's 24-bit format to
+> configure LCDIF selects the wrong data-bus mode and changes the assignment
+> of color bits on the LCD_DATA pins.
+>=20
+> Read the optional bus-width endpoint property from the LCDIF output port
+> and use it to select the media bus format used to configure LCDIF. This
+> allows the LCDIF bus mode to describe the physical interface
+> independently of the downstream display format.
+>=20
+> When the optional property is absent, or it has an invalid value, continue
+> using the format reported by the downstream display device, preserving
+> the existing behavior. The code is not validating the DT for
+> correctness and just fall back to the previous behavior in case of
+> errors.
+>=20
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Yes
+Thanks.
 
->>
->> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
->> index 1f3daf002707..89cea0c14cf1 100644
->> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
->> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
->> @@ -68,7 +68,8 @@ properties:
->>      maxItems: 1
->>  
->>    port:
->> -    $ref: /schemas/graph.yaml#/properties/port
->> +    $ref: /schemas/graph.yaml#/$defs/port-base
->> +    unevaluatedProperties: false
->>      description: The LCDIF output port
-> 
-> With that change:
-> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa6UL[L]x
 
-Please do not. Build testing is not testing (in the meaning of
-"Tested-by" tag), otherwise where is Rob's tested-by tag for all the
-patches he build tested?
+> ---
+> v3: improve commit message and make it clear that the code assumes that
+>     the DT is correct, when the DT contains an invalid property value,
+>     the code safely fall-back to the previous behavior
+> v2: use the common bus-width property instead of the legacy interface-pix=
+=2Dfmt
+> ---
+>  drivers/gpu/drm/mxsfb/mxsfb_drv.c | 24 ++++++++++++++++++++++++
+>  drivers/gpu/drm/mxsfb/mxsfb_drv.h |  2 ++
+>  drivers/gpu/drm/mxsfb/mxsfb_kms.c | 12 ++++++++++++
+>  3 files changed, 38 insertions(+)
+>=20
+> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mx=
+sfb_drv.c
+> index 8b4a500347fb..f8ecc8bbd63c 100644
+> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> @@ -12,7 +12,10 @@
+>  #include <linux/clk.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/io.h>
+> +#include <linux/media-bus-format.h>
+>  #include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_graph.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/property.h>
+>  #include <linux/pm_runtime.h>
+> @@ -211,7 +214,10 @@ static int mxsfb_load(struct drm_device *drm,
+>  		      const struct mxsfb_devdata *devdata)
+>  {
+>  	struct platform_device *pdev =3D to_platform_device(drm->dev);
+> +	struct device_node *np =3D pdev->dev.of_node;
+>  	struct mxsfb_drm_private *mxsfb;
+> +	struct device_node *ep;
+> +	u32 bus_width =3D 0;
+>  	int ret;
+> =20
+>  	mxsfb =3D devm_kzalloc(&pdev->dev, sizeof(*mxsfb), GFP_KERNEL);
+> @@ -238,6 +244,24 @@ static int mxsfb_load(struct drm_device *drm,
+>  	if (IS_ERR(mxsfb->clk_disp_axi))
+>  		mxsfb->clk_disp_axi =3D NULL;
+> =20
+> +	ep =3D of_graph_get_next_endpoint(np, NULL);
+> +	if (ep) {
+> +		of_property_read_u32(ep, "bus-width", &bus_width);
+> +		of_node_put(ep);
+> +	}
+> +
+> +	switch (bus_width) {
+> +	case 16:
+> +		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB565_1X16;
+> +		break;
+> +	case 18:
+> +		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB666_1X18;
+> +		break;
+> +	case 24:
+> +		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB888_1X24;
+> +		break;
+> +	}
+> +
+>  	ret =3D dma_set_mask_and_coherent(drm->dev, DMA_BIT_MASK(32));
+>  	if (ret)
+>  		return ret;
+> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.h b/drivers/gpu/drm/mxsfb/mx=
+sfb_drv.h
+> index d160d921b25f..bdc47ce5be79 100644
+> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.h
+> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.h
+> @@ -46,6 +46,8 @@ struct mxsfb_drm_private {
+>  	struct drm_connector		*connector;
+>  	struct drm_bridge		*bridge;
+> =20
+> +	u32				bus_format;
+> +
+>  	bool				crc_active;
+>  };
+> =20
+> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mx=
+sfb_kms.c
+> index d8ebebc5314b..1d78c486d147 100644
+> --- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+> +++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+> @@ -386,6 +386,18 @@ static void mxsfb_crtc_atomic_enable(struct drm_crtc=
+ *crtc,
+>  	if (!bus_format)
+>  		bus_format =3D MEDIA_BUS_FMT_RGB888_1X24;
+> =20
+> +	/*
+> +	 * Prefer the bus format derived from the OF graph endpoint "bus-width"
+> +	 * property when available. Otherwise, use the bus format reported by
+> +	 * the downstream bridge or panel.
+> +	 *
+> +	 * This supports mismatched display and interface bus widths, such as
+> +	 * a 24-bit panel connected through an 18-bit interface or an 18-bit
+> +	 * panel connected through a 24-bit interface.
+> +	 */
+> +	if (mxsfb->bus_format)
+> +		bus_format =3D mxsfb->bus_format;
+> +
+>  	mxsfb_crtc_mode_set_nofb(mxsfb, bridge_state, bus_format);
+> =20
+>  	/* Write cur_buf as well to avoid an initial corrupt frame */
+>=20
 
-Best regards,
-Krzysztof
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
