@@ -1,133 +1,137 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CDF368296
-	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 15:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7108648CD4A
+	for <imx@lists.linux.dev>; Thu, 13 Aug 2026 16:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786636083; cv=none; b=UhQG+iKIlZC89IsJ1AFiyIw3K009LpWQ5G5c9QUwHZTJXahJr/K1zweccnlGxXuqm7qHgmha3Ve6gATeqjIyztJRtnj+Cwp7bcrjOkLf3mITGHMpH3nhXj8EWM7OGZs1aaA+yLVp2G25ln98M3/eWCRvpe2hKFCd81s6Ifsr5nw=
+	t=1786637467; cv=none; b=hWsPLkxZfYInfV0OX1oFNCPLeQ9NQUVB79reAkR7u/55FHTT9yTK6p2cZ4DgiW2xqV2uQZ8mfQsaUYnoP448zHcg1aOLZoSZn3sostSxCLwPbZQ5T5PMNfNhhpN+SI3IdRDCCKKfvuOvxWfx6fEg4tFFeBdkL0txOYRkom93ssw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786636083; c=relaxed/simple;
-	bh=/E0SubGOI81IPyIwUykkQsP6Ke0hxLpTzwIAs4x/vNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jt+wUzQ8cIH9FMoxdH8OG5QIsgioZdRriOdlEewLc6S2ssq/wtCRl1eS9S2OHMlsRUe/lgBPtmPZRXwAamCnsV1OfEuelikWQc6fW0QyiAH9o8PkoGu5gBCwT/yQ276apzdklSM9mco3xYHvmvKsSpwpurtyqgiDop0W42n/8Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fPNie1fB; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1786637467; c=relaxed/simple;
+	bh=1Dp5lap9lrpf8yBi562e4hhl5LXAXrcbzfj+AqT4nyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PjqXFRgQGVKTGJhIPVP+XNUZFn7drq18DJCL7XoUIywAiEMTTsUpAZo0+gXySmC2qKLGmwmCgJztVyDY0+osa8D3BT9jWmEoBAUzP8ONP7xNXflJJ6J150xf//XupXvdKKGNYgwqvpRm06mNJSAz4ULfXWL9Nf8tkw9cs6nEqeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hBZoHzVU; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fPNie1fB"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3900e39d935so993374a91.0
-        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 08:48:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hBZoHzVU"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f633e6058so2492f8f.0
+        for <imx@lists.linux.dev>; Thu, 13 Aug 2026 09:11:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786636079; x=1787240879; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Nns/NScm0vqMpTyGameGuxqrFfJTWu3YR2M4cTpXgEc=;
-        b=fPNie1fBulvDNcn1UEeKjOcSn7sqU+Z/tVCV/VlDD8Qj+gZLSEj45XSTK8nQu9vfdm
-         NTbMM912mgT1Yj7DXryHj1Uoy6d4viwVM2+RGoMRDGiyoewcwNvj5gx/hQXv3Ji4V4L4
-         uUuWV6Id6FCZqtTc+XRLUWreWFmyAsB4iqq7Y79KweOenLg2emDiPQG2XqIrV72jUVv9
-         XdxWOmF7DRmqeBjc1UwxqoFbr2wR/lI+OfbGeWHgmTm0OQtdLPYMxy6SEyCcL3qWpzpl
-         lSGdQ5m/WQNpX3uOb/4EiWzUCm4kOYVxwtM2gR4/W7iYSmVrlJX3gE8fUW+puWMPYWDQ
-         ugEQ==
+        d=gmail.com; s=20251104; t=1786637463; x=1787242263; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=REc2CNetkw/IR0cYYmcVDcXvVokY9XmMkULq1ud2MQc=;
+        b=hBZoHzVUCgy3TNwLugFJonC0WxdPJvRBrwO7g5YYu/xQT+OZZprVQ+piLhDy+Ad5eK
+         EGq2hEKSW+2MjW67oqyDSrSJ2YxsQTvwRVCEgagJVvPgIuLr2vo0G9rKnJkXHRdsh3dr
+         gGIfsxLaFvEwLtXsFlQAecJtwN4n6NCcIzqZd8k0PmuP2uh2wYx1DJ918BRcVogqeXl/
+         4p/rnvdFCWAI9Q8Qw8DBI2Sz4ahGg1roNlMFaVCMRmiJVdv5Qct0+wlpaxhKbhhGtsS0
+         PTBN0WAWpC9ccTXDf07FZUldMvfIzb/H+R+TijNokzoHcOdaw9jMy5bk9wCTH4J4bFz5
+         bMVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786636079; x=1787240879;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Nns/NScm0vqMpTyGameGuxqrFfJTWu3YR2M4cTpXgEc=;
-        b=SMAIoFwBE7IByUBPCRfdP2peZMhqcc7SOAAulcJxZtkpF6y/L8OxJyfupOyrxd5nzp
-         UmxmjvcbR2Qr7mjWpfzTo/ffzIf7OAaZsCxs/jexgCTvECxrL/j2Eil2Y1kqECCpCKxi
-         SdACuiKlWoZAsk6WoadbmSSLVs++M5T9oVDI0YHY/Fd9Ft248lWWuRyQZeF2IuJZwaAz
-         S8XlYUNao4I/GW/oDc+mOtwYokBD0EzpUzOPQDMoJWGOeF6w1gpe0kF5hHQjBl/1L5I7
-         iCGoye2YqJ0cFiYvvr4epU0ZF/Cm+zXjLJx9siYjPV25jKVJlLrue8yPZEnREavGFuQi
-         db3w==
-X-Forwarded-Encrypted: i=1; AHgh+RoHSNLBFxy8ZkMPC9LAP2hl0PveUz2O4IP4DSQal1LzovgIQuEkZTVbB/6kDUG8o2MzW54=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXgR7l01Ordl0Ba1V5RKG/O0NlBwVdaoe2tiIZaFjx8CIaQ5Jd
-	3+vFKr+IBvtGudGkRBjdsdQ7D4AYjWvY+KlnlM/KCS10UdawlxPx0GJ2vtNYnSuwxfQ=
-X-Gm-Gg: AR+sD13RfDy2W5TPsYKgkGJT7lrn+jh6ZbOhYaYhPoIhiZllE6TLR5U34fWrCYtFV8w
-	mftBgsH9K7T0I4Y16GUjI2qPDlvf8UA5QFKulC6wSNnrkdRGOH6K62Y4kGbdjOmNSQ1mcbDz9oA
-	zn8jDeyzE2mT2zcqGHdkI842C/wIa/0ql+QwRbXceeIQwqyYtoo6kJOgLamq5SVAOQ1G2noY34R
-	tJRQK64LVm9wadNbO6+rqPniJ4eS2mHYOrSoWrROSSFlAh4DspFehgs8zkDwQ/yfnoWiRx+YV63
-	yLEy36f9lOe2rl9FefOIhLMGDlVnBaHmji9d95AeB5QM+S+KPT0epJvIupUsW9YWVvwb76i68Df
-	DstvpPhldGOW6wTzVxQhk3vdpxh7TBKjrxaodBTKgVfeCW+sJ+iAkWdssJHxxya5z84HbEEmSf3
-	tk4OkYwxp8odsq3VBbD25hPz3mC8luSW+xznukOIpOmk6ky5vAo/fYrKFktmlVrH+z9+c=
-X-Received: by 2002:a17:90b:48c7:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-3931e298447mr8642971a91.14.1786636079339;
-        Thu, 13 Aug 2026 08:47:59 -0700 (PDT)
-Received: from leonardoc-nb ([179.160.38.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931f2a7d9bsm3441973a91.8.2026.08.13.08.47.56
+        d=1e100.net; s=20251104; t=1786637463; x=1787242263;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=REc2CNetkw/IR0cYYmcVDcXvVokY9XmMkULq1ud2MQc=;
+        b=mhb284/mks48tcptTGQOwENP7PUUv5GYk7AmczzW5XBLdIduUu+Brgg/YPYRv/4qHd
+         UisWeukShK1PO5EHyDoV4VYFCpMw16qOOLm47sxMsNMEA9eQFhMmPdtCpznTRdn0/spG
+         8b49ldsxkcI4MeFkfogIwkQ5EEfHGM+bp47czovq5Qdk/h0AIwQtLBFgLlezulGoXu9e
+         S1J8WtmZ5E9oJ6hJ6kDBmRuHoUm/QpXl0bDYd29H+Hk7cWpWZcVeNkEncDTaBgmH/oVe
+         cr7+StSYSVTXmoAO8WoYn7hs2bthaFtb3ajE1u1bA6pxDeEalarSnMs3afpSNux7L5j1
+         WblQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqz3yZ4L4BdSk0NVVlrlXZSCbCT+mywI2V/HnkfTg6eXDQcvNPucM6ZmKZaTqiuTiuq0Vg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBxDKh4ta2mtRXi9lU7zbzy/faKTY05XrHYffzjybA0iGJmau2
+	X/YDp/SEa/JCjc7v76SBA533W/berONLkNEi1OL9CWRaSWAsd7Ho7csm
+X-Gm-Gg: AR+sD11+aYhscMCc6YPGFQhDh1ILNr5B24Inh8ZLvWsj78cqLDQEsk8aaEiq9HfaIoa
+	rl3ll50TTnc1VxeC1myJxuFHCjnwCuSjh1TpibzBiBNO6sV0t3bEqyoYC2RA9oLDOtLt2kTYpAY
+	IWXW4BbdYjAzwJXC/9detsFBk+IBtCnHx3/T2j2d4NvRhOq8YZPrK21hX963q2jAl4QR+nowPD6
+	V//TZuoETiugIoHjazmcgvxTu/f+CazQTNdaQb151CGrCL2O8UN6In0fEcN5Mb0SXr8INAmhan/
+	NGAyld9Wx7p73g6r+Nn/phVD3mXQdAag/v11ONkj3bcf3ciPvGslXe4271UM7i9yhv2nV0IxyKb
+	1KZEvXdq3ErsoAc6BUN0HNNSugDUq3BmKIh5vqHqJO6Fy7g0EV8Av1s0n/IvN5BJqb7EbvGFbd8
+	Qu+K9QAYEuX9C6croMRf7lj/8M3BibDKCiAb5d6oJk6Oe0+zJgaWIiYNi5Af3u7jBOvVUKspmnj
+	TDs
+X-Received: by 2002:a5d:5f56:0:b0:461:e27d:5690 with SMTP id ffacd0b85a97d-4815a0414f0mr9891561f8f.26.1786637463204;
+        Thu, 13 Aug 2026 09:11:03 -0700 (PDT)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f21a24esm449409f8f.11.2026.08.13.09.11.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 08:47:58 -0700 (PDT)
-Date: Thu, 13 Aug 2026 12:47:54 -0300
-From: Leonardo Costa <leoreis.costa@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex
- Capacitive Touch Display 10.1" LVDS V2
-Message-ID: <tfw352zb7gtx7mjg4nqcgjojsesppbwhl76s4hc44gjexgkrdu@sw5tbvwanyan>
-References: <20260813133335.1941580-1-leoreis.costa@gmail.com>
- <20260813133335.1941580-5-leoreis.costa@gmail.com>
- <20260813141916.103531F000E9@smtp.kernel.org>
+        Thu, 13 Aug 2026 09:11:02 -0700 (PDT)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Agner <stefan@agner.ch>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>
+Subject: [PATCH v4 0/4] ARM: dts: vf: Iris carrier board for the Colibri VF50 and VF61
+Date: Thu, 13 Aug 2026 18:10:57 +0200
+Message-ID: <20260813161101.2274327-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260813141916.103531F000E9@smtp.kernel.org>
 
-On Thu, Aug 13, 2026 at 02:19:15PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] The device tree overlay uses an undocumented vendor prefix `optologic` and compatible string `optologic,scx1001511ggc49`.
-> --
-> 
-> --- Patch [4]: [PATCH 4/6] arm64: dts: freescale: imx8mp-verdin: Add Toradex Capacitive Touch Display 10.1" LVDS V2 ---
-> commit ae998202e5daf5ce215671d831b6ffc33e8604ec
-> Author: Leonardo Costa <leonardo.costa@toradex.com>
-> 
-> arm64: dts: freescale: imx8mp-verdin: Add Toradex Capacitive Touch Display 10.1" LVDS V2
->     
-> This commit adds a device tree overlay for the Toradex Capacitive Touch
-> Display 10.1" LVDS V2. The display is connected via Verdin iMX8M Plus LCDIF
-> and features an Opto Logic TFT LCD with an ILITEK capacitive touch controller.
-> 
-> Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
-> > new file mode 100644
-> > index 0000000000000..6b0c1a10ae2a9
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-panel-cap-touch-10inch-lvds-v2.dtso
-> 
-> [ ... ]
-> 
-> > +&{/} {
-> > +	panel-lvds-native {
-> > +		compatible = "optologic,scx1001511ggc49", "panel-lvds";
-> 
-> [Severity: Low]
-> Does this code introduce an undocumented vendor prefix and compatible string?
-> The prefix `optologic` and compatible string `optologic,scx1001511ggc49`
-> appear to be completely missing from `Documentation/devicetree/bindings/`,
-> which will cause the Device Tree binding checker to emit warnings when
-> validating the DT with `make dtbs_check`.
-> 
-> > +		backlight = <&backlight>;
-> > +		data-mapping = "vesa-24";
-> > +		power-supply = <&reg_3p3v>;
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260813133335.1941580-1-leoreis.costa@gmail.com?part=4
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-As specified in the cover letter, these patches should be applied after
-another series:
+This adds a device tree for the Toradex Iris carrier board carrying the
+Vybrid Colibri modules, plus two small preparatory patches for the
+module-level dtsi that the i.MX Colibri variants already had.
 
-- https://lore.kernel.org/linux-arm-kernel/20260623195741.495734-1-leoreis.costa@gmail.com/T/#t
+Everything was tested on a Colibri VF50 on an Iris V1.1 running 6.18.
 
-This series adds the compatible binding strings, and is currently in
-linux-next.
+Changes in v4:
+- gpio-line-names packed four per line (Frank Li)
+- keep the EXT_IO pin group applied next to the carrier hog group
+  instead of overwriting pinctrl-0 in the Iris dtsi, verified in
+  pinmux-pins on hardware (Sashiko review)
+- enable pwm0/pwm1 like the evaluation board does, so the dts matches
+  the commit message; both chips register on hardware (Sashiko review)
+- the compatibles keep their hyphens; Krzysztof asked for hyphens in
+  every newly introduced compatible in the v2 review
+
+Changes in v3, following Krzysztof's review:
+- fold the Iris compatibles into the existing -on-eval enum entries
+- use hyphens in the newly introduced compatibles
+- drop the fixed 5V regulator that only fed the VBUS regulator
+- sent as a fresh thread instead of in reply to v2
+
+Changes in v2:
+- add the dt-bindings patch for the new compatibles
+- describe the USB host VBUS regulator instead of hogging USBH_PEN
+
+Mehmet Fide (4):
+  ARM: dts: vf-colibri: apply the EXT_IO pin group
+  ARM: dts: vf-colibri: name the SODIMM gpio lines
+  dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
+  ARM: dts: vf: add Iris carrier board support for Colibri VF50 and VF61
+
+ .../devicetree/bindings/arm/fsl.yaml          |  12 +-
+ arch/arm/boot/dts/nxp/vf/Makefile             |   2 +
+ arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi | 126 ++++++++++++++++++
+ arch/arm/boot/dts/nxp/vf/vf-colibri.dtsi      |  56 ++++++++
+ .../boot/dts/nxp/vf/vf500-colibri-iris.dts    |  14 ++
+ .../boot/dts/nxp/vf/vf610-colibri-iris.dts    |  14 ++
+ 6 files changed, 220 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/vf/vf500-colibri-iris.dts
+ create mode 100644 arch/arm/boot/dts/nxp/vf/vf610-colibri-iris.dts
+
+
+base-commit: 3d6d817622b0a9721e3cc404df3469171582be13
+-- 
+2.54.0
+
