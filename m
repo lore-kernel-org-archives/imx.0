@@ -1,102 +1,202 @@
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BD53446AD
-	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 09:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F56E356770;
+	Fri, 14 Aug 2026 09:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786699165; cv=none; b=Hvtc/TROWxRrrm7NEy3RqaTSHU5okQUb1vg7MAQFlX/1UJNOIV0eOTnFKcjujWRSrzPXsv26w2Cq0IJDU/vHnu7R1GEQ1295qIt2sNlU30R4Kbn25BuakLb8KkkmRDTcB+NCCmuHG6N4FSyGDWwQ6BOIPEXr3h3H3uwBNlF1Uww=
+	t=1786699232; cv=none; b=MWtqz3JtMoGs9REJL77sAXQhTSjpu9ordCxxQ1qvTTA1f4LKIztDop4v9YcWpI1jC2GsMmJILm30YDpH3tKZDmqHznD0eyCw/R5lFyEwulnpbX6W1FsOFkvCgIQZRBOIyRYCO0N4mkWRByOGnl5UZsXR/6OQf6KpYV044n4cAJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786699165; c=relaxed/simple;
-	bh=ajhbPbhhFDopfE+pfRmjoiyf+z5rmdgu/+yBZgxSJn8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O5455hLPyxOOSc4YIWzgmDhcynj0VceZL4ZL7QDfrXg04kfcE6z3775S6gTgSCA8wZuADgn6gJAj1HocpbzJiG/4bewmmP/db7H5sH9jUe/S1Z6o99Q/lZKT7EtRhgZHfyPjmP4+dXvo4L3Fi/k8Hc5pCh1lWWDMX+prsgc1r00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=L8+DGK+m; arc=none smtp.client-ip=185.136.64.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1786699232; c=relaxed/simple;
+	bh=vTzoFK6spLrza3SQdkn3dlPSpUTmPius0uMwro2rkTg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WBMrjJVEaXOYDJfKw/ePg+6dVWtjVGEjv34hVHBHFEIyyIdSIvit7+kW4dU/ZXaTZxRJzfMZTDNoqfurR5QsaoWnH+gNtkSkug9kO1SsF8dN0/VcVL0JCkrQzn/Vs0FTXtVp042Fe4wXVQqvLDXO99/0+sFzeLOKfW1SxlsOp/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYzxWvNy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="L8+DGK+m"
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20260814090909677e03e509000207a7
-        for <imx@lists.linux.dev>;
-        Fri, 14 Aug 2026 11:09:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=G0t4G5gv+ZWxMZdsCXrUvBl9B11OyaGMOviXCuRt+tI=;
- b=L8+DGK+msJ7hvV0zCpHlpoTSEbQOk4zqT96RCUI6bgzHAuMSfXR7eampmcl23y830PLb1N
- 1n5cX7QopuN2I3LYm1Qh9K0HxqzvqE+L5ZUS/wFbgKQH6Cd59XH8SUPsOcUNlBh+U9Dfudcx
- XFt9BnVUs3g6zSKvJ9Fu5ivnc4bghdw303xrqMHz/8Iezq5p2lFr6XgTRXP60BgRQ3PbyDUm
- 7Q746Bfk/2DmzFctcMVeejlwV6Z7keBOQTktbVayMUz4Op2S5f/Gv8Ge2HJkeTc+eShXr5ln
- Djg6mSwrSZtkRtvJTLw2hg1Cz1WgxPCPITWwHx7RGJp/Shw6Flx1magA==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: netdev@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Linux Team <linux-imx@nxp.com>,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/2] net: fec: support RX flushing via fsl,rx-flush-queues
-Date: Fri, 14 Aug 2026 11:08:59 +0200
-Message-ID: <20260814090906.2225075-1-alexander.sverdlin@siemens.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYzxWvNy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BA51F000E9;
+	Fri, 14 Aug 2026 09:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786699231;
+	bh=LdFQrpkbrPrJWAVU/s+iyDwuA+i85QuNZOUH4St6I+Y=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=gYzxWvNyvOwxbjqiCtoL8aQ/1z/pmvAh23NH925C/ayDR0062l4jBNWQ9zY9Kl3uy
+	 yW3w5+r0vlfeqwtVKyP1nreftqvx01wG0RR2jsK37Ik0g4p/UWIvKhLsR+jJA8bXcI
+	 9+yH6fvLT7kNWqch9Stk+Vr/6o0KxEPErJGT07ksa665i6I/OKtVveYJvU1WgIZ6jF
+	 KL/A8hBtoDMwGSSRQDbQTsqGHVwzQ/FeYps/xNhyvzombxwWFVtQi6gqqAqynedICQ
+	 XhC/Grxm51tkTd0vqXdCRjLi4bI0RbjCuN8pnsu4waKG0Y4wUaal8l2hErBiRlYFEF
+	 wowOjce3VJFZw==
+From: sashiko-bot@kernel.org
+Subject: Re: [RESEND PATCH v6 1/6] can: flexcan: use dedicated IRQ handlers
+ for multi-IRQ platforms
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
+Cc: imx@lists.linux.dev, "Oliver Hartkopp" <socketcan@hartkopp.net>, robh@kernel.org, Frank.Li@kernel.org, "Marc
+ Kleine-Budde" <mkl@pengutronix.de>, "Vincent Mailhol" <mailhol@kernel.org>, "Oleksij
+ Rempel" <o.rempel@pengutronix.de>, linux-can@vger.kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260814090324.647898-2-ciprianmarian.costea@oss.nxp.com>
+References: <20260814090324.647898-1-ciprianmarian.costea@oss.nxp.com>
+ <20260814090324.647898-2-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 14 Aug 2026 09:20:27 +0000
+Message-Id: <20260814092027.86BA51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-The FEC/ENET controller can flush frames that get stuck at the head of the
-RX FIFO because their destination ring has no empty buffer descriptor
-(RxBD[E] clear or ENET_RDARn not set). Without flushing, such a frame blocks
-the FIFO and stalls reception on all queues; with flushing enabled the
-offending frame is discarded instead. Flushing is configured per RX queue
-through the RX_FLUSHn bits of the QOS Scheme register (FEC_QOS_SCHEME).
+New issues:
+- [High] The split IRQ handlers break the FLEXCAN_QUIRK_BROKEN_PERR_STATE w=
+orkaround on multi-IRQ platforms.
 
-This series adds a device tree property, fsl,rx-flush-queues, listing the RX
-queues for which flushing should be enabled, and programs the corresponding
-RX_FLUSHn bits.
+Pre-existing issues:
+- [Critical] Concurrent execution of split IRQ handlers locklessly corrupts=
+ the shared `skb_irq_queue`.
+- [High] The patch fails to fix duplicate frame processing for platforms wi=
+th multiple mailbox IRQs.
+--
 
-Erratum ERR050395 (e.g. i.MX8QXP) can lock up the RX path when flushing is
-enabled on more than one queue at the same time; recovery requires a full
-ENET reset. Rather than encoding that hardware limitation in the binding,
-the DT property is kept generic and the single-queue restriction is enforced
-in the driver: a configuration enabling flushing on multiple queues is
-rejected unless the controller advertises FEC_QUIRK_HAS_MULTI_RX_FLUSH.
-Future parts with the erratum fixed can set that quirk to allow flushing on
-several queues.
+--- Patch [1]: [RESEND PATCH v6 1/6] can: flexcan: use dedicated IRQ handle=
+rs for multi-IRQ platforms ---
+commit 4696683063946bcc95216f931b7fa509b55610f8
+Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Date:   Fri Aug 14 09:03:18 2026 +0000
 
-Example:
+    can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms
 
-    &fec {
-        fsl,num-rx-queues = <3>;
-        fsl,rx-flush-queues = <1>;
-    };
+This commit splits the monolithic flexcan IRQ handler into dedicated
+handlers for mailbox, bus error, and state change events. This is intended
+to prevent duplicate frame processing on multi-IRQ platforms where distinct
+IRQ lines can dispatch concurrently.
 
-Alexander Sverdlin (2):
-  dt-bindings: net: fsl,fec: add fsl,rx-flush-queues
-  net: fec: support receive flushing via fsl,rx-flush-queues
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
+xcan/flexcan-core.c
+> index f5d22c61503fa..f73ff442d5304 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+[ ... ]
+> @@ -1131,25 +1129,57 @@ static irqreturn_t flexcan_irq(int irq, void *dev=
+_id)
+>  		netif_wake_queue(dev);
+>  	}
+> =20
+> +	return handled;
+> +}
+> +
+> +/* Process bus error events */
+> +static irqreturn_t flexcan_do_berr(struct net_device *dev)
+> +{
+> +	struct flexcan_priv *priv =3D netdev_priv(dev);
+> +	struct flexcan_regs __iomem *regs =3D priv->regs;
+> +	irqreturn_t handled =3D IRQ_NONE;
+> +	u32 reg_esr;
+> +
+>  	reg_esr =3D priv->read(&regs->esr);
+> =20
+> -	/* ACK all bus error, state change and wake IRQ sources */
+> -	if (reg_esr & (FLEXCAN_ESR_ALL_INT | FLEXCAN_ESR_WAK_INT)) {
+> +	/* ACK bus error interrupt source */
+> +	if (reg_esr & FLEXCAN_ESR_ERR_INT) {
+>  		handled =3D IRQ_HANDLED;
+> -		priv->write(reg_esr & (FLEXCAN_ESR_ALL_INT | FLEXCAN_ESR_WAK_INT), &re=
+gs->esr);
+> +		priv->write(FLEXCAN_ESR_ERR_INT, &regs->esr);
+>  	}
+> =20
+> -	/* state change interrupt or broken error state quirk fix is enabled */
+> -	if ((reg_esr & FLEXCAN_ESR_ERR_STATE) ||
+> -	    (priv->devtype_data.quirks & (FLEXCAN_QUIRK_BROKEN_WERR_STATE |
+> -					   FLEXCAN_QUIRK_BROKEN_PERR_STATE)))
+> -		flexcan_irq_state(dev, reg_esr);
+> -
+>  	/* bus error IRQ - handle if bus error reporting is activated */
+>  	if ((reg_esr & FLEXCAN_ESR_ERR_BUS) &&
+>  	    (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING))
+>  		flexcan_irq_bus_err(dev, reg_esr);
+> =20
+> +	return handled;
+> +}
 
- .../devicetree/bindings/net/fsl,fec.yaml      | 14 ++++++++
- drivers/net/ethernet/freescale/fec.h          | 14 ++++++++
- drivers/net/ethernet/freescale/fec_main.c     | 34 +++++++++++++++++++
- 3 files changed, 63 insertions(+)
+[Severity: High]
+Does this break the FLEXCAN_QUIRK_BROKEN_PERR_STATE workaround?
 
--- 
-2.55.0
+Before this patch, the monolithic flexcan_irq() checked this quirk and call=
+ed
+flexcan_irq_state() on any interrupt.
 
+The FLEXCAN_QUIRK_BROKEN_PERR_STATE workaround relies on enabling the bus e=
+rror
+interrupt to catch state changes on platforms where the state interrupt is
+broken.
+
+Now that the bus error interrupt is routed exclusively to flexcan_do_berr(),
+which never invokes flexcan_irq_state(), won't state transitions (like bus
+warning or bus-off) be silently ignored on affected platforms?
+
+[ ... ]
+> +/* Mailbox IRQ handler for multi-IRQ platforms */
+> +static irqreturn_t flexcan_irq_mb(int irq, void *dev_id)
+> +{
+> +	struct net_device *dev =3D dev_id;
+> +	struct flexcan_priv *priv =3D netdev_priv(dev);
+> +	irqreturn_t handled;
+> +
+> +	handled =3D flexcan_do_mb(dev);
+
+[Severity: High]
+This is a pre-existing issue, but does this still allow duplicate frame
+processing?
+
+If a platform has a secondary mailbox IRQ (FLEXCAN_QUIRK_SECONDARY_MB_IRQ),
+flexcan_open() registers flexcan_irq_mb() for the secondary IRQ, and the
+primary IRQ registers either flexcan_irq() or flexcan_irq_mb().
+
+Because these can run concurrently on different CPUs, and flexcan_do_mb()
+unconditionally processes all active mailboxes globally, won't both threads
+still race and process the same frames?
+
+> +
+> +	if (handled)
+> +		can_rx_offload_irq_finish(&priv->offload);
+
+[Severity: Critical]
+This is a pre-existing issue, but does splitting the IRQ handlers make
+skb_irq_queue vulnerable to lockless corruption?
+
+When flexcan_irq_mb(), flexcan_irq_boff(), and flexcan_irq_berr() run
+concurrently on different CPUs, they can independently call the can_rx_offl=
+oad
+API (like can_rx_offload_irq_offload_timestamp() and
+can_rx_offload_queue_timestamp()).
+
+These functions insert SKBs into offload->skb_irq_queue using the lockless
+__skb_queue_add_sort().
+
+Additionally, they concurrently call can_rx_offload_irq_finish(), which
+splices the list locklessly:
+
+drivers/net/can/dev/rx-offload.c:can_rx_offload_irq_finish() {
+    ...
+    spin_lock_irqsave(&offload->skb_queue.lock, flags);
+    skb_queue_splice_tail_init(&offload->skb_irq_queue, &offload->skb_queue=
+);
+    spin_unlock_irqrestore(&offload->skb_queue.lock, flags);
+    ...
+}
+
+Will this concurrent lockless access corrupt the skb->next / skb->prev poin=
+ters
+leading to a kernel panic?
+
+> +
+> +	return handled;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814090324.6478=
+98-1-ciprianmarian.costea@oss.nxp.com?part=3D1
