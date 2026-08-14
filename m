@@ -1,273 +1,294 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010017.outbound.protection.outlook.com [52.101.84.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8706747D932;
-	Fri, 14 Aug 2026 14:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786719065; cv=fail; b=OV+n+9oUgD9EIiDPzCepJIM06aqA3XLXWgC9X82wcaz4Bf72IKlkNeMOdT7dwapyBGyMzG8NB5a5GA6q6dmJCoiRmot9ctuol69qUUsixxYOF6Q2MbaN8m8E6K24IEwrq7KlqK4ZGa6wsd+hQ1lv8ZuHZOfciioWRq39Jn4p1Nc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786719065; c=relaxed/simple;
-	bh=ytdQyXJO5EaJZx8lCCIGGTFmO+kFqYpHzRjt7aOyAHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BDd0vUFjDoIopNswmkQXVpz6WocO6fz/cwIA2pxyXathdSXmkldoUwL7RqQB8ixuDdhgj2h9tPRFSd0rDiplGHQSpWrhXXmVyxuI2KLylsuzcexecoyyTFRQA5x/jI1DMa8pCC3Q6JD95bCvTN8jT1YxoaPrzNUaSBvfOCXgRBs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=eAy0q9Qs reason="signature verification failed"; arc=fail smtp.client-ip=52.101.84.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D9E35C687;
+	Fri, 14 Aug 2026 14:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786719460; cv=none; b=OjCqG2tQurzmFmBgmt9y7t7drhb+/O1xTLhFH4AOFR7pOwegC/9Vs8y51CnRxpl84ZBV6vN6HjU8X2gS9j+glLU1fAU9jee3lpGogBWX1R5xnKunUjFoMW5tG3KaPYKYNta0QaytFGC9QIPiVlRv3+qs4dKFJY0u4txfZJtHOgM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786719460; c=relaxed/simple;
+	bh=VJPKLZAERv57LU6ZWlnm/FbV5fCc6NLCWv56VYxLhBU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bRhiVbbbenKH2gAlW/DYKwmxO9UhO+ZY0CgxPl0qphXsW3TsevR/wU/QA+lfLBi6tmYG26vMxG40fKGiREAboypWc7i3aSA+BDjlkGnS3cUoa96eBr57u7kfYFQmwYso8CziGZx8ALtUPXdoxEXcyS7fBcp752P+rxDGxIlyKDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUGSZSzM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="eAy0q9Qs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LguZRnRieGH+kRk7mzKUvTGgf6pCJCMK7LufYiDR3chIN2dlAr9hxYCzRTUD8AtQWKAdFLGpgvD4QCSqfM8CGcmho+qKgIAG0iGw47KpkK9Lh4nPwsupDC8eSfBuDf4tSBKani4RKwakwvmKFrdWF1b2UNgarPw/TeEpmxya+u5ozS3GhobMGP7387ZVEr9B/UQ5Zs6DanbkMbf1v9qoZhNcotwIvHTkJFd/LkwqYGn6+tZgBOIC8AclcjQsPT2RWKbGzjuMp0XNNe8qcq6JnDVGQgjKV/ezXqEsIoXROLcTZQ/OK+lbfvjskt9LpcR6fYQ+H4kaqXggh9s+cBQzQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ywPg+TZW9+jAI2UUnXmYW1ySlp1Ggn9e8lp20qr2nbM=;
- b=SzI51CqnspWCSb0nwthdMNpBSKCHCWMlw4be/ojnlj/A5sjKZ1CeWJM73DZXY58Tq2DFUvlph+2NyD2s5MZ63z3AsWLEu2DGY9A1K04WuYNsbjvWiEyYczH94bl5R7HEKmGicAzq98Yz6yegYGE5IVMBJNroDupPtVuUGD/fW8J3hwrrYUVavQYRIhmK1FR4nOuD0j7Gv6Esw68HDRWpI6mPGrRcyeZ1rym1YqYdoJ7yZb2H9V+kY2uPdCEGnIasmNmUi+NBzyFHbScS84GXqVsaU+sbP9ZgkGSHiJRL4WZk9Ov0NM9rn7Ru8nBT4q6hGGtaiJ7pH37MWx8e3iRLrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ywPg+TZW9+jAI2UUnXmYW1ySlp1Ggn9e8lp20qr2nbM=;
- b=eAy0q9QsFiLu21Ya8EhvNVR7H2PBx6XMQWeQxhsHh1h0XnF8/7PLbsgM+HOnz5L0vZWUB4Ux56YkqJ0mGRlZQq0HYbT4QheyN3/kR3b8gFl+A8qdgXm0RrFIMGH6umuxHm830fvcBSL4mht3Ig5ozp1CnsSfdsHRXhLNUhd/BrPGT4a8si6DuwqFHRIdJHkJavGFhDsU2rzz2ldtdgtt3Szb833WU1pniwbLQU94bXqrbMFRRm5KzLMkzRAgVPKSA98Z2LwEgv7n/vnnsmFFBUBP7UIeDMyeVhnketGUgc0grdNr0x7YMqACtSbhzwt5+YYeDBs4rZO4UoGiEaBUXg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBAPR04MB7462.eurprd04.prod.outlook.com (2603:10a6:10:1a0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.15; Fri, 14 Aug
- 2026 14:50:57 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0315.014; Fri, 14 Aug 2026
- 14:50:54 +0000
-Date: Fri, 14 Aug 2026 09:50:44 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>, imx@lists.linux.dev,
-	Oliver Hartkopp <socketcan@hartkopp.net>, robh@kernel.org,
-	Frank.Li@kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>, linux-can@vger.kernel.org,
-	devicetree@vger.kernel.org, conor+dt@kernel.org
-Subject: Re: [RESEND PATCH v6 1/6] can: flexcan: use dedicated IRQ handlers
- for multi-IRQ platforms
-Message-ID: <an8rRKaadKgTdBFS@SMW015318>
-References: <20260814090324.647898-1-ciprianmarian.costea@oss.nxp.com>
- <20260814090324.647898-2-ciprianmarian.costea@oss.nxp.com>
- <20260814092027.86BA51F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260814092027.86BA51F000E9@smtp.kernel.org>
-X-ClientProxiedBy: PH8PR15CA0016.namprd15.prod.outlook.com
- (2603:10b6:510:2d2::26) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUGSZSzM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88A31F000E9;
+	Fri, 14 Aug 2026 14:57:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786719458;
+	bh=oRHsc21NPHRRTL5TCXKm1vpU6KJAiAdM4KGx4fHfbPM=;
+	h=From:Subject:Date:To:Cc;
+	b=KUGSZSzMNBGgEbZ5Oo19cwy5OO7XpvFKIqR4u+Q/uLSgBrSE90y4IB5hkgsOFBnSJ
+	 smkV7tH2KkJ4/Uv+tHHF1fA/A6BYPuT4jPOHSNOYhaOpwSpc4Bdse1LxeG0VJVCWL7
+	 j0y0PN81fA6pSUJxlcQbSip45VS2QfaOManc9uAZMh4FREFqEWT9Zyr0HnxllJdB6Y
+	 SEdJweF9UW3/8m34t59n2UeL3ys2ujpz1kIMQVOLRlF06q6FuHJiiJrnD2zM5eTCiQ
+	 kHZ15qJK0sT4P9TLHMp2vcvggwXfVgIHCag07PA3FTuRUDCqR5J/Z+aiRlja/zYLXP
+	 w+/4+pP3rqgSQ==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH v2 00/61] drm/plane: Convert all drivers to
+ atomic_create_state and remove reset
+Date: Fri, 14 Aug 2026 16:56:49 +0200
+Message-Id: <20260814-drm-no-more-plane-reset-v2-0-82d2963dd134@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBAPR04MB7462:EE_
-X-MS-Office365-Filtering-Correlation-Id: 961a66ab-fdb0-49dc-9712-08defa1370fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|376014|1800799024|7416014|23010399003|6133799003|5023799004|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	6yXjjTO91Olx2AW/xyNnyB2TRtxocSj3zX34Rppb03XMYtnMwXqWE3bOu5CCI3W3hATJjonWNXKTg/Uc7vaVBZXvvmVS5ENMXGInoz7933VBsdjDhuA9e/hEtRA83HZO/nUJSOqcygYzhdjcS18z+YspFL5rgwUfBfhxIPhh5Nt4Qx25y1pJbkdwLBpPf973W1DW92QCS/pZ0+iFefFzuETH35pK9qaCa0G3nwHojTNT2wGlLhfqG+Ec4Cr8zxAUwQOgQyJ/zUht0kAA4iNQuXBEO4a0ADEd9sV+wRjUw3+rscyoCxmSRMi1ukKm2BkG1CNKYl2QNMFPOvJm8j8vTuVTbFtVuH91xbiXOEcTEjI9jMNgd1UT51x73YNwaWcpzhJHtMKJ7Q3YdxpC0n6niZKpmAiwtIze3uR9wUgXAICVTLTi22tFWszTRzQn5HkN6pJA9sGDwzjxI6tLejjBtjVhcWOjs7LOWp+5bbmFo94fzVXkM9gJDo/iYzYrJgqgS3eZaytuxXwRYG448Je2OWgsW96+xk0KOJ3DtmXgiSNT5hsUte0Ak8pASqktOjGovbc5TzDAtdWmJND1BFmWprCvisyyrGd/0z+MSQqBIJc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(1800799024)(7416014)(23010399003)(6133799003)(5023799004)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?/7NP0nyscA62za/tQL/NTy7bCGxMPBJmfhDFjVMYWTopd021eXvHuNb1XT?=
- =?iso-8859-1?Q?3fiSRtgGW1n8KjrzNM/aOay3/Q/IDsWbgrMKGmE9YY0mYdOmcQParRpM0W?=
- =?iso-8859-1?Q?E41HKjPGF4J1otWbHfYLLz1Sm3syRaxno8SrJxEJNvK7J5720nCQ6YfsSt?=
- =?iso-8859-1?Q?mXx+CZvPsV1wuqm/JHFy19cOUWV9cg22AhZy3MVp/QrDLW5zMoBw38NoV5?=
- =?iso-8859-1?Q?NVxPqRpkwv8vUa0HlXEWTPMH1tRTCxiwJ0BYxobMf0UkTsTK0inW0V7XxB?=
- =?iso-8859-1?Q?bn1NzQsiQBSMnZiwJkTDUPKR2LxY8jOxAJ4MRYRAoX8mAx0xCimMqV9TJ+?=
- =?iso-8859-1?Q?1mo1aNFYrak5N5VsUfQPSuO7Ebgl9pj9O6buP+Ujyco0VhOqYkSINKK5QL?=
- =?iso-8859-1?Q?doIDH7+sk5ZeQKqTg5oNU33t91le7+ty2uwtIzlW0bwJ1FhwCHMkppr/BI?=
- =?iso-8859-1?Q?VpwDhhBJbl18UE1zpr5mwaJMGdxrrFsdErgTcrz3rZ6cn9LApMyyIxcJ9U?=
- =?iso-8859-1?Q?gw6pgZ5SKmVgYk/hF74/6nX128Q+WbErDZ86E/mxtB2um1zZDHLKszOxRY?=
- =?iso-8859-1?Q?vnXELz1KRamTgfIxqEneHkclvulc02kOMhsFOg9AR0eaZxAPat1RABa80a?=
- =?iso-8859-1?Q?A+N39x4UMtONIZTp4Sif3CsgQhdl4RNa5110eToQfTIWbLydCaPglsfvDI?=
- =?iso-8859-1?Q?gqgyFrUWsu5eWG9JVPC9ntx2Tdog1GLBRwbocBA9/tvEKTDLrjGJ93wIOj?=
- =?iso-8859-1?Q?r7zm+NGkbIIpGBWlg2LYTbG3eRS2MMc7+1G5UUrF8QIeU2GX41m+BEtNys?=
- =?iso-8859-1?Q?RLY2cmRDvgxGC2oNk0coQL+8T4c3/sypBsu6Aa+XIcA+IpA04iQdD5jXMk?=
- =?iso-8859-1?Q?MeB9mPZxmxQnS2sIPV71OWTXs31zquBrG8GswMFCutWOJ62NiI+FqoLks7?=
- =?iso-8859-1?Q?amS0Y/yO46d3sIVeevS/Zt7ghCqcuRiu2BmXu3Gqb9SJyK8nDDSK0GCOkx?=
- =?iso-8859-1?Q?fHO1SS/RYFOgY5yzoCNkrHkA4m78FnsFB2+RA1f0+4etSbOu6GugLkXBTy?=
- =?iso-8859-1?Q?ir6J6TKhKnrqqwD8NHW5+ZIy3pLsOOHqYegYAlsG8Yk98/0canqj5KgE4r?=
- =?iso-8859-1?Q?NkmWvtJgS+dMSdHc+tJUrXY5IUiPepSCG0C+AcAr7U6KPAmt8Y9h2wSDAg?=
- =?iso-8859-1?Q?Rt9WwoiPyRAOYcNkyNUQFS+ZTSHxWjKJJM7Nx5Q9FeEhsok53WCNq1Z670?=
- =?iso-8859-1?Q?qW/l6DlpLOv5YbHryhjMzM8AS8ec7nnVjkRWkAn98khjxMVH2IELjeh/mF?=
- =?iso-8859-1?Q?ZAXuTqGQBlMKmdTPVFxa0qtFSrqWmjpa6ZqwaEGrlyqI+lJfwWntp9Dob/?=
- =?iso-8859-1?Q?WTE0IUdwl51OeI3rwj5HmmhEamRHcuI4PAgvcS08iBKmZt+F88jNx8BDYE?=
- =?iso-8859-1?Q?TDCVgWF8FB8ZIsq0ZbrDbFUj9dnqITfnfuNN8yG7Gc2wDt0gswaP8X24ar?=
- =?iso-8859-1?Q?Vj1IC6R0IRJz9ud8rnXWi4QdfCpuLNSz6ZtJzZc5W1AQxjoS1INBGi0gu4?=
- =?iso-8859-1?Q?D44/cWdmF64S+HLst+v5tUXIPviISB3M5fU7gv21Va6qdL1HP60/nSSXMl?=
- =?iso-8859-1?Q?aeqgF0UZkz8O73RHGXLykDso7BLsEnSTB1Ndu87Ds9U/BEaR3GEvT6N9kH?=
- =?iso-8859-1?Q?agq5hEcn/jzBZht8I4cTZBwnSMWoZX+z48iiym8cRJKgvG0V1DvjeDk5Rs?=
- =?iso-8859-1?Q?M0ErlNCGa6RRA35sHEpHg4U1BcpokRJ1SOQ/x+bAX764kXfs78BK9+K9Ml?=
- =?iso-8859-1?Q?CKe0RZnjnTT0qImS9L8hhDANlB37Owpf/9Od2BuNb7Emggt8W/bI?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 961a66ab-fdb0-49dc-9712-08defa1370fc
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 14:50:54.3173
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GCuzxxBQJVMffCe4sCGix9Jx8cfb3dFpN5jdQHAt8kH4C5uV1qEyOjAMzaJmdEtSsTr4tDRqTwEfeqcgyqtKpOpGNvLCMmuQ2Fep4fTia2i1wj6XFgRr1xtnw1I1H7IJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7462
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBBFr0Jm7ZihQhFW3sOwIDKFRmjJlDQaw
+ t2tuHb5XvLf3yCwWA7QZBsIRxusdwnUKYPH2LmB0faJQZHSpFWNvczoPM5eGJepc4zCgVekoi7
+ JFIqpMpDWi7Cxr6N8bxOPNqxe3sdRzL/216zofzPmSHgh1ddXbbg0dHuyOJ7OXgZo933/AP0Ol
+ yu/AAAA
+X-Change-ID: 20260629-drm-no-more-plane-reset-04950f42e07f
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ javierm@redhat.com, Iker Pedrosa <ikerpedrosam@gmail.com>, 
+ Aditya Garg <gargaditya08@proton.me>, admin@kodeit.net, 
+ hamohammed.sa@gmail.com, louis.chauvet@bootlin.com, melissa.srw@gmail.com, 
+ alexander.deucher@amd.com, amd-gfx@lists.freedesktop.org, 
+ christian.koenig@amd.com, Liviu Dudau <liviu.dudau@arm.com>, 
+ alison.wang@nxp.com, stefan@agner.ch, jstultz@google.com, 
+ sumit.semwal@linaro.org, xinliang.liu@linaro.org, yongqin.liu@linaro.org, 
+ Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
+ imx@lists.linux.dev, kernel@pengutronix.de, victor.liu@nxp.com, 
+ l.stach@pengutronix.de, laurentiu.palcu@oss.nxp.com, 
+ Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org, 
+ anitha.chrisanthus@intel.com, paulk@sys-base.io, chenhuacai@kernel.org, 
+ jeffbai@aosc.io, lvjianmin@loongson.cn, wuqianhai@loongson.cn, 
+ xry111@xry111.site, zhengxingda@iscas.ac.cn, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ jbrunet@baylibre.com, khilman@baylibre.com, 
+ linux-amlogic@lists.infradead.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ abhinav.kumar@linux.dev, freedreno@lists.freedesktop.org, 
+ jesszhan0024@gmail.com, linux-arm-msm@vger.kernel.org, lumag@kernel.org, 
+ marijn.suijten@somainline.org, robin.clark@oss.qualcomm.com, 
+ sean@poorly.run, marex@denx.de, airlied@redhat.com, kraxel@redhat.com, 
+ spice-devel@lists.freedesktop.org, virtualization@lists.linux.dev, 
+ andy.yan@rock-chips.com, heiko@sntech.de, hjc@rock-chips.com, 
+ linux-rockchip@lists.infradead.org, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, orsonzhai@gmail.com, 
+ zhang.lyra@gmail.com, alain.volmat@foss.st.com, rgallaispou@gmail.com, 
+ alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com, 
+ philippe.cornu@foss.st.com, raphael.gallais-pou@foss.st.com, 
+ yannick.fertre@foss.st.com, linux-sunxi@lists.linux.dev, 
+ samuel@sholland.org, wens@kernel.org, jyri.sarha@iki.fi, 
+ tomi.valkeinen@ideasonboard.com, hansg@kernel.org, 
+ dmitry.osipenko@collabora.com, gurchetansingh@chromium.org, 
+ olvaffe@gmail.com, michal.simek@amd.com, harry.wentland@amd.com, 
+ siqueira@igalia.com, sunpeng.li@amd.com, linux@armlinux.org.uk, 
+ Dharma Balasubiramani <dharma.b@microchip.com>, 
+ Ludovic Desroches <ludovic.desroches@microchip.com>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, 
+ nicolas.ferre@microchip.com, alim.akhtar@samsung.com, inki.dae@samsung.com, 
+ krzk@kernel.org, kyungmin.park@samsung.com, 
+ linux-samsung-soc@vger.kernel.org, sw0312.kim@samsung.com, 
+ p.zabel@pengutronix.de, angelogioacchino.delregno@collabora.com, 
+ chunkuang.hu@kernel.org, matthias.bgg@gmail.com, dakr@kernel.org, 
+ lyude@redhat.com, nouveau@lists.freedesktop.org, geert+renesas@glider.be, 
+ kieran.bingham+renesas@ideasonboard.com, 
+ laurent.pinchart+renesas@ideasonboard.com, 
+ linux-renesas-soc@vger.kernel.org, magnus.damm@gmail.com, 
+ tomi.valkeinen+renesas@ideasonboard.com, 
+ Biju Das <biju.das.jz@bp.renesas.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ dave.stevenson@raspberrypi.com, kernel-list@raspberrypi.com, 
+ bcm-kernel-feedback-list@broadcom.com, zack.rusin@broadcom.com, 
+ Mikko Perttunen <mperttunen@nvidia.com>, jonathanh@nvidia.com, 
+ linux-tegra@vger.kernel.org, thierry.reding@kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9816; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=VJPKLZAERv57LU6ZWlnm/FbV5fCc6NLCWv56VYxLhBU=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFn1Okd4jeNl+X7syqqbY/cw1tCm+4K+vPySv7ffRjMlP
+ 95gKxbTMZWFQZiTQVZMkeWJTNjp5e2LqxzsV/6AmcPKBDKEgYtTACayYxpjfeGuW6d2Cid9skic
+ XnUw2HXGCmPJg5Nr1x3Q9Gd/Jvuwfu/ra3bOtgm3eByXSe3b8dOmirFOre7X1j0XI2KFw/tl704
+ 9Fr7Ql4Wlr9zT5H/pCUb7a2dvrqxxuza/Pehf6JagnKI0rp8A
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-On Fri, Aug 14, 2026 at 09:20:27AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
->
-> New issues:
-> - [High] The split IRQ handlers break the FLEXCAN_QUIRK_BROKEN_PERR_STATE workaround on multi-IRQ platforms.
+This is a follow-up to the bridge reset removal series, and part of a
+larger effort to remove the reset hook from all KMS objects.
 
-Please check this one, You can fix pre-existing issue later.
+The plane reset hook is overloaded: it is called both at probe time
+to create the initial software state and during suspend/resume to
+reset hardware and software state. These two roles have different
+requirements, and the reset hook is not fallible, making error
+handling difficult for the initial state allocation path.
 
-Frank
+While reset has the semantics to reset both the software and hardware
+state, the vast majority of implementations and all the helpers only
+reset the software state, making them equivalent to
+atomic_create_state in practice. The atomic_create_state hook makes
+this explicit: it only allocates and initializes a pristine state
+without any side effect, and returns the state pointer or an ERR_PTR
+on failure.
 
->
-> Pre-existing issues:
-> - [Critical] Concurrent execution of split IRQ handlers locklessly corrupts the shared `skb_irq_queue`.
-> - [High] The patch fails to fix duplicate frame processing for platforms with multiple mailbox IRQs.
-> --
->
-> --- Patch [1]: [RESEND PATCH v6 1/6] can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms ---
-> commit 4696683063946bcc95216f931b7fa509b55610f8
-> Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> Date:   Fri Aug 14 09:03:18 2026 +0000
->
->     can: flexcan: use dedicated IRQ handlers for multi-IRQ platforms
->
-> This commit splits the monolithic flexcan IRQ handler into dedicated
-> handlers for mailbox, bus error, and state change events. This is intended
-> to prevent duplicate frame processing on multi-IRQ platforms where distinct
-> IRQ lines can dispatch concurrently.
->
-> > diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-> > index f5d22c61503fa..f73ff442d5304 100644
-> > --- a/drivers/net/can/flexcan/flexcan-core.c
-> > +++ b/drivers/net/can/flexcan/flexcan-core.c
-> [ ... ]
-> > @@ -1131,25 +1129,57 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
-> >  		netif_wake_queue(dev);
-> >  	}
-> >
-> > +	return handled;
-> > +}
-> > +
-> > +/* Process bus error events */
-> > +static irqreturn_t flexcan_do_berr(struct net_device *dev)
-> > +{
-> > +	struct flexcan_priv *priv = netdev_priv(dev);
-> > +	struct flexcan_regs __iomem *regs = priv->regs;
-> > +	irqreturn_t handled = IRQ_NONE;
-> > +	u32 reg_esr;
-> > +
-> >  	reg_esr = priv->read(&regs->esr);
-> >
-> > -	/* ACK all bus error, state change and wake IRQ sources */
-> > -	if (reg_esr & (FLEXCAN_ESR_ALL_INT | FLEXCAN_ESR_WAK_INT)) {
-> > +	/* ACK bus error interrupt source */
-> > +	if (reg_esr & FLEXCAN_ESR_ERR_INT) {
-> >  		handled = IRQ_HANDLED;
-> > -		priv->write(reg_esr & (FLEXCAN_ESR_ALL_INT | FLEXCAN_ESR_WAK_INT), &regs->esr);
-> > +		priv->write(FLEXCAN_ESR_ERR_INT, &regs->esr);
-> >  	}
-> >
-> > -	/* state change interrupt or broken error state quirk fix is enabled */
-> > -	if ((reg_esr & FLEXCAN_ESR_ERR_STATE) ||
-> > -	    (priv->devtype_data.quirks & (FLEXCAN_QUIRK_BROKEN_WERR_STATE |
-> > -					   FLEXCAN_QUIRK_BROKEN_PERR_STATE)))
-> > -		flexcan_irq_state(dev, reg_esr);
-> > -
-> >  	/* bus error IRQ - handle if bus error reporting is activated */
-> >  	if ((reg_esr & FLEXCAN_ESR_ERR_BUS) &&
-> >  	    (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING))
-> >  		flexcan_irq_bus_err(dev, reg_esr);
-> >
-> > +	return handled;
-> > +}
->
-> [Severity: High]
-> Does this break the FLEXCAN_QUIRK_BROKEN_PERR_STATE workaround?
->
-> Before this patch, the monolithic flexcan_irq() checked this quirk and called
-> flexcan_irq_state() on any interrupt.
->
-> The FLEXCAN_QUIRK_BROKEN_PERR_STATE workaround relies on enabling the bus error
-> interrupt to catch state changes on platforms where the state interrupt is
-> broken.
->
-> Now that the bus error interrupt is routed exclusively to flexcan_do_berr(),
-> which never invokes flexcan_irq_state(), won't state transitions (like bus
-> warning or bus-off) be silently ignored on affected platforms?
->
-> [ ... ]
-> > +/* Mailbox IRQ handler for multi-IRQ platforms */
-> > +static irqreturn_t flexcan_irq_mb(int irq, void *dev_id)
-> > +{
-> > +	struct net_device *dev = dev_id;
-> > +	struct flexcan_priv *priv = netdev_priv(dev);
-> > +	irqreturn_t handled;
-> > +
-> > +	handled = flexcan_do_mb(dev);
->
-> [Severity: High]
-> This is a pre-existing issue, but does this still allow duplicate frame
-> processing?
->
-> If a platform has a secondary mailbox IRQ (FLEXCAN_QUIRK_SECONDARY_MB_IRQ),
-> flexcan_open() registers flexcan_irq_mb() for the secondary IRQ, and the
-> primary IRQ registers either flexcan_irq() or flexcan_irq_mb().
->
-> Because these can run concurrently on different CPUs, and flexcan_do_mb()
-> unconditionally processes all active mailboxes globally, won't both threads
-> still race and process the same frames?
->
-> > +
-> > +	if (handled)
-> > +		can_rx_offload_irq_finish(&priv->offload);
->
-> [Severity: Critical]
-> This is a pre-existing issue, but does splitting the IRQ handlers make
-> skb_irq_queue vulnerable to lockless corruption?
->
-> When flexcan_irq_mb(), flexcan_irq_boff(), and flexcan_irq_berr() run
-> concurrently on different CPUs, they can independently call the can_rx_offload
-> API (like can_rx_offload_irq_offload_timestamp() and
-> can_rx_offload_queue_timestamp()).
->
-> These functions insert SKBs into offload->skb_irq_queue using the lockless
-> __skb_queue_add_sort().
->
-> Additionally, they concurrently call can_rx_offload_irq_finish(), which
-> splices the list locklessly:
->
-> drivers/net/can/dev/rx-offload.c:can_rx_offload_irq_finish() {
->     ...
->     spin_lock_irqsave(&offload->skb_queue.lock, flags);
->     skb_queue_splice_tail_init(&offload->skb_irq_queue, &offload->skb_queue);
->     spin_unlock_irqrestore(&offload->skb_queue.lock, flags);
->     ...
-> }
->
-> Will this concurrent lockless access corrupt the skb->next / skb->prev pointers
-> leading to a kernel panic?
->
-> > +
-> > +	return handled;
-> > +}
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260814090324.647898-1-ciprianmarian.costea@oss.nxp.com?part=1
+This series first adds the necessary infrastructure in the simple-kms
+and GEM atomic helpers, then converts all 51 plane drivers tree-wide
+from the reset hook to atomic_create_state. The conversions were done
+using a combination of Coccinelle semantic patches and manual
+adjustments. Once all drivers are converted, the old helpers and the
+reset hook itself are removed from struct drm_plane_funcs.
+
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+Changes in v2:
+- Rebase on latest drm-misc-next tag
+- Fix sashiko reviews
+- Fix atmel-hlcdc breakage
+- Link to v1: https://lore.kernel.org/r/20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org
+
+---
+Maxime Ripard (61):
+      drm/simple-kms: Add create_plane_state hook
+      drm/gem-atomic-helper: Create drm_gem_create_shadow_plane_state()
+      drm/gem-atomic-helper: Convert simple-kms shadow helpers to create_plane_state
+      drm/gem-atomic-helper: Switch DRM_GEM_SHADOW_PLANE_FUNCS to atomic_create_state
+      drm/gem-atomic-helper: Remove drm_gem_reset_shadow_plane()
+      drm/sysfb: Convert to atomic_create_state
+      drm/simple-kms: Switch to atomic_create_state
+      drm/ssd130x: Convert to atomic_create_state
+      drm/st7920: Convert to atomic_create_state
+      drm/appletbdrm: Convert to atomic_create_state
+      drm/vkms: Convert to atomic_create_state
+      drm/gem-atomic-helper: Remove __drm_gem_reset_shadow_plane()
+      drm/amdgpu: Convert to atomic_create_state
+      drm/hdlcd: Convert to atomic_create_state
+      drm/fsl-dcu: Convert to atomic_create_state
+      drm/hisilicon/kirin: Convert to atomic_create_state
+      drm/imx/dc: Convert to atomic_create_state
+      drm/imx/dcss: Convert to atomic_create_state
+      drm/ingenic: Convert to atomic_create_state
+      drm/kmb: Convert to atomic_create_state
+      drm/logicvc: Convert to atomic_create_state
+      drm/loongson: Convert to atomic_create_state
+      drm/meson: Convert to atomic_create_state
+      drm/msm/mdp4: Convert to atomic_create_state
+      drm/lcdif: Convert to atomic_create_state
+      drm/mxsfb: Convert to atomic_create_state
+      drm/qxl: Convert to atomic_create_state
+      drm/rockchip: Convert to atomic_create_state
+      drm/sprd: Convert to atomic_create_state
+      drm/sti: Convert to atomic_create_state
+      drm/stm: Convert to atomic_create_state
+      drm/sun4i: sun8i: Convert to atomic_create_state
+      drm/tests: kunit: Convert to atomic_create_state
+      drm/tilcdc: Convert to atomic_create_state
+      drm/vboxvideo: Convert to atomic_create_state
+      drm/verisilicon: Convert to atomic_create_state
+      drm/virtio: Convert to atomic_create_state
+      drm/xlnx: Convert to atomic_create_state
+      drm/atomic-state-helper: Remove drm_atomic_helper_plane_reset()
+      drm/amdgpu_dm: Convert to atomic_create_state
+      drm/komeda: Convert to atomic_create_state
+      drm/malidp: Convert to atomic_create_state
+      drm/armada: Convert to atomic_create_state
+      drm/atmel-hlcdc: Drop spurious csc_init call from reset
+      drm/atmel-hlcdc: Convert to atomic_create_state
+      drm/exynos: Convert to atomic_create_state
+      drm/imx/ipuv3: Convert to atomic_create_state
+      drm/mediatek: Convert to atomic_create_state
+      drm/msm/dpu1: Convert to atomic_create_state
+      drm/msm/mdp5: Convert to atomic_create_state
+      drm/nouveau: Convert to atomic_create_state
+      drm/omap: Convert to atomic_create_state
+      drm/rcar-du: Convert to atomic_create_state
+      drm/rz-du: Convert to atomic_create_state
+      drm/shmobile: Convert to atomic_create_state
+      drm/sun4i: layer: Convert to atomic_create_state
+      drm/vc4: Convert to atomic_create_state
+      drm/vmwgfx: Convert to atomic_create_state
+      drm/atomic-state-helper: Remove __drm_atomic_helper_plane_reset()
+      drm/tegra: Convert to atomic_create_state
+      drm/plane: Remove reset
+
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c           |   2 +-
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c    |  26 +++---
+ drivers/gpu/drm/arm/display/komeda/komeda_plane.c  |  18 ++--
+ drivers/gpu/drm/arm/hdlcd_crtc.c                   |   2 +-
+ drivers/gpu/drm/arm/malidp_planes.c                |  18 ++--
+ drivers/gpu/drm/armada/armada_overlay.c            |  39 ++++----
+ drivers/gpu/drm/armada/armada_plane.c              |  15 ++--
+ drivers/gpu/drm/armada/armada_plane.h              |   2 +-
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c    |  33 +++----
+ drivers/gpu/drm/drm_atomic_state_helper.c          |  41 ---------
+ drivers/gpu/drm/drm_gem_atomic_helper.c            | 100 +++++++++++----------
+ drivers/gpu/drm/drm_mode_config.c                  |   4 +-
+ drivers/gpu/drm/drm_simple_kms_helper.c            |  11 +--
+ drivers/gpu/drm/exynos/exynos_drm_plane.c          |  22 ++---
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_plane.c        |   2 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c    |   2 +-
+ drivers/gpu/drm/imx/dc/dc-plane.c                  |   2 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c              |   2 +-
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c            |  19 ++--
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |   2 +-
+ drivers/gpu/drm/ingenic/ingenic-ipu.c              |   2 +-
+ drivers/gpu/drm/kmb/kmb_plane.c                    |   2 +-
+ drivers/gpu/drm/logicvc/logicvc_layer.c            |   2 +-
+ drivers/gpu/drm/loongson/lsdc_plane.c              |   2 +-
+ drivers/gpu/drm/mediatek/mtk_plane.c               |  22 ++---
+ drivers/gpu/drm/meson/meson_overlay.c              |   2 +-
+ drivers/gpu/drm/meson/meson_plane.c                |   2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c          |  18 ++--
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_plane.c         |   2 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c         |  16 ++--
+ drivers/gpu/drm/mxsfb/lcdif_kms.c                  |   2 +-
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c                  |   2 +-
+ drivers/gpu/drm/nouveau/dispnv50/wndw.c            |  15 ++--
+ drivers/gpu/drm/omapdrm/omap_plane.c               |  13 ++-
+ drivers/gpu/drm/qxl/qxl_display.c                  |   4 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_plane.c    |  15 ++--
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_vsp.c      |  15 ++--
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_vsp.c       |  15 ++--
+ drivers/gpu/drm/renesas/shmobile/shmob_drm_plane.c |  15 ++--
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |   2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c       |   2 +-
+ drivers/gpu/drm/sitronix/st7920.c                  |  12 +--
+ drivers/gpu/drm/solomon/ssd130x.c                  |  12 +--
+ drivers/gpu/drm/sprd/sprd_dpu.c                    |   2 +-
+ drivers/gpu/drm/sti/sti_cursor.c                   |   2 +-
+ drivers/gpu/drm/sti/sti_gdp.c                      |   2 +-
+ drivers/gpu/drm/sti/sti_hqvdp.c                    |   2 +-
+ drivers/gpu/drm/stm/ltdc.c                         |   2 +-
+ drivers/gpu/drm/sun4i/sun4i_layer.c                |  12 ++-
+ drivers/gpu/drm/sun4i/sun8i_ui_layer.c             |   2 +-
+ drivers/gpu/drm/sun4i/sun8i_vi_layer.c             |   2 +-
+ drivers/gpu/drm/sysfb/drm_sysfb_helper.h           |   4 +-
+ drivers/gpu/drm/sysfb/drm_sysfb_modeset.c          |  30 +++++--
+ drivers/gpu/drm/tegra/plane.c                      |  28 +++---
+ drivers/gpu/drm/tests/drm_kunit_helpers.c          |   2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_plane.c              |   2 +-
+ drivers/gpu/drm/tiny/appletbdrm.c                  |  12 +--
+ drivers/gpu/drm/vboxvideo/vbox_mode.c              |   2 +-
+ drivers/gpu/drm/vc4/vc4_plane.c                    |  15 ++--
+ drivers/gpu/drm/verisilicon/vs_cursor_plane.c      |   2 +-
+ drivers/gpu/drm/verisilicon/vs_plane.c             |  14 ++-
+ drivers/gpu/drm/verisilicon/vs_plane.h             |   2 +-
+ drivers/gpu/drm/verisilicon/vs_primary_plane.c     |   2 +-
+ drivers/gpu/drm/virtio/virtgpu_plane.c             |   2 +-
+ drivers/gpu/drm/vkms/vkms_plane.c                  |  15 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                |  17 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                |   2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c                |   4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c               |   4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c               |   4 +-
+ drivers/gpu/drm/xlnx/zynqmp_kms.c                  |   2 +-
+ include/drm/drm_atomic_state_helper.h              |   3 -
+ include/drm/drm_gem_atomic_helper.h                |  13 +--
+ include/drm/drm_plane.h                            |  12 ---
+ include/drm/drm_simple_kms_helper.h                |   1 +
+ 75 files changed, 343 insertions(+), 433 deletions(-)
+---
+base-commit: bd4f284df04d76fd65e57141cb1e6e7a49e4c3cb
+change-id: 20260629-drm-no-more-plane-reset-04950f42e07f
+
+Best regards,
+-- 
+Maxime Ripard <mripard@kernel.org>
+
