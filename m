@@ -1,188 +1,186 @@
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278744582EA
-	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 09:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EF242049B;
+	Fri, 14 Aug 2026 09:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786698566; cv=none; b=eoFgNC+fC5GiHvU6RsABu5Rw4dW40Z1u+hDjuAKGwi5EhE9f9bGrxZbjIGN45T9Aenpp2Xcuh31znY//e0k9zJGytke9ktYhuDmY046maESpg/FSIofGzfY6eNF41549IDYt2NWlZAXNbm2/4AwwHk31DjY7Z12kfR2URq285uY=
+	t=1786698885; cv=none; b=STjxAMfKZLDCLfccsRN+ZkaMzyfANub/pH0p+BZZjoQaZpSFDg63wjZAgkbUDWqCOLcuuJzcBskCAjgSq/NnKiHAcS/w/53X7uZGbx6giZnrEKxl66ZVK6QEsPft64LgJ2oQApLU+2VMnLKhhnfajoHbGgJrvdTbkKf235ubeCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786698566; c=relaxed/simple;
-	bh=JmT62r1LQFUMewiOjNoxJSZLjb5Rke2Ty3fgGYMzUjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkCW4J/UXN/vmkiermbagnE5riam662xd10wzxkkB3ulmvRUzvzMmjqIEltWRUV8uA6h8dvNEoc6+vLvfjtUDvQT4mzpqRr5k1SrWdLDzxoMjxheteGdk/M5vSxpYbsjotYXjColrb5GIubXROxj7lhvZiXaCn8Ew4wi6He4W5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=aFQbwDBU; arc=none smtp.client-ip=185.136.65.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1786698885; c=relaxed/simple;
+	bh=bLxmo6w7wG8c11FaMhjlKWzVYP7EqZgqHvocwbItXeo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MIVZs1a6mLuuhxKko+EtfHP4a0NhoVkoTgRzcT1rtnUS95cpsWtLh0kFPAYBV5xcIz9fU9izWf580ijX3laVXZU7rsg/pcehS+oOWj4Yx+ltYIIkqaS2+/nzpJKgJIeNKvMjCZvBmDX4LXPzNwdhrPCar0SCaAJbetk2KSjSwD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YoAsNzBc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="aFQbwDBU"
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20260814090911bad18c8e9c000207d4
-        for <imx@lists.linux.dev>;
-        Fri, 14 Aug 2026 11:09:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=WMBYKt6pXyX/he4h/0lqd2dFpbK1SOcahc23JBZCrXA=;
- b=aFQbwDBUcXsjxrjR8In9gObCKyk903HbObS6ctu+LEEll4GHW3elsYUCydAboMMbBzV7Bu
- mfUOCTgmQcCoiNpLcqqoXbfDV04op8pXs8d2JBgAHBvog7K7t3zzGahO7GvZfXe2tbYkgnUH
- RPlEIqQI9JfWX3Ri6wEtJGvqwZi+6tAEiQrUfqAWF9ikIm4zXRccK09Gq8h9OvUU6BTBT8AF
- VhzdVsX8SNKgMRrsz66YULWck4n1nT7aH/8pfrSq+oX5Eg0fy7c3cbOFSP/aM9iLIQ7K5UP+
- q0hjdJsWV5i6ceaoQry7XxIYENBYFqCx0ZwMb9Y+uQTqEBvndaiNviGg==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: netdev@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Linux Team <linux-imx@nxp.com>,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/2] net: fec: support receive flushing via fsl,rx-flush-queues
-Date: Fri, 14 Aug 2026 11:09:01 +0200
-Message-ID: <20260814090906.2225075-3-alexander.sverdlin@siemens.com>
-In-Reply-To: <20260814090906.2225075-1-alexander.sverdlin@siemens.com>
-References: <20260814090906.2225075-1-alexander.sverdlin@siemens.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YoAsNzBc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990D91F000E9;
+	Fri, 14 Aug 2026 09:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786698884;
+	bh=WCYDDND33Gs+5oPob/MB66KTD80miateaiz1wxBupxc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YoAsNzBcG14yQCEmhI3e7lGtb1Ocl8W1e7P2wDdHkXun7Sgyci+tPfODotlObDzDQ
+	 oRbd7RQRL40cEVkDN+mykbeHz1rDzvcVdYkxAWzjepwkvmPrJfxUyj8COj0k4wegXh
+	 GjqryQB7SE8zAWrlfghFp5zGHCpdS64/+H++vO5QPo2ECV4BVCRT28TsviKPReaNvQ
+	 41zojx7lJjGyKP3HQ3EvcOVt+w2F2w4ktjzMf774WLWM9cr6+HXAScApm02tEaf4Nj
+	 jlsBiFRsITNUOYa2SqIqe7zEwgI2uCRyD3ypewTIWoX+Y4WeEVFtvZmHGWz+JjDkLe
+	 D3jqy8f4r1HsQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [RESEND PATCH v6 2/6] can: flexcan: disable all IRQ lines in
+ flexcan_chip_interrupts_enable()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, "Vincent Mailhol" <mailhol@kernel.org>, conor+dt@kernel.org, linux-can@vger.kernel.org, "Marc
+ Kleine-Budde" <mkl@pengutronix.de>, "Oliver Hartkopp" <socketcan@hartkopp.net>, imx@lists.linux.dev, Frank.Li@kernel.org, "Oleksij
+ Rempel" <o.rempel@pengutronix.de>, robh@kernel.org
+In-Reply-To: <20260814090324.647898-3-ciprianmarian.costea@oss.nxp.com>
+References: <20260814090324.647898-1-ciprianmarian.costea@oss.nxp.com>
+ <20260814090324.647898-3-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 14 Aug 2026 09:14:43 +0000
+Message-Id: <20260814091443.990D91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-The FEC/ENET controller can flush frames stuck at the head of the RX FIFO
-when their destination ring has no empty buffer descriptor, instead of
-letting them block the FIFO. This is controlled per RX queue through the
-RX_FLUSHn bits of the QOS Scheme register (FEC_QOS_SCHEME).
+Pre-existing issues:
+- [High] Prematurely exposing the device to the network stack during resume=
+, and delaying teardown during suspend, causes a race condition where ndo_s=
+tart_xmit can interact with powered-down or partially initialized hardware.
+- [Medium] PM runtime usage count underflow (double-put) in the probe error=
+ path.
+--
 
-Parse the new fsl,rx-flush-queues property, build the RX flush mask and
-program it in fec_enet_enable_ring().
+--- Patch [2]: [RESEND PATCH v6 2/6] can: flexcan: disable all IRQ lines in=
+ flexcan_chip_interrupts_enable() ---
+commit 51a052134a222a737e75062314cf44dff20da306
+Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-Erratum ERR050395 (e.g. i.MX8QXP) can cause an RX path lock-up when
-flushing is enabled on more than one queue at a time. Rather than encoding
-that limitation in the binding, enforce it in the driver: reject a
-configuration that enables flushing on multiple queues unless the
-controller advertises FEC_QUIRK_HAS_MULTI_RX_FLUSH, which future parts with
-the erratum fixed can set.
+can: flexcan: disable all IRQ lines in flexcan_chip_interrupts_enable()
 
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- drivers/net/ethernet/freescale/fec.h      | 14 ++++++++++
- drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+flexcan_chip_interrupts_enable() disables only the primary IRQ line while
+writing to the IMASK and CTRL registers.
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 7176803146f3d..4af3ae286895f 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -186,6 +186,7 @@
- #define FEC_RCMR_2		0xfff
- #define FEC_DMA_CFG_1		0xfff
- #define FEC_DMA_CFG_2		0xfff
-+#define FEC_QOS_SCHEME		0xfff
- #define FEC_TXIC0		0xfff
- #define FEC_TXIC1		0xfff
- #define FEC_TXIC2		0xfff
-@@ -322,6 +323,10 @@ struct bufdesc_ex {
- #define RCMR_CMP(X)		(((X) == 1) ? RCMR_CMP_1 : RCMR_CMP_2)
- #define FEC_TX_BD_FTYPE(X)	(((X) & 0xf) << 20)
- 
-+/* FEC_QOS_SCHEME bits */
-+#define QOS_RX_FLUSH(X)		(1 << (3 + (X)))	/* RX_FLUSHn, n = 0, 1, 2 */
-+#define QOS_RX_FLUSH_MASK	(QOS_RX_FLUSH(0) | QOS_RX_FLUSH(1) | QOS_RX_FLUSH(2))
-+
- /* The number of Tx and Rx buffers.  These are allocated from the page
-  * pool.  The code may assume these are power of two, so it is best
-  * to keep them that size.
-@@ -499,6 +504,12 @@ struct bufdesc_ex {
- /* Jumbo Frame support */
- #define FEC_QUIRK_JUMBO_FRAME		BIT(25)
- 
-+/* Receive flushing (QOS Scheme register RX_FLUSHn) may be enabled on more than
-+ * one RX queue at a time. Parts without this quirk are subject to erratum
-+ * ERR050395 and must limit RX flushing to a single queue.
-+ */
-+#define FEC_QUIRK_HAS_MULTI_RX_FLUSH	BIT(24)
-+
- struct bufdesc_prop {
- 	int qid;
- 	/* Address of Rx and Tx buffers */
-@@ -604,6 +615,9 @@ struct fec_enet_private {
- 	unsigned int num_tx_queues;
- 	unsigned int num_rx_queues;
- 
-+	/* Bitmask of RX queues with receive flushing enabled */
-+	u32 rx_flush_mask;
-+
- 	struct fec_enet_priv_tx_q *tx_queue[FEC_ENET_MAX_TX_QS];
- 	struct fec_enet_priv_rx_q *rx_queue[FEC_ENET_MAX_RX_QS];
- 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index ced4dbf8cd90f..a4fe8423630b5 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1090,6 +1090,15 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 			       fep->hwp + FEC_RCMR(i));
- 	}
- 
-+	/* Enable receive flushing for the selected queues */
-+	if (fep->rx_flush_mask) {
-+		u32 val = readl(fep->hwp + FEC_QOS_SCHEME);
-+
-+		val &= ~QOS_RX_FLUSH_MASK;
-+		val |= fep->rx_flush_mask;
-+		writel(val, fep->hwp + FEC_QOS_SCHEME);
-+	}
-+
- 	for (i = 0; i < fep->num_tx_queues; i++) {
- 		txq = fep->tx_queue[i];
- 		writel(txq->bd.dma, fep->hwp + FEC_X_DES_START(i));
-@@ -5239,6 +5248,31 @@ fec_probe(struct platform_device *pdev)
- 	fep->num_rx_queues = num_rx_qs;
- 	fep->num_tx_queues = num_tx_qs;
- 
-+	/* Enable receive flushing on the requested queues. Erratum ERR050395
-+	 * restricts flushing to a single queue; only accept more than one queue
-+	 * on controllers known to have the erratum fixed.
-+	 */
-+	for (i = 0; i < of_property_count_u32_elems(np, "fsl,rx-flush-queues"); i++) {
-+		u32 q;
-+
-+		if (of_property_read_u32_index(np, "fsl,rx-flush-queues", i, &q))
-+			break;
-+		if (q >= num_rx_qs) {
-+			dev_warn(&pdev->dev,
-+				 "fsl,rx-flush-queues: queue %u exceeds num-rx-queues, ignoring\n",
-+				 q);
-+			continue;
-+		}
-+		fep->rx_flush_mask |= QOS_RX_FLUSH(q);
-+	}
-+	if (hweight32(fep->rx_flush_mask) > 1 &&
-+	    !(fep->quirks & FEC_QUIRK_HAS_MULTI_RX_FLUSH)) {
-+		dev_err(&pdev->dev,
-+			"fsl,rx-flush-queues: RX flush on multiple queues not supported\n");
-+		ret = -EINVAL;
-+		goto failed_ioremap;
-+	}
-+
- 	/* default enable pause frame auto negotiation */
- 	if (fep->quirks & FEC_QUIRK_HAS_GBIT)
- 		fep->pause_flag |= FEC_PAUSE_FLAG_AUTONEG;
--- 
-2.55.0
+On multi-IRQ platforms (S32G2, MCF5441X), the additional IRQ lines (boff,
+err, secondary-mb) remain active so their handlers can fire while
+registers are inconsistent.
 
+Disable all registered IRQ lines around the IMASK/CTRL writes. This
+also fixes the resume path, which calls this function.
+
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
+xcan/flexcan-core.c
+> index f73ff442d5304..7dde2e623defe 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+> @@ -1519,14 +1519,28 @@ static void flexcan_chip_interrupts_enable(const =
+struct net_device *dev)
+>  {
+>  	const struct flexcan_priv *priv =3D netdev_priv(dev);
+>  	struct flexcan_regs __iomem *regs =3D priv->regs;
+> +	u32 quirks =3D priv->devtype_data.quirks;
+>  	u64 reg_imask;
+> =20
+>  	disable_irq(dev->irq);
+> +	if (quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
+> +		disable_irq(priv->irq_boff);
+> +		disable_irq(priv->irq_err);
+> +	}
+> +	if (quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
+> +		disable_irq(priv->irq_secondary_mb);
+> +
+>  	priv->write(priv->reg_ctrl_default, &regs->ctrl);
+>  	reg_imask =3D priv->rx_mask | priv->tx_mask;
+
+[ ... ]
+
+This isn't a bug introduced by this patch, but while reviewing flexcan-core=
+.c
+I noticed a PM runtime count underflow in the probe error path:
+
+drivers/net/can/flexcan/flexcan-core.c:flexcan_probe() {
+    ...
+	err =3D register_flexcandev(dev);
+	if (err) {
+		dev_err(&pdev->dev, "registering netdev failed\n");
+		goto failed_register;
+	}
+
+	err =3D flexcan_setup_stop_mode(pdev);
+	if (err < 0) {
+		dev_err_probe(&pdev->dev, err, "setup stop mode failed\n");
+		goto failed_setup_stop_mode;
+	}
+    ...
+ failed_setup_stop_mode:
+	unregister_flexcandev(dev);
+ failed_register:
+	pm_runtime_put_noidle(&pdev->dev);
+    ...
+}
+
+[Severity: Medium]
+Since register_flexcandev() successfully drops the PM runtime reference via
+pm_runtime_put() on success, doesn't jumping to failed_setup_stop_mode and
+falling through to failed_register result in a double-put when
+pm_runtime_put_noidle() is called?
+
+
+This is also a pre-existing issue, but the suspend/resume handling appears
+to have a race window with the network stack:
+
+drivers/net/can/flexcan/flexcan-core.c:flexcan_resume() {
+    ...
+	if (netif_running(dev)) {
+		netif_device_attach(dev);
+		netif_start_queue(dev);
+		if (device_may_wakeup(device)) {
+			disable_irq_wake(dev->irq);
+			err =3D flexcan_exit_stop_mode(priv);
+    ...
+}
+
+[Severity: High]
+Could this sequence prematurely expose the device to the network stack?
+Calling netif_device_attach() and netif_start_queue() before hardware
+initialization like flexcan_exit_stop_mode() or flexcan_chip_start()
+completes could allow ndo_start_xmit to write to device registers while the
+device is not powered.
+
+Similarly in suspend:
+
+drivers/net/can/flexcan/flexcan-core.c:flexcan_suspend() {
+    ...
+		} else {
+			err =3D flexcan_chip_stop(dev);
+			if (err)
+				return err;
+			flexcan_chip_interrupts_disable(dev);
+			err =3D flexcan_transceiver_disable(priv);
+			if (err)
+				return err;
+			err =3D pinctrl_pm_select_sleep_state(device);
+			if (err)
+				return err;
+		}
+		netif_stop_queue(dev);
+		netif_device_detach(dev);
+    ...
+}
+
+[Severity: High]
+Does this tear down the hardware before stopping the queue? netif_stop_queu=
+e()
+and netif_device_detach() occur after the hardware is suspended via
+flexcan_chip_stop(), creating a similar race window.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814090324.6478=
+98-1-ciprianmarian.costea@oss.nxp.com?part=3D2
