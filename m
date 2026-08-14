@@ -1,129 +1,115 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D1C412BED
-	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 07:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786693289; cv=pass; b=oL74yQNCF0L3qsUhuaCoCMtRnFwNZQASgmx4TDxgIcJ/E2VoRgfFqLKSMsS1tryiCVCG/elEyCenVxI6pYGvyA/O1EdTjAS0hyPpSdx6j0DXjbypiJs3ohGYtaTEZx1cDx2VR0dpBVzmE4XyAPlLW1XXaDrmjz3LtEPa+Re4JVI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786693289; c=relaxed/simple;
-	bh=W4o1ZmlBfyrCH3y2jdCkwEByqgWhppc/8xEUvhcD0rE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VKHDpp3hFZNqNkDIyucURFuQbRo0uQtXSpGH6i/lhe6KOnbhapL+uSQPUbrU+p95MltNt/e6npaglO7u1OD0aj6uO3zD3D346BNDdRU5FDjX30zV80Nt1eVRFKAkGqC0F6X+zjWbS+/yAGHK1wTiMh8MCZWwnZWXwsX8endxKmE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=krglbWds; arc=pass smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C49C40F8D0;
+	Fri, 14 Aug 2026 07:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786693357; cv=none; b=pkPfpHpW01Fl+S2S2GH+svMYHSF3ZovlRx/hStP+SMQ9Du+Ideo4UDDB+jihMcqPA5Iy31mYpywyvYOloYpGKwih4qvbzDCW33kfP/E2+Ti8oFKwN5rDXY1qNOpQlLQ3e5WqdaJPpFw6N7onv9rawI97OBY4fKDojp5dFYfTEY0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786693357; c=relaxed/simple;
+	bh=h3tlIfhDspgStYU58VPPq1CUIWdW0TwJAoBGmjAm0Lg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=UHCUNdSU1LcBwj+q8XbsJoTsGz24GssU3uxNyIR4kN26BXhd8WdQ6KqyPWRetDY2srkvMugEIHusb5jGHEnOY76svD5zHmekKgVNlnRg3jWoGUZ23giodjfoQhehPUFieE/IS4jfb63sCRsX8hBxOnBgKnc7VfNXes83ooOnuNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKX3bRME; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="krglbWds"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3811f512167so881514a91.3
-        for <imx@lists.linux.dev>; Fri, 14 Aug 2026 00:41:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786693277; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dM2Pp6Ud+nJumLTSQClo7/tPrSMOw6pAE9YIGjXh1Kz2ud3WJ163ppW2Wkm2mu5ns9
-         tFXajfCS7kKH682cB2VjNj817ruSKQnMv+3QUH/76sF1CuFpH0Q2tawnBCV2zMSHZQ5X
-         Hoyi1kC+Jz0+uEI9UTeTlyn3jevqmRWnWfLo5kTm89lv115HMZxidgiF7XfGPF2DERgL
-         OmG7kHlVBwBicdBdZKbLatYuEA/O4rHmYy1oc8ShtEFQDIZKLUbcN4LE65lhsgjDj5Aw
-         cSUK7wigoiBk2s6FuPUsjSo0o79PwchBDJ98y8ZBf/x39JRVy4BtSbmsiW8ElvO5s1Hm
-         mZJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=W4o1ZmlBfyrCH3y2jdCkwEByqgWhppc/8xEUvhcD0rE=;
-        fh=ovoc2Q+bV9EJb7USWXTtGZR1xE/lojeHZ2Ykph0xnfc=;
-        b=hUYuAkaUyaC2JpMZAPJ1JQedLq4TxjVn5z6nULQO0Pnw8+Yz9/kMnZEWtf4fXG8hm4
-         W10p/qJ/x2qqJgGDJcXbDcD3OVMDCc3G6A2KHCSUObSLmfT1Y4imAktLY3QVnZLnm1jz
-         R6MVELpSziZcGXA1I1yGrK8rSkOtocZBtepJT+0o8RHcrT+wXRc0swdRYkVOGysARlIs
-         Z7IcbzPz/bp4pp8euN2LiR7J0iWDlIaH3DMyH4W24WeJ24OWimA3iUN2ViAD45pzI+Le
-         k03k2xPq/jX18/4IaymnIBLXvxFyEBqOgxKLMXRzCAzQehpC2TvrPnK8Ov1g9o2aZ6Xt
-         6eaA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786693277; x=1787298077; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W4o1ZmlBfyrCH3y2jdCkwEByqgWhppc/8xEUvhcD0rE=;
-        b=krglbWds8phKZFD8DzVXuFKiF/4SrhRsKtpvk6wflrv4mk8VNfPKcsC/m04GA7QxFt
-         HedJd+Thb2UKmnPztoQ+33WkbV4DzKYks6ssfCENAL9kK33Iy5dQ8ws7qXwb8IC/FdOU
-         yTZClhjlc+qdDcmIrtJbVqBFtdoX9yaJa5vegRmJ1ZW7pMgYtrUdWQ/TJFapFWfRNrw7
-         Kx7DmJOzoxVWN+kXbvkPBVm5qNCJO1oMM0W9/IwVvkbm3wdTijWbn6bKdz0dE931XsTt
-         u8kh61AtG0XBkXdZhs6X80z8mzuCN3XwUQPJWHSLY4FGsI2bxBiugVLMdIgHGr9XgF7I
-         EZGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786693277; x=1787298077;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W4o1ZmlBfyrCH3y2jdCkwEByqgWhppc/8xEUvhcD0rE=;
-        b=X5IOn64Z71JmTL43GYXfAe61EULgE7joDT3zzLx7HUHT8SUk9I5sc8pKASvUSc39ci
-         u2edR3079iqf9esQjvf6RFzIJIcwccp9OkodxSXYfgZUFqlLx/qhRcOR1BOPQGApa4en
-         njU9arq1hHJr4vJEdvXk/Jn/R6+iqUfHOCMX/hjjh0zluxG78j/0anuMv8DERNyqoPFb
-         H6eR49n3X7qZTto1+T+lll+xFS+XjRCMKs+QVPT7X5pJm6+GrKKrkc6JHX378fwsLczH
-         RpK9S6iMMl9wFXlDRBJcpXXayPH/f9vHYPp1Of7bTZ/lmRHuBvnmq2sLuddwRdQ9Tsmp
-         NPjg==
-X-Forwarded-Encrypted: i=1; AHgh+RoWOd4+jk0XlKFohWUdD5spbrE84co4PKsv3QzS60Qt2jcvgyxxOAIuR1A0rJlNznANpFk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywl032SZcNmozWKur5Osh4CiBaa8RoFurchVygwtb+SDEPm7nwD
-	rLkDM4NNSZ5SAACwO/jmfaGT/oodwna/hmrySEINEsFH5bOIYpStxxw41VEW11MzdQcmg47hLAV
-	vqRIrD2pgmDWlvaCZ0OtObrxr2Yab7Hk=
-X-Gm-Gg: AR+sD12hGc+IXyfyuAgUoAtaLWJDbfJ05tIzLakWwdsWFRBOqQsnm8ZFZdHLEwL8iCT
-	63n6LGU51cYUtIj8Qauq2+CaLxprfvXUSww61nnl05MW1cMIqSX/b4KhSxzPofIgzSOoks4DSPb
-	r1aluSjufbrs2Y4AWH0DSYeWOeHgAiw+Kpv+EOVIn4g1DkUYsrBXa9Em7vbOBIUN6vrfkgMrTDM
-	35AC1BkBmkoATweUQT7tZ4e8VVjd8mMYzy87aJOWgeaP5hJz4gaJDtbfNRzu1B9Gf0nWzsR6rth
-	2VbdNbfe1IbXwONd3K0tVz0/hGn7CcnWtwWAYqGBI1YOkA==
-X-Received: by 2002:a17:90b:3d8b:b0:38e:1497:af5b with SMTP id
- 98e67ed59e1d1-3933b77ece8mr4578497a91.1.1786693276690; Fri, 14 Aug 2026
- 00:41:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKX3bRME"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E871F000E9;
+	Fri, 14 Aug 2026 07:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786693348;
+	bh=hbtnNWBf3/XoWiJ91yP6BV0a4oaoSY4JNk7nCG8IpsM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YKX3bRME0z0bf2H8pFyi/2vNd+upMGie0S9W6VRivzT2Q+Wgu7LFxDh+sp570O6DX
+	 RygT8pK+5m/yg9FQNoVj9OOHr3YtumFhpWxSrlUy2oXCna7jN8VDVdFbW9ESlY+dla
+	 FqIZRXlLHh5QhMB1HVDgj9NAxL59WSTNJ9xR4Zpgj45JdQZA9Z3rI6rNkRFB3e/OCZ
+	 uP4Dqvx9fZXKY6ohAs084ZifXopJRcFKwVNoGyXeQPXqt8r89lW3dTj0+j3ACB7esh
+	 krZXVb4vMuQIMYI70DrIz4BDd3RsWe88HoexWiMrbajX3VXGKftKrnkosWn7wrrisC
+	 J6EGLzFp/CFFw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 16/17] arm64: dts: imx952-evk: Add pinmux and mark
+ conflicting devices for MQS1
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chancel Liu" <chancel.liu@oss.nxp.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260814072022.4064009-17-chancel.liu@oss.nxp.com>
+References: <20260814072022.4064009-1-chancel.liu@oss.nxp.com>
+ <20260814072022.4064009-17-chancel.liu@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 14 Aug 2026 07:42:24 +0000
+Message-Id: <20260814074228.89E871F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260813070020.719810-1-shengjiu.wang@oss.nxp.com>
- <20260813070020.719810-2-shengjiu.wang@oss.nxp.com> <20260814-lean-classy-hyrax-60aab2@quoll>
-In-Reply-To: <20260814-lean-classy-hyrax-60aab2@quoll>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 14 Aug 2026 15:41:01 +0800
-X-Gm-Features: AUfX_mxVp0mCUmIh3cD49Kgp4iw4sN-NjfTifnUiJEeotRXNzWAYJPCWyxB1G3Y
-Message-ID: <CAA+D8AOdF08PyOqQX6HTz-bWZmyB0bmKoW2DxYtnGS3g72aWrA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/5] ASoC: dt-bindings: fsl,imx-asrc: update port
- binding to support multiple paths
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: shengjiu.wang@oss.nxp.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	shawnguo@kernel.org, linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
-	perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, 
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 14, 2026 at 3:21=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On Thu, Aug 13, 2026 at 03:00:16PM +0800, shengjiu.wang@oss.nxp.com wrote=
-:
-> > From: Shengjiu Wang <shengjiu.wang@nxp.com>
-> >
-> > The i.MX ASRC hardware supports up to three conversion pairs (A, B, C).
->
-> Each one or only the newest? You will be getting the same questions.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The patch silently modifies the `&sai1` node to append SoC-level=
+ clock definitions (`pll8k` and `pll11k`) in a board-specific `.dts` file, =
+violating Devicetree abstractions and the commit message's stated scope.
+--
 
-Each one.
+--- Patch [16]: [PATCH 16/17] arm64: dts: imx952-evk: Add pinmux and mark c=
+onflicting devices for MQS1 ---
+commit 8ad36d874036617823df79dfb507cb8569fd6f0b
+Author: Chancel Liu <chancel.liu@nxp.com>
 
-Best regards
-Shengjiu Wang
+arm64: dts: imx952-evk: Add pinmux and mark conflicting devices for MQS1
 
->
-> > The existing binding exposed only a single generic audio-graph port,
-> > which cannot represent independent conversion paths when multiple pairs
-> > are in use simultaneously.
->
-> Best regards,
-> Krzysztof
->
+This commit adds the MQS1 pinctrl group and labels the conflicting device a=
+nd
+sound card so the shared imx9-mqs overlay can disable them.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx952-evk.dts b/arch/arm64/bo=
+ot/dts/freescale/imx952-evk.dts
+> index e9d735dc2a51b..522c6cb9abf28 100644
+> --- a/arch/arm64/boot/dts/freescale/imx952-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx952-evk.dts
+
+[ ... ]
+
+> @@ -519,11 +519,21 @@ &micfil {
+>  	status =3D "okay";
+>  };
+> =20
+> +&mqs1 {
+> +	pinctrl-0 =3D <&pinctrl_mqs1>, <&mqs1_enable>;
+> +	pinctrl-names =3D "default";
+> +};
+> +
+>  &mu7 {
+>  	status =3D "okay";
+>  };
+> =20
+>  &sai1 {
+> +	clocks =3D <&scmi_clk IMX952_CLK_BUSAON>, <&clk_dummy>,
+> +		 <&scmi_clk IMX952_CLK_SAI1>, <&clk_dummy>,
+> +		 <&clk_dummy>, <&scmi_clk IMX952_CLK_AUDIOPLL1>,
+> +		 <&scmi_clk IMX952_CLK_AUDIOPLL2>;
+> +	clock-names =3D "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k", "pl=
+l11k";
+
+[Severity: Medium]
+Is it intentional to place these SoC-level clock definitions in the
+board-specific .dts file rather than the base SoC .dtsi file?
+
+The added clocks (IMX952_CLK_AUDIOPLL1 and IMX952_CLK_AUDIOPLL2) appear to =
+be
+internal SoC clocks. Wiring these to the sai1 peripheral seems like an
+SoC-level integration detail, and placing it here might force other boards
+using sai1 to duplicate this wiring.
+
+Additionally, this change is not mentioned in the commit message. Could the
+commit message be updated to document this, or should this modification be
+split into a separate patch?
+
+>  	assigned-clocks =3D <&scmi_clk IMX952_CLK_AUDIOPLL1_VCO>,
+>  			  <&scmi_clk IMX952_CLK_AUDIOPLL2_VCO>,
+>  			  <&scmi_clk IMX952_CLK_AUDIOPLL1>,
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814072022.4064=
+009-1-chancel.liu@oss.nxp.com?part=3D16
