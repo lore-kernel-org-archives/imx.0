@@ -1,148 +1,127 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3665541A504
-	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 07:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384E041B362;
+	Fri, 14 Aug 2026 08:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786693636; cv=none; b=d8YHIZvG1saR9X4hnyElJENm5XpQjKLlpPmiZX5nEfsfmhFvqDt/SQR5gEMHmPomLDzqA1gxxltustqGSHgC0XgQHggxpCYVaV/R2Q5XCUvQtcMDmAJXotGxSIlOE9u/NrfvHoixRSwJuJT1zTszUSCbayu+qMMlgQOIe32DZ10=
+	t=1786694643; cv=none; b=BQ0S5ihz21yUblWTH0YXKPTWieYUkHdLdiifqviT2FwQvuMRGZX7lg+JU2AQ/cueSSXBkpsvGd6TBznsgJNAh7tye3x96iC4zNI4DbBoZ5CyHl9W6MxsGvlleDyL8yskqaELgNKY2YABHNvRFwfORCA3hXk5COR31/x/ReIAXao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786693636; c=relaxed/simple;
-	bh=ekkvdcRXkpbM4hGg5dbbnxL6NU0N1v5cVqGhil6KP7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bAPrA56XXUzRAaVd+LjAcedewcCiRFGgJOi2Rkqc8TJ2r1cOfoGR9DGZVtVqY4b9YupLjzP5Oi4CkbiMtBWHLixH2rjLwoV3bd5GbZue4lS920YW5tLtJdrkEpBgqa06xhpRQJJySXu7jMGfNl7b3t0tRUmQuAchQCND+DKMAkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMYTDs4B; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786694643; c=relaxed/simple;
+	bh=f/gV5vYFiyp1v8tbidEy1y5VhvcAHpOxhT/ORtc2H+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lycpGs0g0Ov0mzjT/Wr4RR54VZUT8/4YT2+BTgq0X73NgWBVfzd8rkmyYRflOwtbfvbCXChqtgIVQcSo5M/wCkBipLugszSbpE/KfR7bs5+q8YrjqJcQdLBYmxrb45rkGF0JAFbZGxUute3vw0TDdOO7C12xoy69PmZl4T06VuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTcNcRrX; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMYTDs4B"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f703a9d05so462440f8f.0
-        for <imx@lists.linux.dev>; Fri, 14 Aug 2026 00:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786693623; x=1787298423; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+wlLfGsWdr8phAtVLv97nZ0UPHdHbGHGBacvXoI9xCQ=;
-        b=cMYTDs4BBqs/KACnQ63xlSIi8VHn1LlPydCOnRoHHDQD4DZ+U3PHIrqM8ttNez1aaU
-         i2ey00aEd04KCNBi6+DUg28EU5dE1oHICAoWDEP0P0Lh+hdsR+ACX6gHkbBXNxTsHShS
-         cZGLyrm1fMomxoEPPy2A7N0g6jcpqdFo+r9QrtjU2dAWlg08IQBVvu4I4pJ8GG65sMhU
-         iPgyRbanR1jQdzv6vq4ZBvBNLgvD0EdzflXlEBA2LN9wLLIz4BDUtXy8kGTXkPFpacIl
-         03ZFe9wG+mgLDc8XgDobh3X/ZfWwOiotBh2nLizubSYtipXPmd2LQbSv0CVtz5kq4oXu
-         HkYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786693623; x=1787298423;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+wlLfGsWdr8phAtVLv97nZ0UPHdHbGHGBacvXoI9xCQ=;
-        b=KI4v7hVWba8m5hsasolv+lIX87tp0icTIMj/6JFx/zh3KAVSd5ja9WCOWipMMH2V3g
-         ++MRY/YlLlUqHSsTt6+F5UrXWf/5VrsZ2DEfiftiXZgWwGDkEzwtlBmzkZEbCrP7cAKt
-         9EHXLax9Ju+k3Zrx2NAP561RcF0xKN76X2YaXdbCOr9VbNsOcgVUzMnkbHVnjaHvESvb
-         ze8LtW1OQJPlnwNKMrUcPc+reW10ULW8bZLk/FjTNNbSeXMkHSzGfmiwOi3C70ueYQGk
-         hR29VRcU0Xn8x6Jh0FHXTmQEbrVhc+SpTFlj9pMnfOG/TfPBp/hTEe56KygbTL2NdBrR
-         yNNQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrkZa3ALbX47T0d7Vs7xtQybC1E4HidroDvde2syDacq3EH0NRb/tMyMZ+vtWQKfmaz0AA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwMwpZiQkaDPOF+OgYLnVPw1np9lzgqhzawazXYcC5Thybwa6j
-	OsUzNgbrScu+PAiztzNoO0rCacGpHCLC16ae9ongPD7+Uo81LykySKoc
-X-Gm-Gg: AR+sD10JypX3QCiM7J2KZMIzFpRGpPLUECneO67TqwRTzXRRp4V/LYOOOaj3U7HplgR
-	yTUv4bowx2NoHCbai8eF4mgz4w/vaid42hRsnW0R2fPgmaaujnYmW+YeHGEDlr0sfW8EQaveTbS
-	0tKZuaTs5P/d061DAPp6xC/vfn+ExCdU8RX36cxUds180QCdg9rbTZtREdql+2yptJedLbppI/v
-	IyfiLkkPPMEWZ0F+P7omQPw3oNqEUoZCjZ/jtStkGUgQVGTVlp9ni6ijnDhZILGZ+hhjCjZbLn8
-	eJZHb/omU/7W13ZpCvpS176ldKkiJ3Go18RCwws22hADSPkdIh5nxK9z0VG/VerQLEuABDCz6h/
-	gn6Xo78xFQjK24jKzrlLisqJaWDoqlMfg2GDBHx4wUvc62riiMYeuzmnu+bHP/nhvOH346akmUJ
-	ZwDUtMcfMHx+p+CxfoL+SfyIFCBmKPW/hks5FsyzEayJ1SYA+UY6ARafy3vnbxA7J3fA==
-X-Received: by 2002:a05:600c:3496:b0:493:f318:3bc6 with SMTP id 5b1f17b1804b1-4998796e478mr55812165e9.13.1786693622590;
-        Fri, 14 Aug 2026 00:47:02 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499899b5f86sm8172825e9.5.2026.08.14.00.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 00:47:01 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: [PATCH v5 0/4] ARM: dts: vf: Iris carrier board for the Colibri VF50 and VF61
-Date: Fri, 14 Aug 2026 09:46:56 +0200
-Message-ID: <20260814074700.2491256-1-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTcNcRrX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786694641; x=1818230641;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=f/gV5vYFiyp1v8tbidEy1y5VhvcAHpOxhT/ORtc2H+I=;
+  b=cTcNcRrXUbQ9hOi3YD1CGV5POETSr5xaawdLedvsK1MBoXJuY+Xv3tqe
+   yRWxZxT+oIsr+30AdUnALEY6laweC0txgxIzFG3gR5inbLpPlRuNZrz0Z
+   kb7ktZFRDDOyMFxJb+kAUbnIAQhvflQJdpwpxOjfbVW2lm8LiUKqQgJTl
+   Edc/yQEkNxv62K2zWyXOT2XBLVYQ00U3sk7EFwMPliMt7+Gxe0WupN48Z
+   ue3+25FpHTP33agne25DEbistskhO6AgDANqUjLcjZ7gKKdc6nvmxg6FR
+   7Hm0sl7Lt0qvN25indkNcISB08HVIi7cl/MfU8iECtuAceG7hBH8USGU9
+   w==;
+X-CSE-ConnectionGUID: Xg7Ecn9SS+GcaiW8uRKmdQ==
+X-CSE-MsgGUID: 66BRygTJRcqIx7vR8p5ZeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="112817491"
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="112817491"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 01:04:00 -0700
+X-CSE-ConnectionGUID: uZWHJQ8jQdKFP7Q1mWiRNg==
+X-CSE-MsgGUID: 8lhQsporQJ2V5PiZN1hVjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
+   d="scan'208";a="262411537"
+Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.134])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 01:03:51 -0700
+Date: Fri, 14 Aug 2026 11:03:48 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Kelvin Cao <kelvin.cao@microchip.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/2] dmaengine: use dma_chan_name() helper to get
+ per-channel device name
+Message-ID: <an7L5D_9aGMkLiEw@ashevche-desk.local>
+References: <20260812-dma-chan_dev-rename-v1-0-a67131f7d5c2@nxp.com>
+ <20260812-dma-chan_dev-rename-v1-1-a67131f7d5c2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812-dma-chan_dev-rename-v1-1-a67131f7d5c2@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+On Wed, Aug 12, 2026 at 05:24:08PM -0400, Frank.Li@oss.nxp.com wrote:
 
-This adds a device tree for the Toradex Iris carrier board carrying the
-Vybrid Colibri modules, plus two small preparatory patches for the
-module-level dtsi that the i.MX Colibri variants already had.
+> Use the existing dma_chan_name() helper to obtain the per-channel device
+> name instead of open-coding: dev_name(chan->dev->device) /
+> dev_name(chan2dev())
+> 
+> Simplify the code and improve consistency.
+> 
+> No functional change intended.
 
-Tested on a Colibri VF50 on an Iris V1.1, most recently on 7.2-rc7
-plus this series.
+...
 
-Changes in v5:
-- drop the kernel version from the test description in patch 4
-  (Krzysztof)
-- collect the Reviewed-by tags
+>  		ret = devm_request_irq(dev, lchan->irq, loongson2_cmc_dma_chan_irq, IRQF_SHARED,
+> -				       dev_name(chan2dev(lchan)), lchan);
+> +				       dma_chan_name(&lchan->vchan.chan), lchan);
 
-Changes in v4:
-- gpio-line-names packed four per line (Frank Li)
-- keep the EXT_IO pin group applied next to the carrier hog group
-  instead of overwriting pinctrl-0 in the Iris dtsi, verified in
-  pinmux-pins on hardware (Sashiko review)
-- enable pwm0/pwm1 like the evaluation board does; both chips
-  register on hardware (Sashiko review)
-- the compatibles keep their hyphens; Krzysztof asked for hyphens in
-  every newly introduced compatible in the v2 review
+Depending on the amount of users (and I expect there is a number), I would
+expect specific API for virt-dma case.
 
-Changes in v3, following Krzysztof's review:
-- fold the Iris compatibles into the existing -on-eval enum entries
-- use hyphens in the newly introduced compatibles
-- drop the fixed 5V regulator that only fed the VBUS regulator
-- sent as a fresh thread instead of in reply to v2
+>  		if (ret)
+>  			return ret;
 
-Changes in v2:
-- add the dt-bindings patch for the new compatibles
-- describe the USB host VBUS regulator instead of hogging USBH_PEN
-
-Good old times indeed. You did this job before me and pulled me into
-Linux in the first place, so having these patches reviewed by you
-closes a nice circle. I seem to be following your path in every
-detail by now, the hairline included. The tiny board is still out
-there measuring every day. Thanks for the reviews!
-
-Mehmet Fide (4):
-  ARM: dts: vf-colibri: apply the EXT_IO pin group
-  ARM: dts: vf-colibri: name the SODIMM gpio lines
-  dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
-  ARM: dts: vf: add Iris carrier board support for Colibri VF50 and VF61
-
- .../devicetree/bindings/arm/fsl.yaml          |  12 +-
- arch/arm/boot/dts/nxp/vf/Makefile             |   2 +
- arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi | 126 ++++++++++++++++++
- arch/arm/boot/dts/nxp/vf/vf-colibri.dtsi      |  56 ++++++++
- .../boot/dts/nxp/vf/vf500-colibri-iris.dts    |  14 ++
- .../boot/dts/nxp/vf/vf610-colibri-iris.dts    |  14 ++
- 6 files changed, 220 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/vf/vf500-colibri-iris.dts
- create mode 100644 arch/arm/boot/dts/nxp/vf/vf610-colibri-iris.dts
-
-
-base-commit: 3d6d817622b0a9721e3cc404df3469171582be13
 -- 
-2.54.0
+With Best Regards,
+Andy Shevchenko
+
 
