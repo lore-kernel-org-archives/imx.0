@@ -1,121 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94F384232;
-	Fri, 14 Aug 2026 09:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BD53446AD
+	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 09:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786699110; cv=none; b=cT24AXRTOX/ntFvmT7tLA+YP89lEUrZgwmmk9+3X1JKEYxt3TNUHbXC+mJn9J98PMwiJou+UwilBXxddTKmlw/DeGx75IZuKrMGAe8qgtqvvEiHCQlGMwTT/jXYKEKcBiINCmzVYHNEEvyR0gilYVbYPS5pOOxozx686WbzD1J8=
+	t=1786699165; cv=none; b=Hvtc/TROWxRrrm7NEy3RqaTSHU5okQUb1vg7MAQFlX/1UJNOIV0eOTnFKcjujWRSrzPXsv26w2Cq0IJDU/vHnu7R1GEQ1295qIt2sNlU30R4Kbn25BuakLb8KkkmRDTcB+NCCmuHG6N4FSyGDWwQ6BOIPEXr3h3H3uwBNlF1Uww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786699110; c=relaxed/simple;
-	bh=7H4YUhqxWdKgj5VaJ6acrxrm78zbQuKyHIfmHr1xH8Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z8DuvhzHNbg0zZojspmPTfCluNWtq6LuVbs54xe2C4Kp1wQqYZCngV+Xa+Dg7UX9gs1zB7zQtXqSH+FmAbvFTiRt2b8oPuoVsM0twUxWXdQIXh1qxXuz7qouc21XBiyfZXo2AScM1zKI3XQf9NR/ZndT+SoDcRpSumcTjxkOLWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSAOKFKN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786699165; c=relaxed/simple;
+	bh=ajhbPbhhFDopfE+pfRmjoiyf+z5rmdgu/+yBZgxSJn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O5455hLPyxOOSc4YIWzgmDhcynj0VceZL4ZL7QDfrXg04kfcE6z3775S6gTgSCA8wZuADgn6gJAj1HocpbzJiG/4bewmmP/db7H5sH9jUe/S1Z6o99Q/lZKT7EtRhgZHfyPjmP4+dXvo4L3Fi/k8Hc5pCh1lWWDMX+prsgc1r00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=L8+DGK+m; arc=none smtp.client-ip=185.136.64.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSAOKFKN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B3B1F000E9;
-	Fri, 14 Aug 2026 09:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786699109;
-	bh=qJx7g9k5STMKaKQLffh1wIHeqcPN0FDfsmntz9/bEhI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KSAOKFKNFv1cNsIvL8cAWNrpg98ANrtIJxHAwh/k2uvXEo2f1jOgxnKYuA3WCNR/9
-	 R1CtO3J4ohZ5WOYln+GW96ymR3+F7gGbXzSwvimHoVEeNqSlbbNGSPK1HdylFtE+YZ
-	 hjg+r1A7GAHqoNsVLBOMvEnVopblRxpJXyQtoztutxO+LRssqUAxWUhodcy6MhOJdF
-	 yVCJcoMnDRfIPqp3y+Dt/eQtYRDJW2aaPd5OJUS7ytCYGEun14l6hv8ZA/st/O04l2
-	 awC5xXMdcYISQkjlIff5qdh74+fWtIShJ60B3tQwJ1ApCOnYzl1VW8aY8iM68zpadZ
-	 XUJQZN5DnEQ8g==
-From: sashiko-bot@kernel.org
-Subject: Re: [RESEND PATCH v6 3/6] can: flexcan: split rx/tx masks per
- mailbox IRQ line
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
-Cc: conor+dt@kernel.org, "Marc Kleine-Budde" <mkl@pengutronix.de>, linux-can@vger.kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, "Vincent
- Mailhol" <mailhol@kernel.org>, robh@kernel.org, "Oliver Hartkopp" <socketcan@hartkopp.net>, imx@lists.linux.dev, "Oleksij
- Rempel" <o.rempel@pengutronix.de>
-In-Reply-To: <20260814090324.647898-4-ciprianmarian.costea@oss.nxp.com>
-References: <20260814090324.647898-1-ciprianmarian.costea@oss.nxp.com>
- <20260814090324.647898-4-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 14 Aug 2026 09:18:28 +0000
-Message-Id: <20260814091828.C9B3B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="L8+DGK+m"
+Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20260814090909677e03e509000207a7
+        for <imx@lists.linux.dev>;
+        Fri, 14 Aug 2026 11:09:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=G0t4G5gv+ZWxMZdsCXrUvBl9B11OyaGMOviXCuRt+tI=;
+ b=L8+DGK+msJ7hvV0zCpHlpoTSEbQOk4zqT96RCUI6bgzHAuMSfXR7eampmcl23y830PLb1N
+ 1n5cX7QopuN2I3LYm1Qh9K0HxqzvqE+L5ZUS/wFbgKQH6Cd59XH8SUPsOcUNlBh+U9Dfudcx
+ XFt9BnVUs3g6zSKvJ9Fu5ivnc4bghdw303xrqMHz/8Iezq5p2lFr6XgTRXP60BgRQ3PbyDUm
+ 7Q746Bfk/2DmzFctcMVeejlwV6Z7keBOQTktbVayMUz4Op2S5f/Gv8Ge2HJkeTc+eShXr5ln
+ Djg6mSwrSZtkRtvJTLw2hg1Cz1WgxPCPITWwHx7RGJp/Shw6Flx1magA==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Linux Team <linux-imx@nxp.com>,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/2] net: fec: support RX flushing via fsl,rx-flush-queues
+Date: Fri, 14 Aug 2026 11:08:59 +0200
+Message-ID: <20260814090906.2225075-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Pre-existing issues:
-- [Critical] Concurrent execution of split mailbox IRQ handlers corrupts th=
-e lockless `skb_irq_queue`, leading to list corruption and kernel panics.
---
+The FEC/ENET controller can flush frames that get stuck at the head of the
+RX FIFO because their destination ring has no empty buffer descriptor
+(RxBD[E] clear or ENET_RDARn not set). Without flushing, such a frame blocks
+the FIFO and stalls reception on all queues; with flushing enabled the
+offending frame is discarded instead. Flushing is configured per RX queue
+through the RX_FLUSHn bits of the QOS Scheme register (FEC_QOS_SCHEME).
 
---- Patch [3]: [RESEND PATCH v6 3/6] can: flexcan: split rx/tx masks per ma=
-ilbox IRQ line ---
-commit c6ddbabd84c6f2c763ef4c2438243c9db72c6384
-Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+This series adds a device tree property, fsl,rx-flush-queues, listing the RX
+queues for which flushing should be enabled, and programs the corresponding
+RX_FLUSHn bits.
 
-can: flexcan: split rx/tx masks per mailbox IRQ line
+Erratum ERR050395 (e.g. i.MX8QXP) can lock up the RX path when flushing is
+enabled on more than one queue at the same time; recovery requires a full
+ENET reset. Rather than encoding that hardware limitation in the binding,
+the DT property is kept generic and the single-queue restriction is enforced
+in the driver: a configuration enabling flushing on multiple queues is
+rejected unless the controller advertises FEC_QUIRK_HAS_MULTI_RX_FLUSH.
+Future parts with the erratum fixed can set that quirk to allow flushing on
+several queues.
 
-This patch introduces FLEXCAN_SECONDARY_MB_IRQ_MB0_MASK and
-FLEXCAN_SECONDARY_MB_IRQ_MB1_MASK to split the RX/TX masks between the two
-mailbox IRQ lines on S32G2 platforms. It updates flexcan_do_mb() to accept
-a mb_mask parameter so each IRQ handler only processes its corresponding
-mailboxes.
+Example:
 
-> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
-xcan/flexcan-core.c
-> index 7dde2e623defe..8b70952f7f05d 100644
-> --- a/drivers/net/can/flexcan/flexcan-core.c
-> +++ b/drivers/net/can/flexcan/flexcan-core.c
+    &fec {
+        fsl,num-rx-queues = <3>;
+        fsl,rx-flush-queues = <1>;
+    };
 
-[ ... ]
+Alexander Sverdlin (2):
+  dt-bindings: net: fsl,fec: add fsl,rx-flush-queues
+  net: fec: support receive flushing via fsl,rx-flush-queues
 
-> @@ -1244,8 +1255,14 @@ static irqreturn_t flexcan_irq_mb(int irq, void *d=
-ev_id)
->  	struct net_device *dev =3D dev_id;
->  	struct flexcan_priv *priv =3D netdev_priv(dev);
->  	irqreturn_t handled;
-> +	u64 mb_mask =3D ~0ULL;
-> +
-> +	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
-> +		mb_mask =3D (irq =3D=3D priv->irq_secondary_mb) ?
-> +			  FLEXCAN_SECONDARY_MB_IRQ_MB1_MASK :
-> +			  FLEXCAN_SECONDARY_MB_IRQ_MB0_MASK;
-> =20
-> -	handled =3D flexcan_do_mb(dev);
-> +	handled =3D flexcan_do_mb(dev, mb_mask);
+ .../devicetree/bindings/net/fsl,fec.yaml      | 14 ++++++++
+ drivers/net/ethernet/freescale/fec.h          | 14 ++++++++
+ drivers/net/ethernet/freescale/fec_main.c     | 34 +++++++++++++++++++
+ 3 files changed, 63 insertions(+)
 
-[Severity: Critical]
-This is a pre-existing issue and was not introduced by this patch, but is
-this safe from concurrent execution? If both primary and secondary MB IRQ
-lines assert simultaneously on SMP systems, different CPUs could execute
-flexcan_irq_mb() concurrently.
+-- 
+2.55.0
 
-Both handlers would call flexcan_do_mb(), which eventually calls
-can_rx_offload_irq_offload_timestamp(). That offload function modifies the
-shared lockless queue without synchronization:
-
-can_rx_offload_irq_offload_timestamp() {
-    ...
-    __skb_queue_add_sort(&offload->skb_irq_queue, skb,
-                         can_rx_offload_compare);
-    ...
-}
-
-Could this concurrent lockless mutation of the doubly-linked list result
-in list corruption or kernel panics when traffic arrives simultaneously for
-mailboxes in both the mb-0 and mb-1 ranges?
-
-> =20
->  	if (handled)
->  		can_rx_offload_irq_finish(&priv->offload);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260814090324.6478=
-98-1-ciprianmarian.costea@oss.nxp.com?part=3D3
