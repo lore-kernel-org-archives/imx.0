@@ -1,127 +1,145 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24672490BF6
-	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 19:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126563D7D6A
+	for <imx@lists.linux.dev>; Fri, 14 Aug 2026 20:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786734348; cv=none; b=c4dIHfRHTYrDAiyluTezx4nnCNFNaVdHBWgf0WJJ7mM5lmfAhPjCgu8uoj0RQZZvWgHwRfrnW0qewwUa9UQbsFeAfEpdD96rO1qU+CsjWs3m64khJwkYt4eBRvWsZtbSizMIe99ev9mO2+GyMPpTWfmXNQ4giljh35/LlAeyl1Q=
+	t=1786739765; cv=none; b=teRmRtKK535K96bQMyZTyjy/gaeEbliKdgtKxIP8ZcXbzF6E9fEUP8t5RsCQfVa8ygv78eQA5pxZn4ONaUGnWfC3TEIsQNnTRcaMCygMG/cRi47FqESHg4jko27JisnZvIUSeXp6dtaYxXIx0he3sqmwMd30QLj398Gv6/k3MGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786734348; c=relaxed/simple;
-	bh=6Wp1pMcM5hwaADkkdcdckZfs3h1zttS0Kz4AOfE7Occ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gJqfQxJSNcIyaxxRolboVhl2o23R1Z4iLZ2cBqmrOVviB7sjGCpVYqM6Tpjf4sRwYAGdTxSEijd5hAp0i2FQOUapbFLHfOPH+7vDDcTUR0spgu9Pg5A/sv84EjwTHrbs14SgPFSUSDakQyox3S0F1MHUNVsc2kInBpfko3s/0dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AlZIJkE/; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786739765; c=relaxed/simple;
+	bh=L6cGAtA9z1lEA32tpQrcrf/dbswezRI4TiPZATe6Y6k=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=Hah35JY9+n4HL1XSPzzbsURcttcLDVoNUSFpBFa9lHhDdnE3W5+JZnkdQ77Jj+SbnTiEaP+kJ29vSHKC9k6nzl+zybIZKWEzUlz3Y09aeamHcJhGpscAJPccsNEKwJ2CaQcUf15lsCYbkZo3LMA0Vh8UobJ10AIMUaRBqSLyl8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H7UP/L3A; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AlZIJkE/"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cbedf433a99so1255130a12.2
-        for <imx@lists.linux.dev>; Fri, 14 Aug 2026 12:05:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786734346; x=1787339146; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fnPkLJqZQz4hKZtS8FG6LEBJCnBc6ph4JdLLK3tJlY4=;
-        b=AlZIJkE/MuF7GRNEkqu/7JsJnORyyHfQe2jTP53PEW3KIWFdmwF29k3siJfHhWk3sw
-         ca/QWHutL5QBxeR1PBHANIeSQIwMvs1pb3vLmN0uVpo4GcjC+Qv4fda186WkACc+A4PT
-         vygv6R+SEgOcNGnbRdZJeml/jhf2Jv5pkkWsDKIerxoQQOs5JUlu6NGC1Z+JjUrDW3D5
-         xXu1SRtgXNSqK3FpRWbIzJn7ij55Domp7I6Nczxlh04oi1bFI4y5cn+RfxnWU3swNJu1
-         T6StUoC2XP49n+NpEUx/HuWMKbmq/uqGCyL5dQ5IfIZbVWwyqZ/3BeBL6PmO/XW7zjQN
-         F8nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786734346; x=1787339146;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fnPkLJqZQz4hKZtS8FG6LEBJCnBc6ph4JdLLK3tJlY4=;
-        b=Pim/QOLbURaErC3/5+uxO1DnZBa2zgPFn4K6geM1+I5et02Vy44pJ+dOvGy4RcqV4G
-         z0rJNZ/HnqU8QL8ePBS3s0RH0X+EvmXswAQuimXjGK1mANwzD3A2/4DEUFjFkw+JuymE
-         VTDRoyBo0Gy0DQd2x1F0oW3ha8EbjBsIfKYsFyjGazrimavU7bbWekXkeXS0NlOh49Dk
-         5fEV5OX7KG/VmxAbzZr/iqFL58IqiGxuO8XjyUJnFcxOaZkZIU3343rqWDCu1UqsbjYr
-         vUIsq45Dm11VEdRpphjkfk/lk4f27ZePqYNmU+hezngfOjdw1b84oVXUuBebF/0DnyKx
-         bRxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqbyZYMhTqtca62fXZYH4v8if3RTq2qxupK9FcgH2Du0b9BBQA+7KOZqpnZlipEen0pr5E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzCD8rLufaohWnJKNwo1lGzGAo3XWyGlM33akBmCAI4YdPYZ2LG
-	jgAm3elCk1b4V6D/z4Jfb6qP5k0LgttB3HOcyX78Ou3BWHxfs2USEeCY
-X-Gm-Gg: AR+sD12iyo/pf+g5OyhaSV65U2QuqGqXr5CgM5As+SVs2tYJzY1zxsrE5Liid30kAw2
-	RcGMXcFdWHmNN13hrZEtHS69Nm/X5QZnuCFT0iSJvruLuvuwwKHnYFsXKW5lpTJwGUBwCKW7az+
-	SvHFhUNQlNJtWw+15ObyKOD1mXXjGlkxDwkQgtuJ1798denTkgUIwuvqcjNNutAYU0ajYZSbyD9
-	hBISxrHE3vFNuL2UF2JmELIJGGI72nL6CBi+fNbrvGW0Xx9AWXvyHTuBvzP0YYS4IA2+V5OrWqK
-	OTJ0sPeWUkIWutTUxtnamw2KXbbwZAaB2kUbgpAvJ9D1wfrEWT67XaTmpHJ7jkt7X7NXtHVRAFQ
-	3ugTLXod3yg8uIqXf+XPG+/iucWa2Jm2E9qHWNxfvPbYLdwVSJNz41sg1UJ7iESTuGeF5p/p0uY
-	/Jwx/GlTtmQ3bZlK144WqlUCOkIRVQoK5rnOcTKM376ZDgkJxmDr+WWd6CfTBt118OkUBeckCea
-	iuTzdENapscVmcjKniqiaGVsqtTSRy36A9JWMTjjIAkO2ojpyEgMkPWFtVAxeQBFx8VLsVYScKr
-	SQ==
-X-Received: by 2002:a05:6a20:d48e:b0:3c4:1916:9d40 with SMTP id adf61e73a8af0-3cc71a2c76bmr10428980637.12.1786734346257;
-        Fri, 14 Aug 2026 12:05:46 -0700 (PDT)
-Received: from localhost.localdomain ([2406:7400:94:ab62:887d:e555:df21:3318])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d66e52d2sm7081695eec.13.2026.08.14.12.05.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 12:05:45 -0700 (PDT)
-From: manushprajwal <manushprajwal555@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linusw@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H7UP/L3A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786739762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y8HxtGS/+pDsEWZq9YYRCPV84sZrTTgU1WrgrxJbu3s=;
+	b=H7UP/L3ARE0/bTVvirc3xmDHx/wKHGmB/WFp4XiMVEMg+fuKs+uW+ieuTt9abMah/4EBdC
+	y8R9ArTJsEmzVzNImxgj0IyI3iUwBGgagRww3ktlfDlvlZcOMGZq7rVY7wzK1uxF1+3v6q
+	73o+68/ALx7yBsDx5lz5yhPxMLfeomY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-OoJM1A43PeiGF1bcosKBrg-1; Fri,
+ 14 Aug 2026 16:35:57 -0400
+X-MC-Unique: OoJM1A43PeiGF1bcosKBrg-1
+X-Mimecast-MFC-AGG-ID: OoJM1A43PeiGF1bcosKBrg_1786739754
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AC0B919560B5;
+	Fri, 14 Aug 2026 20:35:53 +0000 (UTC)
+Received: from GoldenWind.lan (unknown [10.22.64.233])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 12FBC197751A;
+	Fri, 14 Aug 2026 20:35:49 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
 	linux-arm-kernel@lists.infradead.org,
-	Manush Prajwal <manushprajwal555@gmail.com>
-Subject: [PATCH v2] pinctrl: imx1-core: fix device_node refcount leak
-Date: Sat, 15 Aug 2026 00:35:27 +0530
-Message-ID: <20260814190527.969-1-manushprajwal555@gmail.com>
-X-Mailer: git-send-email 2.46.2.windows.1
+	nouveau@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	asahi@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-samsung-soc@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	spice-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	imx@lists.linux.dev
+Subject: [PATCH 1/5] drm/vblank: Add drm_device.has_hw_vblank
+Date: Fri, 14 Aug 2026 16:35:29 -0400
+Message-ID: <20260814203542.1405135-2-lyude@redhat.com>
+In-Reply-To: <20260814203542.1405135-1-lyude@redhat.com>
+References: <20260814203542.1405135-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: xW3BYIpoMkHlAh_rvSXbDcMYb0dE1IMl-vAkPTixICc_1786739754
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Manush Prajwal <manushprajwal555@gmail.com>
+Currently the way we check if a driver supports hardware vblanks or not is
+actually funny and cursed! Likely because it predates KMS.
 
-imx1_pinctrl_dt_is_flat_functions() iterated child and grandchild
-device nodes with for_each_child_of_node() but returned early from
-inside both loops without dropping the reference the iterator held on
-the current node.
+As it turns out, we only check dev->num_crtcs to see if we have vblank
+support. Why? Because it doesn't actually represent the number of CRTCs on
+the device, unless drm_vblank_init() has been called - which sets
+dev->num_crtcs. And as it turns out, this is the second place we keep track
+of the number of CRTCs we have.
 
-Rework both loops around for_each_child_of_node_scoped() instead of
-adding manual of_node_put() calls, matching the sibling helper in
-pinctrl-imx.c and imx1_pinctrl_parse_dt() in this same file, which
-already use the scoped variant.
+Let's clean this up by starting with adding a variable specifically for
+tracking whether drm_vblank_init() has been called or not.
 
-Signed-off-by: Manush Prajwal <manushprajwal555@gmail.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
-v2: Use for_each_child_of_node_scoped() instead of manual of_node_put()
-    calls, per Frank Li's review.
+ drivers/gpu/drm/drm_vblank.c | 3 ++-
+ include/drm/drm_device.h     | 7 +++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
- drivers/pinctrl/freescale/pinctrl-imx1-core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx1-core.c b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-index b7bd4ef9c0..fa8f6a7e03 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-@@ -547,14 +547,11 @@
+diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+index f90fb2d13e423..d317148af8cb3 100644
+--- a/drivers/gpu/drm/drm_vblank.c
++++ b/drivers/gpu/drm/drm_vblank.c
+@@ -557,6 +557,7 @@ int drm_vblank_init(struct drm_device *dev, unsigned int num_crtcs)
+ 	if (!dev->vblank)
+ 		return -ENOMEM;
+ 
++	dev->has_hw_vblank = true;
+ 	dev->num_crtcs = num_crtcs;
+ 
+ 	for (i = 0; i < num_crtcs; i++) {
+@@ -600,7 +601,7 @@ EXPORT_SYMBOL(drm_vblank_init);
   */
- static bool imx1_pinctrl_dt_is_flat_functions(struct device_node *np)
+ bool drm_dev_has_vblank(const struct drm_device *dev)
  {
--	struct device_node *function_np;
--	struct device_node *pinctrl_np;
--
--	for_each_child_of_node(np, function_np) {
-+	for_each_child_of_node_scoped(np, function_np) {
- 		if (of_property_present(function_np, "fsl,pins"))
- 			return true;
+-	return dev->num_crtcs != 0;
++	return dev->has_hw_vblank;
+ }
+ EXPORT_SYMBOL(drm_dev_has_vblank);
+ 
+diff --git a/include/drm/drm_device.h b/include/drm/drm_device.h
+index 768a8dae83c52..2df08c756afd3 100644
+--- a/include/drm/drm_device.h
++++ b/include/drm/drm_device.h
+@@ -287,6 +287,13 @@ struct drm_device {
+ 	 */
+ 	struct drm_vblank_crtc *vblank;
+ 
++	/**
++	 * @has_hw_vblank:
++	 *
++	 * Has the driver called drm_vblank_init() to setup hardware vblank support?
++	 */
++	bool has_hw_vblank;
++
+ 	/**
+ 	 * @vblank_time_lock:
+ 	 *
+-- 
+2.55.0
 
--		for_each_child_of_node(function_np, pinctrl_np) {
-+		for_each_child_of_node_scoped(function_np, pinctrl_np) {
- 			if (of_property_present(pinctrl_np, "fsl,pins"))
- 				return false;
- 		}
---
-2.46.2.windows.1
