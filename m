@@ -1,178 +1,97 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02262D5932
-	for <imx@lists.linux.dev>; Sat, 15 Aug 2026 15:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F77A4248B1
+	for <imx@lists.linux.dev>; Sat, 15 Aug 2026 15:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786807925; cv=none; b=p40GyMGX03Q+fUCE3YafrRPQ/c01V6Oi94RDOia9InDABI8uvQ0CG37m5NnK2HWWvmXaYvvocwTy0DA7cHGv58ISg9BFaBW21RDDZxnvp1cP2GHVJcgY74/ckO2tUid3JDFthT6PQ4Jj/ZleDEszsKcq3nMA5pmkR9pxZE7CO8g=
+	t=1786808423; cv=none; b=AYjozmGdVuXSbmQeb5u8fDSlSeQZYlTOvpC/g/MxQA8FUgGwmgRB437UxBHUM3ISFIqH7BcywZseRKu7s/Zd9p03508XsKn1tSgnnfhuWFYW79zJ/hTO+Zrmqh6V74EDzlFv7XfeCkNYeJ7ZHpvcpKqOQwEnS7NHslXh8Rc7xx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786807925; c=relaxed/simple;
-	bh=LOiuIZCM4KA/xzhMRXgDS+srE7qigkhYJQnVg3UrBzc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=V7RdKssjLILgXsBEciohKGfRNiS4Vj3GJDK3WmvGSAK+poVkLGgX1qzAsS5mr0X4CIgcUXrQki2qyykavZ23DJA8MQ2qpP533vYT+XVqcs714AcsUVOR97Q1sMiTu1akO6jEI4scd7PhBJkRd1OqFQUxLUF3lTtNsjskXKyQ788=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P83yak4f; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786808423; c=relaxed/simple;
+	bh=sQGJLNtTYZGq8oJ6AjkX4RsX8qmFj8wNB5rVntT49qU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Xs5hc4qm9rT9ft+KvWsVMi0rI9+NTunSWBBNwZ2CR7UanWL/JJUVNaOM3h7EVqTCTFvyTMeYJ8o3yFctA7DFgllpOWLjNjUH4cUvj+1Ir9vXovAGrxaTYh2dwH2TYbopktnoEI1jMXbc0rZFDekjq6vidmjLT7zKdmYHtn9HHk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oP89n5ct; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P83yak4f"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47f904e80eeso1971113f8f.1
-        for <imx@lists.linux.dev>; Sat, 15 Aug 2026 08:32:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786807922; x=1787412722; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:from
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jnre8c5ELyuSiuJWMhk8ldl+BWHHGb0FtLgEFX/aWjw=;
-        b=P83yak4fFvGoPi9xLb20SXSSim4ClpxYTp3gpgVtCzyX++Mj85wJfhAkk/ZFQNewpp
-         K/da9/W31h3xd6UxWUPs5qG+2n0T2+wRM/O0j772kE0O6qfBQ5ItF1sAuRSVjgo8my66
-         yCXDYIeQ5ELXo8ucxn3ioNH/bw643aSOeF7zN7ARE7Fq4MdCdO8MAXUr8P69a+Nkh4HV
-         y0PqKKG4zlFEz4Dln3gQ/UAW6fJ8i/cePAIDCMVXRbCeVzVlmCb4OLyu2xEWpFVHMek0
-         q79TY2m0aacxRIrTJi3piEngPEr2e0fuGS6d1BPIa7ewUAORARYjtLaOL8tfRfjuFhf2
-         Ftuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786807922; x=1787412722;
-        h=content-transfer-encoding:content-type:cc:to:subject:from
-         :content-language:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jnre8c5ELyuSiuJWMhk8ldl+BWHHGb0FtLgEFX/aWjw=;
-        b=P3tgzJ6DMV94CO+8s+d1ReNIdGixditG/1BtRivFthv0dCH95yLHkBnZl2pNLEV9OX
-         /XhNM2GNGf5OOuTp4rzNnOJwI9nJFn10uyJt/fEUed0iCVocKS8aw82PNVVT602HKpY8
-         PUvZdMTdBYeQ0geZJ9Tapmi5P+L7AhhXHdkIAz5s6dUCz3LTB9EBMFaR3Hacir7yTdtR
-         nALFbrvOzPaB2qerw6LuStS9OR7BHitfwelR04gLve4OSFzZSl+/DRgToiZ2X/ZDSpf2
-         CTQEH0hO8LOhCxHZyyeWpqmTI6sBUCEiOSb9jGqkmcMbxUZvm2qkexpER+CfZSR8YzIR
-         oKeg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpc2iuqQsdHWsWw7nNQXNU2dum7JrFJA10B0+hu6ILmA7WX2J8W3QzUSGW5Sue8VsfMUck=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7Xyv6vgzyyn6hMLn4L/5dKjSngAjTd9ow5ACpQ83kS3UwaBdr
-	YBFDPc3MzjAH0ymtEPVJ2WQ7vKGbNhvXIlvXJYIpa1nE86rfqcf839tZ
-X-Gm-Gg: AR+sD13eDTdrQzAkX8aHDukFUJnXknu72I1Xd1FuVrISq7faioGZHuxXjnKARKWP9sA
-	HhGx97MogMayBeAEhwzj9z1juHVAUJS8F5NXJ3NYWfxulTVyA/gz2N4SRHJmY9xeJW3/BWI0wOH
-	YH65gqYx5/M0QqtS//t1vMtGH8Js62YhOIays7C69za46w3OMyxBlQ4E/eIKOR6AYXjznGwT10M
-	aN6B3Mjno9RRDgG1siwm0tMKZvyo4BmsYLyiAI3CbZcUL6Urmko6OQNFi2SAvtK0snwIGPmAemS
-	xAM9UO5QuAfAgKw4hcqzu38nQutNnDzQV8CZYU/XyDViMfc1rpMgjDuGsktwC/Tyu3uJuoOPPBH
-	uFpMIqO8BIPeqacCoTnJ+yLsdmqmu3tDzwhSlLpBjQryNCBwAPXk0KKzPyyAMNz71TUTvJa1QVm
-	bKOXoM9pstk7eoQF5ksO//WzSGrtflbEvC3s4tQQ7Hy9JRnNOHoymadtfgYTNN5aFeJT1R9BYTk
-	xo9k8sZ4KQ61xcfON0w5aoa1NPZE4tLdqmWo8FezoTBGoxTZNbuzjPTL0wB88B1Z5vyRoEVCuBs
-	h+G8uz9njinKguyd+wjC98bOf1BhtoL4X1anWQ==
-X-Received: by 2002:a05:6000:992:b0:481:4f7a:f685 with SMTP id ffacd0b85a97d-4816076c695mr20415359f8f.29.1786807921745;
-        Sat, 15 Aug 2026 08:32:01 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f13:e300:f992:e6b5:6d1d:31bf? (p200300ea8f13e300f992e6b56d1d31bf.dip0.t-ipconnect.de. [2003:ea:8f13:e300:f992:e6b5:6d1d:31bf])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f200752sm18253466f8f.1.2026.08.15.08.32.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Aug 2026 08:32:01 -0700 (PDT)
-Message-ID: <8fdc784c-5e2b-40ac-aed8-7639f43df88d@gmail.com>
-Date: Sat, 15 Aug 2026 17:32:00 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oP89n5ct"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C0E1F000E9;
+	Sat, 15 Aug 2026 15:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786808419;
+	bh=bYMPvv7A4W/ol74n0Et6yV8FgBmIGrGeNplU3CEKqlM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oP89n5ctziwauLKM1lktZMSaDzEF93nuzrGpYu5WQG/VwWyiat8IpxoRJeB+k+FBL
+	 M9Cc9QnKgfHIixr0x0g4hagg4lxZAUaZey6ZN7hX+/wygcsC7LncyXhTC9ajdbI7GI
+	 Vs+wV3lLZsH2VeU98Tg7K/N8GQZHEh3DTS5Sj07TByD6wJKfI1J7eOYiEDdqM1JnkK
+	 5BxfpgcCHBvP+TNxN0ItjdAAL2x0mCc48JdAn377X9QfEzBqElTH3qI6Fh5XKfevlw
+	 M5acF5QRljYDIYEleuxEpqlKyRu0DKwVIcnaK4xeM2fJtqY326Wai/77vmIAKLhh4E
+	 lDF+f4ygtnEdQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ARM: imx6q: remove KSZ9021 PHY fixup
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Heiner Kallweit" <hkallweit1@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <8fdc784c-5e2b-40ac-aed8-7639f43df88d@gmail.com>
+References: <8fdc784c-5e2b-40ac-aed8-7639f43df88d@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 15 Aug 2026 15:40:18 +0000
+Message-Id: <20260815154019.22C0E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH] ARM: imx6q: remove KSZ9021 PHY fixup
-To: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>, Tom Rini <trini@konsulko.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Stefano Babic <sbabic@nabladev.com>, "NXP i.MX U-Boot Team"
- <uboot-imx@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-477fce49aef4 ("arm/imx6q-sabrelite: add enet phy ksz9021rn fixup") added
-this PHY fixup in 2011. In 2013 954c396756e3 ("net/phy: micrel: Add OF
-configuration support for ksz9021") added support for configuring
-pad skew parameters via OF, removing the need for the board-level fixup.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Removing the KSZ9021 PHY fixup breaks backward compatibility with =
+older Device Trees, causing Ethernet to fail.
+--
 
-Note:
-In 2013 14078291d89b ("ARM: i.MX6: call ksz9021 phy fixup for all i.MX6
-boards") extended usage of the fixup to nitrogen6x and titanium.
-nitrogen6x configures the PHY properly via OF, and titanium has no
-mainline Linux support. From u-boot titanium support was removed in 2021.
+--- Patch [1]: [PATCH] ARM: imx6q: remove KSZ9021 PHY fixup ---
+commit 043c886239c15d5e6801536fd77e59f0f71dbb60
+Author: Heiner Kallweit <hkallweit1@gmail.com>
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
- arch/arm/mach-imx/mach-imx6q.c | 30 ------------------------------
- include/linux/micrel_phy.h     |  5 -----
- 2 files changed, 35 deletions(-)
+ARM: imx6q: remove KSZ9021 PHY fixup
 
-diff --git a/arch/arm/mach-imx/mach-imx6q.c b/arch/arm/mach-imx/mach-imx6q.c
-index 7f620092575..58f53fba202 100644
---- a/arch/arm/mach-imx/mach-imx6q.c
-+++ b/arch/arm/mach-imx/mach-imx6q.c
-@@ -20,26 +20,6 @@
- #include "cpuidle.h"
- #include "hardware.h"
- 
--/* For imx6q sabrelite board: set KSZ9021RN RGMII pad skew */
--static int ksz9021rn_phy_fixup(struct phy_device *phydev)
--{
--	if (IS_BUILTIN(CONFIG_PHYLIB)) {
--		/* min rx data delay */
--		phy_write(phydev, MICREL_KSZ9021_EXTREG_CTRL,
--			0x8000 | MICREL_KSZ9021_RGMII_RX_DATA_PAD_SCEW);
--		phy_write(phydev, MICREL_KSZ9021_EXTREG_DATA_WRITE, 0x0000);
--
--		/* max rx/tx clock delay, min rx/tx control delay */
--		phy_write(phydev, MICREL_KSZ9021_EXTREG_CTRL,
--			0x8000 | MICREL_KSZ9021_RGMII_CLK_CTRL_PAD_SCEW);
--		phy_write(phydev, MICREL_KSZ9021_EXTREG_DATA_WRITE, 0xf0f0);
--		phy_write(phydev, MICREL_KSZ9021_EXTREG_CTRL,
--			MICREL_KSZ9021_RGMII_CLK_CTRL_PAD_SCEW);
--	}
--
--	return 0;
--}
--
- /*
-  * fixup for PLX PEX8909 bridge to configure GPIO1-7 as output High
-  * as they are used for slots1-7 PERST#
-@@ -68,14 +48,6 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_PLX, 0x8609, ventana_pciesw_early_fixup);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_PLX, 0x8606, ventana_pciesw_early_fixup);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_PLX, 0x8604, ventana_pciesw_early_fixup);
- 
--static void __init imx6q_enet_phy_init(void)
--{
--	if (IS_BUILTIN(CONFIG_PHYLIB)) {
--		phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
--				ksz9021rn_phy_fixup);
--	}
--}
--
- static void __init imx6q_1588_init(void)
- {
- 	struct device_node *np;
-@@ -179,8 +151,6 @@ static void __init imx6q_init_machine(void)
- 		imx_print_silicon_rev(cpu_is_imx6dl() ? "i.MX6DL" : "i.MX6Q",
- 				imx_get_soc_revision());
- 
--	imx6q_enet_phy_init();
--
- 	of_platform_default_populate(NULL, NULL, NULL);
- 
- 	imx_anatop_init();
-diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
-index 9c6f9817383..bb71b2510c2 100644
---- a/include/linux/micrel_phy.h
-+++ b/include/linux/micrel_phy.h
-@@ -47,11 +47,6 @@
- #define MICREL_PHY_FXEN		BIT(1)
- #define MICREL_KSZ8_P1_ERRATA	BIT(2)
- 
--#define MICREL_KSZ9021_EXTREG_CTRL	0xB
--#define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
--#define MICREL_KSZ9021_RGMII_CLK_CTRL_PAD_SCEW	0x104
--#define MICREL_KSZ9021_RGMII_RX_DATA_PAD_SCEW	0x105
--
- /* Device specific MII_BMCR (Reg 0) bits */
- /* 1 = HP Auto MDI/MDI-X mode, 0 = Microchip Auto MDI/MDI-X mode */
- #define KSZ886X_BMCR_HP_MDIX			BIT(5)
--- 
-2.55.0
+This commit removes the board-level PHY fixup for the KSZ9021 Ethernet PHY
+on i.MX6Q boards, which was originally added to configure RGMII pad skew.
+The commit notes that OF configuration support was added in 2013, making
+the board-level fixup theoretically redundant.
 
+> diff --git a/arch/arm/mach-imx/mach-imx6q.c b/arch/arm/mach-imx/mach-imx6=
+q.c
+> index 7f62009257526..58f53fba202f4 100644
+> --- a/arch/arm/mach-imx/mach-imx6q.c
+> +++ b/arch/arm/mach-imx/mach-imx6q.c
+[ ... ]
+> -static void __init imx6q_enet_phy_init(void)
+> -{
+> -	if (IS_BUILTIN(CONFIG_PHYLIB)) {
+> -		phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
+> -				ksz9021rn_phy_fixup);
+> -	}
+> -}
+> -
+
+[Severity: High]
+Will removing this fixup break Ethernet for users booting with older Device
+Trees that lack the explicit skew-ps properties?
+
+The Linux kernel generally treats the Device Tree as a stable ABI. Older
+DTBs implicitly relied on this board-level fixup to set the necessary PHY
+delays because the KSZ9021 PHY driver only sets RGMII pad skew registers
+if explicit *-skew-ps properties are present. It does not apply default
+delays based solely on the phy-mode.
+
+If a system boots an affected board (like Sabrelite) with an older DTB,
+could this omission cause Ethernet communication to fail unconditionally?
+
+To preserve backward compatibility while still removing it for unaffected
+boards, would it be better to conditionally apply the fixup using
+of_machine_is_compatible() instead of removing it entirely?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/8fdc784c-5e2b-40ac-=
+aed8-7639f43df88d@gmail.com?part=3D1
