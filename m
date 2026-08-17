@@ -1,125 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C0E2EC54A;
-	Mon, 17 Aug 2026 18:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8615735C188;
+	Mon, 17 Aug 2026 20:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786992897; cv=none; b=Fg4aC0yy8VVyvZezd5d9s/mTNuIM4TEcgq6I21iz/HGi1NFxZeT5MX0Bwrj5lfrNVUImAAuPPcrztAnwHNfonZuk9JRSIwYraaAcpvnY9UmM9Y+zAYeIvbWacnO7ctCPr9utTXY4pZ7q7HDPuP8Bm/u7DUmOwAr7jqSu0yKVtQs=
+	t=1786996865; cv=none; b=parm9sNnV9n64A94CeFdWffmJeQNwZULSJuoAIdU0bi1LgdjqkBEv4iOiYD3jYlrBl964L2XeENu9pfGcCVj7s7G/N6q3+fDISuZJvUm7arylRuxVEVgZHW5u5p1luU4NJbz6w4F0ebeRq/tiLEFAoVOd1RNQcUqGrhZeUanRS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786992897; c=relaxed/simple;
-	bh=UagiHACKsOzSdTkMKQraTvqxzxYR38G+03DH+tjOxy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h+wOk6kBst6i0hNCn9CWZZ0nviuDGZ/D0tgMaQ0tFdytb7RcKM7cPhk9Q0j6v2iUNMuL1Fcg/+pbPeCI4yicFd5/zgRUHpPhlj+sy4uHE/4BAGRBso8CSQVlR0Uq7SwZnFVLhZc2sbRJSKQyO6B8rtEiASlmnWdw45v3f+X9+UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Im+Qbwla; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786996865; c=relaxed/simple;
+	bh=B7/K0cZaKP2A76iwO2WVx28fFXkEUtAhjsn0hYBZkgc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FvbGVkI/uTbqhn3481S6okOhweXDrVjxq3dcTNjziN45PUoJ9UE+3F/o6fxWgC7PSZ1s0NUQ8itL5pKXVAFlYEPs8ltJYZK3Zw2lssBizjCGPueSUzBxcytWeVOqwKE0YhvW8kSqxnigTIhfd5FZ5NAQ1e9kJCOd0Co3hPA5k4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4ZEjHhk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Im+Qbwla"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786992896; x=1818528896;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UagiHACKsOzSdTkMKQraTvqxzxYR38G+03DH+tjOxy8=;
-  b=Im+QbwlaWwDxj/9L0TuFT7z8Zn/ylilwg/lAUVoYtc8R/616OrkwlUT3
-   hYc5TW7dcMBv7j0C1EN0ng3bVp4BN6QGKwKQw+LXosg0gQGzckJqGDRII
-   ksJgzZUNLKZques4mFxwUr2LTHaZZqU3NwW6Ykvzhq5DelxP0R55ropkL
-   Q1yg0tJ7UZ/YMTLgmd31RaRrwf7zkJKbQiKDNWAG4uqbfUkweC3RcvFEB
-   azGI+5TVxaEZZ69n1wPvXj8KEdLrbrpQNVRluQ7xbULdGU9rrsHnMcXut
-   xhB+thpd9w/s/BRHCkDyB/UqEf6ui4bkq9KKvB2g+PhpTqa/erSfzHfY0
-   w==;
-X-CSE-ConnectionGUID: vuZdotADTb2dh7ybSA21LQ==
-X-CSE-MsgGUID: ug6ApJJzR66oojV+x6l/kw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="87330820"
-X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; 
-   d="scan'208";a="87330820"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 11:54:55 -0700
-X-CSE-ConnectionGUID: yFyEuGAqQ9Gm8zboujI71g==
-X-CSE-MsgGUID: Z79PQw2ITnSV0r6BrpxHAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; 
-   d="scan'208";a="266971517"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.67])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 11:54:45 -0700
-Date: Mon, 17 Aug 2026 21:54:43 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] nvmem: migrate to const void * in reg_write
-Message-ID: <aoNY85rdMdBDSiGW@ashevche-desk.local>
-References: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4ZEjHhk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FF71F00A3A;
+	Mon, 17 Aug 2026 20:01:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786996864;
+	bh=mY9IMExLPSNZ7VWT+QeQ2woonBHgeryalP0Xg13zfxc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=D4ZEjHhkuBcM4ckTDy85/Zmqx07rT+f+OnlS6CmG+NV003l+IMNyY2k+lFtM2ofaP
+	 fIxmjCOaMCu+HHe/tQbXeODfFQGf8CxlMSfPGnxhLqt/ziDd152OYVzCQR0FZjSjXW
+	 T3Py876UkZDFgcNkcPsl3Ikkm1fSiJqU+zydh6mKjii5U6qdr2PpRFrm5G2IEtCBtx
+	 HptaqpwsCrVcBDuwLCJY/v9Vp12Fb+biG2AuLu0MvYvL/qWHTDkgEW/PkcJGnl3sQI
+	 hRMyp4UG6M1xnVhGOVT/pvzQG+h1PoQH1nbfT3XiU8Cty/V5Wqreij0bbY5X2+7ije
+	 wLLBig9ejPCww==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9390F3926263;
+	Mon, 17 Aug 2026 20:00:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] ptp: netc: skip PEROUT disable if channel is not
+ enabled
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178699681614.1714062.8810905823945131454.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Aug 2026 20:00:16 +0000
+References: <20260811083614.3589967-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20260811083614.3589967-1-wei.fang@oss.nxp.com>
+To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
+Cc: xiaoning.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ Frank.Li@nxp.com, wei.fang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Tue, Aug 04, 2026 at 03:59:34PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 11 Aug 2026 16:36:14 +0800 you wrote:
+> From: Wei Fang <wei.fang@nxp.com>
 > 
-> This was found while drafting the nvmem-provider Rust abstraction.
+> When userspace calls ioctl(PTP_PEROUT_REQUEST) with period = 0 to disable
+> a PEROUT channel that is not enabled, the driver incorrectly enters the
+> disable path. Since the channel's struct netc_pp was previously zeroed,
+> pp->alarm_id evaluates to 0, causing priv->fs_alarm_bitmap &= ~BIT(0) to
+> silently revoke the alarm 0 allocation from whichever channel is actively
+> using it. This can cause two channels conflict over the same hardware
+> alarm configuration and corrupt their periodic output signals.
 > 
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
+> [...]
 
-FWIW, if the approach taken is okay by maintainers,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Here is the summary with links:
+  - [net] ptp: netc: skip PEROUT disable if channel is not enabled
+    https://git.kernel.org/netdev/net/c/273480bb836e
 
-I think this is right direction to go. We should use all possible ways to
-protect the data from corruption.
-
+You are awesome, thank you!
 -- 
-With Best Regards,
-Andy Shevchenko
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
