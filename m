@@ -1,148 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9874B3C3F5B;
-	Mon, 17 Aug 2026 08:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD873C2B8D;
+	Mon, 17 Aug 2026 08:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786955729; cv=none; b=uf65YnljJEkMqUFFoXfS9nXrElf+vVNJfAEtIMrBoMvzoUEmHXlYheY9+ECoRlwrXB53xI3kvsoDgYnM7WrXFzDr/LlHc6XPxBDzPKWrseWTmZdUh7seNKkFS1oiiHDCIhNDlgTYQsmT1DeTiREUcCwuET/cm7r9OAMMbGJtmF0=
+	t=1786955946; cv=none; b=hxvhome9D641VIQZQ7m3jaEQcZZ4s3C+U0lscBV+2Zz08M0MSiNKoZt/1KUzblBU0s60vSHGFxYClYp1P9du+bqWYSAFVVem7RcWfTdJc7Hb9Tp0YUEF9inJi+SPmRebxySjzGd8ahXocmjVxuXfoG6P4jOU2kEgyzmwc3ZR5K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786955729; c=relaxed/simple;
-	bh=oZQvScyA1zqJV4CC6foAQh/CAQe4pGeAga38F8pulH4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KpDy6hDWBkSk5n7I8hMOkpQFJzyzMW7nQ0EBxAZvD9FrVXCW+RU5/k6u3kpNhnd17V9TKe4SmFyKhUx5shO0VigDeoxjr8vEmALq6MHzcf/Of1pxmqO+1Sk7EGW7cUtinG08yMUDoQWJZ8a+PEGovEjm6Lu5JzkhtcKewIQqsCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flkmgvPK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786955946; c=relaxed/simple;
+	bh=aJEKkdq9CsXd7fbqFaeiotvb9gyDHcUTdy5GATf3IwA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=lhhQIJ02zWOTOjX5RT0Non2yakPObD0fJAuJbSFXNcnqrgjRI1zcixtBSCDzH86izdRYVBuEhdFzXQqFeKt9T3jFDd/wlsO/KnsPVMP/ahv3wjWjIRIoLKfdjiFmGbYpPCR874Esm6oqkW4FZdVdLXQA7VqtDnLSgZKAQLxGsXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DulTUMEG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="flkmgvPK"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 657CAC2BD01;
-	Mon, 17 Aug 2026 08:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786955729;
-	bh=oZQvScyA1zqJV4CC6foAQh/CAQe4pGeAga38F8pulH4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=flkmgvPKf6e8HzNM4+WwQwHcVfhGNFylRnTCo27QCV3LYHrbVkqu5XzyHwNCrtw6i
-	 t15amFDREAXU7x37GZO/VM3JA07coVx7hY+O/CMJkgrkzfY5Pc94QdjZkllY09XhLq
-	 nE5AqA0wdKw83+NNPux2f8Zb0kbQBZJHNWMQ+t8qFK1Yld1OsCG8nHHHEE4QQ4R8aO
-	 jPGbhad8IiqI+iQ4avyxLgITBIm+toM1uQ3Q/177YXD7aDLFqvd3M2+BEhk1f7j2NB
-	 fpJIEVS56izeFxg80DBdP2LgwDVRZvvwrJit48QK3WfC4h28SMba9oS9vUcOZXDO6z
-	 oWoQO8KNfkRxQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 534E8C5DF70;
-	Mon, 17 Aug 2026 08:35:29 +0000 (UTC)
-From: Pankaj Gupta via B4 Relay <devnull+pankaj.gupta.oss.nxp.com@kernel.org>
-Date: Mon, 17 Aug 2026 19:36:05 +0530
-Subject: [PATCH v36 7/7] arm64: dts: imx8ulp: add reserved memory for
- EdgeLock Enclave
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DulTUMEG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7001F000E9;
+	Mon, 17 Aug 2026 08:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786955944;
+	bh=/7Ws/zXlk9a8wU3UpFrYhAOQLgoXWCX/e+bQBw1yqIE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DulTUMEGEVV7ICVOrPIovVv5G4IfOGh/y3zj9g7JM1EwDBA4Mz2bcGFZzb77KLa4s
+	 j8lsAyk9JPx7y5yYuYw6kEsDBeJyGVJiEkgnivIk42dCriCLYNvNMstNbveL4iJRUP
+	 Q0Qrb71od6UK3cPjFXRMreM0ZcH0gHmlrRAnw6qn6UOVifIE8jspeG1XtfOtkps209
+	 9TD9ugoi8Szek2/OOSCLrvnB4SMYNLFWM4BLo+BfBi257YaUozQ2cnrvKTZfFrmYGQ
+	 sWQMQf/MoI02CcqZrTCrzLXyDTppEJxq2T39yPvHwv/FC6HbLf8sjhXcLgSDjwez2e
+	 w0/u6yz8bDzBw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v36 1/7] Documentation/firmware: add imx/se to
+ other_interfaces
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?UGFua2FqIEd1cHRhIChPU1Mp?= <pankaj.gupta@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260817-imx-se-if-v36-1-45c42847bfd8@oss.nxp.com>
+References: <20260817-imx-se-if-v36-0-45c42847bfd8@oss.nxp.com>
+ <20260817-imx-se-if-v36-1-45c42847bfd8@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 17 Aug 2026 08:39:03 +0000
+Message-Id: <20260817083904.8E7001F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-imx-se-if-v36-7-45c42847bfd8@oss.nxp.com>
-References: <20260817-imx-se-if-v36-0-45c42847bfd8@oss.nxp.com>
-In-Reply-To: <20260817-imx-se-if-v36-0-45c42847bfd8@oss.nxp.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786975564; l=2461;
- i=pankaj.gupta@oss.nxp.com; s=20260817; h=from:subject:message-id;
- bh=8LTJ7dQk+ZmHVQUVQ7z2QFEU98qQ6ZendsUWTwEehrU=;
- b=kNn9ncyZJDpBj1uyCMvvkX807Jvm/cy4I27lgIY1p5LnifaDmHYrm+a5GWXYOUBxA9RM8FmB/
- ymYcIipWCUsDME3VniMYbkoR3MSJUt88zHitpeNQEFI8mEAoLbKHRcp
-X-Developer-Key: i=pankaj.gupta@oss.nxp.com; a=ed25519;
- pk=g4ZgzIWbpXnSxRsoH+l6PWLP78a+Mzpl8e6RQe74d5Y=
-X-Endpoint-Received: by B4 Relay for pankaj.gupta@oss.nxp.com/20260817 with
- auth_id=955
-X-Original-From: "Pankaj Gupta (OSS)" <pankaj.gupta@oss.nxp.com>
-Reply-To: pankaj.gupta@oss.nxp.com
 
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The patch adds a kernel-doc directive referencing `drivers/firmware=
+/imx/se_ctrl.c`, which does not exist in the source tree, causing Sphinx bu=
+ild warnings/errors.
+--
 
-Reserve 1MB of DDR for the EdgeLock Enclave. The enclave hardware can only
-access DDR in the 0x80000000 - 0xafffffff window, so constrain the pool to
-that range with alloc-ranges and let the kernel choose the placement rather
-than hardcoding an address.
+--- Patch [1]: [PATCH v36 1/7] Documentation/firmware: add imx/se to other_=
+interfaces ---
+commit 82d675982ce8a0c3aea4e77e567697a3f74c3a7b
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-Provide this as a shared imx8ulp-firmware.dtsi that also enables the hsm0
-node and wires up its memory-region, so every i.MX8ULP board can bring up
-the enclave with a single include instead of duplicating the reserved
-memory node. Include it from imx8ulp-evk.
+Documentation/firmware: add imx/se to other_interfaces
 
-Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |  3 ++-
- .../arm64/boot/dts/freescale/imx8ulp-firmware.dtsi | 31 ++++++++++++++++++++++
- 2 files changed, 33 insertions(+), 1 deletion(-)
+Documents i.MX SoC's Service layer and C_DEV driver for selected SoC(s)
+that contains the NXP hardware IP(s) for Secure Enclaves(se) like:
+- NXP EdgeLock Enclave on i.MX93 & i.MX8ULP
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-index 5dea66c1e7aa..885242fd07ce 100644
---- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-@@ -1,11 +1,12 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- /*
-- * Copyright 2021 NXP
-+ * Copyright 2021, 2025 NXP
-  */
- 
- /dts-v1/;
- 
- #include "imx8ulp.dtsi"
-+#include "imx8ulp-firmware.dtsi"
- 
- / {
- 	model = "NXP i.MX8ULP EVK";
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-firmware.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp-firmware.dtsi
-new file mode 100644
-index 000000000000..e4bc352f68af
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp-firmware.dtsi
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2025 NXP
-+ *
-+ * Default reserved memory and EdgeLock Enclave (ELE) enablement shared by
-+ * i.MX8ULP boards. Include this from a board dts to bring up the secure
-+ * enclave without having to duplicate the reserved-memory node. The ELE
-+ * hardware can only access DDR in the 0x80000000 - 0xafffffff window, so the
-+ * pool is constrained to that range with alloc-ranges and the kernel is left
-+ * to place the 1 MiB region.
-+ */
-+
-+/ {
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		ele_reserved: ele-reserved {
-+			compatible = "shared-dma-pool";
-+			alloc-ranges = <0 0x80000000 0 0x30000000>;
-+			size = <0 0x100000>;
-+			no-map;
-+		};
-+	};
-+};
-+
-+&hsm0 {
-+	memory-region = <&ele_reserved>;
-+	status = "okay";
-+};
+> diff --git a/Documentation/driver-api/firmware/other_interfaces.rst b/Doc=
+umentation/driver-api/firmware/other_interfaces.rst
+> index 06ac89adaafba..6c6fa9a0ba1df 100644
+> --- a/Documentation/driver-api/firmware/other_interfaces.rst
+> +++ b/Documentation/driver-api/firmware/other_interfaces.rst
 
--- 
-2.43.0
+[ ... ]
 
+> @@ -49,3 +49,136 @@ of the requests on to a secure monitor (EL3).
+> =20
+>  .. kernel-doc:: drivers/firmware/stratix10-svc.c
+>     :export:
+> +
+> +NXP Secure Enclave Firmware Interface
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
+[ ... ]
+
+> +When a user sends a command to the firmware, it registers its device_ctx
+> +as waiter of a response from firmware.
+> +
+> +Enclave's Firmware owns the storage management over a Linux filesystem.
+> +For this c_dev provisions a dedicated slave device called "receiver".
+> +
+> +.. kernel-doc:: drivers/firmware/imx/se_ctrl.c
+> +   :export:
+
+[Severity: Low]
+Does drivers/firmware/imx/se_ctrl.c exist in the tree yet? Referencing a
+missing file in the kernel-doc directive will cause Sphinx build warnings or
+errors when generating htmldocs.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260817-imx-se-if-=
+v36-0-45c42847bfd8@oss.nxp.com?part=3D1
