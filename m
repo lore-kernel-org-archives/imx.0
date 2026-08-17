@@ -1,167 +1,397 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012000.outbound.protection.outlook.com [52.101.66.0])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013041.outbound.protection.outlook.com [52.101.83.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FF23F44DB
-	for <imx@lists.linux.dev>; Mon, 17 Aug 2026 12:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214EF41A91D
+	for <imx@lists.linux.dev>; Mon, 17 Aug 2026 12:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786969946; cv=fail; b=OJz1zpKRSX5lFK7Y7NSv8139ooCzNIWW5brgUxEvA0G/VSqEu0b3wxZKDdgtPOxxfzYRCdV1Xbh2klAffvfqflmIeSlLp4a2VM1GqoV1Wca/tp/I1wZtSM6vChXHx5XVEJrBFgbMfK/vjuK+Qr+VvDK6iVxwF6mr1Bs+OwVnCE0=
+	t=1786970116; cv=fail; b=o6roSR6OvnoAxNwgSLGFc3glAx6y4gSvYPyppXbnmTsoLUzCodaotGtsGKJC66qkUkdX+0Qq9Ec6NInHKyElT5iL+rB4pXLQ4ljF3Fw/Mf6TVcf53KfbcFO2pzSwavikWzZFi5579J3upi5BhYpOQh+/yTxFHBlaNp6yftHzH8U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786969946; c=relaxed/simple;
-	bh=X30+MXRrYgLDWd5I6t0bGtD3T7c8CWqzLcN7Bifgyf4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LGKpfALwhQT9QPlfyvxXcA2pJsB9zISPFglFKAAymXaC0/navV/BmD6e8+LcA4XFgs3xFxHCFXjOaT0TZNYWnSIMwvUUd4CfpumQKBCDvPReJM5NntXwcx2EE/EY2z3BogxgNau3XoZvjdvVEIB404liHHakg3J4ACIlK9QOqy0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ml05K5dq; arc=fail smtp.client-ip=52.101.66.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1786970116; c=relaxed/simple;
+	bh=yXoXPqj26cqXoPOxKrmD+1Ck4yGovr7ARX9YdSqYNMg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S1PicTYRQsqn508TVl71mU5QvX5nYacn9O0p0ClWutXEonPlPpl3xizoasQna2VB4DNmr9YunJJp/RuV1M8thFGY6b4yDkjyDVotDNWKdI6oCHkoQ2ZclwblvfGWtmvXax/jkQ+kLeygRaAlZRiN4HEfDmY44t2lmYQHZ5qOV8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=YbgPbpXj; arc=fail smtp.client-ip=52.101.83.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ml05K5dq"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="YbgPbpXj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sMGyNjmvI9XLSMrP2ypuAtQ+LrTRleciF3CFB6Z6g6/NL2cwHTyqwJU2b7UIIzttHpA5033jWT4zMCuFryF+z217C4uKBjJTZFlwpikzReGvGA7FIxSG7rWo4rbNx07HFLC++PwH9tGGQX5HeQ4Ijinc04VcehT0Pl50iF7VvUGtHK2tCnUduyw4XKMXvtkbe8Eb/UJHW25SSOTV4jUqhlikEfdZn69lu48JaAq4pFOoC+u3Ec4kXVI8leK+Bk84rQ6vkyMXr8+7xkEufR9uf0XHHwl47jZxDG7a6w/dBTc7tq8UN6kfHxAQzoRJxv46z01Fkk8i8aNmAKa0GWWJyg==
+ b=xCKQm90XuAajymeOUV2LkSR1JTvGwNwwt8LZQsAH92/9Mo3eWjazQLfEij1YOa2yNETGmKAQ1/4CWZ2XX7YIm+KXOrBvQvhjqUNwHtY0Sd06RlEFi3cbS95njvh7q1nx9o+xHWZSPaDX20cHWRLditEnDn9bBFYfCSh92gbyjSCEWn8VjRfTQdRQOYqlcSVsfRmjcznQVF5fu6OlgmL+rc064OneoznRM1FcxOpophk9Ik6zQ5LdqoN4Q7tDOgF0TYvkOtDQLELqyi7AyvpruuW4L1YTRxBaKmkm9D6JVjj7uwQQZPgO0wTYkttXwLWRgVSx9LpHpbAwUKNf0ef30Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iHDHkEDtSJmoujyJQ1CupMdOF64KQ2b/gfVqOwBOop4=;
- b=qyQUB2u23SnqiO5QPL7v0Y6FQieciZkVKgHjAwZ9FtZsh7Ln9HEqrX6rHSH8pmrJ4OxYLG/xjEMvY9txt3uh0AYOyoCbV/WhP+tYrfhGVD7B7rHWwWN24A7K9ZkXlzG3fsV16qTiM24lpDW7Sh0COmpN8FWRTmEyHRVTBGGFVhDzBuAK2GUcyTpNvJpAdat+LC0L+RHnkhtORCU98ou6zQTLZNiKdB2RVWyvAuDrflz44P+AnIcwqDNRXF7fnBrU/G338hbjrH9/4JmfcyO4FxvW9yn+/pF77K2IaL7RhezqngdnjgSexxUmkln8u1NFWxNWWaxlThJT9ZxIaqhIsA==
+ bh=/XHqtesdvt/9oFnNyaorD49lg1HnlBxKGtBMEh4uLmU=;
+ b=tK25JyYYdDMMOtsEKZ7YiGAp0mI4d9/xrdgfM/e51DBB7y/bG65WeCGlj037G4Q+ZzZbb030urvWr41f69tHZDdi7HhBCjxr8x950RZ5hzjzmVTQvqgABJqThPGHbMREn/udtjCFfzTd7zi4i+08pM7yBZZ4gubl0pFlDsQNZKvKu4w+4MBInC5i9og1Pbxxw5y4clmYTG13HP8QKupyrUbb+K0AwbSUs2j+j3GjTHSyd2H7zZDnoWLrKwJltqgbi5Y2r/srqvP76cnKFCXc+1e+nF9db9jGcG64Z1YXii+Q39+pUJtPg1F5hvyy+bi0lfXcOM/FTK/O+LdEjLH9MA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iHDHkEDtSJmoujyJQ1CupMdOF64KQ2b/gfVqOwBOop4=;
- b=ml05K5dqMLjhJ0cKEQY+7cqp+EfZH9KpuYM83TdEDxV3ccbbBcUpn8s14RVA/CtyfhZ71iK0D63NQ1HK4ZLcEpqws783CPhFLl7tsMcYKa2QYPw2AsqYzt6Lbx0IZ1Ine4hjwUiX4CqGKXRG0sDPMMUwNowFDfVvVlSXeAVzS3PE6FyxC0MASq6QYY2ag57aYVS6T7tkQQIsoPoxGdmI3/wuEPc8sOQNwEhuzrZwlboYB+pgWpk7AdJ+oGrWy3FGbH/hLE1Pb3BGp/P+f5iSei7ZgTUi+TCril33YF4zOutDbqjB2uMPy6VqbsH7IYM+c6cflawv4RqnrsRPhIokFg==
+ bh=/XHqtesdvt/9oFnNyaorD49lg1HnlBxKGtBMEh4uLmU=;
+ b=YbgPbpXj2qQ/UVHAgDIoT9F8LBfEb3ej/7VEE4u9w2zrFGo/94MpbQXysSU+/cIvYvcB5LPt5+/2GLfifcFS0zJz478IZvXqEBR8fVSanZu4yNFqSAFmwVqXWcMBASWljvWXcZVDriNEFP1116hBa5Cq9OUCrSXMxRAmY+6mtujOi9xyarvI46CneNZsgfRGlLuPNgvWzc2T67mz2c2M2cFZx8O97c649u3pnWMVPxbX1pKIwKLJLYkYwilxAHrrumiryYjwtSDBS94KD9aM/YTh1xELTY8lvtjj6mxiPuKKsrg8qAEzTDltpFuTk8Mg68dmanan39mR6u4LdA1Ing==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from MRWPR04MB12331.eurprd04.prod.outlook.com (2603:10a6:501:83::21)
- by AM9PR04MB8650.eurprd04.prod.outlook.com (2603:10a6:20b:43d::18) with
- Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by AS8PR04MB9191.eurprd04.prod.outlook.com
+ (2603:10a6:20b:44e::6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 12:32:21 +0000
-Received: from MRWPR04MB12331.eurprd04.prod.outlook.com
- ([fe80::66eb:ed06:314b:992e]) by MRWPR04MB12331.eurprd04.prod.outlook.com
- ([fe80::66eb:ed06:314b:992e%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 12:32:21 +0000
-From: Daniel Baluta <daniel.baluta@nxp.com>
-To: andersson@kernel.org,
-	konradybcio@kernel.org
-Cc: dmitry.baryshkov@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	nathan@kernel.org,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: [PATCH v6 4/4] soc: qcom: ubwc: Fix missing include
-Date: Mon, 17 Aug 2026 15:35:41 +0300
-Message-ID: <20260817123542.48475-5-daniel.baluta@nxp.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260817123542.48475-1-daniel.baluta@nxp.com>
-References: <20260817123542.48475-1-daniel.baluta@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0254.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f5::16) To MRWPR04MB12331.eurprd04.prod.outlook.com
- (2603:10a6:501:83::21)
+ 2026 12:35:08 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 12:35:07 +0000
+Date: Mon, 17 Aug 2026 15:35:03 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, Frank.Li@nxp.com, 
+	Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, 
+	l.stach@pengutronix.de
+Subject: Re: [PATCH v2 18/61] drm/imx/dcss: Convert to atomic_create_state
+Message-ID: <xvedve5evh2myckam3fmtbyuh3wqyqnasnx7ij2jnnqecraahx@e4tvvyqf2czv>
+References: <20260814-drm-no-more-plane-reset-v2-0-82d2963dd134@kernel.org>
+ <20260814-drm-no-more-plane-reset-v2-18-82d2963dd134@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260814-drm-no-more-plane-reset-v2-18-82d2963dd134@kernel.org>
+X-ClientProxiedBy: AS4P195CA0008.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e2::13) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MRWPR04MB12331:EE_|AM9PR04MB8650:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d4df47e-0cc5-44d5-7d6f-08defc5b957e
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|AS8PR04MB9191:EE_
+X-MS-Office365-Filtering-Correlation-Id: bed47479-eee5-46a0-0a1d-08defc5bf864
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|23010399003|1800799024|366016|56012099006|10067099003|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|376014|7416014|366016|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	7733PT9dcWxFav29reSjhLnLFbCjmLP3g+2+Gm5hEeGjC33OLrVV257ZcHZTp3BqjQupX7mbWkCwwjBNZE5NbqWHawA9Mh6yut411yOo/om28/qQC42CkgVydqSjLW8l2yruDcPYMONoDhtoZJlZoUl1Puidjv/fBfIS7aZ/M/OEjrdLQTwE5X4ezTJyDVYz0dqzMxGzb5sPUM9OyTPgNJxa+d54KeakgHNDeovtszKh8J3Yc5KF5eS3UhBKH1B7qu0h0+f9uNJTbs10+cudBM7TjB0i/xv5DaJ/eYSlL1F74g2R+/hE6+Qiz7IawqJ5fbPeRq/vOxP/VJ0YBXOriWh4As6v+tni01qLiKI0t4Ikg0EITH2bh6Bil1+gjhq/u/AIR0cndoRf17/T8BrXeKsTJmT6iGUDNBNIDgBabYcgmTET8Z3T47xw3Bb1U4Y34pl/vgHZCQnxC5wLTdAqMJ6zTOzjV1akmSqlWRBUWAv6+6kXjOY0Liuer+rTyAnSI7LElPHk29OhtGNlKh35Tkk9FBpWTRbwuTX+erPLxVlEp7JNH+XpCVr6waCpuJ10HQUHGczjRRHVkEc64jdBl2WgFrm5Bwv0UDcUxvCqUhx63BLMwk64LnxqolVRPcN/4gGZHy3Y6iNQaJske/LmspdsUXdJV44plNXwhLbca0E=
+	GAN8UkG4dJ7RoZxWXl+jYBOhTNV7ROtZi/hUmvY4vHvAgWttaGcd0IzNcxe6kfs/3ism+i6BzwHh4ASlm5GCpvGG3btdz1IERH7wqjbe+hTqTJLiZCBZ+YQU0rr6AemhtVnHV55spAGIL/jOAUIY8x0/djglwCULHnLXTl2fux7Jd7rNhepjzAhOiqex8MGAs/MjjJaiZIOsQoPV2F6lIzvFK8AxoqPXmcLb9vFgIcxpXoE8uxhsd/UcwSJ2M1E6LpSlikor6PrQIrG5jHY6kPTGdeXVhlMK8p0a3rj2053vqMNvy6DB/ZCGofsQAmIpVQLzutalj4k6jDr9ixNOTFJzHbxi/IIcrgy97lpnED7dSNxvzDgt8PGeiu0SvOb5nTLjso2dkJnAhdPCPs3Bpr+hPbdjpxS6yAqGFTZpEvF6p2VNWKofc2LQqEdox5E2bNC5J9Aot+vboz8O97e5OQzvsGmBZDN6ET+N9LUYzlelkCntGCGCx5K+NbW6SwYVWyOiOhBAn4rAhlsziaks+JNKABw3rNDYPVZPxlAWsn4TMdfcc/JC6RTbsfuviHSSLCXgTkKOKm0kCV8nO9eJ2v05pnee2pIGWtcCyymJFXPI6RVIlg/ROPfGYNYrg3HvhR3VRvEjH8ivBIMF9wkW/yQyq+JB+3bDgK5bql7TGc4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(23010399003)(1800799024)(366016)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(376014)(7416014)(366016)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cldCWFkxa2RFMVNYcG8wcDc4N2RTZHhWTHJDam5BRzhLNDhuMnJqSmtUNGRN?=
- =?utf-8?B?NUkrajVpV1g3SDg2elpkd245V0I0d00zYU1ndHBCdUtMWkV0RlB6YjdkZWJk?=
- =?utf-8?B?c0xhbHBnYTBhcTg3SEhDZ3JVMUNra1dqSWlwdVBQdVZ6SXZ2TERlN1FEa3gw?=
- =?utf-8?B?QmwzNXRsSTZ6Y3JZSk5PL0xaUDdYVW1EVitYcFpYMWhrRVdubXJva2MyZS9u?=
- =?utf-8?B?TTFQUjZleHZERHRMbEV4aS9sNkEvMFlUaGxrNHg5bjUySVRKTnRhSVBLSm05?=
- =?utf-8?B?M25JTFJrVGl1c3RNSTV3NHF1aTYyQzFTMysvZkpWL2dYSlM4bk16OTZRNEp2?=
- =?utf-8?B?UCtvRm1WRFRPd0o3aTViZnZDNTE5dkh2SkZnMXBqQWRQMjJiZ29IU1dmSmJH?=
- =?utf-8?B?Q1RKZjk2Y0lZV0o2eEZVV3p3UlQ5MTdvbUpQbGxLekJTZWZsbC9YTVZBanNI?=
- =?utf-8?B?bWxRbmtpQVNzTlBWNXk1aGppRU4rNWI4LzloTGRXb05rTzRvTmtvWGpZUitX?=
- =?utf-8?B?VHptY3hqRjdNcEJTQWE1OEFJTGNMb2wxbUV0Ukt2RzQ3TUlDRjg1eENVMmZq?=
- =?utf-8?B?V1lXSGxtay9oOGN5N1dRQW85U3gwSUovTWJ3RGZLeE9ZRU5wckY1VzlGL1Fk?=
- =?utf-8?B?TUsyOEcxR0tEQyt2Z1VCZTJsMzNDS1VTVjdkMGVuaWI5OHpqayt5VmZSRUJs?=
- =?utf-8?B?OGc3ZEpQTVNFMWd2c2V3VXNlRlAxeFdaTjVkcWcvdlFKWlFXTmpBWWMxRVYr?=
- =?utf-8?B?bm9idEFiT2JxUkgwUnJOaUNHeW5qcHh0Ti92aHZWNTBZalNCRWNWZ3FmbTFs?=
- =?utf-8?B?MS9pK2ZBT0NuTjV1WXZsU05Gbkwvb0Y2VUI1WG1obFZhZTA2STV6Tjd2LzI5?=
- =?utf-8?B?THh0eGlmdDN1TGMwR1dSdVpyV2tTTy9qWHhJVHVuTnlzMDRTMkFaazRyN3dO?=
- =?utf-8?B?Q1BIdm9VUEFwZy9RbUNMWk5vUVpzV1daeUppZFVsMkpzYjc3bDh0cVNMQWVR?=
- =?utf-8?B?NDNJVVpUMVVQdTYwck9LMkZVdENramJDWklSWE1LYkxpMGFYSDYvQ0NFQnRU?=
- =?utf-8?B?M0poMlV5bkJtem5iU3BtZ3IwclFPNml0YkpZWXFSQ2RBVWFEWEZYalZUMXZ1?=
- =?utf-8?B?enZ6TGk1Ykt3VVZLM042RW9LZk5QRnM3ZVJSTUlZcnV6ODlacnk4WGxDWm1n?=
- =?utf-8?B?WG5uN1NiS1ZlVHcvKzRxZDl4dUczV1NnVExTNjdMMjM0ZzdxbzhKS1dsUU9z?=
- =?utf-8?B?Um1QaGR4S005SjRoa2RuNzRHdFFYOHhVZmhuWGJ3V0NYaTFqTkVyZkNra0NZ?=
- =?utf-8?B?cGJ3QUN1dUpPVUVqWVpIQldxcm9MR0p0am1DREZkZUtzejcrWEhMc3NxWVFU?=
- =?utf-8?B?bkh2NEtQWlhEYXpVV1k3dWx4UkZRT2pGQ0FIcDlDQVpNL2xId25LOFFQNTZ5?=
- =?utf-8?B?SVpiVGZ2elZaN3NibE5ycndHc2dOc3R3M2lvNk9abHhwWUlYYmV0QXMvMFRy?=
- =?utf-8?B?VjVkWnBKL0VOcjlOR0dXeXFxdUVnbFBFQTdHOGY2dFpXRFZSQkVLa3BBVlJV?=
- =?utf-8?B?SURoZ0txdDd0eG41L244bWRZOWhvSVZRcExBalZqK3ZYMVZYUzk3N2JqcXNQ?=
- =?utf-8?B?dUZ4TCs1REg0U1RvTTZXcS81aFJ0ajVNOGcxdmRTbkdwc1M2TE5jcm1ZWk1h?=
- =?utf-8?B?bHIraXlxOThJdlp5K0dKTVRrbXh6bXQwdkJydEdHakxzbnQrVXlEM0pLOXM1?=
- =?utf-8?B?MHhib0s2djhIMEdNSitqazNZNG9HaE9reFlVNS84dGk5aUFaNWdYd3lnZmVw?=
- =?utf-8?B?R1AzdEs5THZ6RUZrQXUyTis5SW9JYWdxd1JvSzNOeDk5WHU5YXVIMXI3ai95?=
- =?utf-8?B?aE92T3ZrWURydGQrcVBkcXAwS2tWeVpuNUpnSUNmVFRXUEVNWHdLMWpYN3pF?=
- =?utf-8?B?Vk1yTXV2S2hMNXdkeE9ZVDlYenFYZWZhRitrcjB6TmExbUlVdHFiN0FRM1hM?=
- =?utf-8?B?ckU2TnhpL1NqTU4rbit4MG12NExPMjZVd0V0eE5JZnM2cGk2dkRxNzJxWUlL?=
- =?utf-8?B?ZVlrRjhjMklaMUphbVlnZG8xK3lSeDR4RG5FSzJyRXpvOHpYK0twV3FNT1BL?=
- =?utf-8?B?NWkrblBLWEMrSnB3OCtoOGRMWGlEcjF5YVNFSTNyV0tNSy92VUJaQXMwTXBi?=
- =?utf-8?B?ejRYdFFsNjdpNDRQMHFKRTN2SWlaTzdsQkZTZ3hPa2tPRTBad0E2Q1pyS3FK?=
- =?utf-8?B?c2dRb1NFb0l1bndCK2dWYWhzS01SOU85TUFta1BGYk5vNldSRnlEdWhWYVFG?=
- =?utf-8?B?TlVkYk4xRjVIZ0luWkE1aCtoSFo0blN1OE4zN3BmalBRNzhkV1FMZz09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d4df47e-0cc5-44d5-7d6f-08defc5b957e
-X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12331.eurprd04.prod.outlook.com
+	=?us-ascii?Q?kTyttU37gMIkb4H+IHN9Iofs57Qg8HUpJqLqP7aVQh5lPVyLhBrX1Pic1EXP?=
+ =?us-ascii?Q?Jy5l5+FRwyWCMs/okz5xmmbzW3cnqww6n4ZAZxCjJ+SF2Kgd8Q2bZtNLcN5y?=
+ =?us-ascii?Q?liYYeVXjTY6ZedH07X+AXGRd0mURLnreHIsVDlOV7d7NbvZ7yhICCu3OvZUx?=
+ =?us-ascii?Q?YILNmOsNkNCSuN/oyKHcaHaokU+ESwhXPgLRMO3ULybErI8M5c2BFh6lPp5H?=
+ =?us-ascii?Q?dvsRu0PN/HxT9O6MKhWqchJHDzY5cGSEwfh2P1Sufc6eXO7In3wfTrcSR3rq?=
+ =?us-ascii?Q?/1RA+grNN+C4JjCvQKkr0GpZjFJ13P3BwAQMXvKjlKB3ud8Mqb8akxJgXrQl?=
+ =?us-ascii?Q?0FRrMzB5hNVMA8xOWCuLWJMcKQNF3cByTiOVYfwtVBN5srbQ7mSFZCvbzcFN?=
+ =?us-ascii?Q?n6+OmbvM7WZkHO+UY3vhTPAYH3g7W5ng5hWiBiIzN3Gq7tRtiI15wqueXW25?=
+ =?us-ascii?Q?t3ks1cC5d3Hg/yJDAMmpjrpNVOpgBAVJhkdXJAPFa2f3yJ6bdj5yBegbKmqD?=
+ =?us-ascii?Q?g5UpwgHUeCBqpjr9tPz591HD/X+cXdYmiPbP5rkhR/jtnqmCMICUrGdn3MId?=
+ =?us-ascii?Q?0DJrk9Kh+yeVvP3vuEvDHxIO6F1IH2CujfmYxRoPI9jFviW949c+HWCaFj9d?=
+ =?us-ascii?Q?5jiljTlQ36f33RR5QGv3ijgmUlzd8ARlrvyR/81oD9++QPi/5MpPEo/C5Kw/?=
+ =?us-ascii?Q?dFjMbC0KZqO1teKx9xj7trJa3r3hnHRW8j1wLv6iKS8WZTKMJXUv/Ob1pe22?=
+ =?us-ascii?Q?liOHP3M2K+t1kp+8Sw2QqbXY0euf6Bg7pZfy6S8E/Y/jG8YobMewgyVCmsSm?=
+ =?us-ascii?Q?zLRiPh6e3+OLzKUUL9+Fj6PMJ5w6w5o1EvqRv0ThreRPr8xeF1RLgNRyTbs5?=
+ =?us-ascii?Q?pFvoaPEYN72QsOeDrAUDSGJ3+jxGEUi4WpKV7pNrgwW2vmIFQ3LVz7nJ0uHT?=
+ =?us-ascii?Q?iKLOFnQxGFvSvVFd7biO9w+73hDjVnGlv734N/yFCsYoFhgHphyejh0Wc737?=
+ =?us-ascii?Q?8TG8UmKMR5uFK2b8h4M5LzLAcb4dis8yd5QqOdf+P1/D7WBtwGrLnZv5rRGa?=
+ =?us-ascii?Q?BCeNflxGQpYBG8gEwMPPwBO+sFX8ElRjlj8rQrpDKGlSs1Tl2zHLVLb4p6+s?=
+ =?us-ascii?Q?g5zJcoY/XTRBFsCKYGZL/eveN+GCLGFgCTiZ0/PE9Tz/XTzj76SFn9y6wf+c?=
+ =?us-ascii?Q?uUN/WWBwUHEa3f7Z++gMKPyoN7Y+VUwTnkci41LspK6E+/vkqXkYH4i2+f2z?=
+ =?us-ascii?Q?6RGpsgdGNHiPYlO/KKRirXvyhribj+zOyPFcaEbShUCo/rUh9dpjm4l58cRA?=
+ =?us-ascii?Q?SaMEuKq0c8ApTEsmHLGpEI+2/Fg1RT1D14twSNPAVPJvxSmygRRDWX0hgKPR?=
+ =?us-ascii?Q?nrbb7ee8tK4yu4H0udMQDhTMzjzhFxbdi4SDfzYEutJlCBPjRsIbUV3h3zyq?=
+ =?us-ascii?Q?/XJGjjqGuGdknKuzvNVp3soWrjiKvsow6aN2ROBXKH+7g3fKu7OVqqjj+YGU?=
+ =?us-ascii?Q?FeQrMN3QR/Yy98Wo5CTwRvZ65IY4qy+61/cfE2VftxGyVP1aJeXCz6M0Cdh0?=
+ =?us-ascii?Q?s1S48b1DdSYYNQoG2/GsGlZrrTLRSC3wcrv0spJSplopVrOPns8HNF/MgEQK?=
+ =?us-ascii?Q?x+Gu2OI8Cagnc6N6kXJRWPV8E5zb2LjYYqOIxrJIzphmR8gZrG/K0jpagk0/?=
+ =?us-ascii?Q?Emqy3tnTIw1rDaITjM02AWPiJuQ3BDwo1W6xOKeHwOwf4MwX7GklLNzbtLVM?=
+ =?us-ascii?Q?0wNKM/t/QTdMmuRr+ztkSVke86xrZgo=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bed47479-eee5-46a0-0a1d-08defc5bf864
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:32:21.4481
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:35:07.8165
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BoX8cSf2eVtsO0VWD7zZbM/sDASAg+xMTeLGbZhFzx3cYNxFJM5808gaZy6p2xWfcN4BkO+5EP3NPXN1qdNfFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8650
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1Mu+4J8LSnos0C3EvSZgC8/2uBSUY2YmglB9Dbp8Q8tHy55pVTwESKpEiolebLRZGTkq1E16Bl+dlNRJxuNhAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9191
 
-When CONFIG_QCOM_UBWC_CONFIG=n, compiler needs to know the definition
-of ERR_PTR otherwise there will be a compilation error:
+On Fri, Aug 14, 2026 at 04:57:07PM +0200, Maxime Ripard wrote:
+> The plane only initializes a pristine state in its reset hook
+> using drm_atomic_helper_plane_reset(), which is equivalent to what
+> atomic_create_state expects. Convert to it.
+> 
+> The conversion was done using the following Coccinelle semantic patch:
+> 
+> @@
+> identifier funcs;
+> symbol drm_atomic_helper_plane_reset;
+> symbol drm_atomic_helper_plane_create_state;
+> @@
+> 
+> struct drm_plane_funcs funcs = {
+>   ...,
+> - .reset = drm_atomic_helper_plane_reset,
+> + .atomic_create_state = drm_atomic_helper_plane_create_state,
+>   ...,
+> };
+> 
+> @match_struct_reset@
+> identifier funcs, reset_func;
+> @@
+> struct drm_plane_funcs funcs = {
+>     ...,
+>     .reset = reset_func,
+>     ...,
+> };
+> 
+> @reset_uses_helpers depends on match_struct_reset@
+> identifier match_struct_reset.reset_func;
+> @@
+> 
+>  void reset_func(...)
+>  {
+>  	<+...
+> (
+>  	__drm_atomic_helper_plane_reset(...);
+> |
+> 	__drm_gem_reset_shadow_plane(...);
+> )
+>  	...+>
+>  }
+> 
+> @match_struct_destroy@
+> identifier funcs, destroy_func;
+> @@
+> struct drm_plane_funcs funcs = {
+>     ...,
+>     .atomic_destroy_state = destroy_func,
+>     ...,
+> };
+> 
+> @script:python renamed_func@
+> old_name << match_struct_reset.reset_func;
+> new_name;
+> @@
+> if old_name.endswith("_reset"):
+>     coccinelle.new_name = old_name.replace("_reset", "_create_state")
+> else:
+>     coccinelle.new_name = old_name
+> 
+> @update_struct depends on match_struct_reset && reset_uses_helpers@
+> identifier match_struct_reset.funcs, match_struct_reset.reset_func;
+> identifier renamed_func.new_name;
+> @@
+> struct drm_plane_funcs funcs = {
+>     ...,
+> -   .reset = reset_func,
+> +   .atomic_create_state = new_name,
+>     ...,
+> };
+> 
+> @drop_destroy depends on update_struct && match_struct_destroy@
+> identifier match_struct_reset.reset_func;
+> identifier match_struct_destroy.destroy_func;
+> identifier container_func;
+> identifier P;
+> symbol drm_atomic_helper_plane_destroy_state;
+> symbol __drm_atomic_helper_plane_destroy_state;
+> @@
+> 
+>  void reset_func(struct drm_plane *P)
+>  {
+>  	...
+> (
+> -	if (P->state) {
+> - 		<+...
+> (
+> -		drm_atomic_helper_plane_destroy_state(P, P->state);
+> |
+> -		__drm_atomic_helper_plane_destroy_state(P->state);
+> |
+> -		P->funcs->atomic_destroy_state(P, P->state);
+> |
+> -		destroy_func(P, P->state);
+> )
+> - 		...+>
+> - 	}
+> |
+> -	drm_WARN_ON_ONCE(P->dev, P->state);
+> |
+> -	WARN_ON(P->state);
+> )
+>  	...
+> (
+> -	kfree(P->state);
+> |
+> -	kfree(container_func(P->state));
+> |
+>  	// kfree is optional
+> )
+> (
+> -	P->state = NULL;
+> |
+>  	// plane->state clearing is optional
+> )
+>  	...
+>  }
+> 
+> @drop_destroy_mtk depends on update_struct@
+> identifier P;
+> symbol __drm_atomic_helper_plane_destroy_state;
+> symbol to_mtk_plane_state;
+> @@
+> 
+>  void mtk_plane_reset(struct drm_plane *P)
+>  {
+>  	...
+> -	if (P->state) {
+> -		__drm_atomic_helper_plane_destroy_state(P->state);
+> -		...
+> -	} else {
+>  		...
+> -	}
+>  	...
+>  }
+> 
+> @transform_nv50_wndw depends on update_struct@
+> identifier S;
+> @@
+> 
+>  void nv50_wndw_reset(...)
+>  {
+>  	...
+> -	if (WARN_ON(!(S = kzalloc_obj(*S))))
+> +	S = kzalloc_obj(*S);
+> +	if (WARN_ON(!S))
+>  		return;
+>  	...
+>  }
+> 
+> @transform_kzalloc depends on update_struct@
+> identifier match_struct_reset.reset_func;
+> identifier P, S;
+> statement ST;
+> statement list STL;
+> @@
+> 
+>  void reset_func(struct drm_plane *P)
+>  {
+>  	<...
+>  	S = kzalloc_obj(*S);
+> (
+> -	if (S)
+> -	{
+> -		STL
+> -	}
+> +	if (!S) return;
+> +
+> +	STL
+> |
+> -	if (S) ST
+> +	if (!S) return;
+> +
+> +	ST
+> )
+> 	...>
+>  }
+> 
+> @transform_body depends on update_struct@
+> identifier match_struct_reset.reset_func;
+> identifier renamed_func.new_name;
+> identifier S, P;
+> expression PS;
+> @@
+> - void reset_func(struct drm_plane *P)
+> + struct drm_plane_state *new_name(struct drm_plane *P)
+> {
+> 	...
+>  	S = kzalloc_obj(*S);
+> 	...
+> (
+>  	if (!S) {
+> 		...
+> -		return;
+> +		return ERR_PTR(-ENOMEM);
+>  	}
+> |
+>  	if (WARN_ON(!S)) {
+> 		...
+> -		return;
+> +		return ERR_PTR(-ENOMEM);
+>  	}
+> |
+>  	if (S == NULL) {
+>  		...
+> -		return;
+> +		return ERR_PTR(-ENOMEM);
+>  	}
+> )
+> 	...
+> (
+> -	__drm_atomic_helper_plane_reset(P, PS);
+> +	__drm_atomic_helper_plane_state_init(PS, P);
+> |
+> -	__drm_gem_reset_shadow_plane(P, PS);
+> +	__drm_gem_shadow_plane_state_init(P, PS);
+> )
+> 	...
+> }
+> 
+> @update_early_return depends on update_struct@
+> identifier match_struct_reset.reset_func;
+> identifier renamed_func.new_name;
+> identifier P;
+> expression PS;
+> @@
+>  struct drm_plane_state *new_name(struct drm_plane *P)
+> {
+> 	<+...
+> -	return;
+> +	return ERR_PTR(-EINVAL);
+> 	...+>
+> }
+> 
+> @update_return_plane depends on update_struct@
+> identifier match_struct_reset.reset_func;
+> identifier renamed_func.new_name;
+> identifier P;
+> expression PS;
+> @@
+>  struct drm_plane_state *new_name(struct drm_plane *P)
+> {
+> 	...
+>  	__drm_atomic_helper_plane_state_init(PS, P);
+> 	...
+> +
+> +	return PS;
+> }
+> 
+> @update_return_shadow depends on update_struct@
+> identifier renamed_func.new_name;
+> identifier P;
+> expression PS;
+> @@
+>  struct drm_plane_state *new_name(struct drm_plane *P)
+> {
+> 	...
+>  	__drm_gem_shadow_plane_state_init(P, PS);
+> 	...
+> +
+> +	return &PS->base;
+> }
+> 
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
-In file included from drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp_v13.c:7:
-./include/linux/soc/qcom/ubwc.h: In function ‘qcom_ubwc_config_get_data’:
-./include/linux/soc/qcom/ubwc.h:45:16: error: implicit declaration of
-function ‘ERR_PTR’ [-Wimplicit-function-declaration]
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-Fix this by including <linux/err.h>
-
-Fixes: 1924272b9ce1 ("soc: qcom: Add UBWC config provider")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
----
- include/linux/soc/qcom/ubwc.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/soc/qcom/ubwc.h b/include/linux/soc/qcom/ubwc.h
-index a7372d9c25fbc..f3a70360b177b 100644
---- a/include/linux/soc/qcom/ubwc.h
-+++ b/include/linux/soc/qcom/ubwc.h
-@@ -8,6 +8,7 @@
- #define __QCOM_UBWC_H__
- 
- #include <linux/bits.h>
-+#include <linux/err.h>
- #include <linux/printk.h>
- #include <linux/types.h>
- 
 -- 
-2.45.2
-
+Thanks,
+Laurentiu
