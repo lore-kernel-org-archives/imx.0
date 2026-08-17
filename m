@@ -1,397 +1,192 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013041.outbound.protection.outlook.com [52.101.83.41])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214EF41A91D
-	for <imx@lists.linux.dev>; Mon, 17 Aug 2026 12:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786970116; cv=fail; b=o6roSR6OvnoAxNwgSLGFc3glAx6y4gSvYPyppXbnmTsoLUzCodaotGtsGKJC66qkUkdX+0Qq9Ec6NInHKyElT5iL+rB4pXLQ4ljF3Fw/Mf6TVcf53KfbcFO2pzSwavikWzZFi5579J3upi5BhYpOQh+/yTxFHBlaNp6yftHzH8U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786970116; c=relaxed/simple;
-	bh=yXoXPqj26cqXoPOxKrmD+1Ck4yGovr7ARX9YdSqYNMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=S1PicTYRQsqn508TVl71mU5QvX5nYacn9O0p0ClWutXEonPlPpl3xizoasQna2VB4DNmr9YunJJp/RuV1M8thFGY6b4yDkjyDVotDNWKdI6oCHkoQ2ZclwblvfGWtmvXax/jkQ+kLeygRaAlZRiN4HEfDmY44t2lmYQHZ5qOV8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=YbgPbpXj; arc=fail smtp.client-ip=52.101.83.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF7241D118;
+	Mon, 17 Aug 2026 12:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786970473; cv=none; b=Kh5ms9B9QmJ0dh0/12SclLH9WRu0S5cIksd/zkoEhIDo9+A4HiaTTxeNFPYL10/EZB3+OjuPJx54jHzM7+uQMYBDXEfnO8NOeKk4J2r/XIYViPoCKP81YR02jQlJkGuW8YXApenzgNgWuOhgdTLjWbE/TYp/1rZ+U624NJNrRZo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786970473; c=relaxed/simple;
+	bh=7X4st2dfy1l8lT+fjQAQC0tAfIF/QQdIXAwtTks4e/k=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Oq/cxNtUWQIk/EYgwOfGg4MlzPD3zlONbqebSvs8Jg1fd28dg11pZLW2cQqHXfDd82I4ris2SE411m2r9tFcEKhP+pXBjwWL9dnx/NBYZv6uru2wiinYRv77qx21JTAs4k+2h0gyVFi/EmMOmmFX6mzShjqvaTctEQtZbY9m8+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aoCANBg2; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="YbgPbpXj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xCKQm90XuAajymeOUV2LkSR1JTvGwNwwt8LZQsAH92/9Mo3eWjazQLfEij1YOa2yNETGmKAQ1/4CWZ2XX7YIm+KXOrBvQvhjqUNwHtY0Sd06RlEFi3cbS95njvh7q1nx9o+xHWZSPaDX20cHWRLditEnDn9bBFYfCSh92gbyjSCEWn8VjRfTQdRQOYqlcSVsfRmjcznQVF5fu6OlgmL+rc064OneoznRM1FcxOpophk9Ik6zQ5LdqoN4Q7tDOgF0TYvkOtDQLELqyi7AyvpruuW4L1YTRxBaKmkm9D6JVjj7uwQQZPgO0wTYkttXwLWRgVSx9LpHpbAwUKNf0ef30Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/XHqtesdvt/9oFnNyaorD49lg1HnlBxKGtBMEh4uLmU=;
- b=tK25JyYYdDMMOtsEKZ7YiGAp0mI4d9/xrdgfM/e51DBB7y/bG65WeCGlj037G4Q+ZzZbb030urvWr41f69tHZDdi7HhBCjxr8x950RZ5hzjzmVTQvqgABJqThPGHbMREn/udtjCFfzTd7zi4i+08pM7yBZZ4gubl0pFlDsQNZKvKu4w+4MBInC5i9og1Pbxxw5y4clmYTG13HP8QKupyrUbb+K0AwbSUs2j+j3GjTHSyd2H7zZDnoWLrKwJltqgbi5Y2r/srqvP76cnKFCXc+1e+nF9db9jGcG64Z1YXii+Q39+pUJtPg1F5hvyy+bi0lfXcOM/FTK/O+LdEjLH9MA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/XHqtesdvt/9oFnNyaorD49lg1HnlBxKGtBMEh4uLmU=;
- b=YbgPbpXj2qQ/UVHAgDIoT9F8LBfEb3ej/7VEE4u9w2zrFGo/94MpbQXysSU+/cIvYvcB5LPt5+/2GLfifcFS0zJz478IZvXqEBR8fVSanZu4yNFqSAFmwVqXWcMBASWljvWXcZVDriNEFP1116hBa5Cq9OUCrSXMxRAmY+6mtujOi9xyarvI46CneNZsgfRGlLuPNgvWzc2T67mz2c2M2cFZx8O97c649u3pnWMVPxbX1pKIwKLJLYkYwilxAHrrumiryYjwtSDBS94KD9aM/YTh1xELTY8lvtjj6mxiPuKKsrg8qAEzTDltpFuTk8Mg68dmanan39mR6u4LdA1Ing==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19) by AS8PR04MB9191.eurprd04.prod.outlook.com
- (2603:10a6:20b:44e::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 12:35:08 +0000
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 12:35:07 +0000
-Date: Mon, 17 Aug 2026 15:35:03 +0300
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, Frank.Li@nxp.com, 
-	Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, 
-	l.stach@pengutronix.de
-Subject: Re: [PATCH v2 18/61] drm/imx/dcss: Convert to atomic_create_state
-Message-ID: <xvedve5evh2myckam3fmtbyuh3wqyqnasnx7ij2jnnqecraahx@e4tvvyqf2czv>
-References: <20260814-drm-no-more-plane-reset-v2-0-82d2963dd134@kernel.org>
- <20260814-drm-no-more-plane-reset-v2-18-82d2963dd134@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814-drm-no-more-plane-reset-v2-18-82d2963dd134@kernel.org>
-X-ClientProxiedBy: AS4P195CA0008.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e2::13) To GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aoCANBg2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786970471; x=1818506471;
+  h=from:to:subject:in-reply-to:references:date:message-id:
+   mime-version;
+  bh=7X4st2dfy1l8lT+fjQAQC0tAfIF/QQdIXAwtTks4e/k=;
+  b=aoCANBg23f6hM++EUWX5525byy5v5c6zWGrwg/KiAVFSp/WghxX3Ar3m
+   /6zwcHjA/VxbxfPx6xfEoGl3eis8ImmuA7sz7utu+t6IpCOXy8InG0CSM
+   T0yqDPiqXnCnC9nLrr0cBEA/RTaiVY3IaPbr+FUpghBU+ZYyUvP+RgkQV
+   4f/ei+2e4YH7ftlpbzZyPf5UyU7PYOiwv8OmQB8sWtKxDOw8auU2eWZi5
+   6k9ow65XPdSkFxNrWZWEGerJkJjZC1VxXb2x3V2wRpN9VzK6hqYS+uzoz
+   UpG0wwIKwRWP9tDRzfv1i+flskA5/w0Pm/gjeLH8rxGStuKtc/dZnLe9f
+   Q==;
+X-CSE-ConnectionGUID: kxeCS2mRQNyCHnVF6Wx7lQ==
+X-CSE-MsgGUID: E5D6+d0GSDS3R9aBzKGghQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="98598087"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="98598087"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:41:10 -0700
+X-CSE-ConnectionGUID: kO9/n7EERguTo2l7wfOCtw==
+X-CSE-MsgGUID: 7ox5dl61Tw6To4e/rrOiGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="266887598"
+Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.110])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:41:05 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, asahi@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-samsung-soc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+ linux-aspeed@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
+ linux-tegra@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ spice-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH 0/5] drm/vblank: Enforce all-or-nothing vblank support
+In-Reply-To: <20260814203542.1405135-1-lyude@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260814203542.1405135-1-lyude@redhat.com>
+Date: Mon, 17 Aug 2026 15:41:02 +0300
+Message-ID: <5f06e91a5ff0e5bb887b72e4ff9077c45cd9216e@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|AS8PR04MB9191:EE_
-X-MS-Office365-Filtering-Correlation-Id: bed47479-eee5-46a0-0a1d-08defc5bf864
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|376014|7416014|366016|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	GAN8UkG4dJ7RoZxWXl+jYBOhTNV7ROtZi/hUmvY4vHvAgWttaGcd0IzNcxe6kfs/3ism+i6BzwHh4ASlm5GCpvGG3btdz1IERH7wqjbe+hTqTJLiZCBZ+YQU0rr6AemhtVnHV55spAGIL/jOAUIY8x0/djglwCULHnLXTl2fux7Jd7rNhepjzAhOiqex8MGAs/MjjJaiZIOsQoPV2F6lIzvFK8AxoqPXmcLb9vFgIcxpXoE8uxhsd/UcwSJ2M1E6LpSlikor6PrQIrG5jHY6kPTGdeXVhlMK8p0a3rj2053vqMNvy6DB/ZCGofsQAmIpVQLzutalj4k6jDr9ixNOTFJzHbxi/IIcrgy97lpnED7dSNxvzDgt8PGeiu0SvOb5nTLjso2dkJnAhdPCPs3Bpr+hPbdjpxS6yAqGFTZpEvF6p2VNWKofc2LQqEdox5E2bNC5J9Aot+vboz8O97e5OQzvsGmBZDN6ET+N9LUYzlelkCntGCGCx5K+NbW6SwYVWyOiOhBAn4rAhlsziaks+JNKABw3rNDYPVZPxlAWsn4TMdfcc/JC6RTbsfuviHSSLCXgTkKOKm0kCV8nO9eJ2v05pnee2pIGWtcCyymJFXPI6RVIlg/ROPfGYNYrg3HvhR3VRvEjH8ivBIMF9wkW/yQyq+JB+3bDgK5bql7TGc4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(376014)(7416014)(366016)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kTyttU37gMIkb4H+IHN9Iofs57Qg8HUpJqLqP7aVQh5lPVyLhBrX1Pic1EXP?=
- =?us-ascii?Q?Jy5l5+FRwyWCMs/okz5xmmbzW3cnqww6n4ZAZxCjJ+SF2Kgd8Q2bZtNLcN5y?=
- =?us-ascii?Q?liYYeVXjTY6ZedH07X+AXGRd0mURLnreHIsVDlOV7d7NbvZ7yhICCu3OvZUx?=
- =?us-ascii?Q?YILNmOsNkNCSuN/oyKHcaHaokU+ESwhXPgLRMO3ULybErI8M5c2BFh6lPp5H?=
- =?us-ascii?Q?dvsRu0PN/HxT9O6MKhWqchJHDzY5cGSEwfh2P1Sufc6eXO7In3wfTrcSR3rq?=
- =?us-ascii?Q?/1RA+grNN+C4JjCvQKkr0GpZjFJ13P3BwAQMXvKjlKB3ud8Mqb8akxJgXrQl?=
- =?us-ascii?Q?0FRrMzB5hNVMA8xOWCuLWJMcKQNF3cByTiOVYfwtVBN5srbQ7mSFZCvbzcFN?=
- =?us-ascii?Q?n6+OmbvM7WZkHO+UY3vhTPAYH3g7W5ng5hWiBiIzN3Gq7tRtiI15wqueXW25?=
- =?us-ascii?Q?t3ks1cC5d3Hg/yJDAMmpjrpNVOpgBAVJhkdXJAPFa2f3yJ6bdj5yBegbKmqD?=
- =?us-ascii?Q?g5UpwgHUeCBqpjr9tPz591HD/X+cXdYmiPbP5rkhR/jtnqmCMICUrGdn3MId?=
- =?us-ascii?Q?0DJrk9Kh+yeVvP3vuEvDHxIO6F1IH2CujfmYxRoPI9jFviW949c+HWCaFj9d?=
- =?us-ascii?Q?5jiljTlQ36f33RR5QGv3ijgmUlzd8ARlrvyR/81oD9++QPi/5MpPEo/C5Kw/?=
- =?us-ascii?Q?dFjMbC0KZqO1teKx9xj7trJa3r3hnHRW8j1wLv6iKS8WZTKMJXUv/Ob1pe22?=
- =?us-ascii?Q?liOHP3M2K+t1kp+8Sw2QqbXY0euf6Bg7pZfy6S8E/Y/jG8YobMewgyVCmsSm?=
- =?us-ascii?Q?zLRiPh6e3+OLzKUUL9+Fj6PMJ5w6w5o1EvqRv0ThreRPr8xeF1RLgNRyTbs5?=
- =?us-ascii?Q?pFvoaPEYN72QsOeDrAUDSGJ3+jxGEUi4WpKV7pNrgwW2vmIFQ3LVz7nJ0uHT?=
- =?us-ascii?Q?iKLOFnQxGFvSvVFd7biO9w+73hDjVnGlv734N/yFCsYoFhgHphyejh0Wc737?=
- =?us-ascii?Q?8TG8UmKMR5uFK2b8h4M5LzLAcb4dis8yd5QqOdf+P1/D7WBtwGrLnZv5rRGa?=
- =?us-ascii?Q?BCeNflxGQpYBG8gEwMPPwBO+sFX8ElRjlj8rQrpDKGlSs1Tl2zHLVLb4p6+s?=
- =?us-ascii?Q?g5zJcoY/XTRBFsCKYGZL/eveN+GCLGFgCTiZ0/PE9Tz/XTzj76SFn9y6wf+c?=
- =?us-ascii?Q?uUN/WWBwUHEa3f7Z++gMKPyoN7Y+VUwTnkci41LspK6E+/vkqXkYH4i2+f2z?=
- =?us-ascii?Q?6RGpsgdGNHiPYlO/KKRirXvyhribj+zOyPFcaEbShUCo/rUh9dpjm4l58cRA?=
- =?us-ascii?Q?SaMEuKq0c8ApTEsmHLGpEI+2/Fg1RT1D14twSNPAVPJvxSmygRRDWX0hgKPR?=
- =?us-ascii?Q?nrbb7ee8tK4yu4H0udMQDhTMzjzhFxbdi4SDfzYEutJlCBPjRsIbUV3h3zyq?=
- =?us-ascii?Q?/XJGjjqGuGdknKuzvNVp3soWrjiKvsow6aN2ROBXKH+7g3fKu7OVqqjj+YGU?=
- =?us-ascii?Q?FeQrMN3QR/Yy98Wo5CTwRvZ65IY4qy+61/cfE2VftxGyVP1aJeXCz6M0Cdh0?=
- =?us-ascii?Q?s1S48b1DdSYYNQoG2/GsGlZrrTLRSC3wcrv0spJSplopVrOPns8HNF/MgEQK?=
- =?us-ascii?Q?x+Gu2OI8Cagnc6N6kXJRWPV8E5zb2LjYYqOIxrJIzphmR8gZrG/K0jpagk0/?=
- =?us-ascii?Q?Emqy3tnTIw1rDaITjM02AWPiJuQ3BDwo1W6xOKeHwOwf4MwX7GklLNzbtLVM?=
- =?us-ascii?Q?0wNKM/t/QTdMmuRr+ztkSVke86xrZgo=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bed47479-eee5-46a0-0a1d-08defc5bf864
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:35:07.8165
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1Mu+4J8LSnos0C3EvSZgC8/2uBSUY2YmglB9Dbp8Q8tHy55pVTwESKpEiolebLRZGTkq1E16Bl+dlNRJxuNhAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9191
+Content-Type: text/plain
 
-On Fri, Aug 14, 2026 at 04:57:07PM +0200, Maxime Ripard wrote:
-> The plane only initializes a pristine state in its reset hook
-> using drm_atomic_helper_plane_reset(), which is equivalent to what
-> atomic_create_state expects. Convert to it.
-> 
-> The conversion was done using the following Coccinelle semantic patch:
-> 
-> @@
-> identifier funcs;
-> symbol drm_atomic_helper_plane_reset;
-> symbol drm_atomic_helper_plane_create_state;
-> @@
-> 
-> struct drm_plane_funcs funcs = {
->   ...,
-> - .reset = drm_atomic_helper_plane_reset,
-> + .atomic_create_state = drm_atomic_helper_plane_create_state,
->   ...,
-> };
-> 
-> @match_struct_reset@
-> identifier funcs, reset_func;
-> @@
-> struct drm_plane_funcs funcs = {
->     ...,
->     .reset = reset_func,
->     ...,
-> };
-> 
-> @reset_uses_helpers depends on match_struct_reset@
-> identifier match_struct_reset.reset_func;
-> @@
-> 
->  void reset_func(...)
->  {
->  	<+...
-> (
->  	__drm_atomic_helper_plane_reset(...);
-> |
-> 	__drm_gem_reset_shadow_plane(...);
-> )
->  	...+>
->  }
-> 
-> @match_struct_destroy@
-> identifier funcs, destroy_func;
-> @@
-> struct drm_plane_funcs funcs = {
->     ...,
->     .atomic_destroy_state = destroy_func,
->     ...,
-> };
-> 
-> @script:python renamed_func@
-> old_name << match_struct_reset.reset_func;
-> new_name;
-> @@
-> if old_name.endswith("_reset"):
->     coccinelle.new_name = old_name.replace("_reset", "_create_state")
-> else:
->     coccinelle.new_name = old_name
-> 
-> @update_struct depends on match_struct_reset && reset_uses_helpers@
-> identifier match_struct_reset.funcs, match_struct_reset.reset_func;
-> identifier renamed_func.new_name;
-> @@
-> struct drm_plane_funcs funcs = {
->     ...,
-> -   .reset = reset_func,
-> +   .atomic_create_state = new_name,
->     ...,
-> };
-> 
-> @drop_destroy depends on update_struct && match_struct_destroy@
-> identifier match_struct_reset.reset_func;
-> identifier match_struct_destroy.destroy_func;
-> identifier container_func;
-> identifier P;
-> symbol drm_atomic_helper_plane_destroy_state;
-> symbol __drm_atomic_helper_plane_destroy_state;
-> @@
-> 
->  void reset_func(struct drm_plane *P)
->  {
->  	...
-> (
-> -	if (P->state) {
-> - 		<+...
-> (
-> -		drm_atomic_helper_plane_destroy_state(P, P->state);
-> |
-> -		__drm_atomic_helper_plane_destroy_state(P->state);
-> |
-> -		P->funcs->atomic_destroy_state(P, P->state);
-> |
-> -		destroy_func(P, P->state);
-> )
-> - 		...+>
-> - 	}
-> |
-> -	drm_WARN_ON_ONCE(P->dev, P->state);
-> |
-> -	WARN_ON(P->state);
-> )
->  	...
-> (
-> -	kfree(P->state);
-> |
-> -	kfree(container_func(P->state));
-> |
->  	// kfree is optional
-> )
-> (
-> -	P->state = NULL;
-> |
->  	// plane->state clearing is optional
-> )
->  	...
->  }
-> 
-> @drop_destroy_mtk depends on update_struct@
-> identifier P;
-> symbol __drm_atomic_helper_plane_destroy_state;
-> symbol to_mtk_plane_state;
-> @@
-> 
->  void mtk_plane_reset(struct drm_plane *P)
->  {
->  	...
-> -	if (P->state) {
-> -		__drm_atomic_helper_plane_destroy_state(P->state);
-> -		...
-> -	} else {
->  		...
-> -	}
->  	...
->  }
-> 
-> @transform_nv50_wndw depends on update_struct@
-> identifier S;
-> @@
-> 
->  void nv50_wndw_reset(...)
->  {
->  	...
-> -	if (WARN_ON(!(S = kzalloc_obj(*S))))
-> +	S = kzalloc_obj(*S);
-> +	if (WARN_ON(!S))
->  		return;
->  	...
->  }
-> 
-> @transform_kzalloc depends on update_struct@
-> identifier match_struct_reset.reset_func;
-> identifier P, S;
-> statement ST;
-> statement list STL;
-> @@
-> 
->  void reset_func(struct drm_plane *P)
->  {
->  	<...
->  	S = kzalloc_obj(*S);
-> (
-> -	if (S)
-> -	{
-> -		STL
-> -	}
-> +	if (!S) return;
-> +
-> +	STL
-> |
-> -	if (S) ST
-> +	if (!S) return;
-> +
-> +	ST
-> )
-> 	...>
->  }
-> 
-> @transform_body depends on update_struct@
-> identifier match_struct_reset.reset_func;
-> identifier renamed_func.new_name;
-> identifier S, P;
-> expression PS;
-> @@
-> - void reset_func(struct drm_plane *P)
-> + struct drm_plane_state *new_name(struct drm_plane *P)
-> {
-> 	...
->  	S = kzalloc_obj(*S);
-> 	...
-> (
->  	if (!S) {
-> 		...
-> -		return;
-> +		return ERR_PTR(-ENOMEM);
->  	}
-> |
->  	if (WARN_ON(!S)) {
-> 		...
-> -		return;
-> +		return ERR_PTR(-ENOMEM);
->  	}
-> |
->  	if (S == NULL) {
->  		...
-> -		return;
-> +		return ERR_PTR(-ENOMEM);
->  	}
-> )
-> 	...
-> (
-> -	__drm_atomic_helper_plane_reset(P, PS);
-> +	__drm_atomic_helper_plane_state_init(PS, P);
-> |
-> -	__drm_gem_reset_shadow_plane(P, PS);
-> +	__drm_gem_shadow_plane_state_init(P, PS);
-> )
-> 	...
-> }
-> 
-> @update_early_return depends on update_struct@
-> identifier match_struct_reset.reset_func;
-> identifier renamed_func.new_name;
-> identifier P;
-> expression PS;
-> @@
->  struct drm_plane_state *new_name(struct drm_plane *P)
-> {
-> 	<+...
-> -	return;
-> +	return ERR_PTR(-EINVAL);
-> 	...+>
-> }
-> 
-> @update_return_plane depends on update_struct@
-> identifier match_struct_reset.reset_func;
-> identifier renamed_func.new_name;
-> identifier P;
-> expression PS;
-> @@
->  struct drm_plane_state *new_name(struct drm_plane *P)
-> {
-> 	...
->  	__drm_atomic_helper_plane_state_init(PS, P);
-> 	...
-> +
-> +	return PS;
-> }
-> 
-> @update_return_shadow depends on update_struct@
-> identifier renamed_func.new_name;
-> identifier P;
-> expression PS;
-> @@
->  struct drm_plane_state *new_name(struct drm_plane *P)
-> {
-> 	...
->  	__drm_gem_shadow_plane_state_init(P, PS);
-> 	...
-> +
-> +	return &PS->base;
-> }
-> 
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+On Fri, 14 Aug 2026, Lyude Paul <lyude@redhat.com> wrote:
+> One of the oddities with DRM that is leftover from the old days is how
+> vblank support is implemented by drivers. This has caused some minor
+> issues for the rust bindings for KMS which could be worked around.
+> However, it seems like a much better idea to fix this on the C side.
+> Those oddities are mainly:
+>
+> * There's nothing in the vblank core that actually ensures that all
+>   CRTCs implement vblank support if one of them do. On Rust's side, we
+>   can't have this and have to ensure either the whole device has vblank
+>   support or not - otherwise it would be quite painful ensuring we don't
+>   expose vblank methods to drivers that can't use them.
+>   This additionally means such a situation would lead to UB.
+> * There is a second variable for keeping track of the number of CRTCs
+>   and it's kind of broken and confusing. Even worse, we currently allow
+>   the vblank API to allow a driver to specify a different number of
+>   CRTCs then it actually has.
+>
+> So, let's just go ahead and fix this across the whole tree, and enforce
+> that a driver must either implement hardware vblank support for all
+> CRTCs or no CRTCs.
 
-Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+For i915, the relevant init order is currently:
+
+- drm_vblank_init()
+- drm_mode_config_init()
+- drm_crtc_init_with_planes() for each CRTC
+
+For the patch series to work, drm_vblank_init() would have to happen
+after mode config and CRTC init. Off-hand, I couldn't say if there are
+dependencies that make this change difficult.
+
+I'd be surprised if i915 were the only driver like this.
+
+
+BR,
+Jani.
+
+>
+> Lyude Paul (5):
+>   drm/vblank: Add drm_device.has_hw_vblank
+>   drm/vblank: Remove drm->num_crtcs
+>   drm/vblank: Remove num_crtcs argument from drm_vblank_init()
+>   drm/vblank: Use drm_for_each_crtc() in drm_vblank_init()
+>   drm/vblank: Require all CRTCs implement vblank support in
+>     drm_vblank_init()
+>
+>  drivers/gpu/drm/adp/adp_drv.c                 |  2 +-
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c      |  2 +-
+>  drivers/gpu/drm/amd/amdgpu/dce_v10_0.c        |  2 +-
+>  drivers/gpu/drm/amd/amdgpu/dce_v6_0.c         |  2 +-
+>  drivers/gpu/drm/amd/amdgpu/dce_v8_0.c         |  2 +-
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  2 +-
+>  .../gpu/drm/arm/display/komeda/komeda_kms.c   |  2 +-
+>  drivers/gpu/drm/arm/hdlcd_drv.c               |  2 +-
+>  drivers/gpu/drm/arm/malidp_drv.c              |  2 +-
+>  drivers/gpu/drm/armada/armada_drv.c           |  2 +-
+>  drivers/gpu/drm/aspeed/aspeed_gfx_drv.c       |  2 +-
+>  drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c  |  2 +-
+>  drivers/gpu/drm/drm_vblank.c                  | 60 ++++++++++++-------
+>  drivers/gpu/drm/exynos/exynos_drm_drv.c       |  2 +-
+>  drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c     |  2 +-
+>  drivers/gpu/drm/gma500/psb_drv.c              |  2 +-
+>  drivers/gpu/drm/gma500/psb_irq.c              |  4 +-
+>  .../gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c   |  2 +-
+>  .../gpu/drm/hisilicon/kirin/kirin_drm_drv.c   |  2 +-
+>  drivers/gpu/drm/hyperv/hyperv_drm_modeset.c   |  2 +-
+>  .../drm/i915/display/intel_display_driver.c   |  3 +-
+>  drivers/gpu/drm/imx/dc/dc-kms.c               |  2 +-
+>  drivers/gpu/drm/imx/dcss/dcss-kms.c           |  2 +-
+>  drivers/gpu/drm/imx/ipuv3/imx-drm-core.c      |  2 +-
+>  drivers/gpu/drm/imx/lcdc/imx-lcdc.c           |  2 +-
+>  drivers/gpu/drm/ingenic/ingenic-drm-drv.c     |  2 +-
+>  drivers/gpu/drm/kmb/kmb_drv.c                 |  2 +-
+>  drivers/gpu/drm/logicvc/logicvc_mode.c        |  2 +-
+>  drivers/gpu/drm/loongson/lsdc_drv.c           |  2 +-
+>  drivers/gpu/drm/mcde/mcde_drv.c               |  2 +-
+>  drivers/gpu/drm/mediatek/mtk_drm_drv.c        |  2 +-
+>  drivers/gpu/drm/meson/meson_drv.c             |  2 +-
+>  drivers/gpu/drm/msm/msm_kms.c                 |  2 +-
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c             |  2 +-
+>  drivers/gpu/drm/mxsfb/mxsfb_drv.c             |  2 +-
+>  drivers/gpu/drm/nouveau/nouveau_display.c     |  2 +-
+>  drivers/gpu/drm/omapdrm/omap_drv.c            |  2 +-
+>  drivers/gpu/drm/pl111/pl111_drv.c             |  2 +-
+>  drivers/gpu/drm/qxl/qxl_display.c             |  2 +-
+>  drivers/gpu/drm/radeon/atombios_crtc.c        |  4 +-
+>  drivers/gpu/drm/radeon/radeon_irq_kms.c       |  2 +-
+>  drivers/gpu/drm/radeon/radeon_legacy_crtc.c   |  4 +-
+>  drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c |  2 +-
+>  drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c  |  2 +-
+>  .../gpu/drm/renesas/shmobile/shmob_drm_drv.c  |  2 +-
+>  drivers/gpu/drm/rockchip/rockchip_drm_drv.c   |  2 +-
+>  drivers/gpu/drm/sprd/sprd_drm.c               |  2 +-
+>  drivers/gpu/drm/sti/sti_compositor.c          |  2 +-
+>  drivers/gpu/drm/stm/ltdc.c                    |  2 +-
+>  drivers/gpu/drm/sun4i/sun4i_drv.c             |  2 +-
+>  drivers/gpu/drm/tegra/drm.c                   |  2 +-
+>  drivers/gpu/drm/tidss/tidss_kms.c             |  2 +-
+>  drivers/gpu/drm/tilcdc/tilcdc_drv.c           |  2 +-
+>  drivers/gpu/drm/tiny/bochs.c                  |  2 +-
+>  drivers/gpu/drm/tiny/cirrus-qemu.c            |  2 +-
+>  drivers/gpu/drm/tve200/tve200_drv.c           |  2 +-
+>  drivers/gpu/drm/vc4/vc4_kms.c                 |  6 +-
+>  drivers/gpu/drm/verisilicon/vs_drm.c          |  2 +-
+>  drivers/gpu/drm/virtio/virtgpu_display.c      |  2 +-
+>  drivers/gpu/drm/vkms/vkms_drv.c               |  3 +-
+>  drivers/gpu/drm/vmwgfx/vmwgfx_vkms.c          |  2 +-
+>  drivers/gpu/drm/xlnx/zynqmp_kms.c             |  2 +-
+>  include/drm/drm_device.h                      | 10 +++-
+>  include/drm/drm_vblank.h                      |  2 +-
+>  64 files changed, 114 insertions(+), 92 deletions(-)
+>
+>
+> base-commit: 568d4cb5dcc5ec4e22975699b6ea67a30806884c
 
 -- 
-Thanks,
-Laurentiu
+Jani Nikula, Intel
