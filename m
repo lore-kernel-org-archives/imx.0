@@ -1,155 +1,146 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D103224B13
-	for <imx@lists.linux.dev>; Sun, 16 Aug 2026 05:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492CB3B95E7
+	for <imx@lists.linux.dev>; Mon, 17 Aug 2026 07:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786856905; cv=none; b=QDtVpC7QPspiO2ACDwqh1/iDI/57QthVlBJq2Ab63UYXP98o7RT6oRgXms3rSgX9VS5mukDP7z8XOUS4IVGdDAb8FY6Y+IfIaLObTwIVJn+oLEeCvcSDV4477/EssBlmac7izJVmT/cP5fpQVSfNwqMLwdafZ029+x5BCRs64z8=
+	t=1786953012; cv=none; b=MzOBzS6vco3Fys0umtwoojTcmbg/8svGV0j8E23BsgL3cSCqPnDtyRbxEmP311g031um6GjJ03olpoxDfbbjO+IPRGhfIgFoKocC6k4b/3JvuklQuFJMi9Lua8pLgsZj1DmwPkEKYnYv9E1ovQ199BrYzIlthpklG/IC6tgLwPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786856905; c=relaxed/simple;
-	bh=K1+6ZfM3X7b1ZXo4/aHurUoKhIdCkiaITB6aDZA59gM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:MIME-Version:
-	 Content-Type; b=F/jDwAn3XVylWWZbyrR2lxD+3FPR43tKcYctZcwschupvxl8jw8CtVbo83m3AsKHuhujEXf/0os+cLVGFIYv6CLbAFTFFe0F43MR98sHj9RFnxoYxJaicQjRe7KyLhIB2/M4nE8Tn9nmAkfj7QF3wKHcL4jKJRkDWtMeD7DLJIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nCEMQ2wU; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786953012; c=relaxed/simple;
+	bh=k6qJ0w8faGh5iZe2bWgTAvS1rr3idWT5/kIKss0S+CY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bbahkw4tM3VFJFzbQ54CLcF1EiJ+BjWZRbnJxaj3/lufGP1rJiJgfF66f5OIhcrXCwmuoTaKFRJAfqZTU699IOXBnykJDHy+CvvuBBw45jK6hoWETXephAO4yTM+QTfsLy5loMLjCbY5mRra/1Fs5XTJWsL6+cJENYWW3HWjx9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jQUA7ZiL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=V9kelxsK; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nCEMQ2wU"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2020421077so389745766b.3
-        for <imx@lists.linux.dev>; Sat, 15 Aug 2026 22:08:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jQUA7ZiL";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="V9kelxsK"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67H7FjBW1637507
+	for <imx@lists.linux.dev>; Mon, 17 Aug 2026 07:50:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	GVBo0uEIEIai1loPWlojzjwt9b5wvxoTQFdfmU3fzfc=; b=jQUA7ZiLgyDksvRW
+	jc0fmwKGPnmtyP9DwjMQkBEFfQk72T2+i6i347GIPVM7oWZQqMu0DlGdjyzw4Xcq
+	/8UkGAwo+q4K4qBzVFdW2SK5+xWnIGMDhmkSaq7xrlBWG0GQTIkH0eTXpq5EgphW
+	r0DVCQMxZszhW+z0QTLVZvbjedKGBnVakdRqgpFum7uEwpFlbkgNYUcOv33rwx4/
+	a9McGXfMPo/Gd857DnTQcqsfWDuSwxaxdhsHTLCtuK7TputfQJ6NytVpmq6Iw0lg
+	n3pL2tEwHlCprDljDmAKbvxEEFbKn0Lb3v9PZx2fTmOq70Sbj/MjWmPziBOOtVNH
+	7+qorw==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g3wreg48f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 17 Aug 2026 07:50:10 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-52d57d17d6cso4131941cf.3
+        for <imx@lists.linux.dev>; Mon, 17 Aug 2026 00:50:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786856902; x=1787461702; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S3EGv/bCwZGVn5e0LnVQX15hxgKZ01RYRO4qrI6Efvk=;
-        b=nCEMQ2wUl0SUkxBJBauYyzNw1cDT7u6jhyW/2o46+Gnzs1gRt5gyLBi+bpOUdJ1r/z
-         8WxJhXfNoqvVG/gyBCMh9iD1oFpSFNZ4NlW4kziIgVKixiv2k9YNRyNCQwO5Mki0R1Wt
-         5PmHz+5ZdGGU3l+wA7yGEir2pQInEYKStfaoIqxjMnyu7BbT4AEByTUTlmGXY7eq6g8b
-         XaCP7hV1pxCh1jA+6cRgtd+DZDHxrDeCDnzB/yXU3VxjAHxFegSQ7zVEzYLxHQ8yISdY
-         9sbo8csYpVCCaPC28T3eZSEKxg0CWFtMiHu/xV+k1/Pl/pIUluo8Yq6y0bMLxMd6+lvq
-         kyFA==
+        d=oss.qualcomm.com; s=google; t=1786953009; x=1787557809; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GVBo0uEIEIai1loPWlojzjwt9b5wvxoTQFdfmU3fzfc=;
+        b=V9kelxsKM3ZB89UER9QPROVHWpYHlmQJv7t8/u2SUnvQ95taqea4UEW66CVQvG6AVZ
+         L9drJhmxTZuKrQjQOHHwnC4vOeEFDrcVPGxmdBzvTMzUnKFiknKNGuX1unmGFMfXBwpv
+         TOuxxoF91GUXGtZkU3RSkOj0CawC3bZdRTqMN+uiUaj85dQF2Kw9oc+poTcZfF80+iih
+         ql8BMKvDenT8LFdAyIgBv+hr32KlVPEzmd7TwajvAoK5sucA1f/ZJr0kSYzfefC6h8AN
+         6ympmpmG+6q3wAc6k9MhA5v8ZiEGk45Zx3XJhW3VRS4tLMsWrFp0eiG/QVsioxYUeaMh
+         DyZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786856902; x=1787461702;
-        h=content-transfer-encoding:content-type:mime-version:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S3EGv/bCwZGVn5e0LnVQX15hxgKZ01RYRO4qrI6Efvk=;
-        b=EJ1e+1ZISlK1FU6nwe2M3d5U77saDBHLzurfWS0ZFjnvhCTQD1mV85ANHLh1Ypg8KB
-         BiQzFN1R/40VplAXXq7r9w+CVqr6Z5kcQkzgADZO7CjrtOzvmYeD6dXO4S1BlWlfdVcj
-         eL1sK56YltmVLvhlmVej9jxqEHRE0xC2ixuN8+VARghSXmAG+n9sKVpJw3i1woeEatoN
-         pAYWTIk/gzD4AdELph+rAAuEjl18InQqjq/ay46oolvIJXZlKbqibaXNrytJSU4j9UaN
-         FrofIolIEu5HEjJ1fPIiTLtMTrc2eqrH0BTK3tHRNeD51AgoupVM1pH5VmK8UwemHM3X
-         okBg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp2nFC2/QbFtpB/EJtKnt9vxnJf7IEwGiYoKlmSiDN6HVvACvA+SmWcFxnWQJvFz8Vvd5w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzQLDP8HisSW5EXtibG8hTaPOg3EuhU7QrMehmrldvfftD3MHBb
-	Ce43s79a+lufRgv4ZLS1aHA65KRopFM5jmGeReLAelb1t5ckWmGtpZos
-X-Gm-Gg: AR+sD11Cy8dc7PWiPplaZEhCfld2Ye1c/B25Lo2AM71N0E1ilvPNXzIDYApoyUE/Jho
-	RMTng0kgSgMTj3SxXel4HEE0p0KUhazJb11YfWAsWIvc7d58T/cgiwKanEAKSrwFxK8pYwtsU/F
-	6+2XICFyHWViXFI3dlF4xMbqTHvIanus9UIeS8/U54/izoVONwhOW9k/NFyiFllW2QeJM9rRzvW
-	Tw0KkecwmmnbS46NsVmaklGEi7c9/dNK/7mHGuJjq/TUUIsCmSigvnK+Wnpk9Y/KBx8HNqKFLQE
-	N9A8KGHKyZ4VlAfrcVdwu9YVvzzmUhdeFuwZTgdwxuZFAujGtnTY0yQ7qLgHX0ByZ4WKy6VfWde
-	igVnRu4wxreVO8NkGA6KAa++usz5CINZNs5WDLctqi9VOy6sGEVEh9Yi23QxWlo+diFCZU0aVV4
-	UI9yDxWNtlcFJfIyQE+VwdUZGtuUiGyo3bvq+sB8Fz5kqK9UnLGzjwc9bl5OXQp9BTPOg=
-X-Received: by 2002:a17:907:ea93:b0:c20:f871:1018 with SMTP id a640c23a62f3a-c212a127aebmr838653266b.21.1786856901726;
-        Sat, 15 Aug 2026 22:08:21 -0700 (PDT)
-Received: from foxbook (bfg7.neoplus.adsl.tpnet.pl. [83.28.44.7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c21238700aesm296472666b.63.2026.08.15.22.08.18
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sat, 15 Aug 2026 22:08:20 -0700 (PDT)
-Date: Sun, 16 Aug 2026 07:10:44 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: frank.li@nxp.com
-Cc: corbet@lwn.net, dmaengine@vger.kernel.org, hch@infradead.org,
- imx@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- lizhijian@fujitsu.com, mst@redhat.com, rdunlap@infradead.org
-Subject: Re: [PATCH v2 1/1] docs: dma: correct dma_set_mask() sample code
-Message-ID: <20260816071044.331a2c51.michal.pecio@gmail.com>
-In-Reply-To: <20240401174159.642998-1-Frank.Li@nxp.com>
+        d=1e100.net; s=20251104; t=1786953009; x=1787557809;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GVBo0uEIEIai1loPWlojzjwt9b5wvxoTQFdfmU3fzfc=;
+        b=BvN7V3O2l9pBUrjuVf5VGYgZaGKc+BrtkLT5fZstLHCxCqHJDeBsspkS4TvghW72ic
+         69wvqoNNkvqL35+H55X3ZcHyv1nojoIBIvW1oCFTFrGXIHL5K42HRyDQcORMTOQB1XCM
+         Pv8e7JHGTvOrFi7AbkdmFMINBr8sG5OHmnaLhYmqvzxu+HSaYn6IYo4Xv+RVDR9OmvIN
+         Wi/JixqDaz/+PWam8jaAnJa6xKbkW/7rU0iPZyEmUpDbuOb7doHZeKhWL16k17C4e2hq
+         1w9g0Kiqc9fbzETY/alsF1kjbPMVlubUcZ7mlCHJfHALL5xFV98I9GXnZ6Y1rabbcRcM
+         RzDA==
+X-Forwarded-Encrypted: i=1; AHgh+RqTevvTAprl+1QHKNkrt9KiZ0GutRgVahvTYY9pvapJSp2mOXdw8rlvBT3UyadTx0HnbQs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzRX5EJliKrsnv0ltUjDoqCFNOnZeiyNhFKAIP9gX+2/Khws6/6
+	XEyuwmtNY54/BrAPFbVQpUfMkZurPh3yclx2WtUyGdzYJcLFLdi/AjAmWjUJEIGAA45sAin4rAZ
+	6wRqtwzEIdcWTmpHc2MW8906geMxjEsaP5CbC8G4dxJmJkipC63K106aU7LhgHQc=
+X-Gm-Gg: AR+sD11iwDMGXt4Jva1/iImf5rREGBupbtpdK2D/0YjsK2RMhxh2hGgi20zlEo9925X
+	GCny4dgkhnYrkOLSSWB5whwZ3bELgPO7zzHlqUgl7LfBBMKZKARN0rEVWE2NkyjgRCDDAqbQ8h0
+	Qn2GG/retVugt4yxgrFO462c+2DPMtz7ybE2AHoP1YJlTtxLzrWn9Q1SM784S3R5VMCYHKUbtZp
+	AkDooNPnGUNF0WxXvgSwl/NlMp4+HlQcM50IDbDKdqdhK9UYgyFDlRwqzAu62UQNFpS3upOkx3G
+	rT1TF3fW2/QE5v1qRU+iFeZAmmoqj0VBLSTZNlbG5wFJjCMsmtLwtniCNZnbV2qPjhlzJiRETYt
+	L8Cjd0KvQPEfiEm1tUlX2jxcP
+X-Received: by 2002:ac8:5fd1:0:b0:51b:f40b:2fa2 with SMTP id d75a77b69052e-52d852d4f3dmr169407091cf.1.1786953009578;
+        Mon, 17 Aug 2026 00:50:09 -0700 (PDT)
+X-Received: by 2002:ac8:5fd1:0:b0:51b:f40b:2fa2 with SMTP id d75a77b69052e-52d852d4f3dmr169406931cf.1.1786953009215;
+        Mon, 17 Aug 2026 00:50:09 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217fe6a073sm16587866b.9.2026.08.17.00.50.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Aug 2026 00:50:08 -0700 (PDT)
+Message-ID: <31fca5ea-0937-4899-b8e4-6ba4552901c7@oss.qualcomm.com>
+Date: Mon, 17 Aug 2026 09:50:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] drm/msm: Guard the QCOM_UBWC_CONFIG select with
+ QCOM_SMEM
+To: Daniel Baluta <daniel.baluta@nxp.com>, andersson@kernel.org,
+        konradybcio@kernel.org
+Cc: dmitry.baryshkov@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nathan@kernel.org, imx@lists.linux.dev
+References: <20260814141724.1006382-1-daniel.baluta@nxp.com>
+ <20260814141724.1006382-2-daniel.baluta@nxp.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260814141724.1006382-2-daniel.baluta@nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=FqI1OWrq c=1 sm=1 tr=0 ts=6a82bd32 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=8AirrxEcAAAA:8 a=EUspDBNiAAAA:8 a=qCMfp5iw1hmu5WYrWjYA:9 a=QEXdDO2ut3YA:10
+ a=kacYvNCVWA4VmyqE58fU:22 a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-ORIG-GUID: nCToKldPtJEiNhsCx8xCK5H2PrmC0Bw2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDA1NyBTYWx0ZWRfX4YjPdD5szBWY
+ du8B8cEPLOO2tbGtwl13QeSrlqm/l971ThcGGOhH3TxP69gfgdgwIk6JvQDfTzNiIItI6TwttBx
+ G6gHDgqnAmfSEOwZb1c1ZpPn3/4Q2ShwsE4NKEXEBoPjjXcFSvpZd+Li9Z1qZY9ZccCaExJoZWT
+ cPA3ZAX29ApYQak/tL0Yt1r40HvHQ0Gk18C6cvORlOFMGVZpA5hjmi218wyTMopsgeD9Tgp1hp1
+ zzgFXnmYogCpNaPgL5qnz93qzYDpKWxSZPMUaZkcBbLi89zO4qDGtWiqUWwX8fyL+Pfjm9othrF
+ nb3j9a5lMkthCU1sR+n+R6i8qPZOKNpYfyPJ/DpeAG6aV08A1miCerryV63tuyKwd3sV9Zc8rPi
+ hSpMp6Gue3VwRmQ5k1iapw4c8XSS4ZJT9vmltfi5u5ucIbTf+mOrT1ZsCWB5zYM6kMp0T/h+wDP
+ X5oP3+G1Am/ZMC1bRdg==
+X-Proofpoint-GUID: nCToKldPtJEiNhsCx8xCK5H2PrmC0Bw2
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDA1NyBTYWx0ZWRfX9rxhOL9GH9S6
+ BnSkuGalAYKXzOtIutGkhzufJldTy4aBur4QXVm9ooP5xstsA9YCaRi7jXhHqLP+OTmOXrAg/2P
+ msQKxhUIoZvqvOSnszVmgplCJ90QxRs=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-16_06,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608170057
 
-Hi,
-
-> There are bunch of codes in driver like
->
->        if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
->                dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32))
->
-> Actually it is wrong because if dma_set_mask_and_coherent(64) fails,
-> dma_set_mask_and_coherent(32) will fail for the same reason.
-
-I encountered similar driver code and found it similarly suspicious.
-I arrived here searching for reasons to convince myself (and relevant
-maintainers) that removing this is indeed the right thing to do.
-
-But I have a few remaining questions and remarks.
-
-> And dma_set_mask_and_coherent(64) never returns failure.
-
-No realistic chance of the dev->dma_mask check (below) giving -EIO?
-
-> According to the definition of dma_set_mask(), it indicates the width
-> of address that device DMA can access. If it can access 64-bit
-> address, it must access 32-bit address inherently. So only need set
-> biggest address width.
->
-> See below code fragment:
->
-> dma_set_mask(mask)
-> {
-> 	mask = (dma_addr_t)mask;
+On 8/14/26 4:17 PM, Daniel Baluta wrote:
+> QCOM_UBWC_CONFIG is about to depend on QCOM_SMEM. Guard the DRM_MSM
+> select with 'if ARCH_QCOM && QCOM_SMEM', and add
+> 'depends on QCOM_SMEM || QCOM_SMEM=n' so a built-in driver is never
+> selected against a missing or modular SMEM.
 > 
-> 	if (!dev->dma_mask || !dma_supported(dev, mask))
-> 		return -EIO;
-> 
-> 	arch_dma_set_mask(dev, mask);
-> 	*dev->dma_mask = mask;
-> 	return 0;
-> }
->
-> dma_supported() will call dma_direct_supported or iommux's
-> dma_supported call back function.
+> Fixes: 1b445022d1d0 ("soc: qcom: ubwc: Get HBB from SMEM")
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
 
-Aapparently, it may also use some 'dma_map_ops' and there is a bunch
-of those spread over drivers/ and arch/. But I gather they are expected
-to behave similarly as the functions named above?
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-> --- a/Documentation/core-api/dma-api-howto.rst
-> +++ b/Documentation/core-api/dma-api-howto.rst
->
-> +The standard 64-bit addressing device would do something like this::
-> +
-> +	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64))
-> +
-> +dma_set_mask_and_coherent() never return fail when DMA_BIT_MASK(64). Typical
-> +error code like::
-> +
-> +	/* Wrong code */
-> +	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
-> +		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32))
-> +
-> +dma_set_mask_and_coherent() will never return failure when bigger then 32.
-> +So typical code like::
-> +
-> +	/* Recommended code */
-> +	if (support_64bit)
-> +		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
-> +	else
-> +		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
-> +
+Konrad
 
-This text is unclear. Two sentences begin with "Typical error code",
-then some code is quoted, and the sentences are cut abruptly without
-actually making any statement about the code in question.
-
-Thanks,
-Michal
