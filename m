@@ -1,308 +1,304 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012038.outbound.protection.outlook.com [52.101.66.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BD0374A0F
-	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 01:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787017306; cv=none; b=GkBzxuKX8WwHsSkIKyGBGhuy9nJ3KaUFEgTu866qPxvqBdPUjqYcFrFobG3N4d7u+1EhOdP2n3i/6h8VCeRHD2XU1k02DR0Z4ySWDnHntazyXV+7s+Y1R7V+RlhwUf2Z8fvPZ00ekJLjsopc5nngMbxfrfZNmpbOOVzjTRZiSsU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787017306; c=relaxed/simple;
-	bh=8bKDC2Equ52KU9kNtEIpPUSElfKwYbT05tsYB7sSYuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmc1yTldo2e8tOhH2FgRaqLyXL4LzgGnzK4SrorPEVK6jsRKW+f/oAJMgy7JZrSrAOpZ7HMJjOhRSEyYgbLicQqHyQ+g8CfMh17xxt9H6UxLjtfAh1ubdKWqYt7jETFBKMMpNikjMr+jNYTr+TbzanYtLcbLvr0k5Yvi26VqR7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rAZicqxS; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AF33AB5C7
+	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 02:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787020969; cv=fail; b=fdw282ZB3FQ/GLrlCV2IkrH22nbsKD+gWi/sbkHg4tKZFNEyNNqnvpKdgjI6a41fmDJ44rUVanHVHM0ApgFTrYIz555OtX4bhrkVJorSZHEPwy3bZZpZYwV/Z0xs8rHnU+MO8R+v3i9T9R5GZJWx5uOmRz2zNKs3n2RFVrIHFVQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787020969; c=relaxed/simple;
+	bh=i+v8aQMV0YI1N44diaCLxoJrJIbSPBofYuh0hjsz0vY=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=unKth9KaPUMjnnVG+gmFXAjWqC5O+XHwklYFvmlZYmmH10uClgFzeIPdgT8Lalek0/QF1HkRfNSRBFtGfk8EA1TgHyxW1C8IwWDBTU09rGvoXCNEy5uRcVGvR1djUD6IucZyI/3vZbmttKbhryE4wEgIIkWt/Xql1LWwVtJXvSc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=prSFFr3h; arc=fail smtp.client-ip=52.101.66.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rAZicqxS"
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-9693bbb962eso2478395241.2
-        for <imx@lists.linux.dev>; Mon, 17 Aug 2026 18:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787017302; x=1787622102; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lX+K9XxfcsBKvrdgR9AJTurv5mgqY/Qbl1yLC0rsNLc=;
-        b=rAZicqxSqjg1Gn/kLJlIpC1yDAJLKYgLq+FKEhyey0OFAAFFfnLpvUXTOZT0tFWoUu
-         VnR3S4BfJ14sUjheNK7EZIH5eMtCQGIARykTKYhtOBJfcVDXgLs7A+lyvWFNegDcEoQZ
-         Rn0xrXdiGw09rkklK+4HmK3tgpMoDpFB7n0j4M1qsyZpJ2kIHeIw2QkmBbeX4iILxB+t
-         Nw+8FYIQtsbns/UeaaqvVTCfvdENWtCjLOOiNwrCYtO8Re9MMbz4Ra6VLSiGu89gohgn
-         /C/npsvl21YkT8FBtpYGrHHd7PcuQj74DT5JgOIjche17LymVr1hMPoWWpXEc4QH+xlM
-         BVxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787017302; x=1787622102;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lX+K9XxfcsBKvrdgR9AJTurv5mgqY/Qbl1yLC0rsNLc=;
-        b=UqtcbWt0Z/nGlsRUOrbF4jZCPnqLhHicyCv+Qui/XO7VHx7WU1BANd+H+cTyCVcUa6
-         jJrJAnACUjfssb5gzwAKwPS+F44W1KlkAKr1rnnrO+hTzSB0kRr6DZX3DKV4X2RPQ8Ax
-         y2alDxhbHsH2VPP5lbZtXAWElvwryFGyDtkUF0mFM7TXc6s8mppUCOuc9Svyo4eu2JMx
-         AUD6PoLOKv6N1RLZ/q/fDhasE3QCJcFbcSLPfScnREy/4NFSY2dIVlWR0v9nnnti1G2b
-         9jJj4EEPRxqGn4XvzOr9Ej6M0m8qZSSoaBUBu/Nrl+Qzzr3PmqPVDkAMqthGfhi8Gcd/
-         SQ5Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpON+FUhhdemT9lutNwpIZEBSeHyfFJoEiXxIE//x7jc14w3pFca4/RR+t8pTix7Vq+9ys=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyTbXtO+jguH16EJR7e6ytDVicUBiEl7KsiszzguGrlVvQb3ACF
-	WfNFMD5sKvRxxQfchnH63y1vdl5jFDykkMZnXXAfgulqTmUbhapPoyRH
-X-Gm-Gg: AR+sD12B8+J/Vlh4MnhRuUrbp9fyYW20O3V4/rSWUKuQ5KhEL1X3PdyeUwuyCw0TDJF
-	Gcefa/X3MGIh5GBRZFW8/sFHWn5gpC6ZrAwq+/thtw79StGyCxIik7CzLxQy5LfTASUx1QXyWdp
-	iC8fCLTYLTYqqvVkGW0tLeJryrbRlT3BtvmcQ/hbPeqAz4+dQuwInsRNA2nnZmF8RK3BCws3M/r
-	P+k2Hndcjm2Ti7aSejkPx//KU+LaaWLCs/CR7oaTHuq9WajnnaBYwOp8Ub7fy6BWrvNJ1l9NeOw
-	lRbHaXwOsx2VxE3KO55KTl6XfVSnxeQFNL/xV7cO1PJCZGOzUmJ3585wmxxr3LWLARHoDD3+zdJ
-	EPTSSHc1OayCcA9XKa05nk2Xe87lFGZgi2ICZUt6+dzRWu0VCov6h955KfP0e93bVzt8hw4d9wI
-	AtXCIlegRR6WZU/xTvaU3qhYHamLJSHIr2whBwouKUEsZsBlJ/t6IX9o9NNtJd0Gd49zMj407ai
-	OvKVuh7chxUroqLAxeuBLGlIYRtZWwtFS+saA==
-X-Received: by 2002:a05:6102:e10:b0:738:6994:eb8 with SMTP id ada2fe7eead31-76f2767926amr6910596137.0.1787017302410;
-        Mon, 17 Aug 2026 18:41:42 -0700 (PDT)
-Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a802:463c:ff0a:9155:ae80:b1ba])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-773c508ab92sm2160162137.7.2026.08.17.18.41.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 18:41:41 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: broonie@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	Fabio Estevam <festevam@nabladev.com>
-Subject: [PATCH v2 2/2] regulator: pca9450: Support regulator-off-in-suspend
-Date: Mon, 17 Aug 2026 22:40:59 -0300
-Message-ID: <20260818014059.351152-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260818014059.351152-1-festevam@gmail.com>
-References: <20260818014059.351152-1-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="prSFFr3h"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=erjXacuzpTdzn57h7eUpKO1JstTH1yW+mziUJyLVxHrsEK2b6Jpv55jvg5f3yDIeq+S8XUjo0nfoDzUyuI/BlJ4FMANSlI3F06fr4+k50ETHwGQuqCgaZNXkkNSPL97fSuggHQw6AHqJXAXfnOkJ3nbITNu4NYCMRJIiqI4oC9AzeT2FWsXY65NemuDhzhhomrZ0mo4g9ohdQF+DuvW82BF3rh87qctQt1PttwlAvBVWnwefVY7BmYGIl5mFMN5+ca9Wk83jtm1ZEGKKg6aZNtPmskwkoRjo/il0Azh0LktXEEjhSHGH23PCQIuFbGl6TeDnGpK6ROILCnWXZxA3eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Od5Z/qYWkzRNGLeRuQc1CFO5VuXINId5mNsE8b76RiE=;
+ b=G1MKu0190dWIpgZzOQL4KrcHNGo/83jY+N6JzRadnWrK/DV3uvkXw414UQu/ZeiijM2IyoTPcPR17hHkJxB1WNPb2E3/A8qqr2Qn0LuySWl7gI/QuHV2Be21sRlxsIbLInomauqhnKlz/u1pJb0P7m4dGlX3WWUBYzubpAM59O5nKYkdlgNaSxSs8wHtEUlVEqF0v5x+sinCyneeJvrfzbHafB7Opp/TcIcDgZxqb+wkihMJ/elEAb6nV0OYqqPmjeiygK+1NJCymBJmgqUA2x+o2mCkN7vxEu6kSASyxg2y2AxDZuaHrNRUSIgJ3i5n7vwWNaWXHK74X7ezKpjytw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Od5Z/qYWkzRNGLeRuQc1CFO5VuXINId5mNsE8b76RiE=;
+ b=prSFFr3heAqYIIgWw2SyR+Kc9dODnxs5LMTFcdEs9FKBu0zUpm4RAN8AoSDmJmmIbBUmenXVcG7UYi4j5C4XAToflIKGMLqrnQ1TxTXsgT6AqFhn53teLZQl2MmXlCQHvFBip0TR148IWC05ZBb6+Ygou2flQAamWUFPKQp7+FYwF291UHlJRL9aAOpKGuVTEYoxhDSwVO9fvkD0N58q2LKRRSH8tMEWddYt41o5iV3UH4Dso7fPFRiTqp7uRljerWJ+Ffclwzu9F3j1NXOJBSdp0UK8DfjWWROxhSPrNXCkLPiN3Pxal/QFEDJFKNGeKiuIN3d9mfSntC/2OSnx6w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com (2603:10a6:800:296::7)
+ by VI1PR04MB10028.eurprd04.prod.outlook.com (2603:10a6:800:1db::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
+ 2026 02:42:44 +0000
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be]) by VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be%5]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
+ 02:42:43 +0000
+From: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
+Date: Tue, 18 Aug 2026 10:44:57 +0800
+Subject: [PATCH] arm64: dts: imx943-evk: Describe the PCIe M.2 Key E
+ connector
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260818-imx943_m2-v1-1-d9832c91a12e@nxp.com>
+X-B4-Tracking: v=1; b=H4sIACjHg2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDC0ML3czcCksT4/hcI12ztEQjM0PTNFOzRCMloPqCotS0zAqwWdGxtbU
+ ADod4T1sAAAA=
+X-Change-ID: 20260818-imx943_m2-6fa2615f56a2
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Sherry Sun <sherry.sun@nxp.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787021122; l=4114;
+ i=sherry.sun@nxp.com; s=20260723; h=from:subject:message-id;
+ bh=JySHJIr2Wgr72eXJnb4Jq/Id+zdhXxcUzOha5ZZ9azE=;
+ b=XLwBuOE4C+gSCPyB0Vb+bSOrwgG2gd6jhIAOgO6mFZ4FPmcWLOq7XPZarLDrCmlGVOgF6q3Xs
+ OG9QQ5olhBCAYbXinlL37VTxzY37af78gSM5aEIoIbMsPQzpaxa57Ll
+X-Developer-Key: i=sherry.sun@nxp.com; a=ed25519;
+ pk=YnYnIFJ2l+5v951x9shBVfHhminNi+3LTfFa3PxSdnI=
+X-ClientProxiedBy: SI3PR03CA0003.apcprd03.prod.outlook.com
+ (2603:1096:4:297::13) To VI2PR04MB11276.eurprd04.prod.outlook.com
+ (2603:10a6:800:296::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11276:EE_|VI1PR04MB10028:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53f0bf55-6504-4e01-05dc-08defcd26104
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|23010399003|7416014|376014|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	fE3BNCpFmD/ygS6kx07GGRdaAGntau/gjEM3xxymabu7UGpVFR2OlQ8QnvzP/x+V31fgjikOlR+LWv0cO93WNT1s4usgWQGYo8j9NCG/YiShEnOvD1+nQHfGvODYJGeNeO22+iMRwKnx3e7YUCn8knzg7sYlfZuHHOCRM5/K5xpTq0NesH7UGef993jqjLRdZ9JD8nLzDNAsAJoncrKEpTPJw5A85hgoNyen7Ikvno6NwlwdIi8DQK5dBKjQtJU4p4egU3CAWdNXqDGz4/Z5EhdF4fRBU3CIfxZfZVsKenn50NubqKSz3ttl3zLBSYt13FHf4xU+qjHZpZhQgBAqo+K/l8Oq0clBU8XEfVH4yL4cJwVx5oW0Lr3KrN6I69NPdGKmZWSdLbJqGgjSJjxH7Y2i0V0RfgJFriWmyWCDJgpwtoOL3YykTfCtz4Lw0oHSQ94aewBSKeqUjTAjDwqizPn0p/FlOOpOkJTIPghEgmcVkfPhFCUvisAfVP4YaKTzZ4oqMASBavVySTSjqRVUdXcPsN7znyyZ3RXdO+LEuWN8fmIBNEUnk1l7E7dChhXuthsjPQY1ZsxRHLRkM4ZgGVZfr74Un/fHQNOjSFEiGX6wOd9QjmjcC3jUYxQAENePZTpr2J9tluj199DBk9mgxnXWsZyTrgGV0cQaHkANmVM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11276.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(23010399003)(7416014)(376014)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NGY3cE5DaTlqZ003emk2Z2Y5QWZqODllMkRiMWhYSzhqd0lWc3M0ampKaUlH?=
+ =?utf-8?B?TWV4dkI5MXQrTXhEUTVBWlZDNmZkdnVPMk5Pbi9TQUF0aWVtYVo4dUhOY0pT?=
+ =?utf-8?B?RjFyQ0xjKzg1ZEZJSmdJb201bzE2UU5IeTc0eXVwdW9qdUxjWk1mSEdWT0tV?=
+ =?utf-8?B?MWlGT2x5YnhXZ3lpalRnanJUbEQyMGZaSUtjVUorQnZzMmRMZDNRV01XWktO?=
+ =?utf-8?B?TkNuanNpL0dUSGZLQkN3ajZPcDEvd0pTa0Q0SXVhelltWHQ3eHUxQm03S3l5?=
+ =?utf-8?B?OXd2WnJZcyt1WlMxeXBwY3FUbjN3S2hnMURRN3cyVGN4YXJwbnM5QzJlOEZm?=
+ =?utf-8?B?cDhabXZpR0VJcENubjZyblJ2RksweTJZTlZUcWxLN1hYTkRtc0R5eDlJdmo0?=
+ =?utf-8?B?aHlBVjlZbUJ1eldmR3FwTXlLOUgzaEVKOWRlVWNHK0daUnpaWVVFZjgwVnNk?=
+ =?utf-8?B?ZXJNamNsNTF2VHU0bmVhb2w2S3haa3liQWFYKzNOSXp0MkZObk9QQk9pTS9J?=
+ =?utf-8?B?dElONkwwQVkzRzlWYkEzTGRKTkNNakNvN2N5V3U3T3lKWlhHdUpPNzZRdUgx?=
+ =?utf-8?B?b1F2aDB0aHd0QjRJMTlSaWM5YVo2S2NaeUo3U2Y4em9lZ1B5V2wrbDdsMGhy?=
+ =?utf-8?B?dTJ4RXNDVGJvb250L0pTSjBvTmVvdVNRcnh5cHpBUWlhdEgyOXhibHNFei92?=
+ =?utf-8?B?NlNqMUtjUEh0emVsSTJERm9qRFh6eGdDQUJ6dUZsTXRlRGpHV0E3MlVWUUhE?=
+ =?utf-8?B?NlBhcUNjeStLUnJaUHdhNThuaE1leXdPNFFPRWowNi9HT24wSENxRWxiWjhT?=
+ =?utf-8?B?Nk1vVjFhSjZhRzE1SGQyYU8zZ1NxbWVoTmNRQkUxb0Qwa1EyUXV3dVU5N2lD?=
+ =?utf-8?B?Y1MycnYzNE9iT01wWC9HemlnYW9sYVB2dE96N2pMbENRQUgwTjFQOEpTR2Ry?=
+ =?utf-8?B?Mm8vc2pHOXM3TndvTkNCditIZ21PN213SmI2UWZRdnh5ZDQrdVF4NjlSM243?=
+ =?utf-8?B?V0tZS21pTERvNVdqZW44YnBiLzJxMUFVWTBsSDN4UG40UjdsajM1aWx6TFdH?=
+ =?utf-8?B?NWZRWmdwNHFZbDhZa0RqU0F1Y1JVcnBBUm84NFcrWk5kQm5pQkFBYWdaL1ZE?=
+ =?utf-8?B?azVPUkI3VHJaK00zbktrdkpQeHlCaXlCWjh2dG5VSlFkQm8vZmVXVHR4OThk?=
+ =?utf-8?B?WWtuY3FlcERudFNuUXpJQUJJY2RMNVdoaG9na2twem9MWWJ2c3ArQnBPQmEx?=
+ =?utf-8?B?ZUtlQW41d3VIMWtSNHBsbkFzZy90T0hiRTBOQWg1MG5XeVA0ajdzUzZOYzRu?=
+ =?utf-8?B?Mnp2RlFPSTBYNzNTVVhHMjd2cGVNNUg0MDdEMnlIaTZtUkRwdHg0SXNpeUhI?=
+ =?utf-8?B?cm45TUZnNFExTFkwYkJ2Szc2L2dUUktIUnp0L2pPOGdrTGpLUzJON3pTcnVi?=
+ =?utf-8?B?SUZjU2NPZytQZW4vblp6eE8zQ0tiV2JpV1QrVzJNV29YREQxbmFvRjVXSWtN?=
+ =?utf-8?B?MWYyN1Z6ZEtCbXAyKytKczRsbk41UjlDWWNkakRkMVU3ZHdSdElNTU5Cb3hT?=
+ =?utf-8?B?dC9uTEVtUGV5aS9qWVBUK3dweEc3NzgxZzc0UmM0OXVSeHJGL2R5azFLM0lI?=
+ =?utf-8?B?NDBhdUdwZUZCMVE0TW1jekVjOU0rQjIwa3VzUSs4NWk0ZGxOMmVIQnAzRHZZ?=
+ =?utf-8?B?UElBU1FyZHQwVjl3NnFRZ1Q3VWp0VkpENEJUY0tGU0xxNHVhekpEb21WcXMr?=
+ =?utf-8?B?S01QNW1QRXBOVVN4Mk9Kcmlwblk0bHpPUi9INlhnVDBqK2pPMkUrWkRad2lm?=
+ =?utf-8?B?cGdZYjF0c2ZIdlpIai90Sm5oQ2w2dmtqTDRvdnZ1YjFsQVhiaU9mVVhST1pw?=
+ =?utf-8?B?cThGN0pwZFdSRFhFNzRLaEIzakw2YTRyMHlFN1BhRS9nRnpCUmJvM1VWSFU0?=
+ =?utf-8?B?eGhZaUlyMS9WZDdUbDF2YVc4Rnk1ZEVyOFUwOUt1Vzd3MGhRT3ZtWXByVUhO?=
+ =?utf-8?B?ZzgzcE9rSldQZ1huVUN6WlZwZytvdS9xVFltNWxZa2hSZDQ5OUJCTExxOHFS?=
+ =?utf-8?B?bkxQWERPM3orTDBZRG1vQUlGSzYzd0ozeFRXZGFGbXNuNVdibkNkWFBQRzZi?=
+ =?utf-8?B?Q21jWTlxQ2d0Y0gyRm40QVgzQUxiMjVYVmVBUEVrcjFGWGZMM0k2TkgyUUw0?=
+ =?utf-8?B?VHR0WjNHeXpiYk9mUGE1b1UxSVU3MHdpT0gwMFFlTVN5bXBORk5HL2hPTXM0?=
+ =?utf-8?B?MTFEUXJUUjVZSWVNcEdHcE1wTWpmOUc2SmEybmE4WEJEOUFuWjdOcVBGNzlI?=
+ =?utf-8?B?U3VUbWd4QkEvRkdMTTk4UVBzdEpaNFBzUUx0NGE3VGNidk5Wc3NsRkQxTzUx?=
+ =?utf-8?Q?qMIn5fYB+PgPmnChyJ33veyrbl7VpWWyM8XNz?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53f0bf55-6504-4e01-05dc-08defcd26104
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11276.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 02:42:43.7552
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gixrbkV4mJpBw/jA5WD3tBlPBBxlr/Cu3reWQpeUXlaGXHTBq9J34gMfKOwebjcnrJ+GsUPV+SpvikIhy5MacYjRNSAqC1HBxvXr+3Qq4L5bAJ8ABAU661KEf4eNml9k
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB10028
 
-From: Fabio Estevam <festevam@nabladev.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-The PCA9450 uses each regulator's ENMODE field to control whether the
-regulator remains enabled when the PMIC transitions from RUN to STANDBY
-mode.
+The i.MX943-EVK has the PCIe M.2 Mechanical Key E connector to
+connect wireless connectivity cards over PCIe and UART interfaces. Hence,
+describe the connector node and link it with the PCIe 0 Root Port and
+LPUART6 nodes through graph port/endpoint.
 
-The driver does not currently implement set_suspend_disable(), so a
-regulator configured with regulator-off-in-suspend remains enabled
-during system suspend.
+Since currently the M.2 driver doesn't support SD-UART interface, for the
+supported SD-UART IW612 M.2 module on imx943-evk board, need to add back
+the WLAN regulator and bluetooth child node.
 
-Implement set_suspend_disable() for the buck regulators and LDO3-LDO5.
-The suspend and runtime controls share ENMODE, so first read the field
-and leave it unchanged when it is 00b. This preserves the state of a
-regulator that was already disabled at runtime. For an enabled regulator,
-program 10b to keep it on in RUN and turn it off while PMIC_STBY_REQ is
-asserted.
-
-Most buck descriptors set enable_val to 01b, while BUCK2 uses 10b. When
-enable_val is nonzero, regulator_is_enabled_regmap() checks for an exact
-match. It would therefore report most bucks as disabled after their ENMODE
-is changed from 01b to 10b, even though all valid nonzero ENMODE values
-enable the regulator in RUN. Use a custom is_enabled() helper for the buck
-operation tables that considers a nonzero ENMODE enabled. The LDO
-descriptors leave enable_val at zero, for which the generic helper already
-performs this nonzero check, so keep using it for the LDOs.
-
-Runtime enable and disable operations remain unchanged: disable writes
-00b and enable writes the regulator's default mode. The suspend callback
-reapplies 10b on each suspend after any intervening runtime operation.
-
-Keep LDO1 and LDO2 on regulator operations without
-set_suspend_disable(), because these regulators supply the SNVS domain
-and must remain enabled in STANDBY mode.
-
-Measured on a custom i.MX8MP board, turning off NVCC_SD2 (LDO5) during
-system suspend reduced power consumption by approximately 64 mW.
-
-Signed-off-by: Fabio Estevam <festevam@nabladev.com>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 ---
-Changes since v1:
-- Preserve the state of regulators that are disabled at runtime.
-- Add a custom is_enabled() callback for buck regulators so that valid
-nonzero ENMODE values are reported as enabled.
+ .../boot/dts/freescale/imx943-evk-sdwifi.dtso      | 25 ++++++++++
+ arch/arm64/boot/dts/freescale/imx943-evk.dts       | 55 ++++++++++++++++------
+ 2 files changed, 66 insertions(+), 14 deletions(-)
 
- drivers/regulator/pca9450-regulator.c | 75 ++++++++++++++++++++++++---
- include/linux/regulator/pca9450.h     |  3 ++
- 2 files changed, 70 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
-index 93d0af7f7eda..613bce411f31 100644
---- a/drivers/regulator/pca9450-regulator.c
-+++ b/drivers/regulator/pca9450-regulator.c
-@@ -77,10 +77,56 @@ static const unsigned int pca9450_dvs_buck_ramp_table[] = {
- 	25000, 12500, 6250, 3125
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx943-evk-sdwifi.dtso b/arch/arm64/boot/dts/freescale/imx943-evk-sdwifi.dtso
+index 59cc1c27b9b9..b95304fd60aa 100644
+--- a/arch/arm64/boot/dts/freescale/imx943-evk-sdwifi.dtso
++++ b/arch/arm64/boot/dts/freescale/imx943-evk-sdwifi.dtso
+@@ -6,10 +6,35 @@
+ /dts-v1/;
+ /plugin/;
  
-+static int pca9450_regulator_is_enabled(struct regulator_dev *rdev)
-+{
-+	unsigned int val;
-+	int ret;
++#include <dt-bindings/gpio/gpio.h>
 +
-+	ret = regmap_read(rdev->regmap, rdev->desc->enable_reg, &val);
-+	if (ret)
-+		return ret;
-+
-+	/* All valid nonzero ENMODE values enable the regulator in RUN mode. */
-+	return !!(val & rdev->desc->enable_mask);
-+}
-+
-+static int pca9450_set_suspend_disable(struct regulator_dev *rdev,
-+				       unsigned int suspend_val)
-+{
-+	int ret;
-+
-+	/* Do not enable a runtime-disabled regulator when returning to RUN. */
-+	ret = pca9450_regulator_is_enabled(rdev);
-+	if (ret < 0)
-+		return ret;
-+	if (!ret)
-+		return 0;
-+
-+	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
-+				  rdev->desc->enable_mask,
-+				  suspend_val);
-+}
-+
-+/*
-+ * ENMODE = 10b keeps the regulator enabled in RUN mode and disables it
-+ * while PMIC_STBY_REQ is asserted.
-+ */
-+static int pca9450_buck_set_suspend_disable(struct regulator_dev *rdev)
-+{
-+	return pca9450_set_suspend_disable(rdev,
-+					   BUCK_ENMODE_ONREQ_STBYREQ);
-+}
-+
-+static int pca9450_ldo_set_suspend_disable(struct regulator_dev *rdev)
-+{
-+	return pca9450_set_suspend_disable(rdev,
-+					   LDO_ENMODE_ONREQ_STBYREQ);
-+}
-+
- static const struct regulator_ops pca9450_dvs_buck_regulator_ops = {
- 	.enable = regulator_enable_regmap,
- 	.disable = regulator_disable_regmap,
--	.is_enabled = regulator_is_enabled_regmap,
-+	.is_enabled = pca9450_regulator_is_enabled,
- 	.list_voltage = regulator_list_voltage_linear_range,
- 	.set_voltage_sel = regulator_set_voltage_sel_regmap,
- 	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-@@ -88,18 +134,20 @@ static const struct regulator_ops pca9450_dvs_buck_regulator_ops = {
- 	.set_ramp_delay	= regulator_set_ramp_delay_regmap,
- 	.set_mode = pca9450_buck_set_mode,
- 	.get_mode = pca9450_buck_get_mode,
-+	.set_suspend_disable = pca9450_buck_set_suspend_disable,
- };
- 
- static const struct regulator_ops pca9450_buck_regulator_ops = {
- 	.enable = regulator_enable_regmap,
- 	.disable = regulator_disable_regmap,
--	.is_enabled = regulator_is_enabled_regmap,
-+	.is_enabled = pca9450_regulator_is_enabled,
- 	.list_voltage = regulator_list_voltage_linear_range,
- 	.set_voltage_sel = regulator_set_voltage_sel_regmap,
- 	.get_voltage_sel = regulator_get_voltage_sel_regmap,
- 	.set_voltage_time_sel = regulator_set_voltage_time_sel,
- 	.set_mode = pca9450_buck_set_mode,
- 	.get_mode = pca9450_buck_get_mode,
-+	.set_suspend_disable = pca9450_buck_set_suspend_disable,
- };
- 
- static const struct regulator_ops pca9450_ldo_regulator_ops = {
-@@ -111,6 +159,16 @@ static const struct regulator_ops pca9450_ldo_regulator_ops = {
- 	.get_voltage_sel = regulator_get_voltage_sel_regmap,
- };
- 
-+static const struct regulator_ops pca9450_ldo_suspend_regulator_ops = {
-+	.enable = regulator_enable_regmap,
-+	.disable = regulator_disable_regmap,
-+	.is_enabled = regulator_is_enabled_regmap,
-+	.list_voltage = regulator_list_voltage_linear_range,
-+	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-+	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-+	.set_suspend_disable = pca9450_ldo_set_suspend_disable,
++&{/} {
++	reg_usdhc3_vmmc: regulator-usdhc3 {
++		compatible = "regulator-fixed";
++		regulator-name = "WLAN_EN";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&reg_m2_pwr>;
++		gpio = <&pcal6416_i2c3_u46 5 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
 +};
 +
- static unsigned int pca9450_ldo5_get_reg_voltage_sel(struct regulator_dev *rdev)
- {
- 	struct pca9450 *pca9450 = rdev_get_drvdata(rdev);
-@@ -164,6 +222,7 @@ static const struct regulator_ops pca9450_ldo5_regulator_ops = {
- 	.list_voltage = regulator_list_voltage_linear_range,
- 	.set_voltage_sel = pca9450_ldo5_set_voltage_sel_regmap,
- 	.get_voltage_sel = pca9450_ldo5_get_voltage_sel_regmap,
-+	.set_suspend_disable = pca9450_ldo_set_suspend_disable,
++&lpuart6 {
++	bluetooth {
++		compatible = "nxp,88w8987-bt";
++	};
++};
++
++&m2_connector {
++	status = "disabled";
++};
++
+ &pcie0 {
+ 	status = "disabled";
  };
  
- /*
-@@ -575,7 +634,7 @@ static struct pca9450_regulator_desc pca9450a_regulators[] = {
- 			.of_match = of_match_ptr("LDO3"),
- 			.regulators_node = of_match_ptr("regulators"),
- 			.id = PCA9450_LDO3,
--			.ops = &pca9450_ldo_regulator_ops,
-+			.ops = &pca9450_ldo_suspend_regulator_ops,
- 			.type = REGULATOR_VOLTAGE,
- 			.n_voltages = PCA9450_LDO3_VOLTAGE_NUM,
- 			.linear_ranges = pca9450_ldo34_volts,
-@@ -594,7 +653,7 @@ static struct pca9450_regulator_desc pca9450a_regulators[] = {
- 			.of_match = of_match_ptr("LDO4"),
- 			.regulators_node = of_match_ptr("regulators"),
- 			.id = PCA9450_LDO4,
--			.ops = &pca9450_ldo_regulator_ops,
-+			.ops = &pca9450_ldo_suspend_regulator_ops,
- 			.type = REGULATOR_VOLTAGE,
- 			.n_voltages = PCA9450_LDO4_VOLTAGE_NUM,
- 			.linear_ranges = pca9450_ldo34_volts,
-@@ -820,7 +879,7 @@ static struct pca9450_regulator_desc pca9450bc_regulators[] = {
- 			.of_match = of_match_ptr("LDO3"),
- 			.regulators_node = of_match_ptr("regulators"),
- 			.id = PCA9450_LDO3,
--			.ops = &pca9450_ldo_regulator_ops,
-+			.ops = &pca9450_ldo_suspend_regulator_ops,
- 			.type = REGULATOR_VOLTAGE,
- 			.n_voltages = PCA9450_LDO3_VOLTAGE_NUM,
- 			.linear_ranges = pca9450_ldo34_volts,
-@@ -839,7 +898,7 @@ static struct pca9450_regulator_desc pca9450bc_regulators[] = {
- 			.of_match = of_match_ptr("LDO4"),
- 			.regulators_node = of_match_ptr("regulators"),
- 			.id = PCA9450_LDO4,
--			.ops = &pca9450_ldo_regulator_ops,
-+			.ops = &pca9450_ldo_suspend_regulator_ops,
- 			.type = REGULATOR_VOLTAGE,
- 			.n_voltages = PCA9450_LDO4_VOLTAGE_NUM,
- 			.linear_ranges = pca9450_ldo34_volts,
-@@ -1040,7 +1099,7 @@ static struct pca9450_regulator_desc pca9451a_regulators[] = {
- 			.of_match = of_match_ptr("LDO3"),
- 			.regulators_node = of_match_ptr("regulators"),
- 			.id = PCA9450_LDO3,
--			.ops = &pca9450_ldo_regulator_ops,
-+			.ops = &pca9450_ldo_suspend_regulator_ops,
- 			.type = REGULATOR_VOLTAGE,
- 			.n_voltages = PCA9450_LDO3_VOLTAGE_NUM,
- 			.linear_ranges = pca9450_ldo34_volts,
-@@ -1059,7 +1118,7 @@ static struct pca9450_regulator_desc pca9451a_regulators[] = {
- 			.of_match = of_match_ptr("LDO4"),
- 			.regulators_node = of_match_ptr("regulators"),
- 			.id = PCA9450_LDO4,
--			.ops = &pca9450_ldo_regulator_ops,
-+			.ops = &pca9450_ldo_suspend_regulator_ops,
- 			.type = REGULATOR_VOLTAGE,
- 			.n_voltages = PCA9450_LDO4_VOLTAGE_NUM,
- 			.linear_ranges = pca9450_ldo34_volts,
-diff --git a/include/linux/regulator/pca9450.h b/include/linux/regulator/pca9450.h
-index 2aa73624d0b8..bf94df5fafe3 100644
---- a/include/linux/regulator/pca9450.h
-+++ b/include/linux/regulator/pca9450.h
-@@ -212,6 +212,9 @@ enum {
+ &usdhc3 {
++	vmmc-supply = <&reg_usdhc3_vmmc>;
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+index 64660f94f4e9..e1f6d64d3a3f 100644
+--- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+@@ -77,6 +77,37 @@ dmic: dmic {
+ 		#sound-dai-cells = <0>;
+ 	};
  
- #define LDO5HOUT_MASK			0x0F
- 
-+/* LDO ENMODE value: ON in RUN, OFF while PMIC_STBY_REQ is asserted */
-+#define LDO_ENMODE_ONREQ_STBYREQ	0x80
++	m2_connector: m2-connector {
++		compatible = "pcie-m2-e-connector";
++		vpcie3v3-supply = <&reg_m2_pwr>;
++		w-disable1-gpios = <&pcal6416_i2c3_u46 5 GPIO_ACTIVE_LOW>;
 +
- /* PCA9450_REG_IRQ bits */
- #define IRQ_PWRON			0x80
- #define IRQ_WDOGB			0x40
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				reg = <0>;
++				m2_e_pcie_ep: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&pcie0_port0_ep>;
++				};
++			};
++
++			port@3 {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				reg = <3>;
++				m2_e_uart_ep: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&lpuart6_ep>;
++				};
++			};
++		};
++	};
++
+ 	reg_m2_pwr: regulator-m2-pwr {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "M.2-power";
+@@ -102,16 +133,6 @@ reg_slot_pwr: regulator-slot-pwr {
+ 		enable-active-high;
+ 	};
+ 
+-	reg_m2_wlan: regulator-wlan {
+-		compatible = "regulator-fixed";
+-		regulator-name = "WLAN_EN";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&reg_m2_pwr>;
+-		gpio = <&pcal6416_i2c3_u46 5 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
+-
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		off-on-delay-us = <12000>;
+@@ -694,8 +715,10 @@ &lpuart6 {
+ 	pinctrl-names = "default";
+ 	status = "okay";
+ 
+-	bluetooth {
+-		compatible = "nxp,88w8987-bt";
++	port {
++		lpuart6_ep: endpoint {
++			remote-endpoint = <&m2_e_uart_ep>;
++		};
+ 	};
+ };
+ 
+@@ -1175,7 +1198,12 @@ &pcie0 {
+ 
+ &pcie0_port0 {
+ 	reset-gpios = <&pcal6416_i2c3_u46 3 GPIO_ACTIVE_LOW>;
+-	vpcie3v3aux-supply = <&reg_m2_wlan>;
++
++	port {
++		pcie0_port0_ep: endpoint {
++			remote-endpoint = <&m2_e_pcie_ep>;
++		};
++	};
+ };
+ 
+ &pcie0_ep {
+@@ -1288,7 +1316,6 @@ &usdhc3 {
+ 	pinctrl-1 = <&pinctrl_usdhc3>;
+ 	pinctrl-names = "default", "sleep";
+ 	bus-width = <4>;
+-	vmmc-supply = <&reg_m2_wlan>;
+ 	mmc-pwrseq = <&usdhc3_pwrseq>;
+ 	keep-power-in-suspend;
+ 	non-removable;
+
+---
+base-commit: e6664f2b33db9b6811eb4cec109f06cb2b4f458d
+change-id: 20260818-imx943_m2-6fa2615f56a2
+
+Best regards,
 -- 
-2.43.0
+Sherry Sun <sherry.sun@nxp.com>
 
