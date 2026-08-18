@@ -1,167 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6143C0A18;
-	Tue, 18 Aug 2026 09:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DA32F5A36
+	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 09:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787045510; cv=none; b=bXS6bbJ5IvDSoGifPKVnlZ8TSHRAldbkQr0M6b8EjVCYnfBCsJ4MZu3FqYKZtvY6LO/xiR3ftgZBarRk4N4CT03bzuSMxsZ9e36sSOQVPSUPa183gRlNBHodkzniMWaTs8t8jQDY7trW4iWFU5gf/OS3bnz3QZB5qaC3so+w5lI=
+	t=1787046494; cv=none; b=q1SceFhZv3YLEevQlLy/vKbe/8JGkAytMR2NZGhfztKAtT89/OV2n8dqoJe5vniseraBiUcvhgNQQ0afsup2ygUQbWzKRLket2m87Gq5kqlEt7OkTWuozsMpErX9PV+0x17HnPJ2tlS0GrrqwD8DeZm6QG/rhXhkoT6Sj7AA9UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787045510; c=relaxed/simple;
-	bh=O4PfENbvgkJUOnLkwHfdpUsWpgjIC9sTq8qJ32I/HuA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IVUeTF8ZrlxPLWUgyAgFfQBn5BOFU/NLZ2YP7bLoEo8CijPdvDeV/kKGDxK2XtS+d/6jkmWjKB4a6RnX172Tw5X2LrH0o6BWyA1WNUaIN+ymOWvts/7cQFrELk9Pyep5vtSQmpOBY5OYuXIg3oklkTTKi8gFKc+UoNSvjdR3LYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVP9IDgW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787046494; c=relaxed/simple;
+	bh=2tH1F8HjI1FLA1En8/6a5RXo2+lxNxdLkaGkELGlRis=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Pv/70azOzmrcJcW8AWmk6ydaAAennyDfd++1HgiwGuGnGl+6U58iOr7xAlXWUPoEFn3VSzU78QQhfta3FVYwJDPUZIICMyffAHPcbAhEiq4dEUhxhfYxWJh+oNF/6Ocfccb5Xm1WNF235TKrJykeK4fMdvxd1OL0ZxYZ6SDq+5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=eFViFbSY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LcqxPbya; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVP9IDgW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E556C1F000E9;
-	Tue, 18 Aug 2026 09:31:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787045508;
-	bh=/osMCfdFU5SEjl+FL2UCRvm7Kij1P5u1jx3B9DLMi9M=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bVP9IDgWirqxwIpjvPxGaqIdVHx+zWYeYaX/54Aaw9rGmnbGsgPmA6p6QssZqbgNA
-	 NyrrW7uwFrBO9Sa5Xf92E3PNVjrs+YFlea7n9fkknA9iZT0f+KKLvMfQa7oQazoYCW
-	 I6pGmzo4sg26bRziwQtYXAecVJN+ht5Eygv9Y3/JKPE9Q7oLm0NAOS8pCWSOV04pyA
-	 uG/G1dncygvLt74/toMGIpgtfWYJsv3LGs684uCsftjT6iXueaw8ljnAKCiVqZydZp
-	 50m9Gnb7ymVVL+bblgv7qSyIJpcK0YulM0pgEotPZXKB88zNlzNVJb4QNFwywj5DL/
-	 q8DRdyQk3n5Tw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 4/4] arm64: dts: freescale: Add chargebyte Charge
- Control Y
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefan Wahren" <wahrenst@gmx.net>
-Cc: imx@lists.linux.dev, "Oliver Hartkopp" <socketcan@hartkopp.net>, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, vkoul@kernel.org, olteanv@gmail.com, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, linux-can@vger.kernel.org, neil.armstrong@linaro.org, "Vincent
- Mailhol" <mailhol@kernel.org>, robh@kernel.org, linux-phy@lists.infradead.org
-In-Reply-To: <20260818091701.6441-5-wahrenst@gmx.net>
-References: <20260818091701.6441-1-wahrenst@gmx.net>
- <20260818091701.6441-5-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 18 Aug 2026 09:31:47 +0000
-Message-Id: <20260818093147.E556C1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="eFViFbSY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LcqxPbya"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E8CC414000E7;
+	Tue, 18 Aug 2026 05:48:10 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 18 Aug 2026 05:48:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787046490;
+	 x=1787132890; bh=LpzOfzRL+RKds2nO/ZCN031cSoA6UfK8poijOaDDQtc=; b=
+	eFViFbSY5j8ZPz5skKPG5qGmS01f0TUd4HHsD4A1TnBjBzF1Ca8IPUbZPBL7L3TZ
+	+uoyloHOw+K2EpBiVnrMXif2Rgjt7GoIHp9M+AcuthYFNKCeiyKGnrEUlfTMlpHz
+	y5c4wiAXQBOKY7jOF4UIo7/XoR6vNLHw4dRJijlbYMZQQfkFb+IOQKyKrAvgHre/
+	Ja7q2G9efDKodv6pKvY7NckHl8GlNzmSJJBILGmbPD3RRKl0Vw/PW3tI+aQMkVpO
+	J87f6ZclnlDq0x2wjwwhOXNMHShdISgi4XKJkh2FRGZNEWBTTQmKY5shz5ljIDLQ
+	TaunEIC+EJbZUIvuuKj5fw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787046490; x=
+	1787132890; bh=LpzOfzRL+RKds2nO/ZCN031cSoA6UfK8poijOaDDQtc=; b=L
+	cqxPbya+94RDpCAiPg0+cvbWvWnIGNUWpVVUEWkk5A9OshcFnkuaGyMJ+ZBY2/uG
+	mbBoa33zrKYhD1iqf2WjznfKGGFh7VP30YqaUX5ydCaivJvy+0qRbb6h3CZThqR0
+	pZRzv7uNedaSZrxIdkhn6wnjfG4XVZjt/OFV3m4m5CvQT2AioqbPHe84FLIBjCI8
+	KKHfIWjPivjiDUAKiHdGEJNfcibKHpV1CWM9uxjKV041dIMdYcTgtwn/8gjSEbHm
+	sbqliwDFxhc6HH3jg93dPZp3/JP5UZlyoZpdX3EcacSs05PrlAU7zzfSHFxMlwfx
+	j9VjK27uO1FsD2IzYtsYg==
+X-ME-Sender: <xms:VSqEagTQwqFNZ1i94xCiUQpRgAxJZr5n7bzo3qHSzgAOEUaW1lK1Nw>
+    <xme:VSqEaon9FP41Q8VunJXb13mUbElhKalov66KHPgmhmI0alfOooALppPmrSOFzXHaQ
+    6b54RYYpYrpAHrjXNMdU4u5oKlqq9dMp3R0EsuFdPVfKYg8rByR86Ve>
+X-ME-Proxy-Cause: dmFkZTGXHWR6wAB3uAIvecQ/f9MmfJVr8MTChH8Q64AcuZL3PGLCd4AyYIYYHX+cwU7c5j
+    m5rfTaKrHQoYQI2mXCcrznS+vkMWvQ2ZhAPeBT0g0NB601b12VC5Ab3o0Y822BWB/HlAp+
+    DYv0ODDl61z3nSCF6cKy2N4TDi4WGXIGjRV+xqF1Ifd+c+viWYi9+Vh3Fgzq7mc7pRMh9s
+    7EmOk3iyIGGqqDpHM0i7smggNja/7tf1pKE+0kNuR9iz98PU/idT198a620dlgTPLv2D8y
+    qUhaVJBpV2n2Boa2pzwtwPHGaIVM3G3cMjiSNcsKOBk69BrYwSdsh5vZBaKlW5r4JTC4Dk
+    3znTBlFb5lTxhSLKfyHnFx5WcdtZ9Dlm8PzWtt5q0hurv4l0JS3ruM5t3wu/dgPPZEfDH4
+    evHHyhIDc/IKcglJCAg1R//1buH3MWjsWoReI/aaY4JY/3SyLqV85AiPCk996ebYvNTWZm
+    TwWIj0EQQQGBI1TUAznkjOoP/PkFKpms/yb9C4FY4FOhUdYFMW22BLi9jpD2bBAUapzBOr
+    ihpgGgPaWiJn3uQcpbB1KlcUau7eIfLs2iR/rMI1h7QsqQj7NxGph2MBK73SeOqpM/do2b
+    5oeM9CTYulObr0Q6U7Z26s0dz82SEHR8AlGF0QBAVITPuUqNgFQ/qEt+KPDA
+X-ME-Proxy: <xmx:VyqEamWE4n5SON-IQcskxmyQJNSjq004uxQGhQfYavn4pQlonYdHIg>
+    <xmx:VyqEav_0nohIj62buEcP_nKBzCxnx20Y2adhoYJymMqChjNpBWHrlQ>
+    <xmx:VyqEahvi4dGodJl4hGE4pAgRiQuuw0EWRQGUEuMc3JCG05xtq7aY6A>
+    <xmx:VyqEan3w9bxF5rjwWCcAtamZUWlRXQRzuS3L8M6sBV9TeWSs5Zfr4g>
+    <xmx:WiqEaq_YziWfQdkBf7kBYx4eITiepYlEQovd3CqmhQsFhkn0CZN8SPhe>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id BA88E32A0071; Tue, 18 Aug 2026 05:48:05 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-ThreadId: Api_u1lkuwYZ
+Date: Tue, 18 Aug 2026 11:47:24 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Daniel Baluta" <daniel.baluta@nxp.com>,
+ "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>
+Cc: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, "Nathan Chancellor" <nathan@kernel.org>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>
+Message-Id: <24e5979d-afed-4257-b9f2-f9bbe8914ad1@app.fastmail.com>
+In-Reply-To: <20260817123542.48475-1-daniel.baluta@nxp.com>
+References: <20260817123542.48475-1-daniel.baluta@nxp.com>
+Subject: Re: [PATCH v6 0/4] soc: qcom: ubwc: Fix link error when QCOM_SMEM=n
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Medium] The LAN8651 ethernet device is missing its hardware reset config=
-uration, leaving the `X_nRST_LAN` pin unmanaged.
-- [Medium] The SD card slot power/reset pin (`SD2_nRESET`) is named in `gpi=
-o-line-names` but is not associated with any regulator or reset control.
-- [Low] The GPIO label `X_LAN_nCS` is incorrectly placed at index 0 of `&gp=
-io2`'s `gpio-line-names` array, but the `lan8651` chip select is actually w=
-ired to index 8.
-- [Low] The `ti,leds-polarity` property used in both Ethernet PHY nodes is =
-undocumented, invalid, and will cause `dtbs_check` validation errors.
---
+On Mon, Aug 17, 2026, at 14:35, Daniel Baluta wrote:
+> DRM_MSM and VIDEO_QCOM_IRIS select QCOM_UBWC_CONFIG, whose
+> ubwc_config.c calls QCOM_SMEM APIs unconditionally. On configs without
+> QCOM_SMEM this fails to link, e.g. on SOC_IMX5:
+>
+>   arm-linux-gnueabihf-ld: ubwc_config.c:(.text+0x2c): undefined
+>       reference to 'qcom_smem_is_available'
+>
+> Fix it by making the QCOM_SMEM requirement explicit in Kconfig.
+>
+> Changes since v5:
+>  * added patch 4/4 to this series, which was initially sent as a
+>  standalone patch (addresses review from Nathan)
+>  * no other change to the series.
+>  * picked up all R-b and Acked-by tags.
+>
+> Link to v5: 
+> https://lore.kernel.org/imx/20260814141724.1006382-1-daniel.baluta@nxp.com/T/#t
 
---- Patch [4]: [PATCH RFC 4/4] arm64: dts: freescale: Add chargebyte Charge=
- Control Y ---
-commit a177a5e0acba62156876ea6dc84457789786bfb8
-Author: Stefan Wahren <wahrenst@gmx.net>
+Krzysztof pointed me to this series when I ran into the same problem
+during my last minute regression test for the coming merge window.
 
-arm64: dts: freescale: Add chargebyte Charge Control Y
+I've included the four patches as fixups in the soc/drivers branch
+now and plan to send this to Linus later today when the regression tests
+finish.
 
-This commit adds support for the chargebyte Charge Control Y, an EVSE
-for MCS charging stations based on the phyCORE-i.MX 93 ARM SoM. It
-adds the devicetree for the board, including ethernet interfaces, CAN,
-SPI, and SD card configurations.
+Let me know if anyone feels that the patches should go a different way.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts b/a=
-rch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
-> @@ -0,0 +1,387 @@
-[ ... ]
-> +/* Ethernet 1 PHY */
-> +&ethphy1 {
-> +	ti,leds-polarity =3D <1>; // active-high
-> +};
-
-[Severity: Low]
-Is ti,leds-polarity supported by the devicetree bindings? It does not
-appear to be documented in the schema and might cause dtbs_check validation
-errors.
-
-[ ... ]
-> +&gpio2 {
-> +	gpio-line-names =3D "X_LAN_nCS", "", "", "", "",
-> +			  "", "", "X_LAN_nIRQ", "", "",
-
-[Severity: Low]
-Should the X_LAN_nCS label be placed at index 8 instead of index 0? The
-lpspi3 node below configures the cs-gpios using index 8 on this bank.
-
-[ ... ]
-> +/* MCS Ethernet SPI */
-> +&lpspi3 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_lpspi3>;
-> +	num-cs =3D <1>;
-> +	cs-gpios =3D <&gpio2 8 GPIO_ACTIVE_LOW>;
-> +	status =3D "okay";
-> +
-> +	lan8651: ethernet@0 {
-> +		compatible =3D "microchip,lan8651", "microchip,lan8650";
-> +		reg =3D <0>;
-> +		interrupt-parent =3D <&gpio2>;
-> +		interrupts =3D <7 IRQ_TYPE_LEVEL_LOW>;
-> +		spi-max-frequency =3D <25000000>;
-> +
-> +		nvmem-cells =3D <&eth2_mac_address 0>;
-> +		nvmem-cell-names =3D "mac-address";
-> +	};
-> +};
-
-[Severity: Medium]
-The pin X_nRST_LAN is labeled in the gpio1 node, but this ethernet node
-doesn't seem to configure a reset mechanism. Does the LAN8651 need a reset
-control or gpio-hog to ensure the pin is driven and not left floating?
-
-[ ... ]
-> +/* Ethernet 2 PHY */
-> +&mdio {
-> +	ethphy2: ethernet-phy@2 {
-> +		reg =3D <2>;
-> +		compatible =3D "ethernet-phy-id2000.a140";
-> +		clocks =3D <&clk IMX93_CLK_ENET_REF_PHY>;
-> +		reset-gpios =3D <&gpio4 13 GPIO_ACTIVE_HIGH>;
-> +		reset-assert-us =3D <30>;
-> +		reset-deassert-us =3D <50000>;
-> +		ti,leds-polarity =3D <1>; // active-high
-> +	};
-> +};
-
-[Severity: Low]
-Similar to the ethernet 1 PHY above, is this ti,leds-polarity property
-supported by the devicetree bindings?
-
-> +
-> +/* SD */
-> +&usdhc2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2_default>, <&pinctrl_usdhc2_cd>;
-> +	cd-gpios =3D <&gpio3 00 GPIO_ACTIVE_LOW>;
-> +	bus-width =3D <4>;
-> +	disable-wp;
-> +	no-sdio;
-> +	no-mmc;
-> +	no-1-8-v;
-> +	status =3D "okay";
-> +};
-
-[Severity: Medium]
-The SD2_nRESET pin is labeled in the gpio3 node, but does this usdhc2 node
-need a vmmc-supply using that pin as a fixed regulator to ensure the SD
-card slot is reliably powered?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260818091701.6441=
--1-wahrenst@gmx.net?part=3D4
+    Arnd
