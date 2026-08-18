@@ -1,37 +1,37 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E3826F288
-	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 15:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84A73CF1FD;
+	Tue, 18 Aug 2026 15:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787065761; cv=none; b=KK52DvZBQoKqi4pG0q2iFKkqOqHFem3QPHCzHOCNNISjdu9ZMHKAJoYPXanf5x02/+hNtTMqOlaoRPBjkOZvSUS70t8GP1F/EzAt286qcKK3biLLjgCgO9nNw3uIH5Dzxxc09xsroayAohVe2yUILUCf+TAw8uLlUrsh2sTqa9o=
+	t=1787068524; cv=none; b=c9Rtw9W2l4ZJg7ivSNKHw9+0wZNRN4lW5zYEVfb/kJc3TZHL4u8FTIP3rN7ePSJ4aeQ8VCPAf3uxEWHAgYWJ51WMCPouS1Fq0WwALmCq8c/F0LQpl1KdBXuWFk6DAb55mpJRpwgDtRUj4AoLewEDbt/sa++2fcsnew02u++zvPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787065761; c=relaxed/simple;
-	bh=8r8ATR9ygIbjjKyhtEPIiReb0qgATLz5U8RqiELlZpY=;
+	s=arc-20240116; t=1787068524; c=relaxed/simple;
+	bh=yBB5Ah18TwalqEmv2x0ZGwuCUI1Tc8gkXWpKPtytP4I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G+g8Szo88B0EhKNcJccXL37/9dm1Nndsst0uReUemOQ+PLcv0rdfhKX6lOZi0WhOub0fRUQsbT+xEBrPQr4osviz4N01wcJKxTBuUBzhsEJXc+Jw8Kjqv7LqCo4nIMk8l/T+HhFA3BODcEp2kleHGL0NVR5u9eGHCPbsySM11SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=nlXUJEF6; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+	 In-Reply-To:Content-Type; b=I3zsbNc6w0XOKnbiU3FRMIIJOAvezv5UyihMi+pscw2M4s7gFC2ytWnRKPN99HM/xNhNeqAq/MCGpQpfuOTjOiMCB/rVbvfTAYzpPM3KKykAy1+ZyePXSxb98PTZAsZmB9DXmi1+AP4LBLukXvbo2QGA07kegHcuz85inFpybOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ui5KdUDl; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="nlXUJEF6"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 073713EDF7;
-	Tue, 18 Aug 2026 15:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
-	t=1787065756;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1HEORH5xQKD3xAagCv48cPmJt85qUOLS0mSV17EcIJY=;
-	b=nlXUJEF6GS5z6kHjeafT4VZnxCMqb9L6UA+/lN6VFodbpvbwdg0/1SSVWaftLosM5OAQak
-	pYCHysmJTrauqr+gXuqQnSk/EEJ0KymfSAVAvrAVddllrVx8JSRx+lxQW+YvDNKXY5ob7K
-	rk2iwwX1h1+rLnl8pmCm1TTOf2Ef1FDGE4n4yShY3qH9lGYkxMrAAK6lRN5clMAWANYWUJ
-	/X8jlif8SM44rGLycnEHSoYYqJUt/dYj0YHMYJ4EsFmqUuykFi9X0TpJ7cq/dnDNJs1zKD
-	tqS+2UiXt0WS1h03jpkgOTaHdsaWUdpRfQdR8VrhtIL6MObIdLp7WGQ9+/1r3A==
-Message-ID: <ddf0ab32-5b66-453e-b7aa-1722aeaf2aa0@yoseli.org>
-Date: Tue, 18 Aug 2026 17:09:10 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ui5KdUDl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=Oib1sAGemzHmu6ROtRkEHyhCtwDTicVNKskycatCaao=; b=Ui5KdUDlipNO9Vm4nINkg/+v4R
+	bOUqu7BxrFpPjJPyyxL5/SQNc4/JySqtBdMrb5CyEz/IRILpW8+YnFuGzsaYbvWJv+9e0YtT8uwx/
+	eE0eXe6fRPjm1sfCVSmOReeGwtH7/zEHlNxdnu5tpHNRyMiy4cejksDu81kvbeMEFRTaItbMt/IGi
+	Q61CWpoF2IThZoi159FSHVf/TCVp1AzMzc9ZSRaQVSMkGFqvkSEm1dUtgG8Qvp88FNz5jkcBhNEOs
+	ACjeQ2XWgqHevHSOffjhKrvnRBjt4Y+4cNGXzMxdf7NzZpsvk2bac1B5a/UMTuKt7keKswSiklY2c
+	JG0mN6zA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wwM9g-00000008JC7-1PPo;
+	Tue, 18 Aug 2026 15:55:12 +0000
+Message-ID: <916c4bd5-c73f-466e-8e9b-aee9d4d7d742@infradead.org>
+Date: Tue, 18 Aug 2026 08:55:11 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -39,206 +39,64 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] m68k: coldfire: Add RNG support for MCF54418
-To: Greg Ungerer <gerg@linux-m68k.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Olivia Mackall <olivia@selenic.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
-References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
- <20251126-b4-m5441x-add-rng-support-v4-2-5309548c9555@yoseli.org>
- <bd25e903-30fc-4905-986c-96d1b42e9f02@linux-m68k.org>
-Content-Language: fr-FR, en-US, en-GB
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-In-Reply-To: <bd25e903-30fc-4905-986c-96d1b42e9f02@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: jeanmichel.hautbois@yoseli.org
-X-GND-Cause: dmFkZTF0GOZonn7fzNqAfnCUw2jviVr9cVO2aEOq2qqvySqTZqejiEHo3UZPhg2MYpG0dEz22m19qjaWiJ+gFXyju6P8uP35WU04mRCTz1h5qF1U2T0B4e8SXglMjUV+6E4JIpxLceYh1TXAKV2KVZrH27yvb2I++Ps4QSs/Y98Pevs9zSwyqhWuilvPay+BM1+NvTEkZbclWUhDRk0mA1Uelx9dLJr+OSzL6e3kL+hclwdRGjaKpb1Fl/6p4B15H/CwBGN2OVg1jWX4KBRF4o5XeDXLDb0SIzzPmnVeDmZu2MVD2AsUuk78siG8K7gR7AgyIwl0O0EpA2gfmo5A77grrDmIbcMrj1ZGdElxP096FvmpVfTY97+paGqeIuonISjquivsEM9AQK+HpH+rTdtuvamL86b37TpBmaMteZyWrzTRpAVCh8XEEuWugxC5my141VbUxnevX2kHIu3lBD7pLDS+2PLmgzmZ3MotjzF8zaXGCCJFXBUo1sSHeuXCmGTOvaz03GF9KjgKnbLvLmAj6tTF4Dc49VIruCYH7oEf4lx+7Om6EIkPLcsOshOkHn/9Uymm0IMz5FzuYU17SKfC69iG2ERxoo3x/8zAXjMfyr5r9oaK9HWAqsxdFAGD043lc3iC9YUMB1iDYz/PXp9QnKaPiJBhwDj78i8U68LCNEXvVg
-X-GND-State: clean
-X-GND-Score: -100
+Subject: Re: [PATCH 11/12] drm/panic: Move panic display code into helper
+ library
+To: Thomas Zimmermann <tzimmermann@suse.de>, jfalempe@redhat.com,
+ javierm@redhat.com, airlied@gmail.com, simona@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org
+Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
+ linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
+ sashiko-reviews@lists.linux.dev
+References: <20260818125012.468092-1-tzimmermann@suse.de>
+ <20260818125012.468092-12-tzimmermann@suse.de>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260818125012.468092-12-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Greg,
+Hi,
 
-Sorry for the very long silence on this one, it fell off my radar...
+On 8/18/26 5:28 AM, Thomas Zimmermann wrote:
+>  M:	Hans de Goede <hansg@kernel.org>
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index 323422861e8f..cdfd72d9a9c5 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -45,6 +45,7 @@ config DRM_MIPI_DSI
+>  config DRM_KMS_HELPER
+>  	tristate
+>  	depends on DRM
+> +	select DRM_PANIC_HELPER if DRM_PANIC
 
-Le 03/12/2025 à 13:15, Greg Ungerer a écrit :
-> Hi Jean-Michel,
-> 
-> On 26/11/25 17:08, Jean-Michel Hautbois via B4 Relay wrote:
->> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
->>
->> Add support for the hardware Random Number Generator (RNGB) found on
->> MCF54418 ColdFire processors with clock enabled at platform
->> initialization.
->>
->> The RNGB block is compatible with the imx-rngc driver.
->>
->> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
->> ---
->>   arch/m68k/coldfire/device.c       | 28 ++++++++++++++++++++++++++++
->>   arch/m68k/coldfire/m5441x.c       |  2 +-
->>   arch/m68k/include/asm/m5441xsim.h |  9 +++++++++
->>   drivers/char/hw_random/Kconfig    |  3 ++-
->>   drivers/char/hw_random/imx-rngc.c |  7 +++++++
->>   5 files changed, 47 insertions(+), 2 deletions(-)
-> 
-> I am happy with the ColdFire arch parts, so from me:
-> 
->      Acked-by: Greg Ungerer <gerg@linux-m68k.org>
-> 
-> I don't mind taking this commit via the m68knommu git tree if the hw_rng
-> maintainers are ok with that. Otherwise if you break out the arch/m68k
-> parts I can apply those on their own.
+but DRM_PANIC_HELPER depends on DRM_TTM so
+DRM_KMS_HELPER should also depend on DRM_TTM. Otherwise:
 
-I think Herbert acked ?
-Do you need another ack ?
+WARNING: unmet direct dependencies detected for DRM_PANIC_HELPER
+  Depends on [n]: HAS_IOMEM [=y] && DRM [=y] && DRM_TTM [=n]
+  Selected by [y]:
+  - DRM_KMS_HELPER [=y] && HAS_IOMEM [=y] && DRM [=y] && DRM_PANIC [=y]
 
-Thanks !
-JM
 
-> Regards
-> Greg
-> 
-> 
-> 
->> diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
->> index b6958ec2a220..9d8f844e319a 100644
->> --- a/arch/m68k/coldfire/device.c
->> +++ b/arch/m68k/coldfire/device.c
->> @@ -622,6 +622,31 @@ static struct platform_device mcf_flexcan0 = {
->>   };
->>   #endif /* MCFFLEXCAN_SIZE */
->> +#ifdef MCF_RNG_BASE
->> +/*
->> + * Random Number Generator (RNG) - only on MCF54418
->> + */
->> +static struct resource mcf_rng_resource[] = {
->> +    {
->> +        .start = MCF_RNG_BASE,
->> +        .end   = MCF_RNG_BASE + MCF_RNG_SIZE - 1,
->> +        .flags = IORESOURCE_MEM,
->> +    },
->> +    {
->> +        .start = MCF_IRQ_RNG,
->> +        .end   = MCF_IRQ_RNG,
->> +        .flags = IORESOURCE_IRQ,
->> +    },
->> +};
->> +
->> +static struct platform_device mcf_rng = {
->> +    .name           = "imx-rngc",
->> +    .id             = -1,
->> +    .num_resources  = ARRAY_SIZE(mcf_rng_resource),
->> +    .resource       = mcf_rng_resource,
->> +};
->> +#endif /* MCF_RNG_BASE */
->> +
->>   static struct platform_device *mcf_devices[] __initdata = {
->>       &mcf_uart,
->>   #ifdef MCFFEC_BASE0
->> @@ -660,6 +685,9 @@ static struct platform_device *mcf_devices[] 
->> __initdata = {
->>   #ifdef MCFFLEXCAN_SIZE
->>       &mcf_flexcan0,
->>   #endif
->> +#ifdef MCF_RNG_BASE
->> +    &mcf_rng,
->> +#endif
->>   };
->>   /*
->> diff --git a/arch/m68k/coldfire/m5441x.c b/arch/m68k/coldfire/m5441x.c
->> index 7a25cfc7ac07..ab5b00637237 100644
->> --- a/arch/m68k/coldfire/m5441x.c
->> +++ b/arch/m68k/coldfire/m5441x.c
->> @@ -158,6 +158,7 @@ static struct clk * const enable_clks[] 
->> __initconst = {
->>       &__clk_0_33, /* pit.1 */
->>       &__clk_0_37, /* eport */
->>       &__clk_0_48, /* pll */
->> +    &__clk_0_49, /* rng */
->>       &__clk_0_51, /* esdhc */
->>       &__clk_1_36, /* CCM/reset module/Power management */
->> @@ -179,7 +180,6 @@ static struct clk * const disable_clks[] 
->> __initconst = {
->>       &__clk_0_44, /* usb otg */
->>       &__clk_0_45, /* usb host */
->>       &__clk_0_47, /* ssi.0 */
->> -    &__clk_0_49, /* rng */
->>       &__clk_0_50, /* ssi.1 */
->>       &__clk_0_53, /* enet-fec */
->>       &__clk_0_54, /* enet-fec */
->> diff --git a/arch/m68k/include/asm/m5441xsim.h b/arch/m68k/include/ 
->> asm/m5441xsim.h
->> index f48cf63bd782..dd64cdfcad3e 100644
->> --- a/arch/m68k/include/asm/m5441xsim.h
->> +++ b/arch/m68k/include/asm/m5441xsim.h
->> @@ -198,6 +198,15 @@
->>   #define MCFRTC_SIZE        (0xfc0a8840 - 0xfc0a8000)
->>   #define MCF_IRQ_RTC        (MCFINT2_VECBASE + MCFINT2_RTC)
->> +/*
->> + *  Random Number Generator (RNG) Module.
->> + *  Note: Only present in MCF54418, not in MCF54410/54415/54417
->> + */
->> +#define MCF_RNG_BASE        0xfc0c4000
->> +#define MCF_RNG_SIZE        0x1c
->> +#define MCFINT2_RNG        28
->> +#define MCF_IRQ_RNG        (MCFINT2_VECBASE + MCFINT2_RNG)
->> +
->>   /*
->>    *  GPIO Module.
->>    */
->> diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/ 
->> Kconfig
->> index 492a2a61a65b..2f301e43db84 100644
->> --- a/drivers/char/hw_random/Kconfig
->> +++ b/drivers/char/hw_random/Kconfig
->> @@ -270,12 +270,13 @@ config HW_RANDOM_MXC_RNGA
->>   config HW_RANDOM_IMX_RNGC
->>       tristate "Freescale i.MX RNGC Random Number Generator"
->>       depends on HAS_IOMEM
->> -    depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL 
->> || COMPILE_TEST
->> +    depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL 
->> || COLDFIRE || COMPILE_TEST
->>       default HW_RANDOM
->>       help
->>         This driver provides kernel-side support for the Random Number
->>         Generator Version C hardware found on some Freescale i.MX
->>         processors. Version B is also supported by this driver.
->> +      Also supports RNGB on Freescale MCF54418 (Coldfire V4e).
->>         To compile this driver as a module, choose M here: the
->>         module will be called imx-rngc.
->> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/ 
->> hw_random/imx-rngc.c
->> index d6a847e48339..44f20a05de0a 100644
->> --- a/drivers/char/hw_random/imx-rngc.c
->> +++ b/drivers/char/hw_random/imx-rngc.c
->> @@ -353,12 +353,19 @@ static const struct of_device_id 
->> imx_rngc_dt_ids[] = {
->>   };
->>   MODULE_DEVICE_TABLE(of, imx_rngc_dt_ids);
->> +static const struct platform_device_id imx_rngc_devtype[] = {
->> +    { .name = "imx-rngc" },
->> +    { /* sentinel */ }
->> +};
->> +MODULE_DEVICE_TABLE(platform, imx_rngc_devtype);
->> +
->>   static struct platform_driver imx_rngc_driver = {
->>       .driver = {
->>           .name = KBUILD_MODNAME,
->>           .pm = pm_ptr(&imx_rngc_pm_ops),
->>           .of_match_table = imx_rngc_dt_ids,
->>       },
->> +    .id_table = imx_rngc_devtype,
->>   };
->>   module_platform_driver_probe(imx_rngc_driver, imx_rngc_probe);
->>
-> 
+>  	select FB_CORE if DRM_FBDEV_EMULATION
+>  	help
+>  	  CRTC helpers for KMS drivers.
+> @@ -130,6 +131,10 @@ config DRM_PANIC_SCREEN_QR_VERSION
+>  	  Smaller QR code are easier to read, but will contain less debugging
+>  	  data. Default is 40.
+>  
+> +config DRM_PANIC_HELPER
+> +	bool
+> +	depends on DRM_TTM
+> +
+>  config DRM_RAS
+>  	bool "DRM RAS support"
+>  	depends on DRM
+
+-- 
+~Randy
 
