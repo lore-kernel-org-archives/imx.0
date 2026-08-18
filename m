@@ -1,93 +1,116 @@
-Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF754476680
-	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 13:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72949478868
+	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 13:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787059277; cv=none; b=rA51iI5VRS7IO/Ja8Qz2n+C7P307z/DbTqoCKax13+QdW1ccDWj5u1TY/MSqIdkT7/SLFCwE5UiCaOyRoCbxll4p8Xfdm8rMpiqZQNbyO1NJUT4bBDAa/qlXoVDad0INaaOrdwPqW7lExH64KYr0fn//lwDzpBkhvuidc859enc=
+	t=1787059964; cv=none; b=HVxwhWlcyNHl6Evptc+YZ0jErPVxjVLs+1AUdgyuJ6ErGcoEWpRk3Rtte1SHe3stLX32fpWW/SbEKZ2DOLWhQxlJl9Btfe0PNpkJiTFWd29Q7Hy/h2TwkKXu2DsazspML4W4WyRXaQfmjsP70DDkRIeDiR6T/M96yPkb6VeZMYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787059277; c=relaxed/simple;
-	bh=ZsbwA2S8iCtojh7QFeYBW3Z2GD9Q2wZunHbT87QGPhg=;
-	h=Message-ID:From:Subject:To:Cc:Date; b=PiEyKbFXVD4lsq2Mt84I8GVCNZeNNpQfMaIfgTbU1iv7UVUPggGlAInkVtKUrrBOvzl9Ywx93ZMdCfhYbD1hpup+vfFC+T3GgUvloqKUtL6Oq+Z+3uuWX9ejNsxoauI5ktNXhlo0rwF4Tcd5UdOErx4OqZFxbzSfAXiw+BfiYtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=m2uJ2HNr; arc=none smtp.client-ip=203.205.221.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1787059964; c=relaxed/simple;
+	bh=SVz+QfANtWE6aRgOOGKehiPu7vLV0EtO0HKQ9SCUAz4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=mgVnHzsYSKPhjU5iknHpVTf4bI7w496mzZ+DOn0yE1JG8VKUg6bP+aUYvDl7DizYj688cNo7QfGUbMJiNK+5WlS4+UumvfDPdjC1xDy0nCmznhSFpJ2YbS5Me9z3oxGlmNd28taPeUltD9ag1SfetYbgMpBjsbOBqNYhviArDTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jOPzQs2J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="m2uJ2HNr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1787059271; bh=m/LXl9fTO3dMTBf7vWRGKL6aArXJcLw5Fe2OfvQ7VdM=;
-	h=From:Subject:To:Cc:Date;
-	b=m2uJ2HNrTYQiwIbaa65DUd42Rmgc/hOULdAn9Mk4LYfzBpzkdj4as7p10ZO5YftJZ
-	 yItFctNhaScZipBD0rW38/Z2LIY1MZVSyAs9Au47XI5RSVHBdZcM4MjcgTs8GvxsJm
-	 cnafV6T2N5qBsbCOxK1sqOlsV5fL2sm0LCHx7Kgk=
-Received: from [127.0.1.1] ([5.195.0.150])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 1721C6D8; Tue, 18 Aug 2026 21:05:50 +0800
-X-QQ-mid: xmsmtpt1787059178tf3sshen6
-Message-ID: <tencent_62C095FCF52245E6900FBA2E4E008042BF08@qq.com>
-X-QQ-XMAILINFO: NnYhxYSyuBnLCu+aiLiRXdbLHmZvFK+8F6DSOcqHeIy3e+QYrf+3KUT3crXI7d
-	 TTHtmD28YmcgN3rxPan8FhnSbihePYVrPw09X+CZpHUuFr2NXB96PCMAkgQuqjqS7VN6AOajSdvL
-	 6h9VTmB+w2/Fv4SFdudYflC6IZ795ZeY+v6DgCV8LTv38shpsyGgS62NA7MVF7Hw7oZ5pMC52RRR
-	 Ik0U4tCrl7tdE/+MtPNX+uxBYvTbjAPt0oGadGb44GnKafuU8PrzyQOFUTvgymFzWwqwznsUUoJr
-	 uq2U4srbCMLElocqrZXnrB08WX8oivAL2tGCfogYlG+v22Tjt8ZsQ7WqtdA0kcwVpkrYCNYHWd6R
-	 f4E4e9/wh6SRCBh49XeugRTnTkhuz8LDThnaqyD0O7mYcCiYG2tSd97pVCRJc68pxKSwqcByqa2E
-	 HI8vJU3CbveFjT4XLS7qkgsPFy6dIf6Fqhwh+LlWzHOP9lSTc5HQ4fVK1AoUYp+0fnvuCJHgBVkT
-	 /Z+yoirw3SJaGqqafsotdzPDWQDRl3Zzr9Fg2WmPbQmFQCuEE7GQ8rVAa/vHddW1RG4AWQxmtBVy
-	 jJPK2NQhPZ4W0C9A93B6af04bWj/AuETdQcBhNJCr87hltWAeuf8k7e5ZILK52BJ8omblz+bv631
-	 td32DrKHefqr8mKDXRV176T+2ucB/4CJQokNuU18jrhZY35YdLzRS1UII/D8WI8zF+/yaK7fxrEl
-	 5UVj6Sqm+DURpKFi2MamGS/TGl+kPHhSDK69roYGCQsBIUZ0GlQHypuqrwhxjOVdUZvXTl9Gi3ZD
-	 e3/yKmojSGbtEvB3Huyu9lmYZ8qeB4Utx1Dp6JD2dxXMwRD+C4sBfNWmY+b7RUwwmWrwn8JRBl9D
-	 qpK5njvcmvnPtIAi7ihq2Q1ng6Hc1WJoimgzoBfTdqqKonpeq3TdoimkIbvgvf2rd76IVEpHDZR8
-	 MwGxRs9Iyj+p5KoS/EpGTTC66rzBY0CeUq42t7xlSP79HIrtn9BluEQUx1g3eg31jBB3PzDwr5Hi
-	 hzl4D8fnFfOgms5I4176Bkxxk1r/4HSZoctAdpbq8wlzBmxcDNIWvTnBsVP9PnYbUWtFaVOA==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH] irqchip: irq-imx-intmux: fix runtime PM cleanup
-To: Thomas Gleixner <tglx@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Date: Tue, 18 Aug 2026 17:21:08 +0400
-X-OQ-MSGID: <178705926890.291840.13691325396124428078@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jOPzQs2J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F691F000E9;
+	Tue, 18 Aug 2026 13:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787059963;
+	bh=lPo0pXzxqMCJKxgTJyjjLc/rvlVQg6D5I4fgtvpnH9E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jOPzQs2JxVCtZNNoOqmaVFGxG2fEF1VRFsIzflmxcEW1P0Tp0Fdb+WFyWlMbUBIlq
+	 9P2KdDFmsIuO/XD+999z7S6Y408XDY5hoGzRpJs1+Rr7XwxGo/3XNrTmJ2HbBXdHBr
+	 hWUni8jts4X4L0HAaw1bFzSYSd/Ab6PEmAn+yGoDg5GPAY/2ZsV/JnpzD/wrqcfM0a
+	 nv0feuFuM089oulQmQbpmbhqodUWqpAryEAEHCRBHOkPjmCb8PLNO6ca7GQmhSAZxq
+	 nUkEHTYSJ9QWj+DgQzGp2UShsHMzNqNDHeP4CShXpAvRqwSEG6Wv+VTZ/wpkX2SrAc
+	 4SgRitFff6OSA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] irqchip: irq-imx-intmux: fix runtime PM cleanup
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jiawen Liu" <1298662399@qq.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <tencent_62C095FCF52245E6900FBA2E4E008042BF08@qq.com>
+References: <tencent_62C095FCF52245E6900FBA2E4E008042BF08@qq.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 18 Aug 2026 13:32:42 +0000
+Message-Id: <20260818133242.D7F691F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Fix imx_intmux_probe lifecycle error path.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] Use-After-Free and resource leak in the probe error path due to mi=
+ssing unwind of IRQ domains and chained handlers.
+- [High] Missing PM active check in the IRQ handler risks a kernel panic on=
+ unclocked register access.
+--
+
+--- Patch [1]: [PATCH] irqchip: irq-imx-intmux: fix runtime PM cleanup ---
+commit da49153900c09e5deedd785bdc0ee1d127431e07
+Author: Jiawen Liu <1298662399@qq.com>
+
+irqchip: irq-imx-intmux: fix runtime PM cleanup
 
 Probe enables runtime PM and clock. Failures after clock enable only
-disable clock and leak PM runtime reference/enable. Clk cleanup is
-incomplete because PM runtime state is left enabled/ref held on later
-probe failures.
+disable clock and leak PM runtime reference/enable. This commit balances
+runtime PM setup on imx-intmux probe failures in imx_intmux_probe.
 
-Balance runtime PM setup on imx-intmux probe failures in
-imx_intmux_probe.
+> diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-i=
+ntmux.c
+> --- a/drivers/irqchip/irq-imx-intmux.c
+> +++ b/drivers/irqchip/irq-imx-intmux.c
+[ ... ]
+> @@ -283,6 +285,8 @@ static int imx_intmux_probe(struct platform_device *p=
+dev)
+>  	return 0;
+>  out:
+>  	clk_disable_unprepare(data->ipg_clk);
+> +	pm_runtime_put_noidle(&pdev->dev);
+> +	pm_runtime_disable(&pdev->dev);
+>  	return ret;
+>  }
 
-Signed-off-by: jiawen <1298662399@qq.com>
----
-diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
---- a/drivers/irqchip/irq-imx-intmux.c
-+++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -240,6 +240,8 @@
- 	ret = clk_prepare_enable(data->ipg_clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
-+		pm_runtime_put_noidle(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
- 		return ret;
- 	}
- 
-@@ -282,6 +284,8 @@
- 	return 0;
- out:
- 	clk_disable_unprepare(data->ipg_clk);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 	return ret;
- }
- 
+[Severity: High]
+This isn't a bug introduced by this patch, but does this error path fail to
+unwind chained handlers and IRQ domains initialized in previous loop
+iterations?
 
+If imx_intmux_probe() fails during channel initialization (for instance, if
+irq_domain_create_linear() fails for a later channel), the code jumps to the
+out label. The error path disables the clock and PM but does not unwind the
+IRQ domains and chained handlers registered in earlier loop iterations.
+
+Because the data structure is managed by devm_kzalloc(), it will be
+automatically freed upon probe failure. The parent IRQ line would remain
+armed with a dangling pointer, which could lead to a use-after-free if the
+hardware triggers an interrupt.
+
+[Severity: High]
+This is also a pre-existing issue, but is there a missing PM active check in
+imx_intmux_irq_handler() that could risk a kernel panic?
+
+Looking at imx_intmux_irq_handler():
+
+imx_intmux_irq_handler()
+    chained_irq_enter(irq_desc_get_chip(desc), desc);
+    irqstat =3D readl_relaxed(data->regs + CHANIPR(idx));
+
+The CHANIPR register is read without first using pm_runtime_get_if_active()
+to verify the device is powered.
+
+If a spurious interrupt arrives on the parent IRQ line while the imx_intmux
+device is runtime suspended (and its clock is disabled), would this unclock=
+ed
+hardware register access cause an imprecise external abort?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/tencent_62C095FCF52=
+245E6900FBA2E4E008042BF08@qq.com?part=3D1
