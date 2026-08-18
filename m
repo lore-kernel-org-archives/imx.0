@@ -1,283 +1,205 @@
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013066.outbound.protection.outlook.com [52.101.72.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E6D43CEED
-	for <imx@lists.linux.dev>; Tue, 18 Aug 2026 18:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787076524; cv=none; b=P2HdlN3UF7gniG3q53oqneBH+qAcB53H35llsc3VV+XDtT0JjYCvjvmh85Uoiesk0uftlgK6JbZ+oeMqD2rL8lpfp7kBsmW7tzpMmHn9tkwgXEYkhlaw77I1DbLbMi4sPQ6dtZz5IvbC6WXfggMQ6lFG5fDrjLtLcwRmlZzF5yA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787076524; c=relaxed/simple;
-	bh=ljq6wlcrbG+jNSceqovgztXUVGeO8fWkLNz+62ATjv4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tZo9GKely2VqYxC4XD0BfX26bQtmqJXrkjemjuAjt7bkL8n+4pDu+N9O+LJb/fDn258yd5iQMcHEMixBNde13EviH+tfcoUvNF/czENtBrGbkie65zmgj8FesNl4dWI0hZB+/29JCkh9U7iYSj4Y9Hrwpw73SQ+DPF+AlG6/PUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPVOMmdn; arc=none smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D8B3290B9;
+	Tue, 18 Aug 2026 18:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787077311; cv=fail; b=QhlPwXBkCEAUlEz+8tUSriPlUhcA47+WXibbSRzTNmLkJ077E/m43YPCrkjoYQDYyvN5j/S3Bv85sxaBaNlspHuOLARGLxONxhyVUQQwz5SgsErxNPS0uCIAkCUizaktqohKDEsniyxG1T6amsio0mrtRq4dVeccYo9/YPoxeHU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787077311; c=relaxed/simple;
+	bh=6biZ16XXuuGLDBGHRbVGXF3fcvVvRh4R0U06E1z1QGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LVDdY/KkaQIoqn10ysGO/h5NnEHuHmyESo3si5tPhi6vA8OCQcIzHrlfGkl/vfLrBMRJqljgRVIOkP9su5CnnH5wgMNHoENXvl9IElx7WHFQHmNzgCJ/yxY7jw1ou7UQZ43bBYAleyUWTll9TePgK8wU+97ejJrkdwNNhE1Ew9w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=snHLUVfD; arc=fail smtp.client-ip=52.101.72.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPVOMmdn"
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5bf9506704fso62983e0c.2
-        for <imx@lists.linux.dev>; Tue, 18 Aug 2026 11:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787076520; x=1787681320; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/Q6ZML4PkLQlkM1EJlZ9nhqZzRAkcWVhx1GwB+/mWrQ=;
-        b=NPVOMmdnQIsQgNeOJdtRTjJTCqGS2iu+0eJrO17gZ+Bi1a51fuK9Jpy0PDRHYqcN5b
-         Uw2zDS4au2i48o31Vw3faF0Orn7PF4ai0RqmIFcRx5xEB6MT7e5x1vGSIqZGJ23jbTRh
-         J7lMWHD/L5ZnDPPrUSCwVpdWBq+JuNgboQGqoS7LMufvPRBahPqB7+ehEmLqeboauvwB
-         UVd0cPck2CAci5MnvlctjWmSDR/2fvC8bkuo0ViIjeTPcyA+0y9UjX9mNUt1dv+E/Are
-         WJjqG+84OtfTR8OUKUY+yc0dBXslnXC0RPJBoB0JJVnItOqyhFAN47utgVmlaDisaKHx
-         ravQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787076520; x=1787681320;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/Q6ZML4PkLQlkM1EJlZ9nhqZzRAkcWVhx1GwB+/mWrQ=;
-        b=HsYCri+L7rAWSx7yGBJcIXc6FoG59IKedK70/h+iUawfkRctSfTwbkfnqdfkWc7pKN
-         ZLiqyQkD7lWKP7Nmlao+qGl6faiZqMXE1uEBRHIa1h/7cMSfxxyWGVExA4Ai8PRlhf/w
-         YvHRFfele9oHJsYdvf79I6cwTauTnCfBIQuoBL+TfKcKYnrWcYOQ+hEHX9T+7e1u3oDF
-         EOny1zpoD2uScSum5w6kDgo2RbQeCCQxZJS6aSE9G8LVsXBhgWySRdsox/CPjc8gq0D3
-         fZoY/5O85DbZgWUsuMO9qa/7gHA8xaLnFuLXp9Gzr+0KHRl++EbWCf7bncAmN+9kxCSk
-         yrNA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqvpo7UMKmryXVoaK6b8xriz1z/CPpFRCaWPH+WUKBN02snOBwrnSuBQaOvEa727W/1o0w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxqSR0J4COEYzxAQ7/nnOVbOcqdGxLnIPeFsIjSsF+AFEOmaE+o
-	n3qoEep6vQuxiKkQqdhN1rBcG4qQpnhGix9cCxaQoGLNz+/KRoMwfdOZ
-X-Gm-Gg: AR+sD11ux0yj0asXv/XpO0WE9SeSqFXnCVt1NwWZSgXwo9v49wCdpA3xNdAWS8KPMge
-	g+fKU7AyFE2XJCT0t50wqx4BnKgOw/36kf9Q7SWqyaeyf7jgs/PC4LeOMW2agtTzLrBiQ3R9jPr
-	T4weEr31mRVaAWqt4lk/FUVYyPgHNF4Fuu6ZlrX7wirR/b8IzWp9oyzr+H7TsMmFgpTGqzYFB9w
-	5jDis5zYIu96EWWI0HCNGfHEk/FsP6QQmUxPsQ3VTO02NKg2Xx0jrGfWra5AGV5HAa13iB6rnDR
-	GPE1rtmcjQYjMeFt3VgUVxQDJ2mb7VLWfa/mYHDH0Ep4enxcIfg2h0L6wlfm5Xery08w/BnIxib
-	pprsVDxrHGqsozbkyp+g1kW2nfEkqMU+k953PK5nDCK1+IpkixJUV02WB/e6ZtL5M26iBvNS1LY
-	hE+/8oOTb7zPhuJAexlk3W41gSTc6d5wve3jEfzgrQ5YnBLl3IeRxcrZ7fGv28aSvp4bs=
-X-Received: by 2002:a05:6122:3401:b0:5bf:4522:fca7 with SMTP id 71dfb90a1353d-5c591c966b6mr8543926e0c.4.1787076520216;
-        Tue, 18 Aug 2026 11:08:40 -0700 (PDT)
-Received: from leonardoc-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c5c78ea7desm4440166e0c.13.2026.08.18.11.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 11:08:39 -0700 (PDT)
-Date: Tue, 18 Aug 2026 15:08:33 -0300
-From: Leonardo Costa <leoreis.costa@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Leonardo Costa <leonardo.costa@toradex.com>
-Subject: Re: [PATCH 6/6] arm64: dts: freescale: imx8mp-verdin: Add Mezzanine
- with Toradex Display 10.1" LVDS V2
-Message-ID: <juuc4af7ndbajcl7gzf4tg5qz2q2j5tt3rvql4jbauradujrre@gc5nbdhhixaf>
-References: <20260813133335.1941580-1-leoreis.costa@gmail.com>
- <20260813133335.1941580-7-leoreis.costa@gmail.com>
- <an3brO5COdw_F76m@SMW015318>
- <rglymw6p4c65yoqz3pjn6e6nq7cil2fa7m7dqghshgdpavby7d@kyza3ceavq6z>
- <an3tiDOUUYLb8PAq@SMW015318>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="snHLUVfD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lTjMNy+Eg6qr5NggNm35hPdVQWMhJn5jlBY6Bwe2yBThoD0cuQLCdLXbETVE/EkHNsJAfzuDsP9sCTVGn3+HOVlQW+zsYEdgARqCAxlyYk5uOLDJCjpeo+cxhBRYogxQ8/zg9oD4bK+vMa+jdpmrmGykOZ13A+rKiuHuPkUU5Oh+ZH5WM2S3IclD9Uertzh6aq8sktyNWGLyQq5LVloFsuYVqHr1i4yU6tL2EocgpIil2BRU6mnJ73QkemHRxUojCIBVUrPJwsonLQK1pBUDbB90Rt0ie/cDRn4tPGUfEbLRGF5YId+Ik7aJ5jWjF0fhT/cPARVLrp7s4nC9GzqjXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X4xAZEYmL6VYz81iTftxKZsYOntc2OMpRbaToiwdhZc=;
+ b=UIub0V8/i7/OveVXcAK1XCx56Vb8Tsa+gge1uDRIaBZ/+aACOlZOZTwH55lEuGbiYRppQHlOy3gS0Ts4J7onfAko6jrEzR8w3nmutHoeZyg4LWKYK6jcBfrJNTdsJZZ4TznMwYloDyxTGqBef+sqtaTu98YU8TtBFHzPcUN1znVb01MeH/dfdiv4MdxbXzJgeAI6YK9lGOy42/nMY4qZSbJObYwPlsZBnBA8BqetqGmEokRbIW9AA5QX2TQYpqRzrwS9+qrFpseLVjJoE7ZngCLvlWqLb/CCVlMQyQxkgg8UsvML4G1PMjmSKck0O6KnSH/VhIg9zk0sWon9fRQvJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X4xAZEYmL6VYz81iTftxKZsYOntc2OMpRbaToiwdhZc=;
+ b=snHLUVfD0wAbCovh5k2mJ5U0aLXD+lNn7nC7DZ2auVDD60s9oZ7B7Xel/owRdHOBJeFHI9VUXij0auTh8jjyBzc0Og9CNh3ndqgmhypBy7TR5X069DmqKXRJ4pRMx5ZPxli1gx9IEYw1rEDAzBohV73cILirT3iCdhMDikO+PcQl89YSJCS4CkZoCHa6dp8IKp+sRUAztcZQuTKOjyTIH9d/+VhjLCppedaEX4GiG+hkIPTXJIG1Yun5EczqVYmF/SiebkWOkoAlplCWg7WziDY/Qr9SCg0Xp0SD/aoPfc4Dz2ivu3FBm7on1v+9RoLH9Dk2ofUJaD1NuIqyuzVA+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU4PR04MB11791.eurprd04.prod.outlook.com (2603:10a6:10:623::11)
+ by AMCPR04MB12624.eurprd04.prod.outlook.com (2603:10a6:20b:76e::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
+ 2026 18:21:47 +0000
+Received: from DU4PR04MB11791.eurprd04.prod.outlook.com
+ ([fe80::11ca:6b74:3234:d7de]) by DU4PR04MB11791.eurprd04.prod.outlook.com
+ ([fe80::11ca:6b74:3234:d7de%5]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
+ 18:21:47 +0000
+Date: Tue, 18 Aug 2026 13:21:32 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Pankaj Gupta (OSS)" <pankaj.gupta@oss.nxp.com>
+Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"Frank.Li@kernel.org" <Frank.Li@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v36 5/7] firmware: imx: adds miscdev
+Message-ID: <aoSirE2DdlF39Jpx@SMW015318>
+References: <20260817-imx-se-if-v36-0-45c42847bfd8@oss.nxp.com>
+ <20260817-imx-se-if-v36-5-45c42847bfd8@oss.nxp.com>
+ <20260817084938.C2B541F00A3D@smtp.kernel.org>
+ <GV2PR04MB12271867DDFC25782A7B688C595A72@GV2PR04MB12271.eurprd04.prod.outlook.com>
+ <aoNU08NYpe1rK6Bz@SMW015318>
+ <GV2PR04MB122715C58E176CB3BAF1E77AF95A62@GV2PR04MB12271.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PR04MB122715C58E176CB3BAF1E77AF95A62@GV2PR04MB12271.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: PH7P220CA0176.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:33b::29) To VI0PR04MB11784.eurprd04.prod.outlook.com
+ (2603:10a6:800:2ea::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <an3tiDOUUYLb8PAq@SMW015318>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU4PR04MB11791:EE_|AMCPR04MB12624:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e7d1d66-74e7-4878-85ed-08defd558f57
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|19092799006|376014|366016|11063799006|6133799003|10067099003|4143699003|56012099006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	EpcrlW+XnkTZXGAGjafDHLg6Bqi2VNElfs72fuJHE/TBl3/BXHkhZfm4JJdqxkIUCAXh2gv9kitCVFxDWcwg9Jed/yiYnimvoYaj02B4P/R0tDeymJr9fhYquqzwQs/mRcWeaYxbniNS1TiBKk4N3HJCvv0R85PoivrxFwikmnO0vDeMm9IzSIX5L/4fIjMJW25TaEf0noupyTu9w5VqGwN+yQQqLy2IKf3fgL40BgLh55fO9m2fXiwBvoz0TRFoPKwLmd5x/POd5xDmnVIOGSzpcWET7qtTZ3cXpBJxI/UvdVymViYrKZfsDl24epoqaRwImE8oL+1XNpX2BX9flQALDHOG70asxL63UNgx16MZ3ph12F8Qsl3z2O7IGGv4hS5vpXs4VVf0rBXykBRp5f2Su3hjZ3/RxO+6opxCtgYmmL9F3fPkXi8JxPxHeLmvAkP/9nBGVyNZJFco2lDhTrQoH8cAqUfNyZKscKJJJ0CGeIcZUzbhVsloggSp+vdV5/aMHgYI5XkXrZu2w14tq7IyrCFANsk6Gj4/NfpRYuPPgN2tLVP20yh2NAjtp2h+aZwO9OTk+udiyj/b1AhsP5/Vi+SfTXnY59EwpMQqVDbCyPkaRc8bE2R/jAqaHqmJcIRWtMInSa//7eSFks0CBaQF2HvlUNsLFVtyR/E6yGk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR04MB11791.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(19092799006)(376014)(366016)(11063799006)(6133799003)(10067099003)(4143699003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IYRIxrT2ylG6XX3ucetUuUUXLuPcKxsmDiUDs4nCefCFQ8evim8XRLt45H9E?=
+ =?us-ascii?Q?9o5NcrVHUl4qmkHu4fuMHUS0r/Xbhsq+J2YH6F5wnTtKP+KdG5CUT0XAYxlw?=
+ =?us-ascii?Q?1tBFiD95n5EZH08SNltK3bBIRDLQobfLO2kryBlB883c3Fsie0xKK+w1KdR0?=
+ =?us-ascii?Q?kC9ycfyNsKL9Vi8jw5Ur0WCuQwvf98u+TJHkW8dp4AJhVD0PebqQbFfIOGhL?=
+ =?us-ascii?Q?WT2/rZ+ckyFNY8oHLKiwe+ScoseA8A2iuYvcHstqeTwN3gvpUlxI+Lt9KqnK?=
+ =?us-ascii?Q?YXVIG8WSdKp3UClBybPiexISW42Wjg2aE7e7gU0l5VoKdJfMvpOZWFceNJIe?=
+ =?us-ascii?Q?g6kU90PHuwtI2lKimceaWQypavZKlLZBioGuG8d+grNMuElChUcYbfUPCCNg?=
+ =?us-ascii?Q?w8VmwKR8UaJKdfvpkZfmIY+sO9L5/ke7Zvq6RVTIK4Tbw+Xb69OKHFx4U04+?=
+ =?us-ascii?Q?Mh+TIeFIjFxPY1l/vHXhx9RTt+TpYtzHwe8pDDr15Nioa13JXZviAM5xusqR?=
+ =?us-ascii?Q?t4Ix5IZVSbwNrvgZFFeJV4lz5BGDxKJnii6w8mjJL6kKQuLFQL36FPh0gkB4?=
+ =?us-ascii?Q?IY6CZymSly83Timamr3FsLxTAphGYcXU9Gzvj8SIl7Soe7Vlgqn15ZTcsgMQ?=
+ =?us-ascii?Q?4lorXwy1pC9k8kRtN/5ha8I3JonmXtmla1/0/dWmecmdMKH/cLYNJvj6K7Ms?=
+ =?us-ascii?Q?JHwcLxmpLlBuAif2w2WIX3D3ZTkrkFv3nxjDFgBdszKU2Ka8Y7nAoyl7rGek?=
+ =?us-ascii?Q?tyGtXn8/FuEYLxk3BIhOl6xA6066v6GY+vaudJhZIcrbsyxTLrQORnR8BKEf?=
+ =?us-ascii?Q?ZvPX9REHmEWb3CafHX31lJph8X46vJGWkAcu4kqygocvjBUKor0ZWqHAxSTd?=
+ =?us-ascii?Q?rUNq7eX/jq7hzQAHq/5CrlayM9FQdZoR4ByvsGt/0FCbJ1FJyHkpWSa8veg9?=
+ =?us-ascii?Q?kPdzWNnW4hWJ5PxjoWf+YsV0TabE8WbqidpVavbp6O5E7mVr12kl5zyKNra+?=
+ =?us-ascii?Q?ZiR36cBgIM9TVohWnQQ7aZ80ChlTC8BE1+B5n9Bgl/WgfvRakNpXf/zFeo32?=
+ =?us-ascii?Q?lwNHBpZw9o9MYAy4uQiA+tROea/ragHMf8w/H/tqVMPagIJtDRqfIPR73hI3?=
+ =?us-ascii?Q?Qrh46+NS8hu1iFq3CXVD1j26kyGRfKWyLSbjRDbkugbKCXIt/Yd7GRN6956k?=
+ =?us-ascii?Q?XpNHzfHEjFXWKk3uS16W0DC4/5CPbMz766oFLhYtI1zHyjpa8NQpIg/1azTF?=
+ =?us-ascii?Q?3IPQFCco7PMzM7OpZtOPRVsz6vLft4txzuSngBrjWnyaF7tCOqUgvnIF+aSQ?=
+ =?us-ascii?Q?LBNmWY19ObF5VE/8eL224GDGCiOQStXan9lKHrbj/UcD5FroiAZ/dgJEjwTC?=
+ =?us-ascii?Q?UuC2ybyEi5XMxkaPBGq8WfeQNGvEN4GYobPRH4OogXPkEkqlwzQqYh2l+IB0?=
+ =?us-ascii?Q?5cnrdRaZP1vWIUVXSpyGkv+CkwCF1Pkn53nEsBtk1e2HoM9n23dqBH0EDytx?=
+ =?us-ascii?Q?BggIVNJOQ7CzoqXLaIZlcOB4oAIeuta3Rrsy2kMPIA9MoVonrZHf5mzZTA+G?=
+ =?us-ascii?Q?9LO/eCydfyM1fpeYCXEo8COI4n5UlEV842MT0N8ViVjul0LM/vjgVMff4R4Y?=
+ =?us-ascii?Q?20gy6OAb6UMWCMdEXgNIpun9rDPwxbDER1dMD5/wR1DPcShujyybbh7DA/sj?=
+ =?us-ascii?Q?TbEfV5VxyDhmMq2w3o2j1JciRdQVJ4B3d+tabrWPU9TqWbLH9ZbGAefB23eH?=
+ =?us-ascii?Q?hzZ32sXXQLVHdYZkbXeXdgtNwcOt/iRf3xA64hxG0723UlAyaFRC?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e7d1d66-74e7-4878-85ed-08defd558f57
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB11784.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 18:21:46.9398
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EGICOBBQzTxGTC7kFiFzGntAYlggmtByEcbSmnJNjz+XDb7++1mzH8wIPqw4jJ9FYUn6HjLw6GmvKGBlgmT1MDnL6aUke/Q5d32qyYsyM+76qRmypf10lNkZeuRQr8Dd
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMCPR04MB12624
 
-On Thu, Aug 13, 2026 at 11:15:04AM -0500, Frank Li wrote:
-> On Thu, Aug 13, 2026 at 12:43:29PM -0300, Leonardo Costa wrote:
-> > On Thu, Aug 13, 2026 at 09:58:52AM -0500, Frank Li wrote:
-> > > On Thu, Aug 13, 2026 at 10:33:35AM -0300, Leonardo Costa wrote:
-> > > > From: Leonardo Costa <leonardo.costa@toradex.com>
+On Tue, Aug 18, 2026 at 09:04:59AM +0000, Pankaj Gupta (OSS) wrote:
+> > > > > --- a/drivers/firmware/imx/ele_common.c
+> > > > > +++ b/drivers/firmware/imx/ele_common.c
+> > > > > @@ -101,15 +101,15 @@ int se_val_cmd_addrs(struct se_if_device_ctx
+> > > > > *dev_ctx, struct se_api_msg *msg,
+> > > > >
+> > > > >             addr = msg->data[f->lsb_idx];
+> > > > >             if (f->has_msb)
+> > > > >                     addr |= (u64)msg->data[f->msb_idx] << 32;
+> > > > >
+> > > > >             /* Zero marks an absent optional buffer. */
+> > > > >             if (!addr)
+> > > > >                     continue;
+> > > > >
+> > > > >             if (addr < base || addr >= end)
+> > > > >                     return -EACCES;
+> > > > >
+> > > > >             /*
+> > > > >              * When the message also carries this buffer's length,
+> > > > > the
+> > > > whole
+> > > > >              * buffer [addr, addr + len) must fit inside the
+> > > > > window, not
+> > > > just
 > > > >
-> > > > Add a device tree overlay enabling the Toradex Capacitive Touch Display
-> > > > 10.1" LVDS V2 on the Verdin Development Board with Verdin iMX8M Plus
-> > > > Mezzanine expansion board. The panel connects via the i.MX8M Plus LCDIF
-> > > > on the Mezzanine LVDS interface (J10). The panel is an Opto Logic
-> > > > SCX1001511GGC49 10.1" WXGA TFT LCD LVDS and the touch input is provided
-> > > > by an ILITEK ILI251x capacitive touch controller.
+> > > > [Severity: High]
+> > > > Does this code prevent firmware from reading outside the shared
+> > > > memory window when the command lacks an explicit buffer size?
 > > > >
-> > > > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> > > > Link: https://developer.toradex.com/hardware/verdin-som-family/add-ons/verdin-imx8m-plus-mezzanine
-> > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > ---
+> > > > For commands like ELE_OEM_AUTH_CONTAINER_REQ that use
+> > > > SE_CMD_ADDR_NO_SIZE with no buf_size, only the start address is
+> > > > checked against the bounds. If a caller provides a start address at
+> > > > the very end of the window (e.g., end - 1), could the firmware read
+> > > > the payload out-of-bounds into adjacent physical memory?
 > > >
-> > > what's difference with Add Toradex Capacitive Touch Display 10.1" LVDS V2
-> > >
-> > > why not share one dtso?
-> > >
-> > > Frank
+> > > - Not a bug - by design.
+> > > - The existing comment explicitly documents the rationale:
+> > >    -- this is a read-only input buffer
+> > >        --- (firmware copies the container header into its own internal memory
+> > for authentication; no DMA write-back through this address).
+> > >    -- A rogue caller can at most cause firmware to read within the shared-
+> > memory window it already owns.
+> > > - Output buffers must be fully bounded;
+> > > - Input-only buffers are safe with addr-only checks.
 > >
-> > Hi Frank,
+> > Why? at lease addr should include payload size?
 > >
-> > There are two main differences:
-> >
-> > 1. The mezzanine one uses different backlight controll pins, so here we
-> > use the 'backlight-mezzanine' node, instead of the 'backlight' one, used
-> > in the one without the mezzanine.
-> >
-> > 2. The touchscreen GPIO and interrupt pins are also different with the
-> > mezzanine board.
-> 
-> 
-> And there are for imx8mm
-> https://lore.kernel.org/imx/20260724-v1-verdin-imx8mm-dtbos-v2-3-9d7988bd76f6@toradex.com/
-> 
-> https://lore.kernel.org/imx/sr26lfvwasgcosfzcf4ydtwxwjjutlio2yqpgxldatpzjo7e4y@77k7gefnjzvl/
-> 
-> Any ways, it is too late for 7.3, we have enough time for 7.4 to discuss
-> work on optimization solution.
-> 
-> If use nexus connectors, we can share one dtso now if there are not
-> clock settings.
+> > Frank
+>
+> Payload size is encoded inside the OEM Authentication Container itself.
+> For ELE_OEM_AUTH_CONTAINER_REQ, the API only passes the start address of the container to firmware.
+>
+> The kernel cannot validate the full container size because determining the actual payload size requires parsing the container header, and that header is interpreted by firmware using information and keys that are not available outside the secure firmware.
 
-Hi Frank,
+please wrap you reply below 80/100 chars each line.
 
-I tried implementing the nexus connectors in imx8mp-verdin-wifi-dev.dts, and
-modify the Mezzanine overlay for the LVDS V2 display to do an initial test
-(diff with the changes at the end of the email). They worked partially, but it
-introduced an issue where the drivers come up much later. Before, the drivers
-relevant for the display (in this case, LCDIF and the touch controller
-specifically) came up at around ~8s. After introducing the nexus connector they
-come up at around ~20s, after the board has already booted (complete logs at
-https://paste.debian.net/hidden/81acfa7d):
+>
+> Therefore, for this command, only the container start address is validated against the shared-memory region.
+> The firmware then reads and processes the container contents as part of the authentication flow.
+>
+> Also note that this is a read-only input buffer.
+> Firmware does not perform any write-back through this address.
+> A malicious caller can only provide invalid input data for authentication,
+> which would cause the authentication operation to fail.
+> It does not provide a mechanism for arbitrary memory corruption or privilege escalation from the kernel side.
+>
+> The trust model for this command assumes that the firmware is responsible for validating and parsing the container format after receiving the start address. Since the container length is not available to the kernel, enforcing an addr + size check in the driver is not possible for this request type. Any bounds validation based on the authenticated container structure must therefore be performed by the firmware itself.
 
-    [   21.008400] input: ILI210x Touchscreen as /devices/platform/soc@0/30800000.bus/30a30000.i2c/i2c-1/1-0041/input/input3
-    [   21.014785] [drm] Initialized imx-lcdif 1.0.0 for 32e90000.display-controller on minor 2
-    [   21.029634] Console: switching to colour frame buffer device 160x50
-    [   21.029823] imx-lcdif 32e90000.display-controller: [drm] fb0: imx-lcdifdrmfb frame buffer device
-    [   21.031376] imx8m-blk-ctrl 32ec0000.blk-ctrl: sync_state() pending due to 32e30000.dwe
+You can provide comments to explain situation.
 
-Was this behavior observed before? It may have not been noticed, since the
-drivers do come up at some point, and it may not be an issue for other
-interfaces, or they may actually come up earlier in other cases. In our case
-this is important though, since visual feedback from the display is expected
-early.
+Frank
 
-It seems that the drivers are being deferred at boot start by the
-device_links_check_suppliers() function. It runs through the drivers before
-they're initialized and defers them if their suppliers are not available. The
-GPIO and PWM drivers are able to follow the gpio-map and pwm-map properties
-(through the of_parse_phandle_with_args_map() function), but from what I see,
-device_links_check_suppliers() has no such mechanism. It follows the phandle to
-the nexus connector node only, and since there's no compatible driver for it,
-the function defers the consumer drivers used in the overlay.
-
-I think this is what is happening mainly because setting the
-fw_devlink=permissive kernel parameter (which sets the DL_FLAG_SYNC_STATE_ONLY
-flag) solved the issue, though I could be misunderstanding something.
-
-	int device_links_check_suppliers(struct device *dev)
-	{
-		...
-		list_for_each_entry(link, &dev->links.suppliers, c_node) {
-			...
-
-			if (link->status != DL_STATE_AVAILABLE &&
-			    !device_link_test(link, DL_FLAG_SYNC_STATE_ONLY)) {
-
-				...
-				device_links_missing_supplier(dev);
-				ret = dev_err_probe(dev, -EPROBE_DEFER,
-						    "supplier %s not ready\n", dev_name(link->supplier));
-				break;
-			}
-			WRITE_ONCE(link->status, DL_STATE_CONSUMER_PROBE);
-		}
-		...
-	}
-
-Has this behavior been observed before? Do you know of any work being done that
-addresses this?
-
-See below the changes that I made for this test, relative to my last patch
-(only a draft):
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-mezzanine-panel-cap-touch-10inch-lvds-v2.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-mezzanine-panel-cap-touch-10inch-lvds-v2.dtso
-index b78322907192..4aa1c407af3f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-mezzanine-panel-cap-touch-10inch-lvds-v2.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-mezzanine-panel-cap-touch-10inch-lvds-v2.dtso
-@@ -21,9 +21,19 @@
- #include "imx8mp-pinfunc.h"
- 
- &{/} {
-+	backlight_lvds: backlight-lvds {
-+		compatible = "pwm-backlight";
-+		brightness-levels = <0 45 63 88 119 158 203 255>;
-+		default-brightness-level = <4>;
-+		/* Verdin GPIO 4 (SODIMM 212) */
-+		enable-gpios = <&lvds_native_connector 1 GPIO_ACTIVE_HIGH>;
-+		/* Verdin PWM_2 (SODIMM 16) */
-+		pwms = <&lvds_native_connector 0 6666667 0>;
-+	};
-+
- 	panel-lvds-native {
- 		compatible = "optologic,scx1001511ggc49", "panel-lvds";
--		backlight = <&backlight_mezzanine>;
-+		backlight = <&backlight_lvds>;
- 		data-mapping = "vesa-24";
- 		power-supply = <&reg_3p3v>;
- 		height-mm = <136>;
-@@ -53,13 +63,6 @@ panel_lvds_native_in: endpoint {
- 	};
- };
- 
--&backlight_mezzanine {
--	/* Verdin PWM_2 (SODIMM 16) */
--	pwms = <&pwm2 0 6666667 0>;
--
--	status = "okay";
--};
--
- /* Verdin I2C_2_DSI */
- &i2c2 {
- 	#address-cells = <1>;
-@@ -69,10 +72,10 @@ touchscreen@41 {
- 		compatible = "ilitek,ili251x";
- 		reg = <0x41>;
- 		/* Verdin GPIO_3 (SODIMM 210) */
--		interrupt-parent = <&gpio1>;
--		interrupts = <5 IRQ_TYPE_EDGE_RISING>;
-+		interrupt-parent = <&lvds_native_connector>;
-+		interrupts = <1>;
- 		/* Verdin GPIO_2 (SODIMM 208) */
--		reset-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
-+		reset-gpios = <&lvds_native_connector 0 GPIO_ACTIVE_LOW>;
- 	};
- };
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-index 72a4f846d694..1103da3d34ba 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-@@ -4,6 +4,28 @@
-  */
- 
- / {
-+	lvds_native_connector: lvds-mezzanine-connector {
-+		// NOTE: Placeholder name, no binding for this yet
-+		compatible = "tdx,verdin-lvds-connector";
-+
-+		#gpio-cells = <2>;
-+		gpio-map = <0 0 &gpio1 1 0>, /* Touchscreen reset GPIO */
-+			   <1 0 &gpio1 6 0>; /* Backlight Enable GPIO */
-+		gpio-map-mask = <0xffffffff 0x0>;
-+		gpio-map-pass-thru = <0x0 0xffffffff>;
-+
-+		#pwm-cells = <3>;
-+		pwm-map = <0 0 0 &pwm2 0 0 0>; /* Backlight PWM */
-+		pwm-map-mask = <0x0 0x0 0x0>;
-+		pwm-map-pass-thru = <0x0 0xffffffff 0xffffffff>;
-+
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-map = <0 &gpio1 5 IRQ_TYPE_EDGE_FALLING>, /* Touchscreen interrupt */
-+				<1 &gpio1 5 IRQ_TYPE_EDGE_RISING>;
-+		interrupt-map-mask = <0xffffffff>;
-+	};
-+
- 	native-hdmi-connector {
- 		compatible = "hdmi-connector";
- 		label = "X37";
-
-Leonardo
+>
+> Regards
+> Pankaj
+>
+> NXP Confidential
