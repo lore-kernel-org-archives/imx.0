@@ -1,118 +1,122 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F960282F3A
-	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 02:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63859282F1E
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 02:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787106027; cv=none; b=lGnA/KgNvZQRJaB1om/n1pLh0GDzYA+oFne3hk3rkQVa1ATE0Rk9nhnI3OtrqFzU6tTaDjFvR/Jayfow+1wJTJvKhWTk89fv5hE5WdZFVyPsabq7s3ZgCtNlNzUwFQqRwiecOx+hveb7LnMfgR0OGqnJ6UJw/SYhNejcxhWezbY=
+	t=1787106941; cv=none; b=vDRUDoka0c6jdRrKcry1KuiWhYf/W78hZoFc4vpkJzGLEoC2kJx9IQ0Md5eYB0qBYxM5EXlTpKIUmGT21FmHlyPd6kHSdVDGTmfEB3c9fAYcrnAQJgDLoN02aVay0NGGqjshNmXBZOLXwWJun5TRYOJESNqF6cqAQk+msHlXLyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787106027; c=relaxed/simple;
-	bh=OXEufZy6jRZLSh8G4vNttI4g37voPQPxQMaRI9h5bR8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NRi9xRlSduXvx9i7pcM17qO5VwXEyVHPXijIt76pM96JMq55VY4CnMMQKJ+nIAN8wWHQ5apYdF2MJnMtj16D85yOfpaNT7KgQJ/cjbKq5JS7R4CxWEpSSBK9tqXX17rj3nvQQmsT79k+Bk/tVOdGNpJOAAFB84y1nP7b98cq75A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wC3gX3bEoVq7JmmAA--.42198S3;
-	Wed, 19 Aug 2026 10:20:12 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app1 (Coremail) with SMTP id yy_KCgCHiaPbEoVqNqb7Aw--.26282S2;
-	Wed, 19 Aug 2026 10:20:11 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdown and remove
-Date: Wed, 19 Aug 2026 02:19:16 +0000
-Message-Id: <20260819021916.442827-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1787106941; c=relaxed/simple;
+	bh=PDMz+Awr5mVU764bcCM43i5i/kp6LKHqzmbxMOLso7o=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JiubgMgHPt7rIDTfnoUSH5J/HqhwPDANShKwbsbbmBtlQ9Xi+EC/ewLn3qYvj9JRfWdFtIpN3fJ0QDsdZ29ftShnDTWC+i/Aw3mpp4Y+xNj6VGHB7SRftzFJ/7W5/Vcbw2CSs5LeNtEPaHBA3sbJq378nxhm+Xk3Fq1F+PPnoPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ip5hr8lX; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ip5hr8lX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2478E1F000E9;
+	Wed, 19 Aug 2026 02:35:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787106939;
+	bh=k8c3xlJF1di+1tl+S1+TuAa5ZBqUVPX6hMCWf/Qfu4A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ip5hr8lXn7h5act42QM6RYOpRDTft1Je4v+C5ZFjgBpfBXluZATZf1OBzWs7GUOL/
+	 L1usR6ftS84z89QkobopfztoZlmqscpV1S9wbre125xSsnWgdxJDnSdaDfV0ERYYXc
+	 6BPClcfYBa1Wt3pFsOTf7k++/U2mpSAMAsMB/bYRclBVcB1y81CX/zMRsQLSL0kgBR
+	 h46oTU25qkkKTzSDKju7NSnMuv3xaq4/GGwVxJZyI+Hf4dtJSJZ5fQp5oh2YB4FzSC
+	 bj24DZq7VXo+uLyTGscIr/FUtGt8waCTbjQ749f92GDB3EEQYHmIz8wIlGEs1GZKMG
+	 kNEE72JKJyicw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdown
+ and remove
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Fan Wu" <fanwu01@zju.edu.cn>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260819021916.442827-1-fanwu01@zju.edu.cn>
+References: <20260819021916.442827-1-fanwu01@zju.edu.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 19 Aug 2026 02:35:38 +0000
+Message-Id: <20260819023539.2478E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yy_KCgCHiaPbEoVqNqb7Aw--.26282S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?hwMz9wXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnVCjTgEH9dVomQuWcozCBBFqHGffgUj/kiZ79lR96Dn6tPZKPn6Kv4uFpy6/Kyifm6gz
-	W5tHy1KOfp+zmAq5OVip9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kw48Kw4xXr4kJFWrCr47Jrc_yoW8tryxpF
-	Z2gr9IkFWqqa1SvanrAF1jgFW5twn3AFW7Gr1xGa4Fv398JF1FkF13KFZYvFW7t34UtFWa
-	vr48tr4DCFZrtFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
-	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
-	6r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
-	Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
-	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
-	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
-	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
-	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7gAwDUUUU
 
-The rs485 delay hrtimers trigger_start_tx and trigger_stop_tx are
-embedded in the devm allocated struct imx_port, and their callbacks
-reach the port through container_of() and touch registers under the
-port lock.  Nothing cancels them synchronously: the tx paths only
-call hrtimer_try_to_cancel(), which does not wait for a running
-callback, and the bounded wait in imx_uart_shutdown() can give up,
-force tx_state to OFF, and leave a timer armed.  After
-imx_uart_remove() returns, devm frees the port and a late callback
-dereferences freed memory.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Cancel both timers at the end of imx_uart_shutdown(), after the port
-lock is dropped and before the clocks are disabled, and again in
-imx_uart_remove() before the devm free: serial core does not call the
-driver shutdown on every path that reaches remove().
+Pre-existing issues:
+- [High] Missing cancellation of `sport->timer` and modem status GPIO IRQs =
+in `imx_uart_remove()` leads to a use-after-free and system crash (bus faul=
+t) for console ports.
+--
 
-This issue was found by an in-house static analysis tool.
+--- Patch [1]: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdo=
+wn and remove ---
+commit 00c3fef931cf8afdbbbb1c6e8dc49797a632d082
+Author: Fan Wu <fanwu01@zju.edu.cn>
 
-Fixes: bd78ecd6056d ("serial: imx: use hrtimers for rs485 delays")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
- drivers/tty/serial/imx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+serial: imx: cancel RS485 trigger hrtimers in shutdown and remove
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 251a50c8aa38..86c99f73c50a 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1707,6 +1707,10 @@ static void imx_uart_shutdown(struct uart_port *port)
- 
- 	uart_port_unlock_irqrestore(&sport->port, flags);
- 
-+	/* The rs485 trigger callbacks take the port lock and touch registers. */
-+	hrtimer_cancel(&sport->trigger_start_tx);
-+	hrtimer_cancel(&sport->trigger_stop_tx);
-+
- 	clk_disable_unprepare(sport->clk_per);
- 	clk_disable_unprepare(sport->clk_ipg);
- }
-@@ -2649,6 +2653,10 @@ static void imx_uart_remove(struct platform_device *pdev)
- 	struct imx_port *sport = platform_get_drvdata(pdev);
- 
- 	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-+
-+	/* Serial core can reach remove() without calling the driver shutdown. */
-+	hrtimer_cancel(&sport->trigger_start_tx);
-+	hrtimer_cancel(&sport->trigger_stop_tx);
- }
- 
- static void imx_uart_restore_context(struct imx_port *sport)
+This commit cancels the RS485 trigger hrtimers synchronously in
+imx_uart_shutdown() and imx_uart_remove() to prevent use-after-free
+after the devm-allocated port is freed.
 
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 251a50c8aa387..86c99f73c50a3 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+
+[ ... ]
+
+> @@ -2649,6 +2653,10 @@ static void imx_uart_remove(struct platform_device=
+ *pdev)
+>  	struct imx_port *sport =3D platform_get_drvdata(pdev);
+> =20
+>  	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
+> +
+> +	/* Serial core can reach remove() without calling the driver shutdown. =
+*/
+> +	hrtimer_cancel(&sport->trigger_start_tx);
+> +	hrtimer_cancel(&sport->trigger_stop_tx);
+
+[Severity: High]
+This is a pre-existing issue, but since we are cancelling timers in
+imx_uart_remove(), does this function also need to cancel sport->timer and
+disable the modem status GPIO IRQs?
+
+If the system boots with hardware flow control enabled on the console,
+imx_uart_console_setup() sets termios, which calls imx_uart_enable_ms() and
+arms sport->timer.
+
+If the driver is unbound via sysfs or the module is unloaded,
+imx_uart_remove() unregisters the console, disabling the UART clocks.
+However, it does not cancel sport->timer or disable the MS GPIO interrupts.
+
+When devres frees the imx_port structure, the timer can still fire:
+
+drivers/tty/serial/imx.c:imx_uart_timeout() {
+        struct imx_port *sport =3D timer_container_of(sport, t, timer);
+        unsigned long flags;
+
+        if (sport->port.state) {
+                uart_port_lock_irqsave(&sport->port, &flags);
+                imx_uart_mctrl_check(sport);
+                uart_port_unlock_irqrestore(&sport->port, flags);
+
+                mod_timer(&sport->timer, jiffies + MCTRL_TIMEOUT);
+        }
+}
+
+Could this lead to accessing the freed sport struct and reading disabled
+UART registers, resulting in a use-after-free and system crash?
+
+>  }
+> =20
+>  static void imx_uart_restore_context(struct imx_port *sport)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819021916.4428=
+27-1-fanwu01@zju.edu.cn?part=3D1
