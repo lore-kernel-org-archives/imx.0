@@ -1,253 +1,197 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010068.outbound.protection.outlook.com [52.101.69.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613E42D593E;
-	Wed, 19 Aug 2026 09:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787130180; cv=none; b=C9hcm5VXC3vB1NBWAl4FeoJoyuRAvb1LPe78CJtFsuPKIn7Wt/y7jR0qaDSk05ZwHu1ph/8iWfjLqhCEIfSpkFmVt1IAZO7vIGGaoSLwO59zWAfiJnL41Wzt7aqkR9VwTWZR+ZWHqNL7Qz26ThcX2ENqkHmhI2IYwDfMO+uksbc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787130180; c=relaxed/simple;
-	bh=LqwDv65ukW0pZ/l4HMlI0o35+RIxlNikoEbgozCev8k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gg8GtJTQusq9g92oWfvcNPFfKa5YbOKhhUAw3PDIiV2dBHEcsd1jl+a/SPWhWbnw3KVl96VtUfEN0eh1/JhLx9DtIS2AIb0EF7jcknYdrG5VuuEnYeJ1Fc8+IC1bqESiD2c028paU9K39yxBUsSfcmcr3vy8LVb6tUtSvs+sT/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e/GaAJJl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PBCXYqmL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y07gBOrv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TKspYuzE; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CB23E00A3
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 09:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787130355; cv=fail; b=UZFiHBbB/DrEaAXgsUkwseeHnnz7P1WhfxHOT4qFaT7D0+fhE6dNc0dEqnatm75t4B8n22u87YqmUBh7LgrH8OmHJvL/VgILC3wixPhJyP/7KAG4Mf6kp0rFmFhGmat9dA470GhoN17ONoTH4FjCGciTZdrpG/GFMPc4gM2Qiec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787130355; c=relaxed/simple;
+	bh=KdafO3UQAa8uLWACwZPJmH4bTfLFHWsFaYiz93QUMuU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Js3/9I5P+FYrZ559o7yfe7uC7YNDnpoBW22Fjg18YNrSQgLFi0xwnRMSDIdVumpWz1YK6nJdicA6UBdh/JscrXgNevWC6QE8GflkSIN4Ho6QvEJ7FMfnjPUwXJW1dRvtJZCPMSMSErn0vHelaOw0U2IgN/tV2fFtsUgYR0e+y0k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IQhAV8hi; arc=fail smtp.client-ip=52.101.69.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e/GaAJJl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PBCXYqmL";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y07gBOrv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TKspYuzE"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4440884A46;
-	Wed, 19 Aug 2026 09:02:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787130167; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
-	b=e/GaAJJl9rKMTEZgRRdA72r2zB5/k6n0oVYabEgQgrLbC0A9zTL0NTI+iB3DMjviafq9UI
-	W078KGzQ44wIVLRNhlrsvThPtYrtm9F5aCMBTCAqLbyum5jMNlVhvEMcFPTLF8VzwYt+lh
-	sQdiCjfU5p1IpnoFVUbRIsI86OWUIXs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787130167;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
-	b=PBCXYqmL+PpD0kP9dfdrg0qOa3wodnJNbfowwlEVEVZWiEc9+LRgbnaXUN/ApgfdsWEtls
-	VFHgXArZtMLMtICA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787130163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
-	b=y07gBOrvzogxVxJ4+dnEhH6yUnqrcM9IsfOEo9m7Q6xvIsE8I4/SG+72+Mh+zDwI8tB/bd
-	xs86vrV1uXIkkdL5dIcbwzcETXEDEnsCLtwGpc9+vakX7BN8TbGVsuKuaVP77As885lYEK
-	p9Kc1gqR1F4gBkG5xuVZcSBN7T/8CKk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787130163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
-	b=TKspYuzEzY14ZdjPaUtFZPDk99lFK+oADgXA5poKvzKjhPNvScITARf6NU4E8NZBPfsxIx
-	XfpHdYc8xAOU/LBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 09DE577A30;
-	Wed, 19 Aug 2026 09:02:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TtX+ADNxhWr2FgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 19 Aug 2026 09:02:43 +0000
-Message-ID: <2011cebd-7e7e-4087-a445-fb2579861ef6@suse.de>
-Date: Wed, 19 Aug 2026 11:02:42 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IQhAV8hi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ssJsXtpWPCJfm23t8LaspI3V8nWAdkI0hCRAxb3L+lQtx/GAMMpw2eaojXGdlR4bLGiAy/vG0i6O/ExkmvnJTGY6maxkiRVAkOSy87WTNRFL1iRV3XL0uw96OTGEtz/msOjoyue3YtHZd6B4SMD53D9XGjemwHl39Q+DzssDsiBh8dLmkOHvJbnbaH7Fcqa0LJZW5x+7U0Sknx4K0HnCi6RBlYt8MHh5BDPNChiTFxAUzSm+Ydx9Tfsk1IZVSwr6YrzEnjO9K82k6IDhq1R7XcegydsTbd7LGjYu5YVIoC11/bwKvXZ4pwmg2nfUsytjQIcA9AqapUCP6J6Iu9qyBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ITSTQ7B2SYldCE8RvC54MMU7N4bR4gbFrtXiEu+D3ks=;
+ b=q8vDGONxoPambGj7/tuqUkkDtWdIHkFFQO11opm1coB1o5EC2diyycp6pg0ouu2riZCNDxfBb6UUPE4YAqmOGmbTZQvzEeaFkLJhXfueAfFxbU//a1R1qd+YjB57hKF1ZCLhCkcAS2exSp6r9Xg2pfCrD8y3Gec7+hwaGCCv6cgveo/+GGv7c/ga83zGLHnQOq3mPIfLd5lshmxj6vKPKejmc5FbxW7sD3QV8ArbsBtooGiF/oQLsb0pbz/6Cwh5G+DQp0VuJc4XrNLEzAQESlVc6/Sj4bEW5Qz4eFRE2m5KNHX4sVuT0u2K4qs2mzeM06SDORPu7ydxDHI28v+jiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ITSTQ7B2SYldCE8RvC54MMU7N4bR4gbFrtXiEu+D3ks=;
+ b=IQhAV8hiRdYnuvey9qvye5v09n1vt/eiaYajRX1jcofPYaYGlCcENI/q5GgTWkKPPI6NIOKN5uuND21tPWB+XI4EQBtcBfD9hV8BLQA1M9xvE+Oyjf0vHBpLC86CKNzP/Yqbtp4Bn2TWwhvnhXOB8IWIwLoD12hq0OmHSnxWEbq30xEtB0dXbQpiPnEDVsuMijGv93lkqK7eEZnIOIa5zL3uEoCn6uM/m3rU6tw4s9kpYfCqWuAhXjIiSinEM4rp8DhBtccVPSPF4zQGHct4/Yd5jOfnqYiDWSPc7zIZMg3/RDc89TZUjoUaKrHj26rgGQtGF1lsKa7mMIkF6F0waw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB8PR04MB6858.eurprd04.prod.outlook.com (2603:10a6:10:113::9)
+ by DB8PR04MB7146.eurprd04.prod.outlook.com (2603:10a6:10:127::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 09:05:50 +0000
+Received: from DB8PR04MB6858.eurprd04.prod.outlook.com
+ ([fe80::bc6f:5fd7:462:d0b5]) by DB8PR04MB6858.eurprd04.prod.outlook.com
+ ([fe80::bc6f:5fd7:462:d0b5%6]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 09:05:50 +0000
+From: Zhipeng.wang_1@oss.nxp.com
+To: Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jindong Yue <jindong.yue@nxp.com>,
+	xuegang.liu@nxp.com,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/5] irqchip/imx-irqsteer: Allow building as module
+Date: Wed, 19 Aug 2026 18:05:38 +0900
+Message-Id: <20260819090543.585131-1-Zhipeng.wang_1@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0012.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::8) To DB8PR04MB6858.eurprd04.prod.outlook.com
+ (2603:10a6:10:113::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] drm/panic: Display panic screen via per-plane
- callback
-To: sashiko-reviews@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Frank.Li@kernel.org, linux-hyperv@vger.kernel.org,
- wsa+renesas@sang-engineering.com, ojeda@kernel.org
-References: <20260818125012.468092-1-tzimmermann@suse.de>
- <20260818125012.468092-10-tzimmermann@suse.de>
- <20260818131951.154171F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260818131951.154171F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.994];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[renesas];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,suse.com:url]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB8PR04MB6858:EE_|DB8PR04MB7146:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6860856b-e0a4-443a-0bcf-08defdd110c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|19092799006|376014|10067099003|56012099006|6133799003|3023799007|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	bWPfXLuZp72So/+DdfSakgoUn9NTDc0Zm9zxrv82MUtCzAzwU7YArNmBAWkNnR+X41rbfG3MfUvEJp+N13aHDFPbna+3WKSag43PMCGKQsuSmpdqgdybQYo2xA+ycFhZFYLgU+36VdIJR8puFcDL2MAn0bVb2gb91qlG2AEc1ASG04rx8QbeOypFGKb6ByXIJiMRnBkac3CphB6RJlwsgkB59neuIMvfBDbvdltEPtMSWi35fLSokKd2GFNR57XGH/1aTNb9ipr83CEBMJSGqdShpaIYcCLzXD9Yh3sX6WqKSUG5N9Dcv1hX9fplPmpi1aPAwTKy8moymphulWKQa3UMseiYBzBY2Gs4FZVu/+b74DMIZvL4S+Ju/WAyxWfAb9SDfS9aNNkTFxAhaEHXUMsxKW/cRolJTpmlO//XzRLnsqZpM7zLpruSrKR2ipD6OSsRN9JWTxzW9B/wajzGMp6I7jax9SJNm3mcmP+EQkAhu4P+Py320nqo1mDP9dYRVC8gw549I/zTgsk3j3a6Si/wPuMCDub+udnOiLudZEw4N+XMS3NKPyWVd6iFBEzm6e2IXAXi4X4k0LalbwbTBLyhQ72dXmzzLcIjMKhO3GdyIUsj3uBSBNZyPkWUxP/cs5QU3kEiX1h1D1ArDuhGnTh3X5WZgW5l/rWAGXYLiO8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(19092799006)(376014)(10067099003)(56012099006)(6133799003)(3023799007)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iNdybo9ZEy+dTfcqNOypXu5ybDjtw9sGZHKlbPnA8EylM1UifzI1Db/ytE2Q?=
+ =?us-ascii?Q?NwnMNwNTfCZ59kB/7UDhRvjmf72UWrTat2NAlPTsObOn28BDnKSpDeDEzBsG?=
+ =?us-ascii?Q?Nu/768uAI0XiyycKU8EBW6nV2wVJE3fdxXDIOB+4D6AwPd8pJXVi/6Bn18El?=
+ =?us-ascii?Q?Wp8Z/3uhV7vHDFiJq0vv95v23fun3Ed0pR+EPzqK5CQg/i3HA8277uNpcA+d?=
+ =?us-ascii?Q?ug6ImXUGUD1t/aOjjm5wUp90zeXgqc58xnn487WtKUkbDxsD5YY8FFO0DX8s?=
+ =?us-ascii?Q?J85pgryMZw1w5je7GXuSQTnTDppkkXvlAjqwx5q11brrT8+FkKDZNyf1ASiU?=
+ =?us-ascii?Q?y8g2s8nQi3Ud1Po1XulxglG84CV0KVfvVIjtmRHZNI2imaCffMPqvezhb5DV?=
+ =?us-ascii?Q?eNCHwSdeupYPUZDVwoYLPO0KlQ/2WA8nOoyJXQY3y0KTjxkFHoSGTG1APCvT?=
+ =?us-ascii?Q?Hz7VyQ8EmBBAUxAAVcssqCmqa+K7GkisfXxRQhhw4iWDBEfMIxxXrpClIfRk?=
+ =?us-ascii?Q?J0Q02v3cpSXP2Lr/R8r0R0lO2ULCoxPPO3Lsjg4OTRdsLxDQd3REybEy1Tql?=
+ =?us-ascii?Q?iiFzGwysCEZT/jU31iy3vxJS+nwuVvJJh8ANLXOpqLe8jLL43Dt/0rW8Cf1x?=
+ =?us-ascii?Q?tFV91vYYbtxn7+31ed7xMX3RuVLAg6nwVnEVHG+LOmLN3O9BJfec7iIMeUQE?=
+ =?us-ascii?Q?EfZI4s8ae2cnHN7Y80iFxvQcMyvIOSUCqD8IR3cz+AORPHounWCRKU8a0j3r?=
+ =?us-ascii?Q?oJ9LtxLhqJK3FWnN1J7yYimNVgA3HLoMBYsu5bLv2EmN4kbmSfgmWg/DDRh9?=
+ =?us-ascii?Q?Gn7kDOiK5U001FQGnBelLh4eDu4zxv2fKK8eK6121vugvr+0ES/4kwZHCl0b?=
+ =?us-ascii?Q?qLlwshFaM1Wp49zFy25yJd0T6QhI2+IdaJCRsUBWT+GYep2vNklmLeV/Dge9?=
+ =?us-ascii?Q?vXKoiDJGxJxLT4fHHPWgmjxJTbcDvDB6mVBHeWTVjB44kf8adm1GzKAYHJQ2?=
+ =?us-ascii?Q?tIlfMoWANu9HJbUqRZr1fER3mHE73hi5Rh26ZukCdK63HNO9UM+kI/lz8Uo3?=
+ =?us-ascii?Q?B826umrDH1Psomu+Q1d816QzXiEo1xr4vSg34aEnbRcD0MZ1/xGq1QMWIAJA?=
+ =?us-ascii?Q?2foO2KhFwOrFv3UOnwkVs6T+iAaO5f8cjotv1F4exAfI2Z6Rz9riEIS+TZUP?=
+ =?us-ascii?Q?tvPwbz1/aDCvyMnIEtJvtI0Ug/2drq7bUn4whBDOHWUv3KiIbvlfAs0hPzRt?=
+ =?us-ascii?Q?gTJpKG6WnZjZOFzxIgWM0ITdlwzSw8MIBm5HhA+TC4K9Nf0/7yrE6FPDttho?=
+ =?us-ascii?Q?N5X+7gOQdfvGmuLigtKRQrY5ycYa3toel1lixaFqsknmfrtSakuU89VfB6Im?=
+ =?us-ascii?Q?5Ihw97Hk/Or+SQoOE2Krbi+deewcU+gM3HNCgmNX71I41ZzZRgleGFKRi55w?=
+ =?us-ascii?Q?8tPBFMEkzG4mLHD0tbtZUElppai0fw1xVKK4tzs0c7UajOlGa+FJsqaMoYTn?=
+ =?us-ascii?Q?OcF51UMgqXgeDWwmdNddJMbFlFwkG0wxnPGDNTlszhhiDeptOvxUz62uR1bw?=
+ =?us-ascii?Q?wLojrlHgOggfQWdXSWR595srRBkON7ScBANhTxIIfTwus2zGjgXZRkkNZQVd?=
+ =?us-ascii?Q?fkPShj+VNzd5bMKA+Uym2eHJcmnsN6nkCjBa6idiIMgI4lD9h3ed5QkjDKZc?=
+ =?us-ascii?Q?FWsruNK2yMoUwJBzdJuY5reSUfFp7UAoFwYAlZaOiKfBJZBzzbbFp0Gsaofn?=
+ =?us-ascii?Q?AxXuO8/uTQ57/e8sQGqSWE87TBfgq5/oyYfj+CyqKTazdsBbILBM?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6860856b-e0a4-443a-0bcf-08defdd110c5
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB6858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 09:05:50.7671
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bA74LwnPSkAua/KlUvArpyjEf+nTvTLnSKm3znbxfyfko8w0eTRlX3e2lM5AoIb3DnI3sQaPxfENB0Oho15OR3pQNYLHHqHMbZzDre/h6ILTFepIm883uKKhYFgocNXt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7146
+
+From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+
+This series makes the i.MX IRQSTEER driver buildable as a module.
+
+v3 was a four-patch series: three fixes for pre-existing bugs that only
+become reachable once the driver can be unbound/reloaded, followed by
+the module conversion. On v3, Frank Li reviewed the unload-path fixes
+and asked for three changes, all addressed here:
+
+ - The probe() error-path irq_domain leak was fixed by hand-rolling an
+   err_domain label. Frank suggested a devres-managed domain instead,
+   and to add a reusable devm_irq_domain_create_linear() helper so other
+   drivers benefit. Patch 1/5 adds that helper (the devres sibling of
+   irq_domain_create_linear()); patch 2/5 switches imx-irqsteer to it,
+   which fixes the leak structurally and lets remove() drop its explicit
+   irq_domain_remove().
+
+ - Frank questioned why remove() disposed of the mappings "twice". The
+   two loops disposed of two different sets: the parent output mappings
+   the driver created with irq_of_parse_and_map(), and the child input
+   mappings the domain handed out. The child mappings are freed by their
+   consumers and, with the domain now owned by devres, are torn down
+   automatically; only the parent mappings need explicit disposal. Patch
+   3/5 disposes of the parent mappings only, dropping the child loop.
+
+ - Frank pointed out that masking in remove() touches CHANMASK while the
+   device may be runtime-suspended with the clock gated. The remove()
+   masking is unnecessary: the next probe() quiesces the hardware before
+   it re-maps and unmasks the parent interrupts, which is the only window
+   in which a stale line could storm. Patch 4/5 therefore masks only in
+   probe().
+
+Patch 5/5 then converts the driver to a module. As in v3, it lets devres
+own the clock and runtime PM (devm_clk_get_enabled() +
+devm_pm_runtime_set_active_enabled()).
+
+Changes in v4:
+ - New patch 1/5: add devm_irq_domain_create_linear() (Frank Li).
+ - Patch 2/5 (was "Fix error handling path in probe()"): use the new
+   devm helper to manage the domain instead of hand-rolling an
+   err_domain label; remove() drops irq_domain_remove() (Frank Li).
+ - Patch 3/5 (was 2/4): dispose of the parent mappings only; the child
+   mapping disposal loop is removed (Frank Li).
+ - Patch 4/5 (was 3/4): mask interrupts in probe() only; the remove()
+   masking, which could touch registers while runtime-suspended, is
+   dropped (Frank Li).
+ - Patch 5/5 (was 4/4): no functional change; remove() and the probe()
+   error path now only dispose of the parent mappings.
+
+v3: https://lore.kernel.org/r/20260807072346.1222389-1-Zhipeng.wang_1@oss.nxp.com
+v2: https://lore.kernel.org/r/20260728092219.525449-1-Zhipeng.wang_1@oss.nxp.com
+v1: https://lore.kernel.org/r/20260724090136.3595894-1-Zhipeng.wang_1@oss.nxp.com
+
+Jindong Yue (1):
+  irqchip/imx-irqsteer: Allow building as module
+
+Zhipeng Wang (4):
+  genirq/irqdomain: Add devm_irq_domain_create_linear()
+  irqchip/imx-irqsteer: Use devm to manage the IRQ domain
+  irqchip/imx-irqsteer: Dispose of parent IRQ mappings in remove()
+  irqchip/imx-irqsteer: Mask all interrupts in probe()
+
+ drivers/irqchip/Kconfig            |  2 +-
+ drivers/irqchip/irq-imx-irqsteer.c | 52 +++++++++++++++++++-----------
+ include/linux/irqdomain.h          | 30 +++++++++++++++++
+ 3 files changed, 64 insertions(+), 20 deletions(-)
 
 
-
-Am 18.08.26 um 15:19 schrieb sashiko-bot@kernel.org:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] The `drm_plane_helper_display_panic_screen` helper unconditionally dereferences `plane->helper_private` and `plane->helper_private->get_scanout_buffer`. However, by adding `DRM_PANIC_PLANE_FUNCS` to shared plane function tables (like `skl_plane_funcs` in i915 and `dm_plane_funcs` in amdgpu), the `display_panic_screen` callback is now applied to all planes (including cursors and overlays). These non-primary planes use different helper functions (e.g., `intel_plane_helper_funcs` or `dm_plane_helper_funcs`) that do not implement `get_scanout_buffer`. This causes `drm_panic_register` to mistakenly register panic dumpers for these planes, and upon a panic, the handler executes a NULL pointer dereference, triggering a nested panic.
-
-Will be fixed by testing for get_scanout_buffer from 
-drm_plane_helper_display_panic_screen().  I'll also add a check to only 
-register panic screens for primary planes.
-
-> - [Medium] The patch replaces `get_scanout_buffer` with `display_panic_screen` as the signal for panic support. However, it fails to add `DRM_PANIC_PLANE_FUNCS` to the legacy fallback `primary_plane_funcs` in `drm_modeset_helper.c`. Older AMDGPU DCE drivers (e.g., DCE 6.0, 8.0, 10.0) use `drm_crtc_init()` which implicitly relies on this legacy structure for their primary planes. Although these drivers implement `get_scanout_buffer` in their helper functions (`dce_v10_0_drm_primary_plane_helper_funcs`), their planes now lack the `display_panic_screen` callback. Consequently, `drm_panic_is_enabled()` returns false and their panic dumpers are never registered, silently breaking panic screen support on these hardware generations.
-
-Will be added.
-
-
-> - [Low] `drm_plane_helper_display_panic_screen` accepts a `panic_type` parameter (an `enum drm_panic_type`). However, when it calls `draw_panic_dispatch()`, it passes the global module parameter `drm_panic_type` instead of the passed-in `panic_type`. This logic bug prevents drivers from tailoring the panic screen implementation via the helper as intended.
-
-Fixed in an earlier patch.
-
-
-> --
->
-> --- Patch [9]: [PATCH 09/12] drm/panic: Display panic screen via per-plane callback ---
-> commit 69fa8c39afc844867e193df3659c6f6f1fb762f3
-> Author: Thomas Zimmermann <tzimmermann@suse.de>
->
-> drm/panic: Display panic screen via per-plane callback
->
-> This commit adds display_panic_screen to struct drm_plane_funcs to replace
-> get_scanout_buffer as the signal for panic support. It provides the helper
-> drm_plane_helper_display_panic_screen() and the DRM_PANIC_PLANE_FUNCS macro
-> to update drivers that implement panic support.
->
->> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
->> index 824ef3ce5de0a..eadc22a255bb5 100644
->> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
->> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-> [ ... ]
->> @@ -2177,6 +2178,7 @@ static const struct drm_plane_funcs dm_plane_funcs = {
->>   	.atomic_set_property = dm_atomic_plane_set_property,
->>   	.atomic_get_property = dm_atomic_plane_get_property,
->>   #endif
->> +	DRM_PANIC_PLANE_FUNCS,
->>   };
-> [Severity: High]
-> Does adding this macro to shared plane function tables (like dm_plane_funcs
-> or skl_plane_funcs) apply the panic screen callback to all planes, including
-> cursors and overlays?
->
-> Non-primary planes use different helper functions that do not implement
-> get_scanout_buffer. Since drm_plane_helper_display_panic_screen()
-> unconditionally dereferences plane->helper_private->get_scanout_buffer,
-> could this cause a NULL pointer dereference in the panic handler for these
-> planes and trigger a nested panic?
->
->> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
->> index 2263a11efdf63..2ecb4d1f6d470 100644
->> --- a/drivers/gpu/drm/drm_panic.c
->> +++ b/drivers/gpu/drm/drm_panic.c
-> [ ... ]
->> +void drm_plane_helper_display_panic_screen(struct drm_plane *plane, const char *description,
->> +					   enum drm_panic_type panic_type,
->> +					   u32 fg_color, u32 bg_color, unsigned int qr_version)
->>   {
->>   	struct drm_scanout_buffer sb = { };
->>   	int ret;
-> [Severity: Low]
-> Is the panic_type parameter correctly passed to the dispatch function?
->
-> The function accepts a panic_type argument, but the implementation appears
-> to pass the global module parameter drm_panic_type to draw_panic_dispatch()
-> instead of the passed-in argument. Does this discard the caller's requested
-> panic type?
->
->> diff --git a/include/drm/drm_panic_helper.h b/include/drm/drm_panic_helper.h
->> new file mode 100644
->> index 0000000000000..e296620bbe34b
->> --- /dev/null
->> +++ b/include/drm/drm_panic_helper.h
-> [ ... ]
->> +#if IS_ENABLED(CONFIG_DRM_PANIC)
->> +#define DRM_PANIC_PLANE_FUNCS \
->> +	.display_panic_screen = drm_plane_helper_display_panic_screen
->> +#else
->> +#define DRM_PANIC_PLANE_FUNCS \
->> +	.display_panic_screen = NULL
->> +#endif
-> [Severity: Medium]
-> Does the legacy fallback primary_plane_funcs in drm_modeset_helper.c also
-> need to be updated with DRM_PANIC_PLANE_FUNCS?
->
-> Older AMDGPU DCE drivers use drm_crtc_init(), which implicitly relies on
-> this legacy structure for their primary planes. Although these drivers
-> implement get_scanout_buffer() in their helper functions, lacking this
-> macro in the fallback could cause drm_panic_is_enabled() to return false
-> and silently drop panic screen support on these hardware generations.
->
-
+base-commit: bd5f485f3f026225b86573e559af0b7254ef4184
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
-
+2.34.1
 
