@@ -1,90 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535132E888A;
-	Wed, 19 Aug 2026 06:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F312C3CF046;
+	Wed, 19 Aug 2026 06:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787120166; cv=none; b=HsXmfZi1N/3xGeSOu3OPSHJC7zpnKSNuWJcNdGzMHtzYBK/FFlQxBU7nb2xQuM5sLOYvGojd51obU43wW3pRnNEqUqE9h2snmpGdi23RKFgK/hh9MBr1mct5EaRv2bf+ioigUDdYSj8DPrlJpiZPGrXbClY2Fw+H3wZxGw+ql3s=
+	t=1787120264; cv=none; b=NMRvCiRoWwI8JazgCk6/l0+edGI4n02mPedZ1z2Dp6CAw9kD7avup18I3nUNHYfXI81DuqeAeCGjDUOnJaLpmvrU2w4mN1+CVXfJ53mBr5C9F+F6tEDY21PWgVPx4rzpsap1zOeyNIPWXP8eOO1nl+zq3m5wyvi7HvjN9d3dCvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787120166; c=relaxed/simple;
-	bh=WChs9zj7HnQ35M+hdofNmSrLrbHhiOKPmlmbqvBdehk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=t+MEcS1g0QAti4UDGcAPPbt3cCsPsIrEDrF8AMO9IrPbJbUhm35K1uhrIoeZ/MdyxIQ2X88Dm2zWW+hCifVgYhRF2u99jjm3eey9HAMDn4lHTfzO2EZ4F7URxIuLrNL3Hl7UAb1Msu0EuP77tMyKgc4PjmDju5s9HqKp1Ggs05c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2JdfMbo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787120264; c=relaxed/simple;
+	bh=3EajQNbjuEt3B0aP/HWXhloydBrWAMv9GoLKHiDXcSw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JsZvAvzhakw8YbajXfiw1jnM4qlA+xGghOexlwJZMFR8GHMo21wg0NpbY6+kE7Ulqyq+JGpbj4lvlp0eQ+B9lDcfIxglqam2rPF3U536aFfC47dwQ3116C0ijYSbPv7FEKjaWqLo6X15Oj2sh5FvIDNBqopEWJBXH0FhkbLMKTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dO720plT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3Q9NN6B3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L8HnCUTS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=eaPdP7nU; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2JdfMbo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8081F000E9;
-	Wed, 19 Aug 2026 06:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787120164;
-	bh=MlaEcysSijIXR0+QepfhGHVFu5bEO38sEjEJwRGQGlc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=A2JdfMbob4eYfRSJPZObdLhUI7/kIExWEfK+db3L8irCwuOK3AlgMFnYuXUHtyPb1
-	 2Cy+4R6yQSpU7EcRrDEGANl9a1xzqB3m+L58KN2vkjSKaE3tUOm4q3u4blEGWbx4K3
-	 CehLYRapbl52JU3fTkIfaEl4peTFj/WiwMCHgtC95Z6rz61Ia6UWPWxPJV3uwzrRLc
-	 bVGN0nhOIa8LB6E4bmNo0cEHp141FzhU5BA9e441NWcgWE/qnCfvKLQvpJ/kFxmBha
-	 Q7zzTR/URh/nv5nqU8u5nGmI2+49pfV7KQ+arRk7wH7XrI6Lv8C8pOXaiKZjRCxG1A
-	 ykG/A3qSFUl6A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v37 1/7] Documentation/firmware: add imx/se to
- other_interfaces
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pankaj Gupta" <pankaj.gupta@nxp.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260819-imx-se-if-v37-1-5ef5de9ff1dc@nxp.com>
-References: <20260819-imx-se-if-v37-0-5ef5de9ff1dc@nxp.com>
- <20260819-imx-se-if-v37-1-5ef5de9ff1dc@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 06:16:04 +0000
-Message-Id: <20260819061604.AA8081F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dO720plT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3Q9NN6B3";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L8HnCUTS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="eaPdP7nU"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 168B33E69;
+	Wed, 19 Aug 2026 06:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787120204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
+	b=dO720plTJcEcHC+arFs6mB/9g8FDyt9rYEInkQG8s2VxFn+S+3tlBdg/z0/AE76kVegV/J
+	po0cwcLIJ0eVH1dO9hOcYHWbGx/nXdmjU0jchzVB/Ap9d4oLj2BeJMXDhXaD1gW3tzAHoa
+	VMq/ekbE9a8qAKfFTXWZ3jSUpCcnGBI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787120204;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
+	b=3Q9NN6B3P//DA/0r1qISw0CBzYxq34c3kFnAVy/gpQSWIUSsUBzu81MGBqHvUkojiRlIT4
+	IvkPnljiLo7vL3CA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L8HnCUTS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eaPdP7nU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787120200; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
+	b=L8HnCUTSvXwz89JqoFEUVGXfyBa/oJZAT7BC7J3w1uwidMcKF4OuijNQdTHOe7KdU9uEgh
+	5FjLcKdQXjz0iGVcE0TMronQ79HDZTovL3ne4XDVb7NDRzvZyTBD8D37rgnErtXW0X/CoY
+	vMYe1wsMsZ1pQJYvLMtEzC1qL6dpgqk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787120200;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
+	b=eaPdP7nUjcgGMN2xiwEPnkNBTlV45RYeLfigA5z8I3ZRnJMisCHgbu0N+Luewac2zV75sO
+	rnXH4UsE7FZEdMAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 960AA2F81;
+	Wed, 19 Aug 2026 06:16:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id B2BRI0dKhWpUcwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 19 Aug 2026 06:16:39 +0000
+Message-ID: <614bdf7b-031d-444b-a30c-132daa55ce3e@suse.de>
+Date: Wed, 19 Aug 2026 08:16:39 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/12] drm/panic: Move panic display code into helper
+ library
+To: Randy Dunlap <rdunlap@infradead.org>, jfalempe@redhat.com,
+ javierm@redhat.com, airlied@gmail.com, simona@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org
+Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
+ linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
+ sashiko-reviews@lists.linux.dev
+References: <20260818125012.468092-1-tzimmermann@suse.de>
+ <20260818125012.468092-12-tzimmermann@suse.de>
+ <916c4bd5-c73f-466e-8e9b-aee9d4d7d742@infradead.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <916c4bd5-c73f-466e-8e9b-aee9d4d7d742@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.19)[-0.973];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[infradead.org,redhat.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -4.50
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 168B33E69
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The kernel-doc directive references a non-existent file (`drivers/f=
-irmware/imx/se_ctrl.c`), which will cause Sphinx builds to fail or emit war=
-nings.
+Hi
+
+Am 18.08.26 um 17:55 schrieb Randy Dunlap:
+> Hi,
+>
+> On 8/18/26 5:28 AM, Thomas Zimmermann wrote:
+>>   M:	Hans de Goede <hansg@kernel.org>
+>> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+>> index 323422861e8f..cdfd72d9a9c5 100644
+>> --- a/drivers/gpu/drm/Kconfig
+>> +++ b/drivers/gpu/drm/Kconfig
+>> @@ -45,6 +45,7 @@ config DRM_MIPI_DSI
+>>   config DRM_KMS_HELPER
+>>   	tristate
+>>   	depends on DRM
+>> +	select DRM_PANIC_HELPER if DRM_PANIC
+> but DRM_PANIC_HELPER depends on DRM_TTM so
+> DRM_KMS_HELPER should also depend on DRM_TTM. Otherwise:
+
+Oops, how did that creep in?  There's no TTM dependency. This Kconfig 
+change appears to be a copy-paste accident. Thanks for noting.
+
+Best regards
+Thomas
+
+>
+> WARNING: unmet direct dependencies detected for DRM_PANIC_HELPER
+>    Depends on [n]: HAS_IOMEM [=y] && DRM [=y] && DRM_TTM [=n]
+>    Selected by [y]:
+>    - DRM_KMS_HELPER [=y] && HAS_IOMEM [=y] && DRM [=y] && DRM_PANIC [=y]
+>
+>
+>>   	select FB_CORE if DRM_FBDEV_EMULATION
+>>   	help
+>>   	  CRTC helpers for KMS drivers.
+>> @@ -130,6 +131,10 @@ config DRM_PANIC_SCREEN_QR_VERSION
+>>   	  Smaller QR code are easier to read, but will contain less debugging
+>>   	  data. Default is 40.
+>>   
+>> +config DRM_PANIC_HELPER
+>> +	bool
+>> +	depends on DRM_TTM
+>> +
+>>   config DRM_RAS
+>>   	bool "DRM RAS support"
+>>   	depends on DRM
+
+-- 
 --
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
---- Patch [1]: [PATCH v37 1/7] Documentation/firmware: add imx/se to other_=
-interfaces ---
-commit ac0ee8751fff1b6f43a912d3cdc22822ca9395fb
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-Documentation/firmware: add imx/se to other_interfaces
-
-This commit documents the i.MX SoC's Service layer and C_DEV driver for
-selected SoCs containing NXP hardware IPs for Secure Enclaves.
-
-> diff --git a/Documentation/driver-api/firmware/other_interfaces.rst b/Doc=
-umentation/driver-api/firmware/other_interfaces.rst
-> index 06ac89adaafba..6c6fa9a0ba1df 100644
-> --- a/Documentation/driver-api/firmware/other_interfaces.rst
-> +++ b/Documentation/driver-api/firmware/other_interfaces.rst
-
-[ ... ]
-
-> +When a user sends a command to the firmware, it registers its device_ctx
-> +as waiter of a response from firmware.
-> +
-> +Enclave's Firmware owns the storage management over a Linux filesystem.
-> +For this c_dev provisions a dedicated slave device called "receiver".
-> +
-> +.. kernel-doc:: drivers/firmware/imx/se_ctrl.c
-> +   :export:
-
-[Severity: Low]
-Does drivers/firmware/imx/se_ctrl.c exist at this point in the tree?
-
-Referencing a non-existent file in a kernel-doc directive will cause the
-Sphinx documentation build to emit warnings or fail.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819-imx-se-if-=
-v37-0-5ef5de9ff1dc@nxp.com?part=3D1
