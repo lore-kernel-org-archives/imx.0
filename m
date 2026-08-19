@@ -1,225 +1,253 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013022.outbound.protection.outlook.com [40.107.159.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15B2D593E
-	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 09:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787130174; cv=fail; b=K2RcjcFxGgZl6apxIorCWnfEnhk6wCIQ2CnqZtfLCQNwFKnXwnJz7WG/QsvuWyRNl7D02LcUQE9THIZoW97fD2ZwP6DVfnDt9G4uizhP1cZFleyrLvsCbhzLho5jr771Vsro8F1AfRR31893EMpjucpAtHDocl1SMVonAv6ev8M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787130174; c=relaxed/simple;
-	bh=JJtE2joP0Jrjw6LBSLGU+rhWP4VL0lDo17rPuP36wXo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BPqzvqv7r5R3N/ePB8+vSH7dDpGDc6k1/gDGqAeoURdTr9MrYy5RWMWq/Xt21sTceC+od17mRH7+WL/EUsgyt8NmV/v0zz8kziR2y7umyscFQis3rgeNUvciqAy264Vvao2a1v1FMoJBe7KWioVaYtQiDo0Pb+C52MlHTUsKV1I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=p0KbcXCk; arc=fail smtp.client-ip=40.107.159.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613E42D593E;
+	Wed, 19 Aug 2026 09:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787130180; cv=none; b=C9hcm5VXC3vB1NBWAl4FeoJoyuRAvb1LPe78CJtFsuPKIn7Wt/y7jR0qaDSk05ZwHu1ph/8iWfjLqhCEIfSpkFmVt1IAZO7vIGGaoSLwO59zWAfiJnL41Wzt7aqkR9VwTWZR+ZWHqNL7Qz26ThcX2ENqkHmhI2IYwDfMO+uksbc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787130180; c=relaxed/simple;
+	bh=LqwDv65ukW0pZ/l4HMlI0o35+RIxlNikoEbgozCev8k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gg8GtJTQusq9g92oWfvcNPFfKa5YbOKhhUAw3PDIiV2dBHEcsd1jl+a/SPWhWbnw3KVl96VtUfEN0eh1/JhLx9DtIS2AIb0EF7jcknYdrG5VuuEnYeJ1Fc8+IC1bqESiD2c028paU9K39yxBUsSfcmcr3vy8LVb6tUtSvs+sT/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e/GaAJJl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PBCXYqmL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y07gBOrv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TKspYuzE; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="p0KbcXCk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r9Te3t+W0RxW38c0c8N7rbzw9Am+MS82h7JbBAsyzjO90cj0X9J6xx5dOGI5dOPTfE/gtHNEBJLb97bhBP7+6Y9fGoiQH6mKN0pig70O7v6MTnXSDZnMhAuQjWFEz5aSBTRvnqeNrYFkL/u+PYKaYb+SElzgepLj9+eS7tPUzN7oHvbcyHut+MdE237qDzvO76v0EP9tnef8ZBe+82sPYDGn7h7RY1NtG6qk62DULyqFCd/0tnKgzm7HHQ7zivy45RESMAfE0o0HJ2T6reDsLeMKfOjW76kBPW30RMyeqnBF3xFXZg4aocqZNjvI0zIGmnDjZ9TftsWkDobEv1WUww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JJtE2joP0Jrjw6LBSLGU+rhWP4VL0lDo17rPuP36wXo=;
- b=j9fcFMuPYjynGoFDNj050lYcplKSgtpV/E2anPv/druxJW/CKDSmf3V8PRqSJtKuifpBdOXLf56nmkrxrS0V7hHInSri4ddvW9Vj3p/jwqYH2qy0hl7YEG9H9C6deMlyqeQkVpt6oIobLXsSYMwPmrYL57mabdethy8zt648YC1ZAE6t1QFpv7SXb+kSmRGs6Z6fhvGtmwFiEk1WDrte8HK/6yg0IDMdhoAQ2/NmwdddHYLXMZ/l8OivUcH0xV3DdoSOUW8fJ3dS5WNPRK3IyrRrTsXFy2WEBCDgJFT4Iead0MUYroHTpbiyqQja7KCdGQc846zD5xCbJM3nXN+1Dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JJtE2joP0Jrjw6LBSLGU+rhWP4VL0lDo17rPuP36wXo=;
- b=p0KbcXCkCQSWQuVAN2yghg3EhWRbB7zu2XWgHjAqLImOrUC21CouvUbaMArs9gzWf57tiRYF32FDcm19mJbBnCxp93rBdpm8WxZwgOuXezZn2sJtZHWwoE9gI6f+wHadM5gemoip7so8kxmEB1Y6KSrbjmzQ2Tj4j6V+EnRvyHXA3f738OSy9miI/ntQjnKbnVh7bzWC9UKQR59Q33HPzoQl2eYeLQCb9hhJvmShm8Zj1fdMZf9icXaAaN1YQUaDh99QHvmimC3IaucVjSncRSlQkr7Zgw2XNFB6SQNTYz7uO7ppQoLPvus7bDiKYzTDKu8rS92VM+NJlz8SZAHT/w==
-Received: from AMBPR04MB12334.eurprd04.prod.outlook.com (2603:10a6:20b:732::5)
- by AM9PR04MB8827.eurprd04.prod.outlook.com (2603:10a6:20b:40a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 09:02:48 +0000
-Received: from AMBPR04MB12334.eurprd04.prod.outlook.com
- ([fe80::9b4f:ab4e:94c3:c457]) by AMBPR04MB12334.eurprd04.prod.outlook.com
- ([fe80::9b4f:ab4e:94c3:c457%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 09:02:48 +0000
-From: "Zhipeng Wang (OSS)" <zhipeng.wang_1@oss.nxp.com>
-To: "Frank Li (OSS)" <frank.li@oss.nxp.com>, "Zhipeng Wang (OSS)"
-	<zhipeng.wang_1@oss.nxp.com>
-CC: Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>, Frank Li
-	<frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel
- Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
-	<jindong.yue@nxp.com>, Xuegang Liu <xuegang.liu@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v3 3/4] irqchip/imx-irqsteer: Mask all interrupts in
- probe() and remove()
-Thread-Topic: [PATCH v3 3/4] irqchip/imx-irqsteer: Mask all interrupts in
- probe() and remove()
-Thread-Index: AQHdJj3QWu4viJ6YXk+nCTattssYXraS9WiAgBIxBRA=
-Date: Wed, 19 Aug 2026 09:02:48 +0000
-Message-ID:
- <AMBPR04MB123341AB132950F3E6961953AEBA52@AMBPR04MB12334.eurprd04.prod.outlook.com>
-References: <20260807072346.1222389-1-Zhipeng.wang_1@oss.nxp.com>
- <20260807072346.1222389-4-Zhipeng.wang_1@oss.nxp.com>
- <anYui4Xjc1iphPL4@SMW015318>
-In-Reply-To: <anYui4Xjc1iphPL4@SMW015318>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-08-19T09:02:26.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
- Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AMBPR04MB12334:EE_|AM9PR04MB8827:EE_
-x-ms-office365-filtering-correlation-id: 09da5024-3d00-4caf-b4de-08defdd0a44e
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|19092799006|38070700021|56012099006|10067099003|4143699003|22082099003|18002099003|11063799006;
-x-microsoft-antispam-message-info:
- +t2rrAF2F2Yq7eVHx+hEztxaCM3G4AWAYvzYP1F1altHWiaz+w/npjZrWxSuRnrTKbBKWMsmV/RffMb3JWZoKnUC+SJZuDQSL8QsYB97Xxf9KO7kTY2wdpDDQIForsCHXmENtBBhJIONwVe6d+V8cREN6Nx6EOYrdVywoajsr7FQ3a/xclh+dX3JyxE6RgToalJBqoo/nTVvWzUqzvpATy5CgA1JZ94HVUnMoXK7zg2btgcGuwZRb+TL+ZQXhAUr0d2vuajt8RFqTdnwMjzjbJc8PgZxbbi1nzGEzUyAald2jFnrCs4eMx1Vzl3mquEIdboLJ1Div0Aoj36G0wQnj4HO6duKDPu+EQ38Otxq7YAO+n9nJ+Ish72nePq0uk+y5wTxhuoJuxWtsJhxFfO5owaOBu6sM1JnIjHQFD6Y/ar6dMejFSAwi7k2IIiSRE3+EN97iaEHJ1ZsOJLMXQrzaVeM9g958Zsp4Df77HsBMyVU3erBIRRxMXFjEHjW/TF88bat9vULKKqT84jLhLxpO6aRWrg5qBQaCZdqr2uIhiRoilkNWYUTnYZf+x0zfAjQCEQ1m89XKfApZb1NaSMBzVd+dCYASio8PGTYL7VV+1tunfiMYXZtlsLRr/PQ51nfBm1IR2PNZkYUElJFkNiOf3sQTsqH6SPI79rFR+IzHq70OE5aQkR0lqlDNiifkHIx321KggQ/uTYpWLdr8L+0gw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR04MB12334.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(19092799006)(38070700021)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?bGc4VlFBVklLZW13cTBXVU1hczFkdEZheTBhZmpLVVNkU1lOcUl0TzIwTXZZ?=
- =?utf-8?B?YkZ6WHJJaEZoZVNXWU9xb2QxbGM2YlF5Ry9TczJKTEkzYUJEd2tQT3hMWkln?=
- =?utf-8?B?SjBzL0E4SU5uS0owRWJ6SUwzLzlzd2xKTFRadzc4NDJTWlFCakpvaE9xOTlz?=
- =?utf-8?B?aC9DNXVqLzU2dE1pVnYxbXhJelowa3JDMEFCYnFCbVMyVlNyQnRYeFd1QWJS?=
- =?utf-8?B?MG85SnlCWTU2ZTVIZkdScHRMai82ZldScmNxTnNyZysyR1VQRGYreC93b3dS?=
- =?utf-8?B?d0FWUFovRDY3WmlRbVVXN09vZ01ibUE1MlY3S25laVRHcUx6Q1FwaHVCRXJ6?=
- =?utf-8?B?V0NaUWtpZG43Z3lMN2RNZTdlRzZYTURUYUkyR2gyRGhQYk02SVYxY2d3cC93?=
- =?utf-8?B?ekw1TXBtQU5YNXdlNXI3MUVMKyt4QVV1MnJuVkNFY2R5VzRLTjM5ZWZleCtk?=
- =?utf-8?B?U2ZDeFhiT2E4SGd0SWFtSG85ZG9vbFBMdnp2MUdwS1o4UnJvZ2swN3UwRXV1?=
- =?utf-8?B?aXJ2dmhYNzJ2anRqVlIzd1FOZ2Y2L0oxRmx1aWJEMGVwUVBldFVhQ2ZWdmVw?=
- =?utf-8?B?bDl2MDB2d3gwcEpJRldBSmhVbVJ4Smh0cHB0T1gyQXl2VnBvbG0wODlEYjJF?=
- =?utf-8?B?SE9sei9ON0EvbVlTcFNQWjhjY3lxQU5reGtIY1c2MGpvcUNhQUtzSXVpeUJs?=
- =?utf-8?B?dnZnNnc5Z21yMnVIUlpXdWpqTk9nQlNLaVZyU3prWEJPM2Z3Sm5ZNm1SNS9L?=
- =?utf-8?B?bVVqMWdBZW5HM1BjNnAwSVpUY3VOa0xqdjBUZWVBemZ2ZWJETmJTbVlnTmIw?=
- =?utf-8?B?c21VcmpTSFBBbWViQ1BSa05mNE5rM2tqWVlMSW5MSjdFRTh3UkxtdjNZNEVu?=
- =?utf-8?B?UnRFNWJoWEpaK3Zha2VTMExsZjRvcXA5UnZ0YUNzQ1UweE1NY2FGR21OMFlX?=
- =?utf-8?B?dHR3YmxPUmRFR1VOV1Qzdmk5d1NObTZOcTBXTEx4cnhqTWFteGd4RWdrZHQ2?=
- =?utf-8?B?QjQ0RW1qYk9JKytoenNvOVlUVXVISjVveTZkdk00QmdEUnBuYXJmaUN5dDhI?=
- =?utf-8?B?Rzl0VUJ1M1lhNUZYQmpxUEpheStMK0Q1Y25wdWwrcy9PYlZPaUhnbkg1K24v?=
- =?utf-8?B?aDBLUi9sbnpFMldlNGI0clE2d3ZmMWFaaEtnS1ZaVVFEalM4OUNqaDN2UkZI?=
- =?utf-8?B?em55bXVJQzlKYnRZSUpuUDQ0cEI0VjYyM0JqZXozenR4aVFpV3RVY0JTRVJG?=
- =?utf-8?B?YkpYUDhVVWZvdENSNXFtajF6bkVGc05GSkJnY1RpczFwS0N1UVFpYkk3Zy9t?=
- =?utf-8?B?UzdMcHVndDJlTHp6cUhxcmdDczY2NFVpV1M3ajlVNnAvbGpvWGVZRjdBYWhN?=
- =?utf-8?B?L2FPZXk1bGRzNjVhQVpCSzUvaWRISTdpS281SFlYVGdtY3hnaUE4bjhZZ2xp?=
- =?utf-8?B?MUJnaThmZ0VjVjFpUUhGbnJrNmt5aUdlWGtWaFQ1bWIyQmxVZVZKUDJaM3Bt?=
- =?utf-8?B?U3B0cGJyYWs4SFNMdmM4TkpEdC9YK1A3NVA2bDMxcHp6eGNmUFV0OW93Y3BG?=
- =?utf-8?B?UDU4RXNiK2NwNk04US95T0wxY2pGQ1dXZnZTMm5kdnN3dXJtbjdCZ3dTTThl?=
- =?utf-8?B?NzZxTHpWMExjN212VlR6K2hxUEdMbjJYOXRvZDFNWVlMUFk3U0JVZHlFdXR4?=
- =?utf-8?B?SUx6ZEpZbXIxdC9RMWc5T0NIK0JVU0VjUjJyQlR5eFF0N3JvbkI2ZW1uL1lj?=
- =?utf-8?B?djhnVzRTZnBtNzVmVGJnT3BSVjV3MTBOT0Z6cnlRWUEzSzVTc08rdUJucnhE?=
- =?utf-8?B?VDg4RWVTY1htYkpHWTlYcmVYbFJ3czUySU16bFoyc3VQZlRxT3hGOGs2OVZt?=
- =?utf-8?B?V0NBcGtxcVpTWWNNeGZJd2tMUkdKTUtvVDlpajgyaGMwRlljMVRtaTgwUHhn?=
- =?utf-8?B?cXF6NWJsL2JpYU5MbVhGRWxTS1EvNG9GVWx0YURnQ0RnMmM4R0s0NFRNdmVO?=
- =?utf-8?B?Y2ZhLzJXalY1TytBTEt0ck5IVUszK2hkMmxoZC9UNnBkOHZtWHUzMVAvZy9i?=
- =?utf-8?B?ekhrclBOZVlGUDhUVk5PbE9McFFlNi8yclY3b0EvZjRKQ3ZBaThnNTRSdUlL?=
- =?utf-8?B?OFJZbE1YQkpnZ1hwbjJwcTJ3MEdsbkhRY0J4MHVFWkxOak9qejRPaFpmSysy?=
- =?utf-8?B?cFRWV003OWRxSHJTSmtxcWZ0c1hEa0Y3ZUdqWmNCYmdWd3B5N0F1bDdZdTBN?=
- =?utf-8?B?eVNTREY1M1BYT0pXbjlrcy9XY3NMNkNkdk1TYlhHb01MS3FGR1ZCbnF2YmZS?=
- =?utf-8?B?VlpvMHJ1eVdYeGtIS1ZDRTJybmtoWVpSaWZuNC9HV0Qwem56TUY4dz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e/GaAJJl";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PBCXYqmL";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y07gBOrv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TKspYuzE"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4440884A46;
+	Wed, 19 Aug 2026 09:02:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787130167; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
+	b=e/GaAJJl9rKMTEZgRRdA72r2zB5/k6n0oVYabEgQgrLbC0A9zTL0NTI+iB3DMjviafq9UI
+	W078KGzQ44wIVLRNhlrsvThPtYrtm9F5aCMBTCAqLbyum5jMNlVhvEMcFPTLF8VzwYt+lh
+	sQdiCjfU5p1IpnoFVUbRIsI86OWUIXs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787130167;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
+	b=PBCXYqmL+PpD0kP9dfdrg0qOa3wodnJNbfowwlEVEVZWiEc9+LRgbnaXUN/ApgfdsWEtls
+	VFHgXArZtMLMtICA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787130163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
+	b=y07gBOrvzogxVxJ4+dnEhH6yUnqrcM9IsfOEo9m7Q6xvIsE8I4/SG+72+Mh+zDwI8tB/bd
+	xs86vrV1uXIkkdL5dIcbwzcETXEDEnsCLtwGpc9+vakX7BN8TbGVsuKuaVP77As885lYEK
+	p9Kc1gqR1F4gBkG5xuVZcSBN7T/8CKk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787130163;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2kdm9/KB4f0uakkMYi5OaEfL3aR00uc57x10GnpoMo=;
+	b=TKspYuzEzY14ZdjPaUtFZPDk99lFK+oADgXA5poKvzKjhPNvScITARf6NU4E8NZBPfsxIx
+	XfpHdYc8xAOU/LBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 09DE577A30;
+	Wed, 19 Aug 2026 09:02:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TtX+ADNxhWr2FgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 19 Aug 2026 09:02:43 +0000
+Message-ID: <2011cebd-7e7e-4087-a445-fb2579861ef6@suse.de>
+Date: Wed, 19 Aug 2026 11:02:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB12334.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09da5024-3d00-4caf-b4de-08defdd0a44e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2026 09:02:48.4456
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3Hs07/0GakjN4E0KPfMmT+txjJvP5tJyqYMUeKW64n6L7ce33qbgdjJK7IoxWfTynZFerDZiitbfNHtPxPicuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8827
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/12] drm/panic: Display panic screen via per-plane
+ callback
+To: sashiko-reviews@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Frank.Li@kernel.org, linux-hyperv@vger.kernel.org,
+ wsa+renesas@sang-engineering.com, ojeda@kernel.org
+References: <20260818125012.468092-1-tzimmermann@suse.de>
+ <20260818125012.468092-10-tzimmermann@suse.de>
+ <20260818131951.154171F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260818131951.154171F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.994];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[renesas];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,suse.com:url]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 
-DQoNCg0KTlhQIENvbmZpZGVudGlhbA0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBG
-cm9tOiBGcmFuayBMaSAoT1NTKSA8ZnJhbmsubGlAb3NzLm54cC5jb20+DQo+IFNlbnQ6IDIwMjbl
-ubQ45pyIOOaXpSAzOjE0DQo+IFRvOiBaaGlwZW5nIFdhbmcgKE9TUykgPHpoaXBlbmcud2FuZ18x
-QG9zcy5ueHAuY29tPg0KPiBDYzogVGhvbWFzIEdsZWl4bmVyIDx0Z2x4QGtlcm5lbC5vcmc+OyBN
-YXJjIFp5bmdpZXIgPG1hekBrZXJuZWwub3JnPjsNCj4gRnJhbmsgTGkgPGZyYW5rLmxpQG54cC5j
-b20+OyBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ow0KPiBQZW5ndXRyb25p
-eCBLZXJuZWwgVGVhbSA8a2VybmVsQHBlbmd1dHJvbml4LmRlPjsgRmFiaW8gRXN0ZXZhbQ0KPiA8
-ZmVzdGV2YW1AZ21haWwuY29tPjsgSmluZG9uZyBZdWUgPGppbmRvbmcueXVlQG54cC5jb20+OyBY
-dWVnYW5nIExpdQ0KPiA8eHVlZ2FuZy5saXVAbnhwLmNvbT47IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
-cm5lbC5vcmc7IGlteEBsaXN0cy5saW51eC5kZXY7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
-aW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYzIDMvNF0gaXJxY2hpcC9pbXgt
-aXJxc3RlZXI6IE1hc2sgYWxsIGludGVycnVwdHMgaW4gcHJvYmUoKQ0KPiBhbmQgcmVtb3ZlKCkN
-Cj4NCj4gT24gRnJpLCBBdWcgMDcsIDIwMjYgYXQgMDQ6MjM6NDVQTSArMDkwMCwgWmhpcGVuZy53
-YW5nXzFAb3NzLm54cC5jb20NCj4gd3JvdGU6DQo+ID4gRnJvbTogWmhpcGVuZyBXYW5nIDx6aGlw
-ZW5nLndhbmdfMUBueHAuY29tPg0KPiA+DQo+ID4gcHJvYmUoKSBzZXRzIHVwIHRoZSBjaGFpbmVk
-IGhhbmRsZXJzIHdpdGhvdXQgZmlyc3QgbWFza2luZyB0aGUgaW5wdXQNCj4gPiBpbnRlcnJ1cHRz
-LCBhbmQgcmVtb3ZlKCkgbGVhdmVzIHRoZSBDSEFOTUFTSyByZWdpc3RlcnMgdW50b3VjaGVkLiBG
-b3INCj4gPiBhIGJ1aWx0LWluIGRyaXZlciB0aGlzIGhhcHBlbmVkIHRvIGJlIGhhcm1sZXNzIGJl
-Y2F1c2UgQ0hBTk1BU0sgcmVzZXRzDQo+ID4gdG8gYWxsLW1hc2tlZCwgYnV0IG9uY2UgdGhlIGRy
-aXZlciBjYW4gYmUgdW5sb2FkZWQgYW5kIHJlbG9hZGVkIGENCj4gPiBjaGlsZCBpbnRlcnJ1cHQg
-bGVmdCB1bm1hc2tlZCBhdCB1bmxvYWQgdGltZSBzdXJ2aXZlcyBpbiBoYXJkd2FyZS4gT24NCj4g
-PiB0aGUgbmV4dA0KPiA+IHByb2JlKCkgdGhlIHBhcmVudCBpbnRlcnJ1cHRzIGFyZSByZS1tYXBw
-ZWQgYW5kIHVubWFza2VkIGJlZm9yZSB0aGUNCj4gPiBuZXcgZG9tYWluIGlzIHJlYWR5LCBzbyBh
-IHN0aWxsLWFzc2VydGVkIGxpbmUgaW1tZWRpYXRlbHkgc3Rvcm1zIHRoZQ0KPiA+IHBhcmVudCB3
-aXRoIG5vIGhhbmRsZXIgdG8gc2VydmljZSBpdC4NCj4gPg0KPiA+IE1hc2sgYWxsIGludGVycnVw
-dHMgaW4gcHJvYmUoKSBiZWZvcmUgd2lyaW5nIHVwIHRoZSBjaGFpbmVkIGhhbmRsZXJzLA0KPiA+
-IGFuZCBhZ2FpbiBpbiByZW1vdmUoKSBzbyB0aGUgaGFyZHdhcmUgaXMgbGVmdCBxdWllc2NlZCBm
-b3IgdGhlIG5leHQgcHJvYmUoKS4NCj4gPiBOb3RlIENIQU5NQVNLIHVzZXMgaW52ZXJ0ZWQgcG9s
-YXJpdHkgKGEgc2V0IGJpdCBlbmFibGVzIHRoZQ0KPiA+IGludGVycnVwdCksIHNvIG1hc2tpbmcg
-bWVhbnMgd3JpdGluZyB6ZXJvLiBUaGlzIG1pcnJvcnMgdGhlIHNpYmxpbmcNCj4gPiBOWFAgY2hh
-aW5lZCBtdXggaXJxLWlteC1pbnRtdXguYywgd2hpY2ggaGFzIG1hc2tlZCBhbGwgc291cmNlcyBp
-biBib3RoDQo+ID4gcHJvYmUoKSBhbmQgcmVtb3ZlKCkgc2luY2UgY29tbWl0IDJmYmIxMzk2MWU3
-NCAoImlycWNoaXA6IEFkZCBOWFANCj4gPiBJTlRNVVggaW50ZXJydXB0IG11bHRpcGxleGVyIHN1
-cHBvcnQiKS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFpoaXBlbmcgV2FuZyA8emhpcGVuZy53
-YW5nXzFAbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiBDaGFuZ2VzIGluIHYzOg0KPiA+ICAtIE5ldyBw
-YXRjaC4gTWFza3MgYWxsIENIQU5NQVNLIGludGVycnVwdHMgaW4gcHJvYmUoKSBhbmQgcmVtb3Zl
-KCkgdG8NCj4gPiAgICBwcmV2ZW50IHRoZSBpbnRlcnJ1cHQgc3Rvcm0gb24gbW9kdWxlIHJlbG9h
-ZCByZXBvcnRlZCBieSBTYXNoaWtvIEFJDQo+ID4gICAgb24gdjIuDQo+ID4NCj4gPiAgZHJpdmVy
-cy9pcnFjaGlwL2lycS1pbXgtaXJxc3RlZXIuYyB8IDkgKysrKysrKysrDQo+ID4gIDEgZmlsZSBj
-aGFuZ2VkLCA5IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2ly
-cWNoaXAvaXJxLWlteC1pcnFzdGVlci5jDQo+ID4gYi9kcml2ZXJzL2lycWNoaXAvaXJxLWlteC1p
-cnFzdGVlci5jDQo+ID4gaW5kZXggNGEyZmU4YmE5N2Y1Li4wYzljOTlmMTE0MWEgMTAwNjQ0DQo+
-ID4gLS0tIGEvZHJpdmVycy9pcnFjaGlwL2lycS1pbXgtaXJxc3RlZXIuYw0KPiA+ICsrKyBiL2Ry
-aXZlcnMvaXJxY2hpcC9pcnEtaW14LWlycXN0ZWVyLmMNCj4gPiBAQCAtMjM2LDYgKzIzNiwxMCBA
-QCBzdGF0aWMgaW50IGlteF9pcnFzdGVlcl9wcm9iZShzdHJ1Y3QNCj4gcGxhdGZvcm1fZGV2aWNl
-ICpwZGV2KQ0KPiA+ICAgICBpZiAoaXJxc3RlZXJfaGFzX2NoYW5jdHJsKGRhdGEtPmRldnR5cGVf
-ZGF0YSkpDQo+ID4gICAgICAgICAgICAgd3JpdGVsX3JlbGF4ZWQoQklUKGRhdGEtPmNoYW5uZWwp
-LCBkYXRhLT5yZWdzICsgQ0hBTkNUUkwpOw0KPiA+DQo+ID4gKyAgIC8qIG1hc2sgYWxsIGludGVy
-cnVwdHMgYmVmb3JlIHNldHRpbmcgdXAgdGhlIGNoYWluZWQgaGFuZGxlcnMgKi8NCj4gPiArICAg
-Zm9yIChpID0gMDsgaSA8IGRhdGEtPnJlZ19udW07IGkrKykNCj4gPiArICAgICAgICAgICB3cml0
-ZWxfcmVsYXhlZCgwLCBkYXRhLT5yZWdzICsgQ0hBTk1BU0soaSwgZGF0YS0+cmVnX251bSkpOw0K
-PiA+ICsNCj4gPiAgICAgZGF0YS0+ZG9tYWluID0gaXJxX2RvbWFpbl9jcmVhdGVfbGluZWFyKGRl
-dl9md25vZGUoJnBkZXYtPmRldiksDQo+IGRhdGEtPnJlZ19udW0gKiAzMiwNCj4gPiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZpbXhfaXJxc3RlZXJfZG9tYWlu
-X29wcywgZGF0YSk7DQo+ID4gICAgIGlmICghZGF0YS0+ZG9tYWluKSB7DQo+ID4gQEAgLTI3OSw2
-ICsyODMsMTEgQEAgc3RhdGljIHZvaWQgaW14X2lycXN0ZWVyX3JlbW92ZShzdHJ1Y3QNCj4gcGxh
-dGZvcm1fZGV2aWNlICpwZGV2KQ0KPiA+ICAgICBzdHJ1Y3QgaXJxc3RlZXJfZGF0YSAqaXJxc3Rl
-ZXJfZGF0YSA9IHBsYXRmb3JtX2dldF9kcnZkYXRhKHBkZXYpOw0KPiA+ICAgICBpbnQgaHdpcnEs
-IGk7DQo+ID4NCj4gPiArICAgLyogbWFzayBhbGwgaW50ZXJydXB0cyBzbyBhIHN0YWxlIGxpbmUg
-Y2Fubm90IHN0b3JtIG9uIHRoZSBuZXh0IHByb2JlICovDQo+ID4gKyAgIGZvciAoaSA9IDA7IGkg
-PCBpcnFzdGVlcl9kYXRhLT5yZWdfbnVtOyBpKyspDQo+ID4gKyAgICAgICAgICAgd3JpdGVsX3Jl
-bGF4ZWQoMCwgaXJxc3RlZXJfZGF0YS0+cmVncyArDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgQ0hBTk1BU0soaSwgaXJxc3RlZXJfZGF0YS0+cmVnX251bSkpOw0KPiA+ICsNCj4NCj4g
-WW91IGFjY2VzcyByZWdpc3RlciBoZXJlLCBkbyB5b3UgbmVlZCBjYWxsIHJ1bnRpbWUgcG0gZ2V0
-IHRvIGVuYWJsZSBjbG9jayBmaXJzdD8NCj4NCj4gRnJhbmsNCj4NCg0KR29vZCBjYXRjaC4gUmF0
-aGVyIHRoYW4gYWRkaW5nIGEgcnVudGltZSBQTSBnZXQvcHV0IGFyb3VuZCB0aGUgcmVnaXN0ZXIN
-CmFjY2VzcywgSSBkcm9wcGVkIHRoZSBtYXNraW5nIGluIHJlbW92ZSgpIGVudGlyZWx5ICh2NCBw
-YXRjaCA0LzUpLg0KDQpUaGUgcmVtb3ZlKCktdGltZSBtYXNraW5nIHdhcyB1bm5lY2Vzc2FyeTog
-dGhlIG5leHQgcHJvYmUoKSBtYXNrcyBhbGwNCnNvdXJjZXMgYmVmb3JlIGl0IHJlLW1hcHMgYW5k
-IHVubWFza3MgdGhlIHBhcmVudCBpbnRlcnJ1cHRzLCB3aGljaCBpcw0KdGhlIG9ubHkgd2luZG93
-IGluIHdoaWNoIGEgc3RhbGUgbGluZSBjb3VsZCBzdG9ybS4gTWFza2luZyBpbiByZW1vdmUoKQ0K
-d291bGQgYWxzbyBtZWFuIHRvdWNoaW5nIENIQU5NQVNLIHdoaWxlIHRoZSBkZXZpY2UgbWF5IGFs
-cmVhZHkgYmUNCnJ1bnRpbWUtc3VzcGVuZGVkIHdpdGggdGhlIGNsb2NrIGdhdGVkIC0gZXhhY3Rs
-eSB0aGUgcHJvYmxlbSB5b3UgcG9pbnQNCm91dC4gU28gdjQgbWFza3Mgb25seSBpbiBwcm9iZSgp
-Lg0KDQpCUnMsDQpaaGlwZW5nDQoNCj4gPiAgICAgZm9yIChpID0gMDsgaSA8IGlycXN0ZWVyX2Rh
-dGEtPmlycV9jb3VudDsgaSsrKSB7DQo+ID4gICAgICAgICAgICAgaWYgKCFpcnFzdGVlcl9kYXRh
-LT5pcnFbaV0pDQo+ID4gICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gPiAtLQ0KPiA+IDIu
-MzQuMQ0KPiA+DQo+ID4NCg==
+
+
+Am 18.08.26 um 15:19 schrieb sashiko-bot@kernel.org:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] The `drm_plane_helper_display_panic_screen` helper unconditionally dereferences `plane->helper_private` and `plane->helper_private->get_scanout_buffer`. However, by adding `DRM_PANIC_PLANE_FUNCS` to shared plane function tables (like `skl_plane_funcs` in i915 and `dm_plane_funcs` in amdgpu), the `display_panic_screen` callback is now applied to all planes (including cursors and overlays). These non-primary planes use different helper functions (e.g., `intel_plane_helper_funcs` or `dm_plane_helper_funcs`) that do not implement `get_scanout_buffer`. This causes `drm_panic_register` to mistakenly register panic dumpers for these planes, and upon a panic, the handler executes a NULL pointer dereference, triggering a nested panic.
+
+Will be fixed by testing for get_scanout_buffer from 
+drm_plane_helper_display_panic_screen().  I'll also add a check to only 
+register panic screens for primary planes.
+
+> - [Medium] The patch replaces `get_scanout_buffer` with `display_panic_screen` as the signal for panic support. However, it fails to add `DRM_PANIC_PLANE_FUNCS` to the legacy fallback `primary_plane_funcs` in `drm_modeset_helper.c`. Older AMDGPU DCE drivers (e.g., DCE 6.0, 8.0, 10.0) use `drm_crtc_init()` which implicitly relies on this legacy structure for their primary planes. Although these drivers implement `get_scanout_buffer` in their helper functions (`dce_v10_0_drm_primary_plane_helper_funcs`), their planes now lack the `display_panic_screen` callback. Consequently, `drm_panic_is_enabled()` returns false and their panic dumpers are never registered, silently breaking panic screen support on these hardware generations.
+
+Will be added.
+
+
+> - [Low] `drm_plane_helper_display_panic_screen` accepts a `panic_type` parameter (an `enum drm_panic_type`). However, when it calls `draw_panic_dispatch()`, it passes the global module parameter `drm_panic_type` instead of the passed-in `panic_type`. This logic bug prevents drivers from tailoring the panic screen implementation via the helper as intended.
+
+Fixed in an earlier patch.
+
+
+> --
+>
+> --- Patch [9]: [PATCH 09/12] drm/panic: Display panic screen via per-plane callback ---
+> commit 69fa8c39afc844867e193df3659c6f6f1fb762f3
+> Author: Thomas Zimmermann <tzimmermann@suse.de>
+>
+> drm/panic: Display panic screen via per-plane callback
+>
+> This commit adds display_panic_screen to struct drm_plane_funcs to replace
+> get_scanout_buffer as the signal for panic support. It provides the helper
+> drm_plane_helper_display_panic_screen() and the DRM_PANIC_PLANE_FUNCS macro
+> to update drivers that implement panic support.
+>
+>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+>> index 824ef3ce5de0a..eadc22a255bb5 100644
+>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> [ ... ]
+>> @@ -2177,6 +2178,7 @@ static const struct drm_plane_funcs dm_plane_funcs = {
+>>   	.atomic_set_property = dm_atomic_plane_set_property,
+>>   	.atomic_get_property = dm_atomic_plane_get_property,
+>>   #endif
+>> +	DRM_PANIC_PLANE_FUNCS,
+>>   };
+> [Severity: High]
+> Does adding this macro to shared plane function tables (like dm_plane_funcs
+> or skl_plane_funcs) apply the panic screen callback to all planes, including
+> cursors and overlays?
+>
+> Non-primary planes use different helper functions that do not implement
+> get_scanout_buffer. Since drm_plane_helper_display_panic_screen()
+> unconditionally dereferences plane->helper_private->get_scanout_buffer,
+> could this cause a NULL pointer dereference in the panic handler for these
+> planes and trigger a nested panic?
+>
+>> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+>> index 2263a11efdf63..2ecb4d1f6d470 100644
+>> --- a/drivers/gpu/drm/drm_panic.c
+>> +++ b/drivers/gpu/drm/drm_panic.c
+> [ ... ]
+>> +void drm_plane_helper_display_panic_screen(struct drm_plane *plane, const char *description,
+>> +					   enum drm_panic_type panic_type,
+>> +					   u32 fg_color, u32 bg_color, unsigned int qr_version)
+>>   {
+>>   	struct drm_scanout_buffer sb = { };
+>>   	int ret;
+> [Severity: Low]
+> Is the panic_type parameter correctly passed to the dispatch function?
+>
+> The function accepts a panic_type argument, but the implementation appears
+> to pass the global module parameter drm_panic_type to draw_panic_dispatch()
+> instead of the passed-in argument. Does this discard the caller's requested
+> panic type?
+>
+>> diff --git a/include/drm/drm_panic_helper.h b/include/drm/drm_panic_helper.h
+>> new file mode 100644
+>> index 0000000000000..e296620bbe34b
+>> --- /dev/null
+>> +++ b/include/drm/drm_panic_helper.h
+> [ ... ]
+>> +#if IS_ENABLED(CONFIG_DRM_PANIC)
+>> +#define DRM_PANIC_PLANE_FUNCS \
+>> +	.display_panic_screen = drm_plane_helper_display_panic_screen
+>> +#else
+>> +#define DRM_PANIC_PLANE_FUNCS \
+>> +	.display_panic_screen = NULL
+>> +#endif
+> [Severity: Medium]
+> Does the legacy fallback primary_plane_funcs in drm_modeset_helper.c also
+> need to be updated with DRM_PANIC_PLANE_FUNCS?
+>
+> Older AMDGPU DCE drivers use drm_crtc_init(), which implicitly relies on
+> this legacy structure for their primary planes. Although these drivers
+> implement get_scanout_buffer() in their helper functions, lacking this
+> macro in the fallback could cause drm_panic_is_enabled() to return false
+> and silently drop panic screen support on these hardware generations.
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
+
+
