@@ -1,66 +1,65 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013003.outbound.protection.outlook.com [52.101.83.3])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011061.outbound.protection.outlook.com [52.101.70.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451213B71DA
-	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 15:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DAB44AB80;
+	Wed, 19 Aug 2026 15:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787152656; cv=fail; b=ZoXZt+g6p4RFzatoAatjOB4Iy1VL2SurTquleFP4SWD/EOOFbA6A1nXfzCbZyywPwBl+3sYvEequcKACws5dSwz8AVb9xnqmfGIjCg4MeNge/Ju4S29rkVRvhn1Kf6Lk612ddC8fMwJRpVb45Rb3yreM5TUmMwo6mx+6Xroh9xg=
+	t=1787153633; cv=fail; b=KP8pVg4ScvvegGYWAc/eKg5nBTkhcOyRQNWfGBf/r+G6tieGRzRGTqcBp5xxOPAc/zZupfqhqjsVDku29J3N9JBQXRk+fyXR+pRQ9NTAtBgFkMcHLS7MmaZH6gviflJEKDuFL0Cc6uORpDSyjjvAAzMYdvsJcLJId00OJZYjiTY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787152656; c=relaxed/simple;
-	bh=i/xMrkmVU/4r0ycj6TgMFNc91FnKPw1p5M8F7z8u2nA=;
+	s=arc-20240116; t=1787153633; c=relaxed/simple;
+	bh=+SKscHdzTVESPUmKPr0vgH9yPt3Bzvx9foQuM0uDbmk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CxDOUw98jdaNfKV16hXpsMhxF3ODrCYS/DTBn4+yn7OuspqU0Zr6hNNalr4/jlaKA8H0RCMtjuzHrQvz3cqPxzJCMb5JRH7gWpBoDuwRagVEXbNWP5wSNaVhtsKL2zgo1nQKGgrRZt0CEBgvGyHa73jrEiJBPqUaFnYe7S9RouU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JOEF/AYL; arc=fail smtp.client-ip=52.101.83.3
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WENE5k2uTZxbiJBCyLi2uSAVhaEYmTee4jOz0uuYqr8BDHZvfBPV8gjqA9tcGlTxe4PY9+f2drSiRe4MosnnCOYCmkQ1NJFtYC2lFB3TcL7JkQuCKDdkGHQmaeMqVsYACGYjsP9M6RWPWfs4bciN0Zmo4U326ZKSZUVgHIpGViY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bV0faWWn reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JOEF/AYL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bV0faWWn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e5ozuTABF9vnq8lOliP1Cfn/d1KjTBA+q4n8WoaSeSrSdjXeixlfyWWUdq7qhfS5FGbkpSz3qmdktwfEfXkDDZ5OU9DsxejsehvotZwfgOx7DcRrLLuJROxIesVbKGxhaYmMHZJBoEKG2tO5RfDeJ9I5C1LRo28oi+w4tCnpX6mu2wB3aZL6dYIRJVrYn9N05KW8uA8eWIMoThAg9Egq0knfHnYwFoS3kEUPcZn7Bzugg3pr5SmWxCB5e3YFqJ2hnMmhqKTBaDww+xT6S5U4OkTifbapgj380Kt1uvCFVGhb0N7ZgAh6yE2RunpJ+1nutUMMYgLRVp+sDEcIE0U/Kw==
+ b=J1zpDnj2Jqqtj+KgT+ZyUy3s+xQcphEAfHvNXYeUH6KCc9TVzTe9jdRtk9vs8d5MMzSg6AR+CqcUshEAAfEM365AMU7o8SMQeZopy4LeHOkAirQsfJN8sn0TmDG6zxGLYSDkxFGL/5REcmj4oOYK/+yhsqPtTu9j9KgNeZ02Gg/I/A4cqHfcXT+wKl1x2a0tZxd/NyOq6xQXIAiWE+4aaJeQljnQNJ25WRArQlyTvlnPjpELoPfL0YXls0rJosnLxx46gA6sWxpweqDmQzSUxaiE3wMjR36++zATMXekTEhf+M0OzeHMg2VB/U3fECSGLBuO4jEkNX3T+WvA5e3umw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k4QWcUJiio/9HLgXjgINLfnyjtSRinPNGm+gjd8rgPA=;
- b=klrSAi+feWEZ1Y+VxviaVcccOg9EBLQb8LLPflXql4btw0jnRLxNcxju8VoTnZfd8YX5Vt/m2ySGl7SL+5TXgEnrrjpPJXB4G8ZcZW+BLG0Tl0mwNQF7PdZd3/olmSRzfZ10irnuQlOVUHEkzRW4TPUhV/qBbQpgEd7XRyUqeexdwD3HUKXJ6/mRjsXmvZ4yqoUXC9poKr7wnXW/GETCopsbco8qb+JHqjajgINEC5UhcB3vqqMSJOJbx0SA4UiWfuApB5OpexZafBNP+Ug0lcC2ZlbVDtaimapGWn7z0sMsnE/6KAvZ60Td6TvHv46oMI5otk8HJINNGsgMUH9WnQ==
+ bh=uqhCk4YV6weDHhFFxA37xZdd/It+U269AIl0AcxXpJg=;
+ b=Zk+3Gme+vdc8gzFG7FcmjLntwY9BXxglkMa2rtwqDvIDJkG+VYMrAEkbfBOpCz4VT6jdUS41tLY6xZMoO7rDa/6UamTkqrOgqPsvxFMl7fU1II+1ChTPXpcAmRz6/r/G7F5t2YC4Fqoblfbl5m3dveI7kuaPEU7AjlCqIfDy/VpmO2PgwMtRhu2rfI6In4n0U6SRn7cK/XhzqMVDEwuAG+Sweqgel45+Ll08Oz4koXVoLRlyGgPQqQFPUl43Rdfw+rlpSqCeBvyPcVmwByqglt+P35AnSLxXyniLL+KxenkZeW8lSB5lc7XqPs9OqWfkjyAv52C6H8bxnWJhIQa9aQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k4QWcUJiio/9HLgXjgINLfnyjtSRinPNGm+gjd8rgPA=;
- b=JOEF/AYLeIhNzg57UDwxC++KK9oDMdEVhHVGqNs2VvNSRT9LZHLCXRxIYKNiEp4I+v9y77bPi/p6R8cZsaAmn3iiDyczGAW6btBF6uzV9jFXP9jPtACgxZNAHUEIzdlvUgwEOiTqbCKkbOdSBdTI5RJu1CTlfmW2cZq03j7x2XWT8uVaI0kW8te/uhfkKtf3lpX39VkhsIH0L7KZNnSxrONwvAgdjXTbvq/xIK/DuLzwKSBbj6WpNifUnzNZpBckJ1ZSPJOeQEb7eRQZ9p/poDgSCJ08H6coZ4CWk1FDptMLHbChocHk4+KoeRvZ0FSYmwZoYc8eDTsjE2gRaRzYLw==
+ bh=uqhCk4YV6weDHhFFxA37xZdd/It+U269AIl0AcxXpJg=;
+ b=bV0faWWnnvRTzp5LSjuCJ9wlJfm+x8CVR6EvFL/G8afrLc+Re4zWfJwv3rudgCC5KBbcVq0wamiw8mEevKgSiwOognW5Axlls41EcNna27NvYDYzyZSpB25jHQJwhMKitXS9kq56ZR7OBTKBbWbMc0er9rZ9/AInw1Y+BBipDiEv2sxR0twtbybgPnYuxoOjAndI8q5hK9RI9zldqtwR88im7x/ZvUWF/IYDuFd2LexO9tlSe0AKTJp+cPO6AiMwfO6JX2jpPusbivEO9iN87X+xQF5tRDfExxCZ1YCdTNSWEgBlj9uybKE6iYidlL+WGci72IPllNkcgbjPZV7BQg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DB8PR04MB7099.eurprd04.prod.outlook.com (2603:10a6:10:12b::19) with
+ by AM0PR04MB6852.eurprd04.prod.outlook.com (2603:10a6:208:18c::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Wed, 19 Aug
- 2026 15:17:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 15:33:47 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 15:17:31 +0000
-Date: Wed, 19 Aug 2026 10:17:23 -0500
+ 15:33:47 +0000
+Date: Wed, 19 Aug 2026 10:33:40 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Zhipeng.wang_1@oss.nxp.com
-Cc: Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jindong Yue <jindong.yue@nxp.com>, xuegang.liu@nxp.com,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 5/5] irqchip/imx-irqsteer: Allow building as module
-Message-ID: <aoXJAx131-gU4qXu@SMW015318>
-References: <20260819090543.585131-1-Zhipeng.wang_1@oss.nxp.com>
- <20260819090543.585131-6-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
+To: sashiko-reviews@lists.linux.dev
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank.Li@kernel.org,
+	robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: dts: imx8mp-evk: enable CBTU02043 for USB
+ Type-C orientation switch
+Message-ID: <aoXM1M8bORem3yFJ@SMW015318>
+References: <20260819-imx8m-typec-v1-0-befc92ecb70a@nxp.com>
+ <20260819-imx8m-typec-v1-1-befc92ecb70a@nxp.com>
+ <20260819150403.1303E1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260819090543.585131-6-Zhipeng.wang_1@oss.nxp.com>
-X-ClientProxiedBy: PH7P221CA0076.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:328::32) To GV2PR04MB11799.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260819150403.1303E1F000E9@smtp.kernel.org>
+X-ClientProxiedBy: SN7PR04CA0240.namprd04.prod.outlook.com
+ (2603:10b6:806:127::35) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,228 +68,127 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB8PR04MB7099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e9aa968-2222-46ae-4e8b-08defe04fcd8
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB6852:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bbd88ed-df54-49d5-3ba9-08defe07427d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|1800799024|23010399003|366016|56012099006|10067099003|4143699003|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|19092799006|366016|376014|23010399003|1800799024|22082099003|18002099003|4143699003|11063799006|56012099006|10067099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	Sf9DabCW/UV9vU9Z7XrMjWf4lcngLbEPMamGaTYHsm6rS0JmNtgO9rGjRwlTC6+bGlvV/4IcLwZkGE4Zv/uXM4KilsV7bC5Rm0ixf8VFCiiEbaWrVSIXrQurx9mS20Ec4ClW3Gkwi7B7uVyJQOqcq+laShcR65N6DXVloMJB4crv8BQDEYM89AHkIDaMfBz+IVIrV8jdJLHx8Mxumkud72Q3nUYyF4gYad8++OrgRj0oIfye1/tSkOU1SyruIZXEbtTGeIrrMDn29Jh+wyk881cXbUQnCoBwhZ2PMZlcTZyYT4GVLjddAUBUmJaPPqWDd66rdDruaXJYXt3fi9a//riYOtiweK/SszOUgP968t8oXY3GKQKwXEDB0Zg/syTsK7iQymLMVGVUqf8pQSUET/1aFeCdIeXkbsRBRKNOrrviH4UG3WIsELMZ253KXXmW0a3dvA2daJFw6hPQNSVHSUl5yAhiGRSxySD7W+geQificHkd0iVX+BqvXNXzlOaUbN3UaqvsTuOJNuP+6ezW0U34mvFLTItCdv2wCqLqkzSDiCpFczIDzWzweyF6SQPmW77vfP0vgTG3NpzzrJ+sq46oL0Wxa81d/UUT4RU997ca4EXsXDjoeEbdn9L4r9RODKfSbb0xnPVeUdHR6zRvbbHeYCNU0O7wBpPspNlyxJo=
+	0rnoWweRWUncMMSMSWkjl8s0vWj/DjOnRPAVOZDyrz2E34u7X86lTZ6vhN4zhyDi9dZZzRz5mTRpeDSuODtRN/lEK4/Hd9SR2E2jztYJmJrXQ9pkuWH1i71L4XcL1f22SKO+pJW354g7wfSZX4gFJWPmhQ9w+ECDx2e7wNvED6Tt4qSHUUUebeTPW+Y/QfYkyQDXYxdIpR7jsdFDJKbbtziYcc8r5JTLWz1NaAkt0Pqw+EhF4hhCeIJzyFADFrVArUq0DDC9T+P9Lun0LDaKnqOysdY+SffRdeRp/aAG5Sk5t28P55GVAPmY4kixBoxcxoKQMoKzd2cNOQTYVmmJk2NwnJXYYZT8DYfck+a0YVK7iZFr2xmfUaRQk14ZtXRVOHEj0wU749gCTYKOYMSLQaWFRuF+VtID7Io6paRPAoDgDEPVjaBPge8O9jApRjlrNFnZWvT3jwPDYHY4S/s/Y7u1iSrhRE+89DHmM23+RvDfXjUazXQqUxvxs0OT+/wBjm967wY9ytHRDoRKF0uLOooa7pFZNfiulCPa9G4rFhfM1/lBKjmQ8R6B4J4zLGsBGo/Qit81yyjOKbBqnFK5h0HRx4fSVU7k+lMs4ZuI+vk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(1800799024)(23010399003)(366016)(56012099006)(10067099003)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(23010399003)(1800799024)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(10067099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6nzlqgGq4VQ06mbZGgk/mnJKlF0owttyTNLrs8LD3tBuuffRC4TEfeV6QrGy?=
- =?us-ascii?Q?7+M4IE7JAHKoJI42F4LkqiclWFWW5InVDqX5rNYB3pdm2zyR184Nu/JRuc0T?=
- =?us-ascii?Q?+APQpfJajU048UK7R8VQGroWqvaHbdjWJU22hfIwubkO7TS7C44JnqFQQxwa?=
- =?us-ascii?Q?L6NAiVGvpXQDNoXxn1z0xUMxyeZTBkIC/tjiFgk2C9GORyzKbEFeckdt9+cF?=
- =?us-ascii?Q?Aopm4V9FA0vpyDRu6Rb94P8CQw+Eqro3m8vVJobIJMvrq/C5OZsrErg6Psv7?=
- =?us-ascii?Q?rqHls9IYBsoryDZX5SiTaELwlqXzx3rx/fvVJYJ2stSJlRUJrWQ+d5YyHjxn?=
- =?us-ascii?Q?2HHZvCgkebCc6ukcSOeHfK6+9gSbs6brHF0B9Oy8/j396w+GlviRntCiOG50?=
- =?us-ascii?Q?t6sRb8WEp9B8GyoSFN5knJyLdOe3ipwXVB1KPfwegFhda4ONFtr+stv3Upcz?=
- =?us-ascii?Q?YnJ3hDFxdIiMwHOaoqE4ufza5ey6N/UAHMSGUollI8qDP9u+JWZ28uHoCiTC?=
- =?us-ascii?Q?47Uqs71iurYtqQv+AIr189HE+9e7LLTAAMISTQUBaaHOzh0l08tDMcdlUO0L?=
- =?us-ascii?Q?9RAhpZYzO69riIEj7VS9VzuAXTkZsdYfLqRZKGHq8M79tMTibhwIiRbgwzzu?=
- =?us-ascii?Q?AKztSNQJImmE7++KJbFOrXBvgA59rv0Bmgw2bY4Xk5NbWc8x4IKcMk9eu9ZN?=
- =?us-ascii?Q?1oHBmKddx0m7ne5RWcJMQFFxQCACT3matIue1jAIOM05Nws0uq8xBMYsXGd1?=
- =?us-ascii?Q?IxyxfJs8OjyluUAAmh4xl031JBEw/IE2ea6rTJKHpYjyC4OHoL2JV3BFP8xl?=
- =?us-ascii?Q?QWCeQHYQxlWjZ+IuZsIHw3FiwjN5vOhFhz4YdLgkW6xT7xVFKVWSSblGBr+J?=
- =?us-ascii?Q?p0T/S07SdFVmAmwW9MhnMXnSrmtswAaWfgkCU9X+kSA0ILipserwelt6CtFV?=
- =?us-ascii?Q?Ek03vNh+5mprSbcT/uT7k5NJNWzbxD8g4sOo0tPsEaC6NjoWQU3SunFzg3Ru?=
- =?us-ascii?Q?Oyhf+Z9NAH3Le+/uEgeTAi6xk8ZnvveTLpKcy3V+0oH9HsulVaVldWWaFaCg?=
- =?us-ascii?Q?E1QY8d2QktJgOTjv5FS2t4nmPQwUKu+seKNS2i0U5UDwTb8GiiwpPsp65fiO?=
- =?us-ascii?Q?LmcHsdjTca7MF8upfW/fftgH7f/7G8aaZMPG8golhQwRpLUdRUqpxi7dJVvu?=
- =?us-ascii?Q?VlvzQWWjmjXd4bG6HqPMlcr6Tr9RkDDLatFFbZFOJdw3L8Jf/D/F4SxJZ/It?=
- =?us-ascii?Q?lG2KsAykZUNY6CfypshKRS9uCupy/xeJATMO1EQI/SJr0a3mIyuLX4Mm3jPH?=
- =?us-ascii?Q?6gAQZmvcXVa7zf5TybdCNzEWGeKXgxOO+T8Xa/XI/CjSCfnVbiPnitjsc2Bl?=
- =?us-ascii?Q?0k8A6TQ5MJOAzUNIXxlUIkm4RdI09AffnqzDv0p8mWYeGBX34XaTMUPIfTa1?=
- =?us-ascii?Q?biUiIrQvVDAm7j1QUQoTh709/aDD5WDpg1ZlbrBcvcAZVz1nfeVBTNyN1fXf?=
- =?us-ascii?Q?oLOIrW1t8s23aCQHyteKOc8WcmOWfDT1coAE1flzK4rvAB3EVB7LhBRk5loY?=
- =?us-ascii?Q?48i++jvcdDiedJgAX0BSUD8MFmSWLqHw44e95oSeOeUC9jg+gfy97SWxBbP6?=
- =?us-ascii?Q?6u6QZgk8FVYIKc+OeWe1isVYoza+AsY+GVVY6zi0QYdiAW2XKPQtocf1kCP7?=
- =?us-ascii?Q?bbSmvYedWm7n/xeiLSJPhhKC6B1/HBJkxqMVbDroKcmyczjv5oyntnG5l8fM?=
- =?us-ascii?Q?tiL/xNi6CTnIaL8ymNpQVr2HFooe+nFaQaxw6tZ4SvPko2N2Bpa9?=
+	=?iso-8859-1?Q?n0HnFhTZLfs7VbZbPy+qBYcV8/LpmKIBPf0cokX+RqYIdsVhRMm9hMvXOO?=
+ =?iso-8859-1?Q?mPBDvr2cFE/eV0NiPJwyHj7v3jhxSyW3m+kkjOvn/VCuOevuuFolJXazCj?=
+ =?iso-8859-1?Q?iP76d+m31Qw3FHPQI8iHupJGwQ06lL5ypS4ndustd6AjLjUimPABOGMVv7?=
+ =?iso-8859-1?Q?RmWVWlTstVfZ/ENKckUx7Ou73l717QRoS3jeHZI923gzHuBYuhr6UU+0cF?=
+ =?iso-8859-1?Q?2RyeaI50q7d3Tk9MywR5xm/khBIj1kBtKA8R+fdafI9jlG8HZqpfCaaMVK?=
+ =?iso-8859-1?Q?uW8IDFI9KYnO/XcNeeOd6V17kinar/tEr0NvT7UzYAgWIkAryJnT+8DY8k?=
+ =?iso-8859-1?Q?OlddOGeYlylKcUN/4OUT/VopJkegnC8jX+OVr6rXOAZA0iA6XXWvmc2cKs?=
+ =?iso-8859-1?Q?yInsYuqYiScJvczTq0hmiFD+9JIjLj2waSA2M/JA3N6jktbkcS1rPKX7T8?=
+ =?iso-8859-1?Q?SlIAvcVLa6Jc/AotYHeSWA5ZMHCAe4dA/aloSDDIBiaYtkie6vcJc9df5q?=
+ =?iso-8859-1?Q?TXg56pcupLC4ZDtYKsV1Vtr0s0GfCD0jKhx0spPMxG1Xj4WmB3HgBADZiH?=
+ =?iso-8859-1?Q?zk4F7j1oxzG/05iKo8JhalqlHiYR0+UGLSqtw1VIfB/QIuySQyE6C5go7a?=
+ =?iso-8859-1?Q?eAMn+JnpNm+YogpKkUbvnUH+DQ/hlAdDauwZuHstZSSACtO86QT78qOaIc?=
+ =?iso-8859-1?Q?wvqwEfQByr4yi3xDpouIIC6+k4c5BOgZoKvg7HyyGqc1M5OUdI05kmNzXm?=
+ =?iso-8859-1?Q?y+vUTaOYyFnTPBPp0k6imPRcvjFrryUwH98ZCHGw8z9mHBLqeKo/WKyIgv?=
+ =?iso-8859-1?Q?qQUN5fbmxU+otkrj8rAO8BRLz9LJkglybjoeVNO+VG75jIu/nyrHq+IJrF?=
+ =?iso-8859-1?Q?FHAxQgdD6P79Y+9bMVQ+J5+VaQ2zvhdjM+sdyNGiCPyuc3yVxwiVxzTM1t?=
+ =?iso-8859-1?Q?zWgV6h7I7dXX8yJqaOzfNmcd7K8zBIWiRQt30gINJso4NDmG8EgKrHoxvQ?=
+ =?iso-8859-1?Q?5qb9MB41IIzNBTKJE7Asm7Z/gwp1V2kcYynAPXiDLkLbUbF6XHr4uviZuE?=
+ =?iso-8859-1?Q?jejeljiGFCfGCvvNb5hXIOc6SZDC6Ey+DnbjfCSA9IJw8y2z+p5DUlhAos?=
+ =?iso-8859-1?Q?bzWVp8dxZ4w3opRwaR7igSYOKQ4mlOoHZgxcHIX0zO+GX3Q5Bga+x2vLhO?=
+ =?iso-8859-1?Q?Hm08p+3mjTiBtL8o931x9oPKuuau+Mdc7gdI+dRzZ72Un5IdHul78rkfmA?=
+ =?iso-8859-1?Q?Gvy5tnLbzpySsnQKQQ4NZABuopskO1R/AOy6tne/7Wrna2QTFIuseinwW0?=
+ =?iso-8859-1?Q?JK6sj9LcxcwXgFbc8wzKoKmQA3V7MBe61EU5DjMyojk1efNd4YmdjtcDAr?=
+ =?iso-8859-1?Q?xgGYIm9pJXMgF3DkJbXfF6mIQiYLW3KdG89tsxT184OVh93YEEM1n7+lio?=
+ =?iso-8859-1?Q?xKuCd1G9Y4X7ReZSLbmtdPxEIUfrhQ4YBpQDHRQSCkOFEayGJWzTysJnvE?=
+ =?iso-8859-1?Q?hYRt1HawG8IPaM3i9jWAhWxvb7xM4/A4u4bCpCuVRxzFKLpNS9VPtrghj5?=
+ =?iso-8859-1?Q?xAMNMOCU2ZBjGY5ZNXjVDT5ui4Q4SbhgG2QMMy4yYgsoqQPr7A83btoOCf?=
+ =?iso-8859-1?Q?D1HV7IlMZwQbNf1KSJBbhc7+M1/zX6gNmNjVFHjU1xXToWcmx+JagkPXRp?=
+ =?iso-8859-1?Q?qjWH6Yzm2b1GKClaPQkQ9z2S77xQH+UTT1/MAN+OcrbI42rFt0E55yQVDt?=
+ =?iso-8859-1?Q?eqPM28YdiYYdw5czPLLz2R4NytPgNpNoC/tJa4Br+WLJqUEOBAxWzSRWzm?=
+ =?iso-8859-1?Q?KzTmrE0KnDxbzZCYC6yz59tvbAq4aa0sXIQqylqcRJMGCBh4V4tv?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e9aa968-2222-46ae-4e8b-08defe04fcd8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bbd88ed-df54-49d5-3ba9-08defe07427d
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 15:17:31.2996
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 15:33:46.9969
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ba3nAentCIThXrmZuFU9boVU3tL+DDgNi3Vb5qMaOaBJ9ykTnjhNG/3k7+xICum9iRppG2PXVFgz4zM01MQAtKKbA8SsBd8z5TaV/8v0t9WTVe2/nbj0sYwUR3PNuWaf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7099
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ps8oZ5BYdsWupBVfhxPBZJ66pVlgZUpJ3UH3fNrgh7FQ00gnaxG5XBDgg5PK9Un76TMaNi6qBsEuaM1aiHgNfARG2wZouHCAKJLtH1TOGFAsQP+5mryUe1i+RgwG7snw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6852
 
-On Wed, Aug 19, 2026 at 06:05:43PM +0900, Zhipeng.wang_1@oss.nxp.com wrote:
-> From: Jindong Yue <jindong.yue@nxp.com>
->
-> Make the driver buildable as a module by turning the Kconfig symbol into
-> a tristate and using module_platform_driver() instead of
-> builtin_platform_driver().
->
-> Now that the driver can be unloaded and reloaded, let the driver core
-> own the clock and runtime PM lifetime so that the probe() error path and
-> remove() do not have to hand-balance them:
->
->  - acquire the clock with devm_clk_get_enabled() instead of a bare
->    devm_clk_get() followed by a manual clk_prepare_enable(), so it is
->    prepared/enabled for the device lifetime and released on unbind;
->  - keep only clk_enable()/clk_disable() in the runtime PM callbacks,
->    since prepare/unprepare is now handled once by devres;
+On Wed, Aug 19, 2026 at 03:04:02PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] The GPIO hog for the CBTU02043 XSD pin incorrectly drives the physical pin HIGH instead of LOW, placing the switch in shutdown mode.
+> - [High] The `pinctrl-names` and `pinctrl-0` properties inside the `gpio-hog` child node will be silently ignored by the `pinctrl` core.
+> --
 
-devm_clk_get_enable() will do prepare() and enable(). tear down also do
-unprepare() and disable()
-
-To avoid both devm_clk() and runtime pm suspend both unprepare and
-disable() clock to make wrong clock refererence.
-
-need in remove function
-
-    /*
-     * Resume the device so runtime_resume() re-enables the clock.
-     * devm cleanup (clk_disable_unprepare) runs after .remove() returns,
-     * so the clock will be enabled and the disable is safe.
-     */
-    pm_runtime_resume_and_get(dev);
-
-    /* devm_clk_get_enable and devm_pm_runtime_enable clean up automatically */
+both look likes make sense.
 
 Frank
 
->  - enable runtime PM with devm_pm_runtime_set_active_enabled(), which
->    marks the device active (matching the enabled clock) and disables
->    runtime PM on unbind.
 >
-> With the clock, runtime PM and IRQ domain all owned by devres, remove()
-> and the probe() error path only have to dispose of the parent IRQ
-> mappings.
+> --- Patch [1]: [PATCH 1/2] arm64: dts: imx8mp-evk: enable CBTU02043 for USB Type-C orientation switch ---
+> commit b6ef05965c4d69ccad672c2aa85487746c77918d
+> Author: Peng Fan <peng.fan@nxp.com>
 >
-> Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
-> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-> ---
->  drivers/irqchip/Kconfig            |  2 +-
->  drivers/irqchip/irq-imx-irqsteer.c | 36 +++++++++++++++++-------------
->  2 files changed, 22 insertions(+), 16 deletions(-)
+> arm64: dts: imx8mp-evk: enable CBTU02043 for USB Type-C orientation switch
 >
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 20b77fbc51ee..105108d2e6ff 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -555,7 +555,7 @@ config CSKY_APB_INTC
->  	  the controller's register.
+> This commit adds a gpio-hog to keep the CBTU02043 crossbar switch always
+> enabled by driving its XSD pin low. It also adds a pinctrl group for the
+> XSD pin to ensure it is properly multiplexed.
 >
->  config IMX_IRQSTEER
-> -	bool "i.MX IRQSTEER support"
-> +	tristate "i.MX IRQSTEER support"
->  	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
->  	default y if ARCH_MXC || ARCH_S32
->  	select IRQ_DOMAIN
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-> index a9909ecb6fef..a60cc527e619 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -10,6 +10,7 @@
->  #include <linux/irqchip/chained_irq.h>
->  #include <linux/irqdomain.h>
->  #include <linux/kernel.h>
-> +#include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/of_irq.h>
->  #include <linux/platform_device.h>
-> @@ -193,7 +194,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
->  		return PTR_ERR(data->regs);
->  	}
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+> > index 7bdd641292fb6..dc3baeac5e3d3 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+> > @@ -935,6 +935,17 @@ usb3_data_hs: endpoint {
+> >  	};
+> >  };
+> >
+> > +&gpio2 {
+> > +	cbtu02043-xsd-hog {
+> > +		gpio-hog;
+> > +		gpios = <20 GPIO_ACTIVE_LOW>;
+> > +		output-low;
 >
-> -	data->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
-> +	data->ipg_clk = devm_clk_get_enabled(&pdev->dev, "ipg");
->  	if (IS_ERR(data->ipg_clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(data->ipg_clk),
->  				     "failed to get ipg clk\n");
-> @@ -226,12 +227,6 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
->  			return -ENOMEM;
->  	}
+> [Severity: High]
+> Will this actually drive the physical pin HIGH instead of LOW?
 >
-> -	ret = clk_prepare_enable(data->ipg_clk);
-> -	if (ret) {
-> -		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
-> -		return ret;
-> -	}
-> -
->  	/* steer all IRQs into configured channel */
->  	if (irqsteer_has_chanctrl(data->devtype_data))
->  		writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
-> @@ -271,12 +266,21 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+> In the gpiolib framework, "output-low" requests a logical 0. Because the
+> pin is specified as GPIO_ACTIVE_LOW, gpiod_direction_output_nonotify()
+> applies an inversion to the logical 0, resulting in the pad being driven
+> to a physical 1 (HIGH level).
 >
->  	platform_set_drvdata(pdev, data);
+> Since the commit message notes that XSD must be driven LOW for normal
+> operation, should this use "output-high" with GPIO_ACTIVE_LOW, or
+> "output-low" with GPIO_ACTIVE_HIGH?
 >
-> -	pm_runtime_set_active(&pdev->dev);
-> -	pm_runtime_enable(&pdev->dev);
-> +	ret = devm_pm_runtime_set_active_enabled(&pdev->dev);
-> +	if (ret)
-> +		goto err_irq;
+> > +		line-name = "CBTU02043_XSD";
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&pinctrl_cbtu02043_xsd>;
 >
->  	return 0;
-> +
-> +err_irq:
-> +	for (i = 0; i < data->irq_count; i++) {
-> +		if (!data->irq[i])
-> +			break;
-> +
-> +		irq_set_chained_handler_and_data(data->irq[i], NULL, NULL);
-> +		irq_dispose_mapping(data->irq[i]);
-> +	}
->  out:
-> -	clk_disable_unprepare(data->ipg_clk);
->  	return ret;
->  }
+> [Severity: High]
+> Will these pinctrl properties be silently ignored by the pinctrl core?
 >
-> @@ -293,8 +297,6 @@ static void imx_irqsteer_remove(struct platform_device *pdev)
->  						 NULL, NULL);
->  		irq_dispose_mapping(irqsteer_data->irq[i]);
->  	}
-> -
-> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
->  }
+> The pinctrl bindings are evaluated by the driver core via
+> pinctrl_bind_pins() only for nodes that instantiate an associated
+> struct device. A gpio-hog node is parsed manually by gpiolib as a firmware
+> subnode and does not instantiate a device.
 >
->  #ifdef CONFIG_PM
-> @@ -324,7 +326,7 @@ static int imx_irqsteer_suspend(struct device *dev)
->  	struct irqsteer_data *irqsteer_data = dev_get_drvdata(dev);
+> Does this mean the MX8MP_IOMUXC_SD2_WP__GPIO2_IO20 pin will not be
+> multiplexed to its GPIO function, preventing the hog from controlling
+> the actual physical line? Should the pinctrl properties be placed in a
+> probed device node, like the parent &gpio2 or &iomuxc?
 >
->  	imx_irqsteer_save_regs(irqsteer_data);
-> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
-> +	clk_disable(irqsteer_data->ipg_clk);
+> > +	};
+> > +};
 >
->  	return 0;
->  }
-> @@ -334,7 +336,7 @@ static int imx_irqsteer_resume(struct device *dev)
->  	struct irqsteer_data *irqsteer_data = dev_get_drvdata(dev);
->  	int ret;
->
-> -	ret = clk_prepare_enable(irqsteer_data->ipg_clk);
-> +	ret = clk_enable(irqsteer_data->ipg_clk);
->  	if (ret) {
->  		dev_err(dev, "failed to enable ipg clk: %d\n", ret);
->  		return ret;
-> @@ -357,6 +359,7 @@ static const struct of_device_id imx_irqsteer_dt_ids[] = {
->  	{ .compatible = "nxp,s32n79-irqsteer",	.data = &s32n79_data },
->  	{},
->  };
-> +MODULE_DEVICE_TABLE(of, imx_irqsteer_dt_ids);
->
->  static struct platform_driver imx_irqsteer_driver = {
->  	.driver = {
-> @@ -367,4 +370,7 @@ static struct platform_driver imx_irqsteer_driver = {
->  	.probe		= imx_irqsteer_probe,
->  	.remove		= imx_irqsteer_remove,
->  };
-> -builtin_platform_driver(imx_irqsteer_driver);
-> +module_platform_driver(imx_irqsteer_driver);
-> +
-> +MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver");
-> +MODULE_LICENSE("GPL");
 > --
-> 2.34.1
->
->
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260819-imx8m-typec-v1-0-befc92ecb70a@nxp.com?part=1
