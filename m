@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8FB283FE5;
-	Wed, 19 Aug 2026 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057513AEF55;
+	Wed, 19 Aug 2026 16:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787156827; cv=none; b=FcUnlSNUo0kwbz8WvOr8Mr4dZNtPg1nR5UczeqRAzZqAUz4ZvbT10XIiFGowAxT78FlVAwori8Os3czyUgHvpXfxBivIuuoY367+375XIF9rhnYboNHYoJBNGuEN1YmiAF+s8opMfriBa8kiuO8QvPirDRIHeHp+FG+Hbx33fNU=
+	t=1787156899; cv=none; b=NSw2vOGyKRp88bWCBi5/wQr+oAYB/teVPIz6CSsaxsQse/aC7QdTHCEYXQpG1HSYVIS8n5sbblrUlMkS8omNjkmt8r2MNYrE9DHjI+Hn6+LMOVkBjvSSUCrxmZipVqb4nFM8W3EE345xjrW7FR95MT/DCnoaVlyAY6qCjbmH+zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787156827; c=relaxed/simple;
-	bh=getZyc5+x7C6K+sHXoqwvKs1rQBBDmmM1OthDhDSEaE=;
+	s=arc-20240116; t=1787156899; c=relaxed/simple;
+	bh=IdepXRfOEoQRVYwcpWcyKZs9GtmS+di7yb74Y6cRJNg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VAigBC5PmmkB80n33uU4C8anwPihMUORYNfZMJa/wL8JlCGynObWK4TA+9MwRYQT7lamVnOxgMXBoE6J6whelwxexmjQG0OqwtaAtWlviYqs2+oHHWj4LS7KJpGo2WdqMvTCHcywUtG0dCG4fCnqX6pXOjRR7JxfaKJycDa+X8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGi5NJrG; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PtO8tivrtv6FGA57l54BgIclO8FuasDfQucC2GNTeIoDep9rA1DGZF8zYEnUsr3nROZaH0PjhDQ3oz0N1flniY00x3xt3gwvYESfEacar+XssJawGbpzAiPIDVn/yJszCMu7M1O6YLGueGPB5t6dxMvOTl9NhkHbQIfMO9kSxlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/6WUj6Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGi5NJrG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCBD1F000E9;
-	Wed, 19 Aug 2026 16:27:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/6WUj6Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7531F000E9;
+	Wed, 19 Aug 2026 16:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787156826;
-	bh=tWum0M/KW01JsIfiqiWfjLWjFJsrmJRkwJ5RSvWc/nw=;
+	s=k20260515; t=1787156893;
+	bh=IdepXRfOEoQRVYwcpWcyKZs9GtmS+di7yb74Y6cRJNg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=MGi5NJrGmu5soIJH5Y4TrPdyTM51X+j9qrW50n2sQen00EnBLtz542mV9BAc94Ln3
-	 h3AcYJQAHPnc32dPj6h9l1oMevVZWUdwAIbCAaGCBZQJvrc3RPLTU9t6+LrUup+Z5P
-	 7WSvtJFiSATKDUES3jhDs8AtEK/Tl/plnRiBgRlsJ9ORXPbzjdMzvBlTo/vZbWESpi
-	 XwW9WqEubaSsAOUMbH84TiC8n5sIhGasJsfNDMpCrbpg1abAeh/yLm0K3G4zrD6E17
-	 Q9ZaOZ8woeEk675NZKTAV2kN4ArP4SowdFj2hesX/YnhEIIeNm+n39XAnzT9U8aO2h
-	 lTrsFrXulQhKQ==
+	b=l/6WUj6QP3QWDdH3LfH9Wm5cGOhFPpX/LGylk/NmXBqs2lDQNmODI5cjKtoQoePdh
+	 9luPw4NMCmRaT90Y4ioOU/Js/yg0jbSiVC7WJsifTFwSic2Ns0JZ3B0ES/bKj9Uinz
+	 kuCmuErJzjFh6GsZYPgU+Ilb9oO2OssYBGRHFLWUKXcRtjMAp04TOXWsIfb71QlCUl
+	 NkMrmcqGJJlHsA0mZA35pFYyu8jIJI4PjYwCyHT1OVevBtTUBz38+YVy72poW2jm3r
+	 IpIENmIwECCvJzK3VU6JO322abbhyxs1Hv8X/ONMiNWm6ockA9jTA+Py6Lqh7WZp/2
+	 MsCHtzBWw7wIw==
 From: Thomas Gleixner <tglx@kernel.org>
-To: Zhipeng.wang_1@oss.nxp.com, Marc Zyngier <maz@kernel.org>, Frank Li
- <Frank.Li@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
- <jindong.yue@nxp.com>, xuegang.liu@nxp.com, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 1/5] genirq/irqdomain: Add
- devm_irq_domain_create_linear()
-In-Reply-To: <20260819090543.585131-2-Zhipeng.wang_1@oss.nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>, Zhipeng.wang_1@oss.nxp.com
+Cc: Marc Zyngier <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jindong Yue <jindong.yue@nxp.com>,
+ xuegang.liu@nxp.com, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 2/5] irqchip/imx-irqsteer: Use devm to manage the IRQ
+ domain
+In-Reply-To: <aoW8tbTmjMKs1IEO@SMW015318>
 References: <20260819090543.585131-1-Zhipeng.wang_1@oss.nxp.com>
- <20260819090543.585131-2-Zhipeng.wang_1@oss.nxp.com>
-Date: Wed, 19 Aug 2026 18:27:02 +0200
-Message-ID: <87wltmjctl.ffs@fw13>
+ <20260819090543.585131-3-Zhipeng.wang_1@oss.nxp.com>
+ <aoW8tbTmjMKs1IEO@SMW015318>
+Date: Wed, 19 Aug 2026 18:28:09 +0200
+Message-ID: <87tsoqjcrq.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,21 +49,11 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-On Wed, Aug 19 2026 at 18:05, Zhipeng wrote:
-> From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+On Wed, Aug 19 2026 at 09:24, Frank Li wrote:
+>> Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts support")
 >
-> irq_domain_create_linear() has no devres-managed counterpart, so every
-> driver that wants the domain torn down automatically on unbind has to
-> either open-code an irq_domain_info and call
-> devm_irq_domain_instantiate() directly, or register a manual devm action.
+> Nit: First patch also need fixes tags to backport.
 
-I'm not opposed to add this, but adding this as a prerequisite for a
-backportable fix is bogus.
+No. That first patch is not fixing anything and I just explained how
+this is done.
 
-Just open code the domain info in driver and use
-devm_irq_domain_instantiate() for the initial backportable fix and then
-mop up the thing _after_ all fixes are done.
-
-Thanks,
-
-        tglx
