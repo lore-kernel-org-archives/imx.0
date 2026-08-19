@@ -1,106 +1,201 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E672E282B;
-	Wed, 19 Aug 2026 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9747B39FCCA;
+	Wed, 19 Aug 2026 13:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787145824; cv=none; b=Cu7RLcHhOo/WoGviQTyqL0nWWS09CH7ZvFyFwXJiDh6VGI7KvI36P5E55jBJsYIfZ2Hiieh/0rZGSXiRZ0oIDqNCAlFuwQR7aLMfMiw6y69LY40rxxkCQanWfCCOavstf/5UEHh9ze7xgrfF2pLsSzMYDvxTXMvDgwIrgbJvAgo=
+	t=1787146259; cv=none; b=RABax3mzmeQLngPlqr8BSVKaDSNTAPJZzjCzI37HEW/lzrUMQ9zwg/9PeVNe4WREIQJED5JTCOK0zaGmQkN2ZzrvLXdKNAaA6LcdNxBQrZ+KqYRwdzjmYiS3+gjkRQ9s0FUh6BbmBcrl+VFEo1VY9I80gwxgKOBovAphrYeal68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787145824; c=relaxed/simple;
-	bh=csgMa/QibvOKbjaoecc19dQD5xpNkKm90cF7EEowrTs=;
+	s=arc-20240116; t=1787146259; c=relaxed/simple;
+	bh=y/jJ5U0R6J7cJczSLfMK3MdiUkuUebU7Efovw4M05P4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mvuvMQSA02n84qQh+3wP6UdcWM5+6gK4aqCF9BSf4GNDJMilUjxDDiaWCjXJ5nK0FUvUpPRNPKJM+NTsJU5+R2WL10SJyU3CX7mmLox360IS99gy58gQ7DujmOG2uTK52CJ6HiKbGxP4L1ityjE/RS/Uxm6Po1JZ9Ao6BOe3yQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nScihf2t; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JfxJoJ7+vD9/sBWzPIrG9hFQa4+9WY2ydmU8s5BjLMajtwZsW51sdXb8CXL8u/XypN6Zb4foxiFiyFt37juxUAMrsmTgDzIUQKvkI7dqsA8vmDS/dZLRaVz2EGIu6Ww9i8IoA3YslUz+1wTHffWi8Rwvon/sEji++7I2sDv2yNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpxjezD9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nScihf2t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46501F00A3A;
-	Wed, 19 Aug 2026 13:23:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpxjezD9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0481F00A3A;
+	Wed, 19 Aug 2026 13:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787145818;
-	bh=8f8K+orO4idWNWQ/RLLI4XBD04M3E2A2gzk70wmdmHM=;
+	s=k20260515; t=1787146255;
+	bh=m4mKzPN+FWk1tWjJ74S3scto91jfZ2ZuFlDYXqOX/4c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nScihf2tiikh0j9wJhqdCJ2dY4ZNfR9bPCnqPbvzOX5wigSWVVk0kvnUS0bgTkFpJ
-	 lbmzykNrbkynv1SMNqM/8/aEcOV4n6rwCjdyTKlyfM9gLVyge/T6Ee/gkQkWNZNVUE
-	 HglcemM0m5AeJu0GBxKxxr166Zp1Tj44z2A4tTILU3b/ye8pD4w0AK1YowbfoyOu1p
-	 UYCbrgXgBAQfeYzB96xmhTn9rdDWVzSBnNWF3LPQAB/+wfxtgaQyQGkfLF0Zjy0EKB
-	 L5nRf3Xa8JUgaiSpPyB/DhtHJaiPBeAEoSRyn55bp+HOmumWKT0LfnYNqWTrr+JyF/
-	 LeTOMrOuCB+pA==
+	b=gpxjezD9AovAB1sA7Zvo8m+V+2CLDuYXJxln0j5QDvUCfgdwOYWaJyPIz4a+cTnig
+	 9bUMpXer420RW5OGLiCbKYkNCRWAJGWEbokj3+gqLmpStPcLAZ58Rx6lzDj7h4KMQj
+	 +pAcuRbLItXPhiCpfBhLAha+J1/RmENjpFgiSpxsa1ZYnToDxRs2I4Q4MhQtrOfOU3
+	 03RBtOQMbia2WYEYbkYEitmOHquX7Qy0Mc7Rsodfrb8Tk46jkHk15xPP1fXbMZvM2w
+	 nGYqASIGphfki5V4B7URVeLfb/VlJPWeTQdaH6sEsOFuJHPaUMoVQwBJ0oW29a5jkZ
+	 7yWZxxAUUqkQg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v38 6/7] arm64: dts: imx8ulp: add secure enclave node
+Subject: Re: [PATCH v38 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260820-imx-se-if-v38-6-5df4a4cff736@nxp.com>
+Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260820-imx-se-if-v38-3-5df4a4cff736@nxp.com>
 References: <20260820-imx-se-if-v38-0-5df4a4cff736@nxp.com>
- <20260820-imx-se-if-v38-6-5df4a4cff736@nxp.com>
+ <20260820-imx-se-if-v38-3-5df4a4cff736@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 13:23:37 +0000
-Message-Id: <20260819132337.B46501F00A3A@smtp.kernel.org>
+Date: Wed, 19 Aug 2026 13:30:55 +0000
+Message-Id: <20260819133055.9B0481F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] The patch explicitly mentions that boards enable the enclave by =
-including 'imx8ulp-firmware.dtsi', but this file is missing from the patch =
-series.
-- [Low] The disabled 'hsm0' node lacks the 'memory-region' property, causin=
-g an unconditional device tree schema validation warning.
+- [High] DMA use-after-free on firmware timeout in `ele_get_info()` and dri=
+ver unbind.
+- [Medium] `se_resume()` ignores the failure of `se_restore_imem_state()`, =
+breaking expected power management error handling semantics.
+- [Low] Incorrect iteration bound computation in `ele_debug_dump` leads to =
+reading past the received payload.
 --
 
---- Patch [6]: [PATCH v38 6/7] arm64: dts: imx8ulp: add secure enclave node=
- ---
-commit 031e0af8a8a7b64a1399f13195904638982a6007
+--- Patch [3]: [PATCH v38 3/7] firmware: imx: add driver for NXP EdgeLock E=
+nclave ---
+commit b60827d987987a5036c02b256c938fa4f0af210a
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-arm64: dts: imx8ulp: add secure enclave node
+firmware: imx: add driver for NXP EdgeLock Enclave
 
-Add the EdgeLock Enclave (ELE) secure-enclave node to the i.MX8ULP SoC dtsi.
+Add MU-based communication interface for secure enclave on i.MX SoC(s).
+The secure enclave FW communicates with Linux over single or multiple
+dedicated messaging unit(MU) based interface(s).
 
-> Keep the node disabled in the SoC dtsi so it does not impose a
-> reserved-memory requirement on every board. Boards enable the enclave and
-> provide its memory-region by including imx8ulp-firmware.dtsi.
-
-[Severity: Medium]
-The commit message mentions that boards enable the enclave by including
-imx8ulp-firmware.dtsi, but this file appears to be missing from the patch.
-Did you intend to include it in this series?
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8ulp.dtsi
-> index c6d1bb9edf388..38233dd74ee33 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
+le_base_msg.c
+> index 0000000000000..724f6e913ce79 100644
+> --- /dev/null
+> +++ b/drivers/firmware/imx/ele_base_msg.c
 
 [ ... ]
 
-> @@ -185,6 +185,14 @@ scmi_sensor: protocol@15 {
->  				#thermal-sensor-cells =3D <1>;
->  			};
->  		};
+> +int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
+> +{
+
+[ ... ]
+
+> +	ret =3D ele_msg_send_rcv(priv, tx_msg, ELE_GET_INFO_REQ_MSG_SZ, rx_msg,
+> +			       ELE_GET_INFO_RSP_MSG_SZ);
+> +	if (ret < 0) {
+> +		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
+
+[Severity: High]
+If an enclave command times out, ele_msg_send_rcv() returns -ETIMEDOUT and
+the error path immediately calls ele_get_info_cleanup(), which frees the DMA
+buffer. If the firmware is still executing and completes the transaction
+later, could it perform a DMA write into physical memory that has been
+reallocated to another subsystem?
+
+> +		return ret;
+> +	}
+
+[ ... ]
+
+> +int ele_debug_dump(struct se_if_priv *priv)
+> +{
+
+[ ... ]
+
+> +		rx_msg->header.size -=3D 2;
 > +
-> +		hsm0: secure-enclave {
-> +			compatible =3D "fsl,imx8ulp-se-ele-hsm";
-> +			mbox-names =3D "tx", "rx";
-> +			mboxes =3D <&s4muap 0 0>, <&s4muap 1 0>;
-> +			sram =3D <&sram0>;
-> +			status =3D "disabled";
-> +		};
->  	};
+> +		if (rx_msg->header.size > 2)
+> +			rx_msg->header.size--;
+> +
+> +		for (i =3D 0; i < rx_msg->header.size; i +=3D 2)
+> +			dev_info(priv->dev, "%s%02x_%02x: 0x%08x 0x%08x",
+> +				 FW_DBG_DUMP_FIXED_STR,	msg_ex_cnt, i,
+> +				 rx_msg->data[i + 1], rx_msg->data[i + 2]);
 
 [Severity: Low]
-Does omitting the memory-region property here cause dtbs_check validation
-warnings?
+Does this loop read past the actual message payload length? If the firmware
+returns an odd number of payload words, the remaining size is not even. The
+loop body would execute when exactly 1 word remains but print both
+rx_msg->data[i + 1] and rx_msg->data[i + 2].
 
-Even when the node is disabled, the fsl,imx-se.yaml binding schema might
-unconditionally require the memory-region property for fsl,imx8ulp-se-ele-h=
-sm.
+> +
+> +		msg_ex_cnt++;
+> +	} while (keep_logging);
+> +
+> +	return ret;
+> +}
+
+> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
+l.c
+> index 0000000000000..53091cc37e7e0 100644
+> --- /dev/null
+> +++ b/drivers/firmware/imx/se_ctrl.c
+
+[ ... ]
+
+> +static void se_if_probe_cleanup(void *plat_dev)
+> +{
+> +	struct platform_device *pdev =3D plat_dev;
+> +	struct device *dev =3D &pdev->dev;
+> +	struct se_if_priv *priv;
+> +
+> +	priv =3D dev_get_drvdata(dev);
+> +	if (!priv)
+> +		return;
+> +
+> +	if (priv->rx_chan)
+> +		mbox_free_channel(priv->rx_chan);
+> +	if (priv->tx_chan)
+> +		mbox_free_channel(priv->tx_chan);
+> +
+> +	/*
+> +	 * Being device managed buffer, no need to free the buffer allocated
+> +	 * in se probe to store encrypted IMEM.
+> +	 */
+> +
+> +	/*
+> +	 * No need to check, if reserved memory is allocated
+> +	 * before calling for its release. Or clearing the
+> +	 * un-set bit.
+> +	 */
+> +	of_reserved_mem_device_release(dev);
+> +
+> +	dev_set_drvdata(dev, NULL);
+> +
+> +	kfree(priv);
+
+[Severity: High]
+Similarly, does this teardown path free device-managed DMA memory without
+waiting for or aborting a potentially busy firmware transaction?
+
+> +}
+
+[ ... ]
+
+> +static int se_resume(struct device *dev)
+> +{
+> +	struct se_if_priv *priv =3D dev_get_drvdata(dev);
+> +	struct se_fw_load_info *load_fw;
+> +	int ret =3D 0;
+> +
+> +	load_fw =3D get_load_fw_instance(priv);
+> +
+> +	if (load_fw->imem_mgmt) {
+> +		ret =3D se_restore_imem_state(priv, &load_fw->imem);
+> +		if (ret)
+> +			dev_warn(dev, "Failure restoring IMEM state[0x%x]", ret);
+> +	}
+> +
+> +	return 0;
+
+[Severity: Medium]
+Should this return the actual error instead of 0? se_restore_imem_state()
+documents that it returns -EIO so the PM subsystem knows the enclave is
+non-functional after resume, but the failure is caught here and 0 is
+unconditionally returned, breaking the expected power management error
+handling semantics.
+
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260820-imx-se-if-=
-v38-0-5df4a4cff736@nxp.com?part=3D6
+v38-0-5df4a4cff736@nxp.com?part=3D3
