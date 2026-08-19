@@ -1,80 +1,87 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE44414A3B;
-	Wed, 19 Aug 2026 10:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823B93CAA2E
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 11:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787136351; cv=none; b=UO0NZa7DyvqSD4lsOvu7WZm+IafWPPDDUz1+9X6wvNChbQgoonbi/gcYSkgWuf3IWzIhVBy/ExR4EmTITwjvdcnN2CL078fCtPaWvC9Cd2BocioTClEfUsTgulCFXaBI7CFgpZ/zIK0XlOL4nL2FaMVstJ5uqEvRgaRv+n4T/GI=
+	t=1787138026; cv=none; b=ZYqwN4MK2pYyswEAA03NNqnVOHCyLUhivBx3kKhc+tjBvXk19s5axLKNGMOmKaF9LdUrDh+kk9128jcLLlEw4voraF6AQuEyOVaI4Uwetkt3wZ2SjLR8Pls+mKcpLDdqNCbl5IdVWQgW1JKGnxEebHF0RG6q2eHDpa/KaeDODfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787136351; c=relaxed/simple;
-	bh=ZuHkUEAywijyKy0CYl/u0oX2kPdWveoBXxulvd/HS7U=;
+	s=arc-20240116; t=1787138026; c=relaxed/simple;
+	bh=909ro/fzf/GQehxNHMqOgCUY8OQL2KUAAFxDDPFuGf0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OZ5wRkwmo5Z/yvqCdDwaMUuaPnQUovcSqK/s4iSZMFH7U2EQ2Jo+EeRi+yjoG4MO6wqmRWtB0Pkh5HmVfwJXYRnwgimds/A0eBQpgdX40P5/WvEVStngo+nCfNdxenNtwrkwEzJUEapdwE8xuC+kAw/sVtIYaU29OtCDMdWcsuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LdNWfzPK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NtPGda8x; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HtiVdQ6P; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nQiVOu0G; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=PKPpAvIBqRhOLr9CV7BUmP3z/wvPy7Yc6xuyH3zFslfikqxKZeV3gPy9f0frg8cZJKu2ZZYYKNSQfUPmfBhv67nVDl7zFd6hiFhi90/NtJYeg5KxDhZzVb6c6LAVw4WhgaSg3v1MleXweI3EqBRZbRRLVHt4LonDGoh7CvJDcII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=R6KbtOGk; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MKki1yGd; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LdNWfzPK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NtPGda8x";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HtiVdQ6P";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nQiVOu0G"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3CA123ECE;
-	Wed, 19 Aug 2026 10:45:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787136342; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Hg/ZPXFle3feAVe1hiMHSTS/1Mz1wkpga/z0zY78R5Q=;
-	b=LdNWfzPKrb9NDTksCcvaHrsvxugOfINA1v+h3Kxy67vH2zhc75r2JKsfmAAhoII4pijNSl
-	DamY7typxy92U9RMhZP6Sk+eDBWphjO7TfrMGA6m0nv+DQmV6o0cPOsy5bl7f8mbDMhkuM
-	fEkDpG5lCEQUoiHXix5NG6Zduj7fH0w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787136342;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Hg/ZPXFle3feAVe1hiMHSTS/1Mz1wkpga/z0zY78R5Q=;
-	b=NtPGda8xTU4/ykIvNTrk/MXoH9S0MdxTKEoPi+bSi+fNK8qvsVvOrNREMwnZWfeM++KHAq
-	bAb3yg0PLR0wlCBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787136338; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Hg/ZPXFle3feAVe1hiMHSTS/1Mz1wkpga/z0zY78R5Q=;
-	b=HtiVdQ6P+QJOYv7bdivbBbzsLhrDtGsKdck5z+Rrnv5Or6Yb44FhFp1YxLUk3gDWrB9qYV
-	cn2gnBsxFaQ4xwdio3kwwY4iDLHaGThOj7ebSl9TL/PcG3Ua+Yaq9p1sn/dvBl9zZR/kEE
-	h4zGF9BReqs7jdJ4u7HD2AXm8xs8UR8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787136338;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Hg/ZPXFle3feAVe1hiMHSTS/1Mz1wkpga/z0zY78R5Q=;
-	b=nQiVOu0G3/p+k3HKPnabYNUqcD5L4WSj9Qhtsmg5DXJti+Tl/1EJONrUHo9Krh/jZRLA7e
-	BT6JqTT+EATfroAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC5BB2F81;
-	Wed, 19 Aug 2026 10:45:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PoR9KFGJhWo/KAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 19 Aug 2026 10:45:37 +0000
-Message-ID: <427a13f5-c820-4aa1-b19f-1fb0493d264d@suse.de>
-Date: Wed, 19 Aug 2026 12:45:37 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="R6KbtOGk";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MKki1yGd"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JA7nKg2947166
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 11:13:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Ig6FvSRli1ZqS5uDLkbhiTZeNooor70ALrndiWqEtrI=; b=R6KbtOGk0MOGWZ1p
+	gb4jfVydfHxpojFg0GJhs/q21UKl0i/VEiMcB/DcdwHtPGBYoMh9TelId8APGW1H
+	mpPKtwLl/mIxWgYIR8VeZHgVifvtEMkhIxaUenX8yCpWRX6UUErn/p0Z/tbgCq5E
+	z7azllfMmg6bu707r3cmjGJjj5A22/uc3byH36q4v6RtVqDR1ovUIJfbXPM65JbJ
+	HBzd2gq1Jwt7/1TUCgQaILpad8RK8lhnHnmp/F5Kq0Q5IhCm/cW2VwUWd353s6em
+	hslwnuteh06ocWdwq+C8G72MQYUVL5B6khbQ/E2RLw6EtvSj50lRTRT4hhS/+8UB
+	pR0x9Q==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g4yfkawsk-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 11:13:43 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-52d57d17d6cso1932141cf.3
+        for <imx@lists.linux.dev>; Wed, 19 Aug 2026 04:13:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1787138023; x=1787742823; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ig6FvSRli1ZqS5uDLkbhiTZeNooor70ALrndiWqEtrI=;
+        b=MKki1yGdJcboTtGEBZzdb9PgY1CJd7uvaqGLGXHlRkiQeu74oP7hC120YBwauEyH7Q
+         /+emSySAfeqbowCFmO0kJLJopecc2TTVcptpPTONxruiUxRWDtVgNiCpk/a+FJVHPLNs
+         IhwvSeub+ZxzHO4AEsf0SnT7zzfyQxEw5oobHkgyiy/m3/ZZeqxTL9tDDhgi3SXZUpki
+         QmCiutrXt5RBTASNPy5atEgVcFR8CnCVIoez79wmu98l81BSvIqaZwptcjpz3+uI6ce+
+         KBsdBxzGaI+cRoA5opIuxK8F0FivxQPfB9DOiaHwEEjIOdmsaFZbq1fgP5EOUjq2HG6K
+         x0ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787138023; x=1787742823;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ig6FvSRli1ZqS5uDLkbhiTZeNooor70ALrndiWqEtrI=;
+        b=HYUpWYYRgvQqGP+seCBPXMq3XYzWO7/7Sg0SVpqHyfjfFAKDCDSEXvzwJKpajsyNmk
+         K0s141ViuTk+P7u7ocxxOlgMNWYnolEiQf0Gfpa4TFe3VGlbrhTHjocdxnWNhnbv78Fi
+         JSBH4u56Y9hyCwYJLJz17Tsn0oMnRqO6783aK7DiyF/i5Vip351Ds/ntN5Nk8S//VG4o
+         9hHp0sHl/EDz/g6omEqrSeJR5r5IwnLUQ9IQMTsIOpZrKfxkPOVurUldjyE3+16RVsb/
+         IyMKoZ/9RLtOzSpFzcuc2lBN8RX1woMm+FAg+xj2xs4NpSxaQO3E2L4XA3U9InNDmjJc
+         WUWg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4feFNoFSdcKFw9uX5m1NoU0xYAtZz9cAUJ0mor84To3INHg0lDMr09aThKOjQAnVAW50=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZ0hLPy+oCzNAspavzhKvxTS310v2oF2tC3A3Ri2wjxsCDPl+T
+	UNBDDgtgiUa+9EbAxNs4MkAgyGbtn7QVdpeYKxM3aoUwS9PUpY7SimlW+Pe5bM3jYOX+VKkLb46
+	r9YqniHdQZaYNy+wfoaypA+PT2hg/ohpeBOmmh8vvQIyCT32cwKTdDS8=
+X-Gm-Gg: AR+sD12BYSZMjlz9eGJWGtjyxcrxDDdCifZreAEn8oOC/rjjrbSe6Uk4pd2yL/CU/Rb
+	vlor8VhVL1oeHQteg/8MXRvlzEdazmlbGXiGf6ciDLj+IjZC9xXJ2uv9w1biy3qyQcJB+gf6DKt
+	zdY+lNwzRWNXD9WoMYDvuV1AoQOCWKxzgsgdVzmHyMkLqAv4emspQyoKjSPAWxGnfJBiCilT09S
+	bMVpVAp6raRWfB9x2Pww1vRKuIcRcFM9lg9pPYz3dH208Z0xU/N5hv8PTSd03loHvK0qX3P/4HX
+	tsjrHythmDTTw9VjYTqt8m9/7w7aAK4GZ78wMfzeP0ozT7XXe37Gufnb+Ljw5vqEHapbKBAUYnu
+	SYv4lugorH6ESGkjnxzrFwbvV
+X-Received: by 2002:ac8:7f0f:0:b0:517:6162:daf5 with SMTP id d75a77b69052e-52dd5c958aamr25088901cf.3.1787138022837;
+        Wed, 19 Aug 2026 04:13:42 -0700 (PDT)
+X-Received: by 2002:ac8:7f0f:0:b0:517:6162:daf5 with SMTP id d75a77b69052e-52dd5c958aamr25088541cf.3.1787138022385;
+        Wed, 19 Aug 2026 04:13:42 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c243c7a6bd9sm57416566b.23.2026.08.19.04.13.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2026 04:13:41 -0700 (PDT)
+Message-ID: <061e5547-4109-4965-8e97-fb126dea3a28@oss.qualcomm.com>
+Date: Wed, 19 Aug 2026 13:13:37 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,158 +89,79 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] drm/panic: Allocate QR-code buffers statically
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: jfalempe@redhat.com, javierm@redhat.com, airlied@gmail.com,
- simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
- linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
- sashiko-reviews@lists.linux.dev
-References: <20260818125012.468092-1-tzimmermann@suse.de>
- <20260818125012.468092-2-tzimmermann@suse.de>
- <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] serial: qcom-geni: Propagate errors from optional IRQ
+ lookup
+To: phucduc.bui@gmail.com, Jiri Slaby <jirislaby@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Frank Li
+ <Frank.Li@nxp.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Yenchia Chen <yenchia.chen@mediatek.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Zhiyong Tao
+ <zhiyong.tao@mediatek.com>,
+        Sherry Sun <sherry.sun@nxp.com>, Robin Gong <yibin.gong@nxp.com>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Zong Jiang <quic_zongjian@quicinc.com>,
+        Aniket Randive <aniket.randive@oss.qualcomm.com>,
+        Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
+        Anup Kulkarni <anup.kulkarni@oss.qualcomm.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20260807090945.41690-1-phucduc.bui@gmail.com>
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org,lists.freedesktop.org,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:url,suse.de:mid,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260807090945.41690-1-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=PoGjqQM3 c=1 sm=1 tr=0 ts=6a858fe7 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=HsG88Ws7tFqbOaRkTuUA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDA4NiBTYWx0ZWRfX/mg1mqpmCaRq
+ f2L5BDQDuvJj/GuWMQenSq3n5iaVzhF6cAbASZtKIDRvAcoKD/98Bw64+1FMyVQs0DNR2RL1KQw
+ zFc/1ssX/OO0UAak6hOd98pRqJRcHAZDGSq4cuUjhHf5hZ8B5KvSlnjiXBbs/6Ir7l0LlXwvq12
+ ZN4SkC6CaFx9W+1svRj6tU8fvpfkoULMZ9tsbYHWZFYNhleNGvDy8m1eOK2EX6sdNUrZ3HdFrbz
+ 2W5yYbGTxExGLw9Z2vyQWG+xmKRNlLl+NWlhAetMZw+NMcYKBYUAUgID4LDVJV8x7QTSYBA0ofW
+ 688watFtYF3j1lCUbC15cKbZoU/nIhoioyXCjslUOkOmKNxEbhADGIQqeTrBoTBLy/h0KhHqG1j
+ xoT3A6F1PJkQLiU2dUnhLrkdwNEKFSgOrMyEvSos8wb8OjIQ0LWlO6WQTqYqYDWCnu4zmzJ4wBw
+ 6N4ZMxJVjF2kXZc/pFg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDA4NiBTYWx0ZWRfX6CpO2EVA4hPp
+ l4YkAzl778RmJytVH959BFhbjVkor58JeaObKBWauVIlyiVWJgv/YHPVoDHSnALiwq5P3tA06CY
+ b33xTxp1PHzs5J0iypoVaSy5fzIgV/I=
+X-Proofpoint-GUID: iXbXEjBtCm6kHoWbbPe1eW-zmw5pO6Zj
+X-Proofpoint-ORIG-GUID: iXbXEjBtCm6kHoWbbPe1eW-zmw5pO6Zj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_03,2026-08-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608190086
 
-Hi
+On 8/7/26 11:09 AM, phucduc.bui@gmail.com wrote:
+> From: bui duc phuc <phucduc.bui@gmail.com>
+> 
+> platform_get_irq_optional() returns a positive IRQ number on success or
+> a negative error code on failure. For an optional IRQ, -ENXIO indicates
+> that no IRQ is available, while other errors should be propagated.
+> 
+> Propagate errors such as -EPROBE_DEFER and -EINVAL instead of continuing
+> probe without the IRQ.
+> 
+> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+> ---
 
-Am 19.08.26 um 11:38 schrieb Geert Uytterhoeven:
-> Hi Thomas,
->
-> On Tue, 18 Aug 2026 at 15:00, Thomas Zimmermann <tzimmermann@suse.de> wrote:
->> Declare qrbuf1 and qrbuf2 as static arrays so that the module loader
->> allocates them for us. Avoids the kmalloc later on. Also allows for
->> using sizeof() to get the number of bytes in each array. Access the
->> arrays once with memset, so that the physical pages are available on
->> a panic.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Thanks for your patch!
->
->> --- a/drivers/gpu/drm/drm_panic.c
->> +++ b/drivers/gpu/drm/drm_panic.c
->> @@ -628,24 +628,23 @@ MODULE_PARM_DESC(panic_qr_version, "maximum version (size) of the QR code");
->>   #define WINDOW_BITS 12
->>   #define MEM_LEVEL 4
->>
->> -static char *qrbuf1;
->> -static char *qrbuf2;
->> +static u8 qrbuf1[QR_BUFFER1_SIZE];
->> +static u8 qrbuf2[QR_BUFFER2_SIZE];
-> I am not a big fan of increasing kernel size like this.
-> You may run (faster) into boot loader limitations.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Which limitation would this be?
-
->
->>   static struct z_stream_s stream;
->>
->>   static void __init drm_panic_qr_init(void)
->>   {
->> -       qrbuf1 = kmalloc(QR_BUFFER1_SIZE, GFP_KERNEL);
->> -       qrbuf2 = kmalloc(QR_BUFFER2_SIZE, GFP_KERNEL);
->> +       /* best-effort allocation; can be NULL */
->>          stream.workspace = kmalloc(zlib_deflate_workspacesize(WINDOW_BITS, MEM_LEVEL),
->>                                     GFP_KERNEL);
-> <ironic>Why not use a static array for this, too?</ironic>
-
-I tried, by the size is calculated at runtime.
-
-
->
->> +
->> +       /* touch memory so that pages are there in the case of a panic */
->> +       memset(qrbuf1, 0, sizeof(qrbuf1));
->> +       memset(qrbuf2, 0, sizeof(qrbuf2));
-> Please clarify "there"?
-> In cache? Not all systems have sufficient data cache, so it may be
-> evicted at any time.
-> In RAM? AFAIK kernel and module memory is not demand-paged.
-> In TLB? Like cache, it may be evicted at any time.
-
-I'd like to avoid looking for a page after a panic has already occurred. 
-But I guess it might not make a difference, given all the DRM that is 
-involved.
-
-The motivation here was that I did not like that panic handling depends 
-on a number of dynamic kmallocs, with which we don't even detect alloc 
-failures until a panic has occurred.
-
->
-> So IMHO this is futile.
-
-Noted.
-
-Best regards
-Thomas
-
->
->>   }
-> Gr{oetje,eeting}s,
->
->                          Geert
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
-
-
+Konrad
