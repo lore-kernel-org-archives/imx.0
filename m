@@ -1,174 +1,181 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F09243849C
-	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 09:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB7B43933A
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 09:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787131488; cv=none; b=oArRWYnU087rdnd5JA/oPE99LoDuIpRJly334KEeyItYTDKKWMVB3guJDMTdZpz1YeL77qIvn2Diu4etd2RvaRiFVMucJWnDdYh5v3t+c9A/eLr+VDZ+Qox3VJsipo99Aqc1RT3hKBMviPY+JDE7SobEnFyqNr2a29n4xbmxJFw=
+	t=1787131508; cv=none; b=nJNhMc2K/flRjdxKwXybV0vXrweugbPgJkkt1vGVB0rvZE1HkM6BtA8vj41k1eGOHGektpT9FI29iXk60EhzTsBNWICZ3AgHcxQ8xliUM6m982oJxYpcNoDhAJBkWsQxGpoVOtRtWU8OD4gNpFdvk7sqAF735SGpbgSxsApZu8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787131488; c=relaxed/simple;
-	bh=IN9u0X1+/pv3mpWjcW7bMRNB4lJUqohSzOC5oMc3y3A=;
+	s=arc-20240116; t=1787131508; c=relaxed/simple;
+	bh=SzZeu+IAq7ZcxKCZTPV6NeLE5B7tLmx6mDnuEOCr9DM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bRD12P8Wvj3q5MldjyHuh714neKTQ5Ql4QgrZmKQpLOXpwJgbBQUBdB4sZNJgmkuCo1UU/YFMppCMA2EDtwn9JccPfL6bK/lYBGpfLsdB7JTx0UpjA9q1vf/16Xjj2b8m2roXWarFOOzAaYbpECQKnccdpuMF017akMmQjPgT3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDvt1nbQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=XODqGEmW2QGuPID4uuYb/ZOu+4Kda1VKdDCBIIF03wkXygib56IOy7l+VJqh1uDHDSMINQipFTABOT/qw4072eVjLNZqZbwSpLsMcDiDLhV28HjjcUq5AG3MTuQVON5tZuusYSr4kLDGvA9CbGnajZAScLz5CiMe/WiSLBQDhCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2fD0ZLN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDvt1nbQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C7B1F000E9;
-	Wed, 19 Aug 2026 09:24:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2fD0ZLN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832631F000E9;
+	Wed, 19 Aug 2026 09:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787131481;
-	bh=5bzl9Y8kpZwHlKBUShdGhcGmB/GVRrDX6viGKtfY10w=;
+	s=k20260515; t=1787131506;
+	bh=IZnGGw26lXrXWyQyvfxlqIqz2TYvppkULNk9z/yQ6vo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kDvt1nbQpTuDK4/3pvdJyOrcUZ6Dz98JHZZC/RUyaGZzR0SwqSg5O0VpMfUZexGee
-	 xsVWOTg5gk+5RqJ8Nib78ioeG3LqsZs5je0Ci6fpKmqOIY+qv3YRSqy74ie4ZkasCi
-	 bkrbcK3QhuqTygr5e7yvZGIg8dgfBvYc646GLo6y3yOuvDf8zZD/dKjQn/NWJDL24T
-	 jf4KxEyFilchbbIMuBmFmUGVGGVKWd6IXzcciZrghPY2d3upQmG1jjKkWaEnr3cqE7
-	 ivHAPaLlY9USwbOxBu2p7GUzdGqccszxlBtFZgil+RPzphPopryVNMtL7t7wVfYJR5
-	 qpQdE9v+TZL+w==
+	b=f2fD0ZLNJJcjAB/urR6/XGUBu9pszTwCOOAzl6/6F0Vfwbw9OeJw92knnaq++fL/e
+	 Agdmhp/YG3fWSrE4gLb1BeGGLtaEcCx6clo3eOmLQtlWfgEKrGj47oJAoDXHgy2QTM
+	 gMkjBVr0UWFJP7bvsyH4AHfdIFV/2G5uwKw9nh/dbC+lDahicyEYerI1Qog2c3LH5a
+	 6XUEMuZQUc0J1+lFEabA6Gju1YGgGWcDEHeHp++QQmN1d7IC3tu6oMQtD+KWTK89vp
+	 dawB1f/tyi6xL411nZ7FCTzc5Sx+KnSFkY4fgh67ogTs6nSQk1WZGbzVdx7f5gj/eN
+	 1ZBx8I2xqjYvQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/5] irqchip/imx-irqsteer: Allow building as module
+Subject: Re: [PATCH v4 4/5] irqchip/imx-irqsteer: Mask all interrupts in
+ probe()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Zhipeng.wang_1@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260819090543.585131-6-Zhipeng.wang_1@oss.nxp.com>
+In-Reply-To: <20260819090543.585131-5-Zhipeng.wang_1@oss.nxp.com>
 References: <20260819090543.585131-1-Zhipeng.wang_1@oss.nxp.com>
- <20260819090543.585131-6-Zhipeng.wang_1@oss.nxp.com>
+ <20260819090543.585131-5-Zhipeng.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 09:24:40 +0000
-Message-Id: <20260819092440.E2C7B1F000E9@smtp.kernel.org>
+Date: Wed, 19 Aug 2026 09:25:06 +0000
+Message-Id: <20260819092506.832631F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
+New issues:
+- [High] The patch introduces an unvalidated loop that performs out-of-boun=
+ds MMIO writes if an excessively large `fsl,num-irqs` value is provided.
+
 Pre-existing issues:
-- [High] Unloading the module while the device is runtime-suspended causes =
-a clock enable count underflow and kernel WARN.
-- [High] Spurious parent interrupts during runtime suspend cause a bus erro=
-r/system crash due to unprotected hardware access.
-- [High] Missing synchronize_irq() in remove() leads to a Use-After-Free ra=
-ce condition with in-flight chained handlers.
-- [High] An unvalidated device tree property `fsl,num-irqs` leads to an out=
--of-bounds memory write.
+- [High] Missing Runtime PM cleanup causes unbalanced clock disable and pot=
+ential external abort on device unbind.
+- [High] Missing synchronization with chained parent IRQ handler in `remove=
+()` leading to potential external abort.
 --
 
---- Patch [5]: [PATCH v4 5/5] irqchip/imx-irqsteer: Allow building as modul=
-e ---
-commit 4fdbf892274cef735a839f80bcfd62708a887cbc
-Author: Jindong Yue <jindong.yue@nxp.com>
+--- Patch [4]: [PATCH v4 4/5] irqchip/imx-irqsteer: Mask all interrupts in =
+probe() ---
+commit ecdadc89363972642c46a3ef5443dd52db1ecece
+Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-irqchip/imx-irqsteer: Allow building as module
+irqchip/imx-irqsteer: Mask all interrupts in probe()
 
-Make the driver buildable as a module by turning the Kconfig symbol into
-a tristate and using module_platform_driver() instead of
-builtin_platform_driver(). Let the driver core own the clock and
-runtime PM lifetime using devres.
+probe() sets up the chained handlers without first masking the input
+interrupts. Mask all interrupts in probe() before wiring up the chained
+handlers to prevent storms from stale asserted lines.
 
 > diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
 -irqsteer.c
-> index a9909ecb6fef7..a60cc527e6191 100644
+> index 320082d3a6325..a9909ecb6fef7 100644
 > --- a/drivers/irqchip/irq-imx-irqsteer.c
 > +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -236,6 +236,14 @@ static int imx_irqsteer_probe(struct platform_device=
+ *pdev)
+>  	if (irqsteer_has_chanctrl(data->devtype_data))
+>  		writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
+> =20
+> +	/*
+> +	 * Mask all interrupts before wiring up the chained handlers. CHANMASK
+> +	 * has inverted polarity (a set bit enables the interrupt), so writing
+> +	 * zero masks the source.
+> +	 */
+> +	for (i =3D 0; i < data->reg_num; i++)
+> +		writel_relaxed(0, data->regs + CHANMASK(i, data->reg_num));
+> +
+
+[Severity: High]
+Can this loop perform out-of-bounds MMIO writes?
+
+If a large value is provided for "fsl,num-irqs" in the device tree,
+data->reg_num could be oversized. The bounds check for the maximum
+number of interrupts happens later in the function:
+
+	if (!data->irq_count || data->irq_count > CHAN_MAX_OUTPUT_INT) {
+		ret =3D -EINVAL;
+		goto out;
+	}
+
+Since this validation executes after the new loop, an oversized value
+would cause out-of-bounds writes to data->regs before being caught.
+
+Could the validation check be moved before this loop?
 
 [ ... ]
 
-> @@ -193,7 +194,7 @@ static int imx_irqsteer_probe(struct platform_device =
-*pdev)
->  		return PTR_ERR(data->regs);
->  	}
-> =20
-> -	data->ipg_clk =3D devm_clk_get(&pdev->dev, "ipg");
-> +	data->ipg_clk =3D devm_clk_get_enabled(&pdev->dev, "ipg");
+While reviewing this file, I also noticed a couple of pre-existing issues in
+imx_irqsteer_remove().
+
+drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_remove() {
+...
+	for (i =3D 0; i < irqsteer_data->irq_count; i++) {
+		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
+						 NULL, NULL);
+		irq_dispose_mapping(irqsteer_data->irq[i]);
+	}
+
+	clk_disable_unprepare(irqsteer_data->ipg_clk);
+...
+}
 
 [Severity: High]
-This is a pre-existing issue, but since the patch modifies
-imx_irqsteer_probe(), could the fsl,num-irqs property cause an out-of-bounds
-write?
+This isn't a bug introduced by this patch, but can clearing the chained
+handler here race with an executing handler and cause an external abort?
 
-In imx_irqsteer_probe(), data->reg_num is calculated from fsl,num-irqs and
-then used in a loop to clear CHANMASK:
+Chained handlers bypass desc->lock and do not set IRQS_INPROGRESS, so there
+is no natural synchronization when irq_set_chained_handler_and_data() is
+called.
 
-for (i =3D 0; i < data->reg_num; i++)
-        writel_relaxed(0, data->regs + CHANMASK(i, data->reg_num));
+If a parent interrupt fires right before the handler is cleared, the chained
+handler might be running concurrently:
 
-However, the bounds check to ensure data->irq_count does not exceed
-CHAN_MAX_OUTPUT_INT happens after this loop. Could a large value in the
-device tree lead to writing past the mapped IOMEM region?
+drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_irq_handler() {
+...
+	irqmap =3D readl_relaxed(data->regs +
+			       CHANSTATUS(idx, data->reg_num));
+...
+}
 
->  	if (IS_ERR(data->ipg_clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(data->ipg_clk),
->  				     "failed to get ipg clk\n");
+If imx_irqsteer_remove() proceeds to disable the hardware clock while the
+handler is still reading the CHANSTATUS MMIO registers, it could crash the
+system. Is there a way to synchronize with the executing handler before
+disabling the clock?
 
-[ ... ]
-
-> @@ -293,8 +297,6 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
->  						 NULL, NULL);
-
-[Severity: High]
-This is a pre-existing issue, but when clearing the chained handlers here,
-is there a risk of a use-after-free?
-
-The chained handler is cleared via irq_set_chained_handler_and_data(), but
-this does not wait for handlers executing on other CPUs to finish. When
-devres subsequently unmaps the I/O memory, could an in-flight
-imx_irqsteer_irq_handler() concurrently read data->regs and cause a bus
-fault? Would calling synchronize_irq() be needed here?
-
->  		irq_dispose_mapping(irqsteer_data->irq[i]);
->  	}
-> -
-> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
->  }
 
 [Severity: High]
-This is a pre-existing issue, but does removing manual clock management in
-favor of devres introduce a clock enable count underflow during unbind?
+This is a pre-existing issue, but does imx_irqsteer_remove() miss PM
+runtime cleanup, leading to an unbalanced clock disable?
 
-If the module is unloaded while the device is auto-suspended, the clock is
-disabled by imx_irqsteer_suspend(). Because the device is left in a
-suspended state when imx_irqsteer_remove() returns, devm_clk_get_enabled()
-teardown will unconditionally call clk_disable_unprepare().
+The function unconditionally disables the clock with clk_disable_unprepare(=
+),
+but fails to call pm_runtime_disable(). If the device is unbound via sysfs,
+the driver core calls pm_runtime_put_sync(), which executes
+imx_irqsteer_suspend() and disables the clock:
 
-Since pm_runtime_disable() does not automatically resume the device, will
-this result in clk_disable() being called with an enable count of 0? Should
-we call pm_runtime_get_sync() in imx_irqsteer_remove() to ensure the clock
-is active before devres cleanup?
+drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_suspend() {
+...
+	imx_irqsteer_save_regs(irqsteer_data);
+	clk_disable_unprepare(irqsteer_data->ipg_clk);
+}
 
-> =20
->  #ifdef CONFIG_PM
-> @@ -324,7 +326,7 @@ static int imx_irqsteer_suspend(struct device *dev)
->  	struct irqsteer_data *irqsteer_data =3D dev_get_drvdata(dev);
-> =20
->  	imx_irqsteer_save_regs(irqsteer_data);
-> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
-> +	clk_disable(irqsteer_data->ipg_clk);
+Then imx_irqsteer_remove() unconditionally disables the clock again, causing
+an unbalanced WARN.
 
-[Severity: High]
-This is a pre-existing issue, but since we are modifying the clock disable
-logic in suspend, what happens if a spurious interrupt arrives while the
-device is suspended?
+Alternatively, if pm_runtime_put_sync() does not immediately suspend the
+device, imx_irqsteer_remove() disables the clock but leaves the device acti=
+ve
+in PM runtime. A later suspend would call imx_irqsteer_suspend(), which tri=
+es
+to access hardware registers with the clock already gated, crashing the sys=
+tem.
 
-imx_irqsteer_irq_handler() unconditionally reads the CHANSTATUS register
-using readl_relaxed(). If imx_irqsteer_suspend() has disabled the hardware
-clock, wouldn't reading from an unclocked peripheral trigger a bus error or
-system crash?
-
-Does the interrupt handler need to use pm_runtime_get_if_active() to verify
-the power state before attempting hardware access?
-
-> =20
->  	return 0;
->  }
-
-[ ... ]
+Should pm_runtime_disable() be called in remove()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819090543.5851=
-31-1-Zhipeng.wang_1@oss.nxp.com?part=3D5
+31-1-Zhipeng.wang_1@oss.nxp.com?part=3D4
