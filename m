@@ -1,120 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F747478;
-	Wed, 19 Aug 2026 04:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF15C3C3432;
+	Wed, 19 Aug 2026 06:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787113594; cv=none; b=PT3N3spi001ZSGY6YJ+u/DXON8yU+lepA0UDHA/FwkesoCTxR4PHcZMelcrBTWVqag8JWt4fJHmxMwhKLlO+UnGIgCgPoc70ARTbH51+5chDkV8et58WrU2JgelXvBhto0HedfG6bG+sWOhtO1tcm982qUGUCK9rlT6Dd8BAquk=
+	t=1787119895; cv=none; b=juc2Ffu3nOxc9z6F4KLqsPD6ofz31nct49D1JkngNzu+9Oj3ffSUfs5VVpabudx4iz0npI9XiHWgi+fABJtF6fmM3pHxdLW39Aq7kQK9AoFN2n2PSxuRhciO66KBEF/H+7EQ9kJam7l2xlMHK+fhdEf7IJBvTCgv0jyZ0ti/mWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787113594; c=relaxed/simple;
-	bh=3dH4ROXMXeRGiQcvakgSxCQUsQkqrvfrA28UZGtGVVk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X1YBy8hRH45xPImhn8U9v3/q8lE3PjA5czi5z5AsdRXA9yPHu1jZuxYHJYwAQUSIE+BfZNWnfo1PzadQo4QrCMPuxk7jC4jTAtxTr3zuEMS76BJI7hjJr1kE8ASm+tdTqdPOE0V2lPOFGUzVnlMGJkotPcNCG/uEQOC0FlxhDi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HP/FhzWr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787119895; c=relaxed/simple;
+	bh=WweNHDHiElH8o82jk8npSceeFRcm3zMBKegXgf5E3CE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ufwpcWJcjggY79AwL8eevGHyoPk2AR+EFpzGNbZL03cwOf6jvT6mxixD6N8a16NmvL/TyJl4Qy6ehgUma76PnXn4hXwdwr36lsGyZgSYxlZwnJErgH7MIUpLNXnc066WifDgFZe5Q7zExmNtFGl67P0oeWUbtQEjA5Gc/6ekLpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aVIy1RM1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HP/FhzWr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0051F000E9;
-	Wed, 19 Aug 2026 04:26:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787113593;
-	bh=ErXhuF7Ai0HjSZoqnrXxUkmbIHJi9H6R6PaXpZbpqo8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HP/FhzWrZM/gW/b1/4S+hPZV/UUhvHOVRU9y/oPMh6xm+RSso2zgpuDCOdv845s8H
-	 rXfygICJPI8sGR2CL4dH8vioHozWiQxCYfBYpaLqs3KG1PXEMV6v3kmf9ygq5jTku7
-	 c3ylCiMuymfYijX0bgI/IN2ESNyB9WWOLUbJuHUjoBssfOMQpSLrIyOOXSzAZuy4gv
-	 2H/IVWznWIF9S6/mRJw1r149c+jRhd8OwJW2aE7fQro71BjEpIVVDi0Ep4AiHIPluC
-	 6tkGckiALH3WNje2xGiVdoEFX0wkfaC+T8uZxfd9aXTwBHUjS825qJQjXvEhq91ScI
-	 S6gg6txu8064Q==
-Message-ID: <46936686-3bdd-4d36-9124-e8d3376ad5ea@kernel.org>
-Date: Wed, 19 Aug 2026 06:26:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aVIy1RM1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A3D5DC2BCFB;
+	Wed, 19 Aug 2026 06:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787119895;
+	bh=WweNHDHiElH8o82jk8npSceeFRcm3zMBKegXgf5E3CE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=aVIy1RM1OBR6MFWeETHto62cXBghFE/wnVLErWiQT7WKr0ylf1hUjHMyhlTz9GBxH
+	 RdrK+ir9cUvxl7eM8qew/VjaGyd38vlcL9m23LaGXA+AFCQPY6aClct6blzBAbAF4v
+	 B43lBJ7PpWnBB50Fp4Hu4EyJRA/76gc12Zr/iFQufVlYmPjDvpO5HTXR8Ptlvx+2Fa
+	 kekP7LDoa6KR6XrCNNr4cKxHjJgF3l/fRWmAhGNufiSTW7GPwmXZa8/TtL3JIG6ZUs
+	 J68B91fcIveXDqr34GLyobWFeSo57o+GgNXAy3nvYJ1NYO9i+k5idRJLthxsPgs5ff
+	 Q9f12dCUP2tpg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 879C1C5DF6D;
+	Wed, 19 Aug 2026 06:11:35 +0000 (UTC)
+From: Pankaj Gupta via B4 Relay <devnull+pankaj.gupta.nxp.com@kernel.org>
+Date: Wed, 19 Aug 2026 17:12:08 +0530
+Subject: [PATCH v37 2/7] dt-bindings: arm: fsl: add imx-se-fw binding doc
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdown
- and remove
-To: Fan Wu <fanwu01@zju.edu.cn>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20260819021916.442827-1-fanwu01@zju.edu.cn>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20260819021916.442827-1-fanwu01@zju.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260819-imx-se-if-v37-2-5ef5de9ff1dc@nxp.com>
+References: <20260819-imx-se-if-v37-0-5ef5de9ff1dc@nxp.com>
+In-Reply-To: <20260819-imx-se-if-v37-0-5ef5de9ff1dc@nxp.com>
+To: Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787139727; l=3245;
+ i=pankaj.gupta@nxp.com; s=20260817; h=from:subject:message-id;
+ bh=T+yyPOpdxzPdIuNJ+imfCdmSEVDwuOuBb/dhiIQRNpY=;
+ b=w5FJgpsTJqBwljS9WIPZ+2esbLHjtrRS2tCm0dNMS6sSN+LNKzD2PyRZDAvxZdqJ67XRyELAm
+ jO5gzPUrXleBZGx8ZmQSz96EWmM4r2S01axs2mjKooq0ZeBSupeXDZ5
+X-Developer-Key: i=pankaj.gupta@nxp.com; a=ed25519;
+ pk=g4ZgzIWbpXnSxRsoH+l6PWLP78a+Mzpl8e6RQe74d5Y=
+X-Endpoint-Received: by B4 Relay for pankaj.gupta@nxp.com/20260817 with
+ auth_id=962
+X-Original-From: Pankaj Gupta <pankaj.gupta@nxp.com>
+Reply-To: pankaj.gupta@nxp.com
 
-On 19. 08. 26, 4:19, Fan Wu wrote:
-> The rs485 delay hrtimers trigger_start_tx and trigger_stop_tx are
-> embedded in the devm allocated struct imx_port, and their callbacks
-> reach the port through container_of() and touch registers under the
-> port lock.  Nothing cancels them synchronously: the tx paths only
-> call hrtimer_try_to_cancel(), which does not wait for a running
-> callback, and the bounded wait in imx_uart_shutdown() can give up,
-> force tx_state to OFF, and leave a timer armed.  After
-> imx_uart_remove() returns, devm frees the port and a late callback
-> dereferences freed memory.
-> 
-> Cancel both timers at the end of imx_uart_shutdown(), after the port
-> lock is dropped and before the clocks are disabled, and again in
-> imx_uart_remove() before the devm free:
+From: Pankaj Gupta <pankaj.gupta@nxp.com>
 
+The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
+creates an embedded secure enclave within the SoC boundary to enable
+features like:
+- HSM
+- SHE
+- V2X
 
-> serial core does not call the
-> driver shutdown on every path that reaches remove().
+Secure-Enclave(s) communication interface are typically via message
+unit, i.e., based on mailbox linux kernel driver. This driver enables
+communication ensuring well defined message sequence protocol between
+Application Core and enclave's firmware.
 
-Could you be more specific on what path it does not?
+Driver configures multiple misc-device on the MU, for multiple
+user-space applications, to be able to communicate over single MU.
 
-thanks,
+It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+
+Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 91 ++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+new file mode 100644
+index 000000000000..fa81adbf9b80
+--- /dev/null
++++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
++
++maintainers:
++  - Pankaj Gupta <pankaj.gupta@nxp.com>
++
++description: |
++  NXP's SoC may contain one or multiple embedded secure-enclave HW
++  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
++  enables features like
++    - Hardware Security Module (HSM),
++    - Security Hardware Extension (SHE), and
++    - Vehicular to Anything (V2X)
++
++  Communication interface to the secure-enclaves(se) is based on the
++  messaging unit(s).
++
++properties:
++  compatible:
++    enum:
++      - fsl,imx8ulp-se-ele-hsm
++      - fsl,imx93-se-ele-hsm
++      - fsl,imx95-se-ele-hsm
++
++  mboxes:
++    items:
++      - description: mailbox phandle to send message to se firmware
++      - description: mailbox phandle to receive message from se firmware
++
++  mbox-names:
++    items:
++      - const: tx
++      - const: rx
++
++  memory-region:
++    maxItems: 1
++
++  sram:
++    maxItems: 1
++
++required:
++  - compatible
++  - mboxes
++  - mbox-names
++
++allOf:
++  # memory-region
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - fsl,imx8ulp-se-ele-hsm
++              - fsl,imx93-se-ele-hsm
++    then:
++      required:
++        - memory-region
++    else:
++      properties:
++        memory-region: false
++
++  # sram
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - fsl,imx8ulp-se-ele-hsm
++    then:
++      required:
++        - sram
++
++    else:
++      properties:
++        sram: false
++
++additionalProperties: false
++
++examples:
++  - |
++    secure-enclave {
++      compatible = "fsl,imx95-se-ele-hsm";
++      mboxes = <&ele_mu0 0 0>, <&ele_mu0 1 0>;
++      mbox-names = "tx", "rx";
++    };
++...
+
 -- 
-js
-suse labs
+2.43.0
+
+
