@@ -1,181 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB7B43933A
-	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 09:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70442434E39
+	for <imx@lists.linux.dev>; Wed, 19 Aug 2026 09:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787131508; cv=none; b=nJNhMc2K/flRjdxKwXybV0vXrweugbPgJkkt1vGVB0rvZE1HkM6BtA8vj41k1eGOHGektpT9FI29iXk60EhzTsBNWICZ3AgHcxQ8xliUM6m982oJxYpcNoDhAJBkWsQxGpoVOtRtWU8OD4gNpFdvk7sqAF735SGpbgSxsApZu8w=
+	t=1787132818; cv=none; b=lP88iYAyhg1JYWqrEzG2nkIfmOcFXxpV0RxCajoGFMxlK2A31BA+wlkb71DVO4Pq1Ukm3SZLTe3Re4/dyFgV399eGaLIF1+7aU/rO1/53tyxKmt1Sx3jytJXg0C1Edfv2LDrcw5GUBKeABM+ihjSAvVgBVvtZ7vYc9zesRNBvHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787131508; c=relaxed/simple;
-	bh=SzZeu+IAq7ZcxKCZTPV6NeLE5B7tLmx6mDnuEOCr9DM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XODqGEmW2QGuPID4uuYb/ZOu+4Kda1VKdDCBIIF03wkXygib56IOy7l+VJqh1uDHDSMINQipFTABOT/qw4072eVjLNZqZbwSpLsMcDiDLhV28HjjcUq5AG3MTuQVON5tZuusYSr4kLDGvA9CbGnajZAScLz5CiMe/WiSLBQDhCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2fD0ZLN; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2fD0ZLN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832631F000E9;
-	Wed, 19 Aug 2026 09:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787131506;
-	bh=IZnGGw26lXrXWyQyvfxlqIqz2TYvppkULNk9z/yQ6vo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f2fD0ZLNJJcjAB/urR6/XGUBu9pszTwCOOAzl6/6F0Vfwbw9OeJw92knnaq++fL/e
-	 Agdmhp/YG3fWSrE4gLb1BeGGLtaEcCx6clo3eOmLQtlWfgEKrGj47oJAoDXHgy2QTM
-	 gMkjBVr0UWFJP7bvsyH4AHfdIFV/2G5uwKw9nh/dbC+lDahicyEYerI1Qog2c3LH5a
-	 6XUEMuZQUc0J1+lFEabA6Gju1YGgGWcDEHeHp++QQmN1d7IC3tu6oMQtD+KWTK89vp
-	 dawB1f/tyi6xL411nZ7FCTzc5Sx+KnSFkY4fgh67ogTs6nSQk1WZGbzVdx7f5gj/eN
-	 1ZBx8I2xqjYvQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/5] irqchip/imx-irqsteer: Mask all interrupts in
- probe()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Zhipeng.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260819090543.585131-5-Zhipeng.wang_1@oss.nxp.com>
-References: <20260819090543.585131-1-Zhipeng.wang_1@oss.nxp.com>
- <20260819090543.585131-5-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Aug 2026 09:25:06 +0000
-Message-Id: <20260819092506.832631F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1787132818; c=relaxed/simple;
+	bh=zlErMMR25SYOsUd3S/0AwpVYnof7u7gBjzWgLBfix9I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sFjBte/BLWKH9x4QQXp0cYDgK8a1Xm2c6p2lZ6KT0WLR3GGM7hwnz5/Ro1kHouioY8UFEaxYhujf9bKVfC48mqkkcbZuC7V5MMjPFI+o8S36MP8F447ojOaM9D5TAM7htsizQEf8ECU/LpPwprXjxPfS8C3d381YvPYOxRXD4gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-80cebd41372so13854597b3.3
+        for <imx@lists.linux.dev>; Wed, 19 Aug 2026 02:46:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787132816; x=1787737616;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dIMgKn9ssmwMdJVgg9MfbDylpozJGdyvq0xNOf3CW1Q=;
+        b=YgSdsrURKZBU5MkEbAA5LstzgQMDWMOs+4RZm9rU/n7ku/UDY8xKlZrhbr5xctljrQ
+         3DVaKfpRL1i6wMOOrpBa9ArId0E6ldxBi2Cu+n7sbcJo/QdyBp/Ooxtyn7xbkizyEzfI
+         rOibkPLC2jWUTm5TpFwzVnUBcDJ+6zNIBMj3yFg0SXmnOOIZ+8TJnsd4v/mQlQ3ijdTj
+         fpo1af4J40rGz3YSTx5cbq17/CkO1K5bH3M9saOZcd4jM+veAJwfFJYSUsAZHbajtxFM
+         zjBplP6pGEFKcnuongERJ8lctmTnF6tQQ6qW7g4kVPeHbHwxpniWNsRdCav4oEGQ+Z6D
+         MPOQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrZefOSckAD0kKPzyRoLmx8/OjM1g/s1HnM3PbJqLJEdrxumiMNE0EiFvbA3ZaQ44bqegk=@lists.linux.dev
+X-Gm-Message-State: AFuF++lMi5FBk2dlDyKLl5f/nLmvjEB5jewlDNoDJkrc//0hv0HfRkmt
+	kzmGJInH1FcJkEwHhfzYpSQBXSI3IKk1bnyPu+1FTEdF0mftzehJm11FDo3Ks3Txy2w=
+X-Gm-Gg: AR+sD10BSlcY13aqZ8JoZMqibyyWpONMns1BrLqpoy23uSaRuTG2KBa16UieDuBX8Lj
+	4/O1N4HHgZAPfa8ZVIKZRGF4D1ZGMhwkHSueKV0TFMA958NpFDqJyxJgwWLvs/fYE2wvsREHM9P
+	kqRgnvtu7udl/AXubvYpBplCFNL0RtB7ygg7L+tgayJYtIuXuuSdB75OC4QXF3S9VgaSlWT3Qkx
+	GWUcnRwqYX9MCuuHOJQbO6yd0ZhaIuJyupoESTRCG5FJI3WiqzMJM7eYf52xszxGhfBIiYUP9zr
+	UKnm9GkVKiwuPTLzrATG7g8qvkKVRYshM6z7Y9E5XXMfA6vh1bF8FvTJa0MqzNgkwGt2iG7a7HK
+	a5pH5inzRLPeD3Gy9+HxYmXOB/rxuBB69PKMqtSxFlgMDW0c/L6VLIoeNC+BnxaYy+4pBp87gXr
+	qkGtEIVpCcSOZqUMq+g/zwPKRo4kW+G6CJSWVwGBuq23WkTrl12k+Cjwz7QKlnqr8fvyYUbKxLu
+	J7T9OMO31L56jprWYC2W2MRXQ==
+X-Received: by 2002:a05:690c:4aa6:b0:81e:c998:9c9a with SMTP id 00721157ae682-844e2515a4bmr11563947b3.17.1787132815989;
+        Wed, 19 Aug 2026 02:46:55 -0700 (PDT)
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com. [74.125.224.46])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84512c408a3sm5756957b3.18.2026.08.19.02.46.55
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2026 02:46:55 -0700 (PDT)
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-66c7127a73dso1104172d50.2
+        for <imx@lists.linux.dev>; Wed, 19 Aug 2026 02:46:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrkNiYnAO4aG1obWldemhyFBUfNYtWH/v3OH+typ65qU4nyn9a7HeAAJfU2/MD1f/1Tshg=@lists.linux.dev
+X-Received: by 2002:a67:e04e:0:b0:777:ffe0:a10b with SMTP id
+ ada2fe7eead31-777ffe0a6b7mr539021137.4.1787132346344; Wed, 19 Aug 2026
+ 02:39:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260818125012.468092-1-tzimmermann@suse.de> <20260818125012.468092-2-tzimmermann@suse.de>
+In-Reply-To: <20260818125012.468092-2-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 19 Aug 2026 11:38:55 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
+X-Gm-Features: AcwNN1Uwr-MWNK1wEAyEr8Z9JNVhxk4jrnSNE7dazUpWIvLo30uHHQJP967oerw
+Message-ID: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
+Subject: Re: [PATCH 01/12] drm/panic: Allocate QR-code buffers statically
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: jfalempe@redhat.com, javierm@redhat.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev, 
+	sashiko-reviews@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+Hi Thomas,
 
-New issues:
-- [High] The patch introduces an unvalidated loop that performs out-of-boun=
-ds MMIO writes if an excessively large `fsl,num-irqs` value is provided.
+On Tue, 18 Aug 2026 at 15:00, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Declare qrbuf1 and qrbuf2 as static arrays so that the module loader
+> allocates them for us. Avoids the kmalloc later on. Also allows for
+> using sizeof() to get the number of bytes in each array. Access the
+> arrays once with memset, so that the physical pages are available on
+> a panic.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-Pre-existing issues:
-- [High] Missing Runtime PM cleanup causes unbalanced clock disable and pot=
-ential external abort on device unbind.
-- [High] Missing synchronization with chained parent IRQ handler in `remove=
-()` leading to potential external abort.
---
+Thanks for your patch!
 
---- Patch [4]: [PATCH v4 4/5] irqchip/imx-irqsteer: Mask all interrupts in =
-probe() ---
-commit ecdadc89363972642c46a3ef5443dd52db1ecece
-Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -628,24 +628,23 @@ MODULE_PARM_DESC(panic_qr_version, "maximum version (size) of the QR code");
+>  #define WINDOW_BITS 12
+>  #define MEM_LEVEL 4
+>
+> -static char *qrbuf1;
+> -static char *qrbuf2;
+> +static u8 qrbuf1[QR_BUFFER1_SIZE];
+> +static u8 qrbuf2[QR_BUFFER2_SIZE];
 
-irqchip/imx-irqsteer: Mask all interrupts in probe()
+I am not a big fan of increasing kernel size like this.
+You may run (faster) into boot loader limitations.
 
-probe() sets up the chained handlers without first masking the input
-interrupts. Mask all interrupts in probe() before wiring up the chained
-handlers to prevent storms from stale asserted lines.
+>  static struct z_stream_s stream;
+>
+>  static void __init drm_panic_qr_init(void)
+>  {
+> -       qrbuf1 = kmalloc(QR_BUFFER1_SIZE, GFP_KERNEL);
+> -       qrbuf2 = kmalloc(QR_BUFFER2_SIZE, GFP_KERNEL);
+> +       /* best-effort allocation; can be NULL */
+>         stream.workspace = kmalloc(zlib_deflate_workspacesize(WINDOW_BITS, MEM_LEVEL),
+>                                    GFP_KERNEL);
 
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index 320082d3a6325..a9909ecb6fef7 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -236,6 +236,14 @@ static int imx_irqsteer_probe(struct platform_device=
- *pdev)
->  	if (irqsteer_has_chanctrl(data->devtype_data))
->  		writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
-> =20
-> +	/*
-> +	 * Mask all interrupts before wiring up the chained handlers. CHANMASK
-> +	 * has inverted polarity (a set bit enables the interrupt), so writing
-> +	 * zero masks the source.
-> +	 */
-> +	for (i =3D 0; i < data->reg_num; i++)
-> +		writel_relaxed(0, data->regs + CHANMASK(i, data->reg_num));
+<ironic>Why not use a static array for this, too?</ironic>
+
 > +
+> +       /* touch memory so that pages are there in the case of a panic */
+> +       memset(qrbuf1, 0, sizeof(qrbuf1));
+> +       memset(qrbuf2, 0, sizeof(qrbuf2));
 
-[Severity: High]
-Can this loop perform out-of-bounds MMIO writes?
+Please clarify "there"?
+In cache? Not all systems have sufficient data cache, so it may be
+evicted at any time.
+In RAM? AFAIK kernel and module memory is not demand-paged.
+In TLB? Like cache, it may be evicted at any time.
 
-If a large value is provided for "fsl,num-irqs" in the device tree,
-data->reg_num could be oversized. The bounds check for the maximum
-number of interrupts happens later in the function:
+So IMHO this is futile.
 
-	if (!data->irq_count || data->irq_count > CHAN_MAX_OUTPUT_INT) {
-		ret =3D -EINVAL;
-		goto out;
-	}
+>  }
 
-Since this validation executes after the new loop, an oversized value
-would cause out-of-bounds writes to data->regs before being caught.
+Gr{oetje,eeting}s,
 
-Could the validation check be moved before this loop?
+                        Geert
 
-[ ... ]
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-While reviewing this file, I also noticed a couple of pre-existing issues in
-imx_irqsteer_remove().
-
-drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_remove() {
-...
-	for (i =3D 0; i < irqsteer_data->irq_count; i++) {
-		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
-						 NULL, NULL);
-		irq_dispose_mapping(irqsteer_data->irq[i]);
-	}
-
-	clk_disable_unprepare(irqsteer_data->ipg_clk);
-...
-}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can clearing the chained
-handler here race with an executing handler and cause an external abort?
-
-Chained handlers bypass desc->lock and do not set IRQS_INPROGRESS, so there
-is no natural synchronization when irq_set_chained_handler_and_data() is
-called.
-
-If a parent interrupt fires right before the handler is cleared, the chained
-handler might be running concurrently:
-
-drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_irq_handler() {
-...
-	irqmap =3D readl_relaxed(data->regs +
-			       CHANSTATUS(idx, data->reg_num));
-...
-}
-
-If imx_irqsteer_remove() proceeds to disable the hardware clock while the
-handler is still reading the CHANSTATUS MMIO registers, it could crash the
-system. Is there a way to synchronize with the executing handler before
-disabling the clock?
-
-
-[Severity: High]
-This is a pre-existing issue, but does imx_irqsteer_remove() miss PM
-runtime cleanup, leading to an unbalanced clock disable?
-
-The function unconditionally disables the clock with clk_disable_unprepare(=
-),
-but fails to call pm_runtime_disable(). If the device is unbound via sysfs,
-the driver core calls pm_runtime_put_sync(), which executes
-imx_irqsteer_suspend() and disables the clock:
-
-drivers/irqchip/irq-imx-irqsteer.c:imx_irqsteer_suspend() {
-...
-	imx_irqsteer_save_regs(irqsteer_data);
-	clk_disable_unprepare(irqsteer_data->ipg_clk);
-}
-
-Then imx_irqsteer_remove() unconditionally disables the clock again, causing
-an unbalanced WARN.
-
-Alternatively, if pm_runtime_put_sync() does not immediately suspend the
-device, imx_irqsteer_remove() disables the clock but leaves the device acti=
-ve
-in PM runtime. A later suspend would call imx_irqsteer_suspend(), which tri=
-es
-to access hardware registers with the clock already gated, crashing the sys=
-tem.
-
-Should pm_runtime_disable() be called in remove()?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260819090543.5851=
-31-1-Zhipeng.wang_1@oss.nxp.com?part=3D4
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
