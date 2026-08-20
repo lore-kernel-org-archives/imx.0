@@ -1,63 +1,161 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A67440636;
-	Wed, 19 Aug 2026 19:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF203B776A;
+	Thu, 20 Aug 2026 08:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787166360; cv=none; b=Eav3U6PVRDlCsHfPiyT052QQukLW5nmFlSbeI815/Uzcy+pWfSmIZ8aa2qOG9G2nlxZX3VBnXe2vSojSeWgr9BQabq+MloxUi9vComWrkhb6mC1iQIABpWVDBUG+ZX3EXPHUVPxUH15Osxg4AGXidxG3AAV4LcpvLE2sC7O0juc=
+	t=1787213988; cv=none; b=N/o4fqW1yqYGEyuUf3FcC8FpWVGkxQzB9CFJEVxCpUqmwo5ZHTMBjtvmr9a1Ae9DUYHEhQjitvPqUh8vSq3N2i3JqOABmuTFMUpken3AF5y7MCdNzlu1WBVBTxr+XK+udEqtvg6rAgfBKT2NDgFIy9shhDP8uWavy+dBRG1E8/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787166360; c=relaxed/simple;
-	bh=j93O/wzY+ND2y2T5OB2ptTo2V7Qf86MbrCV2pZCYH/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=r8wrJkW+ohDsTJlBiaQe0B+CAQEVZWiyf0Jk5Z5T+GK0Qfj9P9qOb6c9dHZ3HgTqYCTtEwxJsrDMWIZYfBFdcTbtz4sDc5KkJOxNxC8T0ZUrEG0uhxiXM5wEbrnpdt6tgY8lHN/Ym7y0Pegy8YHM/dEOPCNLrP7i2uHr9NQq0NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edmJxd/P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787213988; c=relaxed/simple;
+	bh=aBjhidtKj322tki+HOf85aZmKNmGpHeeVcfT0ZY9hC4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oX1jC1e9fhN0qcTWExFt8j/PImLd/+vFu1zt6A6c4PZwwsY+KCT0KUAp2i9XFAAGDHYvTMFvIvNm8iRHGDKymJcBtgmoFvwS7H08EyO53vAy4P2jD3efpBdSk2lrZLiXaqbMeXY0BZTHHtut0rBpHmqrvDxuAmBGejtcmPIhXac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8jn+szi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edmJxd/P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8E51F00A3A;
-	Wed, 19 Aug 2026 19:05:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8jn+szi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE3C1F000E9;
+	Thu, 20 Aug 2026 08:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787166358;
-	bh=j93O/wzY+ND2y2T5OB2ptTo2V7Qf86MbrCV2pZCYH/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=edmJxd/PrdQSDvgsExrOPDvrHqncYA708mfDN3pihKtmJWIpcvsxx1SkdnyHyDoV8
-	 HiewbVbHMxFdsSB4i5+70LZneATeSZZf3aWyA/e+ZCc01qETcWKQFYZBQwdEMo11hy
-	 HynFnlVpEzoQSlBKWYnHPxSd+sbCGh6w/2oc2B4E/fIz7iTG56tAr2dOUgUzN/4Q5v
-	 sw8Gx7oo9k6LC1xWhtTk90U4GFM2AERw0Ipwjq9zVgpSLom+bp5w1E05QKY2ib66eS
-	 3NUDoBeAMO413LtTLi4f55m1bg22MoXegmAj4BcWTI15UMx71eBxYiJ/l1BcjQl+SL
-	 7EOgB2u9f+Nkg==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Julian Braha <julianbraha@gmail.com>, florian.fainelli@broadcom.com,
- rjui@broadcom.com, sbranden@broadcom.com, linux@armlinux.org.uk,
- Frank.Li@nxp.com, s.hauer@pengutronix.de
-Cc: bcm-kernel-feedback-list@broadcom.com, radu@rendec.net,
- kernel@pengutronix.de, festevam@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, arnd@arndb.de, Julian Braha <julianbraha@gmail.com>,
- Marc Zyngier <maz@kernel.org>
+	s=k20260515; t=1787213986;
+	bh=mB2lZE+DV/diSmQuHEoB1XkINKX39O0uxIPWs302dOo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=B8jn+szid7UfRndLRYV8Jn2VOZIFI0AjLgNDv2ZlM/cu1PKRebdVA5T5ayM7PjPEk
+	 mtgS8fG/Hrys//Dp7n6XTuKfjSPDOIJy1Qx26ayIEVxlA4vJK5oQIWLB8oO6qxhd39
+	 Gfic8ZFv6bFdsg9Qhofg2OAuWD4z9XJoT6HXL4zTFhRahtq9qCnGaEGq+NMQechPLo
+	 ZHuAU0kggTXpJiBpmsVK7DOOrv0eDZQ7bH38Xqrh9fpigDJXxrqh/2NB+zC19Oc7FX
+	 mTGfCjuXbhXnwfMtQV/nxptjP1I/4YOwGNmhxYAzkbRxQ1FG4ZLC3ds3F5KZACv3Xh
+	 1tV/4Llwx0FEg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wwy00-0000000HD4J-0tMg;
+	Thu, 20 Aug 2026 08:19:44 +0000
+Date: Thu, 20 Aug 2026 09:22:15 +0100
+Message-ID: <877bllp5fs.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Julian Braha <julianbraha@gmail.com>, Thomas Gleixner <tglx@kernel.org>
+Cc: 	florian.fainelli@broadcom.com,
+	rjui@broadcom.com,
+	sbranden@broadcom.com,
+	linux@armlinux.org.uk,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	bcm-kernel-feedback-list@broadcom.com,
+	radu@rendec.net,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	arnd@arndb.de, Sudeep Holla <sudeep.holla@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
 Subject: Re: [PATCH] irqchip: gic-v3: fix unmet dependency on ARM_PSCI_FW
-In-Reply-To: <20260801212235.2692694-1-julianbraha@gmail.com>
+In-Reply-To: <87lda2j5gs.ffs@fw13>
 References: <20260801212235.2692694-1-julianbraha@gmail.com>
-Date: Wed, 19 Aug 2026 21:05:55 +0200
-Message-ID: <87lda2j5gs.ffs@fw13>
+	<87lda2j5gs.ffs@fw13>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: julianbraha@gmail.com, tglx@kernel.org, florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com, linux@armlinux.org.uk, Frank.Li@nxp.com, s.hauer@pengutronix.de, bcm-kernel-feedback-list@broadcom.com, radu@rendec.net, kernel@pengutronix.de, festevam@gmail.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, arnd@arndb.de, sudeep.holla@kernel.org, mark.rutland@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sat, Aug 01 2026 at 22:22, Julian Braha wrote:
+On Wed, 19 Aug 2026 20:05:55 +0100,
+Thomas Gleixner <tglx@kernel.org> wrote:
+> 
+> On Sat, Aug 01 2026 at 22:22, Julian Braha wrote:
+> 
+> > ARM_GIC_V3 selects HAVE_ARM_SMCCC_DISCOVERY without ensuring its
+> > dependency, ARM_PSCI_FW is met. However, ARM_PSCI_FW should be
+> > selected by the system type, so ARM_GIC_V3 should depend on ARM_PSCI_FW.
+> >
+> > Additionally, the systems that select ARM_GIC_V3 (ARCH_BRCMSTB and
+> > SOC_IMX8M) need to select its dependency, ARM_PSCI_FW, too.
+> >
+> > This unmet dependency was found by kconfirm, a static analysis tool for
+> > Kconfig.
+> 
+> Marc?
+> 
 
-> ARM_GIC_V3 selects HAVE_ARM_SMCCC_DISCOVERY without ensuring its
-> dependency, ARM_PSCI_FW is met. However, ARM_PSCI_FW should be
-> selected by the system type, so ARM_GIC_V3 should depend on ARM_PSCI_FW.
->
-> Additionally, the systems that select ARM_GIC_V3 (ARCH_BRCMSTB and
-> SOC_IMX8M) need to select its dependency, ARM_PSCI_FW, too.
->
-> This unmet dependency was found by kconfirm, a static analysis tool for
-> Kconfig.
+[+ SMCCC folks]
 
-Marc?
+Thanks for roping me in.
+
+This looks like the wrong fix altogether. Whatever the Broadcom stuff
+depends on is irrelevant, and has nothing to do with GICv3. Same thing
+for the NXP contraptions.
+
+If there is something to do *for the GIC driver*, it is to make sure
+it compiles/links correctly when the platform does not select options
+that are not required. Why would NXP and Broadcom care about an
+erratum that is specific to NVIDIA?
+
+I also disagree with what the commit message asserts, ARM_PSCI_FW is
+selected *globally* on arm64, not on a per platform basis (TFFT!).
+The NVIDIA machine being an arm64 platform, the correct dependency fix
+is to select HAVE_ARM_SMCCC_DISCOVERY on arm64.
+
+The overall issue is that there is no fallback to do something
+sensible when HAVE_ARM_SMCCC_DISCOVERY is not selected. Random drivers
+should not have to guess or add random #ifdefs all over the shop.
+
+I came up with the following hack, which compiles correctly on 32bit
+ARM without PSCI at all. YMMV.
+
+Thanks,
+
+	M.
+
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 42f2278a702d0..937f17ec93a2e 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -37,7 +37,7 @@ config ARM_GIC_V3
+ 	bool
+ 	select IRQ_DOMAIN_HIERARCHY
+ 	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
+-	select HAVE_ARM_SMCCC_DISCOVERY
++	select HAVE_ARM_SMCCC_DISCOVERY if ARM64
+ 	select IRQ_MSI_IOMMU
+ 
+ config ARM_GIC_ITS_PARENT
+diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+index 4de81848fe2ee..75f9d3f1723b5 100644
+--- a/include/linux/arm-smccc.h
++++ b/include/linux/arm-smccc.h
+@@ -324,6 +324,7 @@ enum arm_smccc_conduit {
+ 	SMCCC_CONDUIT_HVC,
+ };
+ 
++#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+ /**
+  * arm_smccc_1_1_get_conduit()
+  *
+@@ -363,6 +364,12 @@ s32 arm_smccc_get_soc_id_version(void);
+  * When ARM_SMCCC_ARCH_SOC_ID is not present, returns SMCCC_RET_NOT_SUPPORTED.
+  */
+ s32 arm_smccc_get_soc_id_revision(void);
++#else   /* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
++#define arm_smccc_1_1_get_conduit()	SMCCC_CONDUIT_NONE
++#define arm_smccc_get_version()		0
++#define arm_smccc_get_soc_id_version()	SMCCC_RET_NOT_SUPPORTED
++#define arm_smccc_get_soc_id_revision()	SMCCC_RET_NOT_SUPPORTED
++#endif	/* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
+ 
+ #ifndef __ASSEMBLY__
+ 
+
+-- 
+Jazz isn't dead. It just smells funny.
