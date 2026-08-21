@@ -1,284 +1,339 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013034.outbound.protection.outlook.com [40.107.162.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585C2395AE9
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 14:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787323031; cv=fail; b=oSHZ0XocunwRItol5QMk04gsqBWllSESxJQ0aWiptp38HYJYIOKnBHSHhjiPyGQlEfifc3mJ2pg5zUwznFxmxi/whhggDj9uH1an9le+EBlrPDmd+9URg63ei/DiV0fYAHGeKcu0rKE1YjDOskqZxmQs1Flpa4JeNdrnuOcEjIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787323031; c=relaxed/simple;
-	bh=7qRgZsMMQ1X4Ywz4gsitFxr4rFM0N8gFpO4PpZGnrbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=algu+/6yH/kibBPBMJm/6UWZKewMgB0BYOus/PLCJpzxhEfGXNW3qPXVSUJ3DzIyjjW5sg3NpyWuSetn8C5BtYEO1NTVA1tA5YSOrcei/OFXDISJDYptkuGJdAcMPfUC4kdbdQGI9wkVhQJlEWI+q9R4TMlAcFDNPb2EM8/o00E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Uz1Jc5rr; arc=fail smtp.client-ip=40.107.162.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F152490BFA;
+	Fri, 21 Aug 2026 14:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787323164; cv=none; b=bn7ivDAhJDUto/3NieNgwovXpcK/XeUOPVoQcWtYOCLDoOb+UoaW3BzjCLkQkHtE8fXwFNa+OD4Ysz1BsLk00bNmtICezJMKFOmld6JiHwGpMFj419ECziFhvpH9HmzOL5zlMlJoG9mASAwoBPM/MJo8JFz4fcOA97/2DX98HpU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787323164; c=relaxed/simple;
+	bh=XrpjqpxeU7ALF5OLpK2WpdbG15zlPyFx5PlM9LAlHdY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IY5Zn+nNslg2BV3OmdtRu9dgfx1uVjP+uAEuRJVXXmH1nJC9E/RN+5Tibte8xkEZKKnCQFIgWFOGe/r9huEAbRPwlRuOqzYgIpeoppvqrFpsw4uKR3LucWm/gjVcapSlueSEJzb17qWbjYkil3xKvbr0cblouju235EEkHz0ncA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FN1u/yS7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Uz1Jc5rr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gPwUOqIdQ4TViVtLCbRgGN4JnHc1TvrMOxMeUfMefsAQaUF5HnZIoXwL/bCDKMaparJq2P/YpG4+01osfIim1iR8A8O8BrDvca+2akhKS0rr9V0tyzE4I8CRFl7ib9X3XbDQt1XKjRPln53LvogiG6acMhttKlUsbMenfRqpPQoqF5o82yAOWSmdk2VtVDF/RqAyEZsGf8wCasDuJkFQWWdsfIY7Yb1Gjqt27zfT4vqcJvS9ObmF7auwtYk3QDS5ZoIHCdEUOkw+5/23g2KNahVJFYU0wZ5Iy/CmrP04tkwFmcBzNET6qPNWx5UA5bZCRajBKZUNj9ANA2HaDvOy4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vk3sAGUl/1bew7XTBMNaH+hIbZ1yV06SoOwjlxUAfbg=;
- b=edp2X2uW74WdOV62flCNMtxn0RA/gnOZCrN2rJ2sqkfzIjBV8q/nKJapbinCQ6HIlL5ra5kbM/KV1cKAr+RhcEHC81g2eSK6F1l9yGtjlbHixZj8xM+Rx3HGqoLah/d4y/esZGZd++8eBf4KA550dAi5tYVy/pbmW5Q5NDSOqEkhQ+b1ckbS0sl/1kfiIn7R6WqLfeiviaybtN53ckNYo37g+bq/bw7o0aSYhF97r3iCh/825aUudWje89BjFQaubCp+Nc8q+b1obT7u5R17YihM8txEQ8MAin4LIEoWZXa5U7+Z1//w7DHNZJAK238Ai21OeQVhV0ubgoBQhl5q4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vk3sAGUl/1bew7XTBMNaH+hIbZ1yV06SoOwjlxUAfbg=;
- b=Uz1Jc5rrvDk40tB56lqhd6JOfiTcw/62BHDuGU8/5vid1jf9k70zVhzT/TqPpZiTWuqQuWgWKB+18jn233MED7oAOioGfZlX6c6d6RdDVSsABmIPWAiO90NlU7anfFPddL4hblVyn7+Xcl0RnzRAVPlbzVsTNW4dfP8uZeolXXTJjz/H/90OdioFp4xU3am5usK0RTGPKQoq+vJ39VbxMsSAq71OKtuDv0C99ASPkIFN3Bsr7LoVG0qGVM77mx79efv84rb7rWEdTdSOMSA7XOcGCOjw/AUxocd3kVAPjwYUysd/j+lO3kutVXjaxS1tt73vMiuO9PqaDNuHELvRmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV2PR04MB12293.eurprd04.prod.outlook.com (2603:10a6:150:32b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
- 2026 14:37:05 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
- 14:37:04 +0000
-Date: Fri, 21 Aug 2026 09:36:57 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Xu Yang <xu.yang_2@oss.nxp.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kai Aizen <kai.aizen.dev@gmail.com>,
-	Michael Grzeschik <mgr@kernel.org>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: Re: [PATCH 1/2] usb: gadget: uvc: replace mutex lock/unlock with
- scoped_guard in uvc_function_bind()
-Message-ID: <aohiiQXRp5QnX393@SMW015318>
-References: <20260821-usb-uvc-fixes-v1-0-80e6e279523d@nxp.com>
- <20260821-usb-uvc-fixes-v1-1-80e6e279523d@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821-usb-uvc-fixes-v1-1-80e6e279523d@nxp.com>
-X-ClientProxiedBy: SA9PR11CA0027.namprd11.prod.outlook.com
- (2603:10b6:806:6e::32) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FN1u/yS7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911B61F000E9;
+	Fri, 21 Aug 2026 14:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787323162;
+	bh=1is4vlPBYIemAGJNcyTfyeB4LcQTBxiGBN1U0sCNEMs=;
+	h=From:Subject:Date:To:Cc;
+	b=FN1u/yS7xdcJbsStZ+nKUxoMvs+kEhII7QUNCGLCDiEhPuJw8j37Gjf3ioEGHsays
+	 B4R6H/mGhya901xaI8+TExbsArw8P2XBnjAaCN0Z/T6tQ3ZOnXhBqOG9Y/MCuxFQ6C
+	 HN/AQR2D5n3xrnHkUZefY218B3odTqpVVkxm7+dJ5uNAgi1zBZ7kt0gno/MpL1h+Xb
+	 MKG/JonL4EzBXyXM3CGkhUnJDh8c16VtEqLvL0r3/Mmy54DYjR08fTieu12GmNe5E0
+	 pdEgW/sYqNxYCl6bEerjcj1H24XdynDHugbHesM92juDFZ/tIH8ZmNuSGm3l1YgeXa
+	 Bk7E97B55Zwjw==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH 00/70] drm/crtc: Convert all drivers to atomic_create_state
+ and remove reset
+Date: Fri, 21 Aug 2026 16:38:36 +0200
+Message-Id: <20260821-drm-no-more-crtc-reset-v1-0-fb793475c05a@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB12293:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4422fd0-664a-44a9-8127-08deff91ab8c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|23010399003|376014|10067099003|6133799003|22082099003|18002099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	TIP3j2RMjPrDlVpGe4PXKXK5F4LXV9ngdYVQ/abJTvhFc301PdSP5xVQ/XVsFxU89d8nrXuXXIHbutXgOy4DnhRINgc9c3wP3sHaWcY3Yn0R+3zn0UfkD2i6VhnMtJTTj+XJQicr+bmDOj0W1iU+KRM9WKJpsqAWZgiQeFaewrBOpyihv8xJiogMs805l5Ubi7RXjjhGNv4kDoyFwUgLkJb7GFuf8wd076lt1UWq5Fa6lGMGp/I6pe40vhv24zmOVnXkfmU3sQeF2q5otY2HX5GlZGxSH+NET7ksAL5bQPF0nzXTjXXjd53CYkGQZhqG4O2Ol4T+H8ctuBAFlHSfnzqPUFzSBAK7ZKdwp5U15i4cVfA8eeVkpdAHQDObrqyJRmKrnC81AfiCvS4cnIaluDoHSftTNTHVYSAx93/TMapEJdMm6Z8QoUABDWg2WaSDM/RjtAbLtxfPjwfkBzIRwUu9xjzy45mGDSRAkOvLcr+9r0/W00RtihFHkvaJ4mZEy47Mw0nYhs0kXHY9lzE+4kcykwjwFTEizXBb7kys3wdT7jbrfnahKvkK+NvfIGUdjK8Weh9I7BBesFna0AfgsOzhQuCBRoDixqu1IF1GnN5a2sHUTlumHSwF1F9zSITFktZRWXcGYs6rHQFL6OeL5GGETgcehSuYgAxWoOUxU4U=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(23010399003)(376014)(10067099003)(6133799003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AJbKUneS8wD/FukcRx4lmK6kiVB3VyU4q8e/TtpqOuOnHeL7Kijtn382weO3?=
- =?us-ascii?Q?Qm6JUxjyLltM1uvN9ivk1txXhD9JUhi1wQn0LZ984YzMutplwmRJ9KQYVGnv?=
- =?us-ascii?Q?OXT7s4jdXri3e2QkO/Knx4znNsX8pNIWYjzawVGJkbrQ5zqzC460L+za7NAm?=
- =?us-ascii?Q?3gWlDehaz9c8xYUI4vfJJ87sKoTH99lkRJXQnNp7qr6sV9umfZrsPwi0O0GY?=
- =?us-ascii?Q?sUlrY8oRDbxL7Zjs8SyaY/OUPXPRjqyKyHRuPy+QQ1uiC8IZnjOCuunXa5fR?=
- =?us-ascii?Q?gzvpyWRqsr42xV+mGJmR5BFaE/yCk+NZGexFuYNs3H7DvRKS8Yw6XlBcGH81?=
- =?us-ascii?Q?2p1iK0YRLRchGXr8m2EF7PxcIdJPcpYrDWom7Rpeb/JTRTAMn0P0WT/rD4BL?=
- =?us-ascii?Q?y9JEOdfAFU8/kq3CFiCFLVbgy9jtow5ShXLsTDEyQZ8BpnduZKu3YYq1zsKB?=
- =?us-ascii?Q?EXv3mBIadJuZ3WSlpTTu3EziRJg8WOPDkL7gSD4OONT0lcnRukyncbHVGfN3?=
- =?us-ascii?Q?SwPJFGQ99AI+jvraMvaI4ddQzbo4lkeO3uRLDgTbJwoX9/J4RwHs5yhrIfyq?=
- =?us-ascii?Q?FWITzQiDb1oPJRdDgm2Lh9qAwq2Zh81nbLzQF7CQ69v8uLYvM6BSWCLa+YEi?=
- =?us-ascii?Q?4jlWLSIjzncg4luHmw+ws1o6JK2Evr9/JsHyPDPfhS1qFm102XLC0JaEfzSX?=
- =?us-ascii?Q?n1bVNkvfaKP+w22D9LDZ0KdeH2cIxicZp0TxyC50X6qFMQejjJvAdZ3bJYG8?=
- =?us-ascii?Q?Yz9BBT8VREQTR1s/aauiMdRm2vkI+ChSR92Q0drBwPI3wR+B+/xmVDx9oGqA?=
- =?us-ascii?Q?P5ig3747UDyZLdsANoq9ybpv5S6L3c8BEzk4nEYwF+cPfDGEjHhO6JJ0+NrP?=
- =?us-ascii?Q?HZ09jEfIYYkjK3G3kyE0ORK7cIGYbHLqeAHToVjwgSR71nJmmQgoT8kYyQFr?=
- =?us-ascii?Q?MCdtZSi5UymfpqMtQUQeqsGkd4tSPn5L6vPyCDR99BGyX/X+Qu8potepltwj?=
- =?us-ascii?Q?2K+mxQrakMpRXMEJcm22WJL4lhG+/wVhvAxBdR6Zy+/I0/vg5BcT4cJbUbYe?=
- =?us-ascii?Q?/h9SaD9iiwvHnfwf6iFuj6EWEx1X9cyihqtU+QLQ4RQr07j8GJKB370fdT7D?=
- =?us-ascii?Q?ZUUbwzhYOnQsYPzaM4SKzE59XhEyj+T0w2jzibhswLn/IHzeiGNaIwmK6cYr?=
- =?us-ascii?Q?sHxgotezw8cUvRWth2zujU6E5VS2ZmMG+UsTBPUE+BNMj4QE3hsrN1t/yaRJ?=
- =?us-ascii?Q?CF2WDetjlEdvkxLziDzCpHefyAhh5+QpX5SNV1sPJqzTQ9vVAHIw7O6RyDFh?=
- =?us-ascii?Q?ETSAaLv8tyHO1RHGY7noyXCyOFvkSPdxRBnka2cJl53UoMvveNYaKhsxOMAF?=
- =?us-ascii?Q?EL+0tMxSYwOAviJ9RtArFxBfzUlPOOQhToUiKj8vAvo7bt0zR1jOvtgBs2Lo?=
- =?us-ascii?Q?A6sE/CUawHknNLeWrnB53CV77Uog85zDCgdwkSED/w5lvfWEQMXQhdsV567Q?=
- =?us-ascii?Q?/6AQcHFug2q1BulWsxlol6RnQ1oCr/FLKc/J+SgesKMftj0/K/4pkjqtb04x?=
- =?us-ascii?Q?QUWzGiQ0A6l+SZRR7TXva44q/yE+5yenz+AtoLhOPMDKsU8OjFluLL+5ukgJ?=
- =?us-ascii?Q?0DIj6+r8uWF+CpuSnC1hz2UIMfzDi3Gdd+gRAm07SlVP9sICvhQz9lvAKP2a?=
- =?us-ascii?Q?IYoPphJdCgLJE9fnCPTqqu/zIVWow+aYvy4bej+SInI60GrXo/bIMJmpM1a6?=
- =?us-ascii?Q?66GI1Soytj89FGh5axFvMHS5yGyzGeSRWh1nicQgl61bIVSpJKGU?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4422fd0-664a-44a9-8127-08deff91ab8c
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 14:37:04.9220
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yD2aaiTnz9b0UwmfALgk/noBKcMsLQSJRmvr6S/n6K30ipwZAjfYgELiI0trrGohVjNMdFnBr7LLyDwYKwJVoHpKjTTANKHFtWBNS0iIwY5/VDD5hQn//bkdj1O4APl+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12293
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNwQ7CIAzG8VchPdsEFnRur2J2YFC1B0ALmiXL3
+ l3mjv8v6a8rFBKmAqNaQejLhXNqYU4K/NOlByGH1tDp7qJ7PWCQiCljzELopXoUKlTRWGfDefb
+ XYA2045fQnZc/fJuOFnp/ml+PEWZXmpBj5DqqXY1cPCZaKu7PUPeoB5i27QeOVHDlpAAAAA==
+X-Change-ID: 20260709-drm-no-more-crtc-reset-14a4d5bc8d41
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ Janne Grunau <j@jannau.net>, Sasha Finkelstein <k@chaosmail.tech>, 
+ asahi@lists.linux.dev, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org, 
+ Liviu Dudau <liviu.dudau@arm.com>, Russell King <linux@armlinux.org.uk>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Inki Dae <inki.dae@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, linux-samsung-soc@vger.kernel.org, 
+ Alison Wang <alison.wang@nxp.com>, Stefan Agner <stefan@agner.ch>, 
+ Ruben Wauters <rubenru09@aol.com>, Tian Tao <tiantao6@hisilicon.com>, 
+ Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+ Yongbang Shi <shiyongbang@huawei.com>, John Stultz <jstultz@google.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, Dexuan Cui <decui@microsoft.com>, 
+ Long Li <longli@microsoft.com>, 
+ Saurabh Sengar <ssengar@linux.microsoft.com>, linux-hyperv@vger.kernel.org, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Liu Ying <victor.liu@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, Paul Cercueil <paul@crapouillou.net>, 
+ linux-mips@vger.kernel.org, 
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Kevin Hilman <khilman@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ linux-amlogic@lists.infradead.org, Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Dmitry Baryshkov <lumag@kernel.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+ Marek Vasut <marex@denx.de>, Dave Airlie <airlied@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, spice-devel@lists.freedesktop.org, 
+ virtualization@lists.linux.dev, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ linux-renesas-soc@vger.kernel.org, 
+ Marcus Folkesson <marcus.folkesson@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
+ Samuel Holland <samuel@sholland.org>, linux-sunxi@lists.linux.dev, 
+ Jyri Sarha <jyri.sarha@iki.fi>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Aditya Garg <gargaditya08@proton.me>, Aun-Ali Zaidi <admin@kodeit.net>, 
+ LiangCheng Wang <zaq14760@gmail.com>, Alex Lanzano <lanzano.alex@gmail.com>, 
+ Hans de Goede <hansg@kernel.org>, Icenowy Zheng <zhengxingda@iscas.ac.cn>, 
+ Chia-I Wu <olvaffe@gmail.com>, 
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gurchetan Singh <gurchetansingh@chromium.org>, 
+ Michal Simek <michal.simek@amd.com>, 
+ Javier Martinez Canillas <javierm@redhat.com>, 
+ Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+ Rodrigo Siqueira <siqueira@igalia.com>, 
+ Jocelyn Falempe <jfalempe@redhat.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Dharma Balasubiramani <dharma.b@microchip.com>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Huacai Chen <chenhuacai@kernel.org>, 
+ Jianmin Lv <lvjianmin@loongson.cn>, Mingcong Bai <jeffbai@aosc.io>, 
+ Qianhai Wu <wuqianhai@loongson.cn>, Xi Ruoyao <xry111@xry111.site>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ nouveau@lists.freedesktop.org, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ Biju Das <biju.das.jz@bp.renesas.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, Sandy Huang <hjc@rock-chips.com>, 
+ linux-rockchip@lists.infradead.org, Iker Pedrosa <ikerpedrosam@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Thierry Reding <thierry.reding@kernel.org>, linux-tegra@vger.kernel.org, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Haneen Mohammed <hamohammed.sa@gmail.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, 
+ Melissa Wen <melissa.srw@gmail.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Zack Rusin <zack.rusin@broadcom.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10779; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=XrpjqpxeU7ALF5OLpK2WpdbG15zlPyFx5PlM9LAlHdY=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFkdSd+XbtrDvPLAypKrqwIuJBVtKGP58e3vNoGDLkZFC
+ yNyzqqYdkxlYRDmZJAVU2R5IhN2enn74ioH+5U/YOawMoEMYeDiFICJRGgxVrO/2eF1MjFl/cHs
+ Jxsn5npdOsF9VzR9SUlnHHvK7MgDb5U7ja6LGKsfk5sjoxNiGpPyibE+bdafRRv8i237pSPUjJy
+ TN8z19j5uyFy45IQqZ1NX/r7E2TskJUSfuzM9XtUaqtnAHgQA
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-On Fri, Aug 21, 2026 at 04:22:36PM +0800, Xu Yang wrote:
-> From: Xu Yang <xu.yang_2@nxp.com>
->
-> Commit 68aa70648b62 ("usb: gadget: uvc: hold opts->lock across XU walks
-> in uvc_function_bind") introduced an error_unlock label to release
-> opts->lock on failure paths. The label is misplaced between the return
-> statement and v4l2_error, causing it to fall through into v4l2_error
-> and call v4l2_device_unregister() on a device that was never registered.
->
-> Replace the manual mutex_lock/unlock pair and the error_unlock label
-> with scoped_guard(mutex), removing the need for explicit lock cleanup on
-> error paths.
->
-> Fixes: 68aa70648b62 ("usb: gadget: uvc: hold opts->lock across XU walks in uvc_function_bind")
-> Assisted-by: Claude:claude-sonnet-4.6
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
+This is a follow-up to the plane reset removal series, and part of a
+larger effort to remove the reset hook from all KMS objects.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+The CRTC reset hook is overloaded: it is called both at probe time to
+create the initial software state and during suspend/resume to reset
+hardware and software state. These two roles have different
+requirements, and the reset hook is not fallible, making error
+handling difficult for the initial state allocation path.
 
->  drivers/usb/gadget/function/f_uvc.c | 80 +++++++++++++++++--------------------
->  1 file changed, 36 insertions(+), 44 deletions(-)
->
-> diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-> index d1bf3ea75197..a4fb2790f4ff 100644
-> --- a/drivers/usb/gadget/function/f_uvc.c
-> +++ b/drivers/usb/gadget/function/f_uvc.c
-> @@ -768,23 +768,17 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
->  	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
->  	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
->
-> -	/*
-> -	 * Hold opts->lock across both the XU string-descriptor fixup below and
-> -	 * the descriptor-copy block further down.  Without this, configfs
-> -	 * uvcg_extension_drop() (which takes opts->lock) can race with the
-> -	 * list_for_each_entry() walks here and inside uvc_copy_descriptors(),
-> -	 * leading to a UAF on a freed struct uvcg_extension.  See
-> -	 * drivers/usb/gadget/function/uvc_configfs.c::uvcg_extension_drop().
-> -	 */
-> -	mutex_lock(&opts->lock);
-> -
->  	/*
->  	 * XUs can have an arbitrary string descriptor describing them. If they
-> -	 * have one pick up the ID.
-> +	 * have one pick up the ID. Hold opts->lock here to avoid race with configfs
-> +	 * uvcg_extension_make() and uvcg_extension_drop().
->  	 */
-> -	list_for_each_entry(xu, &opts->extension_units, list)
-> -		if (xu->string_descriptor_index)
-> -			xu->desc.iExtension = cdev->usb_strings[xu->string_descriptor_index].id;
-> +	scoped_guard(mutex, &opts->lock) {
-> +		list_for_each_entry(xu, &opts->extension_units, list)
-> +			if (xu->string_descriptor_index)
-> +				xu->desc.iExtension =
-> +					cdev->usb_strings[xu->string_descriptor_index].id;
-> +	}
->
->  	/*
->  	 * We attach the hard-coded defaults incase the user does not provide
-> @@ -795,7 +789,7 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
->  				 ARRAY_SIZE(uvc_en_us_strings));
->  	if (IS_ERR(us)) {
->  		ret = PTR_ERR(us);
-> -		goto error_unlock;
-> +		goto error;
->  	}
->
->  	uvc_iad.iFunction = opts->iad_index ? cdev->usb_strings[opts->iad_index].id :
-> @@ -809,50 +803,50 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
->
->  	/* Allocate interface IDs. */
->  	if ((ret = usb_interface_id(c, f)) < 0)
-> -		goto error_unlock;
-> +		goto error;
->  	uvc_iad.bFirstInterface = ret;
->  	uvc_control_intf.bInterfaceNumber = ret;
->  	uvc->control_intf = ret;
->  	opts->control_interface = ret;
->
->  	if ((ret = usb_interface_id(c, f)) < 0)
-> -		goto error_unlock;
-> +		goto error;
->  	uvc_streaming_intf_alt0.bInterfaceNumber = ret;
->  	uvc_streaming_intf_alt1.bInterfaceNumber = ret;
->  	uvc->streaming_intf = ret;
->  	opts->streaming_interface = ret;
->
->  	/* Copy descriptors */
-> -	f->fs_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_FULL);
-> -	if (IS_ERR(f->fs_descriptors)) {
-> -		ret = PTR_ERR(f->fs_descriptors);
-> -		f->fs_descriptors = NULL;
-> -		goto error_unlock;
-> -	}
-> +	scoped_guard(mutex, &opts->lock) {
-> +		f->fs_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_FULL);
-> +		if (IS_ERR(f->fs_descriptors)) {
-> +			ret = PTR_ERR(f->fs_descriptors);
-> +			f->fs_descriptors = NULL;
-> +			goto error;
-> +		}
->
-> -	f->hs_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_HIGH);
-> -	if (IS_ERR(f->hs_descriptors)) {
-> -		ret = PTR_ERR(f->hs_descriptors);
-> -		f->hs_descriptors = NULL;
-> -		goto error_unlock;
-> -	}
-> +		f->hs_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_HIGH);
-> +		if (IS_ERR(f->hs_descriptors)) {
-> +			ret = PTR_ERR(f->hs_descriptors);
-> +			f->hs_descriptors = NULL;
-> +			goto error;
-> +		}
->
-> -	f->ss_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_SUPER);
-> -	if (IS_ERR(f->ss_descriptors)) {
-> -		ret = PTR_ERR(f->ss_descriptors);
-> -		f->ss_descriptors = NULL;
-> -		goto error_unlock;
-> -	}
-> +		f->ss_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_SUPER);
-> +		if (IS_ERR(f->ss_descriptors)) {
-> +			ret = PTR_ERR(f->ss_descriptors);
-> +			f->ss_descriptors = NULL;
-> +			goto error;
-> +		}
->
-> -	f->ssp_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_SUPER_PLUS);
-> -	if (IS_ERR(f->ssp_descriptors)) {
-> -		ret = PTR_ERR(f->ssp_descriptors);
-> -		f->ssp_descriptors = NULL;
-> -		goto error_unlock;
-> +		f->ssp_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_SUPER_PLUS);
-> +		if (IS_ERR(f->ssp_descriptors)) {
-> +			ret = PTR_ERR(f->ssp_descriptors);
-> +			f->ssp_descriptors = NULL;
-> +			goto error;
-> +		}
->  	}
->
-> -	mutex_unlock(&opts->lock);
-> -
->  	/* Preallocate control endpoint request. */
->  	uvc->control_req = usb_ep_alloc_request(cdev->gadget->ep0, GFP_KERNEL);
->  	uvc->control_buf = kmalloc(UVC_MAX_REQUEST_SIZE, GFP_KERNEL);
-> @@ -884,8 +878,6 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
->
->  	return 0;
->
-> -error_unlock:
-> -	mutex_unlock(&opts->lock);
->  v4l2_error:
->  	v4l2_device_unregister(&uvc->v4l2_dev);
->  error:
->
-> --
-> 2.34.1
->
->
+While reset has the semantics to reset both the software and hardware
+state, the vast majority of implementations and all the helpers only
+reset the software state, making them equivalent to
+atomic_create_state in practice. The atomic_create_state hook makes
+this explicit: it only allocates and initializes a pristine state
+without any side effect, and returns the state pointer or an ERR_PTR
+on failure.
+
+This series converts all CRTC drivers tree-wide from the reset hook to
+atomic_create_state, then removes the reset hook from struct
+drm_crtc_funcs entirely. Two drivers (tilcdc and loongson) had actual
+hardware reset logic mixed into their reset hook; those are moved to
+CRTC creation instead. The conversions were done using a combination of
+Coccinelle semantic patches and manual adjustments.
+
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+Maxime Ripard (70):
+      drm/adp: Switch to drm_atomic_helper_crtc_create_state
+      drm/amdgpu: vkms: Switch to drm_atomic_helper_crtc_create_state
+      drm/arm: hdlcd: Switch to drm_atomic_helper_crtc_create_state
+      drm/armada: Switch to drm_atomic_helper_crtc_create_state
+      drm/exynos: Switch to drm_atomic_helper_crtc_create_state
+      drm/fsl-dcu: Switch to drm_atomic_helper_crtc_create_state
+      drm/gud: Switch to drm_atomic_helper_crtc_create_state
+      drm/hisilicon: hibmc: Switch to drm_atomic_helper_crtc_create_state
+      drm/hisilicon: kirin: Switch to drm_atomic_helper_crtc_create_state
+      drm/hyperv: Switch to drm_atomic_helper_crtc_create_state
+      drm/imx: dc: Switch to drm_atomic_helper_crtc_create_state
+      drm/imx: dcss: Switch to drm_atomic_helper_crtc_create_state
+      drm/ingenic: Switch to drm_atomic_helper_crtc_create_state
+      drm/kmb: Switch to drm_atomic_helper_crtc_create_state
+      drm/logicvc: Switch to drm_atomic_helper_crtc_create_state
+      drm/meson: Switch to drm_atomic_helper_crtc_create_state
+      drm/msm: mdp4: Switch to drm_atomic_helper_crtc_create_state
+      drm/mxs: mxsfb: Switch to drm_atomic_helper_crtc_create_state
+      drm/qxl: Switch to drm_atomic_helper_crtc_create_state
+      drm/renesas: shmobile: Switch to drm_atomic_helper_crtc_create_state
+      drm/simple-kms: Remove unused reset_crtc hook
+      drm/simple-kms: Switch to drm_atomic_helper_crtc_create_state
+      drm/sitronix: st7571: Switch to drm_atomic_helper_crtc_create_state
+      drm/sprd: Switch to drm_atomic_helper_crtc_create_state
+      drm/sti: Switch to drm_atomic_helper_crtc_create_state
+      drm/stm: Switch to drm_atomic_helper_crtc_create_state
+      drm/sun4i: Switch to drm_atomic_helper_crtc_create_state
+      drm/tests: Switch to drm_atomic_helper_crtc_create_state
+      drm/tilcdc: Move hardware reset to CRTC creation
+      drm/tilcdc: Switch to drm_atomic_helper_crtc_create_state
+      drm/tiny: appletbdrm: Switch to drm_atomic_helper_crtc_create_state
+      drm/tiny: bochs: Switch to drm_atomic_helper_crtc_create_state
+      drm/tiny: cirrus: Switch to drm_atomic_helper_crtc_create_state
+      drm/tiny: pixpaper: Switch to drm_atomic_helper_crtc_create_state
+      drm/tiny: sharp: Switch to drm_atomic_helper_crtc_create_state
+      drm/udl: Switch to drm_atomic_helper_crtc_create_state
+      drm/vbox: Switch to drm_atomic_helper_crtc_create_state
+      drm/verisilicon: Switch to drm_atomic_helper_crtc_create_state
+      drm/virtio: Switch to drm_atomic_helper_crtc_create_state
+      drm/xlnx: Switch to drm_atomic_helper_crtc_create_state
+      drm/mipi-dbi: Switch to drm_atomic_helper_crtc_create_state
+      drm/atomic-helper: Remove drm_atomic_helper_crtc_reset
+      sysfb: Convert to create_state
+      drm/amdgpu: dm: Convert to atomic_create_state
+      drm/komeda: Convert to atomic_create_state
+      drm/malidp: Convert to atomic_create_state
+      drm/ast: Convert to atomic_create_state
+      drm/atmel-hlcdc: Convert to atomic_create_state
+      drm/imx: ipuv3: Convert to atomic_create_state
+      drm/loongsoon: Move hardware reset to CRTC creation
+      drm/loongson: Convert to atomic_create_state
+      drm/mediatek: Convert to atomic_create_state
+      drm/mgag200: Convert to atomic_create_state
+      drm/msm: dpu1: Convert to atomic_create_state
+      drm/msm: mdp5: Convert to atomic_create_state
+      drm/mxsfb: lcdif: Convert to atomic_create_state
+      drm/nouveau: Convert to atomic_create_state
+      drm/omapdrm: Convert to atomic_create_state
+      drm/rcar-du: Convert to atomic_create_state
+      drm/rzg2l-du: Convert to atomic_create_state
+      drm/rockchip: vop: Convert to atomic_create_state
+      drm/rockchip: vop2: Convert to atomic_create_state
+      drm/sitronix: st7920: Convert to atomic_create_state
+      drm/solomon: ssd130x: Convert to atomic_create_state
+      drm/tegra: Convert to atomic_create_state
+      drm/vc4: Convert to atomic_create_state
+      drm/vkms: Convert to atomic_create_state
+      drm/vmwgfx: Convert to atomic_create_state
+      drm/atomic-helper: Remove __drm_atomic_helper_crtc_reset
+      drm/crtc: Remove reset
+
+ drivers/gpu/drm/adp/adp_drv.c                      |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c           |  2 +-
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c | 17 ++++----
+ drivers/gpu/drm/arm/display/komeda/komeda_crtc.c   | 18 ++++----
+ drivers/gpu/drm/arm/hdlcd_crtc.c                   |  2 +-
+ drivers/gpu/drm/arm/malidp_crtc.c                  | 18 ++++----
+ drivers/gpu/drm/armada/armada_crtc.c               |  2 +-
+ drivers/gpu/drm/ast/ast_mode.c                     | 18 ++++----
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_crtc.c     | 19 ++++-----
+ drivers/gpu/drm/drm_atomic_state_helper.c          | 45 --------------------
+ drivers/gpu/drm/drm_mode_config.c                  |  4 +-
+ drivers/gpu/drm/drm_simple_kms_helper.c            | 13 +-----
+ drivers/gpu/drm/exynos/exynos_drm_crtc.c           |  2 +-
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_crtc.c         |  2 +-
+ drivers/gpu/drm/gud/gud_drv.c                      |  2 +-
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c     |  2 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c    |  2 +-
+ drivers/gpu/drm/hyperv/hyperv_drm_modeset.c        |  2 +-
+ drivers/gpu/drm/imx/dc/dc-crtc.c                   |  2 +-
+ drivers/gpu/drm/imx/dcss/dcss-crtc.c               |  2 +-
+ drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c             | 18 ++++----
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c          |  2 +-
+ drivers/gpu/drm/kmb/kmb_crtc.c                     |  2 +-
+ drivers/gpu/drm/logicvc/logicvc_crtc.c             |  2 +-
+ drivers/gpu/drm/loongson/lsdc_crtc.c               | 26 ++++++------
+ drivers/gpu/drm/mediatek/mtk_crtc.c                | 18 ++++----
+ drivers/gpu/drm/meson/meson_crtc.c                 |  2 +-
+ drivers/gpu/drm/mgag200/mgag200_drv.h              |  4 +-
+ drivers/gpu/drm/mgag200/mgag200_mode.c             | 15 ++++---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c           | 18 ++++----
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c          |  2 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_crtc.c          | 20 ++++-----
+ drivers/gpu/drm/mxsfb/lcdif_kms.c                  | 17 ++++----
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c                  |  4 +-
+ drivers/gpu/drm/nouveau/dispnv50/head.c            | 14 +++----
+ drivers/gpu/drm/omapdrm/omap_crtc.c                | 17 ++++----
+ drivers/gpu/drm/qxl/qxl_display.c                  |  2 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_crtc.c     | 17 ++++----
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_crtc.c      | 15 +++----
+ drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c  |  2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c        | 18 ++++----
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c       | 18 ++++----
+ drivers/gpu/drm/sitronix/st7571.c                  |  2 +-
+ drivers/gpu/drm/sitronix/st7920.c                  | 10 +++--
+ drivers/gpu/drm/solomon/ssd130x.c                  | 10 +++--
+ drivers/gpu/drm/sprd/sprd_dpu.c                    |  2 +-
+ drivers/gpu/drm/sti/sti_crtc.c                     |  2 +-
+ drivers/gpu/drm/stm/ltdc.c                         |  4 +-
+ drivers/gpu/drm/sun4i/sun4i_crtc.c                 |  2 +-
+ drivers/gpu/drm/sysfb/drm_sysfb_helper.h           |  4 +-
+ drivers/gpu/drm/sysfb/drm_sysfb_modeset.c          | 20 ++++-----
+ drivers/gpu/drm/tegra/dc.c                         | 18 ++++----
+ drivers/gpu/drm/tests/drm_kunit_helpers.c          |  2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_crtc.c               | 49 +++++++++-------------
+ drivers/gpu/drm/tiny/appletbdrm.c                  |  2 +-
+ drivers/gpu/drm/tiny/bochs.c                       |  2 +-
+ drivers/gpu/drm/tiny/cirrus-qemu.c                 |  2 +-
+ drivers/gpu/drm/tiny/pixpaper.c                    |  2 +-
+ drivers/gpu/drm/tiny/sharp-memory.c                |  2 +-
+ drivers/gpu/drm/udl/udl_modeset.c                  |  2 +-
+ drivers/gpu/drm/vboxvideo/vbox_mode.c              |  2 +-
+ drivers/gpu/drm/vc4/tests/vc4_mock_crtc.c          |  2 +-
+ drivers/gpu/drm/vc4/vc4_crtc.c                     | 14 +++----
+ drivers/gpu/drm/vc4/vc4_drv.h                      |  2 +-
+ drivers/gpu/drm/vc4/vc4_txp.c                      |  2 +-
+ drivers/gpu/drm/verisilicon/vs_crtc.c              |  2 +-
+ drivers/gpu/drm/virtio/virtgpu_display.c           |  2 +-
+ drivers/gpu/drm/vkms/vkms_crtc.c                   | 18 ++++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                | 22 ++++------
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c                |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c               |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c               |  2 +-
+ drivers/gpu/drm/xlnx/zynqmp_kms.c                  |  2 +-
+ include/drm/drm_atomic_state_helper.h              |  3 --
+ include/drm/drm_crtc.h                             | 12 ------
+ include/drm/drm_mipi_dbi.h                         |  2 +-
+ include/drm/drm_simple_kms_helper.h                |  1 -
+ 78 files changed, 275 insertions(+), 385 deletions(-)
+---
+base-commit: 7ea58b9ddb52264a4ed36bccb975062ada32c62d
+change-id: 20260709-drm-no-more-crtc-reset-14a4d5bc8d41
+
+Best regards,
+-- 
+Maxime Ripard <mripard@kernel.org>
+
