@@ -1,184 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E4C48F85E;
-	Fri, 21 Aug 2026 13:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830C32C0F6D;
+	Fri, 21 Aug 2026 13:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787318620; cv=none; b=LiWxnlke4c0P0fmssp/Y/U9eE7u6idM0Wo/JDsi7X4GcpLDLg6VgGUWxHlUwiTK9eanAOw4yk55Y3W2ihiKBWciqJNXHwGVMEVJuHpaUGcvdgObfMYtIWyT+xXvfDS2bsa03VphOl0MximZahIZVax/udqHoAziqB1gNLPUNnKI=
+	t=1787319071; cv=none; b=YuD/0OrNh/i3J8xnKCT9jAa5rwg7Ax6CzK1AUMUK+ur4gsv+gXMalX+QLgr48gPpnwb9SnUE9+sLWnyNFeJS6n4IPbpJZ6ZAmMI73RE15CCii52kRAERXnUFoDhJJMEgvhOzxzdc6AUty5K01qfBjiziBWrGMKVU6jsoGnP/m3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787318620; c=relaxed/simple;
-	bh=eIN7qQx0gCoZyXciN+J32cP2bAGhSqnSq8ru7Ag/TJU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DPJFdWNPFeFA/kGjy0ON5LXTzEd4jS9n0MzNwRLHgVkedcMXMG6+5WynkeVQtvOgTK+qa2p/1QYmbzFHfHvIBcXKNoOgyIxhS6J85AkbDufQy6RbN0dWKIVbGMxf3GsGjvWU5w2rVygVfZ2ff8461wYwAP8yaQcRXNdFn6kU3jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jyoskVxD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787319071; c=relaxed/simple;
+	bh=R5vL96ZPR0G0EN/GrmLL2WqnOuqx3OjeFrZbM2LmI1w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RLURQ9K696AjeY/gSgAbMFSBk4uVJBK+8u/isJE8oAwh8/pFXSB2CxkgHziWZVRJ9HAWBc6Cw/T4hGVxDEt27zxuoIeC3t0EdlpGFR0dngRcISn2XrXfO9w0JPoLTR+m5BNbzJmT5RdjsLSaMzWksn5idDpcIhW9v63kHnc/ok0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QwHm1tBF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jyoskVxD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672201F000E9;
-	Fri, 21 Aug 2026 13:23:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QwHm1tBF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A77E1F00A3A;
+	Fri, 21 Aug 2026 13:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787318608;
-	bh=FkZ1DBbehygR0DUnqE/5kLPx2SnF7CPjHsuBDNe8M6k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jyoskVxDSnsPKlByUsfs7YymYJWTIakwEPZZjGbVJLhR6tXbq6cg+OScxYlfO8vxw
-	 mg1h848LYIeTr3JmulnEMaZ1oZ2RL+k1XHi4oXaM2gr5k2FRl6K8+CfnA68cnh7NDT
-	 jTNmDczsZb3sNJwaClHUsx5Ns0QanF4DwG5VlEBAqPBm68fKl9eVoUVhnTRobuPB/J
-	 Ay9nZCT5KrfFzQzrqfHu5D/9gb1z7wTHthAaHt7ArJ0nTtESbYaD06PJUkCq1W4mxs
-	 DZvSF4rMTIQCTDAYgRm4oTo4t2M+QhbPleOCYFtI90q+lGOubdpaLR8+tuNnNIflMb
-	 NbO19KE15c5Uw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v40 5/7] firmware: imx: adds miscdev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260822-imx-se-if-v40-5-74fbce2f2f95@nxp.com>
-References: <20260822-imx-se-if-v40-0-74fbce2f2f95@nxp.com>
- <20260822-imx-se-if-v40-5-74fbce2f2f95@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 21 Aug 2026 13:23:27 +0000
-Message-Id: <20260821132328.672201F000E9@smtp.kernel.org>
+	s=k20260515; t=1787319070;
+	bh=Uo/du0VNmVsqMTeIOJgXLNIRsqWuxBkETztHJiXKlH8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QwHm1tBFzOeH4Q0RYUy0xNdqoFrvBjA9HTqq6VmrDUlCgzv+1nCQZ/2uv6cHX6ji8
+	 37U+QqRy5UX4cTix0OR322ZtM/qjLHwZvNVdGFWybpV5QKSQd5sQ3TDsLyyX7t22In
+	 nplaIC9Cmv5FUehFUuYwLIiVAxWv+IDdAh+zMD/QcRgAXlPEOMmsQf8JWG2rBlwNrV
+	 H3LWEJehc9NPBS3W4fPn5M405hnEr6shAga5JXiz6caYsYDqMGgZL8J1AHSmn2WeYU
+	 cGvX+q5cSLfWe61Cn842w15VfrXA+2O/Fr9+LgqtwG+YIKSPkGUxYp5BlYHNU1as8r
+	 0Lazhv1fc8TCg==
+Message-ID: <170920ea-e8d9-46a1-8415-659672bd8de4@kernel.org>
+Date: Fri, 21 Aug 2026 08:31:01 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 32/45] clk: socfpga: Make sure clk_init_data is fully
+ initialized
+Content-Language: en-US
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
+ Jerome Brunet <jbrunet+clk@baylibre.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Billy Tsai <billy_tsai@aspeedtech.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Taichi Sugaya <sugaya.taichi@socionext.com>,
+ Takao Orito <orito.takao@socionext.com>, Linus Walleij <linusw@kernel.org>,
+ Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
+ Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
+ Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
+ Sudeep Holla <sudeep.holla@kernel.org>,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ David Lechner <david@lechnology.com>, Abel Vesa <abelvesa@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Vladimir Zapolskiy <vz@mleia.com>, Heiko Stuebner <heiko@sntech.de>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Viresh Kumar <vireshk@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Prashant Gaikwad
+ <pgaikwad@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
+ Liviu Dudau <liviu.dudau@arm.com>, Lorenzo Pieralisi
+ <lpieralisi@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>
+Cc: linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ openbmc@lists.ozlabs.org, arm-scmi@vger.kernel.org, imx@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ soc@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
+ linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+ linux-mediatek@lists.infradead.org
+References: <cover.1787239813.git.geert+renesas@glider.be>
+ <2d38d78f8d59583e29778bebc65eaab911d8a120.1787239813.git.geert+renesas@glider.be>
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <2d38d78f8d59583e29778bebc65eaab911d8a120.1787239813.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] API Contract Violation: SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl uncon=
-ditionally fails with -ENOMEM.
-- [High] Race Condition / Security Isolation: TOCTOU race in ELE_STORAGE_OP=
-EN_REQ allows bypassing receiver uniqueness.
-- [High] Race Condition / Use-After-Free: `se_if_fops_read` accesses `dev_c=
-tx->devname` without `fops_lock` during error handling.
-- [Low] Code Quality / Documentation Mismatch: Missing `__func__` in error =
-logs.
---
 
---- Patch [5]: [PATCH v40 5/7] firmware: imx: adds miscdev ---
-commit 823b871a16858b528f46321987d0641124095c4f
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-firmware: imx: adds miscdev
+On 8/21/26 03:53, Geert Uytterhoeven wrote:
+> The clk_init_data structure contains several mutually-exclusive members
+> for different methods to specify the possible parents of a clock,
+> prompting drivers to initialize only the members they need.  However,
+> not initializing all members may cause subtle issues, which are only
+> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> enabled.
+> 
+> Make sure all members are fully initialized, to avoid such bugs, and to
+> prevent future breakage when converting drivers to a different method
+> for specifying the parents.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> Compile-tested only.
+> ---
+>   drivers/clk/socfpga/clk-gate-a10.c   | 2 +-
+>   drivers/clk/socfpga/clk-gate-s10.c   | 6 +++---
+>   drivers/clk/socfpga/clk-gate.c       | 2 +-
+>   drivers/clk/socfpga/clk-periph-a10.c | 2 +-
+>   drivers/clk/socfpga/clk-periph-s10.c | 8 ++++----
+>   drivers/clk/socfpga/clk-periph.c     | 2 +-
+>   drivers/clk/socfpga/clk-pll-a10.c    | 2 +-
+>   drivers/clk/socfpga/clk-pll-s10.c    | 8 ++++----
+>   drivers/clk/socfpga/clk-pll.c        | 2 +-
+>   9 files changed, 17 insertions(+), 17 deletions(-)
+> 
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 
-This commit adds a miscdev interface to exchange messages with NXP secure
-enclaves from userspace. It provides an ioctl interface and file operations
-for memory management, getting info, and command/response handling.
-
-Closes: https://sashiko.dev/#/patchset/20260821-imx-se-if-v39-0-41e4257c2af=
-c@nxp.com?part=3D5
-
-> - Fix dev_err format specifier from %ld to %d for the err variable and
->   add __func__ to CMD-Receiver registration failure messages.
-
-[Severity: Low]
-The commit message states that __func__ was added to the CMD-Receiver
-registration failure messages. Looking at the code in fw_api_specific_ops(),
-the dev_err() call for registration failure doesn't appear to include
-__func__. Did this change get missed in the final version of the patch?
-
-> diff --git a/drivers/firmware/imx/ele_fw_api.c b/drivers/firmware/imx/ele=
-_fw_api.c
-> --- /dev/null
-> +++ b/drivers/firmware/imx/ele_fw_api.c
-[ ... ]
-> +int ele_uapi_allowed_fw_cmd(struct se_if_device_ctx *dev_ctx, struct se_=
-msg_hdr *header,
-> +			    u32 tx_msg_sz, u32 rx_msg_sz)
-> +{
-[ ... ]
-> +	case ELE_STORAGE_OPEN_REQ:
-> +		/* Might be cleared as part of tear down. */
-> +		if (dev_ctx->strg_hdl) {
-> +			ret =3D -EEXIST;
-> +			break;
-> +		}
-> +		/*
-> +		 * Reject the storage-open request when another context is
-> +		 * already registered as the command receiver.
-[ ... ]
-> +		scoped_guard(mutex, &priv->modify_lock)
-> +			if (priv->cmd_receiver_clbk_hdl.dev_ctx &&
-> +			    priv->cmd_receiver_clbk_hdl.dev_ctx !=3D dev_ctx)
-> +				ret =3D -EBUSY;
-> +		if (rx_msg_sz < ELE_STORAGE_OPEN_RSP_SZ)
-> +			ret =3D -EINVAL;
-> +		break;
-
-[Severity: High]
-Could this check be vulnerable to a race condition? Since the global
-se_if_cmd_lock is not held during this validation, two concurrent threads
-issuing an ELE_STORAGE_OPEN_REQ could potentially both pass this check.
-
-If that happens, thread A would acquire the lock, send its command, and
-register as the receiver. Thread B would then acquire the lock, send its
-command, allocate a second handle, but fail registration in
-fw_api_specific_ops(). Because that failure is only logged and ignored,
-does thread B successfully open storage but have its callbacks silently
-routed to thread A?
-
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-[ ... ]
-> +int set_dev_ctx_as_command_receiver(struct se_if_device_ctx *dev_ctx, bo=
-ol is_ioctl)
-> +{
-> +	struct se_if_priv *priv =3D dev_ctx->priv;
-> +	struct se_api_msg *new_rx_msg =3D NULL;
-> +	struct se_clbk_handle *se_clbk_hdl;
-> +	unsigned long flags;
-> +
-> +	se_clbk_hdl =3D &priv->cmd_receiver_clbk_hdl;
-> +	guard(mutex)(&priv->modify_lock);
-> +	if (se_clbk_hdl->dev_ctx =3D=3D dev_ctx)
-> +		return 0;
-> +
-> +	if (se_clbk_hdl->dev_ctx)
-> +		return -EBUSY;
-> +
-> +	if (!dev_ctx->strg_hdl)
-> +		return -EINVAL;
-> +
-> +	if (is_ioctl)
-> +		return -ENOMEM;
-
-[Severity: High]
-Is this intended to unconditionally fail the ioctl with an out-of-memory
-error?
-
-When the SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl is invoked in se_ioctl(), it
-calls this function with is_ioctl set to true, which will immediately return
--ENOMEM. Does this make it impossible for userspace to register as a
-command receiver via the documented ioctl?
-
-[ ... ]
-> +static ssize_t se_if_fops_read(struct file *fp, char __user *buf, size_t=
- size,
-> +			       loff_t *ppos)
-> +{
-> +	struct se_if_device_ctx *dev_ctx =3D fp->private_data;
-[ ... ]
-> +	err =3D ele_msg_rcv(dev_ctx, &priv->cmd_receiver_clbk_hdl);
-> +	if (err < 0) {
-> +		if (err !=3D -ERESTARTSYS)
-> +			dev_err(priv->dev,
-> +				"%s: Er[0x%x]: Signal Interrupted. Current act-dev-ctx count: %d.",
-> +				dev_ctx->devname, err, dev_ctx->priv->active_devctx_count);
-> +		return err;
-> +	}
-
-[Severity: High]
-Could accessing dev_ctx->devname here lead to a use-after-free?
-
-The fops_lock is explicitly dropped before calling ele_msg_rcv() above. If
-a concurrent unbind occurs and tears down the context, cleanup_dev_ctx()
-could run, acquire fops_lock, and free dev_ctx->devname. If ele_msg_rcv()
-then returns an error, this error path will execute without fops_lock and
-dereference the potentially freed dev_ctx->devname pointer.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260822-imx-se-if-=
-v40-0-74fbce2f2f95@nxp.com?part=3D5
+Thanks,
+Dinh
