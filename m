@@ -1,132 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E852652A2
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 11:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16D83C09E3
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 11:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787310884; cv=none; b=N4f/y1/CoRxjR4qvQk+qxqGxC81cJcRbsDkNB3BXvVWycR5epnoRsWrqiZ3i2X4R+mUtLuxK8cIoQjxv2m9vB/dgM17CrLLGyZQixuKXvtic9TDbZEs6MtlZ3Bv1MpYVfWwoRkBkGujNdHE3gZLl2ZQxxHAoQBBYrSxXb4ZgQK0=
+	t=1787311612; cv=none; b=AnSVhkHIzQ7vsJNXzYCXzGrTy7wvsv+pzTNfszkkBq7mSJD6GiaVB1AwJ3YEoLn8l9zt06zvOyBLtAJi5OIv0N2g23PeWlHSfv/tc/3pTjWWaMPhuUNBGc0I06kdUt/7XPUT6dMeKf+h+O55U0LobkEPrKhekShEGbWViBzLP7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787310884; c=relaxed/simple;
-	bh=8JxB5V1RTtMbIbtW8zVaxjyVWz0RFJXUCsVF+JnbfeU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=b1VQuszSO6QXL2cR9yXH2laOXZMZ4qMi8okYt35/vDCGPS6NcwwU4GbDyRyBddmQofq5GlRc1XVaJCdsmLFIWHlEoKWMwCtmcIZjE2Gt8YOYDy5CViBqyod3EWAk9nU1bg6vkLhxcqq4XlZrCfh2uluYOWdRCtEmHIiBx1hGnm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fa55QQQ4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787311612; c=relaxed/simple;
+	bh=qAWvudYMdASPXPfSTaqms42rgycSdo6rtQ42Q6DlQlc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SXc86FgK+QE9ZQQkS48IZEaIFfD31FIhDwg8TPHJ6MdIkXAyVkcGRmJf0JHK9bl99/YtYhJO7qmEiGwVXxcZm46HojKtGKDTaISF1LFrnCN/xeY1ytWkNZJZ2oRD8FBxfcLfqLRPs+wGkdkZdRP61mEJWkzhDz0ha85Ftpf21R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GdKQqOO4; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fa55QQQ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAED1F00A3A;
-	Fri, 21 Aug 2026 11:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787310883;
-	bh=jCrfQFVsbM+3+d61V5q6m2wy2OeYJUcHOFr9VqC8NvU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fa55QQQ4HMYIXlvDBFyl0qtiqJjjbZyVUX+dP1xD/CnTd+5fwabPpdeUFvHMza0Lw
-	 LSL6JvW6Z3xy7pUG69TT+2YSp5++QZWOEE9oY/Y2bKyWRQdF/A4/pupKCRrbrMKoHk
-	 Q/JpcsX4vHCzUp779U1o1qBMFmS5cMpQIF8Vo8GDwdlH20A4zZgDQahHo8S64HtxDO
-	 V+QmKysV4d+T193gLHjoY+LPJNMPXk4imdOca2Dwj90QUfrgqAHLhW0TfkioTriNyw
-	 0DAboTTal+EZT8hdelD3vNXvhfKLbpxse71DMafpQleFXSQY0ImO20cc2elQCk/LBK
-	 ezrw/aLvRDVBA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] net: fec: Propagate PTP initialization errors
-Reply-To: sashiko-reviews@lists.linux.dev
-To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260820111416.97917-1-phucduc.bui@gmail.com>
-References: <20260820111416.97917-1-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 21 Aug 2026 11:14:42 +0000
-Message-Id: <20260821111442.BAAED1F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GdKQqOO4"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E6464165C
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 04:26:44 -0700 (PDT)
+Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8AF8E3F763
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 04:26:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787311608; bh=qAWvudYMdASPXPfSTaqms42rgycSdo6rtQ42Q6DlQlc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GdKQqOO4Od6bd61kQDFih4z6jRTFvcCPY1Miww5w7H8E1OonPXsuLk+h+Si7r+SBA
+	 ilofcm4/lc1v2nkTvquwhzXtPaYQW31TtUTkpb1wJiuWAQazd6zsChpy4jJLAV9UWO
+	 Mp9bsql3x/b2mvGC2+N3QFFdktc9DUWPzxewJzvU=
+Date: Fri, 21 Aug 2026 12:25:30 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
+	Benjamin Fair <benjaminfair@google.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	David Lechner <david@lechnology.com>,
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, Heiko Stuebner <heiko@sntech.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Emilio =?utf-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Prashant Gaikwad <pgaikwad@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org, arm-scmi@vger.kernel.org,
+	imx@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 05/45] clk: cdce925: Make sure clk_init_data is fully
+ initialized
+Message-ID: <aog1qljZkrxL3nYP@e142607>
+References: <cover.1787239813.git.geert+renesas@glider.be>
+ <308a33a0e63241d94ee08a08a6de6cffa739556e.1787239813.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <308a33a0e63241d94ee08a08a6de6cffa739556e.1787239813.git.geert+renesas@glider.be>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Fri, Aug 21, 2026 at 10:53:15AM +0200, Geert Uytterhoeven wrote:
+> The clk_init_data structure contains several mutually-exclusive members
+> for different methods to specify the possible parents of a clock,
+> prompting drivers to initialize only the members they need.  However,
+> not initializing all members may cause subtle issues, which are only
+> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> enabled.
+> 
+> Make sure all members are fully initialized, to avoid such bugs, and to
+> prevent future breakage when converting drivers to a different method
+> for specifying the parents.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-New issues:
-- [Medium] `fec_ptp_init()` incorrectly returns 0 (success) instead of prop=
-agating the actual error code when `ptp_clock_register()` fails.
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 
-Pre-existing issues:
-- [High] Concurrent execution of the PPS interrupt handler and device teard=
-own causes a use-after-free on `fep->ptp_clock`.
---
+Best regards,
+Liviu
 
---- Patch [1]: [PATCH 1/2] net: fec: Propagate PTP initialization errors ---
-commit 72db297960b04e49a3fe9e579f0ca646d2fb313b
-Author: bui duc phuc <phucduc.bui@gmail.com>
+> ---
+> Compile-tested only.
+> ---
+>  drivers/clk/clk-cdce925.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/clk-cdce925.c b/drivers/clk/clk-cdce925.c
+> index 30d0493c771818ff..4d49cc1659c07be2 100644
+> --- a/drivers/clk/clk-cdce925.c
+> +++ b/drivers/clk/clk-cdce925.c
+> @@ -620,7 +620,7 @@ static int cdce925_probe(struct i2c_client *client)
+>  	struct device_node *node = client->dev.of_node;
+>  	const char *parent_name;
+>  	const char *pll_clk_name[MAX_NUMBER_OF_PLLS] = {NULL,};
+> -	struct clk_init_data init;
+> +	struct clk_init_data init = {};
+>  	u32 value;
+>  	int i;
+>  	int err;
+> -- 
+> 2.43.0
+> 
 
-net: fec: Propagate PTP initialization errors
-
-Change fec_ptp_init() to return an error code instead of silently
-ignoring failures during PTP initialization.
-
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ether=
-net/freescale/fec_ptp.c
-> index 56801c2009d59..8ad680411b0c3 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-
-[ ... ]
-
-> @@ -779,26 +779,29 @@ void fec_ptp_init(struct platform_device *pdev, int=
- irq_idx)
-
-[ ... ]
-
->  	if (irq > 0) {
->  		ret =3D devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
->  				       0, pdev->name, ndev);
->  		if (ret < 0)
-> -			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
-> -				 ret);
-> +			return ret;
->  	}
-
-[Severity: High]
-This is a pre-existing issue, but is it safe to use devm_request_irq() here
-without synchronizing during teardown?
-
-During module removal, fec_drv_remove() calls fec_ptp_stop(), which sets
-fep->pps_enable =3D 0 and unregisters fep->ptp_clock. However, since the
-interrupt is managed by devres, it isn't freed or synchronized until after
-the remove function completes.
-
-If the interrupt fires concurrently on another CPU:
-
-CPU 1 (fec_ptp_stop)
-    ptp_clock_unregister(fep->ptp_clock);
-
-CPU 2 (fec_pps_interrupt)
-    if (fep->pps_enable) {
-        event.type =3D PTP_CLOCK_PPS;
-        ptp_clock_event(fep->ptp_clock, &event);
-    }
-
-If CPU 2 reads fep->pps_enable as true just before CPU 1 clears it, could it
-then dereference the freed fep->ptp_clock?
-
-> =20
->  	fep->ptp_clock =3D ptp_clock_register(&fep->ptp_caps, &pdev->dev);
->  	if (IS_ERR(fep->ptp_clock)) {
->  		fep->ptp_clock =3D NULL;
->  		dev_err(&pdev->dev, "ptp_clock_register failed\n");
-> +		return PTR_ERR(fep->ptp_clock);
-
-[Severity: Medium]
-Since fep->ptp_clock is set to NULL on the line directly above this one,
-doesn't PTR_ERR(fep->ptp_clock) evaluate to 0 here?
-
-This would cause the function to return success instead of propagating the
-negative error code from ptp_clock_register().
-
->  	}
-> =20
->  	schedule_delayed_work(&fep->time_keep, HZ);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260820111416.9791=
-7-1-phucduc.bui@gmail.com?part=3D1
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
