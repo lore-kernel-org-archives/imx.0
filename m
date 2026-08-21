@@ -1,573 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013056.outbound.protection.outlook.com [40.107.159.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E6D38F255;
-	Fri, 21 Aug 2026 07:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787298823; cv=none; b=daDNCA9jjRsFlgoP50wyUKR6X6wuzXLd3/HFR8dMRBykqqPch+Jmvt/9PdeKDTD6EKbOmYH4rW8rNLIHREocthhUY6d95nfbfM9z+15HmEfE7wIVQpLJaC0M3yYyMZkDtagTpTbk4rshNeIbk8SEdT6k/YOLVdMF2Rl5jRvgVMc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787298823; c=relaxed/simple;
-	bh=mCicz1VJivZDcdwBOEOOVwpt3jCgSM8nlaS0sH3pOR0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=n/p61gS4BPrWsqBEsccD6mtjA7ujNOpvVTuxgSu+I50UdCYmhXaOEYO/d/lFbOcG1ojMjVB1ey37s0l/vQGcDeIkvhpawY4S/3DzGmv/fE9SIkBr9IiIu+ILc5N4RdjnY5wlDxm267FpUrQeYNli3UVXCaz3E3d0hVLd8SbnROY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoS20Pei; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1463FC5C1
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 08:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787300326; cv=fail; b=OISUJBQCzeDPng9bpWUE39zMmcerOv29sFLnrNAgGeGWKIN3xcqzLpRwvXolnOqeJ0F49NISF2QpjLJ91fxd8+Qst3ZsyqEJqRDD/RxyWwDKZXb9B9MtJ+CoCHKc4NrJBTACMO3V0prlumMdO41eRNgg+XUB10VixMVw84iAeqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787300326; c=relaxed/simple;
+	bh=gIMWmOdERGNu9GxGFF9vvUMS8yayHnEH1jvMrreAKG4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=nnW2wtE3tudoTRYeSrFvFl2iG0GayWhUy4aJAIsYUfQhl1gXF9SaAF4H4MNXGX2N+iOZmSdX5ed3xOdz0INfW8MNuLsRVUl/G4X6nEQanw9MaQHbymtlYESPJFDpMCnheF40d0WtbVL9GJ7k0yGUTojO9VpHSEJJYNbsGQ6ud+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=riZ15fs5; arc=fail smtp.client-ip=40.107.159.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoS20Pei"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DB71F000E9;
-	Fri, 21 Aug 2026 07:53:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787298821;
-	bh=v3/QCCHlpfDklX8hHuN1kEn6mRfd25Af89KT/XgQn8Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZoS20PeiM7WwAUV5DjZbucLeKC8SkFoAbejlylD0AK9/9tZKWpAMkZQyrvXR+0qZh
-	 7U/sXD9NynWXFTix241BGeL+m0j4jQ3GZdOizZH0iPXisSZVqrOPzxYOnPG5fwlgF9
-	 utmVPXo0zMkl62Noy1Q6GDRQzIwVM54ri76FMGz5wGM2eQdiTQ3S0O5KPJ1v4DYvlS
-	 hUztHKxOWdsBmkw+Z2Iq8vbf1sgcXjYKIg0IgetdrV+ygEwbrm3qCbvEVbDb1mkIVD
-	 dEfg9CiPytQ9Fx3I/W2sjZsivQ+gY2PZzedqwgFVdLf6NKudrewUVGDgpPBJlD30o6
-	 Lf+nqMaBanXvg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v39 5/7] firmware: imx: adds miscdev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260821-imx-se-if-v39-5-41e4257c2afc@nxp.com>
-References: <20260821-imx-se-if-v39-0-41e4257c2afc@nxp.com>
- <20260821-imx-se-if-v39-5-41e4257c2afc@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 21 Aug 2026 07:53:40 +0000
-Message-Id: <20260821075340.B2DB71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="riZ15fs5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WKDlhvwFUnKtnUjc+yAeMu+mr/gBdeT188l2WBUlcBCdjhkbkW0rGD0rfLC3C1bfGsWCcRY8qERkeJCpLyZvconhuCI6sfjRfn8O32xdhdOKfyzMS4qnAu26asZILZxRMCAAUYWzpA2kgrokev+GOHtZf54+JrfTf/BtySuKML4mjbPzEceDEVV9MJdGRL2EnEQZ+p2RzEhRc2doFOaF3E2mY+GaZVVbf3E6nAC2El1wlZUugxluQI1wQDbRirosT0kW3sspGM+HHJd3Rzgdi+g8D67rBYWACCPu30fym/TzogjxkWHYt/Fps+SzBT4sdW40svk0x8irdpyAJRwzYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kyCPnEZa+DrrK1upVtG/lyktvXsczPsW7dNI001TBPM=;
+ b=YQ8RzsTq48JP1JHAbegYd1iB5+Yqp+gHZAyKWzkoDqKCJ8XRYIjw/nR9TXPpIoiXK43Fe+R9+S6tkMOwVbWzCoxwigKDKOzm1ldPfhLemraWRWx9v0ov8PixmSO6RMuguRrHEfDkhBTVZdlOh2JhGMDAnX8FmJWPs/rm9pVGnToH5mpJwdYi0pdGq3v+8kuOsJVEOpHfcLK8ONnv540XvOqAz6B2p9OzbT5T9PsCAPX79ZtHvwVsIURUuHZu1HeNLtZ31uQzwQQbPwN0mbaNtX0Xa1uEUOL+wHPsNBqS+lgNU4oTTAUv+qf7bazkOONXNVTQJACpdt5f4HwgKh5yvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kyCPnEZa+DrrK1upVtG/lyktvXsczPsW7dNI001TBPM=;
+ b=riZ15fs5WAXDJGshO741DkLIGBEAdyzWZRgsyG59qK4lwNbXkXZ4cpEuj+I+T/I2HFYufWOdyN+3l3Zs9If4QHn8fFfuYg5qbE1bIlt+5rVx+F8KrGp36sKjWLwn4TU6Picl2U5Wh3KuErqiZfe9QCRDiwo5ms8GV4nQcwq2n5ijbv0rZzhHVldFIUxBE+gOo7yWh8szWc3OjPbsGN5LKFAw8cMqHTQ4vOl8BQYiiBlobnJ1bVbJepEw57nhO2OrssNsI5OGZwsG6aHF636UpxmhT5wmC/p+Xwr8hPGI0CqlYnZfwHVvuBV80DQL3M3vNn5NRP3UDzxNQT8rEa14QA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by AM9PR04MB8571.eurprd04.prod.outlook.com (2603:10a6:20b:436::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
+ 2026 08:18:41 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
+ 08:18:41 +0000
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+Subject: [PATCH 0/2] usb: gadget: uvc: fix resource leak on video->async_wq
+ and video->kworker
+Date: Fri, 21 Aug 2026 16:22:35 +0800
+Message-Id: <20260821-usb-uvc-fixes-v1-0-80e6e279523d@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMsKiGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDC0NL3dLiJN3SsmTdtMyK1GJdY0NzM0NL02RDE4tEJaCegqJUsARQS3Q
+ shF9cmpSVmlwCMkSpthYAr1/kCHEAAAA=
+X-Change-ID: 20260819-usb-uvc-fixes-3176195c148a
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Kai Aizen <kai.aizen.dev@gmail.com>, Michael Grzeschik <mgr@kernel.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787300562; l=981;
+ i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
+ bh=gIMWmOdERGNu9GxGFF9vvUMS8yayHnEH1jvMrreAKG4=;
+ b=KBg/te8IrVfUz0gXW1ygd7HrJPEYgsO4EV/R01Lgw4wINn+CBJc0H1caKAk/MfTv2WuArL0MO
+ ffPWyuNDczoAxfZFW0lWzLV1qiybNBwjC38sdCNN6rT1fFec0AZXJww
+X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
+ pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
+X-ClientProxiedBy: SG2P153CA0015.APCP153.PROD.OUTLOOK.COM (2603:1096::25) To
+ PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|AM9PR04MB8571:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c229d0e-a2ac-48e9-9eb4-08deff5ccf3f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|19092799006|366016|18002099003|56012099006|10067099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	fxWBZuGrBoPPo/5q8ga69Tb2Q3VcrRKAosLmRMz78MHmoEHigiiayzyF+6fd3+ObwnP8bo28aOLiZboaG7yVF7cHFZicfQfAqzK4T88mLmXoZGl7RSxNRnr70PQ1eVfzpp41fhdlBN0DcD7XJmaer5GsR4R64lWzodPKXLZQPBZ4Iu7E8efQwznsBLX5+5ApVPmQtl+MJkCetlipupRfIrILovHqwSV2v4MJ0JoSSJltGo1XUBtQzKEIvD1qCOnppFzYMQ9+J/u48L7u/tia46f4r2LAL6wdxu4dpgeTc9DzoHoQ1Q6rP0LrdR+6LxLQrD/esDrJFzC1wjdrldPkezxRYRS/6k1GECNmb2i/7109by8mKK/OqlDUP8DjlvlCaEe/QzGynIMZmXiAD1Ffldz57fmg1pkM+Lr5/N/Oa/MKno4xpBNJz5rkLbpuk7m0twGihxut1YJPLza9AvsXy3RfJP3bNeQHrkREOUtSSo1NkSUi8OhFN9HM+e3d+QP21tCFikSBgpNOi41CG0isp2GPf3dHywiF1WgJKXM69IT0Zy6J1zIwgTpk9ucSiHRIYobbWyunB2Tl/VBb8QJvP+GHxhxzWYnp/WoiKfjbSbhBwr59SUENifPLUjU//TrHOxSdOaGc+OJkdtCi0fSshA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(19092799006)(366016)(18002099003)(56012099006)(10067099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q1htdmJhWXpFamlPcnNJaUZhSHlRZUpSZW5tTXdEZXRRaVlsRFR3ODN6WWhq?=
+ =?utf-8?B?WXhTc001NmpOa2JvNHdKVE9ITnNxM3hRTWx0U2d4MHlXSzdMQkpiSlkwd1Ja?=
+ =?utf-8?B?VjBtZ0gxYjNkRVpieGM2Uy9IM01JWm9ObEZpNmhHYU5uMGJxNWJUWDdNMXJx?=
+ =?utf-8?B?cC8wOGt4R040UVZtT1RLaHc2WjdoZ0xHcW9XRUZsUndnT25hb05sS2ticUNZ?=
+ =?utf-8?B?UmdpOEtCN002bFlsTCtFdUViVDhyZXJRcTJrTDdQRzdMVWFjMTh6eGo0VTVW?=
+ =?utf-8?B?cGZoMk1ERnRsUHAvQy9MZkx1U0hMQUJPSFBxV2lOcWlPOXlXL0dhWWFqYmp2?=
+ =?utf-8?B?aW9VR0xoR29qcWtQV0d6bmtvSnM0bkE2MTFxVmtVRk1UVWIrVFJlY1ZMcmVJ?=
+ =?utf-8?B?L3pRQjNKb0x4WE1XTElQY1p0L2x3ZUtZUlMxekF6dVVtTHRNVnAyRy9NUXBQ?=
+ =?utf-8?B?RDhmcXpEY2hjUTFNNE9LSU9XTy8yc2NjZEYwT3RaaXEvRnJPNWUwZEtsY1V1?=
+ =?utf-8?B?VE5nWXdVem1sRlUzTldidlRhVk5YYUdLTWhoZEV5NTl5RHR0R2pBNWl0a0tU?=
+ =?utf-8?B?bkEvN2FRKzhWNjNTbEcyb2NuZG84THdJVjNLR005T3BiU1UrWGIyZkw3Rk9J?=
+ =?utf-8?B?UlM0cXNIQTdSWklJVGtTaHY1V0lmSTY1NXJ3d3YvUGN2ZVI1QzY0bmFXV0h4?=
+ =?utf-8?B?WU10ckpXc3FwS3RreUJUbmRkaGkvSFU0aHUwUy9rcUFaOURIaVBvWk9mUW5M?=
+ =?utf-8?B?ZWtGZFdWVjR1YW1qSEttSU5VRFZueEMyTzRSTVdwemE2NFhNSnNrMVNYUTVj?=
+ =?utf-8?B?R2dkRktWSXNJTVBpNkFuNHU2aVA2WExuTUVxR3MyNUFSTzdZanNTV0VSY2ZH?=
+ =?utf-8?B?bVFEMVQ4eU5GYzJVNHlLYnN2NHJxT3ZYSjVlTjNsaHVPZ09yUFlsdXdhZHFN?=
+ =?utf-8?B?bFNXdWhmaWMxbzhWOVdSdFJZNGtma0tqTTJpZWU5R2pkVTRIbDBnMHY5MDVL?=
+ =?utf-8?B?d0hxVC95K0pHZ04rQ0Z2SHBGN3U4MnFjenBDWXhXM2VMc0dhSTRKdmx6dTQx?=
+ =?utf-8?B?UEVZSm90MVdENlI1YkxJV01pQTMrbWVFVkdkanBwWHVPWmRLdlVUYWs3MU9I?=
+ =?utf-8?B?MDgvVmFjaVZ0VmZhNm1qM0FpRytuSS92Qm5jNytPV0FGNW4ydXJaVWlVM3RJ?=
+ =?utf-8?B?UzNubUhQZWJubXFNRXkybHdaK2xXaGpkT1lsUXAwdTJrVlJkbXRUc083YW8y?=
+ =?utf-8?B?anl6ZVhPZkVpMU9Ec2ZIZW9wbjZsajFlcnlTYWgvaDZaQ1Q0MnhlNW1QbHA3?=
+ =?utf-8?B?RGZGNGE1TG5mSWU2c2JkekJNaVExYmpZUzR6MUFUaWFNOHRFNkZabFkyeGFq?=
+ =?utf-8?B?MXJya09Ka2F5WEk5MllYWVJDZVYxcWQreW55eFdJRjdGTHhQNFNQZW9IelRH?=
+ =?utf-8?B?WTN0OFByZ2lPN3VQRHlVeEk2OUNEK2tzZGVXSko0bDRkR01CbmdPVXkvTUVS?=
+ =?utf-8?B?S2VDQlVzSEV1TWF4RGI4YWZXa3VZZXo2TFJQaUkybWhEZE5ML08xNVFpWHh2?=
+ =?utf-8?B?Rk95eHJvbU0xZUlxRmFqRVRrNlp0NlB3NFUzMyttNUU0Z05hYnhWVDlVYk11?=
+ =?utf-8?B?Z1hxWnJoZFcxSjdiZUVrYzljbzBWcE84ckx4ZWVqNkpuNFNKeDMvT21oSkNF?=
+ =?utf-8?B?NWpzbXdZUWoyYTZBVml6NlFJaGtWeW5tV29KdHdyQmc3K05KQWhHdXQzQXRL?=
+ =?utf-8?B?WWhZQkRzeXZqVTcyQnNwZXA5ekZiQ1ovcDFsb3Frdm5FWlZGZyt1OXYvMFIx?=
+ =?utf-8?B?Qi9ZUDNiVWV4cStyRW9nM1dhelB0RitLOSsvM0hzUmUrT0txa29YeXFHOThZ?=
+ =?utf-8?B?UUtqbS9RTk9URUgzL280UFV2OE1TRTV4czFQNFlUZU5KOTFFYXJJRjdBbWtX?=
+ =?utf-8?B?eGtlTFpwVlZKWm5PZ0IvT08zZDI3Z0pmeTVXb0pkekt2RXBaT3RieVhwUXAr?=
+ =?utf-8?B?S1NLSnM0NkF4MWd6RTg0U0FNdzY4bGJEV0czZEFuR0tJaXQ3cnZyTk9WM1Q0?=
+ =?utf-8?B?R0M3c0xlZUJCWjlDNDJ3TXVwcjFmQmZZNlZsYW9TazgzY3JZNis3Z3VEUzVw?=
+ =?utf-8?B?V2ZqclUxWUhHOUVEZWtJNU8vTlNYdDl2STExNFJheEh1Z3B5V2xETUF2ZTFo?=
+ =?utf-8?B?NnFJNk44ajE0eHk5UW92R0xVRFZxdUlOU3NUOGw4QWRjeGgvcEFZUUtIYmlW?=
+ =?utf-8?B?NDBKcmNXakJUVXlUZEdMK253ZWtiNlNxOEludWsvaXBVL2JhNjV4MGJ0VU96?=
+ =?utf-8?B?cytETlN5aS9MMEJGbmVVSUlJTWs0R0RodlBWYXVld0d6U0tUbXlIRVZTbWx5?=
+ =?utf-8?Q?/oirQY1qR9Pc/Nv0avt7jbtHsqyZ0q0x3/y4C?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c229d0e-a2ac-48e9-9eb4-08deff5ccf3f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 08:18:41.6492
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HpvGYXer/3+Czw6GTKosUOAf/Ns93RPqqfCyFNwWAhieHjNfarHdAU3y2yniFvvvAWtUD4uSEen5n7e4LQ4wTAZe4Ai4hwZzRT3MI9GKjX8ka5LlcrCel5cX5Y5A2js5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8571
+
+This patchset fixes the resource leak issue on uvc_function_bind() error
+handling path and uvc_function_unbind(). For the former, video->async_wq
+and video->kworker may never be destroyed. For the latter, video->kworker
+needs to be destroyed.
+
+Besides, patch#1 also fixes incorrect goto labels that could clean up
+resources not yet initialized.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+Xu Yang (2):
+      usb: gadget: uvc: replace mutex lock/unlock with scoped_guard in uvc_function_bind()
+      usb: gadget: uvc: refactor video cleanup into uvcg_video_deinit()
+
+ drivers/usb/gadget/function/f_uvc.c     | 87 ++++++++++++++-------------------
+ drivers/usb/gadget/function/uvc_video.c | 15 ++++++
+ drivers/usb/gadget/function/uvc_video.h |  1 +
+ 3 files changed, 54 insertions(+), 49 deletions(-)
+---
+base-commit: e1e6e541c5c9cf548e9fdc35fc26808c82074440
+change-id: 20260819-usb-uvc-fixes-3176195c148a
+
+Best regards,
+--  
+Xu Yang <xu.yang_2@nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
-- [High] The command receiver bypasses session and storage handle ownership=
- checks, allowing it to close arbitrary handles belonging to other processe=
-s.
-- [High] Permitting the command receiver to issue `cmd_tag` messages via `w=
-rite()` corrupts the synchronous IOCTL response channel.
-- [High] The driver converts a successful firmware transaction into an `-EI=
-NTR` error if a signal was received during the wait, leading to silent data=
- corruption and handle leaks.
-- [High] Incomplete bounds validation for buffers with no explicit size all=
-ows the firmware to read outside the shared memory window.
-- [High] TOCTOU race in `ELE_STORAGE_OPEN_REQ` validation allows multiple c=
-ommand receivers to open storage sessions, misrouting NVM callbacks.
-- [Medium] The SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl always fails with -ENOM=
-EM.
-- [Low] Variable declarations immediately follow a switch case label, which=
- is invalid C syntax.
---
-
---- Patch [5]: [PATCH v39 5/7] firmware: imx: adds miscdev ---
-commit 592c4b7b59033acb6e7acab4d619d7a526911c5e
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
-
-firmware: imx: adds miscdev
-   =20
-This commit adds the character driver for the NXP EdgeLock Enclave (ELE).
-It exposes ioctls for userspace applications to allocate shared memory, get
-SoC info, and exchange messages with the enclave firmware.
-
-Link: https://sashiko.dev/#/patchset/20260820-imx-se-if-v38-0-5df4a4cff736@=
-nxp.com?part=3D5
-
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
-_common.c
-> --- a/drivers/firmware/imx/ele_common.c
-> +++ b/drivers/firmware/imx/ele_common.c
-> @@ -47,100 +47,150 @@ int se_val_cmd_addrs(struct se_if_device_ctx *dev_c=
-tx, struct se_api_msg *msg,
->  		     u32 tx_msg_sz, const struct se_cmd_addr_field *fields,
->  		     size_t count)
->  {
-
-[ ... ]
-
-> +		if (f->size_idx =3D=3D SE_CMD_RCVR_ADDR_VAR_SIZE) {
-> +			struct cmd_rcvr_data_info *crcvr_info =3D
-> +							&dev_ctx->priv->crcvr_info;
-> +			/*
-> +			 * Export-response buffer: the size was supplied by FW
-> +			 * in the preceding export command and stored per SE
-> +			 * interface in cmd_rcvr_var_size.
-> +			 */
-> +			if ((u64)crcvr_info->cmd_rcvr_var_size > end - addr)
-> +				return -EACCES;
-> +		} else if (f->size_idx !=3D SE_CMD_ADDR_NO_SIZE) {
-> +			u64 len;
-> +
-> +			if (f->size_idx >=3D payload_words)
-> +				return -EINVAL;
-> +
-> +			/* size_mask =3D=3D 0 with a valid size_idx is a descriptor bug. */
-> +			if (!f->size_mask)
-> +				return -EINVAL;
-> +
-> +			/*
-> +			 * Widen to u64 before shifting: size_shift is u8 and
-> +			 * shifting a u32 by >=3D 32 is undefined behaviour.
-> +			 */
-> +			len =3D ((u64)msg->data[f->size_idx] >> f->size_shift) & f->size_mask;
-> +			if (len > end - addr)
-> +				return -EACCES;
-> +		} else if (f->buf_size) {
-> +			/* buf_size: literal byte count (FW-defined constant). */
-> +			if ((u64)f->buf_size > end - addr)
-> +				return -EACCES;
-> +		}
-
-[Severity: High]
-If size_idx is SE_CMD_ADDR_NO_SIZE and buf_size is 0, the logic only checks
-that the start address is within bounds (addr < base || addr >=3D end) earl=
-ier
-in the function.
-
-Could a user supply a DMA address at the very end of the shared memory wind=
-ow
-(e.g., end - 1), causing the firmware to read the multi-byte container head=
-er
-out of bounds into adjacent physical memory?
-
->  	}
-> =20
->  	return 0;
->  }
-
-[ ... ]
-
-> @@ -468,76 +468,86 @@ int ele_msg_send_rcv(struct se_if_device_ctx *dev_c=
-tx, void *tx_msg,
->  		     int tx_msg_sz, void *rx_msg, int exp_rx_msg_sz)
->  {
-
-[ ... ]
-
->  	err =3D ele_msg_rcv(dev_ctx, &priv->waiting_rsp_clbk_hdl);
-> =20
->  	if (priv->waiting_rsp_clbk_hdl.signal_rcvd) {
->  		/*
->  		 * Signal was deferred until the FW/kernel protocol resynchronized.
->  		 * On success report -ERESTARTSYS for the interrupted wait; the
->  		 * command is not re-sent. Keep real errors like -ETIMEDOUT.
->  		 */
->  		if (err > 0)
->  			err =3D -ERESTARTSYS;
-
-[Severity: High]
-Does this sequence result in silent data corruption and handle leaks?
-
-If a signal interrupts the wait in ele_msg_send_rcv() and the wait
-continues killably, a successful firmware response (err > 0) gets
-overridden to -ERESTARTSYS.
-
-The ioctl handler (se_ioctl_cmd_snd_rcv_rsp_handler) then converts this to
--EINTR and returns without copying the successful response payload (rx_msg)
-back to userspace.
-
-Will userspace subsequently retry the operation with zeroed shared memory
-buffers, leading to dropped response data or leaked firmware handles?
-
->  		priv->waiting_rsp_clbk_hdl.signal_rcvd =3D false;
->  		dev_dbg(priv->dev, "%s: Err[0x%x]:Interrupted by signal.",
->  			dev_ctx->devname, err);
->  	}
-> =20
->  	ele_msg_send_rcv_cleanup(priv);
-> =20
->  	return err;
->  }
-
-[ ... ]
-
-> @@ -552,74 +552,74 @@ void se_if_rx_callback(struct mbox_client *mbox_cl,=
- void *msg)
->  {
-
-[ ... ]
-
->  	/* Incoming command: wake up the receiver if any. */
->  	if (header->tag =3D=3D priv->if_defs->cmd_tag) {
->  		se_clbk_hdl =3D &priv->cmd_receiver_clbk_hdl;
->  		spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
-
-[ ... ]
-
->  	} else if (header->tag =3D=3D priv->if_defs->rsp_tag) {
->  		bool exception_for_sz_mismatch =3D check_hdr_exception_for_sz(priv, he=
-ader);
->  		u32 exp_rx_msg_sz =3D 0;
-> =20
->  		/*
->  		 * rx_msg and rx_msg_sz are owned by the sender under clbk_rx_lock.
->  		 * Read both under the lock: drop a late response instead of copying
->  		 * into freed memory, and avoid a stale size. A late response also
->  		 * closes the firmware-busy circuit breaker.
->  		 */
->  		se_clbk_hdl =3D &priv->waiting_rsp_clbk_hdl;
->  		spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
-
-[Severity: High]
-Can asynchronous writes corrupt synchronous ioctl responses?
-
-The write() handler allows sending cmd_tag messages without waiting for a
-response. When the firmware replies with a rsp_tag, se_if_rx_callback()
-blindly assigns it to the single synchronous ioctl waiter
-(priv->waiting_rsp_clbk_hdl).
-
-If the command receiver writes a command while another process is blocked
-in an ioctl, will the ioctl process wake up with the asynchronous response
-data, corrupting its state?
-
->  		if (!se_clbk_hdl->rx_msg) {
->  			if (atomic_read(&priv->fw_busy))
->  				schedule_fw_busy_work =3D true;
->  			spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
-> =20
->  			if (schedule_fw_busy_work)
->  				schedule_work(&priv->fw_busy_work);
-> =20
->  			dev_info(dev, "ELE responded (late), recovery FW available.");
->  			return;
->  		}
-
-> diff --git a/drivers/firmware/imx/ele_fw_api.c b/drivers/firmware/imx/ele=
-_fw_api.c
-> --- a/drivers/firmware/imx/ele_fw_api.c
-> +++ b/drivers/firmware/imx/ele_fw_api.c
-> @@ -0,0 +1,382 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2026 NXP
-> + */
-> +
-> +#include "se_ctrl.h"
-> +#include "ele_common.h"
-> +#include "ele_fw_api.h"
-> +
-> +static int se_cmd_receiver_allowed_cmd(struct se_if_device_ctx *dev_ctx,
-> +				       struct se_api_msg *msg, u32 tx_msg_sz)
-> +{
-> +	u8 cmd =3D msg->header.command;
-> +
-> +	switch (cmd) {
-> +	case ELE_SESSION_CLOSE_REQ:
-> +	case ELE_STORAGE_CLOSE_REQ:
-> +		return 0;
-
-[Severity: High]
-Does this bypass the handle ownership checks for the command receiver?
-
-In ele_uapi_allowed_fw_cmd(), if the caller is the command receiver,
-the request is delegated here and unconditionally allowed.
-
-This seems to bypass the main switch statement where dev_ctx->sess_hdl
-and dev_ctx->strg_hdl are verified against msg->data[0]. Could a malicious
-command receiver use this to close arbitrary handles belonging to other
-processes?
-
-> +	case ELE_STORAGE_MASTER_IMPORT_REQ:
-> +		const struct se_cmd_addr_field *fields;
-> +		size_t count;
-
-[Severity: Low]
-Is this variable declaration right after the case label valid C11 syntax?
-Standard C requires a statement after a label, and a declaration is not
-considered a statement. Does this cause a build failure?
-
-> +
-> +		fields =3D ele_fw_cmd_addr_fields(cmd, &count);
-> +		return se_val_cmd_addrs(dev_ctx, msg, tx_msg_sz, fields, count);
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +}
-
-[ ... ]
-
-> +int ele_uapi_allowed_fw_cmd(struct se_if_device_ctx *dev_ctx, struct se_=
-msg_hdr *header,
-> +			    u32 tx_msg_sz, u32 rx_msg_sz)
-> +{
-
-[ ... ]
-
-> +	case ELE_STORAGE_OPEN_REQ:
-> +		/* Might be cleared as part of tear down. */
-> +		if (dev_ctx->strg_hdl) {
-> +			ret =3D -EEXIST;
-> +			break;
-> +		}
-> +		/*
-> +		 * Reject the storage-open request when another context is
-> +		 * already registered as the command receiver. If we let the
-> +		 * command through, FW would allocate a new storage handle and
-> +		 * start sending NVM callbacks for it; those callbacks would be
-> +		 * routed to the existing receiver (process A), not to the
-> +		 * caller (process B). This would let process A observe and
-> +		 * tamper with process B's NVM traffic. Reject early, before
-> +		 * the command reaches FW, so no handle is allocated and the
-> +		 * state stays consistent.
-> +		 */
-> +		scoped_guard(mutex, &priv->modify_lock)
-> +			if (priv->cmd_receiver_clbk_hdl.dev_ctx &&
-> +			    priv->cmd_receiver_clbk_hdl.dev_ctx !=3D dev_ctx)
-> +				ret =3D -EBUSY;
-
-[Severity: High]
-Can concurrent callers race between this pre-check and the actual receiver
-registration?
-
-The modify_lock is dropped immediately after checking if a receiver is
-already registered. Multiple callers could pass this check, send their
-requests to firmware, and receive valid storage handles.
-
-> +		if (rx_msg_sz < ELE_STORAGE_OPEN_RSP_SZ)
-> +			ret =3D -EINVAL;
-> +		break;
-
-[ ... ]
-
-> +void fw_api_specific_ops(struct se_if_device_ctx *dev_ctx, struct se_api=
-_msg *rx_msg)
-> +{
-> +	struct se_msg_hdr *header =3D &rx_msg->header;
-> +	struct se_if_priv *priv =3D dev_ctx->priv;
-> +
-> +	switch (header->command) {
-> +	case ELE_SESSION_OPEN_REQ:
-> +		dev_ctx->sess_hdl =3D rx_msg->data[1];
-> +		break;
-> +	case ELE_SESSION_CLOSE_REQ:
-> +		dev_ctx->sess_hdl =3D 0;
-> +		break;
-> +	case ELE_STORAGE_OPEN_REQ: {
-> +		int rc;
-> +
-> +		/*
-> +		 * Record the storage handle before registering as command
-> +		 * receiver. FW has already allocated the handle; if we assigned
-> +		 * it only after a successful registration, a failing
-> +		 * set_dev_ctx_as_command_receiver() (e.g. -EBUSY) would leave
-> +		 * strg_hdl at 0 while the ioctl still returns success to
-> +		 * userspace. The kernel would then never close the handle on
-> +		 * teardown, leaking it in FW. Storing it first guarantees
-> +		 * cleanup_dev_ctx() closes it on the next close(), regardless
-> +		 * of whether registration succeeded.
-> +		 */
-> +		dev_ctx->strg_hdl =3D rx_msg->data[1];
-> +
-> +		rc =3D set_dev_ctx_as_command_receiver(dev_ctx, false);
-> +		if (rc)
-> +			dev_err(priv->dev,
-> +				"Failed to register %s as CMD-Receiver: %d\n",
-> +				dev_ctx->devname, rc);
-> +		break;
-> +	}
-
-[Severity: High]
-If the set_dev_ctx_as_command_receiver() call fails due to the race
-mentioned above, the error is merely logged and ignored.
-
-Does this leave the second caller with a valid storage handle, while all
-NVM callbacks are misrouted to the first caller? Should this failure path
-be handled more robustly?
-
-> diff --git a/drivers/firmware/imx/ele_msg_addr_field.c b/drivers/firmware=
-/imx/ele_msg_addr_field.c
-> --- a/drivers/firmware/imx/ele_msg_addr_field.c
-> +++ b/drivers/firmware/imx/ele_msg_addr_field.c
-> @@ -0,0 +1,635 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2026 NXP
-> + */
-
-[ ... ]
-
-> +static const struct se_cmd_addr_field ele_oem_auth_cntr_addr_fields[] =
-=3D {
-> +	/*
-> +	 * Container Header address: a 64-bit physical address split across two
-> +	 * words. data[0] holds the 32-bit MSB and data[1] holds the 32-bit LSB
-> +	 * (ELE API spec Table 27, word size =3D 0x3, so the command is header +
-> +	 * MSB + LSB only). The message carries no length word for this buffer;
-> +	 * the container size is variable and not communicated in the MU payloa=
-d,
-> +	 * and no static firmware-defined maximum is specified. Because this is=
- a
-> +	 * read-only input buffer (the ELE ROM/FW copies the container header
-> +	 * into its internal memory for authentication and does not write back
-> +	 * through this address), enforcing only the start-address range check =
-is
-> +	 * acceptable: a rogue caller can at most cause firmware to read within
-> +	 * the shared-memory window, which is memory the caller already owns.
-> +	 * Output buffers must be fully bounded; input-only buffers are safe wi=
-th
-> +	 * addr-only checks.
-> +	 */
-> +	{ .lsb_idx =3D 1, .msb_idx =3D 0, .has_msb =3D true, .flag_idx =3D SE_C=
-MD_ADDR_ALWAYS,
-> +	  .size_idx =3D SE_CMD_ADDR_NO_SIZE },			/* container_hdr_addr */
-
-[Severity: High]
-Does omitting length constraints for the container header allow out-of-boun=
-ds
-reads? As noted above, since size_idx is SE_CMD_ADDR_NO_SIZE and buf_size
-defaults to 0, no upper bound check is performed when the command is valida=
-ted
-in se_val_cmd_addrs().
-
-> +};
-
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-
-[ ... ]
-
-> @@ -1195,30 +1195,30 @@ int set_dev_ctx_as_command_receiver(struct se_if_=
-device_ctx *dev_ctx, bool is_io
->  {
->  	struct se_if_priv *priv =3D dev_ctx->priv;
->  	struct se_api_msg *new_rx_msg =3D NULL;
->  	struct se_clbk_handle *se_clbk_hdl;
->  	unsigned long flags;
-> =20
->  	se_clbk_hdl =3D &priv->cmd_receiver_clbk_hdl;
->  	guard(mutex)(&priv->modify_lock);
->  	if (se_clbk_hdl->dev_ctx =3D=3D dev_ctx)
->  		return 0;
-> =20
->  	if (se_clbk_hdl->dev_ctx)
->  		return -EBUSY;
-> =20
->  	if (!dev_ctx->strg_hdl)
->  		return -EINVAL;
-> =20
->  	if (is_ioctl)
->  		return -ENOMEM;
-
-[Severity: Medium]
-Does this unconditionally reject the SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl?
-When the ioctl calls this function with is_ioctl =3D true, it immediately
-returns -ENOMEM before any allocations happen. Is this intentional, or does
-it break the ioctl completely?
-
-[ ... ]
-
-> @@ -1505,30 +1505,30 @@ static int se_ioctl_cmd_snd_rcv_rsp_handler(struc=
-t se_if_device_ctx *dev_ctx,
->  					    void __user *uarg)
->  {
-
-[ ... ]
-
->  		/*
->  		 * -ERESTARTSYS here means the wait was interrupted by a signal
->  		 * after the command had already been handed to - and executed
->  		 * by - the firmware, with its response delivered into rx_msg
->  		 * (ele_msg_send_rcv() converts only a positive, i.e. successfully
->  		 * received, result to -ERESTARTSYS). If that response carried a
->  		 * freshly allocated session/storage handle, record it now via
->  		 * fw_api_specific_ops(): the handle is already live in firmware,
->  		 * so leaving it untracked would stop cleanup_dev_ctx() from ever
->  		 * closing it and leak the firmware resource. Validate the
->  		 * delivered response first, using its own declared length bounded
->  		 * by the caller's buffer, so a truncated or malformed reply is
->  		 * not acted upon.
->  		 */
->  		if (err =3D=3D -ERESTARTSYS) {
->  			u32 rsp_sz =3D rx_msg->header.size << 2;
-> =20
->  			if (rsp_sz && rsp_sz <=3D cmd_snd_rcv_rsp_info.rx_buf_sz &&
->  			    !se_val_rsp_hdr_n_status(priv, rx_msg,
->  						     tx_msg->header.command, rsp_sz,
->  						     tx_msg->header.ver =3D=3D
->  						     priv->if_defs->base_api_ver)) {
->  				se_dev_ctx_cpy_out_data(dev_ctx);
->  				fw_api_specific_ops(dev_ctx, rx_msg);
->  			}
->  			/*
->  			 * Returning -ERESTARTSYS would let the VFS transparently restart
->  			 * the ioctl, which would re-run the command with the just
->  			 * cleaned-up (zeroed) shared input buffers. Report -EINTR instead
->  			 * so the syscall is not auto-restarted; userspace enters its
->  			 * signal handler and can decide whether to reissue the command.
->  			 */
->  			err =3D -EINTR;
->  		}
-
-[Severity: High]
-See the note about silent data corruption and handle leaks above; this is w=
-here
-the successful ioctl returns -EINTR without copying the response to the use=
-r.
-
-[ ... ]
-
-> @@ -1807,30 +1807,30 @@ static ssize_t se_if_fops_write(struct file *fp, =
-const char __user *buf,
->  				size_t size, loff_t *ppos)
->  {
->  	struct se_if_device_ctx *dev_ctx =3D fp->private_data;
->  	struct se_if_priv *priv;
->  	int err;
-> =20
->  	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &dev_ctx->fops_lock)=
- {
->  		if (dev_ctx->cleanup_done)
->  			return -ENODEV;
-> =20
->  		priv =3D dev_ctx->priv;
-> =20
->  		dev_dbg(priv->dev, "%s: write from buf (%p)%zu, ppos=3D%lld.", dev_ctx=
-->devname,
->  			buf, size, ((ppos) ? *ppos : 0));
-> =20
->  		if (dev_ctx !=3D priv->cmd_receiver_clbk_hdl.dev_ctx) {
->  			se_dev_ctx_shared_mem_cleanup(dev_ctx);
->  			return -EINVAL;
->  		}
-> =20
->  		if (size < SE_MU_HDR_SZ || size > MAX_ALLOWED_TX_MSG_SZ) {
->  			dev_err(priv->dev, "%s: User buffer too small/large(%zu < %d)",
->  				dev_ctx->devname, size,
->  				size < SE_MU_HDR_SZ ? SE_MU_HDR_SZ :
->  								MAX_ALLOWED_TX_MSG_SZ);
->  			return -ENOSPC;
->  		}
-> =20
->  		struct se_api_msg *tx_msg __free(kfree) =3D memdup_user(buf, size);
->  		if (IS_ERR(tx_msg))
->  			return PTR_ERR(tx_msg);
-> =20
->  		err =3D se_chk_tx_msg_hdr(dev_ctx, &tx_msg->header, size, 0);
->  		if (err)
->  			return err;
-> =20
->  		print_hex_dump_debug("from user ", DUMP_PREFIX_OFFSET, 4, 4,
->  				     tx_msg, size, false);
-> =20
->  		err =3D ele_msg_send(dev_ctx, tx_msg, size);
-> =20
->  		return err;
-
-[Severity: High]
-See the note about asynchronous writes corrupting synchronous ioctl respons=
-es
-above. This is the write handler that sends the command that generates the
-conflicting response.
-
->  	}
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260821-imx-se-if-=
-v39-0-41e4257c2afc@nxp.com?part=3D5
