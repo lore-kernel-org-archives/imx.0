@@ -1,150 +1,184 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95093AEB5D;
-	Fri, 21 Aug 2026 13:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E4C48F85E;
+	Fri, 21 Aug 2026 13:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787318473; cv=none; b=dfJCY4ik8oZzlWYQhnrRxBoZnVu2321CSz6GF75lfxPZxVxoUIYViT+IA0HsAyVMcIl+kU7tDvBJlFFLnHXSNKiKpSL4tfMKE+qRbH8WREdxnZ5pcDA9nEf28LJDkdJ8DqaVw2h+VYmWtet9ea2KEqX1WHTV3Bre6VPGmWy+N0I=
+	t=1787318620; cv=none; b=LiWxnlke4c0P0fmssp/Y/U9eE7u6idM0Wo/JDsi7X4GcpLDLg6VgGUWxHlUwiTK9eanAOw4yk55Y3W2ihiKBWciqJNXHwGVMEVJuHpaUGcvdgObfMYtIWyT+xXvfDS2bsa03VphOl0MximZahIZVax/udqHoAziqB1gNLPUNnKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787318473; c=relaxed/simple;
-	bh=1FTQltPdI0gfZA8MR9dq8ONp3ZEiX/qlC340ghbMeoI=;
+	s=arc-20240116; t=1787318620; c=relaxed/simple;
+	bh=eIN7qQx0gCoZyXciN+J32cP2bAGhSqnSq8ru7Ag/TJU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m+Fnsm8bE6mGV/xnhiK+qzl8N1AS7oI+gMUxR9TvWZc3Tr/ADecxKGYINxk1ShifrlKO0hZuVY/v4OMwtZ7nRdV/3F/iNkQ5G/clVlZqSiGtnwP26XTPkPHLWHkxbxzTISRXxig/E07oLqbT0zLKrA19NiQvYDGn0B83BPJILxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hrGcs3cV; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=DPJFdWNPFeFA/kGjy0ON5LXTzEd4jS9n0MzNwRLHgVkedcMXMG6+5WynkeVQtvOgTK+qa2p/1QYmbzFHfHvIBcXKNoOgyIxhS6J85AkbDufQy6RbN0dWKIVbGMxf3GsGjvWU5w2rVygVfZ2ff8461wYwAP8yaQcRXNdFn6kU3jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jyoskVxD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hrGcs3cV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EDC1F000E9;
-	Fri, 21 Aug 2026 13:21:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jyoskVxD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672201F000E9;
+	Fri, 21 Aug 2026 13:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787318466;
-	bh=UO83Pge5EoyvyzIjtqufsB2ywalS8y7AnvapdpLfoTs=;
+	s=k20260515; t=1787318608;
+	bh=FkZ1DBbehygR0DUnqE/5kLPx2SnF7CPjHsuBDNe8M6k=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hrGcs3cVoyqAxXXsG+C7lfpG0EMRbcbCMUMfT7jqy5xPHoLozL3DhEFi3Sd+FmhGB
-	 JuBRjhE0QPt2MaA9DI8c3QRjLzvtjTPhe2jXW9Az/QHDCkc5dkTRVQFPRTVH5lljzv
-	 tOxWvP4CEc1A9sWRZ5zuAYBn4hn1kbJSs+/RingIBkwYUNEatkmKC262y1zmiGyQhS
-	 JHYfcZS0VKyKXQ1s/wctyAvwHTINfYSjN72yEwhOKBnvqm4cEvjhAotAB2Vwo46Elz
-	 r3yxDnyyIkeaUQMr29gj5v5drcCFoD7i1T4EM5c8pFBinVpdMgkZ+6mkSzFnYDgXKF
-	 3AUttEHY6MpJw==
+	b=jyoskVxDSnsPKlByUsfs7YymYJWTIakwEPZZjGbVJLhR6tXbq6cg+OScxYlfO8vxw
+	 mg1h848LYIeTr3JmulnEMaZ1oZ2RL+k1XHi4oXaM2gr5k2FRl6K8+CfnA68cnh7NDT
+	 jTNmDczsZb3sNJwaClHUsx5Ns0QanF4DwG5VlEBAqPBm68fKl9eVoUVhnTRobuPB/J
+	 Ay9nZCT5KrfFzQzrqfHu5D/9gb1z7wTHthAaHt7ArJ0nTtESbYaD06PJUkCq1W4mxs
+	 DZvSF4rMTIQCTDAYgRm4oTo4t2M+QhbPleOCYFtI90q+lGOubdpaLR8+tuNnNIflMb
+	 NbO19KE15c5Uw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v40 3/7] firmware: imx: add driver for NXP EdgeLock
- Enclave
+Subject: Re: [PATCH v40 5/7] firmware: imx: adds miscdev
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
 Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260822-imx-se-if-v40-3-74fbce2f2f95@nxp.com>
+In-Reply-To: <20260822-imx-se-if-v40-5-74fbce2f2f95@nxp.com>
 References: <20260822-imx-se-if-v40-0-74fbce2f2f95@nxp.com>
- <20260822-imx-se-if-v40-3-74fbce2f2f95@nxp.com>
+ <20260822-imx-se-if-v40-5-74fbce2f2f95@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 21 Aug 2026 13:21:06 +0000
-Message-Id: <20260821132106.82EDC1F000E9@smtp.kernel.org>
+Date: Fri, 21 Aug 2026 13:23:27 +0000
+Message-Id: <20260821132328.672201F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Per-instance IMEM state is gated behind a global static variable, =
-silently breaking boot firmware loading on subsequent probes or module relo=
-ad.
-- [High] Overriding a successful, completed firmware transaction with `-ERE=
-STARTSYS` due to an earlier signal causes hazardous double-execution of non=
--idempotent operations.
+- [High] API Contract Violation: SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl uncon=
+ditionally fails with -ENOMEM.
+- [High] Race Condition / Security Isolation: TOCTOU race in ELE_STORAGE_OP=
+EN_REQ allows bypassing receiver uniqueness.
+- [High] Race Condition / Use-After-Free: `se_if_fops_read` accesses `dev_c=
+tx->devname` without `fops_lock` during error handling.
+- [Low] Code Quality / Documentation Mismatch: Missing `__func__` in error =
+logs.
 --
 
---- Patch [3]: [PATCH v40 3/7] firmware: imx: add driver for NXP EdgeLock E=
-nclave ---
-commit 20968ef12d731efd276f3bd73d0897a236c63074
+--- Patch [5]: [PATCH v40 5/7] firmware: imx: adds miscdev ---
+commit 823b871a16858b528f46321987d0641124095c4f
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-firmware: imx: add driver for NXP EdgeLock Enclave
+firmware: imx: adds miscdev
 
-Add MU-based communication interface for secure enclave.
-Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
+This commit adds a miscdev interface to exchange messages with NXP secure
+enclaves from userspace. It provides an ioctl interface and file operations
+for memory management, getting info, and command/response handling.
 
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
-_common.c
-> index 0000000000000..04ee5112d3463 100644
+Closes: https://sashiko.dev/#/patchset/20260821-imx-se-if-v39-0-41e4257c2af=
+c@nxp.com?part=3D5
+
+> - Fix dev_err format specifier from %ld to %d for the err variable and
+>   add __func__ to CMD-Receiver registration failure messages.
+
+[Severity: Low]
+The commit message states that __func__ was added to the CMD-Receiver
+registration failure messages. Looking at the code in fw_api_specific_ops(),
+the dev_err() call for registration failure doesn't appear to include
+__func__. Did this change get missed in the final version of the patch?
+
+> diff --git a/drivers/firmware/imx/ele_fw_api.c b/drivers/firmware/imx/ele=
+_fw_api.c
 > --- /dev/null
-> +++ b/drivers/firmware/imx/ele_common.c
+> +++ b/drivers/firmware/imx/ele_fw_api.c
 [ ... ]
-> +	err =3D ele_msg_rcv(priv, &priv->waiting_rsp_clbk_hdl);
-> +
-> +	if (priv->waiting_rsp_clbk_hdl.signal_rcvd) {
+> +int ele_uapi_allowed_fw_cmd(struct se_if_device_ctx *dev_ctx, struct se_=
+msg_hdr *header,
+> +			    u32 tx_msg_sz, u32 rx_msg_sz)
+> +{
+[ ... ]
+> +	case ELE_STORAGE_OPEN_REQ:
+> +		/* Might be cleared as part of tear down. */
+> +		if (dev_ctx->strg_hdl) {
+> +			ret =3D -EEXIST;
+> +			break;
+> +		}
 > +		/*
-> +		 * Signal was deferred until the FW/kernel protocol resynchronized.
-> +		 * On success report -ERESTARTSYS for the interrupted wait; the
-> +		 * command is not re-sent. Keep real errors like -ETIMEDOUT.
-> +		 */
-> +		if (err > 0)
-> +			err =3D -ERESTARTSYS;
+> +		 * Reject the storage-open request when another context is
+> +		 * already registered as the command receiver.
+[ ... ]
+> +		scoped_guard(mutex, &priv->modify_lock)
+> +			if (priv->cmd_receiver_clbk_hdl.dev_ctx &&
+> +			    priv->cmd_receiver_clbk_hdl.dev_ctx !=3D dev_ctx)
+> +				ret =3D -EBUSY;
+> +		if (rx_msg_sz < ELE_STORAGE_OPEN_RSP_SZ)
+> +			ret =3D -EINVAL;
+> +		break;
 
 [Severity: High]
-Does overriding a successful hardware response (`err > 0`) with
-`-ERESTARTSYS` cause hazardous double-execution of non-idempotent hardware
-operations (e.g., key generation, counter increments)?
+Could this check be vulnerable to a race condition? Since the global
+se_if_cmd_lock is not held during this validation, two concurrent threads
+issuing an ELE_STORAGE_OPEN_REQ could potentially both pass this check.
 
-If a transaction completes successfully in hardware, but userspace receives
-`-EINTR` (from `-ERESTARTSYS`), it may reissue the system call, causing the
-hardware to execute the same state-changing operation a second time. Should
-returning success take precedence over the pending signal to keep the hardw=
-are
-state consistent with the userspace view?
+If that happens, thread A would acquire the lock, send its command, and
+register as the receiver. Thread B would then acquire the lock, send its
+command, allocate a second handle, but fail registration in
+fw_api_specific_ops(). Because that failure is only logged and ignored,
+does thread B successfully open storage but have its callbacks silently
+routed to thread A?
 
-> +		priv->waiting_rsp_clbk_hdl.signal_rcvd =3D false;
-> +		dev_dbg(priv->dev, "Err[0x%x]:Interrupted by signal.", err);
-> +	}
-> +
-> +	ele_msg_send_rcv_cleanup(priv);
-> +
-> +	return err;
-> +}
-[ ... ]
 > diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
 l.c
-> index 0000000000000..df3d1da28a759 100644
-> --- /dev/null
+> --- a/drivers/firmware/imx/se_ctrl.c
 > +++ b/drivers/firmware/imx/se_ctrl.c
 [ ... ]
-> +	s_info =3D (struct ele_dev_info *)data;
+> +int set_dev_ctx_as_command_receiver(struct se_if_device_ctx *dev_ctx, bo=
+ol is_ioctl)
+> +{
+> +	struct se_if_priv *priv =3D dev_ctx->priv;
+> +	struct se_api_msg *new_rx_msg =3D NULL;
+> +	struct se_clbk_handle *se_clbk_hdl;
+> +	unsigned long flags;
 > +
-> +	if (!var_se_info.soc_rev) {
-> +		var_se_info.soc_rev =3D s_info->d_info.soc_rev;
+> +	se_clbk_hdl =3D &priv->cmd_receiver_clbk_hdl;
+> +	guard(mutex)(&priv->modify_lock);
+> +	if (se_clbk_hdl->dev_ctx =3D=3D dev_ctx)
+> +		return 0;
 > +
-> +		/*
-> +		 * Only update IMEM state when the load_fw path is active;
-> +		 * on SoCs without IMEM management (e.g. i.MX93) the field
-> +		 * is not meaningful.
-> +		 */
-> +		if (load_fw->imem_mgmt)
-> +			load_fw->imem.state =3D s_info->d_addn_info.imem_state;
+> +	if (se_clbk_hdl->dev_ctx)
+> +		return -EBUSY;
+> +
+> +	if (!dev_ctx->strg_hdl)
+> +		return -EINVAL;
+> +
+> +	if (is_ioctl)
+> +		return -ENOMEM;
+
+[Severity: High]
+Is this intended to unconditionally fail the ioctl with an out-of-memory
+error?
+
+When the SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl is invoked in se_ioctl(), it
+calls this function with is_ioctl set to true, which will immediately return
+-ENOMEM. Does this make it impossible for userspace to register as a
+command receiver via the documented ioctl?
+
+[ ... ]
+> +static ssize_t se_if_fops_read(struct file *fp, char __user *buf, size_t=
+ size,
+> +			       loff_t *ppos)
+> +{
+> +	struct se_if_device_ctx *dev_ctx =3D fp->private_data;
+[ ... ]
+> +	err =3D ele_msg_rcv(dev_ctx, &priv->cmd_receiver_clbk_hdl);
+> +	if (err < 0) {
+> +		if (err !=3D -ERESTARTSYS)
+> +			dev_err(priv->dev,
+> +				"%s: Er[0x%x]: Signal Interrupted. Current act-dev-ctx count: %d.",
+> +				dev_ctx->devname, err, dev_ctx->priv->active_devctx_count);
+> +		return err;
 > +	}
 
 [Severity: High]
-Will gating the per-instance `priv->load_fw.imem.state` initialization insi=
-de
-`if (!var_se_info.soc_rev)` silently break boot firmware loading on subsequ=
-ent
-probes or module reload?
+Could accessing dev_ctx->devname here lead to a use-after-free?
 
-Since `var_se_info` is a global static variable whose `soc_rev` field is ne=
-ver
-cleared across driver unbinds, any subsequent interface probe (or re-probe
-after unbind via sysfs) will find `var_se_info.soc_rev` already populated.
-
-This causes the driver to skip updating `load_fw->imem.state`, leaving it at
-`0`. Later, `se_load_firmware()` checks `if (load_fw->imem.state =3D=3D
-ELE_IMEM_STATE_BAD)` to decide whether to load the primary boot firmware.
-Since the state is 0 instead of `0xfe`, does it silently skip the load and
-break firmware initialization for that instance?
-
-> +
-> +	if (se_info->soc_name && !var_se_info.soc_dev_regn.soc_dev_registered) {
-> +		err =3D se_soc_dev_register(priv, var_se_info.soc_rev,
+The fops_lock is explicitly dropped before calling ele_msg_rcv() above. If
+a concurrent unbind occurs and tears down the context, cleanup_dev_ctx()
+could run, acquire fops_lock, and free dev_ctx->devname. If ele_msg_rcv()
+then returns an error, this error path will execute without fops_lock and
+dereference the potentially freed dev_ctx->devname pointer.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260822-imx-se-if-=
-v40-0-74fbce2f2f95@nxp.com?part=3D3
+v40-0-74fbce2f2f95@nxp.com?part=3D5
