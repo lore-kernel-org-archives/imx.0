@@ -1,246 +1,155 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879CE1DDC37;
-	Fri, 21 Aug 2026 12:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628291DDC37
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 12:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787316069; cv=none; b=tTWbeLynkTaghn6W9jmUf5GqLwTnBjPMOT6rVDliJhLIkbY+cSF5wvsNYsMKTDiGy4kGUq+puzDVY4tSxN7RJYAJkSn3J86C9JklZ3D/ihzsojDA20l6r1gQSTPFp1lehcOiVZNoPR/QNP6k8BJNDtGCGsV4UxFWW5d6xSoAAMs=
+	t=1787316115; cv=none; b=R5acQjqGMdph/1Tk9T6olNOxBBNK3E2B++ee6Eili4HvHV/wX4v0mf7Z+0TzhSj+g4WjjSLYvFIRutI+J0Qc67HCh0rf8VZDQ7aClHCQ1Pc6pauhbYv9SR68YaZ2jgIRD42rJPuCD9l7UCl90omITGCWqQ/ReDnqKgT3NVRP5Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787316069; c=relaxed/simple;
-	bh=jSfkbJwvr5Lvh2CXUluZ5wdA39/BKoUXbeuTHiJXQXg=;
+	s=arc-20240116; t=1787316115; c=relaxed/simple;
+	bh=vgmuuaQS3HnAsCd0iMyY6dYX4d4j+M+vRmP1CoIyXxc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OrPu6OBAkl4Cci5X8Nxgw1WJVKAlmNkqPQXLbxnKUjqnMN7LT4fgOymtZ7UUFkeA4yn4ognz2e4wuXtefoelgWeRTFbjvpn46D/OqBzIPBBfSmbfrlXyeDpoeXrHEw+3CBED+E24VIx21eNHPOgBTdZ2maSGVCtHkf7NMtTd09I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhCWLvGF; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Vti80xbDdhXMEhciXY6XUNSS7Ee5siyQ5lsAJ/XfsKFYyvx5bGMf8PZlBCO60yCABPmOaa14o+gI/PekFiA2OxfK4rvRtWOnEmaijQJ9t1egBtYSvI+wFCw8E3nh/rh/ES1+4klgcY/dm9dXhraOr3rTZ473vfZlS1Tnke1x1vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X2pHkczR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhCWLvGF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5971F000E9;
-	Fri, 21 Aug 2026 12:41:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X2pHkczR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00D11F000E9;
+	Fri, 21 Aug 2026 12:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787316068;
-	bh=x8fZVUD+VLPFYzy/zOla+LFds2QmZK25F7ld8li6UC0=;
+	s=k20260515; t=1787316114;
+	bh=RtvGrKa6OAg1aYHccKfYOz4sodKKguzXiQooFBazjlo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WhCWLvGFpFhUj779R0kdSKuSdvLH5S5iJlpnlx7g6LimXhWNH7k7dI6aYbrXlprzx
-	 PGghi9TFlMecurk5f3UrFwx/QwlhgXHFeR3ss2lKNMGyQITPrR9QxoGrJUJXnpsdfL
-	 YWDsQlfmkpfTjTCwt7TehGlsQplrpS77TaSP2kuOQ1dBnoYy8DnlDeupw28yCWvjzi
-	 xw+Dx03rMXlcLNM2pFya0N6a3B9wofYwhG12LU8NRs7o8hdDVndrr2FhhtXHhlhe2z
-	 eei4dWm+xojX8M3noR5ZfXbDaj4yKNGCHz22AAd7Od0rb5WnKyKCPnsfnO0rU8gzOV
-	 BgWsB7RYhiodQ==
+	b=X2pHkczRbe6u/CuwB/g5wD3liWMnR0Tk6rI8mXduzVdaRlPOXHy48lpiUxHU/YV+a
+	 WXeeFnBwBTt3YTZ0BuQPcgj5uF0lh4Xq2cpfLQXexNaahz0eK9xg+wFK889Z7GK3oF
+	 E98thnlHcFuh41oBgo+6IEDLdZEmC5ElmhpaM89yB6+HsX4t00QD3WLOPgyoSm3dv6
+	 LcKNacOHjLXAhdS/Tf5GU4bcKg4WtOsCXFxcbFLVhz8O76vl6zexGVlYV/bntS50hY
+	 HpMzMvpWpxRduVuFy1r1WARP3iY4DofPOxwD8nkrdtHgekyzU+WYM/l6XSP1PA/1Qj
+	 dt13HlJthFovA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7
- support
+Subject: Re: [PATCH] drm/imx: dcss: Silence blend mode not set boot warning
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <d709664186f2a85b6c3173b5e5a8a297464fd7f7.1787314780.git.stefano.r@variscite.com>
-References: <cover.1787314780.git.stefano.r@variscite.com>
- <d709664186f2a85b6c3173b5e5a8a297464fd7f7.1787314780.git.stefano.r@variscite.com>
+To: "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260821122608.2077746-1-laurentiu.palcu@oss.nxp.com>
+References: <20260821122608.2077746-1-laurentiu.palcu@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 21 Aug 2026 12:41:07 +0000
-Message-Id: <20260821124107.DA5971F000E9@smtp.kernel.org>
+Date: Fri, 21 Aug 2026 12:41:53 +0000
+Message-Id: <20260821124153.C00D11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] The Ethernet PHY reset pin for `ethphy1` is muxed on the `fec2` no=
-de instead of `fec1`, causing PHY detection to fail during MDIO bus probe.
-- [Medium] Use of `IRQ_TYPE_NONE` (0) for touchscreen controller interrupts.
-- [Low] Duplicate `assigned-clock-rates` property in the `&sai1` node.
-- [Low] Attempting to delete a non-existent child node `bcrmf@1` instead of=
- `wifi@1`.
-- [Low] Missing required `color` property in the GPIO LED definition.
-- [Low] Use of deprecated `reset-gpio` property instead of `reset-gpios` in=
- the PCIe node.
+- [High] Initial pixel_blend_mode property is set to an unsupported value (=
+PREMULTI), causing userspace compositor crashes.
+- [High] Fast-path atomic commits silently drop alpha and pixel_blend_mode =
+property updates.
 --
 
---- Patch [2]: [PATCH v1 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 su=
-pport ---
-commit 910d1859fce3905900b424cb29918719c63275b0
-Author: Stefano Radaelli <stefano.r@variscite.com>
+--- Patch [1]: [PATCH] drm/imx: dcss: Silence blend mode not set boot warni=
+ng ---
+commit b8d70d6b989c5f19b4322dbd26927d62d307bf28
+Author: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+drm/imx: dcss: Silence blend mode not set boot warning
 
-This commit adds device tree support for the Variscite VAR-SOM-MX7 system on
-module. It provides the common SoM description along with configurations for
-eMMC, NAND, WM8731 audio codec, and the V2 hardware revision.
+This addresses a boot warning about missing blend mode when a pixel format
+with alpha is exposed. It adds the alpha and blending properties to the
+primary plane.
 
-Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi =
-b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
-> index 0000000000000..82814535fb93e 100644
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
-> @@ -0,0 +1,378 @@
+> diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/d=
+css/dcss-crtc.c
+> index ab41759a9f52d..8358219c94c0d 100644
+> --- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+> +++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
 [ ... ]
-> +	leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_gpio_leds>;
-> +
-> +		led-d10 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			gpios =3D <&gpio1 13 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger =3D "heartbeat";
-> +		};
-> +	};
-
-[Severity: Low]
-Does this led-d10 node also need a color property? When function is
-specified, modern LED bindings generally require the color property to form
-sysfs directories in the format color:function.
-
-[ ... ]
-> +&i2c4 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default", "gpio";
-> +	pinctrl-0 =3D <&pinctrl_i2c4>;
-> +	pinctrl-1 =3D <&pinctrl_i2c4_gpio>;
-> +	scl-gpios =3D <&gpio4 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios =3D <&gpio4 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	status =3D "okay";
-> +
-> +	ft5x06_ts: touchscreen@38 {
-> +		compatible =3D "edt,edt-ft5206";
-> +		reg =3D <0x38>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_touch>;
-> +		interrupt-parent =3D <&gpio2>;
-> +		interrupts =3D <30 0>;
-
-[Severity: Medium]
-Is it intentional to use 0 (IRQ_TYPE_NONE) for the touchscreen interrupt
-trigger type here? This can cause the interrupt to be unconfigured or
-incorrectly configured by default, which may lead to missed touch events or
-an interrupt storm.
-
-[ ... ]
-> +&pcie {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_pcie>;
-> +	reset-gpio =3D <&gpio2 31 GPIO_ACTIVE_LOW>;
-
-[Severity: Low]
-Could this use the standard reset-gpios property instead? The reset-gpio
-property is deprecated, and dtbs_check validation may emit warnings for it.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi b/arch/arm/b=
-oot/dts/nxp/imx/imx7d-var-som-v2.dtsi
-> index 0000000000000..724aa6fb36de2 100644
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi
-> @@ -0,0 +1,64 @@
-[ ... ]
-> +/* WiFi */
-> +&usdhc2 {
-> +	mmc-pwrseq =3D <&wifi_pwrseq>;
-> +	/delete-node/ bcrmf@1;
-> +};
-
-[Severity: Low]
-Is there a typo in the node name here? The node defined in the base dtsi is
-wifi@1 (with the label brcmf). Trying to delete bcrmf@1 will cause the
-device tree compiler to fail since the node doesn't exist.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi b/arch/a=
-rm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
-> index 0000000000000..5fab164a64820 100644
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
-> @@ -0,0 +1,65 @@
-[ ... ]
-> +&sai1 {
-> +	assigned-clock-rates =3D <0>, <36864000>;
-> +	assigned-clocks =3D <&clks IMX7D_AUDIO_MCLK_ROOT_SRC>,
-> +			  <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
-> +	assigned-clock-parents =3D <&clks IMX7D_PLL_AUDIO_POST_DIV>;
-> +	assigned-clock-rates =3D <0>, <12288000>;
-
-[Severity: Low]
-Does this node intend to duplicate the assigned-clock-rates property? The
-second definition (<0>, <12288000>) will silently overwrite the first one
-(<0>, <36864000>), which will cause DTC to emit a duplicate property warning
-and the intended 36.864MHz clock rate configuration to be lost.
-
-> +	/delete-property/ fsl,sai-mclk-direction-output;
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi b/arch/arm/boot=
-/dts/nxp/imx/imx7d-var-som.dtsi
-> index 0000000000000..cbd6252bd18f3 100644
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
-> @@ -0,0 +1,633 @@
-[ ... ]
-> +&ecspi1 {
-> +	pinctrl-names =3D "default", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_ecspi1>;
-> +	pinctrl-1 =3D <&pinctrl_ecspi1_sleep>;
-> +	cs-gpios =3D <&gpio4 19 GPIO_ACTIVE_LOW>;
-> +	status =3D "okay";
-> +
-> +	/* Resistive touch controller */
-> +	ads7846_ts: ads7846@0 {
-> +		reg =3D <0>;
-> +		compatible =3D "ti,ads7846";
-> +		pinctrl-names =3D"default";
-> +		pinctrl-0 =3D <&pinctrl_restouch>;
-> +		interrupt-parent =3D <&gpio1>;
-> +		interrupts =3D <9 0>;
-
-[Severity: Medium]
-Is it intentional to use 0 (IRQ_TYPE_NONE) for this touch controller interr=
-upt
-trigger type? This might result in the interrupt being unconfigured by defa=
-ult.
-
-[ ... ]
-> +&fec1 {
-> +	pinctrl-names =3D "default","sleep";
-> +	pinctrl-0 =3D <&pinctrl_enet1>, <&pinctrl_enet1_rst>;
-[ ... ]
-> +	mdio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +
-> +		ethphy0: ethernet-phy@0 {
-> +			compatible =3D "ethernet-phy-ieee802.3-c22";
-> +			reg =3D <0>;
-> +			reset-gpios =3D <&gpio5 11 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us =3D <20000>;
-> +			reset-deassert-us =3D <80000>;
-> +			vddio-supply =3D <&reg_phy_vddio>;
-> +		};
-> +
-> +		ethphy1: ethernet-phy@1 {
-> +			compatible =3D "ethernet-phy-ieee802.3-c22";
-> +			reg =3D <1>;
-> +			reset-gpios =3D <&gpio4 3 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us =3D <20000>;
-> +			reset-deassert-us =3D <80000>;
-> +			vddio-supply =3D <&reg_phy_vddio>;
-> +		};
-> +	};
-> +};
-> +
-> +&fec2 {
-> +	pinctrl-names =3D "default","sleep";
-> +	pinctrl-0 =3D <&pinctrl_enet2>, <&pinctrl_enet2_rst>;
+> @@ -202,6 +203,11 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct dr=
+m_device *drm)
+>  		return ret;
+>  	}
+> =20
+> +	drm_plane_create_alpha_property(&crtc->plane[0]->base);
+> +	drm_plane_create_blend_mode_property(&crtc->plane[0]->base,
+> +					     BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+> +					     BIT(DRM_MODE_BLEND_COVERAGE));
 
 [Severity: High]
-Does ethphy1 fail to reset during the MDIO bus probe on fec1?
+Does exposing only PIXEL_NONE and COVERAGE cause issues with the default pl=
+ane
+reset?
 
-Since ethphy1 is a child of the fec1 MDIO bus, fec1 will attempt to toggle
-its reset GPIO (&gpio4 3) when it probes. However, the pinctrl for this GPIO
-(&pinctrl_enet2_rst) is attached to fec2 instead of fec1. Since fec2 has
-not probed yet, the reset pin may not be muxed properly, preventing the res=
-et
-toggle from reaching the PHY and causing detection to fail.
+Looking at the driver, it uses the default drm_atomic_helper_plane_reset ho=
+ok:
+
+drivers/gpu/drm/imx/dcss/dcss-plane.c:
+struct drm_plane_funcs dcss_plane_funcs =3D {
+    ...
+    .reset =3D drm_atomic_helper_plane_reset,
+    ...
+};
+
+This core helper unconditionally initializes state->pixel_blend_mode to
+DRM_MODE_BLEND_PREMULTI. If the property is created here with only
+PIXEL_NONE and COVERAGE supported, will userspace compositors (like Weston)
+receive an invalid enum value during startup and crash when querying
+properties?
+
+> +
+>  	crtc->irq =3D platform_get_irq_byname(pdev, "vblank");
+>  	if (crtc->irq < 0)
+>  		return crtc->irq;
+[ ... ]
+> diff --git a/drivers/gpu/drm/imx/dcss/dcss-plane.c b/drivers/gpu/drm/imx/=
+dcss/dcss-plane.c
+> index 1746dc5d4b642..06413d0612349 100644
+> --- a/drivers/gpu/drm/imx/dcss/dcss-plane.c
+> +++ b/drivers/gpu/drm/imx/dcss/dcss-plane.c
+[ ... ]
+> @@ -336,7 +344,8 @@ static void dcss_plane_atomic_update(struct drm_plane=
+ *plane,
+>  	dcss_dtg_plane_pos_set(dcss->dtg, dcss_plane->ch_num,
+>  			       dst.x1, dst.y1, dst_w, dst_h);
+>  	dcss_dtg_plane_alpha_set(dcss->dtg, dcss_plane->ch_num,
+> -				 fb->format, new_state->alpha >> 8);
+> +				 fb->format, new_state->alpha >> 8,
+> +				 new_state->pixel_blend_mode);
+
+[Severity: High]
+Does the fast-path logic earlier in this function silently drop alpha and
+pixel_blend_mode updates?
+
+Earlier in dcss_plane_atomic_update(), there is an early return based on
+dcss_plane_needs_setup():
+
+    if (old_state->fb && !drm_atomic_crtc_needs_modeset(crtc_state) &&
+        !dcss_plane_needs_setup(new_state, old_state)) {
+        dcss_plane_atomic_set_base(dcss_plane);
+        return;
+    }
+
+Since dcss_plane_needs_setup() only checks geometry, formatting, rotation, =
+and
+scaling:
+
+    return state->crtc_x !=3D old_state->crtc_x ||
+           ...
+           state->scaling_filter !=3D old_state->scaling_filter;
+
+Will an atomic commit that only modifies the alpha or pixel_blend_mode
+properties cause dcss_plane_needs_setup() to return false?
+
+This would result in returning early and skipping the
+dcss_dtg_plane_alpha_set() hardware update entirely.
+
+> =20
+>  	if (!dcss_plane->ch_num && (new_state->alpha >> 8) =3D=3D 0)
+>  		enable =3D false;
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1787314780.gi=
-t.stefano.r@variscite.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260821122608.2077=
+746-1-laurentiu.palcu@oss.nxp.com?part=3D1
