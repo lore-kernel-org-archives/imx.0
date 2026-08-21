@@ -1,111 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F6843CED9
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 08:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18283313E00
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 08:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787300911; cv=none; b=I16+R0oU+m5hn/dTZHyT6uhfjfMKMoCm3fmoElvCAoO3nYlVyQdJMRRX0GtIMt9IdzlxOKtWLweLv3aOoKrbphC29cYDCZhEqVbpPKg/tOuB3xKTevAzVB0Uy6fDjdbTGF5yC+BWVPdteFtKavw67rbit2ZlvSr2aGpt5ynk9yY=
+	t=1787301178; cv=none; b=tQiM1h+vM59bAS50NRHYkwei/NY38XNGD5E24PE9eM6xpJFcN1cdnVP/18KRmk5JOCBXMttu8ClbFvxhRSkSCIb2WW8giIatnawf1Fz+EtRmlRMqIqHwka/GFsZ96kdQ/f5bG5At9WEFaYvX8T+n/5CcYbto4afZlM3XYTtiYWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787300911; c=relaxed/simple;
-	bh=qJhcjKHLUyuQxuR0sYe4zCiQEHkG6x3ET9S81uqzmTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=oiYFOJGZ4xPXvdIzTxYOzuu3HwsQocRlVunpkU+udrRSvczNoq/MzT1Qv6Oe/M6SVQSpXF+ACpnsqxvekTFLJTppqhRX6JfttYzgVzoIcVE1PJHqv3vODTIsEcmqPjavsbPn3mkObmIvwMA0ceWrfJhxDT0ZURMk3mElMUuLGvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1ywMr9a; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787301178; c=relaxed/simple;
+	bh=zQImaJwgN9Exi25o4CeyNDsEh4jojx4lNA5p8OWtFN8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ntm118f+z1FEVTeUu7q9psqH59tRb5HTCuXVNsvp/2jaGPZG4Lcb6vY1Dry2SoR2/hqFG4sT+dK1rVwzFznr5W4UFGjSth9CG98G4DjwGTYsPSm/x59k5dbljMZSwAmjOD8hn7ThCEHkSrGKGUR6tOy+B/aGmFWN2f6GB8tCy98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghovpcyV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1ywMr9a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787300905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=h2cGhuhLE40OVedXzpfrCNv2r3gg+Q9pq5IchGV8kzo=;
-	b=T1ywMr9a0QnCWaffh8qqbYWQKmAFq1sqrksTOlH6RBsbNcS2lCV2y022scgLwJvO/FFyJd
-	fiJbR4+/DVpV5oU4Bwu96uWnAZnBEblyMRYw1EPaBh8IoG7BKcFNOfHFJTHKa6S/uznw8g
-	+Zr/3ZQwBjvrN5TFy2IP+sQG76UcEIo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-IohSBfaDNnuAMBKdACNN3g-1; Fri,
- 21 Aug 2026 04:28:18 -0400
-X-MC-Unique: IohSBfaDNnuAMBKdACNN3g-1
-X-Mimecast-MFC-AGG-ID: IohSBfaDNnuAMBKdACNN3g_1787300896
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 89B7F195604F;
-	Fri, 21 Aug 2026 08:28:16 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6DDD87D8;
-	Fri, 21 Aug 2026 08:28:10 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: imx: Replace __ASSEMBLY__ with __ASSEMBLER__
-Date: Fri, 21 Aug 2026 10:28:09 +0200
-Message-ID: <20260821082809.185110-1-thuth@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghovpcyV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2351F000E9;
+	Fri, 21 Aug 2026 08:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787301176;
+	bh=AzExCmkJ9vHCGn0LcqLL0euhiaoCbd4o3sTGx2gmiBM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ghovpcyV5TGPcB+afrpF8f/406Jr/4rMACc28re/rFaMMd03HDfKAHBh4ZmNJyc0W
+	 IED+vUVQdqNiv9Rx7LN816/5AwPu9id5OVHEwQ/r3GzsveAl/jjqI8hxY8TLhadcG8
+	 bqwRKZwPEw+BN9VTcrEQWHfAoQ0DP35UPm6lQgok0+hsgkmTXkRkux8j+DBCLu6xlX
+	 GWZ7oAKvJLK1rOvnFF07LoknEdaq0sUa7yvgh5R6B/A5Og5VwxoR8zB6I74yUPsTGO
+	 j6PVxQX0fDJ9mSPZlT9h31DTErQSx5zIB0tWK5fVBQ1Y12y9hJjkfhAGSBg8jOu5lz
+	 cSRtXoFJmCqUQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] usb: gadget: uvc: refactor video cleanup into
+ uvcg_video_deinit()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xu Yang" <xu.yang_2@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260821-usb-uvc-fixes-v1-2-80e6e279523d@nxp.com>
+References: <20260821-usb-uvc-fixes-v1-0-80e6e279523d@nxp.com>
+ <20260821-usb-uvc-fixes-v1-2-80e6e279523d@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 21 Aug 2026 08:32:55 +0000
+Message-Id: <20260821083256.5B2351F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: lzCeHXlnBL3K-1uuA58sL3RuJnI7atzC819gF5YpwiE_1787300896
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
 
-While the GCC and Clang compilers already define __ASSEMBLER__ auto-
-matically when compiling assembly code, __ASSEMBLY__ is a macro that
-only gets defined by the Makefiles in the kernel. This can be very
-confusing when switching between userspace and kernelspace coding, or
-when dealing with uapi headers that rather should use __ASSEMBLER__
-instead. Let's standardize now on the __ASSEMBLER__ macro to avoid
-this confusion.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- Note: This has been split from an earlier bigger patch of mine into
-       a separate patch to ease reviewing
+Pre-existing issues:
+- [High] Calling `uvcg_video_deinit()` in `uvc_function_unbind()` before wa=
+iting for V4L2 file release completion leaves it exposed to concurrent in-f=
+light ioctls, causing use-after-free or NULL pointer dereferences.
+--
 
- arch/arm/mach-imx/hardware.h | 2 +-
- arch/arm/mach-imx/mxc.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+--- Patch [2]: [PATCH 2/2] usb: gadget: uvc: refactor video cleanup into uv=
+cg_video_deinit() ---
+commit 4d7b46b3698b9db70da6cefc8230b5f7e4eb66ce
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-diff --git a/arch/arm/mach-imx/hardware.h b/arch/arm/mach-imx/hardware.h
-index 0760fff39a0b3..71f09648c7778 100644
---- a/arch/arm/mach-imx/hardware.h
-+++ b/arch/arm/mach-imx/hardware.h
-@@ -7,7 +7,7 @@
- #ifndef __ASM_ARCH_MXC_HARDWARE_H__
- #define __ASM_ARCH_MXC_HARDWARE_H__
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <asm/io.h>
- #include <soc/imx/revision.h>
- #endif
-diff --git a/arch/arm/mach-imx/mxc.h b/arch/arm/mach-imx/mxc.h
-index fe2d0f5abfcc2..1d13e3959159e 100644
---- a/arch/arm/mach-imx/mxc.h
-+++ b/arch/arm/mach-imx/mxc.h
-@@ -16,7 +16,7 @@
- 
- #define IMX_DDR_TYPE_LPDDR2		1
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #ifdef CONFIG_SOC_IMX6SL
- static inline bool cpu_is_imx6sl(void)
--- 
-2.55.0
+usb: gadget: uvc: refactor video cleanup into uvcg_video_deinit()
 
+This commit refactors the cleanup logic for UVC video into a new=20
+uvcg_video_deinit() helper to fix resource leaks in error paths and missing=
+=20
+kworker destruction during unbind. It also reorders the teardown in=20
+uvc_function_unbind() to happen after video_unregister_device().
+
+> diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/fun=
+ction/f_uvc.c
+> index a4fb2790f4ffe..fa2f9d0e4ce0b 100644
+> --- a/drivers/usb/gadget/function/f_uvc.c
+> +++ b/drivers/usb/gadget/function/f_uvc.c
+[ ... ]
+> @@ -1048,6 +1044,7 @@ static void uvc_function_unbind(struct usb_configur=
+ation *c,
+> =20
+>  	device_remove_file(&uvc->vdev.dev, &dev_attr_function_name);
+>  	video_unregister_device(&uvc->vdev);
+> +	uvcg_video_deinit(video);
+
+[Severity: High]
+This is a pre-existing issue, but could this ordering lead to a NULL
+pointer dereference if there are in-flight ioctls?
+
+If a userspace app is calling an ioctl like VIDIOC_QBUF concurrently while
+the gadget is unbound, video_unregister_device() clears the registered
+flag but doesn't wait for in-flight ioctls to finish.
+
+Then uvcg_video_deinit() destroys video->async_wq and sets it to NULL:
+
+drivers/usb/gadget/function/uvc_video.c:uvcg_video_deinit() {
+	...
+	if (video->async_wq) {
+		destroy_workqueue(video->async_wq);
+		video->async_wq =3D NULL;
+	}
+}
+
+An in-flight uvc_v4l2_qbuf() could then resume and try to use the workqueue
+by dereferencing the NULL pointer:
+
+drivers/usb/gadget/function/uvc_v4l2.c:uvc_v4l2_qbuf() {
+	...
+	if (uvc->state =3D=3D UVC_STATE_STREAMING)
+		queue_work(video->async_wq, &video->pump);
+}
+
+Should uvcg_video_deinit() be deferred until after=20
+wait_for_completion(&vdev_release_done) when the video device is fully=20
+released and no more ioctls can be executing?
+
+>  	v4l2_device_unregister(&uvc->v4l2_dev);
+> =20
+>  	scoped_guard(mutex, &uvc->lock)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260821-usb-uvc-fi=
+xes-v1-0-80e6e279523d@nxp.com?part=3D2
