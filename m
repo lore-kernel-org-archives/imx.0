@@ -1,69 +1,69 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CA438BF67
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 14:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194948F84F
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 14:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787324365; cv=none; b=BxNarD362DJQYccZS0v+LZeZypnHXu9/Ha/McTQXQaGwmvn+ncJ/tUW7lfDxIExoHOtnuTbRtEOcEQZFOOBBWlAqNX5gp4WnekEo5ksUcFSHTFi55xW6Kz8Bv6UHYdm1+VFi+WCp/uJOtGVk4mp/W27wZPsB6dtpSC+Bwfr0UqM=
+	t=1787324368; cv=none; b=MlEspQEZz2fNoH18u1MuOvduYLsokqF3CFIK5+jBrEsj/btxtUD6/U4JghrV2OwpppzogApR0uxLXf0y0Pobrymu4sC1qgZvnRWMqaEMHwPQSYpcHkRB4cfz6+7TG8+f7KnxdpN0vVihyRqwXD06N4sZjgBluZRprg+cfIx/kHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787324365; c=relaxed/simple;
-	bh=WDEAc+a/SLkgrSJkUe7LKkxiz7rqpJlb0a2xNqjXnFE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=unRyAW3Yp0zCDdt562IKroxmmbjXKBeObesOtDBHVjET0rhp6tNAFYSHbR0jREUlJCFRBUZoyqaUCLMaCFI63ct4fQbLsup1mEFQAkb7T4J3LZpunAMVd4J32mrVHlpI0bfMnS+tw/Ndy9WF0jHVk9a26GWpmAHwHK3HHStqzm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZFCmMeh3; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1787324368; c=relaxed/simple;
+	bh=rH5zmUK9SzoukX9NWfQSCfvEsqUGZmMdB2p0Tr+O7s0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FECK5nKVchervSTm/ORsi2hPxd3T638ZsFjcbkMpfIWb08ALsbofmXY/vWpla0eKfdwrQG/VXz5ygGckf43e4x8BMkbxnWaesFVBZnCm4l0NvBRDm87DyPTjwiI85aa9pf6QpOK9e+PSfJGKyVw/ly4R1hhwWuNAk+UB3GRIz8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YW1ZzEQz; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZFCmMeh3"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a38098734bso2193015a12.1
-        for <imx@lists.linux.dev>; Fri, 21 Aug 2026 07:59:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YW1ZzEQz"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a18840e2abso2084206a12.0
+        for <imx@lists.linux.dev>; Fri, 21 Aug 2026 07:59:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787324362; x=1787929162; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Bmv09nVrxkTx/RCEk8yEB9FeokGQe6GnMpeREDR5iZc=;
-        b=ZFCmMeh3K0dqSNGXs4bGpXLd+f1NHtXzRgfwS7GfHsnjiix4ExUFlEoe0XByPcluuc
-         EDZ/+cKphxVAXZggmFBpR8H+IDGFAFpmmZfoI3P8JuaSeuOJfTUbwmBcA6B8sUWGsVbG
-         ZXvKeN/nHg03+dTWRLxblWOvOuhLZ1drvCNgmiQG3BI1Q4Dr2S+IqoZXpBL6rNkbNs0j
-         94qXJGWUi0d87mnKkcVQ0OKKAIgp9DXuK/7uYBUSbIuhql0b/0zo/laKpdruVReGUHkr
-         ZKVOcUEeGxIxjoAoP9H/+7yafUdYJvvGeqpU16M80TkmCZRxzIfOvZxLsJja8+AowY5K
-         8Iyw==
+        d=gmail.com; s=20251104; t=1787324364; x=1787929164; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=i28649nrMbrzjwe7lKZ6MKTSXfJUvAObdfOOl+7VWTs=;
+        b=YW1ZzEQzbBTURe8lOKsI+vlfAmJgiAdmU0tejM4WX/TsUZSLST/E4Fl/CNFhbBHYhy
+         fPo8mEizTC40srVWx1KwCMaJQfFp4vgbh7EmvYJgvk62FE6HJFZkPgrS+Nz7gjcuMbE6
+         FqWbMZ1Sl+HIXdOADQYG4ttwJvhnHF3K4faUCrL/eZqHlYDPC1MZnNgxz/IXsK2eBJXL
+         ZaZ8FSsWprGSA4rLUMyP+yMRPgi7BjSEilJDDDTEADLfn4xcDt3JfH4sfs0MWbOZrEl0
+         D9jb6Hvm0BtbyS2Aym81Xdv2LI33unqjMLrPJVIfYOsm8fykJNrh4PTg29u5qowZF0d/
+         kjuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787324362; x=1787929162;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Bmv09nVrxkTx/RCEk8yEB9FeokGQe6GnMpeREDR5iZc=;
-        b=X4Vrk1NAJRqxnKGpoIn7BE5X0HexUoJT6pVuMTeLY7OXXI7zAKATphmP4SZMUpKB89
-         w0bLgS3ijjissKZF7LrqFy6lr5t4qB1xcycJmI2eUMKCMf0JIZTyHry/UxbQpOTs2Kpw
-         vDot5h+iICxTcx3jLidvnkTxxfozQWg56PY499FcWONvrUzOLEyJhGMiUlU9Kdxiia4w
-         bYxfKHiT9ezqojJ7htUW6ND/UfpucP5Cz/52zuHfgXTt1SHnit7tleh8jioYVSeFbv3F
-         QKiUJGAnZ23Fa3jdvM/B8/tgzq6CljC7TGlSNujiGSSKH6FFZpv84tLe/PEZTdnMfUdU
-         5eag==
-X-Forwarded-Encrypted: i=1; AHgh+RpLqLznLhkj6z1o1dSW3Q0rHlhOlLPa1GnJiO6N151kHOoaTO6lABkq+ct71moyePATmUo=@lists.linux.dev
-X-Gm-Message-State: AFuF++l7jXdfA/M9EdcB7lKs++hT3sA0En6vao0gXVhsZT64wdstnP8K
-	L0U5EGLvDamGrcvLLbMjQsNa9v76ZZqHTpj68RmU00XQibCeHoC38swF
-X-Gm-Gg: AR+sD122yKuzIOIYzPL60TISokjGYpmbipEFiERlk0a2vG9oQdbvA2dNDDchCgtPKjk
-	T6BRN/tcRRGIvpy3FJaCMJEK3zhuMn+bUqxwh7Skfqd4YVicQq/NDQ95RQgCYOn+aL1or8dOyrp
-	aT8GZ5YUxEWNHWeB7AWjWeKBk/5CmD55lsuXR9NkrppYzg/Zt+Izp2JRSqsykVpsW8B3TBFNHrR
-	7MmPqaUHqP2IQdRhPEwy8aEQ1D+1gGAH28lJgVXvXKr9kYq4lSAbg/ka0WUwjbx6n3lmui9GtjT
-	JFGgO3xELsVbFNXYg1GLfzfl7vJcEEFPqdugrsFzMGXTRWm/hCyU3rEVr8OOJfwMkvZYUIO/Wh4
-	90z7ngHQa/c3cDxdfQ/w6queOS9hEw8wMQ74FFNKSRy28z1fvcpuzoJcuqm+hKSCJZjiCPcxVNc
-	eP8b+DaP70Ant3sKVZsTyqH4nlh0vGfFNzp+EXcS1dOK6jor8HghoHPBdVl4dx24fATDXs9G97n
-	2rFkKaXrQOPWjYhlPPQdtoUliT/TyCLcXBkSoOHATanaZ1Xrh0IRMArcw8L1r9DobbS/7JOfb0k
-	afzjtU8Ki8s7MJfpeMFEC5YWbLGzDnVljhWdjpy1S9KovalW
-X-Received: by 2002:a05:6402:321a:b0:69a:a4cb:2882 with SMTP id 4fb4d7f45d1cf-6a42f216beamr8673257a12.9.1787324362464;
-        Fri, 21 Aug 2026 07:59:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787324364; x=1787929164;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i28649nrMbrzjwe7lKZ6MKTSXfJUvAObdfOOl+7VWTs=;
+        b=YHQ+jJd9uJKpBzDVqwya+fGZUhRJkN0dB64e+srnujW0RFIryv+95MpBMWBhC6Im6a
+         7T8iSCgMK3td8tjldY4Zw1pt7u3AzJIov39/OJldhxIHsPZC/MUg38ksHo3Cz49gsYf7
+         owVwl3xx3wxHTuKYk02OfKgwBc4iBrYo3LvRLhaVBFkXM7XvY/BSfEwxIomLAbwrIDGi
+         q5LNF6ieN5gI5aykamk4+UIoiOisGC5PzBNznoFy4XZHNs5M8obFBxK5PuCUcbJQmhCZ
+         uHgytFQRvzidOthB60R/DTSxBDdJUoT1FNSLu0OhkdIrR8DCt1TqCz1W5xQT4fmdTmK6
+         AeVQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrnNkGzjtQRZUErlpJOUVRIlIcSYln7+YX+sefECOQPUzZ3L5pwLhdLyB17KdRzQH2TYpA=@lists.linux.dev
+X-Gm-Message-State: AFuF++kRssj/ll92R/RCaPoXs2atd4oz/9eXwgjH4eBAoRRjFmBmED2G
+	daVsqMUBqK+xM/RZNzHgrRYdm6rUNUFpLmKzuS2K29lGxkm51NQnU/tr
+X-Gm-Gg: AR+sD10ELMKlcUTelb4rzmYwUvQptG3DSURWnv/01Fwa3EcFuSeG09Yxj6BokV0jtE2
+	Jm4GKDrlKNQ/enhQ/YRUHp+IJJY8IMrainVuI010Ir3OTpPAsPyMZX3YhK3kg2JEGJKq+FPf6CU
+	7QWLWESl5lzt6JpGvLevx++NB3ud+QCHc10uyOqzGNaagIRwTbjWQ7pAJO4sbebZUz+R88YxZsc
+	bq5DnepUhIgtBAOdgEItDCKmvu3eKsxC+Oz5XfvZGxGxQ/qyukVYcgQaS3LgEHAUWJaQ+HiSUrz
+	TYy7a/3Sisn6V82JEpmINjtUJmUS6VNcgJKiEcU+dVURicpXpPXDjmps/YwhBo6TLjl3BWACDSV
+	yyxaDooH50ut1Ssgcxx0huCzIXSdPYNEqpqQj5zsWryXi/UAUpBp369NaX7K1KOmo9YyW0sNUUM
+	FFd3xzazLCCjSHgJS8kzi+VkAsKodKDSIeRhvTXbRz2Am/RJoC5hnigNEFXLI1ifJWcq2y9N96v
+	8jib0We6kMns/flCkfbwLmRcTtAb4Rr7/escNXeV/ol1QavvfOB4llVN5HrQVX5swRId9CJNxZz
+	qLsYDtZ9FUr4Sj4UVOf+bWFZE8HGYqEaBRw4dw==
+X-Received: by 2002:a05:6402:322a:b0:6a1:f895:1ba with SMTP id 4fb4d7f45d1cf-6a42f20b899mr8424396a12.12.1787324363509;
+        Fri, 21 Aug 2026 07:59:23 -0700 (PDT)
 Received: from [127.0.1.1] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a411971b19sm6577066a12.11.2026.08.21.07.59.21
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a411971b19sm6577066a12.11.2026.08.21.07.59.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 07:59:21 -0700 (PDT)
+        Fri, 21 Aug 2026 07:59:23 -0700 (PDT)
 From: Franz Schnyder <fra.schnyder@gmail.com>
-Subject: [PATCH 0/2] arm64: dts: imx8qm: Add USB HSIC support for Apalis
- iMX8
-Date: Fri, 21 Aug 2026 16:58:56 +0200
-Message-Id: <20260821-add-apalis-imx8-usbhsic-v1-0-fb93d73ead44@toradex.com>
+Date: Fri, 21 Aug 2026 16:58:57 +0200
+Subject: [PATCH 1/2] arm64: dts: imx8qm-ss-conn: Add USB HSIC related nodes
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,10 +72,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALBniGoC/yXMwQrCMAyA4VcZORtYypDqq4iHLs3WiM7ROBmMv
- vuqO36H/9/AJKsYXJsNsnzV9D1V0KkBTmEaBTVWg2vdufWOMMSIYQ5PNdTX6nGxPpky+o4vzI4
- o0gC1nrMMuv7Pt/thW/qH8Oe3g1J2/bdeCHsAAAA=
-X-Change-ID: 20260821-add-apalis-imx8-usbhsic-84c9cc211d1f
+Message-Id: <20260821-add-apalis-imx8-usbhsic-v1-1-fb93d73ead44@toradex.com>
+References: <20260821-add-apalis-imx8-usbhsic-v1-0-fb93d73ead44@toradex.com>
+In-Reply-To: <20260821-add-apalis-imx8-usbhsic-v1-0-fb93d73ead44@toradex.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -93,34 +92,74 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  Franz Schnyder <franz.schnyder@toradex.com>
 X-Mailer: b4 0.15.2
 
-The Apalis iMX8QM/QP routes the second USB controller in HSIC mode to 
-the USB hub on the module. Add the HSIC host description for the 
-iMX8QM/QP SoCs and enable the HSIC path for the Apalis iMX8 modules.
+From: Franz Schnyder <franz.schnyder@toradex.com>
 
-The HSIC host node is added in the QM/QP specific dtsi to not conflict 
-with the address used by usbotg2 on the iMX8DXL variant. Therefore, it
-can't be described in the shared iMX8 conn dtsi.
+Add the required nodes to support the iMX8QM/QP USB HSIC host controller.
 
-Tested on Apalis iMX8QM with the Apalis eval board.
+Keep the HSIC host node in the QM/QP specific dtsi to not conflict with
+the address used by usbotg2 on the iMX8DXL variant.
 
 Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
 ---
-Franz Schnyder (2):
-      arm64: dts: imx8qm-ss-conn: Add USB HSIC related nodes
-      arm64: dts: apalis-imx8: Add USB HSIC support
+ arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi   |  9 ++++++++
+ arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 26 +++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
- .../arm64/boot/dts/freescale/imx8-apalis-eval.dtsi |  6 ++++-
- .../boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi |  6 ++++-
- .../boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi |  6 ++++-
- .../arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 16 ++++++++++++-
- arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi    |  9 ++++++++
- arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi  | 26 ++++++++++++++++++++++
- 6 files changed, 65 insertions(+), 4 deletions(-)
----
-base-commit: eba4724641990bd9975ca10ababe726b6143f0b6
-change-id: 20260821-add-apalis-imx8-usbhsic-84c9cc211d1f
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+index 176e2e332f87c..44eee9abacfb1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+@@ -384,3 +384,12 @@ gpmi: nand-controller@5b812000 {
+ 		status = "disabled";
+ 	};
+ };
++
++usbphynop2: usbphynop2 {
++	compatible = "usb-nop-xceiv";
++	#phy-cells = <0>;
++	clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
++	clock-names = "main_clk";
++	power-domains = <&pd IMX_SC_R_USB_0_PHY>;
++	status = "disabled";
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+index ccf9f510e0f88..168f89eebeedb 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+@@ -4,6 +4,32 @@
+  *	Dong Aisheng <aisheng.dong@nxp.com>
+  */
+ 
++&conn_subsys {
++	usbh1: usb@5b0e0000 {
++		compatible = "fsl,imx7ulp-usb", "fsl,imx6ul-usb", "fsl,imx27-usb";
++		reg = <0x5b0e0000 0x200>;
++		interrupt-parent = <&gic>;
++		interrupts = <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
++		phy_type = "hsic";
++		dr_mode = "host";
++		fsl,usbphy = <&usbphynop2>;
++		fsl,usbmisc = <&usbmisc2 0>;
++		clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
++		ahb-burst-config = <0x0>;
++		tx-burst-size-dword = <0x10>;
++		rx-burst-size-dword = <0x10>;
++		#stream-id-cells = <1>;
++		power-domains = <&pd IMX_SC_R_USB_1>;
++		status = "disabled";
++	};
++
++	usbmisc2: usbmisc@5b0e0200 {
++		compatible = "fsl,imx7ulp-usbmisc", "fsl,imx7d-usbmisc", "fsl,imx6q-usbmisc";
++		#index-cells = <1>;
++		reg = <0x5b0e0200 0x200>;
++	};
++};
++
+ &usbphy1 {
+ 	compatible = "fsl,imx8qm-usbphy", "fsl,imx7ulp-usbphy";
+ };
 
-Best regards,
---  
-Franz Schnyder <franz.schnyder@toradex.com>
+-- 
+2.43.0
 
