@@ -1,287 +1,325 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010030.outbound.protection.outlook.com [52.101.69.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA804ADD8A;
-	Fri, 21 Aug 2026 14:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E431E821;
+	Fri, 21 Aug 2026 14:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787321187; cv=pass; b=mAjQFXBiCLk6AWya/CwN/x0dzEOAB+lkFWDE1REkqZu7uiAJkKe1Ko/EsEzBPmns3MM1Vyf4D/X8K1wXMZW6TJvZ1L8y6aKgZpKMcAGNJKW8UKMx3TLWTsiq83+zupbHblcJhMPtwc9n+Ex3gMDBm1+TxznsJatej8mS3vx61P4=
+	t=1787321664; cv=fail; b=ZlykPlczyd6+Fm+8TMPB+EIK531Lfd9uR/Sgt8UM1UwMaiLNWNnrkH420Zn+sQ/upt1jeq6GhkW2JQ7GTf4NU2+7eseunvrEXGNpSbjeMiHh0o3QPttKmTQtuqbHIPwDYxsQXZ1VLkQCBSuuQ1Mm5NA8/7xGI9jGGGRl0pKIoZw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787321187; c=relaxed/simple;
-	bh=xY6CnZViDMwNpVsvDIJLXlXMPUGateyd8GAa9iRNToI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ASYKITZBlpFE7ea82LiwpOKqHz+YZa/ckOvFqR8JA9bGab4+XK9w7ZRKti8S4w91ulwTt/7lyZ3ygZ1HEoqGpcUcCqqEZpDnlzloYq0lzAjsC0KkI/nhDIOqAJ6arkByfb2qLpAaJ2FV96pNRyA/Mq/nWAYZUmMNe5dutoW9iCk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=TTKVytQB; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1787321664; c=relaxed/simple;
+	bh=HfeUJyWcEkAyGXoMmo79wy9yI4EmCqZ3RfwAMd148vE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YLyUV2k9cUPU37LTE7ufaFO3tqmX58MQDKCOcuEQtkgJLTbnRO9ijW0HbHvQOr0oBPWu5U+I+rA/NW1OAwQGWgVjnLzHEE7GyhnG16Hb4NQP250JGg9WtptrkWNPMfvrHJSusxP9PpLZeE0UNhms9fgcOsSFLwS/sGQ7OhH3Svw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KMvW7f5D reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="TTKVytQB"
-ARC-Seal: i=1; a=rsa-sha256; t=1787321085; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aS3Wxr42/WowGTQMOwQn+Aik7EWu3ZtXAyK7Ka9JjnfmyekKH/X9DF7cl903wIOEJg01lQp+gWpZGWmsspCAx0u4fU8P+aSiUAIfuOxMh2gINvbdCDlWZZYuBuYcc4/Hgvq6u6X2dotGYHOAUIOO1A5l2vx+Nlrvv36qnd4Zo1U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1787321085; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IXNJ/14cVvvKroHplPIGuCBeBYfygG4Y7sUaJ45XWQE=; 
-	b=dGSfR9zZz1WQQVWan6t8MG3C7sldyy+btQ1fIcHks35yTU0HKlGgpqkis8Bvw4NE/R8apiMLyVPbZ2hQ/JtlCZybWHRdin/g6Jwx5Uj4lpEPGM+gKQTp/tJmHKoctrb8wHffa2SpJrAL6iyPO9uS8eTa8hjDXKTHy2rgRVXWuH4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787321085;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=IXNJ/14cVvvKroHplPIGuCBeBYfygG4Y7sUaJ45XWQE=;
-	b=TTKVytQB8iMxRzpvUXKXpNq1OdRpglO16qtqbszi6lJF4nmFxmWOyOMX5spT+YP3
-	Xv/lujJhnv14rcillKejZcMdJjESzp+mPU/hITTrVhEacTe4GuC1BIRlXTEL7mp/IW2
-	dTt5sCybxxEgKjnIOYRF8dHMon4uyWe1V4AxLMQU=
-Received: by mx.zohomail.com with SMTPS id 1787321084147104.50540849911135;
-	Fri, 21 Aug 2026 07:04:44 -0700 (PDT)
-Received: by venus (Postfix, from userid 1000)
-	id 52022181F47; Fri, 21 Aug 2026 16:04:34 +0200 (CEST)
-Date: Fri, 21 Aug 2026 16:04:34 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>, 
-	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Billy Tsai <billy_tsai@aspeedtech.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Taichi Sugaya <sugaya.taichi@socionext.com>, 
-	Takao Orito <orito.takao@socionext.com>, Linus Walleij <linusw@kernel.org>, 
-	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
-	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
-	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
-	Sudeep Holla <sudeep.holla@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
-	David Lechner <david@lechnology.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Santosh Shilimkar <ssantosh@kernel.org>, 
-	Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Viresh Kumar <vireshk@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Emilio =?utf-8?B?TMOzcGV6?= <emilio@elopez.com.ar>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Prashant Gaikwad <pgaikwad@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Ulf Hansson <ulfh@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, 
-	arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 28/45] clk: rockchip: Make sure clk_init_data is fully
- initialized
-Message-ID: <aohax7qilvrgV1iE@venus>
-References: <cover.1787239813.git.geert+renesas@glider.be>
- <49127c1f7529acccb17e1408db9f21f6d15aee2b.1787239813.git.geert+renesas@glider.be>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KMvW7f5D"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k7nbIwHyRP2XYDXunLRWCxeb/5bOC9hNHPh54AtTtLHiwPqxd7nnY31beODmEC90iej5HdIkfVgNgrCt8c6/1Xeir1JTsY0YkiA0U3pbNhm7hBqjgNMBhCdaTt/kOw9TN9VE/MTOj8fUnCkPmXZNf2PSXJubK7oXZPx8i7ZVi9zvJK4VLEFHXbqZJ4232h/rLy9UkQ8/Tm1TKL5RW/woGeaUDvA4s77l+qBJ3TklnzRqAXN6zYOssMhkfEEC4Cq16qJxai6X0FB0VyRSoIDuJrhjs0jtAyYX9LForWXurcluIWMO/YNVxqHgxbFC8ndqTiusVlydLH35n3ODwUrL+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rAZ6seswxuRiw+ttABEsF0phIRmy30movO917BbLOso=;
+ b=XCEkw1j4jYfYcRDMhSzRWJ8O135CSL0kzW+kr7iNmpQAdxEEkGqdfzlOHPo62Za0cuEZz6uIqQU1yIx6jOTJ2EO0nQtV8FW5M5O8kIDZ0AkewLohjzmcK+ndgJsrhn1jNOTYhendery5yJ3IKfDyTWeejsp5GHV6SICfH0uuXiWrPbNJLb+1n7dIMsRYNUSLoPRazOFEmYkh+hgXnIrm6TigVPHNpybLa4r8ddnnAZsSOvATuRsxe8e8QZob2HmuNCKyl8CaWqZSvLycJ5Cas8BBgEfpEAVhud+EEIVptAUsZI+7C22TdJeOsNv4XIjg2JOlonIQbuh3r5gg3ObIlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rAZ6seswxuRiw+ttABEsF0phIRmy30movO917BbLOso=;
+ b=KMvW7f5DmKgjSo95uBLMjmfcXJ0g/erZWFTxc9dIdFCEJ0u+7Pm7SGfmsWyJMO54j3AgqXFnsNQoMmElJ2Ex8HkSo5I6z75+hMZTtpiofBH0obVRHQ+l8SYsNjKaDz4ejAjUqbbq3Ixzxp5Q6n9Nhqb0ld3eR1ASMGCq0fBRnUrAS+rzo+cVtXLbj8Dy5BpviWZgBJK+7GHxQkGU5pTNXuPI7jxifgKLtArB2OZWRGVlNJitXaHIXmYs5lZ/1RkIbNDe3yNj3HjXOlq9wUW1gJrlvb1D0WsajAlHdvLLn93qkakiAA0asJfrdQ2vKADPUiS1xW8JuDrCrEL0ONOpmg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM7PR04MB7125.eurprd04.prod.outlook.com (2603:10a6:20b:121::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
+ 2026 14:14:19 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
+ 14:14:19 +0000
+Date: Fri, 21 Aug 2026 09:14:11 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Stefano Radaelli <stefano.radaelli21@gmail.com>, conor+dt@kernel.org,
+	Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+Message-ID: <aohdM1PmiT4loOz0@SMW015318>
+References: <cover.1787314780.git.stefano.r@variscite.com>
+ <d709664186f2a85b6c3173b5e5a8a297464fd7f7.1787314780.git.stefano.r@variscite.com>
+ <20260821124107.DA5971F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260821124107.DA5971F000E9@smtp.kernel.org>
+X-ClientProxiedBy: PH7P220CA0099.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32d::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zybuuvaovsaw7bmk"
-Content-Disposition: inline
-In-Reply-To: <49127c1f7529acccb17e1408db9f21f6d15aee2b.1787239813.git.geert+renesas@glider.be>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/287.318.86
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM7PR04MB7125:EE_
+X-MS-Office365-Filtering-Correlation-Id: 423cbe27-096b-4106-5c3e-08deff8e7d72
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|366016|376014|1800799024|3023799007|6133799003|10067099003|56012099006|4143699003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	KkgQBhjs1bwy/QbBR6QG8TSDRtEVRx/k0nupgHJbfZDjAxOIxvRdT8VzGbqZ7sqIerHVGS6KkEbjp//jvo+u2qDIqA167y7wAeBTwsHsNR3vlQ9cSpCHa6IAHsx5HZae6AUKiWHoS2LFNShELnctGrCR5qgdNXSNrqa6SMlvYCTfq2+AJmiJ0TK4AO7pjH350PrZOH8Y/knulfz7GPgba4l0euASL7uEHSzlsS+iRqFTk/PDyMGZbz5k8jQvarLM29U4GEXqKo7uYRPuAVUs2jCW2hrSXLt2v309wJ+azajVMhFSzsHxzugOexak3zAjbJMsD2IJiDLfKrdHZAgM2G8yBctMqUcqKcrT+MOztwkDttZMDwH6waMFvAu3dolNDnoKgq+tW048sDgtYadoQWuaA6FeXup0/bHjYLXdzairPbwg/Xa5Q2bWmdpkOXbwkF+PczdfvJIBHeyt4z6iPJDuXbEDxkc9VtgcP7XBEKHEKKzxtWbAB+7k1LbjMhi0rIFZNyMlEe68r0lApWPx50IN2KPRV8erd6AscOieiDl4hw5TJPmHz2uPAMw7CA8cifz05Wj/vs5D6QPgh+Ww3rfcRU8xbzzX8A7QC84bT2I=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(366016)(376014)(1800799024)(3023799007)(6133799003)(10067099003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?liak0WslHGRZeIFbLE/spMUlTQXYPNWc7TKxwFwrM+I6+JZIbSi5unJq5v?=
+ =?iso-8859-1?Q?rQh4ysZrhkHOuPLJd5D58BYrzdwcE6o5QJl27ZUnLVHXXLo827XDGRdPuQ?=
+ =?iso-8859-1?Q?7+VkHUw9EDMaUPaeekXftlsjyC97Jo5V8W7hj4OPj3AfKcfAi3m7s8f/59?=
+ =?iso-8859-1?Q?5lV51boc7o3E0nmeZ+2LY8nZNoKcr1Q5jwWnMPHfOErZ/2EtSLmNdKTwba?=
+ =?iso-8859-1?Q?6ApQ7iMYCwBo50KFRfrSaMYNEpLen0GOJUem5d30vk3tM1GNpRSlFjr04T?=
+ =?iso-8859-1?Q?RC1G0WeeqkHlICX9uMJ0a+4ny5NmR62AIpoLa+yOCg356NwFXy6IA5WCO+?=
+ =?iso-8859-1?Q?m+0iuxOk6djulBOgQw4mDsyKwKsB4Y0zqPGNSmb7rtDpjRMjweW7SyVKWr?=
+ =?iso-8859-1?Q?/dpb5owSkKNM51nx2wIl6/rJGGJwIqzExbbb+3s2j+51k1ml5b6ZPcwfSH?=
+ =?iso-8859-1?Q?OVaSprGD4k8fcrt6QEc1+jnr7LuGpM4wXcM0Xc05UhgRJMnFSFgu/oPBmp?=
+ =?iso-8859-1?Q?yOTmah2ZapOLF2Qi2EJaFjL6KNJy8mE5TuLatKJp6J+VfA/Xd7PNb+/+Z4?=
+ =?iso-8859-1?Q?2q+XKxSw30MS/cnmgPzPlf+/6epnRphni/cT4n9XzR5PP4Frzuc9pKVvzv?=
+ =?iso-8859-1?Q?mqliYJZczQeox5x3Qwg93sQrYR8nijxblTmEhFQ1ytBvcf1Oh573DkJhmb?=
+ =?iso-8859-1?Q?TWoOigc5Zqdiw2/eJuE8nWFoN0H0yrb/PoQG+s4Hfq2FjaDLA0E6jSoLpD?=
+ =?iso-8859-1?Q?gWEunCRBdl3hv+tGrKPPF1n0m0GScgPUrjH2eYRETP1tN5g/3YRcbvipij?=
+ =?iso-8859-1?Q?UsASXZlHMUxEV6/+H6MA74e+bJjJUUnAiTVMM0jcU91dd9PTfjgQKxFjZo?=
+ =?iso-8859-1?Q?qiz2mg3/4KYFjrV+ErqCZkzrzPdTeisC0MHKZIJHH00lDNlLoVAlGVsnGI?=
+ =?iso-8859-1?Q?PLzxmB6zxCqP6g84U5m9L12RkN+ynJZ8o2Ux4QIgMqBnsg9M6ptaASvyXl?=
+ =?iso-8859-1?Q?LyGO2IAX0YPtJhcde9zYAadmzCXz514qf9QxeOW6hCsW4J/z2ieaQRRW5t?=
+ =?iso-8859-1?Q?aXqxm+OUYcELrUo3Ew/pFYm4QZvZKIMiDot1zD6WQRRTJ5ezXZknYDgdhn?=
+ =?iso-8859-1?Q?i1tx84A8Pnde0jz16gT1itseg/8EGC9yyIM4JyiGRz7GyJWixr7ARmLlM2?=
+ =?iso-8859-1?Q?bTez9w4OB5decfXAQ2iJb54KVbTBenjWre8ue60/D5IZtG0JIeBfBX+tUg?=
+ =?iso-8859-1?Q?ICu34mjEnzXUdaG4Xa2JBlepAWHyZ1F3TNL4G+wRwHwX/g3cfnXNKfIZTQ?=
+ =?iso-8859-1?Q?U/Wa7bFNhiE+zcxlzmpKOZePQrRWxXirhMt84cb8zfYgUz7tbc+3v+IlfP?=
+ =?iso-8859-1?Q?zNT/7MVHasGxa5eeYRFgUOgT/L6Maxzascu5hRhUHWC6HuIK0Yw5AxvTvz?=
+ =?iso-8859-1?Q?7S7CKtNjnVbKewz2Zh3KIjuvA5yXJ3Vvbq5xrM0WORczMj4QMn2kLrd6ZN?=
+ =?iso-8859-1?Q?/qEcWa3qy1rWihwobtRNTOpORlvpv93sE2XlJgTB5McodAfzxJ7ehF4ghX?=
+ =?iso-8859-1?Q?Vc+Z9hL/NW6iXAdMB9J0iUE9thnSRAFBv2Q9JB8S6cMZyBipfCR8Iu9l60?=
+ =?iso-8859-1?Q?S6jDt9e27otcWvAIw7EjAZcGTR7MA9O2FoNInbKeegB/PfDa+vVmLpgHRk?=
+ =?iso-8859-1?Q?tWTKgyytJw1ubCscdDjud+M7PUnuYtHrVjXjvqOfp0bHsUINjD2pzWErim?=
+ =?iso-8859-1?Q?SqjqTnn4K3Sn9ZxEW6Ex08VEu1aMcsqOccAqmyoecEP4mu/bY9Ux5rdqU6?=
+ =?iso-8859-1?Q?hg8600FS9zKSwxXKU4nT+H7/4SF952cvbCwYGG5K919wt5lw0HNC?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 423cbe27-096b-4106-5c3e-08deff8e7d72
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 14:14:19.1177
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zASLkJ3nS3p8NHP69EGtNWs+jd34ErHh5R71Y0UkRapAZc5CcO4z9+S0qI3ZJ/a4lJMYGyLo5vAkwBVtJMPzTk9St7OI0MtQhJxvxddovaLbJPY+WcJ7X2Um1j+41UyE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7125
+
+On Fri, Aug 21, 2026 at 12:41:07PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [High] The Ethernet PHY reset pin for `ethphy1` is muxed on the `fec2` node instead of `fec1`, causing PHY detection to fail during MDIO bus probe.
+> - [Medium] Use of `IRQ_TYPE_NONE` (0) for touchscreen controller interrupts.
+> - [Low] Duplicate `assigned-clock-rates` property in the `&sai1` node.
+> - [Low] Attempting to delete a non-existent child node `bcrmf@1` instead of `wifi@1`.
+> - [Low] Missing required `color` property in the GPIO LED definition.
+> - [Low] Use of deprecated `reset-gpio` property instead of `reset-gpios` in the PCIe node.
+> --
+>
+> --- Patch [2]: [PATCH v1 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support ---
+> commit 910d1859fce3905900b424cb29918719c63275b0
+> Author: Stefano Radaelli <stefano.r@variscite.com>
+>
+> ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+>
+> This commit adds device tree support for the Variscite VAR-SOM-MX7 system on
+> module. It provides the common SoM description along with configurations for
+> eMMC, NAND, WM8731 audio codec, and the V2 hardware revision.
+>
+> Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
+>
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
+> > index 0000000000000..82814535fb93e 100644
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
+> > @@ -0,0 +1,378 @@
+> [ ... ]
+> > +	leds {
+> > +		compatible = "gpio-leds";
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&pinctrl_gpio_leds>;
+> > +
+> > +		led-d10 {
+> > +			function = LED_FUNCTION_STATUS;
+> > +			gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
+> > +			linux,default-trigger = "heartbeat";
+> > +		};
+> > +	};
+>
+> [Severity: Low]
+> Does this led-d10 node also need a color property? When function is
+> specified, modern LED bindings generally require the color property to form
+> sysfs directories in the format color:function.
+>
+> [ ... ]
+> > +&i2c4 {
+> > +	clock-frequency = <100000>;
+> > +	pinctrl-names = "default", "gpio";
+> > +	pinctrl-0 = <&pinctrl_i2c4>;
+> > +	pinctrl-1 = <&pinctrl_i2c4_gpio>;
+> > +	scl-gpios = <&gpio4 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> > +	sda-gpios = <&gpio4 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> > +	status = "okay";
+> > +
+> > +	ft5x06_ts: touchscreen@38 {
+> > +		compatible = "edt,edt-ft5206";
+> > +		reg = <0x38>;
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&pinctrl_touch>;
+> > +		interrupt-parent = <&gpio2>;
+> > +		interrupts = <30 0>;
+>
+> [Severity: Medium]
+> Is it intentional to use 0 (IRQ_TYPE_NONE) for the touchscreen interrupt
+> trigger type here? This can cause the interrupt to be unconfigured or
+> incorrectly configured by default, which may lead to missed touch events or
+> an interrupt storm.
+>
+> [ ... ]
+> > +&pcie {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_pcie>;
+> > +	reset-gpio = <&gpio2 31 GPIO_ACTIVE_LOW>;
+>
+> [Severity: Low]
+> Could this use the standard reset-gpios property instead? The reset-gpio
+> property is deprecated, and dtbs_check validation may emit warnings for it.
+
+Yes, please add reset-gpios under pci port (&pcie0_port0) for new dts.
+
+>
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi
+> > index 0000000000000..724aa6fb36de2 100644
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi
+> > @@ -0,0 +1,64 @@
+> [ ... ]
+> > +/* WiFi */
+> > +&usdhc2 {
+> > +	mmc-pwrseq = <&wifi_pwrseq>;
+> > +	/delete-node/ bcrmf@1;
+> > +};
+>
+> [Severity: Low]
+> Is there a typo in the node name here? The node defined in the base dtsi is
+> wifi@1 (with the label brcmf). Trying to delete bcrmf@1 will cause the
+> device tree compiler to fail since the node doesn't exist.
+
+Now don't prefer delete-node.
+
+>
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
+> > index 0000000000000..5fab164a64820 100644
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
+> > @@ -0,0 +1,65 @@
+> [ ... ]
+> > +&sai1 {
+> > +	assigned-clock-rates = <0>, <36864000>;
+> > +	assigned-clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_SRC>,
+> > +			  <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
+> > +	assigned-clock-parents = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
+> > +	assigned-clock-rates = <0>, <12288000>;
+>
+> [Severity: Low]
+> Does this node intend to duplicate the assigned-clock-rates property? The
+> second definition (<0>, <12288000>) will silently overwrite the first one
+> (<0>, <36864000>), which will cause DTC to emit a duplicate property warning
+> and the intended 36.864MHz clock rate configuration to be lost.
+
+Yes, please fix it.
 
 
---zybuuvaovsaw7bmk
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 28/45] clk: rockchip: Make sure clk_init_data is fully
- initialized
-MIME-Version: 1.0
+>
+> > +	/delete-property/ fsl,sai-mclk-direction-output;
+> > +};
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
+> > index 0000000000000..cbd6252bd18f3 100644
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
+> > @@ -0,0 +1,633 @@
+> [ ... ]
+> > +&ecspi1 {
+> > +	pinctrl-names = "default", "sleep";
+> > +	pinctrl-0 = <&pinctrl_ecspi1>;
+> > +	pinctrl-1 = <&pinctrl_ecspi1_sleep>;
+> > +	cs-gpios = <&gpio4 19 GPIO_ACTIVE_LOW>;
+> > +	status = "okay";
+> > +
+> > +	/* Resistive touch controller */
+> > +	ads7846_ts: ads7846@0 {
+> > +		reg = <0>;
+> > +		compatible = "ti,ads7846";
+> > +		pinctrl-names ="default";
+> > +		pinctrl-0 = <&pinctrl_restouch>;
+> > +		interrupt-parent = <&gpio1>;
+> > +		interrupts = <9 0>;
+>
+> [Severity: Medium]
+> Is it intentional to use 0 (IRQ_TYPE_NONE) for this touch controller interrupt
+> trigger type? This might result in the interrupt being unconfigured by default.
 
-Hi,
+why type is NONE?
 
-On Fri, Aug 21, 2026 at 10:53:38AM +0200, Geert Uytterhoeven wrote:
-> The clk_init_data structure contains several mutually-exclusive members
-> for different methods to specify the possible parents of a clock,
-> prompting drivers to initialize only the members they need.  However,
-> not initializing all members may cause subtle issues, which are only
-> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-> enabled.
->=20
-> Make sure all members are fully initialized, to avoid such bugs, and to
-> prevent future breakage when converting drivers to a different method
-> for specifying the parents.
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> Compile-tested only.
-> ---
-
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-
-Greetings,
-
--- Sebstian
-
->  drivers/clk/rockchip/clk-cpu.c       | 2 +-
->  drivers/clk/rockchip/clk-ddr.c       | 2 +-
->  drivers/clk/rockchip/clk-gate-grf.c  | 2 +-
->  drivers/clk/rockchip/clk-inverter.c  | 2 +-
->  drivers/clk/rockchip/clk-mmc-phase.c | 2 +-
->  drivers/clk/rockchip/clk-muxgrf.c    | 2 +-
->  drivers/clk/rockchip/clk-pll.c       | 2 +-
->  drivers/clk/rockchip/clk.c           | 2 +-
->  8 files changed, 8 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/clk/rockchip/clk-cpu.c b/drivers/clk/rockchip/clk-cp=
-u.c
-> index 6205af9ba88a8def..eb6b8b878e4dbeea 100644
-> --- a/drivers/clk/rockchip/clk-cpu.c
-> +++ b/drivers/clk/rockchip/clk-cpu.c
-> @@ -304,7 +304,7 @@ struct clk *rockchip_clk_register_cpuclk(const char *=
-name,
->  			int nrates, void __iomem *reg_base, spinlock_t *lock)
->  {
->  	struct rockchip_cpuclk *cpuclk;
-> -	struct clk_init_data init;
-> +	struct clk_init_data init =3D {};
->  	struct clk *clk, *cclk;
->  	int ret;
-> =20
-> diff --git a/drivers/clk/rockchip/clk-ddr.c b/drivers/clk/rockchip/clk-dd=
-r.c
-> index 81ae8a4ee30ed95c..fbb702d0b9d996d5 100644
-> --- a/drivers/clk/rockchip/clk-ddr.c
-> +++ b/drivers/clk/rockchip/clk-ddr.c
-> @@ -97,7 +97,7 @@ struct clk *rockchip_clk_register_ddrclk(const char *na=
-me, int flags,
->  					 spinlock_t *lock)
->  {
->  	struct rockchip_ddrclk *ddrclk;
-> -	struct clk_init_data init;
-> +	struct clk_init_data init =3D {};
->  	struct clk *clk;
-> =20
->  	ddrclk =3D kzalloc_obj(*ddrclk);
-> diff --git a/drivers/clk/rockchip/clk-gate-grf.c b/drivers/clk/rockchip/c=
-lk-gate-grf.c
-> index 88e409e91a636aa1..458314a2569181d1 100644
-> --- a/drivers/clk/rockchip/clk-gate-grf.c
-> +++ b/drivers/clk/rockchip/clk-gate-grf.c
-> @@ -73,7 +73,7 @@ struct clk *rockchip_clk_register_gate_grf(const char *=
-name,
->  		u8 gate_flags)
->  {
->  	struct rockchip_gate_grf *gate;
-> -	struct clk_init_data init;
-> +	struct clk_init_data init =3D {};
->  	struct clk *clk;
-> =20
->  	if (IS_ERR(regmap)) {
-> diff --git a/drivers/clk/rockchip/clk-inverter.c b/drivers/clk/rockchip/c=
-lk-inverter.c
-> index bf9072ed9fd4daed..e6c7dad60e966288 100644
-> --- a/drivers/clk/rockchip/clk-inverter.c
-> +++ b/drivers/clk/rockchip/clk-inverter.c
-> @@ -75,8 +75,8 @@ struct clk *rockchip_clk_register_inverter(const char *=
-name,
->  				void __iomem *reg, int shift, int flags,
->  				spinlock_t *lock)
->  {
-> -	struct clk_init_data init;
->  	struct rockchip_inv_clock *inv_clock;
-> +	struct clk_init_data init =3D {};
->  	struct clk *clk;
-> =20
->  	inv_clock =3D kmalloc_obj(*inv_clock);
-> diff --git a/drivers/clk/rockchip/clk-mmc-phase.c b/drivers/clk/rockchip/=
-clk-mmc-phase.c
-> index 4efd22953f3e0533..d92bea75faf73767 100644
-> --- a/drivers/clk/rockchip/clk-mmc-phase.c
-> +++ b/drivers/clk/rockchip/clk-mmc-phase.c
-> @@ -205,8 +205,8 @@ struct clk *rockchip_clk_register_mmc(const char *nam=
-e,
->  				struct regmap *grf, int grf_reg,
->  				int shift)
->  {
-> -	struct clk_init_data init;
->  	struct rockchip_mmc_clock *mmc_clock;
-> +	struct clk_init_data init =3D {};
->  	struct clk *clk;
->  	int ret;
-> =20
-> diff --git a/drivers/clk/rockchip/clk-muxgrf.c b/drivers/clk/rockchip/clk=
--muxgrf.c
-> index ccbb1379501ab474..ecdc77654813a3c3 100644
-> --- a/drivers/clk/rockchip/clk-muxgrf.c
-> +++ b/drivers/clk/rockchip/clk-muxgrf.c
-> @@ -59,7 +59,7 @@ struct clk *rockchip_clk_register_muxgrf(const char *na=
-me,
->  				int shift, int width, int mux_flags)
->  {
->  	struct rockchip_muxgrf_clock *muxgrf_clock;
-> -	struct clk_init_data init;
-> +	struct clk_init_data init =3D {};
->  	struct clk *clk;
-> =20
->  	if (IS_ERR(regmap)) {
-> diff --git a/drivers/clk/rockchip/clk-pll.c b/drivers/clk/rockchip/clk-pl=
-l.c
-> index 706ca4b344d399a3..7204b09243d483ae 100644
-> --- a/drivers/clk/rockchip/clk-pll.c
-> +++ b/drivers/clk/rockchip/clk-pll.c
-> @@ -1069,7 +1069,7 @@ struct clk *rockchip_clk_register_pll(struct rockch=
-ip_clk_provider *ctx,
->  		unsigned long flags, u8 clk_pll_flags)
->  {
->  	const char *pll_parents[3];
-> -	struct clk_init_data init;
-> +	struct clk_init_data init =3D {};
->  	struct rockchip_clk_pll *pll;
->  	struct clk_mux *pll_mux;
->  	struct clk *pll_clk, *mux_clk;
-> diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
-> index ee8c79b938d3c15b..10df21178ba483e2 100644
-> --- a/drivers/clk/rockchip/clk.c
-> +++ b/drivers/clk/rockchip/clk.c
-> @@ -257,7 +257,7 @@ static struct clk *rockchip_clk_register_frac_branch(
-> =20
->  	if (child) {
->  		struct clk_mux *frac_mux =3D &frac->mux;
-> -		struct clk_init_data init;
-> +		struct clk_init_data init =3D {};
->  		struct clk *mux_clk;
->  		int ret;
-> =20
-> --=20
-> 2.43.0
->=20
->=20
-
---zybuuvaovsaw7bmk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmqIWusACgkQ2O7X88g7
-+poirhAApVi+Y+WU3mrw03dbGLE92vZNTJMxmeK5fzM3D7/o1HO6GGgy5ZBAlAcY
-AHjbpJgLpOY+bLGDnfv97vri7zP1duirRf2Yw3fhqiFp+tdt8AX6f9hU8bfwu+uy
-IaquBhUMuFejInZcStNJFlC4BF1UJkkacYSNtxFWAsKFMLlzOJQKu7lnBZwfbFWu
-C+FZ7xkWGWrSGNvroDobqiM/LDEYmI6OxnSwbCfoeczBF6D1VEaSeZhbDDVfx0hR
-ja1QtzHWcfm4Y3PLzEaNpmYerMSNE1fZIMFmraZZ3oFaak+uOYWZEWk0UzeZF4cv
-L5jzi4Cwa2V4TIot/53rF+xlSAjZAxTrBEH99onUWqBf4XyMa4k2DnlE+wPNqG5p
-Mz4QW3dtELwXRsHfeWqAT+rF2Iv2rsb8mkWeJ9ir0Ll2v8PHl2Ro9gWyag1zeRF5
-cahZmOPxJFpLKOVsNZX6AAhgvlsJN8kSZ8T48gpuTj+TjdEzrvm8A8l2yU5Or/C1
-kT56IUoCapPk1sZVEqNNPZQZduKm53nfXe9viHXg4BVjz8xXOU2LAZJ/gvrqjqzX
-XzRHvPAAdb+4q0BOqXmFgI6e4nSDBivR2zl2aidohQnxA++NPmGSG0xjBNZAqSY1
-HSFBW4PATNUCcY+1z4MjEfCGtmWtnYk0d23W6+Va0wfJjBcmMi8=
-=BMUY
------END PGP SIGNATURE-----
-
---zybuuvaovsaw7bmk--
+Frank
+>
+> [ ... ]
+> > +&fec1 {
+> > +	pinctrl-names = "default","sleep";
+> > +	pinctrl-0 = <&pinctrl_enet1>, <&pinctrl_enet1_rst>;
+> [ ... ]
+> > +	mdio {
+> > +		#address-cells = <1>;
+> > +		#size-cells = <0>;
+> > +
+> > +		ethphy0: ethernet-phy@0 {
+> > +			compatible = "ethernet-phy-ieee802.3-c22";
+> > +			reg = <0>;
+> > +			reset-gpios = <&gpio5 11 GPIO_ACTIVE_LOW>;
+> > +			reset-assert-us = <20000>;
+> > +			reset-deassert-us = <80000>;
+> > +			vddio-supply = <&reg_phy_vddio>;
+> > +		};
+> > +
+> > +		ethphy1: ethernet-phy@1 {
+> > +			compatible = "ethernet-phy-ieee802.3-c22";
+> > +			reg = <1>;
+> > +			reset-gpios = <&gpio4 3 GPIO_ACTIVE_LOW>;
+> > +			reset-assert-us = <20000>;
+> > +			reset-deassert-us = <80000>;
+> > +			vddio-supply = <&reg_phy_vddio>;
+> > +		};
+> > +	};
+> > +};
+> > +
+> > +&fec2 {
+> > +	pinctrl-names = "default","sleep";
+> > +	pinctrl-0 = <&pinctrl_enet2>, <&pinctrl_enet2_rst>;
+>
+> [Severity: High]
+> Does ethphy1 fail to reset during the MDIO bus probe on fec1?
+>
+> Since ethphy1 is a child of the fec1 MDIO bus, fec1 will attempt to toggle
+> its reset GPIO (&gpio4 3) when it probes. However, the pinctrl for this GPIO
+> (&pinctrl_enet2_rst) is attached to fec2 instead of fec1. Since fec2 has
+> not probed yet, the reset pin may not be muxed properly, preventing the reset
+> toggle from reaching the PHY and causing detection to fail.
+>
+> --
+> Sashiko AI review · https://sashiko.dev/#/patchset/cover.1787314780.git.stefano.r@variscite.com?part=2
