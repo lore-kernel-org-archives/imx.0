@@ -1,152 +1,261 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011013.outbound.protection.outlook.com [40.107.130.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C773B2FE3;
-	Fri, 21 Aug 2026 12:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787313692; cv=none; b=iq+KdZUVKb1fDJ31MBtCLvH/pVXvZTqeVUeaVzwSIQV4HWMOPy5xAjwWZwNdh1U1JouAHGLDjKL/jXWFyZgV9LNiq8b6nFtmwDIeXIQ/z+h0juutJcjxW+zO7e63kMciuyr5ynkzIaArL6ma+F4T2VS+s+ZiKmeR0dKeUfNH+bs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787313692; c=relaxed/simple;
-	bh=l8B8jrUwtIpdpun0A6Qe16xv/NvpR7D53DSTYbiZ4f0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BkGcjP2xsU84eqOUpIbpG3Qjd0UOC85w70JozhkERw/WEP+tX6u5E7m+fYvstccPfYPw2KwZdKVp5bIu4j7qOrV9s/6/ZU7v2aqwu+BUsq+gUvg68pjmQrgsNtUYD3VaXBRQ6awYhKn6QzIwQWlhzxgQjCTrOOyYFUmPYYWrYAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=oPKzPzeT; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=oPKzPzeT; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8436D221F26
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 12:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787315199; cv=fail; b=LIMNu6aRmur6IpE/dAV+9LRYdKGBRdsH7h4MUKIXftEmGbmOZi4TvDh6hO8QDa7GxktC+xHysnC5/DOElKZPjLKHRK7kv07eB95d4i62IVvoK5A4iM+8phh8wLVZtdRmPgzhItQlF6yIbmaVD+5GShUFbJeqF4TPAeCs5tzMPYU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787315199; c=relaxed/simple;
+	bh=b9S8HhXQHX44AEcERCnokLomHsGs+z7JChlDDGymeLM=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ZX82KaHHMMNUPSgxFpiCWia43/JmdESwxTLm5VF9G6OQC5KpeIDvDx2o9tUPrLC1GRZo+qKhHGT8AD+90X6hkleSOntcbYvC9rGgS3aZDL6/v7f4pRzuxWEXf1lLlYAnUdMg6q63gu/hLLXcbmhX1Ot+ENgxWsYkLHii34T/i+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=GZtN5i6N; arc=fail smtp.client-ip=40.107.130.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="oPKzPzeT";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="oPKzPzeT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1787313174; bh=l8B8jrUwtIpdpun0A6Qe16xv/NvpR7D53DSTYbiZ4f0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oPKzPzeTto3Rtpjceb9FC+Dvuza3fomwF5mQYCAp+YKs0B/tPC1MS8THVmmrxs6ou
-	 zhiaamwhVaKDU7jU5WC1gTjRBzRQhbcACY4ctkYJr6WQjgcTThdl7GQCUPiZ7UqH7g
-	 csnjYmgX9WYMTrZ29W734dsp9g33Y9EvhzWyUQ1uIRDQObGY8D1xbj3hedRPFAHoQF
-	 U0n9q2y/XGnsZ38tLRDkPYoQO7zr7GLXOdk7I0zy5OppGqqM0BG/JRKMVW1YmJtoNp
-	 P+8saJSIi5glthGejj0fJxKtW1i/9gb2SNwscq7IITpJmbx1bAaAsSZSU3WAHWldb2
-	 JTVqZ/wxxf+qg==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id AC49D81EF9;
-	Fri, 21 Aug 2026 11:52:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1787313174; bh=l8B8jrUwtIpdpun0A6Qe16xv/NvpR7D53DSTYbiZ4f0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oPKzPzeTto3Rtpjceb9FC+Dvuza3fomwF5mQYCAp+YKs0B/tPC1MS8THVmmrxs6ou
-	 zhiaamwhVaKDU7jU5WC1gTjRBzRQhbcACY4ctkYJr6WQjgcTThdl7GQCUPiZ7UqH7g
-	 csnjYmgX9WYMTrZ29W734dsp9g33Y9EvhzWyUQ1uIRDQObGY8D1xbj3hedRPFAHoQF
-	 U0n9q2y/XGnsZ38tLRDkPYoQO7zr7GLXOdk7I0zy5OppGqqM0BG/JRKMVW1YmJtoNp
-	 P+8saJSIi5glthGejj0fJxKtW1i/9gb2SNwscq7IITpJmbx1bAaAsSZSU3WAHWldb2
-	 JTVqZ/wxxf+qg==
-Message-ID: <9def4b16-50e2-4fe0-918f-d680cb9f075c@mleia.com>
-Date: Fri, 21 Aug 2026 14:52:49 +0300
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="GZtN5i6N"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fmSOGjtTc4bUDhLgL9WZlylSN4BYXxsZ/WbSz7jylcTtCUPfzuSCFWaPiPqwdL7pfXdk5SPe2mevn5kdgw9gm6MlCLiT0V9V46JfdJp9aCAQu6i2Nrd0oW0YGELFDUbMV13zi8RIHA+9DFD5bP2AhETIB+Eygsc/+ih61/TXM6vaqpeIpMwyTS1C8v9V82+rHhWGLnFT41dmRKYra3tkXF5TgXwl0+ibKeEEyXCcPB4sUik9ggtuJ1hXr1HVRqBuoRAo4ILLH09I1kUdVYgeOtICQBbaHmtMOZYsdeZjv8v+EUx53IUyQD7Udjq2wpSCKjcKI8+BdO4FQaBqtbcwxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LeUTGI4sBiv/atNV7ksmJDHElcZjr1wREd3dlCZT53o=;
+ b=d+4nYYjjXUQUVnptu0YJ5Mlnzjc+nh+DubkSNDDZSqqRj+vShSRzd7BSqcemNlBS1RRgD5eBgOKEkz2PJ+4d9HtDheCfEDRl1YLdOA1Eqq3eqLet8tpj6siq9E8lJfSGJ0S7CO3Hlg4hGtfJ8E7GTmpn5K5tBS4qfP7Bkz7e8M5X1djqh2w3Gua1A6Oq5gE65FKlil/9wo5m+jXRNZDoQc+pYFv+eIwSCnZXqVRDRyY9jSoS8grFPpR3QT2v40NDaVCc8JaxKxjkCo4vM5sXzOK913dpHOgKAHPqxoS3apjaWO5VgWYakRmkUL0/QTp1s9wX2Eau0i/nom1Y9fXCpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LeUTGI4sBiv/atNV7ksmJDHElcZjr1wREd3dlCZT53o=;
+ b=GZtN5i6NQOUbGdSC/GzpaRjDPkUMooH06MHVwoJuIZbcuR53sqisR0kAyOyqn39B4old2M76sFzpfIltd+I6CnUS/0i69HkyBHj8W5/5a58Wj08uWcQ+17bJG+gdgWGpbeOdI5B/D5iEwLT7N6sMP0JuRDOMVe9LsQlWQnBLvPI5nVtj8T3a0/iYXLa42unW73vRLE+tXLMavE+2x+pOY9e96H5fdiPu0wcgzPqo9puPD9BuItkMnlJltgyWYeV/l7lYm6yucqNjH2ByqCafZJCaOIjFAHG7KPPX6UTfrmqCJLES05FcrALchRLN8oUOCE6jd6VnPNlyA8KayJ3fdA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by GV1PR04MB10427.eurprd04.prod.outlook.com
+ (2603:10a6:150:1d1::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
+ 2026 12:26:31 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0339.007; Fri, 21 Aug 2026
+ 12:26:30 +0000
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Ying Liu <victor.liu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Stone <daniels@collabora.com>,
+	Leandro Ribeiro <leandro.ribeiro@collabora.com>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/imx: dcss: Silence blend mode not set boot warning
+Date: Fri, 21 Aug 2026 12:26:06 +0000
+Message-ID: <20260821122608.2077746-1-laurentiu.palcu@oss.nxp.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AM0PR10CA0021.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:17c::31) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 24/45] clk: nxp: Make sure clk_init_data is fully
- initialized
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Billy Tsai <billy_tsai@aspeedtech.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Taichi Sugaya <sugaya.taichi@socionext.com>,
- Takao Orito <orito.takao@socionext.com>, Linus Walleij <linusw@kernel.org>,
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
- Sudeep Holla <sudeep.holla@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- David Lechner <david@lechnology.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>,
- Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Heiko Stuebner <heiko@sntech.de>, Krzysztof Kozlowski <krzk@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Dinh Nguyen <dinguyen@kernel.org>,
- Viresh Kumar <vireshk@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Prashant Gaikwad
- <pgaikwad@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Lorenzo Pieralisi
- <lpieralisi@kernel.org>, Michal Simek <michal.simek@amd.com>,
- Matthias Brugger <matthias.bgg@gmail.com>
-Cc: linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- openbmc@lists.ozlabs.org, arm-scmi@vger.kernel.org, imx@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- soc@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <cover.1787239813.git.geert+renesas@glider.be>
- <fa00846b4f9e3b91d3cbcb21cd27be7697b3994e.1787239813.git.geert+renesas@glider.be>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <fa00846b4f9e3b91d3cbcb21cd27be7697b3994e.1787239813.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20260821_115254_755594_54D68DD2 
-X-CRM114-Status: GOOD (  17.51  )
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|GV1PR04MB10427:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d283c3e-eb63-443c-aa14-08deff7f6dfc
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|19092799006|23010399003|18002099003|56012099006|6133799003|10067099003|11063799006|921020;
+X-Microsoft-Antispam-Message-Info:
+	15SWnGEpLmR9F3FtmEtCYehUADtgOFLm2SspOhylQvq4wr40DqyJyoysY9uFnBG5OqFM/ld4Rz1Q8wApAbFQUOD+QhHHsnXjKSWC3J9k+YDd+RQPaXjgCQS9nvnKKzeGFocF6fdiZrnB2tA2wNa2iK/T9BwjoTCGQmYFVWwZHoEyIamc+L9uF+FPOLdDAW5bJGG4TaCys7nJU0cw/SFrdz/SCyWQCKTwgNIjtkl72mkCoky9rtWGPWmOQIyj1lnYaiGpV2nnkUPEF8B4MNx8sx++zFA6N3sVfmy6rAuxP2YEMOIVtuZWXIbKo+fXPcfffztMwaLLqbFooDJ7mDVkMinHoOzsytTLA1t5jOP1qiE8dFLoM96KPT2lYIcMLghNPLEs+Pvr87Zx16WXw3MHpJ/RxlQy+dlLSpAxu7w1TvR8MiBhjuDDVYiyInz9xUOkyb1KZ9/PEsimUD2QocFtC1rTXnXBK9q5vG+GL7+3hVkgWzrHEHoHiVkgr2zmkH9Gh63s6kmQWGPdJsGP1r/ISCanGM+3Hg3dK4kyroCBhC2rbY3zFjCJx3d4Jdgi+ZiN9TFljcEnO0amyvoQfYQWkUKNurE/GphA8eskbagV5BZ++R06MS+x6xFTjTcb9TNHwINzrsbgLmVAoSMLVX+ESE+XCz3sgRBZhLDNH1uLekrHjcBmToWAA8XPlK2kC33BGSCfcpVnkjp+46clc8jhhg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(19092799006)(23010399003)(18002099003)(56012099006)(6133799003)(10067099003)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5PP90toWNIwTEB1URQ3fRbHl+igu3Gs8pl5yoJNmRNYIodVazS+JMV6tJx1i?=
+ =?us-ascii?Q?ST6CFPLaE/n2KFWWIqg3jmU6t+WddyvbKKY7fi/+Orow34IBl1586f3hF0lV?=
+ =?us-ascii?Q?DMPubin5Hk2HHIDTddvXoKocAhLggLHLYWeGtloivxGNK0GrDT6TnSyjVWBi?=
+ =?us-ascii?Q?59clLBkuNtJ3mrQxSowNtpRHrbWzh2umWuHWaBWwZqujf/ObipYvh6rUGeNd?=
+ =?us-ascii?Q?/8hOp9WSCaFKLujxX/g7ZuRp24Lq1IAkXCOqM1nWDnJj4lLbKVNe50J2VvYq?=
+ =?us-ascii?Q?4DyLJblVBBdAbv2oOpC40Ol2sBFLp09kfqXNL+0ATjuu5MO/JF1Ee0FDYVBr?=
+ =?us-ascii?Q?CIxVRDfAaGIT3+o0uR1nzQ19oUEpyXKKcGWtZakj0F1DcFbLlo7gT5B/vghK?=
+ =?us-ascii?Q?J7Wrnb2nQXtHMt/3i2TTCYL61Q7Q4Xxoa73ZoGL0aBfO9Fca7EP05kR2HokM?=
+ =?us-ascii?Q?KvqAgpDgc7B094xwUa3xZefOJ+KBM8suY/nzDQWqNVhAPV08dOodoSgL3mGP?=
+ =?us-ascii?Q?dvCG3wo4+x5CIACBlnsSFhbH+SugX7x1P6IPfZ4XKW+0k7NfMmFjK+hpqAKp?=
+ =?us-ascii?Q?0tkU9e+9rDmkxXbdYujWrh/Jkmwy5vP6txM3YEZahqvz7nhaXQLzJgWq9v0y?=
+ =?us-ascii?Q?LJ+mmtyOWYONfwxh6ptH+VgdOgKM0DuV7JTsJyVz1PNysjRyhfA+kjMLuimb?=
+ =?us-ascii?Q?QMQ0/bJFsb7AN6xvYONarMssgEGa+iLxWo1A7YTpgU5gaRsiJ+iRFOaIS+tN?=
+ =?us-ascii?Q?pk9jvzhgXzytFkh+8XMg3b9iDlJDcCWlc9L1Zxq1zDtR4Fi1KwbZkkDgMdeH?=
+ =?us-ascii?Q?cHFPgEr1jJvl9iVrU+ljvjHIZFhRb44j/m4jyOh/clPSm4gBakMCmVYI2OYV?=
+ =?us-ascii?Q?BulDmzOrscFM/xRR5BX0G5bR89yB/zGQpafW6vury3xbXlW/glhR+XmvHPu5?=
+ =?us-ascii?Q?ZANUUsVXK0+vTc/w0ihU8wbUICavO/G/QiNq3pbBot2hEL/U44W24SwBIHZH?=
+ =?us-ascii?Q?gVCaakSJeP8DKAHw+gh/PuHCq+chf/HTWIgJNok5nq3ZdltkTeG2Ozbi3R7Y?=
+ =?us-ascii?Q?Ihap43/8PJaAZXqIQ8AGawtNOmHD5MZbxbB0zKBc5QNZqI+4DztWVXtiEkdt?=
+ =?us-ascii?Q?r9ihAqIcnBhayVWhT3PPk16ZTH45bIFYH3maY/Lrt3L5u67+OM6NDYE9awcQ?=
+ =?us-ascii?Q?oWuV0UJxSr1Zwuoe0zWO3Ugu/xxPvehtDJMX47gTgJ3fwVygfmOg4RbwmzRR?=
+ =?us-ascii?Q?9S7gdoZBDL1M/WRmo8Aq12dlmhE6JovJ5ixCJzDD38E0fgQCfvVflUJxJi/k?=
+ =?us-ascii?Q?e1IbrSkH+CZ5IRotiPQv1d7lIYghg9sNiw+qsnrB7vjdiA8yqb/X86jgwlso?=
+ =?us-ascii?Q?Fh6sbLh6vFyqtsL1iNFR6/h3ibm9REpmZxRUQ3ud2wmC0i+wn+XGQdMJrBYP?=
+ =?us-ascii?Q?sct2hDnPpIujxLOA+jt5NNtCT+sQ9vsK+coIR9YRXBayvKGkP8eu/8e2ffAI?=
+ =?us-ascii?Q?zRLKd9av15Og8DVg8PXAUgxLh2UPl85urfhnLNso1IcLDKJMYWmWVE7Jy/hf?=
+ =?us-ascii?Q?G+zNzTaMPBUIyNrpP4UDBFXochBRLQI+Oo/ipkJhLNKcV1pnyzYC+2FrOXBD?=
+ =?us-ascii?Q?7qI0wEj28rVMEKwh7AX1QXZkaDidQhCYpEbests2SpxpxqLKlrL6x6IA7jkJ?=
+ =?us-ascii?Q?+oGIE/OVbkk/rpWfkAf+3bdHCaQbiXbvte5Jb8KMgH6Ta061pml3fSdrE04C?=
+ =?us-ascii?Q?3caX2PhKp91IUPNI5uS60mVcRDG7sc0=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d283c3e-eb63-443c-aa14-08deff7f6dfc
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 12:26:30.7601
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qnL1+3rC8itDuX+n5i4OanO/OweDTF7447Tr7jxWH9YEKJvajIZ/Sb8A7BWViK9qIJfg0OVht2kmtn8C+Q4huw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10427
 
-On 8/21/26 11:53, Geert Uytterhoeven wrote:
-> The clk_init_data structure contains several mutually-exclusive members
-> for different methods to specify the possible parents of a clock,
-> prompting drivers to initialize only the members they need.  However,
-> not initializing all members may cause subtle issues, which are only
-> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-> enabled.
-> 
-> Make sure all members are fully initialized, to avoid such bugs, and to
-> prevent future breakage when converting drivers to a different method
-> for specifying the parents.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> Compile-tested only.
-> ---
->   drivers/clk/nxp/clk-lpc18xx-creg.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/nxp/clk-lpc18xx-creg.c b/drivers/clk/nxp/clk-lpc18xx-creg.c
-> index 3d3982e9c661a5c2..de3c214a80fcf903 100644
-> --- a/drivers/clk/nxp/clk-lpc18xx-creg.c
-> +++ b/drivers/clk/nxp/clk-lpc18xx-creg.c
-> @@ -138,7 +138,7 @@ static struct clk *clk_register_creg_clk(struct device *dev,
->   					 const char **parent_name,
->   					 struct regmap *syscon)
->   {
-> -	struct clk_init_data init;
-> +	struct clk_init_data init = {};
->   
->   	init.ops = creg_clk->ops;
->   	init.name = creg_clk->name;
+This addresses the following warning that appears at boot time:
 
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+--snip--
+[PLANE:39:plane-0] pixel format with alpha exposed but blend mode not setup
+WARNING: drivers/gpu/drm/drm_mode_config.c:872 at drm_mode_config_validate+0x36c/0x520 [drm]
+--snip--
 
+The warning started appearing after the commit mentioned below was
+introduced. Add the alpha and blending properties to the primary plane.
+
+Fixes: 860e748bddcc ("drm: ensure blend mode supported if pixel format with alpha exposed")
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+---
+ drivers/gpu/drm/imx/dcss/dcss-crtc.c  |  6 ++++++
+ drivers/gpu/drm/imx/dcss/dcss-dev.h   |  3 ++-
+ drivers/gpu/drm/imx/dcss/dcss-dtg.c   | 12 ++++++++----
+ drivers/gpu/drm/imx/dcss/dcss-plane.c | 11 ++++++++++-
+ 4 files changed, 26 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+index ab41759a9f52d..8358219c94c0d 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+@@ -5,6 +5,7 @@
+ 
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
++#include <drm/drm_blend.h>
+ #include <drm/drm_vblank.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+@@ -202,6 +203,11 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct drm_device *drm)
+ 		return ret;
+ 	}
+ 
++	drm_plane_create_alpha_property(&crtc->plane[0]->base);
++	drm_plane_create_blend_mode_property(&crtc->plane[0]->base,
++					     BIT(DRM_MODE_BLEND_PIXEL_NONE) |
++					     BIT(DRM_MODE_BLEND_COVERAGE));
++
+ 	crtc->irq = platform_get_irq_byname(pdev, "vblank");
+ 	if (crtc->irq < 0)
+ 		return crtc->irq;
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.h b/drivers/gpu/drm/imx/dcss/dcss-dev.h
+index b032e873d227c..9b3bd2f3a7ef1 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-dev.h
++++ b/drivers/gpu/drm/imx/dcss/dcss-dev.h
+@@ -147,7 +147,8 @@ bool dcss_dtg_is_enabled(struct dcss_dtg *dtg);
+ void dcss_dtg_ctxld_kick_irq_enable(struct dcss_dtg *dtg, bool en);
+ bool dcss_dtg_global_alpha_changed(struct dcss_dtg *dtg, int ch_num, int alpha);
+ void dcss_dtg_plane_alpha_set(struct dcss_dtg *dtg, int ch_num,
+-			      const struct drm_format_info *format, int alpha);
++			      const struct drm_format_info *format, int alpha,
++			      unsigned int blend_mode);
+ void dcss_dtg_plane_pos_set(struct dcss_dtg *dtg, int ch_num,
+ 			    int px, int py, int pw, int ph);
+ void dcss_dtg_ch_enable(struct dcss_dtg *dtg, int ch_num, bool en);
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-dtg.c b/drivers/gpu/drm/imx/dcss/dcss-dtg.c
+index 6bbfd9aa27aca..21da9d3cce4cb 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-dtg.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-dtg.c
+@@ -3,6 +3,7 @@
+  * Copyright 2019 NXP.
+  */
+ 
++#include <drm/drm_blend.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
+@@ -268,17 +269,20 @@ bool dcss_dtg_global_alpha_changed(struct dcss_dtg *dtg, int ch_num, int alpha)
+ }
+ 
+ void dcss_dtg_plane_alpha_set(struct dcss_dtg *dtg, int ch_num,
+-			      const struct drm_format_info *format, int alpha)
++			      const struct drm_format_info *format, int alpha,
++			      unsigned int blend_mode)
+ {
+ 	/* we care about alpha only when channel 0 is concerned */
+ 	if (ch_num)
+ 		return;
+ 
+ 	/*
+-	 * Use global alpha if pixel format does not have alpha channel or the
+-	 * user explicitly chose to use global alpha (i.e. alpha is not OPAQUE).
++	 * DCSS supports either global alpha or per-pixel blending, following
++	 * the coverage blending formula (with global alpha set to opaque).
++	 * When the pixel blend mode is PIXEL_NONE, the per-pixel alpha is
++	 * meant to be ignored, so fall back to global alpha in that case too.
+ 	 */
+-	if (!format->has_alpha || alpha != 255)
++	if (!format->has_alpha || blend_mode == DRM_MODE_BLEND_PIXEL_NONE)
+ 		dtg->alpha_cfg = (alpha << DEFAULT_FG_ALPHA_POS) & DEFAULT_FG_ALPHA_MASK;
+ 	else /* use per-pixel alpha otherwise */
+ 		dtg->alpha_cfg = CH1_ALPHA_SEL;
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-plane.c b/drivers/gpu/drm/imx/dcss/dcss-plane.c
+index 1746dc5d4b642..06413d0612349 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-plane.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-plane.c
+@@ -209,6 +209,14 @@ static int dcss_plane_atomic_check(struct drm_plane *plane,
+ 		return -EINVAL;
+ 	}
+ 
++	/* DCSS supports either per-pixel or global alpha. Not both. */
++	if (new_plane_state->fb->format->has_alpha &&
++	    new_plane_state->pixel_blend_mode != DRM_MODE_BLEND_PIXEL_NONE &&
++	    new_plane_state->alpha != DRM_BLEND_ALPHA_OPAQUE) {
++		DRM_DEBUG_KMS("Both per-pixel and global alpha not supported.\n");
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -336,7 +344,8 @@ static void dcss_plane_atomic_update(struct drm_plane *plane,
+ 	dcss_dtg_plane_pos_set(dcss->dtg, dcss_plane->ch_num,
+ 			       dst.x1, dst.y1, dst_w, dst_h);
+ 	dcss_dtg_plane_alpha_set(dcss->dtg, dcss_plane->ch_num,
+-				 fb->format, new_state->alpha >> 8);
++				 fb->format, new_state->alpha >> 8,
++				 new_state->pixel_blend_mode);
+ 
+ 	if (!dcss_plane->ch_num && (new_state->alpha >> 8) == 0)
+ 		enable = false;
 -- 
-Best wishes,
-Vladimir
+2.53.0
+
