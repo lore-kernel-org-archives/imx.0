@@ -1,188 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184F47FAE0
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 11:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E852652A2
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 11:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787310884; cv=none; b=mAbOUPei49ragjFDnTN4E41wrLEXX3n09FPECRV98VqHndLaceRJn84P4Ol6rDG9JpM1owSm532Gty7HavtU5Rd7zkooQX313MfnLzAyEv48mhiAvAwV0LpryhjXRhQJgAkySZso4qCuekxo239Qed2PYirr0t0Y+mXp1GrnBsU=
+	t=1787310884; cv=none; b=N4f/y1/CoRxjR4qvQk+qxqGxC81cJcRbsDkNB3BXvVWycR5epnoRsWrqiZ3i2X4R+mUtLuxK8cIoQjxv2m9vB/dgM17CrLLGyZQixuKXvtic9TDbZEs6MtlZ3Bv1MpYVfWwoRkBkGujNdHE3gZLl2ZQxxHAoQBBYrSxXb4ZgQK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787310884; c=relaxed/simple;
-	bh=W4CXX9kTsaPHaJxhouEycsXS+NdmttJ+XrW2E7X6BQI=;
+	bh=8JxB5V1RTtMbIbtW8zVaxjyVWz0RFJXUCsVF+JnbfeU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=M0PoRwKvgLHqejMNFM9TSMLsNcg6ob5Aqomw4bASV7q+LMhbt0lWiUiOk1IHnbQP1dHv7Mkc9aJ4NFaGc2Q+y/riaiqhbehbp0T3/xuz6C3r7JfZR9m4oRpMFhHSyQVOgQ/FsA4IhDUhEH2syfJh0lSBqp3Ur+2Ifse+eiAgFQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fi6bFnb1; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=b1VQuszSO6QXL2cR9yXH2laOXZMZ4qMi8okYt35/vDCGPS6NcwwU4GbDyRyBddmQofq5GlRc1XVaJCdsmLFIWHlEoKWMwCtmcIZjE2Gt8YOYDy5CViBqyod3EWAk9nU1bg6vkLhxcqq4XlZrCfh2uluYOWdRCtEmHIiBx1hGnm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fa55QQQ4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fi6bFnb1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237021F000E9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fa55QQQ4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAED1F00A3A;
 	Fri, 21 Aug 2026 11:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787310882;
-	bh=/AdlsIxDbXqo9SsPJe4sX2iUJfodygOmhe1xxCZXpVc=;
+	s=k20260515; t=1787310883;
+	bh=jCrfQFVsbM+3+d61V5q6m2wy2OeYJUcHOFr9VqC8NvU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Fi6bFnb1jYYOCEufEoKPIHN+nRItsmO021xCZ/k6O4J77R1MCEkGsVcZm2a9UEALg
-	 3IsKVwqqwNTNwAgYPv/S0ouGOMpwURVkTuY2Q5iYp84Q0m8dILPqm4ZrstR/OwuSwN
-	 P5or/PmT5UudDASXQK4TUo/nSEPKutPIJGoW+jwRhucyYeia9QA8t5DL9LgsSHxfgV
-	 GFNX/VwSpUyIZLXyHTHt3sLWkoJD0Y8r1sxix58iK/P/NHRnamhl2wyIRIfa+hqxSH
-	 +QziBIG4KXkrXmV7XYmJVJeh839nkWoy63UejKuUNql56yMqTP14b3QgabsHz85MIh
-	 3x5fk4xVF+iLA==
+	b=fa55QQQ4HMYIXlvDBFyl0qtiqJjjbZyVUX+dP1xD/CnTd+5fwabPpdeUFvHMza0Lw
+	 LSL6JvW6Z3xy7pUG69TT+2YSp5++QZWOEE9oY/Y2bKyWRQdF/A4/pupKCRrbrMKoHk
+	 Q/JpcsX4vHCzUp779U1o1qBMFmS5cMpQIF8Vo8GDwdlH20A4zZgDQahHo8S64HtxDO
+	 V+QmKysV4d+T193gLHjoY+LPJNMPXk4imdOca2Dwj90QUfrgqAHLhW0TfkioTriNyw
+	 0DAboTTal+EZT8hdelD3vNXvhfKLbpxse71DMafpQleFXSQY0ImO20cc2elQCk/LBK
+	 ezrw/aLvRDVBA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] net: fec: Handle PTP initialization errors in probe
+Subject: Re: [PATCH 1/2] net: fec: Propagate PTP initialization errors
 Reply-To: sashiko-reviews@lists.linux.dev
 To: phucduc.bui@gmail.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260820111416.97917-2-phucduc.bui@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260820111416.97917-1-phucduc.bui@gmail.com>
 References: <20260820111416.97917-1-phucduc.bui@gmail.com>
- <20260820111416.97917-2-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 21 Aug 2026 11:14:41 +0000
-Message-Id: <20260821111442.237021F000E9@smtp.kernel.org>
+Date: Fri, 21 Aug 2026 11:14:42 +0000
+Message-Id: <20260821111442.BAAED1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [Medium] `fec_ptp_init()` incorrectly returns 0 (success) instead of prop=
+agating the actual error code when `ptp_clock_register()` fails.
+
 Pre-existing issues:
-- [High] The patch fixes an unconditional `fec_ptp_stop()` in the probe err=
-or path but misses the identical bug in `fec_drv_remove()`, leading to a NU=
-LL pointer dereference.
-- [High] Use-after-free in devm-managed interrupt handlers during driver re=
-moval due to premature `free_netdev()`.
-- [High] PTP device is exposed to userspace before probe completes, leading=
- to potential bus faults on probe error paths.
-- [High] `INIT_WORK(&fep->tx_timeout_work)` is called after `register_netde=
-v()`, creating a race window where an uninitialized work queue can be sched=
-uled.
+- [High] Concurrent execution of the PPS interrupt handler and device teard=
+own causes a use-after-free on `fep->ptp_clock`.
 --
 
---- Patch [2]: [PATCH 2/2] net: fec: Handle PTP initialization errors in pr=
-obe ---
-commit 41e2a49ed28a7c17df87f2ff80ee17b2b80b3801
+--- Patch [1]: [PATCH 1/2] net: fec: Propagate PTP initialization errors ---
+commit 72db297960b04e49a3fe9e579f0ca646d2fb313b
 Author: bui duc phuc <phucduc.bui@gmail.com>
 
-net: fec: Handle PTP initialization errors in probe
-   =20
-Check the return value of fec_ptp_init() and abort the probe if PTP
-initialization fails. Only call fec_ptp_stop() when PTP support was
-initialized to avoid stopping an uninitialized PTP instance during error
-handling.
+net: fec: Propagate PTP initialization errors
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
-rnet/freescale/fec_main.c
-> index ced4dbf8cd90f..b6c22d6c1e69a 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -5384,8 +5384,11 @@ fec_probe(struct platform_device *pdev)
->  		goto failed_reset;
-> =20
->  	irq_cnt =3D fec_enet_get_irq_cnt(pdev);
-> -	if (fep->bufdesc_ex)
-> -		fec_ptp_init(pdev, irq_cnt);
-> +	if (fep->bufdesc_ex) {
-> +		ret =3D fec_ptp_init(pdev, irq_cnt);
-> +		if (ret)
-> +			goto failed_reset;
-> +	}
+Change fec_ptp_init() to return an error code instead of silently
+ignoring failures during PTP initialization.
 
-[Severity: High]
-This is a pre-existing issue, but does fec_ptp_init() expose the PTP device
-to userspace before the probe completes?
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ether=
+net/freescale/fec_ptp.c
+> index 56801c2009d59..8ad680411b0c3 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
 
-drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_init() {
-    ...
-    fep->ptp_clock =3D ptp_clock_register(&fep->ptp_caps, &pdev->dev);
-    ...
-}
-
-This makes the character device accessible to userspace before network devi=
-ce
-registration completes. If register_netdev() fails later in fec_probe(), the
-error path shuts down hardware clocks.
-
-If userspace accesses the PTP device concurrently during this window (e.g. =
-by
-issuing an ioctl), could the PTP callbacks attempt to access disabled
-hardware registers?
-
-> =20
->  	ret =3D fec_enet_init(ndev);
->  	if (ret)
 [ ... ]
-> @@ -5457,7 +5460,8 @@ fec_probe(struct platform_device *pdev)
->  failed_irq:
->  	fec_enet_deinit(ndev);
->  failed_init:
-> -	fec_ptp_stop(pdev);
-> +	if (fep->bufdesc_ex)
-> +		fec_ptp_stop(pdev);
+
+> @@ -779,26 +779,29 @@ void fec_ptp_init(struct platform_device *pdev, int=
+ irq_idx)
+
+[ ... ]
+
+>  	if (irq > 0) {
+>  		ret =3D devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+>  				       0, pdev->name, ndev);
+>  		if (ret < 0)
+> -			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+> -				 ret);
+> +			return ret;
+>  	}
 
 [Severity: High]
-This isn't a bug introduced by this patch, but since you are fixing the
-unconditional call to fec_ptp_stop() here in the probe error path, should we
-also fix the exact same issue in fec_drv_remove()?
+This is a pre-existing issue, but is it safe to use devm_request_irq() here
+without synchronizing during teardown?
 
-drivers/net/ethernet/freescale/fec_main.c:fec_drv_remove() {
-    ...
-    cancel_work_sync(&fep->tx_timeout_work);
-    fec_ptp_stop(pdev);
-    unregister_netdev(ndev);
-    ...
-}
+During module removal, fec_drv_remove() calls fec_ptp_stop(), which sets
+fep->pps_enable =3D 0 and unregisters fep->ptp_clock. However, since the
+interrupt is managed by devres, it isn't freed or synchronized until after
+the remove function completes.
 
-When the driver is unbound from a device without PTP support,
-fec_drv_remove() unconditionally calls fec_ptp_stop(). Since PTP was never
-initialized, hrtimer_cancel() inside fec_ptp_stop() will read from a
-zero-initialized timer, dereferencing a null base pointer.
+If the interrupt fires concurrently on another CPU:
 
-[Severity: High]
-This is a pre-existing issue, but does fec_drv_remove() have a use-after-fr=
-ee
-risk with devm-managed interrupts?
+CPU 1 (fec_ptp_stop)
+    ptp_clock_unregister(fep->ptp_clock);
 
-drivers/net/ethernet/freescale/fec_main.c:fec_drv_remove() {
-    ...
-    fec_enet_deinit(ndev);
-    free_netdev(ndev);
-}
+CPU 2 (fec_pps_interrupt)
+    if (fep->pps_enable) {
+        event.type =3D PTP_CLOCK_PPS;
+        ptp_clock_event(fep->ptp_clock, &event);
+    }
 
-The interrupt is requested with devm_request_irq() in fec_probe(), meaning
-its lifetime extends beyond fec_drv_remove(). However, fec_drv_remove()
-explicitly calls free_netdev(), freeing the ndev and fep structures.
+If CPU 2 reads fep->pps_enable as true just before CPU 1 clears it, could it
+then dereference the freed fep->ptp_clock?
 
-If a spurious or shared interrupt fires after free_netdev() returns but
-before devres executes free_irq(), could the interrupt handler dereference
-the freed memory?
+> =20
+>  	fep->ptp_clock =3D ptp_clock_register(&fep->ptp_caps, &pdev->dev);
+>  	if (IS_ERR(fep->ptp_clock)) {
+>  		fep->ptp_clock =3D NULL;
+>  		dev_err(&pdev->dev, "ptp_clock_register failed\n");
+> +		return PTR_ERR(fep->ptp_clock);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does the initialization order
-in fec_probe() create a race window for tx_timeout_work?
+[Severity: Medium]
+Since fep->ptp_clock is set to NULL on the line directly above this one,
+doesn't PTR_ERR(fep->ptp_clock) evaluate to 0 here?
 
-drivers/net/ethernet/freescale/fec_main.c:fec_probe() {
-    ...
-    ret =3D register_netdev(ndev);
-    if (ret)
-        goto failed_register;
-    ...
-    INIT_WORK(&fep->tx_timeout_work, fec_enet_timeout_work);
-    ...
-}
+This would cause the function to return success instead of propagating the
+negative error code from ptp_clock_register().
 
-Calling register_netdev() makes the network device visible to the system, so
-userspace can configure the interface and start transmitting traffic.=20
-
-If a hardware stall causes the ndo_tx_timeout callback to be invoked before
-INIT_WORK() executes, could schedule_work(&fep->tx_timeout_work) operate on
-an uninitialized work_struct?
-
->  failed_reset:
->  	pm_runtime_put_noidle(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
+>  	}
+> =20
+>  	schedule_delayed_work(&fep->time_keep, HZ);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260820111416.9791=
-7-1-phucduc.bui@gmail.com?part=3D2
+7-1-phucduc.bui@gmail.com?part=3D1
