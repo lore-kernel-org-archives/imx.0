@@ -1,194 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC55845A2AD;
-	Fri, 21 Aug 2026 09:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF3D45DF4F
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 09:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787303154; cv=none; b=oV+v08feGlhzxBevHr108s1OgTEz+iLP3/iWFRb5ZL1+K3K5ZgrKcVUGB/MXIehHAM7hzTatP1fOMMfNve7gKrB6BY4PaqVfjORXBsGZjVbRLgzO0jBPPimA9D0bacJZdNWQcPSopcBACE367D5ROrj93u2GRn/RowYcu5GHkhg=
+	t=1787303296; cv=none; b=Xkx3tRyryL7ki5D9K9bzuv/F/RXheyIhPrmqM96dEclFkET2W4JB0VzY7yzhVW/2DHzJ81ia45PzSUYrwCEoJXMix7ciPm3f3DITBlCPhKyW+OYTha3V47/2f3eEST79Ua1/ugJa1flcdfDSw8EwcqMwW9ir0e902HyvGdDLVNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787303154; c=relaxed/simple;
-	bh=BoVDFLjm3qmryxpWKKtPiB9xGLwmcZ8bdHtjqA34dYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRL7+mmiS5ceIHiEQj9rH6TOU9bd11/V60QxzEudxf56JRbvrevGpPPTGv04UTpfQp6Ys7FXrP/6cJObGZef9SI/MxYQmhdGoW30/R6cMMuChh0cMyE4nfwROb3do3mtvksGHAC4or+4Zmu8vheT2QqyUiRtWn3Xi+3txLCZwgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5598F1F000E9;
-	Fri, 21 Aug 2026 09:05:30 +0000 (UTC)
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Ryan Chen <ryan_chen@aspeedtech.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Taichi Sugaya <sugaya.taichi@socionext.com>,
-	Takao Orito <orito.takao@socionext.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>,
-	Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	David Lechner <david@lechnology.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	s=arc-20240116; t=1787303296; c=relaxed/simple;
+	bh=oOuoI9+wnuoEdfiAh87q5nMwG08Hxu44X07/rH2VMRQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b+iZVAbsevl9RsD5XTz2uIjWDA25FPrZWUpiLtiS3IU/xFPbKB8up4MIrR/erIQYFiPHFIiQgr7RnMGOJZ9lwLcTnmgQ92n6w1ov4+fLSEdPLVtkAMia9OMxXKg1VNuuO9Ud8Bir6DkruKHxPuMfzW+8n+pnVQDrQJMTnmsHBaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=M2jn6TbV; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="M2jn6TbV"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 8F07A14C2D6;
+	Fri, 21 Aug 2026 11:07:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1787303277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aGEJQB9358mwZctsDDONapSyTxRcKMMADgC4+MXroNA=;
+	b=M2jn6TbVDXHVkr/DG2auw74KFiKThPfC0XasZSWIF0/2H3vkffPYarZ0Z189yUSvAFBHf/
+	QbLJi8iGq8/DbVwhhl3Z+c5DH2i0qrzOvtU7quhd+lgDZveIW05P/3uIoPAptls8dYDr5E
+	oOqeQZU7+rq3031TM9LrHcMu2FRVn0CvkLU0PheUnT6lGAg/RscCEnLnNWAqzpZxFkv8i6
+	5ZstEmf9todvM8Gtz1f3DPH91+qfKMcPuALJTE2R6K3FFDITuuY7Uc+ft9D1qhN2Dv4z9V
+	u4S8i4qdypfe+OQdqztFxRKI9jUWypUnpz5o+4p92UwGFectm2NXZQS42rRXrw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 622dfed3;
+	Fri, 21 Aug 2026 09:07:50 +0000 (UTC)
+Date: Fri, 21 Aug 2026 18:07:35 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	=?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio@elopez.com.ar>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Prashant Gaikwad <pgaikwad@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Ulf Hansson <ulfh@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>
-Cc: linux-clk@vger.kernel.org,
-	linux-aspeed@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org,
-	arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	soc@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	linux-tegra@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 45/45] clk: zynqmp: Make sure clk_init_data is fully initialized
-Date: Fri, 21 Aug 2026 10:53:55 +0200
-Message-ID: <ca5b863571e9e21d123ab95cd5667b19f0d14d96.1787239813.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1787239813.git.geert+renesas@glider.be>
-References: <cover.1787239813.git.geert+renesas@glider.be>
+	Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
+	Shawn Guo <shawn.guo@freescale.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
+	Stefan Eichenberger <eichest@gmail.com>
+Subject: Re: [PATCH v3 0/2] i2c: imx: fix SMBus block-read of 0 locking the
+ bus [stable backport question/offer]
+Message-ID: <aogVVwPlOmCqFsg_@codewreck.org>
+References: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
 
-The clk_init_data structure contains several mutually-exclusive members
-for different methods to specify the possible parents of a clock,
-prompting drivers to initialize only the members they need.  However,
-not initializing all members may cause subtle issues, which are only
-exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-enabled.
+Vincent Jardin wrote on Mon, Jul 13, 2026 at 08:11:58PM +0200:
+> i2c-imx rejects an SMBus Block Read byte count of 0 (valid per SMBus 3.1
+> 6.5.7) as -EPROTO and returns without emitting a NACK + STOP, leaving the
+> target holding SDA so the bus stays stuck until a power cycle.
+> 
+> It was triggered by an MPQ8785 PMBus regulator on a LX2160A i2c
+> bus: when the kernel binds it using the pmbus/hwmon framework, the bus
+> locks up and it does never recovers. It was confirmed with a scope, with
+> and without the fix.
+> 
+> The same bug is occuring with two independently introduced spots, so the
+> fix is two patches with their respective Fixes: tags and backport ranges
+> 
+>   1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
+>   2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
 
-Make sure all members are fully initialized, to avoid such bugs, and to
-prevent future breakage when converting drivers to a different method
-for specifying the parents.
+Silly question (half for stable people, half for i2c-imx maintainers),
+but the backport for commit cb2fc3785769 ("i2c: imx: fix locked bus on
+SMBus block-read of 0 (atomic)") to stable brought in b460b15b3cc2
+("i2c: imx: separate atomic, dma and non-dma use case") (also 6.13+) as
+a dep (all the way back to 5.10!);
+with that commit in, 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non
+dma mode") applies almost cleanly on 6.6/6.12[1]... So should we grab
+more easy fixes?
+In particular, I doubt I'll ever hit this SMBus 3.1 bug, but
+5f5c2d4579ca also was a real fix[2], so would it make sense to jump in
+and get both 5f5c2d4579ca and 07fd9385f0d8 ("i2c: imx: fix locked bus on
+SMBus block-read of 0 (IRQ)") for 6.6/6.12?
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Compile-tested only.
----
- drivers/clk/zynqmp/clk-gate-zynqmp.c | 2 +-
- drivers/clk/zynqmp/clk-mux-zynqmp.c  | 2 +-
- drivers/clk/zynqmp/divider.c         | 2 +-
- drivers/clk/zynqmp/pll.c             | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+[1] just a trivial context conflict in the struct there, but it starts
+being more iffy on 6.1 and earlier kernels
+[2] ... We actually ran into that bug on 5.10, our kludgy backport being
+the reason I noticed during today's 5.10.266-rc1 testing...
 
-diff --git a/drivers/clk/zynqmp/clk-gate-zynqmp.c b/drivers/clk/zynqmp/clk-gate-zynqmp.c
-index db10eb69f3fe01a5..1a462af7b8ea3efa 100644
---- a/drivers/clk/zynqmp/clk-gate-zynqmp.c
-+++ b/drivers/clk/zynqmp/clk-gate-zynqmp.c
-@@ -109,10 +109,10 @@ struct clk_hw *zynqmp_clk_register_gate(const char *name, u32 clk_id,
- 					u8 num_parents,
- 					const struct clock_topology *nodes)
- {
-+	struct clk_init_data init = {};
- 	struct zynqmp_clk_gate *gate;
- 	struct clk_hw *hw;
- 	int ret;
--	struct clk_init_data init;
- 
- 	/* allocate the gate */
- 	gate = kzalloc_obj(*gate);
-diff --git a/drivers/clk/zynqmp/clk-mux-zynqmp.c b/drivers/clk/zynqmp/clk-mux-zynqmp.c
-index e37bd3516974c1ee..79509e387b51fe40 100644
---- a/drivers/clk/zynqmp/clk-mux-zynqmp.c
-+++ b/drivers/clk/zynqmp/clk-mux-zynqmp.c
-@@ -133,9 +133,9 @@ struct clk_hw *zynqmp_clk_register_mux(const char *name, u32 clk_id,
- 				       u8 num_parents,
- 				       const struct clock_topology *nodes)
- {
-+	struct clk_init_data init = {};
- 	struct zynqmp_clk_mux *mux;
- 	struct clk_hw *hw;
--	struct clk_init_data init;
- 	int ret;
- 
- 	mux = kzalloc_obj(*mux);
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index 4075f6ecf076a8e6..3eabd1cf211ddba3 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -278,9 +278,9 @@ struct clk_hw *zynqmp_clk_register_divider(const char *name,
- 					   u8 num_parents,
- 					   const struct clock_topology *nodes)
- {
-+	struct clk_init_data init = {};
- 	struct zynqmp_clk_divider *div;
- 	struct clk_hw *hw;
--	struct clk_init_data init;
- 	int ret;
- 
- 	/* allocate the divider */
-diff --git a/drivers/clk/zynqmp/pll.c b/drivers/clk/zynqmp/pll.c
-index 6463787cf57b6018..6158386ca743d1f8 100644
---- a/drivers/clk/zynqmp/pll.c
-+++ b/drivers/clk/zynqmp/pll.c
-@@ -313,9 +313,9 @@ struct clk_hw *zynqmp_clk_register_pll(const char *name, u32 clk_id,
- 				       u8 num_parents,
- 				       const struct clock_topology *nodes)
- {
-+	struct clk_init_data init = {};
- 	struct zynqmp_pll *pll;
- 	struct clk_hw *hw;
--	struct clk_init_data init;
- 	int ret;
- 
- 	init.name = name;
+
+Honestly, I wouldn't have considered backporting either as b460b15b3cc2
+("i2c: imx: separate atomic, dma and non-dma use case") looks too big to
+backport to me, so I definitely wouldn't have done it before, but that
+ship has sailed (it's in the 5.10 -rc right now, but it's been merged a
+couple of weeks ago in higher versions stables), so at this point I
+don't think it's worth reverting either and we might as well keep
+falling forward...
+
+
+
+tl;dr: If maintainers agree, I can send these two for a future 6.6/6.12:
+5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
+07fd9385f0d8 ("i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)")
+
+
+Thanks,
 -- 
-2.43.0
-
+Dominique Martinet | Asmadeus
