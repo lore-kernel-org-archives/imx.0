@@ -1,53 +1,53 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011071.outbound.protection.outlook.com [52.101.65.71])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011030.outbound.protection.outlook.com [52.101.70.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C772F616A
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 07:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FCC2DB794
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 07:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787297530; cv=fail; b=r/Oo841VyowTZxgZs4x6EK3w1fIDApTZI1Nhc4QDuA+nSCO8lQvgnlNS/21Cty+Q0h45z4i7lru3mePTCFXJ9HHcmHj49sTmbNEAYRHL66IHhJdt45xb5qyfebdJdW8UrTDHqP3LE49oaVlh3Fj2n2E/fyG4iCef5elkIMSxLbI=
+	t=1787297541; cv=fail; b=fnn3aRl/5jEmciUtmJptMek4XhMpEiNWtOKyYgkSxkij9lY4nm6PgC7vXQb0yup4Bj4dmIbreThiD27c2M02SruMrhJBDdjtC2qqgle75oIf6xrRb/66bHOlFARjg3Me3Or6exN1HOQ8Klo1dS1JzkZ36GmDPpfzAdD01G1myhA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787297530; c=relaxed/simple;
-	bh=WweNHDHiElH8o82jk8npSceeFRcm3zMBKegXgf5E3CE=;
+	s=arc-20240116; t=1787297541; c=relaxed/simple;
+	bh=EDSUMqxjugceCRja/n53edhTElBTbpwZlenzsq47xnE=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=E2X7zwTXSz6v1IanvTajjh9m7BlFfmmCJSpY8AFqPZyEO55UBDnYC9iAxJVxVFrUveO12dQUKA+O5E3nq6XaVj69iRZ0vOxSY5TJl0L6fGlLSzBR/D7Ar1YeCmQuETA5jKCX9KY+NG+2zeRM4VoZRHZY05huwyEQuAFRnOZzsq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ZEOuNmX4; arc=fail smtp.client-ip=52.101.65.71
+	 To:Cc:MIME-Version; b=eLtc+hjeBt++d5GeO19d7ixKCDM+PnrPcYXwNr9VCWNNgYPaSgzCXtWEZbGotWPfl0+U6tYkhSaBSIGlNMUnBsQkvNuR0Y8XRg1K94bByHIFvGeFl23erhyXZFkiOz7rx6MGrTTjt+SM3X71l/T1V36CmB68e9tNh0TfdlpMamM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Tvsf2tt1; arc=fail smtp.client-ip=52.101.70.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ZEOuNmX4"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Tvsf2tt1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xKJpWY4wNC3/UZCAmA0uhPHn0sa0F5YYLMiqRr83jan0ywFExew/QSu8hxHsITkC4d/u6IkA0oFn4+/Pnrgi6/ahvLY8T6o1eJrLxJyNMPlnrjP8QLJJQ4agTMnTyFMzsEtQjTtdOawAUFlOyli8HWova52415FztM9dhUvI0POxu0JuvViwCrHAHEPCeKaI5GhjB2m6JyS/bTxcyKFVHG7SPNuZSsGFzcX9XmIJMzXTsJJhDiVjEijtkCwHza3RBiMVjd6aNMXayODnM4FV0kNXA5QodC3xQnGxWgSm5hwokfp33AQQPIIzuaTPTSudKXNQx3ld3ezofmCQYsg2XQ==
+ b=vEqxDFq7kRr5pFobBKwVkXR/lSoWl9BWYQ4iWd90QF5L7vPPXOwNrHhIo9FHYsNx4JZmjG++0rWqCG51THUsP+3Nvyt1sarnmvosMMRvBvynkg8hg6iqYHUKnXiGRNrr9oX4gGzndmvmm+QOMsynnPFbHT3kSLjnGqLeM7nNvKq4WtVJ90HobisZ1irwlMEgemIkZYTGYNmv8wAyoJgTHCwP/Hw/yZkzqjB+oRRWUPAAoACm60k4+MS/IbBnUcCFXnBrbgut/EanAOAza5yBINUvYbPs44OdfnpbFdz7acLW4II7mvcji20vS9nTvaJ8YJOzqmuDNUsP576Hvem63A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6rHFjSqf+6DCLeGgGMXnp2u+e8Dc03oxwYB+p+SScKQ=;
- b=hgQ8hPaj+j37uh4ngSsiUbrOl7O7ZVKHh1i/H053UFmUmZys1rZLSyQAjuxBUuaLii5iEjnV2rNcI34I4a+c0SJc/JqviRxAfotgfRaa3H79boe+099Z24YUmsw9XN8UHg1ugdRCBEha9unAuc/e6BuGnocOozvd9XOg90afirwjx51BMJUHKWcmJW/qQZ/fljhKYu30MqFcmUTtYdNr4T5X7IbXq046XaadjqO8s0gVlfmkeLvY41Uw49+n6t6QEj2CmCOGkMo0NgNFTfcoRQnl8XunAFdiT8p/MVVBPTpvqCCxinLeGWDJQZK6cCZ8wrUC9A+N0njnedE9+wF1gw==
+ bh=7ssIwEvE7RLE4O8saRTS8tN+Xler6Jm4e7Pvbv9oHSI=;
+ b=sKTH1eaY/lIOSfy3CCyGLAEcFE3QGDfhqbktfDPiYcmQFMovH8PIlD9/aPVuLGKB9+zc78ic+Vblzb3TtlOAtq5hvtPSEQAcyMGKfYlBbItkCX12dp2YHIwC31HYDgsU7//TzpLSGm3fzwa8bcWEGKV9uEJo2Y3LiumhgBujuDqq/F8QyhFrJgCZ1wEFNIEJZ+sDu7vvOTVLUTX7N+Ibn6plqI9hfobTwdNEYy0tBKW1lqt3oRCNBlYeVFICoBtSeGIAvsFwf64UX+Kx23+d2/elfo7sdXi6Pu1/KCTUMTeNoE4yAko6uOhVJpVfymbajU1RhhurMp0LmynfthPCpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6rHFjSqf+6DCLeGgGMXnp2u+e8Dc03oxwYB+p+SScKQ=;
- b=ZEOuNmX4fEct4KOcCqQ4hN8fGGiTFWmPWch167IsX3eQUYOiNRJWP6pvf1kVVv0W0Jtg4/gJOnrOrLI3H2Z7qzdnOHDIsFav865n7npegJeNNpflWebDhfcawNdNN+HQ6YW23qKfjPIIkVJ+W7yQCQ/J3S78ZZtyVWjF24YwCIiNQZT+x2tq9Dchbb+U3wwHWS09p17hDphlD5T8uNZiqMPhoijOARahQLymxi2QBl//sgJXxSIXHmScSRJJ4jNl74HH6+wmKfpQqmV9N0I/Xq+Nk/RcchqKGnav0500IhhodmcForG6OxnKMyh5gLWFebG5Es5KDsaUQLZYZzZa9Q==
+ bh=7ssIwEvE7RLE4O8saRTS8tN+Xler6Jm4e7Pvbv9oHSI=;
+ b=Tvsf2tt1XN47HhmR8FBEnwFOydBJ8JPLG6QKYfMqV631dfRXviPkh4vyud4XUtZKZc0lTKTYNVpPmykvvTZp/4A+AmsI3lyosn72fbwvxETHAJxUVIC/6CGuzICWSsdzgstG1EF075KsrY7lgMRmICMmtlyKS3JrrxXjsnGHl34dvHUgAXZLJzNYj6ZlmBtZ5uvIRKJLTVR1tamhOmWwBOBvUljFEl58VhOxlOe2R+CpcM/S77gb9ssjiT29A4Y7Pip6cUa0blhNy8p6lPp61JRNsUVcNiQkbj1he+1Gj0GgXiXBp4BhiQJ4OisIqHOvpP3bD+x4rl0dc3Cz96m69Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
  by PA4PR04MB9392.eurprd04.prod.outlook.com (2603:10a6:102:2ab::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Fri, 21 Aug
- 2026 07:32:05 +0000
+ 2026 07:32:10 +0000
 Received: from AM9PR04MB8469.eurprd04.prod.outlook.com
  ([fe80::1f31:d3d0:6150:b49c]) by AM9PR04MB8469.eurprd04.prod.outlook.com
  ([fe80::1f31:d3d0:6150:b49c%3]) with mapi id 15.21.0339.010; Fri, 21 Aug 2026
- 07:32:05 +0000
+ 07:32:10 +0000
 From: pankaj.gupta@oss.nxp.com
-Date: Fri, 21 Aug 2026 18:32:19 +0530
-Subject: [PATCH v39 2/7] dt-bindings: arm: fsl: add imx-se-fw binding doc
+Date: Fri, 21 Aug 2026 18:32:20 +0530
+Subject: [PATCH v39 3/7] firmware: imx: add driver for NXP EdgeLock Enclave
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-imx-se-if-v39-2-41e4257c2afc@nxp.com>
+Message-Id: <20260821-imx-se-if-v39-3-41e4257c2afc@nxp.com>
 References: <20260821-imx-se-if-v39-0-41e4257c2afc@nxp.com>
 In-Reply-To: <20260821-imx-se-if-v39-0-41e4257c2afc@nxp.com>
 To: Jonathan Corbet <corbet@lwn.net>, 
@@ -59,17 +59,18 @@ To: Jonathan Corbet <corbet@lwn.net>,
  Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>
 Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
  devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
+ linux-arm-kernel@lists.infradead.org, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787317340; l=3245;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787317340; l=47913;
  i=pankaj.gupta@nxp.com; s=20260817; h=from:subject:message-id;
- bh=T+yyPOpdxzPdIuNJ+imfCdmSEVDwuOuBb/dhiIQRNpY=;
- b=IHnVZV7Ya7zBjci16JPwu9xatjL6sykF1EPsjXcVMCjU7BUt3ld8WBwUUokK74l2K0sLHho/z
- cFm8npixjPBB5c1zpmJnNIzm+lnFoIlwClzUlrYMAvQbCWwAMzy1hL9
+ bh=38dCiJISkU7gVZge0VtVsYzGqGVtkIOWEEMMV49oOXM=;
+ b=31LzynScnzFU//UwgGKqdScXUFxHpa/e+gfT9sYTbfvzd3pxXDq2kSTuEAmqdEi3xi7bX4cLI
+ 4rA2CPZzvANDpdVQO5R2FW6aSoIL/LMZzorXrDU0/Fj0Ns9HYmf3Bgd
 X-Developer-Key: i=pankaj.gupta@nxp.com; a=ed25519;
  pk=g4ZgzIWbpXnSxRsoH+l6PWLP78a+Mzpl8e6RQe74d5Y=
-X-ClientProxiedBy: SI2P153CA0021.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::20) To AM9PR04MB8469.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SI3PR01CA0014.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::10) To AM9PR04MB8469.eurprd04.prod.outlook.com
  (2603:10a6:20b:414::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -79,192 +80,1739 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM9PR04MB8469:EE_|PA4PR04MB9392:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07b9e12c-89b9-4a30-2047-08deff564c91
+X-MS-Office365-Filtering-Correlation-Id: 1a81d6ad-20d9-424b-006c-08deff564fa4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|23010399003|376014|19092799006|921020|56012099006|6133799003|3023799007|11063799006|10067099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|366016|7416014|1800799024|23010399003|376014|19092799006|921020|56012099006|6133799003|3023799007|5023799004|11063799006|10067099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	s3A96bquPbJp7qMzAfrKZ1QziYV88J8opoYZ8ABFfhAPDj5GGTBYV8cMcfSgIaO6QRRQYXnh63GxzPGdIwmz6f2tDxJlHGycNN0fNeGkWYGSg1BbVhULc1Tpp2dLIBQGqtec07VhMZrD6T+1HoV+xShWuX+J0RPYIALVFGBk3YcReFZ8lI9aliyIlKlTI+S/FNT1Yofnpxajb34fk3MatCbnrbcd/jhWIKZ0lcOV/oGeVX6Ac0e6m2GIK3RdRLpMI2TEyi4YWLNYu5srKVWiNCEBp1Sfj9bCm2fZdWl5kch5BGPv6wthLZ/aGUluTJpZvw0+A2ee7NyBIUbXZwR/jc4463Z587S0lnUO/W2y5MDeBmwlfwYml/zhn8Bs8gTBwS0GONEd42uGCnvkr/zjDomqV0t3rGVOGfDcahqSO0vlitBnMfpWcNaoMCjnN2V+3yY74fNx1B38EjupxH9m/K7eTFimYEQaBFoRngcsnztTceBMruWGY9wOppJ7GfsMbb3YqeO+lktZ4izk0VEUy77yvV6hI6XICRyF8eYnKza0xN/ORCUbnjTUWM8jlZCfDSALYAuW2rkXIlRWA5bqktKaXvWuBfyQFBFV8OrAdy0nMu0ioXYwA+UfcbUmy2Uki8dSG6GJ7GkVZHpfJIq8XT92qZ+saVY1vlp0AALhy9w=
+	JNnf1ZqQuhv6YjvVR/jIh5HcwTqFJh/8MRFyt2uLhd3Y7MmcMv6k69WSv9oN9HWETdh4ZOaKpqt9zPG9c0EnKcJ4Ri9NV0xavQVpBeahpS/QS8oYXbEKqX4pQ+xa5ipsUEa7QLe1C+TcZMha1H53z0UP49bIvq6ZexnYRoeESLmVDy++kB4E5eTmUwBffq1mG6smxsiuZ+pyiM6HARmJm0D8vh+yVen+iaiihRrPwN5BkwDMgVsmAM/tQG0c7UWFRFuOwhkctVA9OwqHM7qrtoMH+vomX8yDdnh2BqL5H35bvBhh8xBwm4UHCVzujQZA6LucED/N5Wjk+dKG2071AqYFyMueh+4jKdMB7EMJMKBF5t7diwSHyWvkhp886UI/VhVhEWvqS8UFp26ANK5zivy1/mqjkbdd2BmhM+srMixQlKsMvhiTzKKePlbR6vxaWZRa+y04MxZEV/3HJrtKQFo2eE2wpN9QjtN1hzLwPrBX+PrqQwf7LQCpkR0rwnijueODS5Gr1VWoM+lWwTZBOk8sCD92EjaQaEhvjRqbsj5mQm+YhfkRTGaAH4jmfY6gKW/WPZG0OcL+LzkXoq0zoCFULMCp9THzux7wa9y4JZFr9O++wxNfYS0Q4acjVuPxRCIm9BrKREBvGlYDQSsfALcLgrYL/nsk259mWspcetB+seQ9DXFerFDrYmw6oJKJdxt8NqcMr//3G8xptayNBg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(23010399003)(376014)(19092799006)(921020)(56012099006)(6133799003)(3023799007)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(23010399003)(376014)(19092799006)(921020)(56012099006)(6133799003)(3023799007)(5023799004)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RGNlUm1ma3BJRWZGMk1Tdmk0UFlmQ1R4U0pKTEFUeXlIMThyb3JhZDlNZXQ5?=
- =?utf-8?B?RXBKV25zMHBueEVmTElzakdlL01MZWNOd3RQVkJsNlFjZ2FvbHFleVFoMWpR?=
- =?utf-8?B?bzRLdkczWDBsRGtiaDRodnBMWjJXeEx3d3l1aU1nZkdXKy94Z1ZuSGRKdmZG?=
- =?utf-8?B?K21zZjAvUmJaTXZOaE9XY2Z4SWdiM2owRFpPNzRoSWNWaHQ4OEl3YVdNdnVt?=
- =?utf-8?B?NzdYdEhVRFhzblJzMG1VWTd5S1dZWXpGV0Qvc011SENiZmVxaUMwUHZuei9S?=
- =?utf-8?B?SENrME1NUXR1TDhMVjlZZkljNVdwMC96bDlTcWpBSTFSaFU2RlkyOGRFdXc1?=
- =?utf-8?B?a3grMEh0UUp1NEVIUUhERmw0NGVrM0c0MXBtNWwvWGcxMW1SQ2hSbWdwVHhT?=
- =?utf-8?B?ZTZnZHFzK08wTWpGVEZNSjRUZHYwWlpxVGNVYUZzbVRQY3hyc01XdERRRkJK?=
- =?utf-8?B?U0E5bkxmaFhwWFZMU25YbU9sUXRuRys2SVgwUVdkQXhWV0xmcE9lZDlOaXZW?=
- =?utf-8?B?ODZQSFpmSDVrWk0xcXJnMUpUVGVRcEdheUs1clZqL0RSTVdEbFdETjRjSHFG?=
- =?utf-8?B?R1NybVZ2MG1qZlgwMkt0YU1uYUwzVXZzM3ZzallxZTViUGpCa0Y3ZVgwL0pX?=
- =?utf-8?B?cDlTL0hYSyswVnJkV0pteW8xekZ1eEN3ZXpSMWFVTU1BUU5LbDNWOFZBRGVE?=
- =?utf-8?B?dEZESi9jNTE4SG9DUDdUdWhlUlhERTNGalphaUIxOXRzTElmdjMyckwrclRP?=
- =?utf-8?B?OHp3b2dGdkdwK1QxUHd0V3UwcnM5ZXhHSU81TG9OUDJpQ296SUdycnVTdHZG?=
- =?utf-8?B?bzBvK1MzbngwWGUwZ2VKMDhkL1lqNXhTci9CbktYSzNwOSsyYldnMEJqY1Ry?=
- =?utf-8?B?NGNiZ2pvbG5EZkttb09qT1k2eER6WmJLUEVJZVR2dVNLQnhqT0J1Si9rS1BE?=
- =?utf-8?B?NC9PTkE0aTRLd0doK2VvTEpqYWwzaHNSTWZ1S25tMGlFVlhQQW5MSjhTbnF5?=
- =?utf-8?B?RzB1WTVidWVpQ3NRbTE0T0dhc2p2dVF0RFBaT1pDM0V5R3pJeS9wbEhjVHVl?=
- =?utf-8?B?eEhqOFZyU1liaC9TU0lEalY1MUNnZGZQeUt0enhqTU9jQ3hJRjVXakFSNFd2?=
- =?utf-8?B?RG1YYVFzYkVyTXBUUmgyUFlUTkJBanRVM0pFS2E0TTBHSm05b0JMSEdzb0xK?=
- =?utf-8?B?R2JTYWx0RlZrMmZ6WHoxQ0tvY05wYTJnMUZiTytvd3pwU1l2YzlmWmIwSCs3?=
- =?utf-8?B?YkcxVFJxYzM2V2tBajJ0SXliN1VJWnpWMThoaUd1MGR3UXFtK3l0dzNpMFhQ?=
- =?utf-8?B?WXlQa0tybXE2WUl0Y3AwM0sza3hpNkJEMkdnMERRU21yekRxWmRFcFF1anFq?=
- =?utf-8?B?SVltSWxhaTAraTE1ZmFDbGYybVNYbk81dUM1N0hHeDJUdHNVSVl0dk1CZlN0?=
- =?utf-8?B?TFJqdXo0OFFYUDFRa1F6NEZ1SFhNRWNzV0lzVFBBTTNLeG1yUG1ZTFl0eHBm?=
- =?utf-8?B?TERJM0xjTld0bFozMmNSbmZtczdIUERnZDRST1pyK3QxS3RzUm5uTzMyVWN4?=
- =?utf-8?B?SVFHWnRDMUZrUEt6eFRma0EzSXVtTUptSGNacHB2anhncWs2cEMzdXVhaUYx?=
- =?utf-8?B?dWdZdjNUSkl2NXdVYm4zTXkrbjZnWnZ5WUZGMm8zUkpsNVZpOXdlTEh5SFFm?=
- =?utf-8?B?NDY2TTBzMFFBTUNyTWphZ2tOOEtJZnpZRWJXcGxjUWszT0RqZXZkU0laWURT?=
- =?utf-8?B?eUR3Y2loaEplTG5qdXg4NFdDZE95azRHUFE3amVXNXVsS3RQelNrOW5tdUhX?=
- =?utf-8?B?UThjSGtMQzN0WEtWdHpKV1MwUGZxUEpUOU1lK2lOUnRMODBUbmtuL1NUZ1dB?=
- =?utf-8?B?Y2t6d2FqUmNOOWx6ZUpTTXVzbFBlY1N2bW1lWXBjYTNVSlpldWdvRFIrOVI0?=
- =?utf-8?B?bWY3TnZDVnRnVGcxWHY0SzNYTEVjS0tNSzBHSUZUN0crZ0Z2VEFyL1pjL0xZ?=
- =?utf-8?B?czVrT2JkOER1YWVEQk1ERUh1dWQ0YWZqM25wU0RDb0toWDN1d2s1aFJYbXJT?=
- =?utf-8?B?b2JSbTVhTGxTTWJaZ3p0UWgvczBkZ2g3dGd3RXEyckwybDRkNmhhVktDSEtV?=
- =?utf-8?B?dTdRd2s2cnEraVE5cFR2YlMzTW9td00vdGpTZWZPWVVDamxOMWJDVDQ5eW9H?=
- =?utf-8?B?enRkT0swdk12Y1Y3akI3bXdXd2ZSeGZNQ2VobklsQ1FHaEZhVXpiR3U3eW4y?=
- =?utf-8?B?UC9NZTFWaVBhOGVLTHJYdThXb2R6MjlOTC9oaFNXWm4vZkF0QlpNK0pHNzRp?=
- =?utf-8?B?Ly9McHN5N1VQZzlBVVpyNVJUeUtRRHg4ZDhGWjkySTNYdnJMQ0hVVTJocnVE?=
- =?utf-8?Q?xtwGAY3KEMKZNrlbFJd2WKIiVYgmhRl++dFkM?=
+	=?utf-8?B?NFhkSktXR3lLZkc0cGEzWk11M1UwWUh6UGUwbFQ2YlYrRXpuc1d5MFVUUXNw?=
+ =?utf-8?B?SXdHemltbVd3OXQydTdLS1UxcUh5QjZHNmFiS2dHazk5RTF1QUxJZTFXbXF0?=
+ =?utf-8?B?bHlzQUFoenV5bTZmU2lZalJ3dWFhWU5rQllxeWdPQXhldGdiMHRJYmFLN25U?=
+ =?utf-8?B?RW53OTUvRXJYd0tlTWY0anQwUWtjeGRaKzNsVTNKOS80dDRxYXdYcGNSck14?=
+ =?utf-8?B?UXdUb1RyU1c1cW1XcnZMQ29IRG4rRUk3QWxKWlB0UDJGd01OUkFna2Y1UmR6?=
+ =?utf-8?B?YW01TEptTEI5RGM0dG03TUh2KzhqVXlzOHAyYno1bVBjZFdLWkppakxtL3NH?=
+ =?utf-8?B?alFvY2p6bm1od1BjbEVsc1BXeHlaMkNQTDlmSUF1TEZUUEpYUVF1SEhMM0NI?=
+ =?utf-8?B?dXBwUXNZWHR4dUg5NzF2Ukt0d2I0YmlTQ2FKZ2dHY2VyUy81RzVYd3VnWE4x?=
+ =?utf-8?B?b2VQRHR1M0lDaTg2VmFmcCs1emtyeGxudElPVGlvU2ZrU09PRTNlRXk3WDNZ?=
+ =?utf-8?B?Zm1FeXhnWExrTlZwMXBJTjhlVHliaXNTUjlYZnJMNm9Ld3VEYXFSTVhyM25O?=
+ =?utf-8?B?VGFFZXhvUjNjK09qSVE2ekh5ODdjZlU1ak42NVVBWng1K0dUN2dxK2RVTHov?=
+ =?utf-8?B?SnlzZnR0dWkxNHloZGMzS1pZVEJsWW5oOHNkRWlETHZQVXZVeXhjbnpJYzZW?=
+ =?utf-8?B?QjZuWXlwTHVWTG81Mmt2V2tRZTA1ZkU5OUNYN29SYVNCNkJZNXFBQk1VNjZF?=
+ =?utf-8?B?V3ByZlNoSzdVbmNZdndxdFdoTHdJWmRyZnhnbzdBTTl4TFR2bTUxV1hkam55?=
+ =?utf-8?B?YmNLZmgvQi9keE9UQUE2VzFBT29nVlJyQTgreVRvZm10bkdRNjNHK29yQzFk?=
+ =?utf-8?B?R3VSQUM5VWZ2a1lUalU5RkxBTm4wY1ZFVW1QZGpUK25lK25DZ1Q1L2h5MU9w?=
+ =?utf-8?B?eENOM3hOdThXQ0VHeDJCZ2M5QllUWVc1VGNwbENrNFdoYlo4d2g1b0MwUjBh?=
+ =?utf-8?B?aWh0SkZpSlZKcTlHVTdsVE15NjNIcjhnMlQvN1NhVXV4bnVxVFowT2s5a3R2?=
+ =?utf-8?B?bkl1YnYyendxMDBsdG1wdi91OGI3cXFTMndqVU4xc0lUMDFKZm40Mit3ZkNO?=
+ =?utf-8?B?bmY5MjNkVmJ2d2oreHhuU2dGRitGZnQ0d29DdDFiUThHZWIyRmZjYzRHOUpr?=
+ =?utf-8?B?T2lrazE2Yy91VFZXWCtMWkNsUWVkYzFqcllpc3pSWHFxS1RkTnVmQm9XQ1Vl?=
+ =?utf-8?B?cjNsZVUyNXRiUEliWGRhem9GdldJRmZmdnpqVEx2elhnL3cyeG5pZ2ZQNzdJ?=
+ =?utf-8?B?Q3A1M3d4eVVHSHUvUVBCdDUyeGhqNjhwUENQd2xNMWhJSGx2NmhoRGlIdjM5?=
+ =?utf-8?B?NGg4WG5CT1Z2R25kMnBoWUZTem9XdmVQUzBPd0w1T2dTYU9SbElHUWczMWpt?=
+ =?utf-8?B?QmpLeVJucG5WMmZyWC83WDMwa3NKQ3VPemlZbmNtQ2syTklucGM3SXZBTkx1?=
+ =?utf-8?B?aHR5SmxZY2NvKzdJbS9iWDVSME1LMFIrS0Jwa3RZOXdQVWE4ZENENUxkZXh0?=
+ =?utf-8?B?WWxqdHk4bGYveW55WWxaVlhuZ2lZNm5VZldlQ2dFcXR2bGZVdkc2RWsvanp5?=
+ =?utf-8?B?NWYyVVRWWVhLTlhMcHdqZCt6c2ZJWVEzZWt5RFQzMTBLYk92QVZDR1AvWGhn?=
+ =?utf-8?B?ZXQyZkdZa1NjeVFKbVVIeHZJbmlOUEhLOWhsM3JYZzEvUXRWelF0YlUrb3la?=
+ =?utf-8?B?WXljMVJ4VmhmeHBSd0pGbG80V29vVEcwQm44cm1vczhPMjk5Z1d2dnl4SU9Z?=
+ =?utf-8?B?TGF6SFpxOFNheE1CWW1nRG1yWFI0Zk5ydUdlMEpRTHplOFNOM2RwZHVyalYx?=
+ =?utf-8?B?VmdzMHVvTm9ZRW1aSjdjMDlyUU03ZzZEVStQVzhwVlVQNHI1WFVXRVJiTWxo?=
+ =?utf-8?B?OWJ1am5YVHU2SWR0cHpzaElpWDZ5aTdEaXRuTi90VnJaOVh5Z0Nab1pnVkw5?=
+ =?utf-8?B?c3FVSDUyYVRQdVJ3UmFPcUZWYkt4L0tYbUdOalU2M3dJRk5SbzIyY21uUnpy?=
+ =?utf-8?B?YVlsNkZJbXB1WjB3Y2tDbGJENWZ0SWZyWmNvNVBoY1lpbnRzemJ2MGkrMy9h?=
+ =?utf-8?B?eTZxM2Njby80WkFaNHRoTnUxNkhQc0FSaW5qZkY2eElWQUVtMkY0QU1tOWM1?=
+ =?utf-8?B?U3J1VkZISVFsWnB3YXlvckhJSjQydE14Nk5HM2JVNXhuQ1NoM1p6NzQrUlpQ?=
+ =?utf-8?B?c2VqczVvOWFkd25GTk9QTTRzejkyWkpPQ3pzcFpjWHJzdXhhd0hyOWZZVGhZ?=
+ =?utf-8?B?Q0xYZUlWZWkwSThaVjlubGRVQ3lmL28vWUZSenRJWWNZaklsMjlMeityMllw?=
+ =?utf-8?Q?HVwDLCO6EorUlb4Z+aONboYj7FCJD1M3lrBHo?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07b9e12c-89b9-4a30-2047-08deff564c91
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a81d6ad-20d9-424b-006c-08deff564fa4
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8469.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 07:32:05.2734
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 07:32:10.5429
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gRYKbhuKeybmB2Ul1Od6LMuNniQSVtn3UpMC1VgTBxRDlo2Zj8o7XhJpQlckuY9TVOZeBpVBl+0Sg3b3FkhAxsEWVsPwt3PPwO6DhQ65Yoi9GXCqTClns4Zk+wVlk4aQ
+X-MS-Exchange-CrossTenant-UserPrincipalName: YkwIAMGw3bKdVz+k3WDONw4RywgqP8QX1oJwvUak6rvezegO58Ts1ekL+9JEr6hcxwmvmfS8LMENaVOfSSwTv6qfJWHceeiD8je51H2BUXm2Gu0IANmn9xQOlucr+Nw9
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9392
 
 From: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
-creates an embedded secure enclave within the SoC boundary to enable
-features like:
-- HSM
-- SHE
-- V2X
+Add MU-based communication interface for secure enclave.
 
-Secure-Enclave(s) communication interface are typically via message
-unit, i.e., based on mailbox linux kernel driver. This driver enables
-communication ensuring well defined message sequence protocol between
-Application Core and enclave's firmware.
+NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are
+embedded in the SoC to support the features like HSM, SHE & V2X, using
+message based communication interface.
 
-Driver configures multiple misc-device on the MU, for multiple
-user-space applications, to be able to communicate over single MU.
+The secure enclave FW communicates with Linux over single or multiple
+dedicated messaging unit(MU) based interface(s).
+Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
 
-It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+For i.MX9x SoC(s) there is at least one dedicated ELE MU(s) for each
+world - Linux(one or more) and OPTEE-OS (one or more).
+
+Other dependent kernel drivers will be:
+- NVMEM: that supports non-volatile devices like EFUSES,
+  managed by NXP's secure-enclave.
 
 Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 91 ++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+Changes from v37 to v38
+- Fixes to not supress returning err in case of suspend/resume.
+---
+ drivers/firmware/imx/Kconfig        |  12 +
+ drivers/firmware/imx/Makefile       |   2 +
+ drivers/firmware/imx/ele_base_msg.c | 282 ++++++++++++++++++++
+ drivers/firmware/imx/ele_base_msg.h | 100 +++++++
+ drivers/firmware/imx/ele_common.c   | 501 +++++++++++++++++++++++++++++++++++
+ drivers/firmware/imx/ele_common.h   |  45 ++++
+ drivers/firmware/imx/se_ctrl.c      | 507 ++++++++++++++++++++++++++++++++++++
+ drivers/firmware/imx/se_ctrl.h      | 112 ++++++++
+ include/linux/firmware/imx/se_api.h |  14 +
+ 9 files changed, 1575 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
+index 127ad752acf8..93ac339800e2 100644
+--- a/drivers/firmware/imx/Kconfig
++++ b/drivers/firmware/imx/Kconfig
+@@ -55,3 +55,15 @@ config IMX_SCMI_MISC_DRV
+ 	  core that could provide misc functions such as board control.
+ 
+ 	  This driver can also be built as a module.
++
++config IMX_SEC_ENCLAVE
++	tristate "i.MX Embedded Secure Enclave - EdgeLock Enclave Firmware driver."
++	depends on MAILBOX && ((IMX_MBOX && ARCH_MXC && ARM64) || COMPILE_TEST)
++	select FW_LOADER
++	default m if ARCH_MXC
++
++	help
++	  Exposes APIs supported by the iMX Secure Enclave HW IP called:
++	  - EdgeLock Enclave Firmware (for i.MX8ULP, i.MX93),
++	    like base, HSM, V2X & SHE using the SAB protocol via the shared Messaging
++	    Unit.
+diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
+index 3bbaffa6e347..4412b15846b1 100644
+--- a/drivers/firmware/imx/Makefile
++++ b/drivers/firmware/imx/Makefile
+@@ -4,3 +4,5 @@ obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
+ obj-${CONFIG_IMX_SCMI_CPU_DRV}	+= sm-cpu.o
+ obj-${CONFIG_IMX_SCMI_MISC_DRV}	+= sm-misc.o
+ obj-${CONFIG_IMX_SCMI_LMM_DRV}	+= sm-lmm.o
++sec_enclave-objs		= se_ctrl.o ele_common.o ele_base_msg.o
++obj-${CONFIG_IMX_SEC_ENCLAVE}	+= sec_enclave.o
+diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/ele_base_msg.c
 new file mode 100644
-index 000000000000..fa81adbf9b80
+index 000000000000..724f6e913ce7
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-@@ -0,0 +1,91 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/firmware/imx/ele_base_msg.c
+@@ -0,0 +1,282 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2025 NXP
++ */
 +
-+title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
++#include <linux/types.h>
 +
-+maintainers:
-+  - Pankaj Gupta <pankaj.gupta@nxp.com>
++#include <linux/cleanup.h>
++#include <linux/completion.h>
++#include <linux/dma-mapping.h>
++#include <linux/genalloc.h>
 +
-+description: |
-+  NXP's SoC may contain one or multiple embedded secure-enclave HW
-+  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
-+  enables features like
-+    - Hardware Security Module (HSM),
-+    - Security Hardware Extension (SHE), and
-+    - Vehicular to Anything (V2X)
++#include "ele_base_msg.h"
++#include "ele_common.h"
 +
-+  Communication interface to the secure-enclaves(se) is based on the
-+  messaging unit(s).
++#define FW_DBG_DUMP_FIXED_STR		"ELE"
 +
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,imx8ulp-se-ele-hsm
-+      - fsl,imx93-se-ele-hsm
-+      - fsl,imx95-se-ele-hsm
++static void ele_get_info_cleanup(struct se_if_priv *priv, u32 *buf, dma_addr_t d_addr,
++				 size_t size)
++{
++	if (priv->mem_pool)
++		gen_pool_free(priv->mem_pool, (unsigned long)buf, size);
++	else
++		dma_free_coherent(priv->dev, size, buf, d_addr);
++}
 +
-+  mboxes:
-+    items:
-+      - description: mailbox phandle to send message to se firmware
-+      - description: mailbox phandle to receive message from se firmware
++int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
++{
++	dma_addr_t get_info_addr = 0;
++	void *get_info_data = NULL;
++	u32 get_info_len;
++	int ret = 0;
 +
-+  mbox-names:
-+    items:
-+      - const: tx
-+      - const: rx
++	if (!priv)
++		return -EINVAL;
 +
-+  memory-region:
-+    maxItems: 1
++	memset(s_info, 0x0, sizeof(*s_info));
 +
-+  sram:
-+    maxItems: 1
++	struct se_api_msg *tx_msg __free(kfree) =
++		kzalloc(ELE_GET_INFO_REQ_MSG_SZ, GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
 +
-+required:
-+  - compatible
-+  - mboxes
-+  - mbox-names
++	struct se_api_msg *rx_msg __free(kfree) =
++		kzalloc(ELE_GET_INFO_RSP_MSG_SZ, GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
 +
-+allOf:
-+  # memory-region
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8ulp-se-ele-hsm
-+              - fsl,imx93-se-ele-hsm
-+    then:
-+      required:
-+        - memory-region
-+    else:
-+      properties:
-+        memory-region: false
++	get_info_len = ELE_GET_INFO_BUFF_SZ;
++	if (priv->mem_pool)
++		get_info_data = gen_pool_dma_alloc(priv->mem_pool,
++						   get_info_len,
++						   &get_info_addr);
++	else
++		get_info_data = dma_alloc_coherent(priv->dev,
++						   get_info_len,
++						   &get_info_addr,
++						   GFP_KERNEL);
++	if (!get_info_data) {
++		dev_err(priv->dev,
++			"%s: Failed to allocate get_info_addr.", __func__);
++		return -ENOMEM;
++	}
 +
-+  # sram
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8ulp-se-ele-hsm
-+    then:
-+      required:
-+        - sram
++	/* gen_pool_dma_alloc() does not zero the buffer. */
++	memset(get_info_data, 0, get_info_len);
 +
-+    else:
-+      properties:
-+        sram: false
++	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
++			    ELE_GET_INFO_REQ, ELE_GET_INFO_REQ_MSG_SZ, true);
 +
-+additionalProperties: false
++	tx_msg->data[0] = upper_32_bits(get_info_addr);
++	tx_msg->data[1] = lower_32_bits(get_info_addr);
++	tx_msg->data[2] = sizeof(*s_info);
++	ret = ele_msg_send_rcv(priv, tx_msg, ELE_GET_INFO_REQ_MSG_SZ, rx_msg,
++			       ELE_GET_INFO_RSP_MSG_SZ);
++	if (ret < 0) {
++		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
++		return ret;
++	}
 +
-+examples:
-+  - |
-+    secure-enclave {
-+      compatible = "fsl,imx95-se-ele-hsm";
-+      mboxes = <&ele_mu0 0 0>, <&ele_mu0 1 0>;
-+      mbox-names = "tx", "rx";
-+    };
-+...
++	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_GET_INFO_REQ,
++				      ELE_GET_INFO_RSP_MSG_SZ, true);
++	if (ret < 0) {
++		ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
++		return ret;
++	}
++
++	memcpy(s_info, get_info_data, sizeof(*s_info));
++
++	ele_get_info_cleanup(priv, get_info_data, get_info_addr, get_info_len);
++
++	return ret;
++}
++
++int ele_fetch_soc_info(struct se_if_priv *priv, void *data)
++{
++	return ele_get_info(priv, (struct ele_dev_info *)data);
++}
++
++int ele_ping(struct se_if_priv *priv)
++{
++	int ret = 0;
++
++	if (!priv)
++		return -EINVAL;
++
++	struct se_api_msg *tx_msg __free(kfree) = kzalloc(ELE_PING_REQ_SZ,
++							  GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
++
++	struct se_api_msg *rx_msg __free(kfree) = kzalloc(ELE_PING_RSP_SZ,
++							  GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
++
++	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
++			    ELE_PING_REQ, ELE_PING_REQ_SZ, true);
++
++	ret = ele_msg_send_rcv(priv, tx_msg, ELE_PING_REQ_SZ, rx_msg,
++			       ELE_PING_RSP_SZ);
++	if (ret < 0)
++		return ret;
++
++	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_PING_REQ,
++				      ELE_PING_RSP_SZ, true);
++
++	return ret;
++}
++
++int ele_service_swap(struct se_if_priv *priv,
++		     dma_addr_t addr,
++		     u32 addr_size, u16 flag)
++{
++	int ret = 0;
++
++	if (!priv)
++		return -EINVAL;
++
++	if (upper_32_bits(addr)) {
++		dev_err(priv->dev,
++			"ELE service-swap address exceeds 32-bit range: %pad\n",
++			&addr);
++		return -ERANGE;
++	}
++
++	struct se_api_msg *tx_msg __free(kfree)	=
++		kzalloc(ELE_SERVICE_SWAP_REQ_MSG_SZ, GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
++
++	struct se_api_msg *rx_msg __free(kfree) =
++		kzalloc(ELE_SERVICE_SWAP_RSP_MSG_SZ, GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
++
++	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
++			    ELE_SERVICE_SWAP_REQ, ELE_SERVICE_SWAP_REQ_MSG_SZ, true);
++
++	tx_msg->data[0] = flag;
++	tx_msg->data[1] = addr_size;
++	tx_msg->data[2] = ELE_NONE_VAL;
++	tx_msg->data[3] = lower_32_bits(addr);
++	ret = se_update_msg_chksum((u32 *)&tx_msg[0], ELE_SERVICE_SWAP_REQ_MSG_SZ);
++	if (ret)
++		return -EINVAL;
++
++	ret = ele_msg_send_rcv(priv, tx_msg, ELE_SERVICE_SWAP_REQ_MSG_SZ,
++			       rx_msg, ELE_SERVICE_SWAP_RSP_MSG_SZ);
++	if (ret < 0)
++		return ret;
++
++	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_SERVICE_SWAP_REQ,
++				      ELE_SERVICE_SWAP_RSP_MSG_SZ, true);
++	if (ret)
++		return ret;
++
++	if (flag == ELE_IMEM_EXPORT)
++		ret = rx_msg->data[1];
++	else
++		ret = 0;
++
++	return ret;
++}
++
++int ele_fw_authenticate(struct se_if_priv *priv, dma_addr_t contnr_addr,
++			dma_addr_t img_addr)
++{
++	int ret = 0;
++
++	if (!priv)
++		return -EINVAL;
++
++	if (upper_32_bits(contnr_addr) || upper_32_bits(img_addr)) {
++		dev_err(priv->dev, "Wrong address: %pap %pap\n", &contnr_addr, &img_addr);
++		return -EINVAL;
++	}
++
++	struct se_api_msg *tx_msg __free(kfree)	=
++		kzalloc(ELE_FW_AUTH_REQ_SZ, GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
++
++	struct se_api_msg *rx_msg __free(kfree) =
++		kzalloc(ELE_FW_AUTH_RSP_MSG_SZ, GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
++
++	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
++			    ELE_FW_AUTH_REQ, ELE_FW_AUTH_REQ_SZ, true);
++
++	tx_msg->data[0] = lower_32_bits(contnr_addr);
++	tx_msg->data[1] = 0;
++	tx_msg->data[2] = lower_32_bits(img_addr);
++
++	ret = ele_msg_send_rcv(priv, tx_msg, ELE_FW_AUTH_REQ_SZ, rx_msg,
++			       ELE_FW_AUTH_RSP_MSG_SZ);
++	if (ret < 0)
++		return ret;
++
++	ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_FW_AUTH_REQ,
++				      ELE_FW_AUTH_RSP_MSG_SZ, true);
++
++	return ret;
++}
++
++int ele_debug_dump(struct se_if_priv *priv)
++{
++	bool keep_logging;
++	int msg_ex_cnt;
++	int ret = 0;
++	int i;
++
++	if (!priv)
++		return -EINVAL;
++
++	struct se_api_msg *tx_msg __free(kfree) = kzalloc(ELE_DEBUG_DUMP_REQ_SZ,
++							  GFP_KERNEL);
++	if (!tx_msg)
++		return -ENOMEM;
++
++	struct se_api_msg *rx_msg __free(kfree)	= kzalloc(ELE_DEBUG_DUMP_RSP_SZ,
++							  GFP_KERNEL);
++	if (!rx_msg)
++		return -ENOMEM;
++
++	se_fill_cmd_msg_hdr(priv, &tx_msg->header, ELE_DEBUG_DUMP_REQ,
++			    ELE_DEBUG_DUMP_REQ_SZ, true);
++
++	msg_ex_cnt = 0;
++	do {
++		memset(rx_msg, 0x0, ELE_DEBUG_DUMP_RSP_SZ);
++
++		ret = ele_msg_send_rcv(priv, tx_msg, ELE_DEBUG_DUMP_REQ_SZ,
++				       rx_msg, ELE_DEBUG_DUMP_RSP_SZ);
++		if (ret < 0)
++			return ret;
++
++		ret = se_val_rsp_hdr_n_status(priv, rx_msg, ELE_DEBUG_DUMP_REQ,
++					      ELE_DEBUG_DUMP_RSP_SZ, true);
++		if (ret) {
++			dev_err(priv->dev, "Dump_Debug_Buffer Error: %x.", ret);
++			break;
++		}
++		keep_logging = (rx_msg->header.size >= (ELE_DEBUG_DUMP_RSP_SZ >> 2) &&
++				msg_ex_cnt < ELE_MAX_DBG_DMP_PKT);
++
++		rx_msg->header.size -= 2;
++
++		if (rx_msg->header.size > 2)
++			rx_msg->header.size--;
++
++		for (i = 0; i < rx_msg->header.size; i += 2)
++			dev_info(priv->dev, "%s%02x_%02x: 0x%08x 0x%08x",
++				 FW_DBG_DUMP_FIXED_STR,	msg_ex_cnt, i,
++				 rx_msg->data[i + 1], rx_msg->data[i + 2]);
++
++		msg_ex_cnt++;
++	} while (keep_logging);
++
++	return ret;
++}
+diff --git a/drivers/firmware/imx/ele_base_msg.h b/drivers/firmware/imx/ele_base_msg.h
+new file mode 100644
+index 000000000000..02525d5e2873
+--- /dev/null
++++ b/drivers/firmware/imx/ele_base_msg.h
+@@ -0,0 +1,100 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2025 NXP
++ *
++ * Header file for the EdgeLock Enclave Base API(s).
++ */
++
++#ifndef ELE_BASE_MSG_H
++#define ELE_BASE_MSG_H
++
++#include <linux/unaligned.h>
++#include <linux/device.h>
++#include <linux/types.h>
++
++#include "se_ctrl.h"
++
++#define ELE_NONE_VAL			0x0
++#define ELE_MAX_DBG_DMP_PKT		50
++
++#define ELE_PING_REQ			0x01
++#define ELE_PING_REQ_SZ			0x04
++#define ELE_PING_RSP_SZ			0x08
++
++#define ELE_FW_AUTH_REQ			0x02
++#define ELE_FW_AUTH_REQ_SZ		0x10
++#define ELE_FW_AUTH_RSP_MSG_SZ		0x08
++
++#define ELE_DEBUG_DUMP_REQ		0x21
++#define ELE_DEBUG_DUMP_REQ_SZ		0x4
++#define ELE_DEBUG_DUMP_RSP_SZ		0x5c
++
++#define ELE_GET_INFO_REQ		0xda
++#define ELE_GET_INFO_REQ_MSG_SZ		0x10
++#define ELE_GET_INFO_RSP_MSG_SZ		0x08
++
++#define MAX_UID_SIZE                     (16)
++#define DEV_GETINFO_ROM_PATCH_SHA_SZ     (32)
++#define DEV_GETINFO_FW_SHA_SZ            (32)
++#define DEV_GETINFO_OEM_SRKH_SZ          (64)
++#define DEV_GETINFO_MIN_VER_MASK	0xff
++#define DEV_GETINFO_MAJ_VER_MASK	0xff00
++#define ELE_DEV_INFO_EXTRA_SZ		0x60
++
++struct dev_info {
++	u8  cmd;
++	u8  ver;
++	u16 length;
++	u16 soc_id;
++	u16 soc_rev;
++	u16 lmda_val;
++	u8  ssm_state;
++	u8  dev_atts_api_ver;
++	u8  uid[MAX_UID_SIZE];
++	u8  sha_rom_patch[DEV_GETINFO_ROM_PATCH_SHA_SZ];
++	u8  sha_fw[DEV_GETINFO_FW_SHA_SZ];
++};
++
++struct dev_addn_info {
++	u8  oem_srkh[DEV_GETINFO_OEM_SRKH_SZ];
++	u8  trng_state;
++	u8  csal_state;
++	u8  imem_state;
++	u8  reserved2;
++};
++
++struct ele_dev_info {
++	struct dev_info d_info;
++	struct dev_addn_info d_addn_info;
++};
++
++#define ELE_GET_INFO_BUFF_SZ		(sizeof(struct ele_dev_info) \
++						+ ELE_DEV_INFO_EXTRA_SZ)
++
++#define ELE_SERVICE_SWAP_REQ		0xdf
++#define ELE_SERVICE_SWAP_REQ_MSG_SZ	0x18
++#define ELE_SERVICE_SWAP_RSP_MSG_SZ	0x0c
++#define ELE_IMEM_SIZE			0x10000
++#define ELE_IMEM_STATE_OK		0xca
++#define ELE_IMEM_STATE_BAD		0xfe
++#define ELE_IMEM_STATE_WORD		0x27
++#define ELE_IMEM_STATE_MASK		0x00ff0000
++#define ELE_IMEM_EXPORT			0x1
++#define ELE_IMEM_IMPORT			0x2
++
++#define GET_SERIAL_NUM_FROM_UID(x, uid_word_sz) ({\
++	const u8 *__x = (const u8 *)(x); \
++	size_t __sz = (uid_word_sz); \
++	((u64)get_unaligned_le32(__x + (__sz - 1) * sizeof(u32)) << 32) | \
++		get_unaligned_le32(__x); \
++	})
++
++int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info);
++int ele_fetch_soc_info(struct se_if_priv *priv, void *data);
++int ele_ping(struct se_if_priv *priv);
++int ele_service_swap(struct se_if_priv *priv, dma_addr_t addr,
++		     u32 addr_size, u16 flag);
++int ele_fw_authenticate(struct se_if_priv *priv, dma_addr_t contnr_addr,
++			dma_addr_t img_addr);
++int ele_debug_dump(struct se_if_priv *priv);
++#endif
+diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele_common.c
+new file mode 100644
+index 000000000000..04ee5112d346
+--- /dev/null
++++ b/drivers/firmware/imx/ele_common.c
+@@ -0,0 +1,501 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2025 NXP
++ */
++
++#include "ele_base_msg.h"
++#include "ele_common.h"
++
++/*
++ * se_update_msg_chksum() - calculate and update message checksum word.
++ * @msg: message buffer.
++ * @msg_len: message length in bytes.
++ *
++ * The message length must be 4-byte aligned. The last word is treated as the
++ * checksum field and is not included in the checksum calculation.
++ *
++ * Return:
++ * 0 on success, negative errno on failure.
++ */
++int se_update_msg_chksum(u32 *msg, u32 msg_len)
++{
++	u32 nb_words;
++	u32 chksum = 0;
++	u32 i;
++
++	if (!msg)
++		return -EINVAL;
++
++	if (msg_len % SE_MSG_WORD_SZ) {
++		pr_err("Msg-len is not 4-byte aligned.\n");
++		return -EINVAL;
++	}
++
++	nb_words = msg_len / sizeof(*msg);
++	if (nb_words < 5)
++		return -EINVAL;
++
++	/* Last word is the checksum word, so skip it. */
++	nb_words--;
++
++	for (i = 0; i < nb_words; i++)
++		chksum ^= msg[i];
++
++	msg[nb_words] = chksum;
++
++	return 0;
++}
++
++int ele_msg_rcv(struct se_if_priv *priv, struct se_clbk_handle *se_clbk_hdl)
++{
++	bool is_rsp_wait_with_timeout = false;
++	bool wait_uninterruptible = false;
++	unsigned long remaining_jiffies;
++	unsigned long deadline_jiffies;
++	unsigned long flags;
++	int ret;
++
++	remaining_jiffies = msecs_to_jiffies(SE_RCV_MSG_DEFAULT_TIMEOUT_MS);
++	if (se_clbk_hdl == &priv->waiting_rsp_clbk_hdl) {
++		is_rsp_wait_with_timeout = true;
++		deadline_jiffies = jiffies + remaining_jiffies;
++	}
++
++	do {
++		if (is_rsp_wait_with_timeout) {
++			unsigned long now = jiffies;
++
++			if (time_after_eq(now, deadline_jiffies)) {
++				/* Deadline hit: fence hung FW, like the ret==0 path. */
++				spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
++				se_clbk_hdl->rx_msg = NULL;
++				if (!completion_done(&se_clbk_hdl->done))
++					atomic_set(&priv->fw_busy, 1);
++				spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
++				ret = -ETIMEDOUT;
++				break;
++			}
++			remaining_jiffies = deadline_jiffies - now;
++		}
++
++		if (wait_uninterruptible)
++			ret = wait_for_completion_timeout(&se_clbk_hdl->done,
++							  remaining_jiffies);
++		else
++			ret = wait_for_completion_interruptible_timeout(&se_clbk_hdl->done,
++									remaining_jiffies);
++		if (ret == -ERESTARTSYS) {
++			/*
++			 * Record that a signal was observed, then continue waiting non-
++			 * interruptibly until the response arrives or the timeout
++			 * expires. The caller can surface the interruption to userspace
++			 * after the protocol transaction is brought back to a
++			 * synchronized state.
++			 */
++			if (is_rsp_wait_with_timeout &&
++			    READ_ONCE(se_clbk_hdl->rx_msg)) {
++				WRITE_ONCE(se_clbk_hdl->signal_rcvd, true);
++				wait_uninterruptible = true;
++				continue;
++			}
++			break;
++		}
++
++		if (ret == 0) {
++			/*
++			 * The response buffer belongs to the caller of ele_msg_send_rcv()
++			 * and may be freed as soon as this function returns. Clear rx_msg
++			 * under clbk_rx_lock so that a late se_if_rx_callback() can
++			 * observe that the waiter has timed out and must not copy into
++			 * the stale buffer.
++			 *
++			 * If the completion has not yet been signaled, mark the firmware
++			 * path busy. This acts as a circuit breaker: reject new
++			 * command/response transactions until the delayed response
++			 * arrives and the callback closes the breaker.
++			 */
++
++			spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
++			se_clbk_hdl->rx_msg = NULL;
++			if (!completion_done(&se_clbk_hdl->done))
++				atomic_set(&priv->fw_busy, 1);
++
++			spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
++			ret = -ETIMEDOUT;
++			dev_err(priv->dev,
++				"Fatal Error: SE interface %s0, hangs indefinitely.\n",
++				get_se_if_name(priv->if_defs->se_if_type));
++			break;
++		}
++		ret = se_clbk_hdl->rx_msg_sz;
++		break;
++	} while (ret < 0);
++
++	return ret;
++}
++
++int ele_msg_send(struct se_if_priv *priv,
++		 void *tx_msg,
++		 int tx_msg_sz)
++{
++	struct se_msg_hdr *header = tx_msg;
++	int err;
++
++	/*
++	 * Check that the size passed as argument matches the size
++	 * carried in the message.
++	 */
++	if (header->size << 2 != tx_msg_sz) {
++		dev_err(priv->dev,
++			"User buf hdr: 0x%x, sz mismatced with input-sz (%d != %d).",
++			*(u32 *)header, header->size << 2, tx_msg_sz);
++		return -EINVAL;
++	}
++
++	/*
++	 * The i.MX MU mailbox controller copies the payload words into MU
++	 * registers synchronously from its send path. It does not retain the
++	 * caller-provided tx_msg pointer after mbox_send_message() returns, so
++	 * the caller-owned buffer may be released after a successful send.
++	 */
++	err = mbox_send_message(priv->tx_chan, tx_msg);
++	if (err < 0) {
++		dev_err(priv->dev, "Error: mbox_send_message failure.\n");
++		return err;
++	}
++
++	return tx_msg_sz;
++}
++
++static void ele_msg_send_rcv_cleanup(struct se_if_priv *priv)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&priv->waiting_rsp_clbk_hdl.clbk_rx_lock, flags);
++	priv->waiting_rsp_clbk_hdl.rx_msg = NULL;
++	priv->waiting_rsp_clbk_hdl.rx_msg_sz = 0;
++	spin_unlock_irqrestore(&priv->waiting_rsp_clbk_hdl.clbk_rx_lock, flags);
++}
++
++/* API used for send/receive blocking call. */
++int ele_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz,
++		     void *rx_msg, int exp_rx_msg_sz)
++{
++	unsigned long flags;
++	int err;
++
++	guard(mutex)(&priv->se_if_cmd_lock);
++
++	if (atomic_read(&priv->fw_busy)) {
++		dev_dbg(priv->dev, "ELE became unresponsive.\n");
++		return -EBUSY;
++	}
++	reinit_completion(&priv->waiting_rsp_clbk_hdl.done);
++	/* Publish rx_msg/rx_msg_sz under the lock read by se_if_rx_callback(). */
++	spin_lock_irqsave(&priv->waiting_rsp_clbk_hdl.clbk_rx_lock, flags);
++	priv->waiting_rsp_clbk_hdl.rx_msg_sz = exp_rx_msg_sz;
++	priv->waiting_rsp_clbk_hdl.rx_msg = rx_msg;
++	spin_unlock_irqrestore(&priv->waiting_rsp_clbk_hdl.clbk_rx_lock, flags);
++
++	err = ele_msg_send(priv, tx_msg, tx_msg_sz);
++	if (err < 0) {
++		ele_msg_send_rcv_cleanup(priv);
++		return err;
++	}
++
++	err = ele_msg_rcv(priv, &priv->waiting_rsp_clbk_hdl);
++
++	if (priv->waiting_rsp_clbk_hdl.signal_rcvd) {
++		/*
++		 * Signal was deferred until the FW/kernel protocol resynchronized.
++		 * On success report -ERESTARTSYS for the interrupted wait; the
++		 * command is not re-sent. Keep real errors like -ETIMEDOUT.
++		 */
++		if (err > 0)
++			err = -ERESTARTSYS;
++		priv->waiting_rsp_clbk_hdl.signal_rcvd = false;
++		dev_dbg(priv->dev, "Err[0x%x]:Interrupted by signal.", err);
++	}
++
++	ele_msg_send_rcv_cleanup(priv);
++
++	return err;
++}
++
++static bool check_hdr_exception_for_sz(struct se_if_priv *priv,
++				       struct se_msg_hdr *header)
++{
++	/*
++	 * List of API headers that can accept a variable length response buffer.
++	 */
++	if (header->command == ELE_DEBUG_DUMP_REQ &&
++	    header->ver == priv->if_defs->base_api_ver &&
++	    header->size >= 2 && header->size <= (ELE_DEBUG_DUMP_RSP_SZ / 4))
++		return true;
++
++	return false;
++}
++
++/*
++ * Callback called by mailbox FW, when data is received.
++ */
++void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg)
++{
++	struct se_clbk_handle *se_clbk_hdl;
++	struct device *dev = mbox_cl->dev;
++	struct se_msg_hdr *header;
++	bool sz_mismatch = false;
++	struct se_if_priv *priv;
++	unsigned long flags;
++	u32 rx_msg_sz;
++
++	priv = dev_get_drvdata(dev);
++	if (!priv)
++		return;
++
++	/* The function can be called with NULL msg */
++	if (IS_ERR_OR_NULL(msg)) {
++		dev_err(dev, "Message is invalid\n");
++		return;
++	}
++
++	header = msg;
++	rx_msg_sz = header->size << 2;
++
++	/* Incoming command: wake up the receiver if any. */
++	if (header->tag == priv->if_defs->cmd_tag) {
++		se_clbk_hdl = &priv->cmd_receiver_clbk_hdl;
++		spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
++		if (!se_clbk_hdl->rx_msg) {
++			spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
++			dev_warn(dev, "No command receiver registered for message: %.8x\n",
++				 *((u32 *)header));
++			return;
++		}
++
++		/*
++		 * cmd_tag messages are delivered only to the explicitly registered
++		 * command receiver. Unlike the synchronous response waiter path, the
++		 * command receiver uses a dedicated long-lived buffer installed by
++		 * SE_IOCTL_ENABLE_CMD_RCV and is not subject to the timeout/circuit-
++		 * breaker handling used for rsp_tag messages.
++		 */
++		dev_dbg(dev, "Selecting cmd receiver: for mesg header:0x%x.",
++			*(u32 *)header);
++
++		/*
++		 * Pre-allocated buffer of MAX_NVM_MSG_LEN
++		 * as the NVM command are initiated by FW.
++		 * Size is revealed as part of this call function.
++		 */
++
++		if (rx_msg_sz > MAX_NVM_MSG_LEN)
++			sz_mismatch = true;
++
++		/*
++		 * Clamp the copy length to the pre-allocated receiver buffer (MAX_NVM_MSG_LEN).
++		 */
++		se_clbk_hdl->rx_msg_sz = min_t(u32, rx_msg_sz, MAX_NVM_MSG_LEN);
++		memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
++		complete(&se_clbk_hdl->done);
++		spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
++		if (sz_mismatch)
++			dev_err(dev,
++				"CMD-RCVER NVM: hdr(0x%x) with different sz(%d != %d).\n",
++				*(u32 *)header,
++				(header->size << 2), rx_msg_sz);
++	} else if (header->tag == priv->if_defs->rsp_tag) {
++		bool exception_for_sz_mismatch = check_hdr_exception_for_sz(priv, header);
++		u32 exp_rx_msg_sz = 0;
++
++		/*
++		 * rx_msg and rx_msg_sz are owned by the sender under clbk_rx_lock.
++		 * Read both under the lock: drop a late response instead of copying
++		 * into freed memory, and avoid a stale size. A late response also
++		 * closes the firmware-busy circuit breaker.
++		 */
++		se_clbk_hdl = &priv->waiting_rsp_clbk_hdl;
++		spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
++		if (!se_clbk_hdl->rx_msg) {
++			/* Close circuit breaker on spinlock race */
++			atomic_set(&priv->fw_busy, 0);
++			spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
++			dev_info(dev, "ELE responded (late), recovery FW available.");
++			return;
++		}
++		exp_rx_msg_sz = se_clbk_hdl->rx_msg_sz;
++		dev_dbg(dev, "Selecting resp waiter: for mesg header:0x%x.",
++			*(u32 *)header);
++
++		/*
++		 * For rsp_tag traffic, the sender provides the expected response
++		 * buffer size. If firmware returns a different size, clamp the copy
++		 * length to the caller's buffer capacity before memcpy() and report the
++		 * mismatch after dropping the spinlock.
++		 */
++		if (rx_msg_sz != exp_rx_msg_sz && !exception_for_sz_mismatch)
++			sz_mismatch = true;
++
++		se_clbk_hdl->rx_msg_sz = min(rx_msg_sz, exp_rx_msg_sz);
++		memcpy(se_clbk_hdl->rx_msg, msg, se_clbk_hdl->rx_msg_sz);
++		complete(&se_clbk_hdl->done);
++		spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
++
++		if (sz_mismatch)
++			dev_err(dev,
++				"Rsp to CMD: hdr(0x%x) with different sz(%d != %d).\n",
++				*(u32 *)header,
++				(header->size << 2), exp_rx_msg_sz);
++	} else {
++		dev_err(dev, "Failed to select a device for message: %.8x\n",
++			*((u32 *)header));
++	}
++}
++
++int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
++			    u8 msg_id, u8 sz, bool is_base_api)
++{
++	struct se_msg_hdr *header = &msg->header;
++	u32 status;
++
++	if (header->tag != priv->if_defs->rsp_tag) {
++		dev_dbg(priv->dev, "MSG[0x%x] Hdr: Resp tag mismatch. (0x%x != 0x%x)",
++			msg_id, header->tag, priv->if_defs->rsp_tag);
++		return -EINVAL;
++	}
++
++	if (header->command != msg_id) {
++		dev_dbg(priv->dev, "MSG Header: Cmd id mismatch. (0x%x != 0x%x)",
++			header->command, msg_id);
++		return -EINVAL;
++	}
++
++	if ((sz % 4) || (header->size != (sz >> 2) &&
++			 !check_hdr_exception_for_sz(priv, header))) {
++		dev_dbg(priv->dev, "MSG[0x%x] Hdr: Cmd size mismatch. (0x%x != 0x%x)",
++			msg_id, header->size, (sz >> 2));
++		return -EINVAL;
++	}
++
++	if (is_base_api && header->ver != priv->if_defs->base_api_ver) {
++		dev_dbg(priv->dev,
++			"MSG[0x%x] Hdr: Base API Vers mismatch. (0x%x != 0x%x)",
++			msg_id, header->ver, priv->if_defs->base_api_ver);
++		return -EINVAL;
++	} else if (!is_base_api && header->ver != priv->if_defs->fw_api_ver) {
++		dev_dbg(priv->dev,
++			"MSG[0x%x] Hdr: FW API Vers mismatch. (0x%x != 0x%x)",
++			msg_id, header->ver, priv->if_defs->fw_api_ver);
++		return -EINVAL;
++	}
++
++	if (header->size > SE_MU_HDR_WORD_SZ) {
++		status = RES_STATUS(msg->data[0]);
++		if (status != priv->if_defs->success_tag) {
++			dev_dbg(priv->dev, "Command Id[%x], Response Failure = 0x%x",
++				header->command, status);
++			return -EPERM;
++		}
++	}
++
++	return 0;
++}
++
++int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
++{
++	struct ele_dev_info s_info = {0};
++	int ret;
++
++	ret = ele_get_info(priv, &s_info);
++	if (ret) {
++		dev_err(priv->dev, "Failed to get info from ELE.\n");
++		return ret;
++	}
++
++	/* Check for the imem-state before continue to save imem state. */
++	if (s_info.d_addn_info.imem_state == ELE_IMEM_STATE_BAD)
++		return 0;
++
++	/*
++	 * EXPORT command will save encrypted IMEM to given address,
++	 * so later in resume, IMEM can be restored from the given
++	 * address.
++	 *
++	 * Size must be at least 64 kB.
++	 */
++	ret = ele_service_swap(priv, imem->daddr, ELE_IMEM_SIZE, ELE_IMEM_EXPORT);
++	if (ret < 0) {
++		dev_err(priv->dev, "Failed to export IMEM.");
++		imem->size = 0;
++	} else if (ret > ELE_IMEM_SIZE) {
++		dev_err(priv->dev, "Invalid exported IMEM size %d.", ret);
++		imem->size = 0;
++		ret = -EIO;
++	} else {
++		dev_dbg(priv->dev,
++			"Exported %d bytes of encrypted IMEM.",
++			ret);
++		imem->size = ret;
++	}
++
++	return ret > 0 ? 0 : ret;
++}
++
++int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
++{
++	struct ele_dev_info s_info;
++	int ret;
++
++	/* get info from ELE */
++	ret = ele_get_info(priv, &s_info);
++	if (ret) {
++		dev_err(priv->dev, "Failed to get info from ELE.");
++		return ret;
++	}
++	imem->state = s_info.d_addn_info.imem_state;
++
++	/* Check for the imem-state and imem-size before continue to
++	 * restore imem state.
++	 */
++	if (s_info.d_addn_info.imem_state != ELE_IMEM_STATE_BAD || !imem->size)
++		return 0;
++
++	/*
++	 * IMPORT command will restore IMEM from the given
++	 * address, here size is the actual size returned by ELE
++	 * during the export operation
++	 */
++	ret = ele_service_swap(priv, imem->daddr, imem->size, ELE_IMEM_IMPORT);
++	if (ret) {
++		dev_err(priv->dev, "Failed to import IMEM");
++		return ret;
++	}
++
++	/*
++	 * After importing IMEM, check if IMEM state is equal to 0xCA
++	 * to ensure IMEM is fully loaded and
++	 * ELE functionality can be used.
++	 */
++	ret = ele_get_info(priv, &s_info);
++	if (ret) {
++		dev_err(priv->dev, "Failed to get info from ELE.");
++		return ret;
++	}
++	imem->state = s_info.d_addn_info.imem_state;
++
++	if (s_info.d_addn_info.imem_state == ELE_IMEM_STATE_OK) {
++		dev_dbg(priv->dev, "Successfully restored IMEM.");
++	} else {
++		dev_err(priv->dev, "Failed to restore IMEM: state=0x%02x, expected 0x%02x.",
++			s_info.d_addn_info.imem_state, ELE_IMEM_STATE_OK);
++		/*
++		 * ele_get_info() succeeded (ret == 0) but the IMEM state
++		 * reported by the hardware is not ELE_IMEM_STATE_OK. Return
++		 * -EIO so the PM subsystem knows the enclave is non-functional
++		 * after resume, instead of silently continuing with bad state.
++		 */
++		ret = -EIO;
++	}
++
++	return ret;
++}
+diff --git a/drivers/firmware/imx/ele_common.h b/drivers/firmware/imx/ele_common.h
+new file mode 100644
+index 000000000000..7bf2febefc45
+--- /dev/null
++++ b/drivers/firmware/imx/ele_common.h
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2025 NXP
++ */
++
++#ifndef __ELE_COMMON_H__
++#define __ELE_COMMON_H__
++
++#include "se_ctrl.h"
++
++#define SE_RCV_MSG_DEFAULT_TIMEOUT_MS	3000
++
++#define ELE_SUCCESS_IND			0xD6
++
++#define IMX_ELE_FW_DIR                 "imx/ele/"
++
++int se_update_msg_chksum(u32 *msg, u32 msg_len);
++
++int ele_msg_rcv(struct se_if_priv *priv, struct se_clbk_handle *se_clbk_hdl);
++
++int ele_msg_send(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz);
++
++int ele_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, int tx_msg_sz,
++		     void *rx_msg, int exp_rx_msg_sz);
++
++void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg);
++
++int se_val_rsp_hdr_n_status(struct se_if_priv *priv, struct se_api_msg *msg,
++			    u8 msg_id, u8 sz, bool is_base_api);
++
++/* Fill a command message header with a given command ID and length in bytes. */
++static inline void se_fill_cmd_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *hdr,
++				       u8 cmd, u32 len, bool is_base_api)
++{
++	hdr->tag = priv->if_defs->cmd_tag;
++	hdr->ver = (is_base_api) ? priv->if_defs->base_api_ver : priv->if_defs->fw_api_ver;
++	hdr->command = cmd;
++	hdr->size = len >> 2;
++}
++
++int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
++
++int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
++
++#endif /*__ELE_COMMON_H__ */
+diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctrl.c
+new file mode 100644
+index 000000000000..df3d1da28a75
+--- /dev/null
++++ b/drivers/firmware/imx/se_ctrl.c
+@@ -0,0 +1,507 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2026 NXP
++ */
++
++#include <linux/bitfield.h>
++#include <linux/completion.h>
++#include <linux/delay.h>
++#include <linux/dev_printk.h>
++#include <linux/dma-mapping.h>
++#include <linux/errno.h>
++#include <linux/export.h>
++#include <linux/firmware.h>
++#include <linux/firmware/imx/se_api.h>
++#include <linux/genalloc.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/miscdevice.h>
++#include <linux/module.h>
++#include <linux/of_platform.h>
++#include <linux/of_reserved_mem.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/sys_soc.h>
++
++#include "ele_base_msg.h"
++#include "ele_common.h"
++#include "se_ctrl.h"
++
++#define MAX_SOC_INFO_DATA_SZ		256
++#define MBOX_TX_NAME			"tx"
++#define MBOX_RX_NAME			"rx"
++
++#define SE_TYPE_STR_DBG			"dbg"
++#define SE_TYPE_STR_HSM			"hsm"
++
++#define SE_TYPE_ID_DBG			0x1
++
++#define SE_TYPE_ID_HSM			0x2
++
++struct se_soc_dev_regn {
++	bool soc_dev_registered;
++	struct soc_device *soc_dev;
++	struct soc_device_attribute *soc_dev_attr;
++};
++
++struct se_var_info {
++	u16 soc_rev;
++	struct se_soc_dev_regn soc_dev_regn;
++	/* To serialize populating common SoC level info. */
++	struct mutex se_var_info_lock;
++};
++
++/* contains fixed information */
++struct se_soc_info {
++	const u16 soc_id;
++	const char *soc_name;
++	const struct se_fw_img_name se_fw_img_nm;
++	bool imem_state_mgmt;
++};
++
++struct se_if_node {
++	struct se_soc_info *se_info;
++	u8 *pool_name;
++	bool reserved_dma_ranges;
++	struct se_if_defines if_defs;
++};
++
++/* common for all the SoC. */
++static struct se_var_info var_se_info = {
++	.soc_rev = 0,
++	.se_var_info_lock = __MUTEX_INITIALIZER(var_se_info.se_var_info_lock)
++};
++
++static struct se_soc_info se_imx8ulp_info = {
++	.soc_id = SOC_ID_OF_IMX8ULP,
++	.soc_name = "i.MX8ULP",
++	.se_fw_img_nm = {
++		.prim_fw_nm_in_rfs = IMX_ELE_FW_DIR
++			"mx8ulpa2-ahab-container.img",
++		.seco_fw_nm_in_rfs = IMX_ELE_FW_DIR
++			"mx8ulpa2ext-ahab-container.img",
++	},
++	.imem_state_mgmt = true,
++};
++
++static struct se_if_node imx8ulp_se_ele_hsm = {
++	.se_info = &se_imx8ulp_info,
++	.pool_name = "sram",
++	.reserved_dma_ranges = true,
++	.if_defs = {
++		.se_if_type = SE_TYPE_ID_HSM,
++		.cmd_tag = 0x17,
++		.rsp_tag = 0xe1,
++		.success_tag = ELE_SUCCESS_IND,
++		.base_api_ver = MESSAGING_VERSION_6,
++		.fw_api_ver = MESSAGING_VERSION_7,
++	},
++};
++
++static struct se_soc_info se_imx93_info = {
++	.soc_id = SOC_ID_OF_IMX93,
++};
++
++static struct se_if_node imx93_se_ele_hsm = {
++	.se_info = &se_imx93_info,
++	.reserved_dma_ranges = true,
++	.if_defs = {
++		.se_if_type = SE_TYPE_ID_HSM,
++		.cmd_tag = 0x17,
++		.rsp_tag = 0xe1,
++		.success_tag = ELE_SUCCESS_IND,
++		.base_api_ver = MESSAGING_VERSION_6,
++		.fw_api_ver = MESSAGING_VERSION_7,
++	},
++};
++
++static const struct of_device_id se_match[] = {
++	{ .compatible = "fsl,imx8ulp-se-ele-hsm", .data = &imx8ulp_se_ele_hsm },
++	{ .compatible = "fsl,imx93-se-ele-hsm", .data = &imx93_se_ele_hsm },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, se_match);
++
++char *get_se_if_name(u8 se_if_id)
++{
++	switch (se_if_id) {
++	case SE_TYPE_ID_DBG: return SE_TYPE_STR_DBG;
++	case SE_TYPE_ID_HSM: return SE_TYPE_STR_HSM;
++	}
++
++	return "unknown";
++}
++
++static struct se_fw_load_info *get_load_fw_instance(struct se_if_priv *priv)
++{
++	return &priv->load_fw;
++}
++
++static void se_soc_device_unregister(struct se_soc_dev_regn *soc_dev_regn)
++{
++	guard(mutex)(&var_se_info.se_var_info_lock);
++
++	if (soc_dev_regn->soc_dev) {
++		soc_device_unregister(soc_dev_regn->soc_dev);
++		soc_dev_regn->soc_dev = NULL;
++	}
++
++	if (soc_dev_regn->soc_dev_attr) {
++		/*
++		 * revision and serial_number are the only kasprintf()-allocated
++		 * strings. machine points into the DT, and soc_id/family are
++		 * constants, so they must not be freed.
++		 */
++		kfree(soc_dev_regn->soc_dev_attr->revision);
++		kfree(soc_dev_regn->soc_dev_attr->serial_number);
++		kfree(soc_dev_regn->soc_dev_attr);
++		soc_dev_regn->soc_dev_attr = NULL;
++	}
++
++	soc_dev_regn->soc_dev_registered = false;
++}
++
++/*
++ * Build and register a soc_device entry for this SoC. Separated from
++ * get_se_soc_info() so that the firmware-fetch path and the sysfs
++ * registration path can be reasoned about independently.
++ */
++static int se_soc_dev_register(struct se_if_priv *priv, u16 soc_rev,
++			       const char *soc_name, const u8 *uid)
++{
++	struct soc_device_attribute *attr;
++	struct soc_device *sdev;
++	int err;
++
++	if (!soc_rev || !soc_name || !uid)
++		return -EINVAL;
++
++	attr = kzalloc_obj(*attr, GFP_KERNEL);
++	if (!attr)
++		return -ENOMEM;
++
++	if (FIELD_GET(DEV_GETINFO_MIN_VER_MASK, soc_rev))
++		attr->revision = kasprintf(GFP_KERNEL, "%x.%x",
++					   FIELD_GET(DEV_GETINFO_MAJ_VER_MASK, soc_rev),
++					   FIELD_GET(DEV_GETINFO_MIN_VER_MASK, soc_rev));
++	else
++		attr->revision = kasprintf(GFP_KERNEL, "%x",
++					   FIELD_GET(DEV_GETINFO_MAJ_VER_MASK, soc_rev));
++
++	if (!attr->revision) {
++		err = -ENOMEM;
++		goto err_free_attr;
++	}
++
++	attr->soc_id = soc_name;
++
++	err = of_property_read_string(of_root, "model", &attr->machine);
++	if (err) {
++		err = -EINVAL;
++		goto err_free_rev;
++	}
++
++	attr->family = "Freescale i.MX";
++
++	attr->serial_number = kasprintf(GFP_KERNEL, "%016llX",
++					GET_SERIAL_NUM_FROM_UID(uid, MAX_UID_SIZE >> 2));
++	if (!attr->serial_number) {
++		err = -ENOMEM;
++		goto err_free_rev;
++	}
++
++	sdev = soc_device_register(attr);
++	if (IS_ERR(sdev)) {
++		err = PTR_ERR(sdev);
++		goto err_free_serial;
++	}
++
++	/*
++	 * Publish the singleton. Freed once, at module unload, by
++	 * se_soc_device_unregister(). Caller holds se_var_info_lock.
++	 */
++	var_se_info.soc_dev_regn.soc_dev = sdev;
++	var_se_info.soc_dev_regn.soc_dev_attr = attr;
++
++	/* Mark registration complete so get_se_soc_info() skips this path on retry. */
++	var_se_info.soc_dev_regn.soc_dev_registered = true;
++
++	return 0;
++
++err_free_serial:
++	kfree(attr->serial_number);
++err_free_rev:
++	kfree(attr->revision);
++err_free_attr:
++	kfree(attr);
++
++	return err;
++}
++
++static int get_se_soc_info(struct se_if_priv *priv, const struct se_soc_info *se_info)
++{
++	struct se_fw_load_info *load_fw = get_load_fw_instance(priv);
++	u8 data[MAX_SOC_INFO_DATA_SZ];
++	struct ele_dev_info *s_info;
++	int err;
++
++	guard(mutex)(&var_se_info.se_var_info_lock);
++
++	/*
++	 * Early exit: both objectives already complete, nothing to do.
++	 */
++	if (var_se_info.soc_rev &&
++	    (!se_info->soc_name || var_se_info.soc_dev_regn.soc_dev_registered))
++		return 0;
++
++	err = ele_fetch_soc_info(priv, &data);
++	if (err < 0)
++		return dev_err_probe(priv->dev, err, "Failed to fetch SoC Info.");
++
++	s_info = (struct ele_dev_info *)data;
++
++	if (!var_se_info.soc_rev) {
++		var_se_info.soc_rev = s_info->d_info.soc_rev;
++
++		/*
++		 * Only update IMEM state when the load_fw path is active;
++		 * on SoCs without IMEM management (e.g. i.MX93) the field
++		 * is not meaningful.
++		 */
++		if (load_fw->imem_mgmt)
++			load_fw->imem.state = s_info->d_addn_info.imem_state;
++	}
++
++	if (se_info->soc_name && !var_se_info.soc_dev_regn.soc_dev_registered) {
++		err = se_soc_dev_register(priv, var_se_info.soc_rev,
++					  se_info->soc_name, s_info->d_info.uid);
++		if (err < 0)
++			return dev_err_probe(priv->dev, err,
++					     "Failed to register SE SoC device.");
++	}
++
++	return 0;
++}
++
++static int se_if_request_channel(struct device *dev, struct mbox_chan **chan,
++				 struct mbox_client *cl, const char *name)
++{
++	struct mbox_chan *t_chan;
++
++	t_chan = mbox_request_channel_byname(cl, name);
++	if (IS_ERR(t_chan))
++		return dev_err_probe(dev, PTR_ERR(t_chan),
++				     "Failed to request %s channel.", name);
++
++	*chan = t_chan;
++
++	return 0;
++}
++
++static void se_if_probe_cleanup(void *plat_dev)
++{
++	struct platform_device *pdev = plat_dev;
++	struct device *dev = &pdev->dev;
++	struct se_if_priv *priv;
++
++	priv = dev_get_drvdata(dev);
++	if (!priv)
++		return;
++
++	if (priv->rx_chan)
++		mbox_free_channel(priv->rx_chan);
++	if (priv->tx_chan)
++		mbox_free_channel(priv->tx_chan);
++
++	/*
++	 * Being device managed buffer, no need to free the buffer allocated
++	 * in se probe to store encrypted IMEM.
++	 */
++
++	/*
++	 * No need to check, if reserved memory is allocated
++	 * before calling for its release. Or clearing the
++	 * un-set bit.
++	 */
++	of_reserved_mem_device_release(dev);
++
++	dev_set_drvdata(dev, NULL);
++
++	kfree(priv);
++}
++
++static int se_if_probe(struct platform_device *pdev)
++{
++	const struct se_soc_info *se_info;
++	const struct se_if_node *if_node;
++	struct se_fw_load_info *load_fw;
++	struct device *dev = &pdev->dev;
++	struct se_if_priv *priv;
++	int ret;
++
++	if_node = device_get_match_data(dev);
++	if (!if_node)
++		return -EINVAL;
++
++	se_info = if_node->se_info;
++
++	priv = kzalloc_obj(*priv, GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->dev = dev;
++	priv->if_defs = &if_node->if_defs;
++	dev_set_drvdata(dev, priv);
++
++	mutex_init(&priv->se_if_cmd_lock);
++	spin_lock_init(&priv->cmd_receiver_clbk_hdl.clbk_rx_lock);
++	spin_lock_init(&priv->waiting_rsp_clbk_hdl.clbk_rx_lock);
++	atomic_set(&priv->fw_busy, 0);
++	init_completion(&priv->waiting_rsp_clbk_hdl.done);
++	init_completion(&priv->cmd_receiver_clbk_hdl.done);
++
++	ret = devm_add_action_or_reset(dev, se_if_probe_cleanup, pdev);
++	if (ret)
++		return ret;
++
++	/* Mailbox client configuration */
++	priv->se_mb_cl.dev		= dev;
++	priv->se_mb_cl.tx_block		= false;
++	priv->se_mb_cl.knows_txdone	= false;
++	priv->se_mb_cl.rx_callback	= se_if_rx_callback;
++
++	ret = se_if_request_channel(dev, &priv->tx_chan, &priv->se_mb_cl, MBOX_TX_NAME);
++	if (ret)
++		return ret;
++
++	ret = se_if_request_channel(dev, &priv->rx_chan, &priv->se_mb_cl, MBOX_RX_NAME);
++	if (ret)
++		return ret;
++
++	if (if_node->pool_name) {
++		priv->mem_pool = of_gen_pool_get(dev->of_node, if_node->pool_name, 0);
++		if (!priv->mem_pool)
++			return dev_err_probe(dev, -ENOMEM,
++					     "Unable to get sram pool = %s.",
++					     if_node->pool_name);
++	}
++
++	if (if_node->reserved_dma_ranges) {
++		ret = of_reserved_mem_device_init(dev);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					    "Failed to init reserved memory region.");
++	}
++
++	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to set 32-bit coherent DMA mask.");
++
++	/*
++	 * Initialize load_fw_lock before registering the misc device.
++	 * A userspace process could open the device and trigger se_load_firmware()
++	 * via IOCTL immediately after misc_register(), so the mutex must be ready
++	 * before the device becomes visible.
++	 */
++	if (se_info->se_fw_img_nm.seco_fw_nm_in_rfs) {
++		load_fw = get_load_fw_instance(priv);
++		mutex_init(&load_fw->load_fw_lock);
++		load_fw->se_fw_img_nm = &se_info->se_fw_img_nm;
++		load_fw->is_fw_tobe_loaded = true;
++	}
++
++	/* By default, there is no pending FW to be loaded.*/
++	if (se_info->imem_state_mgmt) {
++		load_fw = get_load_fw_instance(priv);
++
++		/* allocate buffer where SE store encrypted IMEM */
++		load_fw->imem.buf = dmam_alloc_coherent(priv->dev, ELE_IMEM_SIZE,
++							&load_fw->imem.daddr,
++							GFP_KERNEL);
++		if (!load_fw->imem.buf)
++			return dev_err_probe(dev, -ENOMEM,
++					     "dmam-alloc-failed: To store encr-IMEM.");
++		load_fw->imem_mgmt = true;
++	}
++
++	if (if_node->if_defs.se_if_type == SE_TYPE_ID_HSM) {
++		ret = get_se_soc_info(priv, se_info);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to fetch SoC Info.");
++	}
++
++	dev_info(dev, "i.MX secure-enclave: %s0 interface to firmware, configured.",
++		 get_se_if_name(priv->if_defs->se_if_type));
++
++	return ret;
++}
++
++static int se_suspend(struct device *dev)
++{
++	struct se_if_priv *priv = dev_get_drvdata(dev);
++	struct se_fw_load_info *load_fw;
++	int ret = 0;
++
++	load_fw = get_load_fw_instance(priv);
++
++	if (load_fw->imem_mgmt) {
++		ret = se_save_imem_state(priv, &load_fw->imem);
++		if (ret)
++			dev_err(dev, "Failure saving IMEM state[0x%x]", ret);
++	}
++
++	return ret;
++}
++
++static int se_resume(struct device *dev)
++{
++	struct se_if_priv *priv = dev_get_drvdata(dev);
++	struct se_fw_load_info *load_fw;
++	int ret = 0;
++
++	load_fw = get_load_fw_instance(priv);
++
++	if (load_fw->imem_mgmt) {
++		ret = se_restore_imem_state(priv, &load_fw->imem);
++		if (ret)
++			dev_err(dev, "Failure restoring IMEM state[0x%x]", ret);
++	}
++
++	return ret;
++}
++
++DEFINE_SIMPLE_DEV_PM_OPS(se_pm, se_suspend, se_resume);
++
++static struct platform_driver se_driver = {
++	.driver = {
++		.name = "fsl-se",
++		.of_match_table = se_match,
++		.pm = pm_sleep_ptr(&se_pm),
++	},
++	.probe = se_if_probe,
++};
++
++static int __init se_init(void)
++{
++	return platform_driver_register(&se_driver);
++}
++module_init(se_init);
++
++static void __exit se_exit(void)
++{
++	platform_driver_unregister(&se_driver);
++
++	/*
++	 * The soc_device is a module-scoped singleton that outlives any single
++	 * MU interface bind/unbind. Release it here, once, after every interface
++	 * has been unbound, so its lifetime is tied to the module rather than to
++	 * the first-probed interface.
++	 */
++	se_soc_device_unregister(&var_se_info.soc_dev_regn);
++}
++module_exit(se_exit);
++
++MODULE_AUTHOR("Pankaj Gupta <pankaj.gupta@nxp.com>");
++MODULE_DESCRIPTION("iMX Secure Enclave Driver.");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/firmware/imx/se_ctrl.h b/drivers/firmware/imx/se_ctrl.h
+new file mode 100644
+index 000000000000..54b2a262a2c3
+--- /dev/null
++++ b/drivers/firmware/imx/se_ctrl.h
+@@ -0,0 +1,112 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2026 NXP
++ */
++
++#ifndef SE_CTRL_H
++#define SE_CTRL_H
++
++#include <linux/bitfield.h>
++#include <linux/miscdevice.h>
++#include <linux/mailbox_client.h>
++#include <linux/semaphore.h>
++
++#define MAX_FW_LOAD_RETRIES		50
++#define SE_MSG_WORD_SZ			0x4
++
++#define RES_STATUS(x)			FIELD_GET(0x000000ff, x)
++#define MAX_NVM_MSG_LEN			(256)
++#define MESSAGING_VERSION_6		0x6
++#define MESSAGING_VERSION_7		0x7
++
++struct se_clbk_handle {
++	struct completion done;
++	bool signal_rcvd;
++	u32 rx_msg_sz;
++	/*
++	 * Assignment of the rx_msg buffer to held till the
++	 * received content as part callback function, is copied.
++	 */
++	struct se_api_msg *rx_msg;
++	/*
++	 * Serialise the timeout path in ele_msg_rcv() against
++	 * se_if_rx_callback() so that the callback can never
++	 * memcpy into a buffer that the timeout path has already
++	 * freed.
++	 */
++	spinlock_t clbk_rx_lock;
++};
++
++struct se_imem_buf {
++	u8 *buf;
++	dma_addr_t daddr;
++	u32 size;
++	u32 state;
++};
++
++/* Header of the messages exchange with the EdgeLock Enclave */
++struct se_msg_hdr {
++	u8 ver;
++	u8 size;
++	u8 command;
++	u8 tag;
++}  __packed;
++
++#define SE_MU_HDR_SZ		4
++#define SE_MU_HDR_WORD_SZ	1
++
++struct se_api_msg {
++	struct se_msg_hdr header;
++	u32 data[];
++};
++
++struct se_if_defines {
++	const u8 se_if_type;
++	u8 cmd_tag;
++	u8 rsp_tag;
++	u8 success_tag;
++	u8 base_api_ver;
++	u8 fw_api_ver;
++};
++
++struct se_fw_img_name {
++	const char *prim_fw_nm_in_rfs;
++	const char *seco_fw_nm_in_rfs;
++};
++
++struct se_fw_load_info {
++	const struct se_fw_img_name *se_fw_img_nm;
++	bool is_fw_tobe_loaded;
++	bool imem_mgmt;
++	struct se_imem_buf imem;
++	/* to serialize the fw load state */
++	struct mutex load_fw_lock;
++};
++
++struct se_if_priv {
++	struct device *dev;
++
++	struct se_clbk_handle cmd_receiver_clbk_hdl;
++	/*
++	 * Update to the waiting_rsp_dev, to be protected
++	 * under se_if_cmd_lock.
++	 */
++	struct se_clbk_handle waiting_rsp_clbk_hdl;
++	/*
++	 * prevent new command to be sent on the se interface while previous
++	 * command is still processing. (response is awaited)
++	 */
++	struct mutex se_if_cmd_lock;
++
++	struct mbox_client se_mb_cl;
++	struct mbox_chan *tx_chan, *rx_chan;
++
++	struct gen_pool *mem_pool;
++	const struct se_if_defines *if_defs;
++	struct se_fw_load_info load_fw;
++
++	atomic_t fw_busy;
++};
++
++char *get_se_if_name(u8 se_if_id);
++#endif
+diff --git a/include/linux/firmware/imx/se_api.h b/include/linux/firmware/imx/se_api.h
+new file mode 100644
+index 000000000000..b1c4c9115d7b
+--- /dev/null
++++ b/include/linux/firmware/imx/se_api.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2025 NXP
++ */
++
++#ifndef __SE_API_H__
++#define __SE_API_H__
++
++#include <linux/types.h>
++
++#define SOC_ID_OF_IMX8ULP		0x084d
++#define SOC_ID_OF_IMX93			0x9300
++
++#endif /* __SE_API_H__ */
 
 -- 
 2.43.0
