@@ -1,119 +1,180 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013024.outbound.protection.outlook.com [40.107.159.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5BE37C923
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 05:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787288923; cv=none; b=SZ+vvZxWUKheeWB0vpjn7KpkT7t39nbq1PA8Y84UW7pcA5RnZyuoFV9quM5EHqlxWmkZZhm+zEjegqWw11pkSRn4QlNLm08Rk3RCevbVZakptcpAcVm207TicA/EjzZ0F9hJS7Ax8GEe8nVlf+AW3QFp/WLsGFUyUAULwoGyMHY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787288923; c=relaxed/simple;
-	bh=Je2PC2ClOZ6ieh1+XV2YNDlQhlBw/r0Vx2k7n3eR9mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ljb7BdsDQo7eiNQGN7USwYne4Kez3aiji48VP9Xnm4q1JzXfCk3WLm2cQNbUH8xSfwYDoNVc89BWYCIe/MNDusQpxEK16BDZAIjJK7Iz1ruODKrcauQ0yy6KM2QzWAuBKEMfxubDOsGQ1Tp2Dfosk9seMh7KAoXi0elYyuD3POU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BaNXFqX1; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E5C3F889E
+	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 05:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787290026; cv=fail; b=MSEJmBq40GjMVhIXLqqnMi49RcNNKSbUKJoEND09E+tRHDEtpQt+fZBhthiKLD/xK9gPIi2AFF4dCWh8jXuolUPI41wDnsVXJmp8dZ9fDlEOp/guCKqAPi0ks19MiPFZhLjM4R+kmvcfhI0V0PajdQTuDgcJieaTfeJL1xJFyW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787290026; c=relaxed/simple;
+	bh=eJtKrqLrsasCJIIjVVH8HHKxBZQr50/sg1VJCI+QF1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lKSW1ytIvXO2clsJi+0uP/ipVHqp7HRf/rOk9E1Fd/umEUQOtHEJiPp78SouGnazjm0z6pIdfLi4ysYuV6WP1VWN82OPndC4vKfcpnViRTAdxKGGgK0OorXcBPhtjEYg6DAohAMHBHyPPjjS/XYn5yM7NswC0AAWfpHxJ7GYHak=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JsejO8pg; arc=fail smtp.client-ip=40.107.159.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BaNXFqX1"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cee9b74ee1so4849715ad.3
-        for <imx@lists.linux.dev>; Thu, 20 Aug 2026 22:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787288921; x=1787893721; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=li+qf0ogeiJJV/dt6j1H68lCeDSe/pGSxo0/wCxLe7o=;
-        b=BaNXFqX1O+EkkV7m66dqWFV/1lkH285kxYACeNUK/Nx4Cj3U6rSxmqEZDo2RQPtnmf
-         SwqXo1H5NWzh+CTDUFWCCZbExP3AdRL73nINjw63Fxq6nl9pEwI/pvqmFJwmYvVF3gNu
-         EDRya22qfS2D66ekuUM2IX7JJBBxWiwwQz9KDK7FBGQ+PnhDYaj45fCKqwySNvZ8kTVa
-         5F8qio8IzeFvwRjG/WEJIWxrgbV1ED7RMOY9NwPjID4Wi4jrvsr+8P37lSVegfSdgzrt
-         8bQrmARjzqUCaTFPQrs3YvV4UEx76lvkfBksfUDjcgJLoZYJ9sMyLgwmTMMxRFUC0a1l
-         5WPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787288921; x=1787893721;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=li+qf0ogeiJJV/dt6j1H68lCeDSe/pGSxo0/wCxLe7o=;
-        b=ruh/F6TBcfDyuYsLSCgDPswdhUok7FIhx5l+FSEC5VJ3RtvhzHhf0OCXXhcHqCbT2o
-         VkTkIZK6do9P92UEnw8eUFP0UXrMEG6VQqBk9ZT2qjghfwiIfmp08bYzTVKMqZ1dQEea
-         MKlJWNXP/w1mA4swvCCS/l6FE+NskpHor8j7deNpAELxc0ajqMNcnohwAM1TsXnKbG5A
-         plZiOQ71pPPxHKUi0pl/fG6jWhaH8LEPfh3GPSjHgs/pvyqIMQXtU/qfz0EVapivIwD8
-         m5qjscUjFZZcktcNSsx2bUGt28q0u1CR9+Pj5/YYMYHGSW3++dpTdMDzSB7V/P1VGH1D
-         /Y3A==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/IX2Xj1SLKV0YxSRv36C0edsvSWX6KAmwbNkhfyhvaHyFjRK8SqyzLJOc/QQ06cwkJak=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyLIstQmOnqMgerV3ni4O+4gjXeyjXVCMqmpiZbCT4VirupGv36
-	E4vkf25vzX3qNiJ2NxiuKMXL5jD3eX+eHR57ZxcJVg48aL0r0Bnxc8XA
-X-Gm-Gg: AR+sD10TW8TwkV6hT5xJGvK9RPu6xDoW9sElI4e/YaYjBzNGaYr2UV8N1s160Uj6f69
-	0cJzOwzY+5E+RdOmoJNCN6JDaUmXrLciCWK3TGhAlD9utFcrcmVhW7AjZ8L3MXK2EfZF0yFgyji
-	XOQGAXl5QTAsW8XUus+3Zl5trc+2MXR8pzVYVa7rA87wms+7f1LeBDtdDEt7AwTwIr5wdA3eA6b
-	vSKr0Ufoe4ph+8SIOX1P6LZyQmb/d0lPQneGUGpz2KWXuttd70B3UIZyjs/uOjs1XeMxKTdIV9O
-	DUQb2hHdN9S952sXlEgXUhidrRcsQXmkxMcAtFyxcqJEsExWqijAbXh+h2uawUU+b/6Z8ahko+b
-	/aNNi8cU9ExVpX1CPFQKjVEB7ogehkaKnCPTAhl0SYhiJnUg41DRNv6EeAiyLYOzNeJdD+grBKL
-	fJI8QBglc/ZL8fmIN1lTa7q4/KMa2h9faJ9q6CGk/j9cmJFXr/WPliwRq7dPsx5QmrFbau3PIjK
-	Zuwg4L6FwQMyCzlZOKn5mVU/jqszA2ax92bYytn1rwkJp4=
-X-Received: by 2002:a17:902:d4cc:b0:2c9:aae1:a61a with SMTP id d9443c01a7336-2d64b0c6a16mr64910855ad.14.1787288921196;
-        Thu, 20 Aug 2026 22:08:41 -0700 (PDT)
-Received: from DESKTOP-8BCFI4I ([202.12.123.126])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef3993dsm20673822eec.5.2026.08.20.22.08.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 22:08:40 -0700 (PDT)
-From: Md Rabbani <rabbanyhmm@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Md Rabbani <rabbanyhmm@gmail.com>
-Subject: [PATCH] pinctrl: freescale: imx1: Fix device node leaks in imx1_pinctrl_dt_is_flat_functions()
-Date: Fri, 21 Aug 2026 11:08:13 +0600
-Message-ID: <20260821050813.739-1-rabbanyhmm@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.3
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JsejO8pg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pPnw/LYGxhNuMULWO7Hj7JBTzY+tq38qNVokV4QcfQztyNAVOWa87ACmJFIoXUC/fXYSEfV/mlfoA5gYtsFxkSsh4sB8lg4d+MUM2iS3kIjnLfq8fWxwYEmFDN+Lw+EcTr/VRUuDmrAxND7VsT/TtrfJa+c+4w9cu/VhbaijEQsgjfTS3ecLunCVn7zfp+qn+1kMA0DfjKNhjBogEkjC9er2/AV2DXw+eN2fmkre8LzT1SY7oq3C0Xh8Guz5dWmUxsBz4cv4HXZyZBzPI6wEHhWpojJmC6VSGL6NMSRufwiRcReGljYAMndsS37dwMO+p0QLhxJnW+BUBNAQIdTozw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xBq63GOOFsF8cLySDm08wKi3d7HM3jPQBSLVy3lhl7M=;
+ b=w6f46DElugaL3oHdGUk871qN17O0MnRdYsCH7NG9CzlOUdNIxeQlsJdpOJizOxE1e8oH2m1wS+IamGJjpCA9jfRHJRqrXWq5aZltYcDBlXSjUf0558NQ8XZ9Tvd61RLbYn0gQcoCIMuZz/VzeBMuFmLWpElRxujoCQHd4jA2zUOM72geqXP0wIZbPySd6X9H/xFPuBdc2HCJWTh0WtS6VKXaHMLCyEKVuHjpNlBYU+2Or3Qx+IdmE7ajlEUPpJ937vi+o0uPc0K4wiF4VQK7UvztnpaGeqdnsJdwp/XHHIJUUR/Vpk5tvmgXBO0JcjFqvESIBR7hO3xsuXnVAtGSMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xBq63GOOFsF8cLySDm08wKi3d7HM3jPQBSLVy3lhl7M=;
+ b=JsejO8pgjam5wcE2wm52Ac1f95+iLrJp6J/yyh5sH19HNUqyn+wsXGDyRwBTD0AJ/8un9JfmoDieooSsH92fnNOUhfof0escx1cb4AORMsaN8Bj8MiN92rXd62ABOjNfE5BTymP6bn2ZJU+N6nXfBIjQ1Dd+YRheNwwJIf9WjlCpjuU7h9ghid8nWQ4UrsO8KdVmoRmSTOxMdC9xOM9f20xNoUOZDUZmbW0UWtjaHtir8RbUAB89SJHAdzPnS+9JMOVMvpdH74Z4AeeBVFDSZKBrL1jtHU9qo6a7OCCjPpFP1ImlkDaWPEPFZ6N8zhCN6gKll37WCh4RIVsoE5bxew==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by PAWPR04MB9936.eurprd04.prod.outlook.com
+ (2603:10a6:102:38b::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Fri, 21 Aug
+ 2026 05:26:58 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0339.007; Fri, 21 Aug 2026
+ 05:26:57 +0000
+Date: Fri, 21 Aug 2026 08:26:51 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/imx: dcss: fix autosuspend cleanup during teardown
+Message-ID: <iqr75sl6j5g3lkfoj3jeznaqsm55bl3qciwujivwm7mvgefvil@my2gr2rrsqcz>
+References: <20260808122354.2825209-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260808122354.2825209-1-lgs201920130244@gmail.com>
+X-ClientProxiedBy: AS4P189CA0006.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d7::10) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|PAWPR04MB9936:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe3ed1b9-14b7-4c8b-356a-08deff44d1cc
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|19092799006|7416014|376014|56012099006|10067099003|18002099003|22082099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	iTUo9vllusC9hgWP/FBNJhDrCox+n3L74WraGd1RFeRAyzFF3uNJfz0xfQ2ByjxJmJUcC7KPPkGXPTVw6NK9ydP+kfLcgVgVD4QITXBHDD0PP/LILyU2Zo4DcvsIetU4fD76k8laAKTFJLNfh+tsyjLwxV6inunkWl7XmSatqFgKjEzlhg+u0RDlUy7JL3gS6F2rFKvjpGDrsPaIhSvA3gQVwAoXC60017GWhs0Amo17HxDJaxUeOYsSx7TwritHKvskWRWmxl5yXP/Sl2R/SH7sFfmAGrEqmFh2ZWlk1NgBgZryqjYjUySg/Rl5KV9v2KPRL8sKhtn7SoXlfH2/kT6Yc+WJbxn/EII2k+lxQ73xqWtXAPQcfdIz8i2fd0zo0d0nrkR5/0kT8/tbX7M8Zj5OwG1vW9avYgGMMMKBUn8rmuyp6kmj1ed/1FX7eXELwlW+VhwSXQdBMBrSNpsi0zwAqu2PAis3OYU/YzOIAqBMNvndDQWidr9Y39OgNRZItBzigKPo8NhLVzB8JkivkkFNZbWwDODteguJhN8pATYhY7lmXNdA02sET6CMNWNtzAX9jZBP44CfC1OoY8VclcIOls5EXeSbAxV+d5Kt405s6TroT8HSUUDR2LCoEKS42GoazoMzA0+N8emUzmgwNMImueER0uOsU++UbGpvRLo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(19092799006)(7416014)(376014)(56012099006)(10067099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?X1I8f+aeVM3cAWqi8AOUFrOkf++10YjTSA0cwWHuO9wlT8z9SEltxymBH558?=
+ =?us-ascii?Q?lhfSrrkm9oDjWv7Uk7omPjJUjuHqugKnivl3kiBmS5dzPvtbOtRIJM8zJ6v0?=
+ =?us-ascii?Q?CeEqY1kGRwoucIt/UcwMlFtQ7sMT/XLqzTXRV77J58zPihfQDiqkSxuz4nc/?=
+ =?us-ascii?Q?ZMyEmUCV87u0ei0UOY7BWzqTFFaLjwZQiou7KWEsO5IaXwykBqpL6t+VtfyC?=
+ =?us-ascii?Q?gzTajONzK51PEn+gypz1vTrlyEvcn9HywLGNq3djy7CLWeGTlXI3FNeEnQR3?=
+ =?us-ascii?Q?gliU8lkVb+tdBXHye8XAGoNrYTV47tuU7Fk63kg4mkYATeeHmx124xGt86nZ?=
+ =?us-ascii?Q?XfmdbkOJSDfYesnXMNNcjd6JjeCx2k41pJA713jRPcA7i4c4vv7zDYv9xhVO?=
+ =?us-ascii?Q?gdZ4D+Wh6UrWHUnKeaLOIRg8omZwGp5cWaII3X59v52gexPRWnNaI8WS9kJG?=
+ =?us-ascii?Q?0K+ji1DOjjmNb35jazKNxhWoWIuaK6Gnzb+lvGmE/Nb9Wr6WkeSuU/3ieaWK?=
+ =?us-ascii?Q?ExGPP29Q9qqWKqlN+97d0EhWrdodWIjVYJwwVMLGgpo/WJtagyitV/363Tqr?=
+ =?us-ascii?Q?D0/b/5FrbFhtTUkYhNWk/Yp3JunvAbhS1f+RNx4MDKbbDS/IeFZYhOhbVtaX?=
+ =?us-ascii?Q?839IJQxr3Q80VLDb5ft2GsDwNJiTQIo/iJfMqiD1++NlEcfYzSXpZ8X7bc2h?=
+ =?us-ascii?Q?Q3YQamhfc4b5IBQD/4xKx9qjZtt5LwpKjsE+DXUwdmBNxXZE5SH0vgLUs50o?=
+ =?us-ascii?Q?E7ARQ1g4VY1bLDD6ZIO5q8O1xoMSwB8utYzokK15jZ/zo4APJ1rPUgvKLR1Z?=
+ =?us-ascii?Q?hOVrVXKuSwu+qe0SeRJVWGqpLpc507JDoKAxMQgiPV9oqFO0wq2/lF+BjGc0?=
+ =?us-ascii?Q?1vzkNrEdTt1Dulft5dSY/dj7CbKl07C7NF+RNeyMV2qxGOVu+G5/ZVLWNcK7?=
+ =?us-ascii?Q?HHPsE/4a50WVChzPURCC6TgmJfCGnM9oJVCzw6kJJFBOPg3TUkweFW6nnllH?=
+ =?us-ascii?Q?i4HDVucbGstIqMe6Las45QosispMYOfpireWYA132a2zLiUZ+6tHnxqNlXTF?=
+ =?us-ascii?Q?4drXTSWyAigpV7wSBfVVspNdqzOlZCVbvUtYxGs2HxHL9KYh/c8R34GsYCGk?=
+ =?us-ascii?Q?dnJLV/g56juOHXyaUHTT73tck4vhS+4BUCbBl+bcoVh2EbktJO5ZiPYR5hVt?=
+ =?us-ascii?Q?VhNCo3igR4l4579p/J6p88tsI7G1aBSKAFfvyNhrUd2VwXvt6YG2eciDOio0?=
+ =?us-ascii?Q?FDRGQi0tUvn7539EpeRJxvUAeQB1P6fTx1WtY1tXyP82SdVsqrqzAcMcbXzw?=
+ =?us-ascii?Q?Bk4Vck51BFOphIzhFsCCWsl+7W5qbykp7KP4M7HdHXax/MPdYsKJq4I/on3n?=
+ =?us-ascii?Q?hruiYcHOzYreXCAvdS4pMgsiq9VB1wpitAxRpHCwV1rZPlN0mRDUGAXIfJxe?=
+ =?us-ascii?Q?89Z4mFwrsZ+fkoNwA0NT35ZD8Jh/WPf04kmeOX4ur39tAwwQLZRdCJkAH0OL?=
+ =?us-ascii?Q?u4o9/PSmCC9eOtHQ4iIvVs9627cS/F55ucKbYlU4DtdJvsT6sMNV+CdgPGRk?=
+ =?us-ascii?Q?w8LNwPVRTSeeFxBmRdVRg6tn+ukuHDkHjAET4fFCqIjO7dED/EhMieDeoShY?=
+ =?us-ascii?Q?5pftfOG8eV59G+BTzS/sUOOO/UgbPAdBN8YFrjmZnksVkTD7HTFugWmZRqoW?=
+ =?us-ascii?Q?sPToKucfzsKEI2/N38wYnfsmYKDmlac4FH1vBi2FKhGHNTpBK4VCnx2kbVII?=
+ =?us-ascii?Q?gLQYU7i3aO7/c4VoCK8E/gEzB3gf04g=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe3ed1b9-14b7-4c8b-356a-08deff44d1cc
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 05:26:57.8478
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FPOi7LJjvQQcKtQdit3CJttEpGq0I7NlZ8VcWBV9RiSdde/SpTe15LkwLO35CZSUvfMLcqJ2WL2AJDqLw1bJCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9936
 
-imx1_pinctrl_dt_is_flat_functions() uses for_each_child_of_node() to
-iterate over child and grandchild nodes. When the function returns
-early upon finding an "fsl,pins" property, it does not release the
-acquired device_node references, leaking their reference counts.
+Hi Guangshuo,
 
-Switch to for_each_child_of_node_scoped() to automatically drop the
-node references on early return and loop exit, matching the pattern used
-in pinctrl-imx.c and elsewhere in this driver.
+On Sat, Aug 08, 2026 at 08:23:54PM +0800, Guangshuo Li wrote:
+> dcss_dev_create() calls pm_runtime_use_autosuspend(), but
+> dcss_dev_destroy() does not call the matching
+> pm_runtime_dont_use_autosuspend() before disabling runtime PM.
+> 
+> If the autosuspend delay is set to a negative value while autosuspend
+> is enabled, the runtime PM core increments usage_count to prevent
+> runtime suspend. Without calling pm_runtime_dont_use_autosuspend()
+> during teardown, this reference is not dropped and usage_count remains
+> unbalanced.
+> 
+> The documentation for pm_runtime_use_autosuspend() also notes that it
+> is important to undo it with pm_runtime_dont_use_autosuspend() at
+> driver exit time, unless runtime PM was initially enabled with
+> devm_pm_runtime_enable().
+> 
+> Add the missing pm_runtime_dont_use_autosuspend() call before
+> disabling runtime PM during device teardown.
+> 
+> This issue was found by manual code inspection.
+> 
+> Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+>  drivers/gpu/drm/imx/dcss/dcss-dev.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.c b/drivers/gpu/drm/imx/dcss/dcss-dev.c
+> index 7fd0c4c14205..51398852cdc2 100644
+> --- a/drivers/gpu/drm/imx/dcss/dcss-dev.c
+> +++ b/drivers/gpu/drm/imx/dcss/dcss-dev.c
+> @@ -240,6 +240,7 @@ void dcss_dev_destroy(struct dcss_dev *dcss)
+>  
+>  	of_node_put(dcss->of_port);
+>  
+> +	pm_runtime_dont_use_autosuspend(dcss->dev);
 
-Signed-off-by: Md Rabbani <rabbanyhmm@gmail.com>
----
- drivers/pinctrl/freescale/pinctrl-imx1-core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+This will call rpm_idle(), which will call dcss_dev_runtime_suspend(). So
+you'll end up calling dcss_clocks_disable() twice... :/
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx1-core.c b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-index b7bd4ef9c0..4a6bdaefa4 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-@@ -547,14 +547,11 @@ static int imx1_pinctrl_parse_functions(struct device_node *np,
-  */
- static bool imx1_pinctrl_dt_is_flat_functions(struct device_node *np)
- {
--	struct device_node *function_np;
--	struct device_node *pinctrl_np;
--
--	for_each_child_of_node(np, function_np) {
-+	for_each_child_of_node_scoped(np, function_np) {
- 		if (of_property_present(function_np, "fsl,pins"))
- 			return true;
- 
--		for_each_child_of_node(function_np, pinctrl_np) {
-+		for_each_child_of_node_scoped(function_np, pinctrl_np) {
- 			if (of_property_present(pinctrl_np, "fsl,pins"))
- 				return false;
- 		}
+>  	pm_runtime_disable(dcss->dev);
+>  
+>  	dcss_submodules_stop(dcss);
+> -- 
+> 2.43.0
+> 
+
 -- 
-2.55.0.windows.3
-
+Thanks,
+Laurentiu
