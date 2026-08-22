@@ -1,168 +1,118 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EA04334B0
-	for <imx@lists.linux.dev>; Fri, 21 Aug 2026 23:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD5A23393C
+	for <imx@lists.linux.dev>; Sat, 22 Aug 2026 01:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787353883; cv=none; b=HuZ0n7EybxwYE0G7VQWMYdXBVKJism4H6HRG3pXyjbnU9qA9s8czH9fndSOsMRWxIlYUJ6CoOPjliThHbANjJmZbB43PW3HCu+YB6VsFi6NYFXwYxsOkoh17zLiNw/2wLP7Ko1uJYsIZIRnf6EV940GfQkIBDV3733fkflMR/Jk=
+	t=1787361745; cv=none; b=mkpOEglvIynOBZXoEk+gSUww2yrrmpnO3eLUjq1O536jnrwbxiz1irwktURSU/Jmk/R75jGhWHiPf1diVK/xliLQIIRKQUeUN9vcyfThW6Xi6tV6Av7epwIGV17g0IPWR9EJdXYQTLC9nqh/S4vp8RpN2X+umm0ldjxdet8AaDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787353883; c=relaxed/simple;
-	bh=Hfg4eNdHbaBARANiJABKZ+XnrxmaeCJGh7zzb5htsLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jW4x20qWWFBPeT8G6aPDqMFEvOBGZVzMHsBSRGPrQRD9gk8rEzks9PWCUZibu0f2XosvmQyZLgY5KGPTYALQ/SQDH3unlxWzyzZFRyZgZIwWoDXJwooIoZEUo8j52SChPHIA7xvbrWeq6obenBLDetfNV/9eKBhtLBnAhWFYk78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UX6RXZ7W; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1787361745; c=relaxed/simple;
+	bh=AURKOmGEjz8Y2p/odOo8yUCzmm57mPtXY6UFzZRhmi8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O1LI8PCbuxBkUKZeeGendZm65aTO9ti8KAQ0LQblny3Yu+dVgCdJwJdPtv67QnbDOB4+Z9BLW+q3i2/3kbnFwg6hoOM4Y4xeTo8xmM551elddIty0h3lLTY43yaLuG5kkkA2vNtINDo6U/mVYvH0Rs20L8dbP8hdKBUWxqvPYgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HQoi+8We; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UX6RXZ7W"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-499b57cf2f3so9279475e9.0
-        for <imx@lists.linux.dev>; Fri, 21 Aug 2026 16:11:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HQoi+8We"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso1201638a12.2
+        for <imx@lists.linux.dev>; Fri, 21 Aug 2026 18:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787353878; x=1787958678; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hLSJoNhqitBynpVd16vFcy3Vr4aNPFfC+ZBhksu/Yjg=;
-        b=UX6RXZ7WBt5J2iwpkijPWcFAs+tX9bHScACzTKaoxvdDT+TMLdAdKyE5DFK/B9d+3e
-         rcbpBQiCTjpwVwswSoXJaMcz/ggblkF0KIpF+Kx9kxsdvo1IA+FWnank6ww8HEbAbrI2
-         IC85bdvwyROkuutU/g3pEuTzg74C8VQQKLQ0EDkPJdUkjcOhRgFoMsTYljSl7IrPq5Wx
-         Nzh4BsmIWQk8505xvBn7MiMA1ObnOsPU8EBGIPwE01x7f4tOjajQbf1gw3Z/ePi8UUJu
-         h4Un4NGD+Pnca4OmA9bjkPGycj3mALEJ+dwjIwjQ5jfHGkNvXNV4dIzEG8L24i4vj08p
-         v7YA==
+        d=gmail.com; s=20251104; t=1787361743; x=1787966543; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XNcfeMEYwNlJBKitvYBP+hWuT3fX1KTsmGqaiTl4+vY=;
+        b=HQoi+8WefMKV6fQgLJ8z9NciGr7jIiF7A5sjA5pKNqhQw047XKt+bbAnYL2Qv1MoPG
+         xYkPBeq4PRxaPsQfvgq3YuIJrlEOJGc1PEdENDEorRr9sLV956Gn+yp5ic6VCc9G1xOP
+         PBQ0WGnUdmvoHu442FrLwNCWQtohnokJCsqgJK8rxnceNaAVNLkxO9emKWiuji4enVKR
+         oFrXyxBqveEYWwYOCbIJSwXmO8LH0jbDbu6QbtJMr4i2lCdOotqiyC2D2qdVoDnUZt7y
+         5gkPaEUwBPjogHlBbH/pLvTVdjqKdvGJxdVxiNleMjMB7UCMEn8RYBeZtcIdiYrg2fFt
+         RQSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787353878; x=1787958678;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=hLSJoNhqitBynpVd16vFcy3Vr4aNPFfC+ZBhksu/Yjg=;
-        b=AtYTOb25Blmx0HgpTvViHkyILmtaSbI7Kg60A4mTjF+m0SSDc1JHBhRoQoD2KBTaK2
-         CQjeO4sMC2cSoUVs3OQectMxWE0w1903jyTykx/XKt6PbP/u63GBCehEXXoLD7S6SqbB
-         iVbZLIJTcLhRM0OA/+OX0Obdje7QJXqvb3lKyB1XVfu6DeJr4fXMG2QjWIAkVz5ChZ+F
-         qevH7Gn1YqkDUmcuDFvpr7sCm0RSl4mh8U3Y2RVBsvW7ow+1xLoZ77jOTRfql2kJLJbt
-         4qO7AHvnsCYF31LEhPinwmpd6yhOlF3yKCMZneRidGtsO9S4zxTbwLzM5JM4CkrYsJNy
-         QWgg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2QG3Fqa8dBsMMM5bM1DhTG5tRIaE+xGauu1QcftUQiCbBEm0i2FZEjNqEOpcA7UYPN7k=@lists.linux.dev
-X-Gm-Message-State: AFuF++mPMjEBKa8offe60lsXfX4jexT3b6VtZ9PVNl0ZllXo4ELuFVMh
-	rRq/yF8+IspzhsNQtW7nGOnxlkvOkf2OMyVl0+mtq3GceRK1qufVQVKr
-X-Gm-Gg: AR+sD11PuMfRgoEZqhvwnCVmBkgquLGZrQGYTNbnJOxxPlPnlJF/GwvKeKF5N0PQBoD
-	v7IqPLwiM446469c4AUJvatNnXrkk+pWDlwciqYIja/3ZagNI5Su7Y5TYiuNtwPT2lfzu9WFHdd
-	cNDGuTT4exybwDhqpG/HWSqE7uIHmHfR+eIo2Lv3z6MFKyMfUBNVpGjuXFrP4iRhYEZpXyLRnN2
-	JAotfqbdiBEwC9h4z9Gx0/tC4ZPw2tfUE/9oBXwJfyY7mpQfEdCaPSgYJmwnznYFYMLtoJnwVdS
-	S2w/VIHwvuZ1KC4fdjzdKQC/rKowoVmYPMQQ6zszDeJRm76yeV+pJafDxv7IkZEit+3qY/nYWCT
-	SKhEVOC/5oCpW4qrC2ZlUV+Yzt+r/59qfWA0oS3ewL1+VNgztSfOXOsHxDs4h5gq0REl8A8JA/S
-	eGznJ9iNU2IeoSLkaHLN3T1XlWKCME2jZTqKnF3iBFa4j0uT63v3HhhX8b3TlIeACv7rEuUJEOg
-	JtfqOZtq3YwPCceBsCI2aQZvmUT8KiGvBf58hlv13LK1uL7MGjUUZH9
-X-Received: by 2002:a05:600c:4e94:b0:493:f783:c46a with SMTP id 5b1f17b1804b1-499b9198005mr78347705e9.6.1787353877591;
-        Fri, 21 Aug 2026 16:11:17 -0700 (PDT)
-Received: from [10.128.10.232] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b9a848dasm25994015e9.0.2026.08.21.16.11.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Aug 2026 16:11:16 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <f4d11338-159b-477f-8ff1-1bd52783e183@gmail.com>
-Date: Sat, 22 Aug 2026 00:11:15 +0100
+        d=1e100.net; s=20251104; t=1787361743; x=1787966543;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XNcfeMEYwNlJBKitvYBP+hWuT3fX1KTsmGqaiTl4+vY=;
+        b=ghj4wTletw2v4TlVqUr0omQdK5j7jO6U5nVbN5aem8GkgTIx+Sy7VCxyWPd7zTfqwI
+         s3qyvUgd7juVHi23Pb6hN/q5C0FMmI0KzEPpze9ICosBuT0kESeh67q+NsBeX8KQLtRo
+         1rai9uVD7alCbw2lJTkN2gv944t8p5Lkh/kTgVRqun+pyB7ve6GDqgmhCbvbJrW5pl/v
+         sv47i/dyMc3WQ7BC4C1JcLXTyGlPkK9DrIJ55T0MG6lkVD40IZdr+PkBem+5HCrrjnJK
+         SsHOHrfud8DOCgdncIFro7cXcKDzR49eW+bHg1zj/vtIQAteXZOOkBKEhTbLD5QyPtdQ
+         XcdQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpneW4SBSlp0Mw4mtJ7p2dYsX/x87dQ/7xL5esH4jjxgyYjTZmgqzVw0obVin0GA9tXQAk=@lists.linux.dev
+X-Gm-Message-State: AFuF++ntxSIs0YXzwZFNgg4uzG1LifZPCVZDk9p0kAlFvrB0YbLnKUYx
+	QqdQvYDROLT7mP/gSOmY50PpaBpiqrOek4fU6sYipORXqanvAJar/CGS
+X-Gm-Gg: AR+sD12pLOHf7rRA7FaOpbeoby8nrVr8D0642SzhtXczcUv9GYc1aK56Fn58rHnjzgV
+	zcH73IcgXoh/meqjSD7noOCikpfyemN8rlakqTVRkQM7ZYbYz1GYqqz5CwGGFyVsZx6mqIg1KHI
+	sc/ps740e2LvZJ3tPiWJ3S9KvmE757hjGct7eBV2g3oUS0Rji3uQOtlLdhRanbIPOxX7FsMN2vN
+	f1o6Cliy6gC17Xrl4K9bemmBzkZqrXrvlaMqFg1dphSKof6OokLAE1/mvdQDX93qqeFF71TAAFx
+	SX0QauuX+ZPwvlrwwCx6AClMakv4/pbyI5MEqbFo3k/DxuPImqc2ZZ4ZaoFP2upaQNpHLxckVsM
+	fpf1QRVbwt8fJUEq9+kpEb5bd3vUCjSQynglnKJ6w1IZNyKEH0/Au9Y1sSbvRZmcasQJkePMD/8
+	G5jqSlP/E2uRyckZN+CDF5fYpPyJOYD+zPaFlEj+UTw2oRho9mossWa8NrRezPK2CqTkOa1hBjV
+	1zCf3QV3gnWNrH6A8faja6W9P25KuQyuLXP3FHVoMjsRjElFPJwhXCzjTri43I=
+X-Received: by 2002:a05:6a00:1407:b0:851:8394:1696 with SMTP id d2e1a72fcca58-8520ba16a9bmr3668474b3a.12.1787361743351;
+        Fri, 21 Aug 2026 18:22:23 -0700 (PDT)
+Received: from hanzj-mi.. (ec2-99-79-140-187.ca-central-1.compute.amazonaws.com. [99.79.140.187])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8520f03b243sm144370b3a.31.2026.08.21.18.22.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 18:22:23 -0700 (PDT)
+From: hanzhijian <hanzhijian1991@gmail.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	kernel@pengutronix.de,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	hanzhijian <hanzhijian1991@gmail.com>
+Subject: [PATCH] PCI: imx6: fix pwrctrl device leak on PM runtime setup failure
+Date: Sat, 22 Aug 2026 09:22:05 +0800
+Message-ID: <20260822012205.2459806-1-hanzhijian1991@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] irqchip: gic-v3: fix unmet dependency on ARM_PSCI_FW
-To: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Cc: florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com,
- linux@armlinux.org.uk, Frank.Li@nxp.com, s.hauer@pengutronix.de,
- bcm-kernel-feedback-list@broadcom.com, radu@rendec.net,
- kernel@pengutronix.de, festevam@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, arnd@arndb.de, Sudeep Holla <sudeep.holla@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260801212235.2692694-1-julianbraha@gmail.com>
- <87lda2j5gs.ffs@fw13> <877bllp5fs.wl-maz@kernel.org>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <877bllp5fs.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Marc,
+In imx_pcie_probe(), after pci_pwrctrl_create_devices() creates the
+pwrctrl devices, the error paths for imx_add_pcie_ep() and
+dw_pcie_host_init() both jump to err_pwrctrl_destroy to tear them down.
+However, the error path for devm_pm_runtime_set_active_enabled() returns
+directly, leaking the pwrctrl devices.
 
-On 8/20/26 09:22, Marc Zyngier wrote:
+Jump to err_pwrctrl_destroy instead so the pwrctrl devices are cleaned
+up on this error path too.
 
-> [+ SMCCC folks]
-> 
-> Thanks for roping me in.
-> 
-> This looks like the wrong fix altogether. Whatever the Broadcom stuff
-> depends on is irrelevant, and has nothing to do with GICv3. Same thing
-> for the NXP contraptions.
-> 
-> If there is something to do *for the GIC driver*, it is to make sure
-> it compiles/links correctly when the platform does not select options
-> that are not required. Why would NXP and Broadcom care about an
-> erratum that is specific to NVIDIA?
-> 
-> I also disagree with what the commit message asserts, ARM_PSCI_FW is
-> selected *globally* on arm64, not on a per platform basis (TFFT!).
-> The NVIDIA machine being an arm64 platform, the correct dependency fix
-> is to select HAVE_ARM_SMCCC_DISCOVERY on arm64.
-> 
-> The overall issue is that there is no fallback to do something
-> sensible when HAVE_ARM_SMCCC_DISCOVERY is not selected. Random drivers
-> should not have to guess or add random #ifdefs all over the shop.
-> 
-> I came up with the following hack, which compiles correctly on 32bit
-> ARM without PSCI at all. YMMV.
-> 
-> Thanks,
-> 
-> 	M.
-> 
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 42f2278a702d0..937f17ec93a2e 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -37,7 +37,7 @@ config ARM_GIC_V3
->  	bool
->  	select IRQ_DOMAIN_HIERARCHY
->  	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
-> -	select HAVE_ARM_SMCCC_DISCOVERY
-> +	select HAVE_ARM_SMCCC_DISCOVERY if ARM64
->  	select IRQ_MSI_IOMMU
->  
->  config ARM_GIC_ITS_PARENT
-> diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
-> index 4de81848fe2ee..75f9d3f1723b5 100644
-> --- a/include/linux/arm-smccc.h
-> +++ b/include/linux/arm-smccc.h
-> @@ -324,6 +324,7 @@ enum arm_smccc_conduit {
->  	SMCCC_CONDUIT_HVC,
->  };
->  
-> +#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
->  /**
->   * arm_smccc_1_1_get_conduit()
->   *
-> @@ -363,6 +364,12 @@ s32 arm_smccc_get_soc_id_version(void);
->   * When ARM_SMCCC_ARCH_SOC_ID is not present, returns SMCCC_RET_NOT_SUPPORTED.
->   */
->  s32 arm_smccc_get_soc_id_revision(void);
-> +#else   /* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
-> +#define arm_smccc_1_1_get_conduit()	SMCCC_CONDUIT_NONE
-> +#define arm_smccc_get_version()		0
-> +#define arm_smccc_get_soc_id_version()	SMCCC_RET_NOT_SUPPORTED
-> +#define arm_smccc_get_soc_id_revision()	SMCCC_RET_NOT_SUPPORTED
-> +#endif	/* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
->  
->  #ifndef __ASSEMBLY__
->  
-> 
+Signed-off-by: hanzhijian <hanzhijian1991@gmail.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you for explaining. From my tests, your version resolves the unmet
-dependency well and doesn't introduce others.
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 39790e66b..616c42932 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1975,7 +1975,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 			pm_runtime_no_callbacks(dev);
+ 			ret = devm_pm_runtime_set_active_enabled(dev);
+ 			if (ret < 0)
+-				return ret;
++				goto err_pwrctrl_destroy;
+ 		}
+ 
+ 		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
+-- 
+2.43.0
 
-- Julian Braha
