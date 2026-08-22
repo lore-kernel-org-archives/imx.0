@@ -1,94 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7BF493644
-	for <imx@lists.linux.dev>; Sat, 22 Aug 2026 06:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787380703; cv=none; b=OtLDL+a9QieAqDOrlVzRNZ5PezoNK2r29RBzvxJDshOCfK+k02dP6C+NCN9GRC0FC5hFAiUJCmLvnKP/s7Ctq5/goeYRXY84jAgMsMhH1akEI+8vPxWNKOYu/v6HgDVdXy8GhwL8ibz04txvYdrZffMMbcNYMWghYb1GEPmodHw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787380703; c=relaxed/simple;
-	bh=ZPWOTWlpw992XTMU/+lFhCxMcbYuq45eR8eP46LkXkU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kxRZWUDohJw6B1Vp4P0BQSjP3QA8S00vIO+Xb0dbtu98HxIme72rL7heHLNfN2qk4slDNF+R15qTK+yTt8uud3REv6WxbBYvBTjaHtos/n4ELlI00Hw73ar4aAaieltpxjbCuHhUZWrjmbr/6SgcckEWkPylLS0pTJ8OhOdJ0i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFJSdPaL; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2957D372680
+	for <imx@lists.linux.dev>; Sat, 22 Aug 2026 09:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787389683; cv=pass; b=lqiHj6yBa5qvJz0oPBqOsL8rQ6Xoi1odMGVATwArTE65zQESzwvyiIQUcpmD6m/FbigV+28cJW9MGnXqZlj3YwzSOkVWuAsEkLXdgvOi4jQ5uF4VhrQWc7GOlxZM56JfPrweqI4EFleW50L8UhH0fV7NjxMlIr7bSJkLEiSaP/U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787389683; c=relaxed/simple;
+	bh=LSY6pZTY0pN1XLw/IWutO45ypUvbEMPOBZu3gQ9gNVg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N5g7+xiJm8/LJgM4GRubujPqbjx2P+IythVplXyjwx3fPHmb65ze6Lv8tcP8wHwhyXoVSVTpHEY4FUbQFf4nHYOpzqAY/n/EIe9tBwyi/4Hojw4mrkJxzdyvrrUMxNFdBq42Vth5afougnWlbFNoRRRce1VhunAC3/wshFn4gSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HaOKHHNf; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFJSdPaL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFA21F000E9;
-	Sat, 22 Aug 2026 06:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787380701;
-	bh=EyMw2dcBHtuk9qfeDLgTG09GaSFsCYi/jTJYl93EqJc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AFJSdPaLuAmpQZFzPk4TqJw1OoUMZL05FLzi0IZE1N8bkfADdENc1/u9aAsgo91p3
-	 M6uxwCdDIx6wlHeDhc3eGOraynafWOTP9R/BDPHhPndocrkmScnMEW/F21X7KzDfCG
-	 xmC8PE5fhOi+yW7qA1Xue5R6QJniAWyB79AtaxK/93h6z82K+0DGVeoDgOSfGiNKwD
-	 /UDQveeWr3nq0+z0xlgKKVLqbiwC4ZrdR6scujTsr3NoV5ITRr4L6jrPVwSg9t1/gT
-	 olze8QK2+jNVSy3nboNwtQCDH3OJulvxXu4d11xnG09TLliFNXnqOLmfBlxdT6PJ3c
-	 azBz6IAiMVC/A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net 2/2] net: enetc: restore RX ring congestion mode
- for ENETC v4
-Reply-To: sashiko-reviews@lists.linux.dev
-To: wei.fang@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260821064140.1315611-3-wei.fang@oss.nxp.com>
-References: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
- <20260821064140.1315611-3-wei.fang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 22 Aug 2026 06:38:21 +0000
-Message-Id: <20260822063821.ACFA21F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HaOKHHNf"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cacb8416a1so16598225ad.1
+        for <imx@lists.linux.dev>; Sat, 22 Aug 2026 02:08:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787389681; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jKOf9PRonPVxOp7qKArxPClNDWw1LX0M0q6vvMrD+TlOWUZTrfE334ItKAE8oOiF53
+         wTotxcAwSE+ewShNFBg0DMxj42qtrA7MhxqiyhNxzLwn9JtMUiK/X+HCg8WZ5Sd4oI2k
+         aW2NknwIYNXsowrnI6y7fUngnB6bZ/w7ziZ3Dhbhj2dR4xHwWnUyaXwLmEctgJvXFARz
+         JuSH6T+gMJVI3rIshpiyjq67yt487rZWX8CnixPOa8g4B/59fVEzd/4UqTgkAx3t9beD
+         HJw8g/wht2k8AAd71EhN+eX+E3mSosbQtea/EvWKndLL76o1iaHaKmVqbG0EdggBApq6
+         layg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6woqWYh79iNFHKYUnyFN0FJNuKmn+PKqFBiyiz14Gxc=;
+        fh=8bp3Vs+ezTMfkGlQzQcet6prl8Nv/p2OFdKdENFm/qc=;
+        b=EIPmkZ84EXU/Avy44b96GOeEBrqdS83tDqCRlJtCoLyROMbOnNtYmM30/1siewBCCE
+         POTBCd9YUahLBj+GzBOM2mwuF9gkuUzQUomkS+X43asRPOd/FSGDvwfHbfMFtwZAPYQg
+         2eQXxc8ekArFRn/xFKUUBA3HCzXZbH4l0pQH5E+shyKU9Gzs9kZAus/ZkxDvQ146CUei
+         U2hCdCPwO8fBwNbWZYYqQw7nJmjBtlqe1LdaV6ufK1Ow9QgjqisOvbKt3cm+o3JAArXw
+         6SesDcXh+JXd0Mw7Uade5auuP0GKYa9FdJLzZb8A0micGFubfoH6VRSr2CzlPDd87vVK
+         pyqA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787389681; x=1787994481; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6woqWYh79iNFHKYUnyFN0FJNuKmn+PKqFBiyiz14Gxc=;
+        b=HaOKHHNfk7mow7uFwrx/GsyWUWJWhvzevse3eumG6qohb1vs4hpPtYJFabGKLfArQR
+         VQTtrgI5JYJMb49xH3HbSvLrfLRZpuuRszM1LGYdo9kNM6UX3Cs0PeMvTkai9cQPdNiB
+         muc97H+0J9MKKroaSw7K1LdQGBmFU5KYgZAcTNrt5KkRY+pcXY1gQdhU2/eclmhzpQzC
+         ZDyiNpfRPSvTELYyMVKwcchoIxMhpYko1CGqnPzMvVTgmO4/JikmAAV9j5sTOTovQgll
+         llBSWe6WFO7UZCQdGEASDsXhTr2K8zJPfEpqr4KAjyquFNBJzaNgLzC+Ug9XSjijAqnK
+         i7Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787389681; x=1787994481;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6woqWYh79iNFHKYUnyFN0FJNuKmn+PKqFBiyiz14Gxc=;
+        b=YBPsuTKwuaB2/CwsVQP97Ob+zyq4VNA9CdEDdo4I4dkaFiu96fzvChzZSmqJtsVTOH
+         bB+gyTiBSMB1J+fTjNCZBMt1Dk2HcI3txrrBJgWMog/kDpbVUK3zV0HFmrw28t39QwqQ
+         4M0wmBNroqQjHe4Qlqtt4IqgPI5WE8ss1lZmzdo9fKUCLmdOI1UYOO/pe1QytGBj/Wtf
+         Dldx+sg3Is4ovgNtDDzakFSOKPHEVlKChb1bP0VBH4Yr6Nj8T/2S8vBW5udt6ZpeVxG7
+         LmSlIk7yMDe6Oy8Dlb9/KmMzeHGNUvBAbPbZeaSZdftsratsa8tk94qV+af8SF/T4WNT
+         WECQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4u25F3dcsPKpTLUOSyQFwzyrSl8+YC3i4O05hknjnMtopDA44MrjiRu+GAFmG5NtoJDo=@lists.linux.dev
+X-Gm-Message-State: AFuF++k+++LekglCEKvey/kiWy5hzKhY/FGQ5DOlKbKNuYyeXZ7F/zoU
+	5gcst4vjxMYDLnuhejaRoQ9X4xJQGk1iVtBYwS4ayVRcRhMtL7tBu61haiwtxkC4YGqaHm8uP00
+	4MrfkdxuZeCQ5fq4EVkQQv1k3K2WcROs=
+X-Gm-Gg: AR+sD127ttLHmQAQ5aaZcVSaV790g3T3yxsU7ERf2rAqrregLzXCOqh29L+aoExw1sZ
+	upnAu7EjlNPLQRWS5bL2sNptTIbCt7RF2oqw4/F2+lnjk1u+2zGLeE6KyZqSQZm8R+G5tVXCiOO
+	gwcJXLAeLNOzp9Y5yAbLmXt2ZxpeLDobN9MnupMJx49Xyxqq+HlX/nGSm8ugdaoi6fyU7zjeJjU
+	G42kG/qW98EoDTza+1cj2UgU5eyN6jdf6FE37lzDp2H4TFwObguRcr/UoEtzpEkkZL+PZSTOosH
+	ok1bz7awGyy01sMP15fPFoENLRS8Ebqy5aSH/oqodqVwBsILDNju30ghQa6E7X3rpEJ7cX6k4tL
+	SxORiXOqbfV67kAVy4JI100S3GkJnbhU9UkHBI5U89jxBpShxSULiR3/TkqODVRuYtdlu1jKAIO
+	HIqqSE124Bw8TRnA==
+X-Received: by 2002:a17:902:f70e:b0:2cf:afa5:b19a with SMTP id
+ d9443c01a7336-2d64afd7c86mr244956595ad.11.1787389681421; Sat, 22 Aug 2026
+ 02:08:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260820111416.97917-1-phucduc.bui@gmail.com> <GV2PR04MB1173976A5DA80B2816493C84788A32@GV2PR04MB11739.eurprd04.prod.outlook.com>
+In-Reply-To: <GV2PR04MB1173976A5DA80B2816493C84788A32@GV2PR04MB11739.eurprd04.prod.outlook.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Sat, 22 Aug 2026 16:07:49 +0700
+X-Gm-Features: AcwNN1VGh6KPneuM_bjYGwgQLpofzFqg25qsf12ZcvTaHcRYfF44Rr3qalHtEew
+Message-ID: <CAABR9nFeaLMzk=2_HGvCktZwU7DmNWsHV-vHSBGwbWU8k-TLfg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] net: fec: Propagate PTP initialization errors
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hi Wei Fang,
 
-Pre-existing issues:
-- [High] Unprotected read-modify-write of the ENETC4_PM_CMD_CFG(0) register=
- can cause configuration loss via a TOCTOU race.
---
+Thank you for your review.
 
---- Patch [2]: [PATCH v2 net 2/2] net: enetc: restore RX ring congestion mo=
-de for ENETC v4 ---
-commit bd5bd2aaf8ee0b0d3b280c89c74f1cacc1556562
-Author: Wei Fang <wei.fang@nxp.com>
+> > +     if (irq > 0) {
+> >               ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+> >                                      0, pdev->name, ndev);
+> >               if (ret < 0)
+> > -                     dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+> > -                              ret);
+>
+> Why remove the diagnostic log?
+>
 
-net: enetc: restore RX ring congestion mode for ENETC v4
+The reason is that the error is already logged deeper in the call chain,
+after devm_request_irq() goes through several layers, with sufficient details:
 
-This commit fixes an issue where the RX BD ring congestion mode is cleared
-during runtime reconfiguration and never restored. It tracks the desired
-state in a software flag and restores it when rings are re-enabled,
-ensuring flow control continues to work.
+-----------------------------------------------------------------------------------------
+return dev_err_probe(dev, rc, "request_irq(%u) %ps %ps %s\n",
+                                    irq, handler, thread_fn, devname ? : "");
+-----------------------------------------------------------------------------------------
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index fcfbabb29d22e..9bb1004548abc 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -718,22 +718,14 @@ static void enetc4_set_rx_pause(struct enetc_pf *pf=
-, bool rx_pause)
->  	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
->  }
+Therefore, I removed the diagnostic in this function to avoid duplicate error
+messages.
+If you prefer, I can keep it.
 
-[Severity: High]
-This is a pre-existing issue, but does this read-modify-write on
-ENETC4_PM_CMD_CFG(0) need to be protected by si->gen_lock?
+> >       if (IS_ERR(fep->ptp_clock)) {
+> >               fep->ptp_clock = NULL;
+> >               dev_err(&pdev->dev, "ptp_clock_register failed\n");
+> > +             return PTR_ERR(fep->ptp_clock);
+>
+> fep->ptp_clock is set to NULL on the line immediately before
+> PTR_ERR(fep->ptp_clock) is evaluated, so PTR_ERR receives NULL rather
+> than the original ERR_PTR value.
+>
 
-It appears enetc4_set_rx_pause() and enetc4_mac_tx_enable() run from the
-phylink_resolve workqueue, which does not hold rtnl_lock. Meanwhile,
-ethtool commands (like changing loopback) trigger enetc4_pf_set_loopback()
-under rtnl_lock.
+You're right. This was an oversight on my part.
+The error value should be saved before clearing fep->ptp_clock:
 
-Since both paths perform lockless read-modify-write operations on the
-same ENETC4_PM_CMD_CFG(0) register, could a concurrent link state change
-and ethtool command result in a race condition where one of the updates
-is overwritten and lost?
+---------------------------------------------------------------------------
+if (IS_ERR(fep->ptp_clock)) {
+        ret = PTR_ERR(fep->ptp_clock);
+        fep->ptp_clock = NULL;
+        dev_err(&pdev->dev, "ptp_clock_register failed\n");
+        return ret;
+}
+--------------------------------------------------------------------------
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260821064140.1315=
-611-1-wei.fang@oss.nxp.com?part=3D2
+>
+> Additionally, the second patch can be merged with this patch. There is no
+> need to use two separate patches.
+>
+
+The error propagation part in the second patch is directly related to
+the first patch :
+
+------------------------------------------------------------
+-       if (fep->bufdesc_ex)
+-               fec_ptp_init(pdev, irq_cnt);
++       if (fep->bufdesc_ex) {
++               ret = fec_ptp_init(pdev, irq_cnt);
++               if (ret)
++                       goto failed_reset;
++       }
+------------------------------------------------------------
+
+So I agree that this part can be merged into the first patch.
+However, the change in failed_init is an independent pre-existing bug:
+
+-------------------------------------------------
+ failed_init:
+-       fec_ptp_stop(pdev);
++       if (fep->bufdesc_ex)
++               fec_ptp_stop(pdev);
+-------------------------------------------------
+
+Therefore, I think it would be better to keep this part as a separate patch so
+that the Fixes: tag can correctly identify the commit that introduced the bug.
+
+What do you think?
+
+Best regards,
+Phuc
