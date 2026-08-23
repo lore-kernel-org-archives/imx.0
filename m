@@ -1,120 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EBC331EB9;
-	Sun, 23 Aug 2026 22:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C92D25524C;
+	Sun, 23 Aug 2026 22:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787523906; cv=none; b=V1FSebyRDfiF9Kb1SZFCSH+W+LdLNUQMMgIUj8Q2oFx3r8HsYpzglL9L0HYhqbuVa0lx35P+HotfbtrRHeebUMe7nxYw8ZnwiFPWrFJrRBOooDr2docYy3JKmYrGsNUEkqST7fEpHU2Rx00w2BDMEBL5s2Ok+u45OGhT+kEwo6E=
+	t=1787524556; cv=none; b=BqKYqYsZcowJU0+TbxDL6gV1qjJUmmFzzqcMsIpHRHYWe1j1nhgKTwvnNp7Q3tqW/aBM0K3Z8ocqj3E9/U2j+LF9uwWjU6Obild4zUzMox/+OWy+wikqJnc3f+MZQzukZa5OxtV4bK5f5YnlF5QBwXkOn1Zoth2/B63dLXTJAJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787523906; c=relaxed/simple;
-	bh=cq1hYsxSF8q8kGHGEdS0KX9Ra636QhedZrafPgp9MF4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TYWhmR6V1i7K8EQtkedRnTCmHqK4Kwz9ThnDzPt2N/4dcDJqkD4tir2YnPzdf4qV1VvHf1tiXFLONSC5XuhQuaEyOTPQ2mLXtSn8hM1r9DUZZiAZ4isBdb8t5Zpml89F9Z6faM1hVNJNvusD6YanvpNAfJ3R+0N8mqHLVH1YQbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1e+R70k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787524556; c=relaxed/simple;
+	bh=QQNYF+vq2eHzvXvr6LF/g5eTCLrcpvJfSvMtW/+G7PY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=C0G37bpRmvKJR7S2yU2UNZMYbj/yl874TpotzjCwGqRb7aBUkZUCI8m5A52DhcSBNGqA5w8bCfFcsPgJY/YB/dJ+IPZ2ihLkih21Ztv/JkhIPxOmDVOo/5nQ5wFlbqgpY06CnkVvQCDETG4n+PV0COLWpmyAFF2F6iYihzO7rcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPX+hzNR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1e+R70k"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 668A1C2BCB8;
-	Sun, 23 Aug 2026 22:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787523905;
-	bh=cq1hYsxSF8q8kGHGEdS0KX9Ra636QhedZrafPgp9MF4=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=G1e+R70kZaq6JfUd4XQR/TVBzuSQmU8TWfyq9UiSZxswyqovfTUoT8A07B4+ZBRKj
-	 P0LUxLvrOa+6eJ8CO2b+4EbiaL5eWXAi71gwbZu/f0Hw+GM7nLw1GJvwlxIFJcaBxZ
-	 P+9cniXYPA54HeqKB0UvYbOXOfcQQh/XlhoG6C6CPUQ6AxHEh8j3oJiyTidyYOeTRP
-	 TiUnXGvlHOcXRS6JMHoHJ9AwYDmvRzykxyPORZGYOpUzZdJsJKshZLS5yj8VJXauOK
-	 H9CDqeB3C4buXwkqScazqn4yC3HLOUGwbdPBdL9qVW+IliMflzw5c0spJwAtMzxQM1
-	 w0HdMBlVpZwzQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E72EC5DF97;
-	Sun, 23 Aug 2026 22:25:05 +0000 (UTC)
-From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Mon, 24 Aug 2026 00:24:56 +0200
-Subject: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPX+hzNR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6CC1F000E9;
+	Sun, 23 Aug 2026 22:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787524554;
+	bh=po7IIoGOeeqrSpZ0T/dO1sDrsRTve3va2HW8MDN/VFU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NPX+hzNR7qJdfJBxOLKw2E+bR+SPnZVFnCoIuRwIx2virIuuge7axHzg6M1w8y+Hg
+	 TX82MpT5KOP7wcY751X7V4MIuZ/YJbZ9u0Aj8vt0U/VYpfJkEUvw7ap9UxekQQVGEj
+	 WAW9OZcnzbKVc55PU8G+dr8XphHjVDhr8fizWqwy5fHXqN7DAJi3HfCHe5HkF60bar
+	 FHhPpO7UCVmSvP2Lil8ReBgC0A4zHV59wcZ1z42VFkwSR74+sdBwMyu5s/Z1y3ONIo
+	 /xgunlFK11a8RRH9KGQnBNQ6tvQq3Uf7oPiHjfUFCoskAbiisZ5cgRbnSkGTLuJ95U
+	 g/1ExDDeBmsAg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Vincent Jardin" <vjardin@free.fr>
+Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
+References: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 23 Aug 2026 22:35:53 +0000
+Message-Id: <20260823223554.7A6CC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
-X-B4-Tracking: v=1; b=H4sIADdzi2oC/x2NQQqDMBAAvyJ7diEubdB+pXiIZm0XNIaNkYD49
- 4YeZw4zFyRW4QSv5gLlU5LsoULXNjB/Xfgwiq8MZMianh647Io5pkPZbbgW6qxxGCVsueAiBa0
- 3A/c0+ec8Qa1E5ar/h/d43z/EZGZkcQAAAA==
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Josua Mayer <josua@solid-run.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Vincent Jardin <vjardin@free.fr>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787523904; l=1744;
- i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=v7b3i0icYOPqdG+BqtL6lYNtCLmPe90OESWp1UB4moI=;
- b=ezvxDYGXs6w7Ps/jMEObsLtPsg3EUttJ5frsgrfiS1kdS3jut+ZHF5FBxc6FpWlv0zBsho0Pc
- UYsr1nbTKn0DQLloefJC+hR9tYSMkslaNs5TIRd93+OqdiSsPlxadad
-X-Developer-Key: i=vjardin@free.fr; a=ed25519;
- pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
-X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
- auth_id=871
-X-Original-From: Vincent Jardin <vjardin@free.fr>
-Reply-To: vjardin@free.fr
 
-From: Vincent Jardin <vjardin@free.fr>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
+Pre-existing issues:
+- [High] The pinctrl offset for `dspi2_miso_mosi_pins` is set to `0x3`, whi=
+ch is unaligned for a 32-bit register width, triggering a synchronous align=
+ment fault on ARM64.
+- [High] Pinmux nodes `i2c0_pins` and `gpio0_3_2_pins` specify an incomplet=
+e 1-bit mask (`0x1 << 10`), causing the `pinctrl-single` driver to silently=
+ reject them.
+--
+
+--- Patch [1]: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux ---
+commit 361d41dcf4495f73be88ba1bf5234be91b377473
+Author: Vincent Jardin <vjardin@free.fr>
+
+arm64: dts: lx2160a: fix incorrect pinmux
+   =20
 For gpio1 value set for pinctrl is outside the mask and so will do
-nothing.
-Add the missing offset for value field to be the same as the mask as
-expected.
+nothing. Add the missing offset for value field to be the same as the
+mask as expected.
 
-Fixes: 284ad7064aaa ("arm64: dts: lx2160a: complete pinmux for rcwsr12 configuration word")
+Fixes: 284ad7064aaa ("arm64: dts: lx2160a: complete pinmux for rcwsr12 conf=
+iguration word")
 Signed-off-by: Vincent Jardin <vjardin@free.fr>
----
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index 1d73abffa6b7..b9f079c49e19 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -1803,7 +1803,7 @@ fspi_data74_pins: xspi1-data74-pins {
- 			};
- 
- 			gpio1_31_28_pins: xspi1-data74-gpio-pins {
--				pinctrl-single,bits = <0x0 0x1 (0x7 << 15)>;
-+				pinctrl-single,bits = <0x0 (0x1 << 15) (0x7 << 15)>;
- 			};
- 
- 			fspi_data30_pins: xspi1-data30-pins {
-@@ -1811,7 +1811,7 @@ fspi_data30_pins: xspi1-data30-pins {
- 			};
- 
- 			gpio1_27_24_pins: xspi1-data30-gpio-pins {
--				pinctrl-single,bits = <0x0 0x1 (0x7 << 18)>;
-+				pinctrl-single,bits = <0x0 (0x1 << 18) (0x7 << 18)>;
- 			};
- 
- 			fspi_dqs_sck_cs10_pins: xspi1-base-pins {
-@@ -1819,7 +1819,7 @@ fspi_dqs_sck_cs10_pins: xspi1-base-pins {
- 			};
- 
- 			gpio1_23_20_pins: xspi1-base-gpio-pins {
--				pinctrl-single,bits = <0x0 0x1 (0x7 << 21)>;
-+				pinctrl-single,bits = <0x0 (0x1 << 21) (0x7 << 21)>;
- 			};
- 
- 			esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/=
+boot/dts/freescale/fsl-lx2160a.dtsi
+> index 1d73abffa6b72..b9f079c49e193 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
 
----
-base-commit: 3d6d817622b0a9721e3cc404df3469171582be13
-change-id: 20260824-for-upstream-lx2160a-pinmux-fix-6d09e82bd5cb
+[ ... ]
 
-Best regards,
--- 
-Vincent Jardin <vjardin@free.fr>
+[Severity: High]
+This isn't a bug introduced by this patch, but is the pinctrl offset unalig=
+ned
+for dspi2_miso_mosi_pins?
 
+arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:dspi2_miso_mosi_pins {
+    ...
+    pinctrl-single,bits =3D <0x3 (0x2 << 9) (0x7 << 9)>;
+    ...
+}
 
+The pinctrl-single driver uses 32-bit accessors when the register width is =
+32.
+Since the base offset is 0x3, this results in an unaligned I/O access on
+arm64, which triggers a synchronous alignment fault.
+
+Could this have been a typo for <0x0 (0x3 << 9) (0x7 << 9)>?
+
+[Severity: High]
+This is a pre-existing issue, but does this incomplete mask cause the pin
+configuration to be skipped entirely?
+
+arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:i2c0_pins {
+    ...
+    pinctrl-single,bits =3D <0x8 0x0 (0x1 << 10)>;
+    ...
+}
+
+This also appears in gpio0_3_2_pins:
+
+arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:gpio0_3_2_pins {
+    ...
+    pinctrl-single,bits =3D <0x8 (0x1 << 10) (0x1 << 10)>;
+    ...
+}
+
+Looking at the pinctrl-single driver, it strictly validates that the suppli=
+ed
+mask matches the hardware function mask shifted to the pin's bit position:
+
+drivers/pinctrl/pinctrl-single.c:pcs_parse_bits_in_pinctrl_entry() {
+    ...
+    if (submask !=3D mask_pos) {
+        dev_warn(pcs->dev,
+                "Invalid submask 0x%x for %pOFn at 0x%x\n",
+                submask, np, offset);
+        continue;
+    }
+    ...
+}
+
+Since the function mask is 0x7, mask_pos would be 0x1c00 (0x7 << 10), but t=
+he
+supplied mask is 0x400 (0x1 << 10).
+
+Because these do not match, does the driver log an invalid submask warning =
+and
+skip configuring the pin?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824-for-upstre=
+am-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr?part=3D1
