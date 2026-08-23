@@ -1,159 +1,114 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88BA1891A9
-	for <imx@lists.linux.dev>; Sun, 23 Aug 2026 18:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0053ADBAC
+	for <imx@lists.linux.dev>; Sun, 23 Aug 2026 20:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787508521; cv=none; b=sXx6T2hNrOe9Mo7Ppp10mu5AlCUc5eg1+uRHXla6baItbXEIE9YixGl9fwEXNcNd7s8VAhyg1bxi8NXT2XRkPiB9A7aSQTe3R2nsJEd1tw9eACbj8ord9Lg4P55JCiaAPHzS0XvdCzBrdnRsIC7M6u8YMgMXaxVq7f6CaVbaESw=
+	t=1787517073; cv=none; b=PPhL8SPUPTZ2MLFNq94BTTDic7jzbU16iiv5pMfnxtjgHPV+bA8u9t44YMoWJ61UnbrzrLvyX7xdDfjS9A4K2eVF1D6IXEGLm5092V5C8KmG1pYbjNu3/L15WfLQm9qTbOtZdbt0UWbmlsPY0oNSSUtg3hzn+nvBJoxicLl53c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787508521; c=relaxed/simple;
-	bh=d4+SpXzXQg1I0AEgLHL/3ZdYMeyuisXWriRMDooKRJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SDLBKCJBT1s3WeVY/ExA0WsBZ6iQe9fAQem4o95q5URQAxaZEXrE4HSY6555xeTvOfedilz2E3bDvPIZ44i+ivvDUNGRo6KQVJw45H3c1qD0DB4yGbQnJPRfi81FQr2cTI0v3C3oq+im3XNADHYkJQfqV2aa5lztEds2xuNHWCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bD09Ny3d; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787517073; c=relaxed/simple;
+	bh=4xYmgybZuIZtjSnb7/aPKTUrgeBPIO8Jv2wpF7I5zbU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tXkz7T3tw4cViI6LthA+NtvZGsgrf6miHfkQHjRhOUWIYtDvwCWVEwvXM+2ZA7wz+K2mJmGEsX7fztCRiomtA6tCU8sRDCyIc9DXrLdISKjTdNoJEOR9/iBVUONRGKI2buH+KQWVWa4fERaB3THjJGpcIa8ftXH7mhtooCraESI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9SR/CDW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bD09Ny3d"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f7027ca11so1399924f8f.3
-        for <imx@lists.linux.dev>; Sun, 23 Aug 2026 11:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787508518; x=1788113318; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3gq37rj4bzCyBTGwM7oPPXQqhYUmg5gV71MEIz1jHkg=;
-        b=bD09Ny3dsEopfDqrgIEDgUaizp2HiEH4rhSpFZnj96PjNTDydvF643YOScrUlymf8K
-         UDji1GwtFmnNcFt5zdEIoBiiMXsVNORjGzcIBSFwIJRM9wSEJFCeQl9KreNA8tX85ygx
-         UUm9lGaWLyvMwXej2SfeFrfPUrpFDIWnEgsGSe/LDjXrMGwtFPn1zVXOCgNfg3FuYs/d
-         DZz2jDl8cp1AFPJehXNLGYoL+DJYHpgZQSXJYDSvBqTXA30bpNCRodeOwWhoZuangg3j
-         I7EZ5MgGW5cH2wMKxcR2upJR1L0o9IEgspcDae63XLSwb0JkKtpCYln/oEFC6yBbMgfq
-         agZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787508518; x=1788113318;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3gq37rj4bzCyBTGwM7oPPXQqhYUmg5gV71MEIz1jHkg=;
-        b=Uywl25Tnr9/jCJ3TAOx/3RfSp5SWD/fyuKo1cOi4YOS8cLZC/QN6bcaiiGHrcj6UHn
-         TZEztNffck/e5NecyN8r0wGUxd708u27MDM2FODieMlpg4DxmcRHXQwGjg3ANVfuLQOa
-         xGiiPQ8fL1HTIkBCk3/IGyQLGR05UQVnGB6jHrIayaNxZazW+kUotzGaQ1KDMwxniNwV
-         +e2PIoMMguI/p40NT77usjraZdN6VtbycGv6Y0fHW4uE+o/8RPnL8WzFGSwcHlceeTip
-         TfjhDmGYIeql6bMteqcAyTmUZv4ekT/SmbWAuAFIP5HLvw8SCKr5tOJtOzDoiaq/RY+/
-         uguw==
-X-Forwarded-Encrypted: i=1; AHgh+RrCRyT/eK+mpD91iGc+gSPI0WNeW2baaQA4n3yXEObek0mPFiaMi5C4wpUpbmj1JqPeFSk=@lists.linux.dev
-X-Gm-Message-State: AFuF++m2HFrsaUtoD2Y5UCh7AxMtbYSOaDOEIA6IAUVENzavyqdqPz3S
-	HgP5gYcE7Ab6IYQYuox2iO+1TXXqxTXeLtERLg2NihJjaQd6YXbSV2YD
-X-Gm-Gg: AR+sD12JpndgnY+NhqqAacsgExQ+EA0s0pG8I52/om0meBBoI3XjW6ZEpvDcZzUV/xL
-	Mz9miEE8/k3hg2+tCup7XV7CfFJIdeWzHUekyVe9unWN/FskZ8EYPpPSS90p1wYHprjaEIMgCbR
-	MdH8+E2B4HgmKpUg4KwMt18IFltc/CkU/HkhKbzsQcyVkFseAlahlJqNy9pAxIVBSwxxUwRtfZO
-	FtX3UdSNmoBYQibxyL1t8GQlfTQKu7kIJLy+vjs51T4h5sfS4i3W75EYpwKWb/yBnBrRqCdFHCd
-	7Q4QT/XrmPJtf9pgIZp0no/7ioY+2uO8/CnK1FK2vHW7ogTjsOs+95AlDfPEeVj01cKyEOob9+V
-	96e+O69ias0AHYAguq34JJdPt7hRU2giqviX3UajL4S/91kMdD6SLU/27CN8h1j1rg9Tw0C4qBj
-	CcEgMN7ifr/FXAIY3ZUUQtMCG4sqb+45ueU2cJ/gZJz1HtiJbfN3NHTlT/d9egr4CpyMWKRQQMr
-	j9hRaNdPHcMoYYo2yEIflO0gZs5bBIAcqPg7Wzc7VynWRt0MZ+O
-X-Received: by 2002:a05:6000:310f:b0:47f:f4b9:88b7 with SMTP id ffacd0b85a97d-482c0b58818mr25065061f8f.1.1787508518013;
-        Sun, 23 Aug 2026 11:08:38 -0700 (PDT)
-Received: from nixos-office (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482d4710ac5sm219571f8f.32.2026.08.23.11.08.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 11:08:37 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-From: Julian Braha <julianbraha@gmail.com>
-To: florian.fainelli@broadcom.com,
-	rjui@broadcom.com,
-	sbranden@broadcom.com,
-	linux@armlinux.org.uk,
-	tglx@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	radu@rendec.net,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	arnd@arndb.de,
-	maz@kernel.org,
-	sudeep.holla@kernel.org,
-	mark.rutland@arm.com,
-	lpieralisi@kernel.org,
-	Julian Braha <julianbraha@gmail.com>
-Subject: [PATCH v2] irqchip: gic-v3: fix unmet dependency on ARM_PSCI_FW
-Date: Sun, 23 Aug 2026 19:08:32 +0100
-Message-ID: <20260823180832.1246363-1-julianbraha@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9SR/CDW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864F91F00ACF
+	for <imx@lists.linux.dev>; Sun, 23 Aug 2026 20:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787517070;
+	bh=Hz9a2/4b0H2hGIuQcX4i4J6vhXjz7a1tVe8/vJ1mK5k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Z9SR/CDW2+RChZ3knjritt88WVf6xuW1xAcW5680A4MsxFF1qx3Cyc2rapAylHwmY
+	 i01kHvJ/Qt8Az6ftSP9Wlfop6xlECrhrEo73TxjT0/f/TMQve4hcix+HMncPTM1HJF
+	 PaB7k9Vh9OJ+gqrSWVZQTIzVw2l2P5vSW5Kxn344fH7uIP+cOEvTizQYaQ/F5cUzA7
+	 p+sPgYQkVyJ1IO3DrZBKDbMjn5pO1E6mwMBR6s32rJgu0EpbBk5Sz2CzP916HdHBSq
+	 EsQUo4o2t5BYNwQt0xwWwIZl0XHOiTkx56XOJJ9rE7ywoOqP3O2l4SCAosPzB/PYLc
+	 Yuaa9lHQxDn9A==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b013aa02b2so4799017e87.0
+        for <imx@lists.linux.dev>; Sun, 23 Aug 2026 13:31:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rr9jwaQp94w/w6P6PwlHrLvlj7bbLRYyoHNXITZYEQTV+J2h0TbnycMPHist8z2RMZ+qwg=@lists.linux.dev
+X-Gm-Message-State: AFuF++kO3rj1lT1yBSmeLMgClJIiE/5BbNTuzBmFqeAgmqkGpuXFCPPh
+	THsWP25RLlKwT1agsE/0Ed2B7Z3eCQXHJeghvhlcSXOBSgRx3/LCuT27FU1blZjvO1JncAWOskr
+	tB7iTwCGUjb13TJFp+wtz1FOWf4dOsEY=
+X-Received: by 2002:ac2:51c5:0:b0:5b3:12b1:be93 with SMTP id
+ 2adb3069b0e04-5b484736c8amr4269481e87.0.1787517068028; Sun, 23 Aug 2026
+ 13:31:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1787239813.git.geert+renesas@glider.be> <bd84df92640a05a1a73a8bc775b2d50568a9d0ec.1787239813.git.geert+renesas@glider.be>
+In-Reply-To: <bd84df92640a05a1a73a8bc775b2d50568a9d0ec.1787239813.git.geert+renesas@glider.be>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sun, 23 Aug 2026 22:30:56 +0200
+X-Gmail-Original-Message-ID: <CAD++jLkYE8Fh_HpKPYjL0-ksVQA8f_iLRFNkPU5Jvq+ihay5ww@mail.gmail.com>
+X-Gm-Features: AcwNN1U1aXPtuwFV8knvjn18BtYzZuPH0iZTVosQkZ_l23SVekgfIt7U_k24f4g
+Message-ID: <CAD++jLkYE8Fh_HpKPYjL0-ksVQA8f_iLRFNkPU5Jvq+ihay5ww@mail.gmail.com>
+Subject: Re: [PATCH 39/45] clk: ux500: Make sure clk_init_data is fully initialized
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>, 
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+	Jerome Brunet <jbrunet+clk@baylibre.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Billy Tsai <billy_tsai@aspeedtech.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Taichi Sugaya <sugaya.taichi@socionext.com>, Takao Orito <orito.takao@socionext.com>, 
+	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
+	David Lechner <david@lechnology.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Gregory Clement <gregory.clement@bootlin.com>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Viresh Kumar <vireshk@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	=?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Prashant Gaikwad <pgaikwad@nvidia.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Ulf Hansson <ulfh@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Michal Simek <michal.simek@amd.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, linux-clk@vger.kernel.org, 
+	linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, 
+	arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ARM_GIC_V3 currently selects HAVE_ARM_SMCCC_DISCOVERY without ensuring its
-dependency, ARM_PSCI_FW, is met. However, ARM_PSCI_FW is always enabled on
-for arm64, and the GICv3 driver only uses HAVE_ARM_SMCCC_DISCOVERY to
-identify the NVIDIA T241, which is arm64 anyway.
+On Fri, Aug 21, 2026 at 10:53=E2=80=AFAM Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
 
-Also adds fallbacks for callers to avoid needing #ifdef guards when
-HAVE_ARM_SMCCC_DISCOVERY is disabled (32bit arm).
+> The clk_init_data structure contains several mutually-exclusive members
+> for different methods to specify the possible parents of a clock,
+> prompting drivers to initialize only the members they need.  However,
+> not initializing all members may cause subtle issues, which are only
+> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> enabled.
+>
+> Make sure all members are fully initialized, to avoid such bugs, and to
+> prevent future breakage when converting drivers to a different method
+> for specifying the parents.
+>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-This unmet dependency was found by kconfirm, a static analysis tool for
-Kconfig.
+OK I trust you on this one:
+Acked-by: Linus Walleij <linusw@kernel.org>
 
-Fixes: 35727af2b15d ("irqchip/gicv3: Workaround for NVIDIA erratum T241-FABRIC-4")
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Julian Braha <julianbraha@gmail.com>
----
-Changes since v1:
-- remove select and dependency on ARM_PSCI_FW, 
-- make the HAVE_ARM_SMCCC_DISCOVERY 'select' conditional on arm64
-Link to v1: https://lore.kernel.org/all/20260801212235.2692694-1-julianbraha@gmail.com/
----
- drivers/irqchip/Kconfig   | 2 +-
- include/linux/arm-smccc.h | 7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 20b77fbc51ee..dae023fed7d6 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -37,7 +37,7 @@ config ARM_GIC_V3
- 	bool
- 	select IRQ_DOMAIN_HIERARCHY
- 	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
--	select HAVE_ARM_SMCCC_DISCOVERY
-+	select HAVE_ARM_SMCCC_DISCOVERY if ARM64
- 	select IRQ_MSI_IOMMU
- 
- config ARM_GIC_ITS_PARENT
-diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
-index 4de81848fe2e..248624c1af7c 100644
---- a/include/linux/arm-smccc.h
-+++ b/include/linux/arm-smccc.h
-@@ -324,6 +324,7 @@ enum arm_smccc_conduit {
- 	SMCCC_CONDUIT_HVC,
- };
- 
-+#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
- /**
-  * arm_smccc_1_1_get_conduit()
-  *
-@@ -363,6 +364,12 @@ s32 arm_smccc_get_soc_id_version(void);
-  * When ARM_SMCCC_ARCH_SOC_ID is not present, returns SMCCC_RET_NOT_SUPPORTED.
-  */
- s32 arm_smccc_get_soc_id_revision(void);
-+#else   /* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
-+#define arm_smccc_1_1_get_conduit()	SMCCC_CONDUIT_NONE
-+#define arm_smccc_get_version()		0
-+#define arm_smccc_get_soc_id_version()	SMCCC_RET_NOT_SUPPORTED
-+#define arm_smccc_get_soc_id_revision()	SMCCC_RET_NOT_SUPPORTED
-+#endif	/* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
- 
- #ifndef __ASSEMBLY__
- 
--- 
-2.55.0
-
+Yours,
+Linus Walleij
