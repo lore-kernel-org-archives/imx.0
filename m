@@ -1,35 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7916F2BE7AB;
-	Sat, 22 Aug 2026 20:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966D1370D61
+	for <imx@lists.linux.dev>; Sun, 23 Aug 2026 01:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787428877; cv=none; b=dvx2prhGpq87bEyQB+mUIQ2GpXOCNZ+wWvMjsXhAt9N4ZdtZ7JPSNVg9DKHN+Kkpl60Vm5UaqrbbCPXpLm7doC4gw3YRN1phxlhfLyksqfFluGKSkCIwrYzRmKUXHjOJlmv+cai4wOAgaAU9K8CPBGdFqpugde8PtkbfaPLa4pg=
+	t=1787447514; cv=none; b=uPs8je7Ev8+aX6QN3j/sNN1AT+y5XX5zrADOSvIul20S/3xwMTMnzozbKIF97dobxRyYJO4OjSQHaNsA66qQEHnzYMvqiWPdjfkaVefADuappMQv1T1G3oOFkfZPdB3er1lOWa2040bLQoFOA2huod5dUTtVZTonA2s/HFhmwhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787428877; c=relaxed/simple;
-	bh=S2jwfBr5iP6+eSGEwrj8cJzmzDBCNA4Cqy4vMGn1ukk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=slftQE4pxLGQUGRYHUJ4VNJ4GPpEZgk4NWxFrnBgOMsbhLfINtJ0/jDBPLAETMJUQGLokrBubAtRCuXS9kaWjDRNz9x3YvVGNcI4hi66CAU8z1WD1y4jRjcnAJZx/76iDTFQ9CEE6T9qwuRnPWrckAF3mIgiVRd+gVwoDApbVAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ct2tinfk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787447514; c=relaxed/simple;
+	bh=iUuqAf0i9Av2yS+RuRVgLyRKLXwR5X29p2We1+dWVNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JwPODfRX/a3vPPxHaoQsL/SsUYWwh5/5j86qOudAQo4M72/a3tY5mGrRmILHeIlkMDaAY/d+sEh/4/t+7BZx7GzSS9j8dUftIuOOKxs1LWeuSUoiOjBTvrpxVhcRYKSVOj9uXJfyPYq+KBm+0jPCozc0YFj6GvBXIAhywlN/MKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FKObd+ES; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ct2tinfk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509501F00A3A;
-	Sat, 22 Aug 2026 20:01:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787428874;
-	bh=Jx8mm8pDub3gkd5EkdOP68KBoJTxso8FPjKZkASyM1c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ct2tinfkxmmCl9LqowHjsq08Lrd+7jRueZahErNpehJhrHyjhUBWg6x+LKAbz61Jb
-	 wFtHngDkrTHGIgKKfZPti6J6KNHPa7CqG8ZS+hfIEuWsnhY6dMmtBbA1N7FxlEPtLY
-	 x1YhnlgamNhyt9AjflVmldMe+7oYrwrr9NDUjFf22mZANZC/BLqRJ62q50YzkkMU+6
-	 D3UvsTZ+qqqS9V5IBrVjK0zCiv4MD7byUZwwUt1f1vTQ8730KPRFNnmbxcFy3gPL6w
-	 sH4l/g1qqcRK2idmqItKn7DRGsEUhEl78dVIhjId+QyCsmYK23hf1yU8uMmpJWPu/9
-	 uE0IbMDtLNxFQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A7C380CEF9;
-	Sat, 22 Aug 2026 20:00:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FKObd+ES"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso1713918b3a.2
+        for <imx@lists.linux.dev>; Sat, 22 Aug 2026 18:11:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787447504; x=1788052304; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gJTfLnp0J7T2ypG1rf2UnD2iP61DjaHR8pWm0DBXUoM=;
+        b=FKObd+ESDKyZCngyrLiTfXI6+Kp9btzhJXwweSAc+ir2xxPm0kM0wN/o30gpREa1Lh
+         vXM2J2ZMqzAh8LGCsHBW/Zl4qavcBCJzqF5PsOOhqlxD6VPhihCzea/swt3dlI5s8UiK
+         ZVccIgJphk4++PaClnpacTUym+S5RXRHj9kkY5WC4+Tjw0/FMhxk1+eyvTZXZfkuAyoS
+         fXNTu++ZQ4vqMaGZ6T8G+9BUCSdxSjwrzSwDT9ALtKSL02B2zdw4TWHIoOSamPb4LtFI
+         +ehSrRKb3LLY47a6Sgmvc3jZaSfsrWKF2wUTupCZjXRwrofdnEskYnsKD2LMgmtbdr5A
+         AzYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787447504; x=1788052304;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gJTfLnp0J7T2ypG1rf2UnD2iP61DjaHR8pWm0DBXUoM=;
+        b=qheDGIXCHA1UuBJmo8pZwLBRvA9jMbsXvSPA0VEHskHDLKk+X4BWo7dVCNKs9EYsca
+         Fm5dZ3ZAgdW1K6li+P9i3CRNX9AszIWo5SSqDxESXjx5K+4uNU3/OzaJVKJ1G65m/JgE
+         eZo6YLYJddxL7X98WGEbs5yel7AqBxAL0qFuwzrYybjpjBtd9at2QkLb0YQq7GvPM+/h
+         Yg9RwifcFgygrJsvsDw2MAg3WBR+dT7prIAUwudmdvWYvEO1iqbkNPI3Xzhbe6zw+FC9
+         ZwcXzgC2dWE+Lq06HufgrUaCvb0Jid/uGBrIaKrDfQrWUehIT1WzKkXyjWKuA7/Whw7n
+         tqgQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpSHuZbQD5dijgejHkpr/7N7bIdK9H/GEdfMuwr5G3oZE3D0cpCNz5vDCWJQqZIl9EA0wE=@lists.linux.dev
+X-Gm-Message-State: AFuF++mtdKlNysa/34KGc75AzU9ZdzpxN3SmFO9/sPwhn2bjhBMdGakE
+	AEEZOpU8OIyx6fyWITRu1TgPP2jKLERCrKdeM6Nax+PgAusNh0oGq0nV
+X-Gm-Gg: AR+sD121a3JkgfxAfRgMdPXis9jlgkqTAfiaSO5WBkKmQkMpPzCnD2ALggTjkGTHXE1
+	iHV0zyPZrjfrCaiIEyCgMehRR+QklBjv1gpwHwKM9J2kZIHzZQZq8gP4jiyyzK/DTi2yMTo6dlY
+	YY+J2BSvjiIcka9cdhnuL93rbv0bh5jx0b/PdTRR6t9B2WxKuQX2apJcA2rW/aSvC5o3ikdz4j9
+	v/jumF6dQ1I4X4MtcdV8mMWkaFegWTCjnxOJq6eVl+tB25hodxWfHE8pWruBR2zx9N8fhZ8z0G3
+	nM2tg9SKM7l15+3BgMgRmdp2gZa7UssyqjeNoLkBq805SUKyHtZVyP/opF8j6x/gbFJQoOCawCT
+	b3dyBxoLkdv2k6Ylf+1pj5TEuQHy7Ap9lmK2PbWr8Uie7x42RYjTQ0STJ8tQOfZT9uhVg31+mWu
+	0w8Zg+vCHZuc58gzbsnVKTozQ0vwRANBM/0NjdMOwKEU+iuSMpjmafkZj7b3ED2AzCfxCKdlqsr
+	k5MOPSOg+qnZAlMdOp6Sg6r5QqwtmKL96p2g3DLWniOGzh2K3kP
+X-Received: by 2002:a17:90b:558b:b0:37f:fdc8:71b4 with SMTP id 98e67ed59e1d1-395c33371a9mr31055560a91.2.1787447504358;
+        Sat, 22 Aug 2026 18:11:44 -0700 (PDT)
+Received: from hanzj-mi.. (ec2-99-79-140-187.ca-central-1.compute.amazonaws.com. [99.79.140.187])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e49b406bsm4272706a91.8.2026.08.22.18.11.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Aug 2026 18:11:44 -0700 (PDT)
+From: hanzhijian <hanzhijian1991@gmail.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	kernel@pengutronix.de,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	hanzhijian <hanzhijian1991@gmail.com>,
+	sashiko-bot@kernel.org
+Subject: [PATCH] PCI: imx6: fix power domain leak on probe failure
+Date: Sun, 23 Aug 2026 09:11:25 +0800
+Message-ID: <20260823011125.2876504-1-hanzhijian1991@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,46 +86,89 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] ptp: netc: fix period truncation and potential
- divide-by-zero in PEROUT
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178742882288.1812309.16792261693312598878.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 20:00:22 +0000
-References: <20260821032449.1235065-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20260821032449.1235065-1-wei.fang@oss.nxp.com>
-To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
-Cc: xiaoning.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- Frank.Li@nxp.com, horms@kernel.org, wei.fang@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+imx_pcie_attach_pd() attaches the "pcie" and "pcie_phy" power domains
+and creates device links to them, but nothing detaches them when
+imx_pcie_probe() subsequently fails or defers.  This leaks the power
+domains and device links on every probe failure or deferral.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Save the device links and add imx_pcie_detach_pd() to release them,
+calling it from the probe error paths.
 
-On Fri, 21 Aug 2026 11:24:49 +0800 you wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> The max_period bound in net_timer_enable_perout() was computed as:
-> 
->   max_period = (u64)NETC_TMR_DEFAULT_FIPER + integral_period;
-> 
-> which exceeds U32_MAX when integral_period > 0 (e.g. 0x100000002 for
-> the default 333333333 Hz clock). A period_ns that passes this check but
-> exceeds U32_MAX is then silently truncated when stored into the u32
-> struct netc_pp::period field.
-> 
-> [...]
+Reported-by: sashiko-bot@kernel.org
+Link: https://lore.kernel.org/all/20260822013640.182C01F000E9@smtp.kernel.org/
+Signed-off-by: hanzhijian <hanzhijian1991@gmail.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-Here is the summary with links:
-  - [v2,net] ptp: netc: fix period truncation and potential divide-by-zero in PEROUT
-    https://git.kernel.org/netdev/net/c/777dbc9914b2
-
-You are awesome, thank you!
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 39790e66b..4df548679 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -182,6 +182,9 @@ struct imx_pcie {
+ 	struct device		*pd_pcie;
+ 	/* power domain for pcie phy */
+ 	struct device		*pd_pcie_phy;
++	/* device links for the power domains */
++	struct device_link	*pd_link;
++	struct device_link	*pd_phy_link;
+ 	struct phy		*phy;
+ 	const struct imx_pcie_drvdata *drvdata;
+ 
+@@ -662,6 +665,7 @@ static int imx_pcie_attach_pd(struct device *dev)
+ 		dev_err(dev, "Failed to add device_link to pcie pd\n");
+ 		return -EINVAL;
+ 	}
++	imx_pcie->pd_link = link;
+ 
+ 	imx_pcie->pd_pcie_phy = dev_pm_domain_attach_by_name(dev, "pcie_phy");
+ 	if (IS_ERR(imx_pcie->pd_pcie_phy))
+@@ -675,10 +679,24 @@ static int imx_pcie_attach_pd(struct device *dev)
+ 		dev_err(dev, "Failed to add device_link to pcie_phy pd\n");
+ 		return -EINVAL;
+ 	}
++	imx_pcie->pd_phy_link = link;
+ 
+ 	return 0;
+ }
+ 
++static void imx_pcie_detach_pd(struct imx_pcie *imx_pcie)
++{
++	if (imx_pcie->pd_link)
++		device_link_del(imx_pcie->pd_link);
++	if (imx_pcie->pd_pcie)
++		dev_pm_domain_detach(imx_pcie->pd_pcie, true);
++
++	if (imx_pcie->pd_phy_link)
++		device_link_del(imx_pcie->pd_phy_link);
++	if (imx_pcie->pd_pcie_phy)
++		dev_pm_domain_detach(imx_pcie->pd_pcie_phy, true);
++}
++
+ static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+ 	if (enable)
+@@ -1956,8 +1974,10 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	ret = pci_pwrctrl_create_devices(dev);
+-	if (ret)
++	if (ret) {
++		imx_pcie_detach_pd(imx_pcie);
+ 		return dev_err_probe(dev, ret, "failed to create pwrctrl devices\n");
++	}
+ 
+ 	pci->use_parent_dt_ranges = true;
+ 	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
+@@ -1999,6 +2019,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_pwrctrl_destroy:
++	imx_pcie_detach_pd(imx_pcie);
+ 	if (ret != -EPROBE_DEFER)
+ 		pci_pwrctrl_destroy_devices(dev);
+ 	return ret;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
