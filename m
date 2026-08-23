@@ -1,151 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599C7493640;
-	Sun, 23 Aug 2026 07:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88BA1891A9
+	for <imx@lists.linux.dev>; Sun, 23 Aug 2026 18:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787470045; cv=none; b=kZNNSxMSxUU0EIwDuZaQN8hUkmQswdGphwfGLnVf6zH2abnp+04GEmwY6hwvpjJ2KTK23baSkJdezrzpAmcdl/NoMFL9Jmz3epv0qMj5w+ebWTUZoxWaPJj0wXiSc6ZWMByGDNvr5Sw9lr6VvC4IJG5H1ciLXSq6FH0JTJFRbac=
+	t=1787508521; cv=none; b=sXx6T2hNrOe9Mo7Ppp10mu5AlCUc5eg1+uRHXla6baItbXEIE9YixGl9fwEXNcNd7s8VAhyg1bxi8NXT2XRkPiB9A7aSQTe3R2nsJEd1tw9eACbj8ord9Lg4P55JCiaAPHzS0XvdCzBrdnRsIC7M6u8YMgMXaxVq7f6CaVbaESw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787470045; c=relaxed/simple;
-	bh=OWDi9jL5zJxfDM9n+bhYxUME3C1opO1aOp7rkijGfiA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GL4ahUoCFk0oVeYprHg18rQACZG24QaRlmF0YUhDcowYsjXApVhlPjiN7ZET1ttckWQoFYyzxMCoQPOtRcZMKlQo6PIIrb6xRvoZxiUkPp39WGufFMeIQXplUCWaK3bkubzQEyY/EcJlJ6KjXc+NR0H9Q5X2lBC6s7SFi9L0GAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZRNNwxW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787508521; c=relaxed/simple;
+	bh=d4+SpXzXQg1I0AEgLHL/3ZdYMeyuisXWriRMDooKRJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SDLBKCJBT1s3WeVY/ExA0WsBZ6iQe9fAQem4o95q5URQAxaZEXrE4HSY6555xeTvOfedilz2E3bDvPIZ44i+ivvDUNGRo6KQVJw45H3c1qD0DB4yGbQnJPRfi81FQr2cTI0v3C3oq+im3XNADHYkJQfqV2aa5lztEds2xuNHWCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bD09Ny3d; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZRNNwxW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1561F000E9;
-	Sun, 23 Aug 2026 07:27:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787470044;
-	bh=Sb2nqKHurp+jXB2/BqMdP4FBfASvJUHvgMlB/ahVtjE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TZRNNwxWlbjfzuH/pcgKuo6p6EcXD8yhp2alMLMyEcoXwrAdYTUaDwYQ06S82PE+P
-	 DHfw45Jt3ooAaoxiJdYpKxXXa4U3kHO2ZsHACvndTHroWJ72SR1+MV555wwpqmjdL2
-	 LeKVB+uYYkvWYeohCSTNBPmkzFBdvNudNyL+Cg8IR3WtfwBjccvfpinqLnbvHCnTTM
-	 d9WlHVpPz6QZxTLkEYTvlMw7jL6tHjbm6JJGYgcklZeyw0YYzikbu2bV9yPgbc+SI9
-	 Iu/ZUxZOGk49tbF04vbAYJmApotIZUnxDd6BytvmML6OyNuFtsxWAGHxmPJFVmtzQh
-	 iQpN0JGPe33ug==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] PCI: imx6: fix resource leaks in probe error paths
-Reply-To: sashiko-reviews@lists.linux.dev
-To: hanzhijian <hanzhijian1991@gmail.com>
-Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260823071129.2980059-1-hanzhijian1991@gmail.com>
-References: <20260823011125.2876504-1-hanzhijian1991@gmail.com>
- <20260823071129.2980059-1-hanzhijian1991@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 23 Aug 2026 07:27:23 +0000
-Message-Id: <20260823072723.BF1561F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bD09Ny3d"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f7027ca11so1399924f8f.3
+        for <imx@lists.linux.dev>; Sun, 23 Aug 2026 11:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787508518; x=1788113318; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3gq37rj4bzCyBTGwM7oPPXQqhYUmg5gV71MEIz1jHkg=;
+        b=bD09Ny3dsEopfDqrgIEDgUaizp2HiEH4rhSpFZnj96PjNTDydvF643YOScrUlymf8K
+         UDji1GwtFmnNcFt5zdEIoBiiMXsVNORjGzcIBSFwIJRM9wSEJFCeQl9KreNA8tX85ygx
+         UUm9lGaWLyvMwXej2SfeFrfPUrpFDIWnEgsGSe/LDjXrMGwtFPn1zVXOCgNfg3FuYs/d
+         DZz2jDl8cp1AFPJehXNLGYoL+DJYHpgZQSXJYDSvBqTXA30bpNCRodeOwWhoZuangg3j
+         I7EZ5MgGW5cH2wMKxcR2upJR1L0o9IEgspcDae63XLSwb0JkKtpCYln/oEFC6yBbMgfq
+         agZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787508518; x=1788113318;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3gq37rj4bzCyBTGwM7oPPXQqhYUmg5gV71MEIz1jHkg=;
+        b=Uywl25Tnr9/jCJ3TAOx/3RfSp5SWD/fyuKo1cOi4YOS8cLZC/QN6bcaiiGHrcj6UHn
+         TZEztNffck/e5NecyN8r0wGUxd708u27MDM2FODieMlpg4DxmcRHXQwGjg3ANVfuLQOa
+         xGiiPQ8fL1HTIkBCk3/IGyQLGR05UQVnGB6jHrIayaNxZazW+kUotzGaQ1KDMwxniNwV
+         +e2PIoMMguI/p40NT77usjraZdN6VtbycGv6Y0fHW4uE+o/8RPnL8WzFGSwcHlceeTip
+         TfjhDmGYIeql6bMteqcAyTmUZv4ekT/SmbWAuAFIP5HLvw8SCKr5tOJtOzDoiaq/RY+/
+         uguw==
+X-Forwarded-Encrypted: i=1; AHgh+RrCRyT/eK+mpD91iGc+gSPI0WNeW2baaQA4n3yXEObek0mPFiaMi5C4wpUpbmj1JqPeFSk=@lists.linux.dev
+X-Gm-Message-State: AFuF++m2HFrsaUtoD2Y5UCh7AxMtbYSOaDOEIA6IAUVENzavyqdqPz3S
+	HgP5gYcE7Ab6IYQYuox2iO+1TXXqxTXeLtERLg2NihJjaQd6YXbSV2YD
+X-Gm-Gg: AR+sD12JpndgnY+NhqqAacsgExQ+EA0s0pG8I52/om0meBBoI3XjW6ZEpvDcZzUV/xL
+	Mz9miEE8/k3hg2+tCup7XV7CfFJIdeWzHUekyVe9unWN/FskZ8EYPpPSS90p1wYHprjaEIMgCbR
+	MdH8+E2B4HgmKpUg4KwMt18IFltc/CkU/HkhKbzsQcyVkFseAlahlJqNy9pAxIVBSwxxUwRtfZO
+	FtX3UdSNmoBYQibxyL1t8GQlfTQKu7kIJLy+vjs51T4h5sfS4i3W75EYpwKWb/yBnBrRqCdFHCd
+	7Q4QT/XrmPJtf9pgIZp0no/7ioY+2uO8/CnK1FK2vHW7ogTjsOs+95AlDfPEeVj01cKyEOob9+V
+	96e+O69ias0AHYAguq34JJdPt7hRU2giqviX3UajL4S/91kMdD6SLU/27CN8h1j1rg9Tw0C4qBj
+	CcEgMN7ifr/FXAIY3ZUUQtMCG4sqb+45ueU2cJ/gZJz1HtiJbfN3NHTlT/d9egr4CpyMWKRQQMr
+	j9hRaNdPHcMoYYo2yEIflO0gZs5bBIAcqPg7Wzc7VynWRt0MZ+O
+X-Received: by 2002:a05:6000:310f:b0:47f:f4b9:88b7 with SMTP id ffacd0b85a97d-482c0b58818mr25065061f8f.1.1787508518013;
+        Sun, 23 Aug 2026 11:08:38 -0700 (PDT)
+Received: from nixos-office (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482d4710ac5sm219571f8f.32.2026.08.23.11.08.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 11:08:37 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+From: Julian Braha <julianbraha@gmail.com>
+To: florian.fainelli@broadcom.com,
+	rjui@broadcom.com,
+	sbranden@broadcom.com,
+	linux@armlinux.org.uk,
+	tglx@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: bcm-kernel-feedback-list@broadcom.com,
+	radu@rendec.net,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	arnd@arndb.de,
+	maz@kernel.org,
+	sudeep.holla@kernel.org,
+	mark.rutland@arm.com,
+	lpieralisi@kernel.org,
+	Julian Braha <julianbraha@gmail.com>
+Subject: [PATCH v2] irqchip: gic-v3: fix unmet dependency on ARM_PSCI_FW
+Date: Sun, 23 Aug 2026 19:08:32 +0100
+Message-ID: <20260823180832.1246363-1-julianbraha@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+ARM_GIC_V3 currently selects HAVE_ARM_SMCCC_DISCOVERY without ensuring its
+dependency, ARM_PSCI_FW, is met. However, ARM_PSCI_FW is always enabled on
+for arm64, and the GICv3 driver only uses HAVE_ARM_SMCCC_DISCOVERY to
+identify the NVIDIA T241, which is arm64 anyway.
 
-New issues:
-- [High] The error path in imx_pcie_probe() calls imx_pcie_detach_pd() befo=
-re pci_pwrctrl_destroy_devices(), violating the reverse-initialization orde=
-ring.
+Also adds fallbacks for callers to avoid needing #ifdef guards when
+HAVE_ARM_SMCCC_DISCOVERY is disabled (32bit arm).
 
-Pre-existing issues:
-- [High] imx_add_pcie_ep() ignores the return value of imx_pcie_host_init()=
-. If imx_pcie_host_init() fails, it cleans up and returns an error, leaving=
- clocks and power domains disabled. Proceeding with endpoint initialization=
- will cause dw_pcie_ep_init_registers() to access unclocked PCIe DBI regist=
-ers, leading to a synchronous external abort (kernel panic) on ARM systems.=
- It also leaves imx_pcie_host_exit() uncalled on subsequent error paths.
---
+This unmet dependency was found by kconfirm, a static analysis tool for
+Kconfig.
 
---- Patch [1]: [PATCH v2] PCI: imx6: fix resource leaks in probe error path=
-s ---
-commit 73509c01fd7cdd5762cd2dc7b8e74d13150be953
-Author: hanzhijian <hanzhijian1991@gmail.com>
+Fixes: 35727af2b15d ("irqchip/gicv3: Workaround for NVIDIA erratum T241-FABRIC-4")
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Julian Braha <julianbraha@gmail.com>
+---
+Changes since v1:
+- remove select and dependency on ARM_PSCI_FW, 
+- make the HAVE_ARM_SMCCC_DISCOVERY 'select' conditional on arm64
+Link to v1: https://lore.kernel.org/all/20260801212235.2692694-1-julianbraha@gmail.com/
+---
+ drivers/irqchip/Kconfig   | 2 +-
+ include/linux/arm-smccc.h | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-PCI: imx6: fix resource leaks in probe error paths
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 20b77fbc51ee..dae023fed7d6 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -37,7 +37,7 @@ config ARM_GIC_V3
+ 	bool
+ 	select IRQ_DOMAIN_HIERARCHY
+ 	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
+-	select HAVE_ARM_SMCCC_DISCOVERY
++	select HAVE_ARM_SMCCC_DISCOVERY if ARM64
+ 	select IRQ_MSI_IOMMU
+ 
+ config ARM_GIC_ITS_PARENT
+diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+index 4de81848fe2e..248624c1af7c 100644
+--- a/include/linux/arm-smccc.h
++++ b/include/linux/arm-smccc.h
+@@ -324,6 +324,7 @@ enum arm_smccc_conduit {
+ 	SMCCC_CONDUIT_HVC,
+ };
+ 
++#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+ /**
+  * arm_smccc_1_1_get_conduit()
+  *
+@@ -363,6 +364,12 @@ s32 arm_smccc_get_soc_id_version(void);
+  * When ARM_SMCCC_ARCH_SOC_ID is not present, returns SMCCC_RET_NOT_SUPPORTED.
+  */
+ s32 arm_smccc_get_soc_id_revision(void);
++#else   /* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
++#define arm_smccc_1_1_get_conduit()	SMCCC_CONDUIT_NONE
++#define arm_smccc_get_version()		0
++#define arm_smccc_get_soc_id_version()	SMCCC_RET_NOT_SUPPORTED
++#define arm_smccc_get_soc_id_revision()	SMCCC_RET_NOT_SUPPORTED
++#endif	/* CONFIG_HAVE_ARM_SMCCC_DISCOVERY */
+ 
+ #ifndef __ASSEMBLY__
+ 
+-- 
+2.55.0
 
-imx_pcie_probe() leaks both pwrctrl devices and power domains on failure.
-Save the device links, add imx_pcie_detach_pd() to release the power domains
-and device links in reverse order of acquisition, and call it from the probe
-error paths.
-
-Link: https://lore.kernel.org/all/20260822013640.182C01F000E9@smtp.kernel.o=
-rg/
-
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
-er/dwc/pci-imx6.c
-> index 39790e66b98dc..a2bae4a2c95ba 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-
-[ ... ]
-
-> @@ -1956,8 +1987,10 @@ static int imx_pcie_probe(struct platform_device *=
-pdev)
->  		return ret;
-> =20
->  	ret =3D pci_pwrctrl_create_devices(dev);
-> -	if (ret)
-> +	if (ret) {
-> +		imx_pcie_detach_pd(imx_pcie);
->  		return dev_err_probe(dev, ret, "failed to create pwrctrl devices\n");
-> +	}
-> =20
->  	pci->use_parent_dt_ranges =3D true;
->  	if (imx_pcie->drvdata->mode =3D=3D DW_PCIE_EP_TYPE) {
-
-[Severity: High]
-This is a pre-existing issue, but does imx_add_pcie_ep() ignore the return
-value of imx_pcie_host_init() when called here?
-
-If imx_pcie_host_init() fails, it cleans up its state, disables clocks and
-power, and returns an error code:
-
-drivers/pci/controller/dwc/pci-imx6.c:imx_add_pcie_ep() {
-    ...
-    imx_pcie_host_init(pp);
-    ep =3D &pci->ep;
-    ...
-}
-
-If imx_add_pcie_ep() ignores this error and proceeds with initialization,
-will dw_pcie_ep_init_registers() attempt to read from the unclocked PCIe
-DBI registers?
-
-Could this trigger a synchronous external abort or kernel panic on ARM
-systems?
-
-[ ... ]
-
-> @@ -1999,6 +2032,7 @@ static int imx_pcie_probe(struct platform_device *p=
-dev)
->  	return 0;
-> =20
->  err_pwrctrl_destroy:
-> +	imx_pcie_detach_pd(imx_pcie);
->  	if (ret !=3D -EPROBE_DEFER)
->  		pci_pwrctrl_destroy_devices(dev);
->  	return ret;
-
-[Severity: High]
-Does this error path violate the reverse-initialization ordering?
-
-Earlier in the probe function, imx_pcie_attach_pd() attaches power domains,
-and then pci_pwrctrl_create_devices() populates child devices.
-
-If probe fails, imx_pcie_detach_pd() is called first, which detaches the
-power domains and powers off the hardware. Then pci_pwrctrl_destroy_devices=
-()
-is called to remove the child devices.
-
-Could the child drivers' remove callbacks attempt to access the
-now-powered-off hardware or rely on the parent's power domain being
-active, leading to a system crash or hardware lockup?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260823071129.2980=
-059-1-hanzhijian1991@gmail.com?part=3D1
