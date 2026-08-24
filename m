@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6DA41D640;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E84E421EF8;
 	Mon, 24 Aug 2026 13:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577138; cv=none; b=LJEHpO3IV4e/5ZHTavxy/VpwiZtzT9VR9LHP1vgbCIQV41+BidwCEYdU5OlzGRYHr2CFsmZebpk4vlgTjrkyONma8oxzMMRo4qn971V6ek+KPueQ20BiTMJrzaT/gjobcJax3wQ9Fhqfie3jDR3G+hK1KLZc34UCsyW6J7Lw2/4=
+	t=1787577138; cv=none; b=QKKTHPfyTP96QjjNLXxSPmJYZ5VWX5jidP2EViYVzyjwnb8WcoPAV9dePJpbHx97/96b1AsgG6SMsL0Q4zNQb7igx3UXy+YVVJMz8igrJCofRyKbAs4C2liltb8jCzT2C0egv3AIClU3OJkuIJ7xGSoH8ZLEzow2IGoL6H8yZJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787577138; c=relaxed/simple;
-	bh=aLPrKh54Wlnah4cvi9tYM9DMTZkazBiSOSAV5SDrO3o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hGaFGHrpAsLNvL0kTqT3zetCJnppg+BSCtsynj0rLnNJhg9wDMdLv9zWvGViurxGJx86illaYoeFpUgyiT6Tk4VSsALv7ouaTMnNWk/qBahSoyak5oKXd5hJPC/JLDKhJf4TsMwgdBczpObUtHbcIhhtDfxwoXHrHtmPXDHbBJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PK6Y7xs9; arc=none smtp.client-ip=10.30.226.201
+	bh=eOmEAB1Xz6tQIVGWJ9mAtX/RxTJecAHU6ZfIuBfKcTM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gIXCdoPxB7PqZSw7AwDSb3DDIDka2mKMZiea+2JdiRC8ehl2+eK3JenAIujZ4jJ76l61Pvj4hQBuBCQCOS5bG0D8+rW9JEf24H1bk3Dascwj1CQ5Nf/FEXPcH5AXnurDgu5U5BQRPthUeZoKihF72t1S4LtbmUMs9Wdg9haoE7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qhySWPr0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PK6Y7xs9"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E396EC2BCF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qhySWPr0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BE0A6C2BCF6;
 	Mon, 24 Aug 2026 13:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787577138;
-	bh=aLPrKh54Wlnah4cvi9tYM9DMTZkazBiSOSAV5SDrO3o=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PK6Y7xs9PAWTTHFZ1ropQWLu+ifwdHwiU8nUk9O7jgFGZ5gh2itx0GmqxS4sn2HSf
-	 RmRJ2To34w5eLv6bNhqMp8ghlmVVg5WperuKYsYR6w5sp7OdHHH+UmYZADH7KsDfOz
-	 KFUylocHTGGtwQNs2fYoymsDok3nYqbfGu5jS+kUxSKPfRy/g0REOJ3GtQs8gtY+31
-	 d4JNDm6M9K9PP1LwPqy2f3IYxr10PEK277lvGD+w4jWEZzpxgEftqsx6yz0UmZPwLJ
-	 ClJgG6dMPS9oATHvz/JrFP4egZgvNqq0x9AuRin27K/qIghGipn4KA9nw5LtC3kfri
-	 iIykgDN7Usbew==
+	s=k20201202; t=1787577137;
+	bh=eOmEAB1Xz6tQIVGWJ9mAtX/RxTJecAHU6ZfIuBfKcTM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=qhySWPr0VHZGqjN/KwT7QrpaUm1QaFCwBZ9KSEgivYSE32xyxR584N3A0phKeehQ2
+	 ec5bRlZ/iYw9F92ZBX8GYtsxw9viV/2oJOsz8iZa9xjLIrCTx1A9cLPEQGi085+nbG
+	 WFTN2ssGNBTdkQtHL5/lUV1c2PKnQ0PfQKANDJm+xjjzp/N123xD3ruMi2wnyAhCwZ
+	 7yZ7sBXHfvPaAoGxSbGkcoMC64zgExPH3vsmN06X5uL4W0oeG/SPfIqzmR0h4lAKFM
+	 oSNqK8IpxjJPgsXO6UneCeAB2yuEUW1p3oHFGSOm6hwm5kGCKiZ0q7tGo5E+nuqr0u
+	 0xL/SxMA1pUtQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE254C5DF81;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9508BC5DF9B;
 	Mon, 24 Aug 2026 13:12:17 +0000 (UTC)
 From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Mon, 24 Aug 2026 15:12:02 +0200
-Subject: [PATCH v2 2/3] arm64: dts: lx2160a: fix IIC1 pinmux submask
- rejected by pinctrl-single
+Subject: [PATCH v2 0/3] arm64: dts: lx2160a: fix the malformed pinmux
+ entries
+Date: Mon, 24 Aug 2026 15:12:00 +0200
+Message-Id: <20260824-for-upstream-lx2160a-pinmux-fix-v2-0-0a525d5f4cd5@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,9 +41,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-for-upstream-lx2160a-pinmux-fix-v2-2-0a525d5f4cd5@free.fr>
-References: <20260824-for-upstream-lx2160a-pinmux-fix-v2-0-0a525d5f4cd5@free.fr>
-In-Reply-To: <20260824-for-upstream-lx2160a-pinmux-fix-v2-0-0a525d5f4cd5@free.fr>
+X-B4-Tracking: v=1; b=H4sIACBDjGoC/42NSw6CMBBAr0Jm7Zi2CKmuuIdhUehUJpFPpkAwh
+ LtbOYHL9xbv7RBJmCI8sh2EVo48DgnMJYO2c8OLkH1iMMqUypobhlFwmeIs5Hp8b0aXyuHEQ79
+ sGHjD0qs7WdP4om0gVSahpM/Ds07ccZxH+ZzDVf/s/+1Vo8Y8d3lrfUHOuioI0TUI1MdxfAErm
+ y1szAAAAA==
 To: Frank Li <Frank.Li@nxp.com>, Carlos Song <carlos.song@nxp.com>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
@@ -54,11 +55,11 @@ Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Thibaut Collet <thbt.cllt@gmail.com>, Vincent Jardin <vjardin@free.fr>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787577136; l=2029;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787577136; l=2864;
  i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=O+VGpUg5BMz3UlWXVE3y0mK/EDo+jBPNvLqqP9N2rrU=;
- b=9Ed/17SijE21QKnYqCS+wmMMquGU+wut4XYtYPBK2z9I734J/iXdafdkfxzBHcSF8wg6ghV31
- 0FGmBmeWpd4ApF2eECQlKiDvxZBfzEnxrOpJ2ESHJspGQoNp27Xlyro
+ bh=eOmEAB1Xz6tQIVGWJ9mAtX/RxTJecAHU6ZfIuBfKcTM=;
+ b=TpqRhxT6XpYSa4kKcljJVHo28WzdMGU8ReP/52n6CNe+J58fYSbtjUbVrv5Lx++3QhodVkeZE
+ cJAqxgwss+ZDA82Dd++CCrMPfzbvO1NwfN5NsxPtxcAYNZuqTnt51DB
 X-Developer-Key: i=vjardin@free.fr; a=ed25519;
  pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
 X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
@@ -66,64 +67,71 @@ X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
 X-Original-From: Vincent Jardin <vjardin@free.fr>
 Reply-To: vjardin@free.fr
 
-From: Vincent Jardin <vjardin@free.fr>
+Every pinctrl-single,bits entry in the lx2160a pinmux@70010012c node was
+reviewed against what pinctrl-single actually accepts in bit-per-mux mode:
+ the offset has to name one of the three registers the node maps,
+ the mask has to equal pinctrl-single,function-mask shifted to the field,
+ the value has to fit inside that mask.
 
-IIC1_PMUX is a single bit field at RCWSR14 bit 10, so the mask for the
-two iic1 pinmux nodes was narrowed from 0x7 to 0x1 to avoid writing the
-two reserved bits next to it.
+Three entries fail one of those rules, and each fails differently:
 
-With pinctrl-single,bit-per-mux the driver does not take the supplied
-mask as the bits to modify. It derives the field from the node's
-pinctrl-single,function-mask, which is 0x7 here, and then requires the
-supplied mask to match it exactly:
+  1/3 the three gpio1 groups put the field value at bit 0 instead of at
+      the field, so pcs_parse_bits_in_pinctrl_entry() masks it away and
+      the mux write does nothing;
 
-	bit_pos = __ffs(mask);			/* 10 */
-	mask_pos = ((pcs->fmask) << bit_pos);	/* 0x7 << 10 = 0x1c00 */
-	submask = mask & mask_pos;		/* 0x400 */
-	...
-	if (submask != mask_pos) {
-		dev_warn(pcs->dev,
-			 "Invalid submask 0x%x for %pOFn at 0x%x\n",
-			 submask, np, offset);
-		continue;
-	}
+  2/3 the two iic1 groups carry a one bit mask, which the driver rejects
+      outright with "Invalid submask", dropping both pinctrl states of
+      i2c0 along with its bus recovery;
 
-A one bit mask gives submask 0x400 against mask_pos 0x1c00, so both
-nodes are rejected and the pins are never muxed with this message:
+  3/3 iic5-spi3-pins has the field value in the offset cell, leaving an
+      invalid offset and a value that selects the neighbouring sdhc1
+      function rather than SPI3.
 
-  pinctrl-single 70010012c.pinmux: Invalid submask 0x400 for iic1-i2c-pins
-  pinctrl-single 70010012c.pinmux: Invalid submask 0x400 for iic1-gpio-pins
+After the series no entry in that node is malformed anymore.
 
-The values are not changed:
-  - 0x0 selects IIC1
-  - 0x1 << 10 selects GPIO_1[3:2].
+Only 1/3 was sent with the v1, as a single patch. The other two turned up
+while checking whether it was the only one of its kind in that node.
 
-Fixes: 7a3cc49ad1fc ("arm64: dts: lx2160a: change i2c0 (iic1) pinmux mask to one bit")
+They are 3 patches rather than 1 because each fails differently and
+each requires the reviewer to check something different:
+ 1/3 is mask arithmetic,
+ 3/3 needs the IIC5_PMUX encoding table to confirm which
+     function value is right,
+ 2/3 is a partial revert of a change that was made deliberately.
+
+1/3 and 3/3 share a Fixes: tag and are still not folded together:
+  - one is a value that is never shifted into its field,
+  - the other is a value that ended up in the offset cell and also names
+    the wrong function
+and both they touch unrelated pads.
+
+I can squash any of them if you would rather have them merged.
+
 Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes in v2:
+- Rebased onto current mainline. fsl-lx2160a.dtsi was renamed to
+  fsl-lx216x.dtsi by commit 285560f0d39d ("arm64: dts: lx2160a: split the
+  dtsi to avoid delete-property"), which landed in the v7.3 merge window,
+  so v1 no longer applied.
+- Added 2/3 and 3/3: two more malformed entries in the same pinmux node,
+  found by auditing the rest of it.
+- Link to v1: https://lore.kernel.org/r/20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-index d4522a19405a9..fae705dd07669 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-@@ -1688,11 +1688,11 @@ i2c6_i2c7_pins: iic8-iic7-i2c-pins {
- 
- 			/* RCWSR14 */
- 			i2c0_pins: iic1-i2c-pins {
--				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
-+				pinctrl-single,bits = <0x8 0x0 (0x7 << 10)>;
- 			};
- 
- 			gpio0_3_2_pins: iic1-gpio-pins {
--				pinctrl-single,bits = <0x8 (0x1 << 10) (0x1 << 10)>;
-+				pinctrl-single,bits = <0x8 (0x1 << 10) (0x7 << 10)>;
- 			};
- 		};
- 
+---
+Vincent Jardin (3):
+      arm64: dts: lx2160a: fix incorrect pinmux
+      arm64: dts: lx2160a: fix IIC1 pinmux submask rejected by pinctrl-single
+      arm64: dts: lx2160a: fix the iic5 spi3 pinmux offset and value
 
+ arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+---
+base-commit: 0a0d1d55dad570724bf8c7ea83409639cfb4be9b
+change-id: 20260824-for-upstream-lx2160a-pinmux-fix-6d09e82bd5cb
+
+Best regards,
 -- 
-2.43.0
+Vincent Jardin <vjardin@free.fr>
 
 
