@@ -1,141 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010033.outbound.protection.outlook.com [52.101.69.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C92D25524C;
-	Sun, 23 Aug 2026 22:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787524556; cv=none; b=BqKYqYsZcowJU0+TbxDL6gV1qjJUmmFzzqcMsIpHRHYWe1j1nhgKTwvnNp7Q3tqW/aBM0K3Z8ocqj3E9/U2j+LF9uwWjU6Obild4zUzMox/+OWy+wikqJnc3f+MZQzukZa5OxtV4bK5f5YnlF5QBwXkOn1Zoth2/B63dLXTJAJY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787524556; c=relaxed/simple;
-	bh=QQNYF+vq2eHzvXvr6LF/g5eTCLrcpvJfSvMtW/+G7PY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=C0G37bpRmvKJR7S2yU2UNZMYbj/yl874TpotzjCwGqRb7aBUkZUCI8m5A52DhcSBNGqA5w8bCfFcsPgJY/YB/dJ+IPZ2ihLkih21Ztv/JkhIPxOmDVOo/5nQ5wFlbqgpY06CnkVvQCDETG4n+PV0COLWpmyAFF2F6iYihzO7rcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPX+hzNR; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C892949E0
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 02:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787538033; cv=fail; b=h3/2znTY2dl534qNVad//svWYCP0HeQS4GDH69uAHdLG+R6dgLZcku4VBVgCld0qyt6Shjs0LOueFnPudp3PUWSrzIVO8LaW0kcxG36K3DkrIKO0Bc6TvtzcldZ9udtLh3o0otO+um9ydjh8lQwJlzBATqz7hMLz8l4tu9/02DE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787538033; c=relaxed/simple;
+	bh=aBvgVKdcpvYtqvh5rmdcy6QUXajj4u5c2YYY05ukVJw=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=toR7VHyldpQrY6oOSmfgNgMvfTlUMF2t7BDfrhAs3hgnU/rVwmstSRi+NzRk2ij2Jj575tw+JOTpeZxbylI91HmrSY8i9X+YvPw8glMSiL5cBuOxAsjacFDoT7bL8uicyZt4blImdzFni3I3JNEiw/iqa2SFBPE4lItUPAAfaP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EU0fGZih; arc=fail smtp.client-ip=52.101.69.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPX+hzNR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6CC1F000E9;
-	Sun, 23 Aug 2026 22:35:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787524554;
-	bh=po7IIoGOeeqrSpZ0T/dO1sDrsRTve3va2HW8MDN/VFU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NPX+hzNR7qJdfJBxOLKw2E+bR+SPnZVFnCoIuRwIx2virIuuge7axHzg6M1w8y+Hg
-	 TX82MpT5KOP7wcY751X7V4MIuZ/YJbZ9u0Aj8vt0U/VYpfJkEUvw7ap9UxekQQVGEj
-	 WAW9OZcnzbKVc55PU8G+dr8XphHjVDhr8fizWqwy5fHXqN7DAJi3HfCHe5HkF60bar
-	 FHhPpO7UCVmSvP2Lil8ReBgC0A4zHV59wcZ1z42VFkwSR74+sdBwMyu5s/Z1y3ONIo
-	 /xgunlFK11a8RRH9KGQnBNQ6tvQq3Uf7oPiHjfUFCoskAbiisZ5cgRbnSkGTLuJ95U
-	 g/1ExDDeBmsAg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vincent Jardin" <vjardin@free.fr>
-Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
-References: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 23 Aug 2026 22:35:53 +0000
-Message-Id: <20260823223554.7A6CC1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EU0fGZih"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MgKbQlQMomuNzFe++B1xz3HDxKsor4WDlEo+UOUaGrJ2F+XISzwfOMV93cP+SZ8XQJF+Vy7USZPTTe3iUaEJGvZlBvtKHh4YBGfhIaZKjKAAhpDH5h/Dp2D1yvAxSTG8iJkcu94E6ObAk5hXmJSqEycJn39kNLTv1l1GqlY23tXYutrDLKOKvQna+1Rulf0z3qBKRsym1Jgk+EIKOQidWDqOV4XYi3IvR7u/Et+9qwKVBw9AkAn93CT/PC17XrD42noFnYu2WA0yDJ0YABpqk8HNCZj4Lxf5ys8KGI4qfZjPAbNQFte5AcUIYKWyQ6FhLfLmpmHlyHxVupO1n9J52g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n8ri/hKrhYjTZw4RBDUfKSmSHdPdA3ZX/5uhXeUKQtA=;
+ b=OxNYHqKUtX6jjcDPfALIzA5ZF4c9BJkIDe5/K//pE4JcTM6lxFXVm8uVO0MBNq/1ckB3Btw0HyjNAS5lKABGjWKi/zH4I//SU1aUDISxty12pBgUafPX8Lh3b0r009h1mUCm+l1auNNxqVq48aicbWdJsyqzcCZT//jD+Ci1FoCQ6PCxYdArMpVEY68kVHnzhrBuK9Qeh3+Nb4H+v9fS9KFG5QiOb/x8pF/IxUbGr8FYFmC19XCQsjJVv16jUcMSIQkxoJVHmu+G82l5iN1oFvH7IOoGiuOScdY4qTRyjYf1GQXQyuW/H62a4v26fW3ec12qXWzBJXKR2bs76NUtVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n8ri/hKrhYjTZw4RBDUfKSmSHdPdA3ZX/5uhXeUKQtA=;
+ b=EU0fGZihotqk2GkycO6URioNx/DcyPqzSK2TuXa/6/ppaPCKdTBR8+MmoLkzUyVjgez6E2sFo9QXJCkfvn+hRnmrysdonZUy93mSZRDKVu42EH8RxDUHvE48xPLYkK+mXNvfUp2luJhGRh+phi9U7upGDE/dD+9h5lEERgOZ7uOOF1IW1Mx5MVvIQeJ7hJsRCCG1hvwKR6A80FWzDj4JQUPfCmUa82rCjFIcD61HeLmyO9T/aXPZtVOjGkgS/IShL2KIIj7xFHMDq7gqw/LxG3DFwpeq9517F0X+aIOvfP6TZbyQ5DRfxHTRylcCN3Ei1XAHOo11zlY+1+oRwHRx3Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20) by VE1PR04MB7360.eurprd04.prod.outlook.com
+ (2603:10a6:800:1a3::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
+ 2026 02:20:28 +0000
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994]) by GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994%5]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 02:20:27 +0000
+From: Chancel Liu <chancel.liu@oss.nxp.com>
+To: Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	imx@lists.linux.dev
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/17] arm64: dts: Add MQS1 sound card support for i.MX9 EVK platforms
+Date: Mon, 24 Aug 2026 11:20:03 +0900
+Message-ID: <20260824022020.2812810-1-chancel.liu@oss.nxp.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SEWP216CA0044.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2bd::7) To GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB10021:EE_|VE1PR04MB7360:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a0b0efa-879f-4685-0e50-08df0186431f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|366016|23010399003|10067099003|11063799006|56012099006|3023799007|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	t2ReWctpmaMxWjHj1c4jMiBO1pGH//7Toyniv5fK9iM2yrkFJA3RgMORoY6oakBZzVDNNP9RzIYGdvPbnG+wj+UD+ijs5bID5TLJ1wVwABEnJR4ky7ZfcI3WegvzjO6w77cPiPY/WEc/6WfUFxx2mLvk+hTBfEDvqyQehgmbQjR6L1BOh31S/ENFSSmiGw0M0DxzC45P7I5mIRRN4FWZE+J7jND9Y+m/iYDAlEfLuYCaTqoq44mTYJPe5otE4DPDodW/OAXa/kZWvNjw5V031PYX0/QQ2ijyeC9Rdt4O7WehT4ZBbBC64hWjeTJe/mUYG1r2WRRtuAhifL6RMnPIdnMVqXFFmTtoa8uOCmBRF7L40AylDHY7hsfjYox0VISDSbj3mULfJuOc7tBlmGxbkM8EaQI3sapxE9IvRLZstgSgwsuDtJCbSpNJli5ak8aC4SIRc4dfyeDZeIWtnXLhHjdEzbvh2Ton58RwKW4S63mn0upQ8BVUNADQdV1FTwi3VVmNU3WKt9GoqU2WMdhTGGfI9JJ1p3uN1mYFyOekx71li9Ps1SyaNNpc9tfCL7ymISQ95C+NR8ipZJXcixTcXQtTgfC1YNIbgk4cmF90+cQzujA681C39Yy2HlYLNrVA5ICbfR84wtuDoZWDBhf5uEHr2FBA4OnHIJdE9eneM8U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(366016)(23010399003)(10067099003)(11063799006)(56012099006)(3023799007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Wo/Wfc2Paa7kvyAGeNqc3+ByLJZ074/mSteZCQtzW5VN5ejkoWIFzxDoEIl/?=
+ =?us-ascii?Q?zpEyaWyRq8QjmqmqMEYxoNH4IaUVyHzfErnY5W7eAzZTqLnWcxzpqnSAJbBe?=
+ =?us-ascii?Q?kfjZW5Hd0WYk7V6TH9HJy/Rc2OrQkSrjO4kqpzWNUKpvZesO6dNFDXwLjdLi?=
+ =?us-ascii?Q?o+3diVzH+F/iAvwmqukr92qM65BDHmJADhmaRYRjZ6dPFzY06fGtSSzc9M2t?=
+ =?us-ascii?Q?0gT1E8xZ8oFYOmU2TnWFyDerrnmHFXibblxNMJUDyDK7R8jFLpcqEDAWy/+B?=
+ =?us-ascii?Q?bFDqFDqBNgKX2D9QjoCaaO8YCbhWgYgPwReqvqs/6wf40vRf9QjuHuC0MIfm?=
+ =?us-ascii?Q?0gucbXqDHoM4gFXDpmzvnPRSzdWFs7iIbzZ01JU8EWL/0dscRE8re6cuZ90s?=
+ =?us-ascii?Q?xrKfAq9Hu9LJCJHzfw2W9ECb/edILX9JdExmxe08QPEVnsbw6L+aTcO8NbB6?=
+ =?us-ascii?Q?QBQmtchUQpqojiLQMcSAszPccG8cm0axFxF780qXjAG0HiEdTAqC0J1Ik0e8?=
+ =?us-ascii?Q?nsBy75urYiVzSMM1dd6vE5+kMCP61byTyZnUxPYNxnUaZBSuzvy04dAfzR1l?=
+ =?us-ascii?Q?iVppqZsAxDB0hxrfRXEOPrmMjWpYB173214Gx2+f5vDPdp7BSvrweMXIAPxo?=
+ =?us-ascii?Q?fcQaDfocg0NbzyFkBjIN1/m0TirkH6+QeOPtvkI+H1l81GlLctTHTr7kIRbd?=
+ =?us-ascii?Q?tm99zIsO+56QI6unwKpXio3ODyOzmVo2zhEYnYIFyy6r5BdVZwEagJdPtzSj?=
+ =?us-ascii?Q?weSUbOGiTW7JbKiv2c7xPazaxDVDNZi4fxft4kj/P21T6cetFn7ojlxSbHBL?=
+ =?us-ascii?Q?jWpiPiTKZeY7UAD1YTkNcvpYGB/lcJNgUECul2GpHDBdo7wrqMmmbqnFygge?=
+ =?us-ascii?Q?5joN2oW0ImQ600cG1Qy8P3qcCS+uNXnw70reI3qB/8bOZ4dFCfa3rDEbexkN?=
+ =?us-ascii?Q?iEe7D6T0kpFhykYsDqMM6Bt6WyovtTs++qHrtoHISJq/5SJyetCszDRsjGHr?=
+ =?us-ascii?Q?rvPntgZq8lrZRQSfUbr9On1+OtvfijqnWDyDU5Xmy8z8knxtIO1jFRXHSEAP?=
+ =?us-ascii?Q?SxCxHVqRG/VPePeIsWn1UlqFayduTTMERJWtriKgwMIp2HmGjscSGtROLWJw?=
+ =?us-ascii?Q?F/mYE8rim1X+xtXMT4OU5Z/X90dfKS0gIYYnbs0u+AXBY4SKIJ4To8J0t0xo?=
+ =?us-ascii?Q?WxVCXOFGDgUhSILgmN/5uHWXdT9VMHosX/bUAjRf9NWhBvIJWCaml3Vlu7Lu?=
+ =?us-ascii?Q?l7Fxmqg+jEabCnueTcN257559kOGwztHoh+u79+pAOANGzma0C+mI37osOMx?=
+ =?us-ascii?Q?iie7BVY+e0OYLFydiLDvyLU79hcNk8Dc1ef9YBji5/j0YiFIx3nE3HAMimbT?=
+ =?us-ascii?Q?V/ntYKf/PJs3zfUK8NE9Q7jTcH5fRrwR+6Upcg8R9PrVLpJtbPJ7NtGytFWQ?=
+ =?us-ascii?Q?YKqXogRHZGGk4eDXf7AEvaFgBcFajU7zx5xehAWgtXIaF3lTrR6XA/e7q5Mp?=
+ =?us-ascii?Q?h/6gRzQffx2WnNxzMOAppRVKpK0waFgOHAajd1SooaczeIGRlXrH9wX/BDFd?=
+ =?us-ascii?Q?Lcsgjs+L0BMdzKtrb0kNtq+p20gIQAsn2/75huYNOp6Pu8s4837hjIgt/Pfk?=
+ =?us-ascii?Q?zQKlvicgYp8yTXLfyE/Qt3S+QdB5OoIK2sumbR3W1tVQv7hDcwlCWYf68eII?=
+ =?us-ascii?Q?fYijY7k6Id+5tXjf73dYabPThupL4DaY0J9zJ+Y4xq1M9pC7MWmPktJxWFS6?=
+ =?us-ascii?Q?gjHTSYIjd/v4xmtZrUyIwzknQeA5BMwe+ZeV98UjX01XfcdZhHMX?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a0b0efa-879f-4685-0e50-08df0186431f
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB10021.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 02:20:27.7700
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i0NauCYHuJd4i/M/HybRRfKKMV6I6AFUkQxni2t29xQAiI2WpmXPNN2eIHALD24+r/awnkj7VnLjXtj2fbBEE4jTglPkZmrQ4VIkzqfRYxXkjrZd1JkUlE5sYHzzx5kp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7360
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+From: Chancel Liu <chancel.liu@nxp.com>
 
-Pre-existing issues:
-- [High] The pinctrl offset for `dspi2_miso_mosi_pins` is set to `0x3`, whi=
-ch is unaligned for a 32-bit register width, triggering a synchronous align=
-ment fault on ARM64.
-- [High] Pinmux nodes `i2c0_pins` and `gpio0_3_2_pins` specify an incomplet=
-e 1-bit mask (`0x1 << 10`), causing the `pinctrl-single` driver to silently=
- reject them.
+MQS (Medium Quality Sound) is an internal audio DAC available on multiple
+NXP i.MX9 SoCs. On EVK boards, the MQS output pins are typically shared
+with other peripherals (CAN, PDM microphone, etc.), so enabling MQS
+requires switching board-level pin muxes and disabling the conflicting
+device.
+
+This series adds MQS1 sound card support across the following platforms:
+  - i.MX91 11x11 EVK
+  - i.MX93 11x11 EVK
+  - i.MX93 14x14 EVK
+  - i.MX943 EVK
+  - i.MX95 15x15 EVK
+  - i.MX952 EVK
+
+Note: This series depends on a patch for MQS driver:
+https://lore.kernel.org/linux-sound/20260820021454.2229094-1-chancel.liu@oss.nxp.com/
+In which, MQS_L/MQS_R pins are defined as DAPM output widgets.
+
+Changes in v3:
+- Describe the on-board MQS output amplifier via the simple-audio-amplifier
+- Attach the amplifier as an aux device to MQS sound card
+
+v2: https://lore.kernel.org/imx/20260818030211.3141710-1-chancel.liu@oss.nxp.com/
+
+Changes in v2:
+- Amend commit message to describe SAI1 clocks assignments
+- Remove redundant clocks/clock-names for MQS on the frdm boards
+- Add the missing <&can1_fun> mux state to FlexCAN on imx93-14x14-evk
+
+v1: https://lore.kernel.org/imx/20260814072022.4064009-1-chancel.liu@oss.nxp.com/
+
+Chancel Liu (17):
+  arm64: dts: imx91_93_common: Add clock and sound-dai-cells properties
+    for MQS
+  arm64: dts: imx91-11x11-evk: Add board muxes to select between PDM and
+    MQS1
+  arm64: dts: imx91-11x11-evk: Add MQS1 pinmux, clocks and mark
+    conflicting devices
+  arm64: dts: imx93-11x11-evk: Add board muxes to select between PDM and
+    MQS1
+  arm64: dts: imx93-11x11-evk: Add MQS1 pinmux, clocks and mark
+    conflicting devices
+  arm64: dts: imx93-14x14-evk: Add board muxes to select between
+    FlexCAN1 and MQS1
+  arm64: dts: imx93-14x14-evk: Add MQS1 pinmux, clocks and mark
+    conflicting devices
+  arm64: dts: imx94: Add clock and sound-dai-cells properties for MQS1
+  arm64: dts: imx943-evk: Add board muxes to select between CAN1/PDM and
+    MQS1/MIC
+  arm64: dts: imx943-evk: Add MQS1 pinmux, clocks and mark conflicting
+    devices
+  arm64: dts: imx95: Add clock and sound-dai-cells properties for MQS1
+  arm64: dts: imx95-15x15-evk: Add board muxes to select between PDM and
+    MQS1
+  arm64: dts: imx95-15x15-evk: Add MQS1 pinmux, clocks and mark
+    conflicting devices
+  arm64: dts: imx952: Add AONMIX MQS device node
+  arm64: dts: imx952-evk: Add board muxes to select between CAN1/PDM
+  arm64: dts: imx952-evk: Add MQS1 pinmux, clocks and mark conflicting
+    devices
+  arm64: dts: fsl: Add DT overlay to build MQS1 sound cards on i.MX9
+    platforms
+
+ arch/arm64/boot/dts/freescale/Makefile        | 12 +++
+ arch/arm64/boot/dts/freescale/imx9-mqs.dtso   | 57 +++++++++++++
+ .../boot/dts/freescale/imx91-11x11-evk.dts    | 54 +++++++++++-
+ .../boot/dts/freescale/imx91-11x11-frdm-s.dts |  2 -
+ .../boot/dts/freescale/imx91-11x11-frdm.dts   |  2 -
+ .../boot/dts/freescale/imx91_93_common.dtsi   |  6 ++
+ .../boot/dts/freescale/imx93-11x11-evk.dts    | 54 +++++++++++-
+ .../boot/dts/freescale/imx93-11x11-frdm.dts   |  2 -
+ .../boot/dts/freescale/imx93-14x14-evk.dts    | 55 +++++++++++-
+ arch/arm64/boot/dts/freescale/imx94.dtsi      |  3 +
+ arch/arm64/boot/dts/freescale/imx943-evk.dts  | 83 +++++++++++++++----
+ .../boot/dts/freescale/imx95-15x15-evk.dts    | 48 ++++++++++-
+ .../boot/dts/freescale/imx95-15x15-frdm.dts   |  2 -
+ .../dts/freescale/imx95-19x19-frdm-pro.dts    |  2 -
+ arch/arm64/boot/dts/freescale/imx95.dtsi      |  3 +
+ arch/arm64/boot/dts/freescale/imx952-evk.dts  | 77 +++++++++++++----
+ arch/arm64/boot/dts/freescale/imx952.dtsi     |  8 ++
+ 17 files changed, 416 insertions(+), 54 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx9-mqs.dtso
+
 --
+2.50.1
 
---- Patch [1]: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux ---
-commit 361d41dcf4495f73be88ba1bf5234be91b377473
-Author: Vincent Jardin <vjardin@free.fr>
-
-arm64: dts: lx2160a: fix incorrect pinmux
-   =20
-For gpio1 value set for pinctrl is outside the mask and so will do
-nothing. Add the missing offset for value field to be the same as the
-mask as expected.
-
-Fixes: 284ad7064aaa ("arm64: dts: lx2160a: complete pinmux for rcwsr12 conf=
-iguration word")
-Signed-off-by: Vincent Jardin <vjardin@free.fr>
-
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/=
-boot/dts/freescale/fsl-lx2160a.dtsi
-> index 1d73abffa6b72..b9f079c49e193 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-
-[ ... ]
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is the pinctrl offset unalig=
-ned
-for dspi2_miso_mosi_pins?
-
-arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:dspi2_miso_mosi_pins {
-    ...
-    pinctrl-single,bits =3D <0x3 (0x2 << 9) (0x7 << 9)>;
-    ...
-}
-
-The pinctrl-single driver uses 32-bit accessors when the register width is =
-32.
-Since the base offset is 0x3, this results in an unaligned I/O access on
-arm64, which triggers a synchronous alignment fault.
-
-Could this have been a typo for <0x0 (0x3 << 9) (0x7 << 9)>?
-
-[Severity: High]
-This is a pre-existing issue, but does this incomplete mask cause the pin
-configuration to be skipped entirely?
-
-arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:i2c0_pins {
-    ...
-    pinctrl-single,bits =3D <0x8 0x0 (0x1 << 10)>;
-    ...
-}
-
-This also appears in gpio0_3_2_pins:
-
-arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:gpio0_3_2_pins {
-    ...
-    pinctrl-single,bits =3D <0x8 (0x1 << 10) (0x1 << 10)>;
-    ...
-}
-
-Looking at the pinctrl-single driver, it strictly validates that the suppli=
-ed
-mask matches the hardware function mask shifted to the pin's bit position:
-
-drivers/pinctrl/pinctrl-single.c:pcs_parse_bits_in_pinctrl_entry() {
-    ...
-    if (submask !=3D mask_pos) {
-        dev_warn(pcs->dev,
-                "Invalid submask 0x%x for %pOFn at 0x%x\n",
-                submask, np, offset);
-        continue;
-    }
-    ...
-}
-
-Since the function mask is 0x7, mask_pos would be 0x1c00 (0x7 << 10), but t=
-he
-supplied mask is 0x400 (0x1 << 10).
-
-Because these do not match, does the driver log an invalid submask warning =
-and
-skip configuring the pin?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824-for-upstre=
-am-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr?part=3D1
