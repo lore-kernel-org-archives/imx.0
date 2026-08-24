@@ -1,64 +1,65 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010007.outbound.protection.outlook.com [52.101.69.7])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011018.outbound.protection.outlook.com [52.101.70.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1C225B083;
-	Mon, 24 Aug 2026 14:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF9B3537FD
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 14:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787582955; cv=fail; b=kV9hdz87wtymHCcCziEyDi7YpFvHt6mDwUAD98n87hWJxonpG07Sw4PMbwQVGTNpNSjaDkTPYOCqx1rPD0B1VF11yoXhfdYMfzhxAhQE9ZLjmmf3a/nXY+WrFKL3L+kXukNBM+aPdfZovxKHkwOd6t8+AmiTHu5YkzSfXB+irZk=
+	t=1787583483; cv=fail; b=R3OUrbgHbHm7T1OFGYCdOiiXnHLxo19vv1/nkbHGZkm+KwlrcncPJUxqGOfxdEb617bjD5vRVEMkv6adQBCw29up80nj+/RlLY0owIT4RIbaE7lNwptAXTRtV+eGXqORnIBK0qp/HMNOlRCHCQ3ZpATNQuqbCqAKm4YQYSKyXlg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787582955; c=relaxed/simple;
-	bh=Lo3hCahDRr/DpNU3A+syKZQjZ7dvFrOLUIE/viq6qNM=;
+	s=arc-20240116; t=1787583483; c=relaxed/simple;
+	bh=GsSxBfn9JV3Bp9iOuVbekQLbqQ3eSQ0mLSHnn1GOknE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=R9NtF08chCqLDaBR1W2vrgLYY/5NNf66uUqWsMFbGVTb/aovUahTlz41LZfTeOLPsYO4C1LBAh1TeNqn7RUnr1bixTurfoCqYjeI/lYEAD1aUy91pdmqxAppd6jP2e57HgVqUfZroIv2a4xu4mAFnozSAPFzO5JgvqHOpOC8fbk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=oujakUfo reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.7
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tfHwZrk7Acs6dOZgPYOmcOgMYtU26jXwOvDmfMcBNtpa9FAuso/XdwjIf5ILeB+Szm0TuACfcGxzkEr3wvcfG1aIIEzjOevXKEFpPFRMpi+pfRxxP5CxzbOZ4uZpj9IpaohFInT8aSVfohHWAMHP88CNnLcODW55bhgHzAdLCKU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Fa+wGPVr; arc=fail smtp.client-ip=52.101.70.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="oujakUfo"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Fa+wGPVr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rhkuKxUL/A3d42ngiakKCsOa4+gNK5XfhzO9VkzvKuA6v/UhDW7tRz5DO5T6tKNrsXY2dmIWPjzpi1I+uu+aylvuc6Bs8/hphG0Zzyx6b9TheeLbqe3vIiruPXdBL6COqjxbPDlz6z8KT5lqu5xaI8V1mOzWuSEnzfadiZ7Pl4f4VvLn19A1gp7DsCja4YFvgiGfCdBAkRtlL9h7yJrnxgMZU0/LW+ExzyhGBZdvbFQYyWJrcp2b/S3DaQPqntZB4KMdwl9E8MJH7TGVTDhOkDoURhdfoj1MxROsI0ljqOVIiaZDI2GlDtoMCMdBxTXTSCe0ehIl+PjdCaPZRKnGLQ==
+ b=EI0wcnEl5f8bK9jP52+TvqYWfNcoL1VA0aZpOp169BWqCSAnc45aP4KRGRHNBJRbFTBhBqoobauRxqNGjGjgJSGHHvTFhxv4UKYj9JkQxJLxbMPg6fFvNtmh0vmJa5TfQPYQheJVo0bQAnYwvRunezO59Q6KJ3On1hBUxRf+7pBa0kGZ0H1BWKgerVeng0NOxFsRuXJ5PcNJL1+JhH+m0I5WVV2uMGxlezocbYiiWlqnHVnswYrja+gKZqDvHGVnPydc0fNEH8W3Ms/EmwO/udWdxfDQhI5EubeV0Qm+wQaVcBq58ni2CRWsqteg6Bd516CkjnX3T0Pfq51Aof7Pyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIaBEaAu8w2BzfqK0y37hvOLJS0lARci2eMr1xpur6I=;
- b=tXWvJrzmD3JdGylQgbDBoy9SOxSN2NQL7O6jlph4Q78gjDTa83qXD/kZ0JUi9LSnSsJk0mUuPKwMJmJqqUTXNDsRBvZMZf/CZHN4kLButSO89smIJsvrkKLpBHtLQs5RJyuZ9LUl6UV/nuqOiEIAWV1ho0dtIh2QF6woyoO2ZCeohScyAT52uOAS5Oy8kLfMn13J/ddXHADL4Z/kJ3uFt/zJrG7wmCLOfXK7E0TKIChEHAeFfYK4Kzunz90pqTeALNY4LFu7owi+Ww9dqhL0cRTe5iPmkKpmh9yqMdrHut0x/FCgAlodmmctCnc82ktuuJfjXIcepqx3zZbeYXfV+A==
+ bh=xA19Y0/0v61Rl6IlValoIm0l3LqKgtbPnaywd/8yp/Q=;
+ b=stkg7osJAz6eoO87qfFYL4AQDnZ+GN05RvgJiC/zX2jEjxtdbiV5TeaVYdKstklUhl/e9BP1IjuLBOu+w2t503gV6VWa92eQBhi6nmylKX6aoVx0IRzKBGLPObjOyW+qjGFQT+Lx9XRPrJiK+zBVMH9kP7ABqgvocG1cYXAw/HhOFGpQ0tyMTQGtESt4zvvdKLBiH6VyU07AqxNCIFe6CtHxYLkZEQ+kMojhgkO1s/+Oy2R0bK+HRfjPB5i6jd25hsWbJ1h/zIcJWf4hVkP1rEQkBBFE/WGsNH5Kr/lgLWMTkTGKTgUv/FSTQH9BeX/1BZo/Eyy+jdfLHxR1ankeJw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIaBEaAu8w2BzfqK0y37hvOLJS0lARci2eMr1xpur6I=;
- b=oujakUfoJa7wAzqTDYJNlqHWXkkJRsE2ny2+3PBs2dFdf3qXlHWggLsYULM6ZGEsS2Bqi21Cc28t3o4n/i8w1we4wPpoEXULsnhJjnEiipmIVG7VaOP4j8TXjc8deb4OMKl8cjGNquWWuBuwKzj1YOy4KP2d21ct9XOMONi0vaIfD2SmkcwnPCyQCSn6T6uqZHAjGGAkur4iizZ99IcO20ZnWRyE1vnu+ILfPoe+g+R9Q4LPvDSIBKg4M9cIci84IBXDY5xOwq1YQR/ADHcJGXOQAv3bNu2MILk3yWO84yPpNkbRBVIqXeLPosuHG6NqS+k6RTEMJeuJdXkSP0OIxQ==
+ bh=xA19Y0/0v61Rl6IlValoIm0l3LqKgtbPnaywd/8yp/Q=;
+ b=Fa+wGPVrq/9dEoi/0z9ZI7pacuTgUOGJDEOsARAsUfV/XvgLWcpj8GZF8sc9sM60MkTo7LNd4yE8hlMpOWS3dkykT6hAQ3JQaxj+yZquYMID7WkcL7aHKqhGUcO94EpzmKqE2z6GfbHnzhkV3hzBCdlXDM9rOWxFckIjlTOvChg1wQ+lRRGfrupI43jDbvIeIWM4NHYuTNhRWIg55rDfZ6ewhhePbTPzCZVVXId3DCMGZrDUQwL0jSDAGsawWiLn0HAptWKQ5yxVYrUFdxSn92qz9giFqRUDSPd548S+eXDfyVBFcFXKNzDjeRM7bs4JtCKw8PJI8dUZ2ubdGp3cDQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB7686.eurprd04.prod.outlook.com (2603:10a6:20b:290::24) with
+ by PAXPR04MB9154.eurprd04.prod.outlook.com (2603:10a6:102:22d::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
- 2026 14:49:11 +0000
+ 2026 14:57:58 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
- 14:49:11 +0000
-Date: Mon, 24 Aug 2026 09:49:04 -0500
+ 14:57:58 +0000
+Date: Mon, 24 Aug 2026 09:57:49 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Stefano Radaelli <stefano.radaelli21@gmail.com>, imx@lists.linux.dev,
-	robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	Frank.Li@kernel.org
-Subject: Re: [PATCH v2 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
-Message-ID: <aoxZ4CILG7YF6FJZ@SMW015318>
-References: <cover.1787566980.git.stefano.r@variscite.com>
- <f54545f2a08a558977b0e76bd0f44b2cf1158783.1787566980.git.stefano.r@variscite.com>
- <20260824104141.247111F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
+To: phucduc.bui@gmail.com
+Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: fec: only stop PTP if it was initialized
+Message-ID: <aoxb7aqGAOUjrg6C@SMW015318>
+References: <20260824100834.31655-1-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260824104141.247111F000E9@smtp.kernel.org>
-X-ClientProxiedBy: SA1P222CA0025.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:22c::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260824100834.31655-1-phucduc.bui@gmail.com>
+X-ClientProxiedBy: SA1P222CA0161.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,214 +68,94 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB7686:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e78ea6e-3d51-43f7-eec8-08df01eedba9
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB9154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2460fe56-4496-47b4-dcbc-08df01f01592
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|23010399003|10067099003|56012099006|6133799003|3023799007|22082099003|18002099003|4143699003|5023799004|11063799006|13003099007;
+	BCL:0;ARA:13230040|23010399003|7416014|376014|19092799006|366016|1800799024|10067099003|11063799006|56012099006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	1D42nJ2gTcTrS5lnw4kH9B2eJ2PEF2S1vMYfJuBHqmT9WpPcEmspT0Nzcn9/LD1Tw0tC57jGb9CluZddSmhi4tMEj52AfC44Rb5X8p8XWrRWMfkdUDIAMdfgFJ6UPdKN/L5h9sWheYH0WGw4y2omOSkIUoH7ZanTzwVTRSitvq3qr/8FxChZWRQ6A61GfCo8qvjP0milBT+Z38Z1GgRNLDeI1rguOyxnryZA0QoblC/usvd5ByGKtXSU2dOZBJMuq8Z8Pc3dQmfetXUKifmWCgXASxUjDYKG6Syes52962ivnBRsT+9sXlizoSh3nQ3kJcnyxZWf5lvqIZlyEZtq8CBQ2UIQA3DjrNqIoawSYCP3dOfzkBKhTuPbo1ZWvamdN/IgO7YFFp+/ME9vOeVgXDa3g48g+vjrsPa0EnE/OHtobp1YBrISzjWpiqgYy4J0DYZmkmkXm8IjO6Xnnm0v/BAYRMcC94/UAW05zno2vfYBRdihFaAMDmavjsXHuMsjzCtUNmuPf7Tw/YOR8b5Q0JnVcjLGAEONCgzzbV+tCg/1i6Suwl+S5vbmk6GOcQZwkr1iPxNlZCn88UNE+ui0WXUHcVHwnKHdshWQUDtENA4=
+	Asg0nnx2FX+H10FYB54Mtym95cd9PmcNqLNrRgXcZEPwEYvxoULfpDOgeFRlYaUnebhPexapAcz7V7LujrjfTi2O8aTaA/nwlK6MjBSq47Dcwdf1pC3dCZ+JTZZmc/H3vVZ5BeZOU27K+57Z7R6VdU6GdSv/TFVgpCUGIszB69KG49GNPHn+52gLI39yao0Xny6d4sfRql9cbJ8Z6YG65YRSK5TC31pp6oAZqySOkNuWN0U9/BvPtAC/Enfu3G9EKOeb+rD5PyzS4DkIi0kAh4XlUuVhMwu+vut5Mts03ionPdW5JT3C6Lwv7spNBxiv7Azcc6T7NdcyX181leYHjgxzvqIbfYa25ma1GhM2saI1s2rTcOlGUCITuu4DrvdDTnRWgNPwLZ1tGD+5XMxT2zwlqgw5axDMzD+GDCI6v2Y2/9X/Ofcz6zYWBp4fXLLJLSjm5kwG6ZEJsR/Mxumrj736JuMP9RVm/I22TCUTRx7042ktO3NOiNUgGE2qqESWqycc7ZBZqq/4LlR/zURo29KH06v2D/ikSl8njBijDbudvMvcHrSKGxiKICwfWGJP/+wBNnNcZP1HsPtDF4kr6260pRjDJ4qfLM7i7UdPGQ5SN26JPm7ITNIBN4zHJjGq0BBHEoe9lBX9HUOAUWFXApiE+tgih7P9jjOzDkDFxKo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(23010399003)(10067099003)(56012099006)(6133799003)(3023799007)(22082099003)(18002099003)(4143699003)(5023799004)(11063799006)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(19092799006)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?Rnp1FFQW/AO93tYHbd+c5Ze6zDpZIvu8aYeVQU7u4emtV9oUNqMRQk8UiR?=
- =?iso-8859-1?Q?QbBNsqJ8EHgwHvC9xGff04gvjmlVsAVoztmuzz8hGM+Eu8Ppqn63hKj5Gr?=
- =?iso-8859-1?Q?Qj4XqbrWHf8WXCHZ8nKSmovXtMd3z3kymp1BOCWNkIzojD8NF3ZKcGdU6L?=
- =?iso-8859-1?Q?r5cwXnna4JJue/LCUGbQhAaKxA2bdd850iocCWYJfAMtvV7JafXW2XvmbJ?=
- =?iso-8859-1?Q?29ILDHkpohoXLPoMF6kKD/VuCZF8i72+xlRmVvhNC7jdEk7FiT2lRsT0Cq?=
- =?iso-8859-1?Q?SWjiClOUL8FsKmZ8au8Qy5hFNnM+El4JA9EMtmxHuaobqRdvIuC+O+X52F?=
- =?iso-8859-1?Q?QP1sF0qo7fiOR1NcTQTpDM9h74Q5I9udwG+mXgw/edzXt7MH9NK+JjCy5v?=
- =?iso-8859-1?Q?TKvsvs+xMqSSwmx7XueMRPSELnmffoV51xYsr7BGE6AYbigrXs/cxfMQAV?=
- =?iso-8859-1?Q?EYmtD4RrSKApsJMie23u4Kg26nSkrfVQgI1jJhcK09RSo+eL0o5Wrf1PUk?=
- =?iso-8859-1?Q?STd6WszWxL7SL9abn8GCg1TON7dI2pNfGX3F/Ho8Kz7BdbLH6ffhpcIGEw?=
- =?iso-8859-1?Q?eIVNUubOlFr98lLymxteHjAl4asFD+CAA2KJZntivy7UPGeW4nzGfAAro2?=
- =?iso-8859-1?Q?X92vMPL+lbMM3ZTbqH0W3DkUgan41Id45RI06EtxUsnpAZH2eY2O2Sjtep?=
- =?iso-8859-1?Q?sn9Oy6dPiCycgRAM5HeIwsEk6nat2gLWTCbClx6E4tmGJ7mAKLm5Xg48y/?=
- =?iso-8859-1?Q?MLxJjRjULxEUpRZRAAr7n9v0z5vMNMN79IUUj6Uc1l9R9vKfC4iNP0ClEr?=
- =?iso-8859-1?Q?4pem61xgl9lBQmjbI8jx7b6gT+fEavhdkKYNyHB5xVmd88vcJKS12e1XCx?=
- =?iso-8859-1?Q?65qwgjqDZpah/DyMPJiNktX4Ff0isOkdTGBbEgnZYkx7mwBJvoJ1fcqV3d?=
- =?iso-8859-1?Q?T0XFCWnU6g425DgGGycfeU94deF1po1yNRwCOxk+39s7IE+XQEk7ezkBLm?=
- =?iso-8859-1?Q?EJNwzG1dPjaGLFHyL5acTanRvOW3f/knVr1XQorsf80kezw/Jr1r71FvXS?=
- =?iso-8859-1?Q?sN5XikKOOKw98hJfIhMazsBYiA7SEyPO5LTDpcpbfmNMo+UepoXkB7EBoy?=
- =?iso-8859-1?Q?QPIgIkcJdiLYGdECW4vR8Cx4dNvvtUZaEM/pYd2joJsrwB/WHCDQWU10lo?=
- =?iso-8859-1?Q?Bud/cCebRn6gHu2RDx8X+CaDk6djyFUL+KjftfzsRNy8xg2P6AhlPcmlI3?=
- =?iso-8859-1?Q?UfajGc4YzicM4j2rbvTrj1nQrlnGdvQVoXGi6EHv/PGE2SnqFG0NMHwQfv?=
- =?iso-8859-1?Q?kvXKFeYPqgeP5ECiIQ2amAtXKvM2I8Gvh8AEN69Ja6q+IFoUQjpB/VF4ru?=
- =?iso-8859-1?Q?0zJlhyK/GJZOT6uL8DHpKNvC4inrgIURjFWd4g9ct7YjckNMfKzOPkBLHX?=
- =?iso-8859-1?Q?Bp0hF7JRGgKt4penemA/XfFVSiGA0B4wpTWgYqT2iPq6YGmPENUi8ZkCCO?=
- =?iso-8859-1?Q?pYhvh/M4PzYosGLviTc0/91U4R3WjEfP+wZpJU9qPfqeVTC5N4AleRRHVB?=
- =?iso-8859-1?Q?75Mh4n7cPXmIVIN8UirGkDE9mSnd4wNQgNisKXiUfRie9dGaoOArQ5D2p4?=
- =?iso-8859-1?Q?aswmxKToQ4905RyXxXiPaEi8tP5MpqAsttrpyEUM1JIjd0EixwLFOx0Ug5?=
- =?iso-8859-1?Q?JFhN6ALEgUfPOxcpfY4+gr+aT5UD+NyROSN7CokXatuK2iXheqkGhkblEK?=
- =?iso-8859-1?Q?d9FpTSMkvZVPLLFzWdK45VpctBGFzGSW8w0X1WRlkU3nsU2Vuu8DBeUmaL?=
- =?iso-8859-1?Q?FYw2siFMyl++FBJJRICIeiUsdJq/sTm8MH5hAJIz8EbXt8EE1TOv?=
+	=?us-ascii?Q?ewa9tw6xYJcuJVYQEpVx0cLTQhQ79r4qIfXocG2EkfBJRwqg9H4sIIedgVb/?=
+ =?us-ascii?Q?DI08wDFlPacE0G89iyMCPMC3qTJ5amuXB/WOhtS9dX0nW9M4WntQLE5ZuNjI?=
+ =?us-ascii?Q?CCbI6rnVfGW9Xexo98L/2szDFV83mGF4PM0iXtjHHw/bkflI+M7MVdBag+4g?=
+ =?us-ascii?Q?aDQ+DtbQTHngSzfdCKULQqe1IoOKCLXiGPT9ujgg+FlppHHxQS8gxh6ZCOjF?=
+ =?us-ascii?Q?z37oxSXUq5ZZ0nv7VS/h6TPXa9AfUqKqukiiGZ5yF3Xi9ZOOySj3wYyj+ZVW?=
+ =?us-ascii?Q?OEyr3fnojn7etxgNdZJl7CwiuwFHS3HHZasHPetm7iMxMIEjSFsqcj24i6r3?=
+ =?us-ascii?Q?NbgyLuDJmBC0M/QemoTUcXyC6SXiTlUivwpwsESprCPigzoZSd8W7nmXCqsy?=
+ =?us-ascii?Q?VrgBOL9e00lJLyy3o1tyaENk7B2qgUAq3q6El0fgluy8DeGp6YuzIdajJ3By?=
+ =?us-ascii?Q?qM4kVOwN/OjjPZdG+orAT1pb81YTAR6BGbA6HxUh5+YVsN+fzUk/wAYrauRP?=
+ =?us-ascii?Q?Jq7hn4hvaitiMGILABe41oaz6A7Y18tlOmY2YqvvSKml37BylaXh/i8JOEOP?=
+ =?us-ascii?Q?o9p1P2lk3Cr6/hchmxqKX4uaH4iqJ5KVPR6D4/EGurMVvJecw3CuMKregKRe?=
+ =?us-ascii?Q?Bl7L4qKh7NZ7EO45MAjYppcUFIcM4oKKObVw9y3TqRAMcKNO3tX8tld7w4P5?=
+ =?us-ascii?Q?orTB4Dt7NAT2GH2fnYy1fNaENrJRjqLgQ2yxuUrWN01O7KuHpaphbSmbxxMW?=
+ =?us-ascii?Q?Dx4GAaoCi/CgKe4dsTxQqZirqoG0R/kIO86Ml5/EhUPqqsn0O2VnvyANaSe+?=
+ =?us-ascii?Q?Q/9ElvOLB926XibS1voOiJIT2gmfkKx1KNO8+zcExIiITAevMNzoSvQZLq2K?=
+ =?us-ascii?Q?usCKQshbitvGqXbTqcNmz/lo8QUMrr1sbkLKUpDXRqxBsed9SVS3eaoYuJJ4?=
+ =?us-ascii?Q?w64vDPxfJPP3IdCpdk51JEwG82SQ6XANTx8cHqsScV8t60OR/hdtJ57ors9q?=
+ =?us-ascii?Q?+9gknMgQhnEsF2tiuJnnc5IX0BNgnD5o6Wl2CUfgNHKhQ+74sduYWqJgDDIl?=
+ =?us-ascii?Q?pHZ+/GJJHamwHdkx7jyKGTSiHYiuVDqxi+pQifdlqS+fXBwyqv1opx2odyG7?=
+ =?us-ascii?Q?QJfIUuXDJi6MfSHqssRBPXuBAgFbsPaSuCJz4lsR1C10LabEEHMUp/fCmYRk?=
+ =?us-ascii?Q?V+JliuR39ttUvkBpZdkSu1LzGWFrw0y8QgNfUu5HT5kXHW+to3fQNJV1Q2a2?=
+ =?us-ascii?Q?KwoS2de5yyWXXURV3pUO485pJ6o2cfIjg3gfnLYjIkK6lk9Mnlh5B2SJ/pMo?=
+ =?us-ascii?Q?+iY+Vfxec13FvkDSaPv2G00Ay1S7xOk0Ei64vXO2mAI1mikLzc0v1tCcSULz?=
+ =?us-ascii?Q?lgIlG14Ybar+jA7FgX0rKr9jhzxSCp5N9t+Rmp+xG2otyIT/pegdEy8epuBQ?=
+ =?us-ascii?Q?tcCW8Tbud7IjyJKpbowLR/oiaJPEgtIeclScx2xlawI4fExFr4DJI3TKWLaX?=
+ =?us-ascii?Q?fvoQzE/juTcFmlF73U0qHE2Pm3aSaKgIm/7mp4Roz4NGtTcaPhGrKH99sDOC?=
+ =?us-ascii?Q?nDJR52UskBFH4v0Snb8JmYVnumGsltflYy3cY5fSklJuq2zUqkyuaDMQ9d1R?=
+ =?us-ascii?Q?lZlC04YuuoIrVGfjsoDcV9bTtSRoxSnCFakLIMB2juLw8fha2oEka0qwPA3X?=
+ =?us-ascii?Q?JNulcMjlK9vD8fUZPCSwFQWwFEvEes6JLw+8gnq0QIHipgzGR+gAGK9pzLpD?=
+ =?us-ascii?Q?wxLyue7y17nVXnRkltSMEuYfkUeiNG6YAndXX4iOMwWiOxrAOTyW?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e78ea6e-3d51-43f7-eec8-08df01eedba9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2460fe56-4496-47b4-dcbc-08df01f01592
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 14:49:11.2078
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 14:57:57.9033
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bGJYIKOrCH9x+9t6ibwvjxcoifyYo+E832Sed+GI+bSxO+I3ROIvHBDg3R0nNhgwJnbszQLv44g+pVfVnhSSJrtGVXRqUNTHNr8PpgHPZmqzG5AYYArjW0ENhqnvYaA+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7686
+X-MS-Exchange-CrossTenant-UserPrincipalName: FzkUIFw8Ug4Rpq7bhpUUDYhmJJd01knkWvFtpDDZj3zAdb3mdKUG38bK1sgtUc2eM3HSMi81/e8/U2CRcO1VLSm293VaJ7IEUsQsBrHyjiAN6HG841L4UlW3NofLp76r
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9154
 
-On Mon, Aug 24, 2026 at 10:41:40AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
-> - [High] Overriding `assigned-clocks` in `&sai1` drops essential `SAI1_ROOT_CLK` configuration, breaking audio.
-> - [Low] Missing device tree binding headers in `imx7d-var-som-mx7customboard.dtsi` causing undefined macros.
-> - [Low] The SoM `.dtsi` file incorrectly includes a `/dts-v1/;` directive, leading to duplicate directives in `.dts` files.
-> - [Low] The `usdhc1` and `usdhc3` nodes specify `no-1-8-v` while defining unreachable 100MHz/200MHz pinctrl states.
-> - [Low] Device Tree node names contain underscores, violating DT specifications.
+On Mon, Aug 24, 2026 at 05:08:34PM +0700, phucduc.bui@gmail.com wrote:
+> From: bui duc phuc <phucduc.bui@gmail.com>
+>
+> fec_ptp_init() is only called when fep->bufdesc_ex is available.
+> However, fec_probe() unconditionally calls fec_ptp_stop() on the
+> failed_init path.
+>
+> Check fep->bufdesc_ex before calling fec_ptp_stop() to avoid stopping
+> PTP when it was not initialized.
+>
+> Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+> ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index ced4dbf8cd90..7a87f40d12d9 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -5457,7 +5457,8 @@ fec_probe(struct platform_device *pdev)
+>  failed_irq:
+>  	fec_enet_deinit(ndev);
+>  failed_init:
+> -	fec_ptp_stop(pdev);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_stop(pdev);
+>  failed_reset:
+>  	pm_runtime_put_noidle(&pdev->dev);
+>  	pm_runtime_disable(&pdev->dev);
 > --
+> 2.43.0
 >
-> --- Patch [2]: [PATCH v2 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support ---
-> commit f0d7c3577a1db2d9fa7ddee6134d561982409054
-> Author: Stefano Radaelli <stefano.r@variscite.com>
->
-> ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
->
-> Add device tree support for the Variscite VAR-SOM-MX7 system on module.
-> The module is based on the NXP i.MX7Dual SoC and is available in
-> multiple configurations and hardware revisions.
->
-> Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
->
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi
-> > new file mode 100644
-> > index 0000000000000..2f8185f8c526e
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi
-> > @@ -0,0 +1,99 @@
-> [ ... ]
-> > +&usdhc3 {
-> > +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
-> > +	pinctrl-0 = <&pinctrl_usdhc3>;
-> > +	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-> > +	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-> > +	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
-> > +	vmmc-supply = <&vgen3_reg>;
-> > +	assigned-clocks = <&clks IMX7D_USDHC3_ROOT_CLK>;
-> > +	assigned-clock-rates = <400000000>;
-> > +	no-1-8-v;
->
-> [Severity: Low]
-> Does this no-1-8-v property conflict with the 100MHz and 200MHz pinctrl states
-> defined above it?
->
-> By forcing the MMC core to stay at 3.3V, UHS-I and high-speed modes that
-> require 1.8V might be disabled, making those pinctrl states unreachable dead
-> code.
-
-Make sense, please check it
-
->
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
-> > new file mode 100644
-> > index 0000000000000..ecd4601c12bfb
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
-> > @@ -0,0 +1,382 @@
-> [ ... ]
-> > +	gpio-keys {
-> > +		compatible = "gpio-keys";
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_gpio_keys>;
-> > +
-> > +		key-back {
-> > +			label = "Back";
-> > +			gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
-> > +			linux,code = <KEY_BACK>;
->
-> [Severity: Low]
-> Are the KEY_BACK, KEY_MENU, and KEY_HOME macros undefined here?
->
-> It looks like the dt-bindings/input/input.h header is missing from the
-> includes, which could cause a dtc compilation failure.
->
-> [ ... ]
-> > +	reg_hsic_hub_connect: regulator_hsic_hub_connect {
-> > +		compatible = "regulator-fixed";
->
-> [Severity: Low]
-> Could this node name and regulator_hsic_hub_pwr_on below use hyphens instead
-> of underscores?
-
-Yes, node name should use - instead of _
-
->
-> Using underscores in node names violates the device tree specification and
-> triggers node_name_chars_strict compiler warnings.
->
-> [ ... ]
-> > +&usdhc1 {
-> > +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> > +	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
-> > +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
-> > +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
-> > +	cd-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
-> > +	no-1-8-v;
->
-> [Severity: Low]
-> Does this no-1-8-v property similarly prevent the high-speed pinctrl states
-> from being used on this interface?
->
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
-> > new file mode 100644
-> > index 0000000000000..af5dd6d459ad2
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
-> > @@ -0,0 +1,64 @@
-> [ ... ]
-> > +&sai1 {
-> > +	assigned-clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_SRC>,
-> > +			  <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
-> > +	assigned-clock-parents = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
-> > +	assigned-clock-rates = <0>, <36864000>;
-> > +	/delete-property/ fsl,sai-mclk-direction-output;
-> > +};
->
-> [Severity: High]
-> Does overriding the assigned-clocks here silently drop the required SAI1 root
-> clock configuration defined in the base dtsi?
-
-Please check this also
-
-Frank
->
-> In imx7d-var-som.dtsi, the assigned-clocks property sets IMX7D_SAI1_ROOT_SRC
-> and IMX7D_SAI1_ROOT_CLK. By overriding it without retaining the original
-> assignments, the SAI1 block might lose its required clock configuration, and
-> deleting fsl,sai-mclk-direction-output forces the pad to become an input,
-> which could break the audio interface entirely.
->
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
-> > new file mode 100644
-> > index 0000000000000..486e9360dea52
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
-> > @@ -0,0 +1,637 @@
-> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > +/*
-> > + * Common dtsi for Variscite VAR-SOM-MX7
-> > + *
-> > + * Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
-> > + *
-> > + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-> > + *
-> > + */
-> > +
-> > +/dts-v1/;
->
-> [Severity: Low]
-> Will this /dts-v1/; directive cause a duplicate version directive syntax error?
->
-> When this dtsi file is included by carrier board dts files that also declare
-> /dts-v1/;, the expanded source will contain duplicate version directives.
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/cover.1787566980.git.stefano.r@variscite.com?part=2
 >
