@@ -1,135 +1,142 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4EF1FC110;
-	Mon, 24 Aug 2026 21:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29D93911CE;
+	Mon, 24 Aug 2026 21:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787605953; cv=none; b=nyPSubCCgHNHnie1csG+oGRnQgCcmfbrMPMQ1JqhQlSm2sFtNfdjJLt1S/lkMqP9ts09FfE1Dke7arlv1Jw/G5GHt74mST3h+c/HlOFNBItprhbdClGY68Ml2gL3L3WpKw2VA6uYlbH6lGixytONIyEorCNCDDXdCXd6pjmTMcg=
+	t=1787606749; cv=none; b=S4MrXOgbt5K/1zeH4wUKV8P9KTeNOsiX+9DNLcFNvYEEuHRK2cvM31uL/mHYlBVBWS2VyTNSoTAjzoS5130cAykOd8AViZT+mEnnVC7Oi6Znt1HaTzBVP1icQcNlDxCn5E7QVpbOn6UhM8VdfyeOebvJBfW9/o6K0P1PlwIbq30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787605953; c=relaxed/simple;
-	bh=hGtroxhvwuDcQoqg/UFYIfOq90LSG6yXB8udPS3pFLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cF00QoxUDJmd8T4yVQEui2KSsn3wsRApJBpFufgVMhxuU/zh3gWDPJz9boNkW0pHCVksx/5j/gxTidgh2ozTHMYHYKWc/62wU0rdd8pSp6ED92u09YVwYGqwlM8m4M8w1JeTG55oV0Fx7xrzK8WbGUKtJ3rBbh9zkhLV5PMKkB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=gWJzN7dM; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	s=arc-20240116; t=1787606749; c=relaxed/simple;
+	bh=DMzETM3+OkJKc6qgpdSW8xVmC4w5CNfGRBEct9Ookao=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jeiTLespsj8emW+CdNmXizjTmHA00TtZOcago3EBPigfmfqiDshdOiI8910io6/T020M8w9QGRvTbj6JUV6mGAbhG4N+GAg+m9j0fmyNMdlzDTeBCQ4Yh0DM7sgb4aYc7FtUpMCDeb0fr9JUb8BmMaAsoy8F/ZcIqI4LIwNl6+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sxu13gcJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="gWJzN7dM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=jVWHXt5kccAnCww2YkWc7+CJixLQqoOYi0ZBcColNt0=; b=gWJzN7dM/JTTPxhl+cIzoI7bqh
-	xTglornZsWzyUT6gAWwHlVLJetXnZ2Z5EMuCLuAg11XlHgvf1Wk6a0btrtLN5HhjjAG2Q7UH6bgeO
-	5pNpJ0MEntul+ICrSfwFAc4fEk57NsAyll35Dcvwjx0oFXGnLlTCERbbZn+mD4nieMTql+KosEbZ5
-	inUdcsXbrlIQoUmUoxvJUnR4iJIkSUSNyx7MXP5QpUmuaGKDqp5W4m9eiveS9GyjB0lnwBJYC7Lm9
-	QtCoKLycKYO2D/67maCOOnaxcZahjOMGWSvtkjJmVar4K8lyd1CaB5mAfEoncOElmin1FKJV0R227
-	TIkdKuAg==;
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Billy Tsai <billy_tsai@aspeedtech.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Taichi Sugaya <sugaya.taichi@socionext.com>,
- Takao Orito <orito.takao@socionext.com>, Linus Walleij <linusw@kernel.org>,
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
- Sudeep Holla <sudeep.holla@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- David Lechner <david@lechnology.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>,
- Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Vladimir Zapolskiy <vz@mleia.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Dinh Nguyen <dinguyen@kernel.org>,
- Viresh Kumar <vireshk@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Prashant Gaikwad <pgaikwad@nvidia.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Michal Simek <michal.simek@amd.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- openbmc@lists.ozlabs.org, arm-scmi@vger.kernel.org, imx@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- soc@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- linux-mediatek@lists.infradead.org,
- Geert Uytterhoeven <geert+renesas@glider.be>
-Subject:
- Re: [PATCH 00/45] clk: Make sure clk_init_data is fully initialized (part
- two)
-Date: Mon, 24 Aug 2026 23:11:32 +0200
-Message-ID: <3074509.irdbgypaU6@diego>
-In-Reply-To: <cover.1787239813.git.geert+renesas@glider.be>
-References: <cover.1787239813.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sxu13gcJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 718A5C19425;
+	Mon, 24 Aug 2026 21:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787606749;
+	bh=DMzETM3+OkJKc6qgpdSW8xVmC4w5CNfGRBEct9Ookao=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=sxu13gcJGp2BeXOhVerY+0b6fdid8sgEnP+edLQBo3w2jeULpHqPrLGlqyTJUrSWK
+	 oi9e5wLprjE4k5cqRRfMS6NpC+t2zjNrd+c48EqrLLOCQEswmiAYGJ1RGHH6WgDSii
+	 hMjaqCi/gRznxdd1NrzQaH+pV5zvhixXQOm4vto8AubL1gWKXgHzzT5EOsgPSkvuC6
+	 86kxtI6ghwNMvT+xID8HtmO/YBVcKAw1rp3DNvQGBmWaIjvHfxqza3PCOKtJY8qahx
+	 e9PcNTm2c5aHkMQe1nqKa5lswEsoG4d/7n6NNPNCaIb0DKc16xN24LRjGF9/L1ZLSI
+	 HZS4ZufbWK7MA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C1C0C5DF94;
+	Mon, 24 Aug 2026 21:25:49 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Subject: [PATCH v3 0/3] arm64: dts: lx2160a: fix the malformed pinmux
+ entries
+Date: Mon, 24 Aug 2026 23:25:28 +0200
+Message-Id: <20260824-for-upstream-lx2160a-pinmux-fix-v3-0-5556ff1e6be2@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMi2jGoC/5XNvQ6CMBSG4VshnT2mnFJSnbwP41DaU2kiP2mhw
+ RDu3cLiquP7Dc+3skjBU2TXYmWBko9+6HOIU8FMq/sngbe5GXKsucIK3BBgHuMUSHfwWrCsuYb
+ R9928gPML1JZfSGFjpWlYVsZAeT4e7o/crY/TEN7HYSr39Xc7lVCCEFoYZSVppW8uEJ1dYLuc8
+ E8NgQPXEqWVrjJWfrVt2z5BRmxGGgEAAA==
+To: Frank Li <Frank.Li@nxp.com>, Carlos Song <carlos.song@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Josua Mayer <josua@solid-run.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Thibaut Collet <thbt.cllt@gmail.com>, Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787606747; l=3130;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=DMzETM3+OkJKc6qgpdSW8xVmC4w5CNfGRBEct9Ookao=;
+ b=cNsMCCK0QIkNlo4rCG1R0e1K02J+YQVoyOlzBlxAAW49X0qq3yTtkOQsHRjJGpeJiP3Mey1sk
+ ZRJfk8zPEKmBtcZKuojYklE6PV69liVxVODtihlDuaWfEYaDoMSTjAT
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-Hi Geert,
+Every pinctrl-single,bits entry in the lx2160a pinmux@70010012c node was
+reviewed against what pinctrl-single actually accepts in bit-per-mux mode:
+ the offset has to name one of the three registers the node maps,
+ the mask has to equal pinctrl-single,function-mask shifted to the field,
+ the value has to fit inside that mask.
 
-Am Freitag, 21. August 2026, 10:53:10 Mitteleurop=C3=A4ische Sommerzeit sch=
-rieb Geert Uytterhoeven:
-> 	Hi all,
->=20
-> The clk_init_data structure contains several mutually-exclusive members
-> for different methods to specify the possible parents of a clock,
-> prompting drivers to initialize only the members they need.  However,
-> not initializing all members may cause subtle issues, which are only
-> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-> enabled.
->=20
-> Hence this series aims to make sure all members are fully initialized,
-> to avoid such bugs, and to prevent future breakage when converting
-> drivers to a different method for specifying the parents.
->=20
-> Part One[1] fixed all cases that I identified to be real bugs, in
-> response to a crash I saw on BeagleBone Black.
->=20
-> This series is the clock subpart of Part Two, which fixes remaining
-> cases that are currently harmless.  These are still fragile, and may
-> cause future breakage when converting drivers to a different method for
-> specifying the parents.
->=20
-> Thanks for your comments!
+Three entries fail one of those rules, and each fails differently:
 
-I guess more a handling question, how do you expect this series to be
-applied?
+  1/3 the three gpio1 groups put the field value at bit 0 instead of at
+      the field, so pcs_parse_bits_in_pinctrl_entry() masks it away and
+      the mux write does nothing;
 
-I.e. each clk-arch-maintainer, or in one big thing by the core clock
-maintainers? Just wondering if I should pick the Rockchip patch
-or just let the whole series get applied by the clock maintainers.
+  2/3 the two iic1 groups carry a one bit mask, which the driver rejects
+      outright with "Invalid submask", dropping both pinctrl states of
+      i2c0 along with its bus recovery;
 
+  3/3 iic5-spi3-pins has the field value in the offset cell, leaving an
+      invalid offset and a value that selects the neighbouring sdhc1
+      function rather than SPI3.
 
-Heiko
+After the series no entry in that node is malformed anymore.
+
+Only 1/3 was sent with the v1, as a single patch. The other two turned up
+while checking whether it was the only one of its kind in that node.
+
+They are 3 patches rather than 1 because each fails differently and
+each requires the reviewer to check something different:
+ 1/3 is mask arithmetic,
+ 3/3 needs the IIC5_PMUX encoding table to confirm which
+     function value is right,
+ 2/3 is a partial revert of a change that was made deliberately.
+
+1/3 and 3/3 share a Fixes: tag and are still not folded together:
+  - one is a value that is never shifted into its field,
+  - the other is a value that ended up in the offset cell and also names
+    the wrong function
+and both they touch unrelated pads.
+
+I can squash any of them if you would rather have them merged.
+
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Changes in v3:
+- 2/3: RCWSR14[11:12] are reserved, writing 0 to them is harmless (Josua Mayer)
+- Add Reviewed-by from Josua Mayer on 1/3 and 3/3
+- Link to v2: https://lore.kernel.org/r/20260824-for-upstream-lx2160a-pinmux-fix-v2-0-0a525d5f4cd5@free.fr
+
+Changes in v2:
+- Rebased onto current mainline. fsl-lx2160a.dtsi was renamed to
+  fsl-lx216x.dtsi by commit 285560f0d39d ("arm64: dts: lx2160a: split the
+  dtsi to avoid delete-property"), which landed in the v7.3 merge window,
+  so v1 no longer applied.
+- Added 2/3 and 3/3: two more malformed entries in the same pinmux node,
+  found by auditing the rest of it.
+- Link to v1: https://lore.kernel.org/r/20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr
+
+---
+Vincent Jardin (3):
+      arm64: dts: lx2160a: fix incorrect pinmux
+      arm64: dts: lx2160a: fix IIC1 pinmux submask rejected by pinctrl-single
+      arm64: dts: lx2160a: fix the iic5 spi3 pinmux offset and value
+
+ arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+---
+base-commit: 0a0d1d55dad570724bf8c7ea83409639cfb4be9b
+change-id: 20260824-for-upstream-lx2160a-pinmux-fix-6d09e82bd5cb
+
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
 
 
