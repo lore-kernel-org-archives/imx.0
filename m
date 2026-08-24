@@ -1,147 +1,134 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D154119ED
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787575661; cv=none; b=Q/S40TotoXUUQAum5i0VQxIK4xI88kzsesHT7MEkZQo2NWxw8XP3y+WlY5KUtfVvMb0jDaBKvRDqep2h9qCrOs8y+bIJdO/M/BVp9P7yo1Ijskx1huhAGMa51Rp+Quh9wpPffgTns03VN9PqaCuKRhDksFq8oQ4PbItz3Gex7n4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787575661; c=relaxed/simple;
-	bh=lI76YK88ZltuQHg9+zsDOjRNQgdjPki/p5J+GduZo2g=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715D1363C60
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787575811; cv=pass; b=H/cxur7oG52Tvl8yNrSWOCgGPu/JQ9pxU2DOmW7NwMCMYDND8jW8y00dx+RbeQLR+idnhfZltrqlLNyF7gzNtnUX53XHxkaXMpW0GybqYIka3Vch3NhQ66JhWtC73JenXV9vcHCIIu2SO6pSYTFqgj+s7jFhO0xq6uV1dECKNuI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787575811; c=relaxed/simple;
+	bh=M65GKSm/6Nikad67Nwpr+AO2trBm+ZFvLS2dH1EsVI0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IgiKhh0gCOcokHq3TSbkji8AHw4MhkaspGOEOCWV1z8Lhg+9d7bwPfifEwdwSiVBr/3IAMYFz06KuXf4N+QocXYwSN716ZNY4UeM9Tw/V5WBK797M3y8jHMsAlzJ5rFwaRwGKAwAapiQeDrAKnDRNRSE1x5329k5nyYL3WmFzfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	 To:Cc:Content-Type; b=RWAg1p5NX7NFTVK/8n73JQflNC/w+sZRBJ22/CLoJncqVLl9JPMuLEgMme8j8zUSqzmRrTUWrTdOiGfgyAWpJH4SWf0eSfVAwCbpa/+COQIQE3M6VsC2SPBUVBqt9Iq2pTwV2yL5Pwvf5yyg4vkpKARSsnOei1KZ2yg/1fAqK+A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sFozRQk1; arc=pass smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66d0743503aso1318653d50.3
-        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:47:40 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sFozRQk1"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b4747943b8so2861040e87.0
+        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:50:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787575808; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r81wyoNVfxDtPlxJMlCijD1ShsRFNjB9UMn3SYhfxSlcZ39Nznz+XQpuLjUAi6RduB
+         kCRqwehMvMj9P3xYu1nhdo2/3kWmr6dHeTVSxuwc08bhLtPAesMophU5s8xxlGgxTkEV
+         T+0d26u0uvTk5pRXI/8zQDOLuWWIh2Pg4qakLtuZUywdGjHuMJt0naINMbcn+Hqb5oFj
+         Omx+Q0lkc8RqleGGT3k/kIn9kUNGZKFwvWzmLaswDIr3zWljVstvrbGa3gVFW31xW9Nm
+         CRs6RN7AoPwW65blLRzXzGwOSRLrDT7dQDoS1Ln0csNBG9bmPWJG0HuaIn8rXVOFXXii
+         wOVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rj5OrcPbUSHUeRrK+Yhe+jiBoqRvGnLexb+l8ZGxfyk=;
+        fh=zS4YfSjOctIWYClk4uqFinVFNuPmbQQumCnUIC7GT4E=;
+        b=KQdJBiid8mtBV2bXSj8ekRk7IA7Hq7cFUt5AdK7umezTB0S1YUBYR3p7DZowh5Nvan
+         b6R47PHbSS9UWp1R467v16VBqALQOf2aAP71nlU08w3leVMHqM+ByfJdlSU8tIR+blR9
+         c6wUzpdLLS4D7j00MB8+047ycKk7o7ZZy1DNV1aDWD83LG+JcgmEzGZbPzxRyrW/8CS7
+         Zl4iNUYmLltJUnoSfHs8OlaYs9+BzFYGELkGft8ZJu7/5IvMHPxzM5H7Dyue65ePwMVC
+         9DtOJAhlEkllGNUVZlczY4/dQVa1/1GTWRQ9xxSFm7sC3xRE3rpoKYxsuXQPv3ZHjc/8
+         Q20w==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787575808; x=1788180608; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rj5OrcPbUSHUeRrK+Yhe+jiBoqRvGnLexb+l8ZGxfyk=;
+        b=sFozRQk1M5aP2k5FrqrI+zZtCa9YZn0XmwT/PN6OHRhvGR5rx44EYlIit+ToJnTDKW
+         4LjNleCu59PL1Eqd08I0+uXzZyzlEG1rh+DETyBLvpjhoi77Oz14zMpKhofSZId+euF3
+         BzgPqMsQY3cFivcRnB/itgDWpigLil631NCjbC2gLttKOq+AOWWxYTbuVCKk3TrLHWzX
+         eqpANXWYoHdSokLGtd8nHzxD4QO7h3ma7tkgImJZ0eED1xByY5J62/ou+vP8ox3R85Wu
+         aIgECBt2P7ybrescUQbpJ8uGEMWtLB0ZScfZ9nABVwfaD8pAUERCCvuuTPe6/6dhSf4i
+         cEBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787575659; x=1788180459;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=9ghuoduRfOzi+AYpDw8t1/oQryAhFbodaTAoc1849Hg=;
-        b=VcMTDkN3mk3Vkhr8PfCSI7DtQijRg8QL3popVCRkxbJNbA0PRAawuSYoosn57pZctr
-         BxexCQa0q0CJTM6ucNE3OQMLGdvAIk5ebD5vZosaJBgDHUTisWRra4bf7V/+gdd96MRG
-         t1ZgRK4S6EXqlhIytgHLuEfwh5ypO3vfbxnCh32A+g2WZyKMNILC/KfQsgEVJrYW9bbB
-         FjhgpRXPucEfRpXqfq6WEpUwj6Shmx0ivyPksr8bIpKYOW/epkbKjhKA5lqYoAiq8XjU
-         VhLNZEnjVFtFxnYOVWu/a2LD/7DqrXxa4x24os6AhRTFGMJ006cPBDfq7DYKkhGfDs1Y
-         40Xw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro85SpaEqDk+QvhGHxch0Gj1qBH/SoVlslwmdwOoc2DC2xJbNDYNHvW8f9NImM9yyb1FYA=@lists.linux.dev
-X-Gm-Message-State: AFuF++mi1HPKM3X9jSIKISe5hoo8EBvEXrfSONMRDvufidi7YwV/dzWH
-	2fZuVezqu/kSdWpmncCiPiYr9+qlKsb29KVE5p5kcruGUeMi5WFacUxWPGqygVJ7
-X-Gm-Gg: AR+sD108imTceXAfi4r23tNEWNVUMkxuGuIfWkq8Dlkkh21cmHMrk2N4MHFrmR8P9D0
-	AHiR2p03chWY6lrduFOvvoAa4KzZn6JhgVua6BozQ8mERM7uCmOXCnn5eUrHVlfe605P3xJUYNi
-	ib9jhOI4KBdtNSUaRcMQOr8O4tMjRMRQ7TE90oGuMPedWJgwAgSnjlcPiYtVSWlrQqMKOBqn6Ny
-	EjVWoMlj+9AXouhKKRvJguWoy1Yy/je19u1iH5P2sW6Sr0mEYPzCzoY5sBTEtHO982QFbV1d0Uv
-	Lf5c1DesgPtBBL+IhyjQjJAOKng51o1X54AshcctllF9N1L3QKUbRDIgyRD5Vzkh4hLVogLSECQ
-	41Rb9yCXRVR1RRfllTJLChFCjjQEb4OztuwDd62aoK7zFcluy2qaz7+GRapqRWVhlCg1QNk6crB
-	OTWZIe5+Fyb0epNB40UrPcbJIiGcrPhat4Ch1a+Z0zqO3XgulD0yAiwntlW6AvDbNIuO9nA3AWP
-	jWCvT76TkXvUfjGJd/irz+lfg==
-X-Received: by 2002:a53:e01b:0:b0:66a:b15b:2a91 with SMTP id 956f58d0204a3-66ce4b243acmr7252560d50.42.1787575659306;
-        Mon, 24 Aug 2026 05:47:39 -0700 (PDT)
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com. [74.125.224.51])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66cf9f99e17sm2928492d50.13.2026.08.24.05.47.39
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Aug 2026 05:47:39 -0700 (PDT)
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-66ce00575dcso4633822d50.0
-        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:47:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpU6wCHq+jLQgIVK6RDVgQ1ENKaT87kYJRYiX+GTL1KRbAdMckt1VisaHQBCa35vk26oD4=@lists.linux.dev
-X-Received: by 2002:a05:6102:26c5:b0:772:5acc:b848 with SMTP id
- ada2fe7eead31-77a62c46273mr7826182137.6.1787575289120; Mon, 24 Aug 2026
- 05:41:29 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787575808; x=1788180608;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rj5OrcPbUSHUeRrK+Yhe+jiBoqRvGnLexb+l8ZGxfyk=;
+        b=Ie92T/MV4XbuLOUEyruSj98xunLBCJb12K8xgQJDiNUFdiKjT7BBlUi58trKLx3GsJ
+         P27V7aZqgQrthAi+5Zb1joqUQMJdBvCrg36abVG5cO0z7JJhbg2IrWPaay6m388ijw/k
+         Q+/mzfoLcFUqtEfEfnNSRtAeqTCsrc1ZKPZsRPW5hZaeEcp1a9PZ1rXtZrwBwiknMOWJ
+         ojPLI3zCcBXPAYjoJBl4ZfAOKxqecRFKQb9ZoPx6g9XCAR7yln95QXtGxBDUQXnzojOX
+         DEa8VpajUSFFsPx5TM3rZGyBmI2UCJmffC2fu5vrn+03QpjGqowojgMnn+OVB5X2S5dy
+         oEbQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqK2BO+KzoEotOyO06dhIbXbkMWerkI5z1ut7OlPOregiYLuYkKiXMb8pNXptCCwHXvS8A=@lists.linux.dev
+X-Gm-Message-State: AFuF++lrp/0tPsLbjKom6K6obPu4kp/guIQbcdfMDzO/2LM4Lt1+pI99
+	wcAxOfyHbOKYPeY5FlHQMdBvScrw8jMrjuqSBqjYHj/FGja5T5zHEeuY2SVjNrp7y8Tu2FkfsMg
+	cFnf6ijwe/uXLv0JEEMHwnTh0ykYN14w=
+X-Gm-Gg: AR+sD13fACdX/AXMMwJi1msDjfY2cXRnKmhLZrwqna7omk0kfzE130G6Be3ibwe2UbF
+	KOTqZqaPYWHRoh+gSSe+yjizdWnNeA/TDddMMy4oYwoflkKc4no5qmOIkAU9KCj3Qw/SNsZsILU
+	QQB2J8Sy81oVHi6xjmeVHBa0fmQDICp+qFYYCw6tPHIpIxjkKP6lfL+dtYG8qcuEq9sL6cPODDS
+	2e7CYzcFg2DwhHG0ujm9GYzYi30/6xApJPUli5YdGeN3TTty+a73c5LC8LsZ0M91GhOZy4Lo2T8
+	Wp+xFFSKjq/cGWUhMPgLkWk8EySVvi+XCMjW0OgNcqWZzv2Zs3yu6aKqD+sNEZKKDZXX6IOaVAY
+	YlgFD8PgsIMi0kKahS/8o3T1xyjGSHx4g
+X-Received: by 2002:a05:6512:3d09:b0:5b0:cce:da00 with SMTP id
+ 2adb3069b0e04-5b48b484764mr5090274e87.1.1787575808126; Mon, 24 Aug 2026
+ 05:50:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1787239813.git.geert+renesas@glider.be> <87b3e83137e1a987f3c69d214706e93ef3898cab.1787239813.git.geert+renesas@glider.be>
- <60a8d05a-76fa-43c3-a0f7-fb26a3b659b8@kernel.org>
-In-Reply-To: <60a8d05a-76fa-43c3-a0f7-fb26a3b659b8@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 24 Aug 2026 14:41:17 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWnXTAVZ_eBfoWNe-sy6BC1X+5EHkDw9R0TAA65Opzi_Q@mail.gmail.com>
-X-Gm-Features: AcwNN1UOdKQEkPlARJoVF2UurscVPaHj9T1_AXs-3b7YtVRMAHuDfcVjJgM-XPk
-Message-ID: <CAMuHMdWnXTAVZ_eBfoWNe-sy6BC1X+5EHkDw9R0TAA65Opzi_Q@mail.gmail.com>
-Subject: Re: [PATCH 29/45] clk: samsung: Make sure clk_init_data is fully initialized
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>, 
-	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Billy Tsai <billy_tsai@aspeedtech.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Taichi Sugaya <sugaya.taichi@socionext.com>, Takao Orito <orito.takao@socionext.com>, 
-	Linus Walleij <linusw@kernel.org>, Avi Fishman <avifishman70@gmail.com>, 
-	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
-	Benjamin Fair <benjaminfair@google.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Cristian Marussi <cristian.marussi@arm.com>, David Lechner <david@lechnology.com>, 
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+References: <20260821101039.4037925-1-Zhipeng.wang_1@oss.nxp.com>
+ <20260821101039.4037925-4-Zhipeng.wang_1@oss.nxp.com> <aohftK95_iDsTPPm@SMW015318>
+ <AMBPR04MB12334D1C91BFC42AEDB26E7F2EBA02@AMBPR04MB12334.eurprd04.prod.outlook.com>
+In-Reply-To: <AMBPR04MB12334D1C91BFC42AEDB26E7F2EBA02@AMBPR04MB12334.eurprd04.prod.outlook.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 24 Aug 2026 09:49:54 -0300
+X-Gm-Features: AcwNN1UOE8_YKDKnzMxa-AYkEswtmNEYtfnyPTae-IZsOuoBl4dxSuzeIfXj93w
+Message-ID: <CAOMZO5CdZk3oyMpwPcTEeROBWBr70r9J7Vt-MiEA4+Y7abE5Sw@mail.gmail.com>
+Subject: Re: [PATCH v5 3/9] irqchip/imx-irqsteer: Validate IRQ count before
+ creating domain
+To: "Zhipeng Wang (OSS)" <zhipeng.wang_1@oss.nxp.com>
+Cc: "Frank Li (OSS)" <frank.li@oss.nxp.com>, Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Frank Li <frank.li@nxp.com>, Radu Rendec <radu@rendec.net>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Viresh Kumar <vireshk@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Prashant Gaikwad <pgaikwad@nvidia.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Ulf Hansson <ulfh@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, linux-clk@vger.kernel.org, 
-	linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, 
-	arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org
+	Jindong Yue <jindong.yue@nxp.com>, Xuegang Liu <xuegang.liu@nxp.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof,
+Hi Zhipeng,
 
-On Fri, 21 Aug 2026 at 13:04, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On 21/08/2026 10:53, Geert Uytterhoeven wrote:
-> > The clk_init_data structure contains several mutually-exclusive members
-> > for different methods to specify the possible parents of a clock,
-> > prompting drivers to initialize only the members they need.  However,
-> > not initializing all members may cause subtle issues, which are only
-> > exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-> > enabled.
-> >
-> > Make sure all members are fully initialized, to avoid such bugs, and to
-> > prevent future breakage when converting drivers to a different method
-> > for specifying the parents.
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+On Mon, Aug 24, 2026 at 6:38=E2=80=AFAM Zhipeng Wang (OSS)
+<zhipeng.wang_1@oss.nxp.com> wrote:
+
+> Hi Frank,
 >
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Makes sense, I'll restructure it that way for the next version:
+>
+>  - Move Fabio's IRQ-count validation up so the count is validated before
+>    the domain is created, and add proper error handling there.
+>  - Since the invalid count is then rejected before the domain exists,
+>    the domain leak can no longer happen, so managing the domain with
+>    devm is no longer a fix. I'll drop its Fixes tag and reframe it as an
+>    improvement.
+>  - Move that devm conversion after the new devm_irq_domain_create_linear(=
+)
+>    helper, together with the other cleanup.
 
-Thank you!
+My motivation for sending [PATCH v4 1/2] irqchip/imx-irqsteer: Convert
+to devm_pm_runtime_enable()
+https://lore.kernel.org/lkml/aoXZf2z-50H8rimI@lizhi-Precision-Tower-5810/
+was the "Unbalanced pm_runtime_enable!"
+error during driver unbinding.
 
-> Let me know if I should take it via Samsung SoC clock tree. I assume by
-> default this will go directly via clock tree.
+This was seen on kernel 6.18, so I would like this error fixed in your
+series with a Fixes tag, so stable kernels like 6.18 can be fixed.
 
-In that case, please provide your Acked-by, so the clock maintainers
-don't have to parse your English response to find out ;-)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks
