@@ -1,90 +1,77 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B141228F
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C550416841
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787573684; cv=none; b=RUp+hdt+6frnGMsa98d71EpqSEO8PfbhVXu6zJViuG9YO8Z+2faShAsnCgotPQ73VZBvhe2BqKArOpHC/gvichSuXdGwA9NmJ8640Za6tvCFpwHKHVW1LULbN3KQP3yOB3tNZGOy9HKyzCOR0y0U1nokPnxBkPK6nZeO1BcNDQU=
+	t=1787574156; cv=none; b=mqIt/99lMsYjMNCeHpOLZaqQN0xYl7I+srPmZTSHO7u+9TpZDsg7XD0C8GJr+9w7ZjOgrtwIx75Z5L4FugIXD2YexrKaPMe77Urkz23YxtVZosICJ50uS44HlDxZAnXfg+qtwRbdL5s9+lO3NR/91kO5HOlTfFu1hQgQm4rqJNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787573684; c=relaxed/simple;
-	bh=eiBo1yduJHaXAj53sijSuIC7kmal8T2Qf0O1edtX+Zc=;
+	s=arc-20240116; t=1787574156; c=relaxed/simple;
+	bh=t62Zykvs+8NdpMy0PpJs95Iv6bI1meByLMw4pOoPMnI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tdtnopMes5/e6RiVkC3APp5jPRyeHcswEC1W/GPMtdnPd1yHqeUhb1x9OEScWFmh59t2xfndZ5yE0y1rTgXxXJ9bAbB+gjr0hFKCycdEn27Q9tPP8MSEwkcLksGzzPcvFVGhH5SFZ7BIWutM0u+TJHxiHd5x+VYPSQg8VqU27Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=Ef0G2s2U; arc=none smtp.client-ip=209.85.208.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=IjG8ABlg0Do+eWpUJoQPmb9LGiU3eNs6XQBYHikMZ2sgi7ka64dvuWk18tKGMKarzI2rIri8hvLKB3mK7TpVDQCXmDZoQweCXWtVl4NkE1OcdHm5bARYY/yKhGlQp6NTsIRCzdFW+JlOMKWm6HBPukyH1Jt2SXijP35Zwh72eew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=hfTdEBZn; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="Ef0G2s2U"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so5876892a12.0
-        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:14:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="hfTdEBZn"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so5891232a12.0
+        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:22:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1787573679; x=1788178479; darn=lists.linux.dev;
+        d=baylibre.com; s=google; t=1787574151; x=1788178951; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=IJ2S2NN5RmqVB8PHkfxAhd8Zl5dVEhVpefrqaDYB2O0=;
-        b=Ef0G2s2UFsSjIlRKZwb3XbE3bbSiAFBk7esXMvx0tNn1WGtnI58p2GxpKdSyaJyHBL
-         hU4pj14956TvS52rOfLRIZ6uEuAqnXOrxds5/WyDCNH6GsP84hheTYe0JTtlHJ1SCadF
-         hVAMNjFmtf6Q6bELFlpBs340TrEFL1Hr56kEMDHqGM/GLLBEaipdCYanwGXmMpDDuvze
-         3VlzbIdwOBPdwpDmOeRL6+ImK8VTAE6VStvedMJmSOLhqvC4QRDRiTBS3pT4MXtcIRM7
-         NJ+S1C8aSMpkz+DXzo+L8Ozw6TSOCX6kqBOuXY/Nvfx/tTqeFXfILeT6Sh8MqEzpSFas
-         gjnQ==
+        bh=MHbWNJk5cOn3r4GzbI0kltGoUU2l7AC2RyCAmVHKUJU=;
+        b=hfTdEBZnTfCJ0guszhIhIOtE6YCTnja0Ftg+51b+rmSKXdXAgbCsS2cu+F0+bFCbUF
+         rSGcj3BfPLecWJFX9KubQ1HMVeaHyOXZAz+HupQYZUr9k5f+6fsTx1tD6oljovGk47n2
+         ONeCONYPMiTA55oKiMR8EHGRTQhQXUc3BQWbhC3hItpfeXQLKxORvDfoiqKfCNu5B/aj
+         ODdhoTv4q2giXfhJEiegFbn2EHiJTjfghVncQqKBRfNvwEbxMXn7NFvh1IlhBY24/i3L
+         fUyOMxXLOruA7ftwZ1MJZORMIUUmjqNFo+EI5UT+rex8lA+tj4HQL34dDWhX0oqNMvmF
+         /1kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787573679; x=1788178479;
+        d=1e100.net; s=20251104; t=1787574151; x=1788178951;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IJ2S2NN5RmqVB8PHkfxAhd8Zl5dVEhVpefrqaDYB2O0=;
-        b=dkysZ0KaKVJo3pwm+2EEgGJyQcq1nA/5MVJ3BflQ98AJkQ41Ht+NSPjSAQmaSywjMx
-         s9OBpCwW+IoVT0BscclXCOXNLL5V4nuDleq0nc2b/SowTmj7vDwcNEp6JsWjNuw7dbNf
-         uGkpmYxPxylc6e/ptrb4DQSeA7WeO0vzHO+yo601Edf8A1kjEkAg4x6VL2sjalrSqJJk
-         iuNOx1Bz5Grh4AAUDESjB/jE4omi65bdZP2udtCI4hca8g07t+haiNYy345dl51zjrrP
-         74s2a9IDUma5dvInfj/KcXWUp6F0PwrYkkNy0M4qcHttC4zevl3M4mllQ6myfcyOX/v/
-         gTog==
-X-Forwarded-Encrypted: i=1; AHgh+RqgR4v9mSegfHakrz2oyqEy9HJ6JxYzhIM9DaPyVWV/4XvvpiSAxL30uEMv68x1WpRmr3A=@lists.linux.dev
-X-Gm-Message-State: AFuF++lo9hEqVGBzAAr/31TCQyt/IrhdvtA3lSizVduG92goCIgi86uD
-	bjfprOlnB1eFu48+QwNDbt4jm5sYUqT1+VBB2NgcOxWcbJsVyEdJnnrMz/LsWuab2Ec=
-X-Gm-Gg: AR+sD13KPD+X1X3IJk224mlkF7HAuyn6wD1+UWRgWQyBsUyE8YT16dt3UwwgglJI838
-	IzwCluT7J6wK+9w2dwt7zl1Mj1e41Y65NxXaFlxxHORys3KCz4NOW+Ozo/xfRTyv1pwaBTiSYxW
-	cXm45USXTFB00pNXz/ugHVTSX+xAw3220WEvZGFjfPBN2TWUJIe/LF1HhSdrmzY5DdhwiiUOnvS
-	6U/u5Xc7e6cHLpRtsVYjQGleWHYZnOGZu9iKTktxZViGT3BUgJitC0UD2F43MqecJ6sgrLRGmvs
-	jnxyb5Wd59FjfUHd9Wy4/qWr+03l3GAygnVygrP1+8zv5Sd+S+z/5i1se9+p/shGByjXTgVhc2c
-	NrHqJqTdMwnFExwkyQYtc6THHKSLKGA5IBFiKe4u4n5g1o5i2heOUH3b9KJkI2Q3pvK0fWAYHCl
-	Qu7c/CCUTlBft20SBaKjtPuPSSpQmR3qeLTy1qlQwFGSJpEyP8rCc+nFfIpkeFWVfpHKpNCytST
-	WqKtMe7yExGBwhfCZXbMheg8cIOi1BZ2vT84f+f8kxwgRZk5cox
-X-Received: by 2002:a05:6402:2b98:b0:6a3:6d6d:2296 with SMTP id 4fb4d7f45d1cf-6a582b0cfe9mr21318328a12.5.1787573679054;
-        Mon, 24 Aug 2026 05:14:39 -0700 (PDT)
+        bh=MHbWNJk5cOn3r4GzbI0kltGoUU2l7AC2RyCAmVHKUJU=;
+        b=CheTNLZJBARVDGW6Jia4qJ4RktoqE+yUx0hquaRy2M4a6AlnaMydbA1v56Xc9vQlvp
+         J/vIob+ak8aXaRFjdWZtPrHZK6g003jmnGTBfy3j3DKEW8usJOOerfmpD9+fCyws7G6h
+         SZq7Y6fq74NQOneAj4th4NDuPMlBs9QzKvWMOvvWyvBnq69M38YcjM5/ss9Zz8sxBO0I
+         NdhgGntdPk2OEJiThtt852gbAXvX32M4F8LEPjnR2ypZJjSd453xnm2cgdorRpFiEOOE
+         okISCogyJ3b9xHkUgRgwbyiPQ27nus54J3n7arGUhukRZauPz78cySx4uYDVogrgJiXB
+         W7Yg==
+X-Forwarded-Encrypted: i=1; AHgh+RrTeBYvTfDwSAqDJsURirjIgDnmKyEp8doFrNhw71RX001a/dNhtsqlKlIJ1i7UrGRy9C0=@lists.linux.dev
+X-Gm-Message-State: AFuF++mzeMh8s0VKHRCVW0CIGjh7oRDyuQObVWr+5hpkZ86X9tsTF+E7
+	9nhR19WM/1IgtrCVYUwRLalIRHAKmkz+mS01rGr5gVZhvPZxym/vEoAW8rcc02l+uUM=
+X-Gm-Gg: AR+sD11QX+SzlIdyx2Pcz2Z1/heaXMVZ0aEEB4ituzQUWRLi1dm1a6gf5lBu54O4tCT
+	p0YdUO0SrX5gY8mS546/eYUUp+slApxnh5lnV5PJgEP6/X116G1Cxhn5AmdAs5/6fC+w1QK6M7/
+	8zLRtri+oh6y7WjPDCfzLV+mQ4H5/su86GdKmM9VxSNTez/aJ4pchGL2GmoH223TiXtIwVUtD+D
+	fXbGMGY3c0nWJTVeqWqBR2ojN5Ge4qbsZcl047fm4QnbBFlGBseX+lR2LnEeuH3pBHgq14MWlox
+	p98Zyv7PaRzaBFa25etomkVnYscctFl5eti98tIcUDVZ+PWGyMcz96hkttSX0L/s/ErCVIALe8M
+	hLaljcWzUtw/CBU6iaizFdNHRgFJxrWLEnVUIn92KRtFvuZOh5+n+lxx/sYnR59oXvzTgm4diFt
+	zkBk10jALvc1E3mbFD1erUnmuppNn4nIOY3/VrSA/+t7zdTJWkNXSzVmdgHAn4PzMsK/GxvtEz+
+	lXLERCaVlS3wirKtKIT2MZj3zsFnm5580jqpIWW2sZ6T7JiH9HM
+X-Received: by 2002:a17:907:845:b0:c20:fed2:898b with SMTP id a640c23a62f3a-c2492782dbemr1724856766b.23.1787574151309;
+        Mon, 24 Aug 2026 05:22:31 -0700 (PDT)
 Received: from localhost (p200300f65f19a904efa8a94b704adaa2.dip0.t-ipconnect.de. [2003:f6:5f19:a904:efa8:a94b:704a:daa2])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-6a59e00129fsm10155492a12.1.2026.08.24.05.14.38
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-c24962a3c13sm1308598466b.26.2026.08.24.05.22.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 05:14:38 -0700 (PDT)
-Date: Mon, 24 Aug 2026 14:14:37 +0200
+        Mon, 24 Aug 2026 05:22:30 -0700 (PDT)
+Date: Mon, 24 Aug 2026 14:22:29 +0200
 From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>, 
-	Cristian Marussi <cristian.marussi@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Hans de Goede <johannes.goede@oss.qualcomm.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Brian Masney <bmasney@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Guenter Roeck <linux@roeck-us.net>, 
-	Jyoti Bhayana <jbhayana@google.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-clk@vger.kernel.org, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] module: add SCMI device table alias support
-Message-ID: <aowz8Tcf-ZvVf38m@monoceros>
-References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
- <20260618-scmi-modalias-v2-1-8c7547c1be21@oss.qualcomm.com>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Cristian Marussi <cristian.marussi@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>, arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Subject: Re: [PATCH v3 1/3] module: add SCMI device table alias support
+Message-ID: <aow2GFAfy84k-N2B@monoceros>
+References: <20260820194850.459739-1-johannes.goede@oss.qualcomm.com>
+ <20260820194850.459739-2-johannes.goede@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -92,31 +79,39 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2dhawfj2mm2jx7wk"
+	protocol="application/pgp-signature"; boundary="2tfcczky2nyuuvxm"
 Content-Disposition: inline
-In-Reply-To: <20260618-scmi-modalias-v2-1-8c7547c1be21@oss.qualcomm.com>
+In-Reply-To: <20260820194850.459739-2-johannes.goede@oss.qualcomm.com>
 
 
---2dhawfj2mm2jx7wk
+--2tfcczky2nyuuvxm
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 1/2] module: add SCMI device table alias support
+Subject: Re: [PATCH v3 1/3] module: add SCMI device table alias support
 MIME-Version: 1.0
 
 Hello,
 
-On Thu, Jun 18, 2026 at 03:56:34PM +0000, Bjorn Andersson wrote:
-> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_deviceta=
-ble.h
-> index 3b0c9a251a2e..769382f2eadd 100644
-> --- a/include/linux/mod_devicetable.h
-> +++ b/include/linux/mod_devicetable.h
-> @@ -473,6 +473,17 @@ struct rpmsg_device_id {
->  	kernel_ulong_t driver_data;
->  };
-> =20
-> +/* scmi */
+I just replied to v2 and only then found out there is a v3 already.
+There is something wrong with my mail filtering, sorry.
+
+I'm forwarding my review comments to here (the part that still applies).
+
+On Thu, Aug 20, 2026 at 09:48:48PM +0200, Hans de Goede wrote:
+> diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/scmi.h
+> new file mode 100644
+> index 000000000000..4150481524d4
+> --- /dev/null
+> +++ b/include/linux/device-id/scmi.h
+> @@ -0,0 +1,19 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef LINUX_DEVICE_ID_SCMI_H
+> +#define LINUX_DEVICE_ID_SCMI_H
+> +
+> +#ifdef __KERNEL__
+> +#include <linux/types.h>
+> +typedef unsigned long kernel_ulong_t;
+> +#endif
 > +
 > +#define SCMI_NAME_SIZE		32
 > +#define SCMI_MODULE_PREFIX	"scmi:"
@@ -125,47 +120,56 @@ ble.h
 > +	__u8 protocol_id;
 > +	char name[SCMI_NAME_SIZE];
 > +	kernel_ulong_t driver_data;
-> +};
-> +
 
-Note this won't apply since commit ad428f5811bd ("mod_devicetable.h:
-Split into per subsystem headers"). Please create a header below
-include/device-id for scmi similar to what was done in ad428f5811bd.
-(And don't add an #include for it to mod_devicetable.h, but to the
-modpost program only.)
-
-Also please only add a driver_data member if you need it. And if you do,
-consider using
+Please use
 
 	union {
 		kernel_ulong_t driver_data;
 		const void *driver_data_ptr;
 	};
 
-instead of a plain kernel_ulong_t driver_data member. I'm working (less
-than part-time) on changing the existing device-id members accordingly.
+here instead of the plain driver_data member (or don't add driver_data
+at all if not needed). This yields better type-safety, see e.g.
+https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com
+for an extended explanation.
 
-See e.g.
-https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.c=
-om
-for an extended rationale.
+> +};
+> +
+> +#endif /* ifndef LINUX_DEVICE_ID_SCMI_H */
+> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+> index a397213bedac..d241421c36aa 100644
+> --- a/include/linux/mod_devicetable.h
+> +++ b/include/linux/mod_devicetable.h
+> @@ -49,6 +49,7 @@
+>  #include "device-id/pnp.h"
+>  #include "device-id/rio.h"
+>  #include "device-id/rpmsg.h"
+> +#include "device-id/scmi.h"
 
-Best regards
+Please don't add new includes to mod_devicetable.h. That header is ugly
+and each include makes it worse. Just add <linux/device-id/scmi.h> to
+the modpost source.
+
+>  #include "device-id/sdio.h"
+>  #include "device-id/sdw.h"
+>  #include "device-id/serio.h"
+
+Thanks
 Uwe
 
---2dhawfj2mm2jx7wk
+--2tfcczky2nyuuvxm
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqMNaoACgkQj4D7WH0S
-/k4jGgf/c9brV06dZI0ixNsgSDxInOAAwxzw0Va6pEilBFWeD/1x8NZxQxIb86eu
-ERFi9ET7K8J1CkEXpSDumSzKSUdfMylIEURvojgjfnQEsYGjKUB3lgyc6ZMvZJE8
-KVGIQQhfXJzgdOen9ivFrmp13avoOEZecODfflOtBiCVBT9yqo9G8cB98iPlfN0n
-/20yUKuCi9BVxfitySRFAt3h5YGf8mWqJYyRGszONcDeatlQ3hYxcZRc6nWohvA6
-Pj79A4QISdBE4jbZiuZ4B7Tqk88TXQ1mLTCo6WZ0jaoWxESWjauNoBJPyj55WW4m
-FOrbj1Kew7KV7tsLQ07HGfCNIJuI9A==
-=DfdU
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqMN4MACgkQj4D7WH0S
+/k4yMwf+N+KJ5sPPSlOgLDa7K8R0+3z3wNZSXpKG1mfo73lwlNuUQ0o9mdIVnCSh
+HjOljqygnPT1KDnD0tyk4aBt8VyDQ7dC93v2tUbPE2EFoHWT9BR9lAcDJY3TqVqz
+tjL9DZtz1eAcw4OY5tm7FW6fBRLJTlGAgyzkcgBHxrB/6dIPZ2BaHa+eoJFUN6xU
+dBhVHRKQFKBn79sVAVD5tTw46v3SHrs1nbvdIsEtAeVZ+RE+fI+LWfjIknQiSaZ3
+4Nlmi2JnGiX9tgfeDp4HEArbnCzrtXLfmr4z8sEMjKzmk6yTKI5AxNXgwRVyD7Eu
+UpZzkHPe9Uo1jawnTLk7PSsbMrZ2/g==
+=yxWM
 -----END PGP SIGNATURE-----
 
---2dhawfj2mm2jx7wk--
+--2tfcczky2nyuuvxm--
