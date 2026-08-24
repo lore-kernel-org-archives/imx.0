@@ -1,116 +1,81 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D6C331A4C
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 19:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC1535F602;
+	Mon, 24 Aug 2026 19:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787598007; cv=none; b=NVAvOWfwgk2jS5hurt1VxY/O0N8/sADTRs3toAP0ffwTfZtKJWuZeqjy+asMPF03GznoJV5P5MRu7tzSKSuS4kgtvUmUNXwC2OLK6pjJaNF3NPx2EVBfEbJQKTcfM/Pw5MKE2LzH0Y8sMLi/bxvyG67lRqNnK/yA+SlEJpjauLU=
+	t=1787598070; cv=none; b=OU40rT/xwoW092bmTiNYvD6Po854oVeNhkRA5I3C4oCFEPmrVvLgZC10JsFqo0d/NfxwHm5QPmZxpJVgTdiM4pH4eatTmfhLVq4bqy/gCBEV+7erKPHIATgD5xf1d/9CVCBqebZLoX8Mr4MVg5Q2bauaigGhMw0toqXkIN7/sR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787598007; c=relaxed/simple;
-	bh=/G/bhdwSBXgxLht/9l67PKXD25LbrwqjA+HqIWeioC4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dWXyl8kp0SMphomdShoV2ZTT3tyKxqiY3w8viepDTEPy0GPp0vDVqs0ClVaQjNrX4uvtbeNpEe0r16k11hfljzbUa7qgJaDSsepyXq3bPAtbSHYf+q9mJhi2Zc6o1g4CWyo4+ixvoBzE30N7tzTLWTxZdZDbKicY50HEtTS4UDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z404nS+G; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787598070; c=relaxed/simple;
+	bh=kN3gYtcGX5EZyvcWjto/WRQprDWEn/YFnn04yBNSskM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bHYwTGL/C586SnMnHKehRvRRxUNc7NgxKZl98GGQcCkZN4keTF/SS7HisZpUC4tdocQtiiQaUPlKYpgUS8TZbRLubNQDDgYSOwb934byrdEEnQaEQ6XUsSYfeeL3X+brGkgqomDei7fwcEEr+4QqO7KUtrWpoHQ40IhmZO1JQgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFJ/SW8f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z404nS+G"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-472326ca506so2017902f8f.2
-        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:00:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787598004; x=1788202804; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=65NP61gKnJpo0qnqpfFXMm215YvFjmk0/dMgC3HflCE=;
-        b=Z404nS+G9V1OkyaOM8GHO/+u3GUDvtWpYzmC4bSRBnZLtZ2xsPcEdhyGzGUkhb2M7K
-         TlcGyN6+KTUHo/IYzA71e3d2QnP1Vyl5BhlKeG1JzeDrgNrwKnDkAt61GIcodb5bd3Eg
-         XI5FTWjbuz/chpwdMRFt1O9wEXM36yHztHR+eK61OUGGcreHPTYyFYwlWgFqWp5vaUYY
-         RDXhLJFpPV8aCdtZBKB5m6cnqUyRCB0BXK3m2kJCDFuYkS1Jp2CjN8o/ZvdBd2THu4nD
-         OBiIn9PhU112ivlSnVmdnwKzDWX+rjObylh3OIi7RcE+ji1TLb32aJ9/HpG+I4T1iIyv
-         EbqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787598004; x=1788202804;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=65NP61gKnJpo0qnqpfFXMm215YvFjmk0/dMgC3HflCE=;
-        b=pTqCLChjo0U53e0YLj7F5C0kGj2Ym7YJrbrZDRcTU9z8+ABEEsMETb090gx8apiSRC
-         2APnzYopznxrkok3uJUU6H6t+iCwxY78/3mDOLrwkZE7PRAeJS73VFMLXrk3xW+T+1om
-         1x/h6qzy135Rex02FIqXtNd4iW4XclwxiqSNhdj9DNBBCwzdu3I3lBZxM2LYBC109Ols
-         Pegsra5dNMoQrNKztda99WTdctGKAB+wIdEnTkCLQRAAEI4qKnkRjmG8C5UsG7x+AwAd
-         9ONvSx8F++DVSZEuZyqKJZXiLNVfORGzmgDUrRRuiIHcAePqsWUMAJcGmvMz06ElXA0Y
-         sMRw==
-X-Forwarded-Encrypted: i=1; AHgh+RpaBgchyGZ4UVUIBW+Ex67dIy8hsSF47/VaPsPnlXkqVLbjHZbP2BWEDb5j/uC/j10gEWc=@lists.linux.dev
-X-Gm-Message-State: AFuF++kWMLVJjpK0oHqBGz0qibyGw2X6orw6eltGyKnfeUm8IAzJf8OR
-	OHmS0p6IcjqmuDOFpgzWygzbZAeBn5kJ4N0rSfGsW70/dTRz5XBvDens
-X-Gm-Gg: AR+sD10ipaorqBvBKzBu6C0L8rlglqWooGqZPEeCjAPl65PM7cFQ8mdh1bFYEuvtLI8
-	Qb8tobYpCyJUW/XIB0eRmMoXsgLcJGCX68OmwA4EP+Qsr6SMQA+gwcZVvbUWNiHKMXx055iAV06
-	Wy7TyaZgiKTX1zVUgI6eLMpRQa1rMZtWPjO0Od/mF52NxJqPBu4oIHp9djzKpfh4y4GHSEtp/Z0
-	YJtemwpuy4OZgiV85SrkYYer+5DL0GLWyCSVC6TzXmlBUuABZ70krLUEn3MFxjaQ5zGEamj1eJb
-	veMKkN5FkTb/AhkNfI7isk5QZapHcS3GQBO+Iq+biNTCI+WghjUwIlTHOn1QxuNb4mvv/B88/KP
-	DQIwQAb6XSDP7dLS8LRmyhHgZ+f3L+WEw+omjYyrCQyPxHQcQnhdrFeHD6vSuaIj2AN3LPbxjQS
-	XtQ+Oyd7owyWmhnU58RXGnE2PdKoT3FAnti31vGywPSYJZSYtix+ExzA4TwizujSBUvCF3d3mGd
-	6cyHKo90Dq0xAfVHPMLTUSLK+Yhj5oJuIkm6sBg+QECp8l+BmoTKeW8jOpGhtfvvsmI
-X-Received: by 2002:a05:6000:400c:b0:481:5bce:44b3 with SMTP id ffacd0b85a97d-482c0ba22e3mr37716386f8f.16.1787598004049;
-        Mon, 24 Aug 2026 12:00:04 -0700 (PDT)
-Received: from [10.128.10.232] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9bfd865sm8813534f8f.22.2026.08.24.12.00.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Aug 2026 12:00:03 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <928e0a09-edd0-4f1d-ac6b-c225b4cd6fab@gmail.com>
-Date: Mon, 24 Aug 2026 20:00:02 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFJ/SW8f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27FE1F000E9;
+	Mon, 24 Aug 2026 19:01:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787598068;
+	bh=WlD8NSrX33+fqV6gSsGS3Os8oxiZYeoy8DsPYvW/d+8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=UFJ/SW8f+cVZvpo8o39oIIRBEvI+mEFABc7UAeepKRVJDXzhJOkEDxaSwXTqEb64o
+	 l1sjzMsPcYUuAQN7enfFpAo53L5PJvqIAB7f8w4/2YBVJbeirfAKbIJ3AIjqpahBSK
+	 EjcAXLSMMgl/cP6cNxT+dxVs0bEFCWwrDDbZHHZwIZQd6/plM9Y2Z/UCKf7ChDYpc0
+	 vWRFfDE+XNcPfuaqqrzOLgWObICzHBsUsA7ObBAVx0RpQwr+htNvB50mMFcQLzy5Uz
+	 dbaY4TvOz7KL6PB8aADDZD/zB+WJNdrS7ueoHM46vLIVwaPm1w8XEUcW6n04bB+ZzI
+	 0ggAWOQGBnHiw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A0D3924A4C;
+	Mon, 24 Aug 2026 19:00:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] irqchip: gic-v3: fix unmet dependency on ARM_PSCI_FW
-To: Marc Zyngier <maz@kernel.org>
-Cc: florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com,
- linux@armlinux.org.uk, tglx@kernel.org, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, bcm-kernel-feedback-list@broadcom.com,
- radu@rendec.net, kernel@pengutronix.de, festevam@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, arnd@arndb.de, sudeep.holla@kernel.org,
- mark.rutland@arm.com, lpieralisi@kernel.org
-References: <20260823180832.1246363-1-julianbraha@gmail.com>
- <87cxv7o62i.wl-maz@kernel.org>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <87cxv7o62i.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net 0/2] net: enetc: restore RX ring congestion mode
+ after
+ ring reconfiguration
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178759801607.3065827.9285537541360975986.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Aug 2026 19:00:16 +0000
+References: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com, wei.fang@nxp.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hi Marc,
+Hello:
 
-On 8/24/26 17:07, Marc Zyngier wrote:
-> On Sun, 23 Aug 2026 19:08:32 +0100,
-> Julian Braha <julianbraha@gmail.com> wrote:
->>
->> ARM_GIC_V3 currently selects HAVE_ARM_SMCCC_DISCOVERY without ensuring its
->> dependency, ARM_PSCI_FW, is met. However, ARM_PSCI_FW is always enabled on
->> for arm64, and the GICv3 driver only uses HAVE_ARM_SMCCC_DISCOVERY to
->> identify the NVIDIA T241, which is arm64 anyway.
->>
->> Also adds fallbacks for callers to avoid needing #ifdef guards when
->> HAVE_ARM_SMCCC_DISCOVERY is disabled (32bit arm).
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 21 Aug 2026 14:41:38 +0800 you wrote:
+> From: Wei Fang <wei.fang@nxp.com>
 > 
-> What does this 'Also' tell you? That this part is in the wrong patch.
+> The RX BD ring congestion mode (CM) enables the ENETC MAC to generate
+> PAUSE frames when ingress congestion occurs. It is configured only in
+> the phylink .mac_link_up() callback, which is invoked when the link
+> status changes.
 > 
-> This should be split in two different patches, fixing different
-> problems.  One to allow graceful fallback of the SMCCC_DISCOVERY stuff
-> when it isn't selected, and another to only force the selection of
-> that option on arm64 when GICv3 is selected.
-> 
+> [...]
 
-Thank you for reviewing, will split out these changes.
+Here is the summary with links:
+  - [v2,net,1/2] net: enetc: restore RX ring congestion mode after ring reconfiguration
+    https://git.kernel.org/netdev/net/c/9e94d8e14ae4
+  - [v2,net,2/2] net: enetc: restore RX ring congestion mode for ENETC v4
+    https://git.kernel.org/netdev/net/c/fa1a8457b858
 
-- Julian Braha
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
