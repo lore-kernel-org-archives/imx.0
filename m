@@ -1,179 +1,116 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013035.outbound.protection.outlook.com [40.107.159.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6903A8759
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 09:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787562303; cv=fail; b=EoeAmZpCOJrv+k/hrbZEDG1uu8gfMpWa6W0YRIKbetNhI2ERkKVyiwsZL0GuTcjJUZQui7S06S+pLAuxNLV4mSqp8fovUoyybfqU1XsFg6YIkaim9K0uZQ7E4v98xpKFuIaKnSOfu4IKmnmzdcVmbLlMv4fxDr9M5BRebZiafjk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787562303; c=relaxed/simple;
-	bh=xRnJ3evxyf9Ch/E0Ck5P/TaaVFakXOtCkmkRc7hX9YM=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TFWHz8UMzY72/1l8ZKt2nro6R+0Pe3/RENezDETgDv0MmHtLTdTq15EbaQGI++oct0HH0NXg5fALsUWUFIsdVVXQSbziQJXne/+mTMtMNQnhJljsrjdAyNtk0pONajpnTei8vaG9mYoCTAxv4JrL08Fg5/rDSNpRO52Yu06LDRk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AtAUMJ46; arc=fail smtp.client-ip=40.107.159.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788F1395D86;
+	Mon, 24 Aug 2026 09:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787562569; cv=none; b=kYGagC5c1Q2KEcXETE+6aAWYQ5hw1MOw2v3aiXXIz3ImETtD6kaodlHxdeNxtCZpzzkTeuY/SojDLjkVe+7mJkaXajIas8971bduBTS1vco/wEZc5UaEB3K8KH9uBPMzEDLaCB7ZtoJGwzxI9uqGJp/7Gy8oj66f076HvjhcMmU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787562569; c=relaxed/simple;
+	bh=eCWf39Oq6R1dV4/QbHyL8gv4lIOiAOFmRGTTP3aYLeU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hDEoyfkt41oG7rNiPmsy/c3ym8bqnHHeID8IV5CJgK0P3Pl5EJ+uwPi42Yjsj9wFsf24KJw+mVIuNYJhinjnkJTUaacWiJfSasyuspettm8H1428xaCRZwXrq+ucuQYvJ7qrpXXYFykkyK9PynyJ7POBqEpPfHXrDw6tJ3qaY4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/6RTO09; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AtAUMJ46"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DgIoHQevvVAQlVKa+QEoTYA/xhfZ/QJunvPe2p3VfLeTOS2KSMWqVvQEnaCrL1L8RBQvKOisC5BhRFqJ94x4Y1NeYL+3y17YWLR3x0zovwD9yq52OU46fhjTD4ECGkE6LroQ3eTQ0pu6e952ZsX+iZ7dnqmu77SaKvKJxao3jrmpRK3YVaW6Kq9lNOxhYaO8JORS1oYLF9aqyfFnsI9Gipu7GF4hW2LSp4wm/efBqDQt95Ij9DeT0FFMkzWnJcI9EpxsT6stwKdQpbYnKzNc8OrDvwYzGKNziNwdNkMD4aZBfHvrnLbqRrlkglX7rcf6tt5PTdlpz5NXZszz/7X/LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eI4bRA2CyyViscikNpsGxrkYtDQ/GIpk2oebmZFqe7U=;
- b=Wo8skL8SqodFMcAcgJVL4Yk8zI1qPdMIG52yFEQznrWuQINJH0938nZcrWxO5Zc6TKo4SPJ1m+Xh0UP29ZDniCqxZvQhhv1WKNT/MBbPYjD9wA2L6lngbKirPxR9ag2B4XFQ4auY6KrNitPh2KtrqdbsTsguC7pvsv7fiJH/z6Jd2soryP/LQuKLaUyRaluW1zod6ed5ccz7O/GD8YqS6Kui82JqaCjahPOeoSe+TKSvcdGw1m/Xodic1SGGsiM5B5yf73O9XqpX2zgDMzJ04JM5hQe0WMC50pV6kcoKo8uLSBzVUcVLpUfFy57y2jcMK/AGOCj54kK5InB+O4vasg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eI4bRA2CyyViscikNpsGxrkYtDQ/GIpk2oebmZFqe7U=;
- b=AtAUMJ46Y6q4s7QqsHYmUeyc9/ovRewBeHZ91uKs837iPRjZMlh/bUoTAkCrgLeEo9DIJ6Vxz7O2SJu+s9D15C88KWvL3PFe8RXwwthjMMapv8M/sjwyHNxcBYzyqn1OBGB5fTMeDbouKaizTdcWoEW5vP6X1EaBmWdojx37VgRrFOf7M/BfWepdwtMDUoXYKF8KSpljcuESkxg+SEE7QeJ7w3SG3MTN3Sj7ptBSDNmqb12ohpXYTLirCmeMDzrQ7FKeDvlDJKpjL9GC+PJZeXk7aobm3SUY2n94JtRikPBXoMxxcYFPeufXeh/vvLaEs7BBvvgrkolXrz222qEI2w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
- (2603:10a6:150:112::20) by DU0PR04MB9393.eurprd04.prod.outlook.com
- (2603:10a6:10:358::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
- 2026 09:04:57 +0000
-Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
- ([fe80::d247:853:3e16:1994]) by GVXPR04MB10021.eurprd04.prod.outlook.com
- ([fe80::d247:853:3e16:1994%5]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
- 09:04:57 +0000
-From: Chancel Liu <chancel.liu@oss.nxp.com>
-To: apw@canonical.com,
-	joe@perches.com
-Cc: linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH] checkpatch: Don't apply signature style checks to diff content
-Date: Mon, 24 Aug 2026 18:04:49 +0900
-Message-ID: <20260824090450.3268287-1-chancel.liu@oss.nxp.com>
-X-Mailer: git-send-email 2.50.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0113.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2b9::14) To GVXPR04MB10021.eurprd04.prod.outlook.com
- (2603:10a6:150:112::20)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/6RTO09"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD741F00A3A;
+	Mon, 24 Aug 2026 09:09:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787562568;
+	bh=eCWf39Oq6R1dV4/QbHyL8gv4lIOiAOFmRGTTP3aYLeU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=n/6RTO09hzYkG+Q9Ve8rI9r+ZZwzNsM4jwLBGzfLooHbjI8e8DpEHMtwywwrssodm
+	 sP8RySPfKNeYFWtU1YHCiJHxmrFOHV2+QN5n2Y6aEx9LUhrHocTVkY/c5jvsStZxhC
+	 KdjTAgbk2pFgy/wsl9u9UV2lmq9lCSI3QBCZxxmcQ5CP5rMrrVcdy6t+uoOu29RKMV
+	 gQZjsEMvZQ2/zb5xSqYjc9pEpmVjVlbQBsDqX/b8pT8ACcp4erfohPRQCzOYW3sMrD
+	 gLyPg5zJbBo1Koq1wOpaO5pCcCRaPtXfTEA6Tkxxmm7/Lz7LeyN1plYy+92rChSZ0Y
+	 0hQ/xstw7Kb/g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v41 1/7] Documentation/firmware: add imx/se to
+ other_interfaces
+Reply-To: sashiko-reviews@lists.linux.dev
+To: pankaj.gupta@oss.nxp.com
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260824-imx-se-if-v41-1-29cf129e4d86@nxp.com>
+References: <20260824-imx-se-if-v41-0-29cf129e4d86@nxp.com>
+ <20260824-imx-se-if-v41-1-29cf129e4d86@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 24 Aug 2026 09:09:27 +0000
+Message-Id: <20260824090927.EBD741F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB10021:EE_|DU0PR04MB9393:EE_
-X-MS-Office365-Filtering-Correlation-Id: 954f9482-2990-4250-b150-08df01bec4ca
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|19092799006|6133799003|10067099003|56012099006|5023799004|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	neKBXhu3ghB/UHh9Md83OBvRg1qmez1pOXdybVRGQzmMcTJLCJSRm1bdHhCLKIg3eHDo4zP/9QGvIrKdNjInSr/cd2cWP7wFN8hpaCMoIruvGZf1kLzkrIZ5GFRR8+/bhDJRGSVPo9qBcV7tp5fxf78f3G2Fm3QTf5QfZQOP8NEvRykzvBLJial3vS5M7KkqV0Fr/bgoZxL46GHXI00z+9KTA7AejXEGqsKwVDGM2k+CC+pjgvcLzz5zyWTFk9kpM9I/FsHV/2uBi9Jwb9eyDpWV3Pt1iBA7tV9tKKB6IOEBtvpwCFh1dI3bN5u5qVblyzk94R/8mDruT7gVY+bo6ponNQNkgRp9uTLGh1qn9JT8XjtTiB5vcJDxDKmjkGb9bVxuR3bwt5OaPHIVMT9q9/OgpVE6P7RvAjOt/y1ebw73kDdl9dwId+hO0FKpljOIIEp56IjDFttwl7dldYhDfXDctpB5ZJpc2e57ll8fdyhDFF7XPZ/ZD3qrkV2+gcHdNdqUQ7fi3R7xJvFtOjgxM6ws+xhV1RR84P31Zzx3WnOEIF+2sGXkRNBQMLnoegLf/ePclTlz7dkfPbOmIKLjNnmyRUVPieapxDuvx6Vt4R7bgVDpuAgrutbVYUzjygjIWQn7qtNqofj+rYhump4HQGCTnW962E6FaBZk+HWJm1I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(19092799006)(6133799003)(10067099003)(56012099006)(5023799004)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HsZC+nEEBEdN7D/+ch0KBvYex8Cc4KPp0yDEZAn2roKHiCw+EJgZpaFI8OG8?=
- =?us-ascii?Q?lG5v1tLg4CSDMPkUxcsPSoZrxU9WgHsFyt6ArQARE7QJlGAUm9aXn7pESiqt?=
- =?us-ascii?Q?jME8FJjzrVlfsvZC3unEAEQ2XuuToXUiUyqWqejWWRqADl7ztwBuxHxfhd1H?=
- =?us-ascii?Q?pazrLvvJiGA/VyLnbAxZ1TrgS8poul0fDLM3L3tBr9d0FuPWCvXseGR2rig9?=
- =?us-ascii?Q?LbIpnf89V8prQvGqTwF03ucqwHb86d/u+JY1uci1RCq7lnBxhCdPCeR94Nj+?=
- =?us-ascii?Q?wIrw/np/4MIpPaQ6hIikmNx4Qh6ytSlxK+Nm2RNFW/rIgKallzjH7mtp8Ms9?=
- =?us-ascii?Q?C/6qNS0Z+8F0aY+vtmGPgNNRIRPmav6E2pqsDU4ZoWorZYEgFGXv/DoxvpGR?=
- =?us-ascii?Q?/o6qfrZPJ5Ufyw7DMaA58jDXazjUGuLJD61b2+6EBvVSRHA8MNskpuB8bqxn?=
- =?us-ascii?Q?q4hYIFvRmSsH+MWH1w6NcQyauVGCHoLyDQVieyAjcG7y6bHhy5XplQJbBjmq?=
- =?us-ascii?Q?CfmlVq2XdXJSdNNDEvR+3+qqnC2PJgZEJO9eRijon6SSDxvZzwlIqNvPpmR5?=
- =?us-ascii?Q?jtRn1MHkB77ky60dKtm7dIjh9YsxEtISPGQsPTFZrVqM72ANSRftjBpVh1bP?=
- =?us-ascii?Q?+DN9iEOBRfo7mErH5aut1wcS15peQ3gFXEDk+lq4Z9i/Xz8TITmWo0oW0kFa?=
- =?us-ascii?Q?UGjbFFFUH9d9uEQeZeLYuUM+TseYidxHiqpOs1zULY+MnJJwSyDXeAfWpBk2?=
- =?us-ascii?Q?nX9ZYH6/J8/4rYl0atWFeBz9bRDMm7fV12Ke+kvOLp4ldJAHqKNAk+qhj8cZ?=
- =?us-ascii?Q?Hia3NPpjYb2WOxZK7LsHPSEwIyKIim6fmsmUO48xzPUIBEnJTmexazy1L5ms?=
- =?us-ascii?Q?XxLVe2pAAyaKxXogC9FxVSXXHF0OBk43cO2QM3QDXrc9q7puW8ieiMU2WCOg?=
- =?us-ascii?Q?M0hfYYEgPsKF72iLVtWWf5N2E94FnxVL+U1mM21RbzY/dZUUDtGuniylbyXd?=
- =?us-ascii?Q?6XVe9MGLavjIVqhpyVdvCBmyRgxFpmVgIovANBchov5S1URQEelILd9J2r9b?=
- =?us-ascii?Q?reVqE8km3GS5R0wsJzRqbT2LASw8+3yISZjAxaJ6xpgugnJIWQyerR0Gyr2Q?=
- =?us-ascii?Q?ctN8JT6JZTLWKnEKrr+Qwanjc0a/oybw1uUT9/QES/qzJgM35+Vtlso7iiVJ?=
- =?us-ascii?Q?mWXE2ZHUXW8hl++Gn3X6URyiGqGYTJzndIroUsXpLP+/kbOt7XonihShKW7i?=
- =?us-ascii?Q?QPcEZzFpLmNyxQhB2pFZWMYF6E1W5g/GaZa10GQvBTStMFSywShDprJCJ7HG?=
- =?us-ascii?Q?C8tgVGgKbTCz0BArzGFiYtoj8Kg1fvUHpFXK9wS2V01k4/WwR3t2LZn/KC4l?=
- =?us-ascii?Q?sLhDBEA9Uxo6Vu4YUOSz3n671OZ1oFe2TK7Xz1J8Gk5VLb0OAPSK1puzirG7?=
- =?us-ascii?Q?IaqiPuwmumrW9Vk7IvbqvNtiPr2iN4l5sFjjpK9K83H7YzwOW5bJvQBSM65z?=
- =?us-ascii?Q?iUn8PJ4DxiF1bUNgk8IzlznRu7B7KiQaIPXq7gdQ322Nf3FxWku4mFDdfclH?=
- =?us-ascii?Q?MRVG9CSpJ/ySvW5FuKQMk+6+bDKdJV/N/Q1+//1eyokvNRkHRFN7PnqKGZ96?=
- =?us-ascii?Q?x3urkMZPji6wxoAvru1Ays5mQ/mijyPO+laOAEEkL0JMwAjRlhAjp1MYPUFp?=
- =?us-ascii?Q?L2QENhPzyx6JE7oWQFfdjpUsymEfNhQuRVFBFCEwzqbWgLIpw8RVR29KrgPc?=
- =?us-ascii?Q?vtwoUDzQ1CYeliCtv5n1RfKyagCgyrdKsiG3TnO5s4QP9rBg0awA?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 954f9482-2990-4250-b150-08df01bec4ca
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB10021.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 09:04:57.4387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mlQ5ZQZ+H9iSHnqV+3+uLnmQBh0VcFl7Gu8kRIH31LgoT2rd8zUYiWE7kvJwjVT+oj3S9ZQlzvmkrWIeHpCVNv0hsRoXcweOkWBkx0q/62CNMxNTzjgztTRvdDlFH3AZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9393
 
-From: Chancel Liu <chancel.liu@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Minor grammatical and spacing errors make the text less readable.
+--
 
-The "Check signature styles" test is guarded only by !$in_header_lines,
-so it also runs on the diff body. Any diff context line that looks like
-a "word: value" signature tag is then flagged, even though it is source
-code rather than a real sign-off area.
+--- Patch [1]: [PATCH v41 1/7] Documentation/firmware: add imx/se to other_=
+interfaces ---
+commit 260e585f488d10326488a8cd35371c3b01d9bec6
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-DTS is a common offender. A label line whose name ends in "by" (for
-example a "..._stby:" standby regulator label) matches the
-[a-z0-9_-]+by: pattern, so checkpatch mistakes it for a signature tag
-and emits a bogus BAD_SIGN_OFF "Non-standard signature" warning, an
-"Unrecognized email address" error, and a "whitespace before" warning.
-The problem shows up when such a label appears on a diff context line.
+Documentation/firmware: add imx/se to other_interfaces
 
-Reproducer (build a self-contained mock patch, one printf per line then
-feed it to checkpatch):
+This commit documents the i.MX SoC Service layer and character device driver
+for secure enclaves like the NXP EdgeLock Enclave.
 
-    f=/tmp/r.patch
-    printf 'From: A B <a@b.com>\n'            > $f
-    printf 'Subject: [PATCH] t\n\n'           >> $f
-    printf 'Body.\n\n'                        >> $f
-    printf 'Signed-off-by: A B <a@b.com>\n'   >> $f
-    printf -- '---\n'                         >> $f
-    printf 'diff --git a/foo.dts b/foo.dts\n' >> $f
-    printf -- '--- a/foo.dts\n'               >> $f
-    printf '+++ b/foo.dts\n'                  >> $f
-    printf '@@ -1,3 +1,4 @@\n'                 >> $f
-    printf ' \treg_can1_stby: regulator-can1-stby {\n' >> $f
-    printf '+\t\tregulator-always-on;\n'      >> $f
-    printf ' \t\tregulator-name = "x";\n'     >> $f
-    printf ' \t};\n'                          >> $f
-    ./scripts/checkpatch.pl --no-tree $f
+> diff --git a/Documentation/driver-api/firmware/other_interfaces.rst b/Doc=
+umentation/driver-api/firmware/other_interfaces.rst
+> index 06ac89adaafba..6c6fa9a0ba1df 100644
+> --- a/Documentation/driver-api/firmware/other_interfaces.rst
+> +++ b/Documentation/driver-api/firmware/other_interfaces.rst
+[ ... ]
+> +Each of the above features is enabled through dedicated NXP H/W IP on th=
+e SoC.
+> +On a single SoC, multiple hardware IP (or can say more than one secure e=
+nclave)
+> +can exist.
+> +
+> +NXP SoCs enabled with the such secure enclaves(SEs) IPs are:
 
-Against an unpatched tree this prints the three bogus messages above and
-nothing else; with this change it reports no warnings.
+[Severity: Low]
+This isn't a bug, but there is an extra "the" and a missing space before
+"(SEs)". Could this be updated to "with such secure enclaves (SEs) IPs are:=
+"?
 
-Signature tags only ever appear before the first file diff (mail header,
-commit log and trailer), where $realfile is still empty. Restrict the
-check to that region by adding a $realfile eq '' guard.
+> +i.MX93, i.MX8ULP
+> +
+> +To communicate with one or more co-existing SE(s) on SoC, there is/are d=
+edicated
+> +messaging units(MU) per SE. Each co-existing SE can have one or multiple=
+ exclusive
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
----
- scripts/checkpatch.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[Severity: Low]
+This isn't a bug, but there is a missing space before "(MU)".
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 2b7a42bbdd94..498d9973cfc6 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3077,7 +3077,7 @@ sub process {
- 		}
- 
- # Check signature styles
--		if (!$in_header_lines &&
-+		if (!$in_header_lines && $realfile eq '' &&
- 		    $line =~ /^(\s*)([a-z0-9_-]+by:|$signature_tags)(\s*)(.*)/i) {
- 			my $space_before = $1;
- 			my $sign_off = $2;
--- 
-2.50.1
+> +MUs, dedicated to itself. None of the MU is shared between two SEs. Comm=
+unication
+[ ... ]
+> +NXP Secure Enclave(SE) Interface
+> +--------------------------------
+> +MU(s) is/are not shared between SE(s). But for an SoC like i.MX95 which =
+has
+> +multiple SE(s) like HSM, V2X-HSM, V2X-SHE, all the SE(s) and their inter=
+faces 'se-if'
+> +that is/are dedicated to a particular SE will be enumerated and provisio=
+ned using the
+> +single compatible node("fsl,imx95-se").
 
+[Severity: Low]
+This isn't a bug, but there is a missing space before the parenthesis for t=
+he
+compatible node name.
+
+> +
+> +Each 'se-if' comprises two layers:
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824-imx-se-if-=
+v41-0-29cf129e4d86@nxp.com?part=3D1
