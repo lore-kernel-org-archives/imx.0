@@ -1,69 +1,184 @@
-Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0280936B928
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 13:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9583F58E0;
+	Mon, 24 Aug 2026 13:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577338; cv=none; b=P48lVzy8qRHK+jeGHFPJt9JA9JrmuSSzPYldVhZgbAOEzymFSHI+IRLotfp1o3PgKPktiZ/9/cvYQy3rSY9NNoHuQnKuGaVn7p74ZUTblkaV7VJBzH2JQg6cSjjbgaTFhbdi4oDzuWFXrHhA4AbYd7KsTVruqedRMs3Y8Ztls9k=
+	t=1787577348; cv=none; b=cvvr2yAh9EW9UL5Q9EgPf6YLrxmM1cgL2JQcPpSxqb9obYuTGKqpwxxldZw7fC8Ef709dveL7vUrC1OW0qJqDwFOL3ggVBmYB9Sx9QMmnNtOEp/fYKVLPonD4ZPN4FBid1wqbYMaeFSCoDL1cZ4hFPcfTYUbZ7L31iHY2IXgFTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787577338; c=relaxed/simple;
-	bh=xu6YOcOWUBosY162fqI8wR2m/f4r2kHKyQ4LgFRs438=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qqsVHIgJdqoKn65PmignkRGHqm/n1w331WzCg/o3QSomARLz2qEI11AboC2Hueipv6rpWGaBfPtMb9kUJTNAcCrtw5euuzbagonZ/tXvTD/JHx6Z19dr5GPb1+/SWB/eg1/P93dSYcvLLucdDcc9/PJrzSb21VhzmOL6bCYMnIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=tE4EsFIy; arc=none smtp.client-ip=212.27.42.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	s=arc-20240116; t=1787577348; c=relaxed/simple;
+	bh=Oer2t2eQPBsZQBORcb+SSg1kwBUQ9dlysA5qLeXyhPM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hmDmAp/zRjARPS4eWBigbCAoAI69GOykMhxiCq9EYlHIh1NydgQr4/PIRnX1ZVe9gkFPXYOutIuAdUOF3nZTyUs25s3jXXis24DiD8ZeEvthTH4bB0dq2SxYK43ujHd5Le/zVMKvfLYZLnQk1TudCZ7SZeuBwvWDo+bzcQUwm6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cq/VJgqh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="tE4EsFIy"
-Received: from L30177.local (unknown [46.193.67.97])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp2-g21.free.fr (Postfix) with ESMTPSA id 1AADF2003C3;
-	Mon, 24 Aug 2026 15:15:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1787577333;
-	bh=xu6YOcOWUBosY162fqI8wR2m/f4r2kHKyQ4LgFRs438=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tE4EsFIyKBG0hbwT2YlOyTcRsEht1e52R4KqWyfTanay+mfqAwtAkoG1w1cFurfZt
-	 SkfaeudBWXGjB+X7+h+60FuCj/T8LrPiPMLS4KAwanudCZE7zsTm+F5LHD4LUZmRXF
-	 8+ILdE3Xgf8lis1SoejHi23/R3aXAwFve2c8WXX0IEknqv3X1GKhTxZQbRHX8j8qaj
-	 z8ZQ4QVPmV815FF5Cgi0JRxLH7rJoI3nuWvsDD0vlcWQwQgckip9KTQuv826hjRINh
-	 u0fFBGgouNOHIuLfOlMnTuJpTfhtiYbEx3Rly44yQKf0kAf63ZCY3TwUsjM5gH7wDS
-	 yTu6KM+L5RDdQ==
-Date: Mon, 24 Aug 2026 15:15:18 +0200
-From: Vincent Jardin <vjardin@free.fr>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux
-Message-ID: <aoxD5mwdBCU5Gnfg@L30177.local>
-References: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
- <3d4fe161-895e-4820-a99d-8cd5fd6d9ad2@solid-run.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cq/VJgqh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B364A1F000E9;
+	Mon, 24 Aug 2026 13:15:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787577347;
+	bh=XxLDEedc+fH0MClbI9nD7UrI/pQwIQVYtWd8rQeNnKg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cq/VJgqhQtFgfR9yQV/bP1/SnCzRTmGsFSOCg0yuPsY0hv90NAxNoozUEsX6K8sCb
+	 Noa4BkzrB4SWVuJOhAKk6GVsm33dyxZRcbMQT4rnWVIWygVtReT+CIGbHV4Rwxdo2p
+	 fzmp0ipgtiUhd4LTtjkHZmC110Qn3WtRLdMV7+bhuhTj0S96v2LUbHRk/VwOdxtnkg
+	 WCKn6daBm1jfwzT1idKpMPOINm1QLRkMuq1lagPJ2QhoTdCujiHEF0gQvQkzkZ7HtU
+	 Sn3fXQ2fnRaAQHwQ5wTzN6IaZr1OQ0hKYXL4xy8ihZ2bjKtb5EjZvO/pO0SQcSlaEo
+	 ch+zIOK5u7plw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 04/13] drm/panic: Return errno codes if panic output
+ fails
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Thomas Zimmermann" <tzimmermann@suse.de>
+Cc: imx@lists.linux.dev, intel-xe@lists.freedesktop.org, ojeda@kernel.org, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, intel-gfx@lists.freedesktop.org
+In-Reply-To: <20260824125201.218863-5-tzimmermann@suse.de>
+References: <20260824125201.218863-1-tzimmermann@suse.de>
+ <20260824125201.218863-5-tzimmermann@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 24 Aug 2026 13:15:46 +0000
+Message-Id: <20260824131546.B364A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d4fe161-895e-4820-a99d-8cd5fd6d9ad2@solid-run.com>
 
-Hi Josua,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-> Reviewed-by: Josua Mayer <josua@solid-run.com>
+New issues:
+- [Medium] Using KUNIT_ASSERT_EQ causes kernel test memory to leak if the d=
+rawing function returns an error, bypassing explicit resource cleanup.
 
-Sorry, I did miss your review while doing a v2 based on the Bot's comments.
-Please, can you resubmit your reviewed by on this serie:
-  https://lore.kernel.org/all/20260824-for-upstream-lx2160a-pinmux-fix-v2-0-0a525d5f4cd5@free.fr/
-?
+Pre-existing issues:
+- [High] Concurrent invocation of the debugfs trigger for planes on differe=
+nt devices causes data races on global panic buffers, leading to memory cor=
+ruption.
+--
 
-thank you,
-  Vincent
+--- Patch [4]: [PATCH v2 04/13] drm/panic: Return errno codes if panic outp=
+ut fails ---
+commit 6a8545466378db489975c829328cc895f57550b4
+Author: Thomas Zimmermann <tzimmermann@suse.de>
+
+drm/panic: Return errno codes if panic output fails
+
+Return errno codes from the panic output helpers to detect invalid panic
+handling and avoid flushing the display if an error occurred. The panic
+test cases are updated to assert these new return values.
+
+> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+> index 62490d32019cc..cc33a2b4bb52a 100644
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+
+[ ... ]
+
+> @@ -945,9 +954,15 @@ static void draw_panic_plane(struct drm_plane *plane=
+, const char *description)
+> =20
+>  	drm_panic_set_description(description);
+> =20
+> -	draw_panic_dispatch(&sb);
+> -	if (plane->helper_private->panic_flush)
+> -		plane->helper_private->panic_flush(plane);
+> +	ret =3D draw_panic_dispatch(&sb);
+
+[Severity: High]
+This is a pre-existing issue, but can concurrent writes to the debugfs trig=
+ger
+corrupt global buffers?
+
+If a user concurrently writes to the debugfs trigger files (drm_panic_plane=
+_%d)
+for planes on different DRM devices, draw_panic_plane() executes concurrent=
+ly
+because dev->mode_config.panic_lock is a per-device lock.
+
+When DRM_PANIC_TYPE_QR is active, multiple threads could enter
+drm_panic_get_qr_code_url() and modify the global static variables qrbuf1,
+qrbuf2, and stream.workspace without cross-device synchronization:
+
+drivers/gpu/drm/drm_panic.c:drm_panic_get_qr_code_url() {
+    ...
+    stream.next_in =3D kmsg;
+    stream.avail_in =3D kmsg_len;
+    stream.total_in =3D 0;
+    stream.next_out =3D qrbuf2;
+    stream.avail_out =3D QR_BUFFER2_SIZE;
+    stream.total_out =3D 0;
+    ...
+}
+
+Could this cause memory corruption during simultaneous debugfs writes?
+
+> +	if (!ret) {
+> +		/*
+> +		 * Only flush if we have a panic screen to display. Otherwise
+> +		 * it's probably better to leave the display output as-is.
+> +		 */
+> +		if (plane->helper_private->panic_flush)
+> +			plane->helper_private->panic_flush(plane);
+> +	}
+> =20
+>  	drm_panic_clear_description();
+
+[ ... ]
+
+> diff --git a/drivers/gpu/drm/tests/drm_panic_test.c b/drivers/gpu/drm/tes=
+ts/drm_panic_test.c
+> index ad2f3a2f93b6a..fdd77b0cc54c9 100644
+> --- a/drivers/gpu/drm/tests/drm_panic_test.c
+> +++ b/drivers/gpu/drm/tests/drm_panic_test.c
+
+[ ... ]
+
+> @@ -102,7 +102,8 @@ static void drm_test_panic_screen_user_map(struct kun=
+it *test)
+>  	sb->height =3D params->height;
+>  	sb->pitch[0] =3D params->width * sb->format->cpp[0];
+> =20
+> -	params->draw_screen(sb);
+> +	ret =3D params->draw_screen(sb);
+> +	KUNIT_ASSERT_EQ(test, ret, 0);
+
+[Severity: Medium]
+Will this KUNIT_ASSERT_EQ() cause memory leaks if the test fails?
+
+If params->draw_screen() returns an error, KUNIT_ASSERT_EQ() will abort the
+test thread immediately. This means the test will skip explicit resource
+cleanup, such as the vfree(fb) call at the end of
+drm_test_panic_screen_user_map().
+
+Should this use KUNIT_EXPECT_EQ() instead to allow the cleanup code to run?
+
+> =20
+>  	for (i =3D 0; i < fb_size; i++)
+>  		drm_panic_check_color_byte(test, fb[i]);
+
+[ ... ]
+
+> @@ -146,7 +147,8 @@ static void drm_test_panic_screen_user_page(struct ku=
+nit *test)
+>  	sb->height =3D params->height;
+>  	sb->pitch[0] =3D params->width * sb->format->cpp[0];
+> =20
+> -	params->draw_screen(sb);
+> +	ret =3D params->draw_screen(sb);
+> +	KUNIT_ASSERT_EQ(test, ret, 0);
+
+[Severity: Medium]
+Similarly here in drm_test_panic_screen_user_page(), if KUNIT_ASSERT_EQ()
+aborts the test on failure, will it skip the free_pages: cleanup label,
+resulting in a permanent memory leak?
+
+> =20
+>  	for (p =3D 0; p < npages; p++) {
+>  		int bytes_in_page =3D (p =3D=3D npages - 1) ? fb_size - p * PAGE_SIZE =
+: PAGE_SIZE;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824125201.2188=
+63-1-tzimmermann@suse.de?part=3D4
