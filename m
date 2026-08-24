@@ -1,179 +1,119 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8064071E4;
-	Mon, 24 Aug 2026 14:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787580593; cv=pass; b=oR/mxUESRlTaJ6m9OM+wXfA/PTVWjml96FVbQi8djK55Bwjs2wgSlNspwTSyUaXvYFODeYYCXDJpGqGm1YS7OHQ53fqdtTxjuFXylOFV4oAgDVHJRfRNqlP3GDpYb5BaJLOLpk+m1f9YAIhiVNi6UL+t7LKCh0oVdsnzVONlJYA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787580593; c=relaxed/simple;
-	bh=gO2QlzyaY4RLJobJKaTT0WJ39uMKgLxWfxnjtNPHa0A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JS9tOt/LWkygtHq6Rz3vdqN0VnmVb4ugVG96IQrBpvd78/duBobkBlJ4eANE9+oM4TpGdpZ/hvwsm8NdQOjCm/a5mpRHiYZZW9gFPLWr3RfK9W9DEmxdIrXlIOf+o6ilwKjq/5ZVZMHavafAQTLeiKUgo4uM6gnEWpKcxlJDFvU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=NsQJwBuS; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0942833C182;
+	Mon, 24 Aug 2026 14:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787580688; cv=none; b=mDIfOHr/zQkBimPJrsE0ZS6d639XlsC4L3LkoS5h6UPzuT2jkb5SWdV62E2J52UFjmyWBo0SZGNyNZzZegEQAcmkcFIVDw5a+Qu18yCcYwAetHh1tR69ckrWF3b5yMISGAijsItxVdS9YSJR9clcP4kjGIGPKEr4YDZGsNdN+n0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787580688; c=relaxed/simple;
+	bh=FXwAVx3UqbOjAt7lM9Asm08c1pgGI3sWPbfWT5OsL40=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=RN6PW2sFucHnjBqN/V6z4yiphdw9GcYrnItm1KxMprZeP+UuITIwuOsU8hGOJw4w1p79wFr0LNC0IvMxqg3CmhoOSB0Dgqb9T5B84Y8x2k4jUAuofBS67QCuN9YPVup/sAboQXZ9gConbgTRYXVtxwQ2kWVwoD95tURGZq2Dvvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9wr6Sjt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="NsQJwBuS"
-ARC-Seal: i=1; a=rsa-sha256; t=1787580579; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Xs7GQE12vG2J/xDZWnVYI0ICOOtYtKpA3u4jAoCJ3DJWJ/HGcOwBHkZGAMiIhGCi+6CjDR8jz9N0qOX/Q0JMmeJlgT3SP0ReWcGnVR8MeH+VjLKD7EBTABm+Gpbtml9qPeWTOX0WQhKZ4IuYKP53wBnn16hgbewo9rp1mgjE6a0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1787580579; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=YqE5t8CDTWJv/M+DMvOpZZ0XYqSFISFkIBm+cI8/axs=; 
-	b=A9iuqLEyKwqfIOtD+6x333t8sQv5iw4xVqAnRNJ0f6rNK5HRAql15maRew2U92zlspAH3b02f81S9YxXGThZxSADaEdA0uVp4RwYhdHoKxjQCstghy409ZI33yzYW/iW4+E9plYWX2wBTOT/vWta0W5H3gfTbbG4od8Qq/xQPcM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=yoavmoshe.com;
-	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
-	dmarc=pass header.from=<linux@yoavmoshe.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787580579;
-	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=YqE5t8CDTWJv/M+DMvOpZZ0XYqSFISFkIBm+cI8/axs=;
-	b=NsQJwBuSxj8BJ0czi1c/R29UhQxdo+b6ZwHBMlGQ2QqQo0XgZBsn+lCA3HrZVpLx
-	LVODQh7ik2reF/PwCs1SbjpF/c44RoB+bQhELsBBMUQuPXXxJh4482xYi3jIHUhcKSg
-	H7xXc5BG/Jy0Z9hIuptdp9wLSHPFWSU60qYt2qcA=
-Received: by mx.zohomail.com with SMTPS id 1787580576626588.5393770719288;
-	Mon, 24 Aug 2026 07:09:36 -0700 (PDT)
-Message-ID: <da6bffba-6c44-4ee7-a1a8-842f9e6de408@yoavmoshe.com>
-Date: Mon, 24 Aug 2026 16:09:32 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9wr6Sjt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817C91F00A3A;
+	Mon, 24 Aug 2026 14:11:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787580686;
+	bh=NNSqrxhKdKa9IsISn7TuGdTFnKoxHXdqNnZmSpXrJlU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Z9wr6SjtyDdFI565fEg5Y7ka2qiBRlRSYHSDE4oTcj68lvrC37ievysH8flpSFsGQ
+	 V6k0ysaCuZcI0BdQbAeTG2KTgEfCTJeYgYM6VihjJ30FqRkMQIpvXzMlm0jzbbQTKr
+	 sHma8LyvG8V/1vxLLRmMyH/dsN5gB7UU9vfJX/EZnPfbQV+xjks16B5nx75lndLsLh
+	 iM7XJCTIll7JU50iUrJ/uihq7UDE12/hUfaCAvWQkut8ja7irSLPeuCpA3VDJ7b/Nx
+	 j5i2EgWhpiU+dbZVc4xJx3Rq8Dtgg3oNJaje9YQ3Kzsaz1eQhSMUPzMTgu8VW+GmY7
+	 irzAfulRKrnSw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 13/13] drm/panic: Compile KUnit tests as module
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Thomas Zimmermann" <tzimmermann@suse.de>
+Cc: intel-xe@lists.freedesktop.org, ojeda@kernel.org, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, linux-hyperv@vger.kernel.org
+In-Reply-To: <20260824125201.218863-14-tzimmermann@suse.de>
+References: <20260824125201.218863-1-tzimmermann@suse.de>
+ <20260824125201.218863-14-tzimmermann@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 24 Aug 2026 14:11:25 +0000
+Message-Id: <20260824141126.817C91F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ARM: imx: Fix suspend/resume crash with Clang CFI
-To: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>,
- Nathan Chancellor <nathan@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Russell King <linux@armlinux.org.uk>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260718111340.159896-1-linux@yoavmoshe.com>
- <CABCJKudqGL+BFFcz3qsuoJB6S_OAt-vs2yqePC_=oy+JzmPpVw@mail.gmail.com>
- <3046e60d-509f-471f-bd15-3ce78c87500b@yoavmoshe.com>
- <20260721180950.GA3684684@ax162>
- <180001f5-bddd-4e58-8442-f7ef3c979500@yoavmoshe.com>
- <CABCJKufhvTxmVm8y7xr4RWWKsoZk0h8UGBnem+F5fknnimaqPA@mail.gmail.com>
- <7f273a08-b29c-4e15-b340-898b251efe57@yoavmoshe.com>
- <CABCJKud+GsBVv+XMTsi_4QAaTHo7jXD2Hyvi9wqKd7x3i2xyAg@mail.gmail.com>
- <415ffa24-a30b-43b2-aa6a-a1cde3bd4ef0@yoavmoshe.com>
- <CABCJKud9B8vB-J8f0HLHw6EgEKVWzy+Q1PrNxpO_6yCGtEyi8A@mail.gmail.com>
- <12a46993-82a5-4109-87fa-61b8fcf764aa@yoavmoshe.com>
- <CABCJKufoQ0fX797M01t7CkTgMEwNCELY1=ptZsxr=jWOR-KAyA@mail.gmail.com>
- <CAKwvOdnaOy-nyZ=8oLw4N-_hA9JZVdP2BhR8cweCAOhsy4VG6w@mail.gmail.com>
- <91cb0f21-e78a-4931-b123-937c6a01592c@yoavmoshe.com>
- <CAKwvOdk-JmqjhZWBiLjXTxKhEV+T3BAB6An+3Ara8oybmhAMpA@mail.gmail.com>
-Content-Language: en-GB, sv-SE
-From: Yo'av Moshe <linux@yoavmoshe.com>
-In-Reply-To: <CAKwvOdk-JmqjhZWBiLjXTxKhEV+T3BAB6An+3Ara8oybmhAMpA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-Sorry it took so long, I finally got it to work using your method!
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-On 2026-08-17 11:58 PM, Nick Desaulniers wrote:
-> Can you share that diff? I would have expected that to work. Perhaps a
-> minor mistake in your implementation?
+Pre-existing issues:
+- [High] Dangling pointer in panic_msg array causes use-after-free during k=
+ernel panic after the test module is unloaded.
+--
 
-I started with something very simple: using SYM_TYPED_FUNC_START and
-copying the 4-byte hash into OCRAM before fncpy(). But that didn't boot
-on my hardware (Kobo Clara HD, i.MX6SLL).
+--- Patch [13]: [PATCH v2 13/13] drm/panic: Compile KUnit tests as module -=
+--
+commit 9a00d4c3f17fad5dbc6e3335649c2316482a4fad
+Author: Thomas Zimmermann <tzimmermann@suse.de>
+Subject: drm/panic: Compile KUnit tests as module
+   =20
+Fix dependency of the panic-helper KUnit tests on CONFIG_DRM_KUNIT_TEST=3Dy
+and make them build as a module. Export the necessary interfaces from the
+panic helpers iff the KUnit framework has been enabled.
 
-I think the issues were:
-1. My first attempt wrote the hash to suspend_ocram_base +
-sizeof(*pm_info) - 4, which I suspect overwrote the last member of
-struct imx6_cpu_pm_info, corrupting the memory controller setup.
-2. Moving the hash after pm_info and offsetting fncpy by +4 still failed
-— I think because fncpy requires 8-byte aligned source and destination
-addresses (FNCPY_ALIGN, with a BUG_ON check).
-3. Offsetting by +8 for alignment also failed. I suspect it is because
-SYM_TYPED_FUNC_START emits the 4-byte hash after the .align directive,
-which shifts the imx6_suspend label out of 8-byte alignment, again
-triggering fncpy's source alignment BUG_ON.
+> diff --git a/drivers/gpu/drm/drm_panic_helper.c b/drivers/gpu/drm/drm_pan=
+ic_helper.c
+> index 669f09225f8ed..253262b7e0d4c 100644
+> --- a/drivers/gpu/drm/drm_panic_helper.c
+> +++ b/drivers/gpu/drm/drm_panic_helper.c
 
-The version that finally boots on hardware emits the hash manually with
-explicit alignment padding, instead of using SYM_TYPED_FUNC_START:
+[ ... ]
 
-diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
-index a671ca4..b500922 100644
---- a/arch/arm/mach-imx/pm-imx6.c
-+++ b/arch/arm/mach-imx/pm-imx6.c
-@@ -515,7 +515,7 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
- 	pm_info = suspend_ocram_base;
- 	pm_info->pbase = ocram_pbase;
- 	pm_info->resume_addr = __pa_symbol(v7_cpu_resume);
--	pm_info->pm_info_size = sizeof(*pm_info);
-+	pm_info->pm_info_size = sizeof(*pm_info) + 8;
- 
- 	/*
- 	 * ccm physical address is not used by asm code currently,
-@@ -568,10 +568,16 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
- 			mmdc_offset_array[i]);
- 	}
- 
-+	/* Reserve 8 bytes between pm_info and the function copy in OCRAM:
-+	 * 4 bytes padding + 4 bytes kCFI type hash, so that the hash sits
-+	 * at fncpy_dest - 4 and fncpy_dest remains 8-byte aligned. */
-+	*(u32 *)(suspend_ocram_base + sizeof(*pm_info) + 4) =
-+		*(((u32 *)&imx6_suspend) - 1);
-+
- 	imx6_suspend_in_ocram_fn = fncpy(
--		suspend_ocram_base + sizeof(*pm_info),
-+		suspend_ocram_base + sizeof(*pm_info) + 8,
- 		&imx6_suspend,
--		MX6Q_SUSPEND_OCRAM_SIZE - sizeof(*pm_info));
-+		MX6Q_SUSPEND_OCRAM_SIZE - sizeof(*pm_info) - 8);
- 
- 	__arm_iomem_set_ro(suspend_ocram_base, MX6Q_SUSPEND_OCRAM_SIZE);
- 
-diff --git a/arch/arm/mach-imx/suspend-imx6.S b/arch/arm/mach-imx/suspend-imx6.S
-index 63ccc2d..c06e474 100644
---- a/arch/arm/mach-imx/suspend-imx6.S
-+++ b/arch/arm/mach-imx/suspend-imx6.S
-@@ -3,6 +3,7 @@
-  * Copyright 2014 Freescale Semiconductor, Inc.
-  */
- 
-+#include <linux/cfi_types.h>
- #include <linux/linkage.h>
- #include <asm/assembler.h>
- #include <asm/asm-offsets.h>
-@@ -148,6 +149,15 @@
- 
- 	.endm
- 
-+#ifdef CONFIG_CFI
-+	/*
-+	 * Emit kCFI type hash before imx6_suspend with padding to preserve
-+	 * the 8-byte alignment that fncpy requires for the source address.
-+	 */
-+	.align	3
-+	.4byte	0
-+	__CFI_TYPE(imx6_suspend)
-+#endif
- ENTRY(imx6_suspend)
- 	ldr	r1, [r0, #PM_INFO_PBASE_OFFSET]
- 	ldr	r2, [r0, #PM_INFO_RESUME_ADDR_OFFSET]
+> -static void drm_panic_helper_set_description(const char *description)
+> +VISIBLE_IF_KUNIT void drm_panic_helper_set_description(const char *descr=
+iption)
+>  {
+>  	u32 len;
+> =20
+>  	if (description) {
+>  		struct drm_panic_line *desc_line =3D &panic_msg[panic_msg_lines - 1];
+> =20
+>  		desc_line->txt =3D description;
+>  		len =3D strlen(description);
+>  		/* ignore the last newline character */
+>  		if (len && description[len - 1] =3D=3D '\n')
+>  			len -=3D 1;
+>  		desc_line->len =3D len;
+>  	}
+>  }
+> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_set_description);
 
+[Severity: High]
+This is a pre-existing issue, but since the test can now be built as a modu=
+le,
+does unloading it leave a dangling pointer in the global panic_msg array?
 
-> How did you verify this? Can you share the command line invocations and output?
-I tested each iteration on postmarketOS by building the kernel with
-pmbootstrap (Clang/LLVM, CONFIG_CFI=y), replacing the vmlinuz on the SD
-card, and booting the Kobo Clara HD. The earlier attempts all failed to
-boot (though they worked fine in QEMU, which doesn't emulate the i.MX6
-MMDC hardware I guess?).
+In drivers/gpu/drm/tests/drm_panic_helper_test.c, drm_test_panic_init()
+calls drm_panic_helper_set_description("Kunit testing"), which stores a
+pointer to the test module's .rodata.
 
-I'm not really sure which approach is better now. The version above
-preserves CFI on the indirect call, but it's quite involved compared to
-the v3 __nocfi wrapper. If you think this is the better way to go, I'm
-happy to clean it up and resubmit as v4.
+When the drm_panic_helper_test module is unloaded, this memory is freed. Si=
+nce
+the test suite lacks an .exit callback to call
+drm_panic_helper_clear_description(), the dangling pointer remains in the
+global array.
 
-Yo'av
+If a real kernel panic occurs later where detail->description is NULL (such=
+ as
+via kmsg_dump(KMSG_DUMP_PANIC) on some architectures), this function silent=
+ly
+ignores the NULL input and leaves the dangling pointer intact.
+
+Will this cause a use-after-free read when the panic screen rendering
+dereferences desc_line->txt, potentially preventing the panic screen from
+displaying during an actual crash?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824125201.2188=
+63-1-tzimmermann@suse.de?part=3D13
