@@ -1,176 +1,224 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72C536B924
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 07:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C1D374A1B
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 07:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787556954; cv=none; b=OrivH9kALZUYhjlMtU7ATtGWWArjUq2EVYx1rXJzJVPFNjQhE4BPFdl01HZuYETqiTiE8yd8DrDiKHGE8X2xCe92OwJpgNjJgJ+rZ8lRbRJhr2WmfzvZAK5GPzEK4KGXUML+nFG8xjyXP137sdx6iGFL1VfHfFxzc0HBcf6OQOM=
+	t=1787558135; cv=none; b=ap6p1DXWoLmkbZJSFXFSND+wii8B/OHGPF8dvouVrR7jxeWTjjGrbk0mwfjfbgchsLFDzlPDNQCcXDEpmOI3MmzKPmhDrT0CXUnj/2iG2OCU+tvrE77e706rYjgMQE1Ckc8V+mALFzNEAM1YtE7OmUwwwrpCdYgajoudbqS467c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787556954; c=relaxed/simple;
-	bh=q/g8NJOaENOuQ2WFxVG8AbfQUS+DkEXkOFi2WszB1Aw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=gWwWtqA5K8196kj8p7UKDg+AbtbAoAnAdhCR5pfGnPsN3ypbWo3Xh8woGfEd0zrt30ULWS85CJhaYO1j/tWEz0q53KQNzurxBuxOCGKwbzNwuDtWgXsYqhdpHMQGtc/r0mIYhJo9R0YT1GZG94Ugs89klYN/8FbQGwQbnYMr3V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=AYA0NmP/; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1787558135; c=relaxed/simple;
+	bh=82tOHDC7nJrDfycmSAVW9nOEAnMjFI64BjxgfbPacuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bGI5vmQghjw1y+RqMxP1t1Aror3fzFGy8v7EDMHvLU072Szc4vf2FUzOYNQK7wKTPYkjIKqX98mCmdCmMzpRDJr/uxX5QPQvK1FP8QvPiKfd2Zd9N2Ja9AQYdytKc/FjlBkfpSomvyxVR3V6RSV5kjugsJBlqzAzZGio1v4YRAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cA7MmOez; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="AYA0NmP/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1787556935; x=1788161735; i=markus.elfring@web.de;
-	bh=q/g8NJOaENOuQ2WFxVG8AbfQUS+DkEXkOFi2WszB1Aw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=AYA0NmP/0LWuMTKY7ooSHPsGa4zc8HHMnNA1WKTZhVJbdwtjtJG1BpljNHydajFq
-	 +7Pc0iK4LVcLxevpZSMqk6fhs9mi1hhNXkSSfeQ5/LN6HVrNay+NiW+ECh43Cvtle
-	 qH20pU506aW1+shEBPvNE6caNztbxk+XY8mv1l+pEwM+hsb1C9jfP0pEJxvIqwjxM
-	 Jk5WCtipVp/K/qB36augb6jvxZhiwc139z/LHZz438oyfdmkgU/6U02Gb/KDpazXv
-	 kysD/WxHINBsxh/TgXZ9HdENGs5VYoKxpbOzpb/HD/aCHmO6Xq3mKfc5M2pZO8oVh
-	 3GdAYyeBLrQnP2PGQw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MYclj-1xSGHc00xf-00Ol90; Mon, 24
- Aug 2026 09:35:35 +0200
-Message-ID: <f42f463a-e2cb-486d-91af-40c646d38b6b@web.de>
-Date: Mon, 24 Aug 2026 09:35:32 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cA7MmOez"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc891373e0so34661845ad.2
+        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 00:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787558131; x=1788162931; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fD7HDEqAve3vYidUjX8s8f4KzZ+OcpC6vSRwhTvcNpE=;
+        b=cA7MmOezhlIyqMcg3CyLJhGw+uWvR4xtzSUYbQDloGen+ZXJJykH/FahY5n8AfE6AI
+         RY/g39CLRJo1igFoy2TiETcQIi7+TFZXMHo5Vu6U1PNo1jcfgWh4PztsVXZGtX0pjLJL
+         t5SCJ8LszpqpbIDpsHoUyivMZ0q3mbIuC0f+RPPrI3xaHAsiKlcVJAB4HVVfc3cJq0GS
+         +yaZKKRRYdpTo3JEHT87FeUhSljs2ccrGuEpmcSoOHHh4HxC54bRXsbbmmKVueLOhOi2
+         Vm8uEI3xIk46YooxMOr9JxeE7PxOIMW00uDPO0WM9mgNwCGQxjQOGK0k+Erqp8AcHEOI
+         gJeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787558131; x=1788162931;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fD7HDEqAve3vYidUjX8s8f4KzZ+OcpC6vSRwhTvcNpE=;
+        b=ZaqghqjTdi9whsJzqUfV9AD6xA1MSXx2QmWf1+IkdtDfTVhtVLYUippHFFtwGgPa4r
+         spMfXxWcwW7JxmypMjMA5Vy+qQtAtxVwLti7iAuG2p9BT+RjYbqMalOt/3O1OSA5swDe
+         p9SucAWAmLMKk9tSzpKap4JqCz/G9uLS0SvfViM89a85TvjqOkP4hMjWQM0BNpUA1qro
+         VVZgVZNYNKG+8nSEMKnm4Fwt63HR0hOtXUUxxQ2DFGnL12l42sNMLqVksofMvvTItErE
+         W/ZS9faFfwjeYKaOjpy3wbwTabhRwA5QPPJlXHD+V6vliMydyZa6qpC6Jchgd/DH0+xV
+         Maaw==
+X-Forwarded-Encrypted: i=1; AHgh+RriiI2m4gXWgvupYOhwj3+X1rk2G/ohR2Jit4/K7P5cTdi5f7ZGdAReU/uNm+V2RMey3h8=@lists.linux.dev
+X-Gm-Message-State: AFuF++lH6WA0GdrLKSsYnlmiWQ5yBzYD+Kb2plNaL4BK2RhMrsRvdPvV
+	KClabeuW+5XdqmNQb0YTMrWbl5e7JHX4coGsg+YsD9Wdx60QxbaXn4Y1
+X-Gm-Gg: AR+sD11Zhwf6MasxBGhmEYQgECUDHJfpMgVRi0Xaqk+UUBjy4KAznVmKwzTz+eMmIYB
+	wG5glZWj1Pzv7eWoY+WgKDqs4IRVBxdQu40vGa//TsjBs+3C10cFn0d9d5Lx5z9ZNbCtAiJ4fNY
+	+MwkLil+QBsZb+3rT9gZ48oUfqs9LkAPc86ShYrphkYSEPJy6t8EWkG5XFq+ztaonFnG5rRmgS9
+	GG4CJA2wM3MJzeLkrBL1hD+AhGQWyUq8n0Zl/BEggx/CZKYX5VThgMgqzKfuPX8+/e0dM6gzIn/
+	XNCJnPFPa9xM1oZBrByFUsIU2eyOD11Ypzlo5Zo7Nmgq5VDazqJq1HxABYXyYX9gvXdaVmEpplL
+	FiUEkiiNursQQ0HRE4siSKyYrpw2R+LYf66FJpok36PtQg58yM5UX2+VznskeRnBea6uUNICBse
+	HSLqHb9BIV04dEyYKXN0hwbjdAwEvdadZPVPn5GLlZkKzdU3BURsDD1I18k1AajGegROMDTV+9n
+	JiXpjWw7+AWw8+itZWBLD/Iz/0PYdDIGib1o6WDTMMT3YYAoRi6
+X-Received: by 2002:a17:902:f70b:b0:2d6:3c2f:6a4 with SMTP id d9443c01a7336-2d670d07a21mr311514175ad.13.1787558131477;
+        Mon, 24 Aug 2026 00:55:31 -0700 (PDT)
+Received: from hanzj-mi.. (ec2-99-79-140-187.ca-central-1.compute.amazonaws.com. [99.79.140.187])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d67679e55bsm14421565ad.30.2026.08.24.00.55.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 00:55:31 -0700 (PDT)
+From: hanzhijian <hanzhijian1991@gmail.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	kernel@pengutronix.de,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	hanzhijian <hanzhijian1991@gmail.com>,
+	sashiko-bot@kernel.org
+Subject: [PATCH v3] PCI: imx6: fix resource leaks in probe error paths
+Date: Mon, 24 Aug 2026 15:55:12 +0800
+Message-ID: <20260824075512.3386898-1-hanzhijian1991@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260823071129.2980059-1-hanzhijian1991@gmail.com>
+References: <20260823071129.2980059-1-hanzhijian1991@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Manush Prajwal <manushprajwal555@gmail.com>, imx@lists.linux.dev,
- linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kernel@pengutronix.de, Frank Li <Frank.Li@nxp.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Jacky Bai <ping.bai@nxp.com>, Linus Walleij <linusw@kernel.org>,
- Md Rabbani <rabbanyhmm@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
-References: <20260814190527.969-1-manushprajwal555@gmail.com>
-Subject: Re: [PATCH v2] pinctrl: imx1-core: fix device_node refcount leak
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260814190527.969-1-manushprajwal555@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:PwYQUUsoSwv2Z3S8Eec2KvSwXdDwl+avsF9Auc8cUJcqSs+RzWT
- ebhD33QiPp4fFYEW/gv2NrUA3lSBq3RqVYtdC+4aekFVKfjd1yk6mmBdZ64oaUFeilD8TW6
- m5PpL8e12NilxAb4p4icsYL5rCDrhKLUVUZMXNwW299/JodLk7EcBQjeeJ3H8rNyUV+HIDg
- mak1RB1YjPa0QGys2YOYw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2e8Ig6gz9AA=;XYjB0IL17CfScOfQ85PYGCKWdjW
- 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
+Content-Transfer-Encoding: 8bit
 
-=E2=80=A6
-> Rework both loops around for_each_child_of_node_scoped() instead of
-> adding manual of_node_put() calls, matching the sibling helper in
-> pinctrl-imx.c and imx1_pinctrl_parse_dt() in this same file, which
-> already use the scoped variant.
+imx_pcie_probe() leaks both pwrctrl devices and power domains on
+failure:
 
-How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
-=E2=80=9CCc=E2=80=9D) accordingly?
+- imx_pcie_attach_pd() attaches the "pcie" and "pcie_phy" power domains
+  and creates device links to them, but the device links are only kept
+  in a local variable and nothing detaches the domains on probe failure
+  or deferral, so all of them leak.
 
-See also:
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv7.2#n145
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/stable-kernel-rules.rst?h=3Dv7.2#n34
+- A failure of devm_pm_runtime_set_active_enabled() returns directly
+  without destroying the pwrctrl devices.
 
+- A partial failure inside imx_pcie_attach_pd() leaks the power domains
+  and device links that were already attached.
 
-Regards,
-Markus
+Save the device links, add imx_pcie_detach_pd() to release the power
+domains and device links in reverse order of acquisition, call it from
+the probe error paths, and make imx_pcie_attach_pd() release everything
+it has attached so far on failure.
+
+Reported-by: sashiko-bot@kernel.org
+Link: https://lore.kernel.org/all/20260822013640.182C01F000E9@smtp.kernel.org/
+Signed-off-by: hanzhijian <hanzhijian1991@gmail.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 42 ++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 39790e66b..467006d83 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -182,6 +182,9 @@ struct imx_pcie {
+ 	struct device		*pd_pcie;
+ 	/* power domain for pcie phy */
+ 	struct device		*pd_pcie_phy;
++	/* device links for the power domains */
++	struct device_link	*pd_link;
++	struct device_link	*pd_phy_link;
+ 	struct phy		*phy;
+ 	const struct imx_pcie_drvdata *drvdata;
+ 
+@@ -639,6 +642,26 @@ static int imx6q_pcie_abort_handler(unsigned long addr,
+ }
+ #endif
+ 
++static void imx_pcie_detach_pd(struct imx_pcie *imx_pcie)
++{
++	if (imx_pcie->pd_phy_link) {
++		device_link_del(imx_pcie->pd_phy_link);
++		imx_pcie->pd_phy_link = NULL;
++	}
++	if (!IS_ERR_OR_NULL(imx_pcie->pd_pcie_phy)) {
++		dev_pm_domain_detach(imx_pcie->pd_pcie_phy, true);
++		imx_pcie->pd_pcie_phy = NULL;
++	}
++	if (imx_pcie->pd_link) {
++		device_link_del(imx_pcie->pd_link);
++		imx_pcie->pd_link = NULL;
++	}
++	if (!IS_ERR_OR_NULL(imx_pcie->pd_pcie)) {
++		dev_pm_domain_detach(imx_pcie->pd_pcie, true);
++		imx_pcie->pd_pcie = NULL;
++	}
++}
++
+ static int imx_pcie_attach_pd(struct device *dev)
+ {
+ 	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
+@@ -660,12 +683,18 @@ static int imx_pcie_attach_pd(struct device *dev)
+ 			DL_FLAG_RPM_ACTIVE);
+ 	if (!link) {
+ 		dev_err(dev, "Failed to add device_link to pcie pd\n");
++		imx_pcie_detach_pd(imx_pcie);
+ 		return -EINVAL;
+ 	}
++	imx_pcie->pd_link = link;
+ 
+ 	imx_pcie->pd_pcie_phy = dev_pm_domain_attach_by_name(dev, "pcie_phy");
+-	if (IS_ERR(imx_pcie->pd_pcie_phy))
+-		return PTR_ERR(imx_pcie->pd_pcie_phy);
++	if (IS_ERR(imx_pcie->pd_pcie_phy)) {
++		int ret = PTR_ERR(imx_pcie->pd_pcie_phy);
++
++		imx_pcie_detach_pd(imx_pcie);
++		return ret;
++	}
+ 
+ 	link = device_link_add(dev, imx_pcie->pd_pcie_phy,
+ 			DL_FLAG_STATELESS |
+@@ -673,8 +702,10 @@ static int imx_pcie_attach_pd(struct device *dev)
+ 			DL_FLAG_RPM_ACTIVE);
+ 	if (!link) {
+ 		dev_err(dev, "Failed to add device_link to pcie_phy pd\n");
++		imx_pcie_detach_pd(imx_pcie);
+ 		return -EINVAL;
+ 	}
++	imx_pcie->pd_phy_link = link;
+ 
+ 	return 0;
+ }
+@@ -1956,8 +1987,10 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	ret = pci_pwrctrl_create_devices(dev);
+-	if (ret)
++	if (ret) {
++		imx_pcie_detach_pd(imx_pcie);
+ 		return dev_err_probe(dev, ret, "failed to create pwrctrl devices\n");
++	}
+ 
+ 	pci->use_parent_dt_ranges = true;
+ 	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
+@@ -1975,7 +2008,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 			pm_runtime_no_callbacks(dev);
+ 			ret = devm_pm_runtime_set_active_enabled(dev);
+ 			if (ret < 0)
+-				return ret;
++				goto err_pwrctrl_destroy;
+ 		}
+ 
+ 		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
+@@ -2001,6 +2034,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ err_pwrctrl_destroy:
+ 	if (ret != -EPROBE_DEFER)
+ 		pci_pwrctrl_destroy_devices(dev);
++	imx_pcie_detach_pd(imx_pcie);
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
