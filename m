@@ -1,113 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C035E93B;
-	Mon, 24 Aug 2026 13:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1A93264F9;
+	Mon, 24 Aug 2026 13:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577232; cv=none; b=S5jnAR0/D5PDKYhfMRm9t/NoXS1INp5+3TCh9iqMxX5oylylUeG/w68aLnJemzBvpiN5KbMm/KyaiFDbWAqQETlg0TQqnkPv1vuttyQkHYJNZaRqBD3dNHC86fUyDC/k4AMB7To1yFRFfnbhUbkDpVekl1agdfTOa2SP0YZnmqA=
+	t=1787577312; cv=none; b=WIPj6p+xxyE9FxKUoR8imDtlQ5oUOnyZ9MlZjQozDNF3kJH4yTOnuJ0Aj91h9uDTEMKc4QPutvwA7AOJ8yPOFdaKsZJb1tUJNQwC8qu1xZ+yRVfFvM2MlfyD//Iy0KKwo+xuSmHGn/4w8eRH+mmL0+FO6NwFyX2e9NjtR4ltzTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787577232; c=relaxed/simple;
-	bh=EbToFAb6fri9SAHjQKuwtOM3zN2p5AA42q8BjBL2nJ0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PAYyxQbI04ylQ7SsQ9GqG66bCA9nrRzW9hHYlp8wbPtTCWreU+6UVO6/0HpP4JAHbjohzgfpvKGK1UBkS1xOoGnfEat8GTJJmBvgnCDExkVFL3IbXpQ1bGogIWss8q6SuCpdzEa8S/ils5g8pki/M2A94qDQQ4XzaIqVCZ2fRmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5jsjHvl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787577312; c=relaxed/simple;
+	bh=lXIPyvy1X7UvxfR/v5uXpPyN5bsuH8AK8bFTqQeQC+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=My0LFgc9g9DTX6fydAy+BmwLG/QkBJvSEQmBP4qT4dkRdjyYNoqrNN4GcRJ1ZTOZ0rbsJ/XCv7qs94FnFRetc/TSQ73/v8acpaa1jH9Ayn6pq9IWtnd6yz2sU4tu7YW98RV99LJi96uFODDbYue+7fHkiQD8gMKVEErSe9Rg4oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVhogL74; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5jsjHvl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1B41F00A3A;
-	Mon, 24 Aug 2026 13:13:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVhogL74"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280571F000E9;
+	Mon, 24 Aug 2026 13:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787577231;
-	bh=tMcak/Mf+DuOibRI3q5Ttd/E3iSnBN8Ex3krV5Y5x2E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Z5jsjHvl++N5+Cqf/fa/CRHm3AkmM+TJzjbQAIRNmIy5wXViUvyMJ+t+/HI+BZLRL
-	 AQXy9/WzAth1nZayvtu+FkCWXbjeCXH+9OCH+h9/ZGvsdPXNfT2f5TuGfl///HmLB4
-	 GFagqrMNy9ynD68mxBmeuV/Px5Pi4e+RvSM5Urb/ZMmyrF02+zFEUCv2PC8JYyUXVV
-	 dGzADONQstvTSrahGM0+z9ZaZDH8dMAyzQI0tvUWxlWd2S+Z/UTQJy56dhNoH4KjmX
-	 0BsZY2MkTaEh3MaMXgxy3yXY4+QidsctdkOpw82X6Rv4gjuzfaWrxc3BIX+8Ba91nb
-	 tbVddvTQ+3CoQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 05/13] drm/panic: Pass colors to
- draw_panic_dispatch()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org, intel-xe@lists.freedesktop.org, Frank.Li@kernel.org, ojeda@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, intel-gfx@lists.freedesktop.org
-In-Reply-To: <20260824125201.218863-6-tzimmermann@suse.de>
-References: <20260824125201.218863-1-tzimmermann@suse.de>
- <20260824125201.218863-6-tzimmermann@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Aug 2026 13:13:50 +0000
-Message-Id: <20260824131350.8F1B41F00A3A@smtp.kernel.org>
+	s=k20260515; t=1787577310;
+	bh=huzrhbuEltnFZhsFdMvi18OsDnmKRxLADDVTTKgMQtQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VVhogL74ypzN31xbBU/khmY+YZVSQ40p5fMPtHM9u+svQOoFdvxqtatc9tYy8C8Cg
+	 fN28g6+uV0OFklcMjjosXoIDOlcNLoVMw4h2s1ejJdRH+3/1QPnZR4C9ayjPmvN+M2
+	 +q9FGnLtzoBIlI1jrARAj+4ljLQ2t9kbXy9h8C46GoXNEKyGg6RbY4zI3y9ouA0WHC
+	 lcG6MXKvKZCpmXBPNMQjBjKIHBbvp8oHL+Uvd4Dxutd81QWVDK7EGeUEav+//9zbTZ
+	 I8FpPrlzkG/iwgpgAQ7fSuhPmNvWIkbacLr+lOOj+20aAn2WYRvlwts2HD+HE8azdj
+	 9do/eM5oGt2HQ==
+Date: Mon, 24 Aug 2026 14:15:05 +0100
+From: Simon Horman <horms@kernel.org>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com,
+	wei.fang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net 0/2] net: enetc: restore RX ring congestion mode
+ after ring reconfiguration
+Message-ID: <20260824131505.GU265046@horms.kernel.org>
+References: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Using KUNIT_ASSERT_EQ with unmanaged resources causes kernel mem=
-ory leaks on test failure.
---
+On Fri, Aug 21, 2026 at 02:41:38PM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> The RX BD ring congestion mode (CM) enables the ENETC MAC to generate
+> PAUSE frames when ingress congestion occurs. It is configured only in
+> the phylink .mac_link_up() callback, which is invoked when the link
+> status changes.
+> 
+> However, enetc_reconfigure() tears down and re-creates the RX BD rings
+> at runtime without any link status change, for example when enabling or
+> disabling PTP RX hardware timestamping. enetc_setup_rxbdr() rebuilds the
+> RBMR register from zero, which clears the CM bit, and since the link
+> status does not change, .mac_link_up() is not called again to restore
+> it. As a result, flow control silently stops working after such a
+> reconfiguration.
+> 
+> To solve this issue, track the desired CM state in a software flag
+> ENETC_RXBDR_CM, which is maintained by the .mac_link_up() /
+> .mac_link_down() callbacks and consulted by enetc_setup_rxbdr() when the
+> RX BD rings are (re)configured. Both ENETC v1 and ENETC v4 are affected
+> and are fixed in the same way.
+> 
+> ---
+> v2:
+> 1. Add a generic helper enetc_set_congestion_mode() to set the
+>    congestion mode of the SI's RX BD rings
+> 2. Move the setting of ENETC_RBMR from enetc_setup_rxbdr() to
+>    enetc_enable_rxbdr()
+> 3. Add gen_lock to struct enetc_si to prevent concurrent access to
+>    ENETC_RBMR and the ENETC_RXBDR_CM bit of priv->flags
+> v1 link: https://lore.kernel.org/imx/20260728023217.2499420-1-wei.fang@oss.nxp.com/
 
---- Patch [5]: [PATCH v2 05/13] drm/panic: Pass colors to draw_panic_dispat=
-ch() ---
-commit dfb1a50d1181cba2ccd93fe314ac428958a579a7
-Author: Thomas Zimmermann <tzimmermann@suse.de>
+Thanks for the updates.
 
-drm/panic: Pass colors to draw_panic_dispatch()
+The AI-generated reviews provided by sashiko-bot elsewhere in this
+thread appear to relate to pre-existing issues that I don't believe
+should impact the progress of this patch.
 
-This commit sets the panic-screen colors in a central location and passes
-them to the individual drawing functions. In the test cases, it hardcodes
-these colors to remove test dependencies on the exact config values.
-
-> diff --git a/drivers/gpu/drm/tests/drm_panic_test.c b/drivers/gpu/drm/tes=
-ts/drm_panic_test.c
-> index fdd77b0cc54c9..969a096ec840f 100644
-> --- a/drivers/gpu/drm/tests/drm_panic_test.c
-> +++ b/drivers/gpu/drm/tests/drm_panic_test.c
-[ ... ]
-> @@ -48,10 +41,27 @@ struct drm_test_mode {
->  	.width =3D w, \
->  	.height =3D h, \
->  	.format =3D f, \
-> -	.draw_screen =3D draw_panic_screen_##name, \
-> +	.draw_screen =3D draw_panic_screen_ ## name ## _default, \
-
-[Severity: Medium]
-When params->draw_screen(sb) fails, does this cause the test to leak fb?
-
-In drm_test_panic_screen_user_map(), the KUNIT_ASSERT_EQ() macro aborts the
-test before vfree(fb) can execute:
-
-drivers/gpu/drm/tests/drm_panic_test.c:drm_test_panic_screen_user_map() {
-    ...
-	fb =3D vmalloc(fb_size);
-    ...
-	ret =3D params->draw_screen(sb);
-	KUNIT_ASSERT_EQ(test, ret, 0);
-    ...
-	vfree(fb);
-}
-
-Similarly, does drm_test_panic_screen_user_page() leak the allocated pages
-when the test fails? An abort here skips the free_pages cleanup block:
-
-drivers/gpu/drm/tests/drm_panic_test.c:drm_test_panic_screen_user_page() {
-    ...
-	ret =3D params->draw_screen(sb);
-	KUNIT_ASSERT_EQ(test, ret, 0);
-    ...
-free_pages:
-	for (p =3D 0; p < npages; p++)
-		__free_page(pages[p]);
-	kfree(pages);
-}
-
->  	.fname =3D #name, \
->  	}, \
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824125201.2188=
-63-1-tzimmermann@suse.de?part=3D5
+For the series:
+Reviewed-by: Simon Horman <horms@kernel.org>
