@@ -1,126 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FFB2C9D;
-	Mon, 24 Aug 2026 13:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from smtpfb1-g21.free.fr (smtpfb1-g21.free.fr [212.27.42.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4AE423E81;
+	Mon, 24 Aug 2026 13:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577681; cv=none; b=Bfxwvn4TPmy2a9fRZpKAsclJ0APQ3Df+Y3kb8zVUM9iWH3qWAFRsF1KY8rLas1z/eKtaSy2sEk9weIz3SYPo/TmT+Ba+HD7VgS5wifgH3tu2cLfot222nrWkailigl1NHRDtnCB5Xj+p17xfR5cgNf2f3edggpQU1o0SNFPSgrQ=
+	t=1787577852; cv=none; b=evaRRcaUAw31/i1Qrycuk5/p/+MP8KJq24UwqmdUn74iohkD+LTWYWlD9LUjZGKFx23quL0gpcl8f/oxpglgkODuHHXY03mjz5AldXmsJE4nz/pYbpt2x0jWJumZlTPYfNPGBjAkIr/RggTRKLA+EWeGStRKFT/orrfpTH3/tio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787577681; c=relaxed/simple;
-	bh=PNtSKVSUXLlUo7MPNhnGWaeTqFeekLZ+xnHo0kdhbXk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=R4zqgtCxenGpOjYbpczBkQDGzJfeh+9VpNS+fhNXyP0eM0TEzMain2Reh/gPwHa4Fp9oMtuHpL7/QlfLcvlcc94gYPq7IJrbOxRVHv0ZAlftXXy4qbzubyzQcJ/A3f1T9kf8vwTkC5hGEB3O5G5dKPLAGWi0y2hso5fmtEJZUtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7eZ+srk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787577852; c=relaxed/simple;
+	bh=B2osEAhrHGA2gHHUZMwKIxQGxD27XlhLVaUjhoWrgU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SIrs9laIkwLgLF2Tomwjk+isZthF/On+rVTvF7HALFgmqvROGcilarIEinfnL+wTk7w4uLG1zFBsRDwr3pQ2PwCU8zxTjWUN72F2zMScQLqS/CPOBRaqiScgM8QxL+/KGV6nk5D+qEUiVyaVNCBD3Lc336iUauriVUtpWRVlfGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=AS1r0fHT; arc=none smtp.client-ip=212.27.42.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7eZ+srk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0027B1F000E9;
-	Mon, 24 Aug 2026 13:21:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787577679;
-	bh=tqQWdU7qIu7z80Vg+ML+5cNSrgns2KDCFHdeeAvGBcg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k7eZ+srkEa6Mjjhy159+Dlxi9kUsa8zInzcYaa9ZfJ4kJ6C6bmwFKCqwfFKwBCLkI
-	 hqdiYLhjcWzRuyGQRwVUa1+6K/t31eXHV84x1HeVy2HVW7VxOPIjAdJTpEzN2HMzTv
-	 R2XzFKijKlzLAWUIjp3909DA46jPjHP8gSQZWEBJgyBpdtwg56c8/bCdvRk6plNfYz
-	 QIQsn/oo6kO76R+JRXmBB0XZgxD5mszoYvhKAImi3NFRvmlBdP5TH8ygRF3NZtiDFa
-	 7LaCJTzLecy+s1SY87VGHwqkpkx4NEUvOui9SsgoYbkwJUp7NtSLjOcGxihe6HObLR
-	 sJrmlVyhrl+Lw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 07/13] drm/panic: Retry in dispatch function if panic
- output fails
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: intel-gfx@lists.freedesktop.org, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, linux-hyperv@vger.kernel.org, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, ojeda@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260824125201.218863-8-tzimmermann@suse.de>
-References: <20260824125201.218863-1-tzimmermann@suse.de>
- <20260824125201.218863-8-tzimmermann@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Aug 2026 13:21:18 +0000
-Message-Id: <20260824132119.0027B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="AS1r0fHT"
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
+	by smtpfb1-g21.free.fr (Postfix) with ESMTP id D3410DF92BB;
+	Mon, 24 Aug 2026 15:14:22 +0200 (CEST)
+Received: from L30177.local (unknown [46.193.67.97])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp2-g21.free.fr (Postfix) with ESMTPSA id 6211A2003E8;
+	Mon, 24 Aug 2026 15:14:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1787577254;
+	bh=B2osEAhrHGA2gHHUZMwKIxQGxD27XlhLVaUjhoWrgU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AS1r0fHTSHlYbh8CR6VZVM6JiVQyEiIjZUlX4ekuLrqxHBn5Krbha7lnqnds15384
+	 jRuczmKkSLh+KuiLFeQJAeWk4zBrtsSHej4rKjFb+O8s9yasdUeJpTX1iMMGQk3h5N
+	 mEpCVSO2E2yc90yXxLGWdW7n5nsfg7xIWtRodWlMpAeVqyf7lQxCCufnzSmuvLJ4B4
+	 HBfB0ZKMOqcPIFMEQu2Bx4+jqWYenC+3txC8A2u7peb3bPJY8gjmRrzApZIUn4t2md
+	 CtWzneM6pR4Z9X2lGmjNrEBJpGjqNOcLxhw33RvKDkMkD6ANBTHK7o/qy7GyOfHVZi
+	 Sn/tYm3WYspZw==
+Date: Mon, 24 Aug 2026 15:14:08 +0200
+From: Vincent Jardin <vjardin@free.fr>
+To: sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, Frank.Li@kernel.org
+Subject: Re: [PATCH] arm64: dts: lx2160a: fix incorrect pinmux
+Message-ID: <aoxDoBB2Gtl4IbDO@L30177.local>
+References: <20260824-for-upstream-lx2160a-pinmux-fix-v1-1-33a3c8d5ea8a@free.fr>
+ <20260823223554.7A6CC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260823223554.7A6CC1F000E9@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The commit message claims a change that is not present in the co=
-de diff.
-- [Medium] Fallback to user mode silently flushes a blank screen if the scr=
-een is narrower than a single character, defeating failure preservation.
---
+Hi bot,
 
---- Patch [7]: [PATCH v2 07/13] drm/panic: Retry in dispatch function if pa=
-nic output fails ---
-commit 43648cf544bdeed6f6c85be5e74f3e855c778814
-Author: Thomas Zimmermann <tzimmermann@suse.de>
+Le 23/08/26 22:35, sashiko-bot@kernel.org a écrit :
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> 
+> Pre-existing issues:
+> - [High] The pinctrl offset for `dspi2_miso_mosi_pins` is set to `0x3`, which is unaligned for a 32-bit register width, triggering a synchronous alignment fault on ARM64.
+> - [High] Pinmux nodes `i2c0_pins` and `gpio0_3_2_pins` specify an incomplete 1-bit mask (`0x1 << 10`), causing the `pinctrl-single` driver to silently reject them.
 
-drm/panic: Retry in dispatch function if panic output fails
+I did send a v2 on some topics:
+  https://lore.kernel.org/all/20260824-for-upstream-lx2160a-pinmux-fix-v2-0-0a525d5f4cd5@free.fr/
 
-This patch introduces explicit fallback to DRM_PANIC_TYPE_USER in
-drm_panic_dispatch() when QR code or kmsg outputs fail. It also increases t=
-he
-minimum QR code test size to 494x494.
+The issues were not introduced by this commit but they deserved a review/fixe too.
 
-> Also pass module parameter drm_panic_type as a parameter to
-> drm_panic_dispatch(). This simpifies the implementation. It will later
-> allow for moving the function into a helper library.
-
-[Severity: Medium]
-This isn't a bug, but the commit message mentions passing drm_panic_type as=
- a
-parameter to drm_panic_dispatch(), which isn't present in this patch's code
-changes. Was this already implemented in a preceding commit?
-
-> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-> index f597ef04c5bcb..bc7c096c42363 100644
-> --- a/drivers/gpu/drm/drm_panic.c
-> +++ b/drivers/gpu/drm/drm_panic.c
-
-[ ... ]
-
-> @@ -895,13 +886,22 @@ static int draw_panic_dispatch(struct drm_scanout_b=
-uffer *sb, enum drm_panic_typ
->  {
->  	int ret;
-> =20
-> +retry:
->  	switch (panic_type) {
->  	case DRM_PANIC_TYPE_KMSG:
->  		ret =3D draw_panic_screen_kmsg(sb, fg_color, bg_color);
-> +		if (ret) {
-> +			panic_type =3D DRM_PANIC_TYPE_USER;
-> +			goto retry;
-> +		}
-
-[Severity: Medium]
-Does this fallback logic inadvertently cause the screen to be overwritten w=
-ith
-a blank screen if the screen is narrower than a single character?
-
-If drm_panic_type is set to KMSG and sb->width < font->width,
-draw_panic_screen_kmsg() returns -EINVAL. The retry logic here catches this
-and falls back to DRM_PANIC_TYPE_USER.
-
-However, looking at draw_panic_screen_user(), it lacks a similar width chec=
-k.
-It clears the screen with the background color:
-
-drivers/gpu/drm/drm_panic.c:draw_panic_screen_user() {
-    ...
-    /* Fill with the background color, and draw text on top */
-    drm_panic_fill(sb, &r_screen, bg_color);
-    ...
-}
-
-It then returns 0 (success) without drawing any text. This success code cau=
-ses
-draw_panic_plane() to flush the blank screen, destroying the existing visual
-evidence instead of preserving it.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824125201.2188=
-63-1-tzimmermann@suse.de?part=3D7
+best regards,
+  Vincent
