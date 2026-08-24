@@ -1,184 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9583F58E0;
-	Mon, 24 Aug 2026 13:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C411442124D
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 13:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577348; cv=none; b=cvvr2yAh9EW9UL5Q9EgPf6YLrxmM1cgL2JQcPpSxqb9obYuTGKqpwxxldZw7fC8Ef709dveL7vUrC1OW0qJqDwFOL3ggVBmYB9Sx9QMmnNtOEp/fYKVLPonD4ZPN4FBid1wqbYMaeFSCoDL1cZ4hFPcfTYUbZ7L31iHY2IXgFTs=
+	t=1787577409; cv=none; b=p99CXx7W68u+38mM0Kos42GQYYhXvpLaYib7In8sLH8s+UseN475EnyRvJN2IXPYWi+6R5UfuohlEUJhyFczN2YpTFGWjrf+LRossz46U6EvWYMCXElzCHuYdxuR0p54tgk1uHrwNxnCeLd9brvtDvTgRQwQtvIJy43owfTpXYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787577348; c=relaxed/simple;
-	bh=Oer2t2eQPBsZQBORcb+SSg1kwBUQ9dlysA5qLeXyhPM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hmDmAp/zRjARPS4eWBigbCAoAI69GOykMhxiCq9EYlHIh1NydgQr4/PIRnX1ZVe9gkFPXYOutIuAdUOF3nZTyUs25s3jXXis24DiD8ZeEvthTH4bB0dq2SxYK43ujHd5Le/zVMKvfLYZLnQk1TudCZ7SZeuBwvWDo+bzcQUwm6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cq/VJgqh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787577409; c=relaxed/simple;
+	bh=u69iDQDh65gTSQHaopk712AakCgClJSI2Zoo/JrTLeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=NDaPfzf5VWzzN9F37wZ3NIdOXxOm0I2OSPGEJ22XdXJn66XzfoQL89UfcPCb+QSk7xOjH4TXHewNno4w2awl9YUdMFq3RhsdN9e67KG9GI6jOOmWqCgoJ4jtOf30CG1uMn63JU2p/nNSdi/yyfXSv28+yh3U+Pcy8olYTFAYbAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IKg/D0on; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cq/VJgqh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B364A1F000E9;
-	Mon, 24 Aug 2026 13:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787577347;
-	bh=XxLDEedc+fH0MClbI9nD7UrI/pQwIQVYtWd8rQeNnKg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cq/VJgqhQtFgfR9yQV/bP1/SnCzRTmGsFSOCg0yuPsY0hv90NAxNoozUEsX6K8sCb
-	 Noa4BkzrB4SWVuJOhAKk6GVsm33dyxZRcbMQT4rnWVIWygVtReT+CIGbHV4Rwxdo2p
-	 fzmp0ipgtiUhd4LTtjkHZmC110Qn3WtRLdMV7+bhuhTj0S96v2LUbHRk/VwOdxtnkg
-	 WCKn6daBm1jfwzT1idKpMPOINm1QLRkMuq1lagPJ2QhoTdCujiHEF0gQvQkzkZ7HtU
-	 Sn3fXQ2fnRaAQHwQ5wTzN6IaZr1OQ0hKYXL4xy8ihZ2bjKtb5EjZvO/pO0SQcSlaEo
-	 ch+zIOK5u7plw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 04/13] drm/panic: Return errno codes if panic output
- fails
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: imx@lists.linux.dev, intel-xe@lists.freedesktop.org, ojeda@kernel.org, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, intel-gfx@lists.freedesktop.org
-In-Reply-To: <20260824125201.218863-5-tzimmermann@suse.de>
-References: <20260824125201.218863-1-tzimmermann@suse.de>
- <20260824125201.218863-5-tzimmermann@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Aug 2026 13:15:46 +0000
-Message-Id: <20260824131546.B364A1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IKg/D0on"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787577406;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a5uoZNVB2XRKnrTBdvCmJrG8M4XSoSEJo8KaXU4b4e8=;
+	b=IKg/D0on6WuGIEkDRlaA0AGzaoUcMm9W7vHGwfBWAJy9PM1TAsZ835LTmG9fe7n+UgnIFF
+	bvopKA+EBWEpOmco21ROIk5dc1pKqA14gO8mCCyOW4PPReTY0qxr9Q2Eqkr9ZRnyin93aC
+	96Kp3cH7vPISNQm2ue5R69NB2ZqffVM=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-wzt4iGssPoy2cGf4SbWFDA-1; Mon, 24 Aug 2026 09:16:43 -0400
+X-MC-Unique: wzt4iGssPoy2cGf4SbWFDA-1
+X-Mimecast-MFC-AGG-ID: wzt4iGssPoy2cGf4SbWFDA_1787577403
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-836cfd56077so51610937b3.1
+        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 06:16:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787577403; x=1788182203;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=a5uoZNVB2XRKnrTBdvCmJrG8M4XSoSEJo8KaXU4b4e8=;
+        b=MwVgwX4cIdgNVC7G5LhM8JK+HeMs/G9oeVYik7jbI80Jy60Slld8xFsQ2mwBRc/FpU
+         O62nodp6O3Le8DMaG3DvdXOyzeCKSyV5BDX1bydlBXQRYOlNXV2Kqa0wC1ln2l0QNwu3
+         /+QgQIUD+EGgRukBfnJANzK3FACymf6UOxXLyKo9DZhWsDETDr6qqX+Lr0MKH5dSi8Nc
+         lnr8kVDnV5DKAnQkkmJJ7jNj7fQA5GV4IML2h7CO5oGT0fOIhyEQD+QR34CG2ypupS2K
+         lAtKN/yqRYytx/G0GRkjwar6AnYgKE46fVqhp41iKru+3DklCChVfGFYHb8eUKTFLO9N
+         D2hQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3+Xl5vPHxi+dhn9rHv2QOtYeeMIqWXE9hSGjXwEJ4GbnbxnQ2MFaK/r4LjnsvBZLSb9Y=@lists.linux.dev
+X-Gm-Message-State: AFuF++lBE2DDlR6G4kPefzhowC6cZnd80leh6y8M3FGO5pRMs4UOeOQH
+	9/WSSdXxo+EYECUlDIynTMR4ldi0KT/xqhrNhx9ckn7plPYHRj/sgoFvHSsMpftSlfJZoAN0Y8I
+	Vlxd0URWkv59xbwfF1Xq4XczPAmCdFCB0yCn5LF8GXvNE491Ix3NvqA==
+X-Gm-Gg: AR+sD13XpdG0s5FO9xAr2BrIBEWak2JtTAeCklQRu3gRMz1qU7y2t40Xgg9rMLczApM
+	QaUn9GZRq//ooqRUGWzsf5NaeAPC7rvDkQU+2vfKebasyRAmD3OVAhk1hhtSg3sI0qWIWnb23ng
+	qlXokZgx43Wo4ID7QAhUQIamBXjopduLzIiP+bNwQEli5MSikOgoD7lsWFW/x5XnkYWF8E8pQbm
+	smcjvrXfqVaycWZ2+D1e3r4zwxtIxhuRUDEhpI2HoXRIRP4TmpOonyTvT3DfGtk2NP/XPaHYiVc
+	MMc947AWrL/llZ2ho7L4LZXD8sS7BHOdvXeyWInbX+2IM57EB3T1TASdOB1To4NtyoZP5eJC5O9
+	BMGuL9F+VMeVxyTQWP2C+jLpt5TMj1GcQY84=
+X-Received: by 2002:a05:690c:e0c1:10b0:81e:a4cf:131b with SMTP id 00721157ae682-849f4a7cc91mr76172607b3.22.1787577403068;
+        Mon, 24 Aug 2026 06:16:43 -0700 (PDT)
+X-Received: by 2002:a05:690c:e0c1:10b0:81e:a4cf:131b with SMTP id 00721157ae682-849f4a7cc91mr76172227b3.22.1787577402495;
+        Mon, 24 Aug 2026 06:16:42 -0700 (PDT)
+Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca5d254adsm33243617b3.16.2026.08.24.06.16.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 06:16:41 -0700 (PDT)
+Date: Mon, 24 Aug 2026 09:16:34 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
+	Benjamin Fair <benjaminfair@google.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	David Lechner <david@lechnology.com>,
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, Heiko Stuebner <heiko@sntech.de>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Prashant Gaikwad <pgaikwad@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Ulf Hansson <ulfh@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org, arm-scmi@vger.kernel.org,
+	imx@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 29/45] clk: samsung: Make sure clk_init_data is fully
+ initialized
+Message-ID: <aoxEMm6FGf_onEBf@redhat.com>
+References: <cover.1787239813.git.geert+renesas@glider.be>
+ <87b3e83137e1a987f3c69d214706e93ef3898cab.1787239813.git.geert+renesas@glider.be>
+ <60a8d05a-76fa-43c3-a0f7-fb26a3b659b8@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+In-Reply-To: <60a8d05a-76fa-43c3-a0f7-fb26a3b659b8@kernel.org>
+User-Agent: Mutt/2.4.0 (2026-06-19)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9KhVWbugQxG9vBfY76z1zu-E8Tn5j7X-_JutA9e76RA_1787577403
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hi Krzysztof,
 
-New issues:
-- [Medium] Using KUNIT_ASSERT_EQ causes kernel test memory to leak if the d=
-rawing function returns an error, bypassing explicit resource cleanup.
+On Fri, Aug 21, 2026 at 01:04:01PM +0200, Krzysztof Kozlowski wrote:
+> On 21/08/2026 10:53, Geert Uytterhoeven wrote:
+> > The clk_init_data structure contains several mutually-exclusive members
+> > for different methods to specify the possible parents of a clock,
+> > prompting drivers to initialize only the members they need.  However,
+> > not initializing all members may cause subtle issues, which are only
+> > exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> > enabled.
+> > 
+> > Make sure all members are fully initialized, to avoid such bugs, and to
+> > prevent future breakage when converting drivers to a different method
+> > for specifying the parents.
+> > 
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > ---
+> > Compile-tested only.
+> > ---
+> >  drivers/clk/samsung/clk-cpu.c | 2 +-
+> >  drivers/clk/samsung/clk-pll.c | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> Let me know if I should take it via Samsung SoC clock tree. I assume by
+> default this will go directly via clock tree.
 
-Pre-existing issues:
-- [High] Concurrent invocation of the debugfs trigger for planes on differe=
-nt devices causes data races on global panic buffers, leading to memory cor=
-ruption.
---
+Please take it through your Samsung tree to avoid merge conflicts if
+there are other changes to these files during this development cycle.
 
---- Patch [4]: [PATCH v2 04/13] drm/panic: Return errno codes if panic outp=
-ut fails ---
-commit 6a8545466378db489975c829328cc895f57550b4
-Author: Thomas Zimmermann <tzimmermann@suse.de>
+Brian
 
-drm/panic: Return errno codes if panic output fails
-
-Return errno codes from the panic output helpers to detect invalid panic
-handling and avoid flushing the display if an error occurred. The panic
-test cases are updated to assert these new return values.
-
-> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-> index 62490d32019cc..cc33a2b4bb52a 100644
-> --- a/drivers/gpu/drm/drm_panic.c
-> +++ b/drivers/gpu/drm/drm_panic.c
-
-[ ... ]
-
-> @@ -945,9 +954,15 @@ static void draw_panic_plane(struct drm_plane *plane=
-, const char *description)
-> =20
->  	drm_panic_set_description(description);
-> =20
-> -	draw_panic_dispatch(&sb);
-> -	if (plane->helper_private->panic_flush)
-> -		plane->helper_private->panic_flush(plane);
-> +	ret =3D draw_panic_dispatch(&sb);
-
-[Severity: High]
-This is a pre-existing issue, but can concurrent writes to the debugfs trig=
-ger
-corrupt global buffers?
-
-If a user concurrently writes to the debugfs trigger files (drm_panic_plane=
-_%d)
-for planes on different DRM devices, draw_panic_plane() executes concurrent=
-ly
-because dev->mode_config.panic_lock is a per-device lock.
-
-When DRM_PANIC_TYPE_QR is active, multiple threads could enter
-drm_panic_get_qr_code_url() and modify the global static variables qrbuf1,
-qrbuf2, and stream.workspace without cross-device synchronization:
-
-drivers/gpu/drm/drm_panic.c:drm_panic_get_qr_code_url() {
-    ...
-    stream.next_in =3D kmsg;
-    stream.avail_in =3D kmsg_len;
-    stream.total_in =3D 0;
-    stream.next_out =3D qrbuf2;
-    stream.avail_out =3D QR_BUFFER2_SIZE;
-    stream.total_out =3D 0;
-    ...
-}
-
-Could this cause memory corruption during simultaneous debugfs writes?
-
-> +	if (!ret) {
-> +		/*
-> +		 * Only flush if we have a panic screen to display. Otherwise
-> +		 * it's probably better to leave the display output as-is.
-> +		 */
-> +		if (plane->helper_private->panic_flush)
-> +			plane->helper_private->panic_flush(plane);
-> +	}
-> =20
->  	drm_panic_clear_description();
-
-[ ... ]
-
-> diff --git a/drivers/gpu/drm/tests/drm_panic_test.c b/drivers/gpu/drm/tes=
-ts/drm_panic_test.c
-> index ad2f3a2f93b6a..fdd77b0cc54c9 100644
-> --- a/drivers/gpu/drm/tests/drm_panic_test.c
-> +++ b/drivers/gpu/drm/tests/drm_panic_test.c
-
-[ ... ]
-
-> @@ -102,7 +102,8 @@ static void drm_test_panic_screen_user_map(struct kun=
-it *test)
->  	sb->height =3D params->height;
->  	sb->pitch[0] =3D params->width * sb->format->cpp[0];
-> =20
-> -	params->draw_screen(sb);
-> +	ret =3D params->draw_screen(sb);
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
-
-[Severity: Medium]
-Will this KUNIT_ASSERT_EQ() cause memory leaks if the test fails?
-
-If params->draw_screen() returns an error, KUNIT_ASSERT_EQ() will abort the
-test thread immediately. This means the test will skip explicit resource
-cleanup, such as the vfree(fb) call at the end of
-drm_test_panic_screen_user_map().
-
-Should this use KUNIT_EXPECT_EQ() instead to allow the cleanup code to run?
-
-> =20
->  	for (i =3D 0; i < fb_size; i++)
->  		drm_panic_check_color_byte(test, fb[i]);
-
-[ ... ]
-
-> @@ -146,7 +147,8 @@ static void drm_test_panic_screen_user_page(struct ku=
-nit *test)
->  	sb->height =3D params->height;
->  	sb->pitch[0] =3D params->width * sb->format->cpp[0];
-> =20
-> -	params->draw_screen(sb);
-> +	ret =3D params->draw_screen(sb);
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
-
-[Severity: Medium]
-Similarly here in drm_test_panic_screen_user_page(), if KUNIT_ASSERT_EQ()
-aborts the test on failure, will it skip the free_pages: cleanup label,
-resulting in a permanent memory leak?
-
-> =20
->  	for (p =3D 0; p < npages; p++) {
->  		int bytes_in_page =3D (p =3D=3D npages - 1) ? fb_size - p * PAGE_SIZE =
-: PAGE_SIZE;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824125201.2188=
-63-1-tzimmermann@suse.de?part=3D4
