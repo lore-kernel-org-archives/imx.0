@@ -1,206 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E138D403EB5;
-	Mon, 24 Aug 2026 10:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396C83537D0
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 11:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787568103; cv=none; b=hBSJKdGobM5lfnVNmYZXK9mO2N66CXsCRmvG+SM4HtV988OIOOOmob5NeA4GA80zxV0GBHsQdWylzl+kyQpi1f6xm5OMDdeBybRMutM2AplXzEbxFHOes7KC2VvIWGqbu5TTKICD5aLf8MrNFpw1+49SBjqMcYF0N5bdsHqNZx0=
+	t=1787569345; cv=none; b=RfaatJQ6xh3h/FcwNaWCcC3zr70Avbb8aSnE/tj7HrPjRrzGk9JbW95kjupllgJ/y+Q1tyLz0YOOzhOOqKAkntPM+gc/kp8e5nfa8o23b1It5anuJq4GxJbCpH/Q/qxGoBCHc1vo629C+wc/kteTyph+AdUa6AvyF/MxV9OWT/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787568103; c=relaxed/simple;
-	bh=8r9s+F1nkfnuBTeOhsbJo3G7SONGvu7RZGT6UyA8AoM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=J6483Tj0SbUbbT0RWnebOH3f0GixXSz2mQnRnD8JHD1G0QovOT2OUa1eGwF9TvDqEMFBxS3ce0VDoZOEqzbTwfCAGH4B86PZMqocls7HqL1x0oPdRdxnB5/sG30LbVja03NDLC04S/oJYW/56hFuAcNtU70wcPY6ccSHInEQOqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRVmQUKL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787569345; c=relaxed/simple;
+	bh=D9BZ+hJJpuWA/8cQ7oCYLZ0wTvxa5m969omII2jFUE8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=KKemkZA/a/uOEvFe0oNvo2uX1jL+w33r8ACgNwlv4LzbHkR6Fmt2yItSGyPpxU3jpqb3ewq8uEHqOKgr+MOROF71qMMKN20HRRwS/8XnmGCvmPIyeFt4BSFG+6ZBb4UWpJfbGjAK3qk2D6N8GQ9JcCz9xlGiB09nliTovWez1XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=KpBKffmn; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRVmQUKL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247111F000E9;
-	Mon, 24 Aug 2026 10:41:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787568101;
-	bh=WqXBa68XEOMxy1e0r4MeC8FGsxkrC4ZQrO7h7ire268=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nRVmQUKLCtNSIW1Pooz9GZpqP0+elXmrJHsGQ+ldqds3vdPk5uce7sFGL+Z4kQ3gu
-	 BRs3pFqthIOBEQoEDUnhxoF4nWEqjS/zczrC4jOrqicUB0vN0mjSuLFXkeczUh09Fi
-	 wwKASnzC+X6PgkqrkTPn7b2XlTUTogbnsYJQ7vnsMZ5da04mJhoZGfYpv4Qzj2DraW
-	 w95E4ZQCCkdBUgLeU2vWAnO13XqTlgbXH6EFM0P7Dy4Hzfrdlh5Jkc/4ujyi2F0ibJ
-	 Oczky3ErO9V83yac1r9FIa/AavssmH77DKFNJQphSL+JNKMLRTCuS642Nimazy8cmL
-	 ipf35sFTgjShw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <f54545f2a08a558977b0e76bd0f44b2cf1158783.1787566980.git.stefano.r@variscite.com>
-References: <cover.1787566980.git.stefano.r@variscite.com>
- <f54545f2a08a558977b0e76bd0f44b2cf1158783.1787566980.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Aug 2026 10:41:40 +0000
-Message-Id: <20260824104141.247111F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="KpBKffmn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1787569315; x=1788174115; i=markus.elfring@web.de;
+	bh=hHlrmazqcVpvEqwVpnhYhqqkG2VxRO9nSsjD2wAwwls=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=KpBKffmnlNwfBHHo68jOWUBJ8rSDNw7f/FsXT756kTcwAOTnpZuukL5TQNiOELK9
+	 2tBQ6h6BKP9wOgCS6yUGd7naJvr3eqaij7jJN4EPDHl+S/WlIucVpWLuHlU5A4cGt
+	 EvSCw1ZGPiGnpX41CndfjeC/S+eVjGUaNCy9cxpnQK8GHFy4YQaVjcDoCqedByHUe
+	 XqQQfOWEwiCBeqr9KQkuFXy5NpmbTapV32DRWTsyzpHDG9aYfFvVvhv1oH55GwHWF
+	 PfS7x5JSWs8zGYyb8haoI3P/r5zDsPofuhJMVRgrbFDKn/IrXTPKVIdo8z0GP+zjQ
+	 sszXDdc0979kMnwd6Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N2BMA-1wn5Pp1Vd8-00ssm3; Mon, 24
+ Aug 2026 13:01:55 +0200
+Message-ID: <4f3ab9c9-7f0a-4e1b-84ad-7fe5b0b211a8@web.de>
+Date: Mon, 24 Aug 2026 13:01:53 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: hanzhijian1991@gmail.com, imx@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+ Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?=
+ <kw@linux.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Lucas Stach <l.stach@pengutronix.de>, Manivannan Sadhasivam
+ <mani@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>
+Cc: sashiko-bot@kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ kernel-janitors@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+ Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+References: <20260824075512.3386898-1-hanzhijian1991@gmail.com>
+Subject: Re: [PATCH v3] PCI: imx6: fix resource leaks in probe error paths
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260824075512.3386898-1-hanzhijian1991@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6EMYblq/sqAKTZ76CQ1mfxMBjYW6kcppsrGFyVBiFlmeGRh/w0q
+ 8n6uM+Svx1idjlfZ4aBdDWZf+ECp5vGN7Cl4kk+pgzO8icwq14XbaZ4l1GIZHShY+ML4ONY
+ gSj8C+4hRXb8XqeOhnIu+S7r5V/4sqLTTZWf9Qyr4YYouAzs/m9mnbjE8/ff6/AggxPDufP
+ istixft1SeG+GhxBGGW8Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+/Dpa6abCrU=;g9PZbIhB4O05A6xzneizjiJwAbD
+ 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
+ rWa33vPMY+bCdyWximmKMdhP1Sx3Nphi
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [High] Overriding `assigned-clocks` in `&sai1` drops essential `SAI1_ROOT=
-_CLK` configuration, breaking audio.
-- [Low] Missing device tree binding headers in `imx7d-var-som-mx7customboar=
-d.dtsi` causing undefined macros.
-- [Low] The SoM `.dtsi` file incorrectly includes a `/dts-v1/;` directive, =
-leading to duplicate directives in `.dts` files.
-- [Low] The `usdhc1` and `usdhc3` nodes specify `no-1-8-v` while defining u=
-nreachable 100MHz/200MHz pinctrl states.
-- [Low] Device Tree node names contain underscores, violating DT specificat=
-ions.
---
+> imx_pcie_probe() leaks both pwrctrl devices and power domains on
+> failure:
+=E2=80=A6
 
---- Patch [2]: [PATCH v2 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 su=
-pport ---
-commit f0d7c3577a1db2d9fa7ddee6134d561982409054
-Author: Stefano Radaelli <stefano.r@variscite.com>
+How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
+=E2=80=9CCc=E2=80=9D) accordingly?
 
-ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+See also:
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv7.2#n145
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/stable-kernel-rules.rst?h=3Dv7.2#n34
 
-Add device tree support for the Variscite VAR-SOM-MX7 system on module.
-The module is based on the NXP i.MX7Dual SoC and is available in
-multiple configurations and hardware revisions.
 
-Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
+Would you like to avoid a bit of duplicate source code here?
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi b/arch/arm=
-/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi
-> new file mode 100644
-> index 0000000000000..2f8185f8c526e
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi
-> @@ -0,0 +1,99 @@
-[ ... ]
-> +&usdhc3 {
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> +	pinctrl-3 =3D <&pinctrl_usdhc3_sleep>;
-> +	vmmc-supply =3D <&vgen3_reg>;
-> +	assigned-clocks =3D <&clks IMX7D_USDHC3_ROOT_CLK>;
-> +	assigned-clock-rates =3D <400000000>;
-> +	no-1-8-v;
 
-[Severity: Low]
-Does this no-1-8-v property conflict with the 100MHz and 200MHz pinctrl sta=
-tes
-defined above it?
+> Signed-off-by: hanzhijian <hanzhijian1991@gmail.com>
 
-By forcing the MMC core to stay at 3.3V, UHS-I and high-speed modes that
-require 1.8V might be disabled, making those pinctrl states unreachable dead
-code.
+Can an other representation be more desirable for the =E2=80=9Cpersonal na=
+me=E2=80=9D
+according to the requirements for the Developer's Certificate of Origin?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv7.2#n396
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi =
-b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
-> new file mode 100644
-> index 0000000000000..ecd4601c12bfb
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
-> @@ -0,0 +1,382 @@
-[ ... ]
-> +	gpio-keys {
-> +		compatible =3D "gpio-keys";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_gpio_keys>;
-> +
-> +		key-back {
-> +			label =3D "Back";
-> +			gpios =3D <&gpio1 11 GPIO_ACTIVE_LOW>;
-> +			linux,code =3D <KEY_BACK>;
 
-[Severity: Low]
-Are the KEY_BACK, KEY_MENU, and KEY_HOME macros undefined here?
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 42 ++++++++++++++++++++++++---
+=E2=80=A6
 
-It looks like the dt-bindings/input/input.h header is missing from the
-includes, which could cause a dtc compilation failure.
+Some contributors would appreciate patch version descriptions.
+https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+pre=
+viously+submitted+patch%22
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv7.2#n310
 
-[ ... ]
-> +	reg_hsic_hub_connect: regulator_hsic_hub_connect {
-> +		compatible =3D "regulator-fixed";
-
-[Severity: Low]
-Could this node name and regulator_hsic_hub_pwr_on below use hyphens instead
-of underscores?
-
-Using underscores in node names violates the device tree specification and
-triggers node_name_chars_strict compiler warnings.
-
-[ ... ]
-> +&usdhc1 {
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
-> +	cd-gpios =3D <&gpio5 0 GPIO_ACTIVE_LOW>;
-> +	no-1-8-v;
-
-[Severity: Low]
-Does this no-1-8-v property similarly prevent the high-speed pinctrl states
-from being used on this interface?
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi b/arch/a=
-rm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
-> new file mode 100644
-> index 0000000000000..af5dd6d459ad2
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
-> @@ -0,0 +1,64 @@
-[ ... ]
-> +&sai1 {
-> +	assigned-clocks =3D <&clks IMX7D_AUDIO_MCLK_ROOT_SRC>,
-> +			  <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
-> +	assigned-clock-parents =3D <&clks IMX7D_PLL_AUDIO_POST_DIV>;
-> +	assigned-clock-rates =3D <0>, <36864000>;
-> +	/delete-property/ fsl,sai-mclk-direction-output;
-> +};
-
-[Severity: High]
-Does overriding the assigned-clocks here silently drop the required SAI1 ro=
-ot
-clock configuration defined in the base dtsi?
-
-In imx7d-var-som.dtsi, the assigned-clocks property sets IMX7D_SAI1_ROOT_SRC
-and IMX7D_SAI1_ROOT_CLK. By overriding it without retaining the original
-assignments, the SAI1 block might lose its required clock configuration, and
-deleting fsl,sai-mclk-direction-output forces the pad to become an input,
-which could break the audio interface entirely.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi b/arch/arm/boot=
-/dts/nxp/imx/imx7d-var-som.dtsi
-> new file mode 100644
-> index 0000000000000..486e9360dea52
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
-> @@ -0,0 +1,637 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Common dtsi for Variscite VAR-SOM-MX7
-> + *
-> + * Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
-> + *
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-> + *
-> + */
-> +
-> +/dts-v1/;
-
-[Severity: Low]
-Will this /dts-v1/; directive cause a duplicate version directive syntax er=
-ror?
-
-When this dtsi file is included by carrier board dts files that also declare
-/dts-v1/;, the expanded source will contain duplicate version directives.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1787566980.gi=
-t.stefano.r@variscite.com?part=3D2
+Regards,
+Markus
