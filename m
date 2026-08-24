@@ -1,175 +1,147 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C550416841
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D154119ED
+	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787574156; cv=none; b=mqIt/99lMsYjMNCeHpOLZaqQN0xYl7I+srPmZTSHO7u+9TpZDsg7XD0C8GJr+9w7ZjOgrtwIx75Z5L4FugIXD2YexrKaPMe77Urkz23YxtVZosICJ50uS44HlDxZAnXfg+qtwRbdL5s9+lO3NR/91kO5HOlTfFu1hQgQm4rqJNQ=
+	t=1787575661; cv=none; b=Q/S40TotoXUUQAum5i0VQxIK4xI88kzsesHT7MEkZQo2NWxw8XP3y+WlY5KUtfVvMb0jDaBKvRDqep2h9qCrOs8y+bIJdO/M/BVp9P7yo1Ijskx1huhAGMa51Rp+Quh9wpPffgTns03VN9PqaCuKRhDksFq8oQ4PbItz3Gex7n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787574156; c=relaxed/simple;
-	bh=t62Zykvs+8NdpMy0PpJs95Iv6bI1meByLMw4pOoPMnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IjG8ABlg0Do+eWpUJoQPmb9LGiU3eNs6XQBYHikMZ2sgi7ka64dvuWk18tKGMKarzI2rIri8hvLKB3mK7TpVDQCXmDZoQweCXWtVl4NkE1OcdHm5bARYY/yKhGlQp6NTsIRCzdFW+JlOMKWm6HBPukyH1Jt2SXijP35Zwh72eew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=hfTdEBZn; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="hfTdEBZn"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so5891232a12.0
-        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:22:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1787574151; x=1788178951; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MHbWNJk5cOn3r4GzbI0kltGoUU2l7AC2RyCAmVHKUJU=;
-        b=hfTdEBZnTfCJ0guszhIhIOtE6YCTnja0Ftg+51b+rmSKXdXAgbCsS2cu+F0+bFCbUF
-         rSGcj3BfPLecWJFX9KubQ1HMVeaHyOXZAz+HupQYZUr9k5f+6fsTx1tD6oljovGk47n2
-         ONeCONYPMiTA55oKiMR8EHGRTQhQXUc3BQWbhC3hItpfeXQLKxORvDfoiqKfCNu5B/aj
-         ODdhoTv4q2giXfhJEiegFbn2EHiJTjfghVncQqKBRfNvwEbxMXn7NFvh1IlhBY24/i3L
-         fUyOMxXLOruA7ftwZ1MJZORMIUUmjqNFo+EI5UT+rex8lA+tj4HQL34dDWhX0oqNMvmF
-         /1kg==
+	s=arc-20240116; t=1787575661; c=relaxed/simple;
+	bh=lI76YK88ZltuQHg9+zsDOjRNQgdjPki/p5J+GduZo2g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IgiKhh0gCOcokHq3TSbkji8AHw4MhkaspGOEOCWV1z8Lhg+9d7bwPfifEwdwSiVBr/3IAMYFz06KuXf4N+QocXYwSN716ZNY4UeM9Tw/V5WBK797M3y8jHMsAlzJ5rFwaRwGKAwAapiQeDrAKnDRNRSE1x5329k5nyYL3WmFzfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66d0743503aso1318653d50.3
+        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:47:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787574151; x=1788178951;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MHbWNJk5cOn3r4GzbI0kltGoUU2l7AC2RyCAmVHKUJU=;
-        b=CheTNLZJBARVDGW6Jia4qJ4RktoqE+yUx0hquaRy2M4a6AlnaMydbA1v56Xc9vQlvp
-         J/vIob+ak8aXaRFjdWZtPrHZK6g003jmnGTBfy3j3DKEW8usJOOerfmpD9+fCyws7G6h
-         SZq7Y6fq74NQOneAj4th4NDuPMlBs9QzKvWMOvvWyvBnq69M38YcjM5/ss9Zz8sxBO0I
-         NdhgGntdPk2OEJiThtt852gbAXvX32M4F8LEPjnR2ypZJjSd453xnm2cgdorRpFiEOOE
-         okISCogyJ3b9xHkUgRgwbyiPQ27nus54J3n7arGUhukRZauPz78cySx4uYDVogrgJiXB
-         W7Yg==
-X-Forwarded-Encrypted: i=1; AHgh+RrTeBYvTfDwSAqDJsURirjIgDnmKyEp8doFrNhw71RX001a/dNhtsqlKlIJ1i7UrGRy9C0=@lists.linux.dev
-X-Gm-Message-State: AFuF++mzeMh8s0VKHRCVW0CIGjh7oRDyuQObVWr+5hpkZ86X9tsTF+E7
-	9nhR19WM/1IgtrCVYUwRLalIRHAKmkz+mS01rGr5gVZhvPZxym/vEoAW8rcc02l+uUM=
-X-Gm-Gg: AR+sD11QX+SzlIdyx2Pcz2Z1/heaXMVZ0aEEB4ituzQUWRLi1dm1a6gf5lBu54O4tCT
-	p0YdUO0SrX5gY8mS546/eYUUp+slApxnh5lnV5PJgEP6/X116G1Cxhn5AmdAs5/6fC+w1QK6M7/
-	8zLRtri+oh6y7WjPDCfzLV+mQ4H5/su86GdKmM9VxSNTez/aJ4pchGL2GmoH223TiXtIwVUtD+D
-	fXbGMGY3c0nWJTVeqWqBR2ojN5Ge4qbsZcl047fm4QnbBFlGBseX+lR2LnEeuH3pBHgq14MWlox
-	p98Zyv7PaRzaBFa25etomkVnYscctFl5eti98tIcUDVZ+PWGyMcz96hkttSX0L/s/ErCVIALe8M
-	hLaljcWzUtw/CBU6iaizFdNHRgFJxrWLEnVUIn92KRtFvuZOh5+n+lxx/sYnR59oXvzTgm4diFt
-	zkBk10jALvc1E3mbFD1erUnmuppNn4nIOY3/VrSA/+t7zdTJWkNXSzVmdgHAn4PzMsK/GxvtEz+
-	lXLERCaVlS3wirKtKIT2MZj3zsFnm5580jqpIWW2sZ6T7JiH9HM
-X-Received: by 2002:a17:907:845:b0:c20:fed2:898b with SMTP id a640c23a62f3a-c2492782dbemr1724856766b.23.1787574151309;
-        Mon, 24 Aug 2026 05:22:31 -0700 (PDT)
-Received: from localhost (p200300f65f19a904efa8a94b704adaa2.dip0.t-ipconnect.de. [2003:f6:5f19:a904:efa8:a94b:704a:daa2])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-c24962a3c13sm1308598466b.26.2026.08.24.05.22.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 05:22:30 -0700 (PDT)
-Date: Mon, 24 Aug 2026 14:22:29 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Cristian Marussi <cristian.marussi@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>, arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Subject: Re: [PATCH v3 1/3] module: add SCMI device table alias support
-Message-ID: <aow2GFAfy84k-N2B@monoceros>
-References: <20260820194850.459739-1-johannes.goede@oss.qualcomm.com>
- <20260820194850.459739-2-johannes.goede@oss.qualcomm.com>
+        d=1e100.net; s=20251104; t=1787575659; x=1788180459;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9ghuoduRfOzi+AYpDw8t1/oQryAhFbodaTAoc1849Hg=;
+        b=VcMTDkN3mk3Vkhr8PfCSI7DtQijRg8QL3popVCRkxbJNbA0PRAawuSYoosn57pZctr
+         BxexCQa0q0CJTM6ucNE3OQMLGdvAIk5ebD5vZosaJBgDHUTisWRra4bf7V/+gdd96MRG
+         t1ZgRK4S6EXqlhIytgHLuEfwh5ypO3vfbxnCh32A+g2WZyKMNILC/KfQsgEVJrYW9bbB
+         FjhgpRXPucEfRpXqfq6WEpUwj6Shmx0ivyPksr8bIpKYOW/epkbKjhKA5lqYoAiq8XjU
+         VhLNZEnjVFtFxnYOVWu/a2LD/7DqrXxa4x24os6AhRTFGMJ006cPBDfq7DYKkhGfDs1Y
+         40Xw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro85SpaEqDk+QvhGHxch0Gj1qBH/SoVlslwmdwOoc2DC2xJbNDYNHvW8f9NImM9yyb1FYA=@lists.linux.dev
+X-Gm-Message-State: AFuF++mi1HPKM3X9jSIKISe5hoo8EBvEXrfSONMRDvufidi7YwV/dzWH
+	2fZuVezqu/kSdWpmncCiPiYr9+qlKsb29KVE5p5kcruGUeMi5WFacUxWPGqygVJ7
+X-Gm-Gg: AR+sD108imTceXAfi4r23tNEWNVUMkxuGuIfWkq8Dlkkh21cmHMrk2N4MHFrmR8P9D0
+	AHiR2p03chWY6lrduFOvvoAa4KzZn6JhgVua6BozQ8mERM7uCmOXCnn5eUrHVlfe605P3xJUYNi
+	ib9jhOI4KBdtNSUaRcMQOr8O4tMjRMRQ7TE90oGuMPedWJgwAgSnjlcPiYtVSWlrQqMKOBqn6Ny
+	EjVWoMlj+9AXouhKKRvJguWoy1Yy/je19u1iH5P2sW6Sr0mEYPzCzoY5sBTEtHO982QFbV1d0Uv
+	Lf5c1DesgPtBBL+IhyjQjJAOKng51o1X54AshcctllF9N1L3QKUbRDIgyRD5Vzkh4hLVogLSECQ
+	41Rb9yCXRVR1RRfllTJLChFCjjQEb4OztuwDd62aoK7zFcluy2qaz7+GRapqRWVhlCg1QNk6crB
+	OTWZIe5+Fyb0epNB40UrPcbJIiGcrPhat4Ch1a+Z0zqO3XgulD0yAiwntlW6AvDbNIuO9nA3AWP
+	jWCvT76TkXvUfjGJd/irz+lfg==
+X-Received: by 2002:a53:e01b:0:b0:66a:b15b:2a91 with SMTP id 956f58d0204a3-66ce4b243acmr7252560d50.42.1787575659306;
+        Mon, 24 Aug 2026 05:47:39 -0700 (PDT)
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com. [74.125.224.51])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66cf9f99e17sm2928492d50.13.2026.08.24.05.47.39
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2026 05:47:39 -0700 (PDT)
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-66ce00575dcso4633822d50.0
+        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:47:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpU6wCHq+jLQgIVK6RDVgQ1ENKaT87kYJRYiX+GTL1KRbAdMckt1VisaHQBCa35vk26oD4=@lists.linux.dev
+X-Received: by 2002:a05:6102:26c5:b0:772:5acc:b848 with SMTP id
+ ada2fe7eead31-77a62c46273mr7826182137.6.1787575289120; Mon, 24 Aug 2026
+ 05:41:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2tfcczky2nyuuvxm"
-Content-Disposition: inline
-In-Reply-To: <20260820194850.459739-2-johannes.goede@oss.qualcomm.com>
+References: <cover.1787239813.git.geert+renesas@glider.be> <87b3e83137e1a987f3c69d214706e93ef3898cab.1787239813.git.geert+renesas@glider.be>
+ <60a8d05a-76fa-43c3-a0f7-fb26a3b659b8@kernel.org>
+In-Reply-To: <60a8d05a-76fa-43c3-a0f7-fb26a3b659b8@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 24 Aug 2026 14:41:17 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWnXTAVZ_eBfoWNe-sy6BC1X+5EHkDw9R0TAA65Opzi_Q@mail.gmail.com>
+X-Gm-Features: AcwNN1UOdKQEkPlARJoVF2UurscVPaHj9T1_AXs-3b7YtVRMAHuDfcVjJgM-XPk
+Message-ID: <CAMuHMdWnXTAVZ_eBfoWNe-sy6BC1X+5EHkDw9R0TAA65Opzi_Q@mail.gmail.com>
+Subject: Re: [PATCH 29/45] clk: samsung: Make sure clk_init_data is fully initialized
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>, 
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+	Jerome Brunet <jbrunet+clk@baylibre.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Billy Tsai <billy_tsai@aspeedtech.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Taichi Sugaya <sugaya.taichi@socionext.com>, Takao Orito <orito.takao@socionext.com>, 
+	Linus Walleij <linusw@kernel.org>, Avi Fishman <avifishman70@gmail.com>, 
+	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
+	Benjamin Fair <benjaminfair@google.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Cristian Marussi <cristian.marussi@arm.com>, David Lechner <david@lechnology.com>, 
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Gregory Clement <gregory.clement@bootlin.com>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Viresh Kumar <vireshk@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Prashant Gaikwad <pgaikwad@nvidia.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Ulf Hansson <ulfh@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Michal Simek <michal.simek@amd.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, linux-clk@vger.kernel.org, 
+	linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, 
+	arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Krzysztof,
 
---2tfcczky2nyuuvxm
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH v3 1/3] module: add SCMI device table alias support
-MIME-Version: 1.0
+On Fri, 21 Aug 2026 at 13:04, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On 21/08/2026 10:53, Geert Uytterhoeven wrote:
+> > The clk_init_data structure contains several mutually-exclusive members
+> > for different methods to specify the possible parents of a clock,
+> > prompting drivers to initialize only the members they need.  However,
+> > not initializing all members may cause subtle issues, which are only
+> > exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> > enabled.
+> >
+> > Make sure all members are fully initialized, to avoid such bugs, and to
+> > prevent future breakage when converting drivers to a different method
+> > for specifying the parents.
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Hello,
+Thank you!
 
-I just replied to v2 and only then found out there is a v3 already.
-There is something wrong with my mail filtering, sorry.
+> Let me know if I should take it via Samsung SoC clock tree. I assume by
+> default this will go directly via clock tree.
 
-I'm forwarding my review comments to here (the part that still applies).
+In that case, please provide your Acked-by, so the clock maintainers
+don't have to parse your English response to find out ;-)
 
-On Thu, Aug 20, 2026 at 09:48:48PM +0200, Hans de Goede wrote:
-> diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/scmi.h
-> new file mode 100644
-> index 000000000000..4150481524d4
-> --- /dev/null
-> +++ b/include/linux/device-id/scmi.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef LINUX_DEVICE_ID_SCMI_H
-> +#define LINUX_DEVICE_ID_SCMI_H
-> +
-> +#ifdef __KERNEL__
-> +#include <linux/types.h>
-> +typedef unsigned long kernel_ulong_t;
-> +#endif
-> +
-> +#define SCMI_NAME_SIZE		32
-> +#define SCMI_MODULE_PREFIX	"scmi:"
-> +
-> +struct scmi_device_id {
-> +	__u8 protocol_id;
-> +	char name[SCMI_NAME_SIZE];
-> +	kernel_ulong_t driver_data;
+Gr{oetje,eeting}s,
 
-Please use
+                        Geert
 
-	union {
-		kernel_ulong_t driver_data;
-		const void *driver_data_ptr;
-	};
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-here instead of the plain driver_data member (or don't add driver_data
-at all if not needed). This yields better type-safety, see e.g.
-https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com
-for an extended explanation.
-
-> +};
-> +
-> +#endif /* ifndef LINUX_DEVICE_ID_SCMI_H */
-> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
-> index a397213bedac..d241421c36aa 100644
-> --- a/include/linux/mod_devicetable.h
-> +++ b/include/linux/mod_devicetable.h
-> @@ -49,6 +49,7 @@
->  #include "device-id/pnp.h"
->  #include "device-id/rio.h"
->  #include "device-id/rpmsg.h"
-> +#include "device-id/scmi.h"
-
-Please don't add new includes to mod_devicetable.h. That header is ugly
-and each include makes it worse. Just add <linux/device-id/scmi.h> to
-the modpost source.
-
->  #include "device-id/sdio.h"
->  #include "device-id/sdw.h"
->  #include "device-id/serio.h"
-
-Thanks
-Uwe
-
---2tfcczky2nyuuvxm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqMN4MACgkQj4D7WH0S
-/k4yMwf+N+KJ5sPPSlOgLDa7K8R0+3z3wNZSXpKG1mfo73lwlNuUQ0o9mdIVnCSh
-HjOljqygnPT1KDnD0tyk4aBt8VyDQ7dC93v2tUbPE2EFoHWT9BR9lAcDJY3TqVqz
-tjL9DZtz1eAcw4OY5tm7FW6fBRLJTlGAgyzkcgBHxrB/6dIPZ2BaHa+eoJFUN6xU
-dBhVHRKQFKBn79sVAVD5tTw46v3SHrs1nbvdIsEtAeVZ+RE+fI+LWfjIknQiSaZ3
-4Nlmi2JnGiX9tgfeDp4HEArbnCzrtXLfmr4z8sEMjKzmk6yTKI5AxNXgwRVyD7Eu
-UpZzkHPe9Uo1jawnTLk7PSsbMrZ2/g==
-=yxWM
------END PGP SIGNATURE-----
-
---2tfcczky2nyuuvxm--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
