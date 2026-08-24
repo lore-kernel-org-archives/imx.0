@@ -1,134 +1,215 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715D1363C60
-	for <imx@lists.linux.dev>; Mon, 24 Aug 2026 12:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787575811; cv=pass; b=H/cxur7oG52Tvl8yNrSWOCgGPu/JQ9pxU2DOmW7NwMCMYDND8jW8y00dx+RbeQLR+idnhfZltrqlLNyF7gzNtnUX53XHxkaXMpW0GybqYIka3Vch3NhQ66JhWtC73JenXV9vcHCIIu2SO6pSYTFqgj+s7jFhO0xq6uV1dECKNuI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787575811; c=relaxed/simple;
-	bh=M65GKSm/6Nikad67Nwpr+AO2trBm+ZFvLS2dH1EsVI0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RWAg1p5NX7NFTVK/8n73JQflNC/w+sZRBJ22/CLoJncqVLl9JPMuLEgMme8j8zUSqzmRrTUWrTdOiGfgyAWpJH4SWf0eSfVAwCbpa/+COQIQE3M6VsC2SPBUVBqt9Iq2pTwV2yL5Pwvf5yyg4vkpKARSsnOei1KZ2yg/1fAqK+A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sFozRQk1; arc=pass smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sFozRQk1"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b4747943b8so2861040e87.0
-        for <imx@lists.linux.dev>; Mon, 24 Aug 2026 05:50:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787575808; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r81wyoNVfxDtPlxJMlCijD1ShsRFNjB9UMn3SYhfxSlcZ39Nznz+XQpuLjUAi6RduB
-         kCRqwehMvMj9P3xYu1nhdo2/3kWmr6dHeTVSxuwc08bhLtPAesMophU5s8xxlGgxTkEV
-         T+0d26u0uvTk5pRXI/8zQDOLuWWIh2Pg4qakLtuZUywdGjHuMJt0naINMbcn+Hqb5oFj
-         Omx+Q0lkc8RqleGGT3k/kIn9kUNGZKFwvWzmLaswDIr3zWljVstvrbGa3gVFW31xW9Nm
-         CRs6RN7AoPwW65blLRzXzGwOSRLrDT7dQDoS1Ln0csNBG9bmPWJG0HuaIn8rXVOFXXii
-         wOVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rj5OrcPbUSHUeRrK+Yhe+jiBoqRvGnLexb+l8ZGxfyk=;
-        fh=zS4YfSjOctIWYClk4uqFinVFNuPmbQQumCnUIC7GT4E=;
-        b=KQdJBiid8mtBV2bXSj8ekRk7IA7Hq7cFUt5AdK7umezTB0S1YUBYR3p7DZowh5Nvan
-         b6R47PHbSS9UWp1R467v16VBqALQOf2aAP71nlU08w3leVMHqM+ByfJdlSU8tIR+blR9
-         c6wUzpdLLS4D7j00MB8+047ycKk7o7ZZy1DNV1aDWD83LG+JcgmEzGZbPzxRyrW/8CS7
-         Zl4iNUYmLltJUnoSfHs8OlaYs9+BzFYGELkGft8ZJu7/5IvMHPxzM5H7Dyue65ePwMVC
-         9DtOJAhlEkllGNUVZlczY4/dQVa1/1GTWRQ9xxSFm7sC3xRE3rpoKYxsuXQPv3ZHjc/8
-         Q20w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787575808; x=1788180608; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rj5OrcPbUSHUeRrK+Yhe+jiBoqRvGnLexb+l8ZGxfyk=;
-        b=sFozRQk1M5aP2k5FrqrI+zZtCa9YZn0XmwT/PN6OHRhvGR5rx44EYlIit+ToJnTDKW
-         4LjNleCu59PL1Eqd08I0+uXzZyzlEG1rh+DETyBLvpjhoi77Oz14zMpKhofSZId+euF3
-         BzgPqMsQY3cFivcRnB/itgDWpigLil631NCjbC2gLttKOq+AOWWxYTbuVCKk3TrLHWzX
-         eqpANXWYoHdSokLGtd8nHzxD4QO7h3ma7tkgImJZ0eED1xByY5J62/ou+vP8ox3R85Wu
-         aIgECBt2P7ybrescUQbpJ8uGEMWtLB0ZScfZ9nABVwfaD8pAUERCCvuuTPe6/6dhSf4i
-         cEBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787575808; x=1788180608;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rj5OrcPbUSHUeRrK+Yhe+jiBoqRvGnLexb+l8ZGxfyk=;
-        b=Ie92T/MV4XbuLOUEyruSj98xunLBCJb12K8xgQJDiNUFdiKjT7BBlUi58trKLx3GsJ
-         P27V7aZqgQrthAi+5Zb1joqUQMJdBvCrg36abVG5cO0z7JJhbg2IrWPaay6m388ijw/k
-         Q+/mzfoLcFUqtEfEfnNSRtAeqTCsrc1ZKPZsRPW5hZaeEcp1a9PZ1rXtZrwBwiknMOWJ
-         ojPLI3zCcBXPAYjoJBl4ZfAOKxqecRFKQb9ZoPx6g9XCAR7yln95QXtGxBDUQXnzojOX
-         DEa8VpajUSFFsPx5TM3rZGyBmI2UCJmffC2fu5vrn+03QpjGqowojgMnn+OVB5X2S5dy
-         oEbQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqK2BO+KzoEotOyO06dhIbXbkMWerkI5z1ut7OlPOregiYLuYkKiXMb8pNXptCCwHXvS8A=@lists.linux.dev
-X-Gm-Message-State: AFuF++lrp/0tPsLbjKom6K6obPu4kp/guIQbcdfMDzO/2LM4Lt1+pI99
-	wcAxOfyHbOKYPeY5FlHQMdBvScrw8jMrjuqSBqjYHj/FGja5T5zHEeuY2SVjNrp7y8Tu2FkfsMg
-	cFnf6ijwe/uXLv0JEEMHwnTh0ykYN14w=
-X-Gm-Gg: AR+sD13fACdX/AXMMwJi1msDjfY2cXRnKmhLZrwqna7omk0kfzE130G6Be3ibwe2UbF
-	KOTqZqaPYWHRoh+gSSe+yjizdWnNeA/TDddMMy4oYwoflkKc4no5qmOIkAU9KCj3Qw/SNsZsILU
-	QQB2J8Sy81oVHi6xjmeVHBa0fmQDICp+qFYYCw6tPHIpIxjkKP6lfL+dtYG8qcuEq9sL6cPODDS
-	2e7CYzcFg2DwhHG0ujm9GYzYi30/6xApJPUli5YdGeN3TTty+a73c5LC8LsZ0M91GhOZy4Lo2T8
-	Wp+xFFSKjq/cGWUhMPgLkWk8EySVvi+XCMjW0OgNcqWZzv2Zs3yu6aKqD+sNEZKKDZXX6IOaVAY
-	YlgFD8PgsIMi0kKahS/8o3T1xyjGSHx4g
-X-Received: by 2002:a05:6512:3d09:b0:5b0:cce:da00 with SMTP id
- 2adb3069b0e04-5b48b484764mr5090274e87.1.1787575808126; Mon, 24 Aug 2026
- 05:50:08 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A020941D200;
+	Mon, 24 Aug 2026 12:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787575936; cv=none; b=gj99+O6If0ChvCuXFCldmVPSlrV80A/i83OujABr71J9HFx96DiSZagh8wcDmppjosBR+Z+xVjPGwHV8/7XhFICM6Ftc2hNvdogQ1Onm+ER7wcAJH78zeLrZTxvmKKURNuyIwuGLhnMpvMe8zPUvNzXFh1EdhKz0gYyHYJv7kuU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787575936; c=relaxed/simple;
+	bh=QrXHiKn/YNwE3eIQ/G+kOb8ZqCwb1hJURx/ock1NuwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KOLlp9mCOJM7AyZ7MeRTB4cm301BjcUOPQnpJhmReGbK/S5yZIOwcVvjDbAO4mSsWhGutgKlE5Hx37wqMrFxwC9rrBAbPxP+A5AlfSisgO2+2xiNhEeyl52PnUilE8cZqXJGf2PrbHZ/i/zv53beRdcl7JqkpfzT0ZKFmKyIxGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8E22F867B3;
+	Mon, 24 Aug 2026 12:52:11 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7F8A1340C;
+	Mon, 24 Aug 2026 12:52:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CD1vN3k+jGpyNwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 24 Aug 2026 12:52:09 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: jfalempe@redhat.com,
+	javierm@redhat.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	geert@linux-m68k.org,
+	rdunlap@infradead.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	nouveau@lists.freedesktop.org,
+	linux-renesas-soc@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 08/13] drm/panic: Split draw_panic_plane()
+Date: Mon, 24 Aug 2026 14:43:39 +0200
+Message-ID: <20260824125201.218863-9-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260824125201.218863-1-tzimmermann@suse.de>
+References: <20260824125201.218863-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260821101039.4037925-1-Zhipeng.wang_1@oss.nxp.com>
- <20260821101039.4037925-4-Zhipeng.wang_1@oss.nxp.com> <aohftK95_iDsTPPm@SMW015318>
- <AMBPR04MB12334D1C91BFC42AEDB26E7F2EBA02@AMBPR04MB12334.eurprd04.prod.outlook.com>
-In-Reply-To: <AMBPR04MB12334D1C91BFC42AEDB26E7F2EBA02@AMBPR04MB12334.eurprd04.prod.outlook.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 24 Aug 2026 09:49:54 -0300
-X-Gm-Features: AcwNN1UOE8_YKDKnzMxa-AYkEswtmNEYtfnyPTae-IZsOuoBl4dxSuzeIfXj93w
-Message-ID: <CAOMZO5CdZk3oyMpwPcTEeROBWBr70r9J7Vt-MiEA4+Y7abE5Sw@mail.gmail.com>
-Subject: Re: [PATCH v5 3/9] irqchip/imx-irqsteer: Validate IRQ count before
- creating domain
-To: "Zhipeng Wang (OSS)" <zhipeng.wang_1@oss.nxp.com>
-Cc: "Frank Li (OSS)" <frank.li@oss.nxp.com>, Thomas Gleixner <tglx@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Frank Li <frank.li@nxp.com>, Radu Rendec <radu@rendec.net>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Jindong Yue <jindong.yue@nxp.com>, Xuegang Liu <xuegang.liu@nxp.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 8E22F867B3
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Rspamd-Action: no action
 
-Hi Zhipeng,
+Move locking and parameters from draw_panic_plane() into the new
+helper drm_panic_display_panic_screen(). Call draw_panic_plane() from
+there.
 
-On Mon, Aug 24, 2026 at 6:38=E2=80=AFAM Zhipeng Wang (OSS)
-<zhipeng.wang_1@oss.nxp.com> wrote:
+The new helper drm_panic_display_panic_screen() is now the DRM core's
+interface for displaying a panic screen. The code remaining in
+draw_panic_plane() still does all the heavy lifting. It will become a
+plane helper for DRM drivers.
 
-> Hi Frank,
->
-> Makes sense, I'll restructure it that way for the next version:
->
->  - Move Fabio's IRQ-count validation up so the count is validated before
->    the domain is created, and add proper error handling there.
->  - Since the invalid count is then rejected before the domain exists,
->    the domain leak can no longer happen, so managing the domain with
->    devm is no longer a fix. I'll drop its Fixes tag and reframe it as an
->    improvement.
->  - Move that devm conversion after the new devm_irq_domain_create_linear(=
-)
->    helper, together with the other cleanup.
+v2:
+- use panic_type argument in draw_panic_plane() (Sashiko)
 
-My motivation for sending [PATCH v4 1/2] irqchip/imx-irqsteer: Convert
-to devm_pm_runtime_enable()
-https://lore.kernel.org/lkml/aoXZf2z-50H8rimI@lizhi-Precision-Tower-5810/
-was the "Unbalanced pm_runtime_enable!"
-error during driver unbinding.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ drivers/gpu/drm/drm_panic.c | 62 ++++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 28 deletions(-)
 
-This was seen on kernel 6.18, so I would like this error fixed in your
-series with a Fixes tag, so stable kernels like 6.18 can be fixed.
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index bc7c096c4236..2048a3bf736f 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -936,42 +936,25 @@ static void drm_panic_clear_description(void)
+ 	desc_line->txt = NULL;
+ }
+ 
+-static void draw_panic_plane(struct drm_plane *plane, const char *description)
++static void draw_panic_plane(struct drm_plane *plane, const char *description,
++			     enum drm_panic_type panic_type, u32 fg_color, u32 bg_color,
++			     unsigned int qr_version)
+ {
+ 	struct drm_scanout_buffer sb = { };
+ 	int ret;
+-	unsigned long flags;
+-#if defined(CONFIG_DRM_PANIC_FOREGROUND_COLOR)
+-	u32 fg_color = CONFIG_DRM_PANIC_FOREGROUND_COLOR;
+-#else
+-	u32 fg_color = 0x00ffffff;
+-#endif
+-#if defined(CONFIG_DRM_PANIC_BACKGROUND_COLOR)
+-	u32 bg_color = CONFIG_DRM_PANIC_BACKGROUND_COLOR;
+-#else
+-	u32 bg_color = 0x00000000;
+-#endif
+-#if IS_ENABLED(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
+-	unsigned int qr_version = panic_qr_version;
+-#else
+-	unsigned int qr_version = 0;
+-#endif
+-
+-	if (!drm_panic_trylock(plane->dev, flags))
+-		return;
+ 
+ 	ret = plane->helper_private->get_scanout_buffer(plane, &sb);
+ 
+ 	if (ret || !drm_panic_is_format_supported(sb.format))
+-		goto unlock;
++		return;
+ 
+ 	/* One of these should be set, or it can't draw pixels */
+ 	if (!sb.set_pixel && !sb.pages && iosys_map_is_null(&sb.map[0]))
+-		goto unlock;
++		return;
+ 
+ 	drm_panic_set_description(description);
+ 
+-	ret = draw_panic_dispatch(&sb, drm_panic_type, fg_color, bg_color, qr_version);
++	ret = draw_panic_dispatch(&sb, panic_type, fg_color, bg_color, qr_version);
+ 	if (!ret) {
+ 		/*
+ 		 * Only flush if we have a panic screen to display. Otherwise
+@@ -982,9 +965,33 @@ static void draw_panic_plane(struct drm_plane *plane, const char *description)
+ 	}
+ 
+ 	drm_panic_clear_description();
++}
+ 
+-unlock:
+-	drm_panic_unlock(plane->dev, flags);
++static void drm_panic_display_panic_screen(struct drm_plane *plane, const char *description)
++{
++#if defined(CONFIG_DRM_PANIC_FOREGROUND_COLOR)
++	u32 fg_color = CONFIG_DRM_PANIC_FOREGROUND_COLOR;
++#else
++	u32 fg_color = 0x00ffffff;
++#endif
++#if defined(CONFIG_DRM_PANIC_BACKGROUND_COLOR)
++	u32 bg_color = CONFIG_DRM_PANIC_BACKGROUND_COLOR;
++#else
++	u32 bg_color = 0x00000000;
++#endif
++#if IS_ENABLED(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
++	unsigned int qr_version = panic_qr_version;
++#else
++	unsigned int qr_version = 0;
++#endif
++	struct drm_device *dev = plane->dev;
++	unsigned long flags;
++
++	if (drm_panic_trylock(dev, flags)) {
++		draw_panic_plane(plane, description, drm_panic_type,
++				 fg_color, bg_color, qr_version);
++		drm_panic_unlock(dev, flags);
++	}
+ }
+ 
+ static struct drm_plane *to_drm_plane(struct kmsg_dumper *kd)
+@@ -997,10 +1004,9 @@ static void drm_panic(struct kmsg_dumper *dumper, struct kmsg_dump_detail *detai
+ 	struct drm_plane *plane = to_drm_plane(dumper);
+ 
+ 	if (detail->reason == KMSG_DUMP_PANIC)
+-		draw_panic_plane(plane, detail->description);
++		drm_panic_display_panic_screen(plane, detail->description);
+ }
+ 
+-
+ /*
+  * DEBUG FS, This is currently unsafe.
+  * Create one file per plane, so it's possible to debug one plane at a time.
+@@ -1017,7 +1023,7 @@ static ssize_t debugfs_trigger_write(struct file *file, const char __user *user_
+ 	if (kstrtobool_from_user(user_buf, count, &run) == 0 && run) {
+ 		struct drm_plane *plane = file->private_data;
+ 
+-		draw_panic_plane(plane, "Test from debugfs");
++		drm_panic_display_panic_screen(plane, "Test from debugfs");
+ 	}
+ 	return count;
+ }
+-- 
+2.55.0
 
-Thanks
