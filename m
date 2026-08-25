@@ -1,205 +1,276 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011024.outbound.protection.outlook.com [40.107.130.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A534C488223
-	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 15:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787670719; cv=none; b=jVZGzh5tFaUXoblmn4k57+Awkm0GS6RwT/dkCAMDbdIwvv2anSLIxJTuabiEVqUIrU8wLPGkhN8hKfCpesxh0iSQ1Icx+ncm5x1pWEisbbTJdD7/XNT9T0zLkSl+1eZsCWNtv7R+osJk75/Ny2bUeJBB5Uv/rAVAzDyT1tzUoKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787670719; c=relaxed/simple;
-	bh=VSfhDbGuaO6bj6wZHF4WXo8dJZaWBr1sYjz3PhauiKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=RLJyIQ0QtQl/gw9r4stKdhQm1WaNu59S3tO63L6MRbywuE+HmAicS4dLbMy1cM7PcAYSCnZFhjAZpldqbHClwwfOwY7S9ObL1btW3qnxDiG/SVuSVucXWLRT4/esIY/tgn6P6V6vy+aJ4PQg8CDNZ8jFqFiVB+t73FAvxsPzMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cmNwOCPW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620A8486631
+	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 15:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787671732; cv=fail; b=mYuWQJuJX1+tS+rzxfxhLoAkhaBiAXcnPDJGrxXRzaJgamK8P2yf4jkAtWYd7c/fDOdt2Z5vhDeKK4IuBXsTVGm/adWyPvmImn6sRdPXqJ20EnEXontfb3Pnf7qn/Ylgo0A8DJAdNCPHhtfff51/KoyZOWINZa6ZFEGbtwwevzo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787671732; c=relaxed/simple;
+	bh=eAWi6Hob2Vj5XvMdeI8sYrAQeoV0jEBBT8rmHB53ae8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=a3YS0vZFvVJxN4kjtArUdVdNovbK6Z0GHxESRsgusjnI15mwRxZqw3/9Kv6rpSySK3QGVRVXOEBuVT1pRMNkQY2wKxLuH0w+/7MQ5uMihUZ3GJdS+Kf3uGMixhFmm0WmGxbtNTUl9XnhAd6smtCPeq2SrqXp7co5QgFEFZApTpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=acJZUXnA; arc=fail smtp.client-ip=40.107.130.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cmNwOCPW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787670715;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l2TAxOwHRDlM6cSmZF0xTyxxMoyKXBFa/St1ecjf+fY=;
-	b=cmNwOCPW0pCLo1vgxbiI8024BSzxbFhi3JiPy5Bv8SJO4i3CWLe8pnJoGKFUOrad+B/b/+
-	ss0febDjN34CvxqR7kDJPsYhRohx65REzsx6IYHVayw4b9b70DhLTuDcUesPRiEXiPUqHm
-	uTFVlFozsf2xG5Uyv+HbX3OiX5QSvDo=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-408KVdgTO16kKwY0VekZAA-1; Tue, 25 Aug 2026 11:11:53 -0400
-X-MC-Unique: 408KVdgTO16kKwY0VekZAA-1
-X-Mimecast-MFC-AGG-ID: 408KVdgTO16kKwY0VekZAA_1787670713
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-52d33c89a29so66867361cf.1
-        for <imx@lists.linux.dev>; Tue, 25 Aug 2026 08:11:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787670713; x=1788275513;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:content-type:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=l2TAxOwHRDlM6cSmZF0xTyxxMoyKXBFa/St1ecjf+fY=;
-        b=MmBDZIsM5JxS/PK3Ww/buThs3HyD9kMoScRmoknY3J054Jty9TkrnLIl7fBg/RJDrV
-         0iLNcBjjWX6uisylFR/9B7ELQZARN8Ciudw2d2yFQdnnfT3WDkrpVj/cUayYmcGtQyBd
-         gYpHzcJgpqhvgFJ2Ju7UART2EorW7uOCZ4NzFJtaNq32tWS8g1JCRwXBf/AxYJkit5rw
-         +WHRA0V2uGrlxFc0RFO/6YLU+fhrCK8F9nkFkgTORYRkQD60ur2KW/Tl4RqDwGQzL0Af
-         xthDCDl1/5US8M+wzyKkjk3P4Uj7HgwRkgZ7yG/1qfu1gkQyrVfHtkBVpLLVJsQaxIVg
-         NBTw==
-X-Forwarded-Encrypted: i=1; AHgh+RrADpypsV8jArddzbch4KfvZRsymbu6rEyekOK0tw12YXuuK6/bkPF5jJeXcwoDi0OhgPk=@lists.linux.dev
-X-Gm-Message-State: AFuF++kEANBawP7XE2clLNqznEJ7gEYMx43JN6YhRwMCtjADf2Op9u4+
-	OyOVMTn70ReE2laZFxT5PO+DV5EzzVdHP7qLDZtHkRSat1EMngPncCISgrlAPmZWL24JlV3P+pL
-	R8RN+dgWaqr9u+ZlnpXphxe7H7EhJjtJx77Yy31XQ+0MQoCWb5/PNiQ==
-X-Gm-Gg: AR+sD11nFqkgR3ortM+35o2BrowtKrVqBvC0wk4rzFlCc6t+Qpk+f284JWLp/KWahIO
-	6jfSRPE/ssSziSwN+yxms/Tr8MEg6uAaEb0gkPAMRboA0eo6rAz1F7nxYumrnEXIW1lLzlYuhLZ
-	BgtU1g6zdTPDrZ5pyunaLIU6/b+Wtd5+AU9K7ISSSjMEgVFMoBUyBRth6SpR5DyM80ENEo5pAas
-	7kih+gR4xgOJUb8UsMTlLpcqxYo+h5RoNMQuqHhcU3UG2nDVaK0PuxOfbwU9ef0nHCEkJ/yjSzJ
-	NJksxWyfvgx/FnWSbCAvbZnTQMB8fqRa89Y+HBEuiUsfobOVYOb2KqLf9wDM8iu29N1NThyXdPF
-	wh86HSiSeMeOZxq0EhXcrBcut5pn4u3PvHw4=
-X-Received: by 2002:ac8:7d13:0:b0:52d:3d46:bfd0 with SMTP id d75a77b69052e-52df5a4a41emr343136341cf.32.1787670712433;
-        Tue, 25 Aug 2026 08:11:52 -0700 (PDT)
-X-Received: by 2002:ac8:7d13:0:b0:52d:3d46:bfd0 with SMTP id d75a77b69052e-52df5a4a41emr343134781cf.32.1787670711664;
-        Tue, 25 Aug 2026 08:11:51 -0700 (PDT)
-Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e09aad030sm71209161cf.15.2026.08.25.08.11.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 08:11:50 -0700 (PDT)
-Date: Tue, 25 Aug 2026 11:11:47 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Taichi Sugaya <sugaya.taichi@socionext.com>,
-	Takao Orito <orito.takao@socionext.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	David Lechner <david@lechnology.com>,
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="acJZUXnA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U85qQbCBoHKnVNLFc4Te0ebtletxVOHA2vGRYJQsyK62Vq7XKlVvg7b21EAGp2GvEp20TzuRbrYKlhk8yuxKWzVHbRWdrB0wbqOzuZwXm6iyLDoeIwM7tVmmM3l4H4S80WWmTbwE8RByN7Q6cul52NOPfgPQE6Mp0Nj78BInwkb70DVoMGY0j9nFlwoWgFioGvfPA8KWHFZFa1hWAgydU552Qra94c+hHEorvZ2AbjIKZ9bC1zEP8QUgohtjGZ0if3ILUs/c+H9iymG6HeEfxpDDPEDDNv2E4QHHYLZQ19E+swqMG92R3UAsoi0ilrG/nKSzS1ULEhC560+IQT3wCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CgDGOq8srqdGn9Xs9eGFRVOV0BVwr7Q8yqyrTtk1q9U=;
+ b=D3OhVESGWzp/Pd2V5qHaYbMHnXfu4c4a3aF15PJmYkkFLGnd8O+v2f+64p2a9u1AUWPZgJVER6XL+HENAExr3tMdH5We78WCtyZxAKywAwDy4Y8rhlHUNn6lzPHrUuTrlIQM0xXUHIDCkkJTDFqMGT+qXcZxSq4gAynoF3V4y7Kzpsi7hDu524ENpgl3/B57BWnZMjx47oLLLdeR5+RBLQwYdFoMH9UX9QYGq/qBeSVEJs+PdI1/jB63+rteF6w6QNXCfwN4KvX+49olzted+K+b3cGPSLZjNCp/+btlMM2k9IuDOBQXjMhmw81K6kQPje7YYVkusZnBTP3nzSIFTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CgDGOq8srqdGn9Xs9eGFRVOV0BVwr7Q8yqyrTtk1q9U=;
+ b=acJZUXnAXsifotOHtr2siuqyV4xpL/ACMUqnytXEtjBo/1cS0cbg8YiVx0+LFcw5WgG+ITKhFnRafc42F+xVGfwidiRnGO3ejWddhna4/PaW1xJsWSQqyYLIEoZ/tZzunmw1WhOhAgvrVpJWXRtVhV0/b/p/L7di9c+Nk2dulG9wfuAG2qkq0HeTx51psUfc5exTJjbQS9HqboH+QKoULfWlV1zn/cl1aLB7pQ9YMz13xnS2EQdI2EGGIPOUCi/RNd9SKGmehKxMesfrbKTIS3zf2E1FiBdQdKEcdyzyJsvEMKta8VvMKx0PLXsqY1KJ4/gw+4xYsuD3Pax0/ZlYfQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by PAWPR04MB9839.eurprd04.prod.outlook.com (2603:10a6:102:38b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 15:28:45 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0339.012; Tue, 25 Aug 2026
+ 15:28:45 +0000
+Date: Tue, 25 Aug 2026 10:28:36 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: pankaj.gupta@oss.nxp.com
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Prashant Gaikwad <pgaikwad@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Ulf Hansson <ulfh@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-clk@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 00/45] clk: Make sure clk_init_data is fully initialized
- (part two)
-Message-ID: <ao2ws3ZA-o8ZVjTh@redhat.com>
-References: <cover.1787239813.git.geert+renesas@glider.be>
- <3074509.irdbgypaU6@diego>
+	Pankaj Gupta <pankaj.gupta@nxp.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v42 5/7] firmware: imx: adds miscdev
+Message-ID: <ao20pJG7gJp6mAgz@SMW015318>
+References: <20260825-imx-se-if-v42-0-2e8efac0bb16@nxp.com>
+ <20260825-imx-se-if-v42-5-2e8efac0bb16@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825-imx-se-if-v42-5-2e8efac0bb16@nxp.com>
+X-ClientProxiedBy: SN6PR2101CA0025.namprd21.prod.outlook.com
+ (2603:10b6:805:106::35) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <3074509.irdbgypaU6@diego>
-User-Agent: Mutt/2.4.0 (2026-06-19)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Dj8UAWwtayaZt1r6zIJJ4n0FDO61EKOpwGY5ZsmXmO0_1787670713
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAWPR04MB9839:EE_
+X-MS-Office365-Filtering-Correlation-Id: e25126f6-93bf-4036-7c58-08df02bd8d49
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|23010399003|6133799003|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	uFTIS90FEQ5ctnJQN+BIwjqZ615e1B1Dh67CmwjnuWNmzOaPC1uaEjvpCV8Qq1YR6pcBdCP8ttXUszRgCzS5JLSR2Fk/PCKpgpP2/H1GAi/fwm1saJA/2l3zUUJlaBargVMtCLAwYdWr+K/RN13zEt+6db0aWvRKZIMz6DQmCohPsrHL+VLJTxYuvz/eqv/6eHehnPnT6G7ClYY9oNRmZM5+yP70x6nUAiY78ie7J2rWPATW4F43zNAvACjjnRdb8V44qkNyAOzMRXsUdWWnlWCeWWlMSjkgcfa1R4JyBvg2EMEPMaV61vJqpuRtvu8SemnNw97RNaejFjbm1XC0/G5blFQGIxVDbeyLDcV6WeK/6xRTPMDQEhAUMtEaMgHo+5vvVSqIBhG62fBohflFlG7vcSrQD9E9rWqQB7ny0Eg8xVzQ0J71fekuhrgANxHXOuWB+KQcS017zf5OzZ6esF5JE6KykcgjyzcVisCSNps4CQBbB3iElRs5O0p2kJ509MXxVI8awerPbnIh0atvhQAOYOwBKYICrPdav51uxIc8MxD6tVa/cgu6w2J4QBAz05zBCYQ7hMrqf7PQ3CdNiYzIt6z6iEpIFDyrwBcVhe+xW3sjs/LfMnTZdJaBOve2fjdFjMqiNZ3JG1HiWZCKouAp1Xu3wRnvb0c2wL7vcR8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(23010399003)(6133799003)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?SnHLRVMAm0qI+wet9LeTboqBc/CM5NYVNbbbpQbOuDLNe0KJKxa8WnKbTuqs?=
+ =?us-ascii?Q?0fcN1pyX+vhInuCh40FypmAGLzF0tTpp/fzvsKkinqJjDu+McFIAKn8iInKu?=
+ =?us-ascii?Q?15c4yvfQifN8QOKa9zibf5BZGRoQ3T7oRl3Mti5e/FCWVnrQMVUmmp1S6n/K?=
+ =?us-ascii?Q?qm3xwCC98PjsF0Q4syM1U9jdONisna8WnknMxE1G4D7Obf1jLbtLTLHvrV4p?=
+ =?us-ascii?Q?Bb/DWFFT14wXn4RNbnrH9Vne3fO4ZdFe1YsafbEsqbnX6+GahdeHWD4IkJBa?=
+ =?us-ascii?Q?hrPBNXCueb0M2O4IHVW+FuUATmk6gmYSRl/F925NNe86beOqefXh5xgm4nqL?=
+ =?us-ascii?Q?Di2+oeYEf05JWqk+uTblBaGlgJJsrEInN2gxOYBs9BDS3q7yTPV/I4u5p1+H?=
+ =?us-ascii?Q?5YDP6vVcVzHrl8jic5wW2AVZ7XNyNAAIFnhYDNdZIAWbpTO23p0w0dKKOSeK?=
+ =?us-ascii?Q?RDS3edyVWx/l0MfdeefKMuEhacfrKRP8T7tSuRFcbYnm0UOCK8dgqvE5j/oY?=
+ =?us-ascii?Q?r1OmjsPjWoO6URQi8QC05T0iKVr1n4n2FYShk56XcaaDefHihiF3XYmEOWr1?=
+ =?us-ascii?Q?6p5fa5hQzgGH2w8LsEHNVBVVDkRteAhOdK7bcm3NnxTDwySJ9iunvc1HTuyb?=
+ =?us-ascii?Q?sJeTGWyvlxfvwS+QbU2l5OpK09Y3SXPB97xP45vh0s1iFFe560ldqJKtBZZr?=
+ =?us-ascii?Q?p6gJQAqV1d324hjkDUXUnmqqYvjWn3WZM4Sch/FhFs42Ai9t5B2pOEXbNK7O?=
+ =?us-ascii?Q?iWrBSZTeRJKPxk8b9oXm3Q05u91i9QVhYNg8YuWuJL1pft+qtjRNlTF+HY8o?=
+ =?us-ascii?Q?EHlKN4mUrqGnpIzxLSwWPFfnw7T3b4cUhQpY1NHfeHlY3vpuos8o+ZDlBNP0?=
+ =?us-ascii?Q?zXBA+ewdMdfwAozIZLzeXFf1AZidZo+0RHub56kk2t/er8BjquE3HPkZ1oqT?=
+ =?us-ascii?Q?QAe9Dos9LuxKruhqHS9oCn7/irqv7ZuoBwIngPzAYuOZaFTxZ7J24ncZ2jcp?=
+ =?us-ascii?Q?siPZ2q1TqMMFc2LHB1u7QS4DBlF0KUKlso+DY57cWaCbchqg/8l/HOzl6V1a?=
+ =?us-ascii?Q?DtD+AlKxaGzcEYyzmiFA5mk0uo5/q6KCDS6lFrATGc0Qhca/8cJr6DPjNSUc?=
+ =?us-ascii?Q?NTlm/2HuGywU1EyOPbH1TAtP9zGi3Vc5E7Jf0HAajZkJDSy6C3xVwpxBgfRz?=
+ =?us-ascii?Q?iiVJiEG+La2jYDOLgoIRd4eFHHykS/aYAIFAMRkSIXkiXNkZdUHu9jnmCap2?=
+ =?us-ascii?Q?aGjD0HV9rQOiExfj6wsO25Q9/aXfKOU9WgmW4T2DF0UcWMV/VaCeSxj7Of0i?=
+ =?us-ascii?Q?evPzOB1rusrCA0uZHe+llrfBehhWEdQyAhyJbMm3U+aGz+UHQ/5xbrXyAfgy?=
+ =?us-ascii?Q?HAus+gErEw4pZ1OHecUffB/cjjCuBIm7w4VXADlzUBkvO/WwwMYzzQqJUXX3?=
+ =?us-ascii?Q?EX+r/l1t3myStoWBdg9pyQVp+rGif/txXmnIuRiCcmrjcKFTpBkDkaBHjH1G?=
+ =?us-ascii?Q?pIwmfjSi5w/9Ho3wDDB/gcDIxLHMLIAUuFRiTC4PtIV7owMMSNglwnxrhsGA?=
+ =?us-ascii?Q?cv19bgRiDSlYzYNR+Mn6N0MqfdQcf4n1jrw28QOgtomf5VLYAz3+qPdbqUGP?=
+ =?us-ascii?Q?W3g3i1K+tKiM3jJ8VBWePRUqoishlKTD5UfCxK/nja92wTZDldSzW99Lpr0A?=
+ =?us-ascii?Q?c3nvO+g5eRGjsX3L0yISglsUaVLsB7CAImO6Qp4WvrwmkpejdOdmJGUWDaS3?=
+ =?us-ascii?Q?4KJAXGlhn/63xR43JOZ62Qn7uKLk/7f+oOZDlZXgCFHtivy+CJZc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e25126f6-93bf-4036-7c58-08df02bd8d49
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 15:28:45.6088
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xk1A0ctqxK0O6rXvt+341u+ss1Ide5daPqTD9BhMYjFW8ZFnO+ruD50L0qXl2SOile9VyANkFI6xX7GxBGCgKBaxd8G37IdqUpnOVNorWWHtIs3uXOPENHcVF9VbcnPR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9839
 
-Hi Heiko,
+On Tue, Aug 25, 2026 at 04:33:37AM +0530, pankaj.gupta@oss.nxp.com wrote:
+> From: Pankaj Gupta <pankaj.gupta@nxp.com>
+>
+> Adds the driver for communication interface to secure-enclave, that
+> enables exchanging messages with NXP secure enclave HW IP(s)
+> like EdgeLock Enclave, from:
+> - User-Space Applications via character driver.
+>
+> ABI documentation for the NXP secure-enclave driver.
+>
+> User-space library using this driver:
+> - i.MX Secure Enclave library:
+>   -- URL: https://github.com/nxp-imx/imx-secure-enclave.git,
+> - i.MX Secure Middle-Ware:
+>   -- URL: https://github.com/nxp-imx/imx-smw.git
+>
+> Following checks are performed on the incoming msg-header,
+> to block exchanging invalid arbitrary commands:
+> - maximum allowed words,
+> - check if command-tag & response-tag are valid
+> - version,
+> - command id validation check, to allow limited base-line API(s)
+>   and restrict following:
+>   - exchanging power management commands.
+>   - reset requests.
+>   - BBSM configuration requests.
+>   - re-initializing the FW.
+>   - RNG init
+>   - CAAM resource release management
+>   - SE's internal memory management.
+> from user-space.
+>
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> ---
+...
+> +
+> +int ele_uapi_allowed_fw_rsp(struct se_if_device_ctx *dev_ctx, struct se_msg_hdr *header,
+> +			    u32 tx_msg_sz)
+> +{
+> +	struct se_api_msg *msg = container_of(header, struct se_api_msg, header);
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	bool is_cmd_receiver = false;
+> +
+> +	scoped_guard(mutex, &priv->modify_lock)
+> +		if (dev_ctx == priv->cmd_receiver_clbk_hdl.dev_ctx)
+> +			is_cmd_receiver = true;
+> +
+> +	if (!is_cmd_receiver)
+> +		return -EINVAL;
 
-On Mon, Aug 24, 2026 at 11:11:32PM +0200, Heiko Stübner wrote:
-> Am Freitag, 21. August 2026, 10:53:10 Mitteleuropäische Sommerzeit schrieb Geert Uytterhoeven:
-> > 	Hi all,
-> > 
-> > The clk_init_data structure contains several mutually-exclusive members
-> > for different methods to specify the possible parents of a clock,
-> > prompting drivers to initialize only the members they need.  However,
-> > not initializing all members may cause subtle issues, which are only
-> > exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-> > enabled.
-> > 
-> > Hence this series aims to make sure all members are fully initialized,
-> > to avoid such bugs, and to prevent future breakage when converting
-> > drivers to a different method for specifying the parents.
-> > 
-> > Part One[1] fixed all cases that I identified to be real bugs, in
-> > response to a crash I saw on BeagleBone Black.
-> > 
-> > This series is the clock subpart of Part Two, which fixes remaining
-> > cases that are currently harmless.  These are still fragile, and may
-> > cause future breakage when converting drivers to a different method for
-> > specifying the parents.
-> > 
-> > Thanks for your comments!
-> 
-> I guess more a handling question, how do you expect this series to be
-> applied?
-> 
-> I.e. each clk-arch-maintainer, or in one big thing by the core clock
-> maintainers? Just wondering if I should pick the Rockchip patch
-> or just let the whole series get applied by the clock maintainers.
+is_cmd_receiver only use once
 
-Before you pick up anything, let's see if Stephen picks up this series
-the next few days before he sends his pull to Linus.
+	if (dev_ctx != priv->cmd_receiver_clbk_hdl.dev_ctx)
+		return -EINVAL;
 
-Next development cycle, Jerome Brunet and I will be clk co-maintainers
-[1] and will start collecting patches then. If Stephen doesn't pick up
-this whole series this week, then pick up the patch(es) relevant for
-your tree and send Jerome and I pull as usual. That's just in case
-there's other patches that come in during the next development cycle to
-these files and to avoid merge conflicts. I don't have a strong opinion
-about this though, and could be convinced to take the whole series for
-simplicity.
+so is_cmd_receiver can be removed.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git/commit/?h=clk-next&id=8bc7ceadce1f362a8b0e88075ef3d926b286c01c
+> +
+> +	return se_cmd_receiver_allowed_rsp(dev_ctx, msg, tx_msg_sz);
+> +}
+> +
+...
+> +int se_close_session(struct se_if_device_ctx *dev_ctx, u32 session_hdl)
+> +{
+> +	struct se_api_msg *tx_msg __free(kfree) = NULL;
+> +	struct se_api_msg *rx_msg __free(kfree) = NULL;
+> +	struct se_if_priv *priv;
+> +	int ret;
+> +
+> +	if (!dev_ctx || !dev_ctx->priv)
+> +		return -EINVAL;
+> +
+> +	priv = dev_ctx->priv;
+> +
+> +	tx_msg = kzalloc(ELE_SESSION_CLOSE_REQ_SZ, GFP_KERNEL);
 
-Brian
+cleanup prefer declear varible here
+
+	struct se_api_msg *tx_msg __free(kfree)  =
+		kzalloc(ELE_SESSION_CLOSE_REQ_SZ, GFP_KERNEL);
+
+> +	if (!tx_msg)
+> +		return -ENOMEM;
+> +
+> +	rx_msg = kzalloc(ELE_SESSION_CLOSE_RSP_SZ, GFP_KERNEL);
+> +	if (!rx_msg)
+> +		return -ENOMEM;
+
+the same here. Check other place.
+
+> +
+> +	/*
+> +	 * Session close is a FW-API command; format it with the FW API version
+> +	 * so se_val_rsp_hdr_n_status() below (called with is_base_api = false,
+> +	 * i.e. expecting fw_api_ver) does not reject the matching response and
+> +	 * wrongly report the close as failed, which would leak the handle.
+> +	 */
+> +	se_fill_cmd_msg_hdr(priv, (struct se_msg_hdr *)&tx_msg->header,
+> +			    ELE_SESSION_CLOSE_REQ, ELE_SESSION_CLOSE_REQ_SZ, false);
+> +
+> +	tx_msg->data[0] = session_hdl;
+> +
+> +	/*
+> +	 * Transmit on the caller's own context. Using dev_ctx (rather than
+> +	 * hardcoding priv->priv_dev_ctx) keeps a userspace close() subject to
+> +	 * the going_away check in ele_msg_send_rcv(): if unbind has begun and
+> +	 * freed priv->tx_chan, the send is rejected with -ENODEV instead of
+> +	 * touching the freed mailbox channel. The teardown path passes
+> +	 * priv_dev_ctx so its resync closes are still let through.
+> +	 */
+> +	ret = ele_msg_send_rcv(dev_ctx,
+> +			       tx_msg,
+> +			       ELE_SESSION_CLOSE_REQ_SZ,
+> +			       rx_msg,
+> +			       ELE_SESSION_CLOSE_RSP_SZ);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = se_val_rsp_hdr_n_status(priv,
+> +				      rx_msg,
+> +				      ELE_SESSION_CLOSE_REQ,
+> +				      ELE_SESSION_CLOSE_RSP_SZ,
+> +				      false);
+> +	return ret;
+> +}
+> +
+...
+> +int se_get_mem_pool_buf(struct se_if_device_ctx *dev_ctx, void **buf,
+> +			dma_addr_t *daddr, u32 len)
+> +{
+> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt = &dev_ctx->se_shared_mem_mgmt;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	struct se_buf_desc *b_desc = NULL;
+> +
+> +	lockdep_assert_held(&dev_ctx->fops_lock);
+> +
+> +	if (se_is_fw_busy_ctx(dev_ctx))
+> +		return -EBUSY;
+> +
+> +	b_desc = kzalloc_obj(*b_desc, GFP_KERNEL);
+
+GPF_KERNEL is default for *_obj alloc macro. Needn't set it
+
+kzalloc_obj(*b_desc), check others.
+
+Frank
 
