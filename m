@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0073DB64E;
-	Tue, 25 Aug 2026 08:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1B13DAACB;
+	Tue, 25 Aug 2026 08:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645298; cv=none; b=qV/6IPHnuwo/ZRtc8YwxBqoLBYHUJmgV7/xcgjUwk/dlUmnkH9NSSH24IVsmVih9+fi3yKCs0xGEmB7vmivqCtTblPcMh0TSTA88QGKxGj2v7OJEdKnIyPeNjmpqCR3+/nRZqF4mcEfDH3ycPvTkrghknKjsHKm4O3Nz0u1gph0=
+	t=1787645316; cv=none; b=AbcZ0kRIqFTWTmYs94EucyEVozFF5Pt0ESYAkgDyQKbqa6Gt+Xekb77Ah9b4Ict1PZ4Ap4L0lX8OnyjY+PmhVdegfwlrTvkpa4NsHs4wET5ZbVvCyHPLELR5gsj7BMkQ3pUMWVKUtN39c8yZkqsF4dvO6Ik7eFzO2Ta8Hi0lbgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645298; c=relaxed/simple;
-	bh=OELXcTUyFmBaEVWUR9H4C17xjAfQSWoR0TSvppEZF80=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ssu82REn75LY9KQjQMjRhfyip91+xa4/FNMSMnoHsQE4VGY7iHtX/07QbG5P0gd2VxfJcniQgA7YdQUuapRMXdUhcnPk3A79IPk9nbUc+V48eBOmkrj7r5L7rsuFYtfO5HGCWbTa5tJPyd9V/JX5uj1As3dtUP7ZjNu/FV7SlYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2M4jgQjW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787645316; c=relaxed/simple;
+	bh=QBAsuMSbabBKD7Cd2StD5n6QuYl0K2/vSV16QdydJhg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BF5oSmw6lckVR7HsTs1XhTdeBj9pUZYFi4M8GRN5P7OCQ0oakFGhoM6y6kuYItB/G2+GCSelK1+V7jhwOCK7XPlUWIehwIrWj9z8+ghYdooSo8wyUE+aKohBqFjKwrBvvSzTNWw2gQycv1UwYDDHStj7Flq3SIEsXyOzvzlTHio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfAEjzFG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2M4jgQjW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14FD1F00A3E;
-	Tue, 25 Aug 2026 08:08:13 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfAEjzFG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F171F00A3A;
+	Tue, 25 Aug 2026 08:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1787645294;
-	bh=CzPTi7tIXhfTEP2ST8/9iB8oDWj+fQxEYt0icXPUvmg=;
+	s=korg; t=1787645306;
+	bh=kyLCHUoVIJQwDh9+7rrNPDgGV3VTDmvjMMCBxH0rKao=;
 	h=Subject:To:Cc:From:Date;
-	b=2M4jgQjWcSk3Pcs8PfqnEpq0BHFbO2OkVaslxh/9USE2RWA/EQWthpCyDaCbofhVm
-	 U3DzlEmyw4wCngIQT0QYbcy6ZGjk8bPPjFE3qdJUVu6+5LBMOf1hgyMTVD64iIbDE+
-	 8gruiOpZN8Jfg82wNgNWNG3vCI03KuH7MtBZXcDY=
-Subject: Patch "dmaengine: fsl-edma: Add error handling for devm_kasprintf" has been added to the 7.1-stable tree
+	b=dfAEjzFGH0bXFBCdvRea6HtvmCg1DGQCbZtGg1zMH9pc2oCoyiR8hfZQm961WGt1l
+	 idlSEyGWHSFNr7/w08qZOpYsaefVNoL8WrovLWIGBvMxpCvdb3aHUfwuHSUtmrUYEU
+	 NkYNkHqnmNobHbbVCjhTr13DuT8+qxJwLZptBiN0=
+Subject: Patch "dmaengine: fsl-edma: Add error handling for devm_kasprintf" has been added to the 6.18-stable tree
 To: Frank.Li@nxp.com,gregkh@linuxfoundation.org,griffin@kroah.com,imx@lists.linux.dev,stable@kernel.org,vkoul@kernel.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 25 Aug 2026 10:06:58 +0200
-Message-ID: <2026082558-feminism-wool-e88e@gregkh>
+Date: Tue, 25 Aug 2026 10:07:09 +0200
+Message-ID: <2026082509-bladder-striving-d96f@gregkh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,12 +44,12 @@ This is a note to let you know that I've just added the patch titled
 
     dmaengine: fsl-edma: Add error handling for devm_kasprintf
 
-to the 7.1-stable tree which can be found at:
+to the 6.18-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      dmaengine-fsl-edma-add-error-handling-for-devm_kasprintf.patch
-and it can be found in the queue-7.1 subdirectory.
+and it can be found in the queue-6.18 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -97,6 +97,6 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from griffin@kroah.com are
 
-queue-7.1/mailbox-mchp-ipc-sbi-add-null-check-for-devm_kasprintf.patch
-queue-7.1/rndis_host-add-overflow-check-in-rndis_rx_fixup.patch
-queue-7.1/dmaengine-fsl-edma-add-error-handling-for-devm_kasprintf.patch
+queue-6.18/mailbox-mchp-ipc-sbi-add-null-check-for-devm_kasprintf.patch
+queue-6.18/rndis_host-add-overflow-check-in-rndis_rx_fixup.patch
+queue-6.18/dmaengine-fsl-edma-add-error-handling-for-devm_kasprintf.patch
