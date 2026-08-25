@@ -1,160 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49224.qiye.163.com (mail-m49224.qiye.163.com [45.254.49.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390443F39D4
-	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 10:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4BA3F6619
+	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 11:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787652540; cv=none; b=mfh/JRqenwt8HgYpMIBh2fRVNqBiedmUotEV5aC75dIWM07sIgIg7mnjXE7rm88XHVAzmVeiB7Hgw8sPF/ch0MTiIU3eJh4HB+GSTY3f24/xFCbJGYTbMGZjYhEyXCDVmDNtfrcCXh7zJ69KoI89E4U4QgBHOSlkDR495TdIx8Y=
+	t=1787656717; cv=none; b=EBdh6oUEosWsX3Ehj3ZVvRIYihq9isvxgedS4fYt+yaIDdaqvRMkpU5O8ea0fhO+g7FW+9UFU2Y0msVSqj2brDCjzL0AhDCjEgUduvn//42AfoFYTbqslzCtnSCLoMWEUUpH0NXTfDuyReN0BTuQm7vRVaShMiqGrptQIkybJZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787652540; c=relaxed/simple;
-	bh=wVZTcqcqcdSQnSU/+w3LlNB1rUtZi/d//9oYVZLFX1o=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZfOiIjJjo+aYEFcFD27XciayeqQ8MOS2PKrnSWJdorko3kPeUZaeMpSz7YojdQmt5UBoUMMITDX6EOL4dJogT5a51oqv1lkKU4rZVTUu0OyoodYROBCABuhBs59vHS/i824cqOwbq3YA1tgQS9Ly4THUA/Or2k9RyzAXAlLnlQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=igCD4/3f; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787656717; c=relaxed/simple;
+	bh=UlgNgsoI2mgmcPjZD9IEaM7dJdoYRpuKMNwGpLxOlJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aNxZ+43514i1IskgyucOekH5u41Wt0/zfah31amAyKFoBnNRLqjPvLPznSFAQfiqlEm8sFyYdk5gJi7i43PQebO7es/xJ04ICoc9FXMZuDNkZDvhH3Q5cgDs5J4WS9rea7tsaKXTDxdMrmhCc7yns8mPGpdaDQOET6Hj3ou8Rgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com; spf=pass smtp.mailfrom=thundersoft.com; dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b=g6sSXvDm; arc=none smtp.client-ip=45.254.49.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thundersoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="igCD4/3f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830171F00A3A;
-	Tue, 25 Aug 2026 10:08:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787652538;
-	bh=q/ZAlA77QzzHm6mhu2+J/EcTeMzZkuBjKln5jgwwJA8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=igCD4/3fcPtynQ2yaMOQYUMYQHqIBhEUUVO2r7EhclllR4wHXaX2c8r6/PlC3xK+R
-	 YXxXgeM/5pyvs8qOMw5MwRVLZmTDH+PzQ0Mk5lyB3M0wdizmp7UqAcBbJjKUNzeDIP
-	 zi9Pu9GNEzMCG4jHNOmMvpivPL8Iz2DYuQcaKmwm6SzzvPxCoJ245I23iJTJCE9itx
-	 DouN82XmavyTOgO/l2JD20XwKlGeL2OxzroHl8PofFMAba3XoSXHPwqBbyrSHXJEr7
-	 MXkcrVtcXcBFW/OIItdGedp2ZNmgkYjl1mqqEUI/py+GN0x3r3ynPMt6YP9Hws78rW
-	 10lN6o+5AKSMA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net] net: fec: only stop PTP if it was initialized
-Reply-To: sashiko-reviews@lists.linux.dev
-To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260824100834.31655-1-phucduc.bui@gmail.com>
-References: <20260824100834.31655-1-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 25 Aug 2026 10:08:58 +0000
-Message-Id: <20260825100858.830171F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b="g6sSXvDm"
+Received: from tsdl-HP-EliteDesk-880-G6-Tower-PC.. (unknown [36.129.139.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4b42473f7;
+	Tue, 25 Aug 2026 19:13:14 +0800 (GMT+08:00)
+From: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+To: konrad.dybcio@oss.qualcomm.com
+Cc: Frank.Li@nxp.com,
+	andersson@kernel.org,
+	bryan.odonoghue@linaro.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	festevam@gmail.com,
+	hongyang.zhao@thundersoft.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	konradybcio@kernel.org,
+	krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	rosh@debian.org,
+	s.hauer@pengutronix.de
+Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: qcs6490-rubikpi3: Add IMX219 camera overlays
+Date: Tue, 25 Aug 2026 19:13:00 +0800
+Message-ID: <20260825111300.578054-1-hongyang.zhao@thundersoft.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <1ef41a49-dcf8-4252-acdd-f7f3c1210c55@oss.qualcomm.com>
+References: <1ef41a49-dcf8-4252-acdd-f7f3c1210c55@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0389fd69e09d5kunmfc72ad39516699
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQksdVkhNSkJKTklNT0MeSFYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlITVVKSUJVSkhCVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+DKIM-Signature: a=rsa-sha256;
+	b=g6sSXvDmyQWkNKsuejnsoucOf08FtjSwsRNkWjRVUoH/E29b1E0J9z8qeSrVwN809tPpS8Ilc0BD+F/R7/QBNEetBJKtHhWfzAyZyZSq2UVy8DqjM5ZjQyY7oJMoNXKLyV9aXvejDAWSEkdToPQ2lF1y4Bqdk+hw7aVITxyVexs=; c=relaxed/relaxed; s=default; d=thundersoft.com; v=1;
+	bh=vu2NX5WQU7lXnOIBq1D5RPPESP5Qndpwyx9mUpie3Rk=;
+	h=date:mime-version:subject:message-id:from;
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+Hi Konrad,
 
-Pre-existing issues:
-- [High] Incomplete fix leads to NULL pointer dereference in `fec_drv_remov=
-e()` via uninitialized hrtimer cancellation.
-- [High] Use-after-free (UAF) due to improper work cancellation order in `f=
-ec_drv_remove()`.
-- [High] Use-after-free (UAF) due to improper timer cancellation order in `=
-fec_ptp_stop()`.
-- [High] Unprotected hardware access leading to kernel panic on timer expir=
-y with clocks disabled.
---
+Thanks for the review.
 
---- Patch [1]: [PATCH net] net: fec: only stop PTP if it was initialized ---
-commit 1bdf32b63293bc50d538fd180f2074583880906f
-Author: bui duc phuc <phucduc.bui@gmail.com>
+On 8/12/26 4:22 AM, Hongyang Zhao wrote:
+> > RUBIK Pi 3 ships without camera sensors, and its two connectors support
+> > multiple modules. Keep module-specific nodes out of the base board DTS
+> > and add per-connector overlays for Raspberry Pi Camera Module V2 IMX219
+> > sensors.
+> > 
+> > CAM1 uses CCI1 and CSIPHY1, while CAM2 uses CCI0 and CSIPHY4. Each
+> > overlay describes the 24 MHz sensor input clock and models the module
+> > power domain controlled through the connector PWR_EN signal. The
+> > baseboard supplies VCC3V3_OUTPUT separately and has no per-camera
+> > regulator.
+> > 
+> > Describe each connector CAMERA_GPIO signal as a privacy indicator LED
+> > and associate it with the corresponding sensor. This lets the V4L2 core
+> > control the LED while the sensor is streaming.
+> > 
+> > Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> > Signed-off-by: Hongyang Zhao <hongyang.zhao@thundersoft.com>
+> > ---
+> 
+> [...]
+> 
+> > +	camera@10 {
+> > +		compatible = "sony,imx219";
+> > +		reg = <0x10>;
+> > +
+> > +		clocks = <&cam1_imx219_clk>;
+> > +
+> > +		VANA-supply = <&vreg_cam1_pwr>;
+> > +		VDIG-supply = <&vreg_cam1_pwr>;
+> > +		VDDL-supply = <&vreg_cam1_pwr>;
+> > +
+> > +		leds = <&cam1_privacy_led>;
+> > +		led-names = "privacy";
+> 
+> No reset GPIOs?
 
-net: fec: only stop PTP if it was initialized
+Yes. The RubikPi camera connector does not route a dedicated sensor reset
+signal. It exposes PWR_EN and CAMERA_GPIO, but neither is connected
+directly to the IMX219 reset input when using the official Raspberry Pi
+Camera Module 2.
 
-fec_ptp_init() is only called when fep->bufdesc_ex is available.
-However, fec_probe() unconditionally calls fec_ptp_stop() on the
-failed_init path.
+PWR_EN is connected to the module's ENABLE signal and controls the
+module-local power supplies. CAMERA_GPIO corresponds to a pin that is
+not connected on Camera Module 2. The IMX219 /PWDN signal remains local
+to the camera module and is tied to its 1.8 V rail.
 
-Check fep->bufdesc_ex before calling fec_ptp_stop() to avoid stopping
-PTP when it was not initialized.
+Therefore, there is no board-controllable reset GPIO to describe for
+this camera configuration.
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
-rnet/freescale/fec_main.c
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -5457,7 +5457,8 @@ fec_probe(struct platform_device *pdev)
->  failed_irq:
->  	fec_enet_deinit(ndev);
->  failed_init:
-> -	fec_ptp_stop(pdev);
-> +	if (fep->bufdesc_ex)
-> +		fec_ptp_stop(pdev);
+> 
+> You should also have a reference to the mclk pin state to make sure
+> the correct pin function kicks in
 
-[Severity: High]
-This is a pre-existing issue, but since this patch fixes the missing
-check in the probe error path, should we also add the same check to
-fec_drv_remove()?
+The Camera Module 2 provides its own 24 MHz oscillator, which is
+connected to the IMX219 MCLK input on the module. RubikPi does not route
+a SoC CAM_MCLK signal to this connector. The fixed-clock node represents
+that module-local oscillator, so there is no corresponding TLMM MCLK
+pin state.
 
-fec_drv_remove() calls fec_ptp_stop() unconditionally:
+The Camera Module 2 schematic shows both connections:
+https://datasheets.raspberrypi.com/camera/camera-module-2-schematics.pdf
 
-fec_drv_remove()
-        ...
-        cancel_work_sync(&fep->tx_timeout_work);
-        fec_ptp_stop(pdev);
-        unregister_netdev(ndev);
-        ...
+RUBIK Pi 3 schematic (CSI connector, page 13):
+https://thundercomm.s3-accelerate.amazonaws.com/uploads/web/rubik-pi-3/RUBIKPI3-IOB-V02-RELEASE.pdf
 
-If the device is unbound via sysfs and fep->bufdesc_ex is false, this
-will call hrtimer_cancel() on an uninitialized perout_timer, which could
-cause a null pointer dereference.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but I noticed a potential
-use-after-free in the same device removal path:
-
-fec_drv_remove()
-        ...
-        cancel_work_sync(&fep->tx_timeout_work);
-        fec_ptp_stop(pdev);
-        unregister_netdev(ndev);
-        ...
-
-Since cancel_work_sync() happens before unregister_netdev(), couldn't
-a concurrent tx timeout call schedule_work(&fep->tx_timeout_work)
-again before the network device is fully unregistered?
-
-[Severity: High]
-This is another pre-existing issue, but looking at fec_ptp_stop(), does the
-order of cleanup create a race condition?
-
-fec_ptp_stop()
-        ...
-        hrtimer_cancel(&fep->perout_timer);
-        if (fep->ptp_clock)
-                ptp_clock_unregister(fep->ptp_clock);
-
-If a concurrent userspace PTP_CLK_REQ_PEROUT ioctl calls
-fec_ptp_enable() before ptp_clock_unregister() finishes, could the
-timer be re-armed after it was cancelled, leading to a use-after-free
-when the timer expires later?
-
-[Severity: High]
-This is a pre-existing issue, but is it possible for the perout_timer
-to fire when the hardware clocks are disabled?
-
-When the interface is brought down, the clocks are disabled:
-
-fec_enet_close()
-        ...
-        fec_enet_clk_enable(ndev, false);
-
-If a delayed ptp perout timer expires after this, the timer callback
-will unconditionally access hardware registers:
-
-fec_ptp_pps_perout()
-        ...
-        /* Get the current ptp hardware time counter */
-        ptp_hc =3D fec_ptp_read(&fep->cc);
-
-Could this trigger a synchronous external abort on platforms where the
-clocks are disabled?
-
->  failed_reset:
->  	pm_runtime_put_noidle(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260824100834.3165=
-5-1-phucduc.bui@gmail.com?part=3D1
+Best regards,
+Hongyang
