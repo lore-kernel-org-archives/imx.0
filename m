@@ -1,99 +1,90 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B5C4432FD
-	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 12:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7E347FB10;
+	Tue, 25 Aug 2026 13:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787662506; cv=none; b=jv8GOOpcg4TLvcH7E/eRpFWxACio2ixA61cJ+QQjOZhf2qtjx7ZsQCwzTPw8RvQlYMbSY9tD0Lhg9Uou0S+NKapPWNXSGv1xh3H2pKz+Vri+bfSASzJ1YH5uWjySU9WsMBdsYmkALpR+v7I3Xp4Y9wnjD1rw27s2WynHTSskvvA=
+	t=1787664674; cv=none; b=Ivn70qUCXs0ntxDH0SRcR8btzfBl7T8e7ZilI3jKulVV//7ijskhDxKr2UNBZBZi6qUm7LUgUzkdxDVecUFGn7mN+XHL48/7U4BrxdttyIm1tBhcgeMFRTilKrx2yOiKQLYEQYcGQilU+OvVTPegNA1fbwUTmcdbl3/xO6Tw+0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787662506; c=relaxed/simple;
-	bh=VLAy0C1DrIqO9piddMV94geRcYhGFe2jnsWYgr4FjU8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=igRZdZl0Yj59PdUVnO56qycmHndRvGUm8gzi9v4XNZwf24Yh4kG3+N4YMljnEhszY3db3NSpZ9rkkU4WR+GC7Wa/hB6Ddg7UnHO4xQefKhcFNSug0bPyGbgQFoW8gwrv7ZPirO0xwadIucHWfk5fB2TkbtQdrpO0YJFEklVdiE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=34qD/RmW; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1787664674; c=relaxed/simple;
+	bh=2x0aSf8Jb9izXmlzQb0Ukaurcv7A6WFyXLYJrNPQRN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uh7/2mGO8RSOb7mDdb520eVcRhvWKkLwQuJ0RS4dthPnL4uzno4MMXmy7lWCApV97cfBirLA+y0w9cQrI5zrX1kvp4834VZZRrIMu2m3iYuTekKROvIw42YgdN2t0SpiHGbHpIlsMhCFYKgSHBbde6r7Ws3o9hzXHZ9dGHyeviI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHy14Txm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="34qD/RmW"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id DD6F414C2DE;
-	Tue, 25 Aug 2026 14:54:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1787662494;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QLDj2hZCve2ZWWLDxKombVsx7zXm/NyM2HtS7v1LdNE=;
-	b=34qD/RmW3+YAfFU49MNmHd7+ykPxdE3JfNqfWQGiB7qIcaGMHrcpvRq4xnu2MOVwCKGEcI
-	wMQD841PBTKqMyrQCUmnj5PVf1Ba4K+8EIVmcrNNwGwkloZ12UHr38dDA2El9tZpXBayNw
-	Tcfg7mpgC0VK2f4yq54KKSZtHXBbg7P28Otj3GK0/rPVKQ4auwEr1cHA/JZZCUmCG7g2mt
-	Fu45QbiuoeeyZsBYbzQcUYP9JgS0e0SESGZCW/v9aU4BFcJ9YVxCC9QArt9gJ30cND4nkm
-	ces1Us63jDfQcluY0mPH44hR/ZlfYjfjUIBR4PKgDSgs0fcaXSsk/9xnE2IjHA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 2988523d;
-	Tue, 25 Aug 2026 12:54:47 +0000 (UTC)
-Date: Tue, 25 Aug 2026 21:54:32 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Vincent Jardin <vjardin@free.fr>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
-	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
-	Shawn Guo <shawn.guo@freescale.com>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Stefan Eichenberger <eichest@gmail.com>
-Subject: Re: [PATCH v3 0/2] i2c: imx: fix SMBus block-read of 0 locking the
- bus [stable backport question/offer]
-Message-ID: <ao2QiAGMU3g5dQB8@codewreck.org>
-References: <aogVVwPlOmCqFsg_@codewreck.org>
- <202608250009.7e963743cf842d4e@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHy14Txm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740BB1F000E9;
+	Tue, 25 Aug 2026 13:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1787664673;
+	bh=rxSRPEjfOLm7O42lgV5rhizdSc/CA8a+TxQm5+duJ2U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cHy14Txm2KmH2jLJ8eO4Umy/6G0yictjcrh3DtQGE8/Dmy+3hps90zmBD11uzqwJE
+	 DdifI6DxVXg5R+AHX11nMJx705F91XOxkoBsMbDlk7mDfQl+TMxssvingO1ET7rowr
+	 BEznHrJ8ZPrYJ0nIn1MQzvb6mtD07HW8OqndCX7E=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	stable <stable@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	imx@lists.linux.dev,
+	Griffin Kroah-Hartman <griffin@kroah.com>
+Subject: [PATCH 7.2 49/82] dmaengine: fsl-edma: Add error handling for devm_kasprintf
+Date: Tue, 25 Aug 2026 15:25:36 +0200
+Message-ID: <20260825132543.436484289@linuxfoundation.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260825132541.560541185@linuxfoundation.org>
+References: <20260825132541.560541185@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202608250009.7e963743cf842d4e@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Sasha Levin wrote on Tue, Aug 25, 2026 at 07:49:30AM -0400:
-> Dominique Martinet wrote on Fri, Aug 21, 2026 at 06:07:35PM +0900:
-> > tl;dr: If maintainers agree, I can send these two for a future 6.6/6.12:
-> > 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
-> > 07fd9385f0d8 ("i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)")
-> 
-> Thanks for the offer, but let's not take these on 6.6/6.12.
+7.2-stable review patch.  If anyone has any objections, please let me know.
 
-Ok, thanks for taking the time to check and reply!
+------------------
 
-> 5f5c2d4579ca splits the read path, and the split leaves the block_err
-> handling in the atomic variant only, while the live non-dma path ends up
-> back in the unfixed handler. On 6.6/6.12 the block-read-of-0 fix that
-> shipped in 6.12.101 and its 6.6 sibling landed in the shared
-> i2c_imx_read(), which both paths still go through - so pulling the rework
-> in would actually re-open the bus lockup those trees are already
-> protected against.
+From: Griffin Kroah-Hartman <griffin@kroah.com>
 
-Yes, a backport would only make sense with both patches...
+commit bf1af4dfdc017dfe989c0dbcf0e608dc95f1d2cb upstream.
 
-> Your premise is right that b460b15b3cc2 is now everywhere, but
-> 5f5c2d4579ca also carries five Fixes: follow-ups, four of them tagged
+Add error handling statement to fls_edma3_irq_init() for the
+devm_kasprintf call.
 
-... but now that you've pointed out the others I agree it's more trouble
-than it's worth (even if they all apply cleanly after trivially fixing
-5f5c2d4579ca's backport), so I'm fine with this
-(And that can be reconsidered if more people report timeouts fixed by
-5f5c2d4579ca...)
+Assisted-by: gkh_clanker_2000
+Cc: stable <stable@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: imx@lists.linux.dev
+Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/2026070605-frying-fling-b9c5@gregkh
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/dma/fsl-edma-main.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -414,6 +414,8 @@ static int fsl_edma3_irq_init(struct pla
+ 
+ 		errirq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-err",
+ 					     dev_name(&pdev->dev));
++		if (!errirq_name)
++			return -ENOMEM;
+ 
+ 		ret = devm_request_irq(&pdev->dev, fsl_edma->errirq, fsl_edma3_err_handler_shared,
+ 				       0, errirq_name, fsl_edma);
 
 
-Thanks,
--- 
-Dominique Martinet | Asmadeus
