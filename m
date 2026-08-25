@@ -1,176 +1,465 @@
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2767A470124
-	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 13:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C3C2E06E4
+	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 13:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787665582; cv=none; b=acejZIXVn0Mar4JwIEi3CulXETpOy0NzVg3UdF7C5ekXXtrVDVsZVMz0dSZbBX0YAu5epfvhbdjGcPkfr6TSgtbx5+shVK+pGP8c4PJ/HqNufDOBxsB6qKCTjj2sWhQA72/9ux+zfa6Fk5sCEwOkj21BTRZm7fotdnIUmiqDjDs=
+	t=1787666294; cv=none; b=gzRUGFUUZhMqmHy7I2+bjEMiHBe526WU4EBNyeMQKBWQ6boWFBETedexSHqT5H/mJfpQxCXJfLneFTVRl56CjkJlka8ZpXETcqmFk1cEZqjvPoj0FA9rOzxhFVEY1Kc6hH2w8LqICBlHD/1RnYUx2eQrNMWVJU0D5OKZtXT3dSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787665582; c=relaxed/simple;
-	bh=i1s5kI1v30AEbJiF6ya5DQVhaJFLpKlvr86fshWQ3kw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=WPN+EZBI3wo/AV5rOd510SKWbmxkAjW3T0hQOqmB0acgy0fL1FA7NMM0+pB6FCEH8kP5WGp0A1nBcctu8+gLHAzXDk6eSIMgzcqIGtRG9lKKSD9wr+MccvhdMk2z9XVh4oyemKQUbWhGVoABMxn5uFC2g1jA2BPNTmilgM+R0Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=I29sFMK9; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1787666294; c=relaxed/simple;
+	bh=R8PLrqpijfY7S7ah2mXeq3MCNRf+k1N6Er9hdFFyv4o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dzVCWUNo5SBu8zjtIwUrGjTCZDaIzYqnWCpYpoLjkTJ1aNnBhCe9TFBBZzdVZMf07Z4NgIrIFpFIPNS5VNX/QdY3UsNoe+u1em3+DOikEkYLVpWxDKzEv3ay2l88jwn1CHn8by+SGvT1HFu20OPluFVieFV1T5tcisBpg7bEDd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=hFmJpmbq; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="I29sFMK9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1787665572; x=1788270372; i=markus.elfring@web.de;
-	bh=i1s5kI1v30AEbJiF6ya5DQVhaJFLpKlvr86fshWQ3kw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=I29sFMK9Od55/lzQYOOz9a0tMqZnq4IZNZ5fE841gSSngDO1Fr1eZxVXqCXQKgqY
-	 yXhlLpDZCPGrBa1i3VZ2TG8ZY3ZWmfgWjdiN/zEnOhv+UYkX0tlKL5VFu9a/sFnJm
-	 q13yrEJB5i7rgxy+r7hBsbfjdgz5yJyV5vHkGQM4JqEspflqmVynjqX2azniVXDqF
-	 dAbjAEJ4lQXHMOxTniw/U56vig0oC6BVE0eKcFjzevFITW4GcXE9CGzz7YzwnSkbq
-	 RyZGOWc4fWgAgEO0zU8CxuoP1eqy24/9LsXBlp/9kP6CxOtX67NP3YScgaAWOaBvl
-	 ZmUNONPIFKoeS66riA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MovnY-1wZyuo1Ld0-00lfnG; Tue, 25
- Aug 2026 15:46:12 +0200
-Message-ID: <c1b5027c-5044-414e-8a4a-d2ce135a143c@web.de>
-Date: Tue, 25 Aug 2026 15:46:09 +0200
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="hFmJpmbq"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EFC0011850A;
+	Tue, 25 Aug 2026 15:57:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1787666279; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=oJAT29TO9qBZGvcdJkbBt/NinY791wsu0liqJcNJiLU=;
+	b=hFmJpmbqMJiOdY42UeaoyDEpOv0Vjh2a0DWdE/UtplfrUcnWSeHxmAYzHtV1z0AtT9Jfb3
+	pP4Fj1mlS9VAf/cioqc2BKKveOtpGCvOZW6U6EklQt4hIk3R1n+5XlipXKlhqxdqgSgejO
+	sWLum4otkt+Ezp+odE3WQlW3ig8USU72BiKuN9tr74YbKj748jNNLU+Rze6Pqx//TDnT1I
+	xEYvyLZY4ffgoNAUVc/G2qlaJE3r9TVYplmYISRyCmiRBYwi9ObGGs1seIPD2Vp9wJZyUL
+	hcKovrC1PVBiw95HvYmY23ltJuQjymOIQEW6GltWiIRZyUV2hNEvxOpjnscbig==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: imx8mn: Add ifm VHIP4 EvalBoard configuration EEPROM layout DTOs
+Date: Tue, 25 Aug 2026 15:57:20 +0200
+Message-ID: <20260825135754.864501-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: hanzhijian1991@gmail.com, imx@lists.linux.dev, linux-pci@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
- Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Lucas Stach <l.stach@pengutronix.de>, Manivannan Sadhasivam
- <mani@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: sashiko-bot@kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>
-References: <20260825060340.3767635-1-hanzhijian1991@gmail.com>
-Subject: Re: [PATCH v2] PCI: imx6: fix endpoint init error handling
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260825060340.3767635-1-hanzhijian1991@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:L5SxaG9PEAO7bLQ1XieZcnAYvOVM9KJxXcOjWSeOrBdnK75Y848
- UOD9zsQF5MVhU6Rosgu68wS6RWg6geqXMgnAATeJKpsLt6pD6uhoZOXZKfTiGVvEKI9VPjC
- MIOLrzzSN0soYHCv/GU4fdI/55wVCWvlN9xC24v07YkfZzoYQDyNPXjijVVoSONLBd+9jh9
- siUl/QHi62lBSKlDFm0vA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:v3UkBPJZv8Q=;G0zuGlOJc54gElBSS3/zSNbRvLC
- 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
- =
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-=E2=80=A6
-> Check the return value of imx_pcie_host_init() and =E2=80=A6
+Add DT overlays which describe configuration EEPROM VHIP section,
+for VHIP section v1.0.0.0, v1.1.0.0, v2.0.0.0, used on ifm VHIP4
+EvalBoard .
 
-How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
-=E2=80=9CCc=E2=80=9D) accordingly?
+With the DTO applied, the VHIP section fields become accessible via
+sysfs nvmem interface. The entire EEPROM is accessible via the nvmem
+interface as well.
 
-See also:
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv7.2#n145
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/stable-kernel-rules.rst?h=3Dv7.2#n34
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+NOTE: Depends on https://lore.kernel.org/all/20260810213456.1268831-2-marex@nabladev.com/
+---
+ arch/arm64/boot/dts/freescale/Makefile        |  17 ++-
+ .../imx8mn-vhip4-overlay-eeprom-1000.dtso     | 103 +++++++++++++++++
+ .../imx8mn-vhip4-overlay-eeprom-1100.dtso     | 103 +++++++++++++++++
+ .../imx8mn-vhip4-overlay-eeprom-2000.dtso     | 107 ++++++++++++++++++
+ 4 files changed, 329 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1000.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1100.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-2000.dtso
 
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 95ae85ab4adf5..1215d8f6aa813 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -245,15 +245,25 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-var-som-symphony.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mn-var-som-symphony-legacy.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mn-venice-gw7902.dtb
+ 
++imx8mn-vhip4-evalboard-v1-overlay-eeprom-1000-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
++						      imx8mn-vhip4-overlay-eeprom-1000.dtbo
++imx8mn-vhip4-evalboard-v1-overlay-eeprom-1100-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
++						      imx8mn-vhip4-overlay-eeprom-1100.dtbo
+ imx8mn-vhip4-evalboard-v1-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
+ 						  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo
+ imx8mn-vhip4-evalboard-v1-overlay-ksz9031-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
+ 						  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtbo
+ imx8mn-vhip4-evalboard-v2-overlay-adin1300-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
+ 						   imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo
++imx8mn-vhip4-evalboard-v2-overlay-eeprom-1100-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
++						      imx8mn-vhip4-overlay-eeprom-1100.dtbo
++imx8mn-vhip4-evalboard-v2-overlay-eeprom-2000-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
++						      imx8mn-vhip4-overlay-eeprom-2000.dtbo
+ imx8mn-vhip4-evalboard-v2-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
+ 						  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mn-vhip4-evalboard-v1.dtb \
++			  imx8mn-vhip4-evalboard-v1-overlay-eeprom-1000.dtb \
++			  imx8mn-vhip4-evalboard-v1-overlay-eeprom-1100.dtb \
+ 			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtb \
+ 			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo \
+ 			  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtb \
+@@ -261,8 +271,13 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-vhip4-evalboard-v1.dtb \
+ 			  imx8mn-vhip4-evalboard-v2.dtb \
+ 			  imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtb \
+ 			  imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo \
++			  imx8mn-vhip4-evalboard-v2-overlay-eeprom-1100.dtb \
++			  imx8mn-vhip4-evalboard-v2-overlay-eeprom-2000.dtb \
+ 			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtb \
+-			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
++			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo \
++			  imx8mn-vhip4-overlay-eeprom-1000.dtbo \
++			  imx8mn-vhip4-overlay-eeprom-1100.dtbo \
++			  imx8mn-vhip4-overlay-eeprom-2000.dtbo
+ 
+ imx8mn-tqma8mqnl-mba8mx-lvds-g133han01-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtbo
+ imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1000.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1000.dtso
+new file mode 100644
+index 0000000000000..41641c54164f1
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1000.dtso
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++&cfg_eeprom {
++	cfg_eeprom_layout: nvmem-layout {
++		compatible = "fixed-layout";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		vhip-signature@0 {
++			reg = <0x0 0x4>;
++		};
++
++		vhip-version@4 {
++			reg = <0x4 0x4>;
++		};
++
++		vhip-size@8 {
++			reg = <0x8 0x4>;
++		};
++
++		device-serial@c {
++			reg = <0xc 0x10>;
++		};
++
++		order-number@1c {
++			reg = <0x1c 0x20>;
++		};
++
++		article-name@3c {
++			reg = <0x3c 0x20>;
++		};
++
++		article-rev@5c {
++			reg = <0x5c 0x4>;
++		};
++
++		hardware-rev@60 {
++			reg = <0x60 0x4>;
++		};
++
++		product-type@64 {
++			reg = <0x64 0x20>;
++		};
++
++		software-comatibility@84 {
++			reg = <0x84 0x4>;
++		};
++
++		manufacturing-date@88 {
++			reg = <0x88 0x20>;
++		};
++
++		production-order-number@a8 {
++			reg = <0xa8 0x20>;
++		};
++
++		/* Each MAC address is padded to 8 Bytes */
++		cfg_eeprom_mac1: mac-address-1@c8 {
++			reg = <0xc8 0x8>;
++		};
++
++		cfg_eeprom_mac2: mac-address-2@d0 {
++			reg = <0xd0 0x8>;
++		};
++
++		cfg_eeprom_mac3: mac-address-3@d8 {
++			reg = <0xd8 0x8>;
++		};
++
++		cfg_eeprom_mac4: mac-address-4@e0 {
++			reg = <0xe0 0x8>;
++		};
++
++		cfg_eeprom_mac5: mac-address-5@e8 {
++			reg = <0xe8 0x8>;
++		};
++
++		cfg_eeprom_mac6: mac-address-6@f0 {
++			reg = <0xf0 0x8>;
++		};
++
++		cfg_eeprom_mac7: mac-address-7@f8 {
++			reg = <0xf8 0x8>;
++		};
++
++		cfg_eeprom_mac8: mac-address-8@100 {
++			reg = <0x100 0x8>;
++		};
++
++		next-block-offset@108 {
++			reg = <0x108 0x4>;
++		};
++
++		section-crc@10c {
++			reg = <0x10c 0x4>;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1100.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1100.dtso
+new file mode 100644
+index 0000000000000..5f89b1af6874d
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1100.dtso
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++&cfg_eeprom {
++	cfg_eeprom_layout: nvmem-layout {
++		compatible = "fixed-layout";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		vhip-signature@0 {
++			reg = <0x0 0x4>;
++		};
++
++		vhip-version@4 {
++			reg = <0x4 0x4>;
++		};
++
++		vhip-size@8 {
++			reg = <0x8 0x4>;
++		};
++
++		device-serial@c {
++			reg = <0xc 0x10>;
++		};
++
++		order-number@1c {
++			reg = <0x1c 0x20>;
++		};
++
++		article-name@3c {
++			reg = <0x3c 0x40>;
++		};
++
++		article-rev@7c {
++			reg = <0x7c 0x4>;
++		};
++
++		hardware-rev@80 {
++			reg = <0x80 0x4>;
++		};
++
++		product-type@84 {
++			reg = <0x84 0x20>;
++		};
++
++		software-comatibility@a4 {
++			reg = <0xa4 0x4>;
++		};
++
++		manufacturing-date@a8 {
++			reg = <0xa8 0x20>;
++		};
++
++		production-order-number@c8 {
++			reg = <0xc8 0x20>;
++		};
++
++		/* Each MAC address is padded to 8 Bytes */
++		cfg_eeprom_mac1: mac-address-1@e8 {
++			reg = <0xe8 0x8>;
++		};
++
++		cfg_eeprom_mac2: mac-address-2@f0 {
++			reg = <0xf0 0x8>;
++		};
++
++		cfg_eeprom_mac3: mac-address-3@f8 {
++			reg = <0xf8 0x8>;
++		};
++
++		cfg_eeprom_mac4: mac-address-4@100 {
++			reg = <0x100 0x8>;
++		};
++
++		cfg_eeprom_mac5: mac-address-5@108 {
++			reg = <0x108 0x8>;
++		};
++
++		cfg_eeprom_mac6: mac-address-6@110 {
++			reg = <0x110 0x8>;
++		};
++
++		cfg_eeprom_mac7: mac-address-7@118 {
++			reg = <0x118 0x8>;
++		};
++
++		cfg_eeprom_mac8: mac-address-8@120 {
++			reg = <0x120 0x8>;
++		};
++
++		next-block-offset@128 {
++			reg = <0x128 0x4>;
++		};
++
++		section-crc@12c {
++			reg = <0x12c 0x4>;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-2000.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-2000.dtso
+new file mode 100644
+index 0000000000000..01599bf46ac18
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-2000.dtso
+@@ -0,0 +1,107 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++&cfg_eeprom {
++	cfg_eeprom_layout: nvmem-layout {
++		compatible = "fixed-layout";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		vhip-signature@0 {
++			reg = <0x0 0x4>;
++		};
++
++		vhip-version@4 {
++			reg = <0x4 0x4>;
++		};
++
++		vhip-size@8 {
++			reg = <0x8 0x4>;
++		};
++
++		section-data-crc@c {
++			reg = <0xc 0x4>;
++		};
++
++		next-block-offset@10 {
++			reg = <0x10 0x4>;
++		};
++
++		section-header-crc@14 {
++			reg = <0x14 0x4>;
++		};
++
++		device-serial@18 {
++			reg = <0x18 0x10>;
++		};
++
++		order-number@28 {
++			reg = <0x28 0x20>;
++		};
++
++		article-name@48 {
++			reg = <0x48 0x40>;
++		};
++
++		article-rev@88 {
++			reg = <0x88 0x4>;
++		};
++
++		hardware-rev@8c {
++			reg = <0x8c 0x4>;
++		};
++
++		product-type@90 {
++			reg = <0x90 0x20>;
++		};
++
++		software-comatibility@b0 {
++			reg = <0xb0 0x4>;
++		};
++
++		manufacturing-date@b4 {
++			reg = <0xb4 0x20>;
++		};
++
++		production-order-number@d4 {
++			reg = <0xd4 0x20>;
++		};
++
++		/* Each MAC address is padded to 8 Bytes */
++		cfg_eeprom_mac1: mac-address-1@f4 {
++			reg = <0xf4 0x8>;
++		};
++
++		cfg_eeprom_mac2: mac-address-2@fc {
++			reg = <0xfc 0x8>;
++		};
++
++		cfg_eeprom_mac3: mac-address-3@104 {
++			reg = <0x104 0x8>;
++		};
++
++		cfg_eeprom_mac4: mac-address-4@10c {
++			reg = <0x10c 0x8>;
++		};
++
++		cfg_eeprom_mac5: mac-address-5@114 {
++			reg = <0x114 0x8>;
++		};
++
++		cfg_eeprom_mac6: mac-address-6@11c {
++			reg = <0x11c 0x8>;
++		};
++
++		cfg_eeprom_mac7: mac-address-7@124 {
++			reg = <0x124 0x8>;
++		};
++
++		cfg_eeprom_mac8: mac-address-8@12c {
++			reg = <0x12c 0x8>;
++		};
++	};
++};
+-- 
+2.53.0
 
-Regards,
-Markus
