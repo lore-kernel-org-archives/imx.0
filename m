@@ -1,170 +1,124 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3385446830;
-	Tue, 25 Aug 2026 15:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A517A32B10E
+	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 16:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787671809; cv=none; b=mvUxlZndN2ce+I03nQb2UeVzHAPWL7g0jA2r7eJB5b/EfEFDx/VpY89QWx7HZ5DLcCt0kZmEABbkJnnQSdFD1pmQL12s7qkhAprK6T7JThgU5fYBeb5RZ9788O9DMNIzIVg2qBBhHyMz4yhqv4hNkex9YweqhdgdwtOyfcBYKOA=
+	t=1787674021; cv=none; b=Vx7LXd6cbdaQN/vwMnEe43/z3m4TMBAhlZ4E2XzN7CfALNUMnUggKqP5mFJrcWX55N3hl7reYXlsilTxPKvh3cWovqoQwBoc+dDVqWSQWzbYI6Ht44uGbMQKGtwiytifyAmhvGPhtI/m24KkL4tIuoEbq0NH0Yy+qk847IRwNy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787671809; c=relaxed/simple;
-	bh=VX1DQGP64sDlFJU6h6WjC9QKWk4R7erwd33lDUygt+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kxFc/DPNrRM7Wa8mdbRkuhZOoPAEndp+VxD4uYZ9f1aUkfLPyiLt+wPhS6IrioKWD/uhUVfOlSnTI8XaWj34fylLhR7r4Su/UG4USTdTTqq808FNFLnXBN1XDj9zu4mXqUXB2l/g3F4b+0zgevjmtWwGjpgKHBbo5CEccHmyWoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=Yy9eNa8d; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	s=arc-20240116; t=1787674021; c=relaxed/simple;
+	bh=DvKH2fFcZ/uhD/ZuKu0uGpyMl16LVSMA9icM14BxbOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iFeLmYwCPEJu+CpXYodIJ8izZj9f3cD7c5+BKX1jFclJgbMBd9A9ecHvuYuB4IQY3QTLwwXjQ1cBc1tWzBqQ1T9g0Te8UafHURyNWx6hmyiV3cfJup47Wp8tgBk8IaO4kyGp4/KH/zdzwnXfcTXPAqwvZC51HNAfQdzLqfZCFRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eDqWrCj9; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="Yy9eNa8d"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=rZPvGbvTxuaUieZ0JykzVrZCBZ6diu5+kEagWcP5i6s=; b=Yy9eNa8dOguB5ai5gM8NWsrx/s
-	S2pMtHYDnED1hvYB5pxj6+Ad4/4TwBMLiekzdUSvMpDKpHx8BPpPmvVJ/cip7X8H9hfTHeZg450Ac
-	2Op9+b8btKUlsb6NhCz7ZVBJEZsw/g05xmeUmxrRYHIzkWgR7QUNJTV7jrb9eXjwXkv34PFL2n521
-	y3/OYaJNFUPrMl+YX4jWZiQMiJAl6RKexP5dMehCDrnC/gaxSb8FbDAvrvjhAGY7LElro/LUGP1iU
-	8OZbYjEdaR/xakIod2clSq/KckMSPAOYC6Q+7GHQmf84+7SOpT2wUQGbrCqdD8QNr8LOptweM15Jp
-	TQq+Evrw==;
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Brian Masney <bmasney@redhat.com>
-Cc: Ryan Chen <ryan_chen@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Billy Tsai <billy_tsai@aspeedtech.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Taichi Sugaya <sugaya.taichi@socionext.com>,
- Takao Orito <orito.takao@socionext.com>, Linus Walleij <linusw@kernel.org>,
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
- Sudeep Holla <sudeep.holla@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- David Lechner <david@lechnology.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>,
- Santosh Shilimkar <ssantosh@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Vladimir Zapolskiy <vz@mleia.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Dinh Nguyen <dinguyen@kernel.org>,
- Viresh Kumar <vireshk@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Prashant Gaikwad <pgaikwad@nvidia.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Michal Simek <michal.simek@amd.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-clk@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
- arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
- linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject:
- Re: [PATCH 00/45] clk: Make sure clk_init_data is fully initialized (part
- two)
-Date: Tue, 25 Aug 2026 17:28:37 +0200
-Message-ID: <4227750.aeNJFYEL58@diego>
-In-Reply-To: <ao2ws3ZA-o8ZVjTh@redhat.com>
-References:
- <cover.1787239813.git.geert+renesas@glider.be> <3074509.irdbgypaU6@diego>
- <ao2ws3ZA-o8ZVjTh@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eDqWrCj9"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c25099bb1fbso25585566b.3
+        for <imx@lists.linux.dev>; Tue, 25 Aug 2026 09:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787674018; x=1788278818; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BdqXyZVZhBIDnSDIcLKPXaIgy8TBNW5ywHFUYDexGKw=;
+        b=eDqWrCj9lTm4Z18xOaO9vtfldxal7Pq5uf+hxycp+UB7K0ISD9v68yjmkcsMIjm00y
+         HzB70H14JY7wogYGn9ugKceeT7xCxjMTD77+GgWVechS1EMEFcqSLtRk0t2+91PY+4Gu
+         Pl87DvVyIetnwnNYEegV1xLC/MvqJbAwxZ/KBOrX6m12+iDqPuUVWqaEH1Hr0cjZrbTB
+         Er18VfN0hKNwytV6TKX5W9RcJ1gO65T0dx773ZhhdWB+7Y/2dvvjWgtWibkVR0hpUa62
+         38K+8v8ZLkZsbNU6xXWWbafEBX3ZNaMugzfHZLGXTVJY5Qu1jdGSEmoye1eMwKDB1Rcn
+         z0Vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787674018; x=1788278818;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BdqXyZVZhBIDnSDIcLKPXaIgy8TBNW5ywHFUYDexGKw=;
+        b=FFcnj9rkP+tg9FCMgUC9Ie3kwbmzNDhPU4kl4Ief/c4EzULNmIN6bzrBdI2Px53BOz
+         XjAmCEUzbCdPrylMOZSoi6Dz1+PMdgJKeFm3l4lnBTiwyL5yskUia+Gt87Qzr2wEA2R9
+         Pfp7IC35URnoi86aXzGw67d4HHIDdOa7mlPCITWf4OAtNrguqt9dP5Tb/R0rPkKBIVKO
+         v647XhZK0qZ9v8ddhMcaifWi3PxZF7qoRfTTLnSuArRBGfnAXjiBkKvNeU0wlMxqsmLd
+         g9PR00fxVvTZMk3GW2WAW+lSWOMBYQaDZZ/za+eXKYoRFOzAvmJ4dq+YOl+e1q4RiLhw
+         Oc9w==
+X-Forwarded-Encrypted: i=1; AHgh+Rru3fGnnAHL+cSH8iS/huggS9+9E2KS72n4jQ2T1GMDuZrxa5/I2+YQtxkrWAhx7RZQl7g=@lists.linux.dev
+X-Gm-Message-State: AFuF++kUPXGIg62PH/eDsZqeY+auDrHcjwTb7ZzUhy9yZ4+L2IUEhlyE
+	DIb1+PuC/lLLCT7oE6qqREQonWe4Dy/D7TxgBM9SZJ1jfsDEDPwxTYbO
+X-Gm-Gg: AR+sD13Xbl5YgRdu32Z98eCTy3meVJDidXq6iiBM0g4mKfVhoMbkDd4STOEXX6BJqd5
+	eR77TkPGLSqQLh0HTrgr5bHvk4Z+DSWOY7tWnvwsLrzA3PD8mMWPn5to97BD1dI7+i5y/1h5BVU
+	EZ9zVhXWb1XoB20D/azNNS/IkK8LSnafEvjCjr7bYgsJKZHDiXGrhW8SV+PdVCRSHqqANvrfuuu
+	/gdqmlp10hFyf/7CAoPLEESWwsGvfX2bYgkNdcuXqjIW5O4ZDXTVd1h7HzyMydlsJ89vuvrbWVt
+	qzBcLj8hliOiIS057oNNiHwocFzEeWvueJkY0YWPr+YTcC5haSCZWfGqlbdNi7iJwbj+mLwUlnq
+	J/d1csY7JdYRZ1TqWKWjkT3zrczfQUSbcMYNR3NSqR0LUT6UWaKOYQcKWOriFRch6oMj/P0bLgb
+	IKZ+T6g/PqypGFIZM+Kpmrgz0i04PS/A6EKx422qKz5OmgAPrcFWpcHFWPdb1Qb4lhRJLcU1UNJ
+	S7tVXq4+p8c5cXPkAQsCI1TkMSu7YLG
+X-Received: by 2002:a05:6938:a08e:10b0:c21:7584:fc58 with SMTP id a640c23a62f3a-c24e5b5531emr663869666b.12.1787674017582;
+        Tue, 25 Aug 2026 09:06:57 -0700 (PDT)
+Received: from GLaDOS.station ([109.55.72.35])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a5d62dfsm24369966b.4.2026.08.25.09.06.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 09:06:56 -0700 (PDT)
+Date: Tue, 25 Aug 2026 18:06:53 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: sashiko-reviews@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org,
+	imx@lists.linux.dev, conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+Message-ID: <ao29neQwKSWlK4Lx@GLaDOS.station>
+References: <cover.1787586961.git.stefano.r@variscite.com>
+ <2b7fabe6b1c4d08e58d2542742492564b67c4c32.1787586961.git.stefano.r@variscite.com>
+ <20260825071648.B547C1F000E9@smtp.kernel.org>
+ <ao2p-Yj1HfJeeVOM@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ao2p-Yj1HfJeeVOM@SMW015318>
 
-Am Dienstag, 25. August 2026, 17:11:47 Mitteleurop=C3=A4ische Sommerzeit sc=
-hrieb Brian Masney:
-> Hi Heiko,
->=20
-> On Mon, Aug 24, 2026 at 11:11:32PM +0200, Heiko St=C3=BCbner wrote:
-> > Am Freitag, 21. August 2026, 10:53:10 Mitteleurop=C3=A4ische Sommerzeit=
- schrieb Geert Uytterhoeven:
-> > > 	Hi all,
-> > >=20
-> > > The clk_init_data structure contains several mutually-exclusive membe=
-rs
-> > > for different methods to specify the possible parents of a clock,
-> > > prompting drivers to initialize only the members they need.  However,
-> > > not initializing all members may cause subtle issues, which are only
-> > > exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE =
-is
-> > > enabled.
-> > >=20
-> > > Hence this series aims to make sure all members are fully initialized,
-> > > to avoid such bugs, and to prevent future breakage when converting
-> > > drivers to a different method for specifying the parents.
-> > >=20
-> > > Part One[1] fixed all cases that I identified to be real bugs, in
-> > > response to a crash I saw on BeagleBone Black.
-> > >=20
-> > > This series is the clock subpart of Part Two, which fixes remaining
-> > > cases that are currently harmless.  These are still fragile, and may
-> > > cause future breakage when converting drivers to a different method f=
-or
-> > > specifying the parents.
-> > >=20
-> > > Thanks for your comments!
-> >=20
-> > I guess more a handling question, how do you expect this series to be
-> > applied?
-> >=20
-> > I.e. each clk-arch-maintainer, or in one big thing by the core clock
-> > maintainers? Just wondering if I should pick the Rockchip patch
-> > or just let the whole series get applied by the clock maintainers.
->=20
-> Before you pick up anything, let's see if Stephen picks up this series
-> the next few days before he sends his pull to Linus.
->=20
-> Next development cycle, Jerome Brunet and I will be clk co-maintainers
-> [1] and will start collecting patches then. If Stephen doesn't pick up
-> this whole series this week, then pick up the patch(es) relevant for
-> your tree and send Jerome and I pull as usual. That's just in case
-> there's other patches that come in during the next development cycle to
-> these files and to avoid merge conflicts. I don't have a strong opinion
-> about this though, and could be convinced to take the whole series for
-> simplicity.
+On Tue, Aug 25, 2026 at 09:43:05AM -0500, Frank Li wrote:
+> >
+> > [Severity: Medium]
+> > Does this GPIO hog conflict with the native usdhc3 pinctrl configuration
+> > for SD3_RESET_B?
+> >
+> > The sd3-pwr-hog statically claims gpio6 11, which corresponds to
+> > MX7D_PAD_SD3_RESET_B. The pinctrl_usdhc3 later claims the exact same pad as
+> > SD3_RESET_B in its native mode.
+> >
+> 
+> Is it true?
 
-Thanks for the heads up on the maintainer expansion :-) .
+It's true, I'll fix it.
 
-At least for me both work - Geert's fixes are for the clock types used
-by the Rockchip clock drivers and generally we mostly get new clock trees,
-so there shouldn't be any conflicts between this and other new stuff ;-) .
+> 
+> > [Severity: High]
+> > Does setting the sw1a maximum voltage to 3.3V violate the hardware limits
+> > for the i.MX7D core voltage?
+> >
+> > The sw1a regulator supplies the cpu0 and cpu1 cores. The PFUZE3000 SW1A limit
+> > for this design is typically around 1.475V, and the absolute maximum rating
+> > for the i.MX7D ARM cores is usually around 1.15V.
+> >
+> > If a driver scales the core voltage up to 3.3V based on these boundaries,
+> > could this result in hardware damage?
+> 
+> Please double check this one?
+> 
+I double-checked this.
+PFUZE3000 SW1A supports selector values up to 3.3 V;
+the 1.475V limit applies to SW1B, not SW1A.
+The regulator-max-microvolt value only defines the regulator constraint,
+while the actual CPU voltage is selected according to the i.MX7 OPP table.
+Therefore, the 3.3 V constraint does not cause the CPU supply to be
+driven to 3.3 V.
 
 
-Heiko
-
-
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git/commit/=
-?h=3Dclk-next&id=3D8bc7ceadce1f362a8b0e88075ef3d926b286c01c
->=20
-> Brian
->=20
->=20
-
-
-
-
+Best Regards,
+Stefano
