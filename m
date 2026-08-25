@@ -1,184 +1,340 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0503E3147
-	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 08:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D26B3AA182
+	for <imx@lists.linux.dev>; Tue, 25 Aug 2026 09:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787646751; cv=none; b=nGvpYtlUQE0FPSPk8839b5dbHhP3fNdkEknU7flzsOvcNMXmbXPdWVqsMQ7J9CN4CLVJ77f7rtFz4fjE5fcJlv0+OXmmuwTUa+dGceqRaPsVKJ8IiSUtTsWQ3zPeuotRbR0osunBObrVpSbxM+xHV68htUwW0ZwVKOsi3UX11LE=
+	t=1787649568; cv=none; b=eo1xIrwc6eTngRlSYfqBNgcAEkbeOXtwxIYyIOrTO+ZQawv+TAfSUlWi87zuZAjHA1/+03ISpf6s+Cr3J/8B/8Hwsgkpj6YfdwJ4abQRtleojhKfFHk+QdP6C1Ox384mqQord7aVKroUVyHKhbwV5HVNR4Ahhgmf77nmq2aPKs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787646751; c=relaxed/simple;
-	bh=BvmmOIR737EjiK/CBJK1dwXBIwsPS1i17yPukRjji44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W+VAJxkHUiK4+Oky0Etz2YRUcmhEgGIs92al6D3na43IIMYpF5FEVjtbgWd1hhGV6LITNQ8U3fwH9jWyplawdJLrStaBZcewswNRWmdNGtKiB+WbiDcl1MzduqJXal4vzvic+WPN5rEjcW6TkNmt5xU1bMxa9SkpLduQigsQRDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=i6H0pxhm; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1787649568; c=relaxed/simple;
+	bh=Vn3AKbB8ZvbzsvjI/cHUjpWdEhpZxCDoaRUSFh7u5PQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rwi8qaBWsNB+LH47sfb2TYF1Aa/7ylJx7HT/s/49THPDdBBcVokGwkuGfX00MYrKjk/V8vVChrVvRKwBZ3N/kO9Cph0AvNADgsZ4nS2Ivw28TCBZEfF5fHFfuyEXcNq2F64YMGrJjH+MKjvjbrZEghjQn29BFyVqSmPX2jwDUjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=XV4Oc1qK; arc=none smtp.client-ip=185.136.64.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="i6H0pxhm"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c197eaaab00so743298666b.0
-        for <imx@lists.linux.dev>; Tue, 25 Aug 2026 01:32:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1787646747; x=1788251547; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lD7UStE/XOr8A5NJ+GnuX9Z5tu/0sy2nS7RxI5FuuYU=;
-        b=i6H0pxhmxdj/O1Tq6eX0ggGGa7YNaam/Wg+4r2M3SO6tG8VGpBm6jYn7OmcSdrA3tR
-         nCpxm+3UF/OHNiV+Ti+1gfzvNKdtrABBI2c64mCZP1NDWLMH9IxNj1uMxcRSASb4Ryv4
-         lo72H3UD0TbVlOHFi2PVApNdbF1h/OF0DBZDNbafYWwSHUFCwTI4Jw4m9b6m4PKkpLMA
-         Cvjzl6r0x2ApKF1ad+sdCN9TvvasRa1zQbDI8twtO7GGsDQfzg9Ypz5CS0nwU3PDDAEC
-         pDIf4FD0keKA6RbpJD7HwvLRTY8UVuY7FHMY5KOAbs/AOX7lqN7+Wblp1cH3uc+WctPd
-         aBoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787646747; x=1788251547;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lD7UStE/XOr8A5NJ+GnuX9Z5tu/0sy2nS7RxI5FuuYU=;
-        b=d03QFgtv5ZhIpS2D0R+q/82XIQkeqKQLr//6HwP8BQm4py1uIyaFHRaYQfkELdcU0d
-         ykuDa9L6MdnqX4fGdJZgczlrBareyz8RNLmtWvdU2VHhQRDOTZ/Jm+AmU4DwJZmGo0dm
-         10iQloHhAgDJIiOYCwNNk1a1yLgaP1eQ686jijhgM9SgI43/OKaBZbMzNRtau5dM2Env
-         xIyLF0NxxHJDoVVW2NWMf983PBKqQH9JckpyT3LKpAR1ELMOMaXkbecqb9jGErq2UrhV
-         3AdOiBU9yDLSPqvBfwHjWKeLjdFYezf7tIPybSOpNJ9rJuHrFQ/NCcfB2jsS7vPBcmUr
-         OJVg==
-X-Forwarded-Encrypted: i=1; AHgh+RodREE6K2ii69Fc7BiAH2sYocdBbtl9k+Po+F1gpUs5/L4qHMPPSMdOz1cassJn9rPy6Rc=@lists.linux.dev
-X-Gm-Message-State: AFuF++lq/UhqYmpKk9rGcDytowVKhX4Nt2qLrm4BuuYspMEY0Az2SHXK
-	E15IPFW2j7gmmJ6yidrXPJLX/QV/ZmQiPu+AdixHDDvrgclPsDXgmeEgmfhoYPb99oI=
-X-Gm-Gg: AR+sD13ib9mx3KaJPzmHLP0EXi4js+4wS8beA4IHLGned42DqqfHORIExZlsAYy0wzY
-	MclqJfAaFasXtJS4aUCrcvshciUSGYH3263JtJD2io3JDwN8taherwJema9j2l+yu6uFGl1tKzm
-	Y9q0uLpsMmClsLR9/eWM2aMbhfLpR4oGpBPoDEuF94n+i9HM3beafWXwdWsTpfpiIQZ7ckaModd
-	pmHPAJWobpvDprJPdHXV2eF6Ata9J4QL7LIvMAM96gbanAI2C8qlCi8EyzAYHTmfWhDgTiuW292
-	sAC86KYViIpJszKRxPx0KYngpmzL/Wn8Q6rEpY3aLPoP7BP6TXiBsgmJTkMyILzUPaT5Bjl+y/J
-	nAQ6rrk43WbP7qGVfyeDM6yuR1QOKV8w/mZt+o4ljxZw9wr+ESiCcTpRn4s2Q4VQ2yrCDZL/IKj
-	/toDWLkFSLSSC3KIKvWnbDLvYdhwyMD+4KgGh9uq/1ac+iq8hfGl7O7i1/Zfq58G9VzOVo0BG4m
-	R5AG8VFZOCZT3wT+f4UGSlDvQO98MJmjl9t9d2UliTasUYtlSDgpU2q+3ZICg==
-X-Received: by 2002:a17:907:9445:b0:c21:6f8c:2335 with SMTP id a640c23a62f3a-c24e5ff7a2bmr571761466b.16.1787646746723;
-        Tue, 25 Aug 2026 01:32:26 -0700 (PDT)
-Received: from localhost (p200300f65f19a904037016a565660d5e.dip0.t-ipconnect.de. [2003:f6:5f19:a904:370:16a5:6566:d5e])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-c249686e37bsm1692467466b.55.2026.08.25.01.32.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 01:32:25 -0700 (PDT)
-Date: Tue, 25 Aug 2026 10:32:24 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Cristian Marussi <cristian.marussi@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>, arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Subject: Re: [PATCH v3 1/3] module: add SCMI device table alias support
-Message-ID: <ao1SHx440b6OxUDm@monoceros>
-References: <20260820194850.459739-1-johannes.goede@oss.qualcomm.com>
- <20260820194850.459739-2-johannes.goede@oss.qualcomm.com>
- <aow2GFAfy84k-N2B@monoceros>
- <1bf5984a-d1d2-4763-bb4c-b17ae8360192@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="XV4Oc1qK"
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 202608250919135786f53f65000207b5
+        for <imx@lists.linux.dev>;
+        Tue, 25 Aug 2026 11:19:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=u3r/oMrLHrFnt131fALCYPtJfXT5iOrA4SwySm4Z15A=;
+ b=XV4Oc1qKGpKnTsoiE85NG/Ub+XAvD6aaBDzvVgqtaUYEfaa+w3fMnqhibFfrMeQVem2jey
+ +XBxKbilCNhqQ9n85Epc11342Um0IIsE3YAE8QLEBzvRfX9qbGj6RQa2NANC5lG9f7/vY93k
+ G+sHvy6BZLiPcn9oS9CdtZNSUeZmwl50eHA3lWbOa3XWVERwBBqdLmE0PV+uC5+zmwm02u45
+ 6/YL/5O6opoDvlPNt5g4McVwTKpEcfqyvD55B9XAXS3ddN36nJ3EEXfibEWU2b65IbxTCjrK
+ R8pcaafqOxLsEk4hdaXH1De75OZM4HLq+HdT6Lh/BUw6bZHqzTnoU2JA==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: fec: support RX flushing via an ethtool private flag
+Date: Tue, 25 Aug 2026 11:19:06 +0200
+Message-ID: <20260825091908.1362677-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nfxdkmmv4cdosfpl"
-Content-Disposition: inline
-In-Reply-To: <1bf5984a-d1d2-4763-bb4c-b17ae8360192@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
---nfxdkmmv4cdosfpl
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 1/3] module: add SCMI device table alias support
-MIME-Version: 1.0
+The FEC controller can flush the RX FIFO of an individual receive queue
+through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
 
-Hello Hans,
+RX flushing prevents frames in the RX FIFO from being blocked. Blocking
+can occur when the frame at the head of the RX FIFO cannot be forwarded
+because the ring it is associated with cannot accept it, i.e. when the
+ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flushing
+is enabled for a ring, such a blocking frame is flushed (discarded)
+instead of stalling the FIFO and holding up the other rings.
 
-On Mon, Aug 24, 2026 at 04:58:43PM +0200, Hans de Goede wrote:
-> On 24-Aug-26 14:22, Uwe Kleine-K=F6nig wrote:
-> > Hello,
-> >=20
-> > I just replied to v2 and only then found out there is a v3 already.
-> > There is something wrong with my mail filtering, sorry.
->=20
-> Not sure if it is your filtering, v2 is somewhat old
-> and I only just revived this series.
->=20
-> I'll add you to the Cc list for v4.
+Expose this per-queue capability as a runtime ethtool private flag
+("rx-flush-qN").
 
-If you don't make the mess that is mod_devicetable.h worse, there is no
-need. I'm already overwhelmed with mail ...
+Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flushing
+on more than one queue at a time can lock up the receive path, so only a
+single queue may have flushing enabled.
 
-> >> +};
-> >> +
-> >> +#endif /* ifndef LINUX_DEVICE_ID_SCMI_H */
-> >> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devic=
-etable.h
-> >> index a397213bedac..d241421c36aa 100644
-> >> --- a/include/linux/mod_devicetable.h
-> >> +++ b/include/linux/mod_devicetable.h
-> >> @@ -49,6 +49,7 @@
-> >>  #include "device-id/pnp.h"
-> >>  #include "device-id/rio.h"
-> >>  #include "device-id/rpmsg.h"
-> >> +#include "device-id/scmi.h"
-> >=20
-> > Please don't add new includes to mod_devicetable.h. That header is ugly
-> > and each include makes it worse. Just add <linux/device-id/scmi.h> to
-> > the modpost source.
->=20
-> Hmm, I did that at first, but that is quite ugly also because
-> file2alias.c, does:
->=20
-> #include "../../include/linux/mod_devicetable.h"
->=20
-> So I ended up needing to change that to:
->=20
-> #include "../../include/linux/device-id/scmi.h"
-> #include "../../include/linux/mod_devicetable.h"
->=20
-> my thinking was that the purpose would be to move other
-> consumers of mod_devicetable.h to directly include
-> linux/device-id/*.h"
->=20
-> And keep mod_devicetable.h as a file which includes all
-> of them for use in devicetable-offsets.c + file2alias.c
->=20
-> But I can see how actually getting there will be a long time
-> in the making and in the mean time this will cause longer
-> compile times.
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+Initial attempt to provide the same functionality has been DT-based (and
+can be considered a v1):
+https://lore.kernel.org/all/20260814090906.2225075-1-alexander.sverdlin@siemens.com/
 
-Yeah, I'm still pondering a bit if I should start dropping #includes
-=66rom mod_devicetable.h or if that is more annoying. Fighting new
-includers for mod_devicetable.h itself seems to be a tough task, too.
+ .../device_drivers/ethernet/freescale/fec.rst | 55 ++++++++++++++
+ .../device_drivers/ethernet/index.rst         |  1 +
+ MAINTAINERS                                   |  1 +
+ drivers/net/ethernet/freescale/fec.h          |  9 +++
+ drivers/net/ethernet/freescale/fec_main.c     | 74 +++++++++++++++++++
+ 5 files changed, 140 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/freescale/fec.rst
 
-> So if you're saying the somewhat ugly thing of adding
-> linux/device-id/scmi.h directly to devicetable-offsets.c +
-> file2alias.c is the right thing to do, then I'm happy to
-> do that for v4.
->=20
-> If I'm reading your comment correctly, that is what you
-> want me to do, right ?
+diff --git a/Documentation/networking/device_drivers/ethernet/freescale/fec.rst b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
+new file mode 100644
+index 0000000000000..502261f517e05
+--- /dev/null
++++ b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
+@@ -0,0 +1,55 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++========================================
++Freescale Fast Ethernet Controller (FEC)
++========================================
++
++The Fast Ethernet Controller (FEC), also known as ENET, is the Ethernet MAC
++found on many Freescale/NXP SoCs, including the i.MX and Vybrid families. This
++document describes driver-specific configuration that is not covered by the
++generic networking documentation.
++
++Ethtool private flags
++======================
++
++Some hardware features that are specific to the FEC and have no generic ethtool
++control are exposed as ethtool private flags. The set of available flags depends
++on the SoC and on the driver configuration (for example, the number of receive
++queues), so the flags are enumerated at runtime::
++
++	$ ethtool --show-priv-flags ethX
++
++	$ ethtool --set-priv-flags ethX <flag> on|off
++
++rx-flush-qN
++-----------
++
++On multi-queue capable controllers the driver exposes one ``rx-flush-qN``
++private flag per receive queue (``rx-flush-q0``, ``rx-flush-q1``, ...), which
++enables RX flushing for that queue. RX flushing is disabled by default.
++
++The controller uses a single RX FIFO that is shared by all receive queues. A
++received frame is only removed from the head of the FIFO once it has been
++copied into the buffer descriptor ring of the queue it is destined for. If that
++ring cannot currently accept the frame - i.e. its next buffer descriptor is not
++marked empty (``RxBD[EMPTY]`` is clear) or the ring has not been (re)activated
++(``ENET_RDARn`` is clear) - the frame stays at the head of the FIFO and blocks
++all subsequent frames, including those destined for other, non-congested queues.
++
++When RX flushing is enabled for a queue, a frame that would otherwise block the
++FIFO in this way is instead discarded (flushed), so that frames for the other
++queues can keep flowing. This is controlled through the ``RX_FLUSHn`` bits of
++the ``FEC_QOS_SCHEME`` (``ENET_QOS``) register; see the "Receive flush" and
++"ENET_QOS field descriptions" sections of the SoC reference manual (for example
++the i.MX 8DualX/8DualXPlus/8QuadXPlus Applications Processor Reference Manual,
++IMX8DQXPRM).
++
++.. note::
++
++   Due to erratum ERR050395 (see the applicable Mask Set Errata document, e.g.
++   IMX8X_0N99Z for the i.MX 8QuadXPlus), enabling RX flushing on more than one
++   receive queue at a time can, under certain traffic conditions, lock up the
++   receive path instead of flushing the blocking frame. To avoid triggering the
++   erratum the driver rejects (with ``-EINVAL``) any attempt to enable
++   ``rx-flush-qN`` on more than one queue simultaneously; only a single queue
++   may have RX flushing enabled.
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index d9980c84487a5..0a304b158ef70 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -24,6 +24,7 @@ Contents:
+    dec/dmfe
+    freescale/dpaa
+    freescale/dpaa2/index
++   freescale/fec
+    freescale/gianfar
+    google/gve
+    huawei/hinic
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 460cb72688450..80e412c1283c7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10375,6 +10375,7 @@ L:	imx@lists.linux.dev
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/fsl,fec.yaml
++F:	Documentation/networking/device_drivers/ethernet/freescale/fec.rst
+ F:	drivers/net/ethernet/freescale/fec.h
+ F:	drivers/net/ethernet/freescale/fec_main.c
+ F:	drivers/net/ethernet/freescale/fec_ptp.c
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index 7176803146f3d..f3dbad8db769f 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -322,6 +322,10 @@ struct bufdesc_ex {
+ #define RCMR_CMP(X)		(((X) == 1) ? RCMR_CMP_1 : RCMR_CMP_2)
+ #define FEC_TX_BD_FTYPE(X)	(((X) & 0xf) << 20)
+ 
++/* FEC_QOS_SCHEME bits */
++#define QOS_RX_FLUSH(X)		BIT(3 + (X))
++#define QOS_RX_FLUSH_MASK	(QOS_RX_FLUSH(0) | QOS_RX_FLUSH(1) | QOS_RX_FLUSH(2))
++
+ /* The number of Tx and Rx buffers.  These are allocated from the page
+  * pool.  The code may assume these are power of two, so it is best
+  * to keep them that size.
+@@ -604,6 +608,11 @@ struct fec_enet_private {
+ 	unsigned int num_tx_queues;
+ 	unsigned int num_rx_queues;
+ 
++	/* Bitmask of RX queues with receive flushing enabled */
++	u32 rx_flush_mask;
++	/* Serializes the FEC_QOS_SCHEME read-modify-write */
++	spinlock_t qos_lock;
++
+ 	struct fec_enet_priv_tx_q *tx_queue[FEC_ENET_MAX_TX_QS];
+ 	struct fec_enet_priv_rx_q *rx_queue[FEC_ENET_MAX_RX_QS];
+ 
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index ced4dbf8cd90f..c45282defb0c3 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1072,6 +1072,20 @@ static void fec_enet_active_rxring(struct net_device *ndev)
+ 		writel(0, fep->rx_queue[i]->bd.reg_desc_active);
+ }
+ 
++/* Program the per-queue RX flushing bits in FEC_QOS_SCHEME */
++static void fec_enet_set_rx_flush(struct fec_enet_private *fep)
++{
++#if !defined(CONFIG_M5272)
++	u32 val;
++
++	/* ethtool can race with fec_enet_adjust_link() (no RTNL) */
++	guard(spinlock)(&fep->qos_lock);
++	val = readl(fep->hwp + FEC_QOS_SCHEME);
++	val &= ~QOS_RX_FLUSH_MASK;
++	writel(val | fep->rx_flush_mask, fep->hwp + FEC_QOS_SCHEME);
++#endif
++}
++
+ static void fec_enet_enable_ring(struct net_device *ndev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+@@ -1090,6 +1104,8 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+ 			       fep->hwp + FEC_RCMR(i));
+ 	}
+ 
++	fec_enet_set_rx_flush(fep);
++
+ 	for (i = 0; i < fep->num_tx_queues; i++) {
+ 		txq = fep->tx_queue[i];
+ 		writel(txq->bd.dma, fep->hwp + FEC_X_DES_START(i));
+@@ -3546,6 +3562,7 @@ static void fec_enet_get_ethtool_stats(struct net_device *dev,
+ static void fec_enet_get_strings(struct net_device *netdev,
+ 	u32 stringset, u8 *data)
+ {
++	struct fec_enet_private *fep = netdev_priv(netdev);
+ 	int i;
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+@@ -3561,11 +3578,18 @@ static void fec_enet_get_strings(struct net_device *netdev,
+ 	case ETH_SS_TEST:
+ 		net_selftest_get_strings(data);
+ 		break;
++	case ETH_SS_PRIV_FLAGS:
++		for (i = 0; i < fep->num_rx_queues; i++) {
++			snprintf(data, ETH_GSTRING_LEN, "rx-flush-q%d", i);
++			data += ETH_GSTRING_LEN;
++		}
++		break;
+ 	}
+ }
+ 
+ static int fec_enet_get_sset_count(struct net_device *dev, int sset)
+ {
++	struct fec_enet_private *fep = netdev_priv(dev);
+ 	int count;
+ 
+ 	switch (sset) {
+@@ -3576,11 +3600,58 @@ static int fec_enet_get_sset_count(struct net_device *dev, int sset)
+ 
+ 	case ETH_SS_TEST:
+ 		return net_selftest_get_count();
++	case ETH_SS_PRIV_FLAGS:
++		return fep->num_rx_queues;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+ }
+ 
++static u32 fec_enet_get_priv_flags(struct net_device *ndev)
++{
++	struct fec_enet_private *fep = netdev_priv(ndev);
++	u32 flags = 0;
++	int i;
++
++	for (i = 0; i < fep->num_rx_queues; i++)
++		if (fep->rx_flush_mask & QOS_RX_FLUSH(i))
++			flags |= BIT(i);
++
++	return flags;
++}
++
++static int fec_enet_set_priv_flags(struct net_device *ndev, u32 flags)
++{
++	struct fec_enet_private *fep = netdev_priv(ndev);
++	u32 mask = 0;
++	int i;
++
++	if (flags & ~(BIT(fep->num_rx_queues) - 1))
++		return -EINVAL;
++
++	/* Erratum ERR050395 */
++	if (hweight32(flags) > 1) {
++		netdev_err(ndev, "RX flush is supported on a single queue only\n");
++		return -EINVAL;
++	}
++
++	for (i = 0; i < fep->num_rx_queues; i++)
++		if (flags & BIT(i))
++			mask |= QOS_RX_FLUSH(i);
++
++	if (mask == fep->rx_flush_mask)
++		return 0;
++
++	fep->rx_flush_mask = mask;
++
++	if (!netif_running(ndev))
++		return 0;
++
++	fec_enet_set_rx_flush(fep);
++
++	return 0;
++}
++
+ static void fec_enet_clear_ethtool_stats(struct net_device *dev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(dev);
+@@ -3800,6 +3871,8 @@ static const struct ethtool_ops fec_enet_ethtool_ops = {
+ 	.get_strings		= fec_enet_get_strings,
+ 	.get_ethtool_stats	= fec_enet_get_ethtool_stats,
+ 	.get_sset_count		= fec_enet_get_sset_count,
++	.get_priv_flags		= fec_enet_get_priv_flags,
++	.set_priv_flags		= fec_enet_set_priv_flags,
+ #endif
+ 	.get_ts_info		= fec_enet_get_ts_info,
+ 	.get_wol		= fec_enet_get_wol,
+@@ -5323,6 +5396,7 @@ fec_probe(struct platform_device *pdev)
+ 
+ 	fep->ptp_clk_on = false;
+ 	mutex_init(&fep->ptp_clk_mutex);
++	spin_lock_init(&fep->qos_lock);
+ 
+ 	/* clk_ref is optional, depends on board */
+ 	fep->clk_ref = devm_clk_get_optional(&pdev->dev, "enet_clk_ref");
+-- 
+2.55.0
 
-Yes. I agree it's not pretty, but IMHO better bearable.
-
-Best regards
-Uwe
-
---nfxdkmmv4cdosfpl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqNUxYACgkQj4D7WH0S
-/k5wCgf/eIWRfjCexiKewtXq3u4X6kYeqNfHxU/aHRvaG2XAS6E+1RPly2vZKqRP
-S+yKDqswE2AFauvgqGNf+U3VjCqnf6AQdButjabhaAkBoumLTSz8unOA54k89HjY
-ThBXcUmVtt1D5s/rBi0lh/Ak4BpU9pSqJgw4CwLS0P6hESLiGfqhrD0P3E+/KghH
-Le7l4PIbYdhN0xCAObN5xv6Hd95e/k3i5+zG2kmjw8VZAHvQ8eixXynbI6Ch0MOV
-6TXmQs1gWz+lqtKVk6SSdOwjQFynbbDGAJdAIkys9CxZxwOGSoJyq6rcnQMn5+t8
-awDppaPW9PyQKN759eqifr7kB/XR0Q==
-=xnLj
------END PGP SIGNATURE-----
-
---nfxdkmmv4cdosfpl--
