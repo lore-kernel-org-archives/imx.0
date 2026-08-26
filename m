@@ -1,445 +1,306 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011061.outbound.protection.outlook.com [52.101.65.61])
+Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763E935C690
-	for <imx@lists.linux.dev>; Wed, 26 Aug 2026 04:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C25211466
+	for <imx@lists.linux.dev>; Wed, 26 Aug 2026 05:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787719960; cv=fail; b=r2ur2iW3tTaXry6FfcInolBk4SWH6w7TVm+uem1V2NW2ZGul4HaJ/VhWylWQ3b1rCM+2qeOZcxqYBmrZ0PcTvo0Ulpk/ttEd1zaJ572Iy+l0HpBoC0Wi0FwoHMJ+pmcon2nvDmxHLS5tkhnyqe0TGMuTV3C/kW9mtojojA1hUyg=
+	t=1787723236; cv=fail; b=k6Q/4wwDlYoCRXLeLO5aEpAufpIaXY0QJV/p45iTr2p5oX04BrKrB5ycnuWlmCUROtf/dy9E03eUtX6c9ldsi6iPQFN/b1ID20a05ErlKjXDLUi5WBMKL6JqXxdLyon1ixyOsemF5Mfaw8a5jAC7VPm4kyqi3iXjApMLV8j/e/s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787719960; c=relaxed/simple;
-	bh=hkjb6P38Bm6OpNtUTjJtCJfkOw7GQGZbEOsSWRRPlbc=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=DQOhiPKFiirqmFIk08U2ofxV4sOvJybVY3zhwS2rqptHK7gQCs9gjryobh7FSvp2+jOXCq0SjpirxNoO//2ycx8UKWL0zYuASbsyhqAy1s+PagLJc2YRyXzBXLevzl1fbdUw+R6V4hWTYpMBOykzvHGKHG0YwEtqtJ5R0XVZ6z8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sKfltz/9; arc=fail smtp.client-ip=52.101.65.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1787723236; c=relaxed/simple;
+	bh=K8NzlSkyBeV3KvM/ZHqmTg8yl7TO1El+ptVWr+w8fbU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Tn5IaGfdLHKuxkSsZmD+Mjx+LgdMUWTaxi8sn6LOUUUMYqD30rx2kXGyeYoV8iIEMfnOyc+0AL+qsCbOpCkNaqnoO+hSa6q6UjWT5D+QYhCMKx84ercyXk5zhbWUXO8VuAKZyaXw0ac52Q0CA1KiIi92jkUn7CuQZFbWHpznTYw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=OWMjUp8P; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=mBtSD6rd; arc=fail smtp.client-ip=148.163.154.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sKfltz/9"
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="OWMjUp8P";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="mBtSD6rd"
+Received: from pps.filterd (m0374956.ppops.net [127.0.0.1])
+	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67Q3JZVV3146996;
+	Wed, 26 Aug 2026 00:46:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	proofpoint-05-2026; bh=Gl3AIZelsdHhR3pdopCeu+FNIMhSeam4N37hJ5jrf
+	hA=; b=OWMjUp8P+LzBvWKTCpQzA6kcdTZCGLGV/rakRnUwZ8V6f5UNCDj9oEqPt
+	ejtmWKa+BV4vNxI1kEDa9i413PLvCMR27w3f1/nL4Zy9u7J2Q0ISfoQH01xcVF60
+	MT6RhsTGJAbC9ArHHDGec+6fzoGpQXFogTKSf98btZ+4woJpKOcy/VQi8SY80Tba
+	AZR4qY9t7loz7O0oH5T7EG+g3vVSitPEUmpqPwnFwdy94DsEA2IATFtCgGtqGNlk
+	09f+My05heddGmDV3CP9RV7E/mVvSDP09W29WHA5PCiFdJER5r9rpsyacmWGOKoF
+	8KcWKY2WDRu6TsdtTUugMqcrilpWw==
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012030.outbound.protection.outlook.com [52.101.43.30])
+	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4g9juyj5vc-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 26 Aug 2026 00:46:48 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AbugL9n5tc0NFtQBQ7R0chMnaFBrgt6PLRCM5hEqJRwI/CwP3LICyAZiYK4jLWinX6bF1qFzdPtjywGiumFZk+PjWg0oSejU9J9ZQ61YeTUxPNQj7+0sEnNhOvTdaFV9Hzoq6QvK8em/7cA9yKJheZt12/oIyEVPmQrnjmHkSJOQP3gYN1AaRzxjBkJyCJl2C9vPhIjoUIHC3NDE/blQJw6b8YU7Cp08LJthBIHMlx4A9pfLSXZ+E7BXp7nH1qxpvbfNVrWtud9av33c7mhfpQaKmStiXWlQdfgK/At4ie2nCDWkPW2Yb1pQkzjJG2IkB7jnFNw0MVJy2vO4h7IUDw==
+ b=C3AyOaDALV7IAPNBViD5GxK9Hfh9Z9JmwDKxc4HOLhIcKaVP4p/YRzytf4mKnDSVWzkBT5EE8GdgikYwFcw7e8hiwLoTTiyLo5wFPGs65OUB48W8OHh/k7RmxHXbrOSl480evvzj6vi7W8EdVtw4j/C/ZsBPsTsjK9VAVCz2dtpYqQDnZpjNHQM4NekokOJJmNeQg9a/GjfjLyvW6FnWeFczR73TfTsYys0C2bxY7U8YTXGv4yk4FF1bsfZSZInBGaH69QxCvCU8WYyKKZ/8EJMv2Au1TorE5SgLd++9I1wgAGU7yfnaJMDLOOy2ON+ZuHRWgI3OhkvV5JzV9IXaXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XfQPXvVwZ1cK7B9byDcDDre3mOgfoQuWibVJPpcXY1M=;
- b=Mo2gcsrvXadGodf1fU5EiHvL8qZj8ZLqfZblj4Sl45736PE4we01n7a6aqB/pXsqszFG11bMOVQAH2d6Zp0+lVN1V8HG1JcwipEjM+8GP/jJPiydrzlvbkF1xQvQFCSLWgv+IxXRWkP8qtN8XdKRPUliPL6xnS4YDSIMmmgzM5sKQ0GGF3SsQ1LYkZ73TT4NvhR4Bu+0WL8D8NXaVx55Q0L5E3doR0R5eN6+AwVBmEOy6MZoRNjTQGv9QZT2F8CnGhqSFwAEUJ4fQBSbkoPengfRIbHkko4MP39v2eCWIc/Lzbh6y9Bu9cw8pAcef9jKZSJzssgBbpfTJ/yd5QpF3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ bh=Gl3AIZelsdHhR3pdopCeu+FNIMhSeam4N37hJ5jrfhA=;
+ b=I42wKzXjgVFGCE2DWYHACnNM+vihyxv7rXb/mAP5wdjVicfrjZ94Hwf+nrrOh9dh39LTsNtudll3vydqOAPMAS9MF5hYelnKcvNjEz7mYj5SY+51CnKI3+HCnySOCxFqTsV+EY4M9Ieua/M7V6U00zQNO8BvRFoFnmc1bS+NnBhlcb7IS0Ogwpn8IEbv2dRZemi3zmuG9U4BYwn4yhMMxpFDMrKIsYBVc9R1y2/iJwxw6C/bV+fzbel7g53RyxyI0UXil/K1r+lqaHtAiSmpe/QGpfHBrZKig+4iUkVnDLOncNIhVvYyWpiJ+D7TXZMyTDTBTpBCeOxNoQVPEmaevA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XfQPXvVwZ1cK7B9byDcDDre3mOgfoQuWibVJPpcXY1M=;
- b=sKfltz/9AU0ZXVVPfeMHMdbMci6x5RsJdbTVTbVhaDl1mji6wDCIMspkJwpeEJcwx0Pm+OhsldolGjb1oUjcMkw+c+0V7tJzEbLTcPyicNQZ+BTeaXhv95TmO8rA2nTJgJG70FX4uKpc0e7Gc4ywjSOruImg9ZFMC6JFwbxNpwOFDPM2IXeqEV1eAvMcnazzMi3GasmwaObdm1+yIWfDEh+XrCc+4JjdNyJLY/Qi1YnMrZHKxQTmGl6WJepFQ6TOdGOHeSYUv/KtFSi6CoiX71wLVCr7vfh/y7f9yrO4u7lq5e9aMtkXfq9tj4YzHhBAyyuveSJK6rR3ujKo4eYi4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV1PR04MB11513.eurprd04.prod.outlook.com (2603:10a6:150:284::9)
- by DU2PR04MB8853.eurprd04.prod.outlook.com (2603:10a6:10:2e0::17) with
+ bh=Gl3AIZelsdHhR3pdopCeu+FNIMhSeam4N37hJ5jrfhA=;
+ b=mBtSD6rdXdKMf9fabMjEsaPJEfO6CzHHjf9dH4rjyZOSsDpyUxVQTmMzhJryzkjyDtL4i9fWHGoiZqGgKwNJBBcqcQyU+bAh6MKULvTdTuQInoDpanS6Y/g5JjKhIAXN3Xm3ch9n7mDU1WHZHawsCZrqvuf8Xj7EMB1luy8V970=
+Received: from MW4PR04CA0213.namprd04.prod.outlook.com (2603:10b6:303:87::8)
+ by PH7PR10MB7087.namprd10.prod.outlook.com (2603:10b6:510:27f::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 04:52:24 +0000
-Received: from GV1PR04MB11513.eurprd04.prod.outlook.com
- ([fe80::29e0:98a1:4577:2cc7]) by GV1PR04MB11513.eurprd04.prod.outlook.com
- ([fe80::29e0:98a1:4577:2cc7%3]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 04:52:24 +0000
-From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Date: Wed, 26 Aug 2026 12:55:46 +0800
-Subject: [PATCH 5/5] media: imx8-isi: Enable ISI RAW10/12/14 output LSB
- alignment
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260826-isi_imx952-v1-5-cbfaaa3f0000@oss.nxp.com>
-References: <20260826-isi_imx952-v1-0-cbfaaa3f0000@oss.nxp.com>
-In-Reply-To: <20260826-isi_imx952-v1-0-cbfaaa3f0000@oss.nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787720155; l=12206;
- i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
- bh=hkjb6P38Bm6OpNtUTjJtCJfkOw7GQGZbEOsSWRRPlbc=;
- b=AIUxUOBftntoyhUOk2GRTpieUu+0eQT4akfBIeEm+zgTy9/8fPwIRC3xT5pF+p38DsvDGnwZf
- /G7PHW0SodDCkvY9QQXJQHtwrKv1TnQSyEdqznUiJJqT96dO4FGcLSE
-X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
- pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
-X-ClientProxiedBy: SI2PR06CA0008.apcprd06.prod.outlook.com
- (2603:1096:4:186::23) To GV1PR04MB11513.eurprd04.prod.outlook.com
- (2603:10a6:150:284::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
+ 2026 05:46:45 +0000
+Received: from SJ1PEPF0000231A.namprd03.prod.outlook.com
+ (2603:10b6:303:87:cafe::13) by MW4PR04CA0213.outlook.office365.com
+ (2603:10b6:303:87::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.8 via Frontend Transport; Wed, 26
+ Aug 2026 05:46:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ SJ1PEPF0000231A.mail.protection.outlook.com (10.167.242.231) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 05:46:44 +0000
+Received: from DLEE200.ent.ti.com (157.170.170.75) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 00:46:24 -0500
+Received: from DLEE201.ent.ti.com (157.170.170.76) by DLEE200.ent.ti.com
+ (157.170.170.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 00:46:24 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE201.ent.ti.com
+ (157.170.170.76) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
+ Transport; Wed, 26 Aug 2026 00:46:24 -0500
+Received: from [10.24.52.125] (ws.dhcp.ti.com [10.24.52.125])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 67Q5kHYY3428391;
+	Wed, 26 Aug 2026 00:46:18 -0500
+Message-ID: <cd6818c3-bbad-4ab4-9a4c-4d9eda0ebc10@ti.com>
+Date: Wed, 26 Aug 2026 11:16:16 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/18] Add DT support for CSI2RX multi-stream
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>, <kristo@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>
+CC: <Frank.Li@nxp.com>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+        <festevam@gmail.com>, <andersson@kernel.org>, <geert@linux-m68k.org>,
+        <dmitry.baryshkov@oss.qualcomm.com>, <arnd@arndb.de>,
+        <ebiggers@kernel.org>, <luca.weiss@fairphone.com>,
+        <michal.simek@amd.com>, <sven@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+        <devarsht@ti.com>, <u-kumar1@ti.com>
+References: <20260713113423.2310443-1-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: Rishikesh Donadkar <r-donadkar@ti.com>
+In-Reply-To: <20260713113423.2310443-1-y-abhilashchandra@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV1PR04MB11513:EE_|DU2PR04MB8853:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1847178-4df0-4f76-3f04-08df032dd1fe
+X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231A:EE_|PH7PR10MB7087:EE_
+X-MS-Office365-Filtering-Correlation-Id: c67859bf-8d04-40d3-9f32-08df03356941
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|19092799006|1800799024|366016|3023799007|10067099003|56012099006|11063799006|18002099003|22082099003|921020;
+	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|7416014|376014|36860700016|13003099007|6133799003|10067099003|56012099006|22082099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	8pfc+XbQvVp/Aswnnyaf6aD/HgoDDzkZ5MKOBbtEPjahxiLDUBbk1WXD/gdWiwX4A4WGFdZvKZ0gaRhGRDFz2nVxuWwgBnmIRJGNDPojvO6E4HA1ivnHQwMngfxkENZHbZBlNWpiiYPtI79uTT7wHivLftuUrNVjAO3rdMgnLJZaTsbVqcpaBP+MUV7jENdt6vkE4/bmKIuizgeeCClcNfZ8de4v5Ef5eMjYxUw0PkxONjSwFmUWSF90TJvS0/RpFRZpZBq9DO6DeJepXubYEDPvXZ+dKC2fTHNF4GyMG/fq2CbliHl6jUG5M4xCmVUhUQxZXG3BoM0cWsOEZ//00+lJRT/J0GKehz1T5AgXtrf9EW5qfKBmvHEwKGZIXBDLI/rZXym+Hf5lEBq6OKbYAK6nW3z71eELYodET9jgT3UCdmpijitghUre6chfe1lRwJzHCvg3SeVFkpMu4bjhOrEXO8wd5qsl04Da8o/h+Y9ovFUghzRWYjGaTmLb4tFMR9V/QY9YEoaCAYiDPsQFuzUajMY5Yl4Xr9RmE9CvYdNEHS+tt3AYGxt9tMo21uqbA9/cYF3XPWjJyfhwXuAMyw5EsxVjXnMMM/5MomsCABbZs8WUVJeV9DPQE1JTqGWKvfwij8osW515Y0e7o38gS2frHZta6Ogl1dgqcYDqo3lpJoZFz162MQk+3YGzRuh+2JY4v5c0tHctKzxpMxxniw==
+	ndvyd9jua2EyRRQV/FA0qGNHzqU8/4R+DB6OSjiBK8Rc165HDAha4sOVXDLYHvdszuwe0Hm+geF7BeuYBLsHcllFuce9r3173FiFsNefxX+l0O+5D5ERq2kUjRP3UgmvOxFeh0wI4zHqbKz/OinEtwwYg2edC3R1RuoRY1zRcWV1YNoGStRnEXpqydnl7E2L53Fbl1LnQX3UZpN9jEV9ulSdKfJjvZvU2EcXu8Za1CFU8vyYluyFp9IFQkcKNZ4tyIyGB3z7hUnBEoSm5cIKgLEiyTwxmu5K7GAL7pL4/trvLRm+vyB/tp/uKTQ3tsMXQDFTWv36h7IlXEAWaKnBKtd27iO154MdRNALJdezfFvzn1QRute2m+Qzrxcnedem8nvfEzQ4NaAgb4muq5b7ac6fL8Fw2nUST6wK+gF/wcsDrQUEim6h0dcTYB7xAqpD53dUaeUX6+m/KjWuhIOJgUxzoHDvY2m9DQENLBMZU94SnX9ENw0Wgt2FAh35EP2/M7LCuDopqFgTjuudW18F9fpkTKw3V2nCzbb7YI7cpauPN9An9B2enniUo0MAhQ4g8JOSV6uwG77gM3CzCKUCs+MHKD3NgaVJ+Rx7RsXK/Cak215XXJPnxxtQhDD1RWv0inGA/r/9QVaGd7uoq3wzv9K1MO7U99J/29cR9TF9bVLQu4ahOOUlpkOmJe4h0Ms60coZ5j/xXhW01LxeX2V5nw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB11513.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(19092799006)(1800799024)(366016)(3023799007)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(7416014)(376014)(36860700016)(13003099007)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TG5MaExZZjhjdlNqYi9TY05iYlhGQzR2dHV5LzlhSlovaXMzNkJObVdZTHp4?=
- =?utf-8?B?QVdwWW1pK0txVzFUbDc1YUFsM3hHVGNPTjNSbEdncVFEWFY5SWE3bTlNTVBp?=
- =?utf-8?B?M3h1WU42MHpJclNSSDQvVHUyemxiNHlWc0VzelpQdVd2SWtiZkxNTmtXNlFm?=
- =?utf-8?B?Vlp0SDMzeTAwY0lObGlIaUdTc0RpczBLMS9BaExXMUtVbTgzMTF3d1lFNkFV?=
- =?utf-8?B?cldOaU50THRvcnVBVGI1MWRhbk9BK20vRElXdldkSmF1WjQ5RWZpNmpQcTZs?=
- =?utf-8?B?dGd1bGs4NlBxWEhSMVpnTU1LbzRJS0s0VXA3Yk1MT0trRUg1MFJ1QWtOU0Fp?=
- =?utf-8?B?NEZ0ZGVtUnFPYkdoZklmcHBSUjJwaVR3TXVZZFVZT2haVWdHY3cwMkNoa1lr?=
- =?utf-8?B?T0l1TWxDaTJGQmE1c3JxSHJTbi9VVGdqQmhVYzNUZS9ULzB3ZjBheE9ndmlP?=
- =?utf-8?B?NUY1YytFSk5SUExZUmo4RXRsWFQ0SmpqNjNQaC9lcU80eXIreGd3bTR5eHRV?=
- =?utf-8?B?TVpTV0trSGtSSFlJYVhvc1ExU3ZWeDRoZTJoUVhpZFhlancvZ1VUWC9GUEJv?=
- =?utf-8?B?L2o0aUFOa091dEMyeXRsMjBxcTdvaHRxb2FlSGptNEdIbGFXZlRRNlFrR3Ix?=
- =?utf-8?B?MFRwbjRYRklMSjFWRG9YNEdWSE1WL1lFcUVIenhaQ0xhQkdFYzROcUdKMDFB?=
- =?utf-8?B?TEFZd203MTQyTyt5bkFzQUVhc1dHOWw1UkFURmVCTCtpT01iNlIzZXA3OFJO?=
- =?utf-8?B?L3hETFg0UmllOUJsS25xRGJ5QU5mSUNsWWxDOW5PZ2FMSXFzaHVQQ3hmR0Zi?=
- =?utf-8?B?cklGRHJBTno5dzVxdzdjcG4yV1RQOFA4cFc1eXlkaU83Q2E2T0IyUmR5cXFY?=
- =?utf-8?B?K0ErczJkemViUmExTjVSdm9sekE5aTQwak1tTUJnUllQYVpiUmFmYjJyUldH?=
- =?utf-8?B?WGVQM056WGl3QWRZdWFhMEoySWlMMFh2UzZVaTJzcXZJSUlQTTAyUHNIUEI2?=
- =?utf-8?B?RS9iRVZtdk50Z0ZBcitQQXlHVlJFUDA2VGh4eEp4R3JFVUIxNjVxWUZFSFd0?=
- =?utf-8?B?bU1SbGVMWU5OVW1HVEpNNFdOb3llblBqUzJIVXVFRGlJbFphS0RORmlvUFY1?=
- =?utf-8?B?YWhBalN6a2JDQWw5aDJxRWdHb1A2MDF6TUM2T2NyWFVWVjEzamhDd0YzWi9x?=
- =?utf-8?B?cjB2bmZhVzFTd3daQ1o5M2Q2b2s5N3c2ZCtmMEVPa04rcWlKRkZiREsyNUVP?=
- =?utf-8?B?QmY4eTdHRWdCWktoMExnN3lZMmZEeC9KMXV3dGlJeUJ2R3FuRTlOYlVUZ3FE?=
- =?utf-8?B?WXNKOUxHQW9SRzUvdmdIQm82K3d2KzYwdlk0eG1XK3hTVDB3bHIyRXZZalhL?=
- =?utf-8?B?WVJOazB2RTEzWFhGclRuemZQYWpOOUVoUHNMN0dxeWNscEZYYkZ5cGN6bDla?=
- =?utf-8?B?bXp1NjNyZEthZTlRMUUrNjlxejlqSXZnTjdsQ1pIb3FzMkR5UTNubDZCMkxC?=
- =?utf-8?B?TWpIWDR4Q3Q2MzVWMlRpcXVaa3BNVWFRWUlrQS9mR05MaVVTQ2txUDc1RGVP?=
- =?utf-8?B?RGRIaWIveWVacGdsYjMyL0lXaEI3b1hrYVY5WU1xSzBpdHNPd0VpTVFGREN3?=
- =?utf-8?B?VGhyUzhsVjcxQWJQcitSaGh1WFlaSVV5NWQzUVFWMi8xSlJCbWZ5alZqZ1gx?=
- =?utf-8?B?aVFGMDkwcUkxRXVnZWQvY3N3SHNzdHdTVzJpQjUwaXo2MXZrbHdPSlBPUEN3?=
- =?utf-8?B?eTJ5alByWlN4QVNXS1ZMajAvd2JiTFQybjhTQWNWaFplN21OR1pSTlU2b0hY?=
- =?utf-8?B?MjFYS1RrUm9TUjdPWkdRTnEwMVdUT2xvVVBDQTc0QmhnaWFQd3lSdndGNWVQ?=
- =?utf-8?B?cUNMbTVKM0ZpQk53aHUxcVVhQlNML1M2MUQwZFhUeUYzOEQ5R0tGaWI2NWE1?=
- =?utf-8?B?azgwaGlMVlplR2Zsalg5OVRRc1N0SDFwUzNGbnl1dXFOYzVmLy9mTHBZWXB2?=
- =?utf-8?B?TFVBWlQyVkdGdWswMkdxay9rZFhRMXZUQ095MGdHclBpS1IrSWFlanhpbWdM?=
- =?utf-8?B?emVLbnExWk5ZTmFER0Y2aFdTQkZtT3U3V0ZSckIwOGNlMTBKQ2k3eCtaZnJS?=
- =?utf-8?B?M2xMZ2VSdVNpTGttZHQraFdOWXh3aDVtU0dBWlhTTVB3RElVMjdwN2NYcTR4?=
- =?utf-8?B?emJxRDJWemp5VFcyU1Z3RHRQYnVtTFpUNE9IQ3M0QjRjN244cUFSblpvamdh?=
- =?utf-8?B?QUJsaFk2TmpWNkpyRVBWUElYZmFibC9LNEYvc25LRzMybEl5WENQdEx3d3lN?=
- =?utf-8?B?NVJNNEtVNXNtZ3pQajBpbStNUm93d0NNKzJvZmFBTTRwS1ZRWDlKWUw2Q1hW?=
- =?utf-8?Q?B5nbBCioCN1bvfdqREvdjdSy4xC/B0jZzbe+6?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1847178-4df0-4f76-3f04-08df032dd1fe
-X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB11513.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 04:52:24.3442
+	p6KGL6y6B5s7GqEw1kJl1havgsPD9V1Mzz57TYMT8KER733g40R4dHelVh8c+lUyVUn7U709iDvf7t+QuNP0ttTi8x34Or9T8uiVehA331taAWIRy6ZD/vansXPlIucsKBgNNr+ByMWR9Q93xGaG0J0xwF3V1IcHNMYMYR/IVEDbQEw2tzTPATWf8viyzrnncqgt2gwXcOULj3VLZ0yD4KpXzT5H+RJk17rTrCeCxWkkMhFrObD3hTn03dKaeMeC09KMAeCTimy5k0tAHSYX1pj+apXI60jeH6St257EV7T4R9/B4uVKNptCazgQOjsm4Gi8+drWB3/EgkKuJz4qRXt+xOqOXFJ7WTSFujdYA0QvqI8mKHDF+4uznmmJLqzJ12EpsXTtzI+z5NL9038KdFoyAyB9VTLsFOe9gxpDBfJutXkqUS3teW7FJu659NOh
+X-Exchange-RoutingPolicyChecked:
+	5TXm6oofmaQW+B6opOOC/X3e0vP/sc3V2nFwgALNqwJj6sYFq1LAdQBA+B3J3b76QfglR7h3K67xBEUxUs3o+KykmTbtHaEdYPKehG/8mI2Jbd2JvnKDsVmyjU92us+bUW61XpsIzvRw7zuExrFFEHQ03Xd4//o8kdQCmBlMQBPlT3aFIY1ZZxPXRm3wgiG7IAK4WdqWpJU2PBdMU7JTcTj3ELWKY0rKTEcoPQ1I3R26F2qfh2gNiYXlZTQNpkOj29SNO0qq0/fZ+wEAUguHDfYarOwfm18M7Ku8PWRPWLbFEH2t91C1XEArx4KLsc46a+hjasNFWSPEfLhyFp+8zQ==
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 05:46:44.2660
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5BHbQJ2H/POi0InVX2DCwi3pcRDTawgMwozfCILHVGFmuvg++IXVl9YiwgghJh9gjgvJVlsviXq33SubEhAVT6VyRB06fiU1g7v3UEORLtmm1jNGlPbAn/u4wBtW3zCv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8853
+X-MS-Exchange-CrossTenant-Network-Message-Id: c67859bf-8d04-40d3-9f32-08df03356941
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF0000231A.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7087
+X-Proofpoint-ORIG-GUID: U6TVUCIWxw47uEEnXUa4Dx2VGZgFmBe_
+X-Authority-Analysis: v=2.4 cv=XMYAjwhE c=1 sm=1 tr=0 ts=6a8e7dc8 cx=c_pps
+ a=H8CAifLk0DAaaH9V+JapoA==:117 a=f+v6EHfkeJbVwR46tk4DMg==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=s63m1ICgrNkA:10 a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Z8NIEmU8O1QQgoT56wFK:22 a=jwouBfj2j3NM8CExmVVE:22 a=VwQbUJbxAAAA:8
+ a=sozttTNsAAAA:8 a=NEAV23lmAAAA:8 a=aJAQNMmbZXsmYvqd1TYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI2MDA0NiBTYWx0ZWRfXwmAihV+C8nqG
+ WM0UmqhzLHOZq2yZCXZpPaAt19yisrgjwxkiMYzH2R8G8cWig/+QkOtwqrezZjCjg7VQwK2cYcd
+ TisJZMHAv+muMkOCTAIohPhfmmtAo1s=
+X-Proofpoint-GUID: U6TVUCIWxw47uEEnXUa4Dx2VGZgFmBe_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI2MDA0NiBTYWx0ZWRfXxJewQjn3HHYk
+ I7xxJJG4QFrGLWZieZV98tfIH+6VmootwFI2W9tYgqwDYLvUN4jN4CGCQHqNuN2+PnWIjxGerOE
+ JvSV9oVftYYrJmCvzauM5/5jRZXFyHtlmFcey5Ju79DeU9NQrlxL99hc2Ojw+gQw4SkuEYmRYrp
+ fYwJy1NP8Fr+Xj5gtVMJW9aQ3Hh1oEfjtrlC1PP5jb+mGjV7rlhGFI52zwklF/axSu056sz2Vjc
+ yF5V3ykn2C85jYRShZxFjrBWAw4/cyhohuRzfe2wvt/eVZ2PlkvehaeK+gIjyZTFtmX6h5ILhPK
+ nwT4nk7fj+q0n67YLxhkZ9UIqp36qD/UfajoO6TVYfv3c4i1+ikYEd/zirY+Jc+VDmlBemjo6dI
+ gUymqBW+z+8LCtsCDOjjivkGo9jYayNg1w0w+q+Jr4X1cJEIfj3CI00zZ7SHDAqPGFh1u+hdMlw
+ I3g/zkfoqhLAV5PW7gg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-26_01,2026-08-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 adultscore=0 clxscore=1011 impostorscore=0
+ malwarescore=0 priorityscore=1501 spamscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608260046
 
-V4L2 requires RAW formats to be LSB-aligned (right-aligned). Before
-i.MX952, the ISI shifts RAW10/12/14 output left to MSB, so the driver
-works around this by using RAW16 format instead.
 
-The i.MX952 ISI introduces a RAW output LSB alignment bit. Enable it
-along with the input MSB alignment on platforms that support this
-feature, so that RAW10/12/14 output formats can be used directly
-without the RAW16 workaround.
 
-Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
----
- .../media/platform/nxp/imx8-isi/imx8-isi-core.c    |  1 +
- .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  1 +
- drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c  | 39 ++++++++++++++++++++-
- .../media/platform/nxp/imx8-isi/imx8-isi-regs.h    |  3 ++
- .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 40 +++++++++++-----------
- 5 files changed, 63 insertions(+), 21 deletions(-)
+On 13/07/26 17:04, Yemike Abhilash Chandra wrote:
+> Support for multi-stream in j721e-csi2rx.c driver was merged last cycle[0].
+> This series adds the corresponding device tree support.
+> 
+> Patch 1 is a cleanup fixing indentation in the existing CSI2RX nodes.
+> 
+> The next few patches i.e. (Patch 2 to Patch 6) add the additional DMA
+> channels required for CSI2RX multi-stream capture.
+> 
+> Multi-stream capture uses a SERDES pair based on the FPD-Link or
+> V3Link protocol. The serializer takes the input from a camera sensor
+> and converts it to the FPD-Link standard, while the deserializer
+> aggregates streams from multiple serializers and sends them over the
+> CSI-2 RX interface. Each CSI2RX instance therefore indirectly receives
+> input from multiple sensors.
+> 
+> The remaining patches add overlays for various deserializer boards,
+> and for the UB953 serializer with the IMX219 sensor. Also enabling
+> DS90UB960 deserializer and DS90UB953 serializer drivers in the
+> arm64 defconfig.
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-index 5b19b581b38e..439c7bdecfa8 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-@@ -403,6 +403,7 @@ static const struct mxc_isi_plat_data mxc_imx952_data = {
- 	.format_mask		= GENMASK(30, 24),
- 	.buf_active_reverse	= true,
- 	.has_36bit_dma		= true,
-+	.raw_out_lsb		= true,
- };
- 
- /* -----------------------------------------------------------------------------
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-index a4b638508522..39dbb35bc4cc 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-@@ -179,6 +179,7 @@ struct mxc_isi_plat_data {
- 	u32 format_mask;
- 	bool buf_active_reverse;
- 	bool has_36bit_dma;
-+	bool raw_out_lsb;
- };
- 
- struct mxc_isi_dma_buffer {
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-index 2405f7d33d0a..4838b445f279 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-@@ -308,6 +308,7 @@ static void mxc_isi_channel_set_control(struct mxc_isi_pipe *pipe,
- 					unsigned int vc,
- 					bool bypass)
- {
-+	const struct mxc_isi_plat_data *pdata = pipe->isi->pdata;
- 	u32 val;
- 
- 	mutex_lock(&pipe->lock);
-@@ -357,6 +358,20 @@ static void mxc_isi_channel_set_control(struct mxc_isi_pipe *pipe,
- 			val |= CHNL_CTRL_VC_ID_1(vc >> 2);
- 	}
- 
-+	if (pdata->raw_out_lsb) {
-+		/*
-+		 * Enable RAW10/12/14 output LSB alignment to match the
-+		 * V4L2 requirement that RAW formats are LSB-aligned.
-+		 */
-+		val |= CHNL_CTRL_RAW_OUT_LSB_ALIGN;
-+
-+		/*
-+		 * Align the data selection from pixel link to MSB to
-+		 * avoid data shift since the data from PL is MSB.
-+		 */
-+		val |= CHNL_CTRL_RAW_IN_MSB_ALIGN;
-+	}
-+
- 	mxc_isi_write(pipe, CHNL_CTRL, val);
- 
- 	mutex_unlock(&pipe->lock);
-@@ -406,11 +421,19 @@ void mxc_isi_channel_set_input_format(struct mxc_isi_pipe *pipe,
- 		      CHNL_IN_BUF_PITCH_LINE_PITCH(bpl));
- }
- 
-+static bool isi_out_raw(u32 format)
-+{
-+	return format == CHNL_IMG_CTRL_FORMAT_RAW10 ||
-+	       format == CHNL_IMG_CTRL_FORMAT_RAW12 ||
-+	       format == CHNL_IMG_CTRL_FORMAT_RAW14;
-+}
-+
- void mxc_isi_channel_set_output_format(struct mxc_isi_pipe *pipe,
- 				       const struct mxc_isi_format_info *info,
- 				       struct v4l2_pix_format_mplane *format)
- {
- 	const struct mxc_isi_plat_data *pdata = pipe->isi->pdata;
-+	u32 fmt;
- 	u32 val;
- 
- 	/* set outbuf format */
-@@ -418,7 +441,21 @@ void mxc_isi_channel_set_output_format(struct mxc_isi_pipe *pipe,
- 
- 	val = mxc_isi_read(pipe, CHNL_IMG_CTRL);
- 	val &= ~pdata->format_mask;
--	val |= CHNL_IMG_CTRL_FORMAT(info->isi_out_format);
-+
-+	/*
-+	 * Before i.MX952, the ISI shifts the 10/12/14-bit formats left
-+	 * by 6, 4 and 2 bits when using CHNL_IMG_CTRL_FORMAT_RAW10/12/14
-+	 * respectively, to align the bits to the left and pad with zeros in
-+	 * the LSBs. The corresponding V4L2 formats are however right-aligned,
-+	 * we have to use CHNL_IMG_CTRL_FORMAT_RAW16 to avoid the left shift.
-+	 * After i.MX952, ISI add RAW10/12/14 LSB output alignment, so skip
-+	 * the above workaround.
-+	 */
-+	fmt = !pdata->raw_out_lsb && isi_out_raw(info->isi_out_format) ?
-+	      CHNL_IMG_CTRL_FORMAT_RAW16 :
-+	      info->isi_out_format;
-+
-+	val |= CHNL_IMG_CTRL_FORMAT(fmt);
- 	mxc_isi_write(pipe, CHNL_IMG_CTRL, val);
- 
- 	/* line pitch */
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-index 35dec3a650ac..c9c22a3668f9 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-@@ -20,6 +20,8 @@
- #define CHNL_CTRL_CHAIN_BUF_NO_CHAIN				0
- #define CHNL_CTRL_CHAIN_BUF_2_CHAIN				1
- #define CHNL_CTRL_SW_RST					BIT(24)
-+#define CHNL_CTRL_RAW_OUT_LSB_ALIGN				BIT(23)	/* i.MX952 only */
-+#define CHNL_CTRL_RAW_IN_MSB_ALIGN				BIT(22)	/* i.MX{91,93,95,952} only */
- /*
-  * CHNL_CTRL_BLANK_PXL: i.MX8{QM,QXP} only
-  * CHNL_CTRL_VC_ID_1, CHNL_CTRL_VC_ID_1_MASK: i.MX{95,952} only
-@@ -88,6 +90,7 @@
- #define CHNL_IMG_CTRL_FORMAT_YUV420_3P10P			0x3a
- #define CHNL_IMG_CTRL_FORMAT_YUV420_2P12			0x3d
- #define CHNL_IMG_CTRL_FORMAT_YUV420_3P12			0x3e
-+#define CHNL_IMG_CTRL_FORMAT_RAW14				0x41	/* i.MX{8ULP,91,93,95,952} only */
- #define CHNL_IMG_CTRL_GBL_ALPHA_VAL(n)				((n) << 16)
- #define CHNL_IMG_CTRL_GBL_ALPHA_VAL_MASK			GENMASK(23, 16)
- #define CHNL_IMG_CTRL_GBL_ALPHA_EN				BIT(15)
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-index f45c2aae59ce..9a6a8302774c 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-@@ -221,11 +221,11 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 	/*
- 	 * RAW formats
- 	 *
--	 * The ISI shifts the 10-bit and 12-bit formats left by 6 and 4 bits
--	 * when using CHNL_IMG_CTRL_FORMAT_RAW10 or MXC_ISI_OUT_FMT_RAW12
--	 * respectively, to align the bits to the left and pad with zeros in
--	 * the LSBs. The corresponding V4L2 formats are however right-aligned,
--	 * we have to use CHNL_IMG_CTRL_FORMAT_RAW16 to avoid the left shift.
-+	 * The format entries use the native RAW10/12/14 ISI format codes.
-+	 * On platforms without hardware LSB alignment, the driver
-+	 * substitutes RAW16 at runtime in
-+	 * mxc_isi_channel_set_output_format() to avoid the left shift
-+	 * that the ISI applies to RAW10/12/14 output.
- 	 */
- 	{
- 		.mbus_code	= MEDIA_BUS_FMT_Y8_1X8,
-@@ -240,7 +240,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_Y10_1X10,
- 		.fourcc		= V4L2_PIX_FMT_Y10,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW10,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -249,7 +249,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_Y12_1X12,
- 		.fourcc		= V4L2_PIX_FMT_Y12,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW12,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -258,7 +258,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_Y14_1X14,
- 		.fourcc		= V4L2_PIX_FMT_Y14,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW14,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -312,7 +312,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SBGGR10_1X10,
- 		.fourcc		= V4L2_PIX_FMT_SBGGR10,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW10,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -321,7 +321,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SGBRG10_1X10,
- 		.fourcc		= V4L2_PIX_FMT_SGBRG10,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW10,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -330,7 +330,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SGRBG10_1X10,
- 		.fourcc		= V4L2_PIX_FMT_SGRBG10,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW10,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -339,7 +339,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SRGGB10_1X10,
- 		.fourcc		= V4L2_PIX_FMT_SRGGB10,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW10,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -348,7 +348,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SBGGR12_1X12,
- 		.fourcc		= V4L2_PIX_FMT_SBGGR12,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW12,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -357,7 +357,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SGBRG12_1X12,
- 		.fourcc		= V4L2_PIX_FMT_SGBRG12,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW12,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -366,7 +366,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SGRBG12_1X12,
- 		.fourcc		= V4L2_PIX_FMT_SGRBG12,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW12,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -375,7 +375,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SRGGB12_1X12,
- 		.fourcc		= V4L2_PIX_FMT_SRGGB12,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW12,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -384,7 +384,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SBGGR14_1X14,
- 		.fourcc		= V4L2_PIX_FMT_SBGGR14,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW14,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -393,7 +393,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SGBRG14_1X14,
- 		.fourcc		= V4L2_PIX_FMT_SGBRG14,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW14,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -402,7 +402,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SGRBG14_1X14,
- 		.fourcc		= V4L2_PIX_FMT_SGRBG14,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW14,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
-@@ -411,7 +411,7 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
- 		.mbus_code	= MEDIA_BUS_FMT_SRGGB14_1X14,
- 		.fourcc		= V4L2_PIX_FMT_SRGGB14,
- 		.type		= MXC_ISI_VIDEO_CAP,
--		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
-+		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW14,
- 		.mem_planes	= 1,
- 		.color_planes	= 1,
- 		.depth		= { 16 },
+Hi Abhilash,
 
--- 
-2.34.1
+Thank you for the series. LGTM !
+
+For the entire series,
+
+Reviewed-by: Rishikesh Donadkar <r-donadkar@ti.com>
+
+Rishikesh
+
+> 
+> Changelog:
+> Changes in v2:
+> - Add missing bus-type property in csi2_phy endpoints in overlays (sashiko)
+> - Add missing build targets in Makefile for some overlays (sashiko)
+> - Fix minor DTS styling and whitespace inconsistencies in port definitions in overlays (sashiko)
+> - Remove unused gpio.h header in overlays (sashiko)
+> - Don't replacing generic V3Link fusion board DTB targets instead append new build
+>    targets for v3link + IMX219 (sashiko) (Patch 17)
+> - Add status = "okay" property in port 0 of deserializer ports (sashiko) (patch 17)
+> - Add port-specific suffixes to avoid naming collisions (sashiko) (patch 17)
+> - Add reason in the commit message on why we want the DS90UB960 deserializer and DS90UB953
+>    serializer drivers to be enabled in defconfig (Krzysztof) (Patch 18)
+> - Rebase on top of linux-next (20260709)
+> 
+> Link to v1: https://lore.kernel.org/all/20260702093123.1048575-1-y-abhilashchandra@ti.com/
+> 
+> Testlogs:
+> J721E + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/18b5b81157fa67ab71f711f5b2cdc0a5
+> J721S2 + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/0b8f3617ce7620961d533edfd7c51be0
+> J784S4 + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/7791f3b224f6df34824ae418b9bd9963
+> AM68 + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/29c1c9793939633926b1db3fe058a629
+> 
+> J721E + DS90UB954-Q1EVM: http://gist.github.com/Yemike-Abhilash-Chandra/6d2e1f3f0cafd0eec7eb65061ebe221a
+> J721S2 + DS90UB954-Q1EVM: https://gist.github.com/Yemike-Abhilash-Chandra/a145ae81e7946cdc1c600cb377d3ad44
+> 
+> J784S4 + J7EXPA01EVM Fusion2: https://gist.github.com/Yemike-Abhilash-Chandra/8d7f06881d5435bfa5d9bdbfb209bc38
+> 
+> AM68 + Arducam V3link: https://gist.github.com/Yemike-Abhilash-Chandra/2c607145ba80e3554320042b29af9985
+> J722S + Arducam V3link: https://gist.github.com/Yemike-Abhilash-Chandra/b1fc2e2e8f15372f1379afe5c23668f5
+> 
+> (grep for "ds90ub960" for the deserializer logs and "ds90ub953" for the serializer.
+>   grep for "running tests" to see the actual test pattern genertaion capture logs from
+>   the sensor over the SERDES)
+> 
+> dtbs_check: make CONFIG_OF_ALL_DTBS=y dtstree=arch/arm64/boot/dts/ti dtbs_check gives no errors
+> 
+> Branch: https://github.com/Yemike-Abhilash-Chandra/linux/tree/CSI_MT_DT_V4
+> 
+> [0]: https://lore.kernel.org/all/20260520120022.539913-1-r-donadkar@ti.com/
+> 
+> Jianzhong Xu (1):
+>    arm64: dts: ti: k3-v3link: Add overlay for IMX219+UB953 serializer
+> 
+> Vaishnav Achath (13):
+>    arm64: dts: ti: k3-{j721e/j721s2}-main: Fix indentation in CSI2RX node
+>    arm64: dts: ti: k3-j721e-main: Add multiple channels for CSI2RX DMA
+>    arm64: dts: ti: k3-j721s2-main: Add multiple channels for CSI2RX DMA
+>    arm64: dts: ti: k3-j784s4-j742s2-main-common: Add multiple channels
+>      for CSI2RX DMA
+>    arm64: dts: ti: k3-am62p-j722s: Add multiple channels for CSI2RX DMA
+>    arm64: dts: ti: k3-j722s-main: Add multiple channels for CSI2RX DMA
+>    arm64: dts: ti: k3-j721e: Add overlay for fusion application daughter
+>      board
+>    arm64: dts: ti: k3-j721s2: Add overlay for fusion application daughter
+>      board
+>    arm64: dts: ti: k3-j721e-sk: Add overlay for fusion application
+>      daughter board
+>    arm64: dts: ti: k3-j722s-evm: Add overlay for fusion application
+>      daughter board
+>    arm64: dts: ti: k3-am68-sk: Add overlay for dual Arducam V3link fusion
+>    arm64: dts: ti: k3-j722s-evm: Add overlay for dual Arducam V3link
+>      fusion
+>    arm64: dts: ti: k3-j784s4-evm: Add overlay for J7EXPA01EVM Fusion2
+> 
+> Yemike Abhilash Chandra (4):
+>    arm64: dts: ti: k3-j722s-evm: Add overlay for J7EXPA01EVM Fusion2
+>    arm64: dts: ti: k3-j721s2: Add overlay for DS90UB954-Q1EVM
+>    arm64: dts: ti: k3-j721e: Add overlay for DS90UB954-Q1EVM
+>    arm64: defconfig: Enable DS90UB960 deserializer and DS90UB953
+>      serializer
+> 
+>   arch/arm64/boot/dts/ti/Makefile               |  83 +++++
+>   .../dts/ti/k3-am62p-j722s-common-main.dtsi    |   6 +-
+>   .../boot/dts/ti/k3-am68-sk-v3link-fusion.dtso | 200 ++++++++++++
+>   .../boot/dts/ti/k3-j721e-evm-fusion.dtso      | 190 +++++++++++
+>   .../arm64/boot/dts/ti/k3-j721e-evm-ub954.dtso |  92 ++++++
+>   arch/arm64/boot/dts/ti/k3-j721e-main.dtsi     |  24 +-
+>   .../dts/ti/k3-j721e-sk-fpdlink-fusion.dtso    | 190 +++++++++++
+>   .../boot/dts/ti/k3-j721s2-evm-fusion.dtso     | 190 +++++++++++
+>   .../boot/dts/ti/k3-j721s2-evm-ub954.dtso      |  92 ++++++
+>   arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi    |  22 +-
+>   .../dts/ti/k3-j722s-evm-fpdlink-fusion.dtso   | 196 ++++++++++++
+>   .../ti/k3-j722s-evm-fpdlink-iv-fusion.dtso    | 299 ++++++++++++++++++
+>   .../dts/ti/k3-j722s-evm-v3link-fusion.dtso    | 213 +++++++++++++
+>   arch/arm64/boot/dts/ti/k3-j722s-main.dtsi     |  15 +-
+>   .../ti/k3-j784s4-evm-fpdlink-iv-fusion.dtso   | 282 +++++++++++++++++
+>   .../dts/ti/k3-j784s4-j742s2-main-common.dtsi  |  21 +-
+>   .../boot/dts/ti/k3-v3link-imx219-0-0.dtso     | 128 ++++++++
+>   arch/arm64/configs/defconfig                  |   2 +
+>   18 files changed, 2217 insertions(+), 28 deletions(-)
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-am68-sk-v3link-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j721e-evm-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j721e-evm-ub954.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j721e-sk-fpdlink-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j721s2-evm-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j721s2-evm-ub954.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-evm-fpdlink-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-evm-fpdlink-iv-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-evm-v3link-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-j784s4-evm-fpdlink-iv-fusion.dtso
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-v3link-imx219-0-0.dtso
+> 
 
