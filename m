@@ -1,110 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6674440A2C;
-	Wed, 26 Aug 2026 14:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1891C3D522C;
+	Wed, 26 Aug 2026 14:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787752879; cv=none; b=Ffpy4bvP5HdgwPH+pMsVSKUuOxTmB6db6ocCp4sFxehWf5V6fW+iG01wAXJt5J5P5DcdgUIRZPGgYoTdz+HU5+y5+xSvUvm1yW6PNeSoLMl1hXx9BKFcODTjN0Tchm2EjZ/7XYfG8nD7NVz2Nnc3xMW75VjUxX22UfGfLICJSi0=
+	t=1787753134; cv=none; b=IVNx6p27qLfgpHHd551X+kVhtN6yOxQb8eTRQXRjmPLg5R+Whm63Nuaq9fNnxdvm0NPCzSVOe/HPU+lIHyZmh4jo/XPfccGyikegZ/9bG6tm5NkpRMXccpW3gGfqEzrKmvjm3GAzKGxCuuZQbXHtUyeTugzbve/A4ID44FrmKeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787752879; c=relaxed/simple;
-	bh=Z//0R6rrgYE4syUuu9EGWFrde5oAW4nlyzPGtZfjR+g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oCIcwyUkqv/YkLr8nIrMcT6cQNAx7jVSCmFzd+MB9weQ1qhID4QYtyn8bOtDIHff84QMcM6Mgt0QtaOGiMwQTmP6HofziB1eu06xTfoekf/cTITEeXyU5spMSspfb3jyO/qhh9uCvFNJo4JzxBuuu2g3zrc0UvmOe9nXH4C2Kv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXsSHWN+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787753134; c=relaxed/simple;
+	bh=zp4ZxFvHpCyZaEKvO6J2cBCPxykmOIHLHvOYN+zVeBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QuGc03RivI+WCowCv88j8nnrnWmEZtUFwgkqZ9Eyh2wGajeb/3B4gzziV9SxSIew+R+CYqAOPo4azLNY64nidwnQXg6sbEd0Pymd/rK/NFmVTL0AfcEedFjDhJqjkvMb5CGEJJseoXr+WaIBe4iqYL1I5inXJLRKnfFHnHq52TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cx5EqQ6i; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXsSHWN+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AB61F000E9;
-	Wed, 26 Aug 2026 14:01:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787752875;
-	bh=6IQ1ntCNnNj0PpJ9TcmCmeREGvLZpF+B/RzWt6l61VU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aXsSHWN+wzgrg3eAckG6ilQAqVVjDnMWGWQKgHYQiGLyzYSRQQPtosSgqlEXSadT5
-	 xAfgl9gQMtxQTmpIN6xhPLX2V3FP+518XTGDz11tLVMWgKU8ZO3Kqg8JVlcMDwhboo
-	 aau0BufO1bxMEYH849FxFRmeAGUQWaOqTQWXlrxgJntwYPXI26qgRt+IOikwDMfPSU
-	 09fCvkqTPVWzh9UZiKcIw9CDsGZ7YDYNp4p5Wj6UMyIYy/YlclvVJfeb2gntklttyl
-	 02fmOHHeKCfyX6HGAXkbkF9SpiWNjk9DO/ScrerTmv4xMASxysMWfozu6su18NaY1F
-	 xetnL8W8LUxvA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 07/10] scsi: ufs: Add NXP S32N79 UFS host controller
- driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Larisa Grigore" <larisa.grigore@oss.nxp.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, linux-scsi@vger.kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260826134048.854748-8-larisa.grigore@oss.nxp.com>
-References: <20260826134048.854748-1-larisa.grigore@oss.nxp.com>
- <20260826134048.854748-8-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 26 Aug 2026 14:01:15 +0000
-Message-Id: <20260826140115.72AB61F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cx5EqQ6i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787753132; x=1819289132;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zp4ZxFvHpCyZaEKvO6J2cBCPxykmOIHLHvOYN+zVeBI=;
+  b=Cx5EqQ6iXFgXtNnaE8r9PRoqiQ6W8bs59xIaNJd/WGZUBS0i4pxIXHWW
+   jMydtMIHNEsljLeTsd7VZCo33BfxvENbUStQSIqJPlfOUosv8oqJ0/dSp
+   wqE5CEDGs5Hiwud/BLYe77T5wcTEab7jBQRwCH9NqKaHrjkNXd6S1MExT
+   sTq5I9Ow4IsYTO1+57TmVGkCCKkHmfQowKn2CNbzrSSDRPasg+lNwI0HU
+   yLl0Am2IeYd0qL/IbUo0iJJPEv1+grr35ulFNjEpI1NLirKB/8evFILHh
+   2ly7sWOatoTkdrlIZsNTSwoLKcWn6uj9C4IOgLHtBHazYp57OT/jbDw3H
+   w==;
+X-CSE-ConnectionGUID: y7lMAIQHR9CVL7x1M853tw==
+X-CSE-MsgGUID: W/EllxAeQ8ygsC0KJnzaSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88362961"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="88362961"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:05:31 -0700
+X-CSE-ConnectionGUID: MfkaBtSDSpmzcaUT3yBSlg==
+X-CSE-MsgGUID: ntLGhDOUTCuyxLKkJe4VcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="271090744"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:05:12 -0700
+Date: Wed, 26 Aug 2026 17:05:09 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mike Leach <mike.leach@arm.com>,
+	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+	Mark Brown <broonie@kernel.org>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Boris Brezillon <bbrezillon@kernel.org>, info@mocean-labs.com,
+	Olof Johansson <olof@lixom.net>,
+	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	imx@lists.linux.dev, linux-media@vger.kernel.org,
+	mfd@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+	openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Drop redundant white-space around values in
+ <>
+Message-ID: <ao7ylZTVJFeUJ5h3@ashevche-desk.local>
+References: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The error handling for an unrecognized `nxp,mphy-boot-mode` prop=
-erty aborts the probe instead of skipping MPHY initialization, contradictin=
-g its own error message.
---
+On Wed, Aug 26, 2026 at 12:20:45PM +0200, Krzysztof Kozlowski wrote:
+> Correct a few white-space issues around <>, which will be flagged by
+> dt-check-style.  No functional changes.
 
-commit cc6f571e7075af648ae4e8cc7125fa859f589eaf
-Author: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Don't know which file triggers my name to appear in Cc, but the change
+I like, and indeed it makes style better to read and consistent.
 
-scsi: ufs: Add NXP S32N79 UFS host controller driver
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-This commit adds support for the UFS host controller on the NXP S32N79 SoC
-using the DWC architecture. It handles specific initialization steps prior
-to UIC_LINKSTARTUP and introduces the 'nxp,mphy-boot-mode' device tree
-property.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> diff --git a/drivers/ufs/host/ufs-nxp-s32n7.c b/drivers/ufs/host/ufs-nxp-=
-s32n7.c
-> new file mode 100644
-> --- /dev/null
-> +++ b/drivers/ufs/host/ufs-nxp-s32n7.c
 
-[ ... ]
-
-> +static int ufs_s32n_init(struct ufs_hba *hba)
-> +{
-
-[ ... ]
-
-> +	ret =3D of_property_read_string(np, "nxp,mphy-boot-mode", &mphy_boot_mo=
-de);
-> +	if (ret || !mphy_boot_mode) {
-> +		dev_dbg(dev,
-> +			"nxp,mphy-boot-mode property not found. UFS MPHY init will be skipped=
-.\n");
-> +		goto init_out;
-> +	}
-> +
-> +	if (!strcmp(mphy_boot_mode, "rom")) {
-> +		ufs->mphy_boot_mode =3D MPHY_BOOT_ROM;
-> +	} else {
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Unrecognized nxp,mphy-boot-mode property. UFS MPHY init will b=
-e skipped.\n");
-> +	}
-
-[Severity: Medium]
-Does this code inadvertently abort the entire UFS host controller probe?
-
-The error message explicitly states "UFS MPHY init will be skipped", but
-returning the result of dev_err_probe() propagates the -EINVAL error up the
-call stack and completely fails the probe.
-
-If the intent is to truly skip the MPHY initialization as indicated by the =
-log
-message, should this perhaps log a warning and use `goto init_out` instead =
-of
-returning a fatal error code?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826134048.8547=
-48-1-larisa.grigore@oss.nxp.com?part=3D7
