@@ -1,306 +1,398 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013069.outbound.protection.outlook.com [52.101.72.69])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010067.outbound.protection.outlook.com [52.101.84.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA204424D76
-	for <imx@lists.linux.dev>; Wed, 26 Aug 2026 15:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26BC2C17A3;
+	Wed, 26 Aug 2026 15:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787756958; cv=fail; b=o2ErFWRrfauiahBC8Nw6fRkqkYygsfpRGByIA6SXNj/2RsE+ffLoA4i++LWhIVU5GpPth+aBgPpK0adOYQ2SED+RBPxo/ThzXy4SDPkuyUj/vBCXWn5KH7DL/t/Za+4cPxfSk2esFg9v9E9ZXRpuL16pkcpzxWBSDrEpe0m4XjQ=
+	t=1787757350; cv=fail; b=kT6LahfXAA/TU2d9RAkeCgIklOs6M/FIbQxwD0kxHzFdgSANQ29x9ZpwjDiWZuCu3V9FjY+2FapoVyoGzzl23KmouhPI6mjWO+4jfCA6R1v3lV/WEQseLCxfj/hBntU6GrriczmAW/OqcGhPigXykY2dglL+m4VX0BOR9K6G10c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787756958; c=relaxed/simple;
-	bh=AiMF2fNh9dGo+nzNtVAFm65Np9P9xiDRjicn16iWgf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NDArw/Tn1z9qaUJcxds3aS7ZWV4ciuN0h2VAW1Hd40BkgljkdwuXh9Qjt6Lt5BWkx15C60YUah4bl12XIW/WL22aXiXMS42I60/HHFBQs9oJUPpgaXAmt3TpuUtT+yEbkjeLTgyPz2SKq10u5Y3A+Z3dI6t/0Ummc9Osi47CmVI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=db2Fl4Ht; arc=fail smtp.client-ip=52.101.72.69
+	s=arc-20240116; t=1787757350; c=relaxed/simple;
+	bh=d+BYIzsahhXlQx7TRB5asYWFIrCA8Guu03RDbwaFZt0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=D4ClkRUAEbV+8dozGxBkiI2v61Vywc2rZgS+X5B96H3ht07Wa1Rg75I7tUBsIoene8qoyFakpeDKHpgET414wHZu4DhCM+Wg/+QiSoZFeKn3rRBwTwJ4PkddFTJWO4Rz0i++nU4YeYGNU/usX5MfzFKiVv86slX3tZkn6prc4jQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kRHEdWRW; arc=fail smtp.client-ip=52.101.84.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="db2Fl4Ht"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kRHEdWRW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RQXh0/1irggMs1aQaFpP5vtoWJU0uld+sqBTSBB2b/Zetyy8CMCJN7Imm1sQvgJQXaITkbUk+Ms/JLlR9vl/hllJ0NRlM+cTncd/6ZfEOhRx4MP195f68Tz1F6Iuks9eCTo1d8DTCO8gTSelHbf5xFHaBN6FFkI3rGJFX6DR75bMsT5a/OGHpJkDLcKx5HWX9Q7QVH6Pe8aoZLF27p5bq7D855yW0ST0NvxGTIhVp0OkjcfCK0gbGMhhctWOy5UpUz+cTsYRjjuz0oEXjeFrmHwv6Kx/BrJAA3HSlFFchTHqSpsFKMFQBt/ognGhoqKKnvfiapX9jFDxu4OqZHj4LA==
+ b=v8lBTUIQwqGiCDbYKyZ3Fcn9UplHb8h+rzze6BHth6zZK/U0TG6eOc6iYKus8Sv0TbqcM2BxSrdwf2BoIuQt5L2AfcdW/E6Zv7qSDw2KYQXAWqGW/b+ay6Qlysjnax/hCnBlk1EdIsyjwNI+EBd/OZk9k7wWiNdp+aEAjj1Rc16T+6MwVoc4KrhfkGAkDY71rSlFKqBXW/AxWGlXk2U6WywFRuJ1xxsD2WzdmcbJxEA3H63ccIFBmeaENA8nrmcjRITJiNticuQkn0B/phXtDsIf1jhFaYwj9DsPE5tujyxKL5Tvm0lXAVCZ1Drn3LOFPWJSQE0igMkWpAE9SnEDAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aAQdZ7Ea1eoATwU2X58JXCGV7gU/E6S3xqkssDRpcKU=;
- b=Aq2TYUXcoZiDvxOTbpUegXRZzjtAftaLxRZ1CrpoBn3kA/ZSGehlNPMNLMyoTO5fJaCtI5MQ5vG0iWhnmZvIzWYaJwdQn5siFitUoHI2QFZJgbipu3eMC3BDuLcipUuJ7YbnOhHcf/mQEHAy+uq28Qml1/6rMY2oI52kqPRUnKx0KcCock/xWetUUCsPU7nGwnN+wKYb+iIQT7z4GmQYC4qk2edfh/aQoHTYN6ODFMJK5F5cQhprXudYtDJgaTVkVpujjQpnA8uTPIL1NyH3v5yeoFtyT1ArHEcyMRiDwohiI2fD+29706IIzTSlIM18xvNVYF4yBhGDEfARzpICAQ==
+ bh=5DdrrlLtuUpxY/3VWA4ipNa/ATpLbZ7fJ6pdLZW4cVc=;
+ b=lKCntjSlh1QHRwi/QoTdfOIrFtzSxU3Y8T2FegwpotXbj2jmwdqjcbHPmWmzX7fRKK7DL/kjan1YA5yz02VnXmJ+6ZMDckQALE9ZU/3lmVJ1a/ITsZGNVn07AywX/qM5P00kO/H6j4cxZinFevxnYRub76ZwEWroyxinuNvph4ALtlDV/tuBH3X44TEoQPKIaj54cMZrzwOplDSh93LbwEMjVLKLXXI18OwMFF9x/42Ho5RfxOV7foZGmf0mWTZpyy8ZHxhkvShKE+bBMMJEECvkJ/VDXqitS2ISvyu0GHIFn+aGhOWkUra12PWSpdeb4qAKmE3Xx7nBaQTcvFa0jw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aAQdZ7Ea1eoATwU2X58JXCGV7gU/E6S3xqkssDRpcKU=;
- b=db2Fl4Ht/Vs7qYRgyKJic0J/iBUEhgEufVm20CdcbzOKJeKK4XOJZQEvnxh32hsXKRuKIbguICnEuPayoTMIOKpKIpSBy1q0lcUZfJlVWjhk7y61fL1/dkYU9OSX1Dru66CG0oHMd5ahb2PmZvcU5mJ9HnbkiULIAhoGlawD1pjFw8vUD46FH7Fi7Sy/a8+u6G3pOsYqaWWSMIU6QFtsndX5JeXJwdbL/94MREA+DpjPlTdQo7CGyl738R86MdzWvQvHKU/Uv5YeXBvDoQv3U5fJZ+uonLc+ia7tBmFyyTrtZO6IMkUG0Jv1W/XjXpA8EGP9fyZ2fy+vfFg2c/gChg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by ZR6PR04MB986522.eurprd04.prod.outlook.com (2603:10a6:910:d9::11) with
+ bh=5DdrrlLtuUpxY/3VWA4ipNa/ATpLbZ7fJ6pdLZW4cVc=;
+ b=kRHEdWRWPlX7Q1e8IrB+LjZveiAdx+KykO19LOWGLvG7BKEylE1DxXAK5qjZGAaozuHsgUYdL3gO2WiYf0g4I2v5MQ4zbhnmQQpKZgcK4+Bw7J5xnbNWL1gLrADHg90o+C2zmXxvcaosE5pKQ+Xaak+eKAnkjvRAQ+ZU4J1K2DzF23efkAMbxY/duz78UDI6RrM/p2JnfCHytztZTOg+5Rc5E5BXx2bPYje5XVvCNGU0DietFzpC2qW7/0xCxRaqBlyXF4kydFUM4dOseS4EwNxqxnGzltatc8MqvGjqgNmJALt8lXDs+0ttrEVoBjxlwO5XophCwkySbe5iyMTQtg==
+Received: from GV2PR04MB12271.eurprd04.prod.outlook.com (2603:10a6:150:32a::5)
+ by DU7PR04MB11186.eurprd04.prod.outlook.com (2603:10a6:10:5b2::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
- 2026 15:09:13 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0339.012; Wed, 26 Aug 2026
- 15:09:13 +0000
-Date: Wed, 26 Aug 2026 10:09:01 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>
-Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
-	Ajay Neeli <ajay.neeli@amd.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Pedro Sousa <pedrom.sousa@synopsys.com>, clizzi@redhat.com,
-	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com,
-	linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 02/10] ufs: unipro: Add TX/RX FSM state attributes
-Message-ID: <ao8BjTPouw7t7xfs@SMW015318>
-References: <20260826134048.854748-1-larisa.grigore@oss.nxp.com>
- <20260826134048.854748-3-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826134048.854748-3-larisa.grigore@oss.nxp.com>
-X-ClientProxiedBy: SA1PR02CA0017.namprd02.prod.outlook.com
- (2603:10b6:806:2cf::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Wed, 26 Aug
+ 2026 15:15:42 +0000
+Received: from GV2PR04MB12271.eurprd04.prod.outlook.com
+ ([fe80::3b38:4ed4:2164:c035]) by GV2PR04MB12271.eurprd04.prod.outlook.com
+ ([fe80::3b38:4ed4:2164:c035%5]) with mapi id 15.21.0360.005; Wed, 26 Aug 2026
+ 15:15:42 +0000
+From: "Pankaj Gupta (OSS)" <pankaj.gupta@oss.nxp.com>
+To: "Frank Li (OSS)" <frank.li@oss.nxp.com>, "sashiko-reviews@lists.linux.dev"
+	<sashiko-reviews@lists.linux.dev>
+CC: "Pankaj Gupta (OSS)" <pankaj.gupta@oss.nxp.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "robh@kernel.org" <robh@kernel.org>
+Subject: RE: [PATCH v42 5/7] firmware: imx: adds miscdev
+Thread-Topic: [PATCH v42 5/7] firmware: imx: adds miscdev
+Thread-Index: AQHdM+62vM6+B38BAEOIJdyhzzlrGLateiYAgAFknoCAAZIpEA==
+Date: Wed, 26 Aug 2026 15:15:42 +0000
+Message-ID:
+ <GV2PR04MB12271A88AE415E200228B8A0D95AE2@GV2PR04MB12271.eurprd04.prod.outlook.com>
+References: <20260825-imx-se-if-v42-0-2e8efac0bb16@nxp.com>
+ <20260825-imx-se-if-v42-5-2e8efac0bb16@nxp.com>
+ <20260824175010.E8E2E1F000E9@smtp.kernel.org> <ao2vea2Z6RvDL4oy@SMW015318>
+In-Reply-To: <ao2vea2Z6RvDL4oy@SMW015318>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-08-26T15:05:56.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12271:EE_|DU7PR04MB11186:EE_
+x-ms-office365-filtering-correlation-id: 598dcb9e-f265-44bc-17c0-08df0384e524
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|19092799006|366016|1800799024|23010399003|56012099006|10067099003|6133799003|3023799007|11063799006|5023799004|22082099003|4143699003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ ntTEeC3xYLmvysfCiwc5X2V1gFBmef0TuLND8jZeS/HetIeg2OxPwmNLsyj7fuKo9mQSNA6n8pA2x6Q2mVv7b2gA2/uDmRpAUYXmAEO2PXd3k0M3s7YPGrSTYB3dDjrwteFFTBIPN9BNkkV+2/bl78B5ax4RQWp/bfkVrdPQz9VL5SZWNWfSZsO+4pM5J+7+EOJxc51e0E+iqgOG5C3rGYZoSWksZ8kEVm9iXWrHnl5Scj3HDV7hoCTIDh9aEx4Kf83krIt398xKKOCtzFvU/A7NZ1Ix8+gQ4V/6mzI/PVkLYp6RZf+nZ/GybUcqIStV7Iwc4zugWUQCgGdHZs1L2Q4mLR0q4FYlNoyKrI+W4bkXp/BnjC2RSLphgRV0Ja/BejkLHSRFuVw/q/p++ny7vFQ4Lof08Z2OTPr0WBu+3O3mBTiHhf27/nsxDjBgPbeQ4EAgls0SWyBwmx2IIPq1vMhY0d/i0wASiFVBNNSalrcpRnuJmQtouKrBPZOicaHEwx0chMdMmCuI+VdtSM0ifZzvJIr2MUbRoP4HflTCNqZ+QJxUNj9qcqEVzqDgcBOdxKQ33FZZshRzzbEpVVoQGDkCP17vcKNVAdwjEvguDytw/szl8KI9jcZEu3DrLcej9ivkA6eljFNVajL4xpAXhl0ueFszRmpPx0TjrqFHMLE=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12271.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(366016)(1800799024)(23010399003)(56012099006)(10067099003)(6133799003)(3023799007)(11063799006)(5023799004)(22082099003)(4143699003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ZiElI/s56oVN7oysqBoEZ204Rs6GtgVuZLlW4XgxrmV/oGpW53R+W6L7H5v2?=
+ =?us-ascii?Q?3UFHRWntlHeAtGKkQeMlC/UkXerHaD76dvPutpqZnb2Dpmn3sJWINPRjzcVD?=
+ =?us-ascii?Q?WE82rW5yPUjsM2WIDQkywxkt2dilA5yJSccvZM6R+0vnmBrfSudWilw2UrQs?=
+ =?us-ascii?Q?xk89VKZmvAmXlJErRz7G3lkIiwP2/dOqUB1R7Nre+X3ikCeUhgEoBoZgAgJs?=
+ =?us-ascii?Q?4R4PyHlsIM/o3+awjcCLL7iZfw1ky2gyxOxRsmRxNh7F7KWYyEQc3090KHU6?=
+ =?us-ascii?Q?qBQS95vYabD294/mm/1XJX9Xdhpy7wM5MP8J1AbiEf1VVy2n6x9S081Tr0oM?=
+ =?us-ascii?Q?Oq9ZytqOtfBByfES+WBoGlM7V9XpBcGEOmZQWAs8zHRyUzsSUE4HRixhaax9?=
+ =?us-ascii?Q?dJsq1xJNVGWA5+IhXFguJOASv1NzPhUTmzhSmHkg30WswP5NavgYV78B4qde?=
+ =?us-ascii?Q?8IogKSfKf18VktTqx+w6CFmzfZ+pTenu9As5mqF7pEDjNKI/iKdTjf8wCkq2?=
+ =?us-ascii?Q?E0PUTyMjjnhru3kYukLAnM3lNC2qng0pspliRR/c7SWjJAu104j5nIF14UNP?=
+ =?us-ascii?Q?wbEbhkDA2h5SBvOt0YH6h/AoQAgi+SyaWM9MgSjJQV4J0RzLm0R+4dkAiSSy?=
+ =?us-ascii?Q?+rmqb8zrvbU3z1RELxWyLJmTjf5qinOHSooHGRHWnDYns/VSLP+y0lhlD1rQ?=
+ =?us-ascii?Q?Eaa28mFzuovNfoiqexx9bPcjCtNlzODRZHSAwlgaPOK8479RRffi1MUxXPNG?=
+ =?us-ascii?Q?6OJaAb/MDmXCYwhDsOe3orSR3f+jD1OB07+RQYre7nLQqpp04fwl6QW2qRlK?=
+ =?us-ascii?Q?pnXRmsM7vrt8HTNTUtdzBbGFIYIiyRgM2xYe9j02uu7JBk1xo6SEnPLGrhiE?=
+ =?us-ascii?Q?dU82PbigctUAj1WNQGZiKhc1yZucHWJCuwxaXm7w8lRNt8WUQJcZ95qA5Q27?=
+ =?us-ascii?Q?VSe2wSvi6XkqgtaroB1PrItF3S0CKktgS1/YBc9MXSITORQX5YaTy7yoQVCz?=
+ =?us-ascii?Q?jWJo/1nzhfD14i5B+PiD8S7JdBmDU1ZkEXJn5WKWDOsmtSDhfRVUHlzSD354?=
+ =?us-ascii?Q?MUoudN1Jl7PO2tWueD1MCDV1rLmanNW6rEbzLQ0coMkSesbY2YoxpunCKZxh?=
+ =?us-ascii?Q?rVRCivQXtXu4wOT2Y/MTfj6j57lMQgkFpQjO4mg19YgRz3IUD6ipfaJrXwh9?=
+ =?us-ascii?Q?JiSAwD8+oGQpCzkq+R0Rn5lYi/8l6maHmgoQvD4elY5egDy8Pj1j8LYQZJ7P?=
+ =?us-ascii?Q?4yjLjFsKD9Q8SfFBlgB5iST2HM2K5EnTCAv9hZIMwUHAWOBHdPf3GhV0a7fo?=
+ =?us-ascii?Q?tXPqnIZntFGDCCXWN+pnJDq5sTkrT5KkDvqB7hhmkUBrVYTApvDUxjRdPK9N?=
+ =?us-ascii?Q?6k9FzZgnVrdR5T0JIPZAIjLV4d7vROdjJ4GDOYrZ3sj24gcpd/SRRCa3ndj8?=
+ =?us-ascii?Q?SyVvfAkSh6xZUCiUWrmSfYnNi0GG+e5M3hmtbH36rpB8ZJzsNu7Y6FZ9nqMi?=
+ =?us-ascii?Q?Arbcwlml65pSiAlHJl9q6Ap/PrVaGd3NGotte6f6CpD5Pzbt+7vniOFc4G3/?=
+ =?us-ascii?Q?3YUQKyJpsd91z6nGhXjFfKQQaHYqlEAeN5KGnffVgZxhubH21fnbkUgdrWbw?=
+ =?us-ascii?Q?IKzhlBzCuWUMBQvVwlfQCHKRhPaOsMi1E+7pXv84NoXVypgrrF1cym6/T6wB?=
+ =?us-ascii?Q?QeWtkpUAMwyzDR9+8S5j7QeFde/yR514hDSpzpJUSiyDJk76Dp+1UB49rlSS?=
+ =?us-ascii?Q?ygc8yNS9WQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|ZR6PR04MB986522:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdf29390-8521-4c5b-1f51-08df0383fcc4
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|376014|366016|7416014|23010399003|11063799006|6133799003|4143699003|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- yZU1HPCovJHjr0BBbuBqFliFHKlN5zUQWO0tX2nLfZkZEgYMENvwwVBhRlolFt8znFy9GWUoYVH8RItUUk6qajPTsLcKi0taXqw7MMJsi74cYYVOSJjFgAPnMQQOO/8a6BWiMeh68F25TbOAdWfwRoV/JKbVTgT5Jl7i5Mi/kZd+dbIVfedXNXTc1HU1DVAnawpCCGEi3LanrpeXmmkpCqk2Vp/8hQS3AYgNwGWVUAsbhvBuSKDYICMYfqvpxMbkiC1byvIPH1lGxciGG2fB7V/1KfCa3kBh+s4O74IHzcFXMf8HTH9m4+leQQmLIpGq811KCMjQhdYfp7y/uLBK3qJiSPon4qBxN72CEGQNCE3/uGIkhCHviwxFOUHhxQNckxXXm9MKMG5FXuBAt/Psm/3jkKDo4q+HI7S4EDYeX/+pk6dTya/gUDBCcDVE3lyu/2N+2Jal7DUhqweYRJchWN6eFXP2v/9hbKUkMVswYzddo7XK1d/Lh735wr/VY/7eD67p7MyEnCM+6D+ba8BMo6LNTXf73nq4euuMg9GkekglWfKBXbUJ8ijlIpiC4+27WbCTKpgIG6pqdVqIIDbLWa6vLbHAeoq9QhOTyA2AZpL2WCz+8rRSQznZTNt1UdBGl88qJLx81HmfVGYpwD310le6+GGzvF5ChehdjkpiTWk=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(366016)(7416014)(23010399003)(11063799006)(6133799003)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?FtJxCxlW4uY3fsCskZqe0tK78E4g6iyxo3mfsW0R3zxdp4DJSZAF0Cxy7CrB?=
- =?us-ascii?Q?WWHHMs3ROwFPc1iwrs0mvDdVEhgqNxsLgYTJDMQsEp5DpHba1OAIMEdMD5vs?=
- =?us-ascii?Q?ICubdC1lmSOIxWXXpjHHbvLPGggMmzShkalrxo+6R5s0ixHEvGFoC1nUvi5X?=
- =?us-ascii?Q?Sk0u/+ysKmQJHtk/EehtHGtAlgfZHXvhW3HPAJwjk9a/ua5QrdHAYjQGtt7W?=
- =?us-ascii?Q?VaR4Tq144ThMHoc/n/4CXxGP10crCym9AxxTVVu1gLS1ZWHzYed+sfH3PzeA?=
- =?us-ascii?Q?yehybSQ0+11buehj//CJnKr3fWWb1TEZSB71ALKvQP9iU5xWdZbEQExO66Ys?=
- =?us-ascii?Q?Fblzi3QT5k90G6POyBkzIZBvo3f9JIEjHjCS4dDwrEWbPaSG7rkQYxBryrJg?=
- =?us-ascii?Q?D/B8PGSFjj8itRg9pssWxwd+dCRvHpWl3ZgvKE1GdsFTqS7wEQsAecAdYuAr?=
- =?us-ascii?Q?bZcPiZcAviKyzX5e3EGI9sA1DcFYZTgp7Z9lJDJSaTU08mj2I5xjywBaQVcA?=
- =?us-ascii?Q?jlhP5vv2XjkuqtePnhmn/9xJBWwmNe7OTZ29csQ5U6jSWZnxSEGF4hHwE1Lz?=
- =?us-ascii?Q?ggFqOB/lq/yO8DwYIN0BHgUsE9Rwm2AZZKfLslQQipy8ImZc7AQRVNvEHITh?=
- =?us-ascii?Q?P5MEA+klAoGQ+OiciyfqfYm83SWaigJCpc4TgPEu8FyBmYoFz3vFh3PoaBBz?=
- =?us-ascii?Q?4LtamAh70A/H0KcfUZBTYdLSQsRJnbDIua71dKkOxf28aEFrKrWc/o0uokGN?=
- =?us-ascii?Q?Jid4dkdY+NZLs0apVGLc+GOG9Zx5J3I6HjX+JC/BrJNljwRG1fMW30YnChHc?=
- =?us-ascii?Q?87a+80IGJjg0tNAtBvZbGLE9TIGnETkhKfJUZlN6nIqldqMk1adHusky6GiH?=
- =?us-ascii?Q?YkKE/7MhxAdSOQeOdhYlfS30RRQ8ZwuZLX/ntiH9Bk789FE1w4Oa1227tLW5?=
- =?us-ascii?Q?UwR4l7Teu22Vns+eWd5Fqp3JPkSYNjO7NQorL9++C6mpUHVcf2N3dR6Zlr1r?=
- =?us-ascii?Q?o7iRli8LorYkwIXHvHrYY/x2wQR5O2hViZ8p38xau05VLa9Y+gzPiOohvSYz?=
- =?us-ascii?Q?zL0nlR3wKAkqHZjfWvfSmL97ss1ow3IV8Ni/EMZjHhGbLYFANwlFeq7lI1/M?=
- =?us-ascii?Q?axKJjs2CGjcLfkV6OsRZTa7ogq/21ZDTsGC7rb50GVrlJsZfCBorKrDQsgoY?=
- =?us-ascii?Q?y2xhPHkPNCABiaC36aw8mlw0IuGG0COGMw2wJVJIvgwlJ/vnHE1q4zY3HqOH?=
- =?us-ascii?Q?lv3E5qpcRk5A7BEqk09qW4Kk1/1bqafB+Y3jvuwJG/QpqI/Kkxmcok4lIrDb?=
- =?us-ascii?Q?8cEJtOJd041HzrrP2jTwZLXJET7aaGPyw0k+k49oc0PUYWfXdhsqKxC4IMQJ?=
- =?us-ascii?Q?tKCcJQx0gKmKbrnxmCIViKzHVXgarY/b9Hy7wl0Q066aDvkyrYMsYoGVwD74?=
- =?us-ascii?Q?8weKqCME1G6uamiGjP5EgXYHYRtI0jn986/kvO0U/1j7qNfCHWhOnXVitfnt?=
- =?us-ascii?Q?Jt4BWpNVimVSgqvPYjbKPXzGOZQvCUKZcKxonzaEgd07MxiZQTdPriR55OHE?=
- =?us-ascii?Q?uotYn+p5SAc/Pmzg0OlxbcnHzWdliKmDe96mmpivv7O44CkrbF4B+ebUIsp9?=
- =?us-ascii?Q?uSwIbIqp7pjirxbGxms1bZeWTQmHHZQExYBpLNOSec+9yM30hZQ2LKSaneIp?=
- =?us-ascii?Q?mteuubpvKWO9YeVpnGnq1o84jCEkia9vFZKpFeWXuf3QPMyYsG0UX6vLXACh?=
- =?us-ascii?Q?hho1lJZXcbTFVh7o6P/Wnpd5/lWScfHyhzb7nQ8hz88cJuaOA4ui?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdf29390-8521-4c5b-1f51-08df0383fcc4
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 15:09:12.9377
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12271.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 598dcb9e-f265-44bc-17c0-08df0384e524
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2026 15:15:42.4495
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gH/b/3doKGoHUzwWhfZZfMlaIE9Pi2A2BSjGZKH2c50YDhDfOj1HXXI8c9L1/xcQU452RVGLYpcpazm2x9Si9bYkv5dCt46bftTYuYGqN5pI3pTKJ82WGj7vhU57RhT0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR6PR04MB986522
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tf9zX6lztroPkfolJpjLtDYrfDSqSfnLt3JmJNVqiZGI85I3pPVyXLuN8isKyB+s14fmmlTAQK8cG8tITjCO1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11186
 
-On Wed, Aug 26, 2026 at 03:40:40PM +0200, Larisa Grigore wrote:
+> > >   err =3D ele_msg_rcv(dev_ctx, &priv->waiting_rsp_clbk_hdl);
+> > >
+> > >   if (priv->waiting_rsp_clbk_hdl.signal_rcvd) {
+> > >           /*
+> > >            * Signal was deferred until the FW/kernel protocol
+> resynchronized.
+> > >            * On success report -ERESTARTSYS for the interrupted wait;
+> the
+> > >            * command is not re-sent. Keep real errors like -
+> ETIMEDOUT.
+> > >            */
+> > >           if (err > 0)
+> > >                   err =3D -ERESTARTSYS;
+> >
+> > [Severity: High]
+> > Could this leak firmware resources when a non-fatal signal arrives?
+> > If a firmware response successfully arrives but defers a non-fatal
+> > signal, this code overwrites the positive success size with -ERESTARTSY=
+S.
+> > Then in se_ioctl_cmd_snd_rcv_rsp_handler(), this is converted to
+> > -EINTR and returns early without copying the response payload to
+> userspace.
+> > Because userspace never receives the newly generated handles (e.g.,
+> > keys or contexts), it cannot issue cleanup commands.
+> >
+> > > [ ... ]
+> > > @@ -660,11 +660,11 @@ void se_if_rx_callback(struct mbox_client
+> *mbox_cl, void *msg)
+> > >           se_clbk_hdl =3D &priv->waiting_rsp_clbk_hdl;
+> > >           spin_lock_irqsave(&se_clbk_hdl->clbk_rx_lock, flags);
+> > >           if (!se_clbk_hdl->rx_msg) {
+> > >                   if (atomic_read(&priv->fw_busy))
+> > >                           schedule_fw_busy_work =3D true;
+> > >                   spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock,
+> flags);
+> > >
+> > >                   if (schedule_fw_busy_work)
+> > >                           schedule_work(&priv->fw_busy_work);
+> >
+> > [Severity: High]
+> > Could this lead to a use-after-free of the priv object?
+> > In se_if_probe_cleanup(), cancel_work_sync() is called to wait for and
+> > cancel fw_busy_work before the rx_chan mailbox is disabled. If a late
+> > firmware response arrives in this window, this callback will execute.
+> > Because the callback schedules the work unconditionally if fw_busy is
+> > set without checking going_away, the work could be re-queued after
+> > cancel_work_sync() returns, causing it to access the freed priv object =
+when
+> the unbind finishes.
+> >
+> > > diff --git a/drivers/firmware/imx/ele_fw_api.c
+> > > b/drivers/firmware/imx/ele_fw_api.c
+> > > index 0000000000000..0000000000000
+> > > --- a/drivers/firmware/imx/ele_fw_api.c
+> > > +++ b/drivers/firmware/imx/ele_fw_api.c
+> > > [ ... ]
+> > > @@ -155,10 +155,10 @@ int ele_uapi_allowed_fw_cmd(struct
+> se_if_device_ctx *dev_ctx, struct se_msg_hdr *he
+> > >           /*
+> > >            * Reject the storage-open request when another context is
+> > >            * already registered as the command receiver.
+> > >            */
+> > >           scoped_guard(mutex, &priv->modify_lock)
+> > >                   if (priv->cmd_receiver_clbk_hdl.dev_ctx &&
+> > >                       priv->cmd_receiver_clbk_hdl.dev_ctx !=3D dev_ct=
+x)
+> > >                           ret =3D -EBUSY;
+> >
+> > [Severity: High]
+> > Can this create a TOCTOU race condition?
+> > The modify_lock is dropped immediately after checking the receiver
+> > availability, opening a window before the command reaches firmware.
+> > If two threads concurrently send ELE_STORAGE_OPEN_REQ, both could
+> pass
+> > this check and receive valid storage handles.
+> >
+> > > [ ... ]
+> > > @@ -244,11 +244,11 @@ void fw_api_specific_ops(struct
+> se_if_device_ctx *dev_ctx, struct se_api_msg *rx
+> > >           rc =3D set_dev_ctx_as_command_receiver(dev_ctx, false);
+> > >           if (rc)
+> > >                   dev_err(priv->dev,
+> > >                           "Failed to register %s as CMD-
+> Receiver: %d\n",
+> > >                           dev_ctx->devname, rc);
+> > >           break;
+> > >   }
+> >
+> > [Severity: High]
+> > Following the race condition above, if one thread successfully
+> > registers as the command receiver but the other fails here, the
+> > failure to register only logs an error and returns void. Does this
+> > allow the ioctl to return success, routing the second thread's
+> > firmware callbacks to the first thread and allowing interception of NVM
+> traffic?
+> >
+> > > diff --git a/drivers/firmware/imx/ele_msg_addr_field.c
+> > > b/drivers/firmware/imx/ele_msg_addr_field.c
+> > > index 0000000000000..0000000000000
+> > > --- a/drivers/firmware/imx/ele_msg_addr_field.c
+> > > +++ b/drivers/firmware/imx/ele_msg_addr_field.c
+> > > [ ... ]
+> > > @@ -51,7 +51,7 @@ static const struct se_cmd_addr_field
+> ele_oem_auth_cntr_addr_fields[] =3D {
+> > >    * Output buffers must be fully bounded; input-only buffers are saf=
+e
+> with
+> > >    * addr-only checks.
+> > >    */
+> > >   { .lsb_idx =3D 1, .msb_idx =3D 0, .has_msb =3D true, .flag_idx =3D
+> SE_CMD_ADDR_ALWAYS,
+> > >     .size_idx =3D SE_CMD_ADDR_NO_SIZE },                    /*
+> container_hdr_addr */
+> > >  };
+> >
+> > [Severity: High]
+> > Can this unbounded input buffer allow arbitrary out-of-bounds DMA
+> reads?
+> > The descriptor specifies SE_CMD_ADDR_NO_SIZE and a zero buf_size,
+> > which bypasses end-bounds checks. If a malicious userspace process
+> > places the buffer at the very end of the shared memory window and
+> > crafts a header with a huge size field, couldn't the firmware read
+> > beyond the mapped shared memory window into unmapped space and
+> trigger AXI bus faults?
+> >
+> > > [ ... ]
+> > > @@ -138,7 +138,7 @@ static const struct se_cmd_addr_field
+> ele_keystore_reprov_en_addr_fields[] =3D {
+> > >    * memory the caller already owns. Output buffers must be fully
+> bounded;
+> > >    * input-only buffers are safe with addr-only checks.
+> > >    */
+> > >   { .lsb_idx =3D 1, .msb_idx =3D 0, .has_msb =3D true, .flag_idx =3D
+> SE_CMD_ADDR_ALWAYS,
+> > >     .size_idx =3D SE_CMD_ADDR_NO_SIZE },                    /*
+> signed_msg_addr */
+> > >  };
+> >
+> > [Severity: High]
+> > This appears to be another instance where an unbounded input buffer
+> > might allow arbitrary sized DMA reads by the firmware. Is there a way
+> > to safely bound this input payload?
+> >
+> > > diff --git a/drivers/firmware/imx/se_ctrl.c
+> > > b/drivers/firmware/imx/se_ctrl.c index 0000000000000..0000000000000
+> > > --- a/drivers/firmware/imx/se_ctrl.c
+> > > +++ b/drivers/firmware/imx/se_ctrl.c
+> > > [ ... ]
+> > > @@ -746,10 +746,10 @@ static void se_if_probe_cleanup(void
+> *plat_dev)
+> > >   while (true) {
+> > >           dev_ctx =3D NULL;
+> > >
+> > >           scoped_guard(mutex, &priv->modify_lock) {
+> > >                   if (list_empty(&priv->dev_ctx_list))
+> > >                           goto out_done;
+> >
+> > [Severity: High]
+> > Is there a devres initialization order issue here?
+> > Because devres actions execute in reverse order (LIFO), modify_lock
+> > will be destroyed before se_if_probe_cleanup() is invoked, since it
+> > was initialized after devm_add_action_or_reset. When the cleanup
+> > function later attempts to lock this destroyed mutex, could this lead
+> > to undefined behavior or crashes during device unbind?
 >
-> Add TX_FSM_STATE and RX_FSM_STATE to include/ufs/unipro.h, as these are
-> UniPro M-PHY attribute definitions rather than host controller specific
-> ones.
->
-> Remove the duplicated local definitions from the HiSilicon, Qualcomm, AMD
-> Versal and DesignWare UFS headers.
->
-> This also prepares for using these definitions in a subsequent commit.
->
-> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
-> ---
+> Please check this
+Accepted and will be fixed in v43.
 
-Nice cleanup,
+>
+> >
+> > > [ ... ]
+> > > @@ -1151,9 +1151,9 @@ int set_dev_ctx_as_command_receiver(struct
+> se_if_device_ctx *dev_ctx, bool is_io
+> > >   if (se_clbk_hdl->dev_ctx)
+> > >           return -EBUSY;
+> > >
+> > >   if (!dev_ctx->strg_hdl)
+> > >           return -EINVAL;
+> > >
+> > >   if (is_ioctl)
+> > >           return -ENOMEM;
+> >
+> > [Severity: High]
+> > Does this check render the SE_IOCTL_ENABLE_CMD_RCV_STATUS ioctl
+> broken?
+> > When se_ioctl() invokes this function with is_ioctl set to true, it
+> > will unconditionally return -ENOMEM here and the command receiver will
+> > never be registered via the API.
+>
+> Please check this
+Split the function into two, to make it acceptable.
+>
+> >
+> > > [ ... ]
+> > > @@ -1532,9 +1532,9 @@ static int se_ioctl_get_mu_info(struct
+> se_if_device_ctx *dev_ctx,
+> > >   struct se_if_node *if_node;
+> > >   int err =3D 0;
+> > >
+> > >   if_node =3D container_of(priv->if_defs, typeof(*if_node), if_defs);
+> > >
+> > >   if_info.se_if_id =3D 0;
+> > >   if_info.interrupt_idx =3D 0;
+> > >   if_info.tz =3D 0;
+> > >   if_info.did =3D 0;
+> > >   if_info.cmd_tag =3D priv->if_defs->cmd_tag;
+> >
+> > [Severity: Medium]
+> > Are these structural identification fields intentionally populated
+> > with hardcoded zeroes? Setting se_if_id, interrupt_idx, tz, and did to
+> > 0 prevents userspace from dynamically identifying the secure enclave's
+> > type or configuration.
+>
+> Is it true?
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+In earlier version, it was populated by instance id. There are multiple ins=
+tance id for i.MX95, and onwards.
+For i.MX8ULP, it is only one instance id, that is 0.
+There was a comment to remove that field. Will add this filed with the patc=
+h-set that enabled i.MX95.
+Hence, it is correct what it is now.
 
+>
+> Frank
+> >
+> > > [ ... ]
+> > > @@ -1614,11 +1614,11 @@ static void cleanup_dev_ctx(struct
+> se_if_device_ctx *dev_ctx, bool is_fclose)
+> > >                           struct se_if_device_ctx *tx_ctx =3D is_fclo=
+se ?
+> dev_ctx :
+> > >                                                   dev_ctx->priv-
+> >priv_dev_ctx;
+> > >
+> > >                           if (dev_ctx->strg_hdl &&
+> se_close_storage(tx_ctx,
+> > >
+> dev_ctx->strg_hdl))
+> > >                                   dev_err(dev_ctx->priv->dev, "failed
+> to close storage.\n");
+> > >                           if (dev_ctx->sess_hdl &&
+> se_close_session(tx_ctx,
+> > >
+> dev_ctx->sess_hdl))
+> > >                                   dev_err(dev_ctx->priv->dev, "failed
+> to close session.\n");
+> > >                   }
+> >
+> > [Severity: High]
+> > Will firmware session handles leak if a process exits via a fatal signa=
+l?
+> > If se_close_storage() encounters a pending SIGKILL, its
+> > wait_for_completion aborts instantly and arms the fw_busy circuit
+> breaker.
+> >
+> > When se_close_session() runs immediately afterward, it sees fw_busy is
+> > set and aborts the session close command without sending it. Does this
+> > permanently leak the session handle on the secure enclave?
+> >
+> > --
+> > Sashiko AI review *
+> > https://sashiko.dev/#/patchset/20260825-imx-se-if-v42-0-2e8efac0bb16@n
+> > xp.com?part=3D5
 
->  drivers/ufs/host/ufs-amd-versal2.c | 4 ++--
->  drivers/ufs/host/ufs-hisi.c        | 8 ++++----
->  drivers/ufs/host/ufs-hisi.h        | 5 -----
->  drivers/ufs/host/ufs-qcom.c        | 4 ++--
->  drivers/ufs/host/ufs-qcom.h        | 1 -
->  drivers/ufs/host/ufshcd-dwc.h      | 4 ----
->  include/ufs/unipro.h               | 2 ++
->  7 files changed, 10 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/ufs/host/ufs-amd-versal2.c b/drivers/ufs/host/ufs-amd-versal2.c
-> index 2154d6286817..0d4d5e98ad65 100644
-> --- a/drivers/ufs/host/ufs-amd-versal2.c
-> +++ b/drivers/ufs/host/ufs-amd-versal2.c
-> @@ -112,7 +112,7 @@ static int ufs_versal2_enable_phy(struct ufs_hba *hba)
->                 u32 time_left, mibsel;
->
->                 time_left = TIMEOUT_MICROSEC;
-> -               mibsel = UIC_ARG_MIB_SEL(MTX_FSM_STATE, UIC_ARG_MPHY_TX_GEN_SEL_INDEX(offset));
-> +               mibsel = UIC_ARG_MIB_SEL(TX_FSM_STATE, UIC_ARG_MPHY_TX_GEN_SEL_INDEX(offset));
->                 do {
->                         ret = ufshcd_dme_get(hba, mibsel, &reg);
->                         if (ret)
-> @@ -132,7 +132,7 @@ static int ufs_versal2_enable_phy(struct ufs_hba *hba)
->                 }
->
->                 time_left = TIMEOUT_MICROSEC;
-> -               mibsel = UIC_ARG_MIB_SEL(MRX_FSM_STATE, UIC_ARG_MPHY_RX_GEN_SEL_INDEX(offset));
-> +               mibsel = UIC_ARG_MIB_SEL(RX_FSM_STATE, UIC_ARG_MPHY_RX_GEN_SEL_INDEX(offset));
->                 do {
->                         ret = ufshcd_dme_get(hba, mibsel, &reg);
->                         if (ret)
-> diff --git a/drivers/ufs/host/ufs-hisi.c b/drivers/ufs/host/ufs-hisi.c
-> index 2d214ce9620e..bd223bda1ce2 100644
-> --- a/drivers/ufs/host/ufs-hisi.c
-> +++ b/drivers/ufs/host/ufs-hisi.c
-> @@ -30,10 +30,10 @@ static int ufs_hisi_check_hibern8(struct ufs_hba *hba)
->         unsigned long timeout = jiffies + msecs_to_jiffies(HBRN8_POLL_TOUT_MS);
->
->         do {
-> -               err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(MPHY_TX_FSM_STATE, 0),
-> +               err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(TX_FSM_STATE, 0),
->                                       &tx_fsm_val_0);
->                 err |= ufshcd_dme_get(hba,
-> -                   UIC_ARG_MIB_SEL(MPHY_TX_FSM_STATE, 1), &tx_fsm_val_1);
-> +                   UIC_ARG_MIB_SEL(TX_FSM_STATE, 1), &tx_fsm_val_1);
->                 if (err || (tx_fsm_val_0 == TX_STATE_HIBERN8 &&
->                         tx_fsm_val_1 == TX_STATE_HIBERN8))
->                         break;
-> @@ -47,10 +47,10 @@ static int ufs_hisi_check_hibern8(struct ufs_hba *hba)
->          * check the state again.
->          */
->         if (time_after(jiffies, timeout)) {
-> -               err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(MPHY_TX_FSM_STATE, 0),
-> +               err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(TX_FSM_STATE, 0),
->                                      &tx_fsm_val_0);
->                 err |= ufshcd_dme_get(hba,
-> -                UIC_ARG_MIB_SEL(MPHY_TX_FSM_STATE, 1), &tx_fsm_val_1);
-> +                UIC_ARG_MIB_SEL(TX_FSM_STATE, 1), &tx_fsm_val_1);
->         }
->
->         if (err) {
-> diff --git a/drivers/ufs/host/ufs-hisi.h b/drivers/ufs/host/ufs-hisi.h
-> index 6af6a268458d..08dccfbec404 100644
-> --- a/drivers/ufs/host/ufs-hisi.h
-> +++ b/drivers/ufs/host/ufs-hisi.h
-> @@ -39,11 +39,6 @@
->  #define MASK_UFS_DEVICE_RESET          (0x1 << 16)
->  #define BIT_UFS_DEVICE_RESET           (0x1)
->
-> -/*
-> - * M-TX Configuration Attributes for Hixxxx
-> - */
-> -#define MPHY_TX_FSM_STATE      0x41
-> -
->  /*
->   * Hixxxx UFS HC specific Registers
->   */
-> diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-> index 75f569dd5cfe..b2081ed6197a 100644
-> --- a/drivers/ufs/host/ufs-qcom.c
-> +++ b/drivers/ufs/host/ufs-qcom.c
-> @@ -390,7 +390,7 @@ static int ufs_qcom_check_hibern8(struct ufs_hba *hba)
->
->         do {
->                 err = ufshcd_dme_get(hba,
-> -                               UIC_ARG_MIB_SEL(MPHY_TX_FSM_STATE,
-> +                               UIC_ARG_MIB_SEL(TX_FSM_STATE,
->                                         UIC_ARG_MPHY_TX_GEN_SEL_INDEX(0)),
->                                 &tx_fsm_val);
->                 if (err || tx_fsm_val == TX_STATE_HIBERN8)
-> @@ -406,7 +406,7 @@ static int ufs_qcom_check_hibern8(struct ufs_hba *hba)
->          */
->         if (time_after(jiffies, timeout))
->                 err = ufshcd_dme_get(hba,
-> -                               UIC_ARG_MIB_SEL(MPHY_TX_FSM_STATE,
-> +                               UIC_ARG_MIB_SEL(TX_FSM_STATE,
->                                         UIC_ARG_MPHY_TX_GEN_SEL_INDEX(0)),
->                                 &tx_fsm_val);
->
-> diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
-> index b7b68333fc32..fc24ed995ff3 100644
-> --- a/drivers/ufs/host/ufs-qcom.h
-> +++ b/drivers/ufs/host/ufs-qcom.h
-> @@ -10,7 +10,6 @@
->  #include <soc/qcom/ice.h>
->  #include <ufs/ufshcd.h>
->
-> -#define MPHY_TX_FSM_STATE       0x41
->  #define HBRN8_POLL_TOUT_MS      100
->  #define DEFAULT_CLK_RATE_HZ     1000000
->  #define MAX_SUPP_MAC           64
-> diff --git a/drivers/ufs/host/ufshcd-dwc.h b/drivers/ufs/host/ufshcd-dwc.h
-> index a5e40e7604a1..0406f2bb576b 100644
-> --- a/drivers/ufs/host/ufshcd-dwc.h
-> +++ b/drivers/ufs/host/ufshcd-dwc.h
-> @@ -27,10 +27,6 @@
->
->  #define CBREFREFCLK_GATE_OVR_EN                BIT(7)
->
-> -/* M-PHY Attributes */
-> -#define MTX_FSM_STATE          0x41
-> -#define MRX_FSM_STATE          0xC1
-> -
->  /* M-PHY registers */
->  #define RX_OVRD_IN_1(n)                (0x3006 + ((n) * 0x100))
->  #define RX_PCS_OUT(n)          (0x300F + ((n) * 0x100))
-> diff --git a/include/ufs/unipro.h b/include/ufs/unipro.h
-> index bf063edc284d..d9fcdf922482 100644
-> --- a/include/ufs/unipro.h
-> +++ b/include/ufs/unipro.h
-> @@ -34,6 +34,7 @@
->  #define TX_PWM_G6_G7_SYNC_LENGTH               0x0034
->  #define TX_HS_DEEMPHASIS_SETTING               0x0037
->  #define TX_HS_PRESHOOT_SETTING                 0x003B
-> +#define TX_FSM_STATE                           0x0041
->  #define TX_REFCLKFREQ                          0x00EB
->  #define TX_CFGCLKFREQVAL                       0x00EC
->  #define        CFGEXTRATTR                             0x00F0
-> @@ -72,6 +73,7 @@
->  #define CFGRXCDR8                              0x00BA
->  #define CFGRXOVR8                              0x00BD
->  #define CFGRXOVR6                              0x00BF
-> +#define RX_FSM_STATE                           0x00C1
->  #define RX_FOM                                 0x00C2
->  #define RXDIRECTCTRL2                          0x00C7
->  #define CFGRXOVR4                              0x00E9
-> --
-> 2.43.0
->
->
+NXP Confidential
