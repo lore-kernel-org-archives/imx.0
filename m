@@ -1,136 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1891C3D522C;
-	Wed, 26 Aug 2026 14:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52250442B33;
+	Wed, 26 Aug 2026 14:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787753134; cv=none; b=IVNx6p27qLfgpHHd551X+kVhtN6yOxQb8eTRQXRjmPLg5R+Whm63Nuaq9fNnxdvm0NPCzSVOe/HPU+lIHyZmh4jo/XPfccGyikegZ/9bG6tm5NkpRMXccpW3gGfqEzrKmvjm3GAzKGxCuuZQbXHtUyeTugzbve/A4ID44FrmKeA=
+	t=1787753532; cv=none; b=OVVGgTYCU4Zs/xZyGh7zbOlJndb0hHC5A+kzkuPEfsEPnYTEqcvGxupJEsgb2jbtcUAStNwzm5LqUvNy0dftSSXBC4oCylTjAoCJIMCEPf6pQKDNSmFYQeNeTl4QxTfk+OPseoij3aezTTnZiePrKeWthJSlrYJytOkHZBzoUcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787753134; c=relaxed/simple;
-	bh=zp4ZxFvHpCyZaEKvO6J2cBCPxykmOIHLHvOYN+zVeBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QuGc03RivI+WCowCv88j8nnrnWmEZtUFwgkqZ9Eyh2wGajeb/3B4gzziV9SxSIew+R+CYqAOPo4azLNY64nidwnQXg6sbEd0Pymd/rK/NFmVTL0AfcEedFjDhJqjkvMb5CGEJJseoXr+WaIBe4iqYL1I5inXJLRKnfFHnHq52TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cx5EqQ6i; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787753532; c=relaxed/simple;
+	bh=LR3sXZyv9BZpKnMkFqGg2COPCZoeIEfg8/rVtySW0wE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DnPWbF0/B9wtzfbcNY2d0MPNOHeF8lfvHeaJK3+wFc8bYDblcQsnGJYs3nzbP74b2kSH1V3mOJT7g1lhY1YIKiaHi2rkgMANn8j/VD56CzdyZPh3TXh/hM7MHSEQYqroWdx0qz0payrk/97vWpyjDHb8IavhXmvhOpsu0sFjGKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=lUN82dPn; arc=none smtp.client-ip=188.68.63.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cx5EqQ6i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787753132; x=1819289132;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zp4ZxFvHpCyZaEKvO6J2cBCPxykmOIHLHvOYN+zVeBI=;
-  b=Cx5EqQ6iXFgXtNnaE8r9PRoqiQ6W8bs59xIaNJd/WGZUBS0i4pxIXHWW
-   jMydtMIHNEsljLeTsd7VZCo33BfxvENbUStQSIqJPlfOUosv8oqJ0/dSp
-   wqE5CEDGs5Hiwud/BLYe77T5wcTEab7jBQRwCH9NqKaHrjkNXd6S1MExT
-   sTq5I9Ow4IsYTO1+57TmVGkCCKkHmfQowKn2CNbzrSSDRPasg+lNwI0HU
-   yLl0Am2IeYd0qL/IbUo0iJJPEv1+grr35ulFNjEpI1NLirKB/8evFILHh
-   2ly7sWOatoTkdrlIZsNTSwoLKcWn6uj9C4IOgLHtBHazYp57OT/jbDw3H
-   w==;
-X-CSE-ConnectionGUID: y7lMAIQHR9CVL7x1M853tw==
-X-CSE-MsgGUID: W/EllxAeQ8ygsC0KJnzaSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88362961"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88362961"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:05:31 -0700
-X-CSE-ConnectionGUID: MfkaBtSDSpmzcaUT3yBSlg==
-X-CSE-MsgGUID: ntLGhDOUTCuyxLKkJe4VcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="271090744"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:05:12 -0700
-Date: Wed, 26 Aug 2026 17:05:09 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-	Mark Brown <broonie@kernel.org>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Boris Brezillon <bbrezillon@kernel.org>, info@mocean-labs.com,
-	Olof Johansson <olof@lixom.net>,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	mfd@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-	openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Drop redundant white-space around values in
- <>
-Message-ID: <ao7ylZTVJFeUJ5h3@ashevche-desk.local>
-References: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="lUN82dPn"
+Received: from mors-relay-2502.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2502.netcup.net (Postfix) with ESMTPS id 4hVRRG4WWdz6Crs;
+	Wed, 26 Aug 2026 16:11:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1787753514;
+	bh=LR3sXZyv9BZpKnMkFqGg2COPCZoeIEfg8/rVtySW0wE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lUN82dPnB7XbbKExuk2IfwWOlfjroBdGo5tWmDybP9VKEpFd3dTDU+4qtsnyQR9V1
+	 YRnKi0DZqM4KHr3BoFYpUnZNpECmbzEKg4Z7l6Fg/wEF4TFPSi+izmzbb3LYkS0Kvn
+	 M+yjLrEshbs9oaD3qb7xxpOSBUTM00nYqnJOgjTyoHSGpRK91xLLBOaru9bIJyljPP
+	 /muBx+gvJRUkk7sH6b7XD2T3gmQkZi5AQXLuRsQJ0wX6ajn034AnrC2r3w5bAB5YI9
+	 fopo1FDc0WTrPoFKKl1eIbh9JGVz562H8C3LP+iq27X0i3bYn/At9SqjEldPPDf2cv
+	 iRXoGX17wFVhg==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2502.netcup.net (Postfix) with ESMTPS id 4hVRRG3mq0z4yTM;
+	Wed, 26 Aug 2026 16:11:54 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hVRRD6yhQz8sch;
+	Wed, 26 Aug 2026 16:11:52 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id B2ADA5F992;
+	Wed, 26 Aug 2026 16:11:47 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <04454db7-0779-4a7f-bab2-72fea3480dcf@leemhuis.info>
+Date: Wed, 26 Aug 2026 16:11:46 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mainline/master: PCI link creation fails on Apalis
+ iMX6
+To: Francesco Dolcini <francesco@dolcini.it>,
+ Leonardo Costa <leoreis.costa@gmail.com>
+Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+ kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+ bhelgaas@google.com, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, regressions@lists.linux.dev,
+ linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, leonardo.costa@toradex.com
+References: <bl7i3obu2clzsgeoct2a4mtfhv6typcjdqmgneropf3hpgwve6@n2m5uhlduw57>
+ <20260810211209.GB4821@francesco-nb>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260810211209.GB4821@francesco-nb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <178775350852.4133069.1765088279857940281@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: B2ADA5F992
+X-NC-CID: G3r5K1/Ois168fF789GTTufWvzg9G612mk5/qbx22u4FQm275A0=
 
-On Wed, Aug 26, 2026 at 12:20:45PM +0200, Krzysztof Kozlowski wrote:
-> Correct a few white-space issues around <>, which will be flagged by
-> dt-check-style.  No functional changes.
+On 8/10/26 23:12, Francesco Dolcini wrote:
+> On Mon, Aug 10, 2026 at 02:54:45PM -0300, Leonardo Costa wrote:
+>> We are seeing a regression on Apalis iMX6 where connected PCI device
+>> links fail to come up at initialization, as shown below. The issue is
+>> not on the devices' physical connection, as they worked properly on v7.1
+>> and are working on other stable kernel versions.
+> 
+> just to make this more clear.
+> 
+> 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
+> introduced a regression that prevented the boot. because of that we were
+> not able to run any of our test in our CI/CD
+> 
+> commit 7678e81498e2 ("PCI: imx6: Fix i.MX6Q/DL boot hang caused by improper PHY power sequencing")
+> fixes the boot issue, but now PCIe is not longer working
+Just wondering: what the status of this regression? I feel a bit lost here.
 
-Don't know which file triggers my name to appear in Cc, but the change
-I like, and indeed it makes style better to read and consistent.
+It looks like people were really keen on getting this resolved for 7.2
+-- even multiple revert were considered, but not performed in the end
+(not judging here, just mentioning it). Three days after the quoted mail
+(and thus even before 7.2 was out) Richard Zhu posted a fix afaics:
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+https://lore.kernel.org/all/20260813095003.356062-1-hongxing.zhu@oss.nxp.com/
 
--- 
-With Best Regards,
-Andy Shevchenko
+But that still sits on the list and did not even receive a tested-by. Is
+it not that urgent anymore for some reason I cannot see? Are developers
+waiting for test-results from affected people? Or did this fall through
+the cracks?
 
-
+Ciao, Thorsten
