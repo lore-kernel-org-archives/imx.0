@@ -1,411 +1,250 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010027.outbound.protection.outlook.com [52.101.84.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C63E6DEB
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 09:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787821844; cv=fail; b=aarqou1YazHxgvCF+SbjkG/UrVpCf0EzPIQpSzDoKWobMZOCXeENoDx2Aoyb9fdqy5kye+K+h8GsF9Gg6/G6a5XP0J19TMnbWHeI6hT+hw/haBI2xwMJLw4RKYCdAzVaK2Yp76v+xGyuJ/rhb2XzLWc003euLdT/J6KwYnLo4ZE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787821844; c=relaxed/simple;
-	bh=NyrUNpUUQ021TRHC6vBQvX2pM1eWu+XQSNktW9zf0NM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PwrD9wsLvEtTTkcHzmTA+/0p/wmMaC27EyUgsdi86pXFXn8VrdWbYm7KyJeR79PgYuU42gc0KwTeELMs5Y40droLdEZBxTT34yj3eoUWPIVITmNVdzE0+/TlSry+zcoZ8GrT7SgilUFSSfGRZqN0d69XixintEq7bU39bj/xqN4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EUWMCS0t; arc=fail smtp.client-ip=52.101.84.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19793F9287
+	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 10:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787826934; cv=none; b=Hjrlp6slBsayZYkb9c+fuvWr9xCHzE8xboTRDq2bQffi7UQbdwXGeuyK01vxOIr4D6yjzP3ujtnpQWORakxH93vI1VOUJptv9rVLd/Jw1NcudoZlo8VMCQHpOjkbJRE3gksuJhnUX5B6XWh9BEMIblSTtY2zoHvSSLDIIqxgfrw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787826934; c=relaxed/simple;
+	bh=IcM5iuMjxjTGinZeFjORo6UmefEXNjgyt5SQkssva/w=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=lRjbeolGKBNhsljzzm8JQkNAPTJgEA7uVhRD2At5bFzsepAKtOcCJlIds4ZQz/MEyw1qE3nYORfC5qZVhWuCQeyOtSvRinR1BnUMCrFWWbJUvw3EzsPoXxlwMUUL6pnmcEGsnWxYEc/SixbxsaPrzuP6CHuGD2M2vFNZCtxFIQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXiQNqZS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EUWMCS0t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Shvjz7euLSShyGlE7Q9HZ6NyuCPhfSPMzWW/rNUkdw/6xmtWq2DC3TmWAXsl2Gcn2jv34R2wWJnjiSNkbPOsYiDivlGk/8hjDSlN1UpTeonQuAu+jQrk3lmqjNI+jyarGWpzj4G1QwNrrK7HhXuRLJ6xGRGSm86aNG9ndKaNTPct5Rk/7h3mEu47DqD10LLoXaen+DoRRgJYbERP6M1MtsYAXx0CcCdROLYAroKkdGAbGJEKyVkoWBMw4isTzZwdgL1o/FOYs10vX5qKghp36uLNS2LO2TQU9CkLtq7zmmm2INqCL2iPEamLn0XPM6kiM0OWee2yLL9uaUJEqO5g3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h0Lri72eQ11l1JvNFay/wXwoOq/3rEJlmOnzdjKRQMk=;
- b=gXS0wE+E9uEu4EFvel4aiDiumHsEQlHXVhbbUlIskS2B7ENW4lJNC3gKf9JOG1+LRQsTmZ4lie/hIAAqzgWPXezs+IdNTWVfv+adqO0dI09IJ8k/pEyQ6qPIe4qzP2NGp39YFc2a7+ytJLr3yxh9ameDnjN2Jgc+rlnmhMKDR6Bexe4ntsRaNk0Yi0NJioQ1DCLWuE2VplsEUoe3BbnVfdvUcl2dk8FpCh3t62emoKOUm2TqrB7TesYGM/AEARcxObJ5MrDS7UTfxK153VlvMOdgVkswX1B9SBoUlhWBMUQwmsC6i+WPyGaT220lehNjgsoUbNFlk72KxpK0MiNVfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h0Lri72eQ11l1JvNFay/wXwoOq/3rEJlmOnzdjKRQMk=;
- b=EUWMCS0tLp82RRwq8o+XmM7sJbI4c9P6LItlVwr0o17D63LCEJ6eYUpmnTkWto/cy00p4mflrn2rgZNe6m9TsltCDlwszYVLJdBgEhryWVRqbHcio7n5Hb0P+X+MqkoyKf/SsBI7s7r571NqLMsfAl/f+23JZ3HskmXWJfHJguC1hbzBWc3XvECW9wiCt5oO90s6RqwCmYHizG8y6vOdzlYz8wdkkVJlzcQUgO4RAXso2UelIx8VIDTJ/Nfm1n1bEBxcTuuYBKNXrSUDRmajjaZXjstqIsTHwRIh/A1YJ6xUJFoiQw4Ro4I39OEQw4g3kC6RId17sG2gzXhVVHur5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22) by AS8PR04MB8946.eurprd04.prod.outlook.com
- (2603:10a6:20b:42d::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
- 2026 09:10:37 +0000
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0360.006; Thu, 27 Aug 2026
- 09:10:37 +0000
-Date: Thu, 27 Aug 2026 17:14:40 +0800
-From: Bough Chen <haibo.chen@oss.nxp.com>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>
-Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
-	Ajay Neeli <ajay.neeli@amd.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Pedro Sousa <pedrom.sousa@synopsys.com>, clizzi@redhat.com,
-	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com,
-	linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 03/10] ufs: host: Add common Hibern8 TX FSM polling helper
-Message-ID: <20260827091440.6iqfhvyihrxqv4bp@shlinux89>
-References: <20260826134048.854748-1-larisa.grigore@oss.nxp.com>
- <20260826134048.854748-4-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826134048.854748-4-larisa.grigore@oss.nxp.com>
-X-ClientProxiedBy: SI2P153CA0034.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::17) To PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXiQNqZS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3031F00A3A;
+	Thu, 27 Aug 2026 10:35:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787826932;
+	bh=qzc+huCYc/GioTWJm4RalmvHGPm+hAUKDIvi3Wkv3LE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nXiQNqZSmgXXzYuK1OZIPymDSDD0sbDQdOCX6HTHhO/PRzvgfMbS9RJ4Crj2HThH6
+	 NpAxpJ3O3yspqexAaNaTJQHaX/nOKQu61FVg8hCa81swGDS82PT0EbnQywJw4Gi4/n
+	 HmuG1WCLpBoxMa4S6hVpUvuGb424pVfCJ2tofpbRf+AX+MZwai/P+02+w5eIGZZCKA
+	 2LckTIlK2BzVry2qUDKCQWadizoq3OPuJfwHJEy3KOF6gz/DI7YfPG01cylPS4tBv0
+	 EWunKZlwKmSyCmIVIQcapt5bkJ9rXzB5sFuV2vY7e7ytoCCTC7pYWozvnlmzJ6qvQz
+	 GmVaUblJDnv0A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net v2] net: fec: only stop PTP if it was initialized
+Reply-To: sashiko-reviews@lists.linux.dev
+To: phucduc.bui@gmail.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260826103428.32807-1-phucduc.bui@gmail.com>
+References: <20260826103428.32807-1-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Aug 2026 10:35:31 +0000
+Message-Id: <20260827103532.2E3031F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|AS8PR04MB8946:EE_
-X-MS-Office365-Filtering-Correlation-Id: d82ca5a2-2fb9-418e-463e-08df041b0e84
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|23010399003|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- 567j+4P490lPYQI//4uiHQYzAnm5nfJx/SXHHtVZYXytFIuquNZPcz11w3yIeocOLdG1z2GeyfdVPvsgDp5TBW02k7OIfR1XqO0gCcw8ykaA+PbghaghzXDIUFojUa0iQgz+pa+XYTIcUXIFdojzeuNxhKiFhQJ++OPg+gs2INePY2fBujGq+EzYMluHiYHl6anTGKCr4BkT5NPujlfz/X2jr7wMLrW/XfJW+8jr21M8W6AvsYrGAwT0mfJL2bzh3c1hedmGhjO3qzLQqx2Rbdc9bgP65ycmGKmJH3NzIv0y1ozxivyHxzqKa6020wg2oXwbLxUA/8bxONHEWb4NG4G7fMu3y/OaQ4katHuqf5dmjvmCx5cNlSReG+s/LBoJUKnD54vc4sa+NoxE+SMPq1IgWKNKsuj5YdhJDjddBbV/k/r8DszclIuXWKaeQhWzVGP1Ne9pRQCPEHnfEaOjLShSjIxAKsLn0uDqE22kvSOXVmZbUP/fiS6XHDczHbGjua49wjrxuMyNgPzEFtTdOdPqOg3EV0zCFdNWd2+r4KUPf172fN5ZpmwyKWlpHOrKs56swgoIMWEdRMbM6aopR/RFliCAR3WuQ8DsvVMRbjUCXM3n8G4fSbvfBeSraGJor3fVBy+rfsz4YovPfnRHotR03AJmIZRkDPk9wrRUST8=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(23010399003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?Aw0jWXqw4MbHNBCGG1QkMCQkSGyl4/vq5OsOrwZWYXzI5QUy8qGDUY6M/JI2?=
- =?us-ascii?Q?lgsSKSP0/Hmid6nbc/oOirraEbEiX4mYJrfmJmkr9Av/uBGyPUPxJ4IcF8gw?=
- =?us-ascii?Q?Yhemt2IwC4BzxFMlCYwkkuuqV9rBVut0+wHql9Ay7qEUfhUKHrOqZ7fJxFvU?=
- =?us-ascii?Q?/ueAJmzybu24rVOR7M+wnrzNfWA7DGbm3JGU4hU9giu4ePvQZ5M9LFL0fut2?=
- =?us-ascii?Q?EK9VnzQ6uh0OIo/gDOyjyngCL+mf1sjss2ygrWpE0MrAZdjCBO1wpK3JQ/O8?=
- =?us-ascii?Q?chDceWcG/bwoLv63buq758gOwXpsRKP4ylsGcp6K93bJxAPP+XnOJQUKakTd?=
- =?us-ascii?Q?pFN6SdHvGr9y19HXFXonT9N9EdVKXCwaj7LMVmrGE5zGxckB0Lv7jiTmPcZ4?=
- =?us-ascii?Q?5cVX8TT3ZdMqICvKMiBluzkd6ARdrigkoA7YanryGAkuVn1wdV7P5GoXc+cP?=
- =?us-ascii?Q?gYXBDPGOesWuem6h4d10rrat09ZM8dzwPvp1OjyqLEIcALrUA8w3BlKVaEAx?=
- =?us-ascii?Q?aVRxRQI4kJoQKM82A8WXDQQ+R9jvx7bBM7YGh5ncaM/novRVHikVue5lzADU?=
- =?us-ascii?Q?pVuS/L5qjRKIxW0QXKXRH0dXEiclyXDoF9d89Z3zm4/BL5cgM4uXcKZXf2DE?=
- =?us-ascii?Q?ZpNPzx3S+pgnM2zPjZK5tngcOjpumCwYX4qfJibL97vaWXWvnq/1JN6JdKeP?=
- =?us-ascii?Q?CQGOSxJQouTicLQY9rjVH2kD3b1Uv/4Ngc5dSPYTyIqCc2who2xkPkzdMKZH?=
- =?us-ascii?Q?1VE8SWIdhTj6boGY6D1ilK8ZreDx7kKoFiDor0qHgzqi1Q5jfuS24TNvRzJn?=
- =?us-ascii?Q?nuZrGkdBrZqmXaigMbIutWqIysLZYi2EonP9IqAzV9MxK7xMnzE3/qUA27aY?=
- =?us-ascii?Q?AStTt9LJzKl8/GxgwxoKMaT1ZraDHHYAlRYDVsKLnFjiZLU3c2lxPF2nbxoR?=
- =?us-ascii?Q?DONtfNG6Cig9GziLTet/OW5e/fv8qPGzoUc4Xg5+TeDIKbmEcpsC02UvyTBo?=
- =?us-ascii?Q?JAzhhH3wSR/J5fTesUZcYc6Ogi7c+FgrDsgvB/Wp7CMn0ADyuNj5/4iTYM6x?=
- =?us-ascii?Q?uCzQtJtCeJcSEqxLwXFqio8pEqWn2h5dQc7uF9vvZ7YroK4jB7oM/lCRJfYZ?=
- =?us-ascii?Q?DMNqlkj1wm6Z+6WK6a2W1topDWEN0/OEho7KMEeriZZGVDWqYGNCVJgEwOxb?=
- =?us-ascii?Q?LfQiJcdlLXJb5PTyx7wdJkgwqAdWo1ng6HWKS58mLfdx3/l41rIa4PckEYvo?=
- =?us-ascii?Q?hhciDawHJcOq5q+GbptytkAcsToB4KbyyWD6mNl30OzjrH0VeNv9kQ+P1gX6?=
- =?us-ascii?Q?NoJI2K05ZQjcdfuQNPXNs/NNuzMFUgA2nx70YcMqu5gUh/tULVsg2eMob7is?=
- =?us-ascii?Q?iPJSBWA9bP8V4ibNaXJcYyfno0KTpOoV6/Fj0ypGwNVQ6R/DONrBORGPAOJF?=
- =?us-ascii?Q?0Ijst8VCTh8D2286gxbvnk5gliKAdE2hCD3oBO4E2pw1AkJXDCYxZgfzDZ4C?=
- =?us-ascii?Q?O7kq+7BXzTa7U+fSUQ7Paq71oeY2JuDbixJUoM+qhYNEY4QixYZbROQNyRlb?=
- =?us-ascii?Q?YBI93X+6IwFmoVR48jVRIhFuHOHqG8r3zR745Vp3d5AU/iAlSn1XpEw5uFVP?=
- =?us-ascii?Q?xRSQ9z19iZX8U6yO9TfzYY15V/uR+v+ljXMgmjayDd6/4JKu0EhOYUP54xoi?=
- =?us-ascii?Q?i/HjjyMuKhsl3XiNUnUDp83k28MIFasZa71oNdeTAkwdXZWt3HlRoQ4TEVdO?=
- =?us-ascii?Q?ARzmUs/fe8FhK3cpve6GgCo+zWEpCTII6FQ9o2xzn7MK1uOR5nFp?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d82ca5a2-2fb9-418e-463e-08df041b0e84
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 09:10:37.1643
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q1ndvWdzOZTaScis1iYSyjU+UkDUoB0x3X4nkTBQty+fPRZVaVl7kp93uuj3xiRLWZT5ZXN/VDOZMvaminpO5hEI1h8/r37cvZkEBLwsLnmf4R4DS60W5mEGLalkY9wC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8946
 
-On Wed, Aug 26, 2026 at 03:40:41PM +0200, Larisa Grigore wrote:
-> Factor out the common logic used to poll TX_FSM_STATE until the TX lanes
-> enter Hibern8 into ufshcd_check_hibern8().
-> 
-> The HiSilicon and Qualcomm drivers currently implement similar checks
-> using the UniPro TX_FSM_STATE attribute after link/PHY bring-up. Move
-> this logic to a common helper in ufshcd-pltfrm so it can be shared
-> across host controller drivers.
-> 
-> Switch the HiSilicon and Qualcomm drivers to use the new helper and drop
-> their local implementations.
+Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+s) to consider:
 
-The code change the error return value for qcom and hisi, better to point this
-out like the following, so that QCOM/HISI guys may pay attention on it:
+Pre-existing issues:
+- [Critical] Hardware access with disabled clocks in `fec_drv_remove()` cau=
+sing kernel panic
+- [Critical] PTP clock ioctls access hardware directly without verifying cl=
+ock status, leading to kernel panic
+- [High] Race condition causing Use-After-Free during `fec_drv_remove()` wa=
+tchdog teardown
+- [High] Initialization order race in `fec_probe()` causing workqueue corru=
+ption
+- [High] Race condition causing Use-After-Free during PTP timer teardown in=
+ `fec_ptp_stop()`
+- [High] Use-After-Free in probe error path due to premature explicit freei=
+ng of network device
+- [High] Concurrent `fec_pps_interrupt` execution and `fec_ptp_stop` causes=
+ Use-After-Free
+--
 
-"While at it, normalize the "TX lane failed to reach Hibern8" error path to
-return -ETIMEDOUT instead of the raw TX_FSM_STATE value (qcom) or -1 (hisi),
-so all callers get a proper errno. This is an intentional, harmless change of
-the returned error value; the pass/fail behaviour at the call sites is
-unchanged."
+commit e0b7dcf388492f09f947c8b3bfed37b87cb8fc59
+Author: bui duc phuc <phucduc.bui@gmail.com>
 
-Regards
-Haibo Chen
-> 
-> This also prepares for reusing the same UniPro-specific Hibern8 check in
-> a subsequent commit.
-> 
-> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
-> ---
->  drivers/ufs/host/ufs-hisi.c      | 48 +------------------
->  drivers/ufs/host/ufs-qcom.c      | 42 +----------------
->  drivers/ufs/host/ufshcd-pltfrm.c | 79 ++++++++++++++++++++++++++++++++
->  drivers/ufs/host/ufshcd-pltfrm.h |  2 +
->  4 files changed, 84 insertions(+), 87 deletions(-)
-> 
-> diff --git a/drivers/ufs/host/ufs-hisi.c b/drivers/ufs/host/ufs-hisi.c
-> index bd223bda1ce2..76d77bc30322 100644
-> --- a/drivers/ufs/host/ufs-hisi.c
-> +++ b/drivers/ufs/host/ufs-hisi.c
-> @@ -22,50 +22,6 @@
->  #include <ufs/ufshci.h>
->  #include <ufs/ufs_quirks.h>
->  
-> -static int ufs_hisi_check_hibern8(struct ufs_hba *hba)
-> -{
-> -	int err = 0;
-> -	u32 tx_fsm_val_0 = 0;
-> -	u32 tx_fsm_val_1 = 0;
-> -	unsigned long timeout = jiffies + msecs_to_jiffies(HBRN8_POLL_TOUT_MS);
-> -
-> -	do {
-> -		err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(TX_FSM_STATE, 0),
-> -				      &tx_fsm_val_0);
-> -		err |= ufshcd_dme_get(hba,
-> -		    UIC_ARG_MIB_SEL(TX_FSM_STATE, 1), &tx_fsm_val_1);
-> -		if (err || (tx_fsm_val_0 == TX_STATE_HIBERN8 &&
-> -			tx_fsm_val_1 == TX_STATE_HIBERN8))
-> -			break;
-> -
-> -		/* sleep for max. 200us */
-> -		usleep_range(100, 200);
-> -	} while (time_before(jiffies, timeout));
-> -
-> -	/*
-> -	 * we might have scheduled out for long during polling so
-> -	 * check the state again.
-> -	 */
-> -	if (time_after(jiffies, timeout)) {
-> -		err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(TX_FSM_STATE, 0),
-> -				     &tx_fsm_val_0);
-> -		err |= ufshcd_dme_get(hba,
-> -		 UIC_ARG_MIB_SEL(TX_FSM_STATE, 1), &tx_fsm_val_1);
-> -	}
-> -
-> -	if (err) {
-> -		dev_err(hba->dev, "%s: unable to get TX_FSM_STATE, err %d\n",
-> -			__func__, err);
-> -	} else if (tx_fsm_val_0 != TX_STATE_HIBERN8 ||
-> -			 tx_fsm_val_1 != TX_STATE_HIBERN8) {
-> -		err = -1;
-> -		dev_err(hba->dev, "%s: invalid TX_FSM_STATE, lane0 = %d, lane1 = %d\n",
-> -			__func__, tx_fsm_val_0, tx_fsm_val_1);
-> -	}
-> -
-> -	return err;
-> -}
-> -
->  static void ufs_hisi_clk_init(struct ufs_hba *hba)
->  {
->  	struct ufs_hisi_host *host = ufshcd_get_variant(hba);
-> @@ -224,9 +180,9 @@ static int ufs_hisi_link_startup_pre_change(struct ufs_hba *hba)
->  
->  	/* Unipro VS_mphy_disable */
->  	ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(0xD0C1, 0x0), 0x0);
-> -	err = ufs_hisi_check_hibern8(hba);
-> +	err = ufshcd_check_hibern8(hba, 2, HBRN8_POLL_TOUT_MS);
->  	if (err)
-> -		dev_err(hba->dev, "ufs_hisi_check_hibern8 error\n");
-> +		dev_err(hba->dev, "hibern8 TX FSM check failed\n");
->  
->  	if (!(host->caps & UFS_HISI_CAP_PHY10nm))
->  		ufshcd_writel(hba, UFS_HCLKDIV_NORMAL_VALUE, UFS_REG_HCLKDIV);
-> diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-> index b2081ed6197a..c94488661bcf 100644
-> --- a/drivers/ufs/host/ufs-qcom.c
-> +++ b/drivers/ufs/host/ufs-qcom.c
-> @@ -382,46 +382,6 @@ static int ufs_qcom_init_lane_clks(struct ufs_qcom_host *host)
->  	return 0;
->  }
->  
-> -static int ufs_qcom_check_hibern8(struct ufs_hba *hba)
-> -{
-> -	int err;
-> -	u32 tx_fsm_val;
-> -	unsigned long timeout = jiffies + msecs_to_jiffies(HBRN8_POLL_TOUT_MS);
-> -
-> -	do {
-> -		err = ufshcd_dme_get(hba,
-> -				UIC_ARG_MIB_SEL(TX_FSM_STATE,
-> -					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(0)),
-> -				&tx_fsm_val);
-> -		if (err || tx_fsm_val == TX_STATE_HIBERN8)
-> -			break;
-> -
-> -		/* sleep for max. 200us */
-> -		usleep_range(100, 200);
-> -	} while (time_before(jiffies, timeout));
-> -
-> -	/*
-> -	 * we might have scheduled out for long during polling so
-> -	 * check the state again.
-> -	 */
-> -	if (time_after(jiffies, timeout))
-> -		err = ufshcd_dme_get(hba,
-> -				UIC_ARG_MIB_SEL(TX_FSM_STATE,
-> -					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(0)),
-> -				&tx_fsm_val);
-> -
-> -	if (err) {
-> -		dev_err(hba->dev, "%s: unable to get TX_FSM_STATE, err %d\n",
-> -				__func__, err);
-> -	} else if (tx_fsm_val != TX_STATE_HIBERN8) {
-> -		err = tx_fsm_val;
-> -		dev_err(hba->dev, "%s: invalid TX_FSM_STATE = %d\n",
-> -				__func__, err);
-> -	}
-> -
-> -	return err;
-> -}
-> -
->  static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
->  {
->  	ufshcd_rmwl(host->hba, QUNIPRO_SEL, QUNIPRO_SEL, REG_UFS_CFG1);
-> @@ -607,7 +567,7 @@ static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
->  		break;
->  	case POST_CHANGE:
->  		/* check if UFS PHY moved from DISABLED to HIBERN8 */
-> -		err = ufs_qcom_check_hibern8(hba);
-> +		err = ufshcd_check_hibern8(hba, 1, HBRN8_POLL_TOUT_MS);
->  		ufs_qcom_enable_hw_clk_gating(hba);
->  		ufs_qcom_ice_enable(host);
->  		ufs_qcom_config_ice_allocator(host);
-> diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
-> index c2dafb583cf5..034ee988924a 100644
-> --- a/drivers/ufs/host/ufshcd-pltfrm.c
-> +++ b/drivers/ufs/host/ufshcd-pltfrm.c
-> @@ -9,6 +9,7 @@
->   */
->  
->  #include <linux/clk.h>
-> +#include <linux/delay.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_opp.h>
-> @@ -563,6 +564,84 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
->  }
->  EXPORT_SYMBOL_GPL(ufshcd_pltfrm_remove);
->  
-> +/**
-> + * ufshcd_check_hibern8 - Check if all TX lanes entered Hibern8 state
-> + * @hba: host controller instance
-> + * @num_lanes: number of TX lanes to check
-> + * @timeout_ms: timeout in milliseconds for all lanes
-> + *
-> + * Return: 0 on success, negative errno on failure.
-> + */
-> +int ufshcd_check_hibern8(struct ufs_hba *hba, unsigned int num_lanes,
-> +			 unsigned int timeout_ms)
-> +{
-> +	unsigned long timeout;
-> +	u32 tx_fsm_val = 0;
-> +	unsigned int i;
-> +	bool success;
-> +	int err;
-> +
-> +	if (!num_lanes)
-> +		return -EINVAL;
-> +
-> +	timeout = jiffies + msecs_to_jiffies(timeout_ms);
-> +
-> +	do {
-> +		success = true;
-> +
-> +		for (i = 0; i < num_lanes; i++) {
-> +			err = ufshcd_dme_get(hba,
-> +					UIC_ARG_MIB_SEL(TX_FSM_STATE,
-> +						UIC_ARG_MPHY_TX_GEN_SEL_INDEX(i)),
-> +					&tx_fsm_val);
-> +			if (err) {
-> +				dev_err(hba->dev,
-> +						"%s: unable to get TX_FSM_STATE for lane %u, err %d\n",
-> +						__func__, i, err);
-> +				return err;
-> +			}
-> +
-> +			if (tx_fsm_val != TX_STATE_HIBERN8) {
-> +				success = false;
-> +				break;
-> +			}
-> +		}
-> +
-> +		if (success)
-> +			return 0;
-> +
-> +		/* sleep for max. 200us */
-> +		usleep_range(100, 200);
-> +	} while (time_before(jiffies, timeout));
-> +
-> +	/*
-> +	 * We might have been scheduled out for long during polling, so do
-> +	 * one final check before reporting timeout.
-> +	 */
-> +	for (i = 0; i < num_lanes; i++) {
-> +		err = ufshcd_dme_get(hba,
-> +				UIC_ARG_MIB_SEL(TX_FSM_STATE,
-> +					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(i)),
-> +				&tx_fsm_val);
-> +		if (err) {
-> +			dev_err(hba->dev,
-> +					"%s: unable to get TX_FSM_STATE for lane %u, err %d\n",
-> +					__func__, i, err);
-> +			return err;
-> +		}
-> +
-> +		if (tx_fsm_val != TX_STATE_HIBERN8) {
-> +			dev_err(hba->dev,
-> +					"%s: timeout waiting for lane %u to enter HIBERN8, TX_FSM_STATE=%u\n",
-> +					__func__, i, tx_fsm_val);
-> +			return -ETIMEDOUT;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(ufshcd_check_hibern8);
-> +
->  MODULE_AUTHOR("Santosh Yaragnavi <santosh.sy@samsung.com>");
->  MODULE_AUTHOR("Vinayak Holikatti <h.vinayak@samsung.com>");
->  MODULE_DESCRIPTION("UFS host controller Platform bus based glue driver");
-> diff --git a/drivers/ufs/host/ufshcd-pltfrm.h b/drivers/ufs/host/ufshcd-pltfrm.h
-> index 0a18a8aed94d..ec2a8013e975 100644
-> --- a/drivers/ufs/host/ufshcd-pltfrm.h
-> +++ b/drivers/ufs/host/ufshcd-pltfrm.h
-> @@ -35,5 +35,7 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
->  void ufshcd_pltfrm_remove(struct platform_device *pdev);
->  int ufshcd_populate_vreg(struct device *dev, const char *name,
->  			 struct ufs_vreg **out_vreg, bool skip_current);
-> +int ufshcd_check_hibern8(struct ufs_hba *hba, unsigned int num_lanes,
-> +			 unsigned int timeout_ms);
->  
->  #endif /* UFSHCD_PLTFRM_H_ */
-> -- 
-> 2.43.0
-> 
+    net: fec: only stop PTP if it was initialized
+
+    fec_ptp_init() is only called when fep->bufdesc_ex is available.
+    However, fec_probe() unconditionally calls fec_ptp_stop() on the
+    failed_init path, and fec_drv_remove() unconditionally calls
+    fec_ptp_stop() during device removal.
+   =20
+    Check fep->bufdesc_ex before calling fec_ptp_stop() in both paths
+    to avoid stopping PTP when it was not initialized.
+
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
+rnet/freescale/fec_main.c
+> index ced4dbf8cd90f..794ec427b0ee6 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -5457,7 +5457,8 @@ fec_probe(struct platform_device *pdev)
+>  failed_irq:
+>  	fec_enet_deinit(ndev);
+>  failed_init:
+> -	fec_ptp_stop(pdev);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_stop(pdev);
+
+[Severity: High]
+This is a pre-existing issue, but does the initialization order in
+fec_probe() create a race condition that corrupts the workqueue?
+
+Currently, the device is registered and exposed to the system before the TX
+timeout work is initialized:
+
+fec_probe() {
+    ...
+    ret =3D register_netdev(ndev);
+    if (ret)
+        goto failed_register;
+    ...
+    INIT_WORK(&fep->tx_timeout_work, fec_enet_timeout_work);
+    ...
+}
+
+If a fast userspace actor brings the interface up and triggers a TX timeout
+after register_netdev() but before INIT_WORK(), .ndo_tx_timeout (fec_timeou=
+t)
+could call schedule_work() on an uninitialized work structure, potentially
+corrupting the workqueue. Should INIT_WORK() run before register_netdev()?
+
+[Severity: High]
+This is a pre-existing issue, but is there a use-after-free risk in the pro=
+be
+error path?
+
+At the end of fec_probe():
+
+failed_ioremap:
+    free_netdev(ndev);
+    return ret;
+
+Since devm_request_irq() was used for the interrupt handler, the IRQ is not
+freed until after fec_probe() returns. Because fec_enet_init() writes to the
+MAC interrupt mask register to enable TX interrupts, a pending interrupt
+could fire during this window.
+
+If fec_enet_interrupt() executes, it would dereference the already-freed nd=
+ev
+pointer. Would it be safer to free the netdev via devres, or manually disab=
+le
+interrupts/free the IRQ before freeing ndev?
+
+[Severity: High]
+This is a pre-existing issue, but does the timer teardown sequence
+in fec_ptp_stop() properly protect against concurrent ioctls?
+
+fec_ptp_stop() {
+    ...
+    cancel_delayed_work_sync(&fep->time_keep);
+    hrtimer_cancel(&fep->perout_timer);
+    if (fep->ptp_clock)
+        ptp_clock_unregister(fep->ptp_clock);
+}
+
+The PTP timers are cancelled before the PTP clock character device is
+unregistered. Could a concurrent ioctl (like PTP_PEROUT_REQUEST) invoke
+fec_ptp_enable() and re-arm the timers during unregistration?
+
+If so, could the re-armed timers fire after the driver is removed and access
+freed memory? Should ptp_clock_unregister() be called first to block new
+ioctl requests?
+
+[Severity: High]
+This is a pre-existing issue, but does fec_ptp_stop() synchronize with a
+currently running PPS interrupt handler?
+
+fec_ptp_stop() disables the PPS interrupt at the hardware level but does not
+call synchronize_irq(). It then unregisters the PTP clock:
+
+    if (fep->ptp_clock)
+        ptp_clock_unregister(fep->ptp_clock);
+
+If a concurrent fec_pps_interrupt() is running on another CPU, could it
+dereference fep->ptp_clock via ptp_clock_event(fep->ptp_clock, &event) after
+the clock instance has been unregistered and freed?
+
+[Severity: Critical]
+This is a pre-existing issue, but do the PTP clock ioctls safely access
+hardware when the device is runtime-suspended?
+
+Functions like fec_ptp_adjfine() perform direct register writes:
+
+fec_ptp_adjfine() {
+    ...
+    tmp =3D readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
+    tmp |=3D corr_ns << FEC_T_INC_CORR_OFFSET;
+    writel(tmp, fep->hwp + FEC_ATIME_INC);
+}
+
+Unlike fec_ptp_gettime(), which checks fep->ptp_clk_on under a mutex,
+fec_ptp_adjfine() doesn't seem to verify if the underlying clocks are activ=
+e.
+If an ioctl triggers this while the network interface is down and clocks are
+disabled, could this direct hardware access cause a synchronous abort
+and crash the system?
+
+>  failed_reset:
+>  	pm_runtime_put_noidle(&pdev->dev);
+>  	pm_runtime_disable(&pdev->dev);
+
+[ ... ]
+
+> @@ -5499,7 +5500,8 @@ fec_drv_remove(struct platform_device *pdev)
+>  			ERR_PTR(ret));
+> =20
+>  	cancel_work_sync(&fep->tx_timeout_work);
+
+[Severity: Critical]
+This is a pre-existing issue, but does ignoring a runtime PM resume failure
+here lead to a kernel panic?
+
+Just above this context, pm_runtime_get_sync() is called:
+
+    ret =3D pm_runtime_get_sync(&pdev->dev);
+    if (ret < 0)
+        dev_err(&pdev->dev, ...);
+
+If pm_runtime_get_sync() fails, the device clocks remain disabled. However,
+execution proceeds to fec_ptp_stop(), which eventually calls
+fec_ptp_enable_pps() and performs direct register writes
+(writel(0, fep->hwp + FEC_TCSR(fep->pps_channel))).
+
+Could writing to the SoC registers while their backing clocks are disabled
+cause a synchronous external abort? Should the teardown path gracefully
+handle this resume failure?
+
+> -	fec_ptp_stop(pdev);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_stop(pdev);
+>  	unregister_netdev(ndev);
+
+[Severity: High]
+This is a pre-existing issue, but does cancelling the timeout work before
+unregistering the network device leave a race condition window?
+
+In the current sequence:
+
+    cancel_work_sync(&fep->tx_timeout_work);
+    if (fep->bufdesc_ex)
+        fec_ptp_stop(pdev);
+    unregister_netdev(ndev);
+
+The network device is still fully active when cancel_work_sync() is called.
+Could the network core's watchdog timer fire right after the cancellation,
+invoke .ndo_tx_timeout, and re-queue the work item via schedule_work()?
+
+If that happens, and the driver subsequently unregisters and frees the devi=
+ce,
+could the re-armed work item execute later and cause a use-after-free?
+
+>  	fec_enet_mii_remove(fep);
+>  	if (fep->reg_phy)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260826103428.3280=
+7-1-phucduc.bui@gmail.com?part=3D1
