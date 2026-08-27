@@ -1,337 +1,165 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A2B47CC6C
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 17:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A97822FDE6;
+	Thu, 27 Aug 2026 17:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787851749; cv=none; b=oMXbn/2FJSLbHgay3MpHSMyq7FnMqNTNgEDzyTglU/EPCc4g77RZjQswBzUyrZGFaU7k5IastTMr+jWCE3hVCzJJ6fkqW5jxgS/i2PLmHH1Jl2Gq37USl+0OYYeVVN3IB6c4SKMoK24JNcr9GHNaVnt1cJ9tbbRyRFc13j13QRw=
+	t=1787852528; cv=none; b=LPRQDvLBxgGgP23Ot5DuJz3J6SveL++oZNisPljaqBBDvrhtn0DoILPAxI09R4W9ncspX4PNgsf1pqWGHgc9fIRWWiZy0wHajG88tOhwtZvbGzMd4Jd5c+ohM/4OqXGxLLWW2/iBeOSoJmMGZJbLF4mHMlKGPEBqXUy9x9raVPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787851749; c=relaxed/simple;
-	bh=6kKVQSIPjs2ADRkOSdj/GXos779W2nEJ8pmoL56Nqb4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbNouPBZEAomaxSBG4T2Nfl9Avzl+7gLtRpafb4igrGYNXBVK/ow3cwBpd+M/P0BysE1CeurXwJOrLVpyMN0sn9Z1GJUtd1qzV1Q33LWEra+Nh00Hdc6wQxAmNHixVV2gAZ6xFq0wof6khiwCtrtZqs5fLnNw2R2KGLFI9hC/n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fYz/H4hA; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787852528; c=relaxed/simple;
+	bh=LsWSyKxd9tkuMcXUyiQUR8ritphppIyMhIyx+/1rAq0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ErVFS+JNGP+j0ipLe5Z9kdy3kpfokSTwpCn+VMv799l3/5SHWJ3bOLvmTunpqeu0KBlyL2P1uBCgCl3mnvIGBgcBF+uKHjUa8B32308bTyGQx0nY0fhTlo0g2PBVEHBNdptvId/9CK5GJEwnZQ6ZOnFq5MaSkwFJUHlqKqhumS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imXXYJBQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fYz/H4hA"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49954b88fffso178445e9.0
-        for <imx@lists.linux.dev>; Thu, 27 Aug 2026 10:29:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787851740; x=1788456540; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BbGRleBQtFcAzDnn7sUNqmuOhxmVJ+q008CLKfb/Ty0=;
-        b=fYz/H4hAjKs01zH5Cg4ST37/n3MNN+ykyW8H5fv/0MOscrnlEC+/XsHjicazbyfUCp
-         OtjPerkqhUxyY3CnF33ffYk2IYgh9DkYcK4iQr5Xn/nQLRrZniCawnlLTTcxfnXch58W
-         HyVULCM6giffZNtlNeBRLyCj2StH6s1sokddKkVh+FeL1drt4mHZYPWyxeQQ4eDOyeIX
-         wBDKv9sxw3GL50ufTyYtVtuzjqhV4JHVjpPvyemmUUAxgxIEexYKezkLnWl9zXgr6GDL
-         /UQhrSCpFSGEQpTXDDD7AdnKinIoTZcenT3fpMVKfZzH+vcKIUtL4h2mZlPN1vvH02Tc
-         mKWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787851740; x=1788456540;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BbGRleBQtFcAzDnn7sUNqmuOhxmVJ+q008CLKfb/Ty0=;
-        b=ceAsKgagBlYOEg37BP9Tw2X0r9ZHrOiOCHtDQs2nGtSHIQ1+Wy/Iwgib0Kee2YjEga
-         lur19pmcwwFqBLWyPzKSJSZ6AM4kcYS5DfzP3JCMSWOkPYpUQfKy2f/b79nS/+mwADgV
-         7JcQ2H7ZvFm0ys2ZbRnNtNuty7bsbMSVyVF+2T+/l5Qr3DaifHGhzRgM7S5ZtqnPbiRE
-         fWR1aTGT3YULme/Xf+txENOipNsCSUd3/on+ElonvUee1dpp7OOugyUWvs0A2G68oN3a
-         k9ObKI9TYdq8eJu5Da1xr6bVmr9vyM6RUmX4LNQ35dskcfuACUNM155eEv0SyDYMhtAW
-         pgbw==
-X-Forwarded-Encrypted: i=1; AHgh+RqzKFwf7uQ26S7Js7cVKzRTkA97NrQiOmyhkspV1g/81+ZKLI27QsqNFEQoB1hXjXyVo7g=@lists.linux.dev
-X-Gm-Message-State: AFuF++nqXJmEPya8jZASb3ECeS3a67sVNAGk/jImG0+xACJLThkri/Xm
-	AIdRUqRlUfkujRouUgT0tWEnJe683gZHxgvreKvJ4Tia2NSxW8PBJXeD
-X-Gm-Gg: AR+sD10yf97PsxsJlYGMDvRMRn1I6+WiM1PO7FoVJA49ae86FDQ7DpYpK4NntL7N52P
-	suvAq6aMS+fQw7nf9JYqYpd8GEjG2muAIhaeDGcLb6Bo3a2yS+1teslbY5vcJsTeN9GUXS0CYDD
-	I7qIytqr3z+0SiXWULVhG1UWGYK05ajUFAThzI/5OhSIpZn6BROz/yVcs0AoQqGFFOtfer2RS2n
-	0gQPEUrBVckn28nJ1OGvn/V71d62Ulneus+viHrg2zeaJBB/VVdtlSR9T8XXoLE0IoJ2wZ27VhJ
-	/qS6uesuAQANRzjUoJb/1A60jzckNLrZGq+a1vRyBFLThpFPTek1NbPwpOxZvqm2ja5cE9tdkqn
-	52MmJ//FTrUlR00zxQARXNVuwTr/g8g/uzi85smBdi1OJ4Se2HCnVPcXr4Zv7BDiDaKY3YYT+MS
-	CVTm1Kp0kmUQCeny/Xw7G0OY482lrYggzN7WpNkvn02r9p+148SViJTtJLuUlv9jrhIeHgUm5WD
-	tNAcuEZYnCEvF6emPOYX9X9HaWmd/TH0fUtcNlrFG2B72T/rL+DN87uKevL5LhuJw==
-X-Received: by 2002:a05:600c:198b:b0:49a:a101:4157 with SMTP id 5b1f17b1804b1-49b91c24e71mr9336465e9.7.1787851740144;
-        Thu, 27 Aug 2026 10:29:00 -0700 (PDT)
-Received: from GLaDOS.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b91c510c9sm2174405e9.0.2026.08.27.10.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 10:28:59 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Marek Vasut <marex@nabladev.com>
-Subject: [PATCH v6 3/3] ARM: dts: imx7d: add Variscite MX7CustomBoard support
-Date: Thu, 27 Aug 2026 19:28:48 +0200
-Message-ID: <6d29c7e0bc7a44a544beaaa158a0b4c40d8308bb.1787851637.git.stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1787851637.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imXXYJBQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4B61F000E9;
+	Thu, 27 Aug 2026 17:42:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787852526;
+	bh=+YKihiNIm/ilgl3vt3oQVW7UZ+/8NIePdoiVGL33LYo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=imXXYJBQ9eqNTgyipVmJKOpNUjv0Q5w+y+LhV6XNk89WDSlsZq1ReMr4fItxznLuC
+	 d0GA8Q9c2yRotwUFiQoa2JL8kHrTfFTRPhCSkSgqgOXPm037MubbXRwm3sUCux3R20
+	 y2Xc7cPDrkgXmkTXPtQ7fHoBXt88BZ90GWdCZ0Alqh27jfA235SPs4Q5gvCuRKB6Vf
+	 eiZYxU5niFI0SvjL2+AqTdaNlH5eI2R4vtw5vaBwTSGR2mH/ljaE+HGYy29cyVRDf0
+	 hXRaV7l80Z4xwU/B38FX2429YEwRo2JcKrsxEoP1ibdlHt8fnx652csvfP5OvZ30sH
+	 QhymTNAxAPjjQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7
+ support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <11592f9d727337fedf02fdb107a24e935f3ebce4.1787851637.git.stefano.r@variscite.com>
 References: <cover.1787851637.git.stefano.r@variscite.com>
+ <11592f9d727337fedf02fdb107a24e935f3ebce4.1787851637.git.stefano.r@variscite.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Aug 2026 17:42:06 +0000
+Message-Id: <20260827174206.8A4B61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] WM8731 codec MCLK pin is left undriven due to the deletion of 'fsl=
+,sai-mclk-direction-output' without an alternative clock output route.
+- [Medium] Onboard Wi-Fi and Bluetooth power sequences are improperly deleg=
+ated to user-space scripts instead of kernel device drivers.
+--
 
-Add device tree support for the Variscite MX7CustomBoard carrier board
-with the VAR-SOM-MX7 system on module.
+commit 3caa578f0cdaf021ef9c9ff617d60ff3b372369e
+Author: Stefano Radaelli <stefano.r@variscite.com>
 
-This includes supported board configurations for both VAR-SOM-MX7
-hardware revisions, with eMMC and NAND variants, and WM8731 variants
-for the first hardware revision.
+ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+   =20
+Add device tree support for the Variscite VAR-SOM-MX7 system on module.
+This module is based on the NXP i.MX7Dual SoC and is available in multiple
+configurations.
+   =20
+Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
 
-Also add the resulting DTBs to the i.MX7D device tree Makefile.
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi b/arch/a=
+rm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
+> new file mode 100644
+> index 0000000000000..92dda8d36478e
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
 
-Link: https://www.variscite.com/carrier-boards/var-mx7customboard/
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-v5->v6:
- - 
+[ ... ]
 
-v4->v5:
- - 
+> +&i2c2 {
+> +	wm8731: audio-codec@1a {
+> +		compatible =3D "wlf,wm8731";
+> +		reg =3D <0x1a>;
+> +		#sound-dai-cells =3D <0>;
+> +		AVDD-supply =3D <&vgen6_reg>;
+> +		DBVDD-supply =3D <&vgen6_reg>;
+> +		DCVDD-supply =3D <&vgen6_reg>;
+> +		HPVDD-supply =3D <&vgen6_reg>;
+> +		clocks =3D <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
+> +		clock-names =3D "mclk";
 
-v3->v4:
- - 
+[ ... ]
 
-v2->v3:
- - 
+> +&sai1 {
+> +	assigned-clock-rates =3D <0>, <36864000>;
+> +	/delete-property/ fsl,sai-mclk-direction-output;
+> +};
 
-v1->v2:
- - Fixed commit message
- - Fixed model names
+[Severity: High]
+Does removing the 'fsl,sai-mclk-direction-output' property break the master
+clock for the WM8731 codec?
 
- arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++++
- .../imx/imx7d-var-som-emmc-mx7customboard.dts | 22 ++++++++++++++++++
- ...x7d-var-som-emmc-wm8731-mx7customboard.dts | 23 +++++++++++++++++++
- .../imx/imx7d-var-som-nand-mx7customboard.dts | 22 ++++++++++++++++++
- ...x7d-var-som-nand-wm8731-mx7customboard.dts | 23 +++++++++++++++++++
- .../imx7d-var-som-v2-emmc-mx7customboard.dts  | 23 +++++++++++++++++++
- .../imx7d-var-som-v2-nand-mx7customboard.dts  | 23 +++++++++++++++++++
- 7 files changed, 142 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-wm8731-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-wm8731-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-emmc-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-nand-mx7customboard.dts
+The wm8731 node configures the codec to expect an internal SoC master clock
+by setting clocks =3D <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 1a2539fa19b4..37da667f9ffb 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -444,6 +444,12 @@ dtb-$(CONFIG_SOC_IMX7D) += \
- 	imx7d-sdb-reva.dtb \
- 	imx7d-sdb-sht11.dtb \
- 	imx7d-smegw01.dtb \
-+	imx7d-var-som-emmc-mx7customboard.dtb \
-+	imx7d-var-som-emmc-wm8731-mx7customboard.dtb \
-+	imx7d-var-som-nand-mx7customboard.dtb \
-+	imx7d-var-som-nand-wm8731-mx7customboard.dtb \
-+	imx7d-var-som-v2-emmc-mx7customboard.dtb \
-+	imx7d-var-som-v2-nand-mx7customboard.dtb \
- 	imx7d-zii-rmu2.dtb \
- 	imx7d-zii-rpu2.dtb \
- 	imx7s-colibri-aster.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-mx7customboard.dts b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-mx7customboard.dts
-new file mode 100644
-index 000000000000..855b621b0ee8
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-mx7customboard.dts
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * VAR-MX7CustomBoard for VAR-SOM-MX7 with eMMC
-+ *
-+ * Link: https://variscite.com/carrier-boards/var-mx7customboard/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx7d-var-som.dtsi"
-+#include "imx7d-var-som-emmc.dtsi"
-+#include "imx7d-var-som-mx7customboard.dtsi"
-+
-+/ {
-+	model = "Variscite VAR-SOM-MX7 with eMMC & WM8904 on VAR-MX7CustomBoard";
-+	compatible = "variscite,var-som-imx7d-emmc-mx7customboard",
-+		     "variscite,var-som-imx7d",
-+		     "fsl,imx7d";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-wm8731-mx7customboard.dts b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-wm8731-mx7customboard.dts
-new file mode 100644
-index 000000000000..94c4b1fa5d6c
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-wm8731-mx7customboard.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * VAR-MX7CustomBoard for VAR-SOM-MX7 with eMMC and WM8731
-+ *
-+ * Link: https://variscite.com/carrier-boards/var-mx7customboard/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx7d-var-som.dtsi"
-+#include "imx7d-var-som-emmc.dtsi"
-+#include "imx7d-var-som-wm8731.dtsi"
-+#include "imx7d-var-som-mx7customboard.dtsi"
-+
-+/ {
-+	model = "Variscite VAR-SOM-MX7 with eMMC & WM8731 on VAR-MX7CustomBoard";
-+	compatible = "variscite,var-som-imx7d-emmc-wm8731-mx7customboard",
-+		     "variscite,var-som-imx7d",
-+		     "fsl,imx7d";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-mx7customboard.dts b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-mx7customboard.dts
-new file mode 100644
-index 000000000000..0da9653ecffc
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-mx7customboard.dts
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * VAR-MX7CustomBoard for VAR-SOM-MX7 with NAND
-+ *
-+ * Link: https://variscite.com/carrier-boards/var-mx7customboard/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx7d-var-som.dtsi"
-+#include "imx7d-var-som-nand.dtsi"
-+#include "imx7d-var-som-mx7customboard.dtsi"
-+
-+/ {
-+	model = "Variscite VAR-SOM-MX7 with NAND flash & WM8904 on VAR-MX7CustomBoard";
-+	compatible = "variscite,var-som-imx7d-nand-mx7customboard",
-+		     "variscite,var-som-imx7d",
-+		     "fsl,imx7d";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-wm8731-mx7customboard.dts b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-wm8731-mx7customboard.dts
-new file mode 100644
-index 000000000000..603b2dbf4c8e
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-wm8731-mx7customboard.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * VAR-MX7CustomBoard for VAR-SOM-MX7 with NAND and WM8731
-+ *
-+ * Link: https://variscite.com/carrier-boards/var-mx7customboard/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx7d-var-som.dtsi"
-+#include "imx7d-var-som-nand.dtsi"
-+#include "imx7d-var-som-wm8731.dtsi"
-+#include "imx7d-var-som-mx7customboard.dtsi"
-+
-+/ {
-+	model = "Variscite VAR-SOM-MX7 with NAND flash & WM8731 on VAR-MX7CustomBoard";
-+	compatible = "variscite,var-som-imx7d-nand-wm8731-mx7customboard",
-+		     "variscite,var-som-imx7d",
-+		     "fsl,imx7d";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-emmc-mx7customboard.dts b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-emmc-mx7customboard.dts
-new file mode 100644
-index 000000000000..12971bfefdcc
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-emmc-mx7customboard.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * VAR-MX7CustomBoard for VAR-SOM-MX7 V2 with eMMC
-+ *
-+ * Link: https://variscite.com/carrier-boards/var-mx7customboard/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx7d-var-som.dtsi"
-+#include "imx7d-var-som-v2.dtsi"
-+#include "imx7d-var-som-emmc.dtsi"
-+#include "imx7d-var-som-mx7customboard.dtsi"
-+
-+/ {
-+	model = "Variscite VAR-SOM-MX7-5G_V2 with eMMC & WM8904 on VAR-MX7CustomBoard";
-+	compatible = "variscite,var-som-imx7d-v2-emmc-mx7customboard",
-+		     "variscite,var-som-imx7d-v2",
-+		     "fsl,imx7d";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-nand-mx7customboard.dts b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-nand-mx7customboard.dts
-new file mode 100644
-index 000000000000..1c465e89f198
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-nand-mx7customboard.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * VAR-MX7CustomBoard for VAR-SOM-MX7 V2 with NAND
-+ *
-+ * Link: https://variscite.com/carrier-boards/var-mx7customboard/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx7d-var-som.dtsi"
-+#include "imx7d-var-som-v2.dtsi"
-+#include "imx7d-var-som-nand.dtsi"
-+#include "imx7d-var-som-mx7customboard.dtsi"
-+
-+/ {
-+	model = "Variscite VAR-SOM-MX7-5G_V2 with NAND flash & WM8904 on VAR-MX7CustomBoard";
-+	compatible = "variscite,var-som-imx7d-v2-nand-mx7customboard",
-+		     "variscite,var-som-imx7d-v2",
-+		     "fsl,imx7d";
-+};
--- 
-2.47.3
+By deleting the 'fsl,sai-mclk-direction-output' property from the sai1
+node, the SAI1_MCLK pad is configured as an input instead of driving the
+clock out to the codec.
 
+Will this prevent the WM8731 codec from functioning on this board variant
+because it never receives a clock?
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi b/arch/arm/boot=
+/dts/nxp/imx/imx7d-var-som.dtsi
+> new file mode 100644
+> index 0000000000000..158158afc3391
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
+
+[ ... ]
+
+> +&iomuxc {
+> +	/* GPIO Used in User Space init script */
+> +	pinctrl_bt: btgrp {
+> +		fsl,pins =3D <
+> +			MX7D_PAD_GPIO1_IO14__GPIO1_IO14			0x80000000
+> +		>;
+> +	};
+
+[Severity: Medium]
+Are these Bluetooth power sequences improperly delegated to user-space
+scripts instead of kernel device drivers?
+
+The pinctrl_bt node defines the BT_REG_ON (GPIO1_IO14) pin strictly as a
+pinctrl definition with no corresponding power sequencer or regulator
+binding.
+
+Since the comment explicitly notes it is used in a user space init script,
+will this prevent the kernel from autonomously enumerating the UART Bluetoo=
+th
+device during boot?
+
+[ ... ]
+
+> +&iomuxc_lpsr {
+
+[ ... ]
+
+> +	/* GPIO Used in User Space init script */
+> +	pinctrl_wlan: wlangrp {
+> +		fsl,pins =3D <
+> +			MX7D_PAD_LPSR_GPIO1_IO04__GPIO1_IO4		0x09
+> +		>;
+> +	};
+
+[Severity: Medium]
+Is this Wi-Fi power sequence improperly delegated to user-space scripts
+instead of an MMC power sequence?
+
+The pinctrl_wlan node defines the WL_REG_ON (GPIO1_IO4) pin strictly as a
+pinctrl definition without a corresponding power sequencer or regulator
+binding.
+
+Will this prevent the kernel from autonomously enumerating the SDIO Wi-Fi
+device during boot?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1787851637.gi=
+t.stefano.r@variscite.com?part=3D2
