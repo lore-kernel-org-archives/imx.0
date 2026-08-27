@@ -1,187 +1,113 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC37363C40
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 07:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805113C1970;
+	Thu, 27 Aug 2026 08:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787817480; cv=none; b=QJl7s94Y0ZBTJ2UpDPc2Iu75b1huj/j4KYtJwmvV53QtYUc0EDVNgd+fcX/yPlmJijBS/0IB87SJ/Ndk/Pm8o4lDwsNVdVKPrAtsYqDQA6QqJCitelGPBMZly9owJdH+D8uYASseng+Wj7IQLy/YumlgvmiIBDgMclo7FfQoECk=
+	t=1787818244; cv=none; b=afIWAi3NEZSVwQ0NBlljZcKZsUZbttekRoYN6k4hcZXc88cBgMG6sR895OFGl6jzJ7T5AFqaUpPUi4Achi7tEqkvil7FuKnG8eAxCRbUgaT5ajwvXUwxdzKnMSYcT8lpJ1qgpxz8fHLhW/iBkaGOBTs7DzjE0S/V1PebGy9Y2zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787817480; c=relaxed/simple;
-	bh=wB7oQYB55ay6TpsBEEieK0+fs1L5wWTB14GeroUIITs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TUFGgqvMrLKTQicVJl8YqMEZLiq8ZtldhO191iYN46MP508Ruij3r+3RtRoCMBNuWLVQvY7QvN3kughGSqZrLUsps2324gtqt/BUoF888LCq6s1DrSfQej39TSATHCIpphism8H+U/C/6trApwOThJU/GWcqG3iwwdyKjmuSzJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=S2vbAg6W; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1787818244; c=relaxed/simple;
+	bh=AKPvNKUlw69ATdXUK4li6x2mruf4QKy11p/KL2l1G7E=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Oje2NVUJ3+AvJLK35SC40zwmL5RMl+8k/Wu6qf6ZuohOgqyAdckSKaO9ac8t60gxIdzyjaZzVi92IyZEuJRKiH1DKl7w+ftkVl9gwd3wWCifh4VC10Dt9ghQfNfpkH/7B5SczXuITArEPwY4iIGCbpLHp41X93bnhXPXdwNt8K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQvN3TGz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="S2vbAg6W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=yvFziv4lNhYffP/GPGVZf1WyR/w9ddzuS5seHRU85Hk=; b=S2vbAg6WhN1L+tJiFtAtgDm0Hi
-	9GqoPnQaeEaWKG39TQkvot67tEywlo+Q/TT9gw3boyOw+bsuX/SMEROHWQYuAGIo1frfpjdne1zJf
-	hiygudBzL1onRe1hRIY59fPoGIT3lNchgbKi+3lWEwCq9oetGYuOOwc2mu18tEvvShp+woFoGpaf6
-	0UI54VhiRGm+5Xp3S2XQAWKSMC3Ap6uHXNCWnmDiUAth88Nb/mgxHk7/0MWdweNP1cAKiEtqXjNhG
-	Jt3dHH8yEZnwXNdSGndJwFXqD6VHYMQVRkG20G1J32yaGX8Grs2u7jzFAQGqw42zblQw/dtMGUejm
-	8333dJxQ==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:55640 helo=localhost.localdomain)
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1wzUzl-00000007oR4-0FED;
-	Thu, 27 Aug 2026 09:57:56 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH] arm64: dts: imx8mp-phyboard-pollux: add PEB-WLBT-07 expansion board
-Date: Thu, 27 Aug 2026 09:57:54 +0200
-Message-Id: <20260827075754.2739119-1-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQvN3TGz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE81B1F000E9;
+	Thu, 27 Aug 2026 08:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787818243;
+	bh=URT9xbvleYyTmCXwsCE7G3ihTv03Jp+5OEynI6aUceE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KQvN3TGzcrv1a/1hjxmxwqACB9nbI7VJiNRpv+0xwQvb38xj+39wDZW2lOanOp1+O
+	 JDM3D5ye4AcTdwXNJK23zLzhCGpigxU11egEfpZ7qWrMbnLJR8fNMWsMcK8bLmOfMq
+	 jqVGuI1Bph/zYDk9sS5E3ZFKazJXBMp9k3vx/U5DtGNn0TL4I1LT5PZ3yTFx4pN8mF
+	 3Hu3/GqLsLT7NjgvkEsrk0pJLWcz57CuFT1Wu+3iFpK2VWN49mCZ8Hbon9OhyXL/f0
+	 SCU8A81efxISHHZqr+3A6Ay0vMEiKxlQmkCVpCDxrUkkNe5iiLHjKNtwKNQPXs5vWD
+	 ummk0u8p615JQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mp-phyboard-pollux: add PEB-WLBT-07
+ expansion board
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Primoz Fiser" <primoz.fiser@norik.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260827075754.2739119-1-primoz.fiser@norik.com>
+References: <20260827075754.2739119-1-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Aug 2026 08:10:42 +0000
+Message-Id: <20260827081042.BE81B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-Add support for PEB-WLBT-07 which is an expansion board that provides
-WiFi 6 and Bluetooth 5.4 LE functionality. It features the u-blox
-MAYA-W2 module with the NXP IW612 chipset.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Missing `post-power-on-delay-ms` in the MMC power sequence for t=
+he NXP IW612 Wi-Fi/BT module.
+--
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  3 +
- .../imx8mp-phyboard-pollux-peb-wlbt-07.dtso   | 76 +++++++++++++++++++
- 2 files changed, 79 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-07.dtso
+commit 60b0b6fcfb75ad1ee4054d84dfea3d70e8467993
+Author: Primoz Fiser <primoz.fiser@norik.com>
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 95ae85ab4adf..9c9dcf08c96b 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -456,6 +456,8 @@ imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra-dtbs += imx8mp-phyboard-pollux-rd
- 	imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtbo
- imx8mp-phyboard-pollux-peb-av-10-ph128800t006-dtbs += imx8mp-phyboard-pollux-rdk.dtb \
- 	imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtbo
-+imx8mp-phyboard-pollux-peb-wlbt-07-dtbs += imx8mp-phyboard-pollux-rdk.dtb \
-+	imx8mp-phyboard-pollux-peb-wlbt-07.dtbo
- imx8mp-phyboard-pollux-ph128800t006-dtbs += imx8mp-phyboard-pollux-rdk.dtb \
- 	imx8mp-phyboard-pollux-ph128800t006.dtbo
- imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
-@@ -465,6 +467,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-etml1010g3dra.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-peb-av-10.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-peb-wlbt-07.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-ph128800t006.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-wlbt.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-07.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-07.dtso
-new file mode 100644
-index 000000000000..008b6f9f46e5
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-07.dtso
-@@ -0,0 +1,76 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+* Copyright (C) 2026 PHYTEC Messtechnik GmbH
-+*/
-+
-+#include <dt-bindings/clock/imx8mp-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include "imx8mp-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	usdhc1_pwrseq: pwr-seq {
-+		compatible = "mmc-pwrseq-simple";
-+		reset-gpios = <&gpio2 7 GPIO_ACTIVE_LOW>;
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_RESET_B__UART3_DCE_RTS	0x140 /* RTS */
-+			MX8MP_IOMUXC_SD1_STROBE__UART3_DCE_CTS	0x140 /* CTS */
-+			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX	0x140 /* RX */
-+			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX	0x140 /* TX */
-+		>;
-+	};
-+
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190 /* SDIO_CLK */
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d0 /* SDIO_CMD */
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d0 /* SDIO_D0 */
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d0 /* SDIO_D1 */
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d0 /* SDIO_D2 */
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d0 /* SDIO_D3 */
-+		>;
-+	};
-+
-+	pinctrl_wlbt: wlbtgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05	0x106 /* WAKE_DEV */
-+			MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07	0x106 /* PDn */
-+			MX8MP_IOMUXC_SD1_DATA7__GPIO2_IO09	0x106 /* WAKE_HOST */
-+		>;
-+	};
-+};
-+
-+&uart3 {
-+	assigned-clocks = <&clk IMX8MP_CLK_UART3>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-+	pinctrl-0 = <&pinctrl_uart3>;
-+	pinctrl-names = "default";
-+	uart-has-rtscts;
-+	status = "okay";
-+
-+	bluetooth {
-+		compatible = "nxp,88w8987-bt";
-+		vcc-supply = <&reg_vcc_3v3_sw>;
-+	};
-+};
-+
-+&usdhc1 {
-+	bus-width = <4>;
-+	keep-power-in-suspend;
-+	max-frequency = <50000000>;
-+	mmc-pwrseq = <&usdhc1_pwrseq>;
-+	non-removable;
-+	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_wlbt>;
-+	pinctrl-names = "default";
-+	vmmc-supply = <&reg_vcc_3v3_sw>;
-+	wakeup-source;
-+	status = "okay";
-+};
--- 
-2.34.1
+arm64: dts: imx8mp-phyboard-pollux: add PEB-WLBT-07 expansion board
 
+Add support for PEB-WLBT-07 which is an expansion board that provides WiFi 6
+and Bluetooth 5.4 LE functionality. It features the u-blox MAYA-W2 module
+with the NXP IW612 chipset.
+
+[ ... ]
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlb=
+t-07.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-0=
+7.dtso
+> new file mode 100644
+> index 0000000000000..008b6f9f46e59
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-07.dt=
+so
+> @@ -0,0 +1,76 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> +* Copyright (C) 2026 PHYTEC Messtechnik GmbH
+> +*/
+> +
+> +#include <dt-bindings/clock/imx8mp-clock.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include "imx8mp-pinfunc.h"
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&{/} {
+> +	usdhc1_pwrseq: pwr-seq {
+> +		compatible =3D "mmc-pwrseq-simple";
+> +		reset-gpios =3D <&gpio2 7 GPIO_ACTIVE_LOW>;
+> +	};
+
+[Severity: Medium]
+Is it possible that the usdhc1_pwrseq node needs a post-power-on-delay-ms
+property here?
+
+When the MMC core powers up the SDIO bus, it deasserts the reset GPIO and
+immediately proceeds to probe the module with no explicit delay. If the
+SDIO host controller probes the IW612 module immediately after the reset
+deassertion and the hardware is not yet stabilized, could this cause SDIO
+enumeration failures during device boot or resume?
+
+Other in-tree configurations for the IW61x chipset, such as those in
+imx8mm-var-som-wifi-bt-iw61x.dtsi, explicitly configure a delay like
+post-power-on-delay-ms =3D <100>. While there might be an on-board hardware
+RC delay on the MAYA-W2 module that mitigates the missing software delay,
+adding the explicit software delay might be necessary to guarantee stabilit=
+y.
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260827075754.2739=
+119-1-primoz.fiser@norik.com?part=3D1
