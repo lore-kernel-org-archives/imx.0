@@ -1,173 +1,212 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011063.outbound.protection.outlook.com [52.101.65.63])
+Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E6F2288D5
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 19:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446393F1047;
+	Thu, 27 Aug 2026 19:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787859159; cv=fail; b=iKOb1vvYwGEAMerRk0LoNeLltAp0bZEInVxkNIsOW0DSecM47uIAXQvpOBX1pREu2EVM/C5E9JlPrM4lm37YpdbhnzCKPdhZHsZ9lNMD5MdxmSMlHDfVf/YiLApfL4wjEXrNTRVO/1v0ADsfNUagcWlpjra0oNx7gwZMkchSHbU=
+	t=1787859983; cv=pass; b=lLvveIOqcg0S5dx6C4N4YNwbf+sbsb0xIUeq3f9wcmwXTSlsroKgRb/kTavKp+eDtsRpt6FJlyRFkDobaiZknVIXFUVYzd1dYkD8JmVvgWWdGCT9Bf0s6cZQqUUFhk46owF7rD2qxhnf5T38aKdDyia4/hqerMuMJMK3c3G4mYg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787859159; c=relaxed/simple;
-	bh=NoGmjMqIx5Dwqr3SsHhNvw0fOhzhJL7KispYEos1YYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pdB7WDW4TrD4PP3yp3SX0Br1V1+u8g57Z9IS0YYaOWe6T2VBn8ksdUacW45TMLOzq9hCI1Zwb0USmDrEYJLh6XruLM7RwCgNKTPscE6cnMmRuFYD85df5f5jnO7k/dDUX8shL1vLDq/+13ODzgY1c9TNtWlR4Y8nxX1X3eSSCbg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EBry+nJc; arc=fail smtp.client-ip=52.101.65.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1787859983; c=relaxed/simple;
+	bh=P2X3GwP9E9st5R30tBs9c9j15BLonB6IeIiAYCrVgkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Tlgj+DQLkWormbdtLy/o1gTiEzL6ZLop3GpiZao7T9lVIweOgHRKvUVyg9gFYr/kxmpj5NcWVBttz0iGmc+fJhL1kgg3PkXrPF+CUwmcBcC/wD9Er4giTWMPrd8tX17HZ5pTpKaqgoDwSO0GD+FlFFG03RKVMPFAbh0TOl6mxxw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com; spf=pass smtp.mailfrom=yoavmoshe.com; dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b=VFa2RcbY; arc=pass smtp.client-ip=165.173.180.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoavmoshe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoavmoshe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EBry+nJc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vVUmkvsqRc4bcQOqREJG3PnmLFqDiH/zrBmQijiP1zfKYFAs1VcpQzCYWK6k5hd5SfEUgOo4xFUEUdwHp7nL3XJp1/e3XG2adShVNTkYoum6d9fQfUtzW8tSl4hGW6B/RHa73eVR8daC09ttnjWNjPlZkIisOTp/S7WwPENjX3e4/BPJxuKQVbNUmKeVAE9BV3dE3yUCrtmDubsZoo6GJJ0ClVuQw5wWE26EpfStr9g93e4E6MnLoKI7N9DMposQSR1go+uU10N2mO9OATyvLPzxap+9mSMAYLM0ERTqXWhzo4H0KsZ9zfDrsDlObP0cZtkrXSep01a/o9srvsLt+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NoGmjMqIx5Dwqr3SsHhNvw0fOhzhJL7KispYEos1YYw=;
- b=oaesmBkH90NzhKidwaxxnMdQFr7MmENxaaUrlgRC7r1XIZSvWuGpg5ChsNKeELoc1NJD6zmJ4waAEBWn4G5gGhgLS/U4vjzkSHjlGajuq0GJJyMo/LwG9mi0p1VsH+HGI45n99rRRvu5HxOF8MnXDpyE80IpzXRs4AagGNtgFcWXm4qGG8AOBegjJR5Of6lAj0IplSqfgI0RmHfmzM4r3p6AaVSdoykgk52S3ZBoubiF2wW3sa1A3f3rNC6TMfhk8qmOJQ62D+wxoMRg5PKabnhX7jn7DkaJZzhU50MY3jzGw/Q5CbB5bexLGYTM13U/4OYoCBlXaYFrvVjmmji61w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NoGmjMqIx5Dwqr3SsHhNvw0fOhzhJL7KispYEos1YYw=;
- b=EBry+nJcTzdph6lohbyqfc3WXT9X3bordrJv2/UTEQAvM5cbiEYXTLSEZzQpuv1Ls2Hy0MAEWD3mvkRlc7feZHTlpqQJ7SoLWc12JgFsY0mbWAYgAUMkMGbxqb+MmT8W1UY8AO8iPmV5WAyeSqlA0cdlbDgexS1Awku0MEdVt6OcwNwr/ah73yOyBwMAtiAvOizXp2ihh9+j91EnftKPZ/mVP35u1FId+b0drEb8pAMUCoUZnKsA6cQ+dv/ctfw1Ojfgj0GpKD4pFKLbbR9F7QxAQSK2Ix2/BnjVHlRi9eEvokKrNmPXtyyr4uauhKYmVLj2tpqUCuNLetx4Iviudw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GVXPR04MB10779.eurprd04.prod.outlook.com (2603:10a6:150:21c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
- 2026 19:32:31 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 19:32:31 +0000
-Date: Thu, 27 Aug 2026 14:32:19 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (1024-bit key) header.d=yoavmoshe.com header.i=linux@yoavmoshe.com header.b="VFa2RcbY"
+ARC-Seal: i=1; a=rsa-sha256; t=1787859972; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YwxxdA+sDCyxi7mXigxThpPiP/drwo4YzvrMqfX+N9a5y1kgSBvhJq3HrvoG2zZ+k2LvaMf6jrTreRdA74YfdIZCpJBGjoGLpDH3czgSKL91OMOJcWOixEg6RGGhkn05RFHOemXkZs3DaU050mjcddYD7TO55HZJY3CK7rwz9D4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1787859972; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=D9Ddv1MKk0Ua+UBkqvgckAr84VTg8X9FPDDbUuH7WWk=; 
+	b=Q375y/jTXI9ggWvo/fBtuO9vSRA80PVo776QPgy5wwZ76qogvNdFJdRkqk2+W8kYnRVugiIDE5m8CcJFUnmCF9XMeWjv+JpOnh5VNJC3tPthXm6pSPkoCXpyLIOrQRSq2TjOIKCwOg53Ho7ACOF07mItBCjmmJuF8+ZvmHOvMT8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=yoavmoshe.com;
+	spf=pass  smtp.mailfrom=linux@yoavmoshe.com;
+	dmarc=pass header.from=<linux@yoavmoshe.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787859972;
+	s=zoho; d=yoavmoshe.com; i=linux@yoavmoshe.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=D9Ddv1MKk0Ua+UBkqvgckAr84VTg8X9FPDDbUuH7WWk=;
+	b=VFa2RcbYgv6RksBUo9H3TawIU44ZP0InZhFN6Ml77GFPkJS6hK+N7F/8zJQQ+UnI
+	LlELh9mGJwF8R6ZFqx5+Trz3G9OTelU625O6G4cX9yymxmtaYmvg77RAPSefSF2WZGB
+	qNn20JvfmYkBLBihAdo6eZ4OXlx+lQoTJkwP31iM=
+Received: by mx.zohomail.com with SMTPS id 1787859968747447.95251486025677;
+	Thu, 27 Aug 2026 12:46:08 -0700 (PDT)
+From: Yo'av Moshe <linux@yoavmoshe.com>
+To: Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Marek Vasut <marex@nabladev.com>
-Subject: Re: [PATCH v6 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
-Message-ID: <apCQw3St9NXgm260@SMW015318>
-References: <cover.1787851637.git.stefano.r@variscite.com>
- <11592f9d727337fedf02fdb107a24e935f3ebce4.1787851637.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11592f9d727337fedf02fdb107a24e935f3ebce4.1787851637.git.stefano.r@variscite.com>
-X-ClientProxiedBy: PH7P220CA0144.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	Russell King <linux@armlinux.org.uk>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	llvm@lists.linux.dev,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yo'av Moshe <linux@yoavmoshe.com>
+Subject: [PATCH v4] ARM: imx: Fix suspend/resume crash with Clang CFI
+Date: Thu, 27 Aug 2026 21:45:08 +0200
+Message-ID: <20260827194508.446733-1-linux@yoavmoshe.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260718111340.159896-1-linux@yoavmoshe.com>
+References: <20260718111340.159896-1-linux@yoavmoshe.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVXPR04MB10779:EE_
-X-MS-Office365-Filtering-Correlation-Id: af4a1c1c-b660-402e-8145-08df0471ef8f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|19092799006|6133799003|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- PZcJ1O2qH463JcBeDdeUiOfZdpCAUU9+bxMjQwptZYUgTyI9PaerbM5wX3Q4MHfs12GMEXWHtk3vQfVFFP6iHUOwfK2sfzciPqnCwW/ZRdRoNIhZ9tChILA+FqWVrQ6ri7xx9u6ot+6DDkYvxbgICUX2zqmOSa+Jvx0bSY1NKwYyLtUryBt5Y/jnOwc/jiEKfD+7szFd4jmUoAq/GStEHYPUFPeMx42PMD+c/DTjbfNkWXkbUkD855hiI55yRXiDGkr4g0F9efRQskkdi4qNTpw2R9o5fLprCZbZfhck3qfWxB1S6pecmw40apsDVt3ISSmXzoq4Px3pFx3WMBZQREwMk75NGGN/89rTlJZVEcXu8S+dZaWldlASIproiKYpNVFueGT8XghMU2RSMdaI9VwamwmgpgOZ3jfYmEGOfub/Jcsd4c2pozjxDviG8RiW8H+jPIyU4lSaVerRGFnWaiIA2xpyrxCkCD9gKGS4WjhWCwlXCzf1vxBq9iY3uQNnprnM3j3jE6N0Pr+Ef+U4JL3RuNDm6YzOJ627UXjq+NQtSYS/GXyL7xbr/V/6WemG9vOqbU1DtawO6DInaktUAk0ed7q09QE2GfxjeQ0D+hQ=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(19092799006)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?+qMQ80y1OLp+CmxiTH9xQXBxklXWFh8L4SYWCfqn4emRxmutB0Dj32awwH3b?=
- =?us-ascii?Q?VRlmWt71/asyk7BaCO1shRR8+Nrxen8lL/mPj6Wa/xdMKceD/zru4PRAHr7K?=
- =?us-ascii?Q?R80ZayTPpqNkEZtYFa6eGAyclfhUh0I1Ui405Mq4p95qrhoo4ZLwXx41Bxq5?=
- =?us-ascii?Q?yzjFk1sk/6fqsJxfnLgsxcPsMvE/Yrzna7VBkObBrCM+Huznjyfebn5DR32f?=
- =?us-ascii?Q?e/2IVruOlnO7TQEN5T3uAp2CJTSP9C285XcU1fS98wH+49iMl7UoQouL7/NQ?=
- =?us-ascii?Q?ErQ6EzTip4boMvrrzqALytgzaft9/4m0KMPcX7k/pzo5WwaQM2IzRa3mARES?=
- =?us-ascii?Q?zSitFZ1f4MWJ1U7p5wA8R8/KccKsUYXBOcFAB9XgF+zH/jatBFlw234iz5qs?=
- =?us-ascii?Q?VHw3lqB5dJdySXn1bTCeeDTMmw9servOEJi8E8ZYI/GDzJn1epmf0D7xjGFD?=
- =?us-ascii?Q?55LN4mYWH4kSuFDMfKyYxJZ2PyfUjkpo/0znigaOFvEPsaqowzCC0pL8lZtp?=
- =?us-ascii?Q?bwuQvLicnVX7ElpH+DhOCauu3agB8VWqNfwgs6LKW9f4oH/bqhuulimlh9BB?=
- =?us-ascii?Q?sEUnBln9mfsD+yNsXM83JnR6ODbQ7dHwIGorAFaPrpFq4CjPeaHE88PpgD62?=
- =?us-ascii?Q?BPqwADChH+DbU1W6rIXmoucfr0uj2hZZq4GjJqTCFAnKPuLclNx0PSv8qefE?=
- =?us-ascii?Q?kYIs6wehaXqQ8ku2lkjVUZIgXtXzM0tqejcsAH+9z5rEjJWme5ak85HwpPcL?=
- =?us-ascii?Q?sbaVW0QpDs1PkNCHbWSxaKUi6XHUAe4OHUO6uarDtxt60W9Tlr4BVRBC4DC1?=
- =?us-ascii?Q?EBY8A3GGtaz+k6mVhzttvZHtTMkgrQeyrbXM7kRh4l2pXoC+k0CSOVMiaYm2?=
- =?us-ascii?Q?ioGu6yzLX+oKH/DWVp27IzR6nIRYRupm7Yopzk2ftvJNdMlOmlJpmRZnfOmm?=
- =?us-ascii?Q?RQvF8D3FCIgpUIKsUcYgKHc2aLsy4+LteUtiFuClGaBUOQNVxa1kB7uRBUcQ?=
- =?us-ascii?Q?HJ5eIP9fZR4QMU2C5ZRJ2hAZNANGaJVxc+BOF9RMVR18GoqfZzqSkMMiTl8c?=
- =?us-ascii?Q?lj4ib4b2UFKR8hvJBOnHBkK0CNpWbfClD8+jB//297vysBskxEOzekgrzOL6?=
- =?us-ascii?Q?27f0R2zle1IzRx5b2KFN0Iwd4ts5XCzjtemJG7ACm8XQkcDb+dUPkg/MtqUE?=
- =?us-ascii?Q?an14KgXh8eCL87pBLrfZuagnrdn+mnk6mz5B0fdBhsiEf6iyA123pP7KuBBH?=
- =?us-ascii?Q?lZfaY0FhTU1L0+TTPEcX7totdx71GNxAV0Jk7KqvxwTSb1UaS1DdqfmAy8B4?=
- =?us-ascii?Q?LKcVKndia1md5AmgW6fwsLCiVw999VaqTTjq0m0dCVxbCJe0W5siJpyFXX30?=
- =?us-ascii?Q?geAs2UnDVfcTXZe04ART+uYKzbz0uicUHTQJ21/Pr/5NPvv6B9lPewFVkgLp?=
- =?us-ascii?Q?nWWOCLlnqWs7K8ik9SQdsbdD2UMX4h/3GQPZ3l4Z1vzdmvE93S7/Lhrpwke4?=
- =?us-ascii?Q?0ZDwhXLz666z4XibqnA1uZ7P6suH6aiLfAAwZ3yvzR/henZYNxVqGyWNAAYZ?=
- =?us-ascii?Q?yM9OvHOMO1gqF11Zc5eUUAoVNi2pDWqVWapZm2MmDToq2foIncbEFUlSWhm3?=
- =?us-ascii?Q?7nmZeig+Qf8rgkGRLXr970h5o7JVi3EkEiw2+lFkPbCw5O3sSdPrLOrsAyeb?=
- =?us-ascii?Q?M6UN5zGKBPIc7nk2/Z8TMWck/RDAfWOzMLyr3MHylR6F6nNSF0sSCCBGUXYm?=
- =?us-ascii?Q?BRgzY0lrSJwWWbMQVMHuz2tsUyfDCrKnfZ1i/POeTC5eptyL0GFE?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af4a1c1c-b660-402e-8145-08df0471ef8f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 19:32:31.0383
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E0FFcRLkbb/l58f6frwFqZoxb0gC755EciK8HsZrfMW/CnChU4mE+UZrzlS1RX/ygcOOQl+d9UPOccvQmYMOrTVuzy5eGF9Eu3jnFD3dsDriviZfK0ROYF7E0fhfvb8z
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10779
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Thu, Aug 27, 2026 at 07:28:47PM +0200, Stefano Radaelli wrote:
-> From: Stefano Radaelli <stefano.r@variscite.com>
->
-> Add device tree support for the Variscite VAR-SOM-MX7 system on module.
->
-> The module is based on the NXP i.MX7Dual SoC and is available in
-> multiple configurations and hardware revisions.
->
-> Add the common SoM description together with support for:
-> - eMMC storage
-> - NAND storage
-> - WM8731 audio codec
-> - VAR-SOM-MX7 V2 hardware revision
->
-> Only SoM-specific peripherals are described here. Carrier board specific
-> interfaces are provided by the respective carrier board device trees.
->
-> Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
-> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-> ---
-> + *
-...
-> + */
-> +
-> +/delete-node/ &codec_wm8904;
-> +/delete-node/ &wm8904;
+The suspend code that runs from OCRAM is copied there with fncpy(),
+which does not copy the kCFI type hash preceding the function. With
+CONFIG_CFI=y the indirect call through imx6_suspend_in_ocram_fn
+therefore panics.
 
-Now, don't prefer delete-node in dts, which make maintaince difficult.
+Keep the call covered by CFI instead of exempting it:
 
-imx7d-var-som + wm8904
-imx7d-var-som + wm8791
+- Declare imx6_suspend() with SYM_TYPED_FUNC_START() so a type hash
+  is emitted for it. fncpy() requires the entry point to be 8-byte
+  aligned, and the macro's alignment applies to the hash rather than
+  the entry that follows it, so pad manually before the macro.
 
-Seem to other, why not use dt overylay for difference audio codec
+- Add a cfi_type member at the end of struct imx6_cpu_pm_info, which
+  directly precedes the OCRAM copy of the function. It fits in the
+  struct's tail padding, so no sizes or offsets change. Fill it using
+  cfi_get_func_hash(), putting the hash where the caller's CFI check
+  expects it: four bytes before the function entry.
 
-Frank
+Also mark ccm_base, suspend_ocram_base and imx6_suspend_in_ocram_fn
+as __ro_after_init: they are only written during __init, and the
+function pointer in particular should not be writable afterwards.
+
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Yo'av Moshe <linux@yoavmoshe.com>
+---
+Tested on a Kobo Clara HD (i.MX6SLL) running postmarketOS
+(clang/LLVM, CONFIG_CFI=y): suspend and resume work.
+
+Changes in v4, all following Nick's suggestions:
+- Drop the v3 __nocfi wrapper; keep the indirect call CFI-checked.
+- Store the hash in a cfi_type member in the struct's tail padding
+  instead of open-coded pointer arithmetic.
+- Use cfi_get_func_hash() instead of reading the hash manually.
+- Use SYM_TYPED_FUNC_START()/SYM_FUNC_END() instead of ENTRY()/
+  ENDPROC() with a hand-rolled __CFI_TYPE.
+
+Note: linux/uaccess.h is included before linux/cfi.h because
+cfi_get_func_hash() uses get_kernel_nofault() and cfi.h does not
+include uaccess.h itself.
+
+ arch/arm/mach-imx/pm-imx6.c      | 25 ++++++++++++++++++++++---
+ arch/arm/mach-imx/suspend-imx6.S | 14 ++++++++++++--
+ 2 files changed, 34 insertions(+), 5 deletions(-)
+
+diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
+index a671ca4..2d3d3cd 100644
+--- a/arch/arm/mach-imx/pm-imx6.c
++++ b/arch/arm/mach-imx/pm-imx6.c
+@@ -4,6 +4,8 @@
+  * Copyright 2011 Linaro Ltd.
+  */
+ 
++#include <linux/uaccess.h>
++#include <linux/cfi.h>
+ #include <linux/clk/imx.h>
+ #include <linux/delay.h>
+ #include <linux/init.h>
+@@ -61,9 +63,9 @@
+ #define MX6Q_SUSPEND_OCRAM_SIZE		0x1000
+ #define MX6_MAX_MMDC_IO_NUM		33
+ 
+-static void __iomem *ccm_base;
+-static void __iomem *suspend_ocram_base;
+-static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase);
++static void __iomem *ccm_base __ro_after_init;
++static void __iomem *suspend_ocram_base __ro_after_init;
++static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase) __ro_after_init;
+ 
+ /*
+  * suspend ocram space layout:
+@@ -229,8 +231,18 @@ struct imx6_cpu_pm_info {
+ 	struct imx6_pm_base l2_base;
+ 	u32 mmdc_io_num; /* Number of MMDC IOs which need saved/restored. */
+ 	u32 mmdc_io_val[MX6_MAX_MMDC_IO_NUM][2]; /* To save offset and value */
++	u32 cfi_type; /* kCFI type hash of imx6_suspend() */
+ } __aligned(8);
+ 
++/*
++ * The ocram copy of imx6_suspend() starts right after struct imx6_cpu_pm_info,
++ * and the CFI check on the indirect call reads the kCFI type hash from the
++ * four bytes preceding the function entry, so cfi_type must occupy the last
++ * four bytes of the struct, i.e. fit into its tail padding.
++ */
++static_assert(offsetofend(struct imx6_cpu_pm_info, cfi_type) ==
++	      sizeof(struct imx6_cpu_pm_info));
++
+ void imx6_set_int_mem_clk_lpm(bool enable)
+ {
+ 	u32 val = readl_relaxed(ccm_base + CGPR);
+@@ -568,6 +580,13 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
+ 			mmdc_offset_array[i]);
+ 	}
+ 
++	/*
++	 * Mask out the Thumb bit, as cfi_get_func_hash() expects the
++	 * function's actual start address. Returns 0 if CONFIG_CFI=n.
++	 */
++	pm_info->cfi_type =
++		cfi_get_func_hash((void *)((uintptr_t)&imx6_suspend & ~1UL));
++
+ 	imx6_suspend_in_ocram_fn = fncpy(
+ 		suspend_ocram_base + sizeof(*pm_info),
+ 		&imx6_suspend,
+diff --git a/arch/arm/mach-imx/suspend-imx6.S b/arch/arm/mach-imx/suspend-imx6.S
+index 63ccc2d..f60c4e5 100644
+--- a/arch/arm/mach-imx/suspend-imx6.S
++++ b/arch/arm/mach-imx/suspend-imx6.S
+@@ -3,6 +3,7 @@
+  * Copyright 2014 Freescale Semiconductor, Inc.
+  */
+ 
++#include <linux/cfi_types.h>
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ #include <asm/asm-offsets.h>
+@@ -148,7 +149,16 @@
+ 
+ 	.endm
+ 
+-ENTRY(imx6_suspend)
++#ifdef CONFIG_CFI
++	/*
++	 * Pad the location counter so that the type hash emitted by
++	 * SYM_TYPED_FUNC_START() below ends on an 8-byte boundary:
++	 * fncpy() requires the function entry to be 8-byte aligned.
++	 */
++	.align	3
++	.4byte	0
++#endif
++SYM_TYPED_FUNC_START(imx6_suspend)
+ 	ldr	r1, [r0, #PM_INFO_PBASE_OFFSET]
+ 	ldr	r2, [r0, #PM_INFO_RESUME_ADDR_OFFSET]
+ 	ldr	r3, [r0, #PM_INFO_DDR_TYPE_OFFSET]
+@@ -329,4 +339,4 @@ resume:
+ 	resume_mmdc
+ 
+ 	ret	lr
+-ENDPROC(imx6_suspend)
++SYM_FUNC_END(imx6_suspend)
+-- 
+2.55.0
+
