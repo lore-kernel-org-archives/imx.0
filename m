@@ -1,181 +1,201 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8693DCDBC
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 18:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AEC4C9011
+	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 18:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787854470; cv=none; b=M6nVCsRihhj4kOGxf4uinf9udjt1HToLJo4PmNLeJTIw+ERZzU32NqikDiN9AYfsH+TlT60Vkimqm5g3W9GHSca9iLwj5uRPrOSEsC/mLn5PLf4h6/dyCdMQxhq5NJFIuq4ABkAhxXCiOJ2oL+vTTQM3B0HropuU5kz6B8wJSM4=
+	t=1787855356; cv=none; b=bniGWauWXIgCznUzElv7Me1Wq5X8Itt3M/Obs7l4KmkytRIaPZ3ijjTOmm24gfIj94ztTUjx9e/2w4kzuU6VrGw4iSIRUuYwtEtyrN3RWloMkN+2s3kTWWsSrkqW2vv2bN2QG3Q6olJgxN3/ter79csirIxHnh+Hx5vmgmsQEsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787854470; c=relaxed/simple;
-	bh=nqFcIRWHO1gbZDISpCn+623PYl+5K+bwxrZWcbI+yHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=APw7xtAIFgbW+vqseDxGLcGHfg9IDViPdRfhOJOVdLYwpMn2h6/VOCmnXx2U6ngNoBk/22lga8XED0j+/sGvwv/P0Nm05ekKZP4uitpNUKndPA1NiqNSl/QGCdy6hAHax+beE4kUrw7rzcq3gUfQP7aPpIZX8yJGf87kuHgfRqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5MOZoK1; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787855356; c=relaxed/simple;
+	bh=Bvlk6a/+ZYUQ3qd8DQywcR7qXIrmuptJ04plHRpcS30=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=O7wgVZ7KUulRrYnElWbAthBkhpbwBkKy8zadqM2Tdnhksib2FTf3LNnLwpT9RdpS2rZm3KIzFvoRfeF9BieIIzPzFSokkkUmhXs1yD6mX/M5Kp2OEqqClkYmxRAy7TzsHi0UztDM9Fq/KOz4YF1+NKEa9f1CvIsJB8BQGpH6KYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=Q+804Pcq; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5MOZoK1"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f71156e1aso55240f8f.3
-        for <imx@lists.linux.dev>; Thu, 27 Aug 2026 11:14:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="Q+804Pcq"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c2544ff970dso27319466b.2
+        for <imx@lists.linux.dev>; Thu, 27 Aug 2026 11:29:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787854467; x=1788459267; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C5ubgqku7GUa3LZMLWFNhgKYbrJvkm44caMPa+3aLQo=;
-        b=h5MOZoK14ZWXFVth0/mPi7jLth92N4Kx0S33QWlinjZVVrfaN7wPgRW86WE0NMg1X9
-         lr+Hf/NB9lqfZ+EFkF82v58ZbbWbpbsdl/Ii5iIEd1APNoLdxkhpiA1X9Ged5gXwUIzq
-         oaqvtWaRTsw85uZbDb9uIwFOuZyKAoWLsHNgzhTXaOHY8hj6rmvhylc1bByyN7WaIXtZ
-         eZuSSQQ0l2NxGpE19/UJmfXxdSQFRslMGPmAssWLipPOkLKorqgPGRobWOumXVTxImLj
-         AUhALGeXVYxKT+aCAvq01+DLNLarwm84b62rAbie65QxM8cO+oQHL+naxS4Otrt1ER5H
-         ejFA==
+        d=9elements.com; s=google; t=1787855351; x=1788460151; darn=lists.linux.dev;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uvanX6LwER3+dYc3eyM0edZztrpqWdRZ2jTMJJO+V0U=;
+        b=Q+804PcqUYEkCqHP3VHjNu82oQaPzu08RVh1NjHF6KKDATmjBLBH/QXHDjds/d3mkm
+         ayR07KPuyTvj6RZbVYT4mxm3XZnauvZmymNJjcZatoNwvgMGLXt/4vkF4hjv06v7RXNx
+         WqnytcN6NEoqHr4/7hi3rRBQkahnNO3pp9kHVSbg+F6EGTUBfRo8rydD5dJA77tgDVpF
+         LzeBGM6dxZzVzp9w4B8YnsqvBic7mM2l7c+DL2T1ZzwcrujCwmnRFQ/3AHyMfbaKoVTA
+         jq9k7GeAR7Bl/QKxHZgV4HB7GbpbT9Ll7YVcVbJaASIsaUH9rSqUVVq0Qrxrvxf93szG
+         u5Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787854467; x=1788459267;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1787855351; x=1788460151;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C5ubgqku7GUa3LZMLWFNhgKYbrJvkm44caMPa+3aLQo=;
-        b=OMUbw926thpNZhbpAfGDpHsqPKeat1jjukDhCdnbKTp0tthrxLrSHhVt2x3aGBfdh3
-         fs0awI1hcYwwqhKrsUT3279Ca2jrAE59+e8Cl/fHw5S5cbGfaf0gqP9ZU1P4M2vpUUPW
-         vks/4K3rsBC9IJBui76emv88jlVSimbs2oy6oNjsgIj6f9VX+8C5HUtxSf+GCEjH7IsF
-         xaLknLKv65DTH7X3MHOM33gFynvI+SbQmBFaTu9Qwy0RCrVIrMhZgkvbTsZMrtghAMfm
-         Wew49zMBI3MZWplTwmn5prnF+n7L5SmHfaElDk75XTAV0Ya0fgo+PlqIGB93KlI1Vsi4
-         G0nQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqJQdWjZ7PIHW+gb1ZagxULAiZNN3x80fHHyurs/ueP8zsmmBuUjkho6vCUEJ9MfkRY2Es=@lists.linux.dev
-X-Gm-Message-State: AFuF++kVC6ov0FIfu93zYvHLX/5cpsERAARV9Jcq9J3Vtsp8XKadPuIf
-	KsKi3E+ALgtqO+Xgh3cxjxHGzYgV7Y6xc2qkASU78Lgx35jEWU0w89rQ4ZLIxw==
-X-Gm-Gg: AR+sD13kcydlx549+w8pEwq7CnfsNNWAmT8kLfr61BpVrALaNaWMZjW3jDJFVuU4Rqr
-	B79k+loFCUEn6SmIi7LKWQPesRt6U5LV/f5/wUuRpOdvpzWhyLAI32R0Ty45tajs+U+WyaSqqBu
-	MOi4lEdQBWcMOLuPWu70M8O3lpfeAp0fUNB0FFFUgyqClDhTm5KNu0ZLk+HgeH6GjgVf5VM087m
-	4FJyvEkuJLrTJpty+Fj1bHt+Qql0QWGXOBtP/rb8druxDqqDSgpqw7mAn0L39pCIpcZUn8aXEVS
-	npMM2sFmdIwuB8CfNijdqkAqF2uxQCoGzP3IzAdFJi3GLeinV2O0H4YT159Bzcc56JvJQp+TZNo
-	L0LQ5Ly75muJxV8HII0YQsWyEqip6LpoDIZDAgGXBXAGQ0qfHR73k043TggjuTNH361Hnbohpdn
-	y5KfYHIvf0qeFLlBWV+tuPxUdyjOk9MhH5m5bg3LkLBBaUCl6NlfW3eDAyeehvd+LfmNSygK0Vi
-	CgZtFz7/ae+KWdchhJfDf9nsjBBdzgS4lM33c56ZXjFS9KjQY68vkjdVpsu/G1LJip8TZBk
-X-Received: by 2002:a05:6000:4211:b0:482:f530:c45b with SMTP id ffacd0b85a97d-482f798a6c1mr970197f8f.5.1787854466843;
-        Thu, 27 Aug 2026 11:14:26 -0700 (PDT)
-Received: from GLaDOS.station (net-93-144-65-248.cust.dsl.teletu.it. [93.144.65.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e28dc13fsm10426102f8f.24.2026.08.27.11.14.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 11:14:26 -0700 (PDT)
-Date: Thu, 27 Aug 2026 20:14:24 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org,
-	imx@lists.linux.dev, Frank.Li@kernel.org
-Subject: Re: [PATCH v6 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
-Message-ID: <apB-gMzH2cQNtv_Z@GLaDOS.station>
-References: <cover.1787851637.git.stefano.r@variscite.com>
- <11592f9d727337fedf02fdb107a24e935f3ebce4.1787851637.git.stefano.r@variscite.com>
- <20260827174206.8A4B61F000E9@smtp.kernel.org>
+        bh=uvanX6LwER3+dYc3eyM0edZztrpqWdRZ2jTMJJO+V0U=;
+        b=nYyw7PuAMWAGZjErQ1QoZqfs/JrqGsNmVqr4P9SJmadc9aA6/ftkL5XifC8sQiE5oP
+         p9h5fiEhYbH/2ytwXa8vlf9fKX6euLWrdzHob3BB/wDBWmi1lSTb5NB1NzqvCGWYSXhf
+         KEESerQ2ZFbeVMKSRH+KhjstXU03MTggozqCKN7RpplPDFIwoTCiofcBpkD8QUxiYd0l
+         JhuJB23CA2L3aBQNrD8m1e1oym8UvCSPVyoVMzRIvlbyJPVIu6PM4RT/C3ogmCNWWjwa
+         zK04+Z7vRaTQj7H8omDFEQTbhrtjGPmkT6hgMTHBYPKa1TIJeV59MJNQtYIx/5ejKen7
+         BcPQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rok6jIzRbJo2ZEqDzyf+YyMwxZUXZFaUZxnjb1FYT9ySDzrjqb7ztwyrz3dpwqgVO/boNk=@lists.linux.dev
+X-Gm-Message-State: AFuF++kDxcH2CTGm8lgRJk1fh24X6wimqhx/DB/GkCxbbQC60bSv8nni
+	CUXwY94HwjZKAUEuIJy8UnBAGxb0bQ71N86FmgSGpCCEenVHPovagEt0jFCk7AJmNw==
+X-Gm-Gg: AR+sD12iPLzXSzcIqXYJf0cCTioSKG2IJ48wr6jUSsdCjBmI35rGGWuRkuX6RAfZimA
+	nGw9ndV9dqbYAP/7tCS7zGjl3g9QTBia4QJt0Jpfh7YI947fXLtqMJ0ScbTDfuGn+TrsSCddpZs
+	cGzF/8mxj4hIl5YJrFccbU7LowwRI5eVMnlMK5wPxXPYMNiEHrGigaU0/+OSkBCqpxTcEgHkpSW
+	YQxHWzTDf8hv5a8ub4JmAFoyETQ4c2EazC8tn90fEuDxgJwRcXGMl165BRP4Byno0jrj7Vlfezb
+	n4ptWz154f6L8LO+PdLWvSnKLDqZ05/QGgo0wZVkqWkRCmjEBH6JKRAVz3klAzAYfK7dBuzRxbk
+	4pIE74ZbgU0Rg0YA0mxbKfTiby6Sg8NnlvUqiXLCrTh8fkE9T+0C4vUmFS1vUV2EfkBmH1I5b41
+	ogXRQsa4NIFKqrVku3Bv5GU6kpQEUyluGu1v+MsGTNkKQDtVrOPjIG852l24dG0/sB55WC
+X-Received: by 2002:a17:907:c19:b0:c12:9b93:61fd with SMTP id a640c23a62f3a-c2556c2bea8mr46389166b.6.1787855351489;
+        Thu, 27 Aug 2026 11:29:11 -0700 (PDT)
+Received: from localhost ([185.213.155.230])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a5d68desm1116779366b.10.2026.08.27.11.29.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Aug 2026 11:29:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827174206.8A4B61F000E9@smtp.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 27 Aug 2026 20:29:09 +0200
+Message-Id: <DKZXTSZPJMY8.XM7YYCVPT3EP@9elements.com>
+Subject: Re: [PATCH RESEND v2] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is
+ supported
+From: "Michal Gorlas" <michal.gorlas@9elements.com>
+To: "Frank Li" <Frank.li@oss.nxp.com>
+Cc: "Richard Zhu" <hongxing.zhu@nxp.com>, "Lucas Stach"
+ <l.stach@pengutronix.de>, "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Manivannan
+ Sadhasivam" <mani@kernel.org>, "Rob Herring" <robh@kernel.org>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Frank Li" <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
+ <linux-pci@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.22.0
+References: <20260827-l1-conditional-imx-v2-1-40b324aa2a94@9elements.com>
+ <apBvfYOnCHfl7Zu9@lizhi-Precision-Tower-5810>
+In-Reply-To: <apBvfYOnCHfl7Zu9@lizhi-Precision-Tower-5810>
 
-On Thu, Aug 27, 2026 at 05:42:06PM +0000, sashiko-bot@kernel.org wrote:
-> [ ... ]
-> 
-> > +&i2c2 {
-> > +	wm8731: audio-codec@1a {
-> > +		compatible = "wlf,wm8731";
-> > +		reg = <0x1a>;
-> > +		#sound-dai-cells = <0>;
-> > +		AVDD-supply = <&vgen6_reg>;
-> > +		DBVDD-supply = <&vgen6_reg>;
-> > +		DCVDD-supply = <&vgen6_reg>;
-> > +		HPVDD-supply = <&vgen6_reg>;
-> > +		clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
-> > +		clock-names = "mclk";
-> 
-> [ ... ]
-> 
-> > +&sai1 {
-> > +	assigned-clock-rates = <0>, <36864000>;
-> > +	/delete-property/ fsl,sai-mclk-direction-output;
-> > +};
-> 
-> [Severity: High]
-> Does removing the 'fsl,sai-mclk-direction-output' property break the master
-> clock for the WM8731 codec?
-> 
-> The wm8731 node configures the codec to expect an internal SoC master clock
-> by setting clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>.
-> 
-> By deleting the 'fsl,sai-mclk-direction-output' property from the sai1
-> node, the SAI1_MCLK pad is configured as an input instead of driving the
-> clock out to the codec.
-> 
-> Will this prevent the WM8731 codec from functioning on this board variant
-> because it never receives a clock?
-> 
+On Thu Aug 27, 2026 at 7:10 PM CEST, Frank Li wrote:
+> On Thu, Aug 27, 2026 at 06:51:00PM +0200, Michal Gorlas wrote:
+>> Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
+>> states for devicetree platforms"), ASPM states are force enabled
+>> on all devicetree platforms. This causes PCI devices on some i.MX SoCs
+>> (for e.g. i.MX 8M Plus Kontron SMARC eval carrier) to enter L1 even
+>> though CLKREQ# is not supported (and consequently supports-clkreq is
+>> not set in pcie controller node of their DT), which causes the device to
+>> never wake up from L1.
+>>
+>> Hence, disable L1 capability in the LNKCAP register if supports-clkreq
+>> is not set in the DT explicitly. For devices that set
+>> IMX_PCIE_FLAG_BROKEN_SUSPEND, disable L1 on resume as well, as these
+>> skip imx_pcie_host_init().
+>>
+>> Note, the logic here is very similar to 613f3255a35a, only difference
+>> is that leaving L0s enabled does not cause issues (at least
+>> I never encountered them myself when testing on the device) as its
+>> not dependent on CLKREQ# being physically there.
+>> Since there is already a way of specifying its presence in the DT,
+>> the driver should be aware and disable L1.
+>>
+>> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for d=
+evicetree platforms")
+>> Signed-off-by: Michal Gorlas <michal.gorlas@9elements.com>
+>> Tested-by: Richard Zhu <hongxing.zhu@nxp.com>
+>> Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
+>> ---
+>> Changes in v2:
+>> - disable L1 unconditionally on resume for platforms advertising
+>> IMX_PCIE_FLAG_BROKEN_SUSPEND (Sashiko)
+>> - typos in the commit message
+>> - Link to v1: https://patch.msgid.link/20260719-l1-conditional-imx-v1-1-=
+a55a57915c68@9elements.com
+>> ---
+>>  drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++++++++++
+>>  1 file changed, 20 insertions(+)
+>>
+>> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/control=
+ler/dwc/pci-imx6.c
+>> index 98e1db751132..1fdcbcd2422e 100644
+>> --- a/drivers/pci/controller/dwc/pci-imx6.c
+>> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+>> @@ -1318,6 +1318,22 @@ static void imx_pcie_assert_perst(struct imx_pcie=
+ *imx_pcie, bool assert)
+>>  	}
+>>  }
+>>
+>> +static void imx_pcie_disable_l1(struct dw_pcie *pci)
+>> +{
+>> +	u32 val;
+>> +	u8 offset;
+>> +
+>> +	offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>> +
+>> +	dw_pcie_dbi_ro_wr_en(pci);
+>> +
+>> +	val =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+>> +	val &=3D ~PCI_EXP_LNKCAP_ASPM_L1;
+>> +	dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, val);
+>> +
+>> +	dw_pcie_dbi_ro_wr_dis(pci);
+>> +}
+>> +
+>>  static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+>>  {
+>>  	struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp);
+>> @@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *p=
+p)
+>>
+>>  	imx_setup_phy_mpll(imx_pcie);
+>>
+>> +	if (!imx_pcie->supports_clkreq)
+>> +		imx_pcie_disable_l1(pci);
+>> +
+>>  	return 0;
+>>
+>>  err_phy_off:
+>> @@ -1748,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *de=
+v)
+>>  			return ret;
+>>  		imx_pcie_deassert_core_reset(imx_pcie);
+>>  		imx_pcie_assert_perst(imx_pcie, false);
+>> +		imx_pcie_disable_l1(imx_pcie->pci);
+>
+> Does l1 disable permanent after resume? should it be
+>
+> 	if (!imx_pcie->supports_clkreq)
+> 		mx_pcie_disable_l1(imx_pcie->pci);
 
-The WM8731 MCLK is provided by the configured audio clock root and this
-setup has been validated on hardware.
-Removing fsl,sai-mclk-direction-output is intentional for this board
-variant.
+It would be unnecessary, the imx_pcie_disable_l1() there is already
+guarded by IMX_PCIE_FLAG_BROKEN_SUSPEND, so we know that only iMX6Q
+ends up there on resume. And none of iMX6Q DT's sets supports-clkreq.
 
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
-> > new file mode 100644
-> > index 0000000000000..158158afc3391
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
-> 
-> [ ... ]
-> 
-> > +&iomuxc {
-> > +	/* GPIO Used in User Space init script */
-> > +	pinctrl_bt: btgrp {
-> > +		fsl,pins = <
-> > +			MX7D_PAD_GPIO1_IO14__GPIO1_IO14			0x80000000
-> > +		>;
-> > +	};
-> 
-> [Severity: Medium]
-> Are these Bluetooth power sequences improperly delegated to user-space
-> scripts instead of kernel device drivers?
-> 
-> The pinctrl_bt node defines the BT_REG_ON (GPIO1_IO14) pin strictly as a
-> pinctrl definition with no corresponding power sequencer or regulator
-> binding.
-> 
-> Since the comment explicitly notes it is used in a user space init script,
-> will this prevent the kernel from autonomously enumerating the UART Bluetooth
-> device during boot?
-> 
-> [ ... ]
-> 
-> > +&iomuxc_lpsr {
-> 
-> [ ... ]
-> 
-> > +	/* GPIO Used in User Space init script */
-> > +	pinctrl_wlan: wlangrp {
-> > +		fsl,pins = <
-> > +			MX7D_PAD_LPSR_GPIO1_IO04__GPIO1_IO4		0x09
-> > +		>;
-> > +	};
-> 
-> [Severity: Medium]
-> Is this Wi-Fi power sequence improperly delegated to user-space scripts
-> instead of an MMC power sequence?
-> 
-> The pinctrl_wlan node defines the WL_REG_ON (GPIO1_IO4) pin strictly as a
-> pinctrl definition without a corresponding power sequencer or regulator
-> binding.
-> 
-> Will this prevent the kernel from autonomously enumerating the SDIO Wi-Fi
-> device during boot?
-> 
+Best,
+Michal
+>
+> Frank
+>
+>>
+>>  		/*
+>>  		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
+>>
+>> ---
+>> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+>> change-id: 20260713-l1-conditional-imx-c2bfd20ae085
+>>
+>> Best regards,
+>> --
+>> Michal Gorlas <michal.gorlas@9elements.com>
+>>
 
-Both Bluetooth and Wi-Fi are intentionally handled in userspace,
-as on our other platforms
-
-Stefano
