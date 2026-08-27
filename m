@@ -1,145 +1,140 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B4F35C185
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 15:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787842853; cv=pass; b=cNJ5Z9/av8IYQF8kBn8TwdKTp8cvPBam1eC5jPrZb2g5UVqccprSUwfxrUZ2nirSSYmYO3uCwivyev558LoGXI9+xEEr2njRCZfD2F7nyGL3iHL5vTNoGePvw3+8rJ/sR4T+zt/Oi7KOujFhZDDwxfSgTKP7TzAutBd9+zYLVEo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787842853; c=relaxed/simple;
-	bh=W3Ab3yphKMxYz1/8CqZ7FpqnITfODGN1+Yw8aaRTaYs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jOHiSHOOlOguUAG7+IPGH4/Yt4uo9B3Pbv2jYmVeW5jKvlL0pyKld9ZUwi/ca+K6xyoGxJZn7vQKHWcqy6/4kaZkS+JQcGiocrNa6Jsjs7t/qt+ITDKdpiZV2bkiNGsof57fObG2kNCu3etOgIwzpK0ERosJ934ISZv9cUqWAkU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WITlWeT+; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AA247DFBE
+	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 15:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787843309; cv=none; b=oi5G+q+r2lPsuIcTRe5dey78iDtx1oL92Mww2gRtsdHOtZHpzdFkR2xSq6ZhKGFy1m8FnRV9aRZGRWD4ckdyHGgrd9Jtzd8YDXG7BA10krgdayv/RvUuIPOyn/MQBK/dsj2/1H9jG8ZZ8g6ef5vydsMyChNHVKGl0H5JpxS5NSs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787843309; c=relaxed/simple;
+	bh=gAKJTXCOZU+YKYQWwwMx7YWAfaH/SysH0hVcYfn9dVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ucQbxzogC+SzrRLlMHdRBCHOz6d0tiL1ZWABQWzaZsAv6zE7TgSA6GFDDJL96DtQphax311WI89/bE1cBYs4wZHTS4kYTcs6gkjFesh/ZHZXuyZ/fsgipCeZbZ+hfeccLT+BgtFHHT5b2hTjUG556AfjivFDYMUbT4QOKYzokuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OBZ12/mv; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WITlWeT+"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a5f95a879cso9243a12.0
-        for <imx@lists.linux.dev>; Thu, 27 Aug 2026 08:00:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787842849; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kjmq3AaWs3u54RxoSTQPuDWhOz3ExNDq5zg/pdvNXVJ76j+Z1YalbUg+osGI/6m30r
-         DuXhbAJHKLSpEYr5r9frCT7jn7j+Fg5PfrSD1X/ENw/CZ1w5AlxL97xkSC6nIutKuqPs
-         NNkWgqOUV8kvO6QxdJIJtLOipJuibcD/tNabpz4vd3uw97L9SJHbKmiECKKW24cocPN1
-         /t5I9bn4HhGEYKEWgCnOKinezlfgdVaf5LTVaU5OePDoZ4LEGbnzmAsrI/sfQDeixTm5
-         8O8G4VPE2ee1okaRwWkrBKFDTfmMykhQYvAYXlSn7p1JmAp+4MrONg+i3LCwWW7MHC3Q
-         HanQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=9lxairpgLiXIXVMdCgp5oBtZGa2taxpEkryecJUmNAE=;
-        fh=A3/r5AMDn8pliaPHU9q218cEGy+baM/9c8pcb49Uqhk=;
-        b=ZMGUNGYX9u1DlirOYMLwfFI1aCkVLMMuW8HbW5Z9LtbpTAEZ+KqeAi9+V7MPkWkQNd
-         XWkilEHXCvxpqHHxT5z0GBhznaG6MuUYartLqzha8UDHc8EZbhoEzuSuuuqu8IVV4eHA
-         LpfB0me9j/TjeSYDTFJMiTWkuIQIEicVR3xEWDB6C2HxktaPeXbhPnhVzKzV3qzQ4miq
-         ghCraPfW0prycWxHMBJNhkoRWS/YZNDvRnqvYUynQcJBIdeBPX4+GXxNMpQdts/a5ma/
-         tee+hYLzW5vI6XPClNTXimFBdg0a/AjzS5AZXdIvxHS0mefSrJSal94Ve0hPZQGxvf8y
-         hbZw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OBZ12/mv"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47fd4531020so1340130f8f.3
+        for <imx@lists.linux.dev>; Thu, 27 Aug 2026 08:08:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787842849; x=1788447649; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9lxairpgLiXIXVMdCgp5oBtZGa2taxpEkryecJUmNAE=;
-        b=WITlWeT+ly6y+hzHu1gJ6kV6m0/zFFOdQRt0ghRPJUc6/12TI/fGKOqhZZi8auErKI
-         Iv1k+FYS+ldQEsLIQLNNH9UvYqRNSkeVkcnOZXoMu+86p8TNVjBUTp8+CyaVDHHtkGsx
-         S/RCr93F5vaOTA66Rx51dhxgohpm31eRL8+XQhmAUKJPmKdsdYmesN1zdnGMPX0KZH0x
-         3OGOHgNE5DVvrbZvAsU80U7OL6uciKnCckpOBHLNaumuAyZl/Tt0ry7ITNZ1HLQ28Pg8
-         wotsk738EmCOg8w7w75vo90wbcfttv1icn99sD4gn88sO/6ZJjJstT7v3V2F2SqxArWs
-         16JA==
+        d=gmail.com; s=20251104; t=1787843306; x=1788448106; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fag10csC5nrC5HLW7gpXLgEuW1jB3xGm4i/F+3ymn7w=;
+        b=OBZ12/mvdljXB2U17+UxtBxzYqUAsXLyWMmmaR2z2BUtMsTP3x8vx8bn4NTYqMtezX
+         pVzRnp2F2TUurL3/tzUpItRi2nGbHvMtQIZLSdx5z7doVdpbu05tm+y6DLDuwqojKRu0
+         HS5cFQcP1W1/f4IVmFGGAWgo3H+uJ5TR2UP6h1lbgevsGeaoZd7LFgyZqufFcdgLVlll
+         amdWTHImf+G9G9gR7wF2zFLsN/4lZILk4PwglUA6D/HKscUVxh+WK4FGSidaEB7am5Gt
+         mlgO0LwbWn6l9pSEvNwmbqs/rXYUE5Om8cy7Xk+VaPh1uIdzkoB3u6Lqo5apcdrh/CYB
+         Y2ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787842849; x=1788447649;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=9lxairpgLiXIXVMdCgp5oBtZGa2taxpEkryecJUmNAE=;
-        b=IKGNciq51QbNZb8D0BynN1tXeV8WUYGObZEr+Q1sZWZGjx73CHcmdDiA5ooFLfYrHb
-         mGZs/yPBV1Sg9RFufIRR0lY6RqO2JfdlYs1wxsov2dnReDqjSpjfYBb2KPUtXYYhuKD5
-         yxSAp8u/sE+4uHvVC1CUAahZFX0kqPbpG8X7kePdNHeDf98VEYJ/oQJ7ptXde8HrY33j
-         +RYjdejP/Gu1Qpsm8T/ApsTjlJipcOCHm0r44a/hYuvvThmERhRTFzR/20hCh3NDGqlV
-         pCYvM5KULjkeFcuc+qy8Mo9ytHAAKm0iQnpxKEblsJopiFrnVZ01zqH17x8qaf6Cn7gp
-         eCeQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7MKn30WYI2Jxb86NqlPAG5CqJK6v2dusQMS9al06YhXUWKg9l7Lt2VLJEUiM2Vjb7dYI=@lists.linux.dev
-X-Gm-Message-State: AFuF++nQ4xsEu1iTnZZU1OQ1nW4mJY+m8Pcg8swqxwQKQIZjc/iTZ4Z7
-	CqOQfp7K3/R3dicox6refvNy2/wH18sAlYWAZb+xtgXFJw4Lu97Uv3CLpNj2kInDlD0qo8T1w4D
-	SMjIRA/0VXlhTTYVRfn5fLn4iPLuKMOd2wi++Hktp
-X-Gm-Gg: AR+sD12ydrUZIRmvn16lLjbk0M4KFAJOcyk15TU8ekAi3bfD1u7tqozWcy/2ZHyAriG
-	owyloNcCBTTS1UOO5qCv3EAE7/jZUO/PpwjuAOChlHNyeX1wHD7/gOgzoMfkyeaZh1A5tFaGQZ5
-	9vNRrwgrXzOB0JOr1uhyXXpPRHhhsYHvFr+UxYitt4knPR8GbzSmPereUnRrkjZqwTm5+N+YM0m
-	y5kDgs3X60NHPiaeyxD8NTHsThJZxvUAsLMXsRnX/mgE6z4DiXG27lR7+M5G3YBzWwOBRWAgfi9
-	rjjJejVHgzyT3KnPtWfa4sPYzVK2KldsheIUXwkVMaJxRA==
-X-Received: by 2002:a05:6402:611:b0:67b:7d05:60b8 with SMTP id
- 4fb4d7f45d1cf-6a5f5647937mr53711a12.10.1787842848394; Thu, 27 Aug 2026
- 08:00:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787843306; x=1788448106;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fag10csC5nrC5HLW7gpXLgEuW1jB3xGm4i/F+3ymn7w=;
+        b=nujzy6gOW2YgZJ4RvSGntm0Fx9UcDMmcDdsi5MLr2fqos4Qaoc/1Jy7YluhilyIp1E
+         Nbi+nyd7ObTuc5SMClkYVsCyvjUQHFf1/keaHp2GTMIrDuCfl5W3H+CtoMBDTLvpR83r
+         PBzdoXawa6WmMwg2+SKIIhm4wyNGSD6GVQ2h2kDFjQ1v8KLmURUUNdYPXQiZKqdxSQHT
+         5aDTTVfEyRGs02UsxpqDtJXMwQsp4Bxz0iVd+38CLN5//O4/nPgjqHWkGn9fxpzQ1Jrh
+         LFHL/SMmLvkKN+Dq2e1MCVkkxSD4m7ZbiG+ZVleFirGP5mKaFF+OIVS5hUFcoNtgCVn3
+         3WGQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoKIEVYj77pOKphLrsEuWXNEbf0VzTUckbDFdUZ4o4mK6M3YVuyWDqxovCeFWMm5N8QkYc=@lists.linux.dev
+X-Gm-Message-State: AFuF++nY59rTdE2L+HuOgEGGf6k4hrjiSoGOUljfry14zk5KqB65wKlK
+	8/F0DOBOXXmVSnvzbYL/SP552VQn+rQTTi8KIAl+06KU+6M116yiYvOU
+X-Gm-Gg: AR+sD12tOeH/o+MZovRHGldzMOaMoiHKZNtDNJcE5PmiDg+69gMJQHEzej4nOYOvqSC
+	Xo73l/Vik7q5fMf1ghheszsXHVtmmV9xFe5RQMHjRb9ay04xOLkIfs9+TJ1BxaxCC+9IHGziZEv
+	p0CNDFtWXwfwd0oiIioR7kR+UlaKRVubDonRJJO3gIYrj1jdrssBJo+TfPYuJdRvU5BfyvttQlS
+	sJ8ReEZnULOcN7AG6EWiAjNEN8K0I+sqw+S5RDUCjOnKYumu29Et0BYCAnP2Mmsfqh1Y998L3Bu
+	FlQOKecMEAx+FoANB5e8C3oZAlr7mVX6Laqyq2n3Qa5dnMVB6I2ThRSoARJBnGRE0reeiLCj8vk
+	6l/dGYr1ssaYjSO2P61atbHNdV8IOB1ypEpNLUe2v+/eih/0l6A5Sbdho2UViXeVpZfbN+5gaLH
+	N+svSLW3m2UTcW6Otsw9Dp9SBM6FLxr3FWA+dclhKC8vh2CpauDAjAdHKsFVBJJvrC+vdoCffvF
+	8B3wSlZNm6jBIE=
+X-Received: by 2002:a05:6000:26c4:b0:47f:7759:89df with SMTP id ffacd0b85a97d-482e26bf25amr18874741f8f.3.1787843306015;
+        Thu, 27 Aug 2026 08:08:26 -0700 (PDT)
+Received: from SMW024614.wbi.nxp.com ([165.85.187.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e279eb11sm10247151f8f.8.2026.08.27.08.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 08:08:25 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	elena.popa@nxp.com,
+	cosmin.stoica@nxp.com
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/2] Introduce basic support for MR-NAVQ95
+Date: Thu, 27 Aug 2026 08:06:55 -0700
+Message-ID: <20260827150657.1657-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260826134048.854748-1-larisa.grigore@oss.nxp.com> <20260826134048.854748-4-larisa.grigore@oss.nxp.com>
-In-Reply-To: <20260826134048.854748-4-larisa.grigore@oss.nxp.com>
-From: Stanley Jhu <stanleyjhu@google.com>
-Date: Thu, 27 Aug 2026 23:00:07 +0800
-X-Gm-Features: AcwNN1UTquEpZeWJV5own34vt8ybBkfXz7pYThlv5e4VIyfdz2_DSFDAfqeUnxs
-Message-ID: <CAE14pddHBP6HMihTePR+-Pqhu2DKjVgRA9++5Epod6TOCLagFw@mail.gmail.com>
-Subject: Re: [PATCH 03/10] ufs: host: Add common Hibern8 TX FSM polling helper
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@sandisk.com>, 
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K . Petersen" <martin.petersen@oracle.com>, 
-	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>, Ajay Neeli <ajay.neeli@amd.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Pedro Sousa <pedrom.sousa@synopsys.com>, clizzi@redhat.com, 
-	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com
-Cc: linux-scsi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 26, 2026 at 03:40:41PM +0200, Larisa Grigore wrote:
-> [...]
-> diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
-> index c2dafb583cf5..034ee988924a 100644
-> --- a/drivers/ufs/host/ufshcd-pltfrm.c
-> +++ b/drivers/ufs/host/ufshcd-pltfrm.c
-> @@ -563,6 +564,84 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
->  }
->  EXPORT_SYMBOL_GPL(ufshcd_pltfrm_remove);
->
-> +/**
-> + * ufshcd_check_hibern8 - Check if all TX lanes entered Hibern8 state
-> + * @hba: host controller instance
-> + * @num_lanes: number of TX lanes to check
-> + * @timeout_ms: timeout in milliseconds for all lanes
-> + *
-> + * Return: 0 on success, negative errno on failure.
-> + */
-> +int ufshcd_check_hibern8(struct ufs_hba *hba, unsigned int num_lanes,
-> +                      unsigned int timeout_ms)
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Hi Larisa,
+Hi folks,
 
-Thanks for the great cleanup!
+So, as the title says, this series attempts to introduce basic support for
+NXP's MR-NAVQ95 board. The "basic support" refers to introducing a new DTS
+and enabling a couple of peripherals so that the board'll be able to boot
+from eMMC/SD/NFS.
 
-Would you consider moving this helper to drivers/ufs/core/ufshcd.c and
-renaming it to ufshcd_dme_check_tx_hibern8()?
+So, compared to MX95-19x19-EVK, this board has a smaller form factor
+(comparable to the MX95-based FRDM boards) and is designed for
+robotics-related applications (e.g. drones, rovers, humanoids, etc...).
+The board is currently at revision B and is only available internally.
+The board should be officially announced around October/November 2026.
 
-Since ufshcd-pltfrm.c primarily handles platform device glue and DT parsing,
-polling M-PHY states via DME commands would fit more naturally in the UFS
-core. This also keeps layering clean and allows non-platform controllers to
-reuse it.
+Given that the board and its support are fairly new and still under
+development, I would expect some (hopefully) small changes to the DTS.
+Hopefully, this'll be acceptable.
 
-Additionally, the ufshcd_dme_ prefix would align nicely with existing DME
-conventions in ufshcd.c while avoiding potential confusion with
-ufshcd_is_link_hibern8().
+The schematics, a brief overview and some pictures of the board are
+publicly available at [1].
 
-Thank you,
-Stanley
+[1]: https://github.com/NXP-Robotics/MR-NAVQ95
+
+---
+
+Changes in v2:
+
+* remove the "pinctrl_usdhc2_100mhz", "pinctrl_usdhc2_200mhz", and
+"pinctrl_usdhc1_100mhz" DT nodes as they have the same configuration
+as "pinctrl_usdhc2" and "pinctrl_usdhc1", respectively.
+
+* add "bootph-pre-ram" property to all nodes that were included in Elena's
+u-boot patches. See [2]. Note that "imx95-u-boot.dtsi" is still required
+for the binman node and for the rest of the nodes tagged with
+"bootph-pre-ram".
+
+* link to v1: https://lore.kernel.org/imx/20260825120812.2152-1-laurentiumihalcea111@gmail.com/
+
+[2]: https://lists.u-boot-project.org/pipermail/u-boot/2026-August/629002.html
+
+---
+
+Laurentiu Mihalcea (2):
+  dt-bindings: arm: fsl: add MR-NAVQ95 board
+  arm64: dts: freescale: add MR-NAVQ95 basic board support
+
+ .../devicetree/bindings/arm/fsl.yaml          |   1 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ arch/arm64/boot/dts/freescale/imx95-navq.dts  | 237 ++++++++++++++++++
+ 3 files changed, 239 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-navq.dts
+
+-- 
+2.53.0
+
