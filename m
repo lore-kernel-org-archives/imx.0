@@ -1,80 +1,65 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012061.outbound.protection.outlook.com [52.101.66.61])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010017.outbound.protection.outlook.com [52.101.69.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A63743A813;
-	Thu, 27 Aug 2026 16:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C56C455184
+	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 16:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787846507; cv=fail; b=dfhVlS8ctqb2sU9+IyU0t+PZLYKypKxasQLIGVB7FEsdOHOPE0eUt8zOJ8aiF9WdjAQ8bCUuWSPBioagqzBsznREwjuN90aAQtsgbghR8lXyyK2rQl3UV4AbbPclU/zYZGRQfXccxRxIU9oGpeTX8/Y+/szbnyBd4j5QFjhw1oA=
+	t=1787846612; cv=fail; b=ak+pQ17r5dp8+aAKqp5SexPKFGopnD+8lOEM+p/rTwobHyHEHuUsN4rj5/qvpkpCFwxLcmoxvdEnwJu9Go9SP3pPMjoWQCHmofZ1I9XvPiOhPGkzD5UCS6+PNoWXKPOvrisrpg2InjRCs4CEDi/qKwOqtXrL/+UVqk6cObfpRrU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787846507; c=relaxed/simple;
-	bh=Y7ELVi3DxI8BZcWGAVhivNHMhIHs7itbBfvizrUdLlM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=guFr2Oe/g4r7iteLzF+FOULtPHKg77PB1Dh/21v5O9gaGh8M9ihtHX0w9Snn9IjuupgMqRj6yK24ePFvUnkP6p5p1UjuZnkHZwBmLTtyZ4YHTJCH0/zIizbzDWWvKO1WjqWh4kDqUP5dAPBylKW+J0ZAwzyMVFM/iVbAsDSnPGo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wMhfGddH; arc=fail smtp.client-ip=52.101.66.61
+	s=arc-20240116; t=1787846612; c=relaxed/simple;
+	bh=vP1tsGBTLDsY16WfZTUqpuROL4qcK4OrgY5ozMBceQs=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=uDRYL4xkouT+LxY5yArFacopaSgaMfd6deNQZYgmCKlW4FC04Zc2e32Uly8eWlW3oSUq55zCf4nlHAdRwjAVBW9HLhoMfHxsFYJzorcNP/V58pNGfzZQNAZJywdbT9vlAzugAoD7yHMyLPUugoQr4W3dGWefxlD9z2bW9qtirrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gRzBU7VM; arc=fail smtp.client-ip=52.101.69.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wMhfGddH"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gRzBU7VM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZDHpcbU+TzgoModXJNVcCL4KFMsCcIVZfoLtqYQlAnuGkHOVhxWBArEak189wA39Z1rNVD0D1WDEa0s+IQHLpOD9eC26kIjj5HVughicZ/NPNgCPoihg0mGiDQtT8eo8NR/salC63G2JG0XfdUs6wyQIkt9zAgkS3+5nUHg4t418WZ93Gc/ZVA5jxVimDoIxJaef2qEO6a7a/9W1Vj/jiFtA3yvPWj382izFiQuiMhg5BnK1Iw5a5aZ8o332+7nuYrQTh+6XJvCOp/oYodFEXwVejI/S2ZQXi16BcLkYqc1NKict0gjBAxaiLZxIgsu+nbM/M2Ggq/yFNktJXJvb8Q==
+ b=qAE6qF9jQjw2dvY4kuvc1dspD78JSwXAykh3U6owSN4OCiGBiGrTti0tlBuxQBY9gXQWPCy4yIu+5mv+r7gUEwk45V8NIlL5Im7lLqLvA91CaJbkdMCJECoDbkcsydp/s8EKQqjgy8P/6MYTewNTieq4MdaD7hdJw8X8dBfYjx4eWiQKaaC6ALRHNwv0uMQHYfVuT+7340Kj0yu2vJu830p22GjMwxD5OmDYGhZXIiPbjOk2cVRIxM0lhiovRyRtZ0ramuMP4DeZprMZWdvsFYTnrhcLr/qfLLgNUu9RsW9B31ia9nX/C66lUJ/Biu3ccKsG7Z1SVt7yBhxcBcLEwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uto+BvrZoeEwa6MdxOBIK2+F/boLU+ojvq4RxvsuJkw=;
- b=XUVUwkEFCJv4hKI2iE7+LyIe0kJ8q0mUV2o3L4s6kVm+3pl7xs0/4zFIs9mYU/oBUkMcetiK5bT36H+/GbA3Sq6NGoWU75sr/CCNyy/5HpPOVyVA/Ue5kztB3t5c8I9W/XxDiRMJlV4e4lCtoDV+pay4tZEpGDLOxU/9hWf6O9FzjGZbdD5B17wD4/5ag8RlKs3Pj3eBBEr0iefUOw9NYkSCabCVdt8in2mSRP4CaQ3dtSyjwKvum99GF6JN5Wm8ZO79B6uGnBZSPg6FQwZXktdIrFNaOB1RVe+pb8Ub565KHr4SVmc5RDxEo/X/DJqNjMVJCLoWzh2JeKlNGL5RqQ==
+ bh=cKNjK52vYZgD5oUPy99FkvuX4ZAhDME6ywfveYU7b/g=;
+ b=yF1jcF5wQeCh7nrntCHO64ahOEYpHUW+VDeJ4S+nOtmhQUB1fjeFZPlnB+r+efYYQ4ngOwmaCMtgz5Uqv2BhqTm1iGyDArsYm/dff1wk78w7J1Gp8655JD4VGTsmK2DJegL9IpPiwCgHTHzN/5kthf/R+UOmOKG5eaqH2x3wT1vZczt3T2hDfhS4K0vYnO94NQqzqSwgTyvZFNS0vAF5YhYrfmwm/2UxBCrmR5x3J3P99dcTuIHHzCgpPrvHBGHERAfX9ergZpr1RtfCPQ9KMtl1rcJPCLbWuha5q2gzBgdtmm6c/Ovb3LxWHf20nyhXqk/25UQ/IudXumap3QcQWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uto+BvrZoeEwa6MdxOBIK2+F/boLU+ojvq4RxvsuJkw=;
- b=wMhfGddHHjBGX/fGKjiDpVP5gmxoon6zuNU8Q4HfgXgfTrw9X+E4lLiFZ3ctW5E3ySyys8tS/f9CFDGfEW+Qmui5hDN3yQqrnngKn3QnZZSKj5JIRnV3eb5F/qm5X9GK07Iw6wbe/9bT1FLBHzTHa7cwgC44PjRy/1qp3HKGcL63swU8H0ZuTNYnJsfGBSARlMbYGftrioUhz0aH8GLU2FOxUoJxp7RFNFaN1l51O6YUamz4WMUXr0gxfzho6jU4NYY2UO90cBbyjOpRUaqhwx9cIG2hckAd1EBf3EKXaPaJOyDFXkR++Vgjwym6Gy4G1bwDOhbctfVcv5iToOO4ng==
+ bh=cKNjK52vYZgD5oUPy99FkvuX4ZAhDME6ywfveYU7b/g=;
+ b=gRzBU7VMYJSjfeFTllN+hkT8yyak4zXqZgmQr7Bgw5pKB8ohgENuFaP0FrK6NcW1GkPRpG11Gc9P7tOMpchqnjbEoGu/2ktK4PbwBqpdNcQt+EEN6Z5aJq5iAExedwlCJuVxok9uOBEXzKrPXmuMwRs5FAoZrtAxrYjangy5VSyWAc6qdSgaWnUn7aTHgvdLP97yCDnzI5Ah22zmqaEV8xIy8RKRzITdF4jUjKHkP8SbYAlcLQyvTVKUyklbkIGCFcCu+Jo7wzGRtJUq0jmelXUyqGBGH+aO5Vc8fLTuZ51nuhJ/X79wyYz1Pxr/gg4v3lhHizuFBPlPu4UJGdWq2g==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBAPR04MB7302.eurprd04.prod.outlook.com (2603:10a6:10:1a5::14) with
+ by PA1PR04MB11407.eurprd04.prod.outlook.com (2603:10a6:102:4f7::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Thu, 27 Aug
- 2026 16:01:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
+ 2026 16:03:26 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 16:01:42 +0000
-Date: Thu, 27 Aug 2026 11:01:31 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Wolfram Sang <wsa@kernel.org>,
-	Ludovic Desroches <ludovic.desroches@atmel.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Yao Yuan <yao.yuan@freescale.com>,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] i2c: imx: release DMA channels on probe error
-Message-ID: <apBfW01p9Zik5WOI@SMW015318>
-References: <20260827-i2c-dma-channel-leak-v1-0-271d4adc03a0@cherr.cc>
- <20260827-i2c-dma-channel-leak-v1-2-271d4adc03a0@cherr.cc>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827-i2c-dma-channel-leak-v1-2-271d4adc03a0@cherr.cc>
-X-ClientProxiedBy: SA9PR10CA0029.namprd10.prod.outlook.com
- (2603:10b6:806:a7::34) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ 16:03:25 +0000
+From: Frank.Li@oss.nxp.com
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-media@vger.kernel.org (open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v1 1/1] media: dt-bindings: tc358743: Convert to YAML
+Date: Thu, 27 Aug 2026 12:03:07 -0400
+Message-ID: <20260827160312.4113159-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:510:23d::28) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -83,98 +68,240 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBAPR04MB7302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15851e93-b41f-4637-2496-08df04547c9e
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA1PR04MB11407:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7a76bfc-c542-4615-401c-08df0454ba0e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|5023799004|6133799003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|19092799006|366016|23010399003|1800799024|376014|10067099003|3023799007|18002099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	476jyKYPpLbeG3VPioPmcYwSVcias5eBiuQ/0S53+pHdDJqyrUesh77B6dNUurFBVWzoQgTzdRwtLMDZOZaXjNucgSD9YF2JLBmFPHtI2s1WaNy9jhjmXoBCp0x3PayfFsUikwlwce/A/3VMz44EBHqQUcO30wSgrtZAb2fVgc1rHjeV5Y3TVPAvO6W0q1VEAOAuaAGWMAgneWypmIbHUwtOktlDUNfUPA3E8/td4GMSK9SHrvtyUazJX4U+Z21PQxEBBIWIh2J8A0r5SQXCHYYKub8Ho9n9qpp68otCXFro4CMNpsA9RZqz0vHHjd7Nn17AOtRKg/ddHvAAzM5Ka9hGkFCwrxwA0w+P3R/DCAZX7eBpukhRWYhg7oMV0/2p4jVBztgE3z/WlMlOEnZaQRDjhIbMgWpVZAot0rjbP0VWWhQ6qdFXZr+0Yg8DwjF0PsMPdlPAzmFXjRjAELEzGv+8onnAZkbQHhej+bpWzaLiFcQSC8F3INpsG8kpFJ4kG9G3hojQOG4p69qptvp0RKvGnSUIjZc/hRw/LLmcgyuOOZDBh0OujH0qeTNl8FORMIEjH0yKLYGg5YQ9danAhowBDeA8eD5U/KpIkjyQEvmEg4XJHAKF4AHWMHOb8/yzrLkjxoUV5Ax2363yU4zSqEabKTpN6kwVDfkfe3DlR90=
+	8PVFmT0qJi+EhV4AbzuGTObY/wkknwKkXUcvlLjZZtJ1/R39kTJSamKYsasNh3qGK4K+4d2WHpV6v9639xdYYp54Ow5V5bE6PI+wCViSMaIPoRPsFOWs0o753wccd2LHMzGXOZcXIC4uTnB+WEEivIM2PVVo1ld6omd4YuLSNGLI273OIcQrrl02iIWkZt7aUi8fTT1OadD1HTkGA/fHUqLVd/+9Ej6AsNb6Gbru1RaQkBcKCtM5Z7ItjtLY6rwlxhmepu0NeC1CKjOy1RQeGI3zIjjhLCA3OT5hy1Z1c8PXey4zt9O9ls4M4rr3e8TWPEL0CUrLuwyxak512T/w27ArzGvSbPKBUaNccDTgRYkMlWflFtatqphfTMJL2+NyGfxNY5xl3Rfg0Z4w2PIv0fUZkO4BtKX6EjBXj+oYPMMeHYgl9WyzvFAQStBl3yrXNuTj35ZBn3KYKDEDYkGA4zosy6wR3T6aCsmkXZI8LVz5yRwTpyWShblB+rzE/B93PSiVz95SodQIhWTI77APWED/n/kPlGPPPzWXfM9oboOX/WH87VqayUeFHOaSMHQLfMeA2Pyj37DexDIYPmwmBvhLIUMQc/PvKxY5cVWCBejL9VMfRLGHYpiNUcuLgqkh
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(5023799004)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(23010399003)(1800799024)(376014)(10067099003)(3023799007)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OnKWu6J3CMn66P5XzClU0w+xgKJYsStzajKpnEnhrNpE6qr6ZDoMgFR1WpmI?=
- =?us-ascii?Q?NUEUs2tcYFf5Ac4FMCrAl9YhCelB3gpQ7oXn1WL/Ady1oJ/47ySwX2SBbyHn?=
- =?us-ascii?Q?JUckQkOIVTSXe0USZBX9vV1+bUtOciCm4NE14CFJLwx5CkqUpSZI9Q/zl4B/?=
- =?us-ascii?Q?sSPrJE8Q55CPAZTYNjXePgrOtrVidHbrIGzLmmfSnl0OMVRYF5h7OMrJSvCI?=
- =?us-ascii?Q?tRStHTL614MdwliUpimtQyXRGDG4XtanePkZVwe+Q1NQKpyVEPCvH31kdqVZ?=
- =?us-ascii?Q?ClbMw3k55pJgRmdeKbA2dAeq+LrtkdDYs9uhVHI/9FkOA+y38eEQ7LY+KJCB?=
- =?us-ascii?Q?C7pTKiwgZPRtcoH53rfeRMEBBIcrRYde2LBq+eo+5wfCinrdFy7dGEPqxZOl?=
- =?us-ascii?Q?ABKiD+IV7qlW/pYRA0CVJ65H7+O1cFKcCffyDR37YoqbE/zdUlm1rbXoT1/p?=
- =?us-ascii?Q?0SVdfD+9fujfWUxWcbRhFHfB5bmSBNnwdO4ge0Bs9ITam6Q/ic54flDgdB72?=
- =?us-ascii?Q?1INXKkWl4tt/7OiqiWRkp7nZ1RAIaotTVerYx2rHCXkRfsruEDftR7MYyAiB?=
- =?us-ascii?Q?VvBAApTSCnWdQGlqKwCOHeHhi/TkkUt/1TVoof4crG9vo9bq9Tq+BxwPHaOt?=
- =?us-ascii?Q?Km25dAh24HGxWkHheDM1K3LlR4CXwuCyhBTK7fPKnb+0Ss0aGb8bQuZ8N+aS?=
- =?us-ascii?Q?ILwTMQ8ziI5/57wiAk7GH0VC3p/ltLM290mMdh1GMfDDgBiFL3g3r4pQD5Hj?=
- =?us-ascii?Q?qDhC6TxdreTMSVM7wPwFM6QDXzQlXIlKrEcDvYOXMUbGMMxL20O0vJ7GpGoq?=
- =?us-ascii?Q?XOxbyqeeeBA2B/DOsU8xmah4ZcSZnTJUiZEJu591n5tQ6r+ZlYd5ShVp4tta?=
- =?us-ascii?Q?zi/gPtfYVPDng1ye3jfz0QqJcfuz5Pw+fzQGmJIMW03oUvgBTqtlMb5pazqH?=
- =?us-ascii?Q?RpOwe5WliX4/23k0vreShTd7TWYUTnJjhjroRsle7FVRvuilRe6mzMBGjdGi?=
- =?us-ascii?Q?RBeYXEciCjpmlVrOnqXSulin/iCvsEhvKVv45GC4OgLxWpebHRED8DvF/tGc?=
- =?us-ascii?Q?gcxzck3g27oVghu3J3j+/Lpp+tjePZHW6HwxDXq9k5vM1RqQDcdmuu9LTvKo?=
- =?us-ascii?Q?ckcAyBlgbox66/+PpjoRVLnV6pmspBzx1SVR/JzFNregmrsiIluYg4jIFs3B?=
- =?us-ascii?Q?pXpOwH2dkFCAvJAa0UkmacVf5unJhA1HW82fOJQLrN7Zn6Tnovqm50GRdSat?=
- =?us-ascii?Q?Wfx/bBYEqvNYTG9NrAfe5Xrca+JCfVfGU+5M6msTAxg5v20Q6Tf6EXR6cMU5?=
- =?us-ascii?Q?TQbyDBRR4wXlFVHbT3BJ5UBVvsmND5bgNLxJ5FSc3K+CX8c/IMO/NnbA9h/X?=
- =?us-ascii?Q?yov0yZ2VrOxFmcyYI7ydr/tNSRcDv4pJxC9AffCrFGSbRaW0xFfY07JuWN7L?=
- =?us-ascii?Q?g6pc002Pct/RYZGIDWsI6S58Xct/Bwz+3eWx3S+FUpma7cLewqmPfGygG7KW?=
- =?us-ascii?Q?av54HvwZthdPA2iXBGExsT0QR9kJ0yDV4qNTaPLH6HvDXhYNm7ekRHlnyWIH?=
- =?us-ascii?Q?zRDeod32mkTt+XmFVjf3PJKiCQvR9idKCUP6qQ+eU3RjAWIXTUUur8jsu+Py?=
- =?us-ascii?Q?ZUDuMwDYluBW1+PjxXwN0X/C80csTHzM6onrUMSiJJ8YAuqhu0CgXUd0Is/d?=
- =?us-ascii?Q?lTS64zbuaknqYHSX8ULmZ7nDR9UtUfyZF+UVnplvpdFRuAaXr/aV1JX5PubC?=
- =?us-ascii?Q?47IQtTpI47EBdgL8LchysOAgxIeXD/IE4shO+9L0WjLxwbNBUV5k?=
+	=?us-ascii?Q?y9ba/DnDSpSOdhB8efU0qND+Lzf1Y4Blo8Xe/GnuBm1qL+ewFfuSObKIjBgH?=
+ =?us-ascii?Q?dlGH6EfXXKJVA2pBEJ0mOrBvlrpFoof+eEt6i/ia31sN+vnxut6spxulekI7?=
+ =?us-ascii?Q?MDWRmCasH652O2Ent02WTFf5Z+HU9bQJsoNkQgHDtPRWzwfPFtTk0BB+w6bE?=
+ =?us-ascii?Q?jTkew0gyRAAIZAlzUsaDDU5eS3KiU911+NLfKuocNnpqN+ntD6dndsmwxqI9?=
+ =?us-ascii?Q?48H2aFpxRxw7jBkY1ByNGNH64rE9zkLcQ+7irky0/x6Ah+VSGxgFs2AdbT9L?=
+ =?us-ascii?Q?6kgJTBxbre/T0w3S6yq2LL2AfgViDfp3DLUpYbED9nrj9PvBqhEYoBTnyI4V?=
+ =?us-ascii?Q?qE+9KpgvMFN62XWKt7ePXzFM1IL7vocv7J522pABPofpqlx3VGqTB2GrTkQr?=
+ =?us-ascii?Q?xo8w+5Fhz+2t+x+ctv5bsmvpLwUbqC/JB6ckHX1gXXDXmtPltHbRiVBHGVFk?=
+ =?us-ascii?Q?pEj1+JlbmMbjngmlFjrWAqsL8h9NN0XwgDwef5+Osd6iYDbIEDAaR2VTo4WQ?=
+ =?us-ascii?Q?FqBGIFiPO9BjYYa7MQTDd8SXaE/mBJG47nx6jMtpFKKjosqYtwrj1kpt7KZa?=
+ =?us-ascii?Q?BpFqjRWf7qzJ3Yw/XTfkEyGmASnPHYJpNqPpR03Wczo/oGKhsKN5r4usS9IF?=
+ =?us-ascii?Q?3yjEzhVOwH3l6WPNQT04mR70sYb43i7W5ux1NHHaF2tKuu7D4P2B3KhOePLw?=
+ =?us-ascii?Q?QTiCFW2Y41xZo9sLWwYGGtE7tbm4rNuXJ5Id9IMZ2/3tWhIOiqN4f0mP16c3?=
+ =?us-ascii?Q?hIjCdKiZRFDWnH8xq83SvESXevoX5IvmsmwphYQu3/4ssSuxy4GknMBcvdua?=
+ =?us-ascii?Q?NgRKPDvr87evZJamFJgdnknPwtAzrjeN8ObLs70b1015HQcRDW1vzgrxXsxH?=
+ =?us-ascii?Q?wzm5Ux/WH9Q/eDHTJq5tQFReL2X9n/BXsdQtZQ6TWI+438+zr/31yJpMIURF?=
+ =?us-ascii?Q?OQm7n6Xr8vjvmVHaDESElBIS6gbiKQYZI054HvjLcV+4NWcJgggYMrfvuJbt?=
+ =?us-ascii?Q?aB8K3uKBNPUnEcYNaCKzAIcOCooQsPjK9c6bkkzjtriPjtgT55JRB4Yzi2z+?=
+ =?us-ascii?Q?9pUoOjuRz+OTUdJkaWVVKpo7jVYQS2UZM2dkezWjRwqujmW0aSmqpQXwpa9G?=
+ =?us-ascii?Q?4DgHeYsySjpRL4mJxhOP4s02FSHGSbcABHRgYI9oGq0tgdjouEr818YWYUwy?=
+ =?us-ascii?Q?nQWytM3/eav3I1p8jFtdivc2PxVzPqNCKMtKnC83X2K3oggoLlqBRvDWKpWe?=
+ =?us-ascii?Q?OazGeQviVGkZ0XlkYG3Lw8bvusBCUoGkvfkwiwJJoDGNNhAuKiXtOfe847t9?=
+ =?us-ascii?Q?aJQw4BmChXOasN9M+TcAFmuX9EthuC2CBbE5nDN6+ZuCfStfO2X914gu8Hyc?=
+ =?us-ascii?Q?eefiArJBL/IpjLe4cd5BKsVjDwXZkRTGzjP7Va9ihrg9wV5ehHubrHdlHDKr?=
+ =?us-ascii?Q?oB2n8UqRsl1pbLfsgkMgnlkx7dPGCiUzyt0fXydO+RSUqLCez0rcJ8YJydi1?=
+ =?us-ascii?Q?yFIcumf/396yJRBpPXEbciHvQH1OxvKres5gRtgIJQEpMqOU260DeJEZhpCN?=
+ =?us-ascii?Q?EEBuO+TkIROZsa0tF5j7WWIRqhTVIWtMTB3XjZlsu8so0y3plYUXFzglxAJN?=
+ =?us-ascii?Q?X8nsehY4xTuQVr0wk2pmsqO7zprtT7eSk8dpstpNjVNvS1Z8hOrpBB4FxvIZ?=
+ =?us-ascii?Q?AdJ7d6MgPfy3Rz0F07nI3eA+PIaUsQLg1sf6dKnPUoaVZfNZK1EQc1T3tPpP?=
+ =?us-ascii?Q?4CpcIJX1tZHpeAGpX1xubW96prUGICM=3D?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15851e93-b41f-4637-2496-08df04547c9e
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7a76bfc-c542-4615-401c-08df0454ba0e
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 16:01:42.7995
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 16:03:25.6859
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EY61Z+41K5PYfM1+/pt3a0HXDpOFg6bvUF0pPF6pp0ZlswK1vOXurv7hCcifOe61BBvXEQGfFYtIXUumxGxsHv1hCSUxuzWeIhnmzNSCXc7dXrGuMT5h9GVlxo6an0d5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7302
+X-MS-Exchange-CrossTenant-UserPrincipalName: mz5GG5V5eu7V7ZDD7AO3MXDlfQB30UHRH2LzFMQ+O4NSHK+QNXgfU7YnZCBBTpooio0giC5WYq5AirbB0CST81kAHf8VYhNIPNbT445BkHI6ZqCT6F8GlT6tKGbRQCcV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11407
 
-On Thu, Aug 27, 2026 at 11:43:02PM +0800, Shengzhuo Wei wrote:
-> i2c_imx_dma_request() acquires exclusive tx/rx DMA channels and is
-> optional: on errors other than -EPROBE_DEFER the driver falls back to
-> PIO mode and probe continues. If i2c_add_numbered_adapter() then fails,
-> probe returns through clk_notifier_unregister without releasing the
-> channels, because the remove callback is not invoked after a failed
-> probe.
->
-> Release the channels on the probe error path, mirroring
-> i2c_imx_remove().
->
-> Fixes: ce1a78840ff7 ("i2c: imx: add DMA support for freescale i2c driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shengzhuo Wei <me@cherr.cc>
-> Assisted-by: GLM:5.3
+From: Frank Li <Frank.Li@nxp.com>
 
-Nit: signed-off-by should be last tag
+Convert the Toshiba TC358743 HDMI-RX to MIPI CSI2-TX bridge device
+tree binding from txt to YAML format.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../bindings/media/i2c/toshiba,tc358743.txt   | 48 ----------
+ .../bindings/media/i2c/toshiba,tc358743.yaml  | 93 +++++++++++++++++++
+ MAINTAINERS                                   |  2 +-
+ 3 files changed, 94 insertions(+), 49 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.yaml
 
-> ---
->  drivers/i2c/busses/i2c-imx.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index 19ec056b00af..c24d9201a60e 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -1880,6 +1880,8 @@ static int i2c_imx_probe(struct platform_device *pdev)
->
->  clk_notifier_unregister:
->  	clk_notifier_unregister(i2c_imx->clk, &i2c_imx->clk_change_nb);
-> +	if (i2c_imx->dma)
-> +		i2c_imx_dma_free(i2c_imx);
->  	free_irq(irq, i2c_imx);
->  rpm_disable:
->  	pm_runtime_put_noidle(&pdev->dev);
->
-> --
-> 2.47.3
->
+diff --git a/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt b/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
+deleted file mode 100644
+index 59102edcf01ea..0000000000000
+--- a/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
++++ /dev/null
+@@ -1,48 +0,0 @@
+-* Toshiba TC358743 HDMI-RX to MIPI CSI2-TX Bridge
+-
+-The Toshiba TC358743 HDMI-RX to MIPI CSI2-TX (H2C) is a bridge that converts
+-a HDMI stream to MIPI CSI-2 TX. It is programmable through I2C.
+-
+-Required Properties:
+-
+-- compatible: value should be "toshiba,tc358743"
+-- clocks, clock-names: should contain a phandle link to the reference clock
+-		       source, the clock input is named "refclk".
+-
+-Optional Properties:
+-
+-- reset-gpios: gpio phandle GPIO connected to the reset pin
+-- interrupts: GPIO connected to the interrupt pin
+-- data-lanes: should be <1 2 3 4> for four-lane operation,
+-	      or <1 2> for two-lane operation
+-- clock-lanes: should be <0>
+-- clock-noncontinuous: Presence of this boolean property decides whether the
+-		       MIPI CSI-2 clock is continuous or non-continuous.
+-- link-frequencies: List of allowed link frequencies in Hz. Each frequency is
+-		    expressed as a 64-bit big-endian integer. The frequency
+-		    is half of the bps per lane due to DDR transmission.
+-
+-For further information on the MIPI CSI-2 endpoint node properties, see
+-Documentation/devicetree/bindings/media/video-interfaces.txt.
+-
+-Example:
+-
+-	tc358743@f {
+-		compatible = "toshiba,tc358743";
+-		reg = <0x0f>;
+-		clocks = <&hdmi_osc>;
+-		clock-names = "refclk";
+-		reset-gpios = <&gpio6 9 GPIO_ACTIVE_LOW>;
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
+-
+-		port {
+-			tc358743_out: endpoint {
+-				remote-endpoint = <&mipi_csi2_in>;
+-				data-lanes = <1 2 3 4>;
+-				clock-lanes = <0>;
+-				clock-noncontinuous;
+-				link-frequencies = /bits/ 64 <297000000>;
+-			};
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.yaml b/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.yaml
+new file mode 100644
+index 0000000000000..29dd1d58f766f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.yaml
+@@ -0,0 +1,93 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/media/i2c/toshiba,tc358743.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Toshiba TC358743 HDMI-RX to MIPI CSI2-TX Bridge
++
++maintainers:
++  - Hans Verkuil <hverkuil@kernel.org>
++
++description:
++  The Toshiba TC358743 HDMI-RX to MIPI CSI2-TX (H2C) is a bridge that converts
++  a HDMI stream to MIPI CSI-2 TX. It is programmable through I2C.
++
++properties:
++  compatible:
++    const: toshiba,tc358743
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    const: refclk
++
++  reset-gpios:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  port:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++
++    properties:
++      endpoint:
++        $ref: /schemas/media/video-interfaces.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          data-lanes:
++            oneOf:
++              - items:
++                  - const: 1
++                  - const: 2
++              - items:
++                  - const: 1
++                  - const: 2
++                  - const: 3
++                  - const: 4
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - port
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        bridge@f {
++            compatible = "toshiba,tc358743";
++            reg = <0x0f>;
++            clocks = <&hdmi_osc>;
++            clock-names = "refclk";
++            reset-gpios = <&gpio6 9 GPIO_ACTIVE_LOW>;
++            interrupt-parent = <&gpio2>;
++            interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
++
++            port {
++                 endpoint {
++                     remote-endpoint = <&mipi_csi2_in>;
++                     data-lanes = <1 2 3 4>;
++                     clock-lanes = <0>;
++                     clock-noncontinuous;
++                     link-frequencies = /bits/ 64 <297000000>;
++                 };
++            };
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fe10d29b7657b..9abeaa3f31ca8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27673,7 +27673,7 @@ TOSHIBA TC358743 DRIVER
+ M:	Hans Verkuil <hverkuil@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
++F:	Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.yaml
+ F:	drivers/media/i2c/tc358743*
+ F:	include/media/i2c/tc358743.h
+ 
+-- 
+2.43.0
+
