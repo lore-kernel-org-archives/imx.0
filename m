@@ -1,218 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012061.outbound.protection.outlook.com [52.101.66.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B5D2DF126
-	for <imx@lists.linux.dev>; Thu, 27 Aug 2026 15:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787846261; cv=none; b=nYb0nMYph1wBV5PsEb3poZNgw8av99UHJEXe7D5mmD/pHSVanhf48soPTov/zTOOdLVgR6HuwnLrD1usnrGuW1H60SgiL0eXt40X8MvVQG0SC4Es9hJmN/5x8Pami4GLr9qWV00uaWszDlSbncPuQeKEeHQSmQ2ZXloLCTdfhcU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787846261; c=relaxed/simple;
-	bh=/aypEm9TiisTIYik9Pn+VJGomOz91VUhBZJ1M/LtFYU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iHdRVAKuNrra/Y1E8HFJX8aACn9Snm2qOoI1DwjT3OdYX9rdc7JdnaQcioEkVDCGvETvbFFYrpLC0XmfLO2McBCmMgVmuETeJpHYNyfRMU/U/88qVAPtT02WIgwjnoMTYpt13xpCM2t4+nvFx+tuijDG3wtDG1mFAemiVoBCpIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyjpIV0R; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A63743A813;
+	Thu, 27 Aug 2026 16:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787846507; cv=fail; b=dfhVlS8ctqb2sU9+IyU0t+PZLYKypKxasQLIGVB7FEsdOHOPE0eUt8zOJ8aiF9WdjAQ8bCUuWSPBioagqzBsznREwjuN90aAQtsgbghR8lXyyK2rQl3UV4AbbPclU/zYZGRQfXccxRxIU9oGpeTX8/Y+/szbnyBd4j5QFjhw1oA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787846507; c=relaxed/simple;
+	bh=Y7ELVi3DxI8BZcWGAVhivNHMhIHs7itbBfvizrUdLlM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=guFr2Oe/g4r7iteLzF+FOULtPHKg77PB1Dh/21v5O9gaGh8M9ihtHX0w9Snn9IjuupgMqRj6yK24ePFvUnkP6p5p1UjuZnkHZwBmLTtyZ4YHTJCH0/zIizbzDWWvKO1WjqWh4kDqUP5dAPBylKW+J0ZAwzyMVFM/iVbAsDSnPGo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wMhfGddH; arc=fail smtp.client-ip=52.101.66.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyjpIV0R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01421F000E9;
-	Thu, 27 Aug 2026 15:57:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787846260;
-	bh=4lztL/36K+FpkUNm/V+ODWwjBqnjpH7dVSm7N6X/g64=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DyjpIV0RHewS6Is10A07tqLbEsNDmVciPA59YVqh8hLhZ8okL/0J+Ptz0XmS4sD4G
-	 YD7NKVxKjvdgEVhR1qeBPoHjniSCpli+ANjK9d4see9Yx9CqSvJoOQWPJxqFuWZp2U
-	 u5SYS7dx0GoKQTqYR5GlVi6WbXeJub4Gbob+CSPhO/Y3qVWqQPnoKwjTKus+6C1JXe
-	 sPYSK7tj3STeXPt9U8SfG9Vc7kSJqquqYpj9fbj4a+8hcHC5xXFabKA090Fgn2P8jy
-	 wyIpEUKKSNKFfUvd7jVXAqesz8OyawGcybxWoklGl86swGOubnjidgrUtogEg5hv8C
-	 9Bxnc+dqOTKnA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] i2c: qcom-geni: release DMA channels on probe error
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shengzhuo Wei" <me@cherr.cc>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260827-i2c-dma-channel-leak-v1-3-271d4adc03a0@cherr.cc>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wMhfGddH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZDHpcbU+TzgoModXJNVcCL4KFMsCcIVZfoLtqYQlAnuGkHOVhxWBArEak189wA39Z1rNVD0D1WDEa0s+IQHLpOD9eC26kIjj5HVughicZ/NPNgCPoihg0mGiDQtT8eo8NR/salC63G2JG0XfdUs6wyQIkt9zAgkS3+5nUHg4t418WZ93Gc/ZVA5jxVimDoIxJaef2qEO6a7a/9W1Vj/jiFtA3yvPWj382izFiQuiMhg5BnK1Iw5a5aZ8o332+7nuYrQTh+6XJvCOp/oYodFEXwVejI/S2ZQXi16BcLkYqc1NKict0gjBAxaiLZxIgsu+nbM/M2Ggq/yFNktJXJvb8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uto+BvrZoeEwa6MdxOBIK2+F/boLU+ojvq4RxvsuJkw=;
+ b=XUVUwkEFCJv4hKI2iE7+LyIe0kJ8q0mUV2o3L4s6kVm+3pl7xs0/4zFIs9mYU/oBUkMcetiK5bT36H+/GbA3Sq6NGoWU75sr/CCNyy/5HpPOVyVA/Ue5kztB3t5c8I9W/XxDiRMJlV4e4lCtoDV+pay4tZEpGDLOxU/9hWf6O9FzjGZbdD5B17wD4/5ag8RlKs3Pj3eBBEr0iefUOw9NYkSCabCVdt8in2mSRP4CaQ3dtSyjwKvum99GF6JN5Wm8ZO79B6uGnBZSPg6FQwZXktdIrFNaOB1RVe+pb8Ub565KHr4SVmc5RDxEo/X/DJqNjMVJCLoWzh2JeKlNGL5RqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uto+BvrZoeEwa6MdxOBIK2+F/boLU+ojvq4RxvsuJkw=;
+ b=wMhfGddHHjBGX/fGKjiDpVP5gmxoon6zuNU8Q4HfgXgfTrw9X+E4lLiFZ3ctW5E3ySyys8tS/f9CFDGfEW+Qmui5hDN3yQqrnngKn3QnZZSKj5JIRnV3eb5F/qm5X9GK07Iw6wbe/9bT1FLBHzTHa7cwgC44PjRy/1qp3HKGcL63swU8H0ZuTNYnJsfGBSARlMbYGftrioUhz0aH8GLU2FOxUoJxp7RFNFaN1l51O6YUamz4WMUXr0gxfzho6jU4NYY2UO90cBbyjOpRUaqhwx9cIG2hckAd1EBf3EKXaPaJOyDFXkR++Vgjwym6Gy4G1bwDOhbctfVcv5iToOO4ng==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DBAPR04MB7302.eurprd04.prod.outlook.com (2603:10a6:10:1a5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Thu, 27 Aug
+ 2026 16:01:42 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
+ 16:01:42 +0000
+Date: Thu, 27 Aug 2026 11:01:31 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Wolfram Sang <wsa@kernel.org>,
+	Ludovic Desroches <ludovic.desroches@atmel.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yao Yuan <yao.yuan@freescale.com>,
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] i2c: imx: release DMA channels on probe error
+Message-ID: <apBfW01p9Zik5WOI@SMW015318>
 References: <20260827-i2c-dma-channel-leak-v1-0-271d4adc03a0@cherr.cc>
- <20260827-i2c-dma-channel-leak-v1-3-271d4adc03a0@cherr.cc>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 27 Aug 2026 15:57:39 +0000
-Message-Id: <20260827155739.F01421F000E9@smtp.kernel.org>
+ <20260827-i2c-dma-channel-leak-v1-2-271d4adc03a0@cherr.cc>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827-i2c-dma-channel-leak-v1-2-271d4adc03a0@cherr.cc>
+X-ClientProxiedBy: SA9PR10CA0029.namprd10.prod.outlook.com
+ (2603:10b6:806:a7::34) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBAPR04MB7302:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15851e93-b41f-4637-2496-08df04547c9e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|5023799004|6133799003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	476jyKYPpLbeG3VPioPmcYwSVcias5eBiuQ/0S53+pHdDJqyrUesh77B6dNUurFBVWzoQgTzdRwtLMDZOZaXjNucgSD9YF2JLBmFPHtI2s1WaNy9jhjmXoBCp0x3PayfFsUikwlwce/A/3VMz44EBHqQUcO30wSgrtZAb2fVgc1rHjeV5Y3TVPAvO6W0q1VEAOAuaAGWMAgneWypmIbHUwtOktlDUNfUPA3E8/td4GMSK9SHrvtyUazJX4U+Z21PQxEBBIWIh2J8A0r5SQXCHYYKub8Ho9n9qpp68otCXFro4CMNpsA9RZqz0vHHjd7Nn17AOtRKg/ddHvAAzM5Ka9hGkFCwrxwA0w+P3R/DCAZX7eBpukhRWYhg7oMV0/2p4jVBztgE3z/WlMlOEnZaQRDjhIbMgWpVZAot0rjbP0VWWhQ6qdFXZr+0Yg8DwjF0PsMPdlPAzmFXjRjAELEzGv+8onnAZkbQHhej+bpWzaLiFcQSC8F3INpsG8kpFJ4kG9G3hojQOG4p69qptvp0RKvGnSUIjZc/hRw/LLmcgyuOOZDBh0OujH0qeTNl8FORMIEjH0yKLYGg5YQ9danAhowBDeA8eD5U/KpIkjyQEvmEg4XJHAKF4AHWMHOb8/yzrLkjxoUV5Ax2363yU4zSqEabKTpN6kwVDfkfe3DlR90=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(5023799004)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OnKWu6J3CMn66P5XzClU0w+xgKJYsStzajKpnEnhrNpE6qr6ZDoMgFR1WpmI?=
+ =?us-ascii?Q?NUEUs2tcYFf5Ac4FMCrAl9YhCelB3gpQ7oXn1WL/Ady1oJ/47ySwX2SBbyHn?=
+ =?us-ascii?Q?JUckQkOIVTSXe0USZBX9vV1+bUtOciCm4NE14CFJLwx5CkqUpSZI9Q/zl4B/?=
+ =?us-ascii?Q?sSPrJE8Q55CPAZTYNjXePgrOtrVidHbrIGzLmmfSnl0OMVRYF5h7OMrJSvCI?=
+ =?us-ascii?Q?tRStHTL614MdwliUpimtQyXRGDG4XtanePkZVwe+Q1NQKpyVEPCvH31kdqVZ?=
+ =?us-ascii?Q?ClbMw3k55pJgRmdeKbA2dAeq+LrtkdDYs9uhVHI/9FkOA+y38eEQ7LY+KJCB?=
+ =?us-ascii?Q?C7pTKiwgZPRtcoH53rfeRMEBBIcrRYde2LBq+eo+5wfCinrdFy7dGEPqxZOl?=
+ =?us-ascii?Q?ABKiD+IV7qlW/pYRA0CVJ65H7+O1cFKcCffyDR37YoqbE/zdUlm1rbXoT1/p?=
+ =?us-ascii?Q?0SVdfD+9fujfWUxWcbRhFHfB5bmSBNnwdO4ge0Bs9ITam6Q/ic54flDgdB72?=
+ =?us-ascii?Q?1INXKkWl4tt/7OiqiWRkp7nZ1RAIaotTVerYx2rHCXkRfsruEDftR7MYyAiB?=
+ =?us-ascii?Q?VvBAApTSCnWdQGlqKwCOHeHhi/TkkUt/1TVoof4crG9vo9bq9Tq+BxwPHaOt?=
+ =?us-ascii?Q?Km25dAh24HGxWkHheDM1K3LlR4CXwuCyhBTK7fPKnb+0Ss0aGb8bQuZ8N+aS?=
+ =?us-ascii?Q?ILwTMQ8ziI5/57wiAk7GH0VC3p/ltLM290mMdh1GMfDDgBiFL3g3r4pQD5Hj?=
+ =?us-ascii?Q?qDhC6TxdreTMSVM7wPwFM6QDXzQlXIlKrEcDvYOXMUbGMMxL20O0vJ7GpGoq?=
+ =?us-ascii?Q?XOxbyqeeeBA2B/DOsU8xmah4ZcSZnTJUiZEJu591n5tQ6r+ZlYd5ShVp4tta?=
+ =?us-ascii?Q?zi/gPtfYVPDng1ye3jfz0QqJcfuz5Pw+fzQGmJIMW03oUvgBTqtlMb5pazqH?=
+ =?us-ascii?Q?RpOwe5WliX4/23k0vreShTd7TWYUTnJjhjroRsle7FVRvuilRe6mzMBGjdGi?=
+ =?us-ascii?Q?RBeYXEciCjpmlVrOnqXSulin/iCvsEhvKVv45GC4OgLxWpebHRED8DvF/tGc?=
+ =?us-ascii?Q?gcxzck3g27oVghu3J3j+/Lpp+tjePZHW6HwxDXq9k5vM1RqQDcdmuu9LTvKo?=
+ =?us-ascii?Q?ckcAyBlgbox66/+PpjoRVLnV6pmspBzx1SVR/JzFNregmrsiIluYg4jIFs3B?=
+ =?us-ascii?Q?pXpOwH2dkFCAvJAa0UkmacVf5unJhA1HW82fOJQLrN7Zn6Tnovqm50GRdSat?=
+ =?us-ascii?Q?Wfx/bBYEqvNYTG9NrAfe5Xrca+JCfVfGU+5M6msTAxg5v20Q6Tf6EXR6cMU5?=
+ =?us-ascii?Q?TQbyDBRR4wXlFVHbT3BJ5UBVvsmND5bgNLxJ5FSc3K+CX8c/IMO/NnbA9h/X?=
+ =?us-ascii?Q?yov0yZ2VrOxFmcyYI7ydr/tNSRcDv4pJxC9AffCrFGSbRaW0xFfY07JuWN7L?=
+ =?us-ascii?Q?g6pc002Pct/RYZGIDWsI6S58Xct/Bwz+3eWx3S+FUpma7cLewqmPfGygG7KW?=
+ =?us-ascii?Q?av54HvwZthdPA2iXBGExsT0QR9kJ0yDV4qNTaPLH6HvDXhYNm7ekRHlnyWIH?=
+ =?us-ascii?Q?zRDeod32mkTt+XmFVjf3PJKiCQvR9idKCUP6qQ+eU3RjAWIXTUUur8jsu+Py?=
+ =?us-ascii?Q?ZUDuMwDYluBW1+PjxXwN0X/C80csTHzM6onrUMSiJJ8YAuqhu0CgXUd0Is/d?=
+ =?us-ascii?Q?lTS64zbuaknqYHSX8ULmZ7nDR9UtUfyZF+UVnplvpdFRuAaXr/aV1JX5PubC?=
+ =?us-ascii?Q?47IQtTpI47EBdgL8LchysOAgxIeXD/IE4shO+9L0WjLxwbNBUV5k?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15851e93-b41f-4637-2496-08df04547c9e
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 16:01:42.7995
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EY61Z+41K5PYfM1+/pt3a0HXDpOFg6bvUF0pPF6pp0ZlswK1vOXurv7hCcifOe61BBvXEQGfFYtIXUumxGxsHv1hCSUxuzWeIhnmzNSCXc7dXrGuMT5h9GVlxo6an0d5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7302
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
+On Thu, Aug 27, 2026 at 11:43:02PM +0800, Shengzhuo Wei wrote:
+> i2c_imx_dma_request() acquires exclusive tx/rx DMA channels and is
+> optional: on errors other than -EPROBE_DEFER the driver falls back to
+> PIO mode and probe continues. If i2c_add_numbered_adapter() then fails,
+> probe returns through clk_notifier_unregister without releasing the
+> channels, because the remove callback is not invoked after a failed
+> probe.
+>
+> Release the channels on the probe error path, mirroring
+> i2c_imx_remove().
+>
+> Fixes: ce1a78840ff7 ("i2c: imx: add DMA support for freescale i2c driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shengzhuo Wei <me@cherr.cc>
+> Assisted-by: GLM:5.3
 
-Pre-existing issues:
-- [High] Double Free / Use-After-Free in `geni_i2c_gpi_xfer` due to stale `=
-rx_buf`/`tx_buf` pointers.
-- [High] Double free in `geni_i2c_tx_one_msg` and `geni_i2c_rx_one_msg` whe=
-n DMA preparation fails.
-- [High] Multi-descriptor transfer arrays `dma_buf` and `dma_addr` are leak=
-ed on early error paths.
-- [High] Probe failure leaves the device in `RPM_ACTIVE` state, permanently=
- leaking clocks and interconnect bandwidth.
-- [Medium] Unprotected state modification of `gi2c->err` on timeout in GPI =
-transfer mode.
---
+Nit: signed-off-by should be last tag
 
-commit c5e9b3033c37b684962141040cbfbb6d92768687
-Author: Shengzhuo Wei <me@cherr.cc>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-i2c: qcom-geni: release DMA channels on probe error
-
-This commit ensures that exclusive GPI tx/rx DMA channels are properly
-released if the I2C adapter registration fails during probe. Previously,
-the function returned without freeing these channels.
-
-> diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-=
-qcom-geni.c
-> index 658636c1ee0e2..45c770552bd26 100644
-> --- a/drivers/i2c/busses/i2c-qcom-geni.c
-> +++ b/drivers/i2c/busses/i2c-qcom-geni.c
-> @@ -1189,8 +1189,10 @@ static int geni_i2c_probe(struct platform_device *=
-pdev)
->  		return ret;
-> =20
->  	ret =3D i2c_add_adapter(&gi2c->adap);
-> -	if (ret)
-> +	if (ret) {
-> +		release_gpi_dma(gi2c);
->  		return dev_err_probe(dev, ret, "Error adding i2c adapter\n");
-> +	}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does failing the probe here
-without forcefully suspending the device leave it locked in the RPM_ACTIVE
-state indefinitely?
-
-Since the device is configured for autosuspend earlier in geni_i2c_probe(),
-returning an error here triggers devres cleanup. This cleanup cancels the
-pending autosuspend timer. Because the usage count is 0 but the device is
-still physically active, could this permanently leak power, clocks, and
-interconnect bandwidth?
-
-> =20
->  	dev_dbg(dev, "Geni-I2C adaptor successfully added\n");
-
-While reviewing this patch, I also noticed a few other pre-existing issues =
-in
-the driver.
-
-[Severity: High]
-This is a pre-existing issue, but does geni_i2c_gpi_xfer() double-free the
-buffer when processing mixed read/write I2C messages?
-
-drivers/i2c/busses/i2c-qcom-geni.c:geni_i2c_gpi_xfer() {
-        ...
-		if (!gi2c->is_tx_multi_desc_xfer)
-			geni_i2c_gpi_unmap(gi2c, &msgs[i], tx_buf, tx_addr, rx_buf, rx_addr);
-        ...
-}
-
-If a batch contains a read message (which allocates and assigns rx_buf) fol=
-lowed
-by a write-only message, the second iteration bypasses the read DMA setup.
-Since rx_buf and tx_buf are declared outside the loop and not reset to NULL
-between iterations, does geni_i2c_gpi_unmap() end up passing the stale rx_b=
-uf
-from the previous message, causing i2c_put_dma_safe_msg_buf() to double-fre=
-e it?
-
-Similarly, on the error path in the same function:
-
-drivers/i2c/busses/i2c-qcom-geni.c:geni_i2c_gpi_xfer() {
-        ...
-	else
-		geni_i2c_gpi_unmap(gi2c, &msgs[i], tx_buf, tx_addr, rx_buf, rx_addr);
-        ...
-}
-
-Are the same stale buffer pointers unconditionally passed here on failure,
-causing a double free?
-
-
-[Severity: High]
-This is a pre-existing issue, but does a DMA preparation failure lead to a
-double free in geni_i2c_tx_msg_cleanup()?
-
-drivers/i2c/busses/i2c-qcom-geni.c:geni_i2c_tx_one_msg() {
-        ...
-	} else {
-		gi2c->xfer_len =3D len;
-		gi2c->dma_addr =3D tx_dma;
-		gi2c->dma_buf =3D dma_buf;
-	}
-        ...
-}
-
-When geni_se_tx_dma_prep() fails, this else block is bypassed. Could this l=
-eave
-gi2c->dma_buf retaining a stale pointer from the previous I2C message?
-
-drivers/i2c/busses/i2c-qcom-geni.c:geni_i2c_tx_msg_cleanup() {
-        ...
-		i2c_put_dma_safe_msg_buf(gi2c->dma_buf, cur, !gi2c->err);
-        ...
-}
-
-When this cleanup function is subsequently called, will it unconditionally =
-pass
-the stale, non-NULL pointer from the previous message to be freed again?
-
-
-[Severity: High]
-This is a pre-existing issue, but are the multi-descriptor transfer arrays
-leaked on early error paths?
-
-drivers/i2c/busses/i2c-qcom-geni.c:geni_i2c_gpi_multi_desc_unmap() {
-        ...
-		if (tx_multi_xfer->unmap_msg_cnt =3D=3D gi2c->num_msgs - 1) {
-			kfree(tx_multi_xfer->dma_buf);
-			kfree(tx_multi_xfer->dma_addr);
-			break;
-		}
-        ...
-}
-
-If an early error occurs (such as DMA mapping failing on the first message)=
- and
-the code jumps to the error label, the loop bound is lower than the required
-threshold. Will gating the kfree() calls behind this final message index ch=
-eck
-cause dma_buf and dma_addr to be permanently leaked?
-
-
-[Severity: Medium]
-This is a pre-existing issue, but is there a data race when modifying the e=
-rror
-state on timeout?
-
-drivers/i2c/busses/i2c-qcom-geni.c:geni_i2c_gpi_xfer() {
-        ...
-				gi2c->err =3D -ETIMEDOUT;
-        ...
-}
-
-In GPI transfer mode, this error state is updated directly on timeout witho=
-ut
-holding gi2c->lock.
-
-drivers/i2c/busses/i2c-qcom-geni.c:i2c_gpi_cb_result() {
-        ...
-		gi2c->err =3D -EIO;
-        ...
-}
-
-If the DMA transaction completes with an error precisely as the timeout exp=
-ires,
-could the interrupt handler concurrently modify gi2c->err, leading to a race
-that corrupts the logged or returned error code?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260827-i2c-dma-ch=
-annel-leak-v1-0-271d4adc03a0@cherr.cc?part=3D3
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 19ec056b00af..c24d9201a60e 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1880,6 +1880,8 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>
+>  clk_notifier_unregister:
+>  	clk_notifier_unregister(i2c_imx->clk, &i2c_imx->clk_change_nb);
+> +	if (i2c_imx->dma)
+> +		i2c_imx_dma_free(i2c_imx);
+>  	free_irq(irq, i2c_imx);
+>  rpm_disable:
+>  	pm_runtime_put_noidle(&pdev->dev);
+>
+> --
+> 2.47.3
+>
