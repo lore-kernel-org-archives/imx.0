@@ -1,200 +1,199 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013051.outbound.protection.outlook.com [52.101.83.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A562840F749
-	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 11:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787915626; cv=fail; b=EjFQUos5eI9j0r5I5yb/g3xbwYQIdkk7MQppbRRt9QQQ3EFnZsHHWt42ljXNJ6wDyCSjwpGb8sC7s52lYoeRb+fPQZfdcxiabrzR5XQMH+F2Uw4H38gF0pwpe5YcadREHKv0winaVUjxikh03CCSbqC5eTny1hGnB0t0PkdRPwo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787915626; c=relaxed/simple;
-	bh=Zgr32HvkGIggK07k+O9UVJgq5KAOCmRpLD/WzOiOkPk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FVANoPZablOlm/A37m6OjVz45qUcgcY3STsVYJIAQHEG7/RQ3b6+NMQpdN1i6ryqqUbbb+LewaT489uvyd8cjEFW0ifroNEulzan7UMd1MAmqsjZExOU49HbWu3knZ1FSjUgkwsbUDQ1ISHLI//q2DySlsxqxl6w8mFxor9zN+k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=DE950Wcn; arc=fail smtp.client-ip=52.101.83.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CBD44236B
+	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 13:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787922651; cv=none; b=QNEQHcSMLOissZpuWboCsOdZGI7jQTW+0ZX0XWZgPr5QsoqmKuu0dixSB4pNUltByFRpWlNLhRYy4/PPgtPspwfBGuHgDyscmnGpPQ5X4/JVAU0lZXkvPWA3Ptjcf4dVTsjPcUw2gFsZe+a4lGIWKGTHBIZ/qIx5PY8Z0nc6Fac=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787922651; c=relaxed/simple;
+	bh=iFjL9XI9CHMHdv0QincBDDMEbFGBO5icuMXCstbvhdQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gzSRNaT5GBslkmGQTxw6mJi9q7IVSeTAHI4pjf6hG8H76JZWlnfMBU9JqmMAs5tAnQhIr2ABgiUFQCRWqO2zYvMSCxUrCtQghz4h/VbREdh2uobU5IOslN5MaL4+0x4ZiNFBfQyguDn8FS6+mozhGenCZnA3G9NHlsssheSaNwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=dRRnhhRg; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="DE950Wcn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=udQPGPO3Ybz+9fnxplDi869womp1Z685mQFYOZIFoqeiyFwOG7bJJp0Dcy8++Dd5ML8JOLi88aLRWh3RRiMMcn7TR1WKV7WshXXOSBBQiHN3MwlmY5JZEYlyyR2eOebOqqLZvA8tmfWUfd8pfKLP671GKOaVvcvkDthS4EfW9gLaD1wJOrkLxapcLkpl8hehUSOK29TnrXQNkxO98m4TRGnDx8FAv58dGw9gUPP6gplaRJ3hgiaewLDu+rFUf83z56pWGycUI+/eZiXiWScWK+LNdJOjCrwf1txNeIdA1opRpq8weG7ZgcmejseDBZfMCWPoNJD5BFd/ab1VezgKSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mkrQVSa2CCJCqim6X4u+PKD8j2FL5o3nzVzp7qa/kX4=;
- b=WJeeiwKDpTxMBJq7vBkXZm9p+/5ZERoc8sEc8fbwxJe6cOHqkxJcb9HPOKGt1qclmIqRMPCqB5Anri8tH3CL/gtSLOFd1FlO71saYe+t6Y6HVbTXSeO0x+UTT9rlGunzIZxDH6q2mAnZgGvMvSyxJDtu5sZlxmJ0sUN9VIgPvUJqa1MFcINTTkx0dBQA6mP1z0LbT8gVNGkyTjSv78dKgUOepWuqzUAxLIG34JRpaYmEk1Q4aGyToTnhHSF2nxe5c5DnSRxL9sgk+F8l3fzz4M3zzo/RGA21nKmh8NLUNUFsPisJcrJ46OMBh/CLCnnFXk88Qd1DvUrsutHpiu49iA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mkrQVSa2CCJCqim6X4u+PKD8j2FL5o3nzVzp7qa/kX4=;
- b=DE950WcneELPcL0hEfJ7fs7RsuMJh4aTAICaL8GVoXaDC4qLfkOVlR2/E2kqajgBdZegCV6DVxj49UUR/hvMwmghlhzAwwu89JJhzO0QdJZIoi8tuwOhNM95vlAAlCYIlSSHqIpZThSGRcNnnsm3/UUiWViXwUkYB1jnmJ5A7pHDEMlk7Xu3IdPIVHmBFleRQidud1PiTVVdWaqBPOarVeMT4YvG5Y0+AATL/rjFb6S0Hf/+uYel2e/C3lSHJYD7RizxWA9bb9r79VwSTc4QhSw2Fi/KbRBaYQgUmqirfRcyO/RFf6reNjLh2ZOasC1Z0rVCoFtySiTf/NstOn3nhw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12558.eurprd04.prod.outlook.com
- (2603:10a6:150:368::10) by AM9PR04MB8422.eurprd04.prod.outlook.com
- (2603:10a6:20b:3ea::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.11; Fri, 28 Aug
- 2026 11:13:37 +0000
-Received: from GV2PR04MB12558.eurprd04.prod.outlook.com
- ([fe80::cd9f:102:ea58:4c49]) by GV2PR04MB12558.eurprd04.prod.outlook.com
- ([fe80::cd9f:102:ea58:4c49%6]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 11:13:36 +0000
-Message-ID: <d04076cb-da91-439d-8220-fe2e98e45fc9@oss.nxp.com>
-Date: Fri, 28 Aug 2026 14:13:32 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] ufs: host: Add common Hibern8 TX FSM polling helper
-To: Stanley Jhu <stanleyjhu@google.com>, NXP S32 Linux Team <s32@nxp.com>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman
- <avri.altman@sandisk.com>, Bart Van Assche <bvanassche@acm.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
- Ajay Neeli <ajay.neeli@amd.com>, Manivannan Sadhasivam <mani@kernel.org>,
- Pedro Sousa <pedrom.sousa@synopsys.com>, clizzi@redhat.com,
- aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com
-Cc: linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-References: <20260826134048.854748-1-larisa.grigore@oss.nxp.com>
- <20260826134048.854748-4-larisa.grigore@oss.nxp.com>
- <CAE14pddHBP6HMihTePR+-Pqhu2DKjVgRA9++5Epod6TOCLagFw@mail.gmail.com>
-Content-Language: en-US
-From: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>
-In-Reply-To: <CAE14pddHBP6HMihTePR+-Pqhu2DKjVgRA9++5Epod6TOCLagFw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4PR09CA0023.eurprd09.prod.outlook.com
- (2603:10a6:20b:5d4::13) To GV2PR04MB12558.eurprd04.prod.outlook.com
- (2603:10a6:150:368::10)
+	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="dRRnhhRg"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-482e5733a5aso612724f8f.0
+        for <imx@lists.linux.dev>; Fri, 28 Aug 2026 06:10:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1787922648; x=1788527448; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=D9vn94z6fRxQMjXUuhba8xPlc8Nhl/43jHnKAHyxeqo=;
+        b=dRRnhhRgMRJY/GQ3yfBM39ZCLti/JWSYHAjab6WSxSHBM3TkcNQRoQQvToz6zUaiss
+         na1ZI7TaU991rAyDVNvSafmECOjWnzC12ayLIjU6VUlR5IeUHhoDKWBi+zxgO0/e7swO
+         CYBPfRCUxYRBhRDeH5KWFdaP9+7U4Ww+K+FhdS8rhhEa2VnOUpPwUwYh+Bg0TpvxV4pe
+         YB4V2K9Oyhnk0nGzko2z7bDVoFkUR7NzwpuFbQU3yN7vz58IU73HBzgXQWU8/l/N7PoR
+         i1uxmJZZ9QmZ420leJ8++rq1CQRqzbeRcCU1jr13FqCa+3Vp0bJCagYCxoJGwTIwr0Yt
+         Edpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787922648; x=1788527448;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=D9vn94z6fRxQMjXUuhba8xPlc8Nhl/43jHnKAHyxeqo=;
+        b=jvm56nZWCJ5I5hCuoDOcnqolD8eizlWVSM+waSCvtIwim+lHNab4eTy+ojLo4O7nO8
+         30OdI4V9Zdh8fjWlW3o55U/Lkmto6lgrnQvPxoLJbvaeOA/wFv7DfEt1Kvgajv0h1Qwy
+         eGmBqKNKRSof8bS0aAc+XlsSEcYE95MZxHjvgZemPccdyw/uCq3d4gOXtQJnopnosaZk
+         rIQ+0SQPeoT02Z+ipoQ6z+TLZvYbAV9bwbhFM9WOmrI1hK4tN5uVQVR5xHTLMM2TnvLM
+         CGG/Ty133L6tQQBnAl+ieP7YxNRk9WOaSDZYrvco5ZBZn+KSvdSB0kt72GD2k1TycBmj
+         jXAw==
+X-Forwarded-Encrypted: i=1; AHgh+RokLRRQlEtP9Xc3nugfiJszJpwpmIGiYOD8RqD2etZ4CrTjM/FxkeSof1oDz//0gYMMbyM=@lists.linux.dev
+X-Gm-Message-State: AFuF++lx9hHYQHEMxq3RjIgRe9qfxo0iwDjuwv1uRtdv22NR+dBoSRZh
+	iiuomZoBV83chpdG255avezcG4iWorGBAA4qiKPUFhpm4KGYnIS1MB1sM391wIvpZw==
+X-Gm-Gg: AR+sD12awa/swxg+KK5e0bMTqMsx3MQDIRVvWGTY+6gCWKIsNk+82+38uUKPxgoqHAX
+	ra5lmY5FdgU9AwDzYE+tfQnWEyCpYQ5DLTvuA4NQSU9NQVo3V01tstVO1VFyxJjUQPwp9ppsbAr
+	M7iu2aJgxtoHOTEDR4SxsoAFtQ5I2dijCoFdjWIL+gf/rqXSgEuKddTgUm2Hs/NxNMvUXLcN9gr
+	UMAPGOBU1GkqlofxfFnoqbnzchf7pVKHqp67G0c5I6s7yytx4Ku56p0zGBT24G0WyzXdobQCb3B
+	QLznrwldhRl+GrT/2AEU+95FgOY/EQrjFukWjibmh6tr3MnyhKbgxUev5exRk6dDV6OI9TdNjSg
+	C6wns3j5AufPtrGbqpOIlkLV+HikEdkp7v4LGzUPzbavhUPfOEQDPB3wp1f1rk3uEyGNKXyRXUH
+	nkQ9S5LHwphJ8eGQdRK7vJ/T2zFzj10YTi6rt9eXa0yVGDX0EO2f+gdPszuWnXwFvFAwfo
+X-Received: by 2002:a05:600c:8106:b0:49b:9161:db26 with SMTP id 5b1f17b1804b1-49b91c5554bmr101629195e9.14.1787922647567;
+        Fri, 28 Aug 2026 06:10:47 -0700 (PDT)
+Received: from [127.0.0.2] ([188.111.3.154])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b9500c80asm56510265e9.9.2026.08.28.06.10.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 06:10:46 -0700 (PDT)
+From: Michal Gorlas <michal.gorlas@9elements.com>
+Date: Fri, 28 Aug 2026 15:10:27 +0200
+Subject: [PATCH v3] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is supported
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12558:EE_|AM9PR04MB8422:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2d7e998-3936-479f-2775-08df04f567b7
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|1800799024|23010399003|7416014|376014|366016|4143699003|921020|10067099003|11063799006|56012099006|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
- cRUwAgn7oiUWAiG9HPB0uDqIz3PIF57QEJYX2es3XUEhL2l4WYLldqb6hFzKjVCW65lhSv1e/77Q1BzXiSp2xCyEkHt2+Lb1m+n7lqqaGRoKPExRm2HndT2/+h9cVELUgbODQb1492iEykOdt6QXJv7L23jDm2mFsdZQyrQjiHHspAkwW9/lhkGTYjVCwQXCjYnqWydEPwt61lfX1d4QU0hr0tKaPqnsA5OVUyOvYE8rQ5MaUPOCH3Yv0JFO62k+hKpjYL4+tAt+KBHRKaliCE4JAGOX4rMRdnCiA9nZ0XEE6TELpFuZD+KyUcarFqelWWGskVik7wejLc5QvOasCWRfDRHOvTqEkxTm95w5U9NJnwu1RyIRy3xaFHdPczrMIF9jt1anKb88aevz3VYvehdbcvkpO+SoTrXM0su9qzSQBVfTx7cJvfoZGUB3DOCESquLluWKSCyglqU4xEgh6OGEV1vbAq+bz9yLwHeFDgEmRdhqrPI+POASext/rn/vT/0Er5BF40QBSk7lh5a1HIwsdP34qYeB6Y6tDsYVJpXbec3AIGz4+yu7UsQQTxjmFgvY9kBVDD4olYKs802GJyNCXWDlrikiYeA6nHy8NW8U9FWrSvri87MPXqJq0cmNAnE83ETSDX81EnNspoxAAqDawtBLusJPwJI3cWsiuXRSxQhCt/ocaW531ITeBxKbuTkPKXcbtgVES6FNaMAAbA==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12558.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(23010399003)(7416014)(376014)(366016)(4143699003)(921020)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?RUF2dVpuTE1vOTROVkF3b0kxNEE0Y1owODA0VmtpZGJuL1VvTmw4Z3UxaUc3?=
- =?utf-8?B?RUJ4VjViNEtVU0hOMGs3dlZRRkxjbjEyZWR3VEFJSG5WTTduS1lDWlZ6bEFE?=
- =?utf-8?B?VWQvbjBkVjVyYVVRTkpsQlg3M3daRXo1ekd4ditQckJwL05IeG1WWmR1UVE2?=
- =?utf-8?B?MEsxRDFwSm9oUWJvbkpjcjlrMDJmazJmRWJsdWFNMjhYRTc0NW9ZK2NHVHRI?=
- =?utf-8?B?NWNHOEVaOVBwMWJhOEhnaThWU0RwOHJ6S0ZvMFcxVHAvTXJxRmdSN2R0ZXFs?=
- =?utf-8?B?VGxUaFh2TzZXQ0IzaW4rZXJLM3FXTjRBcDJVcm50dCsvR1RlQ1BNeEpmcUps?=
- =?utf-8?B?MFNhNDFDbDFNdXJpTnphblJUdUh0MGhxVnk5MDlnVzV0WWlnaXVjRWwzU25M?=
- =?utf-8?B?MGpMM2Nsd0tURStHSjlWOGM5Y0EyVXRtSEpJV0FQU1FxZUJjTktWOEN3Umpy?=
- =?utf-8?B?aEV3ZHd5ZTNRZXNHRVMvVG9BNUVnWDdabXRvMm5Pa2liR2dHSVYxOTJCVEJZ?=
- =?utf-8?B?UVdsdEh3cGZpYWVpWHdSS2VhVHdrUWF4c1ZmSTFOaldQYXJIRGIreSs4disw?=
- =?utf-8?B?NEtqQlRDWHFPV2YybnNjellJL09vM2JKaXNya1FOc2pTMWUxcmpYeC9rQVBn?=
- =?utf-8?B?am50OUQwNWdONmFVTGxkaGNkOU9ROFBSdlM5MnRUYXA2akVoOURiMVVwSTcx?=
- =?utf-8?B?MmE2QU81Yk03bCtEM0dzRW1HMjhYUTNhaFZpY1NLczZrSHNlS1JRWHNaNHQ2?=
- =?utf-8?B?YnBYZXZBaFF0ODVzc3dVZmxSNnFDVkFyTmNUejBHTVF0SlFmcW56ZklVSW41?=
- =?utf-8?B?dWJSRkljdUNNZmxaVGxmODZGakwvNFFIM3FFZ3hscDVZajM3S3MvZFc0TWs5?=
- =?utf-8?B?TGE4b2Nhc003UjBXRFp4bGY1ZEcvbnNwSEVtVUltMUpvVGJOS1dvSnlROTRi?=
- =?utf-8?B?S2pVdG0yTjNDbW5lNzlyZTRqbDlCKzdYN2hBek8ySEE1NGd4dHg5VEE1eW1E?=
- =?utf-8?B?QWM0c3FMQ0g2VHhGSWtTS1hYNUhMR2xXOVdOZ3lNLzV6WVpsdGMvVy9zcUVJ?=
- =?utf-8?B?WDRMS01tZDVPcjNlK0FkaUhkblBEcHVsOUhyWGZVUVZPY2lGeFhrRkd2eEVF?=
- =?utf-8?B?VmR1NmI4eTZmZjc5QnFRSEFlY1Y3dW96MmZxa1JsZDZaOWhwTHFSQ2Zlb1U5?=
- =?utf-8?B?TTBOWmtYbXRodFMrZ1RGbUhPOEhQSEpOaEtxbHQ4cno4WVloa04yOGluNXor?=
- =?utf-8?B?UWRHaHNXN3h5VmliSTAvNWZkb0xUSHNzTWUwS014ekdITUplTlczRFB2NEwx?=
- =?utf-8?B?RHFjU29laTNQV01UZFc4Q1NjTE55TklMMnROV0FENmZzNW45R1kwUHowSUQx?=
- =?utf-8?B?T2h3QVdxVS8xNmJjbUt5RXd0a3laNUlkeHZrR2FsdURQWGY2WFB5eVNRazAz?=
- =?utf-8?B?NGdhWDcvVTNsUERmSU9mYUFmaUs2alh0aGdrdnRiN1VzQ3NqNVVKUmh3dEV6?=
- =?utf-8?B?eGtsbThtVzE4N0VGb3A3Vy9jVGJBOC8xdGNDRWRoMlVSNkdqM2VVSkluczI3?=
- =?utf-8?B?dFBxVzBlTjNyd3kvTEpETVdXMHlqb2dIK2tuWkUxSUFDeGJUSDUweWExU0E3?=
- =?utf-8?B?UTZ0alFFcldrN1d3UXpuVjlzVVo2VnAvMUMxYUhYTDlvV2ExbmFXQjNuNGoy?=
- =?utf-8?B?OUtNRTJiWnlleWYvU2Y1Ny9RNlp4Z3BDUG0ySS9ndzE2czhxcWl1TE9FTU4z?=
- =?utf-8?B?YktvazdMQjArTWtZTW1Bcm4yeVIwQXg3Vkc1cFdwb1RYaUEySzM1aUxVZWhn?=
- =?utf-8?B?NkJ1YjV4OW92V2VjNVZzQ2VIYzV4WGEwQkUvVmYzdGlOcjNkbFdTVjRGamFK?=
- =?utf-8?B?TEdFT3RpZ2lOZ2xkOVV1ZXp3WTRoZzZkTnVLSUxJRlFFM0wrRlBuRk1ESkhD?=
- =?utf-8?B?UUlKY1E4NWE4UUdoUVNQZ1V0OGJ6cnA1bTVHdEtmZU5ZWGtMVFoxY3dxeldn?=
- =?utf-8?B?SzU0V2pINEhHSVRkMHVFb2xXdXRZbGh6RkVBNE9kOVlTeVZtZ1V4NkpDeXNh?=
- =?utf-8?B?K252MnNFZitBbjRPOVpwVldnUyt2bmxwLzJ4b0J0bDBIRjArWUg4cFBBbGYr?=
- =?utf-8?B?VlJzelQ1VnhkSkR2SmFZVWhsRWp1c1pHcjBrUFhIdURVNlpROEpqQ0dMbkZF?=
- =?utf-8?B?MFRjeDVpdUEySkgrK3M4VVcrbTZhNEt4YUNtVHg1VXFnYWhCQ1NUWG45U2Mx?=
- =?utf-8?B?MktvMklOaXhQRTdVMkRiTkQ5V2Z6cTl6NHNxTis0RTBmdTBxVWcreGM0dXVC?=
- =?utf-8?B?T2ZjVEJRSUtZekR2V0kybE0vMm5uLzVFWTFFRXdiZEg1am1BWlBXakR5SWFK?=
- =?utf-8?Q?Qr2XZr5ypqtUq1IE=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2d7e998-3936-479f-2775-08df04f567b7
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12558.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 11:13:36.5987
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XjcrjFIQ1cXjLDui778T2nijFvRotADGFYrttUTJ4UlLKz9+bcydziF3vb1NbjHQC5Qr8Kd30g1AdkfMjF+aVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8422
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260828-l1-conditional-imx-v3-1-6fbba62164d9@9elements.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NywrCMBBFf0WyNpJJTR+u/A9xkaZTO9KHJLFUS
+ v/dpCKIdHnh3HNm5tASOnbazcziSI6GPoxkv2Om0f0NOVVhMylkKjJIeAvcDH1FPoC65dRN3Mi
+ yrqTQKHLFwvFhsaZplV6un+2e5R2Nj6ZINOT8YF9rdYTIfQPFVmAEDlwrpVVWgDJpfi6wxQ577
+ w5m6FiMjPJHk8CmRgZNKiBFLOCYl/JfsyzLG+PCBvIRAQAA
+X-Change-ID: 20260713-l1-conditional-imx-c2bfd20ae085
+To: Richard Zhu <hongxing.zhu@nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3353;
+ i=michal.gorlas@9elements.com; h=from:subject:message-id;
+ bh=iFjL9XI9CHMHdv0QincBDDMEbFGBO5icuMXCstbvhdQ=;
+ b=owEBbQKS/ZANAwAKAWKaksyA3pPLAcsmYgBqkYjTmIJt8HzaDIwWBTuzO0XYQLVdHphGqgd9t
+ Ozgk/OH9HiJAjMEAAEKAB0WIQTgoC0bQQLz7jVH2W9impLMgN6TywUCapGI0wAKCRBimpLMgN6T
+ y9lAD/9Dpcx4rPTWIi/H3T+yE1CkO3UrBGGil0YZcJK6Nwmj5nficiQ2wPGBFmYcq5o3O18dOrj
+ g45HsYt22VGBm/SZttLS5SZE4Uum5hB0fl4nLEb+0YII3xG5CUfWZOoKS2+5/vOT9ifd6NS+8mo
+ fkvMprL8gXyydiPFz1egwgG2MTKlLrVzgsdMZqNxB5+FFcpVOBb25NHijfYQKJAdmf8NSy2oOme
+ AShDxz3D8et5fE4nbWbw1TnAIFzaQJ9W2toAusfgFVs7UP4luI7nchOOKZMxDlCJxtYpdCM1l7w
+ 27lExhbVWpxcGxgha4JKvc3dhc3ZtJFSAYPnjhZyQkDZZXjDlmINs1+zdrJKttfENCUuO8Hp3N9
+ nnHCBcvVDSoFRcHyMfpxQ7fbCL9BX7Rc0TGgEmOjfpOo/x/fdnGgyP+Yst8k/s7pREkYW7kuDLe
+ xzrMrpCAQZ77ObhdrrNdzCQk3X4K+/LA0DeWhqY6Xx8+47gT5dhR9r3LdF0DwCzrPgGS+Q5wU6I
+ KbXSiPeptwyiNId8PSIwsoXI8Wg5NobJkh+7BhjaZz26fTznFtYbbHUEttjdGhSGP4PWU4RP29S
+ ypzhaVjUk98wp/0mbjFBz2vbvDTLo35xAebud6sOsNouJE79S92U/t6NWA9dEmTaLq1AgzOG05f
+ x7dsOOE2HhA/VKQ==
+X-Developer-Key: i=michal.gorlas@9elements.com; a=openpgp;
+ fpr=B4EB74EA41969D1140A4D1791596726986433F8C
 
-On 8/27/2026 6:00 PM, Stanley Jhu wrote:
-> [You don't often get email from stanleyjhu@google.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> On Wed, Aug 26, 2026 at 03:40:41PM +0200, Larisa Grigore wrote:
->> [...]
->> diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
->> index c2dafb583cf5..034ee988924a 100644
->> --- a/drivers/ufs/host/ufshcd-pltfrm.c
->> +++ b/drivers/ufs/host/ufshcd-pltfrm.c
->> @@ -563,6 +564,84 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
->>   }
->>   EXPORT_SYMBOL_GPL(ufshcd_pltfrm_remove);
->>
->> +/**
->> + * ufshcd_check_hibern8 - Check if all TX lanes entered Hibern8 state
->> + * @hba: host controller instance
->> + * @num_lanes: number of TX lanes to check
->> + * @timeout_ms: timeout in milliseconds for all lanes
->> + *
->> + * Return: 0 on success, negative errno on failure.
->> + */
->> +int ufshcd_check_hibern8(struct ufs_hba *hba, unsigned int num_lanes,
->> +                      unsigned int timeout_ms)
-> 
-> Hi Larisa,
-> 
-> Thanks for the great cleanup!
-> 
-> Would you consider moving this helper to drivers/ufs/core/ufshcd.c and
-> renaming it to ufshcd_dme_check_tx_hibern8()?
-> 
-> Since ufshcd-pltfrm.c primarily handles platform device glue and DT parsing,
-> polling M-PHY states via DME commands would fit more naturally in the UFS
-> core. This also keeps layering clean and allows non-platform controllers to
-> reuse it.
-> 
-> Additionally, the ufshcd_dme_ prefix would align nicely with existing DME
-> conventions in ufshcd.c while avoiding potential confusion with
-> ufshcd_is_link_hibern8().
-> 
-> Thank you,
-> Stanley
+Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
+states for devicetree platforms"), ASPM states are force enabled
+on all devicetree platforms. This causes PCI devices on some i.MX SoCs
+(for e.g. i.MX 8M Plus Kontron SMARC eval carrier) to enter L1 even
+though CLKREQ# is not supported (and consequently supports-clkreq is
+not set in pcie controller node of their DT), which causes the device to
+never wake up from L1.
 
-Thank you for the suggestion, Stanley!
+Hence, disable L1 capability in the LNKCAP register if supports-clkreq
+is not set in the DT explicitly. For devices that set
+IMX_PCIE_FLAG_BROKEN_SUSPEND, disable L1 on resume as well, as these
+skip imx_pcie_host_init().
 
-Sure, that makes sense. I'll move it to ufshcd.c and rename it to 
-ufshcd_dme_check_tx_hibern8() in v2.
+Note, the logic here is very similar to 613f3255a35a, only difference
+is that leaving L0s enabled does not cause issues (at least
+I never encountered them myself when testing on the device) as its
+not dependent on CLKREQ# being physically there.
+Since there is already a way of specifying its presence in the DT,
+the driver should be aware and disable L1.
 
-Regards,
-Larisa
+Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+Signed-off-by: Michal Gorlas <michal.gorlas@9elements.com>
+Tested-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v3:
+- pick up the reviewed-by tag
+- Link to v2: https://patch.msgid.link/20260827-l1-conditional-imx-v2-1-40b324aa2a94@9elements.com
+
+Changes in v2:
+- disable L1 unconditionally on resume for platforms advertising
+IMX_PCIE_FLAG_BROKEN_SUSPEND (Sashiko)
+- typos in the commit message
+- Link to v1: https://patch.msgid.link/20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 98e1db751132..1fdcbcd2422e 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1318,6 +1318,22 @@ static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
+ 	}
+ }
+ 
++static void imx_pcie_disable_l1(struct dw_pcie *pci)
++{
++	u32 val;
++	u8 offset;
++
++	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++
++	dw_pcie_dbi_ro_wr_en(pci);
++
++	val = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
++	val &= ~PCI_EXP_LNKCAP_ASPM_L1;
++	dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, val);
++
++	dw_pcie_dbi_ro_wr_dis(pci);
++}
++
+ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+@@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+ 
+ 	imx_setup_phy_mpll(imx_pcie);
+ 
++	if (!imx_pcie->supports_clkreq)
++		imx_pcie_disable_l1(pci);
++
+ 	return 0;
+ 
+ err_phy_off:
+@@ -1748,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *dev)
+ 			return ret;
+ 		imx_pcie_deassert_core_reset(imx_pcie);
+ 		imx_pcie_assert_perst(imx_pcie, false);
++		imx_pcie_disable_l1(imx_pcie->pci);
+ 
+ 		/*
+ 		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
+
+---
+base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+change-id: 20260713-l1-conditional-imx-c2bfd20ae085
+
+Best regards,
+--  
+Michal Gorlas <michal.gorlas@9elements.com>
+
