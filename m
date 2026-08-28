@@ -1,254 +1,283 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F26C46D09A
-	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 14:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787928611; cv=none; b=b9eVzzt9ZjAWgGhMaTeSdFv8T3nOoHkEJNh7FJYA6liUuKOgX2kQTc+bBQEvpx73pLuLQIOR3Hs3z2rY5pkUYxPE8heNqeNcNrB2ccSv83cB8LQUFAVGm42qAxSh1QrV3k8vT750drTojA8XgCMSEjhyG04j2xNFMDsB61EFpT4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787928611; c=relaxed/simple;
-	bh=YnWdCCD1qxKEg7762yorNJg/ecsxeveY3xQED7Gsy64=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AeLjvSkQ+96gASDVe/1u9mb4My7ruv6dXVkcJhFYCJdR6CdKiGgTSIYm5OSyUxb82jlPAeNCZUlaGjGSS2z9jc3YTZ3DQSmEmLJEB2D6lefhYgDsLsHrji9Sopek2zlZUlgg0vycgR2JWEu2vX504fQAImtL30XcdtmpG/GHfRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dnExEQ/t; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dsBlPNFe; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715903A4505
+	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 18:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787941798; cv=pass; b=NP1ZE32zPI/ZNM3geS0lZ4kfAsCgmN0/T+Cfgm00AdE6xSLxLn8zZjTxk8ZAWPjZLsACL7ugeuEDApHqV4VPJm7/Jx3c6tswBC0DD/gzLZqdV4KHOCp4grnwjF4wx7TneHIfFw6SWoBpHQXdhsPEE5+OB6jYJrGC5Q711Qhy8BU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787941798; c=relaxed/simple;
+	bh=7s8SHlsqyt2AUfFDcYfnHSUF9xCjR4O62YhHFP5HeT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PeUIXkYz9xMxX7WxWQIhHD40tJZNy7UjF6y5fLGJqZETx2KT4d5RzLP5ikhrFa0XjhfulTtVNHEVc75X+7UHfjhIs0vQflgrUhULtdV1FqS+5sexhN1dHCy16Crp+ICPQqJyNW0EWhVRcYk4esfjlyspxhj98Ft5Zl5U1arwQKg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q1SoknZe; arc=pass smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dnExEQ/t";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dsBlPNFe"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67SDkcO73075326
-	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 14:50:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	hMfz7Vhc8U0TsC57RZ2pmSfybZVbiyDGTC2Y9/EyfeQ=; b=dnExEQ/tkR3FHbuq
-	C2YHv9pwKXa5wkI0RGBfLdmjTG7PffoW9MPOAlMpDvx/OkD0LqTDT6tIMnRcPd3y
-	XmsN0OV1ML92ZCGkNvH9VB2ZunDL9+rnQWtx8jJNztfHN0wINeOm7iCBUPOkcz7z
-	+PSO6d/pwvYp7vSRni5VRqAVJmF1lL25bu7oK2G5wC1eDhwpa/dzegkWvgc4a2e/
-	ddYmqKrI6WZCazeJDUq6ssxzv3nqSTGFJSaQU6NmNLAcaYrJrseun4PmVCD112vd
-	Tksj/4RUsVn67ZuQ6vK89u8rqQEHOioUdN0KOLGCKOqGfrf9P/mYMbNCtcz+BY2A
-	3t7rKw==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gb1v3asf5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 14:50:09 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-385d2703b64so2764749a91.1
-        for <imx@lists.linux.dev>; Fri, 28 Aug 2026 07:50:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q1SoknZe"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-482e1bfcc63so986323f8f.1
+        for <imx@lists.linux.dev>; Fri, 28 Aug 2026 11:29:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787941795; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cEYfh/HxTBmdIA4y8O16hg/ae4WLTeNFDuz48yJeCO8WM5eAbryEOLQfzj2fUf2xj2
+         EMg5zchhmhpVzbKni/+QEGq9B8NusANg1UE2AJk/XAZyy+fKQ9HOArn7/ujt11e9QR80
+         qFvNLBU3gyvuGgIJOyq7P4daVuZWEWMtbxUD6iFxnZpMzrgOdQOQ6OmIgG/S39uyqxlq
+         5aU1PbWGjvQYLVmdlvo+pPeHLCVfJFA4XohEXBRxyVFFl6+1wBQstbl6dF1whfWNX1AS
+         iUPYUwzLmOFQ4WzgxVfxe+4lgRSYEbD0AuK54+76+74dNo7gMlE26TDhnS9ZSxW6h/an
+         XA7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5YJ1kkWNwVyHRN4faZGYbumWsclnmyXO2DH4mLRwZU0=;
+        fh=Hmeg1TjAzndw+p6wO2JgWcqswn8Otq7Ltx70fKp4SbA=;
+        b=SK/mtNkIn2XI1pJNW9g/AktLqLUFnifon0TxLxbUj28lWAw8XcCSbBs7wuJ6cEqSFz
+         WBMQTeDPknpGwY1dMEo1BYJtfZk4p8kbcFHfGUayGVKFkAHgq+UsocdDVRvO3FdRdxf9
+         fcagR4DDlRmTmW16GPOpBlKTh99Md/Q57bcs46rAt0c2X9Rswa0DhIIbFlgMTFVXSLiK
+         Na1RuwJ1WP3FYvMpj5Ay9vttDtaXXZPs3VekxcYLz7rOj4MrGnMDd37R4C5UOh/aq+Ew
+         dPf+nZPIga1cx2BdfloDFmfDXPSXiCy+5oFAHTrWZtfL3L86ZSUp97FRxzzb5MDyJNVh
+         nSyA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1787928608; x=1788533408; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hMfz7Vhc8U0TsC57RZ2pmSfybZVbiyDGTC2Y9/EyfeQ=;
-        b=dsBlPNFeNK0MHBkFSkkjJhVZzgOPfD8l+4vz5bBf7yM+kVeacEhYZUodBMACAiVqv6
-         CCTfim4zettsSfLH/oD2uU28Apr6IWplPGhb3DyMGcGdcnI37QaaLqwX8y+EWq1qigVR
-         vHABXLSOzGUcrSdF9S5M7KFRwRk9trnE5+XuoP0/cyRAakSxqvEo8hDWOSgW/hfrGdOi
-         rQoqN7jpjPfwFUlmOoIQnIubJvjYFE2YWP1pCNdv4zxRuKZMnpw24ZqhgrzyoQFfScn5
-         q9bgCbctt+owUl6b2fYs+F0pNZyiEvJ4uLUaznhciAfwGFDkUTro4MxX+bK+Y70hgsLo
-         QmqA==
+        d=google.com; s=20251104; t=1787941795; x=1788546595; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5YJ1kkWNwVyHRN4faZGYbumWsclnmyXO2DH4mLRwZU0=;
+        b=Q1SoknZejbF5LzZh6bM9HnZcV429G1yLRQfYZ9v+bcGx5lpS52e4YpGwBHs8DyAVK1
+         mklLya+IOSeEL7+Oa9BNTB4obZoZJNzSJmEPd8CRH4noEzeK3YlHwNYwk4rLKMOo66gL
+         aV8K399Z3B5/dSNVKdRXIQXRbgY/QYwGVowel+HbAKX7YndPXMGkX9Ie2xHuQeONtgkI
+         H962L3H3NmowbH7eOkm3mtudTNI3fwgmkCu8D7et6mNZ0LwhlkdOcMe2ERQm5lcV3M0i
+         HfLYWXYVarkupOPcW7IAmYnBAqptUM4wvo+EE42T30xkf8e7+ohBcLABvvPEsUGZ3kyV
+         Zivw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787928608; x=1788533408;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hMfz7Vhc8U0TsC57RZ2pmSfybZVbiyDGTC2Y9/EyfeQ=;
-        b=PP4eOWzTg6cvTUVwtunPYVx0BRJ049G60nwlNQ0WvMjrnXvPSskY7ciF7UJb4CUGZn
-         SywIPnF+D2ZjBqiplN3gJjW5pirjXyqfvbXPWI385WCQexyMoofR2MWQL62FSJWFy/0b
-         SwMjeB+Vyfgs4H2nqp4ZF1RtzHsrGwfXsNYycf27+LGMiDN72HuaUDu2MOvptOX/q/4j
-         ED55KC+Fp4I6SAvmHwPgpVZHJbAf91R2GrMY3YLZGka0JUUeX0tdijf2mTr0o8qPdqaz
-         YgcUTu9v81KiOgvehnnuevyqUxbM15kChoO2+v2VIHl8a+hmTljyDVDcbybyHG6WQJp1
-         StYg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqf72UP3antN/JSjl39oNcJ5c04Ob414QN+ZTKg3qJQL3g+PazCjj4AdOdDDKNoa2ck4A8=@lists.linux.dev
-X-Gm-Message-State: AFuF++kjK4UoKmbNeDazPJAqwyAI5/Gj5iwKEox0033+ymBTg47HNG3P
-	biLD6eCXjVc4ERiSIFTmmsOk3NXvkq3WiuW0Odx5tWiWZgiwMKl6ZOlw486q/T6AMNQyy6qKo1A
-	M3CV/VLc45bob8xnbMishowJbTzMGXZr21cwMIOtVcc0x09t45F86L6I=
-X-Gm-Gg: AR+sD11QRDz7vc85mXdWe1esRn/3weQkZ0GC5b+KStNLmz7LOtRkIncxCpwRbiUVmjm
-	pdbH2MB7Ffu1qowT1Ckhp9lkdy+4aIpAwWEzbASdF8zO2MzSVNx6+H7yBbafBh1ZEjb6Mejw3jW
-	1sjxcGBzSHXHJ9SWFEN3929KmHuhBU5wELTdlFglVQ/dDQCYXXt4N9kM3G0bYfgC24mzfv9TI4q
-	Wx3bltgrCsWedycmHVURFbuXksJkUIS/kiIK87Z21rGa698hFhBWZ7KlJPDhLXwb4QskunUVrWA
-	hnCbzqbMihxvTSWFLXVVzBoS+Ss3pL7M1ZISLwdrkUAy2Hp7wMj6VOEh6WmwtP8JSSWTL+0CxRc
-	GX7c7x5PsLXbFWN8i7Gog17Kdkw2KuDh5fA==
-X-Received: by 2002:a17:90b:4d88:b0:398:9bd3:d6d4 with SMTP id 98e67ed59e1d1-3989bd3d8c8mr344656a91.14.1787928607882;
-        Fri, 28 Aug 2026 07:50:07 -0700 (PDT)
-X-Received: by 2002:a17:90b:4d88:b0:398:9bd3:d6d4 with SMTP id 98e67ed59e1d1-3989bd3d8c8mr344578a91.14.1787928607246;
-        Fri, 28 Aug 2026 07:50:07 -0700 (PDT)
-Received: from [192.168.29.63] ([49.43.230.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d6925e92sm1131305a91.2.2026.08.28.07.50.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Aug 2026 07:50:06 -0700 (PDT)
-Message-ID: <aabc3dbd-3e5b-4272-807f-f0743606e25a@oss.qualcomm.com>
-Date: Fri, 28 Aug 2026 20:20:00 +0530
+        d=1e100.net; s=20251104; t=1787941795; x=1788546595;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5YJ1kkWNwVyHRN4faZGYbumWsclnmyXO2DH4mLRwZU0=;
+        b=Ln7oTZjxEZPexShRELhZgIs60hStiCFZVZlRO6ml4pWdtdb9Sg9fvIPRK6NDPhiQ5j
+         1V7KCucGAyD+mFrQJo98/YN8i+6mtvv8FVmlZAj4YsBS7Qs5Z6TNzdxR50a/oVfgNn/f
+         fzmpCT86TnvAnalUSrAK9d9o3HDEKNjm+T7XbAAWVV88NTHJ45luU2TObiVBLARX5A2n
+         mxAnX4waZNKhDt5uOOOyr75F0M9TrOukjN5t1sh4xXBfTNjZmFPQaZwmCXOXQqP8/lJP
+         3VfezMR2MfBx0hl7lwEZYpAR1EXf1nQfiRZj5tfpnw7QL2j7GOo2pwCwdIr+p7/cjetJ
+         slQA==
+X-Forwarded-Encrypted: i=1; AHgh+RpTLxKFdRbNWHTJSCdAl6iMepbzLaFQwxcukHum9bGlAsu1Dz4AYxFHxoSzggfygsNb1/Q=@lists.linux.dev
+X-Gm-Message-State: AFuF++lmEVvo3Si1zgSvyoVeqKddhc2kI1xoIxADeQpCosjEDWsaKM1Y
+	QKd3SX0WVdOlaA/e3MH8e/9NNQehDT9YeuVLxN3dkiDH8NGa10rg/nATwnYHD/JNeIKoJYSpOqT
+	ZyZSEPQh1UUWIWbo8dtkjfszns3zUEJ/ZZedJo5PP
+X-Gm-Gg: AR+sD11ieeDvsZ2lq3hf/U43bnyI6X7d5ziB+eLOGIYlO2AIaJ4+jaoHBGFkbqlX7fZ
+	praRJr7Z6iQ85l6sFs12h/EHB8WGrYYgSrPL/BCuAG1inDLlcq51m67XbxMxpvJRVwEqSGXzGS5
+	x2pxCdf5lPCw1hXP63UXLajGaDENGFAArgwlFm1JJXN34nvThw32aJZxJszDidkIpZ7X2qBUZLg
+	oSwvVBIfLyy2+Np6AcB2398fyP2dOiiPdbYRNuarP5nqbXaPM3BwBPzhNzz6ETkF7zlIPQE9xJ3
+	qVBEdTJ1bLUOI08/CKTnK3fStmNCr9oAEQD6iXMPhNNWJgok8Mg8Md2DjQeYXoAfkoiEwvkihC3
+	bNJA/84Mamu4iJygK+GHxHpCQP5g8ZPFMKkIUywtLczzv2fek86KR2hd+0w==
+X-Received: by 2002:a05:6000:25ee:b0:482:ea3e:882a with SMTP id
+ ffacd0b85a97d-482eab75e7dmr25940329f8f.6.1787941794160; Fri, 28 Aug 2026
+ 11:29:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is
- supported
-To: Michal Gorlas <michal.gorlas@9elements.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260828-l1-conditional-imx-v3-1-6fbba62164d9@9elements.com>
-Content-Language: en-US
-From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-In-Reply-To: <20260828-l1-conditional-imx-v3-1-6fbba62164d9@9elements.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDEyOCBTYWx0ZWRfXzehFN30zNtXr
- +t3tyv/Y8w8nq7TQfnIdctcfGFWxI89ZA0JCALkoEYw/jZX+WnVII9NmsAAbJGc1Q6RFdVXgWZn
- Jfe6newyXdSfRRuupmk2lX4CXpAo811XsmXmM8YabeWe8AgdRN8aYQpGypCX6J5GTZlldu0OzFw
- Nz1T2Dv4kZXcAjUA+D9EUM4OJv2J86EPru7QwB6PWXOK5ru0eAp32SgZR+hR5B8/nFG2z0AUBh+
- bcPIptja+n4/LHq2jboEm6YxMDgNqsFYp8/SG3ike4ZjuaW3Eyenvx6z0CVNAYUTJtbhQXM6/0X
- c+cWd2fV8z5EHkBL3T9ZLxADsB0dNJo7HDY55MsPplkET7dZ0Wl8uwM8h7JIPb06loYewt7HGAj
- IJp4/K/OG8MrsXNJbnbGzpTZuk8uN/duY/0Ngkw2YwKUuNh4BDs8pkUOERDohSC3kXNUwu8MLz6
- 4T9XA/7LTWdC6HAz7VA==
-X-Proofpoint-ORIG-GUID: uu9rG1sQAL7QXF434-5rOyaex4afu9ii
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDEyOCBTYWx0ZWRfX54OFeDgIrVf5
- SoC+rl3GZ7ZDPhlsAQyx/jxcQWTgu+TgZ2dGosyT3f+uvbPTjFz22lSDMPXo8xCZk8i+vxvY//M
- 1HS9DeYJvzSIWyr4BHxKkcyy8eWveS8=
-X-Authority-Analysis: v=2.4 cv=faedDUQF c=1 sm=1 tr=0 ts=6a91a021 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=LZewZZGB/thYnPi3wayTIg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=YG64nluAAAAA:20 a=VwQbUJbxAAAA:8 a=bC-a23v3AAAA:8 a=PzGKxP3WAAAA:8
- a=8AirrxEcAAAA:8 a=kMM-w56GI0ZO-asq7NAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22 a=FO4_E8m0qiDe52t0p3_H:22 a=zCCnohV0i-_k6euCn0hJ:22
- a=ST-jHhOKWsTCqRlWije3:22 a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-GUID: uu9rG1sQAL7QXF434-5rOyaex4afu9ii
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-28_04,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 phishscore=0 spamscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 malwarescore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608280128
+References: <20260718111340.159896-1-linux@yoavmoshe.com> <20260827194508.446733-1-linux@yoavmoshe.com>
+In-Reply-To: <20260827194508.446733-1-linux@yoavmoshe.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Fri, 28 Aug 2026 11:29:42 -0700
+X-Gm-Features: AcwNN1Wo8FotnJAZ3x2qyZAW16XADYe-Cm0K9lnOHcg75ObfT4YQxREeCDOy8I4
+Message-ID: <CAKwvOdkSZBbq=e916=efx8G-CTzZ5b31AhyUytO6eJjjkEdMow@mail.gmail.com>
+Subject: Re: [PATCH v4] ARM: imx: Fix suspend/resume crash with Clang CFI
+To: "Yo'av Moshe" <linux@yoavmoshe.com>, Sami Tolvanen <samitolvanen@google.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Russell King <linux@armlinux.org.uk>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On 8/28/2026 6:40 PM, Michal Gorlas wrote:
-> Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
-> states for devicetree platforms"), ASPM states are force enabled
-> on all devicetree platforms. This causes PCI devices on some i.MX SoCs
-> (for e.g. i.MX 8M Plus Kontron SMARC eval carrier) to enter L1 even
-> though CLKREQ# is not supported (and consequently supports-clkreq is
-> not set in pcie controller node of their DT), which causes the device to
-> never wake up from L1.
-CLKREQ pin will not play any role  in entry and exit L1, it will be used only for
-L1 sub states entry and exit.
-
-If you want to disable L1, try to add aspm-no-l1 property in root port[1].
-Recently aspm driver change was merged which will disable L1 if that property
-is present[2]
-
-[1]: dt-schema/dtschema/schemas/pci/pci-bus-common.yaml at main ·
-devicetree-org/dt-schema
-<https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pci/pci-bus-common.yaml#L167>
-[2]: Re: [PATCH v6 0/3] PCI/ASPM: Mask ASPM states based on Devicetree
-properties - Bjorn Helgaas
-<https://lore.kernel.org/all/20260812023735.GA846004@bhelgaas/>
-
-- Krishna Chaitanya.
+On Thu, Aug 27, 2026 at 12:46=E2=80=AFPM Yo'av Moshe <linux@yoavmoshe.com> =
+wrote:
 >
-> Hence, disable L1 capability in the LNKCAP register if supports-clkreq
-> is not set in the DT explicitly. For devices that set
-> IMX_PCIE_FLAG_BROKEN_SUSPEND, disable L1 on resume as well, as these
-> skip imx_pcie_host_init().
+> The suspend code that runs from OCRAM is copied there with fncpy(),
+> which does not copy the kCFI type hash preceding the function. With
+> CONFIG_CFI=3Dy the indirect call through imx6_suspend_in_ocram_fn
+> therefore panics.
 >
-> Note, the logic here is very similar to 613f3255a35a, only difference
-> is that leaving L0s enabled does not cause issues (at least
-> I never encountered them myself when testing on the device) as its
-> not dependent on CLKREQ# being physically there.
-> Since there is already a way of specifying its presence in the DT,
-> the driver should be aware and disable L1.
+> Keep the call covered by CFI instead of exempting it:
+
+Nice!  This is a pretty good progression.
+
 >
-> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> Signed-off-by: Michal Gorlas <michal.gorlas@9elements.com>
-> Tested-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> - Declare imx6_suspend() with SYM_TYPED_FUNC_START() so a type hash
+>   is emitted for it. fncpy() requires the entry point to be 8-byte
+>   aligned, and the macro's alignment applies to the hash rather than
+>   the entry that follows it, so pad manually before the macro.
+>
+> - Add a cfi_type member at the end of struct imx6_cpu_pm_info, which
+>   directly precedes the OCRAM copy of the function. It fits in the
+>   struct's tail padding, so no sizes or offsets change. Fill it using
+>   cfi_get_func_hash(), putting the hash where the caller's CFI check
+>   expects it: four bytes before the function entry.
+>
+> Also mark ccm_base, suspend_ocram_base and imx6_suspend_in_ocram_fn
+> as __ro_after_init: they are only written during __init, and the
+> function pointer in particular should not be writable afterwards.
+>
+> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yo'av Moshe <linux@yoavmoshe.com>
 > ---
-> Changes in v3:
-> - pick up the reviewed-by tag
-> - Link to v2: https://patch.msgid.link/20260827-l1-conditional-imx-v2-1-40b324aa2a94@9elements.com
+> Tested on a Kobo Clara HD (i.MX6SLL) running postmarketOS
+> (clang/LLVM, CONFIG_CFI=3Dy): suspend and resume work.
 >
-> Changes in v2:
-> - disable L1 unconditionally on resume for platforms advertising
-> IMX_PCIE_FLAG_BROKEN_SUSPEND (Sashiko)
-> - typos in the commit message
-> - Link to v1: https://patch.msgid.link/20260719-l1-conditional-imx-v1-1-a55a57915c68@9elements.com
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+> Changes in v4, all following Nick's suggestions:
+> - Drop the v3 __nocfi wrapper; keep the indirect call CFI-checked.
+> - Store the hash in a cfi_type member in the struct's tail padding
+>   instead of open-coded pointer arithmetic.
+> - Use cfi_get_func_hash() instead of reading the hash manually.
+> - Use SYM_TYPED_FUNC_START()/SYM_FUNC_END() instead of ENTRY()/
+>   ENDPROC() with a hand-rolled __CFI_TYPE.
 >
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 98e1db751132..1fdcbcd2422e 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1318,6 +1318,22 @@ static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
->  	}
->  }
->  
-> +static void imx_pcie_disable_l1(struct dw_pcie *pci)
-> +{
-> +	u32 val;
-> +	u8 offset;
+> Note: linux/uaccess.h is included before linux/cfi.h because
+> cfi_get_func_hash() uses get_kernel_nofault() and cfi.h does not
+> include uaccess.h itself.
+
+Ah, no, we (you) should fix that. include/linux/cfi.h should IWYU.
+
+>
+>  arch/arm/mach-imx/pm-imx6.c      | 25 ++++++++++++++++++++++---
+>  arch/arm/mach-imx/suspend-imx6.S | 14 ++++++++++++--
+>  2 files changed, 34 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
+> index a671ca4..2d3d3cd 100644
+> --- a/arch/arm/mach-imx/pm-imx6.c
+> +++ b/arch/arm/mach-imx/pm-imx6.c
+> @@ -4,6 +4,8 @@
+>   * Copyright 2011 Linaro Ltd.
+>   */
+>
+> +#include <linux/uaccess.h>
+> +#include <linux/cfi.h>
+
+This is a bug in include/linux/cfi.h; don't work around it. Fix it.
+
+>  #include <linux/clk/imx.h>
+>  #include <linux/delay.h>
+>  #include <linux/init.h>
+> @@ -61,9 +63,9 @@
+>  #define MX6Q_SUSPEND_OCRAM_SIZE                0x1000
+>  #define MX6_MAX_MMDC_IO_NUM            33
+>
+> -static void __iomem *ccm_base;
+> -static void __iomem *suspend_ocram_base;
+> -static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase);
+> +static void __iomem *ccm_base __ro_after_init;
+> +static void __iomem *suspend_ocram_base __ro_after_init;
+> +static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase) __ro_=
+after_init;
+>
+>  /*
+>   * suspend ocram space layout:
+> @@ -229,8 +231,18 @@ struct imx6_cpu_pm_info {
+>         struct imx6_pm_base l2_base;
+>         u32 mmdc_io_num; /* Number of MMDC IOs which need saved/restored.=
+ */
+>         u32 mmdc_io_val[MX6_MAX_MMDC_IO_NUM][2]; /* To save offset and va=
+lue */
+> +       u32 cfi_type; /* kCFI type hash of imx6_suspend() */
+>  } __aligned(8);
+>
+> +/*
+> + * The ocram copy of imx6_suspend() starts right after struct imx6_cpu_p=
+m_info,
+> + * and the CFI check on the indirect call reads the kCFI type hash from =
+the
+> + * four bytes preceding the function entry, so cfi_type must occupy the =
+last
+> + * four bytes of the struct, i.e. fit into its tail padding.
+> + */
+> +static_assert(offsetofend(struct imx6_cpu_pm_info, cfi_type) =3D=3D
+> +             sizeof(struct imx6_cpu_pm_info));
+
+on this IWYU thread, shall we also include linux/build_bug.h for
+static_assert or linux/stddef.h for offsetofend?
+
 > +
-> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +
-> +	dw_pcie_dbi_ro_wr_en(pci);
-> +
-> +	val = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> +	val &= ~PCI_EXP_LNKCAP_ASPM_L1;
-> +	dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, val);
-> +
-> +	dw_pcie_dbi_ro_wr_dis(pci);
-> +}
-> +
->  static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+>  void imx6_set_int_mem_clk_lpm(bool enable)
 >  {
->  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> @@ -1442,6 +1458,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  
->  	imx_setup_phy_mpll(imx_pcie);
->  
-> +	if (!imx_pcie->supports_clkreq)
-> +		imx_pcie_disable_l1(pci);
+>         u32 val =3D readl_relaxed(ccm_base + CGPR);
+> @@ -568,6 +580,13 @@ static int __init imx6q_suspend_init(const struct im=
+x6_pm_socdata *socdata)
+>                         mmdc_offset_array[i]);
+>         }
+>
+> +       /*
+> +        * Mask out the Thumb bit, as cfi_get_func_hash() expects the
+> +        * function's actual start address. Returns 0 if CONFIG_CFI=3Dn.
+> +        */
+> +       pm_info->cfi_type =3D
+> +               cfi_get_func_hash((void *)((uintptr_t)&imx6_suspend & ~1U=
+L));
 > +
->  	return 0;
->  
->  err_phy_off:
-> @@ -1748,6 +1767,7 @@ static int imx_pcie_resume_noirq(struct device *dev)
->  			return ret;
->  		imx_pcie_deassert_core_reset(imx_pcie);
->  		imx_pcie_assert_perst(imx_pcie, false);
-> +		imx_pcie_disable_l1(imx_pcie->pci);
->  
->  		/*
->  		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
+>         imx6_suspend_in_ocram_fn =3D fncpy(
+>                 suspend_ocram_base + sizeof(*pm_info),
+>                 &imx6_suspend,
+> diff --git a/arch/arm/mach-imx/suspend-imx6.S b/arch/arm/mach-imx/suspend=
+-imx6.S
+> index 63ccc2d..f60c4e5 100644
+> --- a/arch/arm/mach-imx/suspend-imx6.S
+> +++ b/arch/arm/mach-imx/suspend-imx6.S
+> @@ -3,6 +3,7 @@
+>   * Copyright 2014 Freescale Semiconductor, Inc.
+>   */
 >
-> ---
-> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
-> change-id: 20260713-l1-conditional-imx-c2bfd20ae085
+> +#include <linux/cfi_types.h>
+>  #include <linux/linkage.h>
+>  #include <asm/assembler.h>
+>  #include <asm/asm-offsets.h>
+> @@ -148,7 +149,16 @@
 >
-> Best regards,
-> --  
-> Michal Gorlas <michal.gorlas@9elements.com>
+>         .endm
 >
+> -ENTRY(imx6_suspend)
+> +#ifdef CONFIG_CFI
+> +       /*
+> +        * Pad the location counter so that the type hash emitted by
+> +        * SYM_TYPED_FUNC_START() below ends on an 8-byte boundary:
+> +        * fncpy() requires the function entry to be 8-byte aligned.
+> +        */
+> +       .align  3
+> +       .4byte  0
+
+I still don't like these assembler directives inline like this; this
+feels like we should have perhaps a new macro in
+include/linux/cfi_types.h. Thoughts, Sami?
+
+One that garuntees the 8B alignment of the symbol for w/e that
+function patching routine requires?
+
+> +#endif
+> +SYM_TYPED_FUNC_START(imx6_suspend)
+>         ldr     r1, [r0, #PM_INFO_PBASE_OFFSET]
+>         ldr     r2, [r0, #PM_INFO_RESUME_ADDR_OFFSET]
+>         ldr     r3, [r0, #PM_INFO_DDR_TYPE_OFFSET]
+> @@ -329,4 +339,4 @@ resume:
+>         resume_mmdc
+>
+>         ret     lr
+> -ENDPROC(imx6_suspend)
+> +SYM_FUNC_END(imx6_suspend)
+> --
+> 2.55.0
 >
 
+
+--=20
+Thanks,
+~Nick Desaulniers
