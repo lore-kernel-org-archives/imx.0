@@ -1,118 +1,122 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CC33C1D77
-	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 05:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E50200110
+	for <imx@lists.linux.dev>; Fri, 28 Aug 2026 05:35:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787894115; cv=none; b=T+QkOU8okVYTkADVOPehtD7dOip9U3OVZd1CLzEkk/BSM3O5g7qdReNABP6MORtZL3QIARmUGa0+gZ3N4eM1zFMJVIQGnmyB4ZQcGyiCt42CrQ+nZq2qdWYQeSqsyLPzyu2/sNB9Css1KEFyupXoHrsM7bt879CkWA8sqwaATW4=
+	t=1787895347; cv=none; b=eHqV++V6pY+7TNbh1PT0uwdZqgxP0NB6GHq5V94Ykw29i8UIw4i7US4WS5r3Ihd3LyRIgzfFoE4z7OvfAQD6Z3Mjb8xIpXpOApzjMGp685foJponbXjTJSLwYiEljldfX2OzFAXYC/C64d7LGRS+ss4k9CjqQpEB6xMUzMlIGB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787894115; c=relaxed/simple;
-	bh=ooNpW8JTLerSSYS5oKKFbYXh2GfP0xI8kf0/srn2Jwk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lVQROexeD52IdwT10kBy2F9AfJp88BxpxSOleswp/KBIMf2pRv3E26aHx9mb+1M7MRxVPlHHlnXj0gI3y6cayBI5A3m6pHCsXLqYURoh4ncUpNLyPU6h2VrMu7EEb7SCMc/nOUZbAeqD0jwppD7uBf3JzWYBBgE0i6T9pyxNVfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OLDR25Lq; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787895347; c=relaxed/simple;
+	bh=C9HWFbTJ5a3RytJIdO3ryUw66MsO7UNIcph+30YX+hs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ClYbGLlGOB/X0L36VijGoGjihWbSpVWFY1sdIGw9TWKkWpq5S2ga5kkiRnn9tJctASmBx8RARn8ZNZwpxMsqSXTy+JWLoxYJoy54Ga7tWjFtGGh+Q3cFLk26BPkg60rbFdU/KyC1dfHbrqXlQgqxMqaNxeJrVGqBxWioElmPNkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ImN2IbT8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OLDR25Lq"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cacb8416a1so6028475ad.1
-        for <imx@lists.linux.dev>; Thu, 27 Aug 2026 22:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787894113; x=1788498913; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+L5wETtDoWmts2CARQJ7hOgr0xkLRcjESgYRsPtYLoQ=;
-        b=OLDR25LqrJUys7ukXgiqfU3i1piwyC4ICSMI0JDtrcOSDoi53RmykRINmVZ7QFGUTX
-         u233EPKkwDLw/FGgrJ7LjwufISi29rDF+CGjdU3FKEUwxpqYVDAmIc5ORdUnYZlNiH+K
-         hdld+OFA7MMCGMvgdQO8Ak0OlTRlQCPFsXHI9wLKxTDgWqbrEQyXU/i7jii2SuH++k9W
-         7D++LSrmHkyQ86psOV+kN+Ib8gaEpsGMfg+gxyGP3ufIn5nEizh66/JuPknuy1lGgdNf
-         ACx8BYwsfqE10+QgtlZ1/9+YWO23WBaFhtQ941ElevvScO+W670bNw06LEjjMFnEMTnT
-         7e/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787894113; x=1788498913;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+L5wETtDoWmts2CARQJ7hOgr0xkLRcjESgYRsPtYLoQ=;
-        b=QIMPZ0+fsPd1kVRi8ktdiVLUEm036mBCZqDeT5jq9YxD7YF+eRXRBd4Supkywgeq7d
-         iSZS6PsXCJQbwpu3wCd8RI4Yn/yEdJQQRvw8+L7JZkgCTIYHgpiQW/gms2RWK1fbwtfp
-         9uX0OzIQcrRnpy1ufmopA4BIeg8gn4IdBGHPqq93g6s9FMA5ndp0KHu1OmzR0zMbQP/k
-         4JlC7zDc0DpVNXQyZoONFMMkICCRfcNWcMO2qWig+6KAWxLCwEG1AoSHuo2nN7DYQ+jN
-         g5FyNRBQTlEQ2OupbU4RVmhANilL0FttO1XmLR2pMFs+iqfRkh7tzJigexVfGwADf+OD
-         JC2Q==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8bavFfK38pluqI/rffesb9yOawX+W/JYHOrZ/k/7AhmfVDcjoS5oi3rEcTV5HYr0s/o4=@lists.linux.dev
-X-Gm-Message-State: AFuF++mN95GcnkeNohj+AzN8nnGsxjMU3PeOGDVSHBt7WatIn1umNyiJ
-	Pz5bPs+vECyYWL+9YrLdWnc2q7ATpMqbjmsVTP9QK/kC6HkxvwTHSHyg
-X-Gm-Gg: AR+sD114gLoiBGtmGb7XWEY4cBpRG3RCulLkakyqkX0A1TFhCnR7kbd/7NIX5BWbhn2
-	Ty9a2qE43ejr2cmtK9YP7EzxJXaPIgn0Ci1PRTiYHrr1HCqnWMJUEz8nFugzBi7eg4BjyR/lKnq
-	OmYLoIDY/xluDNoe8rKfel4egcJsD7DgTfTvy+2/qk3lPM+Q+V7N33VHgcHjXKCfp9iDnaCzX6A
-	g2PCikrK3e8qZuBSv1lFc+Oz5QBwnRHWAiOplQb+5hNoAgK96pId8GTeUE65GC49Cn7h52nZv+s
-	eaXTNPaPpF1Ke7kFfCJr+I7FHB1gpApo2nh+TWwYJATcOLH/ylQZV3CfJAEjYZKDg9zL2oKClXp
-	/R2oK9xUbphb9FyHABfGkTQuyVIK9ruDYjKCawEFPQaey9tIYgNSwXgjmR4bIDWYRf3inxQX1vd
-	Wc3RmY4L8x6uxD2Sh/wrTbnyPpd/KzRJBy0jIak9DORqsYjgH/Sg/NZb/OejJf4WfDNCQV7s9Ue
-	U1u/mNqEI0NzAHujNwJpaCNDzWoFdQm+nNVwdiYviE=
-X-Received: by 2002:a17:902:cf0d:b0:2cf:ca89:499d with SMTP id d9443c01a7336-2d74def3ffcmr81309995ad.7.1787894111223;
-        Thu, 27 Aug 2026 22:15:11 -0700 (PDT)
-Received: from hnkz-ubuntu-vm1.mshome.net (flh4-125-195-69-140.tky.mesh.ad.jp. [125.195.69.140])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d75952ea6fsm2011745ad.21.2026.08.27.22.15.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 22:15:10 -0700 (PDT)
-From: Kazuki Hanai <hnkz.64@gmail.com>
-To: Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Ming Qian <ming.qian@nxp.com>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kazuki Hanai <hnkz.64@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: imx-jpeg: Cancel timeout work on release
-Date: Fri, 28 Aug 2026 14:14:52 +0900
-Message-ID: <20260828051452.1940559-1-hnkz.64@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ImN2IbT8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC3F1F000E9;
+	Fri, 28 Aug 2026 05:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787895345;
+	bh=Oz5lY8w9f2+x7jVn9G4QLERYkMGaJILCsdzyarPoAmA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ImN2IbT82AWvjLdmOCgAApBog3gBpzWzR6yvnB6ruZv+TW1UXX0G/ZVd/RDNW12ZV
+	 oa147/qr7bJrtR6WCNEEovbGlBtqw45kOzkEqEPdBnxtWuqeM6wrU6zwtE79CsEbYv
+	 qnARRREUx/0Hh0ISAtKxZqxd8qYJaWKesJjgroEBasRYCir1z4rlho9zxvL6Z4ORh8
+	 KEc8/MKNZNXcb6Jnh1ftv1M1G9giJInALXUiJmD+ep164nsHfCrNPIbcA9KDNbnx2w
+	 31oVz/kQmDQAL6+rHW+/zXOXsKve0qGCHbcObHOCtVa7hKb7VFywEQa7kKfCQl1lIM
+	 Jl9yKdt460Blg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] media: imx-jpeg: Cancel timeout work on release
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kazuki Hanai" <hnkz.64@gmail.com>
+Cc: Frank.Li@kernel.org, media-ci@linuxtv.org, imx@lists.linux.dev
+In-Reply-To: <20260828051452.1940559-1-hnkz.64@gmail.com>
+References: <20260828051452.1940559-1-hnkz.64@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 28 Aug 2026 05:35:44 +0000
+Message-Id: <20260828053545.0DC3F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-mxc_jpeg_device_run_timeout() signals job completion through
-v4l2_m2m_job_finish(). This clears TRANS_RUNNING and allows a concurrent
-v4l2_m2m_ctx_release() to continue. The timeout handler then accesses
-ctx->mxc_jpeg once more while releasing hw_lock, but the release path may
-already have freed ctx, resulting in a use-after-free.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Synchronously cancel the timeout work after v4l2_m2m_ctx_release() and
-before freeing ctx. The cancellation must remain after the mem2mem release
-because the timeout is the only completion path for a hung hardware job.
+Pre-existing issues:
+- [High] Concurrent execution of `v4l2_m2m_ctx_release()` and `v4l2_m2m_job=
+_finish()` causes a use-after-free of `m2m_ctx`.
+- [High] Race condition in `mxc_jpeg_device_run_timeout()` causes a NULL po=
+inter dereference if it executes after its context's job finishes and anoth=
+er context starts.
+--
 
-Fixes: cfed9632ca8e ("media: imx-jpeg: Add a timeout mechanism for each frame")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kazuki Hanai <hnkz.64@gmail.com>
----
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 1 +
- 1 file changed, 1 insertion(+)
+commit ba4456d4cd6b4b2046f0bf363757a56e4661b019
+Author: Kazuki Hanai <hnkz.64@gmail.com>
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index 725e94152884..dfe3b1ea6bb4 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -2805,6 +2805,7 @@ static int mxc_jpeg_release(struct file *file)
- 			ctx->slot);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_handler);
- 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
-+	cancel_delayed_work_sync(&ctx->task_timer);
- 	v4l2_fh_del(&ctx->fh, file);
- 	v4l2_fh_exit(&ctx->fh);
- 	kfree(ctx);
--- 
-2.53.0
+media: imx-jpeg: Cancel timeout work on release
 
+This commit adds a synchronous cancellation of the timeout work during
+device release to prevent a use-after-free. It places the cancellation
+after the mem2mem context release.
+
+> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/med=
+ia/platform/nxp/imx-jpeg/mxc-jpeg.c
+> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> @@ -2805,6 +2805,7 @@ static int mxc_jpeg_release(struct file *file)
+>  			ctx->slot);
+>  	v4l2_ctrl_handler_free(&ctx->ctrl_handler);
+>  	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+> +	cancel_delayed_work_sync(&ctx->task_timer);
+
+[Severity: High]
+This is a pre-existing issue, but does placing the sync cancel after
+the mem2mem release still leave a use-after-free window?
+
+If mxc_jpeg_release() calls v4l2_m2m_ctx_release(), it blocks in
+v4l2_m2m_cancel_job() waiting for the hung hardware job to finish.
+
+Concurrently, the timeout work mxc_jpeg_device_run_timeout() can
+execute and call v4l2_m2m_job_finish(). Inside v4l2_m2m_job_finish(),
+the job is marked finished and the wait queue is woken up, which
+unblocks v4l2_m2m_ctx_release().
+
+The release function then immediately frees m2m_ctx.
+
+Meanwhile, v4l2_m2m_job_finish() continues on the timeout thread,
+checks schedule_next, and calls v4l2_m2m_schedule_next_job(m2m_dev, m2m_ctx=
+).
+Will this access the newly freed m2m_ctx?
+
+[Severity: High]
+This is also a pre-existing issue, but since we are dealing with the
+timeout work cancellation, is there a race condition in
+mxc_jpeg_device_run_timeout() that can cause a NULL pointer dereference?
+
+If a job for Context A finishes successfully, the IRQ handler
+mxc_jpeg_dec_irq() calls cancel_delayed_work() (which is not synchronous).
+If Context A's delayed work has already started executing but was preempted
+before acquiring hw_lock, cancel_delayed_work() returns without stopping it.
+
+The IRQ handler schedules the next job for Context B, which acquires hw_lock
+and sets ctx->mxc_jpeg->slot_data.used =3D true.
+
+Context A's timeout work then resumes, acquires hw_lock, and incorrectly
+observes the globally shared slot_data.used as true. Assuming it timed out,
+it calls mxc_jpeg_job_finish(ctxA, ...).
+
+Since Context A has no active job, v4l2_m2m_next_src_buf() returns NULL.
+When mxc_jpeg_job_finish() passes this NULL pointer to v4l2_m2m_buf_done(),
+will it cause an unconditional dereference in vb2_buffer_done()?
+
+>  	v4l2_fh_del(&ctx->fh, file);
+>  	v4l2_fh_exit(&ctx->fh);
+>  	kfree(ctx);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260828051452.1940=
+559-1-hnkz.64@gmail.com?part=3D1
