@@ -1,74 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E482E229F;
-	Sat, 29 Aug 2026 19:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C48E38AC8A
+	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 20:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.86.107.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788033101; cv=none; b=p3vpzF/li8rKx0meHTSu8X5BChSP6fwGzqS+7RfcRn4eAtYUtGmT/nv4mfK+7hGUEc5HdX29JI/cHxh9KPjTSmIwL9bN+c/3p2N/1ZoRV3fcgD1TvGUcSrTvYFeXNT10au40fvCSAmOQEh+Xed0zq1D6GEYlP4g/65RngyTxLL4=
+	t=1788036888; cv=none; b=lzcPz0NxbqPw63D8oHpnJfsObgNVNFpfj899lK3K2vY5Y/bFgUJywDnfcCvfzF8M5oBAXkqc/5v/DQmTCqh4dlUbhSHLvVOvl3WPt6Pq6W6Xsz2aaA0RhRZgTHO5dRvXzIyQOqLtmOGJM673Q9hQGVU/wsvFpMPITVH5qOFQilQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788033101; c=relaxed/simple;
-	bh=vcEdv8gVDGWakMB9d9nJW+l918+iVnLF8v7yAV52jQc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=B+ectT2ERB7ToETBZBoqy+P3D+dT46irf4+oIBUmMMw6We76OuBpYcsoHvaRbddzm+lROkMvpfPIdfJgc5W0sTDVzl8c4IwfVfm3UhWoH5E97DCrF8IuAeEUpvcEBlgBtevoKfRLpHNG0i+3R7cX8OkUlsZ9wEP8gVnqJCjcCkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9atAtEb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788036888; c=relaxed/simple;
+	bh=LVyC0XPmnX2zreJq78wI/sZdDJWzYKMX7Lhr3nt6LxM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UMA/1uM6RA3usQ9k0CMiR+FOqvWKJA2VgxE8giqRlxSwrIrtXJtH1go4zhCYYJG0qO3d/CpafqnjqV0NL8f+VtC7FXMn/dFpPlafNw0c+wHmqWQk4UO/uLa8yS98enohOVkAb6LVgKuxoZHaChJG71D2rxYhtmrXYostrPn5Rtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net; spf=pass smtp.mailfrom=rendec.net; dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b=kdldWcE8; arc=none smtp.client-ip=80.86.107.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9atAtEb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA1F1F000E9;
-	Sat, 29 Aug 2026 19:51:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788033100;
-	bh=5qYTPydlQ7iswVozSBwTGzl2I074B+Jrza8i28ghGLY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T9atAtEb6d8YEZ5/2/tAE/jjCZsKc4Y1Hpg+lt50GxF9cwLAjbXI10Yd1jc1fMupF
-	 6VxmGleEiGquV9ZiIDSaWOPUxC1rVdcEk3BVsU7t+bjD+i05ysW98+EQtRnJAsPxCh
-	 ERf0BYdNkT2B4mTDsxUG1aYFRBr+nlTDbmfHIv32pnkZB3NoLR7cSbQd/03ps1mzWb
-	 PTHdrvPJzilykdrerUHHfev8CALLJP79DMqgXVBqGGyILzbYvzltciGcVSzP6KBpg3
-	 6NMKI+SSyAGp7mLG+B8twjaeQ9CEm5tqLYKticC6ZJ8kswjoKADBSyFXlJ7e0/gUzq
-	 ozO+QZGOL8aHw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] dt-bindings: pinctrl: fsl: Replace tabs with spaces
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260829194203.108240-2-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260829194203.108240-2-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b="kdldWcE8"
+Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
+	by mail.mindbit.ro (Postfix) with ESMTPSA id DBC7DC33D3;
+	Sat, 29 Aug 2026 23:54:40 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro DBC7DC33D3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
+	s=default; t=1788036882;
+	bh=TxrhR97T7Qu7CxRJdAD0MZKCPUClAmAqj06Q+J5Xu1Y=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=kdldWcE8dlEfgLe/HjoUUtiCY30jL3gdhWlgdtcaDJKCjr9EP6UiQxJleWQZA/5hI
+	 SCt3UmCYCrs79bvnXq4KRW69LXvlK16vaFVn1i09B0t20+fBRK07T8gnDRM+KeGxKA
+	 DzFLm2NghgwQwz0PIdGTzwhBmulurcKCX2FjhBCY2GMO4x2S7HtOUBhvCrNcpnkcCz
+	 Y5kDYKmBa8S/DGonlf9wCKyvG4Zi6KV26UAUtpDPYLWRtxkZoil64k5BbfAnV97GBg
+	 pZTSyQAaJ2Kcf+fBp2baPEzPyzOxgkKL6kcMpjdyOdQwhdjD+xHCKq4nSDJtmZ5WCw
+	 ngpxwirHS8wyg==
+Message-ID: <b62d3077f3a3c8a12ac47b8a1e163499e2333b5b.camel@rendec.net>
+Subject: Re: [PATCH v5 1/9] irqchip/imx-irqsteer: Call chained_irq_exit() on
+ the handler error path
+From: Radu Rendec <radu@rendec.net>
+To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
+ Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
+	 <jindong.yue@nxp.com>, xuegang.liu@nxp.com, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Date: Sat, 29 Aug 2026 16:54:39 -0400
+In-Reply-To: <20260821101039.4037925-2-Zhipeng.wang_1@oss.nxp.com>
+References: <20260821101039.4037925-1-Zhipeng.wang_1@oss.nxp.com>
+	 <20260821101039.4037925-2-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 29 Aug 2026 19:51:39 +0000
-Message-Id: <20260829195139.BBA1F1F000E9@smtp.kernel.org>
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The commit message incorrectly states 'YAML files do not use spa=
-ces' when it clearly intended to say 'tabs'.
---
-
-commit fc1bb72fd79fb94d419615999bc4d406ae05d524
-Author: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-dt-bindings: pinctrl: fsl: Replace tabs with spaces
-
-This commit replaces tabs with spaces in several Freescale pinctrl YAML
-bindings to resolve dt-style-check warnings about tab characters not being
-allowed in DTS examples.
-
-> dt-bindings: pinctrl: fsl: Replace tabs with spaces
+On Fri, 2026-08-21 at 19:10 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
+> From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 >=20
-> YAML files do not use spaces, even within the values in DTS.  No
+> A chained handler must pair every chained_irq_enter() with a
+> chained_irq_exit() before returning, so that the parent interrupt's flow
+> control is completed (EOI for fasteoi parents, unmask for level-triggered
+> parents). Skipping it leaves the parent interrupt unacknowledged, blockin=
+g
+> further interrupts multiplexed through that line.
+>=20
+> When imx_irqsteer_get_hwirq_base() fails, the handler returned early
+> without calling chained_irq_exit(). Route the error path through the
+> existing chained_irq_exit() so the parent interrupt is always completed
+> before returning.
+>=20
+> Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts s=
+upport")
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> ---
+> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 3 ++-
+> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
+-irqsteer.c
+> index 87b07f517be3..1b8d0c8eedb9 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -154,7 +154,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc =
+*desc)
+> =C2=A0	if (hwirq < 0) {
+> =C2=A0		pr_warn("%s: unable to get hwirq base for irq %d\n",
+> =C2=A0			__func__, irq);
+> -		return;
+> +		goto out;
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	for (i =3D 0; i < 2; i++, hwirq +=3D 32) {
+> @@ -172,6 +172,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc =
+*desc)
+> =C2=A0			generic_handle_domain_irq(data->domain, pos + hwirq);
+> =C2=A0	}
+> =C2=A0
+> +out:
+> =C2=A0	chained_irq_exit(irq_desc_get_chip(desc), desc);
+> =C2=A0}
+> =C2=A0
+>=20
+> base-commit: bd5f485f3f026225b86573e559af0b7254ef4184
 
-[Severity: Medium]
-The commit message states "YAML files do not use spaces", but given the pat=
-ch
-title and the actual changes replacing tabs with spaces, should this say "Y=
-AML
-files do not use tabs" instead?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260829194203.1082=
-40-2-krzysztof.kozlowski@oss.qualcomm.com?part=3D1
+Reviewed-by: Radu Rendec <radu@rendec.net>
