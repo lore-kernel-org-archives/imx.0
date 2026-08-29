@@ -1,632 +1,172 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B38839794B
-	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 19:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE3941737F
+	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 19:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788032443; cv=none; b=HzlUbzyE882iAziMj5TKh4u7U48Hag/peyR+isGs8ZoI5maXL6IKiP91wqQa+z+V1CWG3Kz3qUrbYLiSVqVzdWk6FkKIMVlGuRos/QKyS9Cb1rAMwSbOuI5wpQ30BzIDA1f5/yN2YHTBYDT0a5n7HRWFts/NZbKYbbBg8y1QiJI=
+	t=1788032526; cv=none; b=eLZywfHdCVlysxXVx23NMhkGJ7xTigCCWitp+IkFPOHSf/Gf4YkpQkGPjfCme28zImIR0cm9KlM4SEVzJmTjOaGicO+bQkwsF0GKMxwX0DnvbMiD1K+QZeQyqVIHyIeSqEvBsph+YljJgSSFxspwxE8zhnJPGoeVeEBxsqOuXH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788032443; c=relaxed/simple;
-	bh=LjCRoQ9v6mm0gbK6meWatiEaEoIf8rfjgHpRbM2hWEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8Ey1NN3OBdzDTjJ5a1YCfDJhKZwAK804Tb8HLSYCYaoJCig34vd7Ko+sk6+UWYwdaztdr8KOIGAPav1v8y73I5NH9c/f896CZ2d+RVYHvcF2JYbJV8TpJjQLswaXwtkqok2jGqtKTUF5kxNslBIn2E5eLGGmsgU3unyELMj9eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PrW5MyWR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cQCi2BB/; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1788032526; c=relaxed/simple;
+	bh=w66JHtaqYu6BtNB8TaZPdSDZZgYslAu8moQz0zGwRD0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mJHg6u4Y2olBPWq03DVdZ7+Qi6TAIFVICtzTN9Ad7gDxM+4QA4jniDhIRO5GSExmpO1QUbE5psJNVYU7LQr+9mdggKfFS7RnM/IV2919ShGnEsbO6P0lsDV860Rx0k6n2m9ik3M9tlBlGzkJiKpAGdAfVaM6bPPr5hX20zXqit0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WeU391y3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=H+JtbZud; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PrW5MyWR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cQCi2BB/"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67TGwsTW2420822
-	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 19:40:40 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WeU391y3";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="H+JtbZud"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67TIK07E2021085
+	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 19:42:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=6P26DwrRHs6
-	Nh+TbrqSZhsbcxSipg8Yf1pSl3q29CEY=; b=PrW5MyWRVSwKB+zE6EUaWK7LwjM
-	IrU54G5jmlKiI3KvfbHpTLuMyHF2YBLEvQp0NHWFS4lCOPBrM3lKSdNmP/sMSD5X
-	MjlbFOEbNzMziNGGdwT3hUXKpPb79uvJ8zWBKXBesOOzEDolbeV4tCWWl6AWAwJg
-	AU0sqB6HlQEkhk6P+yObOpejDOKT8lGJxbcuU476v/Jqkag/oK4bquM8l9t4lYeI
-	U9N8/+gyLkhHPaTUq0Jnrh1ygH5NTqppwQJmBypfz0utHcWi8BFnKTlV2nmFUeBy
-	rGBZYhrloq/aGMqeXTJtzeDIB7yxh3ZbgGHu51ZM7Ks8SSe7NXCdGL9FoYg==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gbqn2hmg7-1
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=UE0sMOBybnNkYtc0us0FNHcXyb+U+7zgcvo
+	3E/nh92M=; b=WeU391y3EN2EAeWizyqkPS9VYRMrMaNbiAj1iZtZQ8YwMfV6c+g
+	tmWEAHFuozPD53FpbZrgWQZ5R9Zkrr4Aa1gtPEbnNSuLuScG7MQtnYnRjJavOaOf
+	haOqeJdQCWRelvArqRENAKjM/6+DMPEi89oPoqLxWIf9SLzNupzGSOpVeF/rcStZ
+	hf/EYrqJM1O5XcLILqDeZHPHjtGrKKNz+kcioyAqGUWN38e5xQYSNSuEiI9H9O8o
+	Cl6P1HsI7idBTp0cl68SJdbHTy23TjxkTAjHrpkEfa/MwobotvqRlWhLhqsxCQ2V
+	B0a8mk2eeF7Bgq3Chi04iLHOpERke/5Do+w==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gbr6dsj5x-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 19:40:40 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-53001b668a6so7965261cf.1
-        for <imx@lists.linux.dev>; Sat, 29 Aug 2026 12:40:40 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sat, 29 Aug 2026 19:42:01 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c21c01cf3so42881761cf.2
+        for <imx@lists.linux.dev>; Sat, 29 Aug 2026 12:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788032439; x=1788637239; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6P26DwrRHs6Nh+TbrqSZhsbcxSipg8Yf1pSl3q29CEY=;
-        b=cQCi2BB/1hL3rHwZtR7EIITbIL2KJ6NsZ3RGuJJq8yMyMYiby3kEqBTkMoYdYkXqDB
-         W9xBJGIXIuw/A0n1h5r+KNcFDBZwiXpwDI7OEwGhDcCFpiuMXBELkgphd29fOLman5Ye
-         ewf/I1ugmLnS1Oo6GKAC1AW4i2FAbe4namnCi1R65oAHSXtBx3vRj5iYOO1KqXby9o4l
-         0MKIwRgB1qDF9qk2BSlHBHuGMpCYO2ygRNFXKdaxAtr+nRk3jppe3GkOiqM964X9HEnn
-         VjZO/0cyPtLKtmfmEk71XtLX5/3gUpZrJneBlGVbU8O27j0bKwRWIYH7NgB/GvSbec1V
-         RdJw==
+        d=oss.qualcomm.com; s=google; t=1788032520; x=1788637320; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UE0sMOBybnNkYtc0us0FNHcXyb+U+7zgcvo3E/nh92M=;
+        b=H+JtbZudFP3uMQKNZcTqsu2HWgssxhaB8Yp9kkcoRV8k7FZ+l04Vcrvzh0TuB0ycRA
+         jjeEqlv8W2ySvOqNbo3xxYPo79lmkimtEgttQh7bgNNqZr6WR7A/27cjj2q04eHiwbYZ
+         U/akxgXljQvCoMDvBV6xLAcLtUIR0AHoV0PF/hNcd1kh0AKXacs1t9fx10z7eJQGJKsL
+         Uy2/9JvQ4OoHC0iIw48DKYcds89moeQwCLcRqRQvtcyJR2JpfJdu9zbb9Iw0kn2Pqd2P
+         1yUkUsRkYUkkypX8dnh8nW+pAA/HcBEvppTTbssmzGUDkXei7r+Hf8UdyCJIuIIIl+RN
+         gNjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788032439; x=1788637239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6P26DwrRHs6Nh+TbrqSZhsbcxSipg8Yf1pSl3q29CEY=;
-        b=fSPyXPunAjdf+ePsSJQ+DhuhjijUMhLPJZx8eIFIpZnM7buGwt2QYfNREVVhxsrBnA
-         s0KkvXUOFS6VDO6Lf5IIshdCYjRgv++s4QKkhMLznmhzDpFX6M9kZD2rcNuvPEQ/r549
-         gG4Bmsi1HT2xtqW9NO7uQbMXfPWKZmcErxGWCPT0vxjeIGzNB88qQATcJPLN3TRM+Fxv
-         4OLTvqVSL8SRcyQhXm0uc7DDQL+j6Umk6boRRRvY3ofoGztwiwLvL/SMlGyxkI6lPU/t
-         dWDFtToF9lSUxlRsZMZakxGjq4U25LGQAxC3MMQosefa0rGJakvgSKTTHP98su7VRJ12
-         A7rw==
-X-Forwarded-Encrypted: i=1; AHgh+RqwQoA91LaQVzO37fxkZq1W2Oz1E3X44QN0WEDERToQ340BTmhlIqm4qmZrPX35Agl2xuE=@lists.linux.dev
-X-Gm-Message-State: AFuF++mS/Fj53rHcnseUemeWeVsVPdOIL6sWhOFDmOsdIPL1YXMglBKX
-	L8k+h/IepH+zT3wqQZCOhjqgOzZtGjbIA1T8xQ75wld7WLI2cwmwxIXXi48Y5aC+NCcb71hLAlU
-	rGLZHIyDdCA1TMV/M9EeAOaB9ufYLZPpfIbWAzPaMnq65p0NiPNhhuR0=
-X-Gm-Gg: AR+sD13D+QlIw2rCGYi1jnGpHUGeASaiYABf5+HCQQ4GOZxgOiprU5TP7J1QalLDn8f
-	9+fRsU0mNErrFSuvJTricPj/PcIStscKCl1g0KWROHWv4lTqwaVkPsRGHmJAs068MGj4tLqRX9a
-	36+86XIlUd/6MeEOdl7RdmbTXPrW1nXYPfRR4DKuugTJGFuS4d+2pi2rqab02veg+Tn/BBZM6t3
-	cVcJLRkQFhV5JL4kcRs8I+2zAJPpyxZjcsHi/lRfIyYqRxmbHCwkC6jShbixHyZbps2Bb+LRaj8
-	UNaQq1+2mno5cu+F5j+al241HEJkndTgvj6PpH0D+tRxYLOyclEc6Ak9Mudfuu6IKPACT4AVcvy
-	HifyOwQwFAqvrOwY=
-X-Received: by 2002:ac8:5e51:0:b0:52d:ea18:a8f with SMTP id d75a77b69052e-52fb9624e53mr184585571cf.29.1788032439415;
-        Sat, 29 Aug 2026 12:40:39 -0700 (PDT)
-X-Received: by 2002:ac8:5e51:0:b0:52d:ea18:a8f with SMTP id d75a77b69052e-52fb9624e53mr184585001cf.29.1788032438673;
-        Sat, 29 Aug 2026 12:40:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788032520; x=1788637320;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UE0sMOBybnNkYtc0us0FNHcXyb+U+7zgcvo3E/nh92M=;
+        b=aDSRlWLvoUZ3UE9GfqPi6nsmpFBrEgEaAVOsNQcUn5HXehDupSfYyF5ZzlGdGazKS8
+         yHsj0anJkXfzWYxJM8BO6IVWkcIwtSQ4BdqlQ2Y8zALiZV2fGkfUs++G8utRRl0hNP3D
+         qrCIpA6nMrNik3eyfNYd4PgLsDxLBb8Ep0IIQ/6V0PCaYGum0heb+r+B136UaQldbVQU
+         m/VBCMoDchyB3nI7xyIU0Kn2uq8SlnlNoyrURschy/Zv5vUzFqF3djH2APWbRvmZd/F1
+         /SPYOFRV71AfG3ZP/4vfmGYYlQ6JkMyHCE8B42En4YhBTae0ACVJV5OfL1b0o6OE437c
+         0/xA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpc7HhuwzQ5ClVc63lLk6nbExJYMk/ig3Y5PTm8+SarE20H9ztG2TbfSDOMGYKu82T3Skc=@lists.linux.dev
+X-Gm-Message-State: AFuF++nM50ZXkIrXe/6b1AvdklL2vSntxXR+qgVXbD5y2VYDdyYTNzBg
+	L2W0VisPi1ONGpzaidSXm1gNwISKaGFNsTnWDzs/cLLg13zQmw9yIK2PU7hFjQV6iLlakPLmnaQ
+	W7e0THdSd6dkzGZh9vKncZtUUCvTZ5kr7/+txK7LebNcxz3M1rIsY7eU=
+X-Gm-Gg: AR+sD11yhzfWs2ZtB+/YR1yetP8B8iTba/hrVOOuT3whu5iGaAeCKuZV/iUYqJY4SFT
+	YBHyK/H/cYSxiILwJ60SReXG3cWtseMkMup7391N6WyMuP6tUQgvFVzhK9dvQZtE0AMcNYhoy8T
+	Rfsu6aAwH4eZkhQfMi6Z384a1HwjryjHu8//QtdjAHnKKQuqHE6Lmg3+AZsaP+2xpHi45UccuTh
+	XriQ5jvVMEMbLrBu1NoKbBWoEgDK4RUspZA5zna3dlu8Jjj0JEhzhxBEcK3P5zG38H84f4NCJbz
+	c1rWyi5E/1gbV8RcOqEzh5ggntFw9VNmVhBrLYu7ZQ9HuDZi8JyrRQF+S9PrCzt6hOlqM/SyS/T
+	zf2qhAo2WUpeBFWE=
+X-Received: by 2002:a05:622a:858b:b0:52f:b9ad:9dc1 with SMTP id d75a77b69052e-52fb9adaa2fmr158668581cf.20.1788032520104;
+        Sat, 29 Aug 2026 12:42:00 -0700 (PDT)
+X-Received: by 2002:a05:622a:858b:b0:52f:b9ad:9dc1 with SMTP id d75a77b69052e-52fb9adaa2fmr158668181cf.20.1788032519645;
+        Sat, 29 Aug 2026 12:41:59 -0700 (PDT)
 Received: from quoll ([178.197.219.214])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b961820ffsm65736555e9.3.2026.08.29.12.40.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cc9497b3esm109116615e9.5.2026.08.29.12.41.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 12:40:37 -0700 (PDT)
+        Sat, 29 Aug 2026 12:41:58 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
+        Fabio Estevam <festevam@gmail.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>, linux-sound@vger.kernel.org,
+        devicetree@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH 2/2] arm64: dts: imx8mq: Replace spaces indentation with tabs
-Date: Sat, 29 Aug 2026 21:40:24 +0200
-Message-ID: <20260829194022.107807-4-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH] ASoC: dt-bindings: imx-audmux: Replace tabs with spaces
+Date: Sat, 29 Aug 2026 21:41:55 +0200
+Message-ID: <20260829194154.108191-2-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260829194022.107807-3-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260829194022.107807-3-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20231; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=LjCRoQ9v6mm0gbK6meWatiEaEoIf8rfjgHpRbM2hWEc=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqkzWnhwfUUzccb3AlGB6gDlyoRNkCodAxJsuVG
- vxXsJS+syGJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCapM1pwAKCRDBN2bmhouD
- 13UqD/0RnhndcbIijGFdo+AHm/J/QA5RdHWUl7ou0MFjBuJKL5OnFH7QQG8px999D6sXGOj1YO3
- A9IftuKRZ6sAzMr0iJz7MOKHuissMGmtWV2tnoggcbdSyTZ2WZeYCZvZnTmfYTC20TneaLrl4KP
- WQW4cRLiFiGUjoBI6h9913EKbLOMIiKwrsP6gAjGvXYdxa3VzvoF4+48fMWGlJpKAkHt0WH0jwR
- mxQLq8mQp539LQk7ZvM8Gjaylal4nxAShwEliI4ks6eMesYlpjnAVasSr26NkIj9lX/MT/grdBE
- etSFv7OLKT7kw9D0w51yoP7BQjEoM5xKVb7uEWqQFhDsRw7q7sq0oX3RDCIDqwoIAtkC9GRBV5K
- MH7gTW1YHQ0plEh7jQajbAdf8exQTjjmYx9c4tmp4Vtbkex7egi1xZ+wS80nRedd732WDx/BA9x
- q8kBuMUZ1bvRlM41eCWMTcmPRYxYEjO+FdKWjCE1xgwhjObuFsSmXXyZAwc/+do6q7PnRwFgtfg
- 1RRSkTzHft1I1puGcRmyGZT0xpEFYZXWpZyE2sOo5LDWCHHMq+GNyO75fH9YK8ENLVGGFm3yX85
- PQ7+HVRoZCQ9dC7MRWQbaDj9MUx4MiVqePQqX42ULFhLNwp5Cg7iV5nY+vJv72UzUAI8r3VICEe OPDvGvEMVc+D89g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1317; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=w66JHtaqYu6BtNB8TaZPdSDZZgYslAu8moQz0zGwRD0=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqkzYDrucOEqKbgwzMI9GFk+bfUoET/OAaI0FuE
+ 1AwPwDyxwmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCapM2AwAKCRDBN2bmhouD
+ 1yTxD/wKCcZV032FBhJ4DJlVj52zDbEY6vtEQN1S4V9nAb0+kVofU2g7A6V3jNORq72dYl2DOJn
+ 3PSXvU01Q9j8UAWFG3w/tsec32sPcJCr6jSq9KH3RZwujUqV9JQGgnNLCrblhLe/D7/FLiQqMxM
+ sRgXNWFUza8+56/+Yp4tz2nkkkbN4Urx00SaVxdeu+CBAtB4GsE4vtDdx8OJ/B6mt4/jvJ3b2cU
+ RVYz7quvNf8Jq1bI7a9Tx7l6SfFrJ8kspS+K6VboYo58UAtxsQ8r+dnuYMf+jrC9Hqk18QiSqnM
+ l8FfbDE9EmNt0wh5uTsD/k/KgwBNzMW574Pkbg8bREwntzgSl2+jtxFA3jC3KGDSWH8bm4Du+iv
+ TiLa3FDw1UIVExBtxTv1WtmQ/dKUF9dy5rTZPnjzYRp0iqottMCyK45pGv4bRMnC4/f+/gihsZY
+ M/0h4BeZzJWe5K1kHF1mHXYU93Ag2u+stShAyjLkfKjgoI6G1q/Juv23mTiv+6sQhZggHSp4Osh
+ v7skbiV9MZZV0SeAxhHo1dzNLKHcazp1GIE6JLgCXo45NdxiCxx9sOLfeCPR0M+ejE485U6c467
+ RqEfFbtJcuaro89VgPDDLEN9V0zZNFkX6PDHCpREw+5GyKf8VoS1XbxECY9aVh/kbQQFHP4jOfM jHVBKmsQ9gUpG0Q==
 X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: Xh5jXaQqCTB_PTDCxlWiYXZ98H5OVfyj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI5MDE3MCBTYWx0ZWRfX8aW/c2a0y4kj
- TxELzcTsa40SJBbPCQU7shDDKTMD5dzzpZcqwFiPW3bTgrN3YSfF9mH8T5vMFzHbOg1f+tgGcT9
- D2xC+I3CPUIpzMHy+IRVgLZpGmCv1LzJ2Uscvesey+oaToXVKSo5NqnqdcK+iH5l+JUavFZfORp
- KxNHPx1Q93x5caz8zCF1RKEpAGD32DSNuYAlgFSGqzXWk/bg+qZZhvbYN6ocevcRbGR5ycIZPO/
- p+y0YRzUiy7mhd9jJU/d+DgEM15o3ehidPAhjS1CVZVDWAg+kBt9BWl6XZUdkH4yM010zxVnjKP
- nH0yLivnTikrUNEjOtg9cdyW8F2RKft8r64GT3mDP7rxJ4BhQM36A+TYD4RiUmBKhxMP7D94nQ3
- V7EFHDiOgbBw6slrvX+6NVYn9mXZdblyPC2JODbLHhKnhXtBXVnt0jNsf/GxZ8j87MFbSW47op7
- idvUok3A3+3WhgQCtMQ==
-X-Proofpoint-GUID: Xh5jXaQqCTB_PTDCxlWiYXZ98H5OVfyj
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI5MDE3MCBTYWx0ZWRfX2sJm77Tmqy5d
- nCGJrpPySMAwua+d726NjCv6U93xJbTVTdQN9dGq69rAdyezxcxhCcmQPRj4Nh8ActUO8DVHc9L
- 6+XZpxsdLp5NavTopZmWYZKj7VU7tv8=
-X-Authority-Analysis: v=2.4 cv=a5kAM0SF c=1 sm=1 tr=0 ts=6a9335b8 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=+bKQE0WJfmhK2875HamI0Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI5MDE3MSBTYWx0ZWRfX5X3i45PqZ2a0
+ UowJIwKxQSG8z+gwQx1zMFohYyr715HAc2d0nws8BNKpYUX6D/EyvaQdPwQma/Vs8KnkeHywzDV
+ OMCwVCp1T/baGPi5XeyZqGM7EWUsDK4ynzEgcdxyG+9XU/OkwSWc2U/5p8I6iCqxaObw0lk4eqy
+ hLNjt1g/bb0vWB5m9vUYOG0Ca8Xr6kYiPyU+ve9gbxi7CmBR1evrVjoYPlHCCpBv5Odcxrp7riU
+ B8eF1jVlgcX+Vzr5K/cEq5JHU0gRZ3hx7Dr/elRQPvuV8CP7p+fuzdstwEWaI5wZRJWD8C6J1KX
+ DgU/wqHf93fl9LummtkjVi8nPvoNvvfKHWp0sN6dnNLtTLk/ga7yBqMs6DktHDlk5tDs+2U97Zo
+ bhZkX3NrzP2vGRq+S9ccMUALVyC55EVk1RXWguBSaCM/fr1ky6WA5xbmeRar3ZwKE7592xxJ05n
+ oybGxSzItcB5Dtw/QVA==
+X-Proofpoint-GUID: 4k7KdaVfR8Wq1bxYkmAkAHxvmoFFGMo9
+X-Authority-Analysis: v=2.4 cv=Zakt8MVA c=1 sm=1 tr=0 ts=6a933609 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=+bKQE0WJfmhK2875HamI0Q==:17
  a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8
- a=aA66hxyf1CaHEeRaiHIA:9 a=uxP6HrT_eTzRwkO_Te1X:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=EUspDBNiAAAA:8
+ a=i9mLyMywaSABm-nTGLoA:9 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI5MDE3MSBTYWx0ZWRfXyrjmXzwktBVf
+ gNSqoItRT8jZ/cx91T8ZllgafQuvfM0ibNsTunj9DNjzgwTU6nN2XIYDgGK4OUmXoiTjECv1K1k
+ Mm4pHeIZ8OKiUCrgKo+1zfibfhpUlhs=
+X-Proofpoint-ORIG-GUID: 4k7KdaVfR8Wq1bxYkmAkAHxvmoFFGMo9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-29_05,2026-08-27_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 phishscore=0 clxscore=1015
- adultscore=0 priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0
+ adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608290170
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608290171
 
-Replace excessive spaces for aligning indentation into tabs.  This will
-be reported by dt-style-check ("[mixed-indent-chars] too many space
-characters in indent (more than 7)").
+YAML files do not use spaces, even within the values in DTS.  No
+functional change, although dt-style-check will warn about it
+("[tab-in-yaml] tab character not allowed in DTS example").
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- .../boot/dts/freescale/imx8mq-zii-ultra.dtsi  |  16 +-
- arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 168 +++++++++---------
- 2 files changed, 92 insertions(+), 92 deletions(-)
+ Documentation/devicetree/bindings/sound/imx-audmux.yaml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi
-index c7bbba45f368..a272c1bd7548 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi
-@@ -99,7 +99,7 @@ reg_arm: regulator-arm {
- 		regulator-max-microvolt = <1000000>;
- 		gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
- 		states = <1000000 0x1
--		           900000 0x0>;
-+			   900000 0x0>;
- 		regulator-always-on;
- 	};
- 
-@@ -295,7 +295,7 @@ ucs1002: charger@32 {
- 		reg = <0x32>;
- 		interrupt-parent = <&gpio3>;
- 		interrupts = <17 IRQ_TYPE_EDGE_BOTH>,
--		             <18 IRQ_TYPE_EDGE_FALLING>;
-+			     <18 IRQ_TYPE_EDGE_FALLING>;
- 		interrupt-names = "a_det", "alert";
- 	};
- 
-@@ -549,9 +549,9 @@ &pcie0 {
- 	pinctrl-0 = <&pinctrl_pcie0>;
- 	reset-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
- 	clocks = <&clk IMX8MQ_CLK_PCIE1_ROOT>,
--	         <&pcie0_refclk>,
--	         <&clk IMX8MQ_CLK_PCIE1_PHY>,
--	         <&clk IMX8MQ_CLK_PCIE1_AUX>;
-+		 <&pcie0_refclk>,
-+		 <&clk IMX8MQ_CLK_PCIE1_PHY>,
-+		 <&clk IMX8MQ_CLK_PCIE1_AUX>;
- 	vph-supply = <&vgen5_reg>;
- 	status = "okay";
- };
-@@ -561,9 +561,9 @@ &pcie1 {
- 	pinctrl-0 = <&pinctrl_pcie1>;
- 	reset-gpio = <&gpio1 6 GPIO_ACTIVE_LOW>;
- 	clocks = <&clk IMX8MQ_CLK_PCIE2_ROOT>,
--	         <&pcie1_refclk>,
--	         <&clk IMX8MQ_CLK_PCIE2_PHY>,
--	         <&clk IMX8MQ_CLK_PCIE2_AUX>;
-+		 <&pcie1_refclk>,
-+		 <&clk IMX8MQ_CLK_PCIE2_PHY>,
-+		 <&clk IMX8MQ_CLK_PCIE2_AUX>;
- 	vph-supply = <&vgen5_reg>;
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index d75710cdb5b4..5545b5b20ab2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -363,9 +363,9 @@ vpu-crit {
- 	timer {
- 		compatible = "arm,armv8-timer";
- 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>, /* Physical Secure */
--		             <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>, /* Physical Non-Secure */
--		             <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>, /* Virtual */
--		             <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>; /* Hypervisor */
-+			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>, /* Physical Non-Secure */
-+			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>, /* Virtual */
-+			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>; /* Hypervisor */
- 		interrupt-parent = <&gic>;
- 		arm,no-tick-in-suspend;
- 	};
-@@ -531,8 +531,8 @@ sai1: sai@30010000 {
- 				reg = <0x30010000 0x10000>;
- 				interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_SAI1_IPG>,
--				         <&clk IMX8MQ_CLK_SAI1_ROOT>,
--				         <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
-+					 <&clk IMX8MQ_CLK_SAI1_ROOT>,
-+					 <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
- 				clock-names = "bus", "mclk1", "mclk2", "mclk3";
- 				dmas = <&sdma2 8 24 0>, <&sdma1 9 24 0>;
- 				dma-names = "rx", "tx";
-@@ -545,8 +545,8 @@ sai6: sai@30030000 {
- 				reg = <0x30030000 0x10000>;
- 				interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_SAI6_IPG>,
--				         <&clk IMX8MQ_CLK_SAI6_ROOT>,
--				         <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
-+					 <&clk IMX8MQ_CLK_SAI6_ROOT>,
-+					 <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
- 				clock-names = "bus", "mclk1", "mclk2", "mclk3";
- 				dmas = <&sdma2 4 24 0>, <&sdma2 5 24 0>;
- 				dma-names = "rx", "tx";
-@@ -559,8 +559,8 @@ sai5: sai@30040000 {
- 				reg = <0x30040000 0x10000>;
- 				interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_SAI5_IPG>,
--				         <&clk IMX8MQ_CLK_SAI5_ROOT>,
--				         <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
-+					 <&clk IMX8MQ_CLK_SAI5_ROOT>,
-+					 <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
- 				clock-names = "bus", "mclk1", "mclk2", "mclk3";
- 				dmas = <&sdma2 2 24 0>, <&sdma2 3 24 0>;
- 				dma-names = "rx", "tx";
-@@ -573,8 +573,8 @@ sai4: sai@30050000 {
- 				reg = <0x30050000 0x10000>;
- 				interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_SAI4_IPG>,
--				         <&clk IMX8MQ_CLK_SAI4_ROOT>,
--				         <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
-+					 <&clk IMX8MQ_CLK_SAI4_ROOT>,
-+					 <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
- 				clock-names = "bus", "mclk1", "mclk2", "mclk3";
- 				dmas = <&sdma2 0 24 0>, <&sdma2 1 24 0>;
- 				dma-names = "rx", "tx";
-@@ -585,7 +585,7 @@ gpio1: gpio@30200000 {
- 				compatible = "fsl,imx8mq-gpio", "fsl,imx35-gpio";
- 				reg = <0x30200000 0x10000>;
- 				interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_GPIO1_ROOT>;
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -598,7 +598,7 @@ gpio2: gpio@30210000 {
- 				compatible = "fsl,imx8mq-gpio", "fsl,imx35-gpio";
- 				reg = <0x30210000 0x10000>;
- 				interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_GPIO2_ROOT>;
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -611,7 +611,7 @@ gpio3: gpio@30220000 {
- 				compatible = "fsl,imx8mq-gpio", "fsl,imx35-gpio";
- 				reg = <0x30220000 0x10000>;
- 				interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_GPIO3_ROOT>;
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -624,7 +624,7 @@ gpio4: gpio@30230000 {
- 				compatible = "fsl,imx8mq-gpio", "fsl,imx35-gpio";
- 				reg = <0x30230000 0x10000>;
- 				interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_GPIO4_ROOT>;
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -637,7 +637,7 @@ gpio5: gpio@30240000 {
- 				compatible = "fsl,imx8mq-gpio", "fsl,imx35-gpio";
- 				reg = <0x30240000 0x10000>;
- 				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_GPIO5_ROOT>;
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -845,14 +845,14 @@ clk: clock-controller@30380000 {
- 				compatible = "fsl,imx8mq-ccm";
- 				reg = <0x30380000 0x10000>;
- 				interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
- 				#clock-cells = <1>;
- 				clocks = <&ckil>, <&osc_25m>, <&osc_27m>,
--				         <&clk_ext1>, <&clk_ext2>,
--				         <&clk_ext3>, <&clk_ext4>;
-+					 <&clk_ext1>, <&clk_ext2>,
-+					 <&clk_ext3>, <&clk_ext4>;
- 				clock-names = "ckil", "osc_25m", "osc_27m",
--				              "clk_ext1", "clk_ext2",
--				              "clk_ext3", "clk_ext4";
-+					      "clk_ext1", "clk_ext2",
-+					      "clk_ext3", "clk_ext4";
- 				assigned-clocks = <&clk IMX8MQ_CLK_A53_SRC>,
- 						  <&clk IMX8MQ_CLK_A53_CORE>,
- 						  <&clk IMX8MQ_CLK_NOC>,
-@@ -940,9 +940,9 @@ pgc_gpu: power-domain@5 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8M_POWER_DOMAIN_GPU>;
- 						clocks = <&clk IMX8MQ_CLK_GPU_ROOT>,
--						         <&clk IMX8MQ_CLK_GPU_SHADER_DIV>,
-+							 <&clk IMX8MQ_CLK_GPU_SHADER_DIV>,
- 							 <&clk IMX8MQ_CLK_GPU_AXI>,
--						         <&clk IMX8MQ_CLK_GPU_AHB>;
-+							 <&clk IMX8MQ_CLK_GPU_AHB>;
- 					};
- 
- 					pgc_vpu: power-domain@6 {
-@@ -1000,7 +1000,7 @@ pwm1: pwm@30660000 {
- 				reg = <0x30660000 0x10000>;
- 				interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_PWM1_ROOT>,
--				         <&clk IMX8MQ_CLK_PWM1_ROOT>;
-+					 <&clk IMX8MQ_CLK_PWM1_ROOT>;
- 				clock-names = "ipg", "per";
- 				#pwm-cells = <3>;
- 				status = "disabled";
-@@ -1011,7 +1011,7 @@ pwm2: pwm@30670000 {
- 				reg = <0x30670000 0x10000>;
- 				interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_PWM2_ROOT>,
--				         <&clk IMX8MQ_CLK_PWM2_ROOT>;
-+					 <&clk IMX8MQ_CLK_PWM2_ROOT>;
- 				clock-names = "ipg", "per";
- 				#pwm-cells = <3>;
- 				status = "disabled";
-@@ -1022,7 +1022,7 @@ pwm3: pwm@30680000 {
- 				reg = <0x30680000 0x10000>;
- 				interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_PWM3_ROOT>,
--				         <&clk IMX8MQ_CLK_PWM3_ROOT>;
-+					 <&clk IMX8MQ_CLK_PWM3_ROOT>;
- 				clock-names = "ipg", "per";
- 				#pwm-cells = <3>;
- 				status = "disabled";
-@@ -1033,7 +1033,7 @@ pwm4: pwm@30690000 {
- 				reg = <0x30690000 0x10000>;
- 				interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_PWM4_ROOT>,
--				         <&clk IMX8MQ_CLK_PWM4_ROOT>;
-+					 <&clk IMX8MQ_CLK_PWM4_ROOT>;
- 				clock-names = "ipg", "per";
- 				#pwm-cells = <3>;
- 				status = "disabled";
-@@ -1124,11 +1124,11 @@ ecspi3: spi@30840000 {
- 
- 			uart1: serial@30860000 {
- 				compatible = "fsl,imx8mq-uart",
--				             "fsl,imx6q-uart";
-+					     "fsl,imx6q-uart";
- 				reg = <0x30860000 0x10000>;
- 				interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_UART1_ROOT>,
--				         <&clk IMX8MQ_CLK_UART1_ROOT>;
-+					 <&clk IMX8MQ_CLK_UART1_ROOT>;
- 				clock-names = "ipg", "per";
- 				dmas = <&sdma1 22 4 0>, <&sdma1 23 4 0>;
- 				dma-names = "rx", "tx";
-@@ -1137,11 +1137,11 @@ uart1: serial@30860000 {
- 
- 			uart3: serial@30880000 {
- 				compatible = "fsl,imx8mq-uart",
--				             "fsl,imx6q-uart";
-+					     "fsl,imx6q-uart";
- 				reg = <0x30880000 0x10000>;
- 				interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_UART3_ROOT>,
--				         <&clk IMX8MQ_CLK_UART3_ROOT>;
-+					 <&clk IMX8MQ_CLK_UART3_ROOT>;
- 				clock-names = "ipg", "per";
- 				dmas = <&sdma1 26 4 0>, <&sdma1 27 4 0>;
- 				dma-names = "rx", "tx";
-@@ -1150,11 +1150,11 @@ uart3: serial@30880000 {
- 
- 			uart2: serial@30890000 {
- 				compatible = "fsl,imx8mq-uart",
--				             "fsl,imx6q-uart";
-+					     "fsl,imx6q-uart";
- 				reg = <0x30890000 0x10000>;
- 				interrupts = <GIC_SPI 27 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_UART2_ROOT>,
--				         <&clk IMX8MQ_CLK_UART2_ROOT>;
-+					 <&clk IMX8MQ_CLK_UART2_ROOT>;
- 				clock-names = "ipg", "per";
- 				dmas = <&sdma1 24 4 0>, <&sdma1 25 4 0>;
- 				dma-names = "rx", "tx";
-@@ -1205,8 +1205,8 @@ sai3: sai@308c0000 {
- 				reg = <0x308c0000 0x10000>;
- 				interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_SAI3_IPG>,
--				         <&clk IMX8MQ_CLK_SAI3_ROOT>,
--				         <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
-+					 <&clk IMX8MQ_CLK_SAI3_ROOT>,
-+					 <&clk IMX8MQ_CLK_DUMMY>, <&clk IMX8MQ_CLK_DUMMY>;
- 				clock-names = "bus", "mclk1", "mclk2", "mclk3";
- 				dmas = <&sdma1 12 24 0>, <&sdma1 13 24 0>;
- 				dma-names = "rx", "tx";
-@@ -1356,11 +1356,11 @@ i2c4: i2c@30a50000 {
- 
- 			uart4: serial@30a60000 {
- 				compatible = "fsl,imx8mq-uart",
--				             "fsl,imx6q-uart";
-+					     "fsl,imx6q-uart";
- 				reg = <0x30a60000 0x10000>;
- 				interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_UART4_ROOT>,
--				         <&clk IMX8MQ_CLK_UART4_ROOT>;
-+					 <&clk IMX8MQ_CLK_UART4_ROOT>;
- 				clock-names = "ipg", "per";
- 				dmas = <&sdma1 28 4 0>, <&sdma1 29 4 0>;
- 				dma-names = "rx", "tx";
-@@ -1481,12 +1481,12 @@ mu: mailbox@30aa0000 {
- 
- 			usdhc1: mmc@30b40000 {
- 				compatible = "fsl,imx8mq-usdhc",
--				             "fsl,imx7d-usdhc";
-+					     "fsl,imx7d-usdhc";
- 				reg = <0x30b40000 0x10000>;
- 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_IPG_ROOT>,
--				         <&clk IMX8MQ_CLK_NAND_USDHC_BUS>,
--				         <&clk IMX8MQ_CLK_USDHC1_ROOT>;
-+					 <&clk IMX8MQ_CLK_NAND_USDHC_BUS>,
-+					 <&clk IMX8MQ_CLK_USDHC1_ROOT>;
- 				clock-names = "ipg", "ahb", "per";
- 				fsl,tuning-start-tap = <20>;
- 				fsl,tuning-step = <2>;
-@@ -1496,12 +1496,12 @@ usdhc1: mmc@30b40000 {
- 
- 			usdhc2: mmc@30b50000 {
- 				compatible = "fsl,imx8mq-usdhc",
--				             "fsl,imx7d-usdhc";
-+					     "fsl,imx7d-usdhc";
- 				reg = <0x30b50000 0x10000>;
- 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_IPG_ROOT>,
--				         <&clk IMX8MQ_CLK_NAND_USDHC_BUS>,
--				         <&clk IMX8MQ_CLK_USDHC2_ROOT>;
-+					 <&clk IMX8MQ_CLK_NAND_USDHC_BUS>,
-+					 <&clk IMX8MQ_CLK_USDHC2_ROOT>;
- 				clock-names = "ipg", "ahb", "per";
- 				fsl,tuning-start-tap = <20>;
- 				fsl,tuning-step = <2>;
-@@ -1538,16 +1538,16 @@ fec1: ethernet@30be0000 {
- 				compatible = "fsl,imx8mq-fec", "fsl,imx6sx-fec";
- 				reg = <0x30be0000 0x10000>;
- 				interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
--				             <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
-+					     <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
- 					     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
- 					     <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk IMX8MQ_CLK_ENET1_ROOT>,
--				         <&clk IMX8MQ_CLK_ENET1_ROOT>,
--				         <&clk IMX8MQ_CLK_ENET_TIMER>,
--				         <&clk IMX8MQ_CLK_ENET_REF>,
--				         <&clk IMX8MQ_CLK_ENET_PHY_REF>;
-+					 <&clk IMX8MQ_CLK_ENET1_ROOT>,
-+					 <&clk IMX8MQ_CLK_ENET_TIMER>,
-+					 <&clk IMX8MQ_CLK_ENET_REF>,
-+					 <&clk IMX8MQ_CLK_ENET_PHY_REF>;
- 				clock-names = "ipg", "ahb", "ptp",
--				              "enet_clk_ref", "enet_out";
-+					      "enet_clk_ref", "enet_out";
- 				assigned-clocks = <&clk IMX8MQ_CLK_ENET_AXI>,
- 						  <&clk IMX8MQ_CLK_ENET_TIMER>,
- 						  <&clk IMX8MQ_CLK_ENET_REF>,
-@@ -1639,23 +1639,23 @@ gpu: gpu@38000000 {
- 			reg = <0x38000000 0x40000>;
- 			interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clk IMX8MQ_CLK_GPU_ROOT>,
--			         <&clk IMX8MQ_CLK_GPU_SHADER_DIV>,
--			         <&clk IMX8MQ_CLK_GPU_AXI>,
--			         <&clk IMX8MQ_CLK_GPU_AHB>;
-+				 <&clk IMX8MQ_CLK_GPU_SHADER_DIV>,
-+				 <&clk IMX8MQ_CLK_GPU_AXI>,
-+				 <&clk IMX8MQ_CLK_GPU_AHB>;
- 			clock-names = "core", "shader", "bus", "reg";
- 			#cooling-cells = <2>;
- 			assigned-clocks = <&clk IMX8MQ_CLK_GPU_CORE_SRC>,
--			                  <&clk IMX8MQ_CLK_GPU_SHADER_SRC>,
--			                  <&clk IMX8MQ_CLK_GPU_AXI>,
--			                  <&clk IMX8MQ_CLK_GPU_AHB>,
--			                  <&clk IMX8MQ_GPU_PLL_BYPASS>;
-+					  <&clk IMX8MQ_CLK_GPU_SHADER_SRC>,
-+					  <&clk IMX8MQ_CLK_GPU_AXI>,
-+					  <&clk IMX8MQ_CLK_GPU_AHB>,
-+					  <&clk IMX8MQ_GPU_PLL_BYPASS>;
- 			assigned-clock-parents = <&clk IMX8MQ_GPU_PLL_OUT>,
--			                         <&clk IMX8MQ_GPU_PLL_OUT>,
--			                         <&clk IMX8MQ_GPU_PLL_OUT>,
--			                         <&clk IMX8MQ_GPU_PLL_OUT>,
--			                         <&clk IMX8MQ_GPU_PLL>;
-+						 <&clk IMX8MQ_GPU_PLL_OUT>,
-+						 <&clk IMX8MQ_GPU_PLL_OUT>,
-+						 <&clk IMX8MQ_GPU_PLL_OUT>,
-+						 <&clk IMX8MQ_GPU_PLL>;
- 			assigned-clock-rates = <800000000>, <800000000>,
--			                       <800000000>, <400000000>, <0>;
-+					       <800000000>, <400000000>, <0>;
- 			power-domains = <&pgc_gpu>;
- 		};
- 
-@@ -1663,13 +1663,13 @@ usb_dwc3_0: usb@38100000 {
- 			compatible = "fsl,imx8mq-dwc3", "snps,dwc3";
- 			reg = <0x38100000 0x10000>;
- 			clocks = <&clk IMX8MQ_CLK_USB1_CTRL_ROOT>,
--			         <&clk IMX8MQ_CLK_USB_CORE_REF>,
-+				 <&clk IMX8MQ_CLK_USB_CORE_REF>,
- 				 <&clk IMX8MQ_CLK_32K>;
- 			clock-names = "bus_early", "ref", "suspend";
- 			assigned-clocks = <&clk IMX8MQ_CLK_USB_BUS>,
--			                  <&clk IMX8MQ_CLK_USB_CORE_REF>;
-+					  <&clk IMX8MQ_CLK_USB_CORE_REF>;
- 			assigned-clock-parents = <&clk IMX8MQ_SYS2_PLL_500M>,
--			                         <&clk IMX8MQ_SYS1_PLL_100M>;
-+						 <&clk IMX8MQ_SYS1_PLL_100M>;
- 			assigned-clock-rates = <500000000>, <100000000>;
- 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
- 			phys = <&usb3_phy0>, <&usb3_phy0>;
-@@ -1695,13 +1695,13 @@ usb_dwc3_1: usb@38200000 {
- 			compatible = "fsl,imx8mq-dwc3", "snps,dwc3";
- 			reg = <0x38200000 0x10000>;
- 			clocks = <&clk IMX8MQ_CLK_USB2_CTRL_ROOT>,
--			         <&clk IMX8MQ_CLK_USB_CORE_REF>,
-+				 <&clk IMX8MQ_CLK_USB_CORE_REF>,
- 				 <&clk IMX8MQ_CLK_32K>;
- 			clock-names = "bus_early", "ref", "suspend";
- 			assigned-clocks = <&clk IMX8MQ_CLK_USB_BUS>,
--			                  <&clk IMX8MQ_CLK_USB_CORE_REF>;
-+					  <&clk IMX8MQ_CLK_USB_CORE_REF>;
- 			assigned-clock-parents = <&clk IMX8MQ_SYS2_PLL_500M>,
--			                         <&clk IMX8MQ_SYS1_PLL_100M>;
-+						 <&clk IMX8MQ_SYS1_PLL_100M>;
- 			assigned-clock-rates = <500000000>, <100000000>;
- 			interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
- 			phys = <&usb3_phy1>, <&usb3_phy1>;
-@@ -1767,9 +1767,9 @@ pcie0: pcie@33800000 {
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 0x7>;
- 			interrupt-map = <0 0 0 1 &gic GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
--			                <0 0 0 2 &gic GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
--			                <0 0 0 3 &gic GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
--			                <0 0 0 4 &gic GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
-+					<0 0 0 2 &gic GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
-+					<0 0 0 3 &gic GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-+					<0 0 0 4 &gic GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
- 			fsl,max-link-speed = <2>;
- 			linux,pci-domain = <0>;
- 			clocks = <&clk IMX8MQ_CLK_PCIE1_ROOT>,
-@@ -1779,17 +1779,17 @@ pcie0: pcie@33800000 {
- 			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
- 			power-domains = <&pgc_pcie>;
- 			resets = <&src IMX8MQ_RESET_PCIEPHY>,
--			         <&src IMX8MQ_RESET_PCIE_CTRL_APPS_EN>,
--			         <&src IMX8MQ_RESET_PCIE_CTRL_APPS_TURNOFF>;
-+				 <&src IMX8MQ_RESET_PCIE_CTRL_APPS_EN>,
-+				 <&src IMX8MQ_RESET_PCIE_CTRL_APPS_TURNOFF>;
- 			reset-names = "pciephy", "apps", "turnoff";
- 			assigned-clocks = <&clk IMX8MQ_CLK_PCIE1_CTRL>,
--			                  <&clk IMX8MQ_CLK_PCIE1_PHY>,
--			                  <&clk IMX8MQ_CLK_PCIE1_AUX>;
-+					  <&clk IMX8MQ_CLK_PCIE1_PHY>,
-+					  <&clk IMX8MQ_CLK_PCIE1_AUX>;
- 			assigned-clock-parents = <&clk IMX8MQ_SYS2_PLL_250M>,
--			                         <&clk IMX8MQ_SYS2_PLL_100M>,
--			                         <&clk IMX8MQ_SYS1_PLL_80M>;
-+						 <&clk IMX8MQ_SYS2_PLL_100M>,
-+						 <&clk IMX8MQ_SYS1_PLL_80M>;
- 			assigned-clock-rates = <250000000>, <100000000>,
--			                       <10000000>;
-+					       <10000000>;
- 			status = "disabled";
- 
- 			pcie0_port0: pcie@0 {
-@@ -1868,17 +1868,17 @@ pcie1: pcie@33c00000 {
- 			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
- 			power-domains = <&pgc_pcie>;
- 			resets = <&src IMX8MQ_RESET_PCIEPHY2>,
--			         <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_EN>,
--			         <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF>;
-+				 <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_EN>,
-+				 <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF>;
- 			reset-names = "pciephy", "apps", "turnoff";
- 			assigned-clocks = <&clk IMX8MQ_CLK_PCIE2_CTRL>,
--			                  <&clk IMX8MQ_CLK_PCIE2_PHY>,
--			                  <&clk IMX8MQ_CLK_PCIE2_AUX>;
-+					  <&clk IMX8MQ_CLK_PCIE2_PHY>,
-+					  <&clk IMX8MQ_CLK_PCIE2_AUX>;
- 			assigned-clock-parents = <&clk IMX8MQ_SYS2_PLL_250M>,
--			                         <&clk IMX8MQ_SYS2_PLL_100M>,
--			                         <&clk IMX8MQ_SYS1_PLL_80M>;
-+						 <&clk IMX8MQ_SYS2_PLL_100M>,
-+						 <&clk IMX8MQ_SYS1_PLL_80M>;
- 			assigned-clock-rates = <250000000>, <100000000>,
--			                       <10000000>;
-+					       <10000000>;
- 			status = "disabled";
- 
- 			pcie1_port0: pcie@0 {
+diff --git a/Documentation/devicetree/bindings/sound/imx-audmux.yaml b/Documentation/devicetree/bindings/sound/imx-audmux.yaml
+index dab45c310670..501af1add3c1 100644
+--- a/Documentation/devicetree/bindings/sound/imx-audmux.yaml
++++ b/Documentation/devicetree/bindings/sound/imx-audmux.yaml
+@@ -101,10 +101,10 @@ examples:
+         mux-ssi1 {
+             fsl,audmux-port = <0>;
+             fsl,port-config = <
+-                IMX_AUDMUX_V2_PTCR_SYN		0
+-                IMX_AUDMUX_V2_PTCR_TFSEL(2)	0
+-                IMX_AUDMUX_V2_PTCR_TCSEL(2)	0
+-                IMX_AUDMUX_V2_PTCR_TFSDIR	0
++                IMX_AUDMUX_V2_PTCR_SYN      0
++                IMX_AUDMUX_V2_PTCR_TFSEL(2) 0
++                IMX_AUDMUX_V2_PTCR_TCSEL(2) 0
++                IMX_AUDMUX_V2_PTCR_TFSDIR   0
+                 IMX_AUDMUX_V2_PTCR_TCLKDIR      IMX_AUDMUX_V2_PDCR_RXDSEL(2)
+               >;
+         };
 -- 
 2.53.0
 
