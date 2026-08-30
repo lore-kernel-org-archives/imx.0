@@ -1,167 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3432DC783
-	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 13:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19283939BD
+	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 13:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788096280; cv=none; b=mez6kOf0IwSky4ONfvb2hb4AIWJp7X+h7nJhN+JrCUFWeSQVGIL3sWdlha+QDyrmm6QsbqJFn8l1xNStQBCjb7XYO/8If43ge8mbq1Lnu1380S2aCrprxvkx0aY37lpSmWX8UQyOdoLT+mSfXyMmDecW1qeJvdog0jTqm/MUFdw=
+	t=1788096801; cv=none; b=fjAIuCSdyOXgxsq4uJFelVWpywB27c2Izf40B9jxfsVLeRNTiKic/ZUexZdD/kPX/yzAipG/4pvXmsUVd+g4h4k0dQzGKyCn2X/2DZ4Jd74Vu3UAHEPgnh7BXvyruncvB3sM4k83mZC3HJOFHF0VkwGxjlbsY1rxO45YP2dW3I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788096280; c=relaxed/simple;
-	bh=Qf9x5qhpMBaZv8br3grz2Fy8rBixbyeYi/dOMikqJVA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Nzv+Hupu0Wetz/dkIcNIzDmGRwAJr3DPQd2UVGkpK5UoOdZ5nwECw+LSdMX7XxP6kee4h7n+CmSxmAq5r0KS4dY60qvot9i9SEW4lBYb8U18vr3e5WGWZ+SbfrETD8ecEVVV3K+fayp3Ooton/rnfrm3cWz8jPJG9lOMZWcY7IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOuKh9Q5; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOuKh9Q5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F4D1F000E9;
-	Sun, 30 Aug 2026 13:24:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788096278;
-	bh=OIFrnCoY9kMxX9sM6aHNvOTUtHtAgUbi5mfSgtH0OwE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MOuKh9Q5LizUJfQt4lOphrnNbNDJ69cCUjf83IyDEM5oy8q9/B2FSGB+rFGKqx8qT
-	 rNhdZK55FyGer3FOSSKSAKM2ji80D/XoBe5+7rNcdrx7WsTLxiYo2ArB2T8zN8SXDR
-	 gtf/bHX9wYwx2plOlSjnOrhDFe283yaX87KNERzAq7t/VQowsBAj0Hnenh8tgpZsPs
-	 Tqst6XDtUBPNwBEVbCYXx89IkgCzcTl7QETHORbvj9YO2XDTwEWj3XMYbgMf9m8ePC
-	 4y3/9Gr1x2PKex4DN7ABRD1PpUfTH44zuyPFwuAa0PJK02qxv0F81tzhBqE4YqEP2W
-	 CVHIksEIhZn3A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] hwrng: imx-rngc: propagate clock enable errors
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pengpeng Hou" <pengpeng@iscas.ac.cn>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260830131253.2718-1-pengpeng@iscas.ac.cn>
-References: <20260830131253.2718-1-pengpeng@iscas.ac.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 30 Aug 2026 13:24:37 +0000
-Message-Id: <20260830132438.31F4D1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1788096801; c=relaxed/simple;
+	bh=E0EaDOtsZ4SOqOd7STzJZoFhayn7fzP0Y1Pk1yPDCM8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qd4EI2sbbnW1Etzrhgt87tohBBS1GPoHVQmDdt5lOxeZK6WcqzuFeGW8VJEkLw322rvgo25YHQLWw/8e410zWrpqrBqt9aR0iy1+rVpvKF9Lno5TrsIo9DOforHOFE9il/2ubUL0u9ZxOFe8gXn3lJMoeDXXRtmtJzTTaT5lu+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.241.250])
+	by APP-03 (Coremail) with SMTP id rQCowADHzz0YMZRqgiebBg--.26027S2;
+	Sun, 30 Aug 2026 21:33:13 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] remoteproc: imx_dsp: acquire runtime PM before adding carveouts
+Date: Sun, 30 Aug 2026 21:33:10 +0800
+Message-ID: <20260830133310.6926-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADHzz0YMZRqgiebBg--.26027S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kr17Cr18tryrCw4ktryDAwb_yoW8GryfpF
+	4Sva4rKr4UG3yjqwsrAa1093WS9ayUJFy7Wa4I93Z7Zr18Xw1jyF4rGFy2qFWrtrZYgr45
+	XrZ0y34rZF1ayFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbo5l5UUUUU==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+The prepare callback publishes DSP carveouts before acquiring the
+runtime-PM reference that establishes required clocks and mailbox state.
+A PM failure therefore leaves the prepare transaction partially
+published.
 
-Pre-existing issues:
-- [High] The IRQ handler accesses hardware registers without ensuring the d=
-evice is in an active PM state, which causes synchronous external aborts (b=
-us errors) if the clock is disabled.
-- [High] Stale completion state from lack of reinit_completion causes inval=
-id hardware state reads.
---
+Acquire runtime PM first and drop that reference if carveout
+construction fails, so a failed prepare does not add resources before
+its hardware prerequisite.
 
-commit 2504f9e54a2f61f40b7332a04558df267648996f
-Author: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Fixes: ec0e5549f358 ("remoteproc: imx_dsp_rproc: Add remoteproc driver for DSP on i.MX")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ drivers/remoteproc/imx_dsp_rproc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-hwrng: imx-rngc: propagate clock enable errors
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index fd60c67ba8a9f..96d619daf3f5b 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -726,14 +726,17 @@ static int imx_dsp_rproc_prepare(struct rproc *rproc)
+ 	struct device *dev = rproc->dev.parent;
+ 	int ret;
+ 
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret < 0)
++		return ret;
++
+ 	ret = imx_dsp_rproc_add_carveout(priv);
+ 	if (ret) {
+ 		dev_err(dev, "failed on imx_dsp_rproc_add_carveout\n");
++		pm_runtime_put_sync(dev);
+ 		return ret;
+ 	}
+ 
+-	pm_runtime_get_sync(dev);
+-
+ 	return 0;
+ }
 
-imx_rngc_probe() reads hardware registers after enabling its clock without
-checking the result, and the runtime resume callback always reports success
-after the same unchecked operation. Propagate clock-enable errors before
-accessing the RNG and to the runtime-PM core on resume.
+base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
+-- 
+2.50.1
 
-> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/i=
-mx-rngc.c
-> index 7693328f10564..00a21d62c79c3 100644
-> --- a/drivers/char/hw_random/imx-rngc.c
-> +++ b/drivers/char/hw_random/imx-rngc.c
-> @@ -266,7 +266,9 @@ static int __init imx_rngc_probe(struct platform_devi=
-ce *pdev)
->  	if (irq < 0)
->  		return irq;
-> =20
-> -	clk_prepare_enable(rngc->clk);
-> +	ret =3D clk_prepare_enable(rngc->clk);
-> +	if (ret)
-> +		return ret;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but I have a question about the
-clock management during probe failure.
-
-If imx_rngc_self_test() fails later in imx_rngc_probe(), the driver manually
-disables the clock:
-
-    if (self_test) {
-        ret =3D imx_rngc_self_test(rngc);
-        if (ret) {
-            clk_disable_unprepare(rngc->clk);
-            return dev_err_probe(&pdev->dev, ret, "self test failed\n");
-        }
-    }
-
-However, the IRQ is registered with devm_request_irq() just before the
-self-test, so it remains active until devres unwinds.
-
-If a spurious interrupt occurs, or if the hardware asserts an interrupt from
-the failed self-test right after the clock is disabled, the IRQ handler will
-execute:
-
-drivers/char/hw_random/imx-rngc.c:imx_rngc_irq() {
-    ...
-    status =3D readl(rngc->base + RNGC_STATUS);
-    rngc->err_reg =3D readl(rngc->base + RNGC_ERROR);
-    ...
-}
-
-Could this cause a synchronous external abort due to the MMIO access without
-the clock being enabled?
-
-Should the IRQ be disabled or unregistered before disabling the clock in th=
-is
-error path, or should the IRQ handler verify the PM state before accessing
-registers?
-
-
-[Severity: High]
-This is also a pre-existing issue, but does this driver have a potential ra=
-ce
-condition with its completion mechanism?
-
-The driver initializes the completion once in imx_rngc_probe():
-
-    init_completion(&rngc->rng_op_done);
-
-It then waits on this completion in imx_rngc_init():
-
-    ret =3D wait_for_completion_timeout(&rngc->rng_op_done,
-                                      msecs_to_jiffies(RNGC_SEED_TIMEOUT));
-
-And also in imx_rngc_self_test():
-
-    ret =3D wait_for_completion_timeout(&rngc->rng_op_done,
-                                      usecs_to_jiffies(RNGC_SELFTEST_TIMEOU=
-T));
-
-If a hardware operation times out, the function returns an error without
-consuming a completion event.
-
-If the hardware finishes the operation shortly after the timeout and trigge=
-rs
-the interrupt handler:
-
-drivers/char/hw_random/imx-rngc.c:imx_rngc_irq() {
-    ...
-    if (status & (RNGC_STATUS_SEED_DONE | RNGC_STATUS_ST_DONE))
-        complete(&rngc->rng_op_done);
-    ...
-}
-
-This increments the completion counter. Because the driver never calls
-reinit_completion(), could the next call to imx_rngc_init() or
-imx_rngc_self_test() immediately return success from
-wait_for_completion_timeout() without actually waiting for the new operation
-to finish?
-
-Could this lead to reading uninitialized or stale data, compromising the
-random number generator's security?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260830131253.2718=
--1-pengpeng@iscas.ac.cn?part=3D1
