@@ -1,139 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0CF3F1045
-	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 13:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEF5282F2A
+	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 14:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788097429; cv=none; b=WmmkT3f83lMtJl3dW6+gAHSKJumJqijsYW5zTtor939jRvbji+WamE9/zssSFIMmWtmIZLD8BDD0M9ln+74An/9UkGULpsN+U0ul6SaLtcDMOKYGLTTR2B5uAj/LePmOUvwyCf+AjjiMVO+PyPx+0yf1cP7CNArtazlVm3RlQzE=
+	t=1788098971; cv=none; b=L1yLrQpzVSNmMijqL4gX/ecftPfYZQtSPB29oGYVuVMkLoEPUwrbTfMpElkBJWpmt/W8nOhbVCpSUrj6CCyvD/6VIgtmAZKLUFHlrJyp1u79eg4NVV7B8oHoWg7aq0KRCjjX0O4wiefz209o3zjZ9PWfkG7byuLjj+fkrv4RRlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788097429; c=relaxed/simple;
-	bh=zPKIB6qwZLjTtTToQutlpfT7HPlYN/Vw05PRZ2nmDJs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PNiOe2j1lYLQ84AgicKdm0Aj5a1L6/efrb6n5Zvq7RKI1Ax1ewngn2b0jnu2heDmsmVc71Vv6dLpkeVv6kNBqt4yTSTXZgPpQ8Itb005wcV3q7DCysKFdi4soEJLXcfi3Yu5PXpGu8lZz74lnQO5tbAWJHqptsFwqS7neN9Riz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O11xDCif; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O11xDCif"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140621F00A3D;
-	Sun, 30 Aug 2026 13:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788097428;
-	bh=T7cSTjQzHaabvTM1E8w09lxs5v2Pm4Xs9rln/Cr8rLY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O11xDCifSMImx6l20NVRxJUVrH3WXnvkpR8fnjJX8DRK7P51YjEAXXo/XARCHS+wk
-	 efpZLo0IzVxMep8OEymJmxKD+J1KvFWo/TnmzkN23JiltwhisAemnxb56KrZTzZpbj
-	 MFT7hdCZN6tsbcBmyiCGtyooVyTuG1SWcVIjT/S1vpHzco+R4Ul+iokI2QaTi88nAk
-	 YTeQ7chVCnMiMB6aqwAHFrv8kqqClMuE9/gDXP97Ph73v6wki/mBGr0n1h7yAr+VcT
-	 w7OcVFp6dK1wYLileNcZtchdUoIwWfweU9sftST4VFjXw4StjUvCvUNADsvEFcErJR
-	 ySOft7DmTENKA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] remoteproc: imx_dsp: acquire runtime PM before adding
- carveouts
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pengpeng Hou" <pengpeng@iscas.ac.cn>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260830133310.6926-1-pengpeng@iscas.ac.cn>
-References: <20260830133310.6926-1-pengpeng@iscas.ac.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 30 Aug 2026 13:43:47 +0000
-Message-Id: <20260830134348.140621F00A3D@smtp.kernel.org>
+	s=arc-20240116; t=1788098971; c=relaxed/simple;
+	bh=aq3qOCVQRnrRH/MZ7jN+dWV2whUpt0E7MVX41WDBAQg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PYh+hQko6kBQYnsPKDgcQXFu98tOHbhf0PhAY1kfct3gbelctScZHjpxYz8x88VUGqM9+a2UA2wt9qQ/3EXwyBnGE6xp6xiJmPiANkAY0YV0yIZDeEF+KEFaSYX0/y3k2P7s88H9Wontaquw4JcZtDn/sB0bqQLd4M3fybyXdnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.241.250])
+	by APP-03 (Coremail) with SMTP id rQCowAAHDDqXOZRqwY6bBg--.17790S2;
+	Sun, 30 Aug 2026 22:09:27 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Vinod Koul <vkoul@kernel.org>,
+	imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] dmaengine: fsl-edma: make channel resource allocation transactional
+Date: Sun, 30 Aug 2026 22:09:25 +0800
+Message-ID: <20260830140925.30268-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAHDDqXOZRqwY6bBg--.17790S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tr4fKr43WF43Kw1xXF4kCrg_yoW8ZrWfpa
+	4fJa1FkFWUt34Y9F4DAw4rZr4Fga18JFyUKFW7Gwn8Z3s8Jwn3Cwn5Gw1Svr98ZryrAF4x
+	tFn8JFyrCF1UuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUj2YLD
+	UUUUU==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Channel allocation ignores a required clock failure and does not reject
+a failed TCD DMA-pool allocation before requesting IRQ resources.
 
-Pre-existing issues:
-- [High] If `imx_dsp_rproc_add_carveout()` fails during its iteration, or i=
-f later stages like firmware parsing fail after a successful prepare, previ=
-ously added carveouts and coredump segments are permanently leaked on the r=
-emoteproc lists.
-- [High] Mailbox channels allocated during runtime resume are leaked if clo=
-ck enable fails in `imx_dsp_runtime_resume()`.
---
+Check both prerequisites and unwind only the channel clock that was
+enabled by this allocation attempt.
 
-commit 1aa0eaf53776f4fb1deb0e079f298b5ed6746813
-Author: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Fixes: 9d831528a656 ("dmaengine: fsl-edma: extract common fsl-edma code (no changes in behavior intended)")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ drivers/dma/fsl-edma-common.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-remoteproc: imx_dsp: acquire runtime PM before adding carveouts
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index bb7531c456dfa..02b92d1464cca 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -844,13 +844,20 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+ 	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
+ 	int ret = 0;
+ 
+-	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK)
+-		clk_prepare_enable(fsl_chan->clk);
++	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK) {
++		ret = clk_prepare_enable(fsl_chan->clk);
++		if (ret)
++			return ret;
++	}
+ 
+ 	fsl_chan->tcd_pool = dma_pool_create("tcd_pool", chan->device->dev,
+ 				fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_TCD64 ?
+ 				sizeof(struct fsl_edma_hw_tcd64) : sizeof(struct fsl_edma_hw_tcd),
+ 				32, 0);
++	if (!fsl_chan->tcd_pool) {
++		ret = -ENOMEM;
++		goto err_pool;
++	}
+ 
+ 	if (fsl_chan->txirq)
+ 		ret = request_irq(fsl_chan->txirq, fsl_chan->irq_handler, IRQF_SHARED,
+@@ -873,7 +880,9 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+ 		free_irq(fsl_chan->txirq, fsl_chan);
+ err_txirq:
+ 	dma_pool_destroy(fsl_chan->tcd_pool);
+-	clk_disable_unprepare(fsl_chan->clk);
++err_pool:
++	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK)
++		clk_disable_unprepare(fsl_chan->clk);
+ 
+ 	return ret;
+ }
 
-This commit fixes the prepare callback by acquiring the runtime-PM
-reference before publishing DSP carveouts. This ensures that if the PM
-resume fails, the transaction is not partially published.
+base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
+-- 
+2.50.1
 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_=
-dsp_rproc.c
-> index fd60c67ba8a9f..96d619daf3f5b 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -726,14 +726,17 @@ static int imx_dsp_rproc_prepare(struct rproc *rpro=
-c)
->  	struct device *dev =3D rproc->dev.parent;
->  	int ret;
-> =20
-> +	ret =3D pm_runtime_resume_and_get(dev);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at what happens duri=
-ng
-this runtime resume, if clk_bulk_prepare_enable() fails in
-imx_dsp_runtime_resume(), it returns directly:
-
-drivers/remoteproc/imx_dsp_rproc.c:imx_dsp_runtime_resume() {
-	...
-	ret =3D clk_bulk_prepare_enable(DSP_RPROC_CLK_MAX, priv->clks);
-	if (ret) {
-		dev_err(dev, "failed on clk_bulk_prepare_enable\n");
-		return ret;
-	}
-	...
-}
-
-Does this bypass imx_dsp_rproc_free_mbox() and permanently leak the exclusi=
-ve
-mailbox channels allocated just above it via imx_dsp_rproc_mbox_init()?
-
-Subsequent runtime resume attempts might fail with -EBUSY when
-mbox_request_channel_byname() is called again for the same channels, breaki=
-ng
-device functionality.
-
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	ret =3D imx_dsp_rproc_add_carveout(priv);
->  	if (ret) {
->  		dev_err(dev, "failed on imx_dsp_rproc_add_carveout\n");
-> +		pm_runtime_put_sync(dev);
->  		return ret;
-
-[Severity: High]
-This is a pre-existing issue, but if imx_dsp_rproc_add_carveout() fails
-midway through its loop (e.g., returning -ENOMEM or -EINVAL), it returns an
-error without freeing earlier allocations.
-
-Furthermore, if this prepare callback fully succeeds but rproc_parse_fw()
-subsequently fails in the remoteproc core, the core jumps to the
-unprepare_rproc label (which calls imx_dsp_rproc_unprepare) and completely
-bypasses rproc_resource_cleanup().
-
-Does this permanently leak the previously added rproc_mem_entry and
-rproc_dump_segment objects on the remoteproc lists?
-
-Repeated boot failures could continually append memory to these lists,
-eventually causing an out-of-memory condition.
-
->  	}
-> =20
-> -	pm_runtime_get_sync(dev);
-> -
->  	return 0;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260830133310.6926=
--1-pengpeng@iscas.ac.cn?part=3D1
