@@ -1,91 +1,73 @@
-Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8447B34E741
-	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 16:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.86.107.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E626229D281;
+	Sun, 30 Aug 2026 18:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788107435; cv=none; b=mxbC9O5vxWfJioNvAP/ubbBvwbvyMn8lYBDfPbvkjmFGg1EEiOr0LA6WFj8mWKCGJ9Rv11xTlOBMlZMWASYIlB8QYu/xzhv/nifH5g1rxDmOSGdL7QrgCXXe94ybK/SdG6twrMdPM+Krabf2npOwdSmGQJKlcUN7LIN7B0+z+gE=
+	t=1788113826; cv=none; b=FJp+oESo0YIEj4eXbqWoxJlV4gF1uGFxCbWEmDBC7Om7xSoMJJDGqH/LHoziRPX008XpXORTUL7R0Zqviz/Lp9CjVc4LO8KJSqMm6bOui81dXkxWR9Zjje3nix3AevewRFJgDfHPbCKpm127P0zNKfY0wOl21joUvl8Dii52qJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788107435; c=relaxed/simple;
-	bh=aNS8gAc2JRPWto6wkjb9L5yUtOT4hCY5RJlAwW+y8Hs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rnsxSkqjcEncLhCOcVzwwC5Ig9/80VBQYUSinlGFJUH4x/vboBPSXVDTH2R1BostCZKgemVb+m4J8lSxqHBcyGmYESfAQ/wHYYU57WdW0dDB1EmhALIF2S2ALth1eirNJFw6tkLspp6O0i/vGCXnJ/a7hhQvCttLKITWHT4I75o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net; spf=pass smtp.mailfrom=rendec.net; dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b=VbnYzlYA; arc=none smtp.client-ip=80.86.107.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
+	s=arc-20240116; t=1788113826; c=relaxed/simple;
+	bh=t+fmRMM8dNsgFQky0K6Pk4l9y8LFETDlPVP9aN/QHQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rmz6ye6BSxvoBIQq0sNyoec8GcN3EdoVJZi3cA+eMS5XNBPogeadY4ukvsAKlMXAYbvfVSg9S8O0jEJWZLJEZLf+vWHk30COELALw1aoZiUbJ4ky0nDkAzuKtdCpM1HTpU7VA8AU8O7lZue4iuJMvm1eZ+h6nhS3I9EWMWKimNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFsvVXIv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b="VbnYzlYA"
-Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
-	by mail.mindbit.ro (Postfix) with ESMTPSA id 572C4CC505;
-	Sun, 30 Aug 2026 19:30:28 +0300 (EEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 572C4CC505
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
-	s=default; t=1788107430;
-	bh=DHbQgw0rVP+95Tv0kAeoRDdjuGbtzcnAd7wDYd7T4VY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=VbnYzlYA/is4ElrnBAiVpynIrmgkXqFz8NREmw6TFB236tIPAP0Rj6EZPNRW9A6bo
-	 qYRSCl+FKSPWv1qdPuuKd7jcsmkSjieEnzBAOa+OrSaXKcdsRfw+oIbb749n6La0qr
-	 PmtmiCvjf9YJWIgYO9ghTa/xzswW0LaDlQJh6mt/5AGSSljNsvUDiP5TPaAvmdt+AB
-	 QyyJnf1rkX4m+IsG3bumpZ7jc+02U0WzU/N3tIInaP4QgNI6VLXC6TAaZBcO66h7po
-	 XiZ41hUAHi9ZCgTq4zlrc/aEtAUunfBKqmnth2RtN0llWsP+0/tarLiLK6RTCydtaP
-	 q0j3u2ru77ubQ==
-Message-ID: <0b44f9fe48a6e81a5dbbb61ead46b77b117433b4.camel@rendec.net>
-Subject: Re: [PATCH v5 4/9] irqchip/imx-irqsteer: Dispose of parent IRQ
- mappings in remove()
-From: Radu Rendec <radu@rendec.net>
-To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
- Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
-	 <jindong.yue@nxp.com>, xuegang.liu@nxp.com, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Date: Sun, 30 Aug 2026 12:30:26 -0400
-In-Reply-To: <20260821101039.4037925-5-Zhipeng.wang_1@oss.nxp.com>
-References: <20260821101039.4037925-1-Zhipeng.wang_1@oss.nxp.com>
-	 <20260821101039.4037925-5-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFsvVXIv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F06D1F000E9;
+	Sun, 30 Aug 2026 18:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788113824;
+	bh=lQaKAj+4pBDAOHYv1oG4MSzn5ICb7jgI2jFMOSyM0vQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VFsvVXIvt9Du3oVLMw8LyQHekhZP7ELz12AuoLv9mJPDLRpKuzPxqbSmop0i1V6rR
+	 Q5vUR74DuR6AviZnqC1gD+RULOW/665HbfPFfgKoZJ2kRD7xeGVGQe2Gylbcpo6zIV
+	 Vq57TqL+b3T7sOOueseis5MajfndoPb8LUQl5EDcVGe7UA0GB/axumDq8YeCSagspT
+	 4lNmcRGlmkX6GW/L4VyIB8masZ1kDbxnw3sI725CBh7gKv75OjMOxo7I6zdoPiXEQY
+	 HzDgsjQhOWmo4yXg9NgaRu5kepnehTLok2fM6sbHmBEjUkUXKdc7cskuu9OAYKxf4P
+	 zg+zJJaQVwHMg==
+Date: Sun, 30 Aug 2026 13:17:03 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Colin Huang <u8813345@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Eddie James <eajames@linux.ibm.com>,
+	Dixit Parmar <dixitparmar19@gmail.com>,
+	Wensheng Wang <wenswang@yeah.net>,
+	Cosmo Chou <chou.cosmo@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Antoni Pokusinski <apokusinski01@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: trivial-devices: Add SDMC DM2016
+Message-ID: <178811382250.97630.14321162328800745928.robh@kernel.org>
+References: <20260826194447.3230715-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826194447.3230715-1-Frank.Li@oss.nxp.com>
 
-On Fri, 2026-08-21 at 19:10 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
-> From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
->=20
-> probe() maps the parent output interrupts with irq_of_parse_and_map(),
-> but remove() only unchains the handlers and never disposes of those
-> mappings, leaking them on unbind. The child mappings handed out by the
-> domain are freed by their consumers and, together with the domain, are
-> now torn down by devres, so remove() only has to dispose of the parent
-> mappings it created itself.
->=20
-> Dispose of the parent mappings alongside the chained-handler teardown.
->=20
-> Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
-> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+On Wed, 26 Aug 2026 15:44:44 -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Add SDMC DM2016 (1024bit EEPROM + 128bit OTP memory for key).
+> 
+> Fix legacy imx6 platform CHECK_DTBS warnings:
+>   /soc/bus@2100000/i2c@21a4000/dm2016@51: failed to match any schema with compatible: ['sdmc,dm2016']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 1 +
-> =C2=A01 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index 571324de8bd1..071ab1ac1fe9 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -287,6 +287,7 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
-> =C2=A0
-> =C2=A0		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
-> =C2=A0						 NULL, NULL);
-> +		irq_dispose_mapping(irqsteer_data->irq[i]);
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	clk_disable_unprepare(irqsteer_data->ipg_clk);
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-Reviewed-by: Radu Rendec <radu@rendec.net>
+Applied, thanks!
+
