@@ -1,158 +1,186 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5A62836A6;
-	Sun, 30 Aug 2026 16:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586D43BED5F;
+	Sun, 30 Aug 2026 16:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788106630; cv=none; b=EzVWFgqtZ98E1oCvntdkTKjOhVFHnEsH/UpHy/Fm5XUfAHdLnLYVoBdiE+jz6EplfwkzMa8w8Ds5v59bonVSssLvodfabCoGiZrQr6Bj83jP4SHyTItdc+xBnHibYxzop2KM84Qjn/VfpBP3txxI2PZjpH66jPETWJn5svCRRzQ=
+	t=1788106688; cv=none; b=bETSiCbLufHURouEOrqDvpM+aTyT2Ctlqmxoy8JmK6VXIdDgw1uf8NEXRvIFonEiL7Nf/hwjaA6gXL/Bg+WDay9e5ieZZm7sQ95aci08LtJkT/i7cUw47g6t2EhobxoBrA22/wMi19ryDnHR/s6yWA1ZMwFQWJ4u8tQEpimQz4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788106630; c=relaxed/simple;
-	bh=ZBuyHfcHQBQxTtOh1Ip3mu69EGnHZ6SJOil1WJnOiok=;
+	s=arc-20240116; t=1788106688; c=relaxed/simple;
+	bh=VJ8KSNdOms/52I/FFynH/3c+i1lBlRNyFlqz0j07+ZU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mPSCFBlikzWbTJCmqo5qH7R2oRaibgYoTnMSNo3akQzvu12NsnPj59b6a8+g9G6GTNzz9y4duH9sNJyDnS1zzTopUVpYRYvq73e8IOZX1Sd3RLU1uaByZrsG6d2r9lvfRmwSqrI0cc2wQPzzxuqBcR3fcEIh/ogvjrupuiImUBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGtYEB0b; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=P5M06VZzTB5Lyb4XHftjRr3SAyOnreeyY3j/PTZEaIGNqpjigg4j58I8Zz0kbFIOvJBXPS5bYVrOl4j/ffGoi89wnzdowOyIbB7kg7nivStBGePH98/aHFOrrQH2hpMZXwANAO+Rwa5/tSq5m850imzYzrmDoGmI57WQy4ge8pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vu/SmAow; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGtYEB0b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BE31F000E9;
-	Sun, 30 Aug 2026 16:17:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vu/SmAow"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2401F000E9;
+	Sun, 30 Aug 2026 16:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788106628;
-	bh=cqQeQ39Uqqqa1WoMbd3xF4GyGppSFOxOTriMUiaMklE=;
+	s=k20260515; t=1788106684;
+	bh=xTe6sJhzyDHYKNrYo2defPCOBN0mbyRQs/VI5UCi/3A=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QGtYEB0bWGxJCMx25j/g8y2mapXwxVjMv8KNEJ3VIrDeIwpTdu21MRAw+q0goTH4O
-	 z2/x5KjE9VwqropgmpHpUZpSyLMUhQbL0A5tcxg5j+CKPyyK2Wt+XE1Vg9Fjt3bg3J
-	 joMbEIFWsJQL5Zu1jygAFkNoyaUjuIUirMOUlUkvxBmrwuh3y94szddDL3ALbprJ1a
-	 vzpq1fMZRMe2/gQvHX6jVLw8btrRSdFG7lNnVcSzg68lGa1cp4173QZWiU1LzlJx55
-	 x5RMcLocS1FSPKfc1DPPk9hyiaVDxMtwu+Y1NXxuC5Ti01WySCumJHsfz4ylSOfLtA
-	 6mnsUM/UIh/LA==
+	b=Vu/SmAowbmY59uL/no5biU+cY3x+vkv2LplvoxgDEMWSEkgZeDFRFCVdvsbeoPkAG
+	 akHt0hxr9B4FJnLNJQsxBqdzcOTZ+UoLv5fnuhnG6ojTL8gs2SxE6c+Ohng3385eiB
+	 G4PhUATVYCvCIGi0vPopZh4QWklv9bJNnBXw3pSnnC3ia3amFK1JWawoOv28wFTjLC
+	 r+VKBt4ETdRcfpYBWFXfoTPS+Kzxsj5kU1/yLkUNbcOo37eypvzNzs7UmcdsNFQjpP
+	 CvU4yVMpFzZKiElZSYMWN+Y57SyHfWusklFjNY1S3l4H564rKRoZ2jLhQcmobaLIy1
+	 FJCFyYk4UUN9A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 2/5] media: hi846: Fix link frequency handling
+Subject: Re: [PATCH v6 4/5] media: hi846: Add 6MP and 8MP modes support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Pengyu Luo" <mitltlatltl@gmail.com>
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, media-ci@linuxtv.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260830160025.211384-3-mitltlatltl@gmail.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, media-ci@linuxtv.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+In-Reply-To: <20260830160025.211384-5-mitltlatltl@gmail.com>
 References: <20260830160025.211384-1-mitltlatltl@gmail.com>
- <20260830160025.211384-3-mitltlatltl@gmail.com>
+ <20260830160025.211384-5-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 30 Aug 2026 16:17:07 +0000
-Message-Id: <20260830161708.42BE31F000E9@smtp.kernel.org>
+Date: Sun, 30 Aug 2026 16:18:03 +0000
+Message-Id: <20260830161804.1E2401F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Incomplete filtering of unsupported link frequencies during probe =
-causes state corruption, leading to a kernel crash (NULL pointer dereferenc=
-e) in the final series.
+
+New issues:
+- [Medium] The crop rectangles for the newly added 6MP (3264x1836) and 8MP =
+(3264x2448) modes overflow the native crop bounds of the sensor.
+
+Pre-existing issues:
+- [High] Missing mutex_unlock() on the error path in hi846_set_format(), le=
+ading to a deadlock.
+- [High] Unchecked return value from v4l2_find_nearest_size_conditional() l=
+eads to a NULL pointer dereference in hi846_set_format().
 --
 
-commit bffa4cf45bf88ea9bb0f32956b9b2cda43e64344
+commit e8c04d7885133a51b470ee7348db670b6ed848dd
 Author: Pengyu Luo <mitltlatltl@gmail.com>
+Date:   Sun Aug 30 16:00:24 2026 +0000
 
-media: hi846: Fix link frequency handling
-
-This patch modifies link frequency handling to calculate supported values
-dynamically based on PLL configuration, lane count, and MCLK rate. It repla=
-ces
-hardcoded frequencies and uses v4l2_link_freq_to_bitmap() to find the
-intersection with device tree values.
+    media: hi846: Add 6MP and 8MP modes support
+   =20
+    Hi846 is an 8MP sensor, but the upstream driver has only supported 2MP
+    mode for years. This patch adds 6MP and 8MP modes to maximize sensor
+    utilization.
 
 > diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-> index 7f069aca0fce5..2f8624f9bdf3a 100644
+> index 26b4290148b61..7ad691364cdc1 100644
 > --- a/drivers/media/i2c/hi846.c
 > +++ b/drivers/media/i2c/hi846.c
 [ ... ]
-> @@ -1749,7 +1774,14 @@ static int hi846_set_format(struct v4l2_subdev *sd,
->  	mf->code =3D HI846_MEDIA_BUS_FORMAT;
->  	mf->field =3D V4L2_FIELD_NONE;
-> =20
-> -	__v4l2_ctrl_s_ctrl(hi846->link_freq, hi846_get_link_freq_index(hi846));
-> +	idx =3D hi846_get_link_freq_index(hi846, hi846->cur_mode);
-> +	if (idx < 0) {
-> +		dev_err(&client->dev,
-> +			"failed to get link freq index: %d\n", idx);
-> +		return -EINVAL;
-> +	}
-> +
-> +	__v4l2_ctrl_s_ctrl(hi846->link_freq, idx);
+> @@ -1136,7 +1236,59 @@ static const struct hi846_mode supported_modes[] =
+=3D {
+>  			.width =3D 1632 * 2,
+>  			.height =3D 1224 * 2,
+>  		},
+> -	}
+> +	},
+> +	{
+> +		.width =3D 3264,
+> +		.height =3D 1836,
+[ ... ]
+> +		.crop =3D {
+> +			.left =3D 0x46,
+> +			.top =3D 0x172,
+> +			.width =3D 3264,
+> +			.height =3D 1836,
+> +		},
+
+[Severity: Medium]
+Will this crop configuration violate the V4L2 API contract?
+
+The crop rectangle extends beyond the native crop bounds of the sensor.
+The hardcoded absolute crop bounds in hi846_get_selection() are:
+
+	case V4L2_SEL_TGT_CROP_BOUNDS:
+	case V4L2_SEL_TGT_NATIVE_SIZE:
+		sel->r.top =3D 0;
+		sel->r.left =3D 0;
+		sel->r.width =3D 3264;
+		sel->r.height =3D 2448;
+
+For this new 3264x1836 mode, an offset of (70, 370) with a width of 3264 me=
+ans
+the right boundary extends to 3334, which strictly exceeds the advertised
+3264 maximum limit. Strict userspace frameworks like libcamera or
+v4l2-compliance might reject or clip this, breaking functionality.
+
+> +	},
+> +	{
+> +		.width =3D 3264,
+> +		.height =3D 2448,
+[ ... ]
+> +		.crop =3D {
+> +			.left =3D 0x46,
+> +			.top =3D 0x40,
+> +			.width =3D 3264,
+> +			.height =3D 2448,
+> +		},
+
+[Severity: Medium]
+Similarly, does this crop configuration overflow the native width and height
+bounds?
+
+With an offset of (70, 64) and size 3264x2448, the boundaries are pushed
+to 3334x2512, exceeding the 3264x2448 limits from hi846_get_selection().
+
+Should the native bounds be expanded to accommodate these crop offsets, or
+should the offsets be adjusted to 0?
+
+While reviewing this patch, I also noticed a couple of pre-existing issues =
+in
+the file introduced earlier in this series:
+
+> static int hi846_set_format(struct v4l2_subdev *sd,
+> 			    struct v4l2_subdev_state *sd_state,
+> 			    struct v4l2_subdev_format *fmt)
+> {
+[ ... ]
+> 	hi846->cur_mode =3D
+> 		v4l2_find_nearest_size_conditional(supported_modes,
+> 						   ARRAY_SIZE(supported_modes),
+> 						   width, height,
+> 						   mf->width, mf->height,
+> 						   filter_modes, hi846);
+>=20
+> 	dev_dbg(&client->dev, "%s: found mode: %dx%d\n", __func__,
+> 		hi846->cur_mode->width, hi846->cur_mode->height);
 
 [Severity: High]
-If an unsupported mode was selected, could this regression violate the V4L2
-API by returning -EINVAL here and leaving hi846->cur_mode corrupted?
+This isn't a bug introduced by this patch, but does
+v4l2_find_nearest_size_conditional() return NULL if no matching mode is fou=
+nd?
 
-In patch 3 of this series, when filter_modes() correctly rejects the
-lane-incompatible Mode 0, does this result in 0 valid modes?
+If the device tree configuration provides data-lanes =3D <4> but the
+link-frequencies property only matches modes that have 0 registers for 4-la=
+ne
+configurations, filter_modes() will evaluate to false for every mode.=20
 
-If 0 valid modes remain, would v4l2_find_nearest_size_conditional() return
-NULL, causing hi846_set_format() to dereference a NULL hi846->cur_mode and
-crash the kernel?
-
-Also, in probe, does the default mode initialization blindly assign
-hi846->cur_mode =3D &supported_modes[0], leaving the driver in an inconsist=
-ent
-state if Mode 0 is unsupported?
+This would cause v4l2_find_nearest_size_conditional() to return NULL, leadi=
+ng
+to a kernel crash when hi846->cur_mode->width is unconditionally dereferenc=
+ed.
 
 [ ... ]
-> @@ -1947,20 +1979,33 @@ static int hi846_identify_module(struct hi846 *hi=
-846)
->  	return 0;
->  }
-> =20
-> -static s64 hi846_check_link_freqs(struct hi846 *hi846,
-> -				  struct v4l2_fwnode_endpoint *ep)
-> +static int hi846_add_link_freqs(struct hi846 *hi846, struct device *dev,
-> +				struct v4l2_fwnode_endpoint *ep)
->  {
-> -	const s64 *freqs =3D hi846_link_freqs;
-> -	int freqs_count =3D ARRAY_SIZE(hi846_link_freqs);
-> -	int i, j;
-> -
-> -	for (i =3D 0; i < freqs_count; i++) {
-> -		for (j =3D 0; j < ep->nr_of_link_frequencies; j++)
-> -			if (freqs[i] =3D=3D ep->link_frequencies[j])
-> -				break;
-> -		if (j =3D=3D ep->nr_of_link_frequencies)
-> -			return freqs[i];
-> -	}
-> +	s64 hi846_link_freqs[ARRAY_SIZE(supported_modes)];
-> +	unsigned long freq_bitmap;
-> +	int ret, i;
-> +
-> +	/*
-> +	 * Since the MCLK freq varies between platforms, calculating driver
-> +	 * supported link freqs here.
-> +	 */
-> +	for (i =3D 0; i < ARRAY_SIZE(supported_modes); i++)
-> +		hi846_link_freqs[i] =3D hi846_get_link_freq(hi846, &supported_modes[i]=
-);
-> +
-> +	ret =3D v4l2_link_freq_to_bitmap(dev, ep->link_frequencies,
-> +				       ep->nr_of_link_frequencies,
-> +				       hi846_link_freqs,
-> +				       ARRAY_SIZE(hi846_link_freqs),
-> +				       &freq_bitmap);
+> 	idx =3D hi846_get_link_freq_index(hi846, hi846->cur_mode);
+> 	if (idx < 0) {
+> 		dev_err(&client->dev,
+> 			"failed to get link freq index: %d\n", idx);
+> 		return -EINVAL;
+> 	}
 
 [Severity: High]
-Does this filtering loop contain a regression by failing to check if the
-corresponding modes actually support the configured lane count?
+This is a pre-existing issue, but does this error path leave hi846->mutex
+locked?
 
-If hi846_add_link_freqs() evaluates hi846_get_link_freq() for all modes
-regardless of whether the mode supports the physical lane count
-(hi846->nr_lanes), could this allow incompatible configurations to pass pro=
-be?
-
-For instance, supported_modes[0] (640x480) lacks 4-lane registers, but this
-patch adds a dummy mipi_clk_div_4lane =3D 8. If hi846->nr_lanes =3D=3D 4 an=
-d the
-device tree specifies only this dummy link frequency, would
-v4l2_link_freq_to_bitmap() incorrectly match it, causing probe to succeed
-instead of failing?
+The function returns without calling mutex_unlock(&hi846->mutex), causing a
+deadlock on subsequent calls to driver functions that acquire this mutex.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260830160025.2113=
-84-1-mitltlatltl@gmail.com?part=3D2
+84-1-mitltlatltl@gmail.com?part=3D4
