@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD79282F34
-	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 16:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31C83B4EA9;
+	Sun, 30 Aug 2026 16:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788105911; cv=none; b=DX4wlmu7/0rNjOd+IpJSWaC9YucDUViQawJwHgMcq3KnRVOfyg1Vo5oJzLNu1GjkzeRNgRGK+4b3Xm2j+ne9h/OPvT6NzlZ/le5BoO5kAICqTPmHiweBuxL54OoHY8C4HakojhKct8XZ9sEX5/UQPaZNSLXbnRZW+qlYkUweWPQ=
+	t=1788106243; cv=none; b=ePnbkHo4xpHUTcal7vVzGjtPnmBjigQB8MRbW8XKnZA9J7EKAEgGJjDM3K5uK7tSIaIC6zB12tzvIfr4LSlZeb3SdCqF9rMkTupik2PNKZD5rQErfzW0iC76QU0hyguy/2Qwz71mz7k+u1eNO8B8nlB5maoTAEYotCD+xgErsbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788105911; c=relaxed/simple;
-	bh=u1ESALNmzsQCU6yqcD6Ggi6AL3kKXMNEtmGenk5jjNE=;
+	s=arc-20240116; t=1788106243; c=relaxed/simple;
+	bh=AOCSfDHFJkwwio65699bwbWLdJL9wpy3q6s4S2lvi80=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=O+bn/miZ+jOpxfcQfJq/mtFiryT7w2Kf8yDH+5w5CMFFL4QMoeYm8l6Yr6xwtn4pn2fyi4QEo8qI5H9rLBIgouxOdAfPV45/rNWNa4k3IZAIpV69A5oKucCS9wNlSNH2f6CeUWFlCI8E/zWlSSTnrlTyVUWe2Lj+AEJeRlNUaiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4D3yes3; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JwmhPHLyTHXCn3w/BbEyYm9UTHhb1ElDU/gDh2+uT0d7dwjr3+4I+Psm3KhyuWmYBRMBsgU58Hvfclvrx/ogHWtfm4N9QUbB62bckhXevDh1sclMGpYSLnGK5UmkBD878RU1kDqYtsN2zM3c+dgFhtZLKOb5bwJX39xzbU/gqbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlBQc+85; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4D3yes3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C701F000E9;
-	Sun, 30 Aug 2026 16:05:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlBQc+85"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1481F000E9;
+	Sun, 30 Aug 2026 16:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788105906;
-	bh=PVVqIl9cKCi5vnEcND17b4w2afuysvi+Ey7by5iR8x0=;
+	s=k20260515; t=1788106239;
+	bh=DnUSZ4ZdPTC6GHR1xfHCrFF6jHtSoai1BHNry0GJREM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B4D3yes3AIOK16KRuBQ5oP+agFqtYQhjF3iJ6mSfbpz2sCs/5HRwlANyQZPnn9vV9
-	 vGytwqRFLiZUs1fUofF7Mx6m5TSNKcqXiHrmbPbqEOgnxIuPrx6wOdMu9BDdZeFqnQ
-	 /xQG84/2nA5YI0nALxVZj1oa3SufatfxmsaI9hFfws0budzcgfNeqQK981Ebr35R8K
-	 BusPXJ3a8+kcC4jERLk0nt73VAki3P9VrkAGp1l/yr5Ier3Kns0hIR9ASJwygJL9tX
-	 zun+Oo1Aqgfh6FyGieXLNPc+MYMrsMk+Ll6kCwXwD8JLZ7SSyR8eRCAUvKP1oagJVJ
-	 SO155/6v5cdew==
+	b=OlBQc+85cKqLfHELsQU8XEgBepQ2/YyL9D80e1pAGhEwTX3ULfyiGFP3IHRpyRI/L
+	 GnKiouiP9IJOdJwUxnqLw5n4Kv9W4zXrtVMBiX30jLoqtQIlEigWgfXL8hKcuHUd6c
+	 YyFnn5SziUwcI/aWvHmY2mbyUCiHDUEIIpPJiRabqaP7fTDtMZLsguu76wBg+YIB7W
+	 IXUTGz2Ckxd0XqONdOyiDoD5VbVCIbuq9An6n90uZQ+H+5+EYM1hLyef3l7CFg5jW3
+	 +RlQe+NTFxHIwtLdNPQhYt3S3sO1CQU6W+ozr3irLaNBCIH6uyVrbj12hpg9DfFaV2
+	 +CH8cHSctP2yQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5] ARM: imx: Fix suspend/resume crash with Clang CFI
+Subject: Re: [PATCH v6 5/5] arm64: dts: imx8mq-librem5: Correct link
+ frequency list
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?WW8nYXYgTW9zaGU=?= <linux@yoavmoshe.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260830155100.1020620-1-linux@yoavmoshe.com>
-References: <20260827194508.446733-1-linux@yoavmoshe.com>
- <20260830155100.1020620-1-linux@yoavmoshe.com>
+To: "Pengyu Luo" <mitltlatltl@gmail.com>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20260830160025.211384-6-mitltlatltl@gmail.com>
+References: <20260830160025.211384-1-mitltlatltl@gmail.com>
+ <20260830160025.211384-6-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 30 Aug 2026 16:05:06 +0000
-Message-Id: <20260830160506.84C701F000E9@smtp.kernel.org>
+Date: Sun, 30 Aug 2026 16:10:39 +0000
+Message-Id: <20260830161039.7C1481F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,74 +47,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Global CFI Check Failure on fncpy() copied Suspend/PM routines (IM=
-X5, AT91, OMAP1) due to missing kCFI hashes.
+- [Critical] DT ABI Breakage: Removing existing link frequencies from the D=
+T breaks backwards compatibility with older kernel drivers.
 --
 
-commit 24f4d3cbee4d4f64e23b67ce2fbbb6d3e3eb8db1
-Author: Yo'av Moshe <linux@yoavmoshe.com>
+commit e1f0f3ee9bb107c23572fda8db68e68a5ce30d59
+Author: Pengyu Luo <mitltlatltl@gmail.com>
 
-ARM: imx: Fix suspend/resume crash with Clang CFI
+arm64: dts: imx8mq-librem5: Correct link frequency list
 
-The suspend code that runs from OCRAM is copied there with fncpy(), which d=
-oes
-not copy the kCFI type hash preceding the function. With CONFIG_CFI=3Dy the
-indirect call through imx6_suspend_in_ocram_fn therefore panics.
+This commit corrects the link frequency list for the hi846 camera in the
+imx8mq-librem5 device tree to match calculations from the datasheet.
 
-> diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
-> index a671ca498f887..3c73e2cdb8ceb 100644
-> --- a/arch/arm/mach-imx/pm-imx6.c
-> +++ b/arch/arm/mach-imx/pm-imx6.c
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8mq-librem5.dtsi
+> index f5d529c5baf3e..cc5604172192c 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> @@ -1122,7 +1122,7 @@ port {
+>  			camera1_ep: endpoint {
+>  				data-lanes =3D <1 2>;
+>  				link-frequencies =3D /bits/ 64
+> -					<80000000 200000000 300000000>;
+> +					<187500000 375000000>;
 
-[ ... ]
+[Severity: Critical]
+Does removing the existing link frequencies here break backwards compatibil=
+ity
+with older kernels?
 
-> @@ -568,6 +581,13 @@ static int __init imx6q_suspend_init(const struct im=
-x6_pm_socdata *socdata)
->  			mmdc_offset_array[i]);
->  	}
-> =20
-> +	/*
-> +	 * Mask out the Thumb bit, as cfi_get_func_hash() expects the
-> +	 * function's actual start address. Returns 0 if CONFIG_CFI=3Dn.
-> +	 */
-> +	pm_info->cfi_type =3D
-> +		cfi_get_func_hash((void *)((uintptr_t)&imx6_suspend & ~1UL));
-> +
->  	imx6_suspend_in_ocram_fn =3D fncpy(
->  		suspend_ocram_base + sizeof(*pm_info),
->  		&imx6_suspend,
-[Severity: High]
-This isn't a bug introduced by this patch, but since fncpy() strips the 4-b=
-yte
-kCFI type hash during SRAM copying, wouldn't other ARM architectures using
-fncpy() for suspend routines also fail their CFI checks and panic in the ex=
-act
-same way?
+When an older kernel boots with this updated device tree, the hi846 driver
+invokes hi846_parse_dt() and hi846_check_link_freqs(), which iterates throu=
+gh
+its array of expected hardcoded frequencies (80000000 and 200000000) and
+ensures each one is present in the DT.
 
-For instance, this happens during suspend or idle when the copied PM routine
-is called indirectly.
+Because this removes those legacy frequencies entirely instead of appending=
+ to
+them, it appears the loop will fail to find a match and return -EINVAL, cau=
+sing
+the camera initialization to fail on older kernels (DT ABI breakage).
 
-In arch/arm/mach-imx/pm-imx5.c:mx5_suspend_enter():
-    if (imx5_suspend_in_ocram_fn)
-        imx5_suspend_in_ocram_fn(suspend_ocram_base);
-
-In arch/arm/mach-at91/pm.c:at91_pm_suspend():
-    at91_suspend_sram_fn(&soc_pm.data);
-
-In arch/arm/mach-omap1/pm.c:omap1_pm_idle():
-    omap_sram_suspend(omap_readl(ARM_IDLECT1),
-                      omap_readl(ARM_IDLECT2));
-
-In arch/arm/mach-omap1/pm.c:omap1_pm_suspend():
-    omap_sram_suspend(arg0, arg1);
-
-Do these architectures need a similar fix to ensure the kCFI hash is
-physically located before the function copy in SRAM?
-
->  		MX6Q_SUSPEND_OCRAM_SIZE - sizeof(*pm_info));
+>  				remote-endpoint =3D <&mipi1_sensor_ep>;
+>  			};
+>  		};
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260830155100.1020=
-620-1-linux@yoavmoshe.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260830160025.2113=
+84-1-mitltlatltl@gmail.com?part=3D5
