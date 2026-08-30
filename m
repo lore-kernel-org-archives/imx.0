@@ -1,64 +1,64 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AC735C180
-	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 16:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E343ACEEA
+	for <imx@lists.linux.dev>; Sun, 30 Aug 2026 16:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788105779; cv=none; b=elzEkAOYGWOfYZspK1sLtO12UA2RH/aGxdaA3e8cllNGRZdS0QyWCqfKPVO5GRDeamK6MFPP4BO8x0zx05Qc7CVMCqeDBwnEYZM9x4sSLV8M7QOvgsARwY4GM8Q6rMqAAiGbyJBqjMdEgQKcN0Uh0TG6jefitZ+evWyQ3nhWGhs=
+	t=1788105787; cv=none; b=Z90vLuzbXW8dNEn39D4zxyQGBkDZkwada6tb9nwtQvCGPUksbuTEDXWM2YAm+4cCxzjAjB8NX+4ZnVFMRMAk1Xu6hGVqIMssn/n1vrr5fahZFx0W2uUjZgIO90/ts3DC+Pj7strY39ly03moT96//pGU7U985Jx9LK5NUKpHXBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788105779; c=relaxed/simple;
-	bh=RHIFxs9YrEaoTa6ZvV6LQUL3AldolGdxoyL81l2Y4vA=;
+	s=arc-20240116; t=1788105787; c=relaxed/simple;
+	bh=xmKKzjCAtL6wSzbj7b1CUTRGlabduq+pCSy4GjqEQz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lq2jwtTSf8qBvPIkVRLRzyhM0hT28o3iqSfoKWiM7OPaT60+pWwZtlJFTYV2H6V/gBiUgVI/ngnYj3YzVG/s19BOLZKRVdK7XnWwR3T07yK9x+49QUG5BPFbNuzfbD7fOgiJAL2tJhID3FFQU4hEmhj70z4GFLUCvkFElUrqdy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KfVkE+zh; arc=none smtp.client-ip=209.85.210.174
+	 MIME-Version; b=R4iUO0PThE5KTr2qABfCMiwQusUBc1kJlUQBagkQW7iOrivlu7SNkoeHF2OflhsEna3KTF+qwVitW1SfUytgi7xM85Z5mIW0i1p40Z/urrLEdUmu69vonT0zI84t+6LwGFc5KCQs/+JISRDmgIVsjsLOyi+pIgTKoQI2BI0VKdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U0Nf0Acp; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KfVkE+zh"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84faf0fa17eso2617733b3a.2
-        for <imx@lists.linux.dev>; Sun, 30 Aug 2026 09:02:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U0Nf0Acp"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-853c947bfefso2009061b3a.0
+        for <imx@lists.linux.dev>; Sun, 30 Aug 2026 09:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788105776; x=1788710576; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1788105784; x=1788710584; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HROlraX6vGLZgnawqAwSnbTcyoz5nQUPKuJqXPgTnHE=;
-        b=KfVkE+zhbQv+Ibd4/GbFcuoturWW8wHsIChY+nBr3nc6yur3RvXFOIpJc5lqjSxFCT
-         Ooj+iVXS3Xre33naExl5QcJ+3l8LZ87VP7Xo4L7u26subnln7i5YCDRtmuIhHfNpKeRH
-         TxAtDW/U3aV5jA7M3auUzaO4ScPVY5Zzkisi7oRaIIxKXoHRjsLIPP5P+g0RAKzO5F8u
-         lx0xzTJpqzGY72QWyZZ95NwBfQ8YyfjKDYKBpO6syNXCKijrFj0/XAZoMseWSdxtzKmM
-         JoNGFg68g122w97hgjbWGuIZzH8k1UepZogsHigey5r/SuuOB86bLzgt2uhDQyT8hS2Z
-         kjPQ==
+        bh=pG5hjYJsgEQzoTLm/xPUh1x5QPpaw7ZAGE9j4vcwlU8=;
+        b=U0Nf0Acp9P4zdqUwtluVV79p/ar3378HymYwC7gYGW28j6x/atzqzF4K/pvVz3CDYU
+         hUXhxuBYbdChZbaN7s1bNrXfiPbxg3nnFw77lUofkInKSCy5NgJEQvv5/wUNJHiDw/V4
+         EXegCGPZaDQl/6kDTItFE6HnNqzsXIuPvhFUJ0bK0oRvdTHI4yDtkooPnn4hIWeb8lOq
+         HekbEUCUySNbwpEQtwIRqFhcV6PsiqzsdQg23dizZiYzH03gx8UUtW/oYxKSCvDwWEot
+         xvoAO3St0uUjRjfjt+qERGAHA+y7/nNkpeE40YSNQrHWL5snz2y+4Buj/MEiPb5+UvkX
+         KTkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788105776; x=1788710576;
+        d=1e100.net; s=20251104; t=1788105784; x=1788710584;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HROlraX6vGLZgnawqAwSnbTcyoz5nQUPKuJqXPgTnHE=;
-        b=siwBRUm5SeGv0LtAumE6UDH4/LXaOYIDAj85ZC1JlNUs09K4EMQjzrbT0QBCnWf4hG
-         4LA6PacqaxqRm9z2C+N+SZfEV/OMg6xZapbKGi4VHZitdP28ZHyMdW0xCMTdb3L7yw9E
-         PSASlSjno3YboKwTp7nEUv1QQxlNNIghIr2TuhP3pM1Znx7K87T3tk88WPJBibPXVkYq
-         v3Wl7p2Mp5WbZuwosEevrt5qjqLnOqi3/HhRoxvFjfwKV45NKpYdClWBHkdjPb+A7pru
-         XK5eSwZ2HIy7nhpOJLYiCSJxQyTqVDTasXjcUlAmn+XRYDvgcVkYsvlFOKMB0mfTmD0J
-         S3/w==
-X-Forwarded-Encrypted: i=1; AHgh+RqbWsdmrQB3C9vzf8+vAKBgugScmD4m2DR9n6VCK7GOP2e5AN+6zun5TrAUFoZrNIndaSo=@lists.linux.dev
-X-Gm-Message-State: AFuF++nPGAaL0uJQmE7psdaXRJD76qOBSqKGIIBCz2MAjLunG4Nkbbvj
-	6ip9c/Rf4WQIP5bnEES4ErQyn5ddtn7IhtjoQRVJc86Li+GtLxdGqTpm
-X-Gm-Gg: AR+sD12Ol112O0jcn4zFMeLMS5LshxCK9kCuHTBbk4HgejOwusULDTy/ewisiKcHDRz
-	/mSHHBolqUE8RIlfjVC3zfLge9WwHbkrVNXgSYvu4/EA2UKeIG6EWB5TysGlr7JsueMtdMjfI6i
-	8nNmlXJtxmtHpu9UPQk9ofatbi7wJrpkAHW2Cjqtot1CXVsWhVWNTIQvKjNkx2bKIli2Is2lCaM
-	yhRy0lzgkdOJVDVa9KldewEjJp/QfINzg3YzhL4BXBHeQFZ6bS6gR9KMGBrv+zF6RCQ5YH/HF0m
-	nfsyuVSni2pJ3Vwh/McWKyORPYpMmVNItbAhri3pafvFksxFp20PM2FzKAuAeSw4QTN4XJWZOlD
-	j1fWBJROLTawz9CPuGY59hlc7WPefIhWFYd7y+dWBkX3lNLjvsm7OAvn2K+kInHcfOc2DfTZ/0J
-	XPuv4fBWkHFNQhlybJnbuGPaAX6YfFg+Iputb3Ayk6Use2ovRqXs0MkssEJQwOiZAh1UTev9kAN
-	4jEzn0NUmdpiHb9yJekcv4GVlQDWM/sMX6e/XY7HIzOOLPpYGw4
-X-Received: by 2002:a05:6a21:3944:b0:3d3:ae40:ab0f with SMTP id adf61e73a8af0-3d3ae40b247mr22013318637.26.1788105775652;
-        Sun, 30 Aug 2026 09:02:55 -0700 (PDT)
+        bh=pG5hjYJsgEQzoTLm/xPUh1x5QPpaw7ZAGE9j4vcwlU8=;
+        b=I8aQbDtu+xZGugeq5I7AN1ncCnTVyHW04xxyFNrWyY4dCDHh06R7qq9/Tnq5FZBcCk
+         Tt0p4ASuroW+tz39O1TuzUVeEC2UP6bvfh+QQM1Do6RWj19libbAe65oIYFcF4ldM65b
+         MZyRXjOy0cy3OOZ4bwqL7zTvk9DTK4gI6nSh617deoWBkUqO+kmLX1ontSUpJ3p10m2H
+         7O1tHK96YqX5FRTsaRF/wK+YsJcAtIgENlqnZWmYL1z35cVT3MVbYo05b3DgY+0k4Fe1
+         cIqFxWGMGfoPyRWjYpt/ofLDyOVKrhSd34QvCIvODqoG/jq5wiq5hozTvgInsfIVJbIt
+         vuVw==
+X-Forwarded-Encrypted: i=1; AHgh+RrSlY13jztOkocUQXq85qGRQx6l65cNuI7g4uJmSy1UvYw/MUZgZs3iUnIEg2h+Wi+qv6A=@lists.linux.dev
+X-Gm-Message-State: AFuF++mgVToA1qWeL2tO63I3sAtkW0adC29Y1Ww+/0/dFSROKmSceFmJ
+	NlPoCqwq/uTVqHc4iGSsj5787CNYyuSG3r3ZeQtvVbD5vt9kg3jQZIBl
+X-Gm-Gg: AR+sD10Ab6N8BJOKfKsRTNKr6j+yYT6K/n14dsBXohxdg4WnFaxKbjhJGnUfqiiKUAU
+	epofrlEsIesDFr6iZTmkIA9fS/A0j115SzTzWqRwUGrp22weqxj6cd+3Si8RlrgCWs5cbQrf+mA
+	3rdy1g1xMji7SYdSBtNrQGnNz6h07WnnTn1umLF/is1unWp/HGXE1Hc6KhajVmqb8s9rCluuV/U
+	HG9+sF0JqJA1Nyn2tSlqXSgr/vYsj7ELfj5QVIwfvqkDTSmKxnoumEqgNpHMXp2mqc+3LqkKvem
+	hDRP7Rd5SYXB5J12fRXUx7WURkDuFlp7E4yEfJnviVi3crUep3QvK+oNqSQbvKZ0YKZaJOMdUoG
+	06olAGgFYeXNRjl3ZnRc1C29TT2R4sQfBHXJYsKzRW12C2IAuy6HWz1/1PeI2xJzhVTECAg9Cxa
+	Q3mCBl6odjwpWP51OIQilOiA53GiHi/Sfznp8vdIWmFqnSBnQ67LnvZfMjhtVeC4CYkGEufNWMS
+	wNhMVnGgZRlcuxmDe3FIwJSp+NM7Mvn8FaYmXlLs4txzBGlVBQP
+X-Received: by 2002:a05:6a00:464e:b0:84a:2b96:5986 with SMTP id d2e1a72fcca58-85994f5cfb6mr2189880b3a.8.1788105784320;
+        Sun, 30 Aug 2026 09:03:04 -0700 (PDT)
 Received: from nuvole (2.248.212.35.bc.googleusercontent.com. [35.212.248.2])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f3312270sm2839584a12.11.2026.08.30.09.02.45
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f3312270sm2839584a12.11.2026.08.30.09.02.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 09:02:55 -0700 (PDT)
+        Sun, 30 Aug 2026 09:03:04 -0700 (PDT)
 From: Pengyu Luo <mitltlatltl@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -77,9 +77,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-media@vger.kernel.org,
 	Pengyu Luo <mitltlatltl@gmail.com>
-Subject: [PATCH v6 2/5] media: hi846: Fix link frequency handling
-Date: Mon, 31 Aug 2026 00:00:22 +0800
-Message-ID: <20260830160025.211384-3-mitltlatltl@gmail.com>
+Subject: [PATCH v6 3/5] media: hi846: Fix modes handling for different lane cases
+Date: Mon, 31 Aug 2026 00:00:23 +0800
+Message-ID: <20260830160025.211384-4-mitltlatltl@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260830160025.211384-1-mitltlatltl@gmail.com>
 References: <20260830160025.211384-1-mitltlatltl@gmail.com>
@@ -91,330 +91,128 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Link frequency is tied to PLL configuration, lane count, and external
-and configurable clock, so use runtime here instead of hardcoding for
-specific configuration. To implement this, we do
+When using 4-lane, v4l2_find_nearest_size may return an unsupported
+mode, 640x480 mode, use v4l2_find_nearest_size_conditional() to filter
+out it.
 
-1. Drop fixed link freqs, we calculate the driver supported values and
-use v4l2_link_freq_to_bitmap() to get the intersection with the DT
-supported values.
-
-2. Attach mipi_clk_div_{2,4}lane to current mode, and use the div with
-mclk clock, lane count to calculate link frequency.
-
-3. Drop mclk clock rate check.
-
+Reported-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Closes: https://lore.kernel.org/linux-media/OmTXoHZJTSGePymL9I-1Cw@puri.sm
 Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera")
+Link: https://lore.kernel.org/linux-media/OmTXoHZJTSGePymL9I-1Cw@puri.sm
 Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
 ---
 v6:
-- Add link freq ctrl back (Sakari)
-- Use v4l2_link_freq_to_bitmap() to get matched link freqs (Sakari)
-- Move clk_get() before than hi846_parse_dt(), since we use clock in hi846_parse_dt()
+- Add link freq check in filter.
 v5:
-- Use separated fields instead of raw register values for PLL cfg (Sakari)
-- Use mul_u64_u32_div() to avoid loss of pricision and u64/u32 issues (Sakari)
-- Drop line break (Sakari)
+- Use v4l2_find_nearest_size_conditional() to filter for different lane cases. (Sakari)
 ---
- drivers/media/i2c/hi846.c | 151 ++++++++++++++++++++++++--------------
- 1 file changed, 94 insertions(+), 57 deletions(-)
+ drivers/media/i2c/hi846.c | 63 ++++++++++++++++++++++++---------------
+ 1 file changed, 39 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-index 7f069aca0fce..2f8624f9bdf3 100644
+index 2f8624f9bdf3..648192521344 100644
 --- a/drivers/media/i2c/hi846.c
 +++ b/drivers/media/i2c/hi846.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2021 Purism SPC
+@@ -1713,6 +1713,21 @@ static int __maybe_unused hi846_resume(struct device *dev)
+ 	return hi846_power_on(hi846);
+ }
  
--#include <linux/unaligned.h>
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
-@@ -11,6 +11,7 @@
- #include <linux/pm.h>
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/unaligned.h>
- #include <media/v4l2-ctrls.h>
- #include <media/v4l2-device.h>
- #include <media/v4l2-fwnode.h>
-@@ -219,8 +220,8 @@ struct hi846_mode {
- 	/* Horizontal timing size */
- 	u32 llp;
++static bool filter_modes(const void *array, size_t index, const void *context)
++{
++	const struct hi846_mode *mode = array;
++	const struct hi846 *hi846 = context;
++	bool valid_link_freq;
++	int freq_idx;
++
++	freq_idx = hi846_get_link_freq_index(hi846, mode);
++	valid_link_freq = freq_idx < 0 ? false : true;
++
++	return ((hi846->nr_lanes == 2 && mode->reg_list_2lane.num_of_regs) ||
++		(hi846->nr_lanes == 4 && mode->reg_list_4lane.num_of_regs)) &&
++	       valid_link_freq;
++}
++
+ static int hi846_set_format(struct v4l2_subdev *sd,
+ 			    struct v4l2_subdev_state *sd_state,
+ 			    struct v4l2_subdev_format *format)
+@@ -1736,20 +1751,6 @@ static int hi846_set_format(struct v4l2_subdev *sd,
+ 		return 0;
+ 	}
  
--	/* Link frequency needed for this resolution */
--	u8 link_freq_index;
-+	u8 mipi_clk_div_2lane;
-+	u8 mipi_clk_div_4lane;
- 
- 	u16 fps;
- 
-@@ -1040,13 +1041,6 @@ static const char * const hi846_test_pattern_menu[] = {
- 	"Resolution Pattern",
- };
- 
--#define FREQ_INDEX_640	0
--#define FREQ_INDEX_1280	1
--static const s64 hi846_link_freqs[] = {
--	[FREQ_INDEX_640] = 80000000,
--	[FREQ_INDEX_1280] = 200000000,
--};
+-	if (hi846->nr_lanes == 2) {
+-		if (!hi846->cur_mode->reg_list_2lane.num_of_regs) {
+-			dev_err(&client->dev,
+-				"this mode is not supported for 2 lanes\n");
+-			return -EINVAL;
+-		}
+-	} else {
+-		if (!hi846->cur_mode->reg_list_4lane.num_of_regs) {
+-			dev_err(&client->dev,
+-				"this mode is not supported for 4 lanes\n");
+-			return -EINVAL;
+-		}
+-	}
 -
- static const struct hi846_reg_list hi846_init_regs_list_2lane = {
- 	.num_of_regs = ARRAY_SIZE(hi846_init_2lane),
- 	.regs = hi846_init_2lane,
-@@ -1061,7 +1055,13 @@ static const struct hi846_mode supported_modes[] = {
- 	{
- 		.width = 640,
- 		.height = 480,
--		.link_freq_index = FREQ_INDEX_640,
-+		.mipi_clk_div_2lane = 4,
-+		/*
-+		 * Dummy but necessary if we set this mode default, otherwise
-+		 * hi846_calc_pixel_rate() will be broken in
-+		 * hi846_init_controls()
-+		 */
-+		.mipi_clk_div_4lane = 8,
- 		.fps = 120,
- 		.frame_len = 631,
- 		.llp = HI846_LINE_LENGTH,
-@@ -1086,7 +1086,8 @@ static const struct hi846_mode supported_modes[] = {
- 	{
- 		.width = 1280,
- 		.height = 720,
--		.link_freq_index = FREQ_INDEX_1280,
-+		.mipi_clk_div_2lane = 2,
-+		.mipi_clk_div_4lane = 4,
- 		.fps = 90,
- 		.frame_len = 842,
- 		.llp = HI846_LINE_LENGTH,
-@@ -1112,7 +1113,8 @@ static const struct hi846_mode supported_modes[] = {
- 	{
- 		.width = 1632,
- 		.height = 1224,
--		.link_freq_index = FREQ_INDEX_1280,
-+		.mipi_clk_div_2lane = 2,
-+		.mipi_clk_div_4lane = 4,
- 		.fps = 30,
- 		.frame_len = 2526,
- 		.llp = HI846_LINE_LENGTH,
-@@ -1167,6 +1169,9 @@ struct hi846 {
- 	struct v4l2_ctrl *hblank;
- 	struct v4l2_ctrl *exposure;
+ 	mutex_lock(&hi846->mutex);
  
-+	s64 link_freqs[ARRAY_SIZE(supported_modes)];
-+	int num_link_freqs;
+ 	if (hi846->streaming) {
+@@ -1760,9 +1761,12 @@ static int hi846_set_format(struct v4l2_subdev *sd,
+ 	hi846->fmt = fmt;
+ 
+ 	hi846->cur_mode =
+-		v4l2_find_nearest_size(supported_modes,
+-				       ARRAY_SIZE(supported_modes),
+-				       width, height, mf->width, mf->height);
++		v4l2_find_nearest_size_conditional(supported_modes,
++						   ARRAY_SIZE(supported_modes),
++						   width, height,
++						   mf->width, mf->height,
++						   filter_modes, hi846);
 +
- 	struct mutex mutex; /* protect cur_mode, streaming and chip access */
- 	const struct hi846_mode *cur_mode;
- 	bool streaming;
-@@ -1192,21 +1197,41 @@ static const struct hi846_datafmt *hi846_find_datafmt(u32 code)
- 	return NULL;
- }
+ 	dev_dbg(&client->dev, "%s: found mode: %dx%d\n", __func__,
+ 		hi846->cur_mode->width, hi846->cur_mode->height);
  
--static inline u8 hi846_get_link_freq_index(struct hi846 *hi846)
-+static u64
-+hi846_get_link_freq(const struct hi846 *hi846, const struct hi846_mode *mode)
+@@ -1853,6 +1857,8 @@ static int hi846_enum_frame_size(struct v4l2_subdev *sd,
+ 				 struct v4l2_subdev_frame_size_enum *fse)
  {
--	return hi846->cur_mode->link_freq_index;
-+	u64 mclk = clk_get_rate(hi846->clock);
-+	u8 mipi_clk_div;
-+
-+	if (hi846->nr_lanes == 2)
-+		mipi_clk_div = mode->mipi_clk_div_2lane;
-+	else
-+		mipi_clk_div = mode->mipi_clk_div_4lane;
-+
-+	/*
-+	 * HI846_REG_PLL_CFG_MIPI1_H = 0x025a, it is fixed in listed modes
-+	 * [11:8]: 0x02 => pre_div = 3
-+	 * [7:0]: 0x5a => multiplier = 90
-+	 */
-+	return mul_u64_u32_div(mclk, 90, 3 * mipi_clk_div);
- }
+ 	struct i2c_client *client = v4l2_get_subdevdata(sd);
++	struct hi846 *hi846 = to_hi846(sd);
++	int i, count;
  
--static u64 hi846_get_link_freq(struct hi846 *hi846)
-+static int hi846_get_link_freq_index(const struct hi846 *hi846,
-+				     const struct hi846_mode *mode)
- {
--	u8 index = hi846_get_link_freq_index(hi846);
-+	u64 link_freq = hi846_get_link_freq(hi846, mode);
-+	int i;
-+
-+	for (i = 0; i < hi846->num_link_freqs; i++)
-+		if (hi846->link_freqs[i] == link_freq)
-+			return i;
+ 	if (fse->pad || fse->index >= ARRAY_SIZE(supported_modes))
+ 		return -EINVAL;
+@@ -1862,15 +1868,24 @@ static int hi846_enum_frame_size(struct v4l2_subdev *sd,
+ 		return -EINVAL;
+ 	}
  
--	return hi846_link_freqs[index];
+-	fse->min_width = supported_modes[fse->index].width;
+-	fse->max_width = supported_modes[fse->index].width;
+-	fse->min_height = supported_modes[fse->index].height;
+-	fse->max_height = supported_modes[fse->index].height;
++	for (count = i = 0; i < ARRAY_SIZE(supported_modes); i++) {
++		if (!filter_modes(&supported_modes[i], i, hi846))
++			continue;
++
++		if (count == fse->index) {
++			fse->min_width = supported_modes[i].width;
++			fse->max_width = fse->min_width;
++			fse->min_height = supported_modes[i].height;
++			fse->max_height = fse->min_height;
++			dev_dbg(&client->dev, "%s: max width: %d max height: %d\n", __func__,
++				fse->max_width, fse->max_height);
++			return 0;
++		}
+ 
+-	dev_dbg(&client->dev, "%s: max width: %d max height: %d\n", __func__,
+-		fse->max_width, fse->max_height);
++		count++;
++	}
+ 
+-	return 0;
 +	return -EINVAL;
  }
  
- static u64 hi846_calc_pixel_rate(struct hi846 *hi846)
- {
--	u64 link_freq = hi846_get_link_freq(hi846);
-+	u64 link_freq = hi846_get_link_freq(hi846, hi846->cur_mode);
- 	u64 pixel_rate = link_freq * 2 * hi846->nr_lanes;
- 
- 	do_div(pixel_rate, HI846_RGB_DEPTH);
-@@ -1429,8 +1454,8 @@ static int hi846_init_controls(struct hi846 *hi846)
- 	hi846->link_freq =
- 		v4l2_ctrl_new_int_menu(ctrl_hdlr, &hi846_ctrl_ops,
- 				       V4L2_CID_LINK_FREQ,
--				       ARRAY_SIZE(hi846_link_freqs) - 1,
--				       0, hi846_link_freqs);
-+				       hi846->num_link_freqs - 1,
-+				       0, hi846->link_freqs);
- 	if (hi846->link_freq)
- 		hi846->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
- 
-@@ -1503,10 +1528,9 @@ static int hi846_set_video_mode(struct hi846 *hi846, int fps)
- 	u64 frame_length;
- 	int ret = 0;
- 	int dummy_lines;
--	u64 link_freq = hi846_get_link_freq(hi846);
-+	u64 link_freq = hi846_get_link_freq(hi846, hi846->cur_mode);
- 
--	dev_dbg(&client->dev, "%s: link freq: %llu\n", __func__,
--		hi846_get_link_freq(hi846));
-+	dev_dbg(&client->dev, "%s: link freq: %llu\n", __func__, link_freq);
- 
- 	do_div(link_freq, fps);
- 	frame_length = link_freq;
-@@ -1699,6 +1723,7 @@ static int hi846_set_format(struct v4l2_subdev *sd,
- 	const struct hi846_datafmt *fmt = hi846_find_datafmt(mf->code);
- 	u32 tgt_fps;
- 	s32 vblank_def, h_blank;
-+	int idx;
- 
- 	if (!fmt) {
- 		mf->code = hi846_colour_fmts[0].code;
-@@ -1749,7 +1774,14 @@ static int hi846_set_format(struct v4l2_subdev *sd,
- 	mf->code = HI846_MEDIA_BUS_FORMAT;
- 	mf->field = V4L2_FIELD_NONE;
- 
--	__v4l2_ctrl_s_ctrl(hi846->link_freq, hi846_get_link_freq_index(hi846));
-+	idx = hi846_get_link_freq_index(hi846, hi846->cur_mode);
-+	if (idx < 0) {
-+		dev_err(&client->dev,
-+			"failed to get link freq index: %d\n", idx);
-+		return -EINVAL;
-+	}
-+
-+	__v4l2_ctrl_s_ctrl(hi846->link_freq, idx);
- 	__v4l2_ctrl_s_ctrl_int64(hi846->pixel_rate,
- 				 hi846_calc_pixel_rate(hi846));
- 
-@@ -1947,20 +1979,33 @@ static int hi846_identify_module(struct hi846 *hi846)
- 	return 0;
- }
- 
--static s64 hi846_check_link_freqs(struct hi846 *hi846,
--				  struct v4l2_fwnode_endpoint *ep)
-+static int hi846_add_link_freqs(struct hi846 *hi846, struct device *dev,
-+				struct v4l2_fwnode_endpoint *ep)
- {
--	const s64 *freqs = hi846_link_freqs;
--	int freqs_count = ARRAY_SIZE(hi846_link_freqs);
--	int i, j;
--
--	for (i = 0; i < freqs_count; i++) {
--		for (j = 0; j < ep->nr_of_link_frequencies; j++)
--			if (freqs[i] == ep->link_frequencies[j])
--				break;
--		if (j == ep->nr_of_link_frequencies)
--			return freqs[i];
--	}
-+	s64 hi846_link_freqs[ARRAY_SIZE(supported_modes)];
-+	unsigned long freq_bitmap;
-+	int ret, i;
-+
-+	/*
-+	 * Since the MCLK freq varies between platforms, calculating driver
-+	 * supported link freqs here.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(supported_modes); i++)
-+		hi846_link_freqs[i] = hi846_get_link_freq(hi846, &supported_modes[i]);
-+
-+	ret = v4l2_link_freq_to_bitmap(dev, ep->link_frequencies,
-+				       ep->nr_of_link_frequencies,
-+				       hi846_link_freqs,
-+				       ARRAY_SIZE(hi846_link_freqs),
-+				       &freq_bitmap);
-+	if (ret || !freq_bitmap)
-+		return ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(hi846_link_freqs); i++)
-+		if (BIT(i) & freq_bitmap) {
-+			hi846->link_freqs[hi846->num_link_freqs++] = hi846_link_freqs[i];
-+			dev_dbg(dev, "Add supported link frequency %lld\n", hi846_link_freqs[i]);
-+		}
- 
- 	return 0;
- }
-@@ -1973,7 +2018,6 @@ static int hi846_parse_dt(struct hi846 *hi846, struct device *dev)
- 		.bus_type = V4L2_MBUS_CSI2_DPHY
- 	};
- 	int ret;
--	s64 fq;
- 
- 	ep = fwnode_graph_get_next_endpoint(fwnode, NULL);
- 	if (!ep) {
-@@ -2004,11 +2048,10 @@ static int hi846_parse_dt(struct hi846 *hi846, struct device *dev)
- 		goto check_hwcfg_error;
- 	}
- 
--	/* Check that link frequences for all the modes are in device tree */
--	fq = hi846_check_link_freqs(hi846, &bus_cfg);
--	if (fq) {
--		dev_err(dev, "Link frequency of %lld is not supported\n", fq);
--		ret = -EINVAL;
-+	/* Add link frequencies which are supported by both DT and the driver */
-+	ret = hi846_add_link_freqs(hi846, dev, &bus_cfg);
-+	if (ret) {
-+		dev_err(dev, "failed to add link frequency %d\n", ret);
- 		goto check_hwcfg_error;
- 	}
- 
-@@ -2041,30 +2084,24 @@ static int hi846_probe(struct i2c_client *client)
- 	struct hi846 *hi846;
- 	int ret;
- 	int i;
--	u32 mclk_freq;
- 
- 	hi846 = devm_kzalloc(&client->dev, sizeof(*hi846), GFP_KERNEL);
- 	if (!hi846)
- 		return -ENOMEM;
- 
--	ret = hi846_parse_dt(hi846, &client->dev);
--	if (ret) {
--		dev_err(&client->dev, "failed to check HW configuration: %d",
--			ret);
--		return ret;
--	}
--
-+	/* Get the MCLK first, since we need it to calculate link freqs */
- 	hi846->clock = devm_v4l2_sensor_clk_get(&client->dev, NULL);
- 	if (IS_ERR(hi846->clock))
- 		return dev_err_probe(&client->dev, PTR_ERR(hi846->clock),
- 				     "failed to get clock: %pe\n",
- 				     hi846->clock);
- 
--	mclk_freq = clk_get_rate(hi846->clock);
--	if (mclk_freq != 25000000)
--		dev_warn(&client->dev,
--			 "External clock freq should be 25000000, not %u.\n",
--			 mclk_freq);
-+	ret = hi846_parse_dt(hi846, &client->dev);
-+	if (ret) {
-+		dev_err(&client->dev, "failed to check HW configuration: %d",
-+			ret);
-+		return ret;
-+	}
- 
- 	for (i = 0; i < HI846_NUM_SUPPLIES; i++)
- 		hi846->supplies[i].supply = hi846_supply_names[i];
+ static int hi846_get_selection(struct v4l2_subdev *sd,
 -- 
 2.55.0
 
