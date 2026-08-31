@@ -1,236 +1,169 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013024.outbound.protection.outlook.com [52.101.72.24])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170583B0597;
-	Mon, 31 Aug 2026 08:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166307; cv=fail; b=Uraf0DVSYUCrsnQ04x956iyf2dtBQ8prGQ21CeeI7+tyJdUomHbrLZs71ZOkLfVw9H+wUa9Ui+Jr32gOI5BuY4VoQmb77QOeH88xoGOhQS6ex2SUUK8/JITF2OJynpNzY+w1tyQTSwqRoSdKJ7F49HR2BUBxPiNXynk3yiI3XLk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166307; c=relaxed/simple;
-	bh=6ifz7vQ++bj6xJPc9OTcXsFmKJp53blZxrNRPvvleIo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ssUkTv04gUCU/wn/Unc/c5yaNl03+dbYulPWoU87PK5opy4F3BxumNcuJHUFAvSoMrQON/D3BjW3ePb9h9ykvVdyIH/PD2M8XpGGJ/WK4qqMDIj3t/bP/Epp0Xw7SmyW6wRpEbhAUNuKiz+YYjbPDP3W2KnSPn3U7uRPC0ChWMw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HQgy3Pv/; arc=fail smtp.client-ip=52.101.72.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAD23D4107
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788166329; cv=none; b=jszlfs2Oy5NA4kz1OtkAwQxhAE4vlrL8+m5Q++MF+RtCrD+EUs/Ww7KuLoydPVp1IEOQUG4QZHUpSyQqGkJvQcaESdDFNdI+Ua/b9iH1sEABq+DaZpNq3tnGRx+BVWInk/GC3mBko/S5nY4SySzTszZpLmKx3ssxrrmu6Xhezzk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788166329; c=relaxed/simple;
+	bh=+2hOgK8tLcdWYDNwQNgvsfIaBdx8Bs2buQwhXdccyfI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kmUSIaMyl6bB8cOKvY559xeR+CSbSgH6tYOT/caYE0HVOixMJnP77MiZJ5m3pTmqdo0j9J9jXVVar04s6TI87mONRjnbovGfCtxmnZ+BUQdObeo0kymtoN/tG5cFxy3wrPSlTWPSWqCVw6effoKpUEkWkin4mhto9xr1WXha7iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Cb9qiPO1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JiMwSHDg; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HQgy3Pv/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z7G9XzG8ect4KhJDWkSZffGUqyha03hzoXTGHKfl/2/0tfW2/407yxgQxDvZfWs6K2i5wKGgvU+PUYz/2dIf4T+FR3dVrMcKdkIJ1DPJL6kgadg4QdrZYVX/VgiICgh/0E0Ii+LQnCjc3X6cX4OAXdYdbXQA2N6V42LkIU+5OGrW46lbP5rSae6AE7SV7adQE6P3CUYHW7+mwLIBxxoMxcoycrb08DoHoXltJblCMSAuBVS6UPWIDbQ3sHoaji0mZPBeT6fsGWXvBSdygVonK6rlvVCg0ArMhxHyZVUFswpzTkwQvl+xXR2sxc18lzF16B/bx8KRtPbG81PXOaq8xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PhacesnqQl1WiqjaUV1wauuGmBSB6RCk7RgM7wkjplw=;
- b=rZFaL/UxSTHF4VZqRlzKPIWjkv6B+Gqn/uyM6yoYv5FTxL0Wmf/avmIic9s/hf5muWJMZHs0p2VWfsl1/xNP1RGZHyQIJ0UQjjuKc/lw2zncaxO16SrQrutMdtfdhNiiPCG4FmM/teG9b7rPZXRzQpf3GqILnJzqhWfVJ5MynFn4qT/B+DlhiHOO385HHHDDiIIgHIRSereabrWvqUkakf3QZh7UekPAiLhbCrARv+Cqd5mnCAmDRamhEpmMi/EXOSwxnh8Z3y+40FZGx3CqzV+UkjyggPkJAuxdT9xBv35eRokaNJNXHolQuSjLwts11d7HukgslMXVj6x5HJzidg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PhacesnqQl1WiqjaUV1wauuGmBSB6RCk7RgM7wkjplw=;
- b=HQgy3Pv/l41QbdQ4fO/A9hwQPAok02hEcnOmbz1vVA80p6+Up1LDhh2nzQu0qAfFsJyW57j4mZ1IJfGjISz8VOmt/X5jUm8HidZzB7cwBwPMV80i8MuWLjPwXmXpqcm+2C2SIUg/3prumWQsk3VF/mRqdP6AH1r8mrE3/LlsAecCRKGzY2fQK+BO/07ZBeHPck2+lhuJBjPC4NsS3nQsNjL5uX1HWFP9MRu9epS1RKgr99hRVno0g8ToIXzP4rQUFCG3zCb8OON68QVejVD2PD7c12sp+msefrF4PZWj1TBPbMq5nrjZ0V+y/ZXg4NgVkpm6gNjmeHPVg6jp7oJJVA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB5858.eurprd04.prod.outlook.com (2603:10a6:208:132::23)
- by DU4PR04MB12151.eurprd04.prod.outlook.com (2603:10a6:10:640::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Mon, 31 Aug
- 2026 08:51:42 +0000
-Received: from AM0PR04MB5858.eurprd04.prod.outlook.com
- ([fe80::bdf4:c9d1:4e3f:68c6]) by AM0PR04MB5858.eurprd04.prod.outlook.com
- ([fe80::bdf4:c9d1:4e3f:68c6%3]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 08:51:42 +0000
-Message-ID: <0bf5e10a-a3f6-4f71-a23b-d065cc5681a4@oss.nxp.com>
-Date: Mon, 31 Aug 2026 11:51:39 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/6] can: flexcan: disable all IRQ lines in
- flexcan_chip_interrupts_enable()
-To: Bough Chen <haibo.chen@oss.nxp.com>, sashiko-reviews@lists.linux.dev
-Cc: linux-can@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
- Frank.Li@kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
- Vincent Mailhol <mailhol@kernel.org>, conor+dt@kernel.org,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Oliver Hartkopp <socketcan@hartkopp.net>, devicetree@vger.kernel.org,
- s32@nxp.com
-References: <20260713085306.2643794-1-ciprianmarian.costea@oss.nxp.com>
- <20260713085306.2643794-3-ciprianmarian.costea@oss.nxp.com>
- <20260713090705.9F7671F000E9@smtp.kernel.org>
- <20260824085716.ejrveo5udehy4ijc@shlinux89>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <20260824085716.ejrveo5udehy4ijc@shlinux89>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0246.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f5::15) To AM0PR04MB5858.eurprd04.prod.outlook.com
- (2603:10a6:208:132::23)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Cb9qiPO1";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JiMwSHDg"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V7xNeD4081787
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:52:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	palpmFZZO8X/xAXI6fll/8vpW1RA6tZdCLOM/AIPfzE=; b=Cb9qiPO1ic/fp51i
+	A9Y2ZhtgOkhSln+gHhILBIxKRU9q+EFTQfIhJ4xKf3wSbJzN0zhWjc1wjKvCjW/J
+	20tRmMpCyW+/6NVKa9ju+y4z34Z1xhpfyAlboEeTtuW95Rucj6k1F4i1tL719VRR
+	H7wYpvc/yeIs2lWB1lSE8pg+CBO0IWoWkT6ey/hVX/H+KRECt+7Fqi+odS+2dl0A
+	qFhZoqADFb0HvLuYkRm1kwuOOxblBsRmGTx5jITenBO5AvipKEk6e0kwpMD4rdQU
+	pwUrlCvklDqEPsTAtZqr77iOoDzCBPICWFBDq/2a/PhbXYlmLsDkqzi2JheDwFRQ
+	RC/M7Q==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gcv8h1tdw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:52:06 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-398e1fafe17so1231914a91.0
+        for <imx@lists.linux.dev>; Mon, 31 Aug 2026 01:52:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1788166326; x=1788771126; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=palpmFZZO8X/xAXI6fll/8vpW1RA6tZdCLOM/AIPfzE=;
+        b=JiMwSHDglhSFJH1h0CG/aTkdppcrK5wHYC2iycTM3aURQTC8Lk90gsr45iHMyo+uTM
+         GAVwr6Vnkmp1ihRdSjO8+s/hpBs03PElw3jwJLlj2eey766LugKTMyGrFDk2KxEknq8s
+         ss4DSlaJijE+XrPUNlyTwF+jKOD+AoQkjT6or7RSu45Knignza0wqwL894t/EcrNULr2
+         TIbR2pEk8UUVgwL1TxxJVY59J2s637rQxMg393Nr4qSEYJfchjnE7xRMLz9rPg6YChyG
+         c1B1cOF5WMQFC8aEmaNIs+lWG13GoOlRfrAcVagsx5VnGmke4SA58zDZMYLxBpY6jUhM
+         w/gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788166326; x=1788771126;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=palpmFZZO8X/xAXI6fll/8vpW1RA6tZdCLOM/AIPfzE=;
+        b=JPGjDvAfv2GhWgDPyhS1mNBOZom3wNZsRl8pOg6EuTFeHr0NXa60SYonC+FZifg3Ga
+         cKkrtAfsR/LNs4XO5p5V8KQo429iazWCwmDP9qvvWV4flkael6tcX78dFmdth+RR5rq3
+         r51Ai/wW7XKofYIlrmxwoGpbMopOCBY1EUxkv37s3yKH7Wdjhnh3eQCsrBPIGLIYO2/l
+         2GXDpdg5gOtFI/MaGXKbaOC6A3+yFxs2n89GaC4kr43JWIC2vFGh3YKLlCONvtubcWk9
+         z3M9KZtCIUx90ZJGLQ4VbDEu7MV6AMoaJgbuVHzCuWjBc2w2vv++hB7/uMP2w6jVqNwB
+         aXPw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/Why7OmVXTFqau0qQdnHLkktHsWWu9+rvReL77Lp3aTi+jMpF5t+fvkIp6q45t6IYk0k=@lists.linux.dev
+X-Gm-Message-State: AFuF++ntX9Rtj0KHCedD78/fKE1ucFvmqAfmP8Gt+NzzMnQS9gxgGeHZ
+	dc1rjqVtGGt6DWYrD8c7fZ4w1YyLqUBEutCcez0uZUvRLyIOs7b1LbuCZvfLmcv65zOuDtAfKg/
+	Bs2nXPBc9tRFjEke9lyIAPAI0Z9FEJ0faynRh5Yo6a90D7q6k9VS8y44=
+X-Gm-Gg: AYBFou0w2nVXJx5lzMETjRkYRpA8kxX/7eETUokktpdtJ3MRZMgurJ5dRwM2OqhPgYd
+	IFeBnnPuFtinvTs05ozMl2snHuHOY+xmswgYshPmalJGo8W6r5VmFNSUlnlnc0TcDNjZfDU1VVD
+	Fxrcp96Z5MqZb9kLn+VwKluZgPtfGxctXJaJW+INTmj8ZSiMJrtpTM+yq5YsVRsRa+YjPubfgI5
+	U4oERJoO8yEa0DEqDrQO3VCbsM3LCo1l15t73iZCZ0rmMc3dxtQrh8fxMBbB4cWAL5s2piYqu/Q
+	r2tptMXs85c7oSoF5zxiMJu3TmcHs0V0vkkIYbn3U6PgZbb5cbYemiR/H4aaNZJ5rAE61VpZOM3
+	Cv1TXlh7heKS4frfn4yoRnORYgZD2W1wECA==
+X-Received: by 2002:a17:90b:4c45:b0:398:ceed:6d44 with SMTP id 98e67ed59e1d1-398ceed6d9dmr12393505a91.25.1788166326211;
+        Mon, 31 Aug 2026 01:52:06 -0700 (PDT)
+X-Received: by 2002:a17:90b:4c45:b0:398:ceed:6d44 with SMTP id 98e67ed59e1d1-398ceed6d9dmr12393440a91.25.1788166325630;
+        Mon, 31 Aug 2026 01:52:05 -0700 (PDT)
+Received: from [10.217.218.20] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0df264csm46282736c88.14.2026.08.31.01.51.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 01:52:05 -0700 (PDT)
+Message-ID: <8ec899c7-61a9-45cc-b332-a98d2c0ac344@oss.qualcomm.com>
+Date: Mon, 31 Aug 2026 14:21:56 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB5858:EE_|DU4PR04MB12151:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11cdd3bc-2664-4562-3763-08df073d1403
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|7416014|366016|23010399003|1800799024|10067099003|6133799003|18002099003|22082099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	x30x1JeQLq2nGwrXC8JZzk75htCX+hr2+nkEO9SFl5LUKyXbSpjrRyV0CofcuDoyQcAecdetFREccDSCimZAh7LCy7b2RicDBSdDaev69fE+jqpzXTqlTN55d/PtFi9LsWsHAFmDvp6x0HYVK0HPk2/0SX5XfAMin5N9LQhHAY1EfDZ5flyfxAAabmwaES2iyQcLy3F+UvNueXwa9CGAbGz+xgjW7bq/JPP97bY6bkoAQKrFB59jmVdAxPXC04UqWurU1Od9W9NjBJaDQTfevMyDtfwnwBwg/EtCKMRuvI2jOAF3X3NgMcSVTFqtNoxi5wUeXWZyrF48rP4MmbMh8/YCP+Gm9LqwvXz3x+4Cp5TvE0wg0UCh1ZwvTzSMsJk/99GY/PtpDBJv48a6NED7HiTpM89EqF72gdTlG3CRXl8Zx6uXIzhyT4DPbC0LKistVCeLDKLTy5mBe1iClQYzI4YI8PbfCagshaoY5YCjh5jIVRmMIMkIWo0ew/7IJjHtvWntx736Mi1WQXXbjf4k/ENnfhD8HtBHtoptZCgKLpIeyD5aoKY5pi1n6JDLmUWcLpUuZ++kK8vEdTsF4u1VgHsGAAhU5ytWj+ICsR5bu/c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(366016)(23010399003)(1800799024)(10067099003)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TXFjTVo3WnhwdlQ1VllCK2hvQkxwWGhBWFdBTHM3TGNlQ2RjS0tCbGY3UC9x?=
- =?utf-8?B?N3pmZkhCdGZYa082MmJYeHRQOGFpems3MTZLazJ1bTBDWURkekg5cHcrREw0?=
- =?utf-8?B?T0dVd3R2MENtbWM0M3ZOSmxNaitrdUxvcmVETXhrRHlqdmFzTlk0aFl1N0ZV?=
- =?utf-8?B?cGtFQXM5R0kwZWV5Mmc5a1lqbUJMd1Jvd2ZYSkNyblVUQXEzTzE4Q3hGbXkz?=
- =?utf-8?B?L25XSFMzOGIyMTliNFZ1a3lBQzljckZmWFZYYmVERG1KVmZuYzQ5N0x1ZHhT?=
- =?utf-8?B?MDk1dVZqeFNHN0xpK1V2OFpoa1JsS29Eb2llRzJ4Q0oreGhoTGJLdDhxMmpT?=
- =?utf-8?B?WG4xYTBSZW1QUFJjalRUV0tod0VkK1Y0K3VvRiszc0xjUVpQTXB2MWhSU0lh?=
- =?utf-8?B?TmlwSmNvMzFINE93V0JuNEcvYkM1RlNrL21tRkNuMnZSRDVHeUdXaTVQcGow?=
- =?utf-8?B?TmpZVmkxZCtJbWlrVlEvVjJzcFZoSk9pbExVT3lrVE9oa0I1NGorMy8wL2lQ?=
- =?utf-8?B?Tzk3NDhSM3hRRDBmSjk3NlhacEIva09JZEkxNVhxZWZrOUpDenpya0d3aTRQ?=
- =?utf-8?B?US9CNlhCbmNCVWxqSjZ1ZzNXZW1yejlTVk5MYlN1TTNMQVdLeHVROWNEUm9I?=
- =?utf-8?B?UitpVE5NK0Jja0YwbTQ2bUpza3VtSjhVWnRlSTc5aGhpV1loZlplUXNhV0pI?=
- =?utf-8?B?K1l1amdpclNrNkdIdU9SSndWRklPSXJqZzNrZS91UGtmRldaalN1bEVZZFps?=
- =?utf-8?B?L2lMNWRNNEtCeVR1Tmxpd1NyTUJFa0lkS2tVbGgwVXh1Q3JiUGxjS2piYVRS?=
- =?utf-8?B?ZjlCRXdLVW50SXVjbWJ0VnZXaXBFaXE3WlpSZVFKam1kc0p6aTRoVmVmZER5?=
- =?utf-8?B?STBjK2NnNzIzaE5DUmVGRDQ0ODRjeFA2MEs5MHg1aHBUODZ2K3V2OWNaTng5?=
- =?utf-8?B?aGlVcFlMZ3Nod1dyeTBMak91NC9uRjB3ZjlKb3Fya0w3K0ZkTzNhSVBxL1VJ?=
- =?utf-8?B?Qk9tZVVzbm1yNlRGNDF2eWNNSWsxTFBuOFhkckRWS05vb1h1K0o2em1NZ0Ra?=
- =?utf-8?B?UmRxckJ6YkpsUk5zTEJVc0FOZU9vNG9wTVpvUFF0SnpBUWM5b1ZmYzY0Q01E?=
- =?utf-8?B?R2M3bno0OU1GQTBOZitlMWdpZENOTEJYeVVkVWpEbmlmM21URFF2dlFDQXJ1?=
- =?utf-8?B?dDFQbTQwVTllMDZtOTBiLzcvcEJqL3Q4MytYYjMreXluRTJiQ0tzUk11QXla?=
- =?utf-8?B?RXBaZ1ZOaElLVHhsek93ODVEemJXUFBXREU5cG5scHRnclVXVFZBaW96Skk0?=
- =?utf-8?B?a2lYTXNvUGJrbGZ6alhSRU9Nb3RXcnBxSjZKdC85OWJicmxVWnJGdWJDNWtR?=
- =?utf-8?B?TVY4NjBxejdTZVB2NGdDSDJPQ2VkODlaWTh6cytSQjVnTndSU21qVHFvaDRs?=
- =?utf-8?B?d2hucjRwblBqUXZUYWx0R2NIdGI0NmlZcm1FS0srMHVWL0pTdldwdEptTDVu?=
- =?utf-8?B?T1RQQ0F2ZkgzU0ZOQ244cmpIais2aUNFQkZqcEJIZTZ6aEZIT1M5Ri9HL0VO?=
- =?utf-8?B?TzhRTnJRbnFxMmZVWXg4emkzMi93Q2dsS2VRNHVMMGVYOUhGZ0xHQ2prSFJT?=
- =?utf-8?B?aTVjTzBIOEVCUTFmQjViRWt6ZUszQlNwd01YWFJiWFVpQWE1ZE9zLzFXbDRl?=
- =?utf-8?B?bnB4OTZONlRnRXJQU09LRFJXNHdHSWpENDEvUUU3V3RnNDhHVUR2NUlXRGl3?=
- =?utf-8?B?RFJVWVVpT1UzSXVScktCV01KOTM0OTJPZVRYS1BHUk5BRFZvMUZGNmQzb2RN?=
- =?utf-8?B?djZLRVJmWDRMOEtRZHV3Q3NOV3djSlREdjNZS3haQk5MMVZTUzJPY2R4dURL?=
- =?utf-8?B?a2RCSkNrNk9SQndFaDR5dEdpQ2ZTOFluMVlRVlZwQ21GQ2hoNVRTQ240dURF?=
- =?utf-8?B?U3JFRk5MR0FNZVNIUnBnMnhvUkpXdUJiMzViNWtwc0F0YVVMak14WUM1VVh5?=
- =?utf-8?B?TzZIUFNoeUNqZFBjWkpZTm5FR0EvQWhtd3RlY1RRNUdDVnVvdGV5eTdGL3hC?=
- =?utf-8?B?ZzEyb3VhaDZyb29LS1ZCdUhkZlI2SUpDM0RhdzdRK3poelUwMlF3WDI1allF?=
- =?utf-8?B?dVM3V3UybGtPOU1maDZkVmRmUFJwOGtwaDhBOEw3ZVhGVlp3NjloR1E2N1BG?=
- =?utf-8?B?M25Oa2pOa3Y5RGJmODZJOXhudzc0WmhscDVuTVJabTNHQkJHV3JEVlVyY0pD?=
- =?utf-8?B?ZDR0b1pDTi9wWWdHSG9oamFOaEhCL0oyL2dSV2xwT2dBTWhWWDkyK3dBZG5s?=
- =?utf-8?B?aExxa2Q1aTBET0l5VVNRajkyMlRaRGVOTGN2WlExMDE0cHZuUThOTkt6VGNG?=
- =?utf-8?Q?6pKUb1d/YmCZQXFc=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11cdd3bc-2664-4562-3763-08df073d1403
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5858.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 08:51:42.1473
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oe9UXyIdMZVPd06+vkC7SIVoNw+nG7Gd8tigAs3m5ghbjqmr/7pKV17BaDO3WTmmKCvvn0a9WP7Z+yDqlujaywmtgC3I0mVt3IOelQ0GKTY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12151
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] i2c: qcom-geni: release DMA channels on probe error
+To: Shengzhuo Wei <me@cherr.cc>,
+        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Wolfram Sang <wsa@kernel.org>,
+        Ludovic Desroches <ludovic.desroches@atmel.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Frank Li
+ <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Yao Yuan <yao.yuan@freescale.com>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Bjorn Andersson <andersson@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+References: <20260827-i2c-dma-channel-leak-v1-0-271d4adc03a0@cherr.cc>
+ <20260827-i2c-dma-channel-leak-v1-3-271d4adc03a0@cherr.cc>
+Content-Language: en-US
+From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+In-Reply-To: <20260827-i2c-dma-channel-leak-v1-3-271d4adc03a0@cherr.cc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=DY0nbPtW c=1 sm=1 tr=0 ts=6a9540b6 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=FqpsaMCCsM1CaQCKzz8A:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA3NSBTYWx0ZWRfX3Lq2jLV9dbs7
+ TPg8enUJhS/EGmFsDzwlWLTKI1EToobSm/DNF9gdUbFd/HjDickVSzss70Lr56HUydry1Z3ZPAI
+ Zivvtf1jP7it/XXceJ/dY4h7V/lnVyo7QTyBDQ3S7XtBhdmlgKN648lA7Si0E0hUPgtXP51PRkT
+ 0nXme99vJG9VndlgdRiVqXBJP2NWWVjBtVPPCUU9JvPAIAPuGLeFqWMzv6xPU4+YGeWzFTOCTv1
+ j8WsYD5UqLZ0c+ufS8yltKUOvPiOjhscW80kKi9J8SdQaM7zDb89Cn9CANcj3avpRXlAgS1i89V
+ qidAVId3gfDwPaVYuQPMndUAjf8JrwLx87TFb2AK0ZtqS4MXnqqcaHf1bfejYNac7uRWmexhne4
+ usZrJHsDz5idVZuPnCNSy3zRdr49FOnldoYao/hj+oGLfFgqPbYDvt+nJWGbFeNhmEAIEU2z0d4
+ i1XUBH+2516cQH6PoAg==
+X-Proofpoint-ORIG-GUID: QYm059wM9UWAzJ_kTneQc7basLO9Vt7_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA3NSBTYWx0ZWRfXyUYJZs69Sm3d
+ DQwO5zjlc3cmlww6P5qURXfpDuR3yvF2xO+s/q3YNYZPa9bZqpc3I0VF6oVFFlCRPpVfDu/JhBO
+ Q3H1fDtKN8ve6vh29LVpVRhOPaetwUs=
+X-Proofpoint-GUID: QYm059wM9UWAzJ_kTneQc7basLO9Vt7_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_03,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 clxscore=1011 priorityscore=1501 spamscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310075
 
-On 8/24/2026 11:57 AM, Bough Chen wrote:
-> On Mon, Jul 13, 2026 at 09:07:04AM +0000, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->>
->> Pre-existing issues:
->> - [High] On multi-IRQ platforms, Wake-on-CAN is broken because `flexcan_suspend` only arms the primary IRQ (`dev->irq`) for wakeup, completely ignoring the state/BOFF interrupt (`priv->irq_boff`) which actually handles the wakeup event.
->> - [High] In `flexcan_resume`, the network queue is restarted (`netif_device_attach` and `netif_start_queue`) before the hardware is initialized (`flexcan_chip_start`). This creates a race condition where a packet can be queued for transmission just before the hardware undergoes a soft reset, leading to a permanent TX stall.
->> --
->>
->> --- Patch [2]: [PATCH v6 2/6] can: flexcan: disable all IRQ lines in flexcan_chip_interrupts_enable() ---
->> commit ca7ea75d45df1ecf13f11dcec0bd19377eccf3c6
->> Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> can: flexcan: disable all IRQ lines in flexcan_chip_interrupts_enable()
->>
->> flexcan_chip_interrupts_enable() disables only the primary IRQ line while
->> writing to the IMASK and CTRL registers. On multi-IRQ platforms, the
->> additional IRQ lines remain active so their handlers can fire while registers
->> are inconsistent. This commit disables all registered IRQ lines around the
->> IMASK/CTRL writes.
->>
->>> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
->>> index f73ff442d5304..7dde2e623defe 100644
->>> --- a/drivers/net/can/flexcan/flexcan-core.c
->>> +++ b/drivers/net/can/flexcan/flexcan-core.c
->>> @@ -1519,14 +1519,28 @@ static void flexcan_chip_interrupts_enable(const struct net_device *dev)
->>>   {
->>>   	const struct flexcan_priv *priv = netdev_priv(dev);
->>>   	struct flexcan_regs __iomem *regs = priv->regs;
->>> +	u32 quirks = priv->devtype_data.quirks;
->>>   	u64 reg_imask;
->>>   
->>>   	disable_irq(dev->irq);
->>> +	if (quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
->>> +		disable_irq(priv->irq_boff);
->>
->> [Severity: High]
->> This is a pre-existing issue, but on multi-IRQ platforms, is Wake-on-CAN
->> broken because we only arm the primary IRQ during suspend?
->>
->> In drivers/net/can/flexcan/flexcan-core.c:flexcan_suspend(), we see:
->>
->> 	if (device_may_wakeup(device)) {
->> 		enable_irq_wake(dev->irq);
->> 		err = flexcan_enter_stop_mode(priv);
->>
->> Since the hardware asserts irq_boff (which handles FLEXCAN_ESR_WAK_INT) for
->> wakeup events, doesn't irq_boff need to be armed with enable_irq_wake() as
->> well? Otherwise, the system might fail to wake from suspend since the
->> interrupt controller won't treat the asserted IRQ line as a wakeup source.
+
+
+On 8/27/2026 9:13 PM, Shengzhuo Wei wrote:
+> geni_i2c_init() grabs exclusive GPI tx/rx DMA channels when the serial
+> engine runs in GPI mode. If i2c_add_adapter() subsequently fails, probe
+> returns without releasing the channels, because the remove callback is
+> not invoked after a failed probe.
 > 
-> Yes, this need to be addressed.
+> The adapter-registration failure path used to release the channels via
+> its err_dma label; that release was dropped when the probe tail was
+> restructured into geni_i2c_init().
 > 
->>
->> [Severity: High]
->> This is also a pre-existing issue, but does flexcan_resume() restart the
->> network queue prematurely?
->>
->> In drivers/net/can/flexcan/flexcan-core.c:flexcan_resume(), the queue is
->> restarted before hardware initialization:
->>
->> 	if (netif_running(dev)) {
->> 		netif_device_attach(dev);
->> 		netif_start_queue(dev);
->> 		if (device_may_wakeup(device)) {
->> 			...
->> 		} else {
->> 			...
->> 			err = flexcan_chip_start(dev);
->>
->> If netif_start_queue() is called before flexcan_chip_start() reinitializes
->> the hardware, could the networking stack concurrently call ndo_start_xmit
->> (flexcan_start_xmit) and queue a packet?
->>
->> If so, would the subsequent flexcan_chip_start() soft reset wipe out the
->> freshly populated message buffers, aborting the transmission and leading to a
->> permanent TX stall since the completion interrupt will never fire?
+> Release the channels on the adapter-registration failure path, mirroring
+> geni_i2c_remove().
 > 
-> Good catch, those two findings should be addressed in another patch set.
-> 
-> Regards
-> Haibo Chen
+> Fixes: d8d3bb127ad1 ("i2c: qcom-geni: Isolate serial engine setup")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shengzhuo Wei <me@cherr.cc>
+> Assisted-by: GLM:5.3
+> ---
 
-Agree. Since these two findings are pre-existing I will target them in a 
-new patchset separate from S32N79 Flexcan enablement.
-
-Best Regards,
-Ciprian
-
->>
->> [ ... ]
->>
->> -- 
->> Sashiko AI review · https://sashiko.dev/#/patchset/20260713085306.2643794-1-ciprianmarian.costea@oss.nxp.com?part=2
-
+Reviewed-by: Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>
