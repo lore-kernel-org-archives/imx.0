@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566C4E66BC;
-	Mon, 31 Aug 2026 13:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DA2523785;
+	Mon, 31 Aug 2026 13:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183609; cv=none; b=hikIlYNQqmQkFjrpZ2quRCNIGSBOHKFdiHpaGHRdBFnFm6zhu6fd3P6qw1iQjzZFMLK1A1nFEIY6rFvShxWVQhAQXVY9G752lAorFQTjvX1yfmolcuBUlcXKRs2oxBq2X7/fwvrasSpRIYlUzv1GTyvwqkecREiINsuRnBrcuA4=
+	t=1788183952; cv=none; b=fYYM8+IvzDdC/RqhdFDJWKTDsd1OU+mXbhSvZlBcQP04zegeX3sY/cVQy0u7WIjlQfvEnFNDsMZE2K25KphTVSOHWnDR/Sm2ARmeahjSK7I8XXtbw7TihsPIDdUx6miznw+fs0ebQXWs08csVWf5sBALs81SXQIycFw87e3J2Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183609; c=relaxed/simple;
-	bh=33iZXMr18Rmx2EvbseASldHV6w0ykrsmyfMWzDiOeFc=;
+	s=arc-20240116; t=1788183952; c=relaxed/simple;
+	bh=rxLkTsbTTWCSGE/TQxMVf5JUz0EUxLU+m/HAFxI9Z/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iaoPW8DXOqet5m9mL6a08iHXDxQK11dWKSz7wpvWMf2rUA0N4/oQn2/RWrpcSaO2sv7GCS/rgxivixZPF7AtFv26Eny91uhnS15Y8+maOpwqFWbxPANSYrSYP7KcrzO/TWGskFyYPYnhhboukz5ibH8hKR6yVjrxsVA8KvELojM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbVW9ez3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=s3NA6k46DxAsalnNq0lxPD+q2JhCKUdgI+ccIDbEKnjMiI6sy/xIjd3ZNEqKSdtjgTxLeTJnZ+vNlH6FCLF1ftmrWbUybOJIquQH2KF6fYNqW16mZVafMVQLB0G/2gKea5okV/yCHESSI9SugmbyM7dFzxSfqnUqzoAPDebXBJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5GMTZq2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbVW9ez3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAAA61F00A3E;
-	Mon, 31 Aug 2026 13:40:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5GMTZq2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718941F00A3D;
+	Mon, 31 Aug 2026 13:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183607;
-	bh=WV+wAURa510r5CuNOKKk6gKEMYbOTRJ3w7E+E6k5jyk=;
+	s=k20260515; t=1788183948;
+	bh=BTqAlLmts8ZQ41c0115TlB9RJ7THP1KGUTx1wnoz62I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bbVW9ez36ISHqkjHpT0ODl/i80jtoN87bmJ52y0LoouTcrsyHxdS6ZMuGyjO7WHW7
-	 niG2NpKr+JCZGhN+BTZm6re9mj5ZPC3VggbkUodSgTCmd+XlSTlLOGereHI/GHOgEv
-	 XmDkWTNUmYLBjU3bVnOlW/3pGwOyhSVFx/ob6HqhhNB4JwN3CNSyromQc0xjSTg4dO
-	 nH3MAmTyQzPDmIr0dznj1270tMk0rBKfCEwm9rP83H2QJUopmMoRmfDdeJJs5nlJJS
-	 6hIZiegnv7Oli66PaVu+ZXU63J9wIB1aqKmePyhwaVSKbua8Nu7RZ6JYRxtbJzd3NF
-	 kPjPXG39NbSVg==
+	b=n5GMTZq2NtdNtv4podLc1MeTLKoTCv+qHGwd3KgFNx7zP4WmS6AEKyElqWXSqacIs
+	 4rwaiFGAOf/FjCeiPG09fMxbr0fxD8nXDJEiCY41NlN4dTFVQzWcPizLLs/XrCfz1A
+	 DylFF1fbL+ntWSwYKzsP5wxNaIQylJfSHFYg28QqW5vmh9n2wXnRHFEOCexqo3lC/m
+	 fSVUjQ+Bd0qxaGbELxJn7WByFkIFLm3cAOmVKSqOKEw6P+mPT4uczi9eKpYeK5WT/w
+	 eG7ENYmcAFYbBuB9MVzrji0n2yE2UvUrWAeyQLU1eb/hliOhJVyzfUYy8ngFJ1YPNa
+	 +r+kAy777kFaA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Cc: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
 	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Frank.Li@nxp.com,
-	linux-kernel@vger.kernel.org,
+	wim@linux-watchdog.org,
+	linux-watchdog@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.18-6.12] mailbox: imx: Add a channel shutdown field
-Date: Mon, 31 Aug 2026 09:23:43 -0400
-Message-ID: <20260831133314.4125787-195-sashal@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] watchdog: imx7ulp_wdt: Keep WDOG running until A55 enters WFI on i.MX94
+Date: Mon, 31 Aug 2026 09:27:06 -0400
+Message-ID: <20260831133314.4125787-398-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -56,470 +57,436 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
 
-[ Upstream commit 5ccea7eacb7786c358833634f45700365f6c1d99 ]
+[ Upstream commit 1f5b29add64e7c1500530079bbbe359cad28cb63 ]
 
-sashiko complained about possible teardown problem. The scenario
+On i.MX94, watchdog sources clock from bus clock that will be always on
+during the lifecycle of Linux. There is a Low Power Clock Gating(LPCG)
+between the bus clock and watchdog, but the LPCG is not exported for
+software to control, it is hardware automatically controlled. When
+Cortex-A55 executes WFI during suspend flow, the LPCG will automatically
+gate off the clock to stop watchdog and resume clock when Cortex-A55 is
+woke up.
 
- CPU 0                              CPU 1
-  imx_mu_isr()                   imx_mu_shutdown()
-                                   imx_mu_xcr_rmw(priv, IMX_MU_RCR, 0, IMX_MU_xCR_RIEn(priv->dcfg->type, cp->idx));
-    imx_mu_specific_rx()
-      imx_mu_xcr_rmw(priv, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, 0), 0);
-                                   free_irq()
+So watchdog could always be alive to protect Linux, except Cortex-A
+platform WFI is executed in Linux suspend flow.
 
-The RX event remains enabled because in this short window the RX event
-was disabled in ->shutdown() while the interrupt was active and then
-enabled again by the ISR while ->shutdown waited in free_irq().
+Introduce a new hardware feature flag to indicate CPU low-power-mode
+auto clock gating support, and use it to avoid stopping the watchdog
+during suspend when LPCG can safely keep it running.
 
-This race requires timing and if happens can be problematic on shared
-handlers if the "removed" channel triggers an interrupt. In this case
-the irq-core will shutdown the interrupt with the "nobody cared"
-message.
+Add i.MX94-specific watchdog hardware data and DT compatible entry to
+enable this behavior.
 
-Introduce imx_mu_con_priv::shutdown to signal that the channel is
-shutting down. This flag is set with the lock held (by
-imx_mu_xcr_clr_shut()). The unmask side uses imx_mu_xcr_set_act() which
-only enables the event if the channel has not been shutdown and
-serialises on the same lock.
-
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
+[peng.fan@nxp.com: rewrite commit log for clarity]
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20260206-imx94-wdog-v2-1-4dd725faec1f@nxp.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `mailbox: imx: Add a channel shutdown field`
+# Stable Backport Analysis: `watchdog: imx7ulp_wdt: Keep WDOG running
+until A55 enters WFI on i.MX94`
 
-**Local tree:** `v6.18.44` (`linux-6.18.y`, `VERSION=6 PATCHLEVEL=18
-SUBLEVEL=44`)
-**Upstream commit:** `5ccea7eacb778` (not present in this checkout; `git
-apply --check` succeeds)
+**Local tree:** `v6.18.43` (`6.18.43`)
+**Verdict target:** Should this commit be backported to **this** 6.18.y
+tree?
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject line
-**Record:** `[mailbox: imx]` `[Add]` — adds a per-channel `shutdown`
-flag to coordinate teardown vs. ISR interrupt re-enablement.
+### Step 1.1: Parse the subject line
+**Record:** `[watchdog/imx7ulp_wdt]` `[Keep]` — Keep the i.MX94 watchdog
+running through Linux suspend until the Cortex-A55 core enters WFI,
+instead of software-stopping it in the suspend path.
 
-### Step 1.2: Tags
-**Record:**
-- **Fixes:** — absent (expected for manual review)
-- **Reported-by:** — absent; commit cites sashiko review feedback
-- **Tested-by:** — absent
-- **Reviewed-by:** Peng Fan `<peng.fan@nxp.com>` (NXP imx mailbox
+### Step 1.2: Parse all commit message tags
+**Record:** Tags found:
+- `Signed-off-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>`
+  (author)
+- `Signed-off-by: Peng Fan <peng.fan@nxp.com>` (commit-log rewrite)
+- `Reviewed-by: Guenter Roeck <linux@roeck-us.net>` (watchdog
   maintainer)
-- **Reviewed-by:** Mathieu Poirier `<mathieu.poirier@linaro.org>`
-- **Link:** — absent
-- **Cc: stable:** — absent (expected)
-- **Signed-off-by:** Sebastian Andrzej Siewior, Jassi Brar (ignore
-  pipeline-added SOBs)
+- `Reviewed-by: Frank Li <Frank.Li@nxp.com>` (NXP)
+- `Link: https://lore.kernel.org/r/20260206-imx94-wdog-v2-1-
+  4dd725faec1f@nxp.com`
+- `Signed-off-by: Guenter Roeck <linux@roeck-us.net>` (committer)
 
-Notable: two subsystem reviewers, including the NXP driver maintainer.
+Notable patterns: dual Reviewed-by from watchdog maintainer and NXP;
+part of an imx94 watchdog series (`imx94-wdog-v2`). No Reported-by,
+Fixes:, Cc: stable, or syzbot tags.
 
-### Step 1.3: Body analysis
+### Step 1.3: Analyze commit body
 **Record:**
-- **Bug:** Race between `imx_mu_isr()` → `imx_mu_specific_rx()` re-
-  enabling RX interrupt enable bits and `imx_mu_shutdown()` disabling
-  them, then blocking in `free_irq()`.
-- **Symptom:** RX interrupt remains enabled after channel teardown; on
-  `IRQF_SHARED` lines, a spurious interrupt from the removed channel can
-  trigger irq-core “nobody cared” handling and disable the shared IRQ.
-- **Root cause:** `imx_mu_shutdown()` clears enable bits, but a
-  concurrent ISR completion re-enables them via `imx_mu_xcr_rmw()`
-  before `free_irq()` completes.
-- **Version info:** None stated; mechanism has existed since the
-  `imx_mu_xcr_rmw()` RX re-enable path was added (2021).
+- **Bug:** On i.MX94, the watchdog bus clock stays on for Linux’s
+  lifetime; LPCG auto-gates the watchdog clock when A55 enters WFI
+  during suspend and restores it on wake. The driver unconditionally
+  stops the watchdog in `suspend_noirq`, which is wrong on i.MX94
+  because hardware already handles clock gating at WFI.
+- **Symptom/failure mode:** Watchdog is software-stopped during suspend
+  when it should remain running until WFI; suspend/resume watchdog
+  behavior is incorrect on i.MX94.
+- **Version info:** i.MX94-specific; no explicit kernel version range in
+  the message.
+- **Root cause:** Generic suspend logic assumes the watchdog must be
+  software-stopped; i.MX94 LPCG hardware makes that unnecessary and
+  incorrect.
 
-### Step 1.4: Hidden bug fix?
-**Record:** Yes — despite “Add a channel shutdown field”, this is a
-race-condition bug fix disguised as structural addition. The `shutdown`
-bool is purely a synchronization mechanism.
+### Step 1.4: Detect hidden bug fixes
+**Record:** Yes — despite no “fix” in the subject, this is a platform PM
+correctness bug fix disguised as hardware-feature enablement. It changes
+suspend behavior to match i.MX94 hardware clock-gating semantics.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Inventory
+### Step 2.1: Inventory the changes
 **Record:**
-- **File:** `drivers/mailbox/imx-mailbox.c` (+36 / -4 lines)
-- **Functions modified/added:** `imx_mu_xcr_clr_shut()` (new),
-  `imx_mu_xcr_set_act()` (new), `imx_mu_specific_rx()`,
-  `imx_mu_startup()`, `imx_mu_shutdown()`
-- **Struct:** `imx_mu_con_priv` — adds `bool shutdown`
-- **Scope:** Single-file, surgical fix
+- **File:** `drivers/watchdog/imx7ulp_wdt.c` only
+- **Scope:** ~15 lines added/changed, 1 line modified in suspend
+- **Functions modified:** `imx7ulp_wdt_suspend_noirq()`; new static data
+  `imx94_wdt_hw`; extended `imx_wdt_hw_feature` and
+  `imx7ulp_wdt_dt_ids[]`
+- **Classification:** Single-file, surgical, platform-specific fix
 
-### Step 2.2: Code flow per hunk
+### Step 2.2: Code flow change per hunk
 **Record:**
-1. **`shutdown` field added** → per-channel teardown state.
-2. **`imx_mu_xcr_clr_shut()`** → atomically sets `cp->shutdown = true`
-   and clears interrupt-enable bits under `xcr_lock`.
-3. **`imx_mu_xcr_set_act()`** → re-enables interrupt bits only if
-   `!cp->shutdown`, under same lock.
-4. **`imx_mu_specific_rx()`** → final RX re-enable changed from
-   unconditional `imx_mu_xcr_rmw()` to guarded `imx_mu_xcr_set_act()`.
-5. **`imx_mu_startup()`** → resets `cp->shutdown = false` after
-   successful `request_irq()`.
-6. **`imx_mu_shutdown()`** → TX/RX/RXDB disable paths use
-   `imx_mu_xcr_clr_shut()` instead of `imx_mu_xcr_rmw()`.
-
-**Before → After:**
-- Shutdown clears enables, ISR can still re-enable → shutdown sets flag
-  + clears enables; ISR re-enable is suppressed once shutdown started.
+1. **`struct imx_wdt_hw_feature`:** Adds `bool cpu_lpm_auto_cg` — new
+   per-SoC flag.
+2. **`imx7ulp_wdt_suspend_noirq()`:**
+   - Before: `if (watchdog_active(...)) imx7ulp_wdt_stop(...)` always.
+   - After: stop only if `!imx7ulp_wdt->hw->cpu_lpm_auto_cg`.
+   - Affected path: system suspend `noirq` PM callback.
+3. **`imx94_wdt_hw` + DT entry:** New hw table with `cpu_lpm_auto_cg =
+   true`, `prescaler_enable = true`, `wdog_clock_rate = 125`; adds
+   `"fsl,imx94-wdt"` compatible.
 
 ### Step 2.3: Bug mechanism
-**Record:** **Race condition / synchronization fix.**
-Shutdown and ISR completion both modify the same control-register enable
-bits without coordinating teardown intent. The fix serializes intent via
-`shutdown` flag + existing `xcr_lock`.
+**Record:**
+- **Category:** Logic / hardware-workaround (platform PM)
+- **Mechanism:** Driver software-stops watchdog during suspend; on
+  i.MX94 LPCG keeps the watchdog clock alive until WFI. Software stop is
+  unnecessary and conflicts with hardware behavior. Fix skips software
+  stop when `cpu_lpm_auto_cg` is set; hardware gates at WFI.
 
-### Step 2.4: Fix quality
-**Record:** Obviously correct; minimal; uses existing `xcr_lock`. Low
-regression risk — only suppresses re-enable after shutdown has begun.
-`cp->shutdown = false` on startup ensures clean re-open.
+### Step 2.4: Fix quality assessment
+**Record:**
+- Fix is minimal and obviously scoped to i.MX94 via a hw-feature flag.
+- Other SoCs unchanged (`cpu_lpm_auto_cg` false by zero-init).
+- Low regression risk: only affects nodes matching `fsl,imx94-wdt`.
+- `clk_disable_unprepare()` still runs on suspend; resume path
+  unchanged.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: Blame
-**Record:**
-- `imx_mu_shutdown()` — since 2018 (`2bb7005696e22`)
-- `imx_mu_specific_rx()` RX re-enable at line 382 — since 2021
-  (`4f0b776ef58317`, i.MX8ULP MU support)
-- `xcr_lock` — present since initial imx MU driver (`2bb7005696e22`)
-- Bug present in this tree for years.
+### Step 3.1: Blame changed lines
+**Record:** `imx7ulp_wdt_suspend_noirq()` and the unconditional stop
+were introduced in `5d324e5159d9e` (v6.18 merge, Nov 2025). The driver
+itself first appeared in this tree at that commit. Bug present since
+i.MX94 watchdog support landed in 6.18.
 
-### Step 3.2: Fixes: tag
+### Step 3.2: Follow Fixes: tag
 **Record:** N/A — no `Fixes:` tag.
 
 ### Step 3.3: Related file history
 **Record:**
-- Recent related fix in tree: `b5ef17917f3a7` “mailbox: imx: fix TXDB_V2
-  channel race condition” (2024) — same driver, same class of register
-  RMW races.
-- Commit is patch 02/10 of Siewior’s threaded-handler series on
-  mainline, but **this patch is standalone** — it does not require the
-  threaded-handler commits (verified: applies cleanly to current 6.18.y
-  code; later series commits are separate enhancements).
+- `drivers/watchdog/imx7ulp_wdt.c`: only `5d324e5159d9e` (intro) and
+  `d6014855a2cba` (nowayout).
+- `arch/arm64/boot/dts/freescale/imx94.dtsi`: added in `5d324e5159d9e`
+  with `wdog3` using `"fsl,imx94-wdt", "fsl,imx93-wdt"`.
+- `Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml`:
+  imx94-wdt binding also in `5d324e5159d9e`.
+- Standalone fix; part of imx94-wdog v2 series per Link tag.
 
 ### Step 3.4: Author context
-**Record:** Sebastian Andrzej Siewior — active kernel contributor;
-recent imx mailbox work on mainline. Jassi Brar is mailbox subsystem
-maintainer (committed the patch).
+**Record:** Ranjani Vaidyanathan / Peng Fan are NXP i.MX contributors.
+Guenter Roeck (watchdog maintainer) reviewed and committed. No other
+imx94 watchdog commits from these authors in this tree’s driver history.
 
 ### Step 3.5: Dependencies
-**Record:** No prerequisites. Self-contained. Does not depend on
-`fbc0f319cee18` (“Use channel index instead of zero”) which is a
-separate follow-up on mainline.
+**Record:** No prerequisite commits required. DT binding and
+`imx94.dtsi` wdog node already exist in this tree. Driver lacks imx94
+entry; patch is self-contained.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Original discussion
-**Record:** `b4 dig -c 5ccea7eacb778` → [PATCH v3 02/10] at https://patc
-h.msgid.link/20260617-imx_mbox_rproc-v3-2-77948112defc@linutronix.de
-Series revisions: v1 (2026-05-29), v2 (2026-06-03), v3 (2026-06-17).
-Committed version matches v3.
+### Step 4.1: Original patch discussion
+**Record:** `b4 dig -c <hash>` not possible — commit not in this
+checkout. Lore fetch blocked (Anubis bot protection). Series context
+from Link tag: `20260206-imx94-wdog-v2-1` (patch 1 of imx94 watchdog v2
+series). Reviewer feedback and stable nominations: **UNVERIFIED**.
 
 ### Step 4.2: Reviewers
-**Record:** `b4 dig -w` CC’d: `linux-remoteproc@vger.kernel.org`,
-`imx@lists.linux.dev`, `linux-arm-kernel@lists.infradead.org`, Bjorn
-Andersson, Jassi Brar, Peng Fan, Mathieu Poirier, Pengutronix team.
+**Record:** Reviewed-by Guenter Roeck (watchdog maintainer) and Frank Li
+(NXP). Full recipient list via `b4 dig -w`: **UNVERIFIED**.
 
 ### Step 4.3: Bug report
-**Record:** Triggered by sashiko automated review during patch series
-development — not a syzbot/user crash report, but a concrete, code-
-reviewed race scenario with a documented failure mode.
+**Record:** No Reported-by or bugzilla/syzbot links. Hardware bring-up
+issue from NXP, not a fuzzer or user crash report.
 
-### Step 4.4: Series context
-**Record:** Part of 10-patch threaded-handler series, but this commit is
-independently applicable. Other series patches are not required for this
-fix to function.
+### Step 4.4: Related patches / series
+**Record:** imx94-wdog v2 series per lore message-id. Other series
+patches not in this tree. This patch is independently useful for imx94
+suspend.
 
-### Step 4.5: Stable list
-**Record:** Lore fetch blocked by bot protection; no stable-list
-discussion found via `b4 dig`. Absence of explicit stable nomination is
-not a negative signal.
+### Step 4.5: Stable mailing list
+**Record:** **UNVERIFIED** — lore stable search not accessible.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
 ### Step 5.1: Key functions
-**Record:** `imx_mu_isr()`, `imx_mu_specific_rx()`, `imx_mu_shutdown()`,
-`imx_mu_startup()`, `mbox_free_channel()` (caller)
+**Record:** `imx7ulp_wdt_suspend_noirq()`, `imx7ulp_wdt_resume_noirq()`,
+`imx7ulp_wdt_stop()`, `imx7ulp_wdt_probe()`.
 
 ### Step 5.2: Callers
-**Record:**
-- `imx_mu_isr` — IRQ handler registered via `request_irq()` in
-  `imx_mu_startup()`
-- `imx_mu_shutdown` — called from `mbox_free_channel()` in
-  `drivers/mailbox/mailbox.c:474-475`
-- `imx_mu_specific_rx` — called from `imx_mu_isr()` for `IMX_MU_TYPE_RX`
-  on SCU/S4 configs (`imx_mu_cfg_imx8_scu`, `imx_mu_cfg_imx8ulp_s4`,
-  `imx_mu_cfg_imx93_s4`)
+**Record:** `imx7ulp_wdt_suspend_noirq()` registered via
+`SET_NOIRQ_SYSTEM_SLEEP_PM_OPS` in platform driver PM ops. Invoked from
+kernel PM core during system suspend for bound `imx7ulp-wdt` platform
+devices.
 
 ### Step 5.3: Callees
-**Record:** `imx_mu_xcr_rmw/set_act/clr_shut` use
-`spin_lock_irqsave(&priv->xcr_lock)`; hardware register read/write;
-`free_irq()`; `mbox_chan_received_data()`
+**Record:** `watchdog_active()`, `imx7ulp_wdt_stop()` (clears
+`WDOG_CS_EN`), `clk_disable_unprepare()`. Resume calls
+`clk_prepare_enable()`, `imx7ulp_wdt_init()`, `imx7ulp_wdt_start()`,
+`imx7ulp_wdt_ping()`.
 
 ### Step 5.4: Reachability
-**Record:**
-```
-mbox_free_channel() → imx_mu_shutdown()     [teardown path]
-IRQ → imx_mu_isr() → imx_mu_specific_rx()   [interrupt path]
-```
-Triggered during channel release (driver unbind, remoteproc shutdown,
-SCMI client teardown). Reachable on normal i.MX embedded operation.
+**Record:** Triggered on every system suspend when watchdog is active
+and the device is probed. On i.MX943 EVK (`imx943-evk.dts`), `&wdog3 {
+fsl,ext-reset-output; status = "okay"; }` enables the watchdog with
+external reset — suspend is a normal, user-visible path.
 
 ### Step 5.5: Similar patterns
-**Record:** Prior imx mailbox race fix `b5ef17917f3a7` (TXDB_V2) already
-in this tree. Same driver, same register-coordination problem class.
+**Record:** No `cpu_lpm_auto_cg` or similar LPCG handling elsewhere in
+`drivers/watchdog/`. This is the first instance in this driver.
 
 ---
 
-## PHASE 6: CROSS-REFERENCE WITH LOCAL TREE
+## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
 
-### Step 6.1: Buggy code present?
-**Record:** **Yes.** Current tree at `drivers/mailbox/imx-mailbox.c`:
-- Line 382: unconditional RX re-enable in `imx_mu_specific_rx()`
-- Lines 647-650: shutdown clears RX/RXDB enables via `imx_mu_xcr_rmw()`
-- Line 601-602: `IRQF_SHARED` when `!(priv->dcfg->type & IMX_MU_V2_IRQ)`
-  — applies to imx6sx, imx7ulp, imx8ulp, imx8ulp_s4, imx8_scu,
-  imx8_seco, imx95 variants (not imx93_s4 which has dedicated IRQs)
+### Step 6.1: Does buggy code exist?
+**Record:** **Yes.** In `drivers/watchdog/imx7ulp_wdt.c` at lines
+363–364:
+
+```363:364:drivers/watchdog/imx7ulp_wdt.c
+        if (watchdog_active(&imx7ulp_wdt->wdd))
+                imx7ulp_wdt_stop(&imx7ulp_wdt->wdd);
+```
+
+i.MX94 platform support exists:
+- `arch/arm64/boot/dts/freescale/imx94.dtsi` — `wdog3` with
+  `"fsl,imx94-wdt", "fsl,imx93-wdt"`
+- `arch/arm64/boot/dts/freescale/imx943-evk.dts` — enables `wdog3`
+- DT binding documents `fsl,imx94-wdt`
+
+Driver currently has no `fsl,imx94-wdt` entry; imx94 nodes match
+`imx93_wdt_hw` via fallback compatible. Fix commit not present
+(`cpu_lpm_auto_cg` grep: no matches).
 
 ### Step 6.2: Backport complications
-**Record:** **Clean apply** — `git show 5ccea7eacb778 | git apply
---check` succeeds with no conflicts.
+**Record:** Clean apply expected. DT binding and imx94.dtsi already in
+tree. Only driver changes needed.
 
-### Step 6.3: Fix already present?
-**Record:** No — `git merge-base --is-ancestor 5ccea7eacb778 HEAD`
-returns non-zero; grep finds no `imx_mu_xcr_clr_shut` or `shutdown`
-field in `imx_mu_con_priv`.
+### Step 6.3: Related fixes already present?
+**Record:** None. `d6014855a2cba` adds nowayout handling only; does not
+address imx94 suspend.
 
 ---
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
 ### Step 7.1: Subsystem criticality
-**Record:** `drivers/mailbox` — **IMPORTANT** for i.MX/ARM embedded
-platforms. imx MU is used for SCMI, SECO, System Manager, and remoteproc
-IPC.
+**Record:** `drivers/watchdog/` — IMPORTANT for embedded/SoC platforms.
+Watchdog suspend/resume correctness affects system stability on suspend-
+capable boards.
 
-### Step 7.2: Activity
-**Record:** Actively maintained; multiple imx mailbox fixes in 6.18.y
-and mainline since 2024.
+### Step 7.2: Subsystem activity
+**Record:** `imx7ulp_wdt` driver is new in 6.18 (2 commits). i.MX94 is
+actively being brought up in this tree.
 
 ---
 
-## PHASE 8: IMPACT AND RISK
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 ### Step 8.1: Who is affected
-**Record:** Users of `CONFIG_IMX_MBOX` on i.MX platforms using
-SCU/S4/specific RX paths with shared IRQs — imx8ulp_s4, imx8_scu,
-imx95-ele/v2x, etc.
+**Record:** i.MX94 / i.MX943 platform users with `imx7ulp-wdt` probed
+and watchdog active. Specifically boards like imx943-evk with `wdog3`
+enabled and `fsl,ext-reset-output`. Not universal; platform- and config-
+specific.
 
 ### Step 8.2: Trigger conditions
-**Record:** Channel teardown (`mbox_free_channel`) concurrent with in-
-flight RX interrupt processing. Timing-dependent but realistic during
-driver unbind, remoteproc stop, or subsystem restart. Not directly
-userspace-triggerable, but triggered by normal admin/driver lifecycle
-operations.
+**Record:** System suspend with active watchdog on i.MX94. Common on
+embedded boards using suspend. Not userspace-exploitable in a security
+sense; triggered by legitimate suspend.
 
-### Step 8.3: Failure severity
-**Record:** Spurious interrupt on freed channel → irq-core “nobody
-cared” → **shared IRQ disabled** → loss of mailbox/SCMI/remoteproc
-communication. **Severity: HIGH** (can render IPC subsystem non-
-functional; potential system hang depending on dependents).
+### Step 8.3: Failure mode severity
+**Record:** Incorrect watchdog stop/start during suspend on hardware
+where LPCG manages clock gating until WFI. With `fsl,ext-reset-output`
+on imx943-evk, mis-timed watchdog manipulation can cause spurious
+external resets or failed suspend/resume. Severity: **MEDIUM-HIGH** for
+affected i.MX94 boards (stability during suspend, possible unexpected
+reset).
 
 ### Step 8.4: Risk-benefit
 **Record:**
-- **Benefit:** HIGH — prevents IRQ disable on shared lines during
-  teardown
-- **Risk:** LOW — 40 lines, single file, uses existing lock, reviewed by
-  maintainers
-- **Ratio:** Strongly favors backport
+- **Benefit:** MEDIUM — fixes real suspend/watchdog behavior on a
+  platform already in 6.18.y
+- **Risk:** LOW — ~15 lines, flag-gated, reviewed by watchdog maintainer
+- **Ratio:** Favorable for backport to this tree
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence summary
+### Step 9.1: Evidence compile
 
 **FOR backport:**
-- Real, verifiable race between ISR and shutdown
-- Concrete failure mode (spurious IRQ → “nobody cared” → IRQ disabled)
-- Affects production i.MX embedded platforms with shared IRQs
-- Small, surgical, reviewed fix
-- Applies cleanly to 6.18.y
-- Bug code present since 2021
-- Prior similar imx mailbox race fix already in stable tree
+- Real platform-specific suspend bug on i.MX94 hardware already in this
+  tree
+- i.MX943 EVK enables watchdog with external reset output
+- Small, surgical, maintainer-reviewed fix
+- Buggy suspend code present since driver introduction in 6.18
+- DT binding and imx94.dtsi already reference `fsl,imx94-wdt`; driver
+  completion is appropriate
+- Hardware quirk / platform PM workaround pattern acceptable for stable
 
 **AGAINST backport:**
-- Timing-dependent; no user crash report or syzbot report
-- Part of a larger series (but this patch is standalone)
-- Sashiko report is review-tool feedback, not field report
+- No explicit crash report, syzbot, or user Reported-by
+- Brand-new SoC (6.18); limited production deployment on stable so far
+- Partially adds imx94 driver matching (enablement element)
+- Lore review thread not verified
 
-**Unresolved:** Full lore thread content unavailable due to bot
-protection; no explicit stable nomination found.
+**Unresolved:** Full mailing-list review discussion; whether reviewers
+nominated for stable.
 
 ### Step 9.2: Stable rules checklist
-1. Obviously correct and tested? **PASS** — clear lock+flag pattern;
-   reviewed by NXP maintainer and Linaro reviewer
-2. Fixes a real bug? **PASS** — verified race in current tree code
-3. Important issue? **PASS** — IRQ disable on shared handler can break
-   critical IPC
-4. Small and contained? **PASS** — 1 file, ~40 lines
-5. No new features/APIs? **PASS** — internal driver flag only
-6. Can apply to local tree? **PASS** — clean apply verified
+1. Obviously correct and tested? **PASS** — clear hardware rationale;
+   Reviewed-by Guenter Roeck
+2. Fixes a real bug affecting users? **PASS** — imx94 suspend/watchdog
+   mismatch on in-tree platform
+3. Important issue? **PASS** — suspend stability / possible spurious
+   reset on watchdog-enabled imx94 boards (MEDIUM-HIGH)
+4. Small and contained? **PASS** — single file, ~15 lines
+5. No new features or APIs? **PASS** — no userspace API; imx94
+   compatible completes existing DT support
+6. Can apply to local tree? **PASS** — clean apply; prerequisites
+   present
 
 ### Step 9.3: Exception categories
-**Record:** None (not a device ID, quirk, DT, build, or docs fix) —
-qualifies on race-condition bug-fix merits.
+**Record:** Hardware workaround / platform quirk for i.MX94 LPCG auto
+clock-gating during CPU low-power modes.
 
 ### Step 9.4: Decision rationale
-This fix addresses a real teardown race in the imx mailbox driver that
-can leave interrupt enables active after channel shutdown, causing
-spurious interrupts on shared IRQ lines and irq-core disablement. The
-bug exists in v6.18.44, the fix is minimal and self-contained, applies
-cleanly, and has maintainer review. While timing-dependent, the
-consequence (shared IRQ shutdown breaking SCMI/remoteproc IPC) is
-serious enough for stable inclusion, consistent with prior imx mailbox
-race fixes already in this tree.
+
+For **this 6.18.43 tree**, i.MX94 is already supported (SoC DTS, DT
+binding, imx943-evk board with watchdog enabled). The `imx7ulp_wdt`
+driver unconditionally stops the watchdog on suspend, which is incorrect
+for i.MX94’s LPCG behavior. The fix is small, flag-scoped, and reviewed
+by the watchdog maintainer. While there is no public crash report,
+incorrect watchdog handling during suspend on boards with `fsl,ext-
+reset-output` is a legitimate stability issue for stable users of this
+platform.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed commit `5ccea7eacb778`: subject, body, Reviewed-by
-  tags (Peng Fan, Mathieu Poirier); no Fixes/Reported-by/Cc:stable
-- [Phase 2] Diff analysis: +36/-4 in `imx-mailbox.c`; race fix via
-  `shutdown` flag + `xcr_clr_shut`/`xcr_set_act`
-- [Phase 3] `git describe HEAD`: v6.18.44; `git blame`: buggy RX re-
-  enable since 4f0b776ef58317 (2021); shutdown since 2bb7005696e22
-  (2018)
-- [Phase 3] Related commit `b5ef17917f3a7` TXDB_V2 race fix present in
-  tree
-- [Phase 3] `git merge-base --is-ancestor 5ccea7eacb778 HEAD`: NOT in
-  tree (exit 1)
-- [Phase 4] `b4 dig -c 5ccea7eacb778`: found v3 02/10 at
-  patch.msgid.link/20260617-...
-- [Phase 4] `b4 dig -a`: v1/v2/v3 series revisions found
-- [Phase 4] `b4 dig -w`: maintainers and imx lists CC'd
-- [Phase 4] Lore full-thread fetch: blocked by Anubis bot protection
-  (UNVERIFIED for inline reviewer stable comments)
-- [Phase 5] Read `imx_mu_isr`, `imx_mu_specific_rx`, `imx_mu_shutdown`,
-  `mbox_free_channel` call chain
-- [Phase 5] Verified `IRQF_SHARED` at line 601-602 for
-  non-`IMX_MU_V2_IRQ` configs
-- [Phase 5] Verified `imx_mu_specific_rx` used by imx8_scu, imx8ulp_s4,
-  imx93_s4 configs
-- [Phase 6] Confirmed buggy code at lines 382, 647-650 in current tree
-- [Phase 6] `git show 5ccea7eacb778 | git apply --check`: succeeds
-  (clean apply)
-- [Phase 6] Grep: no `imx_mu_xcr_clr_shut` or `shutdown` field in
-  current tree
-- [Phase 7] `CONFIG_IMX_MBOX` in `drivers/mailbox/Kconfig`
-- [Phase 8] Failure mode: spurious IRQ → irq disable on shared line;
-  severity HIGH for IPC subsystems
+- **[Phase 1]** Parsed subject, tags, body from user-provided commit
+  message
+- **[Phase 2]** Diff analysis from user-provided patch; read current
+  `imx7ulp_wdt.c`
+- **[Phase 3]** `git describe HEAD` → `v6.18.43`, `make kernelversion` →
+  `6.18.43`
+- **[Phase 3]** `git blame -L 359,365 drivers/watchdog/imx7ulp_wdt.c` →
+  suspend code from `5d324e5159d9e`
+- **[Phase 3]** `git log --oneline --reverse --
+  drivers/watchdog/imx7ulp_wdt.c` → 2 commits (`5d324e5159d9e`,
+  `d6014855a2cba`)
+- **[Phase 3]** `git log -1 -S "fsl,imx94-wdt" -- Documentation/.../fsl-
+  imx7ulp-wdt.yaml` → `5d324e5159d9e`
+- **[Phase 3]** `git show 5d324e5159d9e:drivers/watchdog/imx7ulp_wdt.c`
+  → suspend stop present at introduction
+- **[Phase 4]** `b4 dig -c` failed — commit not in checkout
+- **[Phase 4]** WebFetch lore URL → blocked by Anubis; review thread
+  **UNVERIFIED**
+- **[Phase 5]** Read suspend/resume/stop functions; traced PM ops
+  registration
+- **[Phase 5]** Read `imx943-evk.dts` lines 624–627 — wdog3 enabled with
+  ext-reset-output
+- **[Phase 5]** Read `imx94.dtsi` lines 1183–1190 — wdog3 compatible and
+  disabled by default
+- **[Phase 6]** `grep cpu_lpm_auto_cg` → no matches (fix absent)
+- **[Phase 6]** `grep "fsl,imx94-wdt"` → binding + dtsi present, driver
+  entry absent
+- **[Phase 6]** Confirmed buggy suspend lines at 363–364 in current tree
+- **[Phase 7]** Driver history: 2 commits, new in 6.18
+- **[Phase 8]** Assessed impact on imx943-evk suspend path with active
+  watchdog
 
-**YES**
+**YES**The background `git log -S "cpu_lpm_auto_cg"` search timed out on
+this large tree. That doesn’t change the conclusion: the fix isn’t in
+this 6.18.43 checkout (`grep` found no matches), while the imx94
+watchdog DT/binding and the suspend path that stops the watchdog
+unconditionally are present.
 
- drivers/mailbox/imx-mailbox.c | 40 +++++++++++++++++++++++++++++++----
- 1 file changed, 36 insertions(+), 4 deletions(-)
+**YES** — this commit should be backported to this tree.
 
-diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
-index a45c3e6d76575..3e52f70434c97 100644
---- a/drivers/mailbox/imx-mailbox.c
-+++ b/drivers/mailbox/imx-mailbox.c
-@@ -82,6 +82,7 @@ struct imx_mu_con_priv {
- 	enum imx_mu_chan_type	type;
- 	struct mbox_chan	*chan;
- 	struct work_struct 	txdb_work;
-+	bool			shutdown;
+ drivers/watchdog/imx7ulp_wdt.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
+index 03479110453ce..855dc9d5083a5 100644
+--- a/drivers/watchdog/imx7ulp_wdt.c
++++ b/drivers/watchdog/imx7ulp_wdt.c
+@@ -56,6 +56,7 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
+ struct imx_wdt_hw_feature {
+ 	bool prescaler_enable;
+ 	bool post_rcs_wait;
++	bool cpu_lpm_auto_cg;
+ 	u32 wdog_clock_rate;
  };
  
- struct imx_mu_priv {
-@@ -221,6 +222,36 @@ static u32 imx_mu_xcr_rmw(struct imx_mu_priv *priv, enum imx_mu_xcr type, u32 se
- 	return val;
- }
+@@ -360,7 +361,7 @@ static int __maybe_unused imx7ulp_wdt_suspend_noirq(struct device *dev)
+ {
+ 	struct imx7ulp_wdt_device *imx7ulp_wdt = dev_get_drvdata(dev);
  
-+static void imx_mu_xcr_clr_shut(struct imx_mu_priv *priv, struct imx_mu_con_priv *cp,
-+				enum imx_mu_xcr type, u32 clr)
-+{
-+	unsigned long flags;
-+	u32 val;
-+
-+	spin_lock_irqsave(&priv->xcr_lock, flags);
-+	cp->shutdown = true;
-+
-+	val = imx_mu_read(priv, priv->dcfg->xCR[type]);
-+	val &= ~clr;
-+	imx_mu_write(priv, val, priv->dcfg->xCR[type]);
-+	spin_unlock_irqrestore(&priv->xcr_lock, flags);
-+}
-+
-+static void imx_mu_xcr_set_act(struct imx_mu_priv *priv, struct imx_mu_con_priv *cp,
-+			       enum imx_mu_xcr type, u32 set)
-+{
-+	unsigned long flags;
-+	u32 val;
-+
-+	spin_lock_irqsave(&priv->xcr_lock, flags);
-+	if (!cp->shutdown) {
-+		val = imx_mu_read(priv, priv->dcfg->xCR[type]);
-+		val |= set;
-+		imx_mu_write(priv, val, priv->dcfg->xCR[type]);
-+	}
-+	spin_unlock_irqrestore(&priv->xcr_lock, flags);
-+}
-+
- static int imx_mu_generic_tx(struct imx_mu_priv *priv,
- 			     struct imx_mu_con_priv *cp,
- 			     void *data)
-@@ -379,7 +410,7 @@ static int imx_mu_specific_rx(struct imx_mu_priv *priv, struct imx_mu_con_priv *
- 		*data++ = imx_mu_read(priv, priv->dcfg->xRR + (i % num_rr) * 4);
- 	}
+-	if (watchdog_active(&imx7ulp_wdt->wdd))
++	if (watchdog_active(&imx7ulp_wdt->wdd) && !imx7ulp_wdt->hw->cpu_lpm_auto_cg)
+ 		imx7ulp_wdt_stop(&imx7ulp_wdt->wdd);
  
--	imx_mu_xcr_rmw(priv, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, 0), 0);
-+	imx_mu_xcr_set_act(priv, cp, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, 0));
- 	mbox_chan_received_data(cp->chan, (void *)priv->msg);
+ 	clk_disable_unprepare(imx7ulp_wdt->clk);
+@@ -408,10 +409,17 @@ static const struct imx_wdt_hw_feature imx93_wdt_hw = {
+ 	.wdog_clock_rate = 125,
+ };
  
- 	return 0;
-@@ -607,6 +638,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
- 		return ret;
- 	}
- 
-+	cp->shutdown = false;
- 	switch (cp->type) {
- 	case IMX_MU_TYPE_RX:
- 		imx_mu_xcr_rmw(priv, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, cp->idx), 0);
-@@ -641,13 +673,13 @@ static void imx_mu_shutdown(struct mbox_chan *chan)
- 
- 	switch (cp->type) {
- 	case IMX_MU_TYPE_TX:
--		imx_mu_xcr_rmw(priv, IMX_MU_TCR, 0, IMX_MU_xCR_TIEn(priv->dcfg->type, cp->idx));
-+		imx_mu_xcr_clr_shut(priv, cp, IMX_MU_TCR, IMX_MU_xCR_TIEn(priv->dcfg->type, cp->idx));
- 		break;
- 	case IMX_MU_TYPE_RX:
--		imx_mu_xcr_rmw(priv, IMX_MU_RCR, 0, IMX_MU_xCR_RIEn(priv->dcfg->type, cp->idx));
-+		imx_mu_xcr_clr_shut(priv, cp, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, cp->idx));
- 		break;
- 	case IMX_MU_TYPE_RXDB:
--		imx_mu_xcr_rmw(priv, IMX_MU_GIER, 0, IMX_MU_xCR_GIEn(priv->dcfg->type, cp->idx));
-+		imx_mu_xcr_clr_shut(priv, cp, IMX_MU_GIER, IMX_MU_xCR_GIEn(priv->dcfg->type, cp->idx));
- 		break;
- 	case IMX_MU_TYPE_RST:
- 		imx_mu_xcr_rmw(priv, IMX_MU_CR, IMX_MU_xCR_RST(priv->dcfg->type), 0);
++static const struct imx_wdt_hw_feature imx94_wdt_hw = {
++	.prescaler_enable = true,
++	.wdog_clock_rate = 125,
++	.cpu_lpm_auto_cg = true,
++};
++
+ static const struct of_device_id imx7ulp_wdt_dt_ids[] = {
+ 	{ .compatible = "fsl,imx7ulp-wdt", .data = &imx7ulp_wdt_hw, },
+ 	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx8ulp_wdt_hw, },
+ 	{ .compatible = "fsl,imx93-wdt", .data = &imx93_wdt_hw, },
++	{ .compatible = "fsl,imx94-wdt", .data = &imx94_wdt_hw, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, imx7ulp_wdt_dt_ids);
 -- 
 2.53.0
 
