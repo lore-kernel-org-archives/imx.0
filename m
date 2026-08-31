@@ -1,37 +1,38 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8373D47B4
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1CF3CEB9A
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788165358; cv=none; b=Zpg6Kd1RZV4Qqy5dvlAi2XCQ1Xmft+h7KhY4WjvydcT2oZ55pUTfsXm2ifrs0CaehMv0K0dQ0JK0JNq4m8L955FYgs7JSEa++FqoYHn/+qezZQ/ELQvAvNsiJWSSEi5lrlzb5O0XPRCJ6gVvf6roiaBeFIAJ0Wm5MWfwa9gTxEQ=
+	t=1788165360; cv=none; b=KAg36md1ZCh4M6/dc89FGIUncq956u2881QRcYcEZNuvvQf/DDqe9+VbJZWYFD3qjDUR18jIL0x8nQVn7gWP1nXN7ESSWYpGxfVDGJnDo365dHTEw6lbxIDCnOC6UXfsuj7Dj7Iw3CgtMalj3Ts3q/jjLk12XUl6YsJuB8T0hQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788165358; c=relaxed/simple;
-	bh=ZAGyCoDTVJi7iJMYRy2KkAwqwfCuzJEQ/MOzSj+Z+dU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t+pcjXfXAtDkq9pY6DTk8iroBPX/aesL1xSxu71aTjMIJHOz+YUq/lhIhMrR6WsglPf8kz954wGFXK+23AjIfF1R0Ddk+qW5zcWXzcn3G8rvBy7NggiG4s6SLaYWQq9qaaJHqRcV6Ze/EnYw6sb0uwp5eJzuTRr+TG15hOFsYyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=ubw1MYhD; arc=none smtp.client-ip=212.227.17.20
+	s=arc-20240116; t=1788165360; c=relaxed/simple;
+	bh=n2YnfU341xdPKSwP11+KQs4zPF6ddkh8hUvggBjhIrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F+Kd+ppIxht686soizwYuWk9olaLR0M6h8p+rjUP3F3SMbssggSXOuuRI2IxElowq3bQbo2Ln6EJ3iKGkZEwTbmo90Q635HpjFtEjdySUJr0TXaNsAVh9tCgbpvVuQfZ40KFccqMtbkqK2eVL2OZQh5qTU/Z8XFGAhCPmTpupV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Mne736KQ; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="ubw1MYhD"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Mne736KQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1788165344; x=1788770144; i=wahrenst@gmx.net;
-	bh=xR36z+QOFzTRjYJ1sWvjVigZkp1iI59ePSHLK73BJcA=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1788165347; x=1788770147; i=wahrenst@gmx.net;
+	bh=G5CuaOQNRUreviF5QjFWVFnXJ0UNKQzKA4KdvOmwr6o=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=ubw1MYhD0L/W8B1I0Wb4ayyLyJ6jEPPLZ3tar2UVguzZwK0n+Jfn5c+dSLzjoY3z
-	 BRRiuQImQc99I0MhgOQBv4mujkoE8UWk9tEZfx1uA4CQ5eSldW0uhz+l5iD+23yeZ
-	 aI+SnQ5vhLOLw2soJU+Yt7u+Q0GMcDN8YLTMaptKuQJey1bqOrfOxnKZ6nHDoeShO
-	 +/tLlyc3jxfrXlGrcb66vCBOs03ELQhymcp9/sd2LtiNUpopPtkeGSXWgVG61G6n4
-	 lZJQpIPPHYitWhcBrRn5jMzr/73+f/p+ZSe6PbMfdSDLYlmlFzrTfjB3J/Jzpxn8Z
-	 6zjJRxjg17fViVCWew==
+	b=Mne736KQRzNu7qPOPp5jmQUuLyOCcR91dDHGGtMiweBT11hIulfM20yVxVnqYvbr
+	 /wihNBeGTZE9hwz0CQldKz/MnF6Z11gKywJaoesVtY85NI0LGG9PzOMfxBNyU9/pi
+	 8U0vqyL1DUFwGLUBrPp7aO4dEzi1mw8Ld8hXiB2mrv8CvYVu2kRjVawJvI/iqLr/V
+	 5ur2uJ92oIfuT/0O2pprjSVzIc9MPP9Jue/KIbEmYTJhUyWpJ4qaahNbYu8oyoXPx
+	 xApvI2GQHHANvz/huoZ+4A6mbYGLGFvuwX6XLwI4aNuEEy7ZwLNjMuROAIfanHNrR
+	 h+lZ4sNWzYRl2Jqpow==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MlNtF-1wbTZ71cjt-00foLu; Mon, 31
- Aug 2026 10:35:44 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N49lJ-1ws3Xf3BWD-00wMjK; Mon, 31
+ Aug 2026 10:35:46 +0200
 From: Stefan Wahren <wahrenst@gmx.net>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -51,11 +52,15 @@ Cc: Christoph Stoidner <c.stoidner@phytec.de>,
 	linux-phy@lists.infradead.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH V2 0/3] arm64: dts: freescale: Add chargebyte Charge Control Y
-Date: Mon, 31 Aug 2026 10:35:36 +0200
-Message-ID: <20260831083539.8287-1-wahrenst@gmx.net>
+	Stefan Wahren <wahrenst@gmx.net>,
+	Martin Lukas <martin.lukas@chargebyte.com>,
+	Michael Heimpold <michael.heimpold@chargebyte.com>
+Subject: [PATCH V2 3/3] arm64: dts: freescale: Add chargebyte Charge Control Y
+Date: Mon, 31 Aug 2026 10:35:39 +0200
+Message-ID: <20260831083539.8287-4-wahrenst@gmx.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260831083539.8287-1-wahrenst@gmx.net>
+References: <20260831083539.8287-1-wahrenst@gmx.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,148 +68,598 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vNEtWSrwCZbobyBy8k/T9aqdMZQ0aAGaGByHZMBceEV2VgyEWkz
- zNzHX4o4cNHVB9PWb5wHqNJHoLoh/XsMMOflZovzispFktJEcgaEEHKWiL52q8JmabTBBNu
- dj6YYIfNqsimJ/DUeBMRMijMEfIfghYWfLcu1a4mpu12mSM17hxjI07bLx8jl4nYBzMUmlF
- tgVSgwgorIvw6lilfBRng==
+X-Provags-ID: V03:K1:oCqUOiVcnqErOtIsfSQ8bYPqiNLLB9wsbsUaMc1DX5u4f1oQ+rb
+ 6PP5gtSWsUEb9+9mCGXEzHU1fs7T9aNOLPF/laydYUiwjv29Ju9EVKL1SPktJdyJ3fDT5Ls
+ lyKho/2Mdp0qeOHlhe6YQF75Y2joYOluKajhBWjbkmmfO3GJz3HQ7EPvClmdRQ1XsfppZIz
+ Qzk1UA1mgYIqPqL7sQTZQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:GuBXChJGwUM=;FpEs5XuD+i+L2H96muXKg/b2mVT
- 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
- e1C6Y6wJDHw=
+UI-OutboundReport: notjunk:1;M01:P0:O1z7OtwuPqo=;kHECKXJaCb4i/rU7q4xCvMlVxJn
+ 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
 
-This series adds support for the chargebyte Charge Control Y, which is
+This adds the support for chargebyte Charge Control Y, which is
 an Electrical Vehicle Supply Equipment (EVSE) for MCS (Megawatt
-Charging System) charging stations.
+Charging System) charging stations (according to IEC 61851-23-1).
 
-sashiko reported in the first version of the series [1] that X_nRST_LAN
-is available via GPIO line names, but there is no reset mechanismn in the
-device tree. This finding is valid. Since the reset line feature isn't
-implemented for LAN8651 driver yet, I like to proceed with the current
-version. The LAN8651 handles reset via SPI commands and in rare cases
-we still have the possibility to control the reset from userspace.
-Btw the pin has a pull resistor in hardware, so it's not floating.
+chargebyte Charge Control Y uses phyCORE-i.MX 93 ARM
+- NXP i.MX93 1.7 GHz
+- 1 GB DDR4 RAM
+- up to 8 GB eMMC
+- 2x 100 MBit/s Ethernet interfaces
+- 10BASE-T1S Ethernet for MCS communication
+- CAN interface
+- separate safety chip
+- TPM chip
+- power buffered RTC
 
-[1] - https://lore.kernel.org/linux-devicetree/20260818093147.E556C1F000E9=
-@smtp.kernel.org/
-
-Changes in V2:
-- drop phy-can-transceiver changes and make MCP2542 compatible to TI TCAN1=
-042
-  as suggested by Marc Kleine-Budde & Frank Li
-- implemented SD2_nRESET as vmmc supply for SD card interface
-  (reported by sashiko)
-- add UHS support for SD card interface
-- dropped downstream property ti,leds-polarity (reported by sashiko)
-- fix GPIO line name of X_LAN_nCS (reported by sashiko)
-- drop unconnected pins (X_TDI, X_TMS_SWDIO, X_TDO) from GPIO line names=
-=20
-
-Stefan Wahren (3):
-  dt-bindings: arm: fsl: Add chargebyte Charge Control Y
-  dt-bindings: phy: ti,tcan104x-can: Document Microchip MCP2542
-  arm64: dts: freescale: Add chargebyte Charge Control Y
-
- .../devicetree/bindings/arm/fsl.yaml          |   1 +
- .../bindings/phy/ti,tcan104x-can.yaml         |   1 +
+Co-developed-by: Martin Lukas <martin.lukas@chargebyte.com>
+Signed-off-by: Martin Lukas <martin.lukas@chargebyte.com>
+Co-developed-by: Michael Heimpold <michael.heimpold@chargebyte.com>
+Signed-off-by: Michael Heimpold <michael.heimpold@chargebyte.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
  arch/arm64/boot/dts/freescale/Makefile        |   1 +
  .../dts/freescale/imx93-charge-control-y.dts  | 426 ++++++++++++++++++
  .../boot/dts/freescale/imx93-phycore-som.dtsi |   2 +-
- 5 files changed, 430 insertions(+), 1 deletion(-)
+ 3 files changed, 428 insertions(+), 1 deletion(-)
  create mode 100644 arch/arm64/boot/dts/freescale/imx93-charge-control-y.d=
 ts
 
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/=
+freescale/Makefile
+index 8ddaab127ab9..c64902dfc6f3 100644
+=2D-- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -594,6 +594,7 @@ imx93-11x11-frdm-pixpaper-dtbs +=3D imx93-11x11-frdm.d=
+tb imx93-11x11-frdm-pixpaper
+ dtb-$(CONFIG_ARCH_MXC) +=3D imx93-11x11-frdm-pixpaper.dtb
+=20
+ dtb-$(CONFIG_ARCH_MXC) +=3D imx93-14x14-evk.dtb
++dtb-$(CONFIG_ARCH_MXC) +=3D imx93-charge-control-y.dtb
+ dtb-$(CONFIG_ARCH_MXC) +=3D imx93-kontron-bl-osm-s.dtb
+ dtb-$(CONFIG_ARCH_MXC) +=3D imx93-phyboard-nash.dtb
+ dtb-$(CONFIG_ARCH_MXC) +=3D imx93-phyboard-segin.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts b/ar=
+ch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
+new file mode 100644
+index 000000000000..0405098cc05c
+=2D-- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
+@@ -0,0 +1,426 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2025-2026 chargebyte GmbH
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/interrupt-controller/irq.h>
++#include "imx93-phycore-som.dtsi"
++
++/ {
++	model =3D "chargebyte Charge Control Y";
++	compatible =3D "chargebyte,imx93-charge-control-y", "phytec,imx93-phycor=
+e-som", "fsl,imx93";
++
++	aliases {
++		ethernet0 =3D &fec;
++		ethernet1 =3D &lan8651;
++		ethernet2 =3D &eqos;
++		gpio0 =3D &gpio1;
++		gpio1 =3D &gpio2;
++		gpio2 =3D &gpio3;
++		gpio3 =3D &gpio4;
++		mmc0 =3D &usdhc1;
++		mmc1 =3D &usdhc2;
++		rtc0 =3D &rv3028;
++		rtc1 =3D &bbnsm_rtc;
++		serial0 =3D &lpuart1;
++		serial1 =3D &lpuart2;
++		serial2 =3D &lpuart3;
++		serial3 =3D &lpuart4;
++		serial4 =3D &lpuart5;
++	};
++
++	chosen {
++		stdout-path =3D &lpuart1;
++	};
++
++	// Heartbeat LED of phyCore is not populated
++	/delete-node/ leds;
++
++	flexcan1_tc: can-phy0 {
++		compatible =3D "microchip,mcp2542", "ti,tcan1042";
++		#phy-cells =3D <0>;
++		max-bitrate =3D <1000000>;
++	};
++
++	reg_usdhc2_vmmc: regulator-usdhc2 {
++		compatible =3D "regulator-fixed";
++		enable-active-high;
++		gpio =3D <&gpio3 7 GPIO_ACTIVE_HIGH>;
++		pinctrl-names =3D "default";
++		pinctrl-0 =3D <&pinctrl_reg_usdhc2_vmmc>;
++		regulator-min-microvolt =3D <3300000>;
++		regulator-max-microvolt =3D <3300000>;
++		regulator-name =3D "VCC_SD";
++	};
++
++	user_leds: user-leds {
++		compatible =3D "gpio-leds";
++		pinctrl-names =3D "default";
++		pinctrl-0 =3D <&pinctrl_user_leds>;
++
++		led_user_green: led-user-green {
++			color =3D <LED_COLOR_ID_GREEN>;
++			function =3D LED_FUNCTION_BOOT;
++			gpios =3D <&gpio2 24 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger =3D "timer";
++		};
++
++		led_user_red: led-user-red {
++			color =3D <LED_COLOR_ID_RED>;
++			function =3D LED_FUNCTION_SD;
++			gpios =3D <&gpio2 25 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger =3D "mmc1";
++		};
++	};
++};
++
++&eeprom0 {
++	nvmem-layout {
++		compatible =3D "fixed-layout";
++		#address-cells =3D <1>;
++		#size-cells =3D <1>;
++
++		/* Wired ethernet interface */
++		eth1_mac_address: base-mac-address@100 {
++			compatible =3D "mac-base";
++			reg =3D <0x100 0x6>;
++			#nvmem-cell-cells =3D <1>;
++		};
++
++		/* MCS ethernet interface */
++		eth2_mac_address: base-mac-address@108 {
++			compatible =3D "mac-base";
++			reg =3D <0x108 0x6>;
++			#nvmem-cell-cells =3D <1>;
++		};
++	};
++};
++
++/* Ethernet 2 */
++&eqos {
++	phy-mode =3D "rmii";
++	phy-handle =3D <&ethphy2>;
++	assigned-clocks =3D <&clk IMX93_CLK_ENET_TIMER2>,
++			  <&clk IMX93_CLK_ENET>;
++	assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
++				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
++	assigned-clock-rates =3D <100000000>, <50000000>;
++
++	nvmem-cells =3D <&eth1_mac_address 0>;
++	nvmem-cell-names =3D "mac-address";
++
++	status =3D "okay";
++};
++
++/* Ethernet 1 */
++&fec {
++	/* Since MDIO bus is handled by FEC, all PHY strap pins and
++	 * reference clock must be initialized at the same time.
++	 */
++	pinctrl-0 =3D <&pinctrl_fec &pinctrl_eqos &pinctrl_eqos_strap>;
++};
++
++&flexcan1 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_flexcan1>;
++	phys =3D <&flexcan1_tc>;
++	status =3D "okay";
++};
++
++&gpio1 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_gpio1>;
++	gpio-line-names =3D "", "", "", "X_nRST_LAN", "",
++			  "", "LPUART2_RX", "LPUART2_TX", "CAN1_TX", "CAN1_RX",
++			  "", "SPI_TPM_nCS0", "", "", "",
++			  "";
++};
++
++&gpio2 {
++	gpio-line-names =3D "", "", "", "", "",
++			  "", "", "X_LAN_nIRQ", "X_LAN_nCS", "",
++			  "", "", "", "", "",
++			  "", "", "", "", "",
++			  "", "", "", "", "GREEN_LED",
++			  "RED_LED", "", "", "", "";
++};
++
++&gpio3 {
++	gpio-line-names =3D "SD2_nCD", "", "", "", "",
++			  "", "", "SD2_nRESET", "", "",
++			  "", "", "", "", "",
++			  "", "", "", "", "",
++			  "SOM_EMMC_nRESET", "", "", "", "",
++			  "", "", "", "", "",
++			  "", "";
++};
++
++&gpio4 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_gpio4>;
++	gpio-line-names =3D "", "", "X_RTC_nINT", "", "",
++			  "", "", "", "", "",
++			  "", "", "SAFETY_BOOTMODE_SET", "ENET1_RST", "",
++			  "", "", "", "", "",
++			  "", "SOM_EEPROM_WP", "", "SOM_PHY_RESET", "",
++			  "", "", "PMIC_IRQ_B", "nSAFETY_RESET_INT", "SPI_TPM_nINT0";
++};
++
++&lpi2c1 {
++	clock-frequency =3D <400000>;
++	pinctrl-names =3D "default", "gpio";
++	pinctrl-0 =3D <&pinctrl_lpi2c1>;
++	pinctrl-1 =3D <&pinctrl_lpi2c1_gpio>;
++	scl-gpios =3D <&gpio1 00 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios =3D <&gpio1 01 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	#address-cells =3D <1>;
++	#size-cells =3D <0>;
++	status =3D "okay";
++
++	rv3028: rtc@52 {
++		compatible =3D "microcrystal,rv3028";
++		interrupts =3D <2 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent =3D <&gpio4>;
++		wakeup-source;
++		trickle-resistor-ohms =3D <3000>;
++		pinctrl-names =3D "default";
++		pinctrl-0 =3D <&pinctrl_rtc>;
++		reg =3D <0x52>;
++	};
++};
++
++&lpspi1 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_lpspi1>;
++	num-cs =3D <1>;
++	cs-gpios =3D <&gpio1 11 GPIO_ACTIVE_LOW>;
++	status =3D "okay";
++
++	tpm@0 {
++		compatible =3D "infineon,slb9670", "tcg,tpm_tis-spi";
++		reg =3D <0>;
++		spi-max-frequency =3D <10000000>;
++		interrupt-parent =3D <&gpio4>;
++		interrupts =3D <29 IRQ_TYPE_LEVEL_LOW>;
++	};
++};
++
++/* MCS Ethernet SPI */
++&lpspi3 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_lpspi3>;
++	num-cs =3D <1>;
++	cs-gpios =3D <&gpio2 8 GPIO_ACTIVE_LOW>;
++	status =3D "okay";
++
++	lan8651: ethernet@0 {
++		compatible =3D "microchip,lan8651", "microchip,lan8650";
++		reg =3D <0>;
++		interrupt-parent =3D <&gpio2>;
++		interrupts =3D <7 IRQ_TYPE_LEVEL_LOW>;
++		spi-max-frequency =3D <25000000>;
++
++		nvmem-cells =3D <&eth2_mac_address 0>;
++		nvmem-cell-names =3D "mac-address";
++	};
++};
++
++&lpuart1 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_uart1>;
++	status =3D "okay";
++};
++
++&lpuart3 {
++	pinctrl-names =3D "default";
++	pinctrl-0 =3D <&pinctrl_uart3>;
++	status =3D "okay";
++};
++
++/* Ethernet 2 PHY */
++&mdio {
++	ethphy2: ethernet-phy@2 {
++		reg =3D <2>;
++		compatible =3D "ethernet-phy-id2000.a140";
++		clocks =3D <&clk IMX93_CLK_ENET_REF_PHY>;
++		reset-gpios =3D <&gpio4 13 GPIO_ACTIVE_HIGH>;
++		reset-assert-us =3D <30>;
++		reset-deassert-us =3D <50000>;
++	};
++};
++
++/* SD */
++&usdhc2 {
++	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 =3D <&pinctrl_usdhc2_default>, <&pinctrl_usdhc2_cd>;
++	pinctrl-1 =3D <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_cd>;
++	pinctrl-2 =3D <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
++	cd-gpios =3D <&gpio3 00 GPIO_ACTIVE_LOW>;
++	vmmc-supply =3D <&reg_usdhc2_vmmc>;
++	bus-width =3D <4>;
++	disable-wp;
++	no-sdio;
++	no-mmc;
++	status =3D "okay";
++};
++
++&iomuxc {
++
++	// Heartbeat LED of phyCore is not populated
++	/delete-node/ pinctrl_leds;
++
++	pinctrl_eqos: eqosgrp {
++		fsl,pins =3D <
++			MX93_PAD_ENET1_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK		0x4000057e
++			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0				0x50e
++			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1				0x50e
++			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x50e
++		>;
++	};
++
++	pinctrl_eqos_strap: eqosstrapgrp {
++		fsl,pins =3D <
++			MX93_PAD_ENET1_RXC__ENET_QOS_RX_ER		0x17e
++			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0		0x17e
++			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1		0x17e
++			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL	0x17e
++		>;
++	};
++
++	pinctrl_flexcan1: flexcan1grp {
++		fsl,pins =3D <
++			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
++			MX93_PAD_PDM_CLK__CAN1_TX		0x1382
++		>;
++	};
++
++	pinctrl_gpio1: gpio1grp {
++		fsl,pins =3D <
++			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
++			MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10	0x382
++		>;
++	};
++
++	pinctrl_gpio4: gpio4grp {
++		fsl,pins =3D <
++			MX93_PAD_ENET1_TXC__GPIO4_IO07		0x382
++			MX93_PAD_ENET1_RD2__GPIO4_IO12		0x39e
++			MX93_PAD_CCM_CLKO3__GPIO4_IO28		0x39e
++			MX93_PAD_ENET1_RD3__GPIO4_IO13		0x31e
++		>;
++	};
++
++	pinctrl_lpi2c1: lpi2c1grp {
++		fsl,pins =3D <
++			MX93_PAD_I2C1_SCL__LPI2C1_SCL		0x40000b86
++			MX93_PAD_I2C1_SDA__LPI2C1_SDA		0x40000b86
++		>;
++	};
++
++	pinctrl_lpi2c1_gpio: lpi2c1gpiogrp {
++		fsl,pins =3D <
++			MX93_PAD_I2C1_SCL__GPIO1_IO00		0x40000b9e
++			MX93_PAD_I2C1_SDA__GPIO1_IO01		0x40000b9e
++		>;
++	};
++
++	pinctrl_lpspi1: lpspi1grp {
++		fsl,pins =3D <
++			MX93_PAD_CCM_CLKO4__GPIO4_IO29		0x186
++			MX93_PAD_SAI1_TXFS__GPIO1_IO11		0x186
++			MX93_PAD_SAI1_TXC__LPSPI1_SIN		0x186
++			MX93_PAD_SAI1_TXD0__LPSPI1_SCK		0x186
++			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT		0x186
++		>;
++	};
++
++	/* PinCtrl MCS LAN SPI */
++	pinctrl_lpspi3: lpspi3grp {
++		fsl,pins =3D <
++			MX93_PAD_GPIO_IO07__GPIO2_IO07		0x186
++			MX93_PAD_GPIO_IO08__GPIO2_IO08		0x186
++			MX93_PAD_GPIO_IO09__LPSPI3_SIN		0x186
++			MX93_PAD_GPIO_IO10__LPSPI3_SOUT		0x186
++			MX93_PAD_GPIO_IO11__LPSPI3_SCK		0x186
++		>;
++	};
++
++	pinctrl_rtc: rtcgrp {
++		fsl,pins =3D <
++			MX93_PAD_ENET1_TD3__GPIO4_IO02		0x31e
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins =3D <
++			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
++			MX93_PAD_UART1_TXD__LPUART1_TX		0x30e
++		>;
++	};
++
++	pinctrl_uart3: uart3grp {
++		fsl,pins =3D <
++			MX93_PAD_GPIO_IO15__LPUART3_RX		0x31e
++			MX93_PAD_GPIO_IO14__LPUART3_TX		0x30e
++		>;
++	};
++
++	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
++		fsl,pins =3D <
++			MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
++		>;
++	};
++
++	pinctrl_usdhc2_cd: usdhc2cdgrp {
++		fsl,pins =3D <
++			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
++		>;
++	};
++
++	/* need to config the SION for data and cmd pad, refer to ERR052021 */
++	pinctrl_usdhc2_default: usdhc2grp {
++		fsl,pins =3D <
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
++			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
++			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
++			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
++			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000138e
++			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
++		>;
++	};
++
++	/* need to config the SION for data and cmd pad, refer to ERR052021 */
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
++		fsl,pins =3D <
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
++			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
++			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
++			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
++			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000139e
++			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
++			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
++		>;
++	};
++
++	/* need to config the SION for data and cmd pad, refer to ERR052021 */
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
++		fsl,pins =3D <
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x118e
++			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
++			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000139e
++			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000139e
++			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000139e
++			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
++			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
++		>;
++	};
++
++	pinctrl_user_leds: userledgrp {
++		fsl,pins =3D <
++			MX93_PAD_GPIO_IO24__GPIO2_IO24		0x31e
++			MX93_PAD_GPIO_IO25__GPIO2_IO25		0x31e
++		>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/a=
+rm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 325e465d0056..489ed3f7fb61 100644
+=2D-- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -201,7 +201,7 @@ ldo5: LDO5 {
+ 	};
+=20
+ 	/* EEPROM */
+-	eeprom@50 {
++	eeprom0: eeprom@50 {
+ 		compatible =3D "atmel,24c32";
+ 		reg =3D <0x50>;
+ 		pagesize =3D <32>;
 =2D-=20
 2.43.0
 
