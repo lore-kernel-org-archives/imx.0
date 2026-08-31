@@ -1,133 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC85E443AB0;
-	Mon, 31 Aug 2026 18:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCC537F315;
+	Mon, 31 Aug 2026 18:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788201451; cv=none; b=nXHrKByACnaNheit/i+kN6iOJ4uNsb6ISur4N2t7Ob9mLvwov2WoFSLTQ0Svqx1mn2Q+rIHPC2KvNkdgMh5m/OxfViL+JgVyM2Q67qyeGx5hplfrH07DdLGgEfhnzWXlLNKN1HGL6pj0wl/Arl1SGR9YC6MCYcseXeeIz0uCWVI=
+	t=1788202137; cv=none; b=IPmzJ6RtDXrzXO0jVWZO6AuYid5j4NsuVjqgpKC9tJATZRXc+jxIKxyFA1rZe3W4dTYqD2zI6e8+8t+yLL487sasmpyl8QEfnWOTqkLkw29i9OGXPG4dvtCbYMNimJipIxeIP2IY0G0AD3YCYdXmzBU4QaS4E3ZAxI93cibBLOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788201451; c=relaxed/simple;
-	bh=Lh4APJvTv8reX8Q87TX1Rl6zasg7VMXLUYBK3kUgfP4=;
+	s=arc-20240116; t=1788202137; c=relaxed/simple;
+	bh=pCUqWkqCpAo1kbQstbnKqQOO2cfvERuDun1o+DvD2PI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=U9QWZzN3GDbhcN2Ohpzoo+IpbOaUXj4fheywVjVG4NrvOP3ZChbDl9ypVuyNyNmkOLt+UNdRHK1bhQk/9JclLRGBfKeNVpMnpGsJm12Pz0oEbVC/z0jkvqv/spw/chITLifBgLzruHSZEVuh8/91+QDhSrYz+p17EZF5x1sS/0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdY7d/3A; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WV0aAmuPl3S4KJg906Y3yDN2qrCSQoHgds2DX/QWFHJlZTeJgm16j8tqo91rFeJnbbzH8BD7N8eBMG7fxaBk0bB8URzuU3pE5jpVTBM8YNNKjybci4S8qUKReGjxi4I59BxtD9jawtAEq8Y1MD5VveI3VEJYrvpoX59fEBTJ5SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVOmkQps; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdY7d/3A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40A71F000E9;
-	Mon, 31 Aug 2026 18:37:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVOmkQps"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5241F000E9;
+	Mon, 31 Aug 2026 18:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788201450;
-	bh=HREneAFRBlMW9u/Le7CHGfsKDjVf0NPfW/FmhX4GLcY=;
+	s=k20260515; t=1788202135;
+	bh=ERqenx5myDBJRV2d0fLRAHzSyACgToMoRs3RJ8bX2j8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PdY7d/3AvZ2JFw0gLUQvutP1cK7dQC0PG8p4bbxQEG+KItS6nMbi2AZA4eiPw5IDG
-	 JQ3uhrAVF1Dfei94eRRx59Hf5u25E659CIEUXT/dZglsxkQFhv2UkPkjEQWYIbHuib
-	 +rQqZcfPc/jGQMcp6pcQeFeyyvr9Wp0JM5wwLaYdIGSnpfrpZjM+DNIsyW9Td1f2Uq
-	 hVqx5DRJHVVeIeKZCIfhaUeAXkUB2UAEBSLwYHhAPUe2xGLVoAJZLUqG6JsfsRsHnK
-	 bqrmSKNlloWH7/BZmiiaXG9PaJVrm91Ef1XdWMnVBhIRZHpnFdfOe47Y//xUU6aIjr
-	 1umZG53XonxJA==
+	b=JVOmkQpsHF9+25wnkdxmgnLxji4f2/Z9Q7xTeR+494RobPuK3Jal+UpbWcCLSlV7j
+	 A2F7QZOPW4tRL5egkT/9YW/+OhDdXkARJYXfAo1aUoTcdmeG2f9ZvKRQUX212BHB/I
+	 PFu9vc/KUzsdT2+lzPFS1ZiaqiuC5dT+BOJ0MvMPQtss9r0uZqN90MGz1qCDqB5wgR
+	 m88Xrkhuo1CrYggqMWjGxSWpwTR12M+c2IzZeIPdone3hohbv5KDEyaE/J/4KSS6Mv
+	 uKtAWtmxYItEcEBoMI0h0JxAQKlh0d2jkt9Oy0E+z83OejHtT4AO9UKMj4dGyl1C+a
+	 kGEE5Wj8cuCeg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 4/6] dt-bindings: can: fsl,flexcan: add NXP S32N79
- SoC support
+Subject: Re: [PATCH v10 1/1] clk: imx: pll14xx: support spread spectrum
+ clock generation
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
-Cc: "Oliver Hartkopp" <socketcan@hartkopp.net>, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, linux-can@vger.kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, "Vincent Mailhol" <mailhol@kernel.org>, robh@kernel.org, devicetree@vger.kernel.org, "Oleksij
- Rempel" <o.rempel@pengutronix.de>
-In-Reply-To: <20260831143449.12828-5-ciprianmarian.costea@oss.nxp.com>
-References: <20260831143449.12828-1-ciprianmarian.costea@oss.nxp.com>
- <20260831143449.12828-5-ciprianmarian.costea@oss.nxp.com>
+To: "Dario Binacchi" <dario.binacchi@amarulasolutions.com>
+Cc: Frank.Li@kernel.org, linux-clk@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260831154752.15401-2-dario.binacchi@amarulasolutions.com>
+References: <20260831154752.15401-1-dario.binacchi@amarulasolutions.com>
+ <20260831154752.15401-2-dario.binacchi@amarulasolutions.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 31 Aug 2026 18:37:29 +0000
-Message-Id: <20260831183729.C40A71F000E9@smtp.kernel.org>
+Date: Mon, 31 Aug 2026 18:48:54 +0000
+Message-Id: <20260831184855.3E5241F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Concurrent execution of split IRQ handlers corrupts rx-offload skb=
-_irq_queue and CAN state.
+- [High] Missing validation of spread spectrum parameters leads to division=
+ by zero panics.
+- [High] Spread spectrum cannot be disabled and fails to clear stale hardwa=
+re state.
+- [Medium] Integer overflow in spread spectrum rate calculation (`mrr`).
+- [Low] Missing clock infrastructure causes fatal compilation errors.
 --
 
-commit c8453ab295dd4a8e4e7831e7734d0b2de7b63259
-Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+commit ab4effb250732b499e28c0bd53e1f0ee8a868e4c
+Author: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC support
+    clk: imx: pll14xx: support spread spectrum clock generation
+   =20
+    Add support for spread spectrum clock (SSC) generation to the pll14xx
+    driver.
+   =20
+    Tested on the video PLL of i.MX8MN and i.MX8MP based boards.
+   =20
+    Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-Add NXP S32N79 SoC compatible string and interrupt properties.
-On S32N79, FlexCAN IP is integrated with two interrupt lines:
-one for the mailbox interrupts (0-127) and one for signaling
-bus errors and device state changes.
+> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+> index b6f1cc9f57005..27a637847f570 100644
+> --- a/drivers/clk/imx/clk-pll14xx.c
+> +++ b/drivers/clk/imx/clk-pll14xx.c
+> @@ -5,6 +5,7 @@
+> =20
+>  #define pr_fmt(fmt) "pll14xx: " fmt
+> =20
+> +#include <dt-bindings/clock/clock.h>
 
-> diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b=
-/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> index f81d56f7c12a5..d098a44c2b9c2 100644
-> --- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-> +++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+[Severity: Low]
+Does this file build cleanly? It appears <dt-bindings/clock/clock.h> does
+not exist. Additionally, struct clk_spread_spectrum added to struct
+clk_pll14xx, and .set_spread_spectrum assigned in clk_pll1443x_ops are
+undefined, which will cause fatal compilation errors.
 
 [ ... ]
 
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: nxp,s32n79-flexcan
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          items:
-> +            - description: Message Buffer interrupt for mailboxes 0-127
-> +            - description: Bus Error and Device state change interrupt
+> @@ -366,6 +377,37 @@ static int clk_pll1416x_set_rate(struct clk_hw *hw, =
+unsigned long drate,
+>  	return 0;
+>  }
+> =20
+> +static void __clk_pll1443x_set_spread_spectrum(struct clk_hw *hw,
+> +					       unsigned long parent_rate,
+> +					       unsigned int pdiv,
+> +					       unsigned int mdiv)
+> +{
+> +	struct clk_pll14xx *pll =3D to_clk_pll14xx(hw);
+> +	struct clk_spread_spectrum *conf =3D &pll->ss_conf;
+> +	u32 sscg_ctrl, mfr, mrr, sel_pf;
+> +
+> +	if (conf->method =3D=3D CLK_SSC_CENTER_SPREAD)
+> +		sel_pf =3D SEL_PF_CENTER_SPREAD;
+> +	else if (conf->method =3D=3D CLK_SSC_UP_SPREAD)
+> +		sel_pf =3D SEL_PF_UP_SPREAD;
+> +	else if (conf->method =3D=3D CLK_SSC_DOWN_SPREAD)
+> +		sel_pf =3D SEL_PF_DOWN_SPREAD;
+> +	else
+> +		return;
 
 [Severity: High]
-This is a pre-existing issue, but this multi-IRQ configuration exposes a
-concurrent execution bug in the split IRQ handlers.
+Does this early return prevent spread spectrum from being disabled? If the
+modulation method is unconfigured or set to disable, this path bypasses
+clearing the SSCG_ENABLE bit.
 
-When multiple interrupt events (e.g., mailbox processing and bus error) fire
-simultaneously, the handlers mapped to different IRQ numbers on multi-IRQ
-platforms (like S32G2 or S32N79) can be dispatched concurrently on different
-CPU cores.
+If a bootloader had previously enabled spread spectrum, or if it is
+dynamically disabled at runtime, the hardware may continue modulating using
+stale configuration parameters alongside newly set PLL dividers.
 
-For example, in drivers/net/can/flexcan/flexcan-core.c, flexcan_irq_mb()
-calls flexcan_do_mb():
+> +
+> +	sscg_ctrl =3D readl_relaxed(pll->base + SSCG_CTRL);
+> +	sscg_ctrl &=3D ~(SSCG_ENABLE | MFREQ_CTL_MASK | MRAT_CTL_MASK | SEL_PF_=
+MASK);
+> +
+> +	mfr =3D parent_rate / (conf->modfreq_hz * pdiv * BIT(5));
 
-	handled =3D flexcan_do_mb(dev, mb_mask);
+[Severity: High]
+Can this calculation result in a division by zero panic? If
+conf->modfreq_hz is uninitialized (0), this will cause a direct division
+by zero.
 
-	if (handled)
-		can_rx_offload_irq_finish(&priv->offload);
+Furthermore, if parent_rate < conf->modfreq_hz * pdiv * 32 (which is
+possible with large pdiv values and a standard 32kHz modfreq), integer
+division truncates mfr to 0. This will subsequently cause a division by
+zero panic during the mrr calculation while clock subsystem locks are held,
+permanently deadlocking the system.
 
-This can run concurrently with the state change interrupt in flexcan_do_sta=
-te():
+> +	mrr =3D (conf->spread_bp * mdiv * BIT(6)) / (10000 * mfr);
 
-	/* state change interrupt or broken error state quirk fix is enabled */
-	if ((reg_esr & FLEXCAN_ESR_ERR_STATE) ||
-	    (priv->devtype_data.quirks &
-	    (FLEXCAN_QUIRK_BROKEN_WERR_STATE | FLEXCAN_QUIRK_BROKEN_PERR_STATE)))
-		flexcan_irq_state(dev, reg_esr);
+[Severity: Medium]
+Does the calculation 10000 * mfr risk a 32-bit integer overflow? Since
+mfr is a 32-bit unsigned integer and 10000 is a 32-bit signed literal, the
+multiplication is performed using 32-bit arithmetic.
 
-These concurrent handlers invoke can_rx_offload_irq_offload_timestamp() and
-can_rx_offload_queue_timestamp(), which use the lockless
-__skb_queue_add_sort() API to insert SKBs into offload->skb_irq_queue.
+If an anomalous device tree input causes mfr to exceed 429,496, the
+multiplication will silently overflow the 32-bit boundary, producing a
+truncated denominator and an invalid mrr value being pushed to the
+hardware.
 
-Since these list insertion APIs omit locking (relying on a single-IRQ
-execution context), can this concurrent execution corrupt the doubly-linked
-list pointers and lead to a kernel panic during normal CAN traffic?
-
-Additionally, with the FLEXCAN_QUIRK_BROKEN_PERR_STATE quirk, both
-flexcan_irq_berr() and flexcan_irq_boff() can concurrently execute
-flexcan_do_state(), causing data races in can_change_state().
-
-This issue was introduced by the earlier commit "can: flexcan: use dedicated
-IRQ handlers for multi-IRQ platforms" in this patchset, and it was not
-resolved by the end of the series. Should locking be introduced to protect
-the CAN state and offload queues?
+> +
+> +	sscg_ctrl |=3D SSCG_ENABLE | FIELD_PREP(MFREQ_CTL_MASK, mfr) |
+> +		FIELD_PREP(MRAT_CTL_MASK, mrr) |
+> +		FIELD_PREP(SEL_PF_MASK, sel_pf);
+> +
+> +	writel_relaxed(sscg_ctrl, pll->base + SSCG_CTRL);
+> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831143449.1282=
-8-1-ciprianmarian.costea@oss.nxp.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831154752.1540=
+1-2-dario.binacchi@amarulasolutions.com?part=3D1
