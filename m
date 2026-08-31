@@ -1,389 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF797442367
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 16:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0901043E078
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 17:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788193180; cv=none; b=Rp09qSPj4xX1ukfraEsXVjaj7E/xgpNvpLh5POOTa+tGM+4TxHoeoEJ1GlYArgFPGt9LJQ/KJ064EyKrUf2Z4U78oNuv9w9H+ghqaG9QF8Yc+AVdJ+JDF6/LwAoMMhs8wbU6SYTLJlb6bRYQdVUyH5LvCCHp25B5/aoz6+liOis=
+	t=1788198022; cv=none; b=qzFLpFLAgd6sljojhQYU754b8VXRvbRdC/edGoI/Y/rrSY3W4jSninzWlwHkrn/fxsJH9T+dpioqYkvOyR15pd8J5X/kzTkB5sbrO+my9ZTOQX+HmXgFqlvPTh/sMjtuRU7LPqbpBMSdNRirSqONH9WzrV1a55u159a9m5SjvXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788193180; c=relaxed/simple;
-	bh=FnBERb++oszycagihSz+S+BI8VfJkVlkOZtbJpsG5PI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HAhcdCHebWnJXKcHXbNyJb0BXBmYMyJriIN+xLc0ZVR7/GY15cZYFX9Lq5Lzr7nrV/xYgvXdskgEsXPio7hg1ZaerBPH9CjzCA9PjVrwFFFlJUsCFC0UNLpTAmcn9TEmQcvzX7CmowWkAnkDmgVz8qdjKi6VoIGpTw0hOT9Farw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agddjCM3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788198022; c=relaxed/simple;
+	bh=fzsCro2SzG9Css9lgQU8VkWMgjaGPYqwNSUoC8dC5Ck=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Da0WlqwjV5DGbkeNiKuL4KB8Q3rsamlKys273ggdoGyH3T2zj/3FXIKkvCopkP39Coys7/oT3h7xzDEWoN/p7byt9g8/Y6iwj6kMOmtI7tb2hIBOwox/lYJXz+JAHpcSbTzTtYzY10ZhMestvxDQ4ecHWSzAqNbCzxCOWqKrt1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NiEszkvc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agddjCM3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9811F000E9;
-	Mon, 31 Aug 2026 16:19:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NiEszkvc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6033B1F000E9;
+	Mon, 31 Aug 2026 17:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788193178;
-	bh=ZNM/2V0mykS8SK6VlczMP04sxXkuh5GXRJkvZ2iCd24=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=agddjCM3dURqmtcXdTJtoSk+MP/OPHly0w4P4muvMypxMdUyA17m7ID7y9qeapGWw
-	 Eupdc8ZNGPBTgd2y9zXIZEO8mKlYBI7veoQ74/0AW0NeUlaxEg0aS95ZS3UTmV0qFJ
-	 Oym0oXBfJZKgxRcvoi+RlpkkcAvJzb1H2Y7UTcpy/Hhue03e7zjk5rXd8j8UNUKpy6
-	 epgQtKd2Q1btkGo1kcRH84YsInaexXv5Zd6hZeYdiD2QfFA93CIBFzuKzEAFyTLARW
-	 11DczWgdWoYyU47CzOYm1lqW9MsnVnqid1DfY607FGgTsvmkMpxPJrvzRsUbGMF16Q
-	 3nh1tsvfPMRpg==
-From: Maxime Ripard <mripard@kernel.org>
-Date: Mon, 31 Aug 2026 18:17:46 +0200
-Subject: [PATCH v3 30/40] drm/imx/ipuv3: Convert to atomic_create_state
+	s=k20260515; t=1788198020;
+	bh=26BF7/QGqh5Yc3HSL4QwvYiIw/xmbbyhjQI8a5/gRFw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NiEszkvczRW95ILt+5FqPNAXNjkBkoK0rMehGADLlmFsyr8itBcvt7WmCHAv3fI6/
+	 6TM/5hnvezO6JZy2yORK/OAraubV8JBOJs0wB2FHCopseLeLuB0zPdPTn/kFumOYpF
+	 zQRkQxN4FWZu1zgq8jQjVX5SkVFCcWaEdzMkWVxg5DJ/6T1koXBlqfsTNXdJJVHliT
+	 MmM0gkj9oXFBpKlvl7nKA0rYxQggHVrwLxM3dKoaxtX+5hvLzv01vtby+rp3dvx1eL
+	 RITUcdPJeQe3gZqJRC5Pl3ywR9BIGOUYucMOYt2DZYYmCUao6e2UsWBYvT4WMQVQxS
+	 ihzWOJryK7Brg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH AUTOSEL 6.18] i3c: master: svc: Prevent IRQ storm from
+ false SLVSTART on NPCM845
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sasha Levin" <sashal@kernel.org>
+Cc: linux-i3c@lists.infradead.org, Frank.Li@kernel.org, imx@lists.linux.dev, "Alexandre
+ Belloni" <alexandre.belloni@bootlin.com>
+In-Reply-To: <20260831133314.4125787-647-sashal@kernel.org>
+References: <20260831133314.4125787-1-sashal@kernel.org>
+ <20260831133314.4125787-647-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 17:40:19 +0000
+Message-Id: <20260831174020.6033B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-drm-no-more-plane-reset-v3-30-1877c7aa57b3@kernel.org>
-References: <20260831-drm-no-more-plane-reset-v3-0-1877c7aa57b3@kernel.org>
-In-Reply-To: <20260831-drm-no-more-plane-reset-v3-0-1877c7aa57b3@kernel.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
- Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
- imx@lists.linux.dev, kernel@pengutronix.de, p.zabel@pengutronix.de
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6992; i=mripard@kernel.org;
- h=from:subject:message-id; bh=FnBERb++oszycagihSz+S+BI8VfJkVlkOZtbJpsG5PI=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlTV8pufLom7WXZjSN/xKZq/D21dQdbxo0bFZySz3L3/
- F073UjKsmMqC4MwJ4OsmCLLE5mw08vbF1c52K/8ATOHlQlkCAMXpwBM5Ag7Y33Y7N5i5utPjI5l
- MFxmE8tsi/224jDr5EMXd+6s5izWYL/fwBh+R7Fe1fbPK+YPpR49UxnrgyZ/5o+Y8PrTZE7DTsE
- TV0zOidqkvpho6fCm8HnfvDDuKKEsvuOWn0x5N3AfWX2HT7ETAA==
-X-Developer-Key: i=mripard@kernel.org; a=openpgp;
- fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-The plane reset implementation creates a custom state
-subclass, but only initializes a pristine state without resetting any
-hardware. This is equivalent to what atomic_create_state expects.
-Convert to it.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-The conversion was done using the following Coccinelle semantic patch:
+Pre-existing issues:
+- [High] Inconsistent use of I/O accessors for FIFO accesses, mixing stream=
+ and register accessors, which causes data corruption on big-endian systems.
+--
 
-@@
-identifier funcs;
-symbol drm_atomic_helper_plane_reset;
-symbol drm_atomic_helper_plane_create_state;
-@@
+commit c282e92f4b93fba4c854d5e9c34c1ac10212811f
+Author: Stanley Chu <yschu@nuvoton.com>
 
-struct drm_plane_funcs funcs = {
-  ...,
-- .reset = drm_atomic_helper_plane_reset,
-+ .atomic_create_state = drm_atomic_helper_plane_create_state,
-  ...,
-};
+    i3c: master: svc: Prevent IRQ storm from false SLVSTART on NPCM845
 
-@match_struct_reset@
-identifier funcs, reset_func;
-@@
-struct drm_plane_funcs funcs = {
-    ...,
-    .reset = reset_func,
-    ...,
-};
+This commit adds a hardware quirk workaround for the NPCM845 controller.
+It explicitly clears the SLVSTART status bit after emitting a STOP
+condition in the Master Request IBI handler to prevent an IRQ storm caused
+by a spurious SLVSTART.
 
-@reset_uses_helpers depends on match_struct_reset@
-identifier match_struct_reset.reset_func;
-@@
+Link: https://patch.msgid.link/20260413005040.1211107-3-yschu@nuvoton.com
 
- void reset_func(...)
- {
- 	<+...
-(
- 	__drm_atomic_helper_plane_reset(...);
-|
-	__drm_gem_reset_shadow_plane(...);
-)
- 	...+>
- }
+> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
+-i3c-master.c
+> index 9641e66a4e5f2..e74b22c6f808c 100644
+> --- a/drivers/i3c/master/svc-i3c-master.c
+> +++ b/drivers/i3c/master/svc-i3c-master.c
 
-@match_struct_destroy@
-identifier funcs, destroy_func;
-@@
-struct drm_plane_funcs funcs = {
-    ...,
-    .atomic_destroy_state = destroy_func,
-    ...,
-};
+[ ... ]
 
-@script:python renamed_func@
-old_name << match_struct_reset.reset_func;
-new_name;
-@@
-if old_name.endswith("_reset"):
-    coccinelle.new_name = old_name.replace("_reset", "_create_state")
-else:
-    coccinelle.new_name = old_name
+[Severity: High]
+This isn't a bug introduced by this patch, but there is a pre-existing
+issue in this file regarding I/O accessors for FIFO registers.
 
-@update_struct depends on match_struct_reset && reset_uses_helpers@
-identifier match_struct_reset.funcs, match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-@@
-struct drm_plane_funcs funcs = {
-    ...,
--   .reset = reset_func,
-+   .atomic_create_state = new_name,
-    ...,
-};
+In svc_i3c_master_xfer(), does this code mix a stream accessor (writesb)
+for bulk data with a register accessor (writel) for the final byte on the
+same FIFO?
 
-@drop_destroy depends on update_struct && match_struct_destroy@
-identifier match_struct_reset.reset_func;
-identifier match_struct_destroy.destroy_func;
-identifier container_func;
-identifier P;
-symbol drm_atomic_helper_plane_destroy_state;
-symbol __drm_atomic_helper_plane_destroy_state;
-@@
-
- void reset_func(struct drm_plane *P)
- {
- 	...
-(
--	if (P->state) {
-- 		<+...
-(
--		drm_atomic_helper_plane_destroy_state(P, P->state);
-|
--		__drm_atomic_helper_plane_destroy_state(P->state);
-|
--		P->funcs->atomic_destroy_state(P, P->state);
-|
--		destroy_func(P, P->state);
-)
-- 		...+>
-- 	}
-|
--	drm_WARN_ON_ONCE(P->dev, P->state);
-|
--	WARN_ON(P->state);
-)
- 	...
-(
--	kfree(P->state);
-|
--	kfree(container_func(P->state));
-|
- 	// kfree is optional
-)
-(
--	P->state = NULL;
-|
- 	// plane->state clearing is optional
-)
- 	...
- }
-
-@drop_destroy_mtk depends on update_struct@
-identifier P;
-symbol __drm_atomic_helper_plane_destroy_state;
-symbol to_mtk_plane_state;
-@@
-
- void mtk_plane_reset(struct drm_plane *P)
- {
- 	...
--	if (P->state) {
--		__drm_atomic_helper_plane_destroy_state(P->state);
--		...
--	} else {
- 		...
--	}
- 	...
- }
-
-@transform_nv50_wndw depends on update_struct@
-identifier S;
-@@
-
- void nv50_wndw_reset(...)
- {
- 	...
--	if (WARN_ON(!(S = kzalloc_obj(*S))))
-+	S = kzalloc_obj(*S);
-+	if (WARN_ON(!S))
- 		return;
- 	...
- }
-
-@transform_kzalloc depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier P, S;
-statement ST;
-statement list STL;
-@@
-
- void reset_func(struct drm_plane *P)
- {
- 	<...
- 	S = kzalloc_obj(*S);
-(
--	if (S)
--	{
--		STL
--	}
-+	if (!S) return;
-+
-+	STL
-|
--	if (S) ST
-+	if (!S) return;
-+
-+	ST
-)
-	...>
- }
-
-@transform_body depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-identifier S, P;
-expression PS;
-@@
-- void reset_func(struct drm_plane *P)
-+ struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	...
- 	S = kzalloc_obj(*S);
-	...
-(
- 	if (!S) {
-		...
--		return;
-+		return ERR_PTR(-ENOMEM);
- 	}
-|
- 	if (WARN_ON(!S)) {
-		...
--		return;
-+		return ERR_PTR(-ENOMEM);
- 	}
-|
- 	if (S == NULL) {
- 		...
--		return;
-+		return ERR_PTR(-ENOMEM);
- 	}
-)
-	...
-(
--	__drm_atomic_helper_plane_reset(P, PS);
-+	__drm_atomic_helper_plane_state_init(PS, P);
-|
--	__drm_gem_reset_shadow_plane(P, PS);
-+	__drm_gem_shadow_plane_state_init(P, PS);
-)
-	...
+drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_xfer() {
+    ...
+    writesb(master->regs + SVC_I3C_MWDATAB1, out, len - 1);
+    /* Mark END bit if this is the last byte */
+    writel(out[len - 1] | end, master->regs + SVC_I3C_MWDATAB);
+    ...
 }
 
-@update_early_return depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-identifier P;
-expression PS;
-@@
- struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	<+...
--	return;
-+	return ERR_PTR(-EINVAL);
-	...+>
+Using writel() for the remainder byte performs unwanted byte-swapping on
+big-endian platforms, which can corrupt the data sent on the I3C bus.
+
+[Severity: High]
+This is also a pre-existing issue, but do the readl() calls in
+svc_i3c_master_read() and svc_i3c_master_readb() perform incorrect
+byteswapping when reading from the MRDATAB FIFO?
+
+drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_handle_ibi() {
+    ...
+    readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
+    ...
 }
 
-@update_return_plane depends on update_struct@
-identifier match_struct_reset.reset_func;
-identifier renamed_func.new_name;
-identifier P;
-expression PS;
-@@
- struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	...
- 	__drm_atomic_helper_plane_state_init(PS, P);
-	...
-+
-+	return PS;
+drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_read() {
+    ...
+    in[offset + i] =3D readl(master->regs + SVC_I3C_MRDATAB);
+    ...
 }
 
-@update_return_shadow depends on update_struct@
-identifier renamed_func.new_name;
-identifier P;
-expression PS;
-@@
- struct drm_plane_state *new_name(struct drm_plane *P)
-{
-	...
- 	__drm_gem_shadow_plane_state_init(P, PS);
-	...
-+
-+	return &PS->base;
+drivers/i3c/master/svc-i3c-master.c:svc_i3c_master_readb() {
+    ...
+    dst[i] =3D readl(master->regs + SVC_I3C_MRDATAB);
+    ...
 }
 
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
----
-Cc: Frank.Li@nxp.com
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: festevam@gmail.com
-Cc: imx@lists.linux.dev
-Cc: kernel@pengutronix.de
-Cc: p.zabel@pengutronix.de
----
- drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+Since readsb() is used in svc_i3c_master_handle_ibi() for the same
+MRDATAB FIFO, using readl() to read individual bytes into a u8 buffer in
+other functions could result in corrupted data on big-endian systems.
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-index c7ec09e557c1..afebd4fe4395 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-@@ -295,25 +295,22 @@ void ipu_plane_disable_deferred(struct drm_plane *plane)
- 		ipu_plane->disabling = false;
- 		ipu_plane_disable(ipu_plane, false);
- 	}
- }
- 
--static void ipu_plane_state_reset(struct drm_plane *plane)
-+static struct drm_plane_state *ipu_plane_state_create_state(struct drm_plane *plane)
- {
- 	struct ipu_plane_state *ipu_state;
- 
--	if (plane->state) {
--		ipu_state = to_ipu_plane_state(plane->state);
--		__drm_atomic_helper_plane_destroy_state(plane->state);
--		kfree(ipu_state);
--		plane->state = NULL;
--	}
--
- 	ipu_state = kzalloc_obj(*ipu_state);
- 
--	if (ipu_state)
--		__drm_atomic_helper_plane_reset(plane, &ipu_state->base);
-+	if (!ipu_state)
-+		return ERR_PTR(-ENOMEM);
-+
-+	__drm_atomic_helper_plane_state_init(&ipu_state->base, plane);
-+
-+	return &ipu_state->base;
- }
- 
- static struct drm_plane_state *
- ipu_plane_duplicate_state(struct drm_plane *plane)
- {
-@@ -356,11 +353,11 @@ static bool ipu_plane_format_mod_supported(struct drm_plane *plane,
- }
- 
- static const struct drm_plane_funcs ipu_plane_funcs = {
- 	.update_plane	= drm_atomic_helper_update_plane,
- 	.disable_plane	= drm_atomic_helper_disable_plane,
--	.reset		= ipu_plane_state_reset,
-+	.atomic_create_state = ipu_plane_state_create_state,
- 	.atomic_duplicate_state	= ipu_plane_duplicate_state,
- 	.atomic_destroy_state	= ipu_plane_destroy_state,
- 	.format_mod_supported = ipu_plane_format_mod_supported,
- };
- 
-
--- 
-2.55.0
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831133314.4125=
+787-647-sashal@kernel.org?part=3D1
