@@ -1,110 +1,124 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77FE4A091A
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 18:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CD4078C9
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 18:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788199419; cv=none; b=M42dyzgR5wXF2iTHcGyw5E5KAYNRk+kqtlxvJT2AugbZvUJQAVOhSbmiOvU3EUi9ms9Spm4/fI7BRKcY395pKF5dvAF+CxoeBnhDb5h0HpaqMy5QU3qMvh0mvqmTG/SasGC9v/TpUMnsCU535BRLGJaZE5g2tit95LzF18rsTU8=
+	t=1788199880; cv=none; b=ANk8iI8dioMWOOUsIKeV1556D/SWzdW/sA14pVFF+XGxxbkRe+Ip1ZhTurXhJ1rQ2lux0KLz+mZ9kcL4OTXgbDBJSbN5WHRyLCL0aLflL40h1mUwU44YaYVWgXgaH1qdr6cyO5cm5q7q3qHRVcLcwzBbftHJxRdANEhVdVrny9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788199419; c=relaxed/simple;
-	bh=rmq4A/3b9cJXS2TkfGSiciCNONWN4osSAMXLb20UGCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tZ4e7gBOX4sC/ExhVAMGPGJCdlM90vcLhbG/li+bsqK9Yysr4ApCOp6Au2VZaTLkPIR0+Pv6I4WOqFAMIJ9luio5JbBZ612bWEFy47FZO/4qyx8I0ThR0/1f4CmM620DMDKba6iqPhoh+0J4kJIbes9I88UvPOtLWY7XHUF6Kfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEQK734g; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788199880; c=relaxed/simple;
+	bh=zBdK1iiFDwTHqOyTQyYg4l3HxFz9CENCyVT51LTKz4k=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DTV7B7PjGJFxnD2TrYVnRvP7chHrHqLZnPbNEeWLWfRqYafqfHB8TNJPH0AMg3T+lqqeM9vTaAfVTiwN4tU8cebMo16vOvnPbkgF7YrmZBjaGieZv8k8ebutRvC7wTvV+Dvbkm6G8NZ2pfiwfoqUmOD7CXiZnojwUPN5YpLDDCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=Xhm0llmw; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEQK734g"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d53197d8b5so31853765ad.3
-        for <imx@lists.linux.dev>; Mon, 31 Aug 2026 11:03:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="Xhm0llmw"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so59719a91.2
+        for <imx@lists.linux.dev>; Mon, 31 Aug 2026 11:11:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788199417; x=1788804217; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:sender:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=scaTwoDAiAwCNDZtWleBwQ6YcnYnb/xcb5L8AHzEikQ=;
-        b=EEQK734gfDA+kQLCrjlcnpRoqWkPC4XevfkLtfJdqfBPsMyhM1PCOAkdrwk+nJXsTL
-         4F1+aalnIvjtKbCN3xVb7lT2b1r6Z+HLUIhZvL5ym6Tn3qm3f+9YNL5fPwes3daGDX1P
-         L2a+LyH0VDKOZ1ZLRPtjabBO+xZEEoZsIZLtZUWvAkZqsoz0jICTrPjc63X6pbGN4q88
-         cacrmhtnj6R7BPM7BMxSj5Fd/4e6R3J/e38E8lwK/q4GZDY1+OjjQ5+ZQhlX1mn4CSx6
-         2pI+YMLsIYNFmTWb1166eJ4qqsgRYkv3qdaIeM/8wQeE7gHTO7Q7cDdstfiGwkN2Q2ik
-         mBjg==
+        d=baylibre.com; s=google; t=1788199878; x=1788804678; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KYKJ5VPlv39onDgpizRA6tuCgoTPGQMQ0bB2xHAAOlw=;
+        b=Xhm0llmw12Z1/F3RUMCPzX4ULlT2l81r/vOIYxbHh+pT/e6qsEBJLfSLPc9h/BzVNT
+         0aVOI41NmV0HN2i134uU/WFfDw7j7gaUPneK24Y/DlA8EbWN+eBT2kQD4cSRGKugZniU
+         WWsA0RhnCj3tJz6gg54gqPBX4CYuu87tgYuR66xgYkl2EUJmCG7sZWVS5ORXblaqC72l
+         cQpCjLB/h+MWQwHTMbB5vsGn7sQL5W+xAXoLJdzFdKQpcsOEUMUcedlm75CL0drlyIfV
+         /Lnj7yrgPLSW0LO1TIX+FkbiUZYCIYDEIKcLZFtZidvALb4z5s3c9nb1k+Cf3Uu3992K
+         J6kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788199417; x=1788804217;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:sender:x-gm-gg
+        d=1e100.net; s=20251104; t=1788199878; x=1788804678;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=scaTwoDAiAwCNDZtWleBwQ6YcnYnb/xcb5L8AHzEikQ=;
-        b=O5L0f7eyXO1eyLxujz7lN4S7EnKWDe7u7oE8MXWqcKprSbkht3MPDEI/bwaIykr+OO
-         HuZlFfZoDXjAWtZeFgMRAOWtbcoMP4ls/GLMe/NY5vJn1EBoquAU+3w9dqlH2xjo4fKB
-         htjKC5+VNRsXD+1iBSn5QgXUqBSdrFsLAxqKUb78wpaj1q09OY+d3pP+IGORAsXV+2k1
-         6tqECujoime0kG1ViIsanYfuqFbvgP/hcmvrIPOvHi/P7gAftnHK2yii9sX+0V3gXnNX
-         ber+MPUgDxN2sx+147DdswvlBENb3TM6psONToThrqyuzlc5n7IdJZtRjXU2cNv5vdOI
-         zXDg==
-X-Forwarded-Encrypted: i=1; AKwUvBxNRE4d8e2zn6tMHKOQW7K3+1NVZYqCclPWfDoJPiVo6HSUeA8OF0DoTsR/pF+Nerqic88=@lists.linux.dev
-X-Gm-Message-State: AFuF++lbdXALkCamlsixiZk8cu15Shek2CALGfmTAao+ieccZU6bdM2k
-	EUz1wXL/u9qNmXHXLO2wl8vdxPW3XMhyaNEyy/v403n1RDzzaGrMMI7v
-X-Gm-Gg: AYBFou3ty47DfgQWyhsTlSEa8S2zYy6cFpyDTdIown+Qe6LbRDH4FrF6JQT2TNKQwmU
-	klqaBMKexgRhfp0NyG/fHeeOwkGPu1wAb/NDHJlER4LgwKTOovmNpSvS42F8zRgiCguCKs76hNr
-	R3F03Jqx0834T75S/+bM42LmA1VC2cIr/8nEWMKVeWZsHyViHiL0eevfXIfGe4t+MFYja+H3gZd
-	WLAv5tt3Q8F1RjHdYXNekPu191iNLE3An5saayBNORwrEHlj+0DxbYtxA0Bhu1RueLcoOwpexBT
-	bAT1iP7fXcxo7BAf9f06UA/A9p7xA4bADSNnfflBYFB8sw20Yz8bO66K9Z+rkiG+VXMQw0xXv87
-	s8HPP2zy09P2EqB+/JCrpww/m/++MZng5skzzrpbPE1iTfw3Cez02ecKvZu8Bgql/C8Im7ad329
-	vBG0v4jqoRugWziVnaRTI1e5udZLRzCVwDsax3vvAXzO8ecio/TJWCzlvLMZA4EKF8EElPiYnPm
-	g==
-X-Received: by 2002:a17:902:ce8e:b0:2d7:107c:917b with SMTP id d9443c01a7336-2d94a32e0c0mr28121435ad.0.1788199417098;
-        Mon, 31 Aug 2026 11:03:37 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f7be607sm31904707eec.10.2026.08.31.11.03.36
+        bh=KYKJ5VPlv39onDgpizRA6tuCgoTPGQMQ0bB2xHAAOlw=;
+        b=pznVReoDPXSOFeF5Ds3vBVHSQptB9Hl1TGFUr9kDVsqwwjdt6VI479XljHi+j4Bjyf
+         cE5fKPBjeXDxISYh/vux8QChz9Ic8XCQ7Va7jiNfnws45SSoX8McK8V0ts+gFeCr0i7J
+         A8BvWpntQ7wOB+fu3kyHcloVEDne0ftHzIIc8mWH7sUe3WJal6rIb7630GB/4BvW5fSl
+         S4xEPS7RGwmO6WVMaMY4nFcDlhD9+qOL/CPPlnaJzkvtlpn/Rp32I54gsTTCGXtx10SU
+         TLk1KhZSyNK3wD0/0jezetaP0EM40LDlqSjYYHeDbWrQdD3yWP6c+M2D0sJDYVCIWbnS
+         3hIA==
+X-Forwarded-Encrypted: i=1; AKwUvByQZ544x8bxFKbLjUAXlS3sivIM+1+P4uOlxKhOW4qMAoI1oGfOz8xqcmw6OgQVOxCO2/s=@lists.linux.dev
+X-Gm-Message-State: AFuF++m/zvD1G5WbDBM8dNVRcZbCQWrxaYX6/rKY9dDgERxPskIHfJdT
+	TTY2hmwTajiQkGyXxwawIA1YTznqGv98GkjM7V2WL08x1jY9t2A32Vf5oVJjwfslzAQ=
+X-Gm-Gg: AYBFou2yCQBwq/+XSwpZoRMalTB8d9O3U5RbfxpFudNAqe1meiWviYBCUV3yHgjuUsD
+	mdedSoo5QQv0x5TeCI/PEBZtR42X2grUCw8NihjcmDvjGWXSnSZRv4okcT3I12g+pTseUSLaVMq
+	DvU0d2/Zc25sa2Hh9AScwbIwc9dMAUWjObJWyG5pPH5T9G7KEiufx1R4zupzhcI6onpTV4QlOT2
+	lAFfXG2vJQ/SGjqElwgx5jcb3Xh/4vBTlqyXqiZW6pj2dTQdiTH/aKTc/Wv587fc5k98NldbjNj
+	HJF4PFtGodGGa0WYODPhO75qovxiFgL1MpT1kcGawEW2Ry/HUNwrrGXIGnFyDzE+CiNiNrDaHd4
+	I9DWhBBQzuo8bLNAabQNR5d9dmjeYXIBYTSSxGXD9/PCXRH3+Vp3wGgzU79FImQCYoRrzXc0Doj
+	noHUel+GFZvnlv7OtvClNjTiYY84tK/Ndp3LAlyJLXn+n4HmzRkacwz+geXg==
+X-Received: by 2002:a17:90b:4a8c:b0:392:6638:2e6a with SMTP id 98e67ed59e1d1-396d0f69d10mr34762737a91.13.1788199877917;
+        Mon, 31 Aug 2026 11:11:17 -0700 (PDT)
+Received: from localhost ([71.212.197.238])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3990baaeec3sm863336a91.0.2026.08.31.11.11.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 11:03:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Mon, 31 Aug 2026 11:03:35 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Frank.Li@oss.nxp.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Wensheng Wang <wenswang@yeah.net>,
-	Cosmo Chou <chou.cosmo@gmail.com>, Colin Huang <u8813345@gmail.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Dixit Parmar <dixitparmar19@gmail.com>,
-	Antoni Pokusinski <apokusinski01@gmail.com>,
-	Eddie James <eajames@linux.ibm.com>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: hwmon: tmp102: move ti,tmp103 out of
- trivial-devices.yaml
-Message-ID: <25786645-f9c3-4fa7-b1a1-11b3704c3806@roeck-us.net>
-References: <20260826211422.3299728-1-Frank.Li@oss.nxp.com>
+        Mon, 31 Aug 2026 11:11:17 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: linux-arm-kernel@lists.infradead.org, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Fabio Estevam <festevam@gmail.com>, 
+ Frank Li <Frank.Li@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Peter Griffin <peter.griffin@linaro.org>, Roger Quadros <rogerq@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+In-Reply-To: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
+References: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
+Subject: Re: (subset) [PATCH v3 0/7] ARM: dts: Replace clock-frequency in
+ camera sensor nodes
+Message-Id: <178819987707.2869653.6455595386601883422.b4-ty@b4>
+Date: Mon, 31 Aug 2026 11:11:17 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826211422.3299728-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
 
-On Wed, Aug 26, 2026 at 05:14:19PM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Move ti,tmp103 binding from trivial-devices.yaml to ti,tmp102.yaml. Both
-> devices are single temperature sensors and update "#thermal-sensor-cells"
-> property to accept values 0 and 1 (passing no argument is equivalent to
-> passing 0 as the first argument)
-> 
-> Fix below CHECK_DTBS warnings:
-> arch/arm/boot/dts/nxp/imx/imx6dl-plym2m.dtb: temperature-sensor@70 (ti,tmp103): '#thermal-sensor-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Applied.
+On Mon, 10 Aug 2026 21:05:57 +0300, Laurent Pinchart wrote:
+> This patch series contains the leftovers from "[PATCH v2 00/72] media:
+> i2c: Reduce cargo-cult" ([1]). All driver patches have been merged, but
+> DT changes for ARM platforms were postponed to the next kernel release
+> and ended up being forgotten.
+> 
+> To refresh everybody's memory, a large number of camera sensor drivers
+> directly use the "clock-frequency" property to retrieve the effective or
+> desired external clock rate. This is standard behaviour on ACPI
+> platforms that don't implement MIPI DisCo for Imaging, but usage of the
+> property has leaked to OF-based platforms, due to a combination of
+> historical reasons (using "clock-frequency" was initially considered
+> right until before the introduction of "assigned-clock-rates") and plain
+> cargo-cult.
+> 
+> [...]
 
-Thanks,
-Guenter
+Applied, thanks!
+
+[3/7] ARM: dts: ti: omap3-n950: Replace clock-frequency in camera sensor node
+      commit: e74a8fe7c2d85e314ead77064ea671b71de44b14
+[4/7] ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
+      commit: 3da3c1f84d4f1d14d321ffbec742d4027b503827
+[5/7] ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor node
+      commit: e59ab4d7eaed22ba714c57801262a09ac1c32100
+
+Best regards,
+-- 
+Kevin Hilman (TI) <khilman@baylibre.com>
+
