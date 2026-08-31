@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0875548422C
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 16:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF797442367
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 16:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788193110; cv=none; b=UhaMcT/DogtYCJWfFlyZ4rCZ0vsMIZ5o5xRMAEkVgbPNme4cssM5VRylPnsoSq1DHqlGiQlkI1LGORxPe9I2LlMbaDjjcQHY2gZZPrwNSXcl8tr+17KHpppKX9nGF3es/ev5TrW4HOWYNzAJqtDfcIeaUCrOEg/0lkfnqf0QBhQ=
+	t=1788193180; cv=none; b=Rp09qSPj4xX1ukfraEsXVjaj7E/xgpNvpLh5POOTa+tGM+4TxHoeoEJ1GlYArgFPGt9LJQ/KJ064EyKrUf2Z4U78oNuv9w9H+ghqaG9QF8Yc+AVdJ+JDF6/LwAoMMhs8wbU6SYTLJlb6bRYQdVUyH5LvCCHp25B5/aoz6+liOis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788193110; c=relaxed/simple;
-	bh=qsY/E2qp4BzJoPB3EoYrbQ38YpDw3uz6jagVosG5tJM=;
+	s=arc-20240116; t=1788193180; c=relaxed/simple;
+	bh=FnBERb++oszycagihSz+S+BI8VfJkVlkOZtbJpsG5PI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JAtWw/IA8xhbw5cbFfYdWW6+94TfvhCCjtDNunkjfD2zA9m+d6zr0VhOD4LUbX9FoX/0BRLYhT5sJAZDB/HV7dNla00ctfH/Nk1/FqvUfQOlYHrk4iVPHRTUZgd3Q2hM0A9g3azmC0ra3/3ycn0I51IaVwVwjtgDkojWIBaTtnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBgovDeE; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=HAhcdCHebWnJXKcHXbNyJb0BXBmYMyJriIN+xLc0ZVR7/GY15cZYFX9Lq5Lzr7nrV/xYgvXdskgEsXPio7hg1ZaerBPH9CjzCA9PjVrwFFFlJUsCFC0UNLpTAmcn9TEmQcvzX7CmowWkAnkDmgVz8qdjKi6VoIGpTw0hOT9Farw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agddjCM3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBgovDeE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD931F000E9;
-	Mon, 31 Aug 2026 16:18:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agddjCM3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9811F000E9;
+	Mon, 31 Aug 2026 16:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788193108;
-	bh=88t+YLiFUI+K5O2LYm1+llhaPFd2/0sP6B6Nan3OY8U=;
+	s=k20260515; t=1788193178;
+	bh=ZNM/2V0mykS8SK6VlczMP04sxXkuh5GXRJkvZ2iCd24=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YBgovDeEcYaybe2heDnpNPwY2RicHo77iKXzA6YaYlt8yG8HmmxgTZkWgvMEbBh0U
-	 Xr+RltAQu57H1302aikluw7Iw2ng86KFeDhSb0sPqGw9pqD8GHiaWpXwKk+3Gfu9nG
-	 SWZDac6ZUG+dYYFa/SlyXWY9k/6w9cr0nNN9dJZRvGdUTTZUSZk8yyOtG1lPmqdHk0
-	 CmGcbpdTMDOJDXMppbfec4BeQyVhQwE5fK9kj5272/9srq7z7XhgiahFouGh6i4uBI
-	 5xc5ntcs5WdxwxmZwbLGRg8Vsp9KeOdesvcvghy8NxGZxA6IbHiQYdCRqVwTDsyqlN
-	 TVr+dMF+yzTrQ==
+	b=agddjCM3dURqmtcXdTJtoSk+MP/OPHly0w4P4muvMypxMdUyA17m7ID7y9qeapGWw
+	 Eupdc8ZNGPBTgd2y9zXIZEO8mKlYBI7veoQ74/0AW0NeUlaxEg0aS95ZS3UTmV0qFJ
+	 Oym0oXBfJZKgxRcvoi+RlpkkcAvJzb1H2Y7UTcpy/Hhue03e7zjk5rXd8j8UNUKpy6
+	 epgQtKd2Q1btkGo1kcRH84YsInaexXv5Zd6hZeYdiD2QfFA93CIBFzuKzEAFyTLARW
+	 11DczWgdWoYyU47CzOYm1lqW9MsnVnqid1DfY607FGgTsvmkMpxPJrvzRsUbGMF16Q
+	 3nh1tsvfPMRpg==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Mon, 31 Aug 2026 18:17:28 +0200
-Subject: [PATCH v3 12/40] drm/mxsfb: Convert to atomic_create_state
+Date: Mon, 31 Aug 2026 18:17:46 +0200
+Subject: [PATCH v3 30/40] drm/imx/ipuv3: Convert to atomic_create_state
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-drm-no-more-plane-reset-v3-12-1877c7aa57b3@kernel.org>
+Message-Id: <20260831-drm-no-more-plane-reset-v3-30-1877c7aa57b3@kernel.org>
 References: <20260831-drm-no-more-plane-reset-v3-0-1877c7aa57b3@kernel.org>
 In-Reply-To: <20260831-drm-no-more-plane-reset-v3-0-1877c7aa57b3@kernel.org>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -45,20 +45,21 @@ To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Simona Vetter <simona@ffwll.ch>
 Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
  Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
- imx@lists.linux.dev, kernel@pengutronix.de, marex@denx.de, stefan@agner.ch
+ imx@lists.linux.dev, kernel@pengutronix.de, p.zabel@pengutronix.de
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6146; i=mripard@kernel.org;
- h=from:subject:message-id; bh=qsY/E2qp4BzJoPB3EoYrbQ38YpDw3uz6jagVosG5tJM=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlTV4r+k+3JjnH+7vr9bsUjtcjVWb++bpVJsK3PENojn
- 9fmM/V6x1QWBmFOBlkxRZYnMmGnl7cvrnKwX/kDZg4rE8gQBi5OAZhIRw1jw5e/F46+U3cz0j/x
- dOMEmRM30nRMi9lWCGp8tTl/ZsLvDDZui6MTOPff7wp6YtC/cvYNU8Y6xYhQX97TG8UtNBQnRKn
- td7K5IF67/t2iS3vWJOy9PqH4pfuBiT7+in+rV5T+7BKUnD8VAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6992; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=FnBERb++oszycagihSz+S+BI8VfJkVlkOZtbJpsG5PI=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlTV8pufLom7WXZjSN/xKZq/D21dQdbxo0bFZySz3L3/
+ F073UjKsmMqC4MwJ4OsmCLLE5mw08vbF1c52K/8ATOHlQlkCAMXpwBM5Ag7Y33Y7N5i5utPjI5l
+ MFxmE8tsi/224jDr5EMXd+6s5izWYL/fwBh+R7Fe1fbPK+YPpR49UxnrgyZ/5o+Y8PrTZE7DTsE
+ TV0zOidqkvpho6fCm8HnfvDDuKKEsvuOWn0x5N3AfWX2HT7ETAA==
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-The plane only initializes a pristine state in its reset hook
-using drm_atomic_helper_plane_reset(), which is equivalent to what
-atomic_create_state expects. Convert to it.
+The plane reset implementation creates a custom state
+subclass, but only initializes a pristine state without resetting any
+hardware. This is equivalent to what atomic_create_state expects.
+Convert to it.
 
 The conversion was done using the following Coccinelle semantic patch:
 
@@ -327,29 +328,61 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: festevam@gmail.com
 Cc: imx@lists.linux.dev
 Cc: kernel@pengutronix.de
-Cc: marex@denx.de
-Cc: stefan@agner.ch
+Cc: p.zabel@pengutronix.de
 ---
- drivers/gpu/drm/mxsfb/mxsfb_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-index 36ea285182b4..6e82f8f76793 100644
---- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-+++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-@@ -641,11 +641,11 @@ static const struct drm_plane_helper_funcs mxsfb_plane_overlay_helper_funcs = {
- static const struct drm_plane_funcs mxsfb_plane_funcs = {
- 	.format_mod_supported	= mxsfb_format_mod_supported,
- 	.update_plane		= drm_atomic_helper_update_plane,
- 	.disable_plane		= drm_atomic_helper_disable_plane,
- 	.destroy		= drm_plane_cleanup,
--	.reset			= drm_atomic_helper_plane_reset,
-+	.atomic_create_state = drm_atomic_helper_plane_create_state,
- 	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
- 	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
+diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+index c7ec09e557c1..afebd4fe4395 100644
+--- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
++++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
+@@ -295,25 +295,22 @@ void ipu_plane_disable_deferred(struct drm_plane *plane)
+ 		ipu_plane->disabling = false;
+ 		ipu_plane_disable(ipu_plane, false);
+ 	}
+ }
+ 
+-static void ipu_plane_state_reset(struct drm_plane *plane)
++static struct drm_plane_state *ipu_plane_state_create_state(struct drm_plane *plane)
+ {
+ 	struct ipu_plane_state *ipu_state;
+ 
+-	if (plane->state) {
+-		ipu_state = to_ipu_plane_state(plane->state);
+-		__drm_atomic_helper_plane_destroy_state(plane->state);
+-		kfree(ipu_state);
+-		plane->state = NULL;
+-	}
+-
+ 	ipu_state = kzalloc_obj(*ipu_state);
+ 
+-	if (ipu_state)
+-		__drm_atomic_helper_plane_reset(plane, &ipu_state->base);
++	if (!ipu_state)
++		return ERR_PTR(-ENOMEM);
++
++	__drm_atomic_helper_plane_state_init(&ipu_state->base, plane);
++
++	return &ipu_state->base;
+ }
+ 
+ static struct drm_plane_state *
+ ipu_plane_duplicate_state(struct drm_plane *plane)
+ {
+@@ -356,11 +353,11 @@ static bool ipu_plane_format_mod_supported(struct drm_plane *plane,
+ }
+ 
+ static const struct drm_plane_funcs ipu_plane_funcs = {
+ 	.update_plane	= drm_atomic_helper_update_plane,
+ 	.disable_plane	= drm_atomic_helper_disable_plane,
+-	.reset		= ipu_plane_state_reset,
++	.atomic_create_state = ipu_plane_state_create_state,
+ 	.atomic_duplicate_state	= ipu_plane_duplicate_state,
+ 	.atomic_destroy_state	= ipu_plane_destroy_state,
+ 	.format_mod_supported = ipu_plane_format_mod_supported,
  };
  
- static const uint32_t mxsfb_primary_plane_formats[] = {
 
 -- 
 2.55.0
