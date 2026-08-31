@@ -1,483 +1,300 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5808C55EAF7;
-	Mon, 31 Aug 2026 13:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2335632A4;
+	Mon, 31 Aug 2026 13:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184055; cv=none; b=gmN47l0jlajLrCbNm38ctk3/Ry7WcXP/bBiX2t9LWuiRUFzW/crUpNBNVD76ChXrDMB6ta2th6+fo5JQxekaxKO6agkufxhGlq1dYOQTKBmdbJ1Lq5qRREiXWxhvYcV4AImpFmRv4EB2WY+PVbeApzXVOsRj1S4JM0dFHvGjwzI=
+	t=1788184069; cv=none; b=cRzBk0GUxxWojkgsKnD9qffOzPoRgr3QuLWXX3Ts88PrU+NBbGcV5DVjLPWqVFkw5SpktFFM9eadS0iZz7cocgImvesPM2eUJf53FsVKPogvvgIyUHJEb5QiWMQqmdNXM/K8Qg6h0bm1J7RttClHTGT2fBioGSJ5tb6e/3CeCwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184055; c=relaxed/simple;
-	bh=7yjxVhNAX9o3HTxeQpJ0/t/F3IDXyVkBk3Rljnq0Pk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rpc0DEGUsms7uF4+fl1xdHF3apmyyVM/sTpHUxma6988oMBcXbrZT5fJpygdvoDik2Jx4LDVc5gpGJm9MBTfUH91lO86GBAB6WFTzU2VKcaKTjzVC6SRHAlCbxr6YAAUJRejhUZZR5Y1C0Pnshd7O4gJdEU6IAS9B8HkWeL5i68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILcvsDTN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788184069; c=relaxed/simple;
+	bh=UDuyMhgLF/nf0HbmEB4+rxuZfZiTrL+TJII+mnXTyXQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dIzLefvqt6kUcwFYL/fvUpvsZvJXZi4RP1XW8MyDOndP8NeAoybCPeOF3ntYqepqf6EY0qzpQNj/M32obtOdg+0tIwC5Ofv4sfxyGeDXMUNPDa/4jEzDulIYdd2CZiALlz6CRtCafVh4eT3COnwnTOaPFn1JKvTlGwZjMwh3k/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=GFfHNwvs; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILcvsDTN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7C01F00ACF;
-	Mon, 31 Aug 2026 13:47:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184053;
-	bh=Jgg4sdSKbomE329Nl7tVODUKAEXno6ZeeSXNFVTs4r8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ILcvsDTNC3/+2JCCTIQDPLXOdlMAd4m1Mk634fbNR0XRKWvKfXvduykTTdx/vVdEr
-	 +u1BOELQ8lWlY0Huc910AC3U13rdXPMNZYPd10EzchhXD2X8bYcMOk/ZEreEdHX1+2
-	 2Gaqnc30x+tdHuKqkrgye18UiTmsFxQwalorHzhE/pABQaUl8AeCkekxli+wO7kpQW
-	 l8WkfT8i4Q5P1w6REmppC6VOIexnsiCOMzEy+21KIjUNixBYss4hsYioRbowDd/web
-	 EzQ4WDaijA4Ymz0xgnCBpwZwoijyoRaLAj2vHjRoKJB6nUjNX2VUrgntO5GAbakY1k
-	 s+9B+0nuCOX+w==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	han.xu@nxp.com,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
-Date: Mon, 31 Aug 2026 09:28:11 -0400
-Message-ID: <20260831133314.4125787-463-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
-References: <20260831133314.4125787-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="GFfHNwvs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1788184036; x=1788788836; i=wahrenst@gmx.net;
+	bh=ePV4JES9XxvVoQVNoDHrh+vUhV2Gki6cm2F4F/fbt18=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=GFfHNwvsgnAQhjBcNcG5Zxet3c0HKaWN+a9LW/1OBElUw2Z619z6Il6ajAO36uQ6
+	 h6C16LvBLCHdMzkd3ruR8JhSqVDyHZUPGsvscBrDzR/pY21HJasP1x0f80wYsJNBm
+	 lJCRVh++hhYYCgagWHXSSjgLiEcwr4RQqXo+W6eV3Ml5aI2MIl5PNZjk26d23Bo/9
+	 SlFHgCav+6KUE3pRg8BEcVStO87VS5jc3iB4mvGIfgFCaaMwEESKjNKQTmC5mzEn2
+	 QzRqj+d0kPEnW2s+NoWyBFBYv1iwyiZVQPT1CMA8qUb+iNzYdPcaeQYnLaQ19Bac/
+	 1KRLGY32Q+ob8eHoiA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJVHU-1xKuei30MC-00WgUH; Mon, 31
+ Aug 2026 15:47:16 +0200
+Message-ID: <ceccb248-8801-402b-b147-916eb9ed3883@gmx.net>
+Date: Mon, 31 Aug 2026 15:47:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.48
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-From: Haibo Chen <haibo.chen@nxp.com>
-
-[ Upstream commit b4bde5cfff8e43e948219f0a598e4bf057ecfba4 ]
-
-In nxp_fspi_select_mem() the RX sample clock source (MCR0[RXCLKSRC])
-and the DLL control registers (DLLxCR) are reconfigured while the
-FlexSPI module is still enabled. According to the FlexSPI reference
-manual initialization sequence, MCR0 and the DLL control registers
-should be programmed while the module is in stop mode, i.e. with
-MCR0[MDIS] set to 1, and the module re-enabled (MCR0[MDIS] = 0)
-afterwards.
-
-Wrap the RX sample clock source selection and the DLL calibration/
-override reconfiguration in a stop-mode window to align with the RM
-and avoid reconfiguring timing-critical registers while the module is
-active.
-
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-# Stable Backport Analysis: `spi: spi-nxp-fspi: enter stop mode before
-reconfiguring MCR0 and DLL`
-
-**Local tree:** Linux 6.18.44 (`v6.18.44-2-g1b9e1abadee04`, Makefile
-`VERSION=6 PATCHLEVEL=18 SUBLEVEL=44`)
-
----
-
-## PHASE 1: COMMIT MESSAGE FORENSICS
-
-**Step 1.1 – Subject line**
-
-Record: `[spi: spi-nxp-fspi]` `[enter/align]` — Enter FlexSPI stop mode
-(MCR0[MDIS]=1) before reprogramming MCR0 RX clock source and DLL control
-registers during runtime memory selection.
-
-**Step 1.2 – Tags**
-
-| Tag | Value |
-|-----|-------|
-| Signed-off-by | Haibo Chen \<haibo.chen@nxp.com\> |
-| Reviewed-by | Frank Li \<Frank.Li@nxp.com\> (NXP) |
-| Link | https://patch.msgid.link/20260728-fspi-
-clock-v2-2-dbe786a4a6eb@nxp.com |
-| Signed-off-by | Mark Brown \<broonie@kernel.org\> (SPI maintainer) |
-
-Notable: No Reported-by, Fixes:, Cc: stable, or syzbot tags. Reviewed by
-NXP engineer. Link indicates patch **2/2** of `fspi-clock-v2` series
-(patch 1 is already in this tree as `51c52e493346f`).
-
-Record: Reviewed-by from NXP; part of v2 series; no user/fuzzer bug
-report in message.
-
-**Step 1.3 – Body analysis**
-
-Record:
-- **Bug:** `nxp_fspi_select_mem()` reprograms MCR0[RXCLKSRC] and DLLxCR
-  while FlexSPI is still enabled (MCR0[MDIS]=0), violating the FlexSPI
-  reference manual initialization sequence.
-- **Symptom:** Timing-critical registers changed while the module is
-  active; can cause unreliable flash reads when switching chip-select,
-  DTR/STR mode, or clock rate.
-- **Root cause:** Runtime reconfiguration path omits the stop-mode
-  window that probe initialization already uses correctly.
-- **Version info:** None in message.
-
-**Step 1.4 – Hidden bug fix?**
-
-Record: **Yes.** Although framed as RM compliance, this is a hardware
-correctness bug fix. The driver’s own probe path already disables the
-module (MDIS) before DLL programming; `select_mem()` was inconsistent,
-creating a real stability risk on flash access paths.
-
----
-
-## PHASE 2: DIFF ANALYSIS
-
-**Step 2.1 – Inventory**
-
-Record:
-- **File:** `drivers/spi/spi-nxp-fspi.c` (+14 lines net in
-  `nxp_fspi_select_mem()`)
-- **Function modified:** `nxp_fspi_select_mem()`
-- **Scope:** Single-file, surgical fix
-
-**Step 2.2 – Code flow change**
-
-Record:
-- **Hunk 1 (before RX/DLL reconfig):** Reads MCR0, sets MDIS (stop
-  mode), then proceeds with `nxp_fspi_select_rx_sample_clk_source()`,
-  clock rate change, and DLL calibration/override.
-- **Hunk 2 (after DLL reconfig):** Clears MDIS to re-enable the module.
-- **Before:** MCR0 and DLL registers written while module active.
-- **After:** Same operations wrapped in stop-mode window, matching probe
-  init at lines 1244–1252.
-
-**Step 2.3 – Bug mechanism**
-
-Record: **Category (g) logic/correctness + hardware workaround.**
-Reprogramming timing-critical MCR0/DLL registers on a live FlexSPI
-controller violates documented hardware sequencing. The probe path
-already does this correctly; runtime `select_mem()` did not.
-
-**Step 2.4 – Fix quality**
-
-Record:
-- **Obviously correct:** Yes — mirrors existing probe/cleanup MDIS usage
-  in the same file.
-- **Minimal:** Yes — ~14 lines, no refactoring.
-- **Regression risk:** Low overall. **Minor concern:** pre-existing
-  early `return` on `clk_set_rate()` / `clk_prep_enable()` failure would
-  now leave MDIS=1 (module disabled). These paths existed before; stop
-  mode makes failure state slightly worse, but `clk_set_rate()` failure
-  is rare and the function already had unsafe early returns.
-
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-**Step 3.1 – Blame**
-
-Record: Lines 899–929 in current tree blame to `10eaa4c4a2579` (tree
-import artifact; entire `spi-nxp-fspi.c` arrived with stable tree). The
-runtime reconfiguration path without stop mode has been present since
-the driver exists in this tree.
-
-**Step 3.2 – Fixes: tag**
-
-Record: N/A — no Fixes: tag in commit message.
-
-**Step 3.3 – Related file history**
-
-Record:
-- `51c52e493346f` — v2-1 per-SoC rate limits (already in tree; does
-  **not** include stop mode)
-- `40ad64ac25bb7` — ACPI fwnode propagation
-- No stop-mode fix already present
-
-**Step 3.4 – Author context**
-
-Record: Haibo Chen (NXP) authored both `51c52e493346f` (v2-1) and this
-v2-2 patch. Frank Li (NXP) reviewed. Mark Brown (SPI maintainer)
-committed.
-
-**Step 3.5 – Dependencies**
-
-Record: Part of `fspi-clock-v2` 2-patch series. **v2-1 is already in
-this tree.** This patch is standalone — it only wraps existing
-reconfiguration in stop mode and does not depend on v2-1’s data
-structures. Can apply cleanly to current `nxp_fspi_select_mem()`.
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-**Step 4.1 – Original discussion**
-
-Record: **UNVERIFIED** — `b4 dig -c` could not run (commit not in tree);
-lore.kernel.org and patch.msgid.link returned 403/bot protection. Link
-confirms patch `fspi-clock-v2-2` from NXP.
-
-**Step 4.2 – Reviewers**
-
-Record: **UNVERIFIED** via b4 dig -w. Commit message shows Reviewed-by:
-Frank Li (NXP), Signed-off-by: Mark Brown (SPI maintainer).
-
-**Step 4.3 – Bug report**
-
-Record: No Reported-by or syzbot link. Bug inferred from RM requirement
-and inconsistency with probe init.
-
-**Step 4.4 – Series context**
-
-Record: `fspi-clock-v2` series:
-- v2-1 (`51c52e493346f`) — per-SoC SDR/DTR limits — **in tree**
-- v2-2 (this commit) — stop mode before MCR0/DLL reconfig — **not in
-  tree**
-
-**Step 4.5 – Stable list**
-
-Record: **UNVERIFIED** — could not search lore stable archive (403).
-
----
-
-## PHASE 5: CODE SEMANTIC ANALYSIS
-
-**Step 5.1 – Key functions**
-
-Record: `nxp_fspi_select_mem()` modified; calls
-`nxp_fspi_select_rx_sample_clk_source()`, `nxp_fspi_dll_calibration()`,
-`nxp_fspi_dll_override()`.
-
-**Step 5.2 – Callers**
-
-Record: `nxp_fspi_select_mem()` called from `nxp_fspi_exec_op()` (line
-1121), which is the `spi_mem` exec_op handler — invoked on every SPI
-flash memory operation when CS, DTR/STR mode, or frequency changes.
-
-**Step 5.3 – Callees**
-
-Record: `fspi_readl`/`fspi_writel` on MCR0,
-`nxp_fspi_select_rx_sample_clk_source()` (writes MCR0 RXCLKSRC),
-`clk_set_rate`, `nxp_fspi_dll_calibration()`/`nxp_fspi_dll_override()`
-(write DLLACR/DLLBCR).
-
-**Step 5.4 – Reachability**
-
-Record: **Userspace-reachable** via MTD/SPI-NOR flash access on NXP
-platforms. Triggered when:
-- Switching between chip-selects (multi-flash boards)
-- Switching DTR ↔ STR mode (e.g., after `spi_nor_suspend` per driver
-  comment at line 754)
-- Changing operation frequency
-
-**Step 5.5 – Similar patterns**
-
-Record: Probe init (lines 1244–1252) and cleanup (line 1352) already use
-`FSPI_MCR0_MDIS`. `select_mem()` was the inconsistent outlier. Driver
-comment at lines 749–751 notes DTR mode without proper RXCLKSRC “read
-operation may meet issue.”
-
----
-
-## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (6.18.44)
-
-**Step 6.1 – Buggy code present?**
-
-Record: **Yes.** Current `nxp_fspi_select_mem()` at lines 899–929
-reprograms MCR0/DLL without entering stop mode. Commit is **not** yet
-applied.
-
-**Step 6.2 – Backport complications**
-
-Record: **Clean apply expected.** Only adds `u32 reg` and MDIS set/clear
-around existing code. No structural conflicts with recent changes.
-
-**Step 6.3 – Related fixes already present?**
-
-Record: **No.** `git log --grep='stop mode'` returns nothing. v2-1 rate
-limits are present but stop-mode fix is absent.
-
----
-
-## PHASE 7: SUBSYSTEM CONTEXT
-
-**Step 7.1 – Subsystem and criticality**
-
-Record: **drivers/spi** — NXP FlexSPI controller
-(`CONFIG_SPI_NXP_FLEXSPI`, depends on `ARCH_LAYERSCAPE || ARCH_MXC`).
-**IMPORTANT** for NXP embedded (i.MX8, i.MX95, LX2160A) — boot/storage
-flash lives on this controller.
-
-**Step 7.2 – Activity**
-
-Record: Active — recent commits `51c52e493346f`, `40ad64ac25bb7` in this
-tree.
-
----
-
-## PHASE 8: IMPACT AND RISK
-
-**Step 8.1 – Who is affected**
-
-Record: **Platform-specific** — NXP i.MX and Layerscape boards using
-FlexSPI for SPI-NOR flash (common boot media).
-
-**Step 8.2 – Trigger conditions**
-
-Record: Chip-select switch, DTR/STR mode change, or frequency change
-during flash I/O. Moderately common on multi-CS or DTR-capable setups.
-Unprivileged users can trigger via normal flash/MTD access.
-
-**Step 8.3 – Failure mode severity**
-
-Record: **Flash read corruption or failures** when timing registers are
-reprogrammed on an active controller. Severity: **HIGH** for affected
-platforms (silent data corruption risk on NOR flash reads).
-
-**Step 8.4 – Risk/benefit**
-
-Record:
-- **Benefit:** HIGH for NXP embedded users — prevents unreliable flash
-  reads during runtime reconfiguration.
-- **Risk:** LOW — small change, matches existing probe pattern, NXP-
-  reviewed.
-- **Ratio:** Strong benefit, low risk.
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-**Evidence FOR backport:**
-- Fixes real hardware programming sequence violation
-- Probe init already uses stop mode; runtime path was wrong by
-  comparison
-- Can cause flash read instability/corruption on CS/mode/freq switches
-- Small (~14 lines), surgical, NXP-reviewed
-- Buggy code confirmed present in Linux 6.18.44 tree
-- v2-1 prerequisite already in tree; patch applies standalone
-- Hardware workaround / correctness fix category
-
-**Evidence AGAINST:**
-- No explicit user bug report or syzbot finding
-- Platform-specific driver (not universal)
-- Early-return error paths could leave MDIS=1 (pre-existing pattern,
-  rare trigger)
-- Mailing list discussion unverified
-
-**Stable rules checklist:**
-
-| Criterion | Result |
-|-----------|--------|
-| 1. Obviously correct and tested? | **PASS** — matches probe pattern;
-NXP-reviewed |
-| 2. Fixes real bug affecting users? | **PASS** — RM violation on live
-controller during flash ops |
-| 3. Important issue? | **PASS** — flash read corruption risk, HIGH for
-NXP platforms |
-| 4. Small and contained? | **PASS** — single function, ~14 lines |
-| 5. No new features/APIs? | **PASS** — sequencing fix only |
-| 6. Can apply to local tree? | **PASS** — buggy code present, clean
-apply expected |
-
-**Exception category:** Hardware workaround / correctness fix for
-timing-critical register programming.
-
----
-
-## Verification
-
-- [Phase 1] Parsed subject, tags (Reviewed-by Frank Li, Link to v2-2),
-  body — no Reported-by/syzbot
-- [Phase 2] Diff analysis: adds MDIS stop-mode window in
-  `nxp_fspi_select_mem()`, +14 lines
-- [Phase 3] `git blame -L 899,929`: buggy path in current tree; `git log
-  --oneline -- drivers/spi/spi-nxp-fspi.c`: v2-1 present, stop-mode fix
-  absent
-- [Phase 3] `51c52e493346f` confirmed as v2-1 already in tree; stop mode
-  not included
-- [Phase 3] `git merge-base --is-ancestor f43579ef3500 HEAD`: f43579 NOT
-  ancestor (stable import), but runtime reconfig code exists
-- [Phase 4] b4 dig: commit not in tree, could not run `-c`
-- [Phase 4] lore.kernel.org / patch.msgid.link: 403 Forbidden —
-  **UNVERIFIED** discussion content
-- [Phase 5] `nxp_fspi_select_mem()` called from `nxp_fspi_exec_op()`
-  line 1121 — flash hot path
-- [Phase 5] Probe lines 1244–1252 use MDIS before DLL config; cleanup
-  line 1352 uses MDIS
-- [Phase 6] `git describe HEAD`: v6.18.44; buggy code at lines 899–929
-  confirmed by read
-- [Phase 6] `git log --grep='stop mode'`: no matches — fix not yet
-  applied
-- [Phase 7] `CONFIG_SPI_NXP_FLEXSPI` in drivers/spi/Kconfig,
-  ARCH_MXC/ARCH_LAYERSCAPE
-- [Phase 8] Supported SoCs: imx8mm/mp/qxp/dxl/ulp/95, lx2160a (device
-  table lines 1522–1529)
-
-This is a small, hardware-correctness fix that prevents reprogramming
-timing-critical FlexSPI registers while the controller is active — a
-documented violation that can cause flash read failures on NXP embedded
-platforms. The fix mirrors the probe init sequence already in the
-driver, applies cleanly to 6.18.44, and its series prerequisite is
-already present.
-
-**YES**The background `git log -S 'select_rx_sample_clk_source'` search
-timed out and was killed; it wasn’t needed for the verdict — the
-relevant history was already covered via blame, file log, and reading
-the current `nxp_fspi_select_mem()` code.
-
-**Conclusion for Linux 6.18.44:** backport **YES**. The driver
-reprograms MCR0/DLL timing registers at runtime without entering stop
-mode, while probe init already does — a small hardware-correctness fix
-that can affect flash read reliability on NXP i.MX/Layerscape platforms
-when switching chip-select, DTR/STR mode, or frequency.
-
- drivers/spi/spi-nxp-fspi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 69ab72fff19d2..5cdd14d72c34c 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -867,6 +867,7 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	unsigned long rate = op->max_freq;
- 	int ret;
- 	uint64_t size_kb;
-+	u32 reg;
- 
- 	/*
- 	 * Return when following condition all meet,
-@@ -896,6 +897,15 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 
- 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
- 
-+	/*
-+	 * Per the FlexSPI reference manual (initialization sequence), MCR0 and
-+	 * the DLL control registers should be configured while the module is in
-+	 * stop mode (MCR0[MDIS] = 1). Enter stop mode before reconfiguring the
-+	 * RX sample clock source and the DLL, then exit stop mode afterwards.
-+	 */
-+	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-+	fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-+
- 	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
- 	rate = min(f->max_rate, op->max_freq);
- 
-@@ -935,6 +945,10 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	else
- 		nxp_fspi_dll_override(f);
- 
-+	/* Exit stop mode now that MCR0 and the DLL have been reconfigured. */
-+	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-+	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-+
- 	f->pre_op_rate = op->max_freq;
- 
- 	f->selected = spi_get_chipselect(spi, 0);
--- 
-2.53.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 3/3] arm64: dts: freescale: Add chargebyte Charge
+ Control Y
+To: sashiko-reviews@lists.linux.dev
+Cc: Vincent Mailhol <mailhol@kernel.org>,
+ Marc Kleine-Budde <mkl@pengutronix.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, conor+dt@kernel.org,
+ olteanv@gmail.com, vkoul@kernel.org, devicetree@vger.kernel.org,
+ linux-phy@lists.infradead.org, Frank.Li@kernel.org, robh@kernel.org,
+ neil.armstrong@linaro.org, Oliver Hartkopp <socketcan@hartkopp.net>,
+ linux-can@vger.kernel.org, imx@lists.linux.dev
+References: <20260831083539.8287-1-wahrenst@gmx.net>
+ <20260831083539.8287-4-wahrenst@gmx.net>
+ <20260831090445.0F50B1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20260831090445.0F50B1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:NtiKhPWYDQzWNbjpTe7PtXswj1atYkIo1j4qDXe6ZWHHRzTDTpd
+ JFx7ksROHOGknGVdp1IDFB/8VulloSQMJCvaIe/jBd9csmGb5wJGk6eAEK85GJGGjksYFeq
+ LWyhsE+xY+hUFB7UwKsJLQyySu/acf/xW6aUdxWXjpV0Mfq5GqmkrNXL63ROX1P30DdnpFy
+ OZBj3sY4tmDo8AMelr83A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:lsYFMLeZhCU=;dUGm+OHITs3YVRPznO9bpH6SUAv
+ 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
+
+Am 31.08.26 um 11:04 schrieb sashiko-bot@kernel.org:
+> Thank you for your contribution! Sashiko AI review found 3 potential iss=
+ue(s) to consider:
+> - [Medium] Missing GPIO initialization / Unused pin for X_nRST_LAN
+> - [Medium] Missing Pin Mux Configuration for USDHC2_VSELECT in default s=
+tate
+> - [Low] DT Binding Violation: Undocumented compatible string 'microchip,=
+mcp2542'
+> --
+>
+> commit c595019b7dc419cc298a111c2b215904a12f65e1
+> Author: Stefan Wahren <wahrenst@gmx.net>
+> arm64: dts: freescale: Add chargebyte Charge Control Y
+>
+> This commit introduces device tree support for the chargebyte Charge Con=
+trol Y,
+> an Electrical Vehicle Supply Equipment for MCS charging stations based o=
+n the
+> phyCORE-i.MX 93 ARM SoM. It defines necessary pin multiplexing, peripher=
+als
+> like CAN and Ethernet, and device-specific layouts.
+>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts b=
+/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
+>> new file mode 100644
+>> index 0000000000000..0405098cc05c4
+>> --- /dev/null
+>> +++ b/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
+> [ ... ]
+>
+>> +	// Heartbeat LED of phyCore is not populated
+>> +	/delete-node/ leds;
+>> +
+>> +	flexcan1_tc: can-phy0 {
+>> +		compatible =3D "microchip,mcp2542", "ti,tcan1042";
+> [Severity: Low]
+> Is the "microchip,mcp2542" compatible string documented in any devicetre=
+e
+> binding schema?
+This is included in patch #2.
+> Using an undocumented compatible string here might cause `make dtbs_chec=
+k`
+> validation tooling to fail.
+I verified this patch series with "make dtbs_check". False positive?
+>
+>> +		#phy-cells =3D <0>;
+>> +		max-bitrate =3D <1000000>;
+>> +	};
+> [ ... ]
+>
+>> +	pinctrl_flexcan1: flexcan1grp {
+>> +		fsl,pins =3D <
+>> +			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
+>> +			MX93_PAD_PDM_CLK__CAN1_TX		0x1382
+>> +		>;
+>> +	};
+>> +
+>> +	pinctrl_gpio1: gpio1grp {
+>> +		fsl,pins =3D <
+>> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
+> [Severity: Medium]
+> Does the X_nRST_LAN reset pin (GPIO1_IO03) need a GPIO hog or a driver
+> consumer (e.g., via a reset-gpios property) in the device tree?
+>
+> Since the upstream lan865x SPI kernel driver does not parse or manage
+> reset-gpios, leaving its functional state unmanaged here might result in=
+ the
+> hardware reset pin floating or being left in an indeterminate state.
+>
+> Could this cause the LAN8651 Ethernet interface to fail to emerge from r=
+eset
+> and initialize properly on a cold boot?
+As already mentioned in the cover letter, I like to proceed with the=20
+version until the reset management is implemented in LAN8651.
+The pin is not floating because there is a pull resistor in hardware.
+
+Should I move the explanation to the commit message of this patch or add=
+=20
+a comment in the DTS?
+>
+>> +			MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10	0x382
+>> +		>;
+>> +	};
+>> +
+>> +	pinctrl_gpio4: gpio4grp {
+> [ ... ]
+>
+>> +	pinctrl_usdhc2_cd: usdhc2cdgrp {
+>> +		fsl,pins =3D <
+>> +			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
+>> +		>;
+>> +	};
+>> +
+>> +	/* need to config the SION for data and cmd pad, refer to ERR052021 *=
+/
+>> +	pinctrl_usdhc2_default: usdhc2grp {
+>> +		fsl,pins =3D <
+>> +			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
+>> +			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
+>> +			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
+>> +			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
+>> +			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000138e
+>> +			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
+> [Severity: Medium]
+> Should MX93_PAD_SD2_VSELECT__USDHC2_VSELECT be included in this default
+> state group?
+>
+> The MMC core initially brings up the SD card in the default 3.3V state. =
+Without
+> the USDHC2_VSELECT pad configured here, the controller might not be able=
+ to
+> actively manage the IO voltage selection in its default state.
+>
+> Could this absence lead to unpredictable external voltage regulator beha=
+vior or
+> SD card initialization failures?
+Nice catch, will fix it
+
+Best regards
+>
+>> +		>;
+>> +	};
+>> +
+>> +	/* need to config the SION for data and cmd pad, refer to ERR052021 *=
+/
+>> +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
 
