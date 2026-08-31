@@ -1,302 +1,244 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010058.outbound.protection.outlook.com [52.101.69.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5F047DF9B
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 16:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788192695; cv=fail; b=LAR3rCApnMvAoTsE1eIjESvQFTmkxtvd9DlwQeuO3Q1NT1dPN15XFj1EfkC7tnmym1Xo5PAsGW5VG3tryWk9omuEM7mhKzd7GSNmIjrwJEm1LY0vR9da+w9LFv2a61eLOc0L73/JiU7KkNNSQgRRxKru6aocm38y6xNw9saWcpQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788192695; c=relaxed/simple;
-	bh=YWpy5QZbFcemCglnLza/bUX4kAS/g9XT6fIJZ67RY8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EF1cAx8bEE9xfowlSSw/84eW5r8mMQqvpK31Rkdx3DArOQn4ML0/6frpBfNettOPzW21eC07Nm0V6rsogoQJTZ7ra0KGqzo2auIBWgRML0mwa18rUVq3DENTfKlkOkIuScismFyVK/W9/8yLWGKyOcqysXxG+WYXKh7RV34co6Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=M1oXlb/j; arc=fail smtp.client-ip=52.101.69.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9029B484251;
+	Mon, 31 Aug 2026 16:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788193064; cv=none; b=TV/4zQN7+IaxX3wA96ey1s28iLy87FmzDhQWnUUheJnI03lXV2fgBQ1zOiLjxSDVNMIjXSx6gYZ6FdW5wwgh/OxNAr/3HBz/cZ3HwYnuYlhrxgU9wWWnsg2bUrWRTrB9AB+TCB7eMAjuDDFemilVcNsTpvVyr9ltcosmqbUiILc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788193064; c=relaxed/simple;
+	bh=UQdPVjsSllmbAksMbFCnvGYfKEyx+A8rEA2R4ECxdOM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZYr4uKtcHskElFoi43IfII+W9nwrc4qoZjaiTPRG/7VdNmWoSsjxLoQ8gmP3ZWel0y3zfYz3A1PQG/vmq/EFLgkpAoJQJRvIXx7emKOTOj6wZZvN47RAIj0mUJcV55RAtopXIPCiSi+75R8dw2jBU40d9GcszmHYpM6ybD3RDi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOufgh6j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="M1oXlb/j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A944HL0njLq13JdShCXCdlkHSe4tjMilfSoCSSWKs8oI01Lobgdb3BwE0BYHTCyNqJq6la32Xlz5sKd+fxWcoFbS7FbYQnr4tzA+B2Z2F9+AsuLu1o1uEw16rLITJrolw4nhONYfmv7cH2bDe5qhXGbTvL+CBBbaRnwkF6+w3Et8/d8xzq6o2smu3Qe13ZfOOzgHUgI+xi4hRgo81aGKpr9BsGkRHcyQzEnvLPrbvqsdAJ7Pm51Ju69yDxjfZB6D38bhaXzzZ00ypU4HB7EUOuS3rmf2m38DIXKqUL8LWH8lBkG6G7Xpg0NwXY+HYB3gr5K08GCai+iotVKVQ5wsFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3lYlyBG5BX869qd+KbywHnlQ4C/x5m77GSngPb48Ta4=;
- b=lUFz2c0JNS0dDpwq7Pnnqjgh6qttDglRpW2+zS9dTGdjnKjLg4fnO3DY9oBpWN7+weqqRErlgcjR9ttYHnjk0XgMXOPtwLHj1pEtwkw6elfiQiFSYmeTF4K/eEEHs1vsyOuixKQt2b0XZAOLT56S6k98a6qlpUJ5Y4fUlsZHn5wIPZ3I5MeRvpu4qixk1NNyY+cjLb8fqKXhab8AZ4smprAOjRsyQ+p9bOlX0zQ9N2dp/RK+KJ6cec0OvfWdZZRf2vQnAmNrN6zj0leod9MJ1daFfKraUZ2y3ZUBpOoHFVqJYWefShsOpV0I0ogLYJSyBLAWKjr4ED3sPmjbyPOXEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3lYlyBG5BX869qd+KbywHnlQ4C/x5m77GSngPb48Ta4=;
- b=M1oXlb/j7Ms7fHp3HihzbKxl3PbO39IqDmGOPxKhsHvPmKwHNyYxdYQip+gNL8LyzxsMVYVy0jm5JC5YnCBdBoczPF/d5rzX12BAOp963DqPD6zkoZUtxfkKCNRhMCdWS3EYOI7TcmtqcqderSZ9ngP8Hnf115ZNNz2ZxxgFoL2XNa8QQM7IdDUqxOYuZqBL571aD5VkDoIhXN6G9RGBApGJKN01dLRx5bE8e5qrzvlUlUmtswRbz3KV3ym3fzi6QYF3eMhk2OKibTcRp5uuEBVLcxxdX0k3OzJMtH0Y4ChedK96myU+cE+FVFN6+ke7o/0//wdi6//s813v0GOplg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV1PR04MB10774.eurprd04.prod.outlook.com (2603:10a6:150:205::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 16:11:28 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 16:11:28 +0000
-From: Frank.Li@oss.nxp.com
-To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	linux-media@vger.kernel.org (open list:OV2659 OMNIVISION SENSOR DRIVER),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v3 1/1] media: dt-bindings: convert ovti,ov2659.txt to yaml format
-Date: Mon, 31 Aug 2026 12:11:09 -0400
-Message-ID: <20260831161121.4048134-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CY5PR15CA0209.namprd15.prod.outlook.com
- (2603:10b6:930:82::27) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOufgh6j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8771F000E9;
+	Mon, 31 Aug 2026 16:17:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788193062;
+	bh=P49xYdhz/xjQ7BMYEEzVnSoncIoxJ9kG0EiBOFLfPl4=;
+	h=From:Subject:Date:To:Cc;
+	b=cOufgh6jV1ylZ0/c48mF4elVJ9nF9FeI4rC/0rzzTyoqGjE0HVPGEDABGzgDEV3vI
+	 iUozhugXufPr3T01SxkQZ1bmwNK/N/PtzgAd4gWzJai+9/LuDPlU2LBJ/xW2tKRCRp
+	 YV2oJJhx3RwbY/9cIKN31dfI9eJeAT6V3WURQ4mBIPEFMmNMnmHUdGosmocGgz54rt
+	 /1HtPdFXL254gV2Nd1WChSFm4qhgLXrnZXaXQHxDo0JO1VG2RUr5QTm6UlxinAaQSn
+	 VIgK7aCD4ny4wDZofm2VdVYpYghrohClIrrElf29YQtKtfWXRtqfmdZkK7w0CDN0ZT
+	 8bmlzlDnpwnsg==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH v3 00/40] drm/plane: Convert all drivers to
+ atomic_create_state and remove reset
+Date: Mon, 31 Aug 2026 18:17:16 +0200
+Message-Id: <20260831-drm-no-more-plane-reset-v3-0-1877c7aa57b3@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10774:EE_
-X-MS-Office365-Filtering-Correlation-Id: 00411c68-6e0c-4361-0c2b-08df077a83a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|23010399003|11063799006|56012099006|3023799007|10067099003|921020|6133799003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	QdZMeL4ZeJIGBl4bzdDgygtJ8IbSxz2CO/VibL9lH9ExZTBob6DeSumSp//2TNFznBXJX56istc5k1RICkCrbxDsFtOOULn3cbqo8ddNb6EKhWC9YuUoNlQkbKdZNU00rW82ONLG1uj/xs1w383AETq+wfjHAqMfMznUKuvGqd/OVQdmjloBdMCA2/5p2Ltae0vbtsFG7x0TZHeSm1KV4tfAWZR8jzLAMlY1ZsXEcVqi6Qs9VDq5/oLeDuu1owV/Ze7+7i0nPy94V3CpAx1GAy7YXUCz45syNsCKWnV1cPbIDHfh0nOlwWrvCm6DyMhB2wfR0mwftJDChd5qiOac5+LCGij29XxN3Vc8ulNDK06Hl7BQHAkcWpZ1dGdg+jF7llMV2hz1NolK95K1ye6bAYI1rNruCjcwaE4rY7oPxRCsd4484Nxds20r85RLIKLfxgGbG0sgghRduLodGsThh1pCeqfdCf8wicBIFZ/FIx0WHCHNPisDF/cH1JypCkcMRxIAL3xcheuxLgBFSMHOEPTNcevuMeL5lt8JcO8MzQ5JD93g58Q4Ce6LnG9rC+MF7UrxLup725eMc5wArKhhjY9H7bujdT88b/2RV2nfGGeGlekLpU5vHS+JPqZjX/v361Dl85+DOvFdNOSgHv02PiCJf6O/ufbN1wTIP48d2ng=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(23010399003)(11063799006)(56012099006)(3023799007)(10067099003)(921020)(6133799003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xAPU9Q4DHb8ZmZ3v4Mfg4b4YiQKhF7GCz06XKBotq8fQHb2f1DipEc8FJ36f?=
- =?us-ascii?Q?71LZuAKM2bBkqPkdeu8r75VKlxuB8HvEq/hh62zJR0u9sWUMsbEN+5YQ7GEp?=
- =?us-ascii?Q?zMpkSG8EydF87r/rxurJNqIPHLX45qIvaqZ+JaFMwcyDEjgYn91Cix7UkQvO?=
- =?us-ascii?Q?URw5UPAzCJPZ63TvktGDbdqHgvESKDcnBQHDz0TrnsTyF20PxXrM4R/F+NY9?=
- =?us-ascii?Q?5dlmeGZ3LetAtUXKMz1Ccds6cS6k9J7e0OAUxh7w6H7WWSdcGe7yRb4GHL9C?=
- =?us-ascii?Q?SvOKT4LWaVJWcWe7bJ86LXBL0ifiSuL2ZS/5KZPZ48tOqDDs/MRgd1Gv4C1S?=
- =?us-ascii?Q?H8mHyrXZ3vthidzV0ZXcksm6KGtYpSuqoTCwrRrOV0NDfQLSgNW44znPhpoX?=
- =?us-ascii?Q?N8OgLq5TsTWmitJjTFus7+QQHVBcxaLTIz8cpCUW5asXhAgJlXU5yK3V5g8k?=
- =?us-ascii?Q?Bagj+8WFMe9emNXeDDqYCwT2GuhjAX6dc4Ag/SwMgGHENi9m4ww7Vju2PuVV?=
- =?us-ascii?Q?SRKTbW9PYWQ0+1jyd/pI3YWt1ZWdsKlOIYC6Bd0YklXjM+oedvaAVy797oUF?=
- =?us-ascii?Q?d0nzWSojR33vvy4nJ8mV4f8NtKkf/J/4wTEJkCjpaxHHfrH5A6wBuN1zvA7u?=
- =?us-ascii?Q?yLtiTKA5Tn9UAXU39mWeUtAtxHgq3WU3wlbg8h3WYA/BN8c/D2GRRorfUQnK?=
- =?us-ascii?Q?A1t8ME0e5aA2Cf8JYTlLFrMWll8gKF14E7NwLkxIvbToX/c7wV7vTaSm/ZKS?=
- =?us-ascii?Q?pRRRgBgt8ZMDcgj2AneKfnf9u+CGd034m6UuuDCIdrNWI3qpUsqBcwtXFElF?=
- =?us-ascii?Q?o7iR+s0b170KjvbFons7x9hWv6OFCHlTJkoRK6yIATgtomdig74gBOhoml8z?=
- =?us-ascii?Q?eYbzCG/uVc31QQaDeayrK65osCIStRPidck7oTpQTKOTH20O02qvx7JIKRYP?=
- =?us-ascii?Q?tzIGiFm9LN0f1oWiHGJcEosfVIwaqJ1e2CSPt2EbThjpU4ve6M4LVxvzsoCl?=
- =?us-ascii?Q?FY6yrocM0XqzWJ7fLvXijyDvfqL1Ty9YZSte+xNkXxydrrF+QRRngbjau0X2?=
- =?us-ascii?Q?TFh3CCK5Jc/zo4mgOOQjDoH2ZV7AdUwYZGnYMDLZSxFmVrh7olG5yw1+wuhs?=
- =?us-ascii?Q?sEOdl8dCkyb6pEqnf2AMaOQJspH1yQV7Nxx4MS1ILO4KP37xDsAihQnZ6ZsR?=
- =?us-ascii?Q?646V1CP/DsTyXe3xhe6cz7G1O3KDsREPMLwI7PyKT+zWPNjRc9deww7eV1yF?=
- =?us-ascii?Q?y3JzdMp1fdJ1kuKq4Oj+nwQHXe46hKJJPJ3kfHTUpM4rRwCMGaae1dce8ZNj?=
- =?us-ascii?Q?r1re2D1UUBaPRVxdvGQzMLiO7ENMhl97zuUtZaB/HBQy3eWyrXFVCC5wIsLR?=
- =?us-ascii?Q?6OAUwSI1iIOQvWEkpta1Fk3ac/jWpw06/hRgC2vGELXBxY7e5PD4aEgjSljL?=
- =?us-ascii?Q?HvzmI2aX/ffG23gSdFVH+DFJU/5GuI7bHwSp0BGqHV5I/mSHhY2jerZJ1S6C?=
- =?us-ascii?Q?UJh6mJJbvbNvxfpVCKe4FG1QabNuiEPh5GwiXBW542vbzeM9qW85JO1Dsi60?=
- =?us-ascii?Q?/gOo6cgDyWUtyU4dXKlLoXASXNuVeVOjOFAe9MA7iqsxK5XuLj4cKv/9mr2E?=
- =?us-ascii?Q?cjyWnVazNNxYCE4CmMkdNkAVh+5HH0Vikk0xdylaw7ZIjw2TDRw3hpEEhJ4p?=
- =?us-ascii?Q?Rh1n/Ww2JeFoKFsp1qhGF2XLs6cUhI9s+B4e2fpmdbyqXESrjkA8X2b0SxgP?=
- =?us-ascii?Q?E69b6so3NgiKlpQsXrrr04fW2VPJ69HsZRp/Oj1QXD9Y9Ga2aIX9?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00411c68-6e0c-4361-0c2b-08df077a83a4
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 16:11:28.7531
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AASBlZ5+soY6lTzvtYErnF4rWJE8r72TvoqJMwAWJyTY2F75UBQPLQAutdlcE0QOHuX2k66jT2UX1pHf2moldhlS7w04rW4uG6tjTdrfnUIblM/cJKN40XBPVbCn/0v5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10774
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNPQ7CMAyG4augzBi57j8T90AMFXEgoiSVU0Wgq
+ ncnLQNi6Ph+kh9PKrBYDuq4m5RwtMF6lyLf79T13rkbg9WpFSFVWFELWp7gPDy9MAx95xiEA4+
+ ARVuiKYixNipdD8LGvlb5fEl9t2H08l4fxWxZv2aN22bMACFH0m1TGS4Nnh4sjvuDl5ta0Eg/q
+ MmKbYgS1JCmtsq1zvLiD5rn+QNzj1DiCAEAAA==
+X-Change-ID: 20260629-drm-no-more-plane-reset-04950f42e07f
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ hamohammed.sa@gmail.com, louis.chauvet@bootlin.com, melissa.srw@gmail.com, 
+ alexander.deucher@amd.com, amd-gfx@lists.freedesktop.org, 
+ christian.koenig@amd.com, alison.wang@nxp.com, stefan@agner.ch, 
+ jstultz@google.com, sumit.semwal@linaro.org, xinliang.liu@linaro.org, 
+ yongqin.liu@linaro.org, Frank.Li@nxp.com, 
+ Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com, 
+ imx@lists.linux.dev, kernel@pengutronix.de, victor.liu@nxp.com, 
+ anitha.chrisanthus@intel.com, paulk@sys-base.io, chenhuacai@kernel.org, 
+ jeffbai@aosc.io, lvjianmin@loongson.cn, wuqianhai@loongson.cn, 
+ xry111@xry111.site, zhengxingda@iscas.ac.cn, marex@denx.de, 
+ airlied@redhat.com, kraxel@redhat.com, spice-devel@lists.freedesktop.org, 
+ virtualization@lists.linux.dev, andy.yan@rock-chips.com, heiko@sntech.de, 
+ hjc@rock-chips.com, linux-rockchip@lists.infradead.org, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, orsonzhai@gmail.com, 
+ zhang.lyra@gmail.com, alain.volmat@foss.st.com, rgallaispou@gmail.com, 
+ alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com, 
+ philippe.cornu@foss.st.com, raphael.gallais-pou@foss.st.com, 
+ yannick.fertre@foss.st.com, jyri.sarha@iki.fi, 
+ tomi.valkeinen@ideasonboard.com, hansg@kernel.org, 
+ dmitry.osipenko@collabora.com, gurchetansingh@chromium.org, 
+ olvaffe@gmail.com, michal.simek@amd.com, harry.wentland@amd.com, 
+ siqueira@igalia.com, sunpeng.li@amd.com, linux@armlinux.org.uk, 
+ Dharma Balasubiramani <dharma.b@microchip.com>, 
+ Ludovic Desroches <ludovic.desroches@microchip.com>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, 
+ nicolas.ferre@microchip.com, alim.akhtar@samsung.com, inki.dae@samsung.com, 
+ krzk@kernel.org, kyungmin.park@samsung.com, 
+ linux-samsung-soc@vger.kernel.org, sw0312.kim@samsung.com, 
+ p.zabel@pengutronix.de, angelogioacchino.delregno@collabora.com, 
+ chunkuang.hu@kernel.org, matthias.bgg@gmail.com, 
+ Lyude Paul <lyude@redhat.com>, dakr@kernel.org, 
+ nouveau@lists.freedesktop.org, geert+renesas@glider.be, 
+ kieran.bingham+renesas@ideasonboard.com, 
+ laurent.pinchart+renesas@ideasonboard.com, 
+ linux-renesas-soc@vger.kernel.org, magnus.damm@gmail.com, 
+ tomi.valkeinen+renesas@ideasonboard.com, 
+ Biju Das <biju.das.jz@bp.renesas.com>, linux-sunxi@lists.linux.dev, 
+ samuel@sholland.org, wens@kernel.org, bcm-kernel-feedback-list@broadcom.com, 
+ zack.rusin@broadcom.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7711; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=UQdPVjsSllmbAksMbFCnvGYfKEyx+A8rEA2R4ECxdOM=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlTVwqc1s2/O5npboPLBs8f9/2OrUnzbD+Zc2d9+p7w2
+ Ps83PWvO6ayMAhzMsiKKbI8kQk7vbx9cZWD/cofMHNYmUCGMHBxCsBExPQZ68waZE79Kbj6M+VI
+ eegPpkc7du/3kt3862j2dl4/6RXs09Kv7xAU+7RF4d/B/dw5Mq/9zBgb5j5pltE76RyQyPlA086
+ 951/o/P85k6TUqm2YVp+cIDqz8rjT2TZ2j+xFjPX+fNNa+LUB
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-From: Frank Li <Frank.Li@nxp.com>
+This is a follow-up to the bridge reset removal series, and part of a
+larger effort to remove the reset hook from all KMS objects.
 
-Convert the OmniVision OV2659 camera sensor binding from plain text to
-YAML schema format.
+The plane reset hook is overloaded: it is called both at probe time
+to create the initial software state and during suspend/resume to
+reset hardware and software state. These two roles have different
+requirements, and the reset hook is not fallible, making error
+handling difficult for the initial state allocation path.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+While reset has the semantics to reset both the software and hardware
+state, the vast majority of implementations and all the helpers only
+reset the software state, making them equivalent to
+atomic_create_state in practice. The atomic_create_state hook makes
+this explicit: it only allocates and initializes a pristine state
+without any side effect, and returns the state pointer or an ERR_PTR
+on failure.
+
+This series first adds the necessary infrastructure in the simple-kms
+and GEM atomic helpers, then converts all 51 plane drivers tree-wide
+from the reset hook to atomic_create_state. The conversions were done
+using a combination of Coccinelle semantic patches and manual
+adjustments. Once all drivers are converted, the old helpers and the
+reset hook itself are removed from struct drm_plane_funcs.
+
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
-change in v3
-- update subject.
+Changes in v3:
+- Drop leftover state destruction in sun4i
+- Rebase on current drm-misc-next
+- Link to v2: https://lore.kernel.org/r/20260814-drm-no-more-plane-reset-v2-0-82d2963dd134@kernel.org
 
-change in v2
-- drop rob's review by because use new file
-- use new file ovti,2659 according to sakari's feedback
-- v1 (2025) https://lore.kernel.org/imx/aPdHqCWNdmVkch7S@valkosipuli.retiisi.eu/
+Changes in v2:
+- Rebase on latest drm-misc-next tag
+- Fix sashiko reviews
+- Fix atmel-hlcdc breakage
+- Link to v1: https://lore.kernel.org/r/20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org
+
 ---
- .../bindings/media/i2c/ovti,ov2659.txt        | 47 ---------
- .../bindings/media/i2c/ovti,ov2659.yaml       | 95 +++++++++++++++++++
- 2 files changed, 95 insertions(+), 47 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
- create mode 100644 Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml
+Maxime Ripard (40):
+      drm/simple-kms: Remove unused reset_plane hook
+      drm/vkms: Convert to atomic_create_state
+      drm/gem-atomic-helper: Remove __drm_gem_reset_shadow_plane()
+      drm/amdgpu: Convert to atomic_create_state
+      drm/fsl-dcu: Convert to atomic_create_state
+      drm/hisilicon/kirin: Convert to atomic_create_state
+      drm/imx/dc: Convert to atomic_create_state
+      drm/kmb: Convert to atomic_create_state
+      drm/logicvc: Convert to atomic_create_state
+      drm/loongson: Convert to atomic_create_state
+      drm/lcdif: Convert to atomic_create_state
+      drm/mxsfb: Convert to atomic_create_state
+      drm/qxl: Convert to atomic_create_state
+      drm/rockchip: Convert to atomic_create_state
+      drm/sprd: Convert to atomic_create_state
+      drm/sti: Convert to atomic_create_state
+      drm/stm: Convert to atomic_create_state
+      drm/tests: kunit: Convert to atomic_create_state
+      drm/tilcdc: Convert to atomic_create_state
+      drm/vboxvideo: Convert to atomic_create_state
+      drm/verisilicon: Convert to atomic_create_state
+      drm/virtio: Convert to atomic_create_state
+      drm/xlnx: Convert to atomic_create_state
+      drm/atomic-state-helper: Remove drm_atomic_helper_plane_reset()
+      drm/amdgpu_dm: Convert to atomic_create_state
+      drm/armada: Convert to atomic_create_state
+      drm/atmel-hlcdc: Drop spurious csc_init call from reset
+      drm/atmel-hlcdc: Convert to atomic_create_state
+      drm/exynos: Convert to atomic_create_state
+      drm/imx/ipuv3: Convert to atomic_create_state
+      drm/mediatek: Convert to atomic_create_state
+      drm/nouveau: Convert to atomic_create_state
+      drm/omap: Convert to atomic_create_state
+      drm/rcar-du: Convert to atomic_create_state
+      drm/rz-du: Convert to atomic_create_state
+      drm/shmobile: Convert to atomic_create_state
+      drm/sun4i: layer: Convert to atomic_create_state
+      drm/vmwgfx: Convert to atomic_create_state
+      drm/atomic-state-helper: Remove __drm_atomic_helper_plane_reset()
+      drm/plane: Remove reset
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
-deleted file mode 100644
-index 92989a619f292..0000000000000
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
-+++ /dev/null
-@@ -1,47 +0,0 @@
--* OV2659 1/5-Inch 2Mp SOC Camera
--
--The Omnivision OV2659 is a 1/5-inch SOC camera, with an active array size of
--1632H x 1212V. It is programmable through a SCCB. The OV2659 sensor supports
--multiple resolutions output, such as UXGA, SVGA, 720p. It also can support
--YUV422, RGB565/555 or raw RGB output formats.
--
--Required Properties:
--- compatible: Must be "ovti,ov2659"
--- reg: I2C slave address
--- clocks: reference to the xvclk input clock.
--- clock-names: should be "xvclk".
--- link-frequencies: target pixel clock frequency.
--
--Optional Properties:
--- powerdown-gpios: reference to the GPIO connected to the pwdn pin, if any.
--  Active high with internal pull down resistor.
--- reset-gpios: reference to the GPIO connected to the resetb pin, if any.
--  Active low with internal pull up resistor.
--
--For further reading on port node refer to
--Documentation/devicetree/bindings/media/video-interfaces.txt.
--
--Example:
--
--	i2c0@1c22000 {
--		...
--		...
--		 ov2659@30 {
--			compatible = "ovti,ov2659";
--			reg = <0x30>;
--
--			clocks = <&clk_ov2659 0>;
--			clock-names = "xvclk";
--
--			powerdown-gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
--			reset-gpios = <&gpio6 15 GPIO_ACTIVE_LOW>;
--
--			port {
--				ov2659_0: endpoint {
--					remote-endpoint = <&vpfe_ep>;
--					link-frequencies = /bits/ 64 <70000000>;
--				};
--			};
--		};
--		...
--	};
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml
-new file mode 100644
-index 0000000000000..926e5cd966b8d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml
-@@ -0,0 +1,95 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/media/i2c/ovti,ov2659.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: OmniVision OV2659 1/5-Inch 2Mp SOC Camera
-+
-+maintainers:
-+  - Frank Li <Frank.Li@kernel.org>
-+
-+description:
-+  The Omnivision OV2659 is a 1/5-inch SOC camera, with an active array size of
-+  1632H x 1212V. It is programmable through a SCCB. The OV2659 sensor supports
-+  multiple resolutions output, such as UXGA, SVGA, 720p. It also can support
-+  YUV422, RGB565/555 or raw RGB output formats.
-+
-+properties:
-+  compatible:
-+    const: ovti,ov2659
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: xvclk
-+
-+  powerdown-gpios:
-+    description:
-+      Reference to the GPIO connected to the pwdn pin, if any.
-+      Active high with internal pull down resistor.
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description:
-+      Reference to the GPIO connected to the resetb pin, if any.
-+      Active low with internal pull up resistor.
-+    maxItems: 1
-+
-+  port:
-+    $ref: /schemas/graph.yaml#/$defs/port-base
-+    unevaluatedProperties: false
-+
-+    properties:
-+      endpoint:
-+        $ref: /schemas/media/video-interfaces.yaml#
-+        unevaluatedProperties: false
-+
-+        properties:
-+          link-frequencies:
-+            description: Target pixel clock frequency.
-+            maxItems: 1
-+
-+        required:
-+          - link-frequencies
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - port
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        camera@30 {
-+            compatible = "ovti,ov2659";
-+            reg = <0x30>;
-+
-+            clocks = <&clk_ov2659 0>;
-+            clock-names = "xvclk";
-+
-+            powerdown-gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
-+            reset-gpios = <&gpio6 15 GPIO_ACTIVE_LOW>;
-+
-+            port {
-+                endpoint {
-+                    remote-endpoint = <&vpfe_ep>;
-+                    link-frequencies = /bits/ 64 <70000000>;
-+                };
-+            };
-+        };
-+    };
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c           |  2 +-
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c    | 28 +++++++++------
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h    |  2 +-
+ .../display/amdgpu_dm/tests/amdgpu_dm_plane_test.c | 30 ++++++----------
+ drivers/gpu/drm/armada/armada_overlay.c            | 39 ++++++++++----------
+ drivers/gpu/drm/armada/armada_plane.c              | 15 ++++----
+ drivers/gpu/drm/armada/armada_plane.h              |  2 +-
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c    | 33 ++++++++---------
+ drivers/gpu/drm/drm_atomic_state_helper.c          | 41 ----------------------
+ drivers/gpu/drm/drm_gem_atomic_helper.c            | 20 -----------
+ drivers/gpu/drm/drm_mode_config.c                  |  4 +--
+ drivers/gpu/drm/exynos/exynos_drm_plane.c          | 22 +++++-------
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_plane.c        |  2 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c    |  2 +-
+ drivers/gpu/drm/imx/dc/dc-plane.c                  |  2 +-
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c            | 19 +++++-----
+ drivers/gpu/drm/kmb/kmb_plane.c                    |  2 +-
+ drivers/gpu/drm/logicvc/logicvc_layer.c            |  2 +-
+ drivers/gpu/drm/loongson/lsdc_plane.c              |  2 +-
+ drivers/gpu/drm/mediatek/mtk_plane.c               | 22 +++++-------
+ drivers/gpu/drm/mxsfb/lcdif_kms.c                  |  2 +-
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c                  |  2 +-
+ drivers/gpu/drm/nouveau/dispnv50/wndw.c            | 15 ++++----
+ drivers/gpu/drm/omapdrm/omap_plane.c               | 13 ++++---
+ drivers/gpu/drm/qxl/qxl_display.c                  |  4 +--
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_plane.c    | 15 ++++----
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_vsp.c      | 15 ++++----
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_vsp.c       | 15 ++++----
+ drivers/gpu/drm/renesas/shmobile/shmob_drm_plane.c | 15 ++++----
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |  2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c       |  2 +-
+ drivers/gpu/drm/sprd/sprd_dpu.c                    |  2 +-
+ drivers/gpu/drm/sti/sti_cursor.c                   |  2 +-
+ drivers/gpu/drm/sti/sti_gdp.c                      |  2 +-
+ drivers/gpu/drm/sti/sti_hqvdp.c                    |  2 +-
+ drivers/gpu/drm/stm/ltdc.c                         |  2 +-
+ drivers/gpu/drm/sun4i/sun4i_layer.c                | 21 +++++------
+ drivers/gpu/drm/tests/drm_kunit_helpers.c          |  2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_plane.c              |  2 +-
+ drivers/gpu/drm/vboxvideo/vbox_mode.c              |  2 +-
+ drivers/gpu/drm/verisilicon/vs_cursor_plane.c      |  2 +-
+ drivers/gpu/drm/verisilicon/vs_plane.c             | 14 +++-----
+ drivers/gpu/drm/verisilicon/vs_plane.h             |  2 +-
+ drivers/gpu/drm/verisilicon/vs_primary_plane.c     |  2 +-
+ drivers/gpu/drm/virtio/virtgpu_plane.c             |  2 +-
+ drivers/gpu/drm/vkms/vkms_plane.c                  | 15 ++++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                | 17 ++++-----
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c                |  4 +--
+ drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c               |  4 +--
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c               |  4 +--
+ drivers/gpu/drm/xlnx/zynqmp_kms.c                  |  2 +-
+ include/drm/drm_atomic_state_helper.h              |  3 --
+ include/drm/drm_gem_atomic_helper.h                |  2 --
+ include/drm/drm_plane.h                            | 12 -------
+ include/drm/drm_simple_kms_helper.h                |  1 -
+ 56 files changed, 192 insertions(+), 324 deletions(-)
+---
+base-commit: 07c66ce1e6446f5cc6a4ace99a8d46880f45c527
+change-id: 20260629-drm-no-more-plane-reset-04950f42e07f
+
+Best regards,
 -- 
-2.43.0
+Maxime Ripard <mripard@kernel.org>
 
