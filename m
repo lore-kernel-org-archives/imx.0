@@ -1,230 +1,159 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013008.outbound.protection.outlook.com [40.107.162.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A6738B12D
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 18:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788202246; cv=fail; b=skpYONNPCyqikKhdjWvWBsAlI9RAysDIkvouH0IQ12WyGkdg3aMvQx6/5l1RdPgdxqcCcP+FefkFe0J8F+ti+RJxGyP/UndGOpwCo1L4gTjkCikKS/w4Ti1tQzTZONQjsRu/LTEqCv3y/WD0iVG4svbEvyipwdg8k1/w7j4Gwyg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788202246; c=relaxed/simple;
-	bh=ahn9JFdZlt1NkNxIaFPwfoWX0pzPC3l6NWBEwSh+9RI=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=ttFC9ZT/ujQFEVd8PlY5M1Hsm+UNZd4/Rqx79PLVKorzVO2VkBjF/bAECFtf9dfm07PlMuwyz3ckjlKjHNFS3fJFxi9ffyc8zgTkRwInWZihisUMT+iV/BQ2Q+60z70RwDRUZ6+gJI32UtyD2PXRvJ3dosYNM23ZMSo6kgmA204=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qEsHd0aK; arc=fail smtp.client-ip=40.107.162.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0C738D402;
+	Mon, 31 Aug 2026 18:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788202285; cv=none; b=TozOQGSkMwrHAMWSPZ8b5yEK7sQ1UIjLiTSXIfPEzRtsVC8xBhhFoMVTgF3/uofwBb0AXWqvBGDp9RFDRsmNrhqGT3XTVLoF/CpfoNdzCZxtvYbRO+RK6ayxXYS0Kt8keMBjCd7DEqvDQZPX14zZQrQzsDSId8AR6fvOStu3V6E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788202285; c=relaxed/simple;
+	bh=nOJzcAf+JwTqb9EpZGc6AUW4ADlBtYQYFFENrhrSzQc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=d6wiGNoDgIfy4Np2yqCyeQAhMjny2ch+R65I7BDYZJ6m+KV7doc+bY73FgadhhVbStEWblhvwj+Cs7g1uhYH/AhkI4Vr9rPqtKcERelj6oFMEXKrK2WfG6fZ3k16pgF66L7Vpf1ChI0nhEizljSIrTUrG2Aa9URYeQFqxppDSmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOf+v/pZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qEsHd0aK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L/uH9QVklFYCH2bnYeNZsahFZgPpNq4LYV/pGcyGynZSrOTO+QVWmWeOYeL4cvOFi2LjaHwpjApREokP1rpDidGLo7fRmrLaP6DvLOfgRJzZIBLp1nciA9/UILguirC4O9aBwpm0AKKF1mWIllb2mYdBs1lE/6NnvtskbjTZWwYdCUGmane4/hyvPR7y95HiCqrzpcZ1OrE5j1chz+Wzq4FjgSilpWQz8bX4CPDnKP3+nlp5vOoYwYopbW2Owwm15rQiO3JcxQMpWMBekAz2FvOU0jeqCm2luOhMpEjQs32y0oC5q0HZQuQRbTVYBVWDA5WR2DYMWpiTwTfWbdbOaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A73HwCRr0ytLESu6x1iJ7uX34QIjj6bIkBw7RZl0J54=;
- b=yd+pZ89NaD5pWBhyd5082wQCuEdhTGp5cxNcenfHAsaW/oOFC3v33is6lcX2Nhnx7AE230vAeyZKJsdWl1EBv1vdQ7rmujVfwC5qxez2gib5QYvhGeagwXLFvSbrhSVtk22BOgKVUlVTaJYlbeVdOl7365PAorAoCtb65DizZwbEmMsNiyT3Tm+oAkGIzhuMI6tPBIHhDI29tBaqZkLOkY+tPXczhKcCbkdoSLaGP+i1w7kRS9zPeJY54wYc9Ch4afv+UpDqt9V4uUKmGvIUcBCNPzCE7l/YwxIKkbZtU2cPmjWJBs4LI0jkjorpOQxiLe4HcaNNo6PHj+75F+m0zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A73HwCRr0ytLESu6x1iJ7uX34QIjj6bIkBw7RZl0J54=;
- b=qEsHd0aKY5SPXmcvvZBKEyNhBMWFjOCOiipraSGL5MPO9E00ccXC9p0/NNXNfl+TcnDqf3w2N4XGI/YdofanaAPe8ZyJtq6S2Tg2sWTIwOWfnzdqpmAfcxqrmeD3eDF6d60++qGG2VR4cdGDdk6VNEmpaSfj5A6gGFqNsParKV1Ecx23jmfEjlPD3ZGu5j57ZBPZRyV0MRkm1ioFFG8/0KSfZOJc0RZjMlDznfMnqxG9dUmJvG9XQOiAXWUwBAQnjaMfUZEcfUF0VmzVTxnQRdugBqbby8M4mEl751nDYG0lx9mNZBxe4s1e5hfy0l4h1bJoJSsh61cJ7YnOOsqA+g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM0PR04MB11994.eurprd04.prod.outlook.com (2603:10a6:20b:6fb::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 18:50:41 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 18:50:41 +0000
-From: Frank.Li@oss.nxp.com
-Date: Mon, 31 Aug 2026 14:50:20 -0400
-Subject: [PATCH v2 3/3] ARM: dts: imx: remove undocument properties of
- st,stmpe*
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-dts-stmpe-v2-3-f93d5f080443@nxp.com>
-References: <20260831-dts-stmpe-v2-0-f93d5f080443@nxp.com>
-In-Reply-To: <20260831-dts-stmpe-v2-0-f93d5f080443@nxp.com>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Linus Walleij <linusw@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788202221; l=3061;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=vObI9N9nWeIftc272jMDVqqNqfJYNfI3KxDU/Y3lcMc=;
- b=kdeVO0LydXvto0i058tU3Js/TAdwduUiZGBLWhZhcFLwRuoQ2XpC1FrVShTpjTsY1gwZ05UJR
- diRPI71iQv3AbN4k1PLBkO9isaubpAwm4+4tqG8NlrkNFoSlAk+p2EH
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: CY5PR15CA0105.namprd15.prod.outlook.com
- (2603:10b6:930:7::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOf+v/pZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165B21F000E9;
+	Mon, 31 Aug 2026 18:51:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788202283;
+	bh=SrIQmO2TqJQoSY8OIPAeq5rXYbmCOjzKNqsaH0Y3k7o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nOf+v/pZSQOTzM/iyaXT8p37+ONPFponvLkLNgiT+VFDdrEJZflGnobUS89X9PsZB
+	 xDxshAHz5dk/4e4eHpMISNfNMo3s8+oZp5WpA4Rmd4oOlJ7Zno1w6Zkx/5Vjg/uLY6
+	 kn2jXRX2Z2sWGjzx87HPkjQnYBKqgwlU58QaiNJ2XTionBSgZB2Wa5KqX6pZxSHw3V
+	 fb8L7yCsIKLs3Ewxm044B5SrJBeahWo2wVzkNhi2X4gPe8E25WTnJPWsA1uHL19HGf
+	 0LO204EpjICNXtddHNVbeeMiOTiwmRMBVU9Gh/UTN9g3wwZBRZfJEfKr+XPF+A+qxb
+	 h9sRUb32sASxw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 5/6] can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quirk
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
+Cc: "Marc Kleine-Budde" <mkl@pengutronix.de>, "Vincent Mailhol" <mailhol@kernel.org>, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, "Oliver
+ Hartkopp" <socketcan@hartkopp.net>, linux-can@vger.kernel.org, "Oleksij
+ Rempel" <o.rempel@pengutronix.de>
+In-Reply-To: <20260831143449.12828-6-ciprianmarian.costea@oss.nxp.com>
+References: <20260831143449.12828-1-ciprianmarian.costea@oss.nxp.com>
+ <20260831143449.12828-6-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 18:51:22 +0000
+Message-Id: <20260831185123.165B21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB11994:EE_
-X-MS-Office365-Filtering-Correlation-Id: 472c0f89-693a-415d-c646-08df0790c196
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|1800799024|23010399003|7416014|366016|921020|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	jQzE38C9BmOtBKl1Jzld1XQ3EKS1OeT9DOYZlypXH5PZ0r6QUFzJ/zK/OIlLRWe45k8l6/iWOBoO8ak07ToxryNw+Ir5iaedV6zvbm7buRPFFHyji7IzMASHRR3/t3/dOIHe6PSlpN9hK3TlvTvYAnAsDavv0hOl2FzBlZS+ZpAwKkEZH9cPFtjJh77luuBFJoWunDJc/S0dZInfWcx8L6OXYTEGAQ3YIfbg/HalAVo91U6iApf7Gavd/XVoHWs93MLZKgA0w+NMeAX//sQih2bbPV1K5HgHSh9xe8HeITnUDPogIpU/fXHIq20f1KMyrYqZhunosH6MfG4jaGSUUAvBhK3FENMoVb/Q/wocSXT1W2azxSRK1AcBOyCvTLDAJDo2hhImKWPMrwVWAMKdoDle2rkfqnt+Z4Z6jsAkVfb0ZQ7pg8c3TFNSp6Teg4yTq9mNj/LeenPd+jgk+UXQYh1SWnLsLVPvX/Pf3sL1z/ycSOitcTtvHKFbZqVN+r9cr8ULuZ16u7m0rhW4qOFQM/hXIAZyAvkEhExiK0/9hEMyiaAS+sinQz7l+u5WyyLv4pT7x0njJU5Se2F5/M2FhNY16nvcNfiqamjbsCFbmC2iF6eW0DK0FQ0qfnVMcaR4rRa4K8gX9ybRKDe3Gbh+NQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(23010399003)(7416014)(366016)(921020)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QzdUZmNOWG9xZ0tKTXJyVks5UW10Rk1hVVVVUGpWdXpDRmpxdTlSUTNpdjdj?=
- =?utf-8?B?UGZKMHpnWCsvUE5TNHVPRkE4OEJvZE8zdHNBbzNJVk5uTXkzM1hxQ2xXKzdX?=
- =?utf-8?B?SmRVWjg0UCtFZzYzbW0xSUF1YVEwTHhLLzNrVytyLzNvQXVjSi9uNzBiMDBW?=
- =?utf-8?B?d2xISDZHam53R0ZQY1lxdnE4OTNCbEdVdzNaZlI2R1FkTUdvZUowRVJ5VlZ4?=
- =?utf-8?B?ZThFcjcvcnovdnEvSlRSOXorTEMxVm4wOE1rUUluVFc5RWlyc0J6VENVdWk0?=
- =?utf-8?B?czVIQm9wRFVFZ3doZ1Y5WWxuKzAwWVhheThxdXJPM3c1NndwK1k0cFV5RTFT?=
- =?utf-8?B?cnFTa3VQWDVVc045K25JcENrYUEyb2oyNHo2dyswT3ZOdDEvTk84OEhmWTFu?=
- =?utf-8?B?UmV0NlFMb2pLbWkzWm1mclZHWS9SV2hxRU9KUHBubUVyKzNlVlBFYjRObWJo?=
- =?utf-8?B?a1duKzV6N1UxK3dQZ1FYNitzYzhoczN6NG10Vm1rK0h5SFM1S3d5U01KQ1Nx?=
- =?utf-8?B?ajFKTEhTOEpha0hYNk0vVzk1MWFDc1RJc1VmemN5ZlNDWVdVRHhKWlNHSTFx?=
- =?utf-8?B?M1lMY0NRNS9YUEVUUWFEOE9pZ0pieXNFVXNUVnVORGdHM3ZMM2JGNm53dUlE?=
- =?utf-8?B?clFMdmczMUNnY0t6Y1EzL1JEMnFOTjNOWEs0c0hPWFVxcXpmR1gwcTRVaU5n?=
- =?utf-8?B?UUtFdUVvQmY4NW5LdzdBNkhrNGVoYTRSZjRQRjluWnd1RFVnaXdOMksrU3E2?=
- =?utf-8?B?ZmZNUXl2NW5IYXpWN2xiMERlbDFaZitCVW80R0RjbXRjSW9VV3B2K0hFcVB5?=
- =?utf-8?B?Q2U5bTFvQ2lqT3hCZmNBa1dzZ0pZMG83UjRmamJHbjduYkxSeFF1WnpVRTk5?=
- =?utf-8?B?ZVVDSEovUjB5RWtWeE16c3JmK2xOcHAvYXVPa1NmYWtkK1lySllXeG5rRVhG?=
- =?utf-8?B?VmlEWkFJWEhIVXlHN1kyMmgrQisrNnBRR0VOR25pNHRMWmx3cSt3Y1BYTU5s?=
- =?utf-8?B?dlBvOHZmZlFoWElQbXJlLzdBQXhPSzJjeVlmeXpGczhrN1UrYVdvOUF4Qkhp?=
- =?utf-8?B?VmxVWkg4cjBGMXQ1ZFBIc0R4Y0NxbjBnN3Zqb0dOdUI0bU1aWWwvNVJ1eWVW?=
- =?utf-8?B?eGU1UGF1OHozYUVFZGJzdHJpNXhhMnBJUDFQQlhRaHZrcVVHWlNoOTdJNVpY?=
- =?utf-8?B?Wm5jNFlINzVBWGFPNmJsWTA3VXpORG92TGM4c0tvZVYwWm1jc2JFT2xzaXdS?=
- =?utf-8?B?L2lqYjhUSU5PdnVQMU9UZjVXY0FVUUZIdU8vYjdnVzQwc3Z0MzgvWXNybEE5?=
- =?utf-8?B?dVJ2K0hsOWtRZnFzWlFEVXlHY0MwSTFkM1NyM0RiR3dNMGd1a3NpWnZkUHpC?=
- =?utf-8?B?T1VERmRZMkZPa2xFQTUvUWpvcDFlNU16bHpGaTRsMitTdnExRFZ5TGx1Y01l?=
- =?utf-8?B?a3EwZE9aU0JSYWE4b1Q2dlBIald2WWRnZEtRMXVOYmVQT1BWNjZ4QjJJYlRt?=
- =?utf-8?B?OWFiUnJlSitPaTJLbVVIUDFIOWU1UmE3RENWMFFvMCs3UGZPTmRjU0YyNHht?=
- =?utf-8?B?QnUzMFdxeHVLQTcrY0E4M1M4bTdneGNFWnNSYlB4ZjF3S2VXbXdBWmNUeFA3?=
- =?utf-8?B?d2Y2SlYwUUhRSnpQeGxsTHl6RnNXNU8yN3dIMVRsbnRSaklhcFZtQWdvV25N?=
- =?utf-8?B?TUk1Zzg2L1dwWUNkRHpXVFNSVnA3d1ZYakg5c01DVkorVkYwUFcwS3JmZ0ZJ?=
- =?utf-8?B?UVB3Y3FyLzNjR0s3dE0ySk8xTHNQbWZYVFJ0YnZIMUdsWTJPUHhpNEZzem5q?=
- =?utf-8?B?THlLT1pjQkRnODFxalpIRHVldkt1VW0xU0Y3TzF2aWhLTDdmdE1RVmFhb29U?=
- =?utf-8?B?bms3U0FUbEc1QXBDbU03SnZIZFFZUjgwRlE0Sk9QNUVCNE5saEpNYmZNMGFh?=
- =?utf-8?B?ZG84NFFHS1FjRHVjK0trTlVrWTg5WXI5K1dwcVJybG9ZTUVydDNaOUlNTDJj?=
- =?utf-8?B?N0pLSmt5VlFKYkJRSEhYZ0RyWjJhNVZiT09yV2xFWFREbTNHQnFXUm9iMzNB?=
- =?utf-8?B?cUQ0MVZHOVNqOC9iK29KR3Vjc2pMbmFkMkZrNHB3akk1WUlVYytqM2N0RE1Q?=
- =?utf-8?B?cGo5eHE3dmZmYnp6alNQWGp1TGdrc2MzNHg2Ykt1ekIxZzluK2FYdmF2Z0pt?=
- =?utf-8?B?dzRXQzdvYUlqUDIwSUdiUWdQaFRtNmFaY3B1MjZnNTUwWUtOWnR4YkhpK3Zv?=
- =?utf-8?B?YlMwMFJRRjFPYVBjMWtKNnRQZFFLMUJxZjF1dnRnTWpuUmdpcTVMR1o1Zmh3?=
- =?utf-8?B?WkFJSEw0cGovRm84b0JGVENzRGh0VVRWLyt4bmxmaWxReUJHSlBWN2dRNlJE?=
- =?utf-8?Q?yXyfAy1AgAuNwKWbC1scAYjgXyH4B8wzGbGEs?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 472c0f89-693a-415d-c646-08df0790c196
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 18:50:41.5853
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FgAzGztAcLtEWBnA8dKRRGs83fBtf9ptSQ6lauqwZM1+ITZ2vTe2Vv0HTnoDxXfvZp3oljrlUFHMY3M9CPjkVuZBscCydroL3GCNiHuLbvncf8Jeg3pavTTJfcIKz+D7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB11994
 
-From: Frank Li <Frank.Li@nxp.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Remove undocument properties irq-trigger, id, blocks of st,stmp* to fix
-below CHECK_DTBS warnings:
-  arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
-        from schema $id: http://devicetree.org/schemas/mfd/st,stmpe.yaml
+New issues:
+- [Medium] Wakeup interrupt is not configured for the new dedicated ESR IRQ=
+ during suspend.
 
-Known other user (uboot) doesn't support this touch screen device.
+Pre-existing issues:
+- [Critical] Concurrent execution of separate IRQ handlers corrupts the loc=
+kless rx-offload SKB queue.
+--
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi       | 3 ---
- arch/arm/boot/dts/nxp/imx/imx6q-novena.dts     | 3 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi  | 3 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi | 3 ---
- 4 files changed, 12 deletions(-)
+commit 53e92dd64634f7bc681782eddd379791f6533960
+Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi
-index 89b17509ad487..9f7548e87f6ca 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi
-@@ -41,11 +41,8 @@ &i2c2 {
- 	touchscreen@41 {
- 		compatible = "st,stmpe610";
- 		reg = <0x41>;
--		id = <0>;
--		blocks = <0x5>;
- 		interrupts = <6 0x0>;
- 		interrupt-parent = <&gpio7>;
--		irq-trigger = <0x1>;
- 
- 		touchscreen {
- 			compatible = "st,stmpe-ts";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-novena.dts b/arch/arm/boot/dts/nxp/imx/imx6q-novena.dts
-index cd9a050fa906e..9938a63b5110c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-novena.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-novena.dts
-@@ -281,9 +281,6 @@ touch: stmpe811@44 {
- 		compatible = "st,stmpe811";
- 		reg = <0x44>;
- 		irq-gpio = <&gpio5 13 GPIO_ACTIVE_HIGH>;
--		id = <0>;
--		blocks = <0x5>;
--		irq-trigger = <0x1>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_stmpe_novena>;
- 		vio-supply = <&reg_3p3v>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-index 5fcd7cdb7001f..af038ac472261 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -631,11 +631,8 @@ codec: sgtl5000@a {
- 	/* STMPE811 touch screen controller */
- 	stmpe811@41 {
- 		compatible = "st,stmpe811";
--		blocks = <0x5>;
--		id = <0>;
- 		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-parent = <&gpio4>;
--		irq-trigger = <0x1>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_touch_int>;
- 		reg = <0x41>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
-index 8a0ce250e5760..c9e539f83f80f 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
-@@ -555,11 +555,8 @@ codec: sgtl5000@a {
- 	/* STMPE811 touch screen controller */
- 	stmpe811@41 {
- 		compatible = "st,stmpe811";
--		blocks = <0x5>;
- 		interrupts = <20 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-parent = <&gpio6>;
--		id = <0>;
--		irq-trigger = <0x1>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_touch_int>;
- 		reg = <0x41>;
+can: flexcan: add FLEXCAN_QUIRK_IRQ_BERR quirk
 
--- 
-2.43.0
+This commit introduces the FLEXCAN_QUIRK_IRQ_BERR quirk for platforms where=
+ bus
+errors and state changes share a dedicated IRQ line. It adds a combined IRQ
+handler flexcan_irq_esr() and updates interrupt setup and teardown to manage
+the new line.
 
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
+xcan/flexcan-core.c
+> index f28ff0e95b74f..601d88bfcfeb2 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+
+[ ... ]
+
+> @@ -1303,6 +1303,22 @@ static irqreturn_t flexcan_irq_boff(int irq, void =
+*dev_id)
+>  	return handled;
+>  }
+> =20
+> +/* Combined bus error and state change IRQ handler */
+> +static irqreturn_t flexcan_irq_esr(int irq, void *dev_id)
+> +{
+> +	struct net_device *dev =3D dev_id;
+> +	struct flexcan_priv *priv =3D netdev_priv(dev);
+> +	irqreturn_t handled;
+> +
+> +	handled =3D flexcan_do_state(dev);
+> +	handled |=3D flexcan_do_berr(dev);
+> +
+> +	if (handled)
+> +		can_rx_offload_irq_finish(&priv->offload);
+> +
+> +	return handled;
+> +}
+
+[Severity: Critical]
+This is a pre-existing issue, but adding this separate IRQ handler highligh=
+ts
+a race condition. Can this new handler and the main mailbox IRQ handler
+execute concurrently on different CPUs?
+
+If dev->irq and priv->irq_err are dispatched to different CPUs simultaneous=
+ly,
+both handlers can call into the Rx offload functions in rx-offload.c. For
+example:
+
+CPU1 (in flexcan_irq_mb):
+  can_rx_offload_irq_offload_timestamp()
+    __skb_queue_add_sort(&offload->skb_irq_queue, ...)
+
+CPU2 (in flexcan_irq_esr):
+  handled |=3D flexcan_do_berr(dev);
+    flexcan_irq_bus_err()
+      can_rx_offload_queue_timestamp()
+        __skb_queue_add_sort(&offload->skb_irq_queue, ...)
+
+Since the Rx offload queue manipulation in __skb_queue_add_sort() is lockle=
+ss,
+could this concurrent execution corrupt the skb_irq_queue list and crash the
+kernel? Similarly, both paths call can_rx_offload_irq_finish() which splices
+the queue locklessly from the IRQ queue side without adequate mutual exclus=
+ion
+against other HardIRQs.
+
+[ ... ]
+
+> @@ -1905,6 +1922,13 @@ static int flexcan_open(struct net_device *dev)
+>  			goto out_free_irq_boff;
+>  	}
+> =20
+> +	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_IRQ_BERR) {
+> +		err =3D request_irq(priv->irq_err,
+> +				  flexcan_irq_esr, IRQF_SHARED, dev->name, dev);
+> +		if (err)
+> +			goto out_free_irq_boff;
+> +	}
+> +
+
+[Severity: Medium]
+Since this quirk routes the wakeup event (WAK_INT) to this new dedicated ESR
+IRQ line, should priv->irq_err be configured for wakeup during suspend?
+
+Currently, flexcan_suspend() calls enable_irq_wake(dev->irq), but it does
+not arm priv->irq_err. Will the system fail to wake up from sleep upon CAN
+activity on platforms using this quirk because the interrupt controller isn=
+'t
+armed for the correct line?
+
+Should flexcan_suspend() and flexcan_resume() be updated to handle
+priv->irq_err as well?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831143449.1282=
+8-1-ciprianmarian.costea@oss.nxp.com?part=3D5
