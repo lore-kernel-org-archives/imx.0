@@ -1,102 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069153D8107;
-	Mon, 31 Aug 2026 23:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5383BED4F
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 23:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788217844; cv=none; b=fIvMK+pRlaRDGy2VLVVMx8ECSXM8GisplK8n1mLFlXn+Bs6mx0Ml8I/a2S08g41xMq5kMDWzhva5yVlxkwZl1yWPkNi2pxb0k+9fjKtgIbpoXKyhtbwMOqBbBzUUnZb1kQ9mnIBPGiFdnIdY5H0C1NjYtlhA1VEIByD8M3QfQXY=
+	t=1788218095; cv=none; b=IezRZnDhDLWPjZc8pBoPkkH3W9Sw66HDtIuYqhlbo2i19B0AJWohwo+eTtuLn9kkWDI847R/AgLJ8QOK2uohY+nQqfcDMQMVe+oy0nhJpGDKYZgfmi9NWtGLsqsmqWF5GEZXUHh2LZb5EtGH0tMzjG+Jh6z9MwVS1aWEGBb59iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788217844; c=relaxed/simple;
-	bh=xl7LbIGRBsuDrwie13653oun67iC8enxhMPEldnEQLM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kXHn2i+xc5u6+ejXyNhXxanLVN0rxuPpJgLv1x+1OqCWHpFdjlm2tFazu24BXkPRRATFPSMfJQ408J8N3uXpYMRzybh5b5/ch6HBFHDiBZP7zzcG0gzFbPOyUlpwirK7dN9mscFxUYX1xDt314d6FaF4uaz+lv62NWzfI+jjVxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btaJLjeQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788218095; c=relaxed/simple;
+	bh=+DtOgMGR9+Hm0zGDpoOk2t7h7FujKWT+OqJ/UAJlZvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CDANdJkEnikDKZ35AkQha+nCL9+xoiLWLKChJ/A7rXNS3ZBcxfVa9N+Lj0W/oN6Uy/b2XZSO8o/t+V38AVm/N+nWYbVcmT94nHTDyv9OtSbgx+Ew30wnppGsZAI1UUK+c94dyKezIDtmVnEFu4819QnPM9Ssr2fubrLNVDgTGhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QSfOI4xZ; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btaJLjeQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BBF1F000E9;
-	Mon, 31 Aug 2026 23:10:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788217842;
-	bh=UuB7C8cgSm9clnhGnd02TCPdT42Hq2aOMmvhvKCHVsE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=btaJLjeQQa11Gmf8MfMDPpywd8OYxn9uVEFOUZ8xX4HNahj3pB2E34ll9KY9CS6pM
-	 JgLwPnR5OzpQVtFO088krheh8iKFtddtfm48ex4mChSTgDyLvVnlcqrv8GDQFEnNAy
-	 Paypick5xd8k+1kB9YJV5LJ8UheuvhMVE0se2+2bjfzJ9DOJq9GPEWMxHBeK9rAypQ
-	 r1YGrHy3d4hkNxnMx8RgbKrIWBxcmFe5SJwpsy+k6fkcDS4GksHVm0ASBLlA2/eeAj
-	 BoHl/rpqsOCvJDmYF8vspd9P2dpY1gAAHQ5V+7gvoGK85C3eQuwL+6HfQnqlQtaWbj
-	 D2Wbl6SaUy7ag==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <7a3aa8bc7d4613998904db4fbbae03d213c6c30d.1788184274.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QSfOI4xZ"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49557167508so43619335e9.1
+        for <imx@lists.linux.dev>; Mon, 31 Aug 2026 16:14:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788218092; x=1788822892; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7imqAMa0q2kTKskLUSu2S5gDTb494TVGlrCJqb2nzRU=;
+        b=QSfOI4xZLN2r+oQP4bsoJLeL2RyGQTaHPuxx/TBjzo53mkhCDz3foqELano/TrIr9W
+         mvI0vpcgkNUSWTDWQIeOWLJnw+/mJwTKnNNGogTjO+BhONsUMmI21Ak6ogmsbcQCZFEB
+         Wrx1UIPTUizoKblBXcPGZcogPHol8tYu4bKdqpch5h4PB+1wza7dSRytZjKiniHgZlQa
+         4Mjaa5aIrc7vitx5Ybb0CYMD6kZDT1kxjLO1v2vgF2xbwqdNAHEtHy4kUEVHk4+ucpND
+         f59v5C4VXJTpPG7mL0XfT5sK2TZTjMluwoS5nMBjt/MOTx5s0Eo/f/DCUPqum0fjWXhQ
+         c/1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788218092; x=1788822892;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7imqAMa0q2kTKskLUSu2S5gDTb494TVGlrCJqb2nzRU=;
+        b=cxPQhfTd3MQEuEz7hZsy5KCPRJ0Wh0hAWDXqAH7cM2DObMuoYZXleNEm751wx6N56c
+         guDY8HBbd8repKqQ0JH5x37mKA5QYAJg+qXTyScDPgERo8n4YsTqQzIsI+JfbbbXa/1I
+         HGEXYwfbL3MYQbPUphh6KmTT++/AqBa3zz7fF1cH7aNRqABqU4h2HjuGIjsVPTA/GAZU
+         MqIDnXRtZAnpA2euKPMSA3JaKr/VaQGz7MIQcJvQpidXrs9On+IwujiJNdXjmiLIJWhg
+         8C+lm+GZK7Q1U6CZBPdTRoKMhfeWKCeReoE6QG3kLL1acMtxGyethkO/25Wp8wndnFqD
+         ZlxQ==
+X-Gm-Message-State: AFuF++lN5HPsXu4MmWr1/nOqqp4DLCPhU7xEWTh3Q6Sr6YRDB00ZF9Hr
+	4GBUlY43kZBdPKVXHKwm3jCaVDhPOd+aaFPesWBaSWYtvHIabgvrV4Yh
+X-Gm-Gg: AR+sD10NOnvmXKB8fUtq/gHMoU7PfptqREd4c3fNN5ju5jaF1iWtP4MJO8LoVSDMMgZ
+	mnZBL5/v5BVe0hog0mSXX6tw0+DKzcI7gRGM8+wa//JTt4MeMkEqzdQExJP8KqOtDw8Ip0Up7ei
+	DThjZM/nAVp9bxKs+xZKwSNNJmE3vka482A+6QlNGNbgmHRLSx4259p5tLls79ixXxkQZH/LY7V
+	s3PbX5qFAB8WH3mNnnne70zwRUNhYggBMXY9MYKGVTAW+rQCWYA2dJnDtOpRn8RoJYNcM5bVLs1
+	yRMI66nKgRBM/2hQGtgiGpSbstPlHORkyIaxMq5VmjjtWYdSWhHkKBwU27IJB+PXrHSEHoLgT19
+	kcRwL6g1VkIYneOGZp/os5g8QSj0tL24FQNMpVjf9a2WJ88IcXsbGnpYK7ibDB1smZ7svOM08ZX
+	xraOg2B3Ky3MVIN+t2UhEkJqDVFLQK/vBOW7BaPDLaHeVtGGEdWgLt1E+zslAcehkMtoB6vk4wH
+	wJVwN3Kdbxh6h/51pxeqRxVQevbr2di
+X-Received: by 2002:a05:600c:4fd4:b0:499:83f1:398 with SMTP id 5b1f17b1804b1-49cdc59f62emr71319315e9.9.1788218091484;
+        Mon, 31 Aug 2026 16:14:51 -0700 (PDT)
+Received: from GLaDOS.station ([187.14.102.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d4236esm855500f8f.16.2026.08.31.16.14.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 16:14:50 -0700 (PDT)
+Date: Tue, 1 Sep 2026 01:14:44 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, Frank.Li@kernel.org
+Subject: Re: [PATCH v8 2/3] ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+Message-ID: <apYK5AIXkEnDYEHV@GLaDOS.station>
 References: <cover.1788184274.git.stefano.r@variscite.com>
  <7a3aa8bc7d4613998904db4fbbae03d213c6c30d.1788184274.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 31 Aug 2026 23:10:41 +0000
-Message-Id: <20260831231042.59BBF1F000E9@smtp.kernel.org>
+ <20260831231042.59BBF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831231042.59BBF1F000E9@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The `wm8904` codec references an unconfigured and incorrect cloc=
-k (`IMX7D_AUDIO_MCLK_ROOT_DIV`) instead of the actual physical clock provid=
-ing its MCLK.
---
+On Mon, Aug 31, 2026 at 11:10:41PM +0000, sashiko-bot@kernel.org wrote:
+> 
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi
+> > new file mode 100644
+> > index 0000000000000..b56f3680edcff
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi
+> [ ... ]
+> > @@ -0,0 +1,118 @@
+> [ ... ]
+> > +&i2c2 {
+> > +	wm8904: audio-codec@1a {
+> > +		compatible = "wlf,wm8904";
+> > +		reg = <0x1a>;
+> > +		#sound-dai-cells = <0>;
+> > +		clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
+> 
+> [Severity: Medium]
+> Does this code assign the wrong clock to the wm8904 codec's mclk?
+> 
+> The codec is configured to use IMX7D_AUDIO_MCLK_ROOT_DIV, but shouldn't this
+> point to the clock actually driving the MCLK pad (such as
+> IMX7D_SAI1_ROOT_CLK)?
+> 
+> If the driver queries the frequency of this incorrect clock tree node (which
+> defaults to 24MHz) instead of the actual 12.288MHz rate driven by the SAI1
+> pad, it may miscalculate its internal PLL/FLL configuration. 
+> 
+> Could this result in incorrect audio playback speeds or a failure to lock
+> the FLL when the audio subsystem initializes?
+> 
 
-commit 1b158b02c4e2ef7937d25acb3234a66676fd29b6
-Author: Stefano Radaelli <stefano.r@variscite.com>
-Subject: ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
+This is intentional. The WM8904 MCLK is provided by the dedicated audio
+MCLK root, while the SAI1 root clock is configured separately for the
+SAI interface.
+The fact that the pad is muxed as SAI1_MCLK does not imply that the
+codec clock provider must be IMX7D_SAI1_ROOT_CLK.
+This configuration has been validated on the hardware.
 
-This commit adds device tree support for the Variscite VAR-SOM-MX7 system
-on module. It introduces the common SoM description along with support for
-eMMC, NAND, WM8731, WM8904, and the V2 hardware revision.
-
-Link: https://variscite.com/system-on-module-som/i-mx-7/var-som-mx7/
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi b/arch/a=
-rm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi
-> new file mode 100644
-> index 0000000000000..b56f3680edcff
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi
-[ ... ]
-> @@ -0,0 +1,118 @@
-[ ... ]
-> +&i2c2 {
-> +	wm8904: audio-codec@1a {
-> +		compatible =3D "wlf,wm8904";
-> +		reg =3D <0x1a>;
-> +		#sound-dai-cells =3D <0>;
-> +		clocks =3D <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
-
-[Severity: Medium]
-Does this code assign the wrong clock to the wm8904 codec's mclk?
-
-The codec is configured to use IMX7D_AUDIO_MCLK_ROOT_DIV, but shouldn't this
-point to the clock actually driving the MCLK pad (such as
-IMX7D_SAI1_ROOT_CLK)?
-
-If the driver queries the frequency of this incorrect clock tree node (which
-defaults to 24MHz) instead of the actual 12.288MHz rate driven by the SAI1
-pad, it may miscalculate its internal PLL/FLL configuration.=20
-
-Could this result in incorrect audio playback speeds or a failure to lock
-the FLL when the audio subsystem initializes?
-
-> +		clock-names =3D "mclk";
-> +		AVDD-supply =3D <&vgen6_reg>;
-> +		CPVDD-supply =3D <&vgen6_reg>;
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1788184274.gi=
-t.stefano.r@variscite.com?part=3D2
+Stefano
