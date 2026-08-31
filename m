@@ -1,124 +1,115 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CD4078C9
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 18:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D7036EAA4;
+	Mon, 31 Aug 2026 18:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788199880; cv=none; b=ANk8iI8dioMWOOUsIKeV1556D/SWzdW/sA14pVFF+XGxxbkRe+Ip1ZhTurXhJ1rQ2lux0KLz+mZ9kcL4OTXgbDBJSbN5WHRyLCL0aLflL40h1mUwU44YaYVWgXgaH1qdr6cyO5cm5q7q3qHRVcLcwzBbftHJxRdANEhVdVrny9Q=
+	t=1788200153; cv=none; b=XevFbR+UE/JfFsYQYxYtDOXtrFztu1evc1bWsOqZJbviasv/5ZfG5t+iOvN5f2s4geragYZ8ck4XZSFup9pCZehmQTqZJX+5h5ZiVSCY+O0Idcx33hY6Nfa29inhrZo/0Bz0k2zq6T5xdE3bnRQwTrabDH8Y8QEVux7TqidcJtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788199880; c=relaxed/simple;
-	bh=zBdK1iiFDwTHqOyTQyYg4l3HxFz9CENCyVT51LTKz4k=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DTV7B7PjGJFxnD2TrYVnRvP7chHrHqLZnPbNEeWLWfRqYafqfHB8TNJPH0AMg3T+lqqeM9vTaAfVTiwN4tU8cebMo16vOvnPbkgF7YrmZBjaGieZv8k8ebutRvC7wTvV+Dvbkm6G8NZ2pfiwfoqUmOD7CXiZnojwUPN5YpLDDCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=Xhm0llmw; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1788200153; c=relaxed/simple;
+	bh=x0ic9wz/HnvUvxOu+OPLIa+K+8GAZVse6P644E7VeGk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KKBKPvk5Nys1EO87q0lfi7bfU1jGFSQIn1h1/ih0GVMLqjYI3AHuoR9FGMR7NieAL6cKf9gtKnoZM14nV/AJS4WOsHRJXDnfoiBsGYUIyS9TNX8+UGkcjbhcR1g+7y9RMcLRlGTeAtwJq5Mh3BjAjkVUxdwfQVgug3nQvN6jwzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgZIFz6Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="Xhm0llmw"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so59719a91.2
-        for <imx@lists.linux.dev>; Mon, 31 Aug 2026 11:11:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1788199878; x=1788804678; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KYKJ5VPlv39onDgpizRA6tuCgoTPGQMQ0bB2xHAAOlw=;
-        b=Xhm0llmw12Z1/F3RUMCPzX4ULlT2l81r/vOIYxbHh+pT/e6qsEBJLfSLPc9h/BzVNT
-         0aVOI41NmV0HN2i134uU/WFfDw7j7gaUPneK24Y/DlA8EbWN+eBT2kQD4cSRGKugZniU
-         WWsA0RhnCj3tJz6gg54gqPBX4CYuu87tgYuR66xgYkl2EUJmCG7sZWVS5ORXblaqC72l
-         cQpCjLB/h+MWQwHTMbB5vsGn7sQL5W+xAXoLJdzFdKQpcsOEUMUcedlm75CL0drlyIfV
-         /Lnj7yrgPLSW0LO1TIX+FkbiUZYCIYDEIKcLZFtZidvALb4z5s3c9nb1k+Cf3Uu3992K
-         J6kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788199878; x=1788804678;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KYKJ5VPlv39onDgpizRA6tuCgoTPGQMQ0bB2xHAAOlw=;
-        b=pznVReoDPXSOFeF5Ds3vBVHSQptB9Hl1TGFUr9kDVsqwwjdt6VI479XljHi+j4Bjyf
-         cE5fKPBjeXDxISYh/vux8QChz9Ic8XCQ7Va7jiNfnws45SSoX8McK8V0ts+gFeCr0i7J
-         A8BvWpntQ7wOB+fu3kyHcloVEDne0ftHzIIc8mWH7sUe3WJal6rIb7630GB/4BvW5fSl
-         S4xEPS7RGwmO6WVMaMY4nFcDlhD9+qOL/CPPlnaJzkvtlpn/Rp32I54gsTTCGXtx10SU
-         TLk1KhZSyNK3wD0/0jezetaP0EM40LDlqSjYYHeDbWrQdD3yWP6c+M2D0sJDYVCIWbnS
-         3hIA==
-X-Forwarded-Encrypted: i=1; AKwUvByQZ544x8bxFKbLjUAXlS3sivIM+1+P4uOlxKhOW4qMAoI1oGfOz8xqcmw6OgQVOxCO2/s=@lists.linux.dev
-X-Gm-Message-State: AFuF++m/zvD1G5WbDBM8dNVRcZbCQWrxaYX6/rKY9dDgERxPskIHfJdT
-	TTY2hmwTajiQkGyXxwawIA1YTznqGv98GkjM7V2WL08x1jY9t2A32Vf5oVJjwfslzAQ=
-X-Gm-Gg: AYBFou2yCQBwq/+XSwpZoRMalTB8d9O3U5RbfxpFudNAqe1meiWviYBCUV3yHgjuUsD
-	mdedSoo5QQv0x5TeCI/PEBZtR42X2grUCw8NihjcmDvjGWXSnSZRv4okcT3I12g+pTseUSLaVMq
-	DvU0d2/Zc25sa2Hh9AScwbIwc9dMAUWjObJWyG5pPH5T9G7KEiufx1R4zupzhcI6onpTV4QlOT2
-	lAFfXG2vJQ/SGjqElwgx5jcb3Xh/4vBTlqyXqiZW6pj2dTQdiTH/aKTc/Wv587fc5k98NldbjNj
-	HJF4PFtGodGGa0WYODPhO75qovxiFgL1MpT1kcGawEW2Ry/HUNwrrGXIGnFyDzE+CiNiNrDaHd4
-	I9DWhBBQzuo8bLNAabQNR5d9dmjeYXIBYTSSxGXD9/PCXRH3+Vp3wGgzU79FImQCYoRrzXc0Doj
-	noHUel+GFZvnlv7OtvClNjTiYY84tK/Ndp3LAlyJLXn+n4HmzRkacwz+geXg==
-X-Received: by 2002:a17:90b:4a8c:b0:392:6638:2e6a with SMTP id 98e67ed59e1d1-396d0f69d10mr34762737a91.13.1788199877917;
-        Mon, 31 Aug 2026 11:11:17 -0700 (PDT)
-Received: from localhost ([71.212.197.238])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3990baaeec3sm863336a91.0.2026.08.31.11.11.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 11:11:17 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: linux-arm-kernel@lists.infradead.org, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Fabio Estevam <festevam@gmail.com>, 
- Frank Li <Frank.Li@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Peter Griffin <peter.griffin@linaro.org>, Roger Quadros <rogerq@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
- imx@lists.linux.dev, linux-omap@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, 
- Sakari Ailus <sakari.ailus@linux.intel.com>
-In-Reply-To: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
-References: <20260810180604.3034255-1-laurent.pinchart@ideasonboard.com>
-Subject: Re: (subset) [PATCH v3 0/7] ARM: dts: Replace clock-frequency in
- camera sensor nodes
-Message-Id: <178819987707.2869653.6455595386601883422.b4-ty@b4>
-Date: Mon, 31 Aug 2026 11:11:17 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgZIFz6Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379521F000E9;
+	Mon, 31 Aug 2026 18:15:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788200151;
+	bh=iluq10xN/efyo5GTacZ3JTHAVAYJvBqLtVPeLi/7/rs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DgZIFz6QSXQ4wdu1gQLelTqlveOs5A7gxWCSqGwymYPmdTjZHxih10CfjOT6pc+Pf
+	 lRlnEMyez92goE7m8dsNXkZUAw6y1w/GMxiptaoH6av2qGSWYlk69MpEHFpNfshRY+
+	 oYCeevYn9AZ8XnbGjvzRxoA2/oF21XLLjMf6vJy3P3iZrLa+O6TnY9XS7R/b1hiMc3
+	 xh9FxKUhuypV5E8PXwe7pmVuuVgIxJ93BQBKoebqAjw0dXXVMDKUIRYKXqxBzgB3v+
+	 N7AI1/Vy5RS8TmJkOMi8WQGjjZTSjWi2vVKfQc2Ee3XBuqXma6MUh8dkjPdFl6KDqa
+	 mIk0qWn06pvGQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 2/6] can: flexcan: disable all IRQ lines in
+ flexcan_chip_interrupts_enable()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
+Cc: Frank.Li@kernel.org, "Oleksij Rempel" <o.rempel@pengutronix.de>, linux-can@vger.kernel.org, "Marc
+ Kleine-Budde" <mkl@pengutronix.de>, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org, "Vincent
+ Mailhol" <mailhol@kernel.org>, "Oliver Hartkopp" <socketcan@hartkopp.net>, devicetree@vger.kernel.org
+In-Reply-To: <20260831143449.12828-3-ciprianmarian.costea@oss.nxp.com>
+References: <20260831143449.12828-1-ciprianmarian.costea@oss.nxp.com>
+ <20260831143449.12828-3-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 18:15:50 +0000
+Message-Id: <20260831181551.379521F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-On Mon, 10 Aug 2026 21:05:57 +0300, Laurent Pinchart wrote:
-> This patch series contains the leftovers from "[PATCH v2 00/72] media:
-> i2c: Reduce cargo-cult" ([1]). All driver patches have been merged, but
-> DT changes for ARM platforms were postponed to the next kernel release
-> and ended up being forgotten.
-> 
-> To refresh everybody's memory, a large number of camera sensor drivers
-> directly use the "clock-frequency" property to retrieve the effective or
-> desired external clock rate. This is standard behaviour on ACPI
-> platforms that don't implement MIPI DisCo for Imaging, but usage of the
-> property has leaked to OF-based platforms, due to a combination of
-> historical reasons (using "clock-frequency" was initially considered
-> right until before the introduction of "assigned-clock-rates") and plain
-> cargo-cult.
-> 
-> [...]
+Pre-existing issues:
+- [High] Missing synchronization in `flexcan_chip_interrupts_disable()` lea=
+ds to a race with interrupt handlers, which can leave hardware interrupts e=
+nabled after `free_irq()`.
+--
 
-Applied, thanks!
+commit 199c16c8ec6245fdb40faa9ca7c9456354adfb8c
+Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-[3/7] ARM: dts: ti: omap3-n950: Replace clock-frequency in camera sensor node
-      commit: e74a8fe7c2d85e314ead77064ea671b71de44b14
-[4/7] ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
-      commit: 3da3c1f84d4f1d14d321ffbec742d4027b503827
-[5/7] ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor node
-      commit: e59ab4d7eaed22ba714c57801262a09ac1c32100
+can: flexcan: disable all IRQ lines in flexcan_chip_interrupts_enable()
 
-Best regards,
--- 
-Kevin Hilman (TI) <khilman@baylibre.com>
+This commit disables all registered IRQ lines around IMASK/CTRL register
+writes in flexcan_chip_interrupts_enable to prevent handlers from firing
+while registers are inconsistent on multi-IRQ platforms.
 
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/fle=
+xcan/flexcan-core.c
+> index 2e9df2d14b341..4eda54d2169e7 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+[ ... ]
+> @@ -1522,14 +1522,28 @@ static void flexcan_chip_interrupts_enable(const =
+struct net_device *dev)
+>  {
+[ ... ]
+>  	priv->write(upper_32_bits(reg_imask), &regs->imask2);
+>  	priv->write(lower_32_bits(reg_imask), &regs->imask1);
+>  	enable_irq(dev->irq);
+> +	if (quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
+> +		enable_irq(priv->irq_secondary_mb);
+> +	if (quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
+> +		enable_irq(priv->irq_boff);
+> +		enable_irq(priv->irq_err);
+> +	}
+>  }
+> =20
+>  static void flexcan_chip_interrupts_disable(const struct net_device *dev)
+
+[Severity: High]
+This is a pre-existing issue, but does flexcan_chip_interrupts_disable also
+need this same fix pattern applied?
+
+Currently, flexcan_chip_interrupts_disable modifies the ctrl register
+without first masking the IRQ lines via disable_irq.
+
+If flexcan_close calls flexcan_chip_interrupts_disable while the hardware
+is still running, could a concurrent state-change interrupt on another CPU
+invoke flexcan_do_state? That handler calls flexcan_error_irq_enable,
+which might overwrite regs->ctrl and inadvertently re-enable hardware error
+interrupts.
+
+Since flexcan_close immediately proceeds to call free_irq while the
+hardware might still be active due to this race, does this expose a time
+window where an unhandled interrupt storm can trigger?
+
+If an interrupt storm occurs without a registered handler, it could force
+the kernel to permanently disable the IRQ line. On platforms where IRQs are
+shared (requested by IRQF_SHARED in flexcan_open), this could break other
+devices sharing the line.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831143449.1282=
+8-1-ciprianmarian.costea@oss.nxp.com?part=3D2
