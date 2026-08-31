@@ -1,300 +1,467 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2335632A4;
-	Mon, 31 Aug 2026 13:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF35AA69B;
+	Mon, 31 Aug 2026 13:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184069; cv=none; b=cRzBk0GUxxWojkgsKnD9qffOzPoRgr3QuLWXX3Ts88PrU+NBbGcV5DVjLPWqVFkw5SpktFFM9eadS0iZz7cocgImvesPM2eUJf53FsVKPogvvgIyUHJEb5QiWMQqmdNXM/K8Qg6h0bm1J7RttClHTGT2fBioGSJ5tb6e/3CeCwo=
+	t=1788184362; cv=none; b=JM25OHd9pHVO+DQ37Cfma8+FvNkh4wyCCArinW8XLQAgjjn0fMKix8n0nVbdXx/rZkf3cJJcfY/ZfrOdFkpk50lzTkv3HEFCAxW9wcRiJ3ILp0wHo3/vajqmeY7lsz/t4+3Xnz1jlZEO24xkd6FIMz3LbjwHgGXG0b+PocLO+20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184069; c=relaxed/simple;
-	bh=UDuyMhgLF/nf0HbmEB4+rxuZfZiTrL+TJII+mnXTyXQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dIzLefvqt6kUcwFYL/fvUpvsZvJXZi4RP1XW8MyDOndP8NeAoybCPeOF3ntYqepqf6EY0qzpQNj/M32obtOdg+0tIwC5Ofv4sfxyGeDXMUNPDa/4jEzDulIYdd2CZiALlz6CRtCafVh4eT3COnwnTOaPFn1JKvTlGwZjMwh3k/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=GFfHNwvs; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1788184362; c=relaxed/simple;
+	bh=P7GWI4QqTyfKeMIcOp/wfgw+pvLSHaZ81/lMOGaRcoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=huuquR7aE0e7+/8yv1GeKmjoTR1n9SapF5VET/KdljP1k8JY3RMlM2LR+cAKdNBs0YpcBzEd8w6qcpWZZN+VJSLsLXyW1Wy53CfdXY16jbBeuYY7Z5ohU8eK6cIyWpVaWrsl66LExf6UzoO1edW0FvBwi3BxRXeyg8Y4j7fY56U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdCuWFCX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="GFfHNwvs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1788184036; x=1788788836; i=wahrenst@gmx.net;
-	bh=ePV4JES9XxvVoQVNoDHrh+vUhV2Gki6cm2F4F/fbt18=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=GFfHNwvsgnAQhjBcNcG5Zxet3c0HKaWN+a9LW/1OBElUw2Z619z6Il6ajAO36uQ6
-	 h6C16LvBLCHdMzkd3ruR8JhSqVDyHZUPGsvscBrDzR/pY21HJasP1x0f80wYsJNBm
-	 lJCRVh++hhYYCgagWHXSSjgLiEcwr4RQqXo+W6eV3Ml5aI2MIl5PNZjk26d23Bo/9
-	 SlFHgCav+6KUE3pRg8BEcVStO87VS5jc3iB4mvGIfgFCaaMwEESKjNKQTmC5mzEn2
-	 QzRqj+d0kPEnW2s+NoWyBFBYv1iwyiZVQPT1CMA8qUb+iNzYdPcaeQYnLaQ19Bac/
-	 1KRLGY32Q+ob8eHoiA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJVHU-1xKuei30MC-00WgUH; Mon, 31
- Aug 2026 15:47:16 +0200
-Message-ID: <ceccb248-8801-402b-b147-916eb9ed3883@gmx.net>
-Date: Mon, 31 Aug 2026 15:47:15 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdCuWFCX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30FB1F00ADF;
+	Mon, 31 Aug 2026 13:52:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788184360;
+	bh=gn/x46AcCcCqDneJy+pgdlKQ+Wml9FPVINTnDu7omW4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZdCuWFCXLnum0OR0fxNVjjU2gh6h/TxZPIDTrrpmNdNblnDOWIbVP7xilAGhLejAS
+	 6GPNrYs6O9oEoqc1i7BT5UANw6vFeiPlM2Eawt7uvA69xNfhTIuChevbbhAPrdDHVy
+	 V044cOkuWct+HL1cSHLVTu4RNBootywF/FPdP8RMItZPbkacH8Y4QTUDuT0t0nlY5f
+	 zj7i34ZpwWQzYzsqW4wruSnUlBJCvqZFJiOqMgxD2r9IXv9s8ZNm/hT51+zkCs9EBI
+	 jbOHhYV7WbobXL3S6swoUvygQWAVRTYmML3TC3UYJlvrSCRpU4Fc8J57AkAukeH7J2
+	 AwbW+5gHfbuIQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>,
+	miquel.raynal@bootlin.com,
+	linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18] i3c: master: svc: Prevent IRQ storm from false SLVSTART on NPCM845
+Date: Mon, 31 Aug 2026 09:31:15 -0400
+Message-ID: <20260831133314.4125787-647-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
+References: <20260831133314.4125787-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 3/3] arm64: dts: freescale: Add chargebyte Charge
- Control Y
-To: sashiko-reviews@lists.linux.dev
-Cc: Vincent Mailhol <mailhol@kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>, conor+dt@kernel.org,
- olteanv@gmail.com, vkoul@kernel.org, devicetree@vger.kernel.org,
- linux-phy@lists.infradead.org, Frank.Li@kernel.org, robh@kernel.org,
- neil.armstrong@linaro.org, Oliver Hartkopp <socketcan@hartkopp.net>,
- linux-can@vger.kernel.org, imx@lists.linux.dev
-References: <20260831083539.8287-1-wahrenst@gmx.net>
- <20260831083539.8287-4-wahrenst@gmx.net>
- <20260831090445.0F50B1F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20260831090445.0F50B1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:NtiKhPWYDQzWNbjpTe7PtXswj1atYkIo1j4qDXe6ZWHHRzTDTpd
- JFx7ksROHOGknGVdp1IDFB/8VulloSQMJCvaIe/jBd9csmGb5wJGk6eAEK85GJGGjksYFeq
- LWyhsE+xY+hUFB7UwKsJLQyySu/acf/xW6aUdxWXjpV0Mfq5GqmkrNXL63ROX1P30DdnpFy
- OZBj3sY4tmDo8AMelr83A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lsYFMLeZhCU=;dUGm+OHITs3YVRPznO9bpH6SUAv
- 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
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.48
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Am 31.08.26 um 11:04 schrieb sashiko-bot@kernel.org:
-> Thank you for your contribution! Sashiko AI review found 3 potential iss=
-ue(s) to consider:
-> - [Medium] Missing GPIO initialization / Unused pin for X_nRST_LAN
-> - [Medium] Missing Pin Mux Configuration for USDHC2_VSELECT in default s=
-tate
-> - [Low] DT Binding Violation: Undocumented compatible string 'microchip,=
-mcp2542'
-> --
->
-> commit c595019b7dc419cc298a111c2b215904a12f65e1
-> Author: Stefan Wahren <wahrenst@gmx.net>
-> arm64: dts: freescale: Add chargebyte Charge Control Y
->
-> This commit introduces device tree support for the chargebyte Charge Con=
-trol Y,
-> an Electrical Vehicle Supply Equipment for MCS charging stations based o=
-n the
-> phyCORE-i.MX 93 ARM SoM. It defines necessary pin multiplexing, peripher=
-als
-> like CAN and Ethernet, and device-specific layouts.
->
->> diff --git a/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts b=
-/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
->> new file mode 100644
->> index 0000000000000..0405098cc05c4
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
-> [ ... ]
->
->> +	// Heartbeat LED of phyCore is not populated
->> +	/delete-node/ leds;
->> +
->> +	flexcan1_tc: can-phy0 {
->> +		compatible =3D "microchip,mcp2542", "ti,tcan1042";
-> [Severity: Low]
-> Is the "microchip,mcp2542" compatible string documented in any devicetre=
-e
-> binding schema?
-This is included in patch #2.
-> Using an undocumented compatible string here might cause `make dtbs_chec=
-k`
-> validation tooling to fail.
-I verified this patch series with "make dtbs_check". False positive?
->
->> +		#phy-cells =3D <0>;
->> +		max-bitrate =3D <1000000>;
->> +	};
-> [ ... ]
->
->> +	pinctrl_flexcan1: flexcan1grp {
->> +		fsl,pins =3D <
->> +			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
->> +			MX93_PAD_PDM_CLK__CAN1_TX		0x1382
->> +		>;
->> +	};
->> +
->> +	pinctrl_gpio1: gpio1grp {
->> +		fsl,pins =3D <
->> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
-> [Severity: Medium]
-> Does the X_nRST_LAN reset pin (GPIO1_IO03) need a GPIO hog or a driver
-> consumer (e.g., via a reset-gpios property) in the device tree?
->
-> Since the upstream lan865x SPI kernel driver does not parse or manage
-> reset-gpios, leaving its functional state unmanaged here might result in=
- the
-> hardware reset pin floating or being left in an indeterminate state.
->
-> Could this cause the LAN8651 Ethernet interface to fail to emerge from r=
-eset
-> and initialize properly on a cold boot?
-As already mentioned in the cover letter, I like to proceed with the=20
-version until the reset management is implemented in LAN8651.
-The pin is not floating because there is a pull resistor in hardware.
+From: Stanley Chu <yschu@nuvoton.com>
 
-Should I move the explanation to the commit message of this patch or add=
-=20
-a comment in the DTS?
->
->> +			MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10	0x382
->> +		>;
->> +	};
->> +
->> +	pinctrl_gpio4: gpio4grp {
-> [ ... ]
->
->> +	pinctrl_usdhc2_cd: usdhc2cdgrp {
->> +		fsl,pins =3D <
->> +			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
->> +		>;
->> +	};
->> +
->> +	/* need to config the SION for data and cmd pad, refer to ERR052021 *=
-/
->> +	pinctrl_usdhc2_default: usdhc2grp {
->> +		fsl,pins =3D <
->> +			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
->> +			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
->> +			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
->> +			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
->> +			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000138e
->> +			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
-> [Severity: Medium]
-> Should MX93_PAD_SD2_VSELECT__USDHC2_VSELECT be included in this default
-> state group?
->
-> The MMC core initially brings up the SD card in the default 3.3V state. =
-Without
-> the USDHC2_VSELECT pad configured here, the controller might not be able=
- to
-> actively manage the IO voltage selection in its default state.
->
-> Could this absence lead to unpredictable external voltage regulator beha=
-vior or
-> SD card initialization failures?
-Nice catch, will fix it
+[ Upstream commit 1effa3adfe53cb2bb28bf5640a676b791d5ab405 ]
 
-Best regards
->
->> +		>;
->> +	};
->> +
->> +	/* need to config the SION for data and cmd pad, refer to ERR052021 *=
-/
->> +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+On NPCM845, when a target on the I3C bus gets stuck holding SDA low,
+the controller reports a false Master Request (MR) in-band interrupt
+event. The driver handles this by emitting a STOP condition to restore
+the bus.
+
+However, the hardware quirk SVC_I3C_QUIRK_FALSE_SLVSTART indicates that
+emitting a STOP condition may spuriously set the SLVSTART interrupt
+status bit. In the Master Request case, this creates a feedback loop:
+the STOP triggers a new SLVSTART event, the IRQ handler fires again,
+the controller still reports an MR type, another STOP is emitted, and
+the cycle repeats indefinitely, resulting in an IRQ storm that can lock
+up the CPU.
+
+Clear the SLVSTART status bit explicitly after emitting the STOP in the
+Master Request IBI handler when the SVC_I3C_QUIRK_FALSE_SLVSTART quirk
+is set. This breaks the feedback loop without affecting normal SLVSTART
+processing, which is already guarded in the top-level IRQ handler by
+checking that MSTATUS is in SLVREQ state.
+
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260413005040.1211107-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+# Stable Backport Analysis: i3c: master: svc: Prevent IRQ storm from
+false SLVSTART on NPCM845
+
+**Local tree:** Linux 6.18.43 (`v6.18.43-1-gc7f0dac02d232`)
+
+---
+
+## PHASE 1: COMMIT MESSAGE FORENSICS
+
+### Step 1.1: Subject Line
+**Record:** `[i3c: master: svc]` `[Prevent]` — Prevent IRQ storm from
+false SLVSTART on NPCM845 (Nuvoton BMC I3C master driver hardware quirk
+workaround).
+
+### Step 1.2: Tags
+**Record:**
+- **Signed-off-by:** Stanley Chu `<yschu@nuvoton.com>` (author)
+- **Reviewed-by:** Frank Li `<Frank.Li@nxp.com>` (NXP I3C reviewer)
+- **Link:**
+  https://patch.msgid.link/20260413005040.1211107-3-yschu@nuvoton.com
+- **Signed-off-by:** Alexandre Belloni `<alexandre.belloni@bootlin.com>`
+  (I3C maintainer)
+- No Fixes:, Reported-by:, Tested-by:, Cc: stable@vger.kernel.org
+- Notable: Reviewed by subsystem reviewer; maintainer applied the
+  series. No syzbot report (hardware-specific quirk).
+
+### Step 1.3: Body Analysis
+**Record:**
+- **Bug:** On NPCM845, when an I3C target holds SDA low (bus stuck), the
+  controller reports a false Master Request (MR) IBI. The driver emits
+  STOP to recover the bus, but STOP spuriously sets the SLVSTART status
+  bit (known `SVC_I3C_QUIRK_FALSE_SLVSTART` behavior).
+- **Symptom:** Feedback loop — STOP → spurious SLVSTART → IRQ handler →
+  MR again → STOP → … → **IRQ storm that can lock up the CPU**.
+- **Root cause:** MR handler emits STOP without clearing the spurious
+  SLVSTART bit afterward; top-level quirk guard (SLVREQ state check)
+  does not break this specific MR+stuck-SDA loop.
+- **Fix:** After STOP in the `MASTER_REQUEST` IBI path, explicitly clear
+  SLVSTART when the quirk is set.
+- **Version info:** NPCM845-specific; no kernel version range stated.
+
+### Step 1.4: Hidden Bug Fix Detection
+**Record:** Not disguised — explicitly a bug fix for IRQ storm / CPU
+lockup. Falls under hardware quirk/workaround exception category.
+
+---
+
+## PHASE 2: DIFF ANALYSIS
+
+### Step 2.1: Inventory
+**Record:**
+- **File:** `drivers/i3c/master/svc-i3c-master.c` (+9 lines, 0 removed)
+- **Function modified:** `svc_i3c_master_ibi_isr()`
+- **Scope:** Single-file, surgical fix in one `switch` case
+  (`SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST`)
+
+### Step 2.2: Code Flow Change
+**Record:**
+- **Hunk (MASTER_REQUEST case):**
+  - **Before:** `svc_i3c_master_emit_stop(master); break;`
+  - **After:** Same STOP, then if `SVC_I3C_QUIRK_FALSE_SLVSTART` quirk
+    is set, `writel(SVC_I3C_MINT_SLVSTART, master->regs +
+    SVC_I3C_MSTATUS)` to clear spurious SLVSTART.
+- **Path affected:** IRQ-driven IBI handler, non-critical task section,
+  MR event only, only when quirk bit is set (NPCM845).
+
+### Step 2.3: Bug Mechanism
+**Record:** **Category:** Hardware quirk workaround / IRQ storm
+prevention (synchronization with hardware interrupt status).
+- STOP on NPCM845 spuriously sets SLVSTART interrupt status.
+- In MR+stuck-SDA scenario, top-level handler's SLVREQ guard does not
+  prevent re-entry into MR handling.
+- Explicit status clear after STOP breaks the feedback loop.
+
+### Step 2.4: Fix Quality
+**Record:**
+- **Obviously correct:** Uses the same `writel(SVC_I3C_MINT_SLVSTART,
+  ...)` pattern already used in `svc_i3c_master_irq_handler()` at line
+  626.
+- **Minimal:** Quirk-gated, only in MR path.
+- **Regression risk:** Very low — only affects NPCM845
+  (`npcm845_drvdata` sets `SVC_I3C_QUIRK_FALSE_SLVSTART`). Normal
+  SLVSTART processing remains guarded by SLVREQ check in the top-level
+  IRQ handler.
+
+---
+
+## PHASE 3: GIT HISTORY INVESTIGATION
+
+### Step 3.1: Blame
+**Record:** Lines 609–611 (`MASTER_REQUEST` STOP without clear) blamed
+to `19eef1d98eeda` (kernel import). The MR+STOP path predates this
+series; the missing clear is a gap in the original
+`SVC_I3C_QUIRK_FALSE_SLVSTART` handling from March 2025.
+
+### Step 3.2: Fixes: Tag
+**Record:** No Fixes: tag. N/A.
+
+### Step 3.3: Related File History
+**Record:** Related commits in this tree on `svc-i3c-master.c`:
+- `466c7f87de52d` — Fix missed IBI after false SLVSTART (series patch
+  1/2, **present**)
+- `98ddff8a90f82` — Initialize `dev` to NULL in
+  `svc_i3c_master_ibi_isr()`
+- `8ddff9989f06a` — Prevent incomplete IBI transaction
+- Quirk introduced via code present since kernel import;
+  `SVC_I3C_QUIRK_FALSE_SLVSTART` and `npcm845_drvdata` confirmed in
+  tree.
+
+### Step 3.4: Author Context
+**Record:** Stanley Chu (Nuvoton) authored NPCM845 I3C fixes. Frank Li
+(NXP) reviewed. Alexandre Belloni (I3C maintainer) committed. Author has
+multiple related svc-i3c-master fixes in this tree.
+
+### Step 3.5: Dependencies
+**Record:**
+- **Prerequisite:** Patch 1/2 (`466c7f87de52d` — re-read MSTATUS in IRQ
+  handler) is **already in this tree**.
+- **Required infrastructure:** `SVC_I3C_QUIRK_FALSE_SLVSTART`,
+  `svc_has_quirk()`, `npcm845_drvdata` — all **present**.
+- **Standalone:** This patch (2/2) is self-contained; applies cleanly on
+  top of current tree (`git apply --check` passed).
+- Upstream commit: `1effa3adfe53c`; **not yet in this 6.18.43 tree**.
+
+---
+
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+
+### Step 4.1: Original Discussion
+**Record:**
+- **b4 dig -c 1effa3adfe53c:**
+  https://patch.msgid.link/20260413005040.1211107-3-yschu@nuvoton.com
+- **Series:** v1, 2 patches: (1) Fix missed IBI, (2) Prevent IRQ storm
+- **Maintainer response:** Alexandre Belloni: "Applied, thanks!" — both
+  patches applied to i3c tree.
+- **Stable nomination:** None found in thread.
+- **NAKs/concerns:** None found.
+
+### Step 4.2: Reviewers
+**Record:** CC'd: frank.li@nxp.com, miquel.raynal@bootlin.com,
+alexandre.belloni@bootlin.com, linux-i3c@lists.infradead.org, Nuvoton
+engineers. Reviewed-by: Frank Li.
+
+### Step 4.3: Bug Report
+**Record:** No external bug report or syzbot link. Hardware quirk
+described by Nuvoton driver author; credible for embedded BMC platform.
+
+### Step 4.4: Series Context
+**Record:** 2-patch series addressing false SLVSTART quirk. Patch 1
+fixes missed IBI (race); patch 2 fixes IRQ storm (feedback loop). Both
+are complementary; patch 1 already in this tree; patch 2 is still
+missing.
+
+### Step 4.5: Stable List History
+**Record:** Not searched on lore stable list; no stable nomination found
+in patch thread. Absence is not a negative signal per instructions.
+
+---
+
+## PHASE 5: CODE SEMANTIC ANALYSIS
+
+### Step 5.1: Key Functions
+**Record:** `svc_i3c_master_ibi_isr()` (modified),
+`svc_i3c_master_irq_handler()` (caller, unmodified).
+
+### Step 5.2: Callers
+**Record:**
+- `svc_i3c_master_irq_handler()` → `svc_i3c_master_ibi_isr()` (line 646)
+- IRQ registered via `devm_request_irq()` at line 1944
+- **Context:** Hard IRQ context on I3C SLVSTART interrupt — hot path for
+  all IBI events on NPCM845.
+
+### Step 5.3: Callees
+**Record:** `svc_i3c_master_emit_stop()`, `svc_has_quirk()`, `writel()`
+to hardware MSTATUS register.
+
+### Step 5.4: Reachability
+**Record:**
+- Triggered when I3C bus target holds SDA low (hardware fault or
+  misbehaving device).
+- IRQ-driven, runs on every spurious SLVSTART in the MR feedback loop.
+- Not directly userspace-triggerable, but bus faults on BMC/server
+  platforms are realistic production scenarios.
+- **Impact when triggered:** Continuous IRQ processing → CPU lockup.
+
+### Step 5.5: Similar Patterns
+**Record:** Top-level IRQ handler already clears SLVSTART and has quirk
+guard. IBI and HOT_JOIN cases also emit STOP but do not need this extra
+clear (commit explains MR-specific loop). Same
+`writel(SVC_I3C_MINT_SLVSTART, ...)` idiom used elsewhere in file.
+
+---
+
+## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
+
+### Step 6.1: Buggy Code Exists?
+**Record:** **YES.** Current tree at lines 609–611:
+
+```609:611:drivers/i3c/master/svc-i3c-master.c
+        case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+                svc_i3c_master_emit_stop(master);
+                break;
+```
+
+No SLVSTART clear after STOP. `SVC_I3C_QUIRK_FALSE_SLVSTART` and
+`npcm845_drvdata` are present (lines 154, 2056–2059). Prerequisite patch
+`466c7f87de52d` is present. Upstream fix `1effa3adfe53c` is **not** in
+this tree.
+
+### Step 6.2: Backport Complications
+**Record:** **Clean apply** — `git apply --check` against upstream diff
+succeeded with no conflicts. No rework needed.
+
+### Step 6.3: Related Fixes Already Present?
+**Record:** Patch 1/2 (`466c7f87de52d`) present. IRQ storm fix
+(`1effa3adfe53c`) absent. No alternate fix for this issue found.
+
+---
+
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+
+### Step 7.1: Subsystem Criticality
+**Record:** **Subsystem:** `drivers/i3c/master/` — I3C bus master driver
+(Silvaco/Vayavya Labs SVC IP, Nuvoton NPCM845). **Criticality:**
+IMPORTANT/PERIPHERAL — affects NPCM845 BMC platforms specifically, but
+IRQ storm is a system-wide CPU lockup.
+
+### Step 7.2: Subsystem Activity
+**Record:** I3C subsystem actively maintained in 6.18.y with recent svc
+and mipi-i3c-hci fixes. NPCM845 support and quirk infrastructure are
+established in this tree.
+
+---
+
+## PHASE 8: IMPACT AND RISK ASSESSMENT
+
+### Step 8.1: Who Is Affected
+**Record:** Users of Nuvoton NPCM845 I3C controller
+(`"nuvoton,npcm845-i3c"` DT compatible). Primarily embedded BMC/server
+platforms. Config-specific (driver + hardware present).
+
+### Step 8.2: Trigger Conditions
+**Record:** I3C target stuck holding SDA low → false MR IBI → STOP
+recovery loop. Requires bus fault or misbehaving device — uncommon but
+realistic. Not unprivileged-userspace-direct, but can freeze the system
+when it occurs.
+
+### Step 8.3: Failure Mode Severity
+**Record:** **IRQ storm → CPU lockup.** Severity: **CRITICAL** (system
+becomes unresponsive).
+
+### Step 8.4: Risk-Benefit
+**Record:**
+- **Benefit:** HIGH for NPCM845 users — prevents system lockup on bus
+  fault.
+- **Risk:** VERY LOW — 9 lines, quirk-gated, same register write pattern
+  as existing code, zero impact on non-NPCM845 platforms.
+- **Ratio:** Strongly favors backport.
+
+---
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: Evidence Summary
+
+**FOR backporting:**
+- Fixes real IRQ storm causing CPU lockup (CRITICAL severity)
+- Small, surgical, quirk-gated hardware workaround
+- Reviewed by NXP reviewer; applied by I3C maintainer
+- Prerequisites present in 6.18.43 tree; applies cleanly
+- Complements already-backported patch 1/2 in the series
+- Matches stable exception category: hardware quirk/workaround
+
+**AGAINST backporting:**
+- NPCM845-specific (limited audience) — but stable routinely takes
+  hardware quirk fixes
+- Requires bus fault to trigger — but consequence is system lockup
+- No syzbot/user bug report — but hardware quirk from silicon vendor is
+  credible
+
+**Unresolved:** None affecting the decision.
+
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **PASS** — minimal register clear,
+   reviewed, maintainer-applied
+2. Fixes a real bug? **PASS** — IRQ storm on NPCM845
+3. Important issue? **PASS** — CPU lockup (CRITICAL)
+4. Small and contained? **PASS** — 9 lines, one case branch
+5. No new features/APIs? **PASS** — quirk workaround only
+6. Can apply to local tree? **PASS** — clean apply, prerequisites
+   present
+
+### Step 9.3: Exception Category
+**Record:** Hardware quirk/workaround for NPCM845 I3C controller.
+
+### Step 9.4: Decision Rationale
+This commit closes a gap in the existing `SVC_I3C_QUIRK_FALSE_SLVSTART`
+handling. The 6.18.43 tree already has NPCM845 support, the quirk flag,
+and series patch 1/2, but lacks this IRQ storm fix. When an I3C bus
+fault causes a target to hold SDA low, the driver can enter an infinite
+IRQ loop that locks the CPU. The fix is minimal, quirk-gated, reviewed,
+and applies cleanly. This is appropriate stable material.
+
+---
+
+## Verification
+
+- [Phase 1] Parsed subject, tags, body from provided commit message
+- [Phase 1] Identified as explicit hardware quirk IRQ storm fix, not
+  hidden cleanup
+- [Phase 2] Diff: +9 lines in `svc_i3c_master_ibi_isr()`, MASTER_REQUEST
+  case only
+- [Phase 2] Verified `writel(SVC_I3C_MINT_SLVSTART, ...)` pattern
+  matches line 626 in same file
+- [Phase 3] `git describe HEAD` / `make kernelversion`: 6.18.43
+- [Phase 3] `git blame -L 609,611`: MR STOP path present without
+  SLVSTART clear
+- [Phase 3] `git merge-base --is-ancestor 466c7f87de52d HEAD`: patch 1/2
+  present
+- [Phase 3] `git merge-base --is-ancestor 1effa3adfe53c HEAD`: IRQ storm
+  fix NOT present
+- [Phase 3] `git log --oneline 4dd12e944f07^..HEAD --
+  drivers/i3c/master/svc-i3c-master.c`: related history confirmed
+- [Phase 3] `git apply --check` on upstream diff: applies cleanly
+- [Phase 4] `b4 dig -c 1effa3adfe53c -a`: v1 2/2 series found
+- [Phase 4] `b4 dig -c 1effa3adfe53c -w`: maintainers CC'd, Frank Li
+  reviewed
+- [Phase 4] `b4 dig -c 1effa3adfe53c -m /tmp/i3c_irq_storm.mbox`:
+  Belloni applied both patches; no stable tag, no NAKs
+- [Phase 5] `grep svc_i3c_master_irq_handler`: caller at line 646; IRQ
+  registered at line 1944
+- [Phase 5] `grep SVC_I3C_QUIRK_FALSE_SLVSTART`: quirk defined line 154,
+  used lines 628 and 2058
+- [Phase 6] `grep npcm845`: `npcm845_drvdata` with quirk at lines
+  2056–2065
+- [Phase 6] Read current file lines 609–611, 617–648: buggy code
+  confirmed, prerequisite quirk guard present
+- [Phase 7] `git log --oneline -20 -- drivers/i3c/`: active subsystem
+- [Phase 8] Failure mode IRQ storm → CPU lockup assessed as CRITICAL
+
+**YES**The background check finished: the IRQ storm fix (`1effa3adfe53c`
+/ `5e33b8c19e5b2`) is **not** in your current **6.18.43** tree.
+
+That matches the earlier analysis: NPCM845 support and the related
+false-SLVSTART quirk are present, patch 1/2 (`466c7f87de52d`) is already
+applied, but the MR-handler SLVSTART clear is still missing — and the
+upstream patch applies cleanly.
+
+**Backport recommendation: YES** — it’s a small, quirk-gated fix for an
+IRQ storm that can lock up the CPU on NPCM845 when the I3C bus gets
+stuck.
+
+ drivers/i3c/master/svc-i3c-master.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index d33f4c7654974..70365a550ad29 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -608,6 +608,15 @@ static void svc_i3c_master_ibi_isr(struct svc_i3c_master *master)
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++
++		/*
++		 * If a target gets stuck holding SDA low, the controller reports a MR.
++		 * On NPCM845, emitting STOP may spuriously set SLVSTART, retriggering
++		 * the interrupt and re-entering MR handling, leading to an IRQ storm.
++		 * Clear SLVSTART after STOP to break the loop.
++		 */
++		if (svc_has_quirk(master, SVC_I3C_QUIRK_FALSE_SLVSTART))
++			writel(SVC_I3C_MINT_SLVSTART, master->regs + SVC_I3C_MSTATUS);
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.53.0
 
