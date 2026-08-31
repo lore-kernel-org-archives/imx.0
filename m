@@ -1,169 +1,164 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAD23D4107
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7403A71AD;
+	Mon, 31 Aug 2026 09:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166329; cv=none; b=jszlfs2Oy5NA4kz1OtkAwQxhAE4vlrL8+m5Q++MF+RtCrD+EUs/Ww7KuLoydPVp1IEOQUG4QZHUpSyQqGkJvQcaESdDFNdI+Ua/b9iH1sEABq+DaZpNq3tnGRx+BVWInk/GC3mBko/S5nY4SySzTszZpLmKx3ssxrrmu6Xhezzk=
+	t=1788167088; cv=none; b=MoKHVNoaEN9fh2sV90K+V3vvFt55bMJdOORnS0Go0rU18ovNsclYjjbtKNnmsaPWHLJiHvLd2aVnAk60z/zCr0tloKl+efgr0q1vaJKN5fQjIZGDWst83m8BOd3BxtxYF0ruxt8vtDPMexSdlP8jJHgiIxksSJewSLW9LIV/Pjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166329; c=relaxed/simple;
-	bh=+2hOgK8tLcdWYDNwQNgvsfIaBdx8Bs2buQwhXdccyfI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kmUSIaMyl6bB8cOKvY559xeR+CSbSgH6tYOT/caYE0HVOixMJnP77MiZJ5m3pTmqdo0j9J9jXVVar04s6TI87mONRjnbovGfCtxmnZ+BUQdObeo0kymtoN/tG5cFxy3wrPSlTWPSWqCVw6effoKpUEkWkin4mhto9xr1WXha7iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Cb9qiPO1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JiMwSHDg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788167088; c=relaxed/simple;
+	bh=7pAi7166XWQSyCVnLaFq5Oiknqj50joNBVNikhDtwcM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=eHi3F8MmWEK1q7sQc3aOSbYL77f1GtEHteGzbnkNDACI06vuWWOTRecbRks3792WsrF/LQcTfykIBK/kKQ7c4ndEoFZlWH4wcl8eHZya1Fmf0C8A90/xpf9XxnB35idavIMiEz6JNoW9Cyn/LKOpY5+A0lgCm6CPNUMKJP/Y3hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ocqzPnxt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Cb9qiPO1";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JiMwSHDg"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V7xNeD4081787
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:52:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	palpmFZZO8X/xAXI6fll/8vpW1RA6tZdCLOM/AIPfzE=; b=Cb9qiPO1ic/fp51i
-	A9Y2ZhtgOkhSln+gHhILBIxKRU9q+EFTQfIhJ4xKf3wSbJzN0zhWjc1wjKvCjW/J
-	20tRmMpCyW+/6NVKa9ju+y4z34Z1xhpfyAlboEeTtuW95Rucj6k1F4i1tL719VRR
-	H7wYpvc/yeIs2lWB1lSE8pg+CBO0IWoWkT6ey/hVX/H+KRECt+7Fqi+odS+2dl0A
-	qFhZoqADFb0HvLuYkRm1kwuOOxblBsRmGTx5jITenBO5AvipKEk6e0kwpMD4rdQU
-	pwUrlCvklDqEPsTAtZqr77iOoDzCBPICWFBDq/2a/PhbXYlmLsDkqzi2JheDwFRQ
-	RC/M7Q==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gcv8h1tdw-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 08:52:06 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-398e1fafe17so1231914a91.0
-        for <imx@lists.linux.dev>; Mon, 31 Aug 2026 01:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788166326; x=1788771126; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=palpmFZZO8X/xAXI6fll/8vpW1RA6tZdCLOM/AIPfzE=;
-        b=JiMwSHDglhSFJH1h0CG/aTkdppcrK5wHYC2iycTM3aURQTC8Lk90gsr45iHMyo+uTM
-         GAVwr6Vnkmp1ihRdSjO8+s/hpBs03PElw3jwJLlj2eey766LugKTMyGrFDk2KxEknq8s
-         ss4DSlaJijE+XrPUNlyTwF+jKOD+AoQkjT6or7RSu45Knignza0wqwL894t/EcrNULr2
-         TIbR2pEk8UUVgwL1TxxJVY59J2s637rQxMg393Nr4qSEYJfchjnE7xRMLz9rPg6YChyG
-         c1B1cOF5WMQFC8aEmaNIs+lWG13GoOlRfrAcVagsx5VnGmke4SA58zDZMYLxBpY6jUhM
-         w/gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788166326; x=1788771126;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=palpmFZZO8X/xAXI6fll/8vpW1RA6tZdCLOM/AIPfzE=;
-        b=JPGjDvAfv2GhWgDPyhS1mNBOZom3wNZsRl8pOg6EuTFeHr0NXa60SYonC+FZifg3Ga
-         cKkrtAfsR/LNs4XO5p5V8KQo429iazWCwmDP9qvvWV4flkael6tcX78dFmdth+RR5rq3
-         r51Ai/wW7XKofYIlrmxwoGpbMopOCBY1EUxkv37s3yKH7Wdjhnh3eQCsrBPIGLIYO2/l
-         2GXDpdg5gOtFI/MaGXKbaOC6A3+yFxs2n89GaC4kr43JWIC2vFGh3YKLlCONvtubcWk9
-         z3M9KZtCIUx90ZJGLQ4VbDEu7MV6AMoaJgbuVHzCuWjBc2w2vv++hB7/uMP2w6jVqNwB
-         aXPw==
-X-Forwarded-Encrypted: i=1; AKwUvBx/Why7OmVXTFqau0qQdnHLkktHsWWu9+rvReL77Lp3aTi+jMpF5t+fvkIp6q45t6IYk0k=@lists.linux.dev
-X-Gm-Message-State: AFuF++ntX9Rtj0KHCedD78/fKE1ucFvmqAfmP8Gt+NzzMnQS9gxgGeHZ
-	dc1rjqVtGGt6DWYrD8c7fZ4w1YyLqUBEutCcez0uZUvRLyIOs7b1LbuCZvfLmcv65zOuDtAfKg/
-	Bs2nXPBc9tRFjEke9lyIAPAI0Z9FEJ0faynRh5Yo6a90D7q6k9VS8y44=
-X-Gm-Gg: AYBFou0w2nVXJx5lzMETjRkYRpA8kxX/7eETUokktpdtJ3MRZMgurJ5dRwM2OqhPgYd
-	IFeBnnPuFtinvTs05ozMl2snHuHOY+xmswgYshPmalJGo8W6r5VmFNSUlnlnc0TcDNjZfDU1VVD
-	Fxrcp96Z5MqZb9kLn+VwKluZgPtfGxctXJaJW+INTmj8ZSiMJrtpTM+yq5YsVRsRa+YjPubfgI5
-	U4oERJoO8yEa0DEqDrQO3VCbsM3LCo1l15t73iZCZ0rmMc3dxtQrh8fxMBbB4cWAL5s2piYqu/Q
-	r2tptMXs85c7oSoF5zxiMJu3TmcHs0V0vkkIYbn3U6PgZbb5cbYemiR/H4aaNZJ5rAE61VpZOM3
-	Cv1TXlh7heKS4frfn4yoRnORYgZD2W1wECA==
-X-Received: by 2002:a17:90b:4c45:b0:398:ceed:6d44 with SMTP id 98e67ed59e1d1-398ceed6d9dmr12393505a91.25.1788166326211;
-        Mon, 31 Aug 2026 01:52:06 -0700 (PDT)
-X-Received: by 2002:a17:90b:4c45:b0:398:ceed:6d44 with SMTP id 98e67ed59e1d1-398ceed6d9dmr12393440a91.25.1788166325630;
-        Mon, 31 Aug 2026 01:52:05 -0700 (PDT)
-Received: from [10.217.218.20] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0df264csm46282736c88.14.2026.08.31.01.51.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 01:52:05 -0700 (PDT)
-Message-ID: <8ec899c7-61a9-45cc-b332-a98d2c0ac344@oss.qualcomm.com>
-Date: Mon, 31 Aug 2026 14:21:56 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ocqzPnxt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F50B1F000E9;
+	Mon, 31 Aug 2026 09:04:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788167086;
+	bh=L0B9Ydyca33fzaC4BYotoHysBDOs35sZh0O/LAlxSk8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ocqzPnxtT+JcZOfireKyd6nupUJ4hDn+HUKWuQs6g/gc//2ro061YQuO+XACPqzmW
+	 0kEciK3dRMb5y7dj0empXk/gfDx35HNXa01tHLqeWQBqc2VjAkQTW707/Aujz+XOAW
+	 XR02PmbzxNNE0zSgCYypY7yU0TILHDLnwG94NbxHrNFFPg74AqZO/o3Qt6gppSmgCn
+	 lEbkxhrKem5uDWcAYxuQ0QatB7UBh/fT/wDkPyPm96JX4GHjbKfaKFQUHvqlbwSZii
+	 2wrTbeTN0QbNKI2f6+p4OAjO/jy7IEkWHidRTY8CfIyHH4XsgiCjM02+zarqTVlkbc
+	 s7DWNNAAu5Vfw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH V2 3/3] arm64: dts: freescale: Add chargebyte Charge
+ Control Y
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Stefan Wahren" <wahrenst@gmx.net>
+Cc: "Vincent Mailhol" <mailhol@kernel.org>, "Marc Kleine-Budde" <mkl@pengutronix.de>, "Oleksij
+ Rempel" <o.rempel@pengutronix.de>, conor+dt@kernel.org, olteanv@gmail.com, vkoul@kernel.org, devicetree@vger.kernel.org, linux-phy@lists.infradead.org, Frank.Li@kernel.org, robh@kernel.org, neil.armstrong@linaro.org, "Oliver
+ Hartkopp" <socketcan@hartkopp.net>, linux-can@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260831083539.8287-4-wahrenst@gmx.net>
+References: <20260831083539.8287-1-wahrenst@gmx.net>
+ <20260831083539.8287-4-wahrenst@gmx.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 09:04:44 +0000
+Message-Id: <20260831090445.0F50B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] i2c: qcom-geni: release DMA channels on probe error
-To: Shengzhuo Wei <me@cherr.cc>,
-        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Wolfram Sang <wsa@kernel.org>,
-        Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Frank Li
- <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Yao Yuan <yao.yuan@freescale.com>,
-        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-References: <20260827-i2c-dma-channel-leak-v1-0-271d4adc03a0@cherr.cc>
- <20260827-i2c-dma-channel-leak-v1-3-271d4adc03a0@cherr.cc>
-Content-Language: en-US
-From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-In-Reply-To: <20260827-i2c-dma-channel-leak-v1-3-271d4adc03a0@cherr.cc>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=DY0nbPtW c=1 sm=1 tr=0 ts=6a9540b6 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=FqpsaMCCsM1CaQCKzz8A:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA3NSBTYWx0ZWRfX3Lq2jLV9dbs7
- TPg8enUJhS/EGmFsDzwlWLTKI1EToobSm/DNF9gdUbFd/HjDickVSzss70Lr56HUydry1Z3ZPAI
- Zivvtf1jP7it/XXceJ/dY4h7V/lnVyo7QTyBDQ3S7XtBhdmlgKN648lA7Si0E0hUPgtXP51PRkT
- 0nXme99vJG9VndlgdRiVqXBJP2NWWVjBtVPPCUU9JvPAIAPuGLeFqWMzv6xPU4+YGeWzFTOCTv1
- j8WsYD5UqLZ0c+ufS8yltKUOvPiOjhscW80kKi9J8SdQaM7zDb89Cn9CANcj3avpRXlAgS1i89V
- qidAVId3gfDwPaVYuQPMndUAjf8JrwLx87TFb2AK0ZtqS4MXnqqcaHf1bfejYNac7uRWmexhne4
- usZrJHsDz5idVZuPnCNSy3zRdr49FOnldoYao/hj+oGLfFgqPbYDvt+nJWGbFeNhmEAIEU2z0d4
- i1XUBH+2516cQH6PoAg==
-X-Proofpoint-ORIG-GUID: QYm059wM9UWAzJ_kTneQc7basLO9Vt7_
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA3NSBTYWx0ZWRfXyUYJZs69Sm3d
- DQwO5zjlc3cmlww6P5qURXfpDuR3yvF2xO+s/q3YNYZPa9bZqpc3I0VF6oVFFlCRPpVfDu/JhBO
- Q3H1fDtKN8ve6vh29LVpVRhOPaetwUs=
-X-Proofpoint-GUID: QYm059wM9UWAzJ_kTneQc7basLO9Vt7_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_03,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 clxscore=1011 priorityscore=1501 spamscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310075
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] Missing GPIO initialization / Unused pin for X_nRST_LAN
+- [Medium] Missing Pin Mux Configuration for USDHC2_VSELECT in default state
+- [Low] DT Binding Violation: Undocumented compatible string 'microchip,mcp=
+2542'
+--
 
+commit c595019b7dc419cc298a111c2b215904a12f65e1
+Author: Stefan Wahren <wahrenst@gmx.net>
+arm64: dts: freescale: Add chargebyte Charge Control Y
 
-On 8/27/2026 9:13 PM, Shengzhuo Wei wrote:
-> geni_i2c_init() grabs exclusive GPI tx/rx DMA channels when the serial
-> engine runs in GPI mode. If i2c_add_adapter() subsequently fails, probe
-> returns without releasing the channels, because the remove callback is
-> not invoked after a failed probe.
-> 
-> The adapter-registration failure path used to release the channels via
-> its err_dma label; that release was dropped when the probe tail was
-> restructured into geni_i2c_init().
-> 
-> Release the channels on the adapter-registration failure path, mirroring
-> geni_i2c_remove().
-> 
-> Fixes: d8d3bb127ad1 ("i2c: qcom-geni: Isolate serial engine setup")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shengzhuo Wei <me@cherr.cc>
-> Assisted-by: GLM:5.3
-> ---
+This commit introduces device tree support for the chargebyte Charge Contro=
+l Y,
+an Electrical Vehicle Supply Equipment for MCS charging stations based on t=
+he
+phyCORE-i.MX 93 ARM SoM. It defines necessary pin multiplexing, peripherals
+like CAN and Ethernet, and device-specific layouts.
 
-Reviewed-by: Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts b/a=
+rch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
+> new file mode 100644
+> index 0000000000000..0405098cc05c4
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
+
+[ ... ]
+
+> +	// Heartbeat LED of phyCore is not populated
+> +	/delete-node/ leds;
+> +
+> +	flexcan1_tc: can-phy0 {
+> +		compatible =3D "microchip,mcp2542", "ti,tcan1042";
+
+[Severity: Low]
+Is the "microchip,mcp2542" compatible string documented in any devicetree
+binding schema?
+
+Using an undocumented compatible string here might cause `make dtbs_check`
+validation tooling to fail.
+
+> +		#phy-cells =3D <0>;
+> +		max-bitrate =3D <1000000>;
+> +	};
+
+[ ... ]
+
+> +	pinctrl_flexcan1: flexcan1grp {
+> +		fsl,pins =3D <
+> +			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
+> +			MX93_PAD_PDM_CLK__CAN1_TX		0x1382
+> +		>;
+> +	};
+> +
+> +	pinctrl_gpio1: gpio1grp {
+> +		fsl,pins =3D <
+> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
+
+[Severity: Medium]
+Does the X_nRST_LAN reset pin (GPIO1_IO03) need a GPIO hog or a driver
+consumer (e.g., via a reset-gpios property) in the device tree?
+
+Since the upstream lan865x SPI kernel driver does not parse or manage
+reset-gpios, leaving its functional state unmanaged here might result in the
+hardware reset pin floating or being left in an indeterminate state.
+
+Could this cause the LAN8651 Ethernet interface to fail to emerge from reset
+and initialize properly on a cold boot?
+
+> +			MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10	0x382
+> +		>;
+> +	};
+> +
+> +	pinctrl_gpio4: gpio4grp {
+
+[ ... ]
+
+> +	pinctrl_usdhc2_cd: usdhc2cdgrp {
+> +		fsl,pins =3D <
+> +			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc2_default: usdhc2grp {
+> +		fsl,pins =3D <
+> +			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
+> +			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
+> +			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
+> +			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
+> +			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000138e
+> +			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
+
+[Severity: Medium]
+Should MX93_PAD_SD2_VSELECT__USDHC2_VSELECT be included in this default
+state group?
+
+The MMC core initially brings up the SD card in the default 3.3V state. Wit=
+hout
+the USDHC2_VSELECT pad configured here, the controller might not be able to
+actively manage the IO voltage selection in its default state.
+
+Could this absence lead to unpredictable external voltage regulator behavio=
+r or
+SD card initialization failures?
+
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831083539.8287=
+-1-wahrenst@gmx.net?part=3D3
