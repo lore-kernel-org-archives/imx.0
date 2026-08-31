@@ -1,174 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013049.outbound.protection.outlook.com [52.101.83.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18EE352002
-	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 15:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788188443; cv=none; b=i5SU+MfA2n1Y+kCd01SuiMBk+EUGJ3aOcA/LwrWWVQIZWxWN8i70McRd6+PKoA4ZWO/5N5YgCHIu7cGEJD9ob0oSmKZuq9fErYxVW0rDTmyk+O4M294qx1tr9gsjsTE3zyF+8xgtc/aTsGDq7K2zYeboYha4MVFLs33kHsA7ZaY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788188443; c=relaxed/simple;
-	bh=witbMN2yxefa9SDAdH8HD8oV0HpMjY6956EEPK7KEWc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BLkckVRs/RpZFixG/gN5weeGKAKUTF0d5/hRiC9JeNn1gVZCGgVDo2BRycsxEcIMxxRY3RfuizmzLCOsgGkk69Y+1NFfMfdm+Mz+mKL0tkBj750loCt57ZKzdKc1I4UGEPeXD4Nc3ZGSUHnzZyg9gZFhItT1DuY3ZHbQZiY5RfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cM/9xjsw; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7961F51123C
+	for <imx@lists.linux.dev>; Mon, 31 Aug 2026 15:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788188526; cv=fail; b=C22AAd565gpjAo7oNI9g9swEUhCb98zytLH3h3k7KujySDyvLjjC3qbL9Ot7DK0Wr7vj9KEO8ygjznQ7qdX1zQh4iRe7f3GbQ7brOu/iA/+7/0xBrai8KoBnn3p6G0kbdRy4nvLlO04dQKostBTIXTnj0fK6D3aaVlnU9Hna/AY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788188526; c=relaxed/simple;
+	bh=iXwo8CyVwfgnbXYWJORrAVP2l44vN65G8bIEHpQn+Xw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mVYhimajqUsVs9VTf1BJFSyrDI9jpimNIKeF8WpcBd1qrXZyQduL3RR3E6CZhm6+jOkOiYXLVBKXKnwwvmPP0eAKZ3E86ca0aUlRfEnwecYI+cHEJJWPFUnwX4kCRCq+qNzJKK2GdmCkZBJo3j83q9pDj44/Im9MjXMP6wWG09Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ppUgZPY6; arc=fail smtp.client-ip=52.101.83.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cM/9xjsw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B361F000E9;
-	Mon, 31 Aug 2026 15:00:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788188442;
-	bh=nGE4pmHS6Jma0KLBnG1hGDrFGqq8Jr/m+oCt+cWKTsw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cM/9xjswzUD4O3dlJDjGVbcvNOLSVCDA5k7obmVGGzRIIsgOTbGMBEWn9mEebItuH
-	 ymjY4YsxL2izyvInNkO3bQYH8EgOsJXvXE5uBufDcx9s+3p1UVFz/mLJGOCjImrBFu
-	 HNR5PZl03wOUvQ0vWX24+YcEGTsgMJXGmQ8mztCMo+vnrhqfiQFXwJI67OWgFaL5P4
-	 aN7KaI6FZWoYbw+PiJ1O1hXySI5GP4Cr5YuznfLfaqSMGeqahCA8cIq1koqojM9nhg
-	 UUDAjugpJlk/HC/HyHZQLVutOcphSFRZNazOz+UIGgd+/BJv6kv9wIUsxBZk4jcMtV
-	 ePvKCuJR7QZ8Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH AUTOSEL 6.18-6.12] mailbox: imx: Add a channel shutdown
- field
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sasha Levin" <sashal@kernel.org>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260831133314.4125787-195-sashal@kernel.org>
-References: <20260831133314.4125787-1-sashal@kernel.org>
- <20260831133314.4125787-195-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ppUgZPY6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J+qcZN4JTgWreKEmcVSmp5Rt4o3gEShcX+LKAU4gsoDNNw1T3Hd+ie/kEdt3rKbM5UVtCpZf+xmmfkb5igrSf3ar6ZwlmNdcdsSMyHeJnX1Zkk08CmdKceYP8JTCrL1tlxMbzOQ2c/YYl06wC/dKzkRihgjZzhkrzVOAeo/jKrVm552yOvzHsBc0qBocgIoHOoFTlo8zPZFGVHvIPVtzKNq8Z38mF8W+RBskKrJok2dMUTXOzX7QaqtnGPpyhY7lydweVD56v++Ppr80bO0fLQRbj85w/96zIoQO1cBlICcTD1up/TrmglwJ0+VaDitNs0w1JeOCr5jFjmlzQh/5cA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LOyTxG4m7vc3Q8Se6/Wh3tGakVMSL/FRahEccUIWMI4=;
+ b=URb9iCVXjOl91aogysbl+EbB/hMqfaMlStVxIoz3gIaTz8V2hVzV52NjRl1AJkhIkv9joSjqjnGSuHMv091fygmA1ewiemKD9OgAFGZSKqDwmXfsMYIqc63ogSpJLnaFlKOSl7UjVyUznLao9GPM5nPnS1x4WGmDmE0tkETuPj4I7bCI9mZIfpFVzi4IZx9J7JDQw2sCDt5ihFq6yf5LKLlZNIQmGDJLO75G5M2LgwCv+cuNxsP3GF4MxCHw0KgD9HfpYL3FyMUx11vtF2PZDWMhRAbbZuIBzEu5jeSHAnTQNFRFYmUdm5J4zuy1YCEAotGJHngQ7mlJi8UsDJumAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LOyTxG4m7vc3Q8Se6/Wh3tGakVMSL/FRahEccUIWMI4=;
+ b=ppUgZPY6j1KIDmd3+st2z8zUr8vQtkISDEIqXXR0TZGkcqPMTGgPcshuoOnqxUQbVdIEYaWCpnA1uPBId+2eIeQCuxOr1YKfL6Adfm7ykgTPEbf/1FCQhYmWTjh8UDRJLOBsratrPJlSZjK9QIi3xt1Ijs9IqZuReRcAljfG88xbN1uiQDdD633UKBUxEqYjy0dmGzlqjRJtpCaCFo98I7Ayh5rvPe76jlba7l8qi3qg/GDImoyaROSPXZRf+GomyCUVDVUFx7LxzzCsLyvdvE6oQ3h6fpsRncWOIWQLKyK9ygy3sB2UhF4xYqHuCultlvE+Ivj3VTylT+bGIiODGg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AMBPR04MB754926.eurprd04.prod.outlook.com (2603:10a6:20b:787::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 15:02:02 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 15:02:02 +0000
+Date: Mon, 31 Aug 2026 10:01:52 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Linmao Li <lilinmao@kylinos.cn>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Leonard Crestez <cdleonard@gmail.com>,
+	Radu Solea <radu.solea@nxp.com>,
+	Franck LENORMAND <franck.lenormand@nxp.com>,
+	linux-crypto@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: mxs-dcp: handle zero-length skcipher requests
+Message-ID: <apWXYPYyPktawUru@SMW015318>
+References: <20260828093209.3179074-1-lilinmao@kylinos.cn>
+ <apHgn8-IcTshYnfv@SMW015318>
+ <6416cbee-35c7-4fc8-9a80-a25403eb1e6f@kylinos.cn>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 31 Aug 2026 15:00:41 +0000
-Message-Id: <20260831150042.11B361F000E9@smtp.kernel.org>
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6416cbee-35c7-4fc8-9a80-a25403eb1e6f@kylinos.cn>
+X-ClientProxiedBy: PH0P220CA0021.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMBPR04MB754926:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6aec9a4-e569-40c0-8fc2-08df0770d023
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|23010399003|7416014|376014|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	1itxAnAY7539Rct7UgVArCKshgdAbygnLIPe7/NFKcyx5CwO8l63+mvOjcgQHA/xgEBf+uX5awQ8j1h8BhuE3LLQ+HlYQX8S1HdX5pv1L8lD5cTVtkNKcOcVGjyHl6gZxY/l5z+T6U3x+Br9P38ESg5F1kLO60JBfKZq3gbjj3T8U7TmDKrM1NzTbTh4N9usjRH8na19reqeyVr5njZinq+XY3dj0uH4CtP0uM+eo+7uqmAuRBEW5Xv9Vdc/m0zsis80sEOu/K/S4uRgsv6LavbENhtx+uffBKwRygQlack4CwXOcIN62LuK4VLuePxxv6+2aXszHW0uVVL92FrNinaZUkNBUMmH/canBm7vEnL3u7gBvkyry35TMbXPcHrIS9+yeIVzzfJkwz3O92Jbu5iF5y0CtkTilzocBjWwLaolMeDL6GcKe3rIODo+AxGy93zAPIrkGO0JORxGMDZXmA8eKWpeJaHkti/C+D8xlRDb9kpfOMJEyV9PKVu1uLGSRCx8Axluj+NGXulDIwsjqNsB/IWXmLF4k2FeULhZV86yYrcd5FwoTZuh6UMmNPUtdqQJrUtYUPdYNGGl42vpM5ZP/JyiYhlBciTL4OfK9YdWwhPgxOFE/ZFHKDv1XpappSItcgEAvsLq6C0Z62dhdLoK17BEl3TLbjflEvXbDYM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(23010399003)(7416014)(376014)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NWwxWkFQaHI5UVdjRWxEYUlidU9pYXdqU3Q5b0Nhck0zNlZ0SkpqQmpXaHh0?=
+ =?utf-8?B?cG1GV2w4ZHBsZHN2bWppY091cWRUKzNWeUtyN1hoZG9TMmpkNk5KRXpJWnd6?=
+ =?utf-8?B?RitXLzl4eWZydHlFWFc3N3R5TkdMaENHYzErcW5GMXpFUnd1cEo4cjd3eExG?=
+ =?utf-8?B?MnY2WXNvQ093VEtBUldFRnpVSnlnMHZwZDAxdy9zWUNuK0hzZ2FtR0xacm9V?=
+ =?utf-8?B?eTM3UjhTMHlIT3hoU0JwNXBmYlUzYm51YjZta0tkdHQ3dXV3cTlhcW1qNldv?=
+ =?utf-8?B?czVlYjV3SWRUaEc2T2NVdGhrMTdEOWI5dEh6OUUvWXhBNHZoeDVuemRjMzhW?=
+ =?utf-8?B?OW9kSm05aHBPR3lTMi92UlNpK1YvVHVNNlppWU42cTZFOHNrRDkyckNibFN4?=
+ =?utf-8?B?UWlTb0pzM0R0VTc0S2EzWk56MUNDTUVWK2N3V21VU2k0S2F3ZFZraG1TWFUy?=
+ =?utf-8?B?UWtyVHVmYTAwMXBlL1A2cGY1QU9TZEpUTVE0T29mZWswYklIRmdmak9yMlZY?=
+ =?utf-8?B?Q3NDVDZTY3lMMnByRlpXWFB6djV3NGIrb1lraU1ESUNYL0ZDOURTcnk1dW10?=
+ =?utf-8?B?YURVUy9GZDdmUzNDNjE2QUlTQkVBM201RHRxMitUU0RldTdsUCt2ZTRBWmRv?=
+ =?utf-8?B?YUN3VmFaQVcrTUdTeTMyaTRzaVB4Wm9tVHRPSkZ2WnQ1bVFJcGNNTTZFWTVt?=
+ =?utf-8?B?WEhMWlNFalVnZEZSeWRDM1ZWNVlxc1ZuOW00SEdSVjRpODFiTXJzUlgvVUhl?=
+ =?utf-8?B?NFdaZk14VnFjU0J6YVgzaFFqMFlEdHJyRytkNGdOR09xWlkxY3JBTndYWE5i?=
+ =?utf-8?B?NDZQeWpZK2Z0VmQ3V0tiYmZmZXE3ODh2WDlYU1pZbC9aSHRkUWcvYzIxdldu?=
+ =?utf-8?B?V2JhWkxFb0kzRG51UktMWGNQNWtML3hXZkcva0hTRE9RMFhHWjZZYlVuR3V1?=
+ =?utf-8?B?NHNNa1RYd09xKzg3djI5dUlrUzdtNXhTL21pYk5LeVdPK1lyZzlLVnRkL3JI?=
+ =?utf-8?B?SnF3WTZhSGd4cUMyamEyVGI0ZXMrdVkxbVhCb3FYZTVGODVtcWNrVkllWTg2?=
+ =?utf-8?B?VjR0TVpvaEVuME15Mk5Bc3ErdE1XQW1vdkhtcjdaN1daMTJmRDVRMlUzYXVQ?=
+ =?utf-8?B?dEUyNHMrMTJsK204RUxwM09FUlluVGlJRTdKSmxmaW4xR1A2eXBVS2NUcG5l?=
+ =?utf-8?B?T2p0RXQyUzh4bW5BNmYxVHFacnR5NG1ZRHhabGVPN3p3NEdSWmdhcVhyNktN?=
+ =?utf-8?B?STBUZ1hmZ3NKSExxNHRWWXpGL2NrTWRiWm83Zzgwc1dXZXRRUldqVVIveXRY?=
+ =?utf-8?B?TmJuRXd0alBKeTZjNkVRK2FhZzBEaWVWYzdONEdWcmJKbGxjTmd5MG0wQ2Y2?=
+ =?utf-8?B?bDRYeU50cUp5NVpuTE1YOUpCNm5lRCtzc0NXKzlSMFEzaHIxRkkxK3RJTGgz?=
+ =?utf-8?B?NHN4c1VPM0VlMld0RzBTOTRwOEk1cVdDWnMrY3VpNnFuQWUzNnZxVVNvUW1n?=
+ =?utf-8?B?cjhhSkRDY3A0Ums3VFJaNVhNN0l1YzdFZnhhUTZsNERabkd2KytEbnY0WmdX?=
+ =?utf-8?B?N1psdkRMTitnbll1MlFQVDEwY2tQWmdlRzczZU1mby9QSlVzNFFoTmNwelhZ?=
+ =?utf-8?B?bDVGY2ZCYXJvSHRZRVpaWWJlMUpnTitwNWt3MWtRM2pDZHVIaHpOSXBNYXdI?=
+ =?utf-8?B?cVRVcHZvcEpld01XbXpWUWI4SUdobXBGOE1WK0ZNRUJVeW9jcUVhQURQYzVa?=
+ =?utf-8?B?WlhHU0lBNml1OEg5Ym1PanVVcndkSm9qQUVFSklyY1RzbVpsZjRlN1FFaHIv?=
+ =?utf-8?B?c1V6RGQyaGtLZXZ2RjRyTDNaQzRyaXhRWE5rbmFYa3c1NkdNbGpDSWp0R2VR?=
+ =?utf-8?B?RWt2eVBkOVhUNjBGajdSTG41NmhBREdMRUNlUDdRU0ZEdzNDTjJDUC9HZ0M5?=
+ =?utf-8?B?T2RLTkVWcVEwOGY5MG95dWE0Mm1pSEJpL2laanRZR0JzQzdobnI5Q2lKWFlk?=
+ =?utf-8?B?UmMrR3FmcXNTRDVScFZOb1IwRmYrWW51MGxCTGZZbGM2a0xVTHYrWE85dmVt?=
+ =?utf-8?B?cnBlSFcyYjBKTVB6Z1VEOHRoTUl5SlhtUzQyUDFBQ1kzMHk5amNBTDUrMUU4?=
+ =?utf-8?B?TFhzeEthMWc0YlB3b3lWVjR2TjBLQnZLTW83VTNsRXFWdlNzenZDdmZTdW1N?=
+ =?utf-8?B?Y0J3bCtEK1dCTUh3NGVkOC9oWXpXWjBZVUdwd2xmNThMQjdBVUJMNGhqbWZK?=
+ =?utf-8?B?WjFmREtjZ2UvalZXdktYTk1tNndndFpDanF6OUFsdHE2QjhZSC9rZkFydDFE?=
+ =?utf-8?B?MkNCb252MW5nZmsxbm53Z1FyMTNrTGJ2L1RLVEJqN1Z1VzZPZjJ2NmUrT2pX?=
+ =?utf-8?Q?Cqy71HthsnIyA2fXjFg3em/rC6hvWa9MW5Y0S?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6aec9a4-e569-40c0-8fc2-08df0770d023
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 15:02:02.3271
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 40AnQfEPbAtlDXt59I0q3wlPNHJWSjrNoTIVdpV7FA1Y7z5wC1J4vfdJQjjt/Yb2qJ4611w78m4jAnMoTriUAUdbJlkaN5R5PJUJh7iGpvifnVSmIDjbxYJrlD+NKsyi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB754926
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Mon, Aug 31, 2026 at 08:42:20PM +0800, Linmao Li wrote:
+> [You don't often get email from lilinmao@kylinos.cn. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>
+> 在 2026/8/29 3:25, Frank Li 写道:
+> > On Fri, Aug 28, 2026 at 05:32:09PM +0800, Linmao Li wrote:
+> > > [You don't often get email from lilinmao@kylinos.cn. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > >
+> > > Zero-length skcipher requests are valid no-ops, but MXS-DCP queues them.
+> > Any document show it? if return 0 when cryptelen, it is async, no
+> > call crypto_request_complete.
+>   Yes. CRYPTO_ALG_ASYNC means that the implementation may complete a
+>   request asynchronously, not that every request must do so.
+>
+>   A return value of 0 indicates synchronous completion.  Only
+>   -EINPROGRESS and -EBUSY cause crypto_wait_req() to wait for the
+>   completion callback.  The existing fallback path relies on the same
+>   semantics.
+>
+>   There is also a direct precedent in commit 8a4e047c6cc0
+>   ("crypto: marvell/cesa - Handle zero-length skcipher requests").
+>   Marvell CESA registers asynchronous skcipher algorithms but handles a
+>   zero-length request with:
+>
+>           if (!req->cryptlen)
+>                   return 0;
 
-Pre-existing issues:
-- [High] The patch fixes the teardown race for RX channels but misses the i=
-dentical race condition for TX channels, allowing spurious interrupts.
---
+Thanks, but still not answer my question,
 
-commit 339489ae41b0a2b0727c73521707e00976aca9f5
-Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Any document show "Zero-length skcipher requests are valid no-ops", why
+not API direct return 0, instead of pass to every driver to check it.
 
-mailbox: imx: Add a channel shutdown field
+I suppose it should be checked before call driver's callback.
 
-This commit introduces a shutdown flag to imx_mu_con_priv to coordinate
-channel teardown and prevent the ISR from re-enabling interrupts after
-imx_mu_shutdown() has disabled them. The flag is checked by a new function
-imx_mu_xcr_set_act() before modifying the control register.
+Frank
 
-> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
-> index 6778afc64a048..44c2cc06b794e 100644
-> --- a/drivers/mailbox/imx-mailbox.c
-> +++ b/drivers/mailbox/imx-mailbox.c
-[ ... ]
-> @@ -220,6 +221,36 @@ static u32 imx_mu_xcr_rmw(struct imx_mu_priv *priv, =
-enum imx_mu_xcr type, u32 se
->  	return val;
->  }
-> =20
-> +static void imx_mu_xcr_clr_shut(struct imx_mu_priv *priv, struct imx_mu_=
-con_priv *cp,
-> +				enum imx_mu_xcr type, u32 clr)
-> +{
-> +	unsigned long flags;
-> +	u32 val;
-> +
-> +	spin_lock_irqsave(&priv->xcr_lock, flags);
-> +	cp->shutdown =3D true;
-> +
-> +	val =3D imx_mu_read(priv, priv->dcfg->xCR[type]);
-> +	val &=3D ~clr;
-> +	imx_mu_write(priv, val, priv->dcfg->xCR[type]);
-> +	spin_unlock_irqrestore(&priv->xcr_lock, flags);
-> +}
-> +
-> +static void imx_mu_xcr_set_act(struct imx_mu_priv *priv, struct imx_mu_c=
-on_priv *cp,
-> +			       enum imx_mu_xcr type, u32 set)
-> +{
-> +	unsigned long flags;
-> +	u32 val;
-> +
-> +	spin_lock_irqsave(&priv->xcr_lock, flags);
-> +	if (!cp->shutdown) {
-> +		val =3D imx_mu_read(priv, priv->dcfg->xCR[type]);
-> +		val |=3D set;
-> +		imx_mu_write(priv, val, priv->dcfg->xCR[type]);
-> +	}
-> +	spin_unlock_irqrestore(&priv->xcr_lock, flags);
-> +}
-> +
-[ ... ]
-> @@ -377,7 +408,7 @@ static int imx_mu_specific_rx(struct imx_mu_priv *pri=
-v, struct imx_mu_con_priv *
->  		*data++ =3D imx_mu_read(priv, priv->dcfg->xRR + (i % num_rr) * 4);
->  	}
-> =20
-> -	imx_mu_xcr_rmw(priv, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, 0), =
-0);
-> +	imx_mu_xcr_set_act(priv, cp, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->ty=
-pe, 0));
->  	mbox_chan_received_data(cp->chan, (void *)priv->msg);
-> =20
->  	return 0;
-
-[Severity: High]
-This is a pre-existing issue, but while this patch successfully fixes the
-teardown race for RX channels, does the identical race still exist for TX
-channels?
-
-If mbox_free_channel() is called while a TX interrupt is active and there a=
-re
-pending TX messages, it calls imx_mu_shutdown() which sets cp->shutdown =3D=
- true
-and clears the TX interrupt enable bit, then blocks in free_irq().
-
-When the concurrent ISR completes the current TX, it calls mbox_chan_txdone=
-(),
-triggering msg_submit() to send the next queued message via
-imx_mu_generic_tx() or imx_mu_specific_tx().
-
-Both functions unconditionally rewrite the TX interrupt enable bit using
-imx_mu_xcr_rmw(), bypassing the new shutdown flag:
-
-drivers/mailbox/imx-mailbox.c:imx_mu_generic_tx() {
-    ...
-	case IMX_MU_TYPE_TX:
-		imx_mu_write(priv, *arg, priv->dcfg->xTR + cp->idx * 4);
-		imx_mu_xcr_rmw(priv, IMX_MU_TCR, IMX_MU_xCR_TIEn(priv->dcfg->type, cp->id=
-x), 0);
-		break;
-    ...
-}
-
-And similarly in imx_mu_specific_tx():
-
-drivers/mailbox/imx-mailbox.c:imx_mu_specific_tx() {
-    ...
-		for (; i < size; i++) {
-			ret =3D readl_poll_timeout(...);
-			if (ret) {
-				...
-			}
-			imx_mu_write(priv, *arg++, priv->dcfg->xTR + (i % num_tr) * 4);
-		}
-
-		imx_mu_xcr_rmw(priv, IMX_MU_TCR, IMX_MU_xCR_TIEn(priv->dcfg->type, cp->id=
-x), 0);
-		break;
-    ...
-}
-
-Should these TX paths also be updated to use imx_mu_xcr_set_act() to prevent
-a spurious interrupt from disabling the shared IRQ line during teardown?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831133314.4125=
-787-195-sashal@kernel.org?part=3D1
+>
+>
+> Thanks,
+> Linmao
+>
+> >
+> > Frank
+> >
+> > > When such a request reaches the worker, last_out_len remains zero. The
+> > > CBC completion path then subtracts AES_BLOCK_SIZE from this unsigned
+> > > value when updating the IV, causing the offset to underflow. On
+> > > decryption, the resulting source address precedes aes_in_buf.
+> > >
+> > > Return success before enqueueing zero-length requests. This avoids the
+> > > invalid source access and leaves the IV unchanged for a no-op.
+> > >
+> > > Fixes: fadd7a6e616b ("crypto: mxs-dcp - Fix AES issues")
+> > > Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+> > > ---
+> > >   drivers/crypto/mxs-dcp.c | 3 +++
+> > >   1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
+> > > index 133ebc998236..60794b4d49fa 100644
+> > > --- a/drivers/crypto/mxs-dcp.c
+> > > +++ b/drivers/crypto/mxs-dcp.c
+> > > @@ -473,6 +473,9 @@ static int mxs_dcp_aes_enqueue(struct skcipher_request *req, int enc, int ecb)
+> > >          struct dcp_aes_req_ctx *rctx = skcipher_request_ctx(req);
+> > >          int ret;
+> > >
+> > > +       if (!req->cryptlen)
+> > > +               return 0;
+> > > +
+> > >          if (unlikely(actx->key_len != AES_KEYSIZE_128 && !actx->key_referenced))
+> > >                  return mxs_dcp_block_fallback(req, enc);
+> > >
+> > >
+> > > base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+> > > --
+> > > 2.25.1
+> > >
+> > >
