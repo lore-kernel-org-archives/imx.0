@@ -1,113 +1,104 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9623CC7DF;
-	Tue,  1 Sep 2026 03:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511B93A83B1
+	for <imx@lists.linux.dev>; Tue,  1 Sep 2026 03:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788231962; cv=none; b=HdkJ3a7QxXxZ+4ewIFmNmHwDB+DwqwAjXRDm1qO4iuOG3hh1Tu0pYYYEI4GkMSpBb9xRMbCnPEQVq2Ky23jN0am3/H6okc6C3ejVtrayYt0LboBtaVldT4+7t2j7BuER4Fnq1yFCSk5Zai1lQT1xFPhkX7bQpi84IWu3VkG5F2g=
+	t=1788233039; cv=none; b=dDW+yz3ThqhbvyMlbYJbgCelw22fmrWhYwWxko8uS3MAlv5omaT2camuUlR+SJ9eNPfmupEbrmwqGEhsIE5KWPxvevSpN3B5ezE6PfyWuE9hXTmPwqnrEcADit33JlVIn+VQxyF5XAh0i5i1hufWDL5fjSaGGRV4wwI7GiwTTcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788231962; c=relaxed/simple;
-	bh=ABZFUwYhFhIoHEraEjchVne7McbVBhnaI/sZtZckc70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e0j7GrYUZ5nAnr3bZTfx7ulYVW/2k2sf/Qlo7W96PcHWqhs9H+l9q6JXSj3cHO8YK55763r33hwKrb8P4GxxETtULN/cuXWhXWc2qjiokapNWfkKlKaXz+ZngkFxS7DFA/2O3wuOUmfSYefCTsaULlTY/qgoecQX5njxWofQZbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jMI6fJ/S; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788233039; c=relaxed/simple;
+	bh=NqU2+Hr5uCtQm5uHkv3uNJ0iH353VbXE/FK8cJ9S9yc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jeGC7HOzHdYXY7puGcfSiW2JsGrZtJZEirZhRoz9fpp+6CH3W3OGANGQN59hWbWUQyf3cp6GxR/3WOUkEIoDZti/0Y//vINwylPyBdVoLyMNnFPIXntuPhVHcPqSPpJNULySAE2BngSbyetUPJRl0mjwVYf6/Qp6Q6t+CVRJDDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rw/ijvme; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jMI6fJ/S"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=k84NDGMsq/Kto9RzKtWIVCVX3P/YTWj6KJ7tWB1oRjo=; b=jMI6fJ/SkQfRbUomapZSzpP1h9
-	n4ujLooQNjPdcWzpKNHt17/fz3ChFKXlHlp3w+3z6H5nIPUIOMqFot6u8fiwJBfYRVbtQeLtyONcI
-	0PGbPDTRnWzdDs3ekl+VMBwsVHBv3IDHOZ56D7MXywj7z5NuVVkQpehYXqCFfBpaG1WQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1Eon-002IGK-9E; Tue, 01 Sep 2026 05:05:49 +0200
-Date: Tue, 1 Sep 2026 05:05:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"olteanv@gmail.com" <olteanv@gmail.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 net-next 03/15] net: enetc: add link status message
- support to PF driver
-Message-ID: <123a8343-9912-4b57-a402-08bc18748ff7@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rw/ijvme"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067311F000E9;
+	Tue,  1 Sep 2026 03:23:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788233038;
+	bh=OQR+5ts0BMHaIU2WhBt+uN0AbVq2Ot0u/cc8y+8zHh0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Rw/ijvmeiylAaVzjTfFoqb1uip0PWia22DE0C5F71KeHuH7mHcR4Y0s90kSl6PGWw
+	 ga+qwacSbaUX6hzAF2c0zfzxP+JcZsBbEYvLDvzVCargpHS20kSHHglQbDSfju0grx
+	 YQKZ9Z5UQltu2XXTgwGJgHVaPNbrkumI1tVMED0XRsYEgJff4k0NZR503blnvyMJCt
+	 V8cSQgP0gQFtFul/p4+x5u0LBhm+6VaX+2p/bGiOiCHyZrUrCzzXsNZPtU1SsfoO7p
+	 MLRrT6ohnCG1RmXzzmAkWYRGhYmeoiegLGjSAnZOFh2TEJY8NAL0RhIKruiqkUfj+W
+	 ZOYPiXVOb+49g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 net-next 07/15] net: enetc: add .ndo_set_vf_mac() to
+ the enetc v4 driver
+Reply-To: sashiko-reviews@lists.linux.dev
+To: wei.fang@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260831025441.635045-8-wei.fang@oss.nxp.com>
 References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
- <20260831025441.635045-4-wei.fang@oss.nxp.com>
- <bd07a661-857f-421a-9ff0-e807aade9543@lunn.ch>
- <GV2PR04MB117396D2988C68C961868A8F388A82@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <20260831025441.635045-8-wei.fang@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 01 Sep 2026 03:23:57 +0000
+Message-Id: <20260901032358.067311F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB117396D2988C68C961868A8F388A82@GV2PR04MB11739.eurprd04.prod.outlook.com>
 
-On Tue, Sep 01, 2026 at 02:31:21AM +0000, Wei Fang wrote:
-> > > Add link status message support to the PF driver using three command IDs
-> > > under message class 0x80 (ENETC_MSG_CLASS_ID_LINK_STATUS):
-> > >
-> > > 1. ENETC_MSG_GET_CURRENT_LINK_STATUS (cmd_id 0)
-> > > The VF queries the current PF link status synchronously. This command is
-> > > not used by the Linux VF driver but is intended for DPDK-owned VFs.
-> > >
-> > > 2. ENETC_MSG_REGISTER_LINK_CHANGE_NOTIFIER (cmd_id 1)
-> > > The VF registers for link change notification. Upon registration, the PF
-> > > immediately notifies the VF of the current link status via a PSI-to-VSI
-> > > message, and continues to do so on every subsequent link state change.
-> > >
-> > > 3. ENETC_MSG_UNREGISTER_LINK_CHANGE_NOTIFIER (cmd_id 2)
-> > > The VF unregisters from link change notification.
-> > >
-> > > For link status message, the PSI-to-VSI message is 16 bits wide: the
-> > > upper 8 bits carry the message class ID, and the lower 8 bits carry the
-> > > class code. Bit 0 of the class code indicates the link state (1 = link
-> > > down, 0 = link up), and bit 1 indicates whether TX PAUSE is enabled on
-> > > the PF (1 = enabled, 0 = disabled).
-> > >
-> > > The TX PAUSE state is included because VF RX BD rings support congestion
-> > > mode, but whether the hardware can actually send PAUSE frames depends on
-> > > whether TX PAUSE is enabled on the PF. By conveying the PF TX PAUSE state
-> > > in the link status message, the VF can determine whether to enable
-> > > congestion mode on its RX BD rings.
-> > 
-> > I see you have hit the 15 patch limit. Do you have a patch in the next
-> > series implementing ethtool get and set pause?
-> > 
-> 
-> No, we do not have the patch to support ethtool get and set pause for VF.
-> The link is controlled by the PF, including TX PAUSE-related configurations
-> (ON/OFF/refresh threshold and PAUSE Quanta). The VF can only passively
-> decide whether to enable congestion mode based on the actual link status.
-> Adding an ethtool set pause interface to the VF is meaningless because it
-> cannot control the link or configure TX PAUSE, , or rather, it shouldn't control
-> these.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Well, get will return what is actually happening. That could be
-useful.
+Pre-existing issues:
+- [High] Asymmetrical MAC address register access between set and get funct=
+ions for the PF (si =3D=3D 0), causing the bootloader's MAC address to be i=
+gnored and overwritten.
+--
 
-And from what you described, it sounds like the VF has the option to
-not enable congestion mode, i.e. not send pause frames. So you can
-implement a limited set, returning -EOPNOTSUPP under many conditions,
-but still allow some control. But it might not be worth it.
+commit 7332ce3a436cebfb9b0a304898ec0b592d1b0ff9
+Author: Wei Fang <wei.fang@nxp.com>
 
+net: enetc: add .ndo_set_vf_mac() to the enetc v4 driver
 
-      Andrew
+Add .ndo_set_vf_mac() to the enetc v4 driver to configure the MAC
+addresses of VFs.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc4_pf.c
+> index 17fd9ee27942f..eeb70feeb7737 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> @@ -579,6 +579,7 @@ static const struct net_device_ops enetc4_ndev_ops =
+=3D {
+>  	.ndo_hwtstamp_get	=3D enetc_hwtstamp_get,
+>  	.ndo_hwtstamp_set	=3D enetc_hwtstamp_set,
+>  	.ndo_set_vf_trust	=3D enetc_pf_set_vf_trust,
+> +	.ndo_set_vf_mac		=3D enetc_pf_set_vf_mac,
+>  };
+
+[Severity: High]
+This is a pre-existing issue, but while reviewing the MAC address handling =
+in
+this file, I noticed an asymmetrical register access between the set and get
+functions for the PF (when si =3D=3D 0).
+
+In enetc4_pf_get_si_primary_mac(), the code unconditionally reads from
+PSIPMAR0:
+
+    upper =3D __raw_readl(hw->port + ENETC4_PSIPMAR0(si));
+    lower =3D __raw_readl(hw->port + ENETC4_PSIPMAR1(si));
+
+However, the set function enetc4_pf_set_si_primary_mac() correctly writes
+to ENETC4_PMAR0 for si =3D=3D 0.
+
+Does this cause the PF (si =3D=3D 0) to fail to read the primary MAC address
+configured by the bootloader or firmware during enetc4_pf_init()?
+
+Since enetc_setup_mac_addresses() calls enetc_get_si_hw_addr(), wouldn't th=
+is
+read from the wrong register, assume no MAC is present, and generate a rand=
+om
+MAC address that overwrites the bootloader's MAC address?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831025441.6350=
+45-1-wei.fang@oss.nxp.com?part=3D7
