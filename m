@@ -1,177 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010041.outbound.protection.outlook.com [52.101.69.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49FF381EAD
-	for <imx@lists.linux.dev>; Tue,  1 Sep 2026 08:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788250829; cv=none; b=JDRifVMYf8p5Dfd5XRci8cDAJZQLmEADiOv2gJSeRfC6/jaWS6dVHNza7z3iDt+cSmmM4Egjt8IYeBGj3GXfaOwPolcCQrM+41qOzMg2//zuzUAAmgWg+bE1m8uIY8Kl3csK0n5F8JE4Ody920WegWVNOhWMXEqWvpuQ99H+QBg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788250829; c=relaxed/simple;
-	bh=Ic+CLdDGbifIlYmDOJGkFK7hDXi4CtqfPLaO6BU5F5Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZDGdIA0KYT3vkrUfzKA4hdlJxQDyy5vbgYwXvFKpjGSFNSdy61V7VNdsS/tTn3mI6GDIhUjywa5BOoyy+IYl7wbNSuZZyz7xBbz0deMj1KozIjF5pm01y7H4C2znA8Ulqt0WikvibqEOtc7j7wcd0SZOi99vJIKUfC93pvpWSh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gzAMK8x1; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B471E64A8C
+	for <imx@lists.linux.dev>; Tue,  1 Sep 2026 08:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788251976; cv=fail; b=mAG/T0Y3uPyKpeVUvd7Zif/CrrEK//ta1nyEVjvplEuizwyKFoJrmtld9M0JqkOhWjMvUfruuj3Jm+kk3Osc7DRlUAoND1KfFs7/Vd0beECQCWfjooDL7ZmHsptFTZ+qRhUjQ5L3Hk/SMPaJEcsr+YwepQ1gmHf31ACXH/QFnbg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788251976; c=relaxed/simple;
+	bh=I8WW6fExgz4TFPSksTWARPfRmrHzZW6Z9PBnuNdiwD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Y6ylXt5Uix7vhAYG9szyHIEhhakigfWU+9e5dUhwF7asA3SdYNthG6TwgIZJpY+Mck+hBWHcESHBCq1D1NFqdPRmgOJydmIbNa016ByFaD4hTj/LShn6+TKXMgZZ1Ql44acwzGy27dFhdlcePGy2FyPnz7GowzvfBZ9/TSS0qYI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xqHHw8sS; arc=fail smtp.client-ip=52.101.69.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gzAMK8x1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461281F00A3F;
-	Tue,  1 Sep 2026 08:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788250827;
-	bh=YPvY5mQY4Zm0X/Cp19214IV09b0dFQf5gxsFF55Jnj8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gzAMK8x1dfEvg2e0xje/wwvDPnoXtL5cO0twrXSQIXC57s+vt12FeaxuFhmqTKqbG
-	 WwW6h0eU8gCywfRNjWQHWy1LSwMxd62Kur7OJNbORZfymgbPMqA1HSr2V3Jwgid1Hz
-	 zOzQ/aPRFKG51pO1p90kNX2Gr4w4uA1cYtEoRfV3duycatv+mQKm8/ds3ju2bGXySB
-	 aHAz8EYoO3BLWpH/6S9oM+XUb7rN9uA/g8fnL9tdkLL74pI8hVbbj80RKWRqz2K4/V
-	 0wZfGV4BfU3RJ+a7nBQbMO/owqhbk/eHp4QodoTm6GhM6lv1H9xGZj1sfMD0fRhPgR
-	 /DdnbMVKlAcDw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 net-next 8/8] net: dsa: netc: add PTP one-step
- timestamping support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: wei.fang@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260831082335.1184605-9-wei.fang@oss.nxp.com>
-References: <20260831082335.1184605-1-wei.fang@oss.nxp.com>
- <20260831082335.1184605-9-wei.fang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 01 Sep 2026 08:20:26 +0000
-Message-Id: <20260901082027.461281F00A3F@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xqHHw8sS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DkMyh46FthJUMa1mEuZqxa+ZWHm1AHaIkqu9XRnBsJlhoqIpH2r/8AouQgpv0dP9X3kmIrIqwDXhx9oPegTklKnnr/x5mFAyXPxqEGhgWFV1VaWw/9/PE8kTEFG+J0/kP51qlACOIVJfbSJJFLiBucBwirn7blTks/nR9QRvZ1HSG3ArDESpH8RSLHW4ohZo6Wmvel3vxL17LYR5b424Ns7uVOoiXuFtqZ8y0Jjb8FwcZQlZ25CVXHyQjgt/TACbskZIXsbRpbVOezjt2yT9SGVOposJHOW3wQn6dZ6yA9GHQbXUTmDaKNJZclJVeL+cyoisH0POvXeiF81Uceml1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nuUEW51uzRbtSbmP8EaSsaMoH9kQoJut/ROGTshIgm0=;
+ b=P7WZxZDlvwtnEzZ0kffk9Y+rbIAWOnablWTMBxFcuENkHAm0Dv1c5Lh1uia6QjbUCESGhSnI4ldXVGvxblZtIczaryf3VytwBElxqWG83VJDVbp/pwJoiy/X0qFSMzI63USh/0wSB1tcRCeHVFUpy+5+Kxg/9pvs/0DEttZwi+O1KYkWoCxqGUWH/bPxStWSSm32S5F4PEUVGjJCyLwmcnhFriRszpDeWohxI6YdVJylQZjJUjcmD9KP+VEE5Vm1MClRYwnxaQUdk+DTjfV2m2WbIi0hoYijXEqrvz+D/ZOXRoLkDGZsCP6pXtzEV/gegkSASY8Yrvr5Q1KbLmIZpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nuUEW51uzRbtSbmP8EaSsaMoH9kQoJut/ROGTshIgm0=;
+ b=xqHHw8sSYBGhgcpEaS/K/n9OpdXG9eJzyl0T/TH/rT0nO6WyVYLk3GYCOvGDIl7mjbLUNvH6hHB8YBdCMEIilQSJi99xBa+/GEDOTocFuXsT0qbl2QbUU6l/YjzMD4ljRTz2x+/gOld+ILMemJ3dy0ZUxdZv8CyeN8FYPVXqSyZhzVfxvOc1JvtZoZXQSX4g6CXuYVo0MjhTSxzvbJVOyPF9HH8yNaY9HB3MRmeZVNrySOC/ByFRxY3WTUIzBzaDy0OqYSXKC3vrIDnEPpiU3k1j+3oEgm6u/1UzczDEDLOqd83aY99kG+0FS/BNa2CZDUa4k5vfRYJFzAQYCgFQVQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com (2603:10a6:208:132::23)
+ by AS8PR04MB9077.eurprd04.prod.outlook.com (2603:10a6:20b:444::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
+ 2026 08:39:30 +0000
+Received: from AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6]) by AM0PR04MB5858.eurprd04.prod.outlook.com
+ ([fe80::bdf4:c9d1:4e3f:68c6%3]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
+ 08:39:30 +0000
+From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+Cc: linux-can@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	s32@nxp.com,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: [PATCH v2 0/2] can: rx-offload: make skb_irq_queue per-CPU
+Date: Tue,  1 Sep 2026 10:39:25 +0200
+Message-ID: <20260901083927.316283-1-ciprianmarian.costea@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS9PR06CA0322.eurprd06.prod.outlook.com
+ (2603:10a6:20b:45b::6) To AM0PR04MB5858.eurprd04.prod.outlook.com
+ (2603:10a6:208:132::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5858:EE_|AS8PR04MB9077:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2088e230-f3a3-4a2c-73ac-08df080489fe
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|19092799006|376014|1800799024|23010399003|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	k0nwa3D91iv3CScN5Vd8Icoh0ABDVnc0zrBfwmqWCSvcHzpIyPaabkCQ5wmKzCCAR2cD6PJRt5QuYbe/8HtFe1hvNefrT1htEst0iQYI3bnuknPUa22A6CJJNy6CTuVKws2aHHyCtnAi0e83LyW+0zebvtvVtgZajHkENV8Z1ag3LNJBZYTb2Z+f5cejs+xKk97fSveo8Cm8Wg9NpHk57Sl2vsWy4TcKDiJU989HlVKUCoIQlT0Q1urd7x2SHeCDR8zZLtFOOCXS60hYNNO8pBv9lGARgwg9NOkif9vVNlVlmYH+H44eyAAComK0VlpzzJz+tYcjpE4oYSDbV6jiviUAMcDdxLQc7YKXIy51Up35AkMKYRPYDPQrm2iRTwmUgTO2lTgWKTuEqmlihCBuCbkBu888iJf86IuDqnq6hEM1stoUNeR202kw2H56wuC6k5AYrbNokiiBeYqjltcW1be2gkHlNmVKIb5iUx/HsJuKQn0F2KPQBRoWBOE6Fp+aD/hyjDO6kd/U5VGZS65tvw/gzeuiroplS2VJGABriZWorn11cL72PICUGTgwwROq64oHP1KJbuoSBvH6MRWBysS9wrzs0v5oH0oIN56dt4X6+fM0C98xetl4/RC0CccV/EyTS1FcgUHCvmGQ9sGPtT/76ClFxheLG9ANccjn0hQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(19092799006)(376014)(1800799024)(23010399003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WU5WSXZRZnowcUF2RzhvWFpSSHc4TEN6cVpvdk5Pc2NKRHNLbUQzRU9nZG9B?=
+ =?utf-8?B?OGQxRVRVTVpZTFVoVm1nQ3JhVi9oVlVzTXlWUzE2N294b3VOOWVRb1lneUZq?=
+ =?utf-8?B?NkJsK1krUUZQYlBXNXIxSWx3THVjZHhZMWVybDRhelpnNHduU04xNkg3VnR1?=
+ =?utf-8?B?alY5a3BMWkF0MDhYNHI2V1Q3dHcrMnlwbzRzK0tQUHNVZU9Ma0RpUUw5NkdK?=
+ =?utf-8?B?dEs2RDNwem1tUUh3MERJalJOWWhoRGhJWVU0eTZXdjNsenVGNkVSTTZISUkz?=
+ =?utf-8?B?OUJYeWIvTlFvNXhrYjVKbUtyT3J0am03VUVSYk1Pemp1eXlRc3VjUnNGODM2?=
+ =?utf-8?B?QlRiNEo5U3lZWDcxc3J0a0VsdldvcEM4U1VXcG84OHhlQ1I0dE1FODlESkdi?=
+ =?utf-8?B?dTdmc0NhcE1jZjBSVzZxWENIMWUvckFqdmZVWjZ4bklka1ovRmRUMkg5WjlI?=
+ =?utf-8?B?V01yeDB5aTE4TFZDRmNEaDM2MUduSHF2S3phYUExcTk5SzBkYlVWc0drdTh4?=
+ =?utf-8?B?NHc1WG1iczJZTWVGdzdUWE4vanhRMW9oUGhBQnhIcEJrdVRNTERpYzZHK3lU?=
+ =?utf-8?B?L0VQWEpwMGVaL1ZxZFlJYk9MbU9uVlhua1NIbmNpRDV1Z2lLWVozbjVDR3Fv?=
+ =?utf-8?B?QlYrZVpQSHhKWjR3VmY1WkcwV04ySUVuMHZXK1RhTCs0QzFoVEZOS1VDRzVq?=
+ =?utf-8?B?OG1ubllUS0RaS1ZkVnNzWkRkdzMyS2FoOUtaVWVNaWV4QTZ3S1Vxa3J4cXNP?=
+ =?utf-8?B?N2pqSUEzemkvYTg2ajlNSm5oV3dTUVoxekMzNE1uWC9mS3E2aEczUy83b1Nx?=
+ =?utf-8?B?NGZkbjA5b2VuR2Yrendvd0xOTnBObHlpSXg2bm1aRkdTS1I3cnYvV1NBeW45?=
+ =?utf-8?B?Qk1rYnRMYXV5aTZwcmJkTE93Q2s1Wkt0cWJxNmRkb09XTHd5cjZvZlNnaEox?=
+ =?utf-8?B?Z0swS254bzl6VFRNWFFqY2FlQ0ZGeFFVbjFhMWZzMnM2OTlaL3dwREtaY3FV?=
+ =?utf-8?B?eHVFSjZORDg2S1hkS0kwQkJJM3RKY1Y0T0ljbDJxTTRPRzYvbDBlUTlJK1NT?=
+ =?utf-8?B?QmRLVlZaVnZ0WVN2QVdabG9PampUWVZSNitEa1ZSWTRNdFZsUjF4clNyNjlT?=
+ =?utf-8?B?Ky9OYTY4VjhTZEtZdDBHQXhwWW5DN3RUa3UrWmNxSHFLYzRWR3pzcDYxOElR?=
+ =?utf-8?B?cEJhTlNvdWdJZlJnemo0MVRtRDc3bkpoSTlLbDlwcUR5R1NOV1BzUkZjWmJs?=
+ =?utf-8?B?eTFBVEkwczUwWnBkd3E3ajZyVUgzS3VtRzFBNkNIYW9XaVhlNGViVDNZb3Nm?=
+ =?utf-8?B?RnBJRlhrUXlsNzltclcyMG5hem9pbGJ0M0wyaVhvZENhdGdablZTUzJSdTc1?=
+ =?utf-8?B?YzdUVWpvL3BwZXhjMEVCQTdZT3J4Z3M1b1lRTFJVQURQdjZSSVlBU3E4eVVE?=
+ =?utf-8?B?bGw3RUVoZWc4VE9KMEt4VE5RdkFabnB5Y1lwOTNvMEsxcTh3YzA4dmdlMCtV?=
+ =?utf-8?B?M2UzMGFnOHdjODBVaVVPdXpTNy9hN1V4VXlqUHV4RERDNnZWWjFjL3pNaThz?=
+ =?utf-8?B?d1Z2WlJMSFozd3dTSE9JQVg5UW9QM1FoU3FUVk1CTk1DOThZRDV6RHhNK3JV?=
+ =?utf-8?B?M2dWZllKNDY5SC9zR3NlYU9QVlBYRzdoUWpmeFFmWWVWd0t2VzF4elBNU1h6?=
+ =?utf-8?B?RjNaLzR0dE9aTVlORmI3T0J5OUpGZmx3SW9jb3kyY2c0dVJoWkZtZTJZMzBP?=
+ =?utf-8?B?L1dkUkREc204Ykg0elFFSEc1NEtteklxZWZOY2xBTCtHNG51ZWtuMjFSYVN3?=
+ =?utf-8?B?bFJrc1FWWll0ODAya21pc1lsWjc0eW9mU3djVWc5WE1jY1VYMXZQYWhQeGlQ?=
+ =?utf-8?B?Ynk1VDllSUVxUVVkSnEycU9ZZTRhRjROdUNzdnliM0VQeHJTaFh5Q2dOL3BQ?=
+ =?utf-8?B?S3VJd2tVTXRodWNaZVJMRlNmRFdMSmhsZWZqbmtMRjlqZVNoY3QzbUpBOWpt?=
+ =?utf-8?B?NmVjMmY2cGw0MVl5NGFqTXdRZFNSTXg0dGNuWEJVRmFLM0dZU0xUSkFTdUlB?=
+ =?utf-8?B?bFhQTU1BcEVyTUVZaWY3YlBtZXVWbTNvMm9WVFhEZmd4TkRsVW1GK3FBd2t0?=
+ =?utf-8?B?RUJ5UkUvdFVlM09HLzFDM2JzK2RHaXVDeDQvOWI5TUJURHMxTDNPa0x5UU40?=
+ =?utf-8?B?TUpLY29OWlJLcDAzcE8wWDJDNk1GeVlnWGlyelhsTWV4Sk52MXNNbXp3U3Fy?=
+ =?utf-8?B?N0tZZXF6bjA3VHcrTE0wUFR5VkF4S0lUaTF3QUdLVjhzdUd0OGJSMi92c0xR?=
+ =?utf-8?B?bnJ0MS9xQUt0L0RWU0Z2Qi8rMWxmblB0RXVFOTRpZld6RTdTV0xLTUR0dk81?=
+ =?utf-8?Q?vdS2d44J0LyKiwIA=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2088e230-f3a3-4a2c-73ac-08df080489fe
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 08:39:30.0090
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +cBz0msmX0IoGfeUT2B0PqDwNmyv6ydzqUa/NipEKLwp8onf7l9LM0/OXHYpXKraTNuCncwj06/m1Fweq2jx+3d7fo63k44/TvUySkS0PsY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9077
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The driver permanently pins its module in memory by unconditionall=
-y acquiring a module reference during port initialization, completely break=
-ing rmmod.
-- [High] Calling `module_put(THIS_MODULE)` as the last step of an asynchron=
-ous work item creates a race condition with module unloading, potentially l=
-eading to a kernel panic.
-- [High] Relying on the host's SKB destructor for switch MAC transmission c=
-ompletion is unsafe and can lead to register corruption.
---
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-commit 4351c8721de223aecf2a4160d7f76a471ab63a0e
-Author: Wei Fang <wei.fang@nxp.com>
-Subject: net: dsa: netc: add PTP one-step timestamping support
+can_rx_offload keeps a lockless irq_queue that the IRQ handlers fill and
+that is later spliced under skb_queue.lock into the NAPI-facing skb_queue.
+This works as long as a single context fills the irq_queue. flexcan with
+FLEXCAN_QUIRK_SECONDARY_MB_IRQ and mcf5441x use two mailbox IRQ lines. When
+those are affined to different CPUs the two handlers can enqueue into the
+same list at the same time and corrupt it.
 
-This patch adds one-step TX timestamping support for PTP Sync frames on the
-NETC switch. It defers transmission to a process-context work item to safely
-program the per-port PM_SINGLE_STEP register, ensuring only one frame is in
-flight at a time.
+This series:
+  1. Makes the irq_queue per-CPU so the handlers no longer share a list.
+  2. Adds the can_rx_offload_del() that at91_can was missing; without it
+the per-CPU allocation is leaked on unbind.
 
-diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_pt=
-p.c
---- a/drivers/net/dsa/netc/netc_ptp.c
-+++ b/drivers/net/dsa/netc/netc_ptp.c
-[ ... ]
-> +static void netc_onestep_destroy_work(struct work_struct *work)
-> +{
-> +	struct netc_onestep *onestep =3D container_of(work, struct netc_onestep,
-> +						    destroy_work);
-> +
-> +	/* refcnt reaching zero does not by itself mean onestep->work has
-> +	 * stopped: the last in-flight skb destructor calls schedule_work(&work)
-> +	 * *before* the netc_onestep_put() that drops the final reference, so at
-> +	 * the moment refcnt hits zero onestep->work may still be pending or
-> +	 * running on another CPU. destroy_work and work are distinct work_stru=
-cts
-> +	 * and can run concurrently, so cancel_work_sync() is required to drain
-> +	 * onestep->work before mutex_destroy()/kfree() below, otherwise a
-> +	 * still-running work would touch freed memory. No new schedule_work(&w=
-ork)
-> +	 * can occur after this point because no references remain, so this
-> +	 * cancel is final.
-> +	 */
-> +	cancel_work_sync(&onestep->work);
-> +	netc_port_purge_onestep_queue(onestep, true);
-> +	mutex_destroy(&onestep->work_lock);
-> +	kfree(onestep);
-> +	module_put(THIS_MODULE);
-> +}
+Changes since v1:
 
-[Severity: High]
-Can calling module_put(THIS_MODULE) at the end of an asynchronous work item
-lead to a use-after-free panic?
+- The enqueue helpers used this_cpu_ptr() without disabling preemption.
+  All four enqueue helpers now use get_cpu_ptr()/put_cpu_ptr().
+- Guard can_rx_offload_del() against skb_irq_queue == NULL.
+- Fix 'at91_can' memory leak by adding missing 'can_rx_offload_del'.
 
-If this drops the final module reference, a concurrent rmmod could proceed =
-to
-unload the module and free the module text memory. The worker thread, which
-is still running and needs to return to the workqueue core, would then exec=
-ute
-unmapped memory.
+Ciprian Marian Costea (2):
+  can: rx-offload: make skb_irq_queue per-CPU
+  can: at91_can: add missing can_rx_offload_del() in at91_can_remove()
 
-[ ... ]
-> +static void netc_onestep_skb_destructor(struct sk_buff *skb)
-> +{
-> +	struct netc_onestep *onestep =3D skb_shinfo(skb)->destructor_arg;
-> +
-> +	/* skb has been transmitted by hardware. Schedule work to send the next
-> +	 * queued one-step Sync packet, then release this skb's reference on the
-> +	 * context. If the port has already been torn down and this is the last
-> +	 * reference, the context is freed via netc_onestep_release().
-> +	 */
-> +	schedule_work(&onestep->work);
-> +	netc_onestep_put(onestep);
-> +}
+ drivers/net/can/at91_can.c       |  2 +
+ drivers/net/can/dev/rx-offload.c | 83 ++++++++++++++++++++++++++------
+ include/linux/can/rx-offload.h   |  2 +-
+ 3 files changed, 72 insertions(+), 15 deletions(-)
 
-[Severity: High]
-Is it safe to use the skb destructor as a proxy for the switch hardware's
-transmission completion?
+-- 
+2.43.0
 
-The skb destructor fires when the host NIC completes DMA to the switch, whi=
-ch
-happens before the switch MAC transmits the frame onto the wire. If the swi=
-tch
-egress queue is not empty, the first frame is still buffered inside the swi=
-tch
-when the destructor runs.
-
-This would wake up the workqueue, which might then program the PM_SINGLE_ST=
-EP
-register for a second frame. By the time the first frame finally leaves the
-switch MAC, it could use the wrong register values, potentially corrupting =
-the
-PTP timestamps or UDP checksums on the wire.
-
-[ ... ]
-> +static int netc_port_onestep_alloc(struct netc_port *np)
-> +{
-> +	struct netc_onestep *onestep;
-> +	int err;
-> +
-> +	/* Hold a module reference until the last in-flight one-step Sync skb
-> +	 * is freed by the conduit. Without this, the module could be unloaded
-> +	 * before netc_onestep_skb_destructor() returns, causing a panic.
-> +	 * Released in netc_onestep_destroy_work() after all cleanup is done.
-> +	 */
-> +	if (!try_module_get(THIS_MODULE)) {
-> +		dev_err(np->switch_priv->dev,
-> +			"Failed to get the driver module\n");
-> +		return -ENODEV;
-> +	}
-> +
-
-[Severity: High]
-Does this permanently pin the module in memory?
-
-Since this is called during port initialization, acquiring a module referen=
-ce
-here will make the reference count non-zero for the lifetime of the port. As
-a result, the module can never be unloaded via rmmod, because rmmod requires
-the module reference count to be zero before it will unbind the driver and
-tear down the ports.
-
-If the goal is only to prevent the module from unloading while packets are
-in-flight, would it be better to acquire the reference dynamically when the
-packet is queued, rather than globally at initialization?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260831082335.1184=
-605-1-wei.fang@oss.nxp.com?part=3D8
