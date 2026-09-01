@@ -1,137 +1,123 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6350D3B83FB
-	for <imx@lists.linux.dev>; Tue,  1 Sep 2026 19:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2962843FD18
+	for <imx@lists.linux.dev>; Tue,  1 Sep 2026 19:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788291618; cv=pass; b=GBkhDlS7dFLUNN7k4UMpPGVPTXUCyzTLVdnprq57CvEjMfTWELB3g4QwooLfaJFeBvMa7ntmSipSVJ/XTbcZ3v5iBjQzIfWJSkZvA1ndflEwc9F5Sf/Iv7GCkIuPzqGF+pph7P5FP1FlONjusOo2c7drh/lwRVVHlNcgRzDrl50=
+	t=1788291964; cv=pass; b=gYZdnmMe3ieGmO//0U8+hkJQeuWSxV29/zH5/BNGvIaVHeUsK/CC324braqHTt+W2fpqbBS1VXzDrxhpXfpqsXrlr+OuieNiiivEYPuXuW11aMV4KBRJnE3pj6HT2gn72EcV6DVqLhIgT8si2NgL8VbpLdKqh+0WHvB+jLzq0FY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788291618; c=relaxed/simple;
-	bh=vPIlT3/0q3DmEJlhpdxnF5yqYyOZkdrfaCmYL1+wp2E=;
+	s=arc-20240116; t=1788291964; c=relaxed/simple;
+	bh=EwRdv3H15Lg46ZE4qMWBFPfgUbPXiZ0nu+f7bpsc9EY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QGC60uQHVeYUDL3CHcggVrgSk2BoueTHbCcjqqHnQqO4z5MSHUkzrx9g3+OubZl0/VqqHz2WzXgBCgaEHd6Z7z/o9ghUC/PDw9pTWoTBlJaYkilE5MwVhwZtgsxd2dE4L2xiM2yvooSMRqV4wcpXNUW7lcayYPsmC4ELLXoiab8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=McgAgVYg; arc=pass smtp.client-ip=209.85.128.42
+	 To:Cc:Content-Type; b=AzNq82B8vyIgxtmuT0cp2bRD/BY1GR3/8OHoQjLNmVl7H3cG21h6IoUPR9Lh8XQ9Kl+PogGAgxZuHjcrlhGRvnZXXPENnN/tcoHjiViacGCDY3421PJIT8q5Km3FYeoBxBezg2SczqRcA9iG0Cwwum7P8P4VxJEAxrfiYt50Cjw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vL4Pw1yZ; arc=pass smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="McgAgVYg"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-499add6348fso85e9.1
-        for <imx@lists.linux.dev>; Tue, 01 Sep 2026 12:40:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788291614; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vL4Pw1yZ"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4996e2575dbso12005e9.0
+        for <imx@lists.linux.dev>; Tue, 01 Sep 2026 12:46:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788291959; cv=none;
         d=google.com; s=arc-20260327;
-        b=naxL/3wfoyLaBO2naKHqdipj7TBzA30fnlL/6ZpIqSC6l+zu4AYu2c8PAOQcVO+/oD
-         3IgL4s0i6mn/oUe8wyHxuLQg4s8CM53jL2SIy8Wkjhstw/NXBP8vbWP9LUbJQ3YD/8l/
-         2eHJlTghAjLPi8Xny4QBgnIMT1+NCe+xnfCrpWD69jAcuCyz4jhDA2uc/UTAQ2I7mlDV
-         ZGsXMhxYW81FdkT1wCzLI2a+K8P1N0DavhWKK/vEhJVoxiLGrxast3o+JdrKD9EtKjxC
-         yqsRfG08Kl6TCvR58Z8VG2Wk58cipGttpz+PJQ1jWw4fH5Eyy9jlZKm6LX8uH6p4dSyo
-         og/g==
+        b=hFImGo9daROSCW3otbRS3YY87Nw1plt9dZ808lLEucbkjOGE9W2Lv4h3xSfFMW3V/m
+         S/r2eszwu55TFcvKLIoxM4T3groLgoQp2CdrC2YXlNwtd1ODUs8bmmnLvFNW87QXl0YS
+         IKOSUfjyvDIpOwfzKyt5Xfy6DiBtRFj6xiKkoecQEYGXpw+ysddSm7rO2HE3lHKSSahF
+         3eZMha427ruT7FgvXCpL8szhbMNJdGjLASHeqEy3nYZrqCTgwOb8GnzkQGEZhB7wBUzK
+         U/o1BUfGAuZ8THcVs9iprnJY4JKeuNsoD9TuFfr1oMcpL8L9CSORmJl1thZ7SbCKY//q
+         VTAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=mCPNVjswzrfu/6ewp3QsYppMVfdEr2MBSoZ8rIPqMgs=;
-        fh=qEPyi37TZVfvCkDnk+RhGXDAAfeXDxzfdfL/qMCHr0A=;
-        b=sZuLza8tn7cjN8/cJVPo73nPcmS9y7ICpfc1MJzv1DnRDh1rJWAcVZkIZUaXMNMtVD
-         J/0a3jwWQqZHG1LnkxV3PiEuZnYbX0SVvrOkpp1NhbN2xTA36imI7CFJ0mgmjjlmStKX
-         KUJEeNpVdFH7SeILH63j2RvJi0x6WDk4t4GJukxSz0bSuCosDGxQVNKdvURvjQdUNWdK
-         1L5YHcKgjlVVb1ZeXOrNDNa4DP9w7h7PZ9qKwbpMuBUfTjib1XWQA2djSd54MQzMFYm7
-         T6OGxs0V9M4D5IU4A3L+BI5hjuBIwjMv/CJ90uY1EBoBa6znSMziGLNWd/GbNl1TeTFe
-         hhng==;
+        bh=EwRdv3H15Lg46ZE4qMWBFPfgUbPXiZ0nu+f7bpsc9EY=;
+        fh=QWOVjFpjJm2bG3GMK6xzW5Pr/MrCUgsmS5ozW8UOEh4=;
+        b=RO+1B6ju1xY4FUHiDTkYVv4ZlSiaITXU7u9OE6TpvPs35VF5XDEVI9vw9wgV8Alwbm
+         Cw9k0R0t4oni9078OVRvB7+BZtlj+gmwGiKHPflISK2XBh9hOfy6ogQx2hyMOaiytO11
+         83LKY1aS1vY3D0PaNFgd0WI2p0AQOrIvXDYMas41rLXLZioH2krBKInu0MyhEN9x9jNS
+         qnnCMMH1SkcHvD+yIDBfHmXX0uTnkPShl00Fq1pSx9xAwnlf8WXw1OXX3P2KQ6HrYWpL
+         NAORqRuukbX+z51Ic/qxcFG087uTv9dVo6EIMZDZ4cGTv55vbTvUPf2YtS2G7Ha38MKN
+         Pk1g==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788291614; x=1788896414; darn=lists.linux.dev;
+        d=google.com; s=20251104; t=1788291959; x=1788896759; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=mCPNVjswzrfu/6ewp3QsYppMVfdEr2MBSoZ8rIPqMgs=;
-        b=McgAgVYgNAzu7RnAVQI5oHtbuJyzYuCHk+hbFzfw5rudnokOwNwEz+/NQlS8yIUi0n
-         9p6txVr5bOGRocnHI9MxRgwrnzUnVpNyEFMa4qc0TIOaVOZ07Le07izPrbsf/kYymiiM
-         gcImjZq2GE5ASH/JGdFDZfJE4ve94lcZkhvxpgZnPm2fXWhIYifRUmQepBkX0koBxI0w
-         MdZ1T/kfpEZXhHsBuPpQmkPHJerJ+lVOoaNN0FTdBtIyy19xV9bOLqnt2xB/Qt2qU23q
-         /11ec29JuNtgzBV7L5k71xNORUmXokfCNHJc9naXlT0K51SnxBvxcQI3yXsQVOzSmYtv
-         5FrA==
+        bh=EwRdv3H15Lg46ZE4qMWBFPfgUbPXiZ0nu+f7bpsc9EY=;
+        b=vL4Pw1yZ/YopHZXQmfFhFmnixkjDBtXNpMwv97HFtGuy3MHmswbT4tWt6TQRSfdm6w
+         RkSgnAJuq2HyiZeXy8gHYzimRbMyOpAH/JdrleFSLKpany3c3Z4m2OmLIp7WNjjVgKDE
+         AtWdJLUH6wz3qHNuEcflHuzwK+E4m47GUVkwhBq+bRuuGLlNSKWwXxFAlAfKBlr+rE56
+         Bn8A06lTUntw7QKrFqDgIXf9t5wviAS94fqcqfHXHpPlH1WjHcfgOnaytH/QSBaFsGUe
+         qq3f/NhQcxzVIr3+L7YD4gHqD0T7/Lx20v1mucGEnmgrOTP7MotmOMUQnVT1sQ1udXea
+         RUdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788291614; x=1788896414;
+        d=1e100.net; s=20251104; t=1788291959; x=1788896759;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mCPNVjswzrfu/6ewp3QsYppMVfdEr2MBSoZ8rIPqMgs=;
-        b=Iqh8USOnVvGFzoVTtAhAup/GSd2T+rz17yDopyS6C2qggYMmwq0vFQNUR9q5jy46cc
-         Mt6gRsPvrb3Bn9vjzg9c5HRR7gsm2ZNYNjE2h8cqHorHbTzawzv94AvUkMVtZhfCh1Xr
-         rNs+YG9WYRjltlxaslAlBZvI6JlXioBHKAwYZiVyMBaESqouIoq/mBzrCMAv2MpKTd17
-         HwrgWZbW8LEyoyz/o3f86I4DO4tv2Obyawats1eL7XMGgPDZQIDxxxIDgehqc+in8x2L
-         cdDwRB1nsrEOoRmN1UFbKmPzjzBlRJnY0UojWqFncxCUlNmyzF+UFdwQE5KJfng+55Fe
-         vRVg==
-X-Forwarded-Encrypted: i=1; AHgh+RpsgiLXY58sOG67ca5oIeH3SrmSZhAefonYyygCqkpQoT86pCtY2YpTlaq9Gk45AteX038=@lists.linux.dev
-X-Gm-Message-State: AFuF++k90UHbZ5/b/DyQApyXFB5k/WpQtyorY3sTqk8QZG1gdg9fSbXS
-	lKOa5spA5VYHjk+pFKQ296QXSNNKynzqr5WqB9IcEm8l+g+oyz8UZLLBMQwIBNw7LVw3iJqyy5w
-	ESQ5iCMUPGv6G2o8zWLK/QWQ5mFoJE8R3WL3IUZ9S
-X-Gm-Gg: AR+sD13NhHrJfRX7YEmup4b6ocJfbuRM7hx2Yd+VLTR/IRkTqLpSbFf2PBjYfMuKe21
-	KB1bRuiEp/VL/YJM8A1xprfjbJ90+bNC1q8y3TZFNg0KTM4zqkwpw1HoLMTV40UPP9q9UiJ4Uhd
-	j9hW46OooVVEcDfU+Vl1tssnD2FPzmIoWNzKh3qPNRNyAcrj4lTGs/OTjIpwbtSi3UDReSQdeEA
-	QlqP7gxsYHan8nfy4aTH5ZkWyij6HE8uVWFAv6zvL9FrR5uuTit1KRWfbbA3qxiqcDDJYy6ULjm
-	e80QNrUW/1//nx81G3/BIh3kQZwEzwCXuGKojbYSptjVRhYgPMvUXAIQj1HwapuMMcXdUkm/OQm
-	K
-X-Received: by 2002:a05:600c:224b:b0:499:7da3:dd0c with SMTP id
- 5b1f17b1804b1-49ce462122emr115145e9.0.1788291614023; Tue, 01 Sep 2026
- 12:40:14 -0700 (PDT)
+        bh=EwRdv3H15Lg46ZE4qMWBFPfgUbPXiZ0nu+f7bpsc9EY=;
+        b=mW18tK4L8Jl0zalVYvbTGkj15Pk0JqyirzKagq78hLs2jJ4etmP/JCgpmCiz2pU5sX
+         ECm8tRdnrgBPqkAFVhmHfPpri4nLk2fuqD0SVt1xolRHDzMLDSbnMzRbRxdWxovgpzRp
+         xtAiOWAhVis7FlZ8nLzTTbKkUAoyrou1Nyhu02omtM/xnFIC4JtCuxWIz0ApwPG8FJx6
+         uqIUUZFKfckkFxxN4PhNYvNwylPDU8VQUibSI6qBQA3OVKotBsyo0Y4zAZspWnlxQmI5
+         3VH+su+XN9E3mIRduGZLf4uu9909BGHSUkAXoe7uBwDp6HBgZQQcX40Jj/rTl6Y836He
+         Vi3w==
+X-Forwarded-Encrypted: i=1; AHgh+RptBUbTE/vB3IWiZbqbiufq791fL+/yUvHjBrhX9f8NKtEwgZknBwxIGPwxvnm3R/Q8Gbw=@lists.linux.dev
+X-Gm-Message-State: AFuF++mY9/McdqJ5+4UPSUiKd0F1XtrOMxfm8+Ohs2dJxhFEG2A8iulP
+	G5l0A+x3JKe++HbHo9YT/1fJGhE47mRuvqFJ/79BZpX+0l/T/axdm9xOUNiXbOFKE+ftvXV2THE
+	E5+4X/02djV/SPsem6VtDAu3U+i5XVQbplC39ndSE
+X-Gm-Gg: AR+sD12WSXyjqLyHtybOL4qxkOp2S8hTt0VtDMRik8alkjKBIM/nZc+jMVNAG8+gqmX
+	XZPPBhVMwTLMZDPhffO39Lx7zzkod4E03ZqyJEDRGTXLUPB9EmlFQIDyeNqoIdR+jt0Lr4oBvYh
+	zUn5gKcd3jTVmpMcgXN1SGv8BNM+g9K6sjJrcGr66/kJCP8Bo52ot+dhx2f5u5Uc60D+pjyrApP
+	8D8TM55TI0uPz9V4NOzTip7/KD5JLa/ciUQ04cP/RjQt9oLfKwk3L3YIyr3fE19Dn/JE1PddMYk
+	r57+nWe9HEty0ssEVvaj66lED7tFeVv0JC/gyoHg/FT7vh+VMDIifPyHtIdvJ8vmYy3mdiQ/SnW
+	18na3YET7ibM=
+X-Received: by 2002:a05:600c:6050:b0:495:7a0b:3b4a with SMTP id
+ 5b1f17b1804b1-49ce47dbac0mr115925e9.7.1788291958768; Tue, 01 Sep 2026
+ 12:45:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260827194508.446733-1-linux@yoavmoshe.com> <20260830155100.1020620-1-linux@yoavmoshe.com>
-In-Reply-To: <20260830155100.1020620-1-linux@yoavmoshe.com>
+References: <20260718111340.159896-1-linux@yoavmoshe.com> <20260827194508.446733-1-linux@yoavmoshe.com>
+ <CAKwvOdkSZBbq=e916=efx8G-CTzZ5b31AhyUytO6eJjjkEdMow@mail.gmail.com>
+ <CABCJKuc0cWWdkA7zrCcuze4AE-qTSETuUi-eRewPnn_ivHEADQ@mail.gmail.com>
+ <CAKwvOdnA7Ej_uppSL7U2xwxyUQoDMvO+RArj4HCUSOziH0rCqA@mail.gmail.com>
+ <CABCJKuezb0HtOcMBsObczS=HBaRvMszagkOZGHyOVbXBqtJi5g@mail.gmail.com> <2bd0c842-d0cb-4ad7-b3a3-fed2000dea83@yoavmoshe.com>
+In-Reply-To: <2bd0c842-d0cb-4ad7-b3a3-fed2000dea83@yoavmoshe.com>
 From: Sami Tolvanen <samitolvanen@google.com>
-Date: Tue, 1 Sep 2026 12:39:36 -0700
-X-Gm-Features: AcwNN1XK0l8thrBV4rYONxxoAFHyd0qFWNxSTWm7rTcE9pRg3SR1YhO1gQnpQwA
-Message-ID: <CABCJKuecSgC2yZ1QHACv3gfOYf+cPXvR5TCEM_t67NX-putr+g@mail.gmail.com>
-Subject: Re: [PATCH v5] ARM: imx: Fix suspend/resume crash with Clang CFI
+Date: Tue, 1 Sep 2026 12:45:21 -0700
+X-Gm-Features: AcwNN1Vx40LeKlkhxLn2rqkujAMnERf5APsKIrQ9ivuoQyg-T7s82dgNrM0lw9I
+Message-ID: <CABCJKudb5RegHcNPkXG5p1TcCFAe5_8+hqBP-2GyHVK19oB94g@mail.gmail.com>
+Subject: Re: [PATCH v4] ARM: imx: Fix suspend/resume crash with Clang CFI
 To: "Yo'av Moshe" <linux@yoavmoshe.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Russell King <linux@armlinux.org.uk>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+Cc: Nick Desaulniers <ndesaulniers@google.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Russell King <linux@armlinux.org.uk>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Bill Wendling <morbo@google.com>, 
 	Justin Stitt <justinstitt@google.com>, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev, 
 	stable@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 30, 2026 at 8:51=E2=80=AFAM Yo'av Moshe <linux@yoavmoshe.com> w=
+On Sun, Aug 30, 2026 at 9:24=E2=80=AFAM Yo'av Moshe <linux@yoavmoshe.com> w=
 rote:
 >
-> The suspend code that runs from OCRAM is copied there with fncpy(),
-> which does not copy the kCFI type hash preceding the function. With
-> CONFIG_CFI=3Dy the indirect call through imx6_suspend_in_ocram_fn
-> therefore panics.
+> The sashiko-bot's comment on v5 indeed pointed out that imx5, at91 and
+> omap1 might suffer from the same bug: their suspend routines are also
+> fncpy()'d into SRAM without a type hash and called indirectly. They're
+> all ARM, so asm/linkage.h still seems like the right place for the
+> macro.
 >
-> Keep the call covered by CFI instead of exempting it:
->
-> - Add SYM_TYPED_FUNC_START_ALIGNED(), a variant of
->   SYM_TYPED_FUNC_START() that aligns the function entry rather than
->   the type hash preceding it, and use it to declare imx6_suspend():
->   fncpy() requires the entry point of the function it copies to be
->   8-byte aligned. The macro lives in arch/arm/include/asm/linkage.h
->   since the requirement comes from arm's fncpy().
->
-> - Add a cfi_type member at the end of struct imx6_cpu_pm_info, which
->   directly precedes the OCRAM copy of the function. It fits in the
->   struct's tail padding, so no sizes or offsets change. Fill it using
->   cfi_get_func_hash(), putting the hash where the caller's CFI check
->   expects it: four bytes before the function entry.
->
-> Also mark ccm_base, suspend_ocram_base and imx6_suspend_in_ocram_fn
-> as __ro_after_init: they are only written during __init, and the
-> function pointer in particular should not be writable afterwards.
->
-> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yo'av Moshe <linux@yoavmoshe.com>
+> Do you think these need to be fixed as part of this patch, or as
+> follow-ups? I only have my one imx6 device (a Kobo Clara HD), so I'm not
+> sure how to test the fixes for the others.
 
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+I think separate patches for the others should be fine.
 
 Sami
