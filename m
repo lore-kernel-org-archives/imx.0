@@ -1,134 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FDD377A8F
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 07:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F91E3A6B6D;
+	Wed,  2 Sep 2026 07:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788335277; cv=none; b=t7jmD8po8nP80H7janCz9PICzC2WncpQ7/uJn4AkPS57+JL4tHXWxqQqcxt4va6mz1rSa2JOgXDScjLa3U9fdetyEduEdq5L72eF5cMMH+KOo7iMjyYzIgY2OXYqwjPIilfQFNbpQz8GDqxNxpe7TaQrBo0ZkQ4txyMDCk7z5wM=
+	t=1788335594; cv=none; b=jmP4qWMU3DGKFc2T369FfGv91+87ncTqJfu9/dNJhVCLsbmPlURB4A9DweTxsxPE2uiqEjwCB2VI45NmjXdo2Ugu65Duo9DSPoWcAAjxG3fiPEgQiOJKCbJqehQifiXROaWRJADvuJryyGXQ/Xdyyz/FJwv84zMyzLiwaLElrzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788335277; c=relaxed/simple;
-	bh=4wyJJErmSw/0/xkKLWk5KIUMamR/QMqISmOizPs9Cgc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=g8zkBqwC/ZPgFQKvLUH/WHphiU8O3mC4JzdwHolK7cQuxyc22Fc6Oi2h5aGMZPmvzDUvJ560Cf5H907DoAAokR/zhYZTBMGSsmuX6oXJvRFxNRLzjHsbF9gdmPc1XN+ZwHIdqT4vFLIVXlpBeaMz6wYEwu27I+SvX0tUfktvP/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOYzdFGW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788335594; c=relaxed/simple;
+	bh=kETPZPU/C41/ijPKc4L/UB9khx1Jkgm9WprJggkRlFs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TYrGved2s3iGVQ9LLBOu+KhKeC9nBah98+C757zkQGg8zxAqA72Dp0stR2317uHLqC3Ou1sMBT6PN8B9obhp2POpup+85myDYk3xIRXzru+/wufuzEUcEhLZEdhmss5KYOyVuNrB0znEPrQz7y0qmU3fDstJEc/tQAUIGsRh2NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YeUwKnO0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOYzdFGW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFC01F000E9;
-	Wed,  2 Sep 2026 07:47:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YeUwKnO0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A152C1F000E9;
+	Wed,  2 Sep 2026 07:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788335276;
-	bh=JsckJL1qNdDa/wZkwMe12ezOc407ebeBsixO4KR9cHg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BOYzdFGWRIwEjSlZiF/3RwHl2UnpgQvF807vbVf9suQtZxeWsGP0l+TDpqGiLtZMQ
-	 tXHj24KmVt0YbuSo4cVRFqX4asyWxvJ48648QzuRS9hKdGmzMA05jlG6kcJqlb+ApT
-	 t2HUSc/NOAhVeiKRQWNsnciRYYxDiQldKTmM3LRJVSPAXOLMWHL6WAr6lQeECrri5s
-	 aZTSNcOi9xv9D3lt3XypniZe7XIC4KseGbs5hze3uiGR1r3vaAIRn0NhC7GarMe+Q7
-	 7ZuQeFVG5wlSvtb8op2Y0DT3vreEAvM4JqM35uVwLcPWtIIPkLDwYiss9bL9BtBDvY
-	 0yxjOVhGT40zw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an
- ethtool private flag
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
-References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 07:47:55 +0000
-Message-Id: <20260902074756.1AFC01F000E9@smtp.kernel.org>
+	s=k20260515; t=1788335592;
+	bh=8tmcnWUPyIMUbTM/uIlg1zfn7rYpCy3xO2rspCYwIYU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YeUwKnO0aqAduF+uSSsSAmOGd/c2NJbpyp5zAMHi+oXtgRnWF9VRdFmwiKhlWzUHg
+	 nldT/19uLnIos8sIHSv98f9k9FweM/xZEvaciZvX0vclTGFKi4JdHX4VHan28BGUYy
+	 UqDwlaicU+KdKdOGPgEw0vRH4p6ehgakJYq9M/l8BQ1XxbfYln6YVIOhxHuoa9J2c0
+	 tC0wl49PBWwUDF+mLZNDHURn+eJeQDincAO1W7P2onaX/MaSgJ7oeWoWZWhIorXrKF
+	 SPybOKpwGREVSdAJc4O9DE+RKL2Lhdn5Ivc+t4BMFgoxmGay3rIj+NJ8HiSUIMv+hc
+	 pFWyt3v+h138A==
+Date: Wed, 2 Sep 2026 13:22:52 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Zhijian Han <hanzhijian1991@gmail.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	sashiko-bot@kernel.org
+Subject: Re: [PATCH v4] PCI: imx6: fix resource leaks in probe error paths
+Message-ID: <kyuxfl6wmsytudadd2dazw7norz25mpsk6bjsfxsj2cpo7yj3h@eujfdbehavzm>
+References: <20260824150454.3511203-1-hanzhijian1991@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824150454.3511203-1-hanzhijian1991@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] fec_enet_get_sset_count() triggers WARN_ON_ONCE by returning 0 ins=
-tead of -EOPNOTSUPP for ETH_SS_PRIV_FLAGS on unsupported hardware.
-- [Medium] Data race on fep->rx_flush_mask due to lockless write in fec_ene=
-t_set_priv_flags().
---
+On Mon, Aug 24, 2026 at 11:04:54PM +0800, Zhijian Han wrote:
+> imx_pcie_probe() leaks both pwrctrl devices and power domains on failure:
+> 
+> - imx_pcie_attach_pd() attaches the "pcie" and "pcie_phy" power domains
+>   and adds device links to them, but nothing detaches the domains on
+>   probe failure or deferral, so they leak.
+> 
+> - A failure of devm_pm_runtime_set_active_enabled() returns directly
+>   without destroying the pwrctrl devices.
+> 
+> - A partial failure inside imx_pcie_attach_pd() leaks the power domains
+>   that were already attached.
+> 
+> Add imx_pcie_detach_pd() to detach the power domains in reverse order of
+> acquisition and call it from the probe error paths.  Add
+> DL_FLAG_AUTOREMOVE_CONSUMER to the device links so the driver core
+> removes them automatically when probe fails, instead of tracking and
+> deleting them manually.
+> 
+> Reported-by: sashiko-bot@kernel.org
+> Link: https://lore.kernel.org/all/20260822013640.182C01F000E9@smtp.kernel.org/
+> Fixes: 2c5768344f88 ("PCI: imx6: Move pci_pwrctrl_create_devices() to imx_pcie_probe()")
+> Signed-off-by: Zhijian Han <hanzhijian1991@gmail.com>
 
-commit 0779caeb36f03b70108effeec07b7cd6055f53f4
-Author: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Frank, Richard, can I get your review for this patch?
 
-net: fec: support RX flushing via an ethtool private flag
-
-This commit adds support for flushing the RX FIFO of an individual receive
-queue via an ethtool private flag. It exposes a per-queue rx-flush-qN capab=
-ility
-for controllers with the FEC_QUIRK_HAS_MULTI_QUEUES quirk.
-
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
-rnet/freescale/fec_main.c
-> index 794ec427b0ee6..e5c1d04a665c4 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-[ ... ]
-> @@ -3576,11 +3603,67 @@ static int fec_enet_get_sset_count(struct net_dev=
-ice *dev, int sset)
-> =20
->  	case ETH_SS_TEST:
->  		return net_selftest_get_count();
-> +	case ETH_SS_PRIV_FLAGS:
-> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES)
-> +			return min(fep->num_rx_queues, fep->num_tx_queues);
-> +		return 0;
-
-[Severity: High]
-Should this return -EOPNOTSUPP instead of 0 when the hardware doesn't suppo=
-rt
-multi-queues? Returning 0 for unsupported private flags violates the ethtoo=
-l API
-contract and can trigger a WARN_ON_ONCE(!ret) in ethtool_get_strings().
-
->  	default:
->  		return -EOPNOTSUPP;
->  	}
->  }
-[ ... ]
-> +static int fec_enet_set_priv_flags(struct net_device *ndev, u32 flags)
-> +{
-> +	struct fec_enet_private *fep =3D netdev_priv(ndev);
-> +	u32 mask =3D 0;
-> +	int i;
-[ ... ]
-> +	for (i =3D 0; i < fep->num_rx_queues; i++)
-> +		if (flags & BIT(i))
-> +			mask |=3D QOS_RX_FLUSH(i);
-> +
-> +	if (mask =3D=3D fep->rx_flush_mask)
-> +		return 0;
-> +
-> +	fep->rx_flush_mask =3D mask;
-
-[Severity: Medium]
-Does this assignment need to be protected by fep->qos_lock?
-
-It appears fep->rx_flush_mask is read concurrently under fep->qos_lock in
-fec_enet_set_rx_flush():
-
-	guard(spinlock)(&fep->qos_lock);
-	val =3D readl(fep->hwp + FEC_QOS_SCHEME);
-	val &=3D ~QOS_RX_FLUSH_MASK;
-	writel(val | fep->rx_flush_mask, fep->hwp + FEC_QOS_SCHEME);
-
-Could this lockless write lead to a data race if userspace modifies the fla=
-gs
-while the PHY state machine adjusts the link in the background?
-
-> +
-> +	if (!netif_running(ndev))
-> +		return 0;
-> +
-> +	fec_enet_set_rx_flush(fep);
-> +
-> +	return 0;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260901074732.1137=
-91-1-alexander.sverdlin@siemens.com?part=3D1
+- Mani
