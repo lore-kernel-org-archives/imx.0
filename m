@@ -1,162 +1,160 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B364A5EB9
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 15:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A525B4A99A8
+	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 15:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788363940; cv=none; b=TXgyElw0Udzfs6Hf5LaPV9seaoF6gQN+Yl4GljGVf5w5hVUNmJqMqH6T+YHSv8DOAiSctVJS4p7DnuhHEnQkObVNosn39LrZ/0XtWNV5MnOrG9HaPeqcrVmvqoxEqenbpmNhnVdq/MtESmTOpB+QviyR089fRBhnmMtBqr8ZJAA=
+	t=1788364773; cv=none; b=uByCMXlXvtAy8NcEd05hKbQyjvHD8idPUBPoRo1DTb4pRERFW/i5C6GJLtUjZBGQybPOkgdxhY0SOCWt03KruhIoS+4kMnpvm0UAw4dPjBaEfLdosIhLE+SN2XkDJC9igqCuTbNfGIYIUxTKONSjmM2YUxagAHVE/Tv7lwQceQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788363940; c=relaxed/simple;
-	bh=/5wWvImcqPU1KITCKP06lfPB9gw/2Ddp3aenchuF3RM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N4PLl50loFe2Q4S5jVmvq7D+AAhD0YLgZzAujPMmhP6XKodQsNL8VwqKoDjtQ8fJAVa0P5J+64NQTC4fCBCP5OgSoWwIQmGPnLrgrQpFVZiohYjF3MlNgq34JqfECV5jGqW/1DVKuzIaY/cNt/ARfCfTYSt5UqphyXHeK/qZmaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W9us2kDC; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788364773; c=relaxed/simple;
+	bh=50nl2XEV3DXCc8W6cfE/RRkCzo0dx2GKBp8EgKGjJV4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Wni8swms7OcjOjOYNwNsCpzwyG9dkrpqYJRb73XmN5QsS4kjyP0tlQee1Wu0VfmDpazxjuHZNgj2y9XErk+8JqQEr5SIRxSbf88Tfs3U4KyqwTd9FSux/ZS7vP20KFNxJaOQv9M5tXRyC0lTi4Hml5piqody1On3E0q5lXA2U7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkIzb2xs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9us2kDC"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49556f97a9dso9376565e9.1
-        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 08:45:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788363933; x=1788968733; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t0+gl5U9/Zkul8WCUYt9BkcdFSYfVkFnGP/S7FNbanA=;
-        b=W9us2kDC3E9U+RLO3yiP2uHQoFyN4Knb3hhiT4KJFXYypOkRBLvMo9utBt9L/KTu6M
-         WOnP1BqChe2+c/SnxwujTlVf0DZxgT+ApXJyyPCmLlDAhxIsSRYB0kAn1wnXMy1oJ684
-         o6/VdxQgzmQJX9gz3EIP7x/ZV+Xnj92UymqCCuGfXcrIaOtdnHGU0yN5MIypBZC6XGOu
-         XgEgyx2fSC2YyQsrXz2E78pPV+aF9azBH5mI51eiCWbCSmgD/O32I3ehbS2snRLhBHqY
-         /Rp5bdgPx+ScmKxDdgPaa3BjIhyGdRegMo52L2XQSUOoiOnSng4nwAqpuW+5UreRzN/2
-         yKlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788363933; x=1788968733;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=t0+gl5U9/Zkul8WCUYt9BkcdFSYfVkFnGP/S7FNbanA=;
-        b=IjhsScGrGmnZbxq3yaObkfz2oNyp0Txl8SyBwEq6J3yCEo49qLvIbIyuSpLc19qYda
-         EzpMdzMPzMRnbXL+XHFDimCTcDGVU8tqlkERil3OMmoT5mstTyBEK7cnhQlVqIUABMah
-         Rugq1FeA5coaDZ6WEOMryHGzAzC14twPryZPO+05WoMsRHLYZOCpIRcDkZXOkw0xmtDh
-         HM51Qmb2EZR+E+OI85doPu8pTsVdR4g/QBXFYj70hjxIfFGUGIW657PAu1GiHYmGb7tG
-         m3dncBItQIIidRdXjh9Rf0EYPCW4aPQi130XSt6mosSxRKIG86kupyLtcpls+IZbEdhB
-         xjtA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+yhYqLf6JYM5fmAJRbrmk5BYSQpouGhcTOP7oFx9uaqiiQU5Z8pfN7YW0xb/wuMFe8Co=@lists.linux.dev
-X-Gm-Message-State: AFuF++mBQd1e+VZ3ZTx50/tUhZQeAQG29tiHqoKXTySjOn5LPI2gr3ck
-	zT+rs53W8hrW1xuOLIaXp8ZfIE3hU1KCbY6brOfauYksBhzC6IHoBwqO
-X-Gm-Gg: AR+sD12zS8FYu6xV1er0u2rBZyWR3V0j1WgWf8ZcVAEWhlrE80DVeCzHHxQtLCvB8b+
-	eOEUu+1GGwaE7ZpNQrhV2a3IhqqWnRHAp7sqkCAfmBnYq4xF25o4b/Ra0zBSc3fuhXTRtAmiFP/
-	gwCmk0CDBSDfA+ChAzyK3p8Yl8K1v828ZAfMupOftx7BZHuCIp31ASCD+6o6+2JESOejzOF/puA
-	9BAw9UYe/j2+ShzFMNoYpygPqPouI/oWYII+6dTFdHilRp4Hkp2VdXGCLIJEalTwF0YPe/Lm3+r
-	Cmu+5KXkvlyAwth/JRDElDBCGLUGpLcw9U2+hL//HFIPXWU+Nxfy5DhLdtYFj3Aneoy87qElH7t
-	McG5Qa4DpW/bgQUd/0JLSn76bQknETa+r6zIRgq0nW2tB7vuNndFZPOcpXkj26gQ+Oj1dgsEv24
-	y1fb+JjwUPI43xMrp+UfjeFeu3dRBTErwx2seMe/IPnMc9I8knzOIMWWDenK+zPGK+vg==
-X-Received: by 2002:a05:600c:a55:b0:49c:d60c:74e0 with SMTP id 5b1f17b1804b1-49ce582a35emr107105125e9.13.1788363927404;
-        Wed, 02 Sep 2026 08:45:27 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5e686fsm530655e9.15.2026.09.02.08.45.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 08:45:26 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Bartosz Golaszewski <brgl@kernel.org>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: [PATCH v3 0/2] [PATCH v3 0/2] gpio: mmio: report the line direction on chips without direction registers
-Date: Wed,  2 Sep 2026 17:45:23 +0200
-Message-ID: <20260902154525.4090276-1-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkIzb2xs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FCC1F000E9;
+	Wed,  2 Sep 2026 15:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788364771;
+	bh=0CEZhxFbbaaepRtYqDBzbriJL1kzyOEKonZu6cPNBag=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dkIzb2xsxr/E7p5ufVnz9yagIYJjCe0G0dHJfaIMgO83qUn5vf+lOodjV/IghxLwQ
+	 SJ4QqS8CS5brOb7lrKJ+zFYbz3KWJG3v0jjtVVfflOv1SdILmMqWDM95Que9CjvsFf
+	 4IIruxEIDEzKSwHx66OCmYzgGnKBfONrgNe5VYOR3QwhQiN3zM2l4jxcOk4356lDp5
+	 DI0SQ2ctKnkEiSEDf/RQSTSSUWupEW0f3bWSbmxjOJwnBAQCInWkQ3apoQuRbgSmsu
+	 F6x4P49CGU8UIyBTpzmHcfd4LRPl383SuxKKN+b7At8pKvRQBrH0ffAlrNHhw011J+
+	 ewOY1yVcdD1Nw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/2] pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE
+ queries from the pad register
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mehmet Fide" <mehmet.fide@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260902154525.4090276-2-mehmet.fide@gmail.com>
+References: <20260902154525.4090276-1-mehmet.fide@gmail.com>
+ <20260902154525.4090276-2-mehmet.fide@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 15:59:30 +0000
+Message-Id: <20260902155931.38FCC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Hi Bartosz, Linus,
+Pre-existing issues:
+- [High] Missing bounds check for `pin_id` in `imx_pinconf_set()`, `imx_pin=
+conf_set_mmio()`, and GPIO direction callbacks allows out-of-bounds array a=
+ccess via malformed device tree inputs.
+- [High] Missing bounds check during device tree parsing in `imx_pinctrl_pa=
+rse_pin_mmio()` and `imx_pinctrl_parse_pin_scu()`.
+- [High] Unprotected Read-Modify-Write (RMW) on shared general-purpose IOMU=
+XC registers causes a race condition.
+--
 
-this replaces the gpiolib guard patch [1], along the lines Bartosz
-suggested there: instead of teaching gpiod_get_direction() to stay quiet
-when a chip has no get_direction(), give gpio-mmio one and let the pin
-controller tell it what the pad does.
+commit fdadfc4d7f207e1b65da9199ace383a6f7c5d92a
+Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-The user is the Vybrid GPIO block (gpio-vf610, a generic mmio chip with
-GPIO_GENERIC_PINCTRL_BACKEND and no direction registers, the direction
-lives in the iomuxc pad as the OBE bit). Today every
-gpiod_get_direction() there trips the WARN in gpiolib, 21 backtraces per
-boot on a Colibri VF61/VF50.
+    pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE queries from the pad re=
+gister
+   =20
+This patch updates the imx pinctrl driver to decode requested parameters and
+answer PIN_CONFIG_OUTPUT_ENABLE and PIN_CONFIG_INPUT_ENABLE on SoCs that
+declare where those bits live in the pad register. It also adds bounds chec=
+king
+to ensure that pin indices coming from gpio ranges do not read past the pin=
+_regs
+array during pin configuration gets.
 
-Patch 1 is the pinctrl-imx side. Bartosz asked whether the raw register
-coming back from pin_config_get() is a bug in pinctrl-imx: it is, the
-callback never looked at which parameter was requested. It now answers
-PIN_CONFIG_OUTPUT_ENABLE and PIN_CONFIG_INPUT_ENABLE on SoCs that say
-where those bits live (Vybrid: OBE bit 1, IBE bit 0) and -ENOTSUPP for
-everything else, the SCU based SoCs included; the debugfs dump, the only
-raw-register user, reads the register through its own helper. The set
-callback stays raw, as the fsl,pins binding requires. Converting the
-driver fully to generic pinconf is a bigger job than this fix needs.
+> diff --git a/drivers/pinctrl/freescale/pinctrl-imx.c b/drivers/pinctrl/fr=
+eescale/pinctrl-imx.c
+> index 9a45b376d36f9..1bcb2f772d380 100644
+> --- a/drivers/pinctrl/freescale/pinctrl-imx.c
+> +++ b/drivers/pinctrl/freescale/pinctrl-imx.c
+[ ... ]
+> @@ -312,16 +313,63 @@ static int imx_pinconf_get_mmio(struct pinctrl_dev =
+*pctldev, unsigned pin_id,
+[ ... ]
+>  static int imx_pinconf_get(struct pinctrl_dev *pctldev,
+>  			   unsigned pin_id, unsigned long *config)
+>  {
+>  	struct imx_pinctrl *ipctl =3D pinctrl_dev_get_drvdata(pctldev);
+>  	const struct imx_pinctrl_soc_info *info =3D ipctl->info;
+> =20
+> +	if (info->flags & IMX_USE_SCU)
+> +		return -ENOTSUPP;
+> +	if (pin_id >=3D info->npins)
+> +		return -EINVAL;
+> +
 
-Patch 2 keeps the direction in gpio-mmio's existing shadow and installs
-the shadow-reading get_direction() for the "pinctrl backend, no
-direction registers" combination. The pad is asked once, from request(),
-in process context, so it is safe for the gpiochip_lock_as_irq() path
-that calls get_direction() under the irq descriptor lock.
+[Severity: High]
+This isn't a bug introduced by this patch, but since you are adding bounds
+checking here, does imx_pinconf_set() also need this verification?
 
-Tested on a Colibri VF61 (Iris carrier) on top of gpio/for-next, with
-DEBUG_ATOMIC_SLEEP and PROVE_LOCKING enabled: no backtraces, and
-/sys/kernel/debug/gpio shows the right direction for every requested
-line (the hogs, the SD card detect input, the USB VBUS regulator
-output). Lines the pin controller cannot answer for keep the input
-default gpiolib assumed before, so nothing that worked before is
-affected. The initial direction scan in gpiochip_add_data_with_key()
-runs before the pin ranges exist and still guesses; only requested lines
-get the real answer.
+Without validation, a malformed gpio-ranges property in the device tree cou=
+ld
+translate to an invalid pin_id. Since imx_pinconf_set() lacks the
+if (pin_id >=3D info->npins) check, this unvalidated pin_id could cause an
+out-of-bounds array access in imx_pinconf_set_mmio():
 
-Patch 2 needs patch 1 to give correct answers; taking both through one
-tree, with an ack from the other side, avoids the window.
+	const struct imx_pin_reg *pin_reg =3D &ipctl->pin_regs[pin_id];
 
-[1] https://lore.kernel.org/linux-gpio/20260813193715.2346477-1-mehmet.fide@gmail.com/
+Could the same missing bounds check also cause out-of-bounds array accesses=
+ to
+ipctl->pin_regs in the GPIO direction callbacks like imx_pmx_gpio_set_direc=
+tion()
+and vf610_pmx_gpio_set_direction()?
 
-Changes in v3:
-- patch 1: return -ENOTSUPP for the SCU based SoCs instead of letting
-  the firmware call hand back the raw pad value (Sashiko review)
-- patch 1: say in the commit message that the set callback stays raw
-- patch 1: -EINVAL for a pin the device tree never configured, -ENOTSUPP
-  only for unsupported parameters and SoCs; reject a pin index beyond
-  npins, gpio-mmio is the first caller reaching this through a gpio range
-  (local Sashiko run)
-- patch 1, 2: drop two comments that only restated the code
+[Severity: High]
+This is another pre-existing issue, but does imx_pinctrl_parse_pin_mmio() a=
+lso
+lack bounds checking for *pin_id during device tree parsing?
 
-Changes in v2:
-- patch 1: decode the requested parameter instead of returning the raw
-  register; debugfs group dump reads the register through its own helper
-- patch 2: keep the direction in the gpio-mmio shadow, ask pinctrl once
-  from request() instead of from get_direction()
+The pin_id is derived algebraically from raw device tree properties:
 
-Mehmet Fide (2):
-  pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE queries from the pad
-    register
-  gpio: mmio: track the direction of chips without direction registers
+	*pin_id =3D (mux_reg !=3D -1) ? mux_reg / 4 : conf_reg / 4;
+	pin_reg =3D &ipctl->pin_regs[*pin_id];
+	pin->pin =3D *pin_id;
+	pin_reg->mux_reg =3D mux_reg;
+	pin_reg->conf_reg =3D conf_reg;
 
- drivers/gpio/gpio-mmio.c                  | 59 +++++++++++++++++++++--
- drivers/pinctrl/freescale/pinctrl-imx.c   | 56 +++++++++++++++++++--
- drivers/pinctrl/freescale/pinctrl-imx.h   |  4 ++
- drivers/pinctrl/freescale/pinctrl-vf610.c |  2 +
- 4 files changed, 113 insertions(+), 8 deletions(-)
+If the parsed *pin_id exceeds info->npins, this uses the unverified index
+directly on the ipctl->pin_regs array, leading to an immediate out-of-bounds
+memory write.
 
+Does imx_pinctrl_parse_pin_scu() have a similar vulnerability when indexing=
+ the
+info->pins array with an unverified pin->pin?
 
-base-commit: 1900b5a41493e7050c68c1e62780d6fb9a209457
--- 
-2.54.0
+[Severity: High]
+This is a pre-existing issue, but can concurrent driver probes cause
+hardware state corruption of the shared input_reg in imx_pmx_set_one_pin_mm=
+io()?
 
+There is an unprotected read-modify-write on shared general-purpose IOMUXC
+registers:
+
+	val =3D readl(ipctl->base + pin_mmio->input_reg);
+	val &=3D ~mask;
+	val |=3D select << shift;
+	writel(val, ipctl->base + pin_mmio->input_reg);
+
+If two drivers concurrently request pinctrl states that share the same
+general-purpose register, and the pinctrl core calls pinmux_enable_setting()
+locklessly, will these RMW operations race and overwrite each other's
+configurations?
+
+> +	return imx_pinconf_get_mmio(pctldev, pin_id, config);
+> +}
+> +
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902154525.4090=
+276-1-mehmet.fide@gmail.com?part=3D1
