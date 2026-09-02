@@ -1,114 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70800476CF0;
-	Wed,  2 Sep 2026 13:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E8335203C;
+	Wed,  2 Sep 2026 14:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788356129; cv=none; b=SW/yD6ntg9vY+2ZKsv1mkEnPs/y9lzAziICmB44jMIOTwWHhvvmGtUcc74hjnEn+Dy5mXDVCMV12dIUfQ8r37IPJOzfIP6NWoW0lq1gI+CzNwYHijtfDpJi8m2EUJ7C3rwTDfvazf9RUBr7llYoj3OrVXTxMY+Y+qibnv8veeek=
+	t=1788358534; cv=none; b=tP1G7qda0TfwAPwwLqULL1XF8F3pqoZNvSgUVHqz5Or+FV91mWhQGrb6ck/1rlSmXq5YVPzYqbuwxq7G7oZ7hcNFCDnRgp/EDFg1yw3EU05ubOXjyb7U+ABVg7wkUCU0VmDUnwT7IPnL3AEFfaoK+rZGTz4xxOVR2QbDl5vU3co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788356129; c=relaxed/simple;
-	bh=LasyqCyaY4KjfMpvNPz82L67wfUPTzmc4z+mDW0nqzo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=txV6N6Kp3Kz8h3T6YWLuAvJcXV0q195eHJyt6BVxfZBeOqbkFXFtj+13OrAwZOpbjR+0k8vNcz7hO8zJpXVfs/ECbx7MqPjqyXnrFb+W616jY/9ogC4zykwJY1RGx5EWs65cfXAYBc7B1Yxs8PpkCiELiWI2iYNgyariiPELqQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1BZ39oa; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1BZ39oa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22DE1F000E9;
-	Wed,  2 Sep 2026 13:35:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788356126;
-	bh=BGuIznCv9PUDEBDkw/pQ/InrE0j7ZosksJqwh4KPsMM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S1BZ39oaogdM2I1AE3RSZkU3cFwXZgVOlugezO1Bzyybx1qYZd7RQzSZ4yOqKCS6I
-	 p6XjGIlrJ6Gv18frbwe3Zxf9L9NV0zyAmUVuTxpI/zNfWslLzpZLYRHefMHSQ9PcRQ
-	 JzHngr/BtMslX+DllSH+uJ02N6oDNzybG3NCnUPnVexYo/2OjZ2x3UbZdxD0wtRJ5T
-	 NnZZQL1F+nMIG7899AbjTGCC+RvLcCvIYUCr4zJGW17E4EXRbi7wqhQObY52KBWlE+
-	 DGSMnDkpWeBfe+tTRwxQi/H3FCx4fdm2XBlFfLkn7JhLgVOHppHXHJRWQ/fBA91Wdy
-	 cuQJApxU3j3Bw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V3 2/3] dt-bindings: phy: ti,tcan104x-can: Document
- Microchip MCP2542
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefan Wahren" <wahrenst@gmx.net>
-Cc: "Oliver Hartkopp" <socketcan@hartkopp.net>, devicetree@vger.kernel.org, "Vincent
- Mailhol" <mailhol@kernel.org>, "Oleksij Rempel" <o.rempel@pengutronix.de>, conor+dt@kernel.org, linux-can@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, vkoul@kernel.org, olteanv@gmail.com, linux-phy@lists.infradead.org, neil.armstrong@linaro.org, robh@kernel.org
-In-Reply-To: <20260902132801.22056-3-wahrenst@gmx.net>
-References: <20260902132801.22056-1-wahrenst@gmx.net>
- <20260902132801.22056-3-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 13:35:24 +0000
-Message-Id: <20260902133525.E22DE1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1788358534; c=relaxed/simple;
+	bh=2KB2m+gDk/p4vhyDeC61/AYwoCwA5nATQLIcXaUUn1U=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=VeAk757v5Ub0gY3VpzI81AYtG2OBxj/MUlQbi1EJf/NGRo6t60BoIN5WzqKAgPFAkEXiu1UPjynzZrP82+2x2q3cTcKtODiOyDYtEjeBwt7C+ZUekE5FOwlGYtJUwrUZo79eIljUv3pToyQXi7UzWlqRBwCWUIGOiZK80m8ppME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF34A1F000E9;
+	Wed,  2 Sep 2026 14:15:26 +0000 (UTC)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+To: leoreis.costa@gmail.com, fra.schnyder@gmail.com, francesco@dolcini.it, 
+ frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+ kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, 
+ bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, hongxing.zhu@oss.nxp.com
+Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org
+In-Reply-To: <20260813095003.356062-1-hongxing.zhu@oss.nxp.com>
+References: <20260813095003.356062-1-hongxing.zhu@oss.nxp.com>
+Subject: Re: [PATCH v2] PCI: imx6: Move clock enable after core reset
+ assertion
+Message-Id: <178835852653.83808.12038237867062064510.b4-ty@b4>
+Date: Wed, 02 Sep 2026 16:15:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15.2
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The newly added `microchip,mcp2542` compatible string bypasses s=
-chema validation hardware constraints because its fallback conditional bloc=
-k uses a strict `enum` match rather than `contains`.
---
 
-commit c5426cb50d1b23a21e92a69a5197ccb523f72e8b
-Author: Stefan Wahren <wahrenst@gmx.net>
+On Thu, 13 Aug 2026 17:50:03 +0800, hongxing.zhu@oss.nxp.com wrote:
+> Commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
+> inadvertently moved clock enablement before core reset assertion, breaking
+> PCI device initialization on i.MX6Q Apalis platforms with
+> ASM1061/ASM1062 SATA controllers connected.
+> 
+> NOTE: It is not 100% clear if the issue is specific to the ASM1061/ASM1062
+> device or on the specific power-up sequence (reset vs cold-power-on).
+> 
+> [...]
 
-dt-bindings: phy: ti,tcan104x-can: Document Microchip MCP2542
-   =20
-The Microchip MCP2542 High-speed CAN transceiver with Sleep mode is a
-pin-compatible alternative for the TI TCAN1042.
+Applied, thanks!
 
-> diff --git a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml b=
-/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> index 9f5c37ca6496a..3ed4ce2191201 100644
-> --- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> +++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> @@ -18,6 +18,7 @@ properties:
->        - items:
->            - enum:
->                - microchip,ata6561
-> +              - microchip,mcp2542
+[1/1] PCI: imx6: Move clock enable after core reset assertion
+      commit: 16929741a622eb345057e41c7b335d9b297890e1
 
-[Severity: Medium]
-Will this newly added compatible string bypass the hardware constraints enf=
-orced
-later in the schema?
+Best regards,
+-- 
+மணிவண்ணன் சதாசிவம்
 
-When a device tree defines compatible =3D "microchip,mcp2542", "ti,tcan1042=
-", the
-schema parses it as a string array. However, the allOf conditional block fu=
-rther
-down in the file checks for ti,tcan1042 using a strict scalar enum match:
 
-allOf:
-  - if:
-      properties:
-        compatible:
-          enum:
-            - nxp,tjr1443
-            - ti,tcan1042
-            - ti,tcan1043
-    then:
-
-Since the array fails the strict enum match, the then constraints are skipp=
-ed,
-which allows a microchip,mcp2542 device node with an invalid configuration =
-to
-silently pass dt_binding_check.
-
-Should the allOf block be updated to use contains instead of enum, or should
-microchip,mcp2542 be explicitly added to the enum list, to ensure these dev=
-ices
-are properly validated?
-
->                - ti,tcan1051
->            - const: ti,tcan1042
->        - items:
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902132801.2205=
-6-1-wahrenst@gmx.net?part=3D2
