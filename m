@@ -1,140 +1,163 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCA04A64C4
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 17:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788369115; cv=pass; b=C/aitxhGoPBPYTWAHWDPyQKEwqveIPtGdrXTgVwg4GIIcOQKCIDWiEavvWzvGCYOhlbb30xL0QUEM/fds+4dlZnDzXbqNtVwQGq0dOSAAqQQsXL1dqYm53XTfFg7KpUEBGDFW9ltC+Ef86Y8mZKoba8m0kRXQFjRxN5jvAwJ84o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788369115; c=relaxed/simple;
-	bh=CAYWGXwkwt8+u/LxyR1chbCwCtu6a8KVTc22slh2Qj8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jBVcr9lDciS5RakiPMjRpXzUaa+/6+U0LBFYUVfh7KfimtOSOiIrizLpUj+v8qpJFRYyInZf2YliTo/CSf4nvgCwh7tOowUdTHBPngEUeVQIzxMVwK+v0AKQEFUqjUcn8QVx97B3UQZxt9yvt3XVJUiH75DanNXnNk0kXpy+vDU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=trdDu4h9; arc=pass smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD30D3DF003
+	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 17:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788369492; cv=none; b=jbp0qwGQt0KKKzOkwNpyMFeWGPPepOX+hdFmYMN3AHMHfDvsT0otAXa+lD4e+RnNLf2oEgIWvTVRTCJw7ons8fHNQyvY2jKnZ3j2jksD55WsjyPSdHcdUg79xYZC09yDdgYYSqD4BUk6QHXQD+CTzMa6mvpMH0/AEp+1yFzLQB8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788369492; c=relaxed/simple;
+	bh=6Tn0OaGLRreTIGbEtttcTbq5pI0t6SsPxE+m00j3r9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hhJ8e4MRxzb++INdD/ZhCGw6c/GKZLC3cAphsWWhbTGfn0sLr3nJ8LpCPAwN5TRnFsxV06M8NUQlkecbm+fF/pqzTMHXE5HHpkG7M8V/u1qQV6tRQzzkG71WM10Vhksgv4Mo2TUJmKK40KT0JRwA7wffYXaSWxQO/Upf2g0tZaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mhEDrhmO; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="trdDu4h9"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49b392ccaacso19750865e9.2
-        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 10:11:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788369112; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Nkbgj8ci6joGToiIfDAnwl8aZ75pp2r1/dXYrwxgxyc2JGYmnq1lfda9OgdM0rqnQz
-         BRQH9+8q6VjfZiNypX49W23zEL2FynuHBG8PLOWRZGK/Gg1Qrz/iCivLjh71JFmHIqWB
-         CJ8r3zzs+w/5rbkt1cSlQcR6ImZFfRaCQXdPbDVqR3qu+dUwxMnK3BAkoffSCqbpog48
-         3qcQLM2cYjbqcUroGARUIInie+C/AizJfOkacxIOTQSFGdvHrg6PhRhzn1j8fzFeLqi8
-         qEQkR/hy63a7NqEMQ4E0k9P3Sf/VFUjJNd0elCPxGhtW2CgsQmas5wXBwpKhVMxiFAcZ
-         BdGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mYAOQwQb2HfqPywVtWuRASfqN3xJx96u2yl4fq6Cc0Y=;
-        fh=gvlI/k4c9yz57O3nkZka9uLgH08wW9ZrmZkGFUbNFfU=;
-        b=SFIsUzYzGpltB+OFIZWr6TPcsMgshf+ZqAI1kBeLb/parXGDy1+naha+GXXIesDSiU
-         cdgJ+vmLKtr8/TAR53wlen/dwNDn94t17OO+4EptvFtxeF/cDHrwOFDhAfS3Vv94LSGf
-         cl2kZ/EPjdlvyxBLSfvS4AwkqrYgEixZOPD6WnACay1Un9+3Wbv+KAvOMTCnRQM4psKb
-         SkKZZMMy7NmcTI3hykEw5YGlhgXJohpJQKOs8LsqrO79tm9VKFiRX+Fm2pEVp5j2QGm5
-         zLylBfIMi/hmVA2Gpc2Dc36g0f5dK9NKfHMkxEMuSlpZcFZZOiBdZtb9T/28KxTUhwkL
-         sjWQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mhEDrhmO"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49cca4ffdcfso9513695e9.0
+        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 10:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788369112; x=1788973912; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mYAOQwQb2HfqPywVtWuRASfqN3xJx96u2yl4fq6Cc0Y=;
-        b=trdDu4h9Z1djIVulLslgOkEdyGzr0s44zx1OgDuaVgSY4XlwSSwlsIY7p6CUFy/hqR
-         3ZSXBAuhbubu+TBVVRVbSrnjmiuR5Ea+oqYaFxbwlOEe35twHu4TuwurHDp5vj/H8dYD
-         AR69JfOHUK/0jQBuqTmAW9YNLz0v6jzA9rkp3DLc/TzSygAzMaeU20bBiaxaqipLRgg0
-         SVN9Xug3MILXVoymRWGKQWOlSBHKm+mFrMRbG/umwGlppLEJknDu98+Qn6sJkwM+TmD7
-         U0SaQ/7BLgH+VGB45pVKPA4FhuNc7QCNVk08KnSww63JpW33EHBxqt15ouXozT+F5l2I
-         A6HQ==
+        d=gmail.com; s=20251104; t=1788369489; x=1788974289; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6u2dskLwsFp3RaJUgt1/pKQoZpVju/VbValCvllVzDM=;
+        b=mhEDrhmOcW/07/Cc3tM4h/JO/Z5DrFDv+Zomx7PI6/v0rRvb7JJgEdIxbToaS9+l19
+         0rFJHOmCkxp1fPRK73PiiWic20TS6Mn3K6U8iDY2/Ox+Pb9HERkYnzN7e11FoCUM4A4F
+         r3jNCQzOoXXGr2qfasL5bV2iFVKsl7K+YmrTmVMTOqTk9l9BxXIIbim3cVyB2mrvxi4S
+         PTml130/eVFltnCRZNbatdkz3kaGA526qDCN0BUx+6QQN5x0Dg5cJQYwFnCoiw3RONiq
+         7kcr+9h7+RTu7wMBMkRVzItd4VQsqr4817+ZxLFIpcHmwgPCouy3ciZehFicO9jHY6Ih
+         wBXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788369112; x=1788973912;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mYAOQwQb2HfqPywVtWuRASfqN3xJx96u2yl4fq6Cc0Y=;
-        b=TkyMrTEL7KvsHf0RQid1fdw+/ooEwJismzhN7e6EEY8bpgJjoD5r+etmvfW6efPDMd
-         0RODLyrJfebTQJEfB0Ad5aJD0MkfTY44Y22iLPZp4XNrbBscm0+sPPC3fbbLNXTuxhIP
-         1v1S9df0LOHAcW3n8ubgWwlcFexu/OuNcNvBDmS9P6f/g9maqu2L0MB1BNEAZWYKnEoX
-         cibCTpN20upQCXX5kQjj7K5Rw0ioNjhvgJ4ZQ9s0Pk6qCrffLC/X+qnFvKY+7xV8k1Kq
-         n9+84ZYObjWcMW4Xwo29448cx/TWQHfJ91b8GYXelsMhzFrax1N1TXzBYZZ84gHpNYoZ
-         eVOg==
-X-Forwarded-Encrypted: i=1; AHgh+RrBzqtwLxQfUfcyKQyVim6qv5MGAhhfBfilfeikXUUAb1+SH4qc8/PImPZuY4y0dT1lJ04=@lists.linux.dev
-X-Gm-Message-State: AFuF++lG+UJqXImZqggUTp2TNdJX1bKbNgZGYtFbUg9SyV3EACPtZ9oH
-	ntalXaP+UJWX68Vz0n4cFS3U8NEdygcJ5y4yt2yWZK1B9RM9JXHKhfLxE1R1khq7+TxGp8mGk5j
-	h8hCYoNrrbMfAhi1gipVQUtT1xEIxNAJE2ofOwOF8
-X-Gm-Gg: AR+sD11s3L5OgFZojumIdH5a4LXrxo2yqKshRu9ps9t9eoUKgrCDhp8ojE6jLD+naUA
-	s21pSexqsfzmkRWbLtwkhNrws9AXSeq5RXJXMS+ntUuJWZZcanRiRFEZpu/SXG5vsuA/PcWq33p
-	reSXsjmPWn4AGTDGpdCXAOpnSIqhNcdY/yXmkwIE494CjlTALcYhYzfbHiPRu1MWcKd79n1nQHP
-	MbtsaZh4qsBy1N3uOI8yuzRL3Bta/DINdJIIuZ2SwZ8wzRJKleUXujTtPm1Sf631jiQSu6tBgJk
-	hDjOJ1cVDCj744AR/i4IYP+jixxTTbXdOhBCFBmee7hOxa7qgrjzTMOxadwBUUvaBEl8Yg1IpYK
-	gzcnOaoM1bEgus18TVu6nQhOuAeVwqqCw7mm7Rr3QjPA9d/7wi1tWi+tA1bzQcs4xlQ==
-X-Received: by 2002:a05:600c:4e86:b0:49a:77c1:d246 with SMTP id
- 5b1f17b1804b1-49ce5852589mr112274565e9.15.1788369110872; Wed, 02 Sep 2026
- 10:11:50 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788369489; x=1788974289;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6u2dskLwsFp3RaJUgt1/pKQoZpVju/VbValCvllVzDM=;
+        b=EhOowrcl4FeqiHbwNefzDSU5J0P4SvbAUQUEoDWWUg8bUEamro8ABaQR8ZxiR98Rcg
+         iHx858+9vIpAb0uKDHlUFKNsGFrNdwxsKEfAQnJQro9Mm7ZowYNY+xSLeF/8Ez0Yi5P+
+         DrH2dFeB1L3z0CESOR1trejGMapWAvjsb66VvyVxGj3X1rjEfZjoaPzcMgO9MAo86joD
+         tJA18mkJMpWc+nTnkqNFrJIF1H65k8bj+57xw+mAEeTWGCaqby9ZD3fFitAFTg3Zz8ob
+         Hr6hfIPQFvoCmY0lHCULCCzW0eGVzTSA0lI37cQsXaYfiukMablB999iVOcSn0N6B9mq
+         WOaA==
+X-Forwarded-Encrypted: i=1; AHgh+RrFAxqoA/xEaFmi5bKaFG+gxBoqPk/WG/kGE32GROrjlhGukJ1ahHOdAG+rBjgFKCZohD4=@lists.linux.dev
+X-Gm-Message-State: AFuF++nUNeU8sfqwcVRVwzvBk91csCNcFny5vQ684Gb6c2w4RM9ToaMT
+	G3Orffz43PMc5BJCfSl4VLh4yFpXr1EYv7wqx3GDwM26ZgUg1TZgKfoj
+X-Gm-Gg: AR+sD10k6Hbb8TifzIl8vGzfy7JJJRudyJyfhWglbj740NCIzQvzeKIBrLHcdAKEFzB
+	zUTYxLlEL9QFRyrozeYpfM2GNpwuKODoEKR+Zk86QlupjjzThmCRtYVwe8UeWOBjuwMpZqebERo
+	LjayByu8wsLVn5kkVntUZHkga+31SNk0FX4O++IHOTXeeJNGOYx65hujrHO45tthRPyYVxIoj07
+	MDo5ROPiHn1AAPsg0UqC2mojnxYR2H4OidD/ZycIpB9iDMusWyipX5RZJHkZFh4GNs1rhOWMm56
+	dKQBQ3kwejOHDlsa4NeraKrlb6CODuPPdo35ylZg4JtQcvwdffdS15YHKC0Vl+dPrw8Cwpb6RLk
+	XzFPvDULyFPnBCSG9lq4L0OOLdDaqSMCtrF1JLZDmYBWuETqBI0YR10wXVE9U+lZkIhD1wCarqZ
+	PtU+iAg2Y5phI023W5X925cpPwg++rmOTyruQnUB6E9dEpzDn5G404MiXwo8ZZ9DEoWaAITZbBt
+	BWm
+X-Received: by 2002:a05:600c:4f88:b0:499:d366:f572 with SMTP id 5b1f17b1804b1-49ce58388demr95277025e9.10.1788369488491;
+        Wed, 02 Sep 2026 10:18:08 -0700 (PDT)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e80020sm8076593f8f.10.2026.09.02.10.18.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 10:18:07 -0700 (PDT)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Bartosz Golaszewski <brgl@kernel.org>,
+	Linus Walleij <linusw@kernel.org>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev,
+	linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/2] pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE queries from the pad register
+Date: Wed,  2 Sep 2026 19:18:06 +0200
+Message-ID: <20260902171806.4141524-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260902155931.38FCC1F000E9@smtp.kernel.org>
+References: <20260902154525.4090276-2-mehmet.fide@gmail.com> <20260902155931.38FCC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260718111340.159896-1-linux@yoavmoshe.com> <20260827194508.446733-1-linux@yoavmoshe.com>
- <CAKwvOdkSZBbq=e916=efx8G-CTzZ5b31AhyUytO6eJjjkEdMow@mail.gmail.com>
- <CABCJKuc0cWWdkA7zrCcuze4AE-qTSETuUi-eRewPnn_ivHEADQ@mail.gmail.com>
- <CAKwvOdnA7Ej_uppSL7U2xwxyUQoDMvO+RArj4HCUSOziH0rCqA@mail.gmail.com>
- <CABCJKuezb0HtOcMBsObczS=HBaRvMszagkOZGHyOVbXBqtJi5g@mail.gmail.com>
- <2bd0c842-d0cb-4ad7-b3a3-fed2000dea83@yoavmoshe.com> <CABCJKudb5RegHcNPkXG5p1TcCFAe5_8+hqBP-2GyHVK19oB94g@mail.gmail.com>
- <CAKwvOd=OLLO5AXiR54o0nU16e_pTDt_yiEPQ0GgnX8DRGJXYmw@mail.gmail.com>
- <aphSYUS7xGJjj2gT@SMW015318> <CAKwvOdmG92SPOuMJka6KqODqObB0F8YJ6NhpEj7eisv-ZK+GXQ@mail.gmail.com>
-In-Reply-To: <CAKwvOdmG92SPOuMJka6KqODqObB0F8YJ6NhpEj7eisv-ZK+GXQ@mail.gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 2 Sep 2026 10:11:39 -0700
-X-Gm-Features: AcwNN1Xmy-BrINuLcPwv_tFccFrs29sUnSKtr5FfgrTjlEDRCX8NohA0W3QuOR8
-Message-ID: <CAKwvOd=P+bnKm_wDaZjBJQUcYKvVHb55MtOLKWO4k99By8emNA@mail.gmail.com>
-Subject: Re: [PATCH v4] ARM: imx: Fix suspend/resume crash with Clang CFI
-To: Frank Li <Frank.li@oss.nxp.com>, Nathan Chancellor <nathan@kernel.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, "Yo'av Moshe" <linux@yoavmoshe.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Russell King <linux@armlinux.org.uk>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 2, 2026 at 10:10=E2=80=AFAM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> On Wed, Sep 2, 2026 at 9:44=E2=80=AFAM Frank Li <Frank.li@oss.nxp.com> wr=
-ote:
-> >
-> > Nick Desaulniers:
-> >
-> >         Is this patch good to pickup?
->
-> Yes.
->
-> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
->
-> It does depend on
-> https://lore.kernel.org/lkml/20260604-tracing-fix-cfi-h-build-error-v1-1-=
-b27015390901@kernel.org/
-> though, so you might need to coordinate your PRs to Linus with Nathan.
-> Nathan, is https://lore.kernel.org/lkml/20260604-tracing-fix-cfi-h-build-=
-error-v1-1-b27015390901@kernel.org/
-> going via kbuild tree or what?
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-And make sure to pick up v5, not v4. Was just looking at this thread
-on lore, and it seems like Frank you replied on v4, not v5. My RB tag
-is for v5, not v4.
-https://lore.kernel.org/llvm/ca86be7a-7439-49cb-9deb-8d565ca0b1dd@yoavmoshe=
-.com/T/#mc0e4f1537fba074b962de6b4338f289dbb26c81e
---=20
-Thanks,
-~Nick Desaulniers
+> [Severity: High]
+> This isn't a bug introduced by this patch, but since you are adding bounds
+> checking here, does imx_pinconf_set() also need this verification?
+>
+> Without validation, a malformed gpio-ranges property in the device tree could
+> translate to an invalid pin_id. Since imx_pinconf_set() lacks the
+> if (pin_id >= info->npins) check, this unvalidated pin_id could cause an
+> out-of-bounds array access in imx_pinconf_set_mmio():
+>
+> 	const struct imx_pin_reg *pin_reg = &ipctl->pin_regs[pin_id];
+>
+> Could the same missing bounds check also cause out-of-bounds array accesses to
+> ipctl->pin_regs in the GPIO direction callbacks like imx_pmx_gpio_set_direction()
+> and vf610_pmx_gpio_set_direction()?
+
+No. Everything that reaches the driver through a gpio range goes through
+pinctrl_gpio_request() first, and pin_request() looks the pin up with
+pin_desc_get(), which fails for a pin the controller does not have. A bad
+gpio-ranges entry therefore fails the GPIO request, and the direction and
+config callbacks never see that index.
+
+Which also means the npins check I added in this version is redundant
+and its commit message overstates the problem. I can drop it in a v4 or
+keep it as a cheap guard, whichever Bartosz and Linus prefer.
+
+> [Severity: High]
+> This is another pre-existing issue, but does imx_pinctrl_parse_pin_mmio() also
+> lack bounds checking for *pin_id during device tree parsing?
+>
+> The pin_id is derived algebraically from raw device tree properties:
+>
+> 	*pin_id = (mux_reg != -1) ? mux_reg / 4 : conf_reg / 4;
+> 	pin_reg = &ipctl->pin_regs[*pin_id];
+> 	pin->pin = *pin_id;
+> 	pin_reg->mux_reg = mux_reg;
+> 	pin_reg->conf_reg = conf_reg;
+>
+> If the parsed *pin_id exceeds info->npins, this uses the unverified index
+> directly on the ipctl->pin_regs array, leading to an immediate out-of-bounds
+> memory write.
+>
+> Does imx_pinctrl_parse_pin_scu() have a similar vulnerability when indexing the
+> info->pins array with an unverified pin->pin?
+
+Yes, that is the one real hole, and it is where the fsl,pins value is
+turned into an index. As said on v2, I will send a separate bounds check
+for the parsers after this series.
+
+> [Severity: High]
+> This is a pre-existing issue, but can concurrent driver probes cause
+> hardware state corruption of the shared input_reg in imx_pmx_set_one_pin_mmio()?
+>
+> There is an unprotected read-modify-write on shared general-purpose IOMUXC
+> registers:
+>
+> 	val = readl(ipctl->base + pin_mmio->input_reg);
+> 	val &= ~mask;
+> 	val |= select << shift;
+> 	writel(val, ipctl->base + pin_mmio->input_reg);
+>
+> If two drivers concurrently request pinctrl states that share the same
+> general-purpose register, and the pinctrl core calls pinmux_enable_setting()
+> locklessly, will these RMW operations race and overwrite each other's
+> configurations?
+
+The core does call set_mux without a lock and the driver has none around
+that read-modify-write, so in principle yes. This series does not touch
+the mux path and I have not seen it on Vybrid, so I leave that one to
+the i.MX maintainers.
+
+Mehmet
