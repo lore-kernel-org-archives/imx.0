@@ -1,43 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9283EA96A;
-	Wed,  2 Sep 2026 08:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B773EC80B;
+	Wed,  2 Sep 2026 08:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788338065; cv=none; b=euz9ALrjGqMcidLwFNFCPJFhgaSuekFy67xGOP2oOpeSirJBl/8vT0CY9PJwLt+t5YZA3fNAWgfFhtF/j26nKmQJHcMtjQdeu5hG3IIbtOygsVNW/VIVpbmAFQNJodcaj5qHEKaIbtC/XVY/Hz1xgM7qggRyU4Xo2EDHLICdU3I=
+	t=1788338069; cv=none; b=srPRsy0bcjmL60TDofGsuVfzeBhI6GMMtMFjZLvSzNHkNpmnZzGnf5teMYQRYMHFksG0GezvAcrd2LKFyJw9uENQJ1lEcbVe+kb90sL56UHhEez06NUWngUQep6uo0zV5ujNIZUzc55coJ1ECphW8nEEe34GEw8FwYhEc0klBP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788338065; c=relaxed/simple;
-	bh=2WkzidgcjnYJCDkNKBnP5TegDiC3HVXnM7QsW+hJHg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZNRQITn0erNJYeiqPj2VXSulQe8eNAQJBvi6fZ2Xx2L4ZOJ/1YyGbKsrlD9a1SCgrSngDKdiBBHPUISuFgoLMqplUXbHuI0UAcAo0DFR2k8MF0K1+IcVtjFlAwY5+yvYGPoBn2AWe4bylcX4m1NKFfjcabxhZ2Q1CGSD9yBq00k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=W/9uXJzj; arc=none smtp.client-ip=188.40.3.216
+	s=arc-20240116; t=1788338069; c=relaxed/simple;
+	bh=pvQyvqS9sUtcqSCSR896wbTjEugeM9jmQYJkml1WOl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sSRULgVwQut3/HSh168RrhBQkIcB78b1y8sEXspnugkCCEaSVXyof3QeO+pnTZ3vAvvp2Y/O/PECRaQFpuHZXITjG7XuRH/3OK4je+X08wHx4742akN1taT1mcO3Lei/87x/4+v7nUQJGfk/uFaWl4FUSqDIni1u5u+ITqDP0lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=emjCrp2J; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="W/9uXJzj"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="emjCrp2J"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=TaW7OlLvdAso7FjT/g6CTSjBBSyjti7MbS4f2Vr7Pqk=; b=W/9uXJzj1odwnp0zUC1vEjEupV
-	CnCwwoaOQTJaky9lGJsDJN9YP9juIwUeKTz8W/XXTUaYwIRFRpmc0fbNzKMb7+i/Bz2vJK5iItnMM
-	YTBFfTkkMBXUTwRu+WhOA2Ed5m7wdS87mj4N6mlJ3tDZd30kmapsfRtlWVFaO1+ps7ZDLz9buhJDL
-	oFD5+V49glrUWrGOd+zxoiGqhIRMiPU2OUPxE4oPv9/LYAC2ztb/F6H3JcCcMpwfIGm7mETYC0fji
-	ewBjIx84XrPhBC8I+uRy6qn3H16Gp925++e+6ZPuvZZ8f5RSWDiWBOoQkRS5cH1pSC4RdqV3ZCUhl
-	DKO0vaqA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=PYz90TRr0+Fy2EqkgCP2u40jCTa6/ZMbOumw0L8qocQ=; b=emjCrp2JvyczuPrIEBTplKFjtE
+	LKCZfjLlFj7phDxV1jGutyp1XnN6fxkulEK9Aon2XwK2r9/oZTgJSdw3zh/Quxx9yEjHHzipN5Y7V
+	7dBWJgF16D3QKPlZWJ5A4DfBEwdixEmvU2boH6mcOb6uiFyBNJ/uhi61rkhFEr9km7u4Y72lcmeZY
+	8Ir5J0TalNLme14G4ewxrbc7a1N7zSuwN5N2xwJ/BaXCzQkWiXtFAMVqQZ7SO53UHPA6yKBKG/5MW
+	EBaEFK/N7zga8MR39BhlHQGEeYIXr56fMa+nkUbTVGM+zxpcLS5CquztF2ogM8IzWOxj14ndC1Ta3
+	Atuj2+HQ==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1x1fyx-000KR5-0J;
+	id 1x1fyx-000KR8-1a;
 	Wed, 02 Sep 2026 10:06:07 +0200
 Received: from localhost ([127.0.0.1])
 	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1x1fyw-0006It-1l;
-	Wed, 02 Sep 2026 10:06:06 +0200
+	id 1x1fyw-0006It-34;
+	Wed, 02 Sep 2026 10:06:07 +0200
 From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 To: Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
@@ -52,10 +53,12 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH 1/2] ARM: dts: imx7-tqma7: correctly specify PMIC voltage constraints
-Date: Wed,  2 Sep 2026 10:05:37 +0200
-Message-ID: <9a916f24b610cc60e0efd13296f281e00b41391e.1788335665.git.nora.schiffer@ew.tq-group.com>
+Subject: [PATCH 2/2] ARM: dts: imx7-tqma7: sort I2C device nodes by address
+Date: Wed,  2 Sep 2026 10:05:38 +0200
+Message-ID: <322d6e916243122662e06941ff6b0104cf84fb09.1788335665.git.nora.schiffer@ew.tq-group.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <9a916f24b610cc60e0efd13296f281e00b41391e.1788335665.git.nora.schiffer@ew.tq-group.com>
+References: <9a916f24b610cc60e0efd13296f281e00b41391e.1788335665.git.nora.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,121 +69,43 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/28111/Wed Sep  2 08:24:01 2026)
 
-regulator-(min|max)-microvolt refer to the supported voltages according
-to board design, not the possible range of the regulators themselves.
-Update the configuration for the TQMa7x's PMIC and also add a comment
-regarding the PMIC's VCC_SD switching feature.
+Fix order of the nodes to follow convention.
 
-Fixes: a80a1af6ec8a ("ARM: dts: tq imx7 common board support")
 Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi | 40 +++++++++++++----------
- 1 file changed, 23 insertions(+), 17 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-index e1f740edfb763..7f49c80fef4c6 100644
+index 7f49c80fef4c6..353af6b320cb6 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-@@ -46,8 +46,8 @@ pfuze3000: pmic@8 {
+@@ -137,6 +137,12 @@ vgen6_reg: vldo4 {
+ 		};
+ 	};
  
- 		regulators {
- 			sw1a_reg: sw1a {
--				regulator-min-microvolt = <700000>;
--				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <1000000>;
-+				regulator-max-microvolt = <1225000>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <6250>;
-@@ -55,34 +55,33 @@ sw1a_reg: sw1a {
++	/* NXP SE97BTP with temperature sensor + eeprom, TQMa7x 02xx */
++	se97b: temperature-sensor@1e {
++		compatible = "nxp,se97b", "jedec,jc-42.4-temp";
++		reg = <0x1e>;
++	};
++
+ 	/* LM75A temperature sensor, TQMa7x 01xx */
+ 	lm75a: temperature-sensor@48 {
+ 		compatible = "national,lm75a";
+@@ -144,12 +150,6 @@ lm75a: temperature-sensor@48 {
+ 		vs-supply = <&vgen4_reg>;
+ 	};
  
- 			/* use sw1c_reg to align with pfuze100/pfuze200 */
- 			sw1c_reg: sw1b {
--				regulator-min-microvolt = <700000>;
--				regulator-max-microvolt = <1475000>;
-+				regulator-min-microvolt = <1000000>;
-+				regulator-max-microvolt = <1000000>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <6250>;
- 			};
- 
- 			sw2_reg: sw2 {
--				regulator-min-microvolt = <1500000>;
--				regulator-max-microvolt = <1850000>;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
- 
- 			sw3a_reg: sw3 {
--				regulator-min-microvolt = <900000>;
--				regulator-max-microvolt = <1650000>;
-+				regulator-min-microvolt = <1350000>;
-+				regulator-max-microvolt = <1350000>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
- 
- 			swbst_reg: swbst {
--				regulator-min-microvolt = <5000000>;
--				regulator-max-microvolt = <5150000>;
-+				/* Not connected and left unconfigured */
- 			};
- 
- 			snvs_reg: vsnvs {
--				regulator-min-microvolt = <1000000>;
-+				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3000000>;
- 				regulator-boot-on;
- 				regulator-always-on;
-@@ -95,18 +94,25 @@ vref_reg: vrefddr {
- 
- 			vgen1_reg: vldo1 {
- 				regulator-min-microvolt = <1800000>;
--				regulator-max-microvolt = <3300000>;
-+				regulator-max-microvolt = <1800000>;
- 				regulator-always-on;
- 			};
- 
- 			vgen2_reg: vldo2 {
--				regulator-min-microvolt = <800000>;
--				regulator-max-microvolt = <1550000>;
-+				regulator-min-microvolt = <1500000>;
-+				regulator-max-microvolt = <1500000>;
- 				regulator-always-on;
- 			};
- 
- 			vgen3_reg: vccsd {
--				regulator-min-microvolt = <2850000>;
-+				/*
-+				 * Specified values refer to 3.3V operation; voltage for 1.8V
-+				 * operation is derived from this.
-+				 *
-+				 * The base board should usually mux GPIO1_IO08 to SD1_VSELECT for
-+				 * automatic switching of SD card IO voltage.
-+				 */
-+				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-always-on;
- 			};
-@@ -118,13 +124,13 @@ vgen4_reg: v33 {
- 			};
- 
- 			vgen5_reg: vldo3 {
--				regulator-min-microvolt = <1800000>;
-+				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-always-on;
- 			};
- 
- 			vgen6_reg: vldo4 {
--				regulator-min-microvolt = <1800000>;
-+				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-always-on;
- 			};
+-	/* NXP SE97BTP with temperature sensor + eeprom, TQMa7x 02xx */
+-	se97b: temperature-sensor@1e {
+-		compatible = "nxp,se97b", "jedec,jc-42.4-temp";
+-		reg = <0x1e>;
+-	};
+-
+ 	/* ST M24C64 */
+ 	m24c64: eeprom@50 {
+ 		compatible = "atmel,24c64";
 -- 
 TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht München, HRB 105018
