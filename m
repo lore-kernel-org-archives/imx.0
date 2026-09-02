@@ -1,63 +1,63 @@
 Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7BA3264F4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF24372B5E
 	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 06:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788330239; cv=none; b=F6LuUmyxFG8MNRfscsxv+KYhPYRFIuc8BpDWr9YYdEAvzawwiv3uXHxMGN+WIm4WGFD61OHUArQX/EKPdShkQF1IZbjhBRHgfV1BTPSVmpW94nZTrWeei57nFMcM6UDI+u2bYvuWUhgTmu9lSlIfXvT1st4Gg6dM+ieQYbTvy4s=
+	t=1788330239; cv=none; b=bTjEE7enRGV6zyLlS3JcH8wJMuQLBTpc5nmYPjmyerT/F4Vh2G4l1/ehXG9CFRyyDroDqexpu5Wda9fHS1piS5tTlOGqYZIg+MH7DJsy6+s1f4FfRXZ6Pr4AFx+yCWnHemqrEphDquBW1+GaGbI7/xJCQwSvaxV8eBqp2Q1inpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788330239; c=relaxed/simple;
-	bh=9eaEcb6TvEIduA2i2Qs5j+6mpsX5c1wGth55EfwXySQ=;
+	bh=HMnn5aVJ48OtNSiTS+brlOGFOOU4wR55y7WucMsEbHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiGHI28uyf8jDetn3SHYVisgTw5kC+uy9Gt7zRSr7ZBnxIsQsa499OHzSuFOEWykW3A4tSLi8xpYgfAdnCAMcMfISBTE8TinGBPDd/dVZbSJNzq5AHW+KR0/E+y35w/l/QiWylZ27sXAoEAj5wxoE1qKaIGc1qeQzzYjf9F2x2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+4ADJJw; arc=none smtp.client-ip=209.85.128.50
+	 MIME-Version; b=NjLuYe8YgkMzp2VZyGHt3OIDV6Cbl8d3H8Zd5GoRqRUBHRJrNE7VO+X+pT4uISrAqSQsYsTo2WayyGub7nB0VHGRLBc9ACT14SW8KwkKjNessAfJNZWqh+AdGhPKvtGkKEVl0RRXiX28LZw5OhpkVqHRtOsIbUKjT3+MOQm6nVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cb5P4Qcu; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+4ADJJw"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49b8ce9b733so4349055e9.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cb5P4Qcu"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49cdc81f40eso4063635e9.2
         for <imx@lists.linux.dev>; Tue, 01 Sep 2026 23:23:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788330235; x=1788935035; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1788330236; x=1788935036; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pLjWeeRx5GwvUZT6jfZGxkrQuiE7XPs8NxQMb0vudxI=;
-        b=f+4ADJJw3SRi0imkWqnU0LeW2qlP+ZpTgmXQdt2YrSnuBJgBZGz2trCZ6TPHosn4fh
-         fchnjUnKrTB5hrza1pI8fSJ3XnuP0IFi61lHSnOVIFja1pClE8PFZON2CBiCW093EofJ
-         w5sLbYnI9Uk9BlalseGEp6raRixcJd7rMkgAc1g9WxRwM5h+QSRYqGn4IA8zxTHzAj1P
-         XfRx3RLg2o+CLbNDJFrd2dwxW+nU0VlK8NBMyOC+RwP/Lgjh8kDqsRmGypwym0EgsrIY
-         2Vay9++DJGf2u5f9T8wuGCUow6IE74MVz/OAG7Tc7ghNYbp4Y5/ykbmbDyjop+Trchme
-         r6iA==
+        bh=uHOxVIY41WkMlz245AOFHdi0BnFepDxV94FL1AiaZ/8=;
+        b=Cb5P4QcuF+ulb//HLMGpF2SBbiKIOrL/BjrByKwEYOBj5ERreLBoVjIz3eFl2Xv2uQ
+         5dulRpvjhh5PUOzRBLziU55hUppOL9Tg/kBmq7fFf8xQk2ibfQXgXZPIRQfI8ItaIyj3
+         SYpMUoMRaM5rp4mI+KTg961HO5liWokp1hLIOpbrOh2WY+W6eV+wHQiw9fHPbd/LTGoV
+         FBkxCfCOaUkFEedUbk7u+z3li38BbzfPZX78zIAxrcBqCKKGNdgVn4odvYkRRarqaQbm
+         NSBYfV69K/k0qDgCLmbUL0/hgWZVRWbta++Ahg12VjTV+xfDMT8AQF1/u/LprxQe+k5c
+         q4Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788330235; x=1788935035;
+        d=1e100.net; s=20251104; t=1788330236; x=1788935036;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pLjWeeRx5GwvUZT6jfZGxkrQuiE7XPs8NxQMb0vudxI=;
-        b=clPXCUJ0K14R7+bcUfHz/Tpsm+Wnk5vDZxI8RYu3wvPVH0QOdLjukDS/AqtXEq9C3W
-         Z0Q06DJm3jB4nMnU3z63wTetIzQC7FNTpxPkZjxnhFID/Z25qMInWHwp+0mLJQT0GX2j
-         2DC4XLSbarKfr/4goByvLTIX4SVOw6WmV62S01GBiPngmMn7qBUEbiLW3TApkJA/Gc+S
-         0ane05BqrRY5UUPye8wBU8QTQxw7C2Ry4MClMelqF02kDz+wU6Y8TkWIDlzOLA+eluxE
-         seFv2ABtGOtazwlEJt6PGtLuC3gqR2jYisxocUaWxWVCk9u6wpO9vmt/4t2huT0oP7mB
-         iR9A==
-X-Forwarded-Encrypted: i=1; AHgh+RqghM5RFZwn2nxsJSAl2WJmgZ3XWNNHuEmMrYFHyLlCwwGUkO146Yo5M4JDOduVtntwK8o=@lists.linux.dev
-X-Gm-Message-State: AFuF++k1bKnev3L1NkOY/gwyycby0QkN1LrNeLAWQlad2BAHRXg+K1u9
-	hirsI4w+uvQx3XX25dKWL0gV0H5QSfHgiVsaKSLcmkLbd+Ava0N+J9FY
-X-Gm-Gg: AR+sD10rl3/ViEZ2u92l92IcgqoFJPuXh1xEbvIndA/71DWWrHWKUvPKIpSyhxH6djr
-	AydOcgU8eG30BNnKZqP6v5ngE+OqnUqvxXEq+qLeMwbislVmUEiI2SrVxOAvGv+ff0l2MO840/n
-	ctpZZ/5iI/idVW+1bsAXwCoX7QpICgQk81BqU8jxRdiLbeN7J8DHvYwiFz+01czOI20BhmBu+QT
-	ZhDYMte2bcAOUS/eW5zGTp0GRMVQbJ3MrBKJ+xv3XJlTSDQCCy0+HEEIZPadRhEetYFbkC2UHwh
-	423QaPBTnadezMcDrmEwQjVZlE/r8FkIyl8zRZpM/y+tcqXqRbDA1aYHjGKKt+klILk/yij2Trh
-	2RrPAchm4rsYgp5Pwe9O/srzKX+kaXs6xw4LPTeJdMdJiuOujrxrlV0L70w3Oo7GmROKIO+QXVE
-	K+I7o1eU1XHJKghhMXS+tcF8aTYPafkYTZMT7nBtmsp6x7YpRd4AywfifMxDlI3qvQj1I=
-X-Received: by 2002:a05:600c:4592:b0:49c:e1b5:b2bf with SMTP id 5b1f17b1804b1-49ce558ff08mr36761315e9.0.1788330235172;
-        Tue, 01 Sep 2026 23:23:55 -0700 (PDT)
+        bh=uHOxVIY41WkMlz245AOFHdi0BnFepDxV94FL1AiaZ/8=;
+        b=TxJzf9U0dUtugmrT6FlQnHSw2ZOAbwT3rt8hBaMxGK9GL7pgfhKH4RRm0frg2oQ7/n
+         vTPOmTc+aiMWQgwj3udOnth+4Zt3UAc7dqPNfedvA1edQp2CCLUnL4mVHtmqabOAdCLg
+         ADxXyWmvvfC/VR8RpBtNyEZKa65IrNnVqgAKB99lqFE7Wj7RFn1CjJ5cPqR1G5GzyPQr
+         UpZoymrJNm22LJ5I6Uq8n4mBZm9xi7Bk6zUfyg5xHBmIJ1yryj+B1fXCrVX8mmrPUVL+
+         v1zXGiezPxq8J74k5ESksmHYHcTF18UJrCnt4GOqE1zCJotcCMa9OM+YGXw0NDHdQk9d
+         aKuw==
+X-Forwarded-Encrypted: i=1; AHgh+RoUQVJR/xMwCA8SZF2+EhIw6tbizK27k28TtL1OSj3QqxLqvEOTuWhx+ziPjzRF+Rix0Sc=@lists.linux.dev
+X-Gm-Message-State: AFuF++n6paaFyibBypBn6ntTV+cS5x0v9JMHQi//Kj3WI9jwTuHM/Bx0
+	LenwO9+2uQbfe/sqx4iXn2+AsnKkoptAC1vYj2golvq+68N60kjghacB
+X-Gm-Gg: AR+sD10Q7EXThEOhhFm0JPLy1JhzVOddcbWE61/yndE6rC/qy1VZHIBySD6GKNNyZpm
+	CfclDY6PNDbNvfh56QDNyGG1thDuG7qgpiWREFZ/yK8O8kZx65ft++rIOR1Wpxo5qUhqbUeDiyP
+	NZEK9bkX2bZ4WE0s6zOHZn6OkY1Es4sy1GzP8T/jiWuFQvYOgPTyUTlsyAdA7wzXQMaGCQD4J+O
+	/JZEPvw3HpfQWuUIxDdaDcG8J2Kp+g1iwq/9rY8kxn77HbKUuLAopdSU/YS+k46P1wWQdGBD9Nf
+	EYtDZ4o7GZ3ADKv9Yo+KmvFpGurU4OHtI9NbYX0YrNFG63b+vZTTUKt5Db19Sf3STdhKfXV10qU
+	E7SciZ+dvV+Rv9Ohn9OVynu72BxlIBMkma9UMI2qnLn1kj/wjAOv+vMdLIodN5FyEUUyXfV9Nze
+	hAftdp5s0A6N2k7OQkXatA3oqI98E17yFdYdRaMSWuZlKLcvh0rWkLftocS1IdxgZsUg==
+X-Received: by 2002:a05:600c:1d14:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49ce583e94cmr33712895e9.10.1788330236108;
+        Tue, 01 Sep 2026 23:23:56 -0700 (PDT)
 Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce4776131sm49735335e9.11.2026.09.01.23.23.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce4776131sm49735335e9.11.2026.09.01.23.23.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 23:23:54 -0700 (PDT)
+        Tue, 01 Sep 2026 23:23:55 -0700 (PDT)
 From: Mehmet Fide <mehmet.fide@gmail.com>
 To: Bartosz Golaszewski <brgl@kernel.org>,
 	Linus Walleij <linusw@kernel.org>
@@ -72,9 +72,9 @@ Cc: Dong Aisheng <aisheng.dong@nxp.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: [PATCH 1/2] pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE queries from the pad register
-Date: Wed,  2 Sep 2026 08:23:51 +0200
-Message-ID: <20260902062352.3600368-2-mehmet.fide@gmail.com>
+Subject: [PATCH 2/2] gpio: mmio: get the direction from pinctrl when there are no direction registers
+Date: Wed,  2 Sep 2026 08:23:52 +0200
+Message-ID: <20260902062352.3600368-3-mehmet.fide@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260902062352.3600368-1-mehmet.fide@gmail.com>
 References: <20260902062352.3600368-1-mehmet.fide@gmail.com>
@@ -88,108 +88,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-The mmio pinconf get callback ignores which parameter was requested and
-returns the raw conf register, so a generic query through
-pinctrl_gpio_get_config() gets register bits back instead of the packed
-parameter it asked for.
+A generic chip with GPIO_GENERIC_PINCTRL_BACKEND and no direction
+registers already sets the direction through pinctrl, but leaves
+gc->get_direction unset, so every gpiod_get_direction() call trips the
+WARN in gpiolib and the initial line state is guessed. On a Vybrid
+Colibri module that is 21 backtraces per boot.
 
-Decode the requested parameter and answer PIN_CONFIG_OUTPUT_ENABLE and
-PIN_CONFIG_INPUT_ENABLE on SoCs that declare where those bits live in
-the pad register; Vybrid has OBE at bit 1 and IBE at bit 0. The answer
-is 0 with the bit value as the argument, which is what the
-pinctrl_gpio_get_config() users (gpio-by-pinctrl, and gpio-mmio in the
-next patch) expect. Pins the device tree never configured have no
-register offset and get -ENOTSUPP, without the error message meant for
-configuration attempts. Other parameters keep the historic raw-register
-behaviour, which the debugfs dump still relies on.
-
-This gives gpio-mmio a way to read back the line direction on chips
-whose direction lives in the pin controller.
+Install a get_direction callback for that combination which asks the
+pinctrl backend for PIN_CONFIG_OUTPUT_ENABLE, the same way
+gpio-by-pinctrl does it and mirroring how the direction setters are
+forwarded. Pins the pin controller cannot answer for report -ENOTSUPP;
+gpiolib ignores that when requesting a line and in the debugfs dump, and
+such pins cannot change direction through this chip either, as the
+setters fail for them too. The one caller that does not ignore it is
+gpiochip_lock_as_irq(), which now refuses such a pin as an interrupt
+where it previously had nothing to check against.
 
 Suggested-by: Bartosz Golaszewski <brgl@kernel.org>
 Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
 ---
- drivers/pinctrl/freescale/pinctrl-imx.c   | 30 +++++++++++++++++++++++
- drivers/pinctrl/freescale/pinctrl-imx.h   |  4 +++
- drivers/pinctrl/freescale/pinctrl-vf610.c |  2 ++
- 3 files changed, 36 insertions(+)
+ drivers/gpio/gpio-mmio.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx.c b/drivers/pinctrl/freescale/pinctrl-imx.c
-index 9a45b376d36f..5da1a76b0141 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx.c
-@@ -21,6 +21,7 @@
- 
- #include <linux/pinctrl/machine.h>
- #include <linux/pinctrl/pinconf.h>
+diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
+index 7e4b3e8d609f..b2aa74a734e4 100644
+--- a/drivers/gpio/gpio-mmio.c
++++ b/drivers/gpio/gpio-mmio.c
+@@ -49,6 +49,7 @@ o        `                     ~~~~\___/~~~~    ` controller in FPGA is ,.`
+ #include <linux/log2.h>
+ #include <linux/module.h>
+ #include <linux/pinctrl/consumer.h>
 +#include <linux/pinctrl/pinconf-generic.h>
- #include <linux/pinctrl/pinctrl.h>
- #include <linux/pinctrl/pinmux.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/spinlock.h>
+@@ -365,6 +366,28 @@ static int gpio_mmio_dir_return(struct gpio_chip *gc, unsigned int gpio,
+ 		return pinctrl_gpio_direction_input(gc, gpio);
+ }
  
-@@ -297,6 +298,35 @@ static int imx_pinconf_get_mmio(struct pinctrl_dev *pctldev, unsigned pin_id,
- 	struct imx_pinctrl *ipctl = pinctrl_dev_get_drvdata(pctldev);
- 	const struct imx_pinctrl_soc_info *info = ipctl->info;
- 	const struct imx_pin_reg *pin_reg = &ipctl->pin_regs[pin_id];
-+	enum pin_config_param param = pinconf_to_config_param(*config);
-+	unsigned int mask = 0;
-+	u32 raw;
++/*
++ * Without direction registers the direction lives in the pin controller
++ * (Vybrid: the OBE bit in the iomuxc pad), so ask pinctrl.
++ */
++static int gpio_mmio_pinctrl_get_dir(struct gpio_chip *gc, unsigned int gpio)
++{
++	unsigned long config;
++	int ret;
 +
-+	/*
-+	 * Only OUTPUT_ENABLE/INPUT_ENABLE are decoded, and only when the SoC
-+	 * declares the bits. Everything else still returns the raw conf
-+	 * register, the debugfs dump depends on it.
-+	 */
-+	switch (param) {
-+	case PIN_CONFIG_OUTPUT_ENABLE:
-+		mask = info->obe_mask;
-+		break;
-+	case PIN_CONFIG_INPUT_ENABLE:
-+		mask = info->ibe_mask;
-+		break;
-+	default:
-+		break;
-+	}
++#ifdef CONFIG_PINCTRL
++	if (list_empty(&gc->gpiodev->pin_ranges))
++		return -EOPNOTSUPP;
++#endif
 +
-+	if (mask) {
-+		/* pin not configured, nothing to report */
-+		if (pin_reg->conf_reg == -1)
-+			return -ENOTSUPP;
++	config = pinconf_to_config_packed(PIN_CONFIG_OUTPUT_ENABLE, 0);
++	ret = pinctrl_gpio_get_config(gc, gpio, &config);
++	if (ret)
++		return ret;
 +
-+		raw = readl(ipctl->base + pin_reg->conf_reg);
-+		*config = pinconf_to_config_packed(param, !!(raw & mask));
-+		return 0;
-+	}
++	return config ? GPIO_LINE_DIRECTION_OUT : GPIO_LINE_DIRECTION_IN;
++}
++
+ static int gpio_mmio_dir_in_err(struct gpio_chip *gc, unsigned int gpio)
+ {
+ 	return -EINVAL;
+@@ -601,6 +624,10 @@ static int gpio_mmio_setup_direction(struct gpio_generic_chip *chip,
+ 			gc->direction_input = gpio_mmio_dir_in_err;
+ 		else
+ 			gc->direction_input = gpio_mmio_simple_dir_in;
++
++		if (IS_ENABLED(CONFIG_PINCTRL) &&
++		    cfg->flags & GPIO_GENERIC_PINCTRL_BACKEND)
++			gc->get_direction = gpio_mmio_pinctrl_get_dir;
+ 	}
  
- 	if (pin_reg->conf_reg == -1) {
- 		dev_err(ipctl->dev, "Pin(%s) does not support config function\n",
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx.h b/drivers/pinctrl/freescale/pinctrl-imx.h
-index f65ff45b4003..8fa7e1e2521d 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx.h
-+++ b/drivers/pinctrl/freescale/pinctrl-imx.h
-@@ -91,6 +91,10 @@ struct imx_pinctrl_soc_info {
- 	unsigned int mux_mask;
- 	u8 mux_shift;
- 
-+	/* OBE/IBE bits in the conf register, 0 if the pad does not have them */
-+	unsigned int obe_mask;
-+	unsigned int ibe_mask;
-+
- 	int (*gpio_set_direction)(struct pinctrl_dev *pctldev,
- 				  struct pinctrl_gpio_range *range,
- 				  unsigned offset,
-diff --git a/drivers/pinctrl/freescale/pinctrl-vf610.c b/drivers/pinctrl/freescale/pinctrl-vf610.c
-index 76a4bc0181a0..77d077618782 100644
---- a/drivers/pinctrl/freescale/pinctrl-vf610.c
-+++ b/drivers/pinctrl/freescale/pinctrl-vf610.c
-@@ -319,6 +319,8 @@ static const struct imx_pinctrl_soc_info vf610_pinctrl_info = {
- 	.gpio_set_direction = vf610_pmx_gpio_set_direction,
- 	.mux_mask = 0x700000,
- 	.mux_shift = 20,
-+	.obe_mask = 0x2,
-+	.ibe_mask = 0x1,
- };
- 
- static const struct of_device_id vf610_pinctrl_of_match[] = {
+ 	return 0;
 -- 
 2.54.0
 
