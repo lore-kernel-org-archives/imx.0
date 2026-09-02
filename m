@@ -1,225 +1,161 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011066.outbound.protection.outlook.com [40.107.130.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC6C477E57
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 11:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788347170; cv=fail; b=AJfd77I8x5hSEU7QGy/63Qc1VHyu1KiVzuZPhm+VIBaxdt/nbGZc3lCHJHdWjIJAf32bBGlnIQruq7EGUPjJLmX/E2JvkjmgczP01WBGWHsnppgYX4+RJEWuxQBwOEKRp/JLuZEwUG+aWUmz+brQnksM1djY2o15WcU23aqcw0k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788347170; c=relaxed/simple;
-	bh=vsKaUQMCunSlmWeYEPnMWmm9qCmWNh5oGRkVrreCRJw=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Nq5kW7RoH2tTR6Tjl1cWMSYvOed+gSHnJl24HtdD7TyS4oHbsmIdC9SxYRm+/QcPF+6RqQauU470nLsw3fZdcn7D43XbIyTMcsls9wi5LXZ5U+Px2OwQHVf1IjtWazwfdO+g7ToJdOm4vTIK6yd9mcymQYUc+3z/djliSfTA0Dk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rjuqZpZO; arc=fail smtp.client-ip=40.107.130.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5D0477981
+	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 11:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788347287; cv=none; b=fb56lpdR7je8t9JTu/u+UruiO4i4CyZcKo0/lDgRFK23vnRCuyCiA3W4X/tZQByWw6B8rHDc2StmRVrCoUGHrYew7w23OeBEH6B9c+330qGbgqMY+bp+4YlHqAY3CDTlsCn+YjNMsTpsY/TJQsIHZeBe8JhDBAtweIqMXJKC2BY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788347287; c=relaxed/simple;
+	bh=G0sJs0ujHiGOhjGyLliQnfeBam1mT1YiVW8eQVl48a8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qxNGZ+xiazrn+GSpnfwm2bHhXYP5Mfb7cxbVxA5koXdahqxLIPyaB5WWuHAeDenHtgFTD9rHpSni3s3R731P2VF8xZ6aFcZ+sOSR+fjsVd/o2jvAjJet6F5uFzNTmWzj5JUn7XSPAugVlgfH9vwDu2gkSMDxBQeNzqePHWxkIDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jvg/wOwj; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rjuqZpZO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zBIDCPsZFvIa7dBUVxLwM41vrzkuJ3SvHMXCzoSTgHYTQyRw5PcDOi1Z4JhUOas70bvqAyQqA1xYYsVEogUV85ZMWd/L+j+w90a3UtTLyo5uLW3tPUZwM2YKXPy1AtZODdBftWiXv4hBPVKRZTlt+/zGYIUnHsZwxF1D5SNZAFstv9An08/HwLkRDbgi2PleG3jgPgHkQJDbeVs1z6Unop/GuOkhbnZmSpdgdU3EZOPq8pL95Pl3GJj9Z3d60NA2uIm4i8eyMLHm0mS3OYDfKBdzOTf04NLB0DBjATCt3af2tbaRstm5q/z53DPXGE1NO8owff/6v2VEdg2QR0/BBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=777BBndEZWN0pQ0+ExXhYlFGeXGjovNqwjmxa9SC7PY=;
- b=GU9oGknsl0iRxZBNldnuom7jPxWtUfnwopp2i+pxkdEUHc8IsOTLqIIrFx+pNxD1cEsCq84nOQPaMoUf1Jz72KSj6kob55lr2zWt97cPIEiuLc7X8JOd/7P+hoTpKYomS9sumaJ6poHHSjWuYsdI49qymIQETf8Rs8eUT6GCXGXrTD9gRNDi0JIF7VqjxGINLzHB9rRP1wGN8pPIw0CRqcF4hp/8EwEwgA3tHIcmSbIuBptqBa4ttyVQUkciIYf0rSysHtV4lacuPcaPursM6J0Q6A4q2DFZVlHoRg+IQQJ57nFk8pD0XG/RRrmDmJvvY/TSZHYfxwir/6ABc4lP/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=777BBndEZWN0pQ0+ExXhYlFGeXGjovNqwjmxa9SC7PY=;
- b=rjuqZpZOLiu0mvOtgE6+W5Oa8ZF+13Oz4odXfRh5o+iF5Sfbsivki+ASKfrNktDVunj58hRv4kxYj3ZyD9uwajWypaGLcoQv0SLtLEPxTFgCiKnAr6RqiCeRSX+SvdfgkCrdf8KtNT+lljjrWh1fkV9/hAn7XG/+TxAobVzFfCmopTUSHtVqC9ePOeirOey1nInxBoYjQkvQFJhe+4r+slucq711fNjWPVSa847lhA1wuqlQplGarghN8NCV859TvFxWimGOMyYhQdnBvjhHSGA2PnAZYfSX3hpERrNg4p9fj/Nt4HGJ2Ttm1TnZ5WilP9HOMyiotI41xTBceb9Deg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
- by AM9PR04MB8131.eurprd04.prod.outlook.com (2603:10a6:20b:3ed::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 11:05:52 +0000
-Received: from AM9PR04MB8469.eurprd04.prod.outlook.com
- ([fe80::1f31:d3d0:6150:b49c]) by AM9PR04MB8469.eurprd04.prod.outlook.com
- ([fe80::1f31:d3d0:6150:b49c%3]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
- 11:05:52 +0000
-From: pankaj.gupta@oss.nxp.com
-Date: Wed, 02 Sep 2026 22:05:20 +0530
-Subject: [PATCH v45 7/7] arm64: dts: imx8ulp: add reserved memory for
- EdgeLock Enclave
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-imx-se-if-v45-7-6e400879d8ec@nxp.com>
-References: <20260902-imx-se-if-v45-0-6e400879d8ec@nxp.com>
-In-Reply-To: <20260902-imx-se-if-v45-0-6e400879d8ec@nxp.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788366919; l=2500;
- i=pankaj.gupta@nxp.com; s=20260817; h=from:subject:message-id;
- bh=LA5pZ8YRZFeVk56nd//uP0RHiwT4E6voL97vzkkh9tk=;
- b=oOKv4orcdkipZnByIV+RBdzg67WOECXVEm6uzWQW3EGQ3Z9ilwTc3ewefFVpTJ7dJtnQRMD7H
- 8EYxWrI1m2DCVIb8iEHY+fOoik+biCONpN3PqJkKi2RHVf+9Q4GuTAy
-X-Developer-Key: i=pankaj.gupta@nxp.com; a=ed25519;
- pk=g4ZgzIWbpXnSxRsoH+l6PWLP78a+Mzpl8e6RQe74d5Y=
-X-ClientProxiedBy: SI2PR02CA0024.apcprd02.prod.outlook.com
- (2603:1096:4:195::18) To AM9PR04MB8469.eurprd04.prod.outlook.com
- (2603:10a6:20b:414::15)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jvg/wOwj"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49954b88fffso6693135e9.0
+        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 04:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788347283; x=1788952083; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1AfNAVBz0XtGYE2d+HbSOZwCHDoc1V70sAc8HmdvpJ0=;
+        b=Jvg/wOwjYUQMPJFuRDKPaNmire6OIekiU7fHVzlkUGvHGCdtcF/frc8fMGxEpH+wQ9
+         ydLmJeanNij8jfHuHSncqYJWEYen4yYbeIvdMiCL3zhWb+xg44vo7jdFzkWPNUXFTRBP
+         aX3SzKd9zR5tNhs+bFrwMWf0UtZbIbdIaUMA736N8MAyXjpBrqP7UgaSBYOgX9LWiGuq
+         JBHr0OqPobRCZ67VvjwwXFAM1btyEq6S99tVurtewKOPZTBw8GQ/kVYoOu/wAPBMWNVi
+         iMx7eRvSAZtTxnmeHX+kn0MFHLvvVgkvxXTwK0t0GD3zq58fCgQAfqkqotVNO/bw5cMv
+         Zb3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788347283; x=1788952083;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1AfNAVBz0XtGYE2d+HbSOZwCHDoc1V70sAc8HmdvpJ0=;
+        b=MzO8bBS/W92C6tFBo/aJZR3ODtNNXIOT0/tK3DKcooKLpcN5wLKl4Gs5hv+hFFEilZ
+         HHmW2rAKS1nNfYJPz1WtfwcGYsBa1MGAACYhy6MClid5N5Hic3X8fg1BTDLRpriLqivZ
+         GEdEz34Q/MNVSs7dtTo7hSoV3jT9WJAxnRMKLaw6p/3xL3WkX2ACMQzarZu5u4ETCykM
+         QY4HRWTs4BGJ9CuueD3FIsOsqDOQM12PCfq5p2TmjHVf2Qs+ivDyiZpHd99cJKVWxsIs
+         NP/bSaF5zC4B5xyQMmd/1W1pllQTUhGLr1vBehVY3URsZGbblQGNpQ9bMfRsPs/9Zz3O
+         nIpA==
+X-Forwarded-Encrypted: i=1; AHgh+RoDthlZsEkmO7WVVhE0ImpRfxVXs9bgQoIkefPyZTTU4QE0xMzlabDITR7XhuOJ3RDl5cY=@lists.linux.dev
+X-Gm-Message-State: AFuF++nzpuxdKcKc5Q5TCxE3CLGw3DqFDinejCGcCYiYZPCb9/4r2wMA
+	dtE71MeXfGwr4/ytxvRXdOANB5nJOqB/HndnyNtYFbDqym73hnzUwI6W
+X-Gm-Gg: AR+sD11qem046s8wugWcjZnQvyBnxF1HVmxNa6gdheC7KtyCIAn83tlYw756Cm3paG4
+	uWqkEunRNITQ8feWAvV8HPmZhdfCJO58F5V9QpOEm1pxOKt/S35OFcAWNXPdBS9iTCxHMJn8yAv
+	zEiucFOmBliBN2kzVBhTll9QXmvCk9pU+INKx/DbEi1y5EneJW7qC00oQ0obaeu/WZFsLZc0RV8
+	Ho7a1Ka4ob7j5utUgRLU9Y+zgZ0MncbTQRVBVS10YTPurSceGsx6wr9LKGOxYcbwtLQ7yhrM5GG
+	tJmhZ0IjTPBW3y1wrnlWElDCR9t0mfz16Zqq8OvlAnWDuTrMacgSy+naX6OM4FjCFEmJaKBHfo4
+	mik9wk1XpVD1tYzuXx/w98c0d8v0Ztr+XdOhxg8HHkfJRgpgtM8Zf8O7SmrZUVBjlru5d9Sx6Ej
+	ZiKVp3GUfHB2CgcPYQ401mMVLG2I/bpIsErSylS7SmkGSroFtddDeZEk23Rqs+bAxcHlSGY/9wZ
+	dTm
+X-Received: by 2002:a05:600c:4f42:b0:49c:dada:f581 with SMTP id 5b1f17b1804b1-49ce558e89amr70479425e9.0.1788347283266;
+        Wed, 02 Sep 2026 04:08:03 -0700 (PDT)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce58da3acsm96387015e9.0.2026.09.02.04.08.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 04:08:02 -0700 (PDT)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Bartosz Golaszewski <brgl@kernel.org>,
+	Linus Walleij <linusw@kernel.org>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev,
+	linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/2] pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE queries from the pad register
+Date: Wed,  2 Sep 2026 13:08:01 +0200
+Message-ID: <20260902110801.3893392-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260902075629.D0B1C1F000E9@smtp.kernel.org>
+References: <20260902073946.3709080-2-mehmet.fide@gmail.com> <20260902075629.D0B1C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8469:EE_|AM9PR04MB8131:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50fc858e-933a-44a4-e188-08df08e22754
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|366016|19092799006|376014|22082099003|18002099003|56012099006|11063799006|10067099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	caEGGXmGHDLzCg+CW+rk5X/JN9VnPAjDT8LitEW8N5PwJ7SFZCjmcRhP9eTRGMdsOEhKJr562+gNz6HwVgsXlmqHQH4tPCXwjXc5BJ0OlT8EurWFE4w4u871iois4CBV2YUkArz/AofXyoztGP5ImjZyQboEVDY6g1OIY7b/4ok0NoXlLYWXj6nJwvtVU1kTyQDGwGq1qhaBc0z71ZAX7KPXtWLTBn/VNzqM8ctW0bHtkewx0FyY08n8Gevkpmi5oh/6SnbPfQwfSjVXk4kzBv58Thjhr1BEu9K8vV7DGAJaHLp2+FnAtGpmyBGKcBnuJ+UJUbEC/Jxk+uIRrm9vrtwn0WF+VLCWcrG1QfoLyRJaWFoWdcxRDBNKG9MHr4OJX7DYniMsJjuiro/AaG2ImLnx3d/LkjO3y4FoQ8OiB3W9IwFJJDLWMRvWyAFoXj7HFTcqIoK45SrxoXJx+8OZM/MtbZr1cE4o1zGfPx8T43ynuNDr4lcGXSon3cM6P2NQTWrN4AkSLbqfGehGWy4UUIrOlssx0OHAKeygKCpDYqg4fb6NZ3NgESdJfepCCGZvYygtdKkAGhK9x62HsdadyhLL46KBPmit8V9YX6FNBmOE2ZgvXgVxOrkUZ32CxXMQPUTweChUxohJNG8Ozw2JwPoPs0C9l59vB7A3Z1WlVkbREh9hVzYeFW4QosU+7xnaXsmZ0vtIR6zOGTW0JhTRfA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(366016)(19092799006)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OEN3Yk55enAvVzNCaHBvOXN1UUpEYi9oOUJLRlBLNTlqdFhkcUdINzhBY3N1?=
- =?utf-8?B?ckxlT3NUbmNOUXVUV3lFT0t1UThPMEJzeGorNXpoakdzbkcrc3hXdEpkK0Z6?=
- =?utf-8?B?M0Y2ckNrdmVGZFdZeUc5eS9qOEFhbmtJTWwzeitVRWE1ZkxLUnhOV1ZSTXlS?=
- =?utf-8?B?OUdVODloS2RCUzFjSWh1MDZWYzZ5eng0d1BReU53SDZFdFZRYm8xL05uSGla?=
- =?utf-8?B?Ny9LZEhMMlFWK0VqcnZyTHlHUFd4SkRBeWpGcGdURk5MNE9iclNnd3BNdU1T?=
- =?utf-8?B?SUJ1OXF4eGJmQVc0emJFaHJjNW9OL0lhSTIwTG1UV1l0RmhOTlNmTU9IU3VI?=
- =?utf-8?B?YjljSldnRSs0NGxROWFySHpPQTJXYXlzQU5JT0ErUUpGK1AwQ04vbjdyYzBV?=
- =?utf-8?B?YlVIOGFnZm1NakpKU3RoY21yOHVMdDhXelZKVy9MME14TXMrNEVHVHdrQU5j?=
- =?utf-8?B?OVhlaTdhcm5DT3NRblZNdFRhckV6UXlqMVRuOXpUNW5ubklDYXZFOGFybGVL?=
- =?utf-8?B?amx5M3lYblgxUStIYTlTV0FaUTRKMXF1RlhjVTd6Y0U3RVRwVkVBL0t5L0tw?=
- =?utf-8?B?cllqWWdvWS9rNVFGQVBlZkR2UkpYTGUyOVJuVFhtUEdXZVBjaUtiYkZUK1Vx?=
- =?utf-8?B?REFDUU1PSW5lSDJKb1lYTkxuUUFTWnpiWTlNUlJJaTlMdFZNQnJWWFVOdXRx?=
- =?utf-8?B?UjFldU1mdmtzd1dJYWtvV0E3L1RxbC84VVNVRlBjQjQ2T3hndUR4cmF6THBI?=
- =?utf-8?B?UE1PMzVDRHJiY0h2SVZMOFFXMTBqUk02TWNMUzFVUXZ0dFVCV2NGQkplaWlP?=
- =?utf-8?B?bFVPVXZSY3BFRENtYTFpN3h0eXd2TXhVN0NpSTRHTHpUVU9acEhYYWQ1eGdJ?=
- =?utf-8?B?KzBNZ1k2MVJiendCUUNkRllKUFdBZGMvcG5KQm03WmorcjZOMUlIR1cybUZQ?=
- =?utf-8?B?MWZScTFDUitkcXlYdHRhZndxZjNvU1ovQUczU1ZTT0lvcUJ2ODNtNDJzaGtj?=
- =?utf-8?B?WEx0K3EzT3hHdXErejJ6WHRRRVFNcVkwZFJKZEwxU2MrdDVScEJ1ZHlpZW1h?=
- =?utf-8?B?WHZWV20ybnFnZVNWSUtlNUk3d0RnWGNna3NIRVFYaUcvS25CWUYzcitBeHV6?=
- =?utf-8?B?UWk2RXV1TW45ZitxWFZBTkhkYmNhaEE4VDNvNTJmankrUlM4RXY3UlhZYW9C?=
- =?utf-8?B?MG4vNkF1R05hdmVLT2FubUpFZEJLeDNWL2haRHN2aCtsNjF1b04vVXJ6cDlt?=
- =?utf-8?B?WmROeXRISXc3M3NHU1FMa3g0d2ZhN1NoTWtIWjdYL1B3eUtGbHBmK25KVkFG?=
- =?utf-8?B?TEVMRW1JNUtiTUpVR3dHZEc0bkp0a3VrSWRWK0ViNzdtVHBqZUprVlMzV1Zm?=
- =?utf-8?B?KzhJWjVWSG41Z0V1L0diSU84bC96bVBnci9QS1drNkIyUkk5cGhoSmlrWUdT?=
- =?utf-8?B?MTNDQ05aTGdYNDNZNzRqK0VEdlpka2VVcFVKZEZZeUhkZURDekRDRDlydzE0?=
- =?utf-8?B?YzdIS2pYbk05UURNTE5aaThGREluMlJTZm05WkZpa0NoaWNmQW5CeTBVMlNi?=
- =?utf-8?B?RThGZFZNbDFSU2VXMHpIUGMxZmV5OEUzNGxreTlUOU1ZVjRJUnFYdWpLanZl?=
- =?utf-8?B?RDhRRVp1YnIrcXh5SXlVR0hrMTNNRThLL21aV0RKV3Qrbm1Tem45ZmFRbmlq?=
- =?utf-8?B?UHhia1BZYy9SVFN5cHZvdHJpYmtTT0FmUWpjTkd6VWFxOU51WUh4aFgxOEI5?=
- =?utf-8?B?UDV1V2xRNWpLVXlJS3prWHV4SUthWVBRYmx0MlJaOFdTSEV1Q3k1VFF2U1lx?=
- =?utf-8?B?VmxINURQYlhhcjJCalp3VFFSQ2NlaTJRQTBMZXB2YlVqdHp0RndVOFY5clEw?=
- =?utf-8?B?M2hBSjRuMnR3SjFzaElOOWR2b1locUxXMzdzMzBLcXg4WFMybFIyaVU0d0Z1?=
- =?utf-8?B?L0ljeDFYUEp1VzY1b1hhclgxaHVpMHhhMVQ0ZHBxTDhQdnJCejQxZlJmNmtq?=
- =?utf-8?B?WDkvbm4zMXBCbmVaOS81ZFVYZ1VkMjhOWlRuaFRZVVd5VmlVd3Vwa01wWlpr?=
- =?utf-8?B?dHB6VFJ1UUxYVWJIUlUyRm5aTWhhQmZRWDRPeXptclhUUE9SQlY2NWY0Y2pK?=
- =?utf-8?B?STdHYU9Gb0gwbWtOK1NTMnZZdWVOUW1PZGpXcjVIbmQ3ZU53Y21wZ0FUWUkv?=
- =?utf-8?B?Q2JrWFJzcnc5L3NXcytKemdJbzl6V29pZm5NMStEc2xQd0RQZG9SVmY5UUt5?=
- =?utf-8?B?ZDNkWnhmL3poK3V3bXRhbWZjcHZqTHc0VjUrQ3crVU5OWlRFZGZicjZ0UjdD?=
- =?utf-8?B?K3NrVlp5TWdpUnNwTE11Y2kxZ0pvMS93bHRLR0MycWFvWjloWnJvN2dUWisr?=
- =?utf-8?Q?lH3mv6sBKsm67LR5fVoDQ1icgKCcsPXAryXUm?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50fc858e-933a-44a4-e188-08df08e22754
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8469.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 11:05:52.6487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GFDrUJF+mWUZYNT/GP3e5YWsWMinDA2ey1b3X8U2/ngAeObaGSvE9IhCymNmAm+e5C3avS+waT5Rk6jmuRM8jeMexXLyztkd1uHVjhYNXuMritUPjRi+4063t/eXYmzb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8131
+Content-Transfer-Encoding: 8bit
 
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-Reserve 1MB of DDR for the EdgeLock Enclave. The enclave hardware can only
-access DDR in the 0x80000000 - 0xafffffff window, so constrain the pool to
-that range with alloc-ranges and let the kernel choose the placement rather
-than hardcoding an address.
+> New issues:
+> - [High] Dangerous asymmetry between `pin_config_get` (generic) and `pin_config_set` (raw) causes hardware register corruption.
+> - [Medium] Incomplete transition to generic pinconf API breaks SCU-based platforms.
+>
+> Pre-existing issues:
+> - [Critical] Out-of-bounds write during Device Tree parsing in imx_pinctrl_parse_pin_mmio
 
-Provide this as a shared imx8ulp-firmware.dtsi that also enables the hsm0
-node and wires up its memory-region, so every i.MX8ULP board can bring up
-the enclave with a single include instead of duplicating the reserved
-memory node. Include it from imx8ulp-evk.
+[...]
+> [Severity: Medium]
+> Does this bypass the generic decoding logic for SCU platforms?
+>
+> If a generic caller like pinctrl_gpio_get_config() queries an SCU-based
+> platform, it appears the SCU path (info->imx_pinconf_get) will overwrite
+> the generic parameter in *config with a raw hardware register value instead
+> of unpacking it.
 
-Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |  3 ++-
- .../arm64/boot/dts/freescale/imx8ulp-firmware.dtsi | 31 ++++++++++++++++++++++
- 2 files changed, 33 insertions(+), 1 deletion(-)
+Yes, that slipped through: the SCU callback returns the raw pad value
+like the mmio one did. v3 makes imx_pinconf_get() return -ENOTSUPP for
+IMX_USE_SCU SoCs, so a generic query gets "not supported" there instead
+of register bits; the debugfs dump keeps reading the raw value through
+the SCU path as before.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-index 4b925832bb66..5fe58a025cfd 100644
---- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-@@ -1,12 +1,13 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
- /*
-- * Copyright 2021 NXP
-+ * Copyright 2021, 2025 NXP
-  */
- 
- /dts-v1/;
- 
- #include <dt-bindings/input/input.h>
- #include "imx8ulp.dtsi"
-+#include "imx8ulp-firmware.dtsi"
- 
- / {
- 	model = "NXP i.MX8ULP EVK";
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-firmware.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp-firmware.dtsi
-new file mode 100644
-index 000000000000..e4bc352f68af
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp-firmware.dtsi
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2025 NXP
-+ *
-+ * Default reserved memory and EdgeLock Enclave (ELE) enablement shared by
-+ * i.MX8ULP boards. Include this from a board dts to bring up the secure
-+ * enclave without having to duplicate the reserved-memory node. The ELE
-+ * hardware can only access DDR in the 0x80000000 - 0xafffffff window, so the
-+ * pool is constrained to that range with alloc-ranges and the kernel is left
-+ * to place the 1 MiB region.
-+ */
-+
-+/ {
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		ele_reserved: ele-reserved {
-+			compatible = "shared-dma-pool";
-+			alloc-ranges = <0 0x80000000 0 0x30000000>;
-+			size = <0 0x100000>;
-+			no-map;
-+		};
-+	};
-+};
-+
-+&hsm0 {
-+	memory-region = <&ele_reserved>;
-+	status = "okay";
-+};
+[...]
+> [Severity: High]
+> Does this introduce an asymmetry between the get and set callbacks causing
+> hardware corruption?
+>
+> While the get callback now unpacks generic parameters, imx_pinconf_set_mmio()
+> remains completely raw. If a generic caller like pinctrl_gpio_set_config()
+> passes a packed config (e.g., PIN_CONFIG_LEVEL), will it be blindly written
+> into the hardware pad configuration register here?
 
--- 
-2.43.0
+It would, and it would have before this patch too; the set side is not
+changed here. The fsl,pins binding hands pin_config_set the raw pad
+register value and that is the only thing it accepts. The one in-tree
+route for a packed config into it is gpiochip_generic_config(), and the
+GPIO drivers on these pin controllers do not install it as set_config
+(gpio-mmio, gpio-vf610, gpio-mxc); gpio-mxc calls it directly only on
+the SCU based SoCs, with the SCU wakeup code the SCU set callback
+expects, not a generic parameter. Without a set_config the gpiolib bias
+and persist helpers stop at -ENOTSUPP before reaching pinctrl. A raw
+value and a packed one cannot be told apart in the callback either, so
+decoding on the set side means a real conversion of the driver, not a
+fix that belongs in this series. v3 states that boundary in the commit
+message.
 
+[...]
+> [Severity: Critical]
+> This is a pre-existing issue, but can the Device Tree parsing cause an
+> out-of-bounds write here?
+>
+> Looking at imx_pinctrl_parse_pin_mmio() in drivers/pinctrl/freescale/pinctrl-imx.c:
+>
+>     *pin_id = (mux_reg != -1) ? mux_reg / 4 : conf_reg / 4;
+>     pin_reg = &ipctl->pin_regs[*pin_id];
+>     pin->pin = *pin_id;
+>     pin_reg->mux_reg = mux_reg;
+>     pin_reg->conf_reg = conf_reg;
+>
+> If a maliciously crafted Device Tree overlay provides an excessively large
+> mux_reg or conf_reg value, the unvalidated pin_id is used to index into
+> ipctl->pin_regs, potentially overwriting arbitrary memory.
+
+Agreed that the index is not checked against info->npins; it has been
+like that since the parser was written and this patch does not touch it.
+A bounds check with -EINVAL is a one-liner, I will send it as a separate
+patch after this series.
+
+Mehmet
