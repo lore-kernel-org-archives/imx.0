@@ -1,237 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013000.outbound.protection.outlook.com [52.101.83.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0E647209B;
-	Wed,  2 Sep 2026 11:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788348155; cv=none; b=Aj72dRixa9ujYohkx2o5GrEbAhcJ/SVLJA/UCBrePp6FudO3C9ZNnxWm7AfHtPfAhAubzuKOFTnGcub6qqcR/mRRt30eQOGBc2NwqiXkPlyx6Gype0k7g0UsZb6Bw7NtisLwk4u3EqtJ5YmNmzRsfZT1sIrln371Yl3DAQKIuLQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788348155; c=relaxed/simple;
-	bh=FTrJZbLrZyeEm/x5IyivajCsFzOsHn8OIcoz1ZiFQVo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FsTG+Od/SfN6yvN1F7fzMhcmc0/ZWURZ4lbIbzfxbbEXdYXFuLlk03Q3sonJ0RAqvfloPXoSie5xyfGBieia6ylMmnGpXS5ZStDCThZKVel8dt3xOxgN4rH03ELKjN9HTnZo2FSPqV9OzfdLilFWucRSTNTACN7G0gPeDQYafPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5AqqC8r; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8603F463B97;
+	Wed,  2 Sep 2026 12:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788351325; cv=fail; b=HKSmtzzRThxPGYSTRvQH+N6PNrM7YpMCtATYzert1Zk5ZKl8/0qFq/CXCW8dj9eMpC1HSKeJ9Dz/1sMZCu/3snQIfZ0f85fUMoVX1k/mJ6DdneUYORyTda56ziNKpSpBouOrEKE7URDlEDV/kOYQTsW2kTQGl5SQWfDAp75VOpA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788351325; c=relaxed/simple;
+	bh=8TeXDasfdx1yhgdmZ7cv8K79g8JZ8hkv30Q4kDnNKr8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cKrrKjsxpt0AOpZymPYhdBTFVLdjAY2aC2CtMY+LKV7AbaHYgSPnssldX/cd+qYsgR1bhbK9cTGfazKIALCoDgDt3thHwWNg8Enw/+gdDGswzAczs/kPBHFchbVeEmdoiKUkRqm0hz/B3MZ6/eThqQBb1jAWQChOHDDzGZbs0+8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=deq6+rIe; arc=fail smtp.client-ip=52.101.83.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5AqqC8r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49181F000E9;
-	Wed,  2 Sep 2026 11:22:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788348154;
-	bh=n5iiXKXhw5Cofvi72d47GN06W0py6RVJEUhtZYEn0zE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Y5AqqC8rl6JVhiL4pts7upG+sz02dFAvFF3S30eHrr01QSmKMZh8tk5RJyL77mUPT
-	 Hs/iwgLigmXKahWGsTD51syifVHgYiw7/dYDPOqkDy3h/bsOFzmi55oV3cOY0LCWam
-	 SZnsx5L9p4RA3aZ7DShrZEEEwMM2z6/phJQNxBSLRApJSV2RhbCA4eNX+8l/3Z1ap+
-	 n3Wx3wcymrilvGD1DILgLMoZCvN9z8V+wf1lJEXq9RUjSASHLkEMITqUugKkav1SHd
-	 VsKxMSEZPmTGq3wgLVZ/wkw1UVYmRsNsjl9zhgFCoYIncyv9WNxTPCNLD+f89ASzO4
-	 mYEEGkT6VX+kA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v45 5/7] firmware: imx: adds miscdev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: devicetree@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260902-imx-se-if-v45-5-6e400879d8ec@nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="deq6+rIe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LiPQEU02O14vTz44EK2NNAYGi6RnCtjX0xoxgUGoyJ2811loK58CBeQRsZMj+yuIA9KGNYzlkAsZ7rIZo6ehfJ7BeTK6uyUg8cBsgy0q3h8XM8NnLZ1D/L24hM32ofNNSNt/sBpn3DD9VzbQZFnZNbpxtzJu+UP2acoWiIkFw9jiF8ACvg8VyO2wZfMduS0luYhLwd30/cFObaUi6U6tL0zTVzIq0BhQyPUBlwl3sSsVeZL0wGPYn4YWGYR2fP2a8x3hpD1Of/KRUE802r8LpzQA0Txx6plu1psnG792Yn67FrHXUTl+K0pTwS6eY4H53m4HTjyzMveVdD60PITaxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8TeXDasfdx1yhgdmZ7cv8K79g8JZ8hkv30Q4kDnNKr8=;
+ b=auaoVIGbQ4m2a0COKC/guG0YhU3XMri281jJmeeaZ3+whobqaJmdnNI0QwCu81KdD/GIDcCSqqi2ZHLD+9xSJSw7j6KnlbRYpMgIOaASBIDpuLBS1vsTQAU6PijuTuhmcep5WUwHtH1k3eFvIC35Kp8uptfPZvEkKljxW3yN6Lx4i/vUWmsbnwB27RduWGoupO7ITIZNsn+ingXcFqITJ2+lYudOsqBVJSmp3AgI/CZdL2KJJg3tcWQAoT+l8pGPd9cMeSJoDWaqHr7zxojpHMRnZy5PTQIl0tH6xohr2GvgkO71eHoZVKJAXo7jrBiNB+h04IGDA6T4qy+X0x/SXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8TeXDasfdx1yhgdmZ7cv8K79g8JZ8hkv30Q4kDnNKr8=;
+ b=deq6+rIeObtutIKAOf+IHd9vNCVwiGvj26VU/S5w8HdeLvDStYW1Tqcm1ExhQlNDZuhkFtk8ADOK30yjr/xmdLqg1/+n9oaoBeEWwM7M/zpn4kBszzAxs0W/WbQRrJKSU9ve1F4Azc/2QADAr6fKvql4qpIYhh2GxTeBLjfolp4E3JEZi+L3DNIRsRIwe2BL4ZvHfVGdH2Alc9qG4cQd319egDREYd851eh8XryGkcfWYM2sKkpMAl+1FaDvamYDqZRSZvON+/8X/4Fa8KmSWRYgXTt43nbhKLo3AtdonlBOgopL6u5Eo1GXoo6skl6ANtiOf+IFGMgH2c8MKdp7kg==
+Received: from GV2PR04MB12271.eurprd04.prod.outlook.com (2603:10a6:150:32a::5)
+ by DU0PR04MB9696.eurprd04.prod.outlook.com (2603:10a6:10:314::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 12:15:14 +0000
+Received: from GV2PR04MB12271.eurprd04.prod.outlook.com
+ ([fe80::3b38:4ed4:2164:c035]) by GV2PR04MB12271.eurprd04.prod.outlook.com
+ ([fe80::3b38:4ed4:2164:c035%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 12:15:14 +0000
+From: "Pankaj Gupta (OSS)" <pankaj.gupta@oss.nxp.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
+	"Pankaj Gupta (OSS)" <pankaj.gupta@oss.nxp.com>
+CC: "robh@kernel.org" <robh@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: RE: [PATCH v45 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
+Thread-Topic: [PATCH v45 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
+Thread-Index: AQHdOsr5a0hZ3dFv3E2UtTpJQ8LI/La7I94AgAAPtUA=
+Date: Wed, 2 Sep 2026 12:15:14 +0000
+Message-ID:
+ <GV2PR04MB1227104C1918F0B42BDD642FA95B72@GV2PR04MB12271.eurprd04.prod.outlook.com>
 References: <20260902-imx-se-if-v45-0-6e400879d8ec@nxp.com>
- <20260902-imx-se-if-v45-5-6e400879d8ec@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 11:22:33 +0000
-Message-Id: <20260902112233.C49181F000E9@smtp.kernel.org>
+ <20260902-imx-se-if-v45-3-6e400879d8ec@nxp.com>
+ <20260902111807.2E7AA1F000E9@smtp.kernel.org>
+In-Reply-To: <20260902111807.2E7AA1F000E9@smtp.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-09-02T12:14:19.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12271:EE_|DU0PR04MB9696:EE_
+x-ms-office365-filtering-correlation-id: 68609676-d3e7-4afe-bbe8-08df08ebd80f
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|23010399003|366016|19092799006|376014|18002099003|22082099003|38070700021|10067099003|4143699003|11063799006|56012099006;
+x-microsoft-antispam-message-info:
+ b/rELXeRKz3eX7FcRqxkGEMXh52wqVVcq+mx+PfnJYDilK55FL28tm9mZ/bItR/jjyi43Efwky0pOjBzanVJREpvmWMYCkEKjS0Ld8ghcNxrye9ijDoCwr1jn+QVUqqmmLbZyracueQNlpZ+7DLFNuQmtGfvV8C/rRSh+dLvplRcbtGk6ptdUwn7wkU8F3X7CYmtkeP/5X2QkdlU4CwSVGYm6rfDLkQs8oUgt2CU79CiVf9+tQx7qKpGYlYCgqmsJqdo5cYykeqIPpvIR8FqYuZMuxfJieEORwv/H3ZpMnE496bsp6ceN/+Eqt3YuoQnh8Eo+uTE0fzdEOORCVf1lopuMuS3nE/l758NOJ5HZC3UzdjUW2EFs9/2opIOCKf0hFsK+lRv036TJ/CuCyHZu9Sj/MzlV7t7ZsQlBNH8/pa36uSoz0PidkSSLFkPe4FpK2lygBpmupwWqhcywi/oNkBUwYgLZhzZf/yxyQjwdjxtj5Gf+1QT/duws/E9j2yFtWscdUPFmNHirDA6h0VGjD0Bi2NQeM2j3TJPGukzdX29zy6E8nrd4qxcwPEWaVAADEo1Xmx58T2qM/iA9wSkpt1sgbHy+Te5VNDZ20lD0G35HPcQq7eSYmABcbuEN5xVHVquRNFIzPfouErbgX6tyGDoBTkwyfcJfPgXFtkM5GQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12271.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(19092799006)(376014)(18002099003)(22082099003)(38070700021)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Sm5UZmVpWkxOR1lHUFo5VGJURzdxRVdtR1IvNG9iQlI3b2JteHc0Kzg5dURJ?=
+ =?utf-8?B?SUNVdmdOcEhLbFEzMGpWQXJVM3paY2hZZE1YWlFCMGlacTgwb0NlSHI5MXAz?=
+ =?utf-8?B?WmZSdTBPOHNZY1BReXRkODA5dUI2K2ZKZHg3YjVPWWxvMGF2ZDd1UHdKQys0?=
+ =?utf-8?B?NzBqWEN4VTVlVjc4Qk5vU1pwSFBvZG9wemhmNHNlN2ZGU0NxbzlMSWZGejdN?=
+ =?utf-8?B?K2RyWTJmUlVnaFBjbnZFbExBdHRlaldKRGxMS3l2RVRScmlueEtkeGZMTy9W?=
+ =?utf-8?B?TkhTSDRSelNraVlGQnRmb2pRUVNXd1dWcEN3Z0hMSDZTZzZCWFNrcTdYdW9Y?=
+ =?utf-8?B?WWxTdnBKNmxxT2dSbXZYRTBFRXQxVDl3Qk1LaXdnUkovYW90MGpTQ2hsZmc4?=
+ =?utf-8?B?V0ZhMGhIZ2x4YXNZaUhUTjlVeDlXRmdBRmR5Q3R0UEU3WFp5clNXMWtzQXZX?=
+ =?utf-8?B?MVg4QVcrVEl4L3JjM2JkZlRvOU5RcnBCV2l0bjZaVVc5ajRHdVAyYUxMeG1o?=
+ =?utf-8?B?dGFoK25zRkxiTEx0UTJYV1BvdDU3ekV3azRydXlWTTVaejRtRGY2dmMwUWRn?=
+ =?utf-8?B?YXRvbXRBV2JobW1na2MrOGttNkdJSXFLY0xjUmo3dWZIb1Y0Q1JrWnJLc01h?=
+ =?utf-8?B?c0ZrQkRLNm9TOXJqWkFlU2hiN3ptRDN2TERYb21qbnhHN2JZK1N6dmErUGY4?=
+ =?utf-8?B?enJLc0J1ZTZJV1BkSVJHdFFhR0htWTh5Mzg4N3o2SXQ3WkZkWVBMb2ROYzJk?=
+ =?utf-8?B?RTU3L3E1MmsxQnJ0NGtvNTh3ZDFtNWFYRExLaXkvbUo1MmphL0xFQ1BqVUg5?=
+ =?utf-8?B?V0ovbXY0ZlljWGVZYTVhczYxbkxDTHN4czhtZG0zWkVvMEZpWE9JclpQamJJ?=
+ =?utf-8?B?aHFUZ0dONnlZYnFtUC9ZWUZhQW1JSWRKS2t4RGhTS1dvb1plV1pVbUttZ24y?=
+ =?utf-8?B?MlhMT2hSQnRzY210cWw3bDEwV2E3MzRZOHc2SENyZXd2aDc4UkpVckhkYUNj?=
+ =?utf-8?B?THFtT3ZBZS9GUkh4WE1DcWpUNHR5dDdyU3BzS3FraE9JUVRxaHg5Tnl6SHlP?=
+ =?utf-8?B?SVp0L1Y5R3dkR2FRaHVoWkM2Ri9LTkc0K3orMGRJMFI2Y2M3QXpWbDE2OVdi?=
+ =?utf-8?B?dnNmMCtuLzVOSFBYMkJpcFg5MmU5d2JPVVJLbnZuOWZWZFRTTEthRGw5VHRs?=
+ =?utf-8?B?ZW5iZkVnQjlhVlBpYllWTk5Vblc4Ni8xV1g0L1BuRDZtWWlSeGdLY3NXaEl0?=
+ =?utf-8?B?Q3A4OHRLWGg0bmZaRzlMZnN0T1VjYnRWNG4rMXZncTVmMi9pMVo1TVl0UFdY?=
+ =?utf-8?B?amY4MjZFUjEycDlsOE1QUm02TGhtWHl1Unk5ZUtsOWlLNm1qV3Bqc1Y0NUxz?=
+ =?utf-8?B?elZRSDhaeXk2VlNvdGtwZUZsSHF6OExIVDFJcGIxaDhKRVdCbnpzaWswdFpn?=
+ =?utf-8?B?ckx0eGEvQ0ZOcC9PWlhKdUJZRDFEaE9Ec3prRkJMNEtTR2dHNThRd3J0RC9G?=
+ =?utf-8?B?QmhFQVFIdXBlQ01oZHVzQ0pyU24xd2hiNkJZdWhrU3FLMTFtUERTd1pUc0NV?=
+ =?utf-8?B?QVlteCtWaFgydGdvQnpTWEpuS2FZMFRVUUNBRkNBQlZBdmVtcXZGdmRPT1lC?=
+ =?utf-8?B?MmJBYXczemI2d2hEMlQyS0hQS1lPbjdKOC9WMmVMUUszbXR1RFlVQ1g0Z1Fl?=
+ =?utf-8?B?Wmk0dnRGTGpJZUI1M2V5ZDRzMFJvVWxyVXQ2TDdFQzQ5OWIrR1VSQ0pDT1dZ?=
+ =?utf-8?B?UVZEM1R6VExoUFYrQ2FjaFNrcmVEbWY0K2Y1TXl2a1R3YVpjY0MxSVZPeEVE?=
+ =?utf-8?B?dTFUSXFZZVN0VXBJRGFLK0c4c0VSZndseFNjVUpzTGdmeHpVc1VkRnVSWUJX?=
+ =?utf-8?B?aE8vNi9Gd2NDMXd4ZlVqOTladmxwL0l6L3hCQWUvb3pCOEh4ZGVLWENnVXl4?=
+ =?utf-8?B?cGhQZXhIOEVmdkF4VzBuTmhuOEphNVc4YTJjeHY3VlNoVkxaSlpXbnFwSjRa?=
+ =?utf-8?B?VTQ0MGp4ZHhRbkpkVXR3bTdaUGZGZjN1WWdkN3VoaC9xYS96aGhYeGhHT3Fm?=
+ =?utf-8?B?UnE1ekxsRmtPa0ZoTnBNZGZPanpUUVdvbUp5UFZoNXJzZHhmdUFmSHpUV0JK?=
+ =?utf-8?B?UnRqWTFidUZ5aFFaSEFQcGZKK0lGOTMyekhvWU03U1h6YmtDZXNqWVA4QkZo?=
+ =?utf-8?B?eU9vbnllS2hJbzZUSHE0dlV3KzBMbGY4c2R1K3FPL1RLY3drNTRsbmpJbFlH?=
+ =?utf-8?B?Q1M2eGY5cmRGOUE1b1dpYnh6elNlS1IzVUNKMmpNZkUvREJHMHViN1lDOUlw?=
+ =?utf-8?Q?drro618t8SfLcUejK5?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12271.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68609676-d3e7-4afe-bbe8-08df08ebd80f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2026 12:15:14.4538
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 73N3LXxZdY7Kw5u5FRJ8n/i2j03PjE72GNB3PTWWSbVU2lh1uyWzxGM4ZWA06WScU/9hSx6GIoKjbJryu49ceA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9696
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] se_if_fops_write() sends messages to the MU without acquiring the =
-global se_if_cmd_lock, leading to concurrent mailbox accesses.
-- [High] A Time-of-Check to Time-of-Use (TOCTOU) race condition in ELE_STOR=
-AGE_OPEN_REQ allows concurrent ioctls to bypass the command-receiver exclus=
-ivity check.
-- [High] A slab out-of-bounds read occurs in se_ioctl_cmd_snd_rcv_rsp_handl=
-er() due to passing an unvalidated firmware-declared size to downstream pro=
-cessors.
-- [Medium] Unconditional destruction of a conditionally initialized mutex (=
-load_fw_lock) causes a lockdep warning.
---
-
-commit b30bba3cfa7b6a992952bef3da531322ea19e58d
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
-Subject: firmware: imx: adds miscdev
-
-This commit adds the driver for a communication interface to the NXP
-secure-enclave. It enables exchanging messages with HW IP(s) like
-EdgeLock Enclave via a character device for userspace applications.
-
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260902-imx-se-if-v44-0-104658bf941=
-a@nxp.com?part=3D5
-
-> diff --git a/drivers/firmware/imx/ele_fw_api.c b/drivers/firmware/imx/ele=
-_fw_api.c
-> new file mode 100644
-> index 0000000000000..72cecc5c8e258
-> --- /dev/null
-> +++ b/drivers/firmware/imx/ele_fw_api.c
-[ ... ]
-> +int ele_uapi_allowed_fw_cmd(struct se_if_device_ctx *dev_ctx, struct se_=
-msg_hdr *header,
-> +			    u32 tx_msg_sz, u32 rx_msg_sz)
-> +{
-[ ... ]
-> +		/*
-> +		 * Reject the storage-open request when another context is
-> +		 * already registered as the command receiver. If we let the
-> +		 * command through, FW would allocate a new storage handle and
-> +		 * start sending NVM callbacks for it; those callbacks would be
-> +		 * routed to the existing receiver (process A), not to the
-> +		 * caller (process B). This would let process A observe and
-> +		 * tamper with process B's NVM traffic. Reject early, before
-> +		 * the command reaches FW, so no handle is allocated and the
-> +		 * state stays consistent.
-> +		 */
-> +		scoped_guard(mutex, &priv->modify_lock)
-> +			if (priv->cmd_receiver_clbk_hdl.dev_ctx &&
-> +			    priv->cmd_receiver_clbk_hdl.dev_ctx !=3D dev_ctx)
-> +				ret =3D -EBUSY;
-> +		if (rx_msg_sz < ELE_STORAGE_OPEN_RSP_SZ)
-> +			ret =3D -EINVAL;
-> +		break;
-
-[Severity: High]
-Does this check fully prevent concurrent ioctls from bypassing the
-command-receiver exclusivity?
-
-The exclusivity check is performed under modify_lock, but the global
-se_if_cmd_lock isn't acquired until later in ele_msg_send_rcv().
-Two concurrent threads can both observe the receiver as NULL and proceed,
-allowing multiple threads to concurrently dispatch the open request to the
-firmware.
-
-The second thread will fail to register but the error is ignored because
-fw_api_specific_ops() returns void, leaving it with an active FW storage
-session whose NVM callbacks will be silently misrouted to the first thread's
-context.
-
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> index 0792e5152436b..5c77dabbc4e40 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-[ ... ]
-> @@ -383,28 +874,54 @@ static int se_if_probe(struct platform_device *pdev)
-[ ... ]
-> -	/*
-> -	 * Initialize load_fw_lock before registering the misc device.
-> -	 * A userspace process could open the device and trigger se_load_firmwa=
-re()
-> -	 * via IOCTL immediately after misc_register(), so the mutex must be re=
-ady
-> -	 * before the device becomes visible.
-> -	 */
->  	if (se_info->se_fw_img_nm.seco_fw_nm_in_rfs) {
->  		load_fw =3D get_load_fw_instance(priv);
-> -		ret =3D devm_mutex_init(dev, &load_fw->load_fw_lock);
-> -		if (ret)
-> -			return dev_err_probe(dev, ret,
-> -					     "Failed to init mutex: load_fw_lock.\n");
-> +		mutex_init(&load_fw->load_fw_lock);
->  		load_fw->se_fw_img_nm =3D &se_info->se_fw_img_nm;
->  		load_fw->is_fw_tobe_loaded =3D true;
->  	}
-[ ... ]
-> +static void se_if_priv_release(struct kref *kref)
-> +{
-[ ... ]
-> +	put_device(priv->dev);
-> +	mutex_destroy(&priv->load_fw.load_fw_lock);
-
-[Severity: Medium]
-Does this unconditional destruction cause lockdep warnings on systems witho=
-ut
-a firmware image?
-
-In se_if_probe(), mutex_init(&load_fw->load_fw_lock) is executed
-conditionally. If the SoC configuration does not specify a firmware image,
-the mutex remains uninitialized memory, which triggers a lockdep warning
-when mutex_destroy() is called here on module unload or device unbind.
-
-[ ... ]
-> +static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev=
-_ctx,
-> +					    void __user *uarg)
-> +{
-[ ... ]
-> +	struct se_api_msg *rx_msg __free(kfree) =3D
-> +		kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
-> +	if (!rx_msg) {
-> +		se_ioctl_cmd_snd_rcv_cleanup(dev_ctx, uarg, &cmd_snd_rcv_rsp_info);
-> +		return -ENOMEM;
-> +	}
-[ ... ]
-> +	rsp_status_err =3D
-> +		se_val_rsp_hdr_n_status(priv, rx_msg, tx_msg->header.command,
-> +					rx_msg->header.size << 2, tx_msg->header.ver);
-> +
-> +	if (!rsp_status_err) {
-> +		/*
-> +		 * The response is well formed and fully fits the caller's
-> +		 * buffer, so any FW-allocated session/storage handle it carries
-> +		 * (data[1]) has been delivered. Record it now, before the
-> +		 * copy-out steps below. The FW has already committed the handle;
-> +		 * running fw_api_specific_ops() only after a successful
-> +		 * se_dev_ctx_cpy_out_data()/copy_to_user() would leave the
-> +		 * handle untracked - and so never closed on teardown, leaking it
-> +		 * in FW - whenever the caller supplied a bad output pointer.
-> +		 */
-> +		fw_api_specific_ops(dev_ctx, rx_msg, false);
-
-[Severity: High]
-Can this lead to an out-of-bounds read if the userspace-supplied buffer is
-smaller than the firmware response?
-
-rx_msg is allocated using cmd_snd_rcv_rsp_info.rx_buf_sz, but the
-firmware-declared size (rx_msg->header.size << 2) is passed to
-se_val_rsp_hdr_n_status() and subsequently used in fw_api_specific_ops().
-
-This trusts the firmware-declared size instead of the clamped received size,
-allowing out-of-bounds reads into msg->data[0] and rx_msg->data[1] to leak
-kernel heap memory into persistent handles.
-
-[ ... ]
-> +static ssize_t se_if_fops_write(struct file *fp, const char __user *buf,
-> +				size_t size, loff_t *ppos)
-> +{
-> +	struct se_if_device_ctx *dev_ctx =3D fp->private_data;
-> +	struct se_if_priv *priv;
-> +	int err;
-> +
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &dev_ctx->fops_lock)=
- {
-> +		if (dev_ctx->cleanup_done)
-> +			return -ENODEV;
-[ ... ]
-> +		err =3D ele_msg_send(dev_ctx, tx_msg, size);
-> +
-> +		return err;
-> +	}
-> +}
-
-[Severity: High]
-Does this expose the shared mailbox to concurrent writes?
-
-The function acquires the per-context fops_lock but fails to acquire the
-global se_if_cmd_lock before calling ele_msg_send(), which invokes
-mbox_send_message() on the shared priv->tx_chan.
-
-Because fops_lock is per file descriptor, multiple processes can call write=
-()
-concurrently and dispatch messages simultaneously to the same channel, which
-can corrupt the hardware mailbox state.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902-imx-se-if-=
-v45-0-6e400879d8ec@nxp.com?part=3D5
+PiA+ICsgICB1MzIgZ2V0X2luZm9fbGVuOw0KPiA+ICsgICBpbnQgcmV0Ow0KPiA+ICsNCj4gPiAr
+ICAgaWYgKCFwcml2KQ0KPiA+ICsgICAgICAgICAgIHJldHVybiAtRUlOVkFMOw0KPiA+ICsNCj4g
+PiArICAgbWVtc2V0KHNfaW5mbywgMHgwLCBzaXplb2YoKnNfaW5mbykpOw0KPiA+ICsNCj4gPiAr
+ICAgc3RydWN0IHNlX2FwaV9tc2cgKnR4X21zZyBfX2ZyZWUoa2ZyZWUpID0NCj4gPiArICAgICAg
+ICAgICBremFsbG9jKEVMRV9HRVRfSU5GT19SRVFfTVNHX1NaLCBHRlBfS0VSTkVMKTsNCj4NCj4g
+W1NldmVyaXR5OiBIaWdoXQ0KPiBDYW4gdGhpcyBhbGxvY2F0aW9uIGNhdXNlIGEgc3lzdGVtIGRl
+YWRsb2NrIGR1cmluZyBzdXNwZW5kPw0KPg0KPiBTaW5jZSBlbGVfZ2V0X2luZm8oKSBpcyBjYWxs
+ZWQgZnJvbSB0aGUgc3VzcGVuZCBwYXRoOg0KPiBzZV9zdXNwZW5kKCkgLT4gc2Vfc2F2ZV9pbWVt
+X3N0YXRlKCkgLT4gZWxlX2dldF9pbmZvKCkNCj4NCj4gVXNpbmcgR0ZQX0tFUk5FTCBoZXJlIGFs
+bG93cyBkaXJlY3QgbWVtb3J5IHJlY2xhaW0sIHdoaWNoIG1pZ2h0IGF0dGVtcHQgdG8NCj4gZmx1
+c2ggZGlydHkgcGFnZXMgdG8gc3RvcmFnZS4gSWYgdGhlIHN0b3JhZ2UgZGV2aWNlIChsaWtlIGRt
+LWNyeXB0KSBpcyBhIGNvbnN1bWVyIG9mDQo+IHRoaXMgY3J5cHRvIGhhcmR3YXJlIGFuZCBoYXMg
+YWxyZWFkeSBiZWVuIHN1c3BlbmRlZCwgdGhlIHN5c3RlbSBjb3VsZA0KPiBwZXJtYW5lbnRseSBk
+ZWFkbG9jay4NCj4NCj4gU2hvdWxkIHRoaXMgdXNlIEdGUF9OT0lPIG9yIHByZS1hbGxvY2F0ZSB0
+aGUgYnVmZmVyIGluc3RlYWQ/DQoNCkFjY2VwdGVkIHdpbGwgZml4IGluIHY0Ni4NCj4NCj4gWyAu
+Li4gXQ0KPiA+ICtpbnQgZWxlX3NlcnZpY2Vfc3dhcChzdHJ1Y3Qgc2VfaWZfcHJpdiAqcHJpdiwN
+Cj4gPiArICAgICAgICAgICAgICAgIGRtYV9hZGRyX3QgYWRkciwNCj4gPiArICAgICAgICAgICAg
+ICAgIHUzMiBhZGRyX3NpemUsIHUxNiBmbGFnKQ0KPiA+ICt7DQo+ID4gKyAgIGludCByZXQ7DQo+
+ID4gKw0KPiA+ICsgICBpZiAoIXByaXYpDQo+ID4gKyAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7
+DQo+ID4gKw0KPiA+ICsgICBpZiAodXBwZXJfMzJfYml0cyhhZGRyKSkgew0KPiA+ICsgICAgICAg
+ICAgIGRldl9lcnIocHJpdi0+ZGV2LA0KPiA+ICsgICAgICAgICAgICAgICAgICAgIkVMRSBzZXJ2
+aWNlLXN3YXAgYWRkcmVzcyBleGNlZWRzIDMyLWJpdA0KPiByYW5nZTogJXBhZFxuIiwNCj4gPiAr
+ICAgICAgICAgICAgICAgICAgICZhZGRyKTsNCj4gPiArICAgICAgICAgICByZXR1cm4gLUVSQU5H
+RTsNCj4gPiArICAgfQ0KPiA+ICsNCj4gPiArICAgc3RydWN0IHNlX2FwaV9tc2cgKnR4X21zZyBf
+X2ZyZWUoa2ZyZWUpID0NCj4gPiArICAgICAgICAgICBremFsbG9jKEVMRV9TRVJWSUNFX1NXQVBf
+UkVRX01TR19TWiwgR0ZQX0tFUk5FTCk7DQo+DQo+IFtTZXZlcml0eTogSGlnaF0NCj4gU2ltaWxh
+ciB0byB0aGUgZWxlX2dldF9pbmZvKCkgYWxsb2NhdGlvbiBhYm92ZSwgdGhpcyBpcyBhbHNvIGNh
+bGxlZCBmcm9tIHRoZQ0KPiBzdXNwZW5kIHBhdGggdmlhIHNlX3NhdmVfaW1lbV9zdGF0ZSgpLiBD
+b3VsZCB0aGlzIEdGUF9LRVJORUwgYWxsb2NhdGlvbiBhbHNvDQo+IGRlYWRsb2NrIGlmIHRoZSBz
+eXN0ZW0gaXMgdW5kZXIgbWVtb3J5IHByZXNzdXJlIGR1cmluZyBzdXNwZW5kPw0KPg0KPiBbIC4u
+LiBdDQo+ID4gK2ludCBlbGVfZndfYXV0aGVudGljYXRlKHN0cnVjdCBzZV9pZl9wcml2ICpwcml2
+LCBkbWFfYWRkcl90IGNvbnRucl9hZGRyLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgZG1hX2Fk
+ZHJfdCBpbWdfYWRkcikNCj4gPiArew0KPiA+ICsgICBpbnQgcmV0Ow0KPiA+ICsNCj4gPiArICAg
+aWYgKCFwcml2KQ0KPiA+ICsgICAgICAgICAgIHJldHVybiAtRUlOVkFMOw0KPiA+ICsNCj4gPiAr
+ICAgaWYgKHVwcGVyXzMyX2JpdHMoY29udG5yX2FkZHIpIHx8IHVwcGVyXzMyX2JpdHMoaW1nX2Fk
+ZHIpKSB7DQo+ID4gKyAgICAgICAgICAgZGV2X2Vycihwcml2LT5kZXYsICJXcm9uZyBhZGRyZXNz
+OiAlcGFwICVwYXBcbiIsDQo+ICZjb250bnJfYWRkciwNCj4gPiArJmltZ19hZGRyKTsNCj4NCj4g
+W1NldmVyaXR5OiBMb3ddDQo+IERvZXMgdGhpcyBsZWFrIHN0YWNrIG1lbW9yeSBpbnRvIHRoZSBr
+ZXJuZWwgbG9nIG9uIDY0LWJpdCBwbGF0Zm9ybXM/DQo+DQo+IFRoZSB2YXJpYWJsZXMgY29udG5y
+X2FkZHIgYW5kIGltZ19hZGRyIGFyZSBvZiB0eXBlIGRtYV9hZGRyX3QuIFRoZSAlcGFwDQo+IGZv
+cm1hdCBzcGVjaWZpZXIgZXhwZWN0cyBhIHBvaW50ZXIgdG8gcGh5c19hZGRyX3QuIElmIHNpemVv
+ZihkbWFfYWRkcl90KSBpcw0KPiA0IGJ5dGVzIGFuZCBzaXplb2YocGh5c19hZGRyX3QpIGlzIDgg
+Ynl0ZXMgb24gdGhlIGFyY2hpdGVjdHVyZSwgcHJpbnRrIHdpbGwgcmVhZA0KPiBwYXN0IHRoZSBw
+b2ludGVycyBhbmQgcHJpbnQgdW5yZWxhdGVkIHN0YWNrIG1lbW9yeSBpbnRvIGRtZXNnLg0KPg0K
+PiBXb3VsZCBpdCBiZSBzYWZlciB0byB1c2UgJXBhZCBmb3IgZG1hX2FkZHJfdCBwb2ludGVycz8N
+Cj4NCkFjY2VwdGVkIHdpbGwgZml4IGluIHY0Ni4NCg0KPiA+ICsgICAgICAgICAgIHJldHVybiAt
+RUlOVkFMOw0KPiA+ICsgICB9DQo+IFsgLi4uIF0NCj4gLS0NCj4gU2FzaGlrbyBBSSByZXZpZXcg
+wrcgaHR0cHM6Ly9zYXNoaWtvLmRldi8jL3BhdGNoc2V0LzIwMjYwOTAyLWlteC1zZS1pZi12NDUt
+MC0NCj4gNmU0MDA4NzlkOGVjQG54cC5jb20/cGFydD0zDQoNCk5YUCBDb25maWRlbnRpYWwNCg==
