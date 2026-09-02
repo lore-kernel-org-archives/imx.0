@@ -1,193 +1,153 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAED249CF5B
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 16:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB154A5EB1;
+	Wed,  2 Sep 2026 16:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788366028; cv=none; b=cCBdrdaTdZfGdYrP/rbuh5EVw1aMunXQwNvAKY+tgv2sMNFynd2KdSM6xgxODKRPhXlrwtHz9lru8YsLV7AqRhGvWYz2PSLJ1P7sFcL/dA7roKWRJlQcs6om7A1AxHVLuODyRo1RpcPUzsFsTduQcEGOaTxyrEXGed3L8WQAHK8=
+	t=1788366483; cv=none; b=RGioJ7fbwPM9l282VYabIl33m4Uvvy3VbjOe+mDD8gtZZ3Zfpig2SGqzLsfyRqbqkaoqCFr0UzUeKEfMxklfBp5cX7NwEfvMBoyocUdBqB+8GRE6bS9xMfpxtELy8siDqzh02hjAWIV61/k9P3kHI1+I06iu0TELLxulEroSz88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788366028; c=relaxed/simple;
-	bh=G6I21MeRcNKDvGWUGb45NsvcT/Pnsh04t8yZ4XvNhHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BsFrEMH9vgACfJeoiF1FXHFovlkWeD1D6f0RRvZyWhqn87iFjkFzlkPMUZrqDrHmSvSc4DfTeADw8zawNSKrGrl3Wr9o+3fRhwP/tvKgKUxuITClu8b14iIrtBDVEesSetuSyyJxqA0yIB8jEZ1HkIOr1zxsk6DrpdmwrDts4+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S2Yfi8UX; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1788366483; c=relaxed/simple;
+	bh=RtQuk8/RFqmkyFm4EC3Mw225VzDi/hY9MeOiADALU+I=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=j0ixO9dLf7oyZJYs68foBr4/izXt8mpR9Bs8HO3dU/3m2Kn2HZ5uaEjzZ7kFn5iCXD01PukNDxXfXRE2agzI08CEVXzJo76ML3spsINueozSWydicZDXYa+FM21TmEbUtcp01A7DCqAmlm2SKfzUsnxIgXoQU85SmLTAAo6RTYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jjmrz7Y1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S2Yfi8UX"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-39927410578so2358446a91.1
-        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 09:20:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788366026; x=1788970826; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jf3OMAFii79DvFjzmmOgKmfE+xvffqJHuhaGLaLcFJI=;
-        b=S2Yfi8UX9XWuzWMEAk9wYOtNv1PQWp4mDSpQBCrz+RhomK41QweIp0MUDKXYPWyUFb
-         RRZw387iOup6//dcCZT9S2nRQJqe+7UDGhffYXOdiTsoXr/PeHTcVNhujvWXlUntinO/
-         sR1V9wV9/iuFNE9MT+6qoK1tS104e4mUzAg2KzHGzNKvJJKXweiYibrioJnjFKjPKc3O
-         JesPX466NfXU1TUsIIWD6mGyBf845PySlbHDfTDU8R9yfleY9QZJq1Yzrb/eD9CiSkRx
-         rDNXacYCrgDBsc5/Vcoqg/n1F0s7CXhG2gBpfXQchbDleNv7MjwLQVIWuKyz1fwx0vq3
-         IlVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788366026; x=1788970826;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jf3OMAFii79DvFjzmmOgKmfE+xvffqJHuhaGLaLcFJI=;
-        b=SleSJdbURln/j2xLY+1/yzI5A2EV7iJ7NMeK0nRbuhnYEw5h/Oy87mbPK7shXfT1r2
-         gruQsem/hdQObJb8H00+AbgWXtIHsa8GPSBjNRk+akjR0+rg/7ialbF79mXeKR0GarFK
-         hPKbsZbnFGcR/SUuyaKSIEQNOV6EeR5JEssZWFHfzf9JeK9/6OremrBkbPykLOOq2Dmw
-         sL4jMFsRsvay4os+RAnWFg+jLugzxjlJwKTss+SJj4oJk6chXBBj+3u12R4W5VXO9DxW
-         +yoG98W0M3l28f/WQEWn4aBsPeYq4HRfESY/0PJeRHYfx08HOPj8LhJP8Yqp4ZdJGfVb
-         qLsQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxfgAM0EJ4fjYRt3NawQkYR7d5Khsv0GVpzGvPsyh6Ved024FozR5tz+bLFLaPyFTozJuM=@lists.linux.dev
-X-Gm-Message-State: AFuF++lzz0aJUDHSb+VRvPV7cEqmJgU6Fugy8wgE1HB7985Fc5l13CqN
-	7uLp12cBR6rQrgkNNUwdh3QX2ASuiX67Oq887AlPwh8TD+2llH/IcOqhFVSs5ZVgs1c=
-X-Gm-Gg: AYBFou3mlOCrvnYz/DW4QJGSzAi2iw88VFR4oXkG/gF0/jp8904uqIPggPHEEey/Pa7
-	E8sCn1JNMYPKD3J9h5NNFONL+R4xVIuc4pkuDUgc1s8NrpmZ2TjXA82uispZe5ZDVITqBT7ZsTG
-	oCNM3F0q+GKarc7ssqADra2XTN4GljNm1BfvRvxjxgYLN0z9ntiLiXUrlLP7KeWp6nGo72W6m7v
-	webXjWW1IHJRU0ETGF3ClwNbe3JTDb+/edcWm/KiKr6g5tsECXPDk4rg58TIEBfK8fz2kzr8tG5
-	Mk9WXb8CkutJou9ENpiQ8oLg8ufnItnSPOej0glrA6IkYVrijDfT2LeKx4ZwZ9n3op90oQoEs5Q
-	2fmdvz+/W9XSFfwPdwb+SMhVBQoVXmFd+JuWLlAWdN9GERdsZbaDPrM/8Huzl1c32X+RnRcXacY
-	RgWhHpiCFh2cocb96rG1cnRx8QcVEWQuQf5BNJvl/Bh9oTWUvQQGdOjaAYo/gYQeqv
-X-Received: by 2002:a17:90b:268d:b0:398:ab03:95b2 with SMTP id 98e67ed59e1d1-39aee023191mr10058955a91.10.1788366025577;
-        Wed, 02 Sep 2026 09:20:25 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:fff4:86c5:8d86:9e93])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b0861e54csm169061a91.10.2026.09.02.09.20.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 09:20:25 -0700 (PDT)
-Date: Wed, 2 Sep 2026 10:20:22 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Marcel Hofmann <marcel@hofmania.de>, peng.fan@nxp.com,
-	daniel.baluta@nxp.com
-Cc: Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Marcel Hofmann <marcel.hofmann@ingenics-digital.com>
-Subject: Re: [PATCH v2] remoteproc: imx_rproc: allow mappings ending at
- region boundary
-Message-ID: <aphMxtTvcvTqgqCm@p14s>
-References: <20260827123136.438798-1-marcel@hofmania.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jjmrz7Y1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BCF1F000E9;
+	Wed,  2 Sep 2026 16:28:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788366481;
+	bh=2vosrKphzZBfR/M+zGUfAJTRCr+FvrFSKj1GHz8Q2NI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jjmrz7Y1As6KAfzM2qeP5xKVrrQy1L5PzOX96C1rUArBb5ryaEsBp3ZZW1AmBYK7F
+	 rRKPjg1Y1OawGhxZUUyBru23RT2NXWLvD3wzfpaia5LCe5N2PVbcAlz9EJ7JcWqBYD
+	 ZyxvFGWl54E5oUk5pRn0HbjvuRrCrk00yXkQockEEYhePMC+ioOu0SmOfslhNCjHaZ
+	 9jNNqX3JIAUiqmqN6seWjHU9TTb6cwlvbNMcW2PHBlcgEm1P0lyA8/Zbj2DRcW7IBJ
+	 qX0bqrGG332WjehS21xyvmi4HDRVge/pj/g+1rqAcyXWiH1Vcc0EBozOwhchq8fugc
+	 6wPvHyyBGV97A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v46 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
+Reply-To: sashiko-reviews@lists.linux.dev
+To: pankaj.gupta@oss.nxp.com
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260903-imx-se-if-v46-3-aefaab525034@nxp.com>
+References: <20260903-imx-se-if-v46-0-aefaab525034@nxp.com>
+ <20260903-imx-se-if-v46-3-aefaab525034@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 16:28:00 +0000
+Message-Id: <20260902162801.60BCF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827123136.438798-1-marcel@hofmania.de>
 
-On Thu, Aug 27, 2026 at 02:31:36PM +0200, Marcel Hofmann wrote:
-> From: Marcel Hofmann <marcel.hofmann@ingenics-digital.com>
-> 
-> The address range checks in imx_rproc_da_to_sys() and
-> imx_rproc_da_to_va() use a strict comparison for the exclusive end
-> address of the requested range.
-> 
-> As a result, a valid request that ends exactly at the end of an address
-> translation or mapped memory region is rejected. For a region
-> [start, start + size), a request [addr, addr + len) is contained when:
-> 
->     addr >= start && addr + len <= start + size
-> 
-> This occurs when a loadable ELF segment fills an entire mapped memory
-> region. This can be produced by a linker script that extends the
-> resource table section to the end of its designated region:
-> 
->     .resource_table :
->     {
->       . = ALIGN(8);
->       KEEP(*(.resource_table)) /* Resource table */
->       . = ALIGN(8);
->       . = ORIGIN(m_rsc_tbl) + LENGTH(m_rsc_tbl);
->     } > m_rsc_tbl =0x00
-> 
-> This produces a ELF program header like:
-> 
->     LOAD  0x010000 0xa4220000 0xa4220000 0x01000 0x01000 R   0x1000
-> 
-> In this case, the segment size matches the mapped region size exactly,
-> causing the address translation to fail with:
-> 
->     bad phdr da 0xa4220000 mem 0x1000
-> 
-> Rework the upper-bound checks to allow ranges ending exactly at the region
-> boundary while guarding against integer overflow. 
-> 
-> Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
-> Signed-off-by: Marcel Hofmann <marcel.hofmann@ingenics-digital.com>
-> ---
-> 
-> Changes in v2: 
-> - Reworked the bounds check to guard against 64-bit integer overflow
-> - Use u64 for offset instead of unsigned integer
-> - calculate offset first and then validate len against remaining region
->   size
-> 
-> v1: https://lore.kernel.org/r/20260826155123.AEB731F000E9@smtp.kernel.org/
-> 
->  drivers/remoteproc/imx_rproc.c | 18 +++++++++++++-----
->  1 file changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 745ce52cd822..ea852ca143bb 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -540,6 +540,7 @@ static int imx_rproc_da_to_sys(struct imx_rproc *priv, u64 da,
->  	/* parse address translation table */
->  	for (i = 0; i < dcfg->att_size; i++) {
->  		const struct imx_rproc_att *att = &dcfg->att[i];
-> +		u64 offset;
->  
->  		/*
->  		 * Ignore entries not belong to current core:
-> @@ -552,9 +553,11 @@ static int imx_rproc_da_to_sys(struct imx_rproc *priv, u64 da,
->  				continue;
->  		}
->  
-> -		if (da >= att->da && da + len < att->da + att->size) {
-> -			unsigned int offset = da - att->da;
-> +		if (da < att->da)
-> +			continue;
->  
-> +		offset = da - att->da;
-> +		if (offset <= att->size && len <= att->size - offset) {
->  			*sys = att->sa + offset;
->  			if (is_iomem)
->  				*is_iomem = att->flags & ATT_IOMEM;
-> @@ -585,9 +588,14 @@ static void *imx_rproc_da_to_va(struct rproc *rproc, u64 da, size_t len, bool *i
->  		return NULL;
->  
->  	for (i = 0; i < IMX_RPROC_MEM_MAX; i++) {
-> -		if (sys >= priv->mem[i].sys_addr && sys + len <
-> -		    priv->mem[i].sys_addr +  priv->mem[i].size) {
-> -			unsigned int offset = sys - priv->mem[i].sys_addr;
-> +		u64 offset;
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Deadlock in suspend/resume path due to GFP_KERNEL memory allocatio=
+ns in ele_get_info().
+--
+
+commit 05cadf4c7e4a0295c86129fe662754b87efdff7e
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
+
+firmware: imx: add driver for NXP EdgeLock Enclave
+
+Add MU-based communication interface for secure enclave. NXP hardware IP(s)
+for secure-enclaves like Edgelock Enclave (ELE) are embedded in the SoC to
+support features like HSM, SHE & V2X. The secure enclave FW communicates
+with Linux over single or multiple dedicated messaging unit (MU) based
+interface(s).
+
+Closes: https://sashiko.dev/#/patchset/20260902-imx-se-if-v45-0-6e400879d8e=
+c@nxp.com?part=3D3
+
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
+le_base_msg.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/drivers/firmware/imx/ele_base_msg.c
+
+[ ... ]
+
+> +int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
+> +{
+> +	dma_addr_t get_info_addr =3D 0;
+> +	void *get_info_data =3D NULL;
+> +	u32 get_info_len;
+> +	int ret;
 > +
-> +		if (sys < priv->mem[i].sys_addr)
-> +			continue;
+> +	if (!priv)
+> +		return -EINVAL;
 > +
-> +		offset = sys - priv->mem[i].sys_addr;
-> +		if (offset <= priv->mem[i].size &&
-> +		    len <= priv->mem[i].size - offset) {
->  			/* __force to make sparse happy with type conversion */
->  			va = (__force void *)(priv->mem[i].cpu_addr + offset);
+> +	memset(s_info, 0x0, sizeof(*s_info));
+> +
+> +	struct se_api_msg *tx_msg __free(kfree) =3D
+> +		kzalloc(ELE_GET_INFO_REQ_MSG_SZ, GFP_KERNEL);
+> +	if (!tx_msg)
+> +		return -ENOMEM;
+> +
+> +	struct se_api_msg *rx_msg __free(kfree) =3D
+> +		kzalloc(ELE_GET_INFO_RSP_MSG_SZ, GFP_KERNEL);
+> +	if (!rx_msg)
+> +		return -ENOMEM;
+> +
+> +	get_info_len =3D ELE_GET_INFO_BUFF_SZ;
+> +	if (priv->mem_pool)
+> +		get_info_data =3D gen_pool_dma_alloc(priv->mem_pool,
+> +						   get_info_len,
+> +						   &get_info_addr);
+> +	else
+> +		get_info_data =3D dma_alloc_coherent(priv->dev,
+> +						   get_info_len,
+> +						   &get_info_addr,
+> +						   GFP_KERNEL);
 
-This looks sensible.  That said, I would like to see someone on the NXP team
-test this patch in different configuration.
+[Severity: High]
+Can these GFP_KERNEL allocations cause a system deadlock during suspend?
 
-Thanks,
-Mathieu
+The commit message notes that ele_service_swap() was updated to use GFP_NOI=
+O=20
+because it runs in the suspend/resume path, and direct memory reclaim could=
+=20
+trigger I/O to a suspended storage device.=20
 
->  			break;
-> -- 
-> 2.55.0
-> 
+However, it appears ele_get_info() is also executed synchronously in this=20
+exact same suspend/resume path:
+
+> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
+_common.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/drivers/firmware/imx/ele_common.c
+
+[ ... ]
+
+> +int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
+> +{
+> +	struct ele_dev_info s_info =3D {0};
+> +	int ret;
+> +
+> +	ret =3D ele_get_info(priv, &s_info);
+> +	if (ret) {
+> +		dev_err(priv->dev, "Failed to get info from ELE.\n");
+> +		return ret;
+> +	}
+
+Since se_suspend() unconditionally calls se_save_imem_state(), which in tur=
+n=20
+calls ele_get_info(), won't the GFP_KERNEL allocations for tx_msg, rx_msg,=
+=20
+and get_info_data bypass the fix you made in ele_service_swap() and still=20
+risk the same I/O reclaim deadlock?
+
+Should these allocations in ele_get_info() also be changed to use GFP_NOIO=
+=20
+to ensure the entire suspend/resume chain avoids I/O triggers?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903-imx-se-if-=
+v46-0-aefaab525034@nxp.com?part=3D3
