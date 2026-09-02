@@ -1,104 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013035.outbound.protection.outlook.com [40.107.162.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5CC38F254;
-	Wed,  2 Sep 2026 19:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788376893; cv=none; b=WsrlMQY27L3zJd7OIKQrVzcV0ed99GvNEvNOpxJgVslyfix8Xi7wTcH0IzejdqmDFp39rv/gxpJ3GchcYQFz9r5znHvYLNowYoZIuPWG/4YaOOpQJY/MM34CAVpRGh5ffmcIDyPsIyJuRhPiMxwhsc8ZCDuI3f/WPcOqP0khwkY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788376893; c=relaxed/simple;
-	bh=6PuFZ0yK4pQj7FJ6aETp9iCUC1j6TlKg75JP4Faog78=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Rv3htFD7zHhith1xSHxQLWZs0EtP61diK5/FoBGM3HGVI286U6JqsWOcoKh1yQZ7c9VDmq66k8zxnMK8gOcjnBEmjt+gksZSkWIZLyzQtPWH/FiLgUh5z/EGyatjSpmKrXQx59dBe86hfks6Fn+Z5EhswETIqs7DZJWLaG2yp0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naIT/TVY; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824513932E5
+	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 19:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788377173; cv=fail; b=CQqmJU1VW3vool0eDYQsiBUsZ1KbPmNPS7AeBs7AXWlfhWnG4U593ya7OHaU33cfTOQfxMVo2mTZ/dHcL6EE4YFwVKCJYxIWakjuIWNZnWpp3bkevtdFRGWcBaiI4LcnvDDQVj27/a/mZDRxB6xGLILHIv48lTtobrOrxY4THGM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788377173; c=relaxed/simple;
+	bh=lYg4nG7Q+ovcJQ9xDOyKxym/wf7KLTUTaKWw5mtUYSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Y2fWLEvqUD8Aw+RC7pv4tqOJKifiBEzs767H2L1Qj6KA88iqWW558IC41iNVYhFHqe3KLGQZg3x+Q7MKub7jrAmk5nLfRX8F09+EYT9rcAVj6vHVZX7ZwDXwsKwR0kaXb2IzHWD1HBkOkM+tzdICTLWlpsqppcTw1+gSRhF2h4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=r/PtcO9K; arc=fail smtp.client-ip=40.107.162.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naIT/TVY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F461F000E9;
-	Wed,  2 Sep 2026 19:21:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788376891;
-	bh=KlR+9Z4zkDLgxHNLMwkZVNJAmwU+/YZ4fKIa/lKykpc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=naIT/TVYRCMSTh0ZagENljSi2glMIOXos6l4zIG/quyYKjeyYrCCrBGynQOdB4Wca
-	 8qJ1uulbkt+oBQp/B1zMGxv4bpIM5VBM6NsTZ0M045WLyLrIA/QpuFuMV6rJKOSehV
-	 z8f50pROPeXyCfDEERBr8NUvqGBrdFKr1D2Yg4RiRXcnQcm0HvhGsZpLlPQ41ybiO8
-	 7LIUQSp0sI6MYBzuvESzsqTOi0D0rBzNchKM+kgUqEvIkCls2pV71tHF36OABTulI7
-	 WQvpeQQlAd2EhQDYOx9MsnEeerDn//v8A2pqOjBp7r6JhhmzZ2YZ9Uo/RZIhRhApZm
-	 8UdVrcOpqbu/Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/1] ARM: dts: imx53: drop fallback compatible
- "dlg,da9052"
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260902191324.2084035-1-Frank.Li@oss.nxp.com>
-References: <20260902191324.2084035-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Sep 2026 19:21:30 +0000
-Message-Id: <20260902192131.07F461F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="r/PtcO9K"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xf1mPOUkc1VX3L80oQOrJatVbc62U67q8Tw/20fJ0xY0Vv+qvi69tVIFT2ivuhjEjCAuwX9nVu2hY3vRjqzFYCdpD6bmakkVKVftzrzzqV9DpJO4AXgVWOenAtxkAS+ENYZ777YsPa8TKKP/vDJtkmvpShv8qviTeO6aWqF1kl1a37ngG5t6E8h/c9inuQIR5Hw/PW3HjBr9tuh7CR1SYYlVMMc2fOSePJeuW7ekSV9P5VWXuIwm2qWR6pH0EfKcHUc2Mqj0eMpGj81tqqP8kWsFfums66lSgn706oxhjM+sZM+PqTnXxzVg4gP8CeclbJ3Dk9X1r9AqPyRh1Df4FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+xbJzYhkEO/MuYddVnDL0XXf9dDSjrZqbvlkJJnkSMM=;
+ b=PpKJI4XRjbaWC9C+oEHHtw3vMPxiedJbQl+yrKwK9O68tzTe4NfnBRRokUGRmq5sDKYvlfOwPQMBYIFow6/vL5kdhjROr8Gkh+FQ1fBea6WmhFltdfVXD4gUBLJGDEYgLg1UzVOCUjOGGG4Zbb8b763kPXTKJzxhPp+cpt7qD4wEVn91gf8PmusclM74E4WX94XoshjzLAl2+he48LN7zBIXpHlPbcg2yMYY89r2xYWrBpluhezTf6NRzrpBvpMkjvciXfKv2nEJqjU68ApTjwgFnJgROthP7zI/Vux8RzZumkPTDCY4bb2lf9hjmRk4u59v+PPRfx1bA8fQ8IXu8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+xbJzYhkEO/MuYddVnDL0XXf9dDSjrZqbvlkJJnkSMM=;
+ b=r/PtcO9KMWR2NGWh1rELRtuTRX70YZ9/8RMdaqrom+432mKykDku2y4Q2PzvbL2V6kQkMupwjTyogIrqgJB0WGa0/BGtAx9jsuVhsD/9epX+DW768R5RZDZPWbOnVXtDcm/28TyFsrdU83QoWzR/ouDO2v0t6dRzy3tIW8CiKB1idFwpAEMCYdku8tqcxr3jZwZZSzo+Qp25DmJcBaha36i8ULt1BY/X0RwKhUZ/yB8bEh4NCjLEaoM/RIyEsG58bpN/2ZVJF4g9j1lZM7KpWkCQqnnAn5DZQ4EyOZWpMG6+K4cL5HkRlQjzcNNQ7DGPnQGWShSC7qjKJnjE+w49ow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DU4PR04MB10338.eurprd04.prod.outlook.com (2603:10a6:10:565::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 19:26:01 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 19:26:01 +0000
+From: Frank.Li@oss.nxp.com
+To: Carlos Song <carlos.song@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Josua Mayer <josua@solid-run.com>,
+	Vincent Jardin <vjardin@free.fr>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thibaut Collet <thbt.cllt@gmail.com>
+Subject: Re: [PATCH v3 0/3] arm64: dts: lx2160a: fix the malformed pinmux entries
+Date: Wed,  2 Sep 2026 15:25:54 -0400
+Message-ID: <178837711789.2093260.2516319478296690803.b4-ty@b4>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260824-for-upstream-lx2160a-pinmux-fix-v3-0-5556ff1e6be2@free.fr>
+References: <20260824-for-upstream-lx2160a-pinmux-fix-v3-0-5556ff1e6be2@free.fr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH7PR13CA0015.namprd13.prod.outlook.com
+ (2603:10b6:510:174::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU4PR04MB10338:EE_
+X-MS-Office365-Filtering-Correlation-Id: 340d67e4-1127-4659-b7d4-08df092805b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|1800799024|7416014|23010399003|366016|11063799006|10067099003|22082099003|18002099003|56012099006|41080700001;
+X-Microsoft-Antispam-Message-Info:
+	fsyT4TLMLPrzqjVhFmlp8rgFtdCgqgbCO1Z/kdQ2O1+YzXssCGY2+ubbrnGZm6SJZuInH8Ur8jT3l+dUBp6dc2S+SPC/rEZTuf3RpkSvRkDSexLmWm2BY61F2Ybxvt83IRsmwycmrOrivzpBXWkf/KaAdUqkdylgAtmbWEVircvUUhbGjOMOlhg2YT6/ia7xHJQQLMN1s9Uknwj2Uuwy1SFNeP7YES3M9Q6dLzivWnon034hp7dx5Cs/04eKKNJDU+BVVm1pAbqg+PouBwA+S5c7Ehr6ouk+ygUxpyBKZ5Ch7I3AMarI6u5fP6P8L6bdBjh/xUU8GtWIGGPfnDrgjqURWBBID/Z+7vZu+xWjMA8nPHyoSAfImU+ndhexGAnaSF5boypoYKCl1+YRmg763/Yv76y4Wv2XGyl+ECI/TkMNOCqvVkSamecWn1qt/ULZEILuECp+Wosym/3mmWwIwhyd2cTjUWFoVx6ysycp8rHKfskB00HgM+Q1RjcAH7Uc0tY+iIbKWE6hC/cXs4acSpj552HMKrKBzp39wquxteo3sl2qCIC1QUnyhJTVfVtO1URk0OfqTgM+xF6vb4wGmsBgGNXn98Q/26vM/vEO4wcLOluagDAIsAfnbzUH3RNizRhooTMlHfre46AEd8aBlQycrY28X7pfLGQi+Kv1goHHKGB7XFCohr0oRXwT3hnjhcTqssLbfFMZt5wt54mheQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(7416014)(23010399003)(366016)(11063799006)(10067099003)(22082099003)(18002099003)(56012099006)(41080700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SkwrVUpjZGRGbUYxZ1JJckcrTU5MZ0FBYmp0bXdLOENxVDN3T0NLVzdxS2xB?=
+ =?utf-8?B?c1NYYWE2RlNJTVlUZFVKSHZyR0RDaENjcy9CSW5IUGpYY0RnWXp0SXJaMmVH?=
+ =?utf-8?B?cFZ2b0FiOW5sV1ErN3NMelVhUE8rZ0ovYXJqNWdyUHQyUitEUEk0UkFDVnB4?=
+ =?utf-8?B?ZUU3Q3oydWNLZGcva2twTk55bXhaWW1wbnNrYzIrNTBYMEZQUTQ0MnFhc2NG?=
+ =?utf-8?B?dS9BcC9Nam9IS2dPQURBbUxOUldSUzY3MmlNckJ2NytmMUNCUnVRSlBVbi9r?=
+ =?utf-8?B?MlNJSG4yOUNRNGkrblJ1Z1NSRkx5K2R4amFwdnluN0xrYURzN2RXRzJ3Uitl?=
+ =?utf-8?B?U3gvUEswVkM0OWpWMlFnVGIzM2lKa0QvVCtwWE5DWVBJSG0wa3hwb1ltOW9m?=
+ =?utf-8?B?SFdwU2I3WlVBeDFwZ0FtSmFld0R1NGZkczFiSFA2UmVoNU5SVGpnUlZRc1Fy?=
+ =?utf-8?B?a1VoQ2YvVUlKdjZjN2NmdnBubXhSM0NqVzVRNElRMEhwY3phcUVGdkdPa2VO?=
+ =?utf-8?B?d3Z3VlV5OTJFYW9laFM0SGREalA0VHdxckdRVjVYQ0VCUXNmU2dwTnFPc29v?=
+ =?utf-8?B?eFdxWW9lOFM4R1FNaHpQeitXcUFzTVBhRTNiYXl0bWlpZlR6L01ZV2VMZmF3?=
+ =?utf-8?B?R0dlOTkzTkpJN1FkUzNXWVg4cUthL2hpamphaURzUmVGNjlHQUo3M3JpSFJ3?=
+ =?utf-8?B?cUdpVk5uamNFZkdYN1RrczlRbFVWN0I0ejM0cm9MMFVVRVlheUZVMkFEK1NE?=
+ =?utf-8?B?bHE4VFZ5WWhUMVU0aS9jc05OVWdMU1VGZ2JEYWFqQzRXNllJRCtaUUY2akM4?=
+ =?utf-8?B?RTg3amlldFZRY2tnNENoZmREQ1lkZCt4c1dyT2Jya3hwd3BoUldkbW5BamlZ?=
+ =?utf-8?B?aHVkbTJNck1xZFpOTGdzaEE5VmlvOEhzNms0cEYrQ0hqNXJ4UlMzNU8rSHkz?=
+ =?utf-8?B?ZEhqNmg4OFhiVVhPV2xQdlVvRThEQnB4ZXBnUVVqVW81YTNOVGcwcFRPY2wy?=
+ =?utf-8?B?K0piWUJWVDB4NTQ2WWRVM0ZlS0NEcml2VFRwZFNhR3ViV3EzWm4zcDc5NXl5?=
+ =?utf-8?B?Zng3SHpVUGZ3UkIyTUZYb0JUSzNDa0l3dlBXam45dDc5UXhtaTM3SktMMjlH?=
+ =?utf-8?B?NE96a0JZOVJZM3JpazlnQ1FrOG5kcGFHR29MWEljd3NDK0kyeTg4aXo4S3Bx?=
+ =?utf-8?B?VFlXRWZQTUMzN0g4Vk5HL3BhckFrdFhJdFBIb1cvOXoraHFQajJlanNSb2hT?=
+ =?utf-8?B?NmhIeE9XTEtyMTkrbzdNTFA4TnV0emF6Y1BFYTFXMU9SdjFBQUpteGZ1VDg5?=
+ =?utf-8?B?ZlRvWUNuTG1aa3h3WlVmMXZPMkRyYzlCaEhEN2hFZWRlSmNGVGhhRHViamNK?=
+ =?utf-8?B?eDl0NlBmN25FbnBHdWJBbktMRXZlNnBWc2FVbTUydkRScjIxZ2Yzb1pHWTRB?=
+ =?utf-8?B?bTBINXp5VllrQVFFblQrWUN4dUdSdEhCMkFIK0t1SlAxVkhPcXFBK2RwRDFm?=
+ =?utf-8?B?TGhndVhNd0lrNHBKOTVna0N1MVgvT011b2V2RXVpRFgvdHZmWE9GYW9Xck8x?=
+ =?utf-8?B?ZXFGZDExbTZNNmJFaG1OdVNzUEgycDFuU1VzRS9Jck1hN1ppNis0L1lPVGVm?=
+ =?utf-8?B?cXVTc2ZPSkUwNzBma1NRN3E5bTlTcjVQR2U1dU53QUR4S1F6allQemV1N1h2?=
+ =?utf-8?B?UHlReE9IeDRXTXI0L3hCSkQvbEFVRXNEdzZmQ0V3cmpYbmhYc1pRdlVBcXA4?=
+ =?utf-8?B?ZFdENEpCdzBPUnhrdFJJbThuYWZIaUlxRXNwNDVQb1lrN0dWYW5IS3VSTDRq?=
+ =?utf-8?B?VG1kelo2Um40SUFLdyt3dzJRa0JzTHZwZE5NS2hlZlppREJOZ1NTc2ltL0tE?=
+ =?utf-8?B?WFdWM21FWHZ6WUZXaGF5WmxWOWN4RjMxQjFqcFNsMjlTM3pRU3g1UzYvcW1N?=
+ =?utf-8?B?MFlrN1R5Vmc1UW9tRU9CSHBqVUZJV2FwODVMVi9MbE85NXFRZzN6cS9jZWNo?=
+ =?utf-8?B?aDBZaCtBQlVEdDJTOWs1YWVXbHZPRmxpS0haTnJ2S29yMXVtcFMrOGZMZGx0?=
+ =?utf-8?B?S0xHeVAvNm01TWRDUXl2czJnVm1idm5qbGRvU3JsK1BTMUlIazFmbHE5UlQ0?=
+ =?utf-8?B?Sk9RV2RTWUV5V0N2bnhFNjRYam1aVmFaUGdKaVNyV25MT0ViWnlQb1V3cWJr?=
+ =?utf-8?B?b3Foc05tMUUrbmthTWVRNUhRTXhMNnFiUmdkMmMyaHFYSWNwM1ozL1dQSk9o?=
+ =?utf-8?B?YUNJR1cwNFBTbTIvZzVIT0FpcGdUTzg2T09IekFNdTVJdFhzZ1BsRkJBZEV6?=
+ =?utf-8?B?eGJUcDBSUExaZnVWdWR4RkxQeENsKzRFc3ZNRnZpeU9RUHRUZXFweno0M2dG?=
+ =?utf-8?Q?Sp0HvYOWn00ICkg9mmUvpgIezAXBezTBJFPqU?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 340d67e4-1127-4659-b7d4-08df092805b5
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 19:26:01.0846
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j373DLpO++1ZCt047myJuu0rKwF+MQXUMmIR6Uo/437SK7TH4exSXLkjArLCUmbW5DMBp2fFe3Q1mnRv572jkAVu82c6e/uimbdW4A94PGxOOFrIFmzVT1o1cDJSWlbH
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10338
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+From: Frank Li <Frank.Li@nxp.com>
 
-Pre-existing issues:
-- [High] Incomplete fix for DA9052/DA9053 PMIC compatible string fallback m=
-ismatch
+
+On Mon, 24 Aug 2026 23:25:28 +0200, Vincent Jardin wrote:
+> Every pinctrl-single,bits entry in the lx2160a pinmux@70010012c node was
+> reviewed against what pinctrl-single actually accepts in bit-per-mux mode:
+>  the offset has to name one of the three registers the node maps,
+>  the mask has to equal pinctrl-single,function-mask shifted to the field,
+>  the value has to fit inside that mask.
+>
+> Three entries fail one of those rules, and each fails differently:
+>
+> [...]
+
+Applied to imx/fixes, thanks!
+
+[1/3] arm64: dts: lx2160a: fix incorrect pinmux
+      commit: 8188a59dd6782786556b18f515090b79cb701c45
+[2/3] arm64: dts: lx2160a: fix IIC1 pinmux submask rejected by pinctrl-single
+      commit: 6affdda171ca8f2e082e8c4fba56233a2f8c9910
+[3/3] arm64: dts: lx2160a: fix the iic5 spi3 pinmux offset and value
+      commit: f14f4dc8ea3810f8ed4f0f3ea13f8bba3e2b0f04
+
+Best regards,
 --
-
-commit 421ff6545162f4ccc6bbeb14037dca411d6337a7
-Author: Frank Li <Frank.Li@nxp.com>
-
-ARM: dts: imx53: drop fallback compatible "dlg,da9052"
-
-This commit drops the fallback compatible "dlg,da9052" from the
-"dlg,da9053-aa" PMIC nodes in i.MX53 device trees. This prevents incorrect
-voltage and current limits from being applied and fixes dtbs_check warnings.
-
-Link: https://lore.kernel.org/imx/20260902-varied-unsent-b99f9f007685@spud/
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb.dts b/arch/arm/boot/dts/=
-nxp/imx/imx53-qsb.dts
-> index 6831836bd726c..e7e15d2b82c44 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx53-qsb.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb.dts
-> @@ -13,7 +13,7 @@ / {
-> =20
->  &i2c1 {
->  	pmic: dialog@48 {
-> -		compatible =3D "dlg,da9053-aa", "dlg,da9052";
-> +		compatible =3D "dlg,da9053-aa";
->  		reg =3D <0x48>;
->  		interrupt-parent =3D <&gpio7>;
->  		interrupts =3D <11 IRQ_TYPE_LEVEL_LOW>; /* low-level active IRQ at GPI=
-O7_11 */
-
-[Severity: High]
-This is a pre-existing issue, but should this patch also update the PMIC
-node in arch/arm/boot/dts/nxp/imx/imx53-smd.dts?
-
-Looking at the smd device tree, it has a similar fallback configuration:
-
-arch/arm/boot/dts/nxp/imx/imx53-smd.dts:pmic: dialog@48 {
-    compatible =3D "dlg,da9053", "dlg,da9052";
-    ...
-}
-
-Because the driver match tables do not contain the generic "dlg,da9053"
-string, the core falls back to matching "dlg,da9052". This initializes the
-driver with incorrect DA9052 regulator parameters for a DA9053 chip.
-
-Could this expose the smd board to the same hardware risks (incorrect
-voltage steps and current limits) described in the commit message? Would it
-make sense to remove the fallback here as well to fully resolve the mismatch
-across the imx53 boards?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902191324.2084=
-035-1-Frank.Li@oss.nxp.com?part=3D1
+Frank Li <Frank.Li@nxp.com>
