@@ -1,238 +1,134 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A52B3E3163
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 07:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FDD377A8F
+	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 07:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788334794; cv=none; b=HkM+jEzJxc7Y1SyQwN3JvqzUHF33A2NIWqZrrMIxtpvCDyX/GAuPVTef0jpRSPmHXA50nkOlO4CYJ81skPHs17mHOz46/ksRia2GBdzaeZrdS3X3i6m94++p2EZTpzkcEdJXvYIVeVgmzvxNKQXidJCgME/7KkDIE/+DZHgGp+w=
+	t=1788335277; cv=none; b=t7jmD8po8nP80H7janCz9PICzC2WncpQ7/uJn4AkPS57+JL4tHXWxqQqcxt4va6mz1rSa2JOgXDScjLa3U9fdetyEduEdq5L72eF5cMMH+KOo7iMjyYzIgY2OXYqwjPIilfQFNbpQz8GDqxNxpe7TaQrBo0ZkQ4txyMDCk7z5wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788334794; c=relaxed/simple;
-	bh=ilpC4FCHdlA4H9uyWtCLuUO0bSAPtZOeSQKIqdsgpWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1MSDY8/eyX9J7WGho8n15YZ1LbJ3Bil5U07+FXZ/RgHD3CxspSGUfg9FsqN7Ure3zNBHnmLvQjtsDTpIiYDxZFaA/DztYgYR6zxWsBQXevq4Z6eO2fphcqh9n+FnMKV/mhHqrft2W1cY8HqGiZnnuXUC8WzvYDNOKweyXijLjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhtejrPO; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788335277; c=relaxed/simple;
+	bh=4wyJJErmSw/0/xkKLWk5KIUMamR/QMqISmOizPs9Cgc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=g8zkBqwC/ZPgFQKvLUH/WHphiU8O3mC4JzdwHolK7cQuxyc22Fc6Oi2h5aGMZPmvzDUvJ560Cf5H907DoAAokR/zhYZTBMGSsmuX6oXJvRFxNRLzjHsbF9gdmPc1XN+ZwHIdqT4vFLIVXlpBeaMz6wYEwu27I+SvX0tUfktvP/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOYzdFGW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhtejrPO"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-484362f5c4aso775752f8f.3
-        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 00:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788334791; x=1788939591; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=i3PGsxzvr5pYDG64U4cbt7QQR2dVwmU3hq+h46iagFg=;
-        b=OhtejrPOBXIPUyAotuQ4vIRLIwtY1SpzPkDYcKSEF/l8b7fRxrOARABOlczmnw/4W3
-         2hRyp8J87qY+IEufdvf7G2OVLq/nMXigGu+aJeDuqr2/b15apEVLJe7pX9XSpnjioui1
-         0M8Eht6fWcUVB4B71EiI/wFkjQdTLnOlV4EpEZSnEMvZtj02bvVpDBmlwHelDp6Yy0qU
-         mOvk1bHp5ZVLuxislDcoq+CrmueMEHEmxq3Nv3ltJD7XxVwLH0FBn1WJRHMf2CXqp9Ds
-         uUpC/fqRGYpijvzeCCQbAb+xc4Or4wKDjVvZ0e8NEvxw9mCCiv1Kc4x+Jd3/49O1PztB
-         JVIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788334791; x=1788939591;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i3PGsxzvr5pYDG64U4cbt7QQR2dVwmU3hq+h46iagFg=;
-        b=Qn9cy08JwkQZU0pC6MDzKAn8BZ4c3v/1UoBN6jMcJ3UAnOa7fCY157Zfzz9dbnO/Yj
-         txIxxjUaEDnH99i+u01OExD5EBOTyoqPqYp4SmmiXPS6D0sDcybzwp5aX2cW9UizT4+/
-         FIc6t4lbaB+HrUf4O0XoJPzjodPVE3tYJ/3jkabz0mIy5LWYpqYX3AtHilXYj1XCcTnl
-         pE0Ydfj7HVkS4sDYX04tqDkkGg7loElWz4mgHtX/0ebAIsrhgfD67DX5ntMAbMV4FHUH
-         TLqtZ3ErOxa4kd4cGerLmZuGkPdbNLQ+8bh53/vT91Vj7lkCqFdSc20g1j0cUYzs+iEZ
-         y7YA==
-X-Forwarded-Encrypted: i=1; AKwUvByx1h3VJrBUjKH4B0qFuGn5eMRQtcdhnUdepYowUnQqt78v146O9+mY+rGmGRLIhWamELs=@lists.linux.dev
-X-Gm-Message-State: AFuF++kiOBXslaOex+VVA3XQFNNN4x9Jml/f8SQE8KSPppTWB103oTwD
-	crAHluGgr3oABhk3RXRTn63er3fL7Yj/VgI1Xvu4nbTPH7EgI75soBYc
-X-Gm-Gg: AYBFou0ZHNALJKYRD4W3zDKKsc7Rerd18VyeRnD/dOZ+0tAdGp591xx5dO+rRxbXtyb
-	z+bQNUk8ltm/puMXEin0IgL4M5O5PDZVTcCMrBMOclBoKIeTvhAap8LoKdmWdNQ2swzobKX669i
-	Kxm20bbPIP5RSIlKSSab2u1KcMKmAtOJloKgry0IU+Nkzcxze8IkFZ7yjOjNkjWsUG0Qfr8NIW9
-	GuuuqbFlIGa6qsVJyZgdKrOsNGJl554DGzADli64brL9sjXLFYgEuiFuN2aKeDO2EyEGSze2bdj
-	AJxU3dWiWamFCz7cByWjvdrovkArzI6izzRcT27YdJ0Fa9WKo6SqCRY3TzdlSech83AQ4T3Xqfp
-	QGVR4jMoR/HF3vc5AkT/cacTlnfiCF0Bc1C4gY6U4+ErOzvEKwQdelsu0YTVbGiG9bcl53bzftW
-	9OgeM3cK7inUoFocgeLMrUodRWbpbTkt9jHJmm9m8rCotYA9Wel336eNKfwvQrVRzIQA==
-X-Received: by 2002:a05:6000:4910:b0:482:f61c:7cdd with SMTP id ffacd0b85a97d-48488df9e0dmr4742560f8f.4.1788334790310;
-        Wed, 02 Sep 2026 00:39:50 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-484492ce5e5sm4209375f8f.36.2026.09.02.00.39.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 00:39:49 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Bartosz Golaszewski <brgl@kernel.org>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: [PATCH v2 2/2] gpio: mmio: track the direction of chips without direction registers
-Date: Wed,  2 Sep 2026 09:39:46 +0200
-Message-ID: <20260902073946.3709080-3-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260902073946.3709080-1-mehmet.fide@gmail.com>
-References: <20260902073946.3709080-1-mehmet.fide@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOYzdFGW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFC01F000E9;
+	Wed,  2 Sep 2026 07:47:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788335276;
+	bh=JsckJL1qNdDa/wZkwMe12ezOc407ebeBsixO4KR9cHg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BOYzdFGWRIwEjSlZiF/3RwHl2UnpgQvF807vbVf9suQtZxeWsGP0l+TDpqGiLtZMQ
+	 tXHj24KmVt0YbuSo4cVRFqX4asyWxvJ48648QzuRS9hKdGmzMA05jlG6kcJqlb+ApT
+	 t2HUSc/NOAhVeiKRQWNsnciRYYxDiQldKTmM3LRJVSPAXOLMWHL6WAr6lQeECrri5s
+	 aZTSNcOi9xv9D3lt3XypniZe7XIC4KseGbs5hze3uiGR1r3vaAIRn0NhC7GarMe+Q7
+	 7ZuQeFVG5wlSvtb8op2Y0DT3vreEAvM4JqM35uVwLcPWtIIPkLDwYiss9bL9BtBDvY
+	 0yxjOVhGT40zw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an
+ ethtool private flag
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 07:47:55 +0000
+Message-Id: <20260902074756.1AFC01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] fec_enet_get_sset_count() triggers WARN_ON_ONCE by returning 0 ins=
+tead of -EOPNOTSUPP for ETH_SS_PRIV_FLAGS on unsupported hardware.
+- [Medium] Data race on fep->rx_flush_mask due to lockless write in fec_ene=
+t_set_priv_flags().
+--
 
-A generic chip with GPIO_GENERIC_PINCTRL_BACKEND and no direction
-registers sets the direction through pinctrl but has no get_direction
-callback, so every gpiod_get_direction() call trips the WARN in gpiolib
-and the direction gpiolib reports is whatever it assumed. On a Vybrid
-Colibri module that is 21 backtraces per boot.
+commit 0779caeb36f03b70108effeec07b7cd6055f53f4
+Author: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Keep the direction of such a chip in the existing shadow: the direction
-setters update sdir under the chip lock, and get_direction() is the
-shadow-reading path already used for unreadable direction registers.
-That keeps the callback usable in atomic context, which it has to be:
-gpiochip_lock_as_irq() calls it for !can_sleep chips from
-gpiochip_irq_domain_activate(), under the irq descriptor lock.
+net: fec: support RX flushing via an ethtool private flag
 
-The pad's actual state is read once, in process context, when a line is
-requested: gpiolib calls request() right before get_direction() for a
-new line, so the shadow is seeded from PIN_CONFIG_OUTPUT_ENABLE there and
-the line reports what the pin controller says. Lines pinctrl cannot
-answer for keep the input default, which is what gpiolib assumed before.
+This commit adds support for flushing the RX FIFO of an individual receive
+queue via an ethtool private flag. It exposes a per-queue rx-flush-qN capab=
+ility
+for controllers with the FEC_QUIRK_HAS_MULTI_QUEUES quirk.
 
-Suggested-by: Bartosz Golaszewski <brgl@kernel.org>
-Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
----
-v2:
- - keep the direction in the chip's shadow and reuse the shadow-reading
-   get_direction(); seed the shadow from pinctrl in request(), because
-   gpiochip_lock_as_irq() calls get_direction() under the irq descriptor
-   lock for !can_sleep chips (Sashiko)
- - lines pinctrl cannot answer for keep the input default, no error
-   returned to gpiochip_lock_as_irq() (Sashiko)
- - drop the claim about the initial direction scan, it runs before the
-   pin ranges exist (Sashiko)
- drivers/gpio/gpio-mmio.c | 65 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 61 insertions(+), 4 deletions(-)
- drivers/gpio/gpio-mmio.c | 63 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 59 insertions(+), 4 deletions(-)
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
+rnet/freescale/fec_main.c
+> index 794ec427b0ee6..e5c1d04a665c4 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+[ ... ]
+> @@ -3576,11 +3603,67 @@ static int fec_enet_get_sset_count(struct net_dev=
+ice *dev, int sset)
+> =20
+>  	case ETH_SS_TEST:
+>  		return net_selftest_get_count();
+> +	case ETH_SS_PRIV_FLAGS:
+> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES)
+> +			return min(fep->num_rx_queues, fep->num_tx_queues);
+> +		return 0;
 
-diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
-index 7e4b3e8d609f..84bf8cc7a0c7 100644
---- a/drivers/gpio/gpio-mmio.c
-+++ b/drivers/gpio/gpio-mmio.c
-@@ -49,6 +49,7 @@ o        `                     ~~~~\___/~~~~    ` controller in FPGA is ,.`
- #include <linux/log2.h>
- #include <linux/module.h>
- #include <linux/pinctrl/consumer.h>
-+#include <linux/pinctrl/pinconf-generic.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
- #include <linux/spinlock.h>
-@@ -372,7 +373,17 @@ static int gpio_mmio_dir_in_err(struct gpio_chip *gc, unsigned int gpio)
- 
- static int gpio_mmio_simple_dir_in(struct gpio_chip *gc, unsigned int gpio)
- {
--	return gpio_mmio_dir_return(gc, gpio, false);
-+	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
-+	int ret;
-+
-+	ret = gpio_mmio_dir_return(gc, gpio, false);
-+	if (ret)
-+		return ret;
-+
-+	guard(raw_spinlock_irqsave)(&chip->lock);
-+	chip->sdir &= ~gpio_mmio_line2mask(gc, gpio);
-+
-+	return 0;
- }
- 
- static int gpio_mmio_dir_out_err(struct gpio_chip *gc, unsigned int gpio,
-@@ -384,9 +395,19 @@ static int gpio_mmio_dir_out_err(struct gpio_chip *gc, unsigned int gpio,
- static int gpio_mmio_simple_dir_out(struct gpio_chip *gc, unsigned int gpio,
- 				    int val)
- {
-+	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
-+	int ret;
-+
- 	gc->set(gc, gpio, val);
- 
--	return gpio_mmio_dir_return(gc, gpio, true);
-+	ret = gpio_mmio_dir_return(gc, gpio, true);
-+	if (ret)
-+		return ret;
-+
-+	guard(raw_spinlock_irqsave)(&chip->lock);
-+	chip->sdir |= gpio_mmio_line2mask(gc, gpio);
-+
-+	return 0;
- }
- 
- static int gpio_mmio_dir_in(struct gpio_chip *gc, unsigned int gpio)
-@@ -601,20 +622,54 @@ static int gpio_mmio_setup_direction(struct gpio_generic_chip *chip,
- 			gc->direction_input = gpio_mmio_dir_in_err;
- 		else
- 			gc->direction_input = gpio_mmio_simple_dir_in;
-+
-+		if (cfg->flags & GPIO_GENERIC_PINCTRL_BACKEND) {
-+			chip->dir_unreadable = true;
-+			gc->get_direction = gpio_mmio_get_dir;
-+		}
- 	}
- 
- 	return 0;
- }
- 
-+/*
-+ * Without direction registers the direction lives in the pin controller,
-+ * so seed the shadow from there when a line is requested.
-+ */
-+static void gpio_mmio_seed_dir_from_pinctrl(struct gpio_chip *gc,
-+					    unsigned int gpio)
-+{
-+	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
-+	unsigned long config;
-+
-+	if (!IS_ENABLED(CONFIG_PINCTRL) || chip->reg_dir_out || chip->reg_dir_in)
-+		return;
-+
-+	config = pinconf_to_config_packed(PIN_CONFIG_OUTPUT_ENABLE, 0);
-+	if (pinctrl_gpio_get_config(gc, gpio, &config))
-+		return;
-+
-+	guard(raw_spinlock_irqsave)(&chip->lock);
-+	if (config)
-+		chip->sdir |= gpio_mmio_line2mask(gc, gpio);
-+	else
-+		chip->sdir &= ~gpio_mmio_line2mask(gc, gpio);
-+}
-+
- static int gpio_mmio_request(struct gpio_chip *gc, unsigned int gpio_pin)
- {
- 	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
-+	int ret;
- 
- 	if (gpio_pin >= gc->ngpio)
- 		return -EINVAL;
- 
--	if (chip->pinctrl)
--		return gpiochip_generic_request(gc, gpio_pin);
-+	if (chip->pinctrl) {
-+		ret = gpiochip_generic_request(gc, gpio_pin);
-+		if (ret)
-+			return ret;
-+		gpio_mmio_seed_dir_from_pinctrl(gc, gpio_pin);
-+	}
- 
- 	return 0;
- }
--- 
-2.54.0
+[Severity: High]
+Should this return -EOPNOTSUPP instead of 0 when the hardware doesn't suppo=
+rt
+multi-queues? Returning 0 for unsupported private flags violates the ethtoo=
+l API
+contract and can trigger a WARN_ON_ONCE(!ret) in ethtool_get_strings().
 
+>  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+>  }
+[ ... ]
+> +static int fec_enet_set_priv_flags(struct net_device *ndev, u32 flags)
+> +{
+> +	struct fec_enet_private *fep =3D netdev_priv(ndev);
+> +	u32 mask =3D 0;
+> +	int i;
+[ ... ]
+> +	for (i =3D 0; i < fep->num_rx_queues; i++)
+> +		if (flags & BIT(i))
+> +			mask |=3D QOS_RX_FLUSH(i);
+> +
+> +	if (mask =3D=3D fep->rx_flush_mask)
+> +		return 0;
+> +
+> +	fep->rx_flush_mask =3D mask;
+
+[Severity: Medium]
+Does this assignment need to be protected by fep->qos_lock?
+
+It appears fep->rx_flush_mask is read concurrently under fep->qos_lock in
+fec_enet_set_rx_flush():
+
+	guard(spinlock)(&fep->qos_lock);
+	val =3D readl(fep->hwp + FEC_QOS_SCHEME);
+	val &=3D ~QOS_RX_FLUSH_MASK;
+	writel(val | fep->rx_flush_mask, fep->hwp + FEC_QOS_SCHEME);
+
+Could this lockless write lead to a data race if userspace modifies the fla=
+gs
+while the PHY state machine adjusts the link in the background?
+
+> +
+> +	if (!netif_running(ndev))
+> +		return 0;
+> +
+> +	fec_enet_set_rx_flush(fep);
+> +
+> +	return 0;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260901074732.1137=
+91-1-alexander.sverdlin@siemens.com?part=3D1
