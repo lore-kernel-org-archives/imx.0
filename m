@@ -1,170 +1,134 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013050.outbound.protection.outlook.com [52.101.83.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F394A5C48
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 18:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788374565; cv=fail; b=IxvD86WuWN+u5VV+GKd9VTq7jRaDpIgHoHVZle4j8KveHgrscl4E6Z1NTI9Io6gy9NB/8vdgbtXIqtRA+GgNrdRUzsj70ccvBGqJZiADs/KFF3ITsXb8r4jBZZu0yYbhVrqrLrhnDxseJf5ClokY/uDgLU7dd9QdARg/ydxlWsM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788374565; c=relaxed/simple;
-	bh=X5kZDo4kcwJLgsl41nYcGZjqFvj+36+j6N+rdkRy7UU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hz/f3bmEnmQatfOD82FAoPBgJWq95ZyFj1PLT7xN5we1bHejTqHdGX/1JEWVH2CtYwGF+xhmD6xygwPnExpNvtCnQujb5Ju2LJeCUQMMsJmEdr/wEHjY49YQ4yMgFIO0tnWkGxSiH8WZwNC3Lg4BNokAy6MBZ0lyQmk2RW4CDkE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XqbUf6wh; arc=fail smtp.client-ip=52.101.83.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0900D4AA1CD
+	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 18:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788375065; cv=none; b=c5hSAH7oHzzS2yxEI/dHRivkKob08uUy3o2QW752jeqB7kKAi99El5fivWlnWaIWVcX1ZVTGBTSSWJWPX8O1EjT0lfQErQmS9fwg7gWnlpE0IC3Aa2VCDKWjmaSsPIOOjrrs71ybc3d3BcfFgOPEzMOJpCXZ96ZlvzhKZXKW4Mc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788375065; c=relaxed/simple;
+	bh=ztti2r+fzKNtBYjDvDyqLKSRA+anQWIh+N2I4s57yUM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=oaeRkeORwkSmOzMBSxjn5fqw1V4b9tVEoMzZoyfa/yosKBZFoSDpmE2ZWS10zq9egZxKizObEvkLOjXjp202M6hu4rkrvyoOrSEOuZhL3JOb4tX/enTIgSxH1JJpaWzeVnahWXZjMa9Igg8UQxzUSuGu1kDoDqeRbFSu9UeoWgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=I6bZnjMv; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XqbUf6wh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aAXdKR+ja7YIFsftACmQzBMq8ChnothK9Hufi7jy0j+2IiVGIwImPP2M83LkhAGUOFfEqjwo7xYOk8sUwfft+kMvlh6XSsuvJgR469Ja7Z2T/NrFnsckLNUdhOPC4hCOCxvk/3zkwJaQdHlkcnKy2N/5MZ1mca/ny360Hjfq8soXNTncMyZhbH1HIrMf6q4CTcrUsy8BRxxWHVeRInOVyP38dCWHT9230r755aNRW8/tVF2mGa2DbY0gBMl+0DOfv75O9OdWY2tyowZk94YW060AAYNduUNSw+NmItT33hJtowjLPh8pOOUa7cDbAcG40V9V+9VWXjM4J+gWJY42Qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2AxKRJ976rnY9y389//E4Lfcx3DtH9zicjDAgXU7mrg=;
- b=WO5Vic2zhwRsJrJk7otwwyTZLIvxVPRMWA1vn48TDm6grxUBqkg/C4Fs0/UoRWqrXCUIcUv0vR/rwGt1znoQYBX0Il3b83sLUQ4XCaWlZ/tjoG74AXdvuIsT1WUeneHz7xypi3xDhVCFl+m4Csv/It36muhge+HDfcsfCvp4msyMuPzD6hvZKuJ/Fukgwhv+a94n1fDpZhVF/9UExlwFeI9BzUwH2WY5cdVwqfE+wJ5zR4iitIWpghURIFWJ03CKwJvPxR4MUowjTLLdQ/ScwGgj5euKe8MJfcyWT38nuTxOmOqOGmAQAD/syHMH0ZSrbg8gl0HqSWxwO0DHMB2x/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2AxKRJ976rnY9y389//E4Lfcx3DtH9zicjDAgXU7mrg=;
- b=XqbUf6wh5WHV0WKq69MiPKWhEu/1yIY7tcKsQXvRKOScV9qFpVNIkLL8G0tQxK+8zgnJ/qobR0NbP7VomC+q+3L2bN0DtRE2qVlHEti0gEWgTcIExRDn628/pmtbB7aalJ26PclFZzY+m1xDXWu2dXlt4Ef2+Kd0aoVFLZgeJ2CyRABhICkcoQM4Lw1lMDl8nqRVUMEJkrviDN/IbLBN/i6aFdxvRZ/IODZy2yfBFP4DJaIW6yjJ8jrIPhl6v+y2OznflUvd5JWTyKYYQqjaH6A2q2mZ/27ZOa7G6u3ldDs2h7B1OcbvxLv6+/TRIB3x/NXeS7EiCMqr759MWC/F2g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8040.eurprd04.prod.outlook.com (2603:10a6:20b:2a9::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 18:42:39 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
- 18:42:39 +0000
-From: Frank.Li@oss.nxp.com
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	frank.li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	hongxing.zhu@oss.nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>,
-	kernel@pengutronix.de,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH v2 0/3] arm64: dts: imx9x: Fix PCIe memory window overlap with System RAM
-Date: Wed,  2 Sep 2026 14:42:28 -0400
-Message-ID: <178837449498.2056904.10575566728674151756.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260821054334.1277088-1-hongxing.zhu@oss.nxp.com>
-References: <20260821054334.1277088-1-hongxing.zhu@oss.nxp.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH0PR07CA0021.namprd07.prod.outlook.com
- (2603:10b6:510:5::26) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="I6bZnjMv"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c25ee9d1264so49061366b.3
+        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 11:51:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1788375061; x=1788979861; darn=lists.linux.dev;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rto/zkmddcXFKDuBMT5owfeFn2l4lHjmJnj+jxGDxQo=;
+        b=I6bZnjMvTPBM4g6XpbKfhIPTVzB9Aic/5JwhoQrQPFDJgV6BllZj5MhY5agsPxh7Io
+         2wyARKjSdO+oeDJ8NtBci5gWdiI7kfqmgmH6OvLS9fs6ma4QzhvhteGN7Mcu61VwhCpj
+         YKDNeqL+aMYucAAsOISh1vcTJQe8ftScyB7Memws6e8hT2ayme+gTqNW3bJLSIB/CQA4
+         Y9t7GIKL7kX8UPrX2+fIw83QuG8NDb4FgGJcF80v2Myg0Egfj/KephVJ/KLSZhH1EU7v
+         XRDq5UbDI7I41jIPIR1g0bQB9a1HTcerjUqlluUc2LDo5cd3YHDq9d/vjUlK9J8quvSf
+         W07g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788375061; x=1788979861;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rto/zkmddcXFKDuBMT5owfeFn2l4lHjmJnj+jxGDxQo=;
+        b=As8SSGZ8fL/L3AwC9ZQ1xFml/3bodJbw0toAUu9pcVwhrVRkwwbYgd4seSUVowP3Hl
+         ZCXlqmVyCuu206/WbJRhorzUgXu/dvM7qGtL2KDYBolOF1qBT3HSNuC8mEd/hkwjSLii
+         plf37K/tdyYvzMBOfBVp5b5bcdq6uZEv0l8c58nYPLHGdmNqqQZLGUljWoWMwid++edi
+         0vVcNEtNFswZBdeJYDgQp3Xrqh/QSAmzzBGDI+3hB+MRMJDp0Vze6flSctAOEyYfB5Mt
+         Ws8VtiYRYvSTPR0BCtDE0D6AipnSCXmtKtfc311a0RY/DcxomSOkkuBadCJ2odvG5U8G
+         uf9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwnoOLfWlF/HqZOD6EbwMKiocq0PDk3CiF/+53tq7hHSneV/JSfJNPYPSI63fuVVpwlVS0=@lists.linux.dev
+X-Gm-Message-State: AFuF++lMnwpvt/+6Wz5qVkREynQFEOd5KTvKOpn+aBt9hflzvj5m3q0Z
+	KqQ/2LfA2CVari7ZG3iOAinIrDWWwHsDkIME6bqlBpzV0Hi7HAyeOdAMBu2eirAWEg==
+X-Gm-Gg: AYBFou2F17AJKkFMDT7UupJBLH7dCuGRqWB4KFBt+Kc1adZXRDYcfjVVVJq2uEns1Yg
+	mf8OxR1DYXploM/HELbimClOyJTh3Aqdvj80lysTqffX6fw96P3C0uPscN8S1AhZfMudnYqsqUU
+	W+SpISiQaibyk1APAN59u19Xv9j5nZrtSh3I5aztfGox/3v8HHBrlM+Js91XdShKoJ/p1qx5+g0
+	KflJd3LkpAWTFtI/bnsh4fHJKKtVD14WN+s7IH0WRTUNkmNCo2vZgpcetgh74FMdUHGy657uNJl
+	Srk9Mr/oDpgPuKw4pgOORc8iN+ABdBd4pOsslG11YclLNMwLzZ9MGMssF40vcuANFgwRnpM1U9y
+	/d+2uTiB7htfZ/yPduaHZxpufntIjvh1/PTW3C/97GBwpQD5MA5Scl4TuecgAlnDr00x63xg7lm
+	qdqdjlFqEG9oqUaPVKau1N2L7Dky9QpPObsbS4f2f/RptD9Tx5Be6jvTJ2xI5NBOwfOU/K7XZdg
+	J8juJuTnBQmPB8wTmRjsHh8pWV2HQ==
+X-Received: by 2002:a17:907:805:b0:c25:895c:62dc with SMTP id a640c23a62f3a-c25d5496a24mr425850266b.14.1788375060906;
+        Wed, 02 Sep 2026 11:51:00 -0700 (PDT)
+Received: from localhost (5073F89B.static.ziggozakelijk.nl. [80.115.248.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25f4172e44sm200366b.20.2026.09.02.11.51.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 11:51:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8040:EE_
-X-MS-Office365-Filtering-Correlation-Id: 029fa718-0a25-4232-dd0f-08df0921f68d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|366016|376014|19092799006|1800799024|18002099003|22082099003|11063799006|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	gUBc+xkqALyJjlPk/P1al+oEJkX5QqDooOn6EXJ4BtP0j7sUcif1KPx/BvJBf6keY9OEQ+TOt1ijM0JGoQUL+KJhJZAQToVLXLuBdg2fQgCvtcDXJuojK3Z8nzBC9KoFhRBQm9j50odoRpW2rhDn3DEN/UT3N1tcAmrw/fY3kMGZBkvtKuu4bYadYuBDHkJIpgMqt3tiWaKS5/4GBW4NNrTG66UWloRM40eIVytedPky4+mj/mJ1SdGoRJ5NNfIrGSCZzenAXfyXEDNrtr9czG5iTvBynzSXh/O3fiP8OJiK2gvEYdxKaGA3lSnf6f/+/12Z2JMhbm05ak1ZEismANquPhYogv5gBiKx9JkOTDfCTfQ74uCm8af7pCgOkBFxStc5OfEdE9P7lk9SxLoRpYMVYPIsy7IogEQWx0zDMAAyNJvkI4w/wtUkTuE/QiaT/soJ9P6EQtcOLMTZ2jnt6ngPnMUdESWWu2g54JjPfP8QVdqb6AARLygWGFZ8xx5/bu9R15GZ1Zi+qIr/hQE2MLCtlMaROzIKGqReEdp7Wc+a0zL3p9kWy7W3alnNVCyABRs93HOeXuvqm+rxauvRpB2w5IkDLwhNRRd6niPpQ4Hv0cbm6l5wQ4IfBmIsfdyOsIKL7XItC2y6wwIUi0npaHqT6CSn3jIZMOmvAeKeriA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(19092799006)(1800799024)(18002099003)(22082099003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a1R4QUJBam1xakVBaGFNeG9oSk9Cd2dTektjeXpYbG1Mc2doeUtXUjhWV2k5?=
- =?utf-8?B?RWVjQkhsNmFyeXJqczd5ZzdnUkFyK2J0WWpDWVdyUlZXRmJDVmJSei9EZ0sy?=
- =?utf-8?B?Y0R5bXkvMGxlOXorYmVYTVFlSVNieS9kRGh2dE10dWRVdm9zZzhWcHZSN0Zq?=
- =?utf-8?B?NjFVVkxLVG0wS2pEWm1MdER2bWREZC82eVQ3dXp1OHpMRHg0S2JMd09xR1U5?=
- =?utf-8?B?ZTZqRWtvc08vSi9ydU9YZzRTZHdRQ3dxWEdVT0VEUlR0WEd5Q1k2VFlaNHJN?=
- =?utf-8?B?S2RYc0dDQ0xRZ2ppbUp0QjdiQjhRWjloUi9HYkdPcWdOaldoZE9qMHgzdnNQ?=
- =?utf-8?B?T3hSMUtVT1BDZ21aZHN1elFkejJrc3NnL09BVnJveFNqT2JMbHBHQnpMRzBX?=
- =?utf-8?B?ZG1XRFRRaDU1UDk4OXQxcnNNVmtpbVhYd2Y5NDBmb0xlejFBeEMycU9UaDZj?=
- =?utf-8?B?dk82YUE4SDJaL010aDZqMlIrOWptZXRSUXVqaFlWcHVTdHhZaHZOZEh5ZG8x?=
- =?utf-8?B?ZERveVNmSG9DTWcvUDI1MEk2YUNUTk5EZEJoNjlvTmV4WWtrSnMxT21hczhY?=
- =?utf-8?B?RVZRTnptZmJEcXlCcDRJNXJrUGlVUDRwVnkvQURHUEFpTlpsMTNtWG5pK3pP?=
- =?utf-8?B?a0YxYy94VGRhWDdlR3pZUW5sWDRxcm9abDNidFI5WnoydXB2d3FWN3gwOVVP?=
- =?utf-8?B?M0h6ZkZnZURmK0w1TFJTZ3ZGdURpY1Y0QndHZGZlVlNWOHo5aTBuK05mN0VG?=
- =?utf-8?B?WHliazgraiszQ01oNEFLcEErdGdob2VHMytINVZMbi9NUE1rdWdzK2hGcnBq?=
- =?utf-8?B?UTJPK2hKYkx5d3lCamwxTG10YnJRNW5WUlc2Z2RLUUVDblZYdnd2cHowcVRW?=
- =?utf-8?B?bklBT2JKM2c3YmtMeHF4N3ZQM1I0ZXNwMnI5TklNV0o0MlRYM2pSLy9Lejg4?=
- =?utf-8?B?NC9vczhNemwwZUxXQmlNU3kzeXUwVzhjdnlGclMrdjNBSjZ1dHhJYVJkNDVK?=
- =?utf-8?B?cXR1bnJ3WVI1U05kWFJGa2l2SzNKRlJYRzhiOGZRazBJOEUwN2pBNi9qejJj?=
- =?utf-8?B?WFA4cGdnb3NvS1BueGIzT01sb3BCTVMySmk1K1d2RUlaWEpDbVlKcTVUc2p2?=
- =?utf-8?B?V21LSE9Lbnh0UmpMMytoVDh5UVpFbGtTRGV0QjBmd1k5WEVSTzY4WHlFdy95?=
- =?utf-8?B?SnB3YUtHK1lrYnYvdkNwYitXZVA2Znpva1lEWEZpdW9STS9Gc0V2cXM0V0tS?=
- =?utf-8?B?QWMyWEo1K1hibGNaYm8yTTFqUkRHN3o3alNqbGNPckxLay9jcWRQa1haNTNO?=
- =?utf-8?B?bWR1MkNDQ0t4UEhXaUQvbnkyYnBZbjRwbHplUzlscmFaSVRoWnkwS3FYODJi?=
- =?utf-8?B?c3V2dzAyTXdNUlQrT09lc0MzbVUxaW5lMmxWODVLSnphQWJ5NmVWK3hTT3ZB?=
- =?utf-8?B?T2M1RW5vbVBvalk4TnBqUU42NDk1NVJ5cjNlb1NWelNCNkJtd0tVeVFXUHho?=
- =?utf-8?B?bVR0dzhaVFF1a2ltdmZFZjN1NnNrSWFFWUw1a1N1alRINzN5WDY1b1lxay9o?=
- =?utf-8?B?dEFJeStRckRNMWhvNGdxdnhGZ3pGQmdSNHljL0c0aGt4djd4VnZJRFlPeHVZ?=
- =?utf-8?B?VkhwbXRZdVdVT3hZQVNSczMvaVFaMXpxZnFCQWViQkU0alpDcFozNGJ4TzY0?=
- =?utf-8?B?UXhFa2FTd3l6VmErNm54dUdPbGQySkovV2RWVHdHYnljS3BSanBSNDRpRXdW?=
- =?utf-8?B?V1JkaEJxV05PZkxBdit2bkpXSmVVbHVDclhzV1k3RTE1eDEyTTRhWFNKNDQ1?=
- =?utf-8?B?c2R1YmxZTWx2YmdDZlduOUduY0J2eHh3WmVWeHZxRk5kUkhKM25vTGo0Umlr?=
- =?utf-8?B?eXFyQkh2Z2ZMYWVaOGR5ZkhRSXZPN1M4N2xyRlppeFBLNytXRzVTUkVDWlB4?=
- =?utf-8?B?dDFFZzdDM0pPVVR0V3d5VFEwazlSanRWeTVObTNjaGtMSkJVTW9WVnJRQlN5?=
- =?utf-8?B?dS9jTEx0a1RydVJoYk82Ny9wNVRSclcvY1hzT1dMdldBbzA5dFI3N2laMFZR?=
- =?utf-8?B?OExTNG55T1Y5dWFsWUF4R3ZhR0RhaG4zV1ZEQ2FORWFSMHFXYWpieFZXUkxD?=
- =?utf-8?B?QXBpUlFUYXcyL3ZkeGwyMTZIV1dIa1RzVnJTdGNWektidGhJdDQ4a09vTDNS?=
- =?utf-8?B?eUpzR2o1V04vMU9HT0xpZFRBYkFwQ3k0ZVFGTG5OZUFWazNpcExkZC83T2Vj?=
- =?utf-8?B?aExHWkVFRDF2NnRqVDlCRk9Uajc3cWFhSHI5NzdUOWZsM2N4R0w2Zm8xYmtj?=
- =?utf-8?B?cU9PYkROa0N2TE1SbzNVVlRRWklnM0V0bVVkaGZaZmhlUkw3UW5YcitPOE5U?=
- =?utf-8?Q?JvVDy7d3hV18EM2UfgefxDpDqpQL20fGwQliz?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 029fa718-0a25-4232-dd0f-08df0921f68d
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 18:42:38.8634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xXAeOviwmvA8XUKl0M/CyXV4geIyCM+HTOTMMsWD9rtIsmYMte6JT3WCULFlSM0bs9mN0WxooFfyDo19lIaATrGEnHTE3SDxfFFeVl5YXieUDsAOpoo2cMJxOh0PAOIu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8040
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 02 Sep 2026 20:50:59 +0200
+Message-Id: <DL521SM75B0T.1DGK1GVSH1G51@9elements.com>
+Subject: Re: [PATCH RESEND v2] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is
+ supported
+From: "Michal Gorlas" <michal.gorlas@9elements.com>
+To: "Manivannan Sadhasivam" <mani@kernel.org>, "Richard Zhu"
+ <hongxing.zhu@nxp.com>, "Lucas Stach" <l.stach@pengutronix.de>, "Lorenzo
+ Pieralisi" <lpieralisi@kernel.org>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Rob Herring" <robh@kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>
+Cc: <linux-pci@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.22.0
+References: <20260827-l1-conditional-imx-v2-1-40b324aa2a94@9elements.com>
+ <178835947957.88571.7553170178358028044.b4-ty@b4>
+ <gayg4xafgxcog7f7jy2i2e3wctds3do2ytttgv74f3y6ed7qtg@mr3xfxugjfeh>
+In-Reply-To: <gayg4xafgxcog7f7jy2i2e3wctds3do2ytttgv74f3y6ed7qtg@mr3xfxugjfeh>
 
-From: Frank Li <Frank.Li@nxp.com>
-
-
-On Fri, 21 Aug 2026 13:43:31 +0800, hongxing.zhu@oss.nxp.com wrote:
-> This patch series fix PCIe non-prefetchable memory window overlap with
-> system DRAM on i.MX9 series SoCs (imx95, imx94, and imx943).
+On Wed Sep 2, 2026 at 5:36 PM CEST, Manivannan Sadhasivam wrote:
+> On Wed, Sep 02, 2026 at 04:31:19PM +0200, Manivannan Sadhasivam wrote:
+>>=20
+>> On Thu, 27 Aug 2026 18:51:00 +0200, Michal Gorlas wrote:
+>> > Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
+>> > states for devicetree platforms"), ASPM states are force enabled
+>> > on all devicetree platforms. This causes PCI devices on some i.MX SoCs
+>> > (for e.g. i.MX 8M Plus Kontron SMARC eval carrier) to enter L1 even
+>> > though CLKREQ# is not supported (and consequently supports-clkreq is
+>> > not set in pcie controller node of their DT), which causes the device =
+to
+>> > never wake up from L1.
+>> >=20
+>> > [...]
+>>=20
+>> Applied, thanks!
+>>=20
+>> [1/1] PCI: imx6: Enable ASPM L1 only iff CLKREQ# is supported
+>>       commit: 94420d27973f567e5c10b631115ea8b9abc0172e
+>>=20
 >
-> The current address 0xe0000000 conflicts with DRAM regions. Sashiko
-> reports the potential issue in previous review:
+> I dropped this patch now as I completely missed that this patch incorrect=
+ly
+> assumed that ASPM L1 is controlled by the 'supports-clkreq' property. Thi=
+s
+> property is supposed to be used only for ASPM L1ss where REFCLK would be =
+cut
+> off.
 >
-> The fix relocates the PCI bus address to 0x10000000, a reserved and safe
-> range. The other PCI bus address and window size remain unchanged.
+> As Krishna explained in v3 [1], you should use 'aspm,no-l1' property in D=
+T and
+> use it to disable ASPM L1.
+
+Right, 'aspm,no-l1' solves the issue I had. Also forgot to answer
+to Krishna's remark in v3 thread. Sorry.
+
+Best,
+Michal
+
 >
-> [...]
-
-Applied, thanks!
-
-[1/3] arm64: dts: imx95: Avoid 32-bit PCIe window System RAM overlap
-      commit: 9094eb07b3e236233dbaac61ed30cc65be9e9c6c
-[2/3] arm64: dts: imx94: Avoid 32-bit PCIe window System RAM overlap
-      commit: 775ebd246092294432895f8e9bd48e3f0a56714a
-[3/3] arm64: dts: imx943: Avoid 32-bit PCIe window System RAM overlap
-      commit: fff67007ad5403966092006867fe9926aaedda0d
-
-Commit message add discuss link and "Avoid hit this as a P2P transfer[1]."
-
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
+> - Mani
+>
+> [1] https://lore.kernel.org/linux-pci/aabc3dbd-3e5b-4272-807f-f0743606e25=
+a@oss.qualcomm.com/
