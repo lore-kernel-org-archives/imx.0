@@ -1,121 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CDF4AF9DA;
-	Wed,  2 Sep 2026 17:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF56372EE9;
+	Wed,  2 Sep 2026 17:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788368474; cv=none; b=VD7XL/lUoUA0/9oFtugTENM+gfAwQFTNgDuGxfeciDVkWyv4h4LKI+Y6/9PSDDvXWdkZlSdHiIrg6JrXkSLDkC/YiIKlYzYo6LFw/rI5dPqgS6nZ0FLHeSXgWqUM2jeMZZx62b14HC1DHbhGoIksR/QvIyAClxy2w74WG5d0RXA=
+	t=1788368556; cv=none; b=gxi4IeTWQpErjnkEagvNnNpLwXu5iBree1UE5FHohBBxaFiEhjbQFj42SCE6qAVcC+7ouNLZCGuNOwE/upAUoRw03n2cz1WLGN0sQqjV1gqPXJM8USV5MeBN5t2FqBpBs+/2OlaeA6BoevlwCSLOnUCShKJWRvemqFbfZs7fP28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788368474; c=relaxed/simple;
-	bh=Gwt3M8c16qFKjAizc60XazGddbU35HXrs6EDLGqsr38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=enljVomehWswPcv7Y2Sf5Hleke3gmMowh3oKdHKPxcIcxho/LYiH+xiM4p3FVpYe5SbRLbSe8GIYLuqol43Tnb26CQ/R1NQLJqohqwp6kAAswNAhHO8ddvNyb2kKfKJ0TWxwlVfYgtf7fT6wttOY8LzBkbx8limmJ4seoGjyA0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLaDzKYU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788368556; c=relaxed/simple;
+	bh=2ps60H3UPkGePyIUY8BslXowLwMg3bBVIE5cYrw8G4M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CzBi/VSxkiaBaFUSbxOJkTvdIwlxD88prcrk7hV4s8qn8/GblgOsmkZuBCQSl+wLyrowcmHoJINSau+n5ndKd+P/CWS3Vtz1HjFJQ1yOi4tTSUVZBf5RZDNy/J5J0x3jkD1x6q3DDfrLdFBiB7BreJlEQ9iVVAcO4To45hzdLQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSwx4Abx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLaDzKYU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A13E1F00A3A;
-	Wed,  2 Sep 2026 17:01:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSwx4Abx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D37F1F00A3A;
+	Wed,  2 Sep 2026 17:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788368472;
-	bh=/7fv2ruudY4O7ZTNXcdhmsegrQSkGzb4hyE70Cml4sU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GLaDzKYUSZVMye2SSMoNuIDIxegxYnEhVTBPwo4tt/sji4h7vPK2nOq5CtHtD6LvU
-	 tKywE/XfKoML/LDJJ/A13Shd3wXzoLI49Is0JLqB2igPgoXxFYH3vGRxGbQA8yPRan
-	 1LnY9xXeiFzFpT5LAZJ71vLBNKQDAysq5nNeku0B+eeNWTZV0uHT7o8SOgEtFD9SiJ
-	 0W8c35ixUX5Yly7BkLekLtedUYPydxVwz3wHMCaRKyGQM2+n1w568X2xgnd3i3crql
-	 Lt6jz26OOGX3wpd5/kbkSnzIvUzS07T690usB2wKIU7IYjdIdySRCXuDtkuq92ZVtc
-	 IxcX0LGSVER6Q==
-Date: Wed, 2 Sep 2026 18:01:08 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Frank.Li@oss.nxp.com,
-	Support Opensource <support.opensource@diasemi.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	"open list:MULTIFUNCTION DEVICES (MFD)" <mfd@lists.linux.dev>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: mfd: da9052: allow dlg,da9053-aa
- fallback to dlg,da9052
-Message-ID: <20260902-varied-unsent-b99f9f007685@spud>
-References: <20260831201522.51294-1-Frank.Li@oss.nxp.com>
- <20260901-devourer-pushover-f26c72688255@spud>
- <20260902102532.GQ2943942@google.com>
+	s=k20260515; t=1788368554;
+	bh=lZM3OVNQpFxKSG+7Gae1Fc30ECjuYgQUff167olyWVk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KSwx4Abxuplqx/SHHYbRhp8IoydXqTsXvDhJ1RZNhHsHzmWL0QS4TlgWr7NToHnh5
+	 bexXcXXGP2l73TRckdrheEavAEV9MYQYEiXagXKLWxzStkUKX69GYsiM5Fp3Adkjlk
+	 LmVApr9cjvW6qw7GqtAxb1ougRuKIKTFOjVtdDQffDUieqJmaQ0aq6FgQTJU6/cnVw
+	 bZcdpKgcCejLglgc0gcCgOENPwiya/8gKVa/IqP20O1aivc3ck/dw3Qf0rrOkKjb/y
+	 bmGrPjmWgrac0U5VPVNhcIjX0ORRw49l/b938QhnV+EZPj/j55/VpeT3rMHGc2khr5
+	 E9UlkXZBhWQDA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5] PCI: imx6: fix resource leaks in probe error paths
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhijian Han" <hanzhijian1991@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260902164313.2901302-1-hanzhijian1991@gmail.com>
+References: <20260902164313.2901302-1-hanzhijian1991@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 17:02:33 +0000
+Message-Id: <20260902170234.6D37F1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OGMRXVt5Rcvj6VVq"
-Content-Disposition: inline
-In-Reply-To: <20260902102532.GQ2943942@google.com>
 
---OGMRXVt5Rcvj6VVq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Replacing DL_FLAG_STATELESS with DL_FLAG_AUTOREMOVE_CONSUMER for d=
+evice links to virtual PM domain devices creates managed links that violate=
+ the driver core state machine, triggering a WARN_ON during successful prob=
+e.
+--
 
-On Wed, Sep 02, 2026 at 11:25:32AM +0100, Lee Jones wrote:
-> On Tue, 01 Sep 2026, Conor Dooley wrote:
->=20
-> > On Mon, Aug 31, 2026 at 04:15:21PM -0400, Frank.Li@oss.nxp.com wrote:
-> > > From: Frank Li <Frank.Li@nxp.com>
-> > >=20
-> > > Allow dlg,da9053-aa fallback to dlg,da9052 to fix legacy platform (> =
-10
-> > > years) check_dtbs warnings:
-> > >   arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dtb: dialog@48 (dlg,da90=
-53-aa): compatible: ['dlg,da9053-aa', 'dlg,da9052'] is too long
-> > >         from schema $id: http://devicetree.org/schemas/mfd/dlg,da9052=
-=2Eyaml
-> > >=20
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > Previous try drop dlg,da9052 at
-> > > https://lore.kernel.org/imx/20260404-thoughtful-placid-boobook-da26da=
-@quoll/
-> > >=20
-> > > but Krzy have concern about compablity.
-> > >=20
-> > > https://lore.kernel.org/imx/20251107-matrimony-showdown-ba6ce6996b2f@=
-spud/
-> > >=20
-> > > Conor prefer update old dts.
-> >=20
-> > I don't think these devices are actually compatible, so this fallback
-> > would be wrong.
-> > The data comes from the match data, be that spi or i2c, and there's
-> > explicitly different behaviour for the da9052 and da9053aa.
-> > I doubt the legacy platform ever worked properly, and this is what shou=
-ld
-> > have been explained in the PR that Krzysztof denied not just blindly
-> > citing a dtbs_check problem.
-> >=20
-> > Nacked-by: Conor Dooley <conor.dooley@microchip.com>
->=20
-> At first glance this looks like an Acked-by.
->=20
-> IMHO, this is going to cause issues - please rethink this.
+commit 36162fbf1662cbc9312c01c7d2c2113d6c77e624
+Author: Zhijian Han <hanzhijian1991@gmail.com>
 
-As in, use NAKed-by instead or just say NAK without the name/mail?
-Not entirely sure what you're getting at.
+PCI: imx6: fix resource leaks in probe error paths
 
-Cheers,
-Conor.
+This commit fixes resource leaks involving pwrctrl devices and power domains
+in the imx_pcie_probe() error paths. It adds a devm action to detach the
+power domains and replaces the stateless device link flag with an autoremove
+consumer flag so links are cleaned up automatically.
 
---OGMRXVt5Rcvj6VVq
-Content-Type: application/pgp-signature; name=signature.asc
+Link: https://lore.kernel.org/all/20260822013640.182C01F000E9@smtp.kernel.o=
+rg/
 
------BEGIN PGP SIGNATURE-----
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 39790e66b98dc..ec8339e03d584 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaphWUwAKCRB4tDGHoIJi
-0ihnAQC+sM72UQewHQsSjnn+AW0eqHdzt/R0KAaLAwUBiwA+AwEAqOV3gLKg3Hz2
-Jy6DuQe9rageS3PSAzTM9yRM4q8hMgg=
-=+u7D
------END PGP SIGNATURE-----
+[ ... ]
 
---OGMRXVt5Rcvj6VVq--
+> @@ -655,24 +672,30 @@ static int imx_pcie_attach_pd(struct device *dev)
+>  	if (!imx_pcie->pd_pcie)
+>  		return 0;
+>  	link =3D device_link_add(dev, imx_pcie->pd_pcie,
+> -			DL_FLAG_STATELESS |
+>  			DL_FLAG_PM_RUNTIME |
+> -			DL_FLAG_RPM_ACTIVE);
+> +			DL_FLAG_RPM_ACTIVE |
+> +			DL_FLAG_AUTOREMOVE_CONSUMER);
+
+[Severity: High]
+Does changing this link from stateless to managed violate the driver core
+state machine for virtual PM domain devices?
+
+Virtual PM domain devices created on the genpd bus never bind to drivers,
+so their driver status remains DL_DEV_NO_DRIVER. Because of this,
+device_link_add() will initialize a managed link to DL_STATE_DORMANT.
+
+When the consumer device successfully completes its probe, the driver core
+calls device_links_driver_bound(). That function iterates over all managed
+supplier links and evaluates:
+
+WARN_ON(link->status !=3D DL_STATE_CONSUMER_PROBE)
+
+Since this link is dormant, won't this trigger the WARN_ON and turn a
+successful normal boot sequence into a kernel panic on systems with
+panic_on_warn enabled?
+
+>  	if (!link) {
+>  		dev_err(dev, "Failed to add device_link to pcie pd\n");
+> +		imx_pcie_detach_pd(imx_pcie);
+>  		return -EINVAL;
+>  	}
+> =20
+>  	imx_pcie->pd_pcie_phy =3D dev_pm_domain_attach_by_name(dev, "pcie_phy");
+> -	if (IS_ERR(imx_pcie->pd_pcie_phy))
+> -		return PTR_ERR(imx_pcie->pd_pcie_phy);
+> +	if (IS_ERR(imx_pcie->pd_pcie_phy)) {
+> +		int ret =3D PTR_ERR(imx_pcie->pd_pcie_phy);
+> +
+> +		imx_pcie_detach_pd(imx_pcie);
+> +		return ret;
+> +	}
+> =20
+>  	link =3D device_link_add(dev, imx_pcie->pd_pcie_phy,
+> -			DL_FLAG_STATELESS |
+>  			DL_FLAG_PM_RUNTIME |
+> -			DL_FLAG_RPM_ACTIVE);
+> +			DL_FLAG_RPM_ACTIVE |
+> +			DL_FLAG_AUTOREMOVE_CONSUMER);
+
+[Severity: High]
+This has the same issue as the pcie power domain link creation above.
+
+Since DL_FLAG_AUTOREMOVE_CONSUMER implies a managed link, should these
+links for virtual PM domain devices remain DL_FLAG_STATELESS to avoid
+the WARN_ON during device_links_driver_bound()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260902164313.2901=
+302-1-hanzhijian1991@gmail.com?part=3D1
