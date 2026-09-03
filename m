@@ -1,103 +1,104 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67494499B0
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 08:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7199C469846;
+	Thu,  3 Sep 2026 09:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788424726; cv=none; b=WlRXrPjFgg2kWr2o8Esdib049lsjxePGU/EAOjnfopVa2WlklaepY0eG8aOhm/y+4xyzYM7ltUwEbOG2AAWdP/GQ20A/CUUS+DYq+vtGsQso6biDPlgArBzj3kqusYIPayI5+XEcsOsfhZE9z/Z7DxpuRM32cQujCNvO1rK30XE=
+	t=1788426391; cv=none; b=J3XDu1AWOiRoF0IOB7Kz3dPyOz0XLAuJPprfQbaJZx+9bvDhMdPHrZ7tyykwalGDQeYI+Dd3h7TIy27jD7hALo9PbcS9AymddE0ekPnNdYj1dkPWHg1CPKMuQxXOXN3jWRMjPgnCadc0ZISNypMqhCleTBiegzdKocABI463RRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788424726; c=relaxed/simple;
-	bh=GRvwnXHVy/jqUCw/PL8fHu/IurmtPlulBPvKYqgBdWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usp1eiz6W/G6w9dbOAhQMwLzSlmXAd6BbKBuarvpFvw8lpUPCh5B9uhxI+NzKwxb9zYz6D3aU04d5QZRF6FyN5SctHa24E3Imh21Hixs7qMfn2SO2oQT+T4/F2Xd0zh2PWOCXSjgPCBTCeSrUR5IxLA2B6KsvX4evtPB2ptjVkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hFb940hf; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788426391; c=relaxed/simple;
+	bh=T3Nibt0RMBAKTowEo5mkmfusLMTU9MdcH3Q05Dpfm0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JDFhNNtfG9rDeVgu0EAg6Wc4p4jK/f+SAn1THuDFCNyImGae5lOLuUCaw0Qf6PMgoWDURoFcJ5tqlURp4YMAjO69T+5+OpLSzw/X8Xmfw12Y8EZGj1WOUzIxDQhf1rJA9c5LDCFynuRgim0CrpnEtFfDYfoyUXvbjuw5EtVbDPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP0zJOHO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hFb940hf"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4843efcbdb2so1342403f8f.2
-        for <imx@lists.linux.dev>; Thu, 03 Sep 2026 01:38:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788424723; x=1789029523; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GRvwnXHVy/jqUCw/PL8fHu/IurmtPlulBPvKYqgBdWo=;
-        b=hFb940hfv6OIZ+1XGzH284u/ts7lMGsLzknYdEfoOjxft0RGFQk9VL1UQjYSnZeujK
-         EP+fS6Ry0uIjHg58FbBsNZulorYwJgQv2nJ1cRP/RitTjBv48lKrzsF3vRZS8+U2rUBy
-         1KWJOu6TTbxzdIpOWmQRguJ2wuDKNi+nTwT9I7F/XcgaHPvsNmNBtCkCl3kqmQTMCxZK
-         GLD2JnIl/lv2tY9qNoVGQFol8O0kYNyCtdtjIaqMzO/E9GZXB3ZmaZ/3TdblQ6Ajpv3U
-         P1K52ih6paSg02IVax1FZqHGltoeFJTK+1O0W2yHdcf4bkTjJe4wxEPCBeasEgr+fiIe
-         HNMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788424723; x=1789029523;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GRvwnXHVy/jqUCw/PL8fHu/IurmtPlulBPvKYqgBdWo=;
-        b=jUCUbXYkpcLyDlxUBMhPQnwZqBenm76lvayPV8lCQgaQqbaL+MP94Ur+nl5Z1jqq8o
-         Yntd7VnT1JNCd4YGIqZkxTm6ck1uwuULCBahVLs4KkMwWA6ahJeWwNdVnsUc/dii0Kr0
-         Y1/l+Oyvecj8i3y/S05W87S49PyvDXRqEd4A4AlzoOVn7UoEHWR3AoK41I95rkGVj17z
-         vXLASRC9vNxx/Hiqprno+8IVMOIiEcPE4d/AduUfnxbp6M6YLciCfMXZ0bAaDyi9m7/M
-         gWqH9gxfYpWT36b6D+CCg2rPGeeSXRZweFjcqFzcMbOjOUDrR5Zigs3/8zbK3lS0K0Lm
-         ZiPw==
-X-Forwarded-Encrypted: i=1; AKwUvByij41SMTSNuBSoUuuvthAIqsa/9r6cUZjrBpwZ5AXp6ncLY6YrqPicRZpK2G+ZDRjJP4w=@lists.linux.dev
-X-Gm-Message-State: AFuF++lZknqwihxsE3UaahWooI53M6xDZeIjhanub49vQiHDMtQez4U6
-	AR9EzFhVLd2rYwa6wnUo0abgWhSZPI36b/LAESNRyhuLJ7UGzHgncrBI
-X-Gm-Gg: AYBFou2HW+o0nQA5XDKa7jnuxUHN+eYnBUL22N9Eh3kGyTl0QR4Y1znFxC1YjldpwKf
-	3SIncK+t0S97UZTo5P5YvO55VIer8esZjF5lvGStQ4Dtq+reOaN9PakyqXLz30aNVdGK8+5DSe+
-	evO8oWOPOVUJTRjJ8C0/ubBkShOMUFXpGoNaUHCb/OxVn4XZdqSjeKiKB8UQxOsUamDBOZSHJsm
-	uf5I02A1J4T5nEcNw4YSFUKzuB6vB2gOysVIgtqD0nyWs/hYQTfbWpxqnoOHKIhCs9B1lYTqycq
-	/FzkcZQSY2aQztzyE5yDeErpTLyMMeKkWSTlhAccXJLlfy5vTFbqYToMUn5z27ftykfvqMpEc6g
-	Yrtycs6zcngaRhOlzuTZa3tgg87XF6UhjjcpbKfuREEDIsraam9RTjO8dg+oH3Q5RxgQvxEh5XL
-	1ay20cVMqVeUbpRtHW9Ln47SYKARurmmYWYWmLqWCR7I3B/zWTWk5NHN8b5VkXTD4fC6cOejIL+
-	hQK
-X-Received: by 2002:a5d:64c9:0:b0:482:fa3c:3e95 with SMTP id ffacd0b85a97d-48488f07dd0mr17932547f8f.8.1788424723044;
-        Thu, 03 Sep 2026 01:38:43 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448eeae34sm13075059f8f.32.2026.09.03.01.38.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 01:38:42 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Bartosz Golaszewski <brgl@kernel.org>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: Re: [PATCH v5 0/3] gpio: mmio: report the line direction on chips without direction registers
-Date: Thu,  3 Sep 2026 10:38:41 +0200
-Message-ID: <20260903083841.2114833-1-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CAMRc=Mc3u+2ApzMfFFM1L5MJROaQMSifKReJ-3T+9EX3Zdqzfw@mail.gmail.com>
-References: <20260903075940.2089367-1-mehmet.fide@gmail.com> <CAMRc=Mc3u+2ApzMfFFM1L5MJROaQMSifKReJ-3T+9EX3Zdqzfw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP0zJOHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13311F000E9;
+	Thu,  3 Sep 2026 09:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788426390;
+	bh=BJurZ0sDL+PdYyxRCXnRVCg/8ycMguZD9/GnjjsgUOU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eP0zJOHOoS7lq5B3NSCOQTqAOjmyH0JoBfoujISG2iKaiKnt+WPcEXlo5N3TJU8Ji
+	 jn0FxaL+udFQNfzAtnQ/Vq7DpGgE5gtamBbLu0Lx5QNF54eRdnf9hUY1MTtXnco39m
+	 IwIQi83r/ftessLmCGUOhzUXlcmJXlHx+tKFuUXUl1TbXUoduudDYY8O1VQaYIWkEa
+	 ymKukGLoRbZC+/8Cw5K9ObklARRwrrF9IT+8FM2/ZgaPM2ZHRhFuG2E15B8UwteQbT
+	 fBNZRBQ1+x2ez30n0IgBqgj7BjWPOYKG5M1EYkORzVAD5hEljenAdr41RvdzhgbcRW
+	 W86ZfxCwWAl4w==
+Date: Thu, 3 Sep 2026 10:06:25 +0100
+From: Lee Jones <lee@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: Frank.Li@oss.nxp.com,
+	Support Opensource <support.opensource@diasemi.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	"open list:MULTIFUNCTION DEVICES (MFD)" <mfd@lists.linux.dev>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: mfd: da9052: allow dlg,da9053-aa
+ fallback to dlg,da9052
+Message-ID: <20260903090625.GI2133376@google.com>
+References: <20260831201522.51294-1-Frank.Li@oss.nxp.com>
+ <20260901-devourer-pushover-f26c72688255@spud>
+ <20260902102532.GQ2943942@google.com>
+ <20260902-varied-unsent-b99f9f007685@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902-varied-unsent-b99f9f007685@spud>
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+On Wed, 02 Sep 2026, Conor Dooley wrote:
 
-> Why are you spamming the list with multiple versions per day? You're sending
-> a v5 as I'm looking at v4 and I really don't like to have my time wasted like
-> this. Please limit yourself to one iteration a week unless you get a set of
-> comments in which case try to stay at two iterations a week at most.
+> On Wed, Sep 02, 2026 at 11:25:32AM +0100, Lee Jones wrote:
+> > On Tue, 01 Sep 2026, Conor Dooley wrote:
+> > 
+> > > On Mon, Aug 31, 2026 at 04:15:21PM -0400, Frank.Li@oss.nxp.com wrote:
+> > > > From: Frank Li <Frank.Li@nxp.com>
+> > > > 
+> > > > Allow dlg,da9053-aa fallback to dlg,da9052 to fix legacy platform (> 10
+> > > > years) check_dtbs warnings:
+> > > >   arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dtb: dialog@48 (dlg,da9053-aa): compatible: ['dlg,da9053-aa', 'dlg,da9052'] is too long
+> > > >         from schema $id: http://devicetree.org/schemas/mfd/dlg,da9052.yaml
+> > > > 
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > Previous try drop dlg,da9052 at
+> > > > https://lore.kernel.org/imx/20260404-thoughtful-placid-boobook-da26da@quoll/
+> > > > 
+> > > > but Krzy have concern about compablity.
+> > > > 
+> > > > https://lore.kernel.org/imx/20251107-matrimony-showdown-ba6ce6996b2f@spud/
+> > > > 
+> > > > Conor prefer update old dts.
+> > > 
+> > > I don't think these devices are actually compatible, so this fallback
+> > > would be wrong.
+> > > The data comes from the match data, be that spi or i2c, and there's
+> > > explicitly different behaviour for the da9052 and da9053aa.
+> > > I doubt the legacy platform ever worked properly, and this is what should
+> > > have been explained in the PR that Krzysztof denied not just blindly
+> > > citing a dtbs_check problem.
+> > > 
+> > > Nacked-by: Conor Dooley <conor.dooley@microchip.com>
+> > 
+> > At first glance this looks like an Acked-by.
+> > 
+> > IMHO, this is going to cause issues - please rethink this.
+> 
+> As in, use NAKed-by instead or just say NAK without the name/mail?
+> Not entirely sure what you're getting at.
 
-Sorry, that was wrong of me. v5 is v4 with only the get_config()
-documentation corrected (it said the answer comes back packed, it is the
-bare argument), no code change, so please review v5 and ignore v4. No
-further version from me until you and Linus have had your say, and I
-will keep to one iteration a week from now on.
+As in, don't make NACKs looks like acceptance trailers.
 
-Mehmet
+If you're going to "NACK", which I always felt was a bit harsh anyway,
+just say it without making it appear like an official sign-off.  Please.
+
+-- 
+Lee Jones
