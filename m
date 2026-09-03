@@ -1,156 +1,139 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B94EE843
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 16:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689264F30C7
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 16:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788453415; cv=none; b=TKxXpIrYrtKfJDpWH5/MEkIByBTGTAQGgzykXOMh8pX8Qvx03B7BwStVXPQWfNntSozntrJ/hBMCye8Jnd0i+YBeizaC2jDgPKM5P1Ohdp2O2NG5mdWpmS/ot4UhIhJbAc27NxO7evfHjwYDAQVhn8Nt7bKzdsV0IZGJwnYOBkQ=
+	t=1788454072; cv=none; b=DQYhKGIL7+qfo4Hmkexpds5vVFGwDXCi/hNneMOpYKk96//E9ZaQB89KxFXCq419L/O5mD+L69HBaa8V4XbQZMj77cqVt65bs6eRKSmbHBQoMcIhx3KYQJqNpAd9KIyNU54FqLZ9TdfarlIom9Dj10UHj67GSzLBl2Q0IeGziPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788453415; c=relaxed/simple;
-	bh=XydwLZg79QE9i6WsiKtoR53n4EvTxMwuiXwTwuu7/ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C0Hy32Xa7PISTd9IigUdDFPISLlI+3aCGHObujpIv3tYrNO9ZiMFaBtgogsBlcPSHa4NQssUHg7IeS5ePf++ojGxK2j4TdO8+/z2GUHBKPQz/5CgpeLbICWq8FLvEfSpbup/ClWPBMDqXwl4TCUivjHwNgQ2srKHs0azxY/i04k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PlQwKuX5; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788454072; c=relaxed/simple;
+	bh=Q3Oj8C9xs7OwFXcRq/GkyZSIdSxyR3ySBcFgGRhzAoc=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=cYYn9FWuQ0VzlctWs4DgO3NBO3SdpC0C9VFhveitjzIjQ6R+Qv7g7M2lC/WCCJzvNCUCHgr8MYuj3ToDmw5xQdCzPUVDx/fnLPAWV31U8UvllgkxbRGe0yWyOUdeIreEZ+lZvoX64pxRy+AncJSZChHhGlNUeEHHLX9jvd1wDNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=SD6FLgKj; arc=none smtp.client-ip=162.62.57.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PlQwKuX5"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-39682983a0fso3330809a91.3
-        for <imx@lists.linux.dev>; Thu, 03 Sep 2026 09:36:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788453413; x=1789058213; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mx2bivaT9nHj/TUUekmKHf7Mi+OS/7gBxKis+Uo212E=;
-        b=PlQwKuX5/kqCTcW3oMyTfbFlaOlmmlvXqelo5FSwnVVshPA9Qa2BBw+NwXnloOaPVx
-         F/HoZTnECcNvZs65dNKoaeJyX4/86xHMdRaDCyfwzVqohC2TpGRZbIKP5n2fwLQbx36Q
-         A+vy3EEgR6yaaS1awxJbFLhEJrVvRcZPjCKQWwYNaV7Boamtx0hZc7XZEd/fTEwF9S8v
-         HYuaAIRVstlqboi7LcPp9IG1aVkGDXtpPDD5N8RvDU6C2yhA8ZVGf4TNo0yehUdWC1Sf
-         7EdMmIje1RRt5tWV5qO1fLbAlNNPeGbTXnTpG16mauulM5y1HAJLsGaRpvz1Yl+2Z1LP
-         0Ffw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788453413; x=1789058213;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mx2bivaT9nHj/TUUekmKHf7Mi+OS/7gBxKis+Uo212E=;
-        b=J3ASK3p6Hrbqv0bqi/CtDBMiDlczq9ero2PvPIECzfxLccDtr1OBEkVf4sFvBLcoy8
-         M1CGpiSD+27fLvh5OTMn+JYWtOvAmYXav/yPY5DUQRNOob+xxPb9fL/T0+T6jpmnPRhI
-         NIoQ7G+vcFwScCVPzzxzcuw2m73a5DTVRU+y7toFWgmX6dCBzNHpwkTj8vf5Prao3IkL
-         hAdqCkfqMqSjusGnzzdyrwsBm1nB1CWCiQ+uzbNySprModJ7dA2HW/I4hHFIF39MebeG
-         4IHtqrCx7cBSTaxQJqu7r/d1jKsxk2zyj0788o+oKb/Vf5hESYyjKIVP/ljYuqSNcp0T
-         wVfQ==
-X-Forwarded-Encrypted: i=1; AKwUvByv0bcEeCsA4BaIcPIKF9rTLiN2K74NI7/mtjoQTpdQmLWABZT4SR2gK6dnP5C2F0d2pb0=@lists.linux.dev
-X-Gm-Message-State: AFuF++n1pFa1cKTkYWYYPL+n45eHh51JL1/kfDK2i0n52NEMzxso7xJj
-	fMW+brD8AYx5c7TzfEJ2mwvKng6OW3yECNnP5wAf3idgfUSjR5vpLpuU
-X-Gm-Gg: AYBFou14e4aZ1W21GcBF2lxygk5CTUqAoXNNEu1XGvU5ZYLG8L0sOWQu9HG4P+VCcb2
-	yHd0IAvf2FC+5qYid+BiffROYUxW8mFsN/fn+XaSkXWBJii5OKjEdlqsK2+yOR1bE/x4zuYINtY
-	ejo/VeN5kzUxXKz4Kt13vIT/MLkIeBpk96Mgypi5hU9pKokXPnwXXzKhEmDhO5wJozVpGc406zN
-	NxkBdUfDOSsv0+Tl6T0h3mQVwDeHpDK6yLDOum5A2XSnHrkPT6lWjJG6vYq5llt5O6zac/Ocdmy
-	naeKsNxBcCGJObHIdgAuyPxQ1rW6p2UkVU9os3ola/wpT6+TFICA4Grse6zJ4hTrAl4qurLt2jd
-	/zpNDFXLw36d6oy3UaZyFIfL25TMEJ0Zxffi2C8Dbfq+3d+yAHJFDUqyyI8KZZxR3P1jsvgI3NN
-	XiYyTKjsGqDBQg/hjjrGTaqAaEWoCq/75Ouwrkbrm4sqcY1s/KBmRjvA84wQIb/vHXdps=
-X-Received: by 2002:a17:90b:2d83:b0:38f:5801:dc0e with SMTP id 98e67ed59e1d1-39aee049464mr22342206a91.15.1788453413101;
-        Thu, 03 Sep 2026 09:36:53 -0700 (PDT)
-Received: from leonardoc-nb ([179.160.36.119])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b8f44d7sm115281eec.22.2026.09.03.09.36.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 09:36:52 -0700 (PDT)
-Date: Thu, 3 Sep 2026 13:36:47 -0300
-From: Leonardo Costa <leoreis.costa@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Leonardo Costa <leonardo.costa@toradex.com>
-Subject: Re: [PATCH 6/6] arm64: dts: freescale: imx8mp-verdin: Add Mezzanine
- with Toradex Display 10.1" LVDS V2
-Message-ID: <tu5f2ffhfe4vxw2mmdz5qy7svu5a2wi4on3ixrx7zn66chnim2@3tb2jnwp5eke>
-References: <20260813133335.1941580-1-leoreis.costa@gmail.com>
- <20260813133335.1941580-7-leoreis.costa@gmail.com>
- <an3brO5COdw_F76m@SMW015318>
- <rglymw6p4c65yoqz3pjn6e6nq7cil2fa7m7dqghshgdpavby7d@kyza3ceavq6z>
- <an3tiDOUUYLb8PAq@SMW015318>
- <juuc4af7ndbajcl7gzf4tg5qz2q2j5tt3rvql4jbauradujrre@gc5nbdhhixaf>
- <aoSqJ7pHEgJ_RZmr@SMW015318>
- <gsihg6tzkrq6gcygquzbjtiqntvoxp67lo6mqntnmbyvyw7s3y@suv4t26pl5eh>
- <aoW7M1CmaPWDxvhE@SMW015318>
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="SD6FLgKj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1788454057;
+	bh=Q3Oj8C9xs7OwFXcRq/GkyZSIdSxyR3ySBcFgGRhzAoc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SD6FLgKjZpg7hBVajIRSjlIeyxNnrdbaAniY2MdOiH9XjdQGPBzH3l97XwmV1VXvi
+	 qSWmKP7pVsNbuWHFC5T1k1m/8ZyeGd1f2tRO+xN56BOp4eeI0ZacvHP83YyVdgvXZU
+	 n5ae9Jsl711day4PMifqv/l/f+ztHgx3g77eZUbU=
+Received: from LAPTOP-TKBJAGN4.localdomain ([2408:8256:2d01:e2b1:6136:e6c:8ed6:40aa])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id BDE212BE; Fri, 04 Sep 2026 00:47:30 +0800
+X-QQ-mid: xmsmtpt1788454050t17u7474c
+Message-ID: <tencent_578ACB00C8862E1EA60EAC378A712B69BE09@qq.com>
+X-QQ-XMAILINFO: Nxj8FBgDHLvaAaHkTKbSIgNvPfh8cGOvp34W9fJQbK2woihxsiz3NmCGd+4qRs
+	 cNZ58dn8flAQJit9kcgrCCVl3vX8RO6wA+6PBgHLoOCMhIGE/9CPIb9aQnhUyBYzGVO0GXU1dtV8
+	 lHCWCeis5QgvEwQKJEF1Z9pblTUSGojqiPzAgm7esIjUHiAd4ydLZHjTlMRaCcwKZu0T6wHjx1N+
+	 2MGOlqYx+WzUcvwIKWKmYefZvbHQpORQfYlB3Q1VCd7WKt7BkcQGIlK66EEGCJyjtCxe7rUSw78k
+	 Sun3zlRh0/XhbMwIqRMplGsJWdBwb8SYorBIHR9ffFlsei3LIz1syEuo/wIXjAZPygmLk3hNg2ZI
+	 pP2XMOsceMMYjS+RSGrK2Bs0gC9GKG+/E/N9ZmI1/o7SW/cR4ojp6cSVl/G46rda3xZ943IsR1rM
+	 Uhl87uZyRAraaIgQiFbWO22w6rQpc0TsevuCa6PR+/NACfPN0mT8rzbXzbYMjNAuDVcZJLjriVV4
+	 FPEjI45vgbgJQkgWEQ/lisD26HsxeWpD1LXQQW6lopLv6WcucNDYAHaFlv6SpeVxOh8k0YBLZ3gr
+	 4Nw3Ep3llkgqdxFy3HWAnBB7Dld/kp42XoSPCLsHZqThOstOqIN2lPxf4ivP+wMicVIssrMJAbiG
+	 8Aj5nNZVaCH786EcaRNp70wBgTc4llljPER3sVAqwpyNFLzndpNGRWV5d5An86echixihCRvMcCN
+	 XovNGyKesvSnT3bX83FkL4HklJZbVQ/pmt7awmfuiJrEQLyv1sQeP2MHcvz7s0zGzfpLp3NzQwam
+	 fqF4G8Y2OInVA8nXM29gxqK5qg8uEonMdaj/SZJDvb9YXBCPo8GA77nGkLDNpnSpLJp5eyYej7zK
+	 u12vdBxrYbFFYqBgX3weDyhew7rthdLE9nteduQo8UYF00lXx1H1jBZBlwUVdLFfRNwhn3PaPs+o
+	 5xVYsFHkjfKPyz48uloF6aapnhrr8eqgjr+PKgoB+Rd4J2sXLG16hFWJCA5ZYf4toPk+zulwzw73
+	 KgNzLHCJ5dmUuFVUALcu6nskT9/a1qQK9ZB8in9WE7Yk492OyzKK5mXZDsWHg00LcdqH+YrMv5yv
+	 f9yyzP9WmOOjJXOgJajEgRQmCCJpXHURiMt+sXkHIjlccBm7Gl3kCCgZLcbg==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Haobin Jiang <lemonoutput@foxmail.com>
+To: carlos.song@oss.nxp.com
+Cc: Frank.Li@nxp.com,
+	andi.shyti@kernel.org,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	lemonoutput@foxmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	o.rempel@pengutronix.de,
+	s.hauer@pengutronix.de
+Subject: Re: [PATCH v2] i2c: imx: honour I2C_M_IGNORE_NAK
+Date: Fri,  4 Sep 2026 00:47:00 +0800
+X-OQ-MSGID: <20260903164700.3298-1-lemonoutput@foxmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <51425573-3687-486e-876d-f94d57844894@oss.nxp.com>
+References: <51425573-3687-486e-876d-f94d57844894@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoW7M1CmaPWDxvhE@SMW015318>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 19, 2026 at 09:18:27AM -0500, Frank Li wrote:
-> On Wed, Aug 19, 2026 at 08:56:53AM -0300, Leonardo Costa wrote:
-> > On Tue, Aug 18, 2026 at 01:53:27PM -0500, Frank Li wrote:
-> > > On Tue, Aug 18, 2026 at 03:08:33PM -0300, Leonardo Costa wrote:
-> > > > It seems that the drivers are being deferred at boot start by the
-> > > > device_links_check_suppliers() function. It runs through the drivers before
-> > > > they're initialized and defers them if their suppliers are not available. The
-> > > > GPIO and PWM drivers are able to follow the gpio-map and pwm-map properties
-> > > > (through the of_parse_phandle_with_args_map() function), but from what I see,
-> > > > device_links_check_suppliers() has no such mechanism. It follows the phandle to
-> > > > the nexus connector node only, and since there's no compatible driver for it,
-> > > > the function defers the consumer drivers used in the overlay.
-> > > >
-> > > > I think this is what is happening mainly because setting the
-> > > > fw_devlink=permissive kernel parameter (which sets the DL_FLAG_SYNC_STATE_ONLY
-> > > > flag) solved the issue, though I could be misunderstanding something.
-> > > >
-> > > > 	int device_links_check_suppliers(struct device *dev)
-> > > > 	{
-> > > > 		...
-> > > > 		list_for_each_entry(link, &dev->links.suppliers, c_node) {
-> > > > 			...
-> > > >
-> > > > 			if (link->status != DL_STATE_AVAILABLE &&
-> > > > 			    !device_link_test(link, DL_FLAG_SYNC_STATE_ONLY)) {
-> > > >
-> > > > 				...
-> > > > 				device_links_missing_supplier(dev);
-> > > > 				ret = dev_err_probe(dev, -EPROBE_DEFER,
-> > > > 						    "supplier %s not ready\n", dev_name(link->supplier));
-> > > > 				break;
-> > > > 			}
-> > > > 			WRITE_ONCE(link->status, DL_STATE_CONSUMER_PROBE);
-> > > > 		}
-> > > > 		...
-> > > > 	}
-> > > >
-> > > > Has this behavior been observed before? Do you know of any work being done that
-> > > > addresses this?
-> > >
-> > > Does a dummy container driver (for debug) to proof your analyer?  Let
-> > > me to find time to debug it.
-> > >
-> > > Frank
-> >
-> > I made a dummy driver matching that compatible string, and yes, it did
-> > solve the issue.
-> 
-> Thank you very much. Let me think how to fix this problem. Nexus node
-> should be direction overall.
-> 
-> Frank
+Hi Carlos,
 
-Hi Frank,
+Thanks for the review, and sorry for the confusion my v2 caused on
+several points. Let me answer your questions.
 
-FYI, this patch sent as an RFC addresses and solves this issue:
+> Are you using AI to make this patch?
 
-Link: https://lore.kernel.org/all/20260902-fw-devlink-nexus-ready-v1-0-68fe1996e78a@toradex.com/T/#t
+Yes, I did use an AI tool while preparing this patch, and I
+apologise for not stating that upfront. I will describe how it was
+used in the v3 changelog, as described in
+Documentation/process/generated-content.rst.
 
-In the meantime, could we have these overlays merged as they are right now, and
-refactor them to use the nexus connectors later, when that patch is more
-concretely established? We'd like to be able to have these overlays on upstream,
-but we're not sure how long it'll be until that patch is mature enough to be
-accepted and merged.
+> Have you meet one issue on one real platform? Can you share the
+> detail about your devices and platform?
 
-Leonardo
+Yes, an i.MX6ULL on an ALIENTEK i.MX6ULL mini board, with an
+ATECC608A at 0x60 on I2C1. I am writing an out-of-tree ECDSA driver
+for it that reuses the wake pattern of the upstream atmel-i2c
+helper (drivers/crypto/atmel-i2c.c): a wake token sent with
+I2C_M_IGNORE_NAK through i2c_transfer_buffer_flags(). On i2c-imx
+the transfer aborts with -ENXIO at the first, expected NAK because
+the flag is silently dropped, so my driver had to fall back to
+bit-banging SDA over GPIO to wake the chip. I will verify the bus
+behaviour on that board with a logic analyzer and include the
+results and captures with v3.
+
+> After meet NACK, can i2c-imx controller continue to write or read
+> data from FIFO, after NACK normally stop or repeat start, so I am
+> not sure the i2c-imx controller HW will work normally, do you test
+> this?
+
+I will cover this with the tests attached to v3.
+
+> Always goto the PIO path with I2C_M_IGNORE_NAK flag, it is better
+> "return i2c_imx_acked(i2c_imx, false);"?
+
+Agreed, v3 will do that.
+
+> You don't really support the I2C_M_STOP in the code and
+> intentionally ignore I2C_M_STOP check to avoid breaking the
+> imx6qdl-ds,right? Do you work on this platform?
+
+No, I don't have an imx6qdl-ds. The ov2659/SCCB reasoning in the v2
+changelog came from reading the DT and driver code, not from
+hardware, and it will be removed from v3. I2C_M_STOP will stay
+rejected, as in patch [4].
+
+While checking the code I found that patch [4] rejects
+I2C_M_STOP, and in-tree ov2659 on imx6qdl-ds sets I2C_CLIENT_SCCB
+(I2C_M_IGNORE_NAK | I2C_M_STOP) on every message, including the
+chip-ID read at probe, so after [4] lands that probe might fail
+with -EOPNOTSUPP. This is only from reading the code and I might be
+wrong. Similarly, rejecting I2C_M_IGNORE_NAK might affect the
+ATECC508A wake token on imx6qdl-gw5904.
+
+> So can you please rebase your patch on patch[4]?
+
+Yes, v3 will be rebased on top of [4].
+
+I will also fix the sentence spacing in the changelog and comments
+as you asked.
+
+Regards,
+Haobin
+
