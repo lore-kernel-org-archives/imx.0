@@ -1,343 +1,288 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013058.outbound.protection.outlook.com [52.101.83.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19A038B7DC
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 17:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788456613; cv=none; b=JX9ovpH0ge+KftlddnBd9FlWDDpA5CSacMfQcHNx2p+VII3Cc4GfZzqsA9uuhgIclEVM+Oy0wA4Jmj+y6u3zHB/Qi+5YsiilMpp8I50daFIoVkGpQG9NYifCSRSBXHKi7nb5zvCWVcDKBL5dlez4aZWhvLulXFJ8sqBeRRvGOHQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788456613; c=relaxed/simple;
-	bh=kqRN0KkwKLzlSD27WEYVj3mqo9lQk4t/pj6M2HD1yFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ka0bMVBzQTw0t4BNsHR8Tp11G3T8u8S8KoWc0V7PnGX/1cy+YZwqjGxUNwkhqA1DVvbafJkWuEGSkC03yvUr0GAuJwmKXXCcy03C0RfpkLoMmG0QJSx0eI6r2/9oGWaVUHGrbl3ukEiAxCgfcLoxwC+rbfCBZhOb3MLAWEX/bC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MPcndcK8; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D1A3D669C
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 19:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788462673; cv=fail; b=AT4snN63Y+39O6R4TOV8ZwUIy+ZFrXuf45PpbFK6Z16xUWt5IvfNLGPEPHH3HLZkgOu7DAzc3RVQ6JbYApo9NqDRRey/7podulR2+1VMvyQOV03jm0k2gSJkWyvmiuZxBAMTDGYdWosQkrb/m+/1fTk2D/e5q5ILb//G4Rrq3Ko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788462673; c=relaxed/simple;
+	bh=t4yDWAX7F/TR8WH3AQTH7G3+eajAztZ5fl7G1K2cAek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=A81KK3SXjr72lZvxEWk9eZYoAiE8KlNqYGqBU698ibPGwfypVk7BPqQUolEJYLaErNEMaolYw/kVGODIYOmdKSplBmajRUnaepRym9Fn+q5bEL2ZxwuO3/fR/8fPr0V+7nweFOFIsYUuWpByTYpwMt/SE7O8tg/V/YA4EcJqAVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Vxx+rT6j; arc=fail smtp.client-ip=52.101.83.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MPcndcK8"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso615305ad.3
-        for <imx@lists.linux.dev>; Thu, 03 Sep 2026 10:30:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788456610; x=1789061410; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oBzdii0EUHFGQFKd8zeKRUm0f/svlYti0FerJr5HoZQ=;
-        b=MPcndcK8atxkIVUl7o2Mjx8B1p/Fjj6dv87iK9cYE6U50mBbqrfjMBqsK+dEbRv6Xf
-         i/IzrNkw8BlAOpkPh20YAjXkiEd/qgjsTRT/D3Z/gYdirFjflrlG4W8rB+/VTnuIrSoM
-         WFpGWs2YoIeHq1VNUzt3ZFLGv0pPX4CY1z+2gTtNKdJgiB5FkQAWVpM7DyXElNjyIoLn
-         biTP5tg6mq0BV9FDuhKHIcHWIP6XAK+oYWUVDrBbvhEMM9J+jLihNJvhkSFXpbDHxVJf
-         UWflTBldEKI5kyb+d/qrCPPqzlz+VcF62+aOeZNrY3bre+d2jUyfMrmCkmEJSz7yBTQl
-         h0cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788456610; x=1789061410;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oBzdii0EUHFGQFKd8zeKRUm0f/svlYti0FerJr5HoZQ=;
-        b=HQanrv/bl0g3OuZEaQJ5Gq1qfkFQK920p5C/E5HZDRJbCVFZbxndMrjGjCeoZS3YuQ
-         2GnhApKtISjQJoqNxSALkktRNXyOQ268YieUcuDFcYNpl1JQ65EbeXj07Da3arMTOoAV
-         e0ylXClhMFa7ybonzv5+qQ5Facye3yI33/I21qBarE6QeAoY9iB59RNyjAPBZMlS8Bz0
-         4liPsfrHjozSdw7GPqIfMh8CkJkA1A5IdTb14JPg6vYWWVeW0hWdb9By0xSqqGmyZMOQ
-         CpejBE0TX3mE94RhWQxOj5JPiSxkCVh86EJQ4D/vp2cjAdtivtV88Y5ofVNWWH+37xPj
-         paAw==
-X-Forwarded-Encrypted: i=1; AKwUvBzBAzDBN/1erroqCqAT3gEVj1oesRVht4fg61+5bpCiZx+xQAdsf23I3Sel/1imbaMK8Mw=@lists.linux.dev
-X-Gm-Message-State: AFuF++nlDJs5M4CjsSC3GI32KFGfmsDLlCZQjzi/tJfd5GqmZ3MY1Ki1
-	ymdkKKLKIwI04QygoU/JdyIzAB9EFiy78qXF6/ZlbBc2NfWjZZhjY57rNQFTWGN1BHs=
-X-Gm-Gg: AYBFou0Dh9SUetNsSRfjG5gUWG/CHcXSRejcl/ath3koFgmmnMxWB/wbTd2RjysLhdk
-	OMfmteUxUKcm+aVSHA0zx6v2bboxLRbNbbJmicujIJYQ/9spBS8cmZl8jl+qGEQk4Ngq7g7LsQ+
-	YmU4f3DVUQZw/jpIUe9d6+LlR+3xfjKpXnp3ffCp4xQV87I5i0/Sh+JXDMHOvSCQjUPUE9zNuxv
-	AejXc9BdS1E9x1Rw3Bfz06BcOirm3NUsq0Cc1rOyT2p4uQT2ncKiu6KrDB1/EajWGfC0bbilB3e
-	rU0UPqbn1iz1NVYBiCKIjIRY94tfaXLsxRFh2gA+GHA+oAMOjfClIQW4tk4hFfSYxyFdmYu6VWs
-	JkSVwWV5jP7ZA6uY+DWuqaIFea8LioU7Gtw4YS87vEagTCABo9dwKb+jwDpSmpCWxV8vIx6vv70
-	3v8SE8DCsNhLgQy0iWzmCd/iylQTceNiUS9VNmZTYkpvYYtWOC+Gl64jb2wgyHr0LKtKPobQfI4
-	nE=
-X-Received: by 2002:a17:903:3848:b0:2d9:56dd:f804 with SMTP id d9443c01a7336-2db125f00c7mr7573775ad.13.1788456608541;
-        Thu, 03 Sep 2026 10:30:08 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:40c0:ec33:6266:c275])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafed70184sm13249205ad.75.2026.09.03.10.30.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 10:30:07 -0700 (PDT)
-Date: Thu, 3 Sep 2026 11:30:04 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: robh@kernel.org, krzk+dt@kernel.org
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Vxx+rT6j"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DQp7+ajo0hw3Wf258QT1O15FMDQAFT0rzGI6wTnTM+ofsELMJJOZwfiG0ZGPVx7V2GV4z25Z8w0Vrjqa1BKuChO2/mgBtw8X6C86GtmOsKorLHskq2H/gLvqgQKIk5DdJQzDe/qaGHxr3PHhopkyvUo5OWn4UAAQwlHyRsDKQpIyrZ9aBHAGJK0pcUiU7q9q7wNr54kUeI5CM7xM1+xOhnedALL1Sy2pqSDhWZzVRH4yibnjT5t3Et7VMkRtGaqqvFwyKsoeJVrqJnYa94gyhgelM67oh5hBqfWLt8xR6mzpT3qHLG7Y2nUsx4kmg3N/QOhFf1eVkRL5/N21fyKMtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V7qbQTNUzj+jV5r6cRQjR4MwCZrcYayGUDiPOWPEzmQ=;
+ b=j/4/BdCwTdz5DyE7NHmvTEBLSdBjlg6Rp4kRBeA1pFE127RtyRKaCa5dPUROynlj2sbAlGAIgh5A3K9ct7CeMlGyxF4tFMFASBfDm9cgOBKHa+F8XQZpqbi4zpIUhmX+kMoCQ0xSWxQlYIeUdEdWLesZDekgAMTArXg+98wHlVBv2UJGcFt9jaO50J17K9T1YInNIgOQGcFp2QZTY/YXKfoeUW8LeU0shCU/5+M0Vy2QLdmv9/EX32yA/3kmKatLwDa4Fu6i+MvYWJi1wExdZ+UnVnWMaoNtbKRcIZ0dM4TMDUnrNRX6tm0c7d2qyvBG0DQGcueQ3hE0uacxj1av0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V7qbQTNUzj+jV5r6cRQjR4MwCZrcYayGUDiPOWPEzmQ=;
+ b=Vxx+rT6j5LJOcbAEH9li0gKUbAq0FaQf6flkSDtYTLptbXPVuDe9f9dspOyAVSDWCoJMlnkEGJ17i5yBR9HToUl4O5RN3A49k5HMy2fJedaXYGFrPfQIhVu0VOCs20I+7KeDBTcgxj8o092DhSU2Xj0dCQrrB3Sw+WPOTvqsnxdZTstoRGhlHLAWfqjOkZPSGLpnfD4veAJAxrP+9l3ctAgWd0h6yAQZnDeH7ZuriqO/pLIQYQ78IvV0bZz9MpOoV6hD0e2yngO1gUasOYzq8sp8uPTS/VGN016xxlFaZKaU/umBNV7uhaHrtdONpWMlZQvc72LU/QRoPuN2eXMlqw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS8PR04MB8561.eurprd04.prod.outlook.com (2603:10a6:20b:420::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 19:10:56 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 19:10:56 +0000
+Date: Thu, 3 Sep 2026 14:10:45 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Zhijian Han <hanzhijian1991@gmail.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
-	b-padhi@ti.com, Andrew Lunn <andrew@lunn.ch>,
-	viresh.kumar@linaro.org
-Subject: Re: [PATCH v15 2/5] dt-bindings: remoteproc: imx_rproc: Add "rpmsg"
- subnode support
-Message-ID: <apmunD8bkKOu5_Vm@p14s>
-References: <20260721204704.400781-1-shenwei.wang@oss.nxp.com>
- <20260721204704.400781-3-shenwei.wang@oss.nxp.com>
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, sashiko-bot@kernel.org
+Subject: Re: [PATCH v6] PCI: imx6: fix resource leaks in probe error paths
+Message-ID: <apnGNctUMNtaROtr@SMW015318>
+References: <20260903160342.3282199-1-hanzhijian1991@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903160342.3282199-1-hanzhijian1991@gmail.com>
+X-ClientProxiedBy: CY5PR15CA0008.namprd15.prod.outlook.com
+ (2603:10b6:930:14::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260721204704.400781-3-shenwei.wang@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8561:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a8452da-4d51-4bfb-addb-08df09ef14bc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|7416014|23010399003|1800799024|366016|11063799006|6133799003|10067099003|5023799004|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	RqivAUtbVVfOp+VRxGSpPbUc84wM52xFPCG7XLbeRe8BZskbmrbvWPwZxn4BPAaiRXrb/o7rYvKi28e59DBre6Z4EUlM9/VgWa65s0xS0OLPKm05YzX7uNFWtnSBzY5KT3Ld84Ld3mwD1S0ztO127TZdw/2PCMljB1+NBRu0uO17VziT5JOkLehvApF+9QbmmWKGqOHmZMNowfq9qsNF8O6Kp1EL1BWWuE+sm+jwwkAkMx4qPeKZBuMXUA2Xor1PqyguThsXJ2821oWz8UgPSj1STCtDQdF2GHbqI2T4AhjS59ShJ2Zyg4PQmIxUKT8OibUvLaT1JDYdbnI6RSUrMAnKZvr2YRe97jp7ZFH6scs3fBGVxlbrWakfwp3lvnfM8B6gWRI9bshYsRBGoAuMo2KwvOk8wYtAgQfgoz1Pl26oo6rguNpO5pqVgQUEkgexePQNdfHNJwcJhlErUBbeQgXPaQ5v0/ron2Hut2EDt6zeVdvpr97WnVRFURGelbYpST50qF5apC8jpcXlTkPVySjetIkpuvQd70tbbdQlS6di2uWtE46ue18jqEvAufvEC3LdeVNkkteiQFGIfzeyJ/FElWOIlCGDtZtqTy76vrtI6Xkov1/xvKTgK4sRiOgQ7rZQn4iDPPeyvfgnKuHyHKtEeRmr2kwbvpYCNy5bQus=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(23010399003)(1800799024)(366016)(11063799006)(6133799003)(10067099003)(5023799004)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gMEd+UFy+tf5qsfinI7L3cw5VzYrjLgATcVIzhpShRcl+TiUdk3t4Iw/h6Ve?=
+ =?us-ascii?Q?Hf957du4VBHB/Lp5rlRwZJPom2IL7D9e3Vp0iX3W4kJcR+xoV6HOAdLHslrn?=
+ =?us-ascii?Q?4wGFvSbcekhS+TI8dQ0uw4ACmWd/ds0v1ti5di2Spxu9R2zTKiuUlDqCxQ9E?=
+ =?us-ascii?Q?Oco46pWMxRbAWcLbhgeZmF34pKGVAlBJGn8+4cojJJRlSSq1jhrQ625ILmrg?=
+ =?us-ascii?Q?fwJu9OypjW7cDmlhxhzOAjSWcCKz3Y9icg9mT6SrUNtafurpXcnROEZPw1si?=
+ =?us-ascii?Q?OdEN95Mq0FqzIyFmDbycRQF57GJwhkDTjwNhk+OLwdAPwr4jTOHQJgl9GlhM?=
+ =?us-ascii?Q?IsE+nVDCE2KT1oBj6cHIP5EFIDR8q2y7BShjEY93supN56prwv3HxucshoSe?=
+ =?us-ascii?Q?HwDfYQmhsjbeG+Qd7Yp3DhfPu3Un6vuzv4IuNkpkBf4DenZOhcgNuWni0m0w?=
+ =?us-ascii?Q?fT0eD1ag/e7W5Rcfzc65qra0DL3eaNF9CnhW1mg9SzZtkJY/pKeS19Gx4ta9?=
+ =?us-ascii?Q?clYfdxDEmPws7WRRw4jE5+lZ6P5YCSBj0RPjUKphwmUljPx+2E4mfLUpJlH5?=
+ =?us-ascii?Q?jM48fptH7cnlc8rn5lUcnt6tRfdl/1yEmOQN61ZxWQ5jprfygFC56X/7Ebl/?=
+ =?us-ascii?Q?9q4h5+k6Q2R4CWrRp9y//bmDRGn928qo5VzvwgooWO2OrYQ6VZR0I2VlYDf/?=
+ =?us-ascii?Q?kEtmRbzpuBWr2RsmSvQgNa3yPzRMf0ja98MInZTIASC2h4r8fW3FpPRgMbNO?=
+ =?us-ascii?Q?u+xdR8253ktKgPGvTnrNhD9/yI60Pc7VbCDD1EWOV6q/ROYqQGu4ZnMyOtuX?=
+ =?us-ascii?Q?DT+SmFAhBpCPukkVoR57KQCWrN6Lhnw9xB/PvNURahYODZ+IbZ3g39dYvsf0?=
+ =?us-ascii?Q?XlqerxkvxSnvhKKHIDU6QNulwNg1JngdRqFPCiuPyyiPxXlmkpRErPq0dRyU?=
+ =?us-ascii?Q?HVLQ5cKZjzantTln2yiy8RahtMSLy7pILF+PA1F9e9uITlEBWoOrM9jRcFpM?=
+ =?us-ascii?Q?uTEiWf2pYoVGModAf1hgpGeY3kJgXUAVt+4u2IefaovaTCx/S3SMOuboiDjI?=
+ =?us-ascii?Q?qF+4vTB5/XxDQvdm1WM5Z2wJyqozaz38zcV1ZJsIkRmO5UVDMZmovq3h9etE?=
+ =?us-ascii?Q?sWvFxq2mYM41bJBfayLWC/PB9j1MdIcNzd/pniLergy7rPalFkZ6rRRpv2Dy?=
+ =?us-ascii?Q?A/EkSh4uAHE1rCiaG/UiSygSh5GW7AxHPGpuseC1rp2l2Elgdx9ixaIiLRds?=
+ =?us-ascii?Q?h3EebMSIxDOwrfu7ATI+kxkxwt9Z2zs4yG6hLH3gy4IIgAM3bjfdlNaYgOoL?=
+ =?us-ascii?Q?WMU2pf0nWslL34DKCsEU83ULYO3CyirO5gm+1sSY4RZy2WpZR9F9FNr0Nl2t?=
+ =?us-ascii?Q?ouyiqmDivl0m77i8aXUyu0MXIEh0Xm+gtFZtP//ExR5I2Zil+iBjBwiey5Ls?=
+ =?us-ascii?Q?0Od78UtkC5hUex7sJlhqO/+y+SH+0hAwkXYOKzs04cxs+EWyhQC8EpcFpHmY?=
+ =?us-ascii?Q?P669BN8NsaPM8MQfByI4yTxFwKhrjqBIJKtOflcdKNvf/A8QinXGRWaZVxtU?=
+ =?us-ascii?Q?8KV+KcoS2uSbMpLZE1HaVopNjnnP4nv44dUyfjFS3YIlGXtrP3BOBR7hm+i9?=
+ =?us-ascii?Q?8mXJiMElracj/EtrpXOWR+iX7fe14S9I9T1DJe2jXYgr8bWBhmrE0BtfIGRY?=
+ =?us-ascii?Q?fPb4RilFNRCSaAhijJQ4M4ftYACCBgJu2siFQpxJMaQQ3DPwMGp2RrjEmims?=
+ =?us-ascii?Q?+2k0GXP4WZxsKlwXrZ2TfW8z9Z+3N3IfIS3ZtLE8rPffckcruYD3?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a8452da-4d51-4bfb-addb-08df09ef14bc
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 19:10:56.2908
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G3penp/pgh9TOo4bXab9HHRi3heSevi6wd24waXZADU0ZCpusEV3hqAYblNqZfqKdFatPbqdWce6+rJ86l8EcWQbdn/tJp/d3swrncx05Rh+hBALssQrL+wrHjiy/Ncz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8561
 
-Krzysztof and Rob - I'm seeking your advice on the best way to define bindings
-for this use case.
-
-Here is some background:
-
-The transport mechanic between the kernel and remote processors can take
-different forms.  As of this writing we have 'glink' and 'virtio'.  The protocol
-that runs on top of the transport mechanic is RPMSG.  All this is already
-implemented and stable.
-
-In this use case, we have GPIO controllers connected to the remote processor and
-we want to make them available to the kernel.  We also want to use the existing
-virtio-gpio protocol on top of RPMSG, allowing the kernel to interface with the
-GPIO controllers as if they were virtio-gpios.  This patchset is about providing
-a driver that will enact the virtio-gpio procotol on top of the mechanic used
-between the kernel and remote processor.
-
-Shenwei has proposed some bindings (below).  I think they can be improved to
-take into account the transport mechanic and be closer to what virtio-gpio
-currently does.  I'm proposing something like this:
-
-                        $(transport) {
-                                compatible = "$(transport),rpmsg";
-                                #address-cells = <1>;
-                                #size-cells = <0>;
-
-                                gpio {
-                                        compatible = "virtio,device29";
-                                        reg = <3>
-                                        gpio-controller;
-                                        #gpio-cells = <2>;
-                                        interrupt-controller;
-                                        #interrupt-cells = <2>;
-                                };  
-                                gpio {
-                                        compatible = "virtio,device29";
-                                        reg = <4>
-                                        gpio-controller;
-                                        #gpio-cells = <2>;
-                                        interrupt-controller;
-                                        #interrupt-cells = <2>;
-                                };  
-                        }
-
-A complete example with a virtio transport mechanic would look like:
-
-m4_rproc: m4@10000000 {
-                        compatible = "st,stm32mp1-m4";
-                        reg = <0x10000000 0x40000>,
-                              <0x30000000 0x40000>,
-                              <0x38000000 0x10000>;
-                        resets = <&rcc MCU_R>;
-                        reset-names = "mcu_rst";
-                        st,syscfg-holdboot = <&rcc 0x10C 0x1>;
-                        st,syscfg-pdds = <&pwr_mcu 0x0 0x1>;
-                        st,syscfg-rsc-tbl = <&tamp 0x144 0xFFFFFFFF>;
-                        st,syscfg-m4-state = <&tamp 0x148 0xFFFFFFFF>;
-                        status = "disabled";
-
-                        virtio {
-                                compatible = "virtio,rpmsg";
-                                #address-cells = <1>;
-                                #size-cells = <0>;
-
-                                gpio {
-                                        compatible = "virtio,device29";
-                                        reg = <3>
-                                        gpio-controller;
-                                        #gpio-cells = <2>;
-                                        interrupt-controller;
-                                        #interrupt-cells = <2>;
-                                };  
-                                gpio {
-                                        compatible = "virtio,device29";
-                                        reg = <4>
-                                        gpio-controller;
-                                        #gpio-cells = <2>;
-                                        interrupt-controller;
-                                        #interrupt-cells = <2>;
-                                };  
-                        }   
-                };  
-        };
-
-Let me know what you think.
-
-Thanks,
-Mathieu
-
-
-On Tue, Jul 21, 2026 at 03:46:45PM -0500, Shenwei Wang wrote:
-> From: Shenwei Wang <shenwei.wang@nxp.com>
-> 
-> Remote processors may announce multiple GPIO controllers over an RPMSG
-> channel. These GPIO controllers may require corresponding device tree
-> nodes, especially when acting as providers, to supply phandles for their
-> consumers.
-> 
-> Define an RPMSG node to work as a container for a group of RPMSG channels
-> under the imx_rproc node. Each subnode within "rpmsg" represents an
-> individual RPMSG channel. The name of each subnode corresponds to the
-> channel name as defined by the remote processor.
-> 
-> All remote devices associated with a given channel are defined as child
-> nodes under the corresponding channel node.
-> 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+On Fri, Sep 04, 2026 at 12:03:42AM +0800, Zhijian Han wrote:
+> imx_pcie_probe() leaks both pwrctrl devices and power domains on failure:
+>
+> - imx_pcie_attach_pd() attaches the "pcie" and "pcie_phy" power domains
+>   and adds device links to them, but nothing detaches the domains or
+>   removes the links on probe failure or deferral, so they leak.
+>
+> - A failure of devm_pm_runtime_set_active_enabled() returns directly
+>   without destroying the pwrctrl devices.
+>
+> - A partial failure inside imx_pcie_attach_pd() leaks the power domains
+>   that were already attached.
+>
+> Add imx_pcie_detach_pd() to remove the device links and detach the power
+> domains in reverse order of acquisition and register it with
+> devm_add_action_or_reset() so they are released automatically on probe
+> failure.
+>
+> Reported-by: sashiko-bot@kernel.org
+> Link: https://lore.kernel.org/all/20260822013640.182C01F000E9@smtp.kernel.org/
+> Fixes: 2c5768344f88 ("PCI: imx6: Move pci_pwrctrl_create_devices() to imx_pcie_probe()")
+> Signed-off-by: Zhijian Han <hanzhijian1991@gmail.com>
 > ---
->  .../devicetree/bindings/gpio/gpio-rpmsg.yaml  | 55 +++++++++++++++++++
->  .../bindings/remoteproc/fsl,imx-rproc.yaml    | 53 ++++++++++++++++++
->  2 files changed, 108 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-rpmsg.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-rpmsg.yaml b/Documentation/devicetree/bindings/gpio/gpio-rpmsg.yaml
-> new file mode 100644
-> index 000000000000..41eb2e149942
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-rpmsg.yaml
-> @@ -0,0 +1,55 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/gpio/gpio-rpmsg.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> Changes in v6:
+> - Keep the device links stateless and remove them with device_link_del()
+>   in imx_pcie_detach_pd() instead of using DL_FLAG_AUTOREMOVE_CONSUMER,
+>   which creates managed links to power-domain devices that never bind a
+>   driver and would trigger a WARN_ON in device_links_driver_bound()
+>
+> Changes in v5:
+> - Register imx_pcie_detach_pd() with devm_add_action_or_reset() instead
+>   of calling it manually on the error paths
+>
+>  drivers/pci/controller/dwc/pci-imx6.c | 58 ++++++++++++++++++++++-----
+>  1 file changed, 48 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 39790e66b98d..7dd22b4f826a 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -180,8 +180,12 @@ struct imx_pcie {
+>  	struct imx_lut_data	luts[IMX95_MAX_LUT];
+>  	/* power domain for pcie */
+>  	struct device		*pd_pcie;
+> +	/* device link for pcie power domain */
+> +	struct device_link	*pd_link;
+>  	/* power domain for pcie phy */
+>  	struct device		*pd_pcie_phy;
+> +	/* device link for pcie phy power domain */
+> +	struct device_link	*pd_phy_link;
+>  	struct phy		*phy;
+>  	const struct imx_pcie_drvdata *drvdata;
+>
+> @@ -639,10 +643,34 @@ static int imx6q_pcie_abort_handler(unsigned long addr,
+>  }
+>  #endif
+>
+> +static void imx_pcie_detach_pd(struct imx_pcie *imx_pcie)
+> +{
+> +	if (!IS_ERR_OR_NULL(imx_pcie->pd_phy_link)) {
+> +		device_link_del(imx_pcie->pd_phy_link);
+> +		imx_pcie->pd_phy_link = NULL;
+> +	}
+> +	if (!IS_ERR_OR_NULL(imx_pcie->pd_link)) {
+> +		device_link_del(imx_pcie->pd_link);
+> +		imx_pcie->pd_link = NULL;
+> +	}
+> +	if (!IS_ERR_OR_NULL(imx_pcie->pd_pcie_phy)) {
+> +		dev_pm_domain_detach(imx_pcie->pd_pcie_phy, true);
+> +		imx_pcie->pd_pcie_phy = NULL;
+> +	}
+> +	if (!IS_ERR_OR_NULL(imx_pcie->pd_pcie)) {
+> +		dev_pm_domain_detach(imx_pcie->pd_pcie, true);
+> +		imx_pcie->pd_pcie = NULL;
+> +	}
+> +}
 > +
-> +title: Generic RPMSG GPIO Controller
+> +static void imx_pcie_detach_pd_action(void *data)
+> +{
+> +	imx_pcie_detach_pd(data);
+> +}
 > +
-> +maintainers:
-> +  - Shenwei Wang <shenwei.wang@nxp.com>
+>  static int imx_pcie_attach_pd(struct device *dev)
+>  {
+>  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
+> -	struct device_link *link;
+>
+>  	/* Do nothing when in a single power domain */
+>  	if (dev->pm_domain)
+> @@ -654,25 +682,31 @@ static int imx_pcie_attach_pd(struct device *dev)
+>  	/* Do nothing when power domain missing */
+>  	if (!imx_pcie->pd_pcie)
+>  		return 0;
+> -	link = device_link_add(dev, imx_pcie->pd_pcie,
+> -			DL_FLAG_STATELESS |
+> +	imx_pcie->pd_link = device_link_add(dev, imx_pcie->pd_pcie,
+> +					    DL_FLAG_STATELESS |
+>  			DL_FLAG_PM_RUNTIME |
+>  			DL_FLAG_RPM_ACTIVE);
+> -	if (!link) {
+> +	if (!imx_pcie->pd_link) {
+>  		dev_err(dev, "Failed to add device_link to pcie pd\n");
+> +		imx_pcie_detach_pd(imx_pcie);
+>  		return -EINVAL;
+>  	}
+>
+>  	imx_pcie->pd_pcie_phy = dev_pm_domain_attach_by_name(dev, "pcie_phy");
+> -	if (IS_ERR(imx_pcie->pd_pcie_phy))
+> -		return PTR_ERR(imx_pcie->pd_pcie_phy);
+> +	if (IS_ERR(imx_pcie->pd_pcie_phy)) {
+> +		int ret = PTR_ERR(imx_pcie->pd_pcie_phy);
 > +
-> +description:
-> +  On an AMP platform, some GPIO controllers are exposed by the remote processor
-> +  through the RPMSG bus. The RPMSG GPIO transport protocol defines the packet
-> +  structure and communication flow between Linux and the remote firmware. Those
-> +  controllers are managed via this transport protocol. For more details of the
-> +  protocol, check the document below.
-> +  Documentation/driver-api/gpio/gpio-rpmsg.rst
+> +		imx_pcie_detach_pd(imx_pcie);
+> +		return ret;
+> +	}
+>
+> -	link = device_link_add(dev, imx_pcie->pd_pcie_phy,
+> -			DL_FLAG_STATELESS |
+> +	imx_pcie->pd_phy_link = device_link_add(dev, imx_pcie->pd_pcie_phy,
+> +						DL_FLAG_STATELESS |
+>  			DL_FLAG_PM_RUNTIME |
+>  			DL_FLAG_RPM_ACTIVE);
+> -	if (!link) {
+> +	if (!imx_pcie->pd_phy_link) {
+>  		dev_err(dev, "Failed to add device_link to pcie_phy pd\n");
+> +		imx_pcie_detach_pd(imx_pcie);
+>  		return -EINVAL;
+>  	}
+>
+> @@ -1955,6 +1989,10 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		return ret;
+>
+> +	ret = devm_add_action_or_reset(dev, imx_pcie_detach_pd_action, imx_pcie);
+> +	if (ret)
+> +		return ret;
 > +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,rpmsg-gpio
-> +          - const: rpmsg-gpio
-> +      - const: rpmsg-gpio
-> +
-> +  reg:
-> +    description:
-> +      The reg property represents the index of the GPIO controllers. Since
-> +      the driver manages controllers on a remote system, this index tells
-> +      the remote system which controller to operate.
-> +    maxItems: 1
-> +
-> +  "#gpio-cells":
-> +    const: 2
-> +
-> +  gpio-controller: true
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 2
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#gpio-cells"
-> +  - gpio-controller
-> +
-> +allOf:
-> +  - $ref: /schemas/gpio/gpio.yaml#
-> +
-> +unevaluatedProperties: false
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index c18f71b64889..b9b559b186af 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -88,6 +88,34 @@ properties:
->        This property is to specify the resource id of the remote processor in SoC
->        which supports SCFW
->  
-> +  rpmsg:
-> +    type: object
-> +    additionalProperties: false
-> +    description:
-> +      Represents the RPMSG bus between Linux and the remote system. Contains
-> +      a group of RPMSG channel devices running on the bus.
-> +
-> +    properties:
-> +      rpmsg-io:
-> +        type: object
-> +        additionalProperties: false
-> +        properties:
-> +          '#address-cells':
-> +            const: 1
-> +
-> +          '#size-cells':
-> +            const: 0
-> +
-> +        patternProperties:
-> +          "^gpio@[0-9a-f]+$":
-> +            type: object
-> +            $ref: /schemas/gpio/gpio-rpmsg.yaml#
-> +            unevaluatedProperties: false
-> +
-> +        required:
-> +          - '#address-cells'
-> +          - '#size-cells'
-> +
->  required:
->    - compatible
->  
-> @@ -150,5 +178,30 @@ examples:
->                  &mu 3 1>;
->        memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
->        syscon = <&src>;
-> +
-> +      rpmsg {
-> +        rpmsg-io {
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          gpio@0 {
-> +            compatible = "rpmsg-gpio";
-> +            reg = <0>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            #interrupt-cells = <2>;
-> +            interrupt-controller;
-> +          };
-> +
-> +          gpio@1 {
-> +            compatible = "rpmsg-gpio";
-> +            reg = <1>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            #interrupt-cells = <2>;
-> +            interrupt-controller;
-> +          };
-> +        };
-> +      };
->      };
->  ...
-> -- 
-> 2.43.0
-> 
+
+because there is safe guide in imx_pcie_detac_pd_action(), if move it before
+imx_pcie_attach_pd(),  Needn't call imx_pcie_detach_pd() in error path.
+
+Or use goto in for error handle in imx_pcie_attach_pd() instead of duplicate
+call each error branch.
+
+Frank
+
+>  	ret = pci_pwrctrl_create_devices(dev);
+>  	if (ret)
+>  		return dev_err_probe(dev, ret, "failed to create pwrctrl devices\n");
+> @@ -1975,7 +2013,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  			pm_runtime_no_callbacks(dev);
+>  			ret = devm_pm_runtime_set_active_enabled(dev);
+>  			if (ret < 0)
+> -				return ret;
+> +				goto err_pwrctrl_destroy;
+>  		}
+>
+>  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
+>
