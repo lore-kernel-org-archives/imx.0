@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FB947F2D0
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 11:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47CA4772A1
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 11:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788435402; cv=none; b=dhET/xBNT62A3aiLtwKQWk54QUaWxkbmksNsPpSJg/A5Fv/G5Dv0h10t03Kd67TK2Yi6DfnaOBvIpPTLH90ZVJcGQfMK1p+puNrTpsjEk0/6B02Vkio6gUgtcmawVN2r+ZKtZyfDNyg9pAM9DgNO3G1PrmRKkZFHyPM5CVhFOtw=
+	t=1788435481; cv=none; b=MVJOalnrye5YE6SZvcCFyAHshYa25TOkVxkNijlmiPAaSXKWSYfV1h6KwBOCbt2ceNSOCKZoHkYXdiPOELCpYk1HXDWWyYA885rsgUfTFYBthvVlFUH4hzDk2Tdb/Wew6i28ho9Kx+p9jm3SwZ88H51dfmDQMQJ99qIS/ngvhe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788435402; c=relaxed/simple;
-	bh=DtCP/N/4s4lcvVqc/rDjiWB4XcyWX/YxR5f7p2ctCHg=;
+	s=arc-20240116; t=1788435481; c=relaxed/simple;
+	bh=U2NBV6ooqrUwegMZerC6qGql0NvISJGX8k+YjrkTGo4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CONMkS/SguTUov69GpWaGLPCYAk3kJbV3i/FK2WQx3MboOc9XaqGFKjQR5Po/724C+sXuQhX2Z3XVaGzp1ao1Kj0iJAFhtpMMICJ1WYjBS5dmJOL/MCDBMY+45O5Xakb53f9qgwstRnupnLwH+KxBSncNoJpXcI/g06vW3JfCWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRJ7JWLB; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=glEBAzQ5ubOLPgds6vyasAvArwBQyxJSJJ/I5VdCVz09mMG8gFKYZZovG2aRSkoqH8fZdLBQm1JHSxMJDjM5vlrLtc5ERkVXcHlSyS4uFpYjHUkfE1noLgcjh3Mqurm0oWuGkufxyveRBl40Qr/Pi9vH1gGJdxH79k8jHdquHsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mh7/aHji; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRJ7JWLB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3221F00A3A;
-	Thu,  3 Sep 2026 11:36:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mh7/aHji"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28281F000E9;
+	Thu,  3 Sep 2026 11:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788435389;
-	bh=Z+FkFSnFQTOsqj3sIQ04wgxA1+8UrZbwDE6NkMDoAVU=;
+	s=k20260515; t=1788435470;
+	bh=lFVaLwXymsVSYG+aLoKK4ugnot/plBs43vP3RMecoUU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bRJ7JWLBwTnnbID0BYhvtlY1KqutbCnsdOfhMhwJTgGg09ZLJVSc4lPUa/GOrXUA9
-	 6lm3k5RV0dKRz3YV8bItbvQFdo7Gd1ZzXwDSnNruC+pNzXzrKJ5ogHgIJDFsz0l7GZ
-	 LLJwjrdWL87I1zL4I0GWTok3MQHTTrCV+B6m24S+jdIwLPXTNE8ZcpSrpl6lp+kkRF
-	 e2npoiROZaBltpdwQza8gBpt9yIqulntF/RBGlLXOAYIiKrcbWeRYNKLOMzcQ+i98N
-	 fFmSaPl4kXm8glWehhnPoH7jBPWydeKwLVh/wjyes05Vy9xnc/z+TqAWa5hS1SkVEe
-	 /VfyTf4HFbFEw==
+	b=Mh7/aHjiDMYKdkdmsl/pBWk+X9oGAg3X48eLoiPNW2ZfSBEYovC3bqzFkX1yO2GWn
+	 z90aAcXHy7IHl5t07zzmsfoZYOvzKMofqYyaDF+mcbqDnGKmFE36UgYPTG6UlR6xYp
+	 xP4t8Xu9IzQoaOwcdiCvxEsam128AwTvEhbINxtgkKaF7QwPPwUIUDhZZbmBMw19OC
+	 8g0sqrRQOqSz7+dX2nSXSd17+OcfEQhusj5Dt5Z0Q4AZZ2V7lhhTf53DcU4xzUQOVb
+	 XTdr+wqeWphC6BAAOD66TzWcGVaDittc+E7vLr4/wokgEBnp55Wqs800Ic7sAzp8uu
+	 mj+hxy5Lv03bQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 10/13] media: imx7-media-csi: Don't use GFP_DMA when
+Subject: Re: [PATCH 11/13] media: nxp: imx8-isi: Don't use GFP_DMA when
  calling dma_alloc_coherent()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <hebaoquan@kylinos.cn>
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260903111836.1777265-11-hebaoquan@kylinos.cn>
+In-Reply-To: <20260903111836.1777265-12-hebaoquan@kylinos.cn>
 References: <20260903111836.1777265-1-hebaoquan@kylinos.cn>
- <20260903111836.1777265-11-hebaoquan@kylinos.cn>
+ <20260903111836.1777265-12-hebaoquan@kylinos.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 03 Sep 2026 11:36:28 +0000
-Message-Id: <20260903113629.1D3221F00A3A@smtp.kernel.org>
+Date: Thu, 03 Sep 2026 11:37:49 +0000
+Message-Id: <20260903113749.E28281F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,73 +49,69 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Critical] Integer overflow in `sizeimage` calculation and signedness tru=
-ncation in `imx7_csi_alloc_dma_buf()` allow userspace to trigger a massive =
-out-of-bounds DMA write, corrupting kernel memory.
+- [High] Teardown symmetry violation in `mxc_isi_remove()` causing a NULL p=
+ointer dereference / Use-After-Free.
 --
 
-commit 007baffc77bd7059db343099782a06610465cf12
+commit 846491721093e7e929fd40da0be5709669dc9e9f
 Author: Baoquan He <hebaoquan@kylinos.cn>
-Subject: media: imx7-media-csi: Don't use GFP_DMA when calling dma_alloc_co=
-herent()
 
-This commit removes the redundant GFP_DMA flag from the dma_alloc_coherent()
-call in imx7_csi_alloc_dma_buf(). The DMA core already handles device
-addressing limitations and ignores GFP_DMA.
+media: nxp: imx8-isi: Don't use GFP_DMA when calling dma_alloc_coherent()
 
-> diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/drivers/media/=
-platform/nxp/imx7-media-csi.c
-> index 7ddc7ba06e3d4..22c0cbdc92bfb 100644
-> --- a/drivers/media/platform/nxp/imx7-media-csi.c
-> +++ b/drivers/media/platform/nxp/imx7-media-csi.c
-> @@ -466,7 +466,7 @@ static int imx7_csi_alloc_dma_buf(struct imx7_csi *cs=
-i,
+dma_alloc_coherent() allocates the DMA buffer with the device's
+addressing limitation in mind. The DMA core picks the zone from the
+device's coherent DMA mask and ignores GFP_DMA passed by the caller.
+This commit removes the redundant GFP_DMA flag.
+
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drive=
+rs/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> index f45c2aae59ce9..fc907d357149e 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> @@ -773,7 +773,7 @@ static int mxc_isi_video_alloc_discard_buffers(struct=
+ mxc_isi_video *video)
 > =20
->  	buf->len =3D PAGE_ALIGN(size);
->  	buf->virt =3D dma_alloc_coherent(csi->dev, buf->len, &buf->dma_addr,
-> -				       GFP_DMA | GFP_KERNEL);
-> +				       GFP_KERNEL);
-[Severity: Critical]
-This isn't a bug introduced by this patch, but could this allocation lead to
-arbitrary kernel memory corruption?
+>  		buf->size =3D PAGE_ALIGN(video->pix.plane_fmt[i].sizeimage);
+>  		buf->addr =3D dma_alloc_coherent(video->pipe->isi->dev, buf->size,
+> -					       &buf->dma, GFP_DMA | GFP_KERNEL);
+> +					       &buf->dma, GFP_KERNEL);
+>  		if (!buf->addr) {
+>  			mxc_isi_video_free_discard_buffers(video);
+>  			return -ENOMEM;
 
-The size parameter in imx7_csi_alloc_dma_buf() is a signed int. This allows
-large unsigned 32-bit sizeimage values (e.g., between 2 GB and 4 GB) to be
-interpreted as negative, subverting the PAGE_ALIGN macro.
+[Severity: High]
+This isn't a bug introduced by this patch, but looking at the teardown
+sequence in drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:
 
-This seems to be reachable from userspace because imx7_csi_try_fmt() lacks
-bounds checking for width and height in the IMX7_CSI_PAD_SINK case:
+drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:mxc_isi_remove() {
+	...
+	for (i =3D 0; i < isi->pdata->num_channels; ++i) {
+		struct mxc_isi_pipe *pipe =3D &isi->pipes[i];
 
-drivers/media/platform/nxp/imx7-media-csi.c:imx7_csi_try_fmt() {
-    ...
-    case IMX7_CSI_PAD_SINK:
-        *cc =3D imx7_csi_find_mbus_format(sdformat->format.code);
-    ...
+		mxc_isi_pipe_cleanup(pipe);
+	}
+
+	mxc_isi_v4l2_cleanup(isi);
+	...
 }
 
-This allows massive dimensions to bypass validation. When passed to
-__imx7_csi_video_try_fmt(), the 32-bit multiplication overflows without
-prior bounds checking on the total pixel volume:
+Does this code have a teardown symmetry violation causing a use-after-free =
+or
+NULL pointer dereference?
 
-drivers/media/platform/nxp/imx7-media-csi.c:__imx7_csi_video_try_fmt() {
-    ...
-    pixfmt->sizeimage =3D pixfmt->bytesperline * pixfmt->height;
-    ...
-}
+mxc_isi_pipe_cleanup(pipe) is called before mxc_isi_v4l2_cleanup(isi), free=
+ing
+the subdevice active state and setting it to NULL before the user-space
+interfaces are unregistered.
 
-If a user calls VIDIOC_S_FMT with large dimensions (e.g., width=3D32896,
-height=3D65281, and a 16-bpp format), the product wraps around modulo 2^32,
-producing a very small positive sizeimage, or a negative size when passed
-as a signed int to imx7_csi_alloc_dma_buf().
+Because mxc_isi_v4l2_cleanup() has not yet run, the video device nodes are
+still fully registered.
 
-As a result, a tiny buffer is allocated here, but the CSI hardware could
-capture the massive frame and DMA up to 4 GB of data into it, seamlessly
-crossing the buffer boundary.
-
->  	if (!buf->virt)
->  		return -ENOMEM;
->
+Could a concurrent ioctl from user-space, such as VIDIOC_STREAMON, call
+mxc_isi_vb2_prepare_streaming() -> mxc_isi_pipe_acquire() ->
+v4l2_subdev_lock_and_get_active_state() and dereference the now-NULL
+active_state?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903111836.1777=
-265-1-hebaoquan@kylinos.cn?part=3D10
+265-1-hebaoquan@kylinos.cn?part=3D11
