@@ -1,48 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4178328267;
-	Thu,  3 Sep 2026 22:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563B13AA4E3;
+	Thu,  3 Sep 2026 22:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788474262; cv=none; b=pGKUoEQYXJvRYBSpgB77rXLU8Fd/7ZmCqWCxZkKuvcRdTKSWfA9ldB1vz7pFjlFqbTI6wYiAoJJzD+t2HUFprUA6Fi8pkPlCAHJSwWXW1DI5WwpVFkgIDkP9uPb8yDS9aGskYn20O5WO4E6vYMRjELKUopV8tkzYPWDqd8Ep+Hs=
+	t=1788474280; cv=none; b=Og8+o66aNNTWw3rtH6jK3c4dxafZnewiIlo3UIMuzc6OHvD30WjtQsBT7txQFIVn9UL9FhWSW8EmuiQigKWLB6BO6esh5HsH4pNgjI7AXNEXNrYgRvJmj3epretVaEn2I0Kr4WkgTgQucl+42/KBuKxXQfw2UEWXf37mqPy4Omg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788474262; c=relaxed/simple;
-	bh=R5ecAYavOe/shWm/VHZyOlX0ILQ6IoRlJWrBllw86so=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ewzpQFitxtTkx9+0fNJO+nlQod5U9kc559tX42UllPYV8dsYY/DsWmA2ITESxGCP6F5JoZkPMdd4N4wbea7mfUT4CSKvMBgqESMmKWiuwuJTXQvzVjQh1h5N1RPf5QlhZ3+xKYwGuKG3PtmYpCqwjI55hqGRucPoRLUYjTZpwGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfsP5sYC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788474280; c=relaxed/simple;
+	bh=o9uzqH/w6XKwn5FtgV9y4TYcpyP6F+RzZt3Ix+RbXE8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=XOJEPqzOlRwAgqmFc4Ij2dLuGxlve5CyvIfyXlgorAKbXxh5aa8cVGTcHWEpukyCYoGIqSwF4IanEVr38pojtTL4uiF85D+Ra/AgvSU5SP3nRmmMzQOfHDltkkKB5P+F6t+k9nFQ54F4ve8dBrbZ5NDe6IzN98rNCj8M8R9b5kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RR6bZ93M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfsP5sYC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3331F000E9;
-	Thu,  3 Sep 2026 22:24:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RR6bZ93M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29251F000E9;
+	Thu,  3 Sep 2026 22:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788474261;
-	bh=r4Awgxk/6qZuiOs5NBt5iKLdvwHRlQ2uTPMeZaAPeN4=;
-	h=From:To:In-Reply-To:References:Subject:Date;
-	b=BfsP5sYC5/Nqio8sYBOh02H7pgewe4wVisN9kP+lp33gRywxmrMQN3m55asg1ljwb
-	 V70GJjlOaK4UQusnacxTH4HHAG0zvDr4NKrpPX2/+YtlUrB9AGLPYkcBc9MJDTvoKq
-	 LqwiELoZMy8Jj8A5BDEq2H7eEoZJAMIGSvsq7FgxDQLFU+WLkLXYBrkRa03ENyB4n5
-	 Wer75FnMMZuFbMiWqw/72AyxOhvU736AIPMpbGwa44QiCG5fRCj/GfGajKP8w2ZOwA
-	 nDdM1qLakaJbsBfKTsLdbIdkft0cgqpvz87JUGinczdAvUi+05RSPn7E6IQ165hL9O
-	 9soUu5ewR1+3g==
+	s=k20260515; t=1788474279;
+	bh=smD2RzcQBWDNrK4LEeA/1TKZQemBO3xLKFescR1Sxss=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=RR6bZ93M0gt2Hb5ioYGNh7LSGBrvNKO4FXtvtZPs1lYw8sb0qUrgq48XMBIjw0bPy
+	 Pxb1ZxIMwu0ei5SOWtqTSwKP0vDWJWADDX+e28FdYUj5ph8sH8n7Uz8Hc1c8hBLGAM
+	 IGhNKWMUcTSJUIjAuQpdVmWNjhiBknH+OVJ04oOhJvZwe5joA8dDp2cv4+KBBACXKn
+	 W/1SKSUrYf9TT6Msy5SqCQFTLQ4ysdBZlTPHGRAsQ4VBgdR3TpKoibdvw7iXhTLwcP
+	 TWbdGT+atAnvFSwW1r4Kc/u+UJ4OhH1I+xC19xcxVqyj/sIPXyvSswSTykSjcBdg0v
+	 iLjjAmgTBhJMw==
 From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-In-Reply-To: <20260830084046.14679-2-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260830084046.14679-2-krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v2] ASoC: dt-bindings: imx-audmux: Replace tabs with
- spaces
-Message-Id: <178846125559.7659.2373412974052957861.b4-ty@b4>
-Date: Thu, 03 Sep 2026 19:47:35 +0100
+To: Samuel Kayode <samkay014@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20260903082010.4024603-1-donggeunyoo.kernel@gmail.com>
+References: <20260903082010.4024603-1-donggeunyoo.kernel@gmail.com>
+Subject: Re: [PATCH] regulator: pf1550: fix division by zero in the ramp
+ rate selection
+Message-Id: <178847061240.628640.146201407366789198.b4-ty@b4>
+Date: Thu, 03 Sep 2026 22:23:32 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,29 +46,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
- h=from:subject:message-id; bh=R5ecAYavOe/shWm/VHZyOlX0ILQ6IoRlJWrBllw86so=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqmfOQANCyZh+kF83YBereludMZCIbGXvNHdv9n
- qSQ+PVVaVyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapnzkAAKCRAk1otyXVSH
- 0MZ1B/911WzFcnjK0xMG7i2UmccxCAPh6RL/mwROCe+M5azXO87QCxfvoM0RiglkxDPFuPKpnsu
- eU/Xz0Y/Gt1k3tV6S8CpmS+hlcwEDefNFOCnG19IeZ2gVLHEwR0QJUwoZzfcUj6joLb/BQyizk9
- DWuTi0Rkp0NjJQl5/AfBHRt5dAgEqvnfsc08o4mj6N41kpKYpYYFKWPoMTDYZEBAPeqRTp7JLey
- bdLtxNvfe9kW5dtw6dbun8R2VoYjOLoCh/n1keImYM12ZzpU8cXKUdABuC+NeDKJKnWQJx1MbrK
- K9HBvaFfkmdSYsxaqNs4kxnbv+eAlDSbUVtmC4QvA6T4rUET
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1154; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=o9uzqH/w6XKwn5FtgV9y4TYcpyP6F+RzZt3Ix+RbXE8=;
+ b=owEBbAGT/pANAwAKASTWi3JdVIfQAcsmYgBqmfOjqz4ubgzwbsBp12oMWMfEGKhdcy75vkLuP
+ 7FPErnnN4uJATIEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapnzowAKCRAk1otyXVSH
+ 0ITlB/jjrLGMCXqftt8DqMZ7+LpUFeMImdmukYi5ITSX/Dz4CckBDKTJlzK/qZMLWOHZXFh4KNG
+ 4wUNLYCRIOLehXJt+TEwEtdtccIcWDa3GGnM//24LvGj1wd2uZCqXBbHHwoE5S+ndFIsXBgsY25
+ VmZMHGGbA8QgSQY65XqF0XBhOeDpDOo6sw/8AQLYJbr/bS6kXecJzSZtmFwWOepTVRv9+zmLcyG
+ ggXaRu/KD88vKnjfhZh+TVJoSyyYc9HgGtI1Z729O9oBYzlJycXCEMbPduQRWAb7J8SCon7iSjy
+ EUMeRWKmlqChJrbWEYL3iZQ547yto7WFUznUJ1xbjN6AWcg=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sun, 30 Aug 2026 10:40:47 +0200, Krzysztof Kozlowski wrote:
-> ASoC: dt-bindings: imx-audmux: Replace tabs with spaces
+On Thu, 03 Sep 2026 17:20:09 +0900, Donggeun Yoo wrote:
+> regulator: pf1550: fix division by zero in the ramp rate selection
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.4
 
 Thanks!
 
-[1/1] ASoC: dt-bindings: imx-audmux: Replace tabs with spaces
-      https://git.kernel.org/broonie/sound/c/9e6ad2ba055f
+[1/1] regulator: pf1550: fix division by zero in the ramp rate selection
+      https://git.kernel.org/broonie/sound/c/f0c54cc56a9a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
