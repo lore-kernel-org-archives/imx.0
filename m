@@ -1,118 +1,121 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854974657FE;
-	Thu,  3 Sep 2026 11:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FB947F2D0
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 11:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788435392; cv=none; b=iyEfJVobiJP6Se7GM6Oae6DWBg7VW5GxYO2iPBdeK6nEEDihtBYjP4qZ0T1m3srY15q0kboAKfy10TAe9INSOzQYFVKWuxkLZioY9vEqXsBrCQAq5EDdBMOiVB26ryYYTiIeEpvbhZMz6a1oRvtc+iN9PFcBJ9ci4PDY9ZTlMck=
+	t=1788435402; cv=none; b=dhET/xBNT62A3aiLtwKQWk54QUaWxkbmksNsPpSJg/A5Fv/G5Dv0h10t03Kd67TK2Yi6DfnaOBvIpPTLH90ZVJcGQfMK1p+puNrTpsjEk0/6B02Vkio6gUgtcmawVN2r+ZKtZyfDNyg9pAM9DgNO3G1PrmRKkZFHyPM5CVhFOtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788435392; c=relaxed/simple;
-	bh=4BrUozfJNo0rG4OrODIJWwKKspx4G6mMrrRp7O0dnQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qzJpM6wxAsT4gIbbIlBPvCEPV1VGBAvHlf/031b38lpRn5eybF8s0kEHP01ed8aZe5Yg6KDDJGIvUvyGoVAXhPz85UzcxtReI8R+KPWmMk3kyOvA2258b/gVEtLKVzz0rZptWKFH0X3b9EnN9KruwkL2jM31iUDon8la6E1cFEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRDM+4W6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788435402; c=relaxed/simple;
+	bh=DtCP/N/4s4lcvVqc/rDjiWB4XcyWX/YxR5f7p2ctCHg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CONMkS/SguTUov69GpWaGLPCYAk3kJbV3i/FK2WQx3MboOc9XaqGFKjQR5Po/724C+sXuQhX2Z3XVaGzp1ao1Kj0iJAFhtpMMICJ1WYjBS5dmJOL/MCDBMY+45O5Xakb53f9qgwstRnupnLwH+KxBSncNoJpXcI/g06vW3JfCWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRJ7JWLB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRDM+4W6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037631F000E9;
-	Thu,  3 Sep 2026 11:36:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRJ7JWLB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3221F00A3A;
+	Thu,  3 Sep 2026 11:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788435383;
-	bh=wrVEUaKDCxXfXSiIelEGPpoYL6FTx7PTDLeMKbSuEgU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NRDM+4W6Kx1wgNOjbukiCqHo/tSG95NOqtnKCE0GtS8m7HX7kgUaW3mJHhHgaIh6S
-	 OQ8rwMA82m+AF+sBDQNqTBzb1RwflASZbJ1r/IANBk6tYgV/Yu5Tb8sG2tHOttN/S1
-	 a9Hj4DaaX+9ZscuiDxnYT3giYzaF4jJ8pkx1kziIMzmR+dR0F4KGIeZxrpNcJVuRUt
-	 6mQ5p89NC7nX1OG+809dM+ZbG8Gv1jArkOMlj64eyXTZnp6XQ1ugGFabT4Jd2JUMif
-	 PxuHwdRacwmiHUXBBUvcrfDTcmFagzgLlO8HbrmJcd9WI5oK5hppRRHZN3CtoyU0bc
-	 n5Et8HmqmvI1w==
-Date: Thu, 3 Sep 2026 12:36:18 +0100
-From: Lee Jones <lee@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, Frank.Li@oss.nxp.com,
-	Support Opensource <support.opensource@diasemi.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	"open list:MULTIFUNCTION DEVICES (MFD)" <mfd@lists.linux.dev>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: mfd: da9052: allow dlg,da9053-aa
- fallback to dlg,da9052
-Message-ID: <20260903113618.GR2133376@google.com>
-References: <20260831201522.51294-1-Frank.Li@oss.nxp.com>
- <20260901-devourer-pushover-f26c72688255@spud>
- <20260902102532.GQ2943942@google.com>
- <20260902-varied-unsent-b99f9f007685@spud>
- <20260903090625.GI2133376@google.com>
- <20260903-vague-sassy-cow-d2d6c8@quoll>
+	s=k20260515; t=1788435389;
+	bh=Z+FkFSnFQTOsqj3sIQ04wgxA1+8UrZbwDE6NkMDoAVU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bRJ7JWLBwTnnbID0BYhvtlY1KqutbCnsdOfhMhwJTgGg09ZLJVSc4lPUa/GOrXUA9
+	 6lm3k5RV0dKRz3YV8bItbvQFdo7Gd1ZzXwDSnNruC+pNzXzrKJ5ogHgIJDFsz0l7GZ
+	 LLJwjrdWL87I1zL4I0GWTok3MQHTTrCV+B6m24S+jdIwLPXTNE8ZcpSrpl6lp+kkRF
+	 e2npoiROZaBltpdwQza8gBpt9yIqulntF/RBGlLXOAYIiKrcbWeRYNKLOMzcQ+i98N
+	 fFmSaPl4kXm8glWehhnPoH7jBPWydeKwLVh/wjyes05Vy9xnc/z+TqAWa5hS1SkVEe
+	 /VfyTf4HFbFEw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 10/13] media: imx7-media-csi: Don't use GFP_DMA when
+ calling dma_alloc_coherent()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Baoquan He" <hebaoquan@kylinos.cn>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260903111836.1777265-11-hebaoquan@kylinos.cn>
+References: <20260903111836.1777265-1-hebaoquan@kylinos.cn>
+ <20260903111836.1777265-11-hebaoquan@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 03 Sep 2026 11:36:28 +0000
+Message-Id: <20260903113629.1D3221F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903-vague-sassy-cow-d2d6c8@quoll>
 
-On Thu, 03 Sep 2026, Krzysztof Kozlowski wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-> On Thu, Sep 03, 2026 at 10:06:25AM +0100, Lee Jones wrote:
-> > On Wed, 02 Sep 2026, Conor Dooley wrote:
-> > 
-> > > On Wed, Sep 02, 2026 at 11:25:32AM +0100, Lee Jones wrote:
-> > > > On Tue, 01 Sep 2026, Conor Dooley wrote:
-> > > > 
-> > > > > On Mon, Aug 31, 2026 at 04:15:21PM -0400, Frank.Li@oss.nxp.com wrote:
-> > > > > > From: Frank Li <Frank.Li@nxp.com>
-> > > > > > 
-> > > > > > Allow dlg,da9053-aa fallback to dlg,da9052 to fix legacy platform (> 10
-> > > > > > years) check_dtbs warnings:
-> > > > > >   arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dtb: dialog@48 (dlg,da9053-aa): compatible: ['dlg,da9053-aa', 'dlg,da9052'] is too long
-> > > > > >         from schema $id: http://devicetree.org/schemas/mfd/dlg,da9052.yaml
-> > > > > > 
-> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > ---
-> > > > > > Previous try drop dlg,da9052 at
-> > > > > > https://lore.kernel.org/imx/20260404-thoughtful-placid-boobook-da26da@quoll/
-> > > > > > 
-> > > > > > but Krzy have concern about compablity.
-> > > > > > 
-> > > > > > https://lore.kernel.org/imx/20251107-matrimony-showdown-ba6ce6996b2f@spud/
-> > > > > > 
-> > > > > > Conor prefer update old dts.
-> > > > > 
-> > > > > I don't think these devices are actually compatible, so this fallback
-> > > > > would be wrong.
-> > > > > The data comes from the match data, be that spi or i2c, and there's
-> > > > > explicitly different behaviour for the da9052 and da9053aa.
-> > > > > I doubt the legacy platform ever worked properly, and this is what should
-> > > > > have been explained in the PR that Krzysztof denied not just blindly
-> > > > > citing a dtbs_check problem.
-> > > > > 
-> > > > > Nacked-by: Conor Dooley <conor.dooley@microchip.com>
-> > > > 
-> > > > At first glance this looks like an Acked-by.
-> > > > 
-> > > > IMHO, this is going to cause issues - please rethink this.
-> > > 
-> > > As in, use NAKed-by instead or just say NAK without the name/mail?
-> > > Not entirely sure what you're getting at.
-> > 
-> > As in, don't make NACKs looks like acceptance trailers.
-> > 
-> > If you're going to "NACK", which I always felt was a bit harsh anyway,
-> > just say it without making it appear like an official sign-off.  Please.
-> 
-> Heh, tag is correct if maintainer, e.g. you in this case, would like to
-> take such patch still. There were already such cases, I did it once as
-> well to express that I do not agree with the approach taken by other
-> maintainer and I want to be sure that a commit in git history will never
-> be used in future discussions against my review (because this happens
-> all the time "I found commit like this, so I can add here poor code").
+Pre-existing issues:
+- [Critical] Integer overflow in `sizeimage` calculation and signedness tru=
+ncation in `imx7_csi_alloc_dma_buf()` allow userspace to trigger a massive =
+out-of-bounds DMA write, corrupting kernel memory.
+--
 
-I wouldn't take the patch if it was NACKed.
+commit 007baffc77bd7059db343099782a06610465cf12
+Author: Baoquan He <hebaoquan@kylinos.cn>
+Subject: media: imx7-media-csi: Don't use GFP_DMA when calling dma_alloc_co=
+herent()
 
--- 
-Lee Jones
+This commit removes the redundant GFP_DMA flag from the dma_alloc_coherent()
+call in imx7_csi_alloc_dma_buf(). The DMA core already handles device
+addressing limitations and ignores GFP_DMA.
+
+> diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/drivers/media/=
+platform/nxp/imx7-media-csi.c
+> index 7ddc7ba06e3d4..22c0cbdc92bfb 100644
+> --- a/drivers/media/platform/nxp/imx7-media-csi.c
+> +++ b/drivers/media/platform/nxp/imx7-media-csi.c
+> @@ -466,7 +466,7 @@ static int imx7_csi_alloc_dma_buf(struct imx7_csi *cs=
+i,
+> =20
+>  	buf->len =3D PAGE_ALIGN(size);
+>  	buf->virt =3D dma_alloc_coherent(csi->dev, buf->len, &buf->dma_addr,
+> -				       GFP_DMA | GFP_KERNEL);
+> +				       GFP_KERNEL);
+[Severity: Critical]
+This isn't a bug introduced by this patch, but could this allocation lead to
+arbitrary kernel memory corruption?
+
+The size parameter in imx7_csi_alloc_dma_buf() is a signed int. This allows
+large unsigned 32-bit sizeimage values (e.g., between 2 GB and 4 GB) to be
+interpreted as negative, subverting the PAGE_ALIGN macro.
+
+This seems to be reachable from userspace because imx7_csi_try_fmt() lacks
+bounds checking for width and height in the IMX7_CSI_PAD_SINK case:
+
+drivers/media/platform/nxp/imx7-media-csi.c:imx7_csi_try_fmt() {
+    ...
+    case IMX7_CSI_PAD_SINK:
+        *cc =3D imx7_csi_find_mbus_format(sdformat->format.code);
+    ...
+}
+
+This allows massive dimensions to bypass validation. When passed to
+__imx7_csi_video_try_fmt(), the 32-bit multiplication overflows without
+prior bounds checking on the total pixel volume:
+
+drivers/media/platform/nxp/imx7-media-csi.c:__imx7_csi_video_try_fmt() {
+    ...
+    pixfmt->sizeimage =3D pixfmt->bytesperline * pixfmt->height;
+    ...
+}
+
+If a user calls VIDIOC_S_FMT with large dimensions (e.g., width=3D32896,
+height=3D65281, and a 16-bpp format), the product wraps around modulo 2^32,
+producing a very small positive sizeimage, or a negative size when passed
+as a signed int to imx7_csi_alloc_dma_buf().
+
+As a result, a tiny buffer is allocated here, but the CSI hardware could
+capture the massive frame and DMA up to 4 GB of data into it, seamlessly
+crossing the buffer boundary.
+
+>  	if (!buf->virt)
+>  		return -ENOMEM;
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903111836.1777=
+265-1-hebaoquan@kylinos.cn?part=3D10
