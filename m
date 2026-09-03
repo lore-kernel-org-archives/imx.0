@@ -1,139 +1,174 @@
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689264F30C7
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 16:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788454072; cv=none; b=DQYhKGIL7+qfo4Hmkexpds5vVFGwDXCi/hNneMOpYKk96//E9ZaQB89KxFXCq419L/O5mD+L69HBaa8V4XbQZMj77cqVt65bs6eRKSmbHBQoMcIhx3KYQJqNpAd9KIyNU54FqLZ9TdfarlIom9Dj10UHj67GSzLBl2Q0IeGziPo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788454072; c=relaxed/simple;
-	bh=Q3Oj8C9xs7OwFXcRq/GkyZSIdSxyR3ySBcFgGRhzAoc=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=cYYn9FWuQ0VzlctWs4DgO3NBO3SdpC0C9VFhveitjzIjQ6R+Qv7g7M2lC/WCCJzvNCUCHgr8MYuj3ToDmw5xQdCzPUVDx/fnLPAWV31U8UvllgkxbRGe0yWyOUdeIreEZ+lZvoX64pxRy+AncJSZChHhGlNUeEHHLX9jvd1wDNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=SD6FLgKj; arc=none smtp.client-ip=162.62.57.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD2D4F30C9
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 16:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788454488; cv=fail; b=Yp0ItLxqrd9aGYKaBSlTw5D0zv7vwK5g53vaXiy5yHH7g0BBgnEz9CI/HkRh4fQLcJrOXJUoHEw/sZihkS3MHnCmZobtzow+3rIEVJ8RrcXwNBHQi3J37i3Rk2p96xwQLzBpZrQDReCbbt/ZCRLmvwUXoxqmnfOtCw/4cKFA7UU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788454488; c=relaxed/simple;
+	bh=qxGFKtIwqexIyanabnkAvaMG13BpEdCZDONgyI9oWR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mdOe/h3asdx7Sghy86uR/gBSDcW27bzHKiGe95zqmXXtw9TVgGBhhHT567/WBceGXMRnHc4YJtzLwp5DDXn3M7VjQxaX9ZP5ck8SqXLZcDp3G2D0CuhHk4vAjnLFtAR4Mc7pxbJ/DtlOJmFQxC4bnlxgAhQl9K/729BL7vhYI4I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=t0fa7f6s; arc=fail smtp.client-ip=52.101.69.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="SD6FLgKj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1788454057;
-	bh=Q3Oj8C9xs7OwFXcRq/GkyZSIdSxyR3ySBcFgGRhzAoc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SD6FLgKjZpg7hBVajIRSjlIeyxNnrdbaAniY2MdOiH9XjdQGPBzH3l97XwmV1VXvi
-	 qSWmKP7pVsNbuWHFC5T1k1m/8ZyeGd1f2tRO+xN56BOp4eeI0ZacvHP83YyVdgvXZU
-	 n5ae9Jsl711day4PMifqv/l/f+ztHgx3g77eZUbU=
-Received: from LAPTOP-TKBJAGN4.localdomain ([2408:8256:2d01:e2b1:6136:e6c:8ed6:40aa])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id BDE212BE; Fri, 04 Sep 2026 00:47:30 +0800
-X-QQ-mid: xmsmtpt1788454050t17u7474c
-Message-ID: <tencent_578ACB00C8862E1EA60EAC378A712B69BE09@qq.com>
-X-QQ-XMAILINFO: Nxj8FBgDHLvaAaHkTKbSIgNvPfh8cGOvp34W9fJQbK2woihxsiz3NmCGd+4qRs
-	 cNZ58dn8flAQJit9kcgrCCVl3vX8RO6wA+6PBgHLoOCMhIGE/9CPIb9aQnhUyBYzGVO0GXU1dtV8
-	 lHCWCeis5QgvEwQKJEF1Z9pblTUSGojqiPzAgm7esIjUHiAd4ydLZHjTlMRaCcwKZu0T6wHjx1N+
-	 2MGOlqYx+WzUcvwIKWKmYefZvbHQpORQfYlB3Q1VCd7WKt7BkcQGIlK66EEGCJyjtCxe7rUSw78k
-	 Sun3zlRh0/XhbMwIqRMplGsJWdBwb8SYorBIHR9ffFlsei3LIz1syEuo/wIXjAZPygmLk3hNg2ZI
-	 pP2XMOsceMMYjS+RSGrK2Bs0gC9GKG+/E/N9ZmI1/o7SW/cR4ojp6cSVl/G46rda3xZ943IsR1rM
-	 Uhl87uZyRAraaIgQiFbWO22w6rQpc0TsevuCa6PR+/NACfPN0mT8rzbXzbYMjNAuDVcZJLjriVV4
-	 FPEjI45vgbgJQkgWEQ/lisD26HsxeWpD1LXQQW6lopLv6WcucNDYAHaFlv6SpeVxOh8k0YBLZ3gr
-	 4Nw3Ep3llkgqdxFy3HWAnBB7Dld/kp42XoSPCLsHZqThOstOqIN2lPxf4ivP+wMicVIssrMJAbiG
-	 8Aj5nNZVaCH786EcaRNp70wBgTc4llljPER3sVAqwpyNFLzndpNGRWV5d5An86echixihCRvMcCN
-	 XovNGyKesvSnT3bX83FkL4HklJZbVQ/pmt7awmfuiJrEQLyv1sQeP2MHcvz7s0zGzfpLp3NzQwam
-	 fqF4G8Y2OInVA8nXM29gxqK5qg8uEonMdaj/SZJDvb9YXBCPo8GA77nGkLDNpnSpLJp5eyYej7zK
-	 u12vdBxrYbFFYqBgX3weDyhew7rthdLE9nteduQo8UYF00lXx1H1jBZBlwUVdLFfRNwhn3PaPs+o
-	 5xVYsFHkjfKPyz48uloF6aapnhrr8eqgjr+PKgoB+Rd4J2sXLG16hFWJCA5ZYf4toPk+zulwzw73
-	 KgNzLHCJ5dmUuFVUALcu6nskT9/a1qQK9ZB8in9WE7Yk492OyzKK5mXZDsWHg00LcdqH+YrMv5yv
-	 f9yyzP9WmOOjJXOgJajEgRQmCCJpXHURiMt+sXkHIjlccBm7Gl3kCCgZLcbg==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: Haobin Jiang <lemonoutput@foxmail.com>
-To: carlos.song@oss.nxp.com
-Cc: Frank.Li@nxp.com,
-	andi.shyti@kernel.org,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	lemonoutput@foxmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	o.rempel@pengutronix.de,
-	s.hauer@pengutronix.de
-Subject: Re: [PATCH v2] i2c: imx: honour I2C_M_IGNORE_NAK
-Date: Fri,  4 Sep 2026 00:47:00 +0800
-X-OQ-MSGID: <20260903164700.3298-1-lemonoutput@foxmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <51425573-3687-486e-876d-f94d57844894@oss.nxp.com>
-References: <51425573-3687-486e-876d-f94d57844894@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="t0fa7f6s"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FD79NWkdCvvzIbU9R/KQUefFdKE2KgdghcKlsrNIUracpR0frQC8+GcRMgr4SVPnbnj+I4SuYxmW5qUtqsoSU+wGlEAquoP+CisGJlJVTyc5UnyL99k8ddqbGNadltNcJIFm/fs0w9WAxzR8sMsKkfV54Hsr4ZYegi7VPvd/G0we8nRzyxkrE0vpTqf4i/t4FE896jjjab3PheL1xLk/AoVKnStQcm+Ux9s5QDdaA4xJPXZPHcnAcAlgEIJ8weDMnUXdN/VqL0TOWGxeJoBfChLFQqmw25RVttXieIKa3qUu6IE2z57YpGbu45U0/FwAOqacfLg6PTgrZQCjJ0YP7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tPmhGFVhzsX/eNvethW0/UVQcKFKSMvaxttR0hcC59I=;
+ b=YJlW8VKv56xDSFpCYgvaXlJkxSoacyp6JH87S86aiCisKNZejUUDhjBj7MYxsecKDOpMScb5PPCJOOrq3xnHp7H0+m01rq0iFH4NWp6EJQ58eNpytv9GRuNBfhsE+7Z+ozGhr3jGF1sqOVc6mJc6QturQ00CrdSpb0zT933rANCmLeFGXVxHcxAVHtHLXurQ0lZpodRLZq5HOYZ9psvvOA7o/RylTnQT2lZhyt7bWkx1CzKHZu8d5TWL8XWxw6zVIyfVPfPmlcwuYVDrN/WBbTt54g4bMw3ob3xhdXWtqQKiFQiEbjeOQHvX8oc40mjZW0S4iTjyvafeusiZWSJImA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tPmhGFVhzsX/eNvethW0/UVQcKFKSMvaxttR0hcC59I=;
+ b=t0fa7f6s8PeIE7ri9OHLjRa+cLcpG1YPC0qWpj15U+jJoN2BqPnd/qg8KsEJR0gG98Ou7SwDhMKCByc/P+TRw7v3vZKa2fDXL3JDW2uG60SmRJkXGNt0aupLnytbkbCVcMNiwZRX2pR4W7nw5+KHJfQosSlQPq/0CGPX3k0J2PRgf3XLVlQMHAL85OR7gz2KAz7DTV+Cp8rZ9sedToYswrqsdi7LzF/gvdfRxUknI0j8z2GJvtMb9sVJ4YGxl3fjE6tkOOctfqISlrPqaHPCqftimom1Ohdc2rTMavhF9OrfGMZKqEx6pMs8mtLfpigQwMXUhuNOdJUvtQhuDq1Kgg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM0PR04MB11915.eurprd04.prod.outlook.com (2603:10a6:20b:701::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 16:54:41 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 16:54:40 +0000
+Date: Thu, 3 Sep 2026 11:54:30 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:NXP i.MX CLOCK DRIVERS" <linux-clk@vger.kernel.org>,
+	"open list:NXP i.MX CLOCK DRIVERS" <imx@lists.linux.dev>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: clock: imx5: add assigned-clock*
+ properties
+Message-ID: <apmmRsFTqSIxvfi3@SMW015318>
+References: <20260901193720.1066686-1-Frank.Li@oss.nxp.com>
+ <20260902-wonderful-tangible-warthog-d927f3@quoll>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902-wonderful-tangible-warthog-d927f3@quoll>
+X-ClientProxiedBy: CY5PR16CA0027.namprd16.prod.outlook.com
+ (2603:10b6:930:10::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB11915:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3efac39-6f9e-403f-8105-08df09dc0b95
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|23010399003|7416014|1800799024|366016|4143699003|10067099003|11063799006|6133799003|18002099003|22082099003|56012099006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	59of2igAhTmM3lxsRJtUGPIyKbj7Qb1KB34GnoMaX2yqsLmD4XbzIzddL5wuDlz/oWyDEeKQwDvt1yitZqlo02EKljEFjPRZeSH5+IJ6lzcAQl9r7LsrMXjuL7VHxyI5izHJstiB10Q9FyudgnpJeJYJ+FR7izGjcn6Dzk77d7AFt0/G16v7TPXmPZv/miIkyD132CZd9Vv3vjonkUgvSPidC7YOHpLZXguK1Qx2Oz6ztpyX2rNbRQYH7TNfm+oSglv58KC4fcuNrtBKCQqjpcSv0I7OvGm2rPalw6Vik/fx+zKLvpaWH9wH3omWv62vbwpBIdE/bouv+ScQesVIa24s8gu5xa5UQuCeeSFdsIvwtWe9TrX9TyeRWLfc8z+GHUHCKlzDnZ1yfq4EaBqkHWMVzUBQzkZ2mH7phUDEUsrB7KhwveeVJa3SG9tolkGRCLplGz2gE1XsTYfBu0NADXalO8afQCCQrN0EUJ8ao585Pa+em9uzYx0WExhbQyTl5ZnWtRR1WeSwN8VNkUQe8b5cF0+E3kzgPzXPtAay/2qqGzbhprmFzh2fiVaM8Tu3JV/WGy5cdV3Yny6lUDmM/iV/WWbj3lIC4h6xuX5xI/yWw4QWbqz+ewqgs0AIP9gq/tnUanF9BNT3LhRMXIjxq4GWN7DjQD7RCgAeOT/cKf8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(23010399003)(7416014)(1800799024)(366016)(4143699003)(10067099003)(11063799006)(6133799003)(18002099003)(22082099003)(56012099006)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vpp+ynTLjV5y9Yh/xXqkWBcuPl8K1bt06W6XqaDH233BbIMbuVZStcNlSCGW?=
+ =?us-ascii?Q?8TE0z65LoD/93FkF4fviHlaifGE01q2mUkjzgiaG5JDAVrGjzzp6KQZ0IXaT?=
+ =?us-ascii?Q?JIVwGuawHRioHJA3kUHkyGquwK30APxBl3LrEv3ai7JZlPk8Y7i0jjxDYc+0?=
+ =?us-ascii?Q?W16M6pjWUNC4iTIi6flhRQGDQyAXn9t/OJ2khkx3fiBq/30ATXO/1s6uMyi5?=
+ =?us-ascii?Q?HnwSAsiJt29F5viUlFR3R+qg6RaHwbnQ4LObGbeVuS90wHL2Qj0Hin1bDt0E?=
+ =?us-ascii?Q?ZJ+D1auaG89A8Uuy5fzC6UBauQPLULY48nIQalQiJkOpq5pXxPhXVEBGOQ/5?=
+ =?us-ascii?Q?VPdHkOcRqhkHs/M1bOdZJQBZD2qJAGCZfW4ZhcFOf/BcLKfPHC7QbWRpD1kH?=
+ =?us-ascii?Q?WWbazoysgbyQcjSbGZ8AmW/nHSbMr88ljX8w25TAbHi8w1YbrWhci+suQgJd?=
+ =?us-ascii?Q?Gq5ookAcC6LhM4JoO0BNe/ZLl65UPbzhA5euPvne5QNnACRVFjDqZF7xwfFQ?=
+ =?us-ascii?Q?Gkpyg05Z9e+kmy7uKARm/HybpJgq2BB5fPaCT5joEZ6sFODraJWc56ORKyAd?=
+ =?us-ascii?Q?LxsxAGZ/mVt65Gt54ETF7wGHdzO4Ym0kIWwhsVeKibYrFFsF++vQ13FOyz2V?=
+ =?us-ascii?Q?d9Q1RxUqdZZJrnWaqmHh4DHwAVsq36es36PXdabImvod+0bZYBH/fK+Npxce?=
+ =?us-ascii?Q?hqkE4Tq4qr93v4k3hl+fPuMtx04dCUzZeJx7WyDPeGF1OVphSCpDEwaQS2PD?=
+ =?us-ascii?Q?aQN3rfJ9YT0+tMPjg/rd0rPr582LDqlOQwLA7sL92ijiy0B1LPJKldeECYhN?=
+ =?us-ascii?Q?xTKeRudeeSNjMhKbwtYyWWg08zaeNovtJGfv1/ss/iVbrD6/h8W1X4650Ktj?=
+ =?us-ascii?Q?PpTJ7GlKePq+t08iKt1WYMYhxVxZn1tA3P8uQ0DhjNVWsyowPKaDQ0mI5+oG?=
+ =?us-ascii?Q?VJUviCtkxHo66jlev9E3DTQn4ark7DtMXP/upv07trB6sSQrHWGQfwjzrhv5?=
+ =?us-ascii?Q?tLh/TceQS9zQdKS4lC+J6dJOIWj1OQ9KRwMjZ2kYO4QEWcKoG3yO26E8HU63?=
+ =?us-ascii?Q?mEqU6/BvPCWem8snEw/IplxZ2LeQOTFtt5H0OI+ATR8vvujkef/GGogAHFYH?=
+ =?us-ascii?Q?zf/0NNKVJiUTtfntiokNqzrO2tL35sPGLT4SR1ZgpyoPn4o31IXvFx7a6keh?=
+ =?us-ascii?Q?6hycH0PtbNlatwOaZBBsR5OIpdzyqOzSNhLDpRfFKd9AL1KvPh+9rohZnjjp?=
+ =?us-ascii?Q?TnhmIScUsY5/3se+mv5UnWfwr+UKyP+Ut97301V8utpQKajwgZi1NjZf2hVb?=
+ =?us-ascii?Q?impFRdPo/NfHBUJnuqSBKqfRWEjv82686wAT74oG6jXe6dRIzKPg6/6CC6Pv?=
+ =?us-ascii?Q?qiKP062ujgCV12hawzoyx0Q83BoJObRSFAcAmBjoa99Vq2DV03z3c3LQyX5c?=
+ =?us-ascii?Q?r7UAeMby8rnK8DjeQOy0752Zh8APSD4k8jYCLglrwEN0IvN9Sr8A6Gp1D9tv?=
+ =?us-ascii?Q?vtKLz9XqzpkIb87ZNNZ3QkKwVh97/iowrov0jmm98Xyw/iylOvOmq8f0on+l?=
+ =?us-ascii?Q?qE9LYmb/sOVKCiqYQsTJ4+ycJsbg0+kCBRSTcUNr2+Hxd5FUKymLuVNYTc7c?=
+ =?us-ascii?Q?tIb803yfVkce/4+IQKWemYTNtao858pogSZEgRQ2+qQYQzu8f9mVrIz/AX0Q?=
+ =?us-ascii?Q?NRLYpoHxItfdlA+cBpVZvqEIhAZHIQ3dcNfhgwhFhJFwAPHw2N/cTxOVjFvC?=
+ =?us-ascii?Q?K+OQXYNaL08ezqmBdAirTm9xar9y+rQGoOkiQxTgspix2lQrSHtj?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3efac39-6f9e-403f-8105-08df09dc0b95
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 16:54:40.5878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aOAChDn9gm7vUJT5WMnBA+8XKD30snEhCJBpAJb1o9QdvxuI4m/Ny+na2Z8lZCVAMSZOd9z7CVfd/lpVsdRCR+u0TO+daPg+h/U9iFGJjUXDFHB2S2yFYC/k5loItsAf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB11915
 
-Hi Carlos,
+On Wed, Sep 02, 2026 at 08:14:46AM +0200, Krzysztof Kozlowski wrote:
+> On Tue, Sep 01, 2026 at 03:37:19PM -0400, Frank.Li@oss.nxp.com wrote:
+> > From: Frank Li <Frank.Li@nxp.com>
+> >
+> > The i.MX5 CCM is a pure clock provider with no 'clocks' consumer
+> > property in its binding. The dtschema framework only merges the
+> > clocks.yaml meta-schema properties (which include assigned-clocks,
+> > assigned-clock-parents, and assigned-clock-rates) into a binding
+> > when the binding itself declares 'clocks:'.
+> >
+> > For example, imx53-m53menlo.dts configures the CKO1 output clock
+> > by setting assigned-clocks on the &clks node:
+> >
+> >   &clks {
+> >     assigned-clocks = <&clks IMX5_CLK_CKO1_SEL>, ...;
+> >     assigned-clock-parents = <&clks IMX5_CLK_AHB>;
+> >     assigned-clock-rates = <133333334>, <33333334>, <33333334>;
+> >   };
+> >
+> > Without explicit declarations this triggers a dtbs_check error:
+> >   arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dtb: ccm@53fd4000 (fsl,imx53-ccm): 'assigned-clock-parents', 'assigned-clock-rates', 'assigned-clocks' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> >
+> > Assisted-by: Claude:claude-sonnet-4.6
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>
+> Then the DTS is wrong. If this device does not have a parent clock
+> input, then assigning clock parents is wrong because it is either
+> contradictory (you said no parents) or misplaced (clock consumer should
+> set it).
 
-Thanks for the review, and sorry for the confusion my v2 caused on
-several points. Let me answer your questions.
+Make sense, CLKO may just use for debug to measure one of internal clock.
 
-> Are you using AI to make this patch?
+The boards is too old, not sure if it is really used for some periphal.
 
-Yes, I did use an AI tool while preparing this patch, and I
-apologise for not stating that upfront. I will describe how it was
-used in the v3 changelog, as described in
-Documentation/process/generated-content.rst.
+Frank
 
-> Have you meet one issue on one real platform? Can you share the
-> detail about your devices and platform?
-
-Yes, an i.MX6ULL on an ALIENTEK i.MX6ULL mini board, with an
-ATECC608A at 0x60 on I2C1. I am writing an out-of-tree ECDSA driver
-for it that reuses the wake pattern of the upstream atmel-i2c
-helper (drivers/crypto/atmel-i2c.c): a wake token sent with
-I2C_M_IGNORE_NAK through i2c_transfer_buffer_flags(). On i2c-imx
-the transfer aborts with -ENXIO at the first, expected NAK because
-the flag is silently dropped, so my driver had to fall back to
-bit-banging SDA over GPIO to wake the chip. I will verify the bus
-behaviour on that board with a logic analyzer and include the
-results and captures with v3.
-
-> After meet NACK, can i2c-imx controller continue to write or read
-> data from FIFO, after NACK normally stop or repeat start, so I am
-> not sure the i2c-imx controller HW will work normally, do you test
-> this?
-
-I will cover this with the tests attached to v3.
-
-> Always goto the PIO path with I2C_M_IGNORE_NAK flag, it is better
-> "return i2c_imx_acked(i2c_imx, false);"?
-
-Agreed, v3 will do that.
-
-> You don't really support the I2C_M_STOP in the code and
-> intentionally ignore I2C_M_STOP check to avoid breaking the
-> imx6qdl-ds,right? Do you work on this platform?
-
-No, I don't have an imx6qdl-ds. The ov2659/SCCB reasoning in the v2
-changelog came from reading the DT and driver code, not from
-hardware, and it will be removed from v3. I2C_M_STOP will stay
-rejected, as in patch [4].
-
-While checking the code I found that patch [4] rejects
-I2C_M_STOP, and in-tree ov2659 on imx6qdl-ds sets I2C_CLIENT_SCCB
-(I2C_M_IGNORE_NAK | I2C_M_STOP) on every message, including the
-chip-ID read at probe, so after [4] lands that probe might fail
-with -EOPNOTSUPP. This is only from reading the code and I might be
-wrong. Similarly, rejecting I2C_M_IGNORE_NAK might affect the
-ATECC508A wake token on imx6qdl-gw5904.
-
-> So can you please rebase your patch on patch[4]?
-
-Yes, v3 will be rebased on top of [4].
-
-I will also fix the sentence spacing in the changelog and comments
-as you asked.
-
-Regards,
-Haobin
-
+>
+> Best regards,
+> Krzysztof
+>
