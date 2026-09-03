@@ -1,118 +1,122 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD854A8FF2
-	for <imx@lists.linux.dev>; Wed,  2 Sep 2026 22:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B868C182D6
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 01:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.86.107.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788387928; cv=none; b=cmShzR2vB7+DUsX/bMmD6yoWtgyuoMsP69itFnVgpcv+0sncvzkRNm8sHG5lgnoDJIL/9SHMBqVSpzoOi2ya0m2JagvEORPI5+ogyKoQC6Wh46Vj9bf3Kn5hfqLNbIpc9T5FI5JUXYwC+OIJw81Jy9GVyaYqVhADRkqw1OKhgaQ=
+	t=1788398202; cv=none; b=YW0OivHyH99fqsHUG/Akg0RxjUM5xoG0p375eWS/KS0u3KDqqalx1B0TwfWr4m4iCU0HRe3Vxp62GkQaIaH7Xzts5BR37V3J6XXiIVAWIeh+aPfXVctPIFyWR4IUqWixR5TfFldITEvHIpCF4tbdfqVxY8hU+NZdVd+808rUDtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788387928; c=relaxed/simple;
-	bh=szYdDO84PxRayQDTK6zsyyf+Yvx7xqhACB6SYVnCYkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oe7adxmb0tJDdjUi0UiBJafiE8qVerEu2dffBJpljOq1JJPqFLoiUjJIIiR4IeM1lP8eJA19jyTb9kNMkS2c5ihe+E8j3VOw2nYbCY/2yITgFC0QZISPzQgRM1S+eSf+zTC81vxLf7QCLLmyC7n9NFibGHIovLfm0J2xY+Tggqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oSQP6Xp0; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788398202; c=relaxed/simple;
+	bh=6N/uGzfZ/z6s2knBb4sFIBYbeRmal3H64Kvddr6Mtjc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U4e8SeGYrR7IpVl/PFWF6vl0uHg1APfecMw5UJajD0UnOa5CaxsgrrZdi9GIsfeSs8FHlbNAfE8knsCyg2cMQr4/CpZShAxYmbtEoxKWD04XrxHeFU5hChfkWQP181fnzStfyxuPJKpsMcOhJnbeOLRRO+9Obd1vkhM//J1ByMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net; spf=pass smtp.mailfrom=rendec.net; dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b=YEOOrmM5; arc=none smtp.client-ip=80.86.107.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oSQP6Xp0"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49ccfbe062eso13331555e9.3
-        for <imx@lists.linux.dev>; Wed, 02 Sep 2026 15:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788387923; x=1788992723; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=szYdDO84PxRayQDTK6zsyyf+Yvx7xqhACB6SYVnCYkM=;
-        b=oSQP6Xp0V99uQT4vgdU4S5lpBSSQ23SX1L6gfkYDkNo68uzcW+B7oDZ4e2cyHUH5+m
-         wXNeZp7YgNvWgbv4HFy36wZpk4mWozf+PaQ5qemKG3XKk6xVpoJn1bx1b+FeS9RkpW+P
-         xUQoixwN/6ENb+MOptMAjAgf+ChgRQdDvijnnPPWkcInpXLmin9giu7lxLvv59bwu4Z5
-         GRAZQ0QQF4zekRx5NSrZFoO7CoBTnJPhfjqzymy6ZdPWtPUb61vBwMZXR/Jh4wstsirA
-         h/isXYxczqcqNaiJzgNW+u0bQfTO6gprzi2ajlghMWUD8FNOuDM+DOM4h2+tfgde2hL+
-         fmXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788387923; x=1788992723;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=szYdDO84PxRayQDTK6zsyyf+Yvx7xqhACB6SYVnCYkM=;
-        b=VAsc+pJCOni1WwNFzrQbPtcsJr5eeryea0tehjKxlo4Ia+XJBMSMeCVwDNiz3c1bg2
-         BcPbO0tflL0uhBugCwHHX3SX+9KtlsgAXYvIQRD2ZD4RARJ2X++ZYMQsmVnANZ6qISKy
-         BSAUKQFjw5vBanBwwG1lkTgdPd3JgsMNSjDndJ6vczk3dzFIPiTZexshElEZ5jSrVGtK
-         SsmT/Lj2tm5gN6Bf63s37CvxuoCJugk1kYQLgt3nANH9qnwPekn89kEqhkPi+pWdoqrr
-         zivytrq8ezL43NmHSYI5+whj1BevwBfSF5IXNyKorbgKz2FeIGEsZKeJ9jhLl4chU8VQ
-         8Opw==
-X-Forwarded-Encrypted: i=1; AKwUvBwxBS4YWJWA/eHE1Y7FDcosvZTpIjx+5NGot3hcytmZcefj0U2sity9SflLDW1av5hutcM=@lists.linux.dev
-X-Gm-Message-State: AFuF++ndAR0uxaqD2L0mC6h6F2xpUFEbJQaQGIKk+RpYBqHF4XFnLr8h
-	fAYDPiOhbLHSsw/9AX8wGTtEyeyOoRjpZE1/+tbzuefeOf8YXt59/Fdq
-X-Gm-Gg: AYBFou0MgzHeU14Tm8VY+3PFPXRpfLROkrXJpu3TwZCHsl3CwBzPCA6yjIQlYOc8WM3
-	tkfewl5QaZsc61BtFDOkTNDXwAEckTYlcdoOf/zyw1LYIDWkCu3bIGTHo8cMb0niYqESQj5Cgcg
-	NEebZ/qI4Huca9/TAbORegRp1LLIRLmf3ztq0+Wc3TTf53eGJDoHLL4Y7gFTJxizm4psq2bJuHt
-	xiIHkcEojiATJgjgB44ZSS93n+a9tUqVjts1Sq+OQNWR3eMxlWK+TYDaLTAbp8U15faAFJu6TBO
-	tTEr3ezMJabHHW7R9i0pNdDwKR5OgqN45Tlmomo0W6CAebmkUMIO+o99Zume3Vc1qs3zyatgf17
-	mTomcEpUPnpGZUzXynhdzZmvwSBpj+LHyZhsTFeVG7e0seQBgbr9lywNCKliFCVLPk7oTZpkL7P
-	Btg9Z9yK7pNSCQebJtCUsFiLvJ3XmZqHrQPYTSaDaC2qAWAbMZpDeAAq6MofBl2qgsMNudbrKYi
-	fEt
-X-Received: by 2002:a05:600c:530f:b0:499:bdf1:7578 with SMTP id 5b1f17b1804b1-49ce55ecdf2mr157349195e9.3.1788387922631;
-        Wed, 02 Sep 2026 15:25:22 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6023d6sm20916915e9.8.2026.09.02.15.25.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 15:25:22 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: Re: [PATCH v3 2/2] gpio: mmio: track the direction of chips without direction registers
-Date: Thu,  3 Sep 2026 00:25:21 +0200
-Message-ID: <20260902222521.1752085-1-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CAD++jLmJ1+ZT=j_L79SuOzZS3PjOBgrCwhO8egaHfOU1ScLPkg@mail.gmail.com>
-References: <20260902154525.4090276-3-mehmet.fide@gmail.com> <CAD++jLmJ1+ZT=j_L79SuOzZS3PjOBgrCwhO8egaHfOU1ScLPkg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b="YEOOrmM5"
+Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
+	by mail.mindbit.ro (Postfix) with ESMTPSA id B35CFCCE4D;
+	Thu,  3 Sep 2026 04:16:36 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro B35CFCCE4D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
+	s=default; t=1788398198;
+	bh=K0e2bO9sZgwFiNy9Yf/ChdFp1jz620gjB++D5MNjCXE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=YEOOrmM51NHwE9z1OyZ5tUl9Wg+KMhfeR3xhp21rd3UK7faHl/vTW2xUz9Hg3ne7A
+	 KKKY/H7Df/rGVvFtex0Nb4GWwW1k1DF0YbYWkk7OkdubhnQlS09YlBQWG/sPQ4IiTs
+	 9HGGJmapb/7iF+hlzUFMmpaCXLZiOcKWJurqENBaw/j3hoAKVrUWb7Egp6MaeUqzgR
+	 jQKtXvRhY33DYPMveHSG1VfCenWFjjxEzDnqkC+mveuTjl/HT2N1C/V625BO6cSxEL
+	 0l16w+5wqCL21ihAIxx/0jsqV49ikxN+KgeiRX6S71bUEolsexKV14wMtRH4c2vwCh
+	 GStGKTrGxf/9g==
+Message-ID: <860cba0d279223d6e5ac8cb86ba82fbe1f66b3d3.camel@rendec.net>
+Subject: Re: [PATCH v5 7/9] irqchip/imx-irqsteer: Allow building as module
+From: Radu Rendec <radu@rendec.net>
+To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
+ Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
+	 <jindong.yue@nxp.com>, xuegang.liu@nxp.com, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Date: Wed, 02 Sep 2026 21:16:34 -0400
+In-Reply-To: <20260821101039.4037925-8-Zhipeng.wang_1@oss.nxp.com>
+References: <20260821101039.4037925-1-Zhipeng.wang_1@oss.nxp.com>
+	 <20260821101039.4037925-8-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+On Fri, 2026-08-21 at 19:10 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
+> From: Jindong Yue <jindong.yue@nxp.com>
+>=20
+> Make the driver buildable as a module by turning the Kconfig symbol into
+> a tristate and using module_platform_driver() instead of
+> builtin_platform_driver(), and add the MODULE_DEVICE_TABLE() and module
+> metadata needed for autoloading.
+>=20
+> The clock, runtime PM and IRQ domain are already owned by devres, so no
+> further teardown is needed to support unbind and reload.
+>=20
+> Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> ---
+> =C2=A0drivers/irqchip/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 7 ++++++-
+> =C2=A02 files changed, 7 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 20b77fbc51ee..105108d2e6ff 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -555,7 +555,7 @@ config CSKY_APB_INTC
+> =C2=A0	=C2=A0 the controller's register.
+> =C2=A0
+> =C2=A0config IMX_IRQSTEER
+> -	bool "i.MX IRQSTEER support"
+> +	tristate "i.MX IRQSTEER support"
+> =C2=A0	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+> =C2=A0	default y if ARCH_MXC || ARCH_S32
+> =C2=A0	select IRQ_DOMAIN
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
+-irqsteer.c
+> index c2f58787f9a8..dad09e095ed1 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -10,6 +10,7 @@
+> =C2=A0#include <linux/irqchip/chained_irq.h>
+> =C2=A0#include <linux/irqdomain.h>
+> =C2=A0#include <linux/kernel.h>
+> +#include <linux/module.h>
+> =C2=A0#include <linux/of.h>
+> =C2=A0#include <linux/of_irq.h>
+> =C2=A0#include <linux/platform_device.h>
+> @@ -370,6 +371,7 @@ static const struct of_device_id imx_irqsteer_dt_ids[=
+] =3D {
+> =C2=A0	{ .compatible =3D "nxp,s32n79-irqsteer",	.data =3D &s32n79_data },
+> =C2=A0	{},
+> =C2=A0};
+> +MODULE_DEVICE_TABLE(of, imx_irqsteer_dt_ids);
+> =C2=A0
+> =C2=A0static struct platform_driver imx_irqsteer_driver =3D {
+> =C2=A0	.driver =3D {
+> @@ -380,4 +382,7 @@ static struct platform_driver imx_irqsteer_driver =3D=
+ {
+> =C2=A0	.probe		=3D imx_irqsteer_probe,
+> =C2=A0	.remove		=3D imx_irqsteer_remove,
+> =C2=A0};
+> -builtin_platform_driver(imx_irqsteer_driver);
+> +module_platform_driver(imx_irqsteer_driver);
+> +
+> +MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver"=
+);
+> +MODULE_LICENSE("GPL");
 
-> What about just implementing generic optional get_config()
-> in struct gpio_chip, implement a likewise generic
-> gpiochip_generic_get_config() in gpiolib and use that as
-> the fallback?
-
-Yes, that is cleaner: gpio-mmio then knows nothing about pinctrl, the
-same way it does not for set_config today. v4 will add the callback and
-gpiochip_generic_get_config() as a mirror of gpiochip_generic_config(),
-with gpio-mmio installing it for the pinctrl backend and seeding the
-shadow through gc->get_config.
-
-One detail for the generic helper: with CONFIG_PINCTRL off the
-pinctrl_gpio_get_config() stub returns 0 and leaves *config alone, so
-the helper returns -ENOTSUPP there instead of pretending it answered,
-like gpiochip_generic_config() does for a chip without pin ranges.
-
-> I don't think it is necessary to provide any consumer API for this
-> such as gpiod_get_config(gpiod); as no-one really needs it, we can
-> keep it as a private thing in struct gpio_chip for now.
-
-Agreed, nothing outside the chip needs it.
-
-Patch 1 stays as it is, minus the npins check I already told the
-Sashiko bot was redundant.
-
-Thanks,
-Mehmet
+Reviewed-by: Radu Rendec <radu@rendec.net>
