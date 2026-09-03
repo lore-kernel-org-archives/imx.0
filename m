@@ -1,176 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0FC4AA006;
-	Thu,  3 Sep 2026 15:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514504D8DB5;
+	Thu,  3 Sep 2026 15:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788450681; cv=none; b=OGLBoS1Bu3BH4VYkBoyU4UAen3sb6daC/FXhQV5JgjuANuzEc3s82p3fAau87skjf/ZtI1yPQIc7nTgrvBRcLpRe3Kex2vuqI6pN7dkOSpUpa9nloDkh+uCgsF4eov1sdL3k34autzZDpZs1p9rLwA9XBDrIC5q/g7ANb+qfulg=
+	t=1788450993; cv=none; b=MNZAP/4H0eRPQkpoLr4p4Ab0zt9gAhPpzmDVYksfz+4KZSymrKha2bWVNQwiIDXI25MUaTHErcaQvDMBlcT6gotI42LnjYLGzmvcLm1DfLbg42fO3K7Ts1ITWNXGsW7wTKQJxJqBHbLH75EOrx/75yWx89HreeHgr1vzI+WtnnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788450681; c=relaxed/simple;
-	bh=gfV8lbxdOIUklmvVCKFw0CBK5E4ztLJwusEP7Qv29oI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OmSDCvZPXODwLDGqV7yI/qeyMvlLrdOAC6Vgi2i1j4T7646OkPuyyZDoS16UwcuNUFfCWVLamg6XVDyIK+sx+u8nuKwZu0YlVXKjhbwLTMuZxtxse/uj532AGCSxWScSXsP3E8L5sf4ZmVhUUi7Vug+4wu6KpDKtdAdFpR+ofXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmKMukAp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788450993; c=relaxed/simple;
+	bh=DQLgwFyklyQY+Ul3sU7ZxseEkrVOZ6GPPNvBm61Thvk=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=XRffBYnpR9L+v3wkdNnJ63bAitFEqVn3tjfP10JR4pPNUAgRQkJDO/fqOelb4UqV5/0neCgVhgtJB4oNRhMkXqAF4qY6kPmvmMsofQ53CcxiHvlhiEL/cIWe64h/Ufbn2j22/eZuCsztjLH/VWBECcaFN9b7gJP6CkYDW6fb6T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmf/f666; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmKMukAp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA4C1F000E9;
-	Thu,  3 Sep 2026 15:51:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmf/f666"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEB31F000E9;
+	Thu,  3 Sep 2026 15:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788450679;
-	bh=OkTZE4ypwPyLM5Qf7df3BuIci4sZOqTNp+6IhiqM/6U=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KmKMukAprycX9mJrg/Y3F600M+PqwvsH7EseLIzWfghCl3kB3Mxwnj4KG9I7BnZHL
-	 61wwM/Buu9l7iKqWblynGlISwnD2KSDi9IpIKlBK9OG12GxafO3uQrMszrgZRyxMUE
-	 uB7tCG+LIlbtCiOnEVQisSa88weX7mXJH9wNdufyEeu4j/VIAF5/eE20VtvEn3vVtt
-	 86QjP2FWSWDF2Rj4Tj/sq1PEUjFiB6+o4ha3rkHLen7U+dXfhgPKQjSncFpbdA0F0N
-	 L4k1HWckJNiPWneOiry9I0/y3E8hxZdidoQNLDtNf1RdLQFc5RmklDUQobQvP5Lulx
-	 21rFijRtn3jVg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v13 4/4] clk: imx: pll14xx: support spread spectrum
- clock generation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dario Binacchi" <dario.binacchi@amarulasolutions.com>
-Cc: linux-clk@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260903153836.373267-5-dario.binacchi@amarulasolutions.com>
-References: <20260903153836.373267-1-dario.binacchi@amarulasolutions.com>
- <20260903153836.373267-5-dario.binacchi@amarulasolutions.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 03 Sep 2026 15:51:19 +0000
-Message-Id: <20260903155119.ADA4C1F000E9@smtp.kernel.org>
+	s=k20260515; t=1788450991;
+	bh=bhTCUaiiZ8A0gGUxDFrs3mg1RzINT0VFaxoNylx2xNU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=bmf/f666i5KsF1D9J1jgfnJU5WzmYmsn2GVaC3M2Bjo0mBeMEaA7qjVs6ba7A1YWM
+	 6inYhBqR5dLgfnB9e+1pczT7b/NF3WOKNrYCvBQaDWQ0lN/fl+auPqqf8aNEfXPqWQ
+	 EBvrdKsKPZyfkQi/irV9bdklW2sd+g/z9MUlLUKuw+JXefX6vrmsCmKDyL/124Xgbr
+	 50l/wSM2zy+gBOAgej7u/2WKtPLmni+cNVY5aExVPUHZoOKK/jwjGDhfKU9e2M0lHp
+	 BPqjbV8hWgjnFyXVbwFUi7/+ps26a90QVw+Pm8WEQAOdTZfgh+3zFA/GjjjM4a/j9C
+	 kjOZl7FA9VeTQ==
+Date: Thu, 03 Sep 2026 10:56:31 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
+ devicetree@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, 
+ Brian Masney <bmasney+clk@redhat.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux-clk@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ Frank Li <Frank.Li@nxp.com>
+To: Frank.Li@oss.nxp.com
+In-Reply-To: <20260901193720.1066686-1-Frank.Li@oss.nxp.com>
+References: <20260901193720.1066686-1-Frank.Li@oss.nxp.com>
+Message-Id: <178845094493.3613943.7561968637437394338.robh@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: clock: imx5: add assigned-clock*
+ properties
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Potential 32-bit integer overflow in the numerator of the mrr ca=
-lculation escapes bounds checking.
-- [Medium] Invalid SSC configurations generate repeated warnings on every c=
-lock rate change.
---
 
-commit 769a49cba9b51c72357919447fa12a82a6548ced
-Author: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+On Tue, 01 Sep 2026 15:37:19 -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> The i.MX5 CCM is a pure clock provider with no 'clocks' consumer
+> property in its binding. The dtschema framework only merges the
+> clocks.yaml meta-schema properties (which include assigned-clocks,
+> assigned-clock-parents, and assigned-clock-rates) into a binding
+> when the binding itself declares 'clocks:'.
+> 
+> For example, imx53-m53menlo.dts configures the CKO1 output clock
+> by setting assigned-clocks on the &clks node:
+> 
+>   &clks {
+>     assigned-clocks = <&clks IMX5_CLK_CKO1_SEL>, ...;
+>     assigned-clock-parents = <&clks IMX5_CLK_AHB>;
+>     assigned-clock-rates = <133333334>, <33333334>, <33333334>;
+>   };
+> 
+> Without explicit declarations this triggers a dtbs_check error:
+>   arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dtb: ccm@53fd4000 (fsl,imx53-ccm): 'assigned-clock-parents', 'assigned-clock-rates', 'assigned-clocks' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> 
+> Assisted-by: Claude:claude-sonnet-4.6
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/clock/imx5-clock.yaml        | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
 
-    clk: imx: pll14xx: support spread spectrum clock generation
-   =20
-    Add support for spread spectrum clock (SSC) generation to the pll14xx
-    driver.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-> index b6f1cc9f57005..5b187101c558c 100644
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
+yamllint warnings/errors:
 
-[ ... ]
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/imx5-clock.yaml: properties: 'clocks' is a dependency of 'assigned-clocks'
+	from schema $id: http://devicetree.org/meta-schemas/clocks.yaml
 
-> @@ -366,6 +377,58 @@ static int clk_pll1416x_set_rate(struct clk_hw *hw, =
-unsigned long drate,
->  	return 0;
->  }
-> =20
-> +static void __clk_pll1443x_set_spread_spectrum(struct clk_hw *hw,
-> +					       unsigned long parent_rate,
-> +					       unsigned int pdiv,
-> +					       unsigned int mdiv)
-> +{
-> +	struct clk_pll14xx *pll =3D to_clk_pll14xx(hw);
-> +	struct clk_spread_spectrum *conf =3D &pll->ss_conf;
-> +	u32 sscg_ctrl, mfr, mrr, sel_pf;
+doc reference errors (make refcheckdocs):
 
-[ ... ]
+See https://patchwork.kernel.org/project/devicetree/patch/20260901193720.1066686-1-Frank.Li@oss.nxp.com
 
-> +	if (!mfr || mfr > FIELD_MAX(MFREQ_CTL_MASK)) {
-> +		pr_warn("%s: SSC disabled, modulation frequency (%u Hz) out of range\n=
-",
-> +			clk_hw_get_name(hw), conf->modfreq_hz);
-> +		goto out;
-> +	}
-> +
-> +	mrr =3D (conf->spread_bp * mdiv * BIT(6)) / (10000 * mfr);
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
-[Severity: Medium]
-Could this calculation overflow 32-bit arithmetic?
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-If conf->spread_bp from the device tree is a large invalid value, the
-left-to-right evaluated multiplication conf->spread_bp * mdiv occurs
-in 32-bit arithmetic before being promoted.
+pip3 install dtschema --upgrade
 
-Furthermore, on 32-bit architectures where BIT(6) is a 32-bit type,
-the entire numerator conf->spread_bp * mdiv * BIT(6) is evaluated in 32 bit=
-s,
-which can overflow for spread_bp values as low as 65600. This wrapped value
-could then inadvertently pass the mrr > FIELD_MAX(...) bounds check that
-follows.
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
-While typical values are well within bounds, the commit message mentions
-a goal of using 64-bit arithmetic to prevent 32-bit wrapping from
-out-of-range DT values. It appears this code misses that protection
-for spread_bp.
-
-> +	if (!mrr || mrr > FIELD_MAX(MRAT_CTL_MASK)) {
-> +		pr_warn("%s: SSC disabled, spread (%u permyriad) out of range\n",
-> +			clk_hw_get_name(hw), conf->spread_bp);
-> +		goto out;
-> +	}
-> +
-> +	sscg_ctrl |=3D SSCG_ENABLE | FIELD_PREP(MFREQ_CTL_MASK, mfr) |
-> +		FIELD_PREP(MRAT_CTL_MASK, mrr) |
-> +		FIELD_PREP(SEL_PF_MASK, sel_pf);
-> +
-> +out:
-> +	writel_relaxed(sscg_ctrl, pll->base + SSCG_CTRL);
-> +}
-
-[ ... ]
-
-> +static int clk_pll1443x_set_spread_spectrum(struct clk_hw *hw,
-> +					    const struct clk_spread_spectrum *ss_conf)
-> +{
-> +	struct clk_pll14xx *pll =3D to_clk_pll14xx(hw);
-> +	struct clk_hw *parent =3D clk_hw_get_parent(hw);
-> +	unsigned long parent_rate =3D parent ? clk_hw_get_rate(parent) : 0;
-> +	unsigned long flags;
-> +	u32 div_ctl0;
-> +
-> +	spin_lock_irqsave(&pll->lock, flags);
-> +
-> +	pll->ss_conf =3D *ss_conf;
-
-[Severity: Medium]
-Will caching an invalid configuration here cause excessive log spam?
-
-If an out-of-bounds spread spectrum configuration is provided, it is
-unconditionally cached to pll->ss_conf and 0 is returned instead of an erro=
-r.
-
-Subsequent runtime calls to clk_pll1443x_set_rate() will re-evaluate this
-cached invalid configuration via __clk_pll1443x_set_spread_spectrum(), which
-will repeatedly trigger the un-ratelimited pr_warn() calls on every clock
-rate change.
-
-> +
-> +	/*
-> +	 * Apply the configuration to the hardware right away, using the
-> +	 * current PLL dividers: the clock framework does not call set_rate()
-> +	 * if the requested rate is unchanged, so relying on it would leave
-> +	 * the SSC settings unapplied when the PLL is already at the target
-> +	 * rate (e.g. configured by the bootloader).
-> +	 */
-> +	div_ctl0 =3D readl_relaxed(pll->base + DIV_CTL0);
-> +	__clk_pll1443x_set_spread_spectrum(hw, parent_rate,
-> +					   FIELD_GET(PDIV_MASK, div_ctl0),
-> +					   FIELD_GET(MDIV_MASK, div_ctl0));
-> +
-> +	spin_unlock_irqrestore(&pll->lock, flags);
-> +
-> +	return 0;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903153836.3732=
-67-1-dario.binacchi@amarulasolutions.com?part=3D4
