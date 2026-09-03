@@ -1,165 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6C742A792;
-	Thu,  3 Sep 2026 08:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622F23FDC06
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 08:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788423688; cv=none; b=FeaszroxvMBCEm9dGhKpirb+dBc94ylZXoy/dWsiddfjsI9OT5iIwzaWfUwZfyeDhvvtGNOGK9w+0p2OZIlDtVyXqEqbjEnM64/8yDE9g7/lND5TjJKFw/CRbE46Kq51dJcpRTVrLr0HpByeeXGgQm1Y2b6B79xlKCtTExbD7V0=
+	t=1788424072; cv=none; b=PNOLKJ4F3aaNphgsYrUnSxOwHmZg1MQ1gizScisbqCtRfKybSZTXrw+7VVda7GCZVwJp3RGy7eRWNzBgFtGWdUHOIdIKj5xd9HM7DXCfs7+pp3z7CMdhRuHukx7RTDiCdRN0W4+Xc8VO/73HJlqgMbcP/cTL849lJoFp62oUO40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788423688; c=relaxed/simple;
-	bh=kajeAGdoWkgV89zinwd1Ru8wPQWZW7H5K4eMkT6sI3g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LC8DaBrcyZTDQ7o8bINbAGJftV5+28RH2T6Dtl7AmZRjgGwGEDWrtN2dAR8dH8RjtyjubJbSDz4RQB/mlLiuydR20VGvFCEYvx+gKo2RLXTVbjRA2bfnqqUwuxSOxcbKBP1hwWw0Jw0O7rUpAL0jXOzZHPWVcvioi0VISp7AmS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mOKOn26p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788424072; c=relaxed/simple;
+	bh=TrJxAmxvRZ+OJcEmvKu0mS/aQ9NNqWTYt4WrKIdYpSg=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Az6KIyJZb1kM42CYYftV6nmiwx6tKCKiLkYV/0T3oG1uq+KJOXTcrRKHSZYRRCTopm7mzNVQaEqrlLDKm2KY/3Vob5L/0obVHxL3h8QOOzHCNYFJvS5aqzfzlZuengdy67wmdGo4gT13bgI9s7PIQo+DGWA8saLpfKe4udrr0NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eN4byHVI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mOKOn26p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A777C1F000E9;
-	Thu,  3 Sep 2026 08:21:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eN4byHVI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B46C1F000E9
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 08:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788423683;
-	bh=GDoTGdygZN9md3euE+c9LSWt2cQjxDq0+S+S2g4wB6A=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mOKOn26pMRRAOuFyMAX547S0Ddak8/F7AbzM2BN28luHcQLfYvuzZrpy8jDMv2IgH
-	 HQu7vvJsXBi0xFCKtd6EFRZb+NTAc/JTZ1ql0s+a3ukwIkbINgcnlDIUT6k/zdlzIf
-	 CGKweq82eD8leyvFQPqCUreICD3YhnxPFAkumuDrItSLO0vnpN1EiNDXBD/n8e5FI2
-	 vTjCzmpR0MVNsvKaS3EbgPad9v/gJXsdsSf1NqBeb4o67mru7s96yQoYJjuzGVvd7H
-	 SF0sr6cTKXZIKrsGr3OLAC1/xYd92tG1uAnyRUm58iZTNa5cgvWYI0nQUrHyDte07T
-	 wMytlvt0aAu5A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V4 4/4] arm64: dts: freescale: Add chargebyte Charge
- Control Y
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefan Wahren" <wahrenst@gmx.net>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, "Oliver
- Hartkopp" <socketcan@hartkopp.net>, "Vincent Mailhol" <mailhol@kernel.org>, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, neil.armstrong@linaro.org, conor+dt@kernel.org, linux-can@vger.kernel.org, Frank.Li@kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, olteanv@gmail.com, linux-phy@lists.infradead.org, vkoul@kernel.org
-In-Reply-To: <20260903080427.6103-5-wahrenst@gmx.net>
-References: <20260903080427.6103-1-wahrenst@gmx.net>
- <20260903080427.6103-5-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 03 Sep 2026 08:21:22 +0000
-Message-Id: <20260903082122.A777C1F000E9@smtp.kernel.org>
+	s=k20260515; t=1788424071;
+	bh=TrJxAmxvRZ+OJcEmvKu0mS/aQ9NNqWTYt4WrKIdYpSg=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=eN4byHVINY477RELA3fjOr6yDISO0XcJew2kZlR/o8fzM0xRlYSD1WKxj52rTpnYB
+	 AX4OQxOBfc9sQjP78nRL1i+kNxzIlzzi2vM7i1Radyzr3MIZUjbpKKaDy4KU1tN1gi
+	 lLqb7+EedyhSo4BkiZTSgXMPTNrR4ELoHNvxCWlPogjeMzOMMW4eoPFn+ShRTax7PT
+	 UfbQwlR36UgkpJ+5aAiuzrafbg79oOSpAWEDgOG0Zp7a5ekv86BR/68VgjBKjC33qT
+	 EWbjoigeLNGV7fjnGl/GAa76lv9gBBG1YrcBI6j5p5WDBc5TripzediaKfjmw7Y3jK
+	 CTFvOejdZiHow==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5aeb98460c6so3180280e87.2
+        for <imx@lists.linux.dev>; Thu, 03 Sep 2026 01:27:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzQzohWXZmWI9j0Vk3BNQmJ83VPMNJcPGnvVZRKi6Xa3P3yKKS9Brtr0aLYtbJknKP3JQU=@lists.linux.dev
+X-Gm-Message-State: AFuF++lKqtmELm5g5o9t/185hlDn/8d7xUp3d57fVmQrUP0RBvFG1+88
+	FG+vRH07UB4zymfF57TXzLDZ28kY58bPQ//1VWLLgQqpjj/FqCpXv6PFgj7D0YEt/J5vztEXem8
+	+OeOd2hMfKnLbqZ3LUV1bhO7Uk2tt4McaA9+LboYe4g==
+X-Received: by 2002:a05:6512:2246:b0:5b6:4ad:77b5 with SMTP id
+ 2adb3069b0e04-5b6087dc220mr3260661e87.29.1788424069613; Thu, 03 Sep 2026
+ 01:27:49 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 3 Sep 2026 01:27:47 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 3 Sep 2026 01:27:47 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260903075940.2089367-1-mehmet.fide@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260903075940.2089367-1-mehmet.fide@gmail.com>
+Date: Thu, 3 Sep 2026 01:27:47 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Mc3u+2ApzMfFFM1L5MJROaQMSifKReJ-3T+9EX3Zdqzfw@mail.gmail.com>
+X-Gm-Features: AcwNN1V5FdQ_WXfM8AqBAuAps-0ep9MiWg8pjvabZULokJ8aU7j9fqMb0CzLSlw
+Message-ID: <CAMRc=Mc3u+2ApzMfFFM1L5MJROaQMSifKReJ-3T+9EX3Zdqzfw@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] gpio: mmio: report the line direction on chips
+ without direction registers
+To: Mehmet Fide <mehmet.fide@gmail.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Mehmet Fide <mehmet.fide@screeningeagle.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] Mismatched drive strengths on USDHC2 data lines within the same =
-interface speed mode.
-- [Medium] The reset GPIO polarity for the Ethernet PHY (DP83825) is config=
-ured as active-high, but the PHY natively requires an active-low reset.
-- [Low] Incorrect node name used in `/delete-node/` for heartbeat LED pinct=
-rl.
---
+On Thu, 3 Sep 2026 09:59:37 +0200, Mehmet Fide <mehmet.fide@gmail.com> said:
+> From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+>
+> Hi Bartosz, Linus,
+>
+> this replaces the gpiolib guard patch [1], along the lines Bartosz
+> suggested there: instead of teaching gpiod_get_direction() to stay quiet
+> when a chip has no get_direction(), give gpio-mmio one and let the pin
+> controller tell it what the pad does.
+>
 
-commit 228da9fe4e969182ceef8105169e14b5de5949a5
-Author: Stefan Wahren <wahrenst@gmx.net>
+Why are you spamming the list with multiple versions per day? You're sending
+a v5 as I'm looking at v4 and I really don't like to have my time wasted like
+this. Please limit yourself to one iteration a week unless you get a set of
+comments in which case try to stay at two iterations a week at most.
 
-arm64: dts: freescale: Add chargebyte Charge Control Y
-
-This adds device tree support for the chargebyte Charge Control Y, an
-Electrical Vehicle Supply Equipment (EVSE) based on the phyCORE-i.MX 93
-SOM.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts b/a=
-rch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
-> new file mode 100644
-> index 0000000000000..ba240f528f9b9
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx93-charge-control-y.dts
-[ ... ]
-> +/* Ethernet 2 PHY */
-> +&mdio {
-> +	ethphy2: ethernet-phy@2 {
-> +		reg =3D <2>;
-> +		compatible =3D "ethernet-phy-id2000.a140";
-> +		clocks =3D <&clk IMX93_CLK_ENET_REF_PHY>;
-> +		reset-gpios =3D <&gpio4 13 GPIO_ACTIVE_HIGH>;
-
-[Severity: Medium]
-Will this hold the Ethernet PHY in reset? The DP83825 PHY natively expects
-an active-low reset signal. By specifying GPIO_ACTIVE_HIGH here, the kernel
-will assert reset by driving the GPIO high, and normal operation will drive
-it low. This could potentially keep the PHY in reset permanently, preventing
-Ethernet link establishment, unless there is a physical hardware inverter
-between the GPIO and the PHY.
-
-> +		reset-assert-us =3D <30>;
-> +		reset-deassert-us =3D <50000>;
-> +	};
-> +};
-[ ... ]
-> +&iomuxc {
-> +
-> +	// Heartbeat LED of phyCore is not populated
-> +	/delete-node/ pinctrl_leds;
-
-[Severity: Low]
-Will the device tree compiler process this delete-node directive correctly?
-In imx93-phycore-som.dtsi, the node is defined with the name ledsgrp and
-the label pinctrl_leds.
-
-The delete-node syntax expects the exact node name, like:
-	/delete-node/ ledsgrp;
-
-Or alternatively, using the phandle label at the root level:
-/delete-node/ &pinctrl_leds;
-
-Using just the label name inside &iomuxc might result in a "Node not found"
-compiler error or a silent failure that leaves unused pinmux data in the
-binary.
-
-> +
-> +	pinctrl_eqos: eqosgrp {
-[ ... ]
-> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +	pinctrl_usdhc2_default: usdhc2grp {
-> +		fsl,pins =3D <
-> +			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
-> +			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
-> +			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
-> +			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
-> +			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000138e
-> +			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
-
-[Severity: Medium]
-Are these drive strength settings intended to be different across the data
-lines?
-
-In this default mode configuration, DATA0-2 use 0x4000138e (DSE bit 4 =3D 0=
-),
-while DATA3 uses 0x4000139e (DSE bit 4 =3D 1). Mismatched drive strengths on
-the same SDIO bus can introduce signal skew and degrade signal integrity.
-
-> +			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
-> +		>;
-> +	};
-> +
-> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-> +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-> +		fsl,pins =3D <
-> +			MX93_PAD_SD2_CLK__USDHC2_CLK		0x119e
-> +			MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e
-> +			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x4000138e
-> +			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x4000138e
-> +			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x4000139e
-> +			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x4000139e
-
-[Severity: Medium]
-Similarly, in the 100mhz configuration, DATA0-1 are set to 0x4000138e and
-DATA2-3 are set to 0x4000139e. Could this mismatch cause high-frequency
-enumeration or data corruption issues on the SD bus?
-
-> +			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
-> +		>;
-> +	};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903080427.6103=
--1-wahrenst@gmx.net?part=3D4
+Bartosz
