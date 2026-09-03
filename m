@@ -1,294 +1,204 @@
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22BF3F0A9B
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 06:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903923FB07E
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 06:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788417201; cv=none; b=APNwsO0B62e8iWF1Th0/lrS8SUkyQkCW0+O9KEUAKKspXpJm02mhKxrovZ04ycv+qtI3GA9beB4YqLe/zOc/AONzYtFavEnLcR81BAskwkOyzWrH7hjp88Wx00cQAU3ckp4A9ZWwCnq1ZEptsglruzvm6Ck8jmVJRxoj93qMWyo=
+	t=1788417786; cv=none; b=cMHrwA7g1Fjw1ozKhxJKB06Ymjxv+ZVtwqnOpO9UUpBV2YKqFEsLDRo5KBNWwg+D6/WhYs8wp1cJ6kzOf5OX1fIh+4fwxpQ0VRTOLzWItC4MeQLVhEthYtVjGapiFmja7ivBqdhoLaNBNzVMEGE3DgSDX0hFy2Egof6JSGEAt70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788417201; c=relaxed/simple;
-	bh=ee4ofXZqSNwy9f90hRIbdTrXM36N0JGgkb1HtRIRj6I=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=WC84amqIU0yjpeJKSyPa+3o5hkAYMkGs+RdyGMAwrAl12d3R2/kuIHTMQEswvI4nTlWPEFryTsZtaVgNY2rj2LBUEmGbzI+n77hTUfuu0qWjvnj7oAbzBExbLgPYgWqW7NrfTHQA5XPLKJXm/wZvFX6nJ5OXm4kpoWyiPZXLTHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=Ht0wEdYO; arc=none smtp.client-ip=162.62.57.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1788417786; c=relaxed/simple;
+	bh=WBtYj87zdjrwF/MOCOa+deEXOzv4XFTuMBoC2NJnDWc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=F8oOLLAeu6B7DPQ0J2fhfx39PctW/P/u7Cm1dJ+P2hQXdbUinFW0DAGQt7ZJoaNaNoGVZi1KjHWWiPHsprZeuMPDQ8Tdb2egqx4Kl5j0a5Tw7884Iv2QCiJ4LrvAgfabiiJTeSKM9E2EyxGOwDoS+0fFmyZAzM+qLXEgdETGYfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmjZ4Xq/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="Ht0wEdYO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1788417170;
-	bh=iXWuAHhao+JQKfP/uWUlIG0PaXD5vB/r6zkEtM44/P8=;
-	h=From:To:Cc:Subject:Date;
-	b=Ht0wEdYO2C5jA7bllM14mwSoZivlsZkz5UFe/IdoA6v7CJ+TTyRWzhYi9UCkKOoHS
-	 LegAr1mN3+DOdfzPEYN3aazOHp8BaFRKae/9o/4J9coJSvIzR1G2QiIgC4iYd3/nIm
-	 H1oaK7RX0k9cOLjQd3RYz4cnfvXH9XrrBbGJMIiw=
-Received: from LAPTOP-TKBJAGN4.localdomain ([2408:8256:2d01:e2b1:6136:e6c:8ed6:40aa])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 7531182B; Thu, 03 Sep 2026 14:29:19 +0800
-X-QQ-mid: xmsmtpt1788416959th7icnmcj
-Message-ID: <tencent_E6A52FBBB25132C90B8E296FEB96E2C8CA07@qq.com>
-X-QQ-XMAILINFO: N6IfSeM/PG+tdFPro0Mxsj7JJPO19r/CGZbFDiWlPqiRTwHSIuI8IwAoIZ6yLx
-	 shYWmAjecjCTMXxsdmfz4aTo1VuqOgUVm78jzLOa0yIZd0sbfNRSiA8+m/Fh/1MFBPzjGrtDqCyL
-	 48gNIGMnb5GvWOdTmjg5I4BdpjjBYsaVTKPXNhlCDO0MhYcv78MoHoniMk6KX3cVqxPOKBmII+Qd
-	 yh9ecYWJq6NKwHokAw/5Z4Evk96VjaSmVyS8oL9oFp46xgjoY2Sjw3hsodmUHtFc7mARlEWTJ0gH
-	 bvwj3/w08zAtGWBUoI2NfdzZFnYLbpcoLGFNWzXHc2X0+uUAwUIc/+4t5Z3PnoTnVtJJbskfld2i
-	 yZm/KJ+BU95DxJxMzO7k1e6+OWHmnw1xM8LgWBq2u2BuIWb6gSc9fFZosCrMi1bDiYttPGkGvbfi
-	 zxUMAMNZKIg2pzEyEbwNnZnSgD7iFbqZa8vK64L1mA6eXwdKJ2/e3IzczuEMUUolDPN1xk7bEP32
-	 m4YTIJysKcGYeZugxgskKUMajuYfsd295bcgWjl3nsC4tFBckhRFIv7xzC9SLIjP4uWpApHs2uuE
-	 yulofoC5hHkgQO9i5NGDdxdnle+TASM5KEx6mTx7TJmSYNCKYCa6ZUtbjDtxjnECLrah4C9N9Y+G
-	 itcL9eiOY+J3iHFDlznWYoQ2VIemhROBxQFUMJ/uaBPqB6j9szHEaCw4z1Pnaj9e8GT8L8KGscUT
-	 XMdrqtc+LgdoLRRCg06l9kRX4bmyg12bZTvIos4ntPcoyxKVydcKlUotkn/9EkXcy9nqkYVVU49i
-	 vwdzu42NNrLg5ELdXw50/pkpjuxJ34GOoN9cOjW9JlgYaKHSj+PUgAOzJdZBf9BhtTDSfyBRFX5e
-	 Q4SxUOxt/oiPKdZVikagAp7PnPeJ0zYKcvPVuRMMtYffVTgX/6rY1vwkNHz6BWFU/xyAmkLJd+Vb
-	 aRdBO2eKM1UXXP9PczvwmLdgi/i3FY9DUE6OyE4c919lpf5GBkV6tkPiI10NnVRr7IDuJLUYG925
-	 /r1XN2crsQ1EBXjbo1B1BxSDnPTllHfnV6OL603dPtUc1JbSlhw2stq1aw4chp6BAfKgT6brcoFt
-	 fjLHDeLQnMImnvMGFm3I1uVX54pNOork/3sy4ns3Zgy3vrnYFKhmlLWMPL1d191deI/pB/Bu6IgG
-	 WQox6RSzpRHw6nrySr5vLO4CJREOFtGPfHjbz+3xb8ANTE2Q==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Haobin Jiang <lemonoutput@foxmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
-	Haobin Jiang <lemonoutput@foxmail.com>
-Subject: [PATCH v2] i2c: imx: honour I2C_M_IGNORE_NAK
-Date: Thu,  3 Sep 2026 14:29:15 +0800
-X-OQ-MSGID: <20260903062915.7875-1-lemonoutput@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmjZ4Xq/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85A81F00A3A;
+	Thu,  3 Sep 2026 06:42:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788417776;
+	bh=vKbcOt1AJWbUW+VtKHyfxrAg58sVmaLT070Gc/leiMw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FmjZ4Xq/h9xqEB7iH2JjPh8kAtnbxKZrAyJ9pYzv4YojHSkUPQ5xLAmTxn5XARfic
+	 C+E+G/ggwNGKZE4E5gDavM+GNKl9lo4RFs6uihlNcmQgQ7AU+PL5MztfMKXOy6D2MZ
+	 Oy48n5+zUO6jRPiH+PhuxH4/wfOq0MFKQaTxcrOkTnJcGqiCKYG2b9YN2zWtdGRbME
+	 rNF1hicmsbQ5hTdvtau6R2bif+jCsVR09NiV4kVgJVpPXEkL1e4XpA6G0xSQ6c81aq
+	 10igkikLQJ3+FK1rN7Yz3ihlNQP7mVQCycRwFqUsIv8auzY5p8MYFCdniMBoB7f/IX
+	 nqrkeG9PDk0lA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] i2c: imx: honour I2C_M_IGNORE_NAK
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Haobin Jiang" <lemonoutput@foxmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <tencent_E6A52FBBB25132C90B8E296FEB96E2C8CA07@qq.com>
+References: <tencent_E6A52FBBB25132C90B8E296FEB96E2C8CA07@qq.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 03 Sep 2026 06:42:56 +0000
+Message-Id: <20260903064256.A85A81F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The i.MX controller has no hardware "ignore NAK" enable bit and checks
-each byte in software after transmitting it: i2c_imx_acked() on the
-atomic paths, i2c_imx_isr_acked() on the ISR path.  Any NAK is
-therefore treated as a fatal error and aborts the transfer with -ENXIO.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-There are legitimate cases where a target NAKs on purpose and the
-transfer must continue anyway.  The standard way to express this is
-I2C_M_IGNORE_NAK, which the core passes through to the bus driver
-unchanged: i2c_transfer_buffer_flags() performs no validation of the
-message flags, and the i.MX driver has never advertised
-I2C_FUNC_PROTOCOL_MANGLING.  Today such a transfer transmits bytes
-until the first NAK and then fails with -ENXIO, silently dropping the
-flag.  One in-tree caller that hits this on i.MX buses is the wake
-sequence of the Atmel crypto drivers (drivers/crypto/atmel-i2c.c, used
-by atmel-ecc.c for the ATECC508A/608A): the sleeping device NAKs the
-wake token and the write must complete anyway; the ATECC508A is wired
-to an i.MX I2C controller e.g. on the Gateworks GW5904.
+New issues:
+- [High] I2C_M_STOP is silently ignored during multi-message transfers, des=
+pite advertising I2C_FUNC_PROTOCOL_MANGLING.
 
-Advertise I2C_FUNC_PROTOCOL_MANGLING and honour I2C_M_IGNORE_NAK at
-every software ACK check: on the PIO write paths, which check the ACK
-of the address and of every data byte, and on the PIO read paths, which
-check the target's ACK of the address byte, mirroring i2c-img-scb.
-With the flag set a NAK no longer aborts the transfer and the byte loop
-continues so the remaining bytes are still transmitted.  Every transfer
-without the flag keeps the previous behaviour unchanged.
+Pre-existing issues:
+- [Critical] Out-of-bounds write (NULL pointer dereference) in i2c_imx_isr_=
+read_continue when processing a 0-length I2C read message, leading to a ker=
+nel panic.
+- [High] DMA mapping leak on timeout in i2c_imx_dma_write() and i2c_imx_dma=
+_read().
+--
 
-A NAK'd byte does not generate a further DMA request, so a DMA write to
-a deliberately-NAKing target would stall until DMA_TIMEOUT instead of
-completing.  Force the PIO path for every message carrying
-I2C_M_IGNORE_NAK, again mirroring i2c-img-scb, which implements the
-flag in atomic mode only.  The DMA write path therefore never sees the
-flag, but it passes the flag through at the final ACK check like the
-other paths.
+commit 1b0aa275631abf14132713ff5c98382e23b787c9
+Author: Haobin Jiang <lemonoutput@foxmail.com>
 
-I2C_FUNC_PROTOCOL_MANGLING is a blanket capability bit, so advertising
-it while implementing only I2C_M_IGNORE_NAK would silently ignore the
-other mangling flags.  Reject I2C_M_NO_RD_ACK and I2C_M_REV_DIR_ADDR in
-xfer_common() instead; no in-tree user of these flags transfers through
-i2c-imx.  I2C_M_NO_RD_ACK is not implementable at all on this
-controller: it always clocks the ninth acknowledge bit and I2CR[TXAK]
-only selects ACK versus NAK.  I2C_M_STOP is deliberately not rejected:
-the controller already terminates every transfer with a STOP and
-separates messages with repeated STARTs, so leaving the flag unhandled
-changes nothing on the bus, while rejecting it would break the ov2659
-camera on imx6qdl-ds: I2C_CLIENT_SCCB is I2C_M_STOP | I2C_M_IGNORE_NAK
-and the driver stamps client->flags on every message, including the
-chip-ID reads done at probe time.
+i2c: imx: honour I2C_M_IGNORE_NAK
 
-No retry is introduced: the meaning of a NAK is device-specific [1], so
-it stays a device-driver decision.  I2C_M_IGNORE_NAK is only honoured
-when the device driver explicitly sets it, which is exactly how the
-flag is meant to be used.
+This patch advertises I2C_FUNC_PROTOCOL_MANGLING and implements the
+I2C_M_IGNORE_NAK flag for the i.MX I2C controller. It rejects unsupported
+mangling flags but allows I2C_M_STOP, continuing the transfer despite NAKs
+when requested.
 
-Link: https://patchwork.ozlabs.org/project/linux-i2c/patch/1467900229-5262-1-git-send-email-tharvey@gateworks.com/ # [1]
+Link: https://patchwork.ozlabs.org/project/linux-i2c/patch/1467900229-5262-=
+1-git-send-email-tharvey@gateworks.com/ # [1]
 Link: https://lore.kernel.org/linux-i2c/4D46D571.5010907@armadeus.com/ # [2]
-Link: https://patchwork.ozlabs.org/project/linux-i2c/patch/1378857490-30968-1-git-send-email-luka@openwrt.org/ # [3]
-Signed-off-by: Haobin Jiang <lemonoutput@foxmail.com>
+Link: https://patchwork.ozlabs.org/project/linux-i2c/patch/1378857490-30968=
+-1-git-send-email-luka@openwrt.org/ # [3]
 
----
-v1 -> v2:
-	- Honour I2C_M_IGNORE_NAK on the read path as well, at the checks
-	  of the target's ACK of the address byte (i2c_imx_isr_read(),
-	  i2c_imx_prepare_read()), mirroring i2c-img-scb, instead of
-	  silently dropping the flag there.  Read requests carrying the
-	  flag cannot be rejected, because in-tree SCCB sensors such as
-	  ov2659 set I2C_CLIENT_SCCB, i.e. I2C_M_STOP |
-	  I2C_M_IGNORE_NAK, on their read messages too.
-	- Force the PIO path for every message with I2C_M_IGNORE_NAK: a
-	  NAK'd byte does not generate a further DMA request, so a DMA
-	  write to a deliberately-NAKing target would stall until
-	  DMA_TIMEOUT (mirrors i2c-img-scb).  i2c_imx_dma_write() can
-	  therefore never see the flag, though it still passes it
-	  through at the final ACK check like the other paths.
-	- Reject I2C_M_NO_RD_ACK and I2C_M_REV_DIR_ADDR in
-	  xfer_common() instead of advertising blanket support and
-	  silently ignoring them.  I2C_M_STOP is not rejected: the
-	  controller already emits a STOP after the final message and
-	  repeated STARTs between messages, and rejecting it would break
-	  the ov2659 camera on imx6qdl-ds.
-	- Correct the description of the status quo: the core does not
-	  reject I2C_M_IGNORE_NAK; i2c_transfer_buffer_flags() passes the
-	  message flags through unchanged, so the current driver sends
-	  bytes until the first NAK and then fails with -ENXIO.
----
- drivers/i2c/busses/i2c-imx.c | 44 ++++++++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 9 deletions(-)
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 28313d0fad37e..5b22a497a7917 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1002,7 +1009,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_s=
+truct *i2c_imx)
+>  	int result;
+>  	unsigned int temp;
+> =20
+> -	result =3D i2c_imx_isr_acked(i2c_imx);
+> +	result =3D i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNOR=
+E_NAK);
+>  	if (result)
+>  		return result;
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 28313d0fad37..5b22a497a791 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -612,9 +612,12 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
- 	return 0;
- }
- 
--static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
-+static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx, bool ignore_nak)
- {
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		dev_dbg(&i2c_imx->adapter.dev, "<%s> No ACK\n", __func__);
- 		return -ENXIO;  /* No ACK */
- 	}
-@@ -968,11 +971,15 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
- 	return ret;
- }
- 
--static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
-+static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx,
-+				    bool ignore_nak)
- {
- 	i2c_imx->isr_result = 0;
- 
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		i2c_imx->state = IMX_I2C_STATE_FAILED;
- 		i2c_imx->isr_result = -ENXIO;
- 		wake_up(&i2c_imx->queue);
-@@ -985,7 +992,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1002,7 +1009,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
- 	int result;
- 	unsigned int temp;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1213,7 +1220,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- 	if (result)
- 		return result;
- 
--	return i2c_imx_acked(i2c_imx);
-+	/* I2C_M_IGNORE_NAK messages always take the PIO path. */
-+	return i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- }
- 
- static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
-@@ -1227,7 +1235,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
- 	result = i2c_imx_trx_complete(i2c_imx, !use_dma);
- 	if (result)
- 		return result;
--	result = i2c_imx_acked(i2c_imx);
-+	result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1358,7 +1366,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 	result = i2c_imx_trx_complete(i2c_imx, true);
- 	if (result)
- 		return result;
--	result = i2c_imx_acked(i2c_imx);
-+	result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write data\n", __func__);
-@@ -1372,7 +1380,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1549,6 +1557,16 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 	bool is_lastmsg = false;
- 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(adapter);
- 	int use_dma = 0;
-+	u16 mangling = I2C_M_NO_RD_ACK | I2C_M_REV_DIR_ADDR;
-+
-+	/*
-+	 * Only I2C_M_IGNORE_NAK is implemented; reject the unsupported
-+	 * mangling flags.  I2C_M_STOP is the controller's native
-+	 * behaviour and must not be rejected.
-+	 */
-+	for (i = 0; i < num; i++)
-+		if (msgs[i].flags & mangling)
-+			return -EOPNOTSUPP;
- 
- 	/* Start I2C transfer */
- 	result = i2c_imx_start(i2c_imx, atomic);
-@@ -1604,6 +1622,14 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 
- 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
- 			msgs[i].flags & I2C_M_DMA_SAFE;
-+
-+		/*
-+		 * I2C_M_IGNORE_NAK is honoured on the PIO paths only; a
-+		 * NAK'd byte does not generate a further DMA request
-+		 * (mirrors i2c-img-scb).
-+		 */
-+		if (msgs[i].flags & I2C_M_IGNORE_NAK)
-+			use_dma = false;
- 		if (msgs[i].flags & I2C_M_RD) {
- 			int block_data = msgs->flags & I2C_M_RECV_LEN;
- 
-@@ -1697,7 +1723,7 @@ static int i2c_imx_init_recovery_info(struct imx_i2c_struct *i2c_imx,
- static u32 i2c_imx_func(struct i2c_adapter *adapter)
- {
- 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
--		| I2C_FUNC_SMBUS_READ_BLOCK_DATA;
-+		| I2C_FUNC_SMBUS_READ_BLOCK_DATA | I2C_FUNC_PROTOCOL_MANGLING;
- }
- 
- static const struct i2c_algorithm i2c_imx_algo = {
+[Severity: Critical]
+This is a pre-existing issue, but can a 0-length I2C read message cause a
+kernel panic during the ISR read sequence?
 
-base-commit: 04e9bf1648f846976b543e91c1838a712433772a
--- 
-2.34.1
+When a user-space application issues an I2C_RDWR ioctl with a 0-length read
+message (len =3D 0, I2C_M_RD), the i2c-dev subsystem allocates the buffer v=
+ia
+memdup_user(..., 0), which returns ZERO_SIZE_PTR (0x10). The message is
+passed to i2c_imx_read(), starting the ISR state machine.
 
+In i2c_imx_isr_read_continue(), the driver attempts to detect the end of the
+buffer using the following bounds check:
+
+	if ((i2c_imx->msg->len - 1) =3D=3D i2c_imx->msg_buf_idx) {
+		...
+	} else if (i2c_imx->msg_buf_idx =3D=3D (i2c_imx->msg->len - 2)) {
+		...
+	}
+
+Because msg->len is 0 (a __u16), len - 1 promotes to int and evaluates to -=
+1.
+When compared to the unsigned int msg_buf_idx (0), -1 is cast to 4294967295,
+so the condition evaluates to false. The subsequent len - 2 check also
+evaluates to false.
+
+The driver then unconditionally executes:
+	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] =3D imx_i2c_read_reg(...)
+
+This writes directly to the unmapped ZERO_SIZE_PTR buffer (address 0x10) and
+crashes the system.
+
+[ ... ]
+
+> @@ -1213,7 +1220,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct =
+*i2c_imx,
+>  	if (result)
+>  		return result;
+> =20
+> -	return i2c_imx_acked(i2c_imx);
+> +	/* I2C_M_IGNORE_NAK messages always take the PIO path. */
+> +	return i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the DMA timeout error p=
+ath
+leak the DMA mappings?
+
+In i2c_imx_dma_write() and i2c_imx_dma_read(), when an I2C DMA transfer tak=
+es
+longer than DMA_TIMEOUT (1 second) due to hardware stalls or faulty devices,
+the code aborts the transaction:
+
+	if (time_left =3D=3D 0) {
+		dmaengine_terminate_sync(dma->chan_using);
+		return -ETIMEDOUT;
+	}
+
+Calling dmaengine_terminate_sync() aborts the active descriptor without
+executing the callback (i2c_imx_dma_callback()). As a result,
+dma_unmap_single() is never called for the aborted transaction, permanently
+leaking the DMA mapping.
+
+[ ... ]
+
+> @@ -1549,6 +1557,16 @@ static int i2c_imx_xfer_common(struct i2c_adapter =
+*adapter,
+>  	bool is_lastmsg =3D false;
+>  	struct imx_i2c_struct *i2c_imx =3D i2c_get_adapdata(adapter);
+>  	int use_dma =3D 0;
+> +	u16 mangling =3D I2C_M_NO_RD_ACK | I2C_M_REV_DIR_ADDR;
+> +
+> +	/*
+> +	 * Only I2C_M_IGNORE_NAK is implemented; reject the unsupported
+> +	 * mangling flags.  I2C_M_STOP is the controller's native
+> +	 * behaviour and must not be rejected.
+> +	 */
+> +	for (i =3D 0; i < num; i++)
+> +		if (msgs[i].flags & mangling)
+> +			return -EOPNOTSUPP;
+
+[Severity: High]
+Does this code silently ignore the I2C_M_STOP flag during multi-message
+transfers?
+
+By adding I2C_FUNC_PROTOCOL_MANGLING to i2c_imx_func(), this patch advertis=
+es
+support for protocol mangling flags, including I2C_M_STOP. The new check ab=
+ove
+intentionally allows the I2C_M_STOP flag to pass.
+
+However, in the multi-message loop in i2c_imx_xfer_common():
+
+		if (i) {
+			dev_dbg(&i2c_imx->adapter.dev,
+				"<%s> repeated start\n", __func__);
+			temp =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+			temp |=3D I2CR_RSTA;
+			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+
+The driver unconditionally emits a Repeated START (I2CR_RSTA) for all
+subsequent messages (i > 0). If a client driver sets the I2C_M_STOP flag on=
+ a
+message, the hardware fails to emit the requested STOP and will emit a
+Repeated START instead.
+
+Could devices relying on a STOP condition between messages (which is the
+explicit purpose of I2C_M_STOP) malfunction or lock up due to receiving a
+Repeated START instead?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/tencent_E6A52FBBB25=
+132C90B8E296FEB96E2C8CA07@qq.com?part=3D1
