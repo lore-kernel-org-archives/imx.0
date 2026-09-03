@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B83334EEF7
-	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 07:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F94634E777
+	for <imx@lists.linux.dev>; Thu,  3 Sep 2026 07:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788421511; cv=none; b=gJped4tqSF12sgKQahuo/RBwXsTY337kIb/2/QeKN0T53BjdpQkCCdpKxLN8hpP6+uIoARUGstF0i2sjb9wY0M6M9VyKiYy2d7e9juiHOEFe5Vj+bSWKXu0XrS1UT9jzgBmLco+pGyWfagPeqtIAvxz6NgZGqA4Ds9ci5H6qL2A=
+	t=1788421823; cv=none; b=vArNZ0XCyPLYU3xUKK0S3S/SGgVJjUVwzpIrsmeDEF0np46ykzyhqFVZUy8GKiScJaFd+d0ANSGiM0uAEtGSigRs6HMe1kGJBXTU/S5aljj1TCriXGhf7t4CeGosqEnf7gEsDCe+I5hDZM7Hzepg5xVWCvh3XjY2yMV30loRRI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788421511; c=relaxed/simple;
-	bh=lDV1uyktUbn9hYMZccCC4edlyLPG72uGF8tJF8wTOkE=;
+	s=arc-20240116; t=1788421823; c=relaxed/simple;
+	bh=QP9L560ivZu/0EU/cxcR/tyACH1xzQvygp6BsgEOKpM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hPnWSDXWgpyMPm+N8MNS1LYgKYTQCRdqdrer/cpDsn0HdLnqC3UDdihCbQkMpyiWGe/oEViOUmpFxxcfBIepmjvUh0rsVvgSuUcOJXOxoOWY9D1qnplY5dpUGes90SAJ+O54CopkXGV0nOBtZ7Y6vThC1xefnKWRz3KkW8QduFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTE2+TCE; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=RQQSdzZcY6I7nH83KyV92VcKKQDs1CkuuCtPMMzDcZOK1XXxZufFf9hKt0iy7GEVkRyIuriVEJPeJCFHq1GSEvJc+qr6TWClhnN3uMchl1Q/S45U5T787S7WOyA8gwqbMBKW1N+Ju/+iIIVm3tt+2LsZVyXgdpQp8tSg5c5AUb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lif81weC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTE2+TCE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36471F000E9;
-	Thu,  3 Sep 2026 07:45:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lif81weC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF3F1F000E9;
+	Thu,  3 Sep 2026 07:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788421510;
-	bh=+VLag8x7GyfPr3iuEPJiKL7aCyMlYsE2d5zc0S0Ok2I=;
+	s=k20260515; t=1788421821;
+	bh=THMrjoSHXx/YdNfm8PS7Z3gTknh1GfxYVfs8fiMHBs4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eTE2+TCE59w0K6UHQQ8RAUp4vaoZjFivlVELFt4SxXMTcbYpWVnP8Ll46NQA3uGvU
-	 VZpFv1siPyn0pY/ykJUxgyMs/QYPacL2nBvPeL4+bTutxykAkXMOeVD9EzpdfU+pZB
-	 F/W2Bg2mHJA5S+L4pGA1sFFURjMTjgF7s6HIyhq5WDmLTuL7oV/iFzzRfSxbfi8xV8
-	 pFGYmoT6kE9xAEvHRYpVHF+EwDLDQUNlDS2TbHfkEHelyuqtcpnkKFvMlDAfJJwodg
-	 iRtqiuKgiyBoDypHxYk/YwAQlWgN4yu5xvDb9qkKtFOsxP3nYG3qlZPfE+vhmBJKiS
-	 TxThw8ljtZ8Tg==
+	b=Lif81weCyPogdGcYxAPcPW0O88GTQ0vCD8sXxD1AjoLD0bzK2ghrHzY6NSfWs7AdK
+	 IAuUfY0hTgkzY7ksZKaijEGGUEY80YOMa5vmifswspvpw0Xxau9BAl8BC2x5kUcYLb
+	 gxvziilC1rlRNbLObmOt8gaKnxwqqEP4Vp1BZ2zdkQ6pklSm/yxbDvx5Kz3pdEo2gp
+	 70StXFC0Pyiu+LTXtOl4mFw81kfKkIcMtbUK4+dBgifAoDW0SAaJJs9/ZEg6RcRsr/
+	 fzv9okmAq1jLh9wcPH5lIW3QLiw2LyR75fda8rMm5pqAwGLDaLtyIDEYfTX+neSux1
+	 7GaH1wbFyGAjA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/3] gpiolib: add get_config() and
- gpiochip_generic_get_config()
+Subject: Re: [PATCH v4 3/3] gpio: mmio: track the direction of chips without
+ direction registers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Mehmet Fide" <mehmet.fide@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260903073143.2068494-3-mehmet.fide@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260903073143.2068494-4-mehmet.fide@gmail.com>
 References: <20260903073143.2068494-1-mehmet.fide@gmail.com>
- <20260903073143.2068494-3-mehmet.fide@gmail.com>
+ <20260903073143.2068494-4-mehmet.fide@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 03 Sep 2026 07:45:08 +0000
-Message-Id: <20260903074509.F36471F000E9@smtp.kernel.org>
+Date: Thu, 03 Sep 2026 07:50:21 +0000
+Message-Id: <20260903075021.7AF3F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,103 +47,67 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] gpiochip_generic_get_config() returns an unpacked argument inste=
-ad of the documented packed configuration format.
+- [Medium] Incorrect parsing of packed pin configuration value in `gpio_mmi=
+o_seed_dir_from_pinctrl()` due to conflicting API contract.
 --
 
-commit 76e13bb42cd8827a4ba44cd0214563286c510f1f
+commit 38b44b07fd26f5fd809a77e8d6044980715db7d8
 Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-gpiolib: add get_config() and gpiochip_generic_get_config()
+    gpio: mmio: track the direction of chips without direction registers
 
-A chip with a pin control backend sets a line's configuration through
-set_config() and gpiochip_generic_config(), but has no way to read one
-back. gpio-mmio needs that to learn the direction of a line whose
-direction lives in the pin controller.
+This commit tracks the direction of generic GPIO chips with a pinctrl
+backend and no direction registers. It keeps the direction in the existing
+shadow and updates it under the chip lock, reading the state once during
+line request from the pin controller.
 
->     Add the optional get_config() callback, taking the packed parameter to
->     query and returning the packed answer the way pinctrl_gpio_get_config=
-()
->     does, and gpiochip_generic_get_config() as the pin control backed
-
-[Severity: Medium]
-Does pinctrl_gpio_get_config() actually return a packed answer?
-
-Looking at drivers/pinctrl/core.c, pinctrl_gpio_get_config() intentionally
-strips the parameter and returns only the unpacked argument:
-
-int pinctrl_gpio_get_config(...) {
-    ...
-    *config =3D pinconf_to_config_argument(*config);
-    return 0;
-}
-
+> diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
+> index 7e4b3e8d609f3..0709ffaab4dec 100644
+> --- a/drivers/gpio/gpio-mmio.c
+> +++ b/drivers/gpio/gpio-mmio.c
 [ ... ]
-
-> diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-> index 17511434ed077..5c81cce691738 100644
-> --- a/include/linux/gpio/driver.h
-> +++ b/include/linux/gpio/driver.h
-> @@ -359,6 +359,10 @@ struct gpio_irq_chip {
->   * @set_config: optional hook for all kinds of settings. Uses the same
->   *	packed config format as generic pinconf. Must return 0 on success and
->   *	a negative error number on failure.
-> + * @get_config: optional hook to read back a setting. Uses the same pack=
-ed
-> + *	config format as generic pinconf: the parameter to query goes in, the
-> + *	packed parameter and argument come out. Must return 0 on success and a
-> + *	negative error number on failure.
-
-[Severity: Medium]
-Because pinctrl_gpio_get_config() unpacks the argument, does this documented
-API contract contradict the actual implementation?
-
-If a driver follows this documentation and parses the returned value using
-pinconf_to_config_argument(), it will shift the already-unpacked value right
-by 8 bits, yielding 0.
-
+> @@ -601,20 +622,51 @@ static int gpio_mmio_setup_direction(struct gpio_ge=
+neric_chip *chip,
 [ ... ]
-
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index ef8ccaf17c9ce..44328aed16465 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -2440,6 +2440,29 @@ int gpiochip_generic_config(struct gpio_chip *gc, =
-unsigned int offset,
->  }
->  EXPORT_SYMBOL_GPL(gpiochip_generic_config);
-> =20
-> +/**
-> + * gpiochip_generic_get_config() - read back the configuration of a pin
-> + * @gc: the gpiochip owning the GPIO
-> + * @offset: the offset of the GPIO to query
-> + * @config: the packed parameter to query, replaced by the packed answer
-> + *
-> + * Returns:
-> + * 0 on success, or negative errno on failure.
-> + */
-> +int gpiochip_generic_get_config(struct gpio_chip *gc, unsigned int offse=
-t,
-> +				unsigned long *config)
+> +static void gpio_mmio_seed_dir_from_pinctrl(struct gpio_chip *gc,
+> +					    unsigned int gpio)
 > +{
-> +#ifdef CONFIG_PINCTRL
-> +	if (list_empty(&gc->gpiodev->pin_ranges))
-> +		return -ENOTSUPP;
+> +	struct gpio_generic_chip *chip =3D to_gpio_generic_chip(gc);
+> +	unsigned long config;
 > +
-> +	return pinctrl_gpio_get_config(gc, offset, config);
+> +	if (!gc->get_config || chip->reg_dir_out || chip->reg_dir_in)
+> +		return;
+> +
+> +	config =3D pinconf_to_config_packed(PIN_CONFIG_OUTPUT_ENABLE, 0);
+> +	if (gc->get_config(gc, gpio, &config))
+> +		return;
+> +
+> +	guard(raw_spinlock_irqsave)(&chip->lock);
+> +	if (config)
+> +		chip->sdir |=3D gpio_mmio_line2mask(gc, gpio);
+> +	else
+> +		chip->sdir &=3D ~gpio_mmio_line2mask(gc, gpio);
+> +}
 
 [Severity: Medium]
-Will returning this unpacked value directly cause logic errors for drivers
-expecting a packed configuration?
+Are we correctly parsing the packed pin configuration value here?
 
-Returning the unpacked output of pinctrl_gpio_get_config() here finalizes
-the API contract violation.
+The documentation for gc->get_config in include/linux/gpio/driver.h states =
+it
+uses the packed config format where the packed parameter and argument come =
+out.
 
-Any callers, such as the gpio-mmio driver in patch 3/3, that rely on the
-actual returned unpacked value will bypass the documented API contract. If
-the value was truly packed as documented, config would always evaluate to
-true since the parameter is non-zero.
+Because the packed format places the non-zero parameter ID
+(PIN_CONFIG_OUTPUT_ENABLE) in the lower 8 bits, will evaluating config dire=
+ctly
+as a boolean always be true?
+
+If a conforming custom GPIO driver implements gc->get_config according to t=
+he
+documented API, will its direction be unconditionally forced to output mode=
+ by
+this check?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903073143.2068=
-494-1-mehmet.fide@gmail.com?part=3D2
+494-1-mehmet.fide@gmail.com?part=3D3
