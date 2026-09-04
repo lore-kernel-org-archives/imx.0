@@ -1,200 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037CB3DB63D;
-	Fri,  4 Sep 2026 08:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A68138333F;
+	Fri,  4 Sep 2026 08:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788510467; cv=none; b=mWAmPvWJirf/rcMQYqOiake2/gVqjoT4K4mpdv5E5d6XMgn4C1JOK8gCpWPVnXKn6puc/azsSJBfkOAy2ssaH0ZVk+suXwR7jAYPlrG9KuhK0byB4QxfiIFbgmjEoAx9gNLxdWReKM7xV+mr0dyWUrqalSpqQyejKt4TDnpVdD8=
+	t=1788510577; cv=none; b=VTxYnWBI2dT2xp2OeoAjFBt3gu/Mxg6yIPm2S5UizXi881UmDY3Xz4b5exTZVZpEH+8hkC8kDFJSKRDlsI358+nK4NAa3hnkr7c6Xf8Hf97XGvkv63EWqzKHN/AaLW6o2N+Wvah/+vFj8Y4yaBxCErBGaHIk8Z1vQTzVgLVay7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788510467; c=relaxed/simple;
-	bh=rLNFA/cmK/wJ5DYxR1gUV0ogjN3gCN/qPJa/MTw3PH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iYxQBQ4nghM6djIcAjHOSOH0yzqlAJTNCd43gShpBJWqDBRU8vpwcRkFeqFSnXVlD5MFcgBwsTVhe5uC/1DZyhDbTKeJo2PuW19Qc/g1Oej0tz6vtsIzNH2/KH66/ji9eWlhHyOaqBuL4MYzFJuDMjVF9bdeteP0E9PLJaePTrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AU0OtRZH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788510577; c=relaxed/simple;
+	bh=ketV8lJC98MwT152y2+p29SZeDSTVYZ+8Fjsct4s0Cs=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=KvY2u6PmTOHZpOPk6BQf/qehVr+Ahou9SRwdFPi4Mi+ehF8iZHKT5AIN9sj/WNweQzOEn1ohqM2FG0iB/4f56cKRQ0xd8yPDqxmA65ejFJwJN9DRRbm8yWpl/lqroOaVcOXyY4bZ4Uv57AiDK/Qn75d44BsCVTwlilNPlqB3Oc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrU1OzPy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AU0OtRZH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7EA1F00A3D;
-	Fri,  4 Sep 2026 08:27:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrU1OzPy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC721F00A3D;
+	Fri,  4 Sep 2026 08:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788510465;
-	bh=LedSBcjMTN5DXWgZJlvx5zzjDnpXz/AyClnEQVyrKsQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AU0OtRZHC2cMA6mMDFn+85rlIuEACq5hidEe4IL1M5xYAbZm2sRhisC+FIwmFC6rb
-	 sNwJQ1GQTTuNAIZOvfPNt+UxmFYgoltBT2cIOXB5OvBLf4J+Cdm79f4arItT5epqms
-	 v4hQNydsjXRh9oTVM1Tw9j2WkKlAlT3fODDgSDJ7Xbj274S2b388f3NdooLnLZ+i5j
-	 wLgDfMc9Wysha6dkqSe39TNeETcLRRx22rz4RQc8XEgMZVpGJxDRu0pwAMDROlLyvS
-	 03bzaNkVipY/bJBm3CJuPo1m1EB2rVTwvUVGZh7YLCyfCx+GPn95aZkOO4Pudkqhlk
-	 VCF05iu+W2YdQ==
-Date: Fri, 4 Sep 2026 10:27:41 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Marek Vasut <marek.vasut@mailbox.org>, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v6 04/13] drm/imx: dc-crtc: Disable at boot
-Message-ID: <app-rzrdgsxVozsI@houat>
-References: <20260904-imx8-dc-prefetch-v6-0-26643e3f6cb7@nxp.com>
- <20260904-imx8-dc-prefetch-v6-4-26643e3f6cb7@nxp.com>
+	s=k20260515; t=1788510575;
+	bh=57+zfRWquEc7/m7zU9U9Jv+O6fWgkTCFuvFGHmL7CgQ=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc;
+	b=NrU1OzPyAtJcQd2IbkJ0bwhfg/Y0v5rztSmztUnqZ8UF5Z4W4NBVriwtz/uEqC5PP
+	 EWT6q0yHiiFn66VKtWD5c8x3qQ/QprSwnyRYsMri69Tm1wy/af/KVpnHYgMFmEz5FS
+	 GcS4bJIc9w9xviUxreWGGeSTFpIdIMniUfiQgqg+MaVCGewJF+8TvZd3Zaz4c8Zm/1
+	 ks84AnlsD87w0tziRrIM9gSQcTLPD3cZGeeaNxVHLSxQFqH3X8uiTzSgdrn/9M1/yr
+	 snTpDqIvkrA68+/rmz7TdwxO1Z4LtBmkT6gnz4Etb3HXyu5dK72K7i3T+/WMSqeozl
+	 cCqRlh/xvwuHg==
+Message-ID: <94cc04ba62b25e87918820db4c548be5@kernel.org>
+Date: Fri, 04 Sep 2026 08:29:32 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Liu Ying" <victor.liu@nxp.com>
+Subject: Re: [PATCH v6 05/13] drm/imx: dc: Add PRG support
+In-Reply-To: <20260904-imx8-dc-prefetch-v6-5-26643e3f6cb7@nxp.com>
+References: <20260904-imx8-dc-prefetch-v6-5-26643e3f6cb7@nxp.com>
+Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Conor
+ Dooley" <conor+dt@kernel.org>, "David Airlie" <airlied@gmail.com>, "Dmitry
+ Baryshkov" <lumag@kernel.org>, "Fabio Estevam" <festevam@gmail.com>, "Frank
+ Li" <Frank.Li@nxp.com>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek Vasut" <marek.vasut@mailbox.org>, "Maxime
+ Ripard" <mripard@kernel.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Philipp
+ Zabel" <p.zabel@pengutronix.de>, "Rob Herring" <robh@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
+ Vetter" <simona@ffwll.ch>, "Thomas Zimmermann" <tzimmermann@suse.de>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="wy243kauhdd524wa"
-Content-Disposition: inline
-In-Reply-To: <20260904-imx8-dc-prefetch-v6-4-26643e3f6cb7@nxp.com>
 
+On Fri, 4 Sep 2026 15:54:55 +0800, Liu Ying wrote:
+> Display Prefetch Resolve Gasket(PRG) is a part of a FetchUnit's
+> prefetch engine.  It sits between a Display Prefetch Resolve
+> Channel(DPRC) and a FetchUnit.  Add a platform driver to support
+> the PRG.
+> 
+> 
+> [ ... ]
 
---wy243kauhdd524wa
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v6 04/13] drm/imx: dc-crtc: Disable at boot
-MIME-Version: 1.0
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-Hi,
-
-On Fri, Sep 04, 2026 at 03:54:54PM +0800, Liu Ying wrote:
-> CRTC(s) could still be running after the DRM device is unplugged by
-> calling drm_dev_unplug(), because the CRTC disablement logic is
-> protected and bypassed by the drm_dev_enter()/drm_dev_exit() pair.
-> Hence, Pixel Engine's AXI clock use count(managed by Pixel Engine
-> driver's runtime PM) and pixel clock use count could be inbalanced
-> after removing and re-installing the driver module.  To fix this,
-> add a helper dc_crtc_disable_at_boot() and call it to properly
-> disable all CRTCs before advertising DRM device to user-space by
-> calling drm_dev_register().
->=20
-> Fixes: 711a3b878366 ("drm/imx: Add i.MX8qxp Display Controller KMS")
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-
-Just as a heads-up, the readout series I'm working on is probably going
-to help you deal with it:
-https://lore.kernel.org/r/20260629-drm-state-readout-v4-0-5966657980ed@kern=
-el.org
-
-> ---
-> v6:
-> - Rebase onto the latest drm-misc-next and resolve conflicts.
->=20
-> v3:
-> - Collect Frank's R-b tag.
-> ---
->  drivers/gpu/drm/imx/dc/dc-crtc.c | 55 +++++++++++++++++++++++++++++++++-=
-------
->  drivers/gpu/drm/imx/dc/dc-drv.c  |  5 ++++
->  drivers/gpu/drm/imx/dc/dc-drv.h  |  3 +++
->  3 files changed, 54 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc=
--crtc.c
-> index 0d64186a9901..1a537cf88daf 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-crtc.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
-> @@ -293,23 +293,29 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct=
- drm_atomic_commit *state)
->  	dc_crtc_queue_state_event(new_crtc_state);
->  }
-> =20
-> -static void
-> -dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_commit *=
-state)
-> +static inline void __dc_crtc_disable_fg(struct drm_crtc *crtc)
->  {
-> -	struct drm_crtc_state *new_crtc_state =3D
-> -				drm_atomic_get_new_crtc_state(state, crtc);
-> -	struct dc_drm_device *dc_drm =3D to_dc_drm_device(crtc->dev);
->  	struct dc_crtc *dc_crtc =3D to_dc_crtc(crtc);
-> -	int idx;
-> -
-> -	if (!drm_dev_enter(crtc->dev, &idx))
-> -		goto out;
-> =20
->  	enable_irq(dc_crtc->irq_dec_seqcomplete);
->  	dc_fg_disable(dc_crtc->fg);
->  	DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(dec_seqcomplete_done);
->  	disable_irq(dc_crtc->irq_dec_seqcomplete);
-> +}
-> =20
-> +static void
-> +dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_commit *=
-state)
-> +{
-> +	struct drm_crtc_state *new_crtc_state =3D
-> +				drm_atomic_get_new_crtc_state(state, crtc);
-> +	struct dc_drm_device *dc_drm =3D to_dc_drm_device(crtc->dev);
-> +	struct dc_crtc *dc_crtc =3D to_dc_crtc(crtc);
-> +	int idx;
-> +
-> +	if (!drm_dev_enter(crtc->dev, &idx))
-> +		goto out;
-> +
-> +	__dc_crtc_disable_fg(crtc);
->  	dc_fg_disable_clock(dc_crtc->fg);
-> =20
->  	/* request pixel engine power-off as plane is off too */
-> @@ -331,6 +337,37 @@ dc_crtc_atomic_disable(struct drm_crtc *crtc, struct=
- drm_atomic_commit *state)
->  	spin_unlock_irq(&crtc->dev->event_lock);
->  }
-> =20
-> +void dc_crtc_disable_at_boot(struct drm_crtc *crtc)
-> +{
-> +	struct dc_drm_device *dc_drm =3D to_dc_drm_device(crtc->dev);
-> +	struct dc_crtc *dc_crtc =3D to_dc_crtc(crtc);
-> +	int ret;
-> +
-> +	ret =3D pm_runtime_resume_and_get(dc_crtc->de->dev);
-> +	if (ret < 0) {
-> +		dc_crtc_err(crtc, "failed to get DC display engine RPM: %d\n",
-> +			    ret);
-> +		return;
-> +	}
-> +
-> +	if (!dc_fg_wait_for_frame_index_moving(dc_crtc->fg)) {
-> +		dc_crtc_dbg(crtc, "FrameGen frame index isn't moving\n");
-> +		goto out;
-> +	}
-> +
-> +	dc_crtc_dbg(crtc, "disabling at boot\n");
-> +	__dc_crtc_disable_fg(crtc);
-> +	dc_fg_disable_clock(dc_crtc->fg);
-> +
-> +	if (!dc_drm->pe_clk_axi_disabled) {
-> +		clk_disable_unprepare(dc_drm->pe->clk_axi);
-> +		dc_drm->pe_clk_axi_disabled =3D true;
-> +	}
-> +
-> +out:
-> +	pm_runtime_put(dc_crtc->de->dev);
-
-I'm not sure you actually need the pe_clk_axi_disabled flag. If you make
-it handled by runtime_pm, then you can also use pm_runtime_set_active to
-flag the device as active already when you probe, and the runtime_pm
-will know when to enable / disable things properly.
+Thanks!
 Maxime
-
---wy243kauhdd524wa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCapqA+QAKCRAnX84Zoj2+
-duSpAX9/lPUosVP3e92nkRmARUvvaRauY+9r1CBAC06KGtjmDHpcDkZOKDyT+Kz3
-64qtJ58Bf1EQs0TiJNXxRlb0mDxPB8srlEh+Z6JveAlmcLRxMxN/FTHYf8xzSR9e
-1OJFSvgUcQ==
-=/qep
------END PGP SIGNATURE-----
-
---wy243kauhdd524wa--
