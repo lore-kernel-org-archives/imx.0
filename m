@@ -1,181 +1,155 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C321444CF2F
-	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 11:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E79237AA87;
+	Fri,  4 Sep 2026 11:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788520762; cv=none; b=oZSSyQbJJNZd5Lp1FPMp2nEOs7JgqoJwCK7vJ4+i7JaYFTLnRNcZMYDqkqcKQVix+ohdOlIUyP9HwdVDqK6a4dv0P/AlXDEqh0rUXCEt0JXTrORbZbvCnW41SGmqSFy9LSAcu2Jj+SApjcFB6sEt3li1H+BIcZgfSmNUb96MtWY=
+	t=1788521934; cv=none; b=L8IOl4mpkKc4pt5V7Lquz8TP2s13u/O2+m8kmqPitIP720O7/xzyy9uTDXfz5TXylBcI+a5uXHreGGjgAnFGUIcjQ+I9DSQHDWSxvrEeOKitCNHxySt502jkZ6ram2oppgLix4K2i57IXMBtPlF45LIUHUAyqFh+i8zkLJ3bQ00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788520762; c=relaxed/simple;
-	bh=4FbJsU1y3bxVZb6uLxAYt9aA6kLq4fX8b3TGqqY0Ujs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIkWhreSzVqYmV0ZXkpZT19a8j8ksGW01b7Kro0PlevkXvcrGDPuhKRcfI1z0/6G6PsMnYUA438R4v+r0b00j/xMpdkVVaBcUkW1IUKkDcJlylz/eagUYCh4Mr/puUxzZDq01qXkOn0FHuQNi7trEJ1J0FYVgTVPkXjpRiH8n8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yd45Qmu/; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788521934; c=relaxed/simple;
+	bh=sI88re9mQH9GGvNdQuqSOyqwac+FJGSZRs1mUIUeR4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GkUg4QPwqdho71NNwlSd+UcvqD0WpduP81hdnGUbVZdoeAdKs9Y9ZDunqmkZQkwVo1f9u+WEmsi+imm2RYgwwoHTeP7nMozglc7qnByFnoqOHFuGhDdb2kQNWLHfRa/kCw2upGn3a/vcFpILSFlOy+b7KbM5JoNaSXlp/5D6hQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UqaD9GhP; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yd45Qmu/"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38759bcd877so847406a91.2
-        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 04:19:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788520760; x=1789125560; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bRH9NLWj3veDgRtEBUkvu/4GOMF1+Ix0zuaRZ5NgKNI=;
-        b=Yd45Qmu/kcP1L6JiV70ZCHKAgVwL18igUsKZiSJwnlxq7aeyFlobncP+FlCVzruP4c
-         sCq+p+ldi9mCyFcseJecXugt+HiG7IGTTF1OxjCWP37gfEU3EXR01h2M12AyQMSCpfJp
-         P/3w6MbFbq/PoK/apf6YSLPLjP7YU2HXPkwuPBNbKMK4mdZSZuogm9kVLRAg3/IQDHSw
-         TBEkFLfVybaz5aMO8rZNeG7NCleWcby7IJNMIRA26W6Ztc9M/079BCRg+u7rJGTbI5+u
-         nDeqxF5g/A6GfjKlF5iYLtsIxbw4iSwVdR3nfP/tEDVbAXViGv0dnib2aZ9PcSbc9jjU
-         R/tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788520760; x=1789125560;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bRH9NLWj3veDgRtEBUkvu/4GOMF1+Ix0zuaRZ5NgKNI=;
-        b=CjiSt+NcDqi6DH/8DpYpijauYBCf8VwrVdTWbTEOsoNcGyT5wYxhAlNjHG4LE1g0Jl
-         ngCDscykkEyx+c/3kO60DwqgVW00FADcibOma04Km84KXO+j9CH8nq86dEHUIGzQ5gFT
-         kK93jofN8yjEf0zgHMoJtX+M96tHGAyk1WJuwJDC+ag3qgbuMrl+PTIyJZwCKcRRrGVM
-         4Rgk6BQnppKa8yE9sWFKo5Yc0y/o2TIrad/hp/8qiPfijZ/wihQCShjcORDWWtHwjWvy
-         OnW/6PqSBLjqfbWJofqSO9uERnEtiD5IkeLMdsk0zCxiVmCylw5KHEGIHgRMHdA+Tri2
-         pF1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxzKHas37RvxgXQqapNWxAaBXftWsOG+8R6RgpbFQWy3QZMkzI9vZW5q0jBxTV3INw/44k=@lists.linux.dev
-X-Gm-Message-State: AFuF++lsTp98YVcg3lsp1T8d9e8sT6aN6a3zQZlgkE/IaF7zZX3S5r/4
-	5OYf/3U4ceezIV2QYamQKTHj6mfgSUjazUN+TSp7m0o7Cn1Kn0eVCDvc
-X-Gm-Gg: AYBFou2Kz4z/qraPBg+oDKSBxoigIgjmYXurDdhM7tEg+VTzWWkk/2P+BTesm+eR37d
-	gahB0Q4HeAMLlDc8pDWoaENeCqjz5NCZ2a5bkuZpqBUBosd1bYGw+MG98tUU9Xk3nf/tb4qqq4k
-	u/ZvJ68F8E8dJ+D65d5Y7NSS5DNWkJAgReRvC5kXjvfIaxjeo021uF25Fv+BWTT7dZuoMmvIfnu
-	LpYLbHgnoeIDWDzfR6agAhNfq12WOZAuN71A79nHoQstUwrcCJ1xpQLVESTQNTlJoLE/R2/1+ca
-	pkQcHwlWCY1Cw2Y5heZ6rTLHE9xYaItNlNzsePpnV+oPa+JXJIxzdZCD9Ol/zpIhYYu/jMUIzQR
-	RmEzVnL3E7H0SHOM0vCVW7Nr+3mKKE+u29QKMysegThmD4bGiFtC+OkGFwcUVkSLiIaY9BBZeLz
-	Esgitkn/1oFvErvFOHO+e7TH9ra4oZPkmVpeBv4yufjZNs4lp2Wz6Dr+gOXyh1Cu6KPV4jGB7qa
-	gvFbzalos/EZ1I9mSGsdGioe8inCp+q+B+gbQ==
-X-Received: by 2002:a17:90b:39a7:b0:381:cef1:11ac with SMTP id 98e67ed59e1d1-39b26125efemr7563823a91.10.1788520759802;
-        Fri, 04 Sep 2026 04:19:19 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339befdefcsm5190103eec.29.2026.09.04.04.19.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 04:19:19 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/2] input: fix typos in comments
-Date: Fri,  4 Sep 2026 16:49:07 +0530
-Message-ID: <20260904111911.32224-2-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260904111911.32224-1-hemanth.selam@gmail.com>
-References: <20260904111911.32224-1-hemanth.selam@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UqaD9GhP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788521931; x=1820057931;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sI88re9mQH9GGvNdQuqSOyqwac+FJGSZRs1mUIUeR4w=;
+  b=UqaD9GhPIW/SEAoEvQoN/3I3/quz0Twf58glhUF4UbcXAPhfSIYEFom8
+   asi/GlcCJpRE4/DOAHGUgb+lzY83/2fJFiSVHp3kIyLRaB6hWCpIa8k8q
+   2t2iYNFuw9Dr7Hk9t/y1vRxsLA5OJ2KRzi9R+3Red0tuBJTXGQyPFVZnm
+   1d+aS26JkqiJQKkrpvB8p2z/WALCvpkcItvZe9BoKVWDKKGJnpx8a3gNZ
+   XYXsb57cpHTJlPkVqGh9f8Pow1nOt4cx7pZ/9pUxOGI7HKrGZcjEOjNDs
+   UUsJEjk6FIPLMA3G8Trl1a4ffLKBe9mI1SCtb+QVB9iwP4XBRbXs88tcv
+   Q==;
+X-CSE-ConnectionGUID: dzacYcKwTcWqMTi7aC7Q9w==
+X-CSE-MsgGUID: IduF0W9tQPK0EjAlRCvEHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="92720045"
+X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
+   d="scan'208";a="92720045"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 04:38:50 -0700
+X-CSE-ConnectionGUID: ObP9eg0VQSCbRIFJ00EGKA==
+X-CSE-MsgGUID: UlijwXHGRmWAqOZ/7kly8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
+   d="scan'208";a="268698798"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.224])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 04:38:42 -0700
+Date: Fri, 4 Sep 2026 14:38:38 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: Frank.Li@oss.nxp.com, Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>, Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Kelvin Cao <kelvin.cao@microchip.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/3] dmaengine: vchan: add vchan_chan_name() to get
+ channel device name
+Message-ID: <apqtvq2Xov1LKBPN@ashevche-desk.local>
+References: <20260903-dma-chan_dev-rename-v2-0-0db305b6c716@nxp.com>
+ <20260903-dma-chan_dev-rename-v2-1-0db305b6c716@nxp.com>
+ <apqKgda7dW_JXolJ@ashevche-desk.local>
+ <be376690-5219-4bf3-8ed7-02a49cee0e30@foss.st.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be376690-5219-4bf3-8ed7-02a49cee0e30@foss.st.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Fix typos in comments, reported by scripts/checkpatch.pl using the
-misspelling list in scripts/spelling.txt.  Only touches comments, no code
-changes.
+On Fri, Sep 04, 2026 at 11:26:37AM +0200, Amelie Delaunay wrote:
+> On 9/4/26 11:08, Andy Shevchenko wrote:
+> > On Thu, Sep 03, 2026 at 04:53:11PM -0400, Frank.Li@oss.nxp.com wrote:
+> > 
+> > > Introduce vchan_chan_name() to obtain the DMA channel device name.
+> > > 
+> > > Use a dedicated helper instead of directly accessing dma_chan::dev
+> > > so callers remain unaffected by an upcoming rename of the struct member.
+> > 
+> > LGTM,
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > 
+> > ...
+> > 
+> > >   		ret = devm_request_irq(&pdev->dev, chan->irq,
+> > >   				       stm32_dma_chan_irq, 0,
+> > > -				       dev_name(chan2dev(chan)), chan);
+> > > +				       vchan_chan_name(&chan->vchan), chan);
+> > >   		if (ret) {
+> > >   			dev_err(&pdev->dev,
+> > >   				"request_irq failed with err %d channel %d\n",
+> > 
+> > This one...
+> > 
+> > > +++ b/drivers/dma/stm32/stm32-dma3.c
+> > 
+> > >   		ret = devm_request_irq(&pdev->dev, chan->irq, stm32_dma3_chan_irq, 0,
+> > > -				       dev_name(chan2dev(chan)), chan);
+> > > +				       vchan_chan_name(&chan->vchan), chan);
+> > >   		if (ret) {
+> > >   			dev_err_probe(&pdev->dev, ret, "Failed to request channel %s IRQ\n",
+> > > -				      dev_name(chan2dev(chan)));
+> > > +				      vchan_chan_name(&chan->vchan));
+> > >   			goto err_clk_disable;
+> > 
+> > ...and this one are duplicate messages as devm_request*irq() printsr
+> > most of the information.
+> > 
+> > Not sure if there will be a patch to simply drop them.
+> 
+> It was the purpose of this series:
+> https://lore.kernel.org/dmaengine/20260709135846.97972-1-panchuang@vivo.com/
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- drivers/input/keyboard/imx_keypad.c        | 2 +-
- drivers/input/keyboard/pxa27x_keypad.c     | 2 +-
- drivers/input/mouse/elantech.h             | 2 +-
- drivers/input/rmi4/rmi_f54.c               | 2 +-
- drivers/input/touchscreen/exc3000.c        | 2 +-
- drivers/input/touchscreen/usbtouchscreen.c | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+Yes, thanks. My point is (independently on who contributes that patch) that
+the piece above may be an unneeded churn due to messages are going to be
+removed. It all relies if that series (a.k.a. patch that removes messages)
+goes first.
 
-diff --git a/drivers/input/keyboard/imx_keypad.c b/drivers/input/keyboard/imx_keypad.c
-index ccde60cd6bb3..9e0898588e06 100644
---- a/drivers/input/keyboard/imx_keypad.c
-+++ b/drivers/input/keyboard/imx_keypad.c
-@@ -396,7 +396,7 @@ static int imx_keypad_open(struct input_dev *dev)
- 
- 	imx_keypad_config(keypad);
- 
--	/* Sanity control, not all the rows must be actived now. */
-+	/* Sanity control, not all the rows must be activated now. */
- 	if ((readw(keypad->mmio_base + KPDR) & keypad->rows_en_mask) == 0) {
- 		dev_err(&dev->dev,
- 			"too many keys pressed, control pins initialisation\n");
-diff --git a/drivers/input/keyboard/pxa27x_keypad.c b/drivers/input/keyboard/pxa27x_keypad.c
-index 4519eecb317b..320021e9d81b 100644
---- a/drivers/input/keyboard/pxa27x_keypad.c
-+++ b/drivers/input/keyboard/pxa27x_keypad.c
-@@ -522,7 +522,7 @@ static void pxa27x_keypad_config(struct pxa27x_keypad *keypad)
- 		direct_key_num = keypad->direct_key_num;
- 
- 	/*
--	 * Direct keys usage may not start from KP_DKIN0, check the platfrom
-+	 * Direct keys usage may not start from KP_DKIN0, check the platform
- 	 * mask data to config the specific.
- 	 */
- 	if (!keypad->direct_key_mask)
-diff --git a/drivers/input/mouse/elantech.h b/drivers/input/mouse/elantech.h
-index 571e6ca11d33..a2ab57a11b64 100644
---- a/drivers/input/mouse/elantech.h
-+++ b/drivers/input/mouse/elantech.h
-@@ -57,7 +57,7 @@
- 
- /*
-  * One hard to find application note states that X axis range is 0 to 576
-- * and Y axis range is 0 to 384 for harware version 1.
-+ * and Y axis range is 0 to 384 for hardware version 1.
-  * Edge fuzz might be necessary because of bezel around the touchpad
-  */
- #define ETP_EDGE_FUZZ_V1		32
-diff --git a/drivers/input/rmi4/rmi_f54.c b/drivers/input/rmi4/rmi_f54.c
-index 6c6cdec7da9e..43a4e262cd2b 100644
---- a/drivers/input/rmi4/rmi_f54.c
-+++ b/drivers/input/rmi4/rmi_f54.c
-@@ -193,7 +193,7 @@ static int rmi_f54_request_report(struct rmi_function *fn, u8 report_type)
- 
- 	/*
- 	 * Small delay after disabling interrupts to avoid race condition
--	 * in firmare. This value is a bit higher than absolutely necessary.
-+	 * in firmware. This value is a bit higher than absolutely necessary.
- 	 * Should be removed once issue is resolved in firmware.
- 	 */
- 	usleep_range(2000, 3000);
-diff --git a/drivers/input/touchscreen/exc3000.c b/drivers/input/touchscreen/exc3000.c
-index 037bb35238a3..e18e74781c58 100644
---- a/drivers/input/touchscreen/exc3000.c
-+++ b/drivers/input/touchscreen/exc3000.c
-@@ -406,7 +406,7 @@ static int exc3000_probe(struct i2c_client *client)
- 	 * ensures, that the device probe will not fail for temporary issues
- 	 * on the bus.  This is not needed for the sysfs calls (userspace
- 	 * will receive the error code and can start another query) and
--	 * cannot be done for touch events (but that only means loosing one
-+	 * cannot be done for touch events (but that only means losing one
- 	 * or two touch events anyways).
- 	 */
- 	for (retry = 0; retry < 3; retry++) {
-diff --git a/drivers/input/touchscreen/usbtouchscreen.c b/drivers/input/touchscreen/usbtouchscreen.c
-index 0bbacb517c28..81d24f5fbcc4 100644
---- a/drivers/input/touchscreen/usbtouchscreen.c
-+++ b/drivers/input/touchscreen/usbtouchscreen.c
-@@ -51,7 +51,7 @@ static bool hwcalib_xy;
- module_param(hwcalib_xy, bool, 0644);
- MODULE_PARM_DESC(hwcalib_xy, "If set hw-calibrated X/Y are used if available");
- 
--/* device specifc data/functions */
-+/* device specific data/functions */
- struct usbtouch_usb;
- struct usbtouch_device_info {
- 	int min_xc, max_xc;
 -- 
-2.48.1
+With Best Regards,
+Andy Shevchenko
+
 
