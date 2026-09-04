@@ -1,184 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013045.outbound.protection.outlook.com [52.101.72.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB30E43637C
-	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 09:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788513921; cv=none; b=bn1fqMf7SgHbKuliaMmH1rJTMNkK6lLzGMgfcyH5rbX81Ff/NfXhRThcNIPLhq+Zkj7C1hMYe5CpYV9b7Wd9eL8J71ZuKphQvLwlCPunRBvZBVhDbtBojWXDdAt0jqdmZTI/nuvlqUus9NAbDCor7c9qvooPY3gXY4V7NjKSRk0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788513921; c=relaxed/simple;
-	bh=NVNp6C5OGOu8de9PLpPGNzFaGGGP9+ZVZ/VrxPCvAWo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=anrLWNQvGMC7Hp+xruAtEwoAyDYhIf7ELttr+kVOMs1bD21Spqxq1N94ncCWYIe8Okw4x3atcIaesEOMgxS5kzMmDaGd+8vlF+eHeN3Y5s/qQEQC3AkA/ZWEhsMr8L/qYVUozZNy48fF3SNWjdsFY19pCtspUASRAx+eQQIsdHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UF1fYmMn; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFBF43E48D;
+	Fri,  4 Sep 2026 09:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788514009; cv=fail; b=n5aiLOGlwQxnz+5vHmak0ppOQUd2AljTZbivbFx8fFNyXclHyY/q3Tz9uA16NsS2fWAD4QZ6gPOEtLtAOzfaQWcgLyUYa92aMv9jl5KwLIhSeASyoySebe0qo3Ph4rBYWT6EzQF+OSYq1bem5sX/aAgyKmGlIt2rcjm3GHSLwcg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788514009; c=relaxed/simple;
+	bh=mIE97ZpsRAJYncmwUbcUN+Pmv5nAClD4HeSpqZ7ymOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=K9Z9PcINiqnyjv4nIRaEZXkPH/JIc+q1EPOXl0NrOWRQjQcfq/zDTQ7EZTbpfzbUCjmAKw5Ib4/dAc4VDC/ofaOB/NtWdV3aYb0nQAcgZgFRBe6CaYsidt4u8lo+CY89mkkyywsXsfSYaoMs9gymrK1NTQoaDL32oZCvvekPVGs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=msEoMaqb; arc=fail smtp.client-ip=52.101.72.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UF1fYmMn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2644A1F00A3D;
-	Fri,  4 Sep 2026 09:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788513919;
-	bh=WZvyxOqjfsV7qF3zecF6hzl/BiftmP2vO3iHUDMKwq0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UF1fYmMnFE0iMZW10Jk25bsX2UO6RXgpVvLFiRvPwsgpWHpGL3KqEIsWcvkEnol+l
-	 NGQbbycc6dpBfoheJdz5DPqz+JZT1VxXgJIkGvHZJsZXyCq86wGso+j609uSY4AnnT
-	 OlABqtOZOHuUoErMYnT0bYOqVES6XczsLAMx3IhOUxpgCMURjfVVdYgovJtJLi6QCG
-	 Bx85e5KUHE8+UAYfyIxCOE7QFUNh/Kd/8d5gXvEJ2tqGoq1W6sdBgnuuqY3oRXTraZ
-	 t7uCNG8sWSvyAVJu98Eug+/Zs3DXpOjRI8IWY3hVxagC6IV58P1hbH6vFc6PguF7Cq
-	 thLaKwuR/lERA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v2] net: fec: Propagate PTP initialization
- errors
-Reply-To: sashiko-reviews@lists.linux.dev
-To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260903092430.354186-1-phucduc.bui@gmail.com>
-References: <20260903092430.354186-1-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 04 Sep 2026 09:25:18 +0000
-Message-Id: <20260904092519.2644A1F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="msEoMaqb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BKRKpCvDCk9ls7lAXfzRyJdLWIkP0A/t2LNo2EAeXmfmOvL4hhg0KRLbvJJl/WcMrNcKvcRGk4+UgP6vuKRairoJWT3cz12irNv/RKRvcSav1I2SMINr/dfsuFwcAzDlnboRf4oQsmfLAM0/l6Usnb98lqJQq6+YfBB5Sg2L/TsW5LzopRH1YV10hGR294NholmiJxCcG5op/zr7f09h9qIpVsoBW4/GjM7GTtQJ4UyLkz0e/QjBPpvdMPTow3p/cxY55ay2BV4bQDDULwPZ1894jfLYTiwpgZKphYkD0UGSY0uO8lOy3eIizlO7d+VetIp9uASRKlVyfjfWraLJkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jaJLRXdTfKBjKliU4yIsTLYlTagBUvh9PYCo9tJBrjo=;
+ b=IkWUriX2chGSj2rbPC1oieLbsHUUp4COVM9HLk9G/CK0yioglup0ioEYHN/6Sxd4nn7xLzD6GfRYiQVT4AIAWNAjY5VqiAGu/bJ4fNsujmQFJcrHcwv8q7G4ZDbY8FAm1WwMjq+url6MjpoBnWu9o20KHDLK04zgt2YB/1K+mvM5E/0rhe2YbxHRfeWDa5fKrFU89al/iQ7FnlrfNnzeoaM4n+dMV0Cl4SSzRIywAt5Ai9/J3X7E+1kzMaC7b99Bco4e5TvfVK4tLbaBZHByPkrsUYaUhPWRtqm9iaKqDYi7fackieJcVGlCo6V/fJ5SmR5NFu8mEVvVh5ctq+HTng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.88) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jaJLRXdTfKBjKliU4yIsTLYlTagBUvh9PYCo9tJBrjo=;
+ b=msEoMaqbYsaqV1ZQPmhcYSxwQMYYb86+W/3okiSZbBhwMY/qZBbKlAQuYBNpZJHzDu13/DMTjoasIEpi0ZMLUAPJR4Q8efjoVvPHUJuxkZeIGhc9+rCiPbwH8B+Vx6bBallKSnamIgfhgklR/oK7gRnRVFmUb4d7y5To6hpQn8wyX1M/9YsQ7WnGT4gBIsDwuCIn0F8shLFLRG05uTjo7DdNQVQccNRJU5/X4F8jitNRSXr2ZOHolIKlZ/8TTujiLDe2xnI168BZiILbAfaX0ikOZeFXhLTW3VoGD5VGXipRbzThjWeDQ9IxOSTY3UMALbyk1Tuuhh6jD/WcctIHLw==
+Received: from DUZPR01CA0033.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:468::8) by VI0PR10MB747752.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:800:2bd::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
+ 2026 09:26:42 +0000
+Received: from DB3PEPF0000885E.eurprd02.prod.outlook.com
+ (2603:10a6:10:468:cafe::4) by DUZPR01CA0033.outlook.office365.com
+ (2603:10a6:10:468::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.12 via Frontend Transport; Fri, 4
+ Sep 2026 09:26:40 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.88)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.88 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.88; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.88) by
+ DB3PEPF0000885E.mail.protection.outlook.com (10.167.242.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Fri, 4 Sep 2026 09:26:39 +0000
+Received: from ENXDAG1NODE4.st.com (10.75.129.197) by smtpo365.st.com
+ (10.250.44.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 4 Sep
+ 2026 11:23:56 +0200
+Received: from [10.48.87.20] (10.48.87.20) by ENXDAG1NODE4.st.com
+ (10.75.129.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 4 Sep
+ 2026 11:26:37 +0200
+Message-ID: <be376690-5219-4bf3-8ed7-02a49cee0e30@foss.st.com>
+Date: Fri, 4 Sep 2026 11:26:37 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] dmaengine: vchan: add vchan_chan_name() to get
+ channel device name
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	<Frank.Li@oss.nxp.com>
+CC: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, Paul Cercueil
+	<paul@crapouillou.net>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>, Patrice Chotard
+	<patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Thierry Reding
+	<thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, "Ludovic
+ Desroches" <ludovic.desroches@microchip.com>, Viresh Kumar
+	<vireshk@kernel.org>, Keguang Zhang <keguang.zhang@gmail.com>,
+	=?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, Manivannan Sadhasivam
+	<mani@kernel.org>, Daniel Mack <daniel@zonque.org>, Haojian Zhuang
+	<haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, "Chen-Yu
+ Tsai" <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, "Samuel
+ Holland" <samuel@sholland.org>, Kelvin Cao <kelvin.cao@microchip.com>, "Logan
+ Gunthorpe" <logang@deltatee.com>, Laxman Dewangan <ldewangan@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	<linux-arm-kernel@lists.infradead.org>, <dmaengine@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<linux-actions@lists.infradead.org>, <linux-sunxi@lists.linux.dev>,
+	<imx@lists.linux.dev>, Frank Li <Frank.Li@nxp.com>
+References: <20260903-dma-chan_dev-rename-v2-0-0db305b6c716@nxp.com>
+ <20260903-dma-chan_dev-rename-v2-1-0db305b6c716@nxp.com>
+ <apqKgda7dW_JXolJ@ashevche-desk.local>
+Content-Language: en-US
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+In-Reply-To: <apqKgda7dW_JXolJ@ashevche-desk.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To ENXDAG1NODE4.st.com
+ (10.75.129.197)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885E:EE_|VI0PR10MB747752:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e7f79ca-0027-4732-cfcc-08df0a66a00d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|1800799024|82310400026|376014|7416014|4143699003|10067099003|18002099003|22082099003|11063799006|56012099006|13003099007|41080700001;
+X-Microsoft-Antispam-Message-Info:
+	iyoyOf3LVtUa56FiGdactARHtXf3qZbJg+Ym7tLfBsVQkpUD8TDuXyuvNn014MI+vJPGX/lVzaogT3SasTb0csZXPjriEPuwcHW7lcz6e+bOhKr7msAbG23aGOCMcADu1FUb9wv1KgMYh/rrJnY3jz+FRvmCOWU6Dgiea+81128aE1ixsZ9n+a+zTIz2IkOY2jU2DuLq6XfgjwmU0iI9RL+ZwgHupiiWUvIB57/vB7IUKeyGHkLZF0ZOHZkZ++zh43DcGWZ83zSj01GGEcM39D9UeuiU1bro/louxUU2PJLOpLG700GWItjkRyGmNvc7tqeP+wS+MmpuJEliStlUaih+2BSRTjri47fm5ZvoG6ypSZ7KqbUWc/sKxevY5LvQl+8xJowsMM5LN0jNWhqQTUvosDdG8Whw46mv82avSdB43SgilU6c+Y2/RDr8feaTXkKklGnVc2hoBqHNfJyxpe+nb0XP5fO0H58mZxTu/UFWt7uc6KbNxURdK+5UN/pDHIfUoUHoCGXgYtk8xdkv/kkcr6wp1T6ipPjeb/G0p/BlEjIyAnEX1a3ukRX3hT5f5/UcBtfKAndknwmAhkhomBXuSOUhXsMYd4pd3s6VjtmblGfVi9GEDv4wFiB7wIJPYzkmWDumq5bgn2i4iONaDKEOMiqQj5+y+XNWJULxyNLY16pnQzEthTRcxt/T85ZXYm6azn1UrMIVOrcdvhtlOgUZzulXyMCumD3W93zL1U8=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.88;CTRY:;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(1800799024)(82310400026)(376014)(7416014)(4143699003)(10067099003)(18002099003)(22082099003)(11063799006)(56012099006)(13003099007)(41080700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	k35KY3k+uMIA+ymPEIQP6XqlVgCKMVi5Y8XGIWHJr1lmi6su34MqOMCY00yeX7PFejkyyXTTkwHau71TF0xwNoxl5/8T9CqToMC/9YY5trjFJmGZ65UxquCjt78IyC1eqz0AzjQb1zF4NNwBxyjD7MH2cW2LiY2EqsCLlrvpop+MdidVf04s+P59ok3HoSjF9q1DhTLJs4Eok14ryJHimCV3ZXNYkZjzFC+Vuxd3vwQwEtz5EBIH1n+zDG5J2NxH/CA+oyVnA/LcOs7zzyKtKnLHWWyG5dWXGYYyXJw4toKF0YX7e/RzHAJ8k3LnE74qpGkIIcVgFDemshPiOY/QUX87pqMV8N4/qQ8OH+Qj0GIo/yk9mcB5oMKSQO0fgFnWuaZ1CLpjEd24e0zL5sIjvy+nWmp7+SYSW+M+/xgtqEgJVWbumAULZ7gkep4455le
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 09:26:39.7294
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e7f79ca-0027-4732-cfcc-08df0a66a00d
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.88];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885E.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB747752
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 9/4/26 11:08, Andy Shevchenko wrote:
+> On Thu, Sep 03, 2026 at 04:53:11PM -0400, Frank.Li@oss.nxp.com wrote:
+> 
+>> Introduce vchan_chan_name() to obtain the DMA channel device name.
+>>
+>> Use a dedicated helper instead of directly accessing dma_chan::dev
+>> so callers remain unaffected by an upcoming rename of the struct member.
+> 
+> LGTM,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> ...
+> 
+>>   		ret = devm_request_irq(&pdev->dev, chan->irq,
+>>   				       stm32_dma_chan_irq, 0,
+>> -				       dev_name(chan2dev(chan)), chan);
+>> +				       vchan_chan_name(&chan->vchan), chan);
+>>   		if (ret) {
+>>   			dev_err(&pdev->dev,
+>>   				"request_irq failed with err %d channel %d\n",
+> 
+> This one...
+> 
+>> +++ b/drivers/dma/stm32/stm32-dma3.c
+> 
+>>   		ret = devm_request_irq(&pdev->dev, chan->irq, stm32_dma3_chan_irq, 0,
+>> -				       dev_name(chan2dev(chan)), chan);
+>> +				       vchan_chan_name(&chan->vchan), chan);
+>>   		if (ret) {
+>>   			dev_err_probe(&pdev->dev, ret, "Failed to request channel %s IRQ\n",
+>> -				      dev_name(chan2dev(chan)));
+>> +				      vchan_chan_name(&chan->vchan));
+>>   			goto err_clk_disable;
+> 
+> ...and this one are duplicate messages as devm_request*irq() printsr
+> most of the information.
+> 
+> Not sure if there will be a patch to simply drop them.
+> 
 
-Pre-existing issues:
-- [High] The device interrupt handlers are exposed to a use-after-free wind=
-ow on probe error paths because devm_request_irq() is used alongside manual=
- free_netdev().
-- [High] Use-after-free on perout_timer due to incorrect teardown ordering =
-in fec_ptp_stop().
---
+It was the purpose of this series:
+https://lore.kernel.org/dmaengine/20260709135846.97972-1-panchuang@vivo.com/
 
-commit c7933bca59e467b625e0e61dff17b0ea0651dbf8
-Author: bui duc phuc <phucduc.bui@gmail.com>
-Date:   Thu Sep 3 09:24:30 2026 +0000
-
-    net: fec: Propagate PTP initialization errors
-
-    This commit modifies fec_ptp_init() to return an error code instead of
-    silently ignoring failures. It adds error propagation for devm_request_=
-irq()
-    and ptp_clock_register() up through the probe function.
-
-    Link v1: https://lore.kernel.org/all/20260820111416.97917-1-phucduc.bui=
-@gmail.com/
-
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
-rnet/freescale/fec_main.c
-> index 794ec427b0ee6..c6e29b5c2abb4 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -5384,8 +5384,11 @@ fec_probe(struct platform_device *pdev)
->  		goto failed_reset;
-> =20
->  	irq_cnt =3D fec_enet_get_irq_cnt(pdev);
-> -	if (fep->bufdesc_ex)
-> -		fec_ptp_init(pdev, irq_cnt);
-> +	if (fep->bufdesc_ex) {
-> +		ret =3D fec_ptp_init(pdev, irq_cnt);
-> +		if (ret)
-> +			goto failed_reset;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but returning an error here
-exposes a pre-existing use-after-free window in the error path.
-
-Because both the PPS interrupt and MAC interrupts are registered using
-devm_request_irq(), their lifetime is tied to the platform device. When we
-jump to failed_reset, the cleanup code eventually calls free_netdev(ndev).
-
-Since devm_request_irq() teardown happens via devres_release_all() only
-after fec_probe() returns, the interrupts remain active while the netdevice
-and driver private data are already freed.=20
-
-If an interrupt fires during this window, wouldn't the handlers
-(fec_pps_interrupt or fec_enet_interrupt) dereference the freed ndev and
-fep pointers? Should the driver avoid mixing devm_request_irq() with manual
-free_netdev() to prevent this?
-
-> +	}
-> =20
->  	ret =3D fec_enet_init(ndev);
->  	if (ret)
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ether=
-net/freescale/fec_ptp.c
-> index 56801c2009d59..557a76797ebaa 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-[ ... ]
-> @@ -779,26 +779,32 @@ void fec_ptp_init(struct platform_device *pdev, int=
- irq_idx)
->  		      HRTIMER_MODE_REL);
-> =20
->  	irq =3D platform_get_irq_byname_optional(pdev, "pps");
-> -	if (irq < 0)
-> +	if (irq < 0 && irq !=3D -ENXIO)
-> +		return irq;
-> +	if (irq =3D=3D -ENXIO) {
->  		irq =3D platform_get_irq_optional(pdev, irq_idx);
-> -	/* Failure to get an irq is not fatal,
-> -	 * only the PTP_CLOCK_PPS clock events should stop
-> -	 */
-> -	if (irq >=3D 0) {
-> +		if (irq < 0 && irq !=3D -ENXIO)
-> +			return irq;
-> +	}
-> +
-> +	if (irq > 0) {
->  		ret =3D devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
->  				       0, pdev->name, ndev);
->  		if (ret < 0)
-> -			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
-> -				 ret);
-> +			return ret;
->  	}
-> =20
->  	fep->ptp_clock =3D ptp_clock_register(&fep->ptp_caps, &pdev->dev);
->  	if (IS_ERR(fep->ptp_clock)) {
-> +		ret =3D PTR_ERR(fep->ptp_clock);
->  		fep->ptp_clock =3D NULL;
->  		dev_err(&pdev->dev, "ptp_clock_register failed\n");
-> +		return ret;
->  	}
-> =20
->  	schedule_delayed_work(&fep->time_keep, HZ);
-> +
-> +	return 0;
->  }
-
-[Severity: High]
-This is a pre-existing issue, but since this patch handles the setup of
-the PTP clock, it's worth noting the teardown path has a potential
-use-after-free.
-
-In fec_ptp_stop(), the driver cancels fep->perout_timer before calling
-ptp_clock_unregister(fep->ptp_clock):
-
-fec_ptp_stop() {
-    ...
-    hrtimer_cancel(&fep->perout_timer);
-    if (fep->ptp_clock)
-        ptp_clock_unregister(fep->ptp_clock);
-    ...
-}
-
-Because the PTP clock device is still registered with the subsystem while
-the timer is cancelled, could a concurrent userspace thread issue a
-PTP_CLK_REQ_PEROUT ioctl and re-arm the timer just before the netdevice is
-freed by the driver remove function?=20
-
-If so, when the re-armed timer expires, its callback=20
-(fec_ptp_pps_perout_handler) would execute on freed memory.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903092430.3541=
-86-1-phucduc.bui@gmail.com?part=3D1
