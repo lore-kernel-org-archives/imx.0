@@ -1,203 +1,143 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010049.outbound.protection.outlook.com [52.101.69.49])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C9D3B19B6
-	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 09:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788512737; cv=fail; b=elspcTTVM1kwGJHpXnNgsgBNtE8rcdJ+aTZQNAA9e0MiGfU+vjkGQfOBqjYVy+9DWvSknr7Vk/v9s+P89oz3daYVLQlPqpBOYgzXJ0HYeylaAcbvNfAHFokmH5jAQzhfEEkPZmiLVtP88lTBFXXXWo/+rROjuG6KbrSSsXHZRsY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788512737; c=relaxed/simple;
-	bh=8qm0MxBdPuQPOh2MvA2wruwRFPaHUqSaY6WObNrf/Aw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=b4sN7cJeQEAobQll8oQuFJbvBaH2B7IB1CY5nH/mFD/4ypVxFTkQFLpWu6eOJq1+7E+2WcWDTt/FRXaUsZH2xnvct7dqcQU1dDgy/5aLVAKW91m9XapYzlDZgTMaeEXppoy7fRfpuy7BcX7wgK17llLWTSIL+oWMoYcBquf+vhY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OtziiHYV; arc=fail smtp.client-ip=52.101.69.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0930742E8FF;
+	Fri,  4 Sep 2026 09:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788512912; cv=none; b=TP/p7enwwh439+6pySCOyFNz9n005h8XuSITQinxIOfICFx0FBtEerNOLfVWMDlvXL//24LuntDoToR3W4VcDHmaEziENI4u4dsU6dMEyUUwakTkTK6bu7Uch+6b7tt1H/T67CoMV69kYDDniZeNOFR5W9tFgyl8lpXegNR+hTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788512912; c=relaxed/simple;
+	bh=RTOkuJscrpPJjVNNjxoNkn5V5c05RKVFnU/ZyQKRXhU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioyjqVFqcwYc3DWp3rhYgNdGMp3efF+n4mvE0rza0WbJfAoYlnPshq2JUMmeTRHbdSuPeuhpEEDabiy8/39DtdHBWBxo2X9gplDGgtqtbUR0Uc0hyFqpHJFslcQbNqkR/q6w+VflA76/yJoaqI0SwiK0pHf9TV4nOlopsybQeOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NAs6v+X3; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OtziiHYV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MOeGFGjfwYC+RJ1d7lBc4HiMlYNgCPxfPSAdS1Kv+j+0zPAZ+U4HWmDIBhTQ36xZP1z2o9bjJRFbp1hCNnjSC189eOQqqPHdIclTmOvg3bk+Tlkr2ex5SnMcRg3dPBXXsrh5t1hVsGO50xbAsDsS8DYNyUTYUiInpG1PqlGkMUnTGl5eQpZD1vOQj9P3EYzlLoBrgOn31PmjJ93ofMaNGNrDqm5VpfpwzLS+6K5R+ufynfvUSwc/UnR0XqUL/8dzHk/pjT7/zNNjxobPgxCwdqRKtAG63liryUPVxwDaS3fefqVmki+AaHOkwFy+8J3zMVlR6J4BQ+6sjX2rjyL0cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KlQRyq1/vk3a8nhs5ZnTI3DtL5XYSpDY1r+uznbHz/U=;
- b=W+k9aePzxGcHzM3PL8BF8oCH39Yeg2TFQ62uq/9btciKqlKBh91VdYXhrkFL8qd9EnMdO+LGL1t9jtxnm7Q3QviElrJQRskTV1YFw90rHckPNC7WrBBHtINN0V27Xl445rpxtUoui5iUN4+R6fO588pSaaqL2tLqM/c8MG/TuGfXXwcPIKDpUdUisOgrUeCN1QsTtlCEHk4oa+petQwUA8cDMlTHBAls1BseOth0pZKFEk06ScRYcL8ViJBlKolBLtz/H8Oyf0y1d31LOOYVhyyHSpOTqWTwKIiY/gOaWIvGk02T2pVRXBNzWwSzWU4qGKV6k294FjZNQ2ZVSQl+ew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KlQRyq1/vk3a8nhs5ZnTI3DtL5XYSpDY1r+uznbHz/U=;
- b=OtziiHYVSslQT2SOLiVXGd1hi/ubgHzDwatuarkTCMeQgVmbmzW55SbB0Ohp61/c9kYALyIdkhoFc7mK1wg6kUAZ1h5rh4R+z5B6P+kE33KHNfQeTV+mDwzjcjnlUfHBrLc7liXmltwoEBV/AfasiCTBj6g0X03oWpsUp/JyfZPAYhOEU6Wsy99FNmcM5aKXicVeLM1+AqIcT7l/9UQ0zPuwKfptaqneod3W6E8UeWkj1EQyhf1M/RZi4npeyzu26kaeeACIYCZ7WmVCXRkrp+oTRsmA9xLm/fEx2TyOxjmVp6PafpAw4ZZi/L7BQQuhQJrKrl603SM3mvQrDkz7zA==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by AMDPR04MB11583.eurprd04.prod.outlook.com
- (2603:10a6:20b:718::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
- 2026 09:05:33 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 09:05:33 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
- (OSS)" <wei.fang@oss.nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v3 net-next 12/15] net: enetc: add VF support for i.MX94
- and i.MX95
-Thread-Topic: [PATCH v3 net-next 12/15] net: enetc: add VF support for i.MX94
- and i.MX95
-Thread-Index: AQHdOPgYKcRkg1V3zkmASHckn+ikpra9imKAgACZrQA=
-Date: Fri, 4 Sep 2026 09:05:33 +0000
-Message-ID:
- <GV2PR04MB11739AB419B820470F30E0E7A88B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260831025441.635045-13-wei.fang@oss.nxp.com>
- <178847906907.4131868.16287350987605757758@kernel.org>
-In-Reply-To: <178847906907.4131868.16287350987605757758@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AMDPR04MB11583:EE_
-x-ms-office365-filtering-correlation-id: 460120df-8f69-4345-1bb6-08df0a63ad23
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|19092799006|4143699003|6133799003|18002099003|22082099003|56012099006|38070700021|11063799006|10067099003;
-x-microsoft-antispam-message-info:
- X+T+3GM1OQmiZArkQNYsTEfv75Ocbmu0gXDtQP+//G/3zHgUlQkFxV74T4kzljv/jBPSgekf1ZneSVHXHt+9Sq2pV63bwg/a2awm41/ICAIRkzXhN1b0bLU6Meyo9ctau2pEBSitB+p8E6Q1YkUfDj3ePoiNf5PwxHPI0EhlzClvXAEXjQ5axYPZSLwmiE22lMcQJa6cgKIeghhRE8jP6GB8zQyKysfkXYdvU6EtLJoJpjswtoZ5JaObKf0LOr6BeyOQOQaocAQoDTJCYu0MHdcJRkZGoixLBD1Tonqy2IwkBxay+5H3cccV8gRNod9ocVSE6PUXuTfH4gWcvZD/5tm1ZVV6x13C0LgGE4maCQCem958p/fzsBryfESe6y2BHrEbHL1zT1opiaDnSiEj6f7QmlHyhxKe3BU0s0LmKdMqvRFEfoCds3/z6HChInY2ddY9ODkVvSh4qz7SEeuYG2mcZ4aiIMC3Gg6lx4CA1HEUTtJdGe3WkdrejzmbAfM6kGgUCuIe+f+BBdC2Y/cuCUWXqOSpQxxLvTh81I6NqxCeM5+ruTbXOA6yY9oceDgATI4d23e6EfH2WvWMjQB4XstEnnu+e3pbsipAt+TxRzyhFPW5xYw4eCfvPDhTOLfYnr6Izv86RdGDwByHWtsORv/dauWtK3KIQ9QORkeNg4EVWq6JXENO4z1prMQAgWuIOmH5a5hIV68CFYio6yx3ygf/U4xffXVZhhZdkSeAJuI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(19092799006)(4143699003)(6133799003)(18002099003)(22082099003)(56012099006)(38070700021)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?GHkaZbLtc9iq/X2Lu2mQUx4MwgWIo8tcJhfFXUu4eQlZz0NycfbHAU8nhVVD?=
- =?us-ascii?Q?Fo7HYLON3y61RSBNq1MRf9/ttn6ENyx1m4vxg5P+hwjuWknOy0tTZs7Uc6rO?=
- =?us-ascii?Q?NDTfIwpoFJA4rrXhCPSCoNxnNDt/lckmJQDuDx1XdVGaoil2zlR0VyKVrgve?=
- =?us-ascii?Q?wpTF8ihoFN+QtkqD8emqHp3MBZKhloVPny8NNAjJ5F6ioTvfaDPl4Qen/sw+?=
- =?us-ascii?Q?91oMOQF2Y6RUJE5TbSNdzvn9CswX4ELofG9J4aMufTSzOJ9S01CGxKTRs1Gq?=
- =?us-ascii?Q?rnvQ+XzWMGNH4G/wDjooBg5GewCXt3membb48Oya3T8iQ6F990nDlKCrm7cf?=
- =?us-ascii?Q?0i8tULeiXemAogy6rQi10GAtvfRx2iYOrMzChHTDwRzCri1rELnarZaCZ4xR?=
- =?us-ascii?Q?uQqZBmAzfySLfAakUyWckL1jlSa/iWSYYIHAnBhDkgvgUnV1gnXujZe/lvgE?=
- =?us-ascii?Q?kUn7QaSHTQeX9sY+oEiddoQqcIUYe9HuwKQGohaXgSmei/16IIPuKLcGmLy8?=
- =?us-ascii?Q?MENyxthczhLCqRvFpQGI5tTUZnEkvSn5XNUpfxha1albMCUU63gmfI6oppE3?=
- =?us-ascii?Q?A9ZHjwAPEq89yphT09BUnal/vARQFKFFJeM4I8moFkz+wFDFw8U/y4mj7T/l?=
- =?us-ascii?Q?OVsHYpqfXOOPBcBiycJO3TvLuklujWPCKU4vCiyABcSjQunzXipG7CEY4KdR?=
- =?us-ascii?Q?pXLlUnwuHl8zgcv1tM1sXaKKPAMpBi+JyixKKPLpaKkkZRhqztgCicTy90Dv?=
- =?us-ascii?Q?1Ovc6jEvvqWpPd62LI6cd6PnB8Ra3iQ6Aw6QhpbQX0FqvV5ZSItiEqQlF2ax?=
- =?us-ascii?Q?iyKlYqDyWHcd5KQHiKihcPPXgYbRm+3/WZ6ew5FjhHLqmVEoJGzBCN/1SmNB?=
- =?us-ascii?Q?PlWjOgHiiE5N4lFmI06auPByq2+uuZftBtkZZpPrt8VcZkOMzbNVo9BaXDgx?=
- =?us-ascii?Q?gQmQbvp9kFDb68cfxs+7T22JrcF1lZzdkJZGANpOi1xP4bBldz/2JH6k4Rv+?=
- =?us-ascii?Q?T25RLibuQu8BvvWD3SSs+bFHY8O/GyXZH2gweFnT/Wy/LmHSG8NGJR1zhEG7?=
- =?us-ascii?Q?XSFHKkfZ51f3CUGOyv2kKrFIBM8KcNjT9qyWIkSw40m/tOY29CJpW1c2Xjva?=
- =?us-ascii?Q?OTpRmjJ4QdCuSsIh880lh5AWDvqg8qUnjRfOax94AK4nv3cGP9YRToY51Bni?=
- =?us-ascii?Q?F6HemXtJ7tzAP4Qu525XngxAWJyhw74x6K8ew15Oe8V51QDcaUoaSZWnWuaB?=
- =?us-ascii?Q?xVIjKrbL9och36UYaPBeqCiqA6SKl42bugFuGDCGmx22sZcZs1/WhgdnGfHW?=
- =?us-ascii?Q?zQWK4aoGmwKr3WZ3dsd0j06DbmPGmEiyPovV4JbXyKdgVcMzvhCWLgDTeKBz?=
- =?us-ascii?Q?O2FhetG/LcOkL5mlmogPAUZH/KHDEUqCaOTWt5oZA36xQ5ZY5mxAQ/ricx4s?=
- =?us-ascii?Q?JVUHaTXvCX5GGd3KbrhF87E8NPTqT19f9pvrFJ8H2zIAHrM+7mbCpgDTiwqZ?=
- =?us-ascii?Q?8i+F6ae28hMOk8l9TWwCDTdiQCgn8hBMUjXQyYEpy+nSWeuYaiWc6KErjqDy?=
- =?us-ascii?Q?wYHiT8a6/ZhnO53TnfMp4a8JozZcBq7Spnt1pnxtpYVgG7ebNwyCitmvhDzZ?=
- =?us-ascii?Q?3ADIHCLuNdeUlXWro83I8PexfXAham1zu9x4zvl2kWpFs+ND9G6I+UUOm+mo?=
- =?us-ascii?Q?55H7w1Z3j3NW8WtNiLUXxoTmEWRzXXJkvt2cvdYEHJRxH7EL?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NAs6v+X3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788512910; x=1820048910;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RTOkuJscrpPJjVNNjxoNkn5V5c05RKVFnU/ZyQKRXhU=;
+  b=NAs6v+X3rE+zaRAwahZC7m6n3SAJ7BWvE8ViOcmfn34gKLn7WE+aUri3
+   OddVrV/E9mj8+THqPT+cJ7WA+8xjUWQfZETMrQUCLCirR9vHMV9txs2mV
+   YiUA8p6tKEaRxIsj7AfZ5g4SKabhV0nPR5sku0QDRly769yyv6yABbBIG
+   XAONz+PsFtvkPQ5ktWq5/r57rIWsNNKqH9Ltjka1NyvN9QStpn/oW/yg7
+   PHyAskdV+dUYgYLoEmPPQkfdDx9deCgFDhmem6Xzx+QIAH6KZj8IrDAuY
+   Yo09ln/mB2D/VoqLt6qKqEMmSJFWlEIeJFybt0LJdFA3gQkhwwQdBNQVe
+   Q==;
+X-CSE-ConnectionGUID: +huHgJ4STmaWM/9UX7ePPw==
+X-CSE-MsgGUID: v4u123EuQ/2sEjEm/B9BYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="99669230"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="99669230"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 02:08:29 -0700
+X-CSE-ConnectionGUID: EXOLF6UfRfSAQklaHXyikw==
+X-CSE-MsgGUID: 3CuE8+pcSBiwMrpvowrn3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="266732821"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.224])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 02:08:20 -0700
+Date: Fri, 4 Sep 2026 12:08:17 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Kelvin Cao <kelvin.cao@microchip.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/3] dmaengine: vchan: add vchan_chan_name() to get
+ channel device name
+Message-ID: <apqKgda7dW_JXolJ@ashevche-desk.local>
+References: <20260903-dma-chan_dev-rename-v2-0-0db305b6c716@nxp.com>
+ <20260903-dma-chan_dev-rename-v2-1-0db305b6c716@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 460120df-8f69-4345-1bb6-08df0a63ad23
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 09:05:33.2291
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: znBGYnodp1ZzN7PgBHmqKIHYQ1mPo+EDYKnYCeXaDV2yZM4P9J2dhHnRzAXQxGo0yyFYceGN2Jz7ai3yMOXdRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11583
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903-dma-chan_dev-rename-v2-1-0db305b6c716@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-> > @@ -1138,6 +1141,7 @@ static struct pci_driver enetc4_pf_driver =3D {
-> >  	.id_table =3D enetc4_pf_id_table,
-> >  	.probe =3D enetc4_pf_probe,
-> >  	.remove =3D enetc4_pf_remove,
-> > +	.sriov_configure =3D enetc_sriov_configure,
-> >  };
-> >  module_pci_driver(enetc4_pf_driver);
->=20
-> [Severity: Medium]
-> Enabling .sriov_configure here, together with the new 0xef00 VF ID, makes
-> the PSI/VSI mailbox path live on ENETC v4 for the first time.  Can the PF
-> mailbox worker and a VF mailbox sender deadlock against each other on
-> rtnl_lock until the poll times out?
->=20
-> The PF worker path takes rtnl_lock while serving a VF request:
->=20
-> enetc_msg_task() -> enetc_msg_handle_rxmsg() ->
-> enetc_msg_handle_link_speed()
->   -> enetc_msg_get_link_speed() {
-> 	rtnl_lock();
-> 	phylink_ethtool_ksettings_get(priv->phylink, &link_info);
-> 	rtnl_unlock();
->   }
->=20
-> The VF side runs from ndo_set_mac_address, so rtnl is already held, and i=
-t
-> then waits up to 200 ms for the PF to answer:
->=20
-> enetc_vf_set_mac_addr() -> enetc_msg_vsi_set_primary_mac_addr()
->   -> enetc_msg_vsi_send() {
-> 	err =3D read_poll_timeout(enetc_rd, vsimsgsr,
-> 				!(vsimsgsr & ENETC_VSIMSGSR_MB),
-> 				1000, 200000, false, &si->hw, ENETC_VSIMSGSR);
->   }
->=20
-> If the single worker is servicing a trusted VF's link-speed request while=
- a
-> kernel-bound VF issues its own request, the worker blocks in rtnl_lock()
-> held by that VF's sender, so the VF's message cannot be consumed.  The VF
-> operation then fails with "VSI mailbox timeout" after holding rtnl for
-> 200 ms, and the still-unconsumed message makes the following VF sends fai=
-l
-> with "VSI mailbox is busy" (-EIO) until the worker drains it.
->=20
-> The trigger needs a mixed configuration: one trusted VF issuing link-spee=
-d
-> queries (for example a vfio/DPDK-owned VF, since untrusted requests retur=
-n
-> PERM_DENY before rtnl_lock) plus a second kernel-bound ENETC v4 VF on the
-> same host.  The later patch adding ndo_set_rx_mode_async for the ENETC v4
-> VF introduces a second rtnl-held 200 ms mailbox waiter on the same path.
->=20
+On Thu, Sep 03, 2026 at 04:53:11PM -0400, Frank.Li@oss.nxp.com wrote:
 
-The rtnl_lock() in enetc_msg_get_link_speed() is intentional, as discussed
-earlier: for a MAC sitting behind a PCS with rate matching, the speed cache=
-d
-at mac_link_up() is the PCS/interface rate, not the external PHY link speed=
-,
-so querying phylink is what gives the VF the correct value. In practice a D=
-PDK
-VF does not poll link speed in a tight loop, so the chance of this rtnl acq=
-uisition
-overlapping another VF's rtnl-held mailbox send is small.
+> Introduce vchan_chan_name() to obtain the DMA channel device name.
+> 
+> Use a dedicated helper instead of directly accessing dma_chan::dev
+> so callers remain unaffected by an upcoming rename of the struct member.
 
-If the concerned situation does occur, the worst case is that one of the tw=
-o VFs
-gets a mailbox timeout error and retries, which is acceptable. So no change=
- is
-needed here.
+LGTM,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+...
+
+>  		ret = devm_request_irq(&pdev->dev, chan->irq,
+>  				       stm32_dma_chan_irq, 0,
+> -				       dev_name(chan2dev(chan)), chan);
+> +				       vchan_chan_name(&chan->vchan), chan);
+>  		if (ret) {
+>  			dev_err(&pdev->dev,
+>  				"request_irq failed with err %d channel %d\n",
+
+This one...
+
+> +++ b/drivers/dma/stm32/stm32-dma3.c
+
+>  		ret = devm_request_irq(&pdev->dev, chan->irq, stm32_dma3_chan_irq, 0,
+> -				       dev_name(chan2dev(chan)), chan);
+> +				       vchan_chan_name(&chan->vchan), chan);
+>  		if (ret) {
+>  			dev_err_probe(&pdev->dev, ret, "Failed to request channel %s IRQ\n",
+> -				      dev_name(chan2dev(chan)));
+> +				      vchan_chan_name(&chan->vchan));
+>  			goto err_clk_disable;
+
+...and this one are duplicate messages as devm_request*irq() printsr
+most of the information.
+
+Not sure if there will be a patch to simply drop them.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
