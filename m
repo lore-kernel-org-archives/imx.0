@@ -1,44 +1,44 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010036.outbound.protection.outlook.com [52.101.69.36])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012053.outbound.protection.outlook.com [52.101.66.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E381388391
-	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 07:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3943DA5B7
+	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 07:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788506213; cv=fail; b=MDof9KKC+t+I49H/lzGUMA/ZJfT6fTvdIQunvnBiZ/NLNN41nW3aiImdZnieVIaEEca1MM6cFNuMm18zE0cXnEPURfafg3jT6n4+DYWY5HowqVijNovBsMn+77yfxiXC0FjQ/FAyqpdrPLu6/LOKmOWEw3pdPd1qy8s/mD8s5jo=
+	t=1788508374; cv=fail; b=oRiPaoUA7uniSVUr88J61NWhiS+/cfTsDfwoiRXtgoFqVZoV3ZLhS4YE2sDje5EC7y1gFHTUsi4O39iFGHTisytLiZGIqlMn9eH0ZNQ1MuwV0SB19eGFqXuo8hNalRtSbSTHyKmWttYSzXojjYoywVYXBDziNvnR6lsfVmWsq8s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788506213; c=relaxed/simple;
-	bh=EFq6rHmmU1laUXj/K+reJuGSIk/FIyiL6kfmct8jCc4=;
+	s=arc-20240116; t=1788508374; c=relaxed/simple;
+	bh=owuFfi6C8xcvXOhNNmeOGKTOVYLuKaxYvOykfMvAGgM=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KhVKe3ZDHrmumBeB7YrGgYbnhHrv/VfRqQoKgYvr+d+3xU8kwf8GwgImaY4bn2c8GdBCxszhr2l1ktzZ+uIPvJjgcPMp0x3ECiYZRJFjFuvHlGqa4vaPRam2fZxN28sF8cE67wV6unLo9B0lpnYG1yvH5wYy6v+CZmUYb6sIfa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Th79dsAZ; arc=fail smtp.client-ip=52.101.69.36
+	 Content-Type:MIME-Version; b=CQhDAOTcPKVVs9sijgSAuZfVoFky7p3JTGk6vSh4l0i0bAOF2RfPzMPnpepztxNHOiL2/3aOs/ocm5KoSehjg+nuqAvZDlX2TgacJVv05O/lgvf5wbNxxBWGIP/kMbhTyh9IODHfbbk7zw6uVKbpdaZkgCIs/Dapqjk1EsBZ8gw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KOLGQ1tQ; arc=fail smtp.client-ip=52.101.66.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Th79dsAZ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KOLGQ1tQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OUxYPI0v2Lt+2WwtYx2siyZM+JR4wukaP2FJO/5pLkgySSJiC+qlrhlnwb59Z4d0zm+4dHcnaknAfYpnY6L1UrXhADgoq+sPKcjLPkmKFeVaENyHPcY6uuC11gj0/ZkD/+JgL5Fx6ttxliilmDukrZCfLC62WrGI+f1wvJx9yd94A3Xw19/LDjLizguAbB3XQyzGbwhPlgNtzp5/9vSdlP3Hy/PMQxbtnr1ba7UgEdSGIzcrJzmrUcFqy+WcNgRYChNV+GwVIatPT4HiUfMo4avmjPiFXBUEgo53xGbLZGC3LuM2W0wKJ/ELEAXxlExGwLLjggIVNXLNM/J8qo9Nuw==
+ b=Wah344f5PItfQPY+upxhDZBdCnNJjHzAvtaXjV3sl3CWR3Or68AdCFYoSQmCQrwfuxGUlvybS/9+KqEBEAtF/0XAQbbeI8aW3o31LgCcPKVmcEi/SWrBIuCx57lweckQ9o6s4sXDP9Fo0Nd1vLjY5f/7FvqoK92Z842P4nBxwqZMrTJBJ0ixPqz11H7QqjNIdgQ5C0S4t29axAZ/7TJ0vsH0ZAxCjM/ytqXDPX9lAY4h91dvyJjsMzFOOzBlgr3UiyH150FG82eSFiBXE73bKu7LQYo2XAYPLSLc2OL5p3MB2TnSJiMyWoecQBUyVN2EtF27TUfrVzkIO6Puh4y6mA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j/OD+BxQEB2Zb1EH+d/xLWVmnCVRJtfZViHWNJiaq8E=;
- b=Kd9EDqDyEotdJZjMpVtGvbWpAhxGnaLwYY/2LJpZ2SOTmucU+C4sGJ8yizTqYPQPcmvlqDQL9pAlFZkyIa9IRYCFPiK+5E3Kl1RiPbXo4w5jeTTRHr1R3d3pJuYil0trNbXAcIDpRRwgOWy1uLUjavojkT1koRR3Kv5HtWY8ylxYOGLIsYRlcMHdN4F6VVZS0M3nK48vZaYRYDZQ6u3Tq7A+/7/JZrBSO/BKWNehyO6fMuUBmI4+q2L6haRezwTz5915qMiXt6LlZHStHNaoakbMDUYlC4P0zOkcjMt+gT+64j0lB5mCvbE9o0CI+UFLaQgJTQeBWvQUNpjeMqFB/A==
+ bh=Qp4NL4aWJADVd8FxHqUZhUjzPLecTE9Td/j1Jgjr93c=;
+ b=PjLiDv/VYdOLrXTD4PByR0pks6MW/UrV9wRnlSFCPCWXHnvNWBhigCtm9A0YZZLOIVe2HdnxTjNidkdV8xmAb2/GEoSNzmtj72tD3c4EXP0xaxSrg7dwetzOg9Z2PiXdwXx6rtB1TW4bPlgaqVcWGd0G8/MJzilyfPTmNjmTrrl2C1W2X4eUplCCjzAFp9ewiCKhTMXrm7+Mhmv8auNaT51GASbvEjA5bcWZg74ce/KDWyu20zKI6CI7BvOdtoCcX44qWZ1zFWvGPJFUmSupfPBOdM7sswM8SUMOgWVL1Tu4WSI4EFJVALIZghTt69j5m8P6RN+y0OczSeuDrfYwiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j/OD+BxQEB2Zb1EH+d/xLWVmnCVRJtfZViHWNJiaq8E=;
- b=Th79dsAZhHqI1KgCYw/fMZFmGYk3LxB4zXNHruAvF87vdef7UHwll+IOWsHGiBm/tPU//4kEWRtFpKcAg1TTuhej2HU2fJrPjmBxOfvRUsFEQpGl6gQIomV8oW8CAl8W50JStKobmWYFqbnC1QOPO+KdOA0a/lpuak4770+tyzQqdmnjsF+85q53pQwq94e/QgEaWM2jQf5kkbVW/PKrJCym1BWyJMGEYmKi573E7r3WGCeC87oQ58TkLARRa/PS9ZxPK/GsQUz0Wk0sVhtqHZ/HRZewRxGEqnBprZIShfqdleBndOjYpn9i4jUtujN5Z3Gzqx6fPbxR/L0oQPKL5g==
+ bh=Qp4NL4aWJADVd8FxHqUZhUjzPLecTE9Td/j1Jgjr93c=;
+ b=KOLGQ1tQbuf/xUm17fkxcXdWK1+Yj64fpQdNLxaCwbUkSKjtfZ06P6sEBdcJcDDOzCF+w+arvU8Nc3ZndO2IanOPn1bLnrtkgPTnFkl1IDfDKKI10rMlFRIKqE9M2kr5ghVlDpwcxX6Axw3Q083NtZHs8PFJ5QXONNswREeEcGFWmFGk7MqVxkHTk8c0wZrOBEf38udmcLDqvJmUUcefrFBO1a+/xvkqVpezeQu2v9JcNh2Ks2/ldJ4I8D2yiWzXyhUR/JEPz1ZxP+6rSUxUTIGRjdtNRmEbEmy+axbRGDwhDJLcQL31FBD9sAUW2Op3Qf184vMmh058U9sMOWLOWA==
 Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by PAXPR04MB8512.eurprd04.prod.outlook.com
- (2603:10a6:102:213::13) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10a6:150:2fc::18) by VI1PR04MB6973.eurprd04.prod.outlook.com
+ (2603:10a6:803:13d::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
- 2026 07:16:46 +0000
+ 2026 07:52:47 +0000
 Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
  ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
  ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 07:16:46 +0000
+ 07:52:47 +0000
 From: Wei Fang <wei.fang@nxp.com>
 To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
  (OSS)" <wei.fang@oss.nxp.com>
@@ -51,17 +51,17 @@ CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
 	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
 	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v3 net-next 03/15] net: enetc: add link status message
+Subject: RE: [PATCH v3 net-next 04/15] net: enetc: add link speed message
  support to PF driver
-Thread-Topic: [PATCH v3 net-next 03/15] net: enetc: add link status message
+Thread-Topic: [PATCH v3 net-next 04/15] net: enetc: add link speed message
  support to PF driver
-Thread-Index: AQHdOPf5rPAr6++Cq0ud6wQBTmAapLa9iluAgAB1YfA=
-Date: Fri, 4 Sep 2026 07:16:46 +0000
+Thread-Index: AQHdOPf8zvCP2zR37UmwwM82nYY157a9ilwAgACBLWA=
+Date: Fri, 4 Sep 2026 07:52:47 +0000
 Message-ID:
- <GV2PR04MB117391CC7574CC43FD4744D3088B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260831025441.635045-4-wei.fang@oss.nxp.com>
- <178847906345.4131868.5011473704889309213@kernel.org>
-In-Reply-To: <178847906345.4131868.5011473704889309213@kernel.org>
+ <GV2PR04MB117399C0557AA16C12279AB0588B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831025441.635045-5-wei.fang@oss.nxp.com>
+ <178847906490.4131868.13521334026222207494@kernel.org>
+In-Reply-To: <178847906490.4131868.13521334026222207494@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -70,47 +70,47 @@ msip_labels:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|PAXPR04MB8512:EE_
-x-ms-office365-filtering-correlation-id: cd744382-88e4-4ac5-6307-08df0a547af0
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|VI1PR04MB6973:EE_
+x-ms-office365-filtering-correlation-id: c7970a74-4fb8-4d29-71cb-08df0a5982b7
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|23010399003|1800799024|366016|19092799006|376014|18002099003|22082099003|11063799006|5023799004|38070700021|10067099003|56012099006|4143699003;
+ BCL:0;ARA:13230040|19092799006|376014|7416014|23010399003|1800799024|366016|38070700021|11063799006|6133799003|10067099003|5023799004|4143699003|22082099003|18002099003|56012099006;
 x-microsoft-antispam-message-info:
- PwO/wLg/vR7090rt9IADtAOin+cGU/85AL6D5TeQoW+bMSh3x3Vs7cITF6oZG5CdhE4MP061GAYYggosyRW1a6sFqDgvrtE4GfHCuD06MnLIKH2qBU4/yyzIhVdWZbp5K/up/Z/epIrBekjC7ppl/Ud5UTaHLLfflyUobz/h5b3rDDEoCiOjK4JDyRvnQjvsZMitnAJ8hxuC5BLDPSIdmuMYXxV1aRmKb/jHN/E7PXFaI1YV+Iiie76zdg7lz2xfsJ3EFbjF6xoGPTqnHyN0UaQSwzzIASOXCeE8KxE8MgE5j8NkXjN5QTDQSUELJnaXjA3BMR/wtHV6G+N5UbUSM0U0YxgbB5VIYwzoTivDWDQWGJzPOeFUY1px1Jz3+2uYhw7xYKx+zaNHYeR5oOhAy9nSxpXvxIhbn4U0zgKxdyXoZjdJv6Ip78Uf7LIxq/iFiCsquo/NHpSSDDB+f6DxxNDWbCv01Mk4LJwNmtYKT+mMIivw5w5g+94OElLg8p60wwnG+Or0wk6GpQsZRWDxdXk+oVTJ3/zOnP3OUI5s+DRG0Qbkj5My1VicAt+B6SeSHC3tOFsHtKAPQVyti+ey8DpXmYtDT5FhMa93RdzlY/4jt54iWpyhKWZbXvH4uU60ZWoTyMOB5JPcES+cmL8vnKqhYCOu02EsteCtlCY79VAhujAI9hKycghSXi9fDQPG6q8QreOFtSNFrbDwB/jGMmtAfB1kJMglbeopF2gg/UI=
+ 2LV1vUCOS3MJXJc3SsuNqapmKz/0KuGwvMq41QjztnEAwN9kW65/UiKqFYVoRIdKdiB4FTXmGvdECGDiaXgHgybD2ftmt66YLFkFmNNu7j8crwVckNg6G2UtJqa1tRMDAXk/Wb80KfAWGN4QfsobWdnoo+va8oZXr+qhM/qtCIi8/usH9whY0q55rCcw+ZSUxC5j2Q35T0BdO4qv1naH+eq+aVqR7nEnlKXfJIyuUKTB6ljci7HXMCWzW05zhBu4qjTHjgDkEds3q1oG/xpxyZa7FFSo180MYN5ggJ77yy/8vNEdzVJI33xlB3EfqOveQONFn/7NuzpO18nGrr+EnieLaGmO8aUO46xxl9bB67kmgH1HTy5ddC9KbeuJqLDrloiOHAGKcXLdzDay/5h0yKe2N4RQg+YlkcJLn2L3imzaNf+yHsQrx+jhKpPVYo8BRuLmhrg4Hv/AMZ6dvqzNuAtQqO/0UyTAYzuRmiSTm+WG1Ri+P3oMI/M8YUpBFGhGPW2IyULzkmTc6FQnlvmmrJTkBCq+/UH1P2v+2qSF9Fktj/d82FzS+hez1rQBqWuN1PgRN0qf1BAJJxte0+TrsAiCuT655eRtV3skXaGIoLGk9/TaV9MYn/PBDZ39eEW9RFgi3OlVe9x1EmZ4iQWlBct2NREvKnDdvRcNAy/w/ABG0DTVoLtK7mDGsv4WlnnnlvvoSmlf/qiJkKejnV0GzKK7+r9B2YWg9IUx+6izzp4=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(366016)(19092799006)(376014)(18002099003)(22082099003)(11063799006)(5023799004)(38070700021)(10067099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(23010399003)(1800799024)(366016)(38070700021)(11063799006)(6133799003)(10067099003)(5023799004)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?042XkHn4pZb6WVQzf5PKHBXO61/SRY1lnfppSEUT4pIcUvQZuRCrfIrwKQRe?=
- =?us-ascii?Q?CmY7KpjmDYrzGm32E7e8eYSggHioHpRZZU5hY8bWtlYI7PUssRgNGDtUqOHG?=
- =?us-ascii?Q?yqrV5mTZEcXzB0xAD6e0P123d9JGXs7tE4QNyTyFTKWGhhh6WAu0BBKXeDte?=
- =?us-ascii?Q?VE+RMOO18U+c32TEUOud0f5mtVLfHGKB5nkrAo5VN88R5OK440UFWlpaSDPx?=
- =?us-ascii?Q?e8/aCV6iTGJC0Bdw0LDYWtlMDGcu9j5hdupFmydvmVFi4A2fufBTKjptCmWL?=
- =?us-ascii?Q?d8gMnrDQCB4DrCSi1HDIJKN/bWQ/xFqqiB41cgGkry4L4VEYhz3E2ANewv+H?=
- =?us-ascii?Q?3j/QGDSXn4USddeEdtDDK+bUEwjDA5cW1csdOPkBtIbd0j38kX1mlQNKx4KD?=
- =?us-ascii?Q?fypNfKMtuGXgHRglucTLmljOX6sw3JUVGyy5WHGepeo8+2bf4VqDypMTFd5L?=
- =?us-ascii?Q?LCY7gXEZO3EsfproJAX6ejzqqukBi3vjKXiFHfrRZkAJ5xD9wLuYeCC0QkVD?=
- =?us-ascii?Q?dcK9eNw0U7B3aJOK4E88M7TMhp4ko2UdgKNsqxO6VESex2JKpHeLg+2oD2DK?=
- =?us-ascii?Q?xqGCbZtwyc9jUo8DO4pPY+yP4w7UDBMB20ppMCEypkMik4Qb0oK4CQPLqmZX?=
- =?us-ascii?Q?YJtR5MnmF1KJAxNRXtsJKn0NYaE6pU0P9lVwSL6Xd0kH6XoepObIBt/gmxZ7?=
- =?us-ascii?Q?a2WIJHUmn2N2NA+MZ1h/F9HxMgUT/8v82+mPz5baIfvQQyv8mnXyKY6w1m7q?=
- =?us-ascii?Q?L5c06Vqw45IK0J5IQXpLgR78VZWTNPriA7FsDHOHWLdU63ZpTPrZMeUVtPOU?=
- =?us-ascii?Q?EfQCjSj/XEta9HDaU6JMoFAB7ICg5oOF+cP9flaXahqi60VenhzyBnGbc3Kf?=
- =?us-ascii?Q?a4TPjau90kSE+Z7Qm2zaF88qjvgJLVO55Co9QCBhId9+CoXVRSwhcCwo+cwN?=
- =?us-ascii?Q?M7bCzyEC56QSh/7UiTKW+7u21BbMmKPzxFax+CSCe9soGIXKYZsryOcduF9w?=
- =?us-ascii?Q?2/nuZj0bevGzkbuY3TSUPr3EnBSwJgKl76D+ixYMK58/vrsFZS1FXsidQ4nH?=
- =?us-ascii?Q?k2sShrYp/Os08R8oJq/VRhCDYEvPnapEhYxRVGJn4jfmXrlPq44av1OOE+Vw?=
- =?us-ascii?Q?+k2phc1rJvbHJEmX7X9ZWRA/t+OTMSMWSaRZZ6BAk4Akx9ZdcL4quZ9vGWdi?=
- =?us-ascii?Q?jh1EaMcMLU2cuqw+mzoKDodSMwRGGGOQi7Qkvj5ueZGcznyodV26DqOud1br?=
- =?us-ascii?Q?WCj28ge+1SV0VCs5N26g+4PcF4Gb/rDp26LSEuxjUGRY7F/WN4POqYcU918p?=
- =?us-ascii?Q?t7Y4qnSICXTj3uNX1aR8yF2GxAus1KWzlhwnliDHlF5inhIrzxr7lEKBzhmT?=
- =?us-ascii?Q?yl6PI49fo1AnzDxrTlf2sCb70sQv7XkgPziX51gLDV18BtrvmI8a6Up2DUiJ?=
- =?us-ascii?Q?iMK4fpDIxpeZCf+Go8gO5+f22MaMhCjPv0fSeh+3JPqqxuK0LSQ9YhLokQv6?=
- =?us-ascii?Q?p2ltm1GhX2pwn6XnkLlgCtG7+jjrl//NZPR14dMU7yF9DClROV0qHJ85XBen?=
- =?us-ascii?Q?NZcYtmvgvaTPyGynwJ6kYzah5nBuXG5XXeTR1qubRXmvvzw3JQPKWrno7pfF?=
- =?us-ascii?Q?18hW/2OPS6pldA2JIqLdZ+GbMHAQSgsWMdVsGHE+5UgKc890IMa2rA8dUBm9?=
- =?us-ascii?Q?OzdiluaOXN/y2w2hlqFryjQOH9mEBi41rXFMBXHZ8h1p4HhR?=
+ =?us-ascii?Q?MfnKJ1kocFM6bCCbp2tSw1iPkiVUhIKv8itsZ5hC65ocqxXoeWbqemsVRCWQ?=
+ =?us-ascii?Q?4d0e6OeKS+hp+xvFvPNUNjnflDmvzpPHlu3Iq5q4BkMt42XVQuWf1CD1qRf1?=
+ =?us-ascii?Q?P0ryFGBiQ6pG0H6qA4NK287NCCXwQ+Tzrhh6Rq3vj7PfvBq9W5v5jYuF/Wnt?=
+ =?us-ascii?Q?/AAOB3y37oUYcXIxByfEfqtT54XI/T1TlooLfWrW1vpz+kvacGgUpOidvFhW?=
+ =?us-ascii?Q?MWN6+XJuzamWM0AnVR64zIHEYOtl38GK429ta5Bl6HoT8Uun+ojOcqR2gDf7?=
+ =?us-ascii?Q?r/FVtBi1uL5pGOaucnQ+8/IAgkI8kkz4wkWbS9qYPw2CWusMmpFFrcBdDhZd?=
+ =?us-ascii?Q?X12RdrFG7oov9JU5YUDqz8i0FdAAuOte7zVXklOKyC9wc1HIzUjqSGe+i/eP?=
+ =?us-ascii?Q?oDUUxKeJBCspklMm+NIDGUDYAh8wDOpW9pP4CYnrebI1TstXQXP0RChBfZlO?=
+ =?us-ascii?Q?OtDNWLOenU4th90resIHbFfrosAJEbLpYqadNuEnQZTJJe7Mk95ZF3Ht/zw8?=
+ =?us-ascii?Q?SAA9Qzvyz33cqo+VH922cV2IhzjkIHRvZU3fBrq43pyCxTVQwqqPaYNdgToU?=
+ =?us-ascii?Q?2p9m87pTV8ZFENTv81heQbdgxjHZbPjohfJDXltjl7+7dLQdybRrgvTxI6v+?=
+ =?us-ascii?Q?3dA+JOu7xE0jdjfcBDJEYk4pw3+3frp/7V5SeFgX9EoSy4VsCi3FLigfVKtE?=
+ =?us-ascii?Q?JwD3aHxrQm/9ETXmlVOQzLJ44bzfRxZQeCWUCSApflmh3BNEZmeVW4v1Fj9t?=
+ =?us-ascii?Q?mBL6/PQ9OKArJvfD5R7Al1K50mnSyJIuPok11xfmJxVpcZaSsUWwKpkX3u4Q?=
+ =?us-ascii?Q?LcoCp5tsjcN4WnyKXod4yyIHJijunO1M/i2S7rW+PilwSy1hWFnX1kPG9+5Z?=
+ =?us-ascii?Q?AoSs6CFbBoNsRouPoLJ+WtMN9CB70MI68VpS9IbxVvodfsTKR28yuay2R4KX?=
+ =?us-ascii?Q?I32bhS7D2qcM+8tE+1NKVTfcq5vgOaGx5n3b6R7pfEKBX+Qk2yeHZQeIcneO?=
+ =?us-ascii?Q?5dC1a48gmfMyFEG+wccLSqCil623XT2GMDQ8AOAk2qUNdB78pFIvoTM8yAct?=
+ =?us-ascii?Q?3S0IEW3x0P3TjykThtC9wNG+Wdcu6NMAbukJKxsshtCvMjEwm1Rco2XLgwOF?=
+ =?us-ascii?Q?IgRSSKShl4hvga6dPkhQrqHJVWjQbSS7j7LjoJy/8LtePxpYeisicnBJgT9M?=
+ =?us-ascii?Q?3SfoMsZ8lNdlvVUPlKPgaPOsOJYzX03CcCcHW9GP77w0CjG0ObqmTb8ZYQPP?=
+ =?us-ascii?Q?Lrw8z1zsgg5L+3pNuGgIJNUBvnwbqaMsK7ZLYMdTUIHXmqNOKLgZZ22DOgNq?=
+ =?us-ascii?Q?72aWdOHLQkjjgEArwP4Ckc5bbP+BVjBvj3MgzHeMmFC25Pgr1aRz6WbRW31v?=
+ =?us-ascii?Q?qZQdctd0SYaAwoFVgs1Xc8CKPIttwXJIVunmDa8Y0XOaiGMKvqwKgc3nKOk/?=
+ =?us-ascii?Q?uJjCu88w5HDeQdScLWaAaZZsuQJ++sSLtwK+PJd7XPNswPUY2P8GbwIGzIcZ?=
+ =?us-ascii?Q?gg6YWSQfhqsAjnETgYQuD3JXx6z6IcNGoEtLheHSIrKHIxh1E6AEhnoEYGXg?=
+ =?us-ascii?Q?08X86IuNqJOi1F+4a3zX9iXJJBBNRfyG9dsdpODR9ccXVI0+q9hrIHCuV86f?=
+ =?us-ascii?Q?fadlR7AFGpcppHPycBEmniV6GCFLzmbvIWbBtTiK61tL0IajeOL8apqVx3AA?=
+ =?us-ascii?Q?sOlkuQUl1fozRA8OAXXXKn9XirYO+Hc0L+NU1MvqiHXdQ6Po?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -122,255 +122,265 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd744382-88e4-4ac5-6307-08df0a547af0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 07:16:46.5625
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7970a74-4fb8-4d29-71cb-08df0a5982b7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 07:52:47.0894
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SdZOznaaYpesUG/HVmQwhYNyeyX0DuBQexdeiOryjaTe5CRz7bmoq0kMkIre1piFweHkagsM5nVNxmSqQwuH+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8512
+X-MS-Exchange-CrossTenant-userprincipalname: eQFOtLJcm8Wh3Jo71NK+zb8mjygp8ptQmeKkDvKQm0LvfWMX/4jrHFkqk/K1PmyqKgEPjvCSyp/QC8ZF/MQhgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6973
 
-> > +static int enetc_pf_send_msg(struct enetc_pf *pf, u32 msg_code, u16
-> ms_mask)
-> > +{
-> > +	struct enetc_hw *hw =3D &pf->si->hw;
-> > +	u16 old_ms_mask =3D ms_mask;
-> > +	u16 ms_status;
-> > +	u32 val;
-> > +
-> > +	/* The MS bit is set, indicating that the corresponding VF has not
-> > +	 * read the last message, PF cannot send new message to the VF. To
-> > +	 * avoid sending messages to such a VF, the bit corresponding to VF
-> > +	 * is cleared from ms_mask. Because the MS bit can only be written
-> > +	 * as 1, writing a 0 has no effect. Writing a 1 when the bit is
-> > +	 * already set is undefined.
-> > +	 */
-> > +	ms_status =3D enetc_rd(hw, ENETC_PSIMSGSR) & 0xffff;
-> > +	ms_mask &=3D ~ms_status;
-> > +	if (!ms_mask)
-> > +		return -EIO;
+> > @@ -181,6 +212,11 @@ struct enetc_msg_mac_exact_filter {
+> >   * cmd_id 0x0: get the current link status
+> >   * cmd_id 0x1: register link status change notification
+> >   * cmd_id 0x2: unregister link status change notification
+> > + *
+> > + * Link speed message, class_id 0x81.
+> > + * cmd_id 0x0: get the current link speed.
+> > + * cmd_id 0x1: register link speed change notification, not supported =
+yet
+> > + * cmd_id 0x2: unregister link speed change notification, not supporte=
+d yet
+> >   */
 >=20
-> [Severity: High]
-> Can a link state change be lost permanently here?
+> [Severity: Medium]
 >=20
-> The return happens before the enetc_wr(hw, ENETC_PSIMSGSR, ...) below, so
-> when the target VF still has an unread message the new link state is neve=
-r
-> published, and enetc_msg_notify_vf_link_status() only prints
-> "PF notifies link status failed". Nothing records that the VF is out of
-> date, and notifications are generated only on the phylink transitions in
-> enetc4_pl_mac_link_up()/enetc4_pl_mac_link_down().
->=20
-> Single-VF sequence:
->=20
->   link up   -> PSIMSGSR written with "link up", the poll below times out
->                after 200 ms because the VF has not read VSIMSGRR yet
->   link down -> ms_status still has MS(0) set, ms_mask becomes 0,
->                -EIO is returned and "link down" is never written
->=20
-> The VF then consumes the stale "link up" message and keeps carrier on plu=
-s
-> a stale TX PAUSE derived congestion-mode setting until the next PF link
-> transition. The same drop can hit the initial notification issued from
-> enetc_msg_register_link_status_notifier(), which has already replied
-> ENETC_MSG_CLASS_ID_CMD_SUCCESS to the VF.
->=20
-> Would it make sense to record a pending state and re-send it once the MS
-> bit is observed clear, rather than dropping the transition?
-
-The scenario is theoretically possible, but it does not require a fix.
-
-To lose a transition, a VF would have to leave its previous PF message unre=
-ad
-for longer than the 200 ms send window, and a reverse link change would hav=
+> This documents cmd_id 0x0 as returning the current link speed, but can th=
 e
-to occur within that same window. That does not happen in practice:
-
-The PHY state machine polls link status once per second, so consecutive lin=
-k
-changes are at least ~1 s apart - more than enough time for the VF to consu=
-me
-the message and clear its MS bit. In real usage, link transitions are infre=
-quent
-to begin with.
-
-The PF also waits up to 200 ms for the VF to read the message. A VF that fa=
-ils
-to read a single message within that window is already malfunctioning (e.g.=
- a
-stalled), and I don't think the PF should compensate for a broken VF.
-
-So no fix is needed. Recording a pending state to re-send later is possible=
-, but
-since every notification already carries the current state and the next tra=
-nsition
-corrects any stale value, the extra complexity is not justified.
-
+> reply describe a speed the port is not running at?
 >=20
-> > +
-> > +	if (ms_mask !=3D old_ms_mask)
-> > +		dev_warn_ratelimited(&pf->si->pdev->dev,
-> > +				     "PF cannot send message to VF(s) 0x%x\n",
-> > +				     ms_mask ^ old_ms_mask);
+> enetc_msg_get_link_speed() takes the value straight from
+> phylink_ethtool_ksettings_get() with no link-state gating.  For a fixed
+> link, phylink copies the configured speed/duplex unconditionally:
 >=20
-> [Severity: Low]
-> The printed value is a PSIMSGSR MS-bit mask, not a VF index mask, since
->=20
->   #define  PSIMSGSR_MS(n)		BIT((n) + 1)
->=20
-> so a stuck VF0 is reported as 0x2 and VF1 as 0x4. Should the value be
-> shifted back to VF numbering before printing, or should the message say
-> that it is an MS mask?
-
-No fix is needed; it stays consistent with the registers, making debugging
-easier.
-
->=20
-> > +
-> > +	enetc_wr(hw, ENETC_PSIMSGSR,
-> > +		 FIELD_PREP(PSIMSGSR_MC, msg_code) | ms_mask);
-> > +
-> > +	return read_poll_timeout(enetc_rd, val, !(val & ms_mask), 1000,
-> > +				 200000, false, hw, ENETC_PSIMSGSR);
-> > +}
->=20
-> [Severity: High]
-> This waits up to 200 ms for a bit that only the VF can clear, and every
-> caller holds pf->msg_lock across it. Can an untrusted guest use that to
-> stall the host?
->=20
-> The VF-initiated path has no ENETC_VF_FLAG_TRUSTED check (unlike the MAC
-> filter handlers) and no rate limiting:
->=20
->   enetc_msg_task()
->     enetc_msg_handle_rxmsg()
->       enetc_msg_handle_link_status()   /* cmd_id from the VF */
->         enetc_msg_register_link_status_notifier()
->           mutex_lock(&pf->msg_lock);
->           enetc_msg_notify_vf_link_status()
->             enetc_pf_send_msg()        /* sleeps up to 200 ms */
->=20
-> enetc_msg_task() handles all VFs sequentially in one work item with the M=
-R
-> interrupts disabled, so a VF that registers, drains its mailbox and
-> re-registers in a loop keeps pf->msg_lock and the mailbox work item busy
-> and denies mailbox service to the sibling VFs.
->=20
-> The same pf->msg_lock is taken by enetc_pf_notify_vf_link_status() from
-> enetc4_pl_mac_link_up()/enetc4_pl_mac_link_down(), and phylink runs those
-> from its resolve work, which is flushed synchronously from ndo_open/
-> ndo_stop with rtnl_lock held:
->=20
-> drivers/net/phy/phylink.c:phylink_run_resolve_and_disable() {
+> drivers/net/phy/phylink.c:phylink_ethtool_ksettings_get() {
 > 	...
-> 	flush_work(&pl->resolve);
+> 	case MLO_AN_FIXED:
+> 		phylink_get_fixed_state(pl, &link_state);
+> 		phylink_get_ksettings(&link_state, kset);
+> 		break;
 > 	...
 > }
 >=20
-> so the guest-induced stall propagates into the host PF link handling and
-> rtnl-held paths. In the other direction, one unresponsive registered VF
-> adds up to 200 ms to every PF link transition, because the poll condition
-> !(val & ms_mask) waits for all bits of the aggregate mask.
+> So with the carrier down, or before the PF netdev has ever been opened,
+> enetc_build_link_speed_msg() still encodes a valid speed class code rathe=
+r
+> than ENETC_MSG_SPEED_UNKNOWN.  The MLO_AN_INBAND case reads the
+> PCS live,
+> which also need not match what the MAC was last programmed with.
 >=20
-> Is the synchronous acknowledgement wait needed at all here? Link state is
-> idempotent, so a fire-and-forget write with a deferred retry, or at least
-> dropping pf->msg_lock before waiting, would keep the PF link state machin=
-e
-> independent of VF behaviour. The commit message does not mention that a P=
-F
-> link transition can now block on VF acknowledgement.
+> Would it be more consistent to derive the answer from the state the PF
+> already tracks, the way the sibling link-status message does?
 
-This is a potential issue, I will improve this.
+No fix is needed here. Message class 0x81 (link speed) and class 0x80 (link
+status) are intentionally separate, and each returns the correct thing.
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_get_link_statu=
+s()
+> {
+> 	...
+> 	pf_msg =3D enetc_build_link_status_msg(priv, pf->link_up);
+> 	...
+> }
+>=20
+> priv->speed is written next to PCR_PSPEED in enetc4_set_port_speed()
+> (including the 10Mbps fallback on SPEED_UNKNOWN), so the programmed rate
+> is
+> already recorded.  As written, a VF can be told 1G/2.5G while the same PF
+> reports the link as down over class 0x80.
+
+GET_CURRENT_LINK_SPEED is meant to expose the same value userspace
+would see via ethtool - the port's configured/negotiated speed/duplex. That
+is a property that remains meaningful even when the carrier is down (for a
+fixed link, ethtool likewise reports the configured speed regardless of lin=
+k state).
+This message never claims the link is currently up; whether the link is up =
+is
+answered by class 0x80, which the DPDK VF is expected to query separately
 
 >=20
-> > +
-> > +static void enetc_msg_notify_vf_link_status(struct enetc_pf *pf, u16
-> ms_mask)
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > index e21414acdc0d..c3ae4c024f34 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > @@ -280,6 +280,93 @@ static u16 enetc_msg_handle_link_status(struct
+> enetc_pf *pf, int vf_id,
+> >  	return 0;
+> >  }
+> >
+> > +static u16 enetc_build_link_speed_msg(int speed, int duplex)
 > > +{
-> > +	struct enetc_ndev_priv *priv =3D netdev_priv(pf->si->ndev);
-> > +	u16 pf_msg;
+> > +	u32 speed_code =3D ENETC_MSG_SPEED_UNKNOWN;
 > > +
-> > +	pf_msg =3D enetc_build_link_status_msg(priv, pf->link_up);
-> > +	if (enetc_pf_send_msg(pf, pf_msg, ms_mask))
-> > +		dev_err_ratelimited(&pf->si->pdev->dev,
-> > +				    "PF notifies link status failed\n");
+> > +	switch (speed) {
+>=20
+> [ ... ]
+>=20
+> > +	return FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> > +			  ENETC_MSG_CLASS_ID_LINK_SPEED) |
+> > +	       FIELD_PREP(ENETC_PF_MSG_CLASS_CODE_U8, speed_code);
 > > +}
 > > +
-> > +static void enetc_msg_register_link_status_notifier(struct enetc_pf *p=
-f,
-> > +						    int vf_id)
+> > +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
 > > +{
-> > +	u16 pf_msg =3D FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
-> > +				ENETC_MSG_CLASS_ID_CMD_SUCCESS);
+> > +	struct enetc_ndev_priv *priv =3D netdev_priv(pf->si->ndev);
+> > +	struct enetc_vf_state *vf_state =3D &pf->vf_state[vf_id];
+> > +	struct ethtool_link_ksettings link_info =3D {};
 > > +
-> > +	mutex_lock(&pf->msg_lock);
-> > +
-> > +	enetc_pf_reply_msg(&pf->si->hw, vf_id, pf_msg);
-> > +
-> > +	/* SR-IOV is being disabled if pf->sriov_enabled is false, so no
-> > +	 * need to set link_status_ms_mask and notify the link status.
+> > +	/* A malicious or malfunctioning VM could potentially spam these
+> > +	 * messages in a tight loop causing global rtnl_lock contention,
+> > +	 * which may severely starve other processes on the host that
+> > +	 * require rtnl_lock for routine network configuration, resulting
+> > +	 * in a system-wide control-plane denial of service. Therefore,
+> > +	 * we expect the VF query for link speed to be trusted. There's no
+> > +	 * need to consider the transition from trusted to untrusted here,
+> > +	 * as this won't cause rtnl_lock() to be called frequently.
 > > +	 */
-> > +	if (!pf->sriov_enabled)
-> > +		goto msg_unlock;
+> > +	mutex_lock(&vf_state->lock);
+> > +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
+> > +		mutex_unlock(&vf_state->lock);
 > > +
-> > +	pf->link_status_ms_mask |=3D PSIMSGSR_MS(vf_id);
+> > +		return ENETC_PF_MSG_PERM_DENY;
+> > +	}
+> > +	mutex_unlock(&vf_state->lock);
 >=20
 > [Severity: Medium]
-> What clears this bit if the VF goes away without unregistering?
 >=20
-> The bit is set here and cleared only by a cooperative
-> ENETC_MSG_UNREGISTER_LINK_CHANGE_NOTIFIER in
-> enetc_msg_unregister_link_status_notifier(), or globally in
-> enetc_sriov_configure() when SR-IOV is disabled. A VM destroy, a guest
-> crash/reboot, or a killed DPDK application leaves the bit set.
+> Should the trusted-VF requirement be described in the changelog and in th=
+e
+> mailbox ABI comment in enetc_mailbox.h?
 >=20
-> After that, every PF link transition reaches enetc_pf_send_msg() with the
-> stale mask and either writes the MS bit for a VF that will never read it
-> and then blocks the full 200 ms with pf->msg_lock held from the phylink
-> callbacks, or, once the MS bit is stuck set, filters that VF out and (whe=
-n
-> it is the only registered VF) returns -EIO, logging "PF notifies link
-> status failed" indefinitely. Since the poll waits for all bits of the mas=
-k,
-> one dead VF also delays notifications to the live ones.
+> ENETC_VF_FLAG_TRUSTED is only ever set from enetc_pf_set_vf_trust()
+> (ndo_set_vf_trust, i.e. "ip link set <pf> vf N trust on"), and pf->vf_sta=
+te
+> is allocated with devm_kcalloc() in enetc_init_sriov_resources(), so flag=
+s
+> is zero by default.  A default setup therefore gets
+> ENETC_PF_MSG_PERM_DENY / -EACCES back from enetc_msg_vsi_send().
 >=20
-> The FLR handler added later in the series, enetc4_pf_vf_flr_handler(),
-> only restores the promiscuous mode bits and does not touch
-> link_status_ms_mask, and enetc_sriov_configure() resets only the software
-> mask without bringing PSIMSGSR back to a known state. Should the per-VF
-> bit be cleared on FLR / VF teardown as well?
+> The commit message says without qualification:
+>=20
+>   "The PF will reply the current link speed when it receives the get link
+>    speed message from VF."
+>=20
+>   "VFs controlled by DPDK can obtain real-time link speed information fro=
+m
+>    the PF"
+>=20
+> The ABI comment added to struct enetc_msg_generic also describes class 0x=
+81
+> cmd 0x0 with the same wording as the 0x80 status query, and
+> enetc_msg_get_link_status() answers any VF with no trust check.  Two pair=
+ed
+> link-info queries with different permission models is surprising for a
+> DPDK VF implementer reading only the header.
 
-link_status_ms_mask is PF-side software state that records which VFs
-have subscribed to link-status notifications. Its lifetime is tied to the V=
-F
-driver's register/unregister requests, not to the VF hardware.
-
-FLR resets the VF hardware; it does not mean the VF has stopped wanting
-link notifications. A VF can go through an FLR while still being a valid,
-registered subscriber, without re-registering. Clearing its bit in the FLR
-handler would silently stop delivering link updates to a VF that is still
-alive and still subscribed - that would introduce a bug, not fix one.
-
-So the FLR handler should only restore hardware-related state (e.g.
-promiscuous filters), and must not touch link_status_ms_mask. Genuine
-teardown (VM destroy / VF unbind / SR-IOV disable) already clears the
-whole mask in enetc_sriov_configure(), and a graceful VF close sends
-an explicit unregister. Clearing the bit on FLR is therefore neither correc=
-t
-nor necessary.
-
-As for the "VF goes away without unregistering" case, a follow-up
-improvement will remove the 200 ms synchronous wait in
-enetc_pf_send_msg() (moving to a fire-and-forget notification). Once that
-is in place, a dead VF that never reads its message can no longer block the
-PF link state machine: the pre-send MS check simply skips that VF, and
-notifications to the live VFs are unaffected. So this concern will be mitig=
-ated
-by that change.
+The asymmetry is intentional and technically justified, but you're right th=
+at it
+should be documented. I'll update the changelog to state that the get-link-=
+speed
+query requires the VF to be trusted, and annotate the class 0x81 cmd 0x0 en=
+try
+in enetc_mailbox.h to note the trusted-VF requirement, distinguishing it fr=
+om the
+ungated 0x80 status query.
 
 >=20
+> > +
+> > +	rtnl_lock();
+> > +	phylink_ethtool_ksettings_get(priv->phylink, &link_info);
+> > +	rtnl_unlock();
+>=20
+> [Severity: High]
+>=20
+> Can blocking on rtnl here stall mailbox service for the other VFs?
+>=20
+> This runs from the single work item that services every VF with the PSIIE=
+R
+> MR interrupts masked:
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_task() {
+> 	...
+> 	for (i =3D 0; i < pf->num_vfs; i++) {
+> 		...
+> 		enetc_msg_handle_rxmsg(pf, i, &msg_code);
+> 		...
+> 	}
+> out:
+> 	enetc_enable_psiier_interrupts(pf);
+> }
+>=20
+> rtnl hold times elsewhere (ndo_open with PCS/PHY negotiation, netdev
+> unregistration, another driver probing, netlink dumps) are unbounded, whi=
+le
+> the VF side has a hard 200ms budget:
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_vf.c:enetc_msg_vsi_send() {
+> 	...
+> 	err =3D read_poll_timeout(enetc_rd, vsimsgsr,
+> 				!(vsimsgsr & ENETC_VSIMSGSR_MB),
+> 				1000, 200000, false, &si->hw, ENETC_VSIMSGSR);
+> 	if (err) {
+> 		dev_err(dev, "VSI mailbox timeout\n");
+> 	...
+> }
+>=20
+> So one iteration waiting on rtnl can push unrelated requests from other V=
+Fs
+> past that timeout, with a hardware mailbox transaction left outstanding.
+> For a host-assigned VF, enetc_msg_vsi_set_primary_mac_addr() is issued fr=
+om
+> ndo_set_mac_address with rtnl already held, i.e. the VF waits for a PF re=
+ply
+> that needs the very lock the VF holds.
+>=20
+> There is a second effect on teardown: enetc_msg_psi_free() does
+> cancel_work_sync(&si->msg_task), and it is called from
+> enetc_sriov_configure() (pci_driver::sriov_configure, invoked from
+> sriov_numvfs_store() under the PCI device_lock) and from
+> enetc_pf_remove()/enetc4_pf_remove().  Does SR-IOV disable/removal now
+> wait
+> for rtnl while holding device_lock, for a time a busy VF can extend?
+>=20
+> Every other handler in this file avoids rtnl.  enetc_msg_get_link_status(=
+)
+> answers from the cached pf->link_up under pf->msg_lock, and speed/duplex =
+are
+> already handed to enetc4_pl_mac_link_up() where they could be cached the
+> same way.  Would caching the speed there and replying from the cache work
+> instead?
 
---
-pw-bot: cr
+this does not need a fix. Using phylink_ethtool_ksettings_get() here is del=
+iberate
+rather than an oversight, and the practical impact is negligible.
+
+The speed passed into enetc4_pl_mac_link_up() is not always the actual link=
+ speed.
+When there is a PCS after the MAC and rate matching is in effect, the speed=
+ given
+to the callback is the PCS/interface rate, not the external PHY link speed.=
+ Only
+phylink_ethtool_ksettings_get() reflects the real media/PHY link speed. So =
+caching
+the callback speed and replying from it could hand the VF the PCS rate inst=
+ead of
+the actual PHY link speed - exactly what DPDK needs to get right. Querying =
+phylink
+guarantees the VF sees the same link speed that ethtool reports on the PF.
+
+In real usage a DPDK VF does not poll link speed in a tight loop - it queri=
+es it
+occasionally (typically around link-change events), not on a hot path. Comb=
+ined
+with the existing trusted-VF gate, the chance of this rtnl_lock() acquisiti=
+on
+meaningfully contending with host control-plane operations is negligible.
+There is no measurable stall in practice.
+
+Given that the cached value can be semantically wrong for PCS/rate-matching
+setups, and the rtnl acquisition is rare and already restricted to trusted =
+VFs,
+keeping the phylink query is the correct trade-off. No change is needed.
 
