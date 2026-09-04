@@ -1,274 +1,258 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8860B44E66F
-	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 12:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DA7448BB3;
+	Fri,  4 Sep 2026 13:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788526340; cv=none; b=NCKn5+KEeD5fv3Q0JJKETFsM3wZ4Tl8DmJbL3nfBsDBf1JCUgIwAwA9oOY6bszdBDuCt8rcEf2EPN+4guq2/BUSqjFe+xsEFpWhuAvC+QLA4iQh6XM35Xz6kQLSCCl19anwHNQjm71mTj79oOibHOLZlf+qCriZZXNwge7SSaLM=
+	t=1788527996; cv=none; b=YHG38TKj8SZ96zCFI2N9kBosMgzBHfTTBeK8mPM9yBe0iWP8uBKqfl5/j+HcJSQX36BcMs+nKom+SQEGVLc5f8YCYOYnMy/U8Qb02KYGL92tp0ketgK7jg8cPrLxGypH3X+hIdamqQ8jMyZRI/KXZlzFqp3RPAJaIEaS5isqPrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788526340; c=relaxed/simple;
-	bh=sokDvgJXj5WharIosRIU+sz3oSNd7WZxEo2k/p/DzCc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kHn8Udr6GgEaiSznIrqoeM8BmjfEM5VAY+AWcBEdbBGGu7H2lda63T+4S+s5MS+EL1CiGQ5I4qeqOYE7m7aLGQMLQzP+0QgxvmZfM8mnhXxHz/sNtlqCDj1QEkTsl8JeoGAf1qx6K5QHVSAMBwKHAKu6MY0RgH6Ham4tc8BTTgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IF8ZQRRH; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788527996; c=relaxed/simple;
+	bh=kX2Hhn1yZ5LYC7Vu21MGJ+VxU5SYwZaB4szMoUuUu8w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ncRPGy3TBFO0e65oHGQqjX1PVCNVdG1DxyZzUTjLvsHiXSejHbOwezj6OWOBAUk2nzl2ohNF67vPYaWMm1cRAFq2liFVI2Z7Tk8CPGVhXno2a/ZQdQytiiCtYD9d4ESkD83lLB7TPTsERlZ8fS6bXTj5skQtKOv9N/EoJTbhMTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2642HDYe; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IF8ZQRRH"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so893670a12.2
-        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 05:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788526338; x=1789131138; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yCG99e+5QxRQXSuO8zd59u52whzEDFO7RhFXyu9E9Gk=;
-        b=IF8ZQRRHj1XS3dF41FWXbQZbP9dohaF58i/zLm9kfc8Xu7JAppdTR5h0PJrIwNDSVN
-         vNf+Tg+L3fVawkQG/qmwgRUA+zcjdMXOCFDvIH4fRUdxu6Q78Jx4L/xAcVX8PpCzawbP
-         U98grx1zNg7LVpv1K2/4lrZE7JWEk70TGOpYumg1EvGDI2fxVroxTgTHv1/CTGGHehnp
-         L8p7PQbMkwD4GTc7WOMh7SC1ISL8VOu9g6Fit29hlF7FwloJUt7xuzK/qyeGbCoaqIjL
-         4d+hHBSiP4+HlbcZVYgpADkdaG+yQF+uXQreumZh8yT4mOzv01snROFS4JK1AbgDr47q
-         A3NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788526338; x=1789131138;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yCG99e+5QxRQXSuO8zd59u52whzEDFO7RhFXyu9E9Gk=;
-        b=ETjJed1+X6t3qpF5wtsTPd6JhAuUccqJUTXVWBtnNu6RwYwwePd9d5LKKAljzFbwrX
-         uN1IWzfU6ls3a5ldVp+Ifciy28Jpm8pxgltiayR5Se1Xovmia3s2WGWDptnop47FUo13
-         jOiGGkAyECqCGw78fjaSn7IsaiwLNuTPD31y2bozcfQc2AIO/JfmB8TJlcb+apCSIlW/
-         03V7arIC0YGYLDGUqG2IoGBppL8jr4SqKKRL3i938QgaCPt6NrNk0+mwtbqfm3E9Qb1G
-         JkSfaDRGIoB42EGWtCmOF0TOUQ20L8Np2TeAGh7L2NmK5wW5PI/Zqc3PDYijt+prGAo+
-         RjPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy2YFFbMKYA2jPWWRmA56fC6IEO2yXQVKJfwfdd55dkag6UsXzrTsD0DRUYk3CVOhBeAN0=@lists.linux.dev
-X-Gm-Message-State: AFuF++loMr5SY+cMNi9hrvZrbavHqyZbPNRvJTlF3WL1jI4WDrXYj73W
-	oLaAQ9KBHsHWLYO+paWehYCFIDUuOydYpOo6Vbj8Cb95Dzj52dgWi7wm
-X-Gm-Gg: AYBFou2lrfllkJLOCLf9Pi53sSaCycvldqxu7cJ37prWuERB8tKPNHdSFLlP5fxxuSq
-	9ag2TzRFSACsA1bFfSdLw9WGbYW270QAXAZ5v4qwpqnG5AbxOihRssN/mtX2fwPZK6wVHpTabv7
-	hC+uD2amWVG7LxhNjmbdu9kIZk1JOH2FtdvBXdFKyu5jEj7osO0LgjgzJAzxGZUSkfLqvRerKcr
-	B0EuCuyfi5O0sMl238ZmmMFAGEcRrAWAVg9spsh4t/OgdK84/UwOGMlKzkELdXfB7WL5BVV2VFb
-	/b869h1Y/DuANYNivruCZnXEUX/OVoIx7iOet0bTRSDl72XMYRIpsQGJqpT7+i3RNbkS/x6kNNQ
-	RhzlqHd+jyygkjyAnyrGgpDfVz7/zh7H29Xwn0OsNAP8qtrmG1lgkijWpuP6FxehqLCB4vVMqbD
-	oBNGJuv+EX+LNwa8sI/PRWuiYbhe2ZZSUsLWX//IXX5z3zcz+q5DKZvSV/lt1Y54pp6XTrIGU25
-	6uQ4g15VQHdlMY=
-X-Received: by 2002:a17:90b:1dc3:b0:398:d6f4:c61a with SMTP id 98e67ed59e1d1-39b26207ee4mr9145959a91.17.1788526335895;
-        Fri, 04 Sep 2026 05:52:15 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm9816370eec.16.2026.09.04.05.52.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 05:52:15 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Robert Jarzmik <robert.jarzmik@free.fr>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Han Xu <han.xu@nxp.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] mtd: fix typos in comments
-Date: Fri,  4 Sep 2026 18:22:03 +0530
-Message-ID: <20260904125208.12099-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2642HDYe"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EE64F1A19A7;
+	Fri,  4 Sep 2026 13:19:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B75046057F;
+	Fri,  4 Sep 2026 13:19:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8738D11C7ACEC;
+	Fri,  4 Sep 2026 15:19:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788527979; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=eKdsKrjP8I//pYngbU84Hx6Mj3qol3bXMUhsukU9fBU=;
+	b=2642HDYeLffHlkgB9z2+TQ+SSTVjdieJldjZdhT2KdVmbGlCSxt4KomKKeZSTuwyx4GNyd
+	48mlM1abkyZgzXNKlCjdwF4XdQYpfbG9DTu96mOnbhP16IevUntbM9O7JEFLz/wKXS1qjH
+	40w53YGR8WRxzpsdG8EparhTB9a96ZFIBeTFeVAsGGu4J/gDWSKCXKS1TpVDXwBLFRmqTx
+	7v9y8wljVv0E2Z63CtT1qBmaHC9S0UaMpF1re16G8SU0nXMTAnSEp0IfjVBg8hggkv6A6P
+	ZKqCFYoCDQ2ecsSaFY4XQhf/7QZUGc/XonUx0uHl+O7uAi7zR7Zk50/VsPSNAA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 04 Sep 2026 15:19:15 +0200
+Message-Id: <DL6K8VPR37C3.2LQJ8ZM6PIZTS@bootlin.com>
+Subject: Re: [PATCH 1/3] drm: fix typos in comments
+Cc: <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <nouveau@lists.freedesktop.org>, <virtualization@lists.linux.dev>,
+ <spice-devel@lists.freedesktop.org>, <linux-renesas-soc@vger.kernel.org>,
+ <linux-sunxi@lists.linux.dev>, <cgroups@vger.kernel.org>
+To: "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>, <phasta@kernel.org>,
+ "Hemanth Selam" <hemanth.selam@gmail.com>, "Sumit Semwal"
+ <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Luca Ceresoli" <luca.ceresoli@bootlin.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Inki Dae"
+ <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Patrik Jakobsson"
+ <patrik.r.jakobsson@gmail.com>, "Laurentiu Palcu"
+ <laurentiu.palcu@oss.nxp.com>, "Lucas Stach" <l.stach@pengutronix.de>,
+ "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Jianmin Lv" <lvjianmin@loongson.cn>, "Qianhai Wu"
+ <wuqianhai@loongson.cn>, "Huacai Chen" <chenhuacai@kernel.org>, "Mingcong
+ Bai" <jeffbai@aosc.io>, "Xi Ruoyao" <xry111@xry111.site>, "Icenowy Zheng"
+ <zhengxingda@iscas.ac.cn>, "Dave Airlie" <airlied@redhat.com>, "Jocelyn
+ Falempe" <jfalempe@redhat.com>, "Lyude Paul" <lyude@redhat.com>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Jessica Zhang" <jesszhan0024@gmail.com>,
+ "Gerd Hoffmann" <kraxel@redhat.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Chen-Yu Tsai" <wens@kernel.org>, "Samuel
+ Holland" <samuel@sholland.org>, "Huang Rui" <ray.huang@amd.com>, "Matthew
+ Auld" <matthew.auld@intel.com>, "Dave Stevenson"
+ <dave.stevenson@raspberrypi.com>, =?utf-8?q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, "Raspberry Pi Kernel Maintenance"
+ <kernel-list@raspberrypi.com>, "Dmitry Osipenko"
+ <dmitry.osipenko@collabora.com>, "Gurchetan Singh"
+ <gurchetansingh@chromium.org>, "Chia-I Wu" <olvaffe@gmail.com>, "Zack
+ Rusin" <zack.rusin@broadcom.com>, "Broadcom internal kernel review list"
+ <bcm-kernel-feedback-list@broadcom.com>, "Michal Simek"
+ <michal.simek@amd.com>, "Philipp Zabel" <p.zabel@pengutronix.de>, "Natalie
+ Vock" <nat@pixelcluster.dev>, "Tejun Heo" <tj@kernel.org>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, =?utf-8?q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.22.0
+References: <20260904120430.17224-1-hemanth.selam@gmail.com>
+ <20260904120430.17224-2-hemanth.selam@gmail.com>
+ <8b4194fcb6fdb11af10fc81a1a7c915ad71003a0.camel@mailbox.org>
+ <a64864e0-3f10-4f81-b304-c45ef932817a@ideasonboard.com>
+In-Reply-To: <a64864e0-3f10-4f81-b304-c45ef932817a@ideasonboard.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Fix typos in comments, reported by scripts/checkpatch.pl using the
-misspelling list in scripts/spelling.txt.  Only touches comments, no code
-changes.
+On Fri Sep 4, 2026 at 2:34 PM CEST, Tomi Valkeinen wrote:
+> Hi,
+>
+> On 04/09/2026 15:13, Philipp Stanner wrote:
+>> On Fri, 2026-09-04 at 17:34 +0530, Hemanth Selam wrote:
+>>> Fix typos in comments, reported by scripts/checkpatch.pl using the
+>>> misspelling list in scripts/spelling.txt.=C2=A0 Only touches comments, =
+no code
+>>> changes.
+>>>
+>>> Assisted-by: Cursor:claude-opus-5
+>>> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+>>> ---
+>>>  =C2=A0drivers/dma-buf/sync_debug.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/bridge/parade-ps8622.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+2 +-
+>>>  =C2=A0drivers/gpu/drm/bridge/samsung-dsim.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 2 +-
+>>>  =C2=A0drivers/gpu/drm/bridge/tc358767.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 6 +++---
+>>>  =C2=A0drivers/gpu/drm/display/drm_dp_mst_topology.c=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/drm_drv.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/gma500/oaktrail_lvds.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+2 +-
+>>>  =C2=A0drivers/gpu/drm/gma500/power.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/gma500/psb_drv.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4 ++--
+>>>  =C2=A0drivers/gpu/drm/imx/dcss/dcss-ctxld.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 2 +-
+>>>  =C2=A0drivers/gpu/drm/loongson/lsdc_drv.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/mgag200/mgag200_g200se.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/nouveau/dispnv50/tile.h=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/nouveau/nouveau_bios.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+2 +-
+>>>  =C2=A0drivers/gpu/drm/nouveau/nouveau_exec.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+2 +-
+>>>  =C2=A0drivers/gpu/drm/nouveau/nouveau_led.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 2 +-
+>>>  =C2=A0drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxnv50.c=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/omapdrm/dss/dispc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 4 ++--
+>>>  =C2=A0drivers/gpu/drm/omapdrm/omap_gem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/panel/panel-novatek-nt36672a.c=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/panel/panel-samsung-s6e63j0x03.c=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/qxl/qxl_gem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/scheduler/sched_main.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+4 ++--
+>>>  =C2=A0drivers/gpu/drm/sun4i/sun4i_tcon.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/tiny/panel-mipi-dbi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 2 +-
+>>>  =C2=A0drivers/gpu/drm/ttm/ttm_pool.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vc4/vc4_hdmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vc4/vc4_regs.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/virtio/virtgpu_ioctl.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+2 +-
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/device_include/vm_basic_types.h | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/ttm_object.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/vmwgfx_drv.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 6 +++---
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/vmwgfx_kms.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/vmwgfx_so.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/vmwgfx/vmwgfx_surface.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/drm/xlnx/zynqmp_dp.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0drivers/gpu/ipu-v3/ipu-prg.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0include/drm/drm_framebuffer.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4 ++--
+>>>  =C2=A0include/drm/drm_plane.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+2 +-
+>>>  =C2=A0include/uapi/drm/nouveau_drm.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0include/uapi/drm/vmwgfx_drm.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A0kernel/cgroup/dmem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 2 +-
+>>>  =C2=A045 files changed, 53 insertions(+), 53 deletions(-)
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- drivers/mtd/devices/docg3.c                | 4 ++--
- drivers/mtd/nand/onenand/onenand_base.c    | 2 +-
- drivers/mtd/nand/raw/fsmc_nand.c           | 2 +-
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 2 +-
- drivers/mtd/nand/raw/mtk_nand.c            | 2 +-
- drivers/mtd/nand/raw/nand_base.c           | 2 +-
- drivers/mtd/nand/raw/nand_legacy.c         | 4 ++--
- drivers/mtd/spi-nor/otp.c                  | 2 +-
- include/linux/mtd/bbm.h                    | 2 +-
- include/linux/mtd/rawnand.h                | 2 +-
- include/linux/mtd/sh_flctl.h               | 4 ++--
- 11 files changed, 14 insertions(+), 14 deletions(-)
+[...]
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 603fd0efc2ea..84566997d665 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -1884,7 +1884,7 @@ static void doc_release_device(struct mtd_info *mtd)
- 
- /**
-  * docg3_resume - Awakens docg3 floor
-- * @pdev: platfrom device
-+ * @pdev: platform device
-  *
-  * Returns 0 (always successful)
-  */
-@@ -1963,7 +1963,7 @@ static int docg3_suspend(struct platform_device *pdev, pm_message_t state)
-  * @pdev: platform device
-  *
-  * Probes for a G3 chip at the specified IO space in the platform data
-- * ressources. The floor 0 must be available.
-+ * resources. The floor 0 must be available.
-  *
-  * Returns 0 on success, -ENOMEM, -ENXIO on error
-  */
-diff --git a/drivers/mtd/nand/onenand/onenand_base.c b/drivers/mtd/nand/onenand/onenand_base.c
-index d08aeac86f9f..bca5a3bebd41 100644
---- a/drivers/mtd/nand/onenand/onenand_base.c
-+++ b/drivers/mtd/nand/onenand/onenand_base.c
-@@ -3279,7 +3279,7 @@ static void onenand_check_features(struct mtd_info *mtd)
- 			 *
- 			 * Now it has as following
- 			 * KFM4G16Q4M has NOP 4 with version ID 0x0131
--			 * KFM4G16Q5M has NOP 1 with versoin ID 0x013e
-+			 * KFM4G16Q5M has NOP 1 with version ID 0x013e
- 			 */
- 			if ((this->version_id & 0xf) == 0xe)
- 				this->options |= ONENAND_HAS_NOP_1;
-diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
-index b13b2b0c3f30..08ef4425559c 100644
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -461,7 +461,7 @@ static int fsmc_correct_ecc1(struct nand_chip *chip,
- 				      chip->ecc.size, sm_order);
- }
- 
--/* Count the number of 0's in buff upto a max of max_bits */
-+/* Count the number of 0's in buff up to a max of max_bits */
- static int count_written_bits(u8 *buff, int size, int max_bits)
- {
- 	int k, written_bits = 0;
-diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index 527165ccc839..c61f3983a713 100644
---- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -2271,7 +2271,7 @@ static int nand_boot_init(struct gpmi_nand_data  *this)
- {
- 	nand_boot_set_geometry(this);
- 
--	/* This is ROM arch-specific initilization before the BBT scanning. */
-+	/* This is ROM arch-specific initialization before the BBT scanning. */
- 	if (GPMI_IS_MX23(this))
- 		return mx23_boot_init(this);
- 	return 0;
-diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index 21c7e1102746..c439b7814ebb 100644
---- a/drivers/mtd/nand/raw/mtk_nand.c
-+++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -42,7 +42,7 @@
- #define		CON_BRD			BIT(8)  /* burst  read */
- #define		CON_BWR			BIT(9)	/* burst  write */
- #define		CON_SEC_SHIFT		(12)
--/* Timming control register */
-+/* Timing control register */
- #define NFI_ACCCON		(0x0C)
- #define NFI_INTR_EN		(0x10)
- #define		INTR_AHB_DONE_EN	BIT(6)
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index a5b278ab9384..a225b10f8145 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -6205,7 +6205,7 @@ static int nand_scan_tail(struct nand_chip *chip)
- 	/*
- 	 * FIXME: some NAND manufacturer drivers expect the first die to be
- 	 * selected when manufacturer->init() is called. They should be fixed
--	 * to explictly select the relevant die when interacting with the NAND
-+	 * to explicitly select the relevant die when interacting with the NAND
- 	 * chip.
- 	 */
- 	nand_select_target(chip, 0);
-diff --git a/drivers/mtd/nand/raw/nand_legacy.c b/drivers/mtd/nand/raw/nand_legacy.c
-index 97700f80d5b8..94d5c7723c5a 100644
---- a/drivers/mtd/nand/raw/nand_legacy.c
-+++ b/drivers/mtd/nand/raw/nand_legacy.c
-@@ -319,7 +319,7 @@ static void nand_command(struct nand_chip *chip, unsigned int command,
- 				      NAND_CTRL_CLE | NAND_CTRL_CHANGE);
- 		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
- 				      NAND_NCE | NAND_CTRL_CHANGE);
--		/* EZ-NAND can take upto 250ms as per ONFi v4.0 */
-+		/* EZ-NAND can take up to 250ms as per ONFi v4.0 */
- 		nand_wait_status_ready(chip, 250);
- 		return;
- 
-@@ -459,7 +459,7 @@ static void nand_command_lp(struct nand_chip *chip, unsigned int command,
- 				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
- 		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
- 				      NAND_NCE | NAND_CTRL_CHANGE);
--		/* EZ-NAND can take upto 250ms as per ONFi v4.0 */
-+		/* EZ-NAND can take up to 250ms as per ONFi v4.0 */
- 		nand_wait_status_ready(chip, 250);
- 		return;
- 
-diff --git a/drivers/mtd/spi-nor/otp.c b/drivers/mtd/spi-nor/otp.c
-index 7d0b145d78d8..61c55227e15d 100644
---- a/drivers/mtd/spi-nor/otp.c
-+++ b/drivers/mtd/spi-nor/otp.c
-@@ -25,7 +25,7 @@
-  * Read a security register by using the SPINOR_OP_RSECR commands.
-  *
-  * In Winbond/GigaDevice datasheets the term "security register" stands for
-- * an one-time-programmable memory area, consisting of multiple bytes (usually
-+ * a one-time-programmable memory area, consisting of multiple bytes (usually
-  * 256). Thus one "security register" maps to one OTP region.
-  *
-  * This method is used on GigaDevice and Winbond flashes.
-diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
-index d890805f5494..67929fdf2dff 100644
---- a/include/linux/mtd/bbm.h
-+++ b/include/linux/mtd/bbm.h
-@@ -75,7 +75,7 @@ struct nand_bbt_descr {
-  * with NAND_BBT_CREATE.
-  */
- #define NAND_BBT_CREATE_EMPTY	0x00000400
--/* Write bbt if neccecary */
-+/* Write bbt if necessary */
- #define NAND_BBT_WRITE		0x00002000
- /* Read and write back block contents when writing bbt */
- #define NAND_BBT_SAVECONTENT	0x00004000
-diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index 5c70e7bd3ed5..43fefff02025 100644
---- a/include/linux/mtd/rawnand.h
-+++ b/include/linux/mtd/rawnand.h
-@@ -1592,7 +1592,7 @@ void nand_wait_ready(struct nand_chip *chip);
- 
- /*
-  * Free resources held by the NAND device, must be called on error after a
-- * sucessful nand_scan().
-+ * successful nand_scan().
-  */
- void nand_cleanup(struct nand_chip *chip);
- 
-diff --git a/include/linux/mtd/sh_flctl.h b/include/linux/mtd/sh_flctl.h
-index 78fc2d4218c8..15adf2474fa0 100644
---- a/include/linux/mtd/sh_flctl.h
-+++ b/include/linux/mtd/sh_flctl.h
-@@ -60,8 +60,8 @@
-  * Some hardware uses bits called PULSEx instead of FCKSEL_E and QTSEL_E
-  * to control the clock divider used between the High-Speed Peripheral Clock
-  * and the FLCTL internal clock. If so, use CLK_8_BIT_xxx for connecting 8 bit
-- * and CLK_16_BIT_xxx for connecting 16 bit bus bandwith NAND chips. For the 16
-- * bit version the divider is seperate for the pulse width of high and low
-+ * and CLK_16_BIT_xxx for connecting 16 bit bus bandwidth NAND chips. For the 16
-+ * bit version the divider is separate for the pulse width of high and low
-  * signals.
-  */
- #define PULSE3	(0x1 << 27)
--- 
-2.48.1
+>> Not sure if the cost-benefit-ratio would then pay off?
+> I would skip these. Fixing a typo in a key-word (say, a register name)
+> would be useful, but I'm not sure if any of these count.
 
+I agree, and a patch touching so many files will be annoying to cherry-pick
+due to conflicts.
+
+I'd save LLM water and energy consumption for more valuable changes.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
