@@ -1,219 +1,393 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013015.outbound.protection.outlook.com [40.107.159.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FF944470E;
-	Fri,  4 Sep 2026 09:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788514798; cv=none; b=KwJ8TmiMfweSqVDiAflmGtYOOFTBG6NzRawqkg+H5zqiipAP0O4bWZyM2mJhNNE2GipWti9wCaylJXLloCjpuvSHrU5KkzK4HzfYsaJE+JoyHWt5mUltocvJ3iQMrHBlQ3iBkRJfQbuAZgpf5fswr7iHFTtcrOyPmnMiq9pH7PA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788514798; c=relaxed/simple;
-	bh=qmdV0V7qeGcUMiqCF3CZQgYKieXSl1qE6CmW+xYpXTM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JC+EEKHatP7BUxXDkGYdP/SIqSmZcx99l1Q5L+lO/LETHEYIllDCMN2SosjPrBOGAb+ulLKHvOqGaWLO05A1bfZfbDGbZhmRYrYBo4x4SU454AATjK1I6WVkAw9cT9N/l8eGCOJNNUB6n3gRTuHDt0x1gRURK5eSIPMw81IXogc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SA1e0iCe; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7111B22B594
+	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 09:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788515592; cv=fail; b=dxSuK7y0vlv/jNwme4XTnbHsa2EcpuUNqEA5xyGAAfCs5UwfXLuybt81s5YIL9j5FgY+HLg0ZG5yVrBHpo56FNd/VuPNnHhH4KLd+D7ZivunK+8RqffNVXty+TcgcazLgP6EsNu3vZn9jkqDaiqs0cg/KbJOj7yC6S0MYr22ouU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788515592; c=relaxed/simple;
+	bh=S3KgD7L5tQlvQI4U25n8EorKDFpNPpoSfI5cuK4taIQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QfSh0Ns+VT87sYkt1XZRH0htonhxEu0tfQtx7JLKYr6CX91m+Ii1IDgP86ZkNcX2DU6XkUuHPr3foigkqv4vKE/4jWxYk3mDHmfeT0fv/m9UKWf0o0VI0yPSYK+S65eQfiiZN1opK9MBJ+JaSP2jpKsle5RbTFtiGSNEhIrieF4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NAjZ50wS; arc=fail smtp.client-ip=40.107.159.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SA1e0iCe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5401F00A3D;
-	Fri,  4 Sep 2026 09:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788514796;
-	bh=MyLk/irzyTaMJ+/NAD/m58k8JTBQpRzOmCo1MTP68pM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SA1e0iCemcP2Q6QRJuf7uJcmtbVZ3YaRXdSQQrMDN0HBiv5rjU6V6I71pcskGWGj7
-	 gfSVQjKbbjW02pW/IKy0oyWOGfIEpRa8CXEYBZIuV0nGnXp5XDjWwW3IwElNtDcJo8
-	 ZjFn3WSz0564XW53kA1z3xbMiCbQ2HLCp5PF2yG/zxyK6oLLXukIaY8YkAW7oYoKUk
-	 dDi1C8ZQTKI89tBveyxMI9DCWr0Epn9lX/ZrRFTGFBiqDsFF/7XR+Ufp3bfze8wBcw
-	 J+b5PswYv7LQBBz7VM0WMTxannmEEanbP46iIXJw19Bnw3QStXwVIPgPh1MMZK0QPJ
-	 PBliM0T91ae1g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v48 5/7] firmware: imx: adds miscdev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260904-imx-se-if-v48-5-dad90eec7eaf@nxp.com>
-References: <20260904-imx-se-if-v48-0-dad90eec7eaf@nxp.com>
- <20260904-imx-se-if-v48-5-dad90eec7eaf@nxp.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NAjZ50wS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Et5pQ6huL9Ibn9GaEeyQRn/bzTkNyX/fBglocMGWLFgXIs55J2BHup8gCLHNAn9vPRpT8hvKSKtkSnLnOZVbX86R9M1lMdhfd2TkCcc3iJXvlcdKqnHOJ+/vcaKe3QyS1/SKyCrsh9ydYbmJ2Z7lg25AgmlONsWU3K24x748+fbzk8m/u7eSZnZFjGDwJ+6LI2/VcAS++CXMrNTKhVNi4fizkwYBm+Jj2LAxKdMgl+za3QxcxxoUxo4Vg/Lbes3UlCazYx21DMqzw8gEsAbXRnNG2dsEvIDsRClEBZEWZuZD4INnNI1oeh23Ce7FP+ia7dZnfGFz73z4glkzNe4c7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cfZKWLSNg4SRQUTMuWyl/sz8BVL37v4pAMZ8tvVSKqs=;
+ b=UbunnO2rBP8xuW1j3FhpWLWB2jTwYo7nFXdgaVc9jSs1WbNg/8ddn2ddoq871UtIqM05FLU8aGXAmuM/ykjeqRqojsuR9UXqbUVk7JF8wm260T6Qu0L9vMWnzkYOt2jNjjORHuejMySF58tvKhx/CDCgMzEwMKbGHztVu4jV2WSUIkdGYuV1yuIEj8i0Zgw5cGC3HEG+Z7mp/zWO9eLjReFkluvHPPSxZfFMgy5TGPp8Tt0C5LML7hbSAn+HHJ6e+WkrxNWYqlDQQmwYUABb8Y0Ks2I/UrVbtK7A35hNmMSNS5Cq82Xj5azTwSAPbupgao1VjRaPgK7kmBGmVpY6WA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cfZKWLSNg4SRQUTMuWyl/sz8BVL37v4pAMZ8tvVSKqs=;
+ b=NAjZ50wSyDV9tFo8QHvhrfJPGB7kZO5ghoM51WZvFLnQ9pNn1Iyb6koKkMQZrwWeVmLlbDghYCkv04dQK2GrY6oDwWpFN8WXOin6sAFRoL6PQJifgDaF6v4gc+89eVe3/9SZOfju5xGl83XjvBp2caAX709BlmscPnpxY6v4f926VizRU9kbHZJ54v0tgtcUHXxwGKAIhydLYkIKHAAoWHjHtFr30EMhkpZetSbEVtGxAFbizUWHE7g0++o4msoiKxgVhqpHV8BJYsUNxX7AQ9WmPtRx8tODIhiJeFHiUhiPv6iOCyOkeoShb92ohr9XCf7rW2/5gYnq0DxCWXvtCw==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by VE1PR04MB7438.eurprd04.prod.outlook.com
+ (2603:10a6:800:1a0::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 4 Sep
+ 2026 09:53:03 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
+ 09:53:03 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
+ (OSS)" <wei.fang@oss.nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3 net-next 13/15] net: enetc: implement
+ ndo_set_rx_mode_async for ENETC v4 VF
+Thread-Topic: [PATCH v3 net-next 13/15] net: enetc: implement
+ ndo_set_rx_mode_async for ENETC v4 VF
+Thread-Index: AQHdOPgc6qfQmSNghESO08UZZGj8Uba9imMAgAClKzA=
+Date: Fri, 4 Sep 2026 09:53:03 +0000
+Message-ID:
+ <GV2PR04MB117395246319A21FB54172A5088B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831025441.635045-14-wei.fang@oss.nxp.com>
+ <178847907053.4131868.14448615471105460167@kernel.org>
+In-Reply-To: <178847907053.4131868.14448615471105460167@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|VE1PR04MB7438:EE_
+x-ms-office365-filtering-correlation-id: 2c5bfc44-3e44-4c95-8490-08df0a6a4ffe
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|19092799006|38070700021|6133799003|10067099003|56012099006|22082099003|11063799006|5023799004|18002099003|4143699003;
+x-microsoft-antispam-message-info:
+ F2i5jMMFqrT6gD4WAHo1Z2MyKYKXKTImYj6d3LktzxgOyx1FP3uSChwsUi5BT/NErGruJThoUCOWlewBRzgect9s8G6M4eGhXd2hvq41mXT3+yG5z8Vh/QLQTkZggalAMo6274xeNbVyvCLe6eCcE2awRXXgthD9++W4B4PEGIjvi5wFU8+J07cpNaQ0/jLMXVPqJq6JxETflw2JARXd3Ov2IKnR16E8+W68VEljxJ6zCf/s+J96E6pfZ2A7eGEHBAYw25Lmw+FOprm2twXoCCzPhWh0vZJBgIdf3pCdkQvEAF8z5E1EixFVfRafFnELUiOj48O0wJpTXhxpJRX2z1VfKszEy4E+oi5pEVppq6j1FhG6TkC/P2gNn2Qc/X6VhfcMTZ4Oz/2CYnnSFZm9KBsuIyOtTuJq7K/xy/VnCwf32RwRTIObVJVmxn9Tm7CF/M3VZy5GNpj7P/e5D0ksiWZpT/A4mNdn6eQJkclBKDowJj+w29cWbgT5JuGzW0lO+ITulifOHVIkxRcH/kip/05J5V0wZIJebIF5QGOr/XMlgyGAzepu+9fVWjFK5SFw1ZM6C/6TRLicsqsCeCPqTyKA+fN1LzJjBGSuYwUpVwnQulGewK0H2ijPoFoeYwzM/0zXHxswi1IFdCRDwErS2cEI/cKczAU3hrqJEWK3E1fDqQMG1NOxjzR/fbr1HECWcLpoWOyS8rmpypauAtiFRzgw69wCzpHMjsqCITEzhHA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(19092799006)(38070700021)(6133799003)(10067099003)(56012099006)(22082099003)(11063799006)(5023799004)(18002099003)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?iSj9LTkh5m9zJPK3cuAXTg/DdSq5IBtClJj/A/7esT0/NBBi8lEbppAqEhsS?=
+ =?us-ascii?Q?iDEuL/jPuSccnmFeqCzhJYfEfoMtp0B22PHQFGEWnMoLl4WQCwYtUwAmIYI4?=
+ =?us-ascii?Q?FiPaMfSqIr1rxE+zwij5nzCo41eX23pR4tKPGj84UcCCTrLwcURw/UOmGD1o?=
+ =?us-ascii?Q?riY7ziVYxOhzwMVyM7z2tGpd5l1sj1hQO7GDX0RGVxnMjJNk6fw+M7KD1Ie+?=
+ =?us-ascii?Q?qThVeauTB3gJyniFcgUZ6TK6so6tpHKjYgPg2ReB2m0NVChaNdYmCK6v0mJx?=
+ =?us-ascii?Q?peByQs0unjV/1XbL7pZTCWVF3b/JOiPq185H0xy/hrohgWkAeyQAQJUJYJFN?=
+ =?us-ascii?Q?MlV2YAAZKmHVuo8rnQVrtzfUSgRFVU8JTX0e2P3Wi74s2gPQjDzqhJLXhsOI?=
+ =?us-ascii?Q?sAteAjIlw/O70pwhS1x2KScNa6ydcIqQISlhpOgWUSE21TgGwNR2OKO3RRA8?=
+ =?us-ascii?Q?yzyMvP74z+ixMLJhWEbRymY4Qv2xSs/Clz8GVM1VrXGMv8Xmqsj5Sj2OpNAG?=
+ =?us-ascii?Q?qlKXWIHpOhoymkBGDyXIS0Jvlc5kg+9DxLzygzxRbBgFR/PMMkGS5/5NRvRk?=
+ =?us-ascii?Q?W4xqOg/7L4SRR40zI6dPa8XyR/xXNjkVSBpmBgyN0c3a5yHH5VkeLAeaOabR?=
+ =?us-ascii?Q?jY9k2XhXVovIq5RPVpXHSyIb/7a6JbUDb0S20ub+IxLQjEM6jdOQPuuUjNt0?=
+ =?us-ascii?Q?hKy9jIOW+bwi/HjHRK9cl24QwOeaim6uP/klJZ6/oNZEGknoEDh+UgGN0nJW?=
+ =?us-ascii?Q?ywXrU8edeDXaJmSsBSq3v2zaXDhbDu+XUC//LtjyNRc2LLhGFXs+PaTls8OZ?=
+ =?us-ascii?Q?pLyRjPldkupmYHTtxdwGAC0joJ1W9IPQImKcUi1QWuYyVQ36RXF9+/raGpMR?=
+ =?us-ascii?Q?4wA+Ti78I/JmhGg0HeIhAUDVVQm25z3TPnsoIZmOREi9orLz/T2pPzulWPa/?=
+ =?us-ascii?Q?1k5xHP6BZ83CCxgmsordIdcdnV4/zCXmlCGcHgBePJAB2QKyduqySrHGro/r?=
+ =?us-ascii?Q?LNa7LVTMqpFZeDo4d3Y4qqYSk3Rc4tXrzCqn0gD/82fe2SSnl/+7DuAhysLM?=
+ =?us-ascii?Q?rTtmKCvNFHtI+hfjcqjdWqUlq7k5JSy/z5Y84llqGRwIoH+j+8/RJquitJss?=
+ =?us-ascii?Q?uWSk6FO3hEFDTQi1CiNTLaW7Dm+YQPs0KaHccTnGVHN5xK4gzDNOUhQ7Ae3X?=
+ =?us-ascii?Q?dum5HDJCdb6a+WeY5y6yCFYyCFCZZssiCqEqe98ZGCP34WUsuhZNf58u00Ds?=
+ =?us-ascii?Q?ry4EDZc5UxoD6ZHVaDdy2Kelqayk3QRenJ988gN3pu3+Wdny6NfUIcsb4J9h?=
+ =?us-ascii?Q?Ps8pzJUUrzrLgJywuMaDizeno9dJlv28IjzlUYYe1SHchgJmOOh3dgeQ1Bzy?=
+ =?us-ascii?Q?mBHULeOF495Or0haa1x2E2kf0Zh+FPn4Nkcdz0GpwxSpL9qoOViS1F90JjoU?=
+ =?us-ascii?Q?Bh6HlpSnKDn7XB2SC8+XtG2wmDs/rsDO/195mavjYD5ZNHzNQcBH2NuL7lG1?=
+ =?us-ascii?Q?uvc2Zy9aTEPp1lPgmeP4ozEhoey/CWfBgsk/JfMZo4xOM601c2YhW2dT4BqY?=
+ =?us-ascii?Q?20gQBKWPMi+oln/wU+fHlnDuWR5XVqUEc86pzSSvqo9d0XjV0pr0mluS5Dgk?=
+ =?us-ascii?Q?yfZ4N3eMkYj/e05T7hnd/F9cYDFj8porpY/pY8Pw9mvrF0wRjP40ZGEITfxd?=
+ =?us-ascii?Q?zgee4CGqd5q6bH1nFZMuwP3eaax+9Kv8gRSJrbkaaY+4mo7N?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 04 Sep 2026 09:39:55 +0000
-Message-Id: <20260904093956.1F5401F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c5bfc44-3e44-4c95-8490-08df0a6a4ffe
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 09:53:03.4203
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: A9DBs9wL2OqEuAhsw83/PGmBCiAHMgx8EHwixgbv8COv6Z5VBgk9VtYO84Dqk0keOHNpYPPIgBxhLiGZRY+dBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7438
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Permanent destruction of priv_dev_ctx's shared DMA buffer on late =
-firmware response.
-- [High] Leaked firmware session handles due to killable wait in `close()` =
-aborting instantly on fatal signals.
-- [High] Deadlock risk during PM suspend due to GFP_KERNEL allocation insid=
-e a required GFP_NOIO context.
---
+> > +	if (mac_filter_type & ENETC_MAC_FILTER_TYPE_UC) {
+> > +		mac_filter =3D &si->mac_filter[UC];
+> > +		enetc_reset_mac_addr_filter(mac_filter);
+> > +		netdev_hw_addr_list_for_each(ha, uc)
+> > +			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
+> > +
+> > +		bitmap_to_arr32(&msg->hash_tbl[i], mac_filter->mac_hash_table,
+> > +				ENETC_MADDR_HASH_TBL_SZ);
+> > +		i +=3D 2;
+> > +	}
+> > +
+> > +	if (mac_filter_type & ENETC_MAC_FILTER_TYPE_MC) {
+> > +		mac_filter =3D &si->mac_filter[MC];
+> > +		enetc_reset_mac_addr_filter(mac_filter);
+> > +		netdev_hw_addr_list_for_each(ha, mc)
+> > +			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
+> > +
+> > +		bitmap_to_arr32(&msg->hash_tbl[i], mac_filter->mac_hash_table,
+> > +				ENETC_MADDR_HASH_TBL_SZ);
+> > +	}
+> > +
+> > +	enetc_msg_fill_common_hdr(&msg_swbd,
+> ENETC_MSG_CLASS_ID_MAC_FILTER,
+> > +				  ENETC_MSG_SET_MAC_HASH_TABLE, 0, 0);
+> > +
+> > +	return enetc_msg_vsi_send(si, &msg_swbd);
+> > +}
+> > +
+> > +static int enetc_vf_set_rx_mode(struct net_device *ndev,
+> > +				struct netdev_hw_addr_list *uc,
+> > +				struct netdev_hw_addr_list *mc)
+> > +{
+> > +	struct enetc_ndev_priv *priv =3D netdev_priv(ndev);
+> > +	struct enetc_si *si =3D priv->si;
+> > +	int err;
+> > +
+> > +	/* For ENETC v1, we cannot return -EOPNOTSUPP or any other error,
+> > +	 * otherwise ndev->rx_mode_retry_timer will try to set rx_mode
+> > +	 * multiple times, which is pointless.
+> > +	 */
+> > +	if (is_enetc_rev1(si))
+> > +		return 0;
+> > +
+> > +	if (ndev->flags & IFF_PROMISC) {
+> > +		err =3D enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_ALL,
+> > +					       true);
+> > +	} else if (ndev->flags & IFF_ALLMULTI) {
+> > +		err =3D enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_UC,
+> > +					       false);
+> > +		if (err)
+> > +			goto out;
+> > +
+> > +		err =3D enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_MC,
+> > +					       true);
+> > +	} else {
+> > +		err =3D enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_ALL,
+> > +					       false);
+> > +	}
+> > +
+> > +	if (err)
+> > +		goto out;
+> > +
+> > +	err =3D enetc_vf_set_mac_hash_filter(si, uc, mc);
+> > +
+>=20
+> [Severity: Medium]
+> Is the order of these two mailbox transactions the right way round?
+>=20
+> enetc_vf_set_mac_promisc() sends FLUSH_MACS together with en, and the PF
+> handler zeroes both hash filter registers when FLUSH_MACS is set:
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_mac_pr
+> omisc_mode() {
+> 	...
+> 	if ((type & ENETC_MAC_FILTER_TYPE_UC) && flush_macs)
+> 		enetc_set_si_uc_hash_filter(si, si_id, 0);
+>=20
+> 	if ((type & ENETC_MAC_FILTER_TYPE_MC) && flush_macs)
+> 		enetc_set_si_mc_hash_filter(si, si_id, 0);
+> 	...
+> }
+>=20
+> So while promiscuous mode is active the SI hash filters are known to be
+> empty (enetc_vf_set_mac_hash_filter() also returns early for IFF_PROMISC)=
+.
+> On the way out of promiscuous mode this function completes the
+> promisc-disable round trip first and only then installs the replacement
+> hash filters.
+>=20
+> Each enetc_msg_vsi_send() is a blocking round trip polled with
+> read_poll_timeout(..., 1000, 200000, ...). Between the two sends the SI h=
+as
+> promiscuity cleared and empty hash filters - can that drop all multicast
+> and secondary unicast frames for the duration, two round trips in the
+> IFF_ALLMULTI branch?
+>=20
+> And if the hash filter send then fails (-EIO "VSI mailbox is busy", -ETIM=
+E
+> on mailbox timeout, -EBUSY for a busy PSI), the promisc-off write is
+> already committed and is not undone; netif_rx_mode_schedule_retry() gives
+> up after NETIF_RX_MODE_RETRY_MAX attempts:
+>=20
+> net/core/dev_addr_lists.c:netif_rx_mode_schedule_retry() {
+> 	if (dev->rx_mode_retry_count >=3D NETIF_RX_MODE_RETRY_MAX) {
+> 		netdev_err(dev, "rx_mode retry limit reached, giving up\n");
+> 		return;
+> 	}
+> 	...
+> }
+>=20
+> Would programming the new (superset) filters before narrowing the
+> promiscuous bits avoid both the window and the stuck state? The PF side
+> already does something similar in enetc4_pf_set_uc_exact_filter() with it=
+s
+> temporary unicast hash filter.
+>=20
 
-commit 8a8db094cff29d90b76f6889f2022ca7253f3ec8
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
+I don't think this needs to be changed.
 
-firmware: imx: adds miscdev
+First, the window is acceptable. It lasts one mailbox round trip. rx_mode
+changes are infrequent management events, so a brief loss during a
+reconfiguration is tolerable.
 
-Adds the driver for communication interface to NXP secure-enclave hardware
-via a character driver. Handles ABI, initialization, shared memory, and
-restricted command forwarding.
+Second, the retry mechanism exists precisely to cover a failed configuratio=
+n.
+The only errors the hash filter send can return here are -EIO (mailbox busy=
+),
+-ETIME (mailbox timeout) and -EBUSY (PSI busy) - all of which mean the PF
+is not servicing mailbox messages. The core retries with backoff over rough=
+ly
+15 seconds before giving up. If the PF cannot process a single message in t=
+hat
+time, the PF side is already broken, and reordering the two sends would not
+rescue the configuration either - it would just fail at a different point.
 
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/e=
-le_base_msg.c
-> --- a/drivers/firmware/imx/ele_base_msg.c
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-[ ... ]
-> @@ -121,9 +121,9 @@ int ele_get_info(struct se_if_priv *priv, struct ele_=
-dev_info *s_info)
->  	get_info_len =3D ELE_GET_INFO_BUFF_SZ;
->  	if (priv->mem_pool) {
->  		ret =3D se_get_mem_pool_buf(priv->priv_dev_ctx, &get_info_data,
->  					  &get_info_addr, get_info_len);
+> > +out:
+> > +	/* If the error code is -EOPNOTSUPP or -EACCES or -EPERM, return 0
+> > +	 * directly to avoid meaningless retries.
+> > +	 */
+> > +	if (err =3D=3D -EOPNOTSUPP || err =3D=3D -EACCES || err =3D=3D -EPERM=
+)
+> > +		return 0;
+> > +
+> > +	return err;
+> > +}
+> > +
+>=20
+> [Severity: High]
+> For an untrusted VF - the default, since pf->vf_state is allocated with
+> devm_kcalloc() and ENETC_VF_FLAG_TRUSTED is only set by
+> enetc_pf_set_vf_trust() - the PF handlers reject exactly the messages thi=
+s
+> callback sends.
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_mac_pr
+> omisc_mode() {
+> 	...
+> 	promisc =3D !!(msg->config & ENETC_MSG_MAC_PROMISC_MODE);
+> 	if (promisc && !(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
+> 		pf_msg =3D ENETC_PF_MSG_PERM_DENY;
+> 		goto vf_state_unlock;
+> 	}
+> 	...
+> }
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_mac_ha
+> sh_filter() {
+> 	...
+> 	case ENETC_MAC_FILTER_TYPE_UC:
+> 		if (!trusted) {
+> 			pf_msg =3D ENETC_PF_MSG_PERM_DENY;
+> 			goto vf_state_unlock;
+> 		}
+> 	...
+> 	case ENETC_MAC_FILTER_TYPE_ALL:
+> 		...
+> 		if (!trusted &&
+> 		    (hweight64(mc_hash) <=3D ENETC_VF_MC_HASH_BITS_MAX)) {
+> 			enetc_set_si_mc_hash_filter(si, si_id, mc_hash);
+> 			pf_msg =3D
+> ENETC_PF_MSG_MF(ENETC_MF_CLASS_CODE_UCF_DENY);
+> 			goto vf_state_unlock;
+> 		}
+>=20
+> 		if (!trusted) {
+> 			pf_msg =3D ENETC_PF_MSG_PERM_DENY;
+> 			goto vf_state_unlock;
+> 		}
+> 	...
+> }
+>=20
+> enetc_msg_vsi_send() maps PERMISSION_DENY and UCF_DENY to -EACCES and
+> returns before the dev_err(), so there is not even a log line.
+>=20
+> In the IFF_ALLMULTI branch, does the MC promisc-enable message therefore
+> always fail on an untrusted VF, making "if (err) goto out;" skip
+> enetc_vf_set_mac_hash_filter() completely?
+>=20
+> Even when it is reached, enetc_vf_set_mac_hash_filter() selects
+> mac_filter_type =3D ENETC_MAC_FILTER_TYPE_UC under IFF_ALLMULTI, so the
+> mc
+> snapshot handed in by the core is never converted into an MC hash table.
+> With MC promiscuous mode denied as well, does the multicast hash filter
+> stay frozen at its previous contents - so groups joined after the VF is
+> enslaved to a bridge or gets a macvlan on top (both call
+> dev_set_allmulti()), such as IPv6 solicited-node addresses or mDNS, are
+> silently dropped by hardware?
+>=20
+> In the default branch the TYPE_ALL message is refused outright once more
+> than ENETC_VF_MC_HASH_BITS_MAX (8) multicast hash bits are set, so
+> PSIMMHFR0/1 keeps its stale value. Would it be worth falling back to the
+> MC-only message, which the PF does accept from an untrusted VF?
+>=20
+> The out: block then turns -EACCES, -EPERM and -EOPNOTSUPP into 0, and the
+> core treats that as "installed":
+>=20
+> net/core/dev_addr_lists.c:netif_rx_mode_run() {
+> 	...
+> 		if (err)
+> 			netif_rx_mode_schedule_retry(dev);
+> 		else
+> 			dev->rx_mode_retry_count =3D 0;
+> 	...
+> }
+>=20
+> Can this leave the SI hash filters permanently out of sync with the addre=
+ss
+> list the stack believes is programmed, with no retry and no message? Sinc=
+e
+> this patch also sets IFF_UNICAST_FLT, the core's unicast promiscuous
+> fallback is suppressed too.
+>=20
+> Two related points: the promisc-disable message carries FLUSH_MACS =3D en=
+ =3D
+> false, so a denied hash filter update can also leave hardware more
+> permissive than requested (removed multicast groups keep being received).
+> And when trust is granted later, enetc_pf_set_vf_trust() only flips the
+> PF-side flag - nothing replays or re-requests the receive mode
+> configuration that the VF already reported as successfully installed, so
+> does a configuration denied while untrusted stay unapplied indefinitely?
 
-[Severity: High]
-Could this cause a system deadlock during PM suspend?
+I think the current handling is fine for an untrusted VF.
 
-The caller ele_get_info allocates its message buffers using GFP_NOIO
-specifically to prevent direct reclaim from triggering I/O to a suspended
-storage device. However, it relies on se_get_mem_pool_buf here, which
-does a standard kernel allocation.
+First, an untrusted VF not getting allmulti is the security policy working =
+as
+intended. IFF_ALLMULTI means "receive all multicast", which is exactly
+what we do not want to grant to an untrusted VF. If a VF genuinely needs
+this (for example to be enslaved to a bridge or to carry a macvlan), the
+administrator should mark it trusted with ip link set <pf> vf N trust on.
 
-[ ... ]
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele=
-_common.c
-> --- a/drivers/firmware/imx/ele_common.c
-> +++ b/drivers/firmware/imx/ele_common.c
-[ ... ]
-> @@ -342,6 +342,7 @@ int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, str=
-uct se_clbk_handle *se_clbk
->  				if (se_clbk_hdl->rx_msg) {
->  					/*
->  					 * The enclave may still DMA into this
->  					 * buffer (either a normal timeout or
->  					 * a teardown complete_all() wakeup).
->  					 * Quarantine the buffer and arm the
->  					 * circuit breaker unconditionally.
->  					 */
->  					se_clbk_hdl->rx_msg =3D NULL;
->  					se_mark_fw_busy(dev_ctx);
->  				}
->  				spin_unlock_irqrestore(&se_clbk_hdl->clbk_rx_lock, flags);
->  			}
->  			break;
+Second, returning 0 for a denied request is a limitation of the
+ndo_set_rx_mode_async() interface. The interface only defines two
+outcomes: return 0 for success, or a negative errno to request a retry
+via the core backoff. There is no way to express "this was permanently
+denied by policy, do not retry". A permission denial is a stable failure,
+so returning an error would just make the core retry four times with
+backoff and then log "rx_mode retry limit reached, giving up", which
+is misleading and pointless. Returning 0 is the better of the two options
+the interface offers.
 
-[Severity: High]
-Does this instantly abort the wait and arm the circuit breaker if a fatal
-signal like SIGKILL is pending?
-
-By breaking out early, it immediately marks the firmware as busy.
-
-[ ... ]
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-[ ... ]
-> @@ -406,6 +406,12 @@ static void cleanup_se_shared_mem(struct se_if_devic=
-e_ctx *dev_ctx, bool recla
->  	if (free_dma_buf) {
->  		dma_free_coherent(priv->dev, MAX_DATA_SIZE_PER_USER,
->  				  se_shared_mem_mgmt->non_secure_mem.ptr,
->  				  se_shared_mem_mgmt->non_secure_mem.dma_addr);
->  	}
-> =20
->  	/*
->  	 * Drop the host-side tracking unconditionally. On the reclaim path the
->  	 * buffer has been freed. On the deliberate-leak path the buffer is
->  	 * abandoned on purpose, so clearing the pointer here guarantees a later
->  	 * cleanup pass (e.g. se_if_priv_release()) cannot double-free it.
->  	 */
->  	se_shared_mem_mgmt->non_secure_mem.ptr =3D NULL;
->  	se_shared_mem_mgmt->non_secure_mem.dma_addr =3D 0;
->  	se_shared_mem_mgmt->non_secure_mem.size =3D 0;
-
-[Severity: High]
-Are we unconditionally destroying the DMA buffer state here?
-
-Even when reclaim is false, the size and pointers are zeroed out.
-If this is called for priv_dev_ctx (which has no open/close cycle to
-reallocate it), the persistent DMA buffer becomes permanently unusable.
-
-[ ... ]
-> @@ -1149,6 +1149,7 @@ static void se_clear_fw_busy(struct se_if_priv *pri=
-v)
->  			/*
->  			 * Late response arrived after going_away is clear.
->  			 * fw_busy has already been cleared atomically above;
->  			 * reclaim the shared-memory slot now. For priv_dev_ctx
->  			 * this is the only reclaim site (no close() path). For
->  			 * userspace contexts cleanup_se_shared_mem() is a
->  			 * safe no-op if the close() path already reset pos.
->  			 */
->  			cleanup_se_shared_mem(dev_ctx, true);
-
-[Severity: High]
-Can this permanently break internal firmware communications for priv_dev_ct=
-x?
-
-If an internal command times out, priv_dev_ctx is set as the busy context.
-When a late response arrives, se_clear_fw_busy runs and calls
-cleanup_se_shared_mem with reclaim=3Dtrue.=20
-
-Because cleanup_se_shared_mem zeros out the DMA pointer and size, the
-permanent DMA buffer used by priv_dev_ctx is destroyed, breaking subsequent
-operations like system suspend or firmware loading.
-
-[ ... ]
-> @@ -1331,6 +1331,10 @@ static void cleanup_dev_ctx(struct se_if_device_ct=
-x *dev_ctx, bool is_fclose)
->  				struct se_if_device_ctx *tx_ctx =3D is_fclose ? dev_ctx :
->  							dev_ctx->priv->priv_dev_ctx;
-> =20
->  				if (dev_ctx->strg_hdl && se_close_storage(tx_ctx,
->  									  dev_ctx->strg_hdl))
->  					dev_err(dev_ctx->priv->dev, "failed to close storage.\n");
->  				if (dev_ctx->sess_hdl && se_close_session(tx_ctx,
->  									  dev_ctx->sess_hdl))
->  					dev_err(dev_ctx->priv->dev, "failed to close session.\n");
-
-[Severity: High]
-Will this skip sending the session close command and leak the firmware sess=
-ion
-handle if the killable wait aborted instantly above?
-
-Because ele_msg_send_rcv returns -EBUSY immediately if the circuit breaker
-was armed by a SIGKILL interrupt, se_close_storage fails instantly. The
-subsequent call to se_close_session is then also skipped due to the busy
-firmware path.=20
-
-An unprivileged user could trigger this leak by opening a session and
-sending SIGKILL to their own process, permanently exhausting hardware encla=
-ve
-resources.
-
-[ ... ]
-> @@ -2145,6 +2145,8 @@ int se_get_mem_pool_buf(struct se_if_device_ctx *de=
-v_ctx, void **buf,
->  	if (se_is_fw_busy_ctx(dev_ctx))
->  		return -EBUSY;
-> =20
->  	b_desc =3D kzalloc_obj(*b_desc);
->  	if (!b_desc)
->  		return -ENOMEM;
-
-[Severity: High]
-Does this kzalloc_obj allocation violate the GFP_NOIO context required by
-ele_get_info during suspend?
-
-The kzalloc_obj macro implicitly uses GFP_KERNEL, which can trigger direct
-memory reclaim. Since the storage device may already be suspended, flushing
-dirty pages to it will lead to an unrecoverable system deadlock.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260904-imx-se-if-=
-v48-0-dad90eec7eaf@nxp.com?part=3D5
