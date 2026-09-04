@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B333E6DD2;
-	Fri,  4 Sep 2026 08:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FC03D45F7;
+	Fri,  4 Sep 2026 08:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788510779; cv=none; b=GknnWd/S1Va/SAcrXrvgdkETD82duYjIcmWZLvUgAEx9Qfm6tPLRSE8ySvBwOl5VGUrMh8efryKt2pq0sGPxQ68XjnkwECqR/IqEmaSkxvtYZfJA3hx1TF7O+ESilzmN4tcQj/RWdnD+06tueI6ty2nrVGfz4b++a0Pa9em6aNw=
+	t=1788510798; cv=none; b=aod6tyYYuprqiR8WnMjvyYy7HNMoPm1b9VSwjBMGJJPd69UKNrC7IC5cHHKukBorbX1kte/UIfwhmp5+4c/YxozuWxV2/rGRVV4+ZqJ+6DD3JhY4zvRplMcMHXdHhmlBKbJUkNnyg4cDEnOrGnzIGlsD7NokGGylAX/egxgit+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788510779; c=relaxed/simple;
-	bh=bdBBr80WzZOLTqWhW8VfNNoVoyLFpwq6+TpL3iUkku8=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=b7Pa8NKrsOJqC1iC+c0wuNS0gMznqRUOlX9KpkX5JMkbaQpIMPFCiQJuVE5kZts2jDe9+/y4tWZAV/sdzIvd/IGbwLuAx4j4beDKaTgjpOe1meZJe8zW9Bk2WmAk9vkTtFzakMB2zI6JGocO6HRXY7sGBPQLV6tBv5O+uRkb6Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bpf/CL+m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788510798; c=relaxed/simple;
+	bh=NOv7iwMxhCQ0YCsI55fslbqeBAu4YRdlluYMfYstykY=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=usV7pGJ2UnnsX2Pjw7H4pU4FzQu0JoOXiUDyjlmXk9ikIzDVlYClIrtZGNLyEvWmx59vLhfDTndQbEy3H+EzH2UrssKzrsMU8fgzGcA/TcKKp3sWL8qn0oYHA2g6Djp9amGLDp5E4Uk4wh7iUlqL6Nu4ItEUzTDFceerXR95ueE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTGjJxP1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bpf/CL+m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDF91F00A3D;
-	Fri,  4 Sep 2026 08:32:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTGjJxP1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5851F00A3D;
+	Fri,  4 Sep 2026 08:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788510770;
-	bh=AQO2yLCuvyyjb9kwnOf42UURUHWUmykZv1MVLPFfndU=;
+	s=k20260515; t=1788510796;
+	bh=y/nk14eD2Y0cqgzJGSt+5FjulJ5arXb8251Zy5w04Iw=;
 	h=Date:From:To:Subject:In-Reply-To:References:Cc;
-	b=Bpf/CL+mJpaJzRAHF4YSGGkjyZT3Tgm8ZZ00BZVxvd300hDOS32rnJUr4NJxPZKgQ
-	 lWn0O9g9v9ZvzRWkIHkwQuLcbOq/Iczn1VyoAO2eL7q54UsTiHcT8rXKLUAA0aBAQr
-	 em3QLSDP4uArMdwvMQWXZ0MfTWHp4KXTY/GGVdVAsByHIhm2rzYBhpi9yU2NQPgtnt
-	 QYCi5Gb4vQCjjrGu9ouZCOkRUlR6JvvmDrNqOvg81ov29WM+qI5Atuc3zNmCY7gVM0
-	 P8St61CwKFdyqIUJjbkfWlhTfehweZ+aUyF9BbPip2GRJKKQh5qBMt4hZMazS0+7uQ
-	 NuvgHLm3SyvUA==
-Message-ID: <c25980ef93153c0edc6c5bd73e2e2a6a@kernel.org>
-Date: Fri, 04 Sep 2026 08:32:47 +0000
+	b=jTGjJxP1aBNnB3vfu+LiWsWU/lVajEblCXSl6iHSZYPp6UGTE3BXo0Lhh/051QHsO
+	 m/Zfk2EEsmpNzwD9Aqi1DUj6G3uRFNtsdw8PbyDBmpItS8Y3BWj0mBINDbfLeCQdmY
+	 3J1I0N0AgAmwOAwdxYhNuc7UQbRMiHeFtxBSylUiCjTD0Nz9EZ94pU6GxRuRhoSs2C
+	 Ukwy/s3zDvBp98es3I477+izGPFpiWvGSeEXnfwu2SnRiEI8ChwSM41P3ZmOw8gxrP
+	 Vg/Z3Pj0ND9N3DtjqfssIcordwH/hBx8xjC/SBYeBvJUG5hSPwUcwyBe9eDKSv2gAB
+	 mEBaOcdLb+gSw==
+Message-ID: <d6323392130ed13cc5d1da8c2165115d@kernel.org>
+Date: Fri, 04 Sep 2026 08:33:13 +0000
 From: "Maxime Ripard" <mripard@kernel.org>
 To: "Liu Ying" <victor.liu@nxp.com>
-Subject: Re: [PATCH v6 08/13] drm/imx: dc-ed: Support getting source
- selection
-In-Reply-To: <20260904-imx8-dc-prefetch-v6-8-26643e3f6cb7@nxp.com>
-References: <20260904-imx8-dc-prefetch-v6-8-26643e3f6cb7@nxp.com>
+Subject: Re: [PATCH v6 09/13] drm/imx: dc-lb: Support getting secondary
+ input selection
+In-Reply-To: <20260904-imx8-dc-prefetch-v6-9-26643e3f6cb7@nxp.com>
+References: <20260904-imx8-dc-prefetch-v6-9-26643e3f6cb7@nxp.com>
 Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Conor
  Dooley" <conor+dt@kernel.org>, "David Airlie" <airlied@gmail.com>, "Dmitry
  Baryshkov" <lumag@kernel.org>, "Fabio Estevam" <festevam@gmail.com>, "Frank
@@ -49,10 +49,10 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-On Fri, 4 Sep 2026 15:54:58 +0800, Liu Ying wrote:
-> Add a helper to get ExtDst source selection.  This is needed by
-> disabling CRTC at boot in an upcoming commit which tries to get
-> the source selection.
+On Fri, 4 Sep 2026 15:54:59 +0800, Liu Ying wrote:
+> Add a helper to get LayerBlend secondary input selection.  This is
+> needed by disabling CRTC at boot in an upcoming commit which tries
+> to get the selection.
 > 
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > 
