@@ -1,105 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94213E5A17;
-	Fri,  4 Sep 2026 08:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B333E6DD2;
+	Fri,  4 Sep 2026 08:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788510762; cv=none; b=YZIhcJ5n/IsnCF9sLOmJJx6JZPGY+MOILkBfAN3fghYMGcaRZ32jL1j+jwsHpCmAp9XKEQxfmT4JCtK7EOmhVLNvEgdfK/jmMitRdt6OApEZWmlHFLQiJ9EDZUqV83G1PCVSEtdAS8UvJckxYtCXapzEZC/OemR1zANmSZzq77E=
+	t=1788510779; cv=none; b=GknnWd/S1Va/SAcrXrvgdkETD82duYjIcmWZLvUgAEx9Qfm6tPLRSE8ySvBwOl5VGUrMh8efryKt2pq0sGPxQ68XjnkwECqR/IqEmaSkxvtYZfJA3hx1TF7O+ESilzmN4tcQj/RWdnD+06tueI6ty2nrVGfz4b++a0Pa9em6aNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788510762; c=relaxed/simple;
-	bh=sp89dfhZR6pp3XVrQEgyzZlnTEwW+gacT+v+gehbSbY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RAeCwgZSJ7GHstgKHcMVMtDVhYeDojCsUIb18API3fbNbWRUjCw3nuEoeIAi4S4ebGmm3H+LUKZqku82lml5fFkC7Mx+rBJ5x0YfOG+M2Pj0vTHWGBVYmEB06+hpsNEAGANR5jkY5O1I0xwlbWVm7+7YedQATR7HI/od7PTAOEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFYXZymr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788510779; c=relaxed/simple;
+	bh=bdBBr80WzZOLTqWhW8VfNNoVoyLFpwq6+TpL3iUkku8=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=b7Pa8NKrsOJqC1iC+c0wuNS0gMznqRUOlX9KpkX5JMkbaQpIMPFCiQJuVE5kZts2jDe9+/y4tWZAV/sdzIvd/IGbwLuAx4j4beDKaTgjpOe1meZJe8zW9Bk2WmAk9vkTtFzakMB2zI6JGocO6HRXY7sGBPQLV6tBv5O+uRkb6Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bpf/CL+m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFYXZymr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F681F00A3D;
-	Fri,  4 Sep 2026 08:32:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bpf/CL+m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDF91F00A3D;
+	Fri,  4 Sep 2026 08:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788510758;
-	bh=MzSSeYpgZ1cl36kwxauq490fq+r6qAsAHJo6BhOSQ1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JFYXZymr1wFshuxLBjvl/iyhixHCkCSdNKcEN4AdpqHPjeNe7OCTSE9W9hyu9xtuR
-	 /THPX4vBmSvJmF3/ZEUA0Da+o6/SwDv3VnW8nLLZ1vZUXCYX7XSUIRIpRRy20QtS1p
-	 LF6EVoW/ugz7TlGexEb7v2M4BXLeUpHamQwlImMuJSyCceHzASAiMD7tjzJyLw4U0g
-	 oQbNYEnp/4CefBvHa+Q+hpYns3elxf245Bc+SIoPF6gG8PcFbHVPHbmm+dQLvN3+G8
-	 g/YEenlDO0dhAt+Ykn56tIdGC+h71gO4vAjFXu8vxm5d3fHugsZfydYpcumgCDAsZ1
-	 Qwq7tPZZNOoKQ==
-Date: Fri, 4 Sep 2026 10:32:35 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Marek Vasut <marek.vasut@mailbox.org>, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v6 07/13] drm/imx: dc: Use TCON operation mode
-Message-ID: <apqBoxjblzSIuG36@houat>
-References: <20260904-imx8-dc-prefetch-v6-0-26643e3f6cb7@nxp.com>
- <20260904-imx8-dc-prefetch-v6-7-26643e3f6cb7@nxp.com>
+	s=k20260515; t=1788510770;
+	bh=AQO2yLCuvyyjb9kwnOf42UURUHWUmykZv1MVLPFfndU=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc;
+	b=Bpf/CL+mJpaJzRAHF4YSGGkjyZT3Tgm8ZZ00BZVxvd300hDOS32rnJUr4NJxPZKgQ
+	 lWn0O9g9v9ZvzRWkIHkwQuLcbOq/Iczn1VyoAO2eL7q54UsTiHcT8rXKLUAA0aBAQr
+	 em3QLSDP4uArMdwvMQWXZ0MfTWHp4KXTY/GGVdVAsByHIhm2rzYBhpi9yU2NQPgtnt
+	 QYCi5Gb4vQCjjrGu9ouZCOkRUlR6JvvmDrNqOvg81ov29WM+qI5Atuc3zNmCY7gVM0
+	 P8St61CwKFdyqIUJjbkfWlhTfehweZ+aUyF9BbPip2GRJKKQh5qBMt4hZMazS0+7uQ
+	 NuvgHLm3SyvUA==
+Message-ID: <c25980ef93153c0edc6c5bd73e2e2a6a@kernel.org>
+Date: Fri, 04 Sep 2026 08:32:47 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Liu Ying" <victor.liu@nxp.com>
+Subject: Re: [PATCH v6 08/13] drm/imx: dc-ed: Support getting source
+ selection
+In-Reply-To: <20260904-imx8-dc-prefetch-v6-8-26643e3f6cb7@nxp.com>
+References: <20260904-imx8-dc-prefetch-v6-8-26643e3f6cb7@nxp.com>
+Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Conor
+ Dooley" <conor+dt@kernel.org>, "David Airlie" <airlied@gmail.com>, "Dmitry
+ Baryshkov" <lumag@kernel.org>, "Fabio Estevam" <festevam@gmail.com>, "Frank
+ Li" <Frank.Li@nxp.com>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek Vasut" <marek.vasut@mailbox.org>, "Maxime
+ Ripard" <mripard@kernel.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Philipp
+ Zabel" <p.zabel@pengutronix.de>, "Rob Herring" <robh@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
+ Vetter" <simona@ffwll.ch>, "Thomas Zimmermann" <tzimmermann@suse.de>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="xjuaddo6esktd3cx"
-Content-Disposition: inline
-In-Reply-To: <20260904-imx8-dc-prefetch-v6-7-26643e3f6cb7@nxp.com>
 
+On Fri, 4 Sep 2026 15:54:58 +0800, Liu Ying wrote:
+> Add a helper to get ExtDst source selection.  This is needed by
+> disabling CRTC at boot in an upcoming commit which tries to get
+> the source selection.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> 
+> [ ... ]
 
---xjuaddo6esktd3cx
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH v6 07/13] drm/imx: dc: Use TCON operation mode
-MIME-Version: 1.0
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-Hi,
-
-On Fri, Sep 04, 2026 at 03:54:57PM +0800, Liu Ying wrote:
-> @@ -273,7 +285,22 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
->  	dc_ed_pec_sync_trigger(dc_crtc->ed_cont);
->  	dc_ed_pec_sync_trigger(dc_crtc->ed_safe);
->  	dc_fg_shdtokgen(dc_crtc->fg);
-> +
-> +	/* Don't relinquish CPU until TCON is set to operation mode. */
-> +	local_irq_save(flags);
-> +	preempt_disable();
-> +
->  	dc_fg_enable(dc_crtc->fg);
-> +	/*
-> +	 * Turn TCON into operation mode as soon as the first dumb
-> +	 * frame is generated by DC(we don't relinquish CPU to ensure
-> +	 * this).  This makes DPR/PRG be able to evade the frame.
-> +	 */
-> +	DC_CRTC_WAIT_FOR_FRAMEGEN_FRAME_INDEX_MOVING(dc_crtc->fg);
-> +	dc_tc_set_operation_mode(dc_crtc->tc);
-> +
-> +	local_irq_restore(flags);
-> +	preempt_enable();
-
-That's really not great... Can you expand on why you need this, and is
-there really no other way to do it?
-
+Thanks!
 Maxime
-
---xjuaddo6esktd3cx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCapqCIgAKCRAnX84Zoj2+
-dir1AYCXpT5cVplY44dNchFSkeexJ/EEll6WarzurZvlyuK4ccEsQLN5u16HB+0M
-d69UP2sBfR04gGdJ/dhDGLj+kSe/MOJTZ8fjbbkfK0hpumFAmqrpXyNhp/ODKajZ
-YtkzHwfDPg==
-=7yGx
------END PGP SIGNATURE-----
-
---xjuaddo6esktd3cx--
