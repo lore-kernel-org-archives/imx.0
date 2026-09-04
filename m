@@ -1,117 +1,235 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22263F6C2D
-	for <imx@lists.linux.dev>; Fri,  4 Sep 2026 09:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788513415; cv=pass; b=GT1vxiLVpF7n+qgUgoU3HgqEoPMKIXytmUV5IxQfQVY5s3Wv1aMDkzYMvgcCT5RXGwzbiPaAJB65tz6ckiuTgybYMIv5/RkwtFGRhVcVyB7XMfdyTRTjY/6JI+DZKz7pyG15zCkNvhxOMdzsUdK9wigqgdlhQxbTwSnxfClb4cY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788513415; c=relaxed/simple;
-	bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kF2PC0SP87RYj6owG1opXqfB6fGvs2RuMV/EC4eKn5Uyydgp6hbwIxR8/0ZhoGYR/eLmP65PG82KTllsfW8DprcX6Vw8csnC/G8OsKacKDI45hE+o9KPkcWJBFAFj6UnMVeCuivZtP+Jjb4v76nCqyJaxd/RpHst4iXNvxLZnz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IbYOfANu; arc=pass smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5237743553A;
+	Fri,  4 Sep 2026 09:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788513562; cv=none; b=XfABXQxI9z7niixpmQXtnaaPAioRvt4jFv0pemEtxqm+aUEVYwQAKlCdm9JkViA+OOmaZQc4/oNVnQF0syVnpBPTpmkMvwWRRTZaUYaS5hguvBGW7MUXPoDN/tQFWxB+ZmJxM2ceaj5nypScjNWxUsmhNa47/fvxNhXbPxujOc0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788513562; c=relaxed/simple;
+	bh=Ciu3EUMUtyrEFe1yr//0MMiw5+oF+KjxR5BN8wbUdAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WB4tZbtonNLlvsk3S84ULkCYWkBB39WHAeNjh/SQMqR5FJfzPyTHvzT664s4uuTWhfNJba+qYmn6cJS1ov0/3Si/Ds1ZWgiQk3uMek8D+MOicxFo3PZpU05wjR+COM9Zw5mSMl/3eR/9kRpmBsdeoKNMG2FPhzzkaYNMc+6+3Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RsElDCme; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IbYOfANu"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-852c481415fso825855b3a.3
-        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 02:16:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788513413; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CbP0tNQkRIit9tUMXZHj/X590dpWsOvIXAGt3S4FWDYhW9edvlMoINKLG2Vso8wovW
-         S7qLUEtvwly9HE/4PFIOrGxdwlp6qN8Ir+yBHcmcDOP7Ef8t7EZ85sZ/BBMlQLGs6Z2l
-         neIaW6DLZRKhsYO6RtWEXoz6hDdIRm8a6JLcH2iAN8jrRifNKWejpRParGODNsuYTQMG
-         ciqfjV2Yznsr60F4TpOTqXokfdI9hTL7Yt2PGHZUCwPMlWkQxKF5gEqVSuxq/92WPz5A
-         V+VajTzC5+EYTrl3FNJVi4PBcAqrRLP482OExHOz1pjRLui2IrOGOPBocFU/Z6W8iH6y
-         RjbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
-        fh=hARjjv4idU90vFGr84HioyQXwDbK9FGb2gP1IgtZ1B0=;
-        b=mKLfWLXueHMzIBWqcPhpJ3tVd0WPq9lUoOTMJHezIsRaXVmgA5MUaaDo39Urr9aZ9H
-         0jmem47NwDsamYAtxAFS0w0e6uQd75jGLm9EP31XBuLfOpZDz3btgRK8ZqDEiEIG+aw+
-         7eVEQkuU873gUE3/EwotmVzvRXbBIaDx0v7Owuy7jLevRQbvTYA3/WlnEyiVdJegaRjS
-         bsYdkzkWM65A5tTHJ70s52BlaNj4DBpKi/t0J9rEOoCSyhbw6iBgLL3XeB6Vlgt10/zP
-         BlLDwWBAZbT1AcPSgAIzK+59Vv4zf/Ft7hSL9z8EH0RMIJ/q/nNhRCPLuZjVlH54hBZ2
-         qlnw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788513413; x=1789118213; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
-        b=IbYOfANuCNpy9rTvtHojkEttXLgj1gKDoVY6Eo+vVvbGfH3et6rW6GsOajpN6ECf1l
-         92foRUMHQC5USBxVAiS52ugj+0vHi66k7kIylvqY+Qjyz9uYvb7v0r2emf6JCOvg+aYE
-         u0y2+aSqHV2AUjIOcCyXNoJ9iRvQ4IfETsI8KP7Cq36bSLGz5M8VGcAGI+bFCh45DWqK
-         yolfQpwn9ve0yRZv+IhI00zMmlfQ8n4wRvHZuL743GlNGol1skVbzVIIUSmdm1Wa59x3
-         Sev0rLATcJ1OZg9IZsb8CHv7ooh9tebGnRW06gT5pe7/P+4N/IunFcmzmg3rFlfpYiNC
-         D7Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788513413; x=1789118213;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
-        b=UX+lyffDrXSw1lG6oSVEKV8XHhqUiBm3xSOlTytr0VLwLfWRkwciJW54ss556cQWxM
-         7IDzFtffjotO1C7mTdNEvXN+apDYXGTtpQmRWrZ7Hwd/2JLnwUfw20pRE7jehhlKeLqI
-         KCIBOsDL0T2Sq2pp2trTQOF4+uXqcCC/cmVniKaVPcJ8FI7DCNZVZ7oF/1VPUXYWA0se
-         pE3hGD5dNWNOmXACOmXt/69A9jxe/L/bPXRxeBioZE4ccG5PtLmEAQYwN8SIryQSvspZ
-         hnCPduF1FXiRwXG3wGTMIIyGShLLNC8DeVus6Gy2/7KIg+EoreT1rBNLnIRiTfHhx5vQ
-         UlXA==
-X-Forwarded-Encrypted: i=1; AKwUvByu0A99vhhHFENu2SL9aRIXDqOMGaxMs46U9JsT2/8nfS+8aq6sIaAS7k4dcXt8P+a6hR0=@lists.linux.dev
-X-Gm-Message-State: AFuF++kWBVB2Q8dSKyyjHV+dtze/RsDoqa+qLgq2++y6kWvPMfvLkLu8
-	lUu1LwHSZXptb2csaN+qlD4LKy8pS8MSvx4ZNH9WKPv2LO+rMgpMCntimz247L3M64dc2rkSoYK
-	bQjvSxQurqdRW5wVjUkEFFId7EUZD0lY=
-X-Gm-Gg: AYBFou1cr+CQ/ECmQdvVI1bkhR8VwdOpLrCx0Un0Qqdn2VJbD79A1pkQYjl2a+W+G+O
-	JQ6XrT5in1+18VK1hkfLSX972HAzbzsP/IjGisDn8dMVvS40F+1xJixj6oS4iNmSwvRAobaLCGF
-	Vx86fc7TXdx+xEXjuo0h7maU+Y5J0P6k3iazuIgRBE2yINn1a4n5ADiFLLKbD8pIDQHt2Hz7Rob
-	8aNQceN6Oh+YNrvXymgTKaHkudCuasZNTSlDP7tZRpLTwGFmMYc+H+yyT0YsH53LvolDOS7uJgm
-	fvTF1NK/Zfw/d64zdHRbwhA5UDMo+3BATM2N/Z66jjKtFkqQN6zWqHt1UmkE244eMfLLiQrMBaf
-	F5SYIvyM2cEXXMN8TtsLi9lqIDb1oxyiA/MdqIn88bHgOLYNta0iZTfES
-X-Received: by 2002:a05:6a00:1910:b0:853:5152:a3e9 with SMTP id
- d2e1a72fcca58-861692844b3mr6680817b3a.11.1788513413233; Fri, 04 Sep 2026
- 02:16:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RsElDCme"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788513560; x=1820049560;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ciu3EUMUtyrEFe1yr//0MMiw5+oF+KjxR5BN8wbUdAE=;
+  b=RsElDCmeaRg7oFk7AIHfvLhglCC4GdtqIoDC8dWlFTaZ6p9Z8daw994w
+   /GuzDkyudvSY/wn4fo8khEIK4tAokIofo9Vc+fzVmGrtAmNbCPRnBvxzK
+   zaMFM/OjZOAPUWceH+W2zPGuh+H/pCVT1LLnFD28lyXweAshyV5HMv8JU
+   1fdhpVi6Y15y7LyCexEA3L5qVnq2pl8tdukSYM5OzeBKc9iqb7o22Yl1S
+   /n5TSaThldYPZt/VGJ3gPImSi3lSIoX+ZA8dVRpNG7cYCFbFdxVeoUlVc
+   QcdEdtvd0IcIqDuSbK9Hmco2v2mhej2vSCQkzZOO6LpQusEVcZX6Xlnri
+   w==;
+X-CSE-ConnectionGUID: 1Y1QCPWZTPGpQmGjdX2S4A==
+X-CSE-MsgGUID: WkI5hu4lRwu9coWUana0Kg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="88859556"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="88859556"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 02:19:19 -0700
+X-CSE-ConnectionGUID: VxyZgL0WS8O2yrnlkTwwVw==
+X-CSE-MsgGUID: gb9jsf5TTzWkjd20oz81HQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="268676438"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.224])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 02:19:11 -0700
+Date: Fri, 4 Sep 2026 12:19:08 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Kelvin Cao <kelvin.cao@microchip.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 3/3] dmaengine: add union chan_dev for dma_chan::dev
+ for clarity
+Message-ID: <apqNDHoNt09QYJe7@ashevche-desk.local>
+References: <20260903-dma-chan_dev-rename-v2-0-0db305b6c716@nxp.com>
+ <20260903-dma-chan_dev-rename-v2-3-0db305b6c716@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260903092430.354186-1-phucduc.bui@gmail.com>
- <GV2PR04MB117394049F412AAAC59FE93FE88B62@GV2PR04MB11739.eurprd04.prod.outlook.com>
- <CAABR9nFD1+GJiWdyxiuGVRzKjpCUfu3TQHYOLnOym3hHzOM2tg@mail.gmail.com>
- <GV2PR04MB1173931CA07AEAB48339FF71588B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
- <CAABR9nFi06-7=uHmOBFGZv1eUYCskv8WspOdUxbDuQ6vMk68Dg@mail.gmail.com> <GV2PR04MB117399ABD55B1D65AAB8EA42E88B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
-In-Reply-To: <GV2PR04MB117399ABD55B1D65AAB8EA42E88B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Fri, 4 Sep 2026 16:16:41 +0700
-X-Gm-Features: AcwNN1UyZz0SrSd2LGz8BgfAH26qtAAWc51dgQLrq8UzEPhnn0559XUUTa1qyZ0
-Message-ID: <CAABR9nGSi5mty-4AQv_vYz0yqCKE5ALh8ZC7bcFnY99VBfq_CA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: fec: Propagate PTP initialization errors
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Anson Huang <Anson.Huang@nxp.com>, 
-	Stephen Boyd <swboyd@chromium.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903-dma-chan_dev-rename-v2-3-0db305b6c716@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Wei,
+On Thu, Sep 03, 2026 at 04:53:13PM -0400, Frank.Li@oss.nxp.com wrote:
 
-Thanks for the clarification.
+> The current dma_chan structure contains both "device" and "dev". So
+> 
+> chan->device->dev refers to the DMA engine device.
+> chan->dev->device refers to the per-channel device instance.
+> 
+> Their similar naming makes the distinction unclear and increases reader
+> confusion.
+> 
+> Add union dma_chan::chan_dev to make its purpose explicit and clearly
+> identify it as the per-channel device. After all user switch to chan_dev,
+> union and dma_chan::dev will be removed.
+> 
+> Update the kernel-doc accordingly. Besides its sysfs usage, the per-channel
+> device is also used by some DMA engine drivers for IOMMU mapping and
+> therefore deserves a more accurate description.
+> 
+> No functional change intended.
 
->
-> It is a potential issue, so the target tree should be net.
->
+...
 
-I will retarget the patch to the net tree and resend it.
+>  static inline struct device *chan2dev(struct axi_dma_chan *chan)
+>  {
+> -	return &chan->vc.chan.dev->device;
+> +	return &chan->vc.chan.chan_dev->device;
+>  }
 
-Best regards,
-Phuc
+Looking at this and below I think we need a common helper(s)
+
+>  static struct device *chan2dev(struct loongson2_cmc_dma_chan *lchan)
+>  {
+> -	return &lchan->vchan.chan.dev->device;
+> +	return &lchan->vchan.chan.chan_dev->device;
+>  }
+
+>  	({								\
+>  		u32 _v;							\
+>  		_v = readl_relaxed((phy)->base + _reg((phy)->idx));	\
+> -		dev_vdbg(&phy->vchan->vc.chan.dev->device,		\
+> +		dev_vdbg(&phy->vchan->vc.chan.chan_dev->device,		\
+>  			 "%s(): readl(%s): 0x%08x\n", __func__, #_reg,	\
+>  			  _v);						\
+>  		_v;							\
+
+>  #define phy_writel(phy, val, _reg)					\
+>  	do {								\
+>  		writel((val), (phy)->base + _reg((phy)->idx));		\
+> -		dev_vdbg(&phy->vchan->vc.chan.dev->device,		\
+> +		dev_vdbg(&phy->vchan->vc.chan.chan_dev->device,		\
+>  			 "%s(): writel(0x%08x, %s)\n",			\
+>  			 __func__, (u32)(val), #_reg);			\
+>  	} while (0)
+>  #define phy_writel_relaxed(phy, val, _reg)				\
+>  	do {								\
+>  		writel_relaxed((val), (phy)->base + _reg((phy)->idx));	\
+> -		dev_vdbg(&phy->vchan->vc.chan.dev->device,		\
+> +		dev_vdbg(&phy->vchan->vc.chan.chan_dev->device,		\
+>  			 "%s(): writel_relaxed(0x%08x, %s)\n",		\
+>  			 __func__, (u32)(val), #_reg);			\
+>  	} while (0)
+
+>  out_unlock:
+>  	spin_unlock_irqrestore(&pdev->phy_lock, flags);
+> -	dev_dbg(&pchan->vc.chan.dev->device,
+> +	dev_dbg(&pchan->vc.chan.chan_dev->device,
+>  		"%s(): phy=%p(%d)\n", __func__, found,
+>  		found ? found->idx : -1);
+>  
+
+> -	dev_dbg(&chan->vc.chan.dev->device,
+> +	dev_dbg(&chan->vc.chan.chan_dev->device,
+>  		"%s(): freeing\n", __func__);
+
+> -	dev_dbg(&phy->vchan->vc.chan.dev->device,
+> +	dev_dbg(&phy->vchan->vc.chan.chan_dev->device,
+>  		"%s(); phy=%p(%d) misaligned=%d\n", __func__,
+>  		phy, phy->idx, misaligned);
+
+> -	dev_dbg(&phy->vchan->vc.chan.dev->device,
+> +	dev_dbg(&phy->vchan->vc.chan.chan_dev->device,
+>  		"%s(): phy=%p(%d)\n", __func__, phy, phy->idx);
+
+> -	dev_dbg(&chan->vc.chan.dev->device,
+> +	dev_dbg(&chan->vc.chan.chan_dev->device,
+>  		"%s(): desc=%p\n", __func__, desc);
+>  	if (!chan->phy) {
+>  		chan->phy = lookup_phy(chan);
+>  		if (!chan->phy) {
+> -			dev_dbg(&chan->vc.chan.dev->device,
+> +			dev_dbg(&chan->vc.chan.chan_dev->device,
+>  				"%s(): no free dma channel\n", __func__);
+>  			return;
+
+(and so on in this PXA driver)
+
+Besides that we should drop __func__ from all _dbg() messages, that can be
+enabled run-time with help of Dynamic Debug.
+
+So I think this driver requires more prerequisite work.
+
+>  static struct device *chan2dev(struct stm32_dma_chan *chan)
+>  {
+> -	return &chan->vchan.chan.dev->device;
+> +	return &chan->vchan.chan.chan_dev->device;
+>  }
+
+>  static struct device *chan2dev(struct stm32_dma3_chan *chan)
+>  {
+> -	return &chan->vchan.chan.dev->device;
+> +	return &chan->vchan.chan.chan_dev->device;
+>  }
+
+>  static struct device *chan2dev(struct stm32_mdma_chan *chan)
+>  {
+> -	return &chan->vchan.chan.dev->device;
+> +	return &chan->vchan.chan.chan_dev->device;
+>  }
+
+...
+
+Something like
+
+vchan_to_device(vchan)
+{
+	return &vchan->chan.chan_dev->device;
+}
+
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
