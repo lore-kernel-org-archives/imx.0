@@ -1,136 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2A93B0AD8;
-	Sat,  5 Sep 2026 08:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34200479868
+	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 10:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788595256; cv=none; b=us9vf6IM8SdKpGgWBIE495cHWDwGdiY8ULNUa5C9JxspiCavSZaofi+x4JBKKkzGDaeiJZLqZ3Ac2wZFiD3G9tYciF8GNg/cwGix0uR4m72YnxMmBA0gV5oTPo/94jeDXEnbtpbKQ/nd/NxWxLyCfsgi99u5Ebnww1M8OE8Sduc=
+	t=1788605777; cv=none; b=UyF+hvPTEIDKoxj18pyR7t4+4bgRxgYdfCK1Dwlvi/I9MSHcVKqo8sBDP7kT6xxm9k9cXwFAnC51fh6mURV8FYSz5uSxtq4F8KCluzP+zw3eSZDXYOmTi+pvFU/Kv5tMVpsp0ZxTIp2aK4b/SRH934TK5IpLGJs+Ign5A/9DgnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788595256; c=relaxed/simple;
-	bh=DZFfBMrRtiY/73SGDh0XULVSppgU/RJ7ThjUIl3cq4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tY1d+ev/FCKitFIka0sy3Zu1AZZ+SON0sDBYVQ5lqEVwhJmRlTWj/8Ow5MB8jkaDunMj/zf3L8GzuW2Jxe9iQocUKMOakbSCTt9z0KALrF4XXLp/xpay9jpcfEipEv704VdO05KdE6C7pwcbfRHRBkQwineHyATxwmrAIGFLxWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BIkyxALR; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788605777; c=relaxed/simple;
+	bh=bGqyXPE75qnMF9eZSwvumB0OiRbTcmDY3Fg4LOfc+JU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=D4APqMOLGJQYQHgy2FgwCADrhz9z9R+/9tvVcyR4udxxYZGPYnrf1vfiURXQ/kB2dH2UFeKIIGCQAvOMRP0mFhdDYbOgu+BvRT9aOdUY0kMZ4eG/cEIdKdDP66DRg8mjDViFd9VzvD8HkDWk9KTpviIGbLitnqa7mTgV3LaSyHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJll/o4s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BIkyxALR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788595254; x=1820131254;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DZFfBMrRtiY/73SGDh0XULVSppgU/RJ7ThjUIl3cq4s=;
-  b=BIkyxALR4zJV487zRVPQ/VyJp9G8DmH5xOKTqKibkcKUXMfq+GR3bq/1
-   nnRkTdyDLjqbdeUGWZeExgDXF2IaJpwFvdq60AABVs6wvbvCiXWsyGM8z
-   2uvQ2wcKUEZ5ZWyOdWvFL667aGW8+WFyTGtsrrLGit9mcXe0cp5EWhnFv
-   nCqNXZ7EeGN3AmP4R7FVy/Kp/dHgCL34JT/vpX+2DZAD6WLM60hp4DyIi
-   0Wvr27tyry9+lDcOq8mazSVzDU6/5zs9s8P6Y8FNgTEJASzWRBcZSTu9x
-   uZvRgf/BJTpcWUVM+JoUseZ+ZrtoHni4U7yzSOev8OGsmLQq7ga42J8wR
-   A==;
-X-CSE-ConnectionGUID: QWCD3EXLQwG7DpDiI5YPPQ==
-X-CSE-MsgGUID: bOh23kbHRO2FNb99cNZ6UA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="89119567"
-X-IronPort-AV: E=Sophos;i="6.25,263,1779174000"; 
-   d="scan'208";a="89119567"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2026 01:00:52 -0700
-X-CSE-ConnectionGUID: 9JbBadgHQ7SEjpVvHYYgmw==
-X-CSE-MsgGUID: bwhdz7ZKSjWLvCde1OANJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,263,1779174000"; 
-   d="scan'208";a="270230591"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.105])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2026 01:00:43 -0700
-Date: Sat, 5 Sep 2026 11:00:41 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Frank.Li@oss.nxp.com
-Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Kelvin Cao <kelvin.cao@microchip.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 0/4] dmaengine: rename dma_chan::dev to
- dma_chan::chan_dev for clarity
-Message-ID: <apvMKWQhTn5Kf8Sq@ashevche-desk.local>
-References: <20260904-dma-chan_dev-rename-v3-0-685601b0b788@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJll/o4s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB061F00A3D;
+	Sat,  5 Sep 2026 10:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788605768;
+	bh=G87xqMP9tAecej3n4xPImfzUBPp1Cc4WXxGDRtr8GJs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eJll/o4sJJ9a2csvod6vUQjBm8AweGENNru6OBzYRPCqka6SgLIWljf7fZoUcS64M
+	 P/u5e7cBO3gKYdaHuduqR1D7r69ILhz7PmSY1mTvwfV3V83Kx+ZPoHKyqDT4n3Ly/D
+	 uNaUKHz/TYOnvrL/pvrmL0AlSXSCtl2o15+X7Zoa+St8znCHiaCIk9yiO9OzT6MM5r
+	 IClJNzKizoPwfoWEyL8t4YjApw41AnRzcC5mBfG2uexc5G7CKovvfxopapGOXBunc+
+	 vexohSJ47zHV5J34QmKsYxTz7OY0QLzzIUCPsn3NKFT3AW+pY55AL2PfDZl97aqeGD
+	 4aHR2zXPNyahg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
+Reply-To: sashiko-reviews@lists.linux.dev
+To: phucduc.bui@gmail.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260904105542.70540-1-phucduc.bui@gmail.com>
+References: <20260904105542.70540-1-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 05 Sep 2026 10:56:08 +0000
+Message-Id: <20260905105608.AAB061F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904-dma-chan_dev-rename-v3-0-685601b0b788@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Sep 04, 2026 at 05:49:42PM -0400, Frank.Li@oss.nxp.com wrote:
-> The current dma_chan structure contains both "device" and "dev". So
-> 
->     chan->device->dev refers to the DMA engine device.
->     chan->dev->device refers to the per-channel device instance.
-> 
-> Their similar naming makes the distinction unclear and increases reader
-> confusion.
-> 
-> Add union dma_chan::chan_dev to make its purpose explicit and clearly
-> identify it as the per-channel device. After all user switch to chan_dev,
-> union and dma_chan::dev will be removed.
-> 
-> Update the kernel-doc accordingly. Besides its sysfs usage, the per-channel
-> device is also used by some DMA engine drivers for IOMMU mapping and
-> therefore deserves a more accurate description.
-> 
-> 1st patch add help vchan_chan_name()
-> 2nd patch use existing helper dma_chan_name() to reduce rename difference.
-> 3rd patch add (dmaengine|vchan)_chan_dev() helper
-> 4th patch add union chan_dev for dma_chan::dev for clarity
-> 
-> Need following patch to clean other dma engineer driver, which is not
-> in drivers/dma
-> 
-> After complete all rename work, dma_chan::dev can be removed.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Direct return from `fec_probe()` upon IRQ lookup failure bypasses =
+error handling cleanup, leading to resource leaks and a kernel panic.
+- [High] Freeing `ndev` while the PPS `devm_request_irq` is still active ca=
+uses a Use-After-Free if the interrupt fires.
+--
 
-Nice work!
-I have one comment against patch 4/4, after addressing that feel free to add
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-to the entire series.
+commit 946f1eb0b16e1f7bba9a52ab3e2900be9173c0a8
+Author: bui duc phuc <phucduc.bui@gmail.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+net: fec: Propagate PTP initialization errors
 
+Change fec_ptp_init() to return an error code instead of silently
+ignoring failures during PTP initialization.
 
+Link: https://lore.kernel.org/all/20260903092430.354186-1-phucduc.bui@gmail=
+.com/
+
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
+rnet/freescale/fec_main.c
+> index 794ec427b0ee6..a9a458703547d 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+[ ... ]
+> @@ -5394,7 +5397,9 @@ fec_probe(struct platform_device *pdev)
+>  	for (i =3D 0; i < irq_cnt; i++) {
+>  		snprintf(irq_name, sizeof(irq_name), "int%d", i);
+>  		irq =3D platform_get_irq_byname_optional(pdev, irq_name);
+> -		if (irq < 0)
+> +		if (irq < 0 && irq !=3D -ENXIO)
+> +			return irq;
+
+[Severity: High]
+Does this direct return bypass the error handling cleanup at the end of
+fec_probe()?
+
+By returning directly instead of jumping to the failed_irq label, the driver
+bypasses fec_ptp_stop(). This leaves the fep->time_keep delayed work
+(scheduled earlier in fec_ptp_init()) active.
+
+It also bypasses free_netdev(ndev), which leaks the net_device structure.
+
+When the driver core cleans up devres allocations on probe failure, it unma=
+ps
+fep->hwp. If the un-canceled delayed work subsequently fires, will it attem=
+pt
+to access the unmapped memory at fep->hwp and cause a kernel panic?
+
+[ ... ]
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ether=
+net/freescale/fec_ptp.c
+> index 56801c2009d59..557a76797ebaa 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+[ ... ]
+> @@ -779,26 +779,32 @@ void fec_ptp_init(struct platform_device *pdev, int=
+ irq_idx)
+>  		      HRTIMER_MODE_REL);
+> =20
+>  	irq =3D platform_get_irq_byname_optional(pdev, "pps");
+[ ... ]
+> +	if (irq > 0) {
+>  		ret =3D devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+>  				       0, pdev->name, ndev);
+>  		if (ret < 0)
+> -			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+> -				 ret);
+> +			return ret;
+>  	}
+> =20
+>  	fep->ptp_clock =3D ptp_clock_register(&fep->ptp_caps, &pdev->dev);
+>  	if (IS_ERR(fep->ptp_clock)) {
+> +		ret =3D PTR_ERR(fep->ptp_clock);
+>  		fep->ptp_clock =3D NULL;
+>  		dev_err(&pdev->dev, "ptp_clock_register failed\n");
+> +		return ret;
+
+[Severity: High]
+Does this error return leave the devm-managed IRQ active while propagating =
+an
+error back to the probe function?
+
+If ptp_clock_register() fails, fec_ptp_init() returns an error which
+propagates to fec_probe(), causing it to jump to failed_reset.
+
+The error path in fec_probe() manually frees ndev via free_netdev(ndev).
+
+However, the PPS interrupt was registered just prior using devm_request_irq=
+(),
+so it remains active until fec_probe() returns and devres tears it down.
+
+If the PPS interrupt fires between the manual free of ndev and the devres
+cleanup, will fec_pps_interrupt() cast dev_id to ndev and attempt to
+dereference the already-freed ndev structure, causing a use-after-free cras=
+h?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260904105542.7054=
+0-1-phucduc.bui@gmail.com?part=3D1
