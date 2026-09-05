@@ -1,107 +1,148 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFFA377ABF
-	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 05:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADD5345741
+	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 06:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788586942; cv=none; b=CDH40JQXnJj0p+1XsZkLFpSsSn1I4hB3flwZh+VmEY9YkaYDf1Y3r9CiI7kqt1u2zNA5BVj9enuOkcFGmXkviqw8oam+0qKt5a1a+pzf+48oKbtG1OJci+IF1EBg3xTxj24JYtpxEPKEfpATqvVWYlN6Ilu+kK9pg6CrCURvaP0=
+	t=1788588994; cv=none; b=jk2nu2HM+dbYePAMUCG5BmNTdjXTuBuP6cigUQ7q6SUd8TbLtJF8I7j0YqOJdalnj4nK03HuwEFfvEZcKCf/tse4ZJwX5LwwZWXp+++vtGqJwURqKy8xKKtgbcwvg0Zw3MV+odw3fbH85Vep4JRKIIhEB96etRV5fkzpmKuUXfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788586942; c=relaxed/simple;
-	bh=1IF3g+wX2qSaik6PWcrYjKLpudWITvu5kEq+Evvga4U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gI5Pk52imjuT42epOyqDNzP8vYZLNlJcH16LCy/CE5kZsUJq7RheL4nZM3/KFV8gD44sZZBdbTvsD2S/oVH9ddPrYUdDRjoxvLa3dBqeuzbLXo1fCNs3eG/FenUW9lDEctOmtGU2bpUa4bOo4mqSrLuF53TOWH95tR5dgYbfpKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HlaV4iyV; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788588994; c=relaxed/simple;
+	bh=v8k24rcZ1MFIPM+pYRzI1CI7mZhPk99bCXlQjm/5kBc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KgNbNAG3zxOWBIT4QZl6DVnTDWIXytPkfBn/0k2+glkggTXXJBkkb92UoWKx3o9VYpAmUQPVq0DHv8oGTOLxMFPK4h62ggKqrBHTFWtrN+a8NcMKGY9oZ4R89meD+YwcrpPoCeqxS48bFLubtTwVLCbKI1Xnc/Bhbt7GCE6jVs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eG6Yau/S; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HlaV4iyV"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d032846c95so18873615ad.1
-        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 22:42:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788586940; x=1789191740; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1IF3g+wX2qSaik6PWcrYjKLpudWITvu5kEq+Evvga4U=;
-        b=HlaV4iyVJ2fikWX4ULLw/BgiZ5dSMOzT6hps+pCYOqjDXQ0sW3mbdDG8ZOqfgFt7e1
-         aBisSfoX9/YTYYjowyt0Wc12jvw+JLtDhgBEEKMUlM3CKhHMNlhHE0PVvgN5SuCdOXM7
-         TatWGdgHQe4m2VZDZZ7rlb21xjMyS01XsRoo4+++RyRCSZFUgVILkNPGkcIXhaDfQ9mf
-         0KQMUtMqq0Tt8eKy3oHvbzOxzAdm0sBIgbrnKguK2hBCm2/JuokaARNDmxDxDX0IxwYK
-         A6vJOhz/XpHPOdBpE7JY27Wnz2Yrrh9gyfnMXbIQTjGcAJeiScSDwcPmvDwOjaU2AjhC
-         RKVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788586940; x=1789191740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1IF3g+wX2qSaik6PWcrYjKLpudWITvu5kEq+Evvga4U=;
-        b=K0sahkPVZJZ2ipesdUFb8FyqUNNO7CTIIgjTD5sUdtwiBg6I8rEtnj++xjibaPHyq9
-         MDIDHmsZ6FL3cxMCvM+I2ON0CCFlTwmZNZ9FEZ3tkVRZyWboKjij5Eq2tLPC5lF+c6CN
-         8zMPMwxvX0u4jXfofj8jE95qKJci5Uxkf//NFb5JMz4RiXWDZnKqq/eJ9/Jo785oJKBL
-         UtR0+YQqcKuhxFPEz1/mt580gVP7gF6MtKJquvAYXfj7mXKgu949D4CucMxuINpimaGc
-         qylWmoEPqTP1RbCZy46UAvqOQsUZ+h8v7KFENCSo1NAStrGi5V3c+5A5KNPPie+9jAXf
-         TUrQ==
-X-Forwarded-Encrypted: i=1; AKwUvByYyTxxut2ixi2lrBVeuRM13do3w8ngPvgP9t9CTAwi3KIcq9tx5XNoroGUmv8Q/WlQc8E=@lists.linux.dev
-X-Gm-Message-State: AFuF++lNDegdMnfDvQm7bJTdaJ/31NCyUuXHXRKNqrBQ2qGB7b8O+OQ3
-	3xKrTLkDE00ohJtVdeL1nSjp+5Gxz+lGpF/qGt388RoXM+va+/F68Q8=
-X-Gm-Gg: AYBFou1pwd5syFo3zwPKyIi7cYvX20/V4bs6Fzjy2GkshAF3fmqnf2M9OEmOwoW7Gk2
-	EpHLAXPsbjTuOjrMkahg1ONaU5Q78+DrWR0Qiq6/wa8Zd9tfpHIiUjQXfZe9gAd3t0DKf3ZrNva
-	sxIgZRee1dwFA0X9xeGNTzyM8Xy4ydZbJrmz8lvu/9PFDyzqSEl9313Uk8ASYEap5PADCOZ9k4b
-	HD2QyohDrBDKcbco18FYJOdGixS0dO3rT6N9CLwvjNyigyecBxfA1n5wsodKXVqqtBptMx3M+wR
-	zrpFww6BonJn5btFkg5ibAUcV9I5ztfsF93WSPLoaxyPKzYvqm6oXxnC2ueDx2WhrT29EFYSU+i
-	d/HXtQdbkdgoOMlqzmYCINLuLPBL50tZwT/Znhd+kn+tGHd+gOJ+waKvhKKutTitr5wKkLeMGho
-	7BsBhN6b9QBPeNZtrcXtURkZOOSiGBQptizwY2Bs+/VbsKmZqYyBzdb5YWmnpkM9Hf+45y6Kewm
-	nFOr/9/ykLx9g==
-X-Received: by 2002:a17:903:200e:b0:2d9:43f6:59f0 with SMTP id d9443c01a7336-2db1267bc27mr108781345ad.22.1788586940159;
-        Fri, 04 Sep 2026 22:42:20 -0700 (PDT)
-Received: from ydg-Zenbook-14-UM3406GA ([211.230.25.193])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db149cb5f0sm18020405ad.67.2026.09.04.22.42.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 22:42:19 -0700 (PDT)
-From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org,
-	imx@lists.linux.dev,
-	donggeunyoo.kernel@gmail.com
-Subject: Re: [PATCH] regulator: pf1550: fix which regulator is notified
-Date: Sat,  5 Sep 2026 14:42:16 +0900
-Message-ID: <20260905054216.16986-1-donggeunyoo.kernel@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260904111039.705FA1F00A3D@smtp.kernel.org>
-References: <20260904105624.48577-1-donggeunyoo.kernel@gmail.com> <20260904111039.705FA1F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eG6Yau/S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711E51F01559
+	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 06:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788588992;
+	bh=wroX+IXZ78hb2aQP5LUDjSlqEruTGuDIlApEgq/LO60=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=eG6Yau/SZQyADBf7WEKKvoXO5elZ/bvCf/rLi+iKt3NTLV7xty74rhFfmCtOpPiim
+	 KsAmLG9Gn+z3shv/KSeuw44rHL9DtjgoqL/rXuxlacLkIVZF2+hqWRGRtWUTXi/qmJ
+	 kZl5s4svuLfbc9Q0nHCHcueEtH3KiRVj1uiGBF/HJ7S7HftHqGrPtY0Sno1Rhjpz4S
+	 r4ZM1gDlCVp9/4jsn5pfGOohCmBT4WDB98quAjGdOyMWd9pF1NAdOgRtz+4BlRvGeN
+	 E8KPCW/IB9VA/PTkef8GQF62ljNlTZ7dJCjGnGxIPtOxwhbNeoezclLf0Kn6pu8kjd
+	 1SF3HTI8TDArw==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b15dcaca31so1707548e87.0
+        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 23:16:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxx7SVfVPZd7GkDhinQxcvrGZ1+Qook+n5168PtTqGhbXmz7vxcC0+IZtCW3TjCTmWOb54=@lists.linux.dev
+X-Gm-Message-State: AFuF++kRUvll/AIxQCAzTM1gipUB1VlxYzFPXlNfhPCfVXOQjZn9zZNo
+	qN8UvGARd3bu1+pxyO/Veh8PlFBT5hz+DLCNxEyZqg9y4wwc9t7Xcxbg2ag6fx86WwSkQg7sM0C
+	zuVeMqTzytn8jMhsS//8Jx/2oipbg1g8=
+X-Received: by 2002:a05:6512:2c0c:b0:5b4:74a2:cf2e with SMTP id
+ 2adb3069b0e04-5b616f235cemr3181239e87.21.1788588991087; Fri, 04 Sep 2026
+ 23:16:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260831082335.1184605-1-wei.fang@oss.nxp.com> <20260831082335.1184605-9-wei.fang@oss.nxp.com>
+In-Reply-To: <20260831082335.1184605-9-wei.fang@oss.nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sat, 5 Sep 2026 08:16:19 +0200
+X-Gmail-Original-Message-ID: <CAD++jLk+DMHzHiJoX6LMY5wUGMOWm3DN_yAHUUSvFKLKgFwJZw@mail.gmail.com>
+X-Gm-Features: AcwNN1VLKzpVVc3BcKIIuwpH2P20ZdeitB0o0lFGwyQdTkbcdnQSy6KPeNWVBSI
+Message-ID: <CAD++jLk+DMHzHiJoX6LMY5wUGMOWm3DN_yAHUUSvFKLKgFwJZw@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 8/8] net: dsa: netc: add PTP one-step
+ timestamping support
+To: wei.fang@oss.nxp.com
+Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	richardcochran@gmail.com, wei.fang@nxp.com, imx@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 04, 2026 at 11:10:38AM +0000, sashiko-bot@kernel.org wrote:
-> This is a pre-existing issue, but returning IRQ_HANDLED when the driver
-> completely fails to recognize the interrupt defeats the kernel's spurious
-> interrupt detection.
+Hi Wei,
+
+thanks for your patch!
+
+On Mon, Aug 31, 2026 at 10:24=E2=80=AFAM <wei.fang@oss.nxp.com> wrote:
+
+> From: Wei Fang <wei.fang@nxp.com>
 >
-> If the PMIC continuously asserts an unhandled fault, could the parent
-> regmap-irq thread loop endlessly resulting in an interrupt storm and CPU
-> lockup? Should this return IRQ_NONE instead?
+> The NETC switch supports one-step TX timestamping for PTP Sync frames.
+> When transmitting a Sync frame, the driver reads the current PTP time
+> and writes it into the frame's originTimestamp field, and inserts a
+> To_Port subtype 1 tag carrying the low 30 bits of that same PTP time.
+> As the frame leaves the wire, the MAC captures the SFD transmit time
+> and derives the residence time from the timestamp in the tag. It then
+> reads the correction field at the offset given by
+> PM_SINGLE_STEP[OFFSET], adds the residence time to it, and writes the
+> result back.
+>
+> PM_SINGLE_STEP is a per-port register that can describe only one
+> in-flight frame at a time, and programming it requires reading the
+> current PTP time, which may sleep. Both constraints rule out handling
+> one-step Sync on the xmit path.
+>
+> Instead, defer transmission to a per-port process-context work. The
+> xmit path classifies the frame in netc_port_txtstamp(): a genuine
+> one-step Sync (twoStepFlag cleared) has its PTP header offsets cached
+> in the skb control block; frames that cannot be handled as one-step
+> fall back to the two-step path or are sent as normal frames. netc_xmit()
+> hands the classified frame to the switch driver via the
+> onestep_sync_enqueue tagger callback, which queues it and kicks the work
+> if no frame is currently in flight.
+>
+> The work dequeues one frame at a time, reads a fresh PTP time, programs
+> PM_SINGLE_STEP, updates the originTimestamp field, and transmits the
+> frame directly to the conduit via the onestep_sync_xmit tagger callback,
+> bypassing dsa_user_xmit() to avoid double-counting TX stats. Only one
+> frame is in flight at a time: the frame carries a TX-completion
+> destructor that reschedules the work when the conduit frees the skb,
+> keeping PM_SINGLE_STEP always matched to the frame being transmitted.
+>
+> The one-step context is reference-counted and its lifetime is decoupled
+> from the devm-allocated netc_port. In-flight skbs hold a reference via
+> their destructor, so the context outlives port disable until the conduit
+> frees the last in-flight skb. Port disable clears onestep->active under
+> work_lock; a work that runs afterwards observes active cleared will
+> purge the onestep->queue and return without touching the freed port
+> resources.
+>
+> Assisted-by: Wchat:claude-opus-4-8
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-The branch is not reachable.
+You agent produces "dostoyevsky commits" with too much verbiage.
 
-probe() requests the handler for the eleven interrupts returned by
-platform_get_irq(pdev, 0..PF1550_REGULATOR_IRQ_NR-1), without IRQF_SHARED,
-and the lookup loop rebuilds that list with the same calls. The cell has no
-.of_compatible, so platform_get_irq() returns the number mfd_add_device()
-stored in the resource once, through irq_create_mapping(). Both loops see
-the same numbers, so irq_type is always in range.
+Tell you agent to "be terse and to the point" in your AGENTS.md.
 
-An interrupt the driver has no entry for cannot reach the handler either.
-regmap_irq_thread() dispatches only the bits registered in the irq chip, so
-there is nothing for the described storm to come from.
+> +
+> +               /* dsa_tree_teardown() calls dsa_tree_teardown_ports() be=
+fore
+> +                * dsa_tree_teardown_switches(), so netc_port_disable() i=
+s
+> +                * executed before netc_teardown() and onestep->active is=
+ set
+> +                * to false. In-flight one-step skbs still hold reference=
+s via
+> +                * the destructor; the context (and its work) is freed on=
+ly
+> +                * after the conduit frees the last in-flight skb. By the=
+n np
+> +                * may be gone, but the work no longer dereferences np be=
+cause
+> +                * onestep->active has been cleared. And onestep->queue w=
+ill be
+> +                * cleared by netc_onestep_work()/netc_onestep_destroy_wo=
+rk().
+> +                */
+> +               netc_onestep_put(np->onestep);
+> +               np->onestep =3D NULL;
 
-The point about handle_nested_irq() feeding note_interrupt() is right in
-general, it just does not apply here.
+This type of stuff is over-commenting and is considered AI slop.
+Tell you agent to be very restrictive with inserting comments, essentially
+it should only do that when you explicitly tell it to, such as when you
+yourself feel it is really necessary or you got a review comment that
+this is needed.
 
-Thanks,
-Donggeun
+Yours,
+Linus Walleij
