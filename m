@@ -1,148 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADD5345741
-	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 06:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C963C7DE8;
+	Sat,  5 Sep 2026 07:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788588994; cv=none; b=jk2nu2HM+dbYePAMUCG5BmNTdjXTuBuP6cigUQ7q6SUd8TbLtJF8I7j0YqOJdalnj4nK03HuwEFfvEZcKCf/tse4ZJwX5LwwZWXp+++vtGqJwURqKy8xKKtgbcwvg0Zw3MV+odw3fbH85Vep4JRKIIhEB96etRV5fkzpmKuUXfM=
+	t=1788594925; cv=none; b=t6qAsG3PfZg2TCkaBI37A06sQR/DpK/Lr9vT+z7u1qXX7JOjUar/mbrdoZ3mcUmnbux3Nm2iAtrHagfs73MLvQ2UFOJQ2IpcukHa8TKG7UTJP55ntRY22LpfpSzBJLNLFnFU3IbUDnVcOgwgKIU3jh5Zltsx0lHmeIlWTpG3Dyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788588994; c=relaxed/simple;
-	bh=v8k24rcZ1MFIPM+pYRzI1CI7mZhPk99bCXlQjm/5kBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KgNbNAG3zxOWBIT4QZl6DVnTDWIXytPkfBn/0k2+glkggTXXJBkkb92UoWKx3o9VYpAmUQPVq0DHv8oGTOLxMFPK4h62ggKqrBHTFWtrN+a8NcMKGY9oZ4R89meD+YwcrpPoCeqxS48bFLubtTwVLCbKI1Xnc/Bhbt7GCE6jVs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eG6Yau/S; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788594925; c=relaxed/simple;
+	bh=nVoM4RkYZfBPC9WAJEVNQ4+CpJomELlbuzuYSgYBRRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k+3DGj4o97qqMp5oMC5xoIL6m4FteQhYlEI8N+tmQqafXpP3C8DDA+GEo864Hwq2ABWaoU2OgnRoQoICEsUnrTrF8i1b8n+LZ6O0HKqyWfwoQZ+zkfAiMiE8TqYrvOdaMHIwmMuP/M9m+8kuUkY9RdGsJtkc5sXwNpeSeMDgj7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HHyLHpAP; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eG6Yau/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711E51F01559
-	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 06:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788588992;
-	bh=wroX+IXZ78hb2aQP5LUDjSlqEruTGuDIlApEgq/LO60=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eG6Yau/SZQyADBf7WEKKvoXO5elZ/bvCf/rLi+iKt3NTLV7xty74rhFfmCtOpPiim
-	 KsAmLG9Gn+z3shv/KSeuw44rHL9DtjgoqL/rXuxlacLkIVZF2+hqWRGRtWUTXi/qmJ
-	 kZl5s4svuLfbc9Q0nHCHcueEtH3KiRVj1uiGBF/HJ7S7HftHqGrPtY0Sno1Rhjpz4S
-	 r4ZM1gDlCVp9/4jsn5pfGOohCmBT4WDB98quAjGdOyMWd9pF1NAdOgRtz+4BlRvGeN
-	 E8KPCW/IB9VA/PTkef8GQF62ljNlTZ7dJCjGnGxIPtOxwhbNeoezclLf0Kn6pu8kjd
-	 1SF3HTI8TDArw==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b15dcaca31so1707548e87.0
-        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 23:16:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxx7SVfVPZd7GkDhinQxcvrGZ1+Qook+n5168PtTqGhbXmz7vxcC0+IZtCW3TjCTmWOb54=@lists.linux.dev
-X-Gm-Message-State: AFuF++kRUvll/AIxQCAzTM1gipUB1VlxYzFPXlNfhPCfVXOQjZn9zZNo
-	qN8UvGARd3bu1+pxyO/Veh8PlFBT5hz+DLCNxEyZqg9y4wwc9t7Xcxbg2ag6fx86WwSkQg7sM0C
-	zuVeMqTzytn8jMhsS//8Jx/2oipbg1g8=
-X-Received: by 2002:a05:6512:2c0c:b0:5b4:74a2:cf2e with SMTP id
- 2adb3069b0e04-5b616f235cemr3181239e87.21.1788588991087; Fri, 04 Sep 2026
- 23:16:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HHyLHpAP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788594924; x=1820130924;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nVoM4RkYZfBPC9WAJEVNQ4+CpJomELlbuzuYSgYBRRs=;
+  b=HHyLHpAPAm05JgjkhpwKwPO4HkO3E+OG4b4YyLjlAbje4L0BddcT6okT
+   3CLMvlcvCLDmBUcl2+buAkRGdugRhkFD7XBY7XZ/oQZ5cn5c5vqOmWZPz
+   IaTWOu1SFf4JUnNdWtKewExdd0N3DGMgixdmsEwRRPaJmcsUYZBylS39U
+   kXc8r19KReZcHBwSsl6XZYGLkANPRSC2v5rjPLY2J4DWQ43hPV9SHY6U5
+   p78ikW+JWsBkBJl9pBzJ+ysrq/Syrmd19BlFKzC7rXsMLwj/RM5EcefBI
+   crX42Pyqua/BnCHqDaJUyeU2UtC95AjZSAoDfPgp41GH87RBY5FGceteL
+   w==;
+X-CSE-ConnectionGUID: 2vy1dmF0T868xgtyDp+TXA==
+X-CSE-MsgGUID: RnGHjtH2Qz2YwbRlPOni8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="88933088"
+X-IronPort-AV: E=Sophos;i="6.25,263,1779174000"; 
+   d="scan'208";a="88933088"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2026 00:55:23 -0700
+X-CSE-ConnectionGUID: EEhu5k1rQMWULfktoCCXzQ==
+X-CSE-MsgGUID: lwmOrv2pTjCcruQ2CcFOzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,263,1779174000"; 
+   d="scan'208";a="267010278"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.105])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2026 00:55:14 -0700
+Date: Sat, 5 Sep 2026 10:55:12 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Kelvin Cao <kelvin.cao@microchip.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 2/4] dmaengine: use dma_chan_name() helper to get
+ per-channel device name
+Message-ID: <apvK39-BqTHo_CZF@ashevche-desk.local>
+References: <20260904-dma-chan_dev-rename-v3-0-685601b0b788@nxp.com>
+ <20260904-dma-chan_dev-rename-v3-2-685601b0b788@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260831082335.1184605-1-wei.fang@oss.nxp.com> <20260831082335.1184605-9-wei.fang@oss.nxp.com>
-In-Reply-To: <20260831082335.1184605-9-wei.fang@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 5 Sep 2026 08:16:19 +0200
-X-Gmail-Original-Message-ID: <CAD++jLk+DMHzHiJoX6LMY5wUGMOWm3DN_yAHUUSvFKLKgFwJZw@mail.gmail.com>
-X-Gm-Features: AcwNN1VLKzpVVc3BcKIIuwpH2P20ZdeitB0o0lFGwyQdTkbcdnQSy6KPeNWVBSI
-Message-ID: <CAD++jLk+DMHzHiJoX6LMY5wUGMOWm3DN_yAHUUSvFKLKgFwJZw@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 8/8] net: dsa: netc: add PTP one-step
- timestamping support
-To: wei.fang@oss.nxp.com
-Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	richardcochran@gmail.com, wei.fang@nxp.com, imx@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904-dma-chan_dev-rename-v3-2-685601b0b788@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Wei,
+On Fri, Sep 04, 2026 at 05:49:44PM -0400, Frank.Li@oss.nxp.com wrote:
 
-thanks for your patch!
+> Use the existing dma_chan_name() helper to obtain the per-channel device
+> name instead of open-coding: dev_name(chan->dev->device) /
+> dev_name(chan2dev())
+> 
+> Simplify the code and improve consistency.
+> 
+> No functional change intended.
 
-On Mon, Aug 31, 2026 at 10:24=E2=80=AFAM <wei.fang@oss.nxp.com> wrote:
+...
 
-> From: Wei Fang <wei.fang@nxp.com>
->
-> The NETC switch supports one-step TX timestamping for PTP Sync frames.
-> When transmitting a Sync frame, the driver reads the current PTP time
-> and writes it into the frame's originTimestamp field, and inserts a
-> To_Port subtype 1 tag carrying the low 30 bits of that same PTP time.
-> As the frame leaves the wire, the MAC captures the SFD transmit time
-> and derives the residence time from the timestamp in the tag. It then
-> reads the correction field at the offset given by
-> PM_SINGLE_STEP[OFFSET], adds the residence time to it, and writes the
-> result back.
->
-> PM_SINGLE_STEP is a per-port register that can describe only one
-> in-flight frame at a time, and programming it requires reading the
-> current PTP time, which may sleep. Both constraints rule out handling
-> one-step Sync on the xmit path.
->
-> Instead, defer transmission to a per-port process-context work. The
-> xmit path classifies the frame in netc_port_txtstamp(): a genuine
-> one-step Sync (twoStepFlag cleared) has its PTP header offsets cached
-> in the skb control block; frames that cannot be handled as one-step
-> fall back to the two-step path or are sent as normal frames. netc_xmit()
-> hands the classified frame to the switch driver via the
-> onestep_sync_enqueue tagger callback, which queues it and kicks the work
-> if no frame is currently in flight.
->
-> The work dequeues one frame at a time, reads a fresh PTP time, programs
-> PM_SINGLE_STEP, updates the originTimestamp field, and transmits the
-> frame directly to the conduit via the onestep_sync_xmit tagger callback,
-> bypassing dsa_user_xmit() to avoid double-counting TX stats. Only one
-> frame is in flight at a time: the frame carries a TX-completion
-> destructor that reschedules the work when the conduit frees the skb,
-> keeping PM_SINGLE_STEP always matched to the frame being transmitted.
->
-> The one-step context is reference-counted and its lifetime is decoupled
-> from the devm-allocated netc_port. In-flight skbs hold a reference via
-> their destructor, so the context outlives port disable until the conduit
-> frees the last in-flight skb. Port disable clears onestep->active under
-> work_lock; a work that runs afterwards observes active cleared will
-> purge the onestep->queue and return without touching the freed port
-> resources.
->
-> Assisted-by: Wchat:claude-opus-4-8
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> @@ -507,7 +507,7 @@ static int idma64_alloc_chan_resources(struct dma_chan *chan)
+>  	struct idma64_chan *idma64c = to_idma64_chan(chan);
+>  
+>  	/* Create a pool of consistent memory blocks for hardware descriptors */
+> -	idma64c->pool = dma_pool_create(dev_name(chan2dev(chan)),
+> +	idma64c->pool = dma_pool_create(dma_chan_name(chan),
+>  					chan->device->dev,
+>  					sizeof(struct idma64_lli), 8, 0);
 
-You agent produces "dostoyevsky commits" with too much verbiage.
+For example here it may now be condensed to less LoC:
 
-Tell you agent to "be terse and to the point" in your AGENTS.md.
+	idma64c->pool = dma_pool_create(dma_chan_name(chan), chan->device->dev,
+					sizeof(struct idma64_lli), 8, 0);
 
-> +
-> +               /* dsa_tree_teardown() calls dsa_tree_teardown_ports() be=
-fore
-> +                * dsa_tree_teardown_switches(), so netc_port_disable() i=
-s
-> +                * executed before netc_teardown() and onestep->active is=
- set
-> +                * to false. In-flight one-step skbs still hold reference=
-s via
-> +                * the destructor; the context (and its work) is freed on=
-ly
-> +                * after the conduit frees the last in-flight skb. By the=
-n np
-> +                * may be gone, but the work no longer dereferences np be=
-cause
-> +                * onestep->active has been cleared. And onestep->queue w=
-ill be
-> +                * cleared by netc_onestep_work()/netc_onestep_destroy_wo=
-rk().
-> +                */
-> +               netc_onestep_put(np->onestep);
-> +               np->onestep =3D NULL;
+Consider that in case you will need a new version (no need
+to address it separately).
 
-This type of stuff is over-commenting and is considered AI slop.
-Tell you agent to be very restrictive with inserting comments, essentially
-it should only do that when you explicitly tell it to, such as when you
-yourself feel it is really necessary or you got a review comment that
-this is needed.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Yours,
-Linus Walleij
+
