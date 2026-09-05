@@ -1,84 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C143451CD;
-	Sat,  5 Sep 2026 01:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFFA377ABF
+	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 05:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788571259; cv=none; b=nfm4PXoNsAa/38jAsglNvlcAWq08kY4YQzLEtRA46C/fVfTANu+5dthliKVEvRP8cTg3nHumX/HGUeDwN7kYa48vk7clLLxftE3QEfCVaBB9xr8PJwYVywMlzZoGRyO1pvWRrV1Nxw1su1gmtPgK1oDRHgwQ25knIDqktT5sRfY=
+	t=1788586942; cv=none; b=CDH40JQXnJj0p+1XsZkLFpSsSn1I4hB3flwZh+VmEY9YkaYDf1Y3r9CiI7kqt1u2zNA5BVj9enuOkcFGmXkviqw8oam+0qKt5a1a+pzf+48oKbtG1OJci+IF1EBg3xTxj24JYtpxEPKEfpATqvVWYlN6Ilu+kK9pg6CrCURvaP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788571259; c=relaxed/simple;
-	bh=1uqWMzjYhB+/p9aFKiVkrt9pHbKmdVinsZ1ddXopafw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xjps4pGlglLB/xPZFVL4oGOjkPbosKVWH6yVyFmZJXiH9FpL/DzfhiqcqcqANtwU3gPRHn5D1YYAcUQ3zGYYOB98+sXvDVVj/cQwgqvP33r1MmKmEMvcgCiQmING3DWas7i4E1FHmxwi2R3GEsVsqm+Ybp5dxKtPijuDPhAEw38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5HeKfrh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788586942; c=relaxed/simple;
+	bh=1IF3g+wX2qSaik6PWcrYjKLpudWITvu5kEq+Evvga4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gI5Pk52imjuT42epOyqDNzP8vYZLNlJcH16LCy/CE5kZsUJq7RheL4nZM3/KFV8gD44sZZBdbTvsD2S/oVH9ddPrYUdDRjoxvLa3dBqeuzbLXo1fCNs3eG/FenUW9lDEctOmtGU2bpUa4bOo4mqSrLuF53TOWH95tR5dgYbfpKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HlaV4iyV; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5HeKfrh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692D21F00A3D;
-	Sat,  5 Sep 2026 01:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788571257;
-	bh=dXFQDMRpuC8+n06ZAFU1McYG4cVziz2MkxDkhKXuoQ0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=d5HeKfrh46ToYV4qYyIq1dzyHYMqQe/E/AP4M4dK6Q/rmUBbfSgHBubvS0HC5x6qx
-	 988AloHDFirj1uKDFw81vaoedpEIyBxpIiPsyiCpbzpNa9fyIEIECfuGVCjlmelQm6
-	 91ahz33vUqZkpxc4btJ81q2+rVlNqqIOGw3+/wiZ3XXz4F3hnE8xXuPZ4YOYLRTaI1
-	 GvxzFzjJWqG2WE8yH9UXep09yM50+mkWBmSbKxNSQePGsSFGYzw5wJqM5O57H6daaa
-	 DhS6vo452niLT9Aw08mptPQQkjQIe3k2qEDnOMKIrb1XCV3sH+ZVuuhcyK8WAWljtH
-	 AlB3VC5R9NEyA==
-Date: Fri, 4 Sep 2026 18:20:56 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: netdev@vger.kernel.org, Wei Fang <wei.fang@nxp.com>, Frank Li
- <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an
- ethtool private flag
-Message-ID: <20260904182056.0d81cf1f@kernel.org>
-In-Reply-To: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
-References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HlaV4iyV"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d032846c95so18873615ad.1
+        for <imx@lists.linux.dev>; Fri, 04 Sep 2026 22:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788586940; x=1789191740; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1IF3g+wX2qSaik6PWcrYjKLpudWITvu5kEq+Evvga4U=;
+        b=HlaV4iyVJ2fikWX4ULLw/BgiZ5dSMOzT6hps+pCYOqjDXQ0sW3mbdDG8ZOqfgFt7e1
+         aBisSfoX9/YTYYjowyt0Wc12jvw+JLtDhgBEEKMUlM3CKhHMNlhHE0PVvgN5SuCdOXM7
+         TatWGdgHQe4m2VZDZZ7rlb21xjMyS01XsRoo4+++RyRCSZFUgVILkNPGkcIXhaDfQ9mf
+         0KQMUtMqq0Tt8eKy3oHvbzOxzAdm0sBIgbrnKguK2hBCm2/JuokaARNDmxDxDX0IxwYK
+         A6vJOhz/XpHPOdBpE7JY27Wnz2Yrrh9gyfnMXbIQTjGcAJeiScSDwcPmvDwOjaU2AjhC
+         RKVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788586940; x=1789191740;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1IF3g+wX2qSaik6PWcrYjKLpudWITvu5kEq+Evvga4U=;
+        b=K0sahkPVZJZ2ipesdUFb8FyqUNNO7CTIIgjTD5sUdtwiBg6I8rEtnj++xjibaPHyq9
+         MDIDHmsZ6FL3cxMCvM+I2ON0CCFlTwmZNZ9FEZ3tkVRZyWboKjij5Eq2tLPC5lF+c6CN
+         8zMPMwxvX0u4jXfofj8jE95qKJci5Uxkf//NFb5JMz4RiXWDZnKqq/eJ9/Jo785oJKBL
+         UtR0+YQqcKuhxFPEz1/mt580gVP7gF6MtKJquvAYXfj7mXKgu949D4CucMxuINpimaGc
+         qylWmoEPqTP1RbCZy46UAvqOQsUZ+h8v7KFENCSo1NAStrGi5V3c+5A5KNPPie+9jAXf
+         TUrQ==
+X-Forwarded-Encrypted: i=1; AKwUvByYyTxxut2ixi2lrBVeuRM13do3w8ngPvgP9t9CTAwi3KIcq9tx5XNoroGUmv8Q/WlQc8E=@lists.linux.dev
+X-Gm-Message-State: AFuF++lNDegdMnfDvQm7bJTdaJ/31NCyUuXHXRKNqrBQ2qGB7b8O+OQ3
+	3xKrTLkDE00ohJtVdeL1nSjp+5Gxz+lGpF/qGt388RoXM+va+/F68Q8=
+X-Gm-Gg: AYBFou1pwd5syFo3zwPKyIi7cYvX20/V4bs6Fzjy2GkshAF3fmqnf2M9OEmOwoW7Gk2
+	EpHLAXPsbjTuOjrMkahg1ONaU5Q78+DrWR0Qiq6/wa8Zd9tfpHIiUjQXfZe9gAd3t0DKf3ZrNva
+	sxIgZRee1dwFA0X9xeGNTzyM8Xy4ydZbJrmz8lvu/9PFDyzqSEl9313Uk8ASYEap5PADCOZ9k4b
+	HD2QyohDrBDKcbco18FYJOdGixS0dO3rT6N9CLwvjNyigyecBxfA1n5wsodKXVqqtBptMx3M+wR
+	zrpFww6BonJn5btFkg5ibAUcV9I5ztfsF93WSPLoaxyPKzYvqm6oXxnC2ueDx2WhrT29EFYSU+i
+	d/HXtQdbkdgoOMlqzmYCINLuLPBL50tZwT/Znhd+kn+tGHd+gOJ+waKvhKKutTitr5wKkLeMGho
+	7BsBhN6b9QBPeNZtrcXtURkZOOSiGBQptizwY2Bs+/VbsKmZqYyBzdb5YWmnpkM9Hf+45y6Kewm
+	nFOr/9/ykLx9g==
+X-Received: by 2002:a17:903:200e:b0:2d9:43f6:59f0 with SMTP id d9443c01a7336-2db1267bc27mr108781345ad.22.1788586940159;
+        Fri, 04 Sep 2026 22:42:20 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([211.230.25.193])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db149cb5f0sm18020405ad.67.2026.09.04.22.42.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 22:42:19 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org,
+	imx@lists.linux.dev,
+	donggeunyoo.kernel@gmail.com
+Subject: Re: [PATCH] regulator: pf1550: fix which regulator is notified
+Date: Sat,  5 Sep 2026 14:42:16 +0900
+Message-ID: <20260905054216.16986-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260904111039.705FA1F00A3D@smtp.kernel.org>
+References: <20260904105624.48577-1-donggeunyoo.kernel@gmail.com> <20260904111039.705FA1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue,  1 Sep 2026 09:47:29 +0200 A. Sverdlin wrote:
-> The FEC controller can flush the RX FIFO of an individual receive queue
-> through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
-> 
-> RX flushing prevents frames in the RX FIFO from being blocked. Blocking
-> can occur when the frame at the head of the RX FIFO cannot be forwarded
-> because the ring it is associated with cannot accept it, i.e. when the
-> ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flushing
-> is enabled for a ring, such a blocking frame is flushed (discarded)
-> instead of stalling the FIFO and holding up the other rings.
-> 
-> Expose this per-queue capability as a runtime ethtool private flag
-> ("rx-flush-qN").
-> 
-> Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flushing
-> on more than one queue at a time can lock up the receive path, so only a
-> single queue may have flushing enabled.
-> 
-> According to i.MX8QXP Reference Manual, "when both class 1 and class 2 are
-> disabled, RX flushing for these rings must also be disabled". Both RX and
-> TX QoS classes are enabled via DMA_CLASS_EN bit, currently tied to
-> num_tx_queues in the driver. Currently there are no constraints on
-> num_tx_queues == num_rx_queues, neither in DT nor in the code, even though
-> having different values doesn't make much sense even without RX flushing.
-> RX flushing code just takes min() of the both values for now.
+On Fri, Sep 04, 2026 at 11:10:38AM +0000, sashiko-bot@kernel.org wrote:
+> This is a pre-existing issue, but returning IRQ_HANDLED when the driver
+> completely fails to recognize the interrupt defeats the kernel's spurious
+> interrupt detection.
+>
+> If the PMIC continuously asserts an unhandled fault, could the parent
+> regmap-irq thread loop endlessly resulting in an interrupt storm and CPU
+> lockup? Should this return IRQ_NONE instead?
 
-For the errata - how is the user supposed to pick a queue?
-The documentation talks a lot about device specific terms instead of
-using generic easily understood terms. IOW it reads like slop.
+The branch is not reachable.
 
-In general AFAIU the flushing should be enabled in tandem with pause
-frames right now. It'd be great if we can stick to that, or failing
-that add a generic config knob rather than private flags.
-There's nothing private about the drop decision when host ring is empty
+probe() requests the handler for the eleven interrupts returned by
+platform_get_irq(pdev, 0..PF1550_REGULATOR_IRQ_NR-1), without IRQF_SHARED,
+and the lookup loop rebuilds that list with the same calls. The cell has no
+.of_compatible, so platform_get_irq() returns the number mfd_add_device()
+stored in the resource once, through irq_create_mapping(). Both loops see
+the same numbers, so irq_type is always in range.
+
+An interrupt the driver has no entry for cannot reach the handler either.
+regmap_irq_thread() dispatches only the bits registered in the irq chip, so
+there is nothing for the described storm to come from.
+
+The point about handle_nested_irq() feeding note_interrupt() is right in
+general, it just does not apply here.
+
+Thanks,
+Donggeun
