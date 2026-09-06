@@ -1,63 +1,63 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9053911C3
-	for <imx@lists.linux.dev>; Sun,  6 Sep 2026 06:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CAA353A9E
+	for <imx@lists.linux.dev>; Sun,  6 Sep 2026 06:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788675544; cv=none; b=rT1Kbh+h6ehkOm1G7JMIcOEWuRmWVbCEAH+zijeDfzQimk7HdycrTAL4OJho1mEQ5BXY7dYuVJ4SLgphZbMW8cq7leehC60AWsotqTcW3rhVUVGKWqCuyessH6Pog1ws1JtUC+ddJbOYsC1qQumAU3JInAXaTljwWiyszdh0EhU=
+	t=1788675556; cv=none; b=HxiBdKwb8CLL2eccr+8lNLRFq2FM2xyKuSAFoygKE5VPThpieBbTmAQwy5hhZcTPmNWJi1uv5FQFhr1OSrbunXlm13NNeMxcVXmLE92SiOb2E0vTYhhtOrN/agdH7Y6wF8ZpemOE4NsKtNh2Zb/PDNf9TCRej1bQWrbFQkUqB1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788675544; c=relaxed/simple;
-	bh=YrTo+zdkKpV5+yJvFwK8zA6/u2dpSvDVFjumOIdiThw=;
+	s=arc-20240116; t=1788675556; c=relaxed/simple;
+	bh=Ss7geLSo4QMEZ4B3x1S5NF2GS/0eMUyia4inV+Q9JpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nE/i6IEtH27gEE1x6fSZrOMUdRj6Nmzq6G6LYmsveIsGZj9m8aqSyHKzSt7YiYBizGLjvUPqm3JpBDF/Hj2cIWy7f9xtgT2W1Fn6tCu3Qo1x0CAQ2RtUfaXuSo7GjHC16JClR2IJtFeuh+X9sBp8AksN4fw/1K72jAW9+MsEiqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VuQfGUjp; arc=none smtp.client-ip=209.85.216.42
+	 MIME-Version; b=OTUtrx37RAhCoxsHREZJ6rMBOe8bueyNZo8iHVj6lun0Ii18ZW7tGEmwbaOSWtBisHw7wooj7s0hOhqjPgS+S4f4NFerQA40XJ023V8AB4UfyWNrk9FhkJBxW6Z4n3ZiGq4Wj92GdBKQ9Foa4HrISvO7JlyRVwcLVAQBZ2/7Rfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zjo7kywK; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VuQfGUjp"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso1921770a91.3
-        for <imx@lists.linux.dev>; Sat, 05 Sep 2026 23:19:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zjo7kywK"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ce98cb8165so24880245ad.1
+        for <imx@lists.linux.dev>; Sat, 05 Sep 2026 23:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788675542; x=1789280342; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1788675554; x=1789280354; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=P29HLotgsQWEFXe03chzciCUSFMzhS7FgdZp0wCdfRQ=;
-        b=VuQfGUjpO3hNn8N2s9HrTRC++AAXK5erg7BTUIwqW+vz6hZnCrfuBEaZptpuPoYetW
-         7nVK9PPgLoOpBEi2DVgrcy+Lp4TQhS3mq1d7BzJ6QHcqviexVnu6/EOF5q9m6f2GLrb2
-         dAwWTlM1BZGFuw3qFnHTi8Eib8mJw2pLsLnnMb88OgbVzv4JYkQdLvJbNzY881P3Q0ZN
-         DftJFdfd7BZpEjYD7V3y3NtAkF0TB3LcvRlJGz7P+MgVT+asVSj+uiQpcIjpofIszohP
-         4lMVOR5igBwYZuJdBljNNsM2SHKzkK8zzwv6Bj9o3MWbhJQAwf2fLkosHKVZFvqyrGT6
-         aNyg==
+        bh=xSBnT3FwZUixZgWDq520Ci5om1V2mRpux1OuDBHI5/I=;
+        b=Zjo7kywKw3LUzKzdbmy7Z2uyd3mXW+gOvf3YoZF1M16Mzs0/0sOITV0s2HWqfvt0GI
+         X+N+pX0Z3qNvvEO178K1H14q81M4G7qn7ys0C74qYNr0GIqoQRtfFPdrhC7TAm0JJuHV
+         cJJ5/zeDy+DWyUB5oeHVMhNUgMfrVo9+c0xgaN+rbT8pk3wmlY2rxPv/xHh+6AsNPGSl
+         /ImauA9WfY7rheG3ZbvU118rDsJQ9je3HqP9fvl9O2KXWEMFyzwzAqFSMpXWN94XdvAy
+         EJLmweeBglGdy2+dhAaNEea7FVZGyKuIxH9s1ulKxmUoFemHnax3vaDPYUcX708ECX75
+         XmrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788675542; x=1789280342;
+        d=1e100.net; s=20251104; t=1788675554; x=1789280354;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P29HLotgsQWEFXe03chzciCUSFMzhS7FgdZp0wCdfRQ=;
-        b=lZPuE+TECMCy+BuD2i4KsBH5pIp0mRvwjF1JmzxGwNRKrgtb5A2bTliwtIoC9Mb4DU
-         mhEG2P8sV0CTI2ZIU5ZjZfMw54KOxFpIiTR69+ySHyeUmnQJ820k2mL/fhsDge8xrJoK
-         4U4K3smXr3l3ZLEHdkmbRHw73ZpDrTuBz1YvQyaeDZqLwAm9xY1Cq9bN92jVv/VzAxzm
-         cPant5bAuN8bfDJy9gxwf0rgbD9tOwuwMLHd4NtvbywJsF07VQM7nmrR7XseOmRU2AV7
-         qCnQhWmW458uCP0s3rJOQ9rov6N4jWxrkEcHDoF5LV5862dT/GMBuwIqQqXQXIVGyyp2
-         mj6w==
-X-Forwarded-Encrypted: i=1; AKwUvBwbBdeY7vsJhOFz1RwZ0gDzYTYQhMilA6mTTqYmcnQ6ntHgEMnPfyt2JM47ywyiZPMrHr0=@lists.linux.dev
-X-Gm-Message-State: AFuF++ll6jhC4+9I6QgDli0YT7ITh1AbZVAZ5PsECJzViEQtWGmrtHFp
-	8jir8d2HumgL/VBLD0QDpt+YCnGwAkLCdV717Uot4JfG3co6b+tAXsMU
-X-Gm-Gg: AYBFou0qnZM7BcT0pa7vBmD7NpeQ3MDAGfAGFFhVIzClm22/Y9LJxNjZZUXtBo6kXOl
-	m6j/U6Zecc1B3356uZ1NEcOVf9/RNqHWF4mCkF6kNOtwLZf5w1H4viOUeTG3ewlplayVwUKkL6v
-	KO784Gm78eWjBC2OWYZQjbgAoRYYOdDnDRrOyGDEqvOStdd6mptOPigO6iOL6iVG9Ed2HlNFPFk
-	qPWZY1xPhEIn7NbOWUE5gCBVIpyGXk1xWEJBXSGT8jnb7pLXMEgL/Cg3Hscv3A0KcpKbrnCxcq1
-	u2ex/HDatMISJU+CQcu3BXPPbIwSRirLXRiI9D5e5Ft6R4koi++N/EtxZ0MAINkMzzNCBI2LgXP
-	jJiEwfbz4yGO5iI+PuWNAFO2SINWqkSRKE6kwSvg1IHoxBf2jC4CuUnbDSOwcBi7Yo7xby6uOQl
-	1evAMNd1WSVwha4YiXla0vJ7Fw5zyc81MvitITz4Vwtzjolpb0zV9xUHlrH+k=
-X-Received: by 2002:a17:90b:2f87:b0:38e:250b:122f with SMTP id 98e67ed59e1d1-39b261e75femr24578243a91.16.1788675542370;
-        Sat, 05 Sep 2026 23:19:02 -0700 (PDT)
+        bh=xSBnT3FwZUixZgWDq520Ci5om1V2mRpux1OuDBHI5/I=;
+        b=lTJULwulqnxfKuTctCeiNBoGYFkyuLy4h0ePlls0cfXZR4K3DH2YReqO5bJgSuafIv
+         aJB5RcY1O3HeGf+5ZdwZPzi3wcupvOOGCCtnTJJCcrvx2yTS6AigXvG0Fk2gPHUBoYVQ
+         Jla24BJkf2/4y/q9fzvYjpq1zpN3TZamQ5cw3etrl6y9WVwYPbE7BYoOqoiTPeTv6p7x
+         e9u4uSMLrmP5p1YADRn1aLEhNm8qFGDvw0W1PeHa7jKOtFNkqjSjO2ZuOJXbjLxZFOMz
+         kJpYYnf7ZHVsn114zpUVZFb7Scz0TzcqO2TCj7b853VXigEEuBQ0tws471qwgO1JIoy8
+         pSjg==
+X-Forwarded-Encrypted: i=1; AKwUvBw9sm1/v/U7/TAaYKI0qEvNPuStxXUwMdDZmFiz7N04KfBRs/aE21nmiSxSfI28JPJsM80=@lists.linux.dev
+X-Gm-Message-State: AFuF++nRwcI7sYomVbHjKvtHhzSfohvcgdWUP7zVXmYlUs9TO+/Qfa+5
+	0NiryFuMliLglZKd5nXCYjm+VlBHr/KL4HYQLLIrmm4kyDABbR2gOstw
+X-Gm-Gg: AYBFou2ENyLCI/GSBBARayP+4APog4XBNbYWwF/Md3zOoy5epLeBnA7KGefkD7e6e19
+	KfcdySIDR5MqF7P7c/LLRRoeQ9J4NvmBg5+xxYL1gR4652USDW0Pyrr2EPeHY1T4d4Yd69BgQYN
+	rh1dRe+wxHV2Wwa84bHPCpM8s2t1bT6jNlWQ35gUSscE0F49EWIUajiYS0BVq9PmqthJtPANeDp
+	kCzHfpw2X5UZ5dhi3XYnj0CltD69/JiauLnk/oAo4eSz/M1VZ3vtipQ3wauWGIJ/93XR7efWl9D
+	epjeQ4h0gFVCI5anTu49cppMRoWFGA5WmbQtNvadDu3he4+qDaWz/wBxvPbYlXKXuWV9+t0JT7B
+	SSKfI9BvgUPown9ECQjQMpSbMg0IyNklwlcAYH0HKE69BtpiNyQaeZMfNSH0oBoMxpeX8F2+Fkf
+	NQOgT6RwsEirDKbSeMGUZCLQkIdTcYFCBobyDAWR7aZ8AzOyLHVsgpaOZ6uk8=
+X-Received: by 2002:a17:902:da85:b0:2bd:2c3a:2a36 with SMTP id d9443c01a7336-2dafad14a8fmr205668835ad.0.1788675553947;
+        Sat, 05 Sep 2026 23:19:13 -0700 (PDT)
 Received: from gmail.com ([58.84.62.227])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339aa33e96sm18280405eec.12.2026.09.05.23.18.52
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339aa33e96sm18280405eec.12.2026.09.05.23.19.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 23:19:02 -0700 (PDT)
+        Sat, 05 Sep 2026 23:19:13 -0700 (PDT)
 From: Sumeet Pawnikar <sumeet4linux@gmail.com>
 To: rafael@kernel.org,
 	amit.kachhap@gmail.com,
@@ -95,9 +95,9 @@ Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	sumeet4linux@gmail.com
-Subject: [PATCH 4/5] devfreq: Use %pe to print error pointers symbolically
-Date: Sun,  6 Sep 2026 11:47:53 +0530
-Message-ID: <20260906061755.5103-5-sumeet4linux@gmail.com>
+Subject: [PATCH 5/5] power: Use %pe to print error pointers symbolically
+Date: Sun,  6 Sep 2026 11:47:54 +0530
+Message-ID: <20260906061755.5103-6-sumeet4linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260906061755.5103-1-sumeet4linux@gmail.com>
 References: <20260906061755.5103-1-sumeet4linux@gmail.com>
@@ -109,61 +109,107 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace PTR_ERR() and %ld with %pe and pass the original pointer directly
-to dev_err(). The %pe format specifier prints a symbolic error name (e.g.
--ENOMEM) when CONFIG_SYMBOLIC_ERRNAME is enabled, otherwise it falls back
-gracefully and prints the raw integer value. This makes messages more
-readable without any functional change.
+Replace PTR_ERR() and %ld/%li with %pe and pass the original pointer
+directly to dev_info(), dev_warn(), dev_err() and dev_dbg(). The %pe
+format specifier prints a symbolic error name (e.g. -ENOMEM) when
+CONFIG_SYMBOLIC_ERRNAME is enabled, otherwise it falls back gracefully
+and prints the raw integer value. This makes messages more readable
+without any functional change.
 
 Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
 ---
- drivers/devfreq/imx-bus.c         | 4 ++--
- drivers/devfreq/imx8m-ddrc.c      | 3 +--
- drivers/devfreq/mtk-cci-devfreq.c | 4 ++--
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/power/reset/macsmc-reboot.c        | 4 ++--
+ drivers/power/supply/axp20x_battery.c      | 4 ++--
+ drivers/power/supply/cpcap-charger.c       | 4 ++--
+ drivers/power/supply/cw2015_battery.c      | 4 ++--
+ drivers/power/supply/intel_dc_ti_battery.c | 2 +-
+ drivers/power/supply/qcom_smbx.c           | 2 +-
+ 6 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/devfreq/imx-bus.c b/drivers/devfreq/imx-bus.c
-index 49798f542d68..dba76d8b9e5a 100644
---- a/drivers/devfreq/imx-bus.c
-+++ b/drivers/devfreq/imx-bus.c
-@@ -75,8 +75,8 @@ static int imx_bus_init_icc(struct device *dev)
- 	priv->icc_pdev = platform_device_register_data(
- 			dev, icc_driver_name, -1, NULL, 0);
- 	if (IS_ERR(priv->icc_pdev)) {
--		dev_err(dev, "failed to register icc provider %s: %ld\n",
--				icc_driver_name, PTR_ERR(priv->icc_pdev));
-+		dev_err(dev, "failed to register icc provider %s: %pe\n",
-+				icc_driver_name, priv->icc_pdev);
- 		return PTR_ERR(priv->icc_pdev);
+diff --git a/drivers/power/reset/macsmc-reboot.c b/drivers/power/reset/macsmc-reboot.c
+index 9fc36fa68676..7b8460a55e9d 100644
+--- a/drivers/power/reset/macsmc-reboot.c
++++ b/drivers/power/reset/macsmc-reboot.c
+@@ -221,8 +221,8 @@ static int macsmc_reboot_probe(struct platform_device *pdev)
+ 		if (IS_ERR(cell)) {
+ 			if (PTR_ERR(cell) == -EPROBE_DEFER)
+ 				return -EPROBE_DEFER;
+-			dev_warn(&pdev->dev, "Missing NVMEM cell %s (%ld)\n",
+-				 nvmem_names[i], PTR_ERR(cell));
++			dev_warn(&pdev->dev, "Missing NVMEM cell %s (%pe)\n",
++				 nvmem_names[i], cell);
+ 			/* Non fatal, we'll deal with it */
+ 			cell = NULL;
+ 		}
+diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
+index ee8701a6e907..915b6f6881db 100644
+--- a/drivers/power/supply/axp20x_battery.c
++++ b/drivers/power/supply/axp20x_battery.c
+@@ -1123,8 +1123,8 @@ static int axp20x_power_probe(struct platform_device *pdev)
+ 						       axp20x_batt->data->bat_ps_desc,
+ 						       &psy_cfg);
+ 	if (IS_ERR(axp20x_batt->batt)) {
+-		dev_err(&pdev->dev, "failed to register power supply: %ld\n",
+-			PTR_ERR(axp20x_batt->batt));
++		dev_err(&pdev->dev, "failed to register power supply: %pe\n",
++			axp20x_batt->batt);
+ 		return PTR_ERR(axp20x_batt->batt);
  	}
  
-diff --git a/drivers/devfreq/imx8m-ddrc.c b/drivers/devfreq/imx8m-ddrc.c
-index 52beeb5b7d65..28d7c595fa17 100644
---- a/drivers/devfreq/imx8m-ddrc.c
-+++ b/drivers/devfreq/imx8m-ddrc.c
-@@ -340,8 +340,7 @@ static int imx8m_ddrc_check_opps(struct device *dev)
- 	for (i = 0, freq = 0; i < opp_count; ++i, ++freq) {
- 		opp = dev_pm_opp_find_freq_ceil(dev, &freq);
- 		if (IS_ERR(opp)) {
--			dev_err(dev, "Failed enumerating OPPs: %ld\n",
--				PTR_ERR(opp));
-+			dev_err(dev, "Failed enumerating OPPs: %pe\n", opp);
- 			return PTR_ERR(opp);
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+index 34a57dd5c3cf..d423a8bdc0c2 100644
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -808,8 +808,8 @@ static void cpcap_charger_init_optional_gpios(struct cpcap_charger_ddata *ddata)
+ 		ddata->gpio[i] = devm_gpiod_get_index(ddata->dev, "mode",
+ 						      i, GPIOD_OUT_HIGH);
+ 		if (IS_ERR(ddata->gpio[i])) {
+-			dev_info(ddata->dev, "no mode change GPIO%i: %li\n",
+-				 i, PTR_ERR(ddata->gpio[i]));
++			dev_info(ddata->dev, "no mode change GPIO%i: %pe\n",
++				 i, ddata->gpio[i]);
+ 			ddata->gpio[i] = NULL;
  		}
- 		dev_pm_opp_put(opp);
-diff --git a/drivers/devfreq/mtk-cci-devfreq.c b/drivers/devfreq/mtk-cci-devfreq.c
-index 4c22be728f6a..bda788909887 100644
---- a/drivers/devfreq/mtk-cci-devfreq.c
-+++ b/drivers/devfreq/mtk-cci-devfreq.c
-@@ -364,8 +364,8 @@ static int mtk_ccifreq_probe(struct platform_device *pdev)
- 					       passive_data);
- 	if (IS_ERR(drv->devfreq)) {
- 		ret = -EPROBE_DEFER;
--		dev_err(dev, "failed to add devfreq device: %ld\n",
--			PTR_ERR(drv->devfreq));
-+		dev_err(dev, "failed to add devfreq device: %pe\n",
-+			drv->devfreq);
- 		goto out_remove_opp_table;
+ 	}
+diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
+index 1bcb60cf763d..48643f7bf503 100644
+--- a/drivers/power/supply/cw2015_battery.c
++++ b/drivers/power/supply/cw2015_battery.c
+@@ -658,8 +658,8 @@ static int cw_bat_probe(struct i2c_client *client)
+ 
+ 	cw_bat->regmap = devm_regmap_init_i2c(client, &cw2015_regmap_config);
+ 	if (IS_ERR(cw_bat->regmap)) {
+-		dev_err(cw_bat->dev, "Failed to allocate regmap: %ld\n",
+-			PTR_ERR(cw_bat->regmap));
++		dev_err(cw_bat->dev, "Failed to allocate regmap: %pe\n",
++			cw_bat->regmap);
+ 		return PTR_ERR(cw_bat->regmap);
+ 	}
+ 
+diff --git a/drivers/power/supply/intel_dc_ti_battery.c b/drivers/power/supply/intel_dc_ti_battery.c
+index cb6fa8d88b43..5819df23a543 100644
+--- a/drivers/power/supply/intel_dc_ti_battery.c
++++ b/drivers/power/supply/intel_dc_ti_battery.c
+@@ -349,7 +349,7 @@ static int dc_ti_battery_probe(struct platform_device *pdev)
+ 
+ 	chip->vbat_channel = devm_iio_channel_get(dev, "VBAT");
+ 	if (IS_ERR(chip->vbat_channel)) {
+-		dev_dbg(dev, "devm_iio_channel_get() ret %ld\n", PTR_ERR(chip->vbat_channel));
++		dev_dbg(dev, "devm_iio_channel_get() ret %pe\n", chip->vbat_channel);
+ 		return dev_err_probe(dev, -EPROBE_DEFER, "Waiting for VBAT IIO channel\n");
+ 	}
+ 
+diff --git a/drivers/power/supply/qcom_smbx.c b/drivers/power/supply/qcom_smbx.c
+index 67fdb4335338..c8e242341d04 100644
+--- a/drivers/power/supply/qcom_smbx.c
++++ b/drivers/power/supply/qcom_smbx.c
+@@ -613,7 +613,7 @@ static int smb_get_iio_chan(struct smb_chip *chip, struct iio_channel *chan,
+ 	}
+ 
+ 	if (IS_ERR(chan)) {
+-		dev_err(chip->dev, "Failed to chan, err = %li", PTR_ERR(chan));
++		dev_err(chip->dev, "Failed to chan, err = %pe", chan);
+ 		return PTR_ERR(chan);
  	}
  
 -- 
