@@ -1,145 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34200479868
-	for <imx@lists.linux.dev>; Sat,  5 Sep 2026 10:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4359F3370EC
+	for <imx@lists.linux.dev>; Sun,  6 Sep 2026 03:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788605777; cv=none; b=UyF+hvPTEIDKoxj18pyR7t4+4bgRxgYdfCK1Dwlvi/I9MSHcVKqo8sBDP7kT6xxm9k9cXwFAnC51fh6mURV8FYSz5uSxtq4F8KCluzP+zw3eSZDXYOmTi+pvFU/Kv5tMVpsp0ZxTIp2aK4b/SRH934TK5IpLGJs+Ign5A/9DgnA=
+	t=1788665909; cv=none; b=iWICPo+xWV3SKLI78C8HOrjRtQ522oEKxBHj9+6LInnAp2YA3dLRSH/IoDmcGHA7dQyvq47q4IvarCsTTCzGiXJ8q6Vv6HJntAUjJ5sQpg3OxwweQ8RpuWhq6IJyb0aKkN8bvm8UfSJoiTHdbFNpnchpTaTNwK0yuQpedQLFNMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788605777; c=relaxed/simple;
-	bh=bGqyXPE75qnMF9eZSwvumB0OiRbTcmDY3Fg4LOfc+JU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=D4APqMOLGJQYQHgy2FgwCADrhz9z9R+/9tvVcyR4udxxYZGPYnrf1vfiURXQ/kB2dH2UFeKIIGCQAvOMRP0mFhdDYbOgu+BvRT9aOdUY0kMZ4eG/cEIdKdDP66DRg8mjDViFd9VzvD8HkDWk9KTpviIGbLitnqa7mTgV3LaSyHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJll/o4s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788665909; c=relaxed/simple;
+	bh=kcfGz+D/RqtJqDOXx88LoPOrMhM4P5mZj435dno+u1Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GcpD/M9SMy9TQJsMQli73JZJ78IlBFtS5QGATy2pqzUFUd2LNEbpmuWH7ATiZGxKoY2VRI37xjhnYBAsOF22Jv823I8r4UAt/W6Ce455D4pyJlBfbA48KQgmnhGADl19OwnqLPkuYrw3SDwh1nk1GW5YXEEhb+p0MBolpQXOD6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=igWyWEeG; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJll/o4s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB061F00A3D;
-	Sat,  5 Sep 2026 10:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788605768;
-	bh=G87xqMP9tAecej3n4xPImfzUBPp1Cc4WXxGDRtr8GJs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eJll/o4sJJ9a2csvod6vUQjBm8AweGENNru6OBzYRPCqka6SgLIWljf7fZoUcS64M
-	 P/u5e7cBO3gKYdaHuduqR1D7r69ILhz7PmSY1mTvwfV3V83Kx+ZPoHKyqDT4n3Ly/D
-	 uNaUKHz/TYOnvrL/pvrmL0AlSXSCtl2o15+X7Zoa+St8znCHiaCIk9yiO9OzT6MM5r
-	 IClJNzKizoPwfoWEyL8t4YjApw41AnRzcC5mBfG2uexc5G7CKovvfxopapGOXBunc+
-	 vexohSJ47zHV5J34QmKsYxTz7OY0QLzzIUCPsn3NKFT3AW+pY55AL2PfDZl97aqeGD
-	 4aHR2zXPNyahg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
-Reply-To: sashiko-reviews@lists.linux.dev
-To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260904105542.70540-1-phucduc.bui@gmail.com>
-References: <20260904105542.70540-1-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 05 Sep 2026 10:56:08 +0000
-Message-Id: <20260905105608.AAB061F00A3D@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="igWyWEeG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Bn
+	7FZwwf19c3h9u4aABxH+CJMemOfFxO0YWc91hO9HA=; b=igWyWEeG3ZP1kr3m3c
+	HBFlmj5kRfWW8+D43PbIkRWsXc+8yFyi5I4GNSAMb2I0vqpZ6DgpYH9owzRWgqL/
+	FWASWjIGYbV24glq9IqasWm60fSYoVIY3+MdDR8pnC8DaJ1NEtmt/gt8Q0JJcGmI
+	+84xv2O1uMYbF33glmYlMLnQE=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3T5Yg4Jxql1DaAw--.30101S2;
+	Sun, 06 Sep 2026 11:38:09 +0800 (CST)
+From: Pengpeng Hou <hppiscas@163.com>
+To: Ulf Hansson <ulfh@kernel.org>
+Cc: Pengpeng Hou <hppiscas@163.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"A.s. Dong" <aisheng.dong@nxp.com>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] pmdomain: imx: Propagate SCU provider registration failures
+Date: Sun,  6 Sep 2026 11:38:06 +0800
+Message-ID: <20260906033806.84671-1-hppiscas@163.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3T5Yg4Jxql1DaAw--.30101S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WryftF4rKF47Kr4kuFy8Krg_yoW8XF45pF
+	Wktayavrs7Jr4fG3WUGF1DZryay34Fyry7Kay5Ga4xZF45JFnxWa4Fqa4jkFnFyry8tF42
+	yr429FW5CF1FyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRNeOZUUUUU=
+X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbC7QECymqc4CGhRwAA31
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Direct return from `fec_probe()` upon IRQ lookup failure bypasses =
-error handling cleanup, leading to resource leaks and a kernel panic.
-- [High] Freeing `ndev` while the PPS `devm_request_irq` is still active ca=
-uses a Use-After-Free if the interrupt fires.
---
+imx_scu_init_pm_domains() ignores of_genpd_add_provider_onecell() and
+returns success even when none of the initialized domains are published to
+DT consumers.
 
-commit 946f1eb0b16e1f7bba9a52ab3e2900be9173c0a8
-Author: bui duc phuc <phucduc.bui@gmail.com>
+Return the provider error and remove the initialized domains in reverse
+order before devm releases their backing storage on probe failure.
 
-net: fec: Propagate PTP initialization errors
+The issue was found by our static-analysis tool and manually reviewed.
 
-Change fec_ptp_init() to return an error code instead of silently
-ignoring failures during PTP initialization.
+Fixes: c800cd7824bd ("firmware: imx: add SCU power domain driver")
+Assisted-by: gpt 5
+Signed-off-by: Pengpeng Hou <hppiscas@163.com>
+---
+ drivers/pmdomain/imx/scu-pd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Link: https://lore.kernel.org/all/20260903092430.354186-1-phucduc.bui@gmail=
-.com/
+diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
+index e3f9e741daf7..05d4364f34be 100644
+--- a/drivers/pmdomain/imx/scu-pd.c
++++ b/drivers/pmdomain/imx/scu-pd.c
+@@ -474,7 +474,7 @@ static int imx_scu_init_pm_domains(struct device *dev,
+ 	struct genpd_onecell_data *pd_data;
+ 	struct imx_sc_pm_domain *sc_pd;
+ 	u32 count = 0;
+-	int i, j;
++	int i, j, ret;
+ 
+ 	for (i = 0; i < pd_soc->num_ranges; i++)
+ 		count += pd_ranges[i].num;
+@@ -503,7 +503,13 @@ static int imx_scu_init_pm_domains(struct device *dev,
+ 	pd_data->num_domains = count;
+ 	pd_data->xlate = imx_scu_pd_xlate;
+ 
+-	of_genpd_add_provider_onecell(dev->of_node, pd_data);
++	ret = of_genpd_add_provider_onecell(dev->of_node, pd_data);
++	if (ret) {
++		while (count)
++			pm_genpd_remove(domains[--count]);
++
++		return ret;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.50.1 (Apple Git-155)
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
-rnet/freescale/fec_main.c
-> index 794ec427b0ee6..a9a458703547d 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-[ ... ]
-> @@ -5394,7 +5397,9 @@ fec_probe(struct platform_device *pdev)
->  	for (i =3D 0; i < irq_cnt; i++) {
->  		snprintf(irq_name, sizeof(irq_name), "int%d", i);
->  		irq =3D platform_get_irq_byname_optional(pdev, irq_name);
-> -		if (irq < 0)
-> +		if (irq < 0 && irq !=3D -ENXIO)
-> +			return irq;
-
-[Severity: High]
-Does this direct return bypass the error handling cleanup at the end of
-fec_probe()?
-
-By returning directly instead of jumping to the failed_irq label, the driver
-bypasses fec_ptp_stop(). This leaves the fep->time_keep delayed work
-(scheduled earlier in fec_ptp_init()) active.
-
-It also bypasses free_netdev(ndev), which leaks the net_device structure.
-
-When the driver core cleans up devres allocations on probe failure, it unma=
-ps
-fep->hwp. If the un-canceled delayed work subsequently fires, will it attem=
-pt
-to access the unmapped memory at fep->hwp and cause a kernel panic?
-
-[ ... ]
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ether=
-net/freescale/fec_ptp.c
-> index 56801c2009d59..557a76797ebaa 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-[ ... ]
-> @@ -779,26 +779,32 @@ void fec_ptp_init(struct platform_device *pdev, int=
- irq_idx)
->  		      HRTIMER_MODE_REL);
-> =20
->  	irq =3D platform_get_irq_byname_optional(pdev, "pps");
-[ ... ]
-> +	if (irq > 0) {
->  		ret =3D devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
->  				       0, pdev->name, ndev);
->  		if (ret < 0)
-> -			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
-> -				 ret);
-> +			return ret;
->  	}
-> =20
->  	fep->ptp_clock =3D ptp_clock_register(&fep->ptp_caps, &pdev->dev);
->  	if (IS_ERR(fep->ptp_clock)) {
-> +		ret =3D PTR_ERR(fep->ptp_clock);
->  		fep->ptp_clock =3D NULL;
->  		dev_err(&pdev->dev, "ptp_clock_register failed\n");
-> +		return ret;
-
-[Severity: High]
-Does this error return leave the devm-managed IRQ active while propagating =
-an
-error back to the probe function?
-
-If ptp_clock_register() fails, fec_ptp_init() returns an error which
-propagates to fec_probe(), causing it to jump to failed_reset.
-
-The error path in fec_probe() manually frees ndev via free_netdev(ndev).
-
-However, the PPS interrupt was registered just prior using devm_request_irq=
-(),
-so it remains active until fec_probe() returns and devres tears it down.
-
-If the PPS interrupt fires between the manual free of ndev and the devres
-cleanup, will fec_pps_interrupt() cast dev_id to ndev and attempt to
-dereference the already-freed ndev structure, causing a use-after-free cras=
-h?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260904105542.7054=
-0-1-phucduc.bui@gmail.com?part=3D1
