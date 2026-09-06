@@ -1,222 +1,516 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2393D0BE9;
-	Sun,  6 Sep 2026 04:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788668118; cv=none; b=uzzB9vJG4K1DazvXPD+kQv3i8RKbt+Al3kBfdL82ztf4pF70d+ecAG89e1HbOKINu/6k98MFTMPY2DysVmcCUeTeK/97DzMuK+PEsv1scim4YVQrIxgMjW55rUa55mXMIaFluAXqHN/VQJlAjx5JuYin/sT6vgu91ydORJ6ZeUo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788668118; c=relaxed/simple;
-	bh=LzE2QxQvFjOldemw1joETAp+rAIqtzG30VTeIavs1H0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rqv8QfeuiSeqNWD8u7I//L+8FvG4PdpABezQtDbTjfCVIaVyt5EYKymoJyGcZ8S3c/jX9naLf/jxKXVMWtlF0YYPOYB4HvUfdKxvP84UHgfHwqwjYLhehfpTok9VdARUpFkOWEGMZVPwEy8SQH23iVWYIwRXPHNcToqR05g7gSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPFEZz7G; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E73F3DB63D
+	for <imx@lists.linux.dev>; Sun,  6 Sep 2026 04:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788670711; cv=pass; b=VdGnJDStUZVecckQfftCUCy64pq6Z83VhZI9CjAtVbaF3pBMef/on17Hpuul1e7fB/q+OFYRxlt3zNRWoJqV2+8st2kAOeRpYO/03jP0a0IFPZFKK3zEUEoptVdXGICJLo6rLxvXAo79hhQ9sQKaqriKXsytmglx+IxEz0v6kGY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788670711; c=relaxed/simple;
+	bh=acroVMkyDdzPHitwemWi6bttxsSWSkMYEEfwdNb17Sg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NMGqjt1ujZO6aPNWmcR/kP+ERkCu0LUqOm2bxFxoAPtrSnsaiiTwKdbG4KxYElGoQ8aX9kUDwwqHInNgdeZheQfD32zPI0R72p1iKksToHkCJVL/Lj2Ll/iLNUbiQjPytcchuJDxpYa7qMqdpmYZNQLyh7fxqEEphnXbizjXTKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SZL9D5ue; arc=pass smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPFEZz7G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D7D1F00A3A;
-	Sun,  6 Sep 2026 04:15:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788668115;
-	bh=/ODEmOVaZNoe3SxxEirFhhdAgUoxNU8vfhBnBIpL+O8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NPFEZz7GDr7bRSnPMRBBJeRnSut+OwmxDf0yhEt9FQq0ZsVLw4BIul2SkiZlJCaOr
-	 VMKesvogHMC1dJzLQ4GttEVR2CC3JBUgC7TasyEr2yZDFz7TXVuGP+XIWr90Eic4QR
-	 7Rgpua5slSAVSjUNoB2ta232qEXnxDrdYdfl3DTx3uVJjA4KbYhVXecEHKaavBmZDN
-	 fpPmRfjmxe2HyOFcotvorfVqgwI4GYXUu7lltXK/gR8+DXzT2YIMx+dgFTKqrHETnJ
-	 2AVSvIZS0UitBzusdNOIvkIZgecE5q9foitDojl36+Y+c9+0xweJlt0RGEUtRDa2up
-	 +zdbWrNCeBiqQ==
-Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an ethtool
- private flag
-From: netdev-bot+sashiko@kernel.org
-To: alexander.sverdlin@siemens.com
-Cc: netdev@vger.kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
- shenwei.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Sun, 06 Sep 2026 04:15:14 +0000
-Message-ID: <178866811459.219967.2326693241215437513@kernel.org>
-In-Reply-To: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
-References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SZL9D5ue"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-398c1101c1bso2291162a91.1
+        for <imx@lists.linux.dev>; Sat, 05 Sep 2026 21:58:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788670708; cv=none;
+        d=google.com; s=arc-20260327;
+        b=br/F5cSodoGvVb2E8FPFXZ6a7buHXktYINYrTQC4me1iEejmT0GkBgPhyJeEtAN2l5
+         KGi77sbVU40y2gvAkqL2InC02/GNzrgglhDiDIBZn/muMjGix+QWqfSCjhgRkaXz791A
+         H9eH8Gh66lz1WAGNnMHGcy40EbG7w+W7yHf+1Jd7ri31QVODNSUWDwcoDtHNEU4hzSc2
+         3F+ufPJTC5LNLjQfy1EZu6L1TxXOfdUOhRWBk+pc13Mwk4OsMlwasitBwk7nQkEg6AbN
+         lHm+1a09HUaxe3XPMvzpsBYGWw2wKKcTiHWJBTXpHly+UbIsS44wZK74SRmErqZh7PwT
+         y8zA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qO/4F3aY8sQXF7GCHIu1ZeTQ6+uDdCNC0Hk2Fkyw5BQ=;
+        fh=E3ztCRFXHHd5CfmwMsbWmzjNQo9I2tTYWAB+0a2QEr0=;
+        b=mHEAckAfVRXZD+COFnDsks7jTDOd0CPiBjcBb1yIezxjLfBjtBdFa2HLgmx4rDZdBS
+         pt+2K2gtDibuSn2jQyC8e/Dfgt86i6xs58mYL/5LRcjS/64a5mvKNvXjbeHlCZhnDSl9
+         ceAM+d5oOjKiM0+3zFg7mlUeyqTPhRIcArxPn5H4ECfBUbmbYCUaQHkjUMqqs50gtfji
+         q5IM8wdhpWc9OJQJB3cK19AZ+WEzhTXSu3S6S4DDKlvd8maqWttyUnhcXKgisZdT1YtL
+         FP2frzg9fzRpZQWPMPZxiPzTTC3G4aD+8h+rt+I34+FRrNSxT62gtLf8yZCnxhfK2/Wn
+         0Cpw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788670708; x=1789275508; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qO/4F3aY8sQXF7GCHIu1ZeTQ6+uDdCNC0Hk2Fkyw5BQ=;
+        b=SZL9D5ueErqyW1jUeMok5/ZbUQ9SRg9NosneXJKcrZHmxw5eZ25F+vRxOZbH4tlLwc
+         asGjeljOqwFX+d65wwigwCU4BeYKY95DGgt7oSAvACJRBYliDUmL1ORnarXT4Cg/MG9o
+         OlxBiSBLp6ULD4589qui6ia5FXNp84nS/erA1Ee8LytZWlxlumAEMiBj71ESGIGekhU/
+         BEzpMqwNC+C3v9KR1deMBdpjm4mLe7c4dEjXTw6yfhbQm3MWwpO/1qbAJ9L/ZmgwUzaG
+         Poiat6tc7LgPHi7xTnEFV87BdP9o9y+HhkXs//W2dF9la9cEA6IS8Tn/Rs3nrxYhiaAg
+         8gOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788670708; x=1789275508;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qO/4F3aY8sQXF7GCHIu1ZeTQ6+uDdCNC0Hk2Fkyw5BQ=;
+        b=fxshqYLMdpHqWN6U/l5DiLKXL17vO5Tn3wOT1IBKrSxnJPm5mDBzxoFzZweR9FgNE1
+         6/BhBruHvRs1yzyfcPD92ZpjxfoFBF4WJqReqAzLfu4djwQmFLSCoMNK55NClWLkasVC
+         0YygoehVI5u4d1n7OkmmNrnINCbpZEPJtDhFPyC0XMUO1FX6x2bzOe04BEHXHf8QFukg
+         YqfR56mNl9LGOOAATV0GgYdJtJ+IzHSOPYPG04v7ZWKAHKNlYcps6ad2IM7tXtdY+/Hr
+         FxNGKpWSDly4vv2YavjrWMZGm1//YCtA/zWasBl/DV4WOzjRy2mu51KlM+fAo0Jo+lZP
+         Dd0A==
+X-Forwarded-Encrypted: i=1; AKwUvBxck5r7sAQy6ZEOrY2HQ8xuglSZ+Edi0hdAWSifNeJ1+PotIV9VkcnhF+Szjq9+ftYjATQ=@lists.linux.dev
+X-Gm-Message-State: AFuF++n3SgWuzWP4O3u7LAPkwn/yk8B+G4Rw/uKdSoF1jRw1p/v+hJN5
+	sdFKQInelCrP4yiCs590i4pys61l13EGCUvNtp3uJmQ6PXEpawgwmE0xc1vgR2dbb9eeEpMDfj7
+	dXRHgwHfuA6LsDThljdo+3amZjJI2uDo=
+X-Gm-Gg: AYBFou3JP4GcR+jGbdDhi8Is4hQGPWGCRmVrO6qLIDMkm/v8QMq1ADI2i6v58i90SLA
+	TdJFMmenNyS/qYysD2GaRiSgiBK6DHeCMC9CFg0kCtUB/0M1fhnWYraTKGgyHCDyfF+QLP02hIA
+	Hy1T/+WbXfhi4Zcks88DFMpur2LdoenK6MjOs6Y5iVmfqL0ArqFKMsGKhm478AGJPA6NO0F0ezl
+	w0RHJPpYDtaq76+CxwWNI3Qcia7erTmZ+VqJi2iszge/S2XFRvMu/XYGEus4YgZ8/LUCVRC9OOF
+	QtJsZGsJA+K0MTAA3+Uf0K5y7FyxhGFagba2e1k2+ZmHEINg9bjCL7fMA8muZ8z4ZU0iN6s6wfg
+	=
+X-Received: by 2002:a17:90a:d2c6:b0:395:4de4:92c7 with SMTP id
+ 98e67ed59e1d1-39b260d2f07mr24804839a91.3.1788670708273; Sat, 05 Sep 2026
+ 21:58:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20260830160025.211384-1-mitltlatltl@gmail.com>
+ <20260830160025.211384-3-mitltlatltl@gmail.com> <apfrV9FZ1UN8RW55@kekkonen.localdomain>
+In-Reply-To: <apfrV9FZ1UN8RW55@kekkonen.localdomain>
+From: Pengyu Luo <mitltlatltl@gmail.com>
+Date: Sun, 6 Sep 2026 12:56:27 +0800
+X-Gm-Features: AcwNN1XiwG70aVRUQ85nsQ2Ue4F2YGZrf2eiK1bvTSLC4rcqTPaE6uX8PepJ7jM
+Message-ID: <CAH2e8h6eYmych9ESURozoNmn5Xg9SWcUUCo681NBz0FY9LB92w@mail.gmail.com>
+Subject: Re: [PATCH v6 2/5] media: hi846: Fix link frequency handling
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Martin Kepplinger-Novakovic <martink@posteo.de>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On Wed, Sep 2, 2026 at 5:24=E2=80=AFPM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Pengyu,
+>
+> Thanks for the update.
+>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+I am glad to see your review too!
 
-- [Medium] fec_enet_get_sset_count() returns 0 (not a negative error) for
-  ETH_SS_PRIV_FLAGS on every FEC variant lacking…
-- [Low] The new fec.rst documentation contradicts the implementation it
-  ships with.
+> On Mon, Aug 31, 2026 at 12:00:22AM +0800, Pengyu Luo wrote:
+> > Link frequency is tied to PLL configuration, lane count, and external
+> > and configurable clock, so use runtime here instead of hardcoding for
+> > specific configuration. To implement this, we do
+> >
+> > 1. Drop fixed link freqs, we calculate the driver supported values and
+> > use v4l2_link_freq_to_bitmap() to get the intersection with the DT
+> > supported values.
+> >
+> > 2. Attach mipi_clk_div_{2,4}lane to current mode, and use the div with
+> > mclk clock, lane count to calculate link frequency.
+> >
+> > 3. Drop mclk clock rate check.
+> >
+> > Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M=
+ pixel camera")
+> > Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+> > ---
+> > v6:
+> > - Add link freq ctrl back (Sakari)
+> > - Use v4l2_link_freq_to_bitmap() to get matched link freqs (Sakari)
+> > - Move clk_get() before than hi846_parse_dt(), since we use clock in hi=
+846_parse_dt()
+> > v5:
+> > - Use separated fields instead of raw register values for PLL cfg (Saka=
+ri)
+> > - Use mul_u64_u32_div() to avoid loss of pricision and u64/u32 issues (=
+Sakari)
+> > - Drop line break (Sakari)
+> > ---
+> >  drivers/media/i2c/hi846.c | 151 ++++++++++++++++++++++++--------------
+> >  1 file changed, 94 insertions(+), 57 deletions(-)
+> >
+> > diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
+> > index 7f069aca0fce..2f8624f9bdf3 100644
+> > --- a/drivers/media/i2c/hi846.c
+> > +++ b/drivers/media/i2c/hi846.c
+> > @@ -1,7 +1,7 @@
+> >  // SPDX-License-Identifier: GPL-2.0
+> >  // Copyright (c) 2021 Purism SPC
+> >
+> > -#include <linux/unaligned.h>
+> > +#include <linux/bitfield.h>
+> >  #include <linux/clk.h>
+> >  #include <linux/delay.h>
+> >  #include <linux/gpio/consumer.h>
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/pm.h>
+> >  #include <linux/property.h>
+> >  #include <linux/regulator/consumer.h>
+> > +#include <linux/unaligned.h>
+> >  #include <media/v4l2-ctrls.h>
+> >  #include <media/v4l2-device.h>
+> >  #include <media/v4l2-fwnode.h>
+> > @@ -219,8 +220,8 @@ struct hi846_mode {
+> >       /* Horizontal timing size */
+> >       u32 llp;
+> >
+> > -     /* Link frequency needed for this resolution */
+> > -     u8 link_freq_index;
+> > +     u8 mipi_clk_div_2lane;
+> > +     u8 mipi_clk_div_4lane;
+> >
+> >       u16 fps;
+> >
+> > @@ -1040,13 +1041,6 @@ static const char * const hi846_test_pattern_men=
+u[] =3D {
+> >       "Resolution Pattern",
+> >  };
+> >
+> > -#define FREQ_INDEX_640       0
+> > -#define FREQ_INDEX_1280      1
+> > -static const s64 hi846_link_freqs[] =3D {
+> > -     [FREQ_INDEX_640] =3D 80000000,
+> > -     [FREQ_INDEX_1280] =3D 200000000,
+> > -};
+> > -
+> >  static const struct hi846_reg_list hi846_init_regs_list_2lane =3D {
+> >       .num_of_regs =3D ARRAY_SIZE(hi846_init_2lane),
+> >       .regs =3D hi846_init_2lane,
+> > @@ -1061,7 +1055,13 @@ static const struct hi846_mode supported_modes[]=
+ =3D {
+> >       {
+> >               .width =3D 640,
+> >               .height =3D 480,
+> > -             .link_freq_index =3D FREQ_INDEX_640,
+> > +             .mipi_clk_div_2lane =3D 4,
+> > +             /*
+> > +              * Dummy but necessary if we set this mode default, other=
+wise
+> > +              * hi846_calc_pixel_rate() will be broken in
+> > +              * hi846_init_controls()
+> > +              */
+> > +             .mipi_clk_div_4lane =3D 8,
+>
+> The divider of the 4-lane case appears to be always two times that of the
+> 2-lane case. Could you calculate the value instead?
+>
 
---
+Ack
 
-net: fec: support RX flushing via an ethtool private flag
+> I think it'd be better to keep the link frequencies and modes at separate
+> indices; this is the way it used to be, too.
+>
 
-This adds per-queue RX FIFO flushing support for the FEC controller by
-exposing the RX_FLUSHn bits of FEC_QOS_SCHEME as runtime ethtool private
-flags named rx-flush-qN.  A new fec.rst document describing the flags is
-added along with the driver changes.
+You mean add an array for the divider ratios then use the indices in
+modes like before?
 
-> diff --git a/Documentation/networking/device_drivers/ethernet/freescale/fec.rst b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
-> new file mode 100644
-> index 0000000000000..502261f517e05
-> --- /dev/null
-> +++ b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
-> @@ -0,0 +1,55 @@
+> >               .fps =3D 120,
+> >               .frame_len =3D 631,
+> >               .llp =3D HI846_LINE_LENGTH,
+> > @@ -1086,7 +1086,8 @@ static const struct hi846_mode supported_modes[] =
+=3D {
+> >       {
+> >               .width =3D 1280,
+> >               .height =3D 720,
+> > -             .link_freq_index =3D FREQ_INDEX_1280,
+> > +             .mipi_clk_div_2lane =3D 2,
+> > +             .mipi_clk_div_4lane =3D 4,
+> >               .fps =3D 90,
+> >               .frame_len =3D 842,
+> >               .llp =3D HI846_LINE_LENGTH,
+> > @@ -1112,7 +1113,8 @@ static const struct hi846_mode supported_modes[] =
+=3D {
+> >       {
+> >               .width =3D 1632,
+> >               .height =3D 1224,
+> > -             .link_freq_index =3D FREQ_INDEX_1280,
+> > +             .mipi_clk_div_2lane =3D 2,
+> > +             .mipi_clk_div_4lane =3D 4,
+> >               .fps =3D 30,
+> >               .frame_len =3D 2526,
+> >               .llp =3D HI846_LINE_LENGTH,
+> > @@ -1167,6 +1169,9 @@ struct hi846 {
+> >       struct v4l2_ctrl *hblank;
+> >       struct v4l2_ctrl *exposure;
+> >
+> > +     s64 link_freqs[ARRAY_SIZE(supported_modes)];
+> > +     int num_link_freqs;
+> > +
+> >       struct mutex mutex; /* protect cur_mode, streaming and chip acces=
+s */
+> >       const struct hi846_mode *cur_mode;
+> >       bool streaming;
+> > @@ -1192,21 +1197,41 @@ static const struct hi846_datafmt *hi846_find_d=
+atafmt(u32 code)
+> >       return NULL;
+> >  }
+> >
+> > -static inline u8 hi846_get_link_freq_index(struct hi846 *hi846)
+> > +static u64
+> > +hi846_get_link_freq(const struct hi846 *hi846, const struct hi846_mode=
+ *mode)
+> >  {
+> > -     return hi846->cur_mode->link_freq_index;
+> > +     u64 mclk =3D clk_get_rate(hi846->clock);
+> > +     u8 mipi_clk_div;
+> > +
+> > +     if (hi846->nr_lanes =3D=3D 2)
+> > +             mipi_clk_div =3D mode->mipi_clk_div_2lane;
+> > +     else
+> > +             mipi_clk_div =3D mode->mipi_clk_div_4lane;
+> > +
+> > +     /*
+> > +      * HI846_REG_PLL_CFG_MIPI1_H =3D 0x025a, it is fixed in listed mo=
+des
+> > +      * [11:8]: 0x02 =3D> pre_div =3D 3
+> > +      * [7:0]: 0x5a =3D> multiplier =3D 90
+> > +      */
+> > +     return mul_u64_u32_div(mclk, 90, 3 * mipi_clk_div);
+> >  }
+> >
+> > -static u64 hi846_get_link_freq(struct hi846 *hi846)
+> > +static int hi846_get_link_freq_index(const struct hi846 *hi846,
+> > +                                  const struct hi846_mode *mode)
+> >  {
+> > -     u8 index =3D hi846_get_link_freq_index(hi846);
+> > +     u64 link_freq =3D hi846_get_link_freq(hi846, mode);
+> > +     int i;
+> > +
+> > +     for (i =3D 0; i < hi846->num_link_freqs; i++)
+> > +             if (hi846->link_freqs[i] =3D=3D link_freq)
+> > +                     return i;
+> >
+> > -     return hi846_link_freqs[index];
+> > +     return -EINVAL;
+> >  }
+> >
+> >  static u64 hi846_calc_pixel_rate(struct hi846 *hi846)
+> >  {
+> > -     u64 link_freq =3D hi846_get_link_freq(hi846);
+> > +     u64 link_freq =3D hi846_get_link_freq(hi846, hi846->cur_mode);
+> >       u64 pixel_rate =3D link_freq * 2 * hi846->nr_lanes;
+> >
+> >       do_div(pixel_rate, HI846_RGB_DEPTH);
+> > @@ -1429,8 +1454,8 @@ static int hi846_init_controls(struct hi846 *hi84=
+6)
+> >       hi846->link_freq =3D
+> >               v4l2_ctrl_new_int_menu(ctrl_hdlr, &hi846_ctrl_ops,
+> >                                      V4L2_CID_LINK_FREQ,
+> > -                                    ARRAY_SIZE(hi846_link_freqs) - 1,
+> > -                                    0, hi846_link_freqs);
+> > +                                    hi846->num_link_freqs - 1,
+> > +                                    0, hi846->link_freqs);
+> >       if (hi846->link_freq)
+> >               hi846->link_freq->flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
+> >
+> > @@ -1503,10 +1528,9 @@ static int hi846_set_video_mode(struct hi846 *hi=
+846, int fps)
+> >       u64 frame_length;
+> >       int ret =3D 0;
+> >       int dummy_lines;
+> > -     u64 link_freq =3D hi846_get_link_freq(hi846);
+> > +     u64 link_freq =3D hi846_get_link_freq(hi846, hi846->cur_mode);
+> >
+> > -     dev_dbg(&client->dev, "%s: link freq: %llu\n", __func__,
+> > -             hi846_get_link_freq(hi846));
+> > +     dev_dbg(&client->dev, "%s: link freq: %llu\n", __func__, link_fre=
+q);
+> >
+> >       do_div(link_freq, fps);
+> >       frame_length =3D link_freq;
+> > @@ -1699,6 +1723,7 @@ static int hi846_set_format(struct v4l2_subdev *s=
+d,
+> >       const struct hi846_datafmt *fmt =3D hi846_find_datafmt(mf->code);
+> >       u32 tgt_fps;
+> >       s32 vblank_def, h_blank;
+> > +     int idx;
+> >
+> >       if (!fmt) {
+> >               mf->code =3D hi846_colour_fmts[0].code;
+> > @@ -1749,7 +1774,14 @@ static int hi846_set_format(struct v4l2_subdev *=
+sd,
+> >       mf->code =3D HI846_MEDIA_BUS_FORMAT;
+> >       mf->field =3D V4L2_FIELD_NONE;
+> >
+> > -     __v4l2_ctrl_s_ctrl(hi846->link_freq, hi846_get_link_freq_index(hi=
+846));
+> > +     idx =3D hi846_get_link_freq_index(hi846, hi846->cur_mode);
+> > +     if (idx < 0) {
+> > +             dev_err(&client->dev,
+> > +                     "failed to get link freq index: %d\n", idx);
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     __v4l2_ctrl_s_ctrl(hi846->link_freq, idx);
+> >       __v4l2_ctrl_s_ctrl_int64(hi846->pixel_rate,
+> >                                hi846_calc_pixel_rate(hi846));
+> >
+> > @@ -1947,20 +1979,33 @@ static int hi846_identify_module(struct hi846 *=
+hi846)
+> >       return 0;
+> >  }
+> >
+> > -static s64 hi846_check_link_freqs(struct hi846 *hi846,
+> > -                               struct v4l2_fwnode_endpoint *ep)
+> > +static int hi846_add_link_freqs(struct hi846 *hi846, struct device *de=
+v,
+> > +                             struct v4l2_fwnode_endpoint *ep)
+> >  {
+> > -     const s64 *freqs =3D hi846_link_freqs;
+> > -     int freqs_count =3D ARRAY_SIZE(hi846_link_freqs);
+> > -     int i, j;
+> > -
+> > -     for (i =3D 0; i < freqs_count; i++) {
+> > -             for (j =3D 0; j < ep->nr_of_link_frequencies; j++)
+> > -                     if (freqs[i] =3D=3D ep->link_frequencies[j])
+> > -                             break;
+> > -             if (j =3D=3D ep->nr_of_link_frequencies)
+> > -                     return freqs[i];
+> > -     }
+> > +     s64 hi846_link_freqs[ARRAY_SIZE(supported_modes)];
+> > +     unsigned long freq_bitmap;
+> > +     int ret, i;
+> > +
+> > +     /*
+> > +      * Since the MCLK freq varies between platforms, calculating driv=
+er
+> > +      * supported link freqs here.
+> > +      */
+> > +     for (i =3D 0; i < ARRAY_SIZE(supported_modes); i++)
+> > +             hi846_link_freqs[i] =3D hi846_get_link_freq(hi846, &suppo=
+rted_modes[i]);
+> > +
+> > +     ret =3D v4l2_link_freq_to_bitmap(dev, ep->link_frequencies,
+> > +                                    ep->nr_of_link_frequencies,
+> > +                                    hi846_link_freqs,
+> > +                                    ARRAY_SIZE(hi846_link_freqs),
+> > +                                    &freq_bitmap);
+> > +     if (ret || !freq_bitmap)
+> > +             return ret;
+> > +
+> > +     for (i =3D 0; i < ARRAY_SIZE(hi846_link_freqs); i++)
+>
+> Could you use the hi846_link_freqs array as-is for the control?
+>
 
-[ ... ]
+Could you please tell me if an array with repeat numbers is acceptable
+for v4l2_ctrl_new_int_menu(), if so, keep it as-is is more convenient
+later.
 
-> +Some hardware features that are specific to the FEC and have no generic ethtool
-> +control are exposed as ethtool private flags. The set of available flags depends
-> +on the SoC and on the driver configuration (for example, the number of receive
-> +queues), so the flags are enumerated at runtime::
-> +
-> +	$ ethtool --show-priv-flags ethX
-> +
-> +	$ ethtool --set-priv-flags ethX <flag> on|off
-> +
-> +rx-flush-qN
-> +-----------
-> +
-> +On multi-queue capable controllers the driver exposes one ``rx-flush-qN``
-> +private flag per receive queue (``rx-flush-q0``, ``rx-flush-q1``, ...), which
-> +enables RX flushing for that queue. RX flushing is disabled by default.
+> The selectable modes are expected to depend on the chose link frequency,
+> which is not affected by setting the format, for instance. I wonder if it=
+'d
+> be useful to squash the next patch into this one.
+>
 
-[Severity: Low]
-Does this description match the code that ships in the same patch?  The
-document says one flag is exposed "per receive queue" and that the flag set
-depends on "the number of receive queues", but fec_enet_get_sset_count() and
-fec_enet_get_strings() enumerate min(fep->num_rx_queues,
-fep->num_tx_queues) flags, and fec_enet_set_priv_flags() rejects anything
-above that minimum with -EINVAL.
+Yes, it seems so, we need to get the index of link freq to set
+control, so we can filter the mode by the index, and this lets us drop
+previous checks.
 
-fec_enet_get_queue_num() reads the two counts from independent properties:
+Best wishes,
+Pengyu
 
-	of_property_read_u32(np, "fsl,num-tx-queues", num_tx);
 
-	of_property_read_u32(np, "fsl,num-rx-queues", num_rx);
-
-each clamped separately to 1..3, and nothing in the driver or the binding
-forces them to be equal.  So with fsl,num-rx-queues=3 and
-fsl,num-tx-queues=1, the documented rx-flush-q1 and rx-flush-q2 do not exist
-and cannot be set, and the document gives no hint why.
-
-The commit message does explain the TX dependency ("RX flushing code just
-takes min() of the both values for now"), and the -EOPNOTSUPP path for
-controllers without FEC_QUIRK_HAS_MULTI_QUEUES is also not mentioned in the
-new .rst.  Could both be spelled out in the document as well?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 794ec427b0ee6..e5c1d04a665c4 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-
-[ ... ]
-
-> @@ -3561,11 +3581,18 @@ static void fec_enet_get_strings(struct net_device *netdev,
->  	case ETH_SS_TEST:
->  		net_selftest_get_strings(data);
->  		break;
-> +	case ETH_SS_PRIV_FLAGS:
-> +		if (!(fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES))
-> +			break;
-> +		for (i = 0; i < min(fep->num_rx_queues, fep->num_tx_queues); i++)
-> +			ethtool_sprintf(&data, "rx-flush-q%d", i);
-> +		break;
->  	}
->  }
->  
->  static int fec_enet_get_sset_count(struct net_device *dev, int sset)
->  {
-> +	struct fec_enet_private *fep = netdev_priv(dev);
->  	int count;
->  
->  	switch (sset) {
-> @@ -3576,11 +3603,67 @@ static int fec_enet_get_sset_count(struct net_device *dev, int sset)
->  
->  	case ETH_SS_TEST:
->  		return net_selftest_get_count();
-> +	case ETH_SS_PRIV_FLAGS:
-> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES)
-> +			return min(fep->num_rx_queues, fep->num_tx_queues);
-> +		return 0;
-
-[Severity: Medium]
-Should this return a negative error instead of 0 when the quirk is absent?
-
-On the FEC variants without FEC_QUIRK_HAS_MULTI_QUEUES (i.MX25/27/28/6Q/6UL,
-mvf600, s32v234) this reports a private flag count of 0, while the patch
-installs .get_priv_flags/.set_priv_flags unconditionally, so
-privflags_prepare_data() no longer takes its early exit:
-
-net/ethtool/privflags.c:privflags_prepare_data() {
-	ops = dev->ethtool_ops;
-	if (!ops->get_priv_flags || !ops->get_sset_count || !ops->get_strings)
-		return -EOPNOTSUPP;
-
-ethnl_get_priv_flags_info() only errors on nflags < 0, so n_priv_flags stays
-0 and both reply helpers then evaluate a 32-bit shift by 32:
-
-net/ethtool/privflags.c:privflags_reply_size() {
-	const u32 all_flags = ~(u32)0 >> (32 - data->n_priv_flags);
-
-The same expression appears in privflags_fill_reply().  Can this produce an
-UBSAN shift-out-of-bounds report (or a trap with CONFIG_UBSAN_TRAP) for any
-local user running "ethtool --show-priv-flags eth0" on those SoCs?  Before
-this patch every FEC took the -EOPNOTSUPP path because ops->get_priv_flags
-was NULL.
-
-Returning -EOPNOTSUPP for ETH_SS_PRIV_FLAGS when the quirk is not present
-would be propagated unchanged by ethnl_get_priv_flags_info() and keeps the
-old behaviour.
-
->  	default:
->  		return -EOPNOTSUPP;
->  	}
->  }
->  
-
-[ ... ]
-
-> +static int fec_enet_set_priv_flags(struct net_device *ndev, u32 flags)
-> +{
-> +	struct fec_enet_private *fep = netdev_priv(ndev);
-> +	u32 mask = 0;
-> +	int i;
-> +
-> +	if (!(fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES))
-> +		return -EOPNOTSUPP;
-> +
-> +	/* According to i.MX8QXP Reference Manual, "when both class 1 and
-> +	 * class 2 are disabled, RX flushing for these rings must also be
-> +	 * disabled".
-> +	 */
-> +	if (flags & ~(BIT(min(fep->num_rx_queues, fep->num_tx_queues)) - 1))
-> +		return -EINVAL;
-
-[ ... ]
-
-> @@ -3800,6 +3883,8 @@ static const struct ethtool_ops fec_enet_ethtool_ops = {
->  	.get_strings		= fec_enet_get_strings,
->  	.get_ethtool_stats	= fec_enet_get_ethtool_stats,
->  	.get_sset_count		= fec_enet_get_sset_count,
-> +	.get_priv_flags		= fec_enet_get_priv_flags,
-> +	.set_priv_flags		= fec_enet_set_priv_flags,
->  #endif
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901074732.113791-1-alexander.sverdlin%40siemens.com
+> > +             if (BIT(i) & freq_bitmap) {
+> > +                     hi846->link_freqs[hi846->num_link_freqs++] =3D hi=
+846_link_freqs[i];
+> > +                     dev_dbg(dev, "Add supported link frequency %lld\n=
+", hi846_link_freqs[i]);
+> > +             }
+> >
+> >       return 0;
+> >  }
+> > @@ -1973,7 +2018,6 @@ static int hi846_parse_dt(struct hi846 *hi846, st=
+ruct device *dev)
+> >               .bus_type =3D V4L2_MBUS_CSI2_DPHY
+> >       };
+> >       int ret;
+> > -     s64 fq;
+> >
+> >       ep =3D fwnode_graph_get_next_endpoint(fwnode, NULL);
+> >       if (!ep) {
+> > @@ -2004,11 +2048,10 @@ static int hi846_parse_dt(struct hi846 *hi846, =
+struct device *dev)
+> >               goto check_hwcfg_error;
+> >       }
+> >
+> > -     /* Check that link frequences for all the modes are in device tre=
+e */
+> > -     fq =3D hi846_check_link_freqs(hi846, &bus_cfg);
+> > -     if (fq) {
+> > -             dev_err(dev, "Link frequency of %lld is not supported\n",=
+ fq);
+> > -             ret =3D -EINVAL;
+> > +     /* Add link frequencies which are supported by both DT and the dr=
+iver */
+> > +     ret =3D hi846_add_link_freqs(hi846, dev, &bus_cfg);
+> > +     if (ret) {
+> > +             dev_err(dev, "failed to add link frequency %d\n", ret);
+> >               goto check_hwcfg_error;
+> >       }
+> >
+> > @@ -2041,30 +2084,24 @@ static int hi846_probe(struct i2c_client *clien=
+t)
+> >       struct hi846 *hi846;
+> >       int ret;
+> >       int i;
+> > -     u32 mclk_freq;
+> >
+> >       hi846 =3D devm_kzalloc(&client->dev, sizeof(*hi846), GFP_KERNEL);
+> >       if (!hi846)
+> >               return -ENOMEM;
+> >
+> > -     ret =3D hi846_parse_dt(hi846, &client->dev);
+> > -     if (ret) {
+> > -             dev_err(&client->dev, "failed to check HW configuration: =
+%d",
+> > -                     ret);
+> > -             return ret;
+> > -     }
+> > -
+> > +     /* Get the MCLK first, since we need it to calculate link freqs *=
+/
+> >       hi846->clock =3D devm_v4l2_sensor_clk_get(&client->dev, NULL);
+> >       if (IS_ERR(hi846->clock))
+> >               return dev_err_probe(&client->dev, PTR_ERR(hi846->clock),
+> >                                    "failed to get clock: %pe\n",
+> >                                    hi846->clock);
+> >
+> > -     mclk_freq =3D clk_get_rate(hi846->clock);
+> > -     if (mclk_freq !=3D 25000000)
+> > -             dev_warn(&client->dev,
+> > -                      "External clock freq should be 25000000, not %u.=
+\n",
+> > -                      mclk_freq);
+> > +     ret =3D hi846_parse_dt(hi846, &client->dev);
+> > +     if (ret) {
+> > +             dev_err(&client->dev, "failed to check HW configuration: =
+%d",
+> > +                     ret);
+> > +             return ret;
+> > +     }
+> >
+> >       for (i =3D 0; i < HI846_NUM_SUPPLIES; i++)
+> >               hi846->supplies[i].supply =3D hi846_supply_names[i];
+>
+> --
+> Regards,
+>
+> Sakari Ailus
