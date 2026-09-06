@@ -1,138 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554CF1FD4;
-	Sun,  6 Sep 2026 13:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8883597B;
+	Sun,  6 Sep 2026 13:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788700663; cv=none; b=UqkcvcJxqj8aaobXhVgKVnokl0G7eoPDAmh6puFKMULdURnL31zQZEE3MB2yILp/IGnbjO4QO0vGrzvNQXt5/djn/x3ezBPSh2ws+b2PUKZbudtilhEwkw3LQIRHMl0igHalb+dSrlu0KC3kWD2dV+eCf4UtX5O+zzFX4NDrDsQ=
+	t=1788703106; cv=none; b=GUvF58xW7vLxQs5YKMrxThPhBenW3/IxuuwaFBkh4mmwCqMUnnext7eQtTDVDaqVdad5Q+j22P6zix2y4AZLI15V3S5fyNRjsacYBWpe2HnRow20GgyutKQQlPgO7nZn5Iqb/o3jleVarTDAuBIPPg5vp0fpwYhX7zHSThUSDfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788700663; c=relaxed/simple;
-	bh=D+riJ0Sul8S6D6FpkS7ASrdGZkLZpDnzr86lSs63L3U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+PrOckAGYT3LNThh1WD2dJ3BUcMKZj9ADO9Nc7VqKsiQfn+cukYGTEFCtgcgRRsxl7XJWYi0VoTMTDxrvxk3FcFTNPCBWP7myRWGou26klhq5UNWCDsWuwOnFnNF2pY5WPqnxwGvxFOL59o1g3MyR0XdB91BUOHfm3q5Il+slY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYGnlquv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788703106; c=relaxed/simple;
+	bh=GOM8XxqDFjkbB6g2HVCxclX8MgAzz1Zjvu6y5y4pW6E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ptv4h0v9Xs81xIFW85gPy8MZj4RsS0meFLa3dzvcrrXmfLIH9Wu5SfuAIBULH4p2fgqbHciRT879NMJdCuFWmUWeFc6QT86ZtWb8+KuNOR5QtgAmIpLHVhsxL8ZXqHyo/XBontU+c9P8w1Nxm9CWf9NiPxC3/wP3OJZ62jtRe14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ad5vPUdl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYGnlquv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568F91F00A3A;
-	Sun,  6 Sep 2026 13:17:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788700661;
-	bh=WCE/9VZM99B8W32LfhgpdIXVvOZKjQFo9AGkwQcHIa4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lYGnlquv6nQ08OFYgWH62Gul+FzC0S4nEKoXH3HYYrdIE6pd7tM+lCPwXO7aldLAN
-	 Q4COUhQ62ye5l2wAPwxlmrYseQGW0pgj9/UYLoXbUVyXfmaKeMEbygwyEOMIFS5YTH
-	 Z/b16mYpf+Irm/QqiCWkqbZ3bmbNc1pGVQnoH4D9/pocPMhbVh85VkWk8S9kXu2Mt0
-	 Qo6GthoFrapafQq/aHn7shtUGOOtaJl01+KRhfdtu2P7EzARYGQza4SN6SNQuXyKK3
-	 d5snKW14kE+FFBNbO7s3hTmC7/VdtCTdYZOfMF1YQIR8pburFUeDI2Tml4kaETUdTD
-	 8GrmVhheX0ISg==
-From: Simon Horman <horms@kernel.org>
-To: phucduc.bui@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	wei.fang@nxp.com,
-	frank.li@nxp.com,
-	shenwei.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	swboyd@chromium.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
-Date: Sun,  6 Sep 2026 14:17:11 +0100
-Message-ID: <20260906131711.247708-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260904105542.70540-1-phucduc.bui@gmail.com>
-References: <20260904105542.70540-1-phucduc.bui@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ad5vPUdl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0E8A5C2BCFB;
+	Sun,  6 Sep 2026 13:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788703106;
+	bh=GOM8XxqDFjkbB6g2HVCxclX8MgAzz1Zjvu6y5y4pW6E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ad5vPUdlfpJOw/ZZ0rDesF0YXD4LXxGvkTvdC7bGIkmW/hvfcZTyRK3f0euk8K7zM
+	 hy9gyZeUCK3Qcic4dZxhKB4CxAlYQKHE5RkdQYjib/dhL2BYdAJ7T0PVLjT02pg8l8
+	 gTfCxMs0NOOc5t9uBak+hsmvKSXXCEYWmdH3sAyst0Cf2SXABMJW7juBt5SudlbYxv
+	 3v1u60REwYzi4nITapGrn3TVEPTrYJHUzcr5UtW0VXH5vR4UZKLzMYkd+bG7tn0ZUC
+	 SZhPDmd2FyoPiJr6mQaxQoefsDxnW0CZwpkicA5DMltOqH0yHKzKStVfDZ4+i2A7d+
+	 9vfo9ZA3+KVsA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E387CC79F85;
+	Sun,  6 Sep 2026 13:58:25 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maud_spierings.hotmail.com@kernel.org>
+Date: Sun, 06 Sep 2026 15:58:21 +0200
+Subject: [PATCH 1/2] arm64: dts: imx93-11x11-frdm-common: fix the rtc
+ aliases
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260906-imx93_frdm_rtc-v1-1-3fadbda0bea1@hotmail.com>
+References: <20260906-imx93_frdm_rtc-v1-0-3fadbda0bea1@hotmail.com>
+In-Reply-To: <20260906-imx93_frdm_rtc-v1-0-3fadbda0bea1@hotmail.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Maud Spierings <maud_spierings@hotmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788703104; l=851;
+ i=maud_spierings@hotmail.com; s=20241110; h=from:subject:message-id;
+ bh=BMNbgRGZryoXpTYGm7+rXC+ZV8ZnELNCq8RAs2p09Cg=;
+ b=VDqYxWi6vFmns83ATAsUrFlV2oA/mNC2qqZiAY1xgxkD3YU6fdva837VwqbhXk4jFb8f1SOC7
+ SZzhYQOxrILDrnIY/X70ZtBMVaHQP4SUd0GSZ3fwMlb8W+6M8L35ERu
+X-Developer-Key: i=maud_spierings@hotmail.com; a=ed25519;
+ pk=CeFKVnZvRfX2QjB1DpdiAe2N+MEjwLEB9Yhx/OAcxRc=
+X-Endpoint-Received: by B4 Relay for maud_spierings@hotmail.com/20241110
+ with auth_id=273
+X-Original-From: Maud Spierings <maud_spierings@hotmail.com>
+Reply-To: maud_spierings@hotmail.com
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260904105542.70540-1-phucduc.bui@gmail.com?part=1
+From: Maud Spierings <maud_spierings@hotmail.com>
+
+pcf2131 has been assigned the rtc0 alias, but if the bbnsm_rtc gets
+probed first it will take this name.
+
+Properly assign bbnsm_rtc to rtc1 so that this doesn't happen
+
+Signed-off-by: Maud Spierings <maud_spierings@hotmail.com>
 ---
-net: fec: Propagate PTP initialization errors
+ arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-Change fec_ptp_init() to return an error code instead of silently
-ignoring failures during PTP initialization.
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+index 5c8fdd77ec15..97d89288db3c 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+@@ -13,6 +13,7 @@ aliases {
+ 		mmc0 = &usdhc1; /* EMMC */
+ 		mmc1 = &usdhc2; /* uSD */
+ 		rtc0 = &pcf2131;
++		rtc1 = &bbnsm_rtc;
+ 		serial0 = &lpuart1;
+ 		serial4 = &lpuart5;
+ 	};
 
-Link: https://lore.kernel.org/all/20260903092430.354186-1-phucduc.bui@gmail.com/
+-- 
+2.55.0
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 794ec427b0ee6..a9a458703547d 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-[ ... ]
-> @@ -5394,7 +5397,9 @@ fec_probe(struct platform_device *pdev)
->  	for (i = 0; i < irq_cnt; i++) {
->  		snprintf(irq_name, sizeof(irq_name), "int%d", i);
->  		irq = platform_get_irq_byname_optional(pdev, irq_name);
-> -		if (irq < 0)
-> +		if (irq < 0 && irq != -ENXIO)
-> +			return irq;
 
-[Severity: High]
-Does this direct return bypass the error handling cleanup at the end of
-fec_probe()?
-
-By returning directly instead of jumping to the failed_irq label, the driver
-bypasses fec_ptp_stop(). This leaves the fep->time_keep delayed work
-(scheduled earlier in fec_ptp_init()) active.
-
-It also bypasses free_netdev(ndev), which leaks the net_device structure.
-
-When the driver core cleans up devres allocations on probe failure, it unmaps
-fep->hwp. If the un-canceled delayed work subsequently fires, will it attempt
-to access the unmapped memory at fep->hwp and cause a kernel panic?
-
-[ ... ]
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 56801c2009d59..557a76797ebaa 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-[ ... ]
-> @@ -779,26 +779,32 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
->  		      HRTIMER_MODE_REL);
->  
->  	irq = platform_get_irq_byname_optional(pdev, "pps");
-[ ... ]
-> +	if (irq > 0) {
->  		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
->  				       0, pdev->name, ndev);
->  		if (ret < 0)
-> -			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
-> -				 ret);
-> +			return ret;
->  	}
->  
->  	fep->ptp_clock = ptp_clock_register(&fep->ptp_caps, &pdev->dev);
->  	if (IS_ERR(fep->ptp_clock)) {
-> +		ret = PTR_ERR(fep->ptp_clock);
->  		fep->ptp_clock = NULL;
->  		dev_err(&pdev->dev, "ptp_clock_register failed\n");
-> +		return ret;
-
-[Severity: High]
-Does this error return leave the devm-managed IRQ active while propagating an
-error back to the probe function?
-
-If ptp_clock_register() fails, fec_ptp_init() returns an error which
-propagates to fec_probe(), causing it to jump to failed_reset.
-
-The error path in fec_probe() manually frees ndev via free_netdev(ndev).
-
-However, the PPS interrupt was registered just prior using devm_request_irq(),
-so it remains active until fec_probe() returns and devres tears it down.
-
-If the PPS interrupt fires between the manual free of ndev and the devres
-cleanup, will fec_pps_interrupt() cast dev_id to ndev and attempt to
-dereference the already-freed ndev structure, causing a use-after-free crash?
