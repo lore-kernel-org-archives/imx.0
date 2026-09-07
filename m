@@ -1,133 +1,199 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013018.outbound.protection.outlook.com [40.107.159.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4E2517A5
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 02:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C3376BD9
+	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 02:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788748123; cv=pass; b=JVeXFtFgKKBnThI6pHS8IBVSkAbEpB0D/iOQGlIux+2nQvrGA4m1lO+HYc8rQYkNMrIRRL1zhDYyVJtVxhf5CpWp7zkrz76HssGKJqSu8SMvACDlzySH5sqTDZ79jtzsyOu+tISa6pvG+dmYuepbOqizBzc2N87ReJplyLl25as=
+	t=1788748937; cv=fail; b=WBxp/VLjvOHG4Iu0P24ujvxhA5dOBma/Xf7naFoN1vJJzBmuqH2rkEtlVm9q4wp0MtezHnRQ/XdR4MEYfVCC5YW69jb6OXJTDuub7B1PIReIn5Hi5sZY4Lba4k0oM5yY9hR7L0YWjBCi+9kKRbTkuAMJC97KCtTdRKxr5XOFxzc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788748123; c=relaxed/simple;
-	bh=xaDigs+YPMftKzlU+luPuRXiinZXB7yVOimMjfEfb10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m23MdqpKaorHiTwB2DvIcQBx+4ufkusfT4jntXK5AL6IopLtURJoC+82wJ6huBvH5GzR8Kj43NvpQdtdh2jiKl3H/gG5qO5znNhXqvfhqXLhI/RBcAMBW9BiKWytBYSRf/TEvCMDN5+PqFjPXhAEs6Z5vvwPpDttF/Pr+Mh839Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AoBHzfPF; arc=pass smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788748937; c=relaxed/simple;
+	bh=DGZ7VqqBxGCF7NFaZAuUZE8+hJU7NnG9Kd0s6ZEEYTY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RVcrNSgwaZXDp5YvjpoJkJzhG41iSzzZ9JV+ci0KKoHiW0P9D3kZUPw/PIF0yRZ0w3GJKoJ80HKJ4zHw6X9LoZVaKPG04avecOd/mKkWr2lxAKfFxbAPH5fzwAnG6wjA4khw0VSG02ipPrTz7K3EMgH2/k9NEZtcffAwQ53QCb4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VSmZ5U4O; arc=fail smtp.client-ip=40.107.159.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AoBHzfPF"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d7195706f1so32387565ad.0
-        for <imx@lists.linux.dev>; Sun, 06 Sep 2026 19:28:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788748122; cv=none;
-        d=google.com; s=arc-20260327;
-        b=E32PRvzoVkiESGm9KaY8ACThjAbAjLeIBb/HVPj9+XzoBUvQCFsXYZmuwOH7/Wh0Zw
-         i9kDNDDoXpGjZQkHQ45kvTwXIpg7G0ReSa+mdiATtd3W7g48rlBF/sVNNZn9q67aWLHc
-         mzZDl7fQFaRtD7z6vnAHcnzUSahkksgQtufgEsq4gFvNhnTF1nCDwVWkQO4nLc+Jj3dR
-         Eq3YJOPR4xyl/d5mjdQOv7J25mlHJCkW9QEkYIlhgFGActleS0+MVygNYFbc4f337zUc
-         tlCRrEaeKkI7p142HToIjmtn+SQyPBb7Uol8HBqjTtaN6PJpNDU3jCBjGsK8Js4azaZD
-         M7TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=xaDigs+YPMftKzlU+luPuRXiinZXB7yVOimMjfEfb10=;
-        fh=G4qvFJ9tNxmQRb6FmiBbZra98gvXJAt9nrdP5Q8O1C8=;
-        b=ha/yShSef0JXNklViFhnwDSlC/AuzcdQrvUCKIY2RPMZvZKXsaNOLMmyDgvKdOG2Vw
-         ykX2JiimWXQzXwtd3js3YRWeRrAjER6sXIhPMNeQD9UAfvzizPqdaS7H80KU92gCwlTS
-         QrUUiOmQffEVKIJTRijSnnc939122w6kX+0nfq7rDNiYtLomWd2gbvUoPXptQviVFMky
-         KGB45EAGUtOUAUoToesjNlZsvjjQp+35cDUNlPqn/PO47QvBBl3bivzivzIxLHjcAghE
-         VTJ1mm3ZHUOO2lhvxINdXTNFOUnaU0x6uSSJqBXze9b0wTAEsHz4e0am6/U8oqRZDv+8
-         HqPw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788748122; x=1789352922; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xaDigs+YPMftKzlU+luPuRXiinZXB7yVOimMjfEfb10=;
-        b=AoBHzfPFsspKl5rbwdp7w0cQnmqgzzFf5K2UEYEhoT7tZ900qQs07bsEbWeb+z6Y4L
-         3rN1XddXEgF3EDyv6Z9/22+IS3LdaWNlXRyofEsy/X4pD+P12qxT+WzSRw0SvhQhhLlF
-         Oe0W66X+0+YnLGoINKeBkMNPDnOSLhkQAS8CQBx/s5kr0t4o6/zaqDDOq8rHVjpYHmcY
-         iECcVmVg3iz6k2zMcLtxpxfbWQfUR/fT0rUMdWxAvt0QgDP8zVC5dz+q38idY1gbLjqo
-         2sHJZ22rEk+5abazQDjg1uxk9l2qp1fCcqPdFYPRfOHMoSBYEgIEQ2SCL3hwjeXBYkJG
-         OvVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788748122; x=1789352922;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xaDigs+YPMftKzlU+luPuRXiinZXB7yVOimMjfEfb10=;
-        b=H0d3arbKZXAFNyEzpYilIGX5VCfTS5LYfzbeYh23Nj1ewi0xVuiSF1j6LiSTz983V6
-         UTMrxeEh1eTaf/8otstVBWvN62C6/ePeuT/LzeDpcqzYnUz0O6YZELcM4/squtMIvu4N
-         /V5PMhO04nCuKM0WjqoMf9LIyv6PK7cQa49OqIbtru0xHw9mCcjIRFESdrZ+IRXzAaaG
-         QMZuwQOUhqzorObTj2ZTJWnYuNKvCulpdR0pbPDRboxfUqSk10ucvp/1No/i569LBhHt
-         mSYaLnbwuY8gIoWbL1+9Vc6bXeSyJd0LfFmdyt9jkwKlVyFAXMbkQJnCnzBvQw9DHMKV
-         96aw==
-X-Forwarded-Encrypted: i=1; AKwUvBxWcDKDhRBOu5B/2UJZOJinTDH9yMfXg55WG1K9fEe9D2/MxBOOM0ExYl382iGLZN0r1/Q=@lists.linux.dev
-X-Gm-Message-State: AFuF++kMG/AebcxR/lbstG/c8+3nA9MHl3ifcQlbg6s9D4jNxzUXVthj
-	XDNqUY9RNcCI58BO0W+ZECGO0OGaVlj2m0JdESpsyzmCvDs85xVZbD0gOqsJSkj6MzES0eKk8sI
-	BP1eOY/i/0FPsioz0KEi+969CyKsSUv8=
-X-Gm-Gg: AYBFou1OxQPnPqtTz+KsCCDIcmpMSNOVd5KlarZvBMH46oG3HzlhISz5GGlGEP/AzJm
-	6PgoFEDm1FWud3hwx2HWuLAdJrRF2APnZRQFnJqDmN/LHhpgqEHTbR5rvu4G55Xfjg6KWIBBPT8
-	FNpMrFdB2WXjVRzfW06J522QjjCccMTPUw2nF/bTwbuG+7gdD92uVLKY0qKcz4LZtoA5qSBCGBY
-	xTeZi7qCNqjoeUZ1d+tMg+9PHTZekcsURI9IQbZJR5yTo5GVseh/3kzT8nIaSkGS1FO6p1Hx7uu
-	bftuqS2K5INE6Fec8Ik70fUhCxPeoQYJ4Ex3VxF31v7etbuv6m7BUL10u2ZGHtwUGoKmufe0RZv
-	FjD/JfxoqysjamIPJR9wxQVkcBxRWfUdOEEqdO3Ct7fEhtOqa1HhxDhRa
-X-Received: by 2002:a17:903:2349:b0:2d0:cc92:f7a3 with SMTP id
- d9443c01a7336-2db125a5535mr296058245ad.2.1788748121672; Sun, 06 Sep 2026
- 19:28:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VSmZ5U4O"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RDJKE39BILN7ArDYmhIO9LQbhbS55PrzPwyWCr5mStHWWRdZKjlGbv6yTB8L5sinlnh6pRQwvUyQlA6azBgdWVDLjTAu/jFp106hKpqQjcueJ2ls38opOKftoonSNRanreYaVIbXXHVimtbT5FqHeJy1EOa+euKRrnOe03u95dVgRoY40QOFrGtKd+/gXc8slhvi86Zj7QRDXAPxeCrAEA3Ljp8rh7vXT92SbTdxNjbC0xcQdTJHlMZfbRiCWVGGtZTL31O9RtqC2WdBJOm/wP2ppqw9Bl7Tt4WDpiTFb9vpdPKufCWE7wZDE+H1yzk7NLVGJxe+NJw+Zya8/qNiyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1pNosvd7gREf0nZftU6x3gha25+YFz24vrb7W2LXbvg=;
+ b=ax8TrrfwfpSFauAvGG3qs8zzNJI6Jxm1+1rb5E7GcAPfvsd2b9+7Jqzqkt3iLC3Br2w1sATQnGJUHoZ+5eZh93qecjwbujgppmF/gfZmw/2uxR0eiKEpDg223NEBd3Pd8WPAM/KKeDGnXhjhiL5/GxNNgIXyIXB3W0pbcccLDmY0MwdbOQrZeWx7T858icAbgVLIPa8ecnFDjwV4LRaBkMo1QXMRW1t231Da5KuwEyYJ6bBkKmwivWskujSxknvlLJQLK59mKv/8hQPQdcqD7pmQWEt2EYGuIqBJSgeahuoaT/1oF4XnOFxdaMRE96zlPzL/4fTWSK2QZTJnG0ckUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1pNosvd7gREf0nZftU6x3gha25+YFz24vrb7W2LXbvg=;
+ b=VSmZ5U4OkmkrIdDIQK0H5WmOqfDaQ2+g2/gLJk0THmhqHx+iwRdA627GSKa5A1UEK+xZyZjaQx7ghYBVu5IMt6/h4jBtQ/ZKjaEcy2qyQSsBLTMjNmvDGKKAEgk84JmY3eK2FgpXGuolHYHf9sWjZ7eWYCTH2tkjtezJ9QwDcg2TOPPKInOa00x6WYPn19kcrRpS3dqgZkv1CC+7qz3ACHMOdMPN+8rTZy7vY+Ld7H4KsaNB5/q/SDiDjCHuptCTIlIwnxHNRg92hbhuDOglu/UFW8OZzXP8exnPF4M4+v0Pws9Cl5rIgzmRA6wbEXM1M9s7sc786B3dDZ+JMrJyIg==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by MIWPR04MB308196.eurprd04.prod.outlook.com
+ (2603:10a6:290:ec::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 02:42:11 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 02:42:11 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
+ (OSS)" <wei.fang@oss.nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
+	<richardcochran@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v3 net-next 5/8] net: dsa: netc: check return value of
+ ntmp_ipft_delete_entry()
+Thread-Topic: [PATCH v3 net-next 5/8] net: dsa: netc: check return value of
+ ntmp_ipft_delete_entry()
+Thread-Index: AQHdOSGEODtsg90iuUqZ9aqV9UQZ4ra/BlIAgANda6A=
+Date: Mon, 7 Sep 2026 02:42:11 +0000
+Message-ID:
+ <GV2PR04MB117393777FC28A1F78B3371AD88B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831082335.1184605-6-wei.fang@oss.nxp.com>
+ <178856073082.219967.16628382371770285710@kernel.org>
+In-Reply-To: <178856073082.219967.16628382371770285710@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|MIWPR04MB308196:EE_
+x-ms-office365-filtering-correlation-id: 37eda541-7359-4bda-9f7a-08df0c899e28
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|23010399003|7416014|366016|1800799024|376014|10067099003|6133799003|3023799007|22082099003|18002099003|56012099006|5023799004|11063799006|4143699003|38070700021;
+x-microsoft-antispam-message-info:
+ nkFKZ3lXB/LN8o5fLIeBJ8DoniuxQlslAQuoxsNkp61RV9e/bj7YnHQI1Y72CCnjp9iePaMhip19YwUyOD0DjZB5X5ypuq4snPUcVB5hv0wOQTghY+jVGjdjQe7uqWKNKovpXrKm4EdPLUAzPLx22BuNBDnQtOI24NL90UTJkVaECu6OIOIXihrWLZxIDspTIx6B6t/wfux0YhQDxVluTyQmy00eORoEkjENAg9oHS1Tmly7phXYPDzoUSrzvHFIgIpxybEqtU0KBgI2swCUf5LOn/VQQJOLz3r+T5Ol2FXQsqJB7mCpuKcBL0mocVTdQ7wq4Qu3plbnw4YoUJz9jxPBsNTCNDQvHecSXLkC7rnd9JHKkbhtla6mYv/7QWFvZUWw8rJy7uB0V+cwkBS1Gh/JT6jEDxpYfdwv8EsREfczSv0oKmyY43isd0haZOuk1+Tb3iHeEt+7hho/gZIe4x69h0IGqkRYbk8kiNJbocNwBQ1LtbvfB/hQryGODHgeTdedeTs6VWjETtlJVpNGlirMtcycImthcxMWV5d4nmGKTz6oWUdq2Jds9RvDtPud7LaXB2ZWVnk3EBPZvq8rzMamOK34Q1iNeUqOAvRNa8tGaWu01ox4hgnSQ7beZ8Of43nMAxjD8LwAmpLliuVjPJHovMh39ObZSrXWm93jW1b+shVQWQD0EjyUHyqWgzcw35eP+DpZmgxtIQ9N14+lWRd5uf9HuElthKQdFioBVE0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(366016)(1800799024)(376014)(10067099003)(6133799003)(3023799007)(22082099003)(18002099003)(56012099006)(5023799004)(11063799006)(4143699003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?3su0oeFvWarvvBoga+fWCh2QsdMNLTgEu6w0ujLWMPK7CCuLFHfqPjNJo1T+?=
+ =?us-ascii?Q?Mo6BMfICdjXs/VslP7k5ueqiMZWFy0MleKJ0dJhheGcuCcg9FCM0KOjrbxSJ?=
+ =?us-ascii?Q?78fbVdDEyq8VFj9etqIzPEUpzyUwjn1R02A9ecRKlmsj6eiD9g1tQTIJUxjR?=
+ =?us-ascii?Q?G1auTnvQpVMjR9LinC9lOGTvqqT7HNf8tIPNFFGSMOFbA+SvXy5RGV1Ls1KT?=
+ =?us-ascii?Q?drBOjMEvIQQxgiSLVMQfY07oyUvUIr8c4/mB/dLHCoznf/4cqyDF6Ge3pzzA?=
+ =?us-ascii?Q?R5ytATuTRaS46dQjyl2rwbmL7L2OixznM/lO1lNKqkOiwRMm0Y4K36vu38BU?=
+ =?us-ascii?Q?tVMQAPa8VbLs0Eo2UBZ67f0t25XgtbD7XEEE5qNDO1Ybi7zoGZTWiML4H618?=
+ =?us-ascii?Q?3nMypLQ0ilPt5+XIqRT/kBRo2i95bajz2hEbBnJFLtuZ2omQA06VdB743rze?=
+ =?us-ascii?Q?UawBk1jaPbwWrjQcdgZe6rbh5sqtHJLR5nIeDavQRfZAgU4o4AkWy8itZxVW?=
+ =?us-ascii?Q?h0BROLBj9oXCRbJEnvIkM6DKnXCx8i4wfuJ7LkyX8Vu/vu7uza3r3qPIWZf1?=
+ =?us-ascii?Q?w71W4ykTqLBQgkAqZ6PASC4U3tgT6RzDo3EJFVozdRnH4rD9QX84raD+Qt3r?=
+ =?us-ascii?Q?X6T08qgUCp8UQv+hWEUV5p1+7cW1CgrH3zbbngDWb643EzyaBo4UHlatV9Bc?=
+ =?us-ascii?Q?Yzo8QWaQvoHfex9CzLQCTIf5cM4+5GZQKWYGQxtq9shBIXT7rEQAxg5hfkuF?=
+ =?us-ascii?Q?3SA4C5kgag04q2jqvMI3f2SZ1RlxVeooQpZeabE2XXaz+MO7buArHwOV2eNW?=
+ =?us-ascii?Q?VZ0CNtiq1LTqHrS1eviOWeuq0OdyWI9IO1kLWJXzq9K/gFvZfzDwKcbcxQMX?=
+ =?us-ascii?Q?KL+ohvlYKDaa08oPmPKGfyw3YwRjR+aoMprCnuuA9ZnUyf0nd4ZvvdCFAPhV?=
+ =?us-ascii?Q?dkgNqA5YNoEeHS4+UwU4lskq92q4l4s4a7nEKd1S33qzdz1kWey/DSf44g2E?=
+ =?us-ascii?Q?fhNmSkxhwQVvW/MDF3Qx3nYyN+wU5nVGHiRg6JmYZbJXUGuMJS73tFlYnVjw?=
+ =?us-ascii?Q?zFEnGxaKDkYaQcd+jcwABdPyUeLJ1W7YKeTs5fq5zuXBF4CC8jZeUD6bwPf1?=
+ =?us-ascii?Q?cS+a45XYzdc92ikTGj1pV1nTy04iGkA2WvOueZnGbFaD19XBIAX0kRlq00pX?=
+ =?us-ascii?Q?nu1T41ctP+hRe7YLyKKKULLUZZBc+McVBPWD9NFixIBuDnMwNZ/bfe1gtK47?=
+ =?us-ascii?Q?0KWR5pJ19bAft1+lnJp/MYKMQBFnfvJk8SNYi850o9tCFtqi6uqvbOX/m2fO?=
+ =?us-ascii?Q?CQ9J0adMDym8e2AwD54MDwC17Iv6VdUBLqdW0IG7mm/kPGsT5mn+jWUM27eM?=
+ =?us-ascii?Q?fVMUV4OHbTKMcaD0YTtMj12rRAtzJvuTGykEc41ce1dYIbhAx4ijHjGjAcSZ?=
+ =?us-ascii?Q?HAN/sbiMuHWceW5Rb3C9idQfhKdMef2z9i22ZeUMkRqRrxJG1ebqJwcJ/BGG?=
+ =?us-ascii?Q?5x4U0N+RekosqZZyXHCmVxAuhcSnflZXvaW+x4WuwzRLpE3SHJ8wBz9mzRfF?=
+ =?us-ascii?Q?aCKX6F28oGVhALafcK5VTYDzys4svPBEeMloQY+bXxZc/hAhc0aSEZCgKaGx?=
+ =?us-ascii?Q?HYZUBKJS3x6zCIqC5+XjKDhNipVMl9/7ZT0BsxFgknBzhxvCxGq2X6Qm/fYN?=
+ =?us-ascii?Q?FM1gpuMxmcHHK+nl7d4wF8SU3vvkF/38ppK3pnmBoeEhO8q7?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260904105542.70540-1-phucduc.bui@gmail.com> <20260906131711.247708-1-horms@kernel.org>
- <CAABR9nFYrmteCtb6E_txg13U31Bf50p0PUBvaOXi3gmT7Z+0RQ@mail.gmail.com> <GV2PR04MB1173965A34420E072C0DD3A1988B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-In-Reply-To: <GV2PR04MB1173965A34420E072C0DD3A1988B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Mon, 7 Sep 2026 09:28:30 +0700
-X-Gm-Features: AcwNN1WcmIfrIxdZpRQHswHCpN6F3ZPaKgnosKc26H5L6i-cyqOgzdxXQl4mPdE
-Message-ID: <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Simon Horman <horms@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, 
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, "swboyd@chromium.org" <swboyd@chromium.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37eda541-7359-4bda-9f7a-08df0c899e28
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 02:42:11.3311
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Z6buht7YjGk1wdzzlLPsF420GQiFm2nS1ehk5ckAYjHFF0z0WokMsPGxj3STTv8ZpVb0SFxfE45DT1RbxfZ2BA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MIWPR04MB308196
 
-> >
-> > This is a pre-existing issue:
-> >
-> > Previously, I suggested using request_irq() and free_irq() manually,
-> > but that would add more code.
-> > Another option is to replace alloc_etherdev_mqs() with
-> > devm_alloc_etherdev_mqs(). With the LIFO cleanup order,
-> > devm_request_irq() will be cleaned up before free_netdev(res->ndev),
-> > which should resolve the issue.
-> >
-> > Since this is a long-standing, pre-existing issue, I think it would be
-> > better to handle it in a separate patch.
->
-> This issue is currently being addressed in another thread:
-> https://lore.kernel.org/imx/20260904-fec-ptp-pps-event-uaf-v1-2-9af446be4a11@cherr.cc/
->
+> > -	ntmp_ipft_delete_entry(&priv->ntmp, entry_id);
+> > +	np->ipft_hf_eid =3D NTMP_NULL_ENTRY_ID;
+> > +	np->uc =3D false;
+> > +	np->mc =3D false;
+> > +	netc_port_wr(np, NETC_PIPFCR, 0);
+>=20
+> [Severity: Medium]
+> Is every error from ntmp_ipft_delete_entry() safe to interpret as "the
+> entry is still programmed in hardware"?  The NTMP command path does not
+> look transactional:
+>=20
+> drivers/net/ethernet/freescale/enetc/ntmp.c:netc_xmit_ntmp_cmd() {
+> 	...
+> 	cbdr->next_to_use =3D i;
+> 	netc_write(cbdr->regs.pir, i);
+>=20
+> 	err =3D read_poll_timeout(netc_read, val, (val & NETC_CBDRCIR_INDEX) =3D=
+=3D i,
+> 				NETC_CBDR_DELAY_US, NETC_CBDR_TIMEOUT, true,
+> 				cbdr->regs.cir);
+> 	if (unlikely(err))
+> 		return err;
+> 	...
+> }
+>=20
+> The DELETE BD and the producer index are published to hardware before the
+> 1 ms completion poll, so -ETIMEDOUT means "completion not observed", not
+> "command not executed"; -EIO from the writeback error status is similarly
+> indeterminate.  In those cases np->ipft_hf_eid keeps an entry ID the
+> hardware may no longer own, and there is no other release path:
+> ntmp_ipft_delete_entry() has this single caller and nothing else clears
+> np->ipft_hf_eid (this is still the case at the end of the series).
 
-Oh, great! I see it now.
+I think this concern is a bit over-cautious.
 
-However, it looks like that patch does not fully address the root cause.
+For a driver-allocated, currently-valid entry ID,
+ntmp_ipft_delete_entry() will not return -ETIMEDOUT/-EBUSY/-EIO(error_rr)
+on any normal path:
 
-There are two places where devm_request_irq() is called:
-For PPS in fec_ptp_init().
+- -ETIMEDOUT: the command BD ring is only accessed while it is enabled
+  (between ntmp_init_cbdr() and ntmp_free_cbdr()); nothing disables it
+  at runtime. With the ring enabled, 1 ms is far more than enough for a
+  single command, so the completion poll cannot time out.
 
-In probe():
-devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
-0, pdev->name, ndev);
+- -EBUSY: commands are issued synchronously and serialized under
+  ring_lock (post one BD, poll, return), so in-flight BDs never exceed
+  one against a 256-entry ring. A full ring would require the hardware
+  to stop advancing CIR, which would already surface as -ETIMEDOUT.
 
-The approach in that patch only handles the first case, so it does not
-fully solve the problem.
+- -EIO(error_rr): the writeback error status is only set for malformed
+  request data. Validated interfaces always build correct requests.
+
+These three checks are defensive programming to help locate wrong
+configuration or malformed request data when developing a new NTMP
+interface; they do not fire for validated ones.
+
+In short: with the CBDR enabled, commands serialized, and a valid,
+driver-allocated entry ID, -ETIMEDOUT/-EBUSY/-EIO(error_rr) never occur
+on the normal path -- they are defensive checks for new-interface
+development. -EIO(SBE) and -ENOMEM are bus/memory-level catastrophic or
+transient failures; there the command did not take effect, so keeping
+ipft_hf_eid and returning the error is the intended behavior -- the
+hardware entry is still present.
+
