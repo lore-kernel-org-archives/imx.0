@@ -1,121 +1,71 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099453E0C7B
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 02:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788747610; cv=pass; b=KNPIv4T5wny6BA9WZIa/JBFYiY/a8W5konuBmwIgr8BCBawlamxEj8yXNqj/vV269PXJwELWrhf5SGQZzrm3zVGuOuMU07WRM2Ic4AhKu1zJrEyaK4O/ey4LumTAY8/zfnWR6TLziF3LfIbf/zGpseE87MtlDqlq5rwKFz3DFkM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788747610; c=relaxed/simple;
-	bh=yjZIwk2F/FS+WxKDAZj/VzO4DcfE/wopEMvNXvjZ3KI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=al1pzRWysZBNeUM0DdBFiyIqg1H1Rw2U3N5CE6si/iZN6smQWnHw4tgS+5Mw/t923zjvKKxT3qqhmzR2nQLav4nFaFebGuoeMaxIxEHePX8HJ31B+0yaalyusD8cnDLeTbE9uUUVonONXvI7KnkUtyEfJkNbXXzXgrc9RjAuhYk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3xJWibZ; arc=pass smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3xJWibZ"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cb5b8572b70so2949330a12.2
-        for <imx@lists.linux.dev>; Sun, 06 Sep 2026 19:20:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788747608; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GePTjjINmFfa/jVghgwE+OSqNUiya/H0yyx7uZK2AIIQGIY907uYL3wBxT5utgDRSD
-         bZ2qLrirt6pL0lDrbDM3sglxvMzP/oJUJtvVF4qhIZD/EnMbVTDCvW8Q/S6FClDJQMvW
-         Uu/VG9T+C2CG28CQoPG8YipFgOeesicCd1r9rZH6LwXn83WBkERufqpRzadiMbuKJqrI
-         rbrpqEiI1ZVAXtVwAVCNeEzIaclisqN3z5cgnCbknu2z8FJxN+rZLPeDDoNaQvH3NObl
-         OefZBIvLZQtBQ77zfzYZmE8KhsO+3Nfso/VYIOUrcfK9d9DS+tA7hBfcf8ktyQGSIVde
-         Y7UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=yjZIwk2F/FS+WxKDAZj/VzO4DcfE/wopEMvNXvjZ3KI=;
-        fh=Q0x/y9N7UP4EjdOIoVwvr68jQdgHmFb84USgnuP7l/U=;
-        b=AfEfqJUcg+lSmEHZSRg6vviXZ7Z3QB0HK81SrFiSfWgV9hP+NHwavqGh2wGhky1jVz
-         m0sDmdvRG92PvcW+Tm/EeKSVuqoXLZds8K7AaEOxT2/auten2F5SvWQdItCJen9TfITg
-         jawR+RuLnr4EwLVKBELn8gVUVaSSDKrFlL0qL5XKp1L53uE6JbITwrkYlSlW4PV5wZEl
-         r1F1/8izGth7x1OoQYZrlgCJfhTE9l2m6s14OlpwqoTyEMGnr3sE01X+8e44Mcmzq32n
-         KvKhcToOLFZ2939aiTJny7iv52/lbOSa53T14mnpmsR5cys4gEBDEqFhJlM1C3gkIEmD
-         kHjg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788747608; x=1789352408; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yjZIwk2F/FS+WxKDAZj/VzO4DcfE/wopEMvNXvjZ3KI=;
-        b=h3xJWibZdDTQqopWJ8sFMH7IIeZ3Bw9EBWYjL5mWJbyscQkclRWE+LC5XDwElUDyep
-         Rz+yxBJU4j5Tl2+rkqUkBdXh5xBSZWP0s2zKlP4qq/lMECylVmm8bsWB70xFbM75tcGT
-         bFRdoh+1zaYv7xjlK4lUN2Gm9G1NqXf3TVW7afwYhDkMkn1Bm1vdv83KX1K9o2EIj7fq
-         Ognux/Lj1o4DYYuK3zSrrOCJCamVZ76a/XivFg1CCgWnv1Z/m40sISpfXxWYQMwLdVUM
-         d4CeEOBw7ZRzVGhqvvXrYLMr49+l0nlcc0EEX2YRc3FGHdnEe3cCcaF7SrgnlQgN7fKA
-         xhXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788747608; x=1789352408;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yjZIwk2F/FS+WxKDAZj/VzO4DcfE/wopEMvNXvjZ3KI=;
-        b=gT/HwosMuY7pqmLAunjDZZ5Qqln6nuZUq95TleeCQtELfd/gxNT17wHxcJrta1GAFc
-         k7vIlPSx8FfgvkKx8DumZR6xS+YtWxSD6eoVH8ujlg2EfxGdb97hw8GYwd7CGlcXMHjz
-         9Zojs22ZB2MaNa17e3T7EC936QaBKFIQQJx5b+qSTyFFaA67Gebkx5XZhGMLuB/vSjTQ
-         k5MmAD93srYb9Wy6P7Q73Cuku3Tl9Khn4cSF41fuBPIxT4+dm0/gPXvUoV9CBOolq2oZ
-         9HQClmzgF4Ku+z+xGoxRtdxh1/QDKGBBIEAGjmZNJ/G1+bTXXAAPR1M5jUNBBRsfxW4G
-         GUmA==
-X-Forwarded-Encrypted: i=1; AKwUvBz14xvKSCBxQ3O6HfoIkup2ANP+XCoLx74s4qxICYuRGaW6QevYgxGhAu2wqTjmToII5Gs=@lists.linux.dev
-X-Gm-Message-State: AFuF++m/Vm6ouSDm4p8VgbLJHhymGlMw/P3jN+DRFU/KgWyzGcNtgmgn
-	gpkaw5nuvyYgYIX2iZHpwT1zgoHxjtWqBXKOjYE88FPSMuAJabAtoIAH/LlEgz6K5GjfQkg3gM/
-	YI+BxeVFRICoh2HfWQMJzftxWZx4lId4=
-X-Gm-Gg: AYBFou3TJQVIit7clLsblGzZdTRPJMSSNQVjeTQsclyZbpBGRa2gqJ5QEBR0wUmtr7I
-	xdSZ5JjceHsO2k49HQA/GpuHziJURLy0f7CQ+JKxK5qZkRIE3hrR4Ya/a26fBEDh8Av5VQ6rdgH
-	JTAjeyZdVpkEIbdAPQEeqy+hLNAi9C8udNwMOvoYqIiFjFPcimb7eMdEOzWmbTVh44Z9/vQKArZ
-	Z7+ZOjzDQkf1kJDYE8KRLDnCPFf28nrSQFQq7sHFlB1MyZPJDi1CFckIiumZGIIECqgIqdmSnML
-	lPp22Zctb0IaYWGRsSNjGuv2lTe5/sAdAJOPfTSCi5TbWSdcXh3A+hLzl0onJCfFo7dSP7w9Zbq
-	DPkv9fH8vrFTumio2FztU2+1ewWwqTB4Ck6dUAunJ5GGBoHExsazf4Aql
-X-Received: by 2002:a05:6a20:914f:b0:3b4:7e2d:a3c2 with SMTP id
- adf61e73a8af0-3da3a03e965mr30021035637.18.1788747608151; Sun, 06 Sep 2026
- 19:20:08 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF32813790B
+	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 02:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788747658; cv=none; b=dsP1LGEhCEmYnsrk2NBGSWqxBqD4VPIs6jXVzNMEMVQHVfemR7N2MqOM/3kA4+vwayUYWFkRNpWZhxSJTKJHxgtJUAeTMrKKlRJekkpU3dEJ2hSPPclR6Zp6UoCzOHS0oq3dqE/eo/69RI7seJIK5fwSb+HXjBg+U/GodXdIWRI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788747658; c=relaxed/simple;
+	bh=iuwBsBljlJsGfE85nL+6pQCW7IlPR0GAC9bJL81Gnl4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qIbikmEr9iEW/Bt708EQFPcwAKMQ5EUOas1BMxQ2YgOoEpCZGX5Z1mPYhE/yiDDiYmFfoi+E9KNMZRX8ZSBp4QxE1t/K11VTwMKdZQiUc2hU4fNuTu6U5pvBPxpLZJJc1OeSe/8dMinfRlglKL3gGZaZwWQ9ibzNa4ZPfcLjUWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: bdaffe52aa6211f19a56ed5b684f684d-20260907
+X-CID-CACHE: Type:Local,Time:202609071019+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:bd2cf915-2a8a-4423-8dc7-9839c1d61848,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:838c336ffe5aa4a1c76c980d8db66494,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|850|865|898,TC:nil,Content:0|15|50
+	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
+	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: bdaffe52aa6211f19a56ed5b684f684d-20260907
+X-User: gonglinkai@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <gonglinkai@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1772503598; Mon, 07 Sep 2026 10:20:49 +0800
+From: Linkai Gong <gonglinkai@kylinos.cn>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH] clk: imx: composite-93: return timeout from gate enable
+Date: Mon,  7 Sep 2026 10:20:46 +0800
+Message-Id: <20260907022046.1055639-1-gonglinkai@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <apfcGMg4aDLU5lBO@shlinux89>
+References: <20260821085616.1129333-1-gonglinkai@kylinos.cn> <apfcGMg4aDLU5lBO@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260903092430.354186-1-phucduc.bui@gmail.com>
- <GV2PR04MB117394049F412AAAC59FE93FE88B62@GV2PR04MB11739.eurprd04.prod.outlook.com>
- <CAABR9nFD1+GJiWdyxiuGVRzKjpCUfu3TQHYOLnOym3hHzOM2tg@mail.gmail.com>
- <GV2PR04MB1173931CA07AEAB48339FF71588B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
- <CAABR9nFi06-7=uHmOBFGZv1eUYCskv8WspOdUxbDuQ6vMk68Dg@mail.gmail.com> <d12608a5-468a-44ca-9442-07f2eee4e335@lunn.ch>
-In-Reply-To: <d12608a5-468a-44ca-9442-07f2eee4e335@lunn.ch>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Mon, 7 Sep 2026 09:19:56 +0700
-X-Gm-Features: AcwNN1UlYoV4Zt-Ge1izy88cCImOs4q6AUtidKnj8n02ugjYmxdqp8X_pG3V4ag
-Message-ID: <CAABR9nHuSC3jkfuvN0hUU2spfeDfSRDmkVqsvWdwHyyQOsZe1A@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: fec: Propagate PTP initialization errors
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"davem@davemloft.net" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Anson Huang <Anson.Huang@nxp.com>, 
-	Stephen Boyd <swboyd@chromium.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Andrew,
+On Wed, Sep 02, 2026 at 04:17:54PM +0800, Peng Fan wrote:
+> Do you meet any issues or just code inspection?
 
-Thank you for your feedback.
+Just code inspection. Compile tested only, I do not have i.MX93
+hardware.
 
-> > Second, the current implementation can silently ignore -EPROBE_DEFER and
-> > continue probing instead of deferring.
->
-> This is a stronger reason. You should mention it in the commit message
-> as part of your justification for net, rather than net-next.
->
+wait_ready() already returns the timeout, but enable() drops it and
+always returns 0. The clk core then treats the clock as enabled while
+the slice is still busy. That is why the error should be propagated
+even without a field report.
 
-I will add this point to the commit message.
+I will send a v2 with a clearer commit message, as Abel asked.
 
-Best regards,
-Phuc
+Thanks,
+Linkai
