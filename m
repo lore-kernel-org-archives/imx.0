@@ -1,304 +1,167 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61ABD3E8356
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 21:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F2423F40D;
+	Mon,  7 Sep 2026 22:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788816921; cv=none; b=nKFt/zFwGZCgRvXrKbliJaoJpsqRGzhFjNfBegwirVaZvHpWZUy9oILM/KgK/CnA8/48Nbpq9J26b8qCV/s+CGN4psZWYnw6xFY7S8VuOA9ZkiRz4atj5pnVPC/Jt1r+MKLcxlmJhwdbjrtwXqhU/qmOuq9GD+m0E0TjSNGcX/A=
+	t=1788821497; cv=none; b=Ew8Xsa60oH6bD1i1RRvMyaao6wZACmEMZCJMCJPLuXWBtJ3DLtKbsoxy7N6Ao48sEUSLAo4qoCucLI7e+aqUva3gaPv2RP/qck0kQbFuUSXz+DoFewN6F96VjH+/B9ilATA4a4jF4VBQ9r4ZsUiG96T9n2xkhMq1BQFaZwEH1zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788816921; c=relaxed/simple;
-	bh=Ujih48/7PyJVacHYK17Ti9IEauiWuQMit2sL2HMdfAE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p+rD7prWCZJApb/IJaZx59MmfBpgoiuQWjCIIchxCEwx7U1IghbVcWREZsFEaP1gwbGqadIs6r0kWQWIA1QNqiENQpQhTyHYuMev4NLUKwordY6CtBsNlwnVdCZ1OaFJMob2RWIIcUrP4SFr0pp4MuAmATpuaDWSFfzppJKykgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gSNJHwvm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788821497; c=relaxed/simple;
+	bh=e88CkWXLFXByErav3eyr21WjqFho/Gvfnvap7eHR0Rw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=puOGPqDbLqYumYEODco//5KqKP7x7BHtCGY1raI8iPz1O/DuFTqlIG7lZXoD+dnuj/20epYm1hOzKAVCXsAo4cpMnWpXqkLQHHipEjA/CMg1u56qJUQYZpKDhq7aRKTbA07rr2+rSHzqASQ1zqUgH6g+3w5fLMlrf6UmgoykHhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fProWdD8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gSNJHwvm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788816918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JDsc9mqLSLWmK/G1yswq76Two3vz6FazKLBCHBs0HW4=;
-	b=gSNJHwvmj4gQvBm4CX/yHI50Vp5rWPYd8NisYexkqfSj2EZ2Tw7+rRNmPYLwEHCfbFknrg
-	hhzXZJHX00igzrQla9gdfsRF71Dpqn1ppaHyrLNa5wM6Ib1CNRf3WneiVAvJM1m50LlcHy
-	65NN6JoACRaZJxLNwh46Y9qTwdBTyP4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-eEV7gbATOIudCBG4JSjYYw-1; Mon,
- 07 Sep 2026 17:35:11 -0400
-X-MC-Unique: eEV7gbATOIudCBG4JSjYYw-1
-X-Mimecast-MFC-AGG-ID: eEV7gbATOIudCBG4JSjYYw_1788816909
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCCCD19540D9;
-	Mon,  7 Sep 2026 21:35:08 +0000 (UTC)
-Received: from [100.91.157.188] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 66E941801AEA;
-	Mon,  7 Sep 2026 21:35:03 +0000 (UTC)
-Message-ID: <27d2c523-fbdd-4dff-8920-88432d938b22@redhat.com>
-Date: Mon, 7 Sep 2026 23:35:00 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fProWdD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214341F00A3A;
+	Mon,  7 Sep 2026 22:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788821495;
+	bh=osyr9vbobtjiClFCVLlSdXjYM+xnAGLkGjSYTf1jHo8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fProWdD8hdqV3J6Cs439SgfRjqDZrtdPaUoBSxecDNKYG0FC4/PDrVfpBYfK/t3sZ
+	 7AMzpDAbYx2lR1uG18bjo5qubbpiLNCNqnyHhuEgXVJ9SLsloERycfvxyF6uzjSGwM
+	 RYakJlPhxj7sZrwho1TeRZ0rOO+r37jeTw924uJxwtTOw9QsPinTtBPbNlERdQMF75
+	 RBOs47a1KqZucaz1IVtx6NeuQgbSQh+cyFZeMa5enw4m/2hMDnZdiErXnGCGIWcJOO
+	 808jLskhYt6kXdqujzmHYhp3GhrSjosuCEFh0ojlWKUm4opK78GTazVIFonp5R9Ls5
+	 /nBbxXYVPaRaA==
+Date: Mon, 7 Sep 2026 15:51:34 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
+Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "davem@davemloft.net" <davem@davemloft.net>, "shenwei.wang@nxp.com"
+ <shenwei.wang@nxp.com>, "frank.li@nxp.com" <frank.li@nxp.com>,
+ "wei.fang@nxp.com" <wei.fang@nxp.com>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>
+Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an
+ ethtool private flag
+Message-ID: <20260907155134.6e9e77f2@kernel.org>
+In-Reply-To: <371b9a61b150bce5f43e70a8032be4b4bc97e759.camel@siemens.com>
+References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+	<20260904182056.0d81cf1f@kernel.org>
+	<371b9a61b150bce5f43e70a8032be4b4bc97e759.camel@siemens.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/14] drm/panic: Compile KUnit tests as module
-To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
- airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, geert@linux-m68k.org, rdunlap@infradead.org
-Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
- linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
- sashiko-reviews@lists.linux.dev
-References: <20260902121930.597222-1-tzimmermann@suse.de>
- <20260902121930.597222-15-tzimmermann@suse.de>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20260902121930.597222-15-tzimmermann@suse.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: dM2BFPwU6bH1c7mqsyLHDgJQDNCjzXgwaBs6CmgaZrA_1788816909
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 9/2/26 14:13, Thomas Zimmermann wrote:
-> Fix dependency of the panic-helper KUnit tests on CONFIG_DRM_KUNIT_TEST=y
-> and make them build as a module. Export the necessary interfaces from the
-> panic helpers iff the KUnit framework has been enabled.
-> 
-> Select DRM_PANIC_HELPER from DRM_KUNIT_TEST to meet the dependencies of
-> the panic-helper tests.
-> 
-> It is now possible to run the tests by modprobe-ing drm_panic_helper_test
-> at runtime.
+On Mon, 7 Sep 2026 15:47:07 +0000 Sverdlin, Alexander wrote:
+> On Fri, 2026-09-04 at 18:20 -0700, Jakub Kicinski wrote:
+> > On Tue,  1 Sep 2026 09:47:29 +0200 A. Sverdlin wrote: =20
+> > > The FEC controller can flush the RX FIFO of an individual receive que=
+ue
+> > > through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
+> > >=20
+> > > RX flushing prevents frames in the RX FIFO from being blocked. Blocki=
+ng
+> > > can occur when the frame at the head of the RX FIFO cannot be forward=
+ed
+> > > because the ring it is associated with cannot accept it, i.e. when the
+> > > ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flush=
+ing
+> > > is enabled for a ring, such a blocking frame is flushed (discarded)
+> > > instead of stalling the FIFO and holding up the other rings.
+> > >=20
+> > > Expose this per-queue capability as a runtime ethtool private flag
+> > > ("rx-flush-qN").
+> > >=20
+> > > Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flu=
+shing
+> > > on more than one queue at a time can lock up the receive path, so onl=
+y a
+> > > single queue may have flushing enabled.
+> > >=20
+> > > According to i.MX8QXP Reference Manual, "when both class 1 and class =
+2 are
+> > > disabled, RX flushing for these rings must also be disabled". Both RX=
+ and
+> > > TX QoS classes are enabled via DMA_CLASS_EN bit, currently tied to
+> > > num_tx_queues in the driver. Currently there are no constraints on
+> > > num_tx_queues =3D=3D num_rx_queues, neither in DT nor in the code, ev=
+en though
+> > > having different values doesn't make much sense even without RX flush=
+ing.
+> > > RX flushing code just takes min() of the both values for now. =20
+> >=20
+> > For the errata - how is the user supposed to pick a queue?
+> > The documentation talks a lot about device specific terms instead of
+> > using generic easily understood terms. IOW it reads like slop. =20
+>=20
+> Fair point on the wording, let me re-phrase:
+>=20
+> The FEC has a single shared RX FIFO that feeds multiple DMA rings via
+> hardware classification. The FIFO is drained strictly in order, so if the
+> frame at its head is classified to a ring that currently cannot accept it
+> (the host has not replenished that ring's descriptors), that one frame
+> head-of-line-blocks the entire FIFO and starves all other rings,
+> including higher-priority ones. RX flush lets the MAC drop such a blocking
+> frame instead of stalling the whole port.
+>=20
+> So this is not a generic "queue full -> drop its own packets" situation.
+> On a controller with independent per-queue FIFOs a backed-up ring only
+> drops its own traffic; there is no cross-queue impact. On FEC the shared
+> FIFO means a low-priority ring can stall a high-priority one, which is the
+> specific problem this knob addresses.
 
-Thanks, it looks good to me.
+Sound pretty typical for a NIC so far..
 
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+> In practice a user would enable the flushing on the lower-priority
+> ring(s) =E2=80=94 the ones whose backlog you are willing to discard to ke=
+ep the
+> FIFO head clear for high-priority traffic. The queue->priority association
+> is hardcoded in the driver: VLAN PCP 0=E2=80=931 (and unclassified) -> ri=
+ng 0,
+> PCP 2=E2=80=934 -> ring 1, PCP 5=E2=80=937 -> ring 2.
+>=20
+> There are actually two constraints stacked here, and I should have made
+> both explicit in the commit message and documentation:
+>=20
+> - Why flush is needed at all: a low-priority ring can head-of-line-block
+> a high-priority ring through the shared FIFO.
+> - Erratum ERR050395: only one RX_FLUSH bit may be set at a time, so only
+> one ring can be protected this way. With three rings, the remaining
+> ring must be guaranteed not to stall by other means (limiting link rate,
+> for instance).
+>=20
+> So because of the Errata we cannot set RX_FLUSH in queues 1 and 2, but
+> if PCP 5-7 bandwith is already limited in HW, we might want to set RX_FLU=
+SH
+> not in ring 2, but in ring 1.
+>=20
+> > In general AFAIU the flushing should be enabled in tandem with pause
+> > frames right now. It'd be great if we can stick to that, or failing
+> > that add a generic config knob rather than private flags.
+> > There's nothing private about the drop decision when host ring is empty=
+ =20
+>=20
+> I don't think tying it to pause works on FEC, because pause-frame
+> generation is port-global. There is a single flow-control enable and a
+> single pause-quanta setting, driven by the shared RX FIFO thresholds.
+> There is no per-ring pause.
 
-> 
-> v3:
-> - clean up after each test case (Sashiko)
-> v2:
-> - fix parameter order in decl of drm_panic_helper_draw_screen_qr()
->    (Sashiko)
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->   drivers/gpu/drm/Kconfig.debug                 |  1 +
->   drivers/gpu/drm/drm_panic_helper.c            | 26 ++++++++++---------
->   drivers/gpu/drm/tests/Makefile                |  1 +
->   drivers/gpu/drm/tests/drm_panic_helper_test.c | 21 ++++++++++++---
->   include/drm/drm_panic_helper.h                |  8 ++++++
->   5 files changed, 41 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/Kconfig.debug b/drivers/gpu/drm/Kconfig.debug
-> index 1f4c98cbf090..b909cd0a619f 100644
-> --- a/drivers/gpu/drm/Kconfig.debug
-> +++ b/drivers/gpu/drm/Kconfig.debug
-> @@ -69,6 +69,7 @@ config DRM_KUNIT_TEST
->   	select DRM_EXPORT_FOR_TESTS if m
->   	select DRM_GEM_SHMEM_HELPER
->   	select DRM_KUNIT_TEST_HELPERS
-> +	select DRM_PANIC_HELPER
->   	select DRM_SYSFB_HELPER
->   	select PRIME_NUMBERS
->   	default KUNIT_ALL_TESTS
-> diff --git a/drivers/gpu/drm/drm_panic_helper.c b/drivers/gpu/drm/drm_panic_helper.c
-> index f64a3ca38467..683af48de38c 100644
-> --- a/drivers/gpu/drm/drm_panic_helper.c
-> +++ b/drivers/gpu/drm/drm_panic_helper.c
-> @@ -8,6 +8,8 @@
->   #include <linux/utsname.h>
->   #include <linux/zlib.h>
->   
-> +#include <kunit/visibility.h>
-> +
->   #include <drm/drm_fourcc.h>
->   #include <drm/drm_framebuffer.h>
->   #include <drm/drm_modeset_helper_vtables.h>
-> @@ -433,8 +435,8 @@ static void drm_panic_helper_logo_draw(struct drm_scanout_buffer *sb, struct drm
->   				   fg_color);
->   }
->   
-> -static int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb,
-> -					     u32 fg_color, u32 bg_color)
-> +VISIBLE_IF_KUNIT int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb,
-> +						       u32 fg_color, u32 bg_color)
->   {
->   	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
->   	struct drm_rect r_screen, r_logo, r_msg;
-> @@ -466,6 +468,7 @@ static int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb,
->   
->   	return 0;
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_draw_screen_user);
->   
->   /*
->    * Draw one line of kmsg, and handle wrapping if it won't fit in the screen width.
-> @@ -504,8 +507,8 @@ static int draw_line_with_wrap(struct drm_scanout_buffer *sb, const struct font_
->    * Draw the kmsg buffer to the screen, starting from the youngest message at the bottom,
->    * and going up until reaching the top of the screen.
->    */
-> -static int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb,
-> -					     u32 fg_color, u32 bg_color)
-> +VISIBLE_IF_KUNIT int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb,
-> +						       u32 fg_color, u32 bg_color)
->   {
->   	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
->   	struct drm_rect r_screen = DRM_RECT_INIT(0, 0, sb->width, sb->height);
-> @@ -549,6 +552,7 @@ static int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb,
->   
->   	return 0;
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_draw_screen_kmsg);
->   
->   #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
->   /*
-> @@ -691,9 +695,9 @@ static int drm_panic_helper_get_qr_code(u8 **qr_image, unsigned int qr_version)
->   /*
->    * Draw the panic message at the center of the screen, with a QR Code
->    */
-> -static int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
-> -						u32 fg_color, u32 bg_color,
-> -						unsigned int qr_version)
-> +VISIBLE_IF_KUNIT int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
-> +							  u32 fg_color, u32 bg_color,
-> +							  unsigned int qr_version)
->   {
->   	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
->   	struct drm_rect r_screen, r_logo, r_msg, r_qr, r_qr_canvas;
-> @@ -763,6 +767,7 @@ static int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
->   	drm_panic_helper_blit(sb, &r_qr, qr_image, qr_pitch, scale, fg_color);
->   	return 0;
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_draw_screen_qr_code);
->   #else
->   static void __init drm_panic_helper_qr_init(void) { };
->   static void __exit drm_panic_helper_qr_exit(void) { };
-> @@ -815,7 +820,7 @@ static int draw_panic_helper_dispatch(struct drm_scanout_buffer *sb,
->   	return ret;
->   }
->   
-> -static void drm_panic_helper_set_description(const char *description)
-> +VISIBLE_IF_KUNIT void drm_panic_helper_set_description(const char *description)
->   {
->   	u32 len;
->   
-> @@ -830,6 +835,7 @@ static void drm_panic_helper_set_description(const char *description)
->   		desc_line->len = len;
->   	}
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_set_description);
->   
->   static void drm_panic_helper_clear_description(void)
->   {
-> @@ -910,7 +916,3 @@ void __exit drm_panic_helper_exit(void)
->   {
->   	drm_panic_helper_qr_exit();
->   }
-> -
-> -#ifdef CONFIG_DRM_KUNIT_TEST
-> -#include "tests/drm_panic_helper_test.c"
-> -#endif
-> diff --git a/drivers/gpu/drm/tests/Makefile b/drivers/gpu/drm/tests/Makefile
-> index e7193b49cf91..42207df1d1c8 100644
-> --- a/drivers/gpu/drm/tests/Makefile
-> +++ b/drivers/gpu/drm/tests/Makefile
-> @@ -20,6 +20,7 @@ obj-$(CONFIG_DRM_KUNIT_TEST) += \
->   	drm_managed_test.o \
->   	drm_mm_test.o \
->   	drm_modes_test.o \
-> +	drm_panic_helper_test.o \
->   	drm_plane_helper_test.o \
->   	drm_probe_helper_test.o \
->   	drm_rect_test.o \
-> diff --git a/drivers/gpu/drm/tests/drm_panic_helper_test.c b/drivers/gpu/drm/tests/drm_panic_helper_test.c
-> index e6befe0f1c83..6184a6fc7eb8 100644
-> --- a/drivers/gpu/drm/tests/drm_panic_helper_test.c
-> +++ b/drivers/gpu/drm/tests/drm_panic_helper_test.c
-> @@ -6,13 +6,17 @@
->    * KUNIT tests for DRM panic helpers
->    */
->   
-> -#include <drm/drm_fourcc.h>
-> -#include <drm/drm_panic.h>
-> +#include <linux/highmem.h>
-> +#include <linux/units.h>
-> +#include <linux/vmalloc.h>
->   
->   #include <kunit/test.h>
->   
-> -#include <linux/units.h>
-> -#include <linux/vmalloc.h>
-> +#include <drm/drm_fourcc.h>
-> +#include <drm/drm_panic.h>
-> +#include <drm/drm_panic_helper.h>
-> +
-> +MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
->   
->   static void drm_panic_check_color_byte(struct kunit *test, u8 b)
->   {
-> @@ -86,6 +90,11 @@ static int drm_test_panic_init(struct kunit *test)
->   	return 0;
->   }
->   
-> +static void drm_test_panic_exit(struct kunit *test)
-> +{
-> +	drm_panic_helper_set_description(NULL);
-> +}
-> +
->   /*
->    * Test drawing the panic screen, using a memory mapped framebuffer
->    * Set the whole buffer to 0xa5, and then check that all pixels have been
-> @@ -229,7 +238,11 @@ static struct kunit_case drm_panic_screen_user_test[] = {
->   static struct kunit_suite drm_panic_helper_suite = {
->   	.name = "drm_panic_helper",
->   	.init = drm_test_panic_init,
-> +	.exit = drm_test_panic_exit,
->   	.test_cases = drm_panic_screen_user_test,
->   };
->   
->   kunit_test_suite(drm_panic_helper_suite);
-> +
-> +MODULE_DESCRIPTION("KUnit test suite for DRM panic handling");
-> +MODULE_LICENSE("GPL");
-> diff --git a/include/drm/drm_panic_helper.h b/include/drm/drm_panic_helper.h
-> index 6cc9a0eba077..6b19607e0784 100644
-> --- a/include/drm/drm_panic_helper.h
-> +++ b/include/drm/drm_panic_helper.h
-> @@ -8,6 +8,7 @@
->   enum drm_panic_type;
->   
->   struct drm_plane;
-> +struct drm_scanout_buffer;
->   
->   /* drm_panic_helper.c */
->   int drm_plane_helper_display_panic_screen(struct drm_plane *plane,
-> @@ -15,6 +16,13 @@ int drm_plane_helper_display_panic_screen(struct drm_plane *plane,
->   					  enum drm_panic_type panic_type,
->   					  u32 fg_color, u32 bg_color,
->   					  unsigned int qr_version);
-> +#if IS_ENABLED(CONFIG_KUNIT)
-> +int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb, u32 fg_color, u32 bg_color);
-> +int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb, u32 fg_color, u32 bg_color);
-> +int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
-> +					 u32 fg_color, u32 bg_color, unsigned int qr_version);
-> +void drm_panic_helper_set_description(const char *description);
-> +#endif
->   
->   /* drm_panic_helper_qr.rs */
->   size_t drm_panic_helper_qr_max_data_size(u8 version, size_t url_len);
+Global pause means no drops for all rings, PFC/DCB can be more
+selective with certain queues and traffic classes being "lossless".
 
+> I fully agree there is nothing private about "drop when the host ring is
+> backed up". If we want a generic uAPI, the natural shape would be a
+> per-queue attribute (drop-on-backpressure / flush), not a pause-linked
+> one, since the decision is inherently per-ring.
+>=20
+> Does the above justify the ethtool private flag in your opinion, with the
+> fix being a much better commit message and documentation or do you have
+> a new generic uAPI proposal in mind?
+
+The problem is fairly generic. Ideally you would find something
+matching in PFC/DCB APIs or even devlink shared-buffer config.=20
+Failing that we can add something to netlink APIs at queue level.=20
+But since you seem to have a strong association between the rings=20
+and traffic classes AFAIU, the PFC/devlink direction would probably=20
+be better than ring level.
