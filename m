@@ -1,189 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B98030EF86;
-	Mon,  7 Sep 2026 11:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEBC46D548
+	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 11:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788779550; cv=none; b=aKTcXJLDXGwQZY3u9bO17kZPontte7rv9CL6exNa8yv+t0pL7PNes7d7EbHIZW+gPjaeEgr118azT8o0v7i/o2WsgjJXYs0NGd9rMKrTAysyoQffETXrceyT+SMFE8l/neGtchQJZrN1peDzmibwdD3S8yRqA38Gkl6WHQBgAYA=
+	t=1788781302; cv=none; b=L68QRxEWrqMIWlks9I36jS/+VWHuhDgqQifc2jZeQ6GBbWsvPM6mNkAROrcDYNjti7vZnfhoc446jUhukNvL7SbigVLhdX7JmMjfnmK7g5zFzF1DpFNxkW/Pd+DvFXAzg/1Cl5dRNLic6IWl9AhSJSpjBe9aUUynhIsIWQLhwA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788779550; c=relaxed/simple;
-	bh=HKdGpnjcyVFx1eIyBBWJUxYCcuUgcCy3lhn954sxLtU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FGUcid/z2oWEn4q4TJgt4M93nK9+18vCr79IEa7wImlL0ycTpkU/lVVwwDdVfT5gFXdkJOZJoq3jzXNxY+wWIdyAFEefJCygJJMsLH1yi0iS1dwrRdUSGrF5PjFA8kOy71Vqb8NF7E4XvoFljRb+mmG7kmFw7c+3gfoR/GyvPjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8vVD8qw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788781302; c=relaxed/simple;
+	bh=b7Hmk4cNyp3rrqJdAEe17kwY+5NGv4bOQ4fm+78tCZw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aYTA6wUEe0THL4b3WwrvR0DhFUggf8KrX4l6k6g9M+E5MRm8vNmOtQcUV/8WJ+ujK1GHmhwM424tp3mIbkvEiZraz7yvrokkxyD0FsYix7bK4ANCllNm1LE3ohn6Kb9ui7RdxQo9zWqj+ml3IlGoe+XD3YcpRUVwHh9t+glBWEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IzlvOVu9; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8vVD8qw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3869A1F00A3A;
-	Mon,  7 Sep 2026 11:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788779548;
-	bh=5kMrR+DS9Nc+fvCfgREgxa7TTi7Li+qtIpT2ogMDQf4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=K8vVD8qwDfIESg6qknLQ0C4SFG2Hjr59xh12161pCZ2HxDLwojcONNG2ATbaS6YF0
-	 v1/qMAgMaGq6YkEXRfeFXd9ITIYvY5J8/dqozrbrQCF3FZhy3gTrwvFHAj9/K/iPak
-	 ySvL7MC8lbTHMpr7UxUSSS6a5VxiY7efJRHuEHYnlL5lmDa2XyJzuZBI68ZlFDwnw6
-	 hGboLpRKxOzmBS7Ed0n+xbIf+XqiuAs1St6ZynVNNTYB1BcbECnLDj+O+F2HRCvegT
-	 quNwJef64Ua/CTfqZSHyFo1CRBVGl8D/g3eWzWrrcG5/rt3lcLseRFqq6wmUjC28A4
-	 FsNVG0SDG6g5A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/3] can: rx-offload: make skb_irq_queue per-CPU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>
-Cc: Frank.Li@kernel.org, "Vincent Mailhol" <mailhol@kernel.org>, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, "Oliver Hartkopp" <socketcan@hartkopp.net>, linux-can@vger.kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, imx@lists.linux.dev
-In-Reply-To: <20260907104942.17089-2-ciprianmarian.costea@oss.nxp.com>
-References: <20260907104942.17089-1-ciprianmarian.costea@oss.nxp.com>
- <20260907104942.17089-2-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 07 Sep 2026 11:12:27 +0000
-Message-Id: <20260907111228.3869A1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IzlvOVu9"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4843efcbdb2so1820687f8f.2
+        for <imx@lists.linux.dev>; Mon, 07 Sep 2026 04:41:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788781298; x=1789386098; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WQUBOPYyowxH3WcaM03g9fGKTEt+Ia5xxYG+47H3YdM=;
+        b=IzlvOVu9sZUgt21BE6sNNtsQ0F3twC+Oel3Mc2KYEDL81Gcs9G8GPo6eOajaoHeBJB
+         i/2iGlYWRfCDWnu1TUmbc7RROxFiCxnp3h+djwMTJaiMNWfzYHEYTako2KrcqhBtEhHn
+         ZK4Jjtd5M9GagZvY8zw/zWKHCAOxPGcQ8dEdzweBtjMv/YET16hfHQLXF0TcpIJYucY4
+         AQBmX7EWjcXtCnq9B8Oi0i/+Znbpvj0LwaXX8donh4NZ8w4nGkMWb6qj8vi5+zc1/pHM
+         gX1Q68Xr3aCIl/VYqVs9z3yFeUStnIVOof+ZEOWZ3ohn90r+P1+nMNQJNTTsHpwos+Dg
+         847A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788781298; x=1789386098;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WQUBOPYyowxH3WcaM03g9fGKTEt+Ia5xxYG+47H3YdM=;
+        b=FXGSp89oTWxRyHqvif/oreTbmnWhD+3z5kX4LAIxEYE6G9o0dNl2YtmHRK0v2DQ99I
+         kptFHbESccL0wslMKs9mWo3ZCsCHalQNs4KnLbD7+R2VkkptwYQGRRvVOKU9yybcG60B
+         jO8xsjutGDwr/AI4IHvFlZlYUkA8+02EE3SheXr+g4LelulgbcJhIBjeAuZkKq1OEMe7
+         16Zn4GEJ1gvS9mo0Jxb6YBagiNIST2JgPIABnZnOoo+eSoVwdiHkTDRCfQ6hjhuyuSyx
+         AZeBRknuYQ/xMe6Y6q08YJhAgJE1Ua+kp9JXSpUcIHPscDQdVq1Fcnslq6DYWAJ1u4rP
+         FB0w==
+X-Gm-Message-State: AFuF++nmNDMXrXvNpIwM55sL1aNefhPWwdRtmmLXcDOD8xYlXk7uBgoZ
+	1CNMwzwTc90X6a5WrXWzHA3fc4dPr0GSNPZnUKyzdXT5EyneRH1NbHDC
+X-Gm-Gg: AYBFou2zVNAYH3ZOoslpMH7T8ftsLymlm2XAoQz8GSJAQjvl+2loD5JnSQdtaJxS692
+	crGFMD4aiKyERQ77VHWMjBECbIF5zYhFKvEJcBg2D4ktv989G4lvGI4v1WMswLDxLvPsYxguBi0
+	7WKFtLJceD+WzLBdnfeGexuSkqDxudsjtMu6eGhQxlkHpT61xxJULm47HcrpxJOmh1z5Le0DyvS
+	DtfAVk975/+/DIy4DPuMemjTsA3MLEHJdmwoMFPRNaYGDgdETzgfHCrB0OlsS2L9Mm8UYsNsdXr
+	Xah4vtaxH2zwC3fvW1LfcfZEzrADttZzK0WZDP5o4UcXBxHTaDX0XJk1r7oAy39EP9CRS9PSnEP
+	/pa0a85MvrXZuBMRg0hOuxFvItUTCw9tIDkESGGgYV2rEn/HwI0FPio7WN4OUI4Zu8QYw+jrOUh
+	BbtmceBUNDYtXnZlwpaz9LeMIbzrDkAp/6ruKIxGn2g7hgjblZLLBoJ1nUBXz0utB9SxDqi9xqe
+	7ldJQM+YREIrdsrXvOrgCaninu1zXSnuBzLXlQwq5Kls2pJjLilAmP7XiohNj4=
+X-Received: by 2002:a05:6000:712:b0:485:8a47:5b9a with SMTP id ffacd0b85a97d-4858a475db8mr21110822f8f.55.1788781297779;
+        Mon, 07 Sep 2026 04:41:37 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858d2693e8sm26763182f8f.3.2026.09.07.04.41.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 04:41:37 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Date: Mon, 07 Sep 2026 13:41:30 +0200
+Subject: [PATCH 1/4] arm64: dts: freescale: imx8mp-verdin: Add NAU8822
+ Bridge Tied Load
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260907-verdin-imx8mp-non-camera-overlays-ready-v1-1-ca0c63c2994f@toradex.com>
+References: <20260907-verdin-imx8mp-non-camera-overlays-ready-v1-0-ca0c63c2994f@toradex.com>
+In-Reply-To: <20260907-verdin-imx8mp-non-camera-overlays-ready-v1-0-ca0c63c2994f@toradex.com>
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Scheduling while atomic BUG on PREEMPT_RT and high preemption late=
-ncy due to wrapping hardware drain loop in get_cpu_ptr().
-- [High] Lockless list corruption and smp_processor_id() BUG on PREEMPT_RT =
-due to preemptible use of this_cpu_ptr() and splice in can_rx_offload_irq_f=
-inish().
---
+From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-commit c8905dbba299961e2728d05040d60499542251c0
-Author: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Add a device tree overlay for configuring the NAU8822 loudspeaker
+outputs as a Bridge Tied Load (BTL) output on the Verdin Development
+Board.
 
-can: rx-offload: make skb_irq_queue per-CPU
+The overlay adds the codec property for the BTL-capable output
+configuration, where the two loudspeaker outputs are combined for higher
+output power.
 
-This commit makes skb_irq_queue per-CPU to prevent concurrent list
-corruption when multiple IRQ lines are affined to different CPUs. It
-uses get_cpu_ptr() during enqueue to disable preemption, and splices
-the queues in the IRQ finish handlers.
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/Makefile                     |  4 ++++
+ .../boot/dts/freescale/imx8mp-verdin-dev-nau8822-btl.dtso  | 14 ++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-> diff --git a/drivers/net/can/dev/rx-offload.c b/drivers/net/can/dev/rx-of=
-fload.c
-> index 46e7b6db4a1ef..7616a16d90497 100644
-> --- a/drivers/net/can/dev/rx-offload.c
-> +++ b/drivers/net/can/dev/rx-offload.c
-[ ... ]
-> @@ -175,9 +176,18 @@ can_rx_offload_offload_one(struct can_rx_offload *of=
-fload, unsigned int n)
->  int can_rx_offload_irq_offload_timestamp(struct can_rx_offload *offload,
->  					 u64 pending)
->  {
-> +	struct sk_buff_head *irq_queue;
->  	unsigned int i;
->  	int received =3D 0;
-> =20
-> +	/*
-> +	 * get_cpu_ptr() disables preemption so that the lockless
-> +	 * __skb_queue_*() below operate on the current CPU's queue without
-> +	 * racing a migration. This also keeps this_cpu_ptr() valid when a
-> +	 * driver enqueues from a preemptible (threaded IRQ) context.
-> +	 */
-> +	irq_queue =3D get_cpu_ptr(offload->skb_irq_queue);
-> +
->  	for (i =3D offload->mb_first;
->  	     can_rx_offload_le(offload, i, offload->mb_last);
->  	     can_rx_offload_inc(offload, &i)) {
-> @@ -190,20 +200,25 @@ int can_rx_offload_irq_offload_timestamp(struct can=
-_rx_offload *offload,
->  		if (IS_ERR_OR_NULL(skb))
->  			continue;
-> =20
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 984642146dd9..8c6fdeaf12af 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -728,6 +728,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw73xx-2x.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw74xx.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw75xx-2x.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw82xx-2x.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-dev-nau8822-btl.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dahlia.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-ivy.dtb
+@@ -735,12 +736,15 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-mallow.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-yavia.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-zinnia.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dahlia.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev-nau8822-btl.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-ivy.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-mallow.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-yavia.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-zinnia.dtb
+ 
++imx8mp-verdin-wifi-dev-nau8822-btl-dtbs := imx8mp-verdin-wifi-dev.dtb imx8mp-verdin-dev-nau8822-btl.dtbo
++
+ imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0-dtbs += imx8mp-evk.dtb imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtbo
+ imx8mp-evk-lvds0-imx-lvds-hdmi-dtbs += imx8mp-evk.dtb imx8mp-evk-lvds0-imx-lvds-hdmi.dtbo
+ imx8mp-evk-lvds1-imx-dlvds-hdmi-channel0-dtbs += imx8mp-evk.dtb imx8mp-evk-lvds1-imx-dlvds-hdmi-channel0.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-nau8822-btl.dtso b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-nau8822-btl.dtso
+new file mode 100644
+index 000000000000..e94c60381c4e
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev-nau8822-btl.dtso
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * Copyright (c) Toradex
++ *
++ * Enable Bridge Tied Load (BTL) speaker mode on the Verdin Development Board,
++ * combining the two loudspeaker outputs for higher output power.
++ */
++
++/dts-v1/;
++/plugin/;
++
++&nau8822_1a {
++	nuvoton,spk-btl;
++};
 
-[Severity: High]
-Does wrapping this entire hardware drain loop in get_cpu_ptr() cause a
-"scheduling while atomic" BUG on PREEMPT_RT?
+-- 
+2.43.0
 
-Inside the loop in drivers/net/can/dev/rx-offload.c,
-can_rx_offload_offload_one() allocates memory. On PREEMPT_RT, GFP_ATOMIC
-allocations acquire a local_lock, which maps to an rt_mutex and can sleep.
-Acquiring a sleeping lock while preemption is explicitly disabled by
-get_cpu_ptr() triggers the BUG splat, and can also cause significant preemp=
-tion
-latency spikes on non-RT systems.
-
-Could get_cpu_ptr() be pushed down into the loop to strictly guard only the
-lockless __skb_queue_add_sort() operation, similar to how it was correctly
-done in can_rx_offload_queue_timestamp()?
-
-> -		__skb_queue_add_sort(&offload->skb_irq_queue, skb,
-> +		__skb_queue_add_sort(irq_queue, skb,
->  				     can_rx_offload_compare);
->  		received++;
->  	}
-> =20
-> +	put_cpu_ptr(offload->skb_irq_queue);
-> +
->  	return received;
->  }
->  EXPORT_SYMBOL_GPL(can_rx_offload_irq_offload_timestamp);
-> =20
->  int can_rx_offload_irq_offload_fifo(struct can_rx_offload *offload)
->  {
-> +	struct sk_buff_head *irq_queue;
->  	struct sk_buff *skb;
->  	int received =3D 0;
-> =20
-> +	irq_queue =3D get_cpu_ptr(offload->skb_irq_queue);
-> +
->  	while (1) {
->  		skb =3D can_rx_offload_offload_one(offload, 0);
-
-[Severity: High]
-Does this unbounded read loop have the same "scheduling while atomic" issue
-on PREEMPT_RT as in can_rx_offload_irq_offload_timestamp()?
-
-By calling get_cpu_ptr() outside the while loop, preemption is disabled acr=
-oss
-all memory allocations in can_rx_offload_offload_one() here as well.
-
-[ ... ]
-> @@ -307,14 +330,15 @@ EXPORT_SYMBOL_GPL(can_rx_offload_get_echo_skb_queue=
-_tail);
-> =20
->  void can_rx_offload_irq_finish(struct can_rx_offload *offload)
->  {
-> +	struct sk_buff_head *irq_queue =3D this_cpu_ptr(offload->skb_irq_queue);
-
-[Severity: High]
-Does calling this_cpu_ptr() here in a preemptible context trigger a
-"using smp_processor_id() in preemptible" BUG on PREEMPT_RT?
-
-On PREEMPT_RT, standard hardware IRQ handlers like flexcan_irq execute as
-preemptible IRQ threads. Because preemption is not disabled here, calling
-this_cpu_ptr() is unsafe.
-
->  	unsigned long flags;
->  	int queue_len;
-> =20
-> -	if (skb_queue_empty_lockless(&offload->skb_irq_queue))
-> +	if (skb_queue_empty_lockless(irq_queue))
->  		return;
-> =20
->  	spin_lock_irqsave(&offload->skb_queue.lock, flags);
-> -	skb_queue_splice_tail_init(&offload->skb_irq_queue, &offload->skb_queue=
-);
-> +	skb_queue_splice_tail_init(irq_queue, &offload->skb_queue);
-
-[Severity: High]
-Can another IRQ thread preempt this list splice and corrupt the list?
-
-Since preemption is not disabled in this function (and spin_lock_irqsave
-only disables migration on RT, not preemption), a higher-priority IRQ
-thread on a multi-IRQ controller (like FlexCAN on S32G2) could preempt
-the lower-priority one during this skb_queue_splice_tail_init() splice.
-
-If the preempting thread then calls can_rx_offload_irq_offload_timestamp(),
-it will explicitly disable preemption and push to the exact same CPU's
-irq_queue, concurrently modifying the lockless list.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260907104942.1708=
-9-1-ciprianmarian.costea@oss.nxp.com?part=3D1
