@@ -1,38 +1,37 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27BA4FECCE
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 15:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558DD5013A6
+	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 15:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788793482; cv=none; b=hz7QvHMZL7AhjaTdXnKLj01uzMBxLJOkwBIvZp44uw9wrMsFQmFgVOn1gR4KVdlmw7+cRs01Z1P8j8MQLGhby9saIr7SgLroad9jPBS6XpfGTlCxRXAD09tqZsKy0jFCK53g3jZe4jSJmtTBKWt/8CfMvLrtXOgPEs8tSotIzG4=
+	t=1788793492; cv=none; b=QZbZAbBCCkXZc1sjWbvw3fr9qYA2a/Xtf37oGY1HUbJpKax3bRIbqT626P+K/r1+a9d0Vl6w5xyri7vy9OACM4kWH2ol0pUS+eVp+amdXaEdsgIGQ1wrZ56Uk065Bz8iXMjgsKTUGWDcletoEKHsuE8A1vFvZbXr0EtWGdYT9qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788793482; c=relaxed/simple;
-	bh=YoXuY+0EibLgk1NnSC+F/fGnf4dfQgmWLjwckWrmdUE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGgtNwULHu+5WbTYt99WNzRju3ifmq3LJGErmaBrJhK1AfeNGGSfxqykQvMFN2p1ETCbrvjfQ5lXKkr6l8flk04HMi1baBcv6Up5l2LIAwoxXyRQNjp93jPHbA3iPmVWBJ3g15rS0cZyNMoHWgI8cPcyDVJI1qHanRmD2G5SmDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=QS+smdxC; arc=none smtp.client-ip=212.227.15.15
+	s=arc-20240116; t=1788793492; c=relaxed/simple;
+	bh=MqRp+yAXUOJBT54SRxW8JHPpLhcjeyiIOt3B8BsJOFI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UBgbehTl6RpP3bgRClFTBpgZQj2ipvSRA315uoqxZJEBG02ScrOGA2cPihs4TOrHCGa+51LF6S0ZRq0TjulkqlHd/E/MXXxZvCk0s/DGZIioMfAqW+81qNwoKroVxxx/FzGoHC+op+OhBOpAKysh5bDPZklcxLgiaPGYlmUXsrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=inQopaW4; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="QS+smdxC"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="inQopaW4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1788793469; x=1789398269; i=wahrenst@gmx.net;
-	bh=d0+IN+3vWEwMwURYP0YJG7RoE/FnY0FFKtN3xNNLels=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1788793466; x=1789398266; i=wahrenst@gmx.net;
+	bh=xQ+f5XAMDAG+ZbBglr/uBEDXOEuEIpNsBndq8fnp9Ck=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=QS+smdxCTt7ZjqIXh8eoNGVtGmfwGkpUlY+hI9bXDasbBZ4Pao6bwbp0+cHr+9I2
-	 wywMH87if6yRu0u1592yz48AyI4N/SHQHrocm85dnjW9a9zxmf3Df9WQ3VVv0Sn5S
-	 LwMkRW14DctfxvRsNDAgrSsXN6rt7S2EZEiY+eyBw6Xc5jaNfP9Hy9ACm+bIN5XKq
-	 7maM4i2JjqzCJkR0LCEC0xF8J4xXGFIqPgkR8S22nLQ//qswX4qBsXQnHD8FbWuTi
-	 cDBr94szzwMO3fZjSNgBpZDczfgT5LzlgASfZWkLojPtT5+o1M1iudHgEywIOfOVY
-	 ILu5uh9fe6auhAueZA==
+	b=inQopaW4yPYFpEj8pstPEEoHD6atFnx0cYa1+fJNkII28d3aNA2r5jsl6t4VqH9P
+	 HotlSbRhBqOkM8VftXYoBi2BWsQ4keBsafCh6/ekDc/ryMhz/1bYVa8q4HL2x5x1g
+	 i5aMfMB4GcEJjvHZmMtvQ7nFGku0U1cchbA07jsOKhABw2wZd0cjd3rGGnzhQmtVp
+	 kTJMgb/oj6EU+F7wlZMquZvaprgrB2wUwYXQ30TVMecLy3f7rjBY1q9Oz5pGeWcF7
+	 ocVV1hm9VqCJfaUoj0qk/uC1sJe/Id6c/XJnZS5VbVbTwyHyq7KiFWZRP1ZSD+mr0
+	 dC2pw0usLTBD70DkXQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M3lY1-1x3JmQ0KNX-0036eq; Mon, 07
- Sep 2026 17:04:29 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MaJ3n-1xOilj2BHx-00YR0s; Mon, 07
+ Sep 2026 17:04:26 +0200
 From: Stefan Wahren <wahrenst@gmx.net>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -52,14 +51,11 @@ Cc: Christoph Stoidner <c.stoidner@phytec.de>,
 	linux-phy@lists.infradead.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH V5 3/4] dt-bindings: phy: ti,tcan104x-can: Document Microchip MCP2542
-Date: Mon,  7 Sep 2026 17:04:19 +0200
-Message-ID: <20260907150420.18787-4-wahrenst@gmx.net>
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH V5 0/4] arm64: dts: freescale: Add chargebyte Charge Control Y
+Date: Mon,  7 Sep 2026 17:04:16 +0200
+Message-ID: <20260907150420.18787-1-wahrenst@gmx.net>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260907150420.18787-1-wahrenst@gmx.net>
-References: <20260907150420.18787-1-wahrenst@gmx.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,124 +63,165 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:g/1evOvg+Ss50R1tfWuQoC8q2+vu32MtUVYvnYLra1iGfqrgG/J
- 3hy6/T+HuVol0PR6VMd8lhldPRTEqVVmiEJlDvnHa52nGA4/suYsuYXxI1sTAgnoalC4Uox
- cYQHXZ4t04BW4FtjzW+VnWI3qoGxJVkfMsbYkkP5wq0wfZjyfyHf1u6kTOZ+63iwgb6mRkN
- yuPN03Pqm+v7s+LZ2V/XA==
+X-Provags-ID: V03:K1:DnsIFneolBsP5731lClCrVtY43lVIlNwNDBv3/CEI+EIiRYKuY+
+ 1J8n/O1o3KFqo9dwoEqvbb3GUseOMFux9qdhaHAhXmTkHnVSSm4UGzCRkLFNtKhPtszgJhH
+ u0Ghqok6pGivobBG5WQgniEyfk1cNRIss03LQNMd2aafmKEBK8saoOHwv3Np1K7/sck3HWN
+ fOrz2/WgMKhmSO1aHpEYw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:obJK9rLkoak=;+yLb3WZW2BjypugFBvbEdezNq4G
- 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
- FqeDdxjptD9DF
+UI-OutboundReport: notjunk:1;M01:P0:ZZ5Pglu5rR4=;x3Gw7OCdcXuCYFEj659isD+JtmM
+ 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
+ rzDHRdB+Hpo/vdfGk1BQVPybqIoUsAU3kGA==
 
-The Microchip MCP2542 High-speed CAN transceiver with Sleep mode is a
-pin-compatible alternative for the TI TCAN1042.
+This series adds support for the chargebyte Charge Control Y, which is
+an Electrical Vehicle Supply Equipment (EVSE) for MCS (Megawatt
+Charging System) charging stations.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-=2D--
- Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml | 1 +
- 1 file changed, 1 insertion(+)
+sashiko reported in the first version of the series [1] that X_nRST_LAN
+is available via GPIO line names, but there is no reset mechanismn in the
+device tree. This finding is valid. Since the reset line feature isn't
+implemented for LAN8651 driver yet, I like to proceed with the current
+version. The LAN8651 handles reset via SPI commands and in rare cases
+we still have the possibility to control the reset from userspace.
+Btw the pin has a pull resistor in hardware, so it's not floating.
 
-diff --git a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml b/=
-Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-index 0cf5fa21106b..1a0dc9bbe6c9 100644
-=2D-- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-+++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-@@ -18,6 +18,7 @@ properties:
-       - items:
-           - enum:
-               - microchip,ata6561
-+              - microchip,mcp2542
-               - ti,tcan1051
-           - const: ti,tcan1042
-       - items:
+sashiko complained in the fourth version of the series [2] about the
+reset polarity of ethphy2 and the different drive strength across the
+data lines. Both is intended.
+
+[1] - https://lore.kernel.org/linux-devicetree/20260818093147.E556C1F000E9=
+@smtp.kernel.org/
+[2] - https://lore.kernel.org/linux-devicetree/20260903082122.A777C1F000E9=
+@smtp.kernel.org/
+
+Changes in V5:
+- fix delete-node for pinctrl_leds (reported by sashiko)
+- add Krzysztof's Reviewed-by
+
+Changes in V4:
+- prepend constrains fix for ti,tcan104x-can binding (reported by sashiko)
+
+Changes in V3:
+- add Acked-by's from Conor
+- add missing SD2_VSELECT to default pinctrl of SD interface (reported by =
+sashiko)
+- clarify LAN8651 GPIO usage in device tree (suggested by Frank Li)
+- move X_nRST_LAN into dedicated pinctrl group to make it more self-explai=
+ning
+
+Changes in V2:
+- drop phy-can-transceiver changes and make MCP2542 compatible to TI TCAN1=
+042
+  as suggested by Marc Kleine-Budde & Frank Li
+- implemented SD2_nRESET as vmmc supply for SD card interface
+  (reported by sashiko)
+- add UHS support for SD card interface
+- dropped downstream property ti,leds-polarity (reported by sashiko)
+- fix GPIO line name of X_LAN_nCS (reported by sashiko)
+- drop unconnected pins (X_TDI, X_TMS_SWDIO, X_TDO) from GPIO line names=
+=20
+
+Stefan Wahren (4):
+  dt-bindings: phy: ti,tcan104x-can: Fix property constrains
+  dt-bindings: arm: fsl: Add chargebyte Charge Control Y
+  dt-bindings: phy: ti,tcan104x-can: Document Microchip MCP2542
+  arm64: dts: freescale: Add chargebyte Charge Control Y
+
+ .../devicetree/bindings/arm/fsl.yaml          |   1 +
+ .../bindings/phy/ti,tcan104x-can.yaml         |  10 +-
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx93-charge-control-y.dts  | 438 ++++++++++++++++++
+ .../boot/dts/freescale/imx93-phycore-som.dtsi |   2 +-
+ 5 files changed, 447 insertions(+), 5 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-charge-control-y.d=
+ts
+
 =2D-=20
 2.43.0
 
