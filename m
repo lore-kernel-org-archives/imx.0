@@ -1,102 +1,115 @@
-Received: from sg-2-5.ptr.blmpb.com (sg-2-5.ptr.blmpb.com [71.18.227.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BEC4FECD5
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 15:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F571459AC7;
+	Mon,  7 Sep 2026 17:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788796756; cv=none; b=Wt0MhsF0ExE94GX2dO2YEPooO7kBSLM++ihUn4Q8MTYzYlRPt/nqc91G6RQzXBUV8oUAYRAFT9LJ7DL9YfQzWQhHASptw4rrTnJTdMTRIyM7++Cg3vWJCDClmfpMaWlSK5vHZ6Kd0UnKIcW1Yb8pvGJVzNddqpWkq45irnp1sJ4=
+	t=1788801227; cv=none; b=Iutlm2ejpVwYdsoKZ1vQfrHEz6DFp4BtJ+E26NeAutHByjbsa4IKDOu2SFp3BKZpr924vIaXJwWYKCZg8J2jt/G4FMDL81Doe6ph1jlY42LIKoM/8Ij/hMU4MhDBMZA714Kdzeh3/3adjCgV3Rimm/v4sEE7Vi9CTPZvEQT1K6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788796756; c=relaxed/simple;
-	bh=wUEIL7VoWm6sWHD+ZViWxNXwM4BP7GRQp8vE/tW9rMU=;
-	h=Mime-Version:References:Cc:To:From:Subject:In-Reply-To:
-	 Content-Type:Content-Disposition:Date:Message-Id; b=TwRK+vOfMzFIdWj47WVz0PEMCNEVIGc2yrsR7ibTsxLrizzRV4tocId1gdLjEEZg8BdFZYrk+V3/mdyP6DsbbMaXMAtIf60yOwrE5nN4FEFDEJNGW62i3osaZtOfHi29wvspQtfEOFbHGjcOoX05u9OsW5qHYNN8DILHAGzOPTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=r0LrwAnn; arc=none smtp.client-ip=71.18.227.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
+	s=arc-20240116; t=1788801227; c=relaxed/simple;
+	bh=YMwqtk5kFFVk6NmGC1FOGANY0SgL0Bc9vtiSDOAw7LU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mPa1lC9KzpXaTQ2NupgQJtDc2EdDoQ45raXNjatEsIY7Z6z7TwELA1ao1Hb55tRE1HdbPyAAGSPXmR4Ju5k0YUabcZnhLEy+BkNL9Cfkx7OL+UbplIuBQitKCVS+yEElokqgWbGTzCt+ilIMTmLmGxDRw8N8Q23b6sekPMmD4q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zq3fT03B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="r0LrwAnn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2604220257; d=cherr.cc; t=1788796740; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=M8/WI6AJeSmvEUTgCg9I0OUNh2rq2++od/Uz13Erlf0=;
- b=r0LrwAnnVwrDqdKZt88mDsSiChw/sNqErmbwcYw+6FO/za7fp9DTZyVxysalixLBdOqk8L
- eFhO3wLpLdfjO3P5Rec3MD5q/tiZD1qNHKDs/ZVG5qJesvkHjcol1PYMqh5SYaD9hCCc3U
- m0PCIbiytwgyDiNpjtfe66hGrpLT6kXSdNtFM2473Zz06DPTONhdRdoa7chvIATbTLlUj8
- ggHAIM7kFrn9ICBeiAaR/79aDCXFyU8kyTZsk2LqA1KdFXDe+NjrzB65DZm/Cx8zu1fBH2
- 201mJdMdzhxlMq0T39N8UbF6jJpVhjHB6TLKmy1SQQH16rZYdurkSt4SVlwx1g==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zq3fT03B"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B85BC2BCC7;
+	Mon,  7 Sep 2026 17:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788801227;
+	bh=YMwqtk5kFFVk6NmGC1FOGANY0SgL0Bc9vtiSDOAw7LU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Zq3fT03BfjWHlgUc/9Mri7kh86YhT2KEytjCPrpfqMZ+RV1gedghY0c06WwwbgS3h
+	 J4JemTl0VNAIrH+ZcSJt1kNvLivqGfnSZ71q0b0P/qYRE7a9CSL41ewjKRF9L5c++7
+	 KZn8183+CaULlB6+oeNruIYwoqEd99ZR0ttLKndvuoxpz46LVdm04qEUMJf5Pw5d9w
+	 2zbKHqvQUBmWZMtb8PypW3nkNqHda6JJXSofTYJb5ffNEFdmHlF9PNUKkP2SWoNzJ+
+	 kF0hnkQk42N1e5XdIX/5FzJF5ATmWx7Mnp3pO9tPa8s5oFogkZfAaFixdyjG74uD3b
+	 DsiWugiAEQhEw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9A1EC79FA1;
+	Mon,  7 Sep 2026 17:13:46 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Subject: [PATCH v2 0/3] arm64: dts: freescale: add Free Mobile Nodebox v3
+ CPU Module (LX2160A)
+Date: Mon, 07 Sep 2026 19:13:38 +0200
+Message-Id: <20260907-for-upstream-nbxv3-dts-v2-0-6b4afd36180b@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260904105542.70540-1-phucduc.bui@gmail.com> <20260906131711.247708-1-horms@kernel.org> <CAABR9nFYrmteCtb6E_txg13U31Bf50p0PUBvaOXi3gmT7Z+0RQ@mail.gmail.com> <GV2PR04MB1173965A34420E072C0DD3A1988B22@GV2PR04MB11739.eurprd04.prod.outlook.com> <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
-Cc: "Wei Fang" <wei.fang@nxp.com>, "Simon Horman" <horms@kernel.org>, 
-	"Frank Li" <frank.li@nxp.com>, "Shenwei Wang" <shenwei.wang@nxp.com>, 
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
-	"davem@davemloft.net" <davem@davemloft.net>, 
-	"edumazet@google.com" <edumazet@google.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, 
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, 
-	"swboyd@chromium.org" <swboyd@chromium.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"Shengzhuo Wei" <me@cherr.cc>
-To: "Bui Duc Phuc" <phucduc.bui@gmail.com>
-From: "Shengzhuo Wei" <me@cherr.cc>
-Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
-X-Original-From: Shengzhuo Wei <me@cherr.cc>
-In-Reply-To: <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26a9edf43+61fc9f+lists.linux.dev+me@cherr.cc>
-Content-Disposition: inline
-Date: Mon, 7 Sep 2026 23:58:55 +0800
-Message-Id: <ap7fP5Lz04kySgn9@pve>
-Received: from pve ([111.42.148.75]) by smtp.feishu.cn with ESMTPS; Mon, 07 Sep 2026 23:58:58 +0800
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMLwnmoC/4WNQQ6CMBBFr0Jm7ZihEKmuvIdhQelUurCQKTYY0
+ rtbuYDL95L//g6RxXOEW7WDcPLRz6GAOlUwTkN4MnpbGBSpC12pQzcLvpe4Cg8vDGZLDdo1ojE
+ 8Wmqp0YOCMl6End+O8KMvPPm4zvI5flL9s3+TqUZC1zbOEiltOn13wnx2An3O+QupSTIDugAAA
+ A==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788801225; l=1868;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=YMwqtk5kFFVk6NmGC1FOGANY0SgL0Bc9vtiSDOAw7LU=;
+ b=bYN/0gd6/toQ6bC9ZCpsN95CU244lpKKLYbnDuxSpx1DPNG+tTql+s37Tx+3ijWiWcrauz+Ce
+ kcbUZquphNuCFoRBDQCZ01dH6Sy39Zp2a+j4HyVvyVGAO3pLAqZxAny
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-On 2026-09-07 09:28, Bui Duc Phuc wrote:
-> Oh, great! I see it now.
-> 
-> However, it looks like that patch does not fully address the root cause.
-> 
-> There are two places where devm_request_irq() is called:
-> For PPS in fec_ptp_init().
-> 
-> In probe():
-> devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
-> 0, pdev->name, ndev);
-> 
-> The approach in that patch only handles the first case, so it does not
-> fully solve the problem.
-> 
+The Nodebox v3 is a Free Mobile CPU module built around the NXP LX2160A
+(16x Cortex-A72, DPAA2).
 
-Yes, my patch leaves the main Ethernet IRQs unchanged.
+The same fsl-lx2160a-nbxv3.dtsi shall be used verbatim by the
+U-Boot port, sent in parallel to the U-Boot list, so the two trees
+cannot drift.
 
-For PPS, it also addresses the handler racing with PHC teardown,
-as discussed in your earlier thread. Clearing pps_enable does not
-wait for a handler that has already passed the check. The explicit
-devm_free_irq() waits for that handler before ptp_clock_unregister().
+XXX Dependency:
 
-Moving the netdev allocation to devm would address the IRQ/netdev
-freeing order, but by itself would not provide that synchronization
-before PHC teardown.
+the DTS uses gpio hogs on the QorIQ GPIO controllers, which
+needs the commit
+  78c0baf85cd0 ("dt-bindings: gpio: fsl,qoriq-gpio: allow gpio-hog child nodes")
+already in gpio/for-next and that will likely arrive in v7.4-rc1.
+Until it lands, dtbs_check reports the five hog nodes, the rest of the
+tree validates clean against the current schemas.
 
-For the probe failure case Simon pointed out, we also need to account
-for the failed_reset path skipping fec_ptp_stop(). With the explicit
-IRQ release in fec_ptp_stop(), applying both patches would still
-leave that path without the early IRQ cleanup.
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Changes in v2: (from Sashiko's comments)
+- Makefile: dtb entry in alphabetical order (before qds).
+- Move the XSPI1_A_DATA[7:4] GPIO mux group from &fspi to &gpio1, so
+  the reset hogs on gpio1 do not depend on the fspi probe.
+- gpio hogs: describe ethsw-reset# and ethsw-mdio-en with their
+  active-low polarity (GPIO_ACTIVE_LOW), same electrical levels.
+- Link to v1: https://lore.kernel.org/r/20260907-for-upstream-nbxv3-dts-v1-0-f43fd0028b78@free.fr
 
-I am preparing v2 with fec_ptp_stop() moved after unregister_netdev(),
-as Wei suggested for patch 1.
+---
+Vincent Jardin (3):
+      dt-bindings: vendor-prefixes: add Free Mobile
+      dt-bindings: arm: fsl: add freemobile,nbxv3 board
+      arm64: dts: freescale: add Nodebox v3 CPU Module
 
-Are you planning a separate patch for the IRQ lifetime issue? I'd
-like to coordinate so that we cover these paths without duplicating
-the work.
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   6 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/freescale/Makefile             |   2 +
+ .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  34 ++
+ .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 342 +++++++++++++++++++++
+ 5 files changed, 386 insertions(+)
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260907-for-upstream-nbxv3-dts-bbecd04038a2
 
-Thanks,
-Shengzhuo
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
+
+
