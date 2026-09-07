@@ -1,127 +1,105 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7618A4F4744
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 13:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B13AE1A8;
+	Mon,  7 Sep 2026 14:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788789165; cv=none; b=c39cfsA+Wq2Bqa0knAbgNeCJ17ZHJk973TbItYdpxCYPeZA8qOHGDpBGQUZfd25cTSqeK5P8Kv5YTAjnZGwoAEmctaI68hLXFoqd2krv2632Tals85clhPktQsTtJ+wRjFg8BIA6OfUOhXkXt0A3n8y3ZsGSlm2ibwL9/aPUMWg=
+	t=1788791411; cv=none; b=eAKqhaWhKw9J678w6Qfzd4B9HHneOVqtXnJRIXGAiRX1iXPZT+0g7WXnpsMSrFqsRDpmygW9AWU8MbIzUM+V6ygJzTTZm6Ubt+8VNHVkvYy4QAWGQr64H3A4j8PPj9XPiKNQWjawCA5pYvX1oviIVg/6FNYjP04TaaS62PFfz5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788789165; c=relaxed/simple;
-	bh=0bjz/3k0ABD846dQQr54nF2Hj7OJ2PwtD4QZHf9wCbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=unHCUKfD2l5d89cnajqNSVNjtTGA4dggaScrAynC0ceRQF8VO69i3O4bWwjcvKcOw9XufjYRBnd9nkhhjE3V5fSFUjsN1/6A+shNh4oaksHy1iBTufGJ82mb9xRtJ3wIvm9RV+o8vA8tEodOKGgDoWP4pfr698l3uXTNBsfUWMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-X-PTX-Original-Recipient: alexandre.belloni@bootlin.com
-X-PTX-Original-Recipient: mailhol@kernel.org
-X-PTX-Original-Recipient: linux-arm-kernel@lists.infradead.org
-X-PTX-Original-Recipient: imx@lists.linux.dev
-X-PTX-Original-Recipient: nicolas.ferre@microchip.com
-X-PTX-Original-Recipient: s32@nxp.com
-X-PTX-Original-Recipient: ciprianmarian.costea@oss.nxp.com
-X-PTX-Original-Recipient: claudiu.beznea@tuxon.dev
-X-PTX-Original-Recipient: dev.kurt@vandijck-laurijssen.be
-X-PTX-Original-Recipient: linux-can@vger.kernel.org
-X-PTX-Original-Recipient: linux-kernel@vger.kernel.org
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B59B32018B6;
-	Mon, 07 Sep 2026 15:52:26 +0200 (CEST)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1x3Zlq-000Xy5-21;
-	Mon, 07 Sep 2026 15:52:26 +0200
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C8492596948;
-	Mon, 07 Sep 2026 13:49:24 +0000 (UTC)
-Date: Mon, 7 Sep 2026 15:49:24 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>, 
-	linux-can@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 0/3] can_rx_offload keeps a lockless irq_queue that
- the IRQ handlers fill and that is later spliced under skb_queue.lock into
- the NAPI-facing skb_queue. This works as long as a single context fills the
- irq_queue. flexcan with FLEXCAN_QUIRK_SECONDARY_MB_IRQ and mcf5441x use two
- mailbox IRQ lines. When those are affined to different CPUs the two handlers
- can enqueue into the same list at the same time and corrupt it.
-Message-ID: <20260907-lively-easygoing-groundhog-51cdd3-mkl@pengutronix.de>
-References: <20260907104942.17089-1-ciprianmarian.costea@oss.nxp.com>
+	s=arc-20240116; t=1788791411; c=relaxed/simple;
+	bh=ziuOeOxSNcqiPfzFdD4nGs0eE7gGvrp2Nr8Qsw9rbZY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lqlc6Irz7dbDEhvS2DUnu0k7YyoBCUKKgcNt9d+KmXq0jXBJYqJt9f5ZMhUHe0EgJBwkizykqDrm5UCKNNq/AYqYGt6O9iINulupAdb8nA94zq40eaLp96RlQ7nVQCrEVoV8cCcRR3MfSfWItBvctyFHiblosTBt53dgB4bzAaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uu9+6u5b; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uu9+6u5b"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 987EEC2BCC7;
+	Mon,  7 Sep 2026 14:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788791410;
+	bh=ziuOeOxSNcqiPfzFdD4nGs0eE7gGvrp2Nr8Qsw9rbZY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=uu9+6u5bTLM5mUpynWqzImFDDkhziT+M3C6eLIu/h9usjHrpbGLMrrG0NPmq4RfAD
+	 /vZe0zsei109HZLtWu/7HC73vBzrmqonP9lKl1zTvpopNVQtbqLHX2tyVXdFphjUAj
+	 lDMm2S1wkPyvAX9k09G7QzemRxczqX/3FRiUR8FGTNWNNKQbDrTCApftfaLUlWLC64
+	 gkBziRjY/bw212fG3/OCClFM1ltKfTmyo6GFh7CH0DGXID/qtkVPl3pEzh+594fJqI
+	 RLmUpw65P+borgp/g9FOvNiXoNLyGBl4aOvtIVZuzLZPxjQqTEWM3a1jsltXw8DYw1
+	 WNAnpQ/yJzGEg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70BEEC79FA0;
+	Mon,  7 Sep 2026 14:30:10 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Subject: [PATCH 0/3] arm64: dts: freescale: add Free Mobile Nodebox v3 CPU
+ Module (LX2160A)
+Date: Mon, 07 Sep 2026 16:27:36 +0200
+Message-Id: <20260907-for-upstream-nbxv3-dts-v1-0-f43fd0028b78@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="z3ydzlstb6mz4j6c"
-Content-Disposition: inline
-In-Reply-To: <20260907104942.17089-1-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANjJnmoC/x3MMQ6DMAxA0asgz1hyE9SWXgUxJMS0HgjIBoSEu
+ DtRxzf8f4KxCht8qhOUdzGZc8GjrmD4hfxllFQMjtyTWnrhOCtui63KYcIcj91jWg1j5CFRQ/4
+ dHJR4UR7l+I+7/rpuFKHuYmgAAAA=
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788791274; l=1400;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=ziuOeOxSNcqiPfzFdD4nGs0eE7gGvrp2Nr8Qsw9rbZY=;
+ b=FqDKCKguM57Z6Ctx3L4bATK3YBeUPX8/dyvlG+82bXhG1o+utV545PQQZUSwUwV4jqpBWixiN
+ vn35b0/2Z8+A4b4CmS9yOlqLloRLGGLI39toULxKRizXqC5cvB8UxXJ
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
+
+The Nodebox v3 is a Free Mobile CPU module built around the NXP LX2160A
+(16x Cortex-A72, DPAA2).
+
+The same fsl-lx2160a-nbxv3.dtsi shall be used verbatim by the
+U-Boot port, sent in parallel to the U-Boot list, so the two trees
+cannot drift.
+
+XXX Dependency:
+
+the DTS uses gpio hogs on the QorIQ GPIO controllers, which
+needs the commit
+  78c0baf85cd0 ("dt-bindings: gpio: fsl,qoriq-gpio: allow gpio-hog child nodes")
+already in gpio/for-next and that will likely arrive in v7.4-rc1.
+Until it lands, dtbs_check reports the five hog nodes, the rest of the
+tree validates clean against the current schemas.
+
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Vincent Jardin (3):
+      dt-bindings: vendor-prefixes: add Free Mobile
+      dt-bindings: arm: fsl: add freemobile,nbxv3 board
+      arm64: dts: freescale: add Nodebox v3 CPU Module
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   6 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/freescale/Makefile             |   2 +
+ .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  30 ++
+ .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 342 +++++++++++++++++++++
+ 5 files changed, 382 insertions(+)
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260907-for-upstream-nbxv3-dts-bbecd04038a2
+
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
 
 
---z3ydzlstb6mz4j6c
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v5 0/3] can_rx_offload keeps a lockless irq_queue that
- the IRQ handlers fill and that is later spliced under skb_queue.lock into
- the NAPI-facing skb_queue. This works as long as a single context fills the
- irq_queue. flexcan with FLEXCAN_QUIRK_SECONDARY_MB_IRQ and mcf5441x use two
- mailbox IRQ lines. When those are affined to different CPUs the two handlers
- can enqueue into the same list at the same time and corrupt it.
-MIME-Version: 1.0
-
-On 07.09.2026 12:49:39, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->
-> This series:
->   1. Makes the irq_queue per-CPU so the handlers no longer share a list.
-
-As sashiko pointed out, using per-CPU variables in a preemptible context
-doesn't work. When proposing to use per-CPU variables I haven't thought
-that far. So in hindsight this approach is not good.
-
-What about following what NAPI does. Have a dedicated data structure per
-IRQ. I think these ones are needed:
-
-| 	struct sk_buff_head skb_irq_queue;
-| 	u32 skb_queue_len_max;
-|
-| 	unsigned int mb_first;
-| 	unsigned int mb_last;
-
-And pass them to can_rx_offload_queue_timestamp() and
-can_rx_offload_irq_finish().
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---z3ydzlstb6mz4j6c
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCap7A4gAKCRDMOmT6rpmt
-0tuZAQCogFQ+QoWQNO6hDtuUMx9jES7Eaf1siU6qm8CmFEtYUgEAjL4yL5o2L/jP
-fDbWTNDMHBDKnrwVfBb55SMkxq6uAA0=
-=gQZJ
------END PGP SIGNATURE-----
-
---z3ydzlstb6mz4j6c--
