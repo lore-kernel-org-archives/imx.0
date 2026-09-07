@@ -1,199 +1,248 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013018.outbound.protection.outlook.com [40.107.159.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C3376BD9
-	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 02:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788748937; cv=fail; b=WBxp/VLjvOHG4Iu0P24ujvxhA5dOBma/Xf7naFoN1vJJzBmuqH2rkEtlVm9q4wp0MtezHnRQ/XdR4MEYfVCC5YW69jb6OXJTDuub7B1PIReIn5Hi5sZY4Lba4k0oM5yY9hR7L0YWjBCi+9kKRbTkuAMJC97KCtTdRKxr5XOFxzc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788748937; c=relaxed/simple;
-	bh=DGZ7VqqBxGCF7NFaZAuUZE8+hJU7NnG9Kd0s6ZEEYTY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RVcrNSgwaZXDp5YvjpoJkJzhG41iSzzZ9JV+ci0KKoHiW0P9D3kZUPw/PIF0yRZ0w3GJKoJ80HKJ4zHw6X9LoZVaKPG04avecOd/mKkWr2lxAKfFxbAPH5fzwAnG6wjA4khw0VSG02ipPrTz7K3EMgH2/k9NEZtcffAwQ53QCb4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VSmZ5U4O; arc=fail smtp.client-ip=40.107.159.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE9334D4C9
+	for <imx@lists.linux.dev>; Mon,  7 Sep 2026 03:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788752722; cv=none; b=nkOfJicRYytn2KgpRVuMGmOUt5i8z993/xzyhdgqK0NQpLDnT5hUq1WV4Sj/oRJwtJeqnBIoNLNDEs83XV78xpT2Cv2KF/IK9dPEtX9P8FkWLrbuG/FokFgxHv5DxY2sH7+8XmSosmU1ZDeuznKsbwQUAkS3vPO3mByJiYmcfkc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788752722; c=relaxed/simple;
+	bh=0pTtA8upWK02dFZ0yP0XB7/JJ7MEN1jwB45G87JhvOk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X6pksr2qlutJ+vyiaf86B1I7K5FQYhI651m6ViGICUjp9BuwUgNo9S3ojNw3UJmktKP4vv8tzC5JBYJyG1H7K0fI2JmYMmIFytqOErlEZLFjNO57gE1IucTUIKcboWCDf8gqK9UheNvTw/imeUpUD5y0y8Xgd/zxymWAJTCzsZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nNGUVROb; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VSmZ5U4O"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RDJKE39BILN7ArDYmhIO9LQbhbS55PrzPwyWCr5mStHWWRdZKjlGbv6yTB8L5sinlnh6pRQwvUyQlA6azBgdWVDLjTAu/jFp106hKpqQjcueJ2ls38opOKftoonSNRanreYaVIbXXHVimtbT5FqHeJy1EOa+euKRrnOe03u95dVgRoY40QOFrGtKd+/gXc8slhvi86Zj7QRDXAPxeCrAEA3Ljp8rh7vXT92SbTdxNjbC0xcQdTJHlMZfbRiCWVGGtZTL31O9RtqC2WdBJOm/wP2ppqw9Bl7Tt4WDpiTFb9vpdPKufCWE7wZDE+H1yzk7NLVGJxe+NJw+Zya8/qNiyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1pNosvd7gREf0nZftU6x3gha25+YFz24vrb7W2LXbvg=;
- b=ax8TrrfwfpSFauAvGG3qs8zzNJI6Jxm1+1rb5E7GcAPfvsd2b9+7Jqzqkt3iLC3Br2w1sATQnGJUHoZ+5eZh93qecjwbujgppmF/gfZmw/2uxR0eiKEpDg223NEBd3Pd8WPAM/KKeDGnXhjhiL5/GxNNgIXyIXB3W0pbcccLDmY0MwdbOQrZeWx7T858icAbgVLIPa8ecnFDjwV4LRaBkMo1QXMRW1t231Da5KuwEyYJ6bBkKmwivWskujSxknvlLJQLK59mKv/8hQPQdcqD7pmQWEt2EYGuIqBJSgeahuoaT/1oF4XnOFxdaMRE96zlPzL/4fTWSK2QZTJnG0ckUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1pNosvd7gREf0nZftU6x3gha25+YFz24vrb7W2LXbvg=;
- b=VSmZ5U4OkmkrIdDIQK0H5WmOqfDaQ2+g2/gLJk0THmhqHx+iwRdA627GSKa5A1UEK+xZyZjaQx7ghYBVu5IMt6/h4jBtQ/ZKjaEcy2qyQSsBLTMjNmvDGKKAEgk84JmY3eK2FgpXGuolHYHf9sWjZ7eWYCTH2tkjtezJ9QwDcg2TOPPKInOa00x6WYPn19kcrRpS3dqgZkv1CC+7qz3ACHMOdMPN+8rTZy7vY+Ld7H4KsaNB5/q/SDiDjCHuptCTIlIwnxHNRg92hbhuDOglu/UFW8OZzXP8exnPF4M4+v0Pws9Cl5rIgzmRA6wbEXM1M9s7sc786B3dDZ+JMrJyIg==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by MIWPR04MB308196.eurprd04.prod.outlook.com
- (2603:10a6:290:ec::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 02:42:11 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 02:42:11 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
- (OSS)" <wei.fang@oss.nxp.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v3 net-next 5/8] net: dsa: netc: check return value of
- ntmp_ipft_delete_entry()
-Thread-Topic: [PATCH v3 net-next 5/8] net: dsa: netc: check return value of
- ntmp_ipft_delete_entry()
-Thread-Index: AQHdOSGEODtsg90iuUqZ9aqV9UQZ4ra/BlIAgANda6A=
-Date: Mon, 7 Sep 2026 02:42:11 +0000
-Message-ID:
- <GV2PR04MB117393777FC28A1F78B3371AD88B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260831082335.1184605-6-wei.fang@oss.nxp.com>
- <178856073082.219967.16628382371770285710@kernel.org>
-In-Reply-To: <178856073082.219967.16628382371770285710@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|MIWPR04MB308196:EE_
-x-ms-office365-filtering-correlation-id: 37eda541-7359-4bda-9f7a-08df0c899e28
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|23010399003|7416014|366016|1800799024|376014|10067099003|6133799003|3023799007|22082099003|18002099003|56012099006|5023799004|11063799006|4143699003|38070700021;
-x-microsoft-antispam-message-info:
- nkFKZ3lXB/LN8o5fLIeBJ8DoniuxQlslAQuoxsNkp61RV9e/bj7YnHQI1Y72CCnjp9iePaMhip19YwUyOD0DjZB5X5ypuq4snPUcVB5hv0wOQTghY+jVGjdjQe7uqWKNKovpXrKm4EdPLUAzPLx22BuNBDnQtOI24NL90UTJkVaECu6OIOIXihrWLZxIDspTIx6B6t/wfux0YhQDxVluTyQmy00eORoEkjENAg9oHS1Tmly7phXYPDzoUSrzvHFIgIpxybEqtU0KBgI2swCUf5LOn/VQQJOLz3r+T5Ol2FXQsqJB7mCpuKcBL0mocVTdQ7wq4Qu3plbnw4YoUJz9jxPBsNTCNDQvHecSXLkC7rnd9JHKkbhtla6mYv/7QWFvZUWw8rJy7uB0V+cwkBS1Gh/JT6jEDxpYfdwv8EsREfczSv0oKmyY43isd0haZOuk1+Tb3iHeEt+7hho/gZIe4x69h0IGqkRYbk8kiNJbocNwBQ1LtbvfB/hQryGODHgeTdedeTs6VWjETtlJVpNGlirMtcycImthcxMWV5d4nmGKTz6oWUdq2Jds9RvDtPud7LaXB2ZWVnk3EBPZvq8rzMamOK34Q1iNeUqOAvRNa8tGaWu01ox4hgnSQ7beZ8Of43nMAxjD8LwAmpLliuVjPJHovMh39ObZSrXWm93jW1b+shVQWQD0EjyUHyqWgzcw35eP+DpZmgxtIQ9N14+lWRd5uf9HuElthKQdFioBVE0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(366016)(1800799024)(376014)(10067099003)(6133799003)(3023799007)(22082099003)(18002099003)(56012099006)(5023799004)(11063799006)(4143699003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?3su0oeFvWarvvBoga+fWCh2QsdMNLTgEu6w0ujLWMPK7CCuLFHfqPjNJo1T+?=
- =?us-ascii?Q?Mo6BMfICdjXs/VslP7k5ueqiMZWFy0MleKJ0dJhheGcuCcg9FCM0KOjrbxSJ?=
- =?us-ascii?Q?78fbVdDEyq8VFj9etqIzPEUpzyUwjn1R02A9ecRKlmsj6eiD9g1tQTIJUxjR?=
- =?us-ascii?Q?G1auTnvQpVMjR9LinC9lOGTvqqT7HNf8tIPNFFGSMOFbA+SvXy5RGV1Ls1KT?=
- =?us-ascii?Q?drBOjMEvIQQxgiSLVMQfY07oyUvUIr8c4/mB/dLHCoznf/4cqyDF6Ge3pzzA?=
- =?us-ascii?Q?R5ytATuTRaS46dQjyl2rwbmL7L2OixznM/lO1lNKqkOiwRMm0Y4K36vu38BU?=
- =?us-ascii?Q?tVMQAPa8VbLs0Eo2UBZ67f0t25XgtbD7XEEE5qNDO1Ybi7zoGZTWiML4H618?=
- =?us-ascii?Q?3nMypLQ0ilPt5+XIqRT/kBRo2i95bajz2hEbBnJFLtuZ2omQA06VdB743rze?=
- =?us-ascii?Q?UawBk1jaPbwWrjQcdgZe6rbh5sqtHJLR5nIeDavQRfZAgU4o4AkWy8itZxVW?=
- =?us-ascii?Q?h0BROLBj9oXCRbJEnvIkM6DKnXCx8i4wfuJ7LkyX8Vu/vu7uza3r3qPIWZf1?=
- =?us-ascii?Q?w71W4ykTqLBQgkAqZ6PASC4U3tgT6RzDo3EJFVozdRnH4rD9QX84raD+Qt3r?=
- =?us-ascii?Q?X6T08qgUCp8UQv+hWEUV5p1+7cW1CgrH3zbbngDWb643EzyaBo4UHlatV9Bc?=
- =?us-ascii?Q?Yzo8QWaQvoHfex9CzLQCTIf5cM4+5GZQKWYGQxtq9shBIXT7rEQAxg5hfkuF?=
- =?us-ascii?Q?3SA4C5kgag04q2jqvMI3f2SZ1RlxVeooQpZeabE2XXaz+MO7buArHwOV2eNW?=
- =?us-ascii?Q?VZ0CNtiq1LTqHrS1eviOWeuq0OdyWI9IO1kLWJXzq9K/gFvZfzDwKcbcxQMX?=
- =?us-ascii?Q?KL+ohvlYKDaa08oPmPKGfyw3YwRjR+aoMprCnuuA9ZnUyf0nd4ZvvdCFAPhV?=
- =?us-ascii?Q?dkgNqA5YNoEeHS4+UwU4lskq92q4l4s4a7nEKd1S33qzdz1kWey/DSf44g2E?=
- =?us-ascii?Q?fhNmSkxhwQVvW/MDF3Qx3nYyN+wU5nVGHiRg6JmYZbJXUGuMJS73tFlYnVjw?=
- =?us-ascii?Q?zFEnGxaKDkYaQcd+jcwABdPyUeLJ1W7YKeTs5fq5zuXBF4CC8jZeUD6bwPf1?=
- =?us-ascii?Q?cS+a45XYzdc92ikTGj1pV1nTy04iGkA2WvOueZnGbFaD19XBIAX0kRlq00pX?=
- =?us-ascii?Q?nu1T41ctP+hRe7YLyKKKULLUZZBc+McVBPWD9NFixIBuDnMwNZ/bfe1gtK47?=
- =?us-ascii?Q?0KWR5pJ19bAft1+lnJp/MYKMQBFnfvJk8SNYi850o9tCFtqi6uqvbOX/m2fO?=
- =?us-ascii?Q?CQ9J0adMDym8e2AwD54MDwC17Iv6VdUBLqdW0IG7mm/kPGsT5mn+jWUM27eM?=
- =?us-ascii?Q?fVMUV4OHbTKMcaD0YTtMj12rRAtzJvuTGykEc41ce1dYIbhAx4ijHjGjAcSZ?=
- =?us-ascii?Q?HAN/sbiMuHWceW5Rb3C9idQfhKdMef2z9i22ZeUMkRqRrxJG1ebqJwcJ/BGG?=
- =?us-ascii?Q?5x4U0N+RekosqZZyXHCmVxAuhcSnflZXvaW+x4WuwzRLpE3SHJ8wBz9mzRfF?=
- =?us-ascii?Q?aCKX6F28oGVhALafcK5VTYDzys4svPBEeMloQY+bXxZc/hAhc0aSEZCgKaGx?=
- =?us-ascii?Q?HYZUBKJS3x6zCIqC5+XjKDhNipVMl9/7ZT0BsxFgknBzhxvCxGq2X6Qm/fYN?=
- =?us-ascii?Q?FM1gpuMxmcHHK+nl7d4wF8SU3vvkF/38ppK3pnmBoeEhO8q7?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nNGUVROb"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-398a5aad413so2206090a91.3
+        for <imx@lists.linux.dev>; Sun, 06 Sep 2026 20:45:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788752720; x=1789357520; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0EzdYV+POHnT9TuHWNLPzv6lYbvo3yRcxw8sX8142Hc=;
+        b=nNGUVRObsLPc90MW1DjnEVPzjm34mGB3LS8wKUx3fRPgG4grgQc71X3hvM5pV9l0XX
+         zQLmKqZOa83WpnuFTdQwrnMHLVVhZtYRGvfNS8RUa4RiZXiOR6ze+kWBlyMqCGHPsfVt
+         +0h0a1g1Cyj95bCpH+b6lQnZ+MNc1oDZNJ49JGKS8D7qM/WnvQreyVhckvO74aXgdLMz
+         W0hkF+HlRM7MQbSG/DtXqsDeiBcgisOo9yLo4cE9x4UWCxwlSKc2oms52xs6U4CB2Pd7
+         1rlTZj8Hf2AFayBtFJoTWzROT/vJH0IzPkLXQU6zbfgA0Sur2b5vr1a6wlG9AB8zyNSl
+         NERw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788752720; x=1789357520;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0EzdYV+POHnT9TuHWNLPzv6lYbvo3yRcxw8sX8142Hc=;
+        b=SogUv9hC06AuNWWgZdoS3Gz6kRI93BN7l6UgIbHf/FJyyzQo45zX2+Bzjjqa0RnXoW
+         1L3ewCW4rTHLAZmNPeSJQjH9NKP4hPAb9QY5m0dptPw8JETDC1Sb8aa9kia8uVJlb2AJ
+         l5JIpjGqTPnhVLHyZVYSPwED5ODjdldR2NjM9FOlcayN+FD347ch5XRkgKNQDi2pI9Wd
+         UHOVW4dTc3lGGpowr3gAQEfx2EtCZ6A2TqHT8GYAp4xyJNdC/ps46bYCD/3BMfQRIgeD
+         cBrAf0XnWIn6zxCN0NNUCYxY6LP2mNygpN+B5fHnACLkpCffOcF31C6Kh8P8YAfHZUBm
+         Bo4A==
+X-Forwarded-Encrypted: i=1; AKwUvByeqXXDpKu6zlTz/I9UlLkpUc983X4ULko8srIOESi6u8ouhJsAsGMfV07cm4TxoSFiAE0=@lists.linux.dev
+X-Gm-Message-State: AFuF++kLMN7KDnT3Fkp2ChcYaMDjMiswPww9cNZxIycXH1eUzMZbXU4x
+	KKNeR+2PjtixKzyMpBPazN3Ht84HgS21gjm9p8IT8/Hbqr9popYaEmj7
+X-Gm-Gg: AYBFou0jREopnTd6iTZodBsjDo6DXDLqO6WqZMv3X2wACi146p3kAA/HakpQD1jqau9
+	1ioUBrblnz7gIOxwkV1iWRMCjtvQcJh4fDBkaqCEtRp/Ag4Z6/6fvkFEP3GWL7i/F9XpM080Gtz
+	iFIx5nB+zLOHYxC0Hp80EHqCE61u8ofkEoOFSJXGBmiIQYSC0eJ45npxCzW6OxeSeNVIB2M00CG
+	eCyrfGlx3A2DrD2D2bsy6jft960TeiWbtN45WMfiEVT/CYDL920t8K8bLWe0FThUwm5LDW4gXtZ
+	JDpGmh+F3Il82s54op4o8asoZXiXVhRD1UTEcOCSEG9WbJwtNHtRJMGdbdfHCfPN3AwoHPj18WS
+	e5kPlT0QbmEHtv7qms0g4OGCSZbVsEpwS6wfpf2oHDH6deNYCC2YELFXpdeZGIqap2R3tY7iYJ6
+	NcVGzxeEs1ajibseEk2iu3INMExUhQF1pLBkUi33eYT0S+QHOY4+vv35jcbWfW7KRUn2FQ6CsBm
+	9+G89Tpz2MQI+ViDmqLBgNc0ffSfyLHV9/yTWXAqiWk9ClbR1hioaqZa8x3hh6W+sqT3QLOHheN
+	5g4M
+X-Received: by 2002:a17:90b:4fc5:b0:37f:e1b6:4c7d with SMTP id 98e67ed59e1d1-39b26190c25mr31416637a91.6.1788752720474;
+        Sun, 06 Sep 2026 20:45:20 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08ce4221sm28237273a91.14.2026.09.06.20.45.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 20:45:20 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bui duc phuc <phucduc.bui@gmail.com>
+Subject: [PATCH net v4] net: fec: Propagate PTP initialization errors
+Date: Mon,  7 Sep 2026 10:45:01 +0700
+Message-ID: <20260907034502.12619-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 37eda541-7359-4bda-9f7a-08df0c899e28
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 02:42:11.3311
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z6buht7YjGk1wdzzlLPsF420GQiFm2nS1ehk5ckAYjHFF0z0WokMsPGxj3STTv8ZpVb0SFxfE45DT1RbxfZ2BA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MIWPR04MB308196
+Content-Transfer-Encoding: 8bit
 
-> > -	ntmp_ipft_delete_entry(&priv->ntmp, entry_id);
-> > +	np->ipft_hf_eid =3D NTMP_NULL_ENTRY_ID;
-> > +	np->uc =3D false;
-> > +	np->mc =3D false;
-> > +	netc_port_wr(np, NETC_PIPFCR, 0);
->=20
-> [Severity: Medium]
-> Is every error from ntmp_ipft_delete_entry() safe to interpret as "the
-> entry is still programmed in hardware"?  The NTMP command path does not
-> look transactional:
->=20
-> drivers/net/ethernet/freescale/enetc/ntmp.c:netc_xmit_ntmp_cmd() {
-> 	...
-> 	cbdr->next_to_use =3D i;
-> 	netc_write(cbdr->regs.pir, i);
->=20
-> 	err =3D read_poll_timeout(netc_read, val, (val & NETC_CBDRCIR_INDEX) =3D=
-=3D i,
-> 				NETC_CBDR_DELAY_US, NETC_CBDR_TIMEOUT, true,
-> 				cbdr->regs.cir);
-> 	if (unlikely(err))
-> 		return err;
-> 	...
-> }
->=20
-> The DELETE BD and the producer index are published to hardware before the
-> 1 ms completion poll, so -ETIMEDOUT means "completion not observed", not
-> "command not executed"; -EIO from the writeback error status is similarly
-> indeterminate.  In those cases np->ipft_hf_eid keeps an entry ID the
-> hardware may no longer own, and there is no other release path:
-> ntmp_ipft_delete_entry() has this single caller and nothing else clears
-> np->ipft_hf_eid (this is still the case at the end of the series).
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-I think this concern is a bit over-cautious.
+Change fec_ptp_init() to return an error code instead of silently
+ignoring failures during PTP initialization.
 
-For a driver-allocated, currently-valid entry ID,
-ntmp_ipft_delete_entry() will not return -ETIMEDOUT/-EBUSY/-EIO(error_rr)
-on any normal path:
+The PPS IRQ is not required for the FEC/PTP functionality, so its
+absence should not make the probe fail. However, an unavailable
+optional IRQ should be distinguished from an actual error returned
+during the IRQ lookup.
 
-- -ETIMEDOUT: the command BD ring is only accessed while it is enabled
-  (between ntmp_init_cbdr() and ntmp_free_cbdr()); nothing disables it
-  at runtime. With the ring enabled, 1 ms is far more than enough for a
-  single command, so the completion poll cannot time out.
+If a platform does not support the PPS IRQ, it can omit the IRQ from
+its device tree and the optional lookup will return -ENXIO. Propagate
+other errors from the IRQ lookup instead of silently ignoring them.
+In particular, silently ignoring -EPROBE_DEFER can cause the driver to
+continue probing instead of deferring as required.
 
-- -EBUSY: commands are issued synchronously and serialized under
-  ring_lock (post one BD, poll, return), so in-flight BDs never exceed
-  one against a 256-entry ring. A full ring would require the hardware
-  to stop advancing CIR, which would already surface as -ETIMEDOUT.
+Also propagate failures from devm_request_irq() and ptp_clock_register().
 
-- -EIO(error_rr): the writeback error status is only set for malformed
-  request data. Validated interfaces always build correct requests.
+Update the function declaration in fec.h accordingly.
 
-These three checks are defensive programming to help locate wrong
-configuration or malformed request data when developing a new NTMP
-interface; they do not fire for validated ones.
+Found by manual code inspection.
 
-In short: with the CBDR enabled, commands serialized, and a valid,
-driver-allocated entry ID, -ETIMEDOUT/-EBUSY/-EIO(error_rr) never occur
-on the normal path -- they are defensive checks for new-interface
-development. -EIO(SBE) and -ENOMEM are bus/memory-level catastrophic or
-transient failures; there the command did not take effect, so keeping
-ipft_hf_eid and returning the error is the intended behavior -- the
-hardware entry is still present.
+Fixes: b86bcb299092 ("net: fec_ptp: Use platform_get_irq_xxx_optional() to avoid error message")
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+---
+
+Link v1: 
+https://lore.kernel.org/all/20260820111416.97917-1-phucduc.bui@gmail.com/
+Link v2:
+https://lore.kernel.org/all/20260903092430.354186-1-phucduc.bui@gmail.com/
+Link v3:
+https://lore.kernel.org/all/20260904105542.70540-1-phucduc.bui@gmail.com/
+
+Changes in v2:
+ - Squash the two patches into one.
+ - Add error handling for platform_get_irq_byname_optional().
+ - Fix error handling for ptp_clock_register().
+Changes in v3:
+ - Retarget the patch to the net tree instead of net-next.
+ - Add error handling for platform_get_irq_byname_optional() 
+   in fec_probe() for the fec_enet_interrupt IRQ.
+Changes in v4:
+ - Use a goto label for cleanup instead of returning directly on errors 
+   from platform_get_irq_byname_optional() in probe().
+ - Update the commit message.
+
+
+ drivers/net/ethernet/freescale/fec.h      |  2 +-
+ drivers/net/ethernet/freescale/fec_main.c | 18 +++++++++++++-----
+ drivers/net/ethernet/freescale/fec_ptp.c  | 22 ++++++++++++++--------
+ 3 files changed, 28 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index 7176803146f3..8831da37326b 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -692,7 +692,7 @@ struct fec_enet_private {
+ 	u64 ethtool_stats[];
+ };
+ 
+-void fec_ptp_init(struct platform_device *pdev, int irq_idx);
++int fec_ptp_init(struct platform_device *pdev, int irq_idx);
+ void fec_ptp_restore_state(struct fec_enet_private *fep);
+ void fec_ptp_save_state(struct fec_enet_private *fep);
+ void fec_ptp_stop(struct platform_device *pdev);
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 794ec427b0ee..f7636f23d1eb 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -5384,8 +5384,11 @@ fec_probe(struct platform_device *pdev)
+ 		goto failed_reset;
+ 
+ 	irq_cnt = fec_enet_get_irq_cnt(pdev);
+-	if (fep->bufdesc_ex)
+-		fec_ptp_init(pdev, irq_cnt);
++	if (fep->bufdesc_ex) {
++		ret = fec_ptp_init(pdev, irq_cnt);
++		if (ret)
++			goto failed_reset;
++	}
+ 
+ 	ret = fec_enet_init(ndev);
+ 	if (ret)
+@@ -5394,12 +5397,17 @@ fec_probe(struct platform_device *pdev)
+ 	for (i = 0; i < irq_cnt; i++) {
+ 		snprintf(irq_name, sizeof(irq_name), "int%d", i);
+ 		irq = platform_get_irq_byname_optional(pdev, irq_name);
+-		if (irq < 0)
+-			irq = platform_get_irq(pdev, i);
+-		if (irq < 0) {
++		if (irq < 0 && irq != -ENXIO) {
+ 			ret = irq;
+ 			goto failed_irq;
+ 		}
++		if (irq == -ENXIO) {
++			irq = platform_get_irq(pdev, i);
++			if (irq < 0) {
++				ret = irq;
++				goto failed_irq;
++			}
++		}
+ 		ret = devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
+ 				       0, pdev->name, ndev);
+ 		if (ret)
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 56801c2009d5..557a76797eba 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -736,7 +736,7 @@ static irqreturn_t fec_pps_interrupt(int irq, void *dev_id)
+  * cyclecounter init routine and exits.
+  */
+ 
+-void fec_ptp_init(struct platform_device *pdev, int irq_idx)
++int fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ {
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+@@ -779,26 +779,32 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ 		      HRTIMER_MODE_REL);
+ 
+ 	irq = platform_get_irq_byname_optional(pdev, "pps");
+-	if (irq < 0)
++	if (irq < 0 && irq != -ENXIO)
++		return irq;
++	if (irq == -ENXIO) {
+ 		irq = platform_get_irq_optional(pdev, irq_idx);
+-	/* Failure to get an irq is not fatal,
+-	 * only the PTP_CLOCK_PPS clock events should stop
+-	 */
+-	if (irq >= 0) {
++		if (irq < 0 && irq != -ENXIO)
++			return irq;
++	}
++
++	if (irq > 0) {
+ 		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+ 				       0, pdev->name, ndev);
+ 		if (ret < 0)
+-			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+-				 ret);
++			return ret;
+ 	}
+ 
+ 	fep->ptp_clock = ptp_clock_register(&fep->ptp_caps, &pdev->dev);
+ 	if (IS_ERR(fep->ptp_clock)) {
++		ret = PTR_ERR(fep->ptp_clock);
+ 		fep->ptp_clock = NULL;
+ 		dev_err(&pdev->dev, "ptp_clock_register failed\n");
++		return ret;
+ 	}
+ 
+ 	schedule_delayed_work(&fep->time_keep, HZ);
++
++	return 0;
+ }
+ 
+ void fec_ptp_save_state(struct fec_enet_private *fep)
+-- 
+2.43.0
 
