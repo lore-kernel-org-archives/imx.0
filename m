@@ -1,105 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072905803A4;
-	Tue,  8 Sep 2026 15:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8969358122C;
+	Tue,  8 Sep 2026 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788882887; cv=none; b=mP1e9TIWTUCCPQurzCV6fAMI8VYYJUucjY6aAJfQMQCc3dJ7/3wxNsaGj/hfr71FTE+ezcCw/9zf7XQEkCZPzl9J17SsCJJ9C1kciunQsnjpQaTtsaUD48EpeFS12ngRTk0gQYrG85TSw3Cs3i1nvgcdhKV6enUINoLGDemR/KQ=
+	t=1788882907; cv=none; b=pKmzZScncu78tWc6eYtVFFvvsKgA1nNUqzyciNVROcwrSixqe5FqMp2wJPpqk+xXo3No+KfoRu8+ZRvbKuX95dzbZm79tnCgOnDK//oy6WNEYboQ9aQqewWFcLG809kg1cXIxcv2gNBzgtJckzuxhYdbmScMrK7fLq8daUUJlSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788882887; c=relaxed/simple;
-	bh=vJLLBfkaN4n0z7LfLM0SdkDcnADIq78u4hb+z3cSCvs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=E2zrWgkDZ58u5jv7ZZeHbhYokOTKL7cngBhIpvZU5nO4gvds4ZXFfSzH87HIzzEXX0Kp0+9t+NmJ0LQ4ycO9OqqkV3vQ2Eszy4Ew4NHDqSPa/bHqUpFpEcZGsNe8CC9Q8XFx11aI8vd56ojuvE09cQqShtxriqJxSYEi2sdCx/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZmHWOMJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788882907; c=relaxed/simple;
+	bh=SgnCuNwc+3GCof8/NsDV6WJB1NwToaiQ1FMvFg4IKK8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XD8BWefJ+ECqaJbVVKi24qtCeLA6sKZs4CjW+OlPBglYiUvKWLFDlM1Zn9PcH/62lScGCVVCLPUjvKX7NvLmK+9n+9SvhgjOb0NN1gPvT5hQqQeGWn1TT7lVsXgUfB9gBve41rEWQ5ImATgZQdLSciq474SCjPCltINJ+VxU0ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PamJfJNv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZmHWOMJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC331F00A3E;
-	Tue,  8 Sep 2026 15:54:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PamJfJNv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966341F00A3D;
+	Tue,  8 Sep 2026 15:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788882885;
-	bh=yRJdV9GVxWUYV9yCpWvEhBDguuUlSfuEeEuU4CaxoZ4=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=mZmHWOMJriTMhh79lfF6vevN5fYL+hyZ5SmAO+HRxHmDuit/QMZfZm1eky9VaWhpO
-	 EY8PfZs7F6JTliu7YDNeGL7uL6Fo3nNDrQwjrXYBEPDLRWyXaVnj+ihLIHhrf7//ic
-	 MbmMioZtN3usiS1yD51p+BwHYCZYZQ7+pee+q5YQbJQn0SrG7Uoz3Ps6QBRQKzOAXv
-	 9E7yVYSmfOyTJoPo0jH/dZg0twpFUM8BPfDLxnVpPbm8y8p9XUDhZsG0BMW1urCEp/
-	 sF4F4Cc1cSitK9b78P+or+8H0LbIjlZl4fFOYwwv6BKzX0raXmdBf/NkRRmK+X+5wk
-	 x9uarNvZUHhXw==
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 308AF198003A;
-	Tue,  8 Sep 2026 11:54:43 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 08 Sep 2026 11:54:43 -0400
-X-ME-Sender: <xms:wS-gajNhMGM3Gxzcef-yXdGene2vzQIJIJCQsMbUucZg0ESkSia7ew>
-    <xme:wS-gaowIgGPrv4h32oHDZXsUYBzPo0dZzRKFqJcyScwWTAbh6y1ncqGdX0Dv4nlzP
-    7ljYN5QqELhRvEIf6VDdxmSAoQA4tmZ4jgobBKRyMXX9a1r83UIo7Qo>
-X-ME-Proxy-Cause: dmFkZTGLwLZViC9sd85t/P9neK5mQH2VP8dHwnJbVAzTMRboBc9GY3Y0SufdB0PabDu0Bw
-    etX//xWANhEWe+XH12gf0SVEuw/OxEtX4HEnkpJ2rHojRxBWwsQIfNpyPzv7uBN+lSKv5/
-    SqiouBbLssFGgSzJUBbsFNUp6wNdJz2qBToqFbpHCAoGYosRPqyJBSMsHHzbikA99KMoJN
-    liA0KaarEy1JNDfft14Z8BYFZIaVtTSiLGElG0zXYaXrUyfWlxzh2ILUNIu9U3WIUTlIHC
-    ccb7Z+RwpoaVMTAahwIuzfRyusxsV7yqkohJmElcj0EterN2DarbMY4Gu2AhvdwWGHSUSF
-    +QqGOmoEymLbEZ6M8sQd83uUOXo7c7Txg4K89ukNWAElSHrOj586Q4FZ6+hfCt73bCXAOY
-    1xdw78eGIF/CdsscaDLf8AFeXiqjERP3Fq6Gnkt38qDdT2MonVMajVbcD6YqBhSTey9oTZ
-    tIs3Ehn+cMdTxQosFIAxv7Oclq7Epb0ae6DTYo1CGZhmQWIxeXVc5LmxrkgzQqnm1x3O5j
-    FwHN3beBUmEnTRjBFh93yn4JsIbaq7lgNJqAd+PrKfSHerCbz0fd0LOoPZlRMEQsuKEoj4
-    YgdzeCEwX5GSgW7Wz+xbRJTdRDur0fqHFkCISHeqOVXQRi2ylcw8S4/wsPtw
-X-ME-Proxy: <xmx:wy-gasx4ChskjzrEKIJ6om9udRtN3q00ZZk5Hs8QWVvY4dP4cA83zQ>
-    <xmx:wy-gaii72i4Fgq-O1aO7O54W_yWEQhxvgJbw3ivrMy7xdwfyTg7RGA>
-    <xmx:wy-gagl8a5u2zS0xIaHUUfe5LxJRRNInPL7dzMuXbcLxnfBAs79iBw>
-    <xmx:wy-gaghUL3NmZb5NcX7WSJZsyfxf55U3J0f83-ErG9dzlcfF81L28A>
-    <xmx:wy-gas3Luj_0c3PVbuzJEEcAoqgxlhY-jbl5gKU0DhqGlBpftxsVaUXN>
-Feedback-ID: i36794607:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id C855E32A0078; Tue,  8 Sep 2026 11:54:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1788882905;
+	bh=2s131jBymw0wPeIWZySb38FrYNgx82DJAJxH+RDhYQk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PamJfJNv+N9v254qbNF8e4vwgpv/L1KtEcN1GG4vVRNCOnHZSwIj+R+uPIU592jm3
+	 bSlCh2+e70wq/prhszk1WWF/e6twS+0kU4vZYL2jp/IO1wgn0gpsDemtTi5cHsc8lh
+	 rVeH1MhflQUTX38TMKXVU1uG9YX9jHp6bBbcJOYl8hvax9AjziCCf3nsrN0NRftdIF
+	 DkMj9clsFPav9hwKiagUPQVPioVgkxDuhQVk152dS/xgtt0HzadFdJcjUnFW/2yrOF
+	 5VWmrXGWxyuZMMqyEnOyUyI2vit0MyKdjKkaUqaTHs7SAlSzzFkQDlQoPN7HFt2sKd
+	 m+DV+OKk+MS2g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 13/13] ARM: axxia: remove entire platform
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Arnd Bergmann" <arnd@kernel.org>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260908152808.3928630-14-arnd@kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-14-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 15:55:04 +0000
+Message-Id: <20260908155504.966341F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-ThreadId: AaAMVJPR8SoN
-Date: Tue, 08 Sep 2026 17:54:21 +0200
-From: "Arnd Bergmann" <arnd@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: "Conor Dooley" <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, "Frank Li" <Frank.Li@kernel.org>,
- "Rob Herring" <robh@kernel.org>
-Message-Id: <04fd3dc4-6aee-42ba-b41c-df7acb89239e@app.fastmail.com>
-In-Reply-To: <20260908154346.CDA0D1F00A3A@smtp.kernel.org>
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-11-arnd@kernel.org>
- <20260908154346.CDA0D1F00A3A@smtp.kernel.org>
-Subject: Re: [PATCH 10/13] ARM: stm32: remove stm32f4/f7/h7 MCU support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 8, 2026, at 17:43, sashiko-bot@kernel.org wrote:
->> -The STMicroelectronics STM32 family of Cortex-A microprocessors (MPUs) and
->> -Cortex-M microcontrollers (MCUs) are supported by the 'STM32' platform of
->> -ARM Linux.
->> +The STMicroelectronics STM32 family of Cortex-A microprocessors (MPUs) is
->> +supported by the 'STM32' platform of ARM Linux, support for the Cortex-M
->> +based MCUs is has been removed.
->
-> [Severity: Low]
-> Is there a grammatical typo here? Should it be "has been removed" instead of
-> "is has been removed"?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The commit removes the `ARCH_AXXIA` configuration but fails to r=
+emove the associated peripheral drivers, device tree bindings, and Kconfig =
+dependencies. This leaves orphaned code and violates Kconfig rules by refer=
+encing a non-existent symbol.
+--
 
-Fixed.
+commit 5209c3e860d6603a7c70267ff59ac71d1c1c4f84
+Author: Arnd Bergmann <arnd@arndb.de>
 
-> [Severity: Medium]
-> This is a pre-existing issue, but does removing this selection of STM32_EXTI
-> permanently disable the irq-stm32-exti.c driver?
->
-> Looking at drivers/irqchip/Kconfig on line 485, STM32_EXTI is defined as an
-> invisible boolean config symbol. Without being selected here, the driver will
-> never be built. Could the corresponding driver and Kconfig entry be removed as
-> well?
+ARM: axxia: remove entire platform
 
-As with the other platform removal in this series, I already
-have patches for these as well, see
-https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/log/?h=board-remove-7.3
+The initial Axxia port was contributed by LSI in 2014, but never completed
+after the sale of the business unit to Intel. This commit removes the
+Axxia platform now that the 7.3LTS release is out.
 
-       Arnd
+[ ... ]
+
+> diff --git a/arch/arm/mach-axxia/Kconfig b/arch/arm/mach-axxia/Kconfig
+> deleted file mode 100644
+> index f773a66c14028..0000000000000
+> --- a/arch/arm/mach-axxia/Kconfig
+> +++ /dev/null
+> @@ -1,17 +0,0 @@
+> -# SPDX-License-Identifier: GPL-2.0
+> -config ARCH_AXXIA
+
+[Severity: Medium]
+Does removing ARCH_AXXIA here leave orphaned dependencies and dead code
+elsewhere in the tree?
+
+According to the Kconfig subsystem guidelines, referencing a non-existent
+config symbol causes silent configuration failures.
+
+For example, POWER_RESET_AXXIA in drivers/power/reset/Kconfig (line 51)
+still has 'depends on ARCH_AXXIA', turning the axxia-reset driver in
+drivers/power/reset/axxia-reset.c into dead code.
+
+Similarly, I2C_AXXIA in drivers/i2c/busses/Kconfig (line 461) has
+'depends on ARCH_AXXIA || COMPILE_TEST' and 'default ARCH_AXXIA', leaving
+drivers/i2c/busses/i2c-axxia.c as a leftover platform driver.
+
+Furthermore, drivers/clk/Makefile (line 61) still contains the impossible
+build rule 'obj-$(CONFIG_ARCH_AXXIA) +=3D clk-axm5516.o', making
+clk-axm5516.c dead code.
+
+There are also orphaned dt-bindings, such as
+Documentation/devicetree/bindings/i2c/lsi,api2c.yaml and
+include/dt-bindings/clock/lsi,axm5516-clks.h, left behind since all Axxia
+device trees were deleted.
+
+Should these associated peripheral drivers, bindings, and Kconfig entries
+be removed in this patch or a series alongside the architecture removal?
+
+> -	bool "LSI Axxia platforms (DEPRECATED)"
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
+630-1-arnd@kernel.org?part=3D13
