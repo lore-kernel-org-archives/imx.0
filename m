@@ -1,167 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F2423F40D;
-	Mon,  7 Sep 2026 22:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788821497; cv=none; b=Ew8Xsa60oH6bD1i1RRvMyaao6wZACmEMZCJMCJPLuXWBtJ3DLtKbsoxy7N6Ao48sEUSLAo4qoCucLI7e+aqUva3gaPv2RP/qck0kQbFuUSXz+DoFewN6F96VjH+/B9ilATA4a4jF4VBQ9r4ZsUiG96T9n2xkhMq1BQFaZwEH1zQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788821497; c=relaxed/simple;
-	bh=e88CkWXLFXByErav3eyr21WjqFho/Gvfnvap7eHR0Rw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=puOGPqDbLqYumYEODco//5KqKP7x7BHtCGY1raI8iPz1O/DuFTqlIG7lZXoD+dnuj/20epYm1hOzKAVCXsAo4cpMnWpXqkLQHHipEjA/CMg1u56qJUQYZpKDhq7aRKTbA07rr2+rSHzqASQ1zqUgH6g+3w5fLMlrf6UmgoykHhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fProWdD8; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387E5314D35
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 01:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788831605; cv=pass; b=B6DBlOy8tQsKlN4dv97/CfH3U+jIhU6GwKAfO9ms+VDX+ppNKl7BMVHRs8pvX1iAGJYkBMCg+ZTkfB3geAWfUzv3Jn6w/fSkuQUpgMmvqGZIg59BUoTCfXXVn1sU3y73qypJH0025tDh0DAxCt+JId7Lm0Kgq0SDuqX6/ZhZQk4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788831605; c=relaxed/simple;
+	bh=5zuDYty8Bmr1QCZL1/0J0BM+bw13EUZbfwMloSDt9H8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dpy+mcy1VT4vSxsgBUj5QD1RXeElMlPUpBjBX+EfJVtcDrTK+WJIJTjYjkNji9mxCYcuXYSSTf4gLyzGhyj1vNpS93CK9jr79ZEucagx/0nHSQI4W1bIq2f1R+FC4XzMVgNfDCanvGIMGsFYGfdg1UR8A91h9vENWG6AocsZFOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dbeQTgbD; arc=pass smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fProWdD8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214341F00A3A;
-	Mon,  7 Sep 2026 22:51:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788821495;
-	bh=osyr9vbobtjiClFCVLlSdXjYM+xnAGLkGjSYTf1jHo8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fProWdD8hdqV3J6Cs439SgfRjqDZrtdPaUoBSxecDNKYG0FC4/PDrVfpBYfK/t3sZ
-	 7AMzpDAbYx2lR1uG18bjo5qubbpiLNCNqnyHhuEgXVJ9SLsloERycfvxyF6uzjSGwM
-	 RYakJlPhxj7sZrwho1TeRZ0rOO+r37jeTw924uJxwtTOw9QsPinTtBPbNlERdQMF75
-	 RBOs47a1KqZucaz1IVtx6NeuQgbSQh+cyFZeMa5enw4m/2hMDnZdiErXnGCGIWcJOO
-	 808jLskhYt6kXdqujzmHYhp3GhrSjosuCEFh0ojlWKUm4opK78GTazVIFonp5R9Ls5
-	 /nBbxXYVPaRaA==
-Date: Mon, 7 Sep 2026 15:51:34 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "davem@davemloft.net" <davem@davemloft.net>, "shenwei.wang@nxp.com"
- <shenwei.wang@nxp.com>, "frank.li@nxp.com" <frank.li@nxp.com>,
- "wei.fang@nxp.com" <wei.fang@nxp.com>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>
-Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an
- ethtool private flag
-Message-ID: <20260907155134.6e9e77f2@kernel.org>
-In-Reply-To: <371b9a61b150bce5f43e70a8032be4b4bc97e759.camel@siemens.com>
-References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
-	<20260904182056.0d81cf1f@kernel.org>
-	<371b9a61b150bce5f43e70a8032be4b4bc97e759.camel@siemens.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dbeQTgbD"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso3644993a12.0
+        for <imx@lists.linux.dev>; Mon, 07 Sep 2026 18:40:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788831603; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LFmpIUOmZASh2HSbnhG9r0mV543dcxkpOQI5dftPFU5o/fZUy2Is+cDc+KjjGC9sIH
+         8Q1mayIRT8CIZRZI8B2Ni9V3fvR0KnU3yS/fZ/nfwpQxypJdLyTcwg3H3IXkwLOXYfvp
+         vDv/LU37k1+EWxfZcMV9BcR/wDufjHgI4SnT9IMubDD2UTLXt0KInCJmjPyPgpN9O7ZN
+         0P3xqQI4WRl4xyzKBBGk84sLOz2ORa34bEShqxDIuUEPG92xpJmjNtYDS2RbxCS0BLC2
+         EDLhrdKRsoZ/WNAc9hmWdRbw0qnaBgFQb+q7f2k6I0/vi2GPH8SXB20RmwEK7M9gyfVl
+         QSTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=5zuDYty8Bmr1QCZL1/0J0BM+bw13EUZbfwMloSDt9H8=;
+        fh=gm4BlBDHBfsG4qHyoQdMLRaYUUf+LG2TfmWy9L62mA8=;
+        b=TNhRrIG3NREGWALiuPaSh9SRC2HfphB+V+GSRqm1oFR0AXCh/2cTAh3FmflmQKjX/I
+         9w9BRuzKjSQxayN/zoGKY+67P7dFaRgz2WC636nF83cni2ipryJbZzCo7q+x8DRPAOdt
+         M0LmGeEQrur/E+914iwtF5AhvFFNLW/ylwtkvDkwfSlDjVqBsimXil2OKZmhV6VVhP2j
+         EiWEzgxSM++SV1ySXpCsGzsyJ7Vl9Z9E0Qy+tW3r4BwJ4RshyfZmYOASjdZeQQ69PrA1
+         gN+cDH54RVCO8pgj5NH7vklLJ4j0SX5BzRvyg8JS85TWx6cDDI8n1k1U43sl/xaTX4NR
+         Yhqw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788831603; x=1789436403; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5zuDYty8Bmr1QCZL1/0J0BM+bw13EUZbfwMloSDt9H8=;
+        b=dbeQTgbDpLjKN6ZHhcaDwE+KIyhJl+RSUVXhSokfpP9YQ+xSMtrgtIxAhyMa2Q5q5w
+         XI/9CGKYt+26Dfy+R7zW5WCADltZq+Q2vMZKox+kKSOa0xaKVatBQaYMsPsxd0Xp4+Sf
+         VdUoVShXT0dvCDFCCBQsEHdz7ZfkPeMcVEaR/IrBesTJiIHSLSoAfDqSRv7NCAzB9BPy
+         /hxhHL3QlGNQ7s5ebiKuLvTNjGEnZxx6APMSSw3B9QkJoeLVqlHqIlMS29nXHlVSrkEO
+         G59FzYJRpVOsYS4Xt3fLGUJpOF0OpqA9k3AYbWiUefLT5gUmNyT/i8t9V4cW+c58D3xh
+         bANQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788831603; x=1789436403;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5zuDYty8Bmr1QCZL1/0J0BM+bw13EUZbfwMloSDt9H8=;
+        b=diirgXUy0JtL4XNEXxGVvlCHoKwWZUPFS4f/27eLngVAMV9rDfZOSTWYUj2WzW29Qx
+         bATIhfX4mvN2lE1y+rxhGHPgF5V1PHqDoIKBMZxYeQXWk2gOVI87KLN9lqu+JBasGEU9
+         UFyG25ZDKU/eHwWfaPo4AAeRNHE/lx3ALMAohaeBFK8nyz96nGcfGd/+Y1WnupYphVgG
+         NxR2XRVvjMc2JTDGwX3X0WlVhsWqx2hXAtdGgqx++RT6spF5DohlMQXuhZdjdRoOcWv7
+         IpZT15q/pPPhkUJe70+zch86kKu9qhOIPcJ7IVhXgbnwTJOX/pExbBh5sAI3kmIfJOd3
+         MFiQ==
+X-Forwarded-Encrypted: i=1; AKwUvByobFZvgIL7nKwzCxjJKCH2ytPwZfSLCbkDl3eJHqwuu37iqoHQORRv8EeMIawHWofB9zw=@lists.linux.dev
+X-Gm-Message-State: AFuF++kq0aqM2MWD7NDSjZ6I+Tlt4alTcrc5NOieIUFu2TDu1g3hQ+ms
+	1LgBNdFTFz9A7i+/OQTX/V8Xw4VYVXlbXeahGIh3ovoDMFHj+2HLhIGAocLdrlLNPOYrrQF7I33
+	psBXTJ7j37rW1D5u/aFOmTRZWtepjKJw=
+X-Gm-Gg: AYBFou3aGSfjjcUMIATCjw7tU8Ht22HRLXSlkt9U2dN5CTN6vEaxOEy3dZ/6dCyOHJe
+	4A1mhvlvjPBsPJBNlOrx4b0NFEDuSlj1ckTPOjk6Ou8ICx4o5HF2Fx5Iktlo/9SIvCDz1uQkgKd
+	06NOoZWRmWCMeM7IOBYJCg22LJv5k4wIhjfyaFKwjWbx+DJRin9SdK4vKys/aJgXXc6/o5FQjif
+	DcixJ7w9J0k4tCcWmIoiSEZhouxuU6Di9z5eZfCIO6ZmU5UZWbG+cszd0uc0xbd6v2v5uEG7Mul
+	1aeeEW0TJ2a7lp0mrrOJqyO4cDxB7YR3SikrtDtK8PRkgOBGfbLuaAW4KBvP+S/OU5QQS9JQL99
+	v3XnPfLLd/d52yrDd9kiPTPPDuGiGhJRjk23XFbTDjI8u/oHq47znz5mM
+X-Received: by 2002:a17:90b:2d46:b0:38f:57f0:1f5d with SMTP id
+ 98e67ed59e1d1-39b2620a25emr36859083a91.15.1788831603448; Mon, 07 Sep 2026
+ 18:40:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20260904105542.70540-1-phucduc.bui@gmail.com> <20260906131711.247708-1-horms@kernel.org>
+ <CAABR9nFYrmteCtb6E_txg13U31Bf50p0PUBvaOXi3gmT7Z+0RQ@mail.gmail.com>
+ <GV2PR04MB1173965A34420E072C0DD3A1988B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com> <ap7fP5Lz04kySgn9@pve>
+In-Reply-To: <ap7fP5Lz04kySgn9@pve>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Tue, 8 Sep 2026 08:39:52 +0700
+X-Gm-Features: AcwNN1WskE-ZrizZC_ni21bq3lop72zxd2TyEp9MyLsJLSJ8j4zlvcW0r8mEdEY
+Message-ID: <CAABR9nHLcR103aADF1WMSEkw-_BjWB9vyWXENJCYfjX5Wz1nkw@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
+To: Shengzhuo Wei <me@cherr.cc>
+Cc: Wei Fang <wei.fang@nxp.com>, Simon Horman <horms@kernel.org>, Frank Li <frank.li@nxp.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>, 
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, 
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, "swboyd@chromium.org" <swboyd@chromium.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 7 Sep 2026 15:47:07 +0000 Sverdlin, Alexander wrote:
-> On Fri, 2026-09-04 at 18:20 -0700, Jakub Kicinski wrote:
-> > On Tue,  1 Sep 2026 09:47:29 +0200 A. Sverdlin wrote: =20
-> > > The FEC controller can flush the RX FIFO of an individual receive que=
-ue
-> > > through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
-> > >=20
-> > > RX flushing prevents frames in the RX FIFO from being blocked. Blocki=
-ng
-> > > can occur when the frame at the head of the RX FIFO cannot be forward=
-ed
-> > > because the ring it is associated with cannot accept it, i.e. when the
-> > > ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flush=
-ing
-> > > is enabled for a ring, such a blocking frame is flushed (discarded)
-> > > instead of stalling the FIFO and holding up the other rings.
-> > >=20
-> > > Expose this per-queue capability as a runtime ethtool private flag
-> > > ("rx-flush-qN").
-> > >=20
-> > > Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flu=
-shing
-> > > on more than one queue at a time can lock up the receive path, so onl=
-y a
-> > > single queue may have flushing enabled.
-> > >=20
-> > > According to i.MX8QXP Reference Manual, "when both class 1 and class =
-2 are
-> > > disabled, RX flushing for these rings must also be disabled". Both RX=
- and
-> > > TX QoS classes are enabled via DMA_CLASS_EN bit, currently tied to
-> > > num_tx_queues in the driver. Currently there are no constraints on
-> > > num_tx_queues =3D=3D num_rx_queues, neither in DT nor in the code, ev=
-en though
-> > > having different values doesn't make much sense even without RX flush=
-ing.
-> > > RX flushing code just takes min() of the both values for now. =20
-> >=20
-> > For the errata - how is the user supposed to pick a queue?
-> > The documentation talks a lot about device specific terms instead of
-> > using generic easily understood terms. IOW it reads like slop. =20
->=20
-> Fair point on the wording, let me re-phrase:
->=20
-> The FEC has a single shared RX FIFO that feeds multiple DMA rings via
-> hardware classification. The FIFO is drained strictly in order, so if the
-> frame at its head is classified to a ring that currently cannot accept it
-> (the host has not replenished that ring's descriptors), that one frame
-> head-of-line-blocks the entire FIFO and starves all other rings,
-> including higher-priority ones. RX flush lets the MAC drop such a blocking
-> frame instead of stalling the whole port.
->=20
-> So this is not a generic "queue full -> drop its own packets" situation.
-> On a controller with independent per-queue FIFOs a backed-up ring only
-> drops its own traffic; there is no cross-queue impact. On FEC the shared
-> FIFO means a low-priority ring can stall a high-priority one, which is the
-> specific problem this knob addresses.
+Hi Shengzhuo Wei,
 
-Sound pretty typical for a NIC so far..
+Thanks for reaching out.
 
-> In practice a user would enable the flushing on the lower-priority
-> ring(s) =E2=80=94 the ones whose backlog you are willing to discard to ke=
-ep the
-> FIFO head clear for high-priority traffic. The queue->priority association
-> is hardcoded in the driver: VLAN PCP 0=E2=80=931 (and unclassified) -> ri=
-ng 0,
-> PCP 2=E2=80=934 -> ring 1, PCP 5=E2=80=937 -> ring 2.
->=20
-> There are actually two constraints stacked here, and I should have made
-> both explicit in the commit message and documentation:
->=20
-> - Why flush is needed at all: a low-priority ring can head-of-line-block
-> a high-priority ring through the shared FIFO.
-> - Erratum ERR050395: only one RX_FLUSH bit may be set at a time, so only
-> one ring can be protected this way. With three rings, the remaining
-> ring must be guaranteed not to stall by other means (limiting link rate,
-> for instance).
->=20
-> So because of the Errata we cannot set RX_FLUSH in queues 1 and 2, but
-> if PCP 5-7 bandwith is already limited in HW, we might want to set RX_FLU=
-SH
-> not in ring 2, but in ring 1.
->=20
-> > In general AFAIU the flushing should be enabled in tandem with pause
-> > frames right now. It'd be great if we can stick to that, or failing
-> > that add a generic config knob rather than private flags.
-> > There's nothing private about the drop decision when host ring is empty=
- =20
->=20
-> I don't think tying it to pause works on FEC, because pause-frame
-> generation is port-global. There is a single flow-control enable and a
-> single pause-quanta setting, driven by the shared RX FIFO thresholds.
-> There is no per-ring pause.
+>
+> Are you planning a separate patch for the IRQ lifetime issue? I'd
+> like to coordinate so that we cover these paths without duplicating
+> the work.
+>
 
-Global pause means no drops for all rings, PFC/DCB can be more
-selective with certain queues and traffic classes being "lossless".
+I'm not working on a separate patch for this,
+so please feel free to handle all of it in your v2.
+Thanks for taking care of it.
 
-> I fully agree there is nothing private about "drop when the host ring is
-> backed up". If we want a generic uAPI, the natural shape would be a
-> per-queue attribute (drop-on-backpressure / flush), not a pause-linked
-> one, since the decision is inherently per-ring.
->=20
-> Does the above justify the ethtool private flag in your opinion, with the
-> fix being a much better commit message and documentation or do you have
-> a new generic uAPI proposal in mind?
-
-The problem is fairly generic. Ideally you would find something
-matching in PFC/DCB APIs or even devlink shared-buffer config.=20
-Failing that we can add something to netlink APIs at queue level.=20
-But since you seem to have a strong association between the rings=20
-and traffic classes AFAIU, the PFC/devlink direction would probably=20
-be better than ring level.
+Best regards,
+Phuc
