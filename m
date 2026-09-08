@@ -1,151 +1,103 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from sg-2-4.ptr.blmpb.com (sg-2-4.ptr.blmpb.com [71.18.227.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8365563FB8
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 16:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E509156B874
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 16:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788884799; cv=none; b=F+W8985ObHzaPfKfqeM3hBDpzUw+iBedjJowDoffQ7zW5/zk0Z/ye+kN8Gf4TQk5V0EKMSHnnzU7sy5EOkP5baXd3ErJqsLtiK9lbPks7WJlQfAwbnunOy5mm/D0EoirlrUUN+SkqpZYstV1HhaX+jAW/GhpC9fHGXROMD1xtjQ=
+	t=1788885239; cv=none; b=je0oE9zAAvCKmnBJWQQQZ1Z7or9yib+ZtuxVsWUqZDuNfxCkYq/Qw9AjQOrYfxBCBGu6xOpA1GdcRimPNQQkdJrOCgpQ0kARNDREOt7d2zGPEF00KN9l+2NlrRV5OdnatvE76FmVcNwqAWcJqizBLN92HTOJWEZSyyytKXTlSBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788884799; c=relaxed/simple;
-	bh=exUH5aWaSFL5njVn7rk/Sv06R8+LhPCv9p7zVP/y9jc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AyErr2ZDAisV2or/MI8o8dBPgkSuFAgAdpkKjEjugAEU9VkroiYmYn1Ccrlvran0C4K03wKWXSIO3L4SRr57dHroWPRPRZyUq5cyCIA8bT6+FFPtgbYNDu5eXajcW61OeHRUVGHJYvngKIzfDCK75Hxy4F1IvFWwGULKV5X1imo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O2HR/Vg4; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788885239; c=relaxed/simple;
+	bh=4PWeVwZklsxBELa7PilCTz0ljdxc8I/fxpQlz8ppqaM=;
+	h=Subject:Date:Cc:From:Message-Id:Mime-Version:Content-Type:To; b=OKeNdUzpy9tJYMTO3puh0ioG1xG6JYykEz8CNiP6xgWLHzagbWffUadjKEBUdW1o7Oi+lP2zt8DOV3Sw1wf1y9f0G5IOKDyEx1gDSkvx/wJGq4+i1FsGgXcsNVakZO8Kx/42KCcFk9Dr5aBce3379FCYtV+18CJCAZL8y3IBM4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=Ga6vS0RM; arc=none smtp.client-ip=71.18.227.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O2HR/Vg4"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc439aa0078so4033981a12.0
-        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 09:26:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788884797; x=1789489597; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t1j7oDqmpt6ig3FSSyMnjhsns2WPQzdz62Ttg7MdUqY=;
-        b=O2HR/Vg4CpmZvdjb5ucC3I+b6b5bDPMg5KPIkWsRaCfWwyAdD8FxyfgvtorclG475Y
-         dFOPrZOv1FBcEDX+qIaymasfxeHLcEaYSM+LLgmQaQK+KuCPyDKxl805dKEKFnQ7EAFN
-         UVXAOo+PKr8p4kcn9mi64Hu9XMywQHCSFmX7EDr/G4SIh5PFpdhUEKKdfC1S4oSfFuwm
-         p2i5qhKKj3REmjYDkbR7O4fxcBIvpTpnbctpDefdOS6VLbIO8JnWko4RT4wree585m5L
-         XsiVOjWqniPDQLE+Me/1o1PliFaYBfkKGZdzK/hr4l4dQ2hyP69qtwWE2toNED3BNXrc
-         TgUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788884797; x=1789489597;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=t1j7oDqmpt6ig3FSSyMnjhsns2WPQzdz62Ttg7MdUqY=;
-        b=E8QJzxM1vC3I0DyQukC2JcBaS7f6+Imk9tvuGhaf+tDjqcKKbTp/fp+0EEU3SLN6oc
-         ulhEbiAs2YSdC4IT4QVaqq5oZeNSLbqGxHARdgNsJLIbmUHY/cRkcFc7CA+EkUwe8x9V
-         x7ypbePBJYpJi4IGaSIsowqOhZA3A/EYq+tjapi8n+D+rgverbaKoJNBRROQ41pA+9X8
-         890fUVSVsnOrbNHEq8zprv+HX/TLsco2BM1JnGHm8AuZjn4h3cQ73B9XmJyj/zRgdvjA
-         0AzAc1Kzo4Ma16+SzP1agoRJjFwCofr+DV5KdiYjOeqxGNBYfaoLSjThxMwLtLj/G6yC
-         t5wg==
-X-Forwarded-Encrypted: i=1; AKwUvBx1j9PXZlsp4Ewq4m9tNW7UvK7jajnldFjHw9H8ieNi9wOmK73qRPSPTjA22HNIyMnk8Gw=@lists.linux.dev
-X-Gm-Message-State: AFuF++k+Zu/IvRu7aku2b+e8UUU6hflo7uKOqIKjqiJhgW7tA27KOk6Z
-	uD5e0eUucPNwfmiszZWM54XBjuzbHWTFlnqqM7mQsfQjNoZ5yufAF6u3KArTQA==
-X-Gm-Gg: AYBFou0zJYWaY1vChCk0bDATxmePzs0aQwIZRrFxGirrGIP4Gy7By127tFTaIavjY9m
-	VOIyJEvDnyXMUn1YQoBbUoz+pwsSp3PDYQ4IK3lP3DLa3C01CUJw5G580AB1vqxETX/EnB6Qj9R
-	O/0b78HvCcKJKwWeDJA15b4QcNDR5OqNGE1MWX8jiHzUNtS0R1FIKMX7mrHUhmXcVCcYSzmHSzq
-	/mv9KcRdR+Nk2y+6ACdnDKRFpXVgt/UYx4I/wdxT+A3eA41qw/+oSgvXoTK6PV8hbvynkrJ/Vf6
-	xO+vaS+kD8mkrD13P/+ejdPSkKg00X/vbUPbbvIv29GOhI9YOjWvyUe2cz/Bj0gic1t1lWiNRdF
-	hDZbr74rpFi/FriR2jZ9Ag5+2Fe+QWkGbVJ6BeRdwetKsu/uD8SnZ9OKP76+IzcCrSR25VFKrPs
-	AC7Kd7rW8i7OZg35DZ1ZboD/IT1WB0IeBG92lscA0Qv+RFIl5KnJ7GSLzA82s/MHsPTfs59ve8W
-	iPvUvI2p1Hk5Zbr/U9HJR5EDLURzHU32rCWZ/yYaZf089YR
-X-Received: by 2002:a17:90a:c10e:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-39b2622b3afmr42130719a91.18.1788884796952;
-        Tue, 08 Sep 2026 09:26:36 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccc72fsm12862374a91.2.2026.09.08.09.26.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 09:26:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <57763383-2829-4aa0-9623-e6afe79fc022@roeck-us.net>
-Date: Tue, 8 Sep 2026 09:26:34 -0700
+	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="Ga6vS0RM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2604220257; d=cherr.cc; t=1788885230; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=ATYwopDq3lOeKRynyx5bJtLt5Assf/MvZRtPVsMMab8=;
+ b=Ga6vS0RM1ljoSbbhFWuBmHpKE6GcrbuPCnX8hgY493uUmuo1Ra/zvXbsW7I/H4Xyy3A1zU
+ jyiQxykhRGj2t3q727J1v94Y92kvD3kNu3xzdYnS+YJiIGldRg2aHkRGQp9BznzzAZi6ct
+ s44PYkU9PfyJQk0LYzxJsL7Tng7sRq0D+4mJE7Qz8nJgEwIM/wjW5i+XsGJj/bpNjbpoGp
+ Eu+bPsjVGCq1NoCVr8lyC7WzHblegzAK+5WFFr/S7zsrOCfkCTqDJJ0UOTeTfTAZXeWSfj
+ 1n90ms4+lCWtdhTYJNEClyMirFIFD58NZLVBOWFPSm0h/L2vz6tCjuBU+XMa3A==
+Subject: [PATCH net v3 0/2] net: fec: fix PTP clock teardown races on device removal
+Date: Wed, 09 Sep 2026 00:33:43 +0800
+Content-Transfer-Encoding: 7bit
+X-Change-Id: 20260901-fec-ptp-pps-event-uaf-dcc71b5e1db0
+Cc: "Simon Horman" <horms@kernel.org>, "Phuc" <phucduc.bui@gmail.com>, 
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, 
+	"Shengzhuo Wei" <me@cherr.cc>
+X-Original-From: Shengzhuo Wei <me@cherr.cc>
+X-B4-Tracking: v=1; b=H4sIAOc4oGoC/3WNQQ6CMBREr0K69pv+WkBceQ/jorS/UhfQtKXRE O4uoAs3LGcy897EIgVHkV2KiQXKLrqhX8LpUDDdqf5B4MySmeCi4g1HsKTBJw/eR6BMfYJRWTB a19iWhKblbPn6QNa9Nu6N9ZTY/VvGsX2STitxnXUupiG8N3vGbfwTyR1RRuDQKCtl1ZJUiFfdU QhHrTdFFv+Q8x5ELBCh0JQ1ClSG/iDzPH8AEycceBUBAAA=
+Received: from [192.168.9.107] ([111.42.148.75]) by smtp.feishu.cn with ESMTPS; Wed, 09 Sep 2026 00:33:47 +0800
+X-Lms-Return-Path: <lba+26aa038ec+ab8739+lists.linux.dev+me@cherr.cc>
+From: "Shengzhuo Wei" <me@cherr.cc>
+Message-Id: <20260909-fec-ptp-pps-event-uaf-v3-0-bead12c29a16@cherr.cc>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/13] ARM: remove sa1100 platform
-To: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Linus Walleij <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-2-arnd@kernel.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260908152808.3928630-2-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+To: "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>, 
+	"Shenwei Wang" <shenwei.wang@nxp.com>, 
+	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, 
+	"Richard Cochran" <richardcochran@gmail.com>, 
+	"Troy Kisky" <troy.kisky@boundarydevices.com>, 
+	"Fugang Duan" <fugang.duan@nxp.com>, 
+	"Lucas Stach" <l.stach@pengutronix.de>
+X-Mailer: b4 0.16.0
 
-On 9/8/26 08:27, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Most sa1100 platforms were removed a few years, with the remaining
-> ones left as a starting point for a conversion to devicetree.
-> 
-> Nothing ever happened on that front, so remove the rest now,
-> including the sa1111 and locomo drivers that were once shared
-> with pxa but are already sa1100-exclusive now.
-> 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Linus Walleij <linusw@kernel.org>
-> Cc: Kristoffer Ericson <kristoffer.ericson@gmail.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+This series fixes two FEC teardown races: ethtool can access a freed
+PTP clock, and the PPS interrupt can outlive the PHC and netdev.
 
+I have kept the main Ethernet IRQ issue discussed with Phuc [1] out of
+this revision. His PTP initialization error-propagation changes are
+also separate; if they land first, the new probe failure path will
+need PPS IRQ cleanup too.
+
+The bugs were found by code inspection; no hardware testing was done.
+
+[1] https://lore.kernel.org/r/CAABR9nHLcR103aADF1WMSEkw-_BjWB9vyWXENJCYfjX5Wz1nkw@mail.gmail.com/
+
+---
+Changes in v3:
+- Use request_irq()/free_irq() for the PPS interrupt and drop
+  unnecessary braces in patch 2, as suggested by Wei Fang.
+- Patch 1 is unchanged.
+- Link to v2: https://lore.kernel.org/all/20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc/
+
+Changes in v2:
+- Drop the ptp_clock_index_by_dev() lookup and unregister the netdev
+  before fec_ptp_stop() instead, as suggested by Wei Fang, so the
+  netdev callbacks are drained before the PHC teardown.
+- Use -1 as the "no PPS interrupt" sentinel so a valid IRQ 0 is neither
+  skipped on release nor freed when the request never happened.
+- Link to v1: https://lore.kernel.org/netdev/20260904-fec-ptp-pps-event-uaf-v1-0-9af446be4a11@cherr.cc
+
+---
+Shengzhuo Wei (2):
+      net: fec: stop the PTP clock after the netdev is unregistered
+      net: fec: free the PPS interrupt before tearing down the PHC and netdev
+
+ drivers/net/ethernet/freescale/fec.h      |  1 +
+ drivers/net/ethernet/freescale/fec_main.c |  2 +-
+ drivers/net/ethernet/freescale/fec_ptp.c  | 12 ++++++++++--
+ 3 files changed, 12 insertions(+), 3 deletions(-)
+---
+base-commit: 548e7bcd0c5460ddcbca9600cea603ebeebf4da7
+change-id: 20260901-fec-ptp-pps-event-uaf-dcc71b5e1db0
+
+Best regards,
+--  
+Shengzhuo Wei <me@cherr.cc>
