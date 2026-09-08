@@ -1,34 +1,33 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1AA54EED2
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 21:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08175519A7
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 21:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788904470; cv=none; b=rNoS2IpolQau9R2jIPPKk3W6hAmQA3rpsgA30qgeNix/K5Agh36IQt/hgo7to23dCf50BaFoaiZ7B9lAjsrBmIT0ZyfT3UPhuAeGSIut/uvjUSwp+WSW1qv1iJqjFyvRExqWU9+AVATkSFZ3/gS/82pzDWB60vW8DmCO4pXmjRU=
+	t=1788904531; cv=none; b=O2vb6klch1CF0R3hyxr1fiq77NnRWA3iG21LVows4VSLPGOxrzp4cN8uGcIpLydJK+m5uUdRy3gqlA0M3m9KvG6GAJAFZSzjVNJgZ5W814CX90QUFYPqkGuBjUbzoZNa9n1yC6BiR6sYFcnt5l+iEbKT0L62WsFY97CYdTz+dbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788904470; c=relaxed/simple;
-	bh=zl2UFm+eERLdzi9WAOUTNcRWXaoJyOpP7jCOr5YoSwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZTBQRfv2ilYBhTZuTomyAkXUeW6f7fX6qQHkIyj9JWWz3pzZd8BeOZft76MCnpkoCCUWpzVnFGty9PxY5iv4yjV1Cb5NkakGF4jxyD15EmTCPTWldxihVuaDfmM+xwZB0+z2D9tCjfZHjihFxOoohhr2sr7mvDzU7R75k+SWei4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=WXAs9orN; arc=none smtp.client-ip=178.251.229.89
+	s=arc-20240116; t=1788904531; c=relaxed/simple;
+	bh=382uOfWKw9shIIHoy5dE+ILCsYYms/zIoHM1a/Ci/MI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YP+sqTzi7UgKGfoNd26jbQLvez0EdYJdbD23GBXn5WOpT3qPFTxGPq2JssaAdIL3gdyEPiglg59Ppf6PCr3V2tY7i0r6CJngFLffUuHfIP9h2oKAzB1+zi0O+qGpCMQkoP9PhezXWQbJ78LUsptnThppfe43C1/MrLDPa5KCghk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=eKACFwtP; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="WXAs9orN"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2C69B10176D;
-	Tue, 08 Sep 2026 23:54:18 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="eKACFwtP"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D80B8100346;
+	Tue, 08 Sep 2026 23:55:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1788904461; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=lo980KpxOEWZtNfw8Iuk8CZbmDKkSo6ssfw7sJy1rvs=;
-	b=WXAs9orNlQF1RJTcQ6ASKpmmwroiR/ZRjTj0BJqFLbxz0PdjUDyMPYicKspslQ33sfcFpE
-	xBoMIzdEjBgazKbMgRDz1xJ1GZQHpZo7P/yFdD2kefb4dbmy+86E7Gu6/L2o3HhJP/vsBj
-	ggkwvHuyC79AnqPdslkWTtqnxvtm0FepFNHf10WWoAgD+StxaofZG6DQO+nZTMFiZlCs55
-	A0JV+g/UsU15Cg4svhzBVI1sO6jUitzN6f9M48oD4AEzGI6p51n2nA/LM812oiaIfeAeIb
-	01ZNyCMDpCX0War6D+j8Fc9MFx/S0KmfExjuRVjVNJJpXiXRIta9AcOZLeRCGg==
+	s=dkim; t=1788904523; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=Lx8vUrl8G0vy6Q42VWe8patHE21Kb5u7SDIaA+quT4A=;
+	b=eKACFwtPGFXiQXRqzxq816VuwkNmQSN7przuyniCP6SnnCZDU1IkDWeFLGeLV8KUhk6NcJ
+	KSjkBpHDvBVLi5B1rPl4TyTbFTAlyCkCIzCLj9cqaTbfLOWwPLmjUASyPMRwGA8gXvAGdi
+	FucFCZgFrR4sEsVvKHbskZ7h86HVlNShKv11B6WailahDlg9lYPLKyQDmVeJSKWjmGqQJ3
+	fb7hCeTK212kz5n/bmttw3wrQj349GElJxIkCWKhQjGdVmzNKic92185c5jQSzCohgi/O2
+	Qij43O7TdHvOujuXMzQLU5UvFPexEGu1SiF8T1BpnP9fO0YetfCUz3E5rGUSqg==
 From: Marek Vasut <marex@nabladev.com>
 To: linux-arm-kernel@lists.infradead.org
-Cc: Fedor Ross <fedor.ross@ifm.com>,
-	Marek Vasut <marex@nabladev.com>,
+Cc: Marek Vasut <marex@nabladev.com>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
 	Frank Li <Frank.Li@nxp.com>,
@@ -39,9 +38,9 @@ Cc: Fedor Ross <fedor.ross@ifm.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mn: Add display DT overlays for the ifm VHIP4 EvalBoard
-Date: Tue,  8 Sep 2026 23:53:05 +0200
-Message-ID: <20260908215409.32993-1-marex@nabladev.com>
+Subject: [PATCH] arm64: dts: imx8mm: imx8mp: Update EEPROM with nWP GPIO, label and layout
+Date: Tue,  8 Sep 2026 23:54:37 +0200
+Message-ID: <20260908215519.33061-1-marex@nabladev.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -52,17 +51,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-From: Fedor Ross <fedor.ross@ifm.com>
+Describe ID EEPROM nWP GPIO, label and nvmem layout. The i.MX8MM eDM SBC
+and i.MX8MP eDM SBC nvmem layout is almost identical, except for length
+of product-name@32 field, which is 19 Bytes on the Mini and 24 Bytes on
+the Plus.
 
-Add display DT overlays for the ifm VHIP4 EvalBoard v1. This
-includes two expansion modules, one populated with Displaytech
-DT050BTFT-PTS panel, and the NXP ADV7533 DSI-to-HDMI adapter.
-The Displaytech DT050BTFT-PTS is configured in three different
-DSI lane counts to allow testing all possible DSI lane count
-configurations of the VHIP4 EvalBoard.
-
-Signed-off-by: Fedor Ross <fedor.ross@ifm.com>
-Co-developed-by: Marek Vasut <marex@nabladev.com>
 Signed-off-by: Marek Vasut <marex@nabladev.com>
 ---
 Cc: Conor Dooley <conor+dt@kernel.org>
@@ -77,403 +70,225 @@ Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 ---
- arch/arm64/boot/dts/freescale/Makefile        |  16 ++
- ...-evalboard-v1-overlay-dt050btft-1lane.dtso |  16 ++
- ...-evalboard-v1-overlay-dt050btft-2lane.dtso |  16 ++
- ...-evalboard-v1-overlay-dt050btft-4lane.dtso |  16 ++
- ...evalboard-v1-overlay-dt050btft-common.dtsi | 155 ++++++++++++++++++
- ...evalboard-v1-overlay-nxp-adv7533-hdmi.dtso | 104 ++++++++++++
- 6 files changed, 323 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtso
+ .../freescale/imx8mm-data-modul-edm-sbc.dts   |  56 ++++++++
+ .../freescale/imx8mp-data-modul-edm-sbc.dts   | 128 ++++++++++++++++++
+ 2 files changed, 184 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 984642146dd91..1cbf7205d577c 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -319,6 +319,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-var-som-symphony-legacy.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-venice-gw7902.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
+index df857de0375cf..2b7fed0c5a7c7 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
+@@ -431,7 +431,63 @@ usb-hub@2c {
+ 	eeprom: eeprom@50 {
+ 		compatible = "atmel,24c32";
+ 		reg = <0x50>;
++		label = "dmo-board-info";
+ 		pagesize = <32>;
++		wp-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
++
++		nvmem-layout {
++			compatible = "fixed-layout";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			company-name@24 {
++				reg = <0x24 0xd>;
++			};
++
++			product-name@32 {
++				reg = <0x32 0x13>;
++			};
++
++			board-revision@4b {
++				reg = <0x4b 0x3>;
++			};
++
++			serial-number@4f {
++				reg = <0x4f 0x8>;
++			};
++
++			manufacturing-date@70 {
++				reg = <0x70 0xa>;
++			};
++
++			test-date@7b {
++				reg = <0x7b 0xa>;
++			};
++
++			product-number@86 {
++				reg = <0x86 0x8>;
++			};
++
++			board-variant@9a {
++				reg = <0x9a 0x9>;
++			};
++
++			company-acronym@a4 {
++				reg = <0xa4 0x3>;
++			};
++
++			mac-address@b0 {
++				reg = <0xb0 0x6>;
++			};
++
++			board-id@100 {
++				reg = <0x100 0x4>;
++			};
++
++			wifi-id@1200 {
++				reg = <0x120 0x4>;
++			};
++		};
+ 	};
  
-+imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-+							  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtbo
-+imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-+							  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtbo
-+imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-+							  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtbo
- imx8mn-vhip4-evalboard-v1-overlay-eeprom-1000-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
- 						      imx8mn-vhip4-overlay-eeprom-1000.dtbo
- imx8mn-vhip4-evalboard-v1-overlay-eeprom-1100-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-@@ -327,6 +333,8 @@ imx8mn-vhip4-evalboard-v1-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v1.dtb
- 						  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo
- imx8mn-vhip4-evalboard-v1-overlay-ksz9031-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
- 						  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtbo
-+imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-+							   imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtbo
- imx8mn-vhip4-evalboard-v2-overlay-adin1300-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
- 						   imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo
- imx8mn-vhip4-evalboard-v2-overlay-eeprom-1100-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
-@@ -336,12 +344,20 @@ imx8mn-vhip4-evalboard-v2-overlay-eeprom-2000-dtbs := imx8mn-vhip4-evalboard-v2.
- imx8mn-vhip4-evalboard-v2-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
- 						  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-vhip4-evalboard-v1.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtbo \
-+			  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtbo \
-+			  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtbo \
- 			  imx8mn-vhip4-evalboard-v1-overlay-eeprom-1000.dtb \
- 			  imx8mn-vhip4-evalboard-v1-overlay-eeprom-1100.dtb \
- 			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtb \
- 			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo \
- 			  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtb \
- 			  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtbo \
-+			  imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtbo \
- 			  imx8mn-vhip4-evalboard-v2.dtb \
- 			  imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtb \
- 			  imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo \
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtso
-new file mode 100644
-index 0000000000000..4151765743265
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-1lane.dtso
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
+ 	rtc: rtc@68 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+index c284edfa1f4c8..1d03cf73588c4 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+@@ -421,14 +421,142 @@ tpm: tpm@2e {
+ 	eeprom900: eeprom@50 {	/* board rev.900 */
+ 		compatible = "atmel,24c32";
+ 		reg = <0x50>;
++		label = "dmo-board-info";
+ 		pagesize = <32>;
++		wp-gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
+ 		status = "disabled";
 +
-+#include "imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi"
-+
-+&sn65dsi83_in {
-+	data-lanes = <1>;
-+};
-+
-+&mipi_dsi_bridge1_out {
-+	data-lanes = <1>;
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtso
-new file mode 100644
-index 0000000000000..7b1bd925f53f6
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-2lane.dtso
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi"
-+
-+&sn65dsi83_in {
-+	data-lanes = <1 2>;
-+};
-+
-+&mipi_dsi_bridge1_out {
-+	data-lanes = <1 2>;
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtso
-new file mode 100644
-index 0000000000000..300d5e9536102
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-4lane.dtso
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi"
-+
-+&sn65dsi83_in {
-+	data-lanes = <1 2 3 4>;
-+};
-+
-+&mipi_dsi_bridge1_out {
-+	data-lanes = <1 2 3 4>;
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi
-new file mode 100644
-index 0000000000000..c82cc2eef8532
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-dt050btft-common.dtsi
-@@ -0,0 +1,155 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021-2026 Marek Vasut
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mn-pinfunc.h"
-+
-+&{/} {
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		/* FIXME: 200 Hz, since DT050BTFT-PTS datasheet does not say */
-+		pwms = <&pwm4 0 5000000 0>;
-+		brightness-levels = <0 100>;
-+		num-interpolated-steps = <100>;
-+		default-brightness-level = <75>;
-+	};
-+
-+	lvds-decoder {
-+		compatible = "ti,sn65lvds822", "lvds-decoder";
-+		powerdown-gpios = <&gpio5 19 GPIO_ACTIVE_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_lvds_bridge>;
-+
-+		ports {
++		nvmem-layout {
++			compatible = "fixed-layout";
 +			#address-cells = <1>;
-+			#size-cells = <0>;
++			#size-cells = <1>;
 +
-+			port@0 {
-+				reg = <0>;
-+
-+				lvds_dpi_bridge_in: endpoint {
-+					data-mapping = "vesa-24";
-+					remote-endpoint = <&sn65dsi83_out>;
-+				};
++			company-name@24 {
++				reg = <0x24 0xd>;
 +			};
 +
-+			port@1 {
-+				reg = <1>;
++			product-name@32 {
++				reg = <0x32 0x18>;
++			};
 +
-+				lvds_bridge_out: endpoint {
-+					remote-endpoint = <&lvds_panel_in>;
-+				};
++			board-revision@4b {
++				reg = <0x4b 0x3>;
++			};
++
++			serial-number@4f {
++				reg = <0x4f 0x8>;
++			};
++
++			manufacturing-date@70 {
++				reg = <0x70 0xa>;
++			};
++
++			test-date@7b {
++				reg = <0x7b 0xa>;
++			};
++
++			product-number@86 {
++				reg = <0x86 0x8>;
++			};
++
++			board-variant@9a {
++				reg = <0x9a 0x9>;
++			};
++
++			company-acronym@a4 {
++				reg = <0xa4 0x3>;
++			};
++
++			eeprom900mac: mac-address@b0 {
++				reg = <0xb0 0x6>;
++			};
++
++			board-id@100 {
++				reg = <0x100 0x4>;
++			};
++
++			wifi-id@1200 {
++				reg = <0x120 0x4>;
++			};
++
++			board-lvds-id@140 {
++				reg = <0x140 0x4>;
++			};
++
++			camera-id@160 {
++				reg = <0x160 0x4>;
 +			};
 +		};
-+	};
+ 	};
+ 
+ 	eeprom902: eeprom@51 {	/* board rev.902 */
+ 		compatible = "atmel,24c32";
+ 		reg = <0x51>;
++		label = "dmo-board-info";
+ 		pagesize = <32>;
++		wp-gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
 +
-+	panel {
-+		compatible = "displaytech,dt050btft-pts";
-+		backlight = <&backlight>;
-+		power-supply = <&reg_panel_3v3>;
-+
-+		port {
-+			lvds_panel_in: endpoint {
-+				remote-endpoint = <&lvds_bridge_out>;
-+			};
-+		};
-+	};
-+
-+	reg_panel_3v3: regulator-panel-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-always-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-name = "VCC_DISPL";
-+	};
-+};
-+
-+&i2c3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	bridge@2d {
-+		compatible = "ti,sn65dsi83";
-+		enable-gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_dsi_bridge>;
-+		reg = <0x2d>;
-+
-+		ports {
++		nvmem-layout {
++			compatible = "fixed-layout";
 +			#address-cells = <1>;
-+			#size-cells = <0>;
++			#size-cells = <1>;
 +
-+			port@0 {
-+				reg = <0>;
-+				sn65dsi83_in: endpoint {
-+					data-lanes = <1>;
-+					remote-endpoint = <&mipi_dsi_bridge1_out>;
-+				};
++			company-name@24 {
++				reg = <0x24 0xd>;
 +			};
 +
-+			port@2 {
-+				reg = <2>;
-+				sn65dsi83_out: endpoint {
-+					remote-endpoint = <&lvds_dpi_bridge_in>;
-+				};
++			product-name@32 {
++				reg = <0x32 0x18>;
 +			};
-+		};
-+	};
-+};
 +
-+&iomuxc {
-+	pinctrl_dsi_bridge: dsibridge-grp {
-+		fsl,pins = <
-+			/* nRESET_BRIDGE */
-+			MX8MN_IOMUXC_SD1_CMD_GPIO2_IO1                  0x100
-+		>;
-+	};
++			board-revision@4b {
++				reg = <0x4b 0x3>;
++			};
 +
-+	pinctrl_lvds_bridge: lvdsbridge-grp {
-+		fsl,pins = <
-+			/* LVDS_RGB_SHTDN_n */
-+			MX8MN_IOMUXC_I2C3_SDA_GPIO5_IO19                0x100
-+		>;
-+	};
++			serial-number@4f {
++				reg = <0x4f 0x8>;
++			};
 +
-+	pinctrl_pwm4: pwm4-grp {
-+		fsl,pins = <
-+			/* LCD PWM */
-+			MX8MN_IOMUXC_I2C3_SCL_PWM4_OUT			0x0116
-+		>;
-+	};
-+};
++			manufacturing-date@70 {
++				reg = <0x70 0xa>;
++			};
 +
-+&lcdif {
-+	status = "okay";
-+};
++			test-date@7b {
++				reg = <0x7b 0xa>;
++			};
 +
-+&mipi_dsi {
-+	samsung,burst-clock-frequency = <891000000>;
-+	samsung,esc-clock-frequency = <10000000>;
-+	status = "okay";
++			product-number@86 {
++				reg = <0x86 0x8>;
++			};
 +
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++			board-variant@9a {
++				reg = <0x9a 0x9>;
++			};
 +
-+		port@1 {
-+			reg = <1>;
++			company-acronym@a4 {
++				reg = <0xa4 0x3>;
++			};
 +
-+			mipi_dsi_bridge1_out: endpoint {
-+				data-lanes = <1>;
-+				remote-endpoint = <&sn65dsi83_in>;
++			eeprom902mac: mac-address@b0 {
++				reg = <0xb0 0x6>;
++			};
++
++			board-id@100 {
++				reg = <0x100 0x4>;
++			};
++
++			wifi-id@1200 {
++				reg = <0x120 0x4>;
++			};
++
++			board-lvds-id@140 {
++				reg = <0x140 0x4>;
++			};
++
++			camera-id@160 {
++				reg = <0x160 0x4>;
 +			};
 +		};
-+	};
-+};
-+
-+&pwm4 {	/* LCD backlight PWM */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm4>;
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtso
-new file mode 100644
-index 0000000000000..e1a7aa6806c48
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-nxp-adv7533-hdmi.dtso
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021-2026 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	cec_clock: clk-cec-fixed {
-+		#clock-cells = <0>;
-+		compatible = "fixed-clock";
-+		clock-frequency = <24000000>;
-+	};
-+
-+	hdmi-out {
-+		compatible = "hdmi-connector";
-+		type = "a";
-+
-+		port {
-+			hdmi_con: endpoint {
-+				remote-endpoint = <&adv7513_out>;
-+			};
-+		};
-+	};
-+
-+
-+	reg_adv_1v8: regulator-adv-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-always-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-name = "ADV-1V8";
-+	};
-+
-+	reg_adv_3v3: regulator-adv-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-always-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-name = "ADV-3V3";
-+	};
-+};
-+
-+&i2c3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	hdmi-transmitter@3d {
-+		compatible = "adi,adv7535";
-+		reg = <0x3d>, <0x3e>, <0x3c>, <0x3f>;
-+		reg-names = "main", "edid", "cec", "packet";
-+		a2vdd-supply = <&reg_adv_1v8>;
-+		adi,dsi-lanes = <4>;
-+		avdd-supply = <&reg_adv_1v8>;
-+		dvdd-supply = <&reg_adv_1v8>;
-+		pvdd-supply = <&reg_adv_1v8>;
-+		v3p3-supply = <&reg_adv_3v3>;
-+		status = "okay";
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+				adv7535_in: endpoint {
-+					remote-endpoint = <&mipi_dsi_bridge1_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+				adv7513_out: endpoint {
-+					remote-endpoint = <&hdmi_con>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&mipi_dsi {
-+	samsung,burst-clock-frequency = <891000000>;
-+	samsung,esc-clock-frequency = <10000000>;
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@1 {
-+			reg = <1>;
-+
-+			mipi_dsi_bridge1_out: endpoint {
-+				data-lanes = <1 2 3 4>;
-+				remote-endpoint = <&adv7535_in>;
-+			};
-+		};
-+	};
-+};
+ 	};
+ 
+ 	rtc: rtc@68 {
 -- 
 2.53.0
 
