@@ -1,133 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CA3563FB7;
-	Tue,  8 Sep 2026 16:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED91287247;
+	Tue,  8 Sep 2026 16:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788883888; cv=none; b=OGCoh9uQ3nlggzQ8KVgSa4Dpxs8KHLx5QjufANOkbrW2OUdLOPnwwPMxUTanWJYYNnsv0WONj5qir6vIYlmwHa9v1biLOcANBUX4sUAWq5kwwLqaF/mljUctY3Fd5nOgbGmS2Dh0v4VthpLcVzIP4sAx1mbm3m4vWBR+WPa032Q=
+	t=1788883925; cv=none; b=dgShRcXnUFqpf0XgIQECmIGP4xbSbfxXN8uSCsAshgPX4UeBkkBC0KHJkxKHP1fuFrY0LtizpUSLi8Z7LDPwBhhBJ8G6mTUJEWqRlPibQBMBzHwvmb/GZ8daPluenURW8NQJeyPBRdf4ggXM+GBXyU6HImjKbMylvb6rF0bBgk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788883888; c=relaxed/simple;
-	bh=LCJB/bBSJ6Qr8C+a3E//aJEMDEm/ATsf1wj8b7Yqqlk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lB9oYUVL83QkAttG7QLEZoMYYgEHJxoAcNsoPYcGAPTzFeUOOI9Q/h28JYLTe9g2vomQNeOQsevoGeFAj9AEKopBN1eD1kd1Ojt66uBHg8DjgMOl7/eyt/DbEVzNMuQHgD2NKaebeQFJ0f4HOE1+zmTZ3NYTEFFGyIb0NEdx2BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeQoNOP2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788883925; c=relaxed/simple;
+	bh=do2UA+kUJ1TbXgXRbSmd0EaMt9CkyGUghFC1xnXimn8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=ElXMeLMJslymLQz3i2wLB/GohfMCrewefFOwFVe/MfSpdoa3kfp9X/VlDt+iOMWdnETgrYxh5w8iriLfoe+mbpo/WFwYqYf1EWseQ+d74DkgG41W0D6KTkUPQR3eYslndxa4zV0xZ7ilx/QKY0y04xndHfo3olhVY/Cpsj13IJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIGbpUZr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeQoNOP2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A331F00A3A;
-	Tue,  8 Sep 2026 16:11:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIGbpUZr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5775D1F00A3D;
+	Tue,  8 Sep 2026 16:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788883886;
-	bh=eQtOv7eD6H20m0zWo+xhl+DuKQqGCiyKfHcdLqZ0so4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KeQoNOP2/AbBnkNeFbs6XXLyde3Oo327CnQL++APk9XwN5MCbaW/Qh1rTloh9A6Nt
-	 Gn3aUI8A7IY+4ooXj8sdx5yq1De/+RNBK8Bh/xScHsfxmAXI3x+Pr9nKNY6fZeG1nM
-	 f9eOjDMBhb36++NBYBApMj7BdNSEvS8vBHvQvdnri/FTP5U7pCqkJ4HRQpNzw701HN
-	 SaS4B7B4HirV+fPe1PbSpvmRPXMZtZNGzl5RPy4YnMtLgqryF/5zZ1NjBZS1T++Lgz
-	 HobDVTwXGEZPQCMQ2ykRxdBZpoE5EMlVIcLam5TkXxifdVGpxyO1dXWHmqy1ux6aLu
-	 yW+D8TQZT9EBw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 05/13] ARM: orion/dove/mv78xx0: remove all board files
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Arnd Bergmann" <arnd@kernel.org>
-Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org, dlemoal@kernel.org, linux-rtc@vger.kernel.org, neil.armstrong@linaro.org, vkoul@kernel.org, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>, olteanv@gmail.com, Frank.Li@kernel.org, linux-pci@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, cassel@kernel.org, linux-ide@vger.kernel.org, linux-watchdog@vger.kernel.org
-In-Reply-To: <20260908152808.3928630-6-arnd@kernel.org>
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-6-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 16:11:25 +0000
-Message-Id: <20260908161125.E4A331F00A3A@smtp.kernel.org>
+	s=k20260515; t=1788883923;
+	bh=3bbGkobDpQdGYniX9EG7+4iZ/BE90dQ8CT8XcVZKJEY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=WIGbpUZrib61q8vONJ5FxSNakSuqaKCAsWJ+5gdMnCnFUkEPBkJwty8nxVVkN0Mv1
+	 w9t0XZ7baGlhJo6FAfmbzQHeT6V1vAUfLWN4apw16QVaQoaDbWzrsztdNDktT/3N0X
+	 iigUWVKzKZ4xSPjrUlzdr8zP6wW0E2DfPWCLVHHV/G8G3n7KOVbVsEwV0MVjf3kr7e
+	 bwwkO3x7f2V+zWtZ0deWW2D5+s5mUpPxp+iIHyNV8byIQganVhI0jnbxR+VlciGb7C
+	 dr69/ho0yadENGN25j4/oy5Stqto58/hMhZMDO7KOPS2seR908Ic/8L1QueLpqt231
+	 UbD43Bz747fcQ==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id ACE13198003A;
+	Tue,  8 Sep 2026 12:12:01 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 08 Sep 2026 12:12:01 -0400
+X-ME-Sender: <xms:0DOgapxIuztF-xAq1Xu0-G1BF1NYaz6JIZlSC3D-dq3Fz6DWKbpWFg>
+    <xme:0DOgakHmWMXsSA9O0-u_SlgufJhLfNf5hx5mRaEauyB0lcnspeq1oDMuGNavoa1ut
+    50ZNN52M0vBDTGGdKeGtBDtZKuXvmfocVfBKTB9QPGRwSEIu2bRPRA>
+X-ME-Proxy-Cause: dmFkZTFCMZbKka0PySpBSN0mOueOshb+uEL6ESVsVEH+1U1ATE4YvAKZeFRO257abuQ+ng
+    4PZCmsJnRkV/CoaJ+mDv3YqAto2q5SqEOFwbw6IsHq7VZajVGrnhWI0oYBHvFuJO97HxDG
+    pqfqxCPhTLzTprK3ntJZb0z9cfKzZw9S77ZLaTVZxLK7qnySfdKurKPqugdGDQMkjRCrqw
+    AIrcDceS4WrKbdxeHBH9945l6oxC8GA3mo+q4fJylrSLhZGVKNcwvFuJMdyOUfqVFIRFQC
+    NaLmAW7/Z+ubTtxnGKLueCuD7XLm/D3q6FipdVaMXj+xv+3IUzuF+mc2FDlpeEbdTinHad
+    iTw2WIz06Xf0RdlLqA3VXTMZ43u3wfgRb9mF0Vqd0QgcFmBDd0d1wp6zCTX7oWlwgWq26y
+    I+Og11aGh9ylDkTsSRZ7u/DLN7gYuRMYfqbK74bqmlce000gCwFqxe9BLdxFWsOL731qMT
+    sjH8DirrK5v3MIywZvSKmTrtuysA/pVKnQKGR5NHHFRhn6pY6u/y0fIrdHzdOQfOOlUWEY
+    7oEzUnt83MODHGRusAjEYJpctGSP6JuuIO0hg98JeaOn70wh9I4bN/io+rXokPnWu1dwXD
+    xhymirxxSTjmLZvHZSk8Rp6mtd1KxfakPRkBMJqP06MsSwUt3rxVa9utsROA
+X-ME-Proxy: <xmx:0TOgaoHVWd8BKffCEnm-xJwvT7eTaPZ3mte3HodUiQo0uSLW8oxbYg>
+    <xmx:0TOgarXr5vRy8XaIdHcFcpHvMcxRaRlVZ1IOVs9Ws-lqna-6r2Bm5A>
+    <xmx:0TOgaoyIMSeJ1juWayio0oZ0pDbHTGbiokBMtxKqKkQ3x90X-JNCZg>
+    <xmx:0TOgaoTpjFqgNobdu2LnBZxU30xTI0rppen-HQRWsWcorfxeB4WWOg>
+    <xmx:0TOgashVP2icbUUysxENXiCXVHDUiIBNO3Vldk61mtjQjpID9MMbC-Lx>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 3E8B032A007B; Tue,  8 Sep 2026 12:12:00 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-ThreadId: AGTXWeH1PU47
+Date: Tue, 08 Sep 2026 18:10:47 +0200
+From: "Arnd Bergmann" <arnd@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: devicetree@vger.kernel.org, "Rob Herring" <robh@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, linux-serial@vger.kernel.org,
+ "Frank Li" <Frank.Li@kernel.org>, imx@lists.linux.dev
+Message-Id: <cfce9a0e-a7b7-409d-b9a4-abb9013469a9@app.fastmail.com>
+In-Reply-To: <20260908155212.810C61F00A3A@smtp.kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-4-arnd@kernel.org>
+ <20260908155212.810C61F00A3A@smtp.kernel.org>
+Subject: Re: [PATCH 03/13] ARM: remove riscpc
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Low] Orphaned MAINTAINERS entry for the TS-78xx platform.
-- [Low] Legacy IRQ, MPP, and GPIO implementations are now unreachable dead =
-code and unnecessarily compiled.
---
+On Tue, Sep 8, 2026, at 17:52, sashiko-bot@kernel.org wrote:
+>
+> The Acorn Risc PC platform and its associated drivers, configurations,
+> and board files are being removed as the required gcc-8 compiler and
+> -march=armv3 option are no longer supported.
+>
+>>     The main limitation here is the CPU bus that does not allow 16-bit
+>>     wide data transfers and hence requires the kernel to be built with the
+>>     -march=armv3 compiler option that was discontinued in gcc-9.
+>
+> [Severity: Low]
+> Since this compiler option is the explicitly stated reason for removal in the
+> commit message, should we also delete the compiler flag from the tree?
+>
+> arch/arm/Makefile:
+>     arch-$(CONFIG_CPU_32v3)         :=-march=armv3m
+>
+> Additionally, the config symbol for this architecture version is now
+> dead code because its only selector (ARCH_RPC) was removed:
+>
+> arch/arm/mm/Kconfig:config CPU_32v3
+>     config CPU_32v3
+>         bool
 
-commit 67c50c71bc1677d3a7c7538373463163afb7b062
-Author: Arnd Bergmann <arnd@arndb.de>
-Subject: ARM: orion/dove/mv78xx0: remove all board files
+I decided to remove these two as part of the later StrongARM
+removal patch that depends on this one.
 
-This commit removes the legacy board files for the Orion, Dove, and MV78xx0=
-=20
-platforms. These files were retained in 2022 due to support in Debian/OpenW=
-RT,=20
-which is now gone.
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 81872f61b4317..fdd75b73bf293 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+> [ ... ]
+>> -ARM MFM AND FLOPPY DRIVERS
+>> -M:	Ian Molton <spyro@f2s.com>
+>> -S:	Maintained
+>> -F:	arch/arm/include/asm/floppy.h
+>> -F:	arch/arm/mach-rpc/floppydma.S
+>> -
+>
+> [Severity: Low]
+> Does this leave the floppy header as dead code in the tree? It is removed
+> from MAINTAINERS here, but the file itself was left in the tree:
+>
+> arch/arm/include/asm/floppy.h:
+>     #ifndef __ASM_ARM_FLOPPY_H
+>     #define __ASM_ARM_FLOPPY_H
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fdd75b73bf293..2bb036e8ddcd9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3080,8 +3080,6 @@ F:	Documentation/devicetree/bindings/arm/marvell/ma=
-rvell,orion5x.yaml
->  F:	Documentation/devicetree/bindings/soc/dove/
->  F:	arch/arm/boot/dts/marvell/dove*
->  F:	arch/arm/boot/dts/marvell/orion5x*
-> -F:	arch/arm/mach-dove/
-> -F:	arch/arm/mach-mv78xx0/
->  F:	arch/arm/mach-orion5x/
->  F:	arch/arm/plat-orion/
->  F:	drivers/bus/mvebu-mbus.c
+This is removed along with ISA bus support later, which also
+drops ARCH_MAY_HAVE_PC_FDC, ISA_DMA_API and GENERIC_ISA_DMA.
 
-[Severity: Low]
-Since all the board files like arch/arm/mach-orion5x/ts78xx-setup.c are
-removed in this patch, should the MAINTAINERS entry for the TS-78xx platform
-further down in this file also be removed?
+I could have split up the MAINTAINERS file change, but
+it seemed better to do it in one place. Maybe the other
+patch would have been better, but then I'd have another
+dangling reference to mach-rpc here.
 
-The pattern F: arch/arm/mach-orion5x/ts78xx-* now points to deleted files,
-which leaves an orphaned entry for Alexander Clouter.
+> The Makefile still references it:
+>
+> arch/arm/Makefile:
+>     machine-$(CONFIG_ARCH_RPC)              += rpc
 
-[ ... ]
+Fixed now, this ended up in the StrongARM patch by
+accident.
 
-> diff --git a/arch/arm/mach-orion5x/Makefile b/arch/arm/mach-orion5x/Makef=
-ile
-> index 6f54d7fef27a7..7e9634e043185 100644
-> --- a/arch/arm/mach-orion5x/Makefile
-> +++ b/arch/arm/mach-orion5x/Makefile
-> @@ -2,15 +2,6 @@
->  ccflags-y :=3D -I$(srctree)/arch/arm/plat-orion/include
-> =20
->  obj-y				+=3D common.o pci.o irq.o mpp.o
-> -obj-$(CONFIG_MACH_KUROBOX_PRO)	+=3D kurobox_pro-setup.o
-> -obj-$(CONFIG_MACH_TERASTATION_PRO2)	+=3D terastation_pro2-setup.o
+> The machine type registry still contains it:
+>
+> arch/arm/tools/mach-types:
+>     riscpc                  ARCH_RPC                RISCPC                  1
 
-[Severity: Low]
-Are irq.o and mpp.o now completely unreachable code?
+This is intentional.
 
-Since all the board files that called into these APIs have been removed,
-it appears these objects are now unnecessarily compiled into the kernel
-image. Should they be removed from obj-y here?
+> And the CPU selection still evaluates it:
+>
+> arch/arm/mm/Kconfig:config CPU_SA110
+>     select CPU_32v3 if ARCH_RPC
+>     select CPU_32v4 if !ARCH_RPC
 
-[ ... ]
+Again, this is part of the StrongARM removal. I had considered
+removing these two lines first, but then I'd have to split up
+the CPU_32v3 removal out from that.
 
-> diff --git a/arch/arm/plat-orion/Makefile b/arch/arm/plat-orion/Makefile
-> index e8c7580df8caf..dfde39cdd992b 100644
-> --- a/arch/arm/plat-orion/Makefile
-> +++ b/arch/arm/plat-orion/Makefile
-> @@ -5,5 +5,5 @@
->  ccflags-y :=3D -I$(src)/include
-> =20
->  orion-gpio-$(CONFIG_GPIOLIB)      +=3D gpio.o
-> -obj-$(CONFIG_PLAT_ORION_LEGACY)   +=3D irq.o pcie.o time.o common.o mpp.o
-> +obj-$(CONFIG_PLAT_ORION_LEGACY)   +=3D irq.o pcie.o mpp.o
->  obj-$(CONFIG_PLAT_ORION_LEGACY)   +=3D $(orion-gpio-y)
-
-[Severity: Low]
-Similarly, does this leave irq.o, mpp.o, and the orion-gpio-y objects as de=
-ad
-code as well?
-
-Since their corresponding entry points in the board files were deleted,
-could these also be removed from the build?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
-630-1-arnd@kernel.org?part=3D5
+     Arnd
