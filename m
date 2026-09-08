@@ -1,99 +1,194 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2618F4A5C24
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 09:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A493AA1BF
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 09:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788860690; cv=none; b=mjZDaGyYpD0tl+JqQEXQq4hEQOzij1EFCz4nSldTGK9nronDkPCDQXsY4/xYTswH/O5HQ0lsFxbZIQL+DkGy6XuInMLxw36ybRPUGEBSq6PoLcBSdxkngs8yARkICnCN9n7/OJ+ZFsuLxGRW4buq4uUZsXdsTnkCiwHmWkPi28k=
+	t=1788861427; cv=none; b=d2kE6R8s33MTmOarm5it29fybf6aUv0viAAMipzo4TYIBRdLzWn5Si4ew0M8jlP/OFsXPlbSJQ6IwCOleWXTwG05ES3l1sukT22DSX9IqAgLIrXR31dBqqXRRw9TtG9X8vQTJ3aiKFQy7g5mp7P+iH2khI5iRFjBI/7yYm4PNr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788860690; c=relaxed/simple;
-	bh=hZE62hYy80JCmRJl8frLe8BRekVemno7foWWlr7ByQA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tLp0Uj3EEH91dHdNZMbQ7bwjr8lzUyqKpgPatRjsfYOFWp/WoeKxuBufFQjHxz+SYiZkQy94+s4JO73kLGOg6CHM2yaAm0Swa0G4r+NRdXBoflNX+fZxI8JWfzm6JurqpddS3l6/AMmLRnL9BOe5otdq2EWg+xWnb+U49sGQAfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: ea830a7aab6911f19a56ed5b684f684d-20260908
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:1aaeb123-10e7-410a-b55b-6715d5593966,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:7db8b62,CLOUDID:b7342ac129824bbfa49c5374921c0be9,BulkI
-	D:nil,BulkQuantity:0,SF:102|136|850|865|898,TC:nil,Content:0|15|50|99,EDM:
-	-3|-100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,O
-	SA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ea830a7aab6911f19a56ed5b684f684d-20260908
-X-User: lilinmao@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <lilinmao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1401455100; Tue, 08 Sep 2026 17:44:41 +0800
-From: Linmao Li <lilinmao@kylinos.cn>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: Frank Li <Frank.Li@oss.nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Leonard Crestez <cdleonard@gmail.com>,
-	Radu Solea <radu.solea@nxp.com>,
-	Franck LENORMAND <franck.lenormand@nxp.com>,
-	linux-crypto@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Linmao Li <lilinmao@kylinos.cn>
-Subject: [PATCH v2] crypto: mxs-dcp: handle zero-length skcipher requests
-Date: Tue,  8 Sep 2026 17:44:37 +0800
-Message-Id: <20260908094437.1548278-1-lilinmao@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1788861427; c=relaxed/simple;
+	bh=0wXUMktihooh4atg6zvvLY9rA9IyMpNMlLSopQ05CGg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CdN86y59gAeRl7MPKw1SBNVTW/9a5h8gLXJhoLHvorN85zcEGjtl4rVL0zO1qeJmW+acUugWVIxG9u8AFxzCztxFb9JKNrbDt8REvUs1hfwYdm5iy5a6CI0h7zq1+9hrM5z+bJJl2RUaGDxTjChm57jznkUz4NyttXPGI6KffKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwVq0VNa; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwVq0VNa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA061F00A3A;
+	Tue,  8 Sep 2026 09:57:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788861426;
+	bh=WcAJVViw32frKz3AYBJN86W2kZowjxU1XOAHLaOmh6c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nwVq0VNaB/Ewi+E4gGs16RiXu9tvk7ry7MHGmyqO5ykdXlULop1P38EZQw5LYzj7T
+	 tvEtRE5oHCIiQUngXVxDFkA6KpSrRYtwdLx9/vbR6I0fO7gckIVvQKDYHU/Cf9VwHS
+	 mv9DS6/aS49GYMexK3t/TM+JxoCgJZ0SxrwwQl7RdM8lDXy+Xg+cPgCNPcNFs7DtG3
+	 JRtvNzgCCtbzvmzUO9NldPs5/kPL2W0i+xVWKkd23vFiqsTYblNOEX3hoj4nCloD7g
+	 9egnR4S8M44tnkvSc2Ds0d1d2rHbXVh+3Ey2cohBvREA6UNZvZFTh0Mr2Ldmgl7TD7
+	 zv7QQRIqW0niQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] crypto: mxs-dcp: handle zero-length skcipher
+ requests
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Linmao Li" <lilinmao@kylinos.cn>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260908094437.1548278-1-lilinmao@kylinos.cn>
+References: <20260908094437.1548278-1-lilinmao@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 09:57:05 +0000
+Message-Id: <20260908095705.DBA061F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] Out-of-bounds read and 0-length hardware submission due to imprope=
+r scatterlist trailing data handling.
+- [High] Potential deadlock due to using spin_lock() instead of spin_lock_b=
+h() in queue management.
+- [High] Invalid memory access and API violation using sg_virt() and sg_dma=
+_len() on unmapped scatterlists.
+- [High] DMA channel is not halted or reset on timeout, risking memory corr=
+uption.
+--
+
+commit e69f94141c2ba5f872a9844bc79817c711aedefd
+Author: Linmao Li <lilinmao@kylinos.cn>
+
+crypto: mxs-dcp: handle zero-length skcipher requests
 
 The generic ECB and CBC implementations return success for zero-length
-requests, but MXS-DCP queues them anyway. When such a request reaches
-the worker, last_out_len remains zero. The CBC completion path then
-subtracts AES_BLOCK_SIZE from this unsigned value when updating the IV,
-causing the offset to underflow. On decryption, the resulting source
-address precedes aes_in_buf.
+requests, but MXS-DCP queues them anyway. When such a request reaches the
+worker, the CBC completion path subtracts AES_BLOCK_SIZE from last_out_len,
+causing the offset to underflow. This commit returns success before
+enqueueing zero-length requests to avoid the invalid source access.
 
-Return success before enqueueing zero-length requests, matching the
-generic implementations. This avoids the invalid source access and
-leaves the IV unchanged.
+> diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
+> index 133ebc9982362..60794b4d49fac 100644
+> --- a/drivers/crypto/mxs-dcp.c
+> +++ b/drivers/crypto/mxs-dcp.c
+> @@ -473,6 +473,9 @@ static int mxs_dcp_aes_enqueue(struct skcipher_reques=
+t *req, int enc, int ecb)
+>  	struct dcp_aes_req_ctx *rctx =3D skcipher_request_ctx(req);
+>  	int ret;
+> =20
+> +	if (!req->cryptlen)
+> +		return 0;
+> +
+>  	if (unlikely(actx->key_len !=3D AES_KEYSIZE_128 && !actx->key_reference=
+d))
+>  		return mxs_dcp_block_fallback(req, enc);
 
-Fixes: fadd7a6e616b ("crypto: mxs-dcp - Fix AES issues")
-Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
----
-v2: Clarify commit message: describe zero-length return-0 as existing
-    generic ECB/CBC behavior rather than a general API rule (Frank Li).
- drivers/crypto/mxs-dcp.c | 3 +++
- 1 file changed, 3 insertions(+)
+[Severity: High]
+This isn't a bug introduced by this patch, but since this patch modifies
+mxs_dcp_aes_enqueue(), could there be a deadlock here due to spin_lock()
+usage?
 
-diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
-index 133ebc998236..60794b4d49fa 100644
---- a/drivers/crypto/mxs-dcp.c
-+++ b/drivers/crypto/mxs-dcp.c
-@@ -473,6 +473,9 @@ static int mxs_dcp_aes_enqueue(struct skcipher_request *req, int enc, int ecb)
- 	struct dcp_aes_req_ctx *rctx = skcipher_request_ctx(req);
- 	int ret;
- 
-+	if (!req->cryptlen)
-+		return 0;
-+
- 	if (unlikely(actx->key_len != AES_KEYSIZE_128 && !actx->key_referenced))
- 		return mxs_dcp_block_fallback(req, enc);
- 
+The AES and SHA worker kthreads (dcp_chan_thread_aes and dcp_chan_thread_sh=
+a)
+take the channel lock in process context:
 
-base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
--- 
-2.25.1
+drivers/crypto/mxs-dcp.c:dcp_chan_thread_aes() {
+    ...
+    spin_lock(&sdcp->lock[chan]);
+    ...
+}
 
+However, the enqueue functions take the same lock without disabling softirq=
+s:
+
+drivers/crypto/mxs-dcp.c:mxs_dcp_aes_enqueue() {
+    ...
+    spin_lock(&sdcp->lock[actx->chan]);
+    ret =3D crypto_enqueue_request(&sdcp->queue[actx->chan], &req->base);
+    spin_unlock(&sdcp->lock[actx->chan]);
+    ...
+}
+
+If a softirq (like IPsec network traffic) preempts the worker thread while =
+the
+lock is held, and attempts to enqueue a request, will it spin forever waiti=
+ng
+for the preempted kthread to release the lock? Should this use spin_lock_bh=
+()
+instead?
+
+[Severity: High]
+This is a pre-existing issue, but I noticed a potential out-of-bounds read
+in mxs_dcp_aes_block_crypt() related to how scatterlist trailing data is
+handled.
+
+If a decryption request has a cryptlen that is a multiple of 4096 and the
+scatterlist contains trailing data, the first 4096 bytes are processed,
+making actx->fill =3D 4096. After submission, actx->fill becomes 0. For the
+next element, limit_hit is true, and clen is 0.
+
+Could this cause a 0-length hardware submission and an out-of-bounds read?
+
+drivers/crypto/mxs-dcp.c:mxs_dcp_aes_block_crypt() {
+    ...
+    if (actx->fill =3D=3D out_off || sg_is_last(src) || limit_hit) {
+    ...
+        last_out_len =3D actx->fill;
+        actx->fill =3D 0;
+    ...
+        memcpy(req->iv, in_buf + (last_out_len - AES_BLOCK_SIZE),
+               AES_BLOCK_SIZE);
+    ...
+}
+
+With last_out_len =3D 0, does the memcpy underflow the pointer (0 - 16) and=
+ read
+16 bytes before the in_buf array?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but I noticed a potential invalid
+memory access in mxs_dcp_aes_block_crypt() when handling scatterlists.
+
+The code extracts virtual addresses and DMA lengths directly from the unmap=
+ped
+scatterlist:
+
+drivers/crypto/mxs-dcp.c:mxs_dcp_aes_block_crypt() {
+    ...
+    src_buf =3D sg_virt(src);
+    len =3D sg_dma_len(src);
+    ...
+}
+
+Since the scatterlist is not mapped first, wouldn't sg_virt() return a NULL
+pointer for HIGHMEM pages, leading to a panic during the subsequent memcpy?
+Additionally, is it safe to read sg_dma_len() before a DMA mapping has
+occurred, especially on platforms that require CONFIG_NEED_SG_DMA_LENGTH?
+
+[Severity: High]
+This is a pre-existing issue, but I see a risk of memory corruption in
+mxs_dcp_start_dma() when handling timeouts.
+
+When wait_for_completion_timeout() expires, the function simply returns:
+
+drivers/crypto/mxs-dcp.c:mxs_dcp_start_dma() {
+    ...
+    if (!wait_for_completion_timeout(&sdcp->completion[chan],
+                                     msecs_to_jiffies(1000)))
+        return -ETIMEDOUT;
+    ...
+}
+
+Since the active DMA transfer is abandoned without halting the hardware
+channel, could the hardware resume the transaction later? If the caller unm=
+aps
+the buffers and the worker reuses the shared bounce buffers (aes_in_buf,
+aes_out_buf) for the next request, wouldn't a delayed DMA completion overwr=
+ite
+these buffers while they are in use?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908094437.1548=
+278-1-lilinmao@kylinos.cn?part=3D1
