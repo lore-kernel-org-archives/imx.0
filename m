@@ -1,133 +1,240 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E47F48033F
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 21:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2244349AE
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 21:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788902769; cv=none; b=SCm4vQ3lzBbmAtxYjP7ixkfchbkYN6cg4kB6RMrnrzOw9SplFmHe9ndmXtIj+TwaasbrnjsIK0NldC4jQak0duf0hrvGkg/qRBfY1bB3O/ITC6nHK1b5yc9DiPXjxlf8i+WBRjW751eIU6LfdiMDVdvRiQjQJ3lQEh2OlZZcstg=
+	t=1788903065; cv=none; b=dGcUceah0B8ZIpnsKACus00MUaJdjEpu7TDgd83sO9XaUtjgapXfSMCjvldOJLE9Fs+DDzisq+WJxwYpjfF36MrjtcjYhIdjjrwArted5o62aTvkUy+Pyq1NrQq6iJxJ5KEpYesCLNOoi5gTAL2CtQ6dDenmSYGtQ0k/WwKA7tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788902769; c=relaxed/simple;
-	bh=RFvjS155ZvdGD2YVXxfuKxFce81xapOIJy4GCdmvshg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HG8RisGwRx0Kd3aVl3z6ewBF4uS3oPTvhaLYKnRRuulNB60jMSMAVT6jRl0FGIZmjhkG5F6ZfEE+y8DKbAff5sFmA1UMWAxc/eWY//DD5aFyXNWe8paIoyMSKqF4pukuwGYH0E7y4fQVV07NCnV/0ZAiUyYXDOKCmEXGYoZ0dPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SvGyEyl9; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788903065; c=relaxed/simple;
+	bh=7V7s+HbyLTMDxfCpxTWXwY2jptfBasTXVzfNPzutucw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=l63hP06PcC59PzGb2g3iIwzA17GhgOyDKRW+iScWyKjm4YjZ/B+Tf+5N8dGH2jzYeq5HFah9bMU6FhQNMvQVgZoOhmSFX+Ck1S4KiYyufmwnGHQVyr6lLBEt3rZtoFMTIaPW/E5s9ExO/sLi7iXmZoqd4+Imdc+gOPDYbQXpZew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=S7d4uN+z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IO8hwZL7; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SvGyEyl9"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49b392ccaacso75683485e9.2
-        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 14:26:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788902765; x=1789507565; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Fo0YbEFL8wMrCYE2f1oBd51v/3oi28C2SOi3ZLEFoU0=;
-        b=SvGyEyl9+zPIkI17wCaIpiXia8P3qtZIYb7p6nbT2NdD/C+Uy9KfLLX6VQ5ORZgpxq
-         YQ4fuiHm7mkkExBgJI6LHYetF5sx7FahLof+4zgW2HRfTkQPjA+uWQbwqGyirQS7ibMI
-         CqKuHdPJLPeCk80NG00MgxcTCorh/vtHI74Eo9I3DOOnihQmrXq/oX06hd12+D5jYQ1I
-         lBxUNa3X+khhh7+EQOvRn24x6nW62FLbmIRDgX3PUPKSoJUB6yJ9ntqUfTRvZCZV+h6U
-         M0KWM4B2nQebdB7R14P0eJcB/ZOOEKI/PV7NNSyNgPNgp5j+f2RqNyi/d5cZ1VuiPPXS
-         gxWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788902765; x=1789507565;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fo0YbEFL8wMrCYE2f1oBd51v/3oi28C2SOi3ZLEFoU0=;
-        b=VSOtWEiooCSUHLSLwSWwz38pkhVR9CQAe2MnelKHgUg+d6wQ7jh+Wzjrpbe87RpfPW
-         w93DSw++99tzFv4UsIgfnNKdtvLG66+8vf+FezMd4o2y1/V405unjcyags52DHKU0JqV
-         nHVEeNjuYqhEZVqMqvjbBDUlyue4Ep0YZvPqHgV9rRrQf3HgZpvW+fSeZGe4oZcWZXjh
-         Q49kZIri4oz99bVDOihccLz/Mwr6nxW8byJvVnJnIVIoJzXHgKaETEhLks1wyffXFF/I
-         IcueXwM1tgcBh0iH7RrVW1YnP04vykDLPaHmOgjbwiT43UQMAMq0UIpfkda/0cd6updu
-         CXGw==
-X-Forwarded-Encrypted: i=1; AKwUvByc4YXafyUMbTOl5/IYRsxd06rITjcv9q/2YIq9+D5Ch+A9bP/goDqtFpmnywJhCWb5GSs=@lists.linux.dev
-X-Gm-Message-State: AFuF++lxOUpTlJqCQ957hFlg3SvlsuBA/KA5Lc8IoPlImwJ5GOktbJs5
-	pCF3XBRoanR3B1IyULMcpKsuuAqCu5PFsnzmGAtFr5zrBjSFLXcMv8zu
-X-Gm-Gg: AYBFou0Ii9OlwZQSrT1VtGcP+P+EPl5B8SrZpxXsLl2ZnQozGQpXbp78J+1s8/OlRLB
-	mJeDewlfU/Zf8o5k69AChOPmvR49ovhTIcCOZkhSka+MOhXXSMdnUYl9HSy/P0X3NykbhWkWAMs
-	Ckly8LUP/eL3UrsHxim1feYYCJl5KenYAl9JhFjmcEM84UnpJCc2QvlCQWDJ5tS8rXImxH6TeD2
-	UROYXOwS8St/C0kiAk4jXqrJV9ZYp4wslskbI7Tvs6C+wpHOhhuL1Pn/kZlNPcD6snHPG7GTaaN
-	yvMxlOTqJTKFFiaOd1ujyRJNX+MCp1VD5UfdXxQv43cDj+eQDkFsDO518v1XSRvNeT/OKRUbq/W
-	SUtjAa5iawRhFweLUkNFtkKP9P/0LBrv6WmskZvTxaE6orunnKXl8C5d+JCgR/Gfm6vUQ5wZeVj
-	ZkaYdoBIbz8UCeKW34yGY2uvHHzcIOpK60NVXLL7SitM2v3bGF63ETwoQedCRwmWzS00W9UEjQh
-	9eOBkBmW3HvMny8GuNx2iEhhw==
-X-Received: by 2002:a05:600c:3495:b0:496:c1f3:e8f8 with SMTP id 5b1f17b1804b1-49cf8244bc5mr319923725e9.7.1788902765257;
-        Tue, 08 Sep 2026 14:26:05 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883953cfsm32433704f8f.13.2026.09.08.14.26.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 14:26:04 -0700 (PDT)
-Date: Tue, 8 Sep 2026 22:26:02 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Nicolas Pitre <nico@fluxnic.net>
-Cc: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>, Linus Walleij
- <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>, Drew Fustini
- <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Rob Herring
- <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liviu Dudau
- <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, Lorenzo
- Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Vladimir
- Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman
- <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
- <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu
- Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, Sebastian
- Hesselbarth <sebastian.hesselbarth@gmail.com>, Gregory Clement
- <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
- Kristoffer Ericson <kristoffer.ericson@gmail.com>, Ethan Nelson-Moore
- <enelsonmoore@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo
- <shawnguo@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>, "David
- Hildenbrand (Arm)" <david@kernel.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org,
- Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 01/13] ARM: remove sa1100 platform
-Message-ID: <20260908222602.7b2aab1f@pumpkin>
-In-Reply-To: <ccd58677-5e25-1f9f-2bb4-d1770fce8ac4@fluxnic.net>
-References: <20260908152808.3928630-1-arnd@kernel.org>
-	<20260908152808.3928630-2-arnd@kernel.org>
-	<ccd58677-5e25-1f9f-2bb4-d1770fce8ac4@fluxnic.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="S7d4uN+z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IO8hwZL7"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.stl.internal (Postfix) with ESMTP id 64AB41300D5B;
+	Tue,  8 Sep 2026 17:30:57 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 08 Sep 2026 17:31:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1788903056;
+	 x=1788910256; bh=pMVSTaPR9L/WFtxis++Ox75v2kZpFalNbRfgyF70oy4=; b=
+	S7d4uN+znfHu6WTJ6HPX6e4nBmBcyYjv5uUK1npmjc3P6JeDoJGP8AXrMLdRp2U8
+	pn1lQZz8uvTyolSH2e4N4gvmvX9esuqKDwkPRpBMr0y+zEr+/3kbSNXlBUyJFHWe
+	bGaHWA81Hk6NymexHRjoiEqrCF1XOukct3KhLRxahmWAg9kJy/DjCAZgQYgMag7e
+	Cu73m9DEkyPlBXD6p1BRiJ8C6OstTjytBRN+K8Cq4rBaVZZxU2sDBmCERKzFzgoD
+	7Wb2oodIpYSeNQePLI8m2AGDAZYHGQfQDT9o8b/7I/+yQztplHdmoSxHa0pDkVo+
+	Oqx61RET0YNB3UhaSlJmxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788903056; x=
+	1788910256; bh=pMVSTaPR9L/WFtxis++Ox75v2kZpFalNbRfgyF70oy4=; b=I
+	O8hwZL7tDuEGMrnFZIkGGO0vtVu6wdU0x8QAhuctjYgas9kDutFamb6irRcpTjc6
+	KuyOhcpQkzoaPfGWgCiOhv/PlPIThFeT104ZlVtK2aV0prHzIyh35xu5QJAy8Ztm
+	FmZcvlSLeXNDfn6lRm0TOPvWLMMHTuUBJpRE9DR9Zo3jlJeoUI1wDwj25Nrc5GlA
+	JZZCe+YxNX+I13q12FvWlGb7uSa/+3fOwAL54T51nfL9ilb+tmw4EsmvbKOc7I80
+	24ZRxnoKizNA+542ufQQPKvQej3tIeemsfA0mhD67D3Lnjzq4hw+tWiXGUoDjHXW
+	wq3R+yfkacGu9/9SziSng==
+X-ME-Sender: <xms:gX6gat-21Fq6SnPAmAe4HmOM5pz3nTturGx5V8pH6tN20OG11ldpIA>
+    <xme:gX6gasgKAZz7ua4iY204lbRZFwp08a2OOdX02_B3-yIQB1fSlcWxX_aUBYZ7l2LM4
+    aJOdIsk1r8TnfiHop4K_-QCXLG2e-djWGmceBrFAd_vIwbhHLGtTJU>
+X-ME-Proxy-Cause: dmFkZTFb1JFJrJnD2uLKxZIyhU8m4ESpn2SxKKmvMpu8Uo4Z3dmO2lTyQu8o2TvVpNIc6S
+    UmlE9ILRLjAHujRHYufhylJnXWMyYyNFhp1mlbzh3h52AT8Ri+kYBTl4BI0ym5TzhWZJMh
+    mc7tmRQgKV73iqDpX+IGD7qspRpyhjHL8726DWe454TtTgJ/0dbV1CWuBEv8xQFhmGdjse
+    77yZsJdWgUTc3NYUR2lyibJarVj3y3syDmP7UKGIhRx39ap4O4yWmh+lSc7ieG4tO5/gCE
+    qy9hiAfm7I7cbcax+xjwIsLPhNCtFOjQEGP2SfXDPy6+qeW+XoCXL+CTVvfmUhi2rGe2k+
+    So3TCZsRR8J+tE80pDuP8maN4NUN196hbJ84SBUR2Jjl24vRymAp7D0IgaIp+CiV/uT7UJ
+    eGb5uWSyf12hPRK3j4dSAmm13/QFUT8ufJKN2KXcVWq3KYf8co0uAkWjNOOzcNPX1v3wqe
+    jJy9KoVPMt4n3baJbFqEx/h82KAVG5ufQfw0VE5WN//dDEUBJ0sa7plGwg1YAaRiFAqxWN
+    wJgNc4Xbq3B1pRchsLnQ8xK7A0vHcvbdrk7xLekCENiVZ45AaUzZXEoSYrICrQ3Kb7VLvj
+    M/lbF31JAmj1YnWBp6Jsj7PPOUJKpJmWxXSoELcwbmSc1pyulxWwXIIcGwyQ
+X-ME-Proxy: <xmx:h36gapzWvFXLmxtxFJucUNmu9cLGfklhb1f77AE8Kk15oQY9SWCLkA>
+    <xmx:h36gam4TvWbz2VBzVzcGKqJw-g1LzHNec1aou5xxH_-68dxmNM2LWw>
+    <xmx:h36gao7f1ELMyOpSFMq5B8cMyml_r_jqtWppZU0y1GgadSztwa0T9w>
+    <xmx:h36gavLWQaeQ2DeaTUci_gGKx5VWlcREC6-gBJ9GyLEOMm1ixsrP4A>
+    <xmx:kH6gajjihI0SooZtexQcDlvgEnLJ0Y-SJR5iTzej9oDSDQA_nwjtia-y>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 2816F32A0078; Tue,  8 Sep 2026 17:30:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ThreadId: Ab0V4S-ixU_F
+Date: Tue, 08 Sep 2026 23:30:20 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Rob Herring" <robh@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
+Cc: "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+ "Linus Walleij" <linusw@kernel.org>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Drew Fustini" <fustini@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ "Liviu Dudau" <liviu.dudau@arm.com>,
+ "Sudeep Holla" <sudeep.holla@kernel.org>,
+ "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+ "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>,
+ "Vladimir Zapolskiy" <vz@mleia.com>, "Stefan Agner" <stefan@agner.ch>,
+ "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+ "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Andreas Kemnade" <andreas@kemnade.info>,
+ "Kevin Hilman" <khilman@baylibre.com>,
+ "Roger Quadros" <rogerq@kernel.org>, "Tony Lindgren" <tony@atomide.com>,
+ "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ "Andrew Lunn" <andrew@lunn.ch>,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
+ "Gregory Clement" <gregory.clement@bootlin.com>,
+ "Robert Jarzmik" <robert.jarzmik@free.fr>,
+ "Kristoffer Ericson" <kristoffer.ericson@gmail.com>,
+ "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "A. Sverdlin" <alexander.sverdlin@siemens.com>,
+ "Shawn Guo" <shawnguo@kernel.org>,
+ "Karl Mehltretter" <kmehltretter@gmail.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Nicolas Pitre" <npitre@baylibre.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Linux-OMAP <linux-omap@vger.kernel.org>
+Message-Id: <7608c487-390e-4526-a2ac-11f073c902c2@app.fastmail.com>
+In-Reply-To: <20260908210947.GA519272-robh@kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-13-arnd@kernel.org>
+ <20260908210947.GA519272-robh@kernel.org>
+Subject: Re: [PATCH 12/13] ARM: at91: remove samv7 support
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On Tue, 8 Sep 2026 16:36:47 -0400 (EDT)
-Nicolas Pitre <nico@fluxnic.net> wrote:
+On Tue, Sep 8, 2026, at 23:09, Rob Herring wrote:
+>
+> Do you want to drop all the samv7 platform compatibles from at91.yaml? 
+> Are there non-Linux users using DT?
 
-> On Tue, 8 Sep 2026, Arnd Bergmann wrote:
-> 
-> > From: Arnd Bergmann <arnd@arndb.de>
-> > 
-> > Most sa1100 platforms were removed a few years, with the remaining
-> > ones left as a starting point for a conversion to devicetree.
-> > 
-> > Nothing ever happened on that front, so remove the rest now,
-> > including the sa1111 and locomo drivers that were once shared
-> > with pxa but are already sa1100-exclusive now.  
-> 
-> The SA1100 was the starting point of my career. Feels strange how much 
-> time has passed.
-> 
-> I parted with such hardware a long time ago in any case.
+I see that zephyr uses DT here, but it uses an incompatible
+set of bindings, see
+https://github.com/zephyrproject-rtos/zephyr/tree/main/dts/arm/atmel
 
-I failed to 'steal' a J-Slate when I left Tadpole.
-(a very early 'tablet' computer with an LCD panel)
-So I don't have one either.
-Although that ran VxWorks and rtx-windows (after I patched bits so it worked!).
+I'm dropping the references from the binding now, and also from
+Documentation/arch/arm/microchip.rst, which I had missed earlier.
 
-	David
+      Arnd
+
+diff --git a/Documentation/arch/arm/microchip.rst b/Documentation/arch/arm/microchip.rst
+index e721d855f2c9..b776a6656717 100644
+--- a/Documentation/arch/arm/microchip.rst
++++ b/Documentation/arch/arm/microchip.rst
+@@ -157,45 +157,6 @@ the Microchip website: http://www.microchip.com.
+ 
+           Coming soon
+ 
+-    * ARM Cortex-M7 MCUs
+-      - sams70 family
+-
+-        - sams70j19
+-        - sams70j20
+-        - sams70j21
+-        - sams70n19
+-        - sams70n20
+-        - sams70n21
+-        - sams70q19
+-        - sams70q20
+-        - sams70q21
+-
+-      - samv70 family
+-
+-        - samv70j19
+-        - samv70j20
+-        - samv70n19
+-        - samv70n20
+-        - samv70q19
+-        - samv70q20
+-
+-      - samv71 family
+-
+-        - samv71j19
+-        - samv71j20
+-        - samv71j21
+-        - samv71n19
+-        - samv71n20
+-        - samv71n21
+-        - samv71q19
+-        - samv71q20
+-        - samv71q21
+-
+-          * Datasheet
+-
+-          http://ww1.microchip.com/downloads/en/DeviceDoc/SAM-E70-S70-V70-V71-Family-Data-Sheet-DS60001527D.pdf
+-
+-
+ Linux kernel information
+ ------------------------
+ Linux kernel mach directory: arch/arm/mach-at91
+diff --git a/Documentation/devicetree/bindings/arm/atmel-at91.yaml b/Documentation/devicetree/bindings/arm/atmel-at91.yaml
+index bf161e0950ea..d9b32a95b136 100644
+--- a/Documentation/devicetree/bindings/arm/atmel-at91.yaml
++++ b/Documentation/devicetree/bindings/arm/atmel-at91.yaml
+@@ -258,45 +258,6 @@ properties:
+           - const: microchip,lan9668
+           - const: microchip,lan966
+ 
+-      - items:
+-          - enum:
+-              - atmel,sams70j19
+-              - atmel,sams70j20
+-              - atmel,sams70j21
+-              - atmel,sams70n19
+-              - atmel,sams70n20
+-              - atmel,sams70n21
+-              - atmel,sams70q19
+-              - atmel,sams70q20
+-              - atmel,sams70q21
+-          - const: atmel,sams70
+-          - const: atmel,samv7
+-
+-      - items:
+-          - enum:
+-              - atmel,samv70j19
+-              - atmel,samv70j20
+-              - atmel,samv70n19
+-              - atmel,samv70n20
+-              - atmel,samv70q19
+-              - atmel,samv70q20
+-          - const: atmel,samv70
+-          - const: atmel,samv7
+-
+-      - items:
+-          - enum:
+-              - atmel,samv71j19
+-              - atmel,samv71j20
+-              - atmel,samv71j21
+-              - atmel,samv71n19
+-              - atmel,samv71n20
+-              - atmel,samv71n21
+-              - atmel,samv71q19
+-              - atmel,samv71q20
+-              - atmel,samv71q21
+-          - const: atmel,samv71
+-          - const: atmel,samv7
+-
+ additionalProperties: true
+ 
+ ...
