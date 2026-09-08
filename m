@@ -1,218 +1,135 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151FE509F19
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 10:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788861773; cv=none; b=DsQOuf0lceGeaBNXgzTH+zrSuE6DVwBEmmD1caemX95ktQWCvmdU2YL6CM9Wk7mIlM/vzYACx4PUuZY3Xi3REvmzYvTJsnL6M7XKO+knQu+K5TQHfPcI3WdBieNNmWmbHcx/ZrJZQplZfOp3d24Pve0d8LZxQSExneoxwyWJU7s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788861773; c=relaxed/simple;
-	bh=fU6IyVGeAZ2/0Aflv+2bdlGrk2LbMMDJUGa7dvmI7Xw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nD2dtvG9BrhEQP5ZIEEGNsHEEe/DwixNynH4wb7SM3XAuS9CFHkJXTvS0Rxgm/mZ9Th0v09CIimp+NjH9zL8Hc63a5AXKdFkfdQJEktYv3b7LJb23mgqCGrcY/YXmTMBnZrm6rQ95GqUhXEagd6I/Zw66vEPc8Oa3uymE+iO8Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=RS5h5kpt; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43AE4D8DB5
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 10:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788862439; cv=pass; b=g2xOze3SsAAfjirVA9ctwL2NQsv0SAm0sbQOmcJRhUsf7Noef8Tiw+dWawryzAdIZ9N1BKcs0nIp4iKkRZfT3qX68EJ1/rRhHKbXZSt57DB6Vhy+APRdkOCtuVUwYwE93MW20Rmjb33mRp7fFnL5y2S0v0taRUxnxm6mS29LToE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788862439; c=relaxed/simple;
+	bh=kWGLXFyPHplqccz5poLz3IbI50NU/JwnfhfqrKLhw3c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pe9+d3J3qi7oJN8PxaeUNrT8owtZs3q6ZARs6RPHGz/u/kPO3kzhcuxAVdEgPPTjgOdU34xdFu9EvG3gj1YS+hruV3wKq5a/8Q4ZfZEXvaZR5sVu6FUluLnyzhhIjfgftPacF8bS2ke/cMrfDg5TcRnbZpuAWwkmBv7ZlGbewzw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J6QCztF+; arc=pass smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="RS5h5kpt"
-Received: from francesco-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id C5CE920472;
-	Tue,  8 Sep 2026 12:02:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1788861763;
-	bh=MCbiA6d2rt3S8lOdzp5UrMVswALZKd4o8wNqLwS4zQI=; h=From:To:Subject;
-	b=RS5h5kpti2SyYd5yW2ROAgvenmgN5O/dVg9BxwIRiwseTW+g37UFGKhvaQJMQ3OGA
-	 coO3PpehTRRb//aoN4TRCWJxJ/wxobkSxiP79EhKr5uVOLs3wLTOyJhb4rUmWKMrTL
-	 st1RbLQbfy1uJ9quwNKNEFzA9UoJ+/XMV6IFd8d+gd45aq7BhW5MYfRfmCw0j1/LZx
-	 1YLpv6ynhzsiYvzM5Ypp6UmTmppohGvGjGAoOxzBEGPfWTaaXiCtN1aN7qZSZzZedx
-	 W9b2y40pXHopN6KKpovjWS7fhw78NpMmZJH2qGI+gUJiFWYmJ1dHU++nBRnxr6PeHe
-	 4/B3TMn+pUzkQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v1 3/3] ARM: dts: imx7d-colibri-emmc: Add Toradex Capacitive Touch Display 10" LVDS
-Date: Tue,  8 Sep 2026 12:02:27 +0200
-Message-ID: <20260908100230.83796-4-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260908100230.83796-1-francesco@dolcini.it>
-References: <20260908100230.83796-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J6QCztF+"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84eb992a881so3043758b3a.2
+        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 03:13:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788862437; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gQPXWGbGM1X/nvyjgpCYxWvBqpUMgu3FKuEepiDD11dEbYSMaJd3BIUL04Wr95k/Uo
+         UOWcGJbLTQNBsDEtK37SoveYxc4tJL0vkWalAcuK3N1FdvWUQdWk0GU4Pm72LqgkEmRP
+         NCKI7xOcP16L3S3VhJhoUYz8QcCF47OgfC6BOlZsM4KlWGV7lObvX/yxxCIXiBpvq+FB
+         mL2Iw4KTPphTL/rf9aysFR9q4q7TH+4r1QYb239ax0YKOC29p/Hk5IGQduU2R0biWyVL
+         EIXO6ZFhNdZ5aqGMUGycPsa4v+UdJVMhWCe8+RKaeYK90904tytB6t1deUtyHHDxQm50
+         NsMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=oLrwfLp8ACywcK6OZDMAVfDPAmy/xkA/7NJ1Wh6BTDY=;
+        fh=BmDP4736zjNYu8HxOICp9zAqQzs0ORG98s1NxKAf+U4=;
+        b=a9Z0bkx3bTo8liZKKG7uikfftCinFKffLIz3iKtsfSjmP8PfsJKGro1okcCZAXlgsM
+         EzN6/DxmwZVdZ0BCAmkcsPicskpy5JNSAm7YsZJGR9bDYGfKQzjFwg//4BFAQ1rsa+NU
+         DSWRnyvMV2FHj28xmeW4rvbmMIgSYBP1wd7ZgurR8VF8yMIgvO2okLmzZvMizxiMuREM
+         1OKXnL6lmugCJ3zjgn+mwGl35VvE3JdfcTuy4pR1Ql4q3GeLVQ+lOmVMu+JDRbglWY+7
+         ut2uSatRFpMJefez6T0HVyzsH1yzdxPGbeGT9kmscpwbDBQiLu7Xn1Lid/2RUldZM6Cq
+         Be4w==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788862437; x=1789467237; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oLrwfLp8ACywcK6OZDMAVfDPAmy/xkA/7NJ1Wh6BTDY=;
+        b=J6QCztF+V/xYeHdwQB7kIODp2YZbGO8JmCgUBkPoayzCEuCujXZYmMznYCDZBhHGZu
+         YFirjdF82r6GnILLK29141js2zEzWyrVusBEcxZ7M8VtrUqt9un1NQzdDgq182MM8ZAy
+         ap3xrJMIpm7Ahg4PB5q/ZETEDuiHzPoMIQlcqEUynM25hS8VB/DOYoMpeysaaPDUKuHu
+         qOxqfRcIAIWlRnhoUuNkAxlSUdHuNukAaTlUVA6GbRUrL+jKrrZefR3Xm+OWHimQIsVq
+         HcLFXXCLwnOzp+4eidMBsrLuxW9zquXLfSP4H8YyN8oObWUGSgkeifVt//rMCx5D7bxG
+         W+Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788862437; x=1789467237;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=oLrwfLp8ACywcK6OZDMAVfDPAmy/xkA/7NJ1Wh6BTDY=;
+        b=sEUhd4zbOkB39xiWMiBtzQMHOJ473yMFXwsC2P1gLmd7M8vbDaaMgw/EywHwd9ioIm
+         enL6x7D+1VGr+qmiqJdeiUj1+wu+4HgzDBL+t2l0xIXoL0VPzbglZlqfbOv1m6t0WyON
+         n2P7OG5Zm6IlJ3sM1ZBjqRCCxz8FJ32XqVPmc3mn221IzQp2W3bps20UFSYUq70NJ5Ki
+         14wm+kBMIxefxYfpFB4b/X26sTVnlhp9gncV8d+q3hqFaQVzv8dH5soWOjY0nNHFaYEl
+         D9LBiu661blzBqnzvxkmCi+My5M2kKalPipJdGfNxjmMzsq9k5XPmA2SLs8ZtX/Oznwd
+         q8vw==
+X-Forwarded-Encrypted: i=1; AKwUvBzQgDGDLKlUUyx+CvHQmaEWKlk5KvLffYHW5esJaQ1OrTqL1jgEjngHFrfkSDuSXV+aI0Q=@lists.linux.dev
+X-Gm-Message-State: AFuF++ndqkpw3MNt9z5quqnngVtwkgzZ+prOAZpP0hUKAK2uomWHduAh
+	XxbWuzSZPBc4ytUSpk45RC3hdcgbacutCPzrg9KJIrPoEJggXRd5WeLAYhLjOcICslF5VRNjTKq
+	HL+WxKBtPRSz+4MPu9dcZkAx8Yy2gAlU=
+X-Gm-Gg: AYBFou1lpiS6nnV31DWk7mxtzIx5MXyrqeUoEA6CepwNfdz5PrIQ7IfStAVbhqqArdF
+	CwpuVXr33ZQvwh1gSssXFR40uqs8DVYYNWZhKDuAQfwKqO32Vj23dOK7gYX4C+qGOvh0RA8G0Tn
+	36l6yEIJWCw7BNU5tACYu7tYdIcu1KI9hoSnkAe/ke4o8l/Gy3brYsvG6DuMT/0+e5SGJxDQr8L
+	XblTwX+5nSzhGAqPXoGm0EB03h4CVve8pYmo78w0dCKqtwO8Y2M8sr1alfReEDfYvVEbP8ZE8u4
+	vQ2RlFgSxmFyTOfNFHvwuer9rzhtFC1yCMN98lfwN9fLfpUTxUUmZ4QqJR4aotLJoRcUm6nabFN
+	5r0d1olykEiuOSuE6Qv8GhF4cdVjzdtob9X32VIA3PAZFuZlRgL1otSiG6c3nhXsTxQk=
+X-Received: by 2002:a05:6a21:b97:b0:3da:15a9:a18e with SMTP id
+ adf61e73a8af0-3da3a0cc429mr41624097637.23.1788862437122; Tue, 08 Sep 2026
+ 03:13:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc> <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
+In-Reply-To: <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Tue, 8 Sep 2026 17:13:45 +0700
+X-Gm-Features: AcwNN1VMBv-YMtUDD27KP8tWOFfyKDv8HAQFtZgWktZVu5_za_i0rbJmn6ycjPA
+Message-ID: <CAABR9nG49YgFejWRAkJrCcXF8p03A=HwWhbetmoHSjk_L3h9Gg@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] net: fec: free the PPS interrupt before
+ tearing down the PHC and netdev
+To: Shengzhuo Wei <me@cherr.cc>
+Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Troy Kisky <troy.kisky@boundarydevices.com>, 
+	Fugang Duan <fugang.duan@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Simon Horman <horms@kernel.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> @@ -861,6 +865,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+>
+>         cancel_delayed_work_sync(&fep->time_keep);
+>         hrtimer_cancel(&fep->perout_timer);
+> +
+> +       if (fep->pps_irq >= 0) {
+> +               devm_free_irq(&pdev->dev, fep->pps_irq, ndev);
+> +               fep->pps_irq = -1;
+> +       }
+> +
 
-Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
-LVDS connected via a DPI to LVDS on Iris carrier board. The panel is a
-LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the touch input is
-provided by an Atmel MaxTouch capacitive touch controller.
+I noticed that fec_ptp_stop(pdev) is called only from the failed_init
+error path in fec_probe():
 
-The overlay is also combined with the Iris v2 carrier board device tree
-to provide a ready-to-use DTB.
+failed_init:
+fec_ptp_stop(pdev);
+failed_reset:
+...
+failed_ioremap:
+free_netdev(ndev);
 
-Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-this is based on https://lore.kernel.org/all/20260901124921.78635-1-francesco@dolcini.it/
----
- arch/arm/boot/dts/nxp/imx/Makefile            |  6 ++
- ...emmc-iris-panel-cap-touch-10inch-lvds.dtso | 92 +++++++++++++++++++
- 2 files changed, 98 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-iris-panel-cap-touch-10inch-lvds.dtso
+There are several other error paths below failed_init that eventually
+reach free_netdev(ndev) without calling fec_ptp_stop().
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index d1272104ef27..b9456e7e5310 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -424,6 +424,10 @@ imx7d-colibri-emmc-aster-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-aster.dtb \
- 	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
- 
-+imx7d-colibri-emmc-iris-v2-panel-cap-touch-10inch-lvds-dtbs := \
-+	imx7d-colibri-emmc-iris-v2.dtb \
-+	imx7d-colibri-emmc-iris-panel-cap-touch-10inch-lvds.dtbo
-+
- imx7d-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-iris-v2.dtb \
- 	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
-@@ -459,8 +463,10 @@ dtb-$(CONFIG_SOC_IMX7D) += \
- 	imx7d-colibri-emmc-aster-panel-cap-touch-7inch-parallel.dtb \
- 	imx7d-colibri-emmc-aster-vga.dtb \
- 	imx7d-colibri-emmc-iris.dtb \
-+	imx7d-colibri-emmc-iris-panel-cap-touch-10inch-lvds.dtbo \
- 	imx7d-colibri-emmc-iris-vga.dtb \
- 	imx7d-colibri-emmc-iris-v2.dtb \
-+	imx7d-colibri-emmc-iris-v2-panel-cap-touch-10inch-lvds.dtb \
- 	imx7d-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel.dtb \
- 	imx7d-colibri-emmc-iris-v2-vga.dtb \
- 	imx7d-colibri-emmc-eval-v3.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-iris-panel-cap-touch-10inch-lvds.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-iris-panel-cap-touch-10inch-lvds.dtso
-new file mode 100644
-index 000000000000..ad0f37c71708
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-iris-panel-cap-touch-10inch-lvds.dtso
-@@ -0,0 +1,92 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Toradex Capacitive Touch Display 10.1" LVDS
-+ *
-+ * Toradex Capacitive Touch Display 10.1" on Iris v2 carrier board X7 / X5
-+ * connectors through on-carrier LVDS transmitter
-+ *
-+ * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-+ * https://www.toradex.com/accessories/capacitive-touch-display-10.1-inch-lvds
-+ * https://developer.toradex.com/hardware/colibri-som-family/carrier-boards/iris-carrier-board/
-+ * https://www.toradex.com/products/carrier-board/iris-carrier-board
-+ * https://docs.toradex.com/108421-colibri_arm_iris_carrier_board_datasheet.pdf
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+&{/} {
-+	lvds-encoder {
-+		compatible = "thine,thc63lvd827";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_lvds_transceiver>;
-+		b6b8-gpios = <&gpio7 2 GPIO_ACTIVE_HIGH>;
-+		map-gpios = <&gpio2 13 GPIO_ACTIVE_HIGH>;
-+		mode-gpios = <&gpio7 3 GPIO_ACTIVE_HIGH>;
-+		powerdown-gpios = <&gpio7 11 GPIO_ACTIVE_LOW>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				lvds_bridge_in: endpoint {
-+					pclk-sample = <1>;
-+					remote-endpoint = <&lcdif_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				lvds_bridge_out: endpoint {
-+					remote-endpoint = <&lvds_panel_in>;
-+				};
-+			};
-+		};
-+	};
-+
-+	lvds-panel {
-+		compatible = "logictechno,lt170410-2whc";
-+		backlight = <&backlight>;
-+		power-supply = <&reg_3v3>;
-+
-+		port {
-+			lvds_panel_in: endpoint {
-+				remote-endpoint = <&lvds_bridge_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&atmel_mxt_ts {
-+	pinctrl-0 = <&pinctrl_atmel_connector>;
-+	/* SODIMM 107 / TOUCH_INT# */
-+	interrupt-parent = <&gpio2>;
-+	interrupts = <15 IRQ_TYPE_EDGE_FALLING>;
-+	/* SODIMM 106 / TOUCH_RST# */
-+	reset-gpios = <&gpio2 28 GPIO_ACTIVE_LOW>;
-+
-+	status = "okay";
-+};
-+
-+&backlight {
-+	status = "okay";
-+};
-+
-+&lcdif {
-+	status = "okay";
-+
-+	port {
-+		lcdif_out: endpoint {
-+			remote-endpoint = <&lvds_bridge_in>;
-+		};
-+	};
-+};
--- 
-2.47.3
+Since fec_ptp_stop() is currently responsible for calling
+devm_free_irq(&pdev->dev, fep->pps_irq, ndev),
+could this result in a use-after-free if the PPS IRQ has already been
+registered and one of these lower error paths is taken?
 
+Would it make more sense to handle the PPS IRQ cleanup separately on
+these error paths, or,
+use a devm-based approach so that the IRQ lifetime is managed automatically?
