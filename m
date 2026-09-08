@@ -1,37 +1,42 @@
 Received: from sg-2-4.ptr.blmpb.com (sg-2-4.ptr.blmpb.com [71.18.227.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA9034DB4A
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 02:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B2733A6F2
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 02:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788835108; cv=none; b=Eba3mwDBObkFEtOzS8YTuaieP05Sac/wCZA28h67w2H6eSQKW8YuP3ViZcJr30NLHuax6v6CcNreOQJNKZIubmyghkRUOflNn6+VgqGA0jOOBWk5JJmXDln3aaBcTAXLT9Vp5Ck0VxiX6armhJ+zzoPrDntxHhXMUzm467DvsKM=
+	t=1788835111; cv=none; b=mJA+NiJxJ/yQc3kZTdeIPkH5vJOzurYlg1aVkqL1+BFNc6f20gUO/ruToxCcVY0RksRyyll+fPjLbhuN/4SC5CWQed260VRFinKMsXs5+chcc4+qSgRvjEo+tGXInlBUkIC47e19JqyOo/I5fiLlGl9jvgGt40R517i1oaGBRCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788835108; c=relaxed/simple;
-	bh=YFk8ijcB8bITxXkCpEHcDU++XgwznV4djJXfOVSeN0M=;
-	h=Cc:Content-Type:To:From:Date:Subject:Message-Id:Mime-Version:
-	 In-Reply-To:References; b=G8s1ifjNHsHU3CnEpfL/zL0LrKrTBE1Vnt/YDRP3Dpi/UlSCQDwF4eUjOyg6jHMr6VwJDhOZE/ZIGgYTHrPlVkFHiNRuNFziG24chnmy4FJO9mZ5sBXlCk3SQbkl8uILfN+eoFVfFOCmj57KSHipcLOvYlZzZo5gdotkk9JkNlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=DCgWHM5F; arc=none smtp.client-ip=71.18.227.4
+	s=arc-20240116; t=1788835111; c=relaxed/simple;
+	bh=pxlOfexWygBPVSw286Nocjn0c3g8NEXXEojlLnb2oyY=;
+	h=Date:References:In-Reply-To:Message-Id:Content-Type:From:Subject:
+	 To:Cc:Mime-Version; b=TkczKmPT6TjUMeubnoRnyMDGMOJ9TwEQ7PILD3KkAR2c6S8DbH6YP/Fan8PNUFiloPjNRX26p1d0OsLJA3xmTL6rl42csVAOmS4wmE+BPtsYHWNP1PqaCh5fDN8swMLIt06L5247S7krtDB7EKQtsGNWT8UfiVoNN876PtG6ZoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=wRt6i5N8; arc=none smtp.client-ip=71.18.227.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="DCgWHM5F"
+	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="wRt6i5N8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2604220257; d=cherr.cc; t=1788835097; h=from:subject:
+ s=feishu2604220257; d=cherr.cc; t=1788835091; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=JuHLfjAtbzVg6yDfxoJ2zvQ9bI5H2+ld+xQJ8ev3rsQ=;
- b=DCgWHM5FNZDOJk8SQqHSoGz+xiZ/58DOdYf9s3p1DnNh92toelltSMCUI4tawt+DUo6Bwi
- aGRhkvIa8Dqj0eYu4yggQF7cbwNSsxPDsdSRfmmUE5ToLjZGeB1BlluN+ZfRyom1IAeeYv
- da9O9dQ5PcIR8QiagbP7vf6cppg3+D+qu0Mbvod82JyJd5zZpGUPfKU8el4XyqK6oL3OF8
- xKpEyY1XV9Aj8XLpneLnhZlTpVFGo3UMnanqydLU8A2yfP1JGUsG08rzu4FqerYWN0Grs9
- Fk3l+5Mc/PevnO5a/udQmp+GIGtM43fI05hawdrOGDeQSlSy+s+Dwq+s6s13pA==
-Cc: "Simon Horman" <horms@kernel.org>, "Phuc" <phucduc.bui@gmail.com>, 
-	<imx@lists.linux.dev>, <netdev@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, 
-	"Shengzhuo Wei" <me@cherr.cc>
-Content-Type: text/plain; charset=UTF-8
+ bh=6beIM0Su1eFg259xHdu6aLppSM3IuAgqBeGAf0Hsje0=;
+ b=wRt6i5N84pMAv5jbhtS3bwDkDQb0VMZ5rXTihYcFUeTJodotCoZ7hoaQQBNgwPlT0spHYm
+ KHAlqRZvd2Ca+BiUB6dlDh1JpmEGx7lDQPDDHBN/78J8neD44NOZvqo9+FxRks6uRep6Zp
+ /U+oZ9K1ahRJeydRbSW4KDxh8ANMNjit/yaGg49NmGEhkbCOM3vrpeEvGUZ2HVduvd22q7
+ uuIRBvBHTWLwu0KKKUS6pyOjqh8L0IufEDm4ohgsckf5R47kSTIpfOOOj6wwEWTTetQX82
+ CfmK6nS5FtGoKKvkJiMyb1IaT5X1kfoFsqGcseGT/AMeCdKcLTeR1vAKWppMhw==
+Date: Tue, 08 Sep 2026 10:37:58 +0800
 X-Mailer: b4 0.16.0
+References: <20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc>
+In-Reply-To: <20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc>
+Message-Id: <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
+X-Lms-Return-Path: <lba+26a9f7511+c0ff24+lists.linux.dev+me@cherr.cc>
+Received: from [192.168.9.107] ([111.42.148.30]) by smtp.feishu.cn with ESMTPS; Tue, 08 Sep 2026 10:38:08 +0800
+Content-Type: text/plain; charset=UTF-8
+From: "Shengzhuo Wei" <me@cherr.cc>
+Subject: [PATCH net v2 2/2] net: fec: free the PPS interrupt before tearing down the PHC and netdev
+X-Original-From: Shengzhuo Wei <me@cherr.cc>
 To: "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>, 
 	"Shenwei Wang" <shenwei.wang@nxp.com>, 
 	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
@@ -42,57 +47,88 @@ To: "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>,
 	"Troy Kisky" <troy.kisky@boundarydevices.com>, 
 	"Fugang Duan" <fugang.duan@nxp.com>, 
 	"Lucas Stach" <l.stach@pengutronix.de>
-From: "Shengzhuo Wei" <me@cherr.cc>
-Date: Tue, 08 Sep 2026 10:37:57 +0800
-X-Lms-Return-Path: <lba+26a9f750d+cbd05b+lists.linux.dev+me@cherr.cc>
-Content-Transfer-Encoding: 7bit
-Subject: [PATCH net v2 1/2] net: fec: stop the PTP clock after the netdev is unregistered
-Message-Id: <20260908-fec-ptp-pps-event-uaf-v2-1-2a1d57121ade@cherr.cc>
+Cc: "Simon Horman" <horms@kernel.org>, "Phuc" <phucduc.bui@gmail.com>, 
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, 
+	"Shengzhuo Wei" <me@cherr.cc>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-X-Original-From: Shengzhuo Wei <me@cherr.cc>
-Received: from [192.168.9.107] ([111.42.148.30]) by smtp.feishu.cn with ESMTPS; Tue, 08 Sep 2026 10:38:03 +0800
-In-Reply-To: <20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc>
-References: <20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc>
+Content-Transfer-Encoding: 7bit
 
-fec_drv_remove() unregisters the PTP clock before unregistering the
-netdev. A concurrent ethtool -T can therefore pass a freed PTP clock
-to ptp_clock_index() through fec_enet_get_ts_info().
+The devm-managed PPS interrupt remains registered until after the
+remove callback returns, outliving both the PHC and the netdev.
+An in-flight handler can call ptp_clock_event() during PHC teardown,
+and a later interrupt can dereference the freed netdev.
 
-Move fec_ptp_stop() after unregister_netdev(), which drains the
-ethtool callbacks before the PTP clock is torn down.
+Record the IRQ after a successful request and release it with
+devm_free_irq() in fec_ptp_stop(), before ptp_clock_unregister().
+This removes the handler and waits for any running instance to
+finish before the PHC and netdev are torn down.
 
-Leave the probe error path unchanged, since the netdev has not been
-registered there.
-
-Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+Fixes: 4ad1ceec05e4 ("net: fec: Let fec_ptp have its own interrupt routine")
 Cc: stable@vger.kernel.org
-Suggested-by: Wei Fang <wei.fang@nxp.com>
 Assisted-by: GLM:5.3
 Signed-off-by: Shengzhuo Wei <me@cherr.cc>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec.h     |  1 +
+ drivers/net/ethernet/freescale/fec_ptp.c | 12 +++++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 794ec427b0ee..a29c8ddbbf34 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5500,9 +5500,9 @@ fec_drv_remove(struct platform_device *pdev)
- 			ERR_PTR(ret));
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index 7176803146f3..960b9f01c531 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -670,6 +670,7 @@ struct fec_enet_private {
  
- 	cancel_work_sync(&fep->tx_timeout_work);
-+	unregister_netdev(ndev);
- 	if (fep->bufdesc_ex)
- 		fec_ptp_stop(pdev);
--	unregister_netdev(ndev);
- 	fec_enet_mii_remove(fep);
- 	if (fep->reg_phy)
- 		regulator_disable(fep->reg_phy);
+ 	/* pps  */
+ 	int pps_channel;
++	int pps_irq;
+ 	unsigned int reload_period;
+ 	int pps_enable;
+ 	unsigned int next_counter;
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 56801c2009d5..567ea2a46117 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -778,6 +778,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ 	hrtimer_setup(&fep->perout_timer, fec_ptp_pps_perout_handler, CLOCK_REALTIME,
+ 		      HRTIMER_MODE_REL);
+ 
++	fep->pps_irq = -1;
+ 	irq = platform_get_irq_byname_optional(pdev, "pps");
+ 	if (irq < 0)
+ 		irq = platform_get_irq_optional(pdev, irq_idx);
+@@ -787,9 +788,12 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ 	if (irq >= 0) {
+ 		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+ 				       0, pdev->name, ndev);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+ 				 ret);
++		} else {
++			fep->pps_irq = irq;
++		}
+ 	}
+ 
+ 	fep->ptp_clock = ptp_clock_register(&fep->ptp_caps, &pdev->dev);
+@@ -861,6 +865,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&fep->time_keep);
+ 	hrtimer_cancel(&fep->perout_timer);
++
++	if (fep->pps_irq >= 0) {
++		devm_free_irq(&pdev->dev, fep->pps_irq, ndev);
++		fep->pps_irq = -1;
++	}
++
+ 	if (fep->ptp_clock)
+ 		ptp_clock_unregister(fep->ptp_clock);
+ }
 
 -- 
 2.47.3
