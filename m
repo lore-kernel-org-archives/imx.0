@@ -1,221 +1,813 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD60C552938
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 14:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A807754B1BA;
+	Tue,  8 Sep 2026 15:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788879541; cv=none; b=ty3pbVLNEcD1+Z5Xa1Z9n50zHMLzIyyMs4sWOTxDmWzV7vijdG5ckNelCZ5ppL5AO9pgdyi7HLr9N2HUv3e9JJAYh7Toxm40aJ9FwU722DcfF/YN2eP4Not4T4YIOK9QP5LlxF2KJ90csgPqmDQznYnpVhu1UrnkFlTjUzlugPo=
+	t=1788881328; cv=none; b=VNj5p/taePyPdE+6zdhPxxAKtaS0OIMkW3OyZvTL3+VQD0qWmFmTCkj8KqB/dAg9iAFzwDYOitv4Als76mG4n4wWqVv/aEAduhcHp4bcMW6Cs29OCaS/VVEEm/LQdcdlBW+ORCjdfifofRedjFZ+LOv5f+OwA8E1Vsvcvqk1ncI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788879541; c=relaxed/simple;
-	bh=DLq5kJ6GnQDKhq8FVuX32328SGe67zNr4t3N9JmNPY4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fQ7Ywn7XyLfMhsj0mCz+/li70cqhe8jYzeJrkBe1axRYgyj9bYapiMqXAyy+o8s93vyw7N7mL8mMr6cxIgCYd74+7jxe8LuN/bu7h1dgZkMb0Wdy6FlqdSocvAAk7lK6I+EOgee8eM5IWLhn7iN1/9pZzALLxe9meck+OE1gAIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UrNdHwA1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GIjbCBd3; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788881328; c=relaxed/simple;
+	bh=Y0hrTjeMzz8zVo8khsTD2rAFGuH1tyIFXsakzm0uWXw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=snMZEaTF4JqAzg6nkeTPgg8OlsuZOlJU4/9GPEN2FNQC/P+48ckfH8bfDKaPyTs0rwRUNQz3m2v4sVT440KpUJ6dXYHz/9jcGuPFuWoewi5QGwZDOdMo32icp4cjj6+2m0Ilhqh1lc22c9ytq84PveVnnyN9zEIKkWOPySyRlj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PluZLTeS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UrNdHwA1";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GIjbCBd3"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688EjCAT3192358
-	for <imx@lists.linux.dev>; Tue, 8 Sep 2026 14:58:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	b0N7yiitrW6dR7p59PNZxxyK3pZtNPXwOVD0qGLv/uw=; b=UrNdHwA16moFMjxf
-	fJMD7pH4j0/lZ0U+AgJVseFdFW4hLsnlOMdoR8Iobss+OloYgzBNeMoBUZOMDjYS
-	N56805fokNTB/bpnz8TJv9pQUhiYoRKNrzkNbjhkMUE3qLMTtgHjLQ5vAXizYydr
-	IW/DH8y6a4dQq/Gg6Gw/YclNkuv6eaPdQ13pKuChIJQc1QRqm63HT9ZKlIl2/y4W
-	Y/mQht2pu4kkJy3loTphjQF0/1HdO0BBpfPMnzOS4xSIU9jNccw4s3zO7R0Iz8Pj
-	w98506pIY5mq3j/8EmKgnocSZ/is7sS39+oSAnfkAZhy2MbHIXmzuFHKCPXbaH4p
-	5diaRg==
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com [209.85.217.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjf1chjv7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 08 Sep 2026 14:58:22 +0000 (GMT)
-Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-756261d422dso3371497137.1
-        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 07:58:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788879502; x=1789484302; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b0N7yiitrW6dR7p59PNZxxyK3pZtNPXwOVD0qGLv/uw=;
-        b=GIjbCBd36AnfQyj9z8PzorIGyghRVd5Bys6aK5dh8n6k+fsfHZDAejYfzlfXG/+IE1
-         WoYBYY7xSNu0o0VyhebsxWRk/b8rGSYKAgzkv38eWovE69i0s8E7RfDwClJFgNbbIOKl
-         GDqMXSRfCHOePkurGF9MrkD3LdNSI3/YoEbXSrtm40ju7rzXMCVg3HmBZbFlKsUi87hM
-         Tu6FuH2f2rrUd7zcUozgZ6v8qFoaXCMoNx9jhVQWY3qZVPY737iv90JBLBXiLia4ZjDM
-         7/+Z+o0NTWMPrI2yJTdWxXrphPrqKoZ4RuGBgg0kxTCx+AjhJyDAkNe6DeF9l9AMHj03
-         SL0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788879502; x=1789484302;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b0N7yiitrW6dR7p59PNZxxyK3pZtNPXwOVD0qGLv/uw=;
-        b=GojxsuJ7TdZqND/bTpkhN78Ku5zl2so3H6l1Ohv5+5y6aB5iw7mVM8N2UMrw7DgEib
-         i4s1/xfNx7CTOH3rf1cuXgVgoa7gGUqMojMthNEpN52yxKjCcQQJXq4JI7z48eQX3Vbb
-         3+9L/ebsk/cPeyr4O1eV/jzPOyreu4FkPzAAPvaXUNtCXtkHnf2EopV8eSuPrsdo9KoP
-         PT2ExZKWRH2DIqmS/d1XVS/geCeQBLnhleM0pUqZNXb23mBCQXS2cdfu3QQcUhwuNclw
-         tE0dgcl1UdtiTWQjsdd9ouU7sbjMtmIuT9r+0B8n0AIz/e/+XM3QEwRr1l5Pvnqy+lze
-         wNIA==
-X-Forwarded-Encrypted: i=1; AKwUvBxN5UyOuE1FGx1Mwc2Kr85QHJN0YQiUtUshr09cGUaZhpoU3IBs5xYzFmKEl7nAEENPZYc=@lists.linux.dev
-X-Gm-Message-State: AFuF++nm6k41Wr3pJ3SOr9DQIDzaO4iOA3aRynsyOZHe2zRGG4o+bKwB
-	lBzxiGJe8RRlfsCXleB3V+CXwcu/WUUdbzTzwENDTazh/SWd8kkui1r4tqTKJ7qabKpz58Elw/A
-	LfWabpinZ+TRuqgeHdMlHDZfVUbQ08jJ0SI0Uag48oqqxErnewBmvrxs=
-X-Gm-Gg: AYBFou2pB3RKS7l7/6LqjYY9ryVscooWgze0o6CO6e3ztFkGG50LvBlIKJig2waECfL
-	3oyD07q4nACwj25tp9ToOgjE/vdjh5YVT74evo4tdhe+OQX3fB/gJOFoycTSgyFQgrrV+jTPLF3
-	e22FN8N5D5o017Ai8KQIlJWs828Bzs850qJCVsGAXdoTknETwgLYjPV3OW+crPV4c9NEwVQAvJL
-	QsfwfBD1tw4KpA/ga93dGLUbdnA8jSrxYhr6eW2XW+TqH0s0LFszLFRqAvtSz2KbuAmfI0hAHdx
-	ivXAFkSM9uYlLD7ET2our1Rfof+QvGzY8MULZSdwM2ijJccNizKG304Pi1fs09fZq+jaJti08ri
-	HXrLYOrnS2cjODS2SSIY/nFM7g5l2
-X-Received: by 2002:a05:6102:6b03:b0:77b:ae7:1bba with SMTP id ada2fe7eead31-78a4a72eac3mr14116069137.3.1788879497226;
-        Tue, 08 Sep 2026 07:58:17 -0700 (PDT)
-X-Received: by 2002:a05:6102:6b03:b0:77b:ae7:1bba with SMTP id ada2fe7eead31-78a4a72eac3mr14115998137.3.1788879496786;
-        Tue, 08 Sep 2026 07:58:16 -0700 (PDT)
-Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:79a2:f118:df09:fe51])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485958f1493sm25191276f8f.37.2026.09.08.07.58.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 07:58:15 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Date: Tue, 08 Sep 2026 16:57:25 +0200
-Subject: [PATCH net-next v14 06/10] net: stmmac: qcom-ethqos: update
- phy_mode to the resolved interface in mac_finish()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PluZLTeS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4A81F00A3D;
+	Tue,  8 Sep 2026 15:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788881315;
+	bh=F3lWhbnaiM03lbnfM85WS0STsEIGLj79Q7Igm5XapQo=;
+	h=From:To:Cc:Subject:Date;
+	b=PluZLTeSm+uthie/Lb+KAVMYUVoJuosagnj7POlTKRjAZLSCWiJWTvTkx1UDbWO0W
+	 U4Az/hYg8kuF/0GIvr+eGBSISlZEFP8jata5ldPjD8VYg2DwNC/a6eBJM6o0Chb3uW
+	 HtYD4CZPbh7mWB6HlVYRT1VfZGdnvOYYN8GMQNq7VREwDCoRAjjlGj6TueozbqegPJ
+	 44RESgi7ZtJqtAS0fbCugmaPzfCGkAKabYt6qTEPnFQOgYQ8GjSqpL2bLoo9nmO3ND
+	 nQIebtQocigGtGS51txwJQhON5+DZI4kb1aU+ajMwgH5Rr6EgP9Bif06lN+cb1irvO
+	 WfYFffsHEbaYg==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Drew Fustini <fustini@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Stefan Agner <stefan@agner.ch>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Nicolas Pitre <npitre@baylibre.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-omap@vger.kernel.org
+Subject: [PATCH 00/13] ARM: deprecated platform removal
+Date: Tue,  8 Sep 2026 17:27:50 +0200
+Message-ID: <20260908152808.3928630-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260908-qcom-sa8255p-emac-v14-6-ec212b747a7d@oss.qualcomm.com>
-References: <20260908-qcom-sa8255p-emac-v14-0-ec212b747a7d@oss.qualcomm.com>
-In-Reply-To: <20260908-qcom-sa8255p-emac-v14-0-ec212b747a7d@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Chen-Yu Tsai <wens@kernel.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
-        Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-        Romain Gantois <romain.gantois@bootlin.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Christophe Roullier <christophe.roullier@foss.st.com>,
-        Bartosz Golaszewski <brgl@kernel.org>, Radu Rendec <radu@rendec.net>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Drew Fustini <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
-        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
-        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
-        linux-riscv@lists.infradead.org, brgl@kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1884;
- i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
- bh=DLq5kJ6GnQDKhq8FVuX32328SGe67zNr4t3N9JmNPY4=;
- b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqoCJs9HybHaSqzBfK2Veao8xyX8UXTlPcezcbj
- QlPlyhTxkiJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCaqAibAAKCRAFnS7L/zaE
- w1v+D/9iBpy/Ln8FSiJNFaOgPkx7WGqGjICkj3LljoYYONiLgB2AbbniiS/o11WhO6qaA3KlYCy
- 5LpbCtIpTVc8+Hr/pdu+wDKOYKMU1x3Co7RJPcQDRTDBXbAn3UOdmYo48WkNu3mDMU4Dkd3bbw5
- K45RxGgRtI80+uqgWHFtKkKHnUi/KtbJH+4tT+bTmk0bhPQ7fqcgh/q+Pg9ijh4Zmfh6yyOwq7U
- TY6rIOEV6WalGxA0WrT7qNqvvIV4jB42F1qdYuSD4ce3AGZ9iemrKyl7qTE5LfOEMezpQ6lEr5P
- 5RRxrJOOFtAHSKMf7H+8q039bFTIzhHKyG2hin3YL0duAYz55SGcBdfcPLxdfPga7JS04y2xkr5
- /04dhHN+1c65cwArcgWGGuCapxI2hvyEJdJEUg0Ny0+ezM3BvVFt8KW4xAa4rcO+mRjvvTFEfhT
- wwRHE77XpXq8zpL4yzW4wHiT023lGqHKQaBfqtJOzpD56dgQlZYX8zIZ/XVnz80DVKdb0VuJ6TI
- Tjtej0zBwwzi2noJhR4vy8malCbdiMtieCLlMibgq/nXB9FCnsQjTIIIn2oZI3uZfPtT8hn2TsF
- ASBniHYS1DB52vO23N8V8cd3Idv3x+i7LCDlX/FL99+cCvn8L/PVicsv9qc7QKgIiy2f2JaIrej
- lGHVVieGgj1UMyQ==
-X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Authority-Analysis: v=2.4 cv=VN3tWdPX c=1 sm=1 tr=0 ts=6aa0228e cx=c_pps
- a=DUEm7b3gzWu7BqY5nP7+9g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=EUspDBNiAAAA:8
- a=fYsbkC7JaC8eFfGKQicA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=-aSRE8QhW-JAV6biHavz:22
-X-Proofpoint-ORIG-GUID: G_ep9aaPuw-4fs2sYEXA_dUBqRHT3Y6m
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE2MSBTYWx0ZWRfX9bWYqJnLA4ZE
- 7RcCtaMeQYHZB1Scoa5niqvsBzIM6x0hLBaChxJWv58S134K40dsSc7BbV6nxT/UgbEtCW3Zs75
- HVKw2MqLsG0j+0P1aMDt9Yf5wvZqOP4=
-X-Proofpoint-GUID: G_ep9aaPuw-4fs2sYEXA_dUBqRHT3Y6m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE2MSBTYWx0ZWRfX6nxfSeGAvT8v
- 05TUsf702JifYB6FBZk9Uhju2/G94DpqwQAhODlx3laZBZePNcQrwSaL3qwqft7r1QicVpAPT56
- Z7Fbhya39z8zpQ/7KviN6dh44YF0nIl2VLzXtAc+gv34apLq+5rF2beMPTJAv1HFWrB242Ljr6Y
- RE7Fq+isEAMTn9t+zS7h+Cbyl3PhdZ3yHA8qmbVXfyl7FbY9+hC6wZadfJRsFqIzYuffAclZ9v+
- lpy8qkrmG8OP0KXBxCD40FoIcXdMk+sT0PGJ6w5/k3aRtrrpuQMK2D2gTAuEAVjy9qdx5nm/JDj
- 6J7Izm0xtaWYsKkAChGzDu7Sve2hbr75ZVV0HKnCB17GRNoQdz5/ahjT6p1n5vLgBLI7aEw0qhM
- EH+Of4Z2O8TtYCRbQRCt9Pz51twX7R0Kzyy8t+F6j8bwXY1QWrcxfyhZWsRK/jaVYX6eWqCh4iu
- YACgJ55Nl6pRIfsK0mw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080161
 
-ethqos->phy_mode is read by serdes_powerup() and
-qcom_ethqos_set_sgmii_loopback() to configure the SerDes and its
-wrapper for the correct interface. It is set once at probe from the DT
-phy-mode property and never updated.
+From: Arnd Bergmann <arnd@arndb.de>
 
-phylink resolves the actual runtime interface and passes it to the
-mac_finish() callback. On platforms that only ever operate at one speed
-these two values are always the same, but when the interface changes
-at runtime - for example switching between SGMII and 2500BASE-X — the
-stored value becomes stale. The next serdes_powerup() call, on
-a subsequent link cycle, then reinitialises the SerDes to the wrong mode.
+In the 7.3 kernel, I marked a number of platforms and features as
+deprecated, with the plan to keep these around for the LTS kernel, but
+remove them in 7.4, see [1].
 
-Update ethqos->phy_mode from the interface argument in
-ethqos_mac_finish_serdes() so that it always reflects the last
-resolved interface.
+Cleaning out the deprecated platform code has turned into a larger effort
+than I expected, currently standing at 300 patches, with a lot of them
+still in need of being split up into smaller ones, see [2] for a current
+snapshot.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The first series here removes just the bits in arch/arm/mach-*/, plus
+the portions that directly depend on the removed Kconfig symbols where
+these are trivial to remove.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 47b70b5e706f221c01f1c0ae3b1acafae6641165..fd7414a50eb4e7d4d5adad7e93d49a55500c7f32 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -634,6 +634,12 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
- 
- 	qcom_ethqos_set_sgmii_loopback(ethqos, false);
- 
-+	/* The interface mode is only known once phylink has resolved it and
-+	 * may change at runtime, so keep it in sync for later
-+	 * serdes_powerup()/serdes_powerdown() calls.
-+	 */
-+	ethqos->phy_mode = interface;
-+
- 	if (interface == PHY_INTERFACE_MODE_SGMII ||
- 	    interface == PHY_INTERFACE_MODE_2500BASEX)
- 		ret = phy_set_mode_ext(ethqos->serdes_phy, PHY_MODE_ETHERNET,
+The parts that are not included are those that remove architectural
+features and device drivers that become unused after this part. Some of
+those may also make their way into 7.4, but at this point I would target
+7.5 for most of them, to keep the dependencies simple.
+
+This also gives everyone a chance to voice their objections in case
+that some of the removed platform code does have active users after all,
+before all the corresponding drivers are gone.
+
+     Arnd
+
+Links:
+[1] https://lore.kernel.org/all/20260701212353.2196041-1-arnd@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/log/?h=board-remove-7.3
+
+Arnd Bergmann (13):
+  ARM: remove sa1100 platform
+  ARM: remove footbridge
+  ARM: remove riscpc
+  ARM: remove legacy pxa board files
+  ARM: orion/dove/mv78xx0: remove all board files
+  ARM: omap2: remove omap24xx support
+  ARM: imx: remove i.MX31 SoC support
+  ARM: imx: remove nommu support
+  ARM: lpc18xx: remove entire platform
+  ARM: stm32: remove stm32f4/f7/h7 MCU support
+  ARM: versatile: remove mps2 support
+  ARM: at91: remove samv7 support
+  ARM: axxia: remove entire platform
+
+ Documentation/arch/arm/index.rst              |    1 -
+ Documentation/arch/arm/netwinder.rst          |   85 -
+ .../devicetree/bindings/arm/axxia.yaml        |   23 -
+ MAINTAINERS                                   |   60 -
+ arch/arm/Kconfig                              |   80 +-
+ arch/arm/Kconfig.debug                        |  106 +-
+ arch/arm/Makefile                             |   13 -
+ arch/arm/boot/bootp/Makefile                  |    4 -
+ arch/arm/boot/compressed/Makefile             |   12 -
+ arch/arm/boot/compressed/font.c               |    2 -
+ arch/arm/boot/compressed/head-sa1100.S        |   45 -
+ arch/arm/boot/compressed/head-sharpsl.S       |  151 --
+ arch/arm/boot/compressed/head.S               |   15 -
+ arch/arm/boot/compressed/ll_char_wr.S         |  131 --
+ arch/arm/boot/dts/arm/Makefile                |    3 -
+ arch/arm/boot/dts/arm/mps2-an385.dts          |   92 -
+ arch/arm/boot/dts/arm/mps2-an399.dts          |   92 -
+ arch/arm/boot/dts/arm/mps2.dtsi               |  220 --
+ arch/arm/boot/dts/intel/Makefile              |    1 -
+ arch/arm/boot/dts/intel/axm/Makefile          |    5 -
+ .../boot/dts/intel/axm/axm5516-amarillo.dts   |   47 -
+ arch/arm/boot/dts/intel/axm/axm5516-cpus.dtsi |  200 --
+ arch/arm/boot/dts/intel/axm/axm55xx.dtsi      |  200 --
+ arch/arm/boot/dts/nxp/imx/Makefile            |    5 -
+ arch/arm/boot/dts/nxp/imx/imx31-bug.dts       |   22 -
+ arch/arm/boot/dts/nxp/imx/imx31-lite.dts      |  178 --
+ arch/arm/boot/dts/nxp/imx/imx31.dtsi          |  371 ----
+ arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts   |   72 -
+ arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h |  993 ---------
+ arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi      |  160 --
+ arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h | 1561 --------------
+ arch/arm/boot/dts/nxp/lpc/Makefile            |    5 -
+ arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi        |  543 -----
+ arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dts    |  221 --
+ .../boot/dts/nxp/lpc/lpc4350-hitex-eval.dts   |  485 -----
+ arch/arm/boot/dts/nxp/lpc/lpc4350.dtsi        |   48 -
+ .../dts/nxp/lpc/lpc4357-ea4357-devkit.dts     |  624 ------
+ .../boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts  |  621 ------
+ arch/arm/boot/dts/nxp/lpc/lpc4357.dtsi        |   52 -
+ arch/arm/boot/dts/nxp/vf/Makefile             |    2 -
+ arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts  |   61 -
+ arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts   |   88 -
+ arch/arm/boot/dts/nxp/vf/vf610m4.dtsi         |   61 -
+ arch/arm/boot/dts/st/Makefile                 |   11 -
+ arch/arm/boot/dts/st/stm32f4-pinctrl.dtsi     |  482 -----
+ arch/arm/boot/dts/st/stm32f429-disco.dts      |  243 ---
+ arch/arm/boot/dts/st/stm32f429-pinctrl.dtsi   |   91 -
+ arch/arm/boot/dts/st/stm32f429.dtsi           |  800 --------
+ arch/arm/boot/dts/st/stm32f469-disco.dts      |  260 ---
+ arch/arm/boot/dts/st/stm32f469-pinctrl.dtsi   |   92 -
+ arch/arm/boot/dts/st/stm32f469.dtsi           |   18 -
+ arch/arm/boot/dts/st/stm32f7-pinctrl.dtsi     |  436 ----
+ arch/arm/boot/dts/st/stm32f746-disco.dts      |  234 ---
+ arch/arm/boot/dts/st/stm32f746-pinctrl.dtsi   |   55 -
+ arch/arm/boot/dts/st/stm32f746.dtsi           |  727 -------
+ .../dts/st/stm32f769-disco-mb1166-reva09.dts  |   13 -
+ arch/arm/boot/dts/st/stm32f769-disco.dts      |  243 ---
+ arch/arm/boot/dts/st/stm32f769-pinctrl.dtsi   |   55 -
+ arch/arm/boot/dts/st/stm32f769.dtsi           |   37 -
+ arch/arm/boot/dts/st/stm32h7-pinctrl.dtsi     |  301 ---
+ arch/arm/boot/dts/st/stm32h743.dtsi           |  738 -------
+ arch/arm/boot/dts/st/stm32h743i-disco.dts     |  145 --
+ arch/arm/boot/dts/st/stm32h743i-eval.dts      |  185 --
+ arch/arm/boot/dts/st/stm32h747i-disco.dts     |  149 --
+ arch/arm/boot/dts/st/stm32h750.dtsi           |    6 -
+ arch/arm/boot/dts/st/stm32h750i-art-pi.dts    |  229 ---
+ arch/arm/boot/dts/ti/omap/Makefile            |    6 -
+ arch/arm/boot/dts/ti/omap/omap2.dtsi          |  338 ----
+ .../arm/boot/dts/ti/omap/omap2420-clocks.dtsi |  267 ---
+ arch/arm/boot/dts/ti/omap/omap2420-h4.dts     |   63 -
+ arch/arm/boot/dts/ti/omap/omap2420-n800.dts   |    9 -
+ .../boot/dts/ti/omap/omap2420-n810-wimax.dts  |    9 -
+ arch/arm/boot/dts/ti/omap/omap2420-n810.dts   |   75 -
+ .../dts/ti/omap/omap2420-n8x0-common.dtsi     |  123 --
+ arch/arm/boot/dts/ti/omap/omap2420.dtsi       |  262 ---
+ .../arm/boot/dts/ti/omap/omap2430-clocks.dtsi |  341 ----
+ arch/arm/boot/dts/ti/omap/omap2430-sdp.dts    |   70 -
+ arch/arm/boot/dts/ti/omap/omap2430.dtsi       |  366 ----
+ .../arm/boot/dts/ti/omap/omap24xx-clocks.dtsi | 1241 ------------
+ arch/arm/common/Kconfig                       |   13 -
+ arch/arm/common/Makefile                      |    4 -
+ arch/arm/common/locomo.c                      |  886 --------
+ arch/arm/common/sa1111.c                      | 1413 -------------
+ arch/arm/common/scoop.c                       |  269 ---
+ arch/arm/common/sharpsl_param.c               |   63 -
+ arch/arm/configs/am200epdkit_defconfig        |   91 -
+ arch/arm/configs/assabet_defconfig            |   57 -
+ arch/arm/configs/axm55xx_defconfig            |  231 ---
+ arch/arm/configs/collie_defconfig             |   87 -
+ arch/arm/configs/dove_defconfig               |  134 --
+ arch/arm/configs/footbridge_defconfig         |  114 --
+ arch/arm/configs/h3600_defconfig              |   63 -
+ arch/arm/configs/imx_v6_v7_defconfig          |    1 -
+ arch/arm/configs/imxrt_defconfig              |   35 -
+ arch/arm/configs/jornada720_defconfig         |   95 -
+ arch/arm/configs/lpc18xx_defconfig            |  158 --
+ arch/arm/configs/mps2_defconfig               |  102 -
+ arch/arm/configs/mv78xx0_defconfig            |  120 --
+ arch/arm/configs/neponset_defconfig           |   88 -
+ arch/arm/configs/netwinder_defconfig          |   88 -
+ arch/arm/configs/omap2plus_defconfig          |    2 -
+ arch/arm/configs/rpc_defconfig                |  127 --
+ arch/arm/configs/spitz_defconfig              |  237 ---
+ arch/arm/configs/stm32_defconfig              |   80 -
+ arch/arm/configs/vf610m4_defconfig            |   39 -
+ arch/arm/include/asm/ecard.h                  |  219 --
+ arch/arm/include/asm/hardware/dec21285.h      |  138 --
+ arch/arm/include/asm/hardware/ioc.h           |   69 -
+ arch/arm/include/asm/hardware/iomd.h          |  182 --
+ arch/arm/include/asm/hardware/locomo.h        |  217 --
+ arch/arm/include/asm/hardware/memc.h          |   23 -
+ arch/arm/include/asm/hardware/scoop.h         |   67 -
+ arch/arm/include/asm/hardware/ssp.h           |   25 -
+ arch/arm/include/asm/io.h                     |    5 +-
+ arch/arm/include/asm/mach/pci.h               |   14 -
+ arch/arm/include/asm/mach/sharpsl_param.h     |   33 -
+ arch/arm/include/asm/memory.h                 |    3 -
+ arch/arm/include/debug/dc21285.S              |   41 -
+ arch/arm/include/debug/sa1100.S               |   67 -
+ arch/arm/kernel/atags_parse.c                 |   18 -
+ arch/arm/kernel/bios32.c                      |   12 -
+ arch/arm/kernel/head-common.S                 |   13 -
+ arch/arm/kernel/head.S                        |   22 -
+ arch/arm/lib/delay-loop.S                     |    4 -
+ arch/arm/mach-at91/Kconfig                    |   11 +-
+ arch/arm/mach-at91/Makefile                   |    1 -
+ arch/arm/mach-at91/samv7.c                    |   17 -
+ arch/arm/mach-axxia/Kconfig                   |   17 -
+ arch/arm/mach-axxia/Makefile                  |    3 -
+ arch/arm/mach-axxia/axxia.c                   |   19 -
+ arch/arm/mach-axxia/platsmp.c                 |   87 -
+ arch/arm/mach-dove/Kconfig                    |   32 -
+ arch/arm/mach-dove/Makefile                   |    7 -
+ arch/arm/mach-dove/bridge-regs.h              |   50 -
+ arch/arm/mach-dove/cm-a510.c                  |   94 -
+ arch/arm/mach-dove/common.c                   |  449 ----
+ arch/arm/mach-dove/common.h                   |   46 -
+ arch/arm/mach-dove/dove.h                     |  185 --
+ arch/arm/mach-dove/irq.c                      |   81 -
+ arch/arm/mach-dove/irqs.h                     |   89 -
+ arch/arm/mach-dove/mpp.c                      |  159 --
+ arch/arm/mach-dove/mpp.h                      |  197 --
+ arch/arm/mach-dove/pcie.c                     |  226 ---
+ arch/arm/mach-dove/pm.h                       |   58 -
+ arch/arm/mach-footbridge/Kconfig              |   57 -
+ arch/arm/mach-footbridge/Makefile             |   18 -
+ arch/arm/mach-footbridge/common.c             |  280 ---
+ arch/arm/mach-footbridge/common.h             |   15 -
+ arch/arm/mach-footbridge/dc21285-timer.c      |  136 --
+ arch/arm/mach-footbridge/dc21285.c            |  360 ----
+ arch/arm/mach-footbridge/dma-isa.c            |  230 ---
+ arch/arm/mach-footbridge/ebsa285-pci.c        |   48 -
+ arch/arm/mach-footbridge/ebsa285.c            |  124 --
+ .../mach-footbridge/include/mach/hardware.h   |   90 -
+ arch/arm/mach-footbridge/include/mach/irqs.h  |   97 -
+ .../mach-footbridge/include/mach/isa-dma.h    |   18 -
+ .../arm/mach-footbridge/include/mach/memory.h |   26 -
+ .../mach-footbridge/include/mach/uncompress.h |   34 -
+ arch/arm/mach-footbridge/isa-irq.c            |  177 --
+ arch/arm/mach-footbridge/isa-rtc.c            |   57 -
+ arch/arm/mach-footbridge/isa-timer.c          |   36 -
+ arch/arm/mach-footbridge/isa.c                |   94 -
+ arch/arm/mach-footbridge/netwinder-hw.c       |  772 -------
+ arch/arm/mach-footbridge/netwinder-pci.c      |   62 -
+ arch/arm/mach-imx/Kconfig                     |   38 +-
+ arch/arm/mach-imx/Makefile                    |    4 -
+ arch/arm/mach-imx/cpu-imx31.c                 |   72 -
+ arch/arm/mach-imx/mach-imx31.c                |   18 -
+ arch/arm/mach-imx/mach-imx7d-cm4.c            |   18 -
+ arch/arm/mach-imx/mach-imxrt.c                |   19 -
+ arch/arm/mach-imx/mm-imx3.c                   |   44 -
+ arch/arm/mach-lpc18xx/Makefile                |    2 -
+ arch/arm/mach-lpc18xx/board-dt.c              |   19 -
+ arch/arm/mach-mv78xx0/Kconfig                 |   27 -
+ arch/arm/mach-mv78xx0/Makefile                |    5 -
+ arch/arm/mach-mv78xx0/bridge-regs.h           |   31 -
+ arch/arm/mach-mv78xx0/buffalo-wxl-setup.c     |  183 --
+ arch/arm/mach-mv78xx0/common.c                |  444 ----
+ arch/arm/mach-mv78xx0/common.h                |   54 -
+ arch/arm/mach-mv78xx0/irq.c                   |   69 -
+ arch/arm/mach-mv78xx0/irqs.h                  |   87 -
+ arch/arm/mach-mv78xx0/mpp.c                   |   34 -
+ arch/arm/mach-mv78xx0/mpp.h                   |  337 ---
+ arch/arm/mach-mv78xx0/mv78xx0.h               |  134 --
+ arch/arm/mach-mv78xx0/pcie.c                  |  280 ---
+ arch/arm/mach-omap2/Kconfig                   |   62 +-
+ arch/arm/mach-omap2/Makefile                  |   63 +-
+ arch/arm/mach-omap2/board-generic.c           |   34 -
+ arch/arm/mach-omap2/board-n8x0.c              |  512 -----
+ arch/arm/mach-omap2/clkt2xxx_dpll.c           |   56 -
+ arch/arm/mach-omap2/clkt2xxx_dpllcore.c       |  194 --
+ arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c  |  259 ---
+ arch/arm/mach-omap2/clock.c                   |   12 +-
+ arch/arm/mach-omap2/clock2xxx.h               |   17 -
+ arch/arm/mach-omap2/clockdomain.c             |    4 +-
+ arch/arm/mach-omap2/clockdomain.h             |    5 -
+ arch/arm/mach-omap2/clockdomains2420_data.c   |  154 --
+ arch/arm/mach-omap2/clockdomains2430_data.c   |  181 --
+ .../mach-omap2/clockdomains2xxx_3xxx_data.c   |   29 +-
+ arch/arm/mach-omap2/cm-regbits-24xx.h         |   51 -
+ arch/arm/mach-omap2/cm2xxx.c                  |  302 ---
+ arch/arm/mach-omap2/cm2xxx.h                  |   60 -
+ arch/arm/mach-omap2/cm_common.c               |   12 -
+ arch/arm/mach-omap2/common-board-devices.h    |   11 -
+ arch/arm/mach-omap2/common.h                  |   12 -
+ arch/arm/mach-omap2/control.h                 |   56 -
+ arch/arm/mach-omap2/display.c                 |    4 +-
+ arch/arm/mach-omap2/dma.c                     |   53 +-
+ arch/arm/mach-omap2/fb.c                      |   14 +-
+ arch/arm/mach-omap2/gpmc.h                    |   10 -
+ arch/arm/mach-omap2/i2c.c                     |    2 +-
+ arch/arm/mach-omap2/id.c                      |   80 +-
+ arch/arm/mach-omap2/io.c                      |  140 +-
+ arch/arm/mach-omap2/iomap.h                   |   46 -
+ arch/arm/mach-omap2/l3_2xxx.h                 |   15 -
+ arch/arm/mach-omap2/l4_2xxx.h                 |   19 -
+ arch/arm/mach-omap2/mmc.h                     |   18 -
+ arch/arm/mach-omap2/msdi.c                    |   75 -
+ arch/arm/mach-omap2/omap2-restart.c           |   62 -
+ arch/arm/mach-omap2/omap24xx.h                |   73 -
+ arch/arm/mach-omap2/omap_hwmod.c              |   18 +-
+ arch/arm/mach-omap2/omap_hwmod.h              |    2 -
+ arch/arm/mach-omap2/omap_hwmod_2420_data.c    |  402 ----
+ arch/arm/mach-omap2/omap_hwmod_2430_data.c    |  606 ------
+ .../omap_hwmod_2xxx_interconnect_data.c       |  256 ---
+ .../mach-omap2/omap_hwmod_2xxx_ipblock_data.c |  668 ------
+ arch/arm/mach-omap2/omap_hwmod_common_data.h  |   66 -
+ arch/arm/mach-omap2/opp2420_data.c            |  131 --
+ arch/arm/mach-omap2/opp2430_data.c            |  136 --
+ arch/arm/mach-omap2/opp2xxx.h                 |  430 ----
+ arch/arm/mach-omap2/pdata-quirks.c            |   35 +-
+ arch/arm/mach-omap2/pm.h                      |    5 -
+ arch/arm/mach-omap2/powerdomain.h             |    3 -
+ arch/arm/mach-omap2/powerdomains2xxx_data.c   |  134 --
+ arch/arm/mach-omap2/prcm-common.h             |  147 --
+ arch/arm/mach-omap2/prm-regbits-24xx.h        |   39 -
+ arch/arm/mach-omap2/prm2xxx.c                 |  229 ---
+ arch/arm/mach-omap2/prm2xxx.h                 |  128 --
+ arch/arm/mach-omap2/prm2xxx_3xxx.c            |    1 -
+ arch/arm/mach-omap2/prm_common.c              |   11 -
+ arch/arm/mach-omap2/sdrc.h                    |   21 -
+ arch/arm/mach-omap2/sdrc2xxx.c                |  164 --
+ arch/arm/mach-omap2/sleep24xx.S               |   91 -
+ arch/arm/mach-omap2/soc.h                     |   59 -
+ arch/arm/mach-omap2/sram.c                    |  159 +-
+ arch/arm/mach-omap2/sram.h                    |   32 -
+ arch/arm/mach-omap2/sram242x.S                |  317 ---
+ arch/arm/mach-omap2/sram243x.S                |  317 ---
+ arch/arm/mach-omap2/usb-tusb6010.c            |  217 --
+ arch/arm/mach-omap2/usb-tusb6010.h            |   12 -
+ arch/arm/mach-omap2/voltagedomains2xxx_data.c |   29 -
+ arch/arm/mach-orion5x/Kconfig                 |   95 -
+ arch/arm/mach-orion5x/Makefile                |    9 -
+ arch/arm/mach-orion5x/board-dt.c              |    3 +-
+ arch/arm/mach-orion5x/common.c                |  238 +--
+ arch/arm/mach-orion5x/common.h                |   15 -
+ arch/arm/mach-orion5x/dns323-setup.c          |  757 -------
+ arch/arm/mach-orion5x/kurobox_pro-setup.c     |  407 ----
+ arch/arm/mach-orion5x/mv2120-setup.c          |  256 ---
+ arch/arm/mach-orion5x/net2big-setup.c         |  444 ----
+ arch/arm/mach-orion5x/pci.c                   |    1 -
+ .../arm/mach-orion5x/terastation_pro2-setup.c |  366 ----
+ arch/arm/mach-orion5x/ts209-setup.c           |  331 ---
+ arch/arm/mach-orion5x/ts409-setup.c           |  329 ---
+ arch/arm/mach-orion5x/ts78xx-fpga.h           |   42 -
+ arch/arm/mach-orion5x/ts78xx-setup.c          |  574 ------
+ arch/arm/mach-orion5x/tsx09-common.c          |  129 --
+ arch/arm/mach-orion5x/tsx09-common.h          |   21 -
+ arch/arm/mach-pxa/Kconfig                     |   89 -
+ arch/arm/mach-pxa/Makefile                    |    8 -
+ arch/arm/mach-pxa/am200epd.c                  |  395 ----
+ arch/arm/mach-pxa/am300epd.c                  |  296 ---
+ arch/arm/mach-pxa/devices.c                   |  705 -------
+ arch/arm/mach-pxa/devices.h                   |   68 -
+ arch/arm/mach-pxa/generic.h                   |    5 -
+ arch/arm/mach-pxa/gumstix.c                   |  237 ---
+ arch/arm/mach-pxa/gumstix.h                   |   89 -
+ arch/arm/mach-pxa/pxa25x.c                    |   59 -
+ arch/arm/mach-pxa/pxa27x.c                    |   77 -
+ arch/arm/mach-pxa/pxa300.c                    |    1 -
+ arch/arm/mach-pxa/pxa320.c                    |    1 -
+ arch/arm/mach-pxa/pxa3xx.c                    |    6 -
+ arch/arm/mach-pxa/sharpsl_pm.c                |  941 ---------
+ arch/arm/mach-pxa/sharpsl_pm.h                |  108 -
+ arch/arm/mach-pxa/spitz.c                     | 1174 -----------
+ arch/arm/mach-pxa/spitz.h                     |  185 --
+ arch/arm/mach-pxa/spitz_pm.c                  |  257 ---
+ arch/arm/mach-rpc/Kconfig                     |   24 -
+ arch/arm/mach-rpc/Makefile                    |    9 -
+ arch/arm/mach-rpc/dma.c                       |  393 ----
+ arch/arm/mach-rpc/ecard-loader.S              |   40 -
+ arch/arm/mach-rpc/ecard.c                     | 1146 -----------
+ arch/arm/mach-rpc/ecard.h                     |   66 -
+ arch/arm/mach-rpc/fiq.S                       |   18 -
+ arch/arm/mach-rpc/floppydma.S                 |   29 -
+ arch/arm/mach-rpc/include/mach/acornfb.h      |  137 --
+ arch/arm/mach-rpc/include/mach/hardware.h     |   73 -
+ arch/arm/mach-rpc/include/mach/io.h           |   28 -
+ arch/arm/mach-rpc/include/mach/irqs.h         |   42 -
+ arch/arm/mach-rpc/include/mach/isa-dma.h      |   26 -
+ arch/arm/mach-rpc/include/mach/memory.h       |   32 -
+ arch/arm/mach-rpc/include/mach/uncompress.h   |  181 --
+ arch/arm/mach-rpc/io-acorn.S                  |   28 -
+ arch/arm/mach-rpc/irq.c                       |  226 ---
+ arch/arm/mach-rpc/riscpc.c                    |  225 ---
+ arch/arm/mach-rpc/time.c                      |   97 -
+ arch/arm/mach-sa1100/Kconfig                  |   92 -
+ arch/arm/mach-sa1100/Makefile                 |   20 -
+ arch/arm/mach-sa1100/assabet.c                |  770 -------
+ arch/arm/mach-sa1100/clock.c                  |  145 --
+ arch/arm/mach-sa1100/collie.c                 |  447 ----
+ arch/arm/mach-sa1100/generic.c                |  470 -----
+ arch/arm/mach-sa1100/generic.h                |   58 -
+ arch/arm/mach-sa1100/h3600.c                  |  134 --
+ arch/arm/mach-sa1100/h3xxx.c                  |  305 ---
+ arch/arm/mach-sa1100/include/mach/SA-1100.h   | 1798 -----------------
+ arch/arm/mach-sa1100/include/mach/assabet.h   |   99 -
+ arch/arm/mach-sa1100/include/mach/bitfield.h  |  113 --
+ arch/arm/mach-sa1100/include/mach/collie.h    |   94 -
+ arch/arm/mach-sa1100/include/mach/generic.h   |    1 -
+ arch/arm/mach-sa1100/include/mach/h3xxx.h     |   81 -
+ arch/arm/mach-sa1100/include/mach/hardware.h  |   56 -
+ arch/arm/mach-sa1100/include/mach/irqs.h      |  101 -
+ .../arm/mach-sa1100/include/mach/jornada720.h |   28 -
+ arch/arm/mach-sa1100/include/mach/memory.h    |   37 -
+ arch/arm/mach-sa1100/include/mach/mtd-xip.h   |   23 -
+ arch/arm/mach-sa1100/include/mach/neponset.h  |   31 -
+ arch/arm/mach-sa1100/include/mach/reset.h     |   18 -
+ .../arm/mach-sa1100/include/mach/uncompress.h |   52 -
+ arch/arm/mach-sa1100/jornada720.c             |  380 ----
+ arch/arm/mach-sa1100/jornada720_ssp.c         |  202 --
+ arch/arm/mach-sa1100/neponset.c               |  438 ----
+ arch/arm/mach-sa1100/pm.c                     |  128 --
+ arch/arm/mach-sa1100/sleep.S                  |  143 --
+ arch/arm/mach-sa1100/ssp.c                    |  240 ---
+ arch/arm/mach-stm32/Kconfig                   |   38 +-
+ arch/arm/mach-versatile/Makefile              |    3 -
+ arch/arm/mach-versatile/v2m-mps2.c            |   17 -
+ arch/arm/mm/Kconfig                           |    2 +-
+ arch/arm/mm/init.c                            |    5 -
+ arch/arm/mm/mmu.c                             |   10 +-
+ arch/arm/plat-orion/Makefile                  |    2 +-
+ arch/arm/plat-orion/common.c                  |  826 --------
+ arch/arm/plat-orion/include/plat/addr-map.h   |   54 -
+ arch/arm/plat-orion/include/plat/common.h     |  104 -
+ arch/arm/plat-orion/include/plat/time.h       |   20 -
+ arch/arm/plat-orion/pcie.c                    |    1 -
+ arch/arm/plat-orion/time.c                    |  238 ---
+ block/partitions/Kconfig                      |    7 -
+ drivers/ata/Kconfig                           |    3 +-
+ drivers/crypto/Kconfig                        |    2 +-
+ drivers/i2c/busses/Kconfig                    |    2 +-
+ drivers/media/platform/ti/omap/Kconfig        |    4 +-
+ drivers/mmc/host/Kconfig                      |    2 +-
+ drivers/mtd/nand/onenand/Kconfig              |    4 +-
+ drivers/pci/controller/Kconfig                |    2 +-
+ drivers/phy/marvell/Kconfig                   |    2 +-
+ drivers/rtc/Kconfig                           |    6 +-
+ drivers/rtc/rtc-sa1100.c                      |   16 +-
+ drivers/soc/Makefile                          |    1 -
+ drivers/soc/atmel/soc.c                       |   35 -
+ drivers/thermal/Kconfig                       |    2 +-
+ drivers/tty/vt/keyboard.c                     |    2 +-
+ drivers/video/console/Kconfig                 |    6 +-
+ drivers/video/console/dummycon.c              |    6 -
+ drivers/video/fbdev/cyber2000fb.c             |   10 -
+ drivers/video/fbdev/omap2/omapfb/Kconfig      |    2 +-
+ drivers/watchdog/Kconfig                      |   14 +-
+ include/linux/clk/ti.h                        |    8 -
+ lib/fonts/font_acorn_8x8.c                    |    4 -
+ sound/soc/kirkwood/Kconfig                    |    2 +-
+ 371 files changed, 115 insertions(+), 55679 deletions(-)
+ delete mode 100644 Documentation/arch/arm/netwinder.rst
+ delete mode 100644 Documentation/devicetree/bindings/arm/axxia.yaml
+ delete mode 100644 arch/arm/boot/compressed/font.c
+ delete mode 100644 arch/arm/boot/compressed/head-sa1100.S
+ delete mode 100644 arch/arm/boot/compressed/head-sharpsl.S
+ delete mode 100644 arch/arm/boot/compressed/ll_char_wr.S
+ delete mode 100644 arch/arm/boot/dts/arm/mps2-an385.dts
+ delete mode 100644 arch/arm/boot/dts/arm/mps2-an399.dts
+ delete mode 100644 arch/arm/boot/dts/arm/mps2.dtsi
+ delete mode 100644 arch/arm/boot/dts/intel/axm/Makefile
+ delete mode 100644 arch/arm/boot/dts/intel/axm/axm5516-amarillo.dts
+ delete mode 100644 arch/arm/boot/dts/intel/axm/axm5516-cpus.dtsi
+ delete mode 100644 arch/arm/boot/dts/intel/axm/axm55xx.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31-bug.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31-lite.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4350-hitex-eval.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4350.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4357.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f4-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f429-disco.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32f429-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f429.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f469-disco.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32f469-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f469.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f7-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f746-disco.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32f746-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f746.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f769-disco-mb1166-reva09.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32f769-disco.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32f769-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32f769.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32h7-pinctrl.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32h743.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32h743i-disco.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32h743i-eval.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32h747i-disco.dts
+ delete mode 100644 arch/arm/boot/dts/st/stm32h750.dtsi
+ delete mode 100644 arch/arm/boot/dts/st/stm32h750i-art-pi.dts
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2.dtsi
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-clocks.dtsi
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-h4.dts
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n800.dts
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n810-wimax.dts
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n810.dts
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420.dtsi
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2430-clocks.dtsi
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2430-sdp.dts
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap2430.dtsi
+ delete mode 100644 arch/arm/boot/dts/ti/omap/omap24xx-clocks.dtsi
+ delete mode 100644 arch/arm/common/locomo.c
+ delete mode 100644 arch/arm/common/sa1111.c
+ delete mode 100644 arch/arm/common/scoop.c
+ delete mode 100644 arch/arm/common/sharpsl_param.c
+ delete mode 100644 arch/arm/configs/am200epdkit_defconfig
+ delete mode 100644 arch/arm/configs/assabet_defconfig
+ delete mode 100644 arch/arm/configs/axm55xx_defconfig
+ delete mode 100644 arch/arm/configs/collie_defconfig
+ delete mode 100644 arch/arm/configs/dove_defconfig
+ delete mode 100644 arch/arm/configs/footbridge_defconfig
+ delete mode 100644 arch/arm/configs/h3600_defconfig
+ delete mode 100644 arch/arm/configs/imxrt_defconfig
+ delete mode 100644 arch/arm/configs/jornada720_defconfig
+ delete mode 100644 arch/arm/configs/lpc18xx_defconfig
+ delete mode 100644 arch/arm/configs/mps2_defconfig
+ delete mode 100644 arch/arm/configs/mv78xx0_defconfig
+ delete mode 100644 arch/arm/configs/neponset_defconfig
+ delete mode 100644 arch/arm/configs/netwinder_defconfig
+ delete mode 100644 arch/arm/configs/rpc_defconfig
+ delete mode 100644 arch/arm/configs/spitz_defconfig
+ delete mode 100644 arch/arm/configs/stm32_defconfig
+ delete mode 100644 arch/arm/configs/vf610m4_defconfig
+ delete mode 100644 arch/arm/include/asm/ecard.h
+ delete mode 100644 arch/arm/include/asm/hardware/dec21285.h
+ delete mode 100644 arch/arm/include/asm/hardware/ioc.h
+ delete mode 100644 arch/arm/include/asm/hardware/iomd.h
+ delete mode 100644 arch/arm/include/asm/hardware/locomo.h
+ delete mode 100644 arch/arm/include/asm/hardware/memc.h
+ delete mode 100644 arch/arm/include/asm/hardware/scoop.h
+ delete mode 100644 arch/arm/include/asm/hardware/ssp.h
+ delete mode 100644 arch/arm/include/asm/mach/sharpsl_param.h
+ delete mode 100644 arch/arm/include/debug/dc21285.S
+ delete mode 100644 arch/arm/include/debug/sa1100.S
+ delete mode 100644 arch/arm/mach-at91/samv7.c
+ delete mode 100644 arch/arm/mach-axxia/Kconfig
+ delete mode 100644 arch/arm/mach-axxia/Makefile
+ delete mode 100644 arch/arm/mach-axxia/axxia.c
+ delete mode 100644 arch/arm/mach-axxia/platsmp.c
+ delete mode 100644 arch/arm/mach-dove/Kconfig
+ delete mode 100644 arch/arm/mach-dove/Makefile
+ delete mode 100644 arch/arm/mach-dove/bridge-regs.h
+ delete mode 100644 arch/arm/mach-dove/cm-a510.c
+ delete mode 100644 arch/arm/mach-dove/common.c
+ delete mode 100644 arch/arm/mach-dove/common.h
+ delete mode 100644 arch/arm/mach-dove/dove.h
+ delete mode 100644 arch/arm/mach-dove/irq.c
+ delete mode 100644 arch/arm/mach-dove/irqs.h
+ delete mode 100644 arch/arm/mach-dove/mpp.c
+ delete mode 100644 arch/arm/mach-dove/mpp.h
+ delete mode 100644 arch/arm/mach-dove/pcie.c
+ delete mode 100644 arch/arm/mach-dove/pm.h
+ delete mode 100644 arch/arm/mach-footbridge/Kconfig
+ delete mode 100644 arch/arm/mach-footbridge/Makefile
+ delete mode 100644 arch/arm/mach-footbridge/common.c
+ delete mode 100644 arch/arm/mach-footbridge/common.h
+ delete mode 100644 arch/arm/mach-footbridge/dc21285-timer.c
+ delete mode 100644 arch/arm/mach-footbridge/dc21285.c
+ delete mode 100644 arch/arm/mach-footbridge/dma-isa.c
+ delete mode 100644 arch/arm/mach-footbridge/ebsa285-pci.c
+ delete mode 100644 arch/arm/mach-footbridge/ebsa285.c
+ delete mode 100644 arch/arm/mach-footbridge/include/mach/hardware.h
+ delete mode 100644 arch/arm/mach-footbridge/include/mach/irqs.h
+ delete mode 100644 arch/arm/mach-footbridge/include/mach/isa-dma.h
+ delete mode 100644 arch/arm/mach-footbridge/include/mach/memory.h
+ delete mode 100644 arch/arm/mach-footbridge/include/mach/uncompress.h
+ delete mode 100644 arch/arm/mach-footbridge/isa-irq.c
+ delete mode 100644 arch/arm/mach-footbridge/isa-rtc.c
+ delete mode 100644 arch/arm/mach-footbridge/isa-timer.c
+ delete mode 100644 arch/arm/mach-footbridge/isa.c
+ delete mode 100644 arch/arm/mach-footbridge/netwinder-hw.c
+ delete mode 100644 arch/arm/mach-footbridge/netwinder-pci.c
+ delete mode 100644 arch/arm/mach-imx/cpu-imx31.c
+ delete mode 100644 arch/arm/mach-imx/mach-imx31.c
+ delete mode 100644 arch/arm/mach-imx/mach-imx7d-cm4.c
+ delete mode 100644 arch/arm/mach-imx/mach-imxrt.c
+ delete mode 100644 arch/arm/mach-lpc18xx/Makefile
+ delete mode 100644 arch/arm/mach-lpc18xx/board-dt.c
+ delete mode 100644 arch/arm/mach-mv78xx0/Kconfig
+ delete mode 100644 arch/arm/mach-mv78xx0/Makefile
+ delete mode 100644 arch/arm/mach-mv78xx0/bridge-regs.h
+ delete mode 100644 arch/arm/mach-mv78xx0/buffalo-wxl-setup.c
+ delete mode 100644 arch/arm/mach-mv78xx0/common.c
+ delete mode 100644 arch/arm/mach-mv78xx0/common.h
+ delete mode 100644 arch/arm/mach-mv78xx0/irq.c
+ delete mode 100644 arch/arm/mach-mv78xx0/irqs.h
+ delete mode 100644 arch/arm/mach-mv78xx0/mpp.c
+ delete mode 100644 arch/arm/mach-mv78xx0/mpp.h
+ delete mode 100644 arch/arm/mach-mv78xx0/mv78xx0.h
+ delete mode 100644 arch/arm/mach-mv78xx0/pcie.c
+ delete mode 100644 arch/arm/mach-omap2/board-n8x0.c
+ delete mode 100644 arch/arm/mach-omap2/clkt2xxx_dpll.c
+ delete mode 100644 arch/arm/mach-omap2/clkt2xxx_dpllcore.c
+ delete mode 100644 arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
+ delete mode 100644 arch/arm/mach-omap2/clock2xxx.h
+ delete mode 100644 arch/arm/mach-omap2/clockdomains2420_data.c
+ delete mode 100644 arch/arm/mach-omap2/clockdomains2430_data.c
+ delete mode 100644 arch/arm/mach-omap2/cm-regbits-24xx.h
+ delete mode 100644 arch/arm/mach-omap2/cm2xxx.c
+ delete mode 100644 arch/arm/mach-omap2/cm2xxx.h
+ delete mode 100644 arch/arm/mach-omap2/common-board-devices.h
+ delete mode 100644 arch/arm/mach-omap2/gpmc.h
+ delete mode 100644 arch/arm/mach-omap2/l3_2xxx.h
+ delete mode 100644 arch/arm/mach-omap2/l4_2xxx.h
+ delete mode 100644 arch/arm/mach-omap2/mmc.h
+ delete mode 100644 arch/arm/mach-omap2/msdi.c
+ delete mode 100644 arch/arm/mach-omap2/omap2-restart.c
+ delete mode 100644 arch/arm/mach-omap2/omap24xx.h
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2420_data.c
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2430_data.c
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2xxx_interconnect_data.c
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2xxx_ipblock_data.c
+ delete mode 100644 arch/arm/mach-omap2/opp2420_data.c
+ delete mode 100644 arch/arm/mach-omap2/opp2430_data.c
+ delete mode 100644 arch/arm/mach-omap2/opp2xxx.h
+ delete mode 100644 arch/arm/mach-omap2/powerdomains2xxx_data.c
+ delete mode 100644 arch/arm/mach-omap2/prm-regbits-24xx.h
+ delete mode 100644 arch/arm/mach-omap2/prm2xxx.c
+ delete mode 100644 arch/arm/mach-omap2/prm2xxx.h
+ delete mode 100644 arch/arm/mach-omap2/sdrc2xxx.c
+ delete mode 100644 arch/arm/mach-omap2/sleep24xx.S
+ delete mode 100644 arch/arm/mach-omap2/sram242x.S
+ delete mode 100644 arch/arm/mach-omap2/sram243x.S
+ delete mode 100644 arch/arm/mach-omap2/usb-tusb6010.c
+ delete mode 100644 arch/arm/mach-omap2/usb-tusb6010.h
+ delete mode 100644 arch/arm/mach-omap2/voltagedomains2xxx_data.c
+ delete mode 100644 arch/arm/mach-orion5x/dns323-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/kurobox_pro-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/mv2120-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/net2big-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/terastation_pro2-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/ts209-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/ts409-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/ts78xx-fpga.h
+ delete mode 100644 arch/arm/mach-orion5x/ts78xx-setup.c
+ delete mode 100644 arch/arm/mach-orion5x/tsx09-common.c
+ delete mode 100644 arch/arm/mach-orion5x/tsx09-common.h
+ delete mode 100644 arch/arm/mach-pxa/am200epd.c
+ delete mode 100644 arch/arm/mach-pxa/am300epd.c
+ delete mode 100644 arch/arm/mach-pxa/devices.h
+ delete mode 100644 arch/arm/mach-pxa/gumstix.c
+ delete mode 100644 arch/arm/mach-pxa/gumstix.h
+ delete mode 100644 arch/arm/mach-pxa/sharpsl_pm.c
+ delete mode 100644 arch/arm/mach-pxa/sharpsl_pm.h
+ delete mode 100644 arch/arm/mach-pxa/spitz.c
+ delete mode 100644 arch/arm/mach-pxa/spitz.h
+ delete mode 100644 arch/arm/mach-pxa/spitz_pm.c
+ delete mode 100644 arch/arm/mach-rpc/Kconfig
+ delete mode 100644 arch/arm/mach-rpc/Makefile
+ delete mode 100644 arch/arm/mach-rpc/dma.c
+ delete mode 100644 arch/arm/mach-rpc/ecard-loader.S
+ delete mode 100644 arch/arm/mach-rpc/ecard.c
+ delete mode 100644 arch/arm/mach-rpc/ecard.h
+ delete mode 100644 arch/arm/mach-rpc/fiq.S
+ delete mode 100644 arch/arm/mach-rpc/floppydma.S
+ delete mode 100644 arch/arm/mach-rpc/include/mach/acornfb.h
+ delete mode 100644 arch/arm/mach-rpc/include/mach/hardware.h
+ delete mode 100644 arch/arm/mach-rpc/include/mach/io.h
+ delete mode 100644 arch/arm/mach-rpc/include/mach/irqs.h
+ delete mode 100644 arch/arm/mach-rpc/include/mach/isa-dma.h
+ delete mode 100644 arch/arm/mach-rpc/include/mach/memory.h
+ delete mode 100644 arch/arm/mach-rpc/include/mach/uncompress.h
+ delete mode 100644 arch/arm/mach-rpc/io-acorn.S
+ delete mode 100644 arch/arm/mach-rpc/irq.c
+ delete mode 100644 arch/arm/mach-rpc/riscpc.c
+ delete mode 100644 arch/arm/mach-rpc/time.c
+ delete mode 100644 arch/arm/mach-sa1100/Kconfig
+ delete mode 100644 arch/arm/mach-sa1100/Makefile
+ delete mode 100644 arch/arm/mach-sa1100/assabet.c
+ delete mode 100644 arch/arm/mach-sa1100/clock.c
+ delete mode 100644 arch/arm/mach-sa1100/collie.c
+ delete mode 100644 arch/arm/mach-sa1100/generic.c
+ delete mode 100644 arch/arm/mach-sa1100/generic.h
+ delete mode 100644 arch/arm/mach-sa1100/h3600.c
+ delete mode 100644 arch/arm/mach-sa1100/h3xxx.c
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/SA-1100.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/assabet.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/bitfield.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/collie.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/generic.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/h3xxx.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/hardware.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/irqs.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/jornada720.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/memory.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/mtd-xip.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/neponset.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/reset.h
+ delete mode 100644 arch/arm/mach-sa1100/include/mach/uncompress.h
+ delete mode 100644 arch/arm/mach-sa1100/jornada720.c
+ delete mode 100644 arch/arm/mach-sa1100/jornada720_ssp.c
+ delete mode 100644 arch/arm/mach-sa1100/neponset.c
+ delete mode 100644 arch/arm/mach-sa1100/pm.c
+ delete mode 100644 arch/arm/mach-sa1100/sleep.S
+ delete mode 100644 arch/arm/mach-sa1100/ssp.c
+ delete mode 100644 arch/arm/mach-versatile/v2m-mps2.c
+ delete mode 100644 arch/arm/plat-orion/common.c
+ delete mode 100644 arch/arm/plat-orion/include/plat/addr-map.h
+ delete mode 100644 arch/arm/plat-orion/include/plat/common.h
+ delete mode 100644 arch/arm/plat-orion/include/plat/time.h
+ delete mode 100644 arch/arm/plat-orion/time.c
 
 -- 
-2.47.3
+2.53.0
 
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: Stefan Agner <stefan@agner.ch>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Roger Quadros <rogerq@kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Gregory Clement <gregory.clement@bootlin.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Kristoffer Ericson <kristoffer.ericson@gmail.com>
+Cc: Linus Walleij <linusw@kernel.org>
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nicolas Pitre <npitre@baylibre.com>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-omap@vger.kernel.org
