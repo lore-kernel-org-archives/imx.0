@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8969358122C;
-	Tue,  8 Sep 2026 15:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7495256B865;
+	Tue,  8 Sep 2026 15:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788882907; cv=none; b=pKmzZScncu78tWc6eYtVFFvvsKgA1nNUqzyciNVROcwrSixqe5FqMp2wJPpqk+xXo3No+KfoRu8+ZRvbKuX95dzbZm79tnCgOnDK//oy6WNEYboQ9aQqewWFcLG809kg1cXIxcv2gNBzgtJckzuxhYdbmScMrK7fLq8daUUJlSM=
+	t=1788882908; cv=none; b=l663YS3Q97WPcLOPbOkVEXvlY4m0P1y0SQaBctofF6AEfAUWoTJzvJWIdFusgT5TI+y8MIEtAkeam8Ni8HWifcql7AXbaN5GLayC+jxnWG2tUOUz1dhmcHqEdhyhByyF6AenHloTXI5uYQEUXXo8hsewHPFRyDTSuFv3dkuMvp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788882907; c=relaxed/simple;
-	bh=SgnCuNwc+3GCof8/NsDV6WJB1NwToaiQ1FMvFg4IKK8=;
+	s=arc-20240116; t=1788882908; c=relaxed/simple;
+	bh=uGkR/7RLnVxFrROyoSpk3xD+mmY1L16OmWX9DokJ7U0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XD8BWefJ+ECqaJbVVKi24qtCeLA6sKZs4CjW+OlPBglYiUvKWLFDlM1Zn9PcH/62lScGCVVCLPUjvKX7NvLmK+9n+9SvhgjOb0NN1gPvT5hQqQeGWn1TT7lVsXgUfB9gBve41rEWQ5ImATgZQdLSciq474SCjPCltINJ+VxU0ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PamJfJNv; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=psSOh3RjPx9Q50b3K9HGgPIz+IISiR8TZLELoyp2Nx6nH+OkMMBGSXY0hzAOPCDDI2Ivz3KocMsNMzEjghVP7B2eOqwPnO2IYCj4PK+kOFPSLh/S8JetGhElVWMwM09KdvaTcku2e4moFWhan376MJXddtT1WeImyz7PIF3xWFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ax4QYOAu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PamJfJNv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966341F00A3D;
-	Tue,  8 Sep 2026 15:55:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ax4QYOAu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7992F1F00A3A;
+	Tue,  8 Sep 2026 15:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1788882905;
-	bh=2s131jBymw0wPeIWZySb38FrYNgx82DJAJxH+RDhYQk=;
+	bh=oH60/Ep1LgFeVH+nN2jGTYyJTUZs80XuXZ9f+y6aeYc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PamJfJNv+N9v254qbNF8e4vwgpv/L1KtEcN1GG4vVRNCOnHZSwIj+R+uPIU592jm3
-	 bSlCh2+e70wq/prhszk1WWF/e6twS+0kU4vZYL2jp/IO1wgn0gpsDemtTi5cHsc8lh
-	 rVeH1MhflQUTX38TMKXVU1uG9YX9jHp6bBbcJOYl8hvax9AjziCCf3nsrN0NRftdIF
-	 DkMj9clsFPav9hwKiagUPQVPioVgkxDuhQVk152dS/xgtt0HzadFdJcjUnFW/2yrOF
-	 5VWmrXGWxyuZMMqyEnOyUyI2vit0MyKdjKkaUqaTHs7SAlSzzFkQDlQoPN7HFt2sKd
-	 m+DV+OKk+MS2g==
+	b=Ax4QYOAuwiV0LJeMMAZUCw4oR2/qSdoyDhHU/iDdOd9xvkgSUAIWT0sU1QIYT3VjA
+	 9ZQyXCtK6l1W3HYcpHfN3eqgIh1wyHuQhI13+djKAq/vqXUdt2VOO0E0azh2zb8Q9O
+	 2LoQfR/+a5Z8cfHneXR8FQqQU2v5k4sspkq2yefPu7XzhfrhcdChnzjObWoCWFyAeY
+	 JBzIbBxAFfSWV+UfMDi4W04akgl4uMDkyDMBWfmlGYUs0dhR0oTG2bC5UyGHaS1moQ
+	 3Rp9QBN4LGgHqeYeW5qunEuAoooJFOohfLMnyLExwTsokD5MGYp6P6JFNRI2OHHmF1
+	 KR3xUMgZKYRwA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 13/13] ARM: axxia: remove entire platform
+Subject: Re: [PATCH 12/13] ARM: at91: remove samv7 support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Arnd Bergmann" <arnd@kernel.org>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260908152808.3928630-14-arnd@kernel.org>
+Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260908152808.3928630-13-arnd@kernel.org>
 References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-14-arnd@kernel.org>
+ <20260908152808.3928630-13-arnd@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 15:55:04 +0000
-Message-Id: <20260908155504.966341F00A3D@smtp.kernel.org>
+Date: Tue, 08 Sep 2026 15:55:05 +0000
+Message-Id: <20260908155505.7992F1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,63 +46,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The commit removes the `ARCH_AXXIA` configuration but fails to r=
-emove the associated peripheral drivers, device tree bindings, and Kconfig =
-dependencies. This leaves orphaned code and violates Kconfig rules by refer=
-encing a non-existent symbol.
+- [Low] Incomplete cleanup of SAMV7, SAMS7, and SAME7 platform macros.
 --
 
-commit 5209c3e860d6603a7c70267ff59ac71d1c1c4f84
+commit 0e6ee4e12ed1996bcca25e4e14e2ee5176bc2d17
 Author: Arnd Bergmann <arnd@arndb.de>
 
-ARM: axxia: remove entire platform
+ARM: at91: remove samv7 support
 
-The initial Axxia port was contributed by LSI in 2014, but never completed
-after the sale of the business unit to Intel. This commit removes the
-Axxia platform now that the 7.3LTS release is out.
+This commit removes support for the deprecated samv7 platform. It deletes
+the platform initialization code, Kconfig entries, Makefile hooks, and
+the corresponding SoC definitions in the atmel/soc driver.
 
-[ ... ]
+> diff --git a/drivers/soc/atmel/soc.c b/drivers/soc/atmel/soc.c
+> index d89f9dcade7d2..e276f86326ec7 100644
+> --- a/drivers/soc/atmel/soc.c
+> +++ b/drivers/soc/atmel/soc.c
+> @@ -210,41 +210,6 @@ static const struct at91_soc socs[] __initconst =3D {
+>  		 AT91_CIDR_VERSION_MASK, SAMA5D44_EXID_MATCH,
+>  		 "sama5d44", "sama5d4"),
+>  #endif
+> -#ifdef CONFIG_SOC_SAMV7
+> -	AT91_SOC(SAME70Q21_CIDR_MATCH, AT91_CIDR_MATCH_MASK,
 
-> diff --git a/arch/arm/mach-axxia/Kconfig b/arch/arm/mach-axxia/Kconfig
-> deleted file mode 100644
-> index f773a66c14028..0000000000000
-> --- a/arch/arm/mach-axxia/Kconfig
-> +++ /dev/null
-> @@ -1,17 +0,0 @@
-> -# SPDX-License-Identifier: GPL-2.0
-> -config ARCH_AXXIA
+[Severity: Low]
+Since this removes the usages of SAME70Q21_CIDR_MATCH and the other SAMV7/S=
+AME7
+macros from the socs[] array, should the corresponding macro definitions al=
+so be
+removed from drivers/soc/atmel/soc.h? They appear to be dead code after this
+change.
 
-[Severity: Medium]
-Does removing ARCH_AXXIA here leave orphaned dependencies and dead code
-elsewhere in the tree?
-
-According to the Kconfig subsystem guidelines, referencing a non-existent
-config symbol causes silent configuration failures.
-
-For example, POWER_RESET_AXXIA in drivers/power/reset/Kconfig (line 51)
-still has 'depends on ARCH_AXXIA', turning the axxia-reset driver in
-drivers/power/reset/axxia-reset.c into dead code.
-
-Similarly, I2C_AXXIA in drivers/i2c/busses/Kconfig (line 461) has
-'depends on ARCH_AXXIA || COMPILE_TEST' and 'default ARCH_AXXIA', leaving
-drivers/i2c/busses/i2c-axxia.c as a leftover platform driver.
-
-Furthermore, drivers/clk/Makefile (line 61) still contains the impossible
-build rule 'obj-$(CONFIG_ARCH_AXXIA) +=3D clk-axm5516.o', making
-clk-axm5516.c dead code.
-
-There are also orphaned dt-bindings, such as
-Documentation/devicetree/bindings/i2c/lsi,api2c.yaml and
-include/dt-bindings/clock/lsi,axm5516-clks.h, left behind since all Axxia
-device trees were deleted.
-
-Should these associated peripheral drivers, bindings, and Kconfig entries
-be removed in this patch or a series alongside the architecture removal?
-
-> -	bool "LSI Axxia platforms (DEPRECATED)"
+> -		 AT91_CIDR_VERSION_MASK, SAME70Q21_EXID_MATCH,
+> -		 "same70q21", "same7"),
+> -	AT91_SOC(SAME70Q20_CIDR_MATCH, AT91_CIDR_MATCH_MASK,
 
 [ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
-630-1-arnd@kernel.org?part=3D13
+630-1-arnd@kernel.org?part=3D12
