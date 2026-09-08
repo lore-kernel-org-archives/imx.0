@@ -1,294 +1,120 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08175519A7
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 21:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086575540A6;
+	Tue,  8 Sep 2026 21:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788904531; cv=none; b=O2vb6klch1CF0R3hyxr1fiq77NnRWA3iG21LVows4VSLPGOxrzp4cN8uGcIpLydJK+m5uUdRy3gqlA0M3m9KvG6GAJAFZSzjVNJgZ5W814CX90QUFYPqkGuBjUbzoZNa9n1yC6BiR6sYFcnt5l+iEbKT0L62WsFY97CYdTz+dbo=
+	t=1788904784; cv=none; b=IBm0mjuSbqMWj5A26eD7wAq4jmaA7AyNM4mVLZvrPLekiyvn8TsdQ79SvdKO1mwybB/wDuRAhBVbAVrFrtEIwbmCGNrvHxjvaH0A/HKOVQl8hGIo+ZV2aV3vCKrxjpqRHLpwNi92PiEytGCJxxYsezwh2iBuPJjF9y17EgtegKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788904531; c=relaxed/simple;
-	bh=382uOfWKw9shIIHoy5dE+ILCsYYms/zIoHM1a/Ci/MI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YP+sqTzi7UgKGfoNd26jbQLvez0EdYJdbD23GBXn5WOpT3qPFTxGPq2JssaAdIL3gdyEPiglg59Ppf6PCr3V2tY7i0r6CJngFLffUuHfIP9h2oKAzB1+zi0O+qGpCMQkoP9PhezXWQbJ78LUsptnThppfe43C1/MrLDPa5KCghk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=eKACFwtP; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1788904784; c=relaxed/simple;
+	bh=xwkNg+ob/c3KokeOld57iOXYmaf8KK17Vu+pdHK1f54=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=tbdL2ptcz2WlJgEuyivtFTKXrtQXjHfsDAMQf3xmsYh+v3gqW0FHN9e/T+M5sgGN1afgdA8RaLC0mPtQkyGFtWvOfHGKV8w6NuRRBLB2DFXxV7zrefnn2WoX26y+A+ML8sj9+NXqcvc1lKQIZ3CucWLFXKvM6UjVBumqYNwIM6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvDkZnV0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="eKACFwtP"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D80B8100346;
-	Tue, 08 Sep 2026 23:55:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1788904523; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=Lx8vUrl8G0vy6Q42VWe8patHE21Kb5u7SDIaA+quT4A=;
-	b=eKACFwtPGFXiQXRqzxq816VuwkNmQSN7przuyniCP6SnnCZDU1IkDWeFLGeLV8KUhk6NcJ
-	KSjkBpHDvBVLi5B1rPl4TyTbFTAlyCkCIzCLj9cqaTbfLOWwPLmjUASyPMRwGA8gXvAGdi
-	FucFCZgFrR4sEsVvKHbskZ7h86HVlNShKv11B6WailahDlg9lYPLKyQDmVeJSKWjmGqQJ3
-	fb7hCeTK212kz5n/bmttw3wrQj349GElJxIkCWKhQjGdVmzNKic92185c5jQSzCohgi/O2
-	Qij43O7TdHvOujuXMzQLU5UvFPexEGu1SiF8T1BpnP9fO0YetfCUz3E5rGUSqg==
-From: Marek Vasut <marex@nabladev.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mm: imx8mp: Update EEPROM with nWP GPIO, label and layout
-Date: Tue,  8 Sep 2026 23:54:37 +0200
-Message-ID: <20260908215519.33061-1-marex@nabladev.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvDkZnV0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6539C1F00A3A;
+	Tue,  8 Sep 2026 21:59:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788904782;
+	bh=OTt7Dt+lYemMz6FmxplGaQLySp2r+VnEJrSG+Ecc12A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dvDkZnV036DkG6og7f0FQrpudX9QloDRNpscNPvWegXxC+wI98x5VPlhn/Hud5RNj
+	 5bA/Uar4fMlZ44Wg/MDs2fRJSUD2abD5NDfGgmCr/qEfuBCa/C1JleT+xvxKgRPBgn
+	 8GiifRWNNkEftvryegSveDHLRSotuzXj/orNWZz5mcUoHlpCqSQjtoQrm237S6p5ps
+	 vY2AbTzRM35eG6OhCXWpCoBDJzo43xazw7Ar3WFlopJ20s+S+Z98c/ZmITofTGEcEb
+	 e0k8brkC3g1W0zTIniPPcZlPm7JYVC7w0Az+NZ1Vigsixh1WGxG6X/2/TIIAoMwRRa
+	 TQY6z/cK4wTxg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mm: imx8mp: Update EEPROM with nWP
+ GPIO, label and layout
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marek Vasut" <marex@nabladev.com>
+Cc: robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260908215519.33061-1-marex@nabladev.com>
+References: <20260908215519.33061-1-marex@nabladev.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 21:59:41 +0000
+Message-Id: <20260908215942.6539C1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Describe ID EEPROM nWP GPIO, label and nvmem layout. The i.MX8MM eDM SBC
-and i.MX8MP eDM SBC nvmem layout is almost identical, except for length
-of product-name@32 field, which is 19 Bytes on the Mini and 24 Bytes on
-the Plus.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Devicetree unit address mismatch for `wifi-id` node
+--
 
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- .../freescale/imx8mm-data-modul-edm-sbc.dts   |  56 ++++++++
- .../freescale/imx8mp-data-modul-edm-sbc.dts   | 128 ++++++++++++++++++
- 2 files changed, 184 insertions(+)
+commit 082793f42f1059431835df44206b8d1014d852b6
+Author: Marek Vasut <marex@nabladev.com>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
-index df857de0375cf..2b7fed0c5a7c7 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
-@@ -431,7 +431,63 @@ usb-hub@2c {
- 	eeprom: eeprom@50 {
- 		compatible = "atmel,24c32";
- 		reg = <0x50>;
-+		label = "dmo-board-info";
- 		pagesize = <32>;
-+		wp-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
-+
-+		nvmem-layout {
-+			compatible = "fixed-layout";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			company-name@24 {
-+				reg = <0x24 0xd>;
-+			};
-+
-+			product-name@32 {
-+				reg = <0x32 0x13>;
-+			};
-+
-+			board-revision@4b {
-+				reg = <0x4b 0x3>;
-+			};
-+
-+			serial-number@4f {
-+				reg = <0x4f 0x8>;
-+			};
-+
-+			manufacturing-date@70 {
-+				reg = <0x70 0xa>;
-+			};
-+
-+			test-date@7b {
-+				reg = <0x7b 0xa>;
-+			};
-+
-+			product-number@86 {
-+				reg = <0x86 0x8>;
-+			};
-+
-+			board-variant@9a {
-+				reg = <0x9a 0x9>;
-+			};
-+
-+			company-acronym@a4 {
-+				reg = <0xa4 0x3>;
-+			};
-+
-+			mac-address@b0 {
-+				reg = <0xb0 0x6>;
-+			};
-+
-+			board-id@100 {
-+				reg = <0x100 0x4>;
-+			};
-+
-+			wifi-id@1200 {
-+				reg = <0x120 0x4>;
-+			};
-+		};
- 	};
- 
- 	rtc: rtc@68 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-index c284edfa1f4c8..1d03cf73588c4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-@@ -421,14 +421,142 @@ tpm: tpm@2e {
- 	eeprom900: eeprom@50 {	/* board rev.900 */
- 		compatible = "atmel,24c32";
- 		reg = <0x50>;
-+		label = "dmo-board-info";
- 		pagesize = <32>;
-+		wp-gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
- 		status = "disabled";
-+
-+		nvmem-layout {
-+			compatible = "fixed-layout";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			company-name@24 {
-+				reg = <0x24 0xd>;
-+			};
-+
-+			product-name@32 {
-+				reg = <0x32 0x18>;
-+			};
-+
-+			board-revision@4b {
-+				reg = <0x4b 0x3>;
-+			};
-+
-+			serial-number@4f {
-+				reg = <0x4f 0x8>;
-+			};
-+
-+			manufacturing-date@70 {
-+				reg = <0x70 0xa>;
-+			};
-+
-+			test-date@7b {
-+				reg = <0x7b 0xa>;
-+			};
-+
-+			product-number@86 {
-+				reg = <0x86 0x8>;
-+			};
-+
-+			board-variant@9a {
-+				reg = <0x9a 0x9>;
-+			};
-+
-+			company-acronym@a4 {
-+				reg = <0xa4 0x3>;
-+			};
-+
-+			eeprom900mac: mac-address@b0 {
-+				reg = <0xb0 0x6>;
-+			};
-+
-+			board-id@100 {
-+				reg = <0x100 0x4>;
-+			};
-+
-+			wifi-id@1200 {
-+				reg = <0x120 0x4>;
-+			};
-+
-+			board-lvds-id@140 {
-+				reg = <0x140 0x4>;
-+			};
-+
-+			camera-id@160 {
-+				reg = <0x160 0x4>;
-+			};
-+		};
- 	};
- 
- 	eeprom902: eeprom@51 {	/* board rev.902 */
- 		compatible = "atmel,24c32";
- 		reg = <0x51>;
-+		label = "dmo-board-info";
- 		pagesize = <32>;
-+		wp-gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
-+
-+		nvmem-layout {
-+			compatible = "fixed-layout";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			company-name@24 {
-+				reg = <0x24 0xd>;
-+			};
-+
-+			product-name@32 {
-+				reg = <0x32 0x18>;
-+			};
-+
-+			board-revision@4b {
-+				reg = <0x4b 0x3>;
-+			};
-+
-+			serial-number@4f {
-+				reg = <0x4f 0x8>;
-+			};
-+
-+			manufacturing-date@70 {
-+				reg = <0x70 0xa>;
-+			};
-+
-+			test-date@7b {
-+				reg = <0x7b 0xa>;
-+			};
-+
-+			product-number@86 {
-+				reg = <0x86 0x8>;
-+			};
-+
-+			board-variant@9a {
-+				reg = <0x9a 0x9>;
-+			};
-+
-+			company-acronym@a4 {
-+				reg = <0xa4 0x3>;
-+			};
-+
-+			eeprom902mac: mac-address@b0 {
-+				reg = <0xb0 0x6>;
-+			};
-+
-+			board-id@100 {
-+				reg = <0x100 0x4>;
-+			};
-+
-+			wifi-id@1200 {
-+				reg = <0x120 0x4>;
-+			};
-+
-+			board-lvds-id@140 {
-+				reg = <0x140 0x4>;
-+			};
-+
-+			camera-id@160 {
-+				reg = <0x160 0x4>;
-+			};
-+		};
- 	};
- 
- 	rtc: rtc@68 {
--- 
-2.53.0
+arm64: dts: imx8mm: imx8mp: Update EEPROM with nWP GPIO, label and layout
 
+This commit describes the ID EEPROM nWP GPIO, label, and nvmem layout for
+the i.MX8MM and i.MX8MP eDM SBCs.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts =
+b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
+> index 472c584fb3bd2..92df23e432499 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts
+
+[ ... ]
+
+> +			board-id@100 {
+> +				reg =3D <0x100 0x4>;
+> +			};
+> +
+> +			wifi-id@1200 {
+> +				reg =3D <0x120 0x4>;
+> +			};
+
+[Severity: Low]
+Does this unit address mismatch the reg property? The node name uses 1200,
+but the base address in the reg property is 120. This will likely cause a
+dtc compiler warning for a simple-bus unit address format error.
+
+> +		};
+>  	};
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts =
+b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+> index cb28cf1cdd23f..dbdf4b8f696f6 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+
+[ ... ]
+
+> +			board-id@100 {
+> +				reg =3D <0x100 0x4>;
+> +			};
+> +
+> +			wifi-id@1200 {
+> +				reg =3D <0x120 0x4>;
+> +			};
+
+[Severity: Low]
+Is the unit address 1200 a typo here as well? The reg property specifies 120
+for the i.MX8MP SBC rev.900, which does not match the node name.
+
+[ ... ]
+
+> +			board-id@100 {
+> +				reg =3D <0x100 0x4>;
+> +			};
+> +
+> +			wifi-id@1200 {
+> +				reg =3D <0x120 0x4>;
+> +			};
+
+[Severity: Low]
+Similarly for the i.MX8MP SBC rev.902, should this unit address be updated
+to match the 120 specified in the reg property?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908215519.3306=
+1-1-marex@nabladev.com?part=3D1
