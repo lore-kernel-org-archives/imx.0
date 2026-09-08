@@ -1,480 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B240557D239;
-	Tue,  8 Sep 2026 16:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8365563FB8
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 16:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788884726; cv=none; b=qnaBJn+Kh3bsPV5u4biwzmo5TAFYDXZByDnbbwiexPrgfkHYGBoFwvO6IK6gGHeUBtJTtlZo1Bmo7hq6oLxHWHag4e1OfyT9Dc21DLe4Barp847OmHNDAp4rQgidINHgtGnDTVa1Lpo0XJMBwZYXsA2+FARNPCfYZS/x+MvCvuo=
+	t=1788884799; cv=none; b=F+W8985ObHzaPfKfqeM3hBDpzUw+iBedjJowDoffQ7zW5/zk0Z/ye+kN8Gf4TQk5V0EKMSHnnzU7sy5EOkP5baXd3ErJqsLtiK9lbPks7WJlQfAwbnunOy5mm/D0EoirlrUUN+SkqpZYstV1HhaX+jAW/GhpC9fHGXROMD1xtjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788884726; c=relaxed/simple;
-	bh=rKXFVXuRMSJPI4LvX2cENO8NztImlILaqS8a0FxoQFM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KRX1uZdfuMVTWfojXR0Kthb+bnwbPpihCZugE08hJQB2sV8w0lGTgsZelfYycMyTiw1G3nRk8IB2uKadAGIAZp32iFS02nK4pDHWbXZAovXGmS6DRQgHgNyk1D51ucSic6IUvGCarR/MHLVTQTBRVmPKWAF7brSLyNNC9mwNEwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhLp3eUb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1788884799; c=relaxed/simple;
+	bh=exUH5aWaSFL5njVn7rk/Sv06R8+LhPCv9p7zVP/y9jc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AyErr2ZDAisV2or/MI8o8dBPgkSuFAgAdpkKjEjugAEU9VkroiYmYn1Ccrlvran0C4K03wKWXSIO3L4SRr57dHroWPRPRZyUq5cyCIA8bT6+FFPtgbYNDu5eXajcW61OeHRUVGHJYvngKIzfDCK75Hxy4F1IvFWwGULKV5X1imo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O2HR/Vg4; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhLp3eUb"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7959CC2BD04;
-	Tue,  8 Sep 2026 16:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788884726;
-	bh=rKXFVXuRMSJPI4LvX2cENO8NztImlILaqS8a0FxoQFM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=DhLp3eUbChdbczGKTD8sMn2LCGTOBpzu9BHBoSS3vc4O+BvmHCpO6eb9e3j7SJ2Sm
-	 KJp8PsCS1UoWZ7LlHs79EBg4hjMJX0vPjnFD4xlqCJ02NviDXQgM6G3MUX8ynT25tY
-	 VS8rElF+q0fZtu2cyM2hCtJ7/jbMrE4rnpMnQcMahtpeR6nr8L8p4uLxDQqGX2ftA+
-	 fMVlJymJxY7aKad7svSSH31W/P3b2+X8nG2uzo5yChTPoWU7HC2rnWiYIzlLYCq4B9
-	 JNmlrH/9bVTaMlcZEC17rk5dNn5b3g8Sdh963Knsavq8GyJGD8i4gw6yKapZtTMx38
-	 hhYl8lmx0N7HQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FA8EC79FAA;
-	Tue,  8 Sep 2026 16:25:26 +0000 (UTC)
-From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Tue, 08 Sep 2026 04:12:45 +0200
-Subject: [PATCH v3 3/3] arm64: dts: freescale: add Nodebox v3 CPU Module
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O2HR/Vg4"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc439aa0078so4033981a12.0
+        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 09:26:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788884797; x=1789489597; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t1j7oDqmpt6ig3FSSyMnjhsns2WPQzdz62Ttg7MdUqY=;
+        b=O2HR/Vg4CpmZvdjb5ucC3I+b6b5bDPMg5KPIkWsRaCfWwyAdD8FxyfgvtorclG475Y
+         dFOPrZOv1FBcEDX+qIaymasfxeHLcEaYSM+LLgmQaQK+KuCPyDKxl805dKEKFnQ7EAFN
+         UVXAOo+PKr8p4kcn9mi64Hu9XMywQHCSFmX7EDr/G4SIh5PFpdhUEKKdfC1S4oSfFuwm
+         p2i5qhKKj3REmjYDkbR7O4fxcBIvpTpnbctpDefdOS6VLbIO8JnWko4RT4wree585m5L
+         XsiVOjWqniPDQLE+Me/1o1PliFaYBfkKGZdzK/hr4l4dQ2hyP69qtwWE2toNED3BNXrc
+         TgUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788884797; x=1789489597;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=t1j7oDqmpt6ig3FSSyMnjhsns2WPQzdz62Ttg7MdUqY=;
+        b=E8QJzxM1vC3I0DyQukC2JcBaS7f6+Imk9tvuGhaf+tDjqcKKbTp/fp+0EEU3SLN6oc
+         ulhEbiAs2YSdC4IT4QVaqq5oZeNSLbqGxHARdgNsJLIbmUHY/cRkcFc7CA+EkUwe8x9V
+         x7ypbePBJYpJi4IGaSIsowqOhZA3A/EYq+tjapi8n+D+rgverbaKoJNBRROQ41pA+9X8
+         890fUVSVsnOrbNHEq8zprv+HX/TLsco2BM1JnGHm8AuZjn4h3cQ73B9XmJyj/zRgdvjA
+         0AzAc1Kzo4Ma16+SzP1agoRJjFwCofr+DV5KdiYjOeqxGNBYfaoLSjThxMwLtLj/G6yC
+         t5wg==
+X-Forwarded-Encrypted: i=1; AKwUvBx1j9PXZlsp4Ewq4m9tNW7UvK7jajnldFjHw9H8ieNi9wOmK73qRPSPTjA22HNIyMnk8Gw=@lists.linux.dev
+X-Gm-Message-State: AFuF++k+Zu/IvRu7aku2b+e8UUU6hflo7uKOqIKjqiJhgW7tA27KOk6Z
+	uD5e0eUucPNwfmiszZWM54XBjuzbHWTFlnqqM7mQsfQjNoZ5yufAF6u3KArTQA==
+X-Gm-Gg: AYBFou0zJYWaY1vChCk0bDATxmePzs0aQwIZRrFxGirrGIP4Gy7By127tFTaIavjY9m
+	VOIyJEvDnyXMUn1YQoBbUoz+pwsSp3PDYQ4IK3lP3DLa3C01CUJw5G580AB1vqxETX/EnB6Qj9R
+	O/0b78HvCcKJKwWeDJA15b4QcNDR5OqNGE1MWX8jiHzUNtS0R1FIKMX7mrHUhmXcVCcYSzmHSzq
+	/mv9KcRdR+Nk2y+6ACdnDKRFpXVgt/UYx4I/wdxT+A3eA41qw/+oSgvXoTK6PV8hbvynkrJ/Vf6
+	xO+vaS+kD8mkrD13P/+ejdPSkKg00X/vbUPbbvIv29GOhI9YOjWvyUe2cz/Bj0gic1t1lWiNRdF
+	hDZbr74rpFi/FriR2jZ9Ag5+2Fe+QWkGbVJ6BeRdwetKsu/uD8SnZ9OKP76+IzcCrSR25VFKrPs
+	AC7Kd7rW8i7OZg35DZ1ZboD/IT1WB0IeBG92lscA0Qv+RFIl5KnJ7GSLzA82s/MHsPTfs59ve8W
+	iPvUvI2p1Hk5Zbr/U9HJR5EDLURzHU32rCWZ/yYaZf089YR
+X-Received: by 2002:a17:90a:c10e:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-39b2622b3afmr42130719a91.18.1788884796952;
+        Tue, 08 Sep 2026 09:26:36 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccc72fsm12862374a91.2.2026.09.08.09.26.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2026 09:26:36 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <57763383-2829-4aa0-9623-e6afe79fc022@roeck-us.net>
+Date: Tue, 8 Sep 2026 09:26:34 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] ARM: remove sa1100 platform
+To: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Linus Walleij <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-2-arnd@kernel.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260908152808.3928630-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-for-upstream-nbxv3-dts-v3-3-1d88b2c11680@free.fr>
-References: <20260908-for-upstream-nbxv3-dts-v3-0-1d88b2c11680@free.fr>
-In-Reply-To: <20260908-for-upstream-nbxv3-dts-v3-0-1d88b2c11680@free.fr>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Vincent Jardin <vjardin@free.fr>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788833565; l=9459;
- i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=p+5pwW2bzx8nXoXuoXfw+LgxEea4eljTASMggsqb3Io=;
- b=kkqZa1W7V4y4X0/bu1MnJ/+gp261qCm5mb5/DuL2WiSPv8w/Sa0kZDOKYACW+fyHFHB48zJXx
- 5X0+yKI53BsA1+1CqnXwTaLb/ZqXQ9x8et6GCKsaGFTn81w3hQdUSTY
-X-Developer-Key: i=vjardin@free.fr; a=ed25519;
- pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
-X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
- auth_id=871
-X-Original-From: Vincent Jardin <vjardin@free.fr>
-Reply-To: vjardin@free.fr
 
-From: Vincent Jardin <vjardin@free.fr>
-
-The Nodebox v3 is a Free Mobile CPU module built around the NXP
-LX2160A (16x Cortex-A72, DPAA2).
-
-The same .dtsi is used by the U-Boot port, so both Linux and
-u-boot should not drift.
-
-Signed-off-by: Vincent Jardin <vjardin@free.fr>
----
- arch/arm64/boot/dts/freescale/Makefile             |   2 +
- .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  34 +++
- .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 335 +++++++++++++++++++++
- 3 files changed, 371 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 95ae85ab4adf5..faab8bf0e1676 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -55,6 +55,8 @@ DTC_FLAGS_fsl-lx2160a-half-twins := -Wno-interrupt_map
- dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-half-twins.dtb
- DTC_FLAGS_fsl-lx2160a-honeycomb := -Wno-interrupt_map
- dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-honeycomb.dtb
-+DTC_FLAGS_fsl-lx2160a-nbxv3 := -Wno-interrupt_map
-+dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-nbxv3.dtb
- DTC_FLAGS_fsl-lx2160a-qds := -Wno-interrupt_map
- dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-qds.dtb
- DTC_FLAGS_fsl-lx2160a-rdb := -Wno-interrupt_map
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts
-new file mode 100644
-index 0000000000000..b07e9def0a529
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Free Mobile Nodebox v3 CPU Module (LX2160A)
-+ *
-+ * Copyright 2026 Free Mobile, Vincent Jardin
-+ */
-+
-+/dts-v1/;
-+
-+#include "fsl-lx2160a-rev2.dtsi"
-+#include "fsl-lx2160a-nbxv3.dtsi"
-+
-+/ {
-+	model = "Free Mobile Nodebox v3 CPU Module (LX2160A)";
-+	compatible = "freemobile,nbxv3", "fsl,lx2160a";
-+};
-+
-+&fspi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&fspi_dqs_sck_cs10_pins>, <&fspi_data30_pins>;
-+};
-+
-+&gpio1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gpio1_31_28_pins>;
-+};
-+
-+&pcs_mdio13 {
-+	status = "okay";
-+};
-+
-+&pcs_mdio14 {
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
-new file mode 100644
-index 0000000000000..807699d266e5f
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
-@@ -0,0 +1,335 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Free Mobile Nodebox v3 CPU Module (LX2160A)
-+ *
-+ * Copyright 2026 Free Mobile, Vincent Jardin
-+ *
-+ * This file is shared by the Linux kernel and U-Boot.
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+/ {
-+	aliases {
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	gpio-restart {
-+		compatible = "gpio-restart";
-+		gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+		priority = <128>;
-+	};
-+};
-+
-+&crypto {
-+	status = "okay";
-+};
-+
-+&dspi0 {
-+	status = "okay";
-+
-+	dpll@0 {
-+		compatible = "microchip,zl30733";
-+		reg = <0>;
-+		spi-max-frequency = <12500000>;
-+	};
-+};
-+
-+&dspi2 {
-+	status = "okay";
-+};
-+
-+&dpmac13 {
-+	status = "okay";
-+	phy-handle = <&lan8023_phy_s0>;
-+	phy-connection-type = "10gbase-r";
-+};
-+
-+&dpmac14 {
-+	status = "okay";
-+	phy-handle = <&lan8023_phy_s1>;
-+	phy-connection-type = "10gbase-r";
-+};
-+
-+&dpmac17 {
-+	status = "okay";
-+	phy-handle = <&rtl8211fd>;
-+	phy-connection-type = "rgmii-id";
-+};
-+
-+&emdio1 {
-+	status = "okay";
-+
-+	/* Microchip LAN8023 dual 10G PCS/retimer, Clause 45 only, one address per slice */
-+	lan8023_phy_s0: ethernet-phy@2 {
-+		compatible = "ethernet-phy-ieee802.3-c45";
-+		reg = <2>;
-+	};
-+
-+	lan8023_phy_s1: ethernet-phy@3 {
-+		compatible = "ethernet-phy-ieee802.3-c45";
-+		reg = <3>;
-+	};
-+
-+	rtl8211fd: ethernet-phy@6 {
-+		compatible = "ethernet-phy-id001c.c916";
-+		reg = <6>;
-+	};
-+};
-+
-+&emdio2 {
-+	status = "okay";
-+};
-+
-+&esdhc1 {
-+	status = "okay";
-+	bus-width = <8>;
-+	non-removable;
-+	mmc-hs200-1_8v;
-+	mmc-hs400-1_8v;
-+};
-+
-+&fspi {
-+	status = "okay";
-+
-+	/* GigaDevice GD55LB02GF, 256 MiB boot NOR */
-+	flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		spi-max-frequency = <150000000>;
-+		spi-rx-bus-width = <1>;
-+		spi-tx-bus-width = <1>;
-+	};
-+};
-+
-+&fsl_mc {
-+	status = "okay";
-+};
-+
-+&gpio0 {
-+	status = "okay";
-+	gpio-line-names =
-+		"", "",
-+		"altfn:iic1-sda", "altfn:iic1-scl",
-+		"altfn:uart4-sin", "altfn:uart4-sout",
-+		"altfn:uart2-sin", "altfn:uart2-sout",
-+		"altfn:uart3-sin", "altfn:uart3-sout",
-+		"altfn:uart1-sin", "altfn:uart1-sout",
-+		"altfn:spi3-pcs3", "altfn:spi3-pcs2",
-+		"altfn:spi3-pcs1", "altfn:spi3-pcs0",
-+		"altfn:spi1-sck", "altfn:spi1-sin",
-+		"altfn:spi1-pcs2", "altfn:spi1-pcs1",
-+		"altfn:spi1-pcs0", "altfn:spi1-sout",
-+		"altfn:iic6-sda", "altfn:iic6-scl",
-+		"altfn:spi3-sin", "altfn:spi3-sout",
-+		"altfn:iic4-sda", "altfn:iic4-scl",
-+		"altfn:iic3-sda", "altfn:iic3-scl",
-+		"altfn:iic2-sda", "altfn:iic2-scl";
-+};
-+
-+&gpio1 {
-+	status = "okay";
-+	gpio-line-names =
-+		"", "", "", "", "", "",
-+		"cfg-rcw-src2", "cfg-rcw-src3",
-+		"reset-req-b",
-+		"altfn:sdhc2-clk", "altfn:sdhc2-ds",
-+		"altfn:sdhc2-dat0", "altfn:sdhc2-dat1",
-+		"altfn:sdhc2-dat2", "altfn:sdhc2-dat3",
-+		"altfn:sdhc2-dat4", "altfn:sdhc2-dat5",
-+		"altfn:sdhc2-dat6", "altfn:sdhc2-dat7",
-+		"altfn:sdhc2-cmd",
-+		"cfg-svr1",
-+		"altfn:xspi1-cs0", "altfn:xspi1-sck",
-+		"altfn:xspi1-dqs",
-+		"altfn:xspi1-data0", "altfn:xspi1-data1",
-+		"", "",
-+		"flash-reset#", "pltrst#", "", "ethsw-reset#";
-+
-+	pltrst-hog {
-+		gpio-hog;
-+		gpios = <29 GPIO_ACTIVE_LOW>;
-+		output-low;
-+		line-name = "pltrst#";
-+	};
-+
-+	/* Boot NOR reset, released: electrical high */
-+	flash-reset-hog {
-+		gpio-hog;
-+		gpios = <28 GPIO_ACTIVE_LOW>;
-+		output-low;
-+		line-name = "flash-reset#";
-+	};
-+
-+	/* Ethernet switch reset, released: electrical high */
-+	ethsw-reset-hog {
-+		gpio-hog;
-+		gpios = <31 GPIO_ACTIVE_LOW>;
-+		output-low;
-+		line-name = "ethsw-reset#";
-+	};
-+};
-+
-+&gpio2 {
-+	status = "okay";
-+	gpio-line-names =
-+		"lan8023-mdint",
-+		"i2c2-alert#", "i2c4-alert#", "i2c6-alert#",
-+		"u800-tca9539-int#",
-+		"spi3-alert#",
-+		"wake0", "wake1",
-+		"carrier-hot#",
-+		"u1300-rtl8211fd-int#",
-+		"ethsw-int#",
-+		"", "",
-+		"u1700-zl30733-clk-gpio0", "u1700-zl30733-clk-gpio1",
-+		"u1700-zl30733-clk-gpio2", "u1700-zl30733-clk-gpio3",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "";
-+};
-+
-+&gpio3 {
-+	status = "okay";
-+	gpio-line-names =
-+		"altfn:ec1-txd3", "altfn:ec1-txd2",
-+		"altfn:ec1-txd1", "altfn:ec1-txd0",
-+		"altfn:ec1-tx-en", "altfn:ec1-gtx-clk",
-+		"altfn:ec1-rxd3", "altfn:ec1-rxd2",
-+		"altfn:ec1-rxd1", "altfn:ec1-rxd0",
-+		"altfn:ec1-rx-clk", "altfn:ec1-rx-dv",
-+		"", "",
-+		"ptp-refclk-in",
-+		"", "", "", "", "", "", "", "",
-+		"u1700-zl30733-pps-out",
-+		"",
-+		"ethsw-mdio-en",
-+		"usb01-oc#",	/* USB1_PWRFAULT and USB2_PWRFAULT share one net */
-+		"",
-+		"usb01-oc#",
-+		"altfn:spi3-sck",
-+		"", "";
-+
-+	/* Low enables the carrier-side EMDIO2 level translator */
-+	ethsw-mdio-en-hog {
-+		gpio-hog;
-+		gpios = <25 GPIO_ACTIVE_LOW>;
-+		output-high;
-+		line-name = "ethsw-mdio-en";
-+	};
-+};
-+
-+/* On-module management bus */
-+&i2c0 {
-+	status = "okay";
-+
-+	eeprom@52 {
-+		compatible = "atmel,24c32";
-+		reg = <0x52>;
-+		pagesize = <32>;
-+	};
-+
-+	/* Board ID straps */
-+	gpio@74 {
-+		compatible = "ti,tca9539";
-+		reg = <0x74>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		gpio-line-names =
-+			"boardid-0x0001", "boardid-0x0002",
-+			"boardid-0x0004", "boardid-0x0008",
-+			"boardid-0x0010", "boardid-0x0020",
-+			"boardid-0x0040", "boardid-0x0080",
-+			"boardid-0x0100", "boardid-0x0200",
-+			"boardid-0x0400", "boardid-0x0800",
-+			"boardid-0x1000", "boardid-0x2000",
-+			"boardid-0x4000", "boardid-0x8000";
-+	};
-+
-+	u800: gpio@75 {
-+		compatible = "ti,tca9539";
-+		reg = <0x75>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
-+		gpio-line-names =
-+			"carrier-gpio0", "carrier-gpio1",
-+			"carrier-gpio2", "carrier-gpio3",
-+			"carrier-gpio4", "carrier-gpio5",
-+			"carrier-gpio6", "carrier-gpio7",
-+			"carrier-gpio8", "carrier-gpio9",
-+			"carrier-gpio10", "carrier-gpio11",
-+			"", "", "",
-+			"lan8023-rst";
-+	};
-+
-+	/* +0V8_VDD core rail, MPS MPQ8646 (MPQ8785 core) over PMBus */
-+	vdd08: regulator@10 {
-+		compatible = "mps,mpq8646";
-+		reg = <0x10>;
-+	};
-+
-+	/* SO-DIMM SPD temperature sensors */
-+	temperature-sensor@18 {
-+		compatible = "jedec,jc-42.4-temp";
-+		reg = <0x18>;
-+	};
-+
-+	temperature-sensor@19 {
-+		compatible = "jedec,jc-42.4-temp";
-+		reg = <0x19>;
-+	};
-+};
-+
-+&i2c1 {
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	status = "okay";
-+};
-+
-+&i2c3 {
-+	status = "okay";
-+};
-+
-+&i2c5 {
-+	status = "okay";
-+};
-+
-+&pcie3 {
-+	status = "okay";
-+};
-+
-+&pcie4 {
-+	status = "okay";
-+};
-+
-+&pcie5 {
-+	status = "okay";
-+};
-+
-+&pcie6 {
-+	status = "okay";
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
-+
-+&usb0 {
-+	status = "okay";
-+};
-+
-+&usb1 {
-+	status = "okay";
-+};
-
--- 
-2.43.0
-
+On 9/8/26 08:27, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Most sa1100 platforms were removed a few years, with the remaining
+> ones left as a starting point for a conversion to devicetree.
+> 
+> Nothing ever happened on that front, so remove the rest now,
+> including the sa1111 and locomo drivers that were once shared
+> with pxa but are already sa1100-exclusive now.
+> 
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Linus Walleij <linusw@kernel.org>
+> Cc: Kristoffer Ericson <kristoffer.ericson@gmail.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
