@@ -1,154 +1,176 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF444349A2
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 19:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C6F4349B2
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 19:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788896416; cv=none; b=r2GaMK6MjdHE9s58W+q67Lnx7QFMDl/qbj20oZdNEVT5n+mxHdu4hmL5Jxd4JWuBlqy43JVaKEUyy9YwJP7e7Gn+s4xsB2qLA2Hiu3JAAouaD5w+ziCY2fJzlyu8J+WpHf4X7Hx4xipnRMB43Gn1D2qIdnFHsnzKym4pRF05KEU=
+	t=1788896614; cv=none; b=c4DO5IMmqNVeTyynkRD4TDKScrMEHOsGDUB0fotjftFq5oAiBXci6WD4+LyLrKfgtarTkMzYrl6+fccKNhjJyrea7hYHqlZVbmZXJElfGH7anb0R2hO4IVHDN3jE6hx9DmChTwbNmY0/M3MaDwp25zcJGTcCV8sjEA8kYquSK3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788896416; c=relaxed/simple;
-	bh=EsrGjrnP7IgSiDLJcakyY4ms71wqAvVcdyupbrs+ipo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OVu/PJzsMQPieE8tdhJelccEaRZq0iSojp1+5aSgGutDHqPNk1s8i21DQBzAEOvfeiwHSoAA+HDx7dfGiFftzsKzJqiuqd+fDdwN/1n6+K2ouqG3qo0S7lj2ePMBda+z7U/kosUnVLCUfPFSBv3oR6qg3D1nnCT5xSdx3M+PovA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYnVhdNp; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788896614; c=relaxed/simple;
+	bh=xlqEswEziPGf0ZRlGaptPva6ELMXLnrVfl8OWXiHUlg=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=CFjIOoyg3JsYAug5H5003ED5idhD9uxjNKonE9j27P6FhUbcqMhtSFmr2ZqOdOoQZ5kiJHmHaNcGAYYvY+3rGPFEdiMzRwUKPVn8hndNuiHxKoGvf6LTc6PFQXYHnHzcSIhOHmQN1AtZ/X6vIcMhqBE19zEi7h+htL2sE6C9kIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=X5LkevlL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pvZ5V3cV; arc=none smtp.client-ip=202.12.124.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYnVhdNp"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49b96837ca3so40284665e9.3
-        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 12:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788896412; x=1789501212; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HzP/HtSzvmP6ZP70XBuHWUc2m2AKpgco5yULa/5Kmis=;
-        b=EYnVhdNpo2xVpL7QWHFELWPeGNqBBfGsodP53ITjavUCFa+memvyewuc5PwVUCIhby
-         9nIneInWxTtBiOb8ssFRZ2IBb/uC7OoWnkc5JYHD4Vyb6WQYYqzLTkGASUKOBP6ec6Tq
-         SiGfE1tB8/IW6D06JYjAVM9p1XLLwwjg1cJlUQeAn7pr3pP2sP9S+QBmHeI2Qs5IDw7O
-         go5vrWQ+1jnUp/PTFrOyqtUIEPZ6/sleUQiRPBVV4lpE4Ly90bF8hoHV/RA0kf/tN1YZ
-         CnxamscEBxnA07Ick1+6aWgVHRd9xu6rWiEoki9TZtXde7nuuCVbeLd5kCSQHHo1avak
-         iG1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788896412; x=1789501212;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HzP/HtSzvmP6ZP70XBuHWUc2m2AKpgco5yULa/5Kmis=;
-        b=ma7hNuGjxbL//2x4G7p/F59B4rgrrc+0DvMRIcit9dK86DhA20kNtABkOmC+H1MUHh
-         ssNZB+sM8IahDkqMMKNApVj2V9qOi9rrTE05v34Tq2ebJ4CBiquvGf3NHxC0y322PYzy
-         kGFVjSIO0Z7Pm6HjHDrXQuAtaZUHbyIDlZnk2flqW0oXBl63bCoppH5uCH+wND9QildR
-         J4Fw1izSt75X4DDSbihILYCQb1spmlRTawi9DoIyelFApSMaVYS7VfIW8GVWQiDgK/pB
-         J/blZE+XAYi7bT7k1Z21kVl7Al+y7gkIpTwiBzfxImVmi6Yxhj13a+II5JtgcP1wQitg
-         Mk7w==
-X-Forwarded-Encrypted: i=1; AKwUvBwE0izaRslkInlVmxwKPBG1iLB5EGq6z0S6bxc8a9J0bTOTyDe+4aCuglt3DkD+CsL+uJw=@lists.linux.dev
-X-Gm-Message-State: AFuF++lSNN/yIbmHUKuDK58mJ5KpahQcUy7vO1zQLGUB0rLVqszzdGMw
-	ejW7mdFs4ZTpQD/WqyCHck1Oc44rGECi9aXkNfTkLM4SjuZui1kZWlfM
-X-Gm-Gg: AYBFou3LCj18j2AE8vlXxIkB6kYQb1bfedBXXLPo/NMD8aTAY7CaPIOW68lPHPL24Jw
-	NEhnN4whV6tkv1es0FgqcuKARwgfG3YxifWL/Paj9VTjgTMtTEs7zR1/aF1bEO26VyHAvyWw9zs
-	OF26TTCPrQFqd0onXGKlx82nblPTR78vQ5PHDKXcTUsuxMExBlZHJMzIA89XTghU1CA0IJ6E+IC
-	ydVbs+ErSqiL4UOJBDntEFZ9OyRTSPxA1j3TbR7+qfFu2IE5P9D2QkFW47h9YDbjRYmHIGvooMH
-	ZY8kQzDMoS7IShcsaCy8Z8KHiRoFgXgWLnDaseYuT1QviszrchoWgssfZjFFUBan0oYGmWkIdGz
-	fjTfSlzni0ZFOzJFC6tARTY8l14e9dMlYliRNdaLj6NQ7wx4koMhXnepD9bMc0GycgQAmuYL7rp
-	2whIsgw78QFIxSdZeu9D3pWItnBh3CgU2OFYfBXAm7Efp3syqiy8qvlSFwcvb+usshnBf6/SLr4
-	mTjDDpcNQOVqk5jegPjDUtJaChsZtc8+jLK2qCdX+VhO9Dbv3lyZ2yxjEENdRvNPa/+C9nChZge
-	v6FbPiK6Hq/1GPx3XSHv3pw+
-X-Received: by 2002:a05:600c:a087:b0:49c:d26a:cf70 with SMTP id 5b1f17b1804b1-49cf825a75dmr321721005e9.15.1788896412155;
-        Tue, 08 Sep 2026 12:40:12 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl (dynamic-095-117-170-066.95.117.pool.telefonica.de. [95.117.170.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20fc1be3sm991795e9.4.2026.09.08.12.40.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 12:40:10 -0700 (PDT)
-Date: Tue, 8 Sep 2026 21:39:36 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Linus Walleij <linusw@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
-	Stefan Agner <stefan@agner.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Andrew Lunn <andrew@lunn.ch>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
-	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
-	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Alexander Sverdlin <alexander.sverdlin@siemens.com>, 
-	Shawn Guo <shawnguo@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 01/13] ARM: remove sa1100 platform
-Message-ID: <aqBhF5oS1A2W6dAa@gmail.com>
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-2-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="X5LkevlL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pvZ5V3cV"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.stl.internal (Postfix) with ESMTP id 0ADAF1300C33;
+	Tue,  8 Sep 2026 15:43:25 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 08 Sep 2026 15:43:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1788896605;
+	 x=1788903805; bh=4IJjsl35hy6uWhJvFuqE8L4yxSGKu+5lpZymIsb8Msc=; b=
+	X5LkevlLGq9hwbix4pFg7wOUqgYe4MxbEIW19xLFjKJrm3U/zgwZzFzztNtQUOBh
+	RFtrQ64pKImJP00Et/2RAHViyAWPNjGoNOXGGXFn/GWtHYhp8++J6ek/B4+laPjv
+	QKM6egjpTH2RBLgCwb4Lf6Y4byjkhTVD6N4UxoZ0NEovEHriYTQSAYPUhY//VhmW
+	aXKzm4lxftMtoQrJ6OE4fJE8t+2IOjEfu4pqnbnRA/mVQoYEBrZw3F/ihwM42TLt
+	fbjwxXFtFsOMmixbLAQfRpvpjuuPJrly1ovWZAaodEqn9QTYhIEMzBxkD5K7brC8
+	s74uT0Oph1HGjtq0+W+0xw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788896605; x=
+	1788903805; bh=4IJjsl35hy6uWhJvFuqE8L4yxSGKu+5lpZymIsb8Msc=; b=p
+	vZ5V3cVoyjNATgyblqyW6OoU5UVMW2sJt9Mv0Hb6dqkExYlcInH3dXxty2JJLrKa
+	2L88Uh61zR29akIgJUY7R7UM32Kf9G5d/9EFsY4VFUPXih8BOHbjLg8Wwu6rVZyU
+	8swdRGghSiq7Qd+OzlzDB8g2UFrhsdwPbIq7goKM0oljJLhBsBIW4woOtyJphPjD
+	2Sgo6swnotWArYS56NuiVX1gzo3vvdjYBAFUsixfVlamrkCZgRSABhhEy79rGxGZ
+	SzLkE9WBoSWAvgrz3RAldfQI4VNW4QyvLJjynLKHznjnv8WwuTnwDmGjhyasnNkV
+	cdBJRmagCN9xNmqtOFNCg==
+X-ME-Sender: <xms:TGWgaugDTuyvTPL-dn7pSrPgOLRTtR3TxBJ-vzxEv4GdIIhS9ALWpA>
+    <xme:TGWgap3tKFpon6D5_zbOwa7Tbq-frSBILuWpi0aAVU25A_U91r_sShzlS_IpRx4uQ
+    ao4VaRRG1Cj4GGDFM75cptsxkX9koy0IOSnleTJYP4enIxFdBKDBNE>
+X-ME-Proxy-Cause: dmFkZTGLFhWYBtHQEXq81tVhy+uy/MhH0rumW3g0yZvcQsbh0yNyrcAK4KlJT0tiE7xHCS
+    j4Ej93wV0cyqPDE7MbKgNUlNdDRaBReEAZ159s6i1PqLV4RtO/Pgki3pZYlW+lCD7zGKH8
+    AitwYFf8Q6/NC4sGgmnKnkDBONHDG6eNN2foQMpVn9j3mlJwvgGPVqfdkID9U3krTwHfvT
+    ugjSCsYNWzUA/PuLF2mMImuh9Z2j6SXIDdGhyoAc+33JWK2xZcJYtt3p0a1zuvJtxwR4MI
+    uQoF3AohencpXK77GuBiwGyP352+M/K8OnHWjZgIBjVEA7Mz9bN85ENnEsE+DNTHLDfegm
+    DsYkyMDgPUDBCPOplHS5/5v4VqNOe6rWbgdiL56qMt6BpO9lIHF5nx79cYjHP8FBAaYnFZ
+    9kE4XKrlT1yg45pREJwLabRo9QbOlrDZygCRXcJgzflnXrSTk3hwfzlTMuRf0A4gE/xLbf
+    MFltriCZ86x8E1vs7P3HvIZtQwI9XqRirk9SjIh4X5XaqibIi9gkzP1KT55V4YCcg3V10I
+    l90Vj1l1xrd2bqBTskPcITG9ymdzIZU6yKr3VQE2V73/sMIF/fEePVedrYJqBNMGhEWIQu
+    DXfQpryhjjRooduoa5pPnZ/3QCNk9GKLvJdiFGgqV2PFHh+gOHtLT2oVXY+Q
+X-ME-Proxy: <xmx:U2Wgag68iOgFBZnMGoZdBybFhY13xhgPFcPnLmpv0rQmPCp0OotdJg>
+    <xmx:U2Wgaj4tgVucIbKCwFlL1z4JpK4WXjI__dLdijbTtkqDze2cnT8pMg>
+    <xmx:U2WgajysCDCx2ljtPUTHjTY_tAdeZfX-0eUJ5ru3Q1ejC0WdjQFvZw>
+    <xmx:U2WgatVZoy_vZ2FQwK_rqWrVYin94ECpGT9zf2XRlTUd5dKMW17BOg>
+    <xmx:XWWgaglMGEftEChcN2ZQ-BRA6p8EoT0iFpV0AKPEmXefACCdLfDIepXH>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 25BF232A0078; Tue,  8 Sep 2026 15:43:08 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908152808.3928630-2-arnd@kernel.org>
+X-ThreadId: ABtt46vjHSU-
+Date: Tue, 08 Sep 2026 21:42:42 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Karl Mehltretter" <kmehltretter@gmail.com>,
+ "Arnd Bergmann" <arnd@kernel.org>
+Cc: "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+ "Linus Walleij" <linusw@kernel.org>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Drew Fustini" <fustini@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ "Liviu Dudau" <liviu.dudau@arm.com>,
+ "Sudeep Holla" <sudeep.holla@kernel.org>,
+ "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+ "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>,
+ "Vladimir Zapolskiy" <vz@mleia.com>, "Stefan Agner" <stefan@agner.ch>,
+ "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+ "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Andreas Kemnade" <andreas@kemnade.info>,
+ "Kevin Hilman" <khilman@baylibre.com>,
+ "Roger Quadros" <rogerq@kernel.org>, "Tony Lindgren" <tony@atomide.com>,
+ "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ "Andrew Lunn" <andrew@lunn.ch>,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
+ "Gregory Clement" <gregory.clement@bootlin.com>,
+ "Robert Jarzmik" <robert.jarzmik@free.fr>,
+ "Kristoffer Ericson" <kristoffer.ericson@gmail.com>,
+ "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "A. Sverdlin" <alexander.sverdlin@siemens.com>,
+ "Shawn Guo" <shawnguo@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Nicolas Pitre" <npitre@baylibre.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Linux-OMAP <linux-omap@vger.kernel.org>,
+ "Paul Walmsley" <paul@pwsan.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+ "Kyungmin Park" <kyungmin.park@samsung.com>,
+ "Helge Deller" <deller@gmx.de>, "Tero Kristo" <kristo@kernel.org>,
+ "Stephen Boyd" <sboyd@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, linux-media@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-clk@vger.kernel.org
+Message-Id: <5c7ef711-0e5b-4006-831f-c1129acc65be@app.fastmail.com>
+In-Reply-To: <aqBXOemS4boakDGt@gmail.com>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-7-arnd@kernel.org> <aqBXOemS4boakDGt@gmail.com>
+Subject: Re: [PATCH 06/13] ARM: omap2: remove omap24xx support
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 08, 2026 at 05:27:51PM +0100, Arnd Bergmann wrote:
->  62 files changed, 19 insertions(+), 10501 deletions(-)
+On Tue, Sep 8, 2026, at 21:21, Karl Mehltretter wrote:
+> On Tue, Sep 08, 2026 at 05:27:56PM +0100, Arnd Bergmann wrote:
+>>  86 files changed, 60 insertions(+), 10696 deletions(-)
+>
+>> -CONFIG_ARCH_MULTI_V6=y
+>>  CONFIG_OMAP_RESET_CLOCKS=y
+>> -CONFIG_ARCH_OMAP2=y
+>
+> With CONFIG_ARCH_MULTI_V6 gone, CONFIG_ARM_ERRATA_411920=y a few lines
+> down can be deleted (savedefconfig drops it)
 
-Note that Sashiko skipped reviewing this patch, because it exceeded
-its current 10000 line limit.
+fixed now
 
-> diff --git a/drivers/rtc/rtc-sa1100.c b/drivers/rtc/rtc-sa1100.c
-> @@ -275,18 +275,10 @@ static int sa1100_rtc_probe(struct platform_device *pdev)
-> -	if (IS_ENABLED(CONFIG_ARCH_SA1100) ||
-> -	    of_device_is_compatible(pdev->dev.of_node, "mrvl,sa1100-rtc")) {
-> -		info->rcnr = base + 0x04;
-> -		info->rtsr = base + 0x10;
-> -		info->rtar = base + 0x00;
-> -		info->rttr = base + 0x08;
-> -	} else {
-> -		info->rcnr = base + 0x0;
-> -		info->rtsr = base + 0x8;
-> -		info->rtar = base + 0x4;
-> -		info->rttr = base + 0xc;
-> -	}
-> +	info->rcnr = base + 0x0;
-> +	info->rtsr = base + 0x8;
-> +	info->rtar = base + 0x4;
-> +	info->rttr = base + 0xc;
+>> diff --git a/arch/arm/mach-omap2/gpmc.h b/arch/arm/mach-omap2/gpmc.h
+>> deleted file mode 100644
+>
+> perl scripts/get_maintainer.pl --self-test=patterns now warns:
+>   ./MAINTAINERS:19896: warning: no file matches	F:	arch/arm/mach-omap2/*gpmc*
 
-This drops the layout switch but keeps "mrvl,sa1100-rtc" in
-sa1100_rtc_dt_ids[] and in bindings/rtc/sa1100-rtc.yaml, so a DT with
-that compatible would now silently get the MMP register offsets instead
-of the SA1100 ones.
+Ah perfect, I was looking for that command, and will check
+the rest of my series now.
 
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> @@ -614,16 +614,16 @@ config S3C2410_WATCHDOG
->  	  be called s3c2410_wdt.
->  
->  config SA1100_WATCHDOG
-> -	tristate "SA1100/PXA2xx watchdog"
-> -	depends on ARCH_SA1100 || ARCH_PXA || COMPILE_TEST
-> +	tristate "PXA2xx watchdog"
-> +	depends on ARCH_PXA || COMPILE_TEST
->  	help
-> -	  Watchdog timer embedded into SA11x0 and PXA2xx chips. This will
-> -	  reboot your system when timeout is reached.
-> +	  Watchdog timer embedded PXA2xx chips. This will reboot your
-> +	  system when timeout is reached.
->  
+>> @@ -560,13 +533,11 @@ void __init pdata_quirks_init(const struct of_device_id *omap_dt_match_table)
+>>  	 * We still need this for omap2420 and omap3 PM to work, others are
+>
+> Stale comment about omap2420
 
-"embedded into PXA2xx chips" is better.
+fixed.
 
-The RTC_DRV_SA1100 help text a bit earlier in the patch also still says
-"built into your SA11x0 or PXA2xx CPU".
+>> diff --git a/arch/arm/mach-omap2/voltagedomains2xxx_data.c b/arch/arm/mach-omap2/voltagedomains2xxx_data.c
+>> deleted file mode 100644
+>> [...]
+>> -void __init omap2xxx_voltagedomains_init(void)
+>
+> The declaration for this is still in voltage.h.
 
-Thanks,
-Karl
+fixed.
+
+Thanks a lot for taking a look here.
+
+       Arnd
