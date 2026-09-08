@@ -1,139 +1,151 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3986A52B1CA
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 17:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788887938; cv=pass; b=pZ7lH9UxfggcOWdD+FZAqqNxinth1Y5L2ZEQhuRDxv9BYwLpLfWSCP7A2LbNCFG2ZXnCPNTJ41HFE2FbDs9q3j6+QxMa9/miCybCq+qXyz2lZtrXD1NdPtwd8x+6V+iEpCc3RDCH6fNiH2N7x+W/wB/2aQfKMmPf6o2ApwHOFK8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788887938; c=relaxed/simple;
-	bh=tBwn5bdvvFXypTllpUAbZzuOgMxU9cJnnNMgNB6aHfM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GZWnaO+8qE67wQlWEtpQaSLDkdK3ahCB7XFg8iTfJkysN7ppOpMz+3oCie+7t844rVeEis3njNv7Dce8528aRFRp4u97yAUA2jltn86WpYKeEhFTNDgL/EY8xevqurRr3eWsIpd/umDfvhXya6oVd5VYHh19+iLp3dmL4kc0gb8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=RuEeEMW/; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C60572670
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 17:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788887952; cv=none; b=eXR20ljX7lG9EBdHWVFz0D02Kw5G1PQC4Dd4qKktHzl5LwnrNYL+ADjdAbaBJQqbHkqF0cCJjb2hA+gVq2IJwlp3vCGdl98fUDLv7gTavgiBObDpvT/FwdJdlID1b329E0MZXdiu9WwYoMPSZO+h0YE2ZRBWgk4Zm+rE4IUPJz4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788887952; c=relaxed/simple;
+	bh=6KnREaqCWchLn+Kl1jQKwaetKC/OC+Iq9Mn4RJespOY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=j4jf68hTSDcojnQ1aWMnsmnEntNTt6wyZtsb5clxA/E6S7x/YoLIPwIVCWv23R+3WbbTMygatO3BdmBJe/h3YDp4+nlD31/P4URdAs9jfpcdjLGLsNosSgowjLVaW14ORL3mkYzLotE4SPIMWDPbVBmdltSsyZroeT2CkhQ+gdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBIg65DU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="RuEeEMW/"
-Received: from darkstar.musicnaut.iki.fi (85-76-138-200-nat.elisa-mobile.fi [85.76.138.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hfVyj3s1Sz49Q5S;
-	Tue, 08 Sep 2026 20:18:37 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788887928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PO/N7p293WhZWOnEDuSy9gtwR4Cj1KkgRIMnOyAdkIo=;
-	b=RuEeEMW/lTLQi0I0YRvcxTIwqjW3vNe/zSCBmL/PGJcJBZCIMJydTjFu34u3aTjpaeBQp/
-	qlxsWAySlfMOjDBRxCvil5yr9Go9xiMyb3yHsgrHzpvjURsZDuC2J0VNoTCAzH9d50ohZ9
-	SZt4pd7ThrbA6qTlPwQRFXl85Go9ymb2mUnYH8zcdlBH8xKgdDG/aUdijBE6B91mHYsf/3
-	jHGxS5ZdtOAqcHIzQf8RLPi05/UAICgWjCa4RVxqPJrKEa4fpqAwol5EP2Mr/pyCO5XkJf
-	TvQHKUsuqJlrBKO1872gFYm514Sf7gAjW1wQgR4YUn/6wUUZCkdvej9fYv4iag==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788887928;
-	b=SbNwL400m2OjexdcOokzSVLBXJYp5eFG2UrettS0xu6rLtPQAw0BoPf/Rha3nNm32X4n6N
-	pZhnu1IOhmA42K4eSL3KfjRee1wbSyxocwUHfDcWMWOHXj4ILLfIYj0jWl0C3v0shda8Cs
-	YtShuPaJjzTUQuyHUm+jWn6ClSqpo3i6e8bdD1Sy6wO5h9/gMFr72HuFxxQuuwAWWrwBjJ
-	Bvhd7kAL7qs2ZH5rUYZr3YJgdQLEkmeHK6NniKr8EnUhnI15MVz9pr297APC9kWFLR28Nd
-	gJE3miv9HUpHfPcdmHHFoGcNaVcJ+kap7WMST5SiQb1OOG5go9hAWHx3O2mZBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788887928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PO/N7p293WhZWOnEDuSy9gtwR4Cj1KkgRIMnOyAdkIo=;
-	b=PKxyd3l3jvpv/hX9vp8woYeZp39vkZDVbD7MEec2pYDL0IMXGYLnkm9tAwprnb+m4HisQ2
-	CW5kybZg+P7otj2oJtrIFVpdmVNtKUmS31fGV6YnREg1F9XRdbVjOZCdwPkB+jNi1dUtUI
-	7yL74o8J8adJHO9mTvoZjYN74doQp6+pmwVJQy8Vv4FXx5KqxhCn4/JS5JJmDwh/x0KBFz
-	RKjUDwmtYkvNckHVaeu/b+tTcKJKCccwev1BtIq7RW5wBTe5/NKaKTS+d0hIbqi3vontaO
-	eaNQzuBeoWECcyoUJmaDmeTAaq1rBu7nKsbJHhov2Dyhro3U1y7boF5omjgoAA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-Date: Tue, 8 Sep 2026 20:18:35 +0300
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-omap@vger.kernel.org, Paul Walmsley <paul@pwsan.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Helge Deller <deller@gmx.de>, Tero Kristo <kristo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH 06/13] ARM: omap2: remove omap24xx support
-Message-ID: <aqBDa2f__ZE5BQao@darkstar.musicnaut.iki.fi>
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-7-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBIg65DU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28331F00A3D;
+	Tue,  8 Sep 2026 17:19:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788887950;
+	bh=sISPQBZ0MxNs75rM5cYeDDQnOiC2cyWOaALprSJOx98=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PBIg65DUTKftiGIVoCekxNzqHUyp4ZQnZJWtpOINr7GaT96LkKrLxZSPvwZblxUSe
+	 5+IJy1EYap2PTgwLd5lIQELG8pplxYQD/B2E63TeaOHawGryxfHz7Zn3j/8yA2/PxD
+	 8oNATs8qWeEMiEZvXTh/jT9kaLpX8riLzwAkEgF89Rg3i0Xa2C2+slOdkC40VcPxlu
+	 HIZQ8G1D+JEmKz+JESGI4U7MZa0dxrH6qnseRNJ9sKyqR9NM3KYZ7AH6d2CxfONfvh
+	 j+ri2A3LJONianWVgzTod6NsaVBQATSR5yyPPZS8VR9PHCYhQnCh+nZZC5ypNskQnq
+	 gxnJK3GuFVefQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ASoC: SOF: imx: Prevent stack OOB read in DSP panic
+ dump
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?yJh0ZWZhbiBHaGXIm3U=?= <stefanghetu9@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260908170740.276800-1-stefanghetu9@gmail.com>
+References: <20260908170740.276800-1-stefanghetu9@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 17:19:10 +0000
+Message-Id: <20260908171910.B28331F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908152808.3928630-7-arnd@kernel.org>
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-On Tue, Sep 08, 2026 at 05:27:56PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The omap24xx SoC platform was used in the Nokia N800 and N810 tablets
-> released on 2007 and was among the first ARMv6 CPUs in products that
-> made it into products.
-> 
-> Unfortunately the early ARM1136r0 CPU cores had a number of quirks that
-> caused a disproportionate amount of work to keep them compatible with
-> later ARMv6K/v7/v8 implementations.
-> 
-> Drop the support for this SoC in order to allow removing ARM1136r0.
-> 
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Pre-existing issues:
+- [High] The patch fixes a stack out-of-bounds read in the i.MX DSP panic d=
+ump by clearing `numaregs` to 0, but fails to apply this exact same fix to =
+5 other platform drivers that share the identical vulnerable code pattern.
+- [High] Information leak of kernel stack memory when the firmware oops hea=
+der size is invalid due to an early return bypassing the initialization of =
+output variables.
+- [High] Out-of-bounds string read due to a missing precision specifier for=
+ the `filename` array.
+--
 
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+commit ca4aa4ca867a8171d023c31fffe2fa4cd73d904b
+Author: =C8=98tefan Ghe=C8=9Bu <stefanghetu9@gmail.com>
 
-A.
+ASoC: SOF: imx: Prevent stack OOB read in DSP panic dump
+
+This patch clears numaregs to 0 in the i.MX DSP oops parser to prevent=20
+a stack out-of-bounds read in the shared Xtensa helper. Since the AR block
+is not supported on i.MX, this prevents unsafe memory accesses when dumping
+a DSP panic.
+
+> diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-commo=
+n.c
+> index 7a03c8cc5dd47..436fe49246ba8 100644
+> --- a/sound/soc/sof/imx/imx-common.c
+> +++ b/sound/soc/sof/imx/imx-common.c
+> @@ -34,6 +34,7 @@ void imx8_get_registers(struct snd_sof_dev *sdev,
+> =20
+>  	/* first read registers */
+>  	sof_mailbox_read(sdev, offset, xoops, sizeof(*xoops));
+> +	xoops->plat_hdr.numaregs =3D 0;
+
+[Severity: High]
+This is a pre-existing issue, but does this fix also need to be applied
+to other platform drivers?
+
+The target patch successfully resolves the out-of-bounds read for imx8,
+but there appear to be 5 other drivers that share the identical code
+pattern where xoops is allocated on the stack without backing the
+flexible ar[] array:
+
+- amd_get_registers() in sound/soc/sof/amd/acp-common.c
+- atom_get_registers() in sound/soc/sof/intel/atom.c
+- bdw_get_registers() in sound/soc/sof/intel/bdw.c
+- hda_dsp_get_registers() in sound/soc/sof/intel/hda-dsp.c
+- mtk_adsp_get_registers() in sound/soc/sof/mediatek/mtk-adsp-common.c
+
+If a compromised or malfunctioning DSP provides a non-zero numaregs
+value in its oops header, could it still cause the kernel to iterate
+over unbacked stack memory in xtensa_stack() and leak adjacent stack
+contents via hex_dump_to_buffer() on those platforms?
+
+> =20
+>  	/* then get panic info */
+>  	if (xoops->arch_hdr.totalsize > EXCEPT_MAX_HDR_SIZE) {
+
+[Severity: High]
+This is a pre-existing issue, but if this header size validation fails,
+can it cause an information leak?
+
+When imx8_get_registers() aborts early here, it returns void, leaving
+the caller's stack-allocated panic_info and stack arrays uninitialized.
+
+Does the caller (such as imx8_dump()) consume these uninitialized
+variables?
+
+imx8_dump()
+  imx8_get_registers(..., &panic_info, stack, ...)
+  sof_print_oops_and_stack(..., &panic_info, stack, ...)
+
+If the caller unconditionally passes these uninitialized structures to
+sof_print_oops_and_stack(), could they be formatted and printed to
+dmesg, leaking uninitialized kernel stack memory?
+
+>  		dev_err(sdev->dev, "invalid header size 0x%x. FW oops is bogus\n",
+>  			xoops->arch_hdr.totalsize);
+>  		return;
+>  	}
+
+[Severity: High]
+This is a pre-existing issue, but when sof_print_oops_and_stack()
+processes the panic_info structure, can it read out of bounds?
+
+struct sof_ipc_panic_info defines filename as an array of 32 bytes.
+If the DSP provides a fully filled 32-byte filename string without a
+null terminator:
+
+core.c:sof_print_oops_and_stack() {
+    ...
+    dev_printk(level, sdev->dev, "panic at %s:%d\n", panic_info->filename,
+               panic_info->linenum);
+    ...
+}
+
+Will using the unbounded %s format specifier cause printk to read
+past the end of the array into adjacent stack memory (like linenum)
+until a null byte is encountered? Should this use the %.*s format
+specifier with SOF_TRACE_FILENAME_SIZE?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908170740.2768=
+00-1-stefanghetu9@gmail.com?part=3D1
