@@ -1,151 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C60572670
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 17:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9944A371D11
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788887952; cv=none; b=eXR20ljX7lG9EBdHWVFz0D02Kw5G1PQC4Dd4qKktHzl5LwnrNYL+ADjdAbaBJQqbHkqF0cCJjb2hA+gVq2IJwlp3vCGdl98fUDLv7gTavgiBObDpvT/FwdJdlID1b329E0MZXdiu9WwYoMPSZO+h0YE2ZRBWgk4Zm+rE4IUPJz4=
+	t=1788888222; cv=none; b=XfT04wYIypOBklL4vKdhU2JO8Jw37abrDOapIWTuO+dGopSJAdavzOGvZGGxbrwwc//hZ+5rhq2O2M1+ZXoLThrdgaG0fJ1wJZR3/2l1UJuBj3lA3Ru/qhfrpWzU1esYrNl9qh3GNqJXDifJ2eVwhSUCY9LKsb36MjTzAjliL9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788887952; c=relaxed/simple;
-	bh=6KnREaqCWchLn+Kl1jQKwaetKC/OC+Iq9Mn4RJespOY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=j4jf68hTSDcojnQ1aWMnsmnEntNTt6wyZtsb5clxA/E6S7x/YoLIPwIVCWv23R+3WbbTMygatO3BdmBJe/h3YDp4+nlD31/P4URdAs9jfpcdjLGLsNosSgowjLVaW14ORL3mkYzLotE4SPIMWDPbVBmdltSsyZroeT2CkhQ+gdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBIg65DU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788888222; c=relaxed/simple;
+	bh=Sj8K0bKr+QZ/S9dYM6RKCNRt49IKM+zHKFTuOaeQz0M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PZ1BDsG0PlqqXZI9wyw1OfaLpcCq+FzhZT+r9/p5NNTt8tGV0hqMAg+87Vc4Hgqs5WFGkpO4cLYkmGWazb0iNsNi9/6NzTEP3A3IlBd+Su1gd6K8EM9OIfU2Ygdh4xJJYgPJi75YVGNbkJQ1AzorTAt18FHy1gK8Q67ElL97PVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ddQrHN30; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBIg65DU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28331F00A3D;
-	Tue,  8 Sep 2026 17:19:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ddQrHN30"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E451F00ACF
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 17:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788887950;
-	bh=sISPQBZ0MxNs75rM5cYeDDQnOiC2cyWOaALprSJOx98=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PBIg65DUTKftiGIVoCekxNzqHUyp4ZQnZJWtpOINr7GaT96LkKrLxZSPvwZblxUSe
-	 5+IJy1EYap2PTgwLd5lIQELG8pplxYQD/B2E63TeaOHawGryxfHz7Zn3j/8yA2/PxD
-	 8oNATs8qWeEMiEZvXTh/jT9kaLpX8riLzwAkEgF89Rg3i0Xa2C2+slOdkC40VcPxlu
-	 HIZQ8G1D+JEmKz+JESGI4U7MZa0dxrH6qnseRNJ9sKyqR9NM3KYZ7AH6d2CxfONfvh
-	 j+ri2A3LJONianWVgzTod6NsaVBQATSR5yyPPZS8VR9PHCYhQnCh+nZZC5ypNskQnq
-	 gxnJK3GuFVefQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] ASoC: SOF: imx: Prevent stack OOB read in DSP panic
- dump
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?yJh0ZWZhbiBHaGXIm3U=?= <stefanghetu9@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260908170740.276800-1-stefanghetu9@gmail.com>
-References: <20260908170740.276800-1-stefanghetu9@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 17:19:10 +0000
-Message-Id: <20260908171910.B28331F00A3D@smtp.kernel.org>
+	s=k20260515; t=1788888221;
+	bh=Sj8K0bKr+QZ/S9dYM6RKCNRt49IKM+zHKFTuOaeQz0M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ddQrHN30nhOEvSokqtHBmBF2IZEjMngfe66I7z/xF+nIpLfQMFzhrkZstpyTC3SCV
+	 YVCXh4rNCyfy9alx3+pQF0UabMq1QP9Geu/5dOJsxjAU9iFSO6rPpTGGiy41e48re+
+	 vmBhARYlPQ25cfGK5oj7P7w1JEYaJNt2ko7ZoJnM0EuQY++WA+raK9Cen8G/MNPAMA
+	 6rE1in8zhab5s2tXfBzaWc3zIaZD+qYvlZ3pNYFsQiPDK2xEg3eTX9njnMCtFhgHKi
+	 pWs3oOdNQJM7qOTCwOxNN5ytMf9umeDqGI3grPh6+BxUhER9YiG82Aj0h0C3LkFGKv
+	 uM3fkgpb3KvEQ==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b0231a3e86so4490878e87.0
+        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 10:23:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwDZIrikIDIX/diF5btysoGUw594UMuZUwikOCLipE8Xz4JfbLn9aiPRLMK+psGdU+XGnw=@lists.linux.dev
+X-Gm-Message-State: AFuF++m/lY23XP/aYvOnxROjLGHZI4lHOSOx5XBn4dZx25pt3MChR8Np
+	Z8mrsozpy5falpgZBUAoDJfRb+ladtnl4Q6ozyMyUd5HUrNbfRDX5vzAkxiXYKlY+AxaG84a/H1
+	7aqDQVqgPxnCtpCaHd38aXL6GtBiy4M4=
+X-Received: by 2002:a05:6512:6c3:b0:5b6:1a7c:39 with SMTP id
+ 2adb3069b0e04-5b61a7c02f1mr4244449e87.60.1788888219653; Tue, 08 Sep 2026
+ 10:23:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-2-arnd@kernel.org>
+In-Reply-To: <20260908152808.3928630-2-arnd@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 8 Sep 2026 19:23:26 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=7NjsvV6_2Ea9qyi9fDvDiSASPsLH3uTrPz30_ug7BQQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VilFNAiGqYj4DGWJSxsv2DtJDi9vb9QstH70LkavpX1Bq02jgwVJfqHBE
+Message-ID: <CAD++jL=7NjsvV6_2Ea9qyi9fDvDiSASPsLH3uTrPz30_ug7BQQ@mail.gmail.com>
+Subject: Re: [PATCH 01/13] ARM: remove sa1100 platform
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Russell King <linux@armlinux.org.uk>, Drew Fustini <fustini@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Alexander Sverdlin <alexander.sverdlin@siemens.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Tue, Sep 8, 2026 at 5:28=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wrot=
+e:
 
-Pre-existing issues:
-- [High] The patch fixes a stack out-of-bounds read in the i.MX DSP panic d=
-ump by clearing `numaregs` to 0, but fails to apply this exact same fix to =
-5 other platform drivers that share the identical vulnerable code pattern.
-- [High] Information leak of kernel stack memory when the firmware oops hea=
-der size is invalid due to an early return bypassing the initialization of =
-output variables.
-- [High] Out-of-bounds string read due to a missing precision specifier for=
- the `filename` array.
---
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Most sa1100 platforms were removed a few years, with the remaining
+> ones left as a starting point for a conversion to devicetree.
+>
+> Nothing ever happened on that front, so remove the rest now,
+> including the sa1111 and locomo drivers that were once shared
+> with pxa but are already sa1100-exclusive now.
+>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Linus Walleij <linusw@kernel.org>
+> Cc: Kristoffer Ericson <kristoffer.ericson@gmail.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-commit ca4aa4ca867a8171d023c31fffe2fa4cd73d904b
-Author: =C8=98tefan Ghe=C8=9Bu <stefanghetu9@gmail.com>
+Acked-by: Linus Walleij <linusw@kernel.org>
 
-ASoC: SOF: imx: Prevent stack OOB read in DSP panic dump
+If some user really want to keep this platform around and it
+willing to invest time in testing, I do not think it is hard to
+convert it to device tree using an LLM.
 
-This patch clears numaregs to 0 in the i.MX DSP oops parser to prevent=20
-a stack out-of-bounds read in the shared Xtensa helper. Since the AR block
-is not supported on i.MX, this prevents unsafe memory accesses when dumping
-a DSP panic.
+But if there are no users, away it goes.
 
-> diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-commo=
-n.c
-> index 7a03c8cc5dd47..436fe49246ba8 100644
-> --- a/sound/soc/sof/imx/imx-common.c
-> +++ b/sound/soc/sof/imx/imx-common.c
-> @@ -34,6 +34,7 @@ void imx8_get_registers(struct snd_sof_dev *sdev,
-> =20
->  	/* first read registers */
->  	sof_mailbox_read(sdev, offset, xoops, sizeof(*xoops));
-> +	xoops->plat_hdr.numaregs =3D 0;
-
-[Severity: High]
-This is a pre-existing issue, but does this fix also need to be applied
-to other platform drivers?
-
-The target patch successfully resolves the out-of-bounds read for imx8,
-but there appear to be 5 other drivers that share the identical code
-pattern where xoops is allocated on the stack without backing the
-flexible ar[] array:
-
-- amd_get_registers() in sound/soc/sof/amd/acp-common.c
-- atom_get_registers() in sound/soc/sof/intel/atom.c
-- bdw_get_registers() in sound/soc/sof/intel/bdw.c
-- hda_dsp_get_registers() in sound/soc/sof/intel/hda-dsp.c
-- mtk_adsp_get_registers() in sound/soc/sof/mediatek/mtk-adsp-common.c
-
-If a compromised or malfunctioning DSP provides a non-zero numaregs
-value in its oops header, could it still cause the kernel to iterate
-over unbacked stack memory in xtensa_stack() and leak adjacent stack
-contents via hex_dump_to_buffer() on those platforms?
-
-> =20
->  	/* then get panic info */
->  	if (xoops->arch_hdr.totalsize > EXCEPT_MAX_HDR_SIZE) {
-
-[Severity: High]
-This is a pre-existing issue, but if this header size validation fails,
-can it cause an information leak?
-
-When imx8_get_registers() aborts early here, it returns void, leaving
-the caller's stack-allocated panic_info and stack arrays uninitialized.
-
-Does the caller (such as imx8_dump()) consume these uninitialized
-variables?
-
-imx8_dump()
-  imx8_get_registers(..., &panic_info, stack, ...)
-  sof_print_oops_and_stack(..., &panic_info, stack, ...)
-
-If the caller unconditionally passes these uninitialized structures to
-sof_print_oops_and_stack(), could they be formatted and printed to
-dmesg, leaking uninitialized kernel stack memory?
-
->  		dev_err(sdev->dev, "invalid header size 0x%x. FW oops is bogus\n",
->  			xoops->arch_hdr.totalsize);
->  		return;
->  	}
-
-[Severity: High]
-This is a pre-existing issue, but when sof_print_oops_and_stack()
-processes the panic_info structure, can it read out of bounds?
-
-struct sof_ipc_panic_info defines filename as an array of 32 bytes.
-If the DSP provides a fully filled 32-byte filename string without a
-null terminator:
-
-core.c:sof_print_oops_and_stack() {
-    ...
-    dev_printk(level, sdev->dev, "panic at %s:%d\n", panic_info->filename,
-               panic_info->linenum);
-    ...
-}
-
-Will using the unbounded %s format specifier cause printk to read
-past the end of the array into adjacent stack memory (like linenum)
-until a null byte is encountered? Should this use the %.*s format
-specifier with SOF_TRACE_FILENAME_SIZE?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908170740.2768=
-00-1-stefanghetu9@gmail.com?part=3D1
+Yours,
+Linus Walleij
