@@ -1,173 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C135803BD;
-	Tue,  8 Sep 2026 16:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CA3563FB7;
+	Tue,  8 Sep 2026 16:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788883515; cv=none; b=nXOodb8m81gT3VpVKNsfAO4jVIvEUWn0XlBXclff++v7Jy3VSyhklolU+7eSIY1MVp+1Gm0OQw431uz8Fp6x0Guc1KUHINc/W+m1cQTbRODz0wnx/SFPe4Y4aXOyKHcNjBAZytQB3fpucrKM+n4ClybLroOgIdJyVjMHU+Bztzs=
+	t=1788883888; cv=none; b=OGCoh9uQ3nlggzQ8KVgSa4Dpxs8KHLx5QjufANOkbrW2OUdLOPnwwPMxUTanWJYYNnsv0WONj5qir6vIYlmwHa9v1biLOcANBUX4sUAWq5kwwLqaF/mljUctY3Fd5nOgbGmS2Dh0v4VthpLcVzIP4sAx1mbm3m4vWBR+WPa032Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788883515; c=relaxed/simple;
-	bh=hOuQgcoQcnlovGr/O/JRdONmYhgv1YnCgg8telRPpM8=;
+	s=arc-20240116; t=1788883888; c=relaxed/simple;
+	bh=LCJB/bBSJ6Qr8C+a3E//aJEMDEm/ATsf1wj8b7Yqqlk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JSfr5tVg0fmJYniVyCt6Nab7Co0LbtEtfdCN4GkYV5FauUTo2GK5bwmnEybLrxSyWOCGbbtrVZFwBGEnWyS84CpNZHNo6i/8kMRQgbYkv9Q57gB2cJh3V92MEr4Kvt/ufb7zg7IRwj8N6j9IMrB/Z2c5oQuMg/w2nwH8F+boHpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+2Fm7ww; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=lB9oYUVL83QkAttG7QLEZoMYYgEHJxoAcNsoPYcGAPTzFeUOOI9Q/h28JYLTe9g2vomQNeOQsevoGeFAj9AEKopBN1eD1kd1Ojt66uBHg8DjgMOl7/eyt/DbEVzNMuQHgD2NKaebeQFJ0f4HOE1+zmTZ3NYTEFFGyIb0NEdx2BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeQoNOP2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+2Fm7ww"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE271F00A3D;
-	Tue,  8 Sep 2026 16:05:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeQoNOP2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A331F00A3A;
+	Tue,  8 Sep 2026 16:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788883512;
-	bh=u0GGnkpAZ2l2MiiOxDY+YdlOYsRlajV7Tx+Ols1QYfM=;
+	s=k20260515; t=1788883886;
+	bh=eQtOv7eD6H20m0zWo+xhl+DuKQqGCiyKfHcdLqZ0so4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Z+2Fm7wwv7pftpRopJXHrpObwj0TP/3NmqLaelwYeo+eA4o0rA6wMaeTc7qy9Gq7b
-	 QHa1OrKorzGWIuscuvHDw6lPkmXDJTiEIazepxtB3vrJJDa1UpN/P6fh4zmfOZgxIs
-	 C8sO/wpBM3HaJDR1b/3h26B7XekxFkNm+wdhbIgyGR2wC1i19QQiu0jqyCTdO73ASw
-	 IBDbUS25v6zVejLSFXRBa6S/S0vewj0T8hjobtRqRzTJMUyZe2witVYNi3XRAOUKrz
-	 j1U6/wYcSY0stnD6d+sTsR5JsT/RvQT9onUA9SJpR0obA7MA2yJXDromjVJetKzYft
-	 /bctKsJE9feeA==
+	b=KeQoNOP2/AbBnkNeFbs6XXLyde3Oo327CnQL++APk9XwN5MCbaW/Qh1rTloh9A6Nt
+	 Gn3aUI8A7IY+4ooXj8sdx5yq1De/+RNBK8Bh/xScHsfxmAXI3x+Pr9nKNY6fZeG1nM
+	 f9eOjDMBhb36++NBYBApMj7BdNSEvS8vBHvQvdnri/FTP5U7pCqkJ4HRQpNzw701HN
+	 SaS4B7B4HirV+fPe1PbSpvmRPXMZtZNGzl5RPy4YnMtLgqryF/5zZ1NjBZS1T++Lgz
+	 HobDVTwXGEZPQCMQ2ykRxdBZpoE5EMlVIcLam5TkXxifdVGpxyO1dXWHmqy1ux6aLu
+	 yW+D8TQZT9EBw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 07/13] ARM: imx: remove i.MX31 SoC support
+Subject: Re: [PATCH 05/13] ARM: orion/dove/mv78xx0: remove all board files
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Arnd Bergmann" <arnd@kernel.org>
-Cc: conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260908152808.3928630-8-arnd@kernel.org>
+Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org, dlemoal@kernel.org, linux-rtc@vger.kernel.org, neil.armstrong@linaro.org, vkoul@kernel.org, "Alexandre
+ Belloni" <alexandre.belloni@bootlin.com>, olteanv@gmail.com, Frank.Li@kernel.org, linux-pci@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, cassel@kernel.org, linux-ide@vger.kernel.org, linux-watchdog@vger.kernel.org
+In-Reply-To: <20260908152808.3928630-6-arnd@kernel.org>
 References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-8-arnd@kernel.org>
+ <20260908152808.3928630-6-arnd@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 16:05:11 +0000
-Message-Id: <20260908160512.0FE271F00A3D@smtp.kernel.org>
+Date: Tue, 08 Sep 2026 16:11:25 +0000
+Message-Id: <20260908161125.E4A331F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] Removal of SOC_IMX31 leaves dangling references in Kconfig files=
- and orphaned code, violating Kconfig guidelines.
+- [Low] Orphaned MAINTAINERS entry for the TS-78xx platform.
+- [Low] Legacy IRQ, MPP, and GPIO implementations are now unreachable dead =
+code and unnecessarily compiled.
 --
 
-commit 9fd3329c9e9c5af4c9aa12b23d3a92bfd1566e55
+commit 67c50c71bc1677d3a7c7538373463163afb7b062
 Author: Arnd Bergmann <arnd@arndb.de>
+Subject: ARM: orion/dove/mv78xx0: remove all board files
 
-ARM: imx: remove i.MX31 SoC support
+This commit removes the legacy board files for the Orion, Dove, and MV78xx0=
+=20
+platforms. These files were retained in 2022 due to support in Debian/OpenW=
+RT,=20
+which is now gone.
 
-This commit removes support for the Freescale i.MX31 SoC based on the
-ARM1136r0 CPU core, which is causing extra maintenance effort. The device
-trees, configuration files, and core mach-imx code for i.MX31 are deleted
-while preserving support for the related i.MX35 SoC.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fdd75b73bf293..2bb036e8ddcd9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3080,8 +3080,6 @@ F:	Documentation/devicetree/bindings/arm/marvell/ma=
+rvell,orion5x.yaml
+>  F:	Documentation/devicetree/bindings/soc/dove/
+>  F:	arch/arm/boot/dts/marvell/dove*
+>  F:	arch/arm/boot/dts/marvell/orion5x*
+> -F:	arch/arm/mach-dove/
+> -F:	arch/arm/mach-mv78xx0/
+>  F:	arch/arm/mach-orion5x/
+>  F:	arch/arm/plat-orion/
+>  F:	drivers/bus/mvebu-mbus.c
 
-> diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
-> index e2fc890554631..52387fe2a0573 100644
-> --- a/arch/arm/Kconfig.debug
-> +++ b/arch/arm/Kconfig.debug
-> @@ -424,13 +424,6 @@ choice
->  		  Say Y here if you want kernel low-level debugging support
->  		  on i.MX28.
+[Severity: Low]
+Since all the board files like arch/arm/mach-orion5x/ts78xx-setup.c are
+removed in this patch, should the MAINTAINERS entry for the TS-78xx platform
+further down in this file also be removed?
+
+The pattern F: arch/arm/mach-orion5x/ts78xx-* now points to deleted files,
+which leaves an orphaned entry for Alexander Clouter.
+
+[ ... ]
+
+> diff --git a/arch/arm/mach-orion5x/Makefile b/arch/arm/mach-orion5x/Makef=
+ile
+> index 6f54d7fef27a7..7e9634e043185 100644
+> --- a/arch/arm/mach-orion5x/Makefile
+> +++ b/arch/arm/mach-orion5x/Makefile
+> @@ -2,15 +2,6 @@
+>  ccflags-y :=3D -I$(srctree)/arch/arm/plat-orion/include
 > =20
-> -	config DEBUG_IMX31_UART
-> -		bool "i.MX31 Debug UART"
-> -		depends on SOC_IMX31
-> -		help
-> -		  Say Y here if you want kernel low-level debugging support
-> -		  on i.MX31.
-> -
+>  obj-y				+=3D common.o pci.o irq.o mpp.o
+> -obj-$(CONFIG_MACH_KUROBOX_PRO)	+=3D kurobox_pro-setup.o
+> -obj-$(CONFIG_MACH_TERASTATION_PRO2)	+=3D terastation_pro2-setup.o
 
-[Severity: Medium]
-Can the removal of CONFIG_DEBUG_IMX31_UART leave obsolete preprocessor bloc=
-ks
-in header files?
+[Severity: Low]
+Are irq.o and mpp.o now completely unreachable code?
 
-In arch/arm/include/debug/imx-uart.h, there is still a check for this
-symbol:
-
-#elif defined(CONFIG_DEBUG_IMX31_UART)
-#define UART_PADDR      IMX_DEBUG_UART_BASE(IMX31)
-
-Could this block now be dead code because the config symbol no longer exist=
-s?
+Since all the board files that called into these APIs have been removed,
+it appears these objects are now unnecessarily compiled into the kernel
+image. Should they be removed from obj-y here?
 
 [ ... ]
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 3f0521c652cb0..77704c6a70bad 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -39,17 +39,6 @@ if ARCH_MULTI_V6
+
+> diff --git a/arch/arm/plat-orion/Makefile b/arch/arm/plat-orion/Makefile
+> index e8c7580df8caf..dfde39cdd992b 100644
+> --- a/arch/arm/plat-orion/Makefile
+> +++ b/arch/arm/plat-orion/Makefile
+> @@ -5,5 +5,5 @@
+>  ccflags-y :=3D -I$(src)/include
 > =20
->  comment "ARM1136 platforms"
-> =20
-> -config SOC_IMX31
-> -	bool "i.MX31 support (DEPRECATED)"
-> -	depends on !SMP
-> -	select CPU_ARM1136R0
-> -	select MXC_AVIC
-> -	help
-> -	  This enables support for Freescale i.MX31 processor
-> -
-> -	  This SoC is scheduled for removal in early 2027,
-> -	  since it uses the ARM1136r0 CPU revision.
-> -
+>  orion-gpio-$(CONFIG_GPIOLIB)      +=3D gpio.o
+> -obj-$(CONFIG_PLAT_ORION_LEGACY)   +=3D irq.o pcie.o time.o common.o mpp.o
+> +obj-$(CONFIG_PLAT_ORION_LEGACY)   +=3D irq.o pcie.o mpp.o
+>  obj-$(CONFIG_PLAT_ORION_LEGACY)   +=3D $(orion-gpio-y)
 
-[Severity: Medium]
-Could the removal of SOC_IMX31 orphan the hardware random number generator
-driver?
+[Severity: Low]
+Similarly, does this leave irq.o, mpp.o, and the orion-gpio-y objects as de=
+ad
+code as well?
 
-In drivers/char/hw_random/Kconfig, HW_RANDOM_MXC_RNGA currently has:
-
-config HW_RANDOM_MXC_RNGA
-	tristate "Freescale i.MX RNGA Random Number Generator"
-	depends on SOC_IMX31 || COMPILE_TEST
-
-Since SOC_IMX31 is no longer defined, this driver can now only be selected
-via COMPILE_TEST.
-
-Is there also a risk of leaving dead code in the clock driver?
-
-In drivers/clk/imx/Kconfig, CLK_IMX31 has:
-
-config CLK_IMX31
-	def_bool SOC_IMX31
-
-Could this convert the driver code into uncompilable dead code since
-SOC_IMX31 is removed?
-
-[ ... ]
-> diff --git a/arch/arm/mach-imx/mm-imx3.c b/arch/arm/mach-imx/mm-imx3.c
-> index 9b0b014d7fe27..42e73518004ae 100644
-> --- a/arch/arm/mach-imx/mm-imx3.c
-> +++ b/arch/arm/mach-imx/mm-imx3.c
-[ ... ]
-> -void __init mx31_map_io(void)
-> -{
-> -	iotable_init(mx31_io_desc, ARRAY_SIZE(mx31_io_desc));
-> -}
-[ ... ]
-> -void __init imx31_init_early(void)
-> -{
-> -	struct device_node *np;
-> -
-> -	mxc_set_cpu_type(MXC_CPU_MX31);
-> -	arch_ioremap_caller =3D imx3_ioremap_caller;
-> -	arm_pm_idle =3D imx31_idle;
-> -	np =3D of_find_compatible_node(NULL, NULL, "fsl,imx31-ccm");
-> -	mx3_ccm_base =3D of_iomap(np, 0);
-> -	of_node_put(np);
-> -	BUG_ON(!mx3_ccm_base);
-> -}
-
-[Severity: Medium]
-Are there dangling declarations left behind in the subsystem headers?
-
-In arch/arm/mach-imx/common.h, these declarations still exist:
-
-void mx31_map_io(void);
-void imx31_init_early(void);
-
-Could these dead declarations be removed as well?
+Since their corresponding entry points in the board files were deleted,
+could these also be removed from the build?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
-630-1-arnd@kernel.org?part=3D7
+630-1-arnd@kernel.org?part=3D5
