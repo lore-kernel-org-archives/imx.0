@@ -1,107 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0795251120E
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 09:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4107A4EBAF8
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 09:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788858253; cv=none; b=gEzBBLwwtUZM8WsUF3A54eVZtv/nt+tWmzfJsCFhxIHfFDMWQJpMMD5KR8SjJWDE/9gTE03eLnul3nmpFxtJq9YtSfzJtMWBzMqgMAolqAWFfaZaI/3uNuTmxNj+Fw6qGAKsRUcS/l4CkHc2G2xxXixGhtrtxtmn4chl7N2Ey9A=
+	t=1788858477; cv=none; b=Zxy8eRN84mMo8cqZZkZA85UZMc2fdkax2saXukXHyNyyyDVoUZBs0zJWHnC7a3k6J2UxtuQa+Us9+xTOzwaIFCX9atzFrO4yL36ElbIzp3DzXXzoXjeOv3WqyForPaHEklxU/aUnAVizgtwVv2S4FvTmFo9N9wuhIYT2DaE6khQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788858253; c=relaxed/simple;
-	bh=AEguJwHGoHfAigYwFm4Z58YJCMAcAJ15om+VyScJ5eM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AX/Q3CoAnr9hKMWO45s6sNZylWGCSBifIe0DW8/DGTPXqziZBuKJa6LHdceFaXjmGjrvbUoYdnYy/quekI+mmF29KOiCprVORXYyoOpDIBMz0RDolFtjN+WOEwzRlNHrc/GVYzIPXFlR0Pk2YazxmMW97pb78SAiChLB+v1pcXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0h589ZV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788858477; c=relaxed/simple;
+	bh=eI7mygHg5Pp/gueDQ8IVUiOrphdwqMR4YUjhIN93PJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cnP61P8LW3MzFBKE95fBw3CHTgONTfoAz1H9p1gy8Fx7q5pCyZG3KaHgFkQNB24x6xB7d448V2djzrQXQqBzN/q4b+MCrUhPVhnrgdYypBjTEympZgftWboUXtcYNwxvcNFZfywnqiL7AgguvXSFAQnj8kl7OMn1Ehh7lMZyVg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=G0KAhgIw; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0h589ZV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F241F00A3F;
-	Tue,  8 Sep 2026 09:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788858247;
-	bh=H/JIf1NQjIb4TKJ8HaRrI6/3Q6deTgypMKedqqV6Ryo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S0h589ZV4AEZ/CiNIf7DQhXV475vatv/xrvmCl5ggpO486l+4dhuZU6IIeBQuMP0I
-	 hFA+oBn7YvExTPY4cZ/qeF1JWzo9X5vphAeo288ATXWZrj78LZ9A+E834N97+8pVSb
-	 0nlsZWeMaBjhlPz5UuWBM+fg+nh5l7wrhs9yGANIa6PsBrsieQmmetK9+Ed7LFfZpS
-	 SXqqgRHDcu0IV02ol/g6Nu5uJPiOJjROIAZyzexzr8WGurA6piJ89wLX/0/EVr8UXO
-	 n9q/ZaLcpPYMqo4jvkQGIqGExduI5yb5CbKeXhccFEnu1cZd/Au7bY15UgSX1+2tHx
-	 BiKwznyYr4y7w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] phy: phy-snps-eusb2: fix FSEL_48_MHZ_VAL definition
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: neil.armstrong@linaro.org, linux-phy@lists.infradead.org, Frank.Li@kernel.org, olteanv@gmail.com, vkoul@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260908085953.3315953-1-xu.yang_2@oss.nxp.com>
-References: <20260908085953.3315953-1-xu.yang_2@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 09:04:06 +0000
-Message-Id: <20260908090406.A0F241F00A3F@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="G0KAhgIw"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d5cad1a6baso37979775ad.3
+        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 02:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1788858474; x=1789463274; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IMi1Y04Cowkyywav7yYVH94ClrmOV8qsvBcUcq9aXsA=;
+        b=G0KAhgIwDl5uKePDGlLU39ea9JwopKpi4bVH7aANQ8LdNLrr6XjvYYlVNEsgRG3CFs
+         JCL2e5LXS5HkVZ+fHXmVbdufEIT+GKovE7nKgvuI4PuYGjZwtZ+4DHWxXW03DL821LjC
+         smEEKze0BLTF6y+x05uE2MrxR40TO34JYKU54=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788858474; x=1789463274;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IMi1Y04Cowkyywav7yYVH94ClrmOV8qsvBcUcq9aXsA=;
+        b=TS3Cg50XNRRPMvM1T+SqeYwmYp7bvD+lwGH41opzz3m5/OIn7mrItvCc1KcsQHzGdj
+         k86Kkecu9PWWPuXeoXsTCtC6POZgLnYSav/9wtB8Utxv4CT1dl0TYrie1kfC8ddqtgmp
+         OuMKAs4u6dcf4H/3bd+WMpoVUfr6T5CpVSuTCpCbNpj0DElB1EmwTHz1QsAC1g8UcpIT
+         GjqIrnuMPPqSCwcX1B1oOkPGNHoks6Gnr/8aDZBqV4+RGWnkoOwO6eRWgklHN2/aCQ1m
+         PprXzEUHp+JwK37KgLfQLEAtKc7xj/oapidQ+nIOBm46aX1Odkpzpo/Q3XlMeHHiSzHd
+         I56A==
+X-Forwarded-Encrypted: i=1; AKwUvBwrBL1RviRRgF8LEhY2Qsf07wM9gVM5vBQGA0eacmyuvSsEOkxUoJ1cnTnt5RqJSBl6jtI=@lists.linux.dev
+X-Gm-Message-State: AFuF++mxIF2iYIC/sc3+vXIXckrBfTz2QQIE2Uw5rJ79/uoO6EblUxgs
+	BJcfFXFzWK+mY0l/RUNyWfAeq9eD0mN8NIo2HrCEQrqRXDXCJrLf53VkHYKo2m8J6g==
+X-Gm-Gg: AYBFou0s9f+HA9JP9cwtRiGb0cVmWig/H/tkHy5nX5+lPIsMCV1yqfL+iy0myXbwplw
+	3TtiM3WaZFAZZu1Q4XMH8IO6OK/6qYrRyXDVn1G+JgTVfskrdQjz6DyGMQjfhecRPLo+18dvQhP
+	IHDISGSMz47jl1xDOU07HS8jcre86V8BMFze6HenmXiQC9xPv6Q/Af3llPGXPjjc5kxO2uPv30n
+	zsy3CcwLY4OiDYYmhoqFWs7pn2Lb99EXgIBbVONqMvcsjKTPwAwKDdJjhT6lfmuiWGqKs5REMBf
+	fDw0vpPmTDVJOH9bufomd6zVyDCI4hv01giLbcJDm0Yb6T5BAyF8QEVko0GvqVn2lh/UxuDylp3
+	HZ1Xdks/pC3uSc0nsuf0LSsUOW9QIpYktVdiQGL7L4sba0+iPXiee0jO5P5hDdEcYjjZrWyynkY
+	76DN5+WjBS40DvCjiFcobdpCQUMF9Pd6JGfrHAUlCQSTbIt09lcnGz9Pzs9AoaCj+n6z+66MNfw
+	3w/5FrAeCjoH87eLV9gyYC2e95ObheokbcUAdkCNMAVy8E=
+X-Received: by 2002:a17:90a:d010:b0:38e:bbf1:de3f with SMTP id 98e67ed59e1d1-39b26272ef9mr45630109a91.12.1788858474627;
+        Tue, 08 Sep 2026 02:07:54 -0700 (PDT)
+Received: from wenst-7875.tpe.corp.google.com ([2a00:79e0:201d:8:e541:8c2f:4ce9:823a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b4b72f62esm19718804a91.5.2026.09.08.02.07.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 02:07:53 -0700 (PDT)
+From: Chen-Yu Tsai <wenst@chromium.org>
+To: Liu Ying <victor.liu@nxp.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Chen-Yu Tsai <wenst@chromium.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] drm: Add and use drm_fb_dma_get_gem_clipped_addr() helper
+Date: Tue,  8 Sep 2026 17:07:39 +0800
+Message-ID: <20260908090745.1089143-1-wenst@chromium.org>
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hi,
 
-Pre-existing issues:
-- [High] Missing FIELD_PREP() for EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK cause=
-s bits 11:8 to always evaluate to 0, breaking the 48MHz PLL configuration.
---
+This series adds a helper to retrieve the buffer starting address of a
+"clipped" framebuffer. This contrasts with drm_fb_dma_get_gem_addr(),
+which gives the address of the full buffer.
 
-commit 8f10cea005e7c30e78e3855b1b3db039eba68023
-Author: Xu Yang <xu.yang_2@nxp.com>
+Some drivers program their hardware with clipped dimensions, so they
+should be using the clipped buffer address as well, unless the hardware
+can advance the scanout directly. (Side note: many drivers still use
+the non-clipped dimensions.)
 
-phy: phy-snps-eusb2: fix FSEL_48_MHZ_VAL definition
-   =20
-According to Synopsys eUSB2 PHY Databook, FSEL_48_MHZ_VAL should be 0x6
-for supported 48 MHz reference clock.
+The sun4i driver was recently incorrectly converted to use the unclipped
+drm_fb_dma_get_gem_addr() helper. This broke offsets into subsampled
+pixel groups, but also exposed the mismatch between the dimensions used
+vs the buffer address.
 
-> diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2.c
-> index af4fa17ac6cbc..3cb18d6ebc1d2 100644
-> --- a/drivers/phy/phy-snps-eusb2.c
-> +++ b/drivers/phy/phy-snps-eusb2.c
-> @@ -21,7 +21,7 @@
->  #define FSEL_20_MHZ_VAL			(0x1)
->  #define FSEL_24_MHZ_VAL			(0x2)
->  #define FSEL_26_MHZ_VAL			(0x3)
-> -#define FSEL_48_MHZ_VAL			(0x2)
-> +#define FSEL_48_MHZ_VAL			(0x6)
 
-[Severity: High]
-This is a pre-existing issue, but does the missing FIELD_PREP() prevent the
-48MHz configuration from working on Exynos devices?
+Patch 1 adds the new helper to return the buffer address based on
+clipped coordinates.
 
-When using the 48MHz reference clock, EXYNOS_DIV_11_8_48_MHZ_VAL is 0x1.=20
-However, in exynos_eusb2_ref_clk_init(), the PLL config is written without=
-=20
-shifting:
+Patch 2 switches the sun4i driver to the new helper, and fixes the
+luma plane buffer address offset for subsampled YUV formats.
 
-drivers/phy/phy-snps-eusb2.c:exynos_eusb2_ref_clk_init() {
-	snps_eusb2_hsphy_write_mask(phy->base, EXYNOS_USB_PHY_CFG_PLLCFG1,
-				    EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK,
-				    config->div_11_8_val);
-}
+Patch 3 converts the imx/dc driver to use the new helper. This fixes a
+mismatch between the programmed coordinates and the buffer address.
 
-Because snps_eusb2_hsphy_write_mask() applies the mask bitwise:
+Patch 4 replaces the open coded buffer address calculation in the
+imx/dcss driver with the new helper.
 
-drivers/phy/phy-snps-eusb2.c:snps_eusb2_hsphy_write_mask() {
-	reg &=3D ~mask;
-	reg |=3D val & mask;
-}
 
-Since val is 0x1 and mask is EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK (0x0F00),
-the bitwise AND evaluates to 0, leaving bits 11:8 zeroed.
+Please have a look.
 
-Should FIELD_PREP() be used here to ensure the 48MHz configuration applies
-properly?
 
-> =20
->  #define EXYNOS_USB_PHY_CFG_PLLCFG0	(0x8)
->  #define PHY_CFG_PLL_FB_DIV_19_8_MASK	GENMASK(19, 8)
+Thanks
+ChenYu
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908085953.3315=
-953-1-xu.yang_2@oss.nxp.com?part=3D1
+
+Chen-Yu Tsai (4):
+  drm/fb-dma-helper: Add drm_fb_dma_get_gem_clipped_addr()
+  drm/sun4i: layers: Fix VI buffer address for clipped offsets
+  drm/imx/dc: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+  drm/imx/dcss: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+
+ drivers/gpu/drm/drm_fb_dma_helper.c    | 63 +++++++++++++++++++-------
+ drivers/gpu/drm/imx/dc/dc-plane.c      |  4 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c  | 34 ++++++--------
+ drivers/gpu/drm/sun4i/sun8i_ui_layer.c |  2 +-
+ drivers/gpu/drm/sun4i/sun8i_vi_layer.c | 16 ++++++-
+ include/drm/drm_fb_dma_helper.h        |  4 ++
+ 6 files changed, 83 insertions(+), 40 deletions(-)
+
+-- 
+2.55.0.979.g7e5102b832-goog
+
