@@ -1,21 +1,21 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D32544898
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 13:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FF52741B6
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788875612; cv=none; b=jHrGArIm/J+uvsuhJwd8EyqKy3PgUk5QMZwRKUZa5c2xE76uZn/jdPDVqUVaopxOSYlfAXNRF2ZAB2wjWn2HqZPEXsBIvasqtrPj9KdO8mVsCITswpp9zM+CBB0FMp9d4iY4BRI9iSXfr8SO6dBgn7whiGFoCiyerK+Wv/hgEfQ=
+	t=1788875995; cv=none; b=Z931sQinyx4wqiY98RM4/NWMaUnFZafiqNw08+aeNUI8MmcKOxO67FVhtXlDIetXo0kCXLXKlSmGuIz1TM+XftbYGzgGQ81Xm9Q/ImM5sXXbKtRt9QVXumo6tDtLs4AlflYvMUNfuyH/BFndFDV0LWAAJ3DhW9mRaoNaJkZvyxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788875612; c=relaxed/simple;
-	bh=/Vg9lWTqi4wnFHLehh9gX4MNk7C0M9tMBtmIJXznjpk=;
+	s=arc-20240116; t=1788875995; c=relaxed/simple;
+	bh=jD0cM7p+54y67H5BoqsAB8Z8ZP1xOOXL1QBUpmp5eqc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rq+ZJykIWJE6QZEMOJLDl+toPnN1OINpxjmrxWmYT9WAWyBqTXSMwM39pr1R9nRBqVlrYNU3vlfVH+ncwmnxvl91NJ00etTAZRO7pTXOhZPga6G4sfhyJjUvX8RrqCFopvGN+nQy+h2tIHfgmyZQpC2Znr9VW8a8Ss6BTF9CSGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=NjRa8Qcr; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=Y3rnAp1NpVuWuOExq6SmekRZNJv8JV8bwb//CBNlhj8pneYiDmGFMa8BLvjxU9PNFCbdDcjvv0Lvla3an6NUfhac4rq6f4SJRv4QBPU/YxHDo4sQiS16mg2jC7Y0Rcye9yCKbIMlsjeFTT8/yeSpUoTV4wr8quYzAcyIyFLI3gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=woFMSLeA; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="NjRa8Qcr"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="woFMSLeA"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	t=1788875589;
@@ -23,15 +23,15 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gQ7tlYQD+juZcuDPbtM9CSBLnEhqYupQN8u5lqSsZ7w=;
-	b=NjRa8QcrWnZMwQQAw8Fc6LZsyJgeuKd7ceRtEbWWmN9ezRrbBC2a1gTyER/2zOILOY2TkW
-	/CbygRkELVkk3kdC5MAJz7ATy8Url0NQQhLDiB82HmPadV+E/QTC21oDdGR+xxFDn3MTxv
-	dpqN0a2y26voVssePNZzOFO+8MCfNFT8v49YIKBHle31Nh03XQ5R2CfUl1W+BGF7NcFkNi
-	UcVOr6DMb3kJHpmZQxGMzQYF8o4I2yS3yfbg28gLUhA8Qp21JCmKgNBy9xpYTU5e6VyC9+
-	eSJAzNmfRIlvx87i0gAcqdQWDGgK1aEineWBlWPhyB7KTdRTcHT4nyzss94eEQ==
-Date: Tue, 08 Sep 2026 15:51:54 +0200
-Subject: [PATCH 7/9] arm64: dts: imx8mm-kontron: Add GPIO labels and
- comments
+	bh=W6S6dPizeTTA5G9J/3AscJ1/w+xNcAj+7ZW10z8lG2o=;
+	b=woFMSLeAghhxAzZ6H71b75YnVKqS6FHDCQYI9AjrOOloWvDolEzuufaXfTySFCNYUd/Bdu
+	uCZjCJRGqhrXBg1wrqovDZegUuUHajFlH23pzbUAcVJBorwBSWLlVCFq3WwKJrpP1fQ9uf
+	Sk1cAKoJPHhDj4ir2Q8yvDFumDHrHU1VR/ik655D1m3rUGo+7fTtoIQaxUV90cODrizlVK
+	0iLxS28peLIOtPjb7PYZHUZ0IW3EFp58suLUS4GEYIZJ3HRNftO2PbdonneVwtDNhgWxuE
+	MvPETE+jo40AhsoIPD1vmdDdNY5IsBSe0pfmNGTQWpk+xMK+bU+N9s9dh4fb+A==
+Date: Tue, 08 Sep 2026 15:51:50 +0200
+Subject: [PATCH 3/9] ARM: dts: imx6ul-kontron-bl-common: Fix USB OTG1 ID
+ pin configuration
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-7-4d0e8a75db79@kontron.de>
+Message-Id: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-3-4d0e8a75db79@kontron.de>
 References: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-0-4d0e8a75db79@kontron.de>
 In-Reply-To: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-0-4d0e8a75db79@kontron.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,236 +52,37 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Frieder Schrempf <frieder.schrempf@kontron.de>, 
  Oualid Derouiche <oualid.derouiche@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6947;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=902;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=tLR/ApaxeJaUnZcSY/lBN9zmpG+rQxYFy6C/HB1ebwY=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWuBsPOy+/5P17zQe8j0h2ttzxyx/jnn+Muj2J5HVO3ur
- go8L9PVUcrCIMbFICumyCLFb/Ha1izWR/5YdRTMHFYmkCEMXJwCMJF5kxgZLulMmTeBQ0ulJyQl
- tDb88/b6D6rOZzVF+A0SLrxeyTbxEyPD/3tucnfzvPNtu+f3HfaN2nR9SViatYDtFav4s4HhV6T
- 5AA==
+ bh=iCuZlno55Yjn0MkpffeLuEkr+4wHGhog/vQ/6EFeyBM=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWuBsFOl8dqEt1/mTc+6FBC4OljVTXHnkymXRG8/Tm3r+
+ JyVevtTRykLgxgXg6yYIosUv8VrW7NYH/lj1VEwc1iZQIYwcHEKwETcjBgZ7rGpqvXytFdeOPjz
+ r/eqKm61R57fmn21jTRncMy5U/frOcNvlu/vPBdVidvnLHBNvGSxcWHhueUil8/z7DhTuXzXmkP
+ 8XAA=
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
 From: Oualid Derouiche <oualid.derouiche@kontron.de>
 
-Describe the GPIOs and their purpose using labels and comments.
+Add the missing MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID pinmux entry so
+the USB OTG ID pin is correctly routed and OTG can be used.
 
 Signed-off-by: Oualid Derouiche <oualid.derouiche@kontron.de>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- .../arm64/boot/dts/freescale/imx8mm-kontron-bl.dts | 81 +++++++++++++++-------
- 1 file changed, 55 insertions(+), 26 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
-index 1f3d0577f10c..72588af057d2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
-@@ -97,6 +97,7 @@ reg_vdd_5v: regulator-5v {
- 	};
- };
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+index 65c5f4450c36..0658584c9f11 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+@@ -357,6 +357,7 @@ MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
  
-+/* CAN */
- &ecspi2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_ecspi2>;
-@@ -124,6 +125,7 @@ &ecspi3 {
- 	status = "okay";
- };
- 
-+/* ETH0 */
- &fec1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
-@@ -163,9 +165,24 @@ led@1 {
- 	};
- };
- 
-+/* DIO */
-+&gpio1 {
-+	gpio-line-names = "", "", "", "DOUT1",
-+			  "", "", "DIN1", "DOUT2",
-+			  "DIN2", "DOUT3", "DIN3", "DOUT4";
-+};
-+
- &gpio4 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio4>;
-+	gpio-line-names = "", "CAN_ADR0", "", "",
-+			  "CAN_ADR1", "CAN_ADR2", "CAN_ADR3", "LED6",
-+			  "LED4", "LED5", "", "",
-+			  "", "", "DSI_MUX_SEL", "DSI_MUX_OE",
-+			  "HDMI_IRQ", "LED1", "LED3", "LED2",
-+			  "", "", "", "",
-+			  "", "ETH_IRQ", "LVDS_EN", "PHY_RST",
-+			  "CAN_IRQ", "UART2_RTS";
- 
- 	dsi_mux_sel_hdmi: dsi-mux-sel-hdmi-hog {
- 		gpio-hog;
-@@ -190,6 +207,10 @@ dsi-mux-oe-hog {
- 	};
- };
- 
-+&gpio5 {
-+	gpio-line-names = "", "", "DIN4";
-+};
-+
- &i2c3 {
- 	clock-frequency = <400000>;
- 	pinctrl-names = "default";
-@@ -274,6 +295,7 @@ &pwm2 {
- 	status = "okay";
- };
- 
-+/* RS232 */
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
-@@ -281,6 +303,7 @@ &uart1 {
- 	status = "okay";
- };
- 
-+/* RS485 */
- &uart2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart2>;
-@@ -324,6 +347,7 @@ usbnet: ethernet@1 {
- 	};
- };
- 
-+/* SD-card */
- &usdhc2 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc2>;
-@@ -341,13 +365,13 @@ &iomuxc {
- 
- 	pinctrl_adv7535: adv7535grp {
+ 	pinctrl_usbotg1: usbotg1grp {
  		fsl,pins = <
--			MX8MM_IOMUXC_SAI1_TXD4_GPIO4_IO16		0x19
-+			MX8MM_IOMUXC_SAI1_TXD4_GPIO4_IO16		0x19 /* HDMI_IRQ */
- 		>;
- 	};
- 
- 	pinctrl_can: cangrp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x19
-+			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x19 /* CAN_IRQ */
- 		>;
- 	};
- 
-@@ -356,7 +380,7 @@ pinctrl_ecspi2: ecspi2grp {
- 			MX8MM_IOMUXC_ECSPI2_MISO_ECSPI2_MISO		0x82
- 			MX8MM_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI		0x82
- 			MX8MM_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK		0x82
--			MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x19
-+			MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x19 /* ECSPI2_CS1 */
- 		>;
- 	};
- 
-@@ -365,7 +389,7 @@ pinctrl_ecspi3: ecspi3grp {
- 			MX8MM_IOMUXC_UART2_RXD_ECSPI3_MISO		0x82
- 			MX8MM_IOMUXC_UART1_TXD_ECSPI3_MOSI		0x82
- 			MX8MM_IOMUXC_UART1_RXD_ECSPI3_SCLK		0x82
--			MX8MM_IOMUXC_UART2_TXD_GPIO5_IO25		0x19
-+			MX8MM_IOMUXC_UART2_TXD_GPIO5_IO25		0x19 /* ECSPI3_CS1 */
- 		>;
- 	};
- 
-@@ -385,40 +409,45 @@ MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x1f
- 			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x91
- 			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
- 			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
--			MX8MM_IOMUXC_SAI2_MCLK_GPIO4_IO27		0x19 /* PHY RST */
--			MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25		0x19 /* ETH IRQ */
-+			MX8MM_IOMUXC_SAI2_MCLK_GPIO4_IO27		0x19 /* PHY_RST */
-+			MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25		0x19 /* ETH_IRQ */
- 		>;
- 	};
- 
- 	pinctrl_gpio_led: gpioledgrp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_NAND_READY_B_GPIO3_IO16		0x19
--			MX8MM_IOMUXC_SAI1_RXD5_GPIO4_IO7		0x19
--			MX8MM_IOMUXC_SAI1_RXD6_GPIO4_IO8		0x19
--			MX8MM_IOMUXC_SAI1_RXD7_GPIO4_IO9		0x19
--			MX8MM_IOMUXC_SAI1_TXD5_GPIO4_IO17		0x19
--			MX8MM_IOMUXC_SAI1_TXD6_GPIO4_IO18		0x19
--			MX8MM_IOMUXC_SAI1_TXD7_GPIO4_IO19		0x19
-+			MX8MM_IOMUXC_SAI1_RXD5_GPIO4_IO7		0x19 /* LED6 */
-+			MX8MM_IOMUXC_SAI1_RXD6_GPIO4_IO8		0x19 /* LED4 */
-+			MX8MM_IOMUXC_SAI1_RXD7_GPIO4_IO9		0x19 /* LED5 */
-+			MX8MM_IOMUXC_SAI1_TXD5_GPIO4_IO17		0x19 /* LED1 */
-+			MX8MM_IOMUXC_SAI1_TXD6_GPIO4_IO18		0x19 /* LED3 */
-+			MX8MM_IOMUXC_SAI1_TXD7_GPIO4_IO19		0x19 /* LED2 */
- 		>;
- 	};
- 
- 	pinctrl_gpio: gpiogrp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x19
--			MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7		0x19
--			MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x19
--			MX8MM_IOMUXC_GPIO1_IO11_GPIO1_IO11		0x19
--			MX8MM_IOMUXC_GPIO1_IO06_GPIO1_IO6		0x19
--			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19
--			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10		0x19
--			MX8MM_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x19
-+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x19 /* DOUT1 */
-+			MX8MM_IOMUXC_GPIO1_IO06_GPIO1_IO6		0x19 /* DIN1 */
-+			MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7		0x19 /* DOUT2 */
-+			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19 /* DIN2 */
-+			MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x19 /* DOUT3 */
-+			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10		0x19 /* DIN3 */
-+			MX8MM_IOMUXC_GPIO1_IO11_GPIO1_IO11		0x19 /* DOUT4 */
-+			MX8MM_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x19 /* DIN4 */
- 		>;
- 	};
- 
- 	pinctrl_gpio4: gpio4grp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14		0x19
--			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15		0x19
-+			/* CAN address DIP switches 1-4 */
-+			MX8MM_IOMUXC_SAI1_RXC_GPIO4_IO1			0x19 /* CAN_ADR0 */
-+			MX8MM_IOMUXC_SAI1_RXD2_GPIO4_IO4		0x19 /* CAN_ADR1 */
-+			MX8MM_IOMUXC_SAI1_RXD3_GPIO4_IO5		0x19 /* CAN_ADR2 */
-+			MX8MM_IOMUXC_SAI1_RXD4_GPIO4_IO6		0x19 /* CAN_ADR3 */
-+			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14		0x19 /* DSI_MUX_SEL */
-+			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15		0x19 /* DSI_MUX_OE */
- 		>;
- 	};
- 
-@@ -444,7 +473,7 @@ MX8MM_IOMUXC_SPDIF_RX_PWM2_OUT			0x19
- 
- 	pinctrl_sn65dsi84: sn65dsi84grp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26		0x19
-+			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26		0x19 /* LVDS_EN */
- 			MX8MM_IOMUXC_SD2_WP_GPIO2_IO20			0x19
- 		>;
- 	};
-@@ -463,13 +492,13 @@ pinctrl_uart2: uart2grp {
- 			MX8MM_IOMUXC_SAI3_TXFS_UART2_DCE_RX		0x0
- 			MX8MM_IOMUXC_SAI3_TXC_UART2_DCE_TX		0x0
- 			MX8MM_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B		0x0
--			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29		0x19
-+			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29		0x19 /* UART2_RTS */
- 		>;
- 	};
- 
- 	pinctrl_usb_eth2: usbeth2grp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_NAND_CE1_B_GPIO3_IO2		0x19
-+			MX8MM_IOMUXC_NAND_CE1_B_GPIO3_IO2		0x19 /* ETH_RST */
- 		>;
- 	};
- 
-@@ -481,7 +510,7 @@ MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d0
- 			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
- 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
- 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
--			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
-+			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19 /* SD2_CD */
- 			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
+ 			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0x1b0b0
  		>;
  	};
 
