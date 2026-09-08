@@ -1,180 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0771154CF72;
-	Tue,  8 Sep 2026 15:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072905803A4;
+	Tue,  8 Sep 2026 15:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788882740; cv=none; b=PUENOhj64z+De2k+kBQNXgmnE3ztaF2ra+HwWpSvwKGPWZxHjXuvZAc7ZXafPll7L+5LinMa558eC+GtFWA4/5/VIt+BmbM4rGLfVia48IPX4T9xuhFDtjuea53QUD9h56Hnlxr++kq7Tzyb75zXz4X18QU7aS6Chur5ye1Vhko=
+	t=1788882887; cv=none; b=mP1e9TIWTUCCPQurzCV6fAMI8VYYJUucjY6aAJfQMQCc3dJ7/3wxNsaGj/hfr71FTE+ezcCw/9zf7XQEkCZPzl9J17SsCJJ9C1kciunQsnjpQaTtsaUD48EpeFS12ngRTk0gQYrG85TSw3Cs3i1nvgcdhKV6enUINoLGDemR/KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788882740; c=relaxed/simple;
-	bh=d8w9NAT3V3A7zYcQXRinWDF+fm7HiJ40vU5rhlAvH6c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OyccxrUW30zambBf0lV65Nbp1OwuiuFJQCuhUMTPeSZB9a9wnWM8KnyMw/bXtUxs5bYl8n0VfdTjUklcrUyUPPmCa09CMIjBW7He6riDCvWVeILZKRQVg+x+3OzKqC0XXLrAw7kFu4AykbQMulo+RKg7sGdtpr2+tcb9rEDJmIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUy9AjLm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788882887; c=relaxed/simple;
+	bh=vJLLBfkaN4n0z7LfLM0SdkDcnADIq78u4hb+z3cSCvs=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=E2zrWgkDZ58u5jv7ZZeHbhYokOTKL7cngBhIpvZU5nO4gvds4ZXFfSzH87HIzzEXX0Kp0+9t+NmJ0LQ4ycO9OqqkV3vQ2Eszy4Ew4NHDqSPa/bHqUpFpEcZGsNe8CC9Q8XFx11aI8vd56ojuvE09cQqShtxriqJxSYEi2sdCx/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZmHWOMJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUy9AjLm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810C61F00A3A;
-	Tue,  8 Sep 2026 15:52:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZmHWOMJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC331F00A3E;
+	Tue,  8 Sep 2026 15:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788882732;
-	bh=duhkPdKZr6Q/w+H9JajtA5iWi+BD+H+jYq2zI/FxWn4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eUy9AjLmPbJFndjapuT/L5mDK9FdeEbzL37FWvBagl2JPz4U5JzI9KDYahBzM8fyU
-	 24wpeiPcz6TlmrbbO8X83ODEklS3CgWI7wwDaLOtBrLrv4dA4R5CT+wPFJc0+P/LJz
-	 HetWqEKtviTbU8q4R/aPfgrWMN3+B6hIgYr/l97kDzhSEWcNOa4D4M76O3TkzVlP7b
-	 6dO4U2QsjKiEitYOdErE7/VnG9HlXvKiwvtPhFePeFWGhP+gHkUs5zbk1Hyvuim1xB
-	 ADeekBrJm3zRpqin6ENS+RCqUNANq7c7phAaNQFYeM09VuZ7EmzOysMOyBWl2FGFFO
-	 BYR3djdMDOSLg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 03/13] ARM: remove riscpc
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Arnd Bergmann" <arnd@kernel.org>
-Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, linux-serial@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260908152808.3928630-4-arnd@kernel.org>
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-4-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 15:52:12 +0000
-Message-Id: <20260908155212.810C61F00A3A@smtp.kernel.org>
+	s=k20260515; t=1788882885;
+	bh=yRJdV9GVxWUYV9yCpWvEhBDguuUlSfuEeEuU4CaxoZ4=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=mZmHWOMJriTMhh79lfF6vevN5fYL+hyZ5SmAO+HRxHmDuit/QMZfZm1eky9VaWhpO
+	 EY8PfZs7F6JTliu7YDNeGL7uL6Fo3nNDrQwjrXYBEPDLRWyXaVnj+ihLIHhrf7//ic
+	 MbmMioZtN3usiS1yD51p+BwHYCZYZQ7+pee+q5YQbJQn0SrG7Uoz3Ps6QBRQKzOAXv
+	 9E7yVYSmfOyTJoPo0jH/dZg0twpFUM8BPfDLxnVpPbm8y8p9XUDhZsG0BMW1urCEp/
+	 sF4F4Cc1cSitK9b78P+or+8H0LbIjlZl4fFOYwwv6BKzX0raXmdBf/NkRRmK+X+5wk
+	 x9uarNvZUHhXw==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 308AF198003A;
+	Tue,  8 Sep 2026 11:54:43 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 08 Sep 2026 11:54:43 -0400
+X-ME-Sender: <xms:wS-gajNhMGM3Gxzcef-yXdGene2vzQIJIJCQsMbUucZg0ESkSia7ew>
+    <xme:wS-gaowIgGPrv4h32oHDZXsUYBzPo0dZzRKFqJcyScwWTAbh6y1ncqGdX0Dv4nlzP
+    7ljYN5QqELhRvEIf6VDdxmSAoQA4tmZ4jgobBKRyMXX9a1r83UIo7Qo>
+X-ME-Proxy-Cause: dmFkZTGLwLZViC9sd85t/P9neK5mQH2VP8dHwnJbVAzTMRboBc9GY3Y0SufdB0PabDu0Bw
+    etX//xWANhEWe+XH12gf0SVEuw/OxEtX4HEnkpJ2rHojRxBWwsQIfNpyPzv7uBN+lSKv5/
+    SqiouBbLssFGgSzJUBbsFNUp6wNdJz2qBToqFbpHCAoGYosRPqyJBSMsHHzbikA99KMoJN
+    liA0KaarEy1JNDfft14Z8BYFZIaVtTSiLGElG0zXYaXrUyfWlxzh2ILUNIu9U3WIUTlIHC
+    ccb7Z+RwpoaVMTAahwIuzfRyusxsV7yqkohJmElcj0EterN2DarbMY4Gu2AhvdwWGHSUSF
+    +QqGOmoEymLbEZ6M8sQd83uUOXo7c7Txg4K89ukNWAElSHrOj586Q4FZ6+hfCt73bCXAOY
+    1xdw78eGIF/CdsscaDLf8AFeXiqjERP3Fq6Gnkt38qDdT2MonVMajVbcD6YqBhSTey9oTZ
+    tIs3Ehn+cMdTxQosFIAxv7Oclq7Epb0ae6DTYo1CGZhmQWIxeXVc5LmxrkgzQqnm1x3O5j
+    FwHN3beBUmEnTRjBFh93yn4JsIbaq7lgNJqAd+PrKfSHerCbz0fd0LOoPZlRMEQsuKEoj4
+    YgdzeCEwX5GSgW7Wz+xbRJTdRDur0fqHFkCISHeqOVXQRi2ylcw8S4/wsPtw
+X-ME-Proxy: <xmx:wy-gasx4ChskjzrEKIJ6om9udRtN3q00ZZk5Hs8QWVvY4dP4cA83zQ>
+    <xmx:wy-gaii72i4Fgq-O1aO7O54W_yWEQhxvgJbw3ivrMy7xdwfyTg7RGA>
+    <xmx:wy-gagl8a5u2zS0xIaHUUfe5LxJRRNInPL7dzMuXbcLxnfBAs79iBw>
+    <xmx:wy-gaghUL3NmZb5NcX7WSJZsyfxf55U3J0f83-ErG9dzlcfF81L28A>
+    <xmx:wy-gas3Luj_0c3PVbuzJEEcAoqgxlhY-jbl5gKU0DhqGlBpftxsVaUXN>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id C855E32A0078; Tue,  8 Sep 2026 11:54:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-ThreadId: AaAMVJPR8SoN
+Date: Tue, 08 Sep 2026 17:54:21 +0200
+From: "Arnd Bergmann" <arnd@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: "Conor Dooley" <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, "Frank Li" <Frank.Li@kernel.org>,
+ "Rob Herring" <robh@kernel.org>
+Message-Id: <04fd3dc4-6aee-42ba-b41c-df7acb89239e@app.fastmail.com>
+In-Reply-To: <20260908154346.CDA0D1F00A3A@smtp.kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-11-arnd@kernel.org>
+ <20260908154346.CDA0D1F00A3A@smtp.kernel.org>
+Subject: Re: [PATCH 10/13] ARM: stm32: remove stm32f4/f7/h7 MCU support
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Incomplete removal of the ARCH_RPC platform and ARCH_ACORN config d=
-ependency, leaving orphaned device drivers, Makefile/Kconfig references, an=
-d dead code.
---
+On Tue, Sep 8, 2026, at 17:43, sashiko-bot@kernel.org wrote:
+>> -The STMicroelectronics STM32 family of Cortex-A microprocessors (MPUs) and
+>> -Cortex-M microcontrollers (MCUs) are supported by the 'STM32' platform of
+>> -ARM Linux.
+>> +The STMicroelectronics STM32 family of Cortex-A microprocessors (MPUs) is
+>> +supported by the 'STM32' platform of ARM Linux, support for the Cortex-M
+>> +based MCUs is has been removed.
+>
+> [Severity: Low]
+> Is there a grammatical typo here? Should it be "has been removed" instead of
+> "is has been removed"?
 
-commit 90a4954ac0a5a6d8d3608046095747cf4673b8dd
-Author: Arnd Bergmann <arnd@arndb.de>
+Fixed.
 
-ARM: remove riscpc
+> [Severity: Medium]
+> This is a pre-existing issue, but does removing this selection of STM32_EXTI
+> permanently disable the irq-stm32-exti.c driver?
+>
+> Looking at drivers/irqchip/Kconfig on line 485, STM32_EXTI is defined as an
+> invisible boolean config symbol. Without being selected here, the driver will
+> never be built. Could the corresponding driver and Kconfig entry be removed as
+> well?
 
-The Acorn Risc PC platform and its associated drivers, configurations,
-and board files are being removed as the required gcc-8 compiler and
--march=3Darmv3 option are no longer supported.
+As with the other platform removal in this series, I already
+have patches for these as well, see
+https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/log/?h=board-remove-7.3
 
->     The main limitation here is the CPU bus that does not allow 16-bit
->     wide data transfers and hence requires the kernel to be built with the
->     -march=3Darmv3 compiler option that was discontinued in gcc-9.
-
-[Severity: Low]
-Since this compiler option is the explicitly stated reason for removal in t=
-he
-commit message, should we also delete the compiler flag from the tree?
-
-arch/arm/Makefile:
-    arch-$(CONFIG_CPU_32v3)         :=3D-march=3Darmv3m
-
-Additionally, the config symbol for this architecture version is now
-dead code because its only selector (ARCH_RPC) was removed:
-
-arch/arm/mm/Kconfig:config CPU_32v3
-    config CPU_32v3
-        bool
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 81872f61b4317..fdd75b73bf293 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-[ ... ]
-> -ARM MFM AND FLOPPY DRIVERS
-> -M:	Ian Molton <spyro@f2s.com>
-> -S:	Maintained
-> -F:	arch/arm/include/asm/floppy.h
-> -F:	arch/arm/mach-rpc/floppydma.S
-> -
-
-[Severity: Low]
-Does this leave the floppy header as dead code in the tree? It is removed
-from MAINTAINERS here, but the file itself was left in the tree:
-
-arch/arm/include/asm/floppy.h:
-    #ifndef __ASM_ARM_FLOPPY_H
-    #define __ASM_ARM_FLOPPY_H
-
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index c3d6b8abc815f..5770deca136d3 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-[ ... ]
-> @@ -429,8 +415,6 @@ source "arch/arm/mach-qcom/Kconfig"
-> =20
->  source "arch/arm/mach-realtek/Kconfig"
-> =20
-> -source "arch/arm/mach-rpc/Kconfig"
-> -
->  source "arch/arm/mach-rockchip/Kconfig"
-
-[Severity: Low]
-Are there dangling references to the removed CONFIG_ARCH_RPC?
-
-The Makefile still references it:
-
-arch/arm/Makefile:
-    machine-$(CONFIG_ARCH_RPC)              +=3D rpc
-   =20
-The machine type registry still contains it:
-
-arch/arm/tools/mach-types:
-    riscpc                  ARCH_RPC                RISCPC                 =
- 1
-   =20
-And the CPU selection still evaluates it:
-
-arch/arm/mm/Kconfig:config CPU_SA110
-    select CPU_32v3 if ARCH_RPC
-    select CPU_32v4 if !ARCH_RPC
-
-[ ... ]
-> @@ -490,9 +474,6 @@ config ARCH_MPS2
->  	  This platform is scheduled for removal in early 2027
-> =20
->  # Definitions to make life easier
-> -config ARCH_ACORN
-> -	bool
-> -
-
-[Severity: Low]
-Does removing ARCH_ACORN leave orphaned device drivers in the tree?
-
-All Acorn SCSI drivers depend on this removed config, leaving the entire
-directory as dead code:
-
-drivers/scsi/arm/Kconfig:config SCSI_ACORN
-    depends on ARCH_ACORN && SCSI
-
-While these removed configs make the dependent drivers unselectable and thus
-don't break the build or introduce runtime issues, it leaves a significant
-amount of dead code. I have verified that this dead code is not removed in
-subsequent patches in the series.
-
-> diff --git a/arch/arm/include/asm/ecard.h b/arch/arm/include/asm/ecard.h
-> deleted file mode 100644
-> index 7cbe001bf9ccc..0000000000000
-> --- a/arch/arm/include/asm/ecard.h
-> +++ /dev/null
-> @@ -1,219 +0,0 @@
-[ ... ]
-> -#ifndef __ASM_ECARD_H
-> -#define __ASM_ECARD_H
-
-[Severity: Low]
-Does this leave behind unselectable drivers that still include this deleted
-header?
-
-One of the remaining Risc PC drivers left in the tree still tries to include
-it:
-
-drivers/ata/pata_icside.c:
-    #include <asm/ecard.h>
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
-630-1-arnd@kernel.org?part=3D3
+       Arnd
