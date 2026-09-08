@@ -1,244 +1,173 @@
-Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C4E563FB8
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 16:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C135803BD;
+	Tue,  8 Sep 2026 16:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788883323; cv=none; b=RmmI5/CxUeR1B01hJQNgd8Y7ZMH97qnJzkN1uGJ9fPq81GKEqJ8F+khMOn9HBKq7w/UBTpLtCCO8S4BjzGCTmbXnmzbjwygtQbhGuo5zlnxOkZDr8FD5ZD/fDkCVfEroyK8KdjgUrEqsmqORA19TcyDWjpB9gVKli6GrMxhXjYw=
+	t=1788883515; cv=none; b=nXOodb8m81gT3VpVKNsfAO4jVIvEUWn0XlBXclff++v7Jy3VSyhklolU+7eSIY1MVp+1Gm0OQw431uz8Fp6x0Guc1KUHINc/W+m1cQTbRODz0wnx/SFPe4Y4aXOyKHcNjBAZytQB3fpucrKM+n4ClybLroOgIdJyVjMHU+Bztzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788883323; c=relaxed/simple;
-	bh=PtBvshArS3P1b+I2XeuugmZi94aHWwfsom4fpF20Tj8=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=eoAEEXhJys18OP7vxqxsERk10mn0ababLvOBZR3qZq7FFn7etohDCw4H/XCZpi0WzRslqseAm/DGM8CR9FzZKP/IDOJ1VVnPx/fi+LzbIGJEd5k6+wYJQjJIM6kzLrd+S+Bc//Bw+F4ct3j/uhQB6qxfr4OMWjcYgkQOoagY224=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=cA9AP2BB; arc=none smtp.client-ip=203.205.221.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1788883515; c=relaxed/simple;
+	bh=hOuQgcoQcnlovGr/O/JRdONmYhgv1YnCgg8telRPpM8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JSfr5tVg0fmJYniVyCt6Nab7Co0LbtEtfdCN4GkYV5FauUTo2GK5bwmnEybLrxSyWOCGbbtrVZFwBGEnWyS84CpNZHNo6i/8kMRQgbYkv9Q57gB2cJh3V92MEr4Kvt/ufb7zg7IRwj8N6j9IMrB/Z2c5oQuMg/w2nwH8F+boHpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+2Fm7ww; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="cA9AP2BB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1788883316;
-	bh=6SwRQ6PA+jZ9sSnyk3mpNdGgMyUDicpbvYGA8+pGlt0=;
-	h=From:To:Cc:Subject:Date;
-	b=cA9AP2BBeBRMIcVSMX3/V27YTRhx8lemN8guv/6gHMhGv/tWCtej+81boyBwcVmPF
-	 zRQ/BPnOv5fqWqr0YRm7jHQkLOqxV0NBhxjO1qLlnU8qlWBpD3mxhUTqQOQEi56jh1
-	 5NIyt//U/LVn+nVpab65sL6NNJ2gzdMvmBoRJjgQ=
-Received: from LAPTOP-TKBJAGN4.localdomain ([2408:8256:2d01:e2b1:f9b4:79bb:79ab:d0e2])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 6F854B2; Wed, 09 Sep 2026 00:01:47 +0800
-X-QQ-mid: xmsmtpt1788883307t0dys8503
-Message-ID: <tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com>
-X-QQ-XMAILINFO: MXzpxT/vcbSg1A6KbdFVmG0bev7a//SwtdgMKyqlQmb1J15c/8b45jn6e/n++N
-	 oy/K9Oa3/ujrfqmzuGOkzW4Dg11LO1WiY1hXXp2bX0NS/w6SHVmNpUILzzB79Z8GHQ84fMNLCLG2
-	 g4dr0cNCC4oiFwrjAbSfN3Ul7HjyX3eub9w2tNO8+nOocLInxP/DzNhhZF9rszK1WkT1ESge5n2h
-	 B2BuN5cpP/bW8jUHyz5fEKkLtxQeUG4sIj/OR0qfilH9NUK1irs7Trj+xhM2ct9+ZVXoUUO8o1rF
-	 Z+ipMbGGrIiWlcma6nG8Bl1PGI4KoXyRBUhnhVota0Q3bk9dCesMDR7+Q4GOtFvUykodpi5akkc+
-	 1Ll2jZ4LfXuLPCnxPhK6yqh86w6DAXWSk9OrnfO7rtmKJI5f4J9JUdyLS3C9Jwz0s9CDHp2sXCCU
-	 6XLVL8VPN2Y6QUxJDlTzC4e3CDMLyJG/uypHfRq8z7bxDL4kjXcr7K8R4rzv3sgywMNkXXQs3l1U
-	 I/wH7iLbXA/6/57+rxzDeXhNDn7dCs1Q+DhhLrdLrJ9ldMh82Ygl/2QQw6LK18zuQminc1Lb5eC1
-	 SSsYC9h88UGM0BUZiq/6bBPzM6aZ8fKtNMruaMXQ1oevdkeZ8hkKmQHmBWmrNlFQDYkGHMer5o/M
-	 3z66tDN+rkRMgHnE0C+AcZYny39YP7QDg6h36BfvApNwVLADDUNPgf5ye3RDc9QKuOmgeIseuA9T
-	 uzc6i9pJDi2P464u4QprI4GxJWxTuSMkvXZGjrQiRyysEqzMvwFdpTBdNyYJcL5Sk4qbGakx3ryu
-	 NTh2YsITDkbVBIhyt3/jKl1qdNyQuJX3wgU2bkwYPTb4b2e9SNetT9Lph8PVPD6O1pfRSBR/v0PX
-	 0NfzpgPd4ak2TEqR6WqC++0pSQn26f1VNq4AvnkdY/yvcgzS+9idxcmdrdwHDO1GqRGEFT4EuJHZ
-	 22ANU/j4XxtkvOUUltPlRKPKFwPV3kphpKbKr93xmluKS8VjGgtreCEH5nXVJ+DKlaxvWxXuKzhs
-	 d3v/Qh5EbgGgAFUG17WewXjoueZUeT1K75FCy1IJrV9Lh0N81x/NP11/8wuXABUW4JKQ/gb0T2oo
-	 vFf4oUb1dH10NZdNa6MSz6sAjw54T4lrO6tJzV4m3H6AlETn8U+J9PoO6tmvsGA9xT0NM6mVnlqX
-	 mtXt/eVkTFVWfWqA==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Haobin Jiang <lemonoutput@foxmail.com>
-To: carlos.song@oss.nxp.com,
-	dillon.minfei@gmail.com
-Cc: andi.shyti@kernel.org,
-	Frank.Li@nxp.com,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	o.rempel@pengutronix.de,
-	s.hauer@pengutronix.de,
-	Haobin Jiang <lemonoutput@foxmail.com>
-Subject: [PATCH v3] i2c: imx: honour I2C_M_IGNORE_NAK
-Date: Wed,  9 Sep 2026 00:01:45 +0800
-X-OQ-MSGID: <20260908160145.180323-1-lemonoutput@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+2Fm7ww"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE271F00A3D;
+	Tue,  8 Sep 2026 16:05:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788883512;
+	bh=u0GGnkpAZ2l2MiiOxDY+YdlOYsRlajV7Tx+Ols1QYfM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Z+2Fm7wwv7pftpRopJXHrpObwj0TP/3NmqLaelwYeo+eA4o0rA6wMaeTc7qy9Gq7b
+	 QHa1OrKorzGWIuscuvHDw6lPkmXDJTiEIazepxtB3vrJJDa1UpN/P6fh4zmfOZgxIs
+	 C8sO/wpBM3HaJDR1b/3h26B7XekxFkNm+wdhbIgyGR2wC1i19QQiu0jqyCTdO73ASw
+	 IBDbUS25v6zVejLSFXRBa6S/S0vewj0T8hjobtRqRzTJMUyZe2witVYNi3XRAOUKrz
+	 j1U6/wYcSY0stnD6d+sTsR5JsT/RvQT9onUA9SJpR0obA7MA2yJXDromjVJetKzYft
+	 /bctKsJE9feeA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 07/13] ARM: imx: remove i.MX31 SoC support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Arnd Bergmann" <arnd@kernel.org>
+Cc: conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+In-Reply-To: <20260908152808.3928630-8-arnd@kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-8-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 16:05:11 +0000
+Message-Id: <20260908160512.0FE271F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-I2C_M_IGNORE_NAK is removed from the flags rejected by
-i2c_imx_check_msgs(), so the flag is honoured as documented. I2C_M_STOP
-stays unhandled to preserve existing behaviour and backward
-compatibility. I2C_M_NO_RD_ACK stays rejected.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Removal of SOC_IMX31 leaves dangling references in Kconfig files=
+ and orphaned code, violating Kconfig guidelines.
+--
 
-This change is meant to apply on top of the I2C_M_REV_DIR_ADDR and
-I2C_M_NOSTART series [1], which is not yet merged.
+commit 9fd3329c9e9c5af4c9aa12b23d3a92bfd1566e55
+Author: Arnd Bergmann <arnd@arndb.de>
 
-Tested on an ALIENTEK i.MX6ULL mini board (v6.6.44, equivalent
-backport) with a logic analyzer: with the flag, a 3-byte write to an
-unpopulated address clocks out every byte (each NAK'd) and returns 0;
-without the flag it aborts with -ENXIO after the address byte. A
-4-byte read with the flag completes and returns 0 as well. Waveforms
-and test logs: https://github.com/JHB11Hinson/i2c-imx-ignore-nak-test
+ARM: imx: remove i.MX31 SoC support
 
-Note: part of the code was generated with the assistance
-of a generative AI tool (GLM 5.3) from the author's description of
-the problem, then reviewed and verified by the author.
+This commit removes support for the Freescale i.MX31 SoC based on the
+ARM1136r0 CPU core, which is causing extra maintenance effort. The device
+trees, configuration files, and core mach-imx code for i.MX31 are deleted
+while preserving support for the related i.MX35 SoC.
 
-Link: https://lore.kernel.org/linux-i2c/20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr/ # [1]
+> diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+> index e2fc890554631..52387fe2a0573 100644
+> --- a/arch/arm/Kconfig.debug
+> +++ b/arch/arm/Kconfig.debug
+> @@ -424,13 +424,6 @@ choice
+>  		  Say Y here if you want kernel low-level debugging support
+>  		  on i.MX28.
+> =20
+> -	config DEBUG_IMX31_UART
+> -		bool "i.MX31 Debug UART"
+> -		depends on SOC_IMX31
+> -		help
+> -		  Say Y here if you want kernel low-level debugging support
+> -		  on i.MX31.
+> -
 
-Signed-off-by: Haobin Jiang <lemonoutput@foxmail.com>
----
+[Severity: Medium]
+Can the removal of CONFIG_DEBUG_IMX31_UART leave obsolete preprocessor bloc=
+ks
+in header files?
 
-v1 -> v2:
-	- Honour I2C_M_IGNORE_NAK on the read path as well, mirroring
-	  i2c-img-scb, instead of silently dropping the flag there.
-	- Force the PIO path for every message with I2C_M_IGNORE_NAK:
-	  a NAK'd byte does not generate a further DMA request, so a
-	  DMA write to a deliberately-NAKing target would stall until
-	  DMA_TIMEOUT.
-	- Reject I2C_M_NO_RD_ACK instead of advertising blanket support
-	  and silently ignoring it. I2C_M_STOP is not rejected: the
-	  controller already emits a STOP after the final message, and
-	  rejecting it would break the ov2659 camera on imx6qdl-ds.
+In arch/arm/include/debug/imx-uart.h, there is still a check for this
+symbol:
 
-v2 -> v3:
-	- Rebase on top of the I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
-	  series; the flag rejection moved to i2c_imx_check_msgs().
-	  I2C_M_IGNORE_NAK is now honoured and I2C_M_STOP stays
-	  unhandled, preserving the ov2659/SCCB use case and backward
-	  compatibility as agreed during review.
-	- Keep the DMA write path checking ACK with ignore_nak=false,
-	  as suggested during review; messages carrying
-	  I2C_M_IGNORE_NAK are forced onto the PIO path.
-	- Fix double spaces after periods in the changelog and comments.
-	- State the use of a generative AI tool in the changelog.
-	- Test on an ALIENTEK i.MX6ULL mini board (v6.6.44, equivalent
-	  backport); results linked in the commit message.
+#elif defined(CONFIG_DEBUG_IMX31_UART)
+#define UART_PADDR      IMX_DEBUG_UART_BASE(IMX31)
 
- drivers/i2c/busses/i2c-imx.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+Could this block now be dead code because the config symbol no longer exist=
+s?
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index ab6794bf3ea5..9cd1fa0f4021 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -612,9 +612,12 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
- 	return 0;
- }
- 
--static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
-+static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx, bool ignore_nak)
- {
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		dev_dbg(&i2c_imx->adapter.dev, "<%s> No ACK\n", __func__);
- 		return -ENXIO;  /* No ACK */
- 	}
-@@ -968,11 +971,15 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
- 	return ret;
- }
- 
--static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
-+static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx,
-+				    bool ignore_nak)
- {
- 	i2c_imx->isr_result = 0;
- 
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		i2c_imx->state = IMX_I2C_STATE_FAILED;
- 		i2c_imx->isr_result = -ENXIO;
- 		wake_up(&i2c_imx->queue);
-@@ -985,7 +992,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1014,7 +1021,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1229,7 +1236,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- 	if (result)
- 		return result;
- 
--	return i2c_imx_acked(i2c_imx);
-+	/* I2C_M_IGNORE_NAK messages never take the DMA path. */
-+	return i2c_imx_acked(i2c_imx, false);
- }
- 
- static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
-@@ -1248,7 +1256,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1381,7 +1389,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1396,7 +1404,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1580,8 +1588,9 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return ret;
- }
- 
-+	/* I2C_M_STOP is the controller's native behaviour; don't reject it. */
- #define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
--	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
-+	I2C_M_NO_RD_ACK
- 
- static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
- {
-@@ -1675,6 +1684,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
- 			msgs[i].flags & I2C_M_DMA_SAFE &&
- 			!(msgs[i].flags & I2C_M_NOSTART);
-+
-+		/* A NAK'd byte may not generate a further DMA request. */
-+		if (msgs[i].flags & I2C_M_IGNORE_NAK)
-+			use_dma = false;
- 		if (msgs[i].flags & I2C_M_RD) {
- 			int block_data = msgs->flags & I2C_M_RECV_LEN;
- 
+[ ... ]
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 3f0521c652cb0..77704c6a70bad 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -39,17 +39,6 @@ if ARCH_MULTI_V6
+> =20
+>  comment "ARM1136 platforms"
+> =20
+> -config SOC_IMX31
+> -	bool "i.MX31 support (DEPRECATED)"
+> -	depends on !SMP
+> -	select CPU_ARM1136R0
+> -	select MXC_AVIC
+> -	help
+> -	  This enables support for Freescale i.MX31 processor
+> -
+> -	  This SoC is scheduled for removal in early 2027,
+> -	  since it uses the ARM1136r0 CPU revision.
+> -
 
-base-commit: 04e9bf1648f846976b543e91c1838a712433772a
-prerequisite-patch-id: 24876ef6d4dc440b8d8080e65d369b2b37709b0b
--- 
-2.34.1
+[Severity: Medium]
+Could the removal of SOC_IMX31 orphan the hardware random number generator
+driver?
 
+In drivers/char/hw_random/Kconfig, HW_RANDOM_MXC_RNGA currently has:
+
+config HW_RANDOM_MXC_RNGA
+	tristate "Freescale i.MX RNGA Random Number Generator"
+	depends on SOC_IMX31 || COMPILE_TEST
+
+Since SOC_IMX31 is no longer defined, this driver can now only be selected
+via COMPILE_TEST.
+
+Is there also a risk of leaving dead code in the clock driver?
+
+In drivers/clk/imx/Kconfig, CLK_IMX31 has:
+
+config CLK_IMX31
+	def_bool SOC_IMX31
+
+Could this convert the driver code into uncompilable dead code since
+SOC_IMX31 is removed?
+
+[ ... ]
+> diff --git a/arch/arm/mach-imx/mm-imx3.c b/arch/arm/mach-imx/mm-imx3.c
+> index 9b0b014d7fe27..42e73518004ae 100644
+> --- a/arch/arm/mach-imx/mm-imx3.c
+> +++ b/arch/arm/mach-imx/mm-imx3.c
+[ ... ]
+> -void __init mx31_map_io(void)
+> -{
+> -	iotable_init(mx31_io_desc, ARRAY_SIZE(mx31_io_desc));
+> -}
+[ ... ]
+> -void __init imx31_init_early(void)
+> -{
+> -	struct device_node *np;
+> -
+> -	mxc_set_cpu_type(MXC_CPU_MX31);
+> -	arch_ioremap_caller =3D imx3_ioremap_caller;
+> -	arm_pm_idle =3D imx31_idle;
+> -	np =3D of_find_compatible_node(NULL, NULL, "fsl,imx31-ccm");
+> -	mx3_ccm_base =3D of_iomap(np, 0);
+> -	of_node_put(np);
+> -	BUG_ON(!mx3_ccm_base);
+> -}
+
+[Severity: Medium]
+Are there dangling declarations left behind in the subsystem headers?
+
+In arch/arm/mach-imx/common.h, these declarations still exist:
+
+void mx31_map_io(void);
+void imx31_init_early(void);
+
+Could these dead declarations be removed as well?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
+630-1-arnd@kernel.org?part=3D7
