@@ -1,36 +1,37 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A155E4AA1DE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA14D5505DC
 	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788875998; cv=none; b=uV5J+rjMc1uoFIZpVSPxGHWdCcPgfq5HW9cQagEX2uYWNkfrmJ8uu/X/grOem9F9e85QfbBFg7G+29oBeqbG4jN9CLPpLRI9z9M3VmLSXqXJhxIVa4dA/FONj2xct1mjoRXE9WEjIjOeq3+OGKydKYLW1sfqP1B04rCwpz9ko30=
+	t=1788876000; cv=none; b=Stx9uiGk8+hJXhAP9uFvqdw9v1gaYAviYztbGtO1HkZDYc6osJi9upNjdDFfSiGvmkbAoqnPZdwNjitOYilttGcQ5bN1Qvg3T+Y+mzzGq9Y8m/5/TNizlmrQSKf/7nJsoxCHT0D4WT+crG6RBPCLFt+rruymOydO5Rib7sI6tDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788875998; c=relaxed/simple;
-	bh=7ic4GctefoqLbsA/3ehMeZa39KRVKG5KRpWO8ZCeWZE=;
+	s=arc-20240116; t=1788876000; c=relaxed/simple;
+	bh=pCYoXBjmqmleM+Y0I4Hj40PjbWDiRSIxAHea931Zsl0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b/buTZCyDjhURVNL0vJLrWpbX/6smbVniE+oG6SzivZAsm7UxLuketBMgLt+KpicMou+RI6ZNOlkkJZUL53mzaqkP6EFwV3f0Hrz1hB6NMzRdWbrFBnyn0J784PbA12p3Ye/jiNiuGdHHz907Eyfr9nEVAm7wKIk3d9ftJc8t1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=DROXpOLF; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=Oefa1UqIeWCfu37wz30fgAxvuuW+NLSHkTQVG9/8PkT6TWf81bf5OLPdagNats8+QCSxKOLbb2emWQuikWlTU2/d8PVWyf9umcQ2qEtOsd8+aD0yykAhzdnJioxrgwNQTaxjEOjqvAPwXXRq1G8P36J5Y5zo0Xd6IVNkkn83HB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=sYrdQZB9; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="DROXpOLF"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="sYrdQZB9"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1788875589;
+	t=1788875588;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c+qgtzY6MaCxcO3ICUhFFV0vpVhq609X5qyt6lhvn+I=;
-	b=DROXpOLFySrkh7eL4lQh9iit7MxFoKhb71uLelpFGxy7/I5ZKe47l68H7agFYXxlQp7qMt
-	CLLgUY6xExEO3wHxvHEaRtK48ogDIc4ot86M+TYQQrQLVC74tl8A31qBseDe1dwo5ppN06
-	equkc5mzTbNaYFrG24QkcZCJklzuPqv6dxa/PDH7kQBaZBKN2CbJ+Xa1xzoDlWEyhMsJ2E
-	1y8tbUZBkxk66NiqEJo3LBypvkArloNd6VYcxdU7j00us8w5u3SBkbL6LFejXbuxJkxNfU
-	DDcxDrV2iD40jzmCF3T6K4aPAuzvLaX8J07Ju4qo2jWjfUxYNnvZontVl49JBA==
-Date: Tue, 08 Sep 2026 15:51:51 +0200
-Subject: [PATCH 4/9] arm64: dts: imx93-kontron: Adjust GPIO4_IO29 usage
+	bh=ApdltZkRhsVxOKrNUqqL3XcAJ2zFJ2RCffIpIs58H/g=;
+	b=sYrdQZB9HA8jXyruuTDBKFVyfdSFZ8mdvmILkAF57uRcHsvbmYV1I3LHfKltg21rNtnUGZ
+	8mbUV9TmQGZrbrwfx2n4jVheQX6FUp+XcpP9KKug7u5wUgvMWSiPW5ZKHvn3OxJJ9Klm27
+	TgE1BB6Sg/n/dbBDQ8ClR0qa1s4YJA6wcZbeVR6Orbbzmc6McWqd3gN+URBysVO2gXiHbz
+	P+4GlzRN3OpfjbyaTj9VgFdsObjEIZnjvQmi+UHqr6shM/QGfOP0SJwaLxKZJy+Oe9pJNy
+	fWEVAd2kkEwktmAm2Hm+f1v8eY0nd7N9uMTxJNbMhQv1JfpOoLajINYYDALDyg==
+Date: Tue, 08 Sep 2026 15:51:48 +0200
+Subject: [PATCH 1/9] ARM: dts: imx6ul-kontron-bl-common: Replace UART3 with
+ DIP switch GPIOs
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -39,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-4-4d0e8a75db79@kontron.de>
+Message-Id: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-1-4d0e8a75db79@kontron.de>
 References: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-0-4d0e8a75db79@kontron.de>
 In-Reply-To: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-0-4d0e8a75db79@kontron.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -49,92 +50,80 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2266;
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Eberhard Stoll <eberhard.stoll@kontron.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2269;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=MMVzO63V/8fkJV9PzRy2jq7KDqxZ4OTRvgqObIY0heI=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWuBsNNpM/ur9mvOcDckfzognLTk/MmLYrvdPudVfz6in
- 8p6JuBoRykLgxgXg6yYIosUv8VrW7NYH/lj1VEwc1iZQIYwcHEKwER2/mVk+FsRZcesUFU/aXXO
- 4VK+Kd/YG1lrgr9N4p5mU6D5uZhZiJFhr3OnrHrBqXQptvkeGXdjCx43WDZ5BYm1CRx/rfqhoJY
- NAA==
+ bh=AE7Nzyaxb6x1i6gLi1eAISRF4DYohgutdzU1pqO/mwQ=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWuBsJOJ992Mvc+f7s8PP8R3S0Z/urGOmXIut43UBNcrS
+ v4TSws7SlkYxLgYZMUUWaT4LV7bmsX6yB+rjoKZw8oEMoSBi1MAJqJXz/DPtv9ODGOyZ7ZtgUJF
+ lkDvRu1fr6rkHnrt2ncpT3/6jcrPjAyTS0vc5z+Oc3aXZp+m8+yw07NQ/bPmXlIfFiQ9iK+5K8Y
+ HAA==
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Eberhard Stoll <eberhard.stoll@kontron.de>
 
-Early prototypes had GPIO4_IO29 control the CARRIER_PWR_EN signal.
-This is now controlled by hardware and the GPIO4_IO29 is routed to
-the GPIO_B_2 OSM pad.
+The latest board revision has DIP switches and lacks UART3 instead.
+As the old revision has long been deprecated and not maintained
+anymore, drop the support and reflect the current state of the
+hardware. As the old revision hasn't been widely used, UART3 was
+only available through an obscure extension connector and we have
+carried this patch downstream for years, no users are expected to
+be affected by this change.
 
+Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- .../boot/dts/freescale/imx93-kontron-osm-s.dtsi    | 32 ++--------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ .../boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi  | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-index f881912cde46..36548d918169 100644
---- a/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-@@ -34,29 +34,6 @@ reg_usdhc2_vcc: regulator-usdhc2-vcc {
- 		regulator-max-microvolt = <3300000>;
- 		regulator-name = "VCC_SDIO_A";
- 	};
--
--	reg_vdd_carrier: regulator-vdd-carrier {
--		compatible = "regulator-fixed";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_reg_vdd_carrier>;
--		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
--		enable-active-high;
--		regulator-always-on;
--		regulator-boot-on;
--		regulator-name = "VDD_CARRIER";
--
--		regulator-state-standby {
--			regulator-on-in-suspend;
--		};
--
--		regulator-state-mem {
--			regulator-off-in-suspend;
--		};
--
--		regulator-state-disk {
--			regulator-off-in-suspend;
--		};
--	};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+index f4c45e964daf..a71669bef7d4 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+@@ -172,13 +172,6 @@ &uart2 {
+ 	status = "okay";
  };
  
- &flexcan1 { /* OSM-S CAN_A */
-@@ -113,7 +90,7 @@ &gpio4 {
- 			  "ETH_A_TXD3", "ETH_A_TXD2", "ETH_A_TXD1", "ETH_A_TXD0",
- 			  "ETH_A_TX_EN", "ETH_A_TX_CLK", "ETH_A_RX_CTL", "ETH_A_RX_CLK",
- 			  "ETH_A_RXD0", "ETH_A_RXD1", "ETH_A_RXD2", "ETH_A_RXD3",
--			  "GPIO_B_0", "CARRIER_PWR_EN";
-+			  "GPIO_B_0", "GPIO_B_2";
- };
- 
- &lpi2c1 {
-@@ -385,6 +362,7 @@ MX93_PAD_CCM_CLKO2__GPIO3_IO27			0x31e /* GPIO_A_7 */
- 	pinctrl_gpio4: gpio4grp {
- 		fsl,pins = <
- 			MX93_PAD_CCM_CLKO3__GPIO4_IO28			0x31e /* GPIO_B_0 */
-+			MX93_PAD_CCM_CLKO4__GPIO4_IO29			0x31e /* GPIO_B_2 */
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	uart-has-rtscts;
+-	status = "okay";
+-};
+-
+ &uart4 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart4>;
+@@ -283,6 +276,11 @@ MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x1b0b0	/* DOUT1 */
+ 			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* DIN1 */
+ 			MX6UL_PAD_SNVS_TAMPER1__GPIO5_IO01	0x1b0b0	/* DOUT2 */
+ 			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0	/* DIN2 */
++
++			MX6UL_PAD_UART3_TX_DATA__GPIO1_IO24	0x1b0b0	/* CAN_ADR0 (DIP sw 1) */
++			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25	0x1b0b0	/* CAN_ADR1 (DIP sw 2) */
++			MX6UL_PAD_UART3_CTS_B__GPIO1_IO26	0x1b0b0	/* CAN_ADR2 (DIP sw 3) */
++			MX6UL_PAD_UART3_RTS_B__GPIO1_IO27	0x1b0b0	/* CAN_ADR3 (DIP sw 4) */
  		>;
  	};
  
-@@ -465,12 +443,6 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07		0x31e /* SDIO_A_PWR_EN */
+@@ -334,15 +332,6 @@ MX6UL_PAD_NAND_DATA07__UART2_DCE_RTS	0x1b0b1
  		>;
  	};
  
--	pinctrl_reg_vdd_carrier: regvddcarriergrp {
+-	pinctrl_uart3: uart3grp {
 -		fsl,pins = <
--			MX93_PAD_CCM_CLKO4__GPIO4_IO29			0x31e /* CARRIER_PWR_EN */
+-			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
+-			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
+-			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
+-			MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
 -		>;
 -	};
 -
- 	pinctrl_rtc: rtcgrp {
+ 	pinctrl_uart4: uart4grp {
  		fsl,pins = <
- 			MX93_PAD_SD2_VSELECT__GPIO3_IO19		0x31e
+ 			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
 
 -- 
 2.55.0
