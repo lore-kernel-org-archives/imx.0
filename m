@@ -1,119 +1,108 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906C4563FBD
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 15:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BB95650EF;
+	Tue,  8 Sep 2026 15:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788882072; cv=none; b=rr9HoC/8REJJd8zjllGTWcKTeW/7AUGnebbwiMfW5H5nwsxWEbtq5vDJQ82NK2u2jU1gZGrwE7EafQkfx8HS91nzPB9WvvNj57gz3lYPRx5d+NegWDgixgwhwOL1N4a+StgoRyEdrHeFPTbhSayIZT2O5ZzjEFHzCuqg+YHa4xM=
+	t=1788882117; cv=none; b=bIfjDbaD4CqUiD+Ok55kgCxvGf88cFXOEMb4Kbt/e/fZoEBCSvBP3QUGAadkOHb++iWXjI8m/w7wfGZor8pN83nNNN/kDopzDJwjdkv/VQliOAOq8zOWx/WTVHaO98CRiHtFmIqyNntv6EQUgS+1nXMzIRoqlDAOvWPwGjInCiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788882072; c=relaxed/simple;
-	bh=GzYrXlZnDB1XKGfiPNBinLUJL2v814WR7dfGcc/FiBQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iu1e8WfA0r4w+pD8UAeXYB8Wp4sPd+cBmyYv62BIg7MI9DSMhR54P7cKDddPaxoRrTFSKRbnE7fHOKuA40exAaEpXn/fJDudw+NDKe4HBMnejaznsMpftAUCHVqSYVJTMrl+cI8u656L0CSnV9ke0czVBv44FLYlzsOskQPP1PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=pHtb0IRA; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="pHtb0IRA"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 20D5A1476;
-	Tue,  8 Sep 2026 08:41:05 -0700 (PDT)
-Received: from [10.0.152.207] (unknown [10.0.152.207])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2A8123F7B4;
-	Tue,  8 Sep 2026 08:41:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788882068; bh=GzYrXlZnDB1XKGfiPNBinLUJL2v814WR7dfGcc/FiBQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pHtb0IRAsW9wOvzoGibNXykydW6eCILCKGrOEu/Cep+YCKNzNG2lTH/1wfxB6GmXU
-	 cHbWOW8J08oJ3H7b5SEaQKXaSVLD7iAL3oCvN7oSRO9NDX5ROzp1Mcpr9JSj/4Bquq
-	 NbOWYxtdlzil98rLN4cciq3EoT4jY0mdiyk89BJk=
-Message-ID: <cdb4d02c-242f-4b82-9ddc-f9ea5eb91b53@arm.com>
-Date: Tue, 8 Sep 2026 16:41:00 +0100
+	s=arc-20240116; t=1788882117; c=relaxed/simple;
+	bh=dvEXrpz9+mP43mUOLnmseGtYCWlpD8MtFs4KKAO96P0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cF+ZRX3JXdNp9HCxAIfB9/GT84GDbW2Y3Cn0BmMk+LHATJjUwoQzImCx10NG8KeKRldcisFq2E53tHWhxZIkb3YU0UuHGjOCtrsdJ9Ax1J22g1SiftE1OQPAixra1fiq4F4c3vSewIlcjJWce8h8oQLfa1/n7WYJR/qP61qz1PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FDB1F00A3A;
+	Tue,  8 Sep 2026 15:41:54 +0000 (UTC)
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 09/13] ARM: lpc18xx: remove entire platform
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Arnd Bergmann" <arnd@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260908152808.3928630-10-arnd@kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-10-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 15:41:23 +0000
+Message-Id: <20260908154154.50FDB1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/13] ARM: versatile: remove mps2 support
-To: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Linus Walleij <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
- Stefan Agner <stefan@agner.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
- <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Kristoffer Ericson <kristoffer.ericson@gmail.com>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Alexander Sverdlin <alexander.sverdlin@siemens.com>,
- Shawn Guo <shawnguo@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Andi Shyti
- <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-12-arnd@kernel.org>
-Content-Language: en-GB
-From: Vladimir Murzin <vladimir.murzin@arm.com>
-In-Reply-To: <20260908152808.3928630-12-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 9/8/26 16:28, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The Arm mps2 platform is the reference implementation for Arm
-> microcontrollers and is useful for testing but not expected to be used
-> as a production device.
-> 
-> With all the Cortex-M based products gone, there is no longer a need
-> for a reference platform either, so remove it as well.
-> 
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Cc: Sudeep Holla <sudeep.holla@kernel.org>
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Linus Walleij <linusw@kernel.org>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Andi Shyti <andi.shyti@kernel.org>
-> Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-i2c@vger.kernel.org
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm/Kconfig                     |  14 --
->  arch/arm/boot/dts/arm/Makefile       |   3 -
->  arch/arm/boot/dts/arm/mps2-an385.dts |  92 -----------
->  arch/arm/boot/dts/arm/mps2-an399.dts |  92 -----------
->  arch/arm/boot/dts/arm/mps2.dtsi      | 220 ---------------------------
->  arch/arm/configs/mps2_defconfig      | 102 -------------
->  arch/arm/mach-versatile/Makefile     |   3 -
->  arch/arm/mach-versatile/v2m-mps2.c   |  17 ---
->  drivers/i2c/busses/Kconfig           |   2 +-
->  9 files changed, 1 insertion(+), 544 deletions(-)
->  delete mode 100644 arch/arm/boot/dts/arm/mps2-an385.dts
->  delete mode 100644 arch/arm/boot/dts/arm/mps2-an399.dts
->  delete mode 100644 arch/arm/boot/dts/arm/mps2.dtsi
->  delete mode 100644 arch/arm/configs/mps2_defconfig
->  delete mode 100644 arch/arm/mach-versatile/v2m-mps2.c
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Incomplete platform removal leaves orphaned Kconfig references a=
+nd dead driver code.
+--
 
-Acked-by: Vladimir Murzin <vladimir.murzin@arm.com>
+commit 4fd816877e2bb7047a8b9bdb89bde42225376a14
+Author: Arnd Bergmann <arnd@arndb.de>
 
+ARM: lpc18xx: remove entire platform
+
+This commit removes the architecture support for the NXP LPC18xx and LPC43xx
+microcontrollers since there are no known users running Linux on them. It
+deletes the corresponding platform directory, device tree sources, and remo=
+ves
+the ARCH_LPC18XX Kconfig symbol.
+
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index da29afce309f6..13b38be3353a3 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -443,20 +443,6 @@ source "arch/arm/mach-zte/Kconfig"
+> =20
+>  source "arch/arm/mach-zynq/Kconfig"
+> =20
+> -# ARMv7-M architecture
+> -config ARCH_LPC18XX
+> -	bool "NXP LPC18xx/LPC43xx (DEPRECATED)"
+> -	depends on ARM_SINGLE_ARMV7M
+> -	select ARCH_HAS_RESET_CONTROLLER
+> -	select ARM_AMBA
+> -	select CLKSRC_LPC32XX
+> -	select PINCTRL
+> -	help
+> -	  Support for NXP's LPC18xx Cortex-M3 and LPC43xx Cortex-M4
+> -	  high performance microcontrollers.
+> -
+> -	  This platform is scheduled for removal in early 2027
+> -
+
+[Severity: Medium]
+Does this removal leave several driver Kconfig entries and Makefiles with
+unmet dependencies?
+
+Removing ARCH_LPC18XX here without also cleaning up the corresponding driver
+references causes Kconfig evaluation to check against a non-existent symbol.
+For example, in drivers/gpio/Kconfig, GPIO_LPC18XX has:
+
+    depends on ARCH_LPC18XX || COMPILE_TEST
+
+Similar orphaned references to ARCH_LPC18XX are left behind in:
+- drivers/clk/Kconfig (COMMON_CLK_NXP)
+- drivers/i2c/busses/Kconfig (I2C_LPC2K)
+- drivers/dma/Kconfig (LPC18XX_DMAMUX)
+- drivers/iio/adc/Kconfig (LPC18XX_ADC)
+
+Additionally, it seems platform-specific driver code is left behind as dead
+code. For instance, drivers/clk/nxp/Makefile continues to gate builds on the
+deleted config:
+
+    obj-$(CONFIG_ARCH_LPC18XX)  +=3D clk-lpc18xx-cgu.o
+    obj-$(CONFIG_ARCH_LPC18XX)  +=3D clk-lpc18xx-ccu.o
+
+Should the associated drivers, such as drivers/pinctrl/pinctrl-lpc18xx.c, be
+removed in this patch series as well to prevent unmaintained dead code from
+lingering in the tree?
+
+>  config ARCH_MPS2
+>  	bool "ARM MPS2 platform (DEPRECATED)"
+>  	depends on ARM_SINGLE_ARMV7M
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908152808.3928=
+630-1-arnd@kernel.org?part=3D9
