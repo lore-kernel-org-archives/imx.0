@@ -1,150 +1,161 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010057.outbound.protection.outlook.com [52.101.84.57])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA664AA3FD
-	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 08:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788857786; cv=fail; b=qKwqn2e6shdiUUSbl0QJENaExR9HOM7L5xt0eYHRmY3q+Wys8tSyj1QvyYCFbE0BWNLln7oLL3crZ6Jr0wUIJ6QZXa0Z6rCXmyz6xITaCzoyB41Xkchz+F5DnkE0An4j43piL5clO+NGQx1t5U06VlqS6gSkX1h3G5Hr+A4tbZI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788857786; c=relaxed/simple;
-	bh=YZTRnU2wVKU4EF+poyqCRezGybFSseGKW8rl0YsbBzE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=tcFJZdrbxVoeccKK81jTdea+YQcPnqIhRmCm+EDyibdct1stiffRnh8AMntCopcEbeQkihb9qp/gzrJ/Wp17+4mUhzmH6C7dYX21oTTJBshll9z88/G6EyMuONUJ4HRZCBfRzJECi4Dlg9KUmUa7VgItcjkhvYPWRy8oJUrQ5wI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=f62nO1MS; arc=fail smtp.client-ip=52.101.84.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="f62nO1MS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ngjUh6JC0ev7jadoGaCrQ251mJ/x2/XfwMyhIcVsMGXdLtnMSo474fGfEjTSruWa+szulFK3NFsZ2f/oBYHAHgi1M7mD66SJ13JOZSf45uu66NWNDIqNYvPrZDELUnJtsI9R28VnDr+pMGOAsoD5hEUEjlqJfW9SPPmrJQJNugr0COAIM8COW5CXOWbuYE223suDsooByYh/2T+F7wzm81eQUIBZgyh7g0Jbecs4KlXzNcJXVLpNj7V+ppmn+l69OWfk5RbtFwrIgTnaVqJg0VVktVAUTcNUtfohDO4aJ1FZaDY/9phoq8s/HVzQEYUVnZ9tpl/5My39ayxQFH9VkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rDMRuErsoo9lfOx6JDF8rXAdESDHKjzkDnW2udH6C1g=;
- b=ll+mR7H0We5Ju1ptIhAcn164LXq3ti/9VY5aUxSRkpsbuSGTrff5vW4ZsnP+30KBaip4ZasVtewBE64upgP53r0vU8MYjoIP675KBbVkoR87oeOxQGB+dp7ImCO3kS7UOBcCIOhMwV9npO4aItPqnVs2QZ8FNYTjsF4Lza6fWIOkAsNiAxcXlJc57snUmZaDELf3VNmBwokersJ57pOM0hNaWYMLSZrcxNBcfhti0gnmhxzpvz8rOSqC/WgN8Lbdn1gTAMWBGo95S6bwYTi9FSt+lVwqCMBjGB+U8MNl+Aaq3hLFYif1DyzZ2AVM83WQbr8D82HgzQn6HpgEG3ZPow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rDMRuErsoo9lfOx6JDF8rXAdESDHKjzkDnW2udH6C1g=;
- b=f62nO1MSlVffPXlLcUI3hlGdXAKpKG3pBr6sFpBpL5opu1CJBqtUtDcqcHMhl2ocdz92A85HoxS+8Km/3Ui9AgETfLD5CQKGlCmBmSkhmod8LqfSfc/vaSAz4OSGa62MjtcM+ucEz1sJjzX46ysqOVM5j6dJwrVsJsE9VxBJM2FB2mjd8ztTUClxHQZVwPOP651U7YVmr43L3K+PAO2DYToiD/BDcKlzW6y/gFAXcBr1GC64o3l3RkTwUIeASOQfb/yIRErqrTXKHi64Jso+o8V70ma5pYicC492XxZrcr9/4/QyERTkV1nrqT1JGdAxxrZVCFldhBEwbJZmPd6Lgg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by DU0PR04MB9586.eurprd04.prod.outlook.com (2603:10a6:10:31e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.13; Tue, 8 Sep
- 2026 08:55:53 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0382.014; Tue, 8 Sep 2026
- 08:55:53 +0000
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-To: vkoul@kernel.org,
-	neil.armstrong@linaro.org,
-	mani@kernel.org,
-	dmitry.baryshkov@oss.qualcomm.com,
-	ivo.ivanov.ivanov1@gmail.com
-Cc: linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH] phy: phy-snps-eusb2: fix FSEL_48_MHZ_VAL definition
-Date: Tue,  8 Sep 2026 16:59:53 +0800
-Message-Id: <20260908085953.3315953-1-xu.yang_2@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5P287CA0346.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:21f::7) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB764B04B9
+	for <imx@lists.linux.dev>; Tue,  8 Sep 2026 08:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788857923; cv=none; b=rucUHLZFX3CfsGa34wPv17Y8lSyoY4QkRR6bYuSpr1TLh1AHkfqgI5sWmZVp3+4wg9PZoS7mjqRY74pA9n3dKlt9/KkvIoboPjhr8Y7fPd32IIGBkki7begjozMUzCUUKv4/hj568AY/ZfiztKfIL+6At7S3T2LpICqzDJhrJWM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788857923; c=relaxed/simple;
+	bh=CTsQdxysntUGntTxp2s7c8/ETcCzeu8SXsWlEmKuqxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BzkMPokQIAzdWkyEPg2ML1K6wEXEyKjHAx959vSnbKwTTdLIGRKRjxY4lVD+5lnlv6MR3g/UKfBk17Y9U/U0HnXaO/8Ot+6vBmu1nMsyB9TgJ9KKKqfZYDRxBwTjOvsE2Zk7WlYzXkBVlC4/zdBZsaq0eo9vx3rm2AGDXp0lAv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+X-PTX-Original-Recipient: alexandre.belloni@bootlin.com
+X-PTX-Original-Recipient: mailhol@kernel.org
+X-PTX-Original-Recipient: linux-arm-kernel@lists.infradead.org
+X-PTX-Original-Recipient: imx@lists.linux.dev
+X-PTX-Original-Recipient: nicolas.ferre@microchip.com
+X-PTX-Original-Recipient: s32@nxp.com
+X-PTX-Original-Recipient: ciprianmarian.costea@oss.nxp.com
+X-PTX-Original-Recipient: claudiu.beznea@tuxon.dev
+X-PTX-Original-Recipient: dev.kurt@vandijck-laurijssen.be
+X-PTX-Original-Recipient: linux-can@vger.kernel.org
+X-PTX-Original-Recipient: linux-kernel@vger.kernel.org
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C9AEA20177F;
+	Tue, 08 Sep 2026 10:58:26 +0200 (CEST)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1x3res-000gXD-2J;
+	Tue, 08 Sep 2026 10:58:26 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 616925972E3;
+	Tue, 08 Sep 2026 08:58:26 +0000 (UTC)
+Date: Tue, 8 Sep 2026 10:58:25 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Vincent Mailhol <mailhol@kernel.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>, 
+	linux-can@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v5 0/3] can_rx_offload keeps a lockless irq_queue that
+ the IRQ handlers fill and that is later spliced under skb_queue.lock into
+ the NAPI-facing skb_queue. This works as long as a single context fills the
+ irq_queue. flexcan with FLEXCAN_QUIRK_SECONDARY_MB_IRQ and mcf5441x use two
+ mailbox IRQ lines. When those are affined to different CPUs the two handlers
+ can enqueue into the same list at the same time and corrupt it.
+Message-ID: <20260908-defiant-mauve-woodpecker-0e0f62-mkl@pengutronix.de>
+References: <20260907104942.17089-1-ciprianmarian.costea@oss.nxp.com>
+ <20260907-lively-easygoing-groundhog-51cdd3-mkl@pengutronix.de>
+ <6bdc8044-34de-4d7a-89a5-908de7f8b044@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|DU0PR04MB9586:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c8aab5a-9f3d-46cb-25e2-08df0d86fcf5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|23010399003|376014|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	1+mggfrI59JyodkkUNCJmGHzwig9gdmRPDQASRu++RzIcyL5pjjboRcpWRdrxz3kbmyEB0+mBjofSjfbUCPSsdouVCzxBbMNc441yw3Kx/WwA2xRZbs28mQ9zkcfKcrJDDWXGkNUFoyuDuB1n6G1Dy7wTQ+aIrMKx8Kw0oGXMx++FiM56b4QvBiMk8p33CcAVpoVuD+AeFL3PID1foRAKZ6lXpZtdm3r+EGnFmV0F/0ql3C3TPPLtPNieiS8PY1E+h6KXoRopI+ymG9N16YtcGHbzvXEL89Cxecjnag567lZRYz8LCDVemstqZ433J+pgQVqkd299IGqb3TdmnlT7b+uuk3WhfshtKshXciiCCoFQG5AqoN04RQdKDroE+Up2V2LyIeO9TJyMuEn7Qq34/L5KmrFCSVx7jnePfKEWg/+BEU+RHUCW0feMHvHuaVRoBtpUsjKy4Eo39SXAw0AdBuCxiAwnM8zWLWpjGJvtBR4gV6KBGBdtt6+dgiK0xb9l47RN7hxO65dAXEN2U8TWmcUiDh0hWIhtuXWvGBvIlAbfCVEDerXCqCNoufeS1PSaX45EQKVw6T6bYCWeSyiik6kR33ett63xB7nA/SWMKHp0CBWx0MRdDZNmVtugls2F1I7gRpmPjCosaWSRPZOhea8RFx0/mgSM5xnBY74fcM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(23010399003)(376014)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ld+yfiDzMuoVHgo5QcbMkSoWTEivG73XpqaDLK6MhdeB8OAdfhDjYYw0yY4l?=
- =?us-ascii?Q?6OhzDBX/zKw5NtcanZrz1JFp+rNg+np0AKaqp/w0QowiXOg1OCdi1jCEx9cf?=
- =?us-ascii?Q?WN+PB4Y+R5iLO2vgvyqY34RUkwZa/oJbvF3fGkr5k/KQ6wbmhUfNmzqtkbgo?=
- =?us-ascii?Q?RmTnLA3QXl7BHwzH99tBgzB1rF5DhAuYuPV4vcuXhYds3QPxdcVPrYfqnzUn?=
- =?us-ascii?Q?kvd9k3X9uM+0axHRioEeLrIHEh+OrTGmkp/tf0lhy2BCaNU1Jy7FvIZ1qcRS?=
- =?us-ascii?Q?Qit/gOfiZFIAIfWwHpiZNQ5lQzlprPeSkG8ELyyzY9uVhIFpLBoETaFtKWaV?=
- =?us-ascii?Q?PUOjgL9A9cT9kPsodm9vDcn0fDKQB2DnLN+4SnwnavC+ZKqnXvyLXnN8RCBf?=
- =?us-ascii?Q?faizZSiUMeYezPNc2p+R3iHrALs29jWDWOQEZWQu5ICXUBBLZj/Z48MOrnRE?=
- =?us-ascii?Q?KCm7CM3cQ1h/svHKWIaf+Z8Gwda97Wp+RdaQf2/MXZn/X1mqvyKcx3yESd+W?=
- =?us-ascii?Q?n89f7KRt6oudZ80L+Hn4eqwrFQFCfIlJiru6L5KZuhMI2UjVumrzXPzdGwrR?=
- =?us-ascii?Q?N+IUvLAzv+1kfKF3Bf6zJKtlgpN1lRIO2t23uJMinJW5KzzhOu9FAbCzeYxs?=
- =?us-ascii?Q?k2pgMth4O5l60KGr9dyc/GsLNp6MtJF8hBtlHLogauPBe8erRyiTEzUsjdLd?=
- =?us-ascii?Q?Tzqpzh2y8ZREn+IDXZ4cBvkid4tD1QHfbJjszNgkTLZGYPNACtsl26L6kwF7?=
- =?us-ascii?Q?3mwK6Q8lw/m87toHV8YqhNviEpR3YBzgqXrqecjTKmBQm1vQSFrhM1D/4lZH?=
- =?us-ascii?Q?HjvyOooKWA4TUCzmeUY33r8/5iH5j5VMobWfkghfxRbjTKPmV0eIp70erkPc?=
- =?us-ascii?Q?ahYdU9albWvoEYN39NSYhzQQ5F6A+LejuvsYIIxFIU6S3NGdkzAmENCUR6YO?=
- =?us-ascii?Q?VMYz1ExUYFJjYKvlm1cCYkcHDjJksogDjL9k5iRkDnUWnbHcurdvsMO5L/4+?=
- =?us-ascii?Q?BMAc+HWuBBT4T2JNt/NW/dPihNw6AJULd9npBtdrSpZpLxzBmOegWrQRIlsr?=
- =?us-ascii?Q?oqKkF6dSHT/XvQn3qFqrB6IivpOD5bi5gTSL7Az3ts5QF1mSvxAOaJ4dvJuE?=
- =?us-ascii?Q?R5qpN2No8WNdxh0qw7y6/qKMfueg919IDitFO/JmJxl7ywLFy7cXVAW0fNZa?=
- =?us-ascii?Q?3MfKT+A0AtUGli8VJmvIN2KzDnwv1ya8XuTh7thi3gpqUqRRzj8MJTQg7OYG?=
- =?us-ascii?Q?dWsBBpVRZKF6wmf2/yRmZVexscuXCSxL1RLCmCOfJKMFOUJ6kbtfW+lFfzTp?=
- =?us-ascii?Q?XT7uUaI3zk+CC9ezub+RuzZVu8FJrjBJ3QcWL1X5klv6Mbm8Xg6cWoiJXooF?=
- =?us-ascii?Q?+BFM/DwYLfh1TJOjdKmitVG0HIuZlXcL507qrJ3oBQN1Zled7e4+EM+z/ksi?=
- =?us-ascii?Q?577X10lJGilHo5QAx11/0LBoJKCzCWfEO4/f916koCse/sfuSYZEPOucMYhI?=
- =?us-ascii?Q?rCfX8IKKH3OIISU4/teWsGMVWn1ghrvwD8+ZUDOhMN4nrcKRyuvkR7NYnaOU?=
- =?us-ascii?Q?A+bY6AdeGSKeSC+JySKkrStf3OV3bom7Sh3ezR9HSiJHAo1ZvKxP6bwSr/MV?=
- =?us-ascii?Q?OVHNPWdpfCYQ+UYb1ebvAh26ZCNBtPctSRyegnLrp/EpK4zmF7mLycAok1cp?=
- =?us-ascii?Q?kCucJRbr5R//3KzkwlX/n9cIXZu3eL5OfQerwAc/d4lKLMKGB91NVqzSlDan?=
- =?us-ascii?Q?3G3sP86CUvX2a3y+4Z1llQ7DKFcyXQgsA944fTkesKxm+jFzEDOh?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c8aab5a-9f3d-46cb-25e2-08df0d86fcf5
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 08:55:53.5186
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: THsVD3k+6VrDn9zPqP2gIWk0gy4b/SflPBcTi8VeArQWWKqWMZJIglahqnqR0aiSdGEDNIoFJQekifOrd1afMss92xJ2RrfHyCb+4X+D++LaOr9z1wKjP7F92NsEuhhx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9586
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2x5jigtab6tpbqlb"
+Content-Disposition: inline
+In-Reply-To: <6bdc8044-34de-4d7a-89a5-908de7f8b044@oss.nxp.com>
 
-From: Xu Yang <xu.yang_2@nxp.com>
 
-According to Synopsys eUSB2 PHY Databook, FSEL_48_MHZ_VAL should be 0x6
-for supported 48 MHz reference clock.
+--2x5jigtab6tpbqlb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 0/3] can_rx_offload keeps a lockless irq_queue that
+ the IRQ handlers fill and that is later spliced under skb_queue.lock into
+ the NAPI-facing skb_queue. This works as long as a single context fills the
+ irq_queue. flexcan with FLEXCAN_QUIRK_SECONDARY_MB_IRQ and mcf5441x use two
+ mailbox IRQ lines. When those are affined to different CPUs the two handlers
+ can enqueue into the same list at the same time and corrupt it.
+MIME-Version: 1.0
 
-Fixes: c4098f3e6134 ("phy: phy-snps-eusb2: add support for exynos2200")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
----
- drivers/phy/phy-snps-eusb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2.c
-index af4fa17ac6cb..3cb18d6ebc1d 100644
---- a/drivers/phy/phy-snps-eusb2.c
-+++ b/drivers/phy/phy-snps-eusb2.c
-@@ -21,7 +21,7 @@
- #define FSEL_20_MHZ_VAL			(0x1)
- #define FSEL_24_MHZ_VAL			(0x2)
- #define FSEL_26_MHZ_VAL			(0x3)
--#define FSEL_48_MHZ_VAL			(0x2)
-+#define FSEL_48_MHZ_VAL			(0x6)
- 
- #define EXYNOS_USB_PHY_CFG_PLLCFG0	(0x8)
- #define PHY_CFG_PLL_FB_DIV_19_8_MASK	GENMASK(19, 8)
--- 
-2.34.1
+FYI: somehow the series description ended up in the subject
 
+On 07.09.2026 18:07:42, Ciprian Marian Costea wrote:
+> On 9/7/2026 4:49 PM, Marc Kleine-Budde wrote:
+> > On 07.09.2026 12:49:39, Ciprian Costea wrote:
+> > > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> > >
+> > > This series:
+> > >    1. Makes the irq_queue per-CPU so the handlers no longer share a l=
+ist.
+> >
+> > As sashiko pointed out, using per-CPU variables in a preemptible context
+> > doesn't work. When proposing to use per-CPU variables I haven't thought
+> > that far. So in hindsight this approach is not good.
+> >
+> > What about following what NAPI does. Have a dedicated data structure per
+> > IRQ. I think these ones are needed:
+> >
+> > | 	struct sk_buff_head skb_irq_queue;
+> > | 	u32 skb_queue_len_max;
+> > |
+> > | 	unsigned int mb_first;
+> > | 	unsigned int mb_last;
+> >
+> > And pass them to can_rx_offload_queue_timestamp() and
+> > can_rx_offload_irq_finish().
+
+If the RX-Offload knows the number of concurrent IRQs, you can optimize
+for the single IRQ case and keep skb_queue_splice_tail_init(), while for
+the other case you should sort the skbs into the offload->skb_queue
+list.
+
+> Thanks for replying.
+> Indeed the per-CPU approach should be dropped. I've also missed the
+> PREEMPT_RT case.
+> Your proposal seems better than even having a dedicated spinlock for
+> skb_irq_queue operations as I've originally thought.
+>
+> One thing to confirm before I go ahead and implement this approach for V6:
+> Having the following connected patchset in mind [1] which separates the I=
+RQ
+> handlers, both flexcan MB IRQs currently run flexcan_do_mb() over the full
+> iflag. Therefore, to actually separate the producers I'll have each IRQ
+> drain only its own mb_first..mb_last range into its own queue - is this t=
+he
+> right approach ?
+
+Yes!
+
+Please look out for shared ressources (read-modify-write registers,
+etc..) when accessing the mailboxes concurrently from 2 (or more) IRQs.
+After a quick look I haven't found any.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--2x5jigtab6tpbqlb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCap/OLwAKCRDMOmT6rpmt
+0gC+AP0XJdF0jo1CfnOQqWOPjOdZRSTRYgJxQ/iIjLgdE84A3wEAyf2YhGx0Gr5s
+CMrG0nCwwLxVzMmHBw9CJ51rtQbPXAQ=
+=hr1P
+-----END PGP SIGNATURE-----
+
+--2x5jigtab6tpbqlb--
