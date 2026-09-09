@@ -1,280 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B195314A86;
-	Wed,  9 Sep 2026 14:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E647A1DF98F;
+	Wed,  9 Sep 2026 15:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788964770; cv=none; b=n2MwFPuItKW4Uzz160bTAUAJXb8XYZXjzCGFQ+Scai6sxMda75EsaBdHDQ+/yAJiq2MFxhAxvz7HoncidqC+AiZBeKtr5gkcQJjwoM9DRjEmMnkPL8RxUG51feUA6bIi1PNiaqaildU8OLBJUE0b3X/hKAQcu66a0x4osdQ9zTY=
+	t=1788966606; cv=none; b=KPBPvwFvErOMOk/j/uogNixVwNtOb5UYdeZsAYtHk9W1cItk/YU4irhpHvVdcUhvmlBjX66hNpzlOs9sDQt+BQ1ZrGvT2AEMwd7ic18i+8dHjBWJ1PMttDJTn3CBbYKfVuqTnvhRL65VJBABctexuxmNJA4YnbHCcVP4+1hMOIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788964770; c=relaxed/simple;
-	bh=1rzzRsFBAiuC+bYDPvS/SgKKe5unW7JKdmc8jw0Cpq8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hZ/LD33khtO0Nt0hWwOlL/br0uXqTa6fVkne88/eB7cxt9fpnymCUrVRLq2wr7dx4yYHNzE/5v7MtULXQY0YqOrl9wUKK0x9SRzL2dJFfVnOifYTq88lQA4UuhnIN5yCdy6r2mDYPvu24a1+8y7v2Jxiu8f4u56Bqa25AMfTuvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqcX/Z5F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788966606; c=relaxed/simple;
+	bh=B3JGyzLx8cCd/i3MCr5FaXYdGFjgIHugHdhYe3l65zI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ehKbIKI/QLrmc5d1gic1JCMDuVQ9yRC78y6deahZ/+icJS4PdFp1dULn/LLO7W6vzEdjEocf7l8iL1trq+BfjDli5nLxz9Ep/r8XS0zP6NcQh9adp7YuMbMzmAFsrmTAtvck4qz5Xr4lMG/GQ8On73s7IYgsrvkwoMmKSt+BV1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netwinder.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=fkQl6LBG; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netwinder.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqcX/Z5F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483791F00A3A;
-	Wed,  9 Sep 2026 14:39:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788964768;
-	bh=+UIf8Zu80TSsKBxyqZn2MTJLVYa1HNYtb0XS0mqqrDM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cqcX/Z5F0wiZ2qcJe0b0D/ylWsfnaBX5mIhlSu3R0jYpAglQ1ZoVBrbT7cY7UsgB3
-	 E2ibg1SP7n7ITRMoaKpivUwxaDRdVGqRjZXJ0ZeWx8jQleOw9Ouv1jppWOJ8016nU4
-	 on1srxWDjSEy2oLpclOJKlhmiwRH31IzlDj8/ainsotrMKgCL8YVbyrY8YFYI9yggg
-	 lkhRpa9FuHs+3V19TIClaoEJS/LWDTTA6yQc8kykxlI+PKNmb9+g0bL+dY4m3RBFct
-	 q+tLQk7Cf3XKGyXlcMIG68vMXpwp10dyvrc7akCdy1ZpgsOhAOc0+KMhh06h4X6uoH
-	 yDFeEvmWXd1Xg==
-Subject: Re: [PATCH net v2 2/2] net: fec: free the PPS interrupt before
- tearing down the PHC and netdev
-From: netdev-bot+sashiko@kernel.org
-To: me@cherr.cc
-Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- troy.kisky@boundarydevices.com, fugang.duan@nxp.com, l.stach@pengutronix.de,
- horms@kernel.org, phucduc.bui@gmail.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 09 Sep 2026 14:39:26 +0000
-Message-ID: <178896476679.219967.6901697617013894396@kernel.org>
-In-Reply-To: <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
-References: <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="fkQl6LBG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=1CM/Ie7i+HqydojhG/4KklP2dQRzr4P2XxxuR9fLATg=; b=fkQl6LBG6LJrHcZTamZCq1ChtO
+	JMh4Fm5pOxL5mwqSv5oXi20cu528tNwpvEqr4R49C/edMeJXImXCtAjtRerBWydxBCWyo/C2z5U/b
+	gP2XR2Oo/inXe3bxpoD0+pjl0Fza+w0/xOCDn1V+rpiE47urZlHQtwx/7mxePkwwXvDuoxTaj7xER
+	6LE/nepCtDYxq5S5wP3dD9k0G5k5KjVSybh0bhlNF7qEJWp/R05L4yvMr4ETJjCv0AhWvc0R4g9Xg
+	8xF+Z6eMddN+PI0NjKVPPurEo0gdxEVIFlMUocUOry3anZCEE/fkgoDtE6uFdx6SPnAmnL0yBBMlE
+	cyo2yEmQ==;
+Received: from [66.129.139.8] (helo=rfs.netwinder.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x4Jvb-00000006qdh-48tP;
+	Wed, 09 Sep 2026 15:09:36 +0000
+Date: Wed, 9 Sep 2026 11:09:31 -0400
+From: Ralph Siemsen <ralphs@netwinder.org>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-omap@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 02/13] ARM: remove footbridge
+Message-ID: <aqF2q32M8iQ6qhAr@rfs.lan>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-3-arnd@kernel.org>
+ <CAD++jLkzrp4hsOERqOt6Zc75p-+KoWj0Tvu6VQk=ma2kgDH=Qw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jLkzrp4hsOERqOt6Zc75p-+KoWj0Tvu6VQk=ma2kgDH=Qw@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <ralphs@netwinder.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Tue, Sep 08, 2026 at 07:27:48PM +0200, Linus Walleij wrote:
+>On Tue, Sep 8, 2026 at 5:28 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> Footbridge was deprecated in 7.3 to be removed along with the other
+>> StrongARM platforms and most remaining board files.
+>>
+>> The main machine here is the NetWinder, which was a popular Arm based
+>> desktop PC in the late 1990s and contributed to Arm's later success as
+>> an embedded Linux platform, but was discontinued over 25 years ago and
+>> is no longer all that useful.
+>>
+>> I previously tried to convert this to devicetree in a sensible way but
+>> gave up due to the platform being too different from modern SoC based
+>> targets.
+>>
+>> Cc: Russell King <linux@armlinux.org.uk>
+>> Cc: Ralph Siemsen <ralphs@netwinder.org>
+>> Cc: Helge Deller <deller@gmx.de>
+>> Cc: dri-devel@lists.freedesktop.org
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+>Acked-by: Linus Walleij <linusw@kernel.org>
+>
+>I have one of those machines and it boot mainline but I
+>certainly consider it a paperweight at this point, I can't use
+>it for anything useful.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 0 (1)
+Likewise, I have a NetWinder machine which has occasionally booted a
+mainline kernel, along with fairly current buildroot initramfs. It has 
+been surprisingly smooth sailing, even the bx/bl compiler troubles seem 
+to have been sorted out these days.
 
-- [Medium] fec_ptp_stop() now removes the PPS interrupt handler
-  (devm_free_irq(), drivers/net/ethernet/freescale/fec_ptp.c:870)…
+It's a bit sad to see it go, in particular since it all works. But the 
+reality is that nobody seems to be running this hardware anymore, and 
+there is no community of active users anymore.
 
-Pre-existing issues:
-- [High] Use-after-free of fec_enet_private via the perout hrtimer during
-  driver removal.
-- [Medium] fec_pps_interrupt()
-  (drivers/net/ethernet/freescale/fec_ptp.c:696-728) performs a read-…
-- [Low] Kernel-doc above fec_ptp_init()
-  (drivers/net/ethernet/freescale/fec_ptp.c:735) states "If ptp support…
+Acked-by: Ralph Siemsen <ralphs@netwinder.org>
 
---
-
-net: fec: free the PPS interrupt before tearing down the PHC and netdev
-
-This records the PPS interrupt number in struct fec_enet_private when
-devm_request_irq() succeeds, and releases it with devm_free_irq() in
-fec_ptp_stop() before ptp_clock_unregister(), so the handler is gone
-before the PHC and the netdev go away.
-
-A few questions about the teardown ordering and about state that is not
-covered by the new devm_free_irq() call.
-
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 56801c2009d59..567ea2a461173 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -778,6 +778,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
->  	hrtimer_setup(&fep->perout_timer, fec_ptp_pps_perout_handler, CLOCK_REALTIME,
->  		      HRTIMER_MODE_REL);
->  
-> +	fep->pps_irq = -1;
-
-[Severity: Low]
-This is a pre-existing documentation issue and not something this patch
-introduces, but the kernel-doc directly above fec_ptp_init() in
-fec_ptp.c claims an early-exit path that the body does not have:
-
- * This function performs the required steps for enabling ptp
- * support. If ptp support has already been loaded it simply calls the
- * cyclecounter init routine and exits.
-
-The body has no such test: every call re-populates fep->ptp_caps,
-re-initialises tmreg_lock, the time_keep delayed work and perout_timer,
-and now also resets fep->pps_irq before requesting the pps irq again.
-
-Since fec_ptp_init() is only called once per probe from fec_probe(), this
-has no runtime effect today. If a repeat initialisation ever became
-possible though, would the unconditional fep->pps_irq = -1 erase the
-recorded irq while the old non-shared handler is still installed, so that
-the second devm_request_irq() fails and fec_ptp_stop() then skips
-devm_free_irq() entirely?
-
-Would it make sense to correct the comment while touching this function?
-
->  	irq = platform_get_irq_byname_optional(pdev, "pps");
->  	if (irq < 0)
->  		irq = platform_get_irq_optional(pdev, irq_idx);
-> @@ -787,9 +788,12 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
->  	if (irq >= 0) {
->  		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
->  				       0, pdev->name, ndev);
-> -		if (ret < 0)
-> +		if (ret < 0) {
->  			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
->  				 ret);
-> +		} else {
-> +			fep->pps_irq = irq;
-> +		}
->  	}
->  
-> @@ -861,6 +865,12 @@ void fec_ptp_stop(struct platform_device *pdev)
->  
->  	cancel_delayed_work_sync(&fep->time_keep);
->  	hrtimer_cancel(&fep->perout_timer);
-
-[Severity: High]
-This is a pre-existing race and not introduced here (the patch only
-inserts devm_free_irq() between this cancel and the unregister), but since
-the teardown order is what the patch is about: can the perout hrtimer be
-re-armed after this hrtimer_cancel() and outlive free_netdev()?
-
-fec_ptp_enable() drops both locks before arming the timer:
-
-drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_enable() {
-	...
-unlock:
-			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-			mutex_unlock(&fep->ptp_clk_mutex);
-	...
-			if (delta > FEC_PTP_MAX_NSEC_COUNTER) {
-				timeout = ns_to_ktime(delta - NSEC_PER_SEC);
-				hrtimer_start(&fep->perout_timer, timeout, HRTIMER_MODE_REL);
-	...
-}
-
-So for a PTP_PEROUT_REQUEST whose start time is more than
-FEC_PTP_MAX_NSEC_COUNTER away, a concurrent unbind can run
-fec_drv_remove() -> unregister_netdev() -> fec_ptp_stop() and execute
-hrtimer_cancel() while the timer is not yet armed, and the ioctl arms it
-afterwards.
-
-Does anything cancel it again? ptp_clock_unregister() waits for in-flight
-posix-clock operations and then calls ptp_disable_all_events(), which only
-touches EXTTS pins and PPS. This driver sets ptp_caps.n_pins = 0, and the
-PPS-off request returns -EBUSY from fec_ptp_enable_pps() while
-fep->perout_enable is set, so PEROUT is never disabled.
-
-fec_drv_remove() then reaches:
-
-drivers/net/ethernet/freescale/fec_main.c:fec_drv_remove() {
-	...
-	fec_enet_deinit(ndev);
-	free_netdev(ndev);
-}
-
-which frees the netdev private area containing both fep and the still
-queued perout_timer. When it expires, fec_ptp_pps_perout_handler()
-recovers the freed fec_enet_private with container_of() and
-fec_ptp_pps_perout() writes fep->hwp registers that devres already
-unmapped. Should fec_ptp_stop() do its hrtimer cancellation after the PHC
-has been made inaccessible, rather than before?
-
-> +
-> +	if (fep->pps_irq >= 0) {
-> +		devm_free_irq(&pdev->dev, fep->pps_irq, ndev);
-> +		fep->pps_irq = -1;
-> +	}
-
-[Severity: Medium]
-This is a pre-existing problem, not one added by the patch, but it affects
-where the new devm_free_irq() should go: fec_pps_interrupt() does a
-read-modify-write of the compare channel without taking fep->tmreg_lock:
-
-drivers/net/ethernet/freescale/fec_ptp.c:fec_pps_interrupt() {
-	val = readl(fep->hwp + FEC_TCSR(channel));
-	if (val & FEC_T_TF_MASK) {
-		writel(fep->next_counter, fep->hwp + FEC_TCCR(channel));
-		do {
-			writel(val, fep->hwp + FEC_TCSR(channel));
-		} while (readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
-	...
-}
-
-Every other accessor (fec_ptp_enable_pps(), fec_ptp_pps_perout(),
-fec_ptp_pps_disable()) holds spin_lock_irqsave(&fep->tmreg_lock), and the
-irqsave variant suggests the handler was meant to take it too.
-
-Because val is sampled before the disabling writel(0, FEC_TCSR(ch)) in
-fec_ptp_enable_pps(fep, 0), can a handler running on another CPU write
-TIE and TMODE back into TCSR after that disable, re-arming the channel and
-clobbering fep->next_counter?
-
-In fec_ptp_stop() the new devm_free_irq() sits after
-fec_ptp_enable_pps(fep, 0), so the handler is only quiesced once the
-state has already been torn down. Would freeing the irq first close that
-window?
-
-[Severity: Medium]
-Removing the handler here does not seem to be paired with quiescing the
-1588 compare channel in hardware for the PEROUT case. The channel is only
-disabled when fep->pps_enable is set, via
-fec_ptp_stop() -> fec_ptp_enable_pps(fep, 0), which writes 0 to FEC_TCSR.
-
-When the channel was armed through PTP_CLK_REQ_PEROUT instead,
-fec_ptp_pps_perout() leaves it enabled:
-
-drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_pps_perout() {
-	...
-	temp_val |= (1 << FEC_T_TF_OFFSET | 1 << FEC_T_TIE_OFFSET);
-	temp_val &= ~(FEC_T_TMODE_MASK);
-	temp_val |= (FEC_TMODE_TOGGLE << FEC_T_TMODE_OFFSET);
-	writel(temp_val, fep->hwp + FEC_TCSR(fep->pps_channel));
-	...
-}
-
-and fec_ptp_stop() only cancels the software hrtimer; it never calls the
-existing helper that clears the register:
-
-drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_pps_disable() {
-	hrtimer_cancel(&fep->perout_timer);
-	spin_lock_irqsave(&fep->tmreg_lock, flags);
-	fep->perout_enable = false;
-	writel(0, fep->hwp + FEC_TCSR(channel));
-	...
-}
-
-The later ptp_clock_unregister() -> ptp_disable_all_events() PPS-off
-request cannot help either, since fec_ptp_enable_pps() returns -EBUSY
-immediately while fep->perout_enable is true, without touching TCSR.
-
-The close path does not reliably clear it either. On SoCs with
-FEC_QUIRK_HAS_MULTI_QUEUES, or FEC_QUIRK_NO_HARD_RESET with the link up,
-fec_ctrl_reset() only disables the MAC:
-
-drivers/net/ethernet/freescale/fec_main.c:fec_ctrl_reset() {
-	...
-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-			writel(0, fep->hwp + FEC_ECNTRL);
-	...
-}
-
-so TCSR and TCCR survive fec_stop().
-
-fec_pps_interrupt() is the only code that acknowledges the write-1-to-clear
-TF flag and reloads TCCR from fep->next_counter. After this devm_free_irq(),
-does the channel stay enabled with TF latched and unacknowledged, and the
-output pin still toggling?
-
-And on a later re-bind, would the stale armed channel be serviced as soon
-as fec_ptp_init() re-installs the handler with devm_request_irq() -- which
-happens before ptp_clock_register() and before anything resets TCSR, as
-fec_ptp_start_cyclecounter() only writes ATIME_INC, ATIME_EVT_PERIOD and
-ATIME_CTRL -- reprogramming TCCR from a freshly zeroed fep->next_counter
-on a channel the new instance considers idle?
-
-Would it be better to clear FEC_TCSR for fep->pps_channel (acknowledging
-TF) for both the pps and perout cases, for example by calling
-fec_ptp_pps_disable(), and only then drop the handler?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade%40cherr.cc
+Regards,
+-Ralph
