@@ -1,135 +1,104 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA37358B6B7
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 20:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E193D6478
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 20:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788986475; cv=none; b=eiMr3duqVk5RHeAfgr90YtEjTfFUUIifzvX5k4L5h5AKBrZYosLZVzkTGsnnsNz57OZgNcAsSr5K6jb1mC+w2SEu5gyOSqT6bZxyEZURQCkdkVKimIgRQTHLONkU8tPMxQDMXuhEOFoGqpM/FhbjsDYS0m51RZz9ceC1IqzoqdA=
+	t=1788986965; cv=none; b=QPFNW1ESDzOP+kw1TkBsNWzokp3gs+hT0mjG5nfXIHFHeHGXHNsaCq4gemQ+5uIhKANht58Jol+hz4vpfsUyGHpepHsnUzTbnGEsJlbqMCLHFxmx2SN8q3cSEzOLCGOp79xdunupqzIJTickVEoJmIqGpDxRBnFZ5IYRQN3pF4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788986475; c=relaxed/simple;
-	bh=dVKIiNAEgVbAcUmEZV6u+JTcPDwaNXloRQ0M0HcerBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nia5fk35MTaLCXhz9gKLPtai2o4Ad+pTbwVjdmvLIzyDWLW1mfhqQmjPVdYwrsexsC94NDFB14jxZkZCNGNoic9LdNR4jF0GE7M1lMlvc+gje6imqDO4HJv3jtfpJoR8jeSHqDaJ6K+eXdjOSyIqayR1402uwk7qQ1diDmmad5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZ4VDuYH; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788986965; c=relaxed/simple;
+	bh=DOkjFvWl2S2dI7nTY98/lIdw/BGjUrQ+DkWV+fvMiPE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=mz0jpFgapA33gofer0QvkdHWenZGZvXZKq8kP3yIYpnzk1v5wMjA2WCLxaf8PYdRzWrdj7DL+DcmzPV7YJp1P6A/3Q8F1bbNoUZTnT6qMYfMNa9s8FE7SktwCwTHSaP9vSXTwPm6fH0M9xlmStO/l0yY6bHzYgwOCpUbg3hyKww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSV3KaXv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZ4VDuYH"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b5so9655175e9.2
-        for <imx@lists.linux.dev>; Wed, 09 Sep 2026 13:40:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788986451; x=1789591251; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BMGCVsS43Or0QvhvusoStvupM2eWy3k0/84tq8T1pu0=;
-        b=eZ4VDuYHxcBvv9E7CG/G/SXwYBZhb6NwZz/31DNafV9ddNvvMW5ekE36XvEuSnMoC9
-         CixoRlW7vzVDVWsMI+yVJdLZzt0FvAY4QBam89RmGrFO2urhybKZryuG45VhyQr1emuL
-         LmzaPu+s8bPVtnehEF2jHNc7yHlSg4/PGU11s65HkNL0UUfo0tjz72eCL0c6cCpiHtZz
-         Z56X9pqOjZQJzhHF7JJKxZxRsj+qqN5G2kBC5j3e6s4EJWHmhlZJPtRnCVJ0cXYgAcqC
-         EL0kMm0C4aQPqa6fl71cCz09rfTbkNCMzWh10WAzpk76W3oEOAURpxzve+Yfa1UisZTY
-         Lkig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788986451; x=1789591251;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BMGCVsS43Or0QvhvusoStvupM2eWy3k0/84tq8T1pu0=;
-        b=rC46iPcirQrzhALbbfMUysRGwvPX7Hirz1eSh2E7GyxL6swhqZSlTMEMaZP3WTlCxx
-         q+67NXNwzP7XVp50dk2YrzedRsUA14O+5VDFFbCphegcig3LZvCloBFJtwuQgct7zqbQ
-         GbBRBu49tGRDKA9Gw9g7jFdTDkGKmo7+w/OH1W7SD6Q7FNJEbZmWZ2Ulj+BNGTXdCSjR
-         iN3TEi0L109ykHxAI5DzcMmELq7ojjXwrWNwKAKRwD/Mga/5Cz4Cj0RQhkOvv33puqdV
-         01fBuNjA+SD0Y2+M6jqeSZj1GDMuGStexBywUWCCs5FdaUJ39zw31BJ0RCkYUNlZQjce
-         NSAA==
-X-Forwarded-Encrypted: i=1; AKwUvBx7KG+BZmrqF72i/xE3KEQ7onTgLe5RxxMmix3lfBYxe+1kStTmS9fuCsm3MZnIavhe8wA=@lists.linux.dev
-X-Gm-Message-State: AFuF++lhn75nfEhP+r5+r+XmyKR60l+nbcIC0HxOa6DTcojn6gf8zYjb
-	ZAEwsKh80KQpnNDqV+GsUHmTNcB7NvZ8BokTk6kebDJYJUl1e3B8ONH/
-X-Gm-Gg: AYBFou19ivRtZEelXqk9el5B5nsddc5Y/RnVLhtnanyEfgMBy/BytL9nL3bsZCh4qiT
-	oK+135Xcmzso6zZCg40myNKCh2DinWtuTNGlWDxnrWD3TU25TL0ZGQpncEQQOlpZsiyb1SAMqJf
-	uNMFhiy0iPsU12PXTF2uwtjyrayvRg/sYMH5wrXJ4lpz4JQjyPuF3uYehw7YV3pN135yKle20VX
-	INPDJAzDpdn104gEcaxmJ0qmcaD2O7VEJg2l6pJs67VVwKQIif0lz22kSr2zruUphDochor9SDz
-	ezdBVT9KpgWrspKd43AZi31mxMicSIAHDd6rZl6EnQMPn6yHrDywjo9zLzssmZBSkTjjJ5ao9or
-	Z4qY2Nj5csw6nAmKZI0B8X9mJoEEdWIOG2NvzS0KhdPvbxWFZDLMW1s8EIU6vFLkE6HczgHRlTG
-	aQKPZK6gkMTPvoDeJUAuvOQWIEWBLd6nm+c1Qk6RcJhQQK6gnYBYbK4fanYg32c2PtU436w6CBT
-	T7hSzfLRjq/atqEOJtQqcovg2iDSIkN8IMWbTn0/PSr2o/xxw9hED3sA6LSeHcRUnK08L1OKqHQ
-	8cyw1tDK08sp29AtlSTHLXDyzvRpgjCfx/CXjOuPxJQNZhizBSAmK8unupJQUawWdgVVcGi//sY
-	TDFNnG6kIeHR6hE8h
-X-Received: by 2002:a05:600c:34c9:b0:49d:1deb:a629 with SMTP id 5b1f17b1804b1-49d1f21ae8dmr155804825e9.2.1788986450686;
-        Wed, 09 Sep 2026 13:40:50 -0700 (PDT)
-Received: from workstation ([85.186.165.159])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c437besm17171315e9.11.2026.09.09.13.40.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 13:40:50 -0700 (PDT)
-From: =?UTF-8?q?=C8=98tefan=20Ghe=C8=9Bu?= <stefanghetu9@gmail.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	sound-open-firmware@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	=?UTF-8?q?=C8=98tefan=20Ghe=C8=9Bu?= <stefanghetu9@gmail.com>
-Subject: [PATCH] ASoC: SOF: imx: Prevent stack OOB read in DSP panic dump
-Date: Wed,  9 Sep 2026 23:40:42 +0300
-Message-ID: <20260909204042.46656-2-stefanghetu9@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260909204042.46656-1-stefanghetu9@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSV3KaXv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911C71F00893;
+	Wed,  9 Sep 2026 20:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788986957;
+	bh=2lIFF1tWeK+5bpogEK43Wu8N9CUQv2SMYlNVsrTnErA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KSV3KaXvLe90uFPKgS82YYbJ6cUNCON6Nnv1O+s9ciX81b4xwlr52jiq8hi62cWTl
+	 73gKVLCPWqkXpNY6BDhCsVZDXFc2q9muCPylltN8doZ5dU5AyjVBh3fmpKY35su/dI
+	 Wffn0rtuqlp6Cd07BiVEB56tQm+vnY4PdH1V/LptNB5/KE4SCuabHEVTZykkL1Vo+u
+	 cSSmtKX2UW5Xbj1/uRRa9T7bf58+tavHOKr644YNLH8JEsToFugRPzk2iwyQKNZ+wt
+	 es5ladTJQ6AXvEVNaXiBp5adM8TH0Csg+N+5SpP9AGgFE5ZdrXOz0JrhdTtyCQN7hU
+	 Ly7OUMBrc0qRw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ASoC: SOF: imx: Prevent stack OOB read in DSP panic
+ dump
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?yJh0ZWZhbiBHaGXIm3U=?= <stefanghetu9@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260909204042.46656-2-stefanghetu9@gmail.com>
 References: <20260909204042.46656-1-stefanghetu9@gmail.com>
+ <20260909204042.46656-2-stefanghetu9@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 09 Sep 2026 20:49:17 +0000
+Message-Id: <20260909204917.911C71F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Commit 58bb5081cba1 ("ASoC: SOF: Xtensa: dump ar registers to restore
-call stack") added a shared Xtensa helper that iterates over a flexible
-array of AR registers (`ar[]`) controlled by `plat_hdr.numaregs`.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-While Intel IPC4 allocates dynamic storage for the AR block, the i.MX
-IPC3 path reads the oops message into a stack-allocated struct without
-backing storage for `ar[]`, while leaving `numaregs` unvalidated. This
-causes a stack out-of-bounds read when printing a DSP panic.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch provid=
+es an incomplete fix: a stack out-of-bounds read vulnerability in DSP oops =
+dump remains unpatched in multiple other SOF platform drivers (Intel, AMD, =
+MediaTek).
+--
 
-Clear `numaregs` to 0 on i.MX since the AR block is not fetched or
-supported on this platform, preventing unsafe out-of-bounds memory
-accesses in the shared Xtensa helper.
+commit 9725b087f0cb0d8ed0af1f47cb1ea7c073221581
+Author: =C8=98tefan Ghe=C8=9Bu <stefanghetu9@gmail.com>
 
-Fixes: 58bb5081cba1 ("ASoC: SOF: Xtensa: dump ar registers to restore call stack")
-Signed-off-by: Ștefan Ghețu <stefanghetu9@gmail.com>
----
- sound/soc/sof/imx/imx-common.c | 1 +
- 1 file changed, 1 insertion(+)
+ASoC: SOF: imx: Prevent stack OOB read in DSP panic dump
+   =20
+This commit addresses a stack out-of-bounds read vulnerability during DSP
+panic dumps on i.MX by clearing `numaregs` to 0 after reading the oops
+message into a stack-allocated struct.
 
-diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-common.c
-index 7a03c8cc5dd4..436fe49246ba 100644
---- a/sound/soc/sof/imx/imx-common.c
-+++ b/sound/soc/sof/imx/imx-common.c
-@@ -34,6 +34,7 @@ void imx8_get_registers(struct snd_sof_dev *sdev,
- 
- 	/* first read registers */
- 	sof_mailbox_read(sdev, offset, xoops, sizeof(*xoops));
-+	xoops->plat_hdr.numaregs = 0;
- 
- 	/* then get panic info */
- 	if (xoops->arch_hdr.totalsize > EXCEPT_MAX_HDR_SIZE) {
--- 
-2.53.0
+> diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-commo=
+n.c
+> index 7a03c8cc5dd47..436fe49246ba8 100644
+> --- a/sound/soc/sof/imx/imx-common.c
+> +++ b/sound/soc/sof/imx/imx-common.c
+> @@ -34,6 +34,7 @@ void imx8_get_registers(struct snd_sof_dev *sdev,
+> =20
+>  	/* first read registers */
+>  	sof_mailbox_read(sdev, offset, xoops, sizeof(*xoops));
+> +	xoops->plat_hdr.numaregs =3D 0;
 
+[Severity: High]
+This isn't a bug introduced by this patch, but does this leave the same sta=
+ck
+out-of-bounds read vulnerability unpatched in other SOF platform drivers?
+
+It looks like several other platform drivers read the oops message into a
+stack-allocated struct without clearing or validating `numaregs`:
+
+sound/soc/sof/intel/hda-dsp.c:hda_dsp_get_registers()
+sound/soc/sof/intel/bdw.c:bdw_get_registers()
+sound/soc/sof/intel/atom.c:atom_get_registers()
+sound/soc/sof/amd/acp-common.c:amd_get_registers()
+sound/soc/sof/mediatek/mtk-adsp-common.c:mtk_adsp_get_registers()
+
+If a compromised or malfunctioning DSP sends a panic IPC with a non-zero or
+artificially large `numaregs` value in its header, could it still cause an
+out-of-bounds stack read in these drivers when the shared Xtensa helper loo=
+ps
+over the unallocated `xoops->ar[]` flexible array?
+
+> =20
+>  	/* then get panic info */
+>  	if (xoops->arch_hdr.totalsize > EXCEPT_MAX_HDR_SIZE) {
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260909204042.4665=
+6-2-stefanghetu9@gmail.com?part=3D1
