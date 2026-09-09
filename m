@@ -1,65 +1,67 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D57935E956
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 20:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA37358B6B7
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 20:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788986460; cv=none; b=HLgjSYBY8YEvBUhOWcbIfwjLy8yrmlo5tzW4Xih90m+zJLuTGppIDO/d8/0BWS7lNS0bsY5T6+As9boFUdwr1guw3KOTkVuEI9XtOACVx25jRT2GHJNitye87NdDdFi53bhBrF+tfX+s+joPJJUoGcU6xU9tyi5H/db3g6xZwWE=
+	t=1788986475; cv=none; b=eiMr3duqVk5RHeAfgr90YtEjTfFUUIifzvX5k4L5h5AKBrZYosLZVzkTGsnnsNz57OZgNcAsSr5K6jb1mC+w2SEu5gyOSqT6bZxyEZURQCkdkVKimIgRQTHLONkU8tPMxQDMXuhEOFoGqpM/FhbjsDYS0m51RZz9ceC1IqzoqdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788986460; c=relaxed/simple;
-	bh=V5JXF9xuhHcB9bSbIAWL384a9RlhtX4vE2mq3dg4miE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tuBw0xdicvS4s+E5CQyU2QOpMZXZO9xBXhyR+I3Yx07N3lqPWBoCDZUUP9F/cyKLig76/xbDE2KCjBjRAasJNoDh/kdWRZNdpMn4HWR4eAheSuxcxo3hCP4p3bg9qNSBwUC5vz54hokpOniYlaluKwg6KGvc/tR0Y8rVq6UZXAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hGGyPInN; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1788986475; c=relaxed/simple;
+	bh=dVKIiNAEgVbAcUmEZV6u+JTcPDwaNXloRQ0M0HcerBs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nia5fk35MTaLCXhz9gKLPtai2o4Ad+pTbwVjdmvLIzyDWLW1mfhqQmjPVdYwrsexsC94NDFB14jxZkZCNGNoic9LdNR4jF0GE7M1lMlvc+gje6imqDO4HJv3jtfpJoR8jeSHqDaJ6K+eXdjOSyIqayR1402uwk7qQ1diDmmad5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZ4VDuYH; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hGGyPInN"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49b0d8bc2aaso77268905e9.0
-        for <imx@lists.linux.dev>; Wed, 09 Sep 2026 13:40:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZ4VDuYH"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b5so9655175e9.2
+        for <imx@lists.linux.dev>; Wed, 09 Sep 2026 13:40:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788986447; x=1789591247; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JaOoKXT3Y9f1LpI2jFHn6H2wS4bnhm1a37EU+be2Jqo=;
-        b=hGGyPInNAnpPXvXYIBI68VN07VK9QtccNRSSlvMgwQM6IVb6qAMqxas5zA7REuWo0H
-         Zdx4UeJeXKRavOJdj6pYGxQVMj7dnAGPq401ZuTB5b9EpQSaQxiekxHktP1szvaTiDn+
-         i3XOtqpvwGmREnQDBrL/CwRruJSxNDauJD2lMHJdIRb5neMun9oZ44kBxf0qY66uaD3F
-         RxPszsKinE4zbWyFDPZM7R/vi/37hUn2Kvl8v0n0QsuFxe3SqZh49o8a415T7+Nk/mSy
-         pd5oEFZchQqUqUShHlGVBBvek6fIRO93eu2yQNhQKwbtI4KJ2bFoveKPa7rQ27nkw1ak
-         T6uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788986447; x=1789591247;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1788986451; x=1789591251; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JaOoKXT3Y9f1LpI2jFHn6H2wS4bnhm1a37EU+be2Jqo=;
-        b=Tpf/A8iirl7e/JHAXokrHGmaeirc13Kdw9i4vfsGzG4KiWFskE4QIDx7+oUgY9NNfC
-         vmR0FWx90jOoJgy8ztJO7Dt0NqsyodP4uoGiUJK2job2ilQUCbUY4TFxM465kHbvo899
-         nHoe2TaCEQPx41riQzVZxCSujMzxL6X+feYZ4gDFmsDsdqEfovKrRCL7VkkKHfAtCrQG
-         iHn+esakj8QgJ7W+JcyBen7OpfXGH+sOsKTnL7/BDMehRCKEPr+ZdcXFr24dI0omiWdn
-         5AqOM+kKKgxZAzIDOE/Sh/3xPyvYoxukrU48+GMMT2mYgVkigDS+6VcuKxpbQ1Po0Egz
-         9Slw==
-X-Forwarded-Encrypted: i=1; AKwUvBwhnVDCi/BLYkVQlRtlg1GsqykOfTqh7eA2+nE5Wj7S804shsCUMeixhlTf9om1kEL5ouE=@lists.linux.dev
-X-Gm-Message-State: AFuF++lYMEcyBVvnufTUeWPp986v/wEjwdWIuZyClqWqGg7R9Ad9Mzuk
-	iQJ3YRF9KCFIUbnlBYo5GrH7N6URL7siOl3PWn4jLrr6bJIS6QKA3J5r
-X-Gm-Gg: AYBFou2EczTo9KsnXZkKlEqaeSHdZNT3ka0S2zCfY35eEcGewk7LimdAFScx6mg05ox
-	5i5+ooCo4z+cZ/jWi53dHhAEfBqZky5Y83Vi5fOe4RVDv7MteDpRsFMZjN9Yu6tDcJvGdJGhm7r
-	lU2vBvkYCRJDJKo4fCa++dOPAJi23z5PAQc1KhA/tZwMB88MfOxqLNM8IC2MUmJPzFez4alCURu
-	0L6kzxHw4zqp1kAe1Hl1azZuUJOtsIPri8/gkz780U7fSrqsfixgyBSosR1tHiQ4YhqGUpWCTp0
-	820DsW0mUPbVarRCh5Egghb7nuWl8rj+/QYyP5oIw6/1UTUsnPtx20yMl7iXZtYAr1q8lGjZ8kX
-	3eQCiHVw+ydwz7JV4M7rKZEdSVp0TMiOBcChdn1O5oAQSr0QuYTjbquAhe9f61No3S6NVf0e4qt
-	v4CZiXMRkAGnSwsWTPEejsJEU3bit6JGAjQ6ooKX8DFn3Z3q8GPCCUrkCO01L3rDXeyHdc4G5O8
-	qp85Ze50o2mNENgPL5VcUxR69FoihdXy9SQ2eM7UELYm/5MosCjdBHNmoT5+xmUisqWI6Ww1neA
-	2PDwkF08Bcw1aBjuL+aqB/Iksr4lDMrwqc+MUpfPvoqs2JIA5u4VGNX/m7dvcV07fpKlD6eUx5o
-	+HDX8WmaPR5DfhWwz
-X-Received: by 2002:a05:600c:4f43:b0:49c:fc6c:be0b with SMTP id 5b1f17b1804b1-49cffd457a4mr279515695e9.17.1788986446464;
-        Wed, 09 Sep 2026 13:40:46 -0700 (PDT)
+        bh=BMGCVsS43Or0QvhvusoStvupM2eWy3k0/84tq8T1pu0=;
+        b=eZ4VDuYHxcBvv9E7CG/G/SXwYBZhb6NwZz/31DNafV9ddNvvMW5ekE36XvEuSnMoC9
+         CixoRlW7vzVDVWsMI+yVJdLZzt0FvAY4QBam89RmGrFO2urhybKZryuG45VhyQr1emuL
+         LmzaPu+s8bPVtnehEF2jHNc7yHlSg4/PGU11s65HkNL0UUfo0tjz72eCL0c6cCpiHtZz
+         Z56X9pqOjZQJzhHF7JJKxZxRsj+qqN5G2kBC5j3e6s4EJWHmhlZJPtRnCVJ0cXYgAcqC
+         EL0kMm0C4aQPqa6fl71cCz09rfTbkNCMzWh10WAzpk76W3oEOAURpxzve+Yfa1UisZTY
+         Lkig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788986451; x=1789591251;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BMGCVsS43Or0QvhvusoStvupM2eWy3k0/84tq8T1pu0=;
+        b=rC46iPcirQrzhALbbfMUysRGwvPX7Hirz1eSh2E7GyxL6swhqZSlTMEMaZP3WTlCxx
+         q+67NXNwzP7XVp50dk2YrzedRsUA14O+5VDFFbCphegcig3LZvCloBFJtwuQgct7zqbQ
+         GbBRBu49tGRDKA9Gw9g7jFdTDkGKmo7+w/OH1W7SD6Q7FNJEbZmWZ2Ulj+BNGTXdCSjR
+         iN3TEi0L109ykHxAI5DzcMmELq7ojjXwrWNwKAKRwD/Mga/5Cz4Cj0RQhkOvv33puqdV
+         01fBuNjA+SD0Y2+M6jqeSZj1GDMuGStexBywUWCCs5FdaUJ39zw31BJ0RCkYUNlZQjce
+         NSAA==
+X-Forwarded-Encrypted: i=1; AKwUvBx7KG+BZmrqF72i/xE3KEQ7onTgLe5RxxMmix3lfBYxe+1kStTmS9fuCsm3MZnIavhe8wA=@lists.linux.dev
+X-Gm-Message-State: AFuF++lhn75nfEhP+r5+r+XmyKR60l+nbcIC0HxOa6DTcojn6gf8zYjb
+	ZAEwsKh80KQpnNDqV+GsUHmTNcB7NvZ8BokTk6kebDJYJUl1e3B8ONH/
+X-Gm-Gg: AYBFou19ivRtZEelXqk9el5B5nsddc5Y/RnVLhtnanyEfgMBy/BytL9nL3bsZCh4qiT
+	oK+135Xcmzso6zZCg40myNKCh2DinWtuTNGlWDxnrWD3TU25TL0ZGQpncEQQOlpZsiyb1SAMqJf
+	uNMFhiy0iPsU12PXTF2uwtjyrayvRg/sYMH5wrXJ4lpz4JQjyPuF3uYehw7YV3pN135yKle20VX
+	INPDJAzDpdn104gEcaxmJ0qmcaD2O7VEJg2l6pJs67VVwKQIif0lz22kSr2zruUphDochor9SDz
+	ezdBVT9KpgWrspKd43AZi31mxMicSIAHDd6rZl6EnQMPn6yHrDywjo9zLzssmZBSkTjjJ5ao9or
+	Z4qY2Nj5csw6nAmKZI0B8X9mJoEEdWIOG2NvzS0KhdPvbxWFZDLMW1s8EIU6vFLkE6HczgHRlTG
+	aQKPZK6gkMTPvoDeJUAuvOQWIEWBLd6nm+c1Qk6RcJhQQK6gnYBYbK4fanYg32c2PtU436w6CBT
+	T7hSzfLRjq/atqEOJtQqcovg2iDSIkN8IMWbTn0/PSr2o/xxw9hED3sA6LSeHcRUnK08L1OKqHQ
+	8cyw1tDK08sp29AtlSTHLXDyzvRpgjCfx/CXjOuPxJQNZhizBSAmK8unupJQUawWdgVVcGi//sY
+	TDFNnG6kIeHR6hE8h
+X-Received: by 2002:a05:600c:34c9:b0:49d:1deb:a629 with SMTP id 5b1f17b1804b1-49d1f21ae8dmr155804825e9.2.1788986450686;
+        Wed, 09 Sep 2026 13:40:50 -0700 (PDT)
 Received: from workstation ([85.186.165.159])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c437besm17171315e9.11.2026.09.09.13.40.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c437besm17171315e9.11.2026.09.09.13.40.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 13:40:46 -0700 (PDT)
+        Wed, 09 Sep 2026 13:40:50 -0700 (PDT)
 From: =?UTF-8?q?=C8=98tefan=20Ghe=C8=9Bu?= <stefanghetu9@gmail.com>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
@@ -82,10 +84,12 @@ Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	=?UTF-8?q?=C8=98tefan=20Ghe=C8=9Bu?= <stefanghetu9@gmail.com>
-Subject: [PATCH] ASoC: SOF: Bound the panic filename print to its array size
-Date: Wed,  9 Sep 2026 23:40:41 +0300
-Message-ID: <20260909204042.46656-1-stefanghetu9@gmail.com>
+Subject: [PATCH] ASoC: SOF: imx: Prevent stack OOB read in DSP panic dump
+Date: Wed,  9 Sep 2026 23:40:42 +0300
+Message-ID: <20260909204042.46656-2-stefanghetu9@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260909204042.46656-1-stefanghetu9@gmail.com>
+References: <20260909204042.46656-1-stefanghetu9@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -95,40 +99,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-struct sof_ipc_panic_info carries the panic location as a fixed 32 byte
-array, and include/sound/sof/trace.h documents that the "filename array
-will not include null terminator if fully filled".
+Commit 58bb5081cba1 ("ASoC: SOF: Xtensa: dump ar registers to restore
+call stack") added a shared Xtensa helper that iterates over a flexible
+array of AR registers (`ar[]`) controlled by `plat_hdr.numaregs`.
 
-sof_print_oops_and_stack() prints it with an unbounded %s, so firmware
-that fills all 32 bytes leaves printk() with no terminator to stop at
-within the array. It continues into the adjacent linenum field and, if
-that holds no zero byte either, past the end of the structure into the
-caller's stack frame, since every IPC3 dbg_dump callback passes a stack
-allocated struct sof_ipc_panic_info.
+While Intel IPC4 allocates dynamic storage for the AR block, the i.MX
+IPC3 path reads the oops message into a stack-allocated struct without
+backing storage for `ar[]`, while leaving `numaregs` unvalidated. This
+causes a stack out-of-bounds read when printing a DSP panic.
 
-Use %.*s with SOF_TRACE_FILENAME_SIZE so the print honours the
-documented bound.
+Clear `numaregs` to 0 on i.MX since the AR block is not fetched or
+supported on this platform, preventing unsafe out-of-bounds memory
+accesses in the shared Xtensa helper.
 
-Fixes: c16211d6226d ("ASoC: SOF: Add Sound Open Firmware driver core")
+Fixes: 58bb5081cba1 ("ASoC: SOF: Xtensa: dump ar registers to restore call stack")
 Signed-off-by: Ștefan Ghețu <stefanghetu9@gmail.com>
 ---
- sound/soc/sof/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/sof/imx/imx-common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/core.c b/sound/soc/sof/core.c
-index 2d394389c945..9b0850e87bf6 100644
---- a/sound/soc/sof/core.c
-+++ b/sound/soc/sof/core.c
-@@ -152,7 +152,8 @@ void sof_print_oops_and_stack(struct snd_sof_dev *sdev, const char *level,
- 	dev_printk(level, sdev->dev, "trace point: %#010x\n", tracep_code);
+diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-common.c
+index 7a03c8cc5dd4..436fe49246ba 100644
+--- a/sound/soc/sof/imx/imx-common.c
++++ b/sound/soc/sof/imx/imx-common.c
+@@ -34,6 +34,7 @@ void imx8_get_registers(struct snd_sof_dev *sdev,
  
- out:
--	dev_printk(level, sdev->dev, "panic at %s:%d\n", panic_info->filename,
-+	dev_printk(level, sdev->dev, "panic at %.*s:%d\n",
-+		   SOF_TRACE_FILENAME_SIZE, panic_info->filename,
- 		   panic_info->linenum);
- 	sof_oops(sdev, level, oops);
- 	sof_stack(sdev, level, oops, stack, stack_words);
+ 	/* first read registers */
+ 	sof_mailbox_read(sdev, offset, xoops, sizeof(*xoops));
++	xoops->plat_hdr.numaregs = 0;
+ 
+ 	/* then get panic info */
+ 	if (xoops->arch_hdr.totalsize > EXCEPT_MAX_HDR_SIZE) {
 -- 
 2.53.0
 
