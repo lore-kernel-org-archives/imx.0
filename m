@@ -1,198 +1,103 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013017.outbound.protection.outlook.com [40.107.162.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DFB32C92A
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 02:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D763346AFB
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 04:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788922327; cv=fail; b=X9CM+3+x0bEPjmYWmauPouJwbnm9WyxFAUgAXxwDoC15UfHQS9Tnpn03EhavoK41+yjPeXqfSc6cKq36hCmvUGoqxCE3AbIr3SlWzPNXpcTOEoBdCtQIzQ1uO1oxY9lmcqcSGA7YTvkD9Dhm3WO6A8AETND2bVG4+otGWCYkBb0=
+	t=1788927232; cv=pass; b=JUDig9A9drAHcwXuwZWqNv5TjhzqSBekf3Hh2ihWSl6KQGm8F4IbBBbe4zbRmER0W1a3zluc3jd4asSZCvLwgmDch8yD2bhbssmvmEyer8BzALkax34GFYrJKztICSZqzNtVMRyFHL4GOV730kWCK30srjqMxFmFPbHd6B58288=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788922327; c=relaxed/simple;
-	bh=O9dKt7R2Id2ENzwWaaTyP+kWcJtlIhfyw5zPxO2m/bA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eX0VthIPtONpCepn/Ezccf17o78AvsT+1wOuRaqlXu/dv75pI1HGUjAdkCYVCdef93OrmpQgeuwpFGxkXej4xyAee3+R2PrhGIucR5GH6kQ/RP4mrEj60qX6/L1IzpygVwUiB6Qb2Hj1qo0MN/XPRKkFVJC8dJha5dP5eZ15Mh0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jzv+ZHlm; arc=fail smtp.client-ip=40.107.162.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1788927232; c=relaxed/simple;
+	bh=VbbgDs8vchj2lrFK5eDi1gvI0D0IoQpaWTY+VveU7Sg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l5sAycEkpbLaddfj6MHGhRYa+Z6YYGmZIrreKMFsElkuGaXACePO2aoVv5Of79BRoWayjHx0wNo6kb995o5lQVHGlbifsRDTWaVzuGrl57wjIbSWeryYVp4jcgsuPcNFTiE2NR+2UxWkr2/c3xFvVG8KnQ5unN2tTtSujGEdCL4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gCfbydus; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jzv+ZHlm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kKMT4GNO5o69phJedZ2iqZoBHkJOAlj4W4ol+O6fRpn91r+ubZVQ5K9M7lDTjMjd/uTKF0bQpbt+kPPLr1CFDdlRiSdMVXCJDsSdoyRAWkv/3OBBzzea5i6/NJe4F1oJzmfEPIZpYSTv6Q8AGvRfmO8V6/9ct7agU2OMtHZqsuh7eBmgrRKVQL6+wMgOGqlSfzftCGUd3q1o44Op60YZJ79U3ZBlDWH+wHr4pn6sJ19egoeDhK/AdmLkC+y+oKydBl6y/fU/lLbcU+lFq4LXxTswJIkWzbzkT2hs9328zXggf0kCRtN6nfjl1v5BhRMdFqVAOyenQtTN8t5SaSCu7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TE5ihiJfM2QR4WieX7mxOFEEbO7aRRq8TGQzYfLcJg0=;
- b=ei9fF5ClHtU+uH0FGBjyODh9IcJ6Nd8uchwWKXOHVC2MzwDAhvCT4/c7nkgSvOgRUOaM4+UNCk7SQWXGNuKTR6tCDpTZAitJR4pZ8KtNDGfeyzBM0ioPigMgnfzfP5SoksqJtbxEYQWO5MJdMeyTatfyhFEhJ3zvliZeZvg4L5yG/uK8fl5V0N4TYxj1ToZbZ5yqZRsbs142n6EbBPQnGdPObrD0nsQ8WmASl2pgoeqlan/qecYxXW3apq7iGH0y2leQUIYmKyujgxnOw78i8qaqCcN/u74Eqi3aCzGg2uFTEiNEBMlmOky39CGANH22hlRIr0fcyRpzeEqV9FOsDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TE5ihiJfM2QR4WieX7mxOFEEbO7aRRq8TGQzYfLcJg0=;
- b=jzv+ZHlmuK6cYtEN6d+Plk/TVqkI6UvadWJebZPA1r8joCg6Q4wNbtkGURuUw+1246NI+rk2yhvWsH7P+clYFwq6h3Sz/m3lvQg+fKjVgv1GHdVEmLzbn7BK47TqpNTk14D/FT9UDqzWDadPBE7VyaufccBGeYcPOMjVlgcC4AcfTgyJK/m2SoHnvA5yF++B8a3c9MW2umaWcbULP3YXOclzlcQtqdtCDv2xIOKPZQUwGu7DKLVAcpi9WNjQdU2zyPUaP1bQU81GOI3tU2sis0nNLZB2/708VKkrcxpdi8iDiMLHa/dr5zIkGYJbtuvAiZIi/2Guea5sqIY4EinGQA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by DU2PR04MB8904.eurprd04.prod.outlook.com (2603:10a6:10:2e3::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
- 02:52:00 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0382.014; Wed, 9 Sep 2026
- 02:52:00 +0000
-Date: Wed, 9 Sep 2026 10:49:41 +0800
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-To: ivaylo <ivo.ivanov.ivanov1@gmail.com>
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org, mani@kernel.org, 
-	dmitry.baryshkov@oss.qualcomm.com, linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev
-Subject: Re: [PATCH] phy: phy-snps-eusb2: fix FSEL_48_MHZ_VAL definition
-Message-ID: <ogfpkqixf3xkyvh4bbpvui5ybfaro6g35g6u5kb56k2jsyrsmt@jm67at6cpksf>
-References: <20260908085953.3315953-1-xu.yang_2@oss.nxp.com>
- <aaf8a5ef-2abe-4269-804e-4d2dd1bc4d3e@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaf8a5ef-2abe-4269-804e-4d2dd1bc4d3e@gmail.com>
-X-ClientProxiedBy: FR3P281CA0199.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a5::16) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gCfbydus"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ee1f9bso6463545ad.3
+        for <imx@lists.linux.dev>; Tue, 08 Sep 2026 21:13:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788927231; cv=none;
+        d=google.com; s=arc-20260327;
+        b=d1eAi0W3+pPP4y2dmahNp74Stla2SqYsWYMdn8G4gyztyFH6B706FZFj6pVBRP1er+
+         yFO1jO3HSVHRknFyCdn9IwXOP9meT50V0ESJ7lYxF2A0/tcaWLTUHWaECPrJXbQWR2nX
+         Qcb4PHT4jscDOhNNXBAbcFWQt1hBQcgiYSWrN/wlEvTBSTOOAH66Qyd7U9bkFhczxWT3
+         rlJmaLgbdDsuWobHtBViTVPc3wUca7JlXcW4BJl7S3fVgzQEN8Iz0iKDuCT5+m2dsoJT
+         TyOJ0dHjMCUC9wxJsIQBOM/BE3UBtimro7h1tW2PMGx3+cZQsFRZWba2poa0GyUdoaI0
+         pNEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=VbbgDs8vchj2lrFK5eDi1gvI0D0IoQpaWTY+VveU7Sg=;
+        fh=0EqsyfrOYmQ+MBLW/iW3xE9bMO45xN83qt8BSi7Kj2E=;
+        b=NcDtapmXW658S66MpCGIQPjoEx0vxZfuJSxDcZjqFwiIHjXe+E2npKUaoadBZyGfmw
+         ZaEci72Pt1phO3zw3uAafJEPLCZLfSVUgpFDScOG1T4feCVM4124BfZnn9SZTApF7oJW
+         PAZt7urPh0i6WMQpJ8THWxX5gOigyFfxC8DxAZAYGq88wUS1bWLCjI77BxOH+noy0JrG
+         NEjYCwALfc/VSshi3fYtQ8qOJXzmK5cSCqs+3s9fkM04KCaMA+Yiq63CQC5KaLyCtSYe
+         dI/DPauT3ICuDmbKXJ9u3QVT6GwlVQgnxInND6kqqdA8CUz9JNgV9QZKGGXzj8PI+DjN
+         94sw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788927231; x=1789532031; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VbbgDs8vchj2lrFK5eDi1gvI0D0IoQpaWTY+VveU7Sg=;
+        b=gCfbydusFCJAuKAXGybVvimEY+48UpjIgVtDmsJrqNKZwloZTzxZh5hcSfC5GfRpdN
+         f2bvJQIXcIVTiOz/L7BwYIcJEXHzdeUN/gTUVgYr15jsme3vZ/390+3bLKUoRw+pJYaJ
+         eKWPuP9APDVzPLlE9r+IFsZk61m+sQD8T9pHUL/zsdadcc4PUWWGNYYOoWeOm8IsxSat
+         I4ENd0M6W4/2TzaWKP4jqoTTPI8Yuyjm8/tSbZFMYXQvTqwBrZASLv+idZ11LF4JDXtX
+         iCxfu0zC2AwlevIbzi+J+IsC2Qmu09eo3SfG3aC6AgJ2lyKQPfymEO4IE/4P/pusdVjV
+         ZQoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788927231; x=1789532031;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VbbgDs8vchj2lrFK5eDi1gvI0D0IoQpaWTY+VveU7Sg=;
+        b=QSzE1OWlVs5KiC0AZ/ev/sM/BMAmrHhpW+3hRkpfT/igTMo9PJPzo12oGuAhQgRqda
+         qDBDj5WVb+iI47lnXEn4krZjpA9Qx8Nm3th3KOZWFpCFTXgPNy/qbRREwyFmQG93EFx3
+         hMAk/IRqYj7DPsp+S5dfqsBYnjyrJsAzWX7RyStygsvyENCxaGQp2Xfv5uBT4aPsPqkY
+         znR6TMB47rR46FUcbeX4RQok9xxJDdUdcSOuOD3tHlT5pkNYQxt7lvL6BsjTmcjHf39j
+         /YZgcJqtV79qoOlD/s0W8T+w2zAAVRf3rY4bXSJpGy7jmvVcEPBTerjdfTabb5U11UYC
+         TuUA==
+X-Forwarded-Encrypted: i=1; AKwUvBwOR2mHmvQIG+yXHnr3iZmNkEExdQlnEK+8gOVAHrrWVehBqt4nJw6nJNQYZYVbp644DPg=@lists.linux.dev
+X-Gm-Message-State: AFuF++nVvhGgM6m0HI1dl/KBoPs8CPGea81hpPypp13twLb/U633S/0f
+	GVBuH0QdEnw3p8d2u01aEzEKeaMZLy2EbrqhpGkTPLuZE8YTbm17QxgrYx5BPbbGAZ9eoBwT1bC
+	RHFHbIFRQ7ddhS0j1HKPnjzW+rxcmMHM=
+X-Gm-Gg: AYBFou3WnBANw6dkQ7Ihxtykr7sVq9NPgRDvy5rz8w6PEG9RbON5Xtea9Jk2BZ9MwDM
+	7z1Mt/VCPfQhFbahFOsXkd5zC+b5NlUlosrLCp0q3qo75gOwKVvDnlTyoMK7oewGbqHfKU0PJNo
+	avqwghHADj3fBNqEToT/RLP+5SqBNkSgzZMuVsk3iAIELkI68tgI9oHevAuaW8C5PMrOaRcny52
+	XhmRuMEuafPh4CsOG1XbiOWU/rhPa/z6Df/xpdGgBEgYEd40gke/FsuX7EWR1nAhehCbBIBCpOE
+	gJav8beCZlNXi1LhoxOQ80aJiK3bSRJKlYjxevOqJCOfawyTFmBSN+KwC1baO4WpXfKo9cDVCgU
+	kus0R/pUGVsj2ufhKk/SO7hG/1ZtkpqEDO85r/CrVieA7nDQUyXo35GvUUKtogzGfoUk=
+X-Received: by 2002:a17:903:26cc:b0:2db:56da:6a0b with SMTP id
+ d9443c01a7336-2db8dc82083mr45104355ad.13.1788927230886; Tue, 08 Sep 2026
+ 21:13:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|DU2PR04MB8904:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4948ef4f-809a-4128-2ff1-08df0e1d5223
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|19092799006|10067099003|18002099003|11063799006|4143699003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	7v6tUc2va9UVQ/y4hadNK805LuSB3o53IUp4M1YgwBC60omz29Vh4jCTaTvSnRmjhZA0gBXkGHBEFHCsCGZIdrZnSLE99pjxmvDGY7lZ4qJqgc7iYr/N+wuNt2tpRlsuSJCv7ucX80/y9c2Fin7wM/zNXFlRoT8a/b3m2GJfopCBprPaQM0dlP+uwc6q3jB4lExPY2B/lbiYAU4f6X1fKqKSJ/d6IJvzZnpbd/kdpYwplYDhwLKE9BYheAmBuzL1LbHWXGyOOWz9NR3BybVEiTY3QSMo3P3SDy219O5tOxbvc4ax7SJ7qo0fmaGtjpyFOQD1sfp833F8CvFzW7gxgOYR7sE2HNwjfh03qWvnkzQ/pf0J/DdDdfymLR4mA1hRq+ypcLqHWhYhUphF6rqKCiPLry/hxjc8hKnNacBsJa809pL3EA/KSQ/I7Xyw1x8PXwjaI5fOIP2PpsqG+mJ8m+/f4OsSO0KU4t2yC5GtvCZb0CJEmY3a+/HXbe1f1NUx3nnK3Tzq00NnZGbE2NbXpbumAmnDLYrCxo4ZEI8TYYYDrZSWr5tG2+Aqw1HBSJl6ilZwdmCVpfIY4et4VtzvK2VIHDBdfKmc93cYuF4zzQU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(19092799006)(10067099003)(18002099003)(11063799006)(4143699003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8SW24ZzNTiHESs2noWqfBZt3CaIAvI75ygnDYwI5tTxi5mbX4lXIF5xDz6go?=
- =?us-ascii?Q?YinTHWBiE8FZhOz3SlMq7zKNd++yZxsTL1kvXrM5UgWOak8hxMaH9xEm8fuE?=
- =?us-ascii?Q?8rjDCJeVKQ5ZMWfliZ2GPFz1Cqe5nhOhAjMj7QSlbpMemtPI4cJJdxwDFTN1?=
- =?us-ascii?Q?2IYFUSwTEGMl3MAMCYVPew1hGYapnKcGEKx5fFuOfRCrIWVWUElVXLJJyAif?=
- =?us-ascii?Q?A1QEwo8b4Li4ELwtWCRPMGK2UPsQySFETD16LLmUE4piC2o0f8UJCL+v2tBj?=
- =?us-ascii?Q?/uVGtHVHGZRTREy/s8XH1uuiutZGqZYkUPzEpJ9vtX57FbWRXI306AEcHe31?=
- =?us-ascii?Q?iUX50Bv/bmwUJc+Cd9SPL3tbk1Y2+19Ns8yBkqEY8TOnU1k2hqtFZnE2MwSU?=
- =?us-ascii?Q?ruzX0S12WM8EFQaQpI5xh4hx8D1ojEzmBKRtwLBpCl7R2eEcvmSBaCGeWjvV?=
- =?us-ascii?Q?OzPhGiG38cyzCcYO+VZMoO1x3oMsgBfQBRBTEQ5xDhFOBQduStPjEWT6uVFN?=
- =?us-ascii?Q?RRee55R5Pz17U9v6DrnkK4YoX1AHK2KivuLYspxmTSa7WwV43Vdtgkn48W5P?=
- =?us-ascii?Q?SU/QFP/qvpw+heCQaEoX7nFK+Lg4d31DoRhxSyzylNQfjB8fAUQM1RQr8ikc?=
- =?us-ascii?Q?qReGHIuaIIHD6Na47LQRHeg6rRApflJ/FUQePFUyOIxFz3ikSsQEDYhYjmal?=
- =?us-ascii?Q?Vj1E2At4omsN1UnHVs7AYDe3XTZbnMtKOJpY62xfIpr6q1FZRFkU6uGB7UnO?=
- =?us-ascii?Q?TgPieu2pn/FHX5sJIhmL3Pp5vfGt0b0SwJHhdgXujN22ksgimsyhH7xqQy5j?=
- =?us-ascii?Q?Np5uF8Egtn1AZcm5JUgb6Mmlnbw5zaHJdhKxbgJEpIco1gP3xd8Liz7DThoK?=
- =?us-ascii?Q?2gGNtlvH5fAMi2p3GiDhEmJkGiBhbkX2Fe/NPmKE3P3cMtQ1fEA8OYA9YK3U?=
- =?us-ascii?Q?RiOB72spnpPheW/jAnHSp3JR2DU545LnT/qRCeygYcJ0ti74fNnV+vBI0OUt?=
- =?us-ascii?Q?DM0HWPy1HX+FkF3fIoPodA9p+l72KWRbKhKIgxESZPERbt6Ln1fDYF7vMkWK?=
- =?us-ascii?Q?TxQCItWn8siw4NFcGhSu5hMBEWNbpdDsggI5z7AGC48eIuEzcNxCjszo9tG/?=
- =?us-ascii?Q?CtDRxuks2AJ1b9IxSvWVGbpC7E4rWMSf6IDmcUPJnQfHT4JCY0Bug1ncuF4e?=
- =?us-ascii?Q?3Q84NlOwimKzby/shyqtlsvVm/dlS32GZ2nM3HBO+p/vVM3ZiNYB5HauSH/V?=
- =?us-ascii?Q?wfa5Q4dEntCcjMmDfKdt1uXOMxYcoZU5BeKElfuSf6+buIPh49PCL4umY3cV?=
- =?us-ascii?Q?RnqehRC7mKdnVULW7MBOdEPuiMI0ZP+HaBvg2BzQFagA4obrZkjoMKAcAJJ8?=
- =?us-ascii?Q?9MGl/Z2Iahyd7Vk1AY6vO8Z71eVe7JEJe7rUjk/NJwdaOoDWIbu91+jOiSVN?=
- =?us-ascii?Q?d3wCWNGOXBkXgNpRymTCrMMKaxXDb3aOoALykMvUpohCV/ONcIPSVV7XEQ5f?=
- =?us-ascii?Q?2l8dKmsdef8qh/54N43G0PisejJGziVGHbkIndXvx/TaduRYwdHToTvMcX8L?=
- =?us-ascii?Q?xZil5kX88vPwKdqXWAhDj+Ph+pJruyOTOwA060/u0kk5grtC2SX1T4q7oa9O?=
- =?us-ascii?Q?MleWtEzHj+i1dcKcyvPMb/O/vcS3YZYWTyV0LIZ5Jc7DCi/wA+6kFOvMvjhE?=
- =?us-ascii?Q?opbhl0O/HaUPyJgBV2IgJPvDTb9nrvXKfyfxCAEwKceqtOUy5eJj0b9GidOJ?=
- =?us-ascii?Q?nJQCHk5pJ3NVdQzQRj3PH29W4unFX4fVOg3gn+8+pWxk45xO78Em?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4948ef4f-809a-4128-2ff1-08df0e1d5223
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 02:52:00.7524
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FVYxx3vLDR33Bc/uvtSbao8YPAMZG/BHBGvPYuNw1RaksUKCE/wOgjWzkWFjVO6RySHcuWbafMWFoDr+0+r3y0IUQXSOJNlSDYW/JtfUiebCXvVSeXB64rc2NrAquwjT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8904
+References: <20260907034502.12619-1-phucduc.bui@gmail.com> <20260908034531.CE7F71F00A3D@smtp.kernel.org>
+In-Reply-To: <20260908034531.CE7F71F00A3D@smtp.kernel.org>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Wed, 9 Sep 2026 11:13:38 +0700
+X-Gm-Features: AcwNN1XH4hJEZ2rTmXzpWJyneeiZmqrcyvq1QfRWHmkaHeVbO6yDhYnSn862a4U
+Message-ID: <CAABR9nGL0M_Uo=NZf-dCBg5czze-7LGo1a=AA67GbdF6F9-JgQ@mail.gmail.com>
+Subject: Re: [PATCH net v4] net: fec: Propagate PTP initialization errors
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Sep 08, 2026 at 04:17:57PM +0400, ivaylo wrote:
-> On 8.09.26 12:59, Xu Yang wrote:
-> > From: Xu Yang <xu.yang_2@nxp.com>
-> > 
-> > According to Synopsys eUSB2 PHY Databook, FSEL_48_MHZ_VAL should be 0x6
-> > for supported 48 MHz reference clock.
-> 
-> I don't see this as a justified change. Samsung's implementation of eUSB2
-> differs from the generic Synopsys interface, as is visible from the
-> differences
-> between QCOM's implementation and Samsung's.
-> 
-> From what I see for exynos2200, the FSEL value is 0x2 for both 24 MHz and
-> 48 MHz. The differentiating part is that the upper PLL divider is 0x0 for 24
-> MHz
-> and 0x1 for 48 MHz. The current programming was taken from the samsung\
+>
+> Pre-existing issues:
+> - [High] Use-After-Free when an interrupt fires during probe error cleanup.
+> --
 
-For Product Code H483-0, it's 0x2 for 24 MHz and 0x6 for 48 MHz. The PLL divider
-is 0x0 for 24 MHz and 0x1 for 48 MHz too. So it does seem like something mismatch
-in your side. Because the FSEL_*_MHZ_VAL is common definition in the driver, this
-means FSEL_48_MHZ_VAL is not common anymore. But if you have confirmed it's simply
-like that, it's fine. Others need to add their specific definition in the future.
+This issue is addressed here:
 
-> vendor kernel driver, which is a reliable-ish reference for the differences
-> in register
-> interface implementation when we have no other public resource like a
-> manual.
-> 
-> ..now that I look into it though, the 11_8 value should probably be
-> field_prep'd
-> instead of just directly passed as an argument of
-> snps_eusb2_hsphy_write_mask(),
-> because right now it's essentially 0x1 & 0xf00 = 0? I haven't tested this
-> path on
-> my hardware, so it might prove to be a regression in the future?
-> So:
-> snps_eusb2_hsphy_write_mask(phy->base, EXYNOS_USB_PHY_CFG_PLLCFG1,
-> EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK,
-> FIELD_PREP(EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK, config->div_11_8_val));
-
-Yeah, sashiko had reported it:
-https://sashiko.dev/#/patchset/20260908085953.3315953-1-xu.yang_2@oss.nxp.com?part=1
-
-Thanks,
-Xu Yang
-
-> 
-> For this patch though, unless this change is tested on real hardware and
-> backed up
-> by a technical reference manual for this particular implementation, CC-ing
-> the
-> change to stable is unreasonable.
-> 
-> Best regards,
-> Ivaylo Ivanov
-> 
-> > 
-> > Fixes: c4098f3e6134 ("phy: phy-snps-eusb2: add support for exynos2200")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > ---
-> >   drivers/phy/phy-snps-eusb2.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2.c
-> > index af4fa17ac6cb..3cb18d6ebc1d 100644
-> > --- a/drivers/phy/phy-snps-eusb2.c
-> > +++ b/drivers/phy/phy-snps-eusb2.c
-> > @@ -21,7 +21,7 @@
-> >   #define FSEL_20_MHZ_VAL			(0x1)
-> >   #define FSEL_24_MHZ_VAL			(0x2)
-> >   #define FSEL_26_MHZ_VAL			(0x3)
-> > -#define FSEL_48_MHZ_VAL			(0x2)
-> > +#define FSEL_48_MHZ_VAL			(0x6)
-> >   #define EXYNOS_USB_PHY_CFG_PLLCFG0	(0x8)
-> >   #define PHY_CFG_PLL_FB_DIV_19_8_MASK	GENMASK(19, 8)
-> 
+https://lore.kernel.org/all/20260909-fec-ptp-pps-event-uaf-v3-0-bead12c29a16@cherr.cc/
