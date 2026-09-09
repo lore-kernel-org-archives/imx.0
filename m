@@ -1,314 +1,94 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011002.outbound.protection.outlook.com [40.107.130.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-2-1.ptr.blmpb.com (sg-2-1.ptr.blmpb.com [71.18.227.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C617389DE3
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 19:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788981540; cv=fail; b=Xk4v/y6jcakSGKJpyJGyfh7SLpnM8oTjuZcgcQLarDun3KC3ydJ1tTXXAAyu2waP08nBMpqhN5XGe8l1nVtZzyXqIhewdwEDhtlVYdjTRG2fW5TxPGic4ri0EBqCO83lpWxqzG0fyfOyF6qXn3K9US3XFFCCytOEom47HhCr61s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788981540; c=relaxed/simple;
-	bh=QtXvbfj7tjMlGAyDbILmvoiEHw2RWbI3JnVQc+xYDSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Dc115X6+985CZPFSbBtwpf87uCQ28s8iv5wAuYvpBg6HqK41jy+QgGCxayuDR9QGyM4bwQjjktxoXGk97iF5Ti6ki7hRNL14TFPJPjgGmU4YmJ5H144hyYcg136/NJZWleRaib+zZqi43IV5rLQ0HRjlLTuJoBxKrHbx6lV2U8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=iONPoCdh; arc=fail smtp.client-ip=40.107.130.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076473C3F44
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 19:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788983311; cv=none; b=K08yG2xF1leQnyh9bzJkF+9aPY1GSdSjb02nJD29uKXlNW5jwqU1jh6G6vXPyJcTOQcyyFeRyrskXog4PsP8QEK0I2Y5xiP20Y9v1Tm/1hEfCNoiensoS0khPoIhTvitmUmeVmknjmFpPpraUx5d/yf7FwlnE2Oi+8HvhMZaa4c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788983311; c=relaxed/simple;
+	bh=bIHnFJeIR8NCizBam5bSpQWNUrltT1kv2ZZq+/mblJQ=;
+	h=Date:In-Reply-To:Cc:From:Subject:To:Mime-Version:Content-Type:
+	 References:Message-Id:Content-Disposition; b=POryaoJNyaTYcgtccXERtqGN/WuPWJ5azIx42W6I98pX7i6dvJYwADCwNQDKSeMR0kgIRcvcPceCxpSl/Ucl2cQT09WppAXwXLQydTNj+ET46OEbOCj9oh4KDFzjE7lDIHAxmOdSc9jH/d+vYY/PYOUph8XDpjJW+bxzh6ctv3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=IHW3e2mQ; arc=none smtp.client-ip=71.18.227.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="iONPoCdh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U7bcSyFDYBxgX4ifNu3BJAEBfksXJhwmLvjfGbKjnh0gXfd3x+tYmTQMro2ECJ22mPOnf6SNtCqQvq8NKPtAENscPbm2TlTdTK16hMAjekLMM51B1p7fc8mRvYDKfOX2v5NY+lZswH74RiryPelaTU/MHjFCAwiCGFt/0ooD8Z4wUezmp2/C1zTmTnSXNFuuLvMAVudpx0WW7Er/qSHW/XH/uqvo9Nd/RFmSIiStjP1Gim7GEBImWR6AHkzg+KUUUn94rU51SP6M8R3gnwPP1uGo5XLFeUBdW5MTc/x+dXtEkPFS4KsSRpRz7VzI1d/VJtPBNduY+o4Nv4e42o0H4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ExRYy5OujWimq9Ood5ruXduIunOMnQ17vRXuaLhUZ0c=;
- b=KzBknluCwo6Wix3+3vFE6WRjXXjOH3JCN24Auk1gba1g8UhFHHesUGWBkglVCHE4/8imSGf2z0XUwkXQoBlW3zAw5iQ0NTvtgRT3Rb9hhplKYojyJUoQQkoNURVflStTTvREAX3xdFq3pshlPax5GZhxTbQXbL6QqsLeXq3apxFTmOWirRY8oJSmB2CW5Xj4TSHygIdZTrB6caPPWEwwjVbs/Xgg4ZCxlrTBYvWGTEOn8NaFZhs4WGFCbHXALcWOc/Wj6alj2ZuzZ+H6GJE+NpXAyDuXiq5SrmcKjBBu7K4wip6bqsCZocUyWPSzdOBDgcF+rG+jz7ccgVtSTFWngQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ExRYy5OujWimq9Ood5ruXduIunOMnQ17vRXuaLhUZ0c=;
- b=iONPoCdh8m+ZVdIEdKO6KEDaDNZzfNpbfPYykspz10qh+myQp7JkgZODy2Q8Sc5NrcUk12M9TuWFAqFNn62BZwnPTURn0USn870x4Sp5EgA6asVqtXY/Jn+2yEqZWrK5pA9u2Wm38s7Q3GyQj/GqZs3inzDO+jEKuymkNU2nXJJV0F+5WCc4Hrv1+0RLWsOE88yj0FdlchDnlmWxRptHKjqtHAkVt/21uM0MtFgj12FyS8073M0FR+4ITciHaSovgqQ+UxCBo9OGYyAshgJ/pvAFFu4gjzjy8qj44d7xw+kRkjtucJvNDtUfjOR91Q8et6+ZRedAhQT0hPnGw8w3og==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8342.eurprd04.prod.outlook.com (2603:10a6:20b:3fe::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Wed, 9 Sep 2026
- 19:18:54 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 19:18:53 +0000
-Date: Wed, 9 Sep 2026 14:18:40 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 1/3] dt-bindings: display: bridge: Add THine
- THC63LVD827
-Message-ID: <aqGxEDHZjgYrrOgE@SMW015318>
-References: <20260908100230.83796-1-francesco@dolcini.it>
- <20260908100230.83796-2-francesco@dolcini.it>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908100230.83796-2-francesco@dolcini.it>
-X-ClientProxiedBy: CY5PR18CA0032.namprd18.prod.outlook.com
- (2603:10b6:930:13::35) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="IHW3e2mQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2604220257; d=cherr.cc; t=1788983296; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=VWXdC+EiFgKXDk4rNFutmJw52+1YadomDGamPq9rKuI=;
+ b=IHW3e2mQi6/o4orGzclZk1XIgRsFPdaWkn5bD5vJvp9vNlWhYsuJegb9BlmzDA2ZYMAGfC
+ HfqumZKKN90TLdO642EJJy1s/01ti7hz/QZhwPjEzvNEst3IbKYjpNR1C8kyd4lEs7cPKz
+ jZET06kpwF3br5pxxYFHHIjsQGrR2GCzruD1yzc5L4VdXirNs8pVx7IH3iN3Y5flydGusi
+ jkp5BvUMHxDT/2x0fKxx3ZSbFBPDp2TyCKpnNgbZypIO0LtvqqK7xrVo6WqzM22CeEyU82
+ NZoU4AMJpJ0pyiWpugMXumuYmO8q6Lc1QHMPPDbsj6TcmSYX6rJbsUckjSMGCw==
+Date: Thu, 10 Sep 2026 03:48:11 +0800
+Received: from nobug ([111.42.148.144]) by smtp.feishu.cn with ESMTPS; Thu, 10 Sep 2026 03:48:13 +0800
+In-Reply-To: <CAABR9nGshJE96aCZVriQeMd+7Zjua5n+EKpUTN=953sowUL0Tg@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+Cc: "Shengzhuo Wei" <me@cherr.cc>, "Frank Li" <frank.li@nxp.com>, 
+	"Shenwei Wang" <shenwei.wang@nxp.com>, 
+	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, 
+	"Richard Cochran" <richardcochran@gmail.com>, 
+	"Troy Kisky" <troy.kisky@boundarydevices.com>, 
+	"Fugang Duan" <fugang.duan@nxp.com>, 
+	"Lucas Stach" <l.stach@pengutronix.de>, 
+	"Simon Horman" <horms@kernel.org>, <imx@lists.linux.dev>, 
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>
+From: "Shengzhuo Wei" <me@cherr.cc>
+Subject: Re: [PATCH net v3 2/2] net: fec: free the PPS interrupt before tearing down the PHC and netdev
+To: "Bui Duc Phuc" <phucduc.bui@gmail.com>, "Wei Fang" <wei.fang@nxp.com>
+X-Original-From: Shengzhuo Wei <me@cherr.cc>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8342:EE_
-X-MS-Office365-Filtering-Correlation-Id: daccbd1b-0605-4570-8993-08df0ea72f7f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|23010399003|366016|7416014|376014|10067099003|11063799006|4143699003|56012099006|3023799007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	iQsddF8G9es0Iit4bAqG1DYCzHLdsPt523iJC621e9u73LkQGnCXP88LaO/dvKw2YrKak7YSuYv+IQ6rSP1Y7unKMSiuEMRnC+m9Ll8ZHamWxdrYVnCGBniBoH05+0qHbnlPoiJTWfQBd4cgjRfHmq6BUz760Hyl9ncO3DmqOuHVYK4VmhK8Zd7OO+04JwQhcI5pHEK5cPq0OG8HjMLehU71tIFogBzZBNJDss9vv42cLuBFhyQSM48du3VyG/vEB+VoDOJGRoPIFPNOSjoS46xXDVtxuvxLhxEzBwjKQeV5U5oFU7lxepfOp1ljmsCr/ahW72XtFIlffIrXAK6DiGE8MwoJo8phhk0gF8ONZzSY5pB/SKMeV+eO7EjxqsFCPFK0bIWWoWV86HmsnlWV016IkV64fYZX1/GzXH5v2jCRyr3ui8NHASWMwu6HLajkVHBpTCYdDVn8SyMg6x5/K4MIws7AzQfBgMe5wblknMHIQqfybFqpwOaoe7WJE50foYGpHrcRQumDIcFsEb+RtrckFCvAhIyG292FDUdC1pYW0K2afAo2X4x35Kz1gNKwearSysKEbxixbQvxNpixlNj6LqWcqfXB6OXIXIS2LZDpMaMVrDk34Vks/3pDKvUf
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(366016)(7416014)(376014)(10067099003)(11063799006)(4143699003)(56012099006)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3zdh0xWuitTKpxO0Q53cpiS15XOIx/OQy7iPFlY90HKxWry8lrAR4bKwS4wg?=
- =?us-ascii?Q?nyDsegrcLmQNxGCmaCE0/Y7CkWmxTS6IJ3e6gCXtocHnHkDQuiY9Ds1A34/9?=
- =?us-ascii?Q?Jy2p8ZbvhyDanZTsU2HOSqvRwqfYdwKJa6ex1ke13407ob1YD9mGi5fTNXEv?=
- =?us-ascii?Q?I73GzmS9Jj2lM9H3t2f8LgEaxPuBDkwQkffUJOzqBT5X0Bd3j4dLyZWNUno5?=
- =?us-ascii?Q?7tLu4lnvoiP5SH8MmHzR6m4XWTX9KJg4CRen2ZnyaRU9c5TebGJt1k509BvU?=
- =?us-ascii?Q?vdVAb/uhOvdY0Y/20rfJjtE3+5O5GbXj40EfqeVYY3CqabgRHgg/ANhxPAgD?=
- =?us-ascii?Q?OWBGSaJ0q9fe3AU21tnkZBJcp3EJ9intyFsF8M2pxlNbUAHGv1qK0zEe5Oo5?=
- =?us-ascii?Q?9Bp3NFS4sFf8DjtC2VGebpX4tznYBjgzP+JhRUqvhBGzMITzyQDaKiqPeDRD?=
- =?us-ascii?Q?4x0aWyU4M843tUlYOw8jh+pBJy+bPF0pjbjt259h4UqtrU4MnK9lcLQhdeaU?=
- =?us-ascii?Q?eCeemyqXW9ymzMJBEOJ1WZYLoyU22fprdOo6vUmDmmaHY0kZD4DxhlrIPNmz?=
- =?us-ascii?Q?uIQ3kusLdvo9RPBXzlXlxeD6MytDrPUMM1QE4xK0vIbkdZnEFOoluaSvuLw/?=
- =?us-ascii?Q?a/uoxbSr7zVjqCiEMQddiU1SJmZyil8Oo2NP4Ysx2WPAyTtLAo1hsAT0606b?=
- =?us-ascii?Q?BLaporW2f5SIMoLhFagVmFwtt9nmK9oH4qFLJvIVcS4boINA9rOe4cADBTKW?=
- =?us-ascii?Q?V49rqewRPj7dRA21xZzxQq7PRcnaw5UjXUDb/AqebMV001mwMS4V9AoXKvp4?=
- =?us-ascii?Q?KJ/OlnTM0oZHeM7pjWeDLJk/LTLIeo7W21XjlE/QX63Ob98FQCual1jFdgA+?=
- =?us-ascii?Q?SwqW3jie3itTpnVMc+YPmLJ6lo2ev5h50BC98rufKQDu8u3Ec7+thxqfFSZi?=
- =?us-ascii?Q?M4UGLtdea68iVqRESUOVHL0rpF5bom0xfP0CbNHhkfImCcGLD+DLuaLacsN4?=
- =?us-ascii?Q?DMtnBeXb6FWu/7b/2KssCH/KYeKWTPEzN5iyEZGhMp2BJcxD15N5P0ZYQ5zH?=
- =?us-ascii?Q?1B4n3TNP4Ld7dlUIgs7iCZf62Zp0XEYbtLSdczOKcsced+XSBMOm5mneGzc8?=
- =?us-ascii?Q?1JmcPUmJqrtyv3g464CYS1ZKkV3yRVseMfbd/MkvERrW0iE/RninNe7jWnIu?=
- =?us-ascii?Q?lxolrwmidSugQFEBT+zWv6SQngEgjX0mCq8KCfRnVeByrdfHLs/yWwl3gcAf?=
- =?us-ascii?Q?r8m/QM11mGnlIpqd7yYTsvjokwgwGhlrYuALlK3AvMYO4UUN9Mes2pvhAvKq?=
- =?us-ascii?Q?X0K7L7Qdqt64WeYFr9xtQwPmmpUV5dCi5vsCqpaiYj117YOKsheh4dGVOCTY?=
- =?us-ascii?Q?yHCuuyhXUr1K4wijQU58LZZtq/o4E6ZcEpb4Qecw3Wobw6aQ9gpjnvA6P4tc?=
- =?us-ascii?Q?hyLp0hvG2jIUQkrtHKiA53Kll76lUjPrRyYIIlPiLSJnTQ/e7vtowepVcW24?=
- =?us-ascii?Q?yw3jCRyVrcwGTGfmIF0/NK+jfETYX5lcCjW36qH0E+lUSxHXAdnPJGqOcfTW?=
- =?us-ascii?Q?AS063sjfSCJwIPk9bYnAegpQfyWVGQOoQJmqUT0awSCjHNeC9fvnWQ6E9zHQ?=
- =?us-ascii?Q?bVoVaBMU6pCQVMgfujNSwMDnTPK4yCS7Hmn1AbPjEk1gEGK7t6Mu8XgSDEUq?=
- =?us-ascii?Q?S7FbrZWRO7WMkZG7a3uGnp3NEaHGPwgSGtRh/PghRmo21zeIgz5cekJ3/XMI?=
- =?us-ascii?Q?u8cscWoBuCrKvcFWrA25daa6IfIwIpI0L8NpIfq7owP9qx8GwvTh?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: daccbd1b-0605-4570-8993-08df0ea72f7f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 19:18:53.2545
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t2JjU+jtBnLSYJmfOIvUYDIvNfYQXI5nl525oqekMnOwYTBlKHxnS4yIJf6PVCe8uEsWNxZO+yyudnekNDbROgst4N7b/3Cv8JuYmOmQ1GPDGqwTHpkGYo1cYG0a+lMh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8342
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+References: <20260909-fec-ptp-pps-event-uaf-v3-0-bead12c29a16@cherr.cc> <20260909-fec-ptp-pps-event-uaf-v3-2-bead12c29a16@cherr.cc> <CAABR9nGshJE96aCZVriQeMd+7Zjua5n+EKpUTN=953sowUL0Tg@mail.gmail.com>
+Message-Id: <aqG3-ySw1AecQVkD@nobug>
+Content-Disposition: inline
+X-Lms-Return-Path: <lba+26aa1b7fe+bdac6a+lists.linux.dev+me@cherr.cc>
 
-On Tue, Sep 08, 2026 at 12:02:25PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->
-> Add THine THC63LVD827 DPI to LVDS encoder.
->
-> The THC63LVD827 is a simple DPI to LVDS encoder that can be configured
-> with input pins.
->
-> Link: https://www.thine.co.jp/en/products/detail/THC63LVD827.html
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
->  .../display/bridge/thine,thc63lvd827.yaml     | 126 ++++++++++++++++++
->  MAINTAINERS                                   |   5 +
->  2 files changed, 131 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/bridge/thine,thc63lvd827.yaml
->
-> diff --git a/Documentation/devicetree/bindings/display/bridge/thine,thc63lvd827.yaml b/Documentation/devicetree/bindings/display/bridge/thine,thc63lvd827.yaml
-> new file mode 100644
-> index 000000000000..ead50802e11e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/bridge/thine,thc63lvd827.yaml
-> @@ -0,0 +1,126 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/bridge/thine,thc63lvd827.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: THine THC63LVD827 DPI to LVDS encoder
-> +
-> +maintainers:
-> +  - Francesco Dolcini <francesco.dolcini@toradex.com>
-> +
-> +description: |
+> > +
+> > +       if (fep->pps_irq >= 0) {
+> > +               free_irq(fep->pps_irq, ndev);
+> > +               fep->pps_irq = -1;
+> > +       }
+> > +
+> 
+> I think fep->pps_irq > 0 would be more appropriate here,
+> since the IRQ returned by platform_get_irq_byname_optional() or
+> platform_get_irq_optional() cannot be 0.
 
-Nit: Needn't "|"  should be ">" here
+Hi Phuc,
 
-Frank
+You're right. I hadn't checked whether these helpers could return
+IRQ 0.
 
-> +  The THC63LVD827 converts a 24-bit parallel RGB interface plus HSYNC,
-> +  VSYNC and data-enable to single-link or dual-link LVDS.
-> +
-> +  The LVDS output data mapping is configured using the MAP and 6B/8B inputs,
-> +  that can be controlled by GPIOs.
-> +
-> +  The LVDS output link mode (single/dual) is configured using the MODE input.
-> +
-> +  The parallel interface pixel clock sample polarity is configurable with the
-> +  R/F input strap option.
-> +
-> +properties:
-> +  compatible:
-> +    const: thine,thc63lvd827
-> +
-> +  map-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO connected to the MAP input. A high level selects Mapping Mode 1
-> +      and a low level selects Mapping Mode 2.
-> +
-> +  mode-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO connected to the MODE input. A high level selects single-link
-> +      LVDS output and a low level selects dual-link LVDS output.
-> +
-> +  b6b8-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO connected to the 6B/8B input. A high level selects 6-bit (21-bit)
-> +      mode and a low level selects 8-bit (27-bit) mode.
-> +
-> +  powerdown-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO connected to the active-low /PDWN input. A high level selects
-> +      normal operation and a low level power down the chip.
-> +
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +
-> +    properties:
-> +      port@0:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
-> +        description: Parallel RGB input
-> +
-> +        properties:
-> +          endpoint:
-> +            $ref: /schemas/media/video-interfaces.yaml
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              pclk-sample:
-> +                description:
-> +                  Sample data on falling (0) or rising (1) edges of the pixel
-> +                  clock signal.
-> +                enum: [ 0, 1 ]
-> +                default: 0
-> +
-> +      port@1:
-> +        $ref: /schemas/graph.yaml#/properties/port
-> +        description: LVDS output 1st link, used in single- and dual-link mode.
-> +
-> +      port@2:
-> +        $ref: /schemas/graph.yaml#/properties/port
-> +        description: Optional LVDS output 2nd link, for dual-link mode.
-> +
-> +    required:
-> +      - port@0
-> +      - port@1
-> +
-> +required:
-> +  - compatible
-> +  - ports
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    lvds-encoder {
-> +        compatible = "thine,thc63lvd827";
-> +
-> +        map-gpios = <&gpio4 10 GPIO_ACTIVE_HIGH>;
-> +        mode-gpios = <&gpio4 11 GPIO_ACTIVE_HIGH>;
-> +        powerdown-gpios = <&gpio4 12 GPIO_ACTIVE_LOW>;
-> +
-> +        ports {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            port@0 {
-> +                reg = <0>;
-> +
-> +                endpoint {
-> +                    pclk-sample = <1>;
-> +                    remote-endpoint = <&dpi_out>;
-> +                };
-> +            };
-> +
-> +            port@1 {
-> +                reg = <1>;
-> +
-> +                endpoint {
-> +                    remote-endpoint = <&lvds_display_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 6215fcb07770..0b5a25a35367 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8580,6 +8580,11 @@ F:	Documentation/devicetree/bindings/display/rockchip/rockchip,dw-dp.yaml
->  F:	drivers/gpu/drm/bridge/synopsys/dw-dp.c
->  F:	include/drm/bridge/dw_dp.h
->
-> +DRM DRIVER FOR THINE THC63LVD827 DPI TO LVDS BRIDGE
-> +M:	Francesco Dolcini <francesco@dolcini.it>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/display/bridge/thine,thc63lvd827.yaml
-> +
->  DRM DRIVER FOR TI DLPC3433 MIPI DSI TO DMD BRIDGE
->  M:	Jagan Teki <jagan@amarulasolutions.com>
->  S:	Maintained
-> --
-> 2.47.3
->
->
+I saw the existing irq >= 0 check in the request path and wanted
+the release path to match it. I used -1 to distinguish "no IRQ
+requested" from a possible IRQ 0, recording the IRQ only after
+request_irq() succeeded.
+
+Since both helpers reject IRQ 0, that extra handling is unnecessary.
+Keeping pps_irq at its initial value of 0 and checking > 0 before
+free_irq() is sufficient.
+
+Wei, I plan to drop the -1 initialization, use > 0 for the release
+check, and reset pps_irq to 0 after freeing it. Do you have any
+concerns with that change?
+
+Thanks for pointing this out.
+
+Best regards,
+Shengzhuo
