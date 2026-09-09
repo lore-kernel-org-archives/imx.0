@@ -1,155 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011065.outbound.protection.outlook.com [40.107.130.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362B235C1AE;
-	Wed,  9 Sep 2026 17:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788973758; cv=none; b=bHjdDPagRxyvnRWhWddgxS6ZmSGMssMDX1mTNiRgMmO+Wk+VlV1lJW/2Shd+qfxQFK3f06OUv5Y4A6haEZSyEtQ0ms1rWv+4btMqilYuTKXXKFlSyBv4Cwa2xspDRRPYDD66pAHnRTG+SBOQ6DKrpMKFLXVuI/MRZ2WVVOciWns=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788973758; c=relaxed/simple;
-	bh=GEiN4jMUciIfL7jGFmnCJViga5R1IfaMx7x0DCv1xQ0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Te651uN8ONshQ//IU21pW/Vd+Y04306JD4G0e95Uf+teIkd9wZBSiYAKUk+VLMIgciqQ27YXTXD6GaEtMKz/2HlrqF7pArQN568WbDDGxoHlbbOHtn48eao0ECYvFxuFHnRsDdScGBNSQpogmF5TZ2jADdG6xg1j4HeqFJbRDbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/29XeJu; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BE33AFB18
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 18:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788979575; cv=fail; b=JffiL8x9G8xmfnY7zYIaxfqYq2UbCryMjG2Dob0w7oCSjX1rLEqaiz/UK7waOTQ/xYH2NIq03HJFqqtVTaAR05PTi8qgnCeEJNe8ii9mmEgAd23x9QBHU8Hyi2pTpRBoCxG5HFYtCT8rs9yAPwHOTmOSxqRLGc7qqRWWVvHSKrs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788979575; c=relaxed/simple;
+	bh=B9a4GIbBjXxuAVXIcgHTB5EnUNGZdhRE2F43vtnBzl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=f8JbuwWkl0Vsxj6vmyIfbbkc7TbS/yse/3saUi/2Wio1FCul+dTVQWaQoDH4GF/wvAXMMgIjlmoVwXlCjZQwpraEr1e/7UgTkbfzkutX002CEb2Ic9DPdvH6pWKFzOHTfqrEB9yAoZSUjFxtXndnVQQfqIJdS3RjPQK9+qnatsc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=q7icaDMN; arc=fail smtp.client-ip=40.107.130.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/29XeJu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABD81F000FF;
-	Wed,  9 Sep 2026 17:09:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788973757;
-	bh=780WOgTbPpjCwAj9rTJ8vw/M2+D2yvQvdSsmZ6fR/wk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=R/29XeJu67Odk4F/2J5Tx59rr4SFJDG+cMhFyKn4QlKOqSkIM8/DzER5kBqfGFDqc
-	 SW6HkB1E/y1bvfv0tVnbfQVJWldRtYHUqq6g/90OzbRLsvt7wCwHAZRmWtM/f1Lxg9
-	 cTnQUZHKJTZ4+nOZ5AEwcuW7sF8Hbly3DcL2PY7vFH6mZtU5oGRgWmqOHFo6ka429F
-	 wFu8xWcgAV2O7MQmd6Up70lLu9pv9aAiLpna4cd7bV8f0LiZp0HAB2jRt0yJvwRRMD
-	 Lb37ncPasnZSLdd9X1XOGuN6p1ZpVTII2w7ktLhPRlDeQiTKsnluxpDlnc6FXVfPeH
-	 QwZTohI1wtdUQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v14 03/10] phy: qcom: add the SGMII SerDes PHY
- driver for SCMI systems
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, wsa+renesas@sang-engineering.com, linux-amlogic@lists.infradead.org, neil.armstrong@linaro.org, robh@kernel.org, linux-sunxi@lists.linux.dev
-In-Reply-To: <20260908-qcom-sa8255p-emac-v14-3-ec212b747a7d@oss.qualcomm.com>
-References: <20260908-qcom-sa8255p-emac-v14-0-ec212b747a7d@oss.qualcomm.com>
- <20260908-qcom-sa8255p-emac-v14-3-ec212b747a7d@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 09 Sep 2026 17:09:16 +0000
-Message-Id: <20260909170916.8ABD81F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="q7icaDMN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xpdV0a9Z8iwDBWMooOgPOeZMkRjZVYDQaNqrFimw25F9s05Ynjk7sjDg39ZnE/UYlPzpNrBQZjIz52oeWvxrP/cjOQypHVkz2vDnrRGgtHJ7MiWVrCGw7TpOu4KyUwlTYIeyu0VAYK1RC7gmxfxUj4Ar37OVy3m38ButWVIBumZMO7uv8OypCx5JsY1V9ffyxm5IiG6CdPjstwCIIZbtuqJvWWXyKb6lLZubbnWuJ6ArfUgFCvk+kB5MGMoZ/ArSFjk0g0ND7afLlxzsFGlqaA1cfHPFgaRxM6RcbqI+DXDCdnVA4ufaWDro/SZ8fokUlj7V9PR48VEDCDX2V54T3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vk87k6181RDoIKjEI8BKYjwNFPWaZFl5Iq6t/6vxr+k=;
+ b=zQVyvQ2Uh81DmdxfMrgLn8GVq2oA/8ptsOEux/ntoS+uK4QTxcpbndp06Y0jf2BealUbRSPj126Ve581pj11Z1CxoiuyZkm+FDuiv9xOFkV7zEOFupZz91PkbAwpucU7vxC+G2QAmS2kbUoh9R82oiPTppG/vmufNYDpU8l+n/FbZrenWr+NL672RlNjfoRYPaqBKgo3mcMsqy/CuInvreV+/uqLn5ZunPYqqQqioCAMTumiMK/1Hh8G+4geWk7n3dNAlqkat/vJWArEV3giNK0d3dpbS58e/VnwVgfL6CPu1gRgb7xphuLhhq+rpAn2YVckpkFE5k/EWQOYFScmVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vk87k6181RDoIKjEI8BKYjwNFPWaZFl5Iq6t/6vxr+k=;
+ b=q7icaDMN34SQh7gporuTsQwLTxtZI5Z5udZO4NKl11fXUP52xTIU13zXEh6/mXXvnQOBqqZDeYZrTutc/2lSIAjP8ugLVXWQzDZr+DYoGC/URJaMqpLw0zr5e0k63L4wRAqcpS5OYDlVcLokz/csv+lR3A/WKhFsWvFiA/FiH6w8fRLQRPhejimzsRMgLpcUaotKa5ZOih0kqSsjbg9Ze7JEZlY3rUiOnOfuzkng4uVwS7OFzcYLUIkJH1fgd+RqM3FMIpy2NUPDrv+cXwso9dII4/Dh48eqo87Qe4foWJ6pGIGOhzeYuZ2lwEOIJUraE36rxWoApyHFJ8fuRVbRsQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM6PR04MB11268.eurprd04.prod.outlook.com (2603:10a6:20b:6d1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
+ 18:46:10 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
+ 18:46:09 +0000
+Date: Wed, 9 Sep 2026 13:45:57 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Frieder Schrempf <frieder@fris.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Eberhard Stoll <eberhard.stoll@kontron.de>
+Subject: Re: [PATCH 1/9] ARM: dts: imx6ul-kontron-bl-common: Replace UART3
+ with DIP switch GPIOs
+Message-ID: <aqGpZQlbFHD_-hVg@SMW015318>
+References: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-0-4d0e8a75db79@kontron.de>
+ <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-1-4d0e8a75db79@kontron.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-1-4d0e8a75db79@kontron.de>
+X-ClientProxiedBy: PH8PR02CA0045.namprd02.prod.outlook.com
+ (2603:10b6:510:2da::33) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM6PR04MB11268:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7da11d90-382f-4dde-59c5-08df0ea29d13
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|7416014|376014|23010399003|22082099003|18002099003|56012099006|10067099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	HtSeCwd4A536vACWrzV/+LCJ9UCSKlHDgQcBjfMyAmrQ7SBPAmR5tzWxhFQJCRVlNPQXZ1r38pWTPquQDnJb/J+2ZHgKm2zm7zx0Dt0pLYPTliqjOkKuYQS4DdWg9lmWyYt+uXvo8zri503xT4IcYZ+aVeyGDb8u+Jp/Cw+LbmxINdVI+jxofPa+Y+ossI0V4kC5KOZdDTOTmHFrXrqxEqJD4q81fnDX6M/yX2IBQCoWymCM49Poti/DEZxlIgHdMMfwOhwPBU50xrJ2Nl3TDJH0yXUgfdGesl6+dxASlrWyZgP0mJtbQj9L1pgw/sRKgcyTvKmRn3dS0Zh0RcWXRgU5LQI1+eUQ6vjvANElmzJdiIXcgWROMzQiSQuXYoNDRxk4l7ohMsWoNjF0m4WrfP71I1Vr8yRdn5+HRt0RhOCKyKuWPeXZOhdijOTnZ72Y2WZ3lN5sVusQU2tLpjAbvWelhJU7zLC6bckZbjtprktj9eFYwX93XNCKcbpM4CFgT+1oJsS1j7x/mDtO1PORrslR9y3DojH/4z3o/T7wLcLbh7u+UbdlpEpGmXnmQ2XoPKL8JfSs+sBuXuhWPD/h/erPqYSJ0+kuEJwnQnMxLeYn05lTjlA7lRgJfEwh32NkR0bGbSp/11zVlUGoh0jw43zxYf17bN+/E+57I/xkoVA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(56012099006)(10067099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kbPyK1upnUS3k6m3len73SfIL1M/NtpCCgeVPtnDIKX71K1Nb95ZGgEURuC9?=
+ =?us-ascii?Q?jZLJh9qAvg6hOlrvpKeYykZs2y1O//7p4O/tFt9DfW/aJmwPhGLgYA9ADvG8?=
+ =?us-ascii?Q?y364MMZW95kIc6eos9dcAPW00oXThahKALtMfyf+dizKrKh9nuRQECliXtLi?=
+ =?us-ascii?Q?RZcktEFsF95tXFCL34K8RaUIW2AGqRhO4CbdNJLy5/kGHq+jkFlKFdbNB3Nx?=
+ =?us-ascii?Q?MgAZawdVpvOBzdI3tpN0inNkReVHn//ax7JGH4mNCQNFwyFQUBSEaiWbdqXf?=
+ =?us-ascii?Q?yoZM7NM/uZtnZthB836HIKQOhu9O1GH5RQkbmAz6iGzCKt3PhaVcfYOzFi4/?=
+ =?us-ascii?Q?6nZEupNPDpCs/vzC06ohhn6jNFvPQV9SuOvdxcOtrjnLA3HxQK/Knd/BXmxv?=
+ =?us-ascii?Q?pFecs8gU7+8cuayU69odYmLxnM4OMPeM6GK9+jLlUz8go/lmUytNRMxSE4sk?=
+ =?us-ascii?Q?nus4HD21s/yjPSIocoZ8UpSlW20e9FpTOc2xbuiuojlxb6OaIxaBG+Qdx3n+?=
+ =?us-ascii?Q?y+S9/I1oymHz4XZC/Ajgj0jEndDgRGVhDUwVAGs9wgTvnqapU+PFxobaaEYO?=
+ =?us-ascii?Q?zCNYMO/KtAJs5stBF3Jz1C/uk9QFt+hZrSnwqDC4ZmjQ6ntXPePOKlR8JT/C?=
+ =?us-ascii?Q?O73cu8K/OrYFZzJau6MZYNMSlIXF2Rf+abeEG4lfdlu12UkTyf4r1RgkjpsU?=
+ =?us-ascii?Q?HLTw709Zjsg6sitmOInq/HlmkOBoTsbiAw4N6wpxFKgupApCvpMDq7HWt2RV?=
+ =?us-ascii?Q?ASOSnSA4R7rbBN8UFHAufDbLgJGVFVqy+Lc73khiKvYJkfpo+iW6wmzntA96?=
+ =?us-ascii?Q?sExfZ7bh0XEn+ek5Gf3v2NWW7KHlLNMkFP9m23wiMndjt4EEXJbrSQfYvoNx?=
+ =?us-ascii?Q?2H5XwBfplcbAjQqVqFcHuHNLYvnIgXrTYZgBD4lcsws6NORk4QE1WCma1oLM?=
+ =?us-ascii?Q?1VME86UtLiHJ2QcJntv2pBChzI8/dzQcYXJizChj31tgEBcBfpYecswpWajp?=
+ =?us-ascii?Q?4T7WsGVjeXNr8q13pwKYAuloncgcnxTxdlvv5LHvQ3+6dkoDTA+WRjToa45e?=
+ =?us-ascii?Q?KisIxOmd4dRhiErtyGjnVuMB2WhEGhhJaW8oGQJsMLp+v2WppTH+S2IA8dbB?=
+ =?us-ascii?Q?E/cK6yzspW1lm4h8rHBUtbvznyImBvJZjJS+TqwQoYyDBc+J14So5JuQ8qrs?=
+ =?us-ascii?Q?Tqx0XnSx5J6+K8Ag9MKGAN5hdZPyFISd1CZlc15m3GtT95HpHqmqEOnyxO2H?=
+ =?us-ascii?Q?SpI8ChTmHn0vraftPSdFodVB1GaaTdkFYmkBcswiaQXH/iAX+gv699t9nT3t?=
+ =?us-ascii?Q?GphB4I+YjtUKy0YBCfEKUchNw1B/ImQeJXEn0ymiwiUEt9a/v8bjkvw863HZ?=
+ =?us-ascii?Q?XdGX8i0zSwKw1xbHNUXGnoSzIzY5QH5gdG9GmQF8VS8b/wGVDNsPVHyZ8sP5?=
+ =?us-ascii?Q?UVvqy3oFRF+4zDS2bGX7mhb/Yg8ezTyizZzA9y3zHxQKdX8M7UczFXeRhChh?=
+ =?us-ascii?Q?WA5bJ5PZHSDvtD59zRDGu4a3pBcvOBWtmy4mzuYpgTpS98osxD0MKZIaTGGV?=
+ =?us-ascii?Q?/trAsr4aHnuI6FntLVwJUdq4q0fAERZ0yBNk17KOwpiXCRbAKcTDGuDn5Lm0?=
+ =?us-ascii?Q?X9ejuH1xyGM4XWkr/ncS6BGjAnIqo++Ke/G+sy20tG+AUp2rxAGCdAHTOwA6?=
+ =?us-ascii?Q?9iIEQ5yNOoZMvw3/Mjk/5hg3O5E9Lvddo8okhaYkvb1eX8YJlLrLzkU9Du+L?=
+ =?us-ascii?Q?huWVixRySmzBB78Kzr8sUC/GqCfJT0jaz9gLi0dn1oJb1QMiYCXW?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7da11d90-382f-4dde-59c5-08df0ea29d13
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 18:46:09.7498
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kbpneEe2Bg49pvjH/Vx84+Lh6/9OYyyjoHvNNG4k5+OHQwfVFT9ox681qAbq/fv5zXtpVgIjqCM5Wvxn2l9q69+z5RbMpyT5eGCtzofYCcmT+jKpkS5mIBK3pEWAoIZd
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB11268
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The driver's devres teardown sequence cancels an asynchronous susp=
-end of the platform device, leaving the device permanently active.
-- [High] Missing cleanup of the genpd performance state on driver unbind le=
-aves a persistent power vote on the PM domain.
-- [Low] The driver forcefully selects the user-visible PM subsystem from a =
-leaf hardware driver, overriding user configuration.
---
+On Tue, Sep 08, 2026 at 03:51:48PM +0200, Frieder Schrempf wrote:
+> From: Eberhard Stoll <eberhard.stoll@kontron.de>
+>
+> The latest board revision has DIP switches and lacks UART3 instead.
+> As the old revision has long been deprecated and not maintained
+> anymore, drop the support and reflect the current state of the
+> hardware. As the old revision hasn't been widely used, UART3 was
+> only available through an obscure extension connector and we have
+> carried this patch downstream for years, no users are expected to
+> be affected by this change.
 
-commit dae3dafc17dff2635ed1048ccc9e18ab67fdf8a3
-Author: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: phy: qcom: add the SGMII SerDes PHY driver for SCMI systems
+Remove "we have carried this patch downstream for years".
 
-This commit adds a new firmware-managed variant of the Qualcomm DWMAC SGMII=
-=20
-SerDes/PHY driver. It introduces a separate driver from the HLOS-managed=20
-variant since they share little code.
-
-> diff --git a/drivers/phy/qualcomm/Kconfig b/drivers/phy/qualcomm/Kconfig
-> index d910a5d1a1ac3..677662f642e42 100644
-> --- a/drivers/phy/qualcomm/Kconfig
-> +++ b/drivers/phy/qualcomm/Kconfig
-[ ... ]
-> +config PHY_QCOM_SGMII_ETH_SCMI
-> +	tristate "Qualcomm DWMAC SGMII SerDes/PHY driver (firmware managed)"
-> +	depends on OF && (ARCH_QCOM || COMPILE_TEST)
-> +	select GENERIC_PHY
-> +	select PM
-> +	select PM_GENERIC_DOMAINS
-
-[Severity: Low]
-Is it intended to forcefully select the user-visible PM subsystem from a le=
-af=20
-hardware driver?=20
-
-Leaf drivers typically use "depends on" for user-visible features like PM=20
-to avoid overriding user configurations.
-
-> +	help
-> +	  Enable this to support the internal SerDes/SGMII PHY on Qualcomm
-> +	  chipsets where the SerDes hardware (clocks and registers) is owned
-> +	  by the firmware.
-> diff --git a/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c b/drivers/phy=
-/qualcomm/phy-qcom-sgmii-eth-scmi.c
-> new file mode 100644
-> index 0000000000000..ae961975dcd87
-> --- /dev/null
-> +++ b/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c
-[ ... ]
-> +static int qcom_dwmac_sgmii_phy_scmi_set_mode(struct phy *phy, enum phy_=
-mode mode,
-> +					      int submode)
-> +{
-> +	struct device *dev =3D phy->dev.parent;
-> +	unsigned int perf_state;
-> +	int ret;
+>
+> Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+> ---
+>  .../boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi  | 21 +++++----------------
+>  1 file changed, 5 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+> index f4c45e964daf..a71669bef7d4 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+> @@ -172,13 +172,6 @@ &uart2 {
+>  	status = "okay";
+>  };
+>
+> -&uart3 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_uart3>;
+> -	uart-has-rtscts;
+> -	status = "okay";
+> -};
+> -
+>  &uart4 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_uart4>;
+> @@ -283,6 +276,11 @@ MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x1b0b0	/* DOUT1 */
+>  			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* DIN1 */
+>  			MX6UL_PAD_SNVS_TAMPER1__GPIO5_IO01	0x1b0b0	/* DOUT2 */
+>  			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0	/* DIN2 */
 > +
-> +	ret =3D qcom_dwmac_sgmii_phy_scmi_validate(phy, mode, submode, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	perf_state =3D (submode =3D=3D PHY_INTERFACE_MODE_2500BASEX) ?
-> +		     SPEED_2500 : SPEED_1000;
-> +
-> +	return dev_pm_genpd_set_performance_state(dev, perf_state);
+> +			MX6UL_PAD_UART3_TX_DATA__GPIO1_IO24	0x1b0b0	/* CAN_ADR0 (DIP sw 1) */
+> +			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25	0x1b0b0	/* CAN_ADR1 (DIP sw 2) */
+> +			MX6UL_PAD_UART3_CTS_B__GPIO1_IO26	0x1b0b0	/* CAN_ADR2 (DIP sw 3) */
+> +			MX6UL_PAD_UART3_RTS_B__GPIO1_IO27	0x1b0b0	/* CAN_ADR3 (DIP sw 4) */
 
-[Severity: High]
-If the genpd performance state is dynamically set to a value greater than 0
-here, where does it get reset to 0?=20
+supposed header overlay or real user should set it. otherwise, the real
+user set it will be failure because pin conflict.
 
-Without a teardown path (such as a .remove callback or a dedicated devres=20
-action) to explicitly reset the performance state, the PM domain hardware=20
-might remain forced at a high performance state permanently after driver=20
-unbind, wasting power. The genpd core does not automatically drop dynamical=
-ly=20
-set performance states on unbind.
-
-> +}
-[ ... ]
-> +static void qcom_dwmac_sgmii_phy_scmi_runtime_disable(void *data)
-> +{
-> +	struct device *dev =3D data;
-> +
-> +	pm_runtime_disable(dev);
-
-[Severity: High]
-Will this devres teardown sequence cancel the asynchronous suspend of the=20
-platform device?=20
-
-In the devres unwinding sequence, phy_destroy() unregisters the PHY child,=
-=20
-which causes the PM core to queue an asynchronous pm_request_idle() for the=
-=20
-parent platform device.=20
-
-If qcom_dwmac_sgmii_phy_scmi_runtime_disable() executes pm_runtime_disable()
-immediately after, it aborts the pending idle request. This leaves the=20
-platform device permanently locked in the active state. Could this be avoid=
-ed=20
-by ensuring the device suspends synchronously before disabling runtime PM?
-
-> +}
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908-qcom-sa825=
-5p-emac-v14-0-ec212b747a7d@oss.qualcomm.com?part=3D3
+Frank
+>  		>;
+>  	};
+>
+> @@ -334,15 +332,6 @@ MX6UL_PAD_NAND_DATA07__UART2_DCE_RTS	0x1b0b1
+>  		>;
+>  	};
+>
+> -	pinctrl_uart3: uart3grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
+> -			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
+> -			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
+> -			MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
+> -		>;
+> -	};
+> -
+>  	pinctrl_uart4: uart4grp {
+>  		fsl,pins = <
+>  			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
+>
+> --
+> 2.55.0
+>
+>
