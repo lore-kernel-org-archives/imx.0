@@ -1,241 +1,216 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013023.outbound.protection.outlook.com [52.101.83.23])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235C43BD241
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 15:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788967859; cv=fail; b=gP9o/N6PVhTeS1fxfOXjRVGCK/FCFEImUYGF92rAH1Ku2N2JUED0FPyb7m9wTauqqgwxn99ItxZzM8cQGo/VXQDzoOxbg1N8aVXxkXPBXaVKP8+219Jmi06ggTuWYpBlX6JIN40hW0O/fEtxzLtN/c2kKtEKtGz1+pqZOzQb7iQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788967859; c=relaxed/simple;
-	bh=GkVp6R/Gm9bQe5LHWiC15YBNwGnOtq7HGrdWzHclQDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eAnKh/HH6OATiCH1Y7p3OP/04MZCNhLhAS1cC2tPqNMAXkEfGn1HZIKaIQ0Cp81Yjo7jAKn/TCEjQQsh2v3c8oAiASz8WexT9fp3fPzr4DXHxHsEONr6L5AhMxVnTDH2D7YNUHj2uFPmQNRj384RjGzTGj1kIYto4UoDoH/2+/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=pFRpy9x0; arc=fail smtp.client-ip=52.101.83.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDAC569F1A;
+	Wed,  9 Sep 2026 15:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788968136; cv=none; b=KPkrOIIcWMbZKNB+UYJKMll5k1vuDHzUVVfLKRfHsKaA73+hH3y0LIB43DQU+l3Jh5969n0M9lIkgv8Xc0o5f8HM7ihsCMyCZ6AKtvCJB11MaIXJYSzJKLCPODJXOMkE8xq8088DWekERvtqqR3nbdRg0wKYC5FwxVXMHrPFT18=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788968136; c=relaxed/simple;
+	bh=oVfTCXRG6PIlXP1Q7/pUi/azraL8GraEp29p8DFmo8A=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ZC55kGXsHEtiOsMIojY5kF+JVvMZCFRbOiK5QMJvQXuIOf+Qh72rZErf+w2eFb2bGZcgX3xPmWN5tutHxylVVbnZBIDM6NPAIj/9QL5Jcu3kZJzJjeS1n4T+nFxw5esn4p4cExOVhgNOL7f1EucV+MzmRgTTv3uZR9g6PJ9g0cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4Q+l+8Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="pFRpy9x0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yhwhq2KBJgdLrgMSYtfPo0u+D9ZmEQW5UuRuyw7W80djFXDHfRewDKZAQ/uL7F4jLgaqtQFzbv8ipsK49nxG5UZWhQAePljTlfIH0XXapuhj1gWv9xAlApG8Qk9/l8Yr4p69gUWn6ys0MPlLyAzr2OGlXQr1Fgo/NSGdvC8iI4vo7HVfp9DoBpHZbLbbCwc99bxF2NAngUsG+i8OqHkKj+VIgYdiTDb6uSzQB2MCLr1Zc5KS2NLavHsMkLHaaAdgLfeP+aPSKfVEYVLW22/hHsjVluRMk0XDLSvLSx1sGw00QQPV6c4eKwYuEUgLXOQXeiw9zbx2k3ReI7FUpe1eew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B3jNPCE1h/aS0Wnsnn/o7UByl5DghCcbq9/4rQPVu9c=;
- b=FSGpJJUYIzoUKAL9RnFaJR4adqYoA+Ib+zED9UuipOApYtL8LbE7eNOx/LYdXD5+wwmWfipj2j5Lr0uARVr61lmFzgAJAf5dIGS5r7FKZCoguqALLT7UUwVOId/lpU2aGCsTc49GjDU2P2gA1ZZa/f6mQ1RxO9ODqdw7mhTlYVNTiBG3jgOtHpqrinKbw6evK32ZfyS7M2sUfTWWCyhYDzTY37WjykIFuuvR8Pjiz8RO3tLWQP4O8Z8weHS8O9HNQyvDhnp6Duni5OFlPv1eAkfwsIMBDYoqFIJtdVJ93lo9mCuPf21VLdWSZFsvDgNQV1meJ0PiPrUzU9yffrs5lQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B3jNPCE1h/aS0Wnsnn/o7UByl5DghCcbq9/4rQPVu9c=;
- b=pFRpy9x0aCsq6406jZrXnxQNnuejSn9QtkQg5azNEspIf3bx4SnrMVKqZr+sHkqOuuQKvSzRYXjCHPpWG/Qkpl+BN56apms2NwZ5nggAzMBaqKZ4+mNdICVXVN/lEkX5i2sBHpMzS42herxc+wicPb2zRPoDaB68p1Ai143njpLqLim+EdNrryhDe/FqGmRdH4QnRd2yF7tQj82iFttEEPdNkBNzSbSgNGjmf4HT1NlktCqhTcQPMDHg0LxbqfF+mCoKMgBAIFviEEXGnFmHbv/eQkgpVfHVQkMPeBd7K741nyr/VwC62zBQ2XOicY1fYz/ZAuQZS02hBj6w3dllXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB7493.eurprd04.prod.outlook.com (2603:10a6:20b:293::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
- 15:30:54 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 15:30:53 +0000
-Date: Wed, 9 Sep 2026 10:30:43 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: vjardin@free.fr
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: freescale: add Nodebox v3 CPU Module
-Message-ID: <aqF7o9EYfwlfpYof@SMW015318>
-References: <20260908-for-upstream-nbxv3-dts-v3-0-1d88b2c11680@free.fr>
- <20260908-for-upstream-nbxv3-dts-v3-3-1d88b2c11680@free.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-for-upstream-nbxv3-dts-v3-3-1d88b2c11680@free.fr>
-X-ClientProxiedBy: PH8P223CA0011.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:510:2db::23) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4Q+l+8Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A97A1F00A3A;
+	Wed,  9 Sep 2026 15:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788968134;
+	bh=yCFgjji8MWSCuafdhu2FV2mbPIvOwThLLSaxoSUpYtc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=B4Q+l+8QsQen3SgPYT0E5aq/YggMDf4ST5p7vD/fer5/p0uNCmnfslMXyLQGxGMce
+	 eN3zrEFoHZCJNgj9eQw6ywNGiS/ROZNsEPyP3A6jRwDkoFSNd8dy4RKntZk2vlNlXF
+	 NrCyJOT+ZPUVi3BD/Q50hhlPvUvv5wNwaeebw+XyJ+OsvxQZ7INljznHybVu25UMxs
+	 fQUZWrO4Nb1Al5W2ZwcOo639+RibVcnxSQvFyF558kzv5Jf3+YjnHbq2mKMEb2OF1E
+	 LBwYt5yoqo4atR7rtmj2MBz4B+GqVXhqFMyodLeAV+71Mi1E0al1OK4rW2tl6Gy4gM
+	 w3xNXsizOS8+Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 1/2] dmaengine: fsl-edma: Implement
+ device_prep_peripheral_dma_vec
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
+Cc: Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev, vkoul@kernel.org
+In-Reply-To: <20260909-fsl-edma-dyn-sg-v9-1-60bb2e678e8f@bootlin.com>
+References: <20260909-fsl-edma-dyn-sg-v9-0-60bb2e678e8f@bootlin.com>
+ <20260909-fsl-edma-dyn-sg-v9-1-60bb2e678e8f@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 09 Sep 2026 15:35:33 +0000
+Message-Id: <20260909153534.5A97A1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB7493:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82808c77-f64c-4268-77bf-08df0e8755e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|4143699003|11063799006|56012099006|3023799007|10067099003|6133799003|18002099003|22082099003|15866825006|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	RgqZzNre0NgdeZ+txpHuXf8JVmoScaszzBu+27NSbieVizSzTUrwv2oZ7Tb7j19fQQWTqmk2vaZtknoLcgfwje8eVjLoxs0FJDc9BXSxYnsoPqtgXTDjMO+/EPqGrOfXBGx+9ods2FXp+yjWtbnidWDHCDA2TcoENjJWKxAXV/rVaqEedf8z7Rqog3F9CRL/5nyfNegA0MZzlOsf83L2v8srWy25EHJ1VZtG0I9elOhIZ3aLnNkwdPvIGwnk5boTCQAuO96qrmkxD86xxi2YvTv+Iizm7KrieasTnbWa3HyyiZs5uHYFA9No8t4sfu5J4BT9LmhB3NdhdBNEZwvSZoAzaN3LKLASsWVtfzcEbqc5E1L8u75ZrGCQX70Fo7U7X/3pN4mUNA0lbnHgocW75HNaIABxgurqliiDjTg0FPhrp9S2r2OwqbjH1Z74a2QX7aHOT5qeYwMMzqEG8hTG9HPzK1MohkzHZnXdGVX2hirxYKmN9Bs3zf7JINFBtkvqEmI6NLe9xfjkOHtWyniua95ZDJHYB+T29kf2BopfEdlgyPP/U11dLHeQCoxYGKAo7skflutjGe0Xa2jAFD/63i/dDwpvOnd2XIjorTOwJjZydTu1x5iMEtwttVCeP1/ZGWK1cc6ut5AjzhxGcDLHx8jYnl+k0SppBPH8UpBWoJF5hnpCk35sbA/9MItFIEmD6jEsGXAOQp3MTAGqRnAuGSCyZg0P5CRHXqUfMHLbLOKXpZpmV+w5O5DCHAFLxFCS
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(4143699003)(11063799006)(56012099006)(3023799007)(10067099003)(6133799003)(18002099003)(22082099003)(15866825006)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9cn8aPQCst7ZcQCe7G4q63SyMpVNvoTzZ2iEUQXDDfUHpUXwXXuUOQIrOOm7?=
- =?us-ascii?Q?9yKwPuPqKo6UBrvUTr0spAHm/+ZfPtbBSoXRo75pAlhKU/pKmJy1QmEBa+Zj?=
- =?us-ascii?Q?2TYw5PpTIh6tbUZ5EcY3N55D7qnwsZCvvH27LsMr0OJyQ2Iu+eJ1ArRNVO8u?=
- =?us-ascii?Q?OskxWpNe+f/ERY+opwVTrlMFQO6mfslLqlxycGC+R82G1WS5nPGk8TEJBoUV?=
- =?us-ascii?Q?kr4K1YdHJatE97ozamTqMCqki4VwxIcpwYba2pD5FUJZlUqc02/3YjhyVyJX?=
- =?us-ascii?Q?OTm71ZqphheQp6z1KVKoXSDVpxH51cSoDWZM1RAEZ+TBPjmwei0iHktY8mOh?=
- =?us-ascii?Q?9NENFdhrM4xtcbKECnnIlAZ+AxM0meXaotA4FGaafmbPdNSJgmI6UHNWme5S?=
- =?us-ascii?Q?8uPR80XpdjS6kPLHZwul0Iyuz16uLu+rPvaXTpdz3T5llYE235Z9my/tVcMM?=
- =?us-ascii?Q?MQAojyBv6A1EJI4aiVEvkikBR2XrURmDQ0Acq59mn/N3RBcQkXVyHUtz2QYO?=
- =?us-ascii?Q?htBD3s2rhc8lfTarCwwkZlBmELF+Be+b6hJ6XDYbKg3rO86aqCsRZhln1Hm+?=
- =?us-ascii?Q?a0eq9QAP085drJeXpMxENshNn1mYI8iWEsCat6SpXoshHW20wQXAHLSDc1rQ?=
- =?us-ascii?Q?Cn3WeEi6UuviUUl+TGgq+juB0HCj09Qnpd8Wiuo6KDbaWTNADeBIgml8aCdz?=
- =?us-ascii?Q?/eERT6darNtIhpKGMF8+zNqRyrhmQKU5dxZwjqdGnknrK0glEslcMfMyMFcR?=
- =?us-ascii?Q?l4SMdUFsqjncxZpL00OcsUrm4AE/kSmxgd6UDzbsgJtWFtWETiBq6F1TkSwY?=
- =?us-ascii?Q?zD2Ll0v0NhskcCg9vyC5EBx+5JEcH86ReWMf+smZGflfw2O/ovPnIm4qRz7f?=
- =?us-ascii?Q?ExdLO7803IUb3DdXOomPa9M3Xdajq+GNN8YT2a/Ui9zhYAo/R6atPSpy0FAZ?=
- =?us-ascii?Q?Hn/j4dd8rYlTNQLAnAhHQ2SYqEjD9+4JF3BPlOhCbx8aCMYtsCvT0EEsyzNq?=
- =?us-ascii?Q?DkaZqmfColARwoMn6x2rAW3vly54EzolA4yEqFMU09E3jxXjS4uKaBx7FVvZ?=
- =?us-ascii?Q?np1bjTszazv9cXWUpLpMmPOQmnGMtK4I0dSAn/qDr3E4fOXo/THRz1vjnEc5?=
- =?us-ascii?Q?HSJmXzeQb1M05RYqcjHwESqrLo/CTiZBnZs3pWzCwAwFuOC5/3K4f8QnW34S?=
- =?us-ascii?Q?ZnOZ3sUuovS5ELGcZKEBjbiwIR4T7v4rnuTraGzXwn/ox9tj2c1A1qNzC/ld?=
- =?us-ascii?Q?rkNPSaAHcafFdeGQ2eOvcTeLVJBuzNkwJU/McTsW2/U+U9XXs4sDttH4C0Rl?=
- =?us-ascii?Q?6PnWmtdcKCkyMLcPg1/CpW7KCP+FzapwWb16BBXTYCSJyd4g6jnFHBp+G6PS?=
- =?us-ascii?Q?ERPWQGPZJifouF1EubGX0rk2OUv1mQIZn/rbPibYdGqkwcU73dn6qQnbnvpm?=
- =?us-ascii?Q?Uucrt6G8D9HRbvlfNb9IQ2H279qaOR2E70MIfXl4mZP0xsjFCofUAwOsTF42?=
- =?us-ascii?Q?S1wBb6osGSiQUZ48Oz4yYSw7MV24CqvKDVD84vZlVgbQv/Qdoc4Gz0ZyxFtO?=
- =?us-ascii?Q?x5dp90v1IC3cI/qnkJ0s8bvfJAM4CvpCK0aGywpkBuaAFJuxb57Q4KFzLAmW?=
- =?us-ascii?Q?OC9J2FD+kIKhQRpt9NazGNGgcoGQ2Y2yFniqU1Cx1Wx2Cgpc+G0lvx2YZ70a?=
- =?us-ascii?Q?kBKia7M83Pvj+bR8nvtYtntX5e6B3kAeO2Ck2+DJO9ksRxQn833UyONEA9WM?=
- =?us-ascii?Q?ktUxjWGypulMkB9CNrtuScGBfDJGLnoC8DGeDJcAniKIbSV49zlf?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82808c77-f64c-4268-77bf-08df0e8755e7
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 15:30:53.8179
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LplpRn0BqrT2C7se+oCVpMJ2g0McdWwTw6KdK7DzzVgc0/cFRpFYsxIAS1/alOeJzggUdPmlPR/HeyZyOZj1uOzRD88wx4Ic2s0Xt706TKZslaBnC7AtPZtVb0uTMHlD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7493
 
-On Tue, Sep 08, 2026 at 04:12:45AM +0200, Vincent Jardin via B4 Relay wrote:
-> From: Vincent Jardin <vjardin@free.fr>
->
-> The Nodebox v3 is a Free Mobile CPU module built around the NXP
-> LX2160A (16x Cortex-A72, DPAA2).
->
-> The same .dtsi is used by the U-Boot port, so both Linux and
-> u-boot should not drift.
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-Needn't this paragraph.
+Pre-existing issues:
+- [Critical] Kernel panic due to division by zero when adjusting the burst =
+length for unaligned DMA_DEV_TO_DEV transfers.
+- [Critical] Missing parameter validation for `nb =3D=3D 0` (or `sg_len =3D=
+=3D 0`) allows the allocation of an empty descriptor, leading to critical o=
+ut-of-bounds access.
+- [Critical] Kernel panic (BUG_ON) triggered in `dma_map_phys` when mapping=
+ a DMA_DEV_TO_DEV resource because the driver passes `DMA_NONE` to `dma_map=
+_resource()`.
+- [High] The local `nbytes` variable is permanently reduced during vector l=
+ength alignment, affecting all subsequent vectors.
+- [High] Lockless modification of shared channel state during descriptor pr=
+eparation causes race conditions and resource leaks.
+--
 
->
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
-> ---
->  arch/arm64/boot/dts/freescale/Makefile             |   2 +
->  .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  34 +++
->  .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 335 +++++++++++++++++++++
->  3 files changed, 371 insertions(+)
->
-...
-> +
-> +&gpio1 {
-> +	status = "okay";
-> +	gpio-line-names =
-> +		"", "", "", "", "", "",
-> +		"cfg-rcw-src2", "cfg-rcw-src3",
-> +		"reset-req-b",
-> +		"altfn:sdhc2-clk", "altfn:sdhc2-ds",
-> +		"altfn:sdhc2-dat0", "altfn:sdhc2-dat1",
-> +		"altfn:sdhc2-dat2", "altfn:sdhc2-dat3",
-> +		"altfn:sdhc2-dat4", "altfn:sdhc2-dat5",
-> +		"altfn:sdhc2-dat6", "altfn:sdhc2-dat7",
-> +		"altfn:sdhc2-cmd",
-> +		"cfg-svr1",
-> +		"altfn:xspi1-cs0", "altfn:xspi1-sck",
-> +		"altfn:xspi1-dqs",
-> +		"altfn:xspi1-data0", "altfn:xspi1-data1",
-> +		"", "",
-> +		"flash-reset#", "pltrst#", "", "ethsw-reset#";
-> +
-> +	pltrst-hog {
-> +		gpio-hog;
-> +		gpios = <29 GPIO_ACTIVE_LOW>;
-> +		output-low;
-> +		line-name = "pltrst#";
-> +	};
-> +
-> +	/* Boot NOR reset, released: electrical high */
-> +	flash-reset-hog {
-> +		gpio-hog;
-> +		gpios = <28 GPIO_ACTIVE_LOW>;
-> +		output-low;
-> +		line-name = "flash-reset#";
-> +	};
-> +
-> +	/* Ethernet switch reset, released: electrical high */
-> +	ethsw-reset-hog {
-> +		gpio-hog;
-> +		gpios = <31 GPIO_ACTIVE_LOW>;
-> +		output-low;
-> +		line-name = "ethsw-reset#";
-> +	};
+commit bc7a9931f6cf0321b75f8853ea3938f42947649d
+Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
 
-Does related devices have "reset" property to descript reset?
+    dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+   =20
+    Add implementation of .device_prep_peripheral_dma_vec() callback to set=
+up
+    a scatter/gather DMA transfer from an array of dma_vec structures. Setup
+    a cyclic transfer if the DMA_PREP_REPEAT flag is set.
 
-> +};
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index bb7531c456dfa..c5f5951c988be 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -673,6 +673,122 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_c=
+yclic(
+>  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+>  }
+> =20
+> +struct dma_async_tx_descriptor *
+> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
+_vec *vecs,
+> +				 size_t nb, enum dma_transfer_direction direction,
+> +				 unsigned long flags)
+> +{
+> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
+> +	dma_addr_t src_addr, dst_addr, last_sg;
+> +	struct fsl_edma_desc *fsl_desc;
+> +	u16 soff, doff, iter;
+> +	u32 nbytes;
+> +	int i;
 > +
-> +&gpio2 {
-> +	status = "okay";
-> +	gpio-line-names =
-> +		"lan8023-mdint",
-> +		"i2c2-alert#", "i2c4-alert#", "i2c6-alert#",
-> +		"u800-tca9539-int#",
-> +		"spi3-alert#",
-> +		"wake0", "wake1",
-> +		"carrier-hot#",
-> +		"u1300-rtl8211fd-int#",
-> +		"ethsw-int#",
-> +		"", "",
-> +		"u1700-zl30733-clk-gpio0", "u1700-zl30733-clk-gpio1",
-> +		"u1700-zl30733-clk-gpio2", "u1700-zl30733-clk-gpio3",
-> +		"", "", "", "", "", "", "", "",
-> +		"", "", "", "", "", "", "";
-> +};
+> +	if (!is_slave_direction(direction))
+> +		return NULL;
 > +
-> +&gpio3 {
-> +	status = "okay";
-> +	gpio-line-names =
-> +		"altfn:ec1-txd3", "altfn:ec1-txd2",
-> +		"altfn:ec1-txd1", "altfn:ec1-txd0",
-> +		"altfn:ec1-tx-en", "altfn:ec1-gtx-clk",
-> +		"altfn:ec1-rxd3", "altfn:ec1-rxd2",
-> +		"altfn:ec1-rxd1", "altfn:ec1-rxd0",
-> +		"altfn:ec1-rx-clk", "altfn:ec1-rx-dv",
-> +		"", "",
-> +		"ptp-refclk-in",
-> +		"", "", "", "", "", "", "", "",
-> +		"u1700-zl30733-pps-out",
-> +		"",
-> +		"ethsw-mdio-en",
-> +		"usb01-oc#",	/* USB1_PWRFAULT and USB2_PWRFAULT share one net */
-> +		"",
-> +		"usb01-oc#",
-> +		"altfn:spi3-sck",
-> +		"", "";
-> +
-> +	/* Low enables the carrier-side EMDIO2 level translator */
-> +	ethsw-mdio-en-hog {
-> +		gpio-hog;
-> +		gpios = <25 GPIO_ACTIVE_LOW>;
-> +		output-high;
-> +		line-name = "ethsw-mdio-en";
+> +	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
+> +		return NULL;
 
-The same here, most EN module as regualtor.
+[Severity: Critical]
+This is a pre-existing issue, but if the direction is DMA_DEV_TO_DEV, does
+fsl_edma_prep_slave_dma() eventually pass DMA_NONE to dma_map_resource()?
 
-Frank
+drivers/dma/fsl-edma-common.c:fsl_edma_prep_slave_dma() {
+    ...
+    switch (dir) {
+    ...
+    default:
+        dma_dir =3D DMA_NONE;
+        break;
+    }
+    ...
+    fsl_chan->dma_dev_addr =3D dma_map_resource(dev, addr, size, dma_dir, 0=
+);
+    ...
+}
+
+Will passing DMA_NONE to dma_map_resource() trigger a BUG_ON() panic in the
+core DMA mapping subsystem?
+
+> +
+> +	fsl_desc =3D fsl_edma_alloc_desc(fsl_chan, nb);
+> +	if (!fsl_desc)
+> +		return NULL;
+
+[Severity: Critical]
+This is a pre-existing issue, but does this allow the creation of an empty
+descriptor if nb =3D=3D 0?
+
+If nb =3D=3D 0, a descriptor with a 0-length flexible array is allocated.
+When the DMA engine later issues the transfer, for example in
+fsl_edma_xfer_desc():
+
+    fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
+
+could this unconditionally access the nonexistent zeroth element tcd[0],
+leading to out-of-bounds access?
+
+> +	fsl_desc->iscyclic =3D flags & DMA_PREP_REPEAT;
+> +	fsl_desc->dirn =3D direction;
+> +
+> +	if (direction =3D=3D DMA_MEM_TO_DEV) {
+> +		if (!fsl_chan->cfg.src_addr_width)
+> +			fsl_chan->cfg.src_addr_width =3D fsl_chan->cfg.dst_addr_width;
+> +		fsl_chan->attr =3D
+> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
+> +					      fsl_chan->cfg.dst_addr_width);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this code modify the
+shared channel state fsl_chan->cfg.src_addr_width without holding the chann=
+el
+lock?
+
+If multiple threads concurrently call fsl_edma_prep_peripheral_dma_vec() on
+the same channel, could they race when mutating fsl_chan->cfg.src_addr_width
+and when calling dma_map_resource() in fsl_edma_prep_slave_dma() earlier,
+causing a resource leak or use-after-free of active hardware mappings?
+
+[ ... ]
+
+> +		} else {
+> +			/* DMA_DEV_TO_DEV */
+> +			src_addr =3D fsl_chan->cfg.src_addr;
+> +			dst_addr =3D fsl_chan->cfg.dst_addr;
+> +			soff =3D 0;
+> +			doff =3D 0;
+> +		}
+> +
+> +		/*
+> +		 * Choose the suitable burst length if dma_vec length is not
+> +		 * multiple of burst length so that the whole transfer length is
+> +		 * multiple of minor loop(burst length).
+> +		 */
+> +		if (nbytes && vecs[i].len % nbytes) {
+> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
+> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
+> +						fsl_chan->cfg.src_maxburst :
+> +						fsl_chan->cfg.dst_maxburst;
+> +			int j;
+> +
+> +			for (j =3D burst; j > 1; j--) {
+> +				if (!(vecs[i].len % (j * width))) {
+
+[Severity: Critical]
+This is a pre-existing issue, but if the transfer direction is DMA_DEV_TO_D=
+EV,
+both soff and doff are 0. Since width evaluates to 0, does the modulo
+operation vecs[i].len % (j * width) cause a division by zero and kernel pan=
+ic?
+
+> +					nbytes =3D j * width;
+
+[Severity: High]
+This is a pre-existing issue, but does setting nbytes =3D j * width
+permanently reduce nbytes for all subsequent vectors in the loop?
+
+If the transfer contains an unaligned vector followed by a very large vecto=
+r,
+the first unaligned vector permanently downgrades nbytes for the rest of the
+loop since it is never reset to its original value. Could this cause the
+iteration count iter to exceed hardware limits FIELD_MAX(EDMA_TCD_ITER_MASK=
+),
+rejecting valid transfers?
+
+> +					break;
+> +				}
+> +			}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260909-fsl-edma-d=
+yn-sg-v9-0-60bb2e678e8f@bootlin.com?part=3D1
