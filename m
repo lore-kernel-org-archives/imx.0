@@ -1,64 +1,70 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013064.outbound.protection.outlook.com [40.107.162.64])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012026.outbound.protection.outlook.com [52.101.66.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A58638399E;
-	Wed,  9 Sep 2026 06:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8534345EDD
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 06:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788935171; cv=fail; b=QGw71wZWT7aYD2lsUV5IMkqPVqpVWit51aRLk1S9yT+9OAbPPqOBrA4RVzKNXJvrO1pahtSmRt0OvPYbhxCBrZznS1Xl1iAov80R1UGe+Z1yAPf+/MCEEhq5CvAoDe43mzcYFBjCXk4JTiIVuHv1YXDejlyVF+B3hs57ARIsTwQ=
+	t=1788936010; cv=fail; b=j1lyQA1VkehAPH74szDMrGQd04Jz+3PVTfgNx1PL6UbZpV4FzROObZFvo6qJ8EDqfwwuVzIR7pZZWkl/db6WQTZrrDZYC0UXvAb3RXO/VbRezg2A3rlL1T/bP1+JIo6TJUSxPcexM9IZhGqCelGcT1KktJ0/9suaDY7kgU5qYbs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788935171; c=relaxed/simple;
-	bh=ouaTq63aRnRI85nC+gqSNns27b5jkt5TsZ6k4p7BcfM=;
+	s=arc-20240116; t=1788936010; c=relaxed/simple;
+	bh=acUwX/1AwX+95c2MN/SHIutK5pyVlchH1ip9Z35cylY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qWa8kOgGRxVYUZa+ArfRiSDpG13N0k8w46wcjEB6KRPYCEHeabzTA2GQ2K6plIKtyDmC5wBE+NCzATs1x/RgM+8VqZjeWvD2Q2BgXELqOi89LjzgZwrUPzmYb+8zbee2plCX3tOnB7xgZvcB5uzVpPdcVs3i9hFoLsj/TNRARw0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=U5/05L55; arc=fail smtp.client-ip=40.107.162.64
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bExqLB5BOfBQXxzy+TffAKE2z4kFLDFK0aIsIwHh7T2SR0+h/m8/d4IaB2EzQ4t/X+8AkyPMNXt1wam4fXM88lmTwfAEBYXCycPKq4MFyDNP7fRCKGHwx5oRVq8ox/qL0Q1AJp54u++IhePcZ/rjWQGhoOvK1542PPZ4BtEwGzk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=vSrp2oXH; arc=fail smtp.client-ip=52.101.66.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="U5/05L55"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="vSrp2oXH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iyYY8tFHvUOtr9kFQDZAajoHaanbRY/B7hx9TVJAtfoeAJdwCk9EVBk4JYqrddukYbtZclSF/j+kR4Y1KGyW0FpUJ+o9U2/mQ3BQ1z7DB70DtDQbgGMrIeRcGphosKkgR160iVtGJrZ/MH1YsdsLd1xtlgenfuRwAA5f3wDn9hyoAGKmn+hh+u/Cr4aClAE21XOJHDF/PDyr2iTVwzJHIX2DBcYRNiP8AXqm6NaDssgLWQumnw4ZueJEXIodMIJfGbkU+3WL/vr04OsWNvxjZvwVQEi4zwh0NxLLrZGwhHvpFXCGCG9PAHKCXXkVHcCdt7cJkztnTvSmKc/RGaL2Lg==
+ b=Bdbz5gCG+1x1KoF7nQT3cinuJsBezRfAZ4YZO2/z6mUctaXNbngX/zVQrpBwJF66QGfCAX03GgwCL0g1GqoMVTYoq7IYGifIUZIJ2NemxMK+eu3DSUt9c3kGLKL/cL7AH0lP3veiSLk8fqPGrhyTip9Y1MEoHR7sGqVULhUdPwZqMQjG1Oj3wngh83J0q1yuwnMStvWZcZy76WbWBC5Nj79yzkC+4ZEiQ191oWIOiV8we2SjkIvuEI3ZR6xf0vRhfla7pstYPZYi9iD3i6q5Ph47V+C/0Fi0OBemBUmfTIqk32zqteYcOtQtiPyJ/zRnxNKhIgxvHR9tkmfEU97ylg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z4TS6B831X2XvhO/saXiOYzhd2TO/vtyMa8/cPWb+S0=;
- b=yEWwZXCcur6iX2zAkotH7hCqfihNQp+TmPd/e5x/CFVAgs19ynb9egvEbmwn6t75h9MyP/5acowgYfZqJdmbpMRNu14O+j60SwrnQMEHkTA4aBN7FQWuwQ0sb6quSEntwIAaoY6Ng+nmE8oieoTbvaIlKnziocjpWAW2e1fyizBv7DVOvNOEdmgV/0jViW0H76T9SUCn6ZH7lOtjgEwU0G/TO3XSxT/TbaiR1LLllifOFEKVO2bqr4OfV+AF55IiFd9nyEMow2a+0w9jp8iBGvVu1X1IcHu+52uJ684d3CeV5+moLDFf3mJtgu+qBnUl4jAAFnfpnkJ7ajrLOS5Lzw==
+ bh=mpGnf2THzpjkqf3nYuIap+ZpOXwwTlp/Hym6b5DuIYo=;
+ b=wQsTRsq4H2z9BXfHKs1I+9gFWi7hxW0+YU+UB4oZX10rIxyYTkuFVYehQlFyEmnrBMNtnalEcFeSznAvY8B2py9+Ug5CA4y2OwPHrmpU2XEmf1s/VUZ9WZ2XSKUsGEbmnSx8cImxgjtjYHkMozyN1D0dqD/cnTlwSmDYU8QeBLqf8jlxX+SdkcXLKHHi/pNuQ+7aVJUGgwSNvgcPNfSOSYZI/89EwP+N3JketL1klxDqwyt3jA+IAEnbzkwTN0XGujtSYSdjmc7mbbIxXo0DUWN/cYfLbDPXPz/f4ODn5ZnA1mT1/4bzrZs3/8vsr0L1m6egYVim1U+6kKe1VUnfmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z4TS6B831X2XvhO/saXiOYzhd2TO/vtyMa8/cPWb+S0=;
- b=U5/05L55zukK75N1bexBfHIoksSD9BoD+tgwDoTdbVsmTt3yZs1lUlibXMDS4gqBrncNP8HKvb7WxmgWEII9tAmqgEkkGOTRIdpU8O56swcOeJ8KteobpC0b/HxEakS63uXmkdHcS2nahB0DOWfLDUEUBMK57tNcUT9sWP/pBsxJP2MSlvleTd+eGyDLkkYVYeUZd4xXt7iHVEA3iEtFDs/GLlhx1+XuM/B1OS1/wDm7ZtjxdutMIHFOz9ituYKcDCs7um9JrzJv5TzakSu4KYY7K9aTGRPP62bqXNmtidPWPl0I6TQ1nMOcwO92l8mJFRCXADo3yD727MmwU4tCSA==
+ bh=mpGnf2THzpjkqf3nYuIap+ZpOXwwTlp/Hym6b5DuIYo=;
+ b=vSrp2oXHqwzHO8rB+2cww0JsMnQxQFR2rtrxNScq7vcCzxsSch/XtkZPAccKYi/WTMBaeQQKOa1KsTZzGMG5BEvBKhQwrW4H+cyxstGmBY6iQgZf+PvUvjTUirG0DSVuYpMKuCa+6aVF6oy7thWg545FmMWX6MZds+6qrW4xlF3eHBIADvsMshIQNLjgkrQ0aP7i79HuVSl5U09uY+3GHHymu73YEAXx8P9IXaaxxxJqbQz4kl4ssHZjdWWoUux8wHTGEN6rS3DQHhvSgPPTn509nZVtfeqO8O3VZkJi64oc2+vsBVWkQ90FzLhtZCXPoAukSbHB5H3iPJ9q29uZjg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22) by DB8PR04MB7145.eurprd04.prod.outlook.com
- (2603:10a6:10:fc::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
- 06:26:07 +0000
+ (2603:10a6:102:51c::22) by VI1PR04MB6831.eurprd04.prod.outlook.com
+ (2603:10a6:803:135::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 9 Sep
+ 2026 06:40:03 +0000
 Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
  ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
  ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 06:26:07 +0000
-Date: Wed, 9 Sep 2026 14:30:18 +0800
+ 06:40:02 +0000
+Date: Wed, 9 Sep 2026 14:44:15 +0800
 From: Bough Chen <haibo.chen@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev, mehmet.fide@gmail.com
-Cc: Mehmet Fide <mehmet.fide@gmail.com>, imx@lists.linux.dev,
-	Frank.Li@kernel.org, brgl@kernel.org, linusw@kernel.org
-Subject: Re: [PATCH v5 2/3] gpiolib: add get_config() and
- gpiochip_generic_get_config()
-Message-ID: <20260909063018.sajfn5vjk4y3oyi2@shlinux89>
+To: Mehmet Fide <mehmet.fide@gmail.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>
+Subject: Re: [PATCH v5 3/3] gpio: mmio: track the direction of chips without
+ direction registers
+Message-ID: <20260909064415.pel5dilh7nrkxz6u@shlinux89>
 References: <20260903075940.2089367-1-mehmet.fide@gmail.com>
- <20260903075940.2089367-3-mehmet.fide@gmail.com>
- <20260903081432.278721F00A3A@smtp.kernel.org>
-Content-Type: text/plain; charset=utf-8
+ <20260903075940.2089367-4-mehmet.fide@gmail.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260903081432.278721F00A3A@smtp.kernel.org>
-X-ClientProxiedBy: SGAP274CA0010.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::22)
- To PA6PR04MB11909.eurprd04.prod.outlook.com (2603:10a6:102:51c::22)
+In-Reply-To: <20260903075940.2089367-4-mehmet.fide@gmail.com>
+X-ClientProxiedBy: SG2PR02CA0123.apcprd02.prod.outlook.com
+ (2603:1096:4:188::22) To PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,165 +72,206 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|DB8PR04MB7145:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee9d14d7-df8a-43c6-ed9f-08df0e3b3b1a
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|VI1PR04MB6831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13fe79b5-78e8-4c40-27b1-08df0e3d2d56
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|19092799006|4143699003|11063799006|10067099003|56012099006|22082099003|18002099003|6133799003|3023799007;
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|19092799006|366016|3023799007|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	d85ztXW0rYzAhzkdy59miyNlxPn0eA2vprB35ySYzb9tc+WRsuH/64xEeDfxscce38AwsTTsaIw5CocJnZd1cDVzYc3hhs9F61jPSAxKQPD8Bc4NjzcRmGt+X8c51PBpds5ypzTnUcXWheLPISTkp6kCFG4NRzEn5C2c0s/dNw7fEPSkD7Wc4JGrU/7XgPP/oLoGVrFxScfXpWOfvAhvlyjZ+ps4mSoTtIZfrEsLHlVXS06MkaenEaSWcaE2gP27e29Td8m45vD1JXLULmAkPjzEMPQpRTo1N7PGM+Sdc5gKFYdmpF6KS7rC5LjTULPzBkm6rWfgbdvhot23Xq3of9tkIN54ip403ZAEg2tVum1pN3QwL4hEo+3EDlhAYYmmNdJt0RYMBhDgfq6UThYVrUgK2ycnjQxgNn5MDFcHpqfMRSYaS8cr9T26A4c7DzDPK2eVxEbwtt9kL19V9ZsIgj1PQnd4PjrkPtTV3wtXH2opKNSyc+1B15RkoK2EVbNSQu5pKSlnNJiiHpjmmCQfZjIK1eGbam2s/GQutaroDruL0Mca5882++ytGPEZ1b8V6pDAtLlJgHg4Np2zUlkZqwjEE/a18zqbhgVfzpTomFQ=
+	yAFXmj1QQoogqfLKKldTXgr5zZLMZLt1KQ0f4SP5P305KuMYhHSsQvPzT+aALVcQ1eZZJCKUBu3kuv2xRGv2Z7ry1ceqVcAiWRMHjpKJf2VtVdZzyvkV3FoDCcJ87WLffK2oQjJeFQyXVhLhiZ2ptyTb45dDIJfLqbO1mpMkBtqBnyryF0ilpo8dbnGVkD/iQntmM5eh0/i412YY7e4C75/jsOCMmYOvM5scf4o9IuHwF5Z2+7NU9Jb/o/nwHo+tNanLtzxtuD6sKarNw1KUiz3/cXneDzZaBq1WYIam29fINNabxxuR/EzRu7xb9X3W5U70lE/6czlFoA0YXuXQSp6WPCy0jjGBJ9am8pd1pr+LbV1qytGZjae7aoDzydZ+gw6+CVo3SN2cglhSrrgMndq8jra9RNOydCdXMkHfJVTwK/oNkXG4VHJMrjoAV385DINNMe4MrcLCgE5RMXvRm5T7xXS9jazHBwU/Q8MGA+BBeHNLwzHikn/ITm+Zg28Ey3UKoqW3dEEX/O0NFlPc2RApooqpilw03+ohtD6EFxYfrzEWkxuzq31mpRZlTLAM0VKIAfQBLId4zlQY1Y9kVLsJrjNEGd5Vu7M4/bwjWlHH23f4rT//3Ba+esg/2Jj9JAKDcuKfxd315IAJlK0xacrr284QG+jAbrsn/Eod63U=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(19092799006)(4143699003)(11063799006)(10067099003)(56012099006)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(19092799006)(366016)(3023799007)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wk1jMUxQT3hOaTVCanlZY1hWWWthZDNjSFdMbHYrSXNlNU80dyt1aHFpaTk1?=
- =?utf-8?B?NTZmeXIyK0JRV1g3b0VUWmYyMTlYRDV5TFBMTFI1QjdYWUNHOEMvVHhsVmhl?=
- =?utf-8?B?dDR4YWNZN0M0YzFhaG5YU1JSZGdrT29iQURKbVRvMW1UbVJZUW42c09TdjU5?=
- =?utf-8?B?a245dGxoWWFzQWFOak5NcjZreUJtQ1pIUCswQjdIUkEraGR5NjRGTUJhZXJs?=
- =?utf-8?B?bjhZYXV4eTlsNEkwYWt4RW9nZlR0SHJXdzc3M3BQV3dXdmpiRjZTdEJsQjRB?=
- =?utf-8?B?RFZTTzFneklMemo4RXNSc2k3QXhtbXQwd25zOXdJMEIwcW9pUHJMc2pjYjB6?=
- =?utf-8?B?U2F0MklQSkFDVGY5OVo0OEpjYVRZdEdQaG01MkpkMnE0ancrOG0xQlNWNkQ1?=
- =?utf-8?B?dERYNjN4VEpPSHZsVmxwc0pLOHlPak1FekM1ZWo0Z0hHWC9rRjdCdGRYZkoz?=
- =?utf-8?B?a1FNcXR5MkJuNUg4eGd6ZnM1QzNTa3lsT2NMbVhzYnlBUmJsb1h3TTBXWDNX?=
- =?utf-8?B?cVNqSDNLSVhJWWhHS0RJWEwxLzc1blZIazlnckdMOExzZ2FTaGpja2VXWStN?=
- =?utf-8?B?UzZncFFXbjh0VVNVQTJEM0xJYjlmSWVlZ09SM1FHNmxwbGpMZGNGK05HVlR5?=
- =?utf-8?B?YXJWVE91aHNtL3lYU3JNYStBRC9OYi9CZTdBVkYyZWNlenZwbU16a1ljV0xl?=
- =?utf-8?B?VmlKaTFVYy83b3FGblNKMXlBUnA1SlVWOHIzenFUTGF0VFI3VmQ5TGwyUC9u?=
- =?utf-8?B?VG1RMGJZakdlNE5NdnEzUERIVjQyU0RkekRla3AvYjEwQnBncGhkMCtCTTFN?=
- =?utf-8?B?eVMyZTR6MlpVNjY3RytaaDJWamRXYkw2VCt1b1lveTVvZ0IzR1dPYzBOdDRz?=
- =?utf-8?B?dmFIY0wvWkQ1b0s2V21CZWJncm1DYlZGZHkwdHNpU0h0S3RHbUdsb3plUHVy?=
- =?utf-8?B?NHMyN25sK1NuWU11dmVvZ2YreEhRL3dPeTA1SzVtK1Jobm8ramN1UmpjZjlY?=
- =?utf-8?B?MUNlSGNlVDQ3ekxOVi84TlJINHd6WXFra2wvZWhHK25nbFJuL2R0VUtVZkdP?=
- =?utf-8?B?RlZzZ21pb3U2Ui81b21TTnZ2TjdvZThGVWhwaExwVmx0NllqZEJWamFIZzRh?=
- =?utf-8?B?aVovSTVmOHZQdkVDOXhPeG1jNHdKNy81aHhHMUZQOVh5SU5wRFN5QjU4NnA2?=
- =?utf-8?B?MUdOaTZqN0lzaERTYjF0MEdqMG5UVjYwZHQ0ZUdZdGN3WXo3VnBuSndsVnBw?=
- =?utf-8?B?Q0plaVFzeTRWZnEwVWtsL1J2ajR3MUptMlJ5eVN0aXVWTWQwcjJqOHE2TUxj?=
- =?utf-8?B?RFVSOHFLVldXQXVtN0tzRHpHcWI1Y3JCZHlYZS9XaEJEYWxqUHM5c295WjVp?=
- =?utf-8?B?UlkrUzgvZDBrNEFJOG1Ka3h0OG1iSXJpOU14UzgzUUVTcmVpcVNFM3dSSHJY?=
- =?utf-8?B?Zlk2NXZvaE9ZZityb1NlWDZnK0UyZjY3U0F0SVFSY2d6Yi9FRnI2a1h1TGp5?=
- =?utf-8?B?YUo5cEVEWVlxSmRFRVdJcXcwRXZ3VnR5enNaS3RmcWRmZlFNUTZBS1RrUFpF?=
- =?utf-8?B?TS9RRWlNWC9DblFhYlNkbkpmRGdwWTFvdVptdFJnSXpiQlZ1N3ViVC9ia1ZN?=
- =?utf-8?B?QWQ4QWlTZTJSb09kU3ZJWjRvY0ZjcWsxU0pERy9rUjZVNHlPTVdsNjhoTysr?=
- =?utf-8?B?NXJuNVoxQ211U25lU2NGdFlZeG81aUxad1dyNmRyRFRYdmxiL2EyMFdhTVhh?=
- =?utf-8?B?SGtXNHg2OXdjbHc5SHdlNmg1NS9ITnozUmRJczc3TFZjc0pibGNzbjlMOUxl?=
- =?utf-8?B?MDFWNGw2TmFBZ0hsS0hORzFMU09GdEU0MHJTcXhIVDZQWlFGNWlXRnFER1Qr?=
- =?utf-8?B?cmdVenJIZmtPRzJaWFNxaGFFQnBPUUZ3S2p6ZWxxQm44QkI0VFg5Y2Rsc2NM?=
- =?utf-8?B?VlczTjlQdURiQ01aTi96c1JUU2lxZHpicnAwaEpkK3BrdE9IKzNIKzhkMkJt?=
- =?utf-8?B?cWtaTnJuUzhXalp6Sm5IaXNvaUFRUDFHOHlUN0ZiMDB4dGRBYkhXWGRCU0FF?=
- =?utf-8?B?MExSTTEwNkVDMklvY3huSDBKZythbWRSaU5IQkhTVWsvdkdpZXBUcHdxeFhs?=
- =?utf-8?B?eU9YZmc3Q25ZeE4wdW12UmNJcGE4UDluYXlNZm9SS1pCUFZOWmkrWUh5Zklk?=
- =?utf-8?B?VWpSdjFtK3k2Tm85K3Y1a0I2RnQ4YTNUbmVCczFkREtNQWxseE1LOWE2WU1k?=
- =?utf-8?B?c0o0UzEvZ1N4WDdBV1h2VGpuVDNSSFdUYldHWTJ6UEhOa3RnNDE2NlkyNWJ4?=
- =?utf-8?B?SURGK0lPZ2NmcURvUDI0U3pPN1JMT2FpQmNXRnBPdzY3bGRHRVRsREVYaFJ4?=
- =?utf-8?Q?UccyBsefKV6YwrtJGOTps7L99VfMHNf8y5NSC?=
+	=?us-ascii?Q?JaMbAWJajvtTWi6vZHMSjmSID9sxAB5Dv2IjVQkg85BAta6x/kP99x38Ftbg?=
+ =?us-ascii?Q?o3JifF1xBSgUnKBwREGDkejUSum8XSfmHCMWj48AGzrkwN2JaNY+w/P81qKz?=
+ =?us-ascii?Q?FJWZSUNL6f3Pbmw6QFWQQ0o9os5DmTqVRdpHiWhsTULWxWUmcjTAzCunc0jI?=
+ =?us-ascii?Q?Mxp4yELSSmuiP7CjWFkS9yjafkgCivSQ5E3g3HcpptxbFh14G4F2WYOvn5VG?=
+ =?us-ascii?Q?m0ptuTV5rpE9QlQGBrFKIfWtwehd6ppx0MC9k94j24PP2gcBsDK8Kz5bvxSV?=
+ =?us-ascii?Q?liRCmqT5+13W+Ssh6gH3xJa7T09BNG01nVqfkCvDuMg0jHbbHbABIqMl0Dqv?=
+ =?us-ascii?Q?A4cckGIY8r3QTN3l4SLo8pQ7FiEXOM4GiL61lmTkFNpII7rNoznOjimNE55q?=
+ =?us-ascii?Q?lsNf48xM+vQ8nQhRXrP41H6BLl+e5zAwc+2RXJVpYvmm7xUwpLpPCZ3waKDR?=
+ =?us-ascii?Q?LG83x/msKtHPyCCODCyf9RT5JXnO/oCXAjdkIqqSVtZLZU9+FE0WkBYiOB79?=
+ =?us-ascii?Q?A0AVbAA7Jvz0LU2RV+WiIFCy2lQN4fWsemfwit31eEJiMyKP3vlfruMePSSh?=
+ =?us-ascii?Q?2YTe+vf9pK/SEyVgKMvuC4NoqTsjDGv3c72ZUFO5cLulI2hYVFnGujSsNRlm?=
+ =?us-ascii?Q?K5on8hplf5uoFXg17u7rh8j0dtc/k1V1O23CAsRaeiAvXa6HFIal2K2iSz4p?=
+ =?us-ascii?Q?evS7l/8n3zlFAHy/iHcjzAPWQ3K2yRn1nvCdg9Emj7bdcVc1AaysnTtMJB9d?=
+ =?us-ascii?Q?0MGZR80IRZ754w98xlHaqsGJU3BIVRmX6yfIfKReFn4Ndp/QPNcctaD+DMvK?=
+ =?us-ascii?Q?kpj8KMXres4noc9P1k8ZMZbLr934ibTRFYy0goSp2gQLH1oeNXqlQ+ZUrFoU?=
+ =?us-ascii?Q?lZeOpT0WSzn03hkurFkGRqMCc7Xp5kF0Mm9OBvF1KHAESp6+oa0hCcrBQIup?=
+ =?us-ascii?Q?IpUJDe3L9dBzT8AIj44KIh8PWZQfULdHj7YDt2ifx4abnWVzriX1jM5jCv3v?=
+ =?us-ascii?Q?ELeIP76lPeYCe4bkZ73eHj6a8ADp6ySVSj9f/s5DDgNn2f980O7F1OsQgJoI?=
+ =?us-ascii?Q?G5w/3CP375Bt3ZlhHOduOvfiopMl7D3v/r458NI/8UHeFcs3jZKHxf/fietq?=
+ =?us-ascii?Q?tSHM8CHxZjfD29OmjBSbMOeVo6QQKk1CEv4mYjemRYwTrSkO0t2zqZpb+w3m?=
+ =?us-ascii?Q?tC96mkbhHhouj1TbqfynSRnnL0q66aaj2oqsyo2Sq02sHKIFhMOwMEzWWHLA?=
+ =?us-ascii?Q?2ei6HBrjJVLFvvJIlZkwflMcR+3BhPZ0ZZlwa9am9gJtKX8bVZEtG5OlIl0q?=
+ =?us-ascii?Q?nwafq+nR8/1VqwtFdEwSTdIm+QPQGzRJ1/IL+deyrHSADdV+00FClVDhCmAU?=
+ =?us-ascii?Q?ZCg6GfP+PMh+sR/CaoBhYr4llFYkPywPzd7gwBueecb1OOYGzZ1fRB2yB+GQ?=
+ =?us-ascii?Q?cBYVJDelDBl2op67zg6/1vztKfRsDlTARyzNpsCZi5w/bIDp6cnRscAeFRBn?=
+ =?us-ascii?Q?XxipSbGRfRPEG6wd6lZIWpoMw7MK6Iyc3ha1UABPpIVu8h6AKrwB41MVamDW?=
+ =?us-ascii?Q?APzC/+qCrvN6eedfn++GzyotsukYxFw/BMjKlOtQId+iAXbCSPCVG9xpFw7f?=
+ =?us-ascii?Q?YJj0bGr1pqtHKQHmnIEvcl62EzTLgGFg1EZmtT5yhhCTWx5rvPGZw8+Ewbhl?=
+ =?us-ascii?Q?GNZBYhbG0T8Xqqu6lxidBvmuwBJtaTDCG/V6R51o0SlbDxRyW1IbOS5wpvzu?=
+ =?us-ascii?Q?KQnr515KQMkbOv3sszXMfcJUNzYpXPKEOV+WbzeE6Ipd7XhyyREJ?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee9d14d7-df8a-43c6-ed9f-08df0e3b3b1a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13fe79b5-78e8-4c40-27b1-08df0e3d2d56
 X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 06:26:06.9523
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 06:40:02.8372
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1+iNN3Hit4BYxLT8RCeu2gQR6NKTaL00JYFU2I8SYPxwVOJ0HdJ4WhvecjPgUJ+ZlN+/1gchP0AIqJ2xD2nThM/UAbL1BkwGImAJFGJwFjeTBzsDRkYXYzgWkHB2GeU5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7145
+X-MS-Exchange-CrossTenant-UserPrincipalName: AbH6rl4jEnLD2pQnJPGt1MwQ42/Qpi+HoOT7v7UI1HrULje/0P79hpEFw45fTOxjrIu1U8pcy/KmbD6Dqn2grnNCIiFP3fBMWyuu/DelsIN1KsJVHcvzUPcu5e8KvUte
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6831
 
-On Thu, Sep 03, 2026 at 08:14:31AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+On Thu, Sep 03, 2026 at 09:59:40AM +0200, Mehmet Fide wrote:
+> From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 > 
-> Pre-existing issues:
-> - [High] The fallback stub for `pinctrl_gpio_get_config()` returns 0 without modifying the output `config` parameter, causing callers to use query enums or uninitialized memory as hardware states.
-> - [High] `gpiochip_generic_config()` returns 0 (success) when `CONFIG_PINCTRL` is disabled, silently ignoring hardware configuration requests and creating an API inconsistency.
-> --
+> A generic chip with GPIO_GENERIC_PINCTRL_BACKEND and no direction
+> registers sets the direction through pinctrl but has no get_direction
+> callback, so every gpiod_get_direction() call trips the WARN in gpiolib
+> and the direction gpiolib reports is whatever it assumed. On a Vybrid
+> Colibri module that is 21 backtraces per boot.
 > 
-> commit 5e30160f0acecf52b9ebfedbbaf09c6e99e8ce08
-> Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
-> Subject: gpiolib: add get_config() and gpiochip_generic_get_config()
+> Keep the direction of such a chip in the existing shadow: the direction
+> setters update sdir under the chip lock, and get_direction() is the
+> shadow-reading path already used for unreadable direction registers.
+> That keeps the callback usable in atomic context, which it has to be:
+> gpiochip_lock_as_irq() calls it for !can_sleep chips from
+> gpiochip_irq_domain_activate(), under the irq descriptor lock.
 > 
-> This commit introduces a new get_config() callback for gpiochip and provides
-> gpiochip_generic_get_config() as the generic pin control backend implementation.
-> This allows a chip to read back a line's configuration, which is useful for
-> determining line direction when the pin controller owns it.
-> 
-> > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> > index ef8ccaf17c9ce..fb3ef6754a9ee 100644
-> > --- a/drivers/gpio/gpiolib.c
-> > +++ b/drivers/gpio/gpiolib.c
-> > @@ -2440,6 +2440,29 @@ int gpiochip_generic_config(struct gpio_chip *gc, unsigned int offset,
-> >  }
-> >  EXPORT_SYMBOL_GPL(gpiochip_generic_config);
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but right above this new function,
-> gpiochip_generic_config() delegates to pinctrl_gpio_set_config(). When
-> CONFIG_PINCTRL is disabled, it skips the pin_ranges check and calls the stub,
-> which silently returns 0:
-> 
-> include/linux/pinctrl/consumer.h:pinctrl_gpio_set_config() {
->     return 0;
-> }
-> 
-> Does this cause hardware configuration requests to be silently ignored while
-> reporting success to the caller? The new getter correctly avoids this by
-> returning -ENOTSUPP when the backend is disabled. Should the pre-existing
-> setter stub also be updated to return -ENOTSUPP to ensure consistent API
-> behavior?
+> The pad's actual state is read once, in process context, when a line is
+> requested: gpiolib calls request() right before get_direction() for a
+> new line, so the shadow is seeded there from PIN_CONFIG_OUTPUT_ENABLE
+> through the chip's get_config(), which is gpiochip_generic_get_config()
+> for the pinctrl backend, and the line reports what the pin controller
+> says. Lines pinctrl cannot answer for keep the input default, which is
+> what gpiolib assumed before.
 
-I think Sashiko is correct, better to aligned here, but in a separate patch.
+dir_unreadable is now set from a second source (PINCTRL_BACKEND with no
+direction register, in addition to GPIO_GENERIC_UNREADABLE_REG_DIR);
+worth a line in the commit message.
 
-> 
-> >  
-> > +/**
-> > + * gpiochip_generic_get_config() - read back the configuration of a pin
-> > + * @gc: the gpiochip owning the GPIO
-> > + * @offset: the offset of the GPIO to query
-> > + * @config: the packed parameter to query, replaced by its bare argument
-> > + *
-> > + * Returns:
-> > + * 0 on success, or negative errno on failure.
-> > + */
-> > +int gpiochip_generic_get_config(struct gpio_chip *gc, unsigned int offset,
-> > +				unsigned long *config)
-> > +{
-> > +#ifdef CONFIG_PINCTRL
-> > +	if (list_empty(&gc->gpiodev->pin_ranges))
-> > +		return -ENOTSUPP;
-> > +
-> > +	return pinctrl_gpio_get_config(gc, offset, config);
-> > +#else
-> > +	return -ENOTSUPP;
-> > +#endif
-> 
-> [Severity: High]
-> This is a pre-existing issue, but I notice this helper explicitly works
-> around the behavior of the fallback stub for pinctrl_gpio_get_config(). 
-> 
-> Since the stub returns 0 without modifying the output config parameter:
-> 
-> include/linux/pinctrl/consumer.h:pinctrl_gpio_get_config() {
->     return 0;
-> }
-> 
-> direct callers (such as pin_control_gpio_get_direction() in
-> drivers/gpio/gpio-by-pinctrl.c) are left reading uninitialized memory or
-> query enum values as hardware states when CONFIG_PINCTRL is disabled. 
-> 
-> Should the root stub in include/linux/pinctrl/consumer.h be fixed to return
-> -ENOTSUPP directly to prevent other callers from breaking?
-
-This is also correct, and more critical than the first one. If changing the
-CONFIG_PINCTRL=n stub in include/linux/pinctrl/consumer.h to return -ENOTSUPP,
-then I think you can drop the explicit "#else return -ENOTSUPP" in 
-gpiochip_generic_get_config()
-
-It depends on you to send a new version or a separate patch for this.
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
 
 Regards
 Haibo Chen
+
 > 
-> > +}
-> > +EXPORT_SYMBOL_GPL(gpiochip_generic_get_config);
+> Suggested-by: Bartosz Golaszewski <brgl@kernel.org>
+> Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
+> ---
+>  drivers/gpio/gpio-mmio.c | 60 +++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 56 insertions(+), 4 deletions(-)
 > 
+> diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
+> index 7e4b3e8d609f..0709ffaab4de 100644
+> --- a/drivers/gpio/gpio-mmio.c
+> +++ b/drivers/gpio/gpio-mmio.c
+> @@ -49,6 +49,7 @@ o        `                     ~~~~\___/~~~~    ` controller in FPGA is ,.`
+>  #include <linux/log2.h>
+>  #include <linux/module.h>
+>  #include <linux/pinctrl/consumer.h>
+> +#include <linux/pinctrl/pinconf-generic.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/property.h>
+>  #include <linux/spinlock.h>
+> @@ -372,7 +373,17 @@ static int gpio_mmio_dir_in_err(struct gpio_chip *gc, unsigned int gpio)
+>  
+>  static int gpio_mmio_simple_dir_in(struct gpio_chip *gc, unsigned int gpio)
+>  {
+> -	return gpio_mmio_dir_return(gc, gpio, false);
+> +	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
+> +	int ret;
+> +
+> +	ret = gpio_mmio_dir_return(gc, gpio, false);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(raw_spinlock_irqsave)(&chip->lock);
+> +	chip->sdir &= ~gpio_mmio_line2mask(gc, gpio);
+> +
+> +	return 0;
+>  }
+>  
+>  static int gpio_mmio_dir_out_err(struct gpio_chip *gc, unsigned int gpio,
+> @@ -384,9 +395,19 @@ static int gpio_mmio_dir_out_err(struct gpio_chip *gc, unsigned int gpio,
+>  static int gpio_mmio_simple_dir_out(struct gpio_chip *gc, unsigned int gpio,
+>  				    int val)
+>  {
+> +	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
+> +	int ret;
+> +
+>  	gc->set(gc, gpio, val);
+>  
+> -	return gpio_mmio_dir_return(gc, gpio, true);
+> +	ret = gpio_mmio_dir_return(gc, gpio, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(raw_spinlock_irqsave)(&chip->lock);
+> +	chip->sdir |= gpio_mmio_line2mask(gc, gpio);
+> +
+> +	return 0;
+>  }
+>  
+>  static int gpio_mmio_dir_in(struct gpio_chip *gc, unsigned int gpio)
+> @@ -601,20 +622,51 @@ static int gpio_mmio_setup_direction(struct gpio_generic_chip *chip,
+>  			gc->direction_input = gpio_mmio_dir_in_err;
+>  		else
+>  			gc->direction_input = gpio_mmio_simple_dir_in;
+> +
+> +		if (cfg->flags & GPIO_GENERIC_PINCTRL_BACKEND) {
+> +			chip->dir_unreadable = true;
+> +			gc->get_direction = gpio_mmio_get_dir;
+> +			gc->get_config = gpiochip_generic_get_config;
+> +		}
+>  	}
+>  
+>  	return 0;
+>  }
+>  
+> +static void gpio_mmio_seed_dir_from_pinctrl(struct gpio_chip *gc,
+> +					    unsigned int gpio)
+> +{
+> +	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
+> +	unsigned long config;
+> +
+> +	if (!gc->get_config || chip->reg_dir_out || chip->reg_dir_in)
+> +		return;
+> +
+> +	config = pinconf_to_config_packed(PIN_CONFIG_OUTPUT_ENABLE, 0);
+> +	if (gc->get_config(gc, gpio, &config))
+> +		return;
+> +
+> +	guard(raw_spinlock_irqsave)(&chip->lock);
+> +	if (config)
+> +		chip->sdir |= gpio_mmio_line2mask(gc, gpio);
+> +	else
+> +		chip->sdir &= ~gpio_mmio_line2mask(gc, gpio);
+> +}
+> +
+>  static int gpio_mmio_request(struct gpio_chip *gc, unsigned int gpio_pin)
+>  {
+>  	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
+> +	int ret;
+>  
+>  	if (gpio_pin >= gc->ngpio)
+>  		return -EINVAL;
+>  
+> -	if (chip->pinctrl)
+> -		return gpiochip_generic_request(gc, gpio_pin);
+> +	if (chip->pinctrl) {
+> +		ret = gpiochip_generic_request(gc, gpio_pin);
+> +		if (ret)
+> +			return ret;
+> +		gpio_mmio_seed_dir_from_pinctrl(gc, gpio_pin);
+> +	}
+>  
+>  	return 0;
+>  }
 > -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260903075940.2089367-1-mehmet.fide@gmail.com?part=2
+> 2.54.0
+> 
