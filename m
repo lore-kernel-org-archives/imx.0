@@ -1,131 +1,169 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E647A1DF98F;
-	Wed,  9 Sep 2026 15:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67016352016
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 15:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788966606; cv=none; b=KPBPvwFvErOMOk/j/uogNixVwNtOb5UYdeZsAYtHk9W1cItk/YU4irhpHvVdcUhvmlBjX66hNpzlOs9sDQt+BQ1ZrGvT2AEMwd7ic18i+8dHjBWJ1PMttDJTn3CBbYKfVuqTnvhRL65VJBABctexuxmNJA4YnbHCcVP4+1hMOIQ=
+	t=1788967200; cv=none; b=I+doZpwaeyf/1blF4cqh9mXgeZP+/KN8VFJ8NzFLIoMf7bnB/D5D+FIYcXWgf4PPiOsCC0H4G7x0nkte1MsO9YShj82HbVEMbJDKjjLVtXg4bi0kJ0ddBFYSoWh1x++yK7T6q1tADjhZqJ5rmJR4cI3Hus0Z52wESBexeKzzYlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788966606; c=relaxed/simple;
-	bh=B3JGyzLx8cCd/i3MCr5FaXYdGFjgIHugHdhYe3l65zI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ehKbIKI/QLrmc5d1gic1JCMDuVQ9yRC78y6deahZ/+icJS4PdFp1dULn/LLO7W6vzEdjEocf7l8iL1trq+BfjDli5nLxz9Ep/r8XS0zP6NcQh9adp7YuMbMzmAFsrmTAtvck4qz5Xr4lMG/GQ8On73s7IYgsrvkwoMmKSt+BV1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netwinder.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=fkQl6LBG; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netwinder.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1788967200; c=relaxed/simple;
+	bh=xUVTXe6fcSqGxYpF5BIGmxHrPBDcGknOFxELk2ezG6s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Iaq+Uwh0r7CjPp2ssS3tPN3jUMWqyp+57svgnWn1vstDSjq0UHmcJLW5MzcDF550Y/ZxvGqDWsdAsGpSKFn1wMl86RwAUVAGXTzbnyk/ZB9/rfZvhca4Cl3lL0lvR5Hj6dxxwv6/hIsUt0ShMmdIktp7uUbE2EyGZFf5gPYwOV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vDBAKXbu; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="fkQl6LBG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=1CM/Ie7i+HqydojhG/4KklP2dQRzr4P2XxxuR9fLATg=; b=fkQl6LBG6LJrHcZTamZCq1ChtO
-	JMh4Fm5pOxL5mwqSv5oXi20cu528tNwpvEqr4R49C/edMeJXImXCtAjtRerBWydxBCWyo/C2z5U/b
-	gP2XR2Oo/inXe3bxpoD0+pjl0Fza+w0/xOCDn1V+rpiE47urZlHQtwx/7mxePkwwXvDuoxTaj7xER
-	6LE/nepCtDYxq5S5wP3dD9k0G5k5KjVSybh0bhlNF7qEJWp/R05L4yvMr4ETJjCv0AhWvc0R4g9Xg
-	8xF+Z6eMddN+PI0NjKVPPurEo0gdxEVIFlMUocUOry3anZCEE/fkgoDtE6uFdx6SPnAmnL0yBBMlE
-	cyo2yEmQ==;
-Received: from [66.129.139.8] (helo=rfs.netwinder.org)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x4Jvb-00000006qdh-48tP;
-	Wed, 09 Sep 2026 15:09:36 +0000
-Date: Wed, 9 Sep 2026 11:09:31 -0400
-From: Ralph Siemsen <ralphs@netwinder.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-omap@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 02/13] ARM: remove footbridge
-Message-ID: <aqF2q32M8iQ6qhAr@rfs.lan>
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-3-arnd@kernel.org>
- <CAD++jLkzrp4hsOERqOt6Zc75p-+KoWj0Tvu6VQk=ma2kgDH=Qw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vDBAKXbu"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B858D4E415B2;
+	Wed,  9 Sep 2026 15:19:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8672A60448;
+	Wed,  9 Sep 2026 15:19:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8FA5B11C7AF57;
+	Wed,  9 Sep 2026 17:19:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788967195; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=UHZeJNkyvW20erAKfgi/DtAyQWbftngLV/c7LNNk5bI=;
+	b=vDBAKXbuqvZsCgbrufpD9Rx6zqiIGkegUpKtT8CdAL8DFe5Bnu2VKFuC2QSDyp53FdRwlW
+	gTXP76SQDCpUza0axHtYPmkP+u+ses7t4yatd7aC79Ygl7z8xQlf6P8mzpFCiYArv0zqXq
+	1hZ0PSG6PnGuGCI4chEUsTbJqjubnWvUI5eBSDL766FH8Y/dcFAZPq/BSnsm8woi7iWCLQ
+	HJBXJ/SKmVYV3jPsyP9uognqtW0d0viRD0esHEJWRGNG8jYbhlCAdANzGf3xPXhD7LlRm/
+	Wmr/IIXGD61V4HFkvGrW4k7vH2q5rJ8MlheycSArZObKl+dtcStqFQVEQ7NOWQ==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Subject: [PATCH v9 0/2] dmaengine: fsl-edma: Scatter/gather improvements
+Date: Wed, 09 Sep 2026 17:19:44 +0200
+Message-Id: <20260909-fsl-edma-dyn-sg-v9-0-60bb2e678e8f@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jLkzrp4hsOERqOt6Zc75p-+KoWj0Tvu6VQk=ma2kgDH=Qw@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <ralphs@netwinder.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-B4-Tracking: v=1; b=H4sIABB5oWoC/23RTW7DIBAF4KtErEvF8E9XvUfVhYFxQpXYlXGtR
+ pHvXkgrxRVePmn4eJq5kYxTwkxeDjcy4ZJyGocS3NOBhFM3HJGmWDLhjGsmuaV9PlOMl47G60D
+ zkTrNjAAUJnaclFefE/bp+y6+vf/m/OU/MMyVqROnlOdxut6/XKDO/emCNfoClFGJDINHHnutX
+ /04zuc0PIfxQqq/8IegmG4FXgStpXAhRgkSW0FsBIBWEEVwtgMLxqjY7QhyK7Q7WmQRbEATnfI
+ Q0LWCegiG8VZQRQBtrAGrPModQW8E2Nmkrh0EeKc9il5AK5iNsHPpxdQOLPa9l6VK4K1gH4Jlo
+ hVsEWLgngkwnOn4X1jX9Qc+vme0kAIAAA==
+X-Change-ID: 20260428-fsl-edma-dyn-sg-960731e37da2
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 08, 2026 at 07:27:48PM +0200, Linus Walleij wrote:
->On Tue, Sep 8, 2026 at 5:28 PM Arnd Bergmann <arnd@kernel.org> wrote:
->
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> Footbridge was deprecated in 7.3 to be removed along with the other
->> StrongARM platforms and most remaining board files.
->>
->> The main machine here is the NetWinder, which was a popular Arm based
->> desktop PC in the late 1990s and contributed to Arm's later success as
->> an embedded Linux platform, but was discontinued over 25 years ago and
->> is no longer all that useful.
->>
->> I previously tried to convert this to devicetree in a sensible way but
->> gave up due to the platform being too different from modern SoC based
->> targets.
->>
->> Cc: Russell King <linux@armlinux.org.uk>
->> Cc: Ralph Siemsen <ralphs@netwinder.org>
->> Cc: Helge Deller <deller@gmx.de>
->> Cc: dri-devel@lists.freedesktop.org
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
->Acked-by: Linus Walleij <linusw@kernel.org>
->
->I have one of those machines and it boot mainline but I
->certainly consider it a paperweight at this point, I can't use
->it for anything useful.
+This series adds support for scatter/gather DMA transfers via dma_vec
+and dynamic descriptor chaining to the Freescale eDMA controller driver.
 
-Likewise, I have a NetWinder machine which has occasionally booted a
-mainline kernel, along with fairly current buildroot initramfs. It has 
-been surprisingly smooth sailing, even the bx/bl compiler troubles seem 
-to have been sorted out these days.
+The first patch implements the .device_prep_peripheral_dma_vec() callback,
+enabling the DMA engine to accept an array of dma_vec structures. This
+callback supports both regular and cyclic transfer modes.
 
-It's a bit sad to see it go, in particular since it all works. But the 
-reality is that nobody seems to be running this hardware anymore, and 
-there is no community of active users anymore.
+The second patch introduces dynamic scatter/gather chaining, which allows
+multiple DMA descriptors to be linked together without stopping the channel.
+This optimization eliminates idle periods when back-to-back transfers are
+submitted, improving throughput and reducing latency. The implementation
+carefully preserves cyclic transfer semantics and respects hardware
+constraints on platforms with split register layouts.
 
-Acked-by: Ralph Siemsen <ralphs@netwinder.org>
+I tested it on the i.MX93. The dynamic scatter/gather chaining should
+work with other eDMA controller with split register layout.
 
-Regards,
--Ralph
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+Changes in v9:
+- Rebased and retested on v7.3-rc1.
+- Drop the check on CSR E_LINK flag as it is never set in the driver.
+- Add FSL_EDMA_DRV_CSR_LINKCH flag for eDMA3 and eDMA4 to indicate which
+  controllers can link SG descriptors.
+- Count and limit the number of linked SG descriptors once per
+  issue_pending() call, instead of O(n^2).
+- Link to v8:
+https://patch.msgid.link/20260803-fsl-edma-dyn-sg-v8-0-dc2b0317206d@bootlin.com
+
+Changes in v8:
+- Enforce that major channel linking in not used when linking a descriptor
+  in fsl_edma_link_sg() by checking all TCD, not just the first one.
+- Don't compare the descriptor link_sg_id with the CSR LINKCH field
+  if major channel linking is enabled, to avoid completing unfinished
+  descriptors in fsl_edma_tx_chan_handler().
+- Handle the completion of the last transaction of a linked SG chain if
+  the previous interrupt was missed by checking for the channel completion.
+- Add comments to clarify the assumptions I made.
+- Link to v7: https://patch.msgid.link/20260728-fsl-edma-dyn-sg-v7-0-10dffb4167c2@bootlin.com
+
+Changes in v7:
+- In fsl_edma_prep_peripheral_dma_vec(), make sure that CITER/BITER
+  values fit in their registers.
+- Add the identifier to all TCD of a linked transaction so that we can
+  always identify it when handling the end-of-transfer interrupt.
+- Handle missed/coalesced end-of-transfer interrupt even when the transfer
+  is completed.
+- Link to v6: https://patch.msgid.link/20260710-fsl-edma-dyn-sg-v6-0-831b96be3f31@bootlin.com
+
+Changes in v6:
+- Link DMA transactions in fsl_edma_issue_pending() when they are issued,
+  not when submitted.
+- Add an identifier to linked transactions to handle missed/coalesced
+  end-of-transfer interrupt.
+- Link to v5: https://patch.msgid.link/20260702-fsl-edma-dyn-sg-v5-0-16787185be49@bootlin.com
+
+Changes in v5:
+- Rebased on v7.2-rc1.
+- Add a call to dma_wmb() to ensure that dlast_sga is updated
+  before csr when linking scatter/gather transactions.
+- Don't update TCD registers if updating csr requires clearing the
+  channel DONE bit to avoid a status mismatch in fsl_edma_tx_chan_handler().
+- Link to v4: https://patch.msgid.link/20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com
+
+Changes in v4:
+- To keep transactions in order, link DMA transaction to the end of
+  submitted list first, only lookup the issued list is the submitted
+  list is empty.
+- Link to v3: https://patch.msgid.link/20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com
+
+Changes in v3:
+- Fix formatting errors reported by Frank Li.
+- Add fsl_edma_tx_submit() to link the DMA transactions
+  when they are submitted, not when they are prepared.
+- Link to v2: https://patch.msgid.link/20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com
+
+Changes in v2:
+- Drop the RFC prefix, as asked by Frank Li
+- No code change
+- Link to v1: https://patch.msgid.link/20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com
+
+To: Frank Li <Frank.Li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Frank Li <Frank.Li@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: dmaengine@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Benoît Monin (2):
+      dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+      dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+
+ drivers/dma/fsl-edma-common.c | 254 +++++++++++++++++++++++++++++++++++++++++-
+ drivers/dma/fsl-edma-common.h |  34 ++++--
+ drivers/dma/fsl-edma-main.c   |   2 +
+ drivers/dma/fsl-edma-trace.h  |   5 +
+ 4 files changed, 277 insertions(+), 18 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260428-fsl-edma-dyn-sg-960731e37da2
+
+Best regards,
+--  
+Benoît Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
