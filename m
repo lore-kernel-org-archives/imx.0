@@ -1,176 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013017.outbound.protection.outlook.com [40.107.162.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0DF492E47
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 02:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788921520; cv=none; b=cjehCidh1pH8UlvOcHIj9CfugSCc8OGGcMyDuJTtWp+1ycz/Z0KEbtbQfFHU4/mEj7TwSupYRwHE1HMJnLFRL6UBd7ezTbEpZ5xyaPPYu1R2EFkl0mXXQ/2P1w6q/iE/GSexmczVcr7AtpZp9xEWhVzIQdg0DZBT92Z41hYnSNo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788921520; c=relaxed/simple;
-	bh=071RXVS8rconLOtPJQQjC5w4XHDZCLdnNCtHkzKI/2k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lygQo3KeRB1plDiCFUtU7xNYLij+gegf4gfGTb2HtGI+02xL94cIv7EZwIsO2N+hZMgAwRSTuWxTSKufiSMpKi0xfKvBIM7ct94jYoG/s4f8+SsF2Fac1u+EdqlNdjlUfR4Dce40jNSmvxho20WS47ELFHokgKZBapSwTb0CucA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eh9HyWug; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DFB32C92A
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 02:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788922327; cv=fail; b=X9CM+3+x0bEPjmYWmauPouJwbnm9WyxFAUgAXxwDoC15UfHQS9Tnpn03EhavoK41+yjPeXqfSc6cKq36hCmvUGoqxCE3AbIr3SlWzPNXpcTOEoBdCtQIzQ1uO1oxY9lmcqcSGA7YTvkD9Dhm3WO6A8AETND2bVG4+otGWCYkBb0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788922327; c=relaxed/simple;
+	bh=O9dKt7R2Id2ENzwWaaTyP+kWcJtlIhfyw5zPxO2m/bA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eX0VthIPtONpCepn/Ezccf17o78AvsT+1wOuRaqlXu/dv75pI1HGUjAdkCYVCdef93OrmpQgeuwpFGxkXej4xyAee3+R2PrhGIucR5GH6kQ/RP4mrEj60qX6/L1IzpygVwUiB6Qb2Hj1qo0MN/XPRKkFVJC8dJha5dP5eZ15Mh0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jzv+ZHlm; arc=fail smtp.client-ip=40.107.162.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eh9HyWug"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1C81F00A3D;
-	Wed,  9 Sep 2026 02:38:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788921519;
-	bh=Q9aYTEBRAoE10+cLQE1GoTZNPokf+weuDNsJn9t0NMs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Eh9HyWugqsj9zvNstpjujH8+SIr3z9e8FOTVSkyBWtlyAQcTSaTrX7uip+OvE6Vi/
-	 Uh5JR8+V0T5HCr+QbyORwcrfNSWkQ2NuDgvf0dPUKFbJhX4B56+iELgLNf2s8wSK7S
-	 6RI3WZ1vbISvxKm1IJ/hsWsP5gqn7MWXJD/qJRBIyJClekTVSFPZk7reBLmc9OVqFr
-	 hm6Vczf+Au3XcpIiwWR9br1It2VfAtVwts02Ez3pBJH9sdAIB5f5/dWKUbIhX7cSm+
-	 fjsOGt9KhDi9+fK0HEGRo9ynZFvxvYr2+4g2BDNdStEzUfUcTPVhQt269GQhgTR7Fz
-	 FrbM9CCwIcc2w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net v2 1/2] net: fec: stop the PTP clock after the
- netdev is unregistered
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shengzhuo Wei" <me@cherr.cc>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260908-fec-ptp-pps-event-uaf-v2-1-2a1d57121ade@cherr.cc>
-References: <20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade@cherr.cc>
- <20260908-fec-ptp-pps-event-uaf-v2-1-2a1d57121ade@cherr.cc>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 09 Sep 2026 02:38:38 +0000
-Message-Id: <20260909023839.4B1C81F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jzv+ZHlm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kKMT4GNO5o69phJedZ2iqZoBHkJOAlj4W4ol+O6fRpn91r+ubZVQ5K9M7lDTjMjd/uTKF0bQpbt+kPPLr1CFDdlRiSdMVXCJDsSdoyRAWkv/3OBBzzea5i6/NJe4F1oJzmfEPIZpYSTv6Q8AGvRfmO8V6/9ct7agU2OMtHZqsuh7eBmgrRKVQL6+wMgOGqlSfzftCGUd3q1o44Op60YZJ79U3ZBlDWH+wHr4pn6sJ19egoeDhK/AdmLkC+y+oKydBl6y/fU/lLbcU+lFq4LXxTswJIkWzbzkT2hs9328zXggf0kCRtN6nfjl1v5BhRMdFqVAOyenQtTN8t5SaSCu7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TE5ihiJfM2QR4WieX7mxOFEEbO7aRRq8TGQzYfLcJg0=;
+ b=ei9fF5ClHtU+uH0FGBjyODh9IcJ6Nd8uchwWKXOHVC2MzwDAhvCT4/c7nkgSvOgRUOaM4+UNCk7SQWXGNuKTR6tCDpTZAitJR4pZ8KtNDGfeyzBM0ioPigMgnfzfP5SoksqJtbxEYQWO5MJdMeyTatfyhFEhJ3zvliZeZvg4L5yG/uK8fl5V0N4TYxj1ToZbZ5yqZRsbs142n6EbBPQnGdPObrD0nsQ8WmASl2pgoeqlan/qecYxXW3apq7iGH0y2leQUIYmKyujgxnOw78i8qaqCcN/u74Eqi3aCzGg2uFTEiNEBMlmOky39CGANH22hlRIr0fcyRpzeEqV9FOsDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TE5ihiJfM2QR4WieX7mxOFEEbO7aRRq8TGQzYfLcJg0=;
+ b=jzv+ZHlmuK6cYtEN6d+Plk/TVqkI6UvadWJebZPA1r8joCg6Q4wNbtkGURuUw+1246NI+rk2yhvWsH7P+clYFwq6h3Sz/m3lvQg+fKjVgv1GHdVEmLzbn7BK47TqpNTk14D/FT9UDqzWDadPBE7VyaufccBGeYcPOMjVlgcC4AcfTgyJK/m2SoHnvA5yF++B8a3c9MW2umaWcbULP3YXOclzlcQtqdtCDv2xIOKPZQUwGu7DKLVAcpi9WNjQdU2zyPUaP1bQU81GOI3tU2sis0nNLZB2/708VKkrcxpdi8iDiMLHa/dr5zIkGYJbtuvAiZIi/2Guea5sqIY4EinGQA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by DU2PR04MB8904.eurprd04.prod.outlook.com (2603:10a6:10:2e3::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
+ 02:52:00 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0382.014; Wed, 9 Sep 2026
+ 02:52:00 +0000
+Date: Wed, 9 Sep 2026 10:49:41 +0800
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+To: ivaylo <ivo.ivanov.ivanov1@gmail.com>
+Cc: vkoul@kernel.org, neil.armstrong@linaro.org, mani@kernel.org, 
+	dmitry.baryshkov@oss.qualcomm.com, linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev
+Subject: Re: [PATCH] phy: phy-snps-eusb2: fix FSEL_48_MHZ_VAL definition
+Message-ID: <ogfpkqixf3xkyvh4bbpvui5ybfaro6g35g6u5kb56k2jsyrsmt@jm67at6cpksf>
+References: <20260908085953.3315953-1-xu.yang_2@oss.nxp.com>
+ <aaf8a5ef-2abe-4269-804e-4d2dd1bc4d3e@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaf8a5ef-2abe-4269-804e-4d2dd1bc4d3e@gmail.com>
+X-ClientProxiedBy: FR3P281CA0199.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a5::16) To PAXPR04MB9422.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b4::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|DU2PR04MB8904:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4948ef4f-809a-4128-2ff1-08df0e1d5223
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|19092799006|10067099003|18002099003|11063799006|4143699003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	7v6tUc2va9UVQ/y4hadNK805LuSB3o53IUp4M1YgwBC60omz29Vh4jCTaTvSnRmjhZA0gBXkGHBEFHCsCGZIdrZnSLE99pjxmvDGY7lZ4qJqgc7iYr/N+wuNt2tpRlsuSJCv7ucX80/y9c2Fin7wM/zNXFlRoT8a/b3m2GJfopCBprPaQM0dlP+uwc6q3jB4lExPY2B/lbiYAU4f6X1fKqKSJ/d6IJvzZnpbd/kdpYwplYDhwLKE9BYheAmBuzL1LbHWXGyOOWz9NR3BybVEiTY3QSMo3P3SDy219O5tOxbvc4ax7SJ7qo0fmaGtjpyFOQD1sfp833F8CvFzW7gxgOYR7sE2HNwjfh03qWvnkzQ/pf0J/DdDdfymLR4mA1hRq+ypcLqHWhYhUphF6rqKCiPLry/hxjc8hKnNacBsJa809pL3EA/KSQ/I7Xyw1x8PXwjaI5fOIP2PpsqG+mJ8m+/f4OsSO0KU4t2yC5GtvCZb0CJEmY3a+/HXbe1f1NUx3nnK3Tzq00NnZGbE2NbXpbumAmnDLYrCxo4ZEI8TYYYDrZSWr5tG2+Aqw1HBSJl6ilZwdmCVpfIY4et4VtzvK2VIHDBdfKmc93cYuF4zzQU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(19092799006)(10067099003)(18002099003)(11063799006)(4143699003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8SW24ZzNTiHESs2noWqfBZt3CaIAvI75ygnDYwI5tTxi5mbX4lXIF5xDz6go?=
+ =?us-ascii?Q?YinTHWBiE8FZhOz3SlMq7zKNd++yZxsTL1kvXrM5UgWOak8hxMaH9xEm8fuE?=
+ =?us-ascii?Q?8rjDCJeVKQ5ZMWfliZ2GPFz1Cqe5nhOhAjMj7QSlbpMemtPI4cJJdxwDFTN1?=
+ =?us-ascii?Q?2IYFUSwTEGMl3MAMCYVPew1hGYapnKcGEKx5fFuOfRCrIWVWUElVXLJJyAif?=
+ =?us-ascii?Q?A1QEwo8b4Li4ELwtWCRPMGK2UPsQySFETD16LLmUE4piC2o0f8UJCL+v2tBj?=
+ =?us-ascii?Q?/uVGtHVHGZRTREy/s8XH1uuiutZGqZYkUPzEpJ9vtX57FbWRXI306AEcHe31?=
+ =?us-ascii?Q?iUX50Bv/bmwUJc+Cd9SPL3tbk1Y2+19Ns8yBkqEY8TOnU1k2hqtFZnE2MwSU?=
+ =?us-ascii?Q?ruzX0S12WM8EFQaQpI5xh4hx8D1ojEzmBKRtwLBpCl7R2eEcvmSBaCGeWjvV?=
+ =?us-ascii?Q?OzPhGiG38cyzCcYO+VZMoO1x3oMsgBfQBRBTEQ5xDhFOBQduStPjEWT6uVFN?=
+ =?us-ascii?Q?RRee55R5Pz17U9v6DrnkK4YoX1AHK2KivuLYspxmTSa7WwV43Vdtgkn48W5P?=
+ =?us-ascii?Q?SU/QFP/qvpw+heCQaEoX7nFK+Lg4d31DoRhxSyzylNQfjB8fAUQM1RQr8ikc?=
+ =?us-ascii?Q?qReGHIuaIIHD6Na47LQRHeg6rRApflJ/FUQePFUyOIxFz3ikSsQEDYhYjmal?=
+ =?us-ascii?Q?Vj1E2At4omsN1UnHVs7AYDe3XTZbnMtKOJpY62xfIpr6q1FZRFkU6uGB7UnO?=
+ =?us-ascii?Q?TgPieu2pn/FHX5sJIhmL3Pp5vfGt0b0SwJHhdgXujN22ksgimsyhH7xqQy5j?=
+ =?us-ascii?Q?Np5uF8Egtn1AZcm5JUgb6Mmlnbw5zaHJdhKxbgJEpIco1gP3xd8Liz7DThoK?=
+ =?us-ascii?Q?2gGNtlvH5fAMi2p3GiDhEmJkGiBhbkX2Fe/NPmKE3P3cMtQ1fEA8OYA9YK3U?=
+ =?us-ascii?Q?RiOB72spnpPheW/jAnHSp3JR2DU545LnT/qRCeygYcJ0ti74fNnV+vBI0OUt?=
+ =?us-ascii?Q?DM0HWPy1HX+FkF3fIoPodA9p+l72KWRbKhKIgxESZPERbt6Ln1fDYF7vMkWK?=
+ =?us-ascii?Q?TxQCItWn8siw4NFcGhSu5hMBEWNbpdDsggI5z7AGC48eIuEzcNxCjszo9tG/?=
+ =?us-ascii?Q?CtDRxuks2AJ1b9IxSvWVGbpC7E4rWMSf6IDmcUPJnQfHT4JCY0Bug1ncuF4e?=
+ =?us-ascii?Q?3Q84NlOwimKzby/shyqtlsvVm/dlS32GZ2nM3HBO+p/vVM3ZiNYB5HauSH/V?=
+ =?us-ascii?Q?wfa5Q4dEntCcjMmDfKdt1uXOMxYcoZU5BeKElfuSf6+buIPh49PCL4umY3cV?=
+ =?us-ascii?Q?RnqehRC7mKdnVULW7MBOdEPuiMI0ZP+HaBvg2BzQFagA4obrZkjoMKAcAJJ8?=
+ =?us-ascii?Q?9MGl/Z2Iahyd7Vk1AY6vO8Z71eVe7JEJe7rUjk/NJwdaOoDWIbu91+jOiSVN?=
+ =?us-ascii?Q?d3wCWNGOXBkXgNpRymTCrMMKaxXDb3aOoALykMvUpohCV/ONcIPSVV7XEQ5f?=
+ =?us-ascii?Q?2l8dKmsdef8qh/54N43G0PisejJGziVGHbkIndXvx/TaduRYwdHToTvMcX8L?=
+ =?us-ascii?Q?xZil5kX88vPwKdqXWAhDj+Ph+pJruyOTOwA060/u0kk5grtC2SX1T4q7oa9O?=
+ =?us-ascii?Q?MleWtEzHj+i1dcKcyvPMb/O/vcS3YZYWTyV0LIZ5Jc7DCi/wA+6kFOvMvjhE?=
+ =?us-ascii?Q?opbhl0O/HaUPyJgBV2IgJPvDTb9nrvXKfyfxCAEwKceqtOUy5eJj0b9GidOJ?=
+ =?us-ascii?Q?nJQCHk5pJ3NVdQzQRj3PH29W4unFX4fVOg3gn+8+pWxk45xO78Em?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4948ef4f-809a-4128-2ff1-08df0e1d5223
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 02:52:00.7524
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FVYxx3vLDR33Bc/uvtSbao8YPAMZG/BHBGvPYuNw1RaksUKCE/wOgjWzkWFjVO6RySHcuWbafMWFoDr+0+r3y0IUQXSOJNlSDYW/JtfUiebCXvVSeXB64rc2NrAquwjT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8904
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+On Tue, Sep 08, 2026 at 04:17:57PM +0400, ivaylo wrote:
+> On 8.09.26 12:59, Xu Yang wrote:
+> > From: Xu Yang <xu.yang_2@nxp.com>
+> > 
+> > According to Synopsys eUSB2 PHY Databook, FSEL_48_MHZ_VAL should be 0x6
+> > for supported 48 MHz reference clock.
+> 
+> I don't see this as a justified change. Samsung's implementation of eUSB2
+> differs from the generic Synopsys interface, as is visible from the
+> differences
+> between QCOM's implementation and Samsung's.
+> 
+> From what I see for exynos2200, the FSEL value is 0x2 for both 24 MHz and
+> 48 MHz. The differentiating part is that the upper PLL divider is 0x0 for 24
+> MHz
+> and 0x1 for 48 MHz. The current programming was taken from the samsung\
 
-New issues:
-- [High] Moving fec_ptp_stop() after unregister_netdev() introduces a race =
-condition that can cause a hard CPU lockup in the PPS interrupt handler.
+For Product Code H483-0, it's 0x2 for 24 MHz and 0x6 for 48 MHz. The PLL divider
+is 0x0 for 24 MHz and 0x1 for 48 MHz too. So it does seem like something mismatch
+in your side. Because the FSEL_*_MHZ_VAL is common definition in the driver, this
+means FSEL_48_MHZ_VAL is not common anymore. But if you have confirmed it's simply
+like that, it's fine. Others need to add their specific definition in the future.
 
-Pre-existing issues:
-- [High] Calling cancel_work_sync(&fep->tx_timeout_work) before unregister_=
-netdev() creates a race condition that allows the TX timeout work to be res=
-cheduled, leading to a Use-After-Free.
-- [High] Active devm-managed IRQ handlers are exposed to Use-After-Free bec=
-ause `ndev` is explicitly freed before the devres device teardown phase com=
-pletes.
-- [High] Hardware accesses in PTP operations are performed without runtime =
-PM protection and without checking the PTP clock state, leading to a potent=
-ial Synchronous External Abort.
---
+> vendor kernel driver, which is a reliable-ish reference for the differences
+> in register
+> interface implementation when we have no other public resource like a
+> manual.
+> 
+> ..now that I look into it though, the 11_8 value should probably be
+> field_prep'd
+> instead of just directly passed as an argument of
+> snps_eusb2_hsphy_write_mask(),
+> because right now it's essentially 0x1 & 0xf00 = 0? I haven't tested this
+> path on
+> my hardware, so it might prove to be a regression in the future?
+> So:
+> snps_eusb2_hsphy_write_mask(phy->base, EXYNOS_USB_PHY_CFG_PLLCFG1,
+> EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK,
+> FIELD_PREP(EXYNOS_PHY_CFG_PLL_FB_DIV_11_8_MASK, config->div_11_8_val));
 
-commit 2868dfdaff74bb5f34e63d5c554ad690f2b576c1
-Author: Shengzhuo Wei <me@cherr.cc>
+Yeah, sashiko had reported it:
+https://sashiko.dev/#/patchset/20260908085953.3315953-1-xu.yang_2@oss.nxp.com?part=1
 
-net: fec: stop the PTP clock after the netdev is unregistered
+Thanks,
+Xu Yang
 
-This commit addresses a race condition where a freed PTP clock could be
-accessed during ethtool operations by moving fec_ptp_stop() after
-unregister_netdev().
-
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
-rnet/freescale/fec_main.c
-> index 794ec427b0ee6..a29c8ddbbf34d 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -5500,9 +5500,9 @@ fec_drv_remove(struct platform_device *pdev)
->  			ERR_PTR(ret));
-> =20
->  	cancel_work_sync(&fep->tx_timeout_work);
-
-[Severity: High]
-This is a pre-existing issue, but does calling cancel_work_sync() before
-unregister_netdev() leave a window for the work to be rescheduled?
-
-While unregister_netdev() is running, the network interface and its transmit
-watchdog timer (dev_watchdog) are still active. If the watchdog timer fires
-during this window, could fec_timeout() re-queue the work via
-schedule_work(&fep->tx_timeout_work)?
-
-Since unregister_netdev() shuts down the interface but does not cancel newly
-scheduled work, the delayed work could run after free_netdev() destroys
-ndev, leading to a Use-After-Free.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the error handling for
-pm_runtime_get_sync() safely protect the hardware accesses?
-
-If pm_runtime_get_sync() fails, the device remains suspended, but execution
-continues into fec_ptp_stop(), which invokes fec_ptp_enable_pps() and
-writes to FEC_TCSR.
-
-Similarly, PTP ioctls or deferred timers might invoke functions like
-fec_ptp_adjfine(), which unconditionally access hardware registers:
-
-fec_ptp.c:fec_ptp_adjfine() {
-    ...
-    tmp =3D readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
-    ...
-}
-
-Could accessing these registers while the device bus clocks are disabled
-cause a Synchronous External Abort (bus fault)?
-
-> +	unregister_netdev(ndev);
-
-[Severity: High]
-Does moving unregister_netdev() before fec_ptp_stop() introduce a race
-condition that can cause a hard CPU lockup in the PPS interrupt handler?
-
-Calling unregister_netdev() brings the device down and invokes
-fec_enet_close(), which disables the PTP clock via
-fec_enet_clk_enable(ndev, false).
-
-During the window before fec_ptp_stop() is called, the hardware PPS
-interrupt is still registered and unmasked. If the PPS interrupt fires
-in this window, the CPU enters fec_pps_interrupt() and tries to clear
-the interrupt flag by writing to FEC_TCSR in a do-while loop:
-
-fec_ptp.c:fec_pps_interrupt() {
-    ...
-    do {
-        writel(val, fep->hwp + FEC_TCSR(channel));
-    } while (readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
-    ...
-}
-
-Since the functional timer clock (clk_ptp) is disabled, the timer IP block
-might not process the clear operation. Will the TF_MASK bit never clear,
-causing the interrupt handler to spin indefinitely?
-
->  	if (fep->bufdesc_ex)
->  		fec_ptp_stop(pdev);
-> -	unregister_netdev(ndev);
->  	fec_enet_mii_remove(fep);
->  	if (fep->reg_phy)
->  		regulator_disable(fep->reg_phy);
-
-[Severity: High]
-This is a pre-existing issue, but does explicitly freeing the netdev later
-in this function expose devm-managed IRQ handlers to a Use-After-Free?
-
-The driver registers network interrupts using devm_request_irq() in
-fec_probe(), passing ndev as the dev_id token. These devm-managed
-resources are only released by devres after fec_drv_remove() returns.
-
-However, fec_drv_remove() manually calls free_netdev(ndev) at the end
-of the function:
-
-fec_main.c:fec_drv_remove() {
-    ...
-    fec_enet_deinit(ndev);
-    free_netdev(ndev);
-}
-
-If a spurious or shared interrupt fires between the free_netdev() execution
-and the devres teardown phase, could the active IRQ handler be invoked with
-a freed ndev pointer?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908-fec-ptp-pp=
-s-event-uaf-v2-0-2a1d57121ade@cherr.cc?part=3D1
+> 
+> For this patch though, unless this change is tested on real hardware and
+> backed up
+> by a technical reference manual for this particular implementation, CC-ing
+> the
+> change to stable is unreasonable.
+> 
+> Best regards,
+> Ivaylo Ivanov
+> 
+> > 
+> > Fixes: c4098f3e6134 ("phy: phy-snps-eusb2: add support for exynos2200")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > ---
+> >   drivers/phy/phy-snps-eusb2.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2.c
+> > index af4fa17ac6cb..3cb18d6ebc1d 100644
+> > --- a/drivers/phy/phy-snps-eusb2.c
+> > +++ b/drivers/phy/phy-snps-eusb2.c
+> > @@ -21,7 +21,7 @@
+> >   #define FSEL_20_MHZ_VAL			(0x1)
+> >   #define FSEL_24_MHZ_VAL			(0x2)
+> >   #define FSEL_26_MHZ_VAL			(0x3)
+> > -#define FSEL_48_MHZ_VAL			(0x2)
+> > +#define FSEL_48_MHZ_VAL			(0x6)
+> >   #define EXYNOS_USB_PHY_CFG_PLLCFG0	(0x8)
+> >   #define PHY_CFG_PLL_FB_DIV_19_8_MASK	GENMASK(19, 8)
+> 
