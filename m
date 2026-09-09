@@ -1,113 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C712155D865;
-	Wed,  9 Sep 2026 16:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79DB584950
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 16:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788971803; cv=none; b=uZBPMifcqjqNPRjVIDlQKsBLK77D79/e7QeTgdf9bciLVwgaxsLGeZdx9lKsDDQU5qQG+QSSJRUDDzny151R5iKHaZ45XLywwtqi9j3PmBdexefWnPTekeR4cPnPUQOnelIG3Nz9p63yFtDLVfnQx5JU6Qw+ug2ee+8xoyIgDMM=
+	t=1788972197; cv=none; b=swYpuDfLskLeFBdgM9B4fusDZy1kkELcT5OEUivTpYsN9P9AzRT72iwDPZox4dvyWXoIBOTQjgEh0s/I0Sp+7OEcinWT6MpedMax/WcVKU+rdTZYeHH7nEMa803kxwEJ/62otuNvzv3vdIs2rO3fTaRDpJTP3+V3Tpq7nSiqnNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788971803; c=relaxed/simple;
-	bh=ivQODqGc8KFRbT+CDhnacTUmIisuYelCOQ7C8DxNKCM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=j2uIUfN4r9fEKL1vK8q0P/sfasC170plCnZGFVgaByDwi+e3aszxCDQzvLZaIi3hviI2MOZtNLhVI6deBcXAzIycyRH6h9O1gxkT53SiB/dy/XM+v6dly3axnvJ9sLHEoYlknSDu/bW6xlImtzgFG1HiOjWMiAJ/pVgxiK0LWD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dx70I1I+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788972197; c=relaxed/simple;
+	bh=Rmv+XFG0Smc2ev5OLs9Elfy1TSAjyDdHLInw0IJrl4M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t00UBUZhsrswl5MewQDtdkiEKCOEn2VN2Z20BMYEdsgucxBRen3G8CQJ9bO1d1LSb+8REH68BriRMfhiYrz068WuTlBz42Y7FBqqyWI6bh23qH2+N9w4bKUNfp13wCa0achTlEpzEp23onHFGvnUpfFN0Tq1Qnu/MK0lT6CjIog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=n4iCgFEM; arc=none smtp.client-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dx70I1I+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26281F00893;
-	Wed,  9 Sep 2026 16:36:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788971801;
-	bh=nDQ3BlVROek4PxaLywwCvD6/LeA/synqwhaOMOah7lE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dx70I1I+8UJyr/VBOxcjZH9n5kihC+kb27i9VnPrDp1ipyea5JH6DRYBTXNJ3aHJY
-	 tK/lTlLld6Mvv7CaO7FT8M6c5n1GYf9rlDfs9yhitsA/IXKiamVj7l1M3n8UHZJ5IL
-	 m7z4Moz1bEehf5qcj1SHdImqffS1Cu1dM14AYN4P9z184AZ+ga7ltA5bZ1z3wI57G4
-	 EeU31nzGMeRyayLgVWtVu4tewA7jtJa5PaPmpdPh8+X2MyFDHES2XPpzl75tdtpAMC
-	 vqtNyPXNE76OqzpHTp0UaEJFZjHyS0j1zW12o+fRCKt/82SUkmevuYH1JhPAXvRx1u
-	 xAViDSWb1GEHA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/4] dmaengine: vchan: add vchan_chan_name() to get
- channel device name
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-trace-kernel@vger.kernel.org, Frank.Li@kernel.org, vkoul@kernel.org, dmaengine@vger.kernel.org
-In-Reply-To: <20260909-dma-chan_dev-rename-v4-1-d8fb6892a70f@nxp.com>
-References: <20260909-dma-chan_dev-rename-v4-0-d8fb6892a70f@nxp.com>
- <20260909-dma-chan_dev-rename-v4-1-d8fb6892a70f@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 09 Sep 2026 16:36:40 +0000
-Message-Id: <20260909163640.E26281F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="n4iCgFEM"
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4hg67P6Kgxzlfvpb;
+	Wed,  9 Sep 2026 16:43:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1788972178; x=1791564179; bh=qD52kSI1bMiOql8tKOqAnnYb
+	ynQfw9FhKyunGxJ4H2w=; b=n4iCgFEMQEmPX1Ij3Om1LK0nnt0tTbDtZwIZaOTn
+	EjzudmIgqoqTb4QbC1dhTT1Ftbf/aItaxHEi+Rd0xWNQYl0kTvTP16N/icIcH4EI
+	Zz2eIQERlJoHHbmCNZZPTYG5punBSLgYBvTClToBIMhDHs/S0D8Xi4CLqxl2o9+Y
+	oIOidxOBUTHH3KeighWCbqqw9j5hBIK5WAhBnL7OGUy38v3NIildnCAHEZZGYJFW
+	S0sjeoY6ZvCrnKj+jGgMARXK8B2qRZXKEUNAAcr1fd0BHCcqlRfbi6nI3RM5kmwx
+	kbbsCtXMqx5SbisPCdGpU9E75nIxfYNUrN9AKtsQwNbxtw==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id N08FdswJcFRd; Wed,  9 Sep 2026 16:42:58 +0000 (UTC)
+Received: from [100.86.178.220] (unknown [104.133.214.192])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4hg6724zrCzlfvpG;
+	Wed,  9 Sep 2026 16:42:54 +0000 (UTC)
+Message-ID: <2da174ef-1d5a-425d-b885-be9482b0be90@acm.org>
+Date: Wed, 9 Sep 2026 09:42:53 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/13] ARM: remove riscpc
+To: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Linus Walleij <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
+ linux-omap@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-4-arnd@kernel.org>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260908152808.3928630-4-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On 9/8/26 8:27 AM, Arnd Bergmann wrote:
+> The Acorn Risc PC is the oldest still support Arm machine in the kernel=
+,
+> originally shipped with an ARMv3 ARM610 support in 1994, it later allow=
+ed
+> faster StrongARM CPUs.
+>=20
+> The main limitation here is the CPU bus that does not allow 16-bit
+> wide data transfers and hence requires the kernel to be built with the
+> -march=3Darmv3 compiler option that was discontinued in gcc-9.
+>=20
+> As gcc-8 is barely supported for compiling the kernel, this one
+> will not see another LTS kernel release, so remove it now.
 
-Pre-existing issues:
-- [High] Use-After-Free of DMA channel name in probe error path due to devm=
-/manual cleanup mismatch
---
+If this patch has to be reposted, here is the feedback of my AI coding
+assistant (based on an LLM and hence may be wrong):
+----------------------------------------------------------------------
+Overview
+--------
+This patch removes the Acorn RiscPC platform (ARCH_RPC), the oldest=20
+32-bit ARM machine supported in mainline Linux (originally ARMv3 ARM610,=20
+later StrongARM SA-110). Because RiscPC hardware requires -march=3Darmv3=20
+(discontinued in GCC 9) due to bus limitations, deprecating and removing=20
+it paves the way to clean out legacy ARMv3 support from the kernel.
 
-commit 6477701933e50dc5df4ddb73cea43b46ef1b83f8
-Author: Frank Li <Frank.Li@nxp.com>
+Removing RiscPC also represents a major architectural milestone for=20
+arch/arm: with SA-1100 (patch 1), Footbridge (patch 2), and RiscPC=20
+(patch 3) removed, COMMON_CLK, SPARSE_IRQ, and USE_OF (Device Tree)=20
+become unconditionally selected for all 32-bit ARM targets, and legacy=20
+headers mach/io.h and mach/memory.h are eliminated.
 
-    dmaengine: vchan: add vchan_chan_name() to get channel device name
-   =20
-    Introduce vchan_chan_name() to obtain the DMA channel device name.
-   =20
-    Use a dedicated helper instead of directly accessing dma_chan::dev
-    so callers remain unaffected by an upcoming rename of the struct member.
+Overall, this is a very welcome cleanup, but there are a few missed=20
+references, orphaned symbols, and stale comments that should be addressed=
+.
 
-[ ... ]
+Issues & Observations
+---------------------
+1. Missed arch/arm/Makefile cleanup
+Patch 03 deletes the entire directory arch/arm/mach-rpc/, but does not=20
+touch arch/arm/Makefile. As a result, two orphaned entries remain:
 
-> diff --git a/drivers/dma/stm32/stm32-dma.c b/drivers/dma/stm32/stm32-dma.c
-> index d3ad78562a140..3e8151e2ad75a 100644
-> --- a/drivers/dma/stm32/stm32-dma.c
-> +++ b/drivers/dma/stm32/stm32-dma.c
-> @@ -1668,7 +1668,7 @@ static int stm32_dma_probe(struct platform_device *=
-pdev)
-> =20
->  		ret =3D devm_request_irq(&pdev->dev, chan->irq,
->  				       stm32_dma_chan_irq, 0,
-> -				       dev_name(chan2dev(chan)), chan);
-> +				       vchan_chan_name(&chan->vchan), chan);
->  		if (ret) {
->  			dev_err(&pdev->dev,
->  				"request_irq failed with err %d channel %d\n",
+makefile
 
-[Severity: High]
-This is a pre-existing issue, but in drivers/dma/stm32/stm32-dma.c at
-stm32_dma_probe(), devm_request_irq() stores the dynamically allocated DMA
-channel name (vchan_chan_name()) as the IRQ name.
 
-If a subsequent initialization step fails, such as a failure in
-of_dma_controller_register(), the code jumps to err_unregister:
+machine-$(CONFIG_ARCH_RPC)		+=3D rpc
+machdirs-$(CONFIG_ARCH_RPC)		+=3D arch/arm/mach-rpc
+Furthermore, machdirs-$(CONFIG_ARCH_RPC) was the very last user of=20
+machdirs- in arch/arm/Makefile (after Footbridge and SA-1100 are removed=20
+in patches 1 & 2):
 
-drivers/dma/stm32/stm32-dma.c:stm32_dma_probe() {
-    ...
-err_unregister:
-	dma_async_device_unregister(dd);
-    ...
-}
+makefile
 
-Because dma_async_device_unregister() is called manually, it frees the DMA
-device and its associated channel name string immediately. However, since t=
-he
-IRQ is managed by devm, its cleanup is deferred until devres runs after pro=
-be
-returns.
 
-Could this create a use-after-free window where the IRQ subsystem retains a
-dangling pointer to the freed string? If an interrupt fires or if a user
-reads /proc/interrupts concurrently during this window, could this lead to =
-an
-oops or memory corruption?
+# legacy platforms provide their own mach/*.h headers globally,
+# these three are mutually exclusive
+machdirs-$(CONFIG_ARCH_FOOTBRIDGE)	+=3D arch/arm/mach-footbridge
+machdirs-$(CONFIG_ARCH_RPC)		+=3D arch/arm/mach-rpc
+machdirs-$(CONFIG_ARCH_SA1100)		+=3D arch/arm/mach-sa1100
+KBUILD_CPPFLAGS +=3D $(patsubst %,-I$(srctree)/%/include,$(machdirs-y))
+Once RiscPC is gone, the entire machdirs- inclusion block can and should=20
+be removed from arch/arm/Makefile.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260909-dma-chan_d=
-ev-rename-v4-0-d8fb6892a70f@nxp.com?part=3D1
+2. Missed ARCH_ACORN reference in lib/fonts/Kconfig
+The patch deletes config ARCH_ACORN from arch/arm/Kconfig and removes=20
+#ifdef CONFIG_ARCH_ACORN from
+lib/fonts/font_acorn_8x8.c
+, but missed
+lib/fonts/Kconfig:74
+:
+
+kconfig
+
+
+config FONT_ACORN_8x8
+	bool "Acorn console 8x8 font" if FONTS
+	depends on FRAMEBUFFER_CONSOLE || DRM_PANIC
+	default y if !SPARC && !FONTS && ARM && ARCH_ACORN
+Because ARCH_ACORN is removed, this default can never trigger and the=20
+reference should be cleaned up.
+
+3. Orphaned ARCH_RPC reference in arch/arm/mm/Kconfig
+In
+arch/arm/mm/Kconfig:281-282
+:
+
+kconfig
+
+
+config CPU_SA110
+	bool
+	select CPU_32v3 if ARCH_RPC
+	select CPU_32v4 if !ARCH_RPC
+Since ARCH_RPC is removed, select CPU_32v3 if ARCH_RPC references a=20
+non-existent symbol. If CPU_SA110 remains temporarily (before the=20
+architectural cleanup in 7.5), this should be simplified to select CPU_32=
+v4.
+
+4. Dead code in arch/arm/kernel/atags_compat.c
+With CONFIG_ARCH_ACORN removed from arch/arm/Kconfig, two blocks in
+arch/arm/kernel/atags_compat.c
+  are now dead code:
+
+Lines 150=E2=80=93157: #ifdef CONFIG_ARCH_ACORN / if (machine_is_riscpc()=
+)=20
+memory bank tagging.
+Lines 186=E2=80=93194: #ifdef CONFIG_ARCH_ACORN ATAG_ACORN translation.
+These blocks should be removed as part of this patch.
+
+5. Stale comments
+arch/arm/include/asm/io.h:207-209
+:
+c
+
+
+/*
+  * Now, pick up the machine-defined IO definitions
+  */
+#if IS_ENABLED(CONFIG_PCMCIA) || defined(CONFIG_PCI)
+CONFIG_NEED_MACH_IO_H and #include <mach/io.h> were removed, leaving=20
+this comment describing generic PCI/PCMCIA I/O limits.
+arch/arm/boot/bootp/Makefile:21
+: # guess an initrd location if possible is left dangling right before=20
+ifdef INITRD_OFFSET after all initrd_offset-$(CONFIG_...) logic has been=20
+stripped out.
+6. Floppy driver & arch/arm/include/asm/floppy.h status
+The patch removes the ARM MFM AND FLOPPY DRIVERS entry from MAINTAINERS:
+
+diff
+
+
+-ARM MFM AND FLOPPY DRIVERS
+-M:	Ian Molton <spyro@f2s.com>
+-S:	Maintained
+-F:	arch/arm/include/asm/floppy.h
+-F:	arch/arm/mach-rpc/floppydma.S
+While
+floppydma.S
+  was deleted,
+arch/arm/include/asm/floppy.h
+  was left in the tree.
+
+On ARM, floppy support requires ARCH_MAY_HAVE_PC_FDC, which was selected=20
+only by Footbridge and RiscPC.
+With both gone, no ARM board selects ARCH_MAY_HAVE_PC_FDC.
+Furthermore, asm/floppy.h references IRQ_FLOPPYDISK and DMA_FLOPPY,=20
+which no longer exist on ARM.
+Either
+arch/arm/include/asm/floppy.h
+  and config ARCH_MAY_HAVE_PC_FDC in arch/arm/Kconfig should be deleted=20
+in this patch, or noted if intentionally deferred to the 7.5 driver clean=
+up.
+7. Good changes & verification
+block/partitions/Kconfig: Dropping default y if ARCH_ACORN while keeping=20
+ACORN_PARTITION available under PARTITION_ADVANCED is correct; users can=20
+still inspect/mount Acorn media on modern architectures.
+drivers/tty/vt/keyboard.c: Clean removal of !defined(CONFIG_ARCH_RPC)=20
+from the raw keyboard scan handler.
+Elimination of NEED_MACH_IO_H and NEED_MACH_MEMORY_H: Very clean removal=20
+across arch/arm/Kconfig, arch/arm/include/asm/io.h,=20
+arch/arm/include/asm/memory.h, and arch/arm/mm/mmu.c.
+Minor Typo in Commit Message
+text
+
+
+The Acorn Risc PC is the oldest still support Arm machine in the kernel,
+originally shipped with an ARMv3 ARM610 support in 1994, it later allowed
+faster StrongARM CPUs.
+"oldest still support Arm machine" -> "oldest still supported Arm machine=
+"
+"with an ARMv3 ARM610 support" -> "with ARMv3 ARM610 support" or "with=20
+an ARMv3 ARM610 CPU"
