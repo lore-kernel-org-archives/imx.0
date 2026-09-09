@@ -1,64 +1,64 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD8D35C694
-	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 08:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9958A46EF92
+	for <imx@lists.linux.dev>; Wed,  9 Sep 2026 08:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788941301; cv=none; b=B/yEkzYn3TAdgKZ+nGz9PsOlZSYaDnToc6haWnFjdckvZRVACZ2ZXu3gjznhB9eGYGwsk/Hy24NJ2BBE66y84q4V/5J2VV/woJRetr2DKC6YHmL6LztFmytHhdJ32kIN5cPrLimvQV/JPA09gqBiFTSugHvSyT4t37Zcx8Zl3zw=
+	t=1788941324; cv=none; b=Dlqsoo4zQqi3AJneybTGV1qurLZ0G96/y3P1rtt1TR4MA6ssqvQeSN9vduGkoa+JczyTTSdrKTUlU+Ec0pp26qDTBNtzvD6DHC0QSG91+TpIH2ZUsWNrZ2dyknuKeC8LsFadrQvWh2FEcEP2fRAtj2X3OjLQjkAnWVS6EJ0ZwsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788941301; c=relaxed/simple;
-	bh=sJk1P7W3r94sDQAmQK29QSXw1byQg92FvIaPYKTejbo=;
+	s=arc-20240116; t=1788941324; c=relaxed/simple;
+	bh=R2je63BbknUokaDi3WpiVqNteUMA8vRZHwmgqRUZSpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6WJ5oMjYzDMN6hcYLufAmiJyeZV2Gn/xmyX38bq3vueJU3Y+WLTlHmKwaz5KLsedeFMWGT/tz2oUGE0ZmO4rtUj7LCd9wVgIIcDQLS3lTVRh/RNhVF4AgLt6svwIXFZqFSlTgxJMPKG9sh/Y4rP1HPvdQRyK7rx3sC+qDiuWbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JS9OJXd8; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=EW2m476DjnI2jCD9GjQz/tCVB6UGQrT9b6g+qajTrEzavKOu67hvwby2Due/4u3K2Bo0vFg5NIOT6Fab63SKXgRuJpeyt3PooFDknb0y9dog5R9b1x0bs8DawhZB/OZCDMS6lbMaX95x5ZsOHW347DCK45JK27T8g6EMj2Ev7Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QMhEXesg; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JS9OJXd8"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49b8eeb3ff2so51747825e9.2
-        for <imx@lists.linux.dev>; Wed, 09 Sep 2026 01:08:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QMhEXesg"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so65460935e9.1
+        for <imx@lists.linux.dev>; Wed, 09 Sep 2026 01:08:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788941298; x=1789546098; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1788941321; x=1789546121; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=sJk1P7W3r94sDQAmQK29QSXw1byQg92FvIaPYKTejbo=;
-        b=JS9OJXd8UI3hFsbsM2uSN4ekaX+o4CSLJ7+2ggQv0J2EQLu3RN4Pur4QDT/REfBMyq
-         WXEU0LKDsLKCJwYYRO15LABObVvlip/6khx5ZcNk4xLlhF5i6ZTsdfrQaeFrccJ0K9O5
-         9gtgDdLPQIeSYLEpdYqu6mvs0bXrwnBUkHwaVLnln7Dj8IQsj4O+jzWw73//1jtKsKgn
-         TPahfAV1RAtgtgunvlBKiyprrKwKgqq3F6mKeIFmpRwXGJUu6mC4EqsaNwkby9zqDjlI
-         UhZX8Uhfktm9ZZFEw35ksOa6hML/x32s7hz6KiZ8N0V9OXCVlvWdOwZt2XOaPxX75at2
-         23VQ==
+        bh=R2je63BbknUokaDi3WpiVqNteUMA8vRZHwmgqRUZSpI=;
+        b=QMhEXesgUUrE3PI6nh1GryLLrRTNfPG8xI9O7Mb3cIdUb0c2pccBdesRXGTtdcAd/X
+         tMUw6RJjLSjW28X0bLIR5K7NYo6Y3AnKyPwCmSWPkz9AwGtZorTElfLJ0XbnhbS57ozr
+         nDtMjxtinRFH2cLUVf/vlfKOEyqYvv/nbONOKkqmJw7qO10EGTDtKpoFFva1piMrry+E
+         yqIBvlKAZnuGdLL3xJx1u+POnmhJu3stXFhb1SzVMY4KzSGk+1877IKTkgqavmqaX4Lh
+         Io2ICe9w1k/oWJjrgyuknLlZ/21qj2koQc+Kioo/cVaIqc9syMf7cS8BhEwEOw28okGJ
+         Z3mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788941298; x=1789546098;
+        d=1e100.net; s=20251104; t=1788941321; x=1789546121;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sJk1P7W3r94sDQAmQK29QSXw1byQg92FvIaPYKTejbo=;
-        b=BzvlGddnm99lXqsT/mHyUjEyrQYVr5+M5ULZ3rmZ4Ijedry5Z8js5Y9hcJPzgEQwid
-         4G+FezFMCah7Mkl2KNbF15fG3rFNAVQcwAUG9mQcWAdnwoCh4/+hu1N5419dDV7iMrPy
-         gTevDULxT+ufbLDbzFEq7SjZmtUQzTLoOtSTXpHn/a53dMQu38JxhXmG7HU519gKtIVQ
-         JT9oNJosxZWsrOC22BwJERoywS3na3GGKk6U4YSTWY5/AS4AfPiAA56C10Y7Q1qcihb4
-         Q89R+emy87uuBQt9KDZY05mDqcgzNVJo9R94FV+pEtCKKlJnlHoAKzhUoEG0VRF++YW7
-         4LxA==
-X-Forwarded-Encrypted: i=1; AKwUvBxM7ugA6qZel+rIDh+3/f+6jB6mMoETWhs68h1wgZoLxdgFMlqX0NnTl2vOcoZnqtthWIk=@lists.linux.dev
-X-Gm-Message-State: AFuF++nG/4ySIi98ECeotW2WXd41WR1ls+90Y3DlCf/A/SsiEs836IUJ
-	KPFkM7PcGysEi1RXiEKDUTXkwPdsIfs3e8qrh+buvY6wq18G8xm5wLcf
-X-Gm-Gg: AYBFou0fnNn9o1VhL5N4gl5HsyVbSCf7B1d8msd4zPS5pNwLLpf8BXJR3hjy8Mu7n+I
-	FMmtRyNcrEBXHOOHdcBVV0I8eAxFF7wZ/yqQe0uehG87fOiVXZmjPgJC1rqSbL6GO79OPAkWsZE
-	sMnUjZoC85cCrDMzx7pXANxJf/PRy1+TniLvVWpPFSVNJBXxPegVgGBY7yqA0DT6hAseB1nxZA6
-	t1TnXnfR9zvYPJYn5Wo9nk8dlwkPV5O3+9X6vG5GLlrCWcNdgjmYrhU+RULa6jf9YHenW+Ty+0M
-	0mSsXN1pdh3u1R175jx0Tc6wsXEBg0ek6ExkXZaTfxqffUc5xhU++5MCDYLnOkKtlQfa8ez1MU/
-	BgM8d4iii7pw1gsMrxD7ZDyrtr9qaExWnKX4ao8xL7xqZPtGXB0Mnqnq6cM0hJdaFgYk28OPElX
-	OVF5zex5mun/OwAG6Ql8GacnezL4kMTn2EFFgJ6waH5ULWnZoE7SX7YZ/m/TQLPw1Ri4JF6hdZu
-	rLB
-X-Received: by 2002:a05:600c:3b1f:b0:49c:ee06:9c58 with SMTP id 5b1f17b1804b1-49cf821eff7mr338313485e9.4.1788941297583;
-        Wed, 09 Sep 2026 01:08:17 -0700 (PDT)
+        bh=R2je63BbknUokaDi3WpiVqNteUMA8vRZHwmgqRUZSpI=;
+        b=cKYRFdgtDzATw4fZjgynfPbf1Jcus3cZfi2rg4WKsq/yxsx7xQLMQV3YQhUVVnFSGP
+         q4oxO9hxe89YFUi40Do//H34yc34HmP+4YUsXyv2AySp4JnoMvHp+gl0+xqJc3rGtGkI
+         4dyGjVakk9S60sp7eeeV7wm5dKhbQRFwbVJC/Uqylq+oyoo+juuo9doJOYcs75/H5SE5
+         ZHwDbtxXWOQdASjjUjMtacUSFtFD+eauqlZJq4D7uHRNv4AcSIXWoJa82ydGMVPYXvyf
+         Hnq0Lb80TmIUmQibXZsWMsLvpcU3pRX1B7w0MZ+yBgbIVgwKbXOLIj7V5JpIx+hZKbmO
+         Dcrw==
+X-Forwarded-Encrypted: i=1; AKwUvByEui7E5H1zs/vM894XDo+LNH6u8HW9hiUpRmgxfyalrQuQO0x4rUoxqh7udK4xzUbIqmg=@lists.linux.dev
+X-Gm-Message-State: AFuF++lCaGA6e3xEdIxYL6o+ERamOaeWk6qZhkb7YTc6BQtKBqaBVup6
+	zoD6m7PPSBT675KH7SnWloCkhuY+HDy/mQ4RkmNof0cDZUQAMSaVPUDj
+X-Gm-Gg: AYBFou0Gfzsg0I7yprzblC2cBnFPXu2Y8lEfE5K0dLsiJ9WS1BfGZdh+cSnDxStq5KX
+	dx9dxCBXrRjb1rwTZzG7qAE/xRM18IAxeY7GpGJE2+EKpL9eYvuZq64nWRmoUX9aAyp4bCsczhS
+	alL5ifu/ORIcd6ZAbMqWAy10WyTgBpeYjcTUXxcwUZ5OKY/pN0MWxjWsdnOGHWc70I1u5+FEch4
+	QMwJAeGHbgqB+Ea4lUiewYhXeGEgxrW25/Og0/TtyJwhMTMuG/aP1X8g3xc/XrC4qANvVt4kHB+
+	Reg1f7KEDZ+F9SRs/fAlvybp9aWVgGCf0VV3gCvOqB3bGsrlDDW3srlnhk88xjNQZtelSzpSur+
+	IQZdEnRHpZunyfGprG4Hsc6Qp2Tc0z87ALisxNCAyx+5lPM72HG3vMwvvLUFqw+hPxONFVdvVtl
+	2ql+cfany3k0heMjacX0NPhG4PuWm+QG+eV67pjxKVHW0vRXaK1S37w4ycIdHeDaKTyPbr/FGLp
+	FXl
+X-Received: by 2002:a05:600c:4684:b0:49c:fc6c:be14 with SMTP id 5b1f17b1804b1-49cfc6cc10bmr303543295e9.26.1788941320634;
+        Wed, 09 Sep 2026 01:08:40 -0700 (PDT)
 Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20db6e76sm46285355e9.3.2026.09.09.01.08.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf7703cefsm607453595e9.5.2026.09.09.01.08.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 01:08:16 -0700 (PDT)
+        Wed, 09 Sep 2026 01:08:40 -0700 (PDT)
 From: Mehmet Fide <mehmet.fide@gmail.com>
 To: haibo.chen@nxp.com
 Cc: brgl@kernel.org,
@@ -73,12 +73,12 @@ Cc: brgl@kernel.org,
 	linux-gpio@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] gpiolib: add get_config() and gpiochip_generic_get_config()
-Date: Wed,  9 Sep 2026 10:08:15 +0200
-Message-ID: <20260909080815.2297127-1-mehmet.fide@gmail.com>
+Subject: Re: [PATCH v5 3/3] gpio: mmio: track the direction of chips without direction registers
+Date: Wed,  9 Sep 2026 10:08:39 +0200
+Message-ID: <20260909080839.2297374-1-mehmet.fide@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260909063018.sajfn5vjk4y3oyi2@shlinux89>
-References: <20260903075940.2089367-3-mehmet.fide@gmail.com> <20260903081432.278721F00A3A@smtp.kernel.org> <20260909063018.sajfn5vjk4y3oyi2@shlinux89>
+In-Reply-To: <20260909064415.pel5dilh7nrkxz6u@shlinux89>
+References: <20260903075940.2089367-4-mehmet.fide@gmail.com> <20260909064415.pel5dilh7nrkxz6u@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -91,26 +91,12 @@ From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
 Hi Haibo,
 
-On Wed, Sep 09, 2026 at 02:30:18PM +0800, Bough Chen wrote:
-> > Should the pre-existing setter stub also be updated to return -ENOTSUPP
-> > to ensure consistent API behavior?
->
-> I think Sashiko is correct, better to aligned here, but in a separate patch.
+On Wed, Sep 09, 2026 at 02:44:15PM +0800, Bough Chen wrote:
+> dir_unreadable is now set from a second source (PINCTRL_BACKEND with no
+> direction register, in addition to GPIO_GENERIC_UNREADABLE_REG_DIR);
+> worth a line in the commit message.
 
-Agreed. v6 will start with a preparatory patch that makes both
-CONFIG_PINCTRL=n stubs, pinctrl_gpio_get_config() and
-pinctrl_gpio_set_config(), return -ENOTSUPP. With CONFIG_PINCTRL=y a
-chip without pin ranges already gets -ENOTSUPP from
-gpiochip_generic_config(), so every caller of that path handles the
-value today; the only other users of the stubs, gpio-by-pinctrl and
-gpio-aspeed, are pinctrl-backed drivers. I will compile-test a
-CONFIG_PINCTRL=n GPIOLIB build with the change.
+Will do in v6, together with your Reviewed-by on 1/3 and 3/3. Thanks
+for checking the i.MX7ULP/i.MX8ULP side as well.
 
-> If changing the CONFIG_PINCTRL=n stub in include/linux/pinctrl/consumer.h
-> to return -ENOTSUPP, then I think you can drop the explicit "#else return
-> -ENOTSUPP" in gpiochip_generic_get_config()
-
-Yes, the #else goes away in v6.
-
-Thanks for the review,
 Mehmet
