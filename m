@@ -1,70 +1,73 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010005.outbound.protection.outlook.com [52.101.69.5])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011070.outbound.protection.outlook.com [52.101.70.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8033A5E97
-	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 16:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F7D2D47F4
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 16:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789057934; cv=fail; b=Fw2iEGFwocMHjGuGHtScCNlYHDQxrxMItvfX+dCnFd2kvg2lelCofOaGahIrfpHTs32LlkJe168OOpH9o0exDRK3Lj6eB2w0RbKIe1KGgnqtUxorCnQY0JUsgaqt2LHA36/IrlpIOY/CrmbgwmHR0Ch1GsnHMO2E/SOS+3a74/4=
+	t=1789058242; cv=fail; b=A4ZUv221me21LNYkljXA4Os8k7CdCsld5K/aCHvdG72waZMs+1erdYBCSQX99DtX8GeBx/KhYZvZpQCC62Vus9UxDpvscTJSYc9m5sIgnH4X3mYuyekRPPk4fgYbsODK646nTPq+H0m1slOL01GKPKv9IcAZcXQ91n8lfRsbWf4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789057934; c=relaxed/simple;
-	bh=JKEj/NWD97o40/M3TEYXFcDEhWQ0Qd+nbKfrpDSgQGo=;
+	s=arc-20240116; t=1789058242; c=relaxed/simple;
+	bh=3lHSzrvMcwxwdkHcNkaSS4ti27gj1UcZQKtrfNv8rDY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KoKzZNeXNDxyNjOtPGfYWv1v99GVilAeiaUz5NMcEG04Cb7z92pDekIksZwueD51I+UBlX1I83Cs9wjfT1mfXlfurGnnysirxPkmqwDqcqR+qrpmlMwIq/dpd1lodvEXPi8WLLwVRvq3bHpYDMEjQtBMXekxuZ24wkDth3L/xiI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ayq1E4Bu; arc=fail smtp.client-ip=52.101.69.5
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ef4AaUB8pi6qZhUGCGnoR3cCp9CVkl/mfpZZwrRocwlPCjP1q2bv2D/p9aIVxiZ/f7cnSYRl6qR1HTYKUaUmkk4TJiuiSilGXVB4MMgMNCzyBWu2xmruIgI0eYFxNUMvS4oTuj4Uz2d3fjRTRJ35wIdJ9dg0P5U6CAjYcnuyeo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JDaoOjic; arc=fail smtp.client-ip=52.101.70.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ayq1E4Bu"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JDaoOjic"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LRuHCOusOEa0Jm7Et8sczvJvvQCPipGza+eo/NemZt/mJIev0A0vyInDpNqWzvj7s3lmlUWe1QoQXQl7NaD2qk33kKtWYZXSLsFd1m8kRoRUsruk+Gkn3lNC54D48B6nwBNosjNxXwBS47aLU0hICTpZpNIPMhRukeSCP+QYIt+fzEo3/qWLWma6zu9CF3RsKt/17qWfU3q+Rl6veOtwGmbVmuaFC9mU8NwbCwrX+3HEadhgiIMIfNIo9gzzMQ0YYl8Gso62vCfQGd60eLFM3pbWcUZ5IrzOVizyIqHryfjHWgQp9FgjofG3ShmPe3hfJvxiCrCZecrm6fZUAb0MMQ==
+ b=n+bsbQ87l7sjj2IAK8HVna0+/yINEsMr6MdB/RH7fEc7CJMedm1PncOoApoS8qNExZQJEUkl7ELgLLHeH4A63QjxaaSlEKrQQo0gQRc7+L0TcucIm1Fg748HMpRNpOng0amYYy+5dK5PzqcjwJUv4Q+VX1s7uDl5gZKy/EcGWmZZXj/N0Wi2Tz1S8CNHgDSbTDgoN1A0xZjtKLsDe5NIj2bfs/9KW6sjJywMHQXKH7eZWObF/zYUYgKKGw0Bg8uXWZ0uz41aWQIulqJpQ1kaSmX24hdGRHz6yVj0c1cWYC8c8/LotNlPUHmsMOxPJjRDGMpKfFDBLcRc3emwpmfv/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L22OvJJnj1XpQrbcfsfynWt7q6naD2+cl4v0hsGvcnk=;
- b=dJNsA1VDeHUdEzgtMG+Wj+q6P0cPwDSNbBaqTwwisZ029inOBUYF2xlleiBZwduIjI8PAyIYaeSnbcIZUmbRAmeVVIt+lUwwaHOpayxaG7AD8KPPbNK5pup7Vyk9/pwSn8jGAH8Qpl+mUF2r3LrTB3pKFs+kS3J+myYvAmxtWcE1Mi1HGNbvKUaxlRUGUubZYGdyfj7J7LBADyaKsabU28VAfD63MR7vX/bBb312IZuJh/uOuRuFpS75Y7gZh6bqmr/fPRIOOczSPAlvizOqTOOnVzbLPgJIbCMaLr49n/iG21gxQzrMKVBmm4ODzisqvIW50WiBaWcofJBdJRKqpg==
+ bh=QvYB7Sk0tJgpOEfZyUQRlKfRKv+bmOWl8sbAG3trAwA=;
+ b=R40bspBeSUl7vGUGW1I7whig3KIZ/yMFEMWj9nm5OFUDx0AIJu+mkMBugPPfO6FUxYCKwbwO6nAk9Zr3vyJMb6W0XRbpTpKRGFzkRV9+g/S+MU07J2I0j4Cb3n3rEeajTgzyOg1Qu+gf/lfVWET9uI97eg02Y1T7ofYnMT/4gwjGjuRw2BbYqF2hyl0YMpVouya8SID7+vDRoWCo0o/jIrGskZb3fwM/JfQJ+8V8BQvpu04TMTMvpkwx6pQlFEY2fRtV9AhYn2lLalfe//LBbpBUiiI8NeKT//twYO6ffF3xkrbebUjVeoxOmgywCYWrGAn22tUtpF6Ww24O2cw/sQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L22OvJJnj1XpQrbcfsfynWt7q6naD2+cl4v0hsGvcnk=;
- b=Ayq1E4BuBf03mdM1/m6EuhBJmPg33cXQD+Bls+UwM+9Z6HSK+q8Ix5uS0qw9vDSEC7imdKDRL67jbW4JoPlkaOw82fB5Q7vYnmnjHNWFQPBI6kCXo27IwSq7/7nsFw0U3SYMg2cQG2ce79i0APPZ9u0tn62dt4HGhdAW774U5spKO4J4Ih3otNIqifdpSVJozgHN+EtN8/iyXTIxhbc4BS3S9Clfl5TK1ehiVsAMQXNou0bGPjdz92LN9dXADRll5kpP9CBv1z4TdvHUGwkBqC8E/e3yByZ+0kLEnvG69A7My8yRykmPGmE/X7TgVULxJeJoHMSaNgU5ezHJYobxLQ==
+ bh=QvYB7Sk0tJgpOEfZyUQRlKfRKv+bmOWl8sbAG3trAwA=;
+ b=JDaoOjicUORsvrNSLn5Tx/sGu15rSBPhG2peto59nEn9SaDZ76nOZpighcHw7sONHeO1qpBeB2aouoEYzGGb0kDjTdUwRguctHiF+FTGlJsvdM4a+IXpFCyqAGMn1X/wDrwMpXHc/ig5ekCNgxVR6nC+rPQA8W1aWoJB7qU8OGckQL4exUJoxfLQxoFmlIqD3RS7F6N3EFwLADe3YGYLlv3IvUrrpk8sY24nLZzcgluC+UQPHuiPq80b/RoOfXOHICfRU4UFVwTC1dXECrFudaVn2D+WmBFBL8LQYVkerRXyiEfbIc7yS76rQSrUQHWH/LSqIWyyM4c8Zubfso96gA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AMZPR04MB828691.eurprd04.prod.outlook.com (2603:10a6:20b:7cb::10) with
+ by AS8PR04MB8341.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Thu, 10 Sep
- 2026 16:32:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.6; Thu, 10 Sep
+ 2026 16:37:17 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.005; Thu, 10 Sep 2026
- 16:32:05 +0000
-Date: Thu, 10 Sep 2026 11:31:54 -0500
+ 16:37:17 +0000
+Date: Thu, 10 Sep 2026 11:37:05 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Frieder Schrempf <frieder@fris.de>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH 4/6] arm64: dts: freescale: imx8m{m,p}-verdin: Add camera
- connector nexus
-Message-ID: <aqLbeo5L83QH9OQK@SMW015318>
-References: <20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com>
- <20260910-verdin-imx8mp-hmp-camera-ready-v1-4-3c9349ecdb9f@toradex.com>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
+Subject: Re: [PATCH 2/2] arm64: dts: imx93-kontron: Add support for Kontron
+ i.MX93 DL
+Message-ID: <aqLcsc6SROjv6FRv@SMW015318>
+References: <20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>
+ <20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260910-verdin-imx8mp-hmp-camera-ready-v1-4-3c9349ecdb9f@toradex.com>
-X-ClientProxiedBy: CYZPR20CA0022.namprd20.prod.outlook.com
- (2603:10b6:930:a2::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de>
+X-ClientProxiedBy: CY5PR15CA0155.namprd15.prod.outlook.com
+ (2603:10b6:930:67::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,321 +76,207 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMZPR04MB828691:EE_
-X-MS-Office365-Filtering-Correlation-Id: c26cab8e-76a3-44c1-3d1c-08df0f590c95
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8341:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62e20645-4797-4ea3-9b47-08df0f59c69f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|23010399003|7416014|1800799024|6133799003|22082099003|18002099003|56012099006|4143699003|11063799006|10067099003;
+	BCL:0;ARA:13230040|366016|19092799006|376014|23010399003|7416014|1800799024|22082099003|18002099003|56012099006|3023799007|4143699003|11063799006|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	fYAxLOi/6fqxBdo9Dx318XsK+8uKWUyabcX4xS12bqzxMHBijsq8VA6WwaR8UOkTj4OpKlEYtztphvOdiNcZMSR9eBuQQNh3gH0uBL53aDqSXCtfI1qwFRugHA3Yd4xB85QEXXYjFJqbqzr6LZCiJTZJBEnOBEjX6QzweFykVqW+TrSRLgsb9byWpwGQkM8ueU6PfdgWUTiMz1EL7zLKizicvfAEPucFIuhry79nycLEPIVPaUUuG1T4jWwUKvOYrU8Dt+zpkcyFWBb/ljllCxh65+BTrCFAVofxSqdpsTo9fQMe5BpL0t42T7d5bnd63lukD4Bnr+WC17KQ2CiU7EgEtphd98BRQQOYimPni5dgAOleJtQe11UvFpdV0Gqt07d290Tm9lB4fn1bL8loC9RMWn+HbttgsM+Wbvks+4nxH4METUFsG7YTQWip8xzc7DwCoy+lYYtNN+Fp3h8L7y3/kbbe1/CiTa5Qeoh+3r2xHYyyhl+nkXMJelVTxfq06q02X6nyYeZghuaCY9MLiCMlTPnx+EOdpe4Y7NxvGOBeXYWWiPaY1pSg5QppytWjhAzsVDMl7iXE5DPfVhbUBL/isO2eW84x1/PMA8fWA8oN2/noK03oHryJu2qHcMu1EmJqsmh1/ogSgaZlVMamCFSmtGdNi3ZWHl7zFu4Leh0=
+	VNypQszlb0JbBJjoC7zuzpPoEL6TtByra3wz4vQ2BJaVBK10nnek3ej3x1m8K5Pq6okGatsAQB9qtPWdeUdT3Pojht+FDTWSkTAVlKH2yPlChm2e5+FuTKoWlyy08oUpQw7HiVTJpvT/slCTHxYultCc34XNepCrRyj+yBB0O5I+xVB8qjCbhm7RO4c3U9PL2UBtFSqwOkbhQIsyRtcceWlHbSy6W+Lrf7GMEqX9HzmBA5UbGNzM4uzdYNWzDna4Qgt9q3mAMUhHzMF5IHALLqCI2QbhOXhLqUoXyZ9eQv+EXJCAOVAbb1ZGXyBXta5kpCX/TVTEuoxrBepcZM8xO1O84Ay2ybRs3Y82S+dHn6vCzX26tggPfNEUo1q9YN7v5R1pvkoK9r6hGIQROlqjg3vrtKeox9QmSxPfgmcbEQiv/cYMJtXZygyz/aLazXFIu6tKqsV7j89wTkw7ocx7vmo65GBGzIhYjw2uTbiWqC4I+cuN8rMaDMdxpHYHC/CIXE0e0teWWNGpK4a7RfNVqYp2RDpvHccPxSorZgB4TLQow9us73hb7rTTXutyOLk7yMJqdw+j8c83b5/1KakhUAlcLHyYHERXYf0t2bOmHy0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(23010399003)(7416014)(1800799024)(6133799003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(23010399003)(7416014)(1800799024)(22082099003)(18002099003)(56012099006)(3023799007)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jPR9poLtXow33ftlfV/vg3EhGG4q/LwQi062kzdlkFVgDqELarJMx3HRPCif?=
- =?us-ascii?Q?rIvdOuKfgC0TKSS5N9cn3yyxR60sFeyVPNEsMkzr/llUHuwQOcU5G9/A+ITf?=
- =?us-ascii?Q?BjBTwhdQTuo1CsTJQabd3k/ADQ6v5OUayv4F8lI+I5WtOTKDL83Lc6fbkLnl?=
- =?us-ascii?Q?/18aYB7f1u8MQQ9/KcKb9kJwjSXJKziEnr/7d4vsqHGs6iPxZa2m+clqtFb4?=
- =?us-ascii?Q?SPrqg17nETScxJq9TOa0pbWDL+evQRz4phLLkLc6jb2JCk3wwoQfMRAv4kVF?=
- =?us-ascii?Q?MbOOYgfRqOYEnnKVUunlSTGSrvsHKlKH1slcZ1OlZOgc/uGglW3Agil5UcTf?=
- =?us-ascii?Q?KRMEZn8dSmZXQIWL3CF+kI6/G+ubdRtc8D3bXa8tqRZD2hv+ZwGB87OoiyhE?=
- =?us-ascii?Q?5pbMoxCseUyVkC1qUOWSD5FxvslvYT3+THjpykMmJu8xMQK4fhbjSpX4C40l?=
- =?us-ascii?Q?nCGEgSwVeazYt9HWDftKS5/XW52hZGwbxKcFurCq0D23SUfr1+rgMAhqC/2o?=
- =?us-ascii?Q?h3dI156lstuNhGtWbpgjaR2ZJbWExzfKgjem0Mrz6Q/9zYnZBaD/qlDHjigo?=
- =?us-ascii?Q?atbZQjNAzVb5+2gCbRz8aaLy3FiyOnYZn1+sB7FEVBkwmeIN+KJJAa7ge0ME?=
- =?us-ascii?Q?VvG6Ie5qZ3xIbLbCC/2+mU/BGj6inJjeMxq+tPD7wQrQlRtLOb0eVA5C/yjU?=
- =?us-ascii?Q?WFOk/DGBR9+7xgolyeXPId6bjR4EVWBgsdPHQbdeZbgolnspO3lfxBnC/RAQ?=
- =?us-ascii?Q?aAPqRI4QfSeNQYLR1KAeWonQvq3WHx0hDiOeksAqRK/m8zKtG05JUhBR3Kcc?=
- =?us-ascii?Q?8uFt8HAXh4a38C9fk/mx0nb/0LxoS2TZtrLZvKMRVJs9da9VbStlZBU/JBDZ?=
- =?us-ascii?Q?Wl/1DcsMw3f/c4/2D6SOvks33hIE9RzmodS/HbO1h8r/3qPITvQiKOF/C0aN?=
- =?us-ascii?Q?lHbs55ntuiWb4rgvtcrKAbmtlj2wr7FCCzDyYKyp0wd5cbuV6mmY3viwpLeG?=
- =?us-ascii?Q?iLblzy/SyoXZ6b3gegNPmbv4sm85CVJEJwqR7bEl2z1LAGOkj4hTPG1WjMjI?=
- =?us-ascii?Q?QiZ/yXHuzdFvEfO0xb+Ox9vouoH26uvsZjkM07XdEfA38BjGib/sqrXjejuw?=
- =?us-ascii?Q?fSR1nK2lw40eaN8pxzRAV/tsCoJ4G8TSxLgyNCjF6YiSf3+PQAM2p91N/N09?=
- =?us-ascii?Q?qgqM84pBaXBok32XRz6kCHrysZ2qVpVRn9Cw6/Ff0Ur1e1QduPUjjo09ucG4?=
- =?us-ascii?Q?XunEeP4lKqQl13CEvOmjoGPv6Oi4ONLv6JYGlU90OwSTd1JMSR78x2W2fGMh?=
- =?us-ascii?Q?qM2NgGmaDjJrsP0PI0J8s4X1zdZr5ovdHBDsyYGG1R0YCjOelb2nOhUY0HgQ?=
- =?us-ascii?Q?se+T4ILOStYOpcntqTNzdyciqANzpDP5vNRfBLOaatXfa7W1sfCua3HQrE0U?=
- =?us-ascii?Q?xP1AxSlZssjge8gvzAukZ2n8VesL9dwLNdkoo4RrkRtv9kWYMnrvdWNa2yAd?=
- =?us-ascii?Q?V+nqam+duUXVcJ2ueb5MyQG7ggBSMyaIOxJSsPQe4YVA5bDOts69tmx1yZIF?=
- =?us-ascii?Q?xrDb6gNHEQLOVTuhhkIe6swg8qN6HJaE6jPTr+YCVUZI3uQDmXMWpKQ+D1rD?=
- =?us-ascii?Q?6engSdGihMEAPtSjMHQFKPAAobOmDUvSyQSN9TMr3qrugEgqi2l6a6LdBrgt?=
- =?us-ascii?Q?OLCgmQzRdVI9dLiCOQcnERRA/uO/GRw8ciZw1Uwt1oGvAWIiXEPg0qEazyfa?=
- =?us-ascii?Q?+OHqZsZPDE508JGwi7unWIgmcyS3p5oZbIvRrjZBNrNMqX1ox8ne?=
+	=?us-ascii?Q?nxNaR9+7aYOWr4rj1PKoI5A49gnkvNhsCorYNoQqcY3RZdbup15mHK3eL3s/?=
+ =?us-ascii?Q?xUrhQz01mYDMc/iTQBtgci16BJ4hJubLQm8bYwmteXzZN9+fdumHQnWItztm?=
+ =?us-ascii?Q?5/1ETdL/Bw0tkl3cH6fYMJKy0r+8COz6luXWIDt+CAnQy5QTUDxpD/C2g6h2?=
+ =?us-ascii?Q?k9HO9Aj5oP34mIrBUmeYrFl3GfWAyvh1LdBSM8y25aiXNe6s34lEcUHxGWZn?=
+ =?us-ascii?Q?opyD/4YsEuQUVi5xPg2/+8TYmS/lgrILVxAJJlaTnR65GEnW3/QTl+IPvY66?=
+ =?us-ascii?Q?7oogC5BAjRKlI+xjA1TH4vqs34EvOqdcnHGK09LyObLU8ePI2zFcoDQc1j0K?=
+ =?us-ascii?Q?YlqbITOCDnhxvO2Yb+QdVVvYuGYotMcZhAY+NGNNSh6cz8IKX4q4xxEhAkx0?=
+ =?us-ascii?Q?rGXw+G0HkVSsawOrZm6x9GrvTnCQOLjW0924PQ3kqW6NksyISYpcZWHCA4fB?=
+ =?us-ascii?Q?wrvfluqR+BSLlmBlLEUYwW/QmHmX1/8WpCJGGmahZBEQ5ixlj0MLNPe7d4Zy?=
+ =?us-ascii?Q?KDTvaVGVODwIWfcdfyQy7azpT8fYthytmnEm7lgFaX2nQ36Br4KBkV1D01GZ?=
+ =?us-ascii?Q?h4L8Es8o9RnAOXi78VK+spRMmfN10t2drmeEedZ6rV7FM1F5MuR9OKYzVrYX?=
+ =?us-ascii?Q?g/JJR863yDHviFli1zLSK96K6nFSGjrzyvGh3IVddzBuf2/9KFi/VWllLBOy?=
+ =?us-ascii?Q?FFcne30WKyoZ7S45J8fLfbAYj3KaKiU81Rp6joX4cgyszDutcUMETzN9rNcd?=
+ =?us-ascii?Q?4xfPRZhEThq0lPrpCETi8B6u6IXPDKlnAlFuBaQRTuyapcrT3XH3W61Pkc6+?=
+ =?us-ascii?Q?FaT/dNgMc+O7OEOHM9RwcEtqPrw9INcyPkz1nwXwWCAV3vRceQjDkitWBxUT?=
+ =?us-ascii?Q?RgMVb2pwI1l2Bg8PbFRe0nLyx47ykj8ZuBDw9B/o+PjKq+Pzu7VhcA/31VBm?=
+ =?us-ascii?Q?/8hiWptIH6zc7uMkW0tO2qBr326wqM5TxKpjmDJm04ShQ6C0lU64eZnUGYv0?=
+ =?us-ascii?Q?kuwNE13F2UKokYUArZ0AD8DzNMCWN+3eXW9VCUmyIW3gFzJSq9noQX53gvFr?=
+ =?us-ascii?Q?iixy88KNpFNtlpDWMz2O8dreVuW6I7q8+mrTon+3wtv9EnXz9lH8JjSMCDOG?=
+ =?us-ascii?Q?VHlg/Q+4J89R6UFSxTPD2BTaVSiIgGgbZIROSxXcJlyZqxXZr0EaiG/7G9M8?=
+ =?us-ascii?Q?0wF0/Vq2+S5HMM5lCdH328ajjidzO/IPcl2so1kJGHFUyuFhw1IPgHqzfkQi?=
+ =?us-ascii?Q?CGnFRPvvOa/+3wsAV7PFDKUcoWmfhiDByx96c7blrfr9suftwVImZ0QfeW0x?=
+ =?us-ascii?Q?zvGiV8USWVrF/hROOCLhqG7JOhX+VQz6FEbTGcw7wMM/0tTrMjFWN7f7f7yC?=
+ =?us-ascii?Q?LT9q3Z3jk8tpFOje8Tf9JpTvDRmNgTdBrcg81o+s1piRcSnOqAbBKN2emavs?=
+ =?us-ascii?Q?x2D5BNOd+4L2zcP2G//HH9aIAEnu1ZbWqY3yUMAt/PiIVDvDoAn2x97PBcUV?=
+ =?us-ascii?Q?qiGhZgyyV/wR2Y+5pKSRRvv9bhD4dhvl3eRLYeFDcaOF6nJqSnN7yvtb0kPr?=
+ =?us-ascii?Q?6EA0Hxh4PYC0m8K+WwYbruZ8UX9aXYyrsPLCQh5xfrtslJSbWkrgibZweDg4?=
+ =?us-ascii?Q?8NSHzn8/KEEwqJYyOvrKGhB8aD1hXJs2MOn31rRh2p/djLnstjy5vkw4DYtE?=
+ =?us-ascii?Q?ciVbHmvmLbPBXGuGSXNdmheauEsvnDgak0kNVW31/DDsCBXXGwQofxITHDWa?=
+ =?us-ascii?Q?4Vhl0wsjGht9kU3zEE2gvHO7LcYwZrp5uu4Niz4h9dOFsUOf5xn2?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c26cab8e-76a3-44c1-3d1c-08df0f590c95
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62e20645-4797-4ea3-9b47-08df0f59c69f
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 16:32:05.1140
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 16:37:17.2118
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kfDPTeJsgEBAdIzvTL5QgmOPfnhhzTXvDQaJeuDo7V/wQblB2uZe+LViiywFYEfgL3bj+DnAsJIMNX4RhGN8CwFzx8JYj2mQgCDFjopDY8QXCPDRljoaTq8BBAlVBPH+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMZPR04MB828691
+X-MS-Exchange-CrossTenant-UserPrincipalName: FZnQjVZUcM6zbyCx2v6S5Z2Qd1kqTSD+hf1vv62wmb3kQ+Vg3Qy9tAIcr6LNT+cCMkeEqgAelq4wIPGxzZG7ImoijesA4eP0USLS3Yrf8U2VbaJ0rGwkQYVdOqR4qreh
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8341
 
-On Thu, Sep 10, 2026 at 05:38:00PM +0200, Ernest Van Hoecke wrote:
-> From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+On Thu, Sep 10, 2026 at 05:19:07PM +0200, Frieder Schrempf wrote:
+> From: Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
 >
-> The Verdin Development Board, Dahlia and Mallow expose the same 24-pin CSI
-> camera connector, while Verdin iMX8M Mini and Verdin iMX8M Plus route its
-> sideband signals and media pipeline through different SoC resources.
+> This provides an overlay to enable the 7" LVDS panel on Kontron
+> i.MX93 DL devices.
 >
-> Add a GPIO nexus to each carrier description and stable Verdin-level labels
-> for each module's CSI_1 I2C bus, receiver and capture engine. Keeping the
-> nexus in the carrier files avoids describing the physical connector on
-> carriers which do not provide it.
->
-> This gives accessory overlays a stable connector and media interface
-> without embedding either module's wiring in the accessory description.
->
-> Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> Signed-off-by: Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 > ---
 
-Nice, thank for your efforts.
+Can you use similar method to share 7" lvds for other boards also
+
+https://lore.kernel.org/imx/20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com/T/#t
 
 Frank
 
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi | 17 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi    | 17 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-mallow.dtsi | 17 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi        |  8 +++++++-
->  arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi | 17 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi    | 17 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi | 17 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi        |  7 ++++++-
->  8 files changed, 115 insertions(+), 2 deletions(-)
+>  arch/arm64/boot/dts/freescale/Makefile             |   4 +
+>  .../arm64/boot/dts/freescale/imx93-kontron-dl.dtso | 104 +++++++++++++++++++++
+>  2 files changed, 108 insertions(+)
 >
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-> index 3d0b14968131..4cf77559e69b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-> @@ -4,6 +4,23 @@
->   */
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 95ae85ab4adf..2f0d3378c050 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -653,6 +653,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm-pixpaper.dtb
 >
->  / {
-> +	verdin_camera_connector: camera-connector-0 {
-> +		compatible = "toradex,camera-connector";
-> +		#gpio-cells = <2>;
-> +		/*
-> +		 * CAM_1_CON_RST       (pin 11) - Verdin GPIO_5 (SODIMM 216)
-> +		 * CAM_1_CON_PWRDWN    (pin 22) - Verdin GPIO_6 (SODIMM 218)
-> +		 * CAM_1_CON_IC_DETECT (pin 23) - Verdin GPIO_7 (SODIMM 220)
-> +		 * CAM_1_CON_PWRCTRL   (pin 24) - Verdin GPIO_8 (SODIMM 222)
-> +		 */
-> +		gpio-map = <0 0 &gpio1 0 GPIO_ACTIVE_HIGH>,
-> +			   <1 0 &gpio1 11 GPIO_ACTIVE_HIGH>,
-> +			   <2 0 &gpio1 8 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &gpio1 9 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask = <0xffffffff 0x0>;
-> +		gpio-map-pass-thru = <0x0 0xffffffff>;
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
+> +
+> +imx93-kontron-dl-dtbs += imx93-kontron-bl-osm-s.dtb imx93-kontron-dl.dtbo
+> +dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-dl.dtb
+> +
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso
+> new file mode 100644
+> index 000000000000..2d962823dfeb
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso
+> @@ -0,0 +1,104 @@
+> +// SPDX-License-Identifier: GPL-2.0+ OR MIT
+> +/*
+> + * Copyright (C) 2024 Kontron Electronics GmbH
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +&{/} {
+> +	model = "Kontron DL i.MX93 OSM-S";
+> +	compatible = "kontron,imx93-bl-osm-s", "kontron,imx93-osm-s", "fsl,imx93";
+> +
+> +	backlight: backlight {
+> +		compatible = "pwm-backlight";
+> +		pwms = <&tpm3 3 50000 0>;
+> +		brightness-levels = <0 100>;
+> +		num-interpolated-steps = <100>;
+> +		default-brightness-level = <100>;
 > +	};
 > +
->  	sound_card: sound-card {
->  		compatible = "simple-audio-card";
->  		simple-audio-card,bitclock-master = <&dailink_master>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi
-> index 1d8d146d9eeb..51a836324c16 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi
-> @@ -4,6 +4,23 @@
->   */
->
->  / {
-> +	verdin_camera_connector: camera-connector-0 {
-> +		compatible = "toradex,camera-connector";
-> +		#gpio-cells = <2>;
-> +		/*
-> +		 * CAM_1_CON_RST       (pin 11) - Verdin GPIO_5 (SODIMM 216)
-> +		 * CAM_1_CON_PWRDWN    (pin 22) - Verdin GPIO_6 (SODIMM 218)
-> +		 * CAM_1_CON_IC_DETECT (pin 23) - Verdin GPIO_7 (SODIMM 220)
-> +		 * CAM_1_CON_PWRCTRL   (pin 24) - Verdin GPIO_8 (SODIMM 222)
-> +		 */
-> +		gpio-map = <0 0 &gpio1 0 GPIO_ACTIVE_HIGH>,
-> +			   <1 0 &gpio1 11 GPIO_ACTIVE_HIGH>,
-> +			   <2 0 &gpio1 8 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &gpio1 9 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask = <0xffffffff 0x0>;
-> +		gpio-map-pass-thru = <0x0 0xffffffff>;
+> +	panel {
+> +		compatible = "jenson,bl-jt60050-01a", "panel-lvds";
+> +		backlight = <&backlight>;
+> +		data-mapping = "vesa-24";
+> +		enable-gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;
+> +		power-supply = <&reg_vcc_panel>;
+> +		height-mm = <86>;
+> +		width-mm = <154>;
+> +
+> +		panel-timing {
+> +			clock-frequency = <50000000>;
+> +			hactive = <1024>;
+> +			hback-porch = <160>;
+> +			hfront-porch = <160>;
+> +			hsync-len = <1>;
+> +			vactive = <600>;
+> +			vback-porch = <23>;
+> +			vfront-porch = <12>;
+> +			vsync-len = <1>;
+> +		};
+> +
+> +		port {
+> +			panel_in_lvds0: endpoint {
+> +				remote-endpoint = <&ldb_lvds_ch0>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&gpio3 {
+> +	panel-rst-hog {
+> +		gpio-hog;
+> +		gpios = <26 GPIO_ACTIVE_LOW>;
+> +		output-low;
+> +		line-name = "panel-reset";
 > +	};
 > +
->  	sound_card: sound-card {
->  		compatible = "simple-audio-card";
->  		simple-audio-card,bitclock-master = <&dailink_master>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin-mallow.dtsi
-> index 4a0799d63446..5951cd19a84c 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-mallow.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-mallow.dtsi
-> @@ -11,6 +11,23 @@
->  #include <dt-bindings/leds/common.h>
->
->  / {
-> +	verdin_camera_connector: camera-connector-0 {
-> +		compatible = "toradex,camera-connector";
-> +		#gpio-cells = <2>;
-> +		/*
-> +		 * CAM_1_CON_RST       (pin 11) - Verdin GPIO_5 (SODIMM 216)
-> +		 * CAM_1_CON_PWRDWN    (pin 22) - Verdin GPIO_6 (SODIMM 218)
-> +		 * CAM_1_CON_IC_DETECT (pin 23) - Verdin GPIO_7 (SODIMM 220)
-> +		 * CAM_1_CON_PWRCTRL   (pin 24) - Verdin GPIO_8 (SODIMM 222)
-> +		 */
-> +		gpio-map = <0 0 &gpio1 0 GPIO_ACTIVE_HIGH>,
-> +			   <1 0 &gpio1 11 GPIO_ACTIVE_HIGH>,
-> +			   <2 0 &gpio1 8 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &gpio1 9 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask = <0xffffffff 0x0>;
-> +		gpio-map-pass-thru = <0x0 0xffffffff>;
+> +	panel-stby-hog {
+> +		gpio-hog;
+> +		gpios = <27 GPIO_ACTIVE_HIGH>;
+> +		output-high;
+> +		line-name = "panel-standby";
 > +	};
+> +};
 > +
->  	leds {
->  		compatible = "gpio-leds";
->  		pinctrl-names = "default";
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> index ac450fc6cbfb..5c72b279d506 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> @@ -224,6 +224,9 @@ &cpu_crit0 {
->  	temperature = <105000>;
->  };
->
-> +/* Verdin CSI_1 */
-> +verdin_csi_capture: &csi {};
+> +&lcdif {
+> +	status = "okay";
+> +};
 > +
->  &ddrc {
->  	operating-points-v2 = <&ddrc_opp_table>;
->
-> @@ -596,7 +599,7 @@ &i2c2 {
->  /* Verdin I2C_3_HDMI N/A */
->
->  /* Verdin I2C_4_CSI */
-> -&i2c3 {
-> +verdin_csi_i2c: &i2c3 {
->  	clock-frequency = <400000>;
->  	pinctrl-names = "default", "gpio";
->  	pinctrl-0 = <&pinctrl_i2c3>;
-> @@ -695,6 +698,9 @@ eeprom_carrier_board: eeprom@57 {
->  	};
->  };
->
-> +/* Verdin CSI_1 */
-> +verdin_csi_rx: &mipi_csi {};
+> +&ldb_lvds_ch0 {
+> +	remote-endpoint = <&panel_in_lvds0>;
+> +};
 > +
->  /* Verdin PCIE_1 */
->  &pcie0 {
->  	assigned-clocks = <&clk IMX8MM_CLK_PCIE1_AUX>,
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-> index 0e218e6b8e29..164031d5dd86 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-> @@ -4,6 +4,23 @@
->   */
->
->  / {
-> +	verdin_camera_connector: camera-connector-0 {
-> +		compatible = "toradex,camera-connector";
-> +		#gpio-cells = <2>;
-> +		/*
-> +		 * CAM_1_CON_RST       (pin 11) - Verdin GPIO_5 (SODIMM 216)
-> +		 * CAM_1_CON_PWRDWN    (pin 22) - Verdin GPIO_6 (SODIMM 218)
-> +		 * CAM_1_CON_IC_DETECT (pin 23) - Verdin GPIO_7 (SODIMM 220)
-> +		 * CAM_1_CON_PWRCTRL   (pin 24) - Verdin GPIO_8 (SODIMM 222)
-> +		 */
-> +		gpio-map = <0 0 &gpio1 7 GPIO_ACTIVE_HIGH>,
-> +			   <1 0 &gpio1 8 GPIO_ACTIVE_HIGH>,
-> +			   <2 0 &gpio4 3 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &gpio4 1 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask = <0xffffffff 0x0>;
-> +		gpio-map-pass-thru = <0x0 0xffffffff>;
+> +&lpi2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	status = "okay";
+> +
+> +	touchscreen@5d {
+> +		compatible = "goodix,gt928";
+> +		reg = <0x5d>;
+> +		interrupt-parent = <&gpio2>;
+> +		interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
+> +		irq-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
+> +		AVDD28-supply = <&reg_vcc_panel>;
+> +		VDDIO-supply = <&reg_vcc_panel>;
+> +		reset-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;
 > +	};
+> +};
 > +
->  	native-hdmi-connector {
->  		compatible = "hdmi-connector";
->  		label = "X21";
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-> index 72a4f846d694..c52e46738110 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-> @@ -4,6 +4,23 @@
->   */
->
->  / {
-> +	verdin_camera_connector: camera-connector-0 {
-> +		compatible = "toradex,camera-connector";
-> +		#gpio-cells = <2>;
-> +		/*
-> +		 * CAM_1_CON_RST       (pin 11) - Verdin GPIO_5 (SODIMM 216)
-> +		 * CAM_1_CON_PWRDWN    (pin 22) - Verdin GPIO_6 (SODIMM 218)
-> +		 * CAM_1_CON_IC_DETECT (pin 23) - Verdin GPIO_7 (SODIMM 220)
-> +		 * CAM_1_CON_PWRCTRL   (pin 24) - Verdin GPIO_8 (SODIMM 222)
-> +		 */
-> +		gpio-map = <0 0 &gpio1 7 GPIO_ACTIVE_HIGH>,
-> +			   <1 0 &gpio1 8 GPIO_ACTIVE_HIGH>,
-> +			   <2 0 &gpio4 3 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &gpio4 1 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask = <0xffffffff 0x0>;
-> +		gpio-map-pass-thru = <0x0 0xffffffff>;
-> +	};
+> +&lvds_bridge {
+> +	status = "okay";
+> +};
 > +
->  	native-hdmi-connector {
->  		compatible = "hdmi-connector";
->  		label = "X37";
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-> index 846b36706821..b915fbbd04b6 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-> @@ -11,6 +11,23 @@
->  #include <dt-bindings/leds/common.h>
->
->  / {
-> +	verdin_camera_connector: camera-connector-0 {
-> +		compatible = "toradex,camera-connector";
-> +		#gpio-cells = <2>;
-> +		/*
-> +		 * CAM_1_CON_RST       (pin 11) - Verdin GPIO_5 (SODIMM 216)
-> +		 * CAM_1_CON_PWRDWN    (pin 22) - Verdin GPIO_6 (SODIMM 218)
-> +		 * CAM_1_CON_IC_DETECT (pin 23) - Verdin GPIO_7 (SODIMM 220)
-> +		 * CAM_1_CON_PWRCTRL   (pin 24) - Verdin GPIO_8 (SODIMM 222)
-> +		 */
-> +		gpio-map = <0 0 &gpio1 7 GPIO_ACTIVE_HIGH>,
-> +			   <1 0 &gpio1 8 GPIO_ACTIVE_HIGH>,
-> +			   <2 0 &gpio4 3 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &gpio4 1 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask = <0xffffffff 0x0>;
-> +		gpio-map-pass-thru = <0x0 0xffffffff>;
-> +	};
+> +&media_blk_ctrl {
+> +	status = "okay";
+> +};
 > +
->  	native-hdmi-connector {
->  		compatible = "hdmi-connector";
->  		label = "X14";
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> index 45a4713c260f..53499289cf61 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> @@ -719,7 +719,7 @@ atmel_mxt_ts_mezzanine: touch-mezzanine@4a {
->  };
->
->  /* Verdin I2C_4_CSI */
-> -&i2c3 {
-> +verdin_csi_i2c: &i2c3 {
->  	clock-frequency = <400000>;
->  	pinctrl-names = "default", "gpio";
->  	pinctrl-0 = <&pinctrl_i2c3>;
-> @@ -829,6 +829,11 @@ &i2c5 {
->  	single-master;
->  };
->
-> +/* Verdin CSI_1 */
-> +verdin_csi_capture: &isi_0 {};
-> +
-> +verdin_csi_rx: &mipi_csi_0 {};
-> +
->  /* Verdin PCIE_1 */
->  &pcie {
->  	pinctrl-names = "default";
+> +&tpm3 {
+> +	status = "okay";
+> +};
 >
 > --
-> 2.43.0
+> 2.55.0
 >
 >
