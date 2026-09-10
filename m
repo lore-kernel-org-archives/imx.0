@@ -1,111 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463E1392C2A;
-	Thu, 10 Sep 2026 08:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72A53B47E0
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 10:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789029043; cv=none; b=UsNmG/wPoESEvwJ7fX1/tH/sc2UW0CkcFJWATZoMSwkF1xgR1GrBrszQ96I+y/J5mBiYuCylbH/klvG4sdmumIEO1vNx6sxY6euE8d7zZbWBalWDkx69yeWGYI/oQfpv9yLGC9Rcad/lm91vato9KbHXiWeGOBpZlkaFmVtMKz4=
+	t=1789035391; cv=none; b=FFnswkL9Th5yZxmgv7Gh6KL4yXhKt21z/JU5leKfHwwDa8ARtPPgRdI73dRwQJOQkkEBOUD2g+KRBNyuCWTL49OkHyR30zJRMO5HJLa/ygc1BMYmWlc83NGAX66jm+0JBmBf+6GLsKrdMFcEY15S7ITmU/9ez3qB4mbW5S+UdQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789029043; c=relaxed/simple;
-	bh=nAekbWw3YDvVWN6atyge2/ucl7sq9AxPjpWj7Qvoahg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HaawZupybu0OQEqEedjoKtnHVDRvg1sLPThl6IaXoS+V7X+5R2WoPownTs2s4WYnU13g6csFNZnkK12xvWAZIBfDRqtdRWEG7eb8pyRoICq3pXwOvHH7I1EFgT3ea5ryu3+alm4Ztlzl1Xsn+kdcaBuHlK5DhXaplAWOuf3Bn4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AcDib7oF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789035391; c=relaxed/simple;
+	bh=6lIK5moG7Uy9HM9dqgepxyDsyImkNnmLG7hTGmNUnFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jz+xOgPtQBPm+yHO3BG8wcPgSclyPQvbZsvQZYklm9lM/MXK+8A9EThIb43OrYOt+/ozhbbHjOwZPO8Q3nAsGp+l8BOMc8h0TsoChyQILNlmNLZMA1sR0LVMs9rlLxBEUzneMOquMuKlJymevCleMJweMVWkankX5hNXMJaoM4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=mUe2+h5x; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AcDib7oF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4901F000FF;
-	Thu, 10 Sep 2026 08:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789029041;
-	bh=V2iRU5EWF25kDF/HWroa45GQAjAonv6s5ow4zWIf4eE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AcDib7oF8ceHqvllUmoOGFBn4mpCBkDk+bGd16Kql/S4kSqvU85H8H2jkBe6cZhSP
-	 iXIRH/PZPod1rOxOW0d91t3rpHv0eyecLrVzEir0zfnRwGR5M93h8Y1oKE5QN2wTvv
-	 orQdOk7yO9z8bDwYjE0q2mb7EmsJoiHFULYvLszNlARKBxgIsK2J35fuFY93F5YEU2
-	 qeitxPBraOfXSj3MlsAXVD3oMwn4iwKkE5Tn5SmoEMxPw1h3ax62dwGWDg2nA64td8
-	 wo1KlftDtngDRgOm6akJqOr7ODw7L6W+lZmxx3hUXjiHP1juWtyU7lxJCZ12B+eLzT
-	 f3dMbFUzTdJeQ==
-Date: Thu, 10 Sep 2026 10:30:32 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Rudi Heitbaum <rudi@heitbaum.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Frank Li <frank.li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] PCI: imx6: Use the external clock as REF_CLK when
- needed for i.MX8MQ
-Message-ID: <gbvllf63gssdreregtdotpw7ihz2ea4g2uq52xlfuu2rqfwq6t@yyyta35h34ul>
-References: <cover.1785669457.git.rudi@heitbaum.com>
- <563f057f26b1147a79392509b35dcb7f18113ba9.1785669457.git.rudi@heitbaum.com>
- <GV2PR04MB12019D0F84B4357DF2403B2C68CDC2@GV2PR04MB12019.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="mUe2+h5x"
+Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id 58AD41F95E;
+	Thu, 10 Sep 2026 12:16:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1789035384;
+	bh=HmQEgp98q8O8JhuWPmG9fTi4h3McQ6KmVcusD4VmijQ=; h=From:To:Subject;
+	b=mUe2+h5xiYk7qOe4WNAjvXyKugNWCTLoooYVFua0xFMhkonmKhNYpvdwriuL2ORiH
+	 cHNFccY0u+SkTZoNWus7oluQIrt8BJUo0A4yFED4zQgEYdK65TOHQ7EEfxe2eIMH8X
+	 qIXQOoBcUsR57u7S6fApwTc0ivixdHl1IgSHF6QoXENoHxvgX0sqSm00Q2ETUcVHVB
+	 wMs+iNuPFeIOr0dnjO0k3ipMbuTUSFC5RqJVXZC4i/XKmperIBJP9lTeMe0ThhDaiH
+	 1nSFgBTjMiWBoh7YlbGJIwlSS24X8pUdOfRo3RuegA0w8+hVTDyebywLVLg91/PhWs
+	 8JclziDVGJaNw==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v1 0/7] arm64: dts: freescale: Add Toradex Lino and OSM iMX91/iMX93
+Date: Thu, 10 Sep 2026 12:16:06 +0200
+Message-ID: <20260910101616.139270-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <GV2PR04MB12019D0F84B4357DF2403B2C68CDC2@GV2PR04MB12019.eurprd04.prod.outlook.com>
 
-On Wed, Aug 12, 2026 at 02:49:08AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Rudi Heitbaum <rudi@heitbaum.com>
-> > Sent: Sunday, August 2, 2026 7:32 PM
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>; Lucas Stach
-> > <l.stach@pengutronix.de>; Frank Li <frank.li@nxp.com>; Sascha Hauer
-> > <s.hauer@pengutronix.de>
-> > Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>; Krzysztof Wilczyński
-> > <kwilczynski@kernel.org>; Manivannan Sadhasivam <mani@kernel.org>; Rob
-> > Herring <robh@kernel.org>; Bjorn Helgaas <bhelgaas@google.com>;
-> > Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > <conor+dt@kernel.org>; Fabio Estevam <festevam@gmail.com>; linux-
-> > pci@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev; linux-
-> > arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
-> > rudi@heitbaum.com
-> > Subject: [PATCH 2/3] PCI: imx6: Use the external clock as REF_CLK when
-> > needed for i.MX8MQ
-> > 
-> > i.MX8MQ has two PCIe REF_CLK sources: an off-chip oscillator and the
-> > internal PLL. The driver unconditionally selected the oscillator, which is what
-> > the
-> > 
-> > 	/* TODO: This code assumes external oscillator is being used */
-> > 
-> > comment refers to. Boards wiring an oscillator to the pad describe it as the
-> > "pcie_bus" clock, but nothing in the driver looks that clock up by name, so it
-> > does not select anything.
-> > 
-> > Reuse the generic enable_ext_refclk flag, set when an "extref" clock is
-> > supplied, to select between the two, as is already done for i.MX95 in commit
-> > d8574ce57d76 ("PCI: imx6: Add external reference clock input mode
-> > support").
-> > 
-> > Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
-> Sorry for the late reply.
-> 
-> The code changes look good to me.
-> 
-> However, I'm concerned about backward compatibility. This patch changes the
-> default REF_CLK source from external oscillator to internal PLL when no
-> "extref" clock is specified, which could break existing i.MX8MQ boards.
-> 
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-This clocks is marked as 'optional' in the binding. So the driver should
-continue to work with older DTs that don't specify this clock.
+Add Device Tree support for the Toradex Lino and OSM SoM families,
+based on the NXP i.MX91 and i.MX93 SoCs.
 
-If this clock is truly required, then it should not be defined as optional in
-the binding and the ABI break should be justified in both binding and driver
-commit messages.
+Both families are available with either i.MX91 or i.MX93 on the same
+PCB. Since the two SoCs are pin compatible, common Device Tree files
+are used to share the hardware description between the two variants.
 
-- Mani
+For the Lino family, add support for the Lino-Verdin Adapter, which
+allows Lino modules to be used with Verdin-compatible carrier boards.
+This series supports the Verdin Development Board and Dahlia carrier
+board.
+
+For the OSM family, add support for the OSM Development Board.
+
+Francesco Dolcini (7):
+  dt-bindings: arm: fsl: Add Lino iMX91/iMX93
+  dt-bindings: arm: fsl: Add Toradex OSM iMX91/iMX93
+  arm64: dts: freescale: Add Lino iMX93
+  arm64: dts: freescale: imx93-lino: Add dahlia
+  arm64: dts: freescale: Add Lino iMX91
+  arm64: dts: freescale: Add Toradex OSM iMX93
+  arm64: dts: freescale: Add Toradex OSM iMX91
+
+ .../devicetree/bindings/arm/fsl.yaml          |  30 +
+ arch/arm64/boot/dts/freescale/Makefile        |   8 +
+ .../freescale/imx91-lino-verdin-dahlia.dts    |  24 +
+ .../dts/freescale/imx91-lino-verdin-dev.dts   |  24 +
+ arch/arm64/boot/dts/freescale/imx91-lino.dtsi | 305 ++++++++++
+ .../dts/freescale/imx91-toradex-osm-dev.dts   |  22 +
+ .../boot/dts/freescale/imx91-toradex-osm.dtsi | 303 ++++++++++
+ .../freescale/imx93-imx91-lino-common.dtsi    | 545 ++++++++++++++++++
+ .../imx93-imx91-lino-verdin-common.dtsi       | 175 ++++++
+ ...imx93-imx91-lino-verdin-dahlia-common.dtsi | 198 +++++++
+ .../imx93-imx91-lino-verdin-dev-common.dtsi   | 216 +++++++
+ .../imx93-imx91-toradex-osm-common.dtsi       | 533 +++++++++++++++++
+ .../imx93-imx91-toradex-osm-dev-common.dtsi   | 324 +++++++++++
+ .../freescale/imx93-lino-verdin-dahlia.dts    |  24 +
+ .../dts/freescale/imx93-lino-verdin-dev.dts   |  24 +
+ arch/arm64/boot/dts/freescale/imx93-lino.dtsi | 359 ++++++++++++
+ .../dts/freescale/imx93-toradex-osm-dev.dts   |  22 +
+ .../boot/dts/freescale/imx93-toradex-osm.dtsi | 357 ++++++++++++
+ 18 files changed, 3493 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino-verdin-dahlia.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino-verdin-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-toradex-osm.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-dahlia-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-dev-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino-verdin-dahlia.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino-verdin-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-toradex-osm.dtsi
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.47.3
+
