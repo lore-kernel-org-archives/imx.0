@@ -1,147 +1,335 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011028.outbound.protection.outlook.com [52.101.70.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654445D5C9
-	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 10:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789037408; cv=fail; b=GOvc7mKg44l5tHVHq2puFI7hNk3WOjAmwXn77wfn+gGZJTcyYv1pQJSNdS2VrLBwplbKERbUaGVOyEYkLC0kMSGJHWBo7/Zg99r3pvr9hcUA/aXsQb2E27xKqCReok0NbxHqLlOvalPpEIMfVJvARjBV+mhqWNLfA61hya4MXmw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789037408; c=relaxed/simple;
-	bh=jbudskY43BJxAirVc7RRXqvuVaBUzRoqMwWNcQzgxzI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LXMZFECXZ0hKweYyvp0J6Doi/dWkFGEldB11YabqreVkYFhtgU7tuKop6UKY9jghdVQYsEQjl5F39H6NRB0VSriKjl6R4Py3QxyIlGSkAJFMf0W3ZpvKoM9hrVuE9x71GoEu+RAxuSsEs7s1o6onVMY2SZZRD9iNyim7+YoIZuM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XOZcFqVG; arc=fail smtp.client-ip=52.101.70.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8736F471CEA;
+	Thu, 10 Sep 2026 11:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789039259; cv=none; b=L5InLgOBJgCRu90gVXaShGF+ktq96Er+QJHWQNDKObRzWBJIshIfKr0v/rmf5H+yyiCzXOxUq6VpMXAhLs6ECiq04eKIQBFyHzDTjuaxAhL2uNAi9YZWubhuS5Ey83ZYhlqboNjTN8f+eHnaMjzp0h8q3ognXYBmMDhp5zwTJJA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789039259; c=relaxed/simple;
+	bh=PN5/kxQ5FBNlmtI6XspR7H230X/tKGY2AeXsytHlQjw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mrhH6ToPoHpQsNYzVMyR24zFVL88ZjLC63HD0x23L5tQfUCapxUbylZk1RJQkZn2EhLcnWUvtOeREXoBVOZUYJZ712Ll5xDKrGwdAR742C+QuW0DCNAXn9VuyCtNbVd345aoOda0w7HsccbuXh3Lklnvujsu6FeVNxCeHanYvyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTP7CugY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XOZcFqVG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RkwpbzMA4X4vxDKEnFZXpTIPZWNncoU0OhAHbtmD2ynHuzRO33jUMgpzEt+epSicgLpaDFP6Vtg9JVu4p8vEwGn5YZ2fqUiF/0LRTlrGkvUnC028WUhup5IGqesnY5WA4RjfhxnH36TEbQ/BDs5WePnXZAAUvUQyzsmXxURDgDgi8PyouyFWm5PuCk21eg9GhAf+62vLYdQ7Ynzof17Iv20xY+CpAYLvZt3/ww2aHLJ2V53M/UdunNfc6oMR25ejcrXX8wQQfyCj0HhSYF9JRPlMVVhFQN8kTZbvfz2wNOWSmN/ZvQPbZ+htQ61IJLVuqhSfze+K7xu7Zrdr0Zd06A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jbudskY43BJxAirVc7RRXqvuVaBUzRoqMwWNcQzgxzI=;
- b=L/SxicyY1IejDJdYWOX4itUcJHvYktxG5Oqh61eqFV+phgdwcbFOVxs98CfH7sZiiLVoDW0hxC0m2geLGO8rcEm8B90bY6EaVfaVffFOYpwrAhjy/dAd8UAtTPYUezgJIvEXx/6NWGdCetrTI3t1RuV2ALZ52o9LXBylVvUlk0fwhGLmhpbchuTjNV6J1NZ+A33U7/4WVxwiTWA+hMr770SXzsBhrRE2eUdB9Dyv7vMndgK6V0jDhxYaFsGtAoaBz2P8omfWe8zqpr0UjToM8FAdO3cUnOOMPwQ8X/eUx8S9IroagcZVrcJpOOVndejYsANL4z/y5lgUiVLOxlfNdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jbudskY43BJxAirVc7RRXqvuVaBUzRoqMwWNcQzgxzI=;
- b=XOZcFqVG7nkPTtiEtN0nMIys6QohkhaS1Czv1Zs0DB0e9fWW4Nv44afWLLkTPnJ1b4UR2Y6OW6Q9zGNYVC7r8Ip//GZkkkVSEepBuIhiKq7d+X3oRkQmiVOBJMD81LN4Wwy7HnIBdQwTU16IaDCQYFBKEwZNisjU7FbfobTXCwvbTQhH/E7E+re9OhT7moQpZS5rQQCK7EBVF0naGqcyp1kscWE7/RmxVru7sFaRtljiJ0k8hFAMQyNNinodEEbhUmIM+wvWcmJHVI2WW6auSygU9Yf1rvXRGI4y/ScocvUpNpLd00vUvbCdjP5UU2/OtVi2HRpeO9D8Uu8uHoA2vA==
-Received: from ZR6PR04MB375776.eurprd04.prod.outlook.com
- (2603:10a6:910:dc::10) by AMBPR04MB11786.eurprd04.prod.outlook.com
- (2603:10a6:20b:6ef::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Thu, 10 Sep
- 2026 10:49:56 +0000
-Received: from ZR6PR04MB375776.eurprd04.prod.outlook.com
- ([fe80::b83a:a0f5:2b29:50de]) by ZR6PR04MB375776.eurprd04.prod.outlook.com
- ([fe80::b83a:a0f5:2b29:50de%4]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 10:49:56 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Linkai Gong <gonglinkai@kylinos.cn>, Abel Vesa <abelvesa@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH v2] clk: imx: composite-93: return timeout from gate
- enable
-Thread-Topic: [PATCH v2] clk: imx: composite-93: return timeout from gate
- enable
-Thread-Index: AQHdPm+5Dm+HtrBT7kOm7qAQfmpwdrbHpzIQ
-Date: Thu, 10 Sep 2026 10:49:56 +0000
-Message-ID:
- <ZR6PR04MB375776542DE3B4EDE258846FAB88BF2@ZR6PR04MB375776.eurprd04.prod.outlook.com>
-References: <20260821085616.1129333-1-gonglinkai@kylinos.cn>
- <20260907022214.1076402-1-gonglinkai@kylinos.cn>
-In-Reply-To: <20260907022214.1076402-1-gonglinkai@kylinos.cn>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-09-10T10:49:20.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
- Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZR6PR04MB375776:EE_|AMBPR04MB11786:EE_
-x-ms-office365-filtering-correlation-id: 9532a003-f9ce-4946-2458-08df0f294095
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|19092799006|38070700021|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- 20ovkr9CGoFr/IEg03uLZN3eW7cXSiB1kM4zhOyS/XaXMchrZNuRCJaHdlYLmgf6LChqPXfHA2/b0isNtkSSlUrT5YvJKtfvNs34kj9BOqbv0RDOgkd51K0ptOEDfcTIsWCOvcnwhPxCzvlr+IexuCRd/jSFG0QdyHJSCiXK27pxW8dw7U0RxAPTWzNpXUjJRqqglblmVhv8QUl/SXTFDBnBkNeNNnqP1xtXKUHtnI9vglsZ901GhhP2SRn/NnHEM25PakRqBbaBEjeFKahMW/R3aw5ijSy6yMP2EQzMmzbIYbVBc5VnuQ/eHy6qlzUiYp6lzh+cY8kVrvP6HhiVxSFXh4rdhlir0/xp2tZEHWL8aylYf/IiRQPYgBZ0ZQhrQbUXNVclvH82ZLPsVc9acEEWosdtseYDOpP9as0Wv3Y6zDdgkaInUpXKoEKO9CI/o09RiUsNz81rxIp9KvOSL8S2wXGrRQqixVqAV2VAFqUX9Zmnl6NNJ+OUhJKIH0Pf4xt2OuDJbVTV+EOa3+CsCc7ZnUHWxSUKQd+JX+jgd21rm08leZ+LQ4m+qvfBEOtXViYRs0WKjUxBAG3Ekmq+QLAGdQwvTnl3EJFK94cffCaSNGvnZAoarzCK0UJSMhpy9pBGlcoiIEY7eL8tTxQYG+KyxFwQf9Nwp9Pp/4Nt+Sb3jcRNJsR1WuTbX+MJ/zt3HnyctquCnG4gFcI2J/ggYCEbN0upnFl0u9fXsPU/ZIE=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR6PR04MB375776.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(19092799006)(38070700021)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+wJhcLdc3Nedt/sveJD3r4SgIUG2IdXwV3Mj1ZhhA9Ru25UzIbSq+7JBIMaZ?=
- =?us-ascii?Q?zPyKUMbQFXDia1VnVEOYmXnFZ0cuh6uvgbXx/9fTMFS6l7GCX/gLUaevnoft?=
- =?us-ascii?Q?1E4Al1IzKenRDK39E3dK4Iy+u43Ra/b8/T7gkaxKXBBVrUVroV0nZSftXAnM?=
- =?us-ascii?Q?yDzE6FUSATIiXYhkod8A+Yd58klu4ULTRKLfirh/UcJbtolrapDDCA25k0IP?=
- =?us-ascii?Q?ObTwMSkpszSW+sKp2kqdAlizmMkraGHa1QjcXgpjAp92ifxG4cDppNObllPS?=
- =?us-ascii?Q?51pUnvXOqnJcxAlZiXXQ28c8djcUpK5nKcKo583p3Cjw3FQ1SF8VFMdRukHT?=
- =?us-ascii?Q?JfmQV3vCwPKO2UGN8FaWHdqRtH1/cn7RdBF1KHs0L2oTFziD7fv5h2IMKW5G?=
- =?us-ascii?Q?dAI95YcVDOoJ/wFPFrZNCRk13XVgYHMJzuiKkqYeZjJRrP5x7JTcY3D7dWrh?=
- =?us-ascii?Q?zSHnoQFjDY2QM6CHXijnIWFfgfACUJ/xCPa/OLhw6CjMwrmeFtJBhCMK0UEq?=
- =?us-ascii?Q?i6kxyyp36QuB83jg8X8lRqUxgsKC9p4Hkq8jcJ+61G7bwKpe9Y3ap/W2skzM?=
- =?us-ascii?Q?RqLTy+o4dXj112UHsJuoPWU+ap/MnoxzP5lKj5mHRSiJA2LaklzZA8Ei38i+?=
- =?us-ascii?Q?js+uASSLLrEIFrMMYPRZzs3+SfjbcXlJ1rPfQ+q5jFyLr9CV83qopqvfTvsc?=
- =?us-ascii?Q?Eha9lHqnZvJU/AXl01TwJw41QO8FjUX+Kyyth9J79Tnh5RXWBpXUeGV2WQvJ?=
- =?us-ascii?Q?bkvLwQX3q2fyLX/TVQUPsemY+THV0rjwc0XNBV5BQEMYSWzcj2PW4EIUDEbc?=
- =?us-ascii?Q?RDvCn4VlBbykTIJ1mkIAtvD3cH4g45wL9DxRdHiXti1NlOPIX7zuBsM/K9fL?=
- =?us-ascii?Q?OXcMtcyPkSTYo48fadTPgucXQOvDOse1Mz6yxTGIT5vnb8ZJbAfHaZFQQcOR?=
- =?us-ascii?Q?QCUIljuFiPbPGDMMKOk88/4oZJyeBpUzNPi46ERv0QumGfZxxIojRP+fk840?=
- =?us-ascii?Q?uDJgB15gP/QN20XlOWS6pFmMIvGe0Z1mcUIjIujeZCWPJ8nxODbddZwBCJC+?=
- =?us-ascii?Q?N1t682fz++cDFSUkscvxeIlDZYu31iXvqanTyDfModtqsuaOn+LWogNTWV/x?=
- =?us-ascii?Q?UKQO6KNGZR8Bg7nea1c4BbTqpTllRS2ONvcPF8PXJTX0zPVSZSxHUpmv/VCj?=
- =?us-ascii?Q?QTFGlozlgTLw7D/J4jSzLb6LwonFN6BAyTuaBoGVcIKxVIwFZypIezVA9WAd?=
- =?us-ascii?Q?QnEp1loT/eYKp3iFMG5E7K0PsqPqdx872rwa2v1cNg0RTx8jSwi1AsIiDObt?=
- =?us-ascii?Q?BhOebTUyM0R2xZPyVe/2ZK8PzGLLoloRpsKWMZYFHmd5Z3NkQj2cAmifNr+i?=
- =?us-ascii?Q?u7rA1o+DR7/VkxKJsNmhFTpcZ6oJwQF9dHMr8HntGT9XCNV2vZyGrnf5L5L9?=
- =?us-ascii?Q?qDRH+YEg0jZbmaPqwdWwBYt7vBXRJ//uA3G6VylKlOf2y91B7zmrr8aZy2Hz?=
- =?us-ascii?Q?QjydT0WxPJoJcpQaQv8G0ufNHpDPvY0JdRgAcgFJbzu+siVLW6BTQRpUlTMQ?=
- =?us-ascii?Q?rjwP0w5crYN0OzOt+30NMSDb+Lk6TwawHVoo+6aMtxawETrtx/HO9RE+X3Hq?=
- =?us-ascii?Q?pP124kPESCeGEflN+5TQVUHX9BmT3O3VGhRmTW1evo7CpA/XC5ewICcomIOa?=
- =?us-ascii?Q?Urxcb2a+hquzNiYej3K+9J/qSa03+vL69zMVuQrmLpag8IO6?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTP7CugY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0851F00893;
+	Thu, 10 Sep 2026 11:20:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789039257;
+	bh=4YoZZmaKA2iVAEQYVxLLU72x9KnrYSEBBkocKbLOQtA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GTP7CugYZJ9zXzjq5a2CZB+LeZk5Ghv+IXggKhEDVSy/F8N9qnX9YeG1AYeXTjNWK
+	 c6qq1Zm12WSDHTwDqGI0x2B9IsObvy3gxF810U7m+ykcM1i9/n42CiMYNYmq3JIHCA
+	 nk0rBtZ/xTL3w2oLs+XMbMlAzh5uFRrqTVaTc0evUlckXjwfY9WCoORCRKrw3qH5t6
+	 c76CFZOlarGYuY1FsWr0JoEQKG12ych9IFWZ7l66TvtfBVRo1dCHxnxN1i2HrMjsQ5
+	 fz6aKm+ODXDfFNv1QTIlxL/gGhXxJW3ZDDT3o+bQ6nP8IFs3nUbPe7xr3/B+fzALPU
+	 5eyhqXWKWWBkw==
+Subject: Re: [PATCH v4 net-next 01/15] net: enetc: add trusted VF support
+From: netdev-bot+sashiko@kernel.org
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew@lunn.ch, olteanv@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 10 Sep 2026 11:20:55 +0000
+Message-ID: <178903925585.219967.18067064676940135635@kernel.org>
+In-Reply-To: <20260909100733.1139689-2-wei.fang@oss.nxp.com>
+References: <20260909100733.1139689-2-wei.fang@oss.nxp.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZR6PR04MB375776.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9532a003-f9ce-4946-2458-08df0f294095
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2026 10:49:56.0965
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UYKqSrp9sXlVrA2o+7sdv9TlcOwPVlf0CjLJXHdJdysZ5XK5GG7xwitAu0eolw2hrXaCYLVoXRR8lqV+QTRNBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11786
 
-> Subject: [PATCH v2] clk: imx: composite-93: return timeout from gate
-> enable
->
-> imx93_clk_composite_wait_ready() already reports a busy timeout, but
-> imx93_clk_composite_gate_enable() ignores that and always returns 0.
-> The clk framework then marks the clock enabled and lets consumers
-> run while the CCM slice is still busy.
->
-> Propagate the timeout so enable fails instead of looking successful.
->
-> Fixes: 4a3de5aa7743 ("clk: imx: clk-composite-93: check slice busy")
-> Signed-off-by: Linkai Gong <gonglinkai@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider:
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Critical: 0 · High: 1 · Medium: 1 · Low: 3
 
-NXP Confidential
+- [High] Trust revocation ("ip link set <dev> vf <N> trust off") clears
+  only the software bit in pf->vf_state[vf].flags; it never reprograms…
+- [Medium] Default-deny of the VF primary-MAC mailbox message is a user-
+  visible behaviour change that the commit message understates, and the…
+- [Low] Reported for completeness and marked as resolved within the
+  series: at this commit both enetc_ndev_ops (enetc_pf.c:482-503) and…
+- [Low] Reported for completeness and marked as resolved within the
+  series: at this commit enetc4_ndev_ops advertises .ndo_set_vf_trust…
+- [Low] Reported for completeness and assessed as intended, documented
+  behaviour: ENETC_VF_FLAG_TRUSTED lives in pf->vf_state[] which is…
+
+--
+
+net: enetc: add trusted VF support
+
+This adds an ENETC_VF_FLAG_TRUSTED per-VF flag and wires up
+ndo_set_vf_trust through the new shared enetc_pf_set_vf_trust() helper for
+both the enetc and enetc4 PF drivers.  The first mailbox message gated on
+the flag is the VF primary MAC address change, which now returns
+ENETC_MSG_CLASS_ID_PERMISSION_DENY for untrusted VFs.
+
+A few questions below.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> index 9bb1004548ab..935a6a03b14f 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> @@ -225,11 +225,15 @@ static const struct enetc_pf_ops enetc4_pf_ops = {
+>  static int enetc4_pf_struct_init(struct enetc_si *si)
+>  {
+>  	struct enetc_pf *pf = enetc_si_priv(si);
+> +	int err;
+>  
+>  	pf->si = si;
+> -	pf->total_vfs = pci_sriov_get_totalvfs(si->pdev);
+>  	pf->ops = &enetc4_pf_ops;
+>  
+> +	err = enetc_init_sriov_resources(pf);
+> +	if (err)
+> +		return err;
+> +
+>  	enetc4_get_port_caps(pf);
+>  	enetc4_get_psi_hw_features(si);
+>  
+> @@ -574,6 +578,7 @@ static const struct net_device_ops enetc4_ndev_ops = {
+>  	.ndo_eth_ioctl		= enetc_ioctl,
+>  	.ndo_hwtstamp_get	= enetc_hwtstamp_get,
+>  	.ndo_hwtstamp_set	= enetc_hwtstamp_set,
+> +	.ndo_set_vf_trust	= enetc_pf_set_vf_trust,
+>  };
+
+[Severity: Low]
+At this commit enetc4_pf_driver has no .sriov_configure member and enetc4
+never calls enetc_msg_psi_init(), so VFs cannot be instantiated on ENETC v4
+and the mailbox worker is never armed.
+
+The only reader of ENETC_VF_FLAG_TRUSTED is
+enetc_msg_set_vf_primary_mac_addr(), reached via enetc_msg_task() which is
+only set up by enetc_sriov_configure().  Does that mean
+
+  ip link set <enetc4 pf> vf N trust on
+
+returns 0 here with no observable effect, and that the new
+enetc_init_sriov_resources() call allocates rxmsg/vf_state plus total_vfs
+mutexes for slots that cannot exist yet?
+
+This is resolved later in the same series: the patch adding VF support for
+i.MX94 and i.MX95 adds .sriov_configure = enetc_sriov_configure to
+enetc4_pf_driver, and enetc_msg.c then gates several ENETC v4 mailbox
+operations on the trust flag.  Noting it only because the knob is advertised
+one patch before it can do anything.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> index edc1277bb586..78114ab3e482 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -61,31 +63,49 @@ static u16 enetc_msg_set_vf_primary_mac_addr(struct enetc_pf *pf, int vf_id,
+>  	struct enetc_vf_state *vf_state = &pf->vf_state[vf_id];
+>  	struct enetc_msg_mac_exact_filter *msg = vf_msg;
+>  	struct device *dev = &pf->si->pdev->dev;
+> +	u16 pf_msg = ENETC_PF_MSG_SUCCESS;
+>  	char *addr = msg->mac[0].addr;
+>  
+> +	mutex_lock(&vf_state->lock);
+> +
+> +	/* Untrusted VFs cannot set their MAC addresses by the mailbox
+> +	 * messages.
+> +	 */
+> +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
+> +		pf_msg = ENETC_PF_MSG_PERM_DENY;
+> +		goto vf_state_unlock;
+> +	}
+> +
+
+[Severity: Medium]
+Is this a user-visible behaviour change for existing SR-IOV deployments?
+
+ENETC_VF_FLAG_TRUSTED is zero for every slot, since vf_state is
+devm_kcalloc()'d in enetc_init_sriov_resources() and only
+"ip link set <pf> vf N trust on" sets the bit.  On the VF side
+enetc_msg_vsi_send() maps the new response to an errno:
+
+  case ENETC_MSG_CLASS_ID_PERMISSION_DENY:
+	return -EACCES;
+
+So after this patch enetc_vf_set_mac_addr() -> enetc_msg_vsi_send() fails
+with -EACCES, and an in-guest "ip link set <vf> address ..." or enslaving
+the VF into a bond/macvlan stops working after a kernel upgrade with no
+configuration change.
+
+The commit message says:
+
+    This does not regress VF bring-up. The PF programs a valid
+    primary MAC into every VF slot at probe, and the VF loads it from its
+    own SIPMAR0/1 registers.
+
+Bring-up is indeed unaffected, but could the message also state that guests
+which previously changed their own VF MAC now need the host to mark the slot
+trusted first?
+
+Related question on tags: the message describes this as preventing a
+malicious VM from eavesdropping on other SIs and from spoofing MAC
+addresses, and the VF-set-MAC path has existed since commit beb74ac878c8
+("enetc: Add vf to pf messaging support").  Should this carry a Fixes: tag
+or stable guidance for backporters?
+
+>  	if (!is_valid_ether_addr(addr)) {
+>  		dev_err_ratelimited(dev, "VF%d attempted to set invalid MAC\n",
+>  				    vf_id);
+> -		return (FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> -				   ENETC_MSG_CLASS_ID_MAC_FILTER) |
+> -			FIELD_PREP(ENETC_PF_MSG_CLASS_CODE,
+> -				   ENETC_MF_CLASS_CODE_INVALID_MAC));
+> +		pf_msg = FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> +				    ENETC_MSG_CLASS_ID_MAC_FILTER) |
+> +			 FIELD_PREP(ENETC_PF_MSG_CLASS_CODE,
+> +				    ENETC_MF_CLASS_CODE_INVALID_MAC);
+> +		goto vf_state_unlock;
+>  	}
+>  
+> -	mutex_lock(&vf_state->lock);
+> +	/* PF has higher privileges. If PF has already modified the MAC
+> +	 * address for VF through .ndo_set_vf_mac() interface, VF is not
+> +	 * allowed to set its MAC address via mailbox messages, even if
+> +	 * it is trusted.
+> +	 */
+>  	if (vf_state->flags & ENETC_VF_FLAG_PF_SET_MAC) {
+> -		mutex_unlock(&vf_state->lock);
+>  		dev_err_ratelimited(dev,
+>  				    "VF%d attempted to override PF set MAC\n",
+>  				    vf_id);
+> -		return FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> -				  ENETC_MSG_CLASS_ID_CMD_NOT_PERMITTED);
+> +		pf_msg = FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> +				    ENETC_MSG_CLASS_ID_CMD_NOT_PERMITTED);
+> +		goto vf_state_unlock;
+>  	}
+>  
+>  	enetc_set_si_hw_addr(pf, vf_id + 1, addr);
+> +
+> +vf_state_unlock:
+>  	mutex_unlock(&vf_state->lock);
+>  
+> -	return ENETC_PF_MSG_SUCCESS;
+> +	return pf_msg;
+>  }
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> index 55c07c528f22..a7bf4bfc25b7 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> @@ -488,6 +488,7 @@ static const struct net_device_ops enetc_ndev_ops = {
+>  	.ndo_set_rx_mode	= enetc_pf_set_rx_mode,
+>  	.ndo_vlan_rx_add_vid	= enetc_vlan_rx_add_vid,
+>  	.ndo_vlan_rx_kill_vid	= enetc_vlan_rx_del_vid,
+> +	.ndo_set_vf_trust	= enetc_pf_set_vf_trust,
+>  	.ndo_set_vf_mac		= enetc_pf_set_vf_mac,
+>  	.ndo_set_vf_vlan	= enetc_pf_set_vf_vlan,
+>  	.ndo_set_vf_spoofchk	= enetc_pf_set_vf_spoofchk,
+
+[Severity: Low]
+At this commit neither enetc_ndev_ops nor enetc4_ndev_ops implements
+.ndo_get_vf_config, and rtnl_fill_vf() returns early when
+ndo_get_vf_config is NULL, so IFLA_VF_TRUST is never emitted and
+"ip link show <pf>" prints no VF block.
+
+Since the remediation the commit message recommends is
+"ip link set <dev> vf <N> trust off", would it be worth making the trust
+state readable in the same patch that makes it settable?
+
+This is closed later in the series by the patch adding ndo_get_vf_config()
+support, which reports ivi->trusted from the same flag.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> index d32a195a04c9..519fc90d2647 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> @@ -586,5 +586,28 @@ int enetc_init_sriov_resources(struct enetc_pf *pf)
+>  }
+>  EXPORT_SYMBOL_GPL(enetc_init_sriov_resources);
+>  
+> +int enetc_pf_set_vf_trust(struct net_device *ndev, int vf, bool setting)
+> +{
+> +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+> +	struct enetc_pf *pf = enetc_si_priv(priv->si);
+> +	struct enetc_vf_state *vf_state;
+> +
+> +	if (vf >= pf->total_vfs)
+> +		return -EINVAL;
+
+[Severity: Low]
+Trust lives in pf->vf_state[], which is allocated once at PF probe, and the
+bound here is pf->total_vfs rather than pf->num_vfs.  It is not cleared by
+enetc_sriov_configure(pdev, 0), by pci_disable_sriov(), or by VF FLR, so a
+slot trusted for one guest stays trusted when the VF is destroyed and
+re-created for another guest.
+
+The commit message states this is deliberate:
+
+    it is intentionally preserved across an SR-IOV disable/enable
+    cycle. The bounds check uses pf->total_vfs, the hardware maximum and
+    the size of pf->vf_state[], so pre-configuring an uninstantiated slot
+    is in-bounds. If a slot may be reassigned to another guest, the admin
+    clears trust with "ip link set <dev> vf <N> trust off".
+
+Later in the series enetc_msg_clear_vf_config() encodes the same rationale
+in a comment, so this looks intended and is mentioned only for the record.
+
+> +
+> +	vf_state = &pf->vf_state[vf];
+> +	mutex_lock(&vf_state->lock);
+> +
+> +	if (setting)
+> +		vf_state->flags |= ENETC_VF_FLAG_TRUSTED;
+> +	else
+> +		vf_state->flags &= ~ENETC_VF_FLAG_TRUSTED;
+
+[Severity: High]
+Does clearing trust here leave the hardware MAC filter that the VF
+programmed while it was trusted?
+
+While trusted, the guest can put any valid unicast address into the SI
+primary MAC registers, including the PF's or another VF's:
+
+drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_primary_mac_addr() {
+	...
+	enetc_set_si_hw_addr(pf, vf_id + 1, addr);
+	...
+}
+
+The trust-off branch above only clears the software bit, so ENETC_PSIPMAR0/1
+(ENETC4_PSIPMAR0/1 on v4) for that SI keep the guest-chosen address.
+
+The other paths that could restore it do not.  enetc_setup_mac_addresses()
+is the only place a PF-chosen MAC is written into every VF slot, and it runs
+at probe:
+
+drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:enetc_setup_mac_addresses() {
+	...
+	for (i = 0; i < pf->total_vfs; i++) {
+		err = enetc_setup_mac_address(NULL, pf, i + 1);
+	...
+}
+
+enetc4_pf_vf_flr_handler() re-applies only promiscuous state, so the address
+also survives a VF FLR (guest reboot or driver reload), and the SR-IOV
+disable path does not touch it either.
+
+So after the documented "ip link set <dev> vf <N> trust off", frames for the
+spoofed address still hit that SI's exact-match filter, and a slot later
+reassigned to a different guest inherits the address, because the VF driver
+reads its MAC out of SIPMAR0/1.
+
+At the end of the series the trust-off branch grows scrubbing of
+promiscuous mode and of the UC/MC hash filters, but still does not restore
+the SI primary MAC.  Should this branch reprogram the PF-assigned primary
+MAC for the slot as well?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909100733.1139689-1-wei.fang%40oss.nxp.com
