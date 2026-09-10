@@ -1,208 +1,127 @@
-Received: from mail.fris.de (mail.fris.de [116.203.77.234])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912A44A2613
-	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 15:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A7838F63D
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 15:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789053628; cv=none; b=AWP4z42dBnbG4vCH2f3YbnnShVdMgY02fKBuREZRJggq1+ssndaVzr4FdpowZX+TKfWmWiAkS0mW4jChHUD4HOA2ptLkUjoEdqoWPOK0wsZ2ACAmqIdPKzJoqDyJt2jOED2NjbkBCYSH9MMIrlwMGyM9d6vHFIw5bd+VTJaNjd4=
+	t=1789053841; cv=none; b=TJq8EnFXw6Bch4KUy7jF3rUfOBBq9EGgiZiUxfbzNSpDTRyeQMcEBCHEULUlM7AO+v1GolpNPriyJ0w4cIviBe6+YQBNStZsqVl1ukBYvk0ZKvnohhQlFjtO5qe9VMWcj7dN8BIxop5xPAbSqgo0ZKwSZI8UKOsrm284686AtPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789053628; c=relaxed/simple;
-	bh=qaVLtP24eUQigpsXQ1uRih63mTqL4A2y+Pni/SWk3gs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZEVv8ZVCNDEJnMsbdpbvzvk8AXrtmmKoXMSz5qxolTWpizk+lLLEWJu9+24bKJkLT3Upaf7oykDT9z//9KnFeo8oXI33hFSV71M3ryNyOCXHMV9XeyHx0K9udFOoajr++n655UHV7Y4ZIadMkDEWSBGPZh3TzlNAifixby9YpdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=zfxCzCRx; arc=none smtp.client-ip=116.203.77.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="zfxCzCRx"
-From: Frieder Schrempf <frieder@fris.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1789053611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fMLzyvdCDhOp+LMAXMo33v6YgTadM1kq8Lfjv4tjsH8=;
-	b=zfxCzCRxpsgEG1AjAnutkwMFKvd7iRH45PJsNk0Dy+mqADVvnFefwJquPyrOot9SkABRCM
-	jaZjpQZyhKBCSAmcM4DFWZsU/eKXFfTy+ug9SVtC17DBjlg1YOPAgTGnUYXsyeL4b/teyt
-	8+x/y3sOvq3TuFddB616qpGaR/nHDsXfkGsGAZhcuZ61sr5jJTY5Mein1r2oYriBa3ELyr
-	7ucQ3fKNyXaApS43UrWsqVWYASv7DVvKMgme81/+gB8Hq15P5jCIrJOCOaFMezG4BHrQzr
-	Vu438FaX8iHdStoMdMJq8tOgf5lOjJTkE6arpaHXnW+w23006731o1JJiivaog==
-Date: Thu, 10 Sep 2026 17:19:07 +0200
-Subject: [PATCH 2/2] arm64: dts: imx93-kontron: Add support for Kontron
- i.MX93 DL
+	s=arc-20240116; t=1789053841; c=relaxed/simple;
+	bh=AJLf0w2MP0N0+yUWTqolfEUFEKi+szr9GRVAR7TB2Fc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t/fEBkIDlTuesvsWbCH4tbzl3sty7aZZ/rrPIAv11Xkry0BSOOYnmJQV58nxrHb8gppddChuZDxuulifEfClgj/yW+3eNIemavDtoTgdDcWxVKfK3w5FNFU9zZfDbzUIZPNWa2ctaKZnS+SzLRcB9oLQ3BvQFjSm76OdwC0KWG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+X-PTX-Original-Recipient: laurentiumihalcea111@gmail.com
+X-PTX-Original-Recipient: robh@kernel.org
+X-PTX-Original-Recipient: krzk+dt@kernel.org
+X-PTX-Original-Recipient: conor+dt@kernel.org
+X-PTX-Original-Recipient: s.hauer@pengutronix.de
+X-PTX-Original-Recipient: frank.li@nxp.com
+X-PTX-Original-Recipient: festevam@gmail.com
+X-PTX-Original-Recipient: elena.popa@nxp.com
+X-PTX-Original-Recipient: consmin.stoica@nxp.com
+X-PTX-Original-Recipient: linux-arm-kernel@lists.infradead.org
+X-PTX-Original-Recipient: devicetree@vger.kernel.org
+X-PTX-Original-Recipient: linux-kernel@vger.kernel.org
+X-PTX-Original-Recipient: kernel@pengutronix.de
+X-PTX-Original-Recipient: imx@lists.linux.dev
+Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: afa@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 697642020A4;
+	Thu, 10 Sep 2026 17:23:50 +0200 (CEST)
+Message-ID: <818e023c-8a88-4736-9577-355e97da4466@pengutronix.de>
+Date: Thu, 10 Sep 2026 17:23:50 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] arm64: dts: freescale: add MR-NAVQ95 basic board
+ support
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ elena.popa@nxp.com, consmin.stoica@nxp.com
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, imx@lists.linux.dev
+References: <20260909153943.1048-1-laurentiumihalcea111@gmail.com>
+ <20260909153943.1048-3-laurentiumihalcea111@gmail.com>
+ <f0136c29-e372-4ae9-972a-23d7a60d75e4@pengutronix.de>
+ <a41510f0-8906-4698-9919-b65b40cc9b89@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <a41510f0-8906-4698-9919-b65b40cc9b89@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de>
-References: <20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>
-In-Reply-To: <20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Frieder Schrempf <frieder.schrempf@kontron.de>, 
- Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3435;
- i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=2MoUiiYl7TgFn82k5cuGD2bvJWlqdJspTEKCJ86zaqY=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWvRqZViT9U8Lm1gjAv1zTzaq2L+omzz04+Oay1eTtrX0
- Lrs54RlHaUsDGJcDLJiiixS/Bavbc1ifeSPVUfBzGFlAhnCwMUpABM5vpbhn9K6RS5HtmU/M8g+
- 4Ou1pKziTbfdhi1qm9flK6XoNz0Jnsjwv6DfLXTlaaY5McUpegY/WtZZB9XcCa2stFvmacx09PM
- NPgA=
-X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
- fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-From: Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
+Hello,
 
-This provides an overlay to enable the 7" LVDS panel on Kontron
-i.MX93 DL devices.
+On 9/10/26 5:08 PM, Laurentiu Mihalcea wrote:
+> 
+> Hi Ahmad,
+> 
+> On 9/9/2026 9:20 AM, Ahmad Fatoum wrote:
+>> On 9/9/26 5:39 PM, Laurentiu Mihalcea wrote:
+>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>> +	memory@80000000 {
+>>> +		device_type = "memory";
+>>> +		/* actual size filled in by the bootloader */
+>>> +		reg = <0x0 0x80000000 0 0x80000000>;
+>>
+>> If the board has at least 2G always, this is fine.
+> 
+> the board only ships with 16GB LPDDR5 so yes, it'll always have at least 2GB.
+> While the current size is fine, maybe it would be better to change it to 16GB?
+> Will have to update the commit message as well since "up to 16GB of LPDDR5 memory"
+> might be a bit misleading.
+> 
+> my other option was to leave the size set to 0x0 like some QCOM DTSIs seem to do.
+> Not sure what the preferred way of handling this is?
 
-Signed-off-by: Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
----
- arch/arm64/boot/dts/freescale/Makefile             |   4 +
- .../arm64/boot/dts/freescale/imx93-kontron-dl.dtso | 104 +++++++++++++++++++++
- 2 files changed, 108 insertions(+)
+IMO, the DT should not claim a memory size that's less than what's
+available across variants. So either 2G, 16G or just dropping it is fine
+by me. No need to change this on my account.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 95ae85ab4adf..2f0d3378c050 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -653,6 +653,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm-pixpaper.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
-+
-+imx93-kontron-dl-dtbs += imx93-kontron-bl-osm-s.dtb imx93-kontron-dl.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-dl.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso
-new file mode 100644
-index 000000000000..2d962823dfeb
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0+ OR MIT
-+/*
-+ * Copyright (C) 2024 Kontron Electronics GmbH
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+&{/} {
-+	model = "Kontron DL i.MX93 OSM-S";
-+	compatible = "kontron,imx93-bl-osm-s", "kontron,imx93-osm-s", "fsl,imx93";
-+
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&tpm3 3 50000 0>;
-+		brightness-levels = <0 100>;
-+		num-interpolated-steps = <100>;
-+		default-brightness-level = <100>;
-+	};
-+
-+	panel {
-+		compatible = "jenson,bl-jt60050-01a", "panel-lvds";
-+		backlight = <&backlight>;
-+		data-mapping = "vesa-24";
-+		enable-gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;
-+		power-supply = <&reg_vcc_panel>;
-+		height-mm = <86>;
-+		width-mm = <154>;
-+
-+		panel-timing {
-+			clock-frequency = <50000000>;
-+			hactive = <1024>;
-+			hback-porch = <160>;
-+			hfront-porch = <160>;
-+			hsync-len = <1>;
-+			vactive = <600>;
-+			vback-porch = <23>;
-+			vfront-porch = <12>;
-+			vsync-len = <1>;
-+		};
-+
-+		port {
-+			panel_in_lvds0: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+};
-+
-+&gpio3 {
-+	panel-rst-hog {
-+		gpio-hog;
-+		gpios = <26 GPIO_ACTIVE_LOW>;
-+		output-low;
-+		line-name = "panel-reset";
-+	};
-+
-+	panel-stby-hog {
-+		gpio-hog;
-+		gpios = <27 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "panel-standby";
-+	};
-+};
-+
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&ldb_lvds_ch0 {
-+	remote-endpoint = <&panel_in_lvds0>;
-+};
-+
-+&lpi2c2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	touchscreen@5d {
-+		compatible = "goodix,gt928";
-+		reg = <0x5d>;
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
-+		irq-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
-+		AVDD28-supply = <&reg_vcc_panel>;
-+		VDDIO-supply = <&reg_vcc_panel>;
-+		reset-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;
-+	};
-+};
-+
-+&lvds_bridge {
-+	status = "okay";
-+};
-+
-+&media_blk_ctrl {
-+	status = "okay";
-+};
-+
-+&tpm3 {
-+	status = "okay";
-+};
+>>> +&usdhc2 {
+>>> +	bootph-pre-ram;
+>>> +	bus-width = <4>;
+>>> +	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
+>>> +	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+>>> +	pinctrl-1 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+>>> +	pinctrl-2 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+>>> +	pinctrl-3 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+>>> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+>>
+>> Looks unexpected to have same pinctrl groups for the higher speeds.
+>> Are higher speed modes even possible on this board?
+>>
+>> If not, I would suggest dropping the extra states.
+> 
+> The pin configuration is chosen to meet the timing requirements of the 200MHz
+> state. Because of this, I would expect the configuration to be appropriate for
+> lower frequencies as well.
+> 
+> The intention is to use the same configuration as MX95-19x19-EVK since, from what
+> I've been told, the trace lengths are similar to those of the EVK.
+
+Ok. If you can actually attain higher rates this way, then nothing needs
+to be changed.
+
+> Thanks for taking the time to review this! :)
+
+Cheers,
+Ahmad
 
 -- 
-2.55.0
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
