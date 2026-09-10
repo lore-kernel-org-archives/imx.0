@@ -1,358 +1,224 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023124.outbound.protection.outlook.com [40.107.159.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DC23C2B95;
-	Thu, 10 Sep 2026 07:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789023816; cv=none; b=aFSVHVYaksAt92NXSZG8k9fn0KlN0cQrJajQZZXUBbk+dSnNzU3xArvKgiiUsducZtQBa0FM439S9mKw3QonIxxuSfnt2zsJaOXqZesK2FDVHxEyKOOarlHJtA7eT384XLs7wdfG/Ug7YTGdeuPsiwVVO7JkrBUCh0v8GLw4YgE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789023816; c=relaxed/simple;
-	bh=RxZySMR2RvrEigGsQNhpoN5yrqofPSoEZKa15sewMJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M8znEVhAclW8DOzBaCrd5QLikObZF9mruMfw8EF+eN9VKKfw31/Dd4ygdGniJgKOXRHQra8aFXgfhlvVu9M+NnZvUMYsSWB2GpZDMKys0kZeTISLo5ACWyNPrTz19f1G+sqReehCXFjYWq51361rQxZ+sPJiKWbWu6hG53uCX3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L8SGqx6K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cgde5xHN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gULVbAzq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=af5KKfRi; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3013C37D104
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 07:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789023925; cv=fail; b=QoWKXisnIkdBYwDZCddMZQYTZK4iqfIcrLdROAr7AqP/V9fjpeRRm2GLqS6ruCPl/VhHvpIlh++nTRFjdsC9Wlm09VKqyHm1v2vwg+Y245dYuZEDSwj0WLQPu6fy5tdtfxg4CkDYbhmrDdcNpOjNL96slhSH+ghQD8V/kll6ih4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789023925; c=relaxed/simple;
+	bh=NsRUAyQAZpX4gYLrWRGA4QdpCxu0u8XIrRt8TdreeM8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=euxV0J4oZu7UkfPFIxpdcjfL+kg55KRev+WNA9fObBfLmHiP9CainFdqDxoEBJwQ0g5NiiGKaLcIbMPCvz0Qxg9z/5H5GI3pf+NAnn1PAq7APOICpNqSHPIoxAnq9liwTe0zqx9XPJDnlj8650UrioFjfYDxM6P7OGFjmRvERVo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=BSXqPOme; arc=fail smtp.client-ip=40.107.159.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L8SGqx6K";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cgde5xHN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gULVbAzq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="af5KKfRi"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7E47B21BB3;
-	Thu, 10 Sep 2026 07:03:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789023803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V8y88EkP6ps9ehHOSpLcLPBRb/4bJdYWxdlvkIUXm5U=;
-	b=L8SGqx6KEAyU0nVQHDYPbod/uXFGF9NqdSVZ2Dg9F9uYZzN4v+D91WsglDCVbkRV3c3vld
-	gFzkVDpe6yJCr9H7UvRxADZW/CYIltyfWsQNVdkZvyolzvp0fL/0Pai4m7QBMkLoRuztgG
-	eCO+FyyY8706kNdadCTTc8ZbI+4O87o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789023803;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V8y88EkP6ps9ehHOSpLcLPBRb/4bJdYWxdlvkIUXm5U=;
-	b=cgde5xHNi9RXh+i3NQDL985sugdrr1iIDY7RejpEJyX2gDgybVlH6WD9g1LFcWQBxY6kLL
-	nLkuEwO7MxpGiqCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789023798; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V8y88EkP6ps9ehHOSpLcLPBRb/4bJdYWxdlvkIUXm5U=;
-	b=gULVbAzqaSg4g0zfqn6xxiDbV37p41SWB/dofbZ2CfVrnT1vvlZGc7jP9hD0/x/lKvSwgM
-	C1nKPsWVBnDD6WAcgew/7nxWaLXVQIGIUVhhcrfSsEE/w2Qe44OhjeuqZESlUdwsv1I+wd
-	gl+ZnNsWVV4KvOTRdv191UtU4w3AOcQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789023798;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V8y88EkP6ps9ehHOSpLcLPBRb/4bJdYWxdlvkIUXm5U=;
-	b=af5KKfRim3o9PJ+u8rD5U2uAsT2GI8OEfXqNkKtoW8H1rlqluv95uWWPDTT4HFi4fH+weP
-	WS5z2fQMsoFcA+Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BBD6713185;
-	Thu, 10 Sep 2026 07:03:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xJaNIzNWomrwSwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 10 Sep 2026 07:03:15 +0000
-Message-ID: <a85f3b74-5172-4e2a-ad0e-6bddddbe1e33@suse.de>
-Date: Thu, 10 Sep 2026 09:03:14 +0200
+	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="BSXqPOme"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CNMY2pvo/Pt6YdrJx79+YySME87CJbbZHZcWngb42fjQ93wQawuucYsn/1OLjQ2h1k2TTcJJ+43eL2shNkFQzh23TZagR+doFQQycP6M5cxFLGGXIUsgeLcaAIDiZTrm7fYrVwhS6Ki/t9LPsjOBqH80zwu/1PKDDRyUFuedxOdBG+swXLhDyqcAT/YqMIEM5SS/W/VHj02a0Mja1vXM//KBM9TZfryYfhI4rdpMt0i7qX4BNvNqa2xyo+QWinE8wkR+OL646wYzDS1B7gk5KGnRanCWMx1GYq70w4u/+UZZQB77CeUDYDrdCip76TghLPAyZsAR1h6IrT+bqRMV2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1yVxldyvZTGx4Q3S4cAVoBJT2juLGcnn9gHx/l5nq68=;
+ b=GX856LTvQ6nDODGc3h5fTEtzC3Kn4Vdc3WmommdyLlokBZr8ncvdCBzbabXrfGFF4T8/w3Z0Ui6EAk+GPSsDawrxiHTNl4SnXl+MV2LRCEBsDNMWUPD4JO7fy4CEZGYe14hzC090zfXTJZTFhUKXWBuinOP7Z+z47rBpzp0YnhVHs0L2CSfXeC1sBPq3XBB4ajAhW5pm33OKDolnXj2r/nF3bq7yxYu2BmgQysDk8rqXV10DDB+Svjq4j0nQTD5AdKs7TqwmYbqD5Sgg9wmmGx7CceBP+CcE2pJKqejUq9cIcvpqsBvsoNh0EEDxTludTOCxtJlZEfSf3jKytrHWpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1yVxldyvZTGx4Q3S4cAVoBJT2juLGcnn9gHx/l5nq68=;
+ b=BSXqPOme1ce0YF8ab5YGmmVBCERR2+xred31WPZe2lUpfmBQxR3+EJwRnfaKNR8GrtJ88ASn7MLNZm1InIq8H/YYg8dz2Y/7u8fcStcNVMOAkyLl1mD40Vgf77JjtP0+lbSpz+RGWTGobKtchxoThTdHh9m29N1BnBW2TjZmckA2zZ8fPnhyTjDy08CB96bCemuYd03XQDmiDTrbjcpLflnliPRMoDZ8kgThhPY7aL8TgoOBjxr7iGbbo+AG5ah8iGFdFq1eEVwsyU3ClqFnCLWx38PzRA2AA9GaK22k1Q7E1fPhc1gDVPUjIOM0ua1tStbqchPUvdoiF0cx4op7qg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by PA2PR10MB9148.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:420::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
+ 2026 07:05:15 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 07:05:15 +0000
+Message-ID: <e3b4c69f-6bfd-4765-b3b1-abf0958b5446@kontron.de>
+Date: Thu, 10 Sep 2026 09:05:14 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] ARM: dts: imx6ul-kontron-bl-common: Replace UART3
+ with DIP switch GPIOs
+To: Frank Li <Frank.li@oss.nxp.com>, Frieder Schrempf <frieder@fris.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Eberhard Stoll <eberhard.stoll@kontron.de>
+References: <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-0-4d0e8a75db79@kontron.de>
+ <20260908-upstreaming-v7-2-imx-dt-improvements-08-26-v1-1-4d0e8a75db79@kontron.de>
+ <aqGpZQlbFHD_-hVg@SMW015318>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <aqGpZQlbFHD_-hVg@SMW015318>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0104.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::7) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/41] drm/plane: Convert all drivers to
- atomic_create_state and remove reset
-To: Maxime Ripard <mripard@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, hamohammed.sa@gmail.com,
- louis.chauvet@bootlin.com, melissa.srw@gmail.com, alexander.deucher@amd.com,
- amd-gfx@lists.freedesktop.org, christian.koenig@amd.com,
- alison.wang@nxp.com, stefan@agner.ch, John Stultz <jstultz@google.com>,
- sumit.semwal@linaro.org, xinliang.liu@linaro.org, yongqin.liu@linaro.org,
- Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, festevam@gmail.com,
- imx@lists.linux.dev, kernel@pengutronix.de, victor.liu@nxp.com,
- anitha.chrisanthus@intel.com, paulk@sys-base.io, chenhuacai@kernel.org,
- jeffbai@aosc.io, lvjianmin@loongson.cn, wuqianhai@loongson.cn,
- xry111@xry111.site, zhengxingda@iscas.ac.cn, marex@denx.de,
- airlied@redhat.com, kraxel@redhat.com, spice-devel@lists.freedesktop.org,
- virtualization@lists.linux.dev, andy.yan@rock-chips.com, heiko@sntech.de,
- hjc@rock-chips.com, linux-rockchip@lists.infradead.org,
- Baolin Wang <baolin.wang@linux.alibaba.com>, orsonzhai@gmail.com,
- zhang.lyra@gmail.com, alain.volmat@foss.st.com, rgallaispou@gmail.com,
- alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com,
- philippe.cornu@foss.st.com, raphael.gallais-pou@foss.st.com,
- yannick.fertre@foss.st.com, jyri.sarha@iki.fi,
- tomi.valkeinen@ideasonboard.com, hansg@kernel.org,
- dmitry.osipenko@collabora.com, gurchetansingh@chromium.org,
- olvaffe@gmail.com, michal.simek@amd.com, harry.wentland@amd.com,
- siqueira@igalia.com, sunpeng.li@amd.com, linux@armlinux.org.uk,
- Dharma Balasubiramani <dharma.b@microchip.com>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Manikandan Muralidharan <manikandan.m@microchip.com>,
- alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev,
- nicolas.ferre@microchip.com, alim.akhtar@samsung.com, inki.dae@samsung.com,
- krzk@kernel.org, kyungmin.park@samsung.com,
- linux-samsung-soc@vger.kernel.org, sw0312.kim@samsung.com,
- p.zabel@pengutronix.de, angelogioacchino.delregno@collabora.com,
- chunkuang.hu@kernel.org, matthias.bgg@gmail.com,
- Lyude Paul <lyude@redhat.com>, dakr@kernel.org,
- nouveau@lists.freedesktop.org, geert+renesas@glider.be,
- kieran.bingham+renesas@ideasonboard.com,
- laurent.pinchart+renesas@ideasonboard.com,
- linux-renesas-soc@vger.kernel.org, magnus.damm@gmail.com,
- tomi.valkeinen+renesas@ideasonboard.com,
- Biju Das <biju.das.jz@bp.renesas.com>, linux-sunxi@lists.linux.dev,
- samuel@sholland.org, wens@kernel.org, Zack Rusin <zack.rusin@broadcom.com>,
- bcm-kernel-feedback-list@broadcom.com
-References: <20260908-drm-no-more-plane-reset-v4-0-a31b3fcfc989@kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260908-drm-no-more-plane-reset-v4-0-a31b3fcfc989@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[kernel.org,linux.intel.com,gmail.com,ffwll.ch];
-	TAGGED_RCPT(0.00)[renesas];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,bootlin.com,amd.com,nxp.com,agner.ch,google.com,linaro.org,pengutronix.de,lists.linux.dev,intel.com,sys-base.io,kernel.org,aosc.io,loongson.cn,xry111.site,iscas.ac.cn,denx.de,redhat.com,rock-chips.com,sntech.de,lists.infradead.org,linux.alibaba.com,foss.st.com,iki.fi,ideasonboard.com,collabora.com,chromium.org,igalia.com,armlinux.org.uk,microchip.com,tuxon.dev,samsung.com,vger.kernel.org,glider.be,bp.renesas.com,sholland.org,broadcom.com];
-	R_RATELIMIT(0.00)[to_ip_from(RLzrpdgd8h57p4t6jqxd7odphf)];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[92];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.com:url,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|PA2PR10MB9148:EE_
+X-MS-Office365-Filtering-Correlation-Id: b355f547-4026-497e-9d6a-08df0f09dd2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|10067099003|11063799006|56012099006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	2K7qYe7wlxx8b1uSHl2tteywlLoecK23bfeEdsuuTLqqAmyyDSY4smu6VyP5nI6/juy+wNDYt0KmUJueVzipk9NC6JXasEY7GToktV4RiVVtmXhP3EBvdL68rI8dzufIdTZNaSdeWUrrxkoSYS7nE7Lbj3/YGezFkNO3IbN6BkJAhoZYVfcFSlkyrol9Czy3hJxKctBgBsN34AheN4Za5BuM1YWMe+rRm/M/zOhPvVs3JsxUAgIJKMiXhYL8gGMAhepDwJW0tE21+1QrM/LEOQmuhfxcFCk55EEvsMp0su3TXrNVRQgpVm+Ve/8Ya5Cr2XA1mcMfjOqhtbDTFbk/dbPDL52QTrTSnY6LcawiWWPU5LOBNgjWYDUJ4tabtjP+gTa0LZe7GVBrbdf8RDZ0Ff4eCwe6tZubVh33BBU0bAlI6Qa1Z8OM1hleSqpiajxNh0ZnBwP+xRisY3rk0Z9L+PdiOHgTl80B9cyHQrO2LUjn/y+NX8hpgvqetdbmXAY1e1VCDFWtBoKRzy3j/nL2znKB6/zHthKUkfpfI0WO8kCFdhaK60LENTYUX1Qi6IuNJrg6Gfd6vvW8F/rSZ0ow1aMXLHEDc/D97lTd83O6usyVYlQYJDwC/WXZ3jvEP39oAGwQpsjkXAjkwbksOajqePsbIGaJanUszbV9PIQbviM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(10067099003)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ekpNZE0ybWhvUEp3elJmTVp2TXRCcFdvb3hQT1h3b09abUtlRnZDSE1yTDhE?=
+ =?utf-8?B?M2FNM1V6bkhiL04xSGk5TXB5WC9MUHM2R2FUNmFHTml2NFVrWVl1ZG5aaHBL?=
+ =?utf-8?B?WjJWTjNySFJna1A0S3E4dmkxSnhibkViTE5heGNkSFlYMnVTOEdDYmxJbE04?=
+ =?utf-8?B?NThJcTF6bWpWeUZDbUNBYVljZDhzeWYzUDN2ek5ZQ0RYa0NjaEZxQVhMLzVt?=
+ =?utf-8?B?aFZSSlZwZjc0Z0ltQnU3S21IalJabCsyekFYM1VyTUtlbERhSFZCaTdzWXht?=
+ =?utf-8?B?Z1RPYnlFN2tIVTB6NGNldlNiMXQ0U0grbmp1SkNFWWRIVUlGQmlkZVMrcTM1?=
+ =?utf-8?B?N29mZXdoKytGYWgxN1lUOXpxTlBSZkpLSkt4dnlhcVgxcjRxSjAwTTNvdlRG?=
+ =?utf-8?B?SHBNdE5HU1liWHlaVm0wczhUejhzNnFyN0U0NWpVUGpkWFVmOFVpSjRwN0dF?=
+ =?utf-8?B?eEYwYndOQmNlTUY0MkpMT1dycEVPS3BNRUpLbW85ZlJpRnk1bnRaZmc1Rito?=
+ =?utf-8?B?QkxVZ2NEclBOazU4V2xDYWlwTHJiQktzZjZ2Tk1xVmNEK25na0xvQk5RcjRH?=
+ =?utf-8?B?VEl2RUJ0b01jSEF4VFk0MlhwSE1wbi93QjhPYjZQVWsrcUZRTTdjS3hJczNC?=
+ =?utf-8?B?M2hkbFVuenNjRHdhS2JaQk5jRDZ0NzJFQThrUjMwSlBhYU40c1lDUmExeUdu?=
+ =?utf-8?B?akw1dzJRY20yK1RnME5jMXQzNVo4RCtlZVVBajFBZTdtZ3l3RUVlT2ptT2U5?=
+ =?utf-8?B?ald0TUxJTWMxRlNNT3Y4TERmb1E2TFVTUS9aUzFacDZpbzRkMHRRWFhxL0lY?=
+ =?utf-8?B?aXFkU3dmRWRvdlJibHdpcEl2OHdZNnA4Sk4rdXR0QloxSzhNRzhNSU5hNGpX?=
+ =?utf-8?B?cjVXQVZPL0VQM3B6bWFkL1NYZ1VZQ3ROeGV2djhPcW5OdTFmdVQzTVVkU1J3?=
+ =?utf-8?B?bzAzN0M0K0hMbmlzRm8yc0ZQN3lDQlp2WlM2R1VWK0JqTThmVVlweUxNNWIx?=
+ =?utf-8?B?WXMyUk84Q1RxQlM5a1BWWVRZVDhzSjVTYVNvSVQrdVJJU25GZEMyVUR1aWRi?=
+ =?utf-8?B?Tm8ydnJVeEtwR1FmSk9ZdVZzd1ZMek9CVjZJSXlpSHM5OVk3eVF6QnkxVCta?=
+ =?utf-8?B?bFBtMHFIeElMMm1aZERZbjVsWDhoUC9XK3QzdkR5aGZrbXVQU1BpQ1RMRWl3?=
+ =?utf-8?B?cXBjbDFWeTFTdkV4NkFKTFB5anVwVE5ORWtaS2UxUFF0Z3FIRHBVcEJiUElG?=
+ =?utf-8?B?Q0pyWkRHQTdiTkNKRFAzbEplUTM1a3Y3WnppQlRJQkdvQmpJV29ua0Q1RXFn?=
+ =?utf-8?B?MjJNYk1UYjFGcjBMdzg5Y29ubUNUTVpBcjdmSTRnM0lFekx4djRwMkFiRlBV?=
+ =?utf-8?B?TWZESzI0endWRWFmZkVNRGdiUDFZM0t2RzZIOGtoRjJvRmc4RzNyNENNcWw0?=
+ =?utf-8?B?cGtKanAxYVZYcnNXRW5wdlV2dTlJV2lBQWloc2tlZ2w0bTNnNHVEUTVVRnF2?=
+ =?utf-8?B?Smo0VGVpR3FzaFpPZ0xGTnFScGw5MlZMSklMeWZ3bUk4VGJ5UGRCUUpKY3Zn?=
+ =?utf-8?B?VnUyeHdZanhtZkVwUi83RjFuZE5PVzQvc3QxVDl0ZzZLcWhzcU5CdlNwVDVa?=
+ =?utf-8?B?QkVCVUc5TW0rTWJVMWdMU1ZrdmtkRFY4VHB5enUxQ3hWU3VLYW5xaTdHb2ZK?=
+ =?utf-8?B?RGg5dXR3MGE4SmlPd3JOb2FVTzhuWVNwelAxZzJzeCtxaXZIS3BHTEVjWXYv?=
+ =?utf-8?B?QU5NL202OXY4b2d5NVNNUnRlL3VtTldObG9tYVJnWHZZYy96Q1d4L0JYdFVh?=
+ =?utf-8?B?MTdqcUxvQ1RzZjlsam1jL0tvS3h1TCs3NnRidU8rR1JraklxRS9ISWd4clEr?=
+ =?utf-8?B?amE1TmtNQ05oc2VIcyt1Z0RDa1RmOFJMcTd0bG5ORlFBWXhsdkRSQ3ZVVGVC?=
+ =?utf-8?B?djZWZ3p1dmVmT2M1cHFXWnFMeWdNa3JXNVpaWEcxVnk4TEp2S0hHQ2xkaU5n?=
+ =?utf-8?B?WmpIVzluQ1Fzdm8zMTRYQkJHS05uQzVLL3NFcjNTVXVjYWc4MjQ0ekhtdzFv?=
+ =?utf-8?B?bmJad1N0R3N6SFpveDJmK1R1NTJ1WVAwNlJQQ05RSThyVG42MG5wMHY3cHZ3?=
+ =?utf-8?B?dHdWS04rYzFseU5jdUJtV3Q1R3ZUYXF2YVNZSGZzKzZUWndMVEFLclRjZ09L?=
+ =?utf-8?B?NE1ZYTlhYnVEMkExL3lGS3NuR28rSmoxUHJZQnhuZDBVYVhMRXV4USs5SEhi?=
+ =?utf-8?B?Q0lHQ2lYTm5sNWd5YXFXWThkdTZrekJwK2s4WHVrVDg4SGNtbzk0WHlzYVA1?=
+ =?utf-8?B?d3hGSnBnZURTSHE3NDZiRFdRTndQbWRlOFFVZXYxYWdXZXlOUlRVUzBKVDY5?=
+ =?utf-8?Q?GGiUoD7TOAimICgI=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: b355f547-4026-497e-9d6a-08df0f09dd2f
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 07:05:15.1885
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j5iL0N4yRut6XLDHyvlIeoCw04OA0qi0wi/VGFwFOipMZ9X8my9MnSR06OrX9pNuM7VnjGxoHNAuw9tWYVeI0x/WRqTMNuY3ubJralQ5+tI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR10MB9148
 
-Hi Maxime,
+On 09.09.26 20:45, Frank Li wrote:
+> On Tue, Sep 08, 2026 at 03:51:48PM +0200, Frieder Schrempf wrote:
+>> From: Eberhard Stoll <eberhard.stoll@kontron.de>
+>>
+>> The latest board revision has DIP switches and lacks UART3 instead.
+>> As the old revision has long been deprecated and not maintained
+>> anymore, drop the support and reflect the current state of the
+>> hardware. As the old revision hasn't been widely used, UART3 was
+>> only available through an obscure extension connector and we have
+>> carried this patch downstream for years, no users are expected to
+>> be affected by this change.
+> 
+> Remove "we have carried this patch downstream for years".
 
-nice series. I looked through all the patches.  For those patches where 
-I did not respond specifically, you can add
+Ok.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> 
+>>
+>> Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
+>> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+>> ---
+>>  .../boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi  | 21 +++++----------------
+>>  1 file changed, 5 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+>> index f4c45e964daf..a71669bef7d4 100644
+>> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+>> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+>> @@ -172,13 +172,6 @@ &uart2 {
+>>  	status = "okay";
+>>  };
+>>
+>> -&uart3 {
+>> -	pinctrl-names = "default";
+>> -	pinctrl-0 = <&pinctrl_uart3>;
+>> -	uart-has-rtscts;
+>> -	status = "okay";
+>> -};
+>> -
+>>  &uart4 {
+>>  	pinctrl-names = "default";
+>>  	pinctrl-0 = <&pinctrl_uart4>;
+>> @@ -283,6 +276,11 @@ MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x1b0b0	/* DOUT1 */
+>>  			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* DIN1 */
+>>  			MX6UL_PAD_SNVS_TAMPER1__GPIO5_IO01	0x1b0b0	/* DOUT2 */
+>>  			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0	/* DIN2 */
+>> +
+>> +			MX6UL_PAD_UART3_TX_DATA__GPIO1_IO24	0x1b0b0	/* CAN_ADR0 (DIP sw 1) */
+>> +			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25	0x1b0b0	/* CAN_ADR1 (DIP sw 2) */
+>> +			MX6UL_PAD_UART3_CTS_B__GPIO1_IO26	0x1b0b0	/* CAN_ADR2 (DIP sw 3) */
+>> +			MX6UL_PAD_UART3_RTS_B__GPIO1_IO27	0x1b0b0	/* CAN_ADR3 (DIP sw 4) */
+> 
+> supposed header overlay or real user should set it. otherwise, the real
+> user set it will be failure because pin conflict.
 
-Best regards
-Thomas
+Sorry, I can't figure out what you are suggesting here.
 
-Am 08.09.26 um 16:46 schrieb Maxime Ripard:
-> This is a follow-up to the bridge reset removal series, and part of a
-> larger effort to remove the reset hook from all KMS objects.
->
-> The plane reset hook is overloaded: it is called both at probe time
-> to create the initial software state and during suspend/resume to
-> reset hardware and software state. These two roles have different
-> requirements, and the reset hook is not fallible, making error
-> handling difficult for the initial state allocation path.
->
-> While reset has the semantics to reset both the software and hardware
-> state, the vast majority of implementations and all the helpers only
-> reset the software state, making them equivalent to
-> atomic_create_state in practice. The atomic_create_state hook makes
-> this explicit: it only allocates and initializes a pristine state
-> without any side effect, and returns the state pointer or an ERR_PTR
-> on failure.
->
-> This series first adds the necessary infrastructure in the simple-kms
-> and GEM atomic helpers, then converts all 51 plane drivers tree-wide
-> from the reset hook to atomic_create_state. The conversions were done
-> using a combination of Coccinelle semantic patches and manual
-> adjustments. Once all drivers are converted, the old helpers and the
-> reset hook itself are removed from struct drm_plane_funcs.
->
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
-> ---
-> Changes in v4:
-> - Fix a NULL pointer dereference with vkms
-> - Rebase on drm-misc-next-2026-09-03
-> - Link to v3: https://lore.kernel.org/r/20260831-drm-no-more-plane-reset-v3-0-1877c7aa57b3@kernel.org
->
-> Changes in v3:
-> - Drop leftover state destruction in sun4i
-> - Rebase on current drm-misc-next
-> - Link to v2: https://lore.kernel.org/r/20260814-drm-no-more-plane-reset-v2-0-82d2963dd134@kernel.org
->
-> Changes in v2:
-> - Rebase on latest drm-misc-next tag
-> - Fix sashiko reviews
-> - Fix atmel-hlcdc breakage
-> - Link to v1: https://lore.kernel.org/r/20260709-drm-no-more-plane-reset-v1-0-302d986fe5f0@kernel.org
->
-> ---
-> Maxime Ripard (41):
->        drm/simple-kms: Remove unused reset_plane hook
->        drm/vkms: Move frame_info into vkms_plane_state
->        drm/vkms: Convert to atomic_create_state
->        drm/gem-atomic-helper: Remove __drm_gem_reset_shadow_plane()
->        drm/amdgpu: Convert to atomic_create_state
->        drm/fsl-dcu: Convert to atomic_create_state
->        drm/hisilicon/kirin: Convert to atomic_create_state
->        drm/imx/dc: Convert to atomic_create_state
->        drm/kmb: Convert to atomic_create_state
->        drm/logicvc: Convert to atomic_create_state
->        drm/loongson: Convert to atomic_create_state
->        drm/lcdif: Convert to atomic_create_state
->        drm/mxsfb: Convert to atomic_create_state
->        drm/qxl: Convert to atomic_create_state
->        drm/rockchip: Convert to atomic_create_state
->        drm/sprd: Convert to atomic_create_state
->        drm/sti: Convert to atomic_create_state
->        drm/stm: Convert to atomic_create_state
->        drm/tests: kunit: Convert to atomic_create_state
->        drm/tilcdc: Convert to atomic_create_state
->        drm/vboxvideo: Convert to atomic_create_state
->        drm/verisilicon: Convert to atomic_create_state
->        drm/virtio: Convert to atomic_create_state
->        drm/xlnx: Convert to atomic_create_state
->        drm/atomic-state-helper: Remove drm_atomic_helper_plane_reset()
->        drm/amdgpu_dm: Convert to atomic_create_state
->        drm/armada: Convert to atomic_create_state
->        drm/atmel-hlcdc: Drop spurious csc_init call from reset
->        drm/atmel-hlcdc: Convert to atomic_create_state
->        drm/exynos: Convert to atomic_create_state
->        drm/imx/ipuv3: Convert to atomic_create_state
->        drm/mediatek: Convert to atomic_create_state
->        drm/nouveau: Convert to atomic_create_state
->        drm/omap: Convert to atomic_create_state
->        drm/rcar-du: Convert to atomic_create_state
->        drm/rz-du: Convert to atomic_create_state
->        drm/shmobile: Convert to atomic_create_state
->        drm/sun4i: layer: Convert to atomic_create_state
->        drm/vmwgfx: Convert to atomic_create_state
->        drm/atomic-state-helper: Remove __drm_atomic_helper_plane_reset()
->        drm/plane: Remove reset
->
->   drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c           |  2 +-
->   .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c    | 28 ++++++++-----
->   .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h    |  2 +-
->   .../display/amdgpu_dm/tests/amdgpu_dm_plane_test.c | 30 +++++---------
->   drivers/gpu/drm/armada/armada_overlay.c            | 39 ++++++++----------
->   drivers/gpu/drm/armada/armada_plane.c              | 15 +++----
->   drivers/gpu/drm/armada/armada_plane.h              |  2 +-
->   drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c    | 33 +++++++--------
->   drivers/gpu/drm/drm_atomic_state_helper.c          | 41 ------------------
->   drivers/gpu/drm/drm_gem_atomic_helper.c            | 20 ---------
->   drivers/gpu/drm/drm_mode_config.c                  |  4 +-
->   drivers/gpu/drm/exynos/exynos_drm_plane.c          | 22 ++++------
->   drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_plane.c        |  2 +-
->   drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c    |  2 +-
->   drivers/gpu/drm/imx/dc/dc-plane.c                  |  2 +-
->   drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c            | 19 ++++-----
->   drivers/gpu/drm/kmb/kmb_plane.c                    |  2 +-
->   drivers/gpu/drm/logicvc/logicvc_layer.c            |  2 +-
->   drivers/gpu/drm/loongson/lsdc_plane.c              |  2 +-
->   drivers/gpu/drm/mediatek/mtk_plane.c               | 22 ++++------
->   drivers/gpu/drm/mxsfb/lcdif_kms.c                  |  2 +-
->   drivers/gpu/drm/mxsfb/mxsfb_kms.c                  |  2 +-
->   drivers/gpu/drm/nouveau/dispnv50/wndw.c            | 15 ++++---
->   drivers/gpu/drm/omapdrm/omap_plane.c               | 13 +++---
->   drivers/gpu/drm/qxl/qxl_display.c                  |  4 +-
->   drivers/gpu/drm/renesas/rcar-du/rcar_du_plane.c    | 15 +++----
->   drivers/gpu/drm/renesas/rcar-du/rcar_du_vsp.c      | 15 +++----
->   drivers/gpu/drm/renesas/rz-du/rzg2l_du_vsp.c       | 15 +++----
->   drivers/gpu/drm/renesas/shmobile/shmob_drm_plane.c | 15 +++----
->   drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |  2 +-
->   drivers/gpu/drm/rockchip/rockchip_drm_vop2.c       |  2 +-
->   drivers/gpu/drm/sprd/sprd_dpu.c                    |  2 +-
->   drivers/gpu/drm/sti/sti_cursor.c                   |  2 +-
->   drivers/gpu/drm/sti/sti_gdp.c                      |  2 +-
->   drivers/gpu/drm/sti/sti_hqvdp.c                    |  2 +-
->   drivers/gpu/drm/stm/ltdc.c                         |  2 +-
->   drivers/gpu/drm/sun4i/sun4i_layer.c                | 21 ++++------
->   drivers/gpu/drm/tests/drm_kunit_helpers.c          |  2 +-
->   drivers/gpu/drm/tilcdc/tilcdc_plane.c              |  2 +-
->   drivers/gpu/drm/vboxvideo/vbox_mode.c              |  2 +-
->   drivers/gpu/drm/verisilicon/vs_cursor_plane.c      |  2 +-
->   drivers/gpu/drm/verisilicon/vs_plane.c             | 14 +++----
->   drivers/gpu/drm/verisilicon/vs_plane.h             |  2 +-
->   drivers/gpu/drm/verisilicon/vs_primary_plane.c     |  2 +-
->   drivers/gpu/drm/virtio/virtgpu_plane.c             |  2 +-
->   drivers/gpu/drm/vkms/vkms_composer.c               | 30 +++++++-------
->   drivers/gpu/drm/vkms/vkms_drv.h                    |  2 +-
->   drivers/gpu/drm/vkms/vkms_formats.c                | 48 +++++++++++-----------
->   drivers/gpu/drm/vkms/vkms_plane.c                  | 36 +++++-----------
->   drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                | 17 ++++----
->   drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                |  2 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c                |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c               |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c               |  4 +-
->   drivers/gpu/drm/xlnx/zynqmp_kms.c                  |  2 +-
->   include/drm/drm_atomic_state_helper.h              |  3 --
->   include/drm/drm_gem_atomic_helper.h                |  2 -
->   include/drm/drm_plane.h                            | 12 ------
->   include/drm/drm_simple_kms_helper.h                |  1 -
->   59 files changed, 236 insertions(+), 381 deletions(-)
-> ---
-> base-commit: 17c6b88e85ffe5de5720004ae8c2176d52944aca
-> change-id: 20260629-drm-no-more-plane-reset-04950f42e07f
->
-> Best regards,
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
-
+> 
+> Frank
+>>  		>;
+>>  	};
+>>
+>> @@ -334,15 +332,6 @@ MX6UL_PAD_NAND_DATA07__UART2_DCE_RTS	0x1b0b1
+>>  		>;
+>>  	};
+>>
+>> -	pinctrl_uart3: uart3grp {
+>> -		fsl,pins = <
+>> -			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
+>> -			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
+>> -			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
+>> -			MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
+>> -		>;
+>> -	};
+>> -
+>>  	pinctrl_uart4: uart4grp {
+>>  		fsl,pins = <
+>>  			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
+>>
+>> --
+>> 2.55.0
+>>
+>>
 
