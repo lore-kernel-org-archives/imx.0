@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10241450415
-	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 10:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79AE4477F6
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 10:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789036649; cv=none; b=DUnFQsWkbU7o8OOznQaIygI6bmOtLaFkCw2vbLyt6SyFg7PcUH5iVxLuBhN8dZ3Qe9KtXvfmJ2SUXDSUaixhiTYIJolwPoHAidl/UxnAx63uSpNEVYkMVfj8BvQ/F/AX9d0N4M1plU2GOWaB7RR6jCiB0RKIgVeibaLmxhZsocE=
+	t=1789036650; cv=none; b=kVP6lpYEktXrMP4eaIvGvYmGcCyoymzIRR4i4QTgpn//aDbxgzThNStJN6GqzTSsp5bR6rvaN/sRtzBSQcxI5qpKB8o2L8QoophQKoR4Q/R/rdlEacIvIIXcT5Yy1BCISBpH0aT/7T8oeKevYnHQ8rLIsupohJsVM9WkIZIJLtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789036649; c=relaxed/simple;
-	bh=rreqp54aVTt4Ibbf3JAyDS/Wg10u+9947YLHcFkBzA8=;
+	s=arc-20240116; t=1789036650; c=relaxed/simple;
+	bh=FDL6zvNrd6Ds0P33Z5Y4+ojXKOmgHgb8w85yPE6BHh0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hJMCyaCNAdF/jR3PIC2dV8vBhFnDbNJ5/T50IGXYqqdJFp6OEj086at3voJLc7yyaKiUhZW+ZbQGLtKDIokNjs6+H91e9p34h2HOEUOvEfJJmDtV5GK6mOYlvKbtYc1deOA/1qKb2OLT5/TBSpAhpjxjCOUCpjaoZ61SWRAnZfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTrT8W40; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=RhTUKt6tAdW8j1qAZoNBfAm7gBrrrDkKw3Ut94PiHbKdQln293TocU5hEYtCOTRrj/NBzslcmsCA2Kat2653fCaIhx9hmwfxo7+XX9JZXvz5OpluLPs2HcYMA0YVv6mFFCeEA2NmJW/YAiliu0QqskTicPbD0iDOnPmB55m+kc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LY9g4EuV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTrT8W40"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5931F00893;
-	Thu, 10 Sep 2026 10:37:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LY9g4EuV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6631A1F00898;
+	Thu, 10 Sep 2026 10:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789036647;
-	bh=Pc/Sxsf7W5vmhiu+yBWzm9crsCNhcijRTBL5ojjsyJA=;
+	s=k20260515; t=1789036648;
+	bh=lLLDN29PwIw42RRWSEV3ypDU5EirjlBvssdqfHaHtc8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aTrT8W40rkdz5IgJpNLb/4tfehh4pfg3mluFVSSCzUV42u8RNoz6GH8KGayaBtGm6
-	 JDwx3R57a1uGaQ3TLa9XoXyOhs5YPUnCSAdIGolRHeJAvQGfI2WnwKkYj3VkZmYQQs
-	 kiAfjjsYuubTSs/xkfSCiR1N0tF0rXAyUqKyS3sJsZG4qsI40qSKusBj6EhvcJUnCv
-	 y5mCPUoA/inyxAQcrfYWLLZmS/qzcREb3ducJTZHCfyWbnLiOUSzsziGeLWbFqDCF5
-	 iXEzK5fTNMohWeQWHO5RE9Z8ob9eOi90oRMGmBv1s73S1KoK6OJITLpMqHjqA7rXHQ
-	 7fkq/RFC53+Ww==
+	b=LY9g4EuViL6fnKEHDWBU7joWdB7A/53MmiVyyABwYGtX9JqE73nR54RWtAwNj+182
+	 f6XhaxHhSFDcP/q+uWbqNeOaqfQtZ6N8E5wgvc0tvFB78bJhlJDpVrXzj1joCiKzXg
+	 3I7KAjIeU2U2OrvpTCrHgGz5aVLY2zl2Fm183PZYhsCfTEFCcaxd1m6qIsCdsfv+7m
+	 +HqduAT5en2nsAaX4ZMhdE+l5hr2w0bGa9UJ0bm/us8qKx71pbrhCwq9MZHKTFVmjE
+	 iyu2B2umBqxA7Cn3NehNy/iU3GgZNWzrJ51/Aro+IhNXrL4UmHXcJD08f7aPWUSN4P
+	 m3ulNZZvePagw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 08/15] net: enetc: move mac_filter from
- struct enetc_pf to struct enetc_si
+Subject: Re: [PATCH v4 net-next 12/15] net: enetc: add VF support for i.MX94
+ and i.MX95
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260909100733.1139689-9-wei.fang@oss.nxp.com>
+In-Reply-To: <20260909100733.1139689-13-wei.fang@oss.nxp.com>
 References: <20260909100733.1139689-1-wei.fang@oss.nxp.com>
- <20260909100733.1139689-9-wei.fang@oss.nxp.com>
+ <20260909100733.1139689-13-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Sep 2026 10:37:27 +0000
-Message-Id: <20260910103727.9E5931F00893@smtp.kernel.org>
+Date: Thu, 10 Sep 2026 10:37:28 +0000
+Message-Id: <20260910103728.6631A1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,83 +47,67 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Fallback path in enetc_sync_mac_filters() reads corrupted hash bit=
-map due to union overlap.
+- [High] ENETC4 VF incorrectly exposes `enetc_get_regs` which reads ENETC1-=
+specific CBDR registers, potentially causing bus errors.
 --
 
-commit 5d26a4aca1dc2966f5003f268c0a69349efe5210
+commit dcd5ceb06692837200f5c3183b3830a916b5816e
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
+net: enetc: add VF support for i.MX94 and i.MX95
 
-The mac_filter array currently resides in struct enetc_pf and is used to
-track unicast and multicast MAC address filters for the PF. Since struct
-enetc_si is the common structure shared between the PF and VF drivers,
-move mac_filter into struct enetc_si to prepare for MAC filter support
-in the VF driver.
+This commit adds VF support for the i.MX94 and i.MX95 platforms, introducing
+the new VF device ID 0xef00, the enetc4 SI ops, and the VF driver data. It
+also wires up .sriov_configure for the enetc4 PF driver to allow creation
+and teardown of VFs.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index c467dc05510ef..523c713247805 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-[ ... ]
-> @@ -60,10 +60,9 @@ static void enetc_add_mac_addr_em_filter(struct enetc_=
-mac_filter *filter,
->  	filter->mac_addr_cnt++;
->  }
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/e=
+thernet/freescale/enetc/enetc.c
+> index 80f0082f6c633..803c5c541a5c1 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -3794,6 +3794,13 @@ static const struct enetc_drvdata enetc_vf_data =
+=3D {
+>  	.eth_ops =3D &enetc_vf_ethtool_ops,
+>  };
 > =20
-> -static void enetc_sync_mac_filters(struct enetc_pf *pf)
-> +static void enetc_sync_mac_filters(struct enetc_si *si)
->  {
+> +static const struct enetc_drvdata enetc4_vf_data =3D {
+> +	.sysclk_freq =3D ENETC_CLK_333M,
+> +	.tx_csum =3D true,
+> +	.max_frags =3D ENETC4_MAX_SKB_FRAGS,
+> +	.eth_ops =3D &enetc_vf_ethtool_ops,
 
 [Severity: High]
-This is a pre-existing issue, but since this patch refactors the mac_filter
-storage, does the fallback path in enetc_sync_mac_filters() incorrectly read
-corrupted hash data due to a union overlap?
+Does reusing enetc_vf_ethtool_ops for ENETC4 VFs inadvertently expose
+enetc_get_regs() on hardware that doesn't support it?
 
-Because mac_addr and mac_hash_table share a union in struct enetc_mac_filte=
-r:
+When a user runs ethtool -d on the ENETC4 VF interface, it triggers
+enetc_get_regs(). This function iterates over enetc_si_regs and reads
+ENETC1-specific Command Buffer Descriptor Ring (CBDR) registers:
 
-struct enetc_mac_filter {
-    union {
-        char mac_addr[ETH_ALEN];
-        DECLARE_BITMAP(mac_hash_table, ENETC_MADDR_HASH_TBL_SZ);
-    };
-    int mac_addr_cnt;
-};
-
-When there is exactly one unicast MAC address and the exact-match insertion
-fails (e.g., due to a hardware timeout), the driver falls back to hash table
-filtering. Because of the union overlap, it appears the fallback path will
-read the raw MAC address bytes as a 64-bit hash table mask:
-
-    /* exact match filter */
-    if (em) {
-        ...
-        err =3D enetc_set_mac_flt_entry(si, pos, f->mac_addr, BIT(0));
-        if (!err)
-            continue;
-
-        /* fallback to HT filtering */
-        dev_warn(&si->pdev->dev, "fallback to HT filt (%d)\n", err);
+drivers/net/ethernet/freescale/enetc/enetc_ethtool.c:enetc_get_regs() {
+    ...
+    for (i =3D 0; i < ARRAY_SIZE(enetc_si_regs); i++) {
+            *buf++ =3D enetc_si_regs[i];
+            *buf++ =3D enetc_rd(hw, enetc_si_regs[i]);
     }
+    ...
+}
 
-    bitmap_to_arr64(&hash, f->mac_hash_table, ENETC_MADDR_HASH_TBL_SZ);
-    /* hash table filter, clear EM filter for UC entries */
+Since ENETC4 uses NTMP instead of CBDR, these MMIO offsets are not
+implemented. Does reading them trigger a synchronous external abort
+(bus error) and cause a kernel panic on ARM architectures?
 
-Could this cause the device to drop valid packets or receive invalid ones by
-programming the MAC address bytes as the hash bitmap?
+The PF driver data uses enetc4_pf_ethtool_ops which avoids this, but the VF
+data here reuses the ENETC1 ops. Should there be a dedicated
+enetc4_vf_ethtool_ops that omits get_regs?
 
-> -	struct enetc_mac_filter *f =3D pf->mac_filter;
-> -	struct enetc_si *si =3D pf->si;
-> +	struct enetc_mac_filter *f =3D si->mac_filter;
->  	int i, pos;
-> =20
->  	pos =3D EMETC_MAC_ADDR_FILT_RES;
+> +};
+> +
+>  static const struct enetc_platform_info enetc_info[] =3D {
+>  	{ .revision =3D ENETC_REV_1_0,
+>  	  .dev_id =3D ENETC_DEV_ID_PF,
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260909100733.1139=
-689-1-wei.fang@oss.nxp.com?part=3D8
+689-1-wei.fang@oss.nxp.com?part=3D12
