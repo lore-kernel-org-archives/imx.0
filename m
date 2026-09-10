@@ -1,180 +1,158 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013019.outbound.protection.outlook.com [40.107.159.19])
+Received: from smtpcmd03117.aruba.it (smtpcmd03117.aruba.it [62.149.158.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F3E4A99B4
-	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 16:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789056283; cv=fail; b=bhxdJTE/MzzP0TIBVc6DEkV2ThUA0y5HT3oDjeXMknNQdQ8b8DwkhyzwoWvZ93zGLYlTdXKFIeLUs9UlRa8MqEAHBfveQcAg8ItmaewG3M2IdupvK+GZX6GPU6ymIhIvUugQsN2JD63hXqBIYwocRrMHDEMFMaJMigKPpCw/p5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789056283; c=relaxed/simple;
-	bh=yIPlbqJDKXIRz2yfii9idDU6vqy+9vizVIB0xlwEipc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MWGrxIURNZ3FWKJhHpA+QTtr/lRRsUzaTf5Zaol03Tyo9EmCSODSUHxTOmBVzzirBfPZUmy1sSXyKOPsnKLpxPEa91pkt6R9WbVgKx/p3U9L94GYOv4GMtWJTRUP0j6nRP2gjo9Cqi4tQlT/Qz8nExx0HhAevHnpI6l+YXZVyp4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mOd7Remr; arc=fail smtp.client-ip=40.107.159.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922F4BE420
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 16:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.117
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789056702; cv=none; b=fUHnDBVrcAS4dQTZJKflqSts2jRiODy+5o7ik9n8hz1uuBWyvKqlT3IBNGynKlNBzVP3ZJWFWqKj9pEUF4b3ihT78lq+y+sPOQMT3nJ7jdeflxOVbuowoImRO0MsLel9NV8oLYPMvRe3pB1FggKVj0Uz0V6fNOa+uBXC4xlIYq4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789056702; c=relaxed/simple;
+	bh=iDXgxchB8TYh+FnP7dzJIawOFJjBV39fnBJKzCpj7Z8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VN6fRgrXDmp1XsVo3d4cAUeC+cZP/9ozChIc/aL3Tt+YPaUQsiiebb2d6JNS2KjALyALE++PtlZosWsditl+mxw6qHVZV2GDdezv3R2qBFuW2wbvcIu661e5pIZMjndvGqs8ztN4H+SxgEPvx6H8SvXwZcqkmoKG8ofQnQ99hks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=benettiengineering.com; spf=pass smtp.mailfrom=benettiengineering.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=HiA5HbGx; arc=none smtp.client-ip=62.149.158.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=benettiengineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=benettiengineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mOd7Remr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D7uUdRMgPrsKRGqBVep/d6zDlzt4cDBGlX1DxrevNSkC0OM5rdPItWOXGctSKIWpMFcE/mSaimUxBb8ualEVGJOm8uHj40XLT7XnjGtOkOKfHCrvMjA1RYYH5oVSdCOu48eOVpQFcN5snZ+Qa+2vvTWLuBi806+x7uFeltZRI10NfZY/Un+rEEgv0/wmgHGl6OBrxsU3c1hKXKgwq8OsO58bAw66yn9u5VHvs5Cmy4sXCDWmaJUCThronO5tbz7QMIB7wC96ccCqF9AqanKUmUyUbgqMm3hW/jcTiCGHp8YDrXafYX61gfRITe0jrzTM0ZpMg4ejhgu+syciAGd8iA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qdfkYMAJxZLxxaDV/2+TAAzHen/DNTYlSU5a9GCg0jw=;
- b=yrvAGVv+Ua/f/Jj3B2LWizaYpt5dwWXSpt4JmSrSh0/6vdUcWY3oa2xNreDoURRsb3/NJ6CuiHJVmRQq8Sf6WtqPaE18jp19iILhgcvH5h/Ocbn9Agu8UeXVDlB5DxBuDYyluOFSaLOz95V0AwiczteFvMje79SOVfu8go/Vsf+HOjYaNR9/8woZ7qdau6ffNMZFUe+bso+w92k8tbRjzmtxjgh+XLMuSRPzchlTZy+5BsUYBdPVmd0kpna7GHw0DeWd3faQfJionPgM/ufEctqN27KNNzJde8gKfjLs/QUwunecODPosO99Mz1DNlniUZc8t1xBsTkNQeJRIVZqJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qdfkYMAJxZLxxaDV/2+TAAzHen/DNTYlSU5a9GCg0jw=;
- b=mOd7Remrab/YQwjrFVbUGeVASkHomC2In+cGai+P08U4tAi3GQWMpSnD9nPRWfZDEtrK/nqiTm/j5YrDG+XMIhM/2ypzjYMj0PaJP6KBliY9u/tkyWXIIaIGaPVurm2831JWsgctEy2giM+qtt7nV2xkHhoooC5q3u7vDA9ghFDnvs7QIvsNMFismzmAQWp3El0SGL3/0kQd+8HhuTDd3d0cwpAAgwsuJexO3OlUmyIuEZTEfzUPxbr77L2MJ6ZQn4cMuN5TMiwzxMZ5Bry2zSJXPNY/KDQ0RwkH1Ir+xfI8TC7aNLSz0/YhQsnl+rbajuYmcaQ2msD46lDw4pXUoA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBBPR04MB7563.eurprd04.prod.outlook.com (2603:10a6:10:206::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 16:04:38 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.005; Thu, 10 Sep 2026
- 16:04:37 +0000
-Date: Thu, 10 Sep 2026 11:04:26 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Franz Schnyder <franz.schnyder@toradex.com>
-Subject: Re: [PATCH v1 3/7] arm64: dts: freescale: Add Lino iMX93
-Message-ID: <aqLVCq9NMk67fqPY@SMW015318>
-References: <20260910101616.139270-1-francesco@dolcini.it>
- <20260910101616.139270-4-francesco@dolcini.it>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260910101616.139270-4-francesco@dolcini.it>
-X-ClientProxiedBy: PH1PEPF000132F3.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:518:1::38) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="HiA5HbGx"
+Received: from [192.168.50.197] ([84.33.84.190])
+	by Aruba SMTP with ESMTPSA
+	id 4hK5x55sfwNy24hK5xnjY8; Thu, 10 Sep 2026 18:08:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1789056508; bh=iDXgxchB8TYh+FnP7dzJIawOFJjBV39fnBJKzCpj7Z8=;
+	h=Date:MIME-Version:Subject:To:From:Content-Type;
+	b=HiA5HbGxAw14LZr7gwc9EMiAgewqgLP5Gpqfh3nZ2bQQPSzOsNH7ezAaxCa+FQlAP
+	 MS7BYBaS0fLpuNOsDujSDvAUyO6R3XyK2iHhr/IoIm5vRLwdup8TTtmM5yas38mtmW
+	 3HBiZqu6f3BwROsmS/pHfcH444I88B5rDk4Mf/Vcg6OU25vq5C9shonmw+6F+NQytv
+	 F8FhHYTokK/+vYJmVdn79o8+RAg9v5a+Ga+4h7hjvMwtxwHDTSw6sSpzkZ5I1J01Ac
+	 EXPY1vZxJQZdon/d1ZxmdTIOk3NwSAgwGNC8wbMJRIm+P8fhFyA1AuT9Ru3E8bEnxI
+	 O+zHjl+4JRH/g==
+Message-ID: <f0c3d321-b1de-45f0-b126-a7e3ff381001@benettiengineering.com>
+Date: Thu, 10 Sep 2026 18:08:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBBPR04MB7563:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54c3dfd2-2034-4e51-33a9-08df0f5536bc
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|19092799006|10067099003|11063799006|56012099006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	9EB22bCD7cZGrRU0XCcQzyg+IW+x+EVX4uFkY0i9gLGRpLZQZsMKLtgXNnVw8Ya+QXT1kkmZUfU0W484CKC/Zp8ze+eJmMGKh9BjrEe4KRzVP2hEdf4X98Bhpl6oKzQ62O/lBIZjtP3ewK/YOBjQ3UrArf96sQ27JtoV+dTjMi6fsH1sv47ZQuW7TEY2MRqJ2x0MD5meeWR4UNdVoE4klV2858o4c5bOoxPdIWGKnIiJxyGI28A6Y6ta4JYHyYiS4yF4N6mKzG+mpGG0V1w9PCriJu93O8G0fWFV1UhvJHH4aGXpv514vXssSWRtoWlLxAsZh69D+x+Csaa+0guzvEy2XsMK0nlmTQ1sj5JPoLR5uP8noBl8iwOXqKc8aBueOcZoUpO4V/C7n8Myv7owjInTrgZ2S9TrZ/5OrvyRSl/ML33TL9N3s5uOlcPoJJjBEojGExgfHw3XNcEYcmUAPePbm3ZBTMJX8Smzhkhe4m3k64iUKtAhbiI+W8wg8+stvp9XOUq2YkRtbHQoqcaUzt/l45kKDp/5pnZrRnLfY8yx72Dz8qdJlvuC4N5jAvxKS5RiFOrMmnrOX+dSD1nIgD3KrTTMzlsEQljZrwhQmK5awNYesTI4mcuIp2jJurayvUZGt6TYoQ8w5+fzXDHJbTBeSGpGKI6zeGBmTdisQTg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(19092799006)(10067099003)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?J/P+puQ3VSElM6jglDEezB1LdSKHJanEKRp9avv9yauw8oie+c95tfT0NiE9?=
- =?us-ascii?Q?5DjQy+8+1X6EeciUh5UYEeT3m6jq0y47aOkxqXpHbrqI0adtDtrr6MHRZvzj?=
- =?us-ascii?Q?5tGuC4GrKGKnXz/kaVryj6qCCz9CgC6WFBtakURhi4jHvgRbNHjdMdEwD8Sn?=
- =?us-ascii?Q?fEFU0lfcP2myiDu0BETmAN0BF6B/5gpFFWW00mF2df2kQHCHPWquWv0JmpOH?=
- =?us-ascii?Q?T2+SzFLSERJnTbcyzM6neqq6caVWSYh5PyqB7hYz/3Us643xqfwd9Fx5V3sI?=
- =?us-ascii?Q?K60B2SL6Ept4e1oZLQ24D8CCarGkid484XywZw4DiSP6QUyefT0UK+wpAlo+?=
- =?us-ascii?Q?DtxkXpmdum7jARZ2Kuv+4emDr+MflHsIH1UeW3fxjdBElkCi+i/zpz+0LQy0?=
- =?us-ascii?Q?flH7cC7bIi39sHyBIyLBO7sITqIZ46mu6k0eskI81hU8WN+MLn1cT0IQ1ETE?=
- =?us-ascii?Q?MktF7HMYMzdPQ1SUwOB18NsnIV6EO7j7VGiapHYQ+1/zkTEcOTqxRGAIt2CO?=
- =?us-ascii?Q?FBx5QZN45wiM1XBMtoHvw3liDk1Fo8QS15wL70uq9PvNDhbbHzpJJh7diyo7?=
- =?us-ascii?Q?NerjTGCDrq8iEXorwq9v/5U0f9+zDnODWrBRT4t1xSSpzJY6fBbN8jmSsQQn?=
- =?us-ascii?Q?WqumnZ9aC6//0Wi8nSSwinOWAN4NncP7YlHThGtIhw15XiMhlKETyA7VofBj?=
- =?us-ascii?Q?heAIfoo77nNyt8VH51hg3JANhgkhyD9u0JMISSDmvL3BUKF1rbEfuCy11bmO?=
- =?us-ascii?Q?bx4CGvRqCTmklY9ZYq1DQRe/IVIMRoJpGlkFhPU/CQiYumL3aHj1kPfuQ9u2?=
- =?us-ascii?Q?gisJRU5remReo042aHcJeTuVHvfF1t4CrQXAybp61xrzWn81yuAb1Noj7aqn?=
- =?us-ascii?Q?/Pi6lOss6qGDQWL6v0wl5Ct2mvnaTXqPnMKMFj3L3PwlMrNB04XrscKEqZ+u?=
- =?us-ascii?Q?eS5jlAniAZbVPjQ3QkuU657EgTrke/ixP496mVWhHPyTPA7bYovm5Bav+t5q?=
- =?us-ascii?Q?myRVZcak2bPclZKBFGacKZsO1EBA/d3vBicvzSUmV2O4Ad+Y2phmvq99kpIa?=
- =?us-ascii?Q?v6loCWpGIMIwWkVrmwbrgTfP5kTps9qw4QbzK3qcOyjuqsyzKAcuMwGgt/MB?=
- =?us-ascii?Q?lZePv5lGQy+2bc8ofB+JXB1r05bfxd/u1iSwupZfKeTcLPwyYMPDw4WqG0+v?=
- =?us-ascii?Q?Zd5MjDDDFDzuRTPTF0K+TXsElpv9b8Yi6cewDGBxZ286xt1Nndt/+CSzgczp?=
- =?us-ascii?Q?YJqpf/cyf5VwzYJrDzuxrpQ9ftcYAuBfAy8yp4bqQajbM0emv1etYRqesBAp?=
- =?us-ascii?Q?6pHJ7saZhlM4mr2XRqUgzHv27jtlq5ISMUBvnf+sk23j1N5f1GDZLMocxSXX?=
- =?us-ascii?Q?cS9jewxCf+M8m1gEcCb/d4lbD+9PZzq8v1KfjVoE7F/exPp4nyX3K9IxnoYx?=
- =?us-ascii?Q?bt9FdRMbf763PhKc3fHaJmKRg03ahgWJVC+rxNtS8advDykny4NiTTqIsEpD?=
- =?us-ascii?Q?5H2cmSosjXhwwtWYuJajrQrbif4yrxyB2dSMMNKNWPFox4mtQ74uREHGLe1K?=
- =?us-ascii?Q?zBoJHq2lWSNISAEwxtYC8Mqzd+61ho8Scfg2LaaV5lGkUv8ewYyD0jsL4nor?=
- =?us-ascii?Q?o+DQNWva83TNlxN+Wtbr+S3fBoBLgDaK/8ESoR+06NjV8tPCbGr4PHWtxfSY?=
- =?us-ascii?Q?XQL6cuYaKf21MD7gfEQfAXjsSMhupduRDSO8Lwmx0cv+Rw2JqygE09btXt8j?=
- =?us-ascii?Q?s4E7xSMzBcglNB94Z1P4biZ1j0QwCqQmz7yBLK5E351cspkSnM5n?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54c3dfd2-2034-4e51-33a9-08df0f5536bc
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 16:04:37.8779
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zP60Kn288XhUDSxpn2gGKJ+BAvlsdgTiYvywuiYTQ+DV0IToYZ/XnLPuya51EGQRkgRv3yNsjHrjyRx1irvQ6KoD1LcmiIwEBIEp0IvO5zLxBjEHRmiA6ZKmqg6+i1kX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7563
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/13] ARM: imx: remove nommu support
+To: Fabio Estevam <festevam@gmail.com>, Arnd Bergmann <arnd@kernel.org>,
+ Jesse Taube <mr.bossman075@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Linus Walleij <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
+ <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Kristoffer Ericson <kristoffer.ericson@gmail.com>,
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+ Shawn Guo <shawnguo@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+References: <20260908152808.3928630-1-arnd@kernel.org>
+ <20260908152808.3928630-9-arnd@kernel.org>
+ <CAOMZO5Bw72SkBChbRLg+FaYZ34ENAW95-0+LrgcrESu_YtNXFQ@mail.gmail.com>
+Content-Language: en-US
+From: Giulio Benetti <giulio.benetti@benettiengineering.com>
+In-Reply-To: <CAOMZO5Bw72SkBChbRLg+FaYZ34ENAW95-0+LrgcrESu_YtNXFQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfFMBAVhokiHzs+9aOHLUhkqEKrkdLt3VcC599Pt8KJC50kaml/IaBOBq/Ohw5Gg7rNvCqnB//PcQlphuhph1gxDIUTFmEUvKU2YjZZfwqJJ1+BqDe3OH
+ oP7PKgIjhL1ZDEbpE2K//JBm18QD96jH5jY6dRO5oK4L576dgJr5m1siUNT3Lx5k/o/o/szFBxb9WP38SRtSyCSdwKpkl+Xc6IZbaG1i7D+wcLIcsBnyKGDr
+ MOOAyaZA3gbz8r1iKuls411peL8Z88rxOv+O0sKWGt6GVo15tJXCcq6ovO0BpMNY1DbOgln2ampSRot098eLXSnFH7kh2vP/36oQ6cNrxCOAOzpKCl3P3nAz
+ 7886fCdr6n0892TQ04taWf6bIN23JtlzWX1r69UM87k0hijYJGAyOTF+vwh9tgU9hsS7R3gA1J5CjrUNpIwN/p3ijHzkOo0ov+vV3FqNb2/zHdPZmjD1kmYk
+ Yr/wEiKg8IiuS6jMz6uxOpOmlAS6wzpT0D55UW8j1ClAGOVRwkp/2pWtVU0EoEV+FC3TmEDUPcvfKLYQmZjXmqWQCJXhMkVJ+cyJ1Y1ZN1tClKG3giEM/ZWb
+ S8wAFLqRjQGx5XZBW+YDZacimTlNW6MjlZLOtPcJs+2glopjBEVyuAlaaBeynpINagnpnqx5Z+10m3snZssrElDa7lZLH4WgG9Lfvzz7gm2vyYR6SsaYtoYO
+ NCQtOrmKT7fo+f0jjhjSLESsDemVT6cFqs4ftFHJIQ/Z1FxY2YWr70zngepdvAipv+Xel8CJDxSw1D1kYTz5l3d6kx+th5dfTr6N048I6T78fmMm2bbVaU/F
+ s2sHj9z0oDsHSUHlTpneKUDTdZdyNqBTGxCRWtA7Ry9JByTBc2K6BCIQ1WJWJgNL5AHpRpTkczTr06ShwUENYvD+dvXidS2WbMIVs8sLGPpg4PvuGe1DNBkC
+ 5/pQa3lkVPVf1fvjedm+C9SlmFhStfBq4oIEUR5GIb1CUPS9xeJCvpI9t8unfO2So6XXbUBHv/xO+RU2YwIcGOFCOUfJMMVfP4lzz/boG6MD1Z+Aq4nLAp1E
+ A5KK0IiJnjpsgaTD9Q8zHUt64pGQRNXWQmSF7I3BS043zUHukC6Ulu9HeLgQeeLclSn2DwiQPqbs1TmkyVCnD4Di2VmzpUNg4znZcumujj8EHhuuXB7MCO1P
+ LjngNtXLKQr3rcul0mFQ1E10u08rKRuiGr8D4aHtM1chJ4T/eQI3r5iQwk6bskReLqwlilzV3TpiALQeVazxMQaeUnlCyJdFQKF+mVfoaxI+K6bk3+btXYaA
+ 8l3xEqdA7/pa1DFkcPmYzBzRGaLdIL8YCEsa47qLXABM3G5A9uR0TFpR7zIP1Z5ssOpIqgA80MzdK2gRls0zdKteLuC0qtE7d/yH7QFyJ4ZvdCkoxbRyJI4U
+ zLjfNIQBS7QoFLB5qdsCibABaszNRMHHEy/HEX2XXHr4vRKvsXhba7LnVj/wEg6u57VFwVTrWyE2xNStm9vTay1/51JDgny1wy8bnD6XMqywikeffC2RMmEY
+ 0tkjqoO7CPyAb7WyQwX2DX6UWAqxGTn81Q5FLJ5Xs+iy2+jzO8/YVGg541LypTMv3prSvujdXac1b3Zt9Fspv74PNfyBKbklmhJ++Scjm8l5Vz3DFD0h+b2C
+ /x0ajejCkeITuy7cMykwQpmrPW0an0MKc6nXL2EbD6DuqAAS770tyPwjUcIYo0/WXzco6fKilDtWtbtslZ4u7aho4xchWdDt80z1zlIGan7JmdImmrELzbXB
+ 3bVf8r2dhUbDfSSV4/NUn7BKHnLUf1s3X5MLcbnI
 
-On Thu, Sep 10, 2026 at 12:16:09PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->
-> Add support for the Lino iMX93 SoM, its Verdin adapter and development
-> carrier board.
->
-> The SoM is available in two variants, with i.MX91 or i.MX93 SoC, using
-> the same PCB (the two chips are pin to pin compatible), to avoid
-> duplication create a common dtsi to share commonalities.
->
-...
-> +};
-> +
-> +&gpio1 {
-> +	gpio-line-names =
-> +		"LINO_P18",
-> +		"LINO_P16",
-> +		"PMIC_I2C_SCL",
-> +		"PMIC_I2C_SDA",
-> +		"",
-> +		"",
-> +		"",
-> +		"",
-> +		"",
-> +		"",
-> +		"LINO_P65", /* 10 */
-> +		"LINO_S18",
-> +		"LINO_S24",
-> +		"LINO_S20",
-> +		"LINO_S22",
-> +		"";
+Hi Fabio, Arnd and Jesse,
 
-Can you wrap, 4 pin pre one line to reduce LOC.
+On 9/9/26 10:21 PM, Fabio Estevam wrote:
+> On Tue, Sep 8, 2026 at 12:29 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>>
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> The i.MX platform has grown support for three separate product
+>> lines using Cortex-M based microcontrollers over the years:
+>>
+>>   - i.MX RT1050, a high-end microcontroller
+>>   - Vybrid vf610 suppors running Linux on either the Cortex-A5
+>>     CPU or the Cortex-M4 MCU
+>>   - i.MX7D similarly can run Linux on the Cortex-A7 or the
+>>     Cortex-M4
+>>
+>> There are no known upstream users of any of those three, so
+>> drop support and simplify the platform to assume that an MMU
+>> is present.
+>>
+>> Cc: Frank Li <Frank.Li@nxp.com>
+>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+>> Cc: Fabio Estevam <festevam@gmail.com>
+>> Cc: Stefan Agner <stefan@agner.ch>
+>> Cc: Rob Herring <robh@kernel.org>
+>> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+>> Cc: Conor Dooley <conor+dt@kernel.org>
+>> Cc: Vladimir Zapolskiy <vz@mleia.com>
+>> Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
+>> Cc: devicetree@vger.kernel.org
+>> Cc: imx@lists.linux.dev
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>> ---
+>>   arch/arm/boot/dts/nxp/imx/Makefile            |    2 -
+>>   arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts   |   72 -
+>>   arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h |  993 -----------
+>>   arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi      |  160 --
+>>   arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h | 1561 -----------------
+>>   arch/arm/boot/dts/nxp/vf/Makefile             |    2 -
+>>   arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts  |   61 -
+>>   arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts   |   88 -
+>>   arch/arm/boot/dts/nxp/vf/vf610m4.dtsi         |   61 -
+>>   arch/arm/configs/imxrt_defconfig              |   35 -
+>>   arch/arm/configs/vf610m4_defconfig            |   39 -
+>>   arch/arm/mach-imx/Kconfig                     |   27 +-
+>>   arch/arm/mach-imx/Makefile                    |    3 -
+>>   arch/arm/mach-imx/mach-imx7d-cm4.c            |   18 -
+>>   arch/arm/mach-imx/mach-imxrt.c                |   19 -
+> 
+> The imxrt1050-evk dts is used in U-Boot.
+> 
+> Adding Jesse and Giulio, who use this platform in U-Boot.
 
-> +};
-> +
-...
-> +
-> +/* Lino I2C_1 */
-> +&lpi2c1 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&pinctrl_i2c1>;
-> +	pinctrl-1 = <&pinctrl_i2c1_gpio>;
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
+MMU-less architecture never had a complete support, I agree that it's
+time to drop it so:
+Acked-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
 
-common dtsi should already set #address-cells and #size-cells, can be
-removed, please check others.
-
-Frank
+Best regards
+Giulio Benetti
