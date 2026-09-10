@@ -1,72 +1,71 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012071.outbound.protection.outlook.com [52.101.66.71])
+Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.111.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B8F534453
-	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 17:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789059744; cv=fail; b=FiijIJfw4bHaNIMgncjbyJ/TvNaVtgwzPNT9io3XKca11c7T4XMba8KHUSaqtFhc9uiuFaEKa3L8gGCcUGkEEKcK7CQUeVpB3+rWYcktT28Mr0mcwAJM8zFB+JtuiAN7vWec8Yv4Ysv3PvJd6lgfXYePziCApIFRC+mWsj+LxII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789059744; c=relaxed/simple;
-	bh=oQdcZRAO3fGMytwCUBUI6FXjQOWeehR/EWhPyDUVMs0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UamZ/aPGQmVY9CVBkvY/JifCxirOJLA0+UNsZQZCw40RPRNN6615p+KxbXWfjyJ4bmqofsBOxc7iy1tqyZrPFaBVCMdHQw/ZTAfw/L6QapAHoeLB1hd7BnyJhlkL2vNFedXzMDlpwQACE92H5OyqzM1Q8saAJPpz9+F2m753H44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=hkulHdeV; arc=fail smtp.client-ip=52.101.66.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDFB552955
+	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 17:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.104.111.113
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789060359; cv=none; b=LpcIkcyCSHp5HNDitzkFT0TbJ8p0+FvwculjVBPu9KlHINQ5AR9G9Myzs0GWjAK1NCxJVvsYitDmdACbdzJ3VAKtfh4aluk1txEMFHVIaLLmO+gXs5WKOeu5/0MJrx937qpGS2FccBYPmIOB929XlO2WcxsEHKnbKd1dy1H/gHA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789060359; c=relaxed/simple;
+	bh=QhQDCwVyfD/PEgie3S0zLZuk84xghrlrmylx3+osVp8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type:Content-Disposition; b=DSJA2M9ykUGvELtd6t67aRjrOxgABCSNtbt+r9zb0BurumstT9ZzaIgAcwuAANT2qYVD8jyd4p8SvphzAfgRSmYHxa787Z7XOpc7S7dnJA5QNyUya07z4sz29E0TmJrxGnOuVCuiDv1I9vgQXiqI5bRlBEm5Mi0JsFCpMYYFMxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com; spf=pass smtp.mailfrom=toradex.com; dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b=Cwuca6sk; arc=none smtp.client-ip=194.104.111.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="hkulHdeV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iZDYv8T0USD2H8KGxW89UgFSvIPKNc6/JDDGhEz+Ae5gvNRF/A7vXZOKHtDYXWwqD5gOC1skQDqc9zUdBWPkqbfj9bcRFUpy4kj9tGCMfTMlERsfn4J8zf6qckwZIiLL8dFITYH9LJ3GNAABROWSSdldKB08zhrCRpADoGxnvbdvGKl2Ro1gKVwed7HfVK3bDisHzz3eEH59OdQr792IZxgY67iu0d7HM6IgCvMgSV061sf2I3NUSfF10Qa4QjE0v+npTl3RzW1zmjBQbz7iQXFsRIisok4Rnci6gThq7TQzo3BBn+83IUKXYwnnqsBFDfK3HzouvaeMcXWRr2jVDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pzXR7xKFn4AFDE1Iss2nPIPe/99nhjMSLvF47V1cfMQ=;
- b=ULgsquAVtkoDlfy4h7NYiDVcpDFs0kJ8R9DfAUKVUWivLtQ2sMR9MM0TzWPUBXL5j69xg+pH8XzIAANEHwDmZkvPlZhhVQSTIoAkg/AlOU45yMsFBNT+wzKyadlVryREg7fQN4XjAgXrGDtu51Jc0Mj9FI7UpDFNpx3PppKHDJhsTK1ghDuUgiGgMd3ihJg5wsJ+Vk7DqwGgwjA5WlACSaTOWcJdmVbQ5Gw1wMBGR2qKvY1HxBRlk3BEFrNYsKxHuUAT3DgfJLiqVn7UKJeuq3mXxRvG5hfZSv9RpoW+wtkHd46b/o+Pd/o4/TdRtL0ttgRL9mzDzZqbe3vVKa1YTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pzXR7xKFn4AFDE1Iss2nPIPe/99nhjMSLvF47V1cfMQ=;
- b=hkulHdeVjDTP7XP9Y1k+fy4FPwGFurqC1CnD5I5SuHWC6aDXmxK6w5FX2rgYJ/CEdWnk7Tw9F4R9WqxBLcOGUOw2CVASdqO6yLfseLTUEv0CsuIy8Gv94f0GdD2RDND9zy0ikuSuvM/xEeqQnJG4wSrafeEi5URwPTIXau6gu+Rb1OiU27RhsKqmCJ0nU4wu1/hxpmOGuTjl1ZqytzHqXTM6+K+O2o7NIJvbZAwhNJjTdpa4gCmPECJX97xLLYi5nyANYBVBWglJWZn/KFY4w1DSta2Ypbw2Nybr1pRvzrdtDdG2OYx/kpZEglXHCMR13d/omsUkLCNiNOtKvgq5WQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PA2PR04MB10373.eurprd04.prod.outlook.com (2603:10a6:102:416::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 17:02:03 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.005; Thu, 10 Sep 2026
- 17:02:03 +0000
-Date: Thu, 10 Sep 2026 12:01:51 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b="Cwuca6sk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
+	t=1789060332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2GOG89oMfhyGtc0zIxq7uFeyZkDDw1ADWld6NwnVEYY=;
+	b=Cwuca6skqPgu1GLAgmeka5O6SL4NAcJstbqnug8hIg862HUUtWEBMHbqggBkUxIg+ggBOY
+	IZeNXfshJlcX7hGS7Yvm5iPCWc0JgnnmbBlHpEuDbSMrv/5OXwbOiknrCk/wLjgiMxk/MI
+	3OjYrbfgclaIx39IOFjMTPcItLEtOxk=
+Received: from GVAP278CU002.outbound.protection.outlook.com
+ (mail-switzerlandwestazon11020111.outbound.protection.outlook.com
+ [52.101.188.111]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ de-mta-64-O_GlWKyGPcakNo-Atc1a1w-1; Thu, 10 Sep 2026 19:12:09 +0200
+X-MC-Unique: O_GlWKyGPcakNo-Atc1a1w-1
+X-Mimecast-MFC-AGG-ID: O_GlWKyGPcakNo-Atc1a1w_1789060329
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
+ ZR1PPFC76DBE08A.CHEP278.PROD.OUTLOOK.COM (2603:10a6:918::2ab) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.9; Thu, 10 Sep 2026 17:12:07 +0000
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::88:6821:13f5:a5b2]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::88:6821:13f5:a5b2%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 17:12:06 +0000
+Date: Thu, 10 Sep 2026 19:12:05 +0200
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 Subject: Re: [PATCH 3/6] dt-bindings: connector: Add Toradex camera connector
-Message-ID: <aqLif2zrrsbYd5sM@SMW015318>
+Message-ID: <aqLk5UAv-j39Jxd3@francesco-nb>
 References: <20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com>
  <20260910-verdin-imx8mp-hmp-camera-ready-v1-3-3c9349ecdb9f@toradex.com>
  <aqLaLmz7n31P6igy@SMW015318>
  <prwghb3ftrz5xd3hapxtlv2o2gm5xmuapnpz2h7fqulf75phqz@lk4yiaepormb>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <prwghb3ftrz5xd3hapxtlv2o2gm5xmuapnpz2h7fqulf75phqz@lk4yiaepormb>
-X-ClientProxiedBy: PH8P221CA0013.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:2d8::24) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ <aqLif2zrrsbYd5sM@SMW015318>
+In-Reply-To: <aqLif2zrrsbYd5sM@SMW015318>
+X-ClientProxiedBy: ZR0P278CA0106.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:23::21) To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:2e::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,239 +73,170 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA2PR04MB10373:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce223642-baf9-4fab-f48f-08df0f5d3c5f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: ZRAP278MB0495:EE_|ZR1PPFC76DBE08A:EE_
+X-MS-Office365-Filtering-Correlation-Id: 760c55b3-bc4c-4b48-bc0b-08df0f5ea444
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|19092799006|366016|10067099003|6133799003|3023799007|18002099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	+6xv2zkSOnr+fgCkBD+QBl8vma2W7ns7nkd99bLfib/bl+qELlNG2aM6mqgO9Wm789ThTeXO5WzipJU8g2j9hXfpmdHSzEGVLVQ7OEUZW+dURMzy2jQpkyvJsdLxzKog6ETr7qf9IvtHETgT0j3CQVd0dk0popKxIdA3cvi/mm8OqB6cLt1Cm/Q39PfKksLQrx3P+OWcuj/XnIjwLPXLdmfqNXVCSIvddrApUJz1onJ+JLVaeR/VhwFhhV4Xq1rZrFqRtbAHPd2Y2EBbsXQOTCxaDvZUnmylWz3jAbMkXiznGPp6OSRTIsBhgRq+0cw1rFEkHnz3zzFLtHAgrTd59gXQ+afJJUoXJ6/5OUhMdGGqfm6TK7NHWfZdisrvVtUIukvpyXBFItujDQLK/XxV96QTbrdzfecHn2wpbhuDiEBvmTccPCqmpf4IbS2it/Pkl92WohyDalsP5zl879+1vre24h6kP4VINV86sWaXArbcuXFWbB4QejrJZK9vvgORQ54i9dPu0BoegFfTiU81jr6ZuQaCeIAWeWHQf0U6NQGbXs15ysQ8dtyJbuW5CSzQq/Qt7Nj7zCtuauprYMANTO865BJ/WEES+liNbJ7P/eE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(19092799006)(366016)(10067099003)(6133799003)(3023799007)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|6133799003|22082099003|3023799007|56012099006|4143699003|18002099003|10067099003
+X-Microsoft-Antispam-Message-Info: TcMypZiM1aBlq94BwTbMbS+/ttHVJXBvbdXcMUOrdOK6Z/oK2oDF47Q/NvaXvALvTKVz5WaJr0N1pHR7v4SH4R7H6Xp+7C1dzmzAhqf6gAktva1FWa5/DNH6bD3xatUxBaMiWmOMbz9BDqX6xGVSJ2sgM3STyWIDWVV8H9w/ToCxAmlsBq6E3UodSplnaEbblo1J/HnDIOwpafuYetj150tNC/aSIUgEHao2Rzg1+kP2umXsaa0AJ/x8InZ1dZUKYHTwOi2ZNFo85FFMTtUMb+m4Wu3X1eSJ8FtibK9PMx6JhQWnVEx2aZepn3k7gsFS1QWxEcPprUGjHROU8hAfVQMI8aXNhsBAMsHkOyCbiSoS4P+FdIwwQuZqoM45tf06A4esyPNs4I7gVRvYVFxlU54yqgdHyrKhwkfmkGIM9lugKVD+3JdPwsniEEncks47D8QRt4n3jYLP0YIET0k36dVkq3/1h/XhAEnK5zivtRfkTyDgGJ8e1PWNVX4ydHN2LV8b+vSXJjcL4LjkVwK/1kQWvjeiGh67KxM0wWKgDguDIWIOyTXFDdHfxvvWs9Ch4DAOkxN9szl4vylaRo2Hl5WSbEuP6d79KdP7GcKqAoKvNPPsx4ZJ4qN/xOmfA1Er
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(6133799003)(22082099003)(3023799007)(56012099006)(4143699003)(18002099003)(10067099003);DIR:OUT;SFP:1102
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8QuVwEl8dlYCJfh+Fi6h+K+5DluA/bw/H+5b2pdvAXKcHF2OSMap6kQ9hsx9?=
- =?us-ascii?Q?bMsk+OEMB7eM1jV5kh7WhD/Y5Tthg/vmGs9xcLtfi81dArXy9qEFN6RHANJ5?=
- =?us-ascii?Q?RHe5rg+F46rDQyiVS03CVP5Gqun0onFR1N/QfshKSNL2LXODpqq4zlHqmTBU?=
- =?us-ascii?Q?NLTxPtgg8p881QSo4DY9TKOq1Szl4x5o0IKKJnRJmTTRB/3Z6bIf+6KOHpDm?=
- =?us-ascii?Q?WVO62TTvgcWE50LV0eoVBgLRcgDnUBiXioCTFZjYW1smUGXrb3FGr55zY/mo?=
- =?us-ascii?Q?By1M8akbjJiF1KcKBod2gjdFzYc7e+L3TIRsRs/KykziN6MA7JTwPslqJ+t5?=
- =?us-ascii?Q?K76t31cS8hoN6jbPicU58ZyG93L+LWQ98WSBdyfsU66y2AwOKcOAO2zVM2y0?=
- =?us-ascii?Q?uvobnD/SiMIgqeajaDnis6vrfCMRfwLJAST+qwIYpsDJ89SOJ1R8jq8IcavK?=
- =?us-ascii?Q?mnsgn1KeaU36qKbDqVOAP3d8ILDEGBoYOWY7IqMnwZgu0A6BCjb2CCBTHCVh?=
- =?us-ascii?Q?sQMYsg/wWU7W0lBgE8olvY1WhL9YmsmmFotpPRNgMBIxtnsKvri9Cl4ws3xt?=
- =?us-ascii?Q?ukI7UUMAUS1XWNM4Ig8sQJqA9l6zJI6488m26RN+01+5/emc+vFzis5JweKw?=
- =?us-ascii?Q?XSlQxUtKZw/IRKF0rqXlVSNoyu0sOADCV0rrtG6oHQu9P6FEw3KYRtFENpJb?=
- =?us-ascii?Q?tpwQF+FyA49MUzIXdM3ZpCr3XHXDl6vY56hyL99p1F+XlPL+9F84LZ57mOKb?=
- =?us-ascii?Q?YCrE2zpE+z5j19p8yo/sf6ruW/68cRq2hQnHLlLEwje+dW7mgisLQI9AaFt6?=
- =?us-ascii?Q?XpNqxwVnS6AA9VpShtaTowpmYEyvJBQ+bd/f9daeE0rCSB+zRD+W78yAtb5P?=
- =?us-ascii?Q?KAxRoel+iWwKhm01NkOQTzqsCXDOHr7XOuVpzfD+SuIhy8oUEi0EXMeqz17z?=
- =?us-ascii?Q?Vls0UnX0KnW2TPEvEvpfrcyGddbkTsa1Cg9b1UUeoRMZODIc/+b9d8bcUlFc?=
- =?us-ascii?Q?eA8YrUVSWV9cTPeioZ2QNJ1jkKwxgSOClpRLttPv8Si+Tag/+hS3f9hNqle2?=
- =?us-ascii?Q?NKKPlxmHos9LHqI1gppjGfe29mDaGCeHs2fTcvhT7LuMbmYbM+d0WtEf1uFV?=
- =?us-ascii?Q?RNSzN236+/93AlPg01Viexog4H08/VyyQ/oIjKxzlHZLV+1dAQF+TGJbz5Xt?=
- =?us-ascii?Q?efKJY9nti6hkE+VrXbOVe9QUAoDMopw5WwIUV4QXQhXFonRN7lGoM0odCxAD?=
- =?us-ascii?Q?YaTOWkepuIdcyZ14AdeytnCYQvH6+ekCAvVvrjjdhVsTVH84dAr/KFbORa2Y?=
- =?us-ascii?Q?WuuPRXHM8oSKkAdM1TP/Z7SeTgffI7lFpZ0KVgh4rOTSgexBHTH2mwiLYziw?=
- =?us-ascii?Q?hq8v/pDrC+hR9zvcSj2mGEi2iERZNfEWjUFKQAdTlUozZyUpM9Ey2MZC3scG?=
- =?us-ascii?Q?3LqFPvsRFJArp9ibyuQzh+5cii5iiCD43dcxI3Hf4m0iuE2f7w/mPxIM7WmW?=
- =?us-ascii?Q?0F/R9LKSsGKaGfOSrKY9wpyhH8xTaibORd1OmVcgpkz4DFKwqndR/5q0La+Y?=
- =?us-ascii?Q?pOtbWblpCPRaKKsuqCK1MLroJ6qxBou92Rkyz/MgXrZfvdGkDMS55FTxt8sZ?=
- =?us-ascii?Q?Qo4xdrqh8KpEym1N2h1B4W2Si9igbV3BgKQDE4EAZ2FLwOfM/9KNAqv047lU?=
- =?us-ascii?Q?ln+7gzKHvTdyZzARSLB1X/0C12YZwnoXoyRXEJPgx50vYgH2OO/BoNNu67pJ?=
- =?us-ascii?Q?4ccB7Us31VKz1srzoh/uOBHUllxAHDptmzKLHlMIuzlupHLbPfo2?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce223642-baf9-4fab-f48f-08df0f5d3c5f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6zjcKDND9eYiguZScc/Wli29GrEJYCSqyKj+f3xiGGIf6vanlZI5cs5yqW0f?=
+ =?us-ascii?Q?UzxNlcLpzCTXSC64lbKD0lPRh2UOpEX7a2bKzRbG6DyZGMMh9S+37Ls763Yw?=
+ =?us-ascii?Q?sSi4ayVFzqeq4lOOcE6NQSg38L8Ks/ERNUSU85jZFU1yCeCDwWGnlbF+gXc/?=
+ =?us-ascii?Q?+x6x+dynbfM3jl8Axr/6IvTILBwC+Q6X075YeV6ATL8nYx7fJ2xGXiG9hLAx?=
+ =?us-ascii?Q?ZWSUoSCC1MPh3sFQ2AaUfJYcQqrZj/iq4GoJxMpxC14Q1SuQsd8zbZh4p/CY?=
+ =?us-ascii?Q?QN+BjiAcWRd4y6mX7WeEer+Jj8QU0rpfuSuFItmKJvFcl9gNDbwxDLnHRDV/?=
+ =?us-ascii?Q?gGrhEMhKDwlvGzVSBIPjGAIrX8y/WObkMU1W0VIYRT52M94m7IfgJBKutw43?=
+ =?us-ascii?Q?k54OMAANyyNHmmwuRd9zjiMHWqK4EmfMQxCB2+7/mm4a2DbJTntVJLeZNsw7?=
+ =?us-ascii?Q?W/IbMcHgg8tUB0qj2+ECIJDPacuqKzwbHSFXDam2ytz6S3zKIFvJXDptjW3b?=
+ =?us-ascii?Q?aQWTGdFuj36t0NN+rEoQk0YGvUtAPahaIcZleHgA5SBVf1Fo2ZbEZnwKenKg?=
+ =?us-ascii?Q?PszsUM5905sAj1E9I6uTp7oe6dGLsfMj9NxRczaEJA7AkCAGAb04KKTNjbjX?=
+ =?us-ascii?Q?tm7/fEyYrJ6Dlpi5ewDA+W/ds8tAajYrT+kxwZMzbOPmAFhtXPNmExd3EGDI?=
+ =?us-ascii?Q?INlmAtKSy/XWNYfCfWCdew2776inhxHlVhQn8yce03Mk/A6jvJPcqbFofk0U?=
+ =?us-ascii?Q?aniOueuW2BiAMjJN/LCX3FaoXVBVvFX94fsG/bWNWG9U4jB71D8y6zUGKOdk?=
+ =?us-ascii?Q?6xcO6OevBjNMNoVIMm+tdAmK9VD/KsEByVgwBT2LxAiioYxwd38ddxTHKvhY?=
+ =?us-ascii?Q?Ih7ghNcmpQqErSKXrnbNJQADfRZrF8fWEolljk46hPPM8JLTidQXEA/EeOuI?=
+ =?us-ascii?Q?j8fui+kxxxu3SgXPDoqi0l088UjfSFAZBCWDhpuA4Jxne53zeChMUKtQSfVI?=
+ =?us-ascii?Q?WQUY1br0hVJvJ7gE3ZQlxFIcrfZiA4vGMguKwLZzpUtvd+HvOF9ET/CiFYyC?=
+ =?us-ascii?Q?ZevYGtROTSycJRHQ1bKG34sSK8fsF48UO5ORw+xtOGCN00XTmblBLH0lN9OJ?=
+ =?us-ascii?Q?jjDzgmUnYMJvEEVmeIg1c+HlF2KIrGsFsQ2nHiwm9vYFdcxp+kDakkb/erC8?=
+ =?us-ascii?Q?YjUpgCpGvdQNzAXrUK5cUpuLDtVxpLJux+XGuWwgVLVvpWVpIsrzyyLZ3BZR?=
+ =?us-ascii?Q?WPxSZnhJqnt0d+1rm30P0ts64TqKupzRWDO8CYbX+ok7NxXTH9zQLywpvXqT?=
+ =?us-ascii?Q?/8M8DSemCwguOa9tZwcCT3TDPNbOFR9euYjf7/B7bk3Rr4g1LDWTdf2Hy8r+?=
+ =?us-ascii?Q?R8AfU9Ei5cVkxyZz4+paM9YD9RoAYn6u/+89x450sDhNJY6VZeswuf3ntdyc?=
+ =?us-ascii?Q?eFa3ggkcHfQaK1s13ZNfIrYrxZdmylQ5AwSf8Gjcg8pcsFDwSbvQJPEpjvqq?=
+ =?us-ascii?Q?SoERGnb9jIii1QH2e9HNrM7fmasTwJ1UW4Sds/VTn7/4+LIco1jOO1zsFmSw?=
+ =?us-ascii?Q?rO9l5f4lf06yPBOi4wEpiuX0HPf5GhXCyViODBTfUW8MgJv3b23lITekd+Fr?=
+ =?us-ascii?Q?01x9EppYkgqbMcZxnqxecQK8UdMuVEk5QpxrXzjHEPTT5W4UH/szU9FioGFS?=
+ =?us-ascii?Q?oVbtVLeYUClJEdGtdxSQI9p9mtKpUP92nsJpwtHIA+pz78iixCbUBv+yvnAt?=
+ =?us-ascii?Q?q8NBlXFObwfFHhGtRnwDMOkpAc8jeH8=3D?=
+X-Exchange-RoutingPolicyChecked: mkOEI3FiUXnHk46kUyQAw+xl1kU60xzt0uZPdo6t+6aDaBDgcajoDDzl6Pnj/DwvRCN/7RyTW7g9E+FpVzhSB/6JKuA2OKuT9VrCHSLPADvJKDHONwjhX7owIpzRafcggBJ656t7XfmoRii2XLDcngid0CMdY0WPSgETJV1mFn5BcfFNAygHi7kM4wr8ii/9j7KrLMYg5a51yaWkwYYNqtUkXkuiZwWvjqnFKcVHzb68EfBv+YgutPJQCPqxgUlAmojVEFgdIp2LSf5DSnvOl6sd8PTY5ELDQXYyFDLVGRumJVpx1kyKhlLzh/YVvwlvApRQk4g9JezdeegHx/1TsA==
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 760c55b3-bc4c-4b48-bc0b-08df0f5ea444
+X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 17:02:03.3793
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 17:12:06.8324
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /bkSw7v7a0zTbezVy2P5sAxdNC/SGhvsmxw8k6tJcWgkY53hpNvKJ5sJ7hTjf8aNaGUMzmfYZHZNLSBN/nIN7Fn0pemFxV8CF4E/SoyZFEo3lRDeR0pMnfvOlj9qlaHx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10373
+X-MS-Exchange-CrossTenant-UserPrincipalName: VOFsJJv82Fn0hj6QudbTps1JjJYk8FJiS2AXHqw+hFsmezKLUF1MrJ7htuEM+s9n2ZacIl0NcaETSFBpLdoBY090nYCW4a/5GKviXtcHlq8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR1PPFC76DBE08A
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: fN7g1fU-pu3YwlnjKB5QO-XMrh-ydScRLv4MO7_mx3o_1789060329
+X-Mimecast-Originator: toradex.com
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 10, 2026 at 06:39:30PM +0200, Ernest Van Hoecke wrote:
-> Hi Frank,
->
-> Thanks for reviewing this so quickly.
->
-> On Thu, Sep 10, 2026 at 11:26:22AM -0500, Frank Li wrote:
-> > On Thu, Sep 10, 2026 at 05:37:59PM +0200, Ernest Van Hoecke wrote:
-> > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+On Thu, Sep 10, 2026 at 12:01:51PM -0500, Frank Li wrote:
+> On Thu, Sep 10, 2026 at 06:39:30PM +0200, Ernest Van Hoecke wrote:
+> > Hi Frank,
+> >
+> > Thanks for reviewing this so quickly.
+> >
+> > On Thu, Sep 10, 2026 at 11:26:22AM -0500, Frank Li wrote:
+> > > On Thu, Sep 10, 2026 at 05:37:59PM +0200, Ernest Van Hoecke wrote:
+> > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > >
+> > > > Toradex boards route the sideband signals of their 24-pin camera
+> > > > connectors to different GPIO controllers. Camera overlays which nam=
+e
+> > > > those controllers directly must therefore be duplicated for each ho=
+st
+> > > > board.
+> > > >
+> > > > Describe reset, power-down, detection and power-control as
+> > > > connector-local GPIO functions. This lets an accessory overlay rema=
+in
+> > > > independent of the host wiring. MIPI CSI-2, I2C, clocks and supplie=
+s
+> > > > remain described separately because the GPIO nexus does not abstrac=
+t
+> > > > them.
+> > > >
+> > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > ---
+> > > >  .../connector/toradex,camera-connector.yaml        | 86 ++++++++++=
+++++++++++++
+> > > >  1 file changed, 86 insertions(+)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/connector/toradex,ca=
+mera-connector.yaml b/Documentation/devicetree/bindings/connector/toradex,c=
+amera-connector.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..06e6836e1aa6
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/connector/toradex,camera-co=
+nnector.yaml
+> > > > @@ -0,0 +1,86 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/connector/toradex,camera-connec=
+tor.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/base.yaml#
+> > > > +
+> > > > +title: Toradex camera connector GPIO nexus
+> > > > +
+> > > > +maintainers:
+> > > > +  - Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > +  - Toradex Linux BSP Team <linux-bsp@toradex.com>
+> > > > +
+> > > > +description: |
+> > > > +  Toradex boards provide 24-pin camera connectors carrying MIPI CS=
+I-2, I2C,
+> > > > +  clock, power, and sideband GPIO signals. This binding describes =
+the sideband
+> > > > +  signals as a GPIO nexus. The other connector resources remain de=
+scribed by
+> > > > +  the surrounding board device tree.
+> > > > +
+> > > > +  The nexus exposes connector-local GPIO function numbers to camer=
+a overlays
+> > > > +  and maps the functions wired by a carrier board to their GPIO co=
+ntrollers.
+> > > > +  GPIO specifiers contain a function number followed by standard G=
+PIO flags.
+> > > > +  A board may omit functions which it does not wire.
+> > > > +
+> > > > +  The function numbers are:
+> > > > +    - 0: Camera reset, connector pin 11
+> > > > +    - 1: Camera power-down, connector pin 22
+> > > > +    - 2: Camera identification, connector pin 23
+> > > > +    - 3: Camera power control, connector pin 24
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    const: toradex,camera-connector
 > > >
-> > > Toradex boards route the sideband signals of their 24-pin camera
-> > > connectors to different GPIO controllers. Camera overlays which name
-> > > those controllers directly must therefore be duplicated for each host
-> > > board.
+> > > Name is too generally, suggest use board name, we got similar comment=
+s at
 > > >
-> > > Describe reset, power-down, detection and power-control as
-> > > connector-local GPIO functions. This lets an accessory overlay remain
-> > > independent of the host wiring. MIPI CSI-2, I2C, clocks and supplies
-> > > remain described separately because the GPIO nexus does not abstract
-> > > them.
-> > >
-> > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > ---
-> > >  .../connector/toradex,camera-connector.yaml        | 86 ++++++++++++++++++++++
-> > >  1 file changed, 86 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/connector/toradex,camera-connector.yaml b/Documentation/devicetree/bindings/connector/toradex,camera-connector.yaml
-> > > new file mode 100644
-> > > index 000000000000..06e6836e1aa6
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/connector/toradex,camera-connector.yaml
-> > > @@ -0,0 +1,86 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/connector/toradex,camera-connector.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/base.yaml#
-> > > +
-> > > +title: Toradex camera connector GPIO nexus
-> > > +
-> > > +maintainers:
-> > > +  - Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > +  - Toradex Linux BSP Team <linux-bsp@toradex.com>
-> > > +
-> > > +description: |
-> > > +  Toradex boards provide 24-pin camera connectors carrying MIPI CSI-2, I2C,
-> > > +  clock, power, and sideband GPIO signals. This binding describes the sideband
-> > > +  signals as a GPIO nexus. The other connector resources remain described by
-> > > +  the surrounding board device tree.
-> > > +
-> > > +  The nexus exposes connector-local GPIO function numbers to camera overlays
-> > > +  and maps the functions wired by a carrier board to their GPIO controllers.
-> > > +  GPIO specifiers contain a function number followed by standard GPIO flags.
-> > > +  A board may omit functions which it does not wire.
-> > > +
-> > > +  The function numbers are:
-> > > +    - 0: Camera reset, connector pin 11
-> > > +    - 1: Camera power-down, connector pin 22
-> > > +    - 2: Camera identification, connector pin 23
-> > > +    - 3: Camera power control, connector pin 24
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    const: toradex,camera-connector
+> > > https://lore.kernel.org/imx/20260629074734.3643227-2-chancel.liu@oss.=
+nxp.com/
 > >
-> > Name is too generally, suggest use board name, we got similar comments at
+> > I saw that and it made me reconsider this name.
 > >
-> > https://lore.kernel.org/imx/20260629074734.3643227-2-chancel.liu@oss.nxp.com/
->
-> I saw that and it made me reconsider this name.
->
-> However, I believe that in our case it is specific enough. It is really
-> the same on all our carrier boards, and Toradex specific. It's also only
-> for cameras, which is more defined than just "io". Curious to see if
-> others agree or if we should come up with a name for this.
+> > However, I believe that in our case it is specific enough. It is really
+> > the same on all our carrier boards, and Toradex specific. It's also onl=
+y
+> > for cameras, which is more defined than just "io". Curious to see if
+> > others agree or if we should come up with a name for this.
+>=20
+> If some days later, you update hardware connector to 30pin from 24pins.
 
-If some days later, you update hardware connector to 30pin from 24pins.
+That connector is there since years, not days.
 
->
-> > > +
-> > > +  "#gpio-cells":
-> > > +    const: 2
-> > > +
-> > > +  gpio-map:
-> > > +    minItems: 1
-> > > +    maxItems: 4
-> > > +
-> > > +  gpio-map-mask:
-> > > +    items:
-> > > +      - const: 0xffffffff
-> >
-> > are you sure need full 32bit, only 4 pin, maybe 0xf should enough?
-> >
->
-> Indeed we could reduce the size of the mask, but I don't really see the
-> value in it. Isn't it good that a user can pass through the full GPIO?
+We have multiple cameras, designed to mate with it.
 
-it works, I remember it control input index's width.
+If tomorrow we will define a new camera connector (that is absolutely
+possible), the new connector will get its name, maybe
+toradex,camera-connector-v2, or toradex,camera-connector-22pin or
+whatever that connector would be named, not just in the DT, but also as
+a product and on the actual HW.
 
-	 <0 0 &gpio1 0 GPIO_ACTIVE_HIGH>
-          ^
 
-You can wait for dt team's comments for this.
+Francesco
 
->
-> > > +      - const: 0
-> > > +
-> > > +  gpio-map-pass-thru:
-> > > +    items:
-> > > +      - const: 0
-> > > +      - const: 0xffffffff
-> > > +
-> >
-> > missed
-> > 	gpio-controller: true
-> >
->
-> This is one thing I didn't fully understand about the GPIO nexus
-> concept, why would we need this gpio-controller flag? Isn't the gpio
-> controller behind the nexus? The nexus just maps onto it. The actual
-> controller would be on the SoC or an expander.
-
-Yes, I remember "#gpio-cells" depend on "gpio-controller", does
-pass dt_binding_check?
-
->
-> > > +required:
-> > > +  - compatible
-> > > +  - "#gpio-cells"
-> > > +  - gpio-map
-> > > +  - gpio-map-mask
-> > > +  - gpio-map-pass-thru
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    #include <dt-bindings/gpio/gpio.h>
-> > > +
-> > > +    camera-connector {
-> > > +        compatible = "toradex,camera-connector";
-> > > +        #gpio-cells = <2>;
-> > > +        /*
-> > > +         * 0: Camera reset, connector pin 11
-> > > +         * 1: Camera power-down, connector pin 22
-> > > +         * 2: Camera identification, connector pin 23
-> > > +         * 3: Camera power control, connector pin 24
-> > > +         */
-> > > +        gpio-map = <0 0 &gpio1 0 GPIO_ACTIVE_HIGH>,
-> > > +                   <1 0 &gpio1 1 GPIO_ACTIVE_HIGH>,
-> > > +                   <2 0 &gpio1 2 GPIO_ACTIVE_HIGH>,
-> > > +                   <3 0 &gpio1 3 GPIO_ACTIVE_HIGH>;
-> > > +        gpio-map-mask = <0xffffffff 0x0>;
-> > > +        gpio-map-pass-thru = <0x0 0xffffffff>;
-> > > +    };
-> > > +
-> > > +    gpio1: gpio-controller {
-> > > +        #gpio-cells = <2>;
-> > > +        gpio-controller;
-> > > +    };
-> >
-> > Need't gpio-controller.
-> >
-> > Frank
-> >
->
-> This ties in to my same confusion above, could you explain why or point
-> me to a relevant example/docs?
-
-My means needn't whole gpio-controller{} block, like &its, needn't add
-node of interrupt controllers.
-
-  Example should not contain unrelated device
-  nodes, e.g. consumer nodes in a provider binding, other nodes referenced by
-  phandles or node labels which are not directly referenced in the example
-  itself. Phandles in the example do not have to be resolvable.
-
-Frank
-
->
-> Thanks and kind regards,
-> Ernest
