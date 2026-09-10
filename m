@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7656444E64E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10241450415
 	for <imx@lists.linux.dev>; Thu, 10 Sep 2026 10:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789036648; cv=none; b=XER97CiEthKCYKZNF+jsLj6lrFlr62CuDpKiYzf8NZQjR8OskFwfhJUD11UucMfeQ5TUJX3iXtJMCMT45epbSUdQKbp8kN1yCIz5/fIFEPnr5bcOOP8kIQhqKjP2oEiocWK79cLsEvLKyLPx231amuZ28ybGkpTOO3C6zpYYfUI=
+	t=1789036649; cv=none; b=DUnFQsWkbU7o8OOznQaIygI6bmOtLaFkCw2vbLyt6SyFg7PcUH5iVxLuBhN8dZ3Qe9KtXvfmJ2SUXDSUaixhiTYIJolwPoHAidl/UxnAx63uSpNEVYkMVfj8BvQ/F/AX9d0N4M1plU2GOWaB7RR6jCiB0RKIgVeibaLmxhZsocE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789036648; c=relaxed/simple;
-	bh=HSCf1LCjuqowLlvvnl6QYuN/gazdMHLu3e/21de4rJE=;
+	s=arc-20240116; t=1789036649; c=relaxed/simple;
+	bh=rreqp54aVTt4Ibbf3JAyDS/Wg10u+9947YLHcFkBzA8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MR0GY6FTQ1gjgI/YINSOE2mYR0p80js3MaLCb93IH+Gd4hNd4i/5O49LEU0FCbKY9EZgBURbhNDokts5NTTNRtNCh1CWvj9Bxs8QMMD0+V1Tte527HbtjCKVrbZtaeJ7P4kfivDlCiCX7RLlEaIy5pkDwvKkHMhkbccxQFjmRgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vu5bfru4; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hJMCyaCNAdF/jR3PIC2dV8vBhFnDbNJ5/T50IGXYqqdJFp6OEj086at3voJLc7yyaKiUhZW+ZbQGLtKDIokNjs6+H91e9p34h2HOEUOvEfJJmDtV5GK6mOYlvKbtYc1deOA/1qKb2OLT5/TBSpAhpjxjCOUCpjaoZ61SWRAnZfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTrT8W40; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vu5bfru4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CBA1F000FF;
-	Thu, 10 Sep 2026 10:37:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTrT8W40"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5931F00893;
+	Thu, 10 Sep 2026 10:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789036647;
-	bh=alxy4kEBRtfNPqUeZL47dpyG+Un4HMoeCtnstfHuF00=;
+	bh=Pc/Sxsf7W5vmhiu+yBWzm9crsCNhcijRTBL5ojjsyJA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Vu5bfru4mvnJjaVGMWIJWyjIAsSZ+DE/II26jbxH4VWVC9DJm30Z+0swmC576lS4h
-	 NNRI17QHQqjR1Ch2yWHi5P5xJpIgakN0UlBK82VH2jaT9RrvZ29KQR84MwSbgy7qD5
-	 uRyfY8oJRTMJsZyGtRijmudNJoL93wvk8oaRj01XeaNwinpCq9avivFuYtVIccYIr4
-	 a5ydczg9nLTjGe4mtReEnmUskpM76zmolUorDqnJd3K1XJo9EpDT7DEr5FO8jtFElS
-	 kG8M5euqhHyVLZUAcaaaE3B/O2Bffi4enHwkSozzBuoCAH0J/hpInwIy/BZ9ewOJU2
-	 J48ORoRLniTtQ==
+	b=aTrT8W40rkdz5IgJpNLb/4tfehh4pfg3mluFVSSCzUV42u8RNoz6GH8KGayaBtGm6
+	 JDwx3R57a1uGaQ3TLa9XoXyOhs5YPUnCSAdIGolRHeJAvQGfI2WnwKkYj3VkZmYQQs
+	 kiAfjjsYuubTSs/xkfSCiR1N0tF0rXAyUqKyS3sJsZG4qsI40qSKusBj6EhvcJUnCv
+	 y5mCPUoA/inyxAQcrfYWLLZmS/qzcREb3ducJTZHCfyWbnLiOUSzsziGeLWbFqDCF5
+	 iXEzK5fTNMohWeQWHO5RE9Z8ob9eOi90oRMGmBv1s73S1KoK6OJITLpMqHjqA7rXHQ
+	 7fkq/RFC53+Ww==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 07/15] net: enetc: add .ndo_set_vf_mac() to
- the enetc v4 driver
+Subject: Re: [PATCH v4 net-next 08/15] net: enetc: move mac_filter from
+ struct enetc_pf to struct enetc_si
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260909100733.1139689-8-wei.fang@oss.nxp.com>
+In-Reply-To: <20260909100733.1139689-9-wei.fang@oss.nxp.com>
 References: <20260909100733.1139689-1-wei.fang@oss.nxp.com>
- <20260909100733.1139689-8-wei.fang@oss.nxp.com>
+ <20260909100733.1139689-9-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Sep 2026 10:37:26 +0000
-Message-Id: <20260910103726.D6CBA1F000FF@smtp.kernel.org>
+Date: Thu, 10 Sep 2026 10:37:27 +0000
+Message-Id: <20260910103727.9E5931F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,69 +49,81 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the newly added =
-`.ndo_set_vf_mac` callback directly exposes it: Incorrect MAC address progr=
-amming on Big Endian architectures due to `__raw_writel()`.
+- [High] Fallback path in enetc_sync_mac_filters() reads corrupted hash bit=
+map due to union overlap.
 --
 
-commit d4ab065b05df3371bda6a210173bde546f473ad3
+commit 5d26a4aca1dc2966f5003f268c0a69349efe5210
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: add .ndo_set_vf_mac() to the enetc v4 driver
-   =20
-Add .ndo_set_vf_mac() to the enetc v4 driver to configure the MAC
-addresses of VFs.
+net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index e20989b6f8b49..a44d50b7fd2ad 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -579,6 +579,7 @@ static const struct net_device_ops enetc4_ndev_ops =
-=3D {
->  	.ndo_hwtstamp_get	=3D enetc_hwtstamp_get,
->  	.ndo_hwtstamp_set	=3D enetc_hwtstamp_set,
->  	.ndo_set_vf_trust	=3D enetc_pf_set_vf_trust,
-> +	.ndo_set_vf_mac		=3D enetc_pf_set_vf_mac,
+The mac_filter array currently resides in struct enetc_pf and is used to
+track unicast and multicast MAC address filters for the PF. Since struct
+enetc_si is the common structure shared between the PF and VF drivers,
+move mac_filter into struct enetc_si to prepare for MAC filter support
+in the VF driver.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_pf.c
+> index c467dc05510ef..523c713247805 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+[ ... ]
+> @@ -60,10 +60,9 @@ static void enetc_add_mac_addr_em_filter(struct enetc_=
+mac_filter *filter,
+>  	filter->mac_addr_cnt++;
+>  }
+> =20
+> -static void enetc_sync_mac_filters(struct enetc_pf *pf)
+> +static void enetc_sync_mac_filters(struct enetc_si *si)
+>  {
 
 [Severity: High]
-This isn't a bug introduced by this patch, but the newly added
-.ndo_set_vf_mac callback directly exposes a pre-existing issue in the MAC
-address programming.
+This is a pre-existing issue, but since this patch refactors the mac_filter
+storage, does the fallback path in enetc_sync_mac_filters() incorrectly read
+corrupted hash data due to a union overlap?
 
-When the MAC address is set, the driver invokes enetc4_pf_set_si_primary_ma=
-c()
-via the enetc_pf_set_vf_mac() -> enetc_set_si_hw_addr() call chain:
+Because mac_addr and mac_hash_table share a union in struct enetc_mac_filte=
+r:
 
-drivers/net/ethernet/freescale/enetc/enetc4_pf.c:enetc4_pf_set_si_primary_m=
-ac() {
-	u16 lower =3D get_unaligned_le16(addr + 4);
-	u32 upper =3D get_unaligned_le32(addr);
+struct enetc_mac_filter {
+    union {
+        char mac_addr[ETH_ALEN];
+        DECLARE_BITMAP(mac_hash_table, ENETC_MADDR_HASH_TBL_SZ);
+    };
+    int mac_addr_cnt;
+};
 
-	if (si !=3D 0) {
-		__raw_writel(upper, hw->port + ENETC4_PSIPMAR0(si));
-		__raw_writel(lower, hw->port + ENETC4_PSIPMAR1(si));
-    ...
-}
+When there is exactly one unicast MAC address and the exact-match insertion
+fails (e.g., due to a hardware timeout), the driver falls back to hash table
+filtering. Because of the union overlap, it appears the fallback path will
+read the raw MAC address bytes as a 64-bit hash table mask:
 
-Could the use of __raw_writel() cause the MAC address to be programmed with
-reversed byte order on Big Endian architectures?
+    /* exact match filter */
+    if (em) {
+        ...
+        err =3D enetc_set_mac_flt_entry(si, pos, f->mac_addr, BIT(0));
+        if (!err)
+            continue;
 
-Since get_unaligned_le32() returns a host-endian integer, writing it direct=
-ly
-using __raw_writel() on a Big Endian system will write the bytes in reverse
-order compared to what a Little Endian PCI device expects.
+        /* fallback to HT filtering */
+        dev_warn(&si->pdev->dev, "fallback to HT filt (%d)\n", err);
+    }
 
-Furthermore, will writing the u16 lower value using the 32-bit __raw_writel=
-()
-place the MAC bytes in the wrong word offset on Big Endian systems?
+    bitmap_to_arr64(&hash, f->mac_hash_table, ENETC_MADDR_HASH_TBL_SZ);
+    /* hash table filter, clear EM filter for UC entries */
 
-This would cause the network interface to drop legitimate unicast traffic.
+Could this cause the device to drop valid packets or receive invalid ones by
+programming the MAC address bytes as the hash bitmap?
 
->  };
+> -	struct enetc_mac_filter *f =3D pf->mac_filter;
+> -	struct enetc_si *si =3D pf->si;
+> +	struct enetc_mac_filter *f =3D si->mac_filter;
+>  	int i, pos;
 > =20
->  static struct phylink_pcs *
+>  	pos =3D EMETC_MAC_ADDR_FILT_RES;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260909100733.1139=
-689-1-wei.fang@oss.nxp.com?part=3D7
+689-1-wei.fang@oss.nxp.com?part=3D8
