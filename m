@@ -1,276 +1,131 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011041.outbound.protection.outlook.com [52.101.70.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3428A360751
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 14:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272C935F8C5
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 14:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789137412; cv=fail; b=VsDLWHEh1AZKsU+swfvdDbM3u8LkoODDbKzsNbX1bYpsB7jqA4LYXQ2cu2GTI0gh+1kuF+4pT+eu0OcX46lqCgoauKhyubeUuIgqeCkYHMZieqptEiyG8fkkY+0B/BCw999Nk6ReElcbnMoH/LL8C8vsnZiypAzAy9IAX4qhC/g=
+	t=1789137512; cv=pass; b=tDsxBVvJRcmno6lF4mI2Q8y3YGedfezQk/u49/uImW671hLB8oMCXj2weCGlBTnxZ+Rqz1ccsOssEjppxgID06/pJzj0sjVKv6SkHgAIfifwlpEyDrIJLz1xCzuzPcXF9zoLmHuYXRjWlOhvlKDJmdl9qKT6uA+h3RtnGb3iWW8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789137412; c=relaxed/simple;
-	bh=uf1unvZ0tUnKAUSf+b2aAXv3OUQpp9gnLIbsOjiBnSY=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=aUxa2bkIqybv9/YAWEBjLN/YV3/KrWNhxzRXbni94C6gBGHRRjAZJvH60cAndxXqUxQfM9P6fmPrIM61YwXOBokafXSmriYOrzXoztwJ+G8RzxFFe4G1Cyq4A052ayjCsx0UpamwnL3ZYwsslXsNEXUXtsM88dRjN5ysjNunrPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sSycsoFw; arc=fail smtp.client-ip=52.101.70.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1789137512; c=relaxed/simple;
+	bh=XLpKjuu4srfrU1du6/lAaUzD7jl948KYiIqSg/FlWVg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XxxbOXhKnNsgmDpapNxCO3K4u9vaWW2yfDgind/SacaOt+0RcR/E1a0wOYpILJev+ouoBYVzh2dPvH55xMokPgzcFfaMhNlsFjEjdVZIWFzSINi3dE4CZCXjXRfoi8pgJnLkbXmK6GnSDThxKHb05WIZsrxJtKq29HFskkryM+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com; spf=pass smtp.mailfrom=0x0f.com; dkim=pass (1024-bit key) header.d=0x0f.com header.i=@0x0f.com header.b=JDWSC6T0; arc=pass smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x0f.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sSycsoFw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cyuIDVKiiu3uJWP6advUXKw91uk0Ts2sdwhK0F3PBeUNZ/JpBPL2o2O/Of+F/ABfi+FyVzKrNFL16vBIVBH2/8S44J5eBtmWFD3TMxzb6E0EV7Rmp99SB9H2IUk+Cxaj4osU26SlzhlethfBd9qzKiabg7PiZhnhliri2pUDacERdx3bjIJtvCYoLyC9xu/JRzFPhDpGUS5hYIxeUh3gP3yR5CgrPih6u4itMFVFx2PnRxH7Bw2k7ALqTrWZGvn6REuLQetUVJzxnRtgyFHDEkc76jxS+znpeb+/y7gRx6GAH+/C2OgXBdA1e57aL9+FtcX9Z/HZnj2fy8cR3Xz1NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YitNaMqkfGDN66QtW7Iz4Re0M2oaBJ9gPiZ+9XuUQhI=;
- b=aNTbSgFBT5+vrZ/flK/brkuIsMd6m38zrqPjNhGqevDLZvNgp7JJdp9Jge7lxW8fafDYkVvzGlw+VC70bkzr4dMkB2P+nlHkAcEB/P8ELxkkfxIp5v39Uu5PotUe+lHHVUCHNtRVVXccCBamy1/hACiU5Z39eNT2vJg6y/DFksmBQI+X6hvzjcVzBaOxfmhtJDPJrN/NL7Gfvh4Ue3vOHA8eaQd1Jz6r+0DcM0EetrduYsZUKh2v4aRLfRhD++h5LVD11JBxo183jg6ngtGlawtvrMy90w6si+sDx7+xYlgtc2oAy2Ci1N1ktUYCNvlke9027Ut2usX5AFZyIs6RaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YitNaMqkfGDN66QtW7Iz4Re0M2oaBJ9gPiZ+9XuUQhI=;
- b=sSycsoFwfihLSOiPHP9CNgGiiVFmgSnMiB6PI/ZKzcSj2DlnshFXzVtd3A2b7s5vmRswNcmzDeGsOe7AMoj7Er6A9X9W7PI229UYyLO28ijSKb/YTfVMR1Uxw2jMoeUHIHr5CLK4XeWbOhWO5YMBErCUcPezEhhJD8PO7Be1crUyDiMdcRvaucMycIo8Ju2xBLcmBUeWBs46ljO+GkFBY/BIPbmAxQ5UAXUhZRrXSciWzqvW47AlV+/ZjpkwFNShI1lWmF5lAgRVeUwy6eS6fnfQnwYCtdKYl9S6zkTxxna1y0A2/4EBu5OsvFbb4B6Jn4vHmPKtw5bS8xaXC4ibZA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19) by FRWPR04MB11200.eurprd04.prod.outlook.com
- (2603:10a6:d10:173::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 14:36:45 +0000
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 14:36:45 +0000
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Ying Liu <victor.liu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Stone <daniels@collabora.com>,
-	Leandro Ribeiro <leandro.ribeiro@collabora.com>,
-	Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] drm/imx: dcss: Silence blend mode not set boot warning
-Date: Fri, 11 Sep 2026 14:36:36 +0000
-Message-ID: <20260911143638.2674753-1-laurentiu.palcu@oss.nxp.com>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM8P190CA0020.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::25) To GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19)
+	dkim=pass (1024-bit key) header.d=0x0f.com header.i=@0x0f.com header.b="JDWSC6T0"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8588583a7c3so9079357b3.2
+        for <imx@lists.linux.dev>; Fri, 11 Sep 2026 07:38:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789137507; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oaU2gSA87S0l+dCmuQfKZg6W6uiBWHqcvVfXw+1HF1ySYo6/ImCnT+arGxRfqpfaMl
+         cmt7a8yVBhNfdXsvsxqNRQCx0fuBCTfMyr5W6cipD1eiOgdpuTFDKoGu/dCgWu/65S0g
+         TlXAcRAVrQ3C71hV8qSgCR2ACxAHCrLZrVIyEepOsDC2Fwcd5uA0EZe1cGeERwxiYwco
+         iAVTSlvW9rdtC48XfBY9WcpyoLHsuqTHfIS6+A9evSsb8Ws2pS9JbFZWzBWQWt0gF8mm
+         w0X9DUFlhZRrmn7jn6a3LxsEtNkTQb8yLYqIjA3bZhID4dBpW+A8HWNRiUgzNODNLH0X
+         JGOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jpJbb5DSDD0uOBnoN5sYAo9U83labpJz6g7jqXOS7q0=;
+        fh=wYNuuiC0enXWSERjNTxQruoCxnVIXCo13VmyL3PM4kY=;
+        b=NuvkI7PKy8uVprQAHvezBCboTyxh6rWqQVvvdCC63JlER6vRyt0cDlcpepsdR/9vKd
+         jvEUMIyFLe9iKWIr7YQPk+a4aGiMJggmpzOXuyF3JU6GWCHhDYEtw/+eZQe484dRwb8P
+         /T39BUbFMhY9shIK1XrSMO1DHrCM9aTpSNZlVIGvCSZ4dFMz2kup5WF8wCsrXCHQWd3Y
+         I4Ks9QpPp3wJKskb3Q6080q1o6eaVcrDFV6AYHrsikcnvtE3bWyunej9gJaQPdPv1X9Q
+         y8NyvPq4uMfpFh1gaq5o78YaFYY4x04mcDu45DJcICI3m1+H2ba4AJlc8lZ2sMPk3Dzr
+         ATTg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0x0f.com; s=google; t=1789137507; x=1789742307; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jpJbb5DSDD0uOBnoN5sYAo9U83labpJz6g7jqXOS7q0=;
+        b=JDWSC6T05iHIW2BGJPZ5BMO9MJYFl8yhNfptIDLzM/1aSq/KSh3FRbuIJFLH2lYMVn
+         k0Xg8boaj+W4I8+f+D/Xtg7SVPqsqOjgWwejTH7b8J41soRRfE6T0phlfhXtzVzfbv6f
+         UyV2WzBWvGwiZwe6SpKAKboLXU3tvE7Fun/SQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789137507; x=1789742307;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jpJbb5DSDD0uOBnoN5sYAo9U83labpJz6g7jqXOS7q0=;
+        b=BUko1UbBqukgKKdCiRxKGumuRALhnlV2cB1FrkWcUmNbpnIwciPO+8s1mWV37K6cJf
+         Ah9pfpvvTP3wojql+YPKCR3bLwPmA7fz4bUsX2f2o4ArTnYZj6kQamc3RPybXNURDXbW
+         7DH1KN6Ji6JUCgez4ySqRRuMEe4OJ0ypuzd62+zaO3pCGcmha6cIGty4bH9dZycjEdEk
+         V6sDxm0fMaz+uyFyqJF9GWT0Xf4+8zMEChNUHFqEtO/e8ChFmkxKWWqmGXyCEOoFPAPd
+         2ficwYRlEvqlRlpnRieltglcS92G83M2UA7tKWlh0gqOITF9SIYWeG9DYUcouqQbnG5O
+         DjsA==
+X-Forwarded-Encrypted: i=1; AKwUvBwzP6o+xgJO4PJXjFGCT4NJdJArW1zafqNwSqJE4As07FCok16dT1maMuCTK1jtBCqYt9I=@lists.linux.dev
+X-Gm-Message-State: AFuF++kjLrVtSaecJC1OOHP2hrqgcMCKE26CRsKWKMdXPZJJrJUrHpz+
+	v97IGeP2/8wO8BQCZCdd3PFWCmh/8ihRvcysIOYQY1Mr/1nFuGp3hw5wNVkLrUwKHuWCsz6R7QK
+	pL3de/mk7Al1crAIcyUEh4n+uhaNOuJgPcfmI+4zzNA==
+X-Gm-Gg: AYBFou1yOMh38M1pYpRF/G9YL7aRmBqFr38vcGs/1HvQdWG5l3U7Q0iT01r7KbkagX0
+	sBtHn+9xLj8I64c820OijdatSUgvsD5lZ3kJDjcTjdYPzhENbWGkkyMFoNOgORKZPer9QY20hYQ
+	viEYm1ff2x1D40MH6LxhTTIk5wcOD7kH2xJJu7g7grfyBfwSiAELX+dAvv//JY9kRjTmum7NLb5
+	0y8kHvJ9Of7PUn1dkyFnGzUmkqc9x4nP4Hk6rD/7a9YMEF0R6zwfn0/hUoKNJaHVavdVOyqU7To
+	XQWja5rtfzwCLrmOBYycXyK/46KyzzCbctyE9EOWCD/KaVXQmlt81KT26yR+0eyK
+X-Received: by 2002:a05:690c:399:b0:873:5bb2:6c10 with SMTP id
+ 00721157ae682-884b7316b4dmr14810657b3.58.1789137507274; Fri, 11 Sep 2026
+ 07:38:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|FRWPR04MB11200:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5396eccb-6fdf-489d-3dcf-08df10121a4f
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|376014|7416014|1800799024|366016|10067099003|6133799003|11063799006|56012099006|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	Bz7++HRifECbAwpumh1SHWenZNrjugliFEW9t90qJOirSz5eZtNKf8IJMQ7d31A6+a63cb8bGsi3i59k+tZTijtUAo9C7wkbcr1l/YIWvVSimdNLmD+VlchnsGP9dVSyFXXTTo6j0fUR5/AsBhoMHvigIQgjm8Ko+q7OfUoKZaQpwZk0inDu5fzXS5U/SuXZVwQda5jkhM1ik5Uq50MsucSVsnL6UE8SyvetgsB9DMZ+9ygazDzW3v1eTZXH7/x9u3Z93R+MguTp1WlD++pI+XYLBJ2l/9lNWN30g7Pr3R3K0+fF16VmkXGhIMEcuqqpQ29on+ZKRd8wvG70AY27vIILb3jSRw5TVwYin0/bFT+6N/UUC5912jSFm2pa8LiWZ1yaKh4wW1YvxzS3RezWOBYnAYFcf6/u9E7hoH8YreGjfcput6WW4wg8dCUFi6UXysrvIfRFL18bVX2O5IcLjTaeynl1BMWRoXxcSuK1q0yTtSkSNE8JWRSCaCWhgB9j2R5bc36IUW3E7JZOxuQ+SP75Eb24b89co8nVh7T4Fyd6mT6Is+JQOAv31s/ReHr7cP7bnRXq+Stc8FLHBCZXWovYX2e8nBXJL2OgsXIl8d1YzBiep3StTIs0WZVCebfpE/caOEjBQD42LLvn1GObahuALJ8tMS/G89Tpob8BlR9Z3BesOtr8NYbJsSAskMN+aSqVANwQ7lSxsXiY61SNWA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(376014)(7416014)(1800799024)(366016)(10067099003)(6133799003)(11063799006)(56012099006)(18002099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?k9BUOpKCeNQeFq2q/BTJsr9sPK3RERlvQpxkqonE7i6BjIC+U7pnxavIETBy?=
- =?us-ascii?Q?F8hsIL/eIOc9bhRcZalX2G8GfXwhQvqaSkutActmnVMv8C2XMyvMR9yQonY3?=
- =?us-ascii?Q?0H+xeQPIPv/Edf5qfaYzH2juP1O9wj8UbaCKBCfHjYPkKOJV3jN8JihD6yBO?=
- =?us-ascii?Q?FojdqgyuVro3dEIJ9szb+ijMP6arzUFq1qn6VLE8R9WTcMnlBWNEQ8dKctvD?=
- =?us-ascii?Q?RqLam3vxizPwf/OKfE2N9LFYE+gvIjsEsTxS8ccyZ+GvU/6yRRX0NMy4CVLY?=
- =?us-ascii?Q?39TeW8HVPW4YlJceTvzf+84dkwItvHElvzol1BBwLqyB+2prl7TAZ/tRDEK1?=
- =?us-ascii?Q?VgqVQv1ZsW4kqQujmlt9iMge8nMkPmWv/HZm4f1lF/lq5qaDqKDgOfQVtEoe?=
- =?us-ascii?Q?LXCLKsWtXK/QeNtliY4Nam4wH7DeUU0fHHBx0PM1+H5svohTqAJ2j8DcVP7s?=
- =?us-ascii?Q?pcuGdqdX6EH+U2WW9wd5RcMsS7YpqHS/8geBdhcTBLbuMVJZcBgKBEmxYn06?=
- =?us-ascii?Q?yNbpU6qIazzkN0+MhTbSH86kZZsZp2Wngs8Yx9Jb4xSISqSxvJoyIilYckg8?=
- =?us-ascii?Q?F+DdQHWTC+XrtkjP6KDVQXoIHKm1SVOwyiZon3gtni/I3ol3ucpdz+ScJfIE?=
- =?us-ascii?Q?xppgbXOSBs9t+dvQ0mI2fvY7bfVZyQcp4zkpEu3cYZm0t0cYa5drHv0NggdW?=
- =?us-ascii?Q?d+MWjWNvPHOqhFOk75zNdD45JlPcMPGBgUn3tSwZqk8z2HeH9/Wn+aRk53CI?=
- =?us-ascii?Q?q/C33IJiOYzxivDbs1KVSpQI3VtysBIW1iGMM1Hf6jjSlERmJOJedTv0nlAM?=
- =?us-ascii?Q?E9aF/s+mv5wutMRSfaEkGs7+YokuX3YxN5vKraTRmT5ecS0jiT2Qv2UrVVnA?=
- =?us-ascii?Q?AOM9H2NFaZ+aISsiX72dSQWbHFQnH0qTIv5opsjYHPH6Bk2ggWmpKNT3xFLl?=
- =?us-ascii?Q?ax4LIv0v0RIdTlb7/PaW2iMdTbE6imoN8WZWxma0eFJJGxVUTlxrXuIUPAI1?=
- =?us-ascii?Q?zHW15ySMrxsQ2T5VEBP+kXR9+8IZYsdgB4APHXPIjyl8OyoHDC0wDYx9CaLW?=
- =?us-ascii?Q?ZU2gz4lfy2ziHUE4agn8nm3J74Px3Zl9RQvM8jmIAaScFgsjoyBXYgNaZyW+?=
- =?us-ascii?Q?+IjjzSObasmg0mO+EcK9RYAc5AgNRnMw7bB2sWlWOkoPWxfQvnfHzu8Uiphi?=
- =?us-ascii?Q?7DoByIC5Iw81oTbhQYd5xxduxC6QWj19PvBogC8yduclWDSv7vsn6LneGyJN?=
- =?us-ascii?Q?T0CRZs4Tj4WoPOiAdQPx+nauc3vRRWJv4cIU4qzfojh+TXkOeuZd31Dbj2oh?=
- =?us-ascii?Q?mvpN+1HuLXUJH/l8vCNKqFA36+V7pI1MwAU6nJcosC9MNXHFqMxt7OMOj1Av?=
- =?us-ascii?Q?STvoLV4WzBR2PCjRVEUmuz/w2PjVBcdNa3G4hUBR3q0MjoV1Z472vxrrS6Xm?=
- =?us-ascii?Q?XbL8g/9OCFpu3iESQOlkSyUXilBLrEBq35/mjkyUPZkokWTb8ERRcd3WaA4a?=
- =?us-ascii?Q?H4Mgf4ZBD6wPUEMYPwCVRh7jc6Svmz1leralyvaMRMmc55Dsi856n/Pt27Mf?=
- =?us-ascii?Q?PvncbMCswBAqqaJsN7XNfVyr3dClv4R5DPYIisIlrW2L1CwynrbgreZWzWHW?=
- =?us-ascii?Q?9R10G8L085EAOdOGnQ0RVTgQjC4DWu/LfXyPXX4U8EUMHevxuAcmXk41pA30?=
- =?us-ascii?Q?xX3ngwSNirWISWK3fpKg5/HLs33/EDdfo/B/7P1kSvU7Ct+B+FREV4UrKtPi?=
- =?us-ascii?Q?emm78vpNqy3XTH74Z/vshpfOFr0hEPI=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5396eccb-6fdf-489d-3dcf-08df10121a4f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 14:36:44.9252
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cVullCztGECLYO6SudxMux8L/e97N1Arjs4tfxCiT4hm4s6kZNzK72wcLpISbwpM5tntfRXd5qvv9wrpZ3RrXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11200
+References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-4-arnd@kernel.org>
+ <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com> <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
+In-Reply-To: <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
+From: Daniel Palmer <daniel@0x0f.com>
+Date: Fri, 11 Sep 2026 23:38:14 +0900
+X-Gm-Features: AcwNN1V8w1uOymS_yob5PvYfeWzm1NprI6fjxQoUm4Mlo3gyAoZUnypuVT5lDl8
+Message-ID: <CAFr9PX=_FmMdR4TeP+tqURZdZCTjw8UYxAxeszs_vcpTbX+_aw@mail.gmail.com>
+Subject: Re: [PATCH 03/13] ARM: remove riscpc
+To: Linus Walleij <linusw@kernel.org>
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Drew Fustini <fustini@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Karl Mehltretter <kmehltretter@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	Ian Molton <spyro@f2s.com>, Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This addresses the following warning that appears at boot time:
+Hi Linus,
 
---snip--
-[PLANE:39:plane-0] pixel format with alpha exposed but blend mode not setup
-WARNING: drivers/gpu/drm/drm_mode_config.c:872 at drm_mode_config_validate+0x36c/0x520 [drm]
---snip--
+On Fri, 11 Sept 2026 at 18:11, Linus Walleij <linusw@kernel.org> wrote:
+> - One camp that are enthusiast like yourself. That kind of people
+>   are running the show inside arch/m68k on Amigas and Ataris.
 
-The warning started appearing after the commit mentioned below was
-introduced. Add the alpha and blending properties to the primary plane.
+I have SMP working on m68k (dual 68040, real hardware) among other
+oddities. I think some people would get a kick out of seeing it but
+also I think some people would also ask why we can't just delete
+everything that isn't arm64/amd64/riscv. I'm putting off sending
+patches like that to avoid everything getting deleted. :)
 
-Fixes: 860e748bddcc ("drm: ensure blend mode supported if pixel format with alpha exposed")
-Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
----
-Changes in v2:
-- Also check alpha and pixel_blend_mode in dcss_plane_needs_setup() so that
-  setting alpha is not skipped by the fast-path in dcss_plane_atomic_update(); [Sashiko]
+Cheers,
 
- drivers/gpu/drm/imx/dcss/dcss-crtc.c  |  6 ++++++
- drivers/gpu/drm/imx/dcss/dcss-dev.h   |  3 ++-
- drivers/gpu/drm/imx/dcss/dcss-dtg.c   | 12 ++++++++----
- drivers/gpu/drm/imx/dcss/dcss-plane.c | 15 +++++++++++++--
- 4 files changed, 29 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-index 5e9ee3f09d51f..193ee688cc777 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-@@ -5,6 +5,7 @@
- 
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
-+#include <drm/drm_blend.h>
- #include <drm/drm_vblank.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-@@ -202,6 +203,11 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct drm_device *drm)
- 		return ret;
- 	}
- 
-+	drm_plane_create_alpha_property(&crtc->plane[0]->base);
-+	drm_plane_create_blend_mode_property(&crtc->plane[0]->base,
-+					     BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-+					     BIT(DRM_MODE_BLEND_COVERAGE));
-+
- 	crtc->irq = platform_get_irq_byname(pdev, "vblank");
- 	if (crtc->irq < 0)
- 		return crtc->irq;
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.h b/drivers/gpu/drm/imx/dcss/dcss-dev.h
-index b032e873d227c..9b3bd2f3a7ef1 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-dev.h
-+++ b/drivers/gpu/drm/imx/dcss/dcss-dev.h
-@@ -147,7 +147,8 @@ bool dcss_dtg_is_enabled(struct dcss_dtg *dtg);
- void dcss_dtg_ctxld_kick_irq_enable(struct dcss_dtg *dtg, bool en);
- bool dcss_dtg_global_alpha_changed(struct dcss_dtg *dtg, int ch_num, int alpha);
- void dcss_dtg_plane_alpha_set(struct dcss_dtg *dtg, int ch_num,
--			      const struct drm_format_info *format, int alpha);
-+			      const struct drm_format_info *format, int alpha,
-+			      unsigned int blend_mode);
- void dcss_dtg_plane_pos_set(struct dcss_dtg *dtg, int ch_num,
- 			    int px, int py, int pw, int ph);
- void dcss_dtg_ch_enable(struct dcss_dtg *dtg, int ch_num, bool en);
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-dtg.c b/drivers/gpu/drm/imx/dcss/dcss-dtg.c
-index 6bbfd9aa27aca..21da9d3cce4cb 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-dtg.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-dtg.c
-@@ -3,6 +3,7 @@
-  * Copyright 2019 NXP.
-  */
- 
-+#include <drm/drm_blend.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/interrupt.h>
-@@ -268,17 +269,20 @@ bool dcss_dtg_global_alpha_changed(struct dcss_dtg *dtg, int ch_num, int alpha)
- }
- 
- void dcss_dtg_plane_alpha_set(struct dcss_dtg *dtg, int ch_num,
--			      const struct drm_format_info *format, int alpha)
-+			      const struct drm_format_info *format, int alpha,
-+			      unsigned int blend_mode)
- {
- 	/* we care about alpha only when channel 0 is concerned */
- 	if (ch_num)
- 		return;
- 
- 	/*
--	 * Use global alpha if pixel format does not have alpha channel or the
--	 * user explicitly chose to use global alpha (i.e. alpha is not OPAQUE).
-+	 * DCSS supports either global alpha or per-pixel blending, following
-+	 * the coverage blending formula (with global alpha set to opaque).
-+	 * When the pixel blend mode is PIXEL_NONE, the per-pixel alpha is
-+	 * meant to be ignored, so fall back to global alpha in that case too.
- 	 */
--	if (!format->has_alpha || alpha != 255)
-+	if (!format->has_alpha || blend_mode == DRM_MODE_BLEND_PIXEL_NONE)
- 		dtg->alpha_cfg = (alpha << DEFAULT_FG_ALPHA_POS) & DEFAULT_FG_ALPHA_MASK;
- 	else /* use per-pixel alpha otherwise */
- 		dtg->alpha_cfg = CH1_ALPHA_SEL;
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-plane.c b/drivers/gpu/drm/imx/dcss/dcss-plane.c
-index 303e93fd036c1..f991c35d2b993 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-plane.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-plane.c
-@@ -209,6 +209,14 @@ static int dcss_plane_atomic_check(struct drm_plane *plane,
- 		return -EINVAL;
- 	}
- 
-+	/* DCSS supports either per-pixel or global alpha. Not both. */
-+	if (new_plane_state->fb->format->has_alpha &&
-+	    new_plane_state->pixel_blend_mode != DRM_MODE_BLEND_PIXEL_NONE &&
-+	    new_plane_state->alpha != DRM_BLEND_ALPHA_OPAQUE) {
-+		DRM_DEBUG_KMS("Both per-pixel and global alpha not supported.\n");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
-@@ -263,7 +271,9 @@ static bool dcss_plane_needs_setup(struct drm_plane_state *state,
- 	       fb->format->format != old_fb->format->format ||
- 	       fb->modifier  != old_fb->modifier ||
- 	       state->rotation != old_state->rotation ||
--	       state->scaling_filter != old_state->scaling_filter;
-+	       state->scaling_filter != old_state->scaling_filter ||
-+	       state->alpha != old_state->alpha ||
-+	       state->pixel_blend_mode != old_state->pixel_blend_mode;
- }
- 
- static void dcss_plane_atomic_update(struct drm_plane *plane,
-@@ -336,7 +346,8 @@ static void dcss_plane_atomic_update(struct drm_plane *plane,
- 	dcss_dtg_plane_pos_set(dcss->dtg, dcss_plane->ch_num,
- 			       dst.x1, dst.y1, dst_w, dst_h);
- 	dcss_dtg_plane_alpha_set(dcss->dtg, dcss_plane->ch_num,
--				 fb->format, new_state->alpha >> 8);
-+				 fb->format, new_state->alpha >> 8,
-+				 new_state->pixel_blend_mode);
- 
- 	if (!dcss_plane->ch_num && (new_state->alpha >> 8) == 0)
- 		enable = false;
--- 
-2.53.0
-
+Daniel
