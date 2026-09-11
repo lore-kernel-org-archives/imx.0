@@ -1,113 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405D145C6E6
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 21:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DC03148CF;
+	Fri, 11 Sep 2026 23:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789160539; cv=none; b=RwGgnSShsRYumm5V7pilcUqfV8t8zQ501UTHo25161H5q2A0QdOp5CNcFft0MjimB6eskRk3G6LjyKDLphRM6eHXNvD6hE5d3SipBJavk21CarWfVx5DtL9wPk/u3hyLcKjVGrGlAet0a7rLPzMZXcaKRmE99fFotJOCIcXscX4=
+	t=1789167891; cv=none; b=iSCCOnVM9FHV+UFWSfP4zdjNYogT/Rl22MOuIKxkNG4Id7/SKOUbrca/Uju36Ie7Fyxf++Ome3qZG0fceHFRQ+YtnhxPF4wvOH34E8XeXsABjRprS+Fc4jsHdr6nfcACmyj/XcZeEUK43zm8Tsdeh0sGHBjON+W57PVlL8mk7Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789160539; c=relaxed/simple;
-	bh=lkRPl38AzXz0r4EnkN3gGDyUSIcPVQR3Yt6HAHpoWlY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=feNtG53NlYeuXbn+HtjDG9cINgZy+kBz9GwJPvA2WIhSRt6Nzh3+NUgQzKmUt1+SzounMknNrnQiXXH0p+1W7uYWqHIWZVoh76Xo6E/bqrPkVxJCGNddmEbfXk+TLxlT5eB3nx3jCpjvAeNZgZQUDp8hmor7OSRI6CvoJQkyINQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKAibcVT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789167891; c=relaxed/simple;
+	bh=xlWn8lsNQ74V6HS9v7MVPkrQMIN4eF0tWIk9IW2JCoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MY+jEcnb3K9pzF3GXfBDlzy/n707jOMu+CxoPrj8XCum7qa/ahGBxDCyzXtwJv317dm7Nb6hZBIMgmJjkVYDUpWJ3OmSdqrJhXM6RL8yRBspTCauMY4qE27l99b4fxXc1FJr5l3vgzqCoR44VqI9TSdCyQcN2jSlgUIGVnxrBwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WshzVBKh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKAibcVT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A088E1F000FF;
-	Fri, 11 Sep 2026 21:02:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WshzVBKh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AABF1F000FF;
+	Fri, 11 Sep 2026 23:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789160537;
-	bh=FEN/vCAYKMg/PMrUZTh9zfoX5N/ii/OQ1cwB+CRy8L8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DKAibcVTFPLuzVG1g2/cYQc4VwwOI3ehOYXPOsAPRh1l15yDKoZgJ9cwn9n7qOH+s
-	 mn1quilVUTj75V0f0uEgjDSrpinPqY0yv5ZbRrflg1SE8x/1JVEwSIcs18liEaPBbV
-	 nD7gt+h2WjKdmsDvS5lyjzppz9U/4LkcaNmR3sqVMU6rX7H2RqJF8kayHsn5xkNJCi
-	 LyRk9sMQBzPPatfGjuUbxggH6ZyKeo1uz4N/i8TL2/2GPkwbSpfDSIkO4n2a/laPwB
-	 Wp0D0j+tpbmDsbqjV2NbyTxSqbmarYyfsrU7/KFB++w3+rnyLD6HvX4pu8DCBGEPQp
-	 /3KzaWXSTiMcg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] ARM: imx6q: remove unused header includes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Heiner Kallweit" <hkallweit1@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <3cec5f38-e0d6-4d12-88d4-74cb0000a2f2@gmail.com>
-References: <3cec5f38-e0d6-4d12-88d4-74cb0000a2f2@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 11 Sep 2026 21:02:17 +0000
-Message-Id: <20260911210217.A088E1F000FF@smtp.kernel.org>
+	s=k20260515; t=1789167889;
+	bh=N1LY4rKYOr27Ilt9sZo1N4WbqCnS6yVf+HmCQgzzvz8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WshzVBKh1zOG3iQqHN9bXk6iMn3UhPjWI2o9We2q85J1a0xxuvetInEqSv+oLVBif
+	 oHixlX9hdnUTec+G9zk6kotK91VuauggK0rxfOR07BuXDSuVbPkPSgIKxAGEHnnOmt
+	 Th5abxIcAARPoeXzkg1RZuTPeY7skMICjLiysDWUlk6TbZuVGou1nBri98K3vkOFma
+	 +8WViZY9rRF0QyyYhVaVzRzVW1ce++rNpSS5X6VGBpU3jnuoYD43g/28KA7iJ0xah+
+	 8qQDOEfeqF+wATGMEexc8UPt37RQWJ1KDqUcKNK9vRaS38zBePsIn/L4mZk0RSFzOq
+	 tHA6h1BvCTugg==
+Date: Fri, 11 Sep 2026 16:04:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+ arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
+ linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for
+ ColdFire
+Message-ID: <20260911160447.2873a40f@kernel.org>
+In-Reply-To: <92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+	<20260907134037.1855408-2-gerg@linux-m68k.org>
+	<20260910174210.0f8a4ad2@kernel.org>
+	<92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Removing <linux/phy.h> and <linux/micrel_phy.h> causes a build fail=
-ure because the prerequisite commit 8392af7be78d is not present in the base=
-line, leaving PHY-related code intact.
---
+On Fri, 11 Sep 2026 23:03:56 +1000 Greg Ungerer wrote:
+> On 11/9/26 10:42, Jakub Kicinski wrote:
+> > On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:  
+> >> The FEC driver works today because the m68k architecture io.h has a
+> >> kludge in the definitions of the readl() and writel() functions for
+> >> ColdFire that allow big-endian access if the address of the register to
+> >> access is within the SoC's internal peripheral registers. This is being
+> >> fixed in the near future to define readl() and writel() correctly - with
+> >> no byte swapping. Thus the motivation for this fix here.  
+> > 
+> > What is the motivation for this cleanup?  
+> 
+> Sorry, maybe you were not in the CC list of the cover email. From that:
+> 
+>   This collection of patches is aimed at fixing the non-standard ColdFire
+>   set of readX()/writeX() IO access functions. Instead switching to using the
+>   asm-generic definitions in include/asm-generic/io.h. The difficulty comes
+>   in trying not to break any drivers with this change.
+> 
+>   The implementation of the readX()/writeX() family of IO access functions
+>   is non-standard on ColdFire platforms. They either return big-endian (that
+>   is native endian) data, or on platforms with PCI bus support check the
+>   supplied address and return either big or little endian data based on that
+>   check. This is non-standard, they are expected to always return
+>   little-endian byte ordered data. Unfortunately this behavior also means
+>   that ioreadX()/iowroteX() and their big-endian counter parts
+>   ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+>   using the readX()/writeX() functions.
+> 
+>   Patches 1 and 2 in this series are specific net driver changes that can be
+>   applied independently of the final ColdFire readX()/writeX() change.
 
-commit a97dbfcf09e3d32d8bf22f55a25ab0c09018688e
-Author: Heiner Kallweit <hkallweit1@gmail.com>
+I read it, it doesn't really answer the question of priority.
 
-ARM: imx6q: remove unused header includes
+> > Is someone still making
+> > new SKUs of Coldfire boards? Or (and please don't take this the wrong
+> > way) it was a long standing TODO that was tempting to feed to an LLM?  
+> 
+> It is a long standing todo/fix, but there is nothing LLM anywhere here.
+> This was all manually coded and tested. This patch is 95% textual
+> substitution, so it wasn't exactly very difficult.
+> 
+> > IMO keeping the hacks in m68k is a better choice. FEC was used on more
+> > modern SoCs, definitely on PPC ones. So we'll be able to get rid of
+> > m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
+> > the FEC driver is backwards.  
+> 
+> These changes are not work arounds, they are made to make the FEC driver
+> explicitly aware of endianess of the underlying processor and FEC hardware
+> block. The code as it is now, that is carrying hacks inside readX and writeX
+> for m68k, is trying to hide that from the driver.
 
-This commit removes the includes for phy.h and micrel_phy.h in mach-imx6q.c.
-The commit message indicates these headers are no longer used after a prior
-commit.
+Whatever, let me not waste any more time on this. 
+If Arnd thinks its worth it:
 
-> diff --git a/arch/arm/mach-imx/mach-imx6q.c b/arch/arm/mach-imx/mach-imx6=
-q.c
-> index 7f62009257526..8aa76f42ab76e 100644
-> --- a/arch/arm/mach-imx/mach-imx6q.c
-> +++ b/arch/arm/mach-imx/mach-imx6q.c
-> @@ -8,9 +8,7 @@
->  #include <linux/irqchip.h>
->  #include <linux/of_platform.h>
->  #include <linux/pci.h>
-> -#include <linux/phy.h>
->  #include <linux/regmap.h>
-> -#include <linux/micrel_phy.h>
-
-[Severity: Low]
-Does this removal cause a build failure in the current tree? It appears that
-the prerequisite commit 8392af7be78d is not present in this baseline, leavi=
-ng
-PHY-related code intact.
-
-For instance, ksz9021rn_phy_fixup() relies on struct phy_device, phy_write(=
-),
-and MICREL_KSZ9021_EXTREG_CTRL defined in the removed headers:
-
-arch/arm/mach-imx/mach-imx6q.c:ksz9021rn_phy_fixup() {
-	if (IS_BUILTIN(CONFIG_PHYLIB)) {
-		/* min rx data delay */
-		phy_write(phydev, MICREL_KSZ9021_EXTREG_CTRL,
-			0x8000 | MICREL_KSZ9021_RGMII_RX_DATA_PAD_SCEW);
-		...
-}
-
-Additionally, imx6q_enet_phy_init() relies on phy_register_fixup_for_uid
-and PHY constants that are no longer included:
-
-arch/arm/mach-imx/mach-imx6q.c:imx6q_enet_phy_init() {
-	if (IS_BUILTIN(CONFIG_PHYLIB)) {
-		phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
-				ksz9021rn_phy_fixup);
-	}
-}
-
-Removing these headers unconditionally triggers a compile time regression d=
-ue
-to undeclared identifiers.
-
->  #include <linux/mfd/syscon.h>
->  #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
->  #include <asm/mach/arch.h>
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/3cec5f38-e0d6-4d12-=
-88d4-74cb0000a2f2@gmail.com?part=3D1
+Acked-by: Jakub Kicinski <kuba@kernel.org>
