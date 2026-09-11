@@ -1,259 +1,157 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013006.outbound.protection.outlook.com [52.101.83.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv2-f2.google.com (mail-qv2-f2.google.com [74.125.230.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C90A29B76C
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 02:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06A83EC839
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 03:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.130
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789095373; cv=fail; b=G5Y1K7S5xg4gOPbUjOHgoW3ELwutggFOItirLS4iCcc8tCAD70BFnRbjVBap5em33HC4dtjrKghndPIIE7vjjmRAL3nKg8iNswEqCrQlhwddEZhWHiUyPX9IlDcajpAWGgUrFLMy3zYIoIDVscOdZ2gaVCtBAFV3F8+gYsETV+s=
+	t=1789098289; cv=pass; b=GVFfIq2DXlufSYltpy66l2DQjxs7LKiVyzTHN9ttTUCwBNHrAwlQDqnXrBH0hFsELjrXJ6S+55ZuZFWtYPqR+u2zCu/13dqTXyaywXqXCbj1+bP0CkVYxjFSPuAyVBEYdLUz8rH7HENW+WJttlIHSGWQyxGys4/UJ/TUjJB8ayU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789095373; c=relaxed/simple;
-	bh=GEdNk0WxBe5urR+/pTyEeODlsnuGGlrdeImxxRPjPJ4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Re3HeuiCgXrrZurB6ejLbTXUEvqT0m/wX41H+/QHtlLTC+Ve+FLnY/ItfKH6HKkNEx2q81hiVF/WQnpvykZJP/5xhSfsgtM7ufEWySKwr4Z6EM5NIxOqJ2/N9UVGVpU4BidxmGmmHrnjrecI+k8rSrNuiLlIzOrPemIuYxQNRkw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Z7elUtqM; arc=fail smtp.client-ip=52.101.83.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1789098289; c=relaxed/simple;
+	bh=9MUCzlT67j02Tdxv5MkPUdx0rDyVjNu0IwYTyNrltgs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r7jg4JGao+BXfqrG21++Q9CLov1Uf019Sjq057qEXw9fjpSwRUyBuhxXmnDjCxEzNPKRoYfW3QZTpz1O5Ef3eJBuYAmC1rAQXjajGboutCynu1UxJ9AuI/SVDIYjFvHJ2tMxk1RTJZO28LHHzRNhM52QWzz6zemUrF9GM34NWt0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AoiuXMhb; arc=pass smtp.client-ip=74.125.230.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Z7elUtqM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MTKPkGHdcAFin61ucrEnpyTWt+SOzbE/RdJtTxZBbM1ik1weMBgZKqzCW2EQuphDVPaR6blaxmHI9l6s03GEV8i8jZ+h8ld+JH2hXyHwBiXL3oih3dJ3VbllfStGg/rQM6fiQ2J1psfKGvYU7YhEbwmG5MFfINZwWWomyRYDCLkPu0c6AvaNWTfifdpY5PRcgGzacbd0hIxK24lyHA79sMtCdpmE+mfdABm4b/O79uXOfTc6epsnIHieMRAtg2hBpLXV2C7XH6UPICwMwyUlV+LznyfMxDRRsstYvs8MLxBqlUmc1QARfRaqAKDKYcQrmYbrPGZnCzQnM8DxN/2SZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JuCVuUeECdXvCvPnwYdrmUmjjZ0lGEvpZHECeYrNtRo=;
- b=Sxqp60ofbQMJ0yQcndI8+IqX3doPvCYhFqZS+PRiaKHhgmN+EYyiDcSMi4rVP6hWNDSfVF7VrkK7PV6Vrf0OZNGKvTNGuqhypwdufc3fdmYnGkA4bMTikOnqObg5G8tnD2rM7/QKLUAs0FhhUirax/0HasitI1NbdnfupTFtK3E9oE1uXWJoaTs2uyFUw9d5RJ/UAu+S5yVJ7vte+VBKS3hk/VL/APD6qAPEIQ0ANDfUFhZl7NvzFDa8igg7wST/2jiWMoWWEM5C29b8b9Ew3/F75fHHs0wIblM+M52GOpJWg7PE4HLC5wMdDotwlEQoOfJ1M+maeikzEXxxBflklg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JuCVuUeECdXvCvPnwYdrmUmjjZ0lGEvpZHECeYrNtRo=;
- b=Z7elUtqMvTrosyi4yH4ShL0BxTpfE1gFmnNIHdeUUQvKTBItCLIg2SoYDdDx/ww6rzLqOGqa1SwoY+J79Quyh2Er+V9TytubyCEXT7D6/BA+oxAWEluox//C/qVAFDQxTmqj2vmcn2oJkz2YvXA8X/8231NNLojZ+uu9mONLM55IjIHeWvObMIgeJWG6muTgdqYmGaR8c6tC5ZrwWIqWM0UKynw7xeR9WJHszVxRtliFNcaaEeRbtu9uaUBVQY5UbHBOVtVVlftssUc25NtpavFmVeM2tSsS4eVrLQrd3G6KY2NWNeQxEBvbb+CK1ikvxgpToPv6lXJDA32KmCGZLA==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 02:56:06 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 02:56:06 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
- (OSS)" <wei.fang@oss.nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v4 net-next 04/15] net: enetc: add link speed message
- support to PF driver
-Thread-Topic: [PATCH v4 net-next 04/15] net: enetc: add link speed message
- support to PF driver
-Thread-Index: AQHdQEb946ps4yxDZEeS4fSH9eLQa7bHrFkAgAD+OhA=
-Date: Fri, 11 Sep 2026 02:56:06 +0000
-Message-ID:
- <GV2PR04MB117399FA3E480878C17BF35A188BE2@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260909100733.1139689-5-wei.fang@oss.nxp.com>
- <178903925887.219967.16074856500035860561@kernel.org>
-In-Reply-To: <178903925887.219967.16074856500035860561@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|PA3PR04MB11153:EE_
-x-ms-office365-filtering-correlation-id: da32cc0d-7a7f-479c-5d6d-08df0fb039af
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|23010399003|1800799024|376014|7416014|38070700021|5023799004|6133799003|4143699003|10067099003|56012099006|11063799006|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- 7nLt4eB4lQBKXBUA9p+NQU0wydA3Of44tDkBcAMntoBcx3RcY8T4+RyzXhs99piAiS67S+JgifIEUUUOZDZSKuNMOAHQPhp2dG2UGEMXg6HZJdIyQt+2lDDh0jKUu4jt7dfcis9gOXnQcWSpfRMhTtor+5sbmRhLcybtXxE9x80DW1E9sRLpX1pXqh65OBXEcZQn5k5rk5a9MPWGfhb9PPfJHuE4YpKeaQ+XQaaak9tUJBltqHi0nSN88qc5P5EKCj6zk1nUxVvt4vPnmItz4u78iDkkn6o7azkvri3EAUHeaMy4HYaUI3LRlruER4oAVkYHxjxeZp6Zjj+ePSWUJaI1UtPRgSH26a+C0+vCdD50Wisdtj13BuFglmCckgqQaVTraTvni0gbwV+fqnopVVC0jwYuOr8xE+iHbtD9l9mWGe3JC0py+DJrDH121+SX5BwWnsttHmOkobX77LYhHw/0ML5sSqxXW3Vxwsma5ZEFHRS2bUid78W6fexiymLbwXTYbhXJqJS4HcyegPmSFXSZt8HE4l+Pvh6MyQjh9KHNUbM29IoMYA7+6sJNqAXxb+yUrhPMAGdw+7oj/euvyilc/7Y+F/UU4S9qfy7+7IbpizIwjoM4LeY6XH3p6LR5tDduJaWcOKE3uDoDA+a6xHIr+GpbkycLYg7mHn3Ddj5RLjyhbsIQHrp111wGPW2BL4UgRO2pxrnuXoCSuBV2LjV15IRpf6/7cj8Zgq1VkKY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(23010399003)(1800799024)(376014)(7416014)(38070700021)(5023799004)(6133799003)(4143699003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?cvjLsZbwmp3ExeboPdb0D5bUFGRNr4+2YpWMZ1QXK/LQ5Bhuidfqdpi0O+lf?=
- =?us-ascii?Q?RVU8QpHNehu2fHrfc+fOR2geD2yHbM6CRqBlXu9KDsPF5lH67fn4eJ7G4N0z?=
- =?us-ascii?Q?MaSh0ZsJu8Y5Yw3FQDK4WfNXBiVuqQFIrU8okCUMLmRsadhbJpSg5H2jGANX?=
- =?us-ascii?Q?ujg36G9AzM39QIgBLfCLvwIoZlOllwOfyFrmGWGuTyiRFykI0AnxLVDQ4tc5?=
- =?us-ascii?Q?qvwlOlZv8tvsnXscZShsuswg6Yo0IvxKQCtNqQ/SkBzTQSCKPe6XVecisX1v?=
- =?us-ascii?Q?RXucIwEVUQra8Acaj7nWjNsyRMbpWEW0d7kgVmNGbg1MAao1ywm+7Mro/OTa?=
- =?us-ascii?Q?qq7tUQVKOCsFTJwtNA8jVuQ5szHfxJK29NRQh4lYxyihHv20eY7z/9HozzV4?=
- =?us-ascii?Q?6qAIMGCpTTCi3OxdloqPCvH2hqVbO1n52MluD9hUu4j1FUy9oqYD7kIKLwgB?=
- =?us-ascii?Q?4B5pdAi4i32Lm2a6kOR2/cX3+wqYQBYUcmBp71/cV9HfD3t/PvgMhofcPxav?=
- =?us-ascii?Q?DZ/V13rOyDY4tkL+VZlX13ifwwfg2XUUWsgOs1UISGzpEY42uYAv445YGmmP?=
- =?us-ascii?Q?4hHQeneXRBhqLPcmNM34sCgm6XqTShUUTVww3ipFRqNIrYzqJVmYF8Js69Oz?=
- =?us-ascii?Q?ey0XeshsZ4ShiSzy+zOar5Qm9f9EeXaUxXUQOCGSO+2Jp7eRLjVrqXtp9Hko?=
- =?us-ascii?Q?ANrPrZhilIMd7dJwjTLr0cui6wUPhweuyzfZIaPltgKm+Gb6olHPt6ZMQp8A?=
- =?us-ascii?Q?cxKyD7Yhpag75xSpX7ynBhXIlhN9Nug2VBMaAtqzS+E7f+82eYOiFYGFWBN+?=
- =?us-ascii?Q?ZNAf3QRNk6BwVzjGGqcj/IKiGhnrW8FAQFqA+8AL6cDHQkEmFs46lARSRiOU?=
- =?us-ascii?Q?L7aoh5n3zoeBfgT5HIHVoEGeQizRhPZ957vojz47Ue2/SNXOHz92DPBdv90A?=
- =?us-ascii?Q?oFfJLk34RMXPKqn4m9ad3wvb0ba4j2i2xWKTVUoI+HYGd3QXH9uzwRD8nGED?=
- =?us-ascii?Q?RS5cGcCWZNowA1WlbH5Jqkso2v+1xsr44iCPMIJ6fznJJcTEaLUuXFAeD+cr?=
- =?us-ascii?Q?ea4TpS0eswu/347Ucq0bHdpSNzc2bfxdj3LIBVbY06CiFc6WT5x6hGbfY/dy?=
- =?us-ascii?Q?CvGE8b8s5FMcsP7c64TL/ZM8R8ZzoDFX+ZEvIPzM0hfnih3mvThkB+bUu87x?=
- =?us-ascii?Q?KnefbBJNqdxKSDPmXdgsFMq0vk9IPfsXU3g9NLtet5h0tlF0ngafXzaT6Dle?=
- =?us-ascii?Q?icLSFKek/gjt8cvWLgOf9JAyldIxc3qy12ZPE1Uj0fDKZM1mrZ0ZY5tgnPLT?=
- =?us-ascii?Q?wXIO8NiVybmvhdGMfLGvoYm/qveu2K6zbq6AusrRWGlXCNAxOxISdFu6raDu?=
- =?us-ascii?Q?4WjSETJnbBbWnG95yfPM2f26wByoveZ04ze+JhK3drhMxTqbF0PpaXMoNNKs?=
- =?us-ascii?Q?srmoTicVrBZ7CTyGp4+aOLPimM8jEMZxrp+F8GXEPQzKWYecxS9wdgYOG1C2?=
- =?us-ascii?Q?4Avc+4v6FCQF8SGOU391LMi/F4YV8rc8pyFScvVeCoU8VlXTyUZZu+/29Ri8?=
- =?us-ascii?Q?zmt7uTTkzm/kxBSD0pLetfTGcxgljLSADvdZDoLp2QSvnczQe+IwBiKtzjmX?=
- =?us-ascii?Q?CBsgSfvDIWsAAv5LDcAnE58Xq5pA7kCR37PAm8uADsomBef/1aKh0rJh0e4a?=
- =?us-ascii?Q?mPQZ0/7g7TYNrw2xMWdOVn1DsqymHugaCs/zz3VZILB48fVM?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AoiuXMhb"
+Received: by mail-qv2-f2.google.com with SMTP id 6a1803df08f44-90cbfa89a42so2802706d6.0
+        for <imx@lists.linux.dev>; Thu, 10 Sep 2026 20:44:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789098286; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YgnbkwKAeiLtIheL35XgQQElSKoWJkC0GAbjv9DkuyYQK5o8nQSI6/xBw+6NWvpZ7U
+         GOCkl8LL57PDV0uv5pTQw53QBWkp97yPRnf+UGTi8DyboKVuINouJY/eM4Z4nAIo/MRa
+         3sNbxR6mQTbOqJEfj1NuqzGvRBkS9j8S7RZVBh6UgrJnNIWn+cXKx2CXE8jQGTakhtX9
+         q/Q9Q0leEFUq8QYwScXonchfKXjupQPyNEMQqj1Z2NaEGYZV90Nqr1RcUaQk34ROATG2
+         jfNM+eVG8sAVhsf/moF4HcCGQIVYVlsH5zLi7UckGSs3WmB7ooMYEO4r7CwrKFpi6oqr
+         1V4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9MUCzlT67j02Tdxv5MkPUdx0rDyVjNu0IwYTyNrltgs=;
+        fh=cU36hXt+5G631HmCASqnF4xb9Tq3so55eK5OlrUgRgw=;
+        b=HgTrFGIEZ4tzigEa/M+BGY0mUvFf0LlC0yx0GY6L/casYucBDBDjdELkk2XO9zI87F
+         x8NRjxF8hAiyMWhcFQEmJ7rLwAvjyPFmsMhC4w/A55IsrN2BtKyTyXTkwljyjMsJylKc
+         PzqpMbePKPY6GHgTAMIayfVb5aNfpjUvJ9osIzHgbyUpMCxRQlQ412GOWuxFPBfrsr2A
+         9kDOerf55zo0l+Mpi3H3RNBrhZNrm1D5J17+Dvx5oFforrOVd6GV6wKN40uEj91PPJuB
+         pAbGBlNJf4IEZuvM5/mz446hSD9m9grYqCDD0J7S3/PIZetcpaZrnlIBeZjMfTu8LiWM
+         DCbg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789098286; x=1789703086; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9MUCzlT67j02Tdxv5MkPUdx0rDyVjNu0IwYTyNrltgs=;
+        b=AoiuXMhbvbMqIxLwlgfHuRBfyGIYE31Jre4x7Ek6db6s2WW8Hhbm7UtnNgVBQU+/BE
+         X2uarvPAW4xR9HB9ZzBktIWhvda8HaXHpGUEY0bxcUh74NH58BhU7L6COQHcjbUGfdEx
+         qUrZWFM7xHPtMc0FM5xFZedRNI+G11S+WMEB2BWdxqrmicqNmAxt6LJ2SAXE14dijnbA
+         udNqYjn+syCiE11STU+W2ItWJzC+N2+1mJNo+VuebpnNY7VxqMgr2GFa2vnZ2noBJYLq
+         BMeoVBVgQr//7NIKjEwT5YDConnSb9h/Snp8EsaDP41X7l4IYaqw5cv3T3ALOzR69b9K
+         7gCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789098286; x=1789703086;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9MUCzlT67j02Tdxv5MkPUdx0rDyVjNu0IwYTyNrltgs=;
+        b=jcqFWXoNePYoJWNQt88oCnYzj+kYQL4ghrz6bAMRg5bO9nVoNkFDOUxHavHJoVtBCE
+         CwJ5+mZVNao76xHS5Y73vCHTSING9EgrIv9Nxa+Sa7vFUI6hoCQ/WVFKolSaAZlHs7wJ
+         Cc9fI6QZp9FsmKKmM/YS+10ZtA9zqGzIK5xJ/N9WpOvzaMHXlu7f2qDT37xoI4A9ViPP
+         77+kvQ3FNx1snaDFSZDGaZLsm0RZlQa99nRx4MckZa4fgIvIWC1lFyUZ2WzPIYibeg/O
+         LvcQa9KdkLfmXQtkymKUi6Okz7NO+3JDL6ketptFFOh5ItpJTrwaAxvDYX71XFaMmF7K
+         3OKQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwqRkG9ETsbCvHLoB8+Rzc+z2IpYq6cuE4PVNIqz+PuZR3iFNLU4RfXsFcQwmpumz+m9dM=@lists.linux.dev
+X-Gm-Message-State: AFuF++kYsLpbqXmF3tW9JIwrIEnng6FHcAGTdMofekrZhedUU4G1nKxP
+	h/ulgADrbNszGjArQLIsd/br/BwiUJPK7gerglKRaJe8301wD75rccvTISZvn3nG34LmqWnEHc7
+	oC587M9Zme5cARtXS3AlAy6X53PtrUyM=
+X-Gm-Gg: AYBFou2SkdVezKoSoME+yQESbCTphstq17cyKN/pgF/ZfbeFkE6E5yw42efy0zLA4oN
+	5xPEiD+J/UCaI1mR/CYbFau81FZgMJiadIGv+6NvFO/OPP6MdNiE+eXfdQ+D5S8+MEkW5wTGL8Y
+	g2hUUTrYbKtyXyfINSUpmfyD35DkFvbGX78U7J2Y26Zt+3bLQp2XvXbDfsv+xkY7AVmUdDd8HGL
+	cv11DZaMirUv1X8Fw28Zp5DSq23rcD+mZWgP8dBl2vv6QbaKoAtSjxvDaY6DCYRAAz8Es4kNsMg
+	OfjjDTSs7y6i0emqt6vxGBAf1xMPAJFp3+qXcbc+dTiTicyPSbSillFbKTGNVAciGVabVk1EJjy
+	Rmf/kUoYc6l3NW5n7xCLE6MjXH7JtXcOgGBmV3KGd
+X-Received: by 2002:a05:622a:5987:b0:52d:918b:92e1 with SMTP id
+ d75a77b69052e-530c84f326bmr40390581cf.5.1789098285727; Thu, 10 Sep 2026
+ 20:44:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da32cc0d-7a7f-479c-5d6d-08df0fb039af
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 02:56:06.6101
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /CdSClSboGzVbphEOtsnf1JS47VnclrC5kmn8jWovmWFF1CIwkOhSKi6qlhRESnX0x/LQ0FNjBsuZROyf+Yljw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3PR04MB11153
+References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-4-arnd@kernel.org>
+In-Reply-To: <20260908152808.3928630-4-arnd@kernel.org>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Thu, 10 Sep 2026 20:44:34 -0700
+X-Gm-Features: AcwNN1V1fOC0jmd_i5r-nVHD_ZWN_P0KCiZNA7MUoO0nuGcjQ9okMtkGALkOIWk
+Message-ID: <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
+Subject: Re: [PATCH 03/13] ARM: remove riscpc
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Linus Walleij <linusw@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Karl Mehltretter <kmehltretter@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	Ian Molton <spyro@f2s.com>, Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
-> > +{
-> > +	struct enetc_ndev_priv *priv =3D netdev_priv(pf->si->ndev);
-> > +	struct enetc_vf_state *vf_state =3D &pf->vf_state[vf_id];
-> > +	struct ethtool_link_ksettings link_info =3D {};
-> > +
-> > +	/* A malicious or malfunctioning VM could potentially spam these
-> > +	 * messages in a tight loop causing global rtnl_lock contention,
-> > +	 * which may severely starve other processes on the host that
-> > +	 * require rtnl_lock for routine network configuration, resulting
-> > +	 * in a system-wide control-plane denial of service. Therefore,
-> > +	 * we expect the VF query for link speed to be trusted. There's no
-> > +	 * need to consider the transition from trusted to untrusted here,
-> > +	 * as this won't cause rtnl_lock() to be called frequently.
-> > +	 */
-> > +	mutex_lock(&vf_state->lock);
-> > +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
-> > +		mutex_unlock(&vf_state->lock);
-> > +
-> > +		return ENETC_PF_MSG_PERM_DENY;
-> > +	}
-> > +	mutex_unlock(&vf_state->lock);
-> > +
-> > +	rtnl_lock();
-> > +	phylink_ethtool_ksettings_get(priv->phylink, &link_info);
-> > +	rtnl_unlock();
->=20
-> [Severity: Medium]
-> Is it safe to block on rtnl_lock() inside the PSI mailbox service work
-> item?  This looks like the first sleeping, host-global lock acquisition o=
-n
-> that path: enetc_msg_handle_link_status() only uses si->gen_lock and neve=
-r
-> sleeps.
->=20
-> The completion code is only written back to the VF after the class handle=
-r
-> returns, in enetc_msg_task():
->=20
-> 	for (i =3D 0; i < pf->num_vfs; i++) {
-> 		...
-> 		enetc_msg_handle_rxmsg(pf, i, &msg_code);
-> 		...
-> 		enetc_pf_reply_msg(hw, i, msg_code);
-> 	}
->=20
-> out:
-> 	enetc_msg_enable_mr_int(pf);
->=20
-> while the VF side waits with a fixed 200 ms bound in enetc_msg_vsi_send()=
-:
->=20
-> 	err =3D read_poll_timeout(enetc_rd, vsimsgsr,
-> 				!(vsimsgsr & ENETC_VSIMSGSR_MB),
-> 				1000, 200000, false, &si->hw, ENETC_VSIMSGSR);
-> 	if (err) {
-> 		dev_err(dev, "VSI mailbox timeout\n");
->=20
-> 		return err;
-> 	}
->=20
-> If any unrelated host rtnl holder (for example 'ip link del' going throug=
-h
-> synchronize_net(), an ndo_open of another device, bonding/team
-> reconfiguration or a module load) keeps rtnl for longer than ~200 ms, doe=
-s
-> the reply not arrive after the VF has already given up?  In that case the
-> VF logs "VSI mailbox timeout" and returns -ETIMEDOUT, and because
-> VSIMSGSR[MB] stays set until the PF finally replies, subsequent VF sends
-> hit the earlier check and fail with -EIO ("VSI mailbox is busy").
+Hi, everyone,
 
-In this particular case, it is expected that VF will obtain an error code, =
-and I
-don't think there is anything wrong with that. Furthermore, aside from the
-IP revision being obtained during VF probes, which is not under RTNL lock
-protection, all other mailbox messages are within the RTNL lock context, so
-the situation you mentioned doesn't exist.
+On Tue, Sep 8, 2026 at 8:29=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wrot=
+e:
+> The main limitation here is the CPU bus that does not allow 16-bit
+> wide data transfers and hence requires the kernel to be built with the
+> -march=3Darmv3 compiler option that was discontinued in gcc-9.
+>
+> As gcc-8 is barely supported for compiling the kernel, this one
+> will not see another LTS kernel release, so remove it now.
 
->=20
-> There is a second effect from the same wait.  enetc_msg_task() services a=
-ll
-> VFs serially in one loop and only re-arms the PSIIER MR interrupt sources=
- at
-> enetc_msg_enable_mr_int(pf) on exit, so while one VF's speed query sleeps=
- on
-> rtnl, do the pending messages of the other VFs (set primary MAC, MAC hash
-> filter, promisc mode) not get delayed and potentially time out too?
+Because I think it's cool that the kernel still supports actual Acorn
+hardware, I patched gcc 16.2 to restore ARMv3m support:
+https://github.com/EthanNelson-Moore/gcc-arm-retro
 
-The VF side should handle these errors.
+This ended up being surprisingly straightforward - only a couple
+hundred lines changed - and it would be even fewer lines had I not
+reverted a commit that adds a use of ldrh instead of fixing it.
 
->=20
-> Would a non-blocking source for the speed work here, or alternatively the
-> deferred-reply mechanism (ENETC_MSG_CLASS_ID_CMD_DEFERRED) so the
-> mailbox
-> handshake is not held open across rtnl?
+It is able to compile a kernel successfully (once you update the GCC
+version check to check for -march=3Darmv3m support instead - I can send
+my patch). I haven't tested it, but I am fairly confident that it
+would run, because the assembler will reject code the compiler
+generates with unsupported instructions - this is how I found the
+commit I needed to revert.
 
-The commit message has explained why rntl_lock is used:
-The speed is read via phylink_ethtool_ksettings_get() rather than the
-speed passed to the mac_link_up() callback. When the MAC has a PCS
-layer, mac_link_up() reports the PCS link speed, which may differ from
-the external PHY link speed; phylink_ethtool_ksettings_get() returns the
-actual external link speed.
+I am working on a clocksource driver, which uses both timers (to
+hopefully fix the awful time drift), and removes the dependency on
+LEGACY_TIMER_TICK.
 
->=20
-> [Severity: Medium]
-> On the trust gate itself: the comment above the mutex_lock(&vf_state->loc=
-k)
-> check describes the tight-loop spam scenario, but the check only narrows
-> which VFs can reach rtnl_lock(), it does not bound the rate.  Nothing
-> throttles inbound class 0x81 messages - the MR interrupt sources are simp=
-ly
-> re-armed at the end of enetc_msg_task(), and the only per-VF counter
-> (msg_fail_cnt) tracks PF-to-VF send failures rather than inbound queries.
->=20
-> Can a trusted VF still drive repeated rtnl acquire/release from the PF wo=
-rk
-> item at mailbox round-trip rate, i.e. is the primitive the comment warns
-> about still reachable from guest-controlled code once an admin sets 'trus=
-t
-> on'?
+I also have patches for several cleanups to Risc PC-related code.
 
-The link speed query is a infrequent message. Normally, query speed is only
-activated when the link status changes. A trusted VF means it will not perf=
-orm
-the abnormal behaviors; otherwise, the "trust" would be meaningless.
+I am aware that this has no actual use case, but it was fun. No LLM
+was used for any part of the work.
 
+Ethan
