@@ -1,161 +1,349 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011000.outbound.protection.outlook.com [52.101.70.0])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013011.outbound.protection.outlook.com [40.107.159.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333C93AA1AE
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 02:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7DC38E100
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 02:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789092136; cv=fail; b=RO6Qlxk36s/xuF30l7xLteDwYLC91zGa3xa0gTuqw9mMCWLbYZ5h2Ze9tcGfrwPsyZ6WznmkvhAzanKXTj1xXgZD2cmtfJ+GnM9u0E2qeuZqdrp/DPahnxaVl2yOQ+edtVCg8G3Npb9OUtLFz2jUKR/zTZ/95dzMsqVCAl/tDT0=
+	t=1789093752; cv=fail; b=u5ElsKIXHWeQF9EE2ObSZLoCq2YH8qgsglAglJOiuPBbUfbKUpBcXtiA9cTMuAs1WFWnlEhR9gouh+zdln6MUelbxcce0MuHK18qdyJWtQ7/UYgBy1+Nh2Cm296wP48w1FHboJ49BDNL+ldxjKTImlgADMF844HRT/Q/pqbczvs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789092136; c=relaxed/simple;
-	bh=b0neb5KX4KNoQMvUKZdowlB9YXxNIWwHBHAGPuPkaxo=;
+	s=arc-20240116; t=1789093752; c=relaxed/simple;
+	bh=8BGs2Fbv1MNPtZ9Bag4q1K2bU/8FbGSh71p8DYmCbSM=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z4HNnszkhKWO5V0L/UmNNyGRGyh53Cf9n2ZfMuB4IYMfAJzRJVapAOkn5aJTfrztLnvXqUHn9w6CuhjAycwHxhz/ay4Kbh7p2aMuIa4aqsjxnC0zwsp+DqRHjFgXWdF5RDx0wHkaHgE6VMPph6GKMVcVV+TH+05mf3OMUcPsvyc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ujSaBhaz; arc=fail smtp.client-ip=52.101.70.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	 Content-Type:MIME-Version; b=DV4YEmIxU/wj027932ngugbz1Il0lpxBCBhTnS7jHrGCS3Hu9P783QlDCxHa2F/I3fJSlxjueLs+eECJMZ4vMAzobr+s86LgvIrnFFP2Im5WU3MU5VqBKl2gJx6UU3A1yBHEF4VS46dvlQOs36LiX/P5S/uTHoUvehVVdaaAmwA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=n1qreHNG; arc=fail smtp.client-ip=40.107.159.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ujSaBhaz"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="n1qreHNG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pDxwOH3+8MjLtV3pCk8nwQYPXXt8pVf6ybXztUwP7N5mlCi7cVEYi9Q1j+Oo2EHqtjNK594RvVv8Fp4J+hB6iXXGAj/E8duPF0JYM/GXe11VSpCqPgaD1eIu9TQTPQrsmk5/cUqIWEuEY3cWffhte0WkCAJjS9YPmCzMg1iq2AfsNY3GDhsnAriN+iJzqXlWR45CPoI2nfIU5Zb2zEOwKy+zGm8k6+X1nLjCqrm83uXGDm7U+nsUjwfnRVNwWEDN+VmgGz65H0GLGmX1ww1OuVhZbYPS1a+5XIvZRS9+YFZ0kYyHvzI6MptIjyKzqDYcxGV/74fTK9p7USR6YyTgIw==
+ b=yIrXEbvPQ39gdunZ7vIf5I0hYIC05iFkvYpfI44IwmsXOP7kqZbuH4G931P2FBM5gquWeQdLo/6XIUkGxQl+0bfT4HlXHHgi2IEygbdNvJAH/7KFpedfgo73op1Thcjqu0E7rKoT3nB6tNF/8Nfz8N+gJzsVo3LVDXX2ZW0/btT3I8CCmoKo3eS4mRdbvx3vBk2psyZqo0wSSWkZrPe6ojFmq9ndu9GO1dVtsOGa4BeDS+rFQLWSOyGNNL5YdDD6tfYSFwIdV4nj9P4eBfC3zfbBrg7I/BKA88d6YXEu6PoDJ5mjZBmdxvrtE70jv10rSSO606o9uJQES+AIIc0tKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b0neb5KX4KNoQMvUKZdowlB9YXxNIWwHBHAGPuPkaxo=;
- b=oEec8kVhtZORDeCM6oIltWSXoKOlwpB5X01BxslGsK7vuelCg1wsYWZ9jHnVs/aMJO9DaNv2jDhbpp+vru2fUsbbO36kpvHwQrsUAfn/a3w0YftvmszbZuc+Lw1soNofCyS+dve7q5AzlEOlWT3ymlYRkZi4giow3D5kyoUbUDZCdQu+WUL6wR/GXNFViBlB6qRspzEtAkn/IdVI45geFbABYOZf42zgPPrjz59paNZfYb4dyKVJaCAJYG4pN1ZpUicV8HHpJMYo4uClkfc+oT7SN1gyJdHDzOnu9ei+4+32HpIBRoUB2TsqBnILA2UMIj0SHr3l3KxgcWTn25c6mw==
+ bh=6udfd7DTRfMEj7Ytgc/BNAewHJ7mLlPpeq66DjNgk9U=;
+ b=E/LZEAamATrzQQp0HWGTn93QXp0ThxTRHHl4QI1T0XmBTlR3DB5F6JZLsiDrqbZVVk7fvMI8fXRodBP1iIgNZKuuMocV5gQS4+ApXpGVZpZMtZ8fsCkL+wemDlY4ya34Q/LPRVHjd2RpNvlufq/dCcMd/CLZDn2daGcV318dh2n9w/uc0la3cfubcJ2tUOTftl2iVjopUz9o+Toi4bFXC+a+qMTIT33rX35HvPhncf384QmNsEg9X0jyj3tMioUFQrEYem6eQa/igHfuMHglgRanAaFJB+F8VAjcu2ypNPFlM+i32BFiz5HI+mTFqg7VV9jz4GwOLLlpXEf0kI2eGw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b0neb5KX4KNoQMvUKZdowlB9YXxNIWwHBHAGPuPkaxo=;
- b=ujSaBhazqSC6JBt3LyQt8dick13O3QjhG2cnN04YvfojnTjIeCiWr0Gy2Oz+pfFYmHa0t/0M+nMJ9XNKO6Nsp1G9mfBc9IUdBsGMbiav4VvYZ6xZLdR8yIhVT9uvpGGE5qDkCCdoKERhctOV29hQKgLx5R40XLrawIt1DU0VAEAb587+lf3gYkd5rrks0iaygFmVbyBTTznhmos4EBN0DdY5EX2PaG/jcnCLNvSQcQ2QUSgWz0KB8pOGr5EyuFIooWIs87R0XawAxRGYZkJ5+y0uFf4VhKX4yDgnGrHYrEZg5UipHBtEl9SmUaFxuvPghcfeZGbAcoNouQlbvFNG4g==
-Received: from ZR6PR04MB375776.eurprd04.prod.outlook.com
- (2603:10a6:910:dc::10) by GVXPR04MB10657.eurprd04.prod.outlook.com
- (2603:10a6:150:217::18) with Microsoft SMTP Server (version=TLS1_2,
+ bh=6udfd7DTRfMEj7Ytgc/BNAewHJ7mLlPpeq66DjNgk9U=;
+ b=n1qreHNGmK1pDjwigEtZnDTkS+xrt8BirEZTRxZmWD4chIDWp741Ltja7KYcajgG9kFcUd6N8eUFZzXGFVDb1fxhmuxqq6mOeDcPJbrKxNsQQfukb5q7duTAc4PdeGmA8ga/d3ojBshkqIMckn9ZzTw3SPzCBqHatCDgwTHGOVNvOAMKVt3WxPeLDei8pZ3vYvMT3DwtXEwBhB5OK4ovEKfsMVVgNK0A1o6CciCFijrLtsrTjz4bj3CQZH4qqRggnjN1x6AgNnaE4mzeKn/umIaYtqIRLXXxOTQ+Gn6JH93UDXu8nqqttCCpjW2uhZGeCH8m/IWG6rwR2Tq83pQYxw==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by PA4PR04MB9295.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a6::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 02:02:06 +0000
-Received: from ZR6PR04MB375776.eurprd04.prod.outlook.com
- ([fe80::b83a:a0f5:2b29:50de]) by ZR6PR04MB375776.eurprd04.prod.outlook.com
- ([fe80::b83a:a0f5:2b29:50de%4]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 02:02:06 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Frieder Schrempf <frieder@fris.de>, Abel Vesa <abelvesa@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Frank Li <frank.li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Mikhail Vaniulin <mikhail.vaniulin@axians.rs>
-Subject: RE: [PATCH 1/2] clk: imx: fracn-gppll: Add 350 MHz support
-Thread-Topic: [PATCH 1/2] clk: imx: fracn-gppll: Add 350 MHz support
-Thread-Index: AQHdQTfj8ZXQIHTWt0+Rs+miEkoV3bbIoIcg
-Date: Fri, 11 Sep 2026 02:02:06 +0000
+ 2026 02:29:06 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
+ 02:29:06 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
+ (OSS)" <wei.fang@oss.nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v4 net-next 01/15] net: enetc: add trusted VF support
+Thread-Topic: [PATCH v4 net-next 01/15] net: enetc: add trusted VF support
+Thread-Index: AQHdQEbzOtxqREnqqkSgZxhP+/EdmbbHrFaAgAD4iPA=
+Date: Fri, 11 Sep 2026 02:29:06 +0000
 Message-ID:
- <ZR6PR04MB37577605914AF62FE1F29B5ADB88BE2@ZR6PR04MB375776.eurprd04.prod.outlook.com>
-References:
- <20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>
- <20260910-upstreaming-v7-3-imx93-displayline-v1-1-bb9446e6ed6e@kontron.de>
-In-Reply-To:
- <20260910-upstreaming-v7-3-imx93-displayline-v1-1-bb9446e6ed6e@kontron.de>
+ <GV2PR04MB11739DD052A1E514B40A6E4F888BE2@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260909100733.1139689-2-wei.fang@oss.nxp.com>
+ <178903925585.219967.18067064676940135635@kernel.org>
+In-Reply-To: <178903925585.219967.18067064676940135635@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 msip_labels:
- MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-09-11T02:01:39.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
- Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZR6PR04MB375776:EE_|GVXPR04MB10657:EE_
-x-ms-office365-filtering-correlation-id: ec260267-1116-492e-918f-08df0fa8ae2a
-x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|PA4PR04MB9295:EE_
+x-ms-office365-filtering-correlation-id: 74c3568c-b024-4b56-7e11-08df0fac7431
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|23010399003|376014|366016|7416014|3023799007|38070700021|18002099003|22082099003|56012099006|11063799006|4143699003|10067099003|921020;
+ BCL:0;ARA:13230040|366016|23010399003|19092799006|1800799024|376014|7416014|4143699003|10067099003|6133799003|3023799007|22082099003|18002099003|11063799006|56012099006|38070700021;
 x-microsoft-antispam-message-info:
- oL7PLzq9kM6aZGFKQd17LNxKHzjMfs9r/rBM65fnw6ybQrAZb/XOJClWvYeAwFW3GTLZdJijUDY6LoVL1+y9AV4c7KO5hdvZh5sqDw0S6spNL88eXXn1gyCho3Ta6NjHObYrsXn+lxCp8OsvlciiSB0sbXaEOuuYDN2Q/ORwzfVqP/lbC7mmis945gSevayYJ8STYf1uzrBHnfN/r+KS3IPEw1x/p+/0niCasNQvS//yWpqd9PbJ3DECoRHdue6q3VMt/IbFo3UQEoiI6J4zdnpwYmORRhf5uawgrYRnx+ZvYsbqeKCmUrdH3edSOF3a6CoKAbd7jxWIV7Hl7g9P/LSoWIrxhe0jK/ucyv5By/EOTp68T15gkY6CVGPB3Ir0nWbbZ2Xv+Ny9wzAtdg7GKtjbaoNJsYenN17M9733RT+jSzZvRfpGFl4/hTSzWGN7Y6n3P2k33+9WmKGeHHFgbM0bDaDx5LIk5JsrSmDaCMzNmGHSsTxC6crTIuFpOxBy2ZA5dPyDAW7jTBMis0B3CAcrdOouQDQV702BV7lWs+S2zqLqYbzdAH7pRkdWUMPJza6bHvBTWi14RTcY4nbm9+9lRaWQEt3UNPLDE5hBBjdzUSdsAPhuiltsKidLxdQ2TDKtMF1dxewF4bVp+pQ3T0OqNlMGCd3FaV1bUj6Trns1x7dVms6ufUNJV/KFVuRhxfzCib9r1J9yKGA9nT4hny2IR+wfcKO3PWD9LA0bD1gbG3mLCan4kq2amRWMnIAa
+ BTnMEdFQrOevBt4ZhR3s6+yaC3Kd9m4hMKQCCLXp+DOLExYdLdcSwOuTpegV4aJo8AMByVkmzZ0WFwTrCj5wGVSS84SebebMXMGIjjk+6aaUKywi0a2s8toI7ocej2jRom+HfeWJzMJSiVJSFKKCEhn3CjJrRvp16P/c8o0BstwEKsZaPnPxRyC6w4f72mZRTcwxFL6vC9/l2X4jGLzYWrgw0ZOANhNTKt+t40FSM9DoyXRGaVWnew1JZQvTITs89pRu4uFya4UcMLtbjHMsog2BsJlLNaoDPIDeKdB6wxYqbSPbSTpeNneA/vrjrNa43tR2AAv5SDWoWj8Hg9sv4x+SRtEzDCFedZZHtQx7qrO9vvuxQEk3jovnVB2Qt9jebng7LO2WGKI7nghnh451wtH94mcomC6nC+88KA7iLXZOAc0SmImS3ilhlkqPhhYsO29kTLm2sNcUuLFNE/YUr1N9J7O6n3htb8J3OV5kHVHftZX/2GJgYVPKhs/wBMlh6joYW59VAlHFrWJm8pjoBkZfPoagLLtnLtGiq/FrVxNWHu2e4QJbtF359sV5I/ucMQJqnKs8CGJYRfkxjUY4EOT+etQr/1QD2xbI8sxV+mM+fA3RQM4LerhuuHUKRfTRUYsvEMlQSowqMvGPTWXFrrkCUfcEQL8D9ucuhi2FTztfdF+vkZNiv3Ipxq1t5IoD6ZR9uZSg2XjNK582jgA888i0C02TCvhs3xouxlADeEA=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR6PR04MB375776.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(376014)(366016)(7416014)(3023799007)(38070700021)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(10067099003)(921020);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(19092799006)(1800799024)(376014)(7416014)(4143699003)(10067099003)(6133799003)(3023799007)(22082099003)(18002099003)(11063799006)(56012099006)(38070700021);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?V1dHUWpwK1h2eWJ5T0pEWXNaa0tveXg2Z2lwR1ByaWlYeGRrMUZRM2dFc3U5?=
- =?utf-8?B?RTFKY0NNSEQxZkJ1ZkN6VkdLd3daTUZnMXpsYVg2N0J5c0s0Zk1vVnlkWFBF?=
- =?utf-8?B?NU5vYm96VnNVWnYrdU11MHJFZFZkN1N4STVHV2U0WHg2YjNlekVKdjZObVBF?=
- =?utf-8?B?QlE1QjF6WSszeGsxYlhFMi9TZmUrVWdqUm1scGhkYkJ3MkFjVHBtVk9BWk5V?=
- =?utf-8?B?ZG10ZTVQTUMrcjk4OFFsR3F5cDIrV3llUHZSMWtkSFB1d280YUEwRmRETGZX?=
- =?utf-8?B?a2Y3dS95VXhFRkM5SXZ2Y08rVkh6QXRVcUlJeVBiYkxXT3l5OFV0S2x2dDV1?=
- =?utf-8?B?bkNoYXRZYXh1VVh6WURxNHZ1MnJCbTNhM0tqNVRXbm95UnhpeThaUXBwcmg1?=
- =?utf-8?B?SXdTMEdvTWZEa05LZlVVMjNZNFFZSmRlYVFnYTBqS2hERlR3OWhURW9XRGFP?=
- =?utf-8?B?Nlp6TXA0aXVWNWpQZ2NocEtCOUM1MFBmSEU4SnYzWHFOR1FxK2JDOVhmRHBq?=
- =?utf-8?B?UmhqTnNPR0FVbFJIZGw2eUsxc1ZtVFpLR0gxVGhTWlZXS09sbWx1bHVtQmFo?=
- =?utf-8?B?ZlF2dC9vVFRwUnFzaGZxbTN5dzdMRkVWQjZMSDF4M0FRekpzYzh0M2Y0bVo5?=
- =?utf-8?B?UG14MnRDU3lydDRCUGp2MEJIREZDTVJZankrVHAzemdvQTFkcmg2ZVB0RGJR?=
- =?utf-8?B?Yk9xeTRTVmlKVDUyZTROazB6UG1PMCtyY0FHMVdSb2pZM2FFUU9VandFUDUz?=
- =?utf-8?B?ODA2R2JucXI0Q3hORlFyVWQySElOdmZjZC83TVcwQWEwVFAwdEJ4c2FGV2l6?=
- =?utf-8?B?cVhGaGYyVFNOUEgzWlhOanNVdnRLSTBCTG13eGlNSHpsSU1qWGRpQyswZXdZ?=
- =?utf-8?B?RHhzc2Z0SXpmWkZsbTk2ekRNSTJaYWRoVk5iUTdIR2RLNStVVWxZeUFFOUdT?=
- =?utf-8?B?Q3RIdHV6Q0g1WDJDd2l3Y3p6VzhkdldyMngreWNjVXByVFh5bGFZZTJnbTZt?=
- =?utf-8?B?NUtGMUJxV2ZxNUQ5cGZwL0JQTFR3anFqUml6ODRjVUx5MUwwYWYrWCs2TGxt?=
- =?utf-8?B?c0QxZ29vY0tkdm54YzYzWkpiWU9GdVhHVzhxNkpKTUhKVnZzcFFWVGJlNUYw?=
- =?utf-8?B?UUhZSGorMkZUcXZNVUUzd3hReENiTkF1TWZRTXVxbmRzbWMwMTJrREJzR2g2?=
- =?utf-8?B?MzFQT2pONG9nYzJBOEpUTFZvdWp4OFB2SUtkcnZkVEhuZlNmNGtvMlVOT3Vl?=
- =?utf-8?B?OEpuVWNrR3pDM0E2aTdyNzJrZU5kWllDT3ltK0tvTTJxWm1QdERpM1R3NzhN?=
- =?utf-8?B?Q1MzVjdaWWl3SmsvWS9LV24zdCtkY0NOK081R1MrR3ZmUUx6eUZoanVCaGR0?=
- =?utf-8?B?RHJtUWJvRXlmajViaGR5cE1YVnF5bWRoT0MvL1kyVUg2allYWWh6MVd3bm1Y?=
- =?utf-8?B?cGVlL002TVVPOURNbWppajBycThkMUR3N0tUV0RWQmpzQlFnQ004QWNRTFND?=
- =?utf-8?B?WWFqdmhvdGJjQy94Z2RtTHJtYm5pQVY4ZjFGZDBJY3BMbVpWcU56SUFhdC9J?=
- =?utf-8?B?STJCTndLVUVSSVdNRjluRW9UaENmTHMvNmpRTVplZ1BPU2Rkd3BVb1kxUm9q?=
- =?utf-8?B?RjYwOXZnc09KK01QTDI3Zjg2czZ5OXBXc1RHMEZweWFNMWM4b0FiVThBV1Zh?=
- =?utf-8?B?Vk8zQ28xcEVpa2l2NEFGMVBWeGZsVmxJKzdvU0YzMWFackJiZ1hhS05BR0tB?=
- =?utf-8?B?NEowZE9PV0RqRllzQzdSY2FGcUdyUE9HU0x3VEJVS29QN1gvUW9BTDBKQnRI?=
- =?utf-8?B?ZnNvS3c2clVwOCtoYXRDZnlacnlJbnp4TkVzWjVOZDl3RWdPb0R0eWs4VXVo?=
- =?utf-8?B?a0NDWUlQbWE1Y3Z0cWM2L0xIME5WZHlxN1FobUZIVzdHZmlNNjRMZ1RLdVB0?=
- =?utf-8?B?QUFQSDM2bHVNKzdSNDhja29VSTNSa3FYeS9kcDd0OUd5dERObXVqeUJyandt?=
- =?utf-8?B?dFhjV1FmempuNWUwRzBDWnlGZGlxYW4zb1lzZnYyUWVWWnhNU252NUNjQjVm?=
- =?utf-8?B?dkl4SG81N2dRNUpLQlpCeVFIVFk4ckx3TWgrMXZzakpFSWZ5WW1KRkQ1dVFx?=
- =?utf-8?B?WGQ1NTZ2S3RPYWtiazZhT1hnaVR4QXVTZnM3UURkMCtkaHhkL0pMNlB0Q3lQ?=
- =?utf-8?B?TGpTZlpmZFJpbTVqRTFUUExJOWc3K2ZjUGthc1FwV3BJZkc4eGUvL3BwNjl0?=
- =?utf-8?B?bDFCT3hiRHBBeWtlbjJ1M3ROdEJ3Rnk0NkdsczBIWVlrdUpjVlJmZHBEMTlq?=
- =?utf-8?Q?7wFxU4Fig/pS9JgKqg?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ =?us-ascii?Q?zTyehUGx1ClRLR0C+VrmBhH2NrcRXOA8CzhhQBKE3LHqwqOAlVEHbqwF/K0o?=
+ =?us-ascii?Q?NbX5u6m/0vN53J1++ae5OL+2dotzrDJhTuu0nQ/cdcKDtROnwKLzO02R+ZxC?=
+ =?us-ascii?Q?SVoBgOOdKkcsz6xdHIh01V3jciHR95bC4NRuyuvy1RRhARV+I5odU3/fWfkT?=
+ =?us-ascii?Q?68ACqp7DHGA90Pfvazg5weoL5ZCalM+di84UdYJaX7ALQvfQUr/Xk0AASzHm?=
+ =?us-ascii?Q?C4mM4gcotcH7JkwI0Qu7yTjtvRfGXGI7fxS2ly/bB+29eowHnDPjXE2kDKJ/?=
+ =?us-ascii?Q?VtbkrDCmvXGPpZ6EFAmYucyqRMRSpg6BnCAU3zOCBI8q4rmywHWVR6cNML9s?=
+ =?us-ascii?Q?z3cN+VpEz4JzA6Gl6YIdM8bPMWxnYUmJVr7NBh5c6ePOQBofFGpGHyJ7w/f0?=
+ =?us-ascii?Q?8dKaYZhgrVr7nAgOQqq2nZtMuDRP9qhrQn+sltUjohdapNi/7xVPEtmIxLHb?=
+ =?us-ascii?Q?kTHmXbwRCWYuW1OwT3z/0JxIrslER56Vg9Jqj0ID7mp2zeqZiWKhq1SzBVTN?=
+ =?us-ascii?Q?dLc4X3LuJVT/Dwp7fMU5hQj5AV+7YePyl0fZFbPDKlsc9WiZAB3GxgH9N5sw?=
+ =?us-ascii?Q?6HdARUnz+jAMAUKa15OxQLczMLGOcSzdepHABX4RkKZTqCYsPFM9Top4EG3n?=
+ =?us-ascii?Q?H0/RwDHCujFZD+Hp2Oycmyze2gGvSrbp+mlTivzTr4TptweG66Mu7/Ug3gAh?=
+ =?us-ascii?Q?pwdVlwv3lkSlNjATr7Dbtd0g687Qk7xjFTBgcXsAa0TlWwYc9mfRZBhYOkQP?=
+ =?us-ascii?Q?rkd4bXZU/YsjBnntW8SAq35qYf3yl4LW0JpLYxJQbpGvjajrYhKpY/a90IH5?=
+ =?us-ascii?Q?72/5U3+o3sdW6bRo3B+jDbU3YN74Z0F84IIYFKdoGg0SUF0GRiomIBa7PoUw?=
+ =?us-ascii?Q?Ip752HClGBi+ODhm0CQbZ5gi6R4Of6OLs7T5/Sj5it1TUBO4vkUB5N3yLl8b?=
+ =?us-ascii?Q?9bCUN8e+TpcdzeD0cAC2JarzSyV3ZFRQ1Yv/v48PDExtsvd/aAG6qOjCiDz6?=
+ =?us-ascii?Q?g9LOldBXQYgOvtzAZ5q8oJPublOLqZVkstXySOht/fuLjCpdrCemXbzrxSCT?=
+ =?us-ascii?Q?kta7B4KOP4g5Cbc/E4Rf03hJMOuLtJTjqYR112FK1FC076lYLvTaClWXPIvr?=
+ =?us-ascii?Q?4XcHc3FFvOuHsKc1uB05C2ars80yc/df7kMLVv85N3bwKt+wVqzpu7fzGy6e?=
+ =?us-ascii?Q?SvN1izpRJV14LtI34F/p7FtJRqh+7h8ajoxzTa7XoV0NLnc2/2ig7HkNwOmM?=
+ =?us-ascii?Q?oZId5eFp2U/ZErkLMqIBoq//tnTmDJi9qog3C8N/UT5vbG2+vgpPRMx6pE78?=
+ =?us-ascii?Q?jIddBO3QsOYIZ9mabl5Fe1+phT6Ll9VzIWoEjwmdNvOBGYj0jBrb/YOxxCll?=
+ =?us-ascii?Q?CzfwLO/9h7RMa402izWXdEtgzIh+rUfM3qiNRtV+yEDagjatumsBpBfgqxRL?=
+ =?us-ascii?Q?/hr+n3e4EHYfuK1wdIkxHnnosIVCdz2jSoMtqHRfhL+vLzbV+siOtl7hs5Pp?=
+ =?us-ascii?Q?ogUCLWLLuJis85NdUuZ/qgFjHNTYRFBhSdnr0NQUPABlKwLC7t2oBFrR9GDu?=
+ =?us-ascii?Q?Toni8drf4zxpp/5ojZqvn/M+s6iDzXnLxW/1UPsoLqJ0icjV9Cq33AazCB62?=
+ =?us-ascii?Q?G3FXENrTFAge0t461qt5ennJ8qM2gsJ1viuWYDIb9Lnl/KVNfY47JYYfJOlJ?=
+ =?us-ascii?Q?XeZPKY2G43C3ZPjsqWirPRqshC+qSCnT8ZsgwYngItyakom0?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZR6PR04MB375776.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec260267-1116-492e-918f-08df0fa8ae2a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 02:02:06.0434
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74c3568c-b024-4b56-7e11-08df0fac7431
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 02:29:06.7515
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uI79x52bnKWgBMKkkAhuYOmUZmOrGeY77FADow+U3fAnd3W1fUp77SWqIJdycNH2A1f9I30loDyIQEbaKSt3Wg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10657
+X-MS-Exchange-CrossTenant-userprincipalname: VL5djw8cdQT6AuGC6tkbE7gVr+TMZjvjFhGknposG5lbXYKeWi+w8V5mXDOqkkJ6e2cukx4y+YRXQ/7RBka9Ew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9295
 
-PiBTdWJqZWN0OiBbUEFUQ0ggMS8yXSBjbGs6IGlteDogZnJhY24tZ3BwbGw6IEFkZCAzNTAgTUh6
-IHN1cHBvcnQNCj4NCj4gRnJvbTogTWlraGFpbCBWYW5pdWxpbiA8bWlraGFpbC52YW5pdWxpbkBh
-eGlhbnMucnM+DQo+DQo+IEFkZCB0aGUgMzUwIE1IeiBmcmVxdWVuY3kgc3VwcG9ydCB0aGF0IGNh
-biBiZSB1c2VkIGZvciBkaXNwbGF5IHdpdGgNCj4gcGl4ZWxjbGsgb2YgNTAgTUh6LiBUaGUgZGl2
-aWRlciBvZiA3IGlzIGltcG9ydGFudCBmb3IgTFZEUyBvdXRwdXQgb24NCj4gaS5NWDkzLiBJdCBp
-cyBhbHNvIHVzYWJsZSBmb3IgcGFyYWxsZWwgb3V0cHV0Lg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBN
-aWtoYWlsIFZhbml1bGluIDxtaWtoYWlsLnZhbml1bGluQGF4aWFucy5ycz4NCj4gU2lnbmVkLW9m
-Zi1ieTogRnJpZWRlciBTY2hyZW1wZiA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9uLmRlPg0KDQpS
-ZXZpZXdlZC1ieTogUGVuZyBGYW4gPHBlbmcuZmFuQG54cC5jb20+DQoNCk5YUCBDb25maWRlbnRp
-YWwNCg==
+> > @@ -574,6 +578,7 @@ static const struct net_device_ops enetc4_ndev_ops
+> =3D {
+> >  	.ndo_eth_ioctl		=3D enetc_ioctl,
+> >  	.ndo_hwtstamp_get	=3D enetc_hwtstamp_get,
+> >  	.ndo_hwtstamp_set	=3D enetc_hwtstamp_set,
+> > +	.ndo_set_vf_trust	=3D enetc_pf_set_vf_trust,
+> >  };
+>=20
+> [Severity: Low]
+> At this commit enetc4_pf_driver has no .sriov_configure member and enetc4
+> never calls enetc_msg_psi_init(), so VFs cannot be instantiated on ENETC =
+v4
+> and the mailbox worker is never armed.
+>=20
+> The only reader of ENETC_VF_FLAG_TRUSTED is
+> enetc_msg_set_vf_primary_mac_addr(), reached via enetc_msg_task() which i=
+s
+> only set up by enetc_sriov_configure().  Does that mean
+>=20
+>   ip link set <enetc4 pf> vf N trust on
+>=20
+> returns 0 here with no observable effect, and that the new
+> enetc_init_sriov_resources() call allocates rxmsg/vf_state plus total_vfs
+> mutexes for slots that cannot exist yet?
+>=20
+> This is resolved later in the same series: the patch adding VF support fo=
+r
+> i.MX94 and i.MX95 adds .sriov_configure =3D enetc_sriov_configure to
+> enetc4_pf_driver, and enetc_msg.c then gates several ENETC v4 mailbox
+> operations on the trust flag.  Noting it only because the knob is adverti=
+sed
+> one patch before it can do anything.
+
+No need fix, this patch is a preparatory step for ENETC v4 VF to support
+MAC filters.
+
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > index edc1277bb586..78114ab3e482 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > @@ -61,31 +63,49 @@ static u16
+> enetc_msg_set_vf_primary_mac_addr(struct enetc_pf *pf, int vf_id,
+> >  	struct enetc_vf_state *vf_state =3D &pf->vf_state[vf_id];
+> >  	struct enetc_msg_mac_exact_filter *msg =3D vf_msg;
+> >  	struct device *dev =3D &pf->si->pdev->dev;
+> > +	u16 pf_msg =3D ENETC_PF_MSG_SUCCESS;
+> >  	char *addr =3D msg->mac[0].addr;
+> >
+> > +	mutex_lock(&vf_state->lock);
+> > +
+> > +	/* Untrusted VFs cannot set their MAC addresses by the mailbox
+> > +	 * messages.
+> > +	 */
+> > +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
+> > +		pf_msg =3D ENETC_PF_MSG_PERM_DENY;
+> > +		goto vf_state_unlock;
+> > +	}
+> > +
+>=20
+> [Severity: Medium]
+> Is this a user-visible behaviour change for existing SR-IOV deployments?
+
+The VF will return error code when it has no privilege.
+
+>=20
+> ENETC_VF_FLAG_TRUSTED is zero for every slot, since vf_state is
+> devm_kcalloc()'d in enetc_init_sriov_resources() and only
+> "ip link set <pf> vf N trust on" sets the bit.  On the VF side
+> enetc_msg_vsi_send() maps the new response to an errno:
+>=20
+>   case ENETC_MSG_CLASS_ID_PERMISSION_DENY:
+> 	return -EACCES;
+>=20
+> So after this patch enetc_vf_set_mac_addr() -> enetc_msg_vsi_send() fails
+> with -EACCES, and an in-guest "ip link set <vf> address ..." or enslaving
+> the VF into a bond/macvlan stops working after a kernel upgrade with no
+> configuration change.
+>=20
+> The commit message says:
+>=20
+>     This does not regress VF bring-up. The PF programs a valid
+>     primary MAC into every VF slot at probe, and the VF loads it from its
+>     own SIPMAR0/1 registers.
+>=20
+> Bring-up is indeed unaffected, but could the message also state that gues=
+ts
+> which previously changed their own VF MAC now need the host to mark the s=
+lot
+> trusted first?
+>=20
+> Related question on tags: the message describes this as preventing a
+> malicious VM from eavesdropping on other SIs and from spoofing MAC
+> addresses, and the VF-set-MAC path has existed since commit beb74ac878c8
+> ("enetc: Add vf to pf messaging support").  Should this carry a Fixes: ta=
+g
+> or stable guidance for backporters?
+
+This is a new feature for both ENETC v1 and v4, I do not think we need a
+Fixes tag for new feature.
+
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> > index 55c07c528f22..a7bf4bfc25b7 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> > @@ -488,6 +488,7 @@ static const struct net_device_ops enetc_ndev_ops =
+=3D
+> {
+> >  	.ndo_set_rx_mode	=3D enetc_pf_set_rx_mode,
+> >  	.ndo_vlan_rx_add_vid	=3D enetc_vlan_rx_add_vid,
+> >  	.ndo_vlan_rx_kill_vid	=3D enetc_vlan_rx_del_vid,
+> > +	.ndo_set_vf_trust	=3D enetc_pf_set_vf_trust,
+> >  	.ndo_set_vf_mac		=3D enetc_pf_set_vf_mac,
+> >  	.ndo_set_vf_vlan	=3D enetc_pf_set_vf_vlan,
+> >  	.ndo_set_vf_spoofchk	=3D enetc_pf_set_vf_spoofchk,
+>=20
+> [Severity: Low]
+> At this commit neither enetc_ndev_ops nor enetc4_ndev_ops implements
+> .ndo_get_vf_config, and rtnl_fill_vf() returns early when
+> ndo_get_vf_config is NULL, so IFLA_VF_TRUST is never emitted and
+> "ip link show <pf>" prints no VF block.
+>=20
+> Since the remediation the commit message recommends is
+> "ip link set <dev> vf <N> trust off", would it be worth making the trust
+> state readable in the same patch that makes it settable?
+>=20
+> This is closed later in the series by the patch adding ndo_get_vf_config(=
+)
+> support, which reports ivi->trusted from the same flag.
+
+No need fix, the subsequent patch in this series adds ndo_get_vf_config()
+support.
+
+> > +	vf_state =3D &pf->vf_state[vf];
+> > +	mutex_lock(&vf_state->lock);
+> > +
+> > +	if (setting)
+> > +		vf_state->flags |=3D ENETC_VF_FLAG_TRUSTED;
+> > +	else
+> > +		vf_state->flags &=3D ~ENETC_VF_FLAG_TRUSTED;
+>=20
+> [Severity: High]
+> Does clearing trust here leave the hardware MAC filter that the VF
+> programmed while it was trusted?
+>=20
+> While trusted, the guest can put any valid unicast address into the SI
+> primary MAC registers, including the PF's or another VF's:
+
+A trusted host means it should not change its MAC address to a PF or other
+VF address. If it needs to sniff traffic from other VFs or PFs, it can enab=
+le
+promiscuous mode. So this is not an expected behavior of a trusted VF.
+
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_primary
+> _mac_addr() {
+> 	...
+> 	enetc_set_si_hw_addr(pf, vf_id + 1, addr);
+> 	...
+> }
+>=20
+> The trust-off branch above only clears the software bit, so ENETC_PSIPMAR=
+0/1
+> (ENETC4_PSIPMAR0/1 on v4) for that SI keep the guest-chosen address.
+>=20
+> The other paths that could restore it do not.  enetc_setup_mac_addresses(=
+)
+> is the only place a PF-chosen MAC is written into every VF slot, and it r=
+uns
+> at probe:
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:enetc_setup_mac_
+> addresses() {
+> 	...
+> 	for (i =3D 0; i < pf->total_vfs; i++) {
+> 		err =3D enetc_setup_mac_address(NULL, pf, i + 1);
+> 	...
+> }
+>=20
+> enetc4_pf_vf_flr_handler() re-applies only promiscuous state, so the addr=
+ess
+> also survives a VF FLR (guest reboot or driver reload), and the SR-IOV
+> disable path does not touch it either.
+>=20
+> So after the documented "ip link set <dev> vf <N> trust off", frames for =
+the
+> spoofed address still hit that SI's exact-match filter, and a slot later
+> reassigned to a different guest inherits the address, because the VF driv=
+er
+> reads its MAC out of SIPMAR0/1.
+>=20
+> At the end of the series the trust-off branch grows scrubbing of
+> promiscuous mode and of the UC/MC hash filters, but still does not restor=
+e
+> the SI primary MAC.  Should this branch reprogram the PF-assigned primary
+> MAC for the slot as well?
+
+This follows the same intentional model as the trust gate itself.
+
+Once a VF is set to untrusted, it can no longer change its MAC at all - any
+subsequent ndo_set_mac_address from the VF is immediately rejected with
+PERM_DENY. So the MAC left in the SI primary filter is simply the address t=
+he
+host authorized while the VF was trusted; it is not something the now-untru=
+sted
+VF can keep modifying.
+
+The host also retains a definitive way to reclaim or reset that address:
+ip link set ... vf N mac <addr> (ndo_set_vf_mac) reprograms PSIPMAR0/1 and
+sets ENETC_VF_FLAG_PF_SET_MAC, after which even a trusted VF can no longer
+override it. So there is no need to save the probe-time address or to force=
+ a VF
+reset - the host can deterministically take over the primary MAC through th=
+e
+existing PF interface.
+
