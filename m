@@ -1,146 +1,115 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF82E3FE
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 05:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789103468; cv=none; b=nRwFGXqTfbZP9lJwcIFc/pf5ztIsJ2UF8/pudZYmzmaTJm56+WVYs9fHAQsQNj3cmLnFzqvnXqMy8+mZG/32dX7RbntalJYh/SsR3BqtL/GJdZcaHWsKdM5+J3QdaXQbclKfoYF1ufA95mCx9aCAN0fY4PQE2hqk6478iiHGCDM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789103468; c=relaxed/simple;
-	bh=op8zp3xtqZK1y+5EYbArVhH3q3yVDjwvN7ve9EQ2nqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hRUhywM0mkfQctSt0KDFD/7CO8JytmGESiQTtHlply8w54fj/VDMDSMbKshSdK6thCLggWYwgmfA/1b1xh85GI05tBwnVahKzHsU3MXNQ56WHyoUOBPHXynzeWDrhp6IrRcrM/1K3In+S4eujrCKxCGRsG8LHRQxZXXjoZMQG7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZneD4KGf; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC93839AC
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 05:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789103654; cv=pass; b=ZypywDhH0vOyq130ZdwyWqiC81lBPfD4TSWq4QGm1OrUuGrjOp/JSITNdl8gHQf3+yH5PTtvJ5J4+KnT0+b1Tp7q1CgpeUlt8+jKlolkmdUAZDRbRGPHb7BTXVyt5kcHrpkv9+ZtE00ImzK1i3YZidd1jgHuMYJcULRMm6kDlOY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789103654; c=relaxed/simple;
+	bh=f2m1o0L17hiAg/ebV6tkp4vTmGCqvNCUxTgQkLD8Y+I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FKixsPWDc2USO9MWYzf38NHatBn2LckytTwBuTMPqn8TTrOuiVciZ3upEAOyntBFDHP2qnNU0wtgxUfFqme0HzYf2SFys7wwUBkz2x4SNag7/OsRl4g9pjxuPcwD0p1pnqM5V+v1M2uCusAxFelt98xeiM7xPTTINQHWWt2ntc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kATiUt2F; arc=pass smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZneD4KGf"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-398e9698a70so561055a91.0
-        for <imx@lists.linux.dev>; Thu, 10 Sep 2026 22:11:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kATiUt2F"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d8fb334ddcso3922675ad.0
+        for <imx@lists.linux.dev>; Thu, 10 Sep 2026 22:14:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789103653; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o8nO8Jp7c+V9DCZ/yD3U55APbMQcBWnBtFh8lc9/APLRBQTUJ5cdm5XUSfbZzy4Q6R
+         Fz3XDmpeRaZVk/5LWjp8poK4u3iRuO7mdP/mKkI16J/F3F28CekdpHonpJjRh8FKwd9x
+         cZXBS+sA94OkfGc6ndmQVbfBFu9FHL4F7QomRn/GDH4Til6f8taXL7I63UA2l0JwnwxC
+         Zus9Yscm160LjiywDWlLSzQ9mpm+TbXL4DW8ASZUgx0HAvoKvRyt8DEkgaw7RJlRv4rq
+         mGabhUE6ADXNsdAnX+TgRShR1mZ4Mxus6Qbfjaw4suowDK174fWvcqBP0ZHwqND7v3VQ
+         hvaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=f2m1o0L17hiAg/ebV6tkp4vTmGCqvNCUxTgQkLD8Y+I=;
+        fh=MI66Y7hEHRZCrXU/mgGVSzFI9IJM+3vzPmsLk4VIGjA=;
+        b=fsO0o0FoUjVGd7bX5B7a5hJ7x5DzihrNpVr/eYR0mxXRNXqXF8WCAHAlmYpxJSCnT+
+         pEe21xaAsnhj7ux4u/9AQEmte1nm7TwJCkt1+/ocCCTMvKCstJIkqRh1l2EWgkYIbs6+
+         y9ePQk386baOBEpZPP3q/nniwCC553EYXMfA8J2mB0JUOxA0o+BjI1WPDuInC4jADflW
+         0v+WT3jPWgdci/YiDGVKQsB96sWKY3/Wv9jhzZ50O7dpNICtLgoHNDROnfijdQmQ+CEz
+         7STBlzrchHocuHvB+BGQwgXgdXodcYgnDqLWqS5M+5UUcp0Zl3V7WBmjfnNbf4gGToy8
+         Zh6Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789103465; x=1789708265; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yMlwh42zfWxw3I8aSGFHE6JsCvmUNQVYKp3fX73TBuY=;
-        b=ZneD4KGfiAb3xD63OjCEM8VlIbddvp1JsXsHPvZ2PcylDi+CG2pIhTu9gG6eeUKeQF
-         aF+4pTRSa9wjqFdlNnyCakAUKT+z741LstuQlbT/lgvSgbi+qBxaO69mwAyqOMblnys+
-         QEkw34ECdr6Lii7MtBtFlnO1O8JoN+R/eF2KP+rTFiTzZqmZgDdgwIqZeuSQBoBjhAMF
-         kK4UV3/KHIy+H69QLnxlOYoA1LsHOeRBVxwiRTaZMoskdESPchQPf15dAVbOxcVc91Cn
-         FkFdDNPnIlxz9ZtFqfD/hpBs+/1zJz3fr1ug+TsdzB3cFpSzS0PcJuSsm8HuG7LSWBXG
-         26Jw==
+        d=gmail.com; s=20251104; t=1789103653; x=1789708453; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f2m1o0L17hiAg/ebV6tkp4vTmGCqvNCUxTgQkLD8Y+I=;
+        b=kATiUt2F5HxcrF0VGRHFFdntPckIfiq5BBQF2gcTPdFsc2gxtuEguUMY10HT4EgEzc
+         8oqTpyQ3A97aC1jWS1jhAFMUKom4X/9u164R/aWReBudpTKh+B4iqDV8Yz6cJkj6zcXK
+         0J9FcsFKbsHRY+LBL255p9K/LFrxBEEz5ypZQzh8S7ghAyY6FZWpXinMnxO49YHh0ID9
+         rvCPJcotVUJqHKVQmgAwRvlmoX2Xl9rni1Qsu0Qj2qCV0+ANRhiFmWI6TOIB5u2J2vXC
+         hCftAPWZXVklqKQzftrOXXj9GdoyhSpN6X6BjThzAEqqlAuqQ5B3o+j9AYYD4JE2u3yl
+         kb4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789103465; x=1789708265;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yMlwh42zfWxw3I8aSGFHE6JsCvmUNQVYKp3fX73TBuY=;
-        b=Ht0I4Twty5zjLcqOyufSsaryBNMTopU1SsfjpWhwpPd7yA19ubTDQmq4H1qLn06PR5
-         Z0Ulak2FyrU86Xqe6kla/WNL1nj24gDnWBHpDwg2+7a8n6P/QpkAvOXVMgt2PDKjiFMc
-         I453FSk2L+861AocLHcw46q1c3nQkZ2A6WTTrX/hXrDQw/K+W2wFGH7Z72+S5roeQBZP
-         t1JGgwIENDLbhy9FFUHZ7pmwA7Xrwb5DW9Rys2+ceuThPEtZlrjiCTor33PVqZjpOOKI
-         XgUzfil4r94s+1mfU1Rdw7d5mMcXzlLSaELpb3M3224EUxrWWNnyBxHi8mj/DdOWOVY4
-         jYPw==
-X-Forwarded-Encrypted: i=1; AKwUvByBTGHSM1zHBEVtVmiQiJSyB8kk4hpFTI2RKIDycKV6+LiW42+5XqvGCxXqx11ScNNLBKg=@lists.linux.dev
-X-Gm-Message-State: AFuF++k4OtgZmwybgBO5WArWCxwCXMSatJORJ7pO+AOWaoW/QnszoGgf
-	jnulo/9iA5GZwshVyxbIMUu9e9Ab+nrgG+4UwoaSqQhct+oCWpSgHXAE
-X-Gm-Gg: AYBFou1umt6D+EshPyMtZWLhXnzuY8eQFoLl53zU7R7XQch/KdVxWP/gu0Ki1KezAP4
-	9mrQMcoBE9YR7wevx5z/1qWafzlMOqUVyBqWS8FF/uf0UMIpIZHLT8lO2fJ3wLcIIIMeYYsOy+S
-	d0oKrV8VeAu0JsH4RELSixOFYModkMGcPKOK7f0wlrAh+AbsLN5G4sKdAqZSP5c/hDPO2oO55ZG
-	u9gV04CVkX4YpzN5WhLnTNgbVlkfc2ffstBhD8b6XZqf/Tq7joYhrN7Vk7bAV0RR0r8s3cUliHl
-	KaKiqdbEuVjZLBJBUM4OumX5J4MV4vaOL8N2DBe+BTuyJEG9Jpb3613luUxp8MAyLt46nIhbiYp
-	83rbTylnUIjgqA+c79QBD7EojGd34T+yUbphJBozOxNWWL/3UL6vczeDrHLpQP6R3hOqF/c87r8
-	nuVegScTcRrbUOxFRs8tcVmWfClcs1NN1z/z44+HzYn1s0DxyXkeTvwvdZmgEiWWPyaCoXQPwOt
-	hGa7I/PeqxC+lfoh3uGbBCoOcuCEQHcQpvOS3baEYahr6N4irh7SO5uetZyxpnx9JNwB+gYapsA
-	M12AHIYTjZB7+Bs=
-X-Received: by 2002:a17:90b:2641:b0:398:9bd1:3215 with SMTP id 98e67ed59e1d1-39d9c352a63mr4011103a91.22.1789103465343;
-        Thu, 10 Sep 2026 22:11:05 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d995a42a5sm2512810a91.17.2026.09.10.22.11.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 22:11:04 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-usb@vger.kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	bui duc phuc <phucduc.bui@gmail.com>,
-	Sashiko Bot <sashiko-bot@kernel.org>
-Subject: [PATCH v4] usb: chipidea: ci_hdrc_imx: Fix error handling when creating IRQ name
-Date: Fri, 11 Sep 2026 12:10:43 +0700
-Message-ID: <20260911051043.15962-1-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1789103653; x=1789708453;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=f2m1o0L17hiAg/ebV6tkp4vTmGCqvNCUxTgQkLD8Y+I=;
+        b=Xt46z9ma1gFMWCUN1j73F1BKf4FMwQKM8EZX1m22BOBYXATTZ800qTlnl+5vWoZxQq
+         LAThWq/Knc1Auus1aXqet8n2Tq3oaYbDvwlr+p96SLLm0cbGKLoreg6HyS/Mo5gW5zxl
+         Bd/6CFhtHhxcpctxpF/F1R11DUZTqdYTChd+c7gYlurww8fsoPCtR4pANN9TsCFKe2sN
+         /yJ067yJ84oHjoc/ga2XWZ2NZfx5FqtN1Rn2IhGPemMzo1/fwbluGYtA1r+j7wtg3J5L
+         tJpYeR4xlgw2YnVUiCgcTRq7fEG4TJVMM0pGzJFgHyq7SacGeY5xpvmrwoaT1xGvavvo
+         xV+A==
+X-Forwarded-Encrypted: i=1; AKwUvBwa1rQN9C7u6JQhe6imPricReemt1lIj6JPQ6oQV3CtEkINBWtAhwkpAKUcRTP+IWHSbyk=@lists.linux.dev
+X-Gm-Message-State: AFuF++kGaARJnzz3mInMwN3byhcC/LcVAffS5yRuDlYu+AABTY83exY8
+	Rpzz/Y5aA1AsqK+RUn38EMD2za67b+eW+2YwKE33TorGG5paEVmu+UDdXDmV+5sdvNyg0jeuniV
+	+wrYuT1lmOUHmXKagn5UzT535OqbN+OQ=
+X-Gm-Gg: AYBFou0prq3gTL1toU9hLS5bBlvqlAcrCos1fJIQ/3u+vqiaLpLn96iRMTJ5Q6b/1JN
+	HH0ewQ4cncdHPjGgkgsQSq428DfPWJ0Y0u4w5btGCItbE5ecrWPKSWALfoRqIrtqiQ0W9rc/qZM
+	bKzYkD7SJ7807TswyBgXNiLuJQhbR5qx9P5kolqRIJI9EqPSk4VTv/ZAXE76YUDOV8Zj2ezho70
+	byDuaeklipDJwzQsdmzAKbrav/z/oruSC+8sLxKOlLcq0qBb175KDTF2aITkMQ1H0R8ogoPxUWZ
+	ZUHZI+c2cFNZUtu0AP5JTB6FviLmDeZNQWe4ibZweecH9pP0MqQd6VX6TqDfdISiq7h8oxymj1O
+	G6hL8Bc0rsbtTNpnTIJrjQm7QFEFCyzD5Gc7vGZD1U3o3xO2bliXD7K6rPQBng2P8Bt4=
+X-Received: by 2002:a17:903:2451:b0:2db:7269:38ef with SMTP id
+ d9443c01a7336-2dd2a3362camr50043605ad.14.1789103652898; Thu, 10 Sep 2026
+ 22:14:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260810093112.47807-1-phucduc.bui@gmail.com> <20260810093112.47807-2-phucduc.bui@gmail.com>
+ <2026091054-preflight-capacity-e7e2@gregkh>
+In-Reply-To: <2026091054-preflight-capacity-e7e2@gregkh>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Fri, 11 Sep 2026 12:14:01 +0700
+X-Gm-Features: AcwNN1U4E0obWJZ95GdL5H5vM5ixf2nzVS2DjnR9WxfFgAkwdtRnN-OtjhWnZCA
+Message-ID: <CAABR9nGc+ERL_AenTWzHZwxUeRB4KqyvMB5REOgGzko7X-+p8w@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] usb: chipidea: ci_hdrc_imx: Fix error handling
+ when creating IRQ name
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Peter Chen <peter.chen@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-usb@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Sashiko Bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+Hi Greg,
 
-devm_kasprintf() can fail when allocating the wakeup IRQ name. In this
-case, the probe error path should shut down the PHY before returning.
+Thanks for letting me know.
 
-Use the phy_shutdown error path instead of err_clk so that the PHY is
-properly shut down when creating the IRQ name or requesting the wakeup
-IRQ fails.
+>
+> This patch did not apply, please rebase and resend.
+>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/20260806065755.C9F361F000E9@smtp.kernel.org/
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
+I have rebased the patch and resent it here:
 
-Link v2:
-https://lore.kernel.org/all/20260807065619.30604-2-phucduc.bui@gmail.com/
-Link v3:
-https://lore.kernel.org/all/20260810093112.47807-2-phucduc.bui@gmail.com/
+https://lore.kernel.org/all/20260911051043.15962-1-phucduc.bui@gmail.com/
 
-Changes in v3:
- - Use the phy_shutdown label instead of err_clk as suggested by
-   Sashiko's review.
- - Add Peter Chen's Acked-by tag.
- - Add Frank Li's Reviewed-by tag.
-Changes in v4:
- - Rebased on top of gregkh/usb-testing.
- - The ret assignment for dev_err_probe() is already handled by
-   1db5c6b0b983 ("usb: chipidea: imx: fix missing ret assignment for
-   dev_err_probe").
- - Keep this patch focused on the phy_shutdown error path.
-
- drivers/usb/chipidea/ci_hdrc_imx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 6a17b22047b3..edbf9df9b8f2 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -533,7 +533,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s:wakeup", pdata.name);
- 		if (!irq_name) {
- 			ret = dev_err_probe(dev, -ENOMEM, "failed to create irq_name\n");
--			goto err_clk;
-+			goto phy_shutdown;
- 		}
- 
- 		ret = devm_request_threaded_irq(dev, data->wakeup_irq,
-@@ -541,7 +541,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 						IRQF_ONESHOT | IRQF_NO_AUTOEN,
- 						irq_name, data);
- 		if (ret)
--			goto err_clk;
-+			goto phy_shutdown;
- 	}
- 
- 	ret = imx_usbmisc_init(data->usbmisc_data);
--- 
-2.43.0
-
+Best regards,
+Phuc
