@@ -1,119 +1,203 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FF64756B6
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 13:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005E0472068;
+	Fri, 11 Sep 2026 13:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789133199; cv=none; b=rXUHxqVIOvXzI7psEFWkvZKBgvfWIepREm8AQvmFag62f6I5EyGPokYo85p4V7/vUNCZ/BKjKC1N8bBN1CTLj3zsuv134d0Swc3ZVcnep5PlUnNvciBGLcTeYgoWGVEVdGuYTb/fiSX7/vKb9qI+hPQv2nvUpVFx8ogdLZcaXYQ=
+	t=1789133278; cv=none; b=KNGTx9G6wlNeXBUHs2bItvHKR1HXAiLIaidhTpav/bM0up84WknNcCaDrB2wxsBWX+hhrlpWGFxslQRxq57BlIw4sqpIHgVl01Kn75OE9P9rRFDE3PZfN50sIUaL/QoVpN4SQMvWtgSwlagNHzO1EEasszzp0nxCZBWo40n4oxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789133199; c=relaxed/simple;
-	bh=5SNgYt0Og5PizNXuj2seGZx1s9j3Gc+sbup7rqOyQtc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YTuezz1ky/ckoHgMWZu43R7u/k3j7Q6rG9ZXSjmBJjkc6dpFjXCjqZDWhj8xsO5fgOEEkqr/j4loDjeZRwLNAO99jVK9a2SQc0QA4gdpPAXd+k39HzSftYA5St4XYyYjUxvoVi3hwUMAM21PN4NXZbTU0ansQHBD7iTRqMWa6Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=wcwOBTew; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1789133278; c=relaxed/simple;
+	bh=bb6254xgmnei3js2vLHLK4MFg1wcNIcHE7bFdEPvxDk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=myD0iS0FlCyf5HnuWoazH7Ss/JzJfIt5sB+CEvi/bFUI96+BMLGP7zvZymsxHO+VEID9tFHijBYCiPe4NqMw3nEl3RMI+wnVe67WE/QVRdKzjcoq3tnsvrAqqKeoXF81mW6oC4sqxnxpoJhfeKWIKLcw1YMFwm+pPcKmbt4QpQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G60mzJvf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="wcwOBTew"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4hhFgd0366zlfwJB;
-	Fri, 11 Sep 2026 13:26:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1789133176; x=1791725177; bh=oyAYQmUekWykInIy8DJFeLF8
-	1/4M/B/awGBINpSMfs4=; b=wcwOBTewyRtmaR4XDi8co7igum9aW1TlEoXGCYiJ
-	qx8cjYVoFBVcGKzygIJfO6Jy0l9QtXyU7Sk3HFZQeiLsT4waASG5aZ27+ohAxtC6
-	V1ayq845C/SSqIN7VIGUNLPDAl8sufHJyFtoy49lixQcYXLugwNdXNK1u4JLuurF
-	6QgXk0qfZpXii5uQWzul0Qp77Sh7jkhQCPSRSFyG0nDHmQOJUZyn2ssNPuP1D471
-	vyTJPoNl5bsW97v1CW3F/IG7oZrWP49nbBNPO+w6mCTbQO/rjXrIZlqYZmModOVU
-	j+JeFhJgyVqBERS0n8OViONZvnNP6rUV5CbS6kixuqxViA==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id GbOTp2oya2F2; Fri, 11 Sep 2026 13:26:16 +0000 (UTC)
-Received: from [192.168.51.14] (c-24-6-239-25.hsd1.ca.comcast.net [24.6.239.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4hhFfp1RLbzlfvqM;
-	Fri, 11 Sep 2026 13:25:53 +0000 (UTC)
-Message-ID: <2144051c-268c-40b1-8c22-4be49f0edd17@acm.org>
-Date: Fri, 11 Sep 2026 06:25:52 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G60mzJvf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B36F1F000FF;
+	Fri, 11 Sep 2026 13:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789133276;
+	bh=AJ9tjRqEMdSdtFBQhF1d3Qho63O4SNqmDyHex4MFdhI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=G60mzJvfAF4BQKVx0EVnASsCGPHdG04pNGTG2wjYWQ1by8s89DXhtLYkjVq4oxG71
+	 aQNjL5qKLfJZUdn0RRwoGZ6hqf4fRYin4csGNaRFiJZvwoT6xHJ1skxmJEgiyuKP1q
+	 7BlsnyfTisBsLMU5t8xgaRFJHZ+M+UK7mEa79EVRrvh7D80JNAu/KDevrLv1DNnbP4
+	 OiAGFWQU/QmYPlohLldIu6Mxq7WLVWU86iuNE+ucgkhZfVwf/tMthFStOUpyLQdjHl
+	 8W/DCVX204+pUXWDMv/v0AB47ofVHwmAqcCey5zY6V1UT6/vArJoYFU5eoaK0qE9FC
+	 eCBS4ZA4CRm7Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 1/2] dmaengine: fsl-edma: Implement
+ device_prep_peripheral_dma_vec
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, vkoul@kernel.org, dmaengine@vger.kernel.org
+In-Reply-To: <20260911-fsl-edma-dyn-sg-v10-1-700eb72def57@bootlin.com>
+References: <20260911-fsl-edma-dyn-sg-v10-0-700eb72def57@bootlin.com>
+ <20260911-fsl-edma-dyn-sg-v10-1-700eb72def57@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 11 Sep 2026 13:27:56 +0000
+Message-Id: <20260911132756.8B36F1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/13] ARM: remove riscpc
-To: Linus Walleij <linusw@kernel.org>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Drew Fustini <fustini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
- Stefan Agner <stefan@agner.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
- <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Kristoffer Ericson <kristoffer.ericson@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Alexander Sverdlin <alexander.sverdlin@siemens.com>,
- Shawn Guo <shawnguo@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org,
- Ian Molton <spyro@f2s.com>, Jens Axboe <axboe@kernel.dk>,
- Helge Deller <deller@gmx.de>, Thomas Zimmermann <tzimmermann@suse.de>,
- "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
-References: <20260908152808.3928630-1-arnd@kernel.org>
- <20260908152808.3928630-4-arnd@kernel.org>
- <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
- <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 9/11/26 2:07 AM, Linus Walleij wrote:
-> The community has a built in tension around this:
-> 
-> - One camp that are enthusiast like yourself. That kind of people
->    are running the show inside arch/m68k on Amigas and Ataris.
-> 
-> - One camp who get their paycheck from present day companies
->    and constantly on top of the latest technology. As can be
->    seen Qualcomm just taped out a brand new ARMv7 SoC
->    named Kuno, for example.
-> 
-> As you can see this leads to a bit of tension.
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-That summary looks incomplete to me. Every time a kernel API is modified 
-that is used by the RiscPC code, the RiscPC code has to be modified too.
-Removing the RiscPC code makes modifying kernel APIs easier. A recent
-example is available here: "[PATCH v5] scsi: core: Drop
-Scsi_Host.default_lock"
-(https://lore.kernel.org/linux-scsi/20260831095821.3486994-1-john.g.garry@oracle.com/).
+New issues:
+- [Critical] Kernel panic: Modulo by zero during unaligned DMA_DEV_TO_DEV b=
+urst calculation.
+- [Critical] Arbitrary DMA Execution: 0-length vector triggers out-of-bound=
+s read at tcd[0].
+- [High] Data corruption: Missing multi-FIFO offset causes negative address=
+ drift.
+- [Medium] Logic Error: Unreset burst size artificially breaches FIELD_MAX =
+limit.
 
-Bart.
+Pre-existing issues:
+- [High] Kernel panic: DMA_NONE direction mapping triggers BUG_ON.
+--
+
+commit 084b4b0f402eb171d6adefd8fa18c7fa25e129fb
+Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+
+dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+
+This commit adds the implementation of the .device_prep_peripheral_dma_vec()
+callback to setup a scatter/gather DMA transfer from an array of dma_vec
+structures. It also supports cyclic transfers if the DMA_PREP_REPEAT flag
+is set.
+
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index bb7531c456dfa..c5f5951c988be 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -673,6 +673,122 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_c=
+yclic(
+>  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+>  }
+> =20
+> +struct dma_async_tx_descriptor *
+> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
+_vec *vecs,
+> +				 size_t nb, enum dma_transfer_direction direction,
+> +				 unsigned long flags)
+> +{
+> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
+> +	dma_addr_t src_addr, dst_addr, last_sg;
+> +	struct fsl_edma_desc *fsl_desc;
+> +	u16 soff, doff, iter;
+> +	u32 nbytes;
+> +	int i;
+> +
+> +	if (!is_slave_direction(direction))
+> +		return NULL;
+> +
+> +	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
+> +		return NULL;
+
+[Severity: High]
+This is a pre-existing issue, but does passing DMA_DEV_TO_DEV to
+fsl_edma_prep_slave_dma() cause a kernel panic?
+
+If a driver requests a DMA_DEV_TO_DEV transfer, fsl_edma_prep_slave_dma()
+handles it by mapping the resource with dma_dir =3D DMA_NONE. The core DMA
+mapping API (dma_map_phys via dma_map_resource) asserts
+BUG_ON(!valid_dma_direction(dir)), which leads to an intentional kernel
+crash.
+
+> +
+> +	fsl_desc =3D fsl_edma_alloc_desc(fsl_chan, nb);
+> +	if (!fsl_desc)
+> +		return NULL;
+
+[Severity: Critical]
+Is it possible for a caller to pass nb =3D=3D 0 here?
+
+If nb is 0, fsl_edma_alloc_desc() allocates an empty descriptor with
+n_tcds =3D 0. When the transfer is subsequently submitted via
+fsl_edma_xfer_desc(), the engine unconditionally dereferences
+fsl_chan->edesc->tcd[0].vtcd. Since tcd[0] is out-of-bounds, this will
+result in a heap out-of-bounds read, potentially leading to arbitrary
+DMA programming or a crash.
+
+[ ... ]
+
+> +	for (i =3D 0; i < nb; i++) {
+> +		if (direction =3D=3D DMA_MEM_TO_DEV) {
+> +			src_addr =3D vecs[i].addr;
+> +			dst_addr =3D fsl_chan->dma_dev_addr;
+> +			soff =3D fsl_chan->cfg.dst_addr_width;
+> +			doff =3D 0;
+
+[Severity: High]
+Can this hardcoded offset cause memory corruption for multi-FIFO endpoints?
+
+When fsl_chan->is_multi_fifo is true, fsl_edma_fill_tcd() automatically
+applies a negative Minor Loop Offset (MLOFF) equal to -burst. Because doff
+is set to 0 here, the destination address does not advance during the minor
+loop, but is still incorrectly pulled backwards by -burst at the end of
+each minor loop. This causes the destination address to drift negatively.
+
+[ ... ]
+
+> +		} else {
+> +			/* DMA_DEV_TO_DEV */
+> +			src_addr =3D fsl_chan->cfg.src_addr;
+> +			dst_addr =3D fsl_chan->cfg.dst_addr;
+> +			soff =3D 0;
+> +			doff =3D 0;
+> +		}
+> +
+> +		/*
+> +		 * Choose the suitable burst length if dma_vec length is not
+> +		 * multiple of burst length so that the whole transfer length is
+> +		 * multiple of minor loop(burst length).
+> +		 */
+> +		if (nbytes && vecs[i].len % nbytes) {
+> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
+> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
+> +						fsl_chan->cfg.src_maxburst :
+> +						fsl_chan->cfg.dst_maxburst;
+> +			int j;
+> +
+> +			for (j =3D burst; j > 1; j--) {
+> +				if (!(vecs[i].len % (j * width))) {
+
+[Severity: Critical]
+Could this result in a modulo by zero for DMA_DEV_TO_DEV transfers?
+
+For DMA_DEV_TO_DEV, both soff and doff are 0, which means width evaluates
+to 0. If the vector length is unaligned, the modulo operator will evaluate
+vecs[i].len % 0, causing an immediate kernel panic via division by zero.
+
+> +					nbytes =3D j * width;
+> +					break;
+> +				}
+> +			}
+> +			/* Set burst size as 1 if there's no suitable one */
+> +			if (j =3D=3D 1)
+> +				nbytes =3D width;
+> +		}
+> +
+> +		if (!nbytes || vecs[i].len / nbytes > FIELD_MAX(EDMA_TCD_ITER_MASK))
+> +			goto err_free_desc;
+
+[Severity: Medium]
+Will this erroneously reject valid transfers if nbytes is shrunk during an
+earlier loop iteration?
+
+When a vector length isn't a multiple of nbytes, nbytes is reduced to a
+suitable factor. However, nbytes is never restored to its optimal value at
+the start of the loop for the next vector. If a later vector in the array
+is large, it will be divided by this artificially reduced nbytes, causing
+the calculation to exceed FIELD_MAX(EDMA_TCD_ITER_MASK) and falsely aborting
+the transfer setup.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260911-fsl-edma-d=
+yn-sg-v10-0-700eb72def57@bootlin.com?part=3D1
