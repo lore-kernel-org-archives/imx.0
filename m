@@ -1,231 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6454825C1;
-	Fri, 11 Sep 2026 13:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4202548423C
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 13:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789132175; cv=none; b=lCza7Yj6Xaf/rm8l59ZfA2NZmN2oH3JFAF6tuBfLWpS9vhIWJnTe3ncsfb4O3VyQP3itVN1BlklooOkWqYBX5LnGkpO1OltltEd+O4Qi/ZCe7oCoyzbCCtqsnRLLQDQ+zuyv8c1zWeaXpHAv+HIxTUC6G/yXUl/uRf/JrV93AHE=
+	t=1789132316; cv=none; b=XJdonNMLRrjWFT91U8+CDB5n08BS3HZ1eeYIt7fg1S9NepWrBuUKVPGAqCTploHkVbYfOZgZnnuMyzt5LN3vdRPLx7l26fgI39mEGtTC4E5/qWHDEKssV0amrWD3ttvXItXIKgynETkTzgdMVDzRIRf1GFmwDVpBiAp9Ll3ATrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789132175; c=relaxed/simple;
-	bh=05VaFWmH1fvVu9ssYCkMXTeWwF9HLZII2itZOKyMR6w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B8Od9fwXq0C9J9P1PPRcgF7Z7ENTuaKQgnJH1uPDF3iH0jn8WG7FldniuzZ6+ysweXZfK4z1BhU6x0IKrtqHH2/AxkKuKLgesxdVObqKk6yJeEwhvctP3tvypzLooNCpwOQendkFkAqrZcSdVse4Td7c2c1BjP3QEWjR3XCy99k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33D01F000FF;
-	Fri, 11 Sep 2026 13:09:31 +0000 (UTC)
-Message-ID: <194f8bf1-2412-4d77-975d-c32fbdeb4874@linux-m68k.org>
-Date: Fri, 11 Sep 2026 23:09:29 +1000
+	s=arc-20240116; t=1789132316; c=relaxed/simple;
+	bh=/JurTHwn2B43+frPHF5U/11p25b0aEztmatHqJ6KDDA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DGua7puua6MBnSAY3+MEnjPIFEKbVhmEqTTi42OyPTWd39zQqWdoQdcApMwZT/2x+Tr0ekhBEftPZln/QAGdQARtFVNe/pTik3nhA9qMSHOKsfElNq/agAwHMbGt9nEDPjwNke4jiNxNcIAGIU7544TUgMfMQnzPOOscNpB4R8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N90MhQFM; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N90MhQFM"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F230CC653FE;
+	Fri, 11 Sep 2026 13:12:32 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2CFFC601DE;
+	Fri, 11 Sep 2026 13:11:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A741A11C7AFA8;
+	Fri, 11 Sep 2026 15:11:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789132306; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=K2veW4tdfSPkWWlOWauDWcU2EEO/NWAUWYakYOcJC7s=;
+	b=N90MhQFMo+zHubFJ1ZPjluN4nKaMWxvx+Td+wWJc3NefQyCKv8CLEUQTX/RyTDIJeBtER5
+	5Cszk1rsRDk/bpO+kISEY9S/8LM7eTjtZH+IG2uiZkeyzx19QIYFZl9MSeRol9Qd53qAYG
+	FwR+oYUr47joXKQL3IPddMF3G54X7i776lLbe8NjaunFxFGwHr0G1iirolN/Ceaxpt8s9n
+	I+dCWEofCQGMyQHMEiPZOM/wNCvxf7wONE+EL+6vedk/i0X0BtqH5wrFHndCvbg1RpQIKm
+	9Gf8BQ39fgy5slL/XTqeE+8kBZHMxkXwfaHTmvQxR33Vdd7Hp1NQbBkhvI51IQ==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Subject: [PATCH v10 0/2] dmaengine: fsl-edma: Scatter/gather improvements
+Date: Fri, 11 Sep 2026 15:11:35 +0200
+Message-Id: <20260911-fsl-edma-dyn-sg-v10-0-700eb72def57@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-To: sashiko-reviews@lists.linux.dev
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Frank.Li@kernel.org,
- Vincent Mailhol <mailhol@kernel.org>, imx@lists.linux.dev,
- linux-can@vger.kernel.org, Oliver Hartkopp <socketcan@hartkopp.net>,
- Marc Kleine-Budde <mkl@pengutronix.de>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
- <20260907134037.1855408-2-gerg@linux-m68k.org>
- <20260908134312.00C441F00A3A@smtp.kernel.org>
-Content-Language: en-US
-From: Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <20260908134312.00C441F00A3A@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAf+o2oC/23RzW7DIAwH8FepOI/JBsLHTnuPaYcAps3UJlOSR
+ auqvvugm5RM5Ghk//jLvrGJxo4m9nK4sZGWbuqGPhcITwcWTm1/JN7F/MAECA1KWJ6mM6d4aXm
+ 89nw6cqfBSCRpYitYnvocKXXfD/Lt/beevvwHhbkwpePUTfMwXh9/Llj6/nQJlb4gB64IKHgSM
+ Wn96odhPnf9cxgurPiLWIUGdC2ILGitpAsxKlRUC3IjINaCzIKzLVo0pontjqC2Qr2jRWXBBjL
+ RNR4DuVpoVsGAqIUmC6iNNWgbT2pH0BsBdzapSwaJ3mlPMkmsBbMRdi69mJIBYkpe5ShB1IJdB
+ QuyFmwWYhAeJBoBOtaCWwUHrhZcuSZ4Lygvg2z6L9zv9x9hPSAG0wIAAA==
+X-Change-ID: 20260428-fsl-edma-dyn-sg-960731e37da2
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
+This series adds support for scatter/gather DMA transfers via dma_vec
+and dynamic descriptor chaining to the Freescale eDMA controller driver.
 
-On 8/9/26 23:43, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [Critical] Heap buffer overflow in TX bounce buffer due to unvalidated packet and fragment lengths.
-> - [High] The hardware PPS interrupt handler accesses and modifies shared PTP state without acquiring the required lock, racing with configuration paths on other CPUs.
-> - [High] Unbounded hardware polling loops can cause a hard lockup if the hardware enters an error state.
-> - [High] Integer underflow in RX packet length calculation leads to out-of-bounds memory access.
-> - [High] Out-of-bounds read and write in `fec_enet_clear_csum` due to missing `pskb_may_pull`.
-> - [High] Missing dma_rmb() after reading descriptor status in RX paths.
+The first patch implements the .device_prep_peripheral_dma_vec() callback,
+enabling the DMA engine to accept an array of dma_vec structures. This
+callback supports both regular and cyclic transfer modes.
 
-Given these are pre-existing issues and not in any way related to what
-this patch is doing I am not going to make any changes to it based on this.
+The second patch introduces dynamic scatter/gather chaining, which allows
+multiple DMA descriptors to be linked together without stopping the channel.
+This optimization eliminates idle periods when back-to-back transfers are
+submitted, improving throughput and reducing latency. The implementation
+carefully preserves cyclic transfer semantics and respects hardware
+constraints on platforms with split register layouts.
 
-Certainly a heads up for the drievr maintainers that there is some issues
-worth looking into though.
+I tested it on the i.MX93. The dynamic scatter/gather chaining should
+work with other eDMA controller with split register layout.
 
-Regards
-Greg
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+Changes in v10:
+- Don't move backslash in fsl-edma-common.h to minimize diff, no
+  functional changes.
+- Link to v9: https://patch.msgid.link/20260909-fsl-edma-dyn-sg-v9-0-60bb2e678e8f@bootlin.com
 
+Changes in v9:
+- Rebased and retested on v7.3-rc1.
+- Drop the check on CSR E_LINK flag as it is never set in the driver.
+- Add FSL_EDMA_DRV_CSR_LINKCH flag for eDMA3 and eDMA4 to indicate which
+  controllers can link SG descriptors.
+- Count and limit the number of linked SG descriptors once per
+  issue_pending() call, instead of O(n^2).
+- Link to v8:
+https://patch.msgid.link/20260803-fsl-edma-dyn-sg-v8-0-dc2b0317206d@bootlin.com
 
+Changes in v8:
+- Enforce that major channel linking in not used when linking a descriptor
+  in fsl_edma_link_sg() by checking all TCD, not just the first one.
+- Don't compare the descriptor link_sg_id with the CSR LINKCH field
+  if major channel linking is enabled, to avoid completing unfinished
+  descriptors in fsl_edma_tx_chan_handler().
+- Handle the completion of the last transaction of a linked SG chain if
+  the previous interrupt was missed by checking for the channel completion.
+- Add comments to clarify the assumptions I made.
+- Link to v7: https://patch.msgid.link/20260728-fsl-edma-dyn-sg-v7-0-10dffb4167c2@bootlin.com
 
-> 
-> commit b19b9a07ca8eff68179fb339b69d5c4690fdf442
-> Author: Greg Ungerer <gerg@linux-m68k.org>
-> net: fec: do not use readl()/writel() for ColdFire
-> 
-> This patch modifies the FEC driver to use local fec_readl() and fec_writel() 
-> methods instead of direct hardware register accesses. This avoids incorrect
-> byte swapping on big-endian architectures like ColdFire.
-> 
->> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
->> --- a/drivers/net/ethernet/freescale/fec_main.c
->> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> [ ... ]
->> @@ -1923,7 +1924,7 @@ static int fec_enet_rx_queue(struct fec_enet_private *fep,
->>  			break;
->>  		pkt_received++;
->>  
->> -		writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
->> +		fec_writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but is a memory barrier missing in the RX
-> loop?
-> 
-> The loop checks the status to confirm ownership in the while condition, but
-> without a dma_rmb() immediately after, couldn't speculative execution on
-> architectures with weak memory ordering cause the subsequent read of
-> cbd_datlen to happen before the DMA transfer is completely visible?
-> 
->>  
->>  		/* Check for errors. */
->>  		status ^= BD_ENET_RX_LAST;
-> 
-> [ ... ]
-> 
->> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
->> --- a/drivers/net/ethernet/freescale/fec_ptp.c
->> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> [ ... ]
->> @@ -142,17 +142,17 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
->>  	if (enable) {
->>  		/* clear capture or output compare interrupt status if have.
->>  		 */
->> -		writel(FEC_T_TF_MASK, fep->hwp + FEC_TCSR(fep->pps_channel));
->> +		fec_writel(FEC_T_TF_MASK, fep->hwp + FEC_TCSR(fep->pps_channel));
->>  
->>  		/* It is recommended to double check the TMODE field in the
->>  		 * TCSR register to be cleared before the first compare counter
->>  		 * is written into TCCR register. Just add a double check.
->>  		 */
->> -		val = readl(fep->hwp + FEC_TCSR(fep->pps_channel));
->> +		val = fec_readl(fep->hwp + FEC_TCSR(fep->pps_channel));
->>  		do {
->>  			val &= ~(FEC_T_TMODE_MASK);
->> -			writel(val, fep->hwp + FEC_TCSR(fep->pps_channel));
->> -			val = readl(fep->hwp + FEC_TCSR(fep->pps_channel));
->> +			fec_writel(val, fep->hwp + FEC_TCSR(fep->pps_channel));
->> +			val = fec_readl(fep->hwp + FEC_TCSR(fep->pps_channel));
->>  		} while (val & FEC_T_TMODE_MASK);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but is it safe to have an unbounded polling
-> loop here while IRQs are disabled?
-> 
-> If the hardware transitions into a faulty state and perpetually returns a
-> value with FEC_T_TMODE_MASK set, could this loop cause a hard lockup or
-> kernel panic?
-> 
->>  
->>  		/* Dummy read counter to update the counter */
-> [ ... ]
->> @@ -194,31 +194,31 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
->>  		 * is bigger than fep->cc.mask would be a error.
->>  		 */
->>  		val &= fep->cc.mask;
->> -		writel(val, fep->hwp + FEC_TCCR(fep->pps_channel));
->> +		fec_writel(val, fep->hwp + FEC_TCCR(fep->pps_channel));
->>  
->>  		/* Calculate the second the compare event timestamp */
->>  		fep->next_counter = (val + fep->reload_period) & fep->cc.mask;
-> 
-> [Severity: High]
-> This is a pre-existing issue, but I noticed a potential data race between
-> this configuration path and the interrupt handler.
-> 
-> Here, fep->next_counter is updated while holding fep->tmreg_lock. However,
-> the interrupt handler fec_pps_interrupt() modifies fep->next_counter
-> locklessly. Could this cause the PTP timer to miss events or corrupt the
-> hardware state if this is triggered concurrently from userspace?
-> 
->>  
->>  		/* * Enable compare event when overflow */
->> -		val = readl(fep->hwp + FEC_ATIME_CTRL);
-> [ ... ]
->> @@ -701,15 +701,15 @@ static irqreturn_t fec_pps_interrupt(int irq, void *dev_id)
->>  	u8 channel = fep->pps_channel;
->>  	struct ptp_clock_event event;
->>  
->> -	val = readl(fep->hwp + FEC_TCSR(channel));
->> +	val = fec_readl(fep->hwp + FEC_TCSR(channel));
->>  	if (val & FEC_T_TF_MASK) {
->>  		/* Write the next next compare(not the next according the spec)
->>  		 * value to the register
->>  		 */
->> -		writel(fep->next_counter, fep->hwp + FEC_TCCR(channel));
->> +		fec_writel(fep->next_counter, fep->hwp + FEC_TCCR(channel));
->>  		do {
->> -			writel(val, fep->hwp + FEC_TCSR(channel));
->> -		} while (readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
->> +			fec_writel(val, fep->hwp + FEC_TCSR(channel));
->> +		} while (fec_readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but similar to the loop in
-> fec_ptp_enable_pps(), does this unbounded loop risk a hard lockup?
-> 
-> Since this runs in hardirq context, a faulty hardware state that fails to
-> clear FEC_T_TF_MASK would keep the CPU spinning indefinitely.
-> 
-> [ ... ]
-> 
-> I also noticed a few other pre-existing issues in this driver that fall
-> outside the immediate diff context of this patch:
-> 
-> [Severity: Critical]
-> This is a pre-existing issue, but does fec_enet_txq_submit_frag_skb()
-> overflow the TX bounce buffer?
-> 
-> index = fec_enet_get_bd_index(bdp, &txq->bd);
-> if (((unsigned long) bufaddr) & fep->tx_align ||
->     fep->quirks & FEC_QUIRK_SWAP_FRAME) {
->     memcpy(txq->tx_bounce[index], bufaddr, frag_len);
->     bufaddr = txq->tx_bounce[index];
-> 
-> Since fragments can be up to PAGE_SIZE (4KB or 64KB), but the tx_bounce
-> buffers are statically sized to 2048 bytes, couldn't a large unaligned
-> packet or jumbo frame cause an out-of-bounds heap write?
-> 
-> [Severity: High]
-> This is a pre-existing issue, but I have a question about the packet length
-> calculation in fec_enet_rx_queue_xdp() and fec_enet_rx_queue():
-> 
-> pkt_len = fec16_to_cpu(bdp->cbd_datlen);
-> ...
-> pkt_len -= sub_len;
-> xdp_prepare_buff(&xdp, page_address(page), data_start, pkt_len, false);
-> 
-> If a corrupted or maliciously crafted DMA descriptor reports a pkt_len less
-> than sub_len, pkt_len will underflow. Won't this pass a very large length
-> to xdp_prepare_buff() (or skb_put() in fec_build_skb()), potentially
-> allowing a BPF program to read/write out of bounds or causing an
-> skb_over_panic()?
-> 
-> [Severity: High]
-> This is a pre-existing issue, but I noticed a potential out-of-bounds
-> access on non-linear SKBs in fec_enet_clear_csum():
-> 
-> static bool is_ipv4_pkt(struct sk_buff *skb)
-> {
->     return skb->protocol == htons(ETH_P_IP) && ip_hdr(skb)->version == 4;
-> }
-> 
-> If an AF_PACKET socket transmits a packet where the IP header is in a
-> non-linear fragment, wouldn't ip_hdr(skb)->version and the subsequent
-> ip_hdr(skb)->check = 0 assignment read and write past the linear buffer
-> into unallocated memory, since pskb_may_pull() hasn't been called?
-> 
+Changes in v7:
+- In fsl_edma_prep_peripheral_dma_vec(), make sure that CITER/BITER
+  values fit in their registers.
+- Add the identifier to all TCD of a linked transaction so that we can
+  always identify it when handling the end-of-transfer interrupt.
+- Handle missed/coalesced end-of-transfer interrupt even when the transfer
+  is completed.
+- Link to v6: https://patch.msgid.link/20260710-fsl-edma-dyn-sg-v6-0-831b96be3f31@bootlin.com
+
+Changes in v6:
+- Link DMA transactions in fsl_edma_issue_pending() when they are issued,
+  not when submitted.
+- Add an identifier to linked transactions to handle missed/coalesced
+  end-of-transfer interrupt.
+- Link to v5: https://patch.msgid.link/20260702-fsl-edma-dyn-sg-v5-0-16787185be49@bootlin.com
+
+Changes in v5:
+- Rebased on v7.2-rc1.
+- Add a call to dma_wmb() to ensure that dlast_sga is updated
+  before csr when linking scatter/gather transactions.
+- Don't update TCD registers if updating csr requires clearing the
+  channel DONE bit to avoid a status mismatch in fsl_edma_tx_chan_handler().
+- Link to v4: https://patch.msgid.link/20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com
+
+Changes in v4:
+- To keep transactions in order, link DMA transaction to the end of
+  submitted list first, only lookup the issued list is the submitted
+  list is empty.
+- Link to v3: https://patch.msgid.link/20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com
+
+Changes in v3:
+- Fix formatting errors reported by Frank Li.
+- Add fsl_edma_tx_submit() to link the DMA transactions
+  when they are submitted, not when they are prepared.
+- Link to v2: https://patch.msgid.link/20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com
+
+Changes in v2:
+- Drop the RFC prefix, as asked by Frank Li
+- No code change
+- Link to v1: https://patch.msgid.link/20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com
+
+To: Frank Li <Frank.Li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Frank Li <Frank.Li@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: dmaengine@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Benoît Monin (2):
+      dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+      dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+
+ drivers/dma/fsl-edma-common.c | 254 +++++++++++++++++++++++++++++++++++++++++-
+ drivers/dma/fsl-edma-common.h |  15 ++-
+ drivers/dma/fsl-edma-main.c   |   2 +
+ drivers/dma/fsl-edma-trace.h  |   5 +
+ 4 files changed, 268 insertions(+), 8 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260428-fsl-edma-dyn-sg-960731e37da2
+
+Best regards,
+--  
+Benoît Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
