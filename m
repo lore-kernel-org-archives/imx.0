@@ -1,143 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53090459AD4
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 09:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D8846F4A7
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 09:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789117651; cv=none; b=LYc8pT//GEl5PDyHSu17UbAZTFBHKeOvDpTPqE8diRE9gKaUaxHoVvmtLxtvhTvIfUE6bo/k3/52Kbv3OHcL1zg35sLBkT/yXJUdf72e2rWnU1SVjQxSquq7qCH0nshZk9rFGY9+v++X8rXdXGztq8sDp6pH/W2NnznZLb7aaTQ=
+	t=1789118424; cv=none; b=R2PqkmuVqmR62FEDUg+k0IMW98Rlds+Agg2Pf77ByOwktsHJ1UTL8hNbyKuJvd5pHZrIg7XPFMGSvjbCOSDDe9q05/2TVtKGELLmnBT41frzG8bj6bvAMf+lbXzeKjZnm8nZFszxmIuJATfiayaBqQ545j6b7QGTS0SiLj4xDqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789117651; c=relaxed/simple;
-	bh=/dL3pCPr3MM7dPLehJhDV3xFjQwplqUCQL5XgTxif+k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NKIR5MidipJoYzJFNz22Bdb7N9+D7wODp0YJ2qd/vEBB0eGWbgpZMsP/IbPbn5FUtZAg84pePWZxr+3MbPud4JHIq8cCROR0D6RlXCtv+o65a9v9/2uY+5hrPbI0m2DX4b4Sai54sJD8Iip9vuL+q4PCEeL+/sIIQ3ZVMPd9hz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozwuuEUQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789118424; c=relaxed/simple;
+	bh=W6l3Qb7BsHgcaUFlO1ypRFSSW2D8VcuscnAh7/PepAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OE6H0oi/iaG7eXKlw3aA6GkUVbzitiTeDPLZknZNpiHkSL/UHGzgqTloHP4wD6tsBPMZTmkLgNgV7BANvToLd9Ly/6rEDDcHh47veOuVOuYAtOUW9QW39k56KEUamoD89CimTRqbcQMwMYC6alWoKO8VWyGcfJ+VMMU0JsQ6gv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=SsRfaz8Y; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozwuuEUQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2471F0089C
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 09:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789117650;
-	bh=/VGcQS0ZeRYJfc9e784tdLXi12bCcFoGI0t9ozoHPBo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ozwuuEUQ8Z5se6zO5/fvu0pYLAOc5jGBs3n7Ao8KmKbvgwFVyNUnWcGSZguymLUAt
-	 RVKzsVQaratM2qCL/JX11MdyergavYIT/AlSFNnuGbejufqwsbMAaHjmmUCx7QSWAX
-	 gkSSivPrnNsep6lmjwegM8eFlO37g5AD3iliEMWZVSB9ellqVprjaNTpKigOOglQX4
-	 A07yKT36YEPA0DyRIxKNtXe/lzyMTs9aSi5aHQJz7Dato7ohCLajMILy+cSmGin6G+
-	 dg8cO5vN/lLlf3Dj3aYxfuGDuqOkh2HnLG2wOopDnvUs9h4DBtVxyeNV0hoAqF2pr+
-	 wf2Osx0fo8QlA==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b5e5ab03afso659227e87.3
-        for <imx@lists.linux.dev>; Fri, 11 Sep 2026 02:07:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzo9gxxV8gXzSXp6WyroGizx8NfVCP/d7YATssNZCtq87bPuO3oAe5cCSax3ogk8d18M2c=@lists.linux.dev
-X-Gm-Message-State: AFuF++lRAQw0E7TAsrTKsOXVdkY+zIuMCP8aWvbOHkghfb89n/OLTqCk
-	FFj2t18jIOmvN5OBwSwi1Ca4kV3ZuRgMiL1BI27VdVkTn4Oz1Wx3yi82BHbWXBghbKLB62ZSZBl
-	6PpQRWb/Vg0xTtjEH1C8DYT810LaF6a0=
-X-Received: by 2002:a05:6512:3054:b0:5b6:1a7c:fd99 with SMTP id
- 2adb3069b0e04-5b8a0348f4fmr751726e87.63.1789117648568; Fri, 11 Sep 2026
- 02:07:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="SsRfaz8Y"
+Received: from francesco-nb.. (93-33-8-46.ip42.fastwebnet.it [93.33.8.46])
+	by mail11.truemail.it (Postfix) with ESMTPA id 2D52622D78;
+	Fri, 11 Sep 2026 11:20:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1789118419;
+	bh=2INZCyybt+SGf2xAekMXkwCGx4/CTlSaJfaZ9ipywCc=; h=From:To:Subject;
+	b=SsRfaz8YqnHARrQTsawjEerB/oHOLekb2FqpoK1twxlykYEkm15Ppmrq00WtaxkHr
+	 zuIMZsyaTs35lBXRVNZtj/I/qjzX9eyrrm1HAUO3qXMdZX2ZiSvPOFpUuF0mmKL2aB
+	 MSJJbVyVh6Qjui4QxRErlIz2dTEeZFYybZE6PtmtrcGAixHKgD+wxoIOGg4ghHlSSY
+	 WUO3XIOZ8QM2X2dvdVW2RgTLroxn7lVzXyYXwdCRSF7QN49ldpsIgRdnrtuwf+enBp
+	 k6L9HRLErhrn3W2pxBuZtHnqjBroT7kqgvENndONhU819i2AnltjQH+2/0Joe+Z/9r
+	 WXXcAYfmDgkrA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/7] arm64: dts: freescale: Add Toradex Lino and OSM iMX91/iMX93
+Date: Fri, 11 Sep 2026 11:19:43 +0200
+Message-ID: <20260911091952.96233-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-4-arnd@kernel.org>
- <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
-In-Reply-To: <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 11 Sep 2026 11:07:16 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
-X-Gm-Features: AcwNN1VlOYTrU3ZTl5zPPP6nearnDuFcxxJJedZ2i25yyIxB1qlTUVLyGBWuTQs
-Message-ID: <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
-Subject: Re: [PATCH 03/13] ARM: remove riscpc
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Drew Fustini <fustini@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
-	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
-	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Karl Mehltretter <kmehltretter@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
-	Ian Molton <spyro@f2s.com>, Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 11, 2026 at 5:44=E2=80=AFAM Ethan Nelson-Moore
-<enelsonmoore@gmail.com> wrote:
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-> Because I think it's cool that the kernel still supports actual Acorn
-> hardware, I patched gcc 16.2 to restore ARMv3m support:
-> https://github.com/EthanNelson-Moore/gcc-arm-retro
+Add Device Tree support for the Toradex Lino and OSM SoM families,
+based on the NXP i.MX91 and i.MX93 SoCs.
 
-For the record: I also think this is cool.
+Both families are available with either i.MX91 or i.MX93 on the same
+PCB. Since the two SoCs are pin compatible, common Device Tree files
+are used to share the hardware description between the two variants.
 
-One question: is ARMv3m there in Clang/LLVM? I only
-know that we have ARMv4t.
+For the Lino family, add support for the Lino-Verdin Adapter, which
+allows Lino modules to be used with Verdin-compatible carrier boards.
+This series supports the Verdin Development Board and Dahlia carrier
+board.
 
-To the bigger question.
+For the OSM family, add support for the OSM Development Board.
 
-The community has a built in tension around this:
+v2:
+ - add acked-by
+ - removed #.*cells properties that are already set in the soc dtsi
+v1: https://lore.kernel.org/all/20260910101616.139270-1-francesco@dolcini.it/
 
-- One camp that are enthusiast like yourself. That kind of people
-  are running the show inside arch/m68k on Amigas and Ataris.
+Francesco Dolcini (7):
+  dt-bindings: arm: fsl: Add Lino iMX91/iMX93
+  dt-bindings: arm: fsl: Add Toradex OSM iMX91/iMX93
+  arm64: dts: freescale: Add Lino iMX93
+  arm64: dts: freescale: imx93-lino: Add dahlia
+  arm64: dts: freescale: Add Lino iMX91
+  arm64: dts: freescale: Add Toradex OSM iMX93
+  arm64: dts: freescale: Add Toradex OSM iMX91
 
-- One camp who get their paycheck from present day companies
-  and constantly on top of the latest technology. As can be
-  seen Qualcomm just taped out a brand new ARMv7 SoC
-  named Kuno, for example.
+ .../devicetree/bindings/arm/fsl.yaml          |  30 +
+ arch/arm64/boot/dts/freescale/Makefile        |   8 +
+ .../freescale/imx91-lino-verdin-dahlia.dts    |  24 +
+ .../dts/freescale/imx91-lino-verdin-dev.dts   |  24 +
+ arch/arm64/boot/dts/freescale/imx91-lino.dtsi | 305 ++++++++++
+ .../dts/freescale/imx91-toradex-osm-dev.dts   |  22 +
+ .../boot/dts/freescale/imx91-toradex-osm.dtsi | 303 ++++++++++
+ .../freescale/imx93-imx91-lino-common.dtsi    | 536 ++++++++++++++++++
+ .../imx93-imx91-lino-verdin-common.dtsi       | 175 ++++++
+ ...imx93-imx91-lino-verdin-dahlia-common.dtsi | 198 +++++++
+ .../imx93-imx91-lino-verdin-dev-common.dtsi   | 216 +++++++
+ .../imx93-imx91-toradex-osm-common.dtsi       | 526 +++++++++++++++++
+ .../imx93-imx91-toradex-osm-dev-common.dtsi   | 324 +++++++++++
+ .../freescale/imx93-lino-verdin-dahlia.dts    |  24 +
+ .../dts/freescale/imx93-lino-verdin-dev.dts   |  24 +
+ arch/arm64/boot/dts/freescale/imx93-lino.dtsi | 359 ++++++++++++
+ .../dts/freescale/imx93-toradex-osm-dev.dts   |  22 +
+ .../boot/dts/freescale/imx93-toradex-osm.dtsi | 357 ++++++++++++
+ 18 files changed, 3477 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino-verdin-dahlia.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino-verdin-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-toradex-osm.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-dahlia-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-dev-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino-verdin-dahlia.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino-verdin-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-toradex-osm.dtsi
 
-As you can see this leads to a bit of tension.
+-- 
+2.47.3
 
-What I'm after here is not one camp is doing the right thing
-and the other one is not, because that inevitably boils down
-to the question of what is the meaning of life. Or "what is fun"
-actually (Torvalds wrote a book named "just for fun") and
-either case could be argued to be quite fun, or meaningful.
-
-> I am working on a clocksource driver, which uses both timers (to
-> hopefully fix the awful time drift), and removes the dependency on
-> LEGACY_TIMER_TICK.
->
-> I also have patches for several cleanups to Risc PC-related code.
-
-As SoC maintainers I think we want to hear about a plan to
-migrate RiscPC to device tree should it stay supported. And I
-do not think it is that hard to achieve with the right focus by the
-right people.
-
-Actually testing it on actual hardware would be a further
-requirement, so we're not doing dreamscapes here.
-
-I want to heat from Russell on this.
-
-The ARM kernel started as a passionate project by him, on that very
-machine, and he should decide if we keep it going.
-
-IIUC the Clang/LLVM compiler has essentially solved the compiler
-issue.
-
-> I am aware that this has no actual use case, but it was fun. No LLM
-> was used for any part of the work.
-
-My position is that using LLMs is good in many ways because
-when used right by the right people it allows us to keep a wider
-range of hardware supported.
-
-Yours,
-Linus Walleij
