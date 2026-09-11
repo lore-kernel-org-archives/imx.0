@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DC52931ED;
-	Fri, 11 Sep 2026 00:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FEF25F99F;
+	Fri, 11 Sep 2026 01:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789087333; cv=none; b=uPlcD4KpmTPxPlNJjLQkDoQTcVRYJEuyoaBN3C+xByVWEDKSK9PpZYd7HQMGo6FEm+istjlYKJrohe3mOxZPsDufLBODzMeem4ckGWdaOBH6M+8IwXb7tgMlBkgxu+4vLKe8YYBgyo41h8Yq3cM1kKJoC6lWXkdkVnXcYG4lMxM=
+	t=1789088855; cv=none; b=HjiN10lFXsQqBqLAGmVBYCHJeGc2M+2tkKizKL479I7aeh5n0dq5nIEOqvZaD3K2jlvDOnsqhdkQ9NAlgOX4G+K+9nQwKs2Ew/sKctAoYM7kEO0y8sXX0zPiLMihmQX5D9hS0RotDDOi8M8KS/Kr9Vtr3dGgQx9Wvp2b3P7ByF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789087333; c=relaxed/simple;
-	bh=ifwhu8qRshgYL3v+PSYoaQhUNJ9YbnEjID0Sa6yKFHQ=;
+	s=arc-20240116; t=1789088855; c=relaxed/simple;
+	bh=17PGq8eT/NgvGQvctNMEQ3b7gUavlH2nrvUmvaXojTI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M9+eMPA1wtZt9nlFtjaXZ0jKgWkPqbHKN3teLlY/QzG2esHiQPqf0wCzR63chncvnKeJ+pJPX/pz8fpMtNJ3PSyDdP3LuU6dD0Ea6HMgKw7LcLSkIn6OUTC2DfsDKzKoVYc9wp/Ah0/jwiN7upVs70KF7xqRZWfsQD5czsxMug4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TF+Elq0H; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=it6O+eLUa2xAVOYGwxeKaQ57gmlnKNxpIk3PLvry/6av4NC0Hdin7/Q0Yvja/LmlmWVIP2h+IueR/JNlfuCz1wBKBMZuXn61mD4ITeHU08cWE1vanlISv8hpelAfOeby3y+6wIpeszj3I5UdD1+KxIuvN4LsmmXapIRFGVIg3LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+zn93mz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TF+Elq0H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F1D1F000FF;
-	Fri, 11 Sep 2026 00:42:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+zn93mz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A1E1F000FF;
+	Fri, 11 Sep 2026 01:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789087332;
-	bh=4COo+AepnDjGaBzFEu1pr+/w/FLjgeFSlX8uKK9eUrM=;
+	s=k20260515; t=1789088854;
+	bh=kFUGxS6sw9dU5MHuKgkXOn3J123RGldZfofUywGCtdY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TF+Elq0HsskrnOkrNPUnzocRSh6qm6Mj546ed6RKFfRs/YDSuduejlQxYAUNfguF+
-	 Rf6NCwXW+bzMKSDBgjWVz53eGRQ01OgQyGrtUE8tukSqzQqatYu/dLUgjbkvXiEFem
-	 +brumAPvBD09yKWr4K9UjxRk61mClBJaNkvhSiQhUFXHGUK2xMrY6kXzP8hlJsKlze
-	 dte8NVKY3czbDPr5mmwxXCktKp94RcRRNVAZIwCb3QLqHQBhq2gncYR3Opx4fcBRNa
-	 Ep7hAyAgKO7167mo4bIfdJ+3t544voqEpBUrlf6ttQ/IKyv9CNaZwnQR2fU97PVCQW
-	 ZOL3uvSUVAQKw==
-Date: Thu, 10 Sep 2026 17:42:10 -0700
+	b=I+zn93mzWM6YlfDxtIx/gsd1pHDPhQ1yzr4U+5JjxynbIRzjqbQLpUG+koey74Bil
+	 Szwm3jQviYXA9w81B3gLLLYc/mOF2ER/WSdbxT7hD1jBy9nHtFNwf2Q0uPV1P0Y4/i
+	 SXD8YIguSMIjMK+MHM8zQtAQcYZmKgeA++qgrRPlWCC29sFOGR27pr2jTlkvxCobSA
+	 jcEEFhoeCaJRZCKuiVxXNyqbsBCM+Tr+QmFKi9JaHf7BOmwJPI1PebRqNb4Ao6KIVi
+	 WEsngcGbkK9RH2RxH3Mqk+ThRAzrpSU1YxsNltexJ1HnA1lLsEqLqRE4kXnaBDSORo
+	 w26j7ePzgkZDg==
+Date: Thu, 10 Sep 2026 18:07:33 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Greg Ungerer <gerg@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for
- ColdFire
-Message-ID: <20260910174210.0f8a4ad2@kernel.org>
-In-Reply-To: <20260907134037.1855408-2-gerg@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
-	<20260907134037.1855408-2-gerg@linux-m68k.org>
+To: phucduc.bui@gmail.com
+Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang
+ <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman
+ <horms@kernel.org>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+ <richardcochran@gmail.com>, Stephen Boyd <swboyd@chromium.org>,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net v5 1/2] net: fec: Propagate PTP initialization
+ errors
+Message-ID: <20260910180733.2d4d48e9@kernel.org>
+In-Reply-To: <20260909064712.22539-1-phucduc.bui@gmail.com>
+References: <20260909064712.22539-1-phucduc.bui@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,19 +49,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:
-> The FEC driver works today because the m68k architecture io.h has a
-> kludge in the definitions of the readl() and writel() functions for
-> ColdFire that allow big-endian access if the address of the register to
-> access is within the SoC's internal peripheral registers. This is being
-> fixed in the near future to define readl() and writel() correctly - with
-> no byte swapping. Thus the motivation for this fix here.
+On Wed,  9 Sep 2026 13:47:11 +0700 phucduc.bui@gmail.com wrote:
+>   * cyclecounter init routine and exits.
+>   */
+>  
+> -void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+> +int fec_ptp_init(struct platform_device *pdev, int irq_idx)
 
-What is the motivation for this cleanup? Is someone still making
-new SKUs of Coldfire boards? Or (and please don't take this the wrong
-way) it was a long standing TODO that was tempting to feed to an LLM?
+This function has a kdoc, you need to document the return value now.
 
-IMO keeping the hacks in m68k is a better choice. FEC was used on more
-modern SoCs, definitely on PPC ones. So we'll be able to get rid of
-m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
-the FEC driver is backwards.
+Please repost this for net-next without the Fixes tags.
