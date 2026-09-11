@@ -1,75 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B4A47F3D9;
-	Fri, 11 Sep 2026 13:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFF47535D;
+	Fri, 11 Sep 2026 13:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789131699; cv=none; b=ISujdY/afk0dtJ/L+NtWW0WN9jFtWRXxT+vvDPEfW7zWajyL9KFaJ9XJvjDuaSSrIkBsThPafPaHgzt1I4yT7j4AJ1jESiRxXS/cO3FUMtZF//JrWQCSyvJcYzCnAV3TXn+dFW3maW5Az1yM4ltOEIvgInN7X28GcYlSZUFFR1s=
+	t=1789131845; cv=none; b=I3Hmkk9Zs7ilxnZcDxqFnNUpo9x8JhCxZ7eeFv092HfbXL/g3mwVUw1wTd6gjDHG2UDRafbmIIrDt3Cnj0aepjg/UkvGCm7yfdVDDH8PZobcOiJsMU3u1cEZy2GG4c43AY7iBh1y1+Wmksx9bMYyUn3YSxX/xoHuAap6qgQPqMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789131699; c=relaxed/simple;
-	bh=ITWwrU1+lRmLuva48oLsKTlgUumBuY7FaZNMvnW/XTw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Y/lyRsETsHw/iA/1l3cYW2a675f6Mb1YSi+E6J8vhRpKpVZUocoFKnlFiDs9SUiQ0QQFycP3Gi3RAtzbWledi63mF6rBtRsOy+SkyHRetJhCpvk8mKquwBvfWXKRbrqN8Sb9t3V9sufNSETLa5G+FLSjZDlI+H+82PNNqT8yQV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jIHTr6sS; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jIHTr6sS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EEA1F000FF;
-	Fri, 11 Sep 2026 13:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789131682;
-	bh=njJNqx2xN32J4SV/wSn1hvanaa80mVzmvuVh8G0EjAo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jIHTr6sSpk5e//l7q7kerPPajxMrnRUkF2npfHv6BrMyq2xheK/KRFkXkiwLsQap2
-	 r2S7ppJiminXJFI58jHPB6HHOXQLRU/NmNjfEA89U5p5qfNqAYjByd6qJ1lRGeJAfy
-	 mrIZsCBIJMygeXjpXaqmTATjbdPd9bmI2ueM5hDn92YMb0luJQR+4qdUKqqnarVQbm
-	 w6fGUr0/5SnvtcHikUWUaFFjAIrsgUB82TXZ+1D2fAI5Yvlpmk3YBRGVxzBCybLJRH
-	 gzMEZbfycDDCSWxyXZEwUufA5JjuNx6Z/hoL6IO8w9oK91UUVYeBWJ6P1ntwpijDY4
-	 F8dllB0p0thSQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 14/14] drm/panic: Compile KUnit tests as module
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: linux-hyperv@vger.kernel.org, Frank.Li@kernel.org, intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, imx@lists.linux.dev, "Michael
- S. Tsirkin" <mst@redhat.com>, ojeda@kernel.org, "Eugenio Perez" <eperezma@redhat.com>, gary@garyguo.net, wsa+renesas@sang-engineering.com, dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev
-In-Reply-To: <20260911124540.279841-15-tzimmermann@suse.de>
-References: <20260911124540.279841-1-tzimmermann@suse.de>
- <20260911124540.279841-15-tzimmermann@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 11 Sep 2026 13:01:21 +0000
-Message-Id: <20260911130121.78EEA1F000FF@smtp.kernel.org>
+	s=arc-20240116; t=1789131845; c=relaxed/simple;
+	bh=crelH9CKz5xACPL/P0w+99JDuKyVYM00a9c1QE+DN+Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YgzVDixrG6ZgvFYa9uDpUlY/0/mPfpsVmu93+3/MJgsM4jyrOqSeJESYnEV1K4kRxrWcJu/xaNFjSDCTjPSvmJgVD+9rYQJfOB5GnGk2r+OLkaJ3ZYA21x/Eb6KKoa/de2e1tOZ/f5NRKylIcdUvWxM0N4lvFoAAU2UgsQum6C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30EA1F000FF;
+	Fri, 11 Sep 2026 13:03:59 +0000 (UTC)
+Message-ID: <92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
+Date: Fri, 11 Sep 2026 23:03:56 +1000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+ arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
+ linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, Andrew Lunn <andrew@lunn.ch>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-2-gerg@linux-m68k.org>
+ <20260910174210.0f8a4ad2@kernel.org>
+Content-Language: en-US
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <20260910174210.0f8a4ad2@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> Fix dependency of the panic-helper KUnit tests on CONFIG_DRM_KUNIT_TEST=
-=3Dy
-> and make them build as a module. Export the necessary interfaces from the
-> panic helpers iff the KUnit framework has been enabled.
->=20
-> Select DRM_PANIC_HELPER from DRM_KUNIT_TEST to meet the dependencies of
-> the panic-helper tests.
->=20
-> It is now possible to run the tests by modprobe-ing drm_panic_helper_test
-> at runtime.
->=20
-> v5:
-> - clear test description with drm_panic_helper_clear_description() (Sashi=
-ko)
-> v3:
-> - clean up after each test case (Sashiko)
-> v2:
-> - fix parameter order in decl of drm_panic_helper_draw_screen_qr()
->   (Sashiko)
->=20
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Hi Jakub,
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+On 11/9/26 10:42, Jakub Kicinski wrote:
+> On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:
+>> The FEC driver works today because the m68k architecture io.h has a
+>> kludge in the definitions of the readl() and writel() functions for
+>> ColdFire that allow big-endian access if the address of the register to
+>> access is within the SoC's internal peripheral registers. This is being
+>> fixed in the near future to define readl() and writel() correctly - with
+>> no byte swapping. Thus the motivation for this fix here.
+> 
+> What is the motivation for this cleanup?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260911124540.2798=
-41-1-tzimmermann@suse.de?part=3D14
+Sorry, maybe you were not in the CC list of the cover email. From that:
+
+  This collection of patches is aimed at fixing the non-standard ColdFire
+  set of readX()/writeX() IO access functions. Instead switching to using the
+  asm-generic definitions in include/asm-generic/io.h. The difficulty comes
+  in trying not to break any drivers with this change.
+
+  The implementation of the readX()/writeX() family of IO access functions
+  is non-standard on ColdFire platforms. They either return big-endian (that
+  is native endian) data, or on platforms with PCI bus support check the
+  supplied address and return either big or little endian data based on that
+  check. This is non-standard, they are expected to always return
+  little-endian byte ordered data. Unfortunately this behavior also means
+  that ioreadX()/iowroteX() and their big-endian counter parts
+  ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+  using the readX()/writeX() functions.
+
+  Patches 1 and 2 in this series are specific net driver changes that can be
+  applied independently of the final ColdFire readX()/writeX() change.
+
+
+> Is someone still making
+> new SKUs of Coldfire boards? Or (and please don't take this the wrong
+> way) it was a long standing TODO that was tempting to feed to an LLM?
+
+It is a long standing todo/fix, but there is nothing LLM anywhere here.
+This was all manually coded and tested. This patch is 95% textual
+substitution, so it wasn't exactly very difficult.
+
+
+> IMO keeping the hacks in m68k is a better choice. FEC was used on more
+> modern SoCs, definitely on PPC ones. So we'll be able to get rid of
+> m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
+> the FEC driver is backwards.
+
+These changes are not work arounds, they are made to make the FEC driver
+explicitly aware of endianess of the underlying processor and FEC hardware
+block. The code as it is now, that is carrying hacks inside readX and writeX
+for m68k, is trying to hide that from the driver.
+
+Regards
+Greg
+
+
 
