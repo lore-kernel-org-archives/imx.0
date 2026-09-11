@@ -1,33 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C4446EF89
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 09:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AFD47011C
+	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 09:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789118424; cv=none; b=hVITSAJus4wrunRGMdMu6yc0p3LNZCUrT7yvc0rtDBeZQskV/7rD+oWmILoj3UkqcW+llaES6epqD/4rJjxPJphIMkqabZEIv09ntnIfIJp1b160mvfCWWu2OO3LmH+dW+zgj3xZHbHtrsmN4KcbG7rVMOt5HUvT7XDy40VYza8=
+	t=1789118426; cv=none; b=tXYkJMXnyaXkNVvt0F0J+hUWwsYTtEiYGrKJtJVFl4A+lSezDmHU4elnZH616/wtle3e/qBpNFAFt5ZP+i9QkCte7OQP7exD4FI3OwYI+koPr/beGq5y+r/1mRzdMpvY9mqUi8nh4jzX0rBXaCo3OlIV0gtNcLWJWEf7zb018As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789118424; c=relaxed/simple;
-	bh=WZA9Q5BlsfF3iIqCBUq64t/e5CCKPXdk0aQGcP4xu50=;
+	s=arc-20240116; t=1789118426; c=relaxed/simple;
+	bh=IiHn0z6Tj0f17tifIL8J8urnl6ONH07od4FcuVdYksg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nmm43t8Pqwu491vsDQw8G0o+1Zk38dI7cqq5jV4U7y8300ccuBNYiDf5zZd4HV8Cdyf7dmnDJz+4rzRxBefYdDCxe0zJIeyMUCkp7I6lCVdu1WEaNsfHCcq3grPX3GkhkMvuK4V5ScrpPFoILRxyLgUxwIr5KbcjdxGrk4NKi2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=IA1th1MI; arc=none smtp.client-ip=217.194.8.81
+	 MIME-Version; b=r2B9dz08NBa9kinag5m3KJxoQylZdEZ02pGcKj89HBCx09F4pmQzSL5P/TAx/VnjwUyYphxb0EiNKu186dEelKc9oyhIpl78G0LEnnvPrSwcxE4u9JPqKTUbzriBPyh2t/9NfhW9rQ3r8RLXhvkx6YXN7tK+9gnQtQWoqyIMSmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=z8Z9cslJ; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="IA1th1MI"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="z8Z9cslJ"
 Received: from francesco-nb.. (93-33-8-46.ip42.fastwebnet.it [93.33.8.46])
-	by mail11.truemail.it (Postfix) with ESMTPA id 16FDB22DAE;
-	Fri, 11 Sep 2026 11:20:20 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 7CDF322DF7;
+	Fri, 11 Sep 2026 11:20:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1789118421;
-	bh=pmEvnV8BcXRhDLiqMxfGryQ1V4DpLIU/JOkIeNjibRs=; h=From:To:Subject;
-	b=IA1th1MIFHI3o41x3a8IM5xNJHcQbd3fMFHh4TkNatqZn6Ag+R08/fe78U5GPiru7
-	 mP5jIX6DG1qTjHSm5E6bPCOPqmPF6QTz3aEB4IV02m4q+uGbQXhMc+tjurn7LjyGeA
-	 iMi0fPIsFr6SMW6m6YvPFqL0/vAdZZB5LiuX4dUGmL02JNnkbMnQfTStqsskVfPE2L
-	 +IDkfCoDYy7+A0gPl0iX46QdjRRs5VysO6qZTJRrBV+x+DH8eAF3Fs0UNtCbipXRRM
-	 L8RN7hZa3A/iO9yTand0ugHmR1npfJLK2YOHMRWIeePFylv96Vc46vQByAI5X6vp5I
-	 09TuMQre8tc/g==
+	s=default; t=1789118422;
+	bh=f1ZwUA6aZ+bCcjphsn35lodInoiS717rQCpdkCJqvLs=; h=From:To:Subject;
+	b=z8Z9cslJklzZT8N5SvWMzkxrFZHuYzykH1FCXGhPZV0vWBWWxWfAu3xSjcLXbIBS0
+	 EoZBFUJS7w0sSrKAQtq6u9ufFvDUW32PGrpnb0YpLBZrmSkDOzJreTTYKs/CFsA85Z
+	 q3VyDN6KswvoQLK9yo9pqAeKONrl2ZHISFG5/AA9thCyTHm3mhI3p8V37yL96sQfjj
+	 m1VJE3+CPuj9qdVk8l46ZTRDYq0YAoP0eAnPvOdW/1bGm0T7N1wsiRK8xzYZl+Wk68
+	 LzOO+tE0CAEZWKAetQhm0Oyn1FzcnCaE+hWpJZhfNtLiUOnePk5UHWRQviaSgKFrhS
+	 Jj3BNAUw7qEtg==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -43,9 +43,9 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v2 1/7] dt-bindings: arm: fsl: Add Lino iMX91/iMX93
-Date: Fri, 11 Sep 2026 11:19:44 +0200
-Message-ID: <20260911091952.96233-2-francesco@dolcini.it>
+Subject: [PATCH v2 2/7] dt-bindings: arm: fsl: Add Toradex OSM iMX91/iMX93
+Date: Fri, 11 Sep 2026 11:19:45 +0200
+Message-ID: <20260911091952.96233-3-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260911091952.96233-1-francesco@dolcini.it>
 References: <20260911091952.96233-1-francesco@dolcini.it>
@@ -59,66 +59,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Add bindings for the Toradex Lino iMX91 and Lino iMX93 SoMs, based on
-the NXP i.MX91 and i.MX93 SoCs, respectively.
+Add bindings for the Toradex OSM iMX91 and OSM iMX93 SoMs and the
+OSM Development Board they can be mated with.
 
-Lino SoMs use two board-to-board connectors to interface with a carrier
-board. They can also be mounted on the Lino-Verdin Adapter, which
-converts the Lino interface to the Toradex Verdin family pinout and
-allows the SoM to be used with Verdin-compatible carrier boards.
+The Toradex OSM iMX91 and OSM iMX93 are OSM 1.2-compliant SoMs based
+on the NXP i.MX91 and i.MX93 SoCs, respectively.
 
-The Lino-Verdin Adapter also provides a Wi-Fi/Bluetooth module, an
-Ethernet PHY and a GPIO expander.
-
-Add compatibles for systems consisting of a Lino SoM mounted on a
-Lino-Verdin Adapter and connected to either a Verdin Development Board
-or a Dahlia carrier board.
-
-Link: https://www.toradex.com/computer-on-modules/lino-arm-family/nxp-imx91
-Link: https://www.toradex.com/computer-on-modules/lino-arm-family/nxp-imx93
-Link: https://www.toradex.com/accessories/lino-verdin-adapter
-Link: https://www.toradex.com/products/carrier-board/dahlia-carrier-board-kit
-Link: https://www.toradex.com/products/carrier-board/verdin-development-board-kit
+Link: https://www.toradex.com/computer-on-modules/osm-arm-family/nxp-imx91
+Link: https://www.toradex.com/computer-on-modules/osm-arm-family/nxp-imx93
+Link: https://www.toradex.com/products/carrier-board/osm-development-board
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
 v2:
  - add acked-by
 ---
- Documentation/devicetree/bindings/arm/fsl.yaml | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ Documentation/devicetree/bindings/arm/fsl.yaml | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 338dd9eafb17..a32f779f02e4 100644
+index a32f779f02e4..33ced11fa2a0 100644
 --- a/Documentation/devicetree/bindings/arm/fsl.yaml
 +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1511,6 +1511,15 @@ properties:
-               - fsl,imx91-11x11-frdm-s    # FRDM i.MX91S Development Board
+@@ -1520,6 +1520,12 @@ properties:
+           - const: toradex,lino-imx91
            - const: fsl,imx91
  
-+      - description: i.MX91 boards with Toradex Lino Modules and Verdin Adapter
++      - description: i.MX91 boards with Toradex OSM Modules
 +        items:
-+          - enum:
-+              - toradex,lino-imx91-verdin-dahlia # Lino iMX91 Module on Verdin Dahlia Board
-+              - toradex,lino-imx91-verdin-dev    # Lino iMX91 Module on Verdin Dev Board
-+          - const: toradex,lino-imx91-verdin     # Lino iMX91 Module on Verdin Adapter
-+          - const: toradex,lino-imx91
++          - const: toradex,osm-imx91-dev # OSM iMX91 Module on OSM Dev Board
++          - const: toradex,osm-imx91
 +          - const: fsl,imx91
 +
        - description: i.MX93 based Boards
          items:
            - enum:
-@@ -1522,6 +1531,15 @@ properties:
-               - fsl,imx93-wireless-frdm   # i.MX93 and IW610G WLCSP (Wi-Fi + BLE + 802.15.4) SiP FRDM Board
+@@ -1540,6 +1546,12 @@ properties:
+           - const: toradex,lino-imx93
            - const: fsl,imx93
  
-+      - description: i.MX93 boards with Toradex Lino Modules and Verdin Adapter
++      - description: i.MX93 boards with Toradex OSM Modules
 +        items:
-+          - enum:
-+              - toradex,lino-imx93-verdin-dahlia # Lino iMX93 Module on Verdin Dahlia Board
-+              - toradex,lino-imx93-verdin-dev    # Lino iMX93 Module on Verdin Dev Board
-+          - const: toradex,lino-imx93-verdin     # Lino iMX93 Module on Verdin Adapter
-+          - const: toradex,lino-imx93
++          - const: toradex,osm-imx93-dev # OSM iMX93 Module on OSM Dev Board
++          - const: toradex,osm-imx93
 +          - const: fsl,imx93
 +
        - description: i.MX94 based Boards
