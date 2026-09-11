@@ -1,122 +1,139 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB66476043
-	for <imx@lists.linux.dev>; Fri, 11 Sep 2026 12:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD834477992;
+	Fri, 11 Sep 2026 12:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789130025; cv=none; b=IxGUl5ddRCxnHO3KQPR/hltr/yy5ZpvICQrl/9aQWyjRZiaXo2WnuocSo8oLflQ3LHrMj1he0TXmwom9TO440Cd2+Jayn/dI6+W6Tf4tvUy64VzISRQOgGRomsGdjJw1jzeuUaJqm9SGdvYraQoSJQik0qNIChsPSwuFYtr01M0=
+	t=1789130757; cv=none; b=Aqz3I4y4DbwJoeUDZxTdkCeePTbneXHlKneiCznq+OzENktCILegQvcXNIirAfI/DgB52ww2lAIBmM+lJFmphHZw0pEGVSwBx5KhVWjgxonnKTAqLGLS1kHj+UrVY+4+JUe9kYFSHqpHNen1l6ZkjND5bjo3tzq/IBDl9GxuGLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789130025; c=relaxed/simple;
-	bh=W1BT5wLV5UACWU59maDhG8w3WFFvnU7ZUpjM8vM/QNY=;
+	s=arc-20240116; t=1789130757; c=relaxed/simple;
+	bh=R9L/eTaXmKcO3hBnU98W/9G77TNfUeBGNOLDd6WiCkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=REpKtGvaWahd1yT7CVK6LtMr5KSprW4z5QK/xVvokG7fN7UBcFmnYvTnDTB0oZ+Jq3WMTqAUUkV7R/xiOrnBF6qi9Z3wCl3aNt76P5yUG6fBOmd6FNhHsQm5BGtTpVXbdJFm3ViSHQm3SB22S/VDzgXDC8H7drsbwBdajAaWETI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=16DnCVCF; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 MIME-Version; b=F5y/wOqemQ+QBPRDY32L4v5KonXiqFrNIQRN41LT6ZhCC5v9zXM3NBhbJMdDkfUskUU/geFgCLw6PwknlZAhaTZCX0rv6WrF/QPTl465035nnN6Ozei8JHljNF6eoZt9o7KJyQZZwhg/IqwJyRMLP6XHuq+tQkxdsT37OVVIFZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0YT2oS46; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5noCCjOB; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="16DnCVCF"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0432AC653FF;
-	Fri, 11 Sep 2026 12:34:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2033E601DE;
-	Fri, 11 Sep 2026 12:33:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 57C8411C7AFA8;
-	Fri, 11 Sep 2026 14:33:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789130016; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8yy5zNv8/frc4Fc0jGFJfjDkAWKZuVZtLGLeGk49jBk=;
-	b=16DnCVCFtBW4gV4TVQQqvP3Gq9ICfkIWVX2W2DYsCVeoO8ZjC2tB2M4dafoGRugsfLX2vQ
-	1x+z4BL9WCTbq6cQdh2WuXmVb9yYUzrE53EkDSttVlzKJ3lvPe99LoaEHwmPqgAbnbfvRt
-	qe8wcu/jvdGnELCeWC3B9F6OTLUgccQmmwGKyU1FJ+mPCzs2fInaUrOyrZMnmr4DuCJ0fv
-	Hw+tqRJdLVX7KMyUqRylTS67R4AxKA9sW4/5mSEo09F4noJRAx0M7YG/Rm1Z2TBV8c3/nN
-	4Kekxa+nXPvtIc9n8Tkbyp+Zeq9E0B9oVGbYZEGG+9XLjWlXyQd1/Bnjk17H5w==
-From: =?UTF-8?B?QmVub8OudA==?= Monin <benoit.monin@bootlin.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev,
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v9 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather
- chaining
-Date: Fri, 11 Sep 2026 14:33:34 +0200
-Message-ID: <oBv7yd-8ShCSaD2GFjIzIg@bootlin.com>
-In-Reply-To: <aqMqaaDRKHzZObJE@lizhi-Precision-Tower-5810>
-References:
- <20260909-fsl-edma-dyn-sg-v9-0-60bb2e678e8f@bootlin.com>
- <20260909-fsl-edma-dyn-sg-v9-2-60bb2e678e8f@bootlin.com>
- <aqMqaaDRKHzZObJE@lizhi-Precision-Tower-5810>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0YT2oS46";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5noCCjOB"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9908D1F79D;
+	Fri, 11 Sep 2026 12:45:46 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789130746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tzsC2VzdToDvjyu2bKo4kXLJkrMvANfsE4sUyvOrhy8=;
+	b=0YT2oS467GDz5Jb+FNn42kMHKgOv8Os+MTeed95wwhwmprlCL0grm5Ze4oi4tGk3S5YutP
+	99+RwGo3JJq50EzEBXFD/XWuMrT6bHQU17q3r0LzJS9aHxDqP2mCQ01vts9po0Xb+WSYx7
+	SjLLTtgANg5BUx+Iwb/4nLveg2RZJLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789130746;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tzsC2VzdToDvjyu2bKo4kXLJkrMvANfsE4sUyvOrhy8=;
+	b=5noCCjOByuvOQLxXAMnWcFFwzL91l8msT3tuk55VUOqYc6+kVx9JFbAeIOK+xjspayPRMR
+	bjuHvzX9/Pq6q0Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E8A6C136ED;
+	Fri, 11 Sep 2026 12:45:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0F1yN/n3o2r8EQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 11 Sep 2026 12:45:45 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: jfalempe@redhat.com,
+	javierm@redhat.com,
+	airlied@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	geert@linux-m68k.org,
+	rdunlap@infradead.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	nouveau@lists.freedesktop.org,
+	linux-renesas-soc@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 01/14] drm/panic: Do not use un-escaped URL as format string
+Date: Fri, 11 Sep 2026 14:43:54 +0200
+Message-ID: <20260911124540.279841-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260911124540.279841-1-tzimmermann@suse.de>
+References: <20260911124540.279841-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9908D1F79D
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLo585esf9b7txaosbn5shab9z)]
 
-On Friday, 11 September 2026 at 00:08:41 CEST, Frank Li wrote:
-> > +      /* Link the SG descriptors with the available identifiers */
-> > +      list_for_each_entry_safe(vdesc, tmp, &fsl_chan->vchan.desc_submi=
-tted, node) {
-> > +              if (++issued_count > FIELD_MAX(EDMA_TCD_CSR_LINKCH))
-> > +                      break;
-> > +              fsl_edma_link_sg(fsl_chan, to_fsl_edma_desc(vdesc));
-> > +              list_move_tail(&vdesc->node, &fsl_chan->vchan.desc_issue=
-d);
->=20
-> If this happen, it will depend on DONE irq to queue left desc_issued to
-> hardware tcd? So there are idle gap?
->=20
-> I think it is fine, less possible longer than 31. I just want to confirm
-> if my understand is correct.
->=20
-Yes, only 31 descriptors get linked at most, to make sure that we never get
-the same link_sg_id twice in the issued queue. So we always know which
-descriptor to handle in the end of transfer interrupt.
+Replace the direct use of DRM_PANIC_SCREEN_QR_CODE_URL in snprintf()
+with a %s conversion specifier. Avoids a possible vulnerabilty from
+a crafted URL string.
 
-If we have more descriptors, their last TCD keep the D_REQ flag, and they
-are handled one by one as we are doing today with a "stop-and-start" of the
-channel.
+As the attacker needs to control the kernel at the Kconfig level, the
+potential for an exploit is likely low.
 
-[...]
-> > +#define FSL_EDMA_DRV_EDMA3    (FSL_EDMA_DRV_SPLIT_REG |               \
-> > +                               FSL_EDMA_DRV_BUS_8BYTE |               \
-> > +                               FSL_EDMA_DRV_DEV_TO_DEV |              \
-> > +                               FSL_EDMA_DRV_ALIGN_64BYTE |            \
-> > +                               FSL_EDMA_DRV_CLEAR_DONE_E_SG |         \
-> > +                               FSL_EDMA_DRV_CLEAR_DONE_E_LINK |       \
-> > +                               FSL_EDMA_DRV_CSR_LINKCH)
-> >
-> > -#define FSL_EDMA_DRV_EDMA3    (FSL_EDMA_DRV_SPLIT_REG |       \
-> > -                               FSL_EDMA_DRV_BUS_8BYTE |       \
-> > -                               FSL_EDMA_DRV_DEV_TO_DEV |      \
-> > -                               FSL_EDMA_DRV_ALIGN_64BYTE |    \
-> > -                               FSL_EDMA_DRV_CLEAR_DONE_E_SG | \
-> > -                               FSL_EDMA_DRV_CLEAR_DONE_E_LINK)
-> > -
-> > -#define FSL_EDMA_DRV_EDMA4    (FSL_EDMA_DRV_SPLIT_REG |       \
-> > -                               FSL_EDMA_DRV_BUS_8BYTE |       \
-> > -                               FSL_EDMA_DRV_DEV_TO_DEV |      \
-> > -                               FSL_EDMA_DRV_ALIGN_64BYTE |    \
-> > -                               FSL_EDMA_DRV_CLEAR_DONE_E_LINK)
-> > +#define FSL_EDMA_DRV_EDMA4    (FSL_EDMA_DRV_SPLIT_REG |               \
-> > +                               FSL_EDMA_DRV_BUS_8BYTE |               \
-> > +                               FSL_EDMA_DRV_DEV_TO_DEV |              \
-> > +                               FSL_EDMA_DRV_ALIGN_64BYTE |            \
-> > +                               FSL_EDMA_DRV_CLEAR_DONE_E_LINK |       \
-> > +                               FSL_EDMA_DRV_CSR_LINKCH)
->=20
-> Can you avoid move \ in this patch to reduce difference.
->=20
-Ok, I will revert that change and resend.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.12+
+---
+ drivers/gpu/drm/drm_panic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Best regards,
-=2D-=20
-Beno=C3=AEt
-
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index e576c4791861..ba21df4be338 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -658,7 +658,8 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
+ 	char *kmsg;
+ 	int max_qr_data_size, url_len;
+ 
+-	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
++	url_len = snprintf(url, sizeof(url), "%s?a=%s&v=%s&z=",
++			   CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL,
+ 			   utsname()->machine, utsname()->release);
+ 
+ 	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
+-- 
+2.55.0
 
