@@ -1,145 +1,167 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A153A7F47
-	for <imx@lists.linux.dev>; Sat, 12 Sep 2026 19:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789240237; cv=pass; b=DYZmm4/gu0RV7Onmsy1gKJghOX1NokJ/qYUuTSj0AFHQ32rveV6Dh2kYTYCYAPwjsaj+uCEeoEPKzV+4fWXOvFaLDRgCjenMnSabTFKzgv+qBneBdsrLVn/Pai1upLYsPJZFlsMehl89foHKjHDRQMzfMlEAq9PDs5FaTaEuitM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789240237; c=relaxed/simple;
-	bh=nC1HlSANXwPCu0TdcZsZ/ITYqsAJked312qQsvhydMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GfjotLhVrZ8McjGo8FlDE4qbKarpaWCg0Jqzl+CPQDAwoR+J1wfye3n2VO55XgNy2mxTft8pywtWK54iNg+hCEFR9OYCOVbE1E7AQQc99FaF0sOSvqFs8QJWAQd/w099EnQF1c8VA0TvenS7izNez+sX9RQ2bWWyYHw8PRepWDQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AO4bRH/d; arc=pass smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5973A255F
+	for <imx@lists.linux.dev>; Sat, 12 Sep 2026 19:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789240341; cv=none; b=TEBpYIaHj1NYf4ULeH1zou/wxJ5+PVfty+LawEAVG17oyhfSy9GO8n9wtMQsQxzskGBys4HRSL0Mhe74SnrDN7X0Zet5+blrrGgsO9c4xtFONymt4C+ozFc8nteczqDRFnFygEwgVa6Fv57E5rk69YW2DrWdNR0IKxdcAw22NHM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789240341; c=relaxed/simple;
+	bh=JlupTLV8Cln4XfTiHb4RxwCt6Slbwqs/r3cqkHuWFwc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qJOUeqEutokzOOFCMNeh7XAMpd0E7Hw8XtHw7lSR2fOQXpz6G0NlyP3KG/5xIEQcjUuz97tjd7AN1r0XSnmEVwOQbjCk4YuNE/q/6c82asOMUljM0aJ44EAtc7ydBQ8oPUBSPv///f1qOh2JneRjvDxD6ihHLFFQyTtleN2U298=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kgraU/j6; arc=none smtp.client-ip=74.125.228.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AO4bRH/d"
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d43daa8f4so7933847b3.3
-        for <imx@lists.linux.dev>; Sat, 12 Sep 2026 12:10:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789240234; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HRV2R3dvh/Wwn21MwYktFRNTna/dp2TtbUbPMILZGNYNWeD2b2/m1HWzhv1mFTE/xa
-         0DDhssfZ/iPHpop4ldoYUUdJO+x22Ht0t2eS193GbSKngWYWn3IRbXxXX2TIrZHQjGKD
-         KaNmnUbkWF0Tx2e0zDYyvtzWPicFgaKzTVmqN9VlS/eeSAtdFwWvrtfsd23VpK4aTrxr
-         kAn4koaX5Xh8PoRQy7ZaA6ZWqWIfHdUFgn4qHV/vP5FshXCkHoUyavcXZKDv+O0t1+28
-         QJvS6yci8RIDuIg2AWNu0Q1XhR48bneHUlPr8pG5FkpEP39lAh9BvQJfZwuW4C9VQnLU
-         E3RQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=daj75kJ6ldxZJz9wLYTKbQQmIUWSVox4tdaNBDn6j84=;
-        fh=hG2ems7dHTgL/kWYjIrqIPPoCjEhwtPxxvDWEMSCpsM=;
-        b=ANCrKM/HILquuCj9CSEeGBXsBxwi/EobC5hP7ZNGjOE8cnf4cAC/z+r5vroAJQ6ocK
-         sask7jlAmckHwW/OEC2CxZtaSvznYyrR1MXfZcqib8fpDw3MHozWIOH0JL8wZL9eqdjA
-         GJPNZJwyQehW1K7MojG8J4auZBvY73sjv9Zhzyuk5N6XtS2HJsvECD2rOsQF0JCuXA0Q
-         DpVLRJRcm3igD0zq0Ya9ivu2tnVocr+8RE9A8NaBxQY6GP4x8WuEWrIhCR94BdOB6Epe
-         GE7bF8j33hbln4QYD1MTaDJ5plXWParbRp5PISYBNCL5BMXmQWvdV/E/3UTNd3f5xx/8
-         rCdQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kgraU/j6"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469d249c4so1056399b3a.2
+        for <imx@lists.linux.dev>; Sat, 12 Sep 2026 12:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789240234; x=1789845034; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=daj75kJ6ldxZJz9wLYTKbQQmIUWSVox4tdaNBDn6j84=;
-        b=AO4bRH/dFlfqPwg5NBKTHBKEPdFtQdyXi1EN8WbArQXxoFJDC+ClFsKPEygF5Fse0R
-         4SXbv5k7dgtWFEuI6GmFuIzHVpt4CQRnRmoqQm95Ms1JAmk4nLXfUn8i8581IK9Jtxjf
-         J0/eiFTdaje9wcxKkeOxm+iZWA6M5YVu3ErstYP0qEAGLxA14uw4pIXihmnmpkA8dkYu
-         Edd0/7Hp31rYsIAz5UZwc0xk1142MNdJeqaifHFLY3lM85mvx6EI+v1g5hPkFEvj71GR
-         8jsxwinPRJ0pK214s1Q75blEBPTrNsUdS4c2ITw+9z4VQGCg+EZRv7NXj1YStuq6LrHo
-         t73A==
+        d=gmail.com; s=20251104; t=1789240339; x=1789845139; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ghx8XBCWnxG/J6Ds3c+N5I7YNs+hz5/VoWXUJ3eWQPY=;
+        b=kgraU/j6mqR+avuK54d5H7nwoycM9F1FCPK/YEFtDrpCRevXBNCsZcvdAmYCm4SzID
+         xzpVRBd4FvpGJebitkHcwVRJD85aEb/Hk3GlxWO5/UBROnBbyNRIVIewlL2AHFaO8RUy
+         /9YqRg1g5rRFlBVmyzmfl67vHh5J5Mm/M6cvIZ2BG/8Rms+26g8UyUH42brmmCxio2WW
+         L6pwbTc8ANSQtDO5FLjbZTq1k2/uBNUj+u/BgyILgVn3HpAFKf6Pzqb/VwLmYda6rs0M
+         ChmxMV0kopD/9WQvOkEf2vQ3JLOfz/j1DdJ8vdmPn1zy1QCipeRX8Ax5X22qyZHXVXHM
+         qhOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789240234; x=1789845034;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=daj75kJ6ldxZJz9wLYTKbQQmIUWSVox4tdaNBDn6j84=;
-        b=o8IFjQPdAeU+TqpeTe0iVVUe5U+TDklMOm2sfsj/CBEL6PQaF/0loFg4BpFqA41CTz
-         skiRK9C4Jj4vf/SItbrvxGzL3+vdkJnFBmXVcIxYMmG4rycRlMjPFoXhEa8/fu10+/7L
-         ka3aBNr+lUqinBL2kU7P37DcIMb5UAWN6TgpUX60BXeVLazD9hVfOA/6la0ahnqz5t2S
-         QfWCpJoZCfpuQ6UdkCeJ8Ife7cb76wBP2tgtejBnOzVeCXKtbMeBCqK+n+QJR4A1ahHa
-         bKbDuDP/+WdxY0mfV+5trOvf4NCaZaH55E/AebV4JowdjO8R6idmL4v0lDCictsrLwJq
-         po9w==
-X-Forwarded-Encrypted: i=1; AKwUvBwZ/4Xz5kYRKM8TtP3iRH01wtej/sl+0A3QcxWFGo45LwI0EtijbKuWGSO8w1Qa0wo33VU=@lists.linux.dev
-X-Gm-Message-State: AFuF++n3iJ3yaOBHsptSrK87eFzmPIKIs1D9XFeUM3muTpRPInYIFfOj
-	QHjSukfrd3/6Maikf5SaMrA0rakcg4S0tPV7TRhCehgcdlpWV8z02L93rSpdNxcIOEIH8AWDulD
-	zmxpDCNBDZMY3e7TGk7tWQKUrwJJNfkM=
-X-Gm-Gg: AYBFou1GBknLkS8fTT4eDqPoogaomNztF16bL6nXtNqnFNpzOOw46gI7ZSzp8KLDKR4
-	E9WTlK/u4xKpEwXbO1s083uR2U4ObZB/Xm5h8/YOIGqfmptb19VouZFQSCF4arAX/jGLFlvYPRJ
-	fjUrHI2eCEXJA9CyWCVDTEFtKenW0OD3I7WZuCZLff8FX/cMQZFNI0OUmEtCd0ByQoCmikE/ygb
-	U5posL+KFPhWDsrJL0Q023J2utDW2zxgkM6obFKh7vaTR1FfOktQglWeCKOUiJ70zYlDOlXmDhI
-	y9ykRn59EOJpGxFJ1ec68BSAY8bmCABwzKDDxlUKi+6FPNhqUUdu
-X-Received: by 2002:a05:690c:9a91:b0:873:5bd1:98b5 with SMTP id
- 00721157ae682-884b200e9d9mr29464677b3.39.1789240234520; Sat, 12 Sep 2026
- 12:10:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789240339; x=1789845139;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ghx8XBCWnxG/J6Ds3c+N5I7YNs+hz5/VoWXUJ3eWQPY=;
+        b=RoLQYWSDR8yB/KDidNwwwXAzbJ/jhUqmSwbyNDWZOLVkhrZR6CJcVe9f7vokVVIxVi
+         nu39qBA1aGoMOJAaz0QspqgNbUIq0Ds5AHPy7VpLrNp2ZbE/pfMz5mRKxqBLtP5+OcHb
+         JxIAorPIC9OWf2urWzpM9lSMgERMNXwkpI9+y5auVUPLwxskgebU7HTigTCKk9VlHm8g
+         I+wBCtRL6jXkCaYsk4Ky0ozeP7DONUFux1tHv59+G+lMf0CXGm2YJjGanwckn4vtJmhY
+         rMM5rN6D18tC5dU2XP0+5TUw+jdjNSajecpJtrwbfQ4qEcoQVnN9DOECGEncxdBFi/yH
+         GRIQ==
+X-Forwarded-Encrypted: i=1; AKwUvByYg0DgY9C3Qcu9lVtlgGg+vzaWuouGYeG6ctczF2aDeizZ7S2T3Upi43y9u5tV65tzyZ0=@lists.linux.dev
+X-Gm-Message-State: AFuF++k2hbd6b3vo8SoKR91hanz6kVRdmauAMVedLg2NpMPCBq4EN/hV
+	wqXm6VPWV0rP0G3VO6M86ZK7UfvdU3qK8J6ezlA7wZvXIWwH4GL6T0jx
+X-Gm-Gg: AYBFou3q6u0EWQEBIHOnGGPbvG06tX8sUaqeklvsXoChyLN2tTjQ8hsmFSvNii1aFQb
+	15lMzq8yurCRwzfa2ziuaM1n0pZJn7DGnShYqbsz3FnEsTYKzotGQ2cA/8a0M3JfdpMfD0R0yVu
+	xViZz4UaIzFHpwsF+4KnQG8GM5h+Yf6KXhqXYuZhKQrrE/vaachuq1n7hw1z9kGk9vH0MbBv8Ex
+	KCg7N7P9n9Ym6jvSr4cv2P2JXUeLvA0kTV3OBMH8tzzqPx1ZI7YMsSvF9g4ZDUzuqdexxG0N+80
+	kTcnlM6ngznkl9bDB9Bf4Qzi2JehiHNHTiPxr8rlhhUgEY5JgUn8J2fc/p+fS8N38OHhoJHUyDE
+	IKP5dDA9ySR4RojkH+ZtZaMYhvAYUDHIsTY+tX3gq4DY85BOFqd+seiasMqlClZoIsZCgHkbIFW
+	I6wgAUcD/nFD/uTRep2Nos4fDLmK8ufamLZoh+pkYUsJL+OmvaqfSx/vCHQ2wDhQjsoskJ
+X-Received: by 2002:a05:6a20:a128:b0:3cd:67e9:8565 with SMTP id adf61e73a8af0-3daed19f362mr18812158637.9.1789240339105;
+        Sat, 12 Sep 2026 12:12:19 -0700 (PDT)
+Received: from gmail.com ([58.84.61.98])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b348cbsm14722239c88.3.2026.09.12.12.12.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Sep 2026 12:12:18 -0700 (PDT)
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+To: rafael@kernel.org,
+	krzk@kernel.org,
+	amit.kachhap@gmail.com,
+	daniel.lezcano@kernel.org,
+	thara.gopinath@gmail.com,
+	talel@amazon.com,
+	hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org,
+	mmayer@broadcom.com,
+	viresh.kumar@linaro.org,
+	sumitg@nvidia.com,
+	peter.griffin@linaro.org,
+	myungjoo.ham@samsung.com,
+	kyungmin.park@samsung.com,
+	cw00.choi@samsung.com,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	sven@kernel.org,
+	j@jannau.net,
+	marcan@marcan.st,
+	casey.connolly@linaro.org,
+	sre@kernel.org,
+	wens@kernel.org,
+	t.schramm@manjaro.org
+Cc: bcm-kernel-feedback-list@broadcom.com,
+	linux-samsung-soc@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sumeet4linux@gmail.com
+Subject: [PATCH v2 0/5] PM: Use %pe to print error pointers symbolically
+Date: Sun, 13 Sep 2026 00:41:50 +0530
+Message-ID: <20260912191156.185448-1-sumeet4linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260906061755.5103-1-sumeet4linux@gmail.com> <20260906061755.5103-6-sumeet4linux@gmail.com>
- <1a5fb9bb-d057-4579-8b2c-b81aa16a61cb@kernel.org>
-In-Reply-To: <1a5fb9bb-d057-4579-8b2c-b81aa16a61cb@kernel.org>
-From: Sumeet Pawnikar <sumeet4linux@gmail.com>
-Date: Sun, 13 Sep 2026 00:40:23 +0530
-X-Gm-Features: AcwNN1WFgZ6qmRCXqz0Ywv_tzPCCXsJ0jqSiA_xFTFPzs4rsV6HyVJPe6GfuozM
-Message-ID: <CAJ9orWRgatqn5gLx5+eDu7-T4s2PWcoVQPvuyMBgEp-KwDwkfQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] power: Use %pe to print error pointers symbolically
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: rafael@kernel.org, amit.kachhap@gmail.com, daniel.lezcano@kernel.org, 
-	thara.gopinath@gmail.com, talel@amazon.com, hayashi.kunihiko@socionext.com, 
-	mhiramat@kernel.org, mmayer@broadcom.com, viresh.kumar@linaro.org, 
-	sumitg@nvidia.com, peter.griffin@linaro.org, myungjoo.ham@samsung.com, 
-	kyungmin.park@samsung.com, cw00.choi@samsung.com, Frank.Li@nxp.com, 
-	s.hauer@pengutronix.de, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, sven@kernel.org, j@jannau.net, 
-	marcan@marcan.st, casey.connolly@linaro.org, sre@kernel.org, wens@kernel.org, 
-	t.schramm@manjaro.org, bcm-kernel-feedback-list@broadcom.com, 
-	linux-samsung-soc@vger.kernel.org, kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 6, 2026 at 12:00=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 06/09/2026 08:17, Sumeet Pawnikar wrote:
-> >       }
-> > diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supp=
-ly/cw2015_battery.c
-> > index 1bcb60cf763d..48643f7bf503 100644
-> > --- a/drivers/power/supply/cw2015_battery.c
-> > +++ b/drivers/power/supply/cw2015_battery.c
-> > @@ -658,8 +658,8 @@ static int cw_bat_probe(struct i2c_client *client)
-> >
-> >       cw_bat->regmap =3D devm_regmap_init_i2c(client, &cw2015_regmap_co=
-nfig);
-> >       if (IS_ERR(cw_bat->regmap)) {
-> > -             dev_err(cw_bat->dev, "Failed to allocate regmap: %ld\n",
-> > -                     PTR_ERR(cw_bat->regmap));
-> > +             dev_err(cw_bat->dev, "Failed to allocate regmap: %pe\n",
-> > +                     cw_bat->regmap);
-> >               return PTR_ERR(cw_bat->regmap);
->
-> return dev_err_probe
->
-> Instead you should use dev_err_probe and drop the last argument.
->
-Sure. I'll do this suggested usage of dev_err_probe in different patch
-series for *_probe() functions update.
+This patch series is a cleanup for subsystems under power management
+(linux-pm) that converts several instances of error pointer printing
+to use the `%pe` format specifier instead of explicitly casting with
+`PTR_ERR()`.
 
-As of now reverting the change for dev_err under *_porbe() function
-and planning to post V2 for this original series to use %pe for review.
+Currently, many drivers use `PTR_ERR()` paired with `%ld` or `%li` to
+print error codes returned as pointers. By switching to `%pe` and passing
+the error pointer directly, the logging subsystem will automatically
+print the symbolic error name (e.g., `-ENOMEM`, `-EPROBE_DEFER`) when
+`CONFIG_SYMBOLIC_ERRNAME` is enabled, and gracefully fall back to the
+numeric value otherwise.
 
-Thanks,
-Sumeet.
+This change significantly improves the readability of kernel logs and
+dmesg traces during debugging, without introducing any functional changes
+or side effects.
 
-> Best regards,
-> Krzysztof
+The cleanup has been applied across the following PM subsystems/drivers:
+* powercap (intel_rapl_msr)
+* thermal (cpufreq_cooling, devfreq_cooling, qcom)
+* cpufreq (bmips, cppc, qoriq, s3c64xx)
+* devfreq (imx-bus, imx8m-ddrc)
+* power/supply (various battery and charger drivers)
+
+---
+changes in v2:
+ - Krzysztof kozlowski suggested to use dev_err_probe instead of dev_err
+   for *_probe() functions during review of v1 series. This will be done
+   in different patch series.
+ - Here in v2, reverted the changes for dev_err under *_probe() functions. 
+
+ - Link to v1: https://lore.kernel.org/all/20260906061755.5103-1-sumeet4linux@gmail.com/
+
+---
+
+Sumeet Pawnikar (5):
+  power: Use %pe to print error pointers symbolically
+  devfreq: Use %pe to print error pointers symbolically
+  cpufreq: Use %pe to print error pointers symbolically
+  thermal: Use %pe to print error pointers symbolically
+  powercap: intel_rapl: Use %pe to print error pointers symbolically
+
+ drivers/cpufreq/bmips-cpufreq.c            | 4 ++--
+ drivers/cpufreq/cppc_cpufreq.c             | 4 ++--
+ drivers/cpufreq/qoriq-cpufreq.c            | 4 ++--
+ drivers/cpufreq/s3c64xx-cpufreq.c          | 5 ++---
+ drivers/devfreq/imx-bus.c                  | 4 ++--
+ drivers/devfreq/imx8m-ddrc.c               | 3 +--
+ drivers/power/reset/macsmc-reboot.c        | 4 ++--
+ drivers/power/supply/cpcap-charger.c       | 4 ++--
+ drivers/power/supply/intel_dc_ti_battery.c | 2 +-
+ drivers/power/supply/qcom_smbx.c           | 2 +-
+ drivers/powercap/intel_rapl_msr.c          | 4 ++--
+ drivers/thermal/cpufreq_cooling.c          | 4 ++--
+ drivers/thermal/devfreq_cooling.c          | 4 ++--
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c   | 4 ++--
+ 14 files changed, 25 insertions(+), 27 deletions(-)
+
+-- 
+2.43.0
+
