@@ -1,139 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9792E7631;
-	Sat, 12 Sep 2026 13:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789220659; cv=none; b=O2t0XGpNBGo3jYwqUWZ+AKsO43V0KasaJ4ykGqyaNudcgSdVsGBcrX/Hq8rZO3utMRsEJCuaUvcenbe/mebnVgsLodcfczKMmLUF5QcBt0LyxiWofa8GuJpOTsxh29YVsM8VvMPxD4A/udW4kmzlrmD8s+bTE8rkqIbe97YTIF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789220659; c=relaxed/simple;
-	bh=raYOzNJNftyNcGK5NFUzBqq9joPnkbHyVpKlg+MYvoo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=G3Cc+ie52oBvl6mumlFTmtoEhqp/jV5EDXsdXkUiaxDjUSHmSeGz8FwBPxxg5mov+JX0smT63JtEtjvKbUiTnD62787H5RpdWJpYX3AnFuRXXINVRQre8QRnDDe9ehu5jlRiPB5mSTxU1Faj0V+gn5zD5KQq6931Rn3lC/yhXGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ql9fbDPu; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF7F274B46
+	for <imx@lists.linux.dev>; Sat, 12 Sep 2026 19:07:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789240073; cv=pass; b=QGkeQLiVo9SY/L4hCfX1J4JpgaI1rm2eE4R5flYF4M9spUuio/DTSj1bdO3/uF7EFa+xBQcKARKEEl5Q49VCD8oUctg+ZFIXjzMgIXHYw3z0fyUQnqrrrF3qh3bID7oO2m1Wo4c0PdzTzQKb19IygJjIFjdokv4LfI+s2eTntd8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789240073; c=relaxed/simple;
+	bh=vBGRoQcJXlxAMtSg/Ev+xruoEjdajUUrjRvI4ba6Pgw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DWD205Y5aCrimH/5v1Uk8V6WBEUZ/2DHT7fHzXDg7ExbFKiL4AvwzQwtRPqtQLbvDMeM8ZJVT2sjzqJV3XotN40ItPZECKvUbPIDe/AzWwUGWLEUVCAztzY6ntwa9j4JnIBkYN/Aw4s78p1Jv2OEoIE0+wlOhzLecAcfvFOQgb0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ASHC+msH; arc=pass smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ql9fbDPu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E8E1F00893;
-	Sat, 12 Sep 2026 13:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789220658;
-	bh=viHVWO0CCV9KxpqbJIg6gFw+p2CcGWuaCFW/13N12aY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ql9fbDPu//5uGXebc1/VdSowcY+MAwSutdOplCMGl1IvxazODY9gJLLx5a6xVsQBs
-	 eUge7fKiasGpvg8FmbSKmILdxS/cOwoDHMJKl/Ev+UKLRNXJn+KF9Amzel3Z75ITr1
-	 r63XKm6OTx7idB2K+2zou5OXv//CftKEqaPLFslTMKdkvTdLJemu0Q7DuPaF73hI9D
-	 uaVXKW21K0eZL4GITto9d2EN2sizuTaUK78NCvjlB/1//d8qu1ZHxoRJ5HPX7yBlZL
-	 wK0bkNBEUPr1fP8rIl3rt0xIHw2G5lE7BaIfPOn+Y9meGR9fxQJ28BooPi+mKgIpt6
-	 E/4ifp72WjQAg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/3] arm64: dts: freescale: add Nodebox v3 CPU Module
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vincent Jardin" <vjardin@free.fr>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260912-for-upstream-nbxv3-dts-v5-3-ead604dba61b@free.fr>
-References: <20260912-for-upstream-nbxv3-dts-v5-0-ead604dba61b@free.fr>
- <20260912-for-upstream-nbxv3-dts-v5-3-ead604dba61b@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 12 Sep 2026 13:44:17 +0000
-Message-Id: <20260912134417.C9E8E1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ASHC+msH"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-836c4474028so17697547b3.0
+        for <imx@lists.linux.dev>; Sat, 12 Sep 2026 12:07:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789240070; cv=none;
+        d=google.com; s=arc-20260327;
+        b=druKrOWQ0lTeJDDJNTAbGdGorDQBQfOD6Il8IktDWI3nArnYrUsKhRsgv8bbIf8W28
+         YaR8A8gLpsMmWlY2J3Sj6hmPoOZq1Tpr5pfJs1TyFrjmrkbEqSjWIViUshpA19+mS3mp
+         qjLrfZWrcuhwuZEef6Dsw6wzqfMmQGQUgSu44oRckwEQkjzs1tgdGE2wb3gvtZiYsKkd
+         wlVnhpPIBQkaQdANe/30jageLMTFc5apsg1fT6v+iX4XSnr2uGfJWhA6LBd9L/gAL0qM
+         7q+NC692aI4uSgG8Ltba6YNI8+BCsNFbKOirh4xhXTB4c+waXdXTOG27aq1beRh8FPvM
+         DjLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=frZxPsvBVeqqB8BxzOhZbWb1UNk2/xKGtRE4rwWtWZ0=;
+        fh=dN3uIZVa4D4g/svD5WdzotPR5uT/BWoggsqXOZtKFVE=;
+        b=c7zIkqaaHsLXQfWDGMpUv9h1zSgmX6b8oiEDZu4wWEKMr0VsmrJ6NycQsbNm/8H5sS
+         uz7kV8ZFvfsFrQywDaHq4ece2pFkdc12tjr0gts3h9H2ojK0b4rL0kNAfDyYtwrnJxvR
+         BL55MaUbz35zJGihdAR9J2ATtmrlSL7j7W0R9mULKGar1ME2GXaTkdjXi2QISld0jTPb
+         DMgU7RZ1ZKZbtYzjq5uffIgKy08CE5n7IzCQ6G0aFtQh0OgnHHUZeTke0dgnNKAso258
+         ieAiOqvX6lYNgpbC8vurEicCPIgBK4maSDhGmmAH9w+XQoG5HhEwLmScEPuULpew+dh6
+         yGGg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789240070; x=1789844870; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=frZxPsvBVeqqB8BxzOhZbWb1UNk2/xKGtRE4rwWtWZ0=;
+        b=ASHC+msHUV/u9n2oqeq7vTBwiEdo07a5oq++i8zAStkwAVP13omjf16RPiwLR5+SU+
+         YWr+xBY0D6018zQaesHG11HKDB5HH7AahiMU0KWhRfIsgE3oT7PzgbKh9u7GId9JyhQf
+         /9o+aI56vSmNwnTz0J52cHmRB7EPz8j2PH/jq8uxAUO3jqqA3IUuwm2zv9qESnvZnk6x
+         /xPAAH6ZjHuo0WTO+ue7R54x/Vz9LO9YYLZxfHDj0MpIjBFIVhhO/61r0Bg6E2ORT599
+         osyjWXg5IG5yrlyWBniGti7X/3Nwr4v7pcgcnw0w4lNT8wKDkWlPdS2aaf5tz5Ntzoau
+         kMHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789240070; x=1789844870;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=frZxPsvBVeqqB8BxzOhZbWb1UNk2/xKGtRE4rwWtWZ0=;
+        b=gMGZU6SOpjoRwqdyDLxnR54Itg6BanlFin6/gvmhB8pCbdW3DvGlosvAjwh59y1/m+
+         l4fNL8iRFxm6y+EqNJhqgh0pzS/7TXofz1AceRDsWVzj6xEHvO3DNV2WIWeAYKuDysk6
+         EWctVaEVJmOd6gepDRyucjQtIKhsTbnqcGWAxaOP5FspcYmcx6vdJBTQm+Fxc05Dq1Df
+         797KOZruRoC0PIV2ZwUX+5VvjI1e7LVQ2prvvB/U1tYHMSih2/uQs25lSbLw4KTTkJpl
+         8Y+EXLD4PbE5kr/AEhANMoqALApEc4OgFptCfmPT9OSn8PE5xmAu/K8gNIReaOnUd4/f
+         hZmw==
+X-Forwarded-Encrypted: i=1; AKwUvBwwSup4ttQoYpcXMM7sgjcRd8uOWb/eH91UrENvNASwkUL+0Q/LWIJyWDUbLXAnMaUHaWs=@lists.linux.dev
+X-Gm-Message-State: AFuF++nqbrzye67+loh35NIlP95QB3sfPA2FqsUjMlklz3Y+LLLbT7CB
+	9iWu5kdfK6Yfz10nwuTr3LIZcOVJ+2fvKOHyXBNE4Ygu3dy8B98vAjHqxgUg6ftpQt6Rq5Pn1sG
+	nBOLF9eaIHBcRZ8RtgHeGfOG6tJCqK0A=
+X-Gm-Gg: AYBFou0hKahCpU2AhMJlAQVGS7JgEoGKru+L9tUzwr3wezOtyqB/ckpdQh292IyuxPK
+	xSyh3+5b3LqKJyzk0pCKLDtxjN8PuB6fzZ9ZGE236S6oL7HqgHTjOq9qumUTBwhnesBeuavxL9+
+	OtqiPXb2JistwiT8g+PEjAT6S16mBfsWIVxWMR1jJVmpb3TCVk9V7gEgzU/fQZe0yigmsWLETpc
+	57kSvWVkboQKaqdMd39rqSmTJApcGnovlG0M/JZajW0anLiS6zBwWPZMVmyMCY5a2MEYSVMC4+E
+	VEfl0Tnj2xOZNuIguJZGjkUSKhSpa40e9ppJm9fpykxLblo8RjsQ
+X-Received: by 2002:a05:690c:a790:b0:873:5bb2:6c0a with SMTP id
+ 00721157ae682-884b6f29b6bmr21177167b3.52.1789240070580; Sat, 12 Sep 2026
+ 12:07:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260906061755.5103-1-sumeet4linux@gmail.com> <20260906061755.5103-5-sumeet4linux@gmail.com>
+ <98a0dbf7-9724-4ccc-8810-645dfe715656@kernel.org>
+In-Reply-To: <98a0dbf7-9724-4ccc-8810-645dfe715656@kernel.org>
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+Date: Sun, 13 Sep 2026 00:37:38 +0530
+X-Gm-Features: AcwNN1XqTP8GoNHaMkR4dokovXZ0UiUGTDkYaF2EyUFt2qLbm2siHwKKSL9BVhQ
+Message-ID: <CAJ9orWStxJLN-0Dk2LqmyxEagC_nH-veS7wWrN_kXvb6WEUWiw@mail.gmail.com>
+Subject: Re: [PATCH 4/5] devfreq: Use %pe to print error pointers symbolically
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: rafael@kernel.org, amit.kachhap@gmail.com, daniel.lezcano@kernel.org, 
+	thara.gopinath@gmail.com, talel@amazon.com, hayashi.kunihiko@socionext.com, 
+	mhiramat@kernel.org, mmayer@broadcom.com, viresh.kumar@linaro.org, 
+	sumitg@nvidia.com, peter.griffin@linaro.org, myungjoo.ham@samsung.com, 
+	kyungmin.park@samsung.com, cw00.choi@samsung.com, Frank.Li@nxp.com, 
+	s.hauer@pengutronix.de, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, sven@kernel.org, j@jannau.net, 
+	marcan@marcan.st, casey.connolly@linaro.org, sre@kernel.org, wens@kernel.org, 
+	t.schramm@manjaro.org, bcm-kernel-feedback-list@broadcom.com, 
+	linux-samsung-soc@vger.kernel.org, kernel@pengutronix.de, imx@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Ethernet PHY nodes are missing hardware interrupt and reset prop=
-erties despite the hardware lines being explicitly routed and documented.
---
+On Sun, Sep 6, 2026 at 12:00=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 06/09/2026 08:17, Sumeet Pawnikar wrote:
+> >               ret =3D -EPROBE_DEFER;
+> > -             dev_err(dev, "failed to add devfreq device: %ld\n",
+> > -                     PTR_ERR(drv->devfreq));
+> > +             dev_err(dev, "failed to add devfreq device: %pe\n",
+> > +                     drv->devfreq);
+>
+> Instead you should use dev_err_probe and drop the last argument.
+>
+Sure. I'll do this suggested usage of dev_err_probe in different patch
+series for *_probe() functions update.
 
-commit 15177a59c196f0e48927f297cc2ef90524059103
-Author: Vincent Jardin <vjardin@free.fr>
+Planning to post V2 for this original series to use %pe to print the
+error pointers symbolically, reverting the change for dev_err under
+*_porbe() function.
 
-arm64: dts: freescale: add Nodebox v3 CPU Module
+Thanks,
+Sumeet.
 
-This commit introduces device tree support for the Free Mobile Nodebox v3 C=
-PU
-module. The module is built around the NXP LX2160A SoC and includes support
-for various interfaces including Ethernet, I2C, and PCI.
-
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi b/arch/=
-arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
-> new file mode 100644
-> index 0000000000000..ca4fb5329c0b2
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
-[ ... ]
-> +&emdio1 {
-> +	status =3D "okay";
-> +
-> +	/* Microchip LAN8023 dual 10G PCS/retimer, Clause 45 only, one address =
-per slice */
-> +	lan8023_phy_s0: ethernet-phy@2 {
-> +		compatible =3D "ethernet-phy-ieee802.3-c45";
-> +		reg =3D <2>;
-> +	};
-> +
-> +	lan8023_phy_s1: ethernet-phy@3 {
-> +		compatible =3D "ethernet-phy-ieee802.3-c45";
-> +		reg =3D <3>;
-> +	};
-> +
-> +	rtl8211fd: ethernet-phy@6 {
-> +		compatible =3D "ethernet-phy-id001c.c916";
-> +		reg =3D <6>;
-> +	};
-> +};
-
-[Severity: Medium]
-Should these Ethernet PHY nodes include hardware interrupt and reset
-properties?
-
-Without the interrupts property, the kernel PHY state machine will fall back
-to a 1-second polling interval, which increases latency and wastes CPU cycl=
-es.
-Missing reset-gpios prevents the kernel from resetting the PHYs during prob=
-e,
-leaving initialization reliant on the bootloader.
-
-The hardware lines appear to be explicitly routed and documented below in t=
-he
-gpio-line-names arrays.
-
-[ ... ]
-> +&gpio2 {
-> +	gpio-line-names =3D
-> +		"lan8023-mdint",
-> +		"i2c2-alert#", "i2c4-alert#", "i2c6-alert#",
-> +		"u800-tca9539-int#",
-> +		"spi3-alert#",
-> +		"wake0", "wake1",
-> +		"carrier-hot#",
-> +		"u1300-rtl8211fd-int#",
-[ ... ]
-> +	u800: gpio@75 {
-> +		compatible =3D "ti,tca9539";
-> +		reg =3D <0x75>;
-> +		#gpio-cells =3D <2>;
-> +		#interrupt-cells =3D <2>;
-> +		gpio-controller;
-> +		gpio-line-names =3D
-> +			"carrier-gpio0", "carrier-gpio1",
-> +			"carrier-gpio2", "carrier-gpio3",
-> +			"carrier-gpio4", "carrier-gpio5",
-> +			"carrier-gpio6", "carrier-gpio7",
-> +			"carrier-gpio8", "carrier-gpio9",
-> +			"carrier-gpio10", "carrier-gpio11",
-> +			"", "", "",
-> +			"lan8023-rst";
-
-Is it intentional that lan8023-mdint and u1300-rtl8211fd-int# are defined
-in &gpio2, and lan8023-rst is defined in u800, but they aren't linked to
-their respective PHY nodes in &emdio1?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260912-for-upstre=
-am-nbxv3-dts-v5-0-ead604dba61b@free.fr?part=3D3
+>
+> Best regards,
+> Krzysztof
