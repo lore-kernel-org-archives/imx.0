@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B950647CA9D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93DA357CFC;
 	Sat, 12 Sep 2026 13:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789219963; cv=none; b=i4zoq5EIwLobSHx/PZugz2L7lw6BoSHUu69AOUPuy6DE6wSzwVEDJgFPGJt5uZVFXddpetmA2l49dskliTtZuWADDJra5dL6uvwRi5PXYw56XpBfoXbORM2aaB3y7aICv+GP/SmGXT/ucf8nOhxuXwludYSubDIuo7V61AKsy1A=
+	t=1789219963; cv=none; b=SWNCb9xf75V8PWCccbGJTGwVH0U16d/480ft1lZ3I1Jq97ld7rftb6zDCaYWLNY2gcECucgJBXV1wWGWH6PIkthf71jTtM9R2RiMEKHSxsQ/WvTuTiuWyb3evh/Ykmp5GV9ta2FAsokCJeP4bHN8g1V9gwlDip9QNryx1hrUsPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789219963; c=relaxed/simple;
-	bh=OrWt6rMcj6X1ajmEcZpTCRWUVCtmz1KcB9KqCUg4L08=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gqmC7lVwJ7DmBA62WJD2QdN4tGNPw05q9HfCQHWlKatyHbXa+QKpo2VeaaPxOmHzWfEzp+/UGp14cOrqHOKeql6GDeG0ufoupnEJ2ozsSLT8RL3Jlh5XK9VmbkSeK8VeC6aVD3TIdFv2MBTlnj34WJq9io496RSpdjdwOCcvlIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MANaxdac; arc=none smtp.client-ip=10.30.226.201
+	bh=n5QACkd1zv3PhqXE3MIany6DDgK40aeV4SQY8yeovjE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PLo53mhreC9ICu/Udm11gU/O5AretRUA1pF5InlhaYRwjzZjjSslc396YRyWJoimmQyL1CZXx/yDLowULqm8Ph8Y/29+DqVm1jPIYhT1203uutgOw/7o2VcUxb6EW+h0D/uXY08eMKxgaTVv8/tM+1mvfHc9LjlM8/N4WGnCiqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kMPb1eNA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MANaxdac"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6329EC2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kMPb1eNA"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6E5F4C2BCB9;
 	Sat, 12 Sep 2026 13:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789219963;
-	bh=OrWt6rMcj6X1ajmEcZpTCRWUVCtmz1KcB9KqCUg4L08=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=MANaxdac1idLyNbcmHIk3DuXNNb4dYVZeQcKbafSUcOZ21NORXoj92ksCZN8zSZo9
-	 +gr+OV6pDwmM3QcXDogYL6UrhFtTtjjN/MYOpQZM7EdUF+pKAKVDHoFirA1ccEesgr
-	 yhglXC6hMDAy83YdXzLja1qgPUZxNixuVFe5ytHsjtX17b0ngRifyqsM6jcFIlIA45
-	 OFyDCdUS8e7CQ49BE2qIDCj2szdXdDENaZZGOTAEhUIe2dWhkfNS3Us422cVHGEYGZ
-	 Pnqko8mlDVVcFGX2dESrhvV7r45OIwwmUTkwVOr5VEf65nTPw6WegIlyobQapuBuwH
-	 TjDHfQqjhoMjw==
+	bh=n5QACkd1zv3PhqXE3MIany6DDgK40aeV4SQY8yeovjE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=kMPb1eNAKy2ull0Kt4rBiyZNO9WrhVXXATUcsnauepvA8hwOaPV1JEvbRkFgRUYDo
+	 ib9wUiWzHLu6xtkBebMm2vi6ec3YqPOEfZEBH2ylhFauf2dXeAU5wrwHR5r8MW8Phk
+	 o5tcIfLZGYhTQNvFmKqaWd9QUCYUdrEqI+zIAzhBqjPaDpLtdpZYqOzKF1m6vDBr7B
+	 LQohuqHPaZxdYOtRKHOp6+33lH5M9kBVaKKiR3cJJsp9ilgIWGh7AYoYGw9P2DYXt3
+	 QOHHk+LMhUeuYH0aPEd4SndKOhcaPqs1tsiaKlkK1+ajXP7oXuzMo1nHF06EeWBr5V
+	 12BrIDTKpMLTA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4131FC88E5C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FF19C88E59;
 	Sat, 12 Sep 2026 13:32:43 +0000 (UTC)
 From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Subject: [PATCH v5 0/3] arm64: dts: freescale: add Free Mobile Nodebox v3
- CPU Module (LX2160A)
-Date: Sat, 12 Sep 2026 15:32:35 +0200
-Message-Id: <20260912-for-upstream-nbxv3-dts-v5-0-ead604dba61b@free.fr>
+Date: Sat, 12 Sep 2026 15:32:36 +0200
+Subject: [PATCH v5 1/3] dt-bindings: vendor-prefixes: add Free Mobile
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,11 +40,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHNUpWoC/43PTQ6CMBAF4KuYrq2Z/gDVlfcwLlo61S4E0mKDI
- dzdwgoWRJdvkvnezEgiBo+RXA4jCZh89G2TQ3E8kPqpmwdSb3MmHHgJZ6ioawN9d7EPqF+0MUM
- S1PaRGoO1BQlCaU7ychfQ+WGBb/ecnz72bfgsPYnN059kYhSok8JZAK5Mpa4uIJ5cIDOY+H8Iz
- 0hppHZWlEyB2SJijahdRGSEWaUMrxkrFWwRuUIY20VkRnh+prJFURV6dck0TV9f4CssiQEAAA=
- =
+Message-Id: <20260912-for-upstream-nbxv3-dts-v5-1-ead604dba61b@free.fr>
+References: <20260912-for-upstream-nbxv3-dts-v5-0-ead604dba61b@free.fr>
+In-Reply-To: <20260912-for-upstream-nbxv3-dts-v5-0-ead604dba61b@free.fr>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -56,11 +53,11 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  Vincent Jardin <vjardin@free.fr>, 
  Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789219957; l=2820;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789219957; l=923;
  i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=OrWt6rMcj6X1ajmEcZpTCRWUVCtmz1KcB9KqCUg4L08=;
- b=u/fmjZZEnrnpwQPJPqOgX1QDr5zvJVm6nT8vRCIisliHgtt4il7bFesIn6VRknz++VO83xHxp
- AJ6MYWXyaOCBb1aN+EvXLzp+OHkVMfmh8iprjWWCtFyA1VTBb1b0TuU
+ bh=YJnL8SVSS5jtnm6LBYWZbK3h+dEb8nY2DV6ueCzz3OA=;
+ b=qmRFT5RpvWd3q46tYhS7mCLr27LjvwhGpawYwavOPxHiZMrNwHJmpV6pexi5F0y4Mr67j/h4e
+ eTXs1KxxHNcCXdfMV2EVFsKvoFrCVUbrb8BoR7ItnPUiVjgoS+XHxGA
 X-Developer-Key: i=vjardin@free.fr; a=ed25519;
  pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
 X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
@@ -68,70 +65,32 @@ X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
 X-Original-From: Vincent Jardin <vjardin@free.fr>
 Reply-To: vjardin@free.fr
 
-The Nodebox v3 is a Free Mobile CPU module built around the NXP LX2160A
-(16x Cortex-A72, DPAA2).
+From: Vincent Jardin <vjardin@free.fr>
 
-The same fsl-lx2160a-nbxv3.dtsi shall be used verbatim by the
-U-Boot port, sent in parallel to the U-Boot list, so the two trees
-cannot drift.
+Free Mobile is a French mobile network operator. Add its vendor
+prefix, used by the Nodebox v3 CPU Module (freemobile,nbxv3).
 
-Dependency:
-
-the DTS uses gpio hogs on the QorIQ GPIO controllers, which
-needs the commit
-  78c0baf85cd0 ("dt-bindings: gpio: fsl,qoriq-gpio: allow gpio-hog child nodes")
-already in gpio/for-next and that will likely arrive in v7.4-rc1.
-Until it lands, dtbs_check reports the five hog nodes, the rest of the
-tree validates clean against the current schemas.
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
-Changes in v5:
-- read dts-coding-style: many reorder/cleanup including
-  comments from Frank Li without functional changes
-- Link to v4: https://lore.kernel.org/r/20260911-for-upstream-nbxv3-dts-v4-0-2fd07d5575ab@free.fr
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Changes in v4:
-- dt-bindings: arm: fsl: commit message like the other ones (Krzysztof Kozlowski)
-- Acked-by on the vendor prefix
-- Drop U-Boot comments from the DTS commit message (Frank Li)
-- Boot NOR reset: reset-gpios on flash@0 instead of a gpio hog (Frank Li)
-- ethsw-mdio-en: regulator-fixed instead of a gpio hog (Frank Li)
-- ethsw-reset#: hog dropped (Frank Li)
-- pltrst#: platform without consumer node
-- Link to v3: https://lore.kernel.org/r/20260908-for-upstream-nbxv3-dts-v3-0-1d88b2c11680@free.fr
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index ba2002969373..e467da45cd7a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -626,6 +626,8 @@ patternProperties:
+     description: Freebox SAS
+   "^freecom,.*":
+     description: Freecom Gmbh
++  "^freemobile,.*":
++    description: Free Mobile
+   "^frida,.*":
+     description: Shenzhen Frida LCD Co., Ltd.
+   "^friendlyarm,.*":
 
-Changes in v3:
-- Drop the thermtrip hog on gpio1 line 23, should have been clean'd
-  before
-- Link to v2: https://lore.kernel.org/r/20260907-for-upstream-nbxv3-dts-v2-0-6b4afd36180b@free.fr
-
-Changes in v2: (from Sashiko's comments)
-- Makefile: dtb entry in alphabetical order (before qds).
-- Move the XSPI1_A_DATA[7:4] GPIO mux group from &fspi to &gpio1, so
-  the reset hogs on gpio1 do not depend on the fspi probe.
-- gpio hogs: describe ethsw-reset# and ethsw-mdio-en with their
-  active-low polarity (GPIO_ACTIVE_LOW), same electrical levels.
-- Link to v1: https://lore.kernel.org/r/20260907-for-upstream-nbxv3-dts-v1-0-f43fd0028b78@free.fr
-
----
-Vincent Jardin (3):
-      dt-bindings: vendor-prefixes: add Free Mobile
-      dt-bindings: arm: fsl: add Free Mobile Nodebox v3 CPU Module
-      arm64: dts: freescale: add Nodebox v3 CPU Module
-
- Documentation/devicetree/bindings/arm/fsl.yaml     |   6 +
- .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
- arch/arm64/boot/dts/freescale/Makefile             |   2 +
- .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  34 +++
- .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 330 +++++++++++++++++++++
- 5 files changed, 374 insertions(+)
----
-base-commit: df2908090cda368b01ff43709f51890076c56157
-change-id: 20260907-for-upstream-nbxv3-dts-bbecd04038a2
-
-Best regards,
 -- 
-Vincent Jardin <vjardin@free.fr>
+2.43.0
 
 
