@@ -1,77 +1,82 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-qk2-f8.google.com (mail-qk2-f8.google.com [74.125.230.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42851C84DC
-	for <imx@lists.linux.dev>; Sat, 12 Sep 2026 01:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE77E36B923
+	for <imx@lists.linux.dev>; Sat, 12 Sep 2026 02:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.200
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789176586; cv=pass; b=IhcO/RyjWjfg0gV+zilwoZNA3ubaGjVPAnZ2hITmGJIPhX8vxgTv+eIYtt5rHUWvhafXnJ/q1KgwJtzsJH0JTMmzpN3zhAuuud7/ntWhIye3JqK4TA477OyBAJ6CYmqfZUaswxrx23yds8rX9PORaHhzqsEA+4IniKPPyVN6QE4=
+	t=1789178956; cv=pass; b=edg7W8/8m7I0ngSd3eiJH4XypqOLwDNmPFTSdkRZGD7fGP1ndjyLfIK8QLmHSioES2fvvyldUdXs1ZCJbaHDkuak+b3i/UDClMfnIjehXRoF4XLkDXVFUV+Ri+RSGKAZzaEv/zu5zip3VGDulyOFOGhWUxErwmtC1WQNR4Y81NY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789176586; c=relaxed/simple;
-	bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
+	s=arc-20240116; t=1789178956; c=relaxed/simple;
+	bh=mdT9ENWPEzBfkyRK8P1a2dUQlY39G8cEaKSfK8TCWpw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=obWk63JuHcJczXJv5yqv1IHbsm7EMlPChMQ7ry+l9fs0kNl4x7bCrzZ/RI5ImuYdjQTnFSr5kcK1icPabz8XhqC0vw9PXqfie+7iWCPltfzJp0iahxxYj78BASX8ZCk4+16kt4AKXWcBPAlVA8k1a0R2Qojb59Ou5Y32rbcAQZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com; spf=pass smtp.mailfrom=0x0f.com; dkim=pass (1024-bit key) header.d=0x0f.com header.i=@0x0f.com header.b=FX1x+r4T; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x0f.com
+	 To:Cc:Content-Type; b=gxuCnWyJG7YINksmecQICLefMToF/nR83HGeP0vO9/AIeteUlvi8XQXlvciBPUjl7wkSI1rGFlLoC+YhEg0P+BCixLUhHHGn4foa5lx98vFGv9VGdIejKeLpk9sCV6NqL9yH3hGKe0Vf9nXrCLNunquPX9+QOJIeCSCr/IJo48s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0MURO8l; arc=pass smtp.client-ip=74.125.230.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=0x0f.com header.i=@0x0f.com header.b="FX1x+r4T"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d8fb334e72so4645925ad.1
-        for <imx@lists.linux.dev>; Fri, 11 Sep 2026 18:29:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789176583; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0MURO8l"
+Received: by mail-qk2-f8.google.com with SMTP id d75a77b69052e-530e2f0c0a8so4153591cf.0
+        for <imx@lists.linux.dev>; Fri, 11 Sep 2026 19:09:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789178949; cv=none;
         d=google.com; s=arc-20260327;
-        b=laocNXBVfue7uBhPETVk9qETfJqklFk7taiRgxU3xzt8j9v3yk88PyZWbx6WXLx0Oo
-         QMMRiznRYzNQKbP0GQEihlSgIPLh+B+jvNagVyHXEvSVjZNaaKCR4jeiWg1fpsXu6spW
-         aolyOYGv6hccsHbSqR6+u6xAr/t4ZtQNFpa5zbwhME+G/uC2Bubs3qnFLxEc+OCoj+6C
-         rHU1AW/sMvtCbLH68VF8rB+hLSwrFkEVpt5SJY7T4cDOTWmw/Xh4BmseE9Kt6lmJTGqp
-         JaasmkK892Ij8RmwhKLPab5DMjP6KVKyqJDnQ0OctQRvryuYFd1Q/WRftfio3B5tZLh4
-         CwCg==
+        b=S/TDXBzW6IsesT6RiSfuoqi0JEOnIzOksVn9mvv0FYzlrAkGOysZfzM3zHWuQsLRwA
+         +C3i/vXZXXzHYeFyqXiU9wWkk3xHDx0SfFvSqbYvBEaxuyEbbVVWE8iQM+qxLjr3tMjX
+         8L/Ko1pNt07zTx5GzJl52Rme1gnFRm58/YvnpgNXYdXNvketKa0SVzX9+L0/cGTbfJSP
+         vvbV7GIRcW6I11dqkr0q121NceqF8LSb159gP8MFUj+CDu7Gfb9HxGuYpo8U7i2qtHI0
+         LyFQr9CsaC+tIuJpb8bE7FG6dZr0Ra6MTVrpmXC1kKFnnK3Plildf3CX5OduBD94pg+Q
+         3+EA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
-        fh=yEbZVQ/SOODXeIy2zHv2vOWACDOF83nf2VpQovYEajk=;
-        b=CkfVcxKfVWVvbKAPDEqiUk7fbEFQ1JjAoeJv0IFErZHbGK3hkn6IWed4h3ibgd27KM
-         9kOitC/3+XU0ovcVPEUv5Y0AWvzaD6QcEOUIHtZsacF4+HCRkIQhY49ekk5HvyYAZnG9
-         P5jahn65KCuHvnDmllXJHUqX5O7uqnOd0l3/iEoXdJBFsKHR+0jiSmhnszAklrT3aBSv
-         C1sR09kQtnY1BNHuDjlrmO3KXH4WCbKlequwQQ+9iHVhnP7GDX0zbzZkS7Vq9JiPa0Rr
-         EApqIxnzlYrydHr2sxPPSFJa8m8X/VDldZP+Uxwl/oO4khFgPEupM5J8FJHes6TSTI1z
-         Ehhg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mdT9ENWPEzBfkyRK8P1a2dUQlY39G8cEaKSfK8TCWpw=;
+        fh=3gioXuUIXcHE1oLOhsgWC0jINS8FMfVcNNHFqH+Dudk=;
+        b=TwwGR69djolqvDGIPt4sPFB1zQtv/2aSEsEeA6osxdcA8Bifs495Yhx1xKImmypIkq
+         MlfmxX45LBGD7BLinLO2cPXzFvGD99rPQQKmP6DD0bxwrtXmU75UYmIkzYr9dII571Ys
+         O3GL01rKj9+J8sed42m0luJgdAjo2xc6wVuNHOStntIUJl9Ro6bRB+Ct7hH3Z6rsezCC
+         O8pjmt6XycMQfdDTYRFaVUyqJ7QFUDvz4bdb61J2GArf1BP3kSJGTnqJAftsi1/jj4fT
+         qsJHdVoWI1hftMcl7JAQLr/lRjBVuPQZ3a+NNDdSuiuAddlAK2dmwFEU+3qA/Nlh0jV+
+         +DAw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0x0f.com; s=google; t=1789176583; x=1789781383; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
-        b=FX1x+r4T2IdG84H7VtfwZ1eLIRCJCAxF3p4GGvXcSPvwYXiV+Nw/wIFsuhj1uMkXuc
-         82N/JFuWx57Vir+76UD6JolJb6K1m0ucJ2IUhmS0SHu03U7orWaiUbtE/NDxrZWHdwOW
-         TwgEViK8i1Xx34BrJTzN97whnSt2XFq3Khz40=
+        d=gmail.com; s=20251104; t=1789178949; x=1789783749; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mdT9ENWPEzBfkyRK8P1a2dUQlY39G8cEaKSfK8TCWpw=;
+        b=T0MURO8lhUoNjOyxE849xg+N+QONmq3Gp+oeY8jPrfD7w13czcehbFBVb0tsoDk73e
+         BESgy/mMJCDj7UYX6lV8ARqQ7RbkX6wQKfG8kvyNkIHaO46uVvyINc9sikRFbT/IG/9M
+         HTEJaF3AYu2dThW8n8jcpj8Lzfcjo8xsLtsKQoTYvECZLXZHa2+pjYwO/r4EhBVaRzwF
+         M3r0n5iU5L66Iki05tqAYFujOA2Lk3K82FCXfG7zToSfasi6Li3a80uRN/ZbebvuscNF
+         vvKcKC9sKaF8XbcHMigOeM2F/MKME9lZzeforKC7bHYeSH5oFLatnWM/jAfieiYBnH6E
+         Zzng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789176583; x=1789781383;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
-        b=krCpkCNILQPA7v0IonXocDMNQVdS5KYdhrX+pRJmmcOV3dLAOmCzrclavfJ8tpML+S
-         5uT82hGKXvXHI+rFaJTuJ8nIE359qysKu3K+PhzdQlQAqXyRJHn95CxNnwEjCqQtNdG/
-         tgJQ61Yv8IgSvkeK7muZigKzt7xv+hXcM0ypp893dZeSLkO2/6xBYkHBUXAfP4UYHSHL
-         zlaT/1NdYuT+/xYnymtRoP2bY9DyZELFAmSOrPZAb+Gk5J4h44PYn3iMjt35sAbOU8Aw
-         eRDCtSzQMFK5dl8oYNleUSbBQdPvDQ9XA08gDRYXMZCcEN4xspnGDjYmUxsMDGHbr8+d
-         xtmA==
-X-Forwarded-Encrypted: i=1; AKwUvByXpjjAQsAJLMCAnmJSAkk52v89hvbHVs1vvo9GQkiWxiqYBBBExkTwgCpLbLtBJzczSqQ=@lists.linux.dev
-X-Gm-Message-State: AFuF++mkNCFokmhXx6zVfwlSwxzKJiu/+8+j3CvcKIoRrl/sfSo4J9fD
-	/jvNxAlCATkJR0v3Cd2AiMN8Jmr4TmKrub2zaqfLJqAyKrOy2E3OPIqVmY4s8u9NWBA5nqz+aEF
-	0U0W9mSxOS96M0uvZjA7LX6hamdDyRS9S/Ry8bsUNvA==
-X-Gm-Gg: AYBFou34C9U+TRy3ksvkZ7KnUvLOAt8amptSiJgonEU+g1kvHdfmdAuXp2wcCMHuETi
-	dkrpi6f8OMMUjr1q3QMUmXf+850D6qZaQyWJ+qLDP/qZTPyADv9G9vRjhHkU8pe5d+RBuMWfjXU
-	R7kM80wsxKJcOFybwFDz57XHiTRQ/6lo3ep/fPR6MtZjpFmJCucSpwiDM4FaE/AJDRFEQgwd1+M
-	MZ7GtPnuCfKmdvfRSp8a+nuS3xdZcY91ALyLsJQqvyTCyVaZa/INqzDPwEgmRFn+DlMrDA6uH9y
-	JUXhIx3rxBAhlueRGK8r0S2PJhPH08Laq/L2fw93gGlTqAK//Rdcxw==
-X-Received: by 2002:a17:90b:4fc2:b0:381:6c5:3f63 with SMTP id
- 98e67ed59e1d1-39d9bc42d1bmr12376403a91.6.1789176583130; Fri, 11 Sep 2026
- 18:29:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789178949; x=1789783749;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mdT9ENWPEzBfkyRK8P1a2dUQlY39G8cEaKSfK8TCWpw=;
+        b=T0FNQKWt+MO6fD1Bhd1N8X6a0Q1MUUWRXqmToUAEtfVPUmbdei7XzS2fjBv+jGlwPA
+         bsPW+5UpaQsCUlf+pjZdBJvVoryhhVP+iR7Xs0whSxxmF5iPCWb9KVpuqiFclhNWE4js
+         f80u3u6HAbBKrqpRJOTBh1jGBcF0hMiB1hAO+UFHpWkA1oOtcMilnMlY4IOdODQyjFB7
+         y1F7CB/sWw9j9RfZyY2YqQagkxAdgOwNk40SO1sG5TSixe8NHVZRCFh8ta2WkEczIvM+
+         98G9HjniQYGmSbAPOCVR3zj8O0I+GUKglGMb/HyoP97MI8w6CCxyKj895vhLSxTMyQWT
+         n3Bw==
+X-Forwarded-Encrypted: i=1; AKwUvBxyb+FZBInlZr+WHAJNJkbnpna04pW2zfHjfav221edIfhVpPSyP8mwwq/J6S0Sx2HhdIg=@lists.linux.dev
+X-Gm-Message-State: AFuF++kQGRgFYJcUg9ni2WMaoOj303RV28xfTGHefHx8r6UAMa9K0wlR
+	xfn9+8kBfQrHqDKfjbvkSJTG9z1o8eBDJJqQ0bi++VqOR2+XoQfMaCB35cHvVVpOoie2Muu0CSY
+	axmIV9siieYq6hGNPbhB3d+HHt6H2UHI=
+X-Gm-Gg: AYBFou04jGiyN3XdxAyKi+y0fr95vMX/vmpztbnaPk6MMvDNucJIWsm6ydw7CGvpjJB
+	INynT94xQJkUzNRpkNbzvpAdHsKHP/G6lWtWoBfdvmB1XuCF5Sudzw7x6QBUo+QNczS3dmYbdfl
+	btQGDc9eFub6XlItZpPAMU9LByn305HumM1w19m7UA5S+KdiwrUc5nMOjKm/+6ErxYdJ4Dnb/F+
+	chftgXgqJvilKu7UTZ1tZg+WbM5uJGHUpt0I94WHotittSE+CzjT7oxS2eIPFCeUf27FDr59sni
+	iVVCWaugue+VCuzYg0XxTM5Eu2s8mtWAI5jmGFr01uu3mWLqk7uONy1fD8pX7ene5nEWKdEET4W
+	DJU8tYv4/ZHgPEJaphUJzsgArjBf3wMi5WpZtd/KI
+X-Received: by 2002:ac8:5dc6:0:b0:530:d1d6:792d with SMTP id
+ d75a77b69052e-530e7dd8ae5mr13590681cf.15.1789178947506; Fri, 11 Sep 2026
+ 19:09:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,19 +84,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-4-arnd@kernel.org>
- <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
- <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
- <CAFr9PX=_FmMdR4TeP+tqURZdZCTjw8UYxAxeszs_vcpTbX+_aw@mail.gmail.com> <CAD++jL=zaF1zcTv6Mta5Xw69WeLC30NRcH0_pkSkLJJ0UtnZHQ@mail.gmail.com>
-In-Reply-To: <CAD++jL=zaF1zcTv6Mta5Xw69WeLC30NRcH0_pkSkLJJ0UtnZHQ@mail.gmail.com>
-From: Daniel Palmer <daniel@0x0f.com>
-Date: Sat, 12 Sep 2026 10:29:30 +0900
-X-Gm-Features: AcwNN1UYIuhyU3FVES8GlXYNI9phDxlCK3dBrZsiSwUakZtphqfaiRPyo96Awf4
-Message-ID: <CAFr9PX=tVOzqGU4k0zSzXheuU5z5LZi4LSGdUvjChrSTrbyjJg@mail.gmail.com>
+ <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com> <aqRI3N5FPX1dpIlk@gmail.com>
+In-Reply-To: <aqRI3N5FPX1dpIlk@gmail.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Fri, 11 Sep 2026 19:08:55 -0700
+X-Gm-Features: AcwNN1XgIQzd6k50BFzIHmb9Q0P_yN5Y-RnB_uEDdmfcLkrtltvi4fLr_oEAXtE
+Message-ID: <CADkSEUgkPyikkhqLBOVEeS-H8L7CvUN8VD88=dUuTeFB8pUM5w@mail.gmail.com>
 Subject: Re: [PATCH 03/13] ARM: remove riscpc
-To: Linus Walleij <linusw@kernel.org>
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Drew Fustini <fustini@kernel.org>, 
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Linus Walleij <linusw@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Drew Fustini <fustini@kernel.org>, 
 	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
 	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
@@ -106,8 +109,7 @@ Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.or
 	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
 	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
 	Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Karl Mehltretter <kmehltretter@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
@@ -115,47 +117,87 @@ Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.or
 	Thomas Zimmermann <tzimmermann@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org, 
 	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+Hi, Karl,
 
-On Sat, 12 Sept 2026 at 03:15, Linus Walleij <linusw@kernel.org> wrote:
-> I would say using generic entry would be a prerequisite for
-> doing m68k SMP so we don't introduce *more* entry
-> oddities, but after that I'm game.
+On Fri, Sep 11, 2026 at 11:43=E2=80=AFAM Karl Mehltretter
+<kmehltretter@gmail.com> wrote:
+> I've made a RiscPC emulator in the browser using QEMU and WASM. It boots
+> Linux kernels and currently emulates a StrongARM RiscPC:
 
-I have started this for one part of the m68k tree (68000), but it's
-one of those things that is hard/frustrating to test on real hardware.
-For the last few weeks I've had claude create a QEMU that can boot all
-of the m68k supported machines to Linux, Netbsd and their original OS.
-It already found this:
-https://lore.kernel.org/linux-m68k/20260828094940.3882602-1-daniel@0x0f.com/
+That's awesome. Are you planning to add support for the NetWinder to the b?
 
-> As SoC maintainer I see that m68k has a lot of technical debt
-> like drivers under arch/m68k and no proper hardware description
-> (such as device tree)
+A couple things that I didn't see when I glanced through the code:
 
-I have m68k machines using devicetree... :)
+* QEMU needs to model the broken ldrh/strh instructions for the Risc
+PC (but not the NetWinder). I am not sure exactly what their behavior
+is on real hardware (though I have seen forum posts where people
+investigated this - I'll let you know when I find them). For now, you
+could just have them load/store a random value (:p). It would also be
+helpful if it could print a warning when one of these instructions is
+executed, to help people detect and remove instances of them in e.g.
+JITs.
 
-> There are things like
-> amiints.c, cia.c, ataints.c, q40ints.c etc that should be in
-> drivers/irqchip. So many time.c that should be in
-> drivers/clocksource/* and many other unmodern things.
+* On ARMv3, CP15 register c0 is write-only, and you don't model this.
+This caused Linux on ARMv3 to be broken for a very long time before
+support was eventually removed - it was broken even in 2.4.18-rmk4. A
+patch to run Linux on the CL-PS7500FE (=3D ARM710 Risc PC on a chip,
+used in the Acorn A7000+) works around this by keeping a copy of it:
+http://webpal.bigbrd.com/patch-2.4.18-rmk4-wp3.gz. According to a
+comment in later 2.4 versions, that approach won't work, but I don't
+understand why. Also, the patch fails to fix other reads to the
+register outside cpu_get_pgd() (I forget which ones).
 
-Would be easier with devicetree. But is anyone crazy enough to go
-through the pain of merging the devicetree support and then arguing
-about devicetree bindings for each of those drivers only to be told
-m68k should just be removed?
+A few things I know about early ARM hardware and Linux that might help you:
 
-> Albeit I think actually going and fixing that can't be super-hard
-> in the age of LLMs. So listing things like this likely will just make
-> someone go and do it. :D
+Before 2.6, ARM support in the mainline kernel was very incomplete
+and, IIRC, unusable. To build a working kernel, you needed to apply a
+patch from http://ftp.armlinux.org.uk/pub/linux/arm/kernel/. There are
+no patches for versions newer than 2.4.27, but the 2.4.27 patch mostly
+applies correctly to 2.4.37.11 (I didn't try to fully fix it up
+though). The last patch that was released was 2.6.0-rmk2 - it has some
+relevant changes like the CL-PS7500 PS/2 mouse driver. There is also
+an unreleased 2.6.4 patch - I should ask RMK if he still has it.
 
-Once you have an emulator that the LLM can operate it can do the
-change/build/test/debug cycle all on its own.
-With a test harness it can even test the changes work on the real hardware.
-But I don't think that's enough to convince people the changes are
-worth reviewing/merging.
+The NetWinder development team shipped patches to their kernel with
+additional features for the NetWinder (and other ARM hardware,
+including Acorn). This is the last one:
+http://www.netwinder.org/mirror/users/r/ralphs/kernel/patch-2.4.21-rmk1-nw1=
+.gz
+I don't think most of those changes ended up in mainline.
 
-Cheers,
+The Risc PC and NetWinder lost their audio drivers when OSS was
+removed in commit 727dede0ba8afbd8d19116d39f2ae8d19d00033d. RMK was
+working on an ALSA driver for the NetWinder but never finished it
+(IIRC it is in 2.6.0-rmk2 but probably doesn't work).
 
-Daniel
+> I used LLMs a lot while building it.
+
+I don't use LLMs for environmental reasons, because they are often
+inaccurate, and because I like using my own brain and don't want it to
+atrophy, but we are all entitled to our own opinion.
+
+> Your GCC work looks useful for this. I will look at building the RiscPC
+> Linux kernel with it, and at emulating the original ARMv3 CPU too.
+
+Great. Let me know if it works.
+
+P.S. I have a few UI suggestions for the emulator:
+* Make the display bigger and able to lock the mouse/keyboard and go
+into fullscreen.
+* Remove the LK201 keyboard - the NetWinder used a normal PC keyboard
+(if you add it), and the Risc PC used an Acorn PS/2 keyboard (a normal
+British PC keyboard but with no Windows key):
+https://chrisacorns.computinghistory.org.uk/32bit_UpgradesA2G/Acorn_RiscPC_=
+Keyboard.html.
+Just keep virtual keys for the keys that you can't input in a web
+browser.
+* It should be possible to middle click using a modifier key if the
+emulator ever runs Risc OS, because middle clicking is heavily used in
+Risc OS.
+* I think some of the explanatory text is unnecessary.
+* The skeuomorphism is cute but inaccurately represents a Risc PC, and
+I think it clutters the UI unnecessarily.
+
+Ethan
