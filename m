@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D89847988C;
-	Sat, 12 Sep 2026 11:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE66B433BCE;
+	Sat, 12 Sep 2026 11:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789213517; cv=none; b=HuatIasj7xQ7s9JHpsL1wMBa0wteRJfPe3oFK2H46vRRmxgRd7VBGJEdplh+dLoDzJnfflzKO5MfqHXkfoHEy8oygxMhKvYBC9vcU52vRyaENv6GOpOLkma4g8dFxJXJllOsAvSusgz9Le4toLTSikLe+ymE003GthJtYQrY3Ew=
+	t=1789213551; cv=none; b=USzKj23EdveLDnkrf+NKuzXz5Jc9zAnHg1Sd/gHrEMKz9eOniEs6Zw9a7ELtruaeUzRVHyEbRA3uDT7wtFJKwUxZN1ysO336EAM2tZKbkcYZW98aE3yqwWHuepZG6L/ATrkUwQfaUGbfpO7bHSMibTEUPUMFnjeJMLUeocRHAtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789213517; c=relaxed/simple;
-	bh=wmHrla6ZNzqShHsuxaANpSKVpZL1nPknQ3I9n0oD/xw=;
+	s=arc-20240116; t=1789213551; c=relaxed/simple;
+	bh=c6WD7C7S3TjLd7cJZ8j92HWoRNHqdou9U5vyc1YmdS8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EFm48Ukwm8Qa9VJFQk2sMd57FCEDI8RVvrXZLgQ0V4pZbx1KxjjTDO93VKxvyNvZYZMRvHCsVvt/iW/r8IaVtGRRXywZ56XeVmY7KhLcfKk3JJ/vGpqcectD77kFYj1ILRSXD7Faf+jobxNPhCR0FDvHOPvCnb3aQWj84I1URhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUmaGqQI; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WIi2eBc8i5nyoRgPqc149rsH/ekMt3UpWPVj1f3uAwhboXrvrUVcTVkr8fM1ozzWpF1KvYXyPHZ4Say7/swBsKPbhL8QcdbQp5jIjzj+5mUKnfKVcLwpMgBK+qvmiwIFzxYyhnFD/bZO8HFgt6XpVNtZRnTojFLAjCAnCub/KA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0yBJTvB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUmaGqQI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD7B1F000FF;
-	Sat, 12 Sep 2026 11:45:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0yBJTvB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26ABB1F00893;
+	Sat, 12 Sep 2026 11:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789213514;
-	bh=Q9tIxNlqbfxcpnZlo9UDu7oFefd5LlWGCBTz/4F7pDQ=;
+	s=k20260515; t=1789213550;
+	bh=MUbFgpCjYeQ18ZaBE7tS1mrsj896z8O7Qqi4LVtGOP4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jUmaGqQIZj39btBFU7v5Xim3tTxDSgsl0DkSFa2ai8rErQiMf+MGxitJ7SLee1l/5
-	 0eXUtaOns8EyRTPsyPBTRlZi7W4JHYKU4zV1Qejy2MbXcFyMYmDoiKJWzhiI2vbd3B
-	 IZqrh2tilufyfPXSBX2Iqz0mny0pL/pZkq/np3CfEAttVPYRK5ZhXzqkOZ+p3YtNEc
-	 IPPvjRneLfbnhxtfmNad4FYdBZ9rQ2iGHFOj2xmQfF1Ez8huasvbzumLWKpwlVeTBM
-	 jVXuvEDwolylucOpr+Jv4bn7cqYuUwPzygI2aEEc/aH8eSMo34r0MmVT1z7eBGU9ww
-	 Ndk3L9LVQ2E1w==
+	b=g0yBJTvB5lJhI2zEzI2cvnpgUMzNJI1qF6EXw43rCWcV0KuNuFgjk0DMwAZs73IL+
+	 WdaWTlou0CNbtnVJ9nbPNmndATxmRPp3wsotlW7z+vHwjnQ+vWZPijK5bSvmxs4RvT
+	 /6YYfLFRPzdy107vkKrL8zFUh9Jz5BGmbpZ2KN++aDviJaVYs1qGRkx/Amw3P9wiiD
+	 ui5PMfK9idiZTlq1yevAe5EL7hMGVIe8yI79w5VApgJEx4vTrMltsHxqWtxjMvvI7J
+	 jsPqtbdUtbWBIDGqIyxr7AuU3HzPzJx21GUQ/1qfWuFrEqD5+cCfzNVxm6ftv+Mrnk
+	 hhBF2mKOnb8Zw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v50 2/7] dt-bindings: arm: fsl: add imx-se-fw binding
- doc
+Subject: Re: [PATCH v50 6/7] arm64: dts: imx8ulp: add secure enclave node
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
-Cc: conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260912-imx-se-if-v50-2-80834ef510d3@nxp.com>
+Cc: robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260912-imx-se-if-v50-6-80834ef510d3@nxp.com>
 References: <20260912-imx-se-if-v50-0-80834ef510d3@nxp.com>
- <20260912-imx-se-if-v50-2-80834ef510d3@nxp.com>
+ <20260912-imx-se-if-v50-6-80834ef510d3@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 12 Sep 2026 11:45:13 +0000
-Message-Id: <20260912114513.9CD7B1F000FF@smtp.kernel.org>
+Date: Sat, 12 Sep 2026 11:45:49 +0000
+Message-Id: <20260912114550.26ABB1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,46 +46,42 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Discrepancy in the documented compatible string for i.MX95.
+- [Medium] Mismatch between the commit message and the actual SRAM node lab=
+eled in the device tree.
 --
 
-commit fadaa2081933a0613e667a53214f0c48c9bcd198
+commit 6e41c69d46e1780283726744191a5e95f15d0970
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-dt-bindings: arm: fsl: add imx-se-fw binding doc
+arm64: dts: imx8ulp: add secure enclave node
 
-This commit adds the device tree binding documentation for the NXP
-i.MX Hardware Secure Enclave(s) EdgeLock Enclave. It defines the
-communication interface using messaging units and specifies compatible
-strings for i.MX8ULP, i.MX93, and i.MX95.
+This commit adds the EdgeLock Enclave (ELE) secure-enclave node to the
+i.MX8ULP SoC dtsi. It includes a label for the SRAM node referenced by
+the enclave and keeps the enclave node disabled by default.
 
-> diff --git a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml b=
-/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> new file mode 100644
-> index 0000000000000..fa81adbf9b80d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-
-[ ... ]
-
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,imx8ulp-se-ele-hsm
-> +      - fsl,imx93-se-ele-hsm
-> +      - fsl,imx95-se-ele-hsm
+> Add the EdgeLock Enclave (ELE) secure-enclave node to the i.MX8ULP SoC
+> dtsi, together with a label for sram@2201f000 that the node references.
 
 [Severity: Medium]
-Is there a discrepancy with the compatible string intended for i.MX95?
+Is the SRAM address in the commit message accurate? The commit message stat=
+es
+that a label is being added for sram@2201f000, but the actual code change
+applies the sram0 label to the node at sram@22010000 instead.
 
-The binding here specifies fsl,imx95-se-ele-hsm, but in patch 1/7
-of this series, the firmware documentation in=20
-Documentation/driver-api/firmware/other_interfaces.rst states that it
-is using the single compatible node fsl,imx95-se.
-
-Could this mismatch cause confusion for device tree authors and driver
-maintainers regarding which compatible string is actually expected?
+> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
+/dts/freescale/imx8ulp.dtsi
+> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+[ ... ]
+> @@ -154,7 +154,7 @@ sosc: clock-sosc {
+>  		#clock-cells =3D <0>;
+>  	};
+> =20
+> -	sram@22010000 {
+> +	sram0: sram@22010000 {
+>  		compatible =3D "mmio-sram";
+>  		reg =3D <0x0 0x22010000 0x0 0x10000>;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260912-imx-se-if-=
-v50-0-80834ef510d3@nxp.com?part=3D2
+v50-0-80834ef510d3@nxp.com?part=3D6
