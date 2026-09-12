@@ -1,110 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DC03148CF;
-	Fri, 11 Sep 2026 23:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789167891; cv=none; b=iSCCOnVM9FHV+UFWSfP4zdjNYogT/Rl22MOuIKxkNG4Id7/SKOUbrca/Uju36Ie7Fyxf++Ome3qZG0fceHFRQ+YtnhxPF4wvOH34E8XeXsABjRprS+Fc4jsHdr6nfcACmyj/XcZeEUK43zm8Tsdeh0sGHBjON+W57PVlL8mk7Qo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789167891; c=relaxed/simple;
-	bh=xlWn8lsNQ74V6HS9v7MVPkrQMIN4eF0tWIk9IW2JCoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MY+jEcnb3K9pzF3GXfBDlzy/n707jOMu+CxoPrj8XCum7qa/ahGBxDCyzXtwJv317dm7Nb6hZBIMgmJjkVYDUpWJ3OmSdqrJhXM6RL8yRBspTCauMY4qE27l99b4fxXc1FJr5l3vgzqCoR44VqI9TSdCyQcN2jSlgUIGVnxrBwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WshzVBKh; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42851C84DC
+	for <imx@lists.linux.dev>; Sat, 12 Sep 2026 01:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789176586; cv=pass; b=IhcO/RyjWjfg0gV+zilwoZNA3ubaGjVPAnZ2hITmGJIPhX8vxgTv+eIYtt5rHUWvhafXnJ/q1KgwJtzsJH0JTMmzpN3zhAuuud7/ntWhIye3JqK4TA477OyBAJ6CYmqfZUaswxrx23yds8rX9PORaHhzqsEA+4IniKPPyVN6QE4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789176586; c=relaxed/simple;
+	bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=obWk63JuHcJczXJv5yqv1IHbsm7EMlPChMQ7ry+l9fs0kNl4x7bCrzZ/RI5ImuYdjQTnFSr5kcK1icPabz8XhqC0vw9PXqfie+7iWCPltfzJp0iahxxYj78BASX8ZCk4+16kt4AKXWcBPAlVA8k1a0R2Qojb59Ou5Y32rbcAQZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com; spf=pass smtp.mailfrom=0x0f.com; dkim=pass (1024-bit key) header.d=0x0f.com header.i=@0x0f.com header.b=FX1x+r4T; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x0f.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WshzVBKh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AABF1F000FF;
-	Fri, 11 Sep 2026 23:04:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789167889;
-	bh=N1LY4rKYOr27Ilt9sZo1N4WbqCnS6yVf+HmCQgzzvz8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WshzVBKh1zOG3iQqHN9bXk6iMn3UhPjWI2o9We2q85J1a0xxuvetInEqSv+oLVBif
-	 oHixlX9hdnUTec+G9zk6kotK91VuauggK0rxfOR07BuXDSuVbPkPSgIKxAGEHnnOmt
-	 Th5abxIcAARPoeXzkg1RZuTPeY7skMICjLiysDWUlk6TbZuVGou1nBri98K3vkOFma
-	 +8WViZY9rRF0QyyYhVaVzRzVW1ce++rNpSS5X6VGBpU3jnuoYD43g/28KA7iJ0xah+
-	 8qQDOEfeqF+wATGMEexc8UPt37RQWJ1KDqUcKNK9vRaS38zBePsIn/L4mZk0RSFzOq
-	 tHA6h1BvCTugg==
-Date: Fri, 11 Sep 2026 16:04:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Greg Ungerer <gerg@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for
- ColdFire
-Message-ID: <20260911160447.2873a40f@kernel.org>
-In-Reply-To: <92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
-	<20260907134037.1855408-2-gerg@linux-m68k.org>
-	<20260910174210.0f8a4ad2@kernel.org>
-	<92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
+	dkim=pass (1024-bit key) header.d=0x0f.com header.i=@0x0f.com header.b="FX1x+r4T"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d8fb334e72so4645925ad.1
+        for <imx@lists.linux.dev>; Fri, 11 Sep 2026 18:29:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789176583; cv=none;
+        d=google.com; s=arc-20260327;
+        b=laocNXBVfue7uBhPETVk9qETfJqklFk7taiRgxU3xzt8j9v3yk88PyZWbx6WXLx0Oo
+         QMMRiznRYzNQKbP0GQEihlSgIPLh+B+jvNagVyHXEvSVjZNaaKCR4jeiWg1fpsXu6spW
+         aolyOYGv6hccsHbSqR6+u6xAr/t4ZtQNFpa5zbwhME+G/uC2Bubs3qnFLxEc+OCoj+6C
+         rHU1AW/sMvtCbLH68VF8rB+hLSwrFkEVpt5SJY7T4cDOTWmw/Xh4BmseE9Kt6lmJTGqp
+         JaasmkK892Ij8RmwhKLPab5DMjP6KVKyqJDnQ0OctQRvryuYFd1Q/WRftfio3B5tZLh4
+         CwCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
+        fh=yEbZVQ/SOODXeIy2zHv2vOWACDOF83nf2VpQovYEajk=;
+        b=CkfVcxKfVWVvbKAPDEqiUk7fbEFQ1JjAoeJv0IFErZHbGK3hkn6IWed4h3ibgd27KM
+         9kOitC/3+XU0ovcVPEUv5Y0AWvzaD6QcEOUIHtZsacF4+HCRkIQhY49ekk5HvyYAZnG9
+         P5jahn65KCuHvnDmllXJHUqX5O7uqnOd0l3/iEoXdJBFsKHR+0jiSmhnszAklrT3aBSv
+         C1sR09kQtnY1BNHuDjlrmO3KXH4WCbKlequwQQ+9iHVhnP7GDX0zbzZkS7Vq9JiPa0Rr
+         EApqIxnzlYrydHr2sxPPSFJa8m8X/VDldZP+Uxwl/oO4khFgPEupM5J8FJHes6TSTI1z
+         Ehhg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0x0f.com; s=google; t=1789176583; x=1789781383; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
+        b=FX1x+r4T2IdG84H7VtfwZ1eLIRCJCAxF3p4GGvXcSPvwYXiV+Nw/wIFsuhj1uMkXuc
+         82N/JFuWx57Vir+76UD6JolJb6K1m0ucJ2IUhmS0SHu03U7orWaiUbtE/NDxrZWHdwOW
+         TwgEViK8i1Xx34BrJTzN97whnSt2XFq3Khz40=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789176583; x=1789781383;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MqFZZ1MZCCOk3B2AWbqhU4vVtD/Z+SwXDy5HKI6vso0=;
+        b=krCpkCNILQPA7v0IonXocDMNQVdS5KYdhrX+pRJmmcOV3dLAOmCzrclavfJ8tpML+S
+         5uT82hGKXvXHI+rFaJTuJ8nIE359qysKu3K+PhzdQlQAqXyRJHn95CxNnwEjCqQtNdG/
+         tgJQ61Yv8IgSvkeK7muZigKzt7xv+hXcM0ypp893dZeSLkO2/6xBYkHBUXAfP4UYHSHL
+         zlaT/1NdYuT+/xYnymtRoP2bY9DyZELFAmSOrPZAb+Gk5J4h44PYn3iMjt35sAbOU8Aw
+         eRDCtSzQMFK5dl8oYNleUSbBQdPvDQ9XA08gDRYXMZCcEN4xspnGDjYmUxsMDGHbr8+d
+         xtmA==
+X-Forwarded-Encrypted: i=1; AKwUvByXpjjAQsAJLMCAnmJSAkk52v89hvbHVs1vvo9GQkiWxiqYBBBExkTwgCpLbLtBJzczSqQ=@lists.linux.dev
+X-Gm-Message-State: AFuF++mkNCFokmhXx6zVfwlSwxzKJiu/+8+j3CvcKIoRrl/sfSo4J9fD
+	/jvNxAlCATkJR0v3Cd2AiMN8Jmr4TmKrub2zaqfLJqAyKrOy2E3OPIqVmY4s8u9NWBA5nqz+aEF
+	0U0W9mSxOS96M0uvZjA7LX6hamdDyRS9S/Ry8bsUNvA==
+X-Gm-Gg: AYBFou34C9U+TRy3ksvkZ7KnUvLOAt8amptSiJgonEU+g1kvHdfmdAuXp2wcCMHuETi
+	dkrpi6f8OMMUjr1q3QMUmXf+850D6qZaQyWJ+qLDP/qZTPyADv9G9vRjhHkU8pe5d+RBuMWfjXU
+	R7kM80wsxKJcOFybwFDz57XHiTRQ/6lo3ep/fPR6MtZjpFmJCucSpwiDM4FaE/AJDRFEQgwd1+M
+	MZ7GtPnuCfKmdvfRSp8a+nuS3xdZcY91ALyLsJQqvyTCyVaZa/INqzDPwEgmRFn+DlMrDA6uH9y
+	JUXhIx3rxBAhlueRGK8r0S2PJhPH08Laq/L2fw93gGlTqAK//Rdcxw==
+X-Received: by 2002:a17:90b:4fc2:b0:381:6c5:3f63 with SMTP id
+ 98e67ed59e1d1-39d9bc42d1bmr12376403a91.6.1789176583130; Fri, 11 Sep 2026
+ 18:29:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-4-arnd@kernel.org>
+ <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
+ <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
+ <CAFr9PX=_FmMdR4TeP+tqURZdZCTjw8UYxAxeszs_vcpTbX+_aw@mail.gmail.com> <CAD++jL=zaF1zcTv6Mta5Xw69WeLC30NRcH0_pkSkLJJ0UtnZHQ@mail.gmail.com>
+In-Reply-To: <CAD++jL=zaF1zcTv6Mta5Xw69WeLC30NRcH0_pkSkLJJ0UtnZHQ@mail.gmail.com>
+From: Daniel Palmer <daniel@0x0f.com>
+Date: Sat, 12 Sep 2026 10:29:30 +0900
+X-Gm-Features: AcwNN1UYIuhyU3FVES8GlXYNI9phDxlCK3dBrZsiSwUakZtphqfaiRPyo96Awf4
+Message-ID: <CAFr9PX=tVOzqGU4k0zSzXheuU5z5LZi4LSGdUvjChrSTrbyjJg@mail.gmail.com>
+Subject: Re: [PATCH 03/13] ARM: remove riscpc
+To: Linus Walleij <linusw@kernel.org>
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Drew Fustini <fustini@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Karl Mehltretter <kmehltretter@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	Ian Molton <spyro@f2s.com>, Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 11 Sep 2026 23:03:56 +1000 Greg Ungerer wrote:
-> On 11/9/26 10:42, Jakub Kicinski wrote:
-> > On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:  
-> >> The FEC driver works today because the m68k architecture io.h has a
-> >> kludge in the definitions of the readl() and writel() functions for
-> >> ColdFire that allow big-endian access if the address of the register to
-> >> access is within the SoC's internal peripheral registers. This is being
-> >> fixed in the near future to define readl() and writel() correctly - with
-> >> no byte swapping. Thus the motivation for this fix here.  
-> > 
-> > What is the motivation for this cleanup?  
-> 
-> Sorry, maybe you were not in the CC list of the cover email. From that:
-> 
->   This collection of patches is aimed at fixing the non-standard ColdFire
->   set of readX()/writeX() IO access functions. Instead switching to using the
->   asm-generic definitions in include/asm-generic/io.h. The difficulty comes
->   in trying not to break any drivers with this change.
-> 
->   The implementation of the readX()/writeX() family of IO access functions
->   is non-standard on ColdFire platforms. They either return big-endian (that
->   is native endian) data, or on platforms with PCI bus support check the
->   supplied address and return either big or little endian data based on that
->   check. This is non-standard, they are expected to always return
->   little-endian byte ordered data. Unfortunately this behavior also means
->   that ioreadX()/iowroteX() and their big-endian counter parts
->   ioreadXbe()/iowriteXbe() are currently broken because they are implemented
->   using the readX()/writeX() functions.
-> 
->   Patches 1 and 2 in this series are specific net driver changes that can be
->   applied independently of the final ColdFire readX()/writeX() change.
+Hi Linus,
 
-I read it, it doesn't really answer the question of priority.
+On Sat, 12 Sept 2026 at 03:15, Linus Walleij <linusw@kernel.org> wrote:
+> I would say using generic entry would be a prerequisite for
+> doing m68k SMP so we don't introduce *more* entry
+> oddities, but after that I'm game.
 
-> > Is someone still making
-> > new SKUs of Coldfire boards? Or (and please don't take this the wrong
-> > way) it was a long standing TODO that was tempting to feed to an LLM?  
-> 
-> It is a long standing todo/fix, but there is nothing LLM anywhere here.
-> This was all manually coded and tested. This patch is 95% textual
-> substitution, so it wasn't exactly very difficult.
-> 
-> > IMO keeping the hacks in m68k is a better choice. FEC was used on more
-> > modern SoCs, definitely on PPC ones. So we'll be able to get rid of
-> > m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
-> > the FEC driver is backwards.  
-> 
-> These changes are not work arounds, they are made to make the FEC driver
-> explicitly aware of endianess of the underlying processor and FEC hardware
-> block. The code as it is now, that is carrying hacks inside readX and writeX
-> for m68k, is trying to hide that from the driver.
+I have started this for one part of the m68k tree (68000), but it's
+one of those things that is hard/frustrating to test on real hardware.
+For the last few weeks I've had claude create a QEMU that can boot all
+of the m68k supported machines to Linux, Netbsd and their original OS.
+It already found this:
+https://lore.kernel.org/linux-m68k/20260828094940.3882602-1-daniel@0x0f.com/
 
-Whatever, let me not waste any more time on this. 
-If Arnd thinks its worth it:
+> As SoC maintainer I see that m68k has a lot of technical debt
+> like drivers under arch/m68k and no proper hardware description
+> (such as device tree)
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+I have m68k machines using devicetree... :)
+
+> There are things like
+> amiints.c, cia.c, ataints.c, q40ints.c etc that should be in
+> drivers/irqchip. So many time.c that should be in
+> drivers/clocksource/* and many other unmodern things.
+
+Would be easier with devicetree. But is anyone crazy enough to go
+through the pain of merging the devicetree support and then arguing
+about devicetree bindings for each of those drivers only to be told
+m68k should just be removed?
+
+> Albeit I think actually going and fixing that can't be super-hard
+> in the age of LLMs. So listing things like this likely will just make
+> someone go and do it. :D
+
+Once you have an emulator that the LLM can operate it can do the
+change/build/test/debug cycle all on its own.
+With a test harness it can even test the changes work on the real hardware.
+But I don't think that's enough to convince people the changes are
+worth reviewing/merging.
+
+Cheers,
+
+Daniel
