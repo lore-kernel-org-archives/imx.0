@@ -1,290 +1,156 @@
-Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A062366048
-	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 17:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.86.107.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA6F3F5BC3
+	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 18:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789321616; cv=none; b=aPc4RueoMtqYVMc92OlCeXnDfYJbsLN/pqNA3921cDiB3vicLtiB88z/IQwpdbRZCWfsTx+9jVdyEA6a5/GijaDSqctVhk2ZjgEzS6we1KLJ9cruuy5naIQ+klzA66bMTN0hmLW/11loVucqUgS79vs2fObMp8VhsjlraxvkdJA=
+	t=1789323262; cv=none; b=id8Rs2I8uOL7rWgAaZLWoF07ClEPVhDfJ0+26hDRIp6ZuW8TsR7DBRvTFGd/+O4B86uFTr7hEBpH1y+0ttHw2xCZ08p2g26LOT5luLi7MDVpJxCB6AiKSvdhBkXJSNg6vaSoQozjaxAfCJVgYUp43uIhf0zFOmnkm3+Imb7wGeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789321616; c=relaxed/simple;
-	bh=o8qEB1K3roUnT9ubsTk6JkTQKujt+fQ5XSky6m8yCnY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XKa1Dt6UxgAvB36EtWe2G8WsgljfqVCgH+Hk+pXOtw9IAsCfrU4z/VKGPcyJ4t1+7uPXbhcVgrCvYkOWbnWYd56wv12jthz17X/rFyzlZKzgb7006tqoaWDoLbXeWEPP4YX8R6GAkzG95Ticgrx01IAZ5lU/JuP2AKtvt7An3+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net; spf=pass smtp.mailfrom=rendec.net; dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b=tC09IrwS; arc=none smtp.client-ip=80.86.107.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
+	s=arc-20240116; t=1789323262; c=relaxed/simple;
+	bh=+i/WMQo12F+E81xj/jdX7lcu6060BfxnYwbQM4ckRZ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q3FFA62t4i0Q0p2O9lOWLyXvdv8Zk1qSI3J51OlTPYskH+kA0inggNQi7EX6QLZiBVJtNu0Vkwo+kMslK0P7muRNkZ8mYsHCRyk2k2cGy6m/7nmifertbgs6U/iP7x00oBWc/NzdaAAYMgKgw9ubaEAx/Iwe6CvUOr1fXksIUlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvvP55/n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b="tC09IrwS"
-Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
-	by mail.mindbit.ro (Postfix) with ESMTPSA id 2F3EDC348B;
-	Sun, 13 Sep 2026 20:40:32 +0300 (EEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 2F3EDC348B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
-	s=default; t=1789321233;
-	bh=3kVp9ftx8zdV1vMJiO0ohMeT8+KjRu1oX4KcUm+8AvI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=tC09IrwSiPOs7gHg7yWVRSy6mEZJmz5O/vGXTX8hb11vcs0jtlPZ2X1FOOFLl09G/
-	 CjcsZODJv9Pxx3n7/3QBCBhoB/nDj89bv8+o5kGCI2SOkjWBPcrV4r5NVKnkHufRFb
-	 OxMd50eiIZ4FLw4xDMNO6xttBSW8p31y2oOl7+D6rc3cbXomS0n3dr7yrIVh3TAUHd
-	 DJmovyH5F9GNpQGRUT77Zp6KLaQObAtqbS2JnLQw7RuAmNDup6Jt+3k/PcUPUYfGoY
-	 9D0pxIv6as7KpMtJreUCXExIVEkPzEZixQZvIYjeEdJbA3sZrDSOVf8sGd/EHYFJ/5
-	 PKyDDV8HGecJQ==
-Message-ID: <ac1f6aa6904852c1b73178a50fd6a0c279bb113d.camel@rendec.net>
-Subject: Re: [PATCH v3 1/2] irqchip/imx-irqsteer: Convert to
- devm_pm_runtime_enable()
-From: Radu Rendec <radu@rendec.net>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Fabio Estevam <festevam@gmail.com>, tglx@kernel.org, Frank.Li@nxp.com, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, Fabio Estevam
-	 <festevam@nabladev.com>
-Date: Sun, 13 Sep 2026 13:40:30 -0400
-In-Reply-To: <aqRXTITjN3rgjsBk@lizhi-Precision-Tower-5810>
-References: <20260805192743.244441-1-festevam@gmail.com>
-	 <f5e720e174fb74615f5c3c0702e63f6b8aa3ec87.camel@rendec.net>
-	 <aqRXTITjN3rgjsBk@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvvP55/n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACF91F00898
+	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 18:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789323240;
+	bh=+i/WMQo12F+E81xj/jdX7lcu6060BfxnYwbQM4ckRZ4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hvvP55/nHzg3/6gPMxh0YINwon8tEDxLKQnsxvgL7zzskx4gYrfCfSfy47JdpMDie
+	 OGEwxbeb74cUWo/loc9B108PmKXEkXCcTvWPtajz0l9pP7TuptDnAwTXGoNuhWO/iu
+	 Mu74j1fqlLIKiipimyrOM/zC3kf75WeWsHNv4cymURXtjN0NTTgVXB4uMcv2bRfqoK
+	 JpgoMqR6Rc+amOFPQYzCLt4sOtHjW9lDdu18j5QrU+hqGRbGkUKSDsb/e7VXW3ctzS
+	 2MWHG2pnVObAs/ThqoYrarP//BQQmNoPF31327CaF+JuKKUoooVumSujNpFVInc2hX
+	 KmYL2CSgIAUgw==
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f13d77so1452130e87.0
+        for <imx@lists.linux.dev>; Sun, 13 Sep 2026 11:13:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzHnvOuR9jFtfGGleo3j9uAZUOORO8wXl0Qw3zqTia9jImiEgZRRAVjtUdPHPaz7inkpfc=@lists.linux.dev
+X-Gm-Message-State: AFuF++lgHsUt5CO2Est+J9ngqikU7sjlJ44DNEjBvS4+JSqp1dfxB1Wf
+	x8jBF6D/z40RKHKlnw+xD8WjTOAWP9HKPYR7biHUOMxKeNM4AfIBb56i9svzmIoegyBniUPdVPx
+	7bNy7c0fxZJeUOjI0/IuJFi7LRYIBaXo=
+X-Received: by 2002:a05:6512:158b:b0:5b8:9ec5:c936 with SMTP id
+ 2adb3069b0e04-5b8a8ec2c76mr1378800e87.44.1789323238029; Sun, 13 Sep 2026
+ 11:13:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20260908152808.3928630-1-arnd@kernel.org> <20260908152808.3928630-4-arnd@kernel.org>
+ <CADkSEUjYhRk-ezaXZkHzFTFQnySFSisKtZfEP-_NtLnQF+6-1Q@mail.gmail.com>
+ <CAD++jL=ysmPgs8yKH5KBobuv-eeCHHgZwvo1kvHOFuTwhkaOew@mail.gmail.com>
+ <CAFr9PX=_FmMdR4TeP+tqURZdZCTjw8UYxAxeszs_vcpTbX+_aw@mail.gmail.com>
+ <CAD++jL=zaF1zcTv6Mta5Xw69WeLC30NRcH0_pkSkLJJ0UtnZHQ@mail.gmail.com> <CAFr9PX=tVOzqGU4k0zSzXheuU5z5LZi4LSGdUvjChrSTrbyjJg@mail.gmail.com>
+In-Reply-To: <CAFr9PX=tVOzqGU4k0zSzXheuU5z5LZi4LSGdUvjChrSTrbyjJg@mail.gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sun, 13 Sep 2026 20:13:44 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=nr_Rgf6e+vo2bbTRNvEXysEEMjMhGp3-2J2_JPSVkiA@mail.gmail.com>
+X-Gm-Features: AcwNN1UBjE2eanAt46mrgMtCvXLgZ5DQ_bTFYwRvKhaMIzHs2zMGgr1ICh4wWo0
+Message-ID: <CAD++jL=nr_Rgf6e+vo2bbTRNvEXysEEMjMhGp3-2J2_JPSVkiA@mail.gmail.com>
+Subject: Re: [PATCH 03/13] ARM: remove riscpc
+To: Daniel Palmer <daniel@0x0f.com>
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Arnd Bergmann <arnd@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Drew Fustini <fustini@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Stefan Agner <stefan@agner.ch>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	Kristoffer Ericson <kristoffer.ericson@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Karl Mehltretter <kmehltretter@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	Ian Molton <spyro@f2s.com>, Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>, linux-block@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-09-11 at 15:32 -0400, Frank Li wrote:
-> On Thu, Aug 06, 2026 at 05:28:59PM -0400, Radu Rendec wrote:
-> > On Wed, 2026-08-05 at 16:27 -0300, Fabio Estevam wrote:
-> > > From: Fabio Estevam <festevam@nabladev.com>
-> > >=20
-> > > imx_irqsteer_probe() enables runtime PM, but imx_irqsteer_remove() do=
-es
-> > > not disable it. Consequently, runtime PM remains enabled after unbind=
-ing
-> > > the device, and rebinding it triggers:
-> > >=20
-> > > Unbalanced pm_runtime_enable!
-> > >=20
-> > > Use devm_pm_runtime_enable() to automatically disable runtime PM when
-> > > the device is removed. Set up runtime PM before creating the IRQ doma=
-in
-> > > and registering chained handlers so that a failure cannot leave eithe=
-r
-> > > resource pointing at freed driver data.
-> > >=20
-> > > Fixes: 4730d2233311 ("irqchip/imx-irqsteer: Add runtime PM support")
-> > > Signed-off-by: Fabio Estevam <festevam@nabladev.com>
-> > > ---
-> > > Changes since v1:
-> > > - Move devm_pm_runtime_enable() prior to irq_domain_create_linear(). =
-(Frank)
-> > >=20
-> > > =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 8 +++++---
-> > > =C2=A01 file changed, 5 insertions(+), 3 deletions(-)
-> > >=20
-> > > diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq=
--imx-irqsteer.c
-> > > index 87b07f517be3..653e25115083 100644
-> > > --- a/drivers/irqchip/irq-imx-irqsteer.c
-> > > +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> > > @@ -236,6 +236,11 @@ static int imx_irqsteer_probe(struct platform_de=
-vice *pdev)
-> > > =C2=A0	if (irqsteer_has_chanctrl(data->devtype_data))
-> > > =C2=A0		writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
-> > > =C2=A0
-> > > +	pm_runtime_set_active(&pdev->dev);
-> > > +	ret =3D devm_pm_runtime_enable(&pdev->dev);
-> > > +	if (ret)
-> > > +		goto out;
-> > > +
-> > > =C2=A0	data->domain =3D irq_domain_create_linear(dev_fwnode(&pdev->de=
-v), data->reg_num * 32,
-> > > =C2=A0						&imx_irqsteer_domain_ops, data);
-> > > =C2=A0	if (!data->domain) {
-> > > @@ -262,9 +267,6 @@ static int imx_irqsteer_probe(struct platform_dev=
-ice *pdev)
-> > > =C2=A0
-> > > =C2=A0	platform_set_drvdata(pdev, data);
-> > > =C2=A0
-> > > -	pm_runtime_set_active(&pdev->dev);
-> > > -	pm_runtime_enable(&pdev->dev);
-> > > -
-> > > =C2=A0	return 0;
-> > > =C2=A0out:
-> > > =C2=A0	clk_disable_unprepare(data->ipg_clk);
-> >=20
-> > I still believe there is something off with the way pm_runtime is
-> > handled, and that the double clock disable is possible.
-> >=20
-> > Since (like I said) I have very limited understanding of the runtime_pm
-> > framework, I decided to make a little experiment.
-> >=20
-> > With the dummy module below, I see this:
-> > [=C2=A0 548.253591] pm_dummy pm_dummy: pm_dummy_probe() executed
-> > [=C2=A0 548.254209] pm_dummy pm_dummy: clock enabled; refcount: 1
-> > [=C2=A0 548.255028] pm_dummy pm_dummy: pm_dummy_runtime_suspend() trigg=
-ered
->=20
-> https://elixir.bootlin.com/linux/v7.2.2/source/drivers/base/dd.c#L827
->=20
-> after probe, pm_request_idle(dev), which trigger pm_dummy_runtime_suspend=
-()
->=20
-> > [=C2=A0 548.255845] pm_dummy pm_dummy: clock disabled; refcount: 0
->=20
-> > [=C2=A0 554.261820] pm_dummy pm_dummy: pm_dummy_runtime_resume() trigge=
-red
-> > [=C2=A0 554.263100] pm_dummy pm_dummy: clock enabled; refcount: 1
-> > [=C2=A0 554.264006] pm_dummy pm_dummy: pm_dummy_runtime_suspend() trigg=
-ered
-> > [=C2=A0 554.264997] pm_dummy pm_dummy: clock disabled; refcount: 0
-> > [=C2=A0 554.265819] pm_dummy pm_dummy: pm_dummy_remove() executed
->=20
-> You should set runtime_resume() at remove function to match probe's state=
-.
-> if your driver remove() did disable clock.
->=20
-> It is trick between runtime pm and devm clock management.
->=20
-> The beneafit of keep runtime active in probe, driver can work when disabl=
-e
-> CONFIG_PM, but complex at tear down.
->=20
-> keep inactive in probe, code will be simple, but it will not work if
-> disable CONFIG_PM because clock have not enabled
+Hi Daniel,
 
-Thanks, Frank! I appreciate you took the time to explain this in
-detail.
+On Sat, Sep 12, 2026 at 3:29=E2=80=AFAM Daniel Palmer <daniel@0x0f.com> wro=
+te:
+> On Sat, 12 Sept 2026 at 03:15, Linus Walleij <linusw@kernel.org> wrote:
 
-The dummy driver followed the exact same logic/sequence as the proposed
-patch, and the purpose was to observe the behavior of runtime_pm in
-isolation and prove that something wasn't quite right about the clock
-management.
+> > I would say using generic entry would be a prerequisite for
+> > doing m68k SMP so we don't introduce *more* entry
+> > oddities, but after that I'm game.
+>
+> I have started this for one part of the m68k tree (68000), but it's
+> one of those things that is hard/frustrating to test on real hardware.
 
-I believe this is now handled correctly in Zhipeng's consolidated patch
-series against imx-irqsteer.
+Pretty cool!
 
-> > [=C2=A0 554.266609] pm_dummy pm_dummy: clock disabled; refcount: -1
-> > [=C2=A0 554.267468] pm_dummy pm_dummy: ********************************=
-******************
-> > [=C2=A0 554.268554] pm_dummy pm_dummy: [BUG DETECTED] Clock disable cou=
-nt underflow! (-1)
-> > [=C2=A0 554.269479] pm_dummy pm_dummy: ********************************=
-******************
-> >=20
-> > What I find interesting is that the device is suspended immediately
-> > during probe(), then it's automatically resumed and immediately
-> > suspended again right before remove(). The latter is probably a side
-> > effect of devm_pm_runtime_enable(). But in any case, the clock *is*
-> > disabled twice, and that's even without any explicit suspend or resume,
-> > it's just by loading and unloading the module.
-> >=20
-> > #include <linux/module.h>
-> > #include <linux/kernel.h>
-> > #include <linux/init.h>
-> > #include <linux/platform_device.h>
-> > #include <linux/pm_runtime.h>
-> >=20
-> > MODULE_LICENSE("GPL");
-> > MODULE_AUTHOR("Radu Rendec <radu@rendec.net>");
-> > MODULE_DESCRIPTION("runtime_pm playground");
-> >=20
-> > static int mock_clk_count =3D 0;
-> >=20
-> > static int mock_clk_prepare_enable(struct device *dev)
-> > {
-> > 	mock_clk_count++;
-> > 	dev_info(dev, "clock enabled; refcount: %d\n", mock_clk_count);
-> > 	return 0;
-> > }
-> >=20
-> > static void mock_clk_disable_unprepare(struct device *dev)
-> > {
-> > 	mock_clk_count--;
-> > 	dev_info(dev, "clock disabled; refcount: %d\n", mock_clk_count);
-> >=20
-> > 	if (mock_clk_count < 0) {
-> > 		dev_err(dev, "**************************************************\n");
-> > 		dev_err(dev, "[BUG DETECTED] Clock disable count underflow! (%d)\n", =
-mock_clk_count);
-> > 		dev_err(dev, "**************************************************\n");
-> > 	}
-> > }
-> >=20
-> > static int pm_dummy_runtime_suspend(struct device *dev)
-> > {
-> > 	dev_info(dev, "%s() triggered\n", __func__);
-> > 	mock_clk_disable_unprepare(dev);
-> > 	return 0;
-> > }
-> >=20
-> > static int pm_dummy_runtime_resume(struct device *dev)
-> > {
-> > 	dev_info(dev, "%s() triggered\n", __func__);
-> > 	return mock_clk_prepare_enable(dev);
-> > }
-> >=20
-> > static const struct dev_pm_ops pm_dummy_pm_ops =3D {
-> > 	SET_RUNTIME_PM_OPS(pm_dummy_runtime_suspend, pm_dummy_runtime_resume, =
-NULL)
-> > };
-> >=20
-> > static int pm_dummy_probe(struct platform_device *pdev)
-> > {
-> > 	dev_info(&pdev->dev, "%s() executed\n", __func__);
-> >=20
-> > 	mock_clk_prepare_enable(&pdev->dev);
-> > 	pm_runtime_set_active(&pdev->dev);
-> > 	devm_pm_runtime_enable(&pdev->dev);
-> >=20
-> > 	return 0;
-> > }
-> >=20
-> > static void pm_dummy_remove(struct platform_device *pdev)
-> > {
-> > 	dev_info(&pdev->dev, "%s() executed\n", __func__);
-> >=20
-> > 	mock_clk_disable_unprepare(&pdev->dev);
-> > }
-> >=20
-> > static struct platform_driver pm_dummy =3D {
-> > 	.probe =3D pm_dummy_probe,
-> > 	.remove =3D pm_dummy_remove,
-> > 	.driver =3D {
-> > 		.name =3D "pm_dummy",
-> > 		.pm =3D &pm_dummy_pm_ops,
-> > 	},
-> > };
-> >=20
-> > static struct platform_device *pdev;
-> >=20
-> > static int __init pm_demo_init(void)
-> > {
-> > 	int ret;
-> >=20
-> > 	ret =3D platform_driver_register(&pm_dummy);
-> > 	if (ret)
-> > 		return ret;
-> >=20
-> > 	pdev =3D platform_device_register_simple("pm_dummy", -1, NULL, 0);
-> > 	if (IS_ERR(pdev)) {
-> > 		platform_driver_unregister(&pm_dummy);
-> > 		return PTR_ERR(pdev);
-> > 	}
-> >=20
-> > 	return 0;
-> > }
-> >=20
-> > static void __exit pm_demo_exit(void)
-> > {
-> > 	platform_device_unregister(pdev);
-> > 	platform_driver_unregister(&pm_dummy);
-> > }
-> >=20
-> > module_init(pm_demo_init);
-> > module_exit(pm_demo_exit);
+> For the last few weeks I've had claude create a QEMU that can boot all
+> of the m68k supported machines to Linux, Netbsd and their original OS.
+> It already found this:
+> https://lore.kernel.org/linux-m68k/20260828094940.3882602-1-daniel@0x0f.c=
+om/
 
---=20
-Best regards,
-Radu
+Now we're talking.
+
+> > As SoC maintainer I see that m68k has a lot of technical debt
+> > like drivers under arch/m68k and no proper hardware description
+> > (such as device tree)
+>
+> I have m68k machines using devicetree... :)
+>
+> > There are things like
+> > amiints.c, cia.c, ataints.c, q40ints.c etc that should be in
+> > drivers/irqchip. So many time.c that should be in
+> > drivers/clocksource/* and many other unmodern things.
+>
+> Would be easier with devicetree. But is anyone crazy enough to go
+> through the pain of merging the devicetree support and then arguing
+> about devicetree bindings for each of those drivers only to be told
+> m68k should just be removed?
+
+That's conflating two completely different things that think
+about themselves as different communities.
+
+Devicetree is in its ambition OS-independent and the fact that
+the bindings are all in the Linux git is just a convenience because
+that community works well and is dominant.
+
+No device tree maintainer should *ever* complain abot
+*any* binding with reference to what Linux supports or
+where Linux want to go. Only people not actually working
+with device tree would say such things.
+
+Device tree bindings have been deleted but then by the
+person who is maintainer of the binding itself, and for
+the argument that "no operating system" supports the
+platform anymore.
+
+Reviewing and merging m68k bindings should not be
+any more problem than any other binding, and it should
+not have an impact on Linux support of m68k.
+
+> Once you have an emulator that the LLM can operate it can do the
+> change/build/test/debug cycle all on its own.
+> With a test harness it can even test the changes work on the real hardwar=
+e.
+> But I don't think that's enough to convince people the changes are
+> worth reviewing/merging.
+
+I will review them. And I do not think the DT maintainers
+have anything against m68k.
+
+Yours,
+Linus Walleij
