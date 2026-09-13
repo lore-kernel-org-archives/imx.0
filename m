@@ -1,128 +1,132 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99C93EAC84
-	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 12:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EF53EB7F4
+	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 12:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789302766; cv=none; b=WkbScZv9L0mN1jnsSKobJzcLpy30XlvJlsF/HHF+wfURyTAT9upFZ2iZMVtLkmmbfsY81Dy/b0XgWeoUd8CMcl1yj7L0RaqpcmPApCsCxTUz9/1CxuXVk3KERSXeducvs5OKYHvQrlMFPZIKW+ilEq5fYkHNX1SE/D0OvoJlU7k=
+	t=1789302831; cv=none; b=f+6LXJXFXOk9Nx/Txi1p4r+QYn97Cp7MSpqyyVy8AfyvIf0B0GSbeiHrhx/O3PcyP9zOgLhKhE8DkNvoa+4pHTxKyAcn7zybfjjSuLvBFJAHToakpUTBDmGZ3cm3Pd5pJlD5JiuKdeTqLy7qFRVvgT4dBKAKKthW6Z+JP/j+tK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789302766; c=relaxed/simple;
-	bh=2Gu3jj/bbPy6v9TykMXMcpf1SKJ1++HGbKCm7btm+8U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IlNpuEOpFhdFUi28amwtsryv8KH0ipg6HWieLn4DfDKWK6NXTJF7s5/Q1pAymQNGS7fuiOTDyfTMxnj3i/XJtn/KkU9RLITXpVasqfiBJpsgxN5nFC5QRomg4DdndEhIdFSd4nSBI5Q6V/dO/fUaDEG33395XYYfopjBb94qyE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hrLhsp6C; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TloD8frr; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1789302831; c=relaxed/simple;
+	bh=t/ic0tf39N6W1RFgeQXjtBLIbwB325uktvFQO+N0nJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GqysjEI5Qj/ueY3+xM0RYDwBT1q/7oHDLGHzaGesxbr/yg/jWtytp2e6IJhUlVEJ8QRmNr2hypXhdsyl0hoK0EyAtiJoCiRUbPFUneDj657V0WX9kEb07IKgaTLvExUrQ7Q/m5HYyiDZruCDH4eijYEJvs0jUplyUTkCmVQLHS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=b7n0FhAD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZngVMzJC; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hrLhsp6C";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TloD8frr"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAUNJx2354395
-	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 12:32:43 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="b7n0FhAD";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZngVMzJC"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAU3rW821441
+	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 12:33:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=TGISa+34lKvjnngXN542isa8VDFHuqbKo1m
-	R1pUEm5g=; b=hrLhsp6C2M/z7Y/zgRIQveifwhhB5pLaKveZKGIPLcTvQ58cGtd
-	sG/Q/u8Y1mcirrAFL13w91FeMSMaAuFTsU9VsWuhmI0qF1dzTlRsHc1wtnMYSZCZ
-	2OsMZCuUGoo28eEx3fNyZU0myWw7Wiuikj0JqSzGqGeDQaIg38BDWn1uT60PSCWu
-	2i1lqVjnGwv1ko3C94lqTixqyClRW/LlBWpe64Jk6roUB+BFOnezgp19d8fXwxY+
-	H+CNmddzS5LbmSOqBcis8Mv3JdtmEM7i0n5bqDEs7EMa2G7Kd47oE1EtVIwqvFmN
-	xKFg6Fcr9MkNiNNXIbV4dwHE2+vhsk8F8eQ==
+	:subject:to; s=qcppdkim1; bh=f7HmkIpzv0+5Vv76flnhc4C5zbL28Bg/Lfl
+	KqWGDWGA=; b=b7n0FhADcI+IpF5mfr1PX2tBD4EfBpKtmPseVPxYWM2OSjmeWWo
+	fg4+eYEcJsIC5rfIYitoEL864RL2UJ3sm3p8/lp6UH7Q8GXKg8rsJpUeQrx3on8q
+	2I72efIUvNGgilEalnAlqAweqoQgwoYECompVaI7sYTiVc3sg8vX7N9WRoRVnVQ5
+	H2lsg5sST8/gFh6YnK8auD3/7r12VpAwF25R5nykNFlpOKtgpsRDuuFhCFxEFz2F
+	B4jR7jrz/PrVQWQ5XUFsJHKKmu53wvfzo5sv27Yuc8dgzC2pzzk8wJ+O9lfSwmd2
+	zqQBFdn+UiHaKhAXSL597Y47ZUGZ8vSjxbg==
 Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9cb8st-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9cb60b-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 12:32:42 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939d6c515deso482416685a.3
-        for <imx@lists.linux.dev>; Sun, 13 Sep 2026 05:32:42 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sun, 13 Sep 2026 12:33:47 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e82060977so488456285a.1
+        for <imx@lists.linux.dev>; Sun, 13 Sep 2026 05:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789302762; x=1789907562; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1789302827; x=1789907627; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TGISa+34lKvjnngXN542isa8VDFHuqbKo1mR1pUEm5g=;
-        b=TloD8frrVv/TDNsgbi+Bfy/1ogo8cYXj2Mx4wShslbOfSTX66Y7DkFEyD3P91rtNv4
-         I2NNwPbPx/e8EHk9B+8BKsLLtRT31tnCFj0g9lThFZRA+47kwtHzCybyLtF6tLDu2eZU
-         ASTZFZMN/dKKJJNaDQ4QuL+8un6ySseIg90k1TzSXQwfc+Q6KYZYtkymYvaqStKSn6A5
-         8eCHqGbSn08xNTfd2MjdmT3J2MrVYgosp4uApaALehnWUl1GGkdl4bkX/LPd0MULnPmh
-         yhdtMMtyUf9+xOJGjEBpyeQyt7OxhxymTZC98sHqd+OrNCAo05MPjWU0aIB/FOf9G+Vm
-         n0FQ==
+        bh=f7HmkIpzv0+5Vv76flnhc4C5zbL28Bg/LflKqWGDWGA=;
+        b=ZngVMzJCQUsADfKxjeEPnMEFxQYJidmKOo5VW0luzk8Ht8R8gzJ8DEtFuWu/pEzyPA
+         OgGbJn+SkdwdpTJE7rldFmJW9iWWI0JTvoi70FnnkwqAIozRri2ZIyNgTVebUqcIe60S
+         F+/RR0kDcWlWEle2ZDI71EOvZq4kf8zSvWil0CSWu/KrnkQNaYihtOzzaQ/UYQKv96dA
+         lepat5f4NmBKdTiyeeF89yAdjAxJdLDfjaPti0dbxihGMOfK16Dood8lxanGKM2+g74F
+         F/0uLp1NGmALOOgxdDJ1ZeqpZ2XgBsmTJuwby5WpyYqnNoOoNgyEQeiZ0x+pPjADeak3
+         iR2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789302762; x=1789907562;
+        d=1e100.net; s=20251104; t=1789302827; x=1789907627;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TGISa+34lKvjnngXN542isa8VDFHuqbKo1mR1pUEm5g=;
-        b=bnBU7dB1DdLjvfG003EIwUgc8meZgi7wS59yYl49ymqjDEbecX7CF1ck3PtO8JdHYs
-         ocCUcXnvsvLw3SIC5haBFQ17NQPgy9b07RNF/J+6pH+oiGDMdiSBEqlFLKZeRFqBRmZN
-         pa49fxTfwFHcPkYwyaeQ9q/A4y7w3IEdRd2TUR0Hv84soyrzg8Pc8/7kegJF9i/T3+5Y
-         cllYmO3e3owCwNDyRYLwJEY/XE4Sj7JSnPKqNCEFXoCK/PedSUtTUIukyug3+/Z4gSsl
-         8fk1ldYHbSL9kvNfgIbSGCnS+6Ne7ZB6/DCsqVQoz0zb+DYBHbEkWjGyyRa1mCfgPxPh
-         ri/A==
-X-Forwarded-Encrypted: i=1; AKwUvBwkrakBeAjD4qX4+P09VWthcSqbtN01d5/Dic5QWaYfhnfncmF7H0mU3DuAvHwnItAcFSY=@lists.linux.dev
-X-Gm-Message-State: AFuF++mX+De5MnFIDbz/evNHDgXFVTKzH2+Tw2MiiX56nGfeIW3bKEN6
-	8pAb1gBNN3DwyOUf3K2ZigAqqm/Q/nNoM10pDc4JRNMJVB/puFyPR2+VbizinemjQCpbxTwD3rp
-	uqhuVpFTvOo5sgVwVtbl+0HUzCe7HDnwhKA20o7D7lhWio0U6Uv7Iw2E=
-X-Gm-Gg: AYBFou1uR0oF0L+8oknD7JinekiJP5MqJhFdVcasietXy0GV1XrA4j+x8sIgSsQZkS5
-	HJgE7Jv7nHMMF2pozad32hHF6r004rqsbreUO2uniNYLESRr9uYJkVSwh0+lWFqiv32yzEviGNv
-	9nBETMzIrbL1t+LYiqQSDBsbTc0MDxYcflaMp+PPOJK6AkxoaDkpSsYb1pfHddaTy0hF+jMvPfz
-	q36X9Dmq0T7J6/vSdXj1xwbcvE65++emRXgn9ZRJyRJuhczIbOBu3vZlhOSY2SReDl1tBku17Ve
-	GtaVFoImE83ljDvmd7SJSYb4MqOmyuL8vngrJL86kl0b9j1N/E5ItaP0dP4YYXHZkX/jVkvmyBi
-	GlF9BvGypTJJQklk=
-X-Received: by 2002:a05:620a:3704:b0:939:8c80:669 with SMTP id af79cd13be357-939ea1d357amr1749448085a.42.1789302761013;
-        Sun, 13 Sep 2026 05:32:41 -0700 (PDT)
-X-Received: by 2002:a05:620a:3704:b0:939:8c80:669 with SMTP id af79cd13be357-939ea1d357amr1749436285a.42.1789302759896;
-        Sun, 13 Sep 2026 05:32:39 -0700 (PDT)
+        bh=f7HmkIpzv0+5Vv76flnhc4C5zbL28Bg/LflKqWGDWGA=;
+        b=GjDIZkb2Fnh0BBDf19PIlD4k8bW7/lqm2VJtoa5Q3TDpKGjUj1QaoekwqfBujpKUXI
+         6WoDEPp+JRq4p4hNUr4XDbmCAJAVN7ro+px2+7ElxnznRYuHX7dX2foOxTsc4dm1YaMO
+         lq9GCq8Z5oXX2dlJAVjQwQp3pNd6RwZjS6w2kBN74vbOV5l4fLAEnpLmUn1KFXZIW+NF
+         W9aYCQiykM9C0PfeL0JkTh0s36kdGyBedUUrCKUG+1C4eNZdDTcrOgVGcuc1ABb1jTCX
+         xnjMANogPim4gFkYZoL3QfTwXd3AoLGlS5iLjtrzAv7+YU5/giJlg3E7fn2LFgFMKuaL
+         WSbQ==
+X-Forwarded-Encrypted: i=1; AKwUvByv58fRhbK2mD908+AuqqIjPJdW46Tu7KdDYahmcXDqFNMT7R1tT11ZbHReXObDA6W5xKI=@lists.linux.dev
+X-Gm-Message-State: AFuF++kmZ8zDQ4FbMWFEre3BfhZj54ZcQa6ZcPkUXD/O5fCVEZI5x+tI
+	1kkTF16A6GIotbzN1F1rpsbvfspMSvHSn/UZGSp+mIiDgF78JPnBirR02TLnHl/rBkDRMHI4Md3
+	vrrhHMugemwVwJoGKmU6B/IicjbXAmQW7big4hm35rqSaoCP085ZNtKk=
+X-Gm-Gg: AYBFou2vy2bQHUYBTe5rMMPGH0aNJFzwsaWvnIRa6oDtSXlh0ertDZPgdFHDeMoo6cY
+	EHSlg29Wqjf92p1Lcl7qgWHo7PIXTucTk/PCvCKpfDEzYkOK0DWNRz91zVT8ahV/ER+jrc/1M/G
+	K11LBgD4Mmo2Q6bh//n4iamyKLnSk1YNu4WauGw8zJ1X04KSwplacmvVzejFk/kmUGpHBpGCix5
+	N/Fz0tOvK2uzxyOA5bTPTxtSmOh1L4tnGVZd0JTLunkC6GgbzTqqYm6QWb+F2WNbM0LHCb+lbgr
+	pFhh3Pzpf4hQnUwFh+ZrvtzTFhHdhu/1GObGZkKE97809m4wMvW6OoJA/j1bHCef/H2yoE32MYL
+	xsDZ8pU/l2c0gYj4=
+X-Received: by 2002:a05:620a:2608:b0:939:72cb:bae9 with SMTP id af79cd13be357-93a1875c70dmr190633685a.32.1789302825750;
+        Sun, 13 Sep 2026 05:33:45 -0700 (PDT)
+X-Received: by 2002:a05:620a:2608:b0:939:72cb:bae9 with SMTP id af79cd13be357-93a1875c70dmr190598085a.32.1789302820486;
+        Sun, 13 Sep 2026 05:33:40 -0700 (PDT)
 Received: from quoll ([178.197.219.214])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb33ee8bsm19252297f8f.15.2026.09.13.05.32.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e69f02c92sm131403175e9.2.2026.09.13.05.33.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 05:32:39 -0700 (PDT)
+        Sun, 13 Sep 2026 05:33:39 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh@kernel.org>,
+To: Chen-Yu Tsai <wens@kernel.org>, David Airlie <airlied@gmail.com>,
+        Simona Vetter <simona@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        =?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>, Liu Ying <victor.liu@nxp.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Luca Ceresoli <luca.ceresoli@bootlin.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
-        Binbin Zhou <zhoubinbin@loongson.cn>,
+        Francesco Dolcini <francesco@dolcini.it>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Yannick Fertre <yannick.fertre@foss.st.com>,
+        Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+        Philippe Cornu <philippe.cornu@foss.st.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-        Baojun Xu <baojun.xu@ti.com>, Sen Wang <sen@ti.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Khanh Le <khanh.le.xr@renesas.com>,
-        Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>,
-        patches@opensource.cirrus.com,
-        David Rau <David.Rau.opensource@dm.renesas.com>,
-        Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Yingkun Meng <mengyingkun@loongson.cn>,
-        Trevor Wu <trevor.wu@mediatek.com>,
-        Julien Massot <jmassot@collabora.com>,
-        Jiaxin Yu <jiaxin.yu@mediatek.com>,
-        Shane Chien <shane.chien@mediatek.com>,
-        Daniel Beer <daniel.beer@igorinstitute.com>,
-        Sebastian Reichel <sre@kernel.org>, linux-sound@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
+        Adrien Grassein <adrien.grassein@gmail.com>,
+        Russell King <linux@armlinux.org.uk>, Simha BN <simhavcs@gmail.com>,
+        CK Hu <ck.hu@mediatek.com>, Jitao shi <jitao.shi@mediatek.com>,
+        Yongxing Mou <yongxing.mou@oss.qualcomm.com>,
+        Abel Vesa <abelvesa@kernel.org>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Martinez Canillas <javierm@redhat.com>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, imx@lists.linux.dev,
         linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
+        freedreno@lists.freedesktop.org,
+        linux-stm32@st-md-mailman.stormreply.com
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH] ASoC: dt-bindings: Use consistent indentation in the example
-Date: Sun, 13 Sep 2026 14:32:35 +0200
-Message-ID: <20260913123234.99988-2-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH 1/2] dt-bindings: display: Use consistent indentation in the example
+Date: Sun, 13 Sep 2026 14:33:32 +0200
+Message-ID: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -130,1100 +134,566 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=40804; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=2Gu3jj/bbPy6v9TykMXMcpf1SKJ1++HGbKCm7btm+8U=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqppfijdqHteb6ODapLAJwSGQ7ZJi+KC637npI3
- e2QGe+0pPGJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaqaX4gAKCRDBN2bmhouD
- 110eEACGD8m3jhkC2KzVVUUe8o8bcCI1gu6hurz7BysVWqrOLr+9N8A1SKkFJEgDmHtm7DPiODF
- 6XeSJvJ/o+a3QByut6cqAg+/fK5BbVrMpdt8xEuuv8+LLKNXffpXxFZtgKLeqSKPGr5ld2vuok9
- Voano4Gl7Z+ag0wKfK33pSKMGMqBpPeP6yLw1Yhw7NSagHAygBwE4BO0IHg6VFiptHNTk2qvJfF
- VEZ/ZZxYOEBRFosC41YIa9ARhYgASub/Twwm6OXX4CYK5ee684y/zKVSDs1VuF4aICgOqe6VIh1
- Ow7M8cpfUTMSmJ2C9n+OjHk0Q6Glqvn7nuYyeV7wATTXhFlOUe3p9ogDkxNJFyNLImWe119CJqb
- Hk0saYTpKE07Vz6k1AU+k5QT56ClED9Szt4GMTEWcGoaQS0t3yNiNI6EovnQmjqhzjpFlw1tVxg
- P2eTY+nYhOdfx+JEZsjS2C5myIzWy6auSMDHfio9JHzrxNujxpHGb8bc56YZG9DFq/Ha8eNep1g
- BVVZLM8/g1KqVpThs2UR4wDnyAxDnG9EdwhJCxfeXHU4zf77O2iB3fvBoc/shRXEJFHnmQOsHQl
- M/7UvOak0zBbmVxkWjkjUhCfI2Pz1i0dCQv4n//OjFthZ2cKxc2TBN9hJNZT4IXHj5OSup9j1so Omu8DuY2/sBWK7A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=22457; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=t/ic0tf39N6W1RFgeQXjtBLIbwB325uktvFQO+N0nJI=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqppgbdMNBpo0AnVIy4ur2YLrkt4SDEMjNBcmQQ
+ tLi/y/gxliJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaqaYGwAKCRDBN2bmhouD
+ 12C3D/9CPU7qgE0K/4X7lvjxa5vavXw/cLVgs1jasrbMM8VKmuC+xgEGCbNOfkfXTR2lOdzuqlz
+ vuuWpOzbCUbXSHYM1+ZEP4SFXzxOjtW4QCjuuH7lBnFBUrI1Lq12YpJDhoORYdachYihnCT2h1Q
+ 6kEnDTWiFbFNdISfNE8riq0iDN0YzBIR4ng6bRsZWhOKZPUKXjm4m+R9TlY/p/QJ4EAH5ZgspSi
+ Z1ZQZFyV/bMEiVauVUOIPCIt5qhr3UhwOXf4T90qUvTjU5ANGwyNgSra7SK4vKKUJMKmOoJkft9
+ gRQBp/KZhOaWd+XD4Tsw+/JpuvTSOges34QKAgFZJPkOxRqpVQ79JtJ5AcaA8nr/m4KLeS04ASJ
+ 6RRlNteHb7dLeWoVVJX+A4MwNZ7wbHf7CnJpNVAD3xod+k9I3ElYuLn/Rx3uYqBmE9TtWIiEAoU
+ TucsUHnpKgwHPBiHFkVw2Va75luCrvITE8a8l5QmRLMpuTLCfzIWD28ZBpUWBt14Ro48lxBNX7X
+ h5QXliaQGAacI4SGSzsCqL7SboSgK86r4dhJaoNtv2etdf2VLbzAE8bc21XAVdOCETsHKzaQBjg
+ 4nbgYRUsnxwMEO1BcpgQHGtcFnlKXIIN0yz8MVVt/eqLvR1LNgRPZwP/vSwtxmjdoXrz9HiZN2z E6iSMWa3Oi3k2HQ==
 X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEzMDE3OCBTYWx0ZWRfX0r4rZeG6ilQT
- jzYo3sP/8tLXOjuim4elj46m6Pw0YWmAuFZkE7SAyK4nka4mSK0MtU8qXzi3b3b1d9Y+kuVoGb4
- Fi8pHb530Lvz62Tk/z6OYeMNucmCUSs=
-X-Proofpoint-GUID: tyKIKMJMgWZke_MRBYfosu6ez2yp8mTc
-X-Authority-Analysis: v=2.4 cv=BdZNQbt2 c=1 sm=1 tr=0 ts=6aa697ea cx=c_pps
+X-Proofpoint-GUID: 86sitIrgo0PGFTGO551iA2lWTX8Tvmgc
+X-Authority-Analysis: v=2.4 cv=Pv4G/AM3 c=1 sm=1 tr=0 ts=6aa6982b cx=c_pps
  a=qKBjSQ1v91RyAK45QCPf5w==:117 a=+bKQE0WJfmhK2875HamI0Q==:17
  a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=EUspDBNiAAAA:8
- a=D3JuzSTt47YHJieUixAA:9 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: tyKIKMJMgWZke_MRBYfosu6ez2yp8mTc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEzMDE3OCBTYWx0ZWRfX2LUIUu3xAng1
- VuoUi3y7RPdqVw4yDAmGRxKWIG45QYWouQ65xqt9uHVj39V1jetAzXSPV7ujx7Sji1H9bJEfnDr
- z76Kjnh/jOqEoV3GnWixJMc+5fiv6Tr49oB/WSMS+/Skh+vWE1sUzWomMxN/gr0KyPGu6G4BZhI
- zNzxrIpNtNi5imIZs2DMsXcYSeLkcNYUdFEiDYZiLRCpZMlNJwBDn33vmClpyA3t7MCkL3DxCnR
- 2/Y28TKJSzWImag+cnYRvTYGc4uB9+xQfwu6ioYfCYCUBTjrUw89mJzKf8Yp/6J5LJvqyTPBAKi
- 4g61QPoJBaKbCqSqX834E/FXyupNf+gyYsGqu473uiudfqpG8q6d7cwfcgKpGlMl8n0+YfIgvxh
- OJg9E84Ct1R2ccGL/J53aqQiwk+TSOaOVmwoLfV2fJPdKmNLsM8glGf/VL9WZahG4mQqnc5dmdk
- ge3l1AxG1pyeU24Vb1w==
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
+ a=0YAVxFya4kk6LBs_cYMA:9 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEzMDE3OCBTYWx0ZWRfX7AAWn1zvY15v
+ H6uyNqmNt4HZ8/2dPfr8lr0nIX3Mq/wiJGglI/dVMAcRyyc90WLyzTv7drHzsvobXb6WkdpThFF
+ 6aJYyoGcgWvLa6kWsmGrvk+AlQ7TqAQ=
+X-Proofpoint-ORIG-GUID: 86sitIrgo0PGFTGO551iA2lWTX8Tvmgc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEzMDE3OCBTYWx0ZWRfX0WOqIfWa78oI
+ ueTvjqOfHRMilIxUG0WcqxDqaYVg/SxPFlk8R8YEqEIVLO0HWmuNM7zUtHjVvXiiMtzlI8QMS4B
+ xL8DsrC8jdQ1ruXHOkCkWZYIbTclSFzXTyypTSwdVLAdz6U7CVqrCOci8h28pS+IPfz9WjEcXhT
+ Tpy8cuv6KGQihZftuho+sM9MleYZq4SOimZy+tY/sRnY8FLoWrVha8iElaaGBF6LLQiTwx5bvge
+ HysrU4Jw5lhBAtQzBE8zWsc1jGFVvjL+V1Wky0D4lKOfXZiQov0bLCvsd6x909sb74yAU5lOlfT
+ BHdgTN9zGpj9EUWecNt88LyeRLSAZ+V1xxY2RUCNDVlKXDSaxgW9HKmZSscTFgbNb9dG2x3g1g3
+ CyvySCQ5SxAHfbYkvBkf9A2PNsxa44nN1RqXNBUkHddmh5qOBGG7yTRsRUziSWpXqU4uIyCe/Iw
+ K+Ti0FeBLl6pcG/7WLg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-13_04,2026-09-11_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 adultscore=0 malwarescore=0 clxscore=1015
- spamscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609130178
+ phishscore=0 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609130178
 
 Correct indentation in the examples to consistent 2- or 4-spaces
 indentation to fix dt-check-style warnings ("example 0
 [indent-consistent] indent mismatch ...").  Preferred is 4-spaces, but
 re-indenting entire example just for that is too much churn.
 
-While changing the lines, correct also node name to be generic in
-dialog,da7219.yaml.
-
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- .../bindings/sound/adi,adau1372.yaml          | 10 +--
- .../bindings/sound/adi,adau7118.yaml          | 22 ++---
- .../bindings/sound/amlogic,gx-sound-card.yaml | 20 ++---
- .../bindings/sound/asahi-kasei,ak4619.yaml    |  6 +-
- .../bindings/sound/cirrus,cs35l45.yaml        | 38 ++++-----
- .../bindings/sound/cirrus,cs4270.yaml         | 12 +--
- .../bindings/sound/cirrus,cs42l42.yaml        | 42 +++++-----
- .../bindings/sound/cirrus,cs42l84.yaml        | 18 ++--
- .../bindings/sound/cirrus,cs42xx8.yaml        | 56 ++++++-------
- .../bindings/sound/dialog,da7219.yaml         | 62 +++++++-------
- .../bindings/sound/fsl,imx-asrc.yaml          |  2 +-
- .../devicetree/bindings/sound/fsl,sai.yaml    | 14 ++--
- .../bindings/sound/imx-audio-card.yaml        |  4 +-
- .../bindings/sound/invensense,ics43432.yaml   |  8 +-
- .../sound/loongson,ls-audio-card.yaml         |  4 +-
- .../sound/mediatek,mt8173-afe-pcm.yaml        | 22 ++---
- .../bindings/sound/mediatek,mt8183-audio.yaml | 82 +++++++++----------
- .../sound/mt8186-mt6366-da7219-max98357.yaml  | 36 ++++----
- .../sound/mt8186-mt6366-rt1019-rt5682s.yaml   | 36 ++++----
- .../sound/mt8192-mt6359-rt1015-rt5682.yaml    | 46 +++++------
- .../bindings/sound/mt8195-mt6359.yaml         | 50 +++++------
- .../bindings/sound/qcom,q6apm-lpass-dais.yaml | 12 +--
- .../bindings/sound/renesas,rsnd.yaml          | 16 ++--
- .../bindings/sound/renesas,rz-ssi.yaml        | 32 ++++----
- .../bindings/sound/ti,tas5805m.yaml           | 10 +--
- .../bindings/sound/ti,tlv320dac3100.yaml      |  2 +-
- .../bindings/sound/ti,tpa6130a2.yaml          |  2 +-
- 27 files changed, 332 insertions(+), 332 deletions(-)
+ .../display/allwinner,sun6i-a31-mipi-dsi.yaml | 10 +--
+ .../display/bridge/fsl,imx8qxp-pxl2dpi.yaml   |  4 +-
+ .../display/bridge/lontium,lt8912b.yaml       |  8 +-
+ .../megachips,stdp2690-ge-b850v3-fw.yaml      |  2 +-
+ .../bindings/display/bridge/nxp,tda998x.yaml  |  2 +-
+ .../display/bridge/toshiba,tc358764.yaml      |  2 +-
+ .../display/bridge/toshiba,tc358775.yaml      | 12 +--
+ .../bindings/display/himax,hx8357.yaml        |  2 +-
+ .../bindings/display/imx/fsl,imx-lcdc.yaml    |  2 +-
+ .../bindings/display/imx/fsl,imx6q-ldb.yaml   | 54 +++++------
+ .../display/mediatek/mediatek,ethdr.yaml      | 90 +++++++++----------
+ .../display/mediatek/mediatek,hdmi.yaml       | 24 ++---
+ .../display/panel/samsung,ams495qa01.yaml     |  2 +-
+ .../bindings/display/sitronix,st7567.yaml     |  4 +-
+ .../bindings/display/st,stm32-dsi.yaml        | 46 +++++-----
+ .../bindings/display/st,stm32-ltdc.yaml       |  6 +-
+ .../bindings/display/st,stm32mp25-lvds.yaml   |  4 +-
+ 17 files changed, 137 insertions(+), 137 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/adi,adau1372.yaml b/Documentation/devicetree/bindings/sound/adi,adau1372.yaml
-index 9a7ff50a0a22..532550de62d7 100644
---- a/Documentation/devicetree/bindings/sound/adi,adau1372.yaml
-+++ b/Documentation/devicetree/bindings/sound/adi,adau1372.yaml
-@@ -52,11 +52,11 @@ examples:
-         #address-cells = <1>;
+diff --git a/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml b/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
+index c731fbdc2fe0..7b11cb5e5f6d 100644
+--- a/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
++++ b/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
+@@ -119,11 +119,11 @@ examples:
          #size-cells = <0>;
-         audio-codec@3c {
--                compatible = "adi,adau1372";
--                reg = <0x3c>;
--                #sound-dai-cells = <0>;
--                clock-names = "mclk";
--                clocks = <&adau1372z_xtal>;
-+            compatible = "adi,adau1372";
-+            reg = <0x3c>;
-+            #sound-dai-cells = <0>;
-+            clock-names = "mclk";
-+            clocks = <&adau1372z_xtal>;
-         };
-     };
  
-diff --git a/Documentation/devicetree/bindings/sound/adi,adau7118.yaml b/Documentation/devicetree/bindings/sound/adi,adau7118.yaml
-index 11f59c29b575..8272cdaf66a8 100644
---- a/Documentation/devicetree/bindings/sound/adi,adau7118.yaml
-+++ b/Documentation/devicetree/bindings/sound/adi,adau7118.yaml
-@@ -68,20 +68,20 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
-         adau7118_codec: audio-codec@14 {
--                compatible = "adi,adau7118";
--                reg = <0x14>;
--                #sound-dai-cells = <0>;
--                iovdd-supply = <&supply>;
--                dvdd-supply = <&supply>;
--                adi,pdm-clk-map = <1 1 0 0>;
--                adi,decimation-ratio = <16>;
-+            compatible = "adi,adau7118";
-+            reg = <0x14>;
-+            #sound-dai-cells = <0>;
-+            iovdd-supply = <&supply>;
-+            dvdd-supply = <&supply>;
-+            adi,pdm-clk-map = <1 1 0 0>;
-+            adi,decimation-ratio = <16>;
-         };
-     };
- 
-     /* example with hw standalone mode */
-     adau7118_codec_hw: adau7118-codec-hw {
--            compatible = "adi,adau7118";
--            #sound-dai-cells = <0>;
--            iovdd-supply = <&supply>;
--            dvdd-supply = <&supply>;
-+        compatible = "adi,adau7118";
-+        #sound-dai-cells = <0>;
-+        iovdd-supply = <&supply>;
-+        dvdd-supply = <&supply>;
-     };
-diff --git a/Documentation/devicetree/bindings/sound/amlogic,gx-sound-card.yaml b/Documentation/devicetree/bindings/sound/amlogic,gx-sound-card.yaml
-index 6fdf605ad59c..2be3b34e4f5f 100644
---- a/Documentation/devicetree/bindings/sound/amlogic,gx-sound-card.yaml
-+++ b/Documentation/devicetree/bindings/sound/amlogic,gx-sound-card.yaml
-@@ -94,20 +94,20 @@ examples:
-         audio-routing = "I2S ENCODER I2S IN", "I2S FIFO Playback";
- 
-         dai-link-0 {
--               sound-dai = <&i2s_fifo>;
-+            sound-dai = <&i2s_fifo>;
+         panel@0 {
+-                compatible = "bananapi,lhr050h41", "ilitek,ili9881c";
+-                reg = <0>;
+-                power-supply = <&reg_display>;
+-                reset-gpios = <&r_pio 0 5 1>; /* PL05 */
+-                backlight = <&pwm_bl>;
++            compatible = "bananapi,lhr050h41", "ilitek,ili9881c";
++            reg = <0>;
++            power-supply = <&reg_display>;
++            reset-gpios = <&r_pio 0 5 1>; /* PL05 */
++            backlight = <&pwm_bl>;
          };
  
-         dai-link-1 {
--                sound-dai = <&i2s_encoder>;
--                dai-format = "i2s";
--                mclk-fs = <256>;
-+            sound-dai = <&i2s_encoder>;
-+            dai-format = "i2s";
-+            mclk-fs = <256>;
+         port {
+diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml
+index e4e77fad05f1..af9ad07ef08b 100644
+--- a/Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml
+@@ -84,8 +84,8 @@ examples:
+                 };
  
--                codec-0 {
--                        sound-dai = <&codec0>;
--                };
-+            codec-0 {
-+                sound-dai = <&codec0>;
+                 mipi_lvds_0_pxl2dpi_dc_pixel_link1: endpoint@1 {
+-                     reg = <1>;
+-                     remote-endpoint = <&dc_pixel_link1_mipi_lvds_0_pxl2dpi>;
++                    reg = <1>;
++                    remote-endpoint = <&dc_pixel_link1_mipi_lvds_0_pxl2dpi>;
+                 };
+             };
+ 
+diff --git a/Documentation/devicetree/bindings/display/bridge/lontium,lt8912b.yaml b/Documentation/devicetree/bindings/display/bridge/lontium,lt8912b.yaml
+index 988351f3cd01..2d2dc9c046fb 100644
+--- a/Documentation/devicetree/bindings/display/bridge/lontium,lt8912b.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/lontium,lt8912b.yaml
+@@ -107,11 +107,11 @@ examples:
+           };
+ 
+           port@1 {
+-              reg = <1>;
++            reg = <1>;
+ 
+-              endpoint {
+-                  remote-endpoint = <&hdmi_in>;
+-              };
++            endpoint {
++              remote-endpoint = <&hdmi_in>;
 +            };
- 
--                codec-1 {
--                        sound-dai = <&codec1>;
--                };
-+            codec-1 {
-+                sound-dai = <&codec1>;
-+            };
+           };
          };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/asahi-kasei,ak4619.yaml b/Documentation/devicetree/bindings/sound/asahi-kasei,ak4619.yaml
-index d412531ef9a2..2e81947bb8dd 100644
---- a/Documentation/devicetree/bindings/sound/asahi-kasei,ak4619.yaml
-+++ b/Documentation/devicetree/bindings/sound/asahi-kasei,ak4619.yaml
-@@ -54,9 +54,9 @@ examples:
- 
-             #sound-dai-cells = <0>;
-             port {
--                 ak4619_endpoint: endpoint {
--                       remote-endpoint = <&rsnd_endpoint>;
--                  };
-+                ak4619_endpoint: endpoint {
-+                    remote-endpoint = <&rsnd_endpoint>;
+       };
+diff --git a/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml b/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
+index dfa6ff6f115e..74539132bf94 100644
+--- a/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
+@@ -104,7 +104,7 @@ examples:
+                     endpoint {
+                         remote-endpoint = <&stdp2690_in>;
+                     };
+-               };
 +                };
              };
          };
      };
-diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs35l45.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs35l45.yaml
-index 70f6c62aedca..ef976fd2caf8 100644
---- a/Documentation/devicetree/bindings/sound/cirrus,cs35l45.yaml
-+++ b/Documentation/devicetree/bindings/sound/cirrus,cs35l45.yaml
-@@ -136,24 +136,24 @@ examples:
-         #size-cells = <0>;
+diff --git a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+index 1205c8e9de32..0ad55ff8e330 100644
+--- a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+@@ -106,7 +106,7 @@ examples:
+             video-ports = <0x230145>;
  
-         cs35l45: cs35l45@2 {
--          #sound-dai-cells = <1>;
--          compatible = "cirrus,cs35l45";
--          reg = <2>;
--          spi-max-frequency = <5000000>;
--          vdd-a-supply = <&dummy_vreg>;
--          vdd-batt-supply = <&dummy_vreg>;
--          reset-gpios = <&gpio 110 0>;
--          cirrus,asp-sdout-hiz-ctrl = <(CS35L45_ASP_TX_HIZ_UNUSED |
--                                        CS35L45_ASP_TX_HIZ_DISABLED)>;
--          cirrus,gpio-ctrl1 {
--             gpio-ctrl = <0x2>;
--          };
--          cirrus,gpio-ctrl2 {
--             gpio-ctrl = <0x2>;
--          };
--          cirrus,gpio-ctrl3 {
--             gpio-ctrl = <0x1>;
--             gpio-dir = <0x1>;
--          };
-+            #sound-dai-cells = <1>;
-+            compatible = "cirrus,cs35l45";
-+            reg = <2>;
-+            spi-max-frequency = <5000000>;
-+            vdd-a-supply = <&dummy_vreg>;
-+            vdd-batt-supply = <&dummy_vreg>;
-+            reset-gpios = <&gpio 110 0>;
-+            cirrus,asp-sdout-hiz-ctrl = <(CS35L45_ASP_TX_HIZ_UNUSED |
-+                                          CS35L45_ASP_TX_HIZ_DISABLED)>;
-+            cirrus,gpio-ctrl1 {
-+                gpio-ctrl = <0x2>;
-+            };
-+            cirrus,gpio-ctrl2 {
-+                gpio-ctrl = <0x2>;
-+            };
-+            cirrus,gpio-ctrl3 {
-+                gpio-ctrl = <0x1>;
-+                gpio-dir = <0x1>;
-+            };
-         };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs4270.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs4270.yaml
-index 336e11773694..61106294a1d5 100644
---- a/Documentation/devicetree/bindings/sound/cirrus,cs4270.yaml
-+++ b/Documentation/devicetree/bindings/sound/cirrus,cs4270.yaml
-@@ -49,11 +49,11 @@ unevaluatedProperties: false
- examples:
-   - |
-     i2c {
--      #address-cells = <1>;
--      #size-cells = <0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
+             #sound-dai-cells = <1>;
+-                         /* DAI-format / AP_ENA reg value */
++            /* DAI-format / AP_ENA reg value */
+             audio-ports = <TDA998x_SPDIF 0x04>,
+                           <TDA998x_I2S 0x03>;
  
--      codec@48 {
--          compatible = "cirrus,cs4270";
--          reg = <0x48>;
--      };
-+        codec@48 {
-+            compatible = "cirrus,cs4270";
-+            reg = <0x48>;
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml
-index af599d8735e2..ab4c7d22dc0e 100644
---- a/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml
-+++ b/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml
-@@ -199,28 +199,28 @@ examples:
-   - |
-     #include <dt-bindings/sound/cs42l42.h>
-     i2c {
--      #address-cells = <1>;
--      #size-cells = <0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
- 
--      cs42l42: cs42l42@48 {
--          compatible = "cirrus,cs42l42";
--          reg = <0x48>;
--          VA-supply = <&dummy_vreg>;
--          VP-supply = <&dummy_vreg>;
--          VCP-supply = <&dummy_vreg>;
--          VD_FILT-supply = <&dummy_vreg>;
--          VL-supply = <&dummy_vreg>;
-+        audio-codec@48 {
-+            compatible = "cirrus,cs42l42";
-+            reg = <0x48>;
-+            VA-supply = <&dummy_vreg>;
-+            VP-supply = <&dummy_vreg>;
-+            VCP-supply = <&dummy_vreg>;
-+            VD_FILT-supply = <&dummy_vreg>;
-+            VL-supply = <&dummy_vreg>;
- 
--          reset-gpios = <&axi_gpio_0 1 0>;
--          interrupt-parent = <&gpio0>;
--          interrupts = <55 8>;
-+            reset-gpios = <&axi_gpio_0 1 0>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <55 8>;
- 
--          cirrus,ts-inv = <CS42L42_TS_INV_DIS>;
--          cirrus,ts-dbnc-rise = <CS42L42_TS_DBNCE_1000>;
--          cirrus,ts-dbnc-fall = <CS42L42_TS_DBNCE_0>;
--          cirrus,btn-det-init-dbnce = <100>;
--          cirrus,btn-det-event-dbnce = <10>;
--          cirrus,bias-lvls = <0x0F 0x08 0x04 0x01>;
--          cirrus,hs-bias-ramp-rate = <CS42L42_HSBIAS_RAMP_SLOW>;
--      };
-+            cirrus,ts-inv = <CS42L42_TS_INV_DIS>;
-+            cirrus,ts-dbnc-rise = <CS42L42_TS_DBNCE_1000>;
-+            cirrus,ts-dbnc-fall = <CS42L42_TS_DBNCE_0>;
-+            cirrus,btn-det-init-dbnce = <100>;
-+            cirrus,btn-det-event-dbnce = <10>;
-+            cirrus,bias-lvls = <0x0F 0x08 0x04 0x01>;
-+            cirrus,hs-bias-ramp-rate = <CS42L42_HSBIAS_RAMP_SLOW>;
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs42l84.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs42l84.yaml
-index 7f8338e8ae36..94062c1d9d45 100644
---- a/Documentation/devicetree/bindings/sound/cirrus,cs42l84.yaml
-+++ b/Documentation/devicetree/bindings/sound/cirrus,cs42l84.yaml
-@@ -43,14 +43,14 @@ examples:
-     #include <dt-bindings/gpio/gpio.h>
-     #include <dt-bindings/interrupt-controller/irq.h>
-     i2c {
--      #address-cells = <1>;
--      #size-cells = <0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
- 
--      jack_codec: codec@4b {
--          compatible = "cirrus,cs42l84";
--          reg = <0x4b>;
--          reset-gpios = <&pinctrl_nub 4 GPIO_ACTIVE_LOW>;
--          interrupts-extended = <&pinctrl_ap 180 IRQ_TYPE_LEVEL_LOW>;
--          #sound-dai-cells = <0>;
--      };
-+        jack_codec: codec@4b {
-+            compatible = "cirrus,cs42l84";
-+            reg = <0x4b>;
-+            reset-gpios = <&pinctrl_nub 4 GPIO_ACTIVE_LOW>;
-+            interrupts-extended = <&pinctrl_ap 180 IRQ_TYPE_LEVEL_LOW>;
-+            #sound-dai-cells = <0>;
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs42xx8.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs42xx8.yaml
-index a1ae548c4b7b..b5cdc7e537f8 100644
---- a/Documentation/devicetree/bindings/sound/cirrus,cs42xx8.yaml
-+++ b/Documentation/devicetree/bindings/sound/cirrus,cs42xx8.yaml
-@@ -75,37 +75,37 @@ unevaluatedProperties: false
- examples:
-   - |
-     i2c {
--      #address-cells = <1>;
--      #size-cells = <0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
- 
--      codec@48 {
--          compatible = "cirrus,cs42888";
--          reg = <0x48>;
--          clocks = <&codec_mclk 0>;
--          clock-names = "mclk";
--          VA-supply = <&reg_audio>;
--          VD-supply = <&reg_audio>;
--          VLS-supply = <&reg_audio>;
--          VLC-supply = <&reg_audio>;
--          reset-gpios = <&gpio 1>;
--      };
-+        codec@48 {
-+            compatible = "cirrus,cs42888";
-+            reg = <0x48>;
-+            clocks = <&codec_mclk 0>;
-+            clock-names = "mclk";
-+            VA-supply = <&reg_audio>;
-+            VD-supply = <&reg_audio>;
-+            VLS-supply = <&reg_audio>;
-+            VLC-supply = <&reg_audio>;
-+            reset-gpios = <&gpio 1>;
-+        };
-     };
- 
-     spi {
--      #address-cells = <1>;
--      #size-cells = <0>;
--      cs-gpios = <&gpio 8 0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        cs-gpios = <&gpio 8 0>;
- 
--      codec@0 {
--          compatible = "cirrus,cs42888";
--          reg = <0>;
--          spi-max-frequency = <6000000>;
--          clocks = <&codec_mclk 0>;
--          clock-names = "mclk";
--          VA-supply = <&reg_audio>;
--          VD-supply = <&reg_audio>;
--          VLS-supply = <&reg_audio>;
--          VLC-supply = <&reg_audio>;
--          reset-gpios = <&gpio 1>;
--      };
-+        codec@0 {
-+            compatible = "cirrus,cs42888";
-+            reg = <0>;
-+            spi-max-frequency = <6000000>;
-+            clocks = <&codec_mclk 0>;
-+            clock-names = "mclk";
-+            VA-supply = <&reg_audio>;
-+            VD-supply = <&reg_audio>;
-+            VLS-supply = <&reg_audio>;
-+            VLC-supply = <&reg_audio>;
-+            reset-gpios = <&gpio 1>;
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/dialog,da7219.yaml b/Documentation/devicetree/bindings/sound/dialog,da7219.yaml
-index 19137abdba3e..852f27e9dffe 100644
---- a/Documentation/devicetree/bindings/sound/dialog,da7219.yaml
-+++ b/Documentation/devicetree/bindings/sound/dialog,da7219.yaml
-@@ -195,44 +195,44 @@ examples:
-   - |
-     #include <dt-bindings/interrupt-controller/irq.h>
-     i2c {
--      #address-cells = <1>;
--      #size-cells = <0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
- 
--      codec: da7219@1a {
--          compatible = "dlg,da7219";
--          reg = <0x1a>;
-+        codec: audio-codec@1a {
-+            compatible = "dlg,da7219";
-+            reg = <0x1a>;
- 
--          interrupt-parent = <&gpio6>;
--          interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+            interrupt-parent = <&gpio6>;
-+            interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
- 
--          VDD-supply = <&vdd_reg>;
--          VDDMIC-supply = <&vddmic_reg>;
--          VDDIO-supply = <&vddio_reg>;
-+            VDD-supply = <&vdd_reg>;
-+            VDDMIC-supply = <&vddmic_reg>;
-+            VDDIO-supply = <&vddio_reg>;
- 
--          #clock-cells = <1>;
--          clock-output-names = "da7219-dai-wclk", "da7219-dai-bclk";
-+            #clock-cells = <1>;
-+            clock-output-names = "da7219-dai-wclk", "da7219-dai-bclk";
- 
--          clocks = <&clks 201>;
--          clock-names = "mclk";
-+            clocks = <&clks 201>;
-+            clock-names = "mclk";
- 
--          dlg,micbias-lvl = <2600>;
--          dlg,mic-amp-in-sel = "diff";
-+            dlg,micbias-lvl = <2600>;
-+            dlg,mic-amp-in-sel = "diff";
- 
--          da7219_aad {
--              dlg,btn-cfg = <50>;
--              dlg,mic-det-thr = <500>;
--              dlg,jack-ins-deb = <20>;
--              dlg,jack-ins-det-pty = "low";
--              dlg,jack-det-rate = "32_64";
--              dlg,jack-rem-deb = <1>;
-+            da7219_aad {
-+                dlg,btn-cfg = <50>;
-+                dlg,mic-det-thr = <500>;
-+                dlg,jack-ins-deb = <20>;
-+                dlg,jack-ins-det-pty = "low";
-+                dlg,jack-det-rate = "32_64";
-+                dlg,jack-rem-deb = <1>;
- 
--              dlg,a-d-btn-thr = <0xa>;
--              dlg,d-b-btn-thr = <0x16>;
--              dlg,b-c-btn-thr = <0x21>;
--              dlg,c-mic-btn-thr = <0x3E>;
-+                dlg,a-d-btn-thr = <0xa>;
-+                dlg,d-b-btn-thr = <0x16>;
-+                dlg,b-c-btn-thr = <0x21>;
-+                dlg,c-mic-btn-thr = <0x3E>;
- 
--              dlg,btn-avg = <4>;
--              dlg,adc-1bit-rpt = <1>;
--          };
--      };
-+                dlg,btn-avg = <4>;
-+                dlg,adc-1bit-rpt = <1>;
-+            };
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-index 608defc93c1e..cd69bad107c7 100644
---- a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-+++ b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-@@ -186,5 +186,5 @@ examples:
-             asrc_endpoint: endpoint {
-                 remote-endpoint = <&fe00_ep>;
+diff --git a/Documentation/devicetree/bindings/display/bridge/toshiba,tc358764.yaml b/Documentation/devicetree/bindings/display/bridge/toshiba,tc358764.yaml
+index 866607400514..23c5b254426b 100644
+--- a/Documentation/devicetree/bindings/display/bridge/toshiba,tc358764.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/toshiba,tc358764.yaml
+@@ -81,7 +81,7 @@ examples:
+                 port@1 {
+                     reg = <1>;
+                     lvds_ep: endpoint {
+-                      remote-endpoint = <&panel_ep>;
++                        remote-endpoint = <&panel_ep>;
+                     };
+                 };
              };
+diff --git a/Documentation/devicetree/bindings/display/bridge/toshiba,tc358775.yaml b/Documentation/devicetree/bindings/display/bridge/toshiba,tc358775.yaml
+index 258dd9cfd770..8a0d8a66a9b0 100644
+--- a/Documentation/devicetree/bindings/display/bridge/toshiba,tc358775.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/toshiba,tc358775.yaml
+@@ -161,9 +161,9 @@ examples:
+                 dsi0_out: endpoint {
+                     remote-endpoint = <&d2l_in_test>;
+                 };
+-             };
+-         };
+-     };
++            };
++        };
++    };
+ 
+   - |
+     /* For dual-link LVDS display panel */
+@@ -227,7 +227,7 @@ examples:
+                 dsi0_out_dual: endpoint {
+                     remote-endpoint = <&d2l_in_dual>;
+                 };
+-             };
+-         };
+-     };
++            };
++        };
++    };
+ ...
+diff --git a/Documentation/devicetree/bindings/display/himax,hx8357.yaml b/Documentation/devicetree/bindings/display/himax,hx8357.yaml
+index 34c3b89bf003..bafcd4418d5a 100644
+--- a/Documentation/devicetree/bindings/display/himax,hx8357.yaml
++++ b/Documentation/devicetree/bindings/display/himax,hx8357.yaml
+@@ -74,5 +74,5 @@ examples:
+             dc-gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+             rotation = <90>;
+             backlight = <&backlight>;
 -       };
 +        };
      };
-diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-index ba65b3f3d066..eb0b9d8d907f 100644
---- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-+++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-@@ -260,13 +260,13 @@ examples:
-                 playback-only;
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml
+index c2b29622bceb..84610b5690c4 100644
+--- a/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml
+@@ -110,7 +110,7 @@ examples:
  
-                 sai1_endpoint0: endpoint {
--                   dai-tdm-slot-num = <8>;
--                   dai-tdm-slot-width = <32>;
--                   dai-tdm-slot-width-map = <32 8 32>;
--                   dai-format = "dsp_a";
--                   bitclock-master;
--                   frame-master;
--                   remote-endpoint = <&mcodec01_ep>;
-+                    dai-tdm-slot-num = <8>;
-+                    dai-tdm-slot-width = <32>;
-+                    dai-tdm-slot-width-map = <32 8 32>;
-+                    dai-format = "dsp_a";
-+                    bitclock-master;
-+                    frame-master;
-+                    remote-endpoint = <&mcodec01_ep>;
+         port {
+             parallel_out: endpoint {
+-              remote-endpoint = <&panel_in>;
++                remote-endpoint = <&panel_in>;
+             };
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml
+index 1646f41d8f72..cee1b504adf9 100644
+--- a/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml
+@@ -150,44 +150,44 @@ examples:
+ 
+         /* Using an of-graph endpoint link to connect the panel */
+         lvds-channel@0 {
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            port@0 {
+                 reg = <0>;
+-                #address-cells = <1>;
+-                #size-cells = <0>;
+ 
+-                port@0 {
+-                    reg = <0>;
+-
+-                    endpoint {
+-                        remote-endpoint = <&ipu_di0_lvds0>;
+-                    };
++                endpoint {
++                    remote-endpoint = <&ipu_di0_lvds0>;
+                 };
++            };
+ 
+-                port@2 {
+-                    reg = <2>;
++            port@2 {
++                reg = <2>;
+ 
+-                    endpoint {
+-                        remote-endpoint = <&panel_in>;
+-                    };
+-               };
++                endpoint {
++                    remote-endpoint = <&panel_in>;
++                };
++            };
+         };
+ 
+         /* Using display-timings and fsl,data-mapping/width instead */
+         lvds-channel@1 {
++            reg = <1>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            fsl,data-mapping = "spwg";
++            fsl,data-width = <24>;
++
++            display-timings {/* ... */
++            };
++
++            port@1 {
+                 reg = <1>;
+-                #address-cells = <1>;
+-                #size-cells = <0>;
+-                fsl,data-mapping = "spwg";
+-                fsl,data-width = <24>;
+ 
+-                display-timings {/* ... */
+-                };
+-
+-                port@1 {
+-                     reg = <1>;
+-
+-                     endpoint {
+-                         remote-endpoint = <&ipu_di1_lvds1>;
+-                     };
++                endpoint {
++                    remote-endpoint = <&ipu_di1_lvds1>;
+                 };
++            };
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/display/mediatek/mediatek,ethdr.yaml b/Documentation/devicetree/bindings/display/mediatek/mediatek,ethdr.yaml
+index 98db47894eeb..6c0edbae96d7 100644
+--- a/Documentation/devicetree/bindings/display/mediatek/mediatek,ethdr.yaml
++++ b/Documentation/devicetree/bindings/display/mediatek/mediatek,ethdr.yaml
+@@ -158,51 +158,51 @@ examples:
+         #size-cells = <2>;
+ 
+         hdr-engine@1c114000 {
+-                compatible = "mediatek,mt8195-disp-ethdr";
+-                reg = <0 0x1c114000 0 0x1000>,
+-                      <0 0x1c115000 0 0x1000>,
+-                      <0 0x1c117000 0 0x1000>,
+-                      <0 0x1c119000 0 0x1000>,
+-                      <0 0x1c11a000 0 0x1000>,
+-                      <0 0x1c11b000 0 0x1000>,
+-                      <0 0x1c11c000 0 0x1000>;
+-                reg-names = "mixer", "vdo_fe0", "vdo_fe1", "gfx_fe0", "gfx_fe1",
+-                            "vdo_be", "adl_ds";
+-                mediatek,gce-client-reg = <&gce0 SUBSYS_1c11XXXX 0x4000 0x1000>,
+-                                          <&gce0 SUBSYS_1c11XXXX 0x5000 0x1000>,
+-                                          <&gce0 SUBSYS_1c11XXXX 0x7000 0x1000>,
+-                                          <&gce0 SUBSYS_1c11XXXX 0x9000 0x1000>,
+-                                          <&gce0 SUBSYS_1c11XXXX 0xa000 0x1000>,
+-                                          <&gce0 SUBSYS_1c11XXXX 0xb000 0x1000>,
+-                                          <&gce0 SUBSYS_1c11XXXX 0xc000 0x1000>;
+-                clocks = <&vdosys1 CLK_VDO1_DISP_MIXER>,
+-                         <&vdosys1 CLK_VDO1_HDR_VDO_FE0>,
+-                         <&vdosys1 CLK_VDO1_HDR_VDO_FE1>,
+-                         <&vdosys1 CLK_VDO1_HDR_GFX_FE0>,
+-                         <&vdosys1 CLK_VDO1_HDR_GFX_FE1>,
+-                         <&vdosys1 CLK_VDO1_HDR_VDO_BE>,
+-                         <&vdosys1 CLK_VDO1_26M_SLOW>,
+-                         <&vdosys1 CLK_VDO1_HDR_VDO_FE0_DL_ASYNC>,
+-                         <&vdosys1 CLK_VDO1_HDR_VDO_FE1_DL_ASYNC>,
+-                         <&vdosys1 CLK_VDO1_HDR_GFX_FE0_DL_ASYNC>,
+-                         <&vdosys1 CLK_VDO1_HDR_GFX_FE1_DL_ASYNC>,
+-                         <&vdosys1 CLK_VDO1_HDR_VDO_BE_DL_ASYNC>,
+-                         <&topckgen CLK_TOP_ETHDR>;
+-                clock-names = "mixer", "vdo_fe0", "vdo_fe1", "gfx_fe0", "gfx_fe1",
+-                              "vdo_be", "adl_ds", "vdo_fe0_async", "vdo_fe1_async",
+-                              "gfx_fe0_async", "gfx_fe1_async","vdo_be_async",
+-                              "ethdr_top";
+-                power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+-                iommus = <&iommu_vpp M4U_PORT_L3_HDR_DS>,
+-                         <&iommu_vpp M4U_PORT_L3_HDR_ADL>;
+-                interrupts = <GIC_SPI 517 IRQ_TYPE_LEVEL_HIGH 0>; /* disp mixer */
+-                resets = <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_VDO_FE0_DL_ASYNC>,
+-                         <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_VDO_FE1_DL_ASYNC>,
+-                         <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_GFX_FE0_DL_ASYNC>,
+-                         <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_GFX_FE1_DL_ASYNC>,
+-                         <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_VDO_BE_DL_ASYNC>;
+-                reset-names = "vdo_fe0_async", "vdo_fe1_async", "gfx_fe0_async",
+-                              "gfx_fe1_async", "vdo_be_async";
++            compatible = "mediatek,mt8195-disp-ethdr";
++            reg = <0 0x1c114000 0 0x1000>,
++                  <0 0x1c115000 0 0x1000>,
++                  <0 0x1c117000 0 0x1000>,
++                  <0 0x1c119000 0 0x1000>,
++                  <0 0x1c11a000 0 0x1000>,
++                  <0 0x1c11b000 0 0x1000>,
++                  <0 0x1c11c000 0 0x1000>;
++            reg-names = "mixer", "vdo_fe0", "vdo_fe1", "gfx_fe0", "gfx_fe1",
++                        "vdo_be", "adl_ds";
++            mediatek,gce-client-reg = <&gce0 SUBSYS_1c11XXXX 0x4000 0x1000>,
++                                      <&gce0 SUBSYS_1c11XXXX 0x5000 0x1000>,
++                                      <&gce0 SUBSYS_1c11XXXX 0x7000 0x1000>,
++                                      <&gce0 SUBSYS_1c11XXXX 0x9000 0x1000>,
++                                      <&gce0 SUBSYS_1c11XXXX 0xa000 0x1000>,
++                                      <&gce0 SUBSYS_1c11XXXX 0xb000 0x1000>,
++                                      <&gce0 SUBSYS_1c11XXXX 0xc000 0x1000>;
++            clocks = <&vdosys1 CLK_VDO1_DISP_MIXER>,
++                     <&vdosys1 CLK_VDO1_HDR_VDO_FE0>,
++                     <&vdosys1 CLK_VDO1_HDR_VDO_FE1>,
++                     <&vdosys1 CLK_VDO1_HDR_GFX_FE0>,
++                     <&vdosys1 CLK_VDO1_HDR_GFX_FE1>,
++                     <&vdosys1 CLK_VDO1_HDR_VDO_BE>,
++                     <&vdosys1 CLK_VDO1_26M_SLOW>,
++                     <&vdosys1 CLK_VDO1_HDR_VDO_FE0_DL_ASYNC>,
++                     <&vdosys1 CLK_VDO1_HDR_VDO_FE1_DL_ASYNC>,
++                     <&vdosys1 CLK_VDO1_HDR_GFX_FE0_DL_ASYNC>,
++                     <&vdosys1 CLK_VDO1_HDR_GFX_FE1_DL_ASYNC>,
++                     <&vdosys1 CLK_VDO1_HDR_VDO_BE_DL_ASYNC>,
++                     <&topckgen CLK_TOP_ETHDR>;
++            clock-names = "mixer", "vdo_fe0", "vdo_fe1", "gfx_fe0", "gfx_fe1",
++                          "vdo_be", "adl_ds", "vdo_fe0_async", "vdo_fe1_async",
++                          "gfx_fe0_async", "gfx_fe1_async","vdo_be_async",
++                          "ethdr_top";
++            power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
++            iommus = <&iommu_vpp M4U_PORT_L3_HDR_DS>,
++                     <&iommu_vpp M4U_PORT_L3_HDR_ADL>;
++            interrupts = <GIC_SPI 517 IRQ_TYPE_LEVEL_HIGH 0>; /* disp mixer */
++            resets = <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_VDO_FE0_DL_ASYNC>,
++                     <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_VDO_FE1_DL_ASYNC>,
++                     <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_GFX_FE0_DL_ASYNC>,
++                     <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_GFX_FE1_DL_ASYNC>,
++                     <&vdosys1 MT8195_VDOSYS1_SW1_RST_B_HDR_VDO_BE_DL_ASYNC>;
++            reset-names = "vdo_fe0_async", "vdo_fe1_async", "gfx_fe0_async",
++                          "gfx_fe1_async", "vdo_be_async";
+         };
+     };
+ ...
+diff --git a/Documentation/devicetree/bindings/display/mediatek/mediatek,hdmi.yaml b/Documentation/devicetree/bindings/display/mediatek/mediatek,hdmi.yaml
+index b90b6d18a828..9af876329e6a 100644
+--- a/Documentation/devicetree/bindings/display/mediatek/mediatek,hdmi.yaml
++++ b/Documentation/devicetree/bindings/display/mediatek/mediatek,hdmi.yaml
+@@ -112,24 +112,24 @@ examples:
+         mediatek,syscon-hdmi = <&mmsys 0x900>;
+ 
+         ports {
+-          #address-cells = <1>;
+-          #size-cells = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
+ 
+-          port@0 {
+-            reg = <0>;
++            port@0 {
++                reg = <0>;
+ 
+-            hdmi0_in: endpoint {
+-              remote-endpoint = <&dpi0_out>;
++                hdmi0_in: endpoint {
++                    remote-endpoint = <&dpi0_out>;
++                };
+             };
+-          };
+ 
+-          port@1 {
+-            reg = <1>;
++            port@1 {
++                reg = <1>;
+ 
+-            hdmi0_out: endpoint {
+-              remote-endpoint = <&hdmi_con_in>;
++                hdmi0_out: endpoint {
++                    remote-endpoint = <&hdmi_con_in>;
++                };
+             };
+-          };
+         };
+     };
+ 
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,ams495qa01.yaml b/Documentation/devicetree/bindings/display/panel/samsung,ams495qa01.yaml
+index e081c84a932b..6db87f7d70d8 100644
+--- a/Documentation/devicetree/bindings/display/panel/samsung,ams495qa01.yaml
++++ b/Documentation/devicetree/bindings/display/panel/samsung,ams495qa01.yaml
+@@ -51,7 +51,7 @@ examples:
+ 
+             port {
+                 mipi_in_panel: endpoint {
+-                  remote-endpoint = <&mipi_out_panel>;
++                    remote-endpoint = <&mipi_out_panel>;
+                 };
+             };
+         };
+diff --git a/Documentation/devicetree/bindings/display/sitronix,st7567.yaml b/Documentation/devicetree/bindings/display/sitronix,st7567.yaml
+index 2eb6d00b5a25..c007718541f6 100644
+--- a/Documentation/devicetree/bindings/display/sitronix,st7567.yaml
++++ b/Documentation/devicetree/bindings/display/sitronix,st7567.yaml
+@@ -64,5 +64,5 @@ examples:
+                 vfront-porch = <0>;
+                 vsync-len = <0>;
+             };
+-          };
+-     };
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/display/st,stm32-dsi.yaml b/Documentation/devicetree/bindings/display/st,stm32-dsi.yaml
+index 53560052aaf0..1b5f4317dab2 100644
+--- a/Documentation/devicetree/bindings/display/st,stm32-dsi.yaml
++++ b/Documentation/devicetree/bindings/display/st,stm32-dsi.yaml
+@@ -101,35 +101,35 @@ examples:
+         #size-cells = <0>;
+ 
+         ports {
+-              #address-cells = <1>;
+-              #size-cells = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
+ 
+-              port@0 {
+-                    reg = <0>;
+-                    dsi_in: endpoint {
+-                        remote-endpoint = <&ltdc_ep1_out>;
+-                    };
+-              };
++            port@0 {
++                reg = <0>;
++                dsi_in: endpoint {
++                    remote-endpoint = <&ltdc_ep1_out>;
++                };
++            };
+ 
+-              port@1 {
+-                    reg = <1>;
+-                    dsi_out: endpoint {
+-                        remote-endpoint = <&panel_in>;
+-                    };
+-              };
++            port@1 {
++                reg = <1>;
++                dsi_out: endpoint {
++                    remote-endpoint = <&panel_in>;
++                };
++            };
+         };
+ 
+         panel@0 {
+-              compatible = "orisetech,otm8009a";
+-              reg = <0>;
+-              reset-gpios = <&gpioe 4 GPIO_ACTIVE_LOW>;
+-              power-supply = <&v3v3>;
++            compatible = "orisetech,otm8009a";
++            reg = <0>;
++            reset-gpios = <&gpioe 4 GPIO_ACTIVE_LOW>;
++            power-supply = <&v3v3>;
+ 
+-              port {
+-                    panel_in: endpoint {
+-                        remote-endpoint = <&dsi_out>;
+-                    };
+-              };
++            port {
++                panel_in: endpoint {
++                    remote-endpoint = <&dsi_out>;
++                };
++            };
+         };
+     };
+ 
+diff --git a/Documentation/devicetree/bindings/display/st,stm32-ltdc.yaml b/Documentation/devicetree/bindings/display/st,stm32-ltdc.yaml
+index 77058a5ccf68..81c7772de25b 100644
+--- a/Documentation/devicetree/bindings/display/st,stm32-ltdc.yaml
++++ b/Documentation/devicetree/bindings/display/st,stm32-ltdc.yaml
+@@ -119,9 +119,9 @@ examples:
+         resets = <&rcc LTDC_R>;
+ 
+         port {
+-             ltdc_out_dsi: endpoint {
+-                     remote-endpoint = <&dsi_in>;
+-             };
++            ltdc_out_dsi: endpoint {
++                remote-endpoint = <&dsi_in>;
++            };
+         };
+     };
+ 
+diff --git a/Documentation/devicetree/bindings/display/st,stm32mp25-lvds.yaml b/Documentation/devicetree/bindings/display/st,stm32mp25-lvds.yaml
+index 14e042156179..f8e43c5a656a 100644
+--- a/Documentation/devicetree/bindings/display/st,stm32mp25-lvds.yaml
++++ b/Documentation/devicetree/bindings/display/st,stm32mp25-lvds.yaml
+@@ -114,14 +114,14 @@ examples:
+             port@0 {
+                 reg = <0>;
+                 lvds_in: endpoint {
+-                   remote-endpoint = <&ltdc_ep1_out>;
++                    remote-endpoint = <&ltdc_ep1_out>;
                  };
              };
  
-diff --git a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-index 950e3eab2942..27636466ba63 100644
---- a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-+++ b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-@@ -105,10 +105,10 @@ examples:
-             format = "i2s";
-             fsl,mclk-equal-bclk;
-             cpu {
--                 sound-dai = <&sai1>;
-+                sound-dai = <&sai1>;
-             };
-             codec {
--                 sound-dai = <&ak4458_1>, <&ak4458_2>;
-+                sound-dai = <&ak4458_1>, <&ak4458_2>;
+             port@1 {
+                 reg = <1>;
+                 lvds_out0: endpoint {
+-                   remote-endpoint = <&lvds_panel_in>;
++                    remote-endpoint = <&lvds_panel_in>;
+                 };
              };
          };
-         fe-dai-link {
-diff --git a/Documentation/devicetree/bindings/sound/invensense,ics43432.yaml b/Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
-index 7bd984817aa9..054f80390b8d 100644
---- a/Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
-+++ b/Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
-@@ -42,10 +42,10 @@ examples:
-         compatible = "invensense,ics43432";
- 
-         port {
--          endpoint {
--            remote-endpoint = <&i2s1_endpoint>;
--            dai-format = "i2s";
--          };
-+            endpoint {
-+                remote-endpoint = <&i2s1_endpoint>;
-+                dai-format = "i2s";
-+            };
-         };
- 
-     };
-diff --git a/Documentation/devicetree/bindings/sound/loongson,ls-audio-card.yaml b/Documentation/devicetree/bindings/sound/loongson,ls-audio-card.yaml
-index dc7f4afbb777..69ea611d4250 100644
---- a/Documentation/devicetree/bindings/sound/loongson,ls-audio-card.yaml
-+++ b/Documentation/devicetree/bindings/sound/loongson,ls-audio-card.yaml
-@@ -79,7 +79,7 @@ examples:
-             sound-dai = <&i2s>;
-         };
-         codec {
--             sound-dai = <&es8323>;
-+            sound-dai = <&es8323>;
-         };
-     };
- 
-@@ -104,6 +104,6 @@ examples:
-         };
- 
-         codec {
--             sound-dai = <&es8388>;
-+            sound-dai = <&es8388>;
-         };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/mediatek,mt8173-afe-pcm.yaml b/Documentation/devicetree/bindings/sound/mediatek,mt8173-afe-pcm.yaml
-index d8993b5d457a..4c66160e9e1b 100644
---- a/Documentation/devicetree/bindings/sound/mediatek,mt8173-afe-pcm.yaml
-+++ b/Documentation/devicetree/bindings/sound/mediatek,mt8173-afe-pcm.yaml
-@@ -84,15 +84,15 @@ examples:
-                  <&topckgen CLK_TOP_I2S2_M_SEL>,
-                  <&topckgen CLK_TOP_I2S3_M_SEL>,
-                  <&topckgen CLK_TOP_I2S3_B_SEL>;
--         clock-names = "infra_sys_audio_clk",
--                       "top_pdn_audio",
--                       "top_pdn_aud_intbus",
--                       "bck0",
--                       "bck1",
--                       "i2s0_m",
--                       "i2s1_m",
--                       "i2s2_m",
--                       "i2s3_m",
--                       "i2s3_b";
--          memory-region = <&afe_dma_mem>;
-+        clock-names = "infra_sys_audio_clk",
-+                      "top_pdn_audio",
-+                      "top_pdn_aud_intbus",
-+                      "bck0",
-+                      "bck1",
-+                      "i2s0_m",
-+                      "i2s1_m",
-+                      "i2s2_m",
-+                      "i2s3_m",
-+                      "i2s3_b";
-+        memory-region = <&afe_dma_mem>;
-     };
-diff --git a/Documentation/devicetree/bindings/sound/mediatek,mt8183-audio.yaml b/Documentation/devicetree/bindings/sound/mediatek,mt8183-audio.yaml
-index 031b0fa7b4dc..261247ca2c87 100644
---- a/Documentation/devicetree/bindings/sound/mediatek,mt8183-audio.yaml
-+++ b/Documentation/devicetree/bindings/sound/mediatek,mt8183-audio.yaml
-@@ -182,47 +182,47 @@ examples:
-                  <&topckgen CLK_TOP_APLL12_DIV4>,
-                  <&topckgen CLK_TOP_APLL12_DIVB>,
-                  <&clk26m>;
--      clock-names = "aud_afe_clk",
--                    "aud_dac_clk",
--                    "aud_dac_predis_clk",
--                    "aud_adc_clk",
--                    "aud_adc_adda6_clk",
--                    "aud_apll22m_clk",
--                    "aud_apll24m_clk",
--                    "aud_apll1_tuner_clk",
--                    "aud_apll2_tuner_clk",
--                    "aud_i2s1_bclk_sw",
--                    "aud_i2s2_bclk_sw",
--                    "aud_i2s3_bclk_sw",
--                    "aud_i2s4_bclk_sw",
--                    "aud_tdm_clk",
--                    "aud_tml_clk",
--                    "aud_infra_clk",
--                    "mtkaif_26m_clk",
--                    "top_mux_audio",
--                    "top_mux_aud_intbus",
--                    "top_syspll_d2_d4",
--                    "top_mux_aud_1",
--                    "top_apll1_ck",
--                    "top_mux_aud_2",
--                    "top_apll2_ck",
--                    "top_mux_aud_eng1",
--                    "top_apll1_d8",
--                    "top_mux_aud_eng2",
--                    "top_apll2_d8",
--                    "top_i2s0_m_sel",
--                    "top_i2s1_m_sel",
--                    "top_i2s2_m_sel",
--                    "top_i2s3_m_sel",
--                    "top_i2s4_m_sel",
--                    "top_i2s5_m_sel",
--                    "top_apll12_div0",
--                    "top_apll12_div1",
--                    "top_apll12_div2",
--                    "top_apll12_div3",
--                    "top_apll12_div4",
--                    "top_apll12_divb",
--                    "top_clk26m_clk";
-+        clock-names = "aud_afe_clk",
-+                      "aud_dac_clk",
-+                      "aud_dac_predis_clk",
-+                      "aud_adc_clk",
-+                      "aud_adc_adda6_clk",
-+                      "aud_apll22m_clk",
-+                      "aud_apll24m_clk",
-+                      "aud_apll1_tuner_clk",
-+                      "aud_apll2_tuner_clk",
-+                      "aud_i2s1_bclk_sw",
-+                      "aud_i2s2_bclk_sw",
-+                      "aud_i2s3_bclk_sw",
-+                      "aud_i2s4_bclk_sw",
-+                      "aud_tdm_clk",
-+                      "aud_tml_clk",
-+                      "aud_infra_clk",
-+                      "mtkaif_26m_clk",
-+                      "top_mux_audio",
-+                      "top_mux_aud_intbus",
-+                      "top_syspll_d2_d4",
-+                      "top_mux_aud_1",
-+                      "top_apll1_ck",
-+                      "top_mux_aud_2",
-+                      "top_apll2_ck",
-+                      "top_mux_aud_eng1",
-+                      "top_apll1_d8",
-+                      "top_mux_aud_eng2",
-+                      "top_apll2_d8",
-+                      "top_i2s0_m_sel",
-+                      "top_i2s1_m_sel",
-+                      "top_i2s2_m_sel",
-+                      "top_i2s3_m_sel",
-+                      "top_i2s4_m_sel",
-+                      "top_i2s5_m_sel",
-+                      "top_apll12_div0",
-+                      "top_apll12_div1",
-+                      "top_apll12_div2",
-+                      "top_apll12_div3",
-+                      "top_apll12_div4",
-+                      "top_apll12_divb",
-+                      "top_clk26m_clk";
-     };
- 
- ...
-diff --git a/Documentation/devicetree/bindings/sound/mt8186-mt6366-da7219-max98357.yaml b/Documentation/devicetree/bindings/sound/mt8186-mt6366-da7219-max98357.yaml
-index 037f21443ad1..d5b358838e2a 100644
---- a/Documentation/devicetree/bindings/sound/mt8186-mt6366-da7219-max98357.yaml
-+++ b/Documentation/devicetree/bindings/sound/mt8186-mt6366-da7219-max98357.yaml
-@@ -167,30 +167,30 @@ examples:
-                 "HDMI1", "TX";
- 
-         hs-playback-dai-link {
--                link-name = "I2S0";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&da7219>;
--                };
-+            link-name = "I2S0";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&da7219>;
-+            };
-         };
- 
-         hs-capture-dai-link {
--                link-name = "I2S1";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&da7219>;
--                };
-+            link-name = "I2S1";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&da7219>;
-+            };
-         };
- 
-         spk-dp-playback-dai-link {
--                link-name = "I2S3";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&anx_bridge_dp>, <&max98357a>;
--                };
-+            link-name = "I2S3";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&anx_bridge_dp>, <&max98357a>;
-+            };
-         };
-     };
- 
-diff --git a/Documentation/devicetree/bindings/sound/mt8186-mt6366-rt1019-rt5682s.yaml b/Documentation/devicetree/bindings/sound/mt8186-mt6366-rt1019-rt5682s.yaml
-index ed93f18ef985..7f553575c73d 100644
---- a/Documentation/devicetree/bindings/sound/mt8186-mt6366-rt1019-rt5682s.yaml
-+++ b/Documentation/devicetree/bindings/sound/mt8186-mt6366-rt1019-rt5682s.yaml
-@@ -171,30 +171,30 @@ examples:
-                 "HDMI1", "TX";
- 
-         hs-playback-dai-link {
--                link-name = "I2S0";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&rt5682s 0>;
--                };
-+            link-name = "I2S0";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&rt5682s 0>;
-+            };
-         };
- 
-         hs-capture-dai-link {
--                link-name = "I2S1";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&rt5682s 0>;
--                };
-+            link-name = "I2S1";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&rt5682s 0>;
-+            };
-         };
- 
-         spk-hdmi-playback-dai-link {
--                link-name = "I2S3";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&it6505dptx>, <&rt1019p>;
--                };
-+            link-name = "I2S3";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&it6505dptx>, <&rt1019p>;
-+            };
-         };
-     };
- 
-diff --git a/Documentation/devicetree/bindings/sound/mt8192-mt6359-rt1015-rt5682.yaml b/Documentation/devicetree/bindings/sound/mt8192-mt6359-rt1015-rt5682.yaml
-index c4e68f31aaab..841aab0178e3 100644
---- a/Documentation/devicetree/bindings/sound/mt8192-mt6359-rt1015-rt5682.yaml
-+++ b/Documentation/devicetree/bindings/sound/mt8192-mt6359-rt1015-rt5682.yaml
-@@ -165,38 +165,38 @@ examples:
-                 "Speakers", "Speaker";
- 
-         spk-playback-dai-link {
--                link-name = "I2S3";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&rt1015p>;
--                };
-+            link-name = "I2S3";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&rt1015p>;
-+            };
-         };
- 
-         hs-playback-dai-link {
--                link-name = "I2S8";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&rt5682 0>;
--                };
-+            link-name = "I2S8";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&rt5682 0>;
-+            };
-         };
- 
-         hs-capture-dai-link {
--                link-name = "I2S9";
--                dai-format = "i2s";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&rt5682 0>;
--                };
-+            link-name = "I2S9";
-+            dai-format = "i2s";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&rt5682 0>;
-+            };
-         };
- 
-         displayport-dai-link {
--                link-name = "TDM";
--                dai-format = "dsp_a";
--                codec {
--                        sound-dai = <&anx_bridge_dp>;
--                };
-+            link-name = "TDM";
-+            dai-format = "dsp_a";
-+            codec {
-+                sound-dai = <&anx_bridge_dp>;
-+            };
-         };
-     };
- 
-diff --git a/Documentation/devicetree/bindings/sound/mt8195-mt6359.yaml b/Documentation/devicetree/bindings/sound/mt8195-mt6359.yaml
-index 356e1feee962..c6bd286780c9 100644
---- a/Documentation/devicetree/bindings/sound/mt8195-mt6359.yaml
-+++ b/Documentation/devicetree/bindings/sound/mt8195-mt6359.yaml
-@@ -156,46 +156,46 @@ examples:
-                 "Ext Spk", "Speaker";
- 
-         mm-dai-link {
--                link-name = "ETDM1_IN_BE";
--                mediatek,clk-provider = "cpu";
-+            link-name = "ETDM1_IN_BE";
-+            mediatek,clk-provider = "cpu";
-         };
- 
-         hs-playback-dai-link {
--                link-name = "ETDM1_OUT_BE";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&headset_codec>;
--                };
-+            link-name = "ETDM1_OUT_BE";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&headset_codec>;
-+            };
-         };
- 
-         hs-capture-dai-link {
--                link-name = "ETDM2_IN_BE";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&headset_codec>;
--                };
-+            link-name = "ETDM2_IN_BE";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&headset_codec>;
-+            };
-         };
- 
-         spk-playback-dai-link {
--                link-name = "ETDM2_OUT_BE";
--                mediatek,clk-provider = "cpu";
--                codec {
--                        sound-dai = <&spk_amplifier>;
--                };
-+            link-name = "ETDM2_OUT_BE";
-+            mediatek,clk-provider = "cpu";
-+            codec {
-+                sound-dai = <&spk_amplifier>;
-+            };
-         };
- 
-         hdmi-dai-link {
--                link-name = "ETDM3_OUT_BE";
--                codec {
--                        sound-dai = <&hdmi_tx>;
--                };
-+            link-name = "ETDM3_OUT_BE";
-+            codec {
-+                sound-dai = <&hdmi_tx>;
-+            };
-         };
- 
-         displayport-dai-link {
--                link-name = "DPTX_BE";
--                codec {
--                        sound-dai = <&dp_tx>;
--                };
-+            link-name = "DPTX_BE";
-+            codec {
-+                sound-dai = <&dp_tx>;
-+            };
-         };
-     };
- 
-diff --git a/Documentation/devicetree/bindings/sound/qcom,q6apm-lpass-dais.yaml b/Documentation/devicetree/bindings/sound/qcom,q6apm-lpass-dais.yaml
-index 4878c424ef03..78587139f155 100644
---- a/Documentation/devicetree/bindings/sound/qcom,q6apm-lpass-dais.yaml
-+++ b/Documentation/devicetree/bindings/sound/qcom,q6apm-lpass-dais.yaml
-@@ -75,11 +75,11 @@ examples:
-         #size-cells = <0>;
- 
-         dai@10 {
--           reg = <PRIMARY_MI2S_RX>;
--           clocks = <&q6prmcc LPASS_CLK_ID_PRI_MI2S_IBIT
--                              LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
--                    <&q6prmcc LPASS_CLK_ID_MCLK_1
--                              LPASS_CLK_ATTRIBUTE_COUPLE_NO>;
--           clock-names = "bclk", "mclk";
-+            reg = <PRIMARY_MI2S_RX>;
-+            clocks = <&q6prmcc LPASS_CLK_ID_PRI_MI2S_IBIT
-+                               LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
-+                     <&q6prmcc LPASS_CLK_ID_MCLK_1
-+                               LPASS_CLK_ATTRIBUTE_COUPLE_NO>;
-+            clock-names = "bclk", "mclk";
-         };
-     };
-diff --git a/Documentation/devicetree/bindings/sound/renesas,rsnd.yaml b/Documentation/devicetree/bindings/sound/renesas,rsnd.yaml
-index e8a2acb92646..d3516fb1b130 100644
---- a/Documentation/devicetree/bindings/sound/renesas,rsnd.yaml
-+++ b/Documentation/devicetree/bindings/sound/renesas,rsnd.yaml
-@@ -432,14 +432,14 @@ examples:
-                       "ssi.1", "ssi.0";
- 
-         rcar_sound,dvc {
--               dvc0: dvc-0 {
--                    dmas = <&audma0 0xbc>;
--                    dma-names = "tx";
--               };
--               dvc1: dvc-1 {
--                    dmas = <&audma0 0xbe>;
--                    dma-names = "tx";
--               };
-+            dvc0: dvc-0 {
-+                dmas = <&audma0 0xbc>;
-+                dma-names = "tx";
-+            };
-+            dvc1: dvc-1 {
-+                dmas = <&audma0 0xbe>;
-+                dma-names = "tx";
-+            };
-         };
- 
-         rcar_sound,mix {
-diff --git a/Documentation/devicetree/bindings/sound/renesas,rz-ssi.yaml b/Documentation/devicetree/bindings/sound/renesas,rz-ssi.yaml
-index 1394f78281fc..d696fb33d9b8 100644
---- a/Documentation/devicetree/bindings/sound/renesas,rz-ssi.yaml
-+++ b/Documentation/devicetree/bindings/sound/renesas,rz-ssi.yaml
-@@ -95,20 +95,20 @@ examples:
-     ssi0: ssi@10049c00 {
-         compatible = "renesas,r9a07g044-ssi",
-                      "renesas,rz-ssi";
--            reg = <0x10049c00 0x400>;
--            interrupts = <GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>,
--                         <GIC_SPI 327 IRQ_TYPE_EDGE_RISING>,
--                         <GIC_SPI 328 IRQ_TYPE_EDGE_RISING>;
--            interrupt-names = "int_req", "dma_rx", "dma_tx";
--            clocks = <&cpg CPG_MOD R9A07G044_SSI0_PCLK2>,
--                     <&cpg CPG_MOD R9A07G044_SSI0_PCLK_SFR>,
--                     <&audio_clk1>,
--                     <&audio_clk2>;
--            clock-names = "ssi", "ssi_sfr", "audio_clk1", "audio_clk2";
--            power-domains = <&cpg>;
--            resets = <&cpg R9A07G044_SSI0_RST_M2_REG>;
--            dmas = <&dmac 0x2655>,
--                   <&dmac 0x2656>;
--            dma-names = "tx", "rx";
--            #sound-dai-cells = <0>;
-+        reg = <0x10049c00 0x400>;
-+        interrupts = <GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 327 IRQ_TYPE_EDGE_RISING>,
-+                     <GIC_SPI 328 IRQ_TYPE_EDGE_RISING>;
-+        interrupt-names = "int_req", "dma_rx", "dma_tx";
-+        clocks = <&cpg CPG_MOD R9A07G044_SSI0_PCLK2>,
-+                 <&cpg CPG_MOD R9A07G044_SSI0_PCLK_SFR>,
-+                 <&audio_clk1>,
-+                 <&audio_clk2>;
-+        clock-names = "ssi", "ssi_sfr", "audio_clk1", "audio_clk2";
-+        power-domains = <&cpg>;
-+        resets = <&cpg R9A07G044_SSI0_RST_M2_REG>;
-+        dmas = <&dmac 0x2655>,
-+               <&dmac 0x2656>;
-+        dma-names = "tx", "rx";
-+        #sound-dai-cells = <0>;
-     };
-diff --git a/Documentation/devicetree/bindings/sound/ti,tas5805m.yaml b/Documentation/devicetree/bindings/sound/ti,tas5805m.yaml
-index c2c2835a9e1d..f2ab274b02cd 100644
---- a/Documentation/devicetree/bindings/sound/ti,tas5805m.yaml
-+++ b/Documentation/devicetree/bindings/sound/ti,tas5805m.yaml
-@@ -45,13 +45,13 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
-         tas5805m: tas5805m@2c {
--                reg = <0x2c>;
--                compatible = "ti,tas5805m";
-+            reg = <0x2c>;
-+            compatible = "ti,tas5805m";
- 
--                pvdd-supply = <&audiopwr>;
--                pdn-gpios = <&tlmm 160 0>;
-+            pvdd-supply = <&audiopwr>;
-+            pdn-gpios = <&tlmm 160 0>;
- 
--                ti,dsp-config-name = "mono_pbtl_48khz";
-+            ti,dsp-config-name = "mono_pbtl_48khz";
-         };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/sound/ti,tlv320dac3100.yaml b/Documentation/devicetree/bindings/sound/ti,tlv320dac3100.yaml
-index 10299064cbc6..3bdaab1e5084 100644
---- a/Documentation/devicetree/bindings/sound/ti,tlv320dac3100.yaml
-+++ b/Documentation/devicetree/bindings/sound/ti,tlv320dac3100.yaml
-@@ -121,6 +121,6 @@ examples:
-             AVDD-supply = <&regulator>;
-             IOVDD-supply = <&regulator>;
-             DVDD-supply = <&regulator>;
--       };
-+        };
-     };
- 
-diff --git a/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml b/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
-index a42bf9bde694..5634b601ce65 100644
---- a/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
-+++ b/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
-@@ -50,6 +50,6 @@ examples:
-             reg = <0x60>;
-             Vdd-supply = <&vmmc2>;
-             power-gpio = <&gpio4 2 GPIO_ACTIVE_HIGH>;
--       };
-+        };
-     };
- 
 -- 
 2.53.0
 
