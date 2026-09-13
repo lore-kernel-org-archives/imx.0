@@ -1,472 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554243E95A0;
-	Sun, 13 Sep 2026 12:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2177C20A5C4;
+	Sun, 13 Sep 2026 12:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789302930; cv=none; b=LrtTfHTZKiNnq/+tTMz059JPF+h4hdyJT/SjC84suZgsETnDzkmhJH88CeBMZmEdrtaTgLCoQrdUfIg21fUtyHUq5/AIsS++JTQOSdGPInLKlOW2ptvHJSSLtCg/X47Vm8ikMqdRlaX8fSQKTi7WPeAcQ8XO5SkIuTJ074gagWM=
+	t=1789303006; cv=none; b=LzC12rY1w1Y7lvF8eutVc22bvhCAnheYuyrij7Jn8P65H7KRrFzE7gj3oJtGS0HguBZpC1w7YmaObnvvE2ZJ22XKDDt45zcRWHzo9MTd27Y1otBE6cUGHofsyW7LgkwiLY6wQ+TKdWr8aleLHJrbAXfWK2nLnF0peRdsKxM5XN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789302930; c=relaxed/simple;
-	bh=mRDHZlUIpAlU6RHtE8wT155EWsA+1LPFI312orcJqNE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FWAqaMpBU0cKpGRlyd+p6sos5ivNh0mkjamei4acCMeF3Cwis7ZN97CBb5muTRKhcaxPW1e9okwzxxRK04ZRgXWZ7mHRC/TUpPJT80eDmlMhpm9kNL6euWPrAGmz+cHEsqdo/whb9Oi4Os1w/r4hOSYvmzOrZ7GQmQLa/bW1LJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmOAz3vV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1789303006; c=relaxed/simple;
+	bh=1ssd5Yr2qT7IaMhW0fYIUvaWYJrAfokPMc0SmNZpqCA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=tYbJC7mKrP6kTV7uMjn2iz/C150tpdlj28SMXFIkeSY94ldZOZObui7hKA6S5QJwGyPylthocOyD4LaypnJfxZr+HQDv7LX3BbPVpZ85MuaY7/KMoDFAShV1uNeRIhyk3Jfp7Czp6AyF/6amC3/hI5ApEQoWG2Up1W+gVM7VIAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZKZSJ07; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmOAz3vV"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19A99C2BCFD;
-	Sun, 13 Sep 2026 12:35:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789302930;
-	bh=mRDHZlUIpAlU6RHtE8wT155EWsA+1LPFI312orcJqNE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pmOAz3vVQ5J1IqgE5qLUfku9v42v1W6qCkaBz7NsIgEI0KmNJjdXWmO9pAM6idhLW
-	 6ixX3DpEe4szX/DwFVqFZ2oExcv7PlDhE8smExpAbgOVrKy6s4pvXanuPNrTNN7ujC
-	 /q//YlCGsL7GFaE6xrtv4lyWVdVs0oMRA73xbjqu9Fc6OxzL+wBSIekRA38uti3n15
-	 oN1c1/+bXLBIR8gvIAEqKh79E15HCQwrSoHjPWtmyAXz8xeyaF4//7ALh89GPI1tan
-	 Ir2eWEvSMFKhhf3Rtq4EN++WXZRRVUmmSSl5kT6UqHuKgU6c0rI4Z3GSz7nsjMzNYf
-	 2HF2Y71QBsNPQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04280C88E64;
-	Sun, 13 Sep 2026 12:35:30 +0000 (UTC)
-From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Sun, 13 Sep 2026 14:35:26 +0200
-Subject: [PATCH v6 3/3] arm64: dts: freescale: add Nodebox v3 CPU Module
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZKZSJ07"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456621F000FF;
+	Sun, 13 Sep 2026 12:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789303004;
+	bh=beuAr0PMWvUVSQrOiwOaO94HdL2BIYJYpR5pWD0hU+0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oZKZSJ07YoU0FX8exkJ5geEuTfX3eF5/do24Rb/g8vz/UzghvbE7BwMoc3Vv9mR4o
+	 KBUjEJwiYdCCxDmxNzk8LYsaXSCDmB7ZxLXO1+fL/Hp6NCAUAbmnniCH5LTGKGHRwA
+	 Ce5iwWZz+kzZlvmZmnLWvdTzo0TPYoD32igJDM0l8u59rX5EvPSiu/W9cWCmijGaBb
+	 bgggo7ObVV5BJ/ssAtp3Y88Nxgxa5DB+BA1TAowlmgXhebX5/iUxXYyYqjUcD8KHZL
+	 mPgq1n6JQSjF1BDbueuK47WSLnFL/Dw0FVPVjSAXibn/BJCby/emB4sOmUjy80Skdb
+	 ngqK1dJeMSKBw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ASoC: dt-bindings: Use consistent indentation in the
+ example
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, wsa+renesas@sang-engineering.com, conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260913123234.99988-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260913123234.99988-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 13 Sep 2026 12:36:43 +0000
+Message-Id: <20260913123644.456621F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260913-for-upstream-nbxv3-dts-v6-3-058566b93ba1@free.fr>
-References: <20260913-for-upstream-nbxv3-dts-v6-0-058566b93ba1@free.fr>
-In-Reply-To: <20260913-for-upstream-nbxv3-dts-v6-0-058566b93ba1@free.fr>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Vincent Jardin <vjardin@free.fr>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789302928; l=9157;
- i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=FRb13gz7F1L1AEx3aobWJiLzlyRHDD1gJnj/Fr57/uQ=;
- b=6QH9Qcrahjd7o5Tlu/MOd1Q0BfiAdGFK1KPc8XzSztvcExodKu5z4VXdlHwp+vE2B8cZvv111
- eSS/u8UM0/CCi9KXuKIGqxfwlHLxKCtN5jiZG9AbSzqNqLPtp+w7yVR
-X-Developer-Key: i=vjardin@free.fr; a=ed25519;
- pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
-X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
- auth_id=871
-X-Original-From: Vincent Jardin <vjardin@free.fr>
-Reply-To: vjardin@free.fr
 
-From: Vincent Jardin <vjardin@free.fr>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Undocumented modification of node name and removal of node label in=
+ cirrus,cs42l42.yaml.
+--
 
-The Nodebox v3 is a Free Mobile CPU module built around the NXP
-LX2160A (16x Cortex-A72, DPAA2).
+commit 5295b0f4ddd7e74d1f23eafb35de82eb0e0a7330
+Author: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Signed-off-by: Vincent Jardin <vjardin@free.fr>
----
- arch/arm64/boot/dts/freescale/Makefile             |   2 +
- .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  34 +++
- .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 330 +++++++++++++++++++++
- 3 files changed, 366 insertions(+)
+ASoC: dt-bindings: Use consistent indentation in the example
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 95ae85ab4adf..faab8bf0e167 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -55,6 +55,8 @@ DTC_FLAGS_fsl-lx2160a-half-twins := -Wno-interrupt_map
- dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-half-twins.dtb
- DTC_FLAGS_fsl-lx2160a-honeycomb := -Wno-interrupt_map
- dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-honeycomb.dtb
-+DTC_FLAGS_fsl-lx2160a-nbxv3 := -Wno-interrupt_map
-+dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-nbxv3.dtb
- DTC_FLAGS_fsl-lx2160a-qds := -Wno-interrupt_map
- dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-lx2160a-qds.dtb
- DTC_FLAGS_fsl-lx2160a-rdb := -Wno-interrupt_map
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts
-new file mode 100644
-index 000000000000..cc02204e9d1b
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Free Mobile Nodebox v3 CPU Module (LX2160A)
-+ *
-+ * Copyright 2026 Free Mobile, Vincent Jardin
-+ */
-+
-+/dts-v1/;
-+
-+#include "fsl-lx2160a-rev2.dtsi"
-+#include "fsl-lx2160a-nbxv3.dtsi"
-+
-+/ {
-+	compatible = "freemobile,nbxv3", "fsl,lx2160a";
-+	model = "Free Mobile Nodebox v3 CPU Module (LX2160A)";
-+};
-+
-+&fspi {
-+	pinctrl-0 = <&fspi_dqs_sck_cs10_pins>, <&fspi_data30_pins>;
-+	pinctrl-names = "default";
-+};
-+
-+&gpio1 {
-+	pinctrl-0 = <&gpio1_31_28_pins>;
-+	pinctrl-names = "default";
-+};
-+
-+&pcs_mdio13 {
-+	status = "okay";
-+};
-+
-+&pcs_mdio14 {
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
-new file mode 100644
-index 000000000000..ca4fb5329c0b
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
-@@ -0,0 +1,330 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Free Mobile Nodebox v3 CPU Module (LX2160A)
-+ *
-+ * Copyright 2026 Free Mobile, Vincent Jardin
-+ *
-+ * This file is shared by the Linux kernel and U-Boot.
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+/ {
-+
-+	aliases {
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	gpio-restart {
-+		compatible = "gpio-restart";
-+		gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+		priority = <128>;
-+	};
-+
-+	reg_ethsw_mdio: regulator-ethsw-mdio {
-+		compatible = "regulator-fixed";
-+		gpio = <&gpio3 25 GPIO_ACTIVE_LOW>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-name = "ethsw-mdio-en";
-+	};
-+};
-+
-+&crypto {
-+	status = "okay";
-+};
-+
-+&dpmac13 {
-+	phy-connection-type = "10gbase-r";
-+	phy-handle = <&lan8023_phy_s0>;
-+
-+	status = "okay";
-+};
-+
-+&dpmac14 {
-+	phy-connection-type = "10gbase-r";
-+	phy-handle = <&lan8023_phy_s1>;
-+
-+	status = "okay";
-+};
-+
-+&dpmac17 {
-+	phy-connection-type = "rgmii-id";
-+	phy-handle = <&rtl8211fd>;
-+
-+	status = "okay";
-+};
-+
-+&dspi0 {
-+	status = "okay";
-+
-+	dpll@0 {
-+		compatible = "microchip,zl30733";
-+		reg = <0>;
-+		spi-max-frequency = <12500000>;
-+	};
-+};
-+
-+&dspi2 {
-+	status = "okay";
-+};
-+
-+&emdio1 {
-+	status = "okay";
-+
-+	/* Microchip LAN8023 dual 10G PCS/retimer, Clause 45 only, one address per slice */
-+	lan8023_phy_s0: ethernet-phy@2 {
-+		compatible = "ethernet-phy-ieee802.3-c45";
-+		reg = <2>;
-+	};
-+
-+	lan8023_phy_s1: ethernet-phy@3 {
-+		compatible = "ethernet-phy-ieee802.3-c45";
-+		reg = <3>;
-+	};
-+
-+	rtl8211fd: ethernet-phy@6 {
-+		compatible = "ethernet-phy-id001c.c916";
-+		reg = <6>;
-+	};
-+};
-+
-+&emdio2 {
-+	status = "okay";
-+};
-+
-+&esdhc1 {
-+	bus-width = <8>;
-+	mmc-hs200-1_8v;
-+	mmc-hs400-1_8v;
-+	non-removable;
-+
-+	status = "okay";
-+};
-+
-+&fsl_mc {
-+	status = "okay";
-+};
-+
-+&fspi {
-+	status = "okay";
-+
-+	/* GigaDevice GD55LB02GF, 256 MiB boot NOR */
-+	flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		reset-gpios = <&gpio1 28 GPIO_ACTIVE_LOW>;
-+		spi-max-frequency = <150000000>;
-+		spi-rx-bus-width = <1>;
-+		spi-tx-bus-width = <1>;
-+	};
-+};
-+
-+&gpio0 {
-+	gpio-line-names =
-+		"", "",
-+		"altfn:iic1-sda", "altfn:iic1-scl",
-+		"altfn:uart4-sin", "altfn:uart4-sout",
-+		"altfn:uart2-sin", "altfn:uart2-sout",
-+		"altfn:uart3-sin", "altfn:uart3-sout",
-+		"altfn:uart1-sin", "altfn:uart1-sout",
-+		"altfn:spi3-pcs3", "altfn:spi3-pcs2",
-+		"altfn:spi3-pcs1", "altfn:spi3-pcs0",
-+		"altfn:spi1-sck", "altfn:spi1-sin",
-+		"altfn:spi1-pcs2", "altfn:spi1-pcs1",
-+		"altfn:spi1-pcs0", "altfn:spi1-sout",
-+		"altfn:iic6-sda", "altfn:iic6-scl",
-+		"altfn:spi3-sin", "altfn:spi3-sout",
-+		"altfn:iic4-sda", "altfn:iic4-scl",
-+		"altfn:iic3-sda", "altfn:iic3-scl",
-+		"altfn:iic2-sda", "altfn:iic2-scl";
-+
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	gpio-line-names =
-+		"", "", "", "", "", "",
-+		"cfg-rcw-src2", "cfg-rcw-src3",
-+		"reset-req-b",
-+		"altfn:sdhc2-clk", "altfn:sdhc2-ds",
-+		"altfn:sdhc2-dat0", "altfn:sdhc2-dat1",
-+		"altfn:sdhc2-dat2", "altfn:sdhc2-dat3",
-+		"altfn:sdhc2-dat4", "altfn:sdhc2-dat5",
-+		"altfn:sdhc2-dat6", "altfn:sdhc2-dat7",
-+		"altfn:sdhc2-cmd",
-+		"cfg-svr1",
-+		"altfn:xspi1-cs0", "altfn:xspi1-sck",
-+		"altfn:xspi1-dqs",
-+		"altfn:xspi1-data0", "altfn:xspi1-data1",
-+		"", "",
-+		"flash-reset#", "pltrst#", "", "ethsw-reset#";
-+
-+	status = "okay";
-+
-+	/* Platform reset, no consumer node: released at boot */
-+	pltrst-hog {
-+		gpio-hog;
-+		gpios = <29 GPIO_ACTIVE_LOW>;
-+		line-name = "pltrst#";
-+		output-low;
-+	};
-+};
-+
-+&gpio2 {
-+	gpio-line-names =
-+		"lan8023-mdint",
-+		"i2c2-alert#", "i2c4-alert#", "i2c6-alert#",
-+		"u800-tca9539-int#",
-+		"spi3-alert#",
-+		"wake0", "wake1",
-+		"carrier-hot#",
-+		"u1300-rtl8211fd-int#",
-+		"ethsw-int#",
-+		"", "",
-+		"u1700-zl30733-clk-gpio0", "u1700-zl30733-clk-gpio1",
-+		"u1700-zl30733-clk-gpio2", "u1700-zl30733-clk-gpio3",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "";
-+
-+	status = "okay";
-+};
-+
-+&gpio3 {
-+	gpio-line-names =
-+		"altfn:ec1-txd3", "altfn:ec1-txd2",
-+		"altfn:ec1-txd1", "altfn:ec1-txd0",
-+		"altfn:ec1-tx-en", "altfn:ec1-gtx-clk",
-+		"altfn:ec1-rxd3", "altfn:ec1-rxd2",
-+		"altfn:ec1-rxd1", "altfn:ec1-rxd0",
-+		"altfn:ec1-rx-clk", "altfn:ec1-rx-dv",
-+		"", "",
-+		"ptp-refclk-in",
-+		"", "", "", "", "", "", "", "",
-+		"u1700-zl30733-pps-out",
-+		"",
-+		"ethsw-mdio-en",
-+		"usb01-oc#",	/* USB1_PWRFAULT and USB2_PWRFAULT share one net */
-+		"",
-+		"usb01-oc#",
-+		"altfn:spi3-sck",
-+		"", "";
-+
-+	status = "okay";
-+};
-+
-+/* On-module management bus */
-+&i2c0 {
-+	status = "okay";
-+
-+	/* +0V8_VDD core rail, MPS MPQ8646 (MPQ8785 core) over PMBus */
-+	vdd08: regulator@10 {
-+		compatible = "mps,mpq8646";
-+		reg = <0x10>;
-+	};
-+
-+	/* SO-DIMM SPD temperature sensors */
-+	temperature-sensor@18 {
-+		compatible = "jedec,jc-42.4-temp";
-+		reg = <0x18>;
-+	};
-+
-+	temperature-sensor@19 {
-+		compatible = "jedec,jc-42.4-temp";
-+		reg = <0x19>;
-+	};
-+
-+	eeprom@52 {
-+		compatible = "atmel,24c32";
-+		reg = <0x52>;
-+		pagesize = <32>;
-+	};
-+
-+	/* Board ID straps */
-+	gpio@74 {
-+		compatible = "ti,tca9539";
-+		reg = <0x74>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+		gpio-line-names =
-+			"boardid-0x0001", "boardid-0x0002",
-+			"boardid-0x0004", "boardid-0x0008",
-+			"boardid-0x0010", "boardid-0x0020",
-+			"boardid-0x0040", "boardid-0x0080",
-+			"boardid-0x0100", "boardid-0x0200",
-+			"boardid-0x0400", "boardid-0x0800",
-+			"boardid-0x1000", "boardid-0x2000",
-+			"boardid-0x4000", "boardid-0x8000";
-+	};
-+
-+	u800: gpio@75 {
-+		compatible = "ti,tca9539";
-+		reg = <0x75>;
-+		#gpio-cells = <2>;
-+		#interrupt-cells = <2>;
-+		gpio-controller;
-+		gpio-line-names =
-+			"carrier-gpio0", "carrier-gpio1",
-+			"carrier-gpio2", "carrier-gpio3",
-+			"carrier-gpio4", "carrier-gpio5",
-+			"carrier-gpio6", "carrier-gpio7",
-+			"carrier-gpio8", "carrier-gpio9",
-+			"carrier-gpio10", "carrier-gpio11",
-+			"", "", "",
-+			"lan8023-rst";
-+		interrupt-controller;
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+};
-+
-+&i2c1 {
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	status = "okay";
-+};
-+
-+&i2c3 {
-+	status = "okay";
-+};
-+
-+&i2c5 {
-+	status = "okay";
-+};
-+
-+&pcie3 {
-+	status = "okay";
-+};
-+
-+&pcie4 {
-+	status = "okay";
-+};
-+
-+&pcie5 {
-+	status = "okay";
-+};
-+
-+&pcie6 {
-+	status = "okay";
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
-+
-+&usb0 {
-+	status = "okay";
-+};
-+
-+&usb1 {
-+	status = "okay";
-+};
+This commit corrects indentation in several DT binding examples to use
+consistent 2- or 4-spaces spacing, resolving dt-check-style warnings. The
+commit message also notes a generic node name correction specifically for
+dialog,da7219.yaml.
 
--- 
-2.43.0
+[ ... ]
 
+> diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml =
+b/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml
+> index af599d8735e26..ab4c7d22dc0eb 100644
+> --- a/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml
+> +++ b/Documentation/devicetree/bindings/sound/cirrus,cs42l42.yaml
+> @@ -199,28 +199,28 @@ examples:
+>    - |
+>      #include <dt-bindings/sound/cs42l42.h>
+>      i2c {
+> -      #address-cells =3D <1>;
+> -      #size-cells =3D <0>;
+> -
+> -      cs42l42: cs42l42@48 {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        audio-codec@48 {
 
+[Severity: Low]
+The commit message explicitly notes: "While changing the lines, correct also
+node name to be generic in dialog,da7219.yaml."
+
+Does this patch unintentionally also rename the node and drop the label here
+in cirrus,cs42l42.yaml without documenting it in the commit message?
+
+> -          compatible =3D "cirrus,cs42l42";
+> -          reg =3D <0x48>;
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260913123234.9998=
+8-2-krzysztof.kozlowski@oss.qualcomm.com?part=3D1
