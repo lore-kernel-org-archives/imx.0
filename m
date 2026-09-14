@@ -1,832 +1,994 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AD3BE16A;
-	Mon, 14 Sep 2026 14:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66694756D3;
+	Mon, 14 Sep 2026 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789394921; cv=none; b=moIxstt6DhaXLcWR08zkhBf02n+YTI3ZqZBSxf+roW9pjo0Lt2gzK4XpL+xUWrQhmnugr01aLaWafuXOxAv29+zGldGGYEr/TCTQQzIvHB0PrG8yBNqR0hvOrUQXhxG5knOUj9U6G8HG7GHOkfYesaCrby2s2EzSiXhUyyBP5wE=
+	t=1789394949; cv=none; b=O6grwVZ4ViKGYphRtVZlODxVqG615VvOwKs4Z5bL92lzgByJydsJ+RgNJ6rDDw/C0eNm9iKkFacUgy1M004pwFDtol6mmedGfWneObAYZzwbvQYgeQjhG46cP4ognw3CJQkdoZUfgCSmxWkxsKcpGSWduxo8Yy4fR2EIEF3j7y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789394921; c=relaxed/simple;
-	bh=iFRt2jnjkbPFx1gQEvSTKxnuipUBNmUrn/V+BF0BDbk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oY1MuGwFt9f6N6ApRdUh9L3o5UNvphyIrGpuA9C23GTzFtpeAQRqHDAhIznV25Z9QGlixa1BhaAr3uNGBFLI9GZR4elSrtKHI3rnl+sx2nNoFEb93/SpxqstmBIdyoTATeiih21t8ZtYO2+mQzF1qwBBoDeWuJEEcjDwILHJCJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5b8egLl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789394949; c=relaxed/simple;
+	bh=ZnTwSaVfM3mWeMjUtbyK0oHWVF12+iCjEfUVFLeKIzo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cTtikzHdsQ7ExlFo+JjsHR+Q4SqnAmmPnQEhrIsUCySstbcdAv9/SJmNKlicbAkLimvPA2qP/d3NdfFzMo+iFE5bXZcCMBz3Qji6qzAQoEjBSwt0Ak/RIlwSzD/vhtgFGbzVgv0Dr5z3Gkn9a6CZGhWkr09IX/AKmfHnVmQpVTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyfEdouN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5b8egLl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96C01F000FF;
-	Mon, 14 Sep 2026 14:08:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyfEdouN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7DF1F0089B;
+	Mon, 14 Sep 2026 14:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394918;
-	bh=9GnhsWilQxzqdTa1jgZAUDf+GXIGrJYRdT7lriz3cds=;
-	h=From:To:Cc:Subject:Date;
-	b=W5b8egLljogSijA5JI47rfQX3gyyCc/Ht1eA0EX2CK0Alf4ae4pSVf7vfMVCZ5SAJ
-	 kYU8suAlWyil+ZoTPTjcprttSDhTYop48U+kU6M3gvvveLvXc2/isKuxqRG/0ZcElF
-	 pnxpb76Jl5JFE9D7oOYmHooXO+0pY9fji48h5IthiQ9c8/+/kH6oVIie7/uWVO9xYM
-	 bcWZazNtKo2NI9gXUfsVxeWajvDtSSzCOdngz0aKgsoHbTbqWfjBql07qL3MXDutTQ
-	 tVsIGk3GJRznQpW3EumO1EfwxcmZjBmru2qlYvA85YMuhGdfw5Si6CwyY0utCFCDag
-	 3QipBDYU86Vag==
+	s=k20260515; t=1789394944;
+	bh=42inLRz8gZhU+AxY5sJ0nlLEYyFSC3HrJiu1Lcb0MdA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nyfEdouNrEKZPBYL4MEv96BNZroQIcz+olKVxd2fLp+Di6OmsOBiJdevI7rJNHNmc
+	 /krcVaNjQwMgg9pF83+H9uPz//5Mav5YiC01d4tWryydFoG5cD+b3jfy1869lLr7ro
+	 k1OK7s2QRU6eJHuUa7+xz470S/2c6RxhByof1MDg3jqcXDyLz5wL7iOvGbzP+SJmgp
+	 rsTL8Y9OpCuYWXAcdZKz+mQiibkNoLIsKHYjNSqyv0zhV9ld/r5Ns9al/pBQWawvey
+	 zMEr+7AyMy23w/ATfYhGMnYtN53XceVapUfxFClaZEWyFR31qC+FGLDsQZBiDiDWQu
+	 udGa+1rlNy+4A==
 From: Arnd Bergmann <arnd@kernel.org>
 To: soc@lists.linux.dev
 Cc: Arnd Bergmann <arnd@arndb.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-omap@vger.kernel.org
-Subject: [PATCH v2 00/14] ARM: deprecated platform removal
-Date: Mon, 14 Sep 2026 16:08:02 +0200
-Message-ID: <20260914140821.1805449-1-arnd@kernel.org>
+	devicetree@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH v2 07/14] ARM: imx: remove i.MX31 SoC support
+Date: Mon, 14 Sep 2026 16:08:09 +0200
+Message-ID: <20260914140821.1805449-8-arnd@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260914140821.1805449-1-arnd@kernel.org>
+References: <20260914140821.1805449-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-In the 7.3 kernel, I marked a number of platforms and features as
-deprecated, with the plan to keep these around for the LTS kernel, but
-remove them in 7.4, see [1].
+The Freescale i.MX31 was an early SoC based on the ARM1136r0 CPU core. It
+was used in the Bug Labs modular computer but ultimately much less
+popular than most other i.MX SoCs.
 
-Cleaning out the deprecated platform code has turned into a larger effort
-than I expected, currently standing at 300 patches, with a lot of them
-still in need of being split up into smaller ones, see [2] for a current
-snapshot.
+As the ARM1136r0 support is causing a lot of extra maintenance effort
+to keep alive and there are no known users, remove i.MX31 in order to
+allow removing support for that CPU core altogether.
 
-The first series here removes just the bits in arch/arm/mach-*/, plus
-the portions that directly depend on the removed Kconfig symbols where
-these are trivial to remove.
+The related i.MX35 is based on a slightly newer ARM1136r1 CPU core that
+does not have this problem, so there is no reason to remove that.
 
-The parts that are not included are those that remove architectural
-features and device drivers that become unused after this part,
-
-This also gives everyone a chance to voice their objections in case
-that some of the removed platform code does have active users after all,
-before all the corresponding drivers are gone.
-
-     Arnd
-
-Changes since v1 [3]:
-
- - minor cleanups and fixes based on feedback
- - skipped riscpc patch, which is still under discussion
- - added patch to remove plat-orion, folding the remaining
-   PCI support into mach-orion5x
- - added patch to remove Integrator/CM1136JF-S
-
-Links:
-[1] https://lore.kernel.org/all/20260701212353.2196041-1-arnd@kernel.org/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/log/?h=board-remove-7.3
-[3] https://lore.kernel.org/lkml/20260908152808.3928630-1-arnd@kernel.org/T/#t
-
-Arnd Bergmann (14):
-  ARM: remove sa1100 platform
-  ARM: remove footbridge
-  ARM: remove legacy pxa board files
-  ARM: orion/dove/mv78xx0: remove all board files
-  ARM: orion5x: fold plat-orion/pcie.c and hw_pci into pci.c
-  ARM: omap2: remove omap24xx support
-  ARM: imx: remove i.MX31 SoC support
-  ARM: versatile: remove Integrator/CM1136JF-S option
-  ARM: imx: remove nommu support
-  ARM: lpc18xx: remove entire platform
-  ARM: stm32: remove stm32f4/f7/h7 MCU support
-  ARM: versatile: remove mps2 support
-  ARM: at91: remove samv7 support
-  ARM: axxia: remove entire platform
-
- Documentation/arch/arm/index.rst              |    9 -
- Documentation/arch/arm/marvell.rst            |   15 +-
- Documentation/arch/arm/microchip.rst          |   39 -
- Documentation/arch/arm/netwinder.rst          |   85 -
- Documentation/arch/arm/sa1100/assabet.rst     |  301 ---
- Documentation/arch/arm/sa1100/cerf.rst        |   35 -
- Documentation/arch/arm/sa1100/index.rst       |   13 -
- Documentation/arch/arm/sa1100/lart.rst        |   15 -
- Documentation/arch/arm/sa1100/serial_uart.rst |   51 -
- Documentation/arch/arm/stm32/overview.rst     |    8 +-
- .../arch/arm/stm32/stm32f429-overview.rst     |   25 -
- .../arch/arm/stm32/stm32f746-overview.rst     |   32 -
- .../arch/arm/stm32/stm32f769-overview.rst     |   34 -
- .../arch/arm/stm32/stm32h743-overview.rst     |   33 -
- .../arch/arm/stm32/stm32h750-overview.rst     |   34 -
- .../devicetree/bindings/arm/atmel-at91.yaml   |   39 -
- .../devicetree/bindings/arm/axxia.yaml        |   23 -
- MAINTAINERS                                   |   48 -
- arch/arm/Kconfig                              |   63 +-
- arch/arm/Kconfig.debug                        |  104 +-
- arch/arm/Makefile                             |   15 -
- arch/arm/boot/bootp/Makefile                  |    2 -
- arch/arm/boot/compressed/Makefile             |    8 -
- arch/arm/boot/compressed/head-sa1100.S        |   45 -
- arch/arm/boot/compressed/head-sharpsl.S       |  151 --
- arch/arm/boot/compressed/head.S               |    7 -
- arch/arm/boot/dts/arm/Makefile                |    3 -
- arch/arm/boot/dts/arm/mps2-an385.dts          |   92 -
- arch/arm/boot/dts/arm/mps2-an399.dts          |   92 -
- arch/arm/boot/dts/arm/mps2.dtsi               |  220 --
- arch/arm/boot/dts/intel/Makefile              |    1 -
- arch/arm/boot/dts/intel/axm/Makefile          |    5 -
- .../boot/dts/intel/axm/axm5516-amarillo.dts   |   47 -
- arch/arm/boot/dts/intel/axm/axm5516-cpus.dtsi |  200 --
- arch/arm/boot/dts/intel/axm/axm55xx.dtsi      |  200 --
- arch/arm/boot/dts/nxp/imx/Makefile            |    5 -
- arch/arm/boot/dts/nxp/imx/imx31-bug.dts       |   22 -
- arch/arm/boot/dts/nxp/imx/imx31-lite.dts      |  178 --
- arch/arm/boot/dts/nxp/imx/imx31.dtsi          |  371 ----
- arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts   |   72 -
- arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h |  993 ---------
- arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi      |  160 --
- arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h | 1561 --------------
- arch/arm/boot/dts/nxp/lpc/Makefile            |    5 -
- arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi        |  543 -----
- arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dts    |  221 --
- .../boot/dts/nxp/lpc/lpc4350-hitex-eval.dts   |  485 -----
- arch/arm/boot/dts/nxp/lpc/lpc4350.dtsi        |   48 -
- .../dts/nxp/lpc/lpc4357-ea4357-devkit.dts     |  624 ------
- .../boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts  |  621 ------
- arch/arm/boot/dts/nxp/lpc/lpc4357.dtsi        |   52 -
- arch/arm/boot/dts/nxp/vf/Makefile             |    2 -
- arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts  |   61 -
- arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts   |   88 -
- arch/arm/boot/dts/nxp/vf/vf610m4.dtsi         |   61 -
- arch/arm/boot/dts/st/Makefile                 |   11 -
- arch/arm/boot/dts/st/stm32429i-eval.dts       |  349 ----
- arch/arm/boot/dts/st/stm32746g-eval.dts       |  236 ---
- arch/arm/boot/dts/st/stm32f4-pinctrl.dtsi     |  482 -----
- arch/arm/boot/dts/st/stm32f429-disco.dts      |  243 ---
- arch/arm/boot/dts/st/stm32f429-pinctrl.dtsi   |   91 -
- arch/arm/boot/dts/st/stm32f429.dtsi           |  800 --------
- arch/arm/boot/dts/st/stm32f469-disco.dts      |  260 ---
- arch/arm/boot/dts/st/stm32f469-pinctrl.dtsi   |   92 -
- arch/arm/boot/dts/st/stm32f469.dtsi           |   18 -
- arch/arm/boot/dts/st/stm32f7-pinctrl.dtsi     |  436 ----
- arch/arm/boot/dts/st/stm32f746-disco.dts      |  234 ---
- arch/arm/boot/dts/st/stm32f746-pinctrl.dtsi   |   55 -
- arch/arm/boot/dts/st/stm32f746.dtsi           |  727 -------
- .../dts/st/stm32f769-disco-mb1166-reva09.dts  |   13 -
- arch/arm/boot/dts/st/stm32f769-disco.dts      |  243 ---
- arch/arm/boot/dts/st/stm32f769-pinctrl.dtsi   |   55 -
- arch/arm/boot/dts/st/stm32f769.dtsi           |   37 -
- arch/arm/boot/dts/st/stm32h7-pinctrl.dtsi     |  301 ---
- arch/arm/boot/dts/st/stm32h743.dtsi           |  738 -------
- arch/arm/boot/dts/st/stm32h743i-disco.dts     |  145 --
- arch/arm/boot/dts/st/stm32h743i-eval.dts      |  185 --
- arch/arm/boot/dts/st/stm32h747i-disco.dts     |  149 --
- arch/arm/boot/dts/st/stm32h750.dtsi           |    6 -
- arch/arm/boot/dts/st/stm32h750i-art-pi.dts    |  229 ---
- arch/arm/boot/dts/ti/omap/Makefile            |    6 -
- arch/arm/boot/dts/ti/omap/omap2.dtsi          |  338 ----
- .../arm/boot/dts/ti/omap/omap2420-clocks.dtsi |  267 ---
- arch/arm/boot/dts/ti/omap/omap2420-h4.dts     |   63 -
- arch/arm/boot/dts/ti/omap/omap2420-n800.dts   |    9 -
- .../boot/dts/ti/omap/omap2420-n810-wimax.dts  |    9 -
- arch/arm/boot/dts/ti/omap/omap2420-n810.dts   |   75 -
- .../dts/ti/omap/omap2420-n8x0-common.dtsi     |  123 --
- arch/arm/boot/dts/ti/omap/omap2420.dtsi       |  262 ---
- .../arm/boot/dts/ti/omap/omap2430-clocks.dtsi |  341 ----
- arch/arm/boot/dts/ti/omap/omap2430-sdp.dts    |   70 -
- arch/arm/boot/dts/ti/omap/omap2430.dtsi       |  366 ----
- .../arm/boot/dts/ti/omap/omap24xx-clocks.dtsi | 1241 ------------
- arch/arm/common/Kconfig                       |   13 -
- arch/arm/common/Makefile                      |    4 -
- arch/arm/common/locomo.c                      |  886 --------
- arch/arm/common/sa1111.c                      | 1413 -------------
- arch/arm/common/scoop.c                       |  269 ---
- arch/arm/common/sharpsl_param.c               |   63 -
- arch/arm/configs/am200epdkit_defconfig        |   91 -
- arch/arm/configs/assabet_defconfig            |   57 -
- arch/arm/configs/axm55xx_defconfig            |  231 ---
- arch/arm/configs/collie_defconfig             |   87 -
- arch/arm/configs/dove_defconfig               |  134 --
- arch/arm/configs/footbridge_defconfig         |  114 --
- arch/arm/configs/h3600_defconfig              |   63 -
- arch/arm/configs/imx_v6_v7_defconfig          |    1 -
- arch/arm/configs/imxrt_defconfig              |   35 -
- arch/arm/configs/jornada720_defconfig         |   95 -
- arch/arm/configs/lpc18xx_defconfig            |  158 --
- arch/arm/configs/mps2_defconfig               |  102 -
- arch/arm/configs/mv78xx0_defconfig            |  120 --
- arch/arm/configs/neponset_defconfig           |   88 -
- arch/arm/configs/netwinder_defconfig          |   88 -
- arch/arm/configs/omap2plus_defconfig          |    4 -
- arch/arm/configs/spitz_defconfig              |  237 ---
- arch/arm/configs/stm32_defconfig              |   80 -
- arch/arm/configs/vf610m4_defconfig            |   39 -
- arch/arm/include/asm/cputype.h                |    4 -
- arch/arm/include/asm/hardware/dec21285.h      |  138 --
- arch/arm/include/asm/hardware/locomo.h        |  217 --
- arch/arm/include/asm/hardware/sa1111.h        |  442 ----
- arch/arm/include/asm/hardware/scoop.h         |   67 -
- arch/arm/include/asm/hardware/ssp.h           |   25 -
- arch/arm/include/asm/mach/pci.h               |   86 -
- arch/arm/include/asm/mach/sharpsl_param.h     |   33 -
- arch/arm/include/asm/pci.h                    |    3 -
- arch/arm/include/debug/dc21285.S              |   41 -
- arch/arm/include/debug/imx-uart.h             |   10 -
- arch/arm/include/debug/sa1100.S               |   67 -
- arch/arm/kernel/atags_parse.c                 |   18 -
- arch/arm/kernel/bios32.c                      |  254 ---
- arch/arm/kernel/head.S                        |   10 -
- arch/arm/mach-at91/Kconfig                    |   11 +-
- arch/arm/mach-at91/Makefile                   |    1 -
- arch/arm/mach-at91/samv7.c                    |   17 -
- arch/arm/mach-axxia/Kconfig                   |   17 -
- arch/arm/mach-axxia/Makefile                  |    3 -
- arch/arm/mach-axxia/axxia.c                   |   19 -
- arch/arm/mach-axxia/platsmp.c                 |   87 -
- arch/arm/mach-dove/Kconfig                    |   32 -
- arch/arm/mach-dove/Makefile                   |    7 -
- arch/arm/mach-dove/bridge-regs.h              |   50 -
- arch/arm/mach-dove/cm-a510.c                  |   94 -
- arch/arm/mach-dove/common.c                   |  449 ----
- arch/arm/mach-dove/common.h                   |   46 -
- arch/arm/mach-dove/dove.h                     |  185 --
- arch/arm/mach-dove/irq.c                      |   81 -
- arch/arm/mach-dove/irqs.h                     |   89 -
- arch/arm/mach-dove/mpp.c                      |  159 --
- arch/arm/mach-dove/mpp.h                      |  197 --
- arch/arm/mach-dove/pcie.c                     |  226 ---
- arch/arm/mach-dove/pm.h                       |   58 -
- arch/arm/mach-footbridge/Kconfig              |   57 -
- arch/arm/mach-footbridge/Makefile             |   18 -
- arch/arm/mach-footbridge/common.c             |  280 ---
- arch/arm/mach-footbridge/common.h             |   15 -
- arch/arm/mach-footbridge/dc21285-timer.c      |  136 --
- arch/arm/mach-footbridge/dc21285.c            |  360 ----
- arch/arm/mach-footbridge/dma-isa.c            |  230 ---
- arch/arm/mach-footbridge/ebsa285-pci.c        |   48 -
- arch/arm/mach-footbridge/ebsa285.c            |  124 --
- .../mach-footbridge/include/mach/hardware.h   |   90 -
- arch/arm/mach-footbridge/include/mach/irqs.h  |   97 -
- .../mach-footbridge/include/mach/isa-dma.h    |   18 -
- .../arm/mach-footbridge/include/mach/memory.h |   26 -
- .../mach-footbridge/include/mach/uncompress.h |   34 -
- arch/arm/mach-footbridge/isa-irq.c            |  177 --
- arch/arm/mach-footbridge/isa-rtc.c            |   57 -
- arch/arm/mach-footbridge/isa-timer.c          |   36 -
- arch/arm/mach-footbridge/isa.c                |   94 -
- arch/arm/mach-footbridge/netwinder-hw.c       |  772 -------
- arch/arm/mach-footbridge/netwinder-pci.c      |   62 -
- arch/arm/mach-imx/Kconfig                     |   38 +-
- arch/arm/mach-imx/Makefile                    |    4 -
- arch/arm/mach-imx/common.h                    |    2 -
- arch/arm/mach-imx/cpu-imx31.c                 |   72 -
- arch/arm/mach-imx/mach-imx31.c                |   18 -
- arch/arm/mach-imx/mach-imx7d-cm4.c            |   18 -
- arch/arm/mach-imx/mach-imxrt.c                |   19 -
- arch/arm/mach-imx/mach-vf610.c                |    1 -
- arch/arm/mach-imx/mm-imx3.c                   |   44 -
- arch/arm/mach-lpc18xx/Makefile                |    2 -
- arch/arm/mach-lpc18xx/board-dt.c              |   19 -
- arch/arm/mach-mv78xx0/Kconfig                 |   27 -
- arch/arm/mach-mv78xx0/Makefile                |    5 -
- arch/arm/mach-mv78xx0/bridge-regs.h           |   31 -
- arch/arm/mach-mv78xx0/buffalo-wxl-setup.c     |  183 --
- arch/arm/mach-mv78xx0/common.c                |  444 ----
- arch/arm/mach-mv78xx0/common.h                |   54 -
- arch/arm/mach-mv78xx0/irq.c                   |   69 -
- arch/arm/mach-mv78xx0/irqs.h                  |   87 -
- arch/arm/mach-mv78xx0/mpp.c                   |   34 -
- arch/arm/mach-mv78xx0/mpp.h                   |  337 ---
- arch/arm/mach-mv78xx0/mv78xx0.h               |  134 --
- arch/arm/mach-mv78xx0/pcie.c                  |  280 ---
- arch/arm/mach-mvebu/Makefile                  |    2 -
- arch/arm/mach-omap2/Kconfig                   |   62 +-
- arch/arm/mach-omap2/Makefile                  |   63 +-
- arch/arm/mach-omap2/board-generic.c           |   34 -
- arch/arm/mach-omap2/board-n8x0.c              |  512 -----
- arch/arm/mach-omap2/clkt2xxx_dpll.c           |   56 -
- arch/arm/mach-omap2/clkt2xxx_dpllcore.c       |  194 --
- arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c  |  259 ---
- arch/arm/mach-omap2/clock.c                   |   12 +-
- arch/arm/mach-omap2/clock2xxx.h               |   17 -
- arch/arm/mach-omap2/clockdomain.c             |    4 +-
- arch/arm/mach-omap2/clockdomain.h             |    5 -
- arch/arm/mach-omap2/clockdomains2420_data.c   |  154 --
- arch/arm/mach-omap2/clockdomains2430_data.c   |  181 --
- .../mach-omap2/clockdomains2xxx_3xxx_data.c   |   29 +-
- arch/arm/mach-omap2/cm-regbits-24xx.h         |   51 -
- arch/arm/mach-omap2/cm2xxx.c                  |  302 ---
- arch/arm/mach-omap2/cm2xxx.h                  |   60 -
- arch/arm/mach-omap2/cm_common.c               |   12 -
- arch/arm/mach-omap2/common-board-devices.h    |   11 -
- arch/arm/mach-omap2/common.h                  |   12 -
- arch/arm/mach-omap2/control.h                 |   56 -
- arch/arm/mach-omap2/display.c                 |    4 +-
- arch/arm/mach-omap2/dma.c                     |   53 +-
- arch/arm/mach-omap2/fb.c                      |   14 +-
- arch/arm/mach-omap2/gpmc.h                    |   10 -
- arch/arm/mach-omap2/i2c.c                     |    2 +-
- arch/arm/mach-omap2/id.c                      |   80 +-
- arch/arm/mach-omap2/io.c                      |  140 +-
- arch/arm/mach-omap2/iomap.h                   |   46 -
- arch/arm/mach-omap2/l3_2xxx.h                 |   15 -
- arch/arm/mach-omap2/l4_2xxx.h                 |   19 -
- arch/arm/mach-omap2/mmc.h                     |   18 -
- arch/arm/mach-omap2/msdi.c                    |   75 -
- arch/arm/mach-omap2/omap2-restart.c           |   62 -
- arch/arm/mach-omap2/omap24xx.h                |   73 -
- arch/arm/mach-omap2/omap_hwmod.c              |   20 +-
- arch/arm/mach-omap2/omap_hwmod.h              |    2 -
- arch/arm/mach-omap2/omap_hwmod_2420_data.c    |  402 ----
- arch/arm/mach-omap2/omap_hwmod_2430_data.c    |  606 ------
- .../omap_hwmod_2xxx_interconnect_data.c       |  256 ---
- .../mach-omap2/omap_hwmod_2xxx_ipblock_data.c |  668 ------
- arch/arm/mach-omap2/omap_hwmod_common_data.h  |   66 -
- arch/arm/mach-omap2/opp2420_data.c            |  131 --
- arch/arm/mach-omap2/opp2430_data.c            |  136 --
- arch/arm/mach-omap2/opp2xxx.h                 |  430 ----
- arch/arm/mach-omap2/pdata-quirks.c            |   37 +-
- arch/arm/mach-omap2/pm.h                      |    5 -
- arch/arm/mach-omap2/powerdomain.h             |    3 -
- arch/arm/mach-omap2/powerdomains2xxx_data.c   |  134 --
- arch/arm/mach-omap2/prcm-common.h             |  147 --
- arch/arm/mach-omap2/prm-regbits-24xx.h        |   39 -
- arch/arm/mach-omap2/prm2xxx.c                 |  229 ---
- arch/arm/mach-omap2/prm2xxx.h                 |  128 --
- arch/arm/mach-omap2/prm2xxx_3xxx.c            |    1 -
- arch/arm/mach-omap2/prm_common.c              |   11 -
- arch/arm/mach-omap2/sdrc.h                    |   21 -
- arch/arm/mach-omap2/sdrc2xxx.c                |  164 --
- arch/arm/mach-omap2/sleep24xx.S               |   91 -
- arch/arm/mach-omap2/soc.h                     |   59 -
- arch/arm/mach-omap2/sram.c                    |  159 +-
- arch/arm/mach-omap2/sram.h                    |   32 -
- arch/arm/mach-omap2/sram242x.S                |  317 ---
- arch/arm/mach-omap2/sram243x.S                |  317 ---
- arch/arm/mach-omap2/usb-tusb6010.c            |  217 --
- arch/arm/mach-omap2/usb-tusb6010.h            |   12 -
- arch/arm/mach-omap2/voltage.h                 |    1 -
- arch/arm/mach-omap2/voltagedomains2xxx_data.c |   29 -
- arch/arm/mach-orion5x/Kconfig                 |   95 -
- arch/arm/mach-orion5x/Makefile                |   13 +-
- arch/arm/mach-orion5x/board-d2net.c           |    2 -
- arch/arm/mach-orion5x/board-dt.c              |    4 +-
- arch/arm/mach-orion5x/board-mss2.c            |    1 -
- arch/arm/mach-orion5x/board-rd88f5182.c       |    1 -
- arch/arm/mach-orion5x/common.c                |  238 +--
- arch/arm/mach-orion5x/common.h                |   34 +-
- arch/arm/mach-orion5x/dns323-setup.c          |  757 -------
- arch/arm/mach-orion5x/irq.c                   |   51 -
- arch/arm/mach-orion5x/irqs.h                  |    9 -
- arch/arm/mach-orion5x/kurobox_pro-setup.c     |  407 ----
- arch/arm/mach-orion5x/mpp.c                   |   41 -
- arch/arm/mach-orion5x/mpp.h                   |  130 --
- arch/arm/mach-orion5x/mv2120-setup.c          |  256 ---
- arch/arm/mach-orion5x/net2big-setup.c         |  444 ----
- arch/arm/mach-orion5x/pci.c                   |  429 +++-
- .../arm/mach-orion5x/terastation_pro2-setup.c |  366 ----
- arch/arm/mach-orion5x/ts209-setup.c           |  331 ---
- arch/arm/mach-orion5x/ts409-setup.c           |  329 ---
- arch/arm/mach-orion5x/ts78xx-fpga.h           |   42 -
- arch/arm/mach-orion5x/ts78xx-setup.c          |  574 ------
- arch/arm/mach-orion5x/tsx09-common.c          |  129 --
- arch/arm/mach-orion5x/tsx09-common.h          |   21 -
- arch/arm/mach-pxa/Kconfig                     |   89 -
- arch/arm/mach-pxa/Makefile                    |    8 -
- arch/arm/mach-pxa/am200epd.c                  |  395 ----
- arch/arm/mach-pxa/am300epd.c                  |  296 ---
- arch/arm/mach-pxa/devices.c                   |  705 -------
- arch/arm/mach-pxa/devices.h                   |   68 -
- arch/arm/mach-pxa/generic.h                   |    5 -
- arch/arm/mach-pxa/gumstix.c                   |  237 ---
- arch/arm/mach-pxa/gumstix.h                   |   89 -
- arch/arm/mach-pxa/pxa25x.c                    |   59 -
- arch/arm/mach-pxa/pxa27x.c                    |   77 -
- arch/arm/mach-pxa/pxa300.c                    |    1 -
- arch/arm/mach-pxa/pxa320.c                    |    1 -
- arch/arm/mach-pxa/pxa3xx.c                    |    6 -
- arch/arm/mach-pxa/sharpsl_pm.c                |  941 ---------
- arch/arm/mach-pxa/sharpsl_pm.h                |  108 -
- arch/arm/mach-pxa/spitz.c                     | 1174 -----------
- arch/arm/mach-pxa/spitz.h                     |  185 --
- arch/arm/mach-pxa/spitz_pm.c                  |  257 ---
- arch/arm/mach-sa1100/Kconfig                  |   92 -
- arch/arm/mach-sa1100/Makefile                 |   20 -
- arch/arm/mach-sa1100/assabet.c                |  770 -------
- arch/arm/mach-sa1100/clock.c                  |  145 --
- arch/arm/mach-sa1100/collie.c                 |  447 ----
- arch/arm/mach-sa1100/generic.c                |  470 -----
- arch/arm/mach-sa1100/generic.h                |   58 -
- arch/arm/mach-sa1100/h3600.c                  |  134 --
- arch/arm/mach-sa1100/h3xxx.c                  |  305 ---
- arch/arm/mach-sa1100/include/mach/SA-1100.h   | 1798 -----------------
- arch/arm/mach-sa1100/include/mach/assabet.h   |   99 -
- arch/arm/mach-sa1100/include/mach/bitfield.h  |  113 --
- arch/arm/mach-sa1100/include/mach/collie.h    |   94 -
- arch/arm/mach-sa1100/include/mach/generic.h   |    1 -
- arch/arm/mach-sa1100/include/mach/h3xxx.h     |   81 -
- arch/arm/mach-sa1100/include/mach/hardware.h  |   56 -
- arch/arm/mach-sa1100/include/mach/irqs.h      |  101 -
- .../arm/mach-sa1100/include/mach/jornada720.h |   28 -
- arch/arm/mach-sa1100/include/mach/memory.h    |   37 -
- arch/arm/mach-sa1100/include/mach/mtd-xip.h   |   23 -
- arch/arm/mach-sa1100/include/mach/neponset.h  |   31 -
- arch/arm/mach-sa1100/include/mach/reset.h     |   18 -
- .../arm/mach-sa1100/include/mach/uncompress.h |   52 -
- arch/arm/mach-sa1100/jornada720.c             |  380 ----
- arch/arm/mach-sa1100/jornada720_ssp.c         |  202 --
- arch/arm/mach-sa1100/neponset.c               |  438 ----
- arch/arm/mach-sa1100/pm.c                     |  128 --
- arch/arm/mach-sa1100/sleep.S                  |  143 --
- arch/arm/mach-sa1100/ssp.c                    |  240 ---
- arch/arm/mach-stm32/Kconfig                   |   38 +-
- arch/arm/mach-stm32/board-dt.c                |    7 -
- arch/arm/mach-versatile/Kconfig               |   10 -
- arch/arm/mach-versatile/Makefile              |    3 -
- arch/arm/mach-versatile/v2m-mps2.c            |   17 -
- arch/arm/mm/Kconfig                           |    2 +-
- arch/arm/mm/init.c                            |    5 -
- arch/arm/mm/ioremap.c                         |    1 -
- arch/arm/mm/mmu.c                             |   16 -
- arch/arm/plat-orion/Makefile                  |    9 -
- arch/arm/plat-orion/common.c                  |  826 --------
- arch/arm/plat-orion/gpio.c                    |  616 ------
- arch/arm/plat-orion/include/plat/addr-map.h   |   54 -
- arch/arm/plat-orion/include/plat/common.h     |  104 -
- arch/arm/plat-orion/include/plat/irq.h        |   15 -
- arch/arm/plat-orion/include/plat/mpp.h        |   34 -
- arch/arm/plat-orion/include/plat/orion-gpio.h |   38 -
- arch/arm/plat-orion/include/plat/pcie.h       |   34 -
- arch/arm/plat-orion/include/plat/time.h       |   20 -
- arch/arm/plat-orion/irq.c                     |   39 -
- arch/arm/plat-orion/mpp.c                     |   82 -
- arch/arm/plat-orion/pcie.c                    |  288 ---
- arch/arm/plat-orion/time.c                    |  238 ---
- drivers/ata/Kconfig                           |    3 +-
- drivers/crypto/Kconfig                        |    2 +-
- drivers/i2c/busses/Kconfig                    |    2 +-
- drivers/media/platform/ti/omap/Kconfig        |    4 +-
- drivers/mmc/host/Kconfig                      |    2 +-
- drivers/mtd/nand/onenand/Kconfig              |    4 +-
- drivers/pci/controller/Kconfig                |    2 +-
- drivers/pci/controller/pci-mvebu.c            |    5 -
- drivers/phy/marvell/Kconfig                   |    2 +-
- drivers/rtc/Kconfig                           |    8 +-
- drivers/rtc/rtc-sa1100.c                      |   17 +-
- drivers/soc/Makefile                          |    1 -
- drivers/soc/atmel/soc.c                       |   36 -
- drivers/soc/atmel/soc.h                       |   26 -
- drivers/thermal/Kconfig                       |    2 +-
- drivers/video/console/Kconfig                 |    6 +-
- drivers/video/console/dummycon.c              |    6 -
- drivers/video/fbdev/cyber2000fb.c             |   10 -
- drivers/video/fbdev/omap2/omapfb/Kconfig      |    2 +-
- drivers/watchdog/Kconfig                      |   14 +-
- include/linux/clk/ti.h                        |    8 -
- sound/soc/kirkwood/Kconfig                    |    2 +-
- 381 files changed, 567 insertions(+), 55511 deletions(-)
- delete mode 100644 Documentation/arch/arm/netwinder.rst
- delete mode 100644 Documentation/arch/arm/sa1100/assabet.rst
- delete mode 100644 Documentation/arch/arm/sa1100/cerf.rst
- delete mode 100644 Documentation/arch/arm/sa1100/index.rst
- delete mode 100644 Documentation/arch/arm/sa1100/lart.rst
- delete mode 100644 Documentation/arch/arm/sa1100/serial_uart.rst
- delete mode 100644 Documentation/arch/arm/stm32/stm32f429-overview.rst
- delete mode 100644 Documentation/arch/arm/stm32/stm32f746-overview.rst
- delete mode 100644 Documentation/arch/arm/stm32/stm32f769-overview.rst
- delete mode 100644 Documentation/arch/arm/stm32/stm32h743-overview.rst
- delete mode 100644 Documentation/arch/arm/stm32/stm32h750-overview.rst
- delete mode 100644 Documentation/devicetree/bindings/arm/axxia.yaml
- delete mode 100644 arch/arm/boot/compressed/head-sa1100.S
- delete mode 100644 arch/arm/boot/compressed/head-sharpsl.S
- delete mode 100644 arch/arm/boot/dts/arm/mps2-an385.dts
- delete mode 100644 arch/arm/boot/dts/arm/mps2-an399.dts
- delete mode 100644 arch/arm/boot/dts/arm/mps2.dtsi
- delete mode 100644 arch/arm/boot/dts/intel/axm/Makefile
- delete mode 100644 arch/arm/boot/dts/intel/axm/axm5516-amarillo.dts
- delete mode 100644 arch/arm/boot/dts/intel/axm/axm5516-cpus.dtsi
- delete mode 100644 arch/arm/boot/dts/intel/axm/axm55xx.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31-bug.dts
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31-lite.dts
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dts
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4350-hitex-eval.dts
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4350.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts
- delete mode 100644 arch/arm/boot/dts/nxp/lpc/lpc4357.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts
- delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts
- delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32429i-eval.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32746g-eval.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32f4-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f429-disco.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32f429-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f429.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f469-disco.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32f469-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f469.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f7-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f746-disco.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32f746-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f746.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f769-disco-mb1166-reva09.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32f769-disco.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32f769-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32f769.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32h7-pinctrl.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32h743.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32h743i-disco.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32h743i-eval.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32h747i-disco.dts
- delete mode 100644 arch/arm/boot/dts/st/stm32h750.dtsi
- delete mode 100644 arch/arm/boot/dts/st/stm32h750i-art-pi.dts
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-clocks.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-h4.dts
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n800.dts
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n810-wimax.dts
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n810.dts
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2420.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2430-clocks.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2430-sdp.dts
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap2430.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap24xx-clocks.dtsi
- delete mode 100644 arch/arm/common/locomo.c
- delete mode 100644 arch/arm/common/sa1111.c
- delete mode 100644 arch/arm/common/scoop.c
- delete mode 100644 arch/arm/common/sharpsl_param.c
- delete mode 100644 arch/arm/configs/am200epdkit_defconfig
- delete mode 100644 arch/arm/configs/assabet_defconfig
- delete mode 100644 arch/arm/configs/axm55xx_defconfig
- delete mode 100644 arch/arm/configs/collie_defconfig
- delete mode 100644 arch/arm/configs/dove_defconfig
- delete mode 100644 arch/arm/configs/footbridge_defconfig
- delete mode 100644 arch/arm/configs/h3600_defconfig
- delete mode 100644 arch/arm/configs/imxrt_defconfig
- delete mode 100644 arch/arm/configs/jornada720_defconfig
- delete mode 100644 arch/arm/configs/lpc18xx_defconfig
- delete mode 100644 arch/arm/configs/mps2_defconfig
- delete mode 100644 arch/arm/configs/mv78xx0_defconfig
- delete mode 100644 arch/arm/configs/neponset_defconfig
- delete mode 100644 arch/arm/configs/netwinder_defconfig
- delete mode 100644 arch/arm/configs/spitz_defconfig
- delete mode 100644 arch/arm/configs/stm32_defconfig
- delete mode 100644 arch/arm/configs/vf610m4_defconfig
- delete mode 100644 arch/arm/include/asm/hardware/dec21285.h
- delete mode 100644 arch/arm/include/asm/hardware/locomo.h
- delete mode 100644 arch/arm/include/asm/hardware/sa1111.h
- delete mode 100644 arch/arm/include/asm/hardware/scoop.h
- delete mode 100644 arch/arm/include/asm/hardware/ssp.h
- delete mode 100644 arch/arm/include/asm/mach/pci.h
- delete mode 100644 arch/arm/include/asm/mach/sharpsl_param.h
- delete mode 100644 arch/arm/include/debug/dc21285.S
- delete mode 100644 arch/arm/include/debug/sa1100.S
- delete mode 100644 arch/arm/mach-at91/samv7.c
- delete mode 100644 arch/arm/mach-axxia/Kconfig
- delete mode 100644 arch/arm/mach-axxia/Makefile
- delete mode 100644 arch/arm/mach-axxia/axxia.c
- delete mode 100644 arch/arm/mach-axxia/platsmp.c
- delete mode 100644 arch/arm/mach-dove/Kconfig
- delete mode 100644 arch/arm/mach-dove/Makefile
- delete mode 100644 arch/arm/mach-dove/bridge-regs.h
- delete mode 100644 arch/arm/mach-dove/cm-a510.c
- delete mode 100644 arch/arm/mach-dove/common.c
- delete mode 100644 arch/arm/mach-dove/common.h
- delete mode 100644 arch/arm/mach-dove/dove.h
- delete mode 100644 arch/arm/mach-dove/irq.c
- delete mode 100644 arch/arm/mach-dove/irqs.h
- delete mode 100644 arch/arm/mach-dove/mpp.c
- delete mode 100644 arch/arm/mach-dove/mpp.h
- delete mode 100644 arch/arm/mach-dove/pcie.c
- delete mode 100644 arch/arm/mach-dove/pm.h
- delete mode 100644 arch/arm/mach-footbridge/Kconfig
- delete mode 100644 arch/arm/mach-footbridge/Makefile
- delete mode 100644 arch/arm/mach-footbridge/common.c
- delete mode 100644 arch/arm/mach-footbridge/common.h
- delete mode 100644 arch/arm/mach-footbridge/dc21285-timer.c
- delete mode 100644 arch/arm/mach-footbridge/dc21285.c
- delete mode 100644 arch/arm/mach-footbridge/dma-isa.c
- delete mode 100644 arch/arm/mach-footbridge/ebsa285-pci.c
- delete mode 100644 arch/arm/mach-footbridge/ebsa285.c
- delete mode 100644 arch/arm/mach-footbridge/include/mach/hardware.h
- delete mode 100644 arch/arm/mach-footbridge/include/mach/irqs.h
- delete mode 100644 arch/arm/mach-footbridge/include/mach/isa-dma.h
- delete mode 100644 arch/arm/mach-footbridge/include/mach/memory.h
- delete mode 100644 arch/arm/mach-footbridge/include/mach/uncompress.h
- delete mode 100644 arch/arm/mach-footbridge/isa-irq.c
- delete mode 100644 arch/arm/mach-footbridge/isa-rtc.c
- delete mode 100644 arch/arm/mach-footbridge/isa-timer.c
- delete mode 100644 arch/arm/mach-footbridge/isa.c
- delete mode 100644 arch/arm/mach-footbridge/netwinder-hw.c
- delete mode 100644 arch/arm/mach-footbridge/netwinder-pci.c
- delete mode 100644 arch/arm/mach-imx/cpu-imx31.c
- delete mode 100644 arch/arm/mach-imx/mach-imx31.c
- delete mode 100644 arch/arm/mach-imx/mach-imx7d-cm4.c
- delete mode 100644 arch/arm/mach-imx/mach-imxrt.c
- delete mode 100644 arch/arm/mach-lpc18xx/Makefile
- delete mode 100644 arch/arm/mach-lpc18xx/board-dt.c
- delete mode 100644 arch/arm/mach-mv78xx0/Kconfig
- delete mode 100644 arch/arm/mach-mv78xx0/Makefile
- delete mode 100644 arch/arm/mach-mv78xx0/bridge-regs.h
- delete mode 100644 arch/arm/mach-mv78xx0/buffalo-wxl-setup.c
- delete mode 100644 arch/arm/mach-mv78xx0/common.c
- delete mode 100644 arch/arm/mach-mv78xx0/common.h
- delete mode 100644 arch/arm/mach-mv78xx0/irq.c
- delete mode 100644 arch/arm/mach-mv78xx0/irqs.h
- delete mode 100644 arch/arm/mach-mv78xx0/mpp.c
- delete mode 100644 arch/arm/mach-mv78xx0/mpp.h
- delete mode 100644 arch/arm/mach-mv78xx0/mv78xx0.h
- delete mode 100644 arch/arm/mach-mv78xx0/pcie.c
- delete mode 100644 arch/arm/mach-omap2/board-n8x0.c
- delete mode 100644 arch/arm/mach-omap2/clkt2xxx_dpll.c
- delete mode 100644 arch/arm/mach-omap2/clkt2xxx_dpllcore.c
- delete mode 100644 arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
- delete mode 100644 arch/arm/mach-omap2/clock2xxx.h
- delete mode 100644 arch/arm/mach-omap2/clockdomains2420_data.c
- delete mode 100644 arch/arm/mach-omap2/clockdomains2430_data.c
- delete mode 100644 arch/arm/mach-omap2/cm-regbits-24xx.h
- delete mode 100644 arch/arm/mach-omap2/cm2xxx.c
- delete mode 100644 arch/arm/mach-omap2/cm2xxx.h
- delete mode 100644 arch/arm/mach-omap2/common-board-devices.h
- delete mode 100644 arch/arm/mach-omap2/gpmc.h
- delete mode 100644 arch/arm/mach-omap2/l3_2xxx.h
- delete mode 100644 arch/arm/mach-omap2/l4_2xxx.h
- delete mode 100644 arch/arm/mach-omap2/mmc.h
- delete mode 100644 arch/arm/mach-omap2/msdi.c
- delete mode 100644 arch/arm/mach-omap2/omap2-restart.c
- delete mode 100644 arch/arm/mach-omap2/omap24xx.h
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2420_data.c
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2430_data.c
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2xxx_interconnect_data.c
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_2xxx_ipblock_data.c
- delete mode 100644 arch/arm/mach-omap2/opp2420_data.c
- delete mode 100644 arch/arm/mach-omap2/opp2430_data.c
- delete mode 100644 arch/arm/mach-omap2/opp2xxx.h
- delete mode 100644 arch/arm/mach-omap2/powerdomains2xxx_data.c
- delete mode 100644 arch/arm/mach-omap2/prm-regbits-24xx.h
- delete mode 100644 arch/arm/mach-omap2/prm2xxx.c
- delete mode 100644 arch/arm/mach-omap2/prm2xxx.h
- delete mode 100644 arch/arm/mach-omap2/sdrc2xxx.c
- delete mode 100644 arch/arm/mach-omap2/sleep24xx.S
- delete mode 100644 arch/arm/mach-omap2/sram242x.S
- delete mode 100644 arch/arm/mach-omap2/sram243x.S
- delete mode 100644 arch/arm/mach-omap2/usb-tusb6010.c
- delete mode 100644 arch/arm/mach-omap2/usb-tusb6010.h
- delete mode 100644 arch/arm/mach-omap2/voltagedomains2xxx_data.c
- delete mode 100644 arch/arm/mach-orion5x/dns323-setup.c
- delete mode 100644 arch/arm/mach-orion5x/irq.c
- delete mode 100644 arch/arm/mach-orion5x/kurobox_pro-setup.c
- delete mode 100644 arch/arm/mach-orion5x/mpp.c
- delete mode 100644 arch/arm/mach-orion5x/mpp.h
- delete mode 100644 arch/arm/mach-orion5x/mv2120-setup.c
- delete mode 100644 arch/arm/mach-orion5x/net2big-setup.c
- delete mode 100644 arch/arm/mach-orion5x/terastation_pro2-setup.c
- delete mode 100644 arch/arm/mach-orion5x/ts209-setup.c
- delete mode 100644 arch/arm/mach-orion5x/ts409-setup.c
- delete mode 100644 arch/arm/mach-orion5x/ts78xx-fpga.h
- delete mode 100644 arch/arm/mach-orion5x/ts78xx-setup.c
- delete mode 100644 arch/arm/mach-orion5x/tsx09-common.c
- delete mode 100644 arch/arm/mach-orion5x/tsx09-common.h
- delete mode 100644 arch/arm/mach-pxa/am200epd.c
- delete mode 100644 arch/arm/mach-pxa/am300epd.c
- delete mode 100644 arch/arm/mach-pxa/devices.h
- delete mode 100644 arch/arm/mach-pxa/gumstix.c
- delete mode 100644 arch/arm/mach-pxa/gumstix.h
- delete mode 100644 arch/arm/mach-pxa/sharpsl_pm.c
- delete mode 100644 arch/arm/mach-pxa/sharpsl_pm.h
- delete mode 100644 arch/arm/mach-pxa/spitz.c
- delete mode 100644 arch/arm/mach-pxa/spitz.h
- delete mode 100644 arch/arm/mach-pxa/spitz_pm.c
- delete mode 100644 arch/arm/mach-sa1100/Kconfig
- delete mode 100644 arch/arm/mach-sa1100/Makefile
- delete mode 100644 arch/arm/mach-sa1100/assabet.c
- delete mode 100644 arch/arm/mach-sa1100/clock.c
- delete mode 100644 arch/arm/mach-sa1100/collie.c
- delete mode 100644 arch/arm/mach-sa1100/generic.c
- delete mode 100644 arch/arm/mach-sa1100/generic.h
- delete mode 100644 arch/arm/mach-sa1100/h3600.c
- delete mode 100644 arch/arm/mach-sa1100/h3xxx.c
- delete mode 100644 arch/arm/mach-sa1100/include/mach/SA-1100.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/assabet.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/bitfield.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/collie.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/generic.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/h3xxx.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/hardware.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/irqs.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/jornada720.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/memory.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/mtd-xip.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/neponset.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/reset.h
- delete mode 100644 arch/arm/mach-sa1100/include/mach/uncompress.h
- delete mode 100644 arch/arm/mach-sa1100/jornada720.c
- delete mode 100644 arch/arm/mach-sa1100/jornada720_ssp.c
- delete mode 100644 arch/arm/mach-sa1100/neponset.c
- delete mode 100644 arch/arm/mach-sa1100/pm.c
- delete mode 100644 arch/arm/mach-sa1100/sleep.S
- delete mode 100644 arch/arm/mach-sa1100/ssp.c
- delete mode 100644 arch/arm/mach-versatile/v2m-mps2.c
- delete mode 100644 arch/arm/plat-orion/Makefile
- delete mode 100644 arch/arm/plat-orion/common.c
- delete mode 100644 arch/arm/plat-orion/gpio.c
- delete mode 100644 arch/arm/plat-orion/include/plat/addr-map.h
- delete mode 100644 arch/arm/plat-orion/include/plat/common.h
- delete mode 100644 arch/arm/plat-orion/include/plat/irq.h
- delete mode 100644 arch/arm/plat-orion/include/plat/mpp.h
- delete mode 100644 arch/arm/plat-orion/include/plat/orion-gpio.h
- delete mode 100644 arch/arm/plat-orion/include/plat/pcie.h
- delete mode 100644 arch/arm/plat-orion/include/plat/time.h
- delete mode 100644 arch/arm/plat-orion/irq.c
- delete mode 100644 arch/arm/plat-orion/mpp.c
- delete mode 100644 arch/arm/plat-orion/pcie.c
- delete mode 100644 arch/arm/plat-orion/time.c
-
--- 
-2.53.0
-
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
 Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
-Cc: Stefan Agner <stefan@agner.ch>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: Kevin Hilman <khilman@baylibre.com>
-Cc: Roger Quadros <rogerq@kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Gregory Clement <gregory.clement@bootlin.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Kristoffer Ericson <kristoffer.ericson@gmail.com>
-Cc: Linus Walleij <linusw@kernel.org>
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Nicolas Pitre <npitre@baylibre.com>
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: devicetree@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
 Cc: imx@lists.linux.dev
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-omap@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Acked-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
+Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+I have follow-up patches to remove the i.MX31 specific clk
+and hwrng drivers as well as the orphaned wm8350 driver.
+---
+ arch/arm/Kconfig.debug                   |   9 -
+ arch/arm/boot/dts/nxp/imx/Makefile       |   3 -
+ arch/arm/boot/dts/nxp/imx/imx31-bug.dts  |  22 --
+ arch/arm/boot/dts/nxp/imx/imx31-lite.dts | 178 -----------
+ arch/arm/boot/dts/nxp/imx/imx31.dtsi     | 371 -----------------------
+ arch/arm/configs/imx_v6_v7_defconfig     |   1 -
+ arch/arm/include/debug/imx-uart.h        |  10 -
+ arch/arm/mach-imx/Kconfig                |  11 -
+ arch/arm/mach-imx/Makefile               |   1 -
+ arch/arm/mach-imx/common.h               |   2 -
+ arch/arm/mach-imx/cpu-imx31.c            |  72 -----
+ arch/arm/mach-imx/mach-imx31.c           |  18 --
+ arch/arm/mach-imx/mm-imx3.c              |  44 ---
+ 13 files changed, 742 deletions(-)
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31-bug.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31-lite.dts
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx31.dtsi
+ delete mode 100644 arch/arm/mach-imx/cpu-imx31.c
+ delete mode 100644 arch/arm/mach-imx/mach-imx31.c
+
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index 237a2ea717ed..729f5184fba5 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -424,13 +424,6 @@ choice
+ 		  Say Y here if you want kernel low-level debugging support
+ 		  on i.MX28.
+ 
+-	config DEBUG_IMX31_UART
+-		bool "i.MX31 Debug UART"
+-		depends on SOC_IMX31
+-		help
+-		  Say Y here if you want kernel low-level debugging support
+-		  on i.MX31.
+-
+ 	config DEBUG_IMX35_UART
+ 		bool "i.MX35 Debug UART"
+ 		depends on SOC_IMX35
+@@ -1411,7 +1404,6 @@ config DEBUG_IMX_UART_PORT
+ 	depends on DEBUG_IMX1_UART || \
+ 		   DEBUG_IMX25_UART || \
+ 		   DEBUG_IMX27_UART || \
+-		   DEBUG_IMX31_UART || \
+ 		   DEBUG_IMX35_UART || \
+ 		   DEBUG_IMX50_UART || \
+ 		   DEBUG_IMX51_UART || \
+@@ -1468,7 +1460,6 @@ config DEBUG_LL_INCLUDE
+ 	default "debug/imx.S" if DEBUG_IMX1_UART || \
+ 				 DEBUG_IMX25_UART || \
+ 				 DEBUG_IMX27_UART || \
+-				 DEBUG_IMX31_UART || \
+ 				 DEBUG_IMX35_UART || \
+ 				 DEBUG_IMX50_UART || \
+ 				 DEBUG_IMX51_UART || \
+diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+index 1a2539fa19b4..e0747cb6e772 100644
+--- a/arch/arm/boot/dts/nxp/imx/Makefile
++++ b/arch/arm/boot/dts/nxp/imx/Makefile
+@@ -16,9 +16,6 @@ dtb-$(CONFIG_SOC_IMX27) += \
+ 	imx27-pdk.dtb \
+ 	imx27-phytec-phycore-rdk.dtb \
+ 	imx27-phytec-phycard-s-rdk.dtb
+-dtb-$(CONFIG_SOC_IMX31) += \
+-	imx31-bug.dtb \
+-	imx31-lite.dtb
+ dtb-$(CONFIG_SOC_IMX35) += \
+ 	imx35-eukrea-mbimxsd35-baseboard.dtb \
+ 	imx35-pdk.dtb
+diff --git a/arch/arm/boot/dts/nxp/imx/imx31-bug.dts b/arch/arm/boot/dts/nxp/imx/imx31-bug.dts
+deleted file mode 100644
+index d87eee3f9b3c..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx31-bug.dts
++++ /dev/null
+@@ -1,22 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Copyright 2012 Denis 'GNUtoo' Carikli <GNUtoo@no-log.org>
+- */
+-
+-/dts-v1/;
+-#include "imx31.dtsi"
+-
+-/ {
+-	model = "Buglabs i.MX31 Bug 1.x";
+-	compatible = "buglabs,imx31-bug", "fsl,imx31";
+-
+-	memory@80000000 {
+-		device_type = "memory";
+-		reg = <0x80000000 0x8000000>; /* 128M */
+-	};
+-};
+-
+-&uart5 {
+-	uart-has-rtscts;
+-	status = "okay";
+-};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx31-lite.dts b/arch/arm/boot/dts/nxp/imx/imx31-lite.dts
+deleted file mode 100644
+index 630f8fa69ba8..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx31-lite.dts
++++ /dev/null
+@@ -1,178 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
+-//
+-// Copyright (C) 2016-2018 Vladimir Zapolskiy <vz@mleia.com>
+-
+-/dts-v1/;
+-
+-#include "imx31.dtsi"
+-
+-#include <dt-bindings/gpio/gpio.h>
+-#include <dt-bindings/interrupt-controller/irq.h>
+-
+-/ {
+-	model = "LogicPD i.MX31 Lite";
+-	compatible = "logicpd,imx31-lite", "fsl,imx31";
+-
+-	chosen {
+-		stdout-path = &uart1;
+-	};
+-
+-	memory@80000000 {
+-		device_type = "memory";
+-		reg = <0x80000000 0x8000000>;
+-	};
+-
+-	leds {
+-		compatible = "gpio-leds";
+-
+-		led0 {
+-			gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+-		};
+-
+-		led1 {
+-			gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
+-		};
+-	};
+-};
+-
+-&ata {
+-	status = "okay";
+-};
+-
+-&nfc {
+-	nand-bus-width = <8>;
+-	nand-ecc-mode = "hw";
+-	nand-on-flash-bbt;
+-	status = "okay";
+-};
+-
+-&sdhci1 {
+-	bus-width = <4>;
+-	cd-gpios = <&gpio2 11 GPIO_ACTIVE_HIGH>;
+-	wp-gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;
+-	status = "okay";
+-};
+-
+-&spi2 {
+-	status = "okay";
+-
+-	pmic@0 {
+-		compatible = "fsl,mc13783";
+-		reg = <0>;
+-		spi-cs-high;
+-		spi-max-frequency = <1000000>;
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
+-
+-		fsl,mc13xxx-uses-adc;
+-		fsl,mc13xxx-uses-rtc;
+-
+-		regulators {
+-			sw1a {		/* QVCC */
+-				regulator-min-microvolt = <1200000>;
+-				regulator-max-microvolt = <1500000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			sw1b {		/* QVCC */
+-				regulator-min-microvolt = <1200000>;
+-				regulator-max-microvolt = <1500000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			sw2a {		/* 1.8V_DDR, NVCC2, NVCC21 and NVCC22 */
+-				regulator-min-microvolt = <1800000>;
+-				regulator-max-microvolt = <1800000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			sw2b {		/* NVCC10 */
+-				regulator-min-microvolt = <1800000>;
+-				regulator-max-microvolt = <1800000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			violo {		/* NVCC1 and NVCC7 */
+-				regulator-min-microvolt = <1800000>;
+-				regulator-max-microvolt = <1800000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			viohi {		/* VIOHI */
+-				regulator-min-microvolt = <2775000>;
+-				regulator-max-microvolt = <2775000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			vaudio {	/* VAUDIO */
+-				regulator-min-microvolt = <2775000>;
+-				regulator-max-microvolt = <2775000>;
+-			};
+-
+-			vcam {		/* NVCC4 */
+-				regulator-min-microvolt = <2800000>;
+-				regulator-max-microvolt = <2800000>;
+-			};
+-
+-			vgen {		/* NVCC5 / NVCC8 and NVCC6 / NVCC9 */
+-				regulator-min-microvolt = <2775000>;
+-				regulator-max-microvolt = <2775000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-
+-			vmmc2 {		/* NVCC3 */
+-				regulator-min-microvolt = <1600000>;
+-				regulator-max-microvolt = <3000000>;
+-				regulator-always-on;
+-				regulator-boot-on;
+-			};
+-		};
+-	};
+-};
+-
+-&uart1 {
+-	uart-has-rtscts;
+-	status = "okay";
+-};
+-
+-/* Routed to the extension board */
+-&uart2 {
+-	uart-has-rtscts;
+-	status = "okay";
+-};
+-
+-/* Routed to the extension board */
+-&uart3 {
+-	uart-has-rtscts;
+-	status = "okay";
+-};
+-
+-&weim {
+-	status = "okay";
+-
+-	flash@0,0 {
+-		compatible = "cfi-flash";
+-		reg = <0 0x0 0x200000>;
+-		bank-width = <2>;
+-		linux,mtd-name = "physmap-flash.0";
+-		fsl,weim-cs-timing = <0x0000cf03 0xa0330d01 0x00220800>;
+-	};
+-
+-	ethernet@4,0 {
+-		compatible = "smsc,lan9117", "smsc,lan9115";
+-		reg = <4 0x0 0x100>;
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+-		phy-mode = "mii";
+-		reg-io-width = <2>;
+-		smsc,irq-push-pull;
+-		fsl,weim-cs-timing = <0x00008701 0x04000541 0x00010000>;
+-	};
+-};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx31.dtsi b/arch/arm/boot/dts/nxp/imx/imx31.dtsi
+deleted file mode 100644
+index c58f855ea851..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx31.dtsi
++++ /dev/null
+@@ -1,371 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
+-//
+-// Copyright 2016-2018 Vladimir Zapolskiy <vz@mleia.com>
+-// Copyright 2012 Denis 'GNUtoo' Carikli <GNUtoo@no-log.org>
+-
+-/ {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	/*
+-	 * The decompressor and also some bootloaders rely on a
+-	 * pre-existing /chosen node to be available to insert the
+-	 * command line and merge other ATAGS info.
+-	 */
+-	chosen {};
+-
+-	aliases {
+-		gpio0 = &gpio1;
+-		gpio1 = &gpio2;
+-		gpio2 = &gpio3;
+-		i2c0 = &i2c1;
+-		i2c1 = &i2c2;
+-		i2c2 = &i2c3;
+-		serial0 = &uart1;
+-		serial1 = &uart2;
+-		serial2 = &uart3;
+-		serial3 = &uart4;
+-		serial4 = &uart5;
+-		spi0 = &spi1;
+-		spi1 = &spi2;
+-		spi2 = &spi3;
+-	};
+-
+-	cpus {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		cpu@0 {
+-			compatible = "arm,arm1136jf-s";
+-			device_type = "cpu";
+-			reg = <0>;
+-		};
+-	};
+-
+-	avic: interrupt-controller@68000000 {
+-		compatible = "fsl,imx31-avic", "fsl,avic";
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-		reg = <0x68000000 0x100000>;
+-	};
+-
+-	soc: soc {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "simple-bus";
+-		interrupt-parent = <&avic>;
+-		ranges;
+-
+-		iram: sram@1fffc000 {
+-			compatible = "mmio-sram";
+-			reg = <0x1fffc000 0x4000>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			ranges = <0 0x1fffc000 0x4000>;
+-		};
+-
+-		aips1: bus@43f00000 { /* AIPS1 */
+-			compatible = "fsl,aips-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x43f00000 0x100000>;
+-			ranges;
+-
+-			i2c1: i2c@43f80000 {
+-				compatible = "fsl,imx31-i2c", "fsl,imx21-i2c";
+-				reg = <0x43f80000 0x4000>;
+-				interrupts = <10>;
+-				clocks = <&clks 33>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				status = "disabled";
+-			};
+-
+-			i2c3: i2c@43f84000 {
+-				compatible = "fsl,imx31-i2c", "fsl,imx21-i2c";
+-				reg = <0x43f84000 0x4000>;
+-				interrupts = <3>;
+-				clocks = <&clks 35>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				status = "disabled";
+-			};
+-
+-			ata: ata@43f8c000 {
+-				compatible = "fsl,imx31-pata", "fsl,imx27-pata";
+-				reg = <0x43f8c000 0x4000>;
+-				interrupts = <15>;
+-				clocks = <&clks 26>;
+-				status = "disabled";
+-			};
+-
+-			uart1: serial@43f90000 {
+-				compatible = "fsl,imx31-uart", "fsl,imx21-uart";
+-				reg = <0x43f90000 0x4000>;
+-				interrupts = <45>;
+-				clocks = <&clks 10>, <&clks 30>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart2: serial@43f94000 {
+-				compatible = "fsl,imx31-uart", "fsl,imx21-uart";
+-				reg = <0x43f94000 0x4000>;
+-				interrupts = <32>;
+-				clocks = <&clks 10>, <&clks 31>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			i2c2: i2c@43f98000 {
+-				compatible = "fsl,imx31-i2c", "fsl,imx21-i2c";
+-				reg = <0x43f98000 0x4000>;
+-				interrupts = <4>;
+-				clocks = <&clks 34>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				status = "disabled";
+-			};
+-
+-			spi1: spi@43fa4000 {
+-				compatible = "fsl,imx31-cspi";
+-				reg = <0x43fa4000 0x4000>;
+-				interrupts = <14>;
+-				clocks = <&clks 10>, <&clks 53>;
+-				clock-names = "ipg", "per";
+-				dmas = <&sdma 8 8 0>, <&sdma 9 8 0>;
+-				dma-names = "rx", "tx";
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				status = "disabled";
+-			};
+-
+-			kpp: kpp@43fa8000 {
+-				compatible = "fsl,imx31-kpp", "fsl,imx21-kpp";
+-				reg = <0x43fa8000 0x4000>;
+-				interrupts = <24>;
+-				clocks = <&clks 46>;
+-				status = "disabled";
+-			};
+-
+-			uart4: serial@43fb0000 {
+-				compatible = "fsl,imx31-uart", "fsl,imx21-uart";
+-				reg = <0x43fb0000 0x4000>;
+-				clocks = <&clks 10>, <&clks 49>;
+-				clock-names = "ipg", "per";
+-				interrupts = <46>;
+-				status = "disabled";
+-			};
+-
+-			uart5: serial@43fb4000 {
+-				compatible = "fsl,imx31-uart", "fsl,imx21-uart";
+-				reg = <0x43fb4000 0x4000>;
+-				interrupts = <47>;
+-				clocks = <&clks 10>, <&clks 50>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-		};
+-
+-		spba-bus@50000000 {
+-			compatible = "fsl,spba-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x50000000 0x100000>;
+-			ranges;
+-
+-			sdhci1: mmc@50004000 {
+-				compatible = "fsl,imx31-mmc";
+-				reg = <0x50004000 0x4000>;
+-				interrupts = <9>;
+-				clocks = <&clks 10>, <&clks 20>;
+-				clock-names = "ipg", "per";
+-				dmas = <&sdma 20 3 0>;
+-				dma-names = "rx-tx";
+-				status = "disabled";
+-			};
+-
+-			sdhci2: mmc@50008000 {
+-				compatible = "fsl,imx31-mmc";
+-				reg = <0x50008000 0x4000>;
+-				interrupts = <8>;
+-				clocks = <&clks 10>, <&clks 21>;
+-				clock-names = "ipg", "per";
+-				dmas = <&sdma 21 3 0>;
+-				dma-names = "rx-tx";
+-				status = "disabled";
+-			};
+-
+-			uart3: serial@5000c000 {
+-				compatible = "fsl,imx31-uart", "fsl,imx21-uart";
+-				reg = <0x5000c000 0x4000>;
+-				interrupts = <18>;
+-				clocks = <&clks 10>, <&clks 48>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			spi2: spi@50010000 {
+-				compatible = "fsl,imx31-cspi";
+-				reg = <0x50010000 0x4000>;
+-				interrupts = <13>;
+-				clocks = <&clks 10>, <&clks 54>;
+-				clock-names = "ipg", "per";
+-				dmas = <&sdma 6 8 0>, <&sdma 7 8 0>;
+-				dma-names = "rx", "tx";
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				status = "disabled";
+-			};
+-
+-			iim: efuse@5001c000 {
+-				compatible = "fsl,imx31-iim";
+-				reg = <0x5001c000 0x1000>;
+-				interrupts = <19>;
+-				clocks = <&clks 25>;
+-			};
+-		};
+-
+-		bus@53f00000 { /* AIPS2 */
+-			compatible = "fsl,aips-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x53f00000 0x100000>;
+-			ranges;
+-
+-			clks: ccm@53f80000 {
+-				compatible = "fsl,imx31-ccm";
+-				reg = <0x53f80000 0x4000>;
+-				interrupts = <31>, <53>;
+-				#clock-cells = <1>;
+-			};
+-
+-			spi3: spi@53f84000 {
+-				compatible = "fsl,imx31-cspi";
+-				reg = <0x53f84000 0x4000>;
+-				interrupts = <17>;
+-				clocks = <&clks 10>, <&clks 28>;
+-				clock-names = "ipg", "per";
+-				dmas = <&sdma 10 8 0>, <&sdma 11 8 0>;
+-				dma-names = "rx", "tx";
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				status = "disabled";
+-			};
+-
+-			gpt: timer@53f90000 {
+-				compatible = "fsl,imx31-gpt";
+-				reg = <0x53f90000 0x4000>;
+-				interrupts = <29>;
+-				clocks = <&clks 10>, <&clks 22>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			gpio3: gpio@53fa4000 {
+-				compatible = "fsl,imx31-gpio";
+-				reg = <0x53fa4000 0x4000>;
+-				interrupts = <56>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			rng@53fb0000 {
+-				compatible = "fsl,imx31-rnga";
+-				reg = <0x53fb0000 0x4000>;
+-				interrupts = <22>;
+-				clocks = <&clks 29>;
+-			};
+-
+-			gpio1: gpio@53fcc000 {
+-				compatible = "fsl,imx31-gpio";
+-				reg = <0x53fcc000 0x4000>;
+-				interrupts = <52>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			gpio2: gpio@53fd0000 {
+-				compatible = "fsl,imx31-gpio";
+-				reg = <0x53fd0000 0x4000>;
+-				interrupts = <51>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			sdma: dma-controller@53fd4000 {
+-				compatible = "fsl,imx31-sdma";
+-				reg = <0x53fd4000 0x4000>;
+-				interrupts = <34>;
+-				clocks = <&clks 10>, <&clks 27>;
+-				clock-names = "ipg", "ahb";
+-				#dma-cells = <3>;
+-				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx31.bin";
+-			};
+-
+-			rtc: rtc@53fd8000 {
+-				compatible = "fsl,imx31-rtc", "fsl,imx21-rtc";
+-				reg = <0x53fd8000 0x4000>;
+-				interrupts = <25>;
+-				clocks = <&clks 2>, <&clks 40>;
+-				clock-names = "ref", "ipg";
+-			};
+-
+-			wdog: watchdog@53fdc000 {
+-				compatible = "fsl,imx31-wdt", "fsl,imx21-wdt";
+-				reg = <0x53fdc000 0x4000>;
+-				clocks = <&clks 41>;
+-				interrupts = <55>;
+-			};
+-
+-			pwm: pwm@53fe0000 {
+-				compatible = "fsl,imx31-pwm", "fsl,imx27-pwm";
+-				reg = <0x53fe0000 0x4000>;
+-				interrupts = <26>;
+-				clocks = <&clks 10>, <&clks 42>;
+-				clock-names = "ipg", "per";
+-				#pwm-cells = <3>;
+-				status = "disabled";
+-			};
+-		};
+-
+-		emi-bus@b8000000 { /* External Memory Interface */
+-			compatible = "simple-bus";
+-			reg = <0xb8000000 0x5000>;
+-			ranges;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			nfc: nand-controller@b8000000 {
+-				compatible = "fsl,imx31-nand", "fsl,imx27-nand";
+-				reg = <0xb8000000 0x1000>;
+-				interrupts = <33>;
+-				clocks = <&clks 9>;
+-				dmas = <&sdma 30 17 0>;
+-				dma-names = "rx-tx";
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-				status = "disabled";
+-			};
+-
+-			weim: memory-controller@b8002000 {
+-				compatible = "fsl,imx31-weim", "fsl,imx27-weim";
+-				reg = <0xb8002000 0x1000>;
+-				clocks = <&clks 56>;
+-				#address-cells = <2>;
+-				#size-cells = <1>;
+-				ranges = <0 0 0xa0000000 0x08000000
+-					  1 0 0xa8000000 0x08000000
+-					  2 0 0xb0000000 0x02000000
+-					  3 0 0xb2000000 0x02000000
+-					  4 0 0xb4000000 0x02000000
+-					  5 0 0xb6000000 0x02000000>;
+-				status = "disabled";
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index ed588add8d31..6ac42c06c1e9 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -15,7 +15,6 @@ CONFIG_PERF_EVENTS=y
+ CONFIG_KEXEC=y
+ CONFIG_ARCH_MULTI_V6=y
+ CONFIG_ARCH_MXC=y
+-CONFIG_SOC_IMX31=y
+ CONFIG_SOC_IMX35=y
+ CONFIG_SOC_IMX50=y
+ CONFIG_SOC_IMX51=y
+diff --git a/arch/arm/include/debug/imx-uart.h b/arch/arm/include/debug/imx-uart.h
+index 3edbb3c5b42b..df038a0852f9 100644
+--- a/arch/arm/include/debug/imx-uart.h
++++ b/arch/arm/include/debug/imx-uart.h
+@@ -26,14 +26,6 @@
+ #define IMX27_UART_BASE_ADDR(n)	IMX27_UART##n##_BASE_ADDR
+ #define IMX27_UART_BASE(n)	IMX27_UART_BASE_ADDR(n)
+ 
+-#define IMX31_UART1_BASE_ADDR	0x43f90000
+-#define IMX31_UART2_BASE_ADDR	0x43f94000
+-#define IMX31_UART3_BASE_ADDR	0x5000c000
+-#define IMX31_UART4_BASE_ADDR	0x43fb0000
+-#define IMX31_UART5_BASE_ADDR	0x43fb4000
+-#define IMX31_UART_BASE_ADDR(n)	IMX31_UART##n##_BASE_ADDR
+-#define IMX31_UART_BASE(n)	IMX31_UART_BASE_ADDR(n)
+-
+ #define IMX35_UART1_BASE_ADDR	0x43f90000
+ #define IMX35_UART2_BASE_ADDR	0x43f94000
+ #define IMX35_UART3_BASE_ADDR	0x5000c000
+@@ -116,8 +108,6 @@
+ #define UART_PADDR	IMX_DEBUG_UART_BASE(IMX25)
+ #elif defined(CONFIG_DEBUG_IMX27_UART)
+ #define UART_PADDR	IMX_DEBUG_UART_BASE(IMX27)
+-#elif defined(CONFIG_DEBUG_IMX31_UART)
+-#define UART_PADDR	IMX_DEBUG_UART_BASE(IMX31)
+ #elif defined(CONFIG_DEBUG_IMX35_UART)
+ #define UART_PADDR	IMX_DEBUG_UART_BASE(IMX35)
+ #elif defined(CONFIG_DEBUG_IMX50_UART)
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 3f0521c652cb..77704c6a70ba 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -39,17 +39,6 @@ if ARCH_MULTI_V6
+ 
+ comment "ARM1136 platforms"
+ 
+-config SOC_IMX31
+-	bool "i.MX31 support (DEPRECATED)"
+-	depends on !SMP
+-	select CPU_ARM1136R0
+-	select MXC_AVIC
+-	help
+-	  This enables support for Freescale i.MX31 processor
+-
+-	  This SoC is scheduled for removal in early 2027,
+-	  since it uses the ARM1136r0 CPU revision.
+-
+ config SOC_IMX35
+ 	bool "i.MX35 support"
+ 	select CPU_ARM1136R1
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 5c650bf40e02..fa0144f0882d 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -5,7 +5,6 @@ obj-$(CONFIG_SOC_IMX25) += cpu-imx25.o mach-imx25.o pm-imx25.o
+ 
+ obj-$(CONFIG_SOC_IMX27) += cpu-imx27.o pm-imx27.o mach-imx27.o
+ 
+-obj-$(CONFIG_SOC_IMX31) += mm-imx3.o cpu-imx31.o mach-imx31.o
+ obj-$(CONFIG_SOC_IMX35) += mm-imx3.o cpu-imx35.o mach-imx35.o
+ 
+ imx5-pm-$(CONFIG_PM) += pm-imx5.o
+diff --git a/arch/arm/mach-imx/common.h b/arch/arm/mach-imx/common.h
+index d7ecaa822adb..158ea819f5be 100644
+--- a/arch/arm/mach-imx/common.h
++++ b/arch/arm/mach-imx/common.h
+@@ -15,9 +15,7 @@ struct pt_regs;
+ struct clk;
+ struct device_node;
+ 
+-void mx31_map_io(void);
+ void mx35_map_io(void);
+-void imx31_init_early(void);
+ void imx35_init_early(void);
+ void mxc_set_cpu_type(unsigned int type);
+ void mxc_restart(enum reboot_mode, const char *);
+diff --git a/arch/arm/mach-imx/cpu-imx31.c b/arch/arm/mach-imx/cpu-imx31.c
+deleted file mode 100644
+index e81ef9e36a1f..000000000000
+--- a/arch/arm/mach-imx/cpu-imx31.c
++++ /dev/null
+@@ -1,72 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * MX31 CPU type detection
+- *
+- * Copyright (c) 2009 Daniel Mack <daniel@caiaq.de>
+- */
+-
+-#include <linux/module.h>
+-#include <linux/of_address.h>
+-#include <linux/io.h>
+-
+-#include "common.h"
+-#include "hardware.h"
+-#include "iim.h"
+-
+-static int mx31_cpu_rev = -1;
+-
+-static struct {
+-	u8 srev;
+-	const char *name;
+-	unsigned int rev;
+-} mx31_cpu_type[] = {
+-	{ .srev = 0x00, .name = "i.MX31(L)", .rev = IMX_CHIP_REVISION_1_0 },
+-	{ .srev = 0x10, .name = "i.MX31",    .rev = IMX_CHIP_REVISION_1_1 },
+-	{ .srev = 0x11, .name = "i.MX31L",   .rev = IMX_CHIP_REVISION_1_1 },
+-	{ .srev = 0x12, .name = "i.MX31",    .rev = IMX_CHIP_REVISION_1_1 },
+-	{ .srev = 0x13, .name = "i.MX31L",   .rev = IMX_CHIP_REVISION_1_1 },
+-	{ .srev = 0x14, .name = "i.MX31",    .rev = IMX_CHIP_REVISION_1_2 },
+-	{ .srev = 0x15, .name = "i.MX31L",   .rev = IMX_CHIP_REVISION_1_2 },
+-	{ .srev = 0x28, .name = "i.MX31",    .rev = IMX_CHIP_REVISION_2_0 },
+-	{ .srev = 0x29, .name = "i.MX31L",   .rev = IMX_CHIP_REVISION_2_0 },
+-};
+-
+-static int mx31_read_cpu_rev(void)
+-{
+-	void __iomem *iim_base;
+-	struct device_node *np;
+-	u32 i, srev;
+-	int rev = IMX_CHIP_REVISION_UNKNOWN;
+-
+-	np = of_find_compatible_node(NULL, NULL, "fsl,imx31-iim");
+-	iim_base = of_iomap(np, 0);
+-	of_node_put(np);
+-	BUG_ON(!iim_base);
+-
+-	/* read SREV register from IIM module */
+-	srev = imx_readl(iim_base + MXC_IIMSREV);
+-	srev &= 0xff;
+-
+-	for (i = 0; i < ARRAY_SIZE(mx31_cpu_type); i++)
+-		if (srev == mx31_cpu_type[i].srev) {
+-			rev = mx31_cpu_type[i].rev;
+-			imx_print_silicon_rev(mx31_cpu_type[i].name,
+-						mx31_cpu_type[i].rev);
+-			goto out;
+-		}
+-
+-	imx_print_silicon_rev("i.MX31", IMX_CHIP_REVISION_UNKNOWN);
+-
+-out:
+-	iounmap(iim_base);
+-	return rev;
+-}
+-
+-int mx31_revision(void)
+-{
+-	if (mx31_cpu_rev == -1)
+-		mx31_cpu_rev = mx31_read_cpu_rev();
+-
+-	return mx31_cpu_rev;
+-}
+-EXPORT_SYMBOL(mx31_revision);
+diff --git a/arch/arm/mach-imx/mach-imx31.c b/arch/arm/mach-imx/mach-imx31.c
+deleted file mode 100644
+index e9a1092b6093..000000000000
+--- a/arch/arm/mach-imx/mach-imx31.c
++++ /dev/null
+@@ -1,18 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Copyright 2012 Sascha Hauer, Pengutronix
+- */
+-
+-#include <asm/mach/arch.h>
+-#include "common.h"
+-
+-static const char * const imx31_dt_board_compat[] __initconst = {
+-	"fsl,imx31",
+-	NULL
+-};
+-
+-DT_MACHINE_START(IMX31_DT, "Freescale i.MX31 (Device Tree Support)")
+-	.map_io		= mx31_map_io,
+-	.init_early	= imx31_init_early,
+-	.dt_compat	= imx31_dt_board_compat,
+-MACHINE_END
+diff --git a/arch/arm/mach-imx/mm-imx3.c b/arch/arm/mach-imx/mm-imx3.c
+index 9b0b014d7fe2..42e73518004a 100644
+--- a/arch/arm/mach-imx/mm-imx3.c
++++ b/arch/arm/mach-imx/mm-imx3.c
+@@ -69,49 +69,6 @@ static void __iomem *imx3_ioremap_caller(phys_addr_t phys_addr, size_t size,
+ 	return __arm_ioremap_caller(phys_addr, size, mtype, caller);
+ }
+ 
+-#ifdef CONFIG_SOC_IMX31
+-static struct map_desc mx31_io_desc[] __initdata = {
+-	imx_map_entry(MX31, X_MEMC, MT_DEVICE),
+-	imx_map_entry(MX31, AVIC, MT_DEVICE_NONSHARED),
+-	imx_map_entry(MX31, AIPS1, MT_DEVICE_NONSHARED),
+-	imx_map_entry(MX31, AIPS2, MT_DEVICE_NONSHARED),
+-	imx_map_entry(MX31, SPBA0, MT_DEVICE_NONSHARED),
+-};
+-
+-/*
+- * This function initializes the memory map. It is called during the
+- * system startup to create static physical to virtual memory mappings
+- * for the IO modules.
+- */
+-void __init mx31_map_io(void)
+-{
+-	iotable_init(mx31_io_desc, ARRAY_SIZE(mx31_io_desc));
+-}
+-
+-static void imx31_idle(void)
+-{
+-	int reg = imx_readl(mx3_ccm_base + MXC_CCM_CCMR);
+-	reg &= ~MXC_CCM_CCMR_LPM_MASK;
+-	imx_writel(reg, mx3_ccm_base + MXC_CCM_CCMR);
+-
+-	imx3_idle();
+-}
+-
+-void __init imx31_init_early(void)
+-{
+-	struct device_node *np;
+-
+-	mxc_set_cpu_type(MXC_CPU_MX31);
+-	arch_ioremap_caller = imx3_ioremap_caller;
+-	arm_pm_idle = imx31_idle;
+-	np = of_find_compatible_node(NULL, NULL, "fsl,imx31-ccm");
+-	mx3_ccm_base = of_iomap(np, 0);
+-	of_node_put(np);
+-	BUG_ON(!mx3_ccm_base);
+-}
+-#endif /* ifdef CONFIG_SOC_IMX31 */
+-
+-#ifdef CONFIG_SOC_IMX35
+ static struct map_desc mx35_io_desc[] __initdata = {
+ 	imx_map_entry(MX35, X_MEMC, MT_DEVICE),
+ 	imx_map_entry(MX35, AVIC, MT_DEVICE_NONSHARED),
+@@ -147,4 +104,3 @@ void __init imx35_init_early(void)
+ 	of_node_put(np);
+ 	BUG_ON(!mx3_ccm_base);
+ }
+-#endif /* ifdef CONFIG_SOC_IMX35 */
+-- 
+2.53.0
+
