@@ -1,125 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB6241D624
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D4342641B
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789377503; cv=none; b=q6V31dpm+9JIh4JTGBzM05MskcNCPwD+1DwbnN6XD+7puVre2PVWDH0JtzdQmEbwyRFdk3KZlNgYFgYNvLsqYZXzqY87o0E+DmIqsJ3gXwB07/1MjRjN99IguXbwbWRDiWZFNjKZrXsDy19aFCcFrtA9ce6muxhiAR55y7shKxM=
+	t=1789377843; cv=none; b=qV9cCIlv/E0HVFch1VfvvamYuK2ouHBmx431QUq1zv7JWmgn0QTdnkVpt6ZG1PQUMvS7rIeu/geCjVcj2VaUyGKU1J/yGHc0o5yylizSFhwxsw5TqbOUOa6947tAaceBd9wEm09o7x/audTeuiz1v/5bJRuYXhsJzzfZHOzy4PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789377503; c=relaxed/simple;
-	bh=y+XthYpwJa0ncDZ+rJaH7UIirjA9bghrnQc1+p4y9tI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JwQaYfsmA7/ZCRS0aeyjda6r6GQNReKdyCrKa5kvoAOfwEBEVQ1eda5bSLogYFqVBldnJQ0XzNPPJJ3zG34di1vnnH8+zTa8pF6sdyUvgAacbm5Cs6Z04sjQkfzFIPV53ukiuR+0DGyryDrsYYsov7q+CGjC/scO+hMEkCMIjkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huqoo2Wb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789377843; c=relaxed/simple;
+	bh=PJCpttXgaFTAAuIppNV/gcSz4Kqn62rNZomfMgasjmI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GaOIeNNcijM7zjf6l5h5n4ttJIRaIbqoVIkiFuIhOJ7vOh5gcXhzOrr1Ax41T98yq06QGh8LHIUlKVI5g1899sfqVGRNSOBmA+q+iloOyxGN1OzabLF0d36RYlpi2WHbVIRWmO/XAZpIyyFKNv77/Ni9sNwLJ8dlvKigXD7Bz0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S03B2mRD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huqoo2Wb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A44C1F000FF;
-	Mon, 14 Sep 2026 09:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789377501;
-	bh=2YL3MC718vW3UHSqqFd9vlO0hJLQr7pBGsPwZmNxl1c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=huqoo2WbDiUJYDQVo7Wm4fXnki0m2SpndKb8grWRqQSLwBTFm9AvswKt+WtJOP2SL
-	 j1IRgTmAJqAKf6E1oxfRoG0duwel/UV2eAsgp1gdainZ6ZE47RXhc7vX5sQlUYEibE
-	 NX2008x6hLliHdgOIkkWwLLuW4xU28bgU0+yJrnFq7Hl5nAGOefKLYs7BDbW0jvnKJ
-	 caasLViCVdlXtjweMeja9Nm1KiXNmjOYYPQMAuU3/iQvINiP+1/AaNn3Kxf9Rk6cZu
-	 05btP8NjnF1PWS4J8cHqyboN2MwaXwtnCg9E8dpYqDEPXooMUveuL6Okz2UOYF1Yux
-	 Qobs0TcB1Cc+A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] i2c: imx-lpi2c: release clocks on remove
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guangshuo Li" <lgs201920130244@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260914090718.1666333-1-lgs201920130244@gmail.com>
-References: <20260914090718.1666333-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 09:18:20 +0000
-Message-Id: <20260914091821.4A44C1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S03B2mRD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789377837;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tb/KsUxM9jxkMjSRJHpE7KiQY8ZPLkB6sQ8Hi6kwrEk=;
+	b=S03B2mRDhMOL9hadIcjxq84aJy8x2b9D+LQRphsfR0PdxlSCwtWsvengupFKEESvc1Vm48
+	I8ruJN69aaAnU2kVZpNcR43EyW1fQVn3HoCQ5L+YIzEkzrMhFUfviLS2Oe8+EcUgt3hZ3G
+	77M7sQNZfEwjFDdRQNiorKBilPwieko=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-iaRFVCSQPYylag8iEtcpCg-1; Mon, 14 Sep 2026 05:23:56 -0400
+X-MC-Unique: iaRFVCSQPYylag8iEtcpCg-1
+X-Mimecast-MFC-AGG-ID: iaRFVCSQPYylag8iEtcpCg_1789377835
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955e865174so14964135e9.3
+        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 02:23:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789377835; x=1789982635;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Tb/KsUxM9jxkMjSRJHpE7KiQY8ZPLkB6sQ8Hi6kwrEk=;
+        b=A1OMr+azo7M/72wSHDM+KsoG1po3sR9/ENISk1Md/Dw01RV4VLxcG6Hp28NvoDNUAM
+         EVNE8BIFVs2MYPmuNBAjQe8WJozc8kU0Gtz2BZx9A78YgyXEs70iskfVxn4KYrJscBXN
+         d/fyWZByBecvb8D8hu2vD/6i6VF9gb89FOLXuOk9WV1TlaLHqbnP2y3Uvo6QRvJ1j2y7
+         soj065xv8TiWsFj9Piy7aKu9Mkhf+fH1MKK/2xKPfyuRC7szDLbFbIN/vUA4CfMvj3Iz
+         Y7gCoIUOrJHvVlEt1xqTCQeGC1Y3N+7CZQAR6TC/gjXgaZVjOqWDgoXwKDxzpxRacstA
+         nX9w==
+X-Forwarded-Encrypted: i=1; AKwUvBxHNacYrUW9jp/wxrCanOVpmKmHxtdqM+bcxmY60EWID3v/UWZPsc5AU6NZP9org+wrXmc=@lists.linux.dev
+X-Gm-Message-State: AFuF++meVTE41FXxjS5FFCn0A4cN7exqhbh9KaveRVDjtCSLe3GQnTQ3
+	SZLefhlb0R7KrzQQrT8pe/SzVqMC53BkwlIx7mDo4k30+KwCDcQg+q+8mNA337kciG6LONwaKq1
+	ryMIkek/LaStX639QU1UYbRDAVH77oywyvyjhyPl/lBlJceOD8ZcmCw==
+X-Gm-Gg: AYBFou3TPCKiy+jwNVF/17uljrK5BQR0XoTy3x2gKRovDM2Ytibmz5iHB0l1alfCur9
+	aovY87eCiY81iHBP3WM/dX1a9Q5xHGGt3r4Cog9y+KRpbTrNQN2nB/KYVa6LCONTSCZHZFLvG/R
+	/uBXUwgSm0KMyyHAkmcL/L25fpj25Jfb09mJvUuaovVwyDn9SgOnr9Qdsh8MupZ9wpcaxWFjqvQ
+	JGlyidHKLK8SJBqcP26NctVa2FtJAi0NAe6pzQsnwHm2Dl5IdL5BcGKLx75PWj/3o8RXdrFqXvx
+	R+AUjng24r8k3ohQcD3Lm34L50ybHOlyqHD+LkunRJA2BomV/dj0jom6VVEhf6nnSYYnVKtkpy1
+	uysoA/uTJmDAEkqEIIQwyfueEO/SZdkdaBUGbKet8gvcFKDT5W7QRh+Wa6A==
+X-Received: by 2002:a05:600c:628f:b0:49d:1df6:2592 with SMTP id 5b1f17b1804b1-49e7a66ae3dmr16857935e9.21.1789377835296;
+        Mon, 14 Sep 2026 02:23:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:628f:b0:49d:1df6:2592 with SMTP id 5b1f17b1804b1-49e7a66ae3dmr16857405e9.21.1789377834915;
+        Mon, 14 Sep 2026 02:23:54 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e6576122bsm399519375e9.2.2026.09.14.02.23.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 02:23:54 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Chen-Yu Tsai
+ <wens@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Liu Ying
+ <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
+ Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Luca Ceresoli <luca.ceresoli@bootlin.com>, Frank Li
+ <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Francesco Dolcini <francesco@dolcini.it>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Rob
+ Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang
+ <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Marcus Folkesson
+ <marcus.folkesson@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Yannick Fertre
+ <yannick.fertre@foss.st.com>, Raphael Gallais-Pou
+ <raphael.gallais-pou@foss.st.com>, Philippe Cornu
+ <philippe.cornu@foss.st.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Adrien Grassein <adrien.grassein@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Simha BN <simhavcs@gmail.com>, CK Hu
+ <ck.hu@mediatek.com>, Jitao shi <jitao.shi@mediatek.com>, Yongxing Mou
+ <yongxing.mou@oss.qualcomm.com>, Abel Vesa <abelvesa@kernel.org>, Chris
+ Morgan <macromorgan@hotmail.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH 1/2] dt-bindings: display: Use consistent indentation in
+ the example
+In-Reply-To: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
+Date: Mon, 14 Sep 2026 11:23:52 +0200
+Message-ID: <87pkyg1907.fsf@ocarina.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: tPjXn6b34RID0XfZPCPtH7H7sqwk2H53wX3k0FNRs-8_1789377835
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> writes:
 
-New issues:
-- [High] Manually disabling hardware clocks while the devm-managed interrup=
-t is still active creates a race condition leading to a system crash on spu=
-rious interrupts.
-- [Medium] Ignored return value of pm_runtime_get_sync() leads to unbalance=
-d clock disable and reference count underflow if device resume fails.
+> Correct indentation in the examples to consistent 2- or 4-spaces
+> indentation to fix dt-check-style warnings ("example 0
+> [indent-consistent] indent mismatch ...").  Preferred is 4-spaces, but
+> re-indenting entire example just for that is too much churn.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> ---
 
-Pre-existing issues:
-- [High] ISR unconditionally accesses hardware registers without ensuring t=
-he device is runtime active.
---
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-commit aa70bea937f841715508dc37222d676d4d04042f
-Author: Guangshuo Li <lgs201920130244@gmail.com>
-i2c: imx-lpi2c: release clocks on remove
+-- 
+Best regards,
 
-This commit modifies lpi2c_imx_remove() to resume the device before disabli=
-ng
-runtime PM, ensuring the clocks are in a known enabled and prepared state. =
-It
-then drops the temporary runtime PM reference and explicitly disables and
-unprepares the clocks during final teardown.
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
-imx-lpi2c.c
-> index 49aabef7f115c..7f4bc98325853 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> @@ -1613,8 +1613,13 @@ static void lpi2c_imx_remove(struct platform_devic=
-e *pdev)
-> =20
->  	i2c_del_adapter(&lpi2c_imx->adapter);
-> =20
-> +	pm_runtime_get_sync(&pdev->dev);
-
-[Severity: Medium]
-If this fails and returns a negative error code, is it safe to proceed? The
-clocks would remain disabled, which might cause an enable count underflow
-when clk_bulk_disable_unprepare() is unconditionally called later in this
-function.
-
->  	pm_runtime_disable(&pdev->dev);
-> +	pm_runtime_put_noidle(&pdev->dev);
->  	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> +
-> +	clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
-
-[Severity: High]
-Does disabling the clocks here create a race condition with the devm managed
-interrupt? Because the interrupt handler was registered with
-devm_request_irq(), it is only automatically freed after lpi2c_imx_remove()
-returns. If a spurious or delayed interrupt fires during this window,
-lpi2c_imx_isr() will attempt to read hardware registers with clocks disable=
-d,
-which can cause a fatal system crash.
-
-[Severity: High]
-This is a pre-existing issue, but does lpi2c_imx_isr() also need to check if
-the device is runtime active? The ISR unconditionally reads hardware regist=
-ers:
-
-drivers/i2c/busses/i2c-imx-lpi2c.c:lpi2c_imx_isr() {
-    ...
-    u32 scr =3D readl(lpi2c_imx->base + LPI2C_SCR);
-    ...
-}
-
-If the device is suspended and a spurious interrupt fires, this could also
-lead to a system crash. Should the ISR use pm_runtime_get_if_active()
-before accessing hardware registers?
-
-> +	pm_runtime_set_suspended(&pdev->dev);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914090718.1666=
-333-1-lgs201920130244@gmail.com?part=3D1
