@@ -1,119 +1,157 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D71C471258
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 12:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD1C396D36
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 13:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789390412; cv=none; b=KjhwFeHqcoxKV2AmR9bu3uBhL/oOfNyjNJxqwMTtjMbhTUV1vITQJ6L9Dtv+O/wxgRiF7/5JDKlTjr2Oj/ojwY8Bx3izpCFAEBExQGEAykfcxxQmB7AgMizMnO1AVb9DFiBHU6RE7exJ1WHqp9LvYUHwWl1UwliS1AOk5cpVWWg=
+	t=1789391541; cv=none; b=X5zGvytq50n3yeLzawxL+BXdxh4Hb+x3fQqJvq12HQ4vLCjtfU+69Da5rmvCNNDSSQMyOk/cLbaUk/6caFH403xu3/mqWR5k8YBcEEs8+x3K8uuN3ge/VzHe+5cUTNsxqvGcTS7dFGEngRbxxZzKocPMFGEd+ie2UbKKDiqcw2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789390412; c=relaxed/simple;
-	bh=9MU3GlGUB1OPK/XpXe4SqAgEDW6zxQdlcL04VkOQLyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PQLSuV7NCmO6eco8d+xV4lPN5m0T9T4Dg8yw6eCFbMf1X+v814lnnYB/s5DKlMA4oN2Uody57lgMzwDlFDEUifQTfIery5gse9EQvDwd8lDWisNGKUZ+bA9cymMwkMgA8kf+ohjeR6R0Kx7Ssm9jukR/COjD9+RMFgpJ3aWx9gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OoRENNmo; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789391541; c=relaxed/simple;
+	bh=oxbFhAvr6JSfGzP5RlSIkIiQp3K9ZHr1MCwoENtbehI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P++ylis5YRWCQElz1Ggr7RF97AgSSp1wdnkVnOL1JJeo8wryg4J4jvCWg+W32I8VPnVyyT9mqnKHQG5oHRwbK9syy1zGAXyy7b1X3DgqnVIwB6/bJqowvnuV4FbPKvVLpdZrk+UixWYSvOnQLTavlSyAhCmkiv+D5UBCMuQSUds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPBSdDIB; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OoRENNmo"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71cdb22bso11148425e9.2
-        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 05:53:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789390408; x=1789995208; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A3kON4+baHQ2AT9bdbK8IFIq5pzfZyIIzNPdnsQweAI=;
-        b=OoRENNmoCLtIC5uGi9NDCkya1KKagZEji9YkiLUnGdOthq0IYIlnS5wkdMRiWGAGJg
-         U2vZGXWTCAlciTvUQXq9TkIoXvODFuS2eMBNiSPfNGKxDI6dBa4k4v3P17pHyELzScbI
-         ZW8RHuFOwiZG6l/OBXjh71Ewhpd10AQTV5vxvjTAar5FK2W19qe+1pXi3Mz1Y6cngWWh
-         A5DjiMRVhpqX8wxWDOvjmtEzkNlWxOkvF9LIFbU8kSDsgY5L31v+KPGLhhtA3+2fCWXx
-         TqO3R0bdLTTWxF8RCri+a1ZUIbBa498RFYvZcfwvmIvCndxjCDJzMvFyrI1UwC5WTL8H
-         XN/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789390408; x=1789995208;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=A3kON4+baHQ2AT9bdbK8IFIq5pzfZyIIzNPdnsQweAI=;
-        b=XKXTfzmH4TuOnj82q0pAJBosy8z86ZJWFiEvexPEm0UfJv4jkyerg1gAU5qgZUz9Ck
-         ldFkm1sYVGK4AXBxxWFgffy0fWfjJ2m0IN6g6O34pvJ/P66wiFGMoo1tBPphnRz5k0I/
-         3YmXgnoqPQiS+1GNfU/JbSP1zF/dvcYYvc45Tc3TrowQ7yqFDnbTEe1WLgWYRpvK0gYd
-         9eO67ZAgGRbGa0INjAjuVB6ARoc6zd9z2oQodYLSToW2Vr2DwhDNrqTf16l5ViMxlweQ
-         ZSrZMlu9vR4rg2sKJwAZx6T55m3oCNlspkz3SdO4UUtTUpBfJrUNjybdTJgJbFOMpiTL
-         /2rw==
-X-Forwarded-Encrypted: i=1; AKwUvBxDsAu/aJxuzi0JNDXLTv8VfK2UoNov7zHYuPmJvE62BaCCb5/VWrdEBTxbHCgiVk1gGP4=@lists.linux.dev
-X-Gm-Message-State: AFuF++nYTMmD5XM7hsIgwwtO9yBhgbq11budHJX88AVfNoaEgCxyB2aq
-	HmQjj8HNBT8detbVEIx8v/Gdc6McsJTuvDSAbKIzNdwE7cUSfB8HShZs
-X-Gm-Gg: AYBFou1PL+t/A/exFUmcdcZIEu0RYKHyyloq8A0+7iAzbgXAROq1mSgFwcz91F84ZZB
-	roYX8tbvIoAQXrJKV4IrDvA1niYA43RXsJ3yvOuX0/qjhZ5WBTvCpTF6bV5vdGgmmSS5+TtAVRb
-	rWOHk9wM5hcu6xd+0OQ8x9UZ+nY8ih2g6yJhtl1t0SCcKfyygvAjD1FFXv3gXS0IVsdu9KiYYWV
-	A7rl9znNgDYwGpdjefMqzYSo54mpmj+B43CDRJ6jD+gLq8yEMS0mYrUUme2kqBQWYOX+op1Y0ul
-	EWMSoMz4TQGgJTMeNjGCwsjbscRj00AENc/r8QQGsT7rmYVj+VMP5XPWfd/DrATAUjgU1llove4
-	LffMpGgfN6R/59C6+wvVuo/h6o5EYgL5aggm8Quxch+lFH2Es5nP0G9ymk9EzXCjwjbk2NtbuLW
-	Hdnw4lgjDTSQf9i90LLALmIQJ/SRQQzmEtxp1O6a4o6/+rWMC35LTIpIO9v7leaclYGptHYZzlZ
-	N6IzqG1WWn1XAjdFSETYwjHECpO24VzywXrYau5JrS7lFPHrH/ShooMaqApcQ0bGwiUs1B33vt4
-	N1QBEsLnfCRXEZjB
-X-Received: by 2002:a05:600c:4693:b0:49c:fa20:cbfc with SMTP id 5b1f17b1804b1-49e7a66b714mr30526925e9.19.1789390408188;
-        Mon, 14 Sep 2026 05:53:28 -0700 (PDT)
-Received: from GLaDOS.station ([187.14.102.91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60acff8bsm320954365e9.9.2026.09.14.05.53.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 05:53:27 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPBSdDIB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789391540; x=1820927540;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oxbFhAvr6JSfGzP5RlSIkIiQp3K9ZHr1MCwoENtbehI=;
+  b=mPBSdDIBFWF1SQT+VjfdPVHFSXjrs7TKpab9zSYV7DhyBmM5w2Wtw6dT
+   2UdNib5PFjRQAqsRcOUDE6NqsX2fRRFY0MLLyxux6YJcK+unCC+TiRpRH
+   KJJeP9f+9LUl5XOMJwM7jw+z3GjaqNOFj02qCz9k2s6OxBf4EvlTfxzVU
+   xBV3vN9GM1pNC0ceeooFCvEi8XIEr+dMfxe0ZGDngzkq/3xvIKuAPZVs5
+   SCnZLeB98dvGp4R4Tjw3aW7f4HuPmGltyqJ0jpnTWB/rwEHUpxgG9XqvL
+   wG6fSP48xcL+vUtzzOTCc/jPZ30gOLRacuwX9Ck0ZkN3t56sL0k7Bb0wr
+   A==;
+X-CSE-ConnectionGUID: oDcwLBIRT1CauyFTYeQvtA==
+X-CSE-MsgGUID: c4o/KQU5S8myDfI80Tl7Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="112511241"
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="112511241"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 06:12:19 -0700
+X-CSE-ConnectionGUID: K5cBbZILTeK5caqNakas1g==
+X-CSE-MsgGUID: YqxQpIzbRh2TnzGxHNT0cQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="270832192"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa006.jf.intel.com with ESMTP; 14 Sep 2026 06:12:15 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 5371A99; Mon, 14 Sep 2026 15:12:14 +0200 (CEST)
+Date: Mon, 14 Sep 2026 15:12:14 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Subasri S <subasris1210@gmail.com>
+Cc: Peter Chen <peter.chen@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Natasha Kovalenko <natasha.k@variscite.com>
-Subject: [PATCH v1 1/1] arm64: dts: imx95-var-dart-sonata: correct UART8 header pins
-Date: Mon, 14 Sep 2026 14:53:11 +0200
-Message-ID: <20260914125311.8354-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+	Duncan Sands <duncan.sands@free.fr>,
+	Chas Williams <3chas3@gmail.com>,
+	Minas Harutyunyan <hminas@synopsys.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] usb: typec: Use %pe to print error pointers
+Message-ID: <aqfyrs6Hdjc_ywZG@black.igk.intel.com>
+References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
+ <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+On Sat, Aug 01, 2026 at 05:59:52PM +0530, Subasri S wrote:
+> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
+> error pointers in various typec drivers. This prints symbolic
+> error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
+> making error logs more readable.
+> 
+> Fix coccinelle reported warning:
+> WARNING: Consider using %pe to print PTR_ERR()
+> 
+> Compile tested only.
+> 
+> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+> Signed-off-by: Subasri S <subasris1210@gmail.com>
 
-Correct the UART8 header reference from J12 to J6 on the DART-MX95
-Sonata carrier board.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-This is a documentation-only fix and does not change the hardware
-configuration.
+> ---
+>  drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
+>  drivers/usb/typec/tcpm/tcpm.c       | 2 +-
+>  drivers/usb/typec/wusb3801.c        | 4 ++--
+>  3 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
+> index 985683fe49e9..b32f4c433de9 100644
+> --- a/drivers/usb/typec/mux/pi3usb30532.c
+> +++ b/drivers/usb/typec/mux/pi3usb30532.c
+> @@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+>  
+>  	pi->sw = typec_switch_register(dev, &sw_desc);
+>  	if (IS_ERR(pi->sw)) {
+> -		dev_err(dev, "Error registering typec switch: %ld\n",
+> -			PTR_ERR(pi->sw));
+> +		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
+>  		return PTR_ERR(pi->sw);
+>  	}
+>  
+> @@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+>  	pi->mux = typec_mux_register(dev, &mux_desc);
+>  	if (IS_ERR(pi->mux)) {
+>  		typec_switch_unregister(pi->sw);
+> -		dev_err(dev, "Error registering typec mux: %ld\n",
+> -			PTR_ERR(pi->mux));
+> +		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
+>  		return PTR_ERR(pi->mux);
+>  	}
+>  
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 89eec20a2064..ad10470ea73b 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
+>  			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
+>  		partner = typec_register_partner(port->typec_port, &port->partner_desc);
+>  		if (IS_ERR(partner)) {
+> -			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
+> +			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
+>  			return;
+>  		}
+>  
+> diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
+> index 6062875fb04a..86d13ab41670 100644
+> --- a/drivers/usb/typec/wusb3801.c
+> +++ b/drivers/usb/typec/wusb3801.c
+> @@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
+>  		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
+>  			wusb3801->partner = typec_register_partner(port, &desc);
+>  			if (IS_ERR(wusb3801->partner))
+> -				dev_err(dev, "Failed to register partner: %ld\n",
+> -					PTR_ERR(wusb3801->partner));
+> +				dev_err(dev, "Failed to register partner: %pe\n",
+> +					wusb3801->partner);
+>  		}
+>  
+>  		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
+> 
+> -- 
+> 2.43.0
 
-Co-developed-by: Natasha Kovalenko <natasha.k@variscite.com>
-Signed-off-by: Natasha Kovalenko <natasha.k@variscite.com>
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
- arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
-index 3479abc25df2..9344a0d99418 100644
---- a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
-@@ -336,7 +336,7 @@ &lpuart1 {
- 	status = "okay";
- };
- 
--/* Header (J12.4, J12.6) */
-+/* Header (J6.4, J6.6) */
- &lpuart8 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart8>;
 -- 
-2.47.3
-
+heikki
