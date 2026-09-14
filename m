@@ -1,153 +1,92 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C597D3859C2
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 13:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1785473C65
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 13:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789393345; cv=none; b=KyVowNPdlp5ZvYBvV0eSd/qo7TPZoaaXpQlLceMu6V+r4atntu5fDZhhtCpLxoNFoXtlTH12QTScQt/DoOawEU8RzwbzS9QmlyHuUvJLJ8jB4muuNx9/NzHCm4UbPK5X+re/fem7VINiaBrCqdW84PSfcYUVXxTpm8txlg1w87I=
+	t=1789393624; cv=none; b=Y4YXF1UXd4498/jLol9RmdGmMUIItqjDmON1w6IHsT1OBlU/SWD54+5N5eKz6jjr/es2dAyXgiyHlznUnQpDPf+GEl4tKuNCui8HWxw3+cSqj72Ej5hgvpyI6BNcR34dhhKpRFW5EqC3l++RZf3FjkxR87tlT/deL4hcZWXSiuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789393345; c=relaxed/simple;
-	bh=+onlGpa1hiO1MNd5qR3jYCkVSL71ELpSzMUjHSHRwDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jsgjKoU450NFd8V0eJz7vnfBnM085HO5k4I0h4gF9k3faYQmv6xRK8Jqn+12sLRrSeutl8Sw+ZFYcQX7+PaAoH20cNpNGHYNPGta9Ol42b76jTp7s3afTITSrB2y5JtYUtoek4bX15/0KwnSRLEzWSjJYaJiRoQ/6RyYuK1c0ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0TlY65C; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789393624; c=relaxed/simple;
+	bh=jD0cM7p+54y67H5BoqsAB8Z8ZP1xOOXL1QBUpmp5eqc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dq8R6Qy5KsSqHca1K/QOLcvwKhkXsKfSvGqwLI6eKIe2mwAFjun4T5KTP4M5zD7gyEC1C55yKjih4sWUanT0O8Rw4iPXQCLaIw7Tx5fehMZp+9syjJU3qbno4VWHG4rh54Cn6WBOaEBafjJrOWQoB6TKORHaZ8xhs0WDuDYk+Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=MBcdRlbY; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0TlY65C"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a3490bso1863798b3a.3
-        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 06:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789393343; x=1789998143; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bakTp6stDBZ5NtOXw79DszktYHeILhkNYFFO9zeitSo=;
-        b=Z0TlY65CFApix8ha24NtS5a9JsC9Pkk695IVeBrFV2nUVidokqGhvg6kPyyrcRjBvd
-         6yS+veBLL7RiijQw8JvMBdbZecOzKGx0yY1A4pNo+dpEdIs8fH+izj87hFGekFHN3Bg1
-         /e1A6PrO6mPeNdskCRMOxwUF5NUSlRWpM206Ryr63kOqtt1pBaBwo+VsvtsfhaXGzq5d
-         xZKurgT+rC/qN+bx1Q+Z8swopMfEKhXKHx11TQf6esrnttvuXZZFcLi3pn8u/7Z7xQQL
-         oRXhbwV15r26BU0Wj6zVH3BxX3C4K7lXyN8StCLpNhwp8W3FhFlVwP+p1+SSSjNmefha
-         1TbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789393343; x=1789998143;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bakTp6stDBZ5NtOXw79DszktYHeILhkNYFFO9zeitSo=;
-        b=EmMVNqPpSzdmkPoF7iDWB4ZenUqtod3YRzppYq97l0pL1QcWYGGl/SJIFNhJVDjGh7
-         w8P1dr2nfpAo8ieLYq1zW6cnSSx3XLofIMJPzzyO5tY1SvPoqrsBxbwBc2OyrSrw0M2h
-         7By/OPFF37kkpj90sn6FedRMaRxIOjQ7T/GEm+FxKL/U7h8F/G3JDRI6ZUv4UFtv4JR6
-         IsF2/ba6+9Uld4krkmpt3QPdWYFbVsfFUNvn0kuZ01EnS8wZlNMaSPyqrM3EWu4GfP9g
-         UqDhnGpPPHhHqpmhg4UM3Y2Xs5TzNWfCagL3C7uhjTwAlkxFVmcSf+7c0lhJUWQtkLf1
-         T8mg==
-X-Forwarded-Encrypted: i=1; AKwUvBz80xpUFsooAlWep6mYTfl9CWa/M3sAvbIlvSauSaylhPWOiyepShuuxPfoa3jh9EGl4mo=@lists.linux.dev
-X-Gm-Message-State: AFuF++nNPur3O4rVVcLq0Omzxk6QK42CqyFXJ6yHqf2pijdf+RPCj9kX
-	gJiOi3/0cZcTTImmI1tvkDxb6zBJTbfff/+jNoWlsQL2rqe7La01mVCC
-X-Gm-Gg: AYBFou1iu41iAmsU9nQGepa6YVh29WVjeCe4H7p8JFDewVastzCmAy17Lc8mIFuD4QS
-	iRd5s9C+2Cs1jqYHU2GcGzkkgfI6f4i2kqGOrgayI7Sm6tpE8Zqk+Meq4oOQGo+skTvAYjoMjGF
-	jTtLpvfieayL4CdL/SyXlunVGETKx6b98lUd1MUG6Aa9v8FPLuKeWeCTSUp+ycq4Syy8osyj3Nm
-	ANziP45t4Ne4RWqLfZjuMVdzUkB/mNxE2+qWbErNos+mNN+u+1evQtMro42HKOGrO3uWqtUqoLx
-	pOcoD/h/51b35wga4qZ3qHqrXvqOkSSUrrUN7X30sTTlDjpxv8l2Af9UOJsi3a7RwzQYAA4Lmxi
-	TB5g6ZRIgMEoJgDnJ40SV7PjAruoC2/Ix5TDVniO7xjtU7fsrEF3tXFCQCEisAIEmzxASqFp9tu
-	b9fU4GFp7QiAZdfAbH/npYTsO3k5nDksLH1yXPgF38AEzJd8LJ+86Vag==
-X-Received: by 2002:a05:6a00:1c93:b0:851:b03a:fcb with SMTP id d2e1a72fcca58-86f84b1da7emr5036133b3a.14.1789393342959;
-        Mon, 14 Sep 2026 06:42:22 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b29dc09d4sm4536921b3a.47.2026.09.14.06.42.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 06:42:22 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Radu Rendec <radu@rendec.net>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Joakim Zhang <qiangqing.zhang@nxp.com>,
-	Marc Zyngier <maz@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] irqchip/imx-intmux: fix runtime PM teardown on remove
-Date: Mon, 14 Sep 2026 21:42:11 +0800
-Message-ID: <20260914134211.1734163-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="MBcdRlbY"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1789393612;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W6S6dPizeTTA5G9J/3AscJ1/w+xNcAj+7ZW10z8lG2o=;
+	b=MBcdRlbYG94TxOJvM03IV9Rx1AzOLQtvx+o4ZzORZe0cMXTKNYqBHc5QsQZHP40q7k+4z0
+	tJmADmcPamyLoa4xtWv0nAIDSkaLOvpwB1w7WYn7JzxB4kfcFEb4MRIW1bvKO2Ky7Spt2C
+	NAT/H3AsA/BLXBsVyiJIiBTG5+fBqfLWe0xkT0Va9nX+yw/Zrnbv37DNZlhrn+dvyyH8L7
+	GTowi+ytAdZF3VgNX+LBJ9eGFHIN0NIK9Z+NH125Nw9l6bgN0U8rvTzoj4OFtiMmdISBk7
+	sfelGb1H2OSDH1RVxDnT258vPxo7+8p7t7Ds5/VVwbbDbubKJgoelNjU18eClw==
+Date: Mon, 14 Sep 2026 15:46:11 +0200
+Subject: [PATCH v2 3/9] ARM: dts: imx6ul-kontron-bl-common: Fix USB OTG1 ID
+ pin configuration
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-upstreaming-v7-2-imx-dt-improvements-08-26-v2-3-8e12bc5f1f10@kontron.de>
+References: <20260914-upstreaming-v7-2-imx-dt-improvements-08-26-v2-0-8e12bc5f1f10@kontron.de>
+In-Reply-To: <20260914-upstreaming-v7-2-imx-dt-improvements-08-26-v2-0-8e12bc5f1f10@kontron.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Oualid Derouiche <oualid.derouiche@kontron.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=902;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=iCuZlno55Yjn0MkpffeLuEkr+4wHGhog/vQ/6EFeyBM=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWv5r1OnpKPPyzKmXI8oLHS73lnIPdfooPFJ5o/7s1dZ/
+ r61RLOzo4SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCJXuxh+3NLXru56vOLGRCXF
+ nFmrLoaWqX75VGv6SuXehQlLPyz5wsjw0Exmp9y8jqIch4yr+dZaJ41yxJdrHW59YOBw5VXE0T5
+ GAA==
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-imx_intmux_probe() enables the IPG clock and then drops its runtime PM
-reference with pm_runtime_put(). With CONFIG_PM enabled, the runtime
-suspend callback disables the IPG clock. With CONFIG_PM disabled, the
-clock remains enabled after probe.
+From: Oualid Derouiche <oualid.derouiche@kontron.de>
 
-imx_intmux_remove() accesses the CHANIER registers without first making
-sure that the device is runtime active. The device may therefore be
-runtime suspended with the IPG clock disabled when these registers are
-accessed. In addition, the remove path only calls pm_runtime_disable()
-and does not balance the clock enable when CONFIG_PM is disabled.
+Add the missing MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID pinmux entry so
+the USB OTG ID pin is correctly routed and OTG can be used.
 
-Resume the device and acquire a runtime PM reference before accessing
-the registers. If resume fails, skip the register accesses but still
-tear down the chained handlers and IRQ domains. Disable runtime PM
-afterwards, drop the acquired reference without triggering another
-runtime suspend, and explicitly disable the IPG clock.
-
-This keeps the clock enabled while the hardware registers are accessed
-and balances the clk_prepare_enable() performed during probe for both
-CONFIG_PM configurations.
-
-This issue was found by manual code inspection.
-
-Fixes: bb403111e017 ("irqchip/imx-intmux: Implement intmux runtime power management")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Oualid Derouiche <oualid.derouiche@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- drivers/irqchip/irq-imx-intmux.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
-index 47c2681d138a..de2a8f98f625 100644
---- a/drivers/irqchip/irq-imx-intmux.c
-+++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -288,12 +288,16 @@ static int imx_intmux_probe(struct platform_device *pdev)
- static void imx_intmux_remove(struct platform_device *pdev)
- {
- 	struct intmux_data *data = platform_get_drvdata(pdev);
--	int i;
-+	int i, ret;
-+
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret < 0)
-+		dev_warn(&pdev->dev, "failed to resume device: %d\n", ret);
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+index 65c5f4450c36..0658584c9f11 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+@@ -357,6 +357,7 @@ MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
  
- 	for (i = 0; i < data->channum; i++) {
- 		/* disable all interrupt sources of this channel */
--		writel_relaxed(0, data->regs + CHANIER(i));
--
-+		if (ret >= 0)
-+			writel_relaxed(0, data->regs + CHANIER(i));
- 		irq_set_chained_handler_and_data(data->irqchip_data[i].irq,
- 						 NULL, NULL);
- 
-@@ -301,6 +305,11 @@ static void imx_intmux_remove(struct platform_device *pdev)
- 	}
- 
- 	pm_runtime_disable(&pdev->dev);
-+	if (ret >= 0) {
-+		pm_runtime_put_noidle(&pdev->dev);
-+		clk_disable_unprepare(data->ipg_clk);
-+		pm_runtime_set_suspended(&pdev->dev);
-+	}
- }
- 
- #ifdef CONFIG_PM
+ 	pinctrl_usbotg1: usbotg1grp {
+ 		fsl,pins = <
++			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
+ 			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0x1b0b0
+ 		>;
+ 	};
+
 -- 
-2.43.0
+2.55.0
 
