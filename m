@@ -1,116 +1,104 @@
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C4E477980;
-	Mon, 14 Sep 2026 14:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68194313522;
+	Mon, 14 Sep 2026 14:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789395208; cv=none; b=FuMvIFcywqg4hu+p9AVW2KStHMDqbn5doE5XWhGRLTCQBlJ9cLGL7gdlyP2uBLQWfUga/9tJUUkN7MvS6aPSRt8vGNN1Zksm+2rlZe3Qx9muv21A2fyPk3xz4FefRLrAc0gxtiER7TtdJFJcCvc74ItoFWblcR/3GKlWU0CgECA=
+	t=1789395922; cv=none; b=LEDI4KLPjeK8SPup0yND2q5gL9bOXNTQTVKTg5a3GqJikwY5bnF1/GyMa2CRuUmHbSlVgf42USHJhU2ZfkYNsQixAOK+qL3SDmT7Rm8JElr7QV/FwRSq7KD3c1K14iCf3rWa2nmdCaakMCfqTWG00YOBGrV6DKCJUw8it9pWVsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789395208; c=relaxed/simple;
-	bh=HPoZWFDHbv/7IEvQj89VBgQug8JWRFu6B46ZI2l/FlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3bRhkpBAz4l/JyJka57IG2btJDlVISht36wa7ADPwA9+SAFAkb42Dpr8NiViwmF82ypC80HOL9Yxs8wWm4ztpq/NekOU/EfNrb37lacbI/RGaT3kwdpC4I3Z8Yp/QDVAS6DVNoaAeb7xsjaUUV9bCafxOJqtnOGyOiiuz7gk04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 6BE34717EC24; Mon, 14 Sep 2026 16:13:17 +0200 (CEST)
-Date: Mon, 14 Sep 2026 16:13:17 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] nvmem: migrate to const void * in reg_write
-Message-ID: <aqgA_bGo3yqBNL0_@desktop>
-References: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
- <aoNY85rdMdBDSiGW@ashevche-desk.local>
+	s=arc-20240116; t=1789395922; c=relaxed/simple;
+	bh=tMOcf0VSmgrOTAYKc0LUcVv5zdjbLnYbielD0+ul63g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ivE6uBnVziutyM+fi8KkA5CVSZBlvSsoTy6lQbE0FzQ1nhEUKPE5rwmqIC5kmgPEpUsVJqjO3GrJi6994tCpnh9VDWLyJPr6Vxkx2TLcvPohNXy4eXopU755YfheTgt8iEfiz7swPI/BARcjRB/qtVWmhCjtXWPX0IBMDdIBbaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fa8Vo/+9; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fa8Vo/+9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A706F1F000FF;
+	Mon, 14 Sep 2026 14:25:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789395921;
+	bh=g/oiuJ9HHblMLLh8Pc2n3fKfKnpbDEmBGeMJ+bGYrLI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Fa8Vo/+9cNwmIwwV4xFI/VH9nJnpXmN9UsdDxA+88r57Sd70iQ37QepvNhq1MQn6j
+	 HemcoJfcPwmW5+o5JQYsKjxBw2RDI17vWbtJE6O8wO4OtJzX2UCLNgD5B4nq3sY0hu
+	 bft6ClgrbjHeTVpYcH2BbOZgJj2BHr/LhCOzWy0wo6ICISHKQlqNGEcfpiYOUnTaLa
+	 MXn8wxn5SEUzfZODP6NmNr5XW1QkVzoCBilDRgx5hKQpCOlmDXCe6gXzZCxB9KxbA2
+	 aTfPuY5llvda/GgIrmbbbOB0yZS+IRUAct9qYDmYmIKD7CxVnlHzC6Y78hLGk3ArmF
+	 uzdi5hV/w3/aQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 7/9] arm64: dts: imx8mm-kontron: Add GPIO labels and
+ comments
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Frieder Schrempf" <frieder@fris.de>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260914-upstreaming-v7-2-imx-dt-improvements-08-26-v2-7-8e12bc5f1f10@kontron.de>
+References: <20260914-upstreaming-v7-2-imx-dt-improvements-08-26-v2-0-8e12bc5f1f10@kontron.de>
+ <20260914-upstreaming-v7-2-imx-dt-improvements-08-26-v2-7-8e12bc5f1f10@kontron.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 14:25:20 +0000
+Message-Id: <20260914142520.A706F1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoNY85rdMdBDSiGW@ashevche-desk.local>
-Jabber-ID: linkmauve@linkmauve.fr
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Undocumented functional change in hardware pin configuration
+--
 
-On Mon, Aug 17, 2026 at 09:54:43PM +0300, Andy Shevchenko wrote:
-> On Tue, Aug 04, 2026 at 03:59:34PM +0200, Link Mauve wrote:
-> > This callback used to take a mutable void * for no reason, which causes
-> > the compiler to be unaware that the val buffer should never be modified
-> > by the callback.
-> > 
-> > This was found while drafting the nvmem-provider Rust abstraction.
-> > 
-> > Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> > callback and deprecates the existing one, with the goal of renaming the
-> > new one into the old one once no user remains in the kernel.
-> 
-> FWIW, if the approach taken is okay by maintainers,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+commit d302aef127127e0c0034e70e30def7814e7b8ba2
+Author: Oualid Derouiche <oualid.derouiche@kontron.de>
 
-Thanks for the review!
+arm64: dts: imx8mm-kontron: Add GPIO labels and comments
 
-> 
-> I think this is right direction to go. We should use all possible ways to
-> protect the data from corruption.
+Describe the GPIOs and their purpose using labels and comments.
 
-Sorry for not pinging again before the end of the 7.3 merge window, I
-was on vacations, but this only delayed that work by one cycle.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/a=
+rm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+> index 1f3d0577f10c9..72588af057d21 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+[ ... ]
+>  	pinctrl_gpio4: gpio4grp {
+>  		fsl,pins =3D <
+> -			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14		0x19
+> -			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15		0x19
+> +			/* CAN address DIP switches 1-4 */
+> +			MX8MM_IOMUXC_SAI1_RXC_GPIO4_IO1			0x19 /* CAN_ADR0 */
+> +			MX8MM_IOMUXC_SAI1_RXD2_GPIO4_IO4		0x19 /* CAN_ADR1 */
+> +			MX8MM_IOMUXC_SAI1_RXD3_GPIO4_IO5		0x19 /* CAN_ADR2 */
+> +			MX8MM_IOMUXC_SAI1_RXD4_GPIO4_IO6		0x19 /* CAN_ADR3 */
 
-Is there anything I could do to make it happen for 7.4, or should I just
-wait until a maintainer picks up that series?  I just tested and
-everything still builds file on top of linux-next as of next-20260911.
+[Severity: Medium]
+Does this code introduce an undocumented functional change to the hardware =
+pin
+configurations in pinctrl_gpio4?
 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+The patch modifies pinctrl_gpio4 to actively configure four entirely new pi=
+ns
+(GPIO4_IO1, GPIO4_IO4, GPIO4_IO5, GPIO4_IO6) with the pad setting 0x19. Sin=
+ce
+the &gpio4 node references this group, applying this patch alters the hardw=
+are
+pin multiplexing state during boot.
 
--- 
-Link Mauve
+The commit message strictly claims to 'Add GPIO labels and comments' and
+'Describe the GPIOs and their purpose using labels and comments', implying =
+no
+functional behavioral changes.
+
+Could the commit message be updated to describe this functional change, or
+should these new pins be separated into their own patch?
+
+> +			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14		0x19 /* DSI_MUX_SEL */
+> +			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15		0x19 /* DSI_MUX_OE */
+>  		>;
+>  	};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-upstreamin=
+g-v7-2-imx-dt-improvements-08-26-v2-0-8e12bc5f1f10@kontron.de?part=3D7
