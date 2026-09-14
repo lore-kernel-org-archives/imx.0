@@ -1,161 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E7A1BD9D0;
-	Mon, 14 Sep 2026 13:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C597D3859C2
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 13:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789392317; cv=none; b=pimdLZ6+mbH6Uiu4BEWDp/TMFq/Za00LvmIJQ3VPx1jeZtq+92cbVQIRqJhGdqmsCGBztOntFNF63ySAcgYo/R8nrNaj1r4bd6pkxioXPRbUYpboD6dJfLRDtoCkLynNb5IX2AbaK6Ot+Y1MgbVv+J6Otfy9/zQC1plLHs7Jxas=
+	t=1789393345; cv=none; b=KyVowNPdlp5ZvYBvV0eSd/qo7TPZoaaXpQlLceMu6V+r4atntu5fDZhhtCpLxoNFoXtlTH12QTScQt/DoOawEU8RzwbzS9QmlyHuUvJLJ8jB4muuNx9/NzHCm4UbPK5X+re/fem7VINiaBrCqdW84PSfcYUVXxTpm8txlg1w87I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789392317; c=relaxed/simple;
-	bh=Ee4LgDKckiBTO+R2lJDbFQ5VWZgiQK0tmQ46MSH3o/Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=r8xXI6ILcaYCK/T0zy/HFxM44XGTk4Ahq3QbxD9aFY9JAa6CFHPTYYPgi9lrAhouJbKFgF46x0S4bmRXkWu4Eq2XNqSjLG5b14EmJJA56/FEZzRJOMZHCVcKxxAUgs4hjpHG2FqQKNLJA09gSqYuQXH4BV8/6j4xKfOO2Urj1ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ur7g3YDy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789393345; c=relaxed/simple;
+	bh=+onlGpa1hiO1MNd5qR3jYCkVSL71ELpSzMUjHSHRwDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jsgjKoU450NFd8V0eJz7vnfBnM085HO5k4I0h4gF9k3faYQmv6xRK8Jqn+12sLRrSeutl8Sw+ZFYcQX7+PaAoH20cNpNGHYNPGta9Ol42b76jTp7s3afTITSrB2y5JtYUtoek4bX15/0KwnSRLEzWSjJYaJiRoQ/6RyYuK1c0ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0TlY65C; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ur7g3YDy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1811F000FF;
-	Mon, 14 Sep 2026 13:25:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789392315;
-	bh=zZc+xIHcFwMzzddzraJJ8lrGzjvEH1+rj3zm5cKudN8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ur7g3YDyx4/H+iQrNJduJ0DoJ+BNzNHdICjFnsL+AgZT5JwYDafxWTR+EFSLHgZ9i
-	 HmJJKu+nIAnRRDcQmwaXU73EdXhaljLjdH4/sx770sOPlB82RKbhlYSUh9cDftE7yg
-	 VP5P6QD10W96tU/cVARiewQS8NemmWicrYZlPOEy/ZwPCjC+Xw4liNzAz2V20l5/w9
-	 ZPz1/2auNzzoT9qgAJ9/pfkWGnKdnlRPERsXlowvAH/Q9gx+h3uurW3Z1RZ3GvghrC
-	 A8kW1tcwCqXCqKKo/KXMRrs6TXSOlZWAm9DiwZb3qEOuh6Z4kuU6ImhTaKitUSC6No
-	 ecj8UqYlsF0vA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 03/10] ufs: host: Add common Hibern8 TX FSM polling
- helper
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Larisa Grigore" <larisa.grigore@oss.nxp.com>
-Cc: linux-scsi@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260914125000.30812-4-larisa.grigore@oss.nxp.com>
-References: <20260914125000.30812-1-larisa.grigore@oss.nxp.com>
- <20260914125000.30812-4-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 13:25:14 +0000
-Message-Id: <20260914132514.AC1811F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0TlY65C"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a3490bso1863798b3a.3
+        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 06:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789393343; x=1789998143; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bakTp6stDBZ5NtOXw79DszktYHeILhkNYFFO9zeitSo=;
+        b=Z0TlY65CFApix8ha24NtS5a9JsC9Pkk695IVeBrFV2nUVidokqGhvg6kPyyrcRjBvd
+         6yS+veBLL7RiijQw8JvMBdbZecOzKGx0yY1A4pNo+dpEdIs8fH+izj87hFGekFHN3Bg1
+         /e1A6PrO6mPeNdskCRMOxwUF5NUSlRWpM206Ryr63kOqtt1pBaBwo+VsvtsfhaXGzq5d
+         xZKurgT+rC/qN+bx1Q+Z8swopMfEKhXKHx11TQf6esrnttvuXZZFcLi3pn8u/7Z7xQQL
+         oRXhbwV15r26BU0Wj6zVH3BxX3C4K7lXyN8StCLpNhwp8W3FhFlVwP+p1+SSSjNmefha
+         1TbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789393343; x=1789998143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bakTp6stDBZ5NtOXw79DszktYHeILhkNYFFO9zeitSo=;
+        b=EmMVNqPpSzdmkPoF7iDWB4ZenUqtod3YRzppYq97l0pL1QcWYGGl/SJIFNhJVDjGh7
+         w8P1dr2nfpAo8ieLYq1zW6cnSSx3XLofIMJPzzyO5tY1SvPoqrsBxbwBc2OyrSrw0M2h
+         7By/OPFF37kkpj90sn6FedRMaRxIOjQ7T/GEm+FxKL/U7h8F/G3JDRI6ZUv4UFtv4JR6
+         IsF2/ba6+9Uld4krkmpt3QPdWYFbVsfFUNvn0kuZ01EnS8wZlNMaSPyqrM3EWu4GfP9g
+         UqDhnGpPPHhHqpmhg4UM3Y2Xs5TzNWfCagL3C7uhjTwAlkxFVmcSf+7c0lhJUWQtkLf1
+         T8mg==
+X-Forwarded-Encrypted: i=1; AKwUvBz80xpUFsooAlWep6mYTfl9CWa/M3sAvbIlvSauSaylhPWOiyepShuuxPfoa3jh9EGl4mo=@lists.linux.dev
+X-Gm-Message-State: AFuF++nNPur3O4rVVcLq0Omzxk6QK42CqyFXJ6yHqf2pijdf+RPCj9kX
+	gJiOi3/0cZcTTImmI1tvkDxb6zBJTbfff/+jNoWlsQL2rqe7La01mVCC
+X-Gm-Gg: AYBFou1iu41iAmsU9nQGepa6YVh29WVjeCe4H7p8JFDewVastzCmAy17Lc8mIFuD4QS
+	iRd5s9C+2Cs1jqYHU2GcGzkkgfI6f4i2kqGOrgayI7Sm6tpE8Zqk+Meq4oOQGo+skTvAYjoMjGF
+	jTtLpvfieayL4CdL/SyXlunVGETKx6b98lUd1MUG6Aa9v8FPLuKeWeCTSUp+ycq4Syy8osyj3Nm
+	ANziP45t4Ne4RWqLfZjuMVdzUkB/mNxE2+qWbErNos+mNN+u+1evQtMro42HKOGrO3uWqtUqoLx
+	pOcoD/h/51b35wga4qZ3qHqrXvqOkSSUrrUN7X30sTTlDjpxv8l2Af9UOJsi3a7RwzQYAA4Lmxi
+	TB5g6ZRIgMEoJgDnJ40SV7PjAruoC2/Ix5TDVniO7xjtU7fsrEF3tXFCQCEisAIEmzxASqFp9tu
+	b9fU4GFp7QiAZdfAbH/npYTsO3k5nDksLH1yXPgF38AEzJd8LJ+86Vag==
+X-Received: by 2002:a05:6a00:1c93:b0:851:b03a:fcb with SMTP id d2e1a72fcca58-86f84b1da7emr5036133b3a.14.1789393342959;
+        Mon, 14 Sep 2026 06:42:22 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1002::de93])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b29dc09d4sm4536921b3a.47.2026.09.14.06.42.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 06:42:22 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Radu Rendec <radu@rendec.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Joakim Zhang <qiangqing.zhang@nxp.com>,
+	Marc Zyngier <maz@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] irqchip/imx-intmux: fix runtime PM teardown on remove
+Date: Mon, 14 Sep 2026 21:42:11 +0800
+Message-ID: <20260914134211.1734163-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The polling loop in `ufshcd_dme_check_tx_hibern8()` incorrectly =
-conflates a DME communication timeout with the TX lane not yet being in the=
- HIBERN8 state, causing redundant retries on hard failures.
---
+imx_intmux_probe() enables the IPG clock and then drops its runtime PM
+reference with pm_runtime_put(). With CONFIG_PM enabled, the runtime
+suspend callback disables the IPG clock. With CONFIG_PM disabled, the
+clock remains enabled after probe.
 
-commit 36540d76db2dafb48398ab3a254711f31858e35f
-Author: Larisa Grigore <larisa.grigore@oss.nxp.com>
+imx_intmux_remove() accesses the CHANIER registers without first making
+sure that the device is runtime active. The device may therefore be
+runtime suspended with the IPG clock disabled when these registers are
+accessed. In addition, the remove path only calls pm_runtime_disable()
+and does not balance the clock enable when CONFIG_PM is disabled.
 
-ufs: host: Add common Hibern8 TX FSM polling helper
+Resume the device and acquire a runtime PM reference before accessing
+the registers. If resume fails, skip the register accesses but still
+tear down the chained handlers and IRQ domains. Disable runtime PM
+afterwards, drop the acquired reference without triggering another
+runtime suspend, and explicitly disable the IPG clock.
 
-This commit factors out the common logic used to poll TX_FSM_STATE until
-the TX lanes enter Hibern8 into a single helper, ufshcd_dme_check_tx_hibern=
-8().
-It updates the HiSilicon and Qualcomm drivers to use this new helper and
-normalizes the error path to return -ETIMEDOUT.
+This keeps the clock enabled while the hardware registers are accessed
+and balances the clk_prepare_enable() performed during probe for both
+CONFIG_PM configurations.
 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index 2ba244cf40ac7..e5facc0a59a79 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -4448,6 +4448,84 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 a=
-ttr_sel,
->  }
->  EXPORT_SYMBOL_GPL(ufshcd_dme_get_attr);
-> =20
-> +/**
-> + * ufshcd_poll_tx_hibern8_lanes - Check TX_FSM_STATE of all TX lanes once
-> + * @hba: host controller instance
-> + * @num_lanes: number of TX lanes to check
-> + *
-> + * Read TX_FSM_STATE for every lane and verify it reached Hibern8.
-> + *
-> + * Return: 0 if all lanes are in Hibern8, -ETIMEDOUT if any lane is not
-> + * (yet) in Hibern8, or a negative errno if the attribute read fails.
-> + */
-> +static int ufshcd_poll_tx_hibern8_lanes(struct ufs_hba *hba,
-> +					unsigned int num_lanes)
-> +{
-> +	u32 tx_fsm_val =3D 0;
-> +	unsigned int i;
-> +	int err;
-> +
-> +	for (i =3D 0; i < num_lanes; i++) {
-> +		err =3D ufshcd_dme_get(hba,
-> +				UIC_ARG_MIB_SEL(TX_FSM_STATE,
-> +					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(i)),
-> +				&tx_fsm_val);
-> +		if (err) {
-> +			dev_err(hba->dev,
-> +				"%s: unable to get TX_FSM_STATE for lane %u, err %d\n",
-> +				__func__, i, err);
-> +			return err;
-> +		}
-> +
-> +		if (tx_fsm_val !=3D TX_STATE_HIBERN8)
-> +			return -ETIMEDOUT;
+This issue was found by manual code inspection.
 
-[Severity: Medium]
-Since ufshcd_dme_get() returns -ETIMEDOUT on a hard UIC command timeout, is=
- it
-safe to overload -ETIMEDOUT here to mean "state not reached"? Could this ca=
-use
-the caller to conflate a simple retry condition with a hard hardware
-communication failure?
+Fixes: bb403111e017 ("irqchip/imx-intmux: Implement intmux runtime power management")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/irqchip/irq-imx-intmux.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * ufshcd_dme_check_tx_hibern8 - Check if all TX lanes entered Hibern8 s=
-tate
-> + * @hba: host controller instance
-> + * @num_lanes: number of TX lanes to check
-> + * @timeout_ms: timeout in milliseconds for all lanes
-> + *
-> + * Return: 0 on success, negative errno on failure.
-> + */
-> +int ufshcd_dme_check_tx_hibern8(struct ufs_hba *hba, unsigned int num_la=
-nes,
-> +				unsigned int timeout_ms)
-> +{
-> +	unsigned long timeout;
-> +	int err;
-> +
-> +	if (!num_lanes)
-> +		return -EINVAL;
-> +
-> +	timeout =3D jiffies + msecs_to_jiffies(timeout_ms);
-> +
-> +	do {
-> +		err =3D ufshcd_poll_tx_hibern8_lanes(hba, num_lanes);
-> +		if (err !=3D -ETIMEDOUT)
-> +			return err;
-> +
-> +		/* sleep for max. 200us */
-> +		usleep_range(100, 200);
-> +	} while (time_before(jiffies, timeout));
+diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
+index 47c2681d138a..de2a8f98f625 100644
+--- a/drivers/irqchip/irq-imx-intmux.c
++++ b/drivers/irqchip/irq-imx-intmux.c
+@@ -288,12 +288,16 @@ static int imx_intmux_probe(struct platform_device *pdev)
+ static void imx_intmux_remove(struct platform_device *pdev)
+ {
+ 	struct intmux_data *data = platform_get_drvdata(pdev);
+-	int i;
++	int i, ret;
++
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret < 0)
++		dev_warn(&pdev->dev, "failed to resume device: %d\n", ret);
+ 
+ 	for (i = 0; i < data->channum; i++) {
+ 		/* disable all interrupt sources of this channel */
+-		writel_relaxed(0, data->regs + CHANIER(i));
+-
++		if (ret >= 0)
++			writel_relaxed(0, data->regs + CHANIER(i));
+ 		irq_set_chained_handler_and_data(data->irqchip_data[i].irq,
+ 						 NULL, NULL);
+ 
+@@ -301,6 +305,11 @@ static void imx_intmux_remove(struct platform_device *pdev)
+ 	}
+ 
+ 	pm_runtime_disable(&pdev->dev);
++	if (ret >= 0) {
++		pm_runtime_put_noidle(&pdev->dev);
++		clk_disable_unprepare(data->ipg_clk);
++		pm_runtime_set_suspended(&pdev->dev);
++	}
+ }
+ 
+ #ifdef CONFIG_PM
+-- 
+2.43.0
 
-[Severity: Medium]
-If ufshcd_dme_get() encounters a hard transport communication failure and
-returns -ETIMEDOUT, will this loop blindly continue retrying instead of
-aborting immediately?
-
-It seems this could significantly multiply the timeout duration on an error
-path (e.g., waiting multiple 500ms UIC timeouts) and spam the error log on
-each iteration.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914125000.3081=
-2-1-larisa.grigore@oss.nxp.com?part=3D3
