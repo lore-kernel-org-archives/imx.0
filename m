@@ -1,38 +1,38 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B807B41CB20
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F9441F5D1;
+	Mon, 14 Sep 2026 09:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789377001; cv=none; b=DAznDlJu4EaLCwrj6oSD5Ewe4qjynE4qarrMGTdLzcmAvRBlZfSkQ1sk6BYtO6KH76s84tQUrqa2g2NKdP8dsb+IZ5TAq1UMSQNJeWNUWeAZvD6mbOzw8aHxtUw9uebvhepSt/OeaXl2HTasNhWAH3AyLp+SpJ0NKwjj5Rn216A=
+	t=1789377007; cv=none; b=QD7RSdyTq3AkBXLPRt8Vt+2vz293ecCZur+x6rIC94o0JOyafUO5gFGRrdSI7PmaHtfs0ckGBEagRopHI1HXZmX0i5EegZobYq/Crmuwf4EhdzlpJ6tFy7vnlxRXeB3BEerOI1x9cikuL/R6m4i8YcxoYb8H2KDhmhvMR488evc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789377001; c=relaxed/simple;
+	s=arc-20240116; t=1789377007; c=relaxed/simple;
 	bh=sHMWlu+OTUqYhqFrSUJL3jwM1neJ6/5JmISeQqqjsEA=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:To:From:
-	 References:In-Reply-To; b=bztY6qTvBuf6ptHOhpTyaKJ97QklDw9mG4USegJGc6kui4NFgKGSbamF2qdN0z+VZsOhL6E80fOWa+xHWPnd7T3Ol1ZcXoFJqBqZqJcClcQSumcHDALfKVXk8Tz7t7Y59P0qIjUi37IFRP3RLbsgjRUjHVSvGkajou7vj5Gl1Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QOx/baCy; arc=none smtp.client-ip=185.171.202.116
+	 References:In-Reply-To; b=BdYu/sdRLUbICVin5fkAIeWdMETBwc1IpjbZmX7Roxe0Dri2HAeOkXCKKAoVMIxEJwffVK3eaiMmP0jRqxk+ksi6kXjc5wlitYz2Kz4BMt0z/ttvX6FDZX9tr9VumCN1+aomr8ezc0ApuPTz44Zl/wD9e8AggEnAH9OSF26vs1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V/S0lrmm; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QOx/baCy"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V/S0lrmm"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A786BC62215;
-	Mon, 14 Sep 2026 09:10:37 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C9A5EC5CD41;
+	Mon, 14 Sep 2026 09:10:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8B50060323;
-	Mon, 14 Sep 2026 09:09:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E0CB11C7AFDB;
-	Mon, 14 Sep 2026 11:09:21 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B045F60580;
+	Mon, 14 Sep 2026 09:10:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9370F11C7AFDC;
+	Mon, 14 Sep 2026 11:09:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789376991; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1789376999; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
 	bh=J6gkIocMxhvdpf/NKA6qKbg3ZwMu+O+tLx3jm8Ehdxo=;
-	b=QOx/baCyIfdZIARepp6rSTVpentmNiDyxh/MzkNo667zrVwrPzSi/av2sIi9036kR90wcX
-	1cvc4jdCrwV097hLpWf2iDVabSiC11DtW7J1xyqQXazNoA64Wl91R5rKEI8FxCpyc9ptil
-	d+WhOydTJIs7zDbd6mw+szwsocwD9lCzeBTxIRfayrxJRpUvKv/JdIZAezkFvDYRk5/QsS
-	OPFQcb5MRz94HyIbB/OsKBkagZqlQWVnJh1TLJZMeu43YXlcLA101Ygc2ctU0spQmfnRI1
-	mlCgsvmVZUbYE5ne3cozOiZTcqNTeXaw+yp6jOZae8jNUAqU4pSkxil5SzkMsw==
+	b=V/S0lrmmL71ZBsBR/XBCFjI98LgKkiHAv7j9dc0xrTkjkGC9lUUILnC0yOpXTDdo6Jqym+
+	efzToVH1eyBm9ahiseIPrlPneDIHEWt7DqGZb6bDmy0oDinA45cHma+7+DqkRjloEf6G4P
+	4WXtli+F8pHa2mmVqCJu2x1nfnLkYl9O8hXqGEWBaHmOvlr71+4u4LL0Zq9vhSM23gTlDx
+	LJ4AlI90ifROUyx7NgNve5QPatdQ4yidw+kC682ul7VhVGHAmjFHi85J+j86VqIpop0Cj4
+	CBgFpqr4f/HRNcCCy9bbwsy07nqo+molgZt2jZxtiBDm5iimwdzMn/T/gWxDQg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,10 +41,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Sep 2026 11:09:15 +0200
-Message-Id: <DLEX6WY9X3PO.S0N8N4G4K301@bootlin.com>
-Subject: Re: [PATCH 1/2] dt-bindings: display: Use consistent indentation in
- the example
+Date: Mon, 14 Sep 2026 11:09:31 +0200
+Message-Id: <DLEX74H9NP51.1V8PYE64K89RI@bootlin.com>
+Subject: Re: [PATCH 2/2] dt-bindings: display/msm: Use consistent
+ indentation in the example
 To: "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Chen-Yu
  Tsai" <wens@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona
  Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
@@ -86,7 +86,8 @@ To: "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Chen-Yu
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.22.0
 References: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
-In-Reply-To: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
+ <20260913123331.100293-4-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260913123331.100293-4-krzysztof.kozlowski@oss.qualcomm.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
 On Sun Sep 13, 2026 at 2:33 PM CEST, Krzysztof Kozlowski wrote:
