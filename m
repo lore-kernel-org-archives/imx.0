@@ -1,98 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010000.outbound.protection.outlook.com [52.101.84.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B7488212;
-	Mon, 14 Sep 2026 15:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789399056; cv=none; b=foSAmQ9IeqGj/4iPCnA8ptRSdL5kftAtucW0xxMOB77Xgd3QHERK0LbYs8W2bUaSvJLh8/4AI5dJ6NOykJyxbPg/QE9NTJgjfbXPcAuFnhvTwSONmR05GYOzThPr4f27sBSK4oMaCqf5xgo95RDjncrYG+QbjfvCZn5TIIDqsfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789399056; c=relaxed/simple;
-	bh=WJVZANtvb57o/eiyecBKFn7aqdmuNvWQsg+Qp0tD8C0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ipS1LIu6tPCfV5pr8EqKnF/F9DqQ6SvagF46vwf6WExI9VsKa9wS+2K3xlduLw+ABqTRpcIvwxxQdgVtnwbJYdxbwoGon+d5WlaXvL7CsRrtRFa/gYm9fPZp1OwKajd6lHXPfTkvIUsJ4X/21h658Hx69rfc7U4i+OOXvKppcs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIKkSwx4; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A17477E3B
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 15:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789401512; cv=fail; b=JgEtgCY2OFlRCTlaTKxNk2C00CkXioUCCuelopLlh57+vBx70iP9e+Biu7nHLtk2SRU1ATwA79Kqp8jMtVK0WQ4wzvZHPFqIEQ6Z4GGq5uOFqE36Ki4vnEYK1PwXTaHX8OEdf+Upl33zaUsmmDP0wSCdbVE5m8CS8uJGM74Vruo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789401512; c=relaxed/simple;
+	bh=QCpQHpbmUzW40+oPlhYuUxi1Y+y6JiQx3Ne034HSjWg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bW/S1HxniXqTYtgaxevPN+6XF5z7H0SfmI59so8ufKfXJKDtms2Pgdno9nWGQMzbdzMkDjUxqv3kIW9FUHCiPMioNgMMt/BfQNitSqvSI07HqjDOj/6Pqy3HKBsIfga8EMPmqF0V6WeeGbrjjYp7SuwIjb9dwaE12nJj4m8vkYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dk7OBqPz; arc=fail smtp.client-ip=52.101.84.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIKkSwx4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD741F000FF;
-	Mon, 14 Sep 2026 15:17:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789399054;
-	bh=6YMpYsqszjIHimH8+85byjVbhmmzDk2fY3lzbXyaeJo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oIKkSwx4KziSzlb/XggMjj6Efy8upibzHZ5cNiyqWUtEOTcteG22O35SPWsH/9qQh
-	 p76t5vq8z4fX76LxVllT4/537adD1/eHiNLoaPiuUCGOxlffs1Lqy10SYzeVVat2nB
-	 1rK2Jboc30guBrP4DUAV7+HjfFc/cOvDO0WBn2hyscVsQYQ3aDHRaoApLGRy7Vo+Ov
-	 msFNvdq296s9rUc5PB88hFPvRW/fhO8YxKAvOhChnA5E3cXYORHEqtoJ5CF4Ky2SxT
-	 yXQf4SzE1k2iOkSaTH0eHn5xpwtDTQK80PfE+c9mcSXknlad0pfybXLMjeTyS99i/e
-	 3fnPjMRl6rXQw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v51 6/7] arm64: dts: imx8ulp: add secure enclave node
-Reply-To: sashiko-reviews@lists.linux.dev
-To: pankaj.gupta@oss.nxp.com
-Cc: imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260915-imx-se-if-v51-6-4a7dac612cb5@nxp.com>
-References: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
- <20260915-imx-se-if-v51-6-4a7dac612cb5@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 15:17:33 +0000
-Message-Id: <20260914151734.4FD741F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dk7OBqPz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dwl9Z1bMqK/bdSQeN0ImocVMxT7XNBRS6tn0RHLHUl1yE/jO+mPTvmCL3hUOUBDMdDaos6+GYhcKGkzsk4Z1ZOUeOB0cfGKKpIXZ3YlWUk9VtkfNm3r7Ddx8cj5WmqiBqAnWhKpJpJSXux7nFhldoceBcrZM5MHqpyv/pzoG7V7jq4xKfpIttJd1drWJmUshxoDW1eKjCAiBvCJzIg2Sgvf/5d25TdDGSH7uEvldPx9szpySE4O7ex9+c27LjuBIhM2Ut5BBQ58C+8ASL3zfiuTomtS3idqnjptFdNvXruWkwMSMvtyPe00p3zSv0echVhL2f4Q52YZq5d7f2ZZzLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8T6sLuMjEhaHVf7Bpvg//STWquhKCLiZEjRS/vvpMe8=;
+ b=IkRw84OSCAcn8Cw1jFNiC76Fdk9oSHA4sQEQWD2amxIrrgTCC4xgNvf/6sxs0B+6jR8dH5AeZgLSv2BNR84Tro7S2BdQRieiN6IRO3WGw3f0X1rgB/MfJ0k5cNG1KHr8XqdGa4ptde+yX0tKNB6/61nDp2pLGz8bQ9MS32TKNc2CHVkZ/GjBSf4ebsNf9+VhuqJVD/YhuN1n0WEjeZ5d9Z2cvmcJqlZYI531AIEDy8SanSb560WUCLRcZGaXDgujy+GS18jiHaDKZF0lXN3WCyyIfWHHDuUeHfySigQhQ2NV98tI4MYVF/9nX7cGhJ9YVyG370kA02KOKvb8sxBQQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8T6sLuMjEhaHVf7Bpvg//STWquhKCLiZEjRS/vvpMe8=;
+ b=dk7OBqPzcBsozcm5KstHtJaKbklcN+hTPWAZRktrU16HRTQMXF91TiVEGpdras+lvST6qvTtA12TvOp1/iFtNbDxzVsI2/6a795cTbvmyOR7rE/kvR1UVSaqxlpk8VJdeEv9bf1L9Z4bFLwJeHXmOnoUdmiwh2mok9Y4Y2AY8e94tmkde+whc5TmwUmJZ5x4m3WScwlwYyaaZ85VuOor9mrrA/9dQA0yPENZbgHZU043dSBipUAezpW+dsP7JRtm/lN5PJCI7mIyq58XCLm5wlCsKclH7T7jOV0FGn7DSO3y+8fjhMGUc5GgJYe070YboiH163sgEBSu8Ya5I1+sRQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI0PR04MB10952.eurprd04.prod.outlook.com (2603:10a6:800:268::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 15:58:26 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 15:58:26 +0000
+Date: Mon, 14 Sep 2026 11:58:18 -0400
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Slavin Liu <bolin.liu@seu.edu.cn>
+Cc: frank.li@nxp.com, vkoul@kernel.org, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] dmaengine: fsl-edma: check channel acquisition
+ before use
+Message-ID: <aqgZmtQwpZoxuTzd@lizhi-Precision-Tower-5810>
+References: <20260911060902.94153-1-bolin.liu@seu.edu.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911060902.94153-1-bolin.liu@seu.edu.cn>
+X-ClientProxiedBy: PH7P221CA0072.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:328::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB10952:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86ccee9e-7331-4b87-04d1-08df12790335
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|19092799006|376014|10067099003|3023799007|22082099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	SPDweMaGTt7THeZAoPEqCtf8CODE0dn3SXo/aaEZeXwakisqg2ZUZhqc9uTCuXCP3O0DK4OTg3KDVdVC4NM03pmgwQg377XwfanAJyNacHjx8KkdXWFRGXUyRDcK7NBk5mRsBe9wOL1tGBDH9fKYXgbamtAAfg7fHXemIpohcAzUYV9xP+N24NYfIc+JGVx0XbSx/RsseZlEkmKBfSmNmROh9cIwFHhmxNvRDhbXJF9hpTiPh/Z2Oots8hGXfEbcNtYeLF1VIlld6DW1ssNlWXCP7ztWjb/+xVtnF9QlvyfN0BnBh7JwCfgNncMDQjdUWRgX5LXsPTAozVmMgx1WEpf4AdNt4wM0BsQB4SKPIHtljyJGFWLjLLa7rkV6XDA4x7jgv5+XlnbF4tZyR5AGnUJLYu9twhegoXXgXkU+qX30Fp1yZefWu5teBRRf0wnHHg3CPoU80kOkUil16Yw3lNacjcVNfKhQPqx8sijEpIM9LSWSqr9HfDrvdtoanw0ZVyITMRgVpL+JK8ykJcuoteZCvTgz7X9Kwm215MmXK82aE1GJBwsna1QFPHQF/Rm2J3oaMbMwUtucdWPlEwvLXds0I/mN+i992CNcJmceVIGBKurVknTEDCpuEW0LUDwuv64qlATJfqfwH9lzdv28BQPPkqsg0Fs9szES4uDChzE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(19092799006)(376014)(10067099003)(3023799007)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hQ2in5LsUH1AJEhDdg4uBt1/B4NSuHzjTyXoE5QSLcZ5gk9J5XIGfh8biklm?=
+ =?us-ascii?Q?DIk/NSKN7MXm7d3/SKkNkTmBeswwXONatf1SDOQ0chocpHQH/cM+nNI5zZdZ?=
+ =?us-ascii?Q?6oR50kOPJrEYzQ0RaTlAnnJi1gL4kfbRtFHdjpLRDkCGTQx/GwEgVW/hOr/3?=
+ =?us-ascii?Q?g2cSIJGJWO55VzzpqcmlcEcoXy3P7Y/rmzvjNvlqPLH06lPYQa+8voCsl6sr?=
+ =?us-ascii?Q?fN7FHhFseslte13Xkd1uBwg8D2GHNqCC/c+G/AC/i1eCscalndraMZqUpdIi?=
+ =?us-ascii?Q?3hTqQ8ByYO5yTl0dfsA7oXlaJ6BGDKWPi0JjgRVwr3pqkbUrLLy6bRfjcydx?=
+ =?us-ascii?Q?AZ6fzDMVKn3l5t9Tqw2OQnzLVYExoztJXcth1K1dhY33yqNZNza89f4beixS?=
+ =?us-ascii?Q?KfWiDaR9P7InLBNGd72UYD7Jgsjgxmowg4SlCNQZHGIb2f0PAS1g8jN55Edx?=
+ =?us-ascii?Q?7KArR4S1k9MatULe1BVBYuCwq7J/Vo1iC+BRV7HVO/0iGv1oeUtju9N/ZG4D?=
+ =?us-ascii?Q?zgbZoc6nZa8LHU4Gl525dm7y5Qhgg2HQjnb0gqpN7APUr60RB45HR1hwtvTu?=
+ =?us-ascii?Q?o7SlOp/DURxBWSbLqzJZer6hKh1tMrwCVZ+4CaYGgf/nHCZf0Q1+FSnyl/DR?=
+ =?us-ascii?Q?mJj5od9rcQdUW8zIXpB9gRdM9BSYGMHMtOETSqwnLyM+SYXJNUSY16aCI6PS?=
+ =?us-ascii?Q?t8/jQJyaTLcOy6Er7wt9SU3mRYOOCk13aaMIW4AnW72QMrhgp5Ry0r3i/lB8?=
+ =?us-ascii?Q?rAuE7z+Gy2bPAGkcJoX+Slqv10nIzYjHgDUFB4lMAtJcRwJIe3h1GruKNGqg?=
+ =?us-ascii?Q?GtBS0a4lJmfKZEBorgQxOGnDo3xAQT0u4bUG5lh8X13vW4+7jKhxk5cCdtWR?=
+ =?us-ascii?Q?csqOREeNnz2TB0IVWcBMUoYGvOt9vYPySzmi7ESDarbhMeMnkPnEFTulUcXU?=
+ =?us-ascii?Q?0FcW4oBsNG1vPfCui0XMIA8f4WbvWxFoOt3Y8wymxYo6l/uiv3EzgSLvcozw?=
+ =?us-ascii?Q?8ne00eE8siai0qE927ZvYIXEumcU7y77chyck3TSGyYSLiACTIy40azPYK8w?=
+ =?us-ascii?Q?9IErQ40MIX/f46rgMOnv7OazcDwqrrg8oYCQkfeCmxt8toATlndZw/Y6Uj4g?=
+ =?us-ascii?Q?m1myjNEXZPrBaBTPKscGHra4iKAVEHPQPSN1q+VT7bzezN8FewY0InVFKMk1?=
+ =?us-ascii?Q?g/Z+V2FinEHgOSmhx2UFKRM1t5rPEqlMAYwP9uMj4ZK6w9efgDu/Erto5E5Q?=
+ =?us-ascii?Q?hrVSPYMsAa2L0rNPPeoMRNVwowd0ur8upaNaFbFRRKHEiqBU1rcyM+yg5nmU?=
+ =?us-ascii?Q?P9j+04YNKH1ysxwtHQTGxkQCwHQZyB/tv9rUg/fbkRJZijddou1V54vRfvsy?=
+ =?us-ascii?Q?RX7ULX2Va6iEvTeai9A/9Y3kL2xGLrd+qHxHrkdgBi2ExGdo8D/IYNkxKt7m?=
+ =?us-ascii?Q?PGFobV+8DFMvOsBYkX0ignq0o17XnJYFuTD2pWRfrZRL4H/RPnL2PFelkAD+?=
+ =?us-ascii?Q?IXCumy3g5GHcVq6kldWVxb0VzSuuuy1+jAqoXyCXfP8BRRgsTXRA0r4zrmme?=
+ =?us-ascii?Q?kmGCPniaplxJJyXMVdZ4AFoKcaYeqycO7+F/e4Tc9tqOVxmMQGwHCLc338eb?=
+ =?us-ascii?Q?5+qTeD9d9xcAnf59NJbbbJe91zI8FcjCu3Lckc3VOVsDzkh2wrHa0Cc7sk/D?=
+ =?us-ascii?Q?iBufe6VKBlgTFZom/wNFy8CcaF/fwrggTT8RUPFQwUt+YRD9pp6r5fMA0v0H?=
+ =?us-ascii?Q?CfVH7uKsqlk1ErG0mN0zUNiuiPXg7VAoRY8x7vwZu8HYoV/3gSm8?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86ccee9e-7331-4b87-04d1-08df12790335
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 15:58:26.5949
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TLSlBUelC6pqs7bYDOCyJMwCTLM7+xACXp7nWyqmLA+PGO3VJgOeC9MMIgzwiH+ve8MDU04FFaPSSlhlxJMcYfCSlK0lKDv5JrML9ScIfmV9uXa7cDSfautyYjygcHD+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10952
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The commit message inaccurately states that a label was added fo=
-r `sram@2201f000`, when in fact the label was added to the parent `sram@220=
-10000` node.
---
+On Fri, Sep 11, 2026 at 02:09:02PM +0800, Slavin Liu wrote:
+> dma_get_slave_channel() can return NULL when acquiring a channel fails,
+> for example if fsl_edma_alloc_chan_resources() cannot request an IRQ.
+> fsl_edma3_xlate() dereferences that return value to update privatecnt.
+>
+> Acquire and check the channel before publishing its source ID and
+> request parameters. A NULL-only check after the existing source-ID
+> assignment would leave the failed request marked as in use, causing
+> fsl_edma_srcid_in_use() to reject a subsequent request for that source.
+> The channel resource-allocation callback does not consume these request
+> parameters, so set them only after acquisition succeeds. The existing
+> scoped mutex release and successful-channel return are preserved.
+>
+> Detected by static analysis and reviewed with AI-assisted source auditing.
+>
+> Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+> Assisted-by: LLM
+> Signed-off-by: Slavin Liu <bolin.liu@seu.edu.cn>
+> ---
 
-commit 54e1057c5cc05f686747858b82632103c75a6b80
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
+Next time, remove RFC for such patch
 
-arm64: dts: imx8ulp: add secure enclave node
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-This commit adds the EdgeLock Enclave secure-enclave node to the i.MX8ULP
-SoC dtsi. It also provides a label to the SRAM node so it can be referenced
-by the secure enclave.
-
->     Add the EdgeLock Enclave (ELE) secure-enclave node to the i.MX8ULP SoC
->     dtsi, together with a label for sram@2201f000 that the node reference=
-s.
-
-[Severity: Medium]
-Could this commit message be updated to reflect the actual node modified?
-
-The message states a label was added for sram@2201f000, but the diff shows
-the sram0 label is actually added to the parent node at sram@22010000.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8ulp.dtsi
-> index 777b89ed68490..ac8293f81c6b2 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-
-[ ... ]
-
-> @@ -154,7 +154,7 @@ sosc: clock-sosc {
->  		#clock-cells =3D <0>;
->  	};
-> =20
-> -	sram@22010000 {
-> +	sram0: sram@22010000 {
->  		compatible =3D "mmio-sram";
->  		reg =3D <0x0 0x22010000 0x0 0x10000>;
-> =20
-
-The address 0x2201f000 corresponds to the scmi-sram-section@f000 child node
-instead. The code itself appears to be functionally correct since the driver
-expects the parent mmio-sram node for its gen_pool, but the commit message
-description of the address is misleading.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-imx-se-if-=
-v51-0-4a7dac612cb5@nxp.com?part=3D6
+>  drivers/dma/fsl-edma-main.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> index d9fb717b5b53..6934ac882697 100644
+> --- a/drivers/dma/fsl-edma-main.c
+> +++ b/drivers/dma/fsl-edma-main.c
+> @@ -326,13 +326,16 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
+>  		if ((dma_spec->args[2] & FSL_EDMA_ODD_CH) && !(i & 0x1))
+>  			continue;
+>
+> +		chan = dma_get_slave_channel(chan);
+> +		if (!chan)
+> +			return NULL;
+> +
+>  		fsl_chan->srcid = dma_spec->args[0];
+>  		fsl_chan->priority = dma_spec->args[1];
+>  		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
+>  		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
+>  		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
+>
+> -		chan = dma_get_slave_channel(chan);
+>  		chan->device->privatecnt++;
+>  		return chan;
+>  	}
