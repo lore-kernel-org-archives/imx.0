@@ -1,105 +1,120 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7F4448B97
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 12:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB8248094D;
+	Mon, 14 Sep 2026 12:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789389590; cv=none; b=hQaoEezoxU3Ixl9KNRrsCJc7yz2pORfljkmOcgPHnf/BxfIQr9hIeQxYqdxHxNH7RQF+McfhENjoOhs7t4vNoRG+KXlONydSWclh48vmEIBpQHQWPvQh7AAJM/h+T7GWAaZ/HTkNa4Xs3/RZClSF8jZydBDqJZUU5wtKKw75hEk=
+	t=1789390146; cv=none; b=WwfFaFij3n8WrJ4pCz4vUAV6ErR3I4EkWLspakoolcdZXeOrfRtEdCgylddOODLqhZto8/9ElJLjYZPxdDRll078bVhiRWg26T0F5rtRV5dGgPl6d025LuHXQ3txW44p291JL1BbyK9xw4ZiFdM+QVYHNbiKWf6HGbZZnPiXJII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789389590; c=relaxed/simple;
-	bh=O/gngp4hf+LLp5p9T8vhJw8mUWabD83UKmDRD05jdnY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pAZ+TcWS9tLrVBpNOZHa9DFx6KoDbxy+ToTnwCVKqMv9RoGNMibcbpWpV2QXoUSSfqUdJrBEJ1g3K+uqBWZp3Nu56+xMW+aQghbokxlr5tAdRMJk9kEc4euk4FRsAWHt709b2FVuB0iYd0GSj7tEKJ0ll1KP979jUz8pkQsAins=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qrUUmPFt; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789390146; c=relaxed/simple;
+	bh=Vq6OODz2BCg/vn3bK26Ax+waxkjSGIIpxbW2p2ETn6E=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=crV2TJLi+pYkRR74Dr7Q78qDIo76zMTy4pn4qYq1kyHqGakIyuAz4/LjHqW2CIE6pAHsmLWpKehmcM/FnYlKjq08BJJMmYe3TZ96Xkk5w6ufnnYwCTXrWr7ypB4R+wFUPEbxDF2BU7nIza5njAe7VFttxJ+SF6EPaGxD1C38rps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irz8mPe3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qrUUmPFt"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccfd61ecaso19005265e9.3
-        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 05:39:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789389586; x=1789994386; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O/gngp4hf+LLp5p9T8vhJw8mUWabD83UKmDRD05jdnY=;
-        b=qrUUmPFtc33SZRuOr0KjIRvckZS12nxvim3fPGyrfcsxyztZOsyxG4Pia57UB8UOHn
-         NFO/5gTpmougpXECs+ct9b0xb2mRNUx57ids4XEBXAfpGTpFt4h+6GCQJkHovfx9sWPB
-         QubA904KAYzX8i16ECgXRQ8cWnKJ0WfuTQEwN9+ztYAIUg8CsUrrAHcI1nu6KxSYjtrM
-         XBr6b1S9BOcfjuxqH0pc3GzdhcvFIFbyirvwVbuX0wj2j1LRzGBnsVnVSbwu0DXabopU
-         wIps/Gf23APSRHnXleQcpHE+wV5ilCNg3kFDUCtB6/M33wFyMyNo0IOWj23XIMFuIAOo
-         C7Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789389586; x=1789994386;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O/gngp4hf+LLp5p9T8vhJw8mUWabD83UKmDRD05jdnY=;
-        b=DfS4p5uErOciPiaBsfu/4V4GxFm5H8Equ1b5RSSthqx7DiGH103WhSWGaXrK+t9WMD
-         /buWSr3oMF3hgNgCeNQP0NgG5LCZMXcNmqB0/JMfhBWNv0qeWpnHskf4cUdS44ZWDIn9
-         cEbbNTJClT4Wl5XFigtRDD7A37kha0FL2E0S4Bt9f/u/+POci5k0U923zGWmMC7fNlUn
-         xiSRL4mAJAivB0WsAjlIKxh0UY+wf7pNP7IXPCAe49VwW67sGrv3Mxr3tjMS0jgI1dXY
-         RkCNmFJ8GwNd21zaoRft3evyGRi/jggHRrzCZbN7BC+m+bgqCgo16N3YRZox7O5Jcxgo
-         N89g==
-X-Forwarded-Encrypted: i=1; AKwUvBz+oMp8BUe9gJreCR+OahVDYl+b5naJU2vKu0+AvTr8KqjYqlp/KcIuWxshgIvmj+5s5Ng=@lists.linux.dev
-X-Gm-Message-State: AFuF++nc6fPTTPDTSP2Vv220/HHj1J/itP4BqUISqve83f79CXzz+ibx
-	acS6ujnDgvjJtE4jboVC8yHz1KKwQ9QhIRx9PAXQAaqQ1itZjh4WzuPv
-X-Gm-Gg: AYBFou02cZF6mzFS7yPKhzdf1wxCk2717eq7dzXx5guV7Q47Xnvnv+tGCNrVz7nAWdH
-	nFRwRCpZxeI7AW4UH80KVy/dUAnprbeyY2uEUuvnYSNlTW2llMN/dy9zxTseppOc+AMJVK9x/pA
-	L6CEoo6Uab8AhwbW7hnGOUmKsuMI/KWV0dYCySiDS2bof2wjSYR6/i1ObhB0wzwNY9UOLMB4v/V
-	EnFnlFwqoNirxCCHZunPF7nL/9MaWeMX+z1hsX3SinZQl/zInESiEV9Op7wmNDrjDERvfiq5lEt
-	Arp1ZAi4pEkgbdjJr2S861yxFbtf5i1dJEDmaSxF8vhdbaD7M1e4lp9CIodXl8oyc5apILoA6E7
-	GW+vzSOakjJCETOPDn6erxrfUIY7MnEMaZP/JdpLnJHQWxQBHGef8DdbfAIp/oiQqBSYRPPcF+V
-	1+ABO8W6sHVJQckWvpXGXoseRlmyPwfeEXgjuKU4Sy3zdLem40Z86Xc11nCKtYAOZ+SqA6GMpBv
-	rJn
-X-Received: by 2002:a05:600c:4f41:b0:49d:38:afce with SMTP id 5b1f17b1804b1-49e7a6868c0mr31405635e9.22.1789389586006;
-        Mon, 14 Sep 2026 05:39:46 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb34f353sm26035194f8f.26.2026.09.14.05.39.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 05:39:45 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: Re: [PATCH v5 1/3] pinctrl: imx: answer OUTPUT_ENABLE/INPUT_ENABLE queries from the pad register
-Date: Mon, 14 Sep 2026 14:39:44 +0200
-Message-ID: <20260914123944.149806-1-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <CAD++jLnmgKrmUnyCx8dq9yFuJxx68Tt-3XPz0WRzOO8F7805OA@mail.gmail.com>
-References: 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irz8mPe3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9CC1F00893;
+	Mon, 14 Sep 2026 12:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789390144;
+	bh=cO8MfQgzbstSs3OjNMCZUD++0K4thea2LVqxZPsF3s0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=irz8mPe39YkjJkgZJJhdNXZ6hHsoE3XCcsbJuCtHZaA5/nU2BUthj39fjq7WuVcG3
+	 1rXkeD6UDBqmRIubwn2R1nRnzMrjbyOqKHm0T0fdoLZ8G7HLcMC9OxR2EgOL4RKeG0
+	 daAvyBcfSJLoyBFPMIlPqvEYn4vIcOObxXh/xOP4VzyGA/egmjdi/TiR+tydv+KgIa
+	 ED8nHvjhmreM9NSiSxnG0l+pfvqJN/769RAo3po0yNpRV5XvrWitzfoX0MYw3IHdcE
+	 khLQFYIDMEfOrK235deWBSxkt/Y4+J+uCnPhDSeRbhbzvWr9ziZQo+CLDt3nvDfRD6
+	 u/YvkCX0Pv1gw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] PCI: imx6: Avoid dereferencing a NULL clock name
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Rudi Heitbaum" <rudi@heitbaum.com>
+Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <aqfqE4OLhnN4a1lW@b65e9c1eb12f>
+References: <aqfqE4OLhnN4a1lW@b65e9c1eb12f>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 12:49:03 +0000
+Message-Id: <20260914124904.1F9CC1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-On 2026-09-14 Linus Walleij wrote:
-> This looks like something I could apply separately from the rest,
-> can I just queue this patch in the pinctrl tree?
+Pre-existing issues:
+- [High] The return value of imx_pcie_host_init() is completely ignored in =
+imx_add_pcie_ep().
+--
 
-Thanks for the reviews. If it is all the same to you, I would keep the
-three together until v6 has been looked at; gpio-mmio depends on this
-patch to get correct answers on Vybrid, so I would rather not have it
-land ahead of the rest. v6 goes out this week with Haibo's comments
-addressed and a small pinctrl patch for the CONFIG_PINCTRL=n stubs
-added. Once that is settled, this patch can go through your tree and the
-gpio patches through Bartosz's in the same cycle.
+commit 628ea0e01756defcb86187cc3b9ad1e2b8354965
+Author: Rudi Heitbaum <rudi@heitbaum.com>
 
-Best regards,
-Mehmet
+PCI: imx6: Avoid dereferencing a NULL clock name
+
+This commit prevents a NULL pointer dereference when accessing clock IDs by
+checking that clk_bulk_data::id is not NULL before using it in strncmp().
+This fixes a probe crash caused by unpopulated clock names.
+
+Link: https://lore.kernel.org/all/am8iBwJSEhYhWTqk@6cfee64030a6/
+
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 39790e66b98dc..f8dd83a88ddf7 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -542,7 +542,7 @@ static int imx_setup_phy_mpll(struct imx_pcie *imx_pc=
+ie)
+>  		return 0;
+> =20
+>  	for (i =3D 0; i < imx_pcie->num_clks; i++)
+> -		if (strncmp(clks[i].id, "pcie_phy", 8) =3D=3D 0)
+> +		if (clks[i].id && strncmp(clks[i].id, "pcie_phy", 8) =3D=3D 0)
+>  			phy_rate =3D clk_get_rate(clks[i].clk);
+> =20
+>  	switch (phy_rate) {
+
+[ ... ]
+
+> @@ -1836,7 +1836,8 @@ static int imx_pcie_probe(struct platform_device *p=
+dev)
+>  		return dev_err_probe(dev, imx_pcie->num_clks,
+>  				     "failed to get clocks\n");
+>  	for (i =3D 0; i < imx_pcie->num_clks; i++)
+> -		if (strncmp(imx_pcie->clks[i].id, "extref", 6) =3D=3D 0)
+> +		if (imx_pcie->clks[i].id &&
+> +		    strncmp(imx_pcie->clks[i].id, "extref", 6) =3D=3D 0)
+>  			imx_pcie->enable_ext_refclk =3D true;
+> =20
+>  	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_PHYDRV)) {
+
+[Severity: High]
+This isn't a bug introduced by this patch, but I noticed a potential problem
+with error handling in imx_add_pcie_ep() within this file:
+
+drivers/pci/controller/dwc/pci-imx6.c:imx_add_pcie_ep() {
+    ...
+	imx_pcie_host_init(pp);
+	ep =3D &pci->ep;
+    ...
+	ret =3D dw_pcie_ep_init(ep);
+	if (ret) {
+    ...
+}
+
+The return value of imx_pcie_host_init() is completely ignored. If hardware
+initialization steps in imx_pcie_host_init() fail (e.g., regulator_enable or
+clk_enable returning an error), it returns a negative error code.
+
+Does ignoring this return value allow execution to proceed and initialize t=
+he
+endpoint on unpowered or unclocked hardware, triggering a system crash upon
+register access in dw_pcie_ep_init()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/aqfqE4OLhnN4a1lW@b6=
+5e9c1eb12f?part=3D1
