@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938ED353A94;
-	Mon, 14 Sep 2026 15:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B7488212;
+	Mon, 14 Sep 2026 15:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789398593; cv=none; b=F6Q7Jf3HqQF2cjx/jIGLBIcWGOIBc9ntfbitSb9pluOGt2W7p/1tFBvUiT1eUYSj0Io/AB4DeTB5+8jTi2BDG7S1HNlhF6GN2BvTKbCXkCXrgRTBd1Mw+x55OZr4Etym3c1pJ2qnEm5dRPAlLUQlWtXr7AbbM9fv+I8PQOp3Oro=
+	t=1789399056; cv=none; b=foSAmQ9IeqGj/4iPCnA8ptRSdL5kftAtucW0xxMOB77Xgd3QHERK0LbYs8W2bUaSvJLh8/4AI5dJ6NOykJyxbPg/QE9NTJgjfbXPcAuFnhvTwSONmR05GYOzThPr4f27sBSK4oMaCqf5xgo95RDjncrYG+QbjfvCZn5TIIDqsfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789398593; c=relaxed/simple;
-	bh=P1SV/Kl+DaWinZ9PQIQFV2ccqHOzHwLcHnMTQj59jKI=;
+	s=arc-20240116; t=1789399056; c=relaxed/simple;
+	bh=WJVZANtvb57o/eiyecBKFn7aqdmuNvWQsg+Qp0tD8C0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ow/PRQHhAJkv7Cq2dISjVdVjMJbtxhwUDfW71crIp9WsqBf+0Wu/slB9cr2GEQKDOu5c0XjRYrAVWmxKrPyMOnrEKduSArs34yPTuogP+zcjj8miPMhTrzBtpPoFAbw2SSV1oi5Vkyu8GTJAS2j9SCtKAft+xoQeSg7icIgP/IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNb8XWqC; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ipS1LIu6tPCfV5pr8EqKnF/F9DqQ6SvagF46vwf6WExI9VsKa9wS+2K3xlduLw+ABqTRpcIvwxxQdgVtnwbJYdxbwoGon+d5WlaXvL7CsRrtRFa/gYm9fPZp1OwKajd6lHXPfTkvIUsJ4X/21h658Hx69rfc7U4i+OOXvKppcs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIKkSwx4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNb8XWqC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADB01F000FF;
-	Mon, 14 Sep 2026 15:09:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIKkSwx4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD741F000FF;
+	Mon, 14 Sep 2026 15:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789398591;
-	bh=Kp9SMreYAwrLLd3C+k6DxKByfXv6m4kvU0zr11BgQYs=;
+	s=k20260515; t=1789399054;
+	bh=6YMpYsqszjIHimH8+85byjVbhmmzDk2fY3lzbXyaeJo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WNb8XWqCQsChRRR+ma06xkfeRRhetY/FpANusm2/OefLmC5iBHd/wFvJIcIjMXxkZ
-	 veJ9FxJ+vsJKXD/Cd0PRm6CNckkzzHVE+p4wftxsKhC9/oZoNgyfSqRdCj87h485O3
-	 7tHcNA3b0ujvkn8AyfQmS/MrMXd5Si0aWGFyQ6noUWLjKFtx1BppBQ3yP0kaLm5mjN
-	 +nyO+C9onTrHUQUTeXha7fxfT9VKI+/CceDcle/IRU7Z/tTUY+q7HnCRls8EIXJWsB
-	 QbVTP18SLN38PTCKrLLnJ1mC/exjhiNLRtbQoLXq2ufulZA41BW2FT4faJ/b2Que/I
-	 hrupxJQA1r9TA==
+	b=oIKkSwx4KziSzlb/XggMjj6Efy8upibzHZ5cNiyqWUtEOTcteG22O35SPWsH/9qQh
+	 p76t5vq8z4fX76LxVllT4/537adD1/eHiNLoaPiuUCGOxlffs1Lqy10SYzeVVat2nB
+	 1rK2Jboc30guBrP4DUAV7+HjfFc/cOvDO0WBn2hyscVsQYQ3aDHRaoApLGRy7Vo+Ov
+	 msFNvdq296s9rUc5PB88hFPvRW/fhO8YxKAvOhChnA5E3cXYORHEqtoJ5CF4Ky2SxT
+	 yXQf4SzE1k2iOkSaTH0eHn5xpwtDTQK80PfE+c9mcSXknlad0pfybXLMjeTyS99i/e
+	 3fnPjMRl6rXQw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v51 5/7] firmware: imx: adds miscdev
+Subject: Re: [PATCH v51 6/7] arm64: dts: imx8ulp: add secure enclave node
 Reply-To: sashiko-reviews@lists.linux.dev
 To: pankaj.gupta@oss.nxp.com
-Cc: conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260915-imx-se-if-v51-6-4a7dac612cb5@nxp.com>
 References: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
- <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
+ <20260915-imx-se-if-v51-6-4a7dac612cb5@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 15:09:50 +0000
-Message-Id: <20260914150950.CADB01F000FF@smtp.kernel.org>
+Date: Mon, 14 Sep 2026 15:17:33 +0000
+Message-Id: <20260914151734.4FD741F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,79 +46,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The firmware-busy circuit breaker can be permanently disabled if a=
- recovery command times out.
+- [Medium] The commit message inaccurately states that a label was added fo=
+r `sram@2201f000`, when in fact the label was added to the parent `sram@220=
+10000` node.
 --
 
-commit 8efdce1526b5b7fd05d241f2ae2a7a89f4376e43
+commit 54e1057c5cc05f686747858b82632103c75a6b80
 Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-firmware: imx: adds miscdev
+arm64: dts: imx8ulp: add secure enclave node
 
-Adds the driver for communication interface to secure-enclave, that
-enables exchanging messages with NXP secure enclave HW IP(s)
-like EdgeLock Enclave.
+This commit adds the EdgeLock Enclave secure-enclave node to the i.MX8ULP
+SoC dtsi. It also provides a label to the SRAM node so it can be referenced
+by the secure enclave.
 
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> index b5d3421c09878..519f24d24a859 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
+>     Add the EdgeLock Enclave (ELE) secure-enclave node to the i.MX8ULP SoC
+>     dtsi, together with a label for sram@2201f000 that the node reference=
+s.
+
+[Severity: Medium]
+Could this commit message be updated to reflect the actual node modified?
+
+The message states a label was added for sram@2201f000, but the diff shows
+the sram0 label is actually added to the parent node at sram@22010000.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot=
+/dts/freescale/imx8ulp.dtsi
+> index 777b89ed68490..ac8293f81c6b2 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
 
 [ ... ]
 
-> +static void se_clear_fw_busy(struct se_if_priv *priv)
-> +{
-> +	struct fw_busy_info *fbusy_info =3D &priv->fw_busy_info;
-> +	struct se_if_device_ctx *dev_ctx =3D NULL;
-> +	unsigned long flags;
-> +
-> +	scoped_guard(spinlock_irqsave, &fbusy_info->fw_busy_lock) {
-> +		dev_ctx =3D fbusy_info->fw_busy_dev_ctx;
-> +		fbusy_info->fw_busy_dev_ctx =3D NULL;
-> +
-> +		if (!dev_ctx) {
-[ ... ]
-> +			atomic_set(&fbusy_info->fw_busy, 0);
-> +			return;
-> +		}
-> +	}
-[ ... ]
-> +	scoped_guard(mutex, &dev_ctx->fops_lock) {
-[ ... ]
-> +		if (have_snap) {
-[ ... ]
-> +			fw_api_specific_ops(priv->priv_dev_ctx,
-> +					    (struct se_api_msg *)late_rx_snap, true);
-[ ... ]
-> +	se_release_msg_if(priv);
-> +
-> +	spin_lock_irqsave(&fbusy_info->fw_busy_lock, flags);
-> +	atomic_set(&fbusy_info->fw_busy, 0);
-> +	spin_unlock_irqrestore(&fbusy_info->fw_busy_lock, flags);
+> @@ -154,7 +154,7 @@ sosc: clock-sosc {
+>  		#clock-cells =3D <0>;
+>  	};
+> =20
+> -	sram@22010000 {
+> +	sram0: sram@22010000 {
+>  		compatible =3D "mmio-sram";
+>  		reg =3D <0x0 0x22010000 0x0 0x10000>;
+> =20
 
-[Severity: High]
-Can the circuit breaker be permanently bypassed if a recovery command times
-out?
-
-If fw_api_specific_ops() triggers a cleanup command like se_close_session()
-and the firmware is still hung, that command will time out and call
-se_mark_fw_busy(). Since fbusy_info->fw_busy_dev_ctx was set to NULL at the
-start of this function, se_mark_fw_busy() will claim the slot again and set
-fw_busy =3D 1.
-
-When se_clear_fw_busy() finishes, it unconditionally sets fw_busy to 0
-here, but leaves the newly armed fw_busy_dev_ctx populated. This leaves
-the system in a state where fw_busy =3D 0 but fw_busy_dev_ctx !=3D NULL.
-
-If this happens, could subsequent timeouts from user-space ioctls fail to
-re-arm the circuit breaker because se_mark_fw_busy() sees a non-NULL
-fw_busy_dev_ctx and silently returns? This would permanently bypass the
-fast reject mechanism.
-
-> +	kref_put(&dev_ctx->refcount, se_if_dev_ctx_release);
-> +}
+The address 0x2201f000 corresponds to the scmi-sram-section@f000 child node
+instead. The code itself appears to be functionally correct since the driver
+expects the parent mmio-sram node for its gen_pool, but the commit message
+description of the address is misleading.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-imx-se-if-=
-v51-0-4a7dac612cb5@nxp.com?part=3D5
+v51-0-4a7dac612cb5@nxp.com?part=3D6
