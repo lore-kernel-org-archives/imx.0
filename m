@@ -1,99 +1,96 @@
-Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9EE3E5A0E;
-	Mon, 14 Sep 2026 20:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4C030E0CC;
+	Mon, 14 Sep 2026 21:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789419594; cv=none; b=DiaVxydL1AZ2E54xqhGAGoo+yKXK82azDQa8Qg2V5bhSGLe77CGXypU1xdxMgZbPJFV4Iz18C8LgeXMZSQG4Px5tpzvcKx6VZd9RF7cUzsZ7oZ9N426sF5h8tLH+SvxIolztd6u2AbnbN+NjA3QSDozocBbRspSnrQxB18d6oqw=
+	t=1789419696; cv=none; b=auEdsPfRYQDIZgByHQNkToyjfj35/Seqj4qadZNmNfSVBWuL40X9cEgzHHt2xpGQsRBEqdQVf/8fDH0mF3gOl28TBj0MW3XcUVMvle717ENe2thinL25vhlOYCDhbWWRhmkH2bmO8e4NjLLh5Q68XbXzsAdsmaZ8ZK/gSZXYtpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789419594; c=relaxed/simple;
-	bh=5kxlidUFCpU0ULPnNoqi4Oj2SDugDDeRksisx15L+fs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckcCRnUq4nkwK2SX4oTQYZS+ymzxm5escgLYJKatGPgf2eWwdlrgPEZEsF7ws217wmplAH/5wKxbnQBuXZFWmgzzL8s5jVJJRKLvpXLBNnIV13qSOPtaBzwuIVAUFxeAkFgVO2TqzIcpTrwWu92AH8Km+bLAeC2ENr5aot0bVu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=NIQHoxlk; arc=none smtp.client-ip=212.27.42.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	s=arc-20240116; t=1789419696; c=relaxed/simple;
+	bh=n5QACkd1zv3PhqXE3MIany6DDgK40aeV4SQY8yeovjE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tli3k7HgI0Dp6x317ahCwKHmuQE5c/6IwjtuRfjApjcQ1f0m4tUEIO7xHV6aR6B//+yApKxuLbZ1XoTnigqrGsyk1i2QiVqdWxJGnfp12ImoNSaH0a7e2i4EiARxYHl4QLvnGSwl+JjvMv1bixPlLEhm6gNF8AAJI3cclcyByao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fPjLsWMy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="NIQHoxlk"
-Received: from l301776.home (unknown [IPv6:2a01:e0a:ac2:22b0:3514:9134:2ea8:d094])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp3-g21.free.fr (Postfix) with ESMTPSA id 200EF13F879;
-	Mon, 14 Sep 2026 22:59:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1789419590;
-	bh=5kxlidUFCpU0ULPnNoqi4Oj2SDugDDeRksisx15L+fs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NIQHoxlkAdE05We4kmWYV8nraIak2Ff5y29nmaPQHdG8t6hZOxyV17pu7r8mL8DYl
-	 jKyP/RFBfBXhsrkiZYKzyLDseGCr5jpgItMvarlPmmrroy1A57uGjliRxkLUgaSCZ/
-	 IDCXJMgHaR39Wh1hDMgG8xrFP0ZoA+zLaei8j8SdwLtm48ztXnoOMudBEUbmtx0Eqz
-	 rp+UD9XvBdRMJaX1S9ieCovwY9QoXC9q6iUM8AezqUaihaF2s5POQO0X7ip2teXNIP
-	 ptVu5Ki6McgRnW5n8uBJtidRdcAklShpzR1RcpjElapeR82UDQtD30fGc0PGi3QdhC
-	 ohxATrfoOHPzw==
-Date: Mon, 14 Sep 2026 22:59:43 +0200
-From: Vincent Jardin <vjardin@free.fr>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: sashiko-reviews@lists.linux.dev, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org,
-	Frank.Li@kernel.org
-Subject: Re: [PATCH v6 3/3] arm64: dts: freescale: add Nodebox v3 CPU Module
-Message-ID: <aqhgP3Yy6uGB9RIC@l301776.home>
-References: <20260913-for-upstream-nbxv3-dts-v6-0-058566b93ba1@free.fr>
- <20260913-for-upstream-nbxv3-dts-v6-3-058566b93ba1@free.fr>
- <20260913124548.EBB021F000FF@smtp.kernel.org>
- <aqf91XlM-aiX2MXe@SMW015318>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fPjLsWMy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F67AC2BCFB;
+	Mon, 14 Sep 2026 21:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789419696;
+	bh=n5QACkd1zv3PhqXE3MIany6DDgK40aeV4SQY8yeovjE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=fPjLsWMyhs+Q2lIb8/u8B399dKax3CndF3hfkAhaqZvAuc/rhz67qCgnvsxe5u9b1
+	 B0UiChn5QQBSJaITW4OvbXK7GxJlTNjNNBFYQH+L7NhusEfzeL4wWzOAcJSAxADGKe
+	 eBN/Jllnr5xfHQOljPanjt0gmIiVNX4hAJ38eS5agKVHVB9tLoTCRC5CaYoJ6ndY7k
+	 oQoInpGdMVaBGsB/xjYs/bhlNyvXP0PD2HKqsVN8DEi+kxMn7iS9DIYKCp2fRdD5EP
+	 j0cyo7z9//q+alg4sh4wVpga1lvICqIt7kqjsRpE5SxeUXA4XQC4xDN0Dco+Y5xjT2
+	 5L8zbUKggERkA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC786C88E7B;
+	Mon, 14 Sep 2026 21:01:35 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Mon, 14 Sep 2026 23:01:34 +0200
+Subject: [PATCH v7 1/3] dt-bindings: vendor-prefixes: add Free Mobile
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqf91XlM-aiX2MXe@SMW015318>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-for-upstream-nbxv3-dts-v7-1-373a142b08d5@free.fr>
+References: <20260914-for-upstream-nbxv3-dts-v7-0-373a142b08d5@free.fr>
+In-Reply-To: <20260914-for-upstream-nbxv3-dts-v7-0-373a142b08d5@free.fr>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Vincent Jardin <vjardin@free.fr>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789419694; l=923;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=YJnL8SVSS5jtnm6LBYWZbK3h+dEb8nY2DV6ueCzz3OA=;
+ b=KPvHnjXaWyA3V9IjJEfPXvAX2+giWbckoUOP7ejSIEhUwOvWv527dWlOufpBbFpxywfP1ce1T
+ ba+UrtLfIwWAt5HzLSXMabxoMAtJcQ5vaiWBqk1CbH0XDhrmWpwK4Fo
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-Hi Frank,
+From: Vincent Jardin <vjardin@free.fr>
 
-Le 14/09/26 08:59, Frank Li a écrit :
-> > However, the board's strict naming convention uses a '#' or '-b' suffix for
-> > active-low signals (e.g., ethsw-reset#, usb01-oc#). The absence of this
-> > suffix on ethsw-mdio-en strongly implies it is an active-high signal. If it
-> > is active-high, driving it low will erroneously disable the MDIO bus to the
-> > Ethernet switch.
-> 
-> Is it true?
+Free Mobile is a French mobile network operator. Add its vendor
+prefix, used by the Nodebox v3 CPU Module (freemobile,nbxv3).
 
-Yes, the polarity is right: the SoC enables the carrier's MDIO level
-shifter through an inverting stage, so the shifter is on when the pad is
-low.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> > > +&gpio3 {
-> > > +	gpio-line-names =
-> > > +		"altfn:ec1-txd3", "altfn:ec1-txd2",
-> > > +		"altfn:ec1-txd1", "altfn:ec1-txd0",
-> > > +		"altfn:ec1-tx-en", "altfn:ec1-gtx-clk",
-> > > +		"altfn:ec1-rxd3", "altfn:ec1-rxd2",
-> > > +		"altfn:ec1-rxd1", "altfn:ec1-rxd0",
-> > > +		"altfn:ec1-rx-clk", "altfn:ec1-rx-dv",
-> > > +		"", "",
-> > > +		"ptp-refclk-in",
-> > > +		"", "", "", "", "", "", "", "",
-> > > +		"u1700-zl30733-pps-out",
-> > > +		"",
-> > > +		"ethsw-mdio-en",
-> > > +		"usb01-oc#",	/* USB1_PWRFAULT and USB2_PWRFAULT share one net */
-> > > +		"",
-> > > +		"usb01-oc#",
-> >
-> > [Severity: Low]
-> > Are these duplicate line names intentional?
-> 
-> Please fix this small problem.
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index ba2002969373..e467da45cd7a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -626,6 +626,8 @@ patternProperties:
+     description: Freebox SAS
+   "^freecom,.*":
+     description: Freecom Gmbh
++  "^freemobile,.*":
++    description: Free Mobile
+   "^frida,.*":
+     description: Shenzhen Frida LCD Co., Ltd.
+   "^friendlyarm,.*":
 
-OK, I'll do it in a v7
+-- 
+2.43.0
 
-Thanks,
-  Vincent
 
-> > Sashiko AI review · https://sashiko.dev/#/patchset/20260913-for-upstream-nbxv3-dts-v6-0-058566b93ba1@free.fr?part=3
