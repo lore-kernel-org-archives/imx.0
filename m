@@ -1,125 +1,125 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C125C41DDF0
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB6241D624
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789377358; cv=none; b=XL5wR0OYrq8ELLFRLmFx9sAVEwySAQ/nagmbkOuClpX3WEkJ1eO6RxxD4bDIyYLisHQ79kN3/fC2+qHQdRc6PgwmwVyBBq254gYOb4oCR7d0XgghnT/YjK8Urp63KgHEy7bLqWSgB6iqmJJHjlTQGjU0rOO6jmNKn/+8hfeKuGw=
+	t=1789377503; cv=none; b=q6V31dpm+9JIh4JTGBzM05MskcNCPwD+1DwbnN6XD+7puVre2PVWDH0JtzdQmEbwyRFdk3KZlNgYFgYNvLsqYZXzqY87o0E+DmIqsJ3gXwB07/1MjRjN99IguXbwbWRDiWZFNjKZrXsDy19aFCcFrtA9ce6muxhiAR55y7shKxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789377358; c=relaxed/simple;
-	bh=MEXHfGz4HzaBznx53art+ix5nkCHygSVvo4IcvkNi3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=geO4quI+MIE6s/634Uue+6bxYBXKMqYxX+uACdg2Jf3uur3Hm89StUcmEE200F8R/BsZjiIPLnVBugqTlz3grlTMt/feWRgJRTgIsvsoZZ2jR+uDdSnMqADpFQT6tT/RBpIyNQbd0E9ImnIWFSVh3gYXmRZuoh+vFsGdCdhIGDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AxWwTjbG; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789377503; c=relaxed/simple;
+	bh=y+XthYpwJa0ncDZ+rJaH7UIirjA9bghrnQc1+p4y9tI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JwQaYfsmA7/ZCRS0aeyjda6r6GQNReKdyCrKa5kvoAOfwEBEVQ1eda5bSLogYFqVBldnJQ0XzNPPJJ3zG34di1vnnH8+zTa8pF6sdyUvgAacbm5Cs6Z04sjQkfzFIPV53ukiuR+0DGyryDrsYYsov7q+CGjC/scO+hMEkCMIjkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huqoo2Wb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AxWwTjbG"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8692be1cda4so2429996b3a.1
-        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 02:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789377356; x=1789982156; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=phiJHwRkepb3+2i8AgNorxLeG3jmpMTw91eiZ14pBcE=;
-        b=AxWwTjbGRKaKdiad32mw0+/nIaEHuniCFK/pd4QQgEeYIiYtA+th7GZPbCRJEyLA8U
-         XUZgjFLriS6Qpi8kZDFoEL92hPrXW9f8aHBxiYMeYSrof2HKHzf42NiSpq8yBQ4LUoj1
-         +qQoWysMSxoeB+UvcGZDB3nlLk+Vj60wevsYDGVYz6u7pUfnV1kyO4YSNYn9hasl0fKu
-         Kz4LLUu7u5bNIkjqCS9tBkY13Cljm+gkMursRP1ky5n/ztGmAbFcfgHbDezIFF0zAhH/
-         jI+P8d8gjX6DuqS6JcI9BtOFterJ/ZMNA/Xo5uaeRZ6n+aum6/1aDLHu4jjdR+PRFRlL
-         rRPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789377356; x=1789982156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=phiJHwRkepb3+2i8AgNorxLeG3jmpMTw91eiZ14pBcE=;
-        b=iMKWujZS5hmG008K0cFkA4VPdVGlnjgjQ6oNas8h/FuwrUtVjkiiEh3yN5Ykw6lgwe
-         RMVsGsiV4krSU7SK727Ul8xHJImL+HU+qna71AzXUV3Bt7pHbQjy6ENaNuTOcANfXFg+
-         5OzDGJja06JDiPgqK6S9NUno9IG8Q+FkE3g8CDkh+QtQSvWH8Xf2QvVWMke827cLijVb
-         ZPs+DR8jdCkNWBy3OLNNeXx97KN1ofj2sVHXCyHFTkiwhKT1nFvO2HdLeII239UwYXQk
-         G1lQU7WSL3aWYkAhTT5J3VQXjbRHC1HtOdnjT3tmhD36sJGJTNzwBU+0C83cHSR4v/hm
-         SZgg==
-X-Forwarded-Encrypted: i=1; AKwUvByyjC+Mv1Wn3q7dRfr7Zze5wyok2yAmIFH5lXjswfdVU/RD5c8n6tIWvmZNL1h56HXmrG8=@lists.linux.dev
-X-Gm-Message-State: AFuF++kOBz/NyajPM6gnvXO+1fMRo84t0iy3Z/gVQ6YUGjCl39V/L1KH
-	5IRRDv47wb9UmAeRCL6jC4/X3YEySaTm5LDorV5gNn4fIgo+1INg0+6X
-X-Gm-Gg: AYBFou3/tc9Fnlwfm6k4HYyFTVzbcWeEtPOe5XbZbVVOgPxZb/OY4Az4ZaTEt9kdGX9
-	9TbCKIAeTHkoA9qn+ku03LhvVBOAdF/1acbya6znMir020GEla3BxB5+JfLc7c8yST1HTYEZOIL
-	+H+RdkssWJRZ9Zo/YyjmsmCi7f/XkHydXu2oZmCgzopjPduQyRAG25QL9cnpycp9qsqsRiMkAEr
-	twpUGbXsLjaAkFOqAW/NcMDp2vFqLzoCV6h5VkT1wFAZrFdv+mMK3b4AbeR7XtYtnZtsI3aUsqy
-	C3CLKa50Sa2+OBYbyR15K2JDdMKeLK+VL5a50pUUIw/8v/1PKKuUGdWevx2dO18qNuEnJsIEnzh
-	hF2rhnLHCImEb48+sDsVF3y47qA4ds64fREk6+8wrBAITOB4iFQmLyB394hPe8/nb7ZcqXzzy2D
-	i3UOT/4PRGPIIGiAHxjMlrrELmo7Lda2TuofQONDWxodb5Hzme5sypBQ==
-X-Received: by 2002:a05:6a00:4288:b0:845:c694:5c3d with SMTP id d2e1a72fcca58-86f83346552mr3922964b3a.1.1789377355574;
-        Mon, 14 Sep 2026 02:15:55 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b287c0762sm4480614b3a.13.2026.09.14.02.15.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 02:15:55 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Gao Pan <b54642@freescale.com>,
-	Fugang Duan <B38611@freescale.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] i2c: imx: disable autosuspend on remove
-Date: Mon, 14 Sep 2026 17:15:44 +0800
-Message-ID: <20260914091544.1667137-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huqoo2Wb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A44C1F000FF;
+	Mon, 14 Sep 2026 09:18:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789377501;
+	bh=2YL3MC718vW3UHSqqFd9vlO0hJLQr7pBGsPwZmNxl1c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=huqoo2WbDiUJYDQVo7Wm4fXnki0m2SpndKb8grWRqQSLwBTFm9AvswKt+WtJOP2SL
+	 j1IRgTmAJqAKf6E1oxfRoG0duwel/UV2eAsgp1gdainZ6ZE47RXhc7vX5sQlUYEibE
+	 NX2008x6hLliHdgOIkkWwLLuW4xU28bgU0+yJrnFq7Hl5nAGOefKLYs7BDbW0jvnKJ
+	 caasLViCVdlXtjweMeja9Nm1KiXNmjOYYPQMAuU3/iQvINiP+1/AaNn3Kxf9Rk6cZu
+	 05btP8NjnF1PWS4J8cHqyboN2MwaXwtnCg9E8dpYqDEPXooMUveuL6Okz2UOYF1Yux
+	 Qobs0TcB1Cc+A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] i2c: imx-lpi2c: release clocks on remove
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guangshuo Li" <lgs201920130244@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260914090718.1666333-1-lgs201920130244@gmail.com>
+References: <20260914090718.1666333-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 09:18:20 +0000
+Message-Id: <20260914091821.4A44C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-i2c_imx_probe() enables runtime PM autosuspend with
-pm_runtime_use_autosuspend(). The probe error path correctly undoes
-this setting with pm_runtime_dont_use_autosuspend(), but the normal
-remove path only disables runtime PM.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-The runtime PM API requires pm_runtime_use_autosuspend() to be undone
-with pm_runtime_dont_use_autosuspend() at driver exit unless runtime PM
-was enabled with devm_pm_runtime_enable(). Leaving the autosuspend flag
-set therefore leaves the runtime PM state incompletely cleaned up after
-the driver is unbound.
+New issues:
+- [High] Manually disabling hardware clocks while the devm-managed interrup=
+t is still active creates a race condition leading to a system crash on spu=
+rious interrupts.
+- [Medium] Ignored return value of pm_runtime_get_sync() leads to unbalance=
+d clock disable and reference count underflow if device resume fails.
 
-Add the missing pm_runtime_dont_use_autosuspend() call to the remove
-path.
+Pre-existing issues:
+- [High] ISR unconditionally accesses hardware registers without ensuring t=
+he device is runtime active.
+--
 
-This issue was found by manual code inspection.
+commit aa70bea937f841715508dc37222d676d4d04042f
+Author: Guangshuo Li <lgs201920130244@gmail.com>
+i2c: imx-lpi2c: release clocks on remove
 
-Fixes: 588eb93ea49f ("i2c: imx: add runtime pm support to improve the performance")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/i2c/busses/i2c-imx.c | 1 +
- 1 file changed, 1 insertion(+)
+This commit modifies lpi2c_imx_remove() to resume the device before disabli=
+ng
+runtime PM, ensuring the clocks are in a known enabled and prepared state. =
+It
+then drops the temporary runtime PM reference and explicitly disables and
+unprepares the clocks during final teardown.
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 19ec056b00af..4dc3df6a41a4 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1920,6 +1920,7 @@ static void i2c_imx_remove(struct platform_device *pdev)
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- }
- 
- static int i2c_imx_runtime_suspend(struct device *dev)
--- 
-2.43.0
+> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
+imx-lpi2c.c
+> index 49aabef7f115c..7f4bc98325853 100644
+> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
+> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> @@ -1613,8 +1613,13 @@ static void lpi2c_imx_remove(struct platform_devic=
+e *pdev)
+> =20
+>  	i2c_del_adapter(&lpi2c_imx->adapter);
+> =20
+> +	pm_runtime_get_sync(&pdev->dev);
 
+[Severity: Medium]
+If this fails and returns a negative error code, is it safe to proceed? The
+clocks would remain disabled, which might cause an enable count underflow
+when clk_bulk_disable_unprepare() is unconditionally called later in this
+function.
+
+>  	pm_runtime_disable(&pdev->dev);
+> +	pm_runtime_put_noidle(&pdev->dev);
+>  	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> +
+> +	clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
+
+[Severity: High]
+Does disabling the clocks here create a race condition with the devm managed
+interrupt? Because the interrupt handler was registered with
+devm_request_irq(), it is only automatically freed after lpi2c_imx_remove()
+returns. If a spurious or delayed interrupt fires during this window,
+lpi2c_imx_isr() will attempt to read hardware registers with clocks disable=
+d,
+which can cause a fatal system crash.
+
+[Severity: High]
+This is a pre-existing issue, but does lpi2c_imx_isr() also need to check if
+the device is runtime active? The ISR unconditionally reads hardware regist=
+ers:
+
+drivers/i2c/busses/i2c-imx-lpi2c.c:lpi2c_imx_isr() {
+    ...
+    u32 scr =3D readl(lpi2c_imx->base + LPI2C_SCR);
+    ...
+}
+
+If the device is suspended and a spurious interrupt fires, this could also
+lead to a system crash. Should the ISR use pm_runtime_get_if_active()
+before accessing hardware registers?
+
+> +	pm_runtime_set_suspended(&pdev->dev);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914090718.1666=
+333-1-lgs201920130244@gmail.com?part=3D1
