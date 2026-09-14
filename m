@@ -1,112 +1,161 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D674071DE
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 13:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E7A1BD9D0;
+	Mon, 14 Sep 2026 13:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789392316; cv=none; b=H0aQzQaSPUSVZQs0Xz6jyILJ0mA5Mhn9Gf5VEpBcujqSOQCvQPLpY+r9iavy5Q8efNXFLjf2SHnOe57KmEidH2OYhEndCKlg5MGRi8D8JvyrT+uaYcusFZUsXkLZ4TMKySPyRcPRbh0QlxowP+P4vKwr0WujO+rVlWb8dIbkI0w=
+	t=1789392317; cv=none; b=pimdLZ6+mbH6Uiu4BEWDp/TMFq/Za00LvmIJQ3VPx1jeZtq+92cbVQIRqJhGdqmsCGBztOntFNF63ySAcgYo/R8nrNaj1r4bd6pkxioXPRbUYpboD6dJfLRDtoCkLynNb5IX2AbaK6Ot+Y1MgbVv+J6Otfy9/zQC1plLHs7Jxas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789392316; c=relaxed/simple;
-	bh=ieGOto/Lmqnuw6XZHi4NqzamoYlK1PHnKIFnRsx1XIA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NFaowHvlwIno8JbL8s+lNPuUr+zxPYrnXrWsxPeXwOqtI/ebIBNpOt0TAiSXJcosm4te0ped9WEnv66bDhRmB3/rPN0E93dYJb3evN6L2h2fSYHsMTqTEyJbBXu4xUcAHMx41zzsbGjVljOEnZz1hGEKaVJsxM1Qw1yQdj4r+hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVnp3VJH; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789392317; c=relaxed/simple;
+	bh=Ee4LgDKckiBTO+R2lJDbFQ5VWZgiQK0tmQ46MSH3o/Y=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=r8xXI6ILcaYCK/T0zy/HFxM44XGTk4Ahq3QbxD9aFY9JAa6CFHPTYYPgi9lrAhouJbKFgF46x0S4bmRXkWu4Eq2XNqSjLG5b14EmJJA56/FEZzRJOMZHCVcKxxAUgs4hjpHG2FqQKNLJA09gSqYuQXH4BV8/6j4xKfOO2Urj1ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ur7g3YDy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVnp3VJH"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso3262206a91.3
-        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 06:25:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789392314; x=1789997114; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a6EI5rX+MYKMYU0UnF1Il4E9mul776cfp5306LOEsvs=;
-        b=PVnp3VJHGQ5knHjWhahz2Sd+Bx9OXhrNUcXPPSwNK/NBGHKV8mp5cvRMiqYnksxLw+
-         6T4SZY652D1Abz5vC8s0EVYAnHZMyAOuiiq5j6R6/fKqHvkUYpAtycsQkkAw6PrqTb9A
-         k94YRF/3ODeoKECBvgzOhsQOk4+/C3wIh//TBYumNxuLBtGgN1gfh7LjADCEqBNfYsu6
-         d5sAxtG2x8nzSWxdnMtIUcekCpGtG6LL57HQw6SkoRRk17dB/asocnhuOvN1Ivs4csTg
-         lyDQGPc9VK0Kl9pC+f6a6no8ebt+fEQZJqDcLjoJsq73LwL0GoY0gdsNlzHanFTegtxy
-         Z42g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789392314; x=1789997114;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=a6EI5rX+MYKMYU0UnF1Il4E9mul776cfp5306LOEsvs=;
-        b=T+f0SpMUcAuHoILf8P8aG0xwXwHB50eJlgRGcdnoZAFrgL1N8ptNLGtQIVeHRxIIrQ
-         /2Pz8KxMTEVTtL3bjsYTl3NSiQaAGp8eX4kC9ycm+PDwi0fCHlzPhP49QgDa0mU4TcLQ
-         P0MiwhJmkA5Wk+z6u1s2gcIZmLLwKGCOdd2W7dogGpoMEW9Aerc46uMqp0yyAHu6GCBK
-         I6an2uGldEdtdMhgGNbZGPFq8V2W5eodVTkIqrNhojpSKOZLyxoTEN5dDFAAt36r3vep
-         xU+k9Hmm4bxiDBOX5OtHmbamBXf0zzHWRMUZhI3u0vSCPMBWTchw+8lEFlpaufKf68HO
-         DNXg==
-X-Forwarded-Encrypted: i=1; AKwUvBxF1CSSJIiBujfTEXRzu4UT2Jp9kYVV60X+5rfNvNSKdE1C65ws2RCSscPKTWfuVAp+SVg=@lists.linux.dev
-X-Gm-Message-State: AFuF++nXf3e+Ta2VdWf+0MmcjRt1h7EPKbRWsEGFJDyi1Kc6Nn7LcJMw
-	9W3kZzowiirsIiGl3Ul6BpwIRZfPp1Ur7rf0WdNOVJPDrafsfZtl2Fsv
-X-Gm-Gg: AYBFou2ZwMWrU4VM5fta/T+5IM+UfHzjboEj5eGphu1UQNh73eiuFlIpPSEkTemkC7X
-	ZZPWcBcFZ9aF9docoVtZhdAfdlyh+EfqpA81nXlTbAnu8eznrJF3WIUd0p621MHq21enjrC8Lmz
-	zo+wIDVDyvrgiUSnbVxOa2/XmMvP0X8iY3bJVTk3LH7swfqEZEaBx5mH85gbsw5vxUVfd/F8lIU
-	Aump+gwwjLqItDfApug62JXC0LOxw7cDM5pSYfZjFWZVORxWo5uxxXwO0SLUW4FhZo5YSRJE5Ma
-	s/OWbCCZsR90aJOjl/7639yVgtzQx8KVrImtH0Wd0kRwrvhXPimBfWTfZyG0LAiOukWsrWD0Hn6
-	9vouaDLmt0bnpyCphu3k0b74OOZC77ETCzC4uvaUSxq9LARqLjx98fBRoUjce2b0iVCIjbsGIed
-	6lB/9yN5jWzgZ6AhcN+HwfX9jZ5EAfmDZ7S1oJngZH9w6JVbmNapnXv33s3i5h82lZXPJ3n4Ax4
-	Ijjm+qI5JZsUGPw
-X-Received: by 2002:a17:90b:3b42:b0:398:d6e8:f84e with SMTP id 98e67ed59e1d1-39debfa6792mr5368605a91.9.1789392312963;
-        Mon, 14 Sep 2026 06:25:12 -0700 (PDT)
-Received: from SGN-LDSENG.tasernet.com ([2405:4800:5cc3:11a:1ac0:4dff:fe8b:4a69])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d95713602sm20872894a91.11.2026.09.14.06.25.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 06:25:12 -0700 (PDT)
-From: Cong Nguyen <congnt264@gmail.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-rtc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rtc: mxc_v2: fix clk enable-count underflow warning in remove()
-Date: Mon, 14 Sep 2026 20:25:05 +0700
-Message-Id: <20260914132505.2356970-1-congnt264@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ur7g3YDy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1811F000FF;
+	Mon, 14 Sep 2026 13:25:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789392315;
+	bh=zZc+xIHcFwMzzddzraJJ8lrGzjvEH1+rj3zm5cKudN8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ur7g3YDyx4/H+iQrNJduJ0DoJ+BNzNHdICjFnsL+AgZT5JwYDafxWTR+EFSLHgZ9i
+	 HmJJKu+nIAnRRDcQmwaXU73EdXhaljLjdH4/sx770sOPlB82RKbhlYSUh9cDftE7yg
+	 VP5P6QD10W96tU/cVARiewQS8NemmWicrYZlPOEy/ZwPCjC+Xw4liNzAz2V20l5/w9
+	 ZPz1/2auNzzoT9qgAJ9/pfkWGnKdnlRPERsXlowvAH/Q9gx+h3uurW3Z1RZ3GvghrC
+	 A8kW1tcwCqXCqKKo/KXMRrs6TXSOlZWAm9DiwZb3qEOuh6Z4kuU6ImhTaKitUSC6No
+	 ecj8UqYlsF0vA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 03/10] ufs: host: Add common Hibern8 TX FSM polling
+ helper
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Larisa Grigore" <larisa.grigore@oss.nxp.com>
+Cc: linux-scsi@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260914125000.30812-4-larisa.grigore@oss.nxp.com>
+References: <20260914125000.30812-1-larisa.grigore@oss.nxp.com>
+ <20260914125000.30812-4-larisa.grigore@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 13:25:14 +0000
+Message-Id: <20260914132514.AC1811F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-After probe, pdata->clk is left prepared but disabled -- every RTC
-callback enables/disables it transiently around register access.
-mxc_rtc_remove() calls clk_disable_unprepare(), which disables it
-again and hits clk_core_disable()'s "already disabled" WARN().
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The polling loop in `ufshcd_dme_check_tx_hibern8()` incorrectly =
+conflates a DME communication timeout with the TX lane not yet being in the=
+ HIBERN8 state, causing redundant retries on hard failures.
+--
 
-Use plain clk_unprepare() instead, matching the probe-failure paths
-which already do this correctly.
+commit 36540d76db2dafb48398ab3a254711f31858e35f
+Author: Larisa Grigore <larisa.grigore@oss.nxp.com>
 
-Fixes: 83c880f79e88 ("rtc: add mxc driver for i.MX53 SRTC")
-Assisted-by: Claude:claude-opus-4
-Signed-off-by: Cong Nguyen <congnt264@gmail.com>
----
- drivers/rtc/rtc-mxc_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ufs: host: Add common Hibern8 TX FSM polling helper
 
-diff --git a/drivers/rtc/rtc-mxc_v2.c b/drivers/rtc/rtc-mxc_v2.c
-index a07acbbcfaeb..93dcf18abde2 100644
---- a/drivers/rtc/rtc-mxc_v2.c
-+++ b/drivers/rtc/rtc-mxc_v2.c
-@@ -365,7 +365,7 @@ static void mxc_rtc_remove(struct platform_device *pdev)
- {
- 	struct mxc_rtc_data *pdata = platform_get_drvdata(pdev);
- 
--	clk_disable_unprepare(pdata->clk);
-+	clk_unprepare(pdata->clk);
- }
- 
- static const struct of_device_id mxc_ids[] = {
--- 
-2.25.1
+This commit factors out the common logic used to poll TX_FSM_STATE until
+the TX lanes enter Hibern8 into a single helper, ufshcd_dme_check_tx_hibern=
+8().
+It updates the HiSilicon and Qualcomm drivers to use this new helper and
+normalizes the error path to return -ETIMEDOUT.
 
+> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+> index 2ba244cf40ac7..e5facc0a59a79 100644
+> --- a/drivers/ufs/core/ufshcd.c
+> +++ b/drivers/ufs/core/ufshcd.c
+> @@ -4448,6 +4448,84 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 a=
+ttr_sel,
+>  }
+>  EXPORT_SYMBOL_GPL(ufshcd_dme_get_attr);
+> =20
+> +/**
+> + * ufshcd_poll_tx_hibern8_lanes - Check TX_FSM_STATE of all TX lanes once
+> + * @hba: host controller instance
+> + * @num_lanes: number of TX lanes to check
+> + *
+> + * Read TX_FSM_STATE for every lane and verify it reached Hibern8.
+> + *
+> + * Return: 0 if all lanes are in Hibern8, -ETIMEDOUT if any lane is not
+> + * (yet) in Hibern8, or a negative errno if the attribute read fails.
+> + */
+> +static int ufshcd_poll_tx_hibern8_lanes(struct ufs_hba *hba,
+> +					unsigned int num_lanes)
+> +{
+> +	u32 tx_fsm_val =3D 0;
+> +	unsigned int i;
+> +	int err;
+> +
+> +	for (i =3D 0; i < num_lanes; i++) {
+> +		err =3D ufshcd_dme_get(hba,
+> +				UIC_ARG_MIB_SEL(TX_FSM_STATE,
+> +					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(i)),
+> +				&tx_fsm_val);
+> +		if (err) {
+> +			dev_err(hba->dev,
+> +				"%s: unable to get TX_FSM_STATE for lane %u, err %d\n",
+> +				__func__, i, err);
+> +			return err;
+> +		}
+> +
+> +		if (tx_fsm_val !=3D TX_STATE_HIBERN8)
+> +			return -ETIMEDOUT;
+
+[Severity: Medium]
+Since ufshcd_dme_get() returns -ETIMEDOUT on a hard UIC command timeout, is=
+ it
+safe to overload -ETIMEDOUT here to mean "state not reached"? Could this ca=
+use
+the caller to conflate a simple retry condition with a hard hardware
+communication failure?
+
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * ufshcd_dme_check_tx_hibern8 - Check if all TX lanes entered Hibern8 s=
+tate
+> + * @hba: host controller instance
+> + * @num_lanes: number of TX lanes to check
+> + * @timeout_ms: timeout in milliseconds for all lanes
+> + *
+> + * Return: 0 on success, negative errno on failure.
+> + */
+> +int ufshcd_dme_check_tx_hibern8(struct ufs_hba *hba, unsigned int num_la=
+nes,
+> +				unsigned int timeout_ms)
+> +{
+> +	unsigned long timeout;
+> +	int err;
+> +
+> +	if (!num_lanes)
+> +		return -EINVAL;
+> +
+> +	timeout =3D jiffies + msecs_to_jiffies(timeout_ms);
+> +
+> +	do {
+> +		err =3D ufshcd_poll_tx_hibern8_lanes(hba, num_lanes);
+> +		if (err !=3D -ETIMEDOUT)
+> +			return err;
+> +
+> +		/* sleep for max. 200us */
+> +		usleep_range(100, 200);
+> +	} while (time_before(jiffies, timeout));
+
+[Severity: Medium]
+If ufshcd_dme_get() encounters a hard transport communication failure and
+returns -ETIMEDOUT, will this loop blindly continue retrying instead of
+aborting immediately?
+
+It seems this could significantly multiply the timeout duration on an error
+path (e.g., waiting multiple 500ms UIC timeouts) and spam the error log on
+each iteration.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914125000.3081=
+2-1-larisa.grigore@oss.nxp.com?part=3D3
