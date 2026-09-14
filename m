@@ -1,139 +1,105 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971DF418A37
-	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B807B41CB20
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 09:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789376853; cv=none; b=ohn/GMIuDlcX/fdcFweTZQ9G2D8u770hfkm3kzzGUoMT9aHnVgQrlZUWab7XSLav28ggHrzttJH1VrHvvYHSpZ2xRUBtL4TbwmkVmkSzbXOBFmAB07uzlfSDMtpWbZ9euRMDSsGEFSi8YtOqHhlGHw9gTKPpvNimUXDFo2J7qhY=
+	t=1789377001; cv=none; b=DAznDlJu4EaLCwrj6oSD5Ewe4qjynE4qarrMGTdLzcmAvRBlZfSkQ1sk6BYtO6KH76s84tQUrqa2g2NKdP8dsb+IZ5TAq1UMSQNJeWNUWeAZvD6mbOzw8aHxtUw9uebvhepSt/OeaXl2HTasNhWAH3AyLp+SpJ0NKwjj5Rn216A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789376853; c=relaxed/simple;
-	bh=FN6z/whQjCJR5PJ9elVbNUyC4Aww99HqmqaHahztQls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jmKGHw7sQzEOmcgYPzLxMEPy9u+A2KjtsnWYsUu67H++X/1wQNRizmbk5piYr1aK4o2ME+ue7xLbUGxEy4UVk4cBrRk8qnMCY4DXBbIhnNgrZfvyrxOQfxKeG3WybU4gtLoYK9761CyQEnCJxnkiYmD1fuQnDBT6yph/RvQIFFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JgX4jxcm; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789377001; c=relaxed/simple;
+	bh=sHMWlu+OTUqYhqFrSUJL3jwM1neJ6/5JmISeQqqjsEA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:To:From:
+	 References:In-Reply-To; b=bztY6qTvBuf6ptHOhpTyaKJ97QklDw9mG4USegJGc6kui4NFgKGSbamF2qdN0z+VZsOhL6E80fOWa+xHWPnd7T3Ol1ZcXoFJqBqZqJcClcQSumcHDALfKVXk8Tz7t7Y59P0qIjUi37IFRP3RLbsgjRUjHVSvGkajou7vj5Gl1Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QOx/baCy; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JgX4jxcm"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-86309e1a213so1240975b3a.0
-        for <imx@lists.linux.dev>; Mon, 14 Sep 2026 02:07:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789376851; x=1789981651; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wvFBiMkRGjwoloZbq9nwDlVvLI1OyRNq467fT53sktU=;
-        b=JgX4jxcmkD58DA7taTajsEswRNX8UcN5U0FiIvlUCSGfuFGDxaVnf5Sn46blbavPh7
-         Xa+wb3XQLrB6h3gJwkq6dwzHg73VsuNxHR7fUbiYERX8fNh1Bmmrppv3X+gN0hFgK91R
-         ycGcAGDoimXja9TqTc9ioICIshBQkop0KuYWQR4RLpIH8F8xToiohE+/sgAErZACu5Se
-         1h6krQiLppOoVrOPpyVOP3+xW2wtUrrkybtKacpAyvyhnV4/xQ7Lr/G4M9M7P1A1yjzl
-         0vBKuPRWaQJmzltVJ++q8dI2+FZ3alI1cL0+kUzbmbrIp5DLjj9nRyh7+g7lyzenfqX2
-         V0zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789376851; x=1789981651;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wvFBiMkRGjwoloZbq9nwDlVvLI1OyRNq467fT53sktU=;
-        b=bZjzVF2ei/atjJveztDSJtl7XbfL8vFx4Apjw8NZqohP57859akB8AKz7AOl6X8tcQ
-         jIVlgI+3C8fc3V0QqJW54H3R1WjsskSgGu4NPRvTooo6307qDLx3BxWsetdvaBANv8Fz
-         o/2n3OPs3jUG8K35IVEIRrcfWsVervySyLWkaVFrrE+jTgMz+U951pSVOjS1YJz7o4NT
-         fEkB/GoRA0JnWrzUTs6X7rykanQW2SwHFPn1lxamhpwiQwovvsfx3dvQG1mrfd4GgYI7
-         BR8HhUDcOv4t2uNlaBFOEeQygN5+EG96mBp6+cKKs+XCpeOcIMlOBkWWB+Bks5XfqcAu
-         skxg==
-X-Forwarded-Encrypted: i=1; AKwUvBwn7yTy2tEMgw7mSMbv9zofOMMgyRp7GbLvbvz32QuFMy1Qi5AwIgHv7n+oD1bNUfKYDMY=@lists.linux.dev
-X-Gm-Message-State: AFuF++k0zCrnDrU/tQtwyL91IwRyE9e7gcBwZAVIfL1xggLarMNJ1/SD
-	x3sS7H6NuVvD5qpDn+85JM6yIjeO2sh7DilR/C7iT3WOMx0Ta0J7meJD
-X-Gm-Gg: AYBFou3nEyupC+vbA/YTYLlxnDxoTTsrzt60SI8KcI4Wn8JN7Yc4WeLOtxDXBtZUkhx
-	nqfhD54/WmDT5aHjN94NeleF/qjtiLxreZsSoTBjRzUXuY0+o0egQ9QaynSAHTAsY9xaMWfSdcW
-	Kh1YOqJ5c/7QpnC9fzhQLoBzDp1ltjB4SxXNx8pl8TdypCZy+oyvjjxqx1TdF/RjLeSuqSuf4b7
-	5Kzr8usvA3yGb395UIZth4mT9gCK7NJL77FBIDNX8LHDkPYWHDBLC9+dKqML5pz7zuVoP+CN1WE
-	AIsZMoh56bXmIsoT29JDo45mgrluLy/rm97eN1FW5zWSrE18HZ1Ufb4UZLBWdio0PXJ70Aflxke
-	qBypovqsrBIk3OHgn12JnmwgaE+GHcNavU7vtMi1Dt8Ju1gzZlkQRFqVp+VA4+BH9e0r7VO67Pf
-	ZrtgjMXh2z1mcOEavh6cTBzj2O/9F8r9dr4Afe6va9nzQwLtRspbNXQ2Q=
-X-Received: by 2002:a05:6a00:8d8e:b0:84e:909:ac03 with SMTP id d2e1a72fcca58-86f83b3b22fmr3682395b3a.10.1789376850775;
-        Mon, 14 Sep 2026 02:07:30 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b291c1601sm4365005b3a.31.2026.09.14.02.07.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 02:07:30 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Dong Aisheng <aisheng.dong@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Fugang Duan <fugang.duan@nxp.com>,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] i2c: imx-lpi2c: release clocks on remove
-Date: Mon, 14 Sep 2026 17:07:18 +0800
-Message-ID: <20260914090718.1666333-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QOx/baCy"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A786BC62215;
+	Mon, 14 Sep 2026 09:10:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8B50060323;
+	Mon, 14 Sep 2026 09:09:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E0CB11C7AFDB;
+	Mon, 14 Sep 2026 11:09:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789376991; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=J6gkIocMxhvdpf/NKA6qKbg3ZwMu+O+tLx3jm8Ehdxo=;
+	b=QOx/baCyIfdZIARepp6rSTVpentmNiDyxh/MzkNo667zrVwrPzSi/av2sIi9036kR90wcX
+	1cvc4jdCrwV097hLpWf2iDVabSiC11DtW7J1xyqQXazNoA64Wl91R5rKEI8FxCpyc9ptil
+	d+WhOydTJIs7zDbd6mw+szwsocwD9lCzeBTxIRfayrxJRpUvKv/JdIZAezkFvDYRk5/QsS
+	OPFQcb5MRz94HyIbB/OsKBkagZqlQWVnJh1TLJZMeu43YXlcLA101Ygc2ctU0spQmfnRI1
+	mlCgsvmVZUbYE5ne3cozOiZTcqNTeXaw+yp6jOZae8jNUAqU4pSkxil5SzkMsw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Sep 2026 11:09:15 +0200
+Message-Id: <DLEX6WY9X3PO.S0N8N4G4K301@bootlin.com>
+Subject: Re: [PATCH 1/2] dt-bindings: display: Use consistent indentation in
+ the example
+To: "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Chen-Yu
+ Tsai" <wens@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Samuel
+ Holland" <samuel@sholland.org>, "Liu Ying" <victor.liu@nxp.com>, "Andrzej
+ Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Frank Li"
+ <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
+ "Francesco Dolcini" <francesco@dolcini.it>, "Philipp Zabel"
+ <p.zabel@pengutronix.de>, "Chun-Kuang Hu" <chunkuang.hu@kernel.org>, "Rob
+ Clark" <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov"
+ <lumag@kernel.org>, "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica
+ Zhang" <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn
+ Suijten" <marijn.suijten@somainline.org>, "Marcus Folkesson"
+ <marcus.folkesson@gmail.com>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Yannick Fertre"
+ <yannick.fertre@foss.st.com>, "Raphael Gallais-Pou"
+ <raphael.gallais-pou@foss.st.com>, "Philippe Cornu"
+ <philippe.cornu@foss.st.com>, "Matthias Brugger" <matthias.bgg@gmail.com>,
+ "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
+ "Adrien Grassein" <adrien.grassein@gmail.com>, "Russell King"
+ <linux@armlinux.org.uk>, "Simha BN" <simhavcs@gmail.com>, "CK Hu"
+ <ck.hu@mediatek.com>, "Jitao shi" <jitao.shi@mediatek.com>, "Yongxing Mou"
+ <yongxing.mou@oss.qualcomm.com>, "Abel Vesa" <abelvesa@kernel.org>, "Chris
+ Morgan" <macromorgan@hotmail.com>, "Martinez Canillas"
+ <javierm@redhat.com>, <dri-devel@lists.freedesktop.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-sunxi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+ <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.22.0
+References: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-lpi2c_imx_probe() prepares and enables the controller clocks before
-enabling runtime PM. After probe succeeds, clock management is handed
-over to the runtime PM callbacks.
+On Sun Sep 13, 2026 at 2:33 PM CEST, Krzysztof Kozlowski wrote:
+> Correct indentation in the examples to consistent 2- or 4-spaces
+> indentation to fix dt-check-style warnings ("example 0
+> [indent-consistent] indent mismatch ...").  Preferred is 4-spaces, but
+> re-indenting entire example just for that is too much churn.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-However, lpi2c_imx_remove() only disables runtime PM and autosuspend.
-It does not ensure that the device is active before teardown or drop
-the clock references acquired during probe.
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-For platforms which do not require clock prepare/unprepare in the
-runtime PM callbacks, runtime suspend only disables the clocks, leaving
-the prepare references held for the lifetime of the driver. Since the
-remove path never unprepares them, these references are leaked when the
-driver is unbound.
-
-For platforms which prepare and unprepare clocks during runtime PM, an
-unbind while the device is still runtime active can similarly leave
-the clock prepare and enable references outstanding.
-
-Resume the device before disabling runtime PM so that the clocks are in
-a known enabled and prepared state. Then drop the temporary runtime PM
-reference and disable and unprepare the clocks during final teardown.
-Mark the device suspended after the hardware resources have been
-released.
-
-This issue was found by manual code inspection.
-
-Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/i2c/busses/i2c-imx-lpi2c.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index e1a4338bc51e..481950004b2a 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -1604,8 +1604,13 @@ static void lpi2c_imx_remove(struct platform_device *pdev)
- 
- 	i2c_del_adapter(&lpi2c_imx->adapter);
- 
-+	pm_runtime_get_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+
-+	clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
-+	pm_runtime_set_suspended(&pdev->dev);
- }
- 
- static int __maybe_unused lpi2c_runtime_suspend(struct device *dev)
--- 
-2.43.0
-
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
