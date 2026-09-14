@@ -1,3414 +1,2487 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012023.outbound.protection.outlook.com [52.101.66.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3736D4746DD;
-	Mon, 14 Sep 2026 14:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789394963; cv=none; b=m79VJ6kjfylbuqtRIS5kFImAIh+nucmw5wTQcmKi3Yld/VWotRe3cEUZnmXUDfHZeNBYuitC8nRgBhqM1U12zN9do2bbXDDYFP37huSTezbdb96raGN2zO1JzgNbVTqQyZyv1tm6hiBHDUgX5erf5hNeylBetK3Sbfe8XvDtdKc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789394963; c=relaxed/simple;
-	bh=mzW7YeAxEWjiVJOUjFtLJ/10wsH1UOu7tzKgc1OY6gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czFc66PUSrjdtqB+XebL9aG/Jy9ZSVy5rAisV64F0Yb7+rm+2PWvlUtjNmpntuiC++47E+SXGMjMhfG/c3uoruMRXmJXBuxsL2vwZ2TriVMpWilRRKXPZOZy5HYO6Uus7czfMn291nasxFXSRB1C06vbIEpHSyRPMFFX4xrY9C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLqC3Hgo; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8703DC4CC
+	for <imx@lists.linux.dev>; Mon, 14 Sep 2026 14:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789395069; cv=fail; b=Xm7chYjls3zpWBJIBMkC3ePToRkBWpR9JCEP7nuaJs/dlRwgYcjjTYkOsz5GDUHgY76lnzrVKOTc5znpQ6f4IsUyHXRpsUsViP1qBX4fdRzdfNtlZrjM2ZzO3G+ECxdpAuUtzZNLrXf5bXXDCzIXhNL5MwQQp41DV2fKvaaLpgw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789395069; c=relaxed/simple;
+	bh=r7Ec53F/T1uhkxMJ7sIfeY6hZ5EzYCt5sIJ+0afBUfw=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=s102KOhrLgiNt7vbbdIpQaxeO69ROjRcMu/Iq/+TInikRFipqVtlLDF1r5rqyI9dlzQ/7FQKPXjKOQ2jjDL5VrY31NKwVWpIAls5y0VH89Kl5wcjBQGt/h3TCSjqotvZYn/XoQjuo+F725+ouPvIRvZyZUD2B4OgZEi+Ckp8TVw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=WbqxElIz; arc=fail smtp.client-ip=52.101.66.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLqC3Hgo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3DB1F00899;
-	Mon, 14 Sep 2026 14:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394949;
-	bh=4tEUrLFaaE+vKXQ9kxvl6TQ7ykZZLWnM4uEJsmgKkNU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jLqC3HgoqH/luTmpExZMoqSAaJAoyOc+z6i45dVJcY+pc0m5AXqmK54EH1GYc9yX7
-	 EXWvgD5Lo5RPZSK/6TdMMqMLXsfK+msdgihna5OLw/up10i5KCCgY61bGe93+52RqG
-	 M/bsrwYscbAADypkNL8K5BlZUD3gkR/rczNZpZnXVawC7jeEUGSNqzatEfAqthXV2h
-	 yCmMbYk5nSbbras0DV261PEbeAJmN1Mrxn3OQ3rhh0Ptv2VpbYH/Vd2argB+NB27mC
-	 oMZS4n16FUAWkXj0wHxHZOyca7RgQTU2u/2u5nC18BuXesyC04HT1Uepo9OuKHD7CS
-	 FPGqy7tkGTmaQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: soc@lists.linux.dev
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Giulio Benetti <giulio.benetti@benettiengineering.com>
-Subject: [PATCH v2 09/14] ARM: imx: remove nommu support
-Date: Mon, 14 Sep 2026 16:08:11 +0200
-Message-ID: <20260914140821.1805449-10-arnd@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260914140821.1805449-1-arnd@kernel.org>
-References: <20260914140821.1805449-1-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="WbqxElIz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rV1hhJcMQILbcHCSAeo7uCj2FpF5vwDzEowv6wi+WpbsQdn4BiSchcz4xYi2Sb5bP99y0P3hfAQqbmLd8bVVHM2KMb9Mta2sQyJxvdXhU8vqKUM6GRTAEylSorrqNbEqMQEO1I4zLO+Sj1p3N0xwfdxOjGkpE0pVex8n/P/WXDvByXI0lkOwILKeMNyzZAl6yVfETRC4MctgFAHSq1Lgt7Apa5G5X018piy5KhrmEUbxHH714hRYnekyYYsjbHBzx5DNKGJcQvjQv6De8hgfsGirvktorcv5RI+b/M8G10q5RFPasKHe9wjKxjCyoYB5Dtt8vAm8akXY6jPfgTvkTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OLSpLKNUFzcrkDhZenzdBA6geNKDwRdN8yzIV2TL4VU=;
+ b=j8HMdi9m6WjIyiFS77/uArXLYJdBqN/OIyuF56cqePSKPbUq7kMg3CFUZvFKa8txwesC+HmaQfrB41z9Awe6F8qjbcziVpvkqn1UbC7eLqBM0xU179/BVb49OTb7Eaky4nX4/U/iI1cuq0BMf0X+EaXAZeKHAqU5fANwYuIJ4pv4T+2rB5May/bk/ykdcgFwu42Z1DDt0tNFZNkxN1pE8KqUE9N7+Kp8dr3o7rAHgDsc96Z/Fcum0+yEBXMehj6Bjsjq4c5wiU4EX1kW3O1PdNOx2SXWIej2EuYKCRmuDY6eb3cavGRp7tXW33/fSU8Kd2VCFYiIGLujSWLdFjRSjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OLSpLKNUFzcrkDhZenzdBA6geNKDwRdN8yzIV2TL4VU=;
+ b=WbqxElIz6pZ6LTdm4iLk5jiufUxE+O9MPfgcwxTcsu8EmZbSoYameymkDNY6hQGT8gENiuFVrrXLot6Uqa+E5+TAkmJTSwuAI+57Mzij/AKOozkiYi9J65I05k+xnD7tfEPZEw5z4gJu1ko72gybgyim6uFXmQ7u9pQWcxkDdP+Zh/F1w80bqvLLXoTF04nLwesosnL+Y5YTtv0TDIvo4FUEepM2CXgdlrXqDAYjsdguauZntd9f7aHpBLZ/BqTcQ7xdbBUeknl8amfS4VFe6JxqI38gu1FcodfjF3sG5/LZYL5LI6ZCOWFWHSj3oQKipcslZxG2UJnBdpcYHp8qXg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8469.eurprd04.prod.outlook.com (2603:10a6:20b:414::15)
+ by AM9PR04MB8618.eurprd04.prod.outlook.com (2603:10a6:20b:439::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 14:10:45 +0000
+Received: from AM9PR04MB8469.eurprd04.prod.outlook.com
+ ([fe80::1f31:d3d0:6150:b49c]) by AM9PR04MB8469.eurprd04.prod.outlook.com
+ ([fe80::1f31:d3d0:6150:b49c%3]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 14:10:45 +0000
+From: pankaj.gupta@oss.nxp.com
+Subject: [PATCH v51 0/7] firmware: imx: driver for NXP secure-enclave
+Date: Tue, 15 Sep 2026 01:09:57 +0530
+Message-Id: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAI1NqGoC/3WWS24cOQxArxL0ejoQKVISs8o9glnoO+lF7MAdN
+ BwEvvtQhYFL4sDwqgt+okQ9UvxzufeXW79fvnz6c3npj9v99vykPxj++nSp3/PTP/16a/rhgg7
+ JsYvX24/X612/jmsm55id+FbDRf//50sft9djsW9/6+/vt/uv55ffx9oPmF//WwXcssoDru6Ks
+ XIOkQRC+/r0+vNzff5xmWs8cOHQrxwqp9BokCSzl53zJxdg3fXDK5djw9R65kp55+jkouOVoxk
+ Pm3OuQ8pg9skLB7hyrFwIOYo4n1PEnQsLhxsXlOsdgzIlod1nPDlxtHLxyMtomEskDLRz6Z0DB
+ 9v5knICTD5p0Nj8zsnKhZUT5UZLI7vqqOeyc+BOEPaNqgbuWoYLLvlaJQ5DnsoA4q7MdMbV2AO
+ 3mHu0Md+lYQeGnNZU7hqOiaOrhvQn6TXKSk5vpNagR22hgSVpIXETDqY5iCBESTx2cyPAJ0luJ
+ 6c73fuEtdeWHRgyrKRs5LRHi4I6D08QuyHjQuJ2nRCP3CYG5syu2ZjpJAPsMadBVZIXKJnIVjL
+ ISYrJ0HSoQY9dgqsAyfSAd4dYr3NvAtOh7CijljIyG4cQFnIvS4SjvmIL2lhaIhsTVzJt5HTIR
+ YJUtZz1MIb0K7llCKdDXEOMXvuI/9853x0K6u1mH9LhLSK2wVCr6SLIK7mfk4+YvutfCZJtzHC
+ SAffdToeAgl4lJo5kvMV4knFvJTgdKiVWYmHUCjdkWsnNBJwOuSyBZZa32NdAFtJkaDqkIviAg
+ 0atpl96t5JbH/LTodpTUYlCEDSV7WEltwz5wyGWPGJuJSaTIY8L6bc+5KdDwoNDG4NKtq+XP8m
+ 0P0N+OqQud49jOBQ2JH1MTodipwi+AXVnM8QrufUEPx0CKMileJe6qTK/OJTMYzsdolmbiWLRZ
+ +Lr8/3+eafjSu/5Pd6yPrh1GQOavZnFo7T3eT894jYoUx0jemOgl5XcPPLTI4Ku3SRWzMPEJLe
+ SW6XR9CjSKLXjwGFvhmAlNwPpmIGkDkDp1JLZLeFK7kPJ9Ai7XkmurhSw5OqR385JxxzkdQhqp
+ WWyd0qLR+L2c06P9C0PnMoQAjtB8cfkMQt1nRtTlJa6zW1Yya3P0/Qo6ylz4fnCmkqjuJJ7bo9
+ eRJF6DUM7qN1t+picDrXcxPWuzSjbDMlKbi8ETYfy7H2ij1mysykvDokZFqdDSe9KL0Tn5HUKe
+ 3t7+xcWSxTorwsAAA==
+To: Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789414820; l=112124;
+ i=pankaj.gupta@nxp.com; s=20260817; h=from:subject:message-id;
+ bh=r7Ec53F/T1uhkxMJ7sIfeY6hZ5EzYCt5sIJ+0afBUfw=;
+ b=gjs+QbtoUlUphIvlSTT4TBU8z6o+zuId4Q5gGVGejS1VQEh2OcqemnfD3K++UIIsglk6oa2C3
+ l1s2umURHigD+9TnVRcMuGWB1ILGM2JVxnQtQoYeoS0spHoT1hKq8TI
+X-Developer-Key: i=pankaj.gupta@nxp.com; a=ed25519;
+ pk=g4ZgzIWbpXnSxRsoH+l6PWLP78a+Mzpl8e6RQe74d5Y=
+X-ClientProxiedBy: MA5P287CA0342.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:21f::9) To AM9PR04MB8469.eurprd04.prod.outlook.com
+ (2603:10a6:20b:414::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8469:EE_|AM9PR04MB8618:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b791a05-c6c6-4232-f159-08df1269f7a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|19092799006|921020|5023799004|11063799006|56012099006|10067099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	XLWxkyQ88HraGJrqW6IdbS7omP3dpS9TiaCj15iniguxY4WQiuNFr576co/ThGOwSdLMvJLC4IsthWhuRdWG0CKPPaI5HfggQlgk8HUGe0UneQRq1uBuDe2adJ4n2HD69mSzyDZl7tR/7AxzTYci1CfvpzC0velm916Z+hQw81Fu+C0djDkrTYwBUF/PqMFEewy8knSOnjVRzPqOyWdj11aPc9V7pIVIeiwuhmk3WVZE9s1piCEyuVTzuLz7slA7G6cLEZ6raQPEQU7poHE807g28j8rpGM9cdGtoF0Hd/ASpfSoRLJa6KMrUHSSaJKlepUKWv9MoLcC9cIKWc0RXL50DaF2p/9Kxh1rj8zKmcZViheu9FK1zbsOcFWwwSq9Z0NK3oQw+dCzoBb2GUxT50FVCiOfA87AmIe2IYJFCDoBR5O5t8vh69Qn96rUJoK2oWc1HEgejqxSxGg/6JuVkcQkqYnwLlqOsWapexUlfW30MDngsde7tzbC7laT1zX/tcn2dcbSPEhrE45E8eWAM+0QlJnZN5p1Vb9qCpvB4BiRQiST1Vr0/fxNL3IzEjEf84x3itVJXjAZirKk8LP5dlIQcWW8DkECwGBZf3NxBaa4HK2ClBkRlmXiyAwXVcmZC/VmS/YvZpLpqpbdhGooOLkS1CAX/0D0k9nS0seOWWZt0r+4euj43xBFnDlnDTttr1sfrJ16kvXn1eGNRw/4lw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8469.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(19092799006)(921020)(5023799004)(11063799006)(56012099006)(10067099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z2J0ZmJIU1dIWllYNHBLbEcvdWYrSXdFYkFvN3pFZVE0aklIMnphYVBaK3lN?=
+ =?utf-8?B?cWhCUzFucHl3dDRjSUhndGZ4L0gzY1lldXJMQUgvYzFZRmNCcW9MVlhDQTkv?=
+ =?utf-8?B?ZStnK2NnTWhsT2VDSE5ld0N1YVdWYmR1THBGaWtjdFZQZS80bHRSNGUzRHdu?=
+ =?utf-8?B?RkJmMkc3UXhOVVhRdUQzUG1na0lEYitzbTF6RUU2V3lrdFVmTUJ5SytQWmRy?=
+ =?utf-8?B?UERadENQMmxGU1FkOGRJUUpTWnVxNzJUZ09uc2F3ektxQUVUVUNZZFRuRkNH?=
+ =?utf-8?B?amV6R1pIaWhGUFJoTnNBV3YvU1NpakFBT2xPRXpOQWtIU3FmVG9BdUJ6OGN0?=
+ =?utf-8?B?RTVQZjlxOEMzdVZCN2JhOWE4bU1WNU5RaTlwR21Mc05CTmhaenVVUFlFNGFB?=
+ =?utf-8?B?QzZ0VlAzNi9qSFRUQzVLVWUwQU9VUTYzc1dEblN6UGlxWkdxNjBhTnJueGRD?=
+ =?utf-8?B?RDk5YytGL290NzgxbHpNQWhXZU1Scmd5czRtRllmUmpDRi9UYU1xZVNEdkgr?=
+ =?utf-8?B?c2lZcjJPQmppbmo3a3pMU2QzSlljYmNXWFh1TlFJSE9SaDdhUGJtRWI5bGVz?=
+ =?utf-8?B?ODB3QWNseERhVTlxdmpBeXk0c2xEeTJ4T3cwczB2NExNYUpPMkZrbnRCdGM5?=
+ =?utf-8?B?cFZLcFk5VGZaZW92N1NTN3diUnpSSXJTZWJOWUlwMk80L1RRRE1QSWttWWQr?=
+ =?utf-8?B?Uk4yK2RvZXZuRXQxNTZldHhVSlNrVzhZMjFOdjBFZDlaMG9MYzhKWHlXS04x?=
+ =?utf-8?B?S1NwTCtJVmZFViszQ3Q5YVBWNEh6NnF3eTF3WCsydEZYMzg4czhLVmxVMGVZ?=
+ =?utf-8?B?bTdBdmdYdXI5NFR4YkNsUVJsa0Z3QTZVTnRtcEtYdGVUWm1TcTFZbE90cHFZ?=
+ =?utf-8?B?WXdJSzFoZHhIVkJlZGNpV3lyNDRVSzF1cnZvbTVCV1RDbVUyS1NzRTU5OGhX?=
+ =?utf-8?B?Wmt4a3ByM2tKaGg4ZWc0VE8rWDg4OVFTd1J0dS96d2tLbEd5bEp6cGJ3SGFk?=
+ =?utf-8?B?ak1jd3dlVDlwd2lya2taVGtqSFFBZ2dSS0dVakU4VEJxZ2RmODBEalE4YmMr?=
+ =?utf-8?B?OGdHU3B4UHZkS2ZadkJEQXF0MjR0WE1KdWYyeUJSek5mYUlFKzNNOVY3ZndN?=
+ =?utf-8?B?dzFxRE5FOEplMnhpc1llS2tYV2llZmRqRzI0MkhIWkNCdmRPMFdha1hsWmhj?=
+ =?utf-8?B?anJMaVB6WnBqNTFpTE8xMXRaTkxTeUx2TjcyVzY2TndCblErNUN6KzZUc0xC?=
+ =?utf-8?B?Y0d1UVZHTXlrZjNEQXRLOGhjalE4MWtSM1dIQ0wvL002bjdJYzRWL3YvR0JO?=
+ =?utf-8?B?emdkaTE5RjdmcjZKQ3VoQjdhNU1sWnd1QzdCT3UxV0FSNkRzZFFlZjR4eVVV?=
+ =?utf-8?B?TnY5cmQ5SXE4SDkxMFBERURxYThFZUthS1B2eGJ0andnV3pzQjJOUTNNY0FT?=
+ =?utf-8?B?Q1NqSGp3ODVhMEtIb3JrY0o1cGhwODlOKzQyRCs2OVhqNi9aWWxjZ1lwanhE?=
+ =?utf-8?B?N3RRT1RoU21CdE9rVDgwdHdjQitydG5zWDllSmduRnJMRUQ3MWdFT1lKMHNj?=
+ =?utf-8?B?bStlc21CNDdpVUl4dkhFZnFJQkpHckF5R2xOMDVJVjI0N1o0U212THBqSVh6?=
+ =?utf-8?B?clBFclNSYnFxeDNNVXdnc3dQYjFEbVliNDFSRDlyNmF2SzVaR012M1pndVZW?=
+ =?utf-8?B?TEVOYmZCRUcyTUd3YUdhN1UyVnBkWE14SFZnNnZ5VWFnenBkbkZpc1dnaFJG?=
+ =?utf-8?B?MHNpVldSeDhBK1Iyc3Y0a3J6dWMvSXZLTVkrbEhLMmVuRjAzUWRsVVhXRkpS?=
+ =?utf-8?B?RnRQc3pHdDh6V0ZrYWVNWndiNlRBTFhCRWJLemF6WlBtVmNXMzdZdjMrSnJZ?=
+ =?utf-8?B?ZGZ1ZUExRllIWEl5UG9zaFdueFdwQjFaTTRwTzk1SDFGK2g3MHdaK1Bxd3ZH?=
+ =?utf-8?B?K25FdU9USFQrb1NsMVd1T3JUbGRqRkFvS2doSDRNaVdZbHgzYjhEaXNpSG1l?=
+ =?utf-8?B?bkszbEpjb0kvWEVpNDJleFN1TDV2VjFrOTlXcWU5SjRJMG1hclNUMzR3a3Nn?=
+ =?utf-8?B?djVsei93dVBNTXFwenltSjQrWlNLQ0w1TVZyTHMvZ050UlArWVNaM0tEb0pH?=
+ =?utf-8?B?K0lQZ2RzTHE2S3V3SVV4d1Vmd1FaSGEwdklkcU9saTBJaU0xZGpWMFhwWWpj?=
+ =?utf-8?B?enZKUlVRNGdpK1hvc3g2d0diKzM1TGYwVEprcmNjT0NsbTA2eU9UWGd5SVBU?=
+ =?utf-8?B?S1MyK0VHSEJhdGdKNXFTZFZxSXh5TXRSK3JIa2pPL3RYQzFVVldjbzVreVIx?=
+ =?utf-8?B?RGdMZnNHYnl5WlhvMXd2R0YxOFQ3cXJOOTlxTGQ1bXdGV2dJaHZDdTRNUGVx?=
+ =?utf-8?Q?PXPcfsbU8jmjD/WrfMbGoI/MmXaqXIjWoiamn?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b791a05-c6c6-4232-f159-08df1269f7a8
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8469.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 14:10:45.3872
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kWqkz/ikPIVsivEkU3cTm44CNKRcf140xv4N030rnXC65wUq1b0YU5ukqm9D0vRyTN3/5k1MUEZJsaErVf9u0jyV4e1P8E/Jm6cZ9FjMPbuT2ztQ/teF4VvC5DJJP2pm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8618
 
-From: Arnd Bergmann <arnd@arndb.de>
+The NXP's i.MX EdgeLock Enclave, a HW IP creating an embedded secure
+enclave within the SoC boundary to enable features like
+- HSM
+- SHE
+- V2X
 
-The i.MX platform has grown support for three separate product
-lines using Cortex-M based microcontrollers over the years:
+Communicates via message unit with linux kernel. This driver is
+enables communication ensuring well defined message sequence protocol
+between Application Core and enclave's firmware.
 
- - i.MX RT1050, a high-end microcontroller
- - Vybrid vf610 suppors running Linux on either the Cortex-A5
-   CPU or the Cortex-M4 MCU
- - i.MX7D similarly can run Linux on the Cortex-A7 or the
-   Cortex-M4
+Driver configures multiple misc-device on the MU, for multiple
+user-space applications can communicate on single MU.
 
-There are no known upstream users of any of those three, so
-drop support and simplify the platform to assume that an MMU
-is present.
+It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
 
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Stefan Agner <stefan@agner.ch>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Acked-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+-------
+Changes in v51:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- fix NULL devname deref in se_clear_fw_busy().    
+  cleanup_dev_ctx() frees dev_ctx->devname while fw_busy is armed, so the
+  late-response cleanup_done branch of se_clear_fw_busy() dereferenced a
+  freed/NULL pointer in two dev_err() calls. Snapshot devname into
+  fw_busy_info at arm time and use that.
+
+References:
+- Link to v50: https://lore.kernel.org/r/20260912-imx-se-if-v50-0-80834ef510d3@nxp.com
+
+Changes in v50:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- Introduce an explicit gating scheme in ele_msg_send_rcv() so that the
+  send+receive path reacts correctly to driver teardown and to the
+  firmware-busy circuit breaker, and add an exclusive messaging-interface
+  reservation that lets the two privileged recovery flows resynchronise
+  session/storage state with firmware without being rejected by that same
+  circuit breaker.
+
+- Two independent gates are checked under clbk_rx_lock at the top of
+  ele_msg_send_rcv(), before a new transaction is armed:
+
+  - going_away (set-once teardown barrier): a caller racing unbind is
+    rejected with the non-retryable -ENODEV. going_away is checked before
+    fw_busy so a caller never gets a misleading retryable -EBUSY when the
+    device is actually gone for good.
+
+  - fw_busy (circuit breaker): while set, new transactions are rejected
+    with the retryable -EBUSY.
+
+- Harden DMA buffer bounds checking in se_val_cmd_addrs(). Rework the size-
+  validation logic as an explicit switch (f->size_idx) that resolves the
+  buffer length from one of these sources; every embedded address is bound-
+  checked and the driver never forwards one without a length it can verify:
+
+  - SE_CMD_ADDR_FIXED_SIZE: the length is a firmware-defined literal
+    supplied in buf_size. A zero buf_size is rejected with -EINVAL, and
+    the whole buffer [addr, addr + buf_size) must fit inside the window
+    (-EACCES otherwise). The two buffers whose length is a fixed firmware
+    constant - GEN_KEY_BLOB load_address (0x30) and AUTH_ENC_NEW
+    iv_address_out (12) - use this sentinel so they keep a real end-bound
+    check.
+
+  - SE_CMD_RCVR_ADDR_VAR_SIZE: the length is taken from
+    se_if_priv.cmd_rcvr_var_size, supplied by firmware in the preceding
+    export command (command-receiver responses). It keeps the same
+    overflow-safe "len > end - addr" comparison.
+
+  - SE_CMD_ADDR_DEDUCE_SZ: no length word is carried in the payload.
+    Instead the buffer begins with a struct fw_tag_len_vers_info header
+    whose length field gives the total buffer byte count, which is read to
+    bound the whole buffer. Only two genuinely addr-only buffers
+    (OEM_AUTH_CONTAINER container header, KEYSTORE_REPROV_ENABLE signed
+    message) use this type.
+
+  - payload-word index (the default): size_idx names a payload word
+    carrying the length, extracted with size_shift/size_mask. It keeps the
+    same overflow-safe "len > end - addr" comparison (addr is already known
+    to be >= base and < end). A size_idx that names an out-of-range word,
+    or a zero size_mask, is treated as a descriptor construction bug and
+    rejected with -EINVAL.
+    (SE_CMD_ADDR_ALWAYS is not a size source; it is used in flag_idx to mark
+     a word that is always a DMA address rather than a flag-gated key id.)
+    
+    Net effect: every descriptor that can express a length is fully bounded,
+    and no descriptor can express an address without one.
+
+Reference:
+- Link to v49: https://lore.kernel.org/r/20260908-imx-se-if-v49-0-a59529118839@nxp.com
+
+Changes in v49:
+
+1/7, 2/7, 4/7, 6/7 & 7/7:
+- No changes
+
+3/7:
+- Wrap IMEM save/restore in `memalloc_noio_save()`/`memalloc_noio_restore()`
+  so all allocations in the suspend/resume call chain are implicitly `GFP_NOIO`,
+  preventing reclaim from issuing I/O to already-suspended devices (avoids
+  a PM deadlock) without threading `GFP_NOIO` through every call site.
+
+5/7:
+- Group the fw-busy circuit-breaker state (`fw_busy`, `fw_busy_lock`,
+  `fw_busy_dev_ctx`, `fw_busy_work`) into a new `struct fw_busy_info`
+  embedded as `priv->fw_busy_info`; use a local `fbusy_info` in all touching
+  functions.
+- Add `orphan_fw_rx_msg[MAX_ALLOWED_RX_MSG_SZ]` to snapshot an orphaned late
+  FW response under `clbk_rx_lock`, so `se_clear_fw_busy()` can parses
+  session/storage handles outside the spinlock.
+- Move `MAX_ALLOWED_RX_MSG_SZ` to se_ctrl.h as literal `0x5c` (value
+  unchanged; equals `ELE_DEBUG_DUMP_RSP_SZ`, the largest FW reply).
+- Fix `se_clear_fw_busy()` ordering: defer `atomic_set(fw_busy, 0)` until
+  after all DMA/handle cleanup (just before `kref_put()`) to close a race
+  where a new command entered `ele_msg_send_rcv()` mid-unwind.
+- Update `se_fw_busy_work()` `container_of()` to a two-step chain matching the new struct layout.
+- Rewrite `se_clear_fw_busy()` shared-memory reclaim policy around
+  `have_snap` as the primary discriminator.
+- Resolve all four Sashiko High-severity issues: (1) SIGKILL circuit-breaker
+  arming is gated by `rx_delivered`; (2) `reclaim=false` DMA-state zeroing
+  is a teardown-only tombstone for userspace ctx; (3) `priv_dev_ctx` DMA
+  buffer no longer destroyed on late response (dispatch on
+  `dev_ctx == priv_dev_ctx`); (4) deferred session/storage handles now
+  closed via the `orphan_fw_rx_msg` snapshot + `fw_api_specific_ops()`.
+
+References:
+- Link to v48: https://lore.kernel.org/r/20260904-imx-se-if-v48-0-dad90eec7eaf@nxp.com
+
+Changes in v48:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- cancel_work_sync(&priv->fw_busy_work): moved from se_if_priv_release() to
+  se_if_probe_cleanup(), after se_clear_fw_busy() and before the initial
+  kref_put. Fixes 2 races that existed when it was called at last-fd-close:
+
+  - Worker self-deadlock: fw_busy_work -> se_clear_fw_busy() ->
+    kref_put(dev_ctx) -> se_if_dev_ctx_release() -> kref_put(priv)
+    could reach zero and invoke se_if_priv_release() from inside
+    the worker itself. cancel_work_sync() would then wait for the
+    current thread to finish, hanging the kernel.
+
+  - UAF of priv_dev_ctx->fops_lock: se_if_priv_release() freed
+    priv->priv_dev_ctx (including its fops_lock) before calling
+    cancel_work_sync(). A concurrently running fw_busy_work with
+    dev_ctx == priv_dev_ctx would then acquire the already-freed
+    mutex, causing use-after-free memory corruption.
+
+  Moving the cancel to probe_cleanup keeps probe_cleanup's own priv
+  ref alive across the cancel, so the worker cannot trigger
+  se_if_priv_release(). going_away is set at the top of
+  probe_cleanup under clbk_rx_lock, preventing any new
+  schedule_work() after the cancel returns.
+
+- of_reserved_mem_device_release(dev): moved from se_if_priv_release() to
+  se_if_probe_cleanup(), after cleanup_se_shared_mem() and before the
+  initial kref_put. Problem with old placement:
+  - Last-fd-close could call the release on a struct device that a newly
+    rebound driver instance had already reconfigured via
+    of_reserved_mem_device_init(), corrupting the new instance's DMA setup.
+    Moving it to probe_cleanup ensures the release always pairs with the
+    init at unbind time, serialized with re-probe by the driver core.
+
+- cleanup_se_shared_mem(priv_dev_ctx) is likewise moved to
+  probe_cleanup (under priv_dev_ctx->fops_lock), before the
+  of_reserved_mem_device_release() call, because dma_free_coherent()
+  must run while the DMA region configuration is still active.
+
+- se_if_priv_release() priv_dev_ctx block updated: now only frees the
+  struct and its devname string, with a comment explaining that
+  cleanup_se_shared_mem() and of_reserved_mem_device_release() were
+  already called in probe_cleanup.
+
+Reference:
+- Link to v47: https://lore.kernel.org/r/20260904-imx-se-if-v47-0-b474ec6fc52a@nxp.com
+
+Changes in v47:
+
+2/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- schedule_work() UAF fix: moved inside clbk_rx_lock; cancel_work_sync()
+  added before kfree(priv) in se_if_priv_release().
+
+- goto/scoped_guard fix: bool list_was_empty + break replaces goto.
+
+- TOCTOU comment: advisory early check noted; FW rejects second
+  ELE_STORAGE_OPEN_REQ itself.
+
+- se_val_rsp_hdr_n_status: add act_rx_msg_sz output to ele_msg_send_rcv()
+  to capture actual received bytes under clbk_rx_lock. Move size check
+  after status check; return -ENOSPC on size mismatch func
+  so fw_api_specific_ops() still runs to record any FW-allocated handle.
+  All callers updated.
+
+- fw_api_specific_ops(): void→int return type, single se_close_storage() call, interrupted path returns 0.
+  Error propagated on success path, ioctl aborts cleanly on registration failure.
+  Updating the declaration in ele_fw_api.h to match.
+
+- single modify_lock acquisition capturing receiver_exists + is_cmd_receiver atomically,
+  eliminating redundant scoped_guard in ELE_STORAGE_OPEN_REQ
+
+3/7
+- ele_get_info() allocates tx_msg and rx_msg with GFP_KERNEL. It is
+  called from the suspend/resume path via se_save_imem_state() and
+  se_restore_imem_state(). Change both allocations in
+  ele_get_info() to GFP_NOIO to avoid the same I/O-reclaim deadlock.
+
+1/7
+- ELE_STORAGE_OPEN_REQ concurrency and command-receiver exclusivity:
+  Explains the three-layer protection used to serialise concurrent
+  ELE_STORAGE_OPEN_REQ ioctls: (1) an advisory early check under
+  modify_lock capturing both receiver_exists and is_cmd_receiver in a
+  single critical section; (2) se_if_cmd_lock serialising the full
+  send+receive cycle; (3) set_dev_ctx_as_command_receiver() re-checking
+  under modify_lock after the response arrives. An ASCII sequence diagram
+  shows how a racing second caller is rejected by firmware before any
+  storage handle is allocated.
+
+- Signal handling after a completed hardware operation:
+  Explains what happens when a signal arrives after firmware has already
+  executed a command and written its response into the MU receive buffer.
+  The driver validates the response, calls fw_api_specific_ops() with
+  is_cmd_interrupted=true (which closes the firmware-allocated handle via
+  se_close_session()/se_close_storage() and clears the kernel-side
+  handle), then returns -EINTR instead of -ERESTARTSYS. Returning -EINTR
+  prevents the VFS from transparently restarting the ioctl with
+  already-zeroed input buffers and lets userspace enter its signal handler
+  to decide whether to reissue the command. An ASCII sequence diagram
+  illustrates the timing.
+
+Reference:
+- Link to v46: https://lore.kernel.org/r/20260903-imx-se-if-v46-0-aefaab525034@nxp.com
+
+Changes in v46:
+
+1/7, 2/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- Moved mutex_init() outside the conditional block so every probe path
+  initializes the mutex, as se_load_firmware() acquires this mutex on
+  every call path, including on SoCs that have no firmware image
+  (is_fw_tobe_loaded is false), so it returns immediately after the lock,
+  but it still takes it).
+
+3/7:
+- ele_service_swap() is invoked from the suspend/resume callbacks via
+  se_save_imem_state() / se_restore_imem_state(). Using GFP_KERNEL in
+  this path allows direct memory reclaim, which may trigger I/O to flush
+  dirty pages. If a storage device that depends on this hardware has
+  already been suspended, the resulting I/O will block indefinitely,
+  causing a system deadlock. Replace GFP_KERNEL with GFP_NOIO to
+  prohibit I/O-triggering reclaim in the suspend/resume path.
+
+- In ele_fw_authenticate(), the format specifier for dma_addr_t pointers
+  was incorrectly %pap, which expects a phys_addr_t *. On architectures
+  where sizeof(dma_addr_t) < sizeof(phys_addr_t), printk reads past the
+  pointer and leaks unrelated stack memory into dmesg. Replace with %pad,
+  the correct format specifier for dma_addr_t *.
+
+Reference:
+- Link to v45: https://lore.kernel.org/r/20260902-imx-se-if-v45-0-6e400879d8ec@nxp.com
+
+Changes in v45:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- pass `false` instead of a non-zero integer to `se_fill_cmd_msg_hdr()` in `se_close_session()` to prevent a session handle leak,
+- replace `devm_mutex_init` with `mutex_init` + `mutex_destroy` to fix a resource leak on probe failure, and
+- snapshot `dev_ctx->devname` once under `fops_lock` in `se_if_fops_read()` to prevent a use-after-free.
+
+Reference:
+- Link to v44: https://lore.kernel.org/r/20260902-imx-se-if-v44-0-104658bf941a@nxp.com
+
+Changes in v44:
+1/7, 2/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- Rename SE_IOCTL_ENABLE_CMD_RCV_STATUS to SE_IOCTL_CHECK_CMD_RCV_REG_STATUS; remove misleading dev_err; update kdoc.
+- Passing rx_msg->header.size<<2 to se_val_rsp_hdr_n_status() is safe - the function only reads header fields; size mismatch is already reported by the mailbox callback.
+- Fix Use-After-Free: replace devm_mutex_init() with mutex_init() for priv->modify_lock and priv->se_if_cmd_lock; add mutex_destroy() in se_if_priv_release().
+
+3/7:
+- Replace bool is_base_api with u8 version in se_val_rsp_hdr_n_status(), letting callers pass the expected API version byte directly.
+
+Reference:
+- Link to v43: https://lore.kernel.org/r/20260831-imx-se-if-v43-0-a3deadbda4ef@nxp.com
+
+Changes in v43:
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+ele_common.c:
+- Fix UAF of fw_busy_work (Sashiko v42 #5): add !going_away guard before
+  schedule_fw_busy_work in se_if_rx_callback(). going_away is set under
+  clbk_rx_lock before cancel_work_sync(); the guard prevents a late mailbox
+  IRQ from re-queuing fw_busy_work against freed priv after teardown.
+
+se_ctrl.c:
+- Fix short rx_buf_sz handle leak (Sashiko v42 #9 / v36 #6 carry-over):
+  pass rx_msg->header.size << 2 (FW-declared size) instead of
+  cmd_snd_rcv_rsp_info.rx_buf_sz to se_val_rsp_hdr_n_status(). If the
+  caller supplied an undersized buffer, rx_buf_sz is clamped and the size
+  check would fail, causing fw_api_specific_ops() to be skipped and any
+  freshly allocated session/storage handle to go unrecorded.
+- Fix devres LIFO / failure-path cleanup ordering (Sashiko v41/v42 #6):
+  group all three devm_mutex_init() calls (se_if_cmd_lock, modify_lock,
+  load_fw_lock) before devm_add_action_or_reset(). This ensures: (a) on
+  devres teardown se_if_probe_cleanup runs before any mutex is destroyed
+  (LIFO), and (b) on any probe failure after the registration point
+  se_if_probe_cleanup is called and frees the non-devm mailbox channels.
+  load_fw_lock init block is moved up from after dma_set_mask_and_coherent.
+- Refactor set_dev_ctx_as_command_receiver() (Sashiko v42 #3):
+  extract static check_cmd_rcvr_status() that requires modify_lock held
+  (lockdep_assert_held). set_dev_ctx_as_command_receiver() acquires
+  modify_lock once, calls check_cmd_rcvr_status(), then arms the receiver
+  path. This eliminates the TOCTOU window between the old check and arm
+  steps and fixes the missing se_clbk_hdl initialisation in the refactored
+  version. SE_IOCTL_ENABLE_CMD_RCV_STATUS now holds modify_lock via
+  guard() before calling check_cmd_rcvr_status() directly.
+- Remove bool is_ioctl parameter from set_dev_ctx_as_command_receiver().
+  The parameter was used only to return -ENOMEM from the ioctl path; the
+  refactoring above makes the distinction unnecessary.
+- Remove redundant GFP_KERNEL from all kzalloc_obj() call sites (Frank).
+
+ele_fw_api.c:
+- Remove redundant is_cmd_receiver bool in ele_uapi_allowed_fw_rsp();
+  replace with direct != check that returns -EINVAL under scoped_guard
+  (Frank).
+- Move tx_msg/rx_msg allocations to their declarations in se_close_session()
+  and se_close_storage(); combine two separate NULL checks into one
+  (Frank).
+
+se_ctrl.h:
+- Update set_dev_ctx_as_command_receiver() declaration to drop bool param.
+
+Reference:
+- Link to v42: https://lore.kernel.org/r/20260825-imx-se-if-v42-0-2e8efac0bb16@nxp.com
+
+Changes in v42:
+1/7, 2/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+- Moved cancel_work_sync() before and without acquiring the
+  se_if_cmd_lock.
+- rewritten comment description explaining that calling it while holding
+  `se_if_cmd_lock` would deadlock (work needs `fops_lock`, close() holds
+  `fops_lock` and waits for `se_if_cmd_lock`), and that `going_away`
+  prevents re-queueing after cancel returns.
+
+3/7
+-  Moved `devm_mutex_init` calls after `devm_add_action_or_reset`.
+
+Reference:
+- Link to v41: https://lore.kernel.org/r/20260824-imx-se-if-v41-0-29cf129e4d86@nxp.com
+
+Changes in v41:
+1/7, 2/7, 6/7 & 7/7:
+- No changes
+
+3/7:
+- ele_fw_authenticate(): drop redundant 'int ret = 0' initialiser;         
+  ret is always set before first use by ele_msg_send_rcv().                
+                                                                           
+- se_if_rx_callback(): replace min_t(u32, ...) with min() for the          
+  cmd-receiver NVM path; both operands are already u32.                    
+                                                                           
+- se_ctrl.c: remove the single-use MBOX_TX_NAME / MBOX_RX_NAME macros      
+  and pass the string literals "tx" / "rx" directly to                     
+  se_if_request_channel().                                                 
+                                                                           
+- move load_fw->imem.state = ... outside the soc_rev guard so it is        
+  refreshed from the firmware response on every probe. Also update the     
+  early-exit condition to not skip the firmware fetch when imem_mgmt is    
+  active, since the imem.state update always requires a fresh FW response. 
+  Only the once-per-module-lifetime operations (soc_rev caching and        
+  soc_device registration) remain inside their respective guards.          
+                                                                           
+- se_if_probe(): dma_set_mask_and_coherent() always succeeds for           
+  masks >= 32-bit; drop the error-check and return path.                   
+                                                                           
+- se_if_probe(): switch mutex_init() for load_fw->load_fw_lock to          
+  devm_mutex_init().  The plain mutex_init() does not register a           
+  destructor, so if probe returns an error on any of the paths that        
+  follow (dmam_alloc_coherent, get_se_soc_info, ...) mutex_destroy()       
+  is never called before kfree(priv) in se_if_probe_cleanup().             
+  devm_mutex_init() ties the mutex lifetime to the device via devres,      
+  guaranteeing mutex_destroy() is invoked automatically on probe           
+  failure unwind or device removal.                                        
+                                                                           
+- Fix all dev_err/dev_warn/dev_info/dev_dbg messages that were missing     
+  the required trailing newline across ele_common.c, ele_base_msg.c        
+  and se_ctrl.c.                                                           
+                                                                           
+- Add kernel-doc (/**) comments to all non-static functions in             
+  ele_common.c and ele_base_msg.c; convert the existing plain-comment      
+  on se_update_msg_chksum() to proper kernel-doc style.
+
+4/7:
+- init_misc_device_context(): drop the pointless err_str local variable
+  and the redundant 'int ret = -ENOMEM' initialiser; return -ENOMEM
+  directly in both OOM paths.  No message is printed for -ENOMEM as the
+  MM subsystem already does that.
+    
+- se_if_probe(): drop the redundant error-code argument (%x) from the
+  dev_err_probe() format string for the init_misc_device_context()
+  failure path; dev_err_probe() already logs the error code.
+    
+5/7:
+
+- init_misc_device_context(): drop the unnecessary err_str variable;
+  return -ENOMEM directly on kzalloc failure and from the exit path,
+  as -ENOMEM needs no additional dev_err_probe() annotation.
+
+- se_if_probe(): remove the redundant [0x%x] error-code duplication
+  from the dev_err_probe() call for init_misc_device_context(); the
+  error value is already printed by dev_err_probe() itself.  Add the
+  required trailing newline.
+
+- se_if_fops_open(): remove the [0x%x] suffix from the 'Failed to
+  create dev-ctx' message and add the required trailing newline.
+
+- ele_common.h: convert the block comment above struct se_cmd_addr_field
+  to kernel-doc format so that field descriptions are picked up by
+  sphinx/kernel-doc.
+
+- se_ctrl.c: fix teardown ordering in se_if_probe_cleanup():
+  * cancel_work_sync() and mbox_free_channel() are now executed under
+    se_if_cmd_lock so that any in-flight sender finishes before the
+    channels are freed and no new sender can sneak in afterward.
+  * Both channel pointers are set to NULL under the lock after freeing
+    to prevent a double-free on any later cleanup path.
+  * The remove-channel comment is updated to reflect the new rationale.
+
+- se_if_probe(): use devm_mutex_init() for modify_lock so the mutex is
+  tracked by devres and automatically destroyed on device removal.
+
+- se_if_fops_open(): unify the two identical error-exit sequences
+  (out_unlock_gate and out_put_priv/inline return) into a single
+  out_put_gate label. The gate lock is now dropped inline before
+  jumping, so all error paths converge on one se_if_open_gate_put()
+  call at the bottom of the function.
+
+Reference:
+- Link to v40: https://lore.kernel.org/r/20260822-imx-se-if-v40-0-74fbce2f2f95@nxp.com
+
+Changes in v40:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7
+- Split se_chk_tx_msg_hdr() into se_chk_tx_rsp_msg_hdr() for the
+  write() path (rsp_tag only) and se_chk_tx_cmd_msg_hdr() for the
+  ioctl path (cmd_tag only). Add ele_uapi_allowed_fw_rsp() to validate
+  rsp_tag messages on the write() path and enforce that only the
+  registered command-receiver context may use it.
+
+- Extend fw_api_specific_ops() with an is_cmd_interrupted flag. When a
+  signal interrupts a SESSION_OPEN or STORAGE_OPEN ioctl after firmware
+  has already allocated the handle, close the handle in firmware and
+  clear sess_hdl/strg_hdl in dev_ctx before returning -EINTR to
+  userspace, preventing handle leaks on the interrupted path.
+
+- Add handle ownership checks in se_cmd_receiver_allowed_cmd(): verify
+  msg->data[0] == dev_ctx->sess_hdl for ELE_SESSION_CLOSE_REQ and
+  msg->data[0] == dev_ctx->strg_hdl for ELE_STORAGE_CLOSE_REQ.
+
+- Wrap ELE_STORAGE_MASTER_IMPORT_REQ case body in braces to fix a
+  variable declaration after a case label.
+
+- Fix dev_err format specifier from %ld to %d for the err variable and
+  add __func__ to CMD-Receiver registration failure messages.
+
+Reference:
+- Link to v39: https://lore.kernel.org/r/20260821-imx-se-if-v39-0-41e4257c2afc@nxp.com
+
+Changes in v39:
+
+1/7, 2/7, 4/7, 6/7 & 7/7:
+- No changes
+
+3/7
+- Fixes to not supress returning err in case of suspend/resume.
+
+5/7
+1: ele_msg_addr_field.c - cross-interface contamination via shared
+  file-scope mutable arrays in ele_set_sz_in_field_addr().
+  ACCEPTED / FIXED. se_if_cmd_lock is per-SE-interface; ELE and V2X have
+  independent locks, so concurrent ELE and V2X export flows could corrupt
+  each other's buf_size in the shared static arrays. Fixed by:
+  - Add SE_CMD_RCVR_ADDR_VAR_SIZE sentinel (ele_common.h).
+  - Add structure priv->crcvr_info to se_if_priv (se_ctrl.h), one per
+    SE interface; cmd_receiver_specific_ops() stores the FW-supplied
+    export size there instead of in a file-scope static.
+  - se_val_cmd_addrs() reads priv->crcvr_info.cmd_rcvr_var_size when size_idx ==
+    SE_CMD_RCVR_ADDR_VAR_SIZE (ele_common.c).
+  - ele_storage_{master,chunk}_export_addr_fields[] changed to
+    'static const' using SE_CMD_RCVR_ADDR_VAR_SIZE; ele_set_sz_in_field_addr()
+    removed (ele_msg_addr_field.c, ele_fw_api.c).
+
+2: ele_common.c - buf_size=0 in struct se_cmd_addr_field bypasses
+  the end-boundary check in se_val_cmd_addrs().
+  ACCEPTED / FIXED. The export-response descriptors previously relied on
+  buf_size being patched at runtime; they now use SE_CMD_RCVR_ADDR_VAR_SIZE
+  so the per-interface priv->cmd_rcvr_var_size is always checked. The
+  cmd_rcvr_last_rcvd_cmd_id guard in se_cmd_receiver_allowed_rsp() also
+  ensures the response path is only reached after a genuine FW export
+  command has been received. (Fixed together with 1.)
+
+3: ele_common.c - completion_done() race in the timeout path: a
+  completion may arrive between completion_done() returning false and
+  wait_for_completion_interruptible_timeout() being called.
+  ACCEPTED / FIXED. Already resolved in commit db0bca8 by replacing the
+  completion_done() poll with a dedicated rx_delivered flag (atomic, set
+  under the RX interrupt) that accurately distinguishes a genuine FW
+  response from a teardown-forced complete_all().
+
+4: se_ctrl.c - potential use-after-free of se_if_open_gate during
+  device removal.
+  NOT A BUG. misc_open() in drivers/char/misc.c holds misc_mtx across the
+  entire .open callback (line 163). misc_deregister() also acquires
+  misc_mtx (line 286). Therefore misc_deregister() cannot return while
+  an .open is in progress, and the gate object cannot be freed beneath a
+  concurrent open.
+
+Reference:
+- Link to v38: https://lore.kernel.org/r/20260820-imx-se-if-v38-0-5df4a4cff736@nxp.com
+
+Changes in v38:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7
+1. ele_msg_addr_field.c - SE_CMD_ADDR_NO_SIZE start-addr-only check
+  (ELE_OEM_AUTH_CONTAINER_REQ, buf_size == 0, no end-boundary check)
+  NOT A BUG. The existing comment in ele_msg_addr_field.c documents
+  the rationale. This is a read-only input buffer: the firmware copies
+  the container header into its own internal memory for authentication
+  and does not write back through the supplied address. Any accidental
+  over-read would stay within firmware's own address space and the
+  over-read contents are not returned to the caller, so there is no
+  confidentiality or integrity impact visible to the attacker.
+
+2. ele_msg_addr_field.c - buf_size dynamically set to zero via truncated
+  se_if_fops_read() snapshot bypasses end-bound check in se_val_cmd_addrs()
+  FIXED. rx_msg_snap[MAX_NVM_MSG_LEN] was already zero-initialized ({}).
+  Additionally, se_if_fops_read() now snapshots the full rx_msg_sz bytes
+  (not just copy_len = min(size, rx_msg_sz)) before calling
+  fw_api_specific_ops(), so data[1] always contains the genuine
+  FW-provided buffer size even when the userspace read() length is short.
+
+3. ele_msg_addr_field.c - global static buf_size race in
+  ele_set_sz_in_field_addr() under concurrent export commands
+  NOT A BUG. FW is sequential (FIFO). se_if_cmd_lock is held across
+  the entire ele_msg_send_rcv() blocking transaction, so only one
+  export is ever in-flight at a time. No concurrent writer is possible.
+
+4. ele_fw_api.c - se_cmd_receiver_allowed_cmd() returns 0 unconditionally
+  for ELE_SESSION_CLOSE_REQ / ELE_STORAGE_CLOSE_REQ (no ownership check)
+  NOT A BUG. Ownership is enforced by design: only the registered
+  cmd_receiver receives NVM callbacks and handle values come from FW
+  responses already stored in dev_ctx. A malicious cmd_receiver cannot
+  observe or spoof handles belonging to other contexts.
+
+5. ele_fw_api.c - ELE_STORAGE_OPEN_REQ pre-check race (TOCTOU):
+  modify_lock dropped before send, another process can win
+  SE_IOCTL_ENABLE_CMD_RCV in the window
+  ACCEPTED. SE_IOCTL_ENABLE_CMD_RCV is re-purposed and renamed to
+  SE_IOCTL_ENABLE_CMD_RCV_STATUS. This ioctl no longer enables the
+  command receiver; it only returns the enablement status that was
+  recorded as part of the successful ELE_STORAGE_OPEN_REQ response.
+  Registration as command receiver is now done atomically inside
+  fw_api_specific_ops() on the response path, eliminating the TOCTOU
+  window between the pre-check and the FW send.
+
+6. ele_fw_api.c - set_dev_ctx_as_command_receiver() failure in
+  fw_api_specific_ops() leaves strg_hdl assigned while NVM traffic
+  routes to attacker
+  NOT AN ISSUE once SE_IOCTL_ENABLE_CMD_RCV_STATUS is re-purposed (see
+  [5] above). fw_api_specific_ops() stores strg_hdl before calling
+  set_dev_ctx_as_command_receiver(), so cleanup_dev_ctx() can always
+  close the handle in FW even if registration fails. A dev_err is
+  emitted on failure. The successful response to userspace is correct;
+  userspace must query SE_IOCTL_ENABLE_CMD_RCV_STATUS to learn the
+  enablement status of the command receiver.
+
+7. se_ctrl.c - dma_alloc_coherent(128 KB) on every open() with no fd
+  limit; potential DoS
+  NOT A BUG. dma_alloc_coherent() returns NULL on exhaustion and open()
+  fails gracefully with -ENOMEM. Kernel fd limits and the OOM killer
+  provide adequate system-level protection.
+
+8. se_ctrl.c - UAF of devname pointer after complete() in
+  se_if_rx_callback() (both cmd_tag and rsp_tag paths)
+  FIXED. Replaced 'const char *devname' with a 'char devname_snap[32]'
+  local buffer. strscpy() snapshots the name before complete() is
+  called so dev_err() uses the snapshot after the waiter may have freed
+  dev_ctx.
+
+9. se_ctrl.c - DMA-after-free: completion_done() vs rx_delivered on
+  teardown wakeup race (deadline and ret==0 timeout paths in
+  ele_msg_rcv())
+  FIXED. Replaced !completion_done(&se_clbk_hdl->done) with
+  !se_clbk_hdl->rx_delivered in both the deadline (time_after_eq) path
+  and the ret==0 timeout path. rx_delivered is set only by the genuine
+  FW RX callback, not by teardown's complete_all(), so se_mark_fw_busy()
+  is now correctly gated on whether firmware actually delivered a
+  response.
+
+10. se_ctrl.c - self-deadlock: fw_api_specific_ops() called inside
+  scoped_guard(modify_lock) in se_if_fops_read()
+  FIXED. fw_api_specific_ops() is split: the command-receiver-specific
+  export-size handling is moved into a new cmd_receiver_specific_ops()
+  function. se_if_fops_read() calls cmd_receiver_specific_ops() which
+  only handles ELE_STORAGE_MASTER_EXPORT_REQ and
+  ELE_STORAGE_CHUNK_EXPORT_REQ (no modify_lock re-acquisition).
+  se_ioctl_cmd_snd_rcv_rsp_handler() continues to call the full
+  fw_api_specific_ops() which handles session/storage handle recording
+  and command-receiver registration outside modify_lock.
+
+11. se_ctrl.c - priv_dev_ctx 128 KB shared-memory slot permanently
+  leaked after late FW response when cleanup_done is false
+  FIXED. In se_clear_fw_busy(), replaced 'else if (dev_ctx->cleanup_done)'
+  with a plain 'else' so cleanup_se_shared_mem(dev_ctx, true) is called
+  unconditionally on the non-teardown (going_away clear) path.
+  priv_dev_ctx has no close() path between a timeout and module unload
+  so cleanup_done is only set at unbind; the previous conditional
+  permanently leaked its 128 KB slot after a late response. For
+  userspace contexts se_dev_ctx_shared_mem_cleanup() is idempotent when
+  pos has already been reset by the normal close() path.
+
+Reference
+- Link to v37: https://lore.kernel.org/r/20260819-imx-se-if-v37-0-5ef5de9ff1dc@nxp.com
+
+Changes in v37:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7:
+- No changes
+
+5/7:
+1. [High] DMA-after-free when a fatal signal races driver unbind.
+   ele_msg_rcv() gated se_mark_fw_busy() on !completion_done(), but
+   se_if_probe_cleanup() calls complete_all() before freeing the DMA
+   buffer. At that point completion_done() returns true, so the circuit
+   breaker was skipped and teardown freed the DMA buffer while the
+   enclave could still be writing into it. Remove the !completion_done()
+   guard: arm the circuit breaker unconditionally when rx_msg is still
+   set and rx_delivered is not. rx_delivered (set by se_if_rx_callback()
+   under clbk_rx_lock after a genuine response is copied) is the correct
+   guard for the safe case.
+
+2. [High] ELE_STORAGE_OPEN_REQ allowed when cmd_receiver slot occupied.
+   If process A already registered as command receiver and process B
+   issued ELE_STORAGE_OPEN_REQ, the command was forwarded to firmware
+   which allocated a new storage handle. NVM callbacks for that handle
+   were then routed to process A (the existing receiver), letting A
+   observe and tamper with B's NVM traffic. Pre-check the cmd_receiver
+   slot in ele_uapi_allowed_fw_cmd() for ELE_STORAGE_OPEN_REQ and reject
+   with -EBUSY before the command reaches firmware, so no handle is
+   allocated when the slot is occupied by another context.
+
+3. [High] Short rx_buf_sz bypasses handle recording causing a firmware
+   resource leak. For ELE_SESSION_OPEN_REQ and ELE_STORAGE_OPEN_REQ the
+   caller-supplied rx_buf_sz is now validated against the minimum
+   response size (ELE_SESSION_OPEN_RSP_SZ / ELE_STORAGE_OPEN_RSP_SZ) in
+   ele_uapi_allowed_fw_cmd() before the command is sent to firmware. If
+   the buffer is too small to receive the response carrying the
+   FW-allocated handle, the command is rejected with -EINVAL up-front
+   rather than letting the handle be allocated and then lost because
+   se_val_rsp_hdr_n_status() rejects the truncated response.
+   se_chk_tx_msg_hdr() / ele_uapi_allowed_fw_cmd() now accept rx_msg_sz
+   as an additional parameter for this check.
+
+4. [High] Uninitialized stack buffer passed to fw_api_specific_ops().
+   rx_msg_snap[MAX_NVM_MSG_LEN] in se_if_fops_read() was declared
+   without initialization. memcpy filled only min(size, rx_msg_sz) bytes;
+   the remainder contained stack garbage. For ELE_STORAGE_MASTER_EXPORT_REQ
+   fw_api_specific_ops() reads data[1] as the export-buffer size, which
+   would be garbage if the caller supplied a short read length, corrupting
+   the DMA bounds check. Initialize the array to zero so any un-copied
+   portion is safely zero.
+
+Reference:
+- Link to v36: https://lore.kernel.org/r/20260817-imx-se-if-v36-0-45c42847bfd8@oss.nxp.com
+
+Changes in v36:
+
+5/7:
+- [High] Fixes the leake of session/storage handle while response copy-out
+  failed.
+    
+- [High] Fixes the racing of close() with driver unbind could transmit on
+  a freed mailbox tx channel.
+
+- [High] Fixes a signal during the long-timeout wait left the task
+  effectively unkillable.
+
+- [Critical] Fixes the vulnerability of not letting the secure enclave access
+  the physical DMA addresses embedded in raw FW commands, that are out
+  of bounds.
+    
+3/7:
+- firmware: imx: fix se_restore_imem_state() bad IMEM state handling
+
+Reference:
+- Link to v35: https://lore.kernel.org/r/20260806-imx-se-if-v35-0-11b25bb308ef@nxp.com
+
+Changes in v35:
+
+1/7, 2/7, 3/7, 4/7, 6/7 & 7/7: 
+- No changes.
+
+5/7:
+- [High] Close request built with base API version but validated with
+  FW API version.
+  se_close_session()/se_close_storage() formatted the request header
+  with se_fill_cmd_msg_hdr(..., is_base_api=true) yet validated the
+  response with se_val_rsp_hdr_n_status(..., is_base_api=false). The
+  version mismatch made validation fail with -EINVAL, so teardown
+  closes always reported failure and the FW session/storage handle was
+  leaked. Format the close requests with the FW API version to match
+  the response validation.
+
+- [High] Storage handle recorded only after receiver registration.
+  In fw_api_specific_ops() ELE_STORAGE_OPEN_REQ, dev_ctx->strg_hdl was
+  assigned only after a successful set_dev_ctx_as_command_receiver().
+  A failing registration (e.g. -EBUSY) left strg_hdl at 0 while the
+  ioctl still returned success, so cleanup_dev_ctx() never closed the
+  handle and it leaked in FW. Record the handle first, then register.
+
+- [High] Close request did not verify the payload handle belongs to the
+  caller.
+  ele_uapi_allowed_fw_cmd() only checked that the calling context had
+  some session/storage open, not that the handle carried in the payload
+  (data[0]) matched. A process could submit a close for another
+  process's handle. Thread the tx buffer size through
+  se_chk_tx_msg_hdr()/ele_uapi_allowed_fw_cmd() and, for the session
+  and storage close requests, reject a buffer too short to hold data[0]
+  or a data[0] that does not match this context's own handle. Checking
+  the size first also keeps the data[0] read in bounds.
+
+- [High] Concurrent close() racing driver unbind could transmit on a
+  freed mailbox channel.
+  se_close_session()/se_close_storage() hardcoded priv->priv_dev_ctx as
+  the transport, bypassing the going_away teardown safeguard in
+  ele_msg_send_rcv(). A userspace close() racing unbind could send on a
+  freed priv->tx_chan (use-after-free in mbox_send_message()). Pass the
+  transport context explicitly: cleanup_dev_ctx() sends userspace-close
+  (is_fclose) traffic on the caller's own dev_ctx so the going_away
+  check rejects it with -ENODEV, while the teardown path keeps using
+  priv_dev_ctx, the only context let through going_away for
+  teardown-close messages while tx_chan is still live.
+
+- [Medium] Interrupted wait discarded an already-delivered FW response
+  and leaked the handle.
+  On an interrupted wait ele_msg_send_rcv() converts a successful
+  (err > 0) result to -ERESTARTSYS. The ioctl handler returned early on
+  err < 0 without recording the session/storage handle, so a handle the
+  FW had already allocated (and returned in the delivered response) was
+  never tracked and leaked. Keep returning -EINTR to userspace so it can
+  run its signal handler and the syscall is not auto-restarted, but
+  before returning, validate the already-delivered response and, if it
+  is well formed, copy out data and run fw_api_specific_ops() so the
+  handle is recorded and closed on teardown. No memory is leaked: the
+  err < 0 path still calls se_ioctl_cmd_snd_rcv_cleanup() and the tx/rx
+  buffers are freed via __free(kfree).
+
+Reference:
+- Link to v34: https://lore.kernel.org/r/20260805-imx-se-if-v34-0-7e4713d14e0a@nxp.com
+
+Changes in v34:
+5/7:
+Teardown vs. in-flight transaction (lost wakeup / unbind hang):
+- se_if_probe_cleanup() now sets priv->going_away under clbk_rx_lock
+  instead of se_if_cmd_lock. se_if_cmd_lock is held across the whole
+  blocking transaction, so acquiring it during unbind could stall for a
+  full receive timeout. clbk_rx_lock is the short spinlock the sender
+  holds while arming a transaction, so setting going_away under it and
+  then calling complete_all() makes teardown and arming mutually
+  exclusive and closes the lost-wakeup window.
+- complete_all() is issued before walking the device-context list so a
+  waiter sleeping on the completion while holding dev_ctx->fops_lock is
+  released before cleanup takes the same lock, avoiding an unbind hang.
+
+ele_msg_send_rcv() arming:
+- going_away and fw_busy are now evaluated under clbk_rx_lock together
+  with reinit_completion() and the buffer publish, so a new transaction
+  is never armed concurrently with teardown.
+- going_away is checked before fw_busy so a caller racing unbind gets a
+  permanent -ENODEV rather than a misleading retryable -EBUSY. fw_busy
+  is only atomic_read() here, so no fw_busy_lock is taken and there is
+  no deadlock. Teardown session/storage close commands issued on
+  priv_dev_ctx are still let through so the kernel can resynchronise
+  state with FW.
+
+ele_msg_rcv() response classification:
+- Add se_clbk_handle::rx_delivered, set by se_if_rx_callback() under
+  clbk_rx_lock only after a real response is copied. ele_msg_rcv() uses
+  it to tell a genuine firmware response apart from a teardown-forced
+  complete_all() that wakes the waiter with no data. Without this a
+  teardown-time close response could be mistaken for the forced abort,
+  failing the close and leaking its DMA buffer, and a forced wakeup
+  could be mistaken for a response while the enclave still DMAs into the
+  shared buffer. The forced-abort path returns -ENODEV and arms the
+  circuit breaker so the buffer is quarantined, not freed.
+
+Session/storage handle tracking (ele_uapi_allowed_fw_cmd()):
+- Reject a repeated ELE_SESSION_OPEN_REQ / ELE_STORAGE_OPEN_REQ with
+  -EEXIST when a handle is already open, preventing a handle leak.
+- Reject ELE_SESSION_CLOSE_REQ / ELE_STORAGE_CLOSE_REQ with -ENXIO when
+  no handle is open.
+
+se_close_session() / se_close_storage():
+- Use __free(kfree) scope-based cleanup consistently and return directly
+  instead of mixing it with goto-based cleanup.
+
+Reference:
+- Link to v33: https://lore.kernel.org/r/20260805-imx-se-if-v33-0-212e32ff0295@nxp.com
+
+Changes in v33:
+5/7: Sashiko AI comment disposition (5/7, 8 comments; 5 fixed, 3 no-change):
+
+- [High] 32/64-bit ABI mismatch in struct se_ioctl_cmd_snd_rcv_rsp_info:
+  FIXED. The members were ordered __u64 tx_buf, __u32 tx_buf_sz, __u64
+  rx_buf, __u32 rx_buf_sz, so the second __u64 (rx_buf) forced 4 bytes of
+  implicit padding after tx_buf_sz. That padding makes the struct size
+  (and therefore the _IOWR() size baked into SE_IOCTL_CMD_SEND_RCV_RSP)
+  differ between 32- and 64-bit userspace. The two __u64 members are now
+  placed first, followed by the two __u32 members, giving a naturally
+  packed, padding-free layout that is identical for 32- and 64-bit
+  callers.
+- [High] fops write/read/ioctl/open returned -EBUSY when the interruptible
+  mutex acquisition was aborted by a signal: FIXED. scoped_cond_guard(
+  mutex_intr, ...) and mutex_lock_interruptible() abort with an
+  interrupted-wait status when a signal is pending, but the handlers
+  anslated that into -EBUSY, which userspace cannot distinguish from a
+  genuinely contended device and which defeats automatic syscall restart.
+  The interrupted-acquire paths in se_if_fops_write(), se_if_fops_read(),
+  se_if_fops_open() (both the gate->lock and priv_dev_ctx->fops_lock
+  acquisitions) and se_ioctl() now return -ERESTARTSYS, so the kernel
+  restarts the syscall or reports -EINTR per the caller's SA_RESTART
+  disposition. The three remaining -EBUSY returns (command receiver
+  already registered, and the two firmware-busy circuit-breaker checks)
+  are genuine non-signal conditions and are intentionally left unchanged.
+
+- [High] se_if_fops_read() could strand an already-consumed response when
+  the fops_lock reacquire after the wait was interrupted: FIXED. The read
+  path drops fops_lock while waiting for the firmware response and then
+  reacquired it with mutex_lock_interruptible(), returning -ERESTARTSYS on
+  a pending signal. By that point the message had already been received
+  and committed, so aborting on a signal discarded a completed response
+  that could not be re-fetched. The reacquire now uses an uninterruptible
+  mutex_lock(); the wait itself stays interruptible, and the cleanup_done
+  re-check under fops_lock is preserved.
+
+- [High] TOCTOU / lost-wakeup between ele_msg_send_rcv() and
+  se_if_probe_cleanup(): FIXED. ele_msg_send_rcv() checks going_away and
+  arms the response completion under se_if_cmd_lock, but teardown set
+  going_away and called complete_all() outside that lock. A thread parked
+  on se_if_cmd_lock could therefore arm the completion after the teardown
+  wakeup had already fired, then block for the full timeout while unbind
+  waited on that thread's fops_lock. se_if_probe_cleanup() now sets
+  going_away and calls complete_all() while holding se_if_cmd_lock, making
+  teardown and the arming path mutually exclusive so the wakeup can no
+  longer be lost. As part of tear-down, close-session & close-storage msg
+  is sent to FW using priv_dev_ctx, to keep FW in sync.
+
+- [High] NULL-pointer dereference on the init_misc_device_context() error
+  path: FIXED. dev_ctx->priv was assigned only after the kasprintf() that
+  builds devname, but the kasprintf() failure path jumps to a cleanup that
+  calls cleanup_se_shared_mem(), which dereferences dev_ctx->priv->mem_pool.
+  If kasprintf() failed, priv was still NULL and cleanup dereferenced NULL.
+  The dev_ctx->priv = priv assignment is moved to immediately after the
+  allocation succeeds, before any goto to the error path.
+
+- [High] Unbounded per-open DMA allocation (device-context exhaustion):
+  NO-CHANGE. Each open() reserves a MAX_DATA_SIZE_PER_USER (128 KB) buffer
+  via dma_alloc_coherent(), but on these platforms the device is bound to
+  a fixed no-map reserved DMA pool (the ele_reserved "shared-dma-pool"
+  region attached with of_reserved_mem_device_init() in probe).
+  Allocations are served exclusively from that bounded pool and cannot
+  exhaust general system memory; once the pool is full dma_alloc_coherent()
+  returns NULL, init_se_shared_mem() returns -ENOMEM and open() fails
+  gracefully. The bounded pool together with the per-process RLIMIT_NOFILE
+  is the real, self-adjusting limit, so no artificial open-count cap is
+  added. No code change.
+
+- [High] SE_IOCTL_CMD_SEND_RCV_RSP reports -EINTR for a successful but
+  signal-interrupted transaction: NO-CHANGE. This is the intended Ctrl+C
+  behaviour. The underlying firmware command is not idempotent and must
+  not be silently re-issued, so once the wait is interrupted the
+  deferred-signal path resynchronises the protocol and ele_msg_send_rcv()
+  reports -ERESTARTSYS, which the handler surfaces as -EINTR to the
+  interrupted application. Reporting plain success here would hide the
+  interruption from the caller. No code change.
+
+- [High] Use-after-free of the open gate / priv between open() and unbind:
+  NO-CHANGE (false positive). misc_open() and misc_deregister() are
+  serialised by misc_mtx, and the open path takes a reference on the stable
+  se_if_open_gate with kref_get_unless_zero() and re-validates
+  gate->dying / gate->priv under gate->lock before use, so it can never
+  operate on a torn-down gate. No code change.
+
+3/7
+- Sample jiffies once. jiffies is volatile, so reading
+  it separately for the deadline check and for the
+  remaining-time subtraction would be a TOCTOU: a timer
+  tick (or a NO_HZ/virtualized tick catch-up that jumps
+  jiffies by several ticks) landing between the two
+  reads could push jiffies past the deadline and make
+  deadline_jiffies - jiffies underflow to a near
+  ULONG_MAX timeout, hanging the wait. One snapshot
+  keeps both uses consistent, so now < deadline_jiffies
+  guarantees a strictly positive remainder.
+
+Reference:
+- Link to v32: https://lore.kernel.org/r/20260730-imx-se-if-v32-0-95f56dff4ba9@nxp.com
+
+Changes in v32:
+5/7:
+- [Critical, new] Kernel panic while traversing the uninitialised
+  mem_pool_buf_list head during device-context cleanup: FIXED.
+  init_se_shared_mem() only ran INIT_LIST_HEAD() on mem_pool_buf_list
+  when priv->mem_pool was non-NULL, but cleanup_se_shared_mem() called
+  se_cleanup_mem_pool_buf() unconditionally, and that walks the head
+  with list_for_each_entry_safe() on every close/teardown. On interfaces
+  with no gen_pool (e.g. imx93, which has no pool_name so
+  priv->mem_pool == NULL) the head stayed zero-filled (next/prev == NULL)
+  and the cleanup walk dereferenced NULL. cleanup_se_shared_mem() now
+  calls se_cleanup_mem_pool_buf() only when priv->mem_pool is non-NULL;
+  interfaces without a pool have nothing to reclaim, so the walk is
+  simply skipped.
+- [High, new] SE_IOCTL_CMD_SEND_RCV_RSP returned a positive value to
+  userspace on success, masking the plain-success contract: FIXED.
+  ele_msg_send_rcv() returns a positive received-message size on success,
+  so on the happy path err held that size and was returned as the ioctl
+  result, making a successful transaction look like a positive (non-zero)
+  return value. The handler now records the received size in
+  rx_buf_sz (copied back to userspace in the response info) and
+  normalises err to 0 so the ioctl reports plain success. The firmware
+  response header/status is validated by se_val_rsp_hdr_n_status() and
+  conveyed to userspace inside the response buffer itself; an -EFAULT
+  copy_to_user() failure or a cleanup error still takes precedence over
+  the success return.
+- [High, new] slab-out-of-bounds read in se_val_rsp_hdr_n_status() when
+  handling debug-dump responses with a small rx_buf_sz: FIXED. Commands
+  that take the variable-length exception in check_hdr_exception_for_sz()
+  bypass the header/size match check, so the caller's receive buffer may
+  be smaller than the size the firmware header claims. Reading the status
+  word msg->data[0] with an rx_buf_sz as small as SE_MU_HDR_SZ over-read
+  the allocation. The status word is now read only when both the firmware
+  header count (header->size) and the received size in words (sz >> 2)
+  exceed the header word SE_MU_HDR_WORD_SZ, so a debug-dump response whose
+  received buffer is too small to hold the status word skips the read
+  instead of over-reading the allocation.
+- [High, pre-existing] Internal kernel HW ops (IMEM save/restore during
+  suspend/resume) fail spuriously with -ERESTARTSYS when a signal is
+  pending, breaking PM transitions: FIXED. All internal kernel-initiated
+  transactions run on priv->priv_dev_ctx (probe-time get_info/ping,
+  firmware authentication, and the PM IMEM export/import). These are not
+  issued on behalf of a restartable userspace syscall, so ele_msg_rcv()
+  now waits uninterruptibly whenever dev_ctx == priv->priv_dev_ctx. The
+  freezer's fake signals raised during a system PM transition can no
+  longer abort them with -ERESTARTSYS; only genuine userspace ioctl/read
+  waiters remain interruptible and use the existing deferred-signal path.
+- [Critical, new] Userspace can construct raw command payloads and embed
+  unvalidated DMA addresses (confused-deputy): NO-CHANGE. Passing
+  physical/DMA addresses inside the message body is inherent to the
+  firmware ABI this interface exposes, and is constrained by
+  se_chk_tx_msg_hdr() -> ele_uapi_allowed_base_cmd()/
+  ele_uapi_allowed_fw_cmd(), which restrict the command set to a
+  vetted allow-list (power-management, reset, BBSM, RNG init, FW
+  re-init, CAAM resource release and SE internal memory management are
+  all blocked). The enclave firmware is the trust boundary that
+  validates addresses against the caller's provisioned resources;
+  per-command address bounds-checking in the kernel would duplicate that
+  policy without owning the authoritative resource map. No code change.
+- [High, new] Firmware commands to the command receiver can overwrite an
+  unprocessed command (se_if_rx_callback() cmd_tag branch memcpy+complete
+  unconditionally): NO-CHANGE. The NVM command-receiver protocol is
+  half-duplex: the firmware issues one storage/NVM command at a time and
+  waits for the userspace daemon's response before issuing the next, so
+  there is no in-flight command to overwrite. The receiver uses a
+  dedicated long-lived buffer and clbk_rx_lock already serialises the
+  callback against se_if_fops_read(). No code change.
+- [High, new] TOCTOU race between ele_msg_send_rcv() checking going_away
+  and se_if_probe_cleanup() forcing wakeup (lost wakeup / deadlock):
+  NO-CHANGE. The ordering is already safe: se_if_probe_cleanup() sets
+  going_away before complete_all() (with an explicit ordering comment),
+  ele_msg_send_rcv() reads going_away under se_if_cmd_lock and bails with
+  -ENODEV before reinit_completion(), and ele_msg_rcv() re-checks
+  going_away after the wake and returns -ENODEV so a teardown-forced
+  completion is never mistaken for a real response. No code change.
+
+4/7:
+- moved the cleanup of priv_dev_ctx->dev_name & priv_dev_ctx, in the end of
+  se_if_probe_cleanup(), after priv->rx_chan freed.
+  Though it gets replaced in the next patch.
+
+Reference:
+- Link to v31: https://lore.kernel.org/r/20260729-imx-se-if-v31-0-e59af7adb784@nxp.com
+
+Changes in v31:
+7/7
+- Kernel is free to choose the exact placement of the 1 MiB block, as long
+  as it lands inside the ELE-accessible window. This avoids hardcoding a
+  fixed address.
+- Adds a new shared imx8ulp-firmware.dtsi that also enables the hsm0
+  node and wires up its memory-region, so every i.MX8ULP board can bring up
+  the enclave with a single include instead of duplicating the reserved
+  memory node. Include it from imx8ulp-evk.
+
+6/7:
+- Keep the node disabled in the SoC dtsi so it does not impose a
+  reserved-memory requirement on every board. Boards enable the enclave and
+  provide its memory-region by including imx8ulp-firmware.dtsi.
+
+5/7:
+- [Critical, new] Driver unbind forcefully wakes waiting ioctls and
+  clears firmware-busy state, causing DMA use-after-free by hardware:
+  FIXED. ele_msg_rcv() detects the teardown-forced wake
+  (is_rsp_wait_with_timeout && going_away), clears rx_msg, arms the
+  circuit breaker via se_mark_fw_busy() and returns -ENODEV; the woken
+  thread no longer treats the forced wake as success and does not free
+  the buffer. se_clear_fw_busy() quarantines (does not reclaim) the DMA
+  buffer during teardown.
+- [High, new] Late mailbox interrupt schedules fw_busy_work after
+  cancel_work_sync(), use-after-free of priv: FIXED.
+  se_if_probe_cleanup() now frees the rx mailbox channel
+  (mbox_free_channel) before cancel_work_sync(&priv->fw_busy_work), so
+  no further se_if_rx_callback() can re-arm the work; the cancel is
+  final.
+- [High, new] Unbind deadlock/hang: a concurrent ioctl blocked on
+  se_if_cmd_lock misses complete_all(), re-arms and waits the full
+  timeout while unbind blocks on fops_lock: FIXED. going_away is set at
+  the very start of teardown before complete_all(); ele_msg_send_rcv()
+  checks going_away under se_if_cmd_lock and returns -ENODEV before
+  reinit_completion(), so the thread bails out instead of re-arming.
+= [Medium, new] 128 KB DMA shared-memory buffer of the internal
+  priv_dev_ctx permanently leaked on unbind: FIXED. New
+  se_shared_mem_mgmt_info.mem_pool_buf_list plus
+  se_get_mem_pool_buf()/se_cleanup_mem_pool_buf() track pool
+  allocations; se_if_priv_release() reclaims the internal context
+  directly so the buffer is released deterministically (except the
+  intentional fw_busy quarantine from the Critical fix above).
+- [High, pre-existing] Race between se_if_rx_callback() and
+  se_if_fops_read() on the shared rx_msg command-receiver buffer, data
+  corruption: FIXED. se_if_fops_read() bounces the payload into a local
+  u8 rx_msg_snap[MAX_NVM_MSG_LEN] under clbk_rx_lock, then
+  copy_to_user() from the private copy after unlocking. copy_len is
+  bounded by MAX_NVM_MSG_LEN so the stack buffer cannot overflow.
+- [High, pre-existing] Dangling priv->dev passed to
+  dma_free_coherent()/dev_warn() if an fd is closed after device unbind:
+  FIXED. get_device(priv->dev) in se_if_probe() pins the parent device
+  for the lifetime of priv and is balanced by put_device(priv->dev) in
+  se_if_priv_release(), so priv->dev stays valid for a late close().
+
+4/7:
+-  add the cleanup of priv_dev_ctx->dev_name & priv_dev_ctx, as part of
+   se_if_probe_cleanup(). Though it gets replaced in the next patch.
+
+3/7:
+- ele_msg_send_rcv(): publish rx_msg/rx_msg_sz under clbk_rx_lock so
+  se_if_rx_callback() cannot observe a torn pair. This change is part
+  of 5/7, already.
+- ele_msg_rcv(): engage the fw_busy breaker on the deadline path, like
+  the ret==0 path, so a hung FW is fenced.
+- ele_get_info(): zero the gen_pool_dma_alloc() buffer, which is not
+  zeroed on allocation.
+
+Two findings need no code change:
+- DMA free on timeout: -ETIMEDOUT means FW is fenced by fw_busy, so the
+  free is safe.
+- -ERESTARTSYS after a completed transaction: the command is not
+  re-sent and the ioctl path converts it to -EINTR.
+
+References:
+- Link to v30: https://lore.kernel.org/r/20260724-imx-se-if-v30-0-ce8ba256692c@nxp.com
+
+Changes in v30:
+
+3/7
+This change dispositions all six findings from the Sashiko AI review:
+- Five are code fixes (three in se_ctrl.c, two in ele_common.c);
+- One is documented as intentional protocol-synchronization behavior.
+
+Addressed (drivers/firmware/imx/se_ctrl.c):
+- [High] Incorrect devres registration order (UAF / NULL pointer deref
+  in the mailbox RX callback):
+- [Medium] priv structure leak on early probe failure paths:
+  The cleanup action is now registered before the channel requests, so
+  priv is released even if se_if_request_channel() fails early.
+- [Medium] soc_device singleton lifecycle tied to the first probed MU
+  interface (data race and premature sysfs deletion):
+  Decouple the singleton from the first-probed MU interface. Track it in
+  var_se_info.soc_dev_regn and release it once at module unload via an
+  explicit module_init()/module_exit() pair instead of a devm action on
+  priv->dev. Serialize soc_dev registration state under se_var_info_lock;
+  se_soc_device_unregister() now takes the lock via guard(mutex).
+
+Addressed (drivers/firmware/imx/ele_common.c):
+- [High] Data race on rx_msg_sz in se_if_rx_callback():
+  Move the read of the expected response size (exp_rx_msg_sz =
+  se_clbk_hdl->rx_msg_sz) to after clbk_rx_lock is acquired, so it can no
+  longer be observed stale relative to a concurrent transaction updating
+  rx_msg_sz under the lock. This prevents copying truncated or corrupted
+  response data.
+- [Medium] ele_msg_rcv() reset the timeout after a signal instead of
+  accounting for elapsed time:
+  For the response-waiter path, compute an absolute deadline_jiffies once
+  and derive remaining_jiffies from it on every iteration. After a signal
+  falls back to an uninterruptible wait, the wait no longer restarts the
+  full timeout; the deadline is honored and -ETIMEDOUT is returned when it
+  elapses.
+
+Documented as intentional, no code change (drivers/firmware/imx/ele_common.c):
+- [Medium] "Unsafe syscall restart on completed non-idempotent hardware
+  operations" in ele_msg_send_rcv():
+  This is intentional protocol-synchronization behavior, not a
+  re-execution bug. A signal is deliberately not acted on while a firmware
+  message exchange is in progress; ele_msg_rcv() defers it until the
+  response path completes and the FW/kernel protocol state is synchronized
+  again, so Linux and firmware never diverge on message ownership. Only
+  after synchronization is the interrupted wait surfaced to userspace via
+  -ERESTARTSYS. The command/response ABI must treat this as an interrupted
+  operation after synchronization; it is not permission for the kernel
+  driver to re-send the command, so the enclave never receives it twice.
+  Clarified with an expanded code comment.
+
+4/7: Sashiko AI issues resolved in this patch; no functional change
+     required beyond a cosmetic whitespace cleanup:
+
+- [High][NEW] Accessing se_clbk_hdl->dev_ctx->devname outside
+  clbk_rx_lock in the cmd_tag path (UAF / NULL deref):
+  Already fixed. In se_if_rx_callback(), the cmd_tag path holds
+  clbk_rx_lock across the dev_dbg() that reads dev_ctx->devname and only
+  proceeds after the explicit "!se_clbk_hdl->dev_ctx" check. The devname
+  used by the post-unlock dev_err() is cached into a local (devname)
+  while the lock is still held, so no dev_ctx dereference happens outside
+  the lock.
+- [High] Incorrect devm registration order frees priv while the RX
+  mailbox channel is still active (NULL deref):
+  Already fixed in drivers/firmware/imx/se_ctrl.c. se_if_probe()
+  registers devm_add_action_or_reset(dev, se_if_probe_cleanup, pdev)
+  before requesting the tx/rx mailbox channels, so LIFO teardown frees
+  the channels (se_if_probe_cleanup) before priv is released.
+- [High] Memory leak of priv when early probe steps fail:
+  Already fixed by the same change. priv is allocated, stored via
+  dev_set_drvdata(), and its release is tied to se_if_probe_cleanup(),
+  which is registered early; any subsequent probe failure unwinds through
+  the devres action that frees priv.
+- [High] Unprotected read of rx_msg_sz creates a TOCTOU race leading to
+  response truncation on late interrupts:
+  Already fixed. The rsp_tag path in se_if_rx_callback() reads
+  exp_rx_msg_sz = se_clbk_hdl->rx_msg_sz only after acquiring
+  clbk_rx_lock (and after confirming rx_msg != NULL), so the size cannot
+  change between the check and the memcpy().
+
+5/7:
+[High] Overwriting a successful firmware transaction with -ERESTARTSYS
+  leads to double execution with zeroed DMA buffers.
+  Fixed. se_ioctl_cmd_snd_rcv_rsp_handler() now converts the deferred
+  -ERESTARTSYS returned by ele_msg_send_rcv() into -EINTR before returning
+  to userspace. -EINTR is not auto-restarted by the VFS, so the ioctl is
+  not silently re-run against the already cleaned-up (zeroed) shared input
+  buffers. Userspace decides whether to reissue the command.
+
+[High] Unbind deadlock/hang caused by incorrect ordering of complete_all()
+  and fops_lock.
+  Fixed. In se_if_probe_cleanup(), complete_all() on the response waiter is
+  now issued before the dev_ctx_list cleanup loop. The blocked ioctl waiter
+  sleeps in ele_msg_rcv() while holding its dev_ctx->fops_lock, and
+  cleanup_dev_ctx() takes the same lock; waking the waiter first lets it
+  drop fops_lock so teardown can proceed instead of hanging.
+
+[High] NULL pointer dereference in se_if_rx_callback().
+  Fixed in 3/7. se_if_rx_callback() now checks priv (dev_get_drvdata()) for
+  NULL before use. A late mailbox interrupt can be delivered during tear-
+  down; the callback returns early instead of dereferencing a cleared
+  drvdata.
+
+[High] Out-of-bounds read/write in se_if_rx_callback() by trusting the
+  unvalidated firmware payload length.
+  Fixed in 3/7. Both the cmd_tag and rsp_tag paths now clamp the memcpy()
+  length to min(firmware-declared size, destination buffer capacity). The
+  copy never trusts the firmware size beyond what fits in either buffer; a
+  size mismatch is still reported after the lock is dropped.
+
+[High] Premature freeing of the gen_pool DMA buffer on timeout.
+  Fixed. ele_get_info_cleanup() now guards the gen_pool_free() path with
+  se_is_fw_busy_ctx(), mirroring the existing guard on the shared-memory
+  path. If the probe-time transaction timed out and firmware may still
+  write the SRAM buffer, the buffer is not returned to the pool (it is
+  reclaimed with the device on unbind) to avoid pool corruption.
+
+[Medium] Lockdep false positive "possible recursive locking detected" on
+  fops_lock.
+  Fixed. The internal priv_dev_ctx fops_lock is given a distinct lockdep
+  class via lockdep_set_class(). Taking it while an open context's
+  fops_lock is held (e.g. a firmware load triggered from an ioctl) is
+  valid hierarchical locking and is no longer misreported.
+
+[Medium] Early device exposure to userspace before probe completes.
+  Fixed. misc_register() is deferred out of init_misc_device_context() into
+  se_if_misc_register(), called at the very end of se_if_probe() after SoC
+  info is fetched and the encrypted-IMEM buffer is allocated. The dev_ctx
+  and its shared memory are still set up early because the internal
+  probe-time ELE_GET_INFO transaction uses priv->priv_dev_ctx directly. A
+  new se_if_open_gate.registered flag ensures se_if_probe_cleanup() only
+  calls misc_deregister() when registration actually succeeded.
+
+[Critical] Arbitrary physical memory read/write (Confused Deputy) via
+  SE_IOCTL_CMD_SEND_RCV_RSP.
+  By design, no code change. The SE messaging-unit protocol legitimately
+  carries firmware-owned physical DMA addresses inside command payloads, so
+  the kernel cannot treat those addresses as the trust boundary. The node is
+  root-only (0600); the ELE firmware and the SoC memory-domain/xRDC hardware
+  enforce which physical regions the enclave may access, and
+  se_chk_tx_msg_hdr() already restricts the permitted command set (power,
+  reset, BBSM, FW re-init, RNG init, CAAM release and SE internal memory
+  management are all blocked from user-space).
+
+[High] Use-After-Free of gate and miscdev due to a race between unbind and
+  VFS open.
+  Already safe, documented as defense-in-depth; no code change. misc_open()
+  invokes file->f_op->open() while holding misc_mtx, and misc_deregister()
+  acquires the same misc_mtx before removing the node, so open() is fully
+  serialized against deregistration. The gate is additionally kref-counted
+  and se_if_fops_open() takes its reference via kref_get_unless_zero(), so a
+  VFS-resolved but not-yet-run open() can never observe a freed gate or
+  miscdev.
+
+[Low] Implicit compiler padding in UAPI struct se_ioctl_cmd_snd_rcv_rsp_info.
+  WONTFIX, no code change. include/uapi/linux/se_ioctl.h is a stable ABI that
+  has shipped to NXP customers for around two years; the member order cannot
+  be changed without breaking existing user-space. The 4-byte hole after
+  tx_buf_sz is part of the established, frozen layout. The struct uses only
+  fixed-width __u64/__u32 members, and the ARM AAPCS aligns 64-bit types to
+  8 bytes on both the 32-bit (AArch32) and 64-bit (AArch64) ABIs this i.MX
+  driver targets, so the layout (members at offsets 0/8/16/24, sizeof 32) is
+  identical for 32-bit and 64-bit user-space and needs no compat-ioctl
+  translation.
+
+Reference:
+- Link to v29: https://lore.kernel.org/r/20260721-imx-se-if-v29-0-04a362f4fcca@nxp.com
+
+Changes in v29:
+5/7:
+- Fix ele_get_info() mem_pool path by initializing get_info_len before
+  gen_pool_dma_alloc() and checking allocation failure before using the
+  returned buffer.
+
+- Add a probe-time comment for ELE_GET_INFO timeout cleanup. The SRAM buffer is
+  used only during probe, and a timeout means the secure-enclave interface is
+  considered unsynchronized and probe fails.
+
+- Serialize internal priv_dev_ctx shared-memory allocation by taking
+  priv_dev_ctx->fops_lock in ele_get_info() and load_firmware().
+
+- Move load_firmware() to use priv_dev_ctx shared memory instead of a temporary
+  dma_alloc_coherent() buffer, and skip shared-memory cleanup while priv_dev_ctx
+  is marked fw_busy.
+
+- Fix init_misc_device_context() error handling so gate allocation failure sets
+  ret = -ENOMEM and releases previously allocated shared memory before freeing
+  the device context.
+
+- Release priv_dev_ctx resources through cleanup_dev_ctx() before freeing
+  priv_dev_ctx during priv release.
+
+- Guard cleanup_se_shared_mem() against being called before coherent shared
+  memory was allocated.
+
+- Fix se_if_fops_read() initialization by assigning priv before first use.
+
+- Avoid modifying command-receiver rx_msg_sz when read() is called from a
+  non-command-receiver context.
+
+- Rework se_if_fops_read() to reacquire fops_lock after ele_msg_rcv() returns
+  before accessing shared-memory lists or command-receiver state.
+
+- Snapshot the command-receiver rx_msg under clbk_rx_lock and hold modify_lock
+  while copying it to userspace, preventing concurrent command-receiver teardown
+  from freeing the buffer.
+
+- Clear command-receiver rx_msg_sz under clbk_rx_lock only after consuming the
+  message.
+
+- Keep shared-memory cleanup in the read path under fops_lock.
+
+- Mark priv_dev_ctx cleanup_done under fops_lock during probe cleanup so open()
+
+- Register se_if_probe_cleanup after mailbox channel requests so devres LIFO
+  ordering runs misc-device cleanup before mailbox channel release.
+
+- Initialize firmware-load state before exposing the misc device to userspace.
+
+4/7:
+- priv->waiting_rsp_clbk_hdl.dev_ctx, priv->waiting_rsp_clbk_hdl.rx_msg,
+  priv->waiting_rsp_clbk_hdl.rx_msg_sz will be updated after
+  acquiring the clbk_rx_lock.
+- Create a local variable "const char *devname" and assigned its value
+   under the clbk_rx_lock in se_if_rx_callback().
+
+3/7:
+- Remove file descriptor, shared-memory setup, and userspace send/receive
+  working from the initial Kconfig help text, because the misc-device UAPIs
+  added later in the series.
+
+- Replace unaligned u32 pointer access in GET_SERIAL_NUM_FROM_UID() with
+  get_unaligned_le32(), avoiding undefined behavior when parsing UID data
+  from byte-aligned buffers.
+
+- Add SE_RCV_MSG_DEFAULT_TIMEOUT_MS and set the default response timeout to
+  3000 ms.
+
+- Replace MAX_SCHEDULE_TIMEOUT in ele_msg_rcv() with a bounded default response
+  timeout using SE_RCV_MS_DEFAULT_TIMEOUT_MS.
+
+- Start handling mailbox messages with IS_ERR_OR_NULL() in se_if_rx_callback()
+  before dereferencing msg.
+
+- Fix SoC revision string formatting to print major.minor instead of
+  mijor.major.
+
+Fixes for issues reported by Sashiko AI bot on 5/7:
+- Move se_if_probe_cleanup devres registration right after mailbox channel
+  requests.
+
+- Split the changes into two so that:
+  - Initialize load_fw_lock and firmware-load state before the misc device can be
+    registered or exposed to userspace in 5/7. Setting load_fw->se_fw_img_nm and
+    load_fw->is_fw_tobe_loaded before possible userspace access to the misc device.
+
+  - Keep IMEM management independent from runtime firmware loading metadata.
+    Add imem_state_mgmt to struct se_soc_info to separate IMEM save/restore
+    buffer management from firmware image availability. Enable IMEM state
+    management explicitly for i.MX8ULP by setting imem_state_mgmt = true.
+    Allocate encrypted IMEM buffer based on imem_state_mgmt instead of tying it
+    to prim_fw_nm_in_rfs.
+
+Reference:
+- Link to v28: https://lore.kernel.org/r/20260717-imx-se-if-v28-0-0a9659c7e69d@nxp.com
+
+Changes in v28:
+
+5/7: Fix 10 of the 13 issues reported by Sashiko AI review
+
+- [High] se_ctrl.c: se_if_fops_read(): reacquire fops_lock after
+ele_msg_rcv() returns before accessing pending lists or rx_msg.
+fops_lock is dropped before the blocking wait; a concurrent close could
+free the DMA buffers and pending lists while the read is blocked, leading
+to UAF and list corruption. Re-check cleanup_done under fops_lock before
+touching any shared state.
+
+- [High] ele_common.c: se_val_rsp_hdr_n_status(): guard msg->data[0] read
+with if (header->size > SE_MU_HDR_WORD_SZ). A header-only response (1
+word) is valid; the unconditional read caused a KASAN slab-out-of-bounds.
+
+- [High] ele_common.h: reduce SE_RCV_MSG_DEFAULT_TIMEOUT from 5000 s to
+3000 ms. After a signal interrupts the interruptible wait, ele_msg_rcv()
+switches to TASK_UNINTERRUPTIBLE. A 5000-second uninterruptible sleep
+reliably triggers the hung-task watchdog. 3000 ms is well below the
+default 120 s threshold.
+
+- [High] se_ctrl.c: cleanup_se_shared_mem(): call
+se_dev_ctx_shared_mem_cleanup() to free se_buf_desc list entries before
+releasing the DMA backing memory, fixing a leak when the fd is closed
+with pending I/O buffers.
+
+- [High] se_ctrl.c: se_dev_ctx_shared_mem_cleanup(): skip memset of DMA
+buffers when the context is the fw_busy one (command timed out). The
+firmware may still be actively accessing the buffer; zeroing it would
+corrupt the in-flight DMA transaction.
+
+- [High] se_ctrl.c: cleanup_se_shared_mem(): guard against calling
+dma_free_coherent() with a NULL ptr (probe failure before DMA alloc
+succeeded).
+
+- [High] The command-receiver rx_msg_sz update is now done under
+cmd_receiver_clbk_hdl.clbk_rx_lock. The read path also validates
+cmd_receiver_clbk_hdl.dev_ctx, rx_msg, and rx_msg_sz under the same callback
+lock before consuming the message.
+
+- [High] se_ctrl.c: se_if_probe_cleanup(): call se_clear_fw_busy() before
+cancel_work_sync(). A late mailbox interrupt arriving between the two
+calls would see fw_busy still set and schedule work on the already-
+cancelled fw_busy_work, causing a use-after-free.
+
+- [Medium] se_ctrl.c: cleanup_dev_ctx(): remove goto from inside a
+scoped_guard() block. Use a local already_done flag instead to keep the
+cleanup path flat and avoid confusing ownership semantics.
+
+- [Misc] se_ctrl.c: se_ctrl.h: add SE_MU_HDR_WORD_SZ = 1 constant.
+Make se_is_fw_busy_ctx(), se_dev_ctx_shared_mem_cleanup() and
+get_shared_mem_slot() non-static so they can be called from ele_common.c
+and future callers.
+
+4/7: Fix init_misc_device_context() to return 0 on the success path.
+
+- The helper initialized ret to -ENOMEM and returned ret even after
+successfully allocating and initializing priv_dev_ctx. This caused
+se_if_probe() to treat a successful init_misc_device_context() call as a
+failure and abort probe. Return 0 after assigning *new_dev_ctx.
+
+- Avoid a possible NULL pointer dereference in se_if_rx_callback() after
+waking the synchronous response waiter. The response callback used
+se_clbk_hdl->dev_ctx->devname after calling complete() and dropping
+clbk_rx_lock. The awakened ele_msg_send_rcv() cleanup path can clear
+waiting_rsp_clbk_hdl.dev_ctx under the same lock before the size-mismatch
+dev_err() is emitted. Snapshot devname while clbk_rx_lock is still held and
+use the local copy after dropping the lock.
+
+3/7: Fix several issues reported by Sashiko in the ELE driver:
+
+- Add cleanup helper for ele_get_info() and remove the goto-based cleanup path
+  that mixed manual cleanup with scoped __free(kfree) objects.
+
+- Document the mailbox TX buffer lifetime assumption in ele_msg_send().
+  The i.MX MU mailbox controller copies message payload words into MU
+  registers synchronously and does not retain the caller-provided tx_msg
+  pointer after mbox_send_message() returns.
+
+- Replace se_get_msg_chksum() with se_update_msg_chksum(), which validates
+  the message pointer and size, calculates the checksum, and updates the
+  checksum word directly.
+
+- Remove the stale ret check after se_fill_cmd_msg_hdr(), since
+  se_fill_cmd_msg_hdr() now returns void.
+
+- Validate the encrypted IMEM export size returned by firmware against
+  ELE_IMEM_SIZE before storing it in imem->size for later resume-time import.
+
+- Add a mutex to serialize population of common SoC-level information stored
+  in var_se_info.
+
+- Add NULL checks for devm_kasprintf() results before passing revision and
+  serial-number strings to soc_device_register().
+
+- Set a 32-bit DMA/coherent mask to make the ELE 32-bit firmware address
+  constraint explicit, while still relying on the reserved memory region for
+  ELE-accessible DMA memory.
+
+- Keep mutable firmware-load and IMEM state per device in struct se_if_priv,
+  while var_se_info only caches immutable SoC-level revision data.
+
+- Keep the SoC device unregister devres action and devm-managed IMEM coherent
+  memory handling from v27.
+
+Reference:
+- Link to v27: https://lore.kernel.org/r/20260715-imx-se-if-v27-0-bb7c45952f06@nxp.com
+
+Changes in v27:
+
+Address Sashiko findings around:
+Changes in v27:
+
+Address Sashiko findings around:
+- Encrypted IMEM DMA address handling, response waiter cleanup,
+  service-swap address validation, SoC device unregister,
+  devm-managed IMEM cleanup, timeout classification, signal
+  handling, firmware-load serialization, UAPI compatibility, and
+  timed-out firmware transaction cleanup.
+
+- Use dma_addr_t for ELE firmware authentication and IMEM service-swap
+  buffers, store the encrypted IMEM DMA handle in the IMEM state, and pass
+  imem->daddr to IMEM save/restore.
+
+- Reject ELE service-swap addresses whose upper 32 bits are set before
+  placing the address into the 32-bit firmware message field.
+
+- Clear waiting_rsp_clbk_hdl state under clbk_rx_lock on all send/receive
+  exit paths, including ele_msg_send() failure.
+
+- Keep mailbox TX completion handled by the mailbox controller/core with
+  knows_txdone set to false. The i.MX MU controller copies the message
+  payload into hardware registers synchronously.
+
+- Move mutable firmware-load and IMEM state to per-device storage in
+  struct se_if_priv.
+
+- Register a devres cleanup action to unregister the SoC device returned by
+  soc_device_register().
+
+- Remove manual freeing of the devm-managed encrypted IMEM coherent buffer
+  from probe cleanup.
+
+- Fix response-wait timeout classification by basing timeout handling on
+  the callback handle being waited on, not on command-receiver file context
+  identity.
+
+- Use fixed-width UAPI fields and u64_to_user_ptr() to support 32-bit
+  userspace compatibility.
+
+- Add compat_ioctl support for the misc-device UAPI.
+
+- Bound userspace-provided message sizes before memdup_user().
+
+- Track timed-out firmware transactions with the corresponding dev_ctx so
+  coherent DMA memory is not freed while firmware may still access it.
+
+- Serialize firmware loading state with load_fw_lock to avoid concurrent
+  firmware authentication requests.
+
+- Fix get_se_soc_id() to use the correct match-data type.
+
+- Fix command-receiver lifecycle handling by clearing command-receiver
+  callback state under clbk_rx_lock and freeing rx_msg only after dropping
+  the lock.
+
+- Avoid unbind/remove deadlock by not holding dev_ctx->fops_lock across the
+  blocking command-receiver read wait.
+
+- Initialize dev_ctx reference counting with kref_init().
+
+- Add ELE FW API command filtering through ele_uapi_allowed_fw_cmd().
+
+- Move FW API command IDs and FW API-specific state transitions into
+  ele_fw_api.c/ele_fw_api.h.
+
+- Allow command-receiver registration/unregistration through the supported
+  storage open/close FW API flow.
+
+- Refactor shared-memory slot allocation and rollback in
+  se_ioctl_setup_iobuf_handler().
+
+- Fix hsm0 device tree indentation reported by Sashiko.
+
+- Address Lothar Waßmann's review comments:
+  - make se_fill_cmd_msg_hdr() return void and remove dead error checks;
+  - remove the trailing comma after the final empty of_device_id sentinel.
+
+- Validate the series with checkpatch, sparse, W=1/W=2 builds, coccicheck,
+  dt_binding_check for fsl,imx-se.yaml, CHECK_DTBS=y for imx8ulp-evk.dtb,
+  and headers_install for include/uapi/linux/se_ioctl.h.
+
+Reference:
+- Link to v26: https://lore.kernel.org/r/20260629-imx-se-if-v26-0-146446285744@nxp.com
+
+Changes in v26:
+- Folded kernel test robot and Sashiko-bot fixes into the series.
+- Added MAILBOX dependency for COMPILE_TEST builds.
+- Hardened response waiter timeout handling and late-response processing.
+- Serialized command receiver registration and callback-visible receiver state.
+- Added iobuf round_up() overflow detection.
+- Rolled back iobuf shared-memory reservation on setup failures.
+- Bounded userspace-controlled response buffer size.
+- Preserved ioctl operation errors across cleanup.
+- Added explicit priv/dev_ctx lifetime handling and teardown/open serialization.
+
+Testing:
+- checkpatch.pl --strict: no warnings
+- sparse: no warnings
+- coccicheck on drivers/firmware/imx/: no driver-specific warnings
+
+Reference:
+- Link to v25: https://lore.kernel.org/r/20260122-imx-se-if-v25-0-5c3e3e3b69a8@nxp.com
+
+Changes in v25:
+5/7
+- removes kernel bot reported warning errors.
+
+3/7
+- fix checkpatch --strict error.
+
+1/2, 2/7, 4/7, 6/7 & 7/7
+- No changes
+
+Reference:
+- Link to v24: https://lore.kernel.org/r/20260121-imx-se-if-v24-0-c5222df51cc2@nxp.com
+
+Changes in v24:
+5/7 & 3/7
+- removes kernel bot reported warning errors.
+
+1/2, 2/7, 4/7, 6/7 & 7/7
+- No changes
+
+Reference:
+- Link to v23: https://lore.kernel.org/r/20251219-imx-se-if-v23-0-5c6773d00318@nxp.com
+
+Changes in v23:
+5/7
+- removed un-neccessary 'kfree' from the func se_ioctl_cmd_snd_rcv_rsp_handler().
+
+1/2, 2/7, 3/7, 4/7, 6/7 & 7/7
+- No changes
+
+Reference:
+- Link to v22: https://lore.kernel.org/r/20251218-imx-se-if-v22-0-07418c872509@nxp.com
+
+Changes in v22:
+3/7 & 5/7
+- reverted to previous change of using "__free(kfree)", by declare-and-initialize __free() vars next to their allocations.
+
+1/7
+- rename the se_fw.c to se_ctrl.c
+
+2/7, 4/7, 5/7 & 7/7
+- No changes.
+
+Reference:
+- Link to v21: https://lore.kernel.org/r/20251212-imx-se-if-v21-0-ee7d6052d848@nxp.com
+
+Changes in v21:
+3/7
+- smatch warning fixes.
+- Added "COMPILE_TEST" into "depends on IMX_MBOX && ARCH_MXC && ARM64"
+- removed "__free(kfree)" & added kfree();
+
+5/7
+- removed "__free(kfree)" & added kfree();
+
+1/2, 2/7, 4/7, & 7/7
+- No changes
+
+Reference:
+- Link to v20: https://lore.kernel.org/r/20251203-imx-se-if-v20-0-a04a25c4255f@nxp.com
+
+Changes in v20:
+5/7:
+- adds a func "se_chk_tx_msg_hdr", to check the validity of the in-coming message from usersapce.
+
+1/2, 2/7, 3/7, 4/7, 6/7 & 7/7
+- No changes
+
+Reference:
+- Link to v19: https://lore.kernel.org/r/20250927-imx-se-if-v19-0-d1e7e960c118@nxp.com
+
+Changes in v19:
+
+1/7
+- Added 9 lines to the Introduction from line 73-82.
+
+3/7
+-  Update the commit message for " For i.MX9x SoC(s) there is at least one
+dedicated ELE MU(s) for each world - Linux(one or more) and OP-TEE OS (one or
+more), that needs to be shared between them.."
+
+Reference:
+- Link to v18: https://lore.kernel.org/r/20250619-imx-se-if-v18-0-c98391ba446d@nxp.com
+
+Changes in v18:
+
+1/7
+- Wrap both diagrams above in literal code block by using double-colon
+
+3/7 & 5/7
+- Collected Frank's R-b tag.
+
+2/7, 4/7, 6/7 & 7/7
+- No changes
+
+Reference:
+- Link to v17: https://lore.kernel.org/r/20250426-imx-se-if-v17-0-0c85155a50d1@nxp.com
+
+Changes in v17:
+- Changes to 3/7 & 5/7: to wrap code text at 80 character whereever possible.
+
+Reference:
+- Link to v16: https://lore.kernel.org/r/20250409-imx-se-if-v16-0-5394e5f3417e@nxp.com
+
+Changes in v16:
+- commit 3/7 and 4/7 are moved to end commits making them as 6/7 and 7/7 respectively.
+- No change in 1/7 & 2/7.
+
+7/7
+- Collected Frank's R-b tag.
+
+6/7
+- commit message is updated to wrap at 75 characters.
+
+5/7
+- func add_b_desc_to_pending_list, removed the initialization of b_desc to
+  NULL.
+- variable timeout in func ele_msg_rcv(), is renamed to timeout_ms.
+- struct se_if_priv, member variable se_rcv_msg_timeout, is renamed to
+  se_rcv_msg_timeout_ms.
+- in func load_firmware, move the label exit after dma_free_coherent.
+
+4/7
+- commit message is updated to wrap at 75 characters.
+
+3/7
+- ele_debug_dump, updated the assignment of keep_logging.
+- ele_fw_authenticate function definition is updated to take two address
+  as arguments.
+
+Reference:
+- Link to v15: https://lore.kernel.org/r/20250407-imx-se-if-v15-0-e3382cecda01@nxp.com
+
+Changes in v15:
+- Patch 3/6 is split into two:
+  - 3/7: arm64: dts: imx8ulp-evk: add reserved memory property
+  - 4/7: arm64: dts: imx8ulp: add nxp secure enclave firmware
+- No change in 1/7 & 2/7.
+
+7/7
+- removed the se_intance_id structure member variable.
+- replace variable name from wait to timeout.
+- used 'goto' to follow the common exit path calling "release_firmware(fw);" in case of error path.
+- removed TBD string.
+- Used ARRAY_SIZE(pending_lists).
+- moved init_device_context after init_misc_device_context.
+- defined err as long to avoid force convert in func
+- added se_rcv_msg_timeout to priv, to control probe/suspend/resume per interface.
+
+6/7
+- removed the se_intance_id structure member variable.
+- Added dev_ctx to the structure se_clbk_handle, too.
+- Collected Frank's R-b tag.
+
+5/7
+- removed the se_intance_id structure member variable.
+- since added se_if_probe_cleanup to devm, se_if_remove() is redundant. hence removed it.
+- rename se_add_msg_chksum to se_get_msg_chksum
+- added check if msg-size is 4 byte aligned.
+- Fixed multiline comments.
+- ele_debug_dump api is updated as part of comment disposition like single setting of flag "keep_logging" & adding if (ret).
+- moved dev_err to dev_dbg, for imem save/restore functions.
+- moved func get_se_if_name, from 7/7 to here.
+
+3/7
+- Updated the commit message.
+- split the current patch into two:
+  -- 3/7 for board dts, and
+  -- 4/7 for chip dts
+
+Reference:
+- Link to v14: https://lore.kernel.org/r/20250327-imx-se-if-v14-0-2219448932e4@nxp.com
+
+Changes in v14:
+
+- Patch 5/5 is split into two:
+  - firmware: drivers: imx: adds miscdev
+  - Introduce dev-ctx dedicated to private.
+    -- Base patch before enabling misc-device context, to have the send-receive path, based on device context.
+- No change in 1/6 & 2/6.
+- Copied change logs from individual commits.
+
+6/6
+- moved definition of func se_load_firmware, from 4/6 patch to this patch.
+- split init_device_context to init_misc_device_context.
+- Different value of se_rcv_msg_timeout is required to be set. Receiving the response of 4K RSA operation can to take upto 3 minutes.
+  This long value cannot be set during Linux: boot-up and suspend-resume.
+  Hence, it will be set to default small-value during Linux: boot-up and suspend-resume.
+- func se_dev_ctx_cpy_out_data(), in either case: do_cpy true or false, the clean-up needs to be done and it is implemented like wise.
+  Once do_cpy is false, no need to continue copy to user buffer. But continue to do clean-up. hence cannot return.
+  And every dev-ctx operation is done after taking the lock. Hence, two operations with same dev-ctx is not possible in parallel.
+- func "init_device_context", for 0th misc dev_ctx, which is created at the time of probe, the device memory management is required. hence there is a difference.
+- func "init_device_context", dev_er is replaced with return dev_err_probe.
+- func "init_device_context", devm_add_action is replaced by devm_add_action_reset.
+- removed type-cast from func se_ioctl_get_se_soc_info_handler().
+- used scoped_cond_guard(mutex, _intr, return -EBUSY, &<mutex_lock>)
+- combined dev_err & dev_dbg to one dev_err in se_if_fops_read().
+- removed the structure member "se_shared_mem_mgmt->secure_mem".
+
+4/6
+- trimmed the ele_fetch_soc_info.
+- removed the function ptr "se_info->se_fetch_soc_info" and replaced with ele_fetch_soc_info.
+- moved definition of func se_load_firmware, to 6/6 patch.
+- Different SoC, different ways to fetch soc_info. Generic function declaration for ele_fetch_soc_info() is needed. Hence wrapping ele_get_info() in it.
+- Updated Kconfig help text for assertive tone.
+- func ele_debug_dump is updated, to remove constructing the format string.
+- removed the macro usage for SOC_ID_MASK.
+- used low case hex number.
+- Condition will never occur, where msg_len satisfy the following condition "msg_len % 4 != 0". Err msg is added if it occurs.
+- Function description is added to se_add_msg_crc.
+- timeout is added to function ele_msg_rcv, in 5/5 patch.
+- local variable "header" is initialized with "tx_msg" and replaced "return err" with "return tx_msg_sz" in func ele_msg_send().
+- replace function name from "exception_for_size" to "check_hdr_exception_for_sz"
+- replaced "return ret > 0 ? 0 : -1;" with "return ret > 0 ? 0 : ret;" in func "se_save_imem_state".
+- func "se_restore_imem_state", to return if the condition is false to proceed.
+- removed casting by (void *).
+- removed devm_kasprintf and done direct allocatiion for attr->soc_id = "i.MX8ULP" & attr->soc_id = "i.MX8ULP", & attr->family.
+- Followed Reverse christmas tree order, whereever missing.
+- There is no return if ele_fw_authenticate fails. Execution flow continue forward and execute the fucn dma_free_coherent().
+- The loop is not for retry. The loop is needed to load secondary fw followed by loading primary fw, first. This is the case when ELE also got reset.
+- dev_err_probe is corrected in func "se_if_request_channel".
+
+3/6
+-
+
+Reference:
+- Link to v13: https://lore.kernel.org/r/20250311-imx-se-if-v13-0-9cc6d8fd6d1c@nxp.com
+
+Changes in v13:
+
+5/5
+- Updated the commit message for imperative mood.
+- Remove the usage of macros- NODE_NAME, GET_ASCII_TO_U8, GET_IDX_FROM_DEV_NODE_NAME.
+- Clean-up the return path by replacing "ret = -<err>; return ret;" with "return -<err>;"
+- Clean-up the return path by replacing "ret = -<err>; goto exit;" with "return -<err>;"
+- Removed goto statements from the entire driver, where there is no common code at function's exit.
+- Fixes the check-patch erros reported with flag "--strict"
+- Replaced devm_add_action, with devm_add_action_or_reset
+- Removed the un-necesary and obvious code comments.
+- Removed dev_probe_err at the exit of function se_if_probe().
+
+4/5
+- Clean-up the return path by replacing "ret = -<err>; return ret;" with "return -<err>;"
+- Clean-up the return path by replacing "ret = -<err>; goto exit;" with "return -<err>;"
+- Removed goto statements from the entire driver, where there is no common code at function's exit.
+- fixes the check-patch erros reported with flag "--strict"
+- removed the un-necesary and obvious code comments.
+- variable received msg timeout to be different at boot-up & suspend/resume and send/recv ioctlis.
+
+3/5
+- compatible string is modified from "fsl,imx8ulp-se" to "fsl,imx8ulp-se-ele-hsm".
+- updated the alias name.
+
+2/5
+- compatible string is modified from "fsl,imx8ulp-se" to "fsl,imx8ulp-se-ele-hsm".
+- compatible string is modified from "fsl,imx93-se" to "fsl,imx93-se-ele-hsm".
+- compatible string is modified from "fsl,imx95-se" to "fsl,imx95-se-ele-hsm".
+- Mis-understood the +1 from Conor. Hence dropped the Reviewed-by tag.
+- Collected Rob's R-b tag on v7 (https://lore.kernel.org/all/172589152997.4184616.5889493628960272898.robh@kernel.org/)
+
+1/5
+- No change
+
+Reference:
+- Link to v12: https://lore.kernel.org/r/20250120-imx-se-if-v12-0-c5ec9754570c@nxp.com
+
+Changes in v12:
+
+5/5
+- increased the wait-timeout.
+
+4/5
+- rename flag "handle_susp_resm" to "imem_mgmt"
+- moved the buffer allocation ot load_fw->imem.buf, to se_probe_if.
+- setting imem state at initialization.
+
+3/5
+- No change
+
+2/5
+- No change
+
+1/5
+- No change
+
+Reference:
+- Link to v11: https://lore.kernel.org/r/20241220-imx-se-if-v11-0-0c7e65d7ae7b@nxp.com
+
+Changes in v11:
+
+5/5
+- devname is constructed by concatinating get_se_if_name(se_if_id) & se_if_instance_id.
+- ele_rcv_msg(), is updated to add the wait_interruptible_timeout for the non-NVM-Daemon message exchanges, such that in case of no response from FW,
+  Linux donot hangs.
+- added a new helper function get_se_if_name(), to return the secure-enclave interface owner's name string.
+- added a new helper function get_se_soc_id(), to return the secure-enclave's SoC id.
+
+4/5
+- moved the se_if_node_info member "soc_register", to the struct "se_if_node_info_list"; as soc registration done once, not per interface.
+- moved the se_if_node_info member "se_fetch_soc_info", to the struct "se_if_node_info_list"; as soc info fetching is done once, not per interface.
+- Added two member variable se_if_id and se_if_instance_id to struct se_if_defines.
+- removed the member "se_name" from struct "se_if_node_info". Rather, it will constructed by concatinating get_se_if_name(se_if_id) & se_if_instance_id.
+- moved the static global variable "se_version", to the newly created structure "struct se_var_info".
+- moved the member "struct se_fw_load_info load_fw" of "se_if_node_info_list", to the newly created structure "struct se_var_info".
+- Replaced RUNTIME_PM_OPS with SET_SYSTEM_SLEEP_PM_OPS, in power-managment ops.
+
+3/5
+- No change
+
+2/5
+- No change
+
+1/5
+- No change
+
+Reference:
+- Link to v10: https://lore.kernel.org/r/20241104-imx-se-if-v10-0-bf06083cc97f@nxp.com
+
+v10: firmware: imx: driver for NXP secure-enclave
+
+Changes in v10:
+5/5
+- replaced the u8, u16, u32, u64, with __u8, __u16, __u32, __u64 in
+  'include/uapi/linux/se_ioctl.h'.
+
+4/5
+- No change
+
+3/5
+- No change
+
+2/5
+- No change
+
+1/5
+- No change
+
+Reference:
+- Link to v9: https://lore.kernel.org/r/20241016-imx-se-if-v9-0-fd8fa0c04eab@nxp.com
+
+Changes in v9:
+
+4/5
+- change se_if_remove function signature, required after rebase to v6.12-rc1.
+- move the info->macros to a structure "struct se_if_defines if_defs".
+- Removed "info" from "struct se_if_defines if_defs".
+- Moved "mem_pool" from "struct se_if_defines if_defs" to "priv".
+- Fetching "info" using container-of.
+
+5/5
+- Fetching "info" using container-of.
+- Fixed issue reported by sparse.
+
+Reference:
+- Link to v8: https://lore.kernel.org/r/20241015-imx-se-if-v8-0-915438e267d3@nxp.com
+
+Changes in v8:
+
+5/5
+- Remove the check for SE_IF_CTX_OPENED.
+- replaced dev_ctx->priv-dev, priv->dev, whereever possible.
+- func "if_misc_deregister" moved before func "init_device_context".
+- func "init_device_context" before func "se_ioctl_cmd_snd_rcv_rsp_handler".
+- func "se_if_fops_write" and "se_if_fops_read", are moved after func "se_ioctl_get_mu_info".
+- non static functions "se_dev_ctx_cpy_out_data, se_dev_ctx_shared_mem_cleanup & init_device_context" are moved static and local scope.
+- Removed back & forth between the two structs "struct se_if_device_ctx *dev_ctx" and "struct se_shared_mem_mgmt_info *se_shared_mem_mgmt"
+- removed the NULL check for bdesc.
+- fops_open, is corrected for acquiring the fops_lock.
+- Fops_close, mutex unlock is removed. Infact check for waiting_rsp_clbk_hdl.dev_ctx, is removed.
+- sema_init(&dev_ctx->fops_lock, 1);, replaced with Mutex.
+- structure member se_notify, is removed.
+
+4/5
+- removed initializing err to zero in func ele_fetch_soc_info(),
+- replaced 'return 0', with 'goto exit', if the condition (!priv->mem_pool) is true.
+- replaced "struct *dev" with "struct se_if_priv *priv", in base_message API(s) and others.
+- Created a separate structure "struct se_if_defines" to maintain interface's fixed values like cmd_tag, rsp_tag, success_tag etc.
+- removed the macros "WORD_SZ", "SOC_VER_MASK", "DEFAULT_IMX_SOC_VER", "RESERVED_DMA_POOL".
+- Added handling for "ctrl+c", by postponing the interrupt, till the response to the "command in flight" is received.
+- Removed the mutext lock "se_if_lock".
+- furnction prototype for "se_save_imem_state" and "se_restore_imem_state", is changed to pass "imem" by reference.
+- Added a new structure "struct se_fw_load_info", dedicated to contain FW loading relevant info. It is a member of struct info_list.
+- split "imem_mgmt_file_in_rfs" into two "prim_fw_nm_in_rfs" and "seco_fw_nm_in_rfs", to be part of "struct se_fw_load_info".
+- moved the function "se_load_firmware" prior to func "if_mbox_free_channel".
+- function "se_load_firmware" is updated to use "request_firmware", instead of "request_firmware_no_wait".
+- function "se_load_firmware" is updated to load "primary" fw image, if the imem_state is not BAD. Then load the "secondary FW" image.
+- Added a new mutex_lock in the function "se_load_firmware", for ensuring FW loading done once, when there are multiple application are in play.
+- instead of "wait_queue_head_t wq", used "sruct completion".
+- add devm_add_action with action as se_if_probe_cleanup.
+
+Reference:
+- Link to v7: https://lore.kernel.org/r/20240904-imx-se-if-v7-0-5afd2ab74264@nxp.com
+
+Changes in v7:
+
+5/5
+- struct se_clbk_handle, is added with a member struct se_if_device_ctx *dev_ctx.
+- func call to ele_miscdev_msg_rcv() & ele_miscdev_msg_send(), are removed.
+- func se_ioctl_cmd_snd_rcv_rsp_handler(), is modified to remove the func call to ele_miscdev_msg_rcv() & ele_miscdev_msg_send()
+- func se_ioctl_cmd_snd_rcv_rsp_handler is callig func ele_msg_send_rcv(), instead.
+- Mutext "se_cmd_if_lock", handling is removed from this patch.
+- func ele_miscdev_msg_send() is replaced with func ele_msg_send(), in fops_write.
+- func ele_miscdev_msg_rcv() is replaced with func ele_msg_rcv(), in fops_read.
+- fops_open is modified to create the new dev_ctx instance (using func init_device_context()), which is not registered as miscdev.
+- Only one dev_ctx is registered as miscdev and its reference is stored in the struct se_if_priv, as priv_dev_ctx.
+- Separate func cleanup_se_shared_mem() & func init_se_shared_mem(), for shared memory handling part of struct dev_ctx.
+- Input param for func(s) ele_msg_rcv(), ele_msg_send() & ele_msg_send_rcv(), is replaced from struct se_if_priv to struct se_if_device_ctx.
+
+4/5
+- A new structure is defined name struct "se_clbk_handle", to contain members processed in mailbox call-back function.
+- "struct se_if_priv" is modified to contain the two structures of "se_clbk_handle" - waiting_rsp_clbk_hdl & cmd_receiver_clbk_hdl.
+- func ele_msg_rcv() is modified to take a new additional input reference param "struct se_clbk_handle *se_clbk_hdl".
+- func ele_msg_send() is modified to take a new additional input tx_msg_sz.
+- func ele_msg_send_rcv(), is modified to take 2 more inputs - tx_msg_sz & exp_rx_msg_sz.
+- func se_val_rsp_hdr_n_status(), is modified to take input of rx_msg buffer, instead of header value, as input param.
+- each caller of the func ele_msg_send_rcv(), is sending these two additional input params.
+- func se_if_callback(), is modified to work on two structures of "se_clbk_handle" - waiting_rsp_clbk_hdl & cmd_receiver_clbk_hdl.
+- Variable "max_dev_ctx", is removed from info & priv struture, as well its usage.
+- New member variable "se_img_file_to_load", is added to structure "priv".
+- Other member variables - rx_msg(ptr), rx_msg_sz, completion done & list of dev_ctxs, is removed from priv struture, along with their usage.
+- func se_resume(), updated to wakeup the two "wq", part of "struct se_clbk_handle": priv->waiting_rsp_clbk_hdl & priv->cmd_receiver_clbk_hdl.
+
+3/5
+- Node name is changed from senclave-firmware@0 to "secure-enclave"
+
+2/5
+- Node name is changed to "secure-enclave".
+
+Reference:
+- Link to v6: https://lore.kernel.org/r/20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com
+
+Changes in v6:
+
+5/5
+- replaced scope_gaurd with gaurd.
+
+4/5
+- replaced scope_gaurd with gaurd.
+- remove reading the regs property from dtb.
+- Added NULL check for priv data fetched from device, as a sanity check, for ele_base_msg apis)
+
+3/5
+- replace firmware with senclave-firmware.
+
+2/5
+- replace firmware with senclave-firmware.
+- drop description for mbox
+- Replaced "items:" with maxItems:1 for "memory-region"
+- Replaced "items:" with maxItems:1 for "sram"
+- remove regs property.
+- remove "$nodename"
+
+Reference:
+- Link to v5: https://lore.kernel.org/r/20240712-imx-se-if-v5-0-66a79903a872@nxp.com
+
+Changes in v5:
+
+2/5
+- updated the description of mboxes
+- updated the description & items for mbox-names.
+- updated the description of memory-region
+- move "additional properties: false" after allOf block.
+- removed other example except one.
+
+4/5
+- Corrected the indentation in Kconfig.
+- info members:mbox_tx_name & mbox_rx_name, are replaced with macros.
+
+5/5
+- Replaced "for  secure enclaves", with "for secure enclaves"
+- Replaced "user space" with "userspace".
+- End the line "[include]<linux/firmware/imx/ele_mu_ioctl.h>" with a period.
+
+Reference:
+- Link to v4: https://lore.kernel.org/r/20240705-imx-se-if-v4-0-52d000e18a1d@nxp.com
+
+Changes in v4:
+
+1/5
+a. Removed - from EdgeLock Enclave.
+
+b. Removed , after "Each of the above feature,"
+
+c. replace "can exists" with "can exist".
+
+d.
+-messaging units(MU) per SE. Each co-existing 'se' can have one or multiple exclusive
+-MU(s), dedicated to itself. None of the MU is shared between two SEs.
++messaging units(MU) per SE. Each co-existing SE can have one or multiple exclusive
++MUs, dedicated to itself. None of the MU is shared between two SEs.
+ Communication of the MU is realized using the Linux mailbox driver.
+
+e.
+-All those SE interfaces 'se-if' that is/are dedicated to a particular SE, will be
+-enumerated and provisioned under the very single 'SE' node.
++Although MU(s) is/are not shared between SE(s). But for SoC like i.MX95 which has
++multiple SE(s) like HSM, V2X-HSM, V2X-SHE; all the SE(s) and their interfaces 'se-if'
++that is/are dedicated to a particular SE will be enumerated and provisioned using the
++single compatible node("fsl,imx95-se").
+
+f. Removed ",". Replaced for "Each 'se-if'," with "Each se-if'.
+
+g. removed ","
+-  This layer is responsible for ensuring the communication protocol, that is defined
++  This layer is responsible for ensuring the communication protocol that is defined
+
+h. removed "-"
+-  - FW can handle one command-message at a time.
++  - FW can handle one command message at a time.
+
+i.
+-  Using these multiple device contexts, that are getting multiplexed over a single MU,
+-  user-space application(s) can call fops like write/read to send the command-message,
+-  and read back the command-response-message to/from Firmware.
+-  fops like read & write uses the above defined service layer API(s) to communicate with
++  Using these multiple device contexts that are getting multiplexed over a single MU,
++  userspace application(s) can call fops like write/read to send the command message,
++  and read back the command response message to/from Firmware.
++  fops like read & write use the above defined service layer API(s) to communicate with
+   Firmware.
+
+j. Uppercase for word "Linux".
+
+2/5
+a. Rephrased the description to remove list of phandles.
+
+b. Moved required before allOf:
++required:
++  - compatible
++  - reg
++  - mboxes
++  - mbox-names
++
++additionalProperties: false
++
+ allOf:
+
+c. replaced not: required: with properties: <property-name>: false.
+   # memory-region
+-      not:
+-        required:
+-          - memory-region
++      properties:
++        memory-region: false
+
+   # sram
+-    else:
+-      not:
+-        required:
+-          - sram
+
+d. Reduced examples. keeping example of i.MX95.
+e. node-name is changed to "firmware@<hex>"
+
+3/5
+- node name changed to "firmware@<hex>".
+
+4/5
+- used sizeof(*s_info)
+- return early, rather than doing goto exit, in ele_get_info().
+- Use upper_32_bits() and lower_32_bits()
+- use rx_msg here instead of priv->rx_msg
+- Moved the status check to validate_rsp_hdr. Rename the function to "se_val_rsp_hdr_n_status"
+- typecasting removed header = (struct se_msg_hdr *) msg;
+- Converted the API name with prefix imx_ele_* or imx_se_*, to ele_* and se_*, respectively.
+- Removed the functions definition & declaration for: free_phybuf_mem_pool() & get_phybuf_mem_pool()
+- removed the mbox_free_channel() calls from clean-up.
+- Flag "priv->flags" is removed.
+- Converted the int se_if_probe_cleanup() to void se_if_probe_cleanup().
+- Replaced NULL initialization of structure members: priv->cmd_receiver_dev & priv->waiting_rsp_dev , with comments.
+- Removed the function's declaration get_phy_buf_mem_pool1
+
+5/5
+Changes to Documentation/ABI/testing/se-cdev.
+a. Removed "-" from "secure-enclave" and "file-descriptor".
+
+b. Removed "-" from "shared-library"
+
+c. Replaced "get" with "getting".
+
+d. Added description for the new IOCTL "send command and receive command response"
+
+e. Replaced "wakeup_intruptible" with "wait_event_interruptible"
+
+f. Removed ";"
+
+g. Removd "," from "mailbox_lock,"
+
+h. Replaced "free" with "frees"
+
+i. In mailbox callback function, checking the buffer size before
+copying.
+
+Reference:
+- Link to v3: https://lore.kernel.org/r/20240617-imx-se-if-v3-0-a7d28dea5c4a@nxp.com
+
+Changes in v3:
+5/5:
+- Initialize tx_msg with NULL.
+- memdup_user() returns an error pointer, not NULL. correct it by adding check for err_ptr.
+- new IOCTL is added to send & recieve the message.
+- replaced the while loop till list is empty, with list_for_each_entry.
+- replaced __list_del_entry, with list_del.
+- Removed the dev_err message from copy to user.
+- Removed the casting of void *.
+- corrected the typcasting in copy to user.
+- removed un-necessary goto statement.
+- Removed dead code for clean-up of memory.
+- Removed un-mapping of secured memory
+- Passing se_if_priv structure to init_device_context.
+- Updated the below check to replace io.length with round_up(io.length).
+	if (shared_mem->size < shared_mem->pos|| io.length >= shared_mem->size - shared_mem->pos)
+- Created a function to cleanup the list of shared memory buffers.
+- Used list_for_each_entry_safe(). created a separate functions: se_dev_ctx_cpy_out_data() & se_dev_ctx_shared_mem_cleanup()
+
+4/5
+- Changed the compatible string to replace "-ele", to "-se".
+- Declaration of imx_se_node_info, is done as const in the whole file
+- Remove the unused macros from ele_base_msg.h
+- Remove the function declaration get_phy_buf_mem_pool1, from the header file.
+- Replace the use of dmam_alloc_coherent to dma_alloc_coherent
+- Check for function pointer, before calling the fucntion pointer in imx_fetch_se_soc_info
+- Removed the unused flag for SE_MU_IO_FLAGS_USE_SEC_MEM.
+-  Removed the unused macros WORD_SZ
+- instead of struct device *dev, struct se_if_priv *priv, is used as argument to the funtions:se_save_imem_state, se_restore_imem_state, imx_fetch_se_soc_info
+- Removed ret from validate_rsp_hdr.
+- changed the prefix of the funtion: plat_add_msg_crc and plat_fill_cmd_msg_hdr.
+- indentation correction for info structures.
+- remove the check for priv not null from se_if_probe_cleanup
+- Removed the casting of void *.
+- se_load_firmware function is corrected for not freeing the buffer when allocation fails.
+- Checking if get_imx_se_node_info() can return NULL, in se_if_probe()
+- imem.size has type u32. return value from se_save_imem_state() will be assigned to imem.size in case of success only.
+- removed the flag un-setting in case of failure. priv->flags &= (~RESERVED_DMA_POOL);
+- removed the function call for devm_of_platform_populate(dev);
+- Checking for not-NULL,  before calling the funtion pointer se_fetch_soc_info.
+- Removed the checking for reserved memory flag, before freeing up the reserved memory, in se_probe_if_cleanup.
+
+3/5
+- Changed the compatible string to replace "-ele", to "-se".
+
+2/5
+- to fix the warning error, replaced the "-ele" & "-v2x" in compatible string, to "-se".
+- Added an example for ele@0 for compatible string "fsl,imx95-se"
+
+Reference
+- Link to v2: https://lore.kernel.org/r/20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com
+
+Changes in v2:
+
+4/4
+- Split this patch into two: 1. base driver & 2. Miscdev
+- Initialize the return variable "err" as 0, before calling 'return err', in the file ele_common.c
+- Fix the usage of un-iniitialized pointer variable, by initializing them with NULL, in ele_base_msg.c.
+- Fix initializing the ret variable, to return the correct error code in case of issue.
+- replaced dmam_alloc_coherent with dma_alloc_coherent.
+- Replace the use of ELE_GET_INFO_READ_SZ, with sizeof(soc_info).
+- Replaced -1 with -EPERM
+- Removed the safety check on func-input param, in ele_get_info().
+- fix the assigning data[1] with lower 32 address, rather than zero, for ele_fw_authenticate API.
+- Correctly initializing the function's return error code, for file  ele_base_msg.c.
+- replaced 'return' with 'goto'.
+- Use length in bytes.
+- Corrected the structure se_msg_hdr.
+- Moved setting of rx_msg  to priv, into the function imx_ele_msg_send_rcv
+- Will add lockdep_assert_held, to receive path, in v2.
+- corrected the spacing at "ret  = validate_rsp_hdr"
+- FIELD_GET() used for RES_STATUS
+- Re-write the structure soc_info, matching the information provided in response to this api.
+- The "|" goes to the end of the previous line.
+- Moved the locking and unlocking of the command lock to the caller of the function.
+- removed the safety check for device private data.
+- Structure memory reference, used to read message header.
+- In the interrupt call back function, remove assigning waiting_rsp_dev to NULL, in case of response message rcv from FW.
+- do while removed.
+- replaced BIT(1) for RESERVED_DMA_POOL, to BIT(0)
+- The backslash is removed while assigning the file name with absolute path to structure variable.fw_name_in_rfs =.
+- Update the 'if' condition by removing "idx < 0".
+- mbox_request_channel_byname() uses a "char" for the name not a u8. Corrected.
+- devm managed resources, are not cleaned now, in function se_probe_if_cleanup
+- Used dev_err_probe().
+- Used %pe to print error string.
+- remove "__maybe_unused" for "struct platform_device *enum_plat_dev __maybe_unused;"
+- used FIELD_GET(), for  RES_STATUS. Removed the use of MSG_TAG, MSG_COMMAND, MSG_SIZE, MSG_VER.
+- Depricated the used of member of struct se_if_priv, bool no_dev_ctx_used;
+- Moved the text explaing the synchronization logic via mutexes, from patch 1/4 to se_ctrl.h.
+- removed the type casting of info_list = (struct imx_se_node_info_list *) device_get_match_data(dev->parent);
+- Used static variable priv->soc_rev in the se_ctrl.c, replaced the following condition: if (info_list->soc_rev) to if (priv->soc_rev) for checking if this flow is already executed or not.
+- imx_fetch_soc_info will return failure if the get_info function fails.
+- Removed devm_free from imx_fetch_soc_info too.
+
+3/3
+- Made changes to move all the properties to parent node, without any child node.
+
+2/4
+- Use Hex pattern string.
+- Move the properties to parent node, with no child node.
+- Add i.MX95-ele to compatible nodes to fix the warning "/example-2/v2x: failed to match any schema with compatible: ['fsl,imx95-v2x']"
+
+1/1
+- Corrected the spelling from creats to creates.
+- drop the braces around the plural 's' for interfaces
+- written se in upper case SE.
+- Replace "multiple message(s)" with messages.
+- Removed too much details about locks.
+
+Testing
+- make CHECK_DTBS=y freescale/imx8ulp-evk.dtb;
+- make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-se.yaml
+- make C=1 CHECK=scripts/coccicheck drivers/firmware/imx/*.* W=1 > r.txt
+- ./scripts/checkpatch.pl --git <>..HEAD
+- Tested the Image and .dtb, on the i.MX8ULP.
+
+Reference
+- Link to v1: https://lore.kernel.org/r/20240510-imx-se-if-v1-0-27c5a674916d@nxp.com
+
 ---
-I have follow-up patches to remove the imxrt specific pinctrl
-and clk drivers.
----
- arch/arm/boot/dts/nxp/imx/Makefile            |    2 -
- arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts   |   72 -
- arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h |  993 -----------
- arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi      |  160 --
- arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h | 1561 -----------------
- arch/arm/boot/dts/nxp/vf/Makefile             |    2 -
- arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts  |   61 -
- arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts   |   88 -
- arch/arm/boot/dts/nxp/vf/vf610m4.dtsi         |   61 -
- arch/arm/configs/imxrt_defconfig              |   35 -
- arch/arm/configs/vf610m4_defconfig            |   39 -
- arch/arm/mach-imx/Kconfig                     |   27 +-
- arch/arm/mach-imx/Makefile                    |    3 -
- arch/arm/mach-imx/mach-imx7d-cm4.c            |   18 -
- arch/arm/mach-imx/mach-imxrt.c                |   19 -
- arch/arm/mach-imx/mach-vf610.c                |    1 -
- 16 files changed, 6 insertions(+), 3136 deletions(-)
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h
- delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts
- delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts
- delete mode 100644 arch/arm/boot/dts/nxp/vf/vf610m4.dtsi
- delete mode 100644 arch/arm/configs/imxrt_defconfig
- delete mode 100644 arch/arm/configs/vf610m4_defconfig
- delete mode 100644 arch/arm/mach-imx/mach-imx7d-cm4.c
- delete mode 100644 arch/arm/mach-imx/mach-imxrt.c
+Pankaj Gupta (7):
+      Documentation/firmware: add imx/se to other_interfaces
+      dt-bindings: arm: fsl: add imx-se-fw binding doc
+      firmware: imx: add driver for NXP EdgeLock Enclave
+      firmware: imx: device context dedicated to priv
+      firmware: imx: adds miscdev
+      arm64: dts: imx8ulp: add secure enclave node
+      arm64: dts: imx8ulp: add reserved memory for EdgeLock Enclave
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index e0747cb6e772..288d16d9315d 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -452,5 +452,3 @@ dtb-$(CONFIG_SOC_IMX7D) += \
- dtb-$(CONFIG_SOC_IMX7ULP) += \
- 	imx7ulp-com.dtb \
- 	imx7ulp-evk.dtb
--dtb-$(CONFIG_SOC_IMXRT) += \
--	imxrt1050-evk.dtb
-diff --git a/arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts b/arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts
-deleted file mode 100644
-index 6a9c10decf52..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imxrt1050-evk.dts
-+++ /dev/null
-@@ -1,72 +0,0 @@
--// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
--/*
-- * Copyright (C) 2019
-- * Author(s): Giulio Benetti <giulio.benetti@benettiengineering.com>
-- */
--
--/dts-v1/;
--#include "imxrt1050.dtsi"
--#include "imxrt1050-pinfunc.h"
--
--/ {
--	model = "NXP IMXRT1050-evk board";
--	compatible = "fsl,imxrt1050-evk", "fsl,imxrt1050";
--
--	chosen {
--		stdout-path = &lpuart1;
--	};
--
--	aliases {
--		gpio0 = &gpio1;
--		gpio1 = &gpio2;
--		gpio2 = &gpio3;
--		gpio3 = &gpio4;
--		gpio4 = &gpio5;
--		mmc0 = &usdhc1;
--		serial0 = &lpuart1;
--	};
--
--	memory@80000000 {
--		device_type = "memory";
--		reg = <0x80000000 0x2000000>;
--	};
--};
--
--&lpuart1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_lpuart1>;
--	status = "okay";
--};
--
--&iomuxc {
--	pinctrl-names = "default";
--	pinctrl_lpuart1: lpuart1grp {
--		fsl,pins = <
--			MXRT1050_IOMUXC_GPIO_AD_B0_12_LPUART1_TXD	0xf1
--			MXRT1050_IOMUXC_GPIO_AD_B0_13_LPUART1_RXD	0xf1
--		>;
--	};
--
--	pinctrl_usdhc0: usdhc0grp {
--		fsl,pins = <
--			MXRT1050_IOMUXC_GPIO_B1_12_USDHC1_CD_B		0x1B000
--			MXRT1050_IOMUXC_GPIO_B1_14_USDHC1_VSELECT	0xB069
--			MXRT1050_IOMUXC_GPIO_SD_B0_00_USDHC1_CMD	0x17061
--			MXRT1050_IOMUXC_GPIO_SD_B0_01_USDHC1_CLK	0x17061
--			MXRT1050_IOMUXC_GPIO_SD_B0_05_USDHC1_DATA3	0x17061
--			MXRT1050_IOMUXC_GPIO_SD_B0_04_USDHC1_DATA2	0x17061
--			MXRT1050_IOMUXC_GPIO_SD_B0_03_USDHC1_DATA1	0x17061
--			MXRT1050_IOMUXC_GPIO_SD_B0_02_USDHC1_DATA0	0x17061
--		>;
--	};
--};
--
--&usdhc1 {
--	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
--	pinctrl-0 = <&pinctrl_usdhc0>;
--	pinctrl-1 = <&pinctrl_usdhc0>;
--	pinctrl-2 = <&pinctrl_usdhc0>;
--	pinctrl-3 = <&pinctrl_usdhc0>;
--	cd-gpios = <&gpio2 28 GPIO_ACTIVE_LOW>;
--	status = "okay";
--};
-diff --git a/arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h b/arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h
-deleted file mode 100644
-index 22c14a3262ad..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imxrt1050-pinfunc.h
-+++ /dev/null
-@@ -1,993 +0,0 @@
--/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
--/*
-- * Copyright (C) 2019
-- * Author(s): Giulio Benetti <giulio.benetti@benettiengineering.com>
-- */
--
--#ifndef _DT_BINDINGS_PINCTRL_IMXRT1050_PINFUNC_H
--#define _DT_BINDINGS_PINCTRL_IMXRT1050_PINFUNC_H
--
--#define IMX_PAD_SION	0x40000000
--
--/*
-- * The pin function ID is a tuple of
-- * <mux_reg conf_reg input_reg mux_mode input_val>
-- */
--
--#define MXRT1050_IOMUXC_GPIO_EMC_00_SEMC_DA00				0x014 0x204 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_00_FLEXPWM4_PWM0_A			0x014 0x204 0x494 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_00_LPSPI2_SCK				0x014 0x204 0x500 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_00_XBAR_INOUT2				0x014 0x204 0x60C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_00_FLEXIO1_D00				0x014 0x204 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_00_GPIO4_IO00				0x014 0x204 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_01_SEMC_DA01				0x018 0x208 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_01_FLEXPWM4_PWM0_B			0x018 0x208 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_01_LPSPI2_PCS0				0x018 0x208 0x4FC 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_01_XBAR_INOUT3				0x018 0x208 0x610 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_01_FLEXIO1_D01				0x018 0x208 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_01_GPIO4_IO01				0x018 0x208 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_02_SEMC_DA02				0x01C 0x20C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_02_FLEXPWM4_PWM1_A			0x01C 0x20C 0x498 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_02_LPSPI2_SDO				0x01C 0x20C 0x508 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_02_XBAR_INOUT4				0x01C 0x20C 0x614 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_02_FLEXIO1_D02				0x01C 0x20C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_02_GPIO4_IO02				0x01C 0x20C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_03_SEMC_DA03				0x020 0x210 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_03_FLEXPWM4_PWM1_B			0x020 0x210 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_03_LPSPI2_SDI				0x020 0x210 0x504 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_03_XBAR_INOUT5				0x020 0x210 0x618 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_03_FLEXIO1_D03				0x020 0x210 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_03_GPIO4_IO03				0x020 0x210 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_04_SEMC_DA04				0x024 0x214 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_04_FLEXPWM4_PWM2_A			0x024 0x214 0x49C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_04_SAI2_TX_DATA			0x024 0x214 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_04_XBAR_INOUT6				0x024 0x214 0x61C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_04_FLEXIO1_D04				0x024 0x214 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_04_GPIO4_IO04				0x024 0x214 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_05_SEMC_DA05				0x028 0x218 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_05_FLEXPWM4_PWM2_B			0x028 0x218 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_05_SAI2_TX_SYNC			0x028 0x218 0x5C4 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_05_XBAR_INOUT7				0x028 0x218 0x620 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_05_FLEXIO1_D05				0x028 0x218 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_05_GPIO4_IO05				0x028 0x218 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_06_SEMC_DA06				0x02C 0x21C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_06_FLEXPWM2_PWM0_A			0x02C 0x21C 0x478 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_06_SAI2_TX_BCLK			0x02C 0x21C 0x5C0 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_06_XBAR_INOUT8				0x02C 0x21C 0x624 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_06_FLEXIO1_D06				0x02C 0x21C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_06_GPIO4_IO06				0x02C 0x21C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_07_SEMC_DA07				0x030 0x220 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_07_FLEXPWM2_PWM0_B			0x030 0x220 0x488 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_07_SAI2_MCLK				0x030 0x220 0x5B0 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_07_XBAR_INOUT9				0x030 0x220 0x628 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_07_FLEXIO1_D07				0x030 0x220 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_07_GPIO4_IO07				0x030 0x220 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_08_SEMC_DM00				0x034 0x224 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_08_FLEXPWM2_PWM1_A			0x034 0x224 0x47C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_08_SAI2_RX_DATA			0x034 0x224 0x5B8 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_08_XBAR_INOUT17			0x034 0x224 0x62C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_08_FLEXIO1_D08				0x034 0x224 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_08_GPIO4_IO08				0x034 0x224 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_09_SEMC_ADDR00				0x038 0x228 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_09_FLEXPWM2_PWM1_B			0x038 0x228 0x48C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_09_SAI2_RX_SYNC			0x038 0x228 0x5BC 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_09_FLEXCAN2_TX				0x038 0x228 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_09_FLEXIO1_D09				0x038 0x228 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_09_GPIO4_IO09				0x038 0x228 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_10_SEMC_ADDR01				0x03C 0x22C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_10_FLEXPWM2_PWM2_A			0x03C 0x22C 0x480 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_10_SAI2_RX_BCLK			0x03C 0x22C 0x5B4 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_10_FLEXCAN2_RX				0x03C 0x22C 0x450 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_10_FLEXIO1_D10				0x03C 0x22C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_10_GPIO4_IO10				0x03C 0x22C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_11_SEMC_ADDR02				0x040 0x230 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_11_FLEXPWM2_PWM2_B			0x040 0x230 0x490 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_11_LPI2C4_SDA				0x040 0x230 0x4E8 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_11_USDHC2_RESET_B			0x040 0x230 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_11_FLEXIO1_D11				0x040 0x230 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_11_GPIO4_IO11				0x040 0x230 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_12_SEMC_ADDR03				0x044 0x234 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_12_XBAR_INOUT24			0x044 0x234 0x640 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_12_LPI2C4_SCL				0x044 0x234 0x4E4 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_12_USDHC2_WP				0x044 0x234 0x5D8 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_12_FLEXPWM1_PWM3_A			0x044 0x234 0x454 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_12_GPIO4_IO12				0x044 0x234 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_13_SEMC_ADDR04				0x048 0x238 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_13_XBAR_INOUT25			0x048 0x238 0x650 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_13_LPUART3_TXD				0x048 0x238 0x53C 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_13_MQS_RIGHT				0x048 0x238 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_13_FLEXPWM1_PWM3_B			0x048 0x238 0x464 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_13_GPIO4_IO13				0x048 0x238 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_14_SEMC_ADDR05				0x04C 0x23C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_14_XBAR_INOUT19			0x04C 0x23C 0x654 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_14_LPUART3_RXD				0x04C 0x23C 0x538 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_14_MQS_LEFT				0x04C 0x23C 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_14_LPSPI2_PCS1				0x04C 0x23C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_14_GPIO4_IO14				0x04C 0x23C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_15_SEMC_ADDR06				0x050 0x240 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_15_XBAR_INOUT20			0x050 0x240 0x634 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_15_LPUART3_CTS_B			0x050 0x240 0x534 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_15_SPDIF_OUT				0x050 0x240 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_15_TMR3_TIMER0				0x050 0x240 0x57C 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_15_GPIO4_IO15				0x050 0x240 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_16_SEMC_ADDR07				0x054 0x244 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_16_XBAR_INOUT21			0x054 0x244 0x658 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_16_LPUART3_RTS_B			0x054 0x244 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_16_SPDIF_IN				0x054 0x244 0x5C8 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_16_TMR3_TIMER1				0x054 0x244 0x580 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_16_GPIO4_IO16				0x054 0x244 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_17_SEMC_ADDR08				0x058 0x248 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_17_FLEXPWM4_PWM3_A			0x058 0x248 0x4A0 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_17_LPUART4_CTS_B			0x058 0x248 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_17_FLEXCAN1_TX				0x058 0x248 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_17_TMR3_TIMER2				0x058 0x248 0x584 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_17_GPIO4_IO17				0x058 0x248 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_18_SEMC_ADDR09				0x05C 0x24C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_18_FLEXPWM4_PWM3_B			0x05C 0x24C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_18_LPUART4_RTS_B			0x05C 0x24C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_18_FLEXCAN1_RX				0x05C 0x24C 0x44C 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_18_TMR3_TIMER3				0x05C 0x24C 0x588 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_18_GPIO4_IO18				0x05C 0x24C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_18_SNVS_VIO_5_CTL			0x05C 0x24C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_19_SEMC_ADDR11				0x060 0x250 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_19_FLEXPWM2_PWM3_A			0x060 0x250 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_19_LPUART4_TXD				0x060 0x250 0x544 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_19_ENET_RX_DATA01			0x060 0x250 0x438 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_19_TMR2_TIMER0				0x060 0x250 0x56C 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_19_GPIO4_IO19				0x060 0x250 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_19_SNVS_VIO_5				0x060 0x250 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_20_SEMC_ADDR12				0x064 0x254 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_20_FLEXPWM2_PWM3_B			0x064 0x254 0x484 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_20_LPUART4_RXD				0x064 0x254 0x540 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_20_ENET_RX_DATA00			0x064 0x254 0x434 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_20_TMR2_TIMER0				0x064 0x254 0x570 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_20_GPIO4_IO20				0x064 0x254 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_21_SEMC_BA0				0x068 0x258 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_21_FLEXPWM3_PWM3_A			0x068 0x258 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_21_LPI2C3_SDA				0x068 0x258 0x4E0 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_21_ENET_TX_DATA01			0x068 0x258 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_21_TMR2_TIMER2				0x068 0x258 0x574 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_21_GPIO4_IO21				0x068 0x258 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_22_SEMC_BA1				0x06C 0x25C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_22_FLEXPWM3_PWM3_B			0x06C 0x25C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_22_LPI2C3_SCL				0x06C 0x25C 0x4DC 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_22_ENET_TX_DATA00			0x06C 0x25C 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_22_TMR2_TIMER3				0x06C 0x25C 0x578 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_22_GPIO4_IO22				0x06C 0x25C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_23_SEMC_ADDR10				0x070 0x260 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_23_FLEXPWM1_PWM0_A			0x070 0x260 0x458 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_23_LPUART5_TXD				0x070 0x260 0x54C 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_23_ENET_RX_EN				0x070 0x260 0x43C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_23_GPT1_CAPTURE2			0x070 0x260 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_23_GPIO4_IO23				0x070 0x260 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_24_SEMC_CAS				0x074 0x264 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_24_FLEXPWM1_PWM0_B			0x074 0x264 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_24_LPUART5_RXD				0x074 0x264 0x548 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_24_ENET_TX_EN				0x074 0x264 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_24_GPT1_CAPTURE1			0x074 0x264 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_24_GPIO4_IO24				0x074 0x264 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_25_SEMC_RAS				0x078 0x268 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_25_FLEXPWM1_PWM1_A			0x078 0x268 0x45C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_25_LPUART6_TXD				0x078 0x268 0x554 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_25_ENET_TX_CLK				0x078 0x268 0x448 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_25_ENET_REF_CLK			0x078 0x268 0x42C 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_25_GPIO4_IO25				0x078 0x268 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_26_SEMC_CLK				0x07C 0x26C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_26_FLEXPWM1_PWM1_B			0x07C 0x26C 0x46C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_26_LPUART6_RXD				0x07C 0x26C 0x550 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_26_ENET_RX_ER				0x07C 0x26C 0x440 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_26_FLEXIO1_D12				0x07C 0x26C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_26_GPIO4_IO26				0x07C 0x26C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_27_SEMC_CKE				0x080 0x270 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_27_FLEXPWM1_PWM2_A			0x080 0x270 0x460 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_27_LPUART5_RTS_B			0x080 0x270 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_27_LPSPI1_SCK				0x080 0x270 0x4F0 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_27_FLEXIO1_D13				0x080 0x270 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_27_GPIO4_IO27				0x080 0x270 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_28_SEMC_WE				0x084 0x274 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_28_FLEXPWM1_PWM2_B			0x084 0x274 0x470 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_28_LPUART5_CTS_B			0x084 0x274 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_28_LPSPI1_SDO				0x084 0x274 0x4F8 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_28_FLEXIO1_D14				0x084 0x274 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_28_GPIO4_IO28				0x084 0x274 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_29_SEMC_CS0				0x088 0x278 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_29_FLEXPWM3_PWM0_A			0x088 0x278 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_29_LPUART6_RTS_B			0x088 0x278 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_29_LPSPI1_SDI				0x088 0x278 0x4F4 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_29_FLEXIO1_D15				0x088 0x278 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_29_GPIO4_IO29				0x088 0x278 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_30_SEMC_DA08				0x08C 0x27C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_30_FLEXPWM3_PWM0_B			0x08C 0x27C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_30_LPUART6_CTS_B			0x08C 0x27C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_30_LPSPI1_PCS0				0x08C 0x27C 0x4EC 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_30_CSI_DATA23				0x08C 0x27C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_30_GPIO4_IO30				0x08C 0x27C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_31_SEMC_DA09				0x090 0x280 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_31_FLEXPWM3_PWM1_A			0x090 0x280 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_31_LPUART7_TXD				0x090 0x280 0x55C 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_31_LPSPI1_PCS1				0x090 0x280 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_31_CSI_DATA22				0x090 0x280 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_31_GPIO4_IO31				0x090 0x280 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_32_SEMC_DA10				0x094 0x284 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_32_FLEXPWM3_PWM1_B			0x094 0x284 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_32_LPUART7_RXD				0x094 0x284 0x558 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_32_CCM_PMIC_READY			0x094 0x284 0x3FC 0x3 0x4
--#define MXRT1050_IOMUXC_GPIO_EMC_32_CSI_DATA21				0x094 0x284 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_32_GPIO3_IO18				0x094 0x284 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_33_SEMC_DA11				0x098 0x288 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_33_FLEXPWM3_PWM2_A			0x098 0x288 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_33_USDHC1_RESET_B			0x098 0x288 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_33_SAI3_RX_DATA			0x098 0x288 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_33_CSI_DATA20				0x098 0x288 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_33_GPIO3_IO19				0x098 0x288 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_34_SEMC_DA12				0x09C 0x28C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_34_FLEXPWM3_PWM2_B			0x09C 0x28C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_34_USDHC1_VSELECT			0x09C 0x28C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_34_SAI3_RX_SYNC			0x09C 0x28C 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_34_CSI_DATA19				0x09C 0x28C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_34_GPIO3_IO20				0x09C 0x28C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_35_SEMC_DA13				0x0A0 0x290 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_35_XBAR_INOUT18			0x0A0 0x290 0x630 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_35_GPT1_COMPARE1			0x0A0 0x290 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_35_SAI3_RX_BCLK			0x0A0 0x290 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_35_CSI_DATA18				0x0A0 0x290 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_35_GPIO3_IO21				0x0A0 0x290 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_35_USDHC1_CD_B				0x0A0 0x290 0x5D4 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_36_SEMC_DA14				0x0A4 0x294 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_36_XBAR_INOUT22			0x0A4 0x294 0x638 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_36_GPT1_COMPARE2			0x0A4 0x294 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_36_SAI3_TX_DATA			0x0A4 0x294 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_36_CSI_DATA17				0x0A4 0x294 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_36_GPIO3_IO22				0x0A4 0x294 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_36_USDHC1_WP				0x0A4 0x294 0x5D8 0x6 0x1
--
--#define MXRT1050_IOMUXC_GPIO_EMC_37_SEMC_DA15				0x0A8 0x298 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_37_XBAR_INOUT23			0x0A8 0x298 0x63C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_37_GPT1_COMPARE3			0x0A8 0x298 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_37_SAI3_MCLK				0x0A8 0x298 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_37_CSI_DATA16				0x0A8 0x298 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_37_GPIO3_IO23				0x0A8 0x298 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_37_USDHC2_WP				0x0A8 0x298 0x608 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_38_SEMC_DM01				0x0AC 0x29C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_38_FLEXPWM1_PWM3_A			0x0AC 0x29C 0x454 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_EMC_38_LPUART8_TXD				0x0AC 0x29C 0x564 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_EMC_38_SAI3_TX_BCLK			0x0AC 0x29C 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_38_CSI_FIELD				0x0AC 0x29C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_38_GPIO3_IO24				0x0AC 0x29C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_38_USDHC2_VSELECT			0x0AC 0x29C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_39_SEMC_DQS				0x0B0 0x2A0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_39_FLEXPWM1_PWM3_B			0x0B0 0x2A0 0x464 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_EMC_39_LPUART8_RXD				0x0B0 0x2A0 0x560 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_EMC_39_SAI3_TX_SYNC			0x0B0 0x2A0 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_39_WDOG1_B				0x0B0 0x2A0 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_39_GPIO3_IO25				0x0B0 0x2A0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_39_USDHC2_CD_B				0x0B0 0x2A0 0x5E0 0x6 0x1
--
--#define MXRT1050_IOMUXC_GPIO_EMC_40_SEMC_RDY				0x0B4 0x2A4 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_40_GPT2_CAPTURE2			0x0B4 0x2A4 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_40_LPSPI1_PCS2				0x0B4 0x2A4 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_40_USB_OTG2_OC				0x0B4 0x2A4 0x5CC 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_40_ENET_MDC				0x0B4 0x2A4 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_40_GPIO3_IO26				0x0B4 0x2A4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_40_USDHC2_RESET_B			0x0B4 0x2A4 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_EMC_41_SEMC_CSX0				0x0B8 0x2A8 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_41_GPT2_CAPTURE1			0x0B8 0x2A8 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_41_LPSPI1_PCS3				0x0B8 0x2A8 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_41_USB_OTG2_PWR			0x0B8 0x2A8 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_41_ENET_MDIO				0x0B8 0x2A8 0x430 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_EMC_41_GPIO3_IO27				0x0B8 0x2A8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_EMC_41_USDHC2_VSELECT			0x0B8 0x2A8 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_FLEXPWM2_PWM3_A			0x0BC 0x2AC 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_XBAR_INOUT14			0x0BC 0x2AC 0x644 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_REF_CLK_32K			0x0BC 0x2AC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_USB_OTG2_ID			0x0BC 0x2AC 0x3F8 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_LPI2C1_SCLS			0x0BC 0x2AC 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_GPIO1_IO00			0x0BC 0x2AC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_USDHC1_RESET_B			0x0BC 0x2AC 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_00_LPSPI3_SCK			0x0BC 0x2AC 0x510 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_FLEXPWM2_PWM3_B			0x0C0 0x2B0 0x484 0x0 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_XBAR_INOUT15			0x0C0 0x2B0 0x648 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_REF_CLK_24M			0x0C0 0x2B0 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_USB_OTG1_ID			0x0C0 0x2B0 0x3F4 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_LPI2C1_SDAS			0x0C0 0x2B0 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_GPIO1_IO01			0x0C0 0x2B0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_EWM_OUT_B				0x0C0 0x2B0 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_01_LPSPI3_SDO			0x0C0 0x2B0 0x518 0x7 0x1
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_FLEXCAN2_TX			0x0C4 0x2B4 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_XBAR_INOUT16			0x0C4 0x2B4 0x64C 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_LPUART6_TXD			0x0C4 0x2B4 0x554 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_USB_OTG1_PWR			0x0C4 0x2B4 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_FLEXPWM1_PWM0_X			0x0C4 0x2B4 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_GPIO1_IO02			0x0C4 0x2B4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_LPI2C1_HREQ			0x0C4 0x2B4 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_02_LPSPI3_SDI			0x0C4 0x2B4 0x514 0x7 0x1
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_FLEXCAN2_RX			0x0C8 0x2B8 0x450 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_XBAR_INOUT17			0x0C8 0x2B8 0x62C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_LPUART6_RXD			0x0C8 0x2B8 0x550 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_USB_OTG1_OC			0x0C8 0x2B8 0x5D0 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_FLEXPWM1_PWM1_X			0x0C8 0x2B8 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_GPIO1_IO03			0x0C8 0x2B8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_REF_CLK_24M			0x0C8 0x2B8 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_03_LPSPI3_PCS0			0x0C8 0x2B8 0x50C 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_SRC_BOOT_MODE00			0x0CC 0x2BC 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_MQS_RIGHT				0x0CC 0x2BC 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_ENET_TX_DATA03			0x0CC 0x2BC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_SAI2_TX_SYNC			0x0CC 0x2BC 0x5C4 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_CSI_DATA09			0x0CC 0x2BC 0x41C 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_GPIO1_IO04			0x0CC 0x2BC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_PIT_TRIGGER00			0x0CC 0x2BC 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_04_LPSPI3_PCS1			0x0CC 0x2BC 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_SRC_BOOT_MODE01			0x0D0 0x2C0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_MQS_LEFT				0x0D0 0x2C0 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_ENET_TX_DATA02			0x0D0 0x2C0 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_SAI2_TX_BCLK			0x0D0 0x2C0 0x5C0 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_CSI_DATA08			0x0D0 0x2C0 0x418 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_GPIO1_IO05			0x0D0 0x2C0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_XBAR_INOUT17			0x0D0 0x2C0 0x62C 0x6 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B0_05_LPSPI3_PCS2			0x0D0 0x2C0 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_JTAG_TMS				0x0D4 0x2C4 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_GPT2_COMPARE1			0x0D4 0x2C4 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_ENET_RX_CLK			0x0D4 0x2C4 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_SAI2_RX_BCLK			0x0D4 0x2C4 0x5B4 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_CSI_DATA07			0x0D4 0x2C4 0x414 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_GPIO1_IO06			0x0D4 0x2C4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_XBAR_INOUT18			0x0D4 0x2C4 0x630 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_06_LPSPI3_PCS3			0x0D4 0x2C4 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_JTAG_TCK				0x0D8 0x2C8 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_GPT2_COMPARE2			0x0D8 0x2C8 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_ENET_TX_ER			0x0D8 0x2C8 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_SAI2_RX_SYNC			0x0D8 0x2C8 0x5BC 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_CSI_DATA06			0x0D8 0x2C8 0x410 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_GPIO1_IO07			0x0D8 0x2C8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_XBAR_INOUT19			0x0D8 0x2C8 0x654 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_07_ENET_1588_EVENT3_OUT		0x0D8 0x2C8 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_JTAG_MOD				0x0DC 0x2CC 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_GPT2_COMPARE3			0x0DC 0x2CC 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_ENET_RX_DATA03			0x0DC 0x2CC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_SAI2_RX_DATA			0x0DC 0x2CC 0x5B8 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_CSI_DATA05			0x0DC 0x2CC 0x40C 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_GPIO1_IO08			0x0DC 0x2CC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_XBAR_INOUT20			0x0DC 0x2CC 0x634 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_08_ENET_1588_EVENT3_IN		0x0DC 0x2CC 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_JTAG_TDI				0x0E0 0x2D0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_FLEXPWM2_PWM3_A			0x0E0 0x2D0 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_ENET_RX_DATA02			0x0E0 0x2D0 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_SAI2_TX_DATA			0x0E0 0x2D0 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_CSI_DATA04			0x0E0 0x2D0 0x408 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_GPIO1_IO09			0x0E0 0x2D0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_XBAR_INOUT21			0x0E0 0x2D0 0x658 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_09_GPT2_CLK				0x0E0 0x2D0 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_JTAG_TDO				0x0E4 0x2D4 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_FLEXPWM1_PWM3_A			0x0E4 0x2D4 0x454 0x1 0x3
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_ENET_CRS				0x0E4 0x2D4 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_SAI2_MCLK				0x0E4 0x2D4 0x5B0 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_CSI_DATA03			0x0E4 0x2D4 0x404 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_GPIO1_IO10			0x0E4 0x2D4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_XBAR_INOUT22			0x0E4 0x2D4 0x638 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_10_ENET_1588_EVENT0_OUT		0x0E4 0x2D4 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_JTAG_TRSTB			0x0E8 0x2D8 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_FLEXPWM1_PWM3_B			0x0E8 0x2D8 0x464 0x1 0x3
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_ENET_COL				0x0E8 0x2D8 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_WDOG1_B				0x0E8 0x2D8 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_CSI_DATA02			0x0E8 0x2D8 0x400 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_GPIO1_IO11			0x0E8 0x2D8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_XBAR_INOUT23			0x0E8 0x2D8 0x63C 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_11_ENET_1588_EVENT0_IN		0x0E8 0x2D8 0x444 0x7 0x1
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_LPI2C4_SCL			0x0EC 0x2DC 0x4E4 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_CCM_PMIC_READY			0x0EC 0x2DC 0x3FC 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_LPUART1_TXD			0x0EC 0x2DC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_WDOG2_B				0x0EC 0x2DC 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_FLEXPWM1_PWM2_X			0x0EC 0x2DC 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_GPIO1_IO12			0x0EC 0x2DC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_ENET_1588_EVENT1_OUT		0x0EC 0x2DC 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_12_NMI				0x0EC 0x2DC 0x568 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_LPI2C4_SDA			0x0F0 0x2E0 0x4E8 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_GPT1_CLK				0x0F0 0x2E0 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_LPUART1_RXD			0x0F0 0x2E0 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_EWM_OUT_B				0x0F0 0x2E0 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_FLEXPWM1_PWM3_X			0x0F0 0x2E0 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_GPIO1_IO13			0x0F0 0x2E0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_ENET_1588_EVENT1_IN		0x0F0 0x2E0 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_13_REF_CLK_24M			0x0F0 0x2E0 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_USB_OTG2_OC			0x0F4 0x2E4 0x5CC 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_XBAR_INOUT24			0x0F4 0x2E4 0x640 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_LPUART1_CTS_B			0x0F4 0x2E4 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_ENET_1588_EVENT0_OUT		0x0F4 0x2E4 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_CSI_VSYNC				0x0F4 0x2E4 0x428 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_GPIO1_IO14			0x0F4 0x2E4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_14_FLEXCAN2_TX			0x0F4 0x2E4 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_USB_OTG2_PWR			0x0F8 0x2E8 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_XBAR_INOUT25			0x0F8 0x2E8 0x650 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_LPUART1_RTS_B			0x0F8 0x2E8 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_ENET_1588_EVENT0_IN		0x0F8 0x2E8 0x444 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_CSI_HSYNC				0x0F8 0x2E8 0x420 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_GPIO1_IO15			0x0F8 0x2E8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_FLEXCAN2_RX			0x0F8 0x2E8 0x450 0x6 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B0_15_WDOG1_WDOG_RST_B_DEB		0x0F8 0x2E8 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_USB_OTG2_ID			0x0FC 0x2EC 0x3F8 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_TMR3_TIMER0			0x0FC 0x2EC 0x57C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_LPUART2_CTS_B			0x0FC 0x2EC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_LPI2C1_SCL			0x0FC 0x2EC 0x4CC 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_WDOG1_B				0x0FC 0x2EC 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_GPIO1_IO16			0x0FC 0x2EC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_USDHC1_WP				0x0FC 0x2EC 0x5D8 0x6 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B1_00_KPP_ROW07				0x0FC 0x2EC 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_USB_OTG1_PWR			0x100 0x2F0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_TMR3_TIMER1			0x100 0x2F0 0x580 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_LPUART2_RTS_B			0x100 0x2F0 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_LPI2C1_SDA			0x100 0x2F0 0x4D0 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_CCM_PMIC_READY			0x100 0x2F0 0x3FC 0x4 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_GPIO1_IO17			0x100 0x2F0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_USDHC1_VSELECT			0x100 0x2F0 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_01_KPP_COL07				0x100 0x2F0 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_USB_OTG1_ID			0x104 0x2F4 0x3F4 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_TMR3_TIMER2			0x104 0x2F4 0x584 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_LPUART2_TXD			0x104 0x2F4 0x530 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_SPDIF_OUT				0x104 0x2F4 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_ENET_1588_EVENT2_OUT		0x104 0x2F4 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_GPIO1_IO18			0x104 0x2F4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_USDHC1_CD_B			0x104 0x2F4 0x5D4 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_02_KPP_ROW06				0x104 0x2F4 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_USB_OTG1_OC			0x108 0x2F8 0x5D0 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_TMR3_TIMER3			0x108 0x2F8 0x588 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_LPUART2_RXD			0x108 0x2F8 0x52C 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_SPDIF_IN				0x108 0x2F8 0x5C8 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_ENET_1588_EVENT2_IN		0x108 0x2F8 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_GPIO1_IO19			0x108 0x2F8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_USDHC2_CD_B			0x108 0x2F8 0x5E0 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_03_KPP_COL06				0x108 0x2F8 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_FLEXSPI_B_DATA3			0x10C 0x2FC 0x4C4 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_ENET_MDC				0x10C 0x2FC 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_LPUART3_CTS_B			0x10C 0x2FC 0x534 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_SPDIF_SR_CLK			0x10C 0x2FC 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_CSI_PIXCLK			0x10C 0x2FC 0x424 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_GPIO1_IO20			0x10C 0x2FC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_USDHC2_DATA0			0x10C 0x2FC 0x5E8 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_04_KPP_ROW05				0x10C 0x2FC 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_FLEXSPI_B_DATA2			0x110 0x300 0x4C0 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_ENET_MDIO				0x110 0x300 0x430 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_LPUART3_RTS_B			0x110 0x300 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_SPDIF_OUT				0x110 0x300 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_CSI_MCLK				0x110 0x300 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_GPIO1_IO21			0x110 0x300 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_USDHC2_DATA1			0x110 0x300 0x5EC 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_05_KPP_COL05				0x110 0x300 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_FLEXSPI_B_DATA1			0x114 0x304 0x4BC 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_LPI2C3_SDA			0x114 0x304 0x4E0 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_LPUART3_TXD			0x114 0x304 0x53C 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_SPDIF_LOCK			0x114 0x304 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_CSI_VSYNC				0x114 0x304 0x428 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_GPIO1_IO22			0x114 0x304 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_USDHC2_DATA2			0x114 0x304 0x5F0 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_06_KPP_ROW04				0x114 0x304 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_FLEXSPI_B_DATA0			0x118 0x308 0x4B8 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_LPI2C3_SCL			0x118 0x308 0x4DC 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_LPUART3_RXD			0x118 0x308 0x538 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_SPDIF_EXT_CLK			0x118 0x308 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_CSI_HSYNC				0x118 0x308 0x420 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_GPIO1_IO23			0x118 0x308 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_USDHC2_DATA3			0x118 0x308 0x5F4 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_07_KPP_COL04				0x118 0x308 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_FLEXSPI_A_SS1_B			0x11C 0x30C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_FLEXPWM4_PWM0_A			0x11C 0x30C 0x494 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_FLEXCAN1_TX			0x11C 0x30C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_CCM_PMIC_READY			0x11C 0x30C 0x3FC 0x3 0x3
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_CSI_DATA09			0x11C 0x30C 0x41C 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_GPIO1_IO24			0x11C 0x30C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_USDHC2_CMD			0x11C 0x30C 0x5E4 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_08_KPP_ROW03				0x11C 0x30C 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_FLEXSPI_A_DQS			0x120 0x310 0x4A4 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_FLEXPWM4_PWM1_A			0x120 0x310 0x498 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_FLEXCAN1_RX			0x120 0x310 0x44C 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_SAI1_MCLK				0x120 0x310 0x58C 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_CSI_DATA08			0x120 0x310 0x418 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_GPIO1_IO25			0x120 0x310 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_USDHC2_CLK			0x120 0x310 0x5DC 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_09_KPP_COL03				0x120 0x310 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_FLEXSPI_A_DATA3			0x124 0x314 0x4B4 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_WDOG1_B				0x124 0x314 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_LPUART8_TXD			0x124 0x314 0x564 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_SAI1_RX_SYNC			0x124 0x314 0x5A4 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_CSI_DATA07			0x124 0x314 0x414 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_GPIO1_IO26			0x124 0x314 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_USDHC2_WP				0x124 0x314 0x608 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_10_KPP_ROW02				0x124 0x314 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_FLEXSPI_A_DATA2			0x128 0x318 0x4B0 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_EWM_OUT_B				0x128 0x318 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_LPUART8_RXD			0x128 0x318 0x560 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_SAI1_RX_BCLK			0x128 0x318 0x590 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_CSI_DATA06			0x128 0x318 0x410 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_GPIO1_IO27			0x128 0x318 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_USDHC2_RESET_B			0x128 0x318 0x000 0x6 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_11_KPP_COL02				0x128 0x318 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_FLEXSPI_A_DATA1			0x12C 0x31C 0x4AC 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_ACMP1_OUT				0x12C 0x31C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_LPSPI3_PCS0			0x12C 0x31C 0x50C 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_SAI1_RX_DATA00			0x12C 0x31C 0x594 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_CSI_DATA05			0x12C 0x31C 0x40C 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_GPIO1_IO28			0x12C 0x31C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_USDHC2_DATA4			0x12C 0x31C 0x5F8 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_12_KPP_ROW01				0x12C 0x31C 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_FLEXSPI_A_DATA0			0x130 0x320 0x4A8 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_ACMP2_OUT				0x130 0x320 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_LPSPI3_SDI			0x130 0x320 0x514 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_SAI1_TX_DATA00			0x130 0x320 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_CSI_DATA04			0x130 0x320 0x408 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_GPIO1_IO29			0x130 0x320 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_USDHC2_DATA5			0x130 0x320 0x5FC 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_13_KPP_COL01				0x130 0x320 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_FLEXSPI_A_SCLK			0x134 0x324 0x4C8 0x0 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_ACMP3_OUT				0x134 0x324 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_LPSPI3_SDO			0x134 0x324 0x518 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_SAI1_TX_BCLK			0x134 0x324 0x5A8 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_CSI_DATA03			0x134 0x324 0x404 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_GPIO1_IO30			0x134 0x324 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_USDHC2_DATA6			0x134 0x324 0x600 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_14_KPP_ROW00				0x134 0x324 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_FLEXSPI_A_SS0_B			0x138 0x328 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_ACMP4_OUT				0x138 0x328 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_LPSPI3_SCK			0x138 0x328 0x510 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_SAI1_TX_SYNC			0x138 0x328 0x5AC 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_CSI_DATA02			0x138 0x328 0x400 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_GPIO1_IO31			0x138 0x328 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_USDHC2_DATA7			0x138 0x328 0x604 0x6 0x1
--#define MXRT1050_IOMUXC_GPIO_AD_B1_15_KPP_COL00				0x138 0x328 0x000 0x7 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_00_LCD_CLK				0x13C 0x32C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_00_TMR1_TIMER0				0x13C 0x32C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_00_MQS_RIGHT				0x13C 0x32C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_00_LPSPI4_PCS0				0x13C 0x32C 0x51C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_00_FLEXIO2_D00				0x13C 0x32C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_00_GPIO2_IO00				0x13C 0x32C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_00_SEMC_CSX1				0x13C 0x32C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_01_LCD_ENABLE				0x140 0x330 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_01_TMR1_TIMER1				0x140 0x330 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_01_MQS_LEFT				0x140 0x330 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_01_LPSPI4_SDI				0x140 0x330 0x524 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_01_FLEXIO2_D01				0x140 0x330 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_01_GPIO2_IO01				0x140 0x330 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_01_SEMC_CSX2				0x140 0x330 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_02_LCD_HSYNC				0x144 0x334 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_02_TMR1_TIMER2				0x144 0x334 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_02_FLEXCAN1_TX				0x144 0x334 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_02_LPSPI4_SDO				0x144 0x334 0x528 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_02_FLEXIO2_D02				0x144 0x334 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_02_GPIO2_IO02				0x144 0x334 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_02_SEMC_CSX3				0x144 0x334 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_03_LCD_VSYNC				0x148 0x338 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_03_TMR2_TIMER0				0x148 0x338 0x56C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_03_FLEXCAN1_RX				0x148 0x338 0x44C 0x2 0x3
--#define MXRT1050_IOMUXC_GPIO_B0_03_LPSPI4_SCK				0x148 0x338 0x520 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_03_FLEXIO2_D03				0x148 0x338 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_03_GPIO2_IO03				0x148 0x338 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_03_WDOG2_RESET_B_DEB			0x148 0x338 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_04_LCD_DATA00				0x14C 0x33C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_04_TMR2_TIMER1				0x14C 0x33C 0x570 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_04_LPI2C2_SCL				0x14C 0x33C 0x4D4 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_04_ARM_TRACE00				0x14C 0x33C 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_04_FLEXIO2_D04				0x14C 0x33C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_04_GPIO2_IO04				0x14C 0x33C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_04_SRC_BT_CFG00				0x14C 0x33C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_05_LCD_DATA01				0x150 0x340 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_05_TMR2_TIMER2				0x150 0x340 0x574 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_05_LPI2C2_SDA				0x150 0x340 0x4D8 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_05_ARM_TRACE01				0x150 0x340 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_05_FLEXIO2_D05				0x150 0x340 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_05_GPIO2_IO05				0x150 0x340 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_05_SRC_BT_CFG01				0x150 0x340 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_06_LCD_DATA02				0x154 0x344 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_06_TMR3_TIMER0				0x154 0x344 0x57C 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_06_FLEXPWM2_PWM0_A			0x154 0x344 0x478 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_06_ARM_TRACE02				0x154 0x344 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_06_FLEXIO2_D06				0x154 0x344 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_06_GPIO2_IO06				0x154 0x344 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_06_SRC_BT_CFG02				0x154 0x344 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_07_LCD_DATA03				0x158 0x348 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_07_TMR3_TIMER1				0x158 0x348 0x580 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_07_FLEXPWM2_PWM0_B			0x158 0x348 0x488 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_07_ARM_TRACE03				0x158 0x348 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_07_FLEXIO2_D07				0x158 0x348 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_07_GPIO2_IO07				0x158 0x348 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_07_SRC_BT_CFG03				0x158 0x348 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_08_LCD_DATA04				0x15C 0x34C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_08_TMR3_TIMER2				0x15C 0x34C 0x584 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_08_FLEXPWM2_PWM1_A			0x15C 0x34C 0x47C 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_08_LPUART3_TXD				0x15C 0x34C 0x53C 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_08_FLEXIO2_D08				0x15C 0x34C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_08_GPIO2_IO08				0x15C 0x34C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_08_SRC_BT_CFG04				0x15C 0x34C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_09_LCD_DATA05				0x160 0x350 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_09_TMR4_TIMER0				0x160 0x350 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_09_FLEXPWM2_PWM1_B			0x160 0x350 0x48C 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_09_LPUART3_RXD				0x160 0x350 0x538 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_09_FLEXIO2_D09				0x160 0x350 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_09_GPIO2_IO09				0x160 0x350 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_09_SRC_BT_CFG05				0x160 0x350 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_10_LCD_DATA06				0x164 0x354 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_10_TMR4_TIMER1				0x164 0x354 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_10_FLEXPWM2_PWM2_A			0x164 0x354 0x480 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_10_SAI1_TX_DATA03			0x164 0x354 0x598 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_10_FLEXIO2_D10				0x164 0x354 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_10_GPIO2_IO10				0x164 0x354 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_10_SRC_BT_CFG06				0x164 0x354 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_11_LCD_DATA07				0x168 0x358 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_11_TMR4_TIMER2				0x168 0x358 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_11_FLEXPWM2_PWM2_B			0x168 0x358 0x490 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_11_SAI1_TX_DATA02			0x168 0x358 0x59C 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_11_FLEXIO2_D11				0x168 0x358 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_11_GPIO2_IO11				0x168 0x358 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_11_SRC_BT_CFG07				0x168 0x358 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_12_LCD_DATA08				0x16C 0x35C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_12_XBAR_INOUT10				0x16C 0x35C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_12_ARM_TRACE_CLK			0x16C 0x35C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_12_SAI1_TX_DATA01			0x16C 0x35C 0x5A0 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B0_12_FLEXIO2_D12				0x16C 0x35C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_12_GPIO2_IO12				0x16C 0x35C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_12_SRC_BT_CFG08				0x16C 0x35C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_13_LCD_DATA09				0x170 0x360 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_13_XBAR_INOUT11				0x170 0x360 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_13_ARM_TRACE_SWO			0x170 0x360 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_13_SAI1_MCLK				0x170 0x360 0x58C 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_13_FLEXIO2_D13				0x170 0x360 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_13_GPIO2_IO13				0x170 0x360 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_13_SRC_BT_CFG09				0x170 0x360 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_14_LCD_DATA10				0x174 0x364 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_14_XBAR_INOUT12				0x174 0x364 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_14_ARM_CM7_TXEV				0x174 0x364 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_14_SAI1_RX_SYNC				0x174 0x364 0x5A4 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_14_FLEXIO2_D14				0x174 0x364 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_14_GPIO2_IO14				0x174 0x364 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_14_SRC_BT_CFG10				0x174 0x364 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B0_15_LCD_DATA11				0x178 0x368 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_15_XBAR_INOUT13				0x178 0x368 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_15_ARM_CM7_RXEV				0x178 0x368 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_15_SAI1_RX_BCLK				0x178 0x368 0x590 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B0_15_FLEXIO2_D15				0x178 0x368 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_15_GPIO2_IO15				0x178 0x368 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B0_15_SRC_BT_CFG11				0x178 0x368 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_00_LCD_DATA12				0x17C 0x36C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_00_XBAR_INOUT14				0x17C 0x36C 0x644 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_00_LPUART4_TXD				0x17C 0x36C 0x544 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_00_SAI1_RX_DATA00			0x17C 0x36C 0x594 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_00_FLEXIO2_D16				0x17C 0x36C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_00_GPIO2_IO16				0x17C 0x36C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_00_FLEXPWM1_PWM3_A			0x17C 0x36C 0x454 0x6 0x4
--
--#define MXRT1050_IOMUXC_GPIO_B1_01_LCD_DATA13				0x180 0x370 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_01_XBAR_INOUT15				0x180 0x370 0x648 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_01_LPUART4_RXD				0x180 0x370 0x540 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_01_SAI1_TX_DATA00			0x180 0x370 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_01_FLEXIO2_D17				0x180 0x370 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_01_GPIO2_IO17				0x180 0x370 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_01_FLEXPWM1_PWM3_B			0x180 0x370 0x464 0x6 0x4
--
--#define MXRT1050_IOMUXC_GPIO_B1_02_LCD_DATA14				0x184 0x374 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_02_XBAR_INOUT16				0x184 0x374 0x64C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_02_LPSPI4_PCS2				0x184 0x374 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_02_SAI1_TX_BCLK				0x184 0x374 0x5A8 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_02_FLEXIO2_D18				0x184 0x374 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_02_GPIO2_IO18				0x184 0x374 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_02_FLEXPWM2_PWM3_A			0x184 0x374 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_03_LCD_DATA15				0x188 0x378 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_03_XBAR_INOUT17				0x188 0x378 0x62C 0x1 0x3
--#define MXRT1050_IOMUXC_GPIO_B1_03_LPSPI4_PCS1				0x188 0x378 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_03_SAI1_TX_SYNC				0x188 0x378 0x5AC 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_03_FLEXIO2_D19				0x188 0x378 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_03_GPIO2_IO19				0x188 0x378 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_03_FLEXPWM2_PWM3_B			0x188 0x378 0x484 0x6 0x3
--
--#define MXRT1050_IOMUXC_GPIO_B1_04_LCD_DATA16				0x18C 0x37C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_04_LPSPI4_PCS0				0x18C 0x37C 0x51C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_04_CSI_DATA15				0x18C 0x37C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_04_ENET_RX_DATA00			0x18C 0x37C 0x434 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_04_FLEXIO2_D20				0x18C 0x37C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_04_GPIO2_IO20				0x18C 0x37C 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_05_LCD_DATA17				0x190 0x380 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_05_LPSPI4_SDI				0x190 0x380 0x524 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_05_CSI_DATA14				0x190 0x380 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_05_ENET_RX_DATA01			0x190 0x380 0x438 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_05_FLEXIO2_D21				0x190 0x380 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_05_GPIO2_IO21				0x190 0x380 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_06_LCD_DATA18				0x194 0x384 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_06_LPSPI4_SDO				0x194 0x384 0x528 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_06_CSI_DATA13				0x194 0x384 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_06_ENET_RX_EN				0x194 0x384 0x43C 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_06_FLEXIO2_D22				0x194 0x384 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_06_GPIO2_IO22				0x194 0x384 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_07_LCD_DATA19				0x198 0x388 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_07_LPSPI4_SCK				0x198 0x388 0x520 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_07_CSI_DATA12				0x198 0x388 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_07_ENET_TX_DATA00			0x198 0x388 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_07_FLEXIO2_D23				0x198 0x388 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_07_GPIO2_IO23				0x198 0x388 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_08_LCD_DATA20				0x19C 0x38C 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_08_TMR1_TIMER3				0x19C 0x38C 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_08_CSI_DATA11				0x19C 0x38C 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_08_ENET_TX_DATA01			0x19C 0x38C 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_08_FLEXIO2_D24				0x19C 0x38C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_08_GPIO2_IO24				0x19C 0x38C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_08_FLEXCAN2_TX				0x19C 0x38C 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_09_LCD_DATA21				0x1A0 0x390 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_09_TMR2_TIMER3				0x1A0 0x390 0x578 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_09_CSI_DATA10				0x1A0 0x390 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_09_ENET_TX_EN				0x1A0 0x390 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_09_FLEXIO2_D25				0x1A0 0x390 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_09_GPIO2_IO25				0x1A0 0x390 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_09_FLEXCAN2_RX				0x1A0 0x390 0x450 0x6 0x3
--
--#define MXRT1050_IOMUXC_GPIO_B1_10_LCD_DATA22				0x1A4 0x394 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_10_TMR3_TIMER3				0x1A4 0x394 0x588 0x1 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_10_CSI_DATA00				0x1A4 0x394 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_10_ENET_TX_CLK				0x1A4 0x394 0x448 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_10_FLEXIO2_D26				0x1A4 0x394 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_10_GPIO2_IO26				0x1A4 0x394 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_10_ENET_REF_CLK				0x1A4 0x394 0x42C 0x6 0x1
--
--#define MXRT1050_IOMUXC_GPIO_B1_11_LCD_DATA23				0x1A8 0x398 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_11_TMR4_TIMER3				0x1A8 0x398 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_11_CSI_DATA01				0x1A8 0x398 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_11_ENET_RX_ER				0x1A8 0x398 0x440 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_11_FLEXIO2_D27				0x1A8 0x398 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_11_GPIO2_IO27				0x1A8 0x398 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_11_LPSPI4_PCS3				0x1A8 0x398 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_12_LPUART5_TXD				0x1AC 0x39C 0x54C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_12_CSI_PIXCLK				0x1AC 0x39C 0x424 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_12_ENET_1588_EVENT0_IN			0x1AC 0x39C 0x444 0x3 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_12_FLEXIO2_D28				0x1AC 0x39C 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_12_GPIO2_IO28				0x1AC 0x39C 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_12_USDHC1_CD_B				0x1AC 0x39C 0x5D4 0x6 0x2
--
--#define MXRT1050_IOMUXC_GPIO_B1_13_WDOG1_B				0x1B0 0x3A0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_13_LPUART5_RXD				0x1B0 0x3A0 0x548 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_13_CSI_VSYNC				0x1B0 0x3A0 0x428 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_13_ENET_1588_EVENT0_OUT			0x1B0 0x3A0 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_13_FLEXIO2_D29				0x1B0 0x3A0 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_13_GPIO2_IO29				0x1B0 0x3A0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_13_USDHC1_WP				0x1B0 0x3A0 0x5D8 0x6 0x3
--
--#define MXRT1050_IOMUXC_GPIO_B1_14_ENET_MDC				0x1B4 0x3A4 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_14_FLEXPWM4_PWM2_A			0x1B4 0x3A4 0x49C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_14_CSI_HSYNC				0x1B4 0x3A4 0x420 0x2 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_14_XBAR_INOUT02				0x1B4 0x3A4 0x60C 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_14_FLEXIO2_D30				0x1B4 0x3A4 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_14_GPIO2_IO30				0x1B4 0x3A4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_14_USDHC1_VSELECT			0x1B4 0x3A4 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_B1_15_ENET_MDIO				0x1B8 0x3A8 0x430 0x0 0x2
--#define MXRT1050_IOMUXC_GPIO_B1_15_FLEXPWM4_PWM3_A			0x1B8 0x3A8 0x4A0 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_15_CSI_MCLK				0x1B8 0x3A8 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_15_XBAR_INOUT03				0x1B8 0x3A8 0x610 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_B1_15_FLEXIO2_D31				0x1B8 0x3A8 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_15_GPIO2_IO31				0x1B8 0x3A8 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_B1_15_USDHC1_RESET_B			0x1B8 0x3A8 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_USDHC1_CMD			0x1BC 0x3AC 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_FLEXPWM1_PWM0_A			0x1BC 0x3AC 0x458 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_LPI2C3_SCL			0x1BC 0x3AC 0x4DC 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_XBAR_INOUT04			0x1BC 0x3AC 0x614 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_LPSPI1_SCK			0x1BC 0x3AC 0x4F0 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_GPIO3_IO12			0x1BC 0x3AC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_00_FLEXSPI_A_SS1_B			0x1BC 0x3AC 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_USDHC1_CLK			0x1C0 0x3B0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_FLEXPWM1_PWM0_B			0x1C0 0x3B0 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_LPI2C3_SDA			0x1C0 0x3B0 0x4E0 0x2 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_XBAR_INOUT05			0x1C0 0x3B0 0x618 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_LPSPI1_PCS0			0x1C0 0x3B0 0x4EC 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_GPIO3_IO13			0x1C0 0x3B0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_01_FLEXSPI_B_SS1_B			0x1C0 0x3B0 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B0_02_USDHC1_DATA0			0x1C4 0x3B4 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_02_FLEXPWM1_PWM1_A			0x1C4 0x3B4 0x45C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_02_LPUART8_CTS_B			0x1C4 0x3B4 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_02_XBAR_INOUT06			0x1C4 0x3B4 0x61C 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_02_LPSPI1_SDO			0x1C4 0x3B4 0x4F8 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_02_GPIO3_IO14			0x1C4 0x3B4 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B0_03_USDHC1_DATA1			0x1C8 0x3B8 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_03_FLEXPWM1_PWM1_B			0x1C8 0x3B8 0x46C 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_03_LPUART8_RTS_B			0x1C8 0x3B8 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_03_XBAR_INOUT07			0x1C8 0x3B8 0x620 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_03_LPSPI1_SDI			0x1C8 0x3B8 0x4F4 0x4 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_03_GPIO3_IO15			0x1C8 0x3B8 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_USDHC1_DATA2			0x1CC 0x3BC 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_FLEXPWM1_PWM2_A			0x1CC 0x3BC 0x460 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_LPUART8_TXD			0x1CC 0x3BC 0x564 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_XBAR_INOUT08			0x1CC 0x3BC 0x624 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_FLEXSPI_B_SS0_B			0x1CC 0x3BC 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_GPIO3_IO16			0x1CC 0x3BC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_04_CCM_CLKO1				0x1CC 0x3BC 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_USDHC1_DATA3			0x1D0 0x3C0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_FLEXPWM1_PWM2_B			0x1D0 0x3C0 0x470 0x1 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_LPUART8_RXD			0x1D0 0x3C0 0x560 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_XBAR_INOUT09			0x1D0 0x3C0 0x628 0x3 0x1
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_FLEXSPI_B_DQS			0x1D0 0x3C0 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_GPIO3_IO17			0x1D0 0x3C0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B0_05_CCM_CLKO2				0x1D0 0x3C0 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_00_USDHC2_DATA3			0x1D4 0x3C4 0x5F4 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_00_FLEXSPI_B_DATA3			0x1D4 0x3C4 0x4C4 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_00_FLEXPWM1_PWM3_A			0x1D4 0x3C4 0x454 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_00_SAI1_TX_DATA03			0x1D4 0x3C4 0x598 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_00_LPUART4_TXD			0x1D4 0x3C4 0x544 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_00_GPIO3_IO00			0x1D4 0x3C4 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_01_USDHC2_DATA2			0x1D8 0x3C8 0x5F0 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_01_FLEXSPI_B_DATA2			0x1D8 0x3C8 0x4C0 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_01_FLEXPWM1_PWM3_B			0x1D8 0x3C8 0x464 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_01_SAI1_TX_DATA02			0x1D8 0x3C8 0x59C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_01_LPUART4_RXD			0x1D8 0x3C8 0x540 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_01_GPIO3_IO01			0x1D8 0x3C8 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_USDHC2_DATA1			0x1DC 0x3CC 0x5EC 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_FLEXSPI_B_DATA1			0x1DC 0x3CC 0x4BC 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_FLEXPWM2_PWM3_A			0x1DC 0x3CC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_SAI1_TX_DATA01			0x1DC 0x3CC 0x5A0 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_FLEXCAN1_TX			0x1DC 0x3CC 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_GPIO3_IO02			0x1DC 0x3CC 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_02_CCM_WAIT				0x1DC 0x3CC 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_USDHC2_DATA0			0x1E0 0x3D0 0x5E8 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_FLEXSPI_B_DATA0			0x1E0 0x3D0 0x4B8 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_FLEXPWM2_PWM3_B			0x1E0 0x3D0 0x484 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_SAI1_MCLK				0x1E0 0x3D0 0x58C 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_FLEXCAN1_RX			0x1E0 0x3D0 0x44C 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_GPIO3_IO03			0x1E0 0x3D0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_03_CCM_PMIC_READY			0x1E0 0x3D0 0x3FC 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_USDHC2_CLK			0x1E4 0x3D4 0x5DC 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_FLEXSPI_B_SCLK			0x1E4 0x3D4 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_LPI2C1_SCL			0x1E4 0x3D4 0x4CC 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_SAI1_RX_SYNC			0x1E4 0x3D4 0x5A4 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_FLEXCAN1_A_SS1_B			0x1E4 0x3D4 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_GPIO3_IO04			0x1E4 0x3D4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_04_CCM_STOP				0x1E4 0x3D4 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_05_USDHC2_CMD			0x1E8 0x3D8 0x5E4 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_05_FLEXSPI_A_DQS			0x1E8 0x3D8 0x4A4 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_05_LPI2C1_SDA			0x1E8 0x3D8 0x4D0 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_05_SAI1_RX_BCLK			0x1E8 0x3D8 0x590 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_05_FLEXCAN1_B_SS0_B			0x1E8 0x3D8 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_05_GPIO3_IO05			0x1E8 0x3D8 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_06_USDHC2_RESET_B			0x1EC 0x3DC 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_06_FLEXSPI_A_SS0_B			0x1EC 0x3DC 0x000 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_06_LPUART7_CTS_B			0x1EC 0x3DC 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_06_SAI1_RX_DATA00			0x1EC 0x3DC 0x594 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_06_LPSPI2_PCS0			0x1EC 0x3DC 0x4FC 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_06_GPIO3_IO06			0x1EC 0x3DC 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_SEMC_CSX1				0x1F0 0x3E0 0x000 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_FLEXSPI_A_SCLK			0x1F0 0x3E0 0x4C8 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_LPUART7_RTS_B			0x1F0 0x3E0 0x000 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_SAI1_TX_DATA00			0x1F0 0x3E0 0x000 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_LPSPI2_SCK			0x1F0 0x3E0 0x500 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_GPIO3_IO07			0x1F0 0x3E0 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_07_CCM_REF_EN_B			0x1F0 0x3E0 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_USDHC2_DATA4			0x1F4 0x3E4 0x5F8 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_FLEXSPI_A_DATA0			0x1F4 0x3E4 0x4A8 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_LPUART7_TXD			0x1F4 0x3E4 0x55C 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_SAI1_TX_BLCK			0x1F4 0x3E4 0x5A8 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_LPSPI2_SDO			0x1F4 0x3E4 0x508 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_GPIO3_IO08			0x1F4 0x3E4 0x000 0x5 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_08_SEMC_CSX2				0x1F4 0x3E4 0x000 0x6 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_09_USDHC2_DATA5			0x1F8 0x3E8 0x5FC 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_09_FLEXSPI_A_DATA1			0x1F8 0x3E8 0x4AC 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_09_LPUART7_RXD			0x1F8 0x3E8 0x558 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_09_SAI1_TX_SYNC			0x1F8 0x3E8 0x5AC 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_09_LPSPI2_SDI			0x1F8 0x3E8 0x504 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_09_GPIO3_IO09			0x1F8 0x3E8 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_10_USDHC2_DATA6			0x1FC 0x3EC 0x600 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_10_FLEXSPI_A_DATA2			0x1FC 0x3EC 0x4B0 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_10_LPUART2_RXD			0x1FC 0x3EC 0x52C 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_10_LPI2C2_SDA			0x1FC 0x3EC 0x4D8 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_10_LPSPI2_PCS2			0x1FC 0x3EC 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_10_GPIO3_IO10			0x1FC 0x3EC 0x000 0x5 0x0
--
--#define MXRT1050_IOMUXC_GPIO_SD_B1_11_USDHC2_DATA7			0x200 0x3F0 0x604 0x0 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_11_FLEXSPI_A_DATA3			0x200 0x3F0 0x4B4 0x1 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_11_LPUART2_TXD			0x200 0x3F0 0x530 0x2 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_11_LPI2C2_SCL			0x200 0x3F0 0x4D4 0x3 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_11_LPSPI2_PCS3			0x200 0x3F0 0x000 0x4 0x0
--#define MXRT1050_IOMUXC_GPIO_SD_B1_11_GPIO3_IO11			0x200 0x3F0 0x000 0x5 0x0
--
--#endif /* _DT_BINDINGS_PINCTRL_IMXRT1050_PINFUNC_H */
-diff --git a/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi b/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
-deleted file mode 100644
-index b0bad0d1ba36..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
-+++ /dev/null
-@@ -1,160 +0,0 @@
--// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
--/*
-- * Copyright (C) 2019
-- * Author(s): Giulio Benetti <giulio.benetti@benettiengineering.com>
-- */
--
--#include "../../armv7-m.dtsi"
--#include <dt-bindings/interrupt-controller/arm-gic.h>
--#include <dt-bindings/clock/imxrt1050-clock.h>
--#include <dt-bindings/gpio/gpio.h>
--
--/ {
--	#address-cells = <1>;
--	#size-cells = <1>;
--
--	clocks {
--		osc: osc {
--			compatible = "fixed-clock";
--			#clock-cells = <0>;
--			clock-frequency = <24000000>;
--		};
--
--		osc3M: osc3M {
--			compatible = "fixed-clock";
--			#clock-cells = <0>;
--			clock-frequency = <3000000>;
--		};
--	};
--
--	soc {
--		lpuart1: serial@40184000 {
--			compatible = "fsl,imxrt1050-lpuart", "fsl,imx7ulp-lpuart";
--			reg = <0x40184000 0x4000>;
--			interrupts = <20>;
--			clocks = <&clks IMXRT1050_CLK_LPUART1>;
--			clock-names = "ipg";
--			status = "disabled";
--		};
--
--		iomuxc: pinctrl@401f8000 {
--			compatible = "fsl,imxrt1050-iomuxc";
--			reg = <0x401f8000 0x4000>;
--			fsl,mux_mask = <0x7>;
--		};
--
--		anatop: anatop@400d8000 {
--			compatible = "fsl,imxrt-anatop";
--			reg = <0x400d8000 0x4000>;
--		};
--
--		clks: clock-controller@400fc000 {
--			compatible = "fsl,imxrt1050-ccm";
--			reg = <0x400fc000 0x4000>;
--			interrupts = <95>, <96>;
--			clocks = <&osc>;
--			clock-names = "osc";
--			#clock-cells = <1>;
--			assigned-clocks = <&clks IMXRT1050_CLK_PLL1_BYPASS>,
--				<&clks IMXRT1050_CLK_PLL1_BYPASS>,
--				<&clks IMXRT1050_CLK_PLL2_BYPASS>,
--				<&clks IMXRT1050_CLK_PLL3_BYPASS>,
--				<&clks IMXRT1050_CLK_PLL3_PFD1_664_62M>,
--				<&clks IMXRT1050_CLK_PLL2_PFD2_396M>;
--			assigned-clock-parents = <&clks IMXRT1050_CLK_PLL1_REF_SEL>,
--				<&clks IMXRT1050_CLK_PLL1_ARM>,
--				<&clks IMXRT1050_CLK_PLL2_SYS>,
--				<&clks IMXRT1050_CLK_PLL3_USB_OTG>,
--				<&clks IMXRT1050_CLK_PLL3_USB_OTG>,
--				<&clks IMXRT1050_CLK_PLL2_SYS>;
--		};
--
--		edma1: dma-controller@400e8000 {
--			#dma-cells = <2>;
--			compatible = "fsl,imx7ulp-edma";
--			reg = <0x400e8000 0x4000>,
--				<0x400ec000 0x4000>;
--			dma-channels = <32>;
--			interrupts = <0>, <1>, <2>, <3>, <4>, <5>, <6>, <7>, <8>,
--				<9>, <10>, <11>, <12>, <13>, <14>, <15>, <16>;
--			clock-names = "dma", "dmamux0";
--			clocks = <&clks IMXRT1050_CLK_DMA>,
--				 <&clks IMXRT1050_CLK_DMA_MUX>;
--		};
--
--		usdhc1: mmc@402c0000 {
--			compatible = "fsl,imxrt1050-usdhc", "fsl,imx6sl-usdhc";
--			reg = <0x402c0000 0x4000>;
--			interrupts = <110>;
--			clocks = <&clks IMXRT1050_CLK_IPG_PDOF>,
--				<&clks IMXRT1050_CLK_AHB_PODF>,
--				<&clks IMXRT1050_CLK_USDHC1>;
--			clock-names = "ipg", "ahb", "per";
--			bus-width = <4>;
--			fsl,wp-controller;
--			no-1-8-v;
--			max-frequency = <200000000>;
--			fsl,tuning-start-tap = <20>;
--			fsl,tuning-step = <2>;
--			status = "disabled";
--		};
--
--		gpio1: gpio@401b8000 {
--			compatible = "fsl,imxrt1050-gpio", "fsl,imx35-gpio";
--			reg = <0x401b8000 0x4000>;
--			interrupts = <80>, <81>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--
--		gpio2: gpio@401bc000 {
--			compatible = "fsl,imxrt1050-gpio", "fsl,imx35-gpio";
--			reg = <0x401bc000 0x4000>;
--			interrupts = <82>, <83>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--
--		gpio3: gpio@401c0000 {
--			compatible = "fsl,imxrt1050-gpio", "fsl,imx35-gpio";
--			reg = <0x401c0000 0x4000>;
--			interrupts = <84>, <85>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--
--		gpio4: gpio@401c4000 {
--			compatible = "fsl,imxrt1050-gpio", "fsl,imx35-gpio";
--			reg = <0x401c4000 0x4000>;
--			interrupts = <86>, <87>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--
--		gpio5: gpio@400c0000 {
--			compatible = "fsl,imxrt1050-gpio", "fsl,imx35-gpio";
--			reg = <0x400c0000 0x4000>;
--			interrupts = <88>, <89>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--
--		gpt: timer@401ec000 {
--			compatible = "fsl,imxrt1050-gpt", "fsl,imx6dl-gpt", "fsl,imx6sl-gpt";
--			reg = <0x401ec000 0x4000>;
--			interrupts = <100>;
--			clocks = <&osc3M>;
--			clock-names = "per";
--		};
--	};
--};
-diff --git a/arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h b/arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h
-deleted file mode 100644
-index 3b9fff2f08e1..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imxrt1170-pinfunc.h
-+++ /dev/null
-@@ -1,1561 +0,0 @@
--/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
--/*
-- * Copyright (C) 2021
-- * Author(s): Jesse Taube <Mr.Bossman075@gmail.com>
-- */
--
--#ifndef _DT_BINDINGS_PINCTRL_IMXRT1170_PINFUNC_H
--#define _DT_BINDINGS_PINCTRL_IMXRT1170_PINFUNC_H
--
--#define IMX_PAD_SION		0x40000000
--
--/*
-- * The pin function ID is a tuple of
-- * <mux_reg conf_reg input_reg mux_mode input_val>
-- */
--
--#define IOMUXC_GPIO_LPSR_00_FLEXCAN3_TX				0x000 0x040 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_00_MIC_CLK				0x000 0x040 0x0 0x1 0x0
--#define IOMUXC_GPIO_LPSR_00_MQS_RIGHT				0x000 0x040 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_00_ARM_CM4_EVENTO			0x000 0x040 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_00_GPIO_MUX6_IO00			0x000 0x040 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_00_LPUART12_TXD			0x000 0x040 0x0B0 0x6 0x0
--#define IOMUXC_GPIO_LPSR_00_SAI4_MCLK				0x000 0x040 0x0C8 0x7 0x0
--#define IOMUXC_GPIO_LPSR_00_GPIO12_IO00				0x000 0x040 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_01_FLEXCAN3_RX				0x004 0x044 0x080 0x0 0x0
--#define IOMUXC_GPIO_LPSR_01_MIC_BITSTREAM0			0x004 0x044 0x0B4 0x1 0x0
--#define IOMUXC_GPIO_LPSR_01_MQS_LEFT				0x004 0x044 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_01_ARM_CM4_EVENTI			0x004 0x044 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_01_GPIO_MUX6_IO01			0x004 0x044 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_01_LPUART12_RXD			0x004 0x044 0x0AC 0x6 0x0
--#define IOMUXC_GPIO_LPSR_01_GPIO12_IO01				0x004 0x044 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_02_GPIO12_IO02				0x008 0x048 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_02_SRC_BOOT_MODE00			0x008 0x048 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_02_LPSPI5_SCK				0x008 0x048 0x098 0x1 0x0
--#define IOMUXC_GPIO_LPSR_02_SAI4_TX_DATA			0x008 0x048 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_02_MQS_RIGHT				0x008 0x048 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_02_GPIO_MUX6_IO02			0x008 0x048 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_LPSR_03_SRC_BOOT_MODE01			0x00C 0x04C 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_03_LPSPI5_PCS0				0x00C 0x04C 0x094 0x1 0x0
--#define IOMUXC_GPIO_LPSR_03_SAI4_TX_SYNC			0x00C 0x04C 0x0DC 0x2 0x0
--#define IOMUXC_GPIO_LPSR_03_MQS_LEFT				0x00C 0x04C 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_03_GPIO_MUX6_IO03			0x00C 0x04C 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_03_GPIO12_IO03				0x00C 0x04C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_04_LPI2C5_SDA				0x010 0x050 0x088 0x0 0x0
--#define IOMUXC_GPIO_LPSR_04_LPSPI5_SOUT				0x010 0x050 0x0A0 0x1 0x0
--#define IOMUXC_GPIO_LPSR_04_SAI4_TX_BCLK			0x010 0x050 0x0D8 0x2 0x0
--#define IOMUXC_GPIO_LPSR_04_LPUART12_RTS_B			0x010 0x050 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_04_GPIO_MUX6_IO04			0x010 0x050 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_04_LPUART11_TXD			0x010 0x050 0x0A8 0x6 0x0
--#define IOMUXC_GPIO_LPSR_04_GPIO12_IO04				0x010 0x050 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_05_GPIO12_IO05				0x014 0x054 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_05_LPI2C5_SCL				0x014 0x054 0x084 0x0 0x0
--#define IOMUXC_GPIO_LPSR_05_LPSPI5_SIN				0x014 0x054 0x09C 0x1 0x0
--#define IOMUXC_GPIO_LPSR_05_SAI4_MCLK				0x014 0x054 0x0C8 0x2 0x1
--#define IOMUXC_GPIO_LPSR_05_LPUART12_CTS_B			0x014 0x054 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_05_GPIO_MUX6_IO05			0x014 0x054 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_05_LPUART11_RXD			0x014 0x054 0x0A4 0x6 0x0
--#define IOMUXC_GPIO_LPSR_05_NMI_GLUE_NMI			0x014 0x054 0x0C4 0x7 0x0
--
--#define IOMUXC_GPIO_LPSR_06_LPI2C6_SDA				0x018 0x058 0x090 0x0 0x0
--#define IOMUXC_GPIO_LPSR_06_SAI4_RX_DATA			0x018 0x058 0x0D0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_06_LPUART12_TXD			0x018 0x058 0x0B0 0x3 0x1
--#define IOMUXC_GPIO_LPSR_06_LPSPI6_PCS3				0x018 0x058 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_06_GPIO_MUX6_IO06			0x018 0x058 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_06_FLEXCAN3_TX				0x018 0x058 0x0 0x6 0x0
--#define IOMUXC_GPIO_LPSR_06_PIT2_TRIGGER3			0x018 0x058 0x0 0x7 0x0
--#define IOMUXC_GPIO_LPSR_06_LPSPI5_PCS1				0x018 0x058 0x0 0x8 0x0
--#define IOMUXC_GPIO_LPSR_06_GPIO12_IO06				0x018 0x058 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_07_LPI2C6_SCL				0x01C 0x05C 0x08C 0x0 0x0
--#define IOMUXC_GPIO_LPSR_07_SAI4_RX_BCLK			0x01C 0x05C 0x0CC 0x2 0x0
--#define IOMUXC_GPIO_LPSR_07_LPUART12_RXD			0x01C 0x05C 0x0AC 0x3 0x1
--#define IOMUXC_GPIO_LPSR_07_LPSPI6_PCS2				0x01C 0x05C 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_07_GPIO_MUX6_IO07			0x01C 0x05C 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_07_FLEXCAN3_RX				0x01C 0x05C 0x080 0x6 0x1
--#define IOMUXC_GPIO_LPSR_07_PIT2_TRIGGER2			0x01C 0x05C 0x0 0x7 0x0
--#define IOMUXC_GPIO_LPSR_07_LPSPI5_PCS2				0x01C 0x05C 0x0 0x8 0x0
--#define IOMUXC_GPIO_LPSR_07_GPIO12_IO07				0x01C 0x05C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_08_GPIO12_IO08				0x020 0x060 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_08_LPUART11_TXD			0x020 0x060 0x0A8 0x0 0x1
--#define IOMUXC_GPIO_LPSR_08_FLEXCAN3_TX				0x020 0x060 0x0 0x1 0x0
--#define IOMUXC_GPIO_LPSR_08_SAI4_RX_SYNC			0x020 0x060 0x0D4 0x2 0x0
--#define IOMUXC_GPIO_LPSR_08_MIC_CLK				0x020 0x060 0x0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_08_LPSPI6_PCS1				0x020 0x060 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_08_GPIO_MUX6_IO08			0x020 0x060 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_08_LPI2C5_SDA				0x020 0x060 0x088 0x6 0x1
--#define IOMUXC_GPIO_LPSR_08_PIT2_TRIGGER1			0x020 0x060 0x0 0x7 0x0
--#define IOMUXC_GPIO_LPSR_08_LPSPI5_PCS3				0x020 0x060 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_LPSR_09_GPIO12_IO09				0x024 0x064 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_09_LPUART11_RXD			0x024 0x064 0x0A4 0x0 0x1
--#define IOMUXC_GPIO_LPSR_09_FLEXCAN3_RX				0x024 0x064 0x080 0x1 0x2
--#define IOMUXC_GPIO_LPSR_09_PIT2_TRIGGER0			0x024 0x064 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_09_MIC_BITSTREAM0			0x024 0x064 0x0B4 0x3 0x1
--#define IOMUXC_GPIO_LPSR_09_LPSPI6_PCS0				0x024 0x064 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_09_GPIO_MUX6_IO09			0x024 0x064 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_09_LPI2C5_SCL				0x024 0x064 0x084 0x6 0x1
--#define IOMUXC_GPIO_LPSR_09_SAI4_TX_DATA			0x024 0x064 0x0 0x7 0x0
--
--#define IOMUXC_GPIO_LPSR_10_GPIO12_IO10				0x028 0x068 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_10_JTAG_MUX_TRSTB			0x028 0x068 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_10_LPUART11_CTS_B			0x028 0x068 0x0 0x1 0x0
--#define IOMUXC_GPIO_LPSR_10_LPI2C6_SDA				0x028 0x068 0x090 0x2 0x1
--#define IOMUXC_GPIO_LPSR_10_MIC_BITSTREAM1			0x028 0x068 0x0B8 0x3 0x0
--#define IOMUXC_GPIO_LPSR_10_LPSPI6_SCK				0x028 0x068 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_10_GPIO_MUX6_IO10			0x028 0x068 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_10_LPI2C5_SCLS				0x028 0x068 0x0 0x6 0x0
--#define IOMUXC_GPIO_LPSR_10_SAI4_TX_SYNC			0x028 0x068 0x0DC 0x7 0x1
--#define IOMUXC_GPIO_LPSR_10_LPUART12_TXD			0x028 0x068 0x0B0 0x8 0x2
--
--#define IOMUXC_GPIO_LPSR_11_JTAG_MUX_TDO			0x02C 0x06C 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_11_LPUART11_RTS_B			0x02C 0x06C 0x0 0x1 0x0
--#define IOMUXC_GPIO_LPSR_11_LPI2C6_SCL				0x02C 0x06C 0x08C 0x2 0x1
--#define IOMUXC_GPIO_LPSR_11_MIC_BITSTREAM2			0x02C 0x06C 0x0BC 0x3 0x0
--#define IOMUXC_GPIO_LPSR_11_LPSPI6_SOUT				0x02C 0x06C 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_11_GPIO_MUX6_IO11			0x02C 0x06C 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_11_LPI2C5_SDAS				0x02C 0x06C 0x0 0x6 0x0
--#define IOMUXC_GPIO_LPSR_11_ARM_TRACE_SWO			0x02C 0x06C 0x0 0x7 0x0
--#define IOMUXC_GPIO_LPSR_11_LPUART12_RXD			0x02C 0x06C 0x0AC 0x8 0x2
--#define IOMUXC_GPIO_LPSR_11_GPIO12_IO11				0x02C 0x06C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_12_GPIO12_IO12				0x030 0x070 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_12_JTAG_MUX_TDI			0x030 0x070 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_12_PIT2_TRIGGER0			0x030 0x070 0x0 0x1 0x0
--#define IOMUXC_GPIO_LPSR_12_MIC_BITSTREAM3			0x030 0x070 0x0C0 0x3 0x0
--#define IOMUXC_GPIO_LPSR_12_LPSPI6_SIN				0x030 0x070 0x0 0x4 0x0
--#define IOMUXC_GPIO_LPSR_12_GPIO_MUX6_IO12			0x030 0x070 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_12_LPI2C5_HREQ				0x030 0x070 0x0 0x6 0x0
--#define IOMUXC_GPIO_LPSR_12_SAI4_TX_BCLK			0x030 0x070 0x0D8 0x7 0x1
--#define IOMUXC_GPIO_LPSR_12_LPSPI5_SCK				0x030 0x070 0x098 0x8 0x1
--
--#define IOMUXC_GPIO_LPSR_13_GPIO12_IO13				0x034 0x074 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_13_JTAG_MUX_MOD			0x034 0x074 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_13_MIC_BITSTREAM1			0x034 0x074 0x0B8 0x1 0x1
--#define IOMUXC_GPIO_LPSR_13_PIT2_TRIGGER1			0x034 0x074 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_13_GPIO_MUX6_IO13			0x034 0x074 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_13_SAI4_RX_DATA			0x034 0x074 0x0D0 0x7 0x1
--#define IOMUXC_GPIO_LPSR_13_LPSPI5_PCS0				0x034 0x074 0x094 0x8 0x1
--
--#define IOMUXC_GPIO_LPSR_14_JTAG_MUX_TCK			0x038 0x078 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_14_MIC_BITSTREAM2			0x038 0x078 0x0BC 0x1 0x1
--#define IOMUXC_GPIO_LPSR_14_PIT2_TRIGGER2			0x038 0x078 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_14_GPIO_MUX6_IO14			0x038 0x078 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_14_SAI4_RX_BCLK			0x038 0x078 0x0CC 0x7 0x1
--#define IOMUXC_GPIO_LPSR_14_LPSPI5_SOUT				0x038 0x078 0x0A0 0x8 0x1
--#define IOMUXC_GPIO_LPSR_14_GPIO12_IO14				0x038 0x078 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_LPSR_15_GPIO12_IO15				0x03C 0x07C 0x0 0xA 0x0
--#define IOMUXC_GPIO_LPSR_15_JTAG_MUX_TMS			0x03C 0x07C 0x0 0x0 0x0
--#define IOMUXC_GPIO_LPSR_15_MIC_BITSTREAM3			0x03C 0x07C 0x0C0 0x1 0x1
--#define IOMUXC_GPIO_LPSR_15_PIT2_TRIGGER3			0x03C 0x07C 0x0 0x2 0x0
--#define IOMUXC_GPIO_LPSR_15_GPIO_MUX6_IO15			0x03C 0x07C 0x0 0x5 0x0
--#define IOMUXC_GPIO_LPSR_15_SAI4_RX_SYNC			0x03C 0x07C 0x0D4 0x7 0x1
--#define IOMUXC_GPIO_LPSR_15_LPSPI5_SIN				0x03C 0x07C 0x09C 0x8 0x1
--
--#define IOMUXC_WAKEUP_DIG_GPIO13_IO00				0x40C94000 0x40C94040 0x0 0x5 0x0
--#define IOMUXC_WAKEUP_DIG_NMI_GLUE_NMI				0x40C94000 0x40C94040 0x0C4 0x7 0x1
--
--#define IOMUXC_PMIC_ON_REQ_DIG_SNVS_LP_PMIC_ON_REQ		0x40C94004 0x40C94044 0x0 0x0 0x0
--#define IOMUXC_PMIC_ON_REQ_DIG_GPIO13_IO01			0x40C94004 0x40C94044 0x0 0x5 0x0
--
--#define IOMUXC_PMIC_STBY_REQ_DIG_CCM_PMIC_VSTBY_REQ		0x40C94008 0x40C94048 0x0 0x0 0x0
--#define IOMUXC_PMIC_STBY_REQ_DIG_GPIO13_IO02			0x40C94008 0x40C94048 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_00_DIG_SNVS_TAMPER0			0x40C9400C 0x40C9404C 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_00_DIG_GPIO13_IO03			0x40C9400C 0x40C9404C 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_01_DIG_SNVS_TAMPER1			0x40C94010 0x40C94050 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_01_DIG_GPIO13_IO04			0x40C94010 0x40C94050 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_02_DIG_SNVS_TAMPER2			0x40C94014 0x40C94054 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_02_DIG_GPIO13_IO05			0x40C94014 0x40C94054 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_03_DIG_SNVS_TAMPER3			0x40C94018 0x40C94058 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_03_DIG_GPIO13_IO06			0x40C94018 0x40C94058 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_04_DIG_SNVS_TAMPER4			0x40C9401C 0x40C9405C 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_04_DIG_GPIO13_IO07			0x40C9401C 0x40C9405C 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_05_DIG_SNVS_TAMPER5			0x40C94020 0x40C94060 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_05_DIG_GPIO13_IO08			0x40C94020 0x40C94060 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_06_DIG_SNVS_TAMPER6			0x40C94024 0x40C94064 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_06_DIG_GPIO13_IO09			0x40C94024 0x40C94064 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_07_DIG_SNVS_TAMPER7			0x40C94028 0x40C94068 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_07_DIG_GPIO13_IO10			0x40C94028 0x40C94068 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_08_DIG_SNVS_TAMPER8			0x40C9402C 0x40C9406C 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_08_DIG_GPIO13_IO11			0x40C9402C 0x40C9406C 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SNVS_09_DIG_SNVS_TAMPER9			0x40C94030 0x40C94070 0x0 0x0 0x0
--#define IOMUXC_GPIO_SNVS_09_DIG_GPIO13_IO12			0x40C94030 0x40C94070 0x0 0x5 0x0
--
--#define IOMUXC_TEST_MODE_DIG					0x0 0x40C94034 0x0 0x0 0x0
--
--#define IOMUXC_POR_B_DIG					0x0 0x40C94038 0x0 0x0 0x0
--
--#define IOMUXC_ONOFF_DIG					0x0 0x40C9403C 0x0 0x0 0x0
--
--#define IOMUXC_GPIO_EMC_B1_00_SEMC_DATA00			0x010 0x254 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_00_FLEXPWM4_PWM0_A			0x010 0x254 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_00_GPIO_MUX1_IO00			0x010 0x254 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_00_FLEXIO1_D00			0x010 0x254 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_00_GPIO7_IO00			0x010 0x254 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_01_GPIO7_IO01			0x014 0x258 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_01_SEMC_DATA01			0x014 0x258 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_01_FLEXPWM4_PWM0_B			0x014 0x258 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_01_GPIO_MUX1_IO01			0x014 0x258 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_01_FLEXIO1_D01			0x014 0x258 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_02_SEMC_DATA02			0x018 0x25C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_02_FLEXPWM4_PWM1_A			0x018 0x25C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_02_GPIO_MUX1_IO02			0x018 0x25C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_02_FLEXIO1_D02			0x018 0x25C 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_02_GPIO7_IO02			0x018 0x25C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_03_SEMC_DATA03			0x01C 0x260 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_03_FLEXPWM4_PWM1_B			0x01C 0x260 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_03_GPIO_MUX1_IO03			0x01C 0x260 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_03_FLEXIO1_D03			0x01C 0x260 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_03_GPIO7_IO03			0x01C 0x260 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_04_GPIO7_IO04			0x020 0x264 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_04_SEMC_DATA04			0x020 0x264 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_04_FLEXPWM4_PWM2_A			0x020 0x264 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_04_GPIO_MUX1_IO04			0x020 0x264 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_04_FLEXIO1_D04			0x020 0x264 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_05_SEMC_DATA05			0x024 0x268 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_05_FLEXPWM4_PWM2_B			0x024 0x268 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_05_GPIO_MUX1_IO05			0x024 0x268 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_05_FLEXIO1_D05			0x024 0x268 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_05_GPIO7_IO05			0x024 0x268 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_06_SEMC_DATA06			0x028 0x26C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_06_FLEXPWM2_PWM0_A			0x028 0x26C 0x518 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_06_GPIO_MUX1_IO06			0x028 0x26C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_06_FLEXIO1_D06			0x028 0x26C 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_06_GPIO7_IO06			0x028 0x26C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_07_GPIO7_IO07			0x02C 0x270 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_07_SEMC_DATA07			0x02C 0x270 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_07_FLEXPWM2_PWM0_B			0x02C 0x270 0x524 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_07_GPIO_MUX1_IO07			0x02C 0x270 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_07_FLEXIO1_D07			0x02C 0x270 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_08_SEMC_DM00				0x030 0x274 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_08_FLEXPWM2_PWM1_A			0x030 0x274 0x51C 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_08_GPIO_MUX1_IO08			0x030 0x274 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_08_FLEXIO1_D08			0x030 0x274 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_08_GPIO7_IO08			0x030 0x274 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_09_SEMC_ADDR00			0x034 0x278 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_09_FLEXPWM2_PWM1_B			0x034 0x278 0x528 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_09_GPT5_CAPTURE1			0x034 0x278 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_09_GPIO_MUX1_IO09			0x034 0x278 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_09_FLEXIO1_D09			0x034 0x278 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_09_GPIO7_IO09			0x034 0x278 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_10_SEMC_ADDR01			0x038 0x27C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_10_FLEXPWM2_PWM2_A			0x038 0x27C 0x520 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_10_GPT5_CAPTURE2			0x038 0x27C 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_10_GPIO_MUX1_IO10			0x038 0x27C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_10_FLEXIO1_D10			0x038 0x27C 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_10_GPIO7_IO10			0x038 0x27C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_11_GPIO7_IO11			0x03C 0x280 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_11_SEMC_ADDR02			0x03C 0x280 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_11_FLEXPWM2_PWM2_B			0x03C 0x280 0x52C 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_11_GPT5_COMPARE1			0x03C 0x280 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_11_GPIO_MUX1_IO11			0x03C 0x280 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_11_FLEXIO1_D11			0x03C 0x280 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_12_SEMC_ADDR03			0x040 0x284 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_12_XBAR1_INOUT04			0x040 0x284 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_12_GPT5_COMPARE2			0x040 0x284 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_12_GPIO_MUX1_IO12			0x040 0x284 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_12_FLEXIO1_D12			0x040 0x284 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_12_GPIO7_IO12			0x040 0x284 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_13_SEMC_ADDR04			0x044 0x288 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_13_XBAR1_INOUT05			0x044 0x288 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_13_GPT5_COMPARE3			0x044 0x288 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_13_GPIO_MUX1_IO13			0x044 0x288 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_13_FLEXIO1_D13			0x044 0x288 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_13_GPIO7_IO13			0x044 0x288 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_14_GPIO7_IO14			0x048 0x28C 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_14_SEMC_ADDR05			0x048 0x28C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_14_XBAR1_INOUT06			0x048 0x28C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_14_GPT5_CLK				0x048 0x28C 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_14_GPIO_MUX1_IO14			0x048 0x28C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_14_FLEXIO1_D14			0x048 0x28C 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_15_SEMC_ADDR06			0x04C 0x290 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_15_XBAR1_INOUT07			0x04C 0x290 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_15_GPIO_MUX1_IO15			0x04C 0x290 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_15_FLEXIO1_D15			0x04C 0x290 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_15_GPIO7_IO15			0x04C 0x290 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_16_SEMC_ADDR07			0x050 0x294 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_16_XBAR1_INOUT08			0x050 0x294 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_16_GPIO_MUX1_IO16			0x050 0x294 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_16_FLEXIO1_D16			0x050 0x294 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_16_GPIO7_IO16			0x050 0x294 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_17_GPIO7_IO17			0x054 0x298 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_17_SEMC_ADDR08			0x054 0x298 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_17_FLEXPWM4_PWM3_A			0x054 0x298 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_17_TMR1_TIMER0			0x054 0x298 0x63C 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_17_GPIO_MUX1_IO17			0x054 0x298 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_17_FLEXIO1_D17			0x054 0x298 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_18_SEMC_ADDR09			0x058 0x29C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_18_FLEXPWM4_PWM3_B			0x058 0x29C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_18_TMR2_TIMER0			0x058 0x29C 0x648 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_18_GPIO_MUX1_IO18			0x058 0x29C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_18_FLEXIO1_D18			0x058 0x29C 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_18_GPIO7_IO18			0x058 0x29C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_19_SEMC_ADDR11			0x05C 0x2A0 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_19_FLEXPWM2_PWM3_A			0x05C 0x2A0 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_19_TMR3_TIMER0			0x05C 0x2A0 0x654 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_19_GPIO_MUX1_IO19			0x05C 0x2A0 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_19_FLEXIO1_D19			0x05C 0x2A0 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_19_GPIO7_IO19			0x05C 0x2A0 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_20_SEMC_ADDR12			0x060 0x2A4 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_20_FLEXPWM2_PWM3_B			0x060 0x2A4 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_20_TMR4_TIMER0			0x060 0x2A4 0x660 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_20_GPIO_MUX1_IO20			0x060 0x2A4 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_20_FLEXIO1_D20			0x060 0x2A4 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_20_GPIO7_IO20			0x060 0x2A4 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_21_GPIO7_IO21			0x064 0x2A8 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_21_SEMC_BA0				0x064 0x2A8 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_21_FLEXPWM3_PWM3_A			0x064 0x2A8 0x53C 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_21_GPIO_MUX1_IO21			0x064 0x2A8 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_21_FLEXIO1_D21			0x064 0x2A8 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_22_GPIO7_IO22			0x068 0x2AC 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_22_SEMC_BA1				0x068 0x2AC 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_22_FLEXPWM3_PWM3_B			0x068 0x2AC 0x54C 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_22_GPIO_MUX1_IO22			0x068 0x2AC 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_22_FLEXIO1_D22			0x068 0x2AC 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_23_SEMC_ADDR10			0x06C 0x2B0 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_23_FLEXPWM1_PWM0_A			0x06C 0x2B0 0x500 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_23_GPIO_MUX1_IO23			0x06C 0x2B0 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_23_FLEXIO1_D23			0x06C 0x2B0 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_23_GPIO7_IO23			0x06C 0x2B0 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_24_GPIO7_IO24			0x070 0x2B4 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_24_SEMC_CAS				0x070 0x2B4 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_24_FLEXPWM1_PWM0_B			0x070 0x2B4 0x50C 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_24_GPIO_MUX1_IO24			0x070 0x2B4 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_24_FLEXIO1_D24			0x070 0x2B4 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_25_GPIO7_IO25			0x074 0x2B8 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_25_SEMC_RAS				0x074 0x2B8 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_25_FLEXPWM1_PWM1_A			0x074 0x2B8 0x504 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_25_GPIO_MUX1_IO25			0x074 0x2B8 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_25_FLEXIO1_D25			0x074 0x2B8 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_26_SEMC_CLK				0x078 0x2BC 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_26_FLEXPWM1_PWM1_B			0x078 0x2BC 0x510 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_26_GPIO_MUX1_IO26			0x078 0x2BC 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_26_FLEXIO1_D26			0x078 0x2BC 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_26_GPIO7_IO26			0x078 0x2BC 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_27_GPIO7_IO27			0x07C 0x2C0 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_27_SEMC_CKE				0x07C 0x2C0 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_27_FLEXPWM1_PWM2_A			0x07C 0x2C0 0x508 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_27_GPIO_MUX1_IO27			0x07C 0x2C0 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_27_FLEXIO1_D27			0x07C 0x2C0 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_28_GPIO7_IO28			0x080 0x2C4 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_28_SEMC_WE				0x080 0x2C4 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_28_FLEXPWM1_PWM2_B			0x080 0x2C4 0x514 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_28_GPIO_MUX1_IO28			0x080 0x2C4 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_28_FLEXIO1_D28			0x080 0x2C4 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_29_SEMC_CS0				0x084 0x2C8 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_29_FLEXPWM3_PWM0_A			0x084 0x2C8 0x530 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_29_GPIO_MUX1_IO29			0x084 0x2C8 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_29_FLEXIO1_D29			0x084 0x2C8 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_29_GPIO7_IO29			0x084 0x2C8 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_30_SEMC_DATA08			0x088 0x2CC 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_30_FLEXPWM3_PWM0_B			0x088 0x2CC 0x540 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_30_GPIO_MUX1_IO30			0x088 0x2CC 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_30_FLEXIO1_D30			0x088 0x2CC 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B1_30_GPIO7_IO30			0x088 0x2CC 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_31_GPIO7_IO31			0x08C 0x2D0 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_31_SEMC_DATA09			0x08C 0x2D0 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_31_FLEXPWM3_PWM1_A			0x08C 0x2D0 0x534 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_31_GPIO_MUX1_IO31			0x08C 0x2D0 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_31_FLEXIO1_D31			0x08C 0x2D0 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_EMC_B1_32_GPIO8_IO00			0x090 0x2D4 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_32_SEMC_DATA10			0x090 0x2D4 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_32_FLEXPWM3_PWM1_B			0x090 0x2D4 0x544 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_32_GPIO_MUX2_IO00			0x090 0x2D4 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_EMC_B1_33_SEMC_DATA11			0x094 0x2D8 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_33_FLEXPWM3_PWM2_A			0x094 0x2D8 0x538 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_33_GPIO_MUX2_IO01			0x094 0x2D8 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_33_GPIO8_IO01			0x094 0x2D8 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_34_GPIO8_IO02			0x098 0x2DC 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_34_SEMC_DATA12			0x098 0x2DC 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_34_FLEXPWM3_PWM2_B			0x098 0x2DC 0x548 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_34_GPIO_MUX2_IO02			0x098 0x2DC 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_EMC_B1_35_GPIO8_IO03			0x09C 0x2E0 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_35_SEMC_DATA13			0x09C 0x2E0 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_35_XBAR1_INOUT09			0x09C 0x2E0 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_35_GPIO_MUX2_IO03			0x09C 0x2E0 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_EMC_B1_36_SEMC_DATA14			0x0A0 0x2E4 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_36_XBAR1_INOUT10			0x0A0 0x2E4 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_36_GPIO_MUX2_IO04			0x0A0 0x2E4 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_36_GPIO8_IO04			0x0A0 0x2E4 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_37_GPIO8_IO05			0x0A4 0x2E8 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_37_SEMC_DATA15			0x0A4 0x2E8 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_37_XBAR1_INOUT11			0x0A4 0x2E8 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_37_GPIO_MUX2_IO05			0x0A4 0x2E8 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_EMC_B1_38_GPIO8_IO06			0x0A8 0x2EC 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_38_SEMC_DM01				0x0A8 0x2EC 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_38_FLEXPWM1_PWM3_A			0x0A8 0x2EC 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_38_TMR1_TIMER1			0x0A8 0x2EC 0x640 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_38_GPIO_MUX2_IO06			0x0A8 0x2EC 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_EMC_B1_39_SEMC_DQS				0x0AC 0x2F0 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_39_FLEXPWM1_PWM3_B			0x0AC 0x2F0 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_39_TMR2_TIMER1			0x0AC 0x2F0 0x64C 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_39_GPIO_MUX2_IO07			0x0AC 0x2F0 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_39_GPIO8_IO07			0x0AC 0x2F0 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_40_SEMC_RDY				0x0B0 0x2F4 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_40_XBAR1_INOUT12			0x0B0 0x2F4 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_40_MQS_RIGHT				0x0B0 0x2F4 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_40_LPUART6_TXD			0x0B0 0x2F4 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B1_40_GPIO_MUX2_IO08			0x0B0 0x2F4 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_40_ENET_1G_MDC			0x0B0 0x2F4 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B1_40_CCM_CLKO1				0x0B0 0x2F4 0x0 0x9 0x0
--#define IOMUXC_GPIO_EMC_B1_40_GPIO8_IO08			0x0B0 0x2F4 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B1_41_GPIO8_IO09			0x0B4 0x2F8 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B1_41_SEMC_CSX00			0x0B4 0x2F8 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B1_41_XBAR1_INOUT13			0x0B4 0x2F8 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B1_41_MQS_LEFT				0x0B4 0x2F8 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B1_41_LPUART6_RXD			0x0B4 0x2F8 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B1_41_FLEXSPI2_B_DATA07			0x0B4 0x2F8 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B1_41_GPIO_MUX2_IO09			0x0B4 0x2F8 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B1_41_ENET_1G_MDIO			0x0B4 0x2F8 0x4C8 0x7 0x0
--#define IOMUXC_GPIO_EMC_B1_41_CCM_CLKO2				0x0B4 0x2F8 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_EMC_B2_00_SEMC_DATA16			0x0B8 0x2FC 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_00_CCM_ENET_REF_CLK_25M		0x0B8 0x2FC 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_00_TMR3_TIMER1			0x0B8 0x2FC 0x658 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_00_LPUART6_CTS_B			0x0B8 0x2FC 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_00_FLEXSPI2_B_DATA06			0x0B8 0x2FC 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_00_GPIO_MUX2_IO10			0x0B8 0x2FC 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_00_XBAR1_INOUT20			0x0B8 0x2FC 0x6D8 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_00_ENET_QOS_1588_EVENT1_OUT		0x0B8 0x2FC 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_00_LPSPI1_SCK			0x0B8 0x2FC 0x5D0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_00_LPI2C2_SCL			0x0B8 0x2FC 0x5B4 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_00_GPIO8_IO10			0x0B8 0x2FC 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_00_FLEXPWM3_PWM0_A			0x0B8 0x2FC 0x530 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_01_SEMC_DATA17			0x0BC 0x300 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_01_USDHC2_CD_B			0x0BC 0x300 0x6D0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_01_TMR4_TIMER1			0x0BC 0x300 0x664 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_01_LPUART6_RTS_B			0x0BC 0x300 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_01_FLEXSPI2_B_DATA05			0x0BC 0x300 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_01_GPIO_MUX2_IO11			0x0BC 0x300 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_01_XBAR1_INOUT21			0x0BC 0x300 0x6DC 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_01_ENET_QOS_1588_EVENT1_IN		0x0BC 0x300 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_01_LPSPI1_PCS0			0x0BC 0x300 0x5CC 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_01_LPI2C2_SDA			0x0BC 0x300 0x5B8 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_01_GPIO8_IO11			0x0BC 0x300 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_01_FLEXPWM3_PWM0_B			0x0BC 0x300 0x540 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_02_SEMC_DATA18			0x0C0 0x304 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_02_USDHC2_WP				0x0C0 0x304 0x6D4 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_02_VIDEO_MUX_CSI_DATA23		0x0C0 0x304 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_02_FLEXSPI2_B_DATA04			0x0C0 0x304 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_02_GPIO_MUX2_IO12			0x0C0 0x304 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_02_XBAR1_INOUT22			0x0C0 0x304 0x6E0 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_02_ENET_QOS_1588_EVENT1_AUX_IN	0x0C0 0x304 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_02_LPSPI1_SOUT			0x0C0 0x304 0x5D8 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_02_GPIO8_IO12			0x0C0 0x304 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_02_FLEXPWM3_PWM1_A			0x0C0 0x304 0x534 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_03_SEMC_DATA19			0x0C4 0x308 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_03_USDHC2_VSELECT			0x0C4 0x308 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_03_VIDEO_MUX_CSI_DATA22		0x0C4 0x308 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_03_FLEXSPI2_B_DATA03			0x0C4 0x308 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_03_GPIO_MUX2_IO13			0x0C4 0x308 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_03_XBAR1_INOUT23			0x0C4 0x308 0x6E4 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_03_ENET_1G_TX_DATA03			0x0C4 0x308 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_03_LPSPI1_SIN			0x0C4 0x308 0x5D4 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_03_GPIO8_IO13			0x0C4 0x308 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_03_FLEXPWM3_PWM1_B			0x0C4 0x308 0x544 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_04_SEMC_DATA20			0x0C8 0x30C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_04_USDHC2_RESET_B			0x0C8 0x30C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_04_SAI2_MCLK				0x0C8 0x30C 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_04_VIDEO_MUX_CSI_DATA21		0x0C8 0x30C 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_04_FLEXSPI2_B_DATA02			0x0C8 0x30C 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_04_GPIO_MUX2_IO14			0x0C8 0x30C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_04_XBAR1_INOUT24			0x0C8 0x30C 0x6E8 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_04_ENET_1G_TX_DATA02			0x0C8 0x30C 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_04_LPSPI3_SCK			0x0C8 0x30C 0x600 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_04_GPIO8_IO14			0x0C8 0x30C 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_04_FLEXPWM3_PWM2_A			0x0C8 0x30C 0x538 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_05_SEMC_DATA21			0x0CC 0x310 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_05_GPT3_CLK				0x0CC 0x310 0x598 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_05_SAI2_RX_SYNC			0x0CC 0x310 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_05_VIDEO_MUX_CSI_DATA20		0x0CC 0x310 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_05_FLEXSPI2_B_DATA01			0x0CC 0x310 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_05_GPIO_MUX2_IO15			0x0CC 0x310 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_05_XBAR1_INOUT25			0x0CC 0x310 0x6EC 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_05_ENET_1G_RX_CLK			0x0CC 0x310 0x4CC 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_05_LPSPI3_PCS0			0x0CC 0x310 0x5F0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_05_PIT1_TRIGGER0			0x0CC 0x310 0x0 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_05_GPIO8_IO15			0x0CC 0x310 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_05_FLEXPWM3_PWM2_B			0x0CC 0x310 0x548 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_06_SEMC_DATA22			0x0D0 0x314 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_06_GPT3_CAPTURE1			0x0D0 0x314 0x590 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_06_GPIO8_IO16			0x0D0 0x314 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_06_SAI2_RX_BCLK			0x0D0 0x314 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_06_FLEXPWM3_PWM3_A			0x0D0 0x314 0x53C 0xB 0x1
--#define IOMUXC_GPIO_EMC_B2_06_VIDEO_MUX_CSI_DATA19		0x0D0 0x314 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_06_FLEXSPI2_B_DATA00			0x0D0 0x314 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_06_GPIO_MUX2_IO16			0x0D0 0x314 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_06_XBAR1_INOUT26			0x0D0 0x314 0x6F0 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_06_ENET_1G_TX_ER			0x0D0 0x314 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_06_LPSPI3_SOUT			0x0D0 0x314 0x608 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_06_PIT1_TRIGGER1			0x0D0 0x314 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_EMC_B2_07_SEMC_DATA23			0x0D4 0x318 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_07_GPT3_CAPTURE2			0x0D4 0x318 0x594 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_07_SAI2_RX_DATA			0x0D4 0x318 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_07_VIDEO_MUX_CSI_DATA18		0x0D4 0x318 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_07_FLEXSPI2_B_DQS			0x0D4 0x318 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_07_GPIO_MUX2_IO17			0x0D4 0x318 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_07_XBAR1_INOUT27			0x0D4 0x318 0x6F4 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_07_ENET_1G_RX_DATA03			0x0D4 0x318 0x4DC 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_07_LPSPI3_SIN			0x0D4 0x318 0x604 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_07_PIT1_TRIGGER2			0x0D4 0x318 0x0 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_07_GPIO8_IO17			0x0D4 0x318 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_07_FLEXPWM3_PWM3_B			0x0D4 0x318 0x54C 0xB 0x1
--
--#define IOMUXC_GPIO_EMC_B2_08_SEMC_DM02				0x0D8 0x31C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_08_GPT3_COMPARE1			0x0D8 0x31C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_08_SAI2_TX_DATA			0x0D8 0x31C 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_08_VIDEO_MUX_CSI_DATA17		0x0D8 0x31C 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_08_FLEXSPI2_B_SS0_B			0x0D8 0x31C 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_08_GPIO_MUX2_IO18			0x0D8 0x31C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_08_XBAR1_INOUT28			0x0D8 0x31C 0x6F8 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_08_ENET_1G_RX_DATA02			0x0D8 0x31C 0x4D8 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_08_LPSPI3_PCS1			0x0D8 0x31C 0x5F4 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_08_PIT1_TRIGGER3			0x0D8 0x31C 0x0 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_08_GPIO8_IO18			0x0D8 0x31C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_09_GPIO8_IO19			0x0DC 0x320 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_09_SEMC_DATA24			0x0DC 0x320 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_09_GPT3_COMPARE2			0x0DC 0x320 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_09_SAI2_TX_BCLK			0x0DC 0x320 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_09_VIDEO_MUX_CSI_DATA16		0x0DC 0x320 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_09_FLEXSPI2_B_SCLK			0x0DC 0x320 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_09_GPIO_MUX2_IO19			0x0DC 0x320 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_09_XBAR1_INOUT29			0x0DC 0x320 0x6FC 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_09_ENET_1G_CRS			0x0DC 0x320 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_09_LPSPI3_PCS2			0x0DC 0x320 0x5F8 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_09_TMR1_TIMER0			0x0DC 0x320 0x63C 0x9 0x1
--
--#define IOMUXC_GPIO_EMC_B2_10_GPIO8_IO20			0x0E0 0x324 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_10_SEMC_DATA25			0x0E0 0x324 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_10_GPT3_COMPARE3			0x0E0 0x324 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_10_SAI2_TX_SYNC			0x0E0 0x324 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_10_VIDEO_MUX_CSI_FIELD		0x0E0 0x324 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_10_FLEXSPI2_A_SCLK			0x0E0 0x324 0x58C 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_10_GPIO_MUX2_IO20			0x0E0 0x324 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_10_XBAR1_INOUT30			0x0E0 0x324 0x700 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_10_ENET_1G_COL			0x0E0 0x324 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_10_LPSPI3_PCS3			0x0E0 0x324 0x5FC 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_10_TMR1_TIMER1			0x0E0 0x324 0x640 0x9 0x1
--
--#define IOMUXC_GPIO_EMC_B2_11_SEMC_DATA26			0x0E4 0x328 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_11_SPDIF_IN				0x0E4 0x328 0x6B4 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_11_ENET_1G_TX_DATA00			0x0E4 0x328 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_11_SAI3_RX_SYNC			0x0E4 0x328 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_11_FLEXSPI2_A_SS0_B			0x0E4 0x328 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_11_GPIO_MUX2_IO21			0x0E4 0x328 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_11_XBAR1_INOUT31			0x0E4 0x328 0x704 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_11_EMVSIM1_IO			0x0E4 0x328 0x69C 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_11_TMR1_TIMER2			0x0E4 0x328 0x644 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_11_GPIO8_IO21			0x0E4 0x328 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_12_SEMC_DATA27			0x0E8 0x32C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_12_SPDIF_OUT				0x0E8 0x32C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_12_ENET_1G_TX_DATA01			0x0E8 0x32C 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_12_SAI3_RX_BCLK			0x0E8 0x32C 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_12_FLEXSPI2_A_DQS			0x0E8 0x32C 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_12_GPIO_MUX2_IO22			0x0E8 0x32C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_12_XBAR1_INOUT32			0x0E8 0x32C 0x708 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_12_EMVSIM1_CLK			0x0E8 0x32C 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_12_TMR1_TIMER3			0x0E8 0x32C 0x0 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_12_GPIO8_IO22			0x0E8 0x32C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_13_GPIO8_IO23			0x0EC 0x330 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_13_SEMC_DATA28			0x0EC 0x330 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_13_ENET_1G_TX_EN			0x0EC 0x330 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_13_SAI3_RX_DATA			0x0EC 0x330 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_13_FLEXSPI2_A_DATA00			0x0EC 0x330 0x57C 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_13_GPIO_MUX2_IO23			0x0EC 0x330 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_13_XBAR1_INOUT33			0x0EC 0x330 0x70C 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_13_EMVSIM1_RST			0x0EC 0x330 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_13_TMR2_TIMER0			0x0EC 0x330 0x648 0x9 0x1
--
--#define IOMUXC_GPIO_EMC_B2_14_SEMC_DATA29			0x0F0 0x334 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_14_ENET_1G_TX_CLK_IO			0x0F0 0x334 0x4E8 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_14_SAI3_TX_DATA			0x0F0 0x334 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_14_FLEXSPI2_A_DATA01			0x0F0 0x334 0x580 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_14_GPIO_MUX2_IO24			0x0F0 0x334 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_14_XBAR1_INOUT34			0x0F0 0x334 0x710 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_14_SFA_ipp_do_atx_clk_under_test	0x0F0 0x334 0x0 0x7 0x0
--#define IOMUXC_GPIO_EMC_B2_14_EMVSIM1_SVEN			0x0F0 0x334 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_14_TMR2_TIMER1			0x0F0 0x334 0x64C 0x9 0x1
--#define IOMUXC_GPIO_EMC_B2_14_GPIO8_IO24			0x0F0 0x334 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_15_SEMC_DATA30			0x0F4 0x338 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_15_ENET_1G_RX_DATA00			0x0F4 0x338 0x4D0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_15_SAI3_TX_BCLK			0x0F4 0x338 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_15_FLEXSPI2_A_DATA02			0x0F4 0x338 0x584 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_15_GPIO_MUX2_IO25			0x0F4 0x338 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_15_XBAR1_INOUT35			0x0F4 0x338 0x714 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_15_EMVSIM1_PD			0x0F4 0x338 0x6A0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_15_TMR2_TIMER2			0x0F4 0x338 0x650 0x9 0x0
--#define IOMUXC_GPIO_EMC_B2_15_GPIO8_IO25			0x0F4 0x338 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_16_GPIO8_IO26			0x0F8 0x33C 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_16_SEMC_DATA31			0x0F8 0x33C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_16_XBAR1_INOUT14			0x0F8 0x33C 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_16_ENET_1G_RX_DATA01			0x0F8 0x33C 0x4D4 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_16_SAI3_TX_SYNC			0x0F8 0x33C 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_16_FLEXSPI2_A_DATA03			0x0F8 0x33C 0x588 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_16_GPIO_MUX2_IO26			0x0F8 0x33C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_16_EMVSIM1_POWER_FAIL		0x0F8 0x33C 0x6A4 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_16_TMR2_TIMER3			0x0F8 0x33C 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_EMC_B2_17_SEMC_DM03				0x0FC 0x340 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_17_XBAR1_INOUT15			0x0FC 0x340 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_17_ENET_1G_RX_EN			0x0FC 0x340 0x4E0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_17_SAI3_MCLK				0x0FC 0x340 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_17_FLEXSPI2_A_DATA04			0x0FC 0x340 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_17_GPIO_MUX2_IO27			0x0FC 0x340 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_17_WDOG1_ANY				0x0FC 0x340 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_17_TMR3_TIMER0			0x0FC 0x340 0x654 0x9 0x1
--#define IOMUXC_GPIO_EMC_B2_17_GPIO8_IO27			0x0FC 0x340 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_18_SEMC_DQS4				0x100 0x344 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_18_XBAR1_INOUT16			0x100 0x344 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_18_ENET_1G_RX_ER			0x100 0x344 0x4E4 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_18_EWM_OUT_B				0x100 0x344 0x0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_18_FLEXSPI2_A_DATA05			0x100 0x344 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_18_GPIO_MUX2_IO28			0x100 0x344 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_18_FLEXSPI1_A_DQS			0x100 0x344 0x550 0x6 0x0
--#define IOMUXC_GPIO_EMC_B2_18_WDOG1_B				0x100 0x344 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_18_TMR3_TIMER1			0x100 0x344 0x658 0x9 0x1
--#define IOMUXC_GPIO_EMC_B2_18_GPIO8_IO28			0x100 0x344 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_EMC_B2_19_GPIO8_IO29			0x104 0x348 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_19_SEMC_CLKX00			0x104 0x348 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_19_ENET_MDC				0x104 0x348 0x0 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_19_ENET_1G_MDC			0x104 0x348 0x0 0x2 0x0
--#define IOMUXC_GPIO_EMC_B2_19_ENET_1G_REF_CLK			0x104 0x348 0x4C4 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_19_FLEXSPI2_A_DATA06			0x104 0x348 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_19_GPIO_MUX2_IO29			0x104 0x348 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_19_ENET_QOS_MDC			0x104 0x348 0x0 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_19_TMR3_TIMER2			0x104 0x348 0x65C 0x9 0x0
--
--#define IOMUXC_GPIO_EMC_B2_20_GPIO8_IO30			0x108 0x34C 0x0 0xA 0x0
--#define IOMUXC_GPIO_EMC_B2_20_SEMC_CLKX01			0x108 0x34C 0x0 0x0 0x0
--#define IOMUXC_GPIO_EMC_B2_20_ENET_MDIO				0x108 0x34C 0x4AC 0x1 0x0
--#define IOMUXC_GPIO_EMC_B2_20_ENET_1G_MDIO			0x108 0x34C 0x4C8 0x2 0x1
--#define IOMUXC_GPIO_EMC_B2_20_ENET_QOS_REF_CLK			0x108 0x34C 0x4A0 0x3 0x0
--#define IOMUXC_GPIO_EMC_B2_20_FLEXSPI2_A_DATA07			0x108 0x34C 0x0 0x4 0x0
--#define IOMUXC_GPIO_EMC_B2_20_GPIO_MUX2_IO30			0x108 0x34C 0x0 0x5 0x0
--#define IOMUXC_GPIO_EMC_B2_20_ENET_QOS_MDIO			0x108 0x34C 0x4EC 0x8 0x0
--#define IOMUXC_GPIO_EMC_B2_20_TMR3_TIMER3			0x108 0x34C 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_00_GPIO8_IO31				0x10C 0x350 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_00_EMVSIM1_IO				0x10C 0x350 0x69C 0x0 0x1
--#define IOMUXC_GPIO_AD_00_FLEXCAN2_TX				0x10C 0x350 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_00_ENET_1G_1588_EVENT1_IN		0x10C 0x350 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_00_GPT2_CAPTURE1				0x10C 0x350 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_00_FLEXPWM1_PWM0_A			0x10C 0x350 0x500 0x4 0x1
--#define IOMUXC_GPIO_AD_00_GPIO_MUX2_IO31			0x10C 0x350 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_00_LPUART7_TXD				0x10C 0x350 0x630 0x6 0x0
--#define IOMUXC_GPIO_AD_00_FLEXIO2_D00				0x10C 0x350 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_00_FLEXSPI2_B_SS1_B			0x10C 0x350 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_01_GPIO9_IO00				0x110 0x354 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_01_EMVSIM1_CLK				0x110 0x354 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_01_FLEXCAN2_RX				0x110 0x354 0x49C 0x1 0x0
--#define IOMUXC_GPIO_AD_01_ENET_1G_1588_EVENT1_OUT		0x110 0x354 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_01_GPT2_CAPTURE2				0x110 0x354 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_01_FLEXPWM1_PWM0_B			0x110 0x354 0x50C 0x4 0x1
--#define IOMUXC_GPIO_AD_01_GPIO_MUX3_IO00			0x110 0x354 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_01_LPUART7_RXD				0x110 0x354 0x62C 0x6 0x0
--#define IOMUXC_GPIO_AD_01_FLEXIO2_D01				0x110 0x354 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_01_FLEXSPI2_A_SS1_B			0x110 0x354 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_02_GPIO9_IO01				0x114 0x358 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_02_EMVSIM1_RST				0x114 0x358 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_02_LPUART7_CTS_B				0x114 0x358 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_02_ENET_1G_1588_EVENT2_IN		0x114 0x358 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_02_GPT2_COMPARE1				0x114 0x358 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_02_FLEXPWM1_PWM1_A			0x114 0x358 0x504 0x4 0x1
--#define IOMUXC_GPIO_AD_02_GPIO_MUX3_IO01			0x114 0x358 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_02_LPUART8_TXD				0x114 0x358 0x638 0x6 0x0
--#define IOMUXC_GPIO_AD_02_FLEXIO2_D02				0x114 0x358 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_02_VIDEO_MUX_EXT_DCIC1			0x114 0x358 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_03_GPIO9_IO02				0x118 0x35C 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_03_EMVSIM1_SVEN				0x118 0x35C 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_03_LPUART7_RTS_B				0x118 0x35C 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_03_ENET_1G_1588_EVENT2_OUT		0x118 0x35C 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_03_GPT2_COMPARE2				0x118 0x35C 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_03_FLEXPWM1_PWM1_B			0x118 0x35C 0x510 0x4 0x1
--#define IOMUXC_GPIO_AD_03_GPIO_MUX3_IO02			0x118 0x35C 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_03_LPUART8_RXD				0x118 0x35C 0x634 0x6 0x0
--#define IOMUXC_GPIO_AD_03_FLEXIO2_D03				0x118 0x35C 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_03_VIDEO_MUX_EXT_DCIC2			0x118 0x35C 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_04_EMVSIM1_PD				0x11C 0x360 0x6A0 0x0 0x1
--#define IOMUXC_GPIO_AD_04_LPUART8_CTS_B				0x11C 0x360 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_04_ENET_1G_1588_EVENT3_IN		0x11C 0x360 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_04_GPT2_COMPARE3				0x11C 0x360 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_04_FLEXPWM1_PWM2_A			0x11C 0x360 0x508 0x4 0x1
--#define IOMUXC_GPIO_AD_04_GPIO_MUX3_IO03			0x11C 0x360 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_04_WDOG1_B				0x11C 0x360 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_04_FLEXIO2_D04				0x11C 0x360 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_04_TMR4_TIMER0				0x11C 0x360 0x660 0x9 0x1
--#define IOMUXC_GPIO_AD_04_GPIO9_IO03				0x11C 0x360 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_05_EMVSIM1_POWER_FAIL			0x120 0x364 0x6A4 0x0 0x1
--#define IOMUXC_GPIO_AD_05_LPUART8_RTS_B				0x120 0x364 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_05_ENET_1G_1588_EVENT3_OUT		0x120 0x364 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_05_GPT2_CLK				0x120 0x364 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_05_FLEXPWM1_PWM2_B			0x120 0x364 0x514 0x4 0x1
--#define IOMUXC_GPIO_AD_05_GPIO_MUX3_IO04			0x120 0x364 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_05_WDOG2_B				0x120 0x364 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_05_FLEXIO2_D05				0x120 0x364 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_05_TMR4_TIMER1				0x120 0x364 0x664 0x9 0x1
--#define IOMUXC_GPIO_AD_05_GPIO9_IO04				0x120 0x364 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_06_USB_OTG2_OC				0x124 0x368 0x6B8 0x0 0x0
--#define IOMUXC_GPIO_AD_06_FLEXCAN1_TX				0x124 0x368 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_06_EMVSIM2_IO				0x124 0x368 0x6A8 0x2 0x0
--#define IOMUXC_GPIO_AD_06_GPT3_CAPTURE1				0x124 0x368 0x590 0x3 0x1
--#define IOMUXC_GPIO_AD_06_VIDEO_MUX_CSI_DATA15			0x124 0x368 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_06_GPIO_MUX3_IO05			0x124 0x368 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_06_ENET_1588_EVENT1_IN			0x124 0x368 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_06_FLEXIO2_D06				0x124 0x368 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_06_TMR4_TIMER2				0x124 0x368 0x668 0x9 0x0
--#define IOMUXC_GPIO_AD_06_GPIO9_IO05				0x124 0x368 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_06_FLEXPWM1_PWM0_X			0x124 0x368 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_07_USB_OTG2_PWR				0x128 0x36C 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_07_FLEXCAN1_RX				0x128 0x36C 0x498 0x1 0x0
--#define IOMUXC_GPIO_AD_07_EMVSIM2_CLK				0x128 0x36C 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_07_GPT3_CAPTURE2				0x128 0x36C 0x594 0x3 0x1
--#define IOMUXC_GPIO_AD_07_VIDEO_MUX_CSI_DATA14			0x128 0x36C 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_07_GPIO_MUX3_IO06			0x128 0x36C 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_07_ENET_1588_EVENT1_OUT			0x128 0x36C 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_07_FLEXIO2_D07				0x128 0x36C 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_07_TMR4_TIMER3				0x128 0x36C 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_07_GPIO9_IO06				0x128 0x36C 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_07_FLEXPWM1_PWM1_X			0x128 0x36C 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_08_USBPHY2_OTG_ID			0x12C 0x370 0x6C4 0x0 0x0
--#define IOMUXC_GPIO_AD_08_LPI2C1_SCL				0x12C 0x370 0x5AC 0x1 0x0
--#define IOMUXC_GPIO_AD_08_EMVSIM2_RST				0x12C 0x370 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_08_GPT3_COMPARE1				0x12C 0x370 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_08_VIDEO_MUX_CSI_DATA13			0x12C 0x370 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_08_GPIO_MUX3_IO07			0x12C 0x370 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_08_ENET_1588_EVENT2_IN			0x12C 0x370 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_08_FLEXIO2_D08				0x12C 0x370 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_08_GPIO9_IO07				0x12C 0x370 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_08_FLEXPWM1_PWM2_X			0x12C 0x370 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_09_USBPHY1_OTG_ID			0x130 0x374 0x6C0 0x0 0x0
--#define IOMUXC_GPIO_AD_09_LPI2C1_SDA				0x130 0x374 0x5B0 0x1 0x0
--#define IOMUXC_GPIO_AD_09_EMVSIM2_SVEN				0x130 0x374 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_09_GPT3_COMPARE2				0x130 0x374 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_09_VIDEO_MUX_CSI_DATA12			0x130 0x374 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_09_GPIO_MUX3_IO08			0x130 0x374 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_09_ENET_1588_EVENT2_OUT			0x130 0x374 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_09_FLEXIO2_D09				0x130 0x374 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_09_GPIO9_IO08				0x130 0x374 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_09_FLEXPWM1_PWM3_X			0x130 0x374 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_10_USB_OTG1_PWR				0x134 0x378 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_10_LPI2C1_SCLS				0x134 0x378 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_10_EMVSIM2_PD				0x134 0x378 0x6AC 0x2 0x0
--#define IOMUXC_GPIO_AD_10_GPT3_COMPARE3				0x134 0x378 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_10_VIDEO_MUX_CSI_DATA11			0x134 0x378 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_10_GPIO_MUX3_IO09			0x134 0x378 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_10_ENET_1588_EVENT3_IN			0x134 0x378 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_10_FLEXIO2_D10				0x134 0x378 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_10_GPIO9_IO09				0x134 0x378 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_10_FLEXPWM2_PWM0_X			0x134 0x378 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_11_USB_OTG1_OC				0x138 0x37C 0x6BC 0x0 0x0
--#define IOMUXC_GPIO_AD_11_LPI2C1_SDAS				0x138 0x37C 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_11_EMVSIM2_POWER_FAIL			0x138 0x37C 0x6B0 0x2 0x0
--#define IOMUXC_GPIO_AD_11_GPT3_CLK				0x138 0x37C 0x598 0x3 0x1
--#define IOMUXC_GPIO_AD_11_VIDEO_MUX_CSI_DATA10			0x138 0x37C 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_11_GPIO_MUX3_IO10			0x138 0x37C 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_11_ENET_1588_EVENT3_OUT			0x138 0x37C 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_11_FLEXIO2_D11				0x138 0x37C 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_11_GPIO9_IO10				0x138 0x37C 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_11_FLEXPWM2_PWM1_X			0x138 0x37C 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_12_SPDIF_LOCK				0x13C 0x380 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_12_LPI2C1_HREQ				0x13C 0x380 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_12_GPT1_CAPTURE1				0x13C 0x380 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_12_FLEXSPI1_B_DATA03			0x13C 0x380 0x570 0x3 0x0
--#define IOMUXC_GPIO_AD_12_VIDEO_MUX_CSI_PIXCLK			0x13C 0x380 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_12_GPIO_MUX3_IO11			0x13C 0x380 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_12_ENET_TX_DATA03			0x13C 0x380 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_12_FLEXIO2_D12				0x13C 0x380 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_12_EWM_OUT_B				0x13C 0x380 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_12_GPIO9_IO11				0x13C 0x380 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_12_FLEXPWM2_PWM2_X			0x13C 0x380 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_13_SPDIF_SR_CLK				0x140 0x384 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_13_PIT1_TRIGGER0				0x140 0x384 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_13_GPT1_CAPTURE2				0x140 0x384 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_13_FLEXSPI1_B_DATA02			0x140 0x384 0x56C 0x3 0x0
--#define IOMUXC_GPIO_AD_13_VIDEO_MUX_CSI_MCLK			0x140 0x384 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_13_GPIO_MUX3_IO12			0x140 0x384 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_13_ENET_TX_DATA02			0x140 0x384 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_13_FLEXIO2_D13				0x140 0x384 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_13_REF_CLK_32K				0x140 0x384 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_13_GPIO9_IO12				0x140 0x384 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_13_FLEXPWM2_PWM3_X			0x140 0x384 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_14_SPDIF_EXT_CLK				0x144 0x388 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_14_REF_CLK_24M				0x144 0x388 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_14_GPT1_COMPARE1				0x144 0x388 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_14_FLEXSPI1_B_DATA01			0x144 0x388 0x568 0x3 0x0
--#define IOMUXC_GPIO_AD_14_VIDEO_MUX_CSI_VSYNC			0x144 0x388 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_14_GPIO_MUX3_IO13			0x144 0x388 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_14_ENET_RX_CLK				0x144 0x388 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_14_FLEXIO2_D14				0x144 0x388 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_14_CCM_ENET_REF_CLK_25M			0x144 0x388 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_14_GPIO9_IO13				0x144 0x388 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_14_FLEXPWM3_PWM0_X			0x144 0x388 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_15_GPIO9_IO14				0x148 0x38C 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_15_FLEXPWM3_PWM1_X			0x148 0x38C 0x0 0xB 0x0
--#define IOMUXC_GPIO_AD_15_SPDIF_IN				0x148 0x38C 0x6B4 0x0 0x1
--#define IOMUXC_GPIO_AD_15_LPUART10_TXD				0x148 0x38C 0x628 0x1 0x0
--#define IOMUXC_GPIO_AD_15_GPT1_COMPARE2				0x148 0x38C 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_15_FLEXSPI1_B_DATA00			0x148 0x38C 0x564 0x3 0x0
--#define IOMUXC_GPIO_AD_15_VIDEO_MUX_CSI_HSYNC			0x148 0x38C 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_15_GPIO_MUX3_IO14			0x148 0x38C 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_15_ENET_TX_ER				0x148 0x38C 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_15_FLEXIO2_D15				0x148 0x38C 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_AD_16_SPDIF_OUT				0x14C 0x390 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_16_LPUART10_RXD				0x14C 0x390 0x624 0x1 0x0
--#define IOMUXC_GPIO_AD_16_GPT1_COMPARE3				0x14C 0x390 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_16_FLEXSPI1_B_SCLK			0x14C 0x390 0x578 0x3 0x0
--#define IOMUXC_GPIO_AD_16_VIDEO_MUX_CSI_DATA09			0x14C 0x390 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_16_GPIO_MUX3_IO15			0x14C 0x390 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_16_ENET_RX_DATA03			0x14C 0x390 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_16_FLEXIO2_D16				0x14C 0x390 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_16_ENET_1G_MDC				0x14C 0x390 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_16_GPIO9_IO15				0x14C 0x390 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_16_FLEXPWM3_PWM2_X			0x14C 0x390 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_17_SAI1_MCLK				0x150 0x394 0x66C 0x0 0x0
--#define IOMUXC_GPIO_AD_17_ACMP1_OUT				0x150 0x394 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_17_GPT1_CLK				0x150 0x394 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_17_FLEXSPI1_A_DQS			0x150 0x394 0x550 0x3 0x1
--#define IOMUXC_GPIO_AD_17_VIDEO_MUX_CSI_DATA08			0x150 0x394 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_17_GPIO_MUX3_IO16			0x150 0x394 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_17_ENET_RX_DATA02			0x150 0x394 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_17_FLEXIO2_D17				0x150 0x394 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_17_ENET_1G_MDIO				0x150 0x394 0x4C8 0x9 0x2
--#define IOMUXC_GPIO_AD_17_GPIO9_IO16				0x150 0x394 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_17_FLEXPWM3_PWM3_X			0x150 0x394 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_18_GPIO9_IO17				0x154 0x398 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_18_FLEXPWM4_PWM0_X			0x154 0x398 0x0 0xB 0x0
--#define IOMUXC_GPIO_AD_18_SAI1_RX_SYNC				0x154 0x398 0x678 0x0 0x0
--#define IOMUXC_GPIO_AD_18_ACMP2_OUT				0x154 0x398 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_18_LPSPI1_PCS1				0x154 0x398 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_18_FLEXSPI1_A_SS0_B			0x154 0x398 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_18_VIDEO_MUX_CSI_DATA07			0x154 0x398 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_18_GPIO_MUX3_IO17			0x154 0x398 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_18_ENET_CRS				0x154 0x398 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_18_FLEXIO2_D18				0x154 0x398 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_18_LPI2C2_SCL				0x154 0x398 0x5B4 0x9 0x1
--
--#define IOMUXC_GPIO_AD_19_SAI1_RX_BCLK				0x158 0x39C 0x670 0x0 0x0
--#define IOMUXC_GPIO_AD_19_ACMP3_OUT				0x158 0x39C 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_19_LPSPI1_PCS2				0x158 0x39C 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_19_FLEXSPI1_A_SCLK			0x158 0x39C 0x574 0x3 0x0
--#define IOMUXC_GPIO_AD_19_VIDEO_MUX_CSI_DATA06			0x158 0x39C 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_19_GPIO_MUX3_IO18			0x158 0x39C 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_19_ENET_COL				0x158 0x39C 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_19_FLEXIO2_D19				0x158 0x39C 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_19_LPI2C2_SDA				0x158 0x39C 0x5B8 0x9 0x1
--#define IOMUXC_GPIO_AD_19_GPIO9_IO18				0x158 0x39C 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_19_FLEXPWM4_PWM1_X			0x158 0x39C 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_20_SAI1_RX_DATA00			0x15C 0x3A0 0x674 0x0 0x0
--#define IOMUXC_GPIO_AD_20_ACMP4_OUT				0x15C 0x3A0 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_20_LPSPI1_PCS3				0x15C 0x3A0 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_20_FLEXSPI1_A_DATA00			0x15C 0x3A0 0x554 0x3 0x0
--#define IOMUXC_GPIO_AD_20_VIDEO_MUX_CSI_DATA05			0x15C 0x3A0 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_20_GPIO_MUX3_IO19			0x15C 0x3A0 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_20_KPP_ROW07				0x15C 0x3A0 0x5A8 0x6 0x0
--#define IOMUXC_GPIO_AD_20_FLEXIO2_D20				0x15C 0x3A0 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_20_ENET_QOS_1588_EVENT2_OUT		0x15C 0x3A0 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_20_GPIO9_IO19				0x15C 0x3A0 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_20_FLEXPWM4_PWM2_X			0x15C 0x3A0 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_21_SAI1_TX_DATA00			0x160 0x3A4 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_21_LPSPI2_PCS1				0x160 0x3A4 0x5E0 0x2 0x0
--#define IOMUXC_GPIO_AD_21_FLEXSPI1_A_DATA01			0x160 0x3A4 0x558 0x3 0x0
--#define IOMUXC_GPIO_AD_21_VIDEO_MUX_CSI_DATA04			0x160 0x3A4 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_21_GPIO_MUX3_IO20			0x160 0x3A4 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_21_KPP_COL07				0x160 0x3A4 0x5A0 0x6 0x0
--#define IOMUXC_GPIO_AD_21_FLEXIO2_D21				0x160 0x3A4 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_21_ENET_QOS_1588_EVENT2_IN		0x160 0x3A4 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_21_GPIO9_IO20				0x160 0x3A4 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_21_FLEXPWM4_PWM3_X			0x160 0x3A4 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_22_GPIO9_IO21				0x164 0x3A8 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_22_SAI1_TX_BCLK				0x164 0x3A8 0x67C 0x0 0x0
--#define IOMUXC_GPIO_AD_22_LPSPI2_PCS2				0x164 0x3A8 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_22_FLEXSPI1_A_DATA02			0x164 0x3A8 0x55C 0x3 0x0
--#define IOMUXC_GPIO_AD_22_VIDEO_MUX_CSI_DATA03			0x164 0x3A8 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_22_GPIO_MUX3_IO21			0x164 0x3A8 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_22_KPP_ROW06				0x164 0x3A8 0x5A4 0x6 0x0
--#define IOMUXC_GPIO_AD_22_FLEXIO2_D22				0x164 0x3A8 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_22_ENET_QOS_1588_EVENT3_OUT		0x164 0x3A8 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_23_SAI1_TX_SYNC				0x168 0x3AC 0x680 0x0 0x0
--#define IOMUXC_GPIO_AD_23_LPSPI2_PCS3				0x168 0x3AC 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_23_FLEXSPI1_A_DATA03			0x168 0x3AC 0x560 0x3 0x0
--#define IOMUXC_GPIO_AD_23_VIDEO_MUX_CSI_DATA02			0x168 0x3AC 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_23_GPIO_MUX3_IO22			0x168 0x3AC 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_23_KPP_COL06				0x168 0x3AC 0x59C 0x6 0x0
--#define IOMUXC_GPIO_AD_23_FLEXIO2_D23				0x168 0x3AC 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_23_ENET_QOS_1588_EVENT3_IN		0x168 0x3AC 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_23_GPIO9_IO22				0x168 0x3AC 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_24_LPUART1_TXD				0x16C 0x3B0 0x620 0x0 0x0
--#define IOMUXC_GPIO_AD_24_LPSPI2_SCK				0x16C 0x3B0 0x5E4 0x1 0x0
--#define IOMUXC_GPIO_AD_24_VIDEO_MUX_CSI_DATA00			0x16C 0x3B0 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_24_ENET_RX_EN				0x16C 0x3B0 0x4B8 0x3 0x0
--#define IOMUXC_GPIO_AD_24_FLEXPWM2_PWM0_A			0x16C 0x3B0 0x518 0x4 0x1
--#define IOMUXC_GPIO_AD_24_GPIO_MUX3_IO23			0x16C 0x3B0 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_24_KPP_ROW05				0x16C 0x3B0 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_24_FLEXIO2_D24				0x16C 0x3B0 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_24_LPI2C4_SCL				0x16C 0x3B0 0x5C4 0x9 0x0
--#define IOMUXC_GPIO_AD_24_GPIO9_IO23				0x16C 0x3B0 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_25_GPIO9_IO24				0x170 0x3B4 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_25_LPUART1_RXD				0x170 0x3B4 0x61C 0x0 0x0
--#define IOMUXC_GPIO_AD_25_LPSPI2_PCS0				0x170 0x3B4 0x5DC 0x1 0x0
--#define IOMUXC_GPIO_AD_25_VIDEO_MUX_CSI_DATA01			0x170 0x3B4 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_25_ENET_RX_ER				0x170 0x3B4 0x4BC 0x3 0x0
--#define IOMUXC_GPIO_AD_25_FLEXPWM2_PWM0_B			0x170 0x3B4 0x524 0x4 0x1
--#define IOMUXC_GPIO_AD_25_GPIO_MUX3_IO24			0x170 0x3B4 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_25_KPP_COL05				0x170 0x3B4 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_25_FLEXIO2_D25				0x170 0x3B4 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_25_LPI2C4_SDA				0x170 0x3B4 0x5C8 0x9 0x0
--
--#define IOMUXC_GPIO_AD_26_LPUART1_CTS_B				0x174 0x3B8 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_26_LPSPI2_SOUT				0x174 0x3B8 0x5EC 0x1 0x0
--#define IOMUXC_GPIO_AD_26_SEMC_CSX01				0x174 0x3B8 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_26_ENET_RX_DATA00			0x174 0x3B8 0x4B0 0x3 0x0
--#define IOMUXC_GPIO_AD_26_FLEXPWM2_PWM1_A			0x174 0x3B8 0x51C 0x4 0x1
--#define IOMUXC_GPIO_AD_26_GPIO_MUX3_IO25			0x174 0x3B8 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_26_KPP_ROW04				0x174 0x3B8 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_26_FLEXIO2_D26				0x174 0x3B8 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_26_ENET_QOS_MDC				0x174 0x3B8 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_26_GPIO9_IO25				0x174 0x3B8 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_26_USDHC2_CD_B				0x174 0x3B8 0x6D0 0xB 0x1
--
--#define IOMUXC_GPIO_AD_27_LPUART1_RTS_B				0x178 0x3BC 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_27_LPSPI2_SIN				0x178 0x3BC 0x5E8 0x1 0x0
--#define IOMUXC_GPIO_AD_27_SEMC_CSX02				0x178 0x3BC 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_27_ENET_RX_DATA01			0x178 0x3BC 0x4B4 0x3 0x0
--#define IOMUXC_GPIO_AD_27_FLEXPWM2_PWM1_B			0x178 0x3BC 0x528 0x4 0x1
--#define IOMUXC_GPIO_AD_27_GPIO_MUX3_IO26			0x178 0x3BC 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_27_KPP_COL04				0x178 0x3BC 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_27_FLEXIO2_D27				0x178 0x3BC 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_27_ENET_QOS_MDIO				0x178 0x3BC 0x4EC 0x9 0x1
--#define IOMUXC_GPIO_AD_27_GPIO9_IO26				0x178 0x3BC 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_27_USDHC2_WP				0x178 0x3BC 0x6D4 0xB 0x1
--
--#define IOMUXC_GPIO_AD_28_GPIO9_IO27				0x17C 0x3C0 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_28_USDHC2_VSELECT			0x17C 0x3C0 0x0 0xB 0x0
--#define IOMUXC_GPIO_AD_28_LPSPI1_SCK				0x17C 0x3C0 0x5D0 0x0 0x1
--#define IOMUXC_GPIO_AD_28_LPUART5_TXD				0x17C 0x3C0 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_28_SEMC_CSX03				0x17C 0x3C0 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_28_ENET_TX_EN				0x17C 0x3C0 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_28_FLEXPWM2_PWM2_A			0x17C 0x3C0 0x520 0x4 0x1
--#define IOMUXC_GPIO_AD_28_GPIO_MUX3_IO27			0x17C 0x3C0 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_28_KPP_ROW03				0x17C 0x3C0 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_28_FLEXIO2_D28				0x17C 0x3C0 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_28_VIDEO_MUX_EXT_DCIC1			0x17C 0x3C0 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_29_LPSPI1_PCS0				0x180 0x3C4 0x5CC 0x0 0x1
--#define IOMUXC_GPIO_AD_29_LPUART5_RXD				0x180 0x3C4 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_29_ENET_REF_CLK				0x180 0x3C4 0x4A8 0x2 0x0
--#define IOMUXC_GPIO_AD_29_ENET_TX_CLK				0x180 0x3C4 0x4C0 0x3 0x0
--#define IOMUXC_GPIO_AD_29_FLEXPWM2_PWM2_B			0x180 0x3C4 0x52C 0x4 0x1
--#define IOMUXC_GPIO_AD_29_GPIO_MUX3_IO28			0x180 0x3C4 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_29_KPP_COL03				0x180 0x3C4 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_29_FLEXIO2_D29				0x180 0x3C4 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_29_VIDEO_MUX_EXT_DCIC2			0x180 0x3C4 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_29_GPIO9_IO28				0x180 0x3C4 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_29_USDHC2_RESET_B			0x180 0x3C4 0x0 0xB 0x0
--
--#define IOMUXC_GPIO_AD_30_LPSPI1_SOUT				0x184 0x3C8 0x5D8 0x0 0x1
--#define IOMUXC_GPIO_AD_30_USB_OTG2_OC				0x184 0x3C8 0x6B8 0x1 0x1
--#define IOMUXC_GPIO_AD_30_FLEXCAN2_TX				0x184 0x3C8 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_30_ENET_TX_DATA00			0x184 0x3C8 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_30_LPUART3_TXD				0x184 0x3C8 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_30_GPIO_MUX3_IO29			0x184 0x3C8 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_30_KPP_ROW02				0x184 0x3C8 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_30_FLEXIO2_D30				0x184 0x3C8 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_30_WDOG2_RESET_B_DEB			0x184 0x3C8 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_30_GPIO9_IO29				0x184 0x3C8 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_31_LPSPI1_SIN				0x188 0x3CC 0x5D4 0x0 0x1
--#define IOMUXC_GPIO_AD_31_USB_OTG2_PWR				0x188 0x3CC 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_31_FLEXCAN2_RX				0x188 0x3CC 0x49C 0x2 0x1
--#define IOMUXC_GPIO_AD_31_ENET_TX_DATA01			0x188 0x3CC 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_31_LPUART3_RXD				0x188 0x3CC 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_31_GPIO_MUX3_IO30			0x188 0x3CC 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_31_KPP_COL02				0x188 0x3CC 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_31_FLEXIO2_D31				0x188 0x3CC 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_31_WDOG1_RESET_B_DEB			0x188 0x3CC 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_31_GPIO9_IO30				0x188 0x3CC 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_32_GPIO9_IO31				0x18C 0x3D0 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_32_LPI2C1_SCL				0x18C 0x3D0 0x5AC 0x0 0x1
--#define IOMUXC_GPIO_AD_32_USBPHY2_OTG_ID			0x18C 0x3D0 0x6C4 0x1 0x1
--#define IOMUXC_GPIO_AD_32_PGMC_PMIC_RDY				0x18C 0x3D0 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_32_ENET_MDC				0x18C 0x3D0 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_32_USDHC1_CD_B				0x18C 0x3D0 0x6C8 0x4 0x0
--#define IOMUXC_GPIO_AD_32_GPIO_MUX3_IO31			0x18C 0x3D0 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_32_KPP_ROW01				0x18C 0x3D0 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_32_LPUART10_TXD				0x18C 0x3D0 0x628 0x8 0x1
--#define IOMUXC_GPIO_AD_32_ENET_1G_MDC				0x18C 0x3D0 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_AD_33_LPI2C1_SDA				0x190 0x3D4 0x5B0 0x0 0x1
--#define IOMUXC_GPIO_AD_33_USBPHY1_OTG_ID			0x190 0x3D4 0x6C0 0x1 0x1
--#define IOMUXC_GPIO_AD_33_XBAR1_INOUT17				0x190 0x3D4 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_33_ENET_MDIO				0x190 0x3D4 0x4AC 0x3 0x1
--#define IOMUXC_GPIO_AD_33_USDHC1_WP				0x190 0x3D4 0x6CC 0x4 0x0
--#define IOMUXC_GPIO_AD_33_GPIO_MUX4_IO00			0x190 0x3D4 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_33_KPP_COL01				0x190 0x3D4 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_33_LPUART10_RXD				0x190 0x3D4 0x624 0x8 0x1
--#define IOMUXC_GPIO_AD_33_ENET_1G_MDIO				0x190 0x3D4 0x4C8 0x9 0x3
--#define IOMUXC_GPIO_AD_33_GPIO10_IO00				0x190 0x3D4 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_34_ENET_1G_1588_EVENT0_IN		0x194 0x3D8 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_34_USB_OTG1_PWR				0x194 0x3D8 0x0 0x1 0x0
--#define IOMUXC_GPIO_AD_34_XBAR1_INOUT18				0x194 0x3D8 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_34_ENET_1588_EVENT0_IN			0x194 0x3D8 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_34_USDHC1_VSELECT			0x194 0x3D8 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_34_GPIO_MUX4_IO01			0x194 0x3D8 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_34_KPP_ROW00				0x194 0x3D8 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_34_LPUART10_CTS_B			0x194 0x3D8 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_34_WDOG1_ANY				0x194 0x3D8 0x0 0x9 0x0
--#define IOMUXC_GPIO_AD_34_GPIO10_IO01				0x194 0x3D8 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_AD_35_GPIO10_IO02				0x198 0x3DC 0x0 0xA 0x0
--#define IOMUXC_GPIO_AD_35_ENET_1G_1588_EVENT0_OUT		0x198 0x3DC 0x0 0x0 0x0
--#define IOMUXC_GPIO_AD_35_USB_OTG1_OC				0x198 0x3DC 0x6BC 0x1 0x1
--#define IOMUXC_GPIO_AD_35_XBAR1_INOUT19				0x198 0x3DC 0x0 0x2 0x0
--#define IOMUXC_GPIO_AD_35_ENET_1588_EVENT0_OUT			0x198 0x3DC 0x0 0x3 0x0
--#define IOMUXC_GPIO_AD_35_USDHC1_RESET_B			0x198 0x3DC 0x0 0x4 0x0
--#define IOMUXC_GPIO_AD_35_GPIO_MUX4_IO02			0x198 0x3DC 0x0 0x5 0x0
--#define IOMUXC_GPIO_AD_35_KPP_COL00				0x198 0x3DC 0x0 0x6 0x0
--#define IOMUXC_GPIO_AD_35_LPUART10_RTS_B			0x198 0x3DC 0x0 0x8 0x0
--#define IOMUXC_GPIO_AD_35_FLEXSPI1_B_SS1_B			0x198 0x3DC 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_SD_B1_00_USDHC1_CMD				0x19C 0x3E0 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B1_00_XBAR1_INOUT20			0x19C 0x3E0 0x6D8 0x2 0x1
--#define IOMUXC_GPIO_SD_B1_00_GPT4_CAPTURE1			0x19C 0x3E0 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B1_00_GPIO_MUX4_IO03			0x19C 0x3E0 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B1_00_FLEXSPI2_A_SS0_B			0x19C 0x3E0 0x0 0x6 0x0
--#define IOMUXC_GPIO_SD_B1_00_KPP_ROW07				0x19C 0x3E0 0x5A8 0x8 0x1
--#define IOMUXC_GPIO_SD_B1_00_GPIO10_IO03			0x19C 0x3E0 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B1_01_USDHC1_CLK				0x1A0 0x3E4 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B1_01_XBAR1_INOUT21			0x1A0 0x3E4 0x6DC 0x2 0x1
--#define IOMUXC_GPIO_SD_B1_01_GPT4_CAPTURE2			0x1A0 0x3E4 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B1_01_GPIO_MUX4_IO04			0x1A0 0x3E4 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B1_01_FLEXSPI2_A_SCLK			0x1A0 0x3E4 0x58C 0x6 0x1
--#define IOMUXC_GPIO_SD_B1_01_KPP_COL07				0x1A0 0x3E4 0x5A0 0x8 0x1
--#define IOMUXC_GPIO_SD_B1_01_GPIO10_IO04			0x1A0 0x3E4 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B1_02_GPIO10_IO05			0x1A4 0x3E8 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B1_02_USDHC1_DATA0			0x1A4 0x3E8 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B1_02_XBAR1_INOUT22			0x1A4 0x3E8 0x6E0 0x2 0x1
--#define IOMUXC_GPIO_SD_B1_02_GPT4_COMPARE1			0x1A4 0x3E8 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B1_02_GPIO_MUX4_IO05			0x1A4 0x3E8 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B1_02_FLEXSPI2_A_DATA00			0x1A4 0x3E8 0x57C 0x6 0x1
--#define IOMUXC_GPIO_SD_B1_02_KPP_ROW06				0x1A4 0x3E8 0x5A4 0x8 0x1
--#define IOMUXC_GPIO_SD_B1_02_FLEXSPI1_A_SS1_B			0x1A4 0x3E8 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_SD_B1_03_USDHC1_DATA1			0x1A8 0x3EC 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B1_03_XBAR1_INOUT23			0x1A8 0x3EC 0x6E4 0x2 0x1
--#define IOMUXC_GPIO_SD_B1_03_GPT4_COMPARE2			0x1A8 0x3EC 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B1_03_GPIO_MUX4_IO06			0x1A8 0x3EC 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B1_03_FLEXSPI2_A_DATA01			0x1A8 0x3EC 0x580 0x6 0x1
--#define IOMUXC_GPIO_SD_B1_03_KPP_COL06				0x1A8 0x3EC 0x59C 0x8 0x1
--#define IOMUXC_GPIO_SD_B1_03_FLEXSPI1_B_SS1_B			0x1A8 0x3EC 0x0 0x9 0x0
--#define IOMUXC_GPIO_SD_B1_03_GPIO10_IO06			0x1A8 0x3EC 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B1_04_USDHC1_DATA2			0x1AC 0x3F0 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B1_04_XBAR1_INOUT24			0x1AC 0x3F0 0x6E8 0x2 0x1
--#define IOMUXC_GPIO_SD_B1_04_GPT4_COMPARE3			0x1AC 0x3F0 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B1_04_GPIO_MUX4_IO07			0x1AC 0x3F0 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B1_04_FLEXSPI2_A_DATA02			0x1AC 0x3F0 0x584 0x6 0x1
--#define IOMUXC_GPIO_SD_B1_04_FLEXSPI1_B_SS0_B			0x1AC 0x3F0 0x0 0x8 0x0
--#define IOMUXC_GPIO_SD_B1_04_ENET_QOS_1588_EVENT2_AUX_IN	0x1AC 0x3F0 0x0 0x9 0x0
--#define IOMUXC_GPIO_SD_B1_04_GPIO10_IO07			0x1AC 0x3F0 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B1_05_GPIO10_IO08			0x1B0 0x3F4 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B1_05_USDHC1_DATA3			0x1B0 0x3F4 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B1_05_XBAR1_INOUT25			0x1B0 0x3F4 0x6EC 0x2 0x1
--#define IOMUXC_GPIO_SD_B1_05_GPT4_CLK				0x1B0 0x3F4 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B1_05_GPIO_MUX4_IO08			0x1B0 0x3F4 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B1_05_FLEXSPI2_A_DATA03			0x1B0 0x3F4 0x588 0x6 0x1
--#define IOMUXC_GPIO_SD_B1_05_FLEXSPI1_B_DQS			0x1B0 0x3F4 0x0 0x8 0x0
--#define IOMUXC_GPIO_SD_B1_05_ENET_QOS_1588_EVENT3_AUX_IN	0x1B0 0x3F4 0x0 0x9 0x0
--
--#define IOMUXC_GPIO_SD_B2_00_GPIO10_IO09			0x1B4 0x3F8 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_00_USDHC2_DATA3			0x1B4 0x3F8 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_00_FLEXSPI1_B_DATA03			0x1B4 0x3F8 0x570 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_00_ENET_1G_RX_EN			0x1B4 0x3F8 0x4E0 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_00_LPUART9_TXD			0x1B4 0x3F8 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_00_LPSPI4_SCK				0x1B4 0x3F8 0x610 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_00_GPIO_MUX4_IO09			0x1B4 0x3F8 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SD_B2_01_USDHC2_DATA2			0x1B8 0x3FC 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_01_FLEXSPI1_B_DATA02			0x1B8 0x3FC 0x56C 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_01_ENET_1G_RX_CLK			0x1B8 0x3FC 0x4CC 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_01_LPUART9_RXD			0x1B8 0x3FC 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_01_LPSPI4_PCS0			0x1B8 0x3FC 0x60C 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_01_GPIO_MUX4_IO10			0x1B8 0x3FC 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_01_GPIO10_IO10			0x1B8 0x3FC 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B2_02_GPIO10_IO11			0x1BC 0x400 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_02_USDHC2_DATA1			0x1BC 0x400 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_02_FLEXSPI1_B_DATA01			0x1BC 0x400 0x568 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_02_ENET_1G_RX_DATA00			0x1BC 0x400 0x4D0 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_02_LPUART9_CTS_B			0x1BC 0x400 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_02_LPSPI4_SOUT			0x1BC 0x400 0x618 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_02_GPIO_MUX4_IO11			0x1BC 0x400 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SD_B2_03_GPIO10_IO12			0x1C0 0x404 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_03_USDHC2_DATA0			0x1C0 0x404 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_03_FLEXSPI1_B_DATA00			0x1C0 0x404 0x564 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_03_ENET_1G_RX_DATA01			0x1C0 0x404 0x4D4 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_03_LPUART9_RTS_B			0x1C0 0x404 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_03_LPSPI4_SIN				0x1C0 0x404 0x614 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_03_GPIO_MUX4_IO12			0x1C0 0x404 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SD_B2_04_USDHC2_CLK				0x1C4 0x408 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_04_FLEXSPI1_B_SCLK			0x1C4 0x408 0x578 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_04_ENET_1G_RX_DATA02			0x1C4 0x408 0x4D8 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_04_FLEXSPI1_A_SS1_B			0x1C4 0x408 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_04_LPSPI4_PCS1			0x1C4 0x408 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_04_GPIO_MUX4_IO13			0x1C4 0x408 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_04_GPIO10_IO13			0x1C4 0x408 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B2_05_GPIO10_IO14			0x1C8 0x40C 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_05_USDHC2_CMD				0x1C8 0x40C 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_05_FLEXSPI1_A_DQS			0x1C8 0x40C 0x550 0x1 0x2
--#define IOMUXC_GPIO_SD_B2_05_ENET_1G_RX_DATA03			0x1C8 0x40C 0x4DC 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_05_FLEXSPI1_B_SS0_B			0x1C8 0x40C 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_05_LPSPI4_PCS2			0x1C8 0x40C 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_05_GPIO_MUX4_IO14			0x1C8 0x40C 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SD_B2_06_GPIO10_IO15			0x1CC 0x410 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_06_USDHC2_RESET_B			0x1CC 0x410 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_06_FLEXSPI1_A_SS0_B			0x1CC 0x410 0x0 0x1 0x0
--#define IOMUXC_GPIO_SD_B2_06_ENET_1G_TX_DATA03			0x1CC 0x410 0x0 0x2 0x0
--#define IOMUXC_GPIO_SD_B2_06_LPSPI4_PCS3			0x1CC 0x410 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_06_GPT6_CAPTURE1			0x1CC 0x410 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_06_GPIO_MUX4_IO15			0x1CC 0x410 0x0 0x5 0x0
--
--#define IOMUXC_GPIO_SD_B2_07_USDHC2_STROBE			0x1D0 0x414 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_07_FLEXSPI1_A_SCLK			0x1D0 0x414 0x574 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_07_ENET_1G_TX_DATA02			0x1D0 0x414 0x0 0x2 0x0
--#define IOMUXC_GPIO_SD_B2_07_LPUART3_CTS_B			0x1D0 0x414 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_07_GPT6_CAPTURE2			0x1D0 0x414 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_07_GPIO_MUX4_IO16			0x1D0 0x414 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_07_LPSPI2_SCK				0x1D0 0x414 0x5E4 0x6 0x1
--#define IOMUXC_GPIO_SD_B2_07_ENET_TX_ER				0x1D0 0x414 0x0 0x8 0x0
--#define IOMUXC_GPIO_SD_B2_07_ENET_QOS_REF_CLK			0x1D0 0x414 0x4A0 0x9 0x1
--#define IOMUXC_GPIO_SD_B2_07_GPIO10_IO16			0x1D0 0x414 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_SD_B2_08_GPIO10_IO17			0x1D4 0x418 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_08_USDHC2_DATA4			0x1D4 0x418 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_08_FLEXSPI1_A_DATA00			0x1D4 0x418 0x554 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_08_ENET_1G_TX_DATA01			0x1D4 0x418 0x0 0x2 0x0
--#define IOMUXC_GPIO_SD_B2_08_LPUART3_RTS_B			0x1D4 0x418 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_08_GPT6_COMPARE1			0x1D4 0x418 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_08_GPIO_MUX4_IO17			0x1D4 0x418 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_08_LPSPI2_PCS0			0x1D4 0x418 0x5DC 0x6 0x1
--
--#define IOMUXC_GPIO_SD_B2_09_GPIO10_IO18			0x1D8 0x41C 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_09_USDHC2_DATA5			0x1D8 0x41C 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_09_FLEXSPI1_A_DATA01			0x1D8 0x41C 0x558 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_09_ENET_1G_TX_DATA00			0x1D8 0x41C 0x0 0x2 0x0
--#define IOMUXC_GPIO_SD_B2_09_LPUART5_CTS_B			0x1D8 0x41C 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_09_GPT6_COMPARE2			0x1D8 0x41C 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_09_GPIO_MUX4_IO18			0x1D8 0x41C 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_09_LPSPI2_SOUT			0x1D8 0x41C 0x5EC 0x6 0x1
--
--#define IOMUXC_GPIO_SD_B2_10_GPIO10_IO19			0x1DC 0x420 0x0 0xA 0x0
--#define IOMUXC_GPIO_SD_B2_10_USDHC2_DATA6			0x1DC 0x420 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_10_FLEXSPI1_A_DATA02			0x1DC 0x420 0x55C 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_10_ENET_1G_TX_EN			0x1DC 0x420 0x0 0x2 0x0
--#define IOMUXC_GPIO_SD_B2_10_LPUART5_RTS_B			0x1DC 0x420 0x0 0x3 0x0
--#define IOMUXC_GPIO_SD_B2_10_GPT6_COMPARE3			0x1DC 0x420 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_10_GPIO_MUX4_IO19			0x1DC 0x420 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_10_LPSPI2_SIN				0x1DC 0x420 0x5E8 0x6 0x1
--
--#define IOMUXC_GPIO_SD_B2_11_USDHC2_DATA7			0x1E0 0x424 0x0 0x0 0x0
--#define IOMUXC_GPIO_SD_B2_11_FLEXSPI1_A_DATA03			0x1E0 0x424 0x560 0x1 0x1
--#define IOMUXC_GPIO_SD_B2_11_ENET_1G_TX_CLK_IO			0x1E0 0x424 0x4E8 0x2 0x1
--#define IOMUXC_GPIO_SD_B2_11_ENET_1G_REF_CLK			0x1E0 0x424 0x4C4 0x3 0x1
--#define IOMUXC_GPIO_SD_B2_11_GPT6_CLK				0x1E0 0x424 0x0 0x4 0x0
--#define IOMUXC_GPIO_SD_B2_11_GPIO_MUX4_IO20			0x1E0 0x424 0x0 0x5 0x0
--#define IOMUXC_GPIO_SD_B2_11_LPSPI2_PCS1			0x1E0 0x424 0x5E0 0x6 0x1
--#define IOMUXC_GPIO_SD_B2_11_GPIO10_IO20			0x1E0 0x424 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_00_VIDEO_MUX_LCDIF_CLK		0x1E4 0x428 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_00_ENET_1G_RX_EN			0x1E4 0x428 0x4E0 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_00_TMR1_TIMER0			0x1E4 0x428 0x63C 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_00_XBAR1_INOUT26			0x1E4 0x428 0x6F0 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_00_GPIO_MUX4_IO21			0x1E4 0x428 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_00_ENET_QOS_RX_EN			0x1E4 0x428 0x4F8 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_00_GPIO10_IO21			0x1E4 0x428 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_01_VIDEO_MUX_LCDIF_ENABLE		0x1E8 0x42C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_01_ENET_1G_RX_CLK			0x1E8 0x42C 0x4CC 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_01_ENET_1G_RX_ER			0x1E8 0x42C 0x4E4 0x2 0x1
--#define IOMUXC_GPIO_DISP_B1_01_TMR1_TIMER1			0x1E8 0x42C 0x640 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_01_XBAR1_INOUT27			0x1E8 0x42C 0x6F4 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_01_GPIO_MUX4_IO22			0x1E8 0x42C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_01_ENET_QOS_RX_CLK			0x1E8 0x42C 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_01_ENET_QOS_RX_ER			0x1E8 0x42C 0x4FC 0x9 0x0
--#define IOMUXC_GPIO_DISP_B1_01_GPIO10_IO22			0x1E8 0x42C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_02_GPIO10_IO23			0x1EC 0x430 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B1_02_VIDEO_MUX_LCDIF_HSYNC		0x1EC 0x430 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_02_ENET_1G_RX_DATA00		0x1EC 0x430 0x4D0 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_02_LPI2C3_SCL			0x1EC 0x430 0x5BC 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_02_TMR1_TIMER2			0x1EC 0x430 0x644 0x3 0x1
--#define IOMUXC_GPIO_DISP_B1_02_XBAR1_INOUT28			0x1EC 0x430 0x6F8 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_02_GPIO_MUX4_IO23			0x1EC 0x430 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_02_ENET_QOS_RX_DATA00		0x1EC 0x430 0x4F0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_02_LPUART1_TXD			0x1EC 0x430 0x620 0x9 0x1
--
--#define IOMUXC_GPIO_DISP_B1_03_VIDEO_MUX_LCDIF_VSYNC		0x1F0 0x434 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_03_ENET_1G_RX_DATA01		0x1F0 0x434 0x4D4 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_03_LPI2C3_SDA			0x1F0 0x434 0x5C0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_03_TMR2_TIMER0			0x1F0 0x434 0x648 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_03_XBAR1_INOUT29			0x1F0 0x434 0x6FC 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_03_GPIO_MUX4_IO24			0x1F0 0x434 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_03_ENET_QOS_RX_DATA01		0x1F0 0x434 0x4F4 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_03_LPUART1_RXD			0x1F0 0x434 0x61C 0x9 0x1
--#define IOMUXC_GPIO_DISP_B1_03_GPIO10_IO24			0x1F0 0x434 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_04_VIDEO_MUX_LCDIF_DATA00		0x1F4 0x438 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_04_ENET_1G_RX_DATA02		0x1F4 0x438 0x4D8 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_04_LPUART4_RXD			0x1F4 0x438 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_04_TMR2_TIMER1			0x1F4 0x438 0x64C 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_04_XBAR1_INOUT30			0x1F4 0x438 0x700 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_04_GPIO_MUX4_IO25			0x1F4 0x438 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_04_ENET_QOS_RX_DATA02		0x1F4 0x438 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_04_LPSPI3_SCK			0x1F4 0x438 0x600 0x9 0x1
--#define IOMUXC_GPIO_DISP_B1_04_GPIO10_IO25			0x1F4 0x438 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_05_GPIO10_IO26			0x1F8 0x43C 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B1_05_VIDEO_MUX_LCDIF_DATA01		0x1F8 0x43C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_05_ENET_1G_RX_DATA03		0x1F8 0x43C 0x4DC 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_05_LPUART4_CTS_B			0x1F8 0x43C 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_05_TMR2_TIMER2			0x1F8 0x43C 0x650 0x3 0x1
--#define IOMUXC_GPIO_DISP_B1_05_XBAR1_INOUT31			0x1F8 0x43C 0x704 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_05_GPIO_MUX4_IO26			0x1F8 0x43C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_05_ENET_QOS_RX_DATA03		0x1F8 0x43C 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_05_LPSPI3_SIN			0x1F8 0x43C 0x604 0x9 0x1
--
--#define IOMUXC_GPIO_DISP_B1_06_VIDEO_MUX_LCDIF_DATA02		0x1FC 0x440 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_06_ENET_1G_TX_DATA03		0x1FC 0x440 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B1_06_LPUART4_TXD			0x1FC 0x440 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_06_TMR3_TIMER0			0x1FC 0x440 0x654 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_06_XBAR1_INOUT32			0x1FC 0x440 0x708 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_06_GPIO_MUX4_IO27			0x1FC 0x440 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_06_SRC_BT_CFG00			0x1FC 0x440 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B1_06_ENET_QOS_TX_DATA03		0x1FC 0x440 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_06_LPSPI3_SOUT			0x1FC 0x440 0x608 0x9 0x1
--#define IOMUXC_GPIO_DISP_B1_06_GPIO10_IO27			0x1FC 0x440 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_07_VIDEO_MUX_LCDIF_DATA03		0x200 0x444 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_07_ENET_1G_TX_DATA02		0x200 0x444 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B1_07_LPUART4_RTS_B			0x200 0x444 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_07_TMR3_TIMER1			0x200 0x444 0x658 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_07_XBAR1_INOUT33			0x200 0x444 0x70C 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_07_GPIO_MUX4_IO28			0x200 0x444 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_07_SRC_BT_CFG01			0x200 0x444 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B1_07_ENET_QOS_TX_DATA02		0x200 0x444 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_07_LPSPI3_PCS0			0x200 0x444 0x5F0 0x9 0x1
--#define IOMUXC_GPIO_DISP_B1_07_GPIO10_IO28			0x200 0x444 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_08_GPIO10_IO29			0x204 0x448 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B1_08_VIDEO_MUX_LCDIF_DATA04		0x204 0x448 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_08_ENET_1G_TX_DATA01		0x204 0x448 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B1_08_USDHC1_CD_B			0x204 0x448 0x6C8 0x2 0x1
--#define IOMUXC_GPIO_DISP_B1_08_TMR3_TIMER2			0x204 0x448 0x65C 0x3 0x1
--#define IOMUXC_GPIO_DISP_B1_08_XBAR1_INOUT34			0x204 0x448 0x710 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_08_GPIO_MUX4_IO29			0x204 0x448 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_08_SRC_BT_CFG02			0x204 0x448 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B1_08_ENET_QOS_TX_DATA01		0x204 0x448 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_08_LPSPI3_PCS1			0x204 0x448 0x5F4 0x9 0x1
--
--#define IOMUXC_GPIO_DISP_B1_09_VIDEO_MUX_LCDIF_DATA05		0x208 0x44C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_09_ENET_1G_TX_DATA00		0x208 0x44C 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B1_09_USDHC1_WP			0x208 0x44C 0x6CC 0x2 0x1
--#define IOMUXC_GPIO_DISP_B1_09_TMR4_TIMER0			0x208 0x44C 0x660 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_09_XBAR1_INOUT35			0x208 0x44C 0x714 0x4 0x1
--#define IOMUXC_GPIO_DISP_B1_09_GPIO_MUX4_IO30			0x208 0x44C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_09_SRC_BT_CFG03			0x208 0x44C 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B1_09_ENET_QOS_TX_DATA00		0x208 0x44C 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_09_LPSPI3_PCS2			0x208 0x44C 0x5F8 0x9 0x1
--#define IOMUXC_GPIO_DISP_B1_09_GPIO10_IO30			0x208 0x44C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_10_VIDEO_MUX_LCDIF_DATA06		0x20C 0x450 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_10_ENET_1G_TX_EN			0x20C 0x450 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B1_10_USDHC1_RESET_B			0x20C 0x450 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B1_10_TMR4_TIMER1			0x20C 0x450 0x664 0x3 0x2
--#define IOMUXC_GPIO_DISP_B1_10_XBAR1_INOUT36			0x20C 0x450 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B1_10_GPIO_MUX4_IO31			0x20C 0x450 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_10_SRC_BT_CFG04			0x20C 0x450 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B1_10_ENET_QOS_TX_EN			0x20C 0x450 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_10_LPSPI3_PCS3			0x20C 0x450 0x5FC 0x9 0x1
--#define IOMUXC_GPIO_DISP_B1_10_GPIO10_IO31			0x20C 0x450 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B1_11_VIDEO_MUX_LCDIF_DATA07		0x210 0x454 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B1_11_ENET_1G_TX_CLK_IO		0x210 0x454 0x4E8 0x1 0x2
--#define IOMUXC_GPIO_DISP_B1_11_ENET_1G_REF_CLK			0x210 0x454 0x4C4 0x2 0x2
--#define IOMUXC_GPIO_DISP_B1_11_TMR4_TIMER2			0x210 0x454 0x668 0x3 0x1
--#define IOMUXC_GPIO_DISP_B1_11_XBAR1_INOUT37			0x210 0x454 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B1_11_GPIO_MUX5_IO00			0x210 0x454 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B1_11_SRC_BT_CFG05			0x210 0x454 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B1_11_ENET_QOS_TX_CLK			0x210 0x454 0x4A4 0x8 0x0
--#define IOMUXC_GPIO_DISP_B1_11_ENET_QOS_REF_CLK			0x210 0x454 0x4A0 0x9 0x2
--#define IOMUXC_GPIO_DISP_B1_11_GPIO11_IO00			0x210 0x454 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B2_00_GPIO11_IO01			0x214 0x458 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_00_VIDEO_MUX_LCDIF_DATA08		0x214 0x458 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_00_WDOG1_B				0x214 0x458 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_00_MQS_RIGHT			0x214 0x458 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_00_ENET_1G_TX_ER			0x214 0x458 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_00_SAI1_TX_DATA03			0x214 0x458 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_00_GPIO_MUX5_IO01			0x214 0x458 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_00_SRC_BT_CFG06			0x214 0x458 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_00_ENET_QOS_TX_ER			0x214 0x458 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_DISP_B2_01_VIDEO_MUX_LCDIF_DATA09		0x218 0x45C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_01_USDHC1_VSELECT			0x218 0x45C 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_01_MQS_LEFT				0x218 0x45C 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_01_WDOG2_B				0x218 0x45C 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_01_SAI1_TX_DATA02			0x218 0x45C 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_01_GPIO_MUX5_IO02			0x218 0x45C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_01_SRC_BT_CFG07			0x218 0x45C 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_01_EWM_OUT_B			0x218 0x45C 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_01_CCM_ENET_REF_CLK_25M		0x218 0x45C 0x0 0x9 0x0
--#define IOMUXC_GPIO_DISP_B2_01_GPIO11_IO02			0x218 0x45C 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B2_02_GPIO11_IO03			0x21C 0x460 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_02_VIDEO_MUX_LCDIF_DATA10		0x21C 0x460 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_02_ENET_TX_DATA00			0x21C 0x460 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_02_PIT1_TRIGGER3			0x21C 0x460 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_02_ARM_TRACE00			0x21C 0x460 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_02_SAI1_TX_DATA01			0x21C 0x460 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_02_GPIO_MUX5_IO03			0x21C 0x460 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_02_SRC_BT_CFG08			0x21C 0x460 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_02_ENET_QOS_TX_DATA00		0x21C 0x460 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_DISP_B2_03_GPIO11_IO04			0x220 0x464 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_03_VIDEO_MUX_LCDIF_DATA11		0x220 0x464 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_03_ENET_TX_DATA01			0x220 0x464 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_03_PIT1_TRIGGER2			0x220 0x464 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_03_ARM_TRACE01			0x220 0x464 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_03_SAI1_MCLK			0x220 0x464 0x66C 0x4 0x1
--#define IOMUXC_GPIO_DISP_B2_03_GPIO_MUX5_IO04			0x220 0x464 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_03_SRC_BT_CFG09			0x220 0x464 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_03_ENET_QOS_TX_DATA01		0x220 0x464 0x0 0x8 0x0
--
--#define IOMUXC_GPIO_DISP_B2_04_VIDEO_MUX_LCDIF_DATA12		0x224 0x468 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_04_ENET_TX_EN			0x224 0x468 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_04_PIT1_TRIGGER1			0x224 0x468 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_04_ARM_TRACE02			0x224 0x468 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_04_SAI1_RX_SYNC			0x224 0x468 0x678 0x4 0x1
--#define IOMUXC_GPIO_DISP_B2_04_GPIO_MUX5_IO05			0x224 0x468 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_04_SRC_BT_CFG10			0x224 0x468 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_04_ENET_QOS_TX_EN			0x224 0x468 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_04_GPIO11_IO05			0x224 0x468 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B2_05_GPIO11_IO06			0x228 0x46C 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_05_VIDEO_MUX_LCDIF_DATA13		0x228 0x46C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_05_ENET_TX_CLK			0x228 0x46C 0x4C0 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_05_ENET_REF_CLK			0x228 0x46C 0x4A8 0x2 0x1
--#define IOMUXC_GPIO_DISP_B2_05_ARM_TRACE03			0x228 0x46C 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_05_SAI1_RX_BCLK			0x228 0x46C 0x670 0x4 0x1
--#define IOMUXC_GPIO_DISP_B2_05_GPIO_MUX5_IO06			0x228 0x46C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_05_SRC_BT_CFG11			0x228 0x46C 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_05_ENET_QOS_TX_CLK			0x228 0x46C 0x4A4 0x8 0x1
--
--#define IOMUXC_GPIO_DISP_B2_06_GPIO11_IO07			0x22C 0x470 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_06_VIDEO_MUX_LCDIF_DATA14		0x22C 0x470 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_06_ENET_RX_DATA00			0x22C 0x470 0x4B0 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_06_LPUART7_TXD			0x22C 0x470 0x630 0x2 0x1
--#define IOMUXC_GPIO_DISP_B2_06_ARM_TRACE_CLK			0x22C 0x470 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_06_SAI1_RX_DATA00			0x22C 0x470 0x674 0x4 0x1
--#define IOMUXC_GPIO_DISP_B2_06_GPIO_MUX5_IO07			0x22C 0x470 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_06_ENET_QOS_RX_DATA00		0x22C 0x470 0x4F0 0x8 0x1
--
--#define IOMUXC_GPIO_DISP_B2_07_VIDEO_MUX_LCDIF_DATA15		0x230 0x474 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_07_ENET_RX_DATA01			0x230 0x474 0x4B4 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_07_LPUART7_RXD			0x230 0x474 0x62C 0x2 0x1
--#define IOMUXC_GPIO_DISP_B2_07_ARM_TRACE_SWO			0x230 0x474 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_07_SAI1_TX_DATA00			0x230 0x474 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_07_GPIO_MUX5_IO08			0x230 0x474 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_07_ENET_QOS_RX_DATA01		0x230 0x474 0x4F4 0x8 0x1
--#define IOMUXC_GPIO_DISP_B2_07_GPIO11_IO08			0x230 0x474 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B2_08_GPIO11_IO09			0x234 0x478 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_08_VIDEO_MUX_LCDIF_DATA16		0x234 0x478 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_08_ENET_RX_EN			0x234 0x478 0x4B8 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_08_LPUART8_TXD			0x234 0x478 0x638 0x2 0x1
--#define IOMUXC_GPIO_DISP_B2_08_ARM_CM7_EVENTO			0x234 0x478 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_08_SAI1_TX_BCLK			0x234 0x478 0x67C 0x4 0x1
--#define IOMUXC_GPIO_DISP_B2_08_GPIO_MUX5_IO09			0x234 0x478 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_08_ENET_QOS_RX_EN			0x234 0x478 0x4F8 0x8 0x1
--#define IOMUXC_GPIO_DISP_B2_08_LPUART1_TXD			0x234 0x478 0x620 0x9 0x2
--
--#define IOMUXC_GPIO_DISP_B2_09_GPIO11_IO10			0x238 0x47C 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_09_VIDEO_MUX_LCDIF_DATA17		0x238 0x47C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_09_ENET_RX_ER			0x238 0x47C 0x4BC 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_09_LPUART8_RXD			0x238 0x47C 0x634 0x2 0x1
--#define IOMUXC_GPIO_DISP_B2_09_ARM_CM7_EVENTI			0x238 0x47C 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_09_SAI1_TX_SYNC			0x238 0x47C 0x680 0x4 0x1
--#define IOMUXC_GPIO_DISP_B2_09_GPIO_MUX5_IO10			0x238 0x47C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_09_ENET_QOS_RX_ER			0x238 0x47C 0x4FC 0x8 0x1
--#define IOMUXC_GPIO_DISP_B2_09_LPUART1_RXD			0x238 0x47C 0x61C 0x9 0x2
--
--#define IOMUXC_GPIO_DISP_B2_10_GPIO11_IO11			0x23C 0x480 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_10_VIDEO_MUX_LCDIF_DATA18		0x23C 0x480 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_10_EMVSIM2_IO			0x23C 0x480 0x6A8 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_10_LPUART2_TXD			0x23C 0x480 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_10_WDOG2_RESET_B_DEB		0x23C 0x480 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_10_XBAR1_INOUT38			0x23C 0x480 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_10_GPIO_MUX5_IO11			0x23C 0x480 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_10_LPI2C3_SCL			0x23C 0x480 0x5BC 0x6 0x1
--#define IOMUXC_GPIO_DISP_B2_10_ENET_QOS_RX_ER			0x23C 0x480 0x4FC 0x8 0x2
--#define IOMUXC_GPIO_DISP_B2_10_SPDIF_IN				0x23C 0x480 0x6B4 0x9 0x2
--
--#define IOMUXC_GPIO_DISP_B2_11_VIDEO_MUX_LCDIF_DATA19		0x240 0x484 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_11_EMVSIM2_CLK			0x240 0x484 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_11_LPUART2_RXD			0x240 0x484 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_11_WDOG1_RESET_B_DEB		0x240 0x484 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_11_XBAR1_INOUT39			0x240 0x484 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_11_GPIO_MUX5_IO12			0x240 0x484 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_11_LPI2C3_SDA			0x240 0x484 0x5C0 0x6 0x1
--#define IOMUXC_GPIO_DISP_B2_11_ENET_QOS_CRS			0x240 0x484 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_11_SPDIF_OUT			0x240 0x484 0x0 0x9 0x0
--#define IOMUXC_GPIO_DISP_B2_11_GPIO11_IO12			0x240 0x484 0x0 0xA 0x0
--
--#define IOMUXC_GPIO_DISP_B2_12_GPIO11_IO13			0x244 0x488 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_12_VIDEO_MUX_LCDIF_DATA20		0x244 0x488 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_12_EMVSIM2_RST			0x244 0x488 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_12_FLEXCAN1_TX			0x244 0x488 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_12_LPUART2_CTS_B			0x244 0x488 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_12_XBAR1_INOUT40			0x244 0x488 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_12_GPIO_MUX5_IO13			0x244 0x488 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_12_LPI2C4_SCL			0x244 0x488 0x5C4 0x6 0x1
--#define IOMUXC_GPIO_DISP_B2_12_ENET_QOS_COL			0x244 0x488 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_12_LPSPI4_SCK			0x244 0x488 0x610 0x9 0x1
--
--#define IOMUXC_GPIO_DISP_B2_13_GPIO11_IO14			0x248 0x48C 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_13_VIDEO_MUX_LCDIF_DATA21		0x248 0x48C 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_13_EMVSIM2_SVEN			0x248 0x48C 0x0 0x1 0x0
--#define IOMUXC_GPIO_DISP_B2_13_FLEXCAN1_RX			0x248 0x48C 0x498 0x2 0x1
--#define IOMUXC_GPIO_DISP_B2_13_LPUART2_RTS_B			0x248 0x48C 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_13_ENET_REF_CLK			0x248 0x48C 0x4A8 0x4 0x2
--#define IOMUXC_GPIO_DISP_B2_13_GPIO_MUX5_IO14			0x248 0x48C 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_13_LPI2C4_SDA			0x248 0x48C 0x5C8 0x6 0x1
--#define IOMUXC_GPIO_DISP_B2_13_ENET_QOS_1588_EVENT0_OUT		0x248 0x48C 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_13_LPSPI4_SIN			0x248 0x48C 0x614 0x9 0x1
--
--#define IOMUXC_GPIO_DISP_B2_14_GPIO_MUX5_IO15			0x24C 0x490 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_14_FLEXCAN1_TX			0x24C 0x490 0x0 0x6 0x0
--#define IOMUXC_GPIO_DISP_B2_14_ENET_QOS_1588_EVENT0_IN		0x24C 0x490 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_14_LPSPI4_SOUT			0x24C 0x490 0x618 0x9 0x1
--#define IOMUXC_GPIO_DISP_B2_14_GPIO11_IO15			0x24C 0x490 0x0 0xA 0x0
--#define IOMUXC_GPIO_DISP_B2_14_VIDEO_MUX_LCDIF_DATA22		0x24C 0x490 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_14_EMVSIM2_PD			0x24C 0x490 0x6AC 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_14_WDOG2_B				0x24C 0x490 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_14_VIDEO_MUX_EXT_DCIC1		0x24C 0x490 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_14_ENET_1G_REF_CLK			0x24C 0x490 0x4C4 0x4 0x3
--
--#define IOMUXC_GPIO_DISP_B2_15_VIDEO_MUX_LCDIF_DATA23		0x250 0x494 0x0 0x0 0x0
--#define IOMUXC_GPIO_DISP_B2_15_EMVSIM2_POWER_FAIL		0x250 0x494 0x6B0 0x1 0x1
--#define IOMUXC_GPIO_DISP_B2_15_WDOG1_B				0x250 0x494 0x0 0x2 0x0
--#define IOMUXC_GPIO_DISP_B2_15_VIDEO_MUX_EXT_DCIC2		0x250 0x494 0x0 0x3 0x0
--#define IOMUXC_GPIO_DISP_B2_15_PIT1_TRIGGER0			0x250 0x494 0x0 0x4 0x0
--#define IOMUXC_GPIO_DISP_B2_15_GPIO_MUX5_IO16			0x250 0x494 0x0 0x5 0x0
--#define IOMUXC_GPIO_DISP_B2_15_FLEXCAN1_RX			0x250 0x494 0x498 0x6 0x2
--#define IOMUXC_GPIO_DISP_B2_15_ENET_QOS_1588_EVENT0_AUX_IN	0x250 0x494 0x0 0x8 0x0
--#define IOMUXC_GPIO_DISP_B2_15_LPSPI4_PCS0			0x250 0x494 0x60C 0x9 0x1
--#define IOMUXC_GPIO_DISP_B2_15_GPIO11_IO16			0x250 0x494 0x0 0xA 0x0
--
--#endif  /* _DT_BINDINGS_PINCTRL_IMXRT1170_PINFUNC_H */
-diff --git a/arch/arm/boot/dts/nxp/vf/Makefile b/arch/arm/boot/dts/nxp/vf/Makefile
-index 0a4a7f9dd43e..1733506c0c72 100644
---- a/arch/arm/boot/dts/nxp/vf/Makefile
-+++ b/arch/arm/boot/dts/nxp/vf/Makefile
-@@ -3,9 +3,7 @@ dtb-$(CONFIG_SOC_VF610) += \
- 	vf500-colibri-eval-v3.dtb \
- 	vf610-bk4.dtb \
- 	vf610-colibri-eval-v3.dtb \
--	vf610m4-colibri.dtb \
- 	vf610-cosmic.dtb \
--	vf610m4-cosmic.dtb \
- 	vf610-twr.dtb \
- 	vf610-zii-cfu1.dtb \
- 	vf610-zii-dev-rev-b.dtb \
-diff --git a/arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts b/arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts
-deleted file mode 100644
-index 86d32f54c250..000000000000
---- a/arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dts
-+++ /dev/null
-@@ -1,61 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0+ OR MIT
--/*
-- * Device tree for Colibri VF61 Cortex-M4 support
-- *
-- * Copyright (C) 2015 Stefan Agner
-- */
--
--/dts-v1/;
--#include "vf610m4.dtsi"
--
--/ {
--	model = "VF610 Cortex-M4";
--	compatible = "fsl,vf610m4";
--
--	chosen {
--		bootargs = "clk_ignore_unused init=/linuxrc rw";
--		stdout-path = "serial2:115200";
--	};
--
--	memory@8c000000 {
--		device_type = "memory";
--		reg = <0x8c000000 0x3000000>;
--	};
--};
--
--&gpio0 {
--	status = "disabled";
--};
--
--&gpio1 {
--	status = "disabled";
--};
--
--&gpio2 {
--	status = "disabled";
--};
--
--&gpio3 {
--	status = "disabled";
--};
--
--&gpio4 {
--	status = "disabled";
--};
--
--&uart2 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart2>;
--	status = "okay";
--};
--
--&iomuxc {
--	pinctrl_uart2: uart2grp {
--		fsl,pins = <
--			VF610_PAD_PTD0__UART2_TX		0x21a2
--			VF610_PAD_PTD1__UART2_RX		0x21a1
--			VF610_PAD_PTD2__UART2_RTS		0x21a2
--			VF610_PAD_PTD3__UART2_CTS		0x21a1
--		>;
--	};
--};
-diff --git a/arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts b/arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts
-deleted file mode 100644
-index 454b484368cb..000000000000
---- a/arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dts
-+++ /dev/null
-@@ -1,88 +0,0 @@
--/*
-- * Device tree for Cosmic+ VF6xx Cortex-M4 support
-- *
-- * Copyright (C) 2015
-- *
-- * Based on vf610m4 Colibri
-- *
-- * This file is dual-licensed: you can use it either under the terms
-- * of the GPL or the X11 license, at your option. Note that this dual
-- * licensing only applies to this file, and not this project as a
-- * whole.
-- *
-- *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of the
-- *     License, or (at your option) any later version.
-- *
-- *     This file is distributed in the hope that it will be useful,
-- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *     GNU General Public License for more details.
-- *
-- * Or, alternatively,
-- *
-- *  b) Permission is hereby granted, free of charge, to any person
-- *     obtaining a copy of this software and associated documentation
-- *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
-- *     copy, modify, merge, publish, distribute, sublicense, and/or
-- *     sell copies of the Software, and to permit persons to whom the
-- *     Software is furnished to do so, subject to the following
-- *     conditions:
-- *
-- *     The above copyright notice and this permission notice shall be
-- *     included in all copies or substantial portions of the Software.
-- *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-- *     OTHER DEALINGS IN THE SOFTWARE.
-- */
--
--/dts-v1/;
--#include "vf610m4.dtsi"
--
--/ {
--	model = "VF610 Cortex-M4";
--	compatible = "fsl,vf610m4";
--};
--
--&gpio0 {
--	status = "disabled";
--};
--
--&gpio1 {
--	status = "disabled";
--};
--
--&gpio2 {
--	status = "disabled";
--};
--
--&gpio3 {
--	status = "disabled";
--};
--
--&gpio4 {
--	status = "disabled";
--};
--
--&uart3 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart3>;
--	status = "okay";
--};
--
--&iomuxc {
--	pinctrl_uart3: uart3grp {
--		fsl,pins = <
--			VF610_PAD_PTA20__UART3_TX		0x21a2
--			VF610_PAD_PTA21__UART3_RX		0x21a1
--		>;
--	};
--};
-diff --git a/arch/arm/boot/dts/nxp/vf/vf610m4.dtsi b/arch/arm/boot/dts/nxp/vf/vf610m4.dtsi
-deleted file mode 100644
-index 648d219e1d0e..000000000000
---- a/arch/arm/boot/dts/nxp/vf/vf610m4.dtsi
-+++ /dev/null
-@@ -1,61 +0,0 @@
--/*
-- * Device tree for VF6xx Cortex-M4 support
-- *
-- * Copyright (C) 2015 Stefan Agner
-- *
-- * This file is dual-licensed: you can use it either under the terms
-- * of the GPL or the X11 license, at your option. Note that this dual
-- * licensing only applies to this file, and not this project as a
-- * whole.
-- *
-- *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of the
-- *     License, or (at your option) any later version.
-- *
-- *     This file is distributed in the hope that it will be useful,
-- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *     GNU General Public License for more details.
-- *
-- * Or, alternatively,
-- *
-- *  b) Permission is hereby granted, free of charge, to any person
-- *     obtaining a copy of this software and associated documentation
-- *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
-- *     copy, modify, merge, publish, distribute, sublicense, and/or
-- *     sell copies of the Software, and to permit persons to whom the
-- *     Software is furnished to do so, subject to the following
-- *     conditions:
-- *
-- *     The above copyright notice and this permission notice shall be
-- *     included in all copies or substantial portions of the Software.
-- *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-- *     OTHER DEALINGS IN THE SOFTWARE.
-- */
--
--#include "../../armv7-m.dtsi"
--#include "vfxxx.dtsi"
--
--/ {
--	#address-cells = <1>;
--	#size-cells = <1>;
--	chosen { };
--	aliases { };
--};
--
--&mscm_ir {
--	interrupt-parent = <&nvic>;
--};
--
--&nvic {
--	arm,num-irq-priority-bits = <4>;
--};
-diff --git a/arch/arm/configs/imxrt_defconfig b/arch/arm/configs/imxrt_defconfig
-deleted file mode 100644
-index 52dba3762996..000000000000
---- a/arch/arm/configs/imxrt_defconfig
-+++ /dev/null
-@@ -1,35 +0,0 @@
--# CONFIG_LOCALVERSION_AUTO is not set
--CONFIG_BPF_SYSCALL=y
--CONFIG_SCHED_AUTOGROUP=y
--# CONFIG_MMU is not set
--CONFIG_ARCH_MXC=y
--CONFIG_SOC_IMXRT=y
--CONFIG_SET_MEM_PARAM=y
--CONFIG_DRAM_BASE=0x80000000
--CONFIG_DRAM_SIZE=0x02000000
--CONFIG_BINFMT_FLAT=y
--CONFIG_UEVENT_HELPER=y
--CONFIG_DEVTMPFS=y
--CONFIG_DEVTMPFS_MOUNT=y
--CONFIG_IMX_WEIM=y
--CONFIG_LEGACY_PTY_COUNT=2
--CONFIG_SERIAL_FSL_LPUART=y
--CONFIG_SERIAL_FSL_LPUART_CONSOLE=y
--CONFIG_SERIAL_DEV_BUS=y
--CONFIG_PINCTRL_IMXRT1050=y
--CONFIG_GPIO_MXC=y
--CONFIG_MMC=y
--CONFIG_MMC_SDHCI=y
--CONFIG_MMC_SDHCI_PLTFM=y
--CONFIG_MMC_SDHCI_ESDHC_IMX=y
--CONFIG_DMADEVICES=y
--CONFIG_FSL_EDMA=y
--CONFIG_CLK_IMXRT1050=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
--CONFIG_VFAT_FS=y
--CONFIG_FAT_DEFAULT_UTF8=y
--CONFIG_EXFAT_FS=y
--CONFIG_NLS_ASCII=y
--CONFIG_NLS_UTF8=y
-diff --git a/arch/arm/configs/vf610m4_defconfig b/arch/arm/configs/vf610m4_defconfig
-deleted file mode 100644
-index a5609cbfdfb3..000000000000
---- a/arch/arm/configs/vf610m4_defconfig
-+++ /dev/null
-@@ -1,39 +0,0 @@
--CONFIG_NAMESPACES=y
--CONFIG_BLK_DEV_INITRD=y
--# CONFIG_RD_BZIP2 is not set
--# CONFIG_RD_LZMA is not set
--# CONFIG_RD_XZ is not set
--# CONFIG_RD_LZ4 is not set
--CONFIG_EXPERT=y
--CONFIG_KALLSYMS_ALL=y
--# CONFIG_MMU is not set
--CONFIG_ARCH_MXC=y
--CONFIG_SOC_VF610=y
--CONFIG_SET_MEM_PARAM=y
--CONFIG_DRAM_BASE=0x8c000000
--CONFIG_FLASH_MEM_BASE=0x8f000000
--CONFIG_FLASH_SIZE=0x01000000
--CONFIG_CMDLINE="console=/dev/ttyLP2"
--CONFIG_XIP_KERNEL=y
--CONFIG_XIP_PHYS_ADDR=0x0f000080
--# CONFIG_SUSPEND is not set
--CONFIG_BINFMT_FLAT=y
--CONFIG_BINFMT_ZFLAT=y
--# CONFIG_UEVENT_HELPER is not set
--# CONFIG_STANDALONE is not set
--# CONFIG_PREVENT_FIRMWARE_BUILD is not set
--# CONFIG_ALLOW_DEV_COREDUMP is not set
--CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_RAM_COUNT=4
--# CONFIG_INPUT_MOUSEDEV is not set
--# CONFIG_KEYBOARD_ATKBD is not set
--# CONFIG_INPUT_MOUSE is not set
--# CONFIG_SERIO is not set
--CONFIG_SERIAL_FSL_LPUART=y
--CONFIG_SERIAL_FSL_LPUART_CONSOLE=y
--# CONFIG_HW_RANDOM is not set
--CONFIG_MFD_SYSCON=y
--# CONFIG_HID is not set
--# CONFIG_USB_SUPPORT is not set
--CONFIG_EXT4_FS=y
--# CONFIG_MISC_FILESYSTEMS is not set
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 77704c6a70ba..cdc1b31fe573 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -2,7 +2,7 @@
- menuconfig ARCH_MXC
- 	bool "Freescale i.MX family"
- 	depends on ((ARCH_MULTI_V4T || ARCH_MULTI_V5) && CPU_LITTLE_ENDIAN) || \
--		ARCH_MULTI_V6_V7 || ARM_SINGLE_ARMV7M
-+		ARCH_MULTI_V6_V7
- 	select CLKSRC_IMX_GPT
- 	select GENERIC_IRQ_CHIP
- 	select GPIOLIB
-@@ -174,7 +174,7 @@ config SOC_LS1021A
- 
- endif
- 
--if ARCH_MULTI_V7 || ARM_SINGLE_ARMV7M
-+if ARCH_MULTI_V7
- 
- comment "Cortex-A/Cortex-M asymmetric multiprocessing platforms"
- 
-@@ -187,38 +187,23 @@ config SOC_IMX7D_CA7
- 	select HAVE_IMX_SRC
- 	select IMX_GPCV2
- 
--config SOC_IMX7D_CM4
--	bool
--	select ARMV7M_SYSTICK
--
- config SOC_IMX7D
- 	bool "i.MX7 Dual support"
--	select SOC_IMX7D_CA7 if ARCH_MULTI_V7
--	select SOC_IMX7D_CM4 if ARM_SINGLE_ARMV7M
--	select ARM_ERRATA_814220 if ARCH_MULTI_V7
-+	select SOC_IMX7D_CA7
-+	select ARM_ERRATA_814220
- 	help
- 	  This enables support for Freescale i.MX7 Dual processor.
- 
- config SOC_IMX7ULP
- 	bool "i.MX7ULP support"
- 	select CLKSRC_IMX_TPM
--	select SOC_IMX7D_CA7 if ARCH_MULTI_V7
--	select SOC_IMX7D_CM4 if ARM_SINGLE_ARMV7M
-+	select SOC_IMX7D_CA7
- 	help
- 	  This enables support for Freescale i.MX7 Ultra Low Power processor.
- 
--config SOC_IMXRT
--	bool "i.MXRT support (DEPRECATED)"
--	depends on ARM_SINGLE_ARMV7M
--	select ARMV7M_SYSTICK if ARM_SINGLE_ARMV7M
--	help
--	  This enables support for Freescale i.MXRT Crossover processor.
--
--	  This platform is scheduled for removal in early 2027
--
- config SOC_VF610
- 	bool "Vybrid Family VF610 support"
--	select ARM_GIC if ARCH_MULTI_V7
-+	select ARM_GIC
- 
- 	help
- 	  This enables support for Freescale Vybrid VF610 processor.
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index fa0144f0882d..135079340428 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -42,7 +42,6 @@ obj-$(CONFIG_SOC_IMX6SLL) += mach-imx6sl.o
- obj-$(CONFIG_SOC_IMX6SX) += mach-imx6sx.o
- obj-$(CONFIG_SOC_IMX6UL) += mach-imx6ul.o
- obj-$(CONFIG_SOC_IMX7D_CA7) += mach-imx7d.o
--obj-$(CONFIG_SOC_IMX7D_CM4) += mach-imx7d-cm4.o
- obj-$(CONFIG_SOC_IMX7ULP) += mach-imx7ulp.o pm-imx7ulp.o
- 
- ifeq ($(CONFIG_SUSPEND),y)
-@@ -59,8 +58,6 @@ obj-$(CONFIG_SOC_IMX50) += mach-imx50.o
- obj-$(CONFIG_SOC_IMX51) += mach-imx51.o
- obj-$(CONFIG_SOC_IMX53) += mach-imx53.o
- 
--obj-$(CONFIG_SOC_IMXRT) += mach-imxrt.o
--
- obj-$(CONFIG_SOC_VF610) += mach-vf610.o
- 
- obj-$(CONFIG_SOC_LS1021A) += mach-ls1021a.o
-diff --git a/arch/arm/mach-imx/mach-imx7d-cm4.c b/arch/arm/mach-imx/mach-imx7d-cm4.c
-deleted file mode 100644
-index 0800b5891d2a..000000000000
---- a/arch/arm/mach-imx/mach-imx7d-cm4.c
-+++ /dev/null
-@@ -1,18 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Copyright (c) 2018 Pengutronix, Oleksij Rempel <o.rempel@pengutronix.de>
-- */
--
--#include <linux/kernel.h>
--#include <asm/v7m.h>
--#include <asm/mach/arch.h>
--
--static const char * const imx7d_cm4_dt_compat[] __initconst = {
--	"fsl,imx7d-cm4",
--	NULL,
--};
--
--DT_MACHINE_START(IMX7D, "Freescale i.MX7 Dual Cortex-M4 (Device Tree)")
--	.dt_compat = imx7d_cm4_dt_compat,
--	.restart = armv7m_restart,
--MACHINE_END
-diff --git a/arch/arm/mach-imx/mach-imxrt.c b/arch/arm/mach-imx/mach-imxrt.c
-deleted file mode 100644
-index 2063a3059c84..000000000000
---- a/arch/arm/mach-imx/mach-imxrt.c
-+++ /dev/null
-@@ -1,19 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Copyright (C) 2019
-- * Author(s): Giulio Benetti <giulio.benetti@benettiengineering.com>
-- */
--
--#include <linux/kernel.h>
--#include <asm/mach/arch.h>
--#include <asm/v7m.h>
--
--static const char *const imxrt_compat[] __initconst = {
--	"fsl,imxrt1050",
--	NULL
--};
--
--DT_MACHINE_START(IMXRTDT, "IMXRT (Device Tree Support)")
--	.dt_compat = imxrt_compat,
--	.restart = armv7m_restart,
--MACHINE_END
-diff --git a/arch/arm/mach-imx/mach-vf610.c b/arch/arm/mach-imx/mach-vf610.c
-index 208ff640698d..f77565381097 100644
---- a/arch/arm/mach-imx/mach-vf610.c
-+++ b/arch/arm/mach-imx/mach-vf610.c
-@@ -59,7 +59,6 @@ static const char * const vf610_dt_compat[] __initconst = {
- 	"fsl,vf510",
- 	"fsl,vf600",
- 	"fsl,vf610",
--	"fsl,vf610m4",
- 	NULL,
- };
- 
+ Documentation/ABI/testing/se-cdev                  |   45 +
+ .../devicetree/bindings/firmware/fsl,imx-se.yaml   |   91 +
+ .../driver-api/firmware/other_interfaces.rst       |  238 ++
+ arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |    3 +-
+ .../arm64/boot/dts/freescale/imx8ulp-firmware.dtsi |   31 +
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi         |   12 +-
+ drivers/firmware/imx/Kconfig                       |   12 +
+ drivers/firmware/imx/Makefile                      |    2 +
+ drivers/firmware/imx/ele_base_msg.c                |  395 ++++
+ drivers/firmware/imx/ele_base_msg.h                |  119 +
+ drivers/firmware/imx/ele_common.c                  | 1012 ++++++++
+ drivers/firmware/imx/ele_common.h                  |  147 ++
+ drivers/firmware/imx/ele_fw_api.c                  |  404 ++++
+ drivers/firmware/imx/ele_fw_api.h                  |  104 +
+ drivers/firmware/imx/ele_msg_addr_field.c          |  619 +++++
+ drivers/firmware/imx/se_ctrl.c                     | 2434 ++++++++++++++++++++
+ drivers/firmware/imx/se_ctrl.h                     |  309 +++
+ include/linux/firmware/imx/se_api.h                |   14 +
+ include/uapi/linux/se_ioctl.h                      |   97 +
+ 19 files changed, 6085 insertions(+), 3 deletions(-)
+---
+base-commit: 39013d3c1230d4a46c4400cbb037374e6c2c59e5
+change-id: 20240507-imx-se-if-a40055093dc6
+
+Best regards,
 -- 
-2.53.0
+Pankaj Gupta <pankaj.gupta@nxp.com>
 
