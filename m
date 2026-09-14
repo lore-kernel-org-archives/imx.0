@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4C030E0CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B57338734A;
 	Mon, 14 Sep 2026 21:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789419696; cv=none; b=auEdsPfRYQDIZgByHQNkToyjfj35/Seqj4qadZNmNfSVBWuL40X9cEgzHHt2xpGQsRBEqdQVf/8fDH0mF3gOl28TBj0MW3XcUVMvle717ENe2thinL25vhlOYCDhbWWRhmkH2bmO8e4NjLLh5Q68XbXzsAdsmaZ8ZK/gSZXYtpY=
+	t=1789419696; cv=none; b=uE8rl4krfx0rF+O2ew9zVq9cx9x+AuVKajLavKQ4M40dkeWY06yZirLSb8rSCB6GvgTTy8CL8A77ycR4bwaZpxMijGsqXtCaTlxw2nNIQpdxmarwhbYdFQv/0OACM28F0bHcV7z/TE2RLENHI1oYvqUPfDY5+WhyRyY/MvDtdAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789419696; c=relaxed/simple;
-	bh=n5QACkd1zv3PhqXE3MIany6DDgK40aeV4SQY8yeovjE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tli3k7HgI0Dp6x317ahCwKHmuQE5c/6IwjtuRfjApjcQ1f0m4tUEIO7xHV6aR6B//+yApKxuLbZ1XoTnigqrGsyk1i2QiVqdWxJGnfp12ImoNSaH0a7e2i4EiARxYHl4QLvnGSwl+JjvMv1bixPlLEhm6gNF8AAJI3cclcyByao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fPjLsWMy; arc=none smtp.client-ip=10.30.226.201
+	bh=abhkSVp4+hSR25yIjnuuhX22Z25hgW7n7760yvmKfN8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XVyHh9rX30TF+hmekvOJ1CIQ1VBVFjxTshFBiE5iWO5QNCxRyPsZjpml6MAbJTyWwO/ZgZUVow+sD30wIq3YH1yLVxhBFk7dATjZnj7g/kYdA4dVRD3/yinXbw+wq41aoiJgJmEVeWSEh170KzlTp73ma9v9DUDwO6mhoXNHr7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqkUeGav; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fPjLsWMy"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F67AC2BCFB;
-	Mon, 14 Sep 2026 21:01:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqkUeGav"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F216EC2BCB8;
+	Mon, 14 Sep 2026 21:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789419696;
-	bh=n5QACkd1zv3PhqXE3MIany6DDgK40aeV4SQY8yeovjE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=fPjLsWMyhs+Q2lIb8/u8B399dKax3CndF3hfkAhaqZvAuc/rhz67qCgnvsxe5u9b1
-	 B0UiChn5QQBSJaITW4OvbXK7GxJlTNjNNBFYQH+L7NhusEfzeL4wWzOAcJSAxADGKe
-	 eBN/Jllnr5xfHQOljPanjt0gmIiVNX4hAJ38eS5agKVHVB9tLoTCRC5CaYoJ6ndY7k
-	 oQoInpGdMVaBGsB/xjYs/bhlNyvXP0PD2HKqsVN8DEi+kxMn7iS9DIYKCp2fRdD5EP
-	 j0cyo7z9//q+alg4sh4wVpga1lvICqIt7kqjsRpE5SxeUXA4XQC4xDN0Dco+Y5xjT2
-	 5L8zbUKggERkA==
+	bh=abhkSVp4+hSR25yIjnuuhX22Z25hgW7n7760yvmKfN8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=dqkUeGavOnEzaz5rqQ02w2E93qDoVKHZKQ8MO04nbBUiMOCBSfivpWmzzoYr68eAP
+	 zwiiYS8w006uwbTTftDdZZCQU3ER9zfYZnja3XGikbk1qj2TsFZFX/1DvhkjkucRDf
+	 AqmHTIZWv0cMa+VtMkZJM0UWbmfVFulpLBBPt475p8MW9QbZE1fYjdPwvRu8adMt+e
+	 PTKFIJl7dDZV8wFDfJ5PqCrA5dHb6EAzN+aKKfvZVa7AeqXSYPZofBxsH474oUQgfw
+	 G5mzNVlGNeG7kOPc5sdUPXFQ18MyJv1Pvp1vWjay6+2FMbT6QQj3SEC07fNzkT+eWh
+	 D3ppLCFV3fyeg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC786C88E7B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAD35C88E72;
 	Mon, 14 Sep 2026 21:01:35 +0000 (UTC)
 From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Mon, 14 Sep 2026 23:01:34 +0200
-Subject: [PATCH v7 1/3] dt-bindings: vendor-prefixes: add Free Mobile
+Subject: [PATCH v7 0/3] arm64: dts: freescale: add Free Mobile Nodebox v3
+ CPU Module (LX2160A)
+Date: Mon, 14 Sep 2026 23:01:33 +0200
+Message-Id: <20260914-for-upstream-nbxv3-dts-v7-0-373a142b08d5@free.fr>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,9 +41,11 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-for-upstream-nbxv3-dts-v7-1-373a142b08d5@free.fr>
-References: <20260914-for-upstream-nbxv3-dts-v7-0-373a142b08d5@free.fr>
-In-Reply-To: <20260914-for-upstream-nbxv3-dts-v7-0-373a142b08d5@free.fr>
+X-B4-Tracking: v=1; b=H4sIAK1gqGoC/43PPW7DMAwF4KsEmquC+lc69R5FBtGiGg21A8kVE
+ gS+e5UsdQIY7fgI8HvklVUqmSp7211ZoZZrnsYe3MuODccwfhLPsWcmQVrYg+NpKvz7VOdC4Yu
+ PeG6Kx7lyRBoiaFA+SNaXT4VSPt/hj0PPx1znqVzuPU3cpn+STXDgSasUAaRH599TIXpNhd3AJ
+ v+HyI5Y1CFFZYUHfETUGvGbiOqIiN6jHISwHh4RvUKE2ER0R2R/xkVjnAlPl5g1IjcR0xEK0YK
+ OGKx4QuwaUZuI7QgYb6zFvcIgfpFlWX4AnImoyBMCAAA=
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -53,11 +56,11 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  Vincent Jardin <vjardin@free.fr>, 
  Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789419694; l=923;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789419694; l=3965;
  i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=YJnL8SVSS5jtnm6LBYWZbK3h+dEb8nY2DV6ueCzz3OA=;
- b=KPvHnjXaWyA3V9IjJEfPXvAX2+giWbckoUOP7ejSIEhUwOvWv527dWlOufpBbFpxywfP1ce1T
- ba+UrtLfIwWAt5HzLSXMabxoMAtJcQ5vaiWBqk1CbH0XDhrmWpwK4Fo
+ bh=abhkSVp4+hSR25yIjnuuhX22Z25hgW7n7760yvmKfN8=;
+ b=ZGGXQUp5d2bpOnBKIbhJlinwXBz5sxD4d8eZgnwyO73++EkGbwZkJhBejxwypgjUncyqhCGQY
+ rHU5KEDHtaTCVzHBKTLyQ76KDXRFoS3hv3rGVJ8ZJrRoq2bDb3gnMDu
 X-Developer-Key: i=vjardin@free.fr; a=ed25519;
  pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
 X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
@@ -65,32 +68,97 @@ X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
 X-Original-From: Vincent Jardin <vjardin@free.fr>
 Reply-To: vjardin@free.fr
 
-From: Vincent Jardin <vjardin@free.fr>
+The Nodebox v3 is a Free Mobile CPU module built around the NXP LX2160A
+(16x Cortex-A72, DPAA2).
 
-Free Mobile is a French mobile network operator. Add its vendor
-prefix, used by the Nodebox v3 CPU Module (freemobile,nbxv3).
+The same fsl-lx2160a-nbxv3.dtsi shall be used verbatim by the
+U-Boot port, sent in parallel to the U-Boot list, so the two trees
+cannot drift.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Dependency:
+
+the DTS uses gpio hogs on the QorIQ GPIO controllers, which
+needs the commit
+  78c0baf85cd0 ("dt-bindings: gpio: fsl,qoriq-gpio: allow gpio-hog child nodes")
+already in gpio/for-next and that will likely arrive in v7.4-rc1.
+Until it lands, dtbs_check reports the five hog nodes, the rest of the
+tree validates clean against the current schemas.
+
+About the patch 2, following Krzysztof's question on v5: the CPU module
+boots on its own, so it is listed as a plain LX2160A board. It is also
+a SoM that will support many carrier boards.
+
+But those carrier boards are still work in progress, so they are not part
+of this series yet. When they will be, fsl.yaml should get them (not
+included with this series, just for comments and TBC):
+
+      - description: Free Mobile Nodebox v3 CPU Module based Boards
+        items:
+          - enum:
+              - freemobile,nbv30
+              - freemobile,nbv31
+              - freemobile,nbv32
+          - const: freemobile,nbxv3
+          - const: fsl,lx2160a
+
 Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v7:
+- gpio3: both USB over-current different names (Frank Li, Sashiko)
+- dt-bindings: arm: fsl: Acked-by Krzysztof Kozlowski
+- Link to v6: https://lore.kernel.org/r/20260913-for-upstream-nbxv3-dts-v6-0-058566b93ba1@free.fr
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index ba2002969373..e467da45cd7a 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -626,6 +626,8 @@ patternProperties:
-     description: Freebox SAS
-   "^freecom,.*":
-     description: Freecom Gmbh
-+  "^freemobile,.*":
-+    description: Free Mobile
-   "^frida,.*":
-     description: Shenzhen Frida LCD Co., Ltd.
-   "^friendlyarm,.*":
+Changes in v6:
+- dt-bindings: arm: fsl: freemobile,nbxv3 no 1 entry enum for the
+  "LX2160A based Boards" (Krzysztof Kozlowski)
+- Link to v5: https://lore.kernel.org/r/20260912-for-upstream-nbxv3-dts-v5-0-ead604dba61b@free.fr
 
+Changes in v5:
+- read dts-coding-style: many reorder/cleanup including
+  comments from Frank Li without functional changes
+- Link to v4: https://lore.kernel.org/r/20260911-for-upstream-nbxv3-dts-v4-0-2fd07d5575ab@free.fr
+
+Changes in v4:
+- dt-bindings: arm: fsl: commit message like the other ones (Krzysztof Kozlowski)
+- Acked-by on the vendor prefix
+- Drop U-Boot comments from the DTS commit message (Frank Li)
+- Boot NOR reset: reset-gpios on flash@0 instead of a gpio hog (Frank Li)
+- ethsw-mdio-en: regulator-fixed instead of a gpio hog (Frank Li)
+- ethsw-reset#: hog dropped (Frank Li)
+- pltrst#: platform without consumer node
+- Link to v3: https://lore.kernel.org/r/20260908-for-upstream-nbxv3-dts-v3-0-1d88b2c11680@free.fr
+
+Changes in v3:
+- Drop the thermtrip hog on gpio1 line 23, should have been clean'd
+  before
+- Link to v2: https://lore.kernel.org/r/20260907-for-upstream-nbxv3-dts-v2-0-6b4afd36180b@free.fr
+
+Changes in v2: (from Sashiko's comments)
+- Makefile: dtb entry in alphabetical order (before qds).
+- Move the XSPI1_A_DATA[7:4] GPIO mux group from &fspi to &gpio1, so
+  the reset hogs on gpio1 do not depend on the fspi probe.
+- gpio hogs: describe ethsw-reset# and ethsw-mdio-en with their
+  active-low polarity (GPIO_ACTIVE_LOW), same electrical levels.
+- Link to v1: https://lore.kernel.org/r/20260907-for-upstream-nbxv3-dts-v1-0-f43fd0028b78@free.fr
+
+---
+Vincent Jardin (3):
+      dt-bindings: vendor-prefixes: add Free Mobile
+      dt-bindings: arm: fsl: add Free Mobile Nodebox v3 CPU Module
+      arm64: dts: freescale: add Nodebox v3 CPU Module
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/freescale/Makefile             |   2 +
+ .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |  34 +++
+ .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 330 +++++++++++++++++++++
+ 5 files changed, 369 insertions(+)
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260907-for-upstream-nbxv3-dts-bbecd04038a2
+
+Best regards,
 -- 
-2.43.0
+Vincent Jardin <vjardin@free.fr>
 
 
