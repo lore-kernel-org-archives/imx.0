@@ -1,72 +1,68 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010059.outbound.protection.outlook.com [52.101.69.59])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013064.outbound.protection.outlook.com [40.107.162.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF0C43A80B
-	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 13:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F11372673
+	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 14:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789479932; cv=fail; b=NLnXhFYQE5bT0/nIkqRqJccIg+yKRRQE9wwebzVeNvu8oKNTTkn9HG2PsTMjjAq77IcVJj/BA1hKgY64+YEXruGctADFDI1fJAtCBWS1pRtesQFuXOxqdM0bQ/kKuUCrOmX/BlxktuKqm7dBGWsqPd/ZhdF3YnPbe7MPKqHH3m4=
+	t=1789481616; cv=fail; b=MpS/iO/GhaNLBAj3JGMcgcgfX4FkwgQXgHKswzJkC1w8QBzq4uL9ZP23O3zsZZ30twN2tCk8Ch0eSahaCN1pVdFqnpeI/nDhC+aJL04u53/dkPKj3s1D7mQ1f0snhCixopxHmdm5H5QCvWEtD2O8YBzrD4/ahYjT3JJcqbnzpsE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789479932; c=relaxed/simple;
-	bh=JCI0rvnTuBA0sjcT4bweG++8wso1dCD5ehbA/+WAbbw=;
+	s=arc-20240116; t=1789481616; c=relaxed/simple;
+	bh=s1BJdHk1dpqgV30inyC7qa9K7HDdhTXGQa7Qy9wGUIE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gbiBw2PSTNg4jRbckwTHZI6b/+mcO/MIiBNr85ukB6JkXyYgHpp2kxJt6X9PB/fdCxF6u1cKb8m4i28P/6ZOA2fhTXphzU4/pkEnw3n0b4kjYMf0EDmcJ16tdk9/EZGdn8coL/jpsy7YumJvKDKUw57CnzWRGEVwts8QsxcfIWE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=WRrgpfui; arc=fail smtp.client-ip=52.101.69.59
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mbp/D6REXoM9UwG357n298RWYnWxq4IByX0xv01bXLLUijQYeGSlBtmFRod/dH+EnnGXqpVOpDHN0npOT+kOZmv/uH3fz4i+qO8N82K+2CTmZ+0PMTwoXHyyErcN7k6ALiCLUHluG/3XmSxiemF3gwmQDIKOrq+UR2mqkdFprXQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bJiOGE0c; arc=fail smtp.client-ip=40.107.162.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="WRrgpfui"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bJiOGE0c"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x+HwUJB8BD8Bm3ktJlcdIUWY6mWbd+n0fD3gkU4A1029ZpEzW4BHFolC+VxsAvwlwpgqNzzS2Z4oHUOWOAG8XxIauCXHo8c90TjgXAFr+cffL4A4PwtXxz4t3RVl5OpLDNnHn9H1+nLM8roo5mKKEkPbEu7E+TEnPtEm/mR3eYZmF42pmGNX5nzCnA2O3yAhNCX9cnm6uBnrb81FtHSOpcO1SNWJJG6RSY0g6N9p+NjJh5S9n/VpYtbpJ4f0+2Aq9nng8pknlm91WOR9Tajz02A0aXWqpu+TrQj01zh4aUCooyJhOAuzWBG3vEz2i6RLmsJsw0c9VM6r2q+5j2/Hhg==
+ b=ySx3icLcZ0Qowj9EPaPoMURdVYgT2b9wm4XfwZSmbARMndgGK1d7LcPgEtigIL8gu2h+6wjXt3sofMUTD6y4xYuFFxAIKfVRZdyb45/C39oatiZ0ox5iRgkF05ukEwxlRog7zaldMxY/tsvt01mIJdPiFVHqiernabbtty9GSgw5dGZykGkyF2Y8s7VI/k+WUH8viWRwmmf/5i6TEvvtjyz4eijvGS1gWP/eqa/7haiuo/kVbimQAiHLVaMkUw3NoW6N+wX5XBHDRZXynY8RqT7ZZeW2rb1Z66/fda6dsCA3FgRwPTIM1zyTeDySKUIYY5LxSatKioScw/3gJrD9OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m1/hyQlWI/dFxiV3hpAXZPejQd9auwGzxAvCrheG6Y0=;
- b=iQF0asPHGkMn4GwyaeP5KDeR6d2F0LWruQmYbVsUFEIQFFs8oYFRD6W9Lgt3lE3E0++BkG6UN/ZKEFip9VpPizdXO9hCf1xCwHDV8T5gv5QjvYWZW4Nt2XQVDqYvTW2fgyNrmKlrsEBEXDmPjEQ5cZMliPNMh0OOygeng3RWZ2CQryllsXgMx64TutZXgpY/uos7SpPzSZdBWqa8eacbg01KadSDAxbpVSuMevaVOvUm9BYr/1VKiQOkXAHMRY8smNPSWbin52bjuSFrzlwuHhGDav28oGwIuq+QM4CwBI8SQPmcxPsQes937VDPgjrcz7UJ6zSWlFfSFAqzD7q7lQ==
+ bh=9QeewuehdhsQAtVvweUxhK1tfcyOiLgRNRgMsU/IQSI=;
+ b=sWRv/ZGgVohpLhfAUxo6tdtbxWPxMKy9RhAjtwHy+VsT/k40TG0jAntxLw89w83+b/ZpKM+pggTGShoSFwCTKKLiShGzeKAZy7qjOvpIprYJX0NYwe5aKOpWEwegp0O8dC9jB3habOyNha6QlUP37pLYqWCNmWue28Bk4RhBkwbnqRYB8MYMfEvivNpyyh56HCsGrTle2tcRuTveq6Mb1ee2ABJZcj+RaxE23WTTpDXkfyq6gjdNwE4PTkvzHQENQyrqgxI8ad8XFHGCha8I6DKswTYEV2T+eTFy2sWKyY6+dXZfMrkjUUrIbtH3W+aSpE2kpsRV6p8HXtUQ/HlNHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m1/hyQlWI/dFxiV3hpAXZPejQd9auwGzxAvCrheG6Y0=;
- b=WRrgpfuiToftxd4G36knTrFlU1AQy3mSQ524NLyI9xV7LvDGkx6jvhpABAtFLVc5eYJ+1yfKRYjaW2ljbaz0W6hfAPWFB5teiZBtFXj3p9SIOx8fOOKae0MC67FrCKd8kIdCqP89Rhcc7lV49jD1R4oT32oLhvMOPxxY0QqIgWI7+4wd8LEgl6Ije+IdeZXAkgoNZGnxfm3hOWXLQcvHhAGRupOFfhumMWgbNV4DgevNjG2G9MUmzsNQytqn39AMJD9c2i4Ps1vw+206RsUKlMbQ3bNZmlHCPtrLSd2tVUBs6FKRONr+rK8t7AvICIH8nkve6Xzdcypk1FnI757LSQ==
+ bh=9QeewuehdhsQAtVvweUxhK1tfcyOiLgRNRgMsU/IQSI=;
+ b=bJiOGE0cd38+JLoO1+i823usT5BAqL6v1+z7tzT4WOhGzMHxVaNm3NytZ4Dv0xbX9VwRqXaOn1vSSHUxLJkZjZyu91uiQnpacFYP/4I2vsIWtR/80u1a9i1Z9l8gPZOCz8nqZo0bWG7BneODsDl3509z3Ej6FvbyTHpeL5GEVcT5TTOMythLrUZLUP8hVTk/E6C4a+WSiT5NxyV5Fndeqqt/QGsV/eO8jwjSIVcYA7zSfIKYHM/7mH5cLJzxOebaGqbza5zzIiOfzjR//8+3/ogq55EUb083hSW/f5XDbvHHUUREoFNAsuF4gkWb1M09NmNQ+AJkF6fqs1lOQuOjOw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PAXPR04MB8094.eurprd04.prod.outlook.com (2603:10a6:102:1c1::15) with
+ by AM9PR04MB8178.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 15 Sep
- 2026 13:45:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Tue, 15 Sep
+ 2026 14:13:25 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.012; Tue, 15 Sep 2026
- 13:45:26 +0000
-Date: Tue, 15 Sep 2026 08:45:16 -0500
+ 14:13:25 +0000
+Date: Tue, 15 Sep 2026 09:13:14 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+To: Ming Qian <ming.qian@oss.nxp.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+	linux-pm@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] media: imx8-isi: Extend output format mask to 7
- bits
-Message-ID: <aqlL7JBEGboebBiZ@SMW015318>
-References: <20260915-isi_imx952-v3-0-3d8ff1363dda@oss.nxp.com>
- <20260915-isi_imx952-v3-2-3d8ff1363dda@oss.nxp.com>
+	Zhou Peng <eagle.zhou@nxp.com>, Xiahong Bao <xiahong.bao@nxp.com>,
+	Ming Zhou <ming.zhou@nxp.com>
+Subject: Re: [PATCH] pmdomain: imx8m-blk-ctrl: Serialize power on/off across
+ sibling domains
+Message-ID: <aqlSerHyjCB-03IR@SMW015318>
+References: <20260915-imx8mp-blk-ctrl-v1-1-b3b4e6e7e676@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260915-isi_imx952-v3-2-3d8ff1363dda@oss.nxp.com>
-X-ClientProxiedBy: CY8PR10CA0026.namprd10.prod.outlook.com
- (2603:10b6:930:4b::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260915-imx8mp-blk-ctrl-v1-1-b3b4e6e7e676@oss.nxp.com>
+X-ClientProxiedBy: CY5PR15CA0196.namprd15.prod.outlook.com
+ (2603:10b6:930:82::19) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,99 +71,182 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8094:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a15425e-467f-41ee-5fcd-08df132f9912
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8178:EE_
+X-MS-Office365-Filtering-Correlation-Id: ada3baab-b51c-4dac-865b-08df13338166
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|7416014|1800799024|23010399003|376014|3023799007|10067099003|18002099003|22082099003|56012099006|11063799006|4143699003;
+	BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|366016|19092799006|11063799006|56012099006|10067099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	jmaSDknu77SqEraM0mvUZ5eovFjqDAix/JlqvjquYoZ1oD0Yv8bOJFCE4pa1dKHnzNCNe/xz7Xob0Wg+3VI37aOdtLqLOaxXghShXfSZvhC+/TygfIHpg2UhzT3cht+9QetLy3pvPCiJDqHhB4ET09xZyWzP/vC64vevkBN7QJhp8qtQ9ueU1ed4atTwoQihsLeeFFmmvYN314GSBMZGLsfnfn4O7fWq+vQ1yGED+Gwlkb2Ny453gNwyOVXyPFa+ZSB+WyORpiSbwpcyqxALq1qiLo5uFQoF/LRuL9fHKfV2hC4sbTdzJJbsPh95N379I9lyORnfa5pGrRyiks8a7jZClX/Nh3/NT2/lPCAsUNKA8Qeoh2MzRVU8rEzHYT0ezIwGC8LO3QcrEuKf/0D7EbIA4niI7xUTNVGPeyRP8Vbl3SZoarqsDL9erwcR9GuEPPvUe/9H3L12e2+mjZVKpt7aRLOUfF8pAoOMkU0POD2u+fBmMeONZiaT+I2yE3DRC3er2A5tRvcWbkNt2pBoJppp/VRv4eGxO4r4Uq8h8QcBxX9WtczrSqmM2OPKkuQxS5hxlryUd4vz/oPfPPLRhuZfulEBOn+X1yGokg3NSaBc104JVapMJIqzhHBY1Fp7Kx9djdINzsmr0U0cIvVa5i0tuQGHht5Fo455IvKi0zU=
+	Y6cFmpiv5QOOShB3GpudBf6XL9eSFH0dJo+3NSLFrwScAOsr7uCGOFQugIjhljsi4FXXDFBcHETEwWnW+iV2xXkzdcY07Qg50eduhskh+zh7M3BkWAtx5zMgNPEOtjE32Ign6Awd+BViud/4sXsowDs/sNiZIyGn7riiPOAzgaz6a3t07ATfVjcRuEEdaVFaqjuSBT/jqw+MipMFk2yUlrtPYwsoBla/jHOqpIIZ7vDVPs6i1lTld3c/4O2AHmJZQOEJztvGoildlAbTP4YNorYH3WxgMOr0C4pJJuE76/yy+1xOpypMzGtygfvPZytQ8KNw7aCpoVdTBJ8HqB2QrIdu7q7yvx+x0qgkL4YbyKO97YyFgBKEPKeW9hV22rwEPni7e9/tq1NUcmUG/QAmUo/W3Vdu5RzW50AKFj98u1UcsD/lmzIb9u1eLAh4xrKyKh19VlRbYKg9+pSPEWmF4YR+M3i3SFbgkLniM/RuKJ1olhFByKSbb++NSgKZN7XzUYdvkoBQr8I3qXTdVkSWdRbwctUzXIl8QRcrsQRXFAfrTbdcdd1Hne/3lxsCgijmRI6VF9oBJVwO+jQg/vtcA5g2AxsRBAkvZ65KoYHDcce7KT2Yw9dosWxi4TZvPJDqthqKGOEZQsBVP64Z4w0NxiC+3DuEeavZfVIFrlv625k=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(1800799024)(23010399003)(376014)(3023799007)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(366016)(19092799006)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s3VCNl2Uffn1GT1WJP//mjTC+glQMUI6ue+A6TTfMou9AJ7koIhbGPLPabw5?=
- =?us-ascii?Q?FpyTlQha5wXQGai8uFvaH+g4DFv1TkblJa0wokHwIcv8/Wgs2mrE83WvetMT?=
- =?us-ascii?Q?/HTGH//1bMBt4+CC5eMJfjoUNVZPBExi/AMRAFHdlWP6pAfSzlFuj2I2b8OC?=
- =?us-ascii?Q?JEATuDJdT+35bPF7fx5Nx1MGUu5t/+5mkfvJU9odMF0N2J8+3vDmuJ/fWTZv?=
- =?us-ascii?Q?d+egeFKU3/s6mDFwlVk6tJnCcz2JPu+w0mv/pka103Qa9n4nNIzDrsMP/P3f?=
- =?us-ascii?Q?e770xX4Ewmv1jIknX4Nw3aThJ8TyurzLp/6ucCq1eYyPtjq4OkdNBOr8Zo/M?=
- =?us-ascii?Q?OjWYXs0v1fbsBj93REtyedHx7PIm1A1GwuZok+NjImRhvoZ2P8gUG1WmO1in?=
- =?us-ascii?Q?z6k9os4vMzN2WXz6TLSjcxZau8w6Vtc4RHT/tZbuxHjFY9eWsDxVAidLPx/J?=
- =?us-ascii?Q?+844YtlYUcgr6UdH0kASC2+Hf2xSt6735M6of8m779YLaIto33kXu9FQRSKE?=
- =?us-ascii?Q?/PANc2A+xdquPVk2lA9B14bc6dhAiqJzFJSTAAGSLXO+LNlARmSCfFLjHDz4?=
- =?us-ascii?Q?0e8kEyaXo/8LKAG2FNfCTrIEILzFyvTWBt8sGNrYLMv8uijVopPNg5ugv5lf?=
- =?us-ascii?Q?ywfvOxMo5EdM1XBxjAyo7nyQVet1SaEEYLC8a9pcIuRDpa1/Yb3ut8YD8x8q?=
- =?us-ascii?Q?7YSV11t4dorzasacPwbhCRDjwjjZ29VErRIfTMv4Bn4qTCX5Wn9/5Ag/vMGU?=
- =?us-ascii?Q?JAlCa54OFzrfzyanQmr9mAZscmFi5sImtJA4iSH1hCleePnG3icpD7V4H96r?=
- =?us-ascii?Q?u0R7HkEVV4MxYNXJ4grLDcMZqHKBU7TegHzPzb5Ib/fCrGph7/KY+0Y68YrO?=
- =?us-ascii?Q?9+6VuIKNtPErWdhV8xGSSFmbMagm+GnJkfEvH/KRa0QCVQkj4jKk5uqMskJg?=
- =?us-ascii?Q?Bn3jkBjeBPQsAJEI/bAZNPknWVleZaeSnhK3qC5YGXyMo6wJbdTVn/Zl0IEo?=
- =?us-ascii?Q?GYRKTKi0i6Sg+xs2gllHjMwCHFPrbft9hNfnhvERQ/vxp8lq32nVHqZZC/AR?=
- =?us-ascii?Q?SxM1PWd/tXNlUSCYM5bSsNkubVyEL0FxYZmNGANFx+TMBpa0ha0gfPfalRsW?=
- =?us-ascii?Q?tsHKGfEAWfyMvBF2MZTK/XLWCjlegIEHJIU8BMKIA9iD8a+fot8cYTe1WqZm?=
- =?us-ascii?Q?cbt49h0KpTMQQAOqk6Lp46jMqKnJjSFMMk/nl2oYLFf05PvXK/aPzeqMm7XK?=
- =?us-ascii?Q?2uGjYxlQKA0Adio1dh+KkuC8xSzmbd2XX1hhIH2RZUefVC5PwznYcApjXsfX?=
- =?us-ascii?Q?NB9RkLgfnxCA5hM6v9f0btewK5YuEowrKqsLkA2ojpqInka+PMnzCZi4e6RB?=
- =?us-ascii?Q?Ot1twtkS18FHV0QVI5UXqS89KmM7k/QgjZkFT17Yycy/CkyReViG+DH9FlYm?=
- =?us-ascii?Q?hNXXKU7cBB0o9SKv0K61+FSX49ukO0OeMGvsJ5jDfhrmH9lmF3bbarF6diux?=
- =?us-ascii?Q?FQuqzVM+Yfwb7Ww73D855BhfklXixuKLQyGn7d/85OWhXiRoigt8FJlyqrEV?=
- =?us-ascii?Q?XbXKd6eu8EysyUafSG24PISnSg1qxw9fnjOJ09/t2uz9JLGnNz+G2OaSdPAN?=
- =?us-ascii?Q?ti704puEsJNHtPJTyHf4/ev54Z0Ws+0Ce2uO7jrSBWtK6eFTLtpLpROCMwHF?=
- =?us-ascii?Q?J76Vxdu4pIiZzNHR8nfkqha02zAH39D70goi2YFrq/KkEhaJZ/4whlF8ne7M?=
- =?us-ascii?Q?NNWYKGl3iBEQxElP4ZEwtRa1a2oueGvdNlytHM6fwvPXzd0tZKKm?=
+	=?us-ascii?Q?Tf4MWpaQigtj+f5LYN2vLAVA6zzlqItakUjYmzCONVXU6EOxhQQN2YefBiGu?=
+ =?us-ascii?Q?SAMnETaBDo5dMEZh0uBCX5M97y/E991LsGT2cercsiun2KEJyEzC7W3e9xV0?=
+ =?us-ascii?Q?IfpIcQU5rEDDB3HG1tbmj0YrYSSoOt9ESeHWV6D5hcaN4bF+yT6pIEptddBR?=
+ =?us-ascii?Q?2nubSLaMGglzs9aObYCdzO05AOC0MU+7KRgEQhcl31YRroA4buiG7u6ojVYs?=
+ =?us-ascii?Q?Hzapwy+OTrlvHl1EpJ2WFc6S/9ZpNWdGtIu7R/k1yeex4Nk+vMOw3NaDr2xq?=
+ =?us-ascii?Q?GyrimfTLr7TyOLxwXTxWlMhC+tLhg4fK/OcXnNqrWIJ8OG1Y2AdkesOlj27S?=
+ =?us-ascii?Q?4XBexbKXE5VoMwtecjVa5w5xZYDsaECR5PEf/52K48Mu+HLJ5n9PmVDxikbP?=
+ =?us-ascii?Q?0XZeRyGsiNM3ytvc2QqHGdktF6/WdxjmchCeiwXZ0xX7iyMyn4UjrFpONuij?=
+ =?us-ascii?Q?vtmjALF/+lh3C7QZq6aRXJmg5IufeqtaMJY+zf+jTVXzbhWV/OgGTv942C6s?=
+ =?us-ascii?Q?QN3e7gUVWtZIk6E0EJPfARTwC7WnoBIJel/3RKOxg9FZz66vjPN0jFsCKJEp?=
+ =?us-ascii?Q?fQVu1psnKhHRT9eyCmUuR1HLHjdd0/ljc5mefISLkuqUMi7Dw2hUi2bGAqhn?=
+ =?us-ascii?Q?oIctlmiQpEgcsAg6VO/ihOowYun8iLpVWbZy1ZRRmYwDU32KRYDxgnbBM0Pw?=
+ =?us-ascii?Q?RaUMiaruhakVLxkaO3ZUnlbv3oEj36TeJqt5rP/svVxbNU3jXJZeiEe/Vfdc?=
+ =?us-ascii?Q?hEfEM2tnwQdDCrWzxT4HqE3/1qG4bT6NkvzsD+03WyZAXOrYLnQGS2awPg3L?=
+ =?us-ascii?Q?P8QHzsbmYMlHXzHYHXk0NiGdoWztgSSG3G+CGViKklZ9aGZ0XSklxKuJdyUU?=
+ =?us-ascii?Q?mPCm4c6c6mbdzkN5DEkE3s0kjeqoGY/tJFk63Auj2cROaIt9x+MJ4ulVv7PZ?=
+ =?us-ascii?Q?0odnYAvY4hGqUw4KLT5fMdMz/S64UW5BG9xFRqdJYc8enSxZlnSIASjIPgGA?=
+ =?us-ascii?Q?1jN1wdfn/CnEnte2VLvAvzbKOzxEelXTsnxS8e9/jJg0znLs5/NLf1KjeCrV?=
+ =?us-ascii?Q?NEU/I3N2mGfj44bkp5lnDQ3U+DhXaeAk/M+T51LT2XI16snCLG3BE3w65Jr2?=
+ =?us-ascii?Q?VuVKXF6jZClP9kg+uoAtNu2NNJevQnMEDsKiJDs7aIlWOTM91vLz3N0XAG47?=
+ =?us-ascii?Q?8LGkLabNBG6y5SPZfHcVIZMhg2UYnXCgiDWHVuXsb03CeuxJp2J8vkoSHoih?=
+ =?us-ascii?Q?1EEMr3zCf+rWq76dmX3uVfuFuZqK6MV6iQyvcCEMNNvjNL6fr3pxZ38DspmG?=
+ =?us-ascii?Q?vcfIwrbIDz7612OUgjaETVX7pKO5PF3KX0y8AhNwn4xBQRTZHTFL+kclkVw2?=
+ =?us-ascii?Q?2TslMOza9j0tg2fPEK68K2KkCBIYvbIepF4QrkX5j+ZQR0Ga+HcBjF5JlNn5?=
+ =?us-ascii?Q?byOGPs9SjGP4YYVULDOrKCHJTg1CWWtnh6QARSvp27MZHpCuNeXLJxCk+NGg?=
+ =?us-ascii?Q?+o4PLBbKSmPU8BYEL0KNplDFqDMktYqktPfFP3D9atH17bZKAX232nE9Za1d?=
+ =?us-ascii?Q?58yRMZbJZ23UppTb4dEYoOa7CGLvfgFczBNxAnoc2VV+rUZuC8eYyErvLVKJ?=
+ =?us-ascii?Q?MdqffgkTmBUhirH6e/tBaBhA/3n8I+uosJW+nDW/lyuq1KRv8mJo4UGhFlhx?=
+ =?us-ascii?Q?veKtOeETZlzVGtZXoSU+ESNl6j7CGB+1pFzRF3s2iuAfYtexMgqrX6Z4Avfw?=
+ =?us-ascii?Q?Dx1+hrQxd3FcUyZvn2rj4C2OsS/ApLhBX2YmaHDDFeg8dN1xo9me?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a15425e-467f-41ee-5fcd-08df132f9912
+X-MS-Exchange-CrossTenant-Network-Message-Id: ada3baab-b51c-4dac-865b-08df13338166
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 13:45:26.6228
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 14:13:25.1459
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QjNUDPlMwfP34f/5tYgVrlgmlLOMApg/kgYQZPp+8MXB6PnW/cCFNQymcX41iuXJa+OTYcwCiufxMhIPfxW+QCukereeQiOqiZ2Gddp12LubS4obyjuE0XBOTfAjPfQA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8094
+X-MS-Exchange-CrossTenant-UserPrincipalName: rbrkmEbNkPw/nRWEOrnkZvN1hEqYcpl663Mg4OqpdDAqVVC9t4kpbQAZc3OcjWKPVNe+lYH+j0FAi5N72B2zE9pEK8FWRUIpDuYPoQjIHT3+WyT3epR7UguJP/35+cLB
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8178
 
-On Tue, Sep 15, 2026 at 06:51:49PM +0800, Guoniu Zhou wrote:
-> The ISI output format field width differs across SoC generations:
-> i.MX8 series (MN/MP/QM/QXP) use a 6-bit field (bits 29:24), while
-> from i.MX8ULP onwards (including i.MX91/93/95/952) the field is
-> extended to 7 bits (bits 30:24) to support RAW32 and RAW14 formats.
+On Tue, Sep 15, 2026 at 07:09:43PM +0900, Ming Qian wrote:
+> On i.MX8MP, running the VC8000E encoder and the G1/G2 decoders
+> concurrently rarely and non-deterministically leaves a VPU stuck in
+> reset: its block registers read back all zeros. A decoder then times out
+> (G1/G2 reset failed) or the encoder fails its format check reading a
+> read-only capability register (VC8000E reset failed). Raising the
+> runtime-PM autosuspend delay hides it, which points at the blk-ctrl
+> power on/off path.
 >
-> Extend CHNL_IMG_CTRL_FORMAT_MASK to 7 bits unconditionally since
-> bit 30 is unused on older platforms.
+> The VPU blk-ctrl exposes G1, G2 and VC8000E as three separate genpds
+> whose power_on/power_off are serialized only by the per-genpd lock, so on
+> SMP the callbacks of different domains can run concurrently. Each domain
+> only manipulates its own bit in the shared BLK_SFT_RSTN/BLK_CLK_EN
+> registers, so this is not a matter of siblings corrupting each other's
+> register bits.
 >
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> However the sibling power transitions still interact through the shared
+> VPUMIX resources: the VPUMIX bus power domain, the VPU_NOC and the ADB400
+> handshake. power_on asserts a domain's reset, enables its clock and
+> releases the reset after a short udelay, relying on the reset propagating
+> through that shared path. The GPC does not ack-verify the ADB400
+> handshake on power-up (it only delays), and per ERR050531 the VPU_NOC
+> handshake is timing sensitive during VC8000E/VPUMIX power up/down
+> cycling. So when a sibling's power_on/power_off runs while another domain
+> is inside its reset window, it disturbs the shared VPU_NOC/ADB/AXI clock
+> timing and the victim's reset fails to take effect, leaving its block in
+> reset with registers reading zero.
+>
+> This is a blk-ctrl defect: the VPU power domains' power up/down sequences
+> must not interleave, yet the driver deliberately avoids a genpd
+> parent/child hierarchy (to meet its sequencing requirements) and so gets
+> no cross-sibling serialization from the genpd core.
+>
+> Add a per-blk-ctrl mutex around the blk-ctrl register and reset sequence
+> and the synchronous power-up path, so a sibling domain cannot run its
+> sequence while another domain is inside its reset window. The GPC
+> power-down is queued by pm_runtime_put() and still completes outside the
+> lock; serializing the reset sequences is what fixes the observed failure.
+> The bus domain's GENPD_NOTIFY_ON notifier runs in the same call stack
+> while the lock is held and must not take it.
+
+Thanks you for detail descript problem, basically it is power up/down
+reset, clock have not serialized.
+
+Can you help summery to cut message shorter end emphase most important
+part?
+
+Frank
+
+>
+> Fixes: a1a5f15f7f6c ("soc: imx: imx8m-blk-ctrl: add i.MX8MP VPU blk ctrl")
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 > ---
-> Changes in v3:
-> - Use unconditional 7-bit mask instead of per-platform approach (Laurent)
-> - Drop Reviewed-by from Frank Li due to significant change
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
+> Reproduced on i.MX8MP with an Android 6.18 kernel: running an H.264
+> decode and an H.264 encode concurrently hits the failure within one to
+> two hours. A VPU comes up stuck in reset, its block registers read back
+> all zeros, and the decoder times out or the encoder fails its format
+> check.
 >
-> Changes in v2:
-> - Add Reviewed-by tag from Frank Li
+> With this patch applied the same test ran overnight, over 14 hours,
+> without a single occurrence.
 > ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 >
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-> index e795f4daf3ff..c704be882705 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-> @@ -39,7 +39,7 @@
->  /* Channel Image Control Register */
->  #define CHNL_IMG_CTRL						0x0004
->  #define CHNL_IMG_CTRL_FORMAT(n)					((n) << 24)
-> -#define CHNL_IMG_CTRL_FORMAT_MASK				GENMASK(29, 24)
-> +#define CHNL_IMG_CTRL_FORMAT_MASK				GENMASK(30, 24)
->  #define CHNL_IMG_CTRL_FORMAT_RGBA8888				0x00
->  #define CHNL_IMG_CTRL_FORMAT_ABGR8888				0x01
->  #define CHNL_IMG_CTRL_FORMAT_ARGB8888				0x02
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> index 479789009c7f..f8105e87ea3c 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/regmap.h>
+>  #include <linux/clk.h>
+> +#include <linux/mutex.h>
 >
-> --
-> 2.34.1
+>  #include <dt-bindings/power/imx8mm-power.h>
+>  #include <dt-bindings/power/imx8mn-power.h>
+> @@ -34,6 +35,12 @@ struct imx8m_blk_ctrl {
+>  	struct regmap *regmap;
+>  	struct imx8m_blk_ctrl_domain *domains;
+>  	struct genpd_onecell_data onecell_data;
+> +	/*
+> +	 * Serializes the blk-ctrl reset/clock sequence across sibling domains;
+> +	 * their transitions interact through the shared VPUMIX bus domain,
+> +	 * VPU_NOC and the not-ack-verified ADB400 handshake (ERR050531).
+> +	 */
+> +	struct mutex power_lock;
+>  };
+>
+>  struct imx8m_blk_ctrl_domain_data {
+> @@ -98,6 +105,8 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+>  	struct imx8m_blk_ctrl *bc = domain->bc;
+>  	int ret;
+>
+> +	guard(mutex)(&bc->power_lock);
+> +
+>  	/* make sure bus domain is awake */
+>  	ret = pm_runtime_get_sync(bc->bus_power_dev);
+>  	if (ret < 0) {
+> @@ -164,6 +173,8 @@ static int imx8m_blk_ctrl_power_off(struct generic_pm_domain *genpd)
+>  	const struct imx8m_blk_ctrl_domain_data *data = domain->data;
+>  	struct imx8m_blk_ctrl *bc = domain->bc;
+>
+> +	guard(mutex)(&bc->power_lock);
+> +
+>  	/* put devices into reset and disable clocks */
+>  	if (data->mipi_phy_rst_mask)
+>  		regmap_clear_bits(bc->regmap, BLK_MIPI_RESET_DIV, data->mipi_phy_rst_mask);
+> @@ -202,6 +213,10 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+>
+>  	bc->dev = dev;
+>
+> +	ret = devm_mutex_init(dev, &bc->power_lock);
+> +	if (ret)
+> +		return ret;
+> +
+>  	bc_data = of_device_get_match_data(dev);
+>
+>  	base = devm_platform_ioremap_resource(pdev, 0);
+>
+> ---
+> base-commit: 6e30287eaf3e41b86dfb86df3b811526693d74b4
+> change-id: 20260911-imx8mp-blk-ctrl-c46f26783073
 >
 >
