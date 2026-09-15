@@ -1,126 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C9E4119F9;
-	Tue, 15 Sep 2026 16:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8985C49F108;
+	Tue, 15 Sep 2026 16:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789489111; cv=none; b=g6PietbA4B5iT/bWVGMpznW2vxUET1LknsP94I5O9pwAwxxLPPTQiVDjDfCDcIEatWQEkDdgaQSVAcaUv+9i9NUQJxEwviPUepaeJTfv7phgW+Hd0to92qnLQlBg2I2WJGjcj0UG90nGkpItN71AJSr89XLEMlYEkWM4G/qIPog=
+	t=1789490968; cv=none; b=mAIuDnCXsDG+VDfF/sfEX9JLXNbWIjStaIxGajmHMQB7TTeR/+9PZUcbsMSfh0cp9/ozX4cChRduuzvyq/5DNtLaJZsUj+TJQFlCSyUKwfvmG5UXfXowD9+NbKnS9B0NYcTCndc/7pPeWVSI5Wa7BX4ycYIKXGUlvz7gty/6tbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789489111; c=relaxed/simple;
-	bh=xsHfdw96GFbaepBJbdXAFV0YRCZ+PaNC0b49O+JVBp0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Jn0VzZWh4eyjOfw6tlfAxdZheix+tqzxPQ3/Lsuk4x85jyunM31+VLUWjNaoznhYNqipySaZvhFvb0i5IOKpiPbs8wHRdqkAtWvrfwlxcurOtJgvPf117lKjLs7o2ZF1J8kcCa1CaykWB2vCR3mzFgKEoQowkB4l1fw0ocjdWxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h27yCwED; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789490968; c=relaxed/simple;
+	bh=TILtcVOpFDDqd3GDAT4vH8MKqC+ojPt8jhWo2iRnC6E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uo4rW0WE9MI1FdF777z/Cb0ZhxyW/6bBFBloHIENehIzauHKql8ArBOlDrxIYtGl9BRROKt1zmVMw/NixU1NPHtOljCLWaddPTzebY9MaAgiWBAK2CurfLYMxHH0xIVk+87XYnMIAiruVqeE8py9dHOo8rbwKoF8NtNJNlhFFEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=T1vPOGEe; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h27yCwED"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3F11F00893;
-	Tue, 15 Sep 2026 16:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789489109;
-	bh=zdMtzOEeKhZuTFoJsqIR3X1skRiJm5fGYebmf2XTqE0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=h27yCwED5eGU5g7CjoRIMjXid1gcL0jK0GIkjqMBQUvezag4D7EoNkuvSCEqur0D2
-	 daVAKP9EZ4rnltqq1O3bZgPwu7oZPS8nB6jnIOQk0oX6i7HVATaCyQq5VgNy65h4rr
-	 LBLMVmA8lx7OdSEbHtlg0JRcHdL/RCfDv4iB+HPR38r5/YcnGy5AUbNRA4v5ysSxhn
-	 9dihzuIcsyXeBmoUtCp9dmFZHQHnhIo6b7LgOEvd7GubTKzN3VOSeLCkAG4WNRMyQy
-	 0gFiruljocQ7QTDMYwK9+TKqxCKwaRauuIyiCB48VbWoL7wGSk1rjSF5Dv+XCOt28W
-	 F09pU1HC4yPjQ==
-From: Mark Brown <broonie@kernel.org>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jerome Brunet <jbrunet@baylibre.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- =?utf-8?q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Binbin Zhou <zhoubinbin@loongson.cn>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Srinivas Kandagatla <srini@kernel.org>, 
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
- Biju Das <biju.das.jz@bp.renesas.com>, 
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
- Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Sen Wang <sen@ti.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Khanh Le <khanh.le.xr@renesas.com>, 
- Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>, 
- patches@opensource.cirrus.com, 
- David Rau <David.Rau.opensource@dm.renesas.com>, 
- Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, 
- Yingkun Meng <mengyingkun@loongson.cn>, Trevor Wu <trevor.wu@mediatek.com>, 
- Julien Massot <jmassot@collabora.com>, Jiaxin Yu <jiaxin.yu@mediatek.com>, 
- Shane Chien <shane.chien@mediatek.com>, 
- Daniel Beer <daniel.beer@igorinstitute.com>, 
- Sebastian Reichel <sre@kernel.org>, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- asahi@lists.linux.dev, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
-In-Reply-To: <20260915063317.28971-2-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260915063317.28971-2-krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v3] ASoC: dt-bindings: Use consistent indentation in
- the example
-Message-Id: <178948092653.151760.9676551205398911501.b4-ty@b4>
-Date: Tue, 15 Sep 2026 15:02:06 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="T1vPOGEe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=xtjhYharta0kivYdIPNAaN7YMmTxSs/zZpGGaIGucV4=; b=T1vPOGEefpHtsFpnGzCF0cC40Z
+	DVSD+cr+mnNnE1iXzuntsCtbw+ERlW+tYCLLRbzGOfQycMVcvh3AG2ZcIWgBG6CiqZRRgwz5g3lFe
+	MqsGorSinRKDBb0kDk061OeHvRIZzuWlZcL5CPC/39XumXC6WBXwWL9ZfJaoi0REffr8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x6WLP-005JkN-6Z; Tue, 15 Sep 2026 18:49:19 +0200
+Date: Tue, 15 Sep 2026 18:49:19 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Franz Schnyder <franz.schnyder@toradex.com>
+Subject: Re: [PATCH v2 3/7] arm64: dts: freescale: Add Lino iMX93
+Message-ID: <100eef7b-e1d6-411b-bac5-98790e8f9ea7@lunn.ch>
+References: <20260911091952.96233-1-francesco@dolcini.it>
+ <20260911091952.96233-4-francesco@dolcini.it>
+ <42ed88a6-d208-482b-94aa-2e45b69c173e@lunn.ch>
+ <20260915132806.GA226756@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1145; i=broonie@kernel.org;
- h=from:subject:message-id; bh=xsHfdw96GFbaepBJbdXAFV0YRCZ+PaNC0b49O+JVBp0=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqqW/KhCABg54MOkosoFTzPXmeLy/RlhkivifSk
- jMcT3bipsWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaqlvygAKCRAk1otyXVSH
- 0LcyB/4hxF4ifiG0nOiFlkrrz1CCm5Ai3AIXbPgY9VtS02VcW230+rF+S51HzwY3b/C69z5M+sl
- E5Bz+18HBKeoMsXQemKmgV3INECe3Ea9Ar+RsVNdjlak3uOxsrweJQs3wXAmBk39p6XeKwsIxa2
- NFhIiS+s3/H5RQoltOYjzF3kbeotptgw8GlvnraZJLU3E8cvMurY4BbIb4ZdIYMR8eAYZ1TIYDC
- tE68mtQGyskHvWIMuv/9pVeHIevKetO+5V4kN/PpMhJXr++EfVuolMTpCMGWRJT/FclrHONvFUq
- MHa017eKvt2sLQlj4BPmTFz/WuSKhH6YpMhSdDizVu85Oo6q
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915132806.GA226756@francesco-nb>
 
-On Tue, 15 Sep 2026 08:33:18 +0200, Krzysztof Kozlowski wrote:
-> ASoC: dt-bindings: Use consistent indentation in the example
+On Tue, Sep 15, 2026 at 03:28:06PM +0200, Francesco Dolcini wrote:
+> Hello Andrew,
+> thanks for the review.
+> 
+> On Tue, Sep 15, 2026 at 03:19:45PM +0200, Andrew Lunn wrote:
+> > > +	ethphy1: ethernet-phy@1 {
+> > > +		reg = <1>;
+> > > +		interrupt-parent = <&adapter_gpio_expander>;
+> > > +		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
+> > 
+> > Falling interrupts is probably wrong. They are normally level, active
+> > low.
+> 
+> 
+> It is wanted. The I2C ioexpander component used for the interrupt
+> supports only edge interrupts. We tested it and it works fine like that.
 
-Applied to
+It works, until it does not work, because you hit a race condition
+with the hardware, two interrupts in quick succession. The second one
+gets lost, and your link remains down forever.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
+>  - when we tested it, the SW emulation was not really reliable, and we
+>    prefer to play on the safe side
 
-Thanks!
+If you want to be safe, delete the interrupt properties and let phylib
+poll the PHY. That always works.
 
-[1/1] ASoC: dt-bindings: Use consistent indentation in the example
-      https://git.kernel.org/broonie/sound/c/bd1041d3e1c0
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+     Andrew
