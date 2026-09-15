@@ -1,64 +1,64 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19099396D2C
-	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 08:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3BD3B6BE4
+	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 08:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789459513; cv=none; b=lPnWtu9mZ3nmCzggvi613U0PlvBqtkm8lWLtXk+oMskzbqG/s2+cj1EBljjXghvJtyhS/s9L8h7lE1JJd2kPsKooeyJDvJN9OcGDmki13pakRHkK6QVMLtxIeq7OKprSaHqTXz8as5tEzDhzcqmVQRhRIrfI572ylaQN/oGxsbI=
+	t=1789459514; cv=none; b=YX+vshaIH7Zdw+AiNH1OyXZkKvGkqLDSneLJNtnus3XkirrNNjgxDsdF7j70un+Jc1EgaXfebTEvyGbiO+LhOgqtocZcL78LY290eFwlyn2dJ38V78O0hgkn/rKcX1Cw+GvsvhP5fsCM97iPJoOsJU20579OaPJpRDjIBQUKY0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789459513; c=relaxed/simple;
-	bh=j2+zPwCu/tcPTMIRdv2LcEAv8lu7jVFYREhBmWgopj8=;
+	s=arc-20240116; t=1789459514; c=relaxed/simple;
+	bh=+kqeTqpcEjn+LLVVihM/uu8q4NnBEHCrxafwfSxU/xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmoJf9qhmOridS2AkCk0u6tooO9YEf/NOHEvZ15Hx4PnU8X3C9jVg8ImWWD7dA/gx/7shc5zyiqjqAao/e45ajhTF5XazyffwDkMlDwoY0qXW0ENVxbffnqxNk9jr/zxO3HV8/hD4MfvLf7j3fslG53VxBbhT6dddY8nUiAlik8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ErFstk1F; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=Et97Wzje8d0R0SJv8VSX7fgNby4JDVn2VB0InU7rxiHiBx/o7oep4xYE61sozyje1HC5TGhiS78DsZIXdyonyrODWq6Og1wmtjfVSbIvHFNNB+X4htd//WWuCKykSKgysIuUzKvGXT3lXYEiacTa7UrGN7XWI251WuqwKDNTOKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9MdGYJk; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ErFstk1F"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71cdb22bso18226545e9.2
-        for <imx@lists.linux.dev>; Tue, 15 Sep 2026 01:05:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9MdGYJk"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e2406so11860775e9.1
+        for <imx@lists.linux.dev>; Tue, 15 Sep 2026 01:05:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789459507; x=1790064307; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1789459508; x=1790064308; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zhuxraLn+BRCMp0d+GHEVuibFLIukV2Tl86N4IJdTu0=;
-        b=ErFstk1F62GcZdGDFpak8EXP3OF5g+/HMsiBpdE3tuluspV9BrmDY2W0ptQnA85i9q
-         kmScYTkZdeoL7haKJ7ESpkBn9yJgrYZ3Q8AHm2gzUiCWF1rcPhkX0o7nRiDeHiRPsKpR
-         QW5o/8QGLJwX7uDxY2zCeP07m1T1k3ngWkU41EBcqATg/1HkhiwaUSClCniTdSg+4XuX
-         ZFSHGSAOB2vAZM3N2TusmnGV60GifvrwFgFKYmi0Q9LB4OKx7iucNJIRyRCepOQYiGSk
-         LLHt/UsasCB6VZjOoEupudpsL65+K9Pe7cYr71JgP/r1FzzVbqXED6qA5xKtGkAK4K23
-         glWg==
+        bh=H137qfG3h8enrbCR8FlT5MD3WdEANP9LGcr88jAxASI=;
+        b=Y9MdGYJk1Y9lBhm5/dMwSY+zAhwGk/Qypn2WqC8HfR2ka1bQf8bLFsBSo0eYN4V7ks
+         1kGOJpnI7+MepeikoD269xAkuzip7a0j3H2LjxongO4tkog7Nw8MTr196aEed+lem39g
+         k9t/zWl2n8oiTeirMTvFmAkNe+I0mxGeDiVz/KVhGVpO/8QaYa1jH0qcq09gE2bsVqpW
+         VNkslA3NFwKhTA5+BEG9QU1BRLvITOH7pykmBbOXVkraSa/xPeDf9yfWOGpzTdjLKl/x
+         k8fhKzddRYdVVAW8mLZsv6Wc4oEQiyKgKrJNP9rC1MCYHxep1mB7Nc60yx3dovIvmOBh
+         yZKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789459507; x=1790064307;
+        d=1e100.net; s=20260707; t=1789459508; x=1790064308;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zhuxraLn+BRCMp0d+GHEVuibFLIukV2Tl86N4IJdTu0=;
-        b=qQ2SHMtCQIOcwjXcF4gPZaDmLW27f+45CN4AKjDth/q2HwxT88GvNfo658I1T1zyov
-         xPW+CfUw+l9m1XN90gofSXHZGuIjJX88T2AD1HbBigSxAHQKhwqKYEAPhZkkXWHmBTxy
-         XcnwgMnMyUNtTt3OYJlEPX1pmKlGZpAFhQbGisva8NFDKVUEwGg/0K1Zk9IoshR8EE6Q
-         8eipabTOqfmJttaOFm2Z3phX0RdOAZfRlOAFT3X+fAUyEnGYhMs8NZo35ZJWsWx5rRh/
-         /9Uhz6LodU/YqhWdvjljPr9cjreXzXwX0q0YtAufwU+Eq9yq05Ac2FNkrRrPhYze4P4H
-         1eIQ==
-X-Forwarded-Encrypted: i=1; AKwUvByOUiTtYsc39P4Mtu8BnbIDbZArS2zOzuOOGiEHPObwhX1bQqoBVnWWGBjbfdvZINNflbs=@lists.linux.dev
-X-Gm-Message-State: AFuF++neV21sx6e0j6KLH0QJOWEdvRisFdGWiKjOfLx1/aJi2gqXycCY
-	rWjJNa7RutA3r3GyE5UNf6IpyPsesxWI9XEzeAFzljvH3FMgXeBMtAt5
-X-Gm-Gg: AYBFou3LhOaaNS2GttpY5dvaX1BeDbvcPIvsCX306wuFtQ+VfH+E0A7lP4MWXZbKwOo
-	ZKI1oY31c6owLNtiBzui+1LJYmYSljBrqUhQC4EqEl+dbAao6v7PjoNI7D16EqhhJqknsj86xeu
-	dIePRDCE5voAR0PHL0RhWl44wdq5kXf2MD3dXK5On72T36020eOIBbr/pgfmrNnzeMXCgT+X6D5
-	mt4PGVD9LOu4b7lnt2guhYf2EbD4Lu2+YbJGRAsYivv7WLMEJOTxlRtje7ANrAc7jzj/8Autg/a
-	zgMSGbEOOZ88KWS9Pka94OzJNop2feTL4yArP3fWAy4m4jYr4ILgwuZhm06Gi2R/FonDVUugEW4
-	RCYdPm7CB0DwyparRsu58E29OsbDZERDt3sVjp+qO0EoWg2NWjhVRc+3bP9SM47rR2kOe4rLb1l
-	gMEGG1hUGww3eiCPX9x4CCPS1R4yW90Wh7FHxoKDAFEoZXV2hV6mPB2ESjX4AVSfE1hehqa2JhH
-	E6A
-X-Received: by 2002:a05:600c:860b:b0:49c:dadb:18a7 with SMTP id 5b1f17b1804b1-49e7a6489bemr67096545e9.10.1789459507015;
-        Tue, 15 Sep 2026 01:05:07 -0700 (PDT)
+        bh=H137qfG3h8enrbCR8FlT5MD3WdEANP9LGcr88jAxASI=;
+        b=fbBYEpPPFUb3eFbA5D1kwKdos658Cj2w2WxAgWab8rKiIry4a1Blteh19itWukJRuo
+         alRyylUVqFhmL9nc1NHAXjfimtSmqiNsYVJX6HGk439CjM130DTQhReAmlqA2lbj5/cW
+         /ciJ8Dgga2aeKv4JGsxGr3ZoriimrYIjFlCPNXWFhrpcNA1JL0BgJfW06Le+zzoY4xJC
+         8WWTTsgOKsKEwYQWFxpj0QrUKh/SU9ZP1esPdWr2QiJyZXD1e8miYKEIWMhGMKBXi3Pi
+         ZK+BUnOaWeLeTJEsemuGRpA6k68xQ9zapaXHaoUq1m2RiB9IV/my9ide+Eh19SGo+eqx
+         DuHg==
+X-Forwarded-Encrypted: i=1; AKwUvBzOtGsvRhnD6rua9cVLbu64ZTXjTT6Czldf/2UbJmu/OviLmKNdHlXzaRc7obIia4YRYLM=@lists.linux.dev
+X-Gm-Message-State: AFuF++muO7HAUAOimf1GRwHZT5v6pr7bSukIo/QKErGKkRIVeZ0ojtwi
+	VlCiRf7ZXmMl/SnNNPRYIwb7yYkdkGQaGQZjPcJJ3Rw2SlQI+BEUpd/6
+X-Gm-Gg: AYBFou2WsbRHTD9HUCsdVDmhxFW3JXz31uKgm5LQBsGEEZdOKrV1uOEL5y2XWg9jsfj
+	T7Out7rMYv7C2pAhmgBxaApB3GH4bSy5oAI664uE2pOyeTWR8AbAupCnjfUYJS9AMqIgi0wOD4c
+	7IJe9B8JPmsLPhOgPNbT6zRsX9dd7SHEW2VSJJ+nzcQrRusu4QYtsJuLrBuBBhypvNpRjMHLLCK
+	MvUZTP+8PrFK1IObIMBc+GRAe19R9Sqj/FwX2sD8f+HU2Wy5e3pT7LYJ0XTe1+1sNldNvUzjQmz
+	4qfHBaDibbimZTeUtDhcHOSM1uRS8PFM6bik0hYXO9P3RjT/QqZZVa6QvuS2cQmt7TUJ4XVu9ES
+	Cgnm17Ig1uVcC9iQOvprwmzSn+SEIace4moQmDmOUohMfqkoGGouMTbjTuUJoLVIde0B+Eueizj
+	PWyWpPBGycrLkHYThB5wcX8PLPF21m51+p6K0nHfxX8S1vDrw4VWIRqnrjG5qHIPBloryyldkP2
+	dzf
+X-Received: by 2002:a05:600c:3e10:b0:49d:2936:8ad1 with SMTP id 5b1f17b1804b1-49e7d722aa2mr32668075e9.1.1789459508063;
+        Tue, 15 Sep 2026 01:05:08 -0700 (PDT)
 Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d27315csm48588365e9.2.2026.09.15.01.05.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d27315csm48588365e9.2.2026.09.15.01.05.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 01:05:06 -0700 (PDT)
+        Tue, 15 Sep 2026 01:05:07 -0700 (PDT)
 From: Mehmet Fide <mehmet.fide@gmail.com>
 To: Bartosz Golaszewski <brgl@kernel.org>,
 	Linus Walleij <linusw@kernel.org>
@@ -74,9 +74,9 @@ Cc: Haibo Chen <haibo.chen@nxp.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: [PATCH v6 3/4] gpiolib: add get_config() and gpiochip_generic_get_config()
-Date: Tue, 15 Sep 2026 10:05:00 +0200
-Message-ID: <20260915080501.329424-4-mehmet.fide@gmail.com>
+Subject: [PATCH v6 4/4] gpio: mmio: track the direction of chips without direction registers
+Date: Tue, 15 Sep 2026 10:05:01 +0200
+Message-ID: <20260915080501.329424-5-mehmet.fide@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260915080501.329424-1-mehmet.fide@gmail.com>
 References: <20260915080501.329424-1-mehmet.fide@gmail.com>
@@ -90,113 +90,152 @@ Content-Transfer-Encoding: 8bit
 
 From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-A chip with a pin control backend sets a line's configuration through
-set_config() and gpiochip_generic_config(), but has no way to read one
-back. gpio-mmio needs that to learn the direction of a line whose
-direction lives in the pin controller.
+A generic chip with GPIO_GENERIC_PINCTRL_BACKEND and no direction
+registers sets the direction through pinctrl but has no get_direction
+callback, so every gpiod_get_direction() call trips the WARN in gpiolib
+and the direction gpiolib reports is whatever it assumed. On a Vybrid
+Colibri module the i2c core, asking for the SDA line's direction before
+bus recovery, gets that backtrace on every boot, and so does any other
+caller outside gpiolib.
 
-Add the optional get_config() callback, taking the packed parameter to
-query and returning its bare argument the way pinctrl_gpio_get_config()
-does, and gpiochip_generic_get_config() as the pin control backed
-implementation, the mirror of gpiochip_generic_config(): a chip without
-pin ranges, or a kernel without pinctrl, gets -ENOTSUPP.
+Keep the direction of such a chip in the existing shadow: the direction
+setters update sdir under the chip lock, and get_direction() is the
+shadow-reading path already used for unreadable direction registers.
+That keeps the callback usable in atomic context, which it has to be:
+gpiochip_lock_as_irq() calls it for !can_sleep chips from
+gpiochip_irq_domain_activate(), under the irq descriptor lock.
 
-Nothing in gpiolib calls get_config() and there is no consumer API; it
-is for the chip's own use.
+The pad's actual state is read once, in process context, when a line is
+requested: gpiolib calls request() right before get_direction() for a
+new line, so the shadow is seeded there from PIN_CONFIG_OUTPUT_ENABLE
+through the chip's get_config(), which is gpiochip_generic_get_config()
+for the pinctrl backend, and the line reports what the pin controller
+says. Lines pinctrl cannot answer for keep the input default, which is
+what gpiolib assumed before.
 
-Suggested-by: Linus Walleij <linusw@kernel.org>
+dir_unreadable, so far set only for GPIO_GENERIC_UNREADABLE_REG_DIR, is
+now also set for a pinctrl-backed chip without direction registers: both
+kinds of chip have no register to read the direction from and serve it
+from the shadow.
+
+The answers depend on the pinctrl driver decoding the parameter. On
+Vybrid that is the preceding pinctrl-imx patch: without it
+pin_config_get() returns the raw pad register, which would seed every
+requested line as an output, so this patch must not land ahead of it.
+
+Suggested-by: Bartosz Golaszewski <brgl@kernel.org>
 Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
 ---
- Documentation/driver-api/gpio/driver.rst |  7 +++++++
- drivers/gpio/gpiolib.c                   | 21 +++++++++++++++++++++
- include/linux/gpio/driver.h              |  9 +++++++++
- 3 files changed, 37 insertions(+)
+ drivers/gpio/gpio-mmio.c | 60 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 56 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/driver-api/gpio/driver.rst b/Documentation/driver-api/gpio/driver.rst
-index a4f160b95089..3e53374c7e9f 100644
---- a/Documentation/driver-api/gpio/driver.rst
-+++ b/Documentation/driver-api/gpio/driver.rst
-@@ -134,6 +134,13 @@ ending up in the pin control back-end "behind" the GPIO controller, usually
- closer to the actual pins. This way the pin controller can manage the below
- listed GPIO configurations.
+diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
+index 7e4b3e8d609f..0709ffaab4de 100644
+--- a/drivers/gpio/gpio-mmio.c
++++ b/drivers/gpio/gpio-mmio.c
+@@ -49,6 +49,7 @@ o        `                     ~~~~\___/~~~~    ` controller in FPGA is ,.`
+ #include <linux/log2.h>
+ #include <linux/module.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/spinlock.h>
+@@ -372,7 +373,17 @@ static int gpio_mmio_dir_in_err(struct gpio_chip *gc, unsigned int gpio)
  
-+The optional .get_config() callback reads a configuration back: the packed
-+parameter to query goes in, its bare argument comes out, the way
-+pinctrl_gpio_get_config() answers. gpiochip_generic_get_config() is its pin
-+control backed counterpart. Nothing in gpiolib calls it; it is for the GPIO
-+driver's own use, for example to learn the direction of a line when the pin
-+controller owns it.
+ static int gpio_mmio_simple_dir_in(struct gpio_chip *gc, unsigned int gpio)
+ {
+-	return gpio_mmio_dir_return(gc, gpio, false);
++	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
++	int ret;
 +
- If a pin controller back-end is used, the GPIO controller or hardware
- description needs to provide "GPIO ranges" mapping the GPIO line offsets to pin
- numbers on the pin controller so they can properly cross-reference each other.
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index ef8ccaf17c9c..0586fc1f9564 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -2440,6 +2440,27 @@ int gpiochip_generic_config(struct gpio_chip *gc, unsigned int offset,
++	ret = gpio_mmio_dir_return(gc, gpio, false);
++	if (ret)
++		return ret;
++
++	guard(raw_spinlock_irqsave)(&chip->lock);
++	chip->sdir &= ~gpio_mmio_line2mask(gc, gpio);
++
++	return 0;
  }
- EXPORT_SYMBOL_GPL(gpiochip_generic_config);
  
-+/**
-+ * gpiochip_generic_get_config() - read back the configuration of a pin
-+ * @gc: the gpiochip owning the GPIO
-+ * @offset: the offset of the GPIO to query
-+ * @config: the packed parameter to query, replaced by its bare argument
-+ *
-+ * Returns:
-+ * 0 on success, or negative errno on failure.
-+ */
-+int gpiochip_generic_get_config(struct gpio_chip *gc, unsigned int offset,
-+				unsigned long *config)
+ static int gpio_mmio_dir_out_err(struct gpio_chip *gc, unsigned int gpio,
+@@ -384,9 +395,19 @@ static int gpio_mmio_dir_out_err(struct gpio_chip *gc, unsigned int gpio,
+ static int gpio_mmio_simple_dir_out(struct gpio_chip *gc, unsigned int gpio,
+ 				    int val)
+ {
++	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
++	int ret;
++
+ 	gc->set(gc, gpio, val);
+ 
+-	return gpio_mmio_dir_return(gc, gpio, true);
++	ret = gpio_mmio_dir_return(gc, gpio, true);
++	if (ret)
++		return ret;
++
++	guard(raw_spinlock_irqsave)(&chip->lock);
++	chip->sdir |= gpio_mmio_line2mask(gc, gpio);
++
++	return 0;
+ }
+ 
+ static int gpio_mmio_dir_in(struct gpio_chip *gc, unsigned int gpio)
+@@ -601,20 +622,51 @@ static int gpio_mmio_setup_direction(struct gpio_generic_chip *chip,
+ 			gc->direction_input = gpio_mmio_dir_in_err;
+ 		else
+ 			gc->direction_input = gpio_mmio_simple_dir_in;
++
++		if (cfg->flags & GPIO_GENERIC_PINCTRL_BACKEND) {
++			chip->dir_unreadable = true;
++			gc->get_direction = gpio_mmio_get_dir;
++			gc->get_config = gpiochip_generic_get_config;
++		}
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static void gpio_mmio_seed_dir_from_pinctrl(struct gpio_chip *gc,
++					    unsigned int gpio)
 +{
-+#ifdef CONFIG_PINCTRL
-+	if (list_empty(&gc->gpiodev->pin_ranges))
-+		return -ENOTSUPP;
-+#endif
++	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
++	unsigned long config;
 +
-+	return pinctrl_gpio_get_config(gc, offset, config);
++	if (!gc->get_config || chip->reg_dir_out || chip->reg_dir_in)
++		return;
++
++	config = pinconf_to_config_packed(PIN_CONFIG_OUTPUT_ENABLE, 0);
++	if (gc->get_config(gc, gpio, &config))
++		return;
++
++	guard(raw_spinlock_irqsave)(&chip->lock);
++	if (config)
++		chip->sdir |= gpio_mmio_line2mask(gc, gpio);
++	else
++		chip->sdir &= ~gpio_mmio_line2mask(gc, gpio);
 +}
-+EXPORT_SYMBOL_GPL(gpiochip_generic_get_config);
 +
- #ifdef CONFIG_PINCTRL
+ static int gpio_mmio_request(struct gpio_chip *gc, unsigned int gpio_pin)
+ {
+ 	struct gpio_generic_chip *chip = to_gpio_generic_chip(gc);
++	int ret;
  
- /**
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index 17511434ed07..4077dc678cae 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -359,6 +359,10 @@ struct gpio_irq_chip {
-  * @set_config: optional hook for all kinds of settings. Uses the same
-  *	packed config format as generic pinconf. Must return 0 on success and
-  *	a negative error number on failure.
-+ * @get_config: optional hook to read back a setting. Takes the packed
-+ *	generic pinconf parameter to query and returns its bare argument in
-+ *	the same variable, like pinctrl_gpio_get_config(). Must return 0 on
-+ *	success and a negative error number on failure.
-  * @to_irq: optional hook supporting non-static gpiod_to_irq() mappings;
-  *	implementation may not sleep
-  * @dbg_show: optional routine to show contents in debugfs; default code
-@@ -434,6 +438,9 @@ struct gpio_chip {
- 	int			(*set_config)(struct gpio_chip *gc,
- 					      unsigned int offset,
- 					      unsigned long config);
-+	int			(*get_config)(struct gpio_chip *gc,
-+					      unsigned int offset,
-+					      unsigned long *config);
- 	int			(*to_irq)(struct gpio_chip *gc,
- 						unsigned int offset);
+ 	if (gpio_pin >= gc->ngpio)
+ 		return -EINVAL;
  
-@@ -708,6 +715,8 @@ int gpiochip_generic_request(struct gpio_chip *gc, unsigned int offset);
- void gpiochip_generic_free(struct gpio_chip *gc, unsigned int offset);
- int gpiochip_generic_config(struct gpio_chip *gc, unsigned int offset,
- 			    unsigned long config);
-+int gpiochip_generic_get_config(struct gpio_chip *gc, unsigned int offset,
-+				unsigned long *config);
+-	if (chip->pinctrl)
+-		return gpiochip_generic_request(gc, gpio_pin);
++	if (chip->pinctrl) {
++		ret = gpiochip_generic_request(gc, gpio_pin);
++		if (ret)
++			return ret;
++		gpio_mmio_seed_dir_from_pinctrl(gc, gpio_pin);
++	}
  
- /**
-  * struct gpio_pin_range - pin range controlled by a gpio chip
+ 	return 0;
+ }
 -- 
 2.55.0
 
