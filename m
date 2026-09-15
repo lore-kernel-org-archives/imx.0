@@ -1,35 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A39747ACC6;
-	Tue, 15 Sep 2026 10:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BE47ACC6
+	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 10:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789467673; cv=none; b=JURvwjevQy2R6cpE6dNeCwVwXn71Fp2NzsqVWAqv+zvn/gpTWUehqYon3Kjnsw6LJHY7ZNFP0lGb2+dCBxjrDrIe2JVm7/4vPGaiKOLnQWCUFou28pkiwpG3gJcbrS+dgjz5jnU3biclEiNabXmoL+Af224uidLlQsO3KfWNe9U=
+	t=1789468435; cv=none; b=Aaz6Mvz4d8eYLuK+lglLPaM4JHOGFDtHG/O5jx6bNPxNYOkh0Bc6iaCZmt2ABv9piU3AXqj5rl0U0/a/znT59/n08QzHSXDXm+Mnpt8hUco7nuEHDAzbvMlDTI1wlkwuA9Kmo3avr42DIS3dpoESmwleme3GHvcKySZRMK8hZ+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789467673; c=relaxed/simple;
-	bh=j2FwAU6Oc/8C613M05UKW5TkX/+ZWeoDiJRoL501X3M=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YuEeHXlNyqHpUEiV165SveEkIyIWQh/9vm/2b3FZHxH2sIsjm4eGvXTPuh46ogX6p1osPuqdYE7DKb2k6VJnW07528HdYQ42g3L+ZlG+ePNy/4W026D2qLxEILtp7samOGZlEQA2g1lchGNgyWm/nKEL+PH/dKk6UKWscJlI70g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrTewRqY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789468435; c=relaxed/simple;
+	bh=rMBxBiuiDq4omRt4799HznSfkajEM8cXWvJc5zo6Fcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tRNC/ulrY4MyLtYaQDTUO+bTAk06jyEBfzzR8cRnhJUX/17jvdsIqjLXwYVEbknge1NAYeWLldaRPew6oQ2SdfblHRr8jkvjsuNnpSq20b6Nv7qMiYAWbaEIRsgFRFOTqw/EAOjNtc86voIMiK7cjDQU5tL9MCUQT1UTMsm4Ct0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cocrC/2i; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrTewRqY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD67E1F000FF;
-	Tue, 15 Sep 2026 10:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789467671;
-	bh=20/7wnbF8nfIl3EGX+jvo0C3k5EWfhud03KDBQFoyEg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NrTewRqYp2tmxhdV4vca9LV/gg5fBNLwrcLjECSN+V1lZ3KyI3pcMYEi0NhQzbMhb
-	 H6LkLgFKvk+I8mDZ2yt8OIrPjKKsTT4+CBSVbcXo5yGpFuj2l++weSewuKhJeS4a4c
-	 Emj5VyzR5c5EyyrMz0n5UUR0zmmbI5ITPwobqWKFtlNCa17UvF3f4Vf0NAeM1J4Vrs
-	 3106/MERHkyzuM51yXJ/uOuD/yA2enafGoEePHpfTOo8v7VLUPXxXs7CmgByqPeVw9
-	 eJR4boyWvLxYwOWBjIChdQYS7MoSKcoQGX4dLKGZEeLf9XZoW5Og4xqxQGVy1e7Gz0
-	 eVELDL7I1nO0A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09B03926263;
-	Tue, 15 Sep 2026 10:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cocrC/2i"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c29d33431c8so19962766b.2
+        for <imx@lists.linux.dev>; Tue, 15 Sep 2026 03:33:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789468431; x=1790073231; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f75fQgzk5PMT2bUGTVE35Rs8Li1ghntLsZOgXFHTcEQ=;
+        b=cocrC/2iBuL1TGYYZYAv/Y8CTnYGAV0h7/z1Uc/PXiLybKCgNSbWBse+iddYb3G3Jc
+         3gn3vBHIc50OlfVdhIJ1mZ1zbenw6mLHRPNHBMxuN40OorVcVzpodt08I5LzodCmC5wV
+         qGmkJEuQNxeWNKOW5pZEIL6iDySTG7sdMOrRLz2mlB9XBiIgPYuObesvPwNPWr+kYfAq
+         IByvtQuYmdztyXP9s/mRB6wq0SXgAG2ow3tYd0uMkmqsa5pgy8DzSZHyVReLwFJBF8M2
+         pxGpYEasvnhkla1n47W2PjC4rFtED13xHDUF3nA9B9vbBFs5E9r/6s5NlWensFm9V8z5
+         jtbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789468431; x=1790073231;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f75fQgzk5PMT2bUGTVE35Rs8Li1ghntLsZOgXFHTcEQ=;
+        b=23hp/XhDyIb8eFNNEuF9qQvoeFVRkiI4f9M9R3xCxAIe+B0TO1no8jHerkED6oavRC
+         UJ7mrquvTkW6OkvO5lu2A1315j9vcSS98Ikp3QjE8TRREaW6fEwWVNRHfWBLGmwT8e3H
+         ncAlZiMR+BpcJglbaeJW3lSuiF3HlQch1wZuvFT/MY7m5pGmNnTjgOV70SMj3l85McVs
+         UTOMVYEcuAOXfU0rPU34ACml1rFytO6BD0qKp00Sm383N6tEXFmI60iwrIGsj5il4+Xl
+         ju4CiDsJwmR+5dufNMuZe+ls0Jxs7dlY6Lzp3MVUJ1Rmi6Iv8QH5BHA4IM3MaId9QFj6
+         pmcw==
+X-Forwarded-Encrypted: i=1; AKwUvBwgdwjOjoq+IKpYCXb3fg3974/08fmK3P1/KnRfvo6YKyJ1dvsGODZsnNQLtrLuFHjNOe8=@lists.linux.dev
+X-Gm-Message-State: AFuF++lbAW6r6Ybzpy5W93qEaCQzGc8+E+oWDH++5CCkIOLMIhqjkKH2
+	1v/jYs+EcQfPvNU/+LgvQn0fuEVwWpfyt3+SyKn3pfj8CF6cmAWpGZY0
+X-Gm-Gg: AYBFou3Jlqot56XKSbzOH9E+hghkMmr8LQRzRlLK04+2Ox2MJkDjeZ4d2aVmgN71kWm
+	ehlkidvRt/2ejRkBrxmXytzjbcHiyXkoyUD56q/JFmyQHehtGTJr3URygk5sZklCex/jcYrw6xf
+	GTRLRyErzbgQdZodfyHjIg0ZRTFYPAXDoMbpNKK4CE/dhFDwkhQ8m12wrt5JEtycI10AFvOsSZ1
+	gZaXUjwgxS7nSBeKt+8zsQZAFhKwme6Qcw52xBqZUc+5IXeVnxXlBFWv420DBp8jTHxfS6Q80GK
+	hRWDtYmSh4QF2DQ8WwMC5r51maxHy4czo1bW3HPg7F51zzRZqkJ/sqq0DZZQFIYCIUycN93IT3C
+	f9tRjltLXLgq+1OvyZI44e5Szii0E4VjshVVbKY0ZHhfrjpcujEPBSVYBD2Np7oeZJCc4tR84yg
+	v0anXgBODtOU2hQvWLDvOnG/Db+t6wswCDB4ANNRBPulp/tW1TlG0945tZZH4lu4sayRXTkHBmX
+	M4YHog990u1OksdwX9MHCQ7fYuzI7DmxLgJA9hwNacw9xquc7F89sstnAPFSjpTlWcyzYTd0EBZ
+	8BlKhbbu2AMNUiCHi2Bae/SszCT+gHBU8JjCc6wKVWyzgLcyBmpv0uOJnNgr+kkTqZtrEhKYvHg
+	hWiutY3KONbLFbhs7JDhmPLQs5jTiK/VNDlDKHoh+ejKxareyxN7Et6Xx40x6s6EX9zv04asxKf
+	h/mpFzCqVZVSkAvbyCIyR3bHbMa6dsblHKtOOWJso2O6sKr8MKpNTrSSLuaz5AEMwooPjPD0BcX
+	6OMGHztSR7q/JQ1
+X-Received: by 2002:a17:907:6d1d:b0:c29:44b0:1428 with SMTP id a640c23a62f3a-c29d79b8aa1mr40465866b.42.1789468430983;
+        Tue, 15 Sep 2026 03:33:50 -0700 (PDT)
+Received: from cs-280612103108-default.europe-west4-a.c.oa7bb030819b2a894-tp.internal (219.40.147.34.bc.googleusercontent.com. [34.147.40.219])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2965c4e8a1sm566041866b.6.2026.09.15.03.33.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 03:33:50 -0700 (PDT)
+From: Joshua Crofts <joshua.crofts1@gmail.com>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] clk: imx: add missing pm_runtime_dont_use_autosuspend() calls
+Date: Tue, 15 Sep 2026 10:33:43 +0000
+Message-ID: <20260915103345.1334-1-joshua.crofts1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,72 +86,25 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 net-next 00/15] net: enetc: SR-IOV improvements and
- ENETC
- v4 VF support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178946760664.1496640.10712113445214724532.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Sep 2026 10:20:06 +0000
-References: <20260909100733.1139689-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20260909100733.1139689-1-wei.fang@oss.nxp.com>
-To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew@lunn.ch, olteanv@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+Several drivers in the clk subsystem forget to call dont_use_autosuspend()
+on teardown or error, causing potential resource leaks. This series adds
+the missing calls.
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+The offending drivers were found using a semantic patch for Coccinelle
+I'm working on [1].
 
-On Wed,  9 Sep 2026 18:07:18 +0800 you wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> This series enhances SR-IOV support for ENETC v1 and adds VF support
-> for ENETC v4. For ENETC v1, the trusted VF management and per-VF
-> configuration query via ndo_get_vf_config() are added. For ENETC v4,
-> preliminary VF support is introduced for i.MX94 and i.MX95 platforms.
-> 
-> [...]
+[1] https://lore.kernel.org/all/20260915064327.1377-1-joshua.crofts1@gmail.com/
 
-Here is the summary with links:
-  - [v4,net-next,01/15] net: enetc: add trusted VF support
-    https://git.kernel.org/netdev/net-next/c/aeb505f83f7b
-  - [v4,net-next,02/15] net: enetc: move msg_task and msg_int_name to struct enetc_si
-    https://git.kernel.org/netdev/net-next/c/99ace7602482
-  - [v4,net-next,03/15] net: enetc: add link status message support to PF driver
-    https://git.kernel.org/netdev/net-next/c/83d385c67af5
-  - [v4,net-next,04/15] net: enetc: add link speed message support to PF driver
-    https://git.kernel.org/netdev/net-next/c/f7e86f8ae699
-  - [v4,net-next,05/15] net: enetc: use enetc_set_si_hw_addr() to set VF MAC address
-    https://git.kernel.org/netdev/net-next/c/fba13302b996
-  - [v4,net-next,06/15] net: enetc: relocate enetc_pf_set_vf_mac() for common PF support
-    https://git.kernel.org/netdev/net-next/c/f37718e9210b
-  - [v4,net-next,07/15] net: enetc: add .ndo_set_vf_mac() to the enetc v4 driver
-    https://git.kernel.org/netdev/net-next/c/18c66a9a4fae
-  - [v4,net-next,08/15] net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
-    https://git.kernel.org/netdev/net-next/c/261be512194d
-  - [v4,net-next,09/15] net: enetc: add MAC address filtering support for VFs of ENETC v4
-    https://git.kernel.org/netdev/net-next/c/e7ac83644e28
-  - [v4,net-next,10/15] net: enetc: simplify and rename PSIIER enable/disable helpers
-    https://git.kernel.org/netdev/net-next/c/76fb8ad66d3d
-  - [v4,net-next,11/15] net: enetc: restore VF MAC promiscuous mode after FLR for ENETC v4
-    https://git.kernel.org/netdev/net-next/c/f539a68b0aa1
-  - [v4,net-next,12/15] net: enetc: add VF support for i.MX94 and i.MX95
-    https://git.kernel.org/netdev/net-next/c/fd793705e62f
-  - [v4,net-next,13/15] net: enetc: implement ndo_set_rx_mode_async for ENETC v4 VF
-    https://git.kernel.org/netdev/net-next/c/e05f2902925e
-  - [v4,net-next,14/15] net: enetc: add PSI-to-VSI link status notification support for VF
-    https://git.kernel.org/netdev/net-next/c/36a16ed591b3
-  - [v4,net-next,15/15] net: enetc: add ndo_get_vf_config() support
-    https://git.kernel.org/netdev/net-next/c/5822ab0f3e89
+Joshua Crofts (2):
+  clk: imx: clk-imx8qxp-lpcg: add missing
+    pm_runtime_dont_use_autosuspend()
+  clk: imx: scu: add missing pm_runtime_dont_use_autosuspend() call
 
-You are awesome, thank you!
+ drivers/clk/imx/clk-imx8qxp-lpcg.c | 1 +
+ drivers/clk/imx/clk-scu.c          | 2 ++
+ 2 files changed, 3 insertions(+)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.3
 
