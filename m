@@ -1,87 +1,84 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8985C49F108;
-	Tue, 15 Sep 2026 16:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B506423645D;
+	Tue, 15 Sep 2026 17:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789490968; cv=none; b=mAIuDnCXsDG+VDfF/sfEX9JLXNbWIjStaIxGajmHMQB7TTeR/+9PZUcbsMSfh0cp9/ozX4cChRduuzvyq/5DNtLaJZsUj+TJQFlCSyUKwfvmG5UXfXowD9+NbKnS9B0NYcTCndc/7pPeWVSI5Wa7BX4ycYIKXGUlvz7gty/6tbM=
+	t=1789493518; cv=none; b=WUjMVWOLZc37PomBS7nfXdKTGi1qT16+48imZ01usmq1cnkkaGbHDKf/YpiWL22ovtrEZ6eNxLfoADqaSn8wlX5vPd6cUQ6irY+I2EBmt7BY8UMXewpi2O5PXrYG2NVw+DN860WK6eiuadOWc6cunuAWLdG69MjjsAIMMdNEdSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789490968; c=relaxed/simple;
-	bh=TILtcVOpFDDqd3GDAT4vH8MKqC+ojPt8jhWo2iRnC6E=;
+	s=arc-20240116; t=1789493518; c=relaxed/simple;
+	bh=COL+eeLxqw5NTAJ2YIlB4B9vdfhxDmT/atOwnDq2bI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uo4rW0WE9MI1FdF777z/Cb0ZhxyW/6bBFBloHIENehIzauHKql8ArBOlDrxIYtGl9BRROKt1zmVMw/NixU1NPHtOljCLWaddPTzebY9MaAgiWBAK2CurfLYMxHH0xIVk+87XYnMIAiruVqeE8py9dHOo8rbwKoF8NtNJNlhFFEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=T1vPOGEe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=iJDlZFASfORkBXuBA9yk/Tv5KT1HnUvNyIrt7Q1WV0w+9b4rsZWQKEQIZhFfk5LOaw2Z+5ESXv0pbQMwg8+/azKKUl02YuCceuhlqUB8a+6G3SzSJWmsYyZ7g6SqbA/4j86u/tZZ2NApm0i3NPF5tStPlwUFIGVgoaXmynEXVfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIQhufCg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="T1vPOGEe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xtjhYharta0kivYdIPNAaN7YMmTxSs/zZpGGaIGucV4=; b=T1vPOGEefpHtsFpnGzCF0cC40Z
-	DVSD+cr+mnNnE1iXzuntsCtbw+ERlW+tYCLLRbzGOfQycMVcvh3AG2ZcIWgBG6CiqZRRgwz5g3lFe
-	MqsGorSinRKDBb0kDk061OeHvRIZzuWlZcL5CPC/39XumXC6WBXwWL9ZfJaoi0REffr8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6WLP-005JkN-6Z; Tue, 15 Sep 2026 18:49:19 +0200
-Date: Tue, 15 Sep 2026 18:49:19 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Franz Schnyder <franz.schnyder@toradex.com>
-Subject: Re: [PATCH v2 3/7] arm64: dts: freescale: Add Lino iMX93
-Message-ID: <100eef7b-e1d6-411b-bac5-98790e8f9ea7@lunn.ch>
-References: <20260911091952.96233-1-francesco@dolcini.it>
- <20260911091952.96233-4-francesco@dolcini.it>
- <42ed88a6-d208-482b-94aa-2e45b69c173e@lunn.ch>
- <20260915132806.GA226756@francesco-nb>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIQhufCg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4E11F000FF;
+	Tue, 15 Sep 2026 17:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789493517;
+	bh=iFo2sfXq+Vmx91S6RId8JHf6RX8qogWnl0ZNBXPfgk8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lIQhufCgxDUfqD04F3wR0FvLT5Dp/oZd1f4za8hLykQV+EpTbG9q/nno/1zrqal+F
+	 FJTxs9W0xcKDyG2kLT8kFseb4ZtoaKXC22h9tjUzrgPb89vjcSGuuYMvaIP+pAxXEz
+	 CQ0iwwtoYWihNv1mt3QFlBkHYkLuHBw9EwFbxdnsINLBer1bPCJfkMf/BcGlZHNG2i
+	 c9YyMbgesw/+3bFgD4ZaQpGx5WQya2ExLC3a2OqbfrSbJZ4Aea1fXU0Oha54nuZ8vq
+	 jfLNfRtkO0McneH1VoqLa0oM76uFPfHImbXRy48gdahZqB3RfjfKOGAUY/KDbBG/IS
+	 wlOFcFaasmHjA==
+Date: Tue, 15 Sep 2026 23:01:52 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: =?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 0/2] dmaengine: fsl-edma: Scatter/gather improvements
+Message-ID: <aqmBCMb8JbYsjpTX@parshuram>
+References: <20260911-fsl-edma-dyn-sg-v10-0-700eb72def57@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260915132806.GA226756@francesco-nb>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260911-fsl-edma-dyn-sg-v10-0-700eb72def57@bootlin.com>
 
-On Tue, Sep 15, 2026 at 03:28:06PM +0200, Francesco Dolcini wrote:
-> Hello Andrew,
-> thanks for the review.
+On 11-09-26, 15:11, Benoît Monin wrote:
+> This series adds support for scatter/gather DMA transfers via dma_vec
+> and dynamic descriptor chaining to the Freescale eDMA controller driver.
 > 
-> On Tue, Sep 15, 2026 at 03:19:45PM +0200, Andrew Lunn wrote:
-> > > +	ethphy1: ethernet-phy@1 {
-> > > +		reg = <1>;
-> > > +		interrupt-parent = <&adapter_gpio_expander>;
-> > > +		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
-> > 
-> > Falling interrupts is probably wrong. They are normally level, active
-> > low.
+> The first patch implements the .device_prep_peripheral_dma_vec() callback,
+> enabling the DMA engine to accept an array of dma_vec structures. This
+> callback supports both regular and cyclic transfer modes.
 > 
+> The second patch introduces dynamic scatter/gather chaining, which allows
+> multiple DMA descriptors to be linked together without stopping the channel.
+> This optimization eliminates idle periods when back-to-back transfers are
+> submitted, improving throughput and reducing latency. The implementation
+> carefully preserves cyclic transfer semantics and respects hardware
+> constraints on platforms with split register layouts.
 > 
-> It is wanted. The I2C ioexpander component used for the interrupt
-> supports only edge interrupts. We tested it and it works fine like that.
+> I tested it on the i.MX93. The dynamic scatter/gather chaining should
+> work with other eDMA controller with split register layout.
 
-It works, until it does not work, because you hit a race condition
-with the hardware, two interrupts in quick succession. The second one
-gets lost, and your link remains down forever.
+This fails to build for me, needs bitfield header
 
->  - when we tested it, the SW emulation was not really reliable, and we
->    prefer to play on the safe side
+drivers/dma/fsl-edma-common.c: In function ‘fsl_edma_tx_chan_handler’:
+drivers/dma/fsl-edma-common.c:59:33: error: implicit declaration of function ‘FIELD_GET’ [-Wimplicit-function-declaration]
+   59 |                 u8 link_sg_id = FIELD_GET(EDMA_TCD_CSR_LINKCH, csr);
+      |                                 ^~~~~~~~~
+drivers/dma/fsl-edma-common.c: In function ‘fsl_edma_prep_peripheral_dma_vec’:
+drivers/dma/fsl-edma-common.c:784:55: error: implicit declaration of function ‘FIELD_MAX’ [-Wimplicit-function-declaration]
+  784 |                 if (!nbytes || vecs[i].len / nbytes > FIELD_MAX(EDMA_TCD_ITER_MASK))
+      |                                                       ^~~~~~~~~
+drivers/dma/fsl-edma-common.c: In function ‘fsl_edma_link_sg’:
+drivers/dma/fsl-edma-common.c:1015:24: error: implicit declaration of function ‘FIELD_PREP’ [-Wimplicit-function-declaration]
+ 1015 |                 csr |= FIELD_PREP(EDMA_TCD_CSR_LINKCH, fsl_chan->link_sg_id);
+      |                        ^~~~~~~~~~
 
-If you want to be safe, delete the interrupt properties and let phylib
-poll the PHY. That always works.
-
-     Andrew
+-- 
+~Vinod
