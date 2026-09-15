@@ -1,100 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3B339E9BD;
-	Tue, 15 Sep 2026 19:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011034A3D29
+	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 20:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789502288; cv=none; b=UzLpq+ZtJtn3prcBzFPEqAPa+Jg4kgn8I24hBzEPNe3pfZd6flENK120NgtUX9rBPv3ZOnyefyqqXI6CUoqesFm/2WglmWP4b1/G5W5RQzciJaqGxdMRqFxPp2Nr9xh2RNOPhcRosgENAzK3Oke1TZHa9P7RdjfBZJ7zxOd5g7k=
+	t=1789503269; cv=none; b=W5fC4GnfctIxwTiQp+rCDf1IG/589x35Ca1OteFt87KLEMwXQbPbea35JdXDNDvBN531ZG8KGHgS0imXxC5TXTJ4XJw2V7S7PTwe3TMqZQAP1GGlAHuP/+SOKVhNFIbBVAMDo9ytyyESi07idL7TCmFeY5PztQkPBbV9rwa3ODA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789502288; c=relaxed/simple;
-	bh=tuEsb7t+iPkmurfk4TspyYYvhwvZorPB3oh02pjpuGI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xr11UjULaJAWjrxFmq+b0TEVkgtat5PWHfve8rPpY0LbsbwTu+R8NG4wwiJ/wbWonx1bJLRC/iObL9pCyHTayln7pfDedyS36SKvoVM9+Xt07l+hGPUn3BWNQl/lLz54CmkOlbllp/XaFp0uPJNWx17lCVtItj8UbU/B2Y33zmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bsCxyAg7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789503269; c=relaxed/simple;
+	bh=D1OuzRqijDI1h3wNHmA32zFcsiNiM1GTztJaHf919oU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N3eQEuEPDYAH5W1qhM9wmTQfBgK9dvnNMfAh3xB7/Jd8YttM26BJqbKmO7J9HPoOniOtRzkToFPP/JrONj3u3aDd8c6suQvfJjf4Mm+bzFBmpVO19vq6f1gmQNiZ/aCwgJqpf5X6YkHbMAK0CBBT12oqls6Z5f7BqcG/LUR+Dio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=uktHQnVE; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bsCxyAg7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3hXn1baUNhRBy6ZdAycWNIKKqnZoz6mdI1Ok9vpRhU4=; b=bsCxyAg7Vr88tUywNVj/X/NAlB
-	F1JWOCIYcR6qiIsC8AWkNSB8NA/itPjfBE1/4jB4GvKFB3rAWKBy2xVvPWncbnN7nMmVrtBtgVTNL
-	CA/a9Nv5jaK4B7zfk+WJ+GIw0jl2CnP3uWHYog6NGsE7EPcy1LVsRk/2SvVeEQoRNaE4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6ZHw-005LFQ-Mk; Tue, 15 Sep 2026 21:57:56 +0200
-Date: Tue, 15 Sep 2026 21:57:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="uktHQnVE"
+Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id 7F8A61FABC;
+	Tue, 15 Sep 2026 22:14:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1789503258;
+	bh=4ea/+Rwdel3pGhyUAK51+c5UpUhpQCRdU/ax/b4MwGs=; h=From:To:Subject;
+	b=uktHQnVEI/P1daTNoRZzdmF16fV80IfH4+MVxOVFqprwm/iYldJEYDpvyzIfxPqS0
+	 rEuxiGoZ87vRoPUqOr+ZFMhYQGvpkuJ9MQBerhwBj+6Y02/sPuK53PhPvls10ns9AJ
+	 A6M9Is/fEGxC6YgaiVkuJ8DGNcMC3X9Cg7AjvQCQbu/B9lwETECTo/9728v/tC6ZDk
+	 PGYoAeRADJbWoRrHIL7qY6a7Zlb2edPtF0C1hbjkqH/RUPCKha9MxtHfg0XsMKksHo
+	 7xS5rgndHrOA8iFstdHow+cV7Nf8vrG9R1eFoRVkUeWKsse2Ivk+IeMQOlLsgRLbph
+	 8cmGMCL6ljfEQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Franz Schnyder <franz.schnyder@toradex.com>
-Subject: Re: [PATCH v2 3/7] arm64: dts: freescale: Add Lino iMX93
-Message-ID: <95dcbf3e-193d-460b-b6b9-cd412394e4c6@lunn.ch>
-References: <20260911091952.96233-1-francesco@dolcini.it>
- <20260911091952.96233-4-francesco@dolcini.it>
- <42ed88a6-d208-482b-94aa-2e45b69c173e@lunn.ch>
- <20260915132806.GA226756@francesco-nb>
- <100eef7b-e1d6-411b-bac5-98790e8f9ea7@lunn.ch>
- <aqmG91HwmKe-enfy@francesco-nb>
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: freescale: imx8mp-toradex-smarc: fix SMARC_SLEEP# gpio-line-names typo
+Date: Tue, 15 Sep 2026 22:14:10 +0200
+Message-ID: <20260915201411.23118-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqmG91HwmKe-enfy@francesco-nb>
+Content-Transfer-Encoding: 8bit
 
-> Would you mind to articulate in which situation such race condition can
-> happen?
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Most PHYs have a number of interrupt sources. Taking a random example:
+gpio3's gpio-line-names has "SLEEP#" instead of "SMARC_SLEEP#" for the
+SMARC SLEEP# connector signal, while the gpio-keys node driven by the
+very same GPIO line already labels it "SMARC_SLEEP#", and the imx95
+Toradex SMARC variant names the equivalent line "SMARC_SLEEP#" too.
 
-/* DM9161 Interrupt Register */
-#define MII_DM9161_INTR_DPLX_CHANGE     0x0010
-#define MII_DM9161_INTR_SPD_CHANGE      0x0008
-#define MII_DM9161_INTR_LINK_CHANGE     0x0004
+GPIO line names are meant to be stable across the whole Toradex SMARC
+family, using the official SMARC-connector signal names from the
+SMARC specification and the SoM datasheet's pin assignment table, so
+userspace GPIO tooling that looks up a line by name works the same on
+any Toradex SMARC board.
 
-#define MII_DM9161_INTR_CHANGE  \
-        (MII_DM9161_INTR_DPLX_CHANGE | \
-         MII_DM9161_INTR_SPD_CHANGE | \
-         MII_DM9161_INTR_LINK_CHANGE)
+Fixes: 97dc91c04558 ("arm64: dts: freescale: add Toradex SMARC iMX8MP")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-and a completely made up example which results in problems...
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
+index 0348da385f23..eb8b9db7e3cd 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
+@@ -323,7 +323,7 @@ &gpio3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_lvds_dsi_sel>;
+ 	gpio-line-names = "ETH_0_INT#", /* 0 */
+-			  "SLEEP#",
++			  "SMARC_SLEEP#",
+ 			  "",
+ 			  "",
+ 			  "",
+-- 
+2.47.3
 
-Three interrupts are enabled. Say the PHY reports a duplex change
-first. That causes the interrupt line to go low, giving a downward
-edge. The interrupt handler fires, and reads the interrupt status
-register. In order the clear the interrupt you need to access another
-register about duplex. Before you do that, the link interrupt fires,
-setting the link bit in the status register. However, there is not
-another edge, because the duplex interrupt has not been cleared
-yet. The PHY driver does clear the duplex interrupt and exits the
-interrupt handler.
-
-The interrupt line is still low, indicating a link interrupt, but
-without an edge, no interrupt handler is triggered. The interrupt has
-been lost, and the link is reported down, despite being up.
-
-If however you are using level interrupts, as soon as the interrupt
-handler exits, and reenables the interrupt in the parent interrupt
-controller, it fires again, and the link interrupt is handled.
-
-If you have multiple interrupts indicated by a single line, you should
-use level handling in the parent interrupt controller.
-
-	Andrew
