@@ -1,25 +1,24 @@
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6914D5A1
-	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 05:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6403E440A25
+	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 05:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789451753; cv=none; b=aALKlz3mynLdNk/kNRFVyHMR9PcfOLrPk5QXbDm3EST34OpCUH5L91iFq49DVDryGtRTgEMQYzMEnnWrOTw0FQbKIZEuhLrtRsSnn9p9WU7sFS2F88mMoqPFBZ/4M/5Y1V9dQy+3dCeHOTJmZUOcq61ik67z0kk8Prjj7ytAhXY=
+	t=1789451831; cv=none; b=Q8Lrn3r+4A1FPqZxZ+ZHgsVNzAf0L6+cn0qdoZwXR+nx+QGZX3yGKcSqQ9DbfAS8aet75l3mEFwkq537SD1+R1R7Jc9+mUq4rcyGj0XA3wQqhOmVgZOiITOVDiZtSgB9XP3o212YOfmSfXTbfrCaNowyDzS780h1Jqj7Twh53Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789451753; c=relaxed/simple;
-	bh=+SAN+6WURDkBH1aCOPX6Ir2NoWeGrHF5jd7ZaeI1vrw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NIHhvsn1Z763Uwf8VbS1us9noOvYTTV2qQm+IVAk+NcXY5qdzkqlvRtxsna++Eh4cpzhY4lI6KZN2QO6TDU1rp7S6Y1y+GLyCkb+97pO0KdPqYW8glxtyuUphBij45XX4BXaeeJUyzB+wQQ+nbrw5UgSUiwounkuaUskquDngrs=
+	s=arc-20240116; t=1789451831; c=relaxed/simple;
+	bh=tLV2xGiTDg2YBjhLCI/PNppwmzdUqU5vJ76gQRacHf0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OiZ7hSQIKkqjpVcY6VxqRcYgzhIraXcAkQvgmJveHkqNowdni55+55CqR4fvcqyK2WQ1DpeiC+CBdLBqqS8eaFxUdP3ypbDlTrXgcaqHfe/Zx1Z9WPRA5pMktYxXDv3iyiKWLGT73ZaLGhbaYbybedyHWMH/AEZGrrmvNE2qGp4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowACXau7g3ahq_UsKCA--.60407S2;
-	Tue, 15 Sep 2026 13:55:44 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowADXq+8r3qhqb1IKCA--.33350S2;
+	Tue, 15 Sep 2026 13:57:00 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
 To: Frank.Li@nxp.com
 Cc: abelvesa@kernel.org,
-	aisheng.dong@nxp.com,
 	bmasney@redhat.com,
 	festevam@gmail.com,
 	imx@lists.linux.dev,
@@ -31,11 +30,12 @@ Cc: abelvesa@kernel.org,
 	peng.fan@nxp.com,
 	s.hauer@pengutronix.de,
 	sboyd@kernel.org,
+	shawnguo@kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] clk: imx: Fix clock reference leak in imx_get_clk_hw_by_name()
-Date: Tue, 15 Sep 2026 05:55:15 +0000
-Message-Id: <20260915055515.1730145-1-vulab@iscas.ac.cn>
+Subject: [PATCH] clk: imx: Fix clock reference leak in imx_obtain_fixed_clock_hw()
+Date: Tue, 15 Sep 2026 05:56:31 +0000
+Message-Id: <20260915055631.1730231-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -44,62 +44,64 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACXau7g3ahq_UsKCA--.60407S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtw1UZFWkGFyruFW8ZF4DXFb_yoWkKwc_Gr
-	WrWr92gF18GF1fJF1kCF17Za4SywsrZF10qayIv3y7JayY9FWUAr42qrn8JrW3WrWrKFyD
-	urnrurZrCrZrCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbaxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr
-	1lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYx
-	BIdaVFxhVjvjDU0xZFpf9x0JULo7NUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRILA2qowd1hTgAAsi
+X-CM-TRANSID:qwCowADXq+8r3qhqb1IKCA--.33350S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw18CFWkXw1fJFy7KF4fAFb_yoW8Gr1kpr
+	4kWrWYk3ySkryS9F17Jr4UZF9Yga1kZFyUK3s3W3W8ur9xXay7tF18C34vgr40yrZYkw13
+	XF1agFn5KF4YyF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r
+	4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
+	6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJb
+	IYCTnIWIevJa73UjIFyTuYvjfUogAwDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAMLA2qowzNfoQAAsL
 
-imx_get_clk_hw_by_name() obtains a consumer clock with
-of_clk_get_by_name(), extracts the hardware pointer with __clk_get_hw()
-and returns it without ever calling clk_put(), leaking the consumer
-reference on both return paths.
+imx_obtain_fixed_clock_hw() obtains the clock through
+imx_obtain_fixed_clock_from_dt(), which creates a consumer reference
+via of_clk_get_from_provider(). The reference is discarded right after
+__clk_get_hw() returns the hardware pointer, leaking it.
 
-Extract the hardware pointer first and drop the clock reference with
-clk_put() before returning.
+Keep the imx_clk_fixed() fallback unchanged and drop the DT-obtained
+consumer reference with clk_put() once the hardware pointer has been
+extracted.
 
-Fixes: 3b315214e091 ("clk: imx: implement new clk_hw based APIs")
+Fixes: a4a4069f4523 ("clk: imx: Add imx_obtain_fixed_clock clk_hw based variant")
 Cc: stable@vger.kernel.org
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/clk/imx/clk.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/clk/imx/clk.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
-index f38506830ccf..e113e30514fa 100644
+index e113e30514fa..49e51e949f71 100644
 --- a/drivers/clk/imx/clk.c
 +++ b/drivers/clk/imx/clk.c
-@@ -119,12 +119,16 @@ struct clk_hw *imx_obtain_fixed_of_clock(struct device_node *np,
- struct clk_hw *imx_get_clk_hw_by_name(struct device_node *np, const char *name)
+@@ -95,11 +95,16 @@ struct clk_hw *imx_obtain_fixed_clock_hw(
+ 			const char *name, unsigned long rate)
  {
  	struct clk *clk;
 +	struct clk_hw *hw;
  
- 	clk = of_clk_get_by_name(np, name);
+ 	clk = imx_obtain_fixed_clock_from_dt(name);
  	if (IS_ERR(clk))
- 		return ERR_PTR(-ENOENT);
- 
+-		clk = imx_clk_fixed(name, rate);
 -	return __clk_get_hw(clk);
++		return __clk_get_hw(imx_clk_fixed(name, rate));
++
 +	hw = __clk_get_hw(clk);
 +	clk_put(clk);
 +
 +	return hw;
  }
- EXPORT_SYMBOL_GPL(imx_get_clk_hw_by_name);
  
+ struct clk_hw *imx_obtain_fixed_of_clock(struct device_node *np,
 -- 
 2.34.1
 
