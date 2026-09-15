@@ -1,51 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E3344AB9B;
-	Tue, 15 Sep 2026 07:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167AD45D900;
+	Tue, 15 Sep 2026 07:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789455815; cv=none; b=QmYhsfp/yrO0behgsQ2x/MJns8UCY8Ih39R3UyAONoqJvRCXjVYF3aG4iUwjskuGaWH5GssUvYeNaFEAS+AIMR0PuFEUG8O/gRqOnXnCz9J5ci8e5vZDcmsjIPNGj/oLSDAaTP403xJ8DCq6xJq4JJHRHSm8uEX6x8K3OwMfwmg=
+	t=1789456553; cv=none; b=Re/QGhHgnDY9gaW3XBEeXj7BJ29upMW89xds88mDzXslx9okW1IJ13ElfTfrCpVBY28Q5uPl5rdJ4twpTlq43OAXs8/ToH0v6rrX36mW89PnyF0loQpZ8Gu92L/O+OR4MDXUPmku+k301pM81ecPY8QLbGmacszPuJvDEE/Adrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789455815; c=relaxed/simple;
-	bh=PASnGHuTNr9ooO+/UyWkBH7ChjK/TTZc6mbxL06hQlI=;
+	s=arc-20240116; t=1789456553; c=relaxed/simple;
+	bh=+hFmXzfeob24QkbjYP8iQSqL7rHNCW4SoAluNe2Mtzo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HBk1rRheAoCBFFnGzkqEZx1T4hYWQ2/dEi4qYnA2ayJbk6y9K2JyzvG4BMIv+OlC1cdUxLF3QhzrUYLVdYqD1HLAcGazENkgP9a4a9WFN8yH/qtVE8j3IguGjeReEaxtTthOOPdse9jLiG/m7aQ6yxsJIvo9Tbe9VAV9EgMsvOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DY8pZtu4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWxU4wmiOa7TuyRqD4MAZJzS7GktcVyqJYshurdWqSZUS12lmOx/vNH99T2/mpiZ/CNntWPSzN7AG1FdW+osEz9vSw+H8VCvkn6alBu2vV/o1Ail7dnb6nzhAxFJU1lU2TRmz7aaB1zzgXOsgg5F5yND1jz23G0M5IIfvv7LY3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SqTPGq1/; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DY8pZtu4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229E91F000FF;
-	Tue, 15 Sep 2026 07:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789455808;
-	bh=0jqazLvI6PHhKlLUw5ES9AlYBTQV/CW02EbTg8KOkAc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DY8pZtu4LuzXGihC1YElZInpGFpLzAlctTZ5qIJHgqTbGCYvRb74jSsImxBX/Of7e
-	 P0rUoS8jmWyqFsv1InIewtvA0IXOHOyhuf4iViVzEhejf/jXhPrH3TqtIs2s1DhQTi
-	 KY1Qq3wU1lwpqPuYbRLl+n9f7qvELuG4c6/zO3fGPtgIBMA1li/lP8ueuCBu2P8uzP
-	 vpR9ZNieeTiSO2dYr7NtjIQeGAK2C6hkvIg/+exeXoSw5ilvOgXNejrys3ydrq+lte
-	 X32vaAM+P4DQW2VRBFoiGaerQ2zbPPtO8yQdygT6+VaK2aUU+SUz8YOkEIO9WZySWq
-	 ih0c7yOtrqI6w==
-Date: Tue, 15 Sep 2026 00:03:26 -0700
-From: Peter Chen <peter.chen@kernel.org>
-To: Subasri S <subasris1210@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SqTPGq1/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789456550; x=1820992550;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+hFmXzfeob24QkbjYP8iQSqL7rHNCW4SoAluNe2Mtzo=;
+  b=SqTPGq1/wIAt9oHS4ekKDbtM/G4Ocj3SZMwt0/NBaW1JmxQb5STj2vgF
+   EUI19h3YNhp+CgoentcZiZFmvRElTAipytatNsq/Ai6mc7N4l+8SD9OHM
+   NPjZlQ7A2uHGNx/i2EEi+7ZxXX7HQOa1KzrZnPUqt3uxaPwOiqVs69dyo
+   KjlFTby+Ol7uNVYWfX4aTBx15PnJ0CEVVNfxOVaZQtv8kA3yWJr4Gh59s
+   bWk+D3oWw+dZlEyhkWtmc2hWQdQT/jsUZElIISdLLZh5PLJyfRcIX4H9C
+   a8BWJKM4Wkx4uV8SHLJUUXbk/ZhtMJChv+tjzlZRLMKc0XYtk+PJHWSal
+   A==;
+X-CSE-ConnectionGUID: iRoJBN4sRUy3YWCZgVrmgg==
+X-CSE-MsgGUID: hJ2N+nKiTWuQxeoMwr/E+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="77372776"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="77372776"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:15:49 -0700
+X-CSE-ConnectionGUID: jCoR3+hhS+iTfoVrXV+ydQ==
+X-CSE-MsgGUID: EtpDa52ZR/agKBjetRCxuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="268588584"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.203])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:15:38 -0700
+Date: Tue, 15 Sep 2026 10:15:36 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Srinivas Kandagatla <srini@kernel.org>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Duncan Sands <duncan.sands@free.fr>,
-	Chas Williams <3chas3@gmail.com>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] usb: chipidea: Use %pe to print error pointers
-Message-ID: <aqjtvglG5NhsDLZe@hu-petche-lv.qualcomm.com>
-References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
- <20260801-usb-ptr_err_patchset-v2-1-1698e298c1e3@gmail.com>
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev, imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] nvmem: core: deprecate reg_write callback with
+ reg_write_const
+Message-ID: <aqjwmMn7GkAoxsu2@ashevche-desk.local>
+References: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
+ <20260804135940.2378737-3-linkmauve@linkmauve.fr>
+ <a1488d9d-3014-44ea-a0d7-6ab99fedccc9@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,87 +100,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260801-usb-ptr_err_patchset-v2-1-1698e298c1e3@gmail.com>
+In-Reply-To: <a1488d9d-3014-44ea-a0d7-6ab99fedccc9@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 26-08-01 17:59:50, Subasri S wrote:
-> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-> error pointers in imx_get_clks(), ci_hdrc_imx_probe(), and
-> ci_get_platdata(). This prints symbolic error names (e.g. -ENOMEM)
-> instead of errno numbers (e.g. -12), making error logs more readable.
-> 
-> Fix coccinelle reported warning:
-> WARNING: Consider using %pe to print PTR_ERR()
-> 
-> Compile-tested only.
-> 
-> Signed-off-by: Subasri S <subasris1210@gmail.com>
+On Mon, Sep 14, 2026 at 10:48:21PM +0100, Srinivas Kandagatla wrote:
+> On 8/4/26 2:59 PM, Link Mauve wrote:
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
+...
 
-Peter
-> ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 12 ++++++------
->  drivers/usb/chipidea/core.c        |  4 ++--
->  2 files changed, 8 insertions(+), 8 deletions(-)
+> > - * @reg_write:	Callback to write data; return zero if successful.
+> > + * @reg_write:	**DEPRECATED** - please use reg_write_const instead.
 > 
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index 56d2ba824a0b..7bfe37ed68ae 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -218,8 +218,8 @@ static int imx_get_clks(struct device *dev)
->  		if (IS_ERR(data->clk)) {
->  			ret = PTR_ERR(data->clk);
->  			dev_err(dev,
-> -				"Failed to get clks, err=%ld,%ld\n",
-> -				PTR_ERR(data->clk), PTR_ERR(data->clk_ipg));
-> +				"Failed to get clks, err=%pe,%pe\n",
-> +				data->clk, data->clk_ipg);
->  			return ret;
->  		}
->  		/* Get wakeup clock. Not all of the platforms need to
-> @@ -448,8 +448,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  		pinctrl_hsic_idle = pinctrl_lookup_state(data->pinctrl, "idle");
->  		if (IS_ERR(pinctrl_hsic_idle)) {
->  			dev_err(dev,
-> -				"pinctrl_hsic_idle lookup failed, err=%ld\n",
-> -					PTR_ERR(pinctrl_hsic_idle));
-> +				"pinctrl_hsic_idle lookup failed, err=%pe\n",
-> +					pinctrl_hsic_idle);
->  			ret = PTR_ERR(pinctrl_hsic_idle);
->  			goto err_put;
->  		}
-> @@ -464,8 +464,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  								"active");
->  		if (IS_ERR(data->pinctrl_hsic_active)) {
->  			dev_err(dev,
-> -				"pinctrl_hsic_active lookup failed, err=%ld\n",
-> -					PTR_ERR(data->pinctrl_hsic_active));
-> +				"pinctrl_hsic_active lookup failed, err=%pe\n",
-> +					data->pinctrl_hsic_active);
->  			ret = PTR_ERR(data->pinctrl_hsic_active);
->  			goto err_put;
->  		}
-> diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-> index 07563be0013f..09db8a4eace2 100644
-> --- a/drivers/usb/chipidea/core.c
-> +++ b/drivers/usb/chipidea/core.c
-> @@ -680,8 +680,8 @@ static int ci_get_platdata(struct device *dev,
->  			/* no vbus regulator is needed */
->  			platdata->reg_vbus = NULL;
->  		} else if (IS_ERR(platdata->reg_vbus)) {
-> -			dev_err(dev, "Getting regulator error: %ld\n",
-> -				PTR_ERR(platdata->reg_vbus));
-> +			dev_err(dev, "Getting regulator error: %pe\n",
-> +				platdata->reg_vbus);
->  			return PTR_ERR(platdata->reg_vbus);
->  		}
->  		/* Get TPL support */
+> Marking here as deprecated is total waste as no one will read it,
+
+This is still okay as we have many such things in the kernel (during the time).
+
+> May be move this message to the core while registering.
+
+No objections here.
+
+...
+
+> >  	nvmem_reg_read_t	reg_read;
+> >  	nvmem_reg_write_t	reg_write;
 > 
-> -- 
-> 2.43.0
-> 
+> flag this with compile time __deprecated flag.
+
+__deprecated is DEPRECATED :-)
+No new code should use it.
+
+include/linux/compiler_attributes.h:110: * Don't. Just don't. See commit 771c035372a0 ("deprecate the '__deprecated'
+
+> > +	nvmem_reg_write_const_t	reg_write_const;
+
 
 -- 
+With Best Regards,
+Andy Shevchenko
 
-Thanks,
-Peter Chen
+
