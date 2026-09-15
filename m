@@ -1,38 +1,41 @@
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB061FB1
-	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 05:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6914D5A1
+	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 05:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789449467; cv=none; b=UHZZIY5lFWfiFrk+Cipm6Z3iiy5jHmvkOjLp1nibEfjRD/9BrrPaNys2HKH5mUl2MwIvwz+KtnNB7Q6oPXtUfem554i8AdyAgnfT783KjyVCAumUvnST3x6eMo7JMo5NSX6rfjPvujkLLOo5Txkg2rvzrYP5QjlsDFa0YeZl4qA=
+	t=1789451753; cv=none; b=aALKlz3mynLdNk/kNRFVyHMR9PcfOLrPk5QXbDm3EST34OpCUH5L91iFq49DVDryGtRTgEMQYzMEnnWrOTw0FQbKIZEuhLrtRsSnn9p9WU7sFS2F88mMoqPFBZ/4M/5Y1V9dQy+3dCeHOTJmZUOcq61ik67z0kk8Prjj7ytAhXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789449467; c=relaxed/simple;
-	bh=V8uNPjis5PZWGe1w2pE64AvMTB3Dg2s0V6cgJK1APLk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NAoKu0bF+mNd+ufoCI0EqLgIr3FXVAcqNjn/7ZzPCFDfEPuHhPnX7J5juXu1AQKhafn7c5WL5gTddZ29xvpKdQTmi8Lc2DkIMIYYTSm+fNedhUqbRKl5gS+Rr9Ahbw1TE5L3IwXIkX8K64Rnx9FEISoHjec6KwNGHF1bMR9zsFI=
+	s=arc-20240116; t=1789451753; c=relaxed/simple;
+	bh=+SAN+6WURDkBH1aCOPX6Ir2NoWeGrHF5jd7ZaeI1vrw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NIHhvsn1Z763Uwf8VbS1us9noOvYTTV2qQm+IVAk+NcXY5qdzkqlvRtxsna++Eh4cpzhY4lI6KZN2QO6TDU1rp7S6Y1y+GLyCkb+97pO0KdPqYW8glxtyuUphBij45XX4BXaeeJUyzB+wQQ+nbrw5UgSUiwounkuaUskquDngrs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowAB3Su7z1KhqhJMJCA--.51114S2;
-	Tue, 15 Sep 2026 13:17:40 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowACXau7g3ahq_UsKCA--.60407S2;
+	Tue, 15 Sep 2026 13:55:44 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
 To: Frank.Li@nxp.com
-Cc: daniel.lezcano@kernel.org,
+Cc: abelvesa@kernel.org,
+	aisheng.dong@nxp.com,
+	bmasney@redhat.com,
 	festevam@gmail.com,
 	imx@lists.linux.dev,
 	kernel@pengutronix.de,
 	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	mturquette@baylibre.com,
+	peng.fan@nxp.com,
 	s.hauer@pengutronix.de,
-	shawn.guo@linaro.org,
-	tglx@kernel.org,
-	lkml@vger.kernel.org,
+	sboyd@kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/6] clocksource/drivers/mxs_timer: Fix clock reference leak in mxs_timer_init
-Date: Tue, 15 Sep 2026 05:17:11 +0000
-Message-Id: <20260915051711.1727701-1-vulab@iscas.ac.cn>
+Subject: [PATCH] clk: imx: Fix clock reference leak in imx_get_clk_hw_by_name()
+Date: Tue, 15 Sep 2026 05:55:15 +0000
+Message-Id: <20260915055515.1730145-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -41,105 +44,62 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAB3Su7z1KhqhJMJCA--.51114S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFyUGFyUJw43ur17GFWkXrb_yoW5JF43pw
-	s7W3y5tr1UXr4Sg3Wftr1qqF9xKayIkF9rGr1fG3Z7Ar43A34jyFyUJFyqq3WakrWkAw43
-	Za1rJrs5CFyUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4
-	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-	MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
-	WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJb
-	IYCTnIWIevJa73UjIFyTuYvjfUr6wZDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAILA2qowzNBSAAAs9
+X-CM-TRANSID:qwCowACXau7g3ahq_UsKCA--.60407S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtw1UZFWkGFyruFW8ZF4DXFb_yoWkKwc_Gr
+	WrWr92gF18GF1fJF1kCF17Za4SywsrZF10qayIv3y7JayY9FWUAr42qrn8JrW3WrWrKFyD
+	urnrurZrCrZrCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbaxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr
+	1lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYx
+	BIdaVFxhVjvjDU0xZFpf9x0JULo7NUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRILA2qowd1hTgAAsi
 
-mxs_timer_init() looks up the timer clock with of_clk_get(), which takes
-a reference on the clock, but no clk_put() exists anywhere in the
-driver. The reference is leaked on every return path after the clock
-has been obtained:
+imx_get_clk_hw_by_name() obtains a consumer clock with
+of_clk_get_by_name(), extracts the hardware pointer with __clk_get_hw()
+and returns it without ever calling clk_put(), leaking the consumer
+reference on both return paths.
 
-- clk_prepare_enable() failure,
-- mxs_clocksource_init() failure,
-- mxs_clockevent_init() failure,
-- irq_of_parse_and_map() failure,
-- request_irq() failure,
-- and on success, where the clock is intentionally left enabled for the
-  timer but the local timer_clk pointer is lost.
+Extract the hardware pointer first and drop the clock reference with
+clk_put() before returning.
 
-Add proper error unwinding: on failure of clk_prepare_enable() only the
-reference is dropped, on the later error paths the clock is disabled and
-unprepared before the reference is dropped, and on success the reference
-is dropped while keeping the clock enabled.
-
-Fixes: 2efb950465e9 ("ARM: mxs: look up timrot clock from device tree")
+Fixes: 3b315214e091 ("clk: imx: implement new clk_hw based APIs")
 Cc: stable@vger.kernel.org
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/clocksource/mxs_timer.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ drivers/clk/imx/clk.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/mxs_timer.c b/drivers/clocksource/mxs_timer.c
-index e52e12d27d2a..dd58d7505797 100644
---- a/drivers/clocksource/mxs_timer.c
-+++ b/drivers/clocksource/mxs_timer.c
-@@ -215,8 +215,10 @@ static int __init mxs_timer_init(struct device_node *np)
- 	}
+diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+index f38506830ccf..e113e30514fa 100644
+--- a/drivers/clk/imx/clk.c
++++ b/drivers/clk/imx/clk.c
+@@ -119,12 +119,16 @@ struct clk_hw *imx_obtain_fixed_of_clock(struct device_node *np,
+ struct clk_hw *imx_get_clk_hw_by_name(struct device_node *np, const char *name)
+ {
+ 	struct clk *clk;
++	struct clk_hw *hw;
  
- 	ret = clk_prepare_enable(timer_clk);
--	if (ret)
-+	if (ret) {
-+		clk_put(timer_clk);
- 		return ret;
-+	}
+ 	clk = of_clk_get_by_name(np, name);
+ 	if (IS_ERR(clk))
+ 		return ERR_PTR(-ENOENT);
  
- 	/*
- 	 * Initialize timers to a known state
-@@ -256,18 +258,32 @@ static int __init mxs_timer_init(struct device_node *np)
- 	/* init and register the timer to the framework */
- 	ret = mxs_clocksource_init(timer_clk);
- 	if (ret)
--		return ret;
-+		goto err_clk_disable;
- 
- 	ret = mxs_clockevent_init(timer_clk);
- 	if (ret)
--		return ret;
-+		goto err_clk_disable;
- 
- 	/* Make irqs happen */
- 	irq = irq_of_parse_and_map(np, 0);
--	if (irq <= 0)
--		return -EINVAL;
-+	if (irq <= 0) {
-+		ret = -EINVAL;
-+		goto err_clk_disable;
-+	}
+-	return __clk_get_hw(clk);
++	hw = __clk_get_hw(clk);
++	clk_put(clk);
 +
-+	ret = request_irq(irq, mxs_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
-+			  "MXS Timer Tick", &mxs_clockevent_device);
-+	if (ret)
-+		goto err_clk_disable;
-+
-+	clk_put(timer_clk);
-+
-+	return 0;
-+
-+err_clk_disable:
-+	clk_disable_unprepare(timer_clk);
-+	clk_put(timer_clk);
- 
--	return request_irq(irq, mxs_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
--			   "MXS Timer Tick", &mxs_clockevent_device);
-+	return ret;
++	return hw;
  }
- TIMER_OF_DECLARE(mxs, "fsl,timrot", mxs_timer_init);
+ EXPORT_SYMBOL_GPL(imx_get_clk_hw_by_name);
+ 
 -- 
 2.34.1
 
