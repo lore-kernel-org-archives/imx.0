@@ -1,61 +1,57 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8F71E5B9F
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 11:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E784527442;
+	Wed, 16 Sep 2026 12:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789559050; cv=none; b=BeHEtuDZTtB5k/z2DVbHTwVkWCIRhzhDy4pGpI7FIqQQHDRT+W/WBz+cxh1OlUFUJW7/FGxSeeZE2AKy9MD8gBm5JJ4YlSeBAYusAeqNj/h0dCiHeOJrHdzVi9nczqz+A01UNLHrPlwOm1obk4Be3QA6U/FBOr6UZ6YuS6WqMa8=
+	t=1789561687; cv=none; b=ra2UBjZD6HBzm2DzM7lK9oQF6MpkiTG4V+8ugtMsfpS/gaFsC/+LHp11FGO6Qo/QUHY9Lzo4vdOkQSd2Z772XO65NSeiYkyQGheK42qvEUjX+5XQ5EscYfbEZgOU27//BnCXwqOMIerMazkexV6fWyPNQy7gLoOu5aYrs07UY8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789559050; c=relaxed/simple;
-	bh=6D2RhALlT55aAHSMPinPZ97+aBQfokN4Sc7vz60gKIc=;
+	s=arc-20240116; t=1789561687; c=relaxed/simple;
+	bh=yYQlTjY0blJDFiAH3GupFPYfZSGhxWxXn4SWM5/3xw4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qR40PMz0xrqX1+2hPz7rzRRNLkG+YuriP463dwGCUISSfO64oeKxwChbjxGpaZ7pyrSRmRIn7diaJTygnXxLtR6a0gvD4yR+zjtztkl5lWZExaReej2nrHFNsyGS++miX2f8t7tGbKYwx9PZJNkOApViwiCvsHSn5RnVLux6r6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=iGnsgwB1; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=XolnPu+hvMYXEjNNxdiA1khgeD3c4YAyheBVgVr4hkMYKYxcbYvgtFbdN+UWVtTOLOMjbpLygA52WMpvhJBXaNGGUBpLUTQ/f3GPplinMtSuix3PoMWzMlnmhVjPj2X3a0avvXHDmLnayvjiGLGkAxdCjtuRJh6wYyQS1LtlDt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4Ic8Dgpp; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="iGnsgwB1"
-Received: from francesco-nb (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 9B7621F822;
-	Wed, 16 Sep 2026 13:43:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1789559032;
-	bh=cUpSAShM1iFVA9tQq7QEj0VN9vBy+vZF0uG3dEujTMA=; h=From:To:Subject;
-	b=iGnsgwB1t8BQiAyma9+PcqCCNUQ9kO/L0seDWZDZH+D/kRhX3fW9nyl42r81Xwv5S
-	 gN7DtrHKezx9zkqKAUoa5LZknZ/J+RlZNghUtueWC0RVf17cR7HlEsLg42SUaPmxTQ
-	 P5w+CKq/cAbAM1d80+SNuHyccsYQCHEYF9IYBlxkgyz/i76jI4qKH6tgNjbP2Yl25Q
-	 KfBTudr6/BAMpKGPLwip98RsojigAteaPIjhQoQ+w+Gl26cO1qOzTput1VECqE4Y0+
-	 8mUFyTlWf5lCARIja/AQi+Bts2B8zln5XJjQj8I+6/Xu1IsgXy63Xc5XWrCG73ggJe
-	 cGenXn2sstU3A==
-Date: Wed, 16 Sep 2026 13:43:50 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4Ic8Dgpp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Y7ep0hNPkrPmj6OIlbqC/gwQgMz4kST08uKktVrdoyE=; b=4Ic8Dgppc1tbR5PSDRMXMpQz1T
+	r0bsjEDlwR5XYOKBaNiBWoPfrtJ400vi0FqutE7vV+TLnMd0Pzb7xF2Ipi2htBH4T8LFBy7pAeVQm
+	U1kiaIBuCgMPz7pZKXhWIwQDoUOTZdVAUkeVneTKyVktxruJYeoA8GZYxOCyMdOiUd9E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x6ojy-005TWo-HS; Wed, 16 Sep 2026 14:27:54 +0200
+Date: Wed, 16 Sep 2026 14:27:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: Re: [PATCH v4 2/4] drm: mxsfb: Add optional DPI output bus-width
- configuration
-Message-ID: <20260916114350.GB284106@francesco-nb>
-References: <20260813092836.38367-1-francesco@dolcini.it>
- <20260813092836.38367-3-francesco@dolcini.it>
- <178954813309.214898.6895255097019153080.b4-review@b4>
- <20260916091543.GA277833@francesco-nb>
- <DLGP7GKZJBOP.350QK94UOGRYV@bootlin.com>
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Franz Schnyder <franz.schnyder@toradex.com>
+Subject: Re: [PATCH v2 3/7] arm64: dts: freescale: Add Lino iMX93
+Message-ID: <8bb9b763-4553-4263-b0ea-0129f5db0229@lunn.ch>
+References: <20260911091952.96233-1-francesco@dolcini.it>
+ <20260911091952.96233-4-francesco@dolcini.it>
+ <42ed88a6-d208-482b-94aa-2e45b69c173e@lunn.ch>
+ <20260915132806.GA226756@francesco-nb>
+ <100eef7b-e1d6-411b-bac5-98790e8f9ea7@lunn.ch>
+ <aqmG91HwmKe-enfy@francesco-nb>
+ <95dcbf3e-193d-460b-b6b9-cd412394e4c6@lunn.ch>
+ <20260916055706.GA20310@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,73 +60,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DLGP7GKZJBOP.350QK94UOGRYV@bootlin.com>
+In-Reply-To: <20260916055706.GA20310@francesco-nb>
 
-On Wed, Sep 16, 2026 at 01:19:08PM +0200, Luca Ceresoli wrote:
-> On Wed Sep 16, 2026 at 11:15 AM CEST, Francesco Dolcini wrote:
-> > Hello Luca,
-> >
-> > On Wed, Sep 16, 2026 at 10:42:13AM +0200, Luca Ceresoli wrote:
-> >> > LCDIF programs LCD_DATABUS_WIDTH from the selected media bus format. The
-> >> > format reported by the downstream panel or bridge describes the display
-> >> > input, but it does not describe how the LCDIF data pins are physically
-> >> > wired on the board.
-> >> >
-> >> > These can differ. For example, a 16-bit LCDIF bus can be connected to a
-> >> > 24-bit display by wiring the available color bits to the corresponding
-> >> > display inputs. In that case, using the display's 24-bit format to
-> >> > configure LCDIF selects the wrong data-bus mode and changes the assignment
-> >> > of color bits on the LCD_DATA pins.
-> >> >
-> >> > Read the optional bus-width endpoint property from the LCDIF output port
-> >> > and use it to select the media bus format used to configure LCDIF. This
-> >> > allows the LCDIF bus mode to describe the physical interface
-> >> > independently of the downstream display format.
-> >> >
-> >> > When the optional property is absent, or it has an invalid value, continue
-> >> > using the format reported by the downstream display device, preserving
-> >> > the existing behavior. The code is not validating the DT for
-> >> > correctness and just fall back to the previous behavior in case of
-> >> > errors.
-> >>
-> >> Why? Generally speaking errors are better spotted immediately, not ignored
-> >> silently.
-> >
-> > My understanding is that the C driver code should not validate the DT
-> > and that this is the general recommendation when parsing properties from
-> > the DT.
-> >
-> > The DT checker is going to spot errors in the DT even earlier and in a
-> > static way.
-> 
-> Drivers typically check for invalid values.
-> 
-> And people writing their private dts can do mistakes and not run the static
-> checks. Bad on their side, sure, but having a runtime error would be useful
-> there.
+> I looked into the specific ethernet phy used here, TI DP83867, and
+> I would say that the falling edge interrupt should be safe on this
+> specific board/phy.
 
-Understood. I would personally not do it. I can add the required error
-checking code. No other DRM maintainer/reviewer commented so far, so I
-am taking this as a request.
+https://www.ti.com/lit/ds/symlink/dp83867ir.pdf
 
-What should I do in case there is an invalid value? Fail or have a
-warning message?
+Page 7:
 
-> Also consider potential regressions. Say someone has an invalid value in
-> their product, say bus-width = <15>, which works because the default 18
-> which gets used as a fallback happens to be the correct value for their
-> hardware. Some years later we implement the new bus-width = <15>, and then
-> that user upgrades to a newer kernel and their display won't work because
-> it will start using that incorrect bus-witch = <15>. Better stopping this
-> before it starts, IMO.
+  INTERRUPT: This pin can be programmed as an interrupt output instead
+  of a Power down input. In this mode, Interrupts is asserted low
+  using this pin.
 
-I do not see this situation honestly, if you have a wrong value, e.g. 15
-bits, before this patch is ignored, and after this patch is also
-ignored ...
+Also:
 
-The default in the code is equivalent to the bus-width property not
-present, and therefore we use whatever is coming from the panel aka the
-next bridge.
+  When operating this pin as an interrupt, the pin is an open-drain
+  architecture.
 
-Francesco
+This allows you to connect multiple PHYs to one SoC interrupt, shared
+interrupts, which again needs level interrupts.
 
+So the datasheet says it is active low.
+
+> What do you think? *IF* my reasoning is correct I would suggest to keep
+> the code as it is now.
+
+If you decide to stay with edge, i suggest you put a comment in DT,
+something like:
+
+# The PHY data sheet says the interrupt is active low, but the
+# interrupt controller does not support level interrupts. Use it as
+# falling edge and hope for the best.
+
+	Andrew
