@@ -1,221 +1,169 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012003.outbound.protection.outlook.com [52.101.66.3])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011032.outbound.protection.outlook.com [52.101.65.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032464BD7B8
-	for <imx@lists.linux.dev>; Tue, 15 Sep 2026 22:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB361AA1D5
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 01:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789511281; cv=fail; b=mtsdoA8u7iPtzGFXfRDu4IYAIJYi9EdwnmZr3TUrg57ctx55kgsPI6YlQUl4St7F6YqEm//wZiYEqIY9/X9ef6FmRUusLulBPIFTOonnp8cjFw2NJcLlpLqSdUXDmjiI3Ud48A5UbS//CV9+Tm2k+DV93KpMb2vMCQKBHou3Dw8=
+	t=1789524004; cv=fail; b=Tzw0wsHHSAMN2lqtr2obuxrWFgvuTG9tT6RNUvrY+xd6z9AWXmn6I/F2aP0/Rggmjm22AeU1kuNUynLLiJGaJvoXt403S6U8Y8GszId0I267sEWIb6OD0wBWQ95RG9DhT9s6620vhLOHzVP/MlNqHdNKRxqI+Og9D2WKnMVt2aw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789511281; c=relaxed/simple;
-	bh=+A6+qn8lFqpEXTIC0vRs6hYvfxyc87CqMpqJ48xYKiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NauaK15kHHapQtm/m4x5c6mP4MGw6Je6j2Y/lpeQq7Q7j49H65plpYxO9AIrxPlQEMpuDQY02bNyOWUovCNND0jHtBAc7qzdA0ZQEhGIFv/ev+ubU+x4MZ6rAJb9IQE11okyATlhdW3B0nzZgs6Vw4aS6SoQ9ERj1xqoiL8UvcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VeSRO4Nl; arc=fail smtp.client-ip=52.101.66.3
+	s=arc-20240116; t=1789524004; c=relaxed/simple;
+	bh=YaiMyYYRF65cLF51N2K/bW6c6sksaPy0wylpGKQKlzw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Gbno/CQGQDgZ6gZxK3e1oARYYKJ3V/1KrpBM4sRGxuw33RQZ46T+Ylcjj3TypuxFRKjfr32OM7G/c/B6rMORKbA9SvtnDQqdDWMfJ9wdJ0wIWkhwGZhIC+9itEyO321q9CqgnJbOFIWHSXGcY22xPYIKDcwuVrvQJ8HT/VwcKUA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gTOWsmR2; arc=fail smtp.client-ip=52.101.65.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VeSRO4Nl"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gTOWsmR2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SiNiNd4z92bjxTdyTWCSVN/Lu6BipXnfLjWINdZQfPs7VVwk9mgX4C4RSAC3WpxPcrSFy8iIA9mk9aVOYrF6Hb7b6AV3ujRmbpDfaLgIU8+TDguiw5e46mDJP1Kjj/h8/UUFUKs62K8biV9uFhtxkU4vvn8LIoM6OhQxCjqjhbDFNtsvctCPaEzwz0FElVGK39pNJIM6+1w2YxW/+V3j+U/IyP1pWvwFAbejGJW5INej6DqUyXhMkFSmxB5ujkqLuQydzfdYbgpru8MH+4qA8H6AWn7CjcOmnrf60hMcxSbwLBE4NZmwPyUR0coOAiGcCMeu1YuRuoDKpKx9jf8TDw==
+ b=OejfbLExsh9DnVVda5XXZ5tFLV7SGYA+DZk/9i+P6OcPLikzHwgNyF/UBdrFjO/jcbh5Cy9FYHfTfsOuo7xo+0CN48EWwC2XYO01pcUTIObGWlLWM0uglcDIsi9NkOYpZdkB8AN20tkSVtchAKjd0emPB+23uQhX+Yz0sx5NZ/AwU1Xf6d+w9SkXC1jSJ7xG6n53rKdD5Hc1bo//z10wWMcniHB3+AUTS7aTMtiVbeIQeQ2KGcPV/nSvJOtYkWHwDVXdnNMj+HX2M89doKHIVIFBBgkTIFUSBPKW14SFHGaF5/AQVzPBbzZMUS7uJ5FYVH8oq3ddtz0dRIxOGQV6vQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HqEr2OuKigcHCvTxoki228jJPC0WZty4KscNXq5bJTI=;
- b=FE0JutKwL9RpaVAytkYgKNYYcwRg4GBqb1EG7dennCYsdFyZYQPSlRc7vKX/2qfwreziuTQDWgJj0yqLq4KsTZyX7HYt43csthzFzF/AeE9DwMPHDsFN+k8tBgbBpei0yhIC8fkketXzVF4s8l+2RGxwGdhaQZQ4bbRl4I4TyASuI6qjnFzKIuYFCqI+e6cFaFqMWyuj7pxrLhXe93hw9oPSAuvsvJbQlQIRD15Q8K/3CpazMWGYW5eVjYNAjxzT0ZuN/p6j5Fbl9XinsdpTI4S1ae3KpoI+6outVOH3zZ29Vr4yvdiT7LCtD8LExudbC7W2KZqcb+qnQL4OBDBrWw==
+ bh=P6K9PD0k8rVsUExA4QKSHpuNdlwesuvCOSJ53qbCn8M=;
+ b=d43J7L2zH678b9rFO5qilPvlhJbIvquEq8HzB03HOgHIE8+QYdVD7Mj93HM6ijBI+cTUt9EfGRjYVELs3MryqryJT8kWaZCNWEAuWXH0By3jOaRHWwEKnKSymdWTUntJ9BM6MWeRcrCvG/H4f7e5+JQZny3ZGsv/G76HTFw8WJnBIjgZmZH81in8PqtLlSilu4RtUAUMhYOQnZ2BXEBS6sFH66LFw2Oi8ObfWohA03wJB41UIRtN5IXi/swVZTzyE9/A936RI769J2ZEdgTg6tQMiWht4bpvr1vKg9hdrE8ipV2wZgOiimW/OQRGaFb7cd+vHc3DAz82XYxmh5PhLw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HqEr2OuKigcHCvTxoki228jJPC0WZty4KscNXq5bJTI=;
- b=VeSRO4NlYTJSfXknQWn7VGHgRy/7NAg/77hwrYbBxWc1myzPkUy4JgGd9DLD6kBs5J9lFRCVDw+pivSDTO32ZlkI8MdC3zC/2EH37D/P3UuGrM1/PNGd5UHk8SX21QvF2PYSG3mn/rNTe5YY3b7VcfNE3kJDDT8YHV7+AwzXAKAJYORBxhErezfLbpvxSYYxIde+ZLQFQCd2jUrOsLqRtQGs9wC4MDwKOcak7jlAdq+HIOFIMxgDIykZVcCNFtE2dhkZXFoIR+ZR2PG7PrT+Uvg0M1kPw2ADriSYzf1wCFANejj1SPdCE3NPsTZ1jl8THGypSp04PuPeKEgEWdhdtQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by DB9PR04MB9380.eurprd04.prod.outlook.com (2603:10a6:10:368::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
- 2026 22:27:50 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.008; Tue, 15 Sep 2026
- 22:27:49 +0000
-From: vladimir.oltean@nxp.com
-To: netdev@vger.kernel.org
-Cc: Zefir Kurtisi <zefir.kurtisi@westermo.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Yangbo Lu <yangbo.lu@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH v3 net 7/7] net: enetc: drain and cancel one-step TX tstamp queue when going down
-Date: Wed, 16 Sep 2026 01:27:34 +0300
-Message-ID: <20260915222735.1016937-8-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
+ bh=P6K9PD0k8rVsUExA4QKSHpuNdlwesuvCOSJ53qbCn8M=;
+ b=gTOWsmR268R4I+Ad9SgbrMpyLGzuMWHzi9bvpnTxWEtcbRg2sPRt0vK7zFlFpTTUhX8Phjh6BhWXrrRMalHvSJuTh6kQRUpqIVNvioMyX//8PWyjGIUO7MN8AuFt7dkw9QWKxM4tPvzfL0s35P/0eTEqe3yWdfDtpEaSRF0yHef9bhlS1wVXQenvFB1fF+QIbgAL4rBzKOky7ZPDDoy1jkh6LixJq4XmWYsC5YdnMEgAgpeA7S4AW/WprxY2w+c4ahOmxzDADL7YvUzDVf88eF0E2qC9/G5pT+BtEsuLyj0rMN1tDd/87PmHlSe6mPkk77flSKXZAI0V5FT5gGj6Yw==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by AS8PR04MB8417.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f9::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
+ 2026 01:59:48 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
+ 01:59:47 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: Zefir Kurtisi <zefir.kurtisi@westermo.com>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+	"Y.B. Lu" <yangbo.lu@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+Subject: RE: [PATCH v3 net 6/7] net: enetc: linearize PTP event packets with
+ one-step TX timestamping
+Thread-Topic: [PATCH v3 net 6/7] net: enetc: linearize PTP event packets with
+ one-step TX timestamping
+Thread-Index: AQHdRWFw24O9fDAF202+7IqiRxcb4LbQcp1w
+Date: Wed, 16 Sep 2026 01:59:47 +0000
+Message-ID:
+ <GV2PR04MB1173959323D0661626527F64988B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
 References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4P189CA0018.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:5db::19) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+ <20260915222735.1016937-7-vladimir.oltean@nxp.com>
+In-Reply-To: <20260915222735.1016937-7-vladimir.oltean@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AS8PR04MB8417:EE_
+x-ms-office365-filtering-correlation-id: afc2b7ce-e797-4f0a-a7c0-08df13962fe0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|23010399003|376014|366016|7416014|22082099003|18002099003|38070700021|10067099003|4143699003|56012099006|11063799006;
+x-microsoft-antispam-message-info:
+ MOomF/UeRYva3W+IPZnjlUuKi9sW/u6WmvPO7Y0llvZcVyQQfUYRsM9pPl2YYA9Es6ae7wkxpQKOYpBKhg3A7cBY15fYiSI16FgaIz50U6qmcpOXavmPUfO0gj4KLc7xrJTjN93kc8VfAhLk8W3ReBsPv+oxFpXiSc/RTcwJ0LR5+PVJGuy4l6+PRoNzhv6Ov7th7HyIB0HLXQ1VgMFcp9svQ1oggDUuyBa5fobJ1fdrxRkMYE34kwYpfJH1tAasE2CvRPW5Tn2BLbqW7YcKw3erHgZIy0S/1TNTg3InpMXCUCBBaca9+OL7vAvi4VvFCydLn0H+28OOJ2k/E1OH0X3S15nEHN62taZUMnmSEmnqLB27PKVvJ/9KAifeYwG81xiI5Kz1sjRvbRSLkqnZLfo4tfjx/HWepEAzgWZLIW1JK7XkqIsyVsq31bJsUcUGUmkOTgMPyemsKKuruVKN/JZgtaS7sipozoI98YfWIaQs51iAwWW1p7GDnJG4j3TC2AfEuUSIOAdwhGBAVwYNCz5ZiaWGjcbA5yZzx4iSyPKthyKZNc8Gac+Lsx0Cx47jn1JwTqVP1tN+77FAAiM2noTWmdmhWTrX3PWnutMtlwgmmr2zziUpp/LUABYGl0Sylv5eBE9/5Dv5DbmKGDegGwOUa5Pp9ToEIqZnTvonzQEqma3mMDjF0HQ4+coJlwg/JI+Fm9PGPDK3CZS7blZHJxVEBN5XT/zMMhT9Jiz+dU0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(376014)(366016)(7416014)(22082099003)(18002099003)(38070700021)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?CU84chpZZplTbPJixhei1zRdfABTjlrA9nxYgab14eYyL59NUCxLWU3ZkXBO?=
+ =?us-ascii?Q?6jOr9WQuRho0Lk8ypcP4JUCLNIlSun8YT+/y4qePAd91SVoAjfK25PVJ+grm?=
+ =?us-ascii?Q?sIXJ45nWPn/S6O72x5EamR/bUyMNNWU6B+qzCqlNz0OaAdGy/j5g5/rTwfmG?=
+ =?us-ascii?Q?V5EB6m7OrYfWQ2zYibEY6Rhj4aJVS/toC3guG3ltKwRHlhcmKriSgtgPddJ2?=
+ =?us-ascii?Q?tPAEb2OpReTRBUCZL36MjZLQ10oDd+9UoKmMiHXz1YlWwXGH23Y1c9P8Y3xL?=
+ =?us-ascii?Q?WM6gEP6MhhHpqpZy58PG99JKLjew32FOZlGOMugMvwDEiQ/l4hHTLdjFt6JB?=
+ =?us-ascii?Q?qMfBEPBteAPiMjV4LpaOxdGw8Ry+/BYmosZ3Js/7qvvxvP1dRLtDMeekyQbw?=
+ =?us-ascii?Q?Sgtv4Qtp9X6Hu8O+6cMshEWGtHq5Z4d6Svgyl6NO1JQntmB1G5U0SEsOulzY?=
+ =?us-ascii?Q?8gbpNFMYKxDFt0as66bjnNYJXCIK3XImwpeLmwaK55Z3IoYrJbpNVVy8zhkb?=
+ =?us-ascii?Q?G6VlvzOu74FsB1b1fPzlMLC7UEJ0Ofr607ZFA/ZGWYouQg57MuVZgJUQaIXj?=
+ =?us-ascii?Q?yyhqPEqXtdv983Hqq2JsWUJeCvLn1gYhk6ib0toy9GzKFQoUbYkKjF9ffHX+?=
+ =?us-ascii?Q?8pHLspP6rTWJqy4JUJwVC4PSx5mcPqWQv8Fr3E5UN3TtU6jZB3F2BdjHnuTG?=
+ =?us-ascii?Q?aVcIi4FURQXsobThc2DRERMf9tQe54Va65IzZoGXwK2HZdyISZASTCrWfgI2?=
+ =?us-ascii?Q?YUh/KJ4oRRjtiEf2J5SmZgB9l9n27+uWxoEfg7oPJ6cBN07nLrgAXzGAimhN?=
+ =?us-ascii?Q?vNxP9bDIwCiu8rp0somb3PVXfD5wMlnED4HPpmVZ0KRwQ15tEIOt6kF2J6EM?=
+ =?us-ascii?Q?Ji9qGwh0w6eaHdPBeDbrnBcFjRMP5ihmx70i7Z+03DA/4WI0pTWj4tWdCmHu?=
+ =?us-ascii?Q?eM09dUZvIQszZW/Uob6ZF80969QPbc3OuN2LiObI0TqvkkOyLOlGcsamNlfh?=
+ =?us-ascii?Q?zlgCbajeINnVT59TlJC6Ditzgfp3JnldDQl47K9jxekQvrM3AOl6W68YUB8u?=
+ =?us-ascii?Q?Pb60AHCsURi/QcfXSi7NGWB5mYZnhftuEXiiBEFdlSJTIbiQlnyaWAOTDbvu?=
+ =?us-ascii?Q?SBEfPDqLYEz9qd64vLPgBQh8BrocPHYsAfZ0ZXARxGcmnZnE2xBQj9L3A1am?=
+ =?us-ascii?Q?ThnyQ/3T08tRLdNvuGThIHK4ptVDKvxThiMKIRE1s6p8VCZStpxQgTPgNvxN?=
+ =?us-ascii?Q?msBqTebSxCGCPU7xH6GLdu/751ZH1z56LyuO0uIP036RcmujmZko54A+kovT?=
+ =?us-ascii?Q?xx/NN09sUQ64tJXBqD+Ot019aaHcvV7DxxMxOd6wlp9mAprlA5WDQPR0sqfK?=
+ =?us-ascii?Q?iYk4QiUGkT3xTqaQug1HqDniLOjwke3HUqLzc4zvyL8Ap8OtLY+0BW3UYFJN?=
+ =?us-ascii?Q?7xoibHFFAerAl7wcTVVeoriAFK+jVXJXo7rksiKTS59bopzsbDrIcIQV8mrn?=
+ =?us-ascii?Q?Y8xdgkAHUJb4i2HdkH0iVIGVTioi+nfMpAq07KS/KeY1x0aOeUGyLP2uLSq1?=
+ =?us-ascii?Q?S43ZaL0ElQiIzWBFGOwfV259rRf0AGoBCXFka6Y5+FwH2OD6uxCxbMZFqhWe?=
+ =?us-ascii?Q?1KSMELEG+XcCRhXw0KM779zR2VggXRxXzUkh9NmWsWReVqoANaoNUsZ50bPq?=
+ =?us-ascii?Q?wRaKQ5DJ26KM9WM629cJEQZvS2So5NpEfE+vkmmnhDG2DuIg?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|DB9PR04MB9380:EE_
-X-MS-Office365-Filtering-Correlation-Id: e26e8598-e198-4863-49c1-08df1378933b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|23010399003|6133799003|18002099003|22082099003|10067099003|5023799004|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	VkHUlRwVRPAKsoBsjeZ3nfaPezizMstXjJWs4mpBdEvDls2SGLojEcbTdLmOG19rNo6945luTh6CIy5gmmEekA9m9fFDLO1IEVD1atE7LeKaegCArxEyk+/H3cecx6lAEIzT7LGIq5fkGrzHTMywru85W/E7AUipNKIkydIpWbTuToD98dUw7R8dwanUiNKzlg8+Q/agWf8zg+4J9ReOcLpNGv3Q13XQPlfp4tqMXI/5MU9ozrJs4k5Fxi6B0ZtZGQRCrz3ntEcG5yPNFEfZcm0157mDPpzoR6oOlkyjJC5noMwNo+nw24TOZJszAzSw/Z3aCo/pLKRMUQG/VSTgx+kxcQ1QVk7wYHMSo1RLfXrl5evd1TydZCHFOAekohVcoIvUE+27tR41IYwWhI6bFP6Wy4Ez9AV02MaYfQE22aBBkO5Kswvqy5sE5iukuyruAIyIaEEfLgW9LTgbHspGlFWqXsqLCOQYNLiQ8mOgLF1SA/bW59iE/UiVYBALKbABKWzIXQA0Ub8chhH/cArf7G6nkd4kM3VJeNzYyTHf7Gmqy/dldkOezLRsBF3DZ4ElsE5foHqVYaCPWvvAiEn5U97gE0PpaEvwrK6kgeyUWIimMnkG6RRviezgoXGPeplKfAZO6PMOdPybhHmpuvRU96TY3iIDRWxlrPBdV7infxE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(23010399003)(6133799003)(18002099003)(22082099003)(10067099003)(5023799004)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?toaOoJVJE3W9YYQIGxKwJIdNAB24oM/fC3HcAc8Og/UgvBIkLYTWbWtBz1YA?=
- =?us-ascii?Q?PLSE6gDvAqdt6qB9tlRg/ggrSmddJaiv4T0ko3X0/Acec15kgUOB1OIMvwf1?=
- =?us-ascii?Q?yxJUMaIunBNIpmI4tfnko4T6ifUxBXuE4dUcBkl+tH9DGGwqUpy4pL0cXqzN?=
- =?us-ascii?Q?Pa46nGK/qfMlV/xbJro+3dxCybSviyCnv6Tg97lS/CBufF5vDlcNMLQCPnIY?=
- =?us-ascii?Q?VC+e75zQJkKCkKidODvPwJydr8D4Dry/X1wvwYcNz++z2BBqh5YDbGorfIMi?=
- =?us-ascii?Q?J7FWnobprjyJFHyfcD3hz6WK3QRrhZ9Er/NCrbICXjSMnLgL7+LHO0Lz+K9H?=
- =?us-ascii?Q?kAoOj+R/I+hzMLE2kWjiHb8BntKQRuIkFxqPE9++Ih397sqBj07hWj4ltfSX?=
- =?us-ascii?Q?Y+nWtxgKW+MZgiklK1bzBz6YOISVlEbrrvHpVxHomWqV1ev245fli7Fe24LI?=
- =?us-ascii?Q?N/oiOa+4Hryod2HJtIg2HeapFhWzHJdQVN3zpN5n9HJYp2qHsUtWPItI7brq?=
- =?us-ascii?Q?Hx4Ctvak/cF+X+2rKns4orbpAh+/eJ9FTk1nw5vRxvv+uqPdLtkFWM1c4BSY?=
- =?us-ascii?Q?EtddVMATlMD7r35XDqg9qCwrPIjOmPr1PFmFXSs4FzaMMT/mddNhV23AeciD?=
- =?us-ascii?Q?nvPbk+Tfy1PrVj3Q4w/hnA3rquZjyBapuXaV3UnlxyjL6O7YLPqjituFJx8Q?=
- =?us-ascii?Q?NKMCCi93usXcf1jy4CJnKTe397wWKXNF90uoT37V6xw/3WjH1tt3g1Jwc6Ea?=
- =?us-ascii?Q?ZHnJcSa8h7wRpxt5z6hJzByQRPRxfUz9+bGK+cwLE0CwVi5nkzFK7ZVt5Zuy?=
- =?us-ascii?Q?CE6Sf5fluolPyniwkUxR7h3KVsGWJK42q7iorQfgwqPMnMwKzP1mPFSl9sfl?=
- =?us-ascii?Q?ZcwhsCrpniEflCesQmDMxrm/rM7fI/qXvN9CIYyGiS9FNYYRGMWlbtH6cGAs?=
- =?us-ascii?Q?mvi0mspRphYvF2vF8fcNtHas9O3OBHMAHJksOq34OTRi6taMYm8Y1G6rT1cC?=
- =?us-ascii?Q?TrxAk8qGgYXdswuuKa1SJLH7SOcYXcEwyJ3o1lurKptzjkJL7ipDJ4g/duO2?=
- =?us-ascii?Q?tjpjnxdl92X2NFtw+5Pa3iLJ4aa4mbcZoH/tOGIUSahbiIPbVf7uuPu7g2Yx?=
- =?us-ascii?Q?yf2kXASPOhr2X0ApFvycMO1ir9mDQ94l5bhadeUc0uS2q6viuOuJUrBvKimb?=
- =?us-ascii?Q?QzSuO5tiRUJiNl9WHQ7xWnhiKMYBN95EdcqJeDrpc3X+cn20kpKKCgJwBedU?=
- =?us-ascii?Q?XHcHgZcdOy6xgav7jZuJSGSo66ObGmf38hgvbNuqqJOUV4o2FksHZUpZZcAy?=
- =?us-ascii?Q?ZoEnXZyrc/tKxJ8VLse4oXtsnwhJzzRCkdfqK8aBL5rtJHIjWGMHPDMK/USr?=
- =?us-ascii?Q?x2QC9GgntvhSXrcXPHEZnNSnGx3fTKeupVXXoiExkSiLvTBvAaHFcDnNfBD2?=
- =?us-ascii?Q?nf5G+WwH/DDl7azf+XxWGTvxEsC5lm5M3rmO056ZzEg6d9sL0RRCWzLrKuXN?=
- =?us-ascii?Q?AK2e9y0+lhKXjLYnVvpGdoBKykDOI5pyeDIJN3f+NDPiYjk1/polgy1HuDSB?=
- =?us-ascii?Q?oiRcKBRjmQ4pWZ3nFMBck/nLGNiQA8UkP7M9dATed3jdPBTN/EBgoBCPIG0/?=
- =?us-ascii?Q?9tfbdqc53AQ8Lgn7Jm6IyCH9LP+6hXpftjrbbd3CFUTZz31ZIthwTOjJqNcU?=
- =?us-ascii?Q?WfgW7bFVDo1mclSeA7q5PMLrV3LKxaoWrcBeQXiVuBoQqfZXKFqGcjIKSilW?=
- =?us-ascii?Q?8TUGTX6bCw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e26e8598-e198-4863-49c1-08df1378933b
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 22:27:49.8475
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: afc2b7ce-e797-4f0a-a7c0-08df13962fe0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 01:59:47.9009
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rt9zMySilmP/bFFIbQlNloWu98PUiM0YWs3jsioTb5GLXdCGFowGAKFau+LkzQEfHw+lqItN/EKKs0yB+TcG5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9380
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yhiu9EIbHBPhlaqXux/rHFL56j0Jx6ybjxi4eXDGcVCepGAT3LgASH9GsgQJueUDC7NMS02oIDW6D5jB/FO5Ag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8417
 
-The driver uses a work item on the system workqueue
-(priv->tx_onestep_tstamp) for deferred transmission of packets with
-one-step TX timestamping requests. The reason is that the MAC supports
-a single such packet in flight, but we cannot block the rate at which
-user space enqueues them.
+> ---
+> v2->v3:
+> - replace skb_linearize() with skb_linearize_cow(),
 
-The problem is that the skb queue is never explicitly drained, and it
-can hold packets even after the interface goes down or (worse) the
-driver is unbound from the device. Especially the last point is
-critical, because the work item will attempt to use freed data
-structures of the netdev.
+This is not true, this patch still use skb_linearize().
 
-The priv->tx_onestep_tstamp work item (enetc_tx_onestep_tstamp)
-processes one item from the priv->tx_skbs queue at a time, and gets
-rescheduled on each one-step PTP packet TX completion.
-
-If we cancelled the work item while NAPI was still enabled, there would
-be no guarantee that NAPI would not reenable it. So the cancellation
-needs to be after napi_disable().
-
-Cancelling the work item waits for enetc_tx_onestep_tstamp() to finish
-sending the current packet if already scheduled. The packet will be put
-in the disabled TX BD ring, where nothing will happen with it until
-enetc_free_rxtx_rings() later reclaims its memory (*).
-
-However, priv->tx_skbs may contain more packets than just this one, and
-because NAPI is disabled, enetc_clean_tx_ring() is unable to take care
-of the rest. So we still have to clean up the remainder from the queue
-and reset the ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS flag back for use.
-
-On driver unbind, the problem should be solved by virtue of the fact
-that unregister_netdev() calls netif_close_many() and that triggers this
-same code path.
-
-(*) Even if we add a check for ENETC_TX_DOWN in enetc_tx_onestep_tstamp(),
-it is unavoidable that racing one-step PTP packets will be enqueued in a
-disabled TX ring. This is because the work item runs asynchronously and
-can miss that flag getting set. Think below:
-
-CPU A                                CPU B
-enetc_tx_onestep_tstamp()
--> test_bit(ENETC_TX_DOWN)
-   // says not down
-                                     enetc_stop()
-                                     -> set_bit(ENETC_TX_DOWN)
-                                     -> enetc_wait_bdrs()
-                                        // waits for the BDs in the
-                                        // ring to be transmitted,
-                                        // but the PTP frame is
-                                        // still queued in software
-                                     -> enetc_disable_tx_bdrs()
--> enetc_start_xmit()
-
-So I don't see any point in adding an ENETC_TX_DOWN test in the work
-item.
-
-Fixes: 7294380c5211 ("enetc: support PTP Sync packet one-step timestamping")
-Reported-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
-v2->v3: patch is new
----
- drivers/net/ethernet/freescale/enetc/enetc.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 62cdcaab3f3f..892490ff1ebe 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -3110,6 +3110,10 @@ void enetc_stop(struct net_device *ndev)
- 		napi_disable(&priv->int_vector[i]->napi);
- 	}
- 
-+	cancel_work_sync(&priv->tx_onestep_tstamp);
-+	skb_queue_purge(&priv->tx_skbs);
-+	clear_bit_unlock(ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS, &priv->flags);
-+
- 	enetc_clear_interrupts(priv);
- }
- EXPORT_SYMBOL_GPL(enetc_stop);
--- 
-2.43.0
+> - improve justification
+> v1->v2:
+> - patch is new
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 8a9ba168eab1..62cdcaab3f3f 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -1099,6 +1099,11 @@ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct
+> net_device *ndev)
+>=20
+>  	/* Fall back to two-step timestamp if not one-step Sync packet */
+>  	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+> +		if (unlikely(skb_linearize(skb))) {
+> +			dev_kfree_skb_any(skb);
+> +			return NETDEV_TX_OK;
+> +		}
+> +
+>  		if (enetc_ptp_parse(skb, &udp, &msgtype, &twostep,
+>  				    &offset1, &offset2) ||
+>  		    msgtype !=3D PTP_MSGTYPE_SYNC || twostep !=3D 0) {
+> --
+> 2.43.0
 
