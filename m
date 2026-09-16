@@ -1,200 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8889C477E53;
-	Wed, 16 Sep 2026 08:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3DF38F642
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 08:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789547764; cv=none; b=H86wc04q238+/qKS6OQBw9oqXcN6Ccf/cWR1ejz+FeGBhy+nAr7uPZLx+GNyl9HxEuXpu9mjLFFuzKOqObwzfXOqVs5YbvOiHWoIVsyWobIJc469JgJlrBA6p339Tyj/NUmZNxvRdzAIfvV22H6WzrpAIUtKcoud9aVGgtAztKs=
+	t=1789548040; cv=none; b=i3IdzukOs0DBvCU2J3Qo2WZCo3kVl1VyY2E38DbJoOt9Upj8gISEabdSfeuv/fln1iIK/wVmpK9qFOuhWV2YYlbE2t6rbT7otRHbgqqi6cExRLkKk37L1rl12oSnLkyt1Ihrjin/L1AOUx3gx9CfUSeyYaswS74VANFdnyuecS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789547764; c=relaxed/simple;
-	bh=OVYsrsmEg6aUUgJqGbF1xeVRd7tVkNOihKNxPjVzHxo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IO4pv5su9e21KHVnFVXjlF7qLSdm6JCbPe+Gji2AY8AFLwpdhKAOY/pKbJ5E9G9EV6nscgG4aeh8Lyb6msacKvDwf4NG+JWo8000Vzkv7TmIAIpr8a3CFI+eqG00KMj+tsiuN9zTomp2Ym/EcFLauo4S7qsOkiY40mHuYGb/p38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6mt1eBE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789548040; c=relaxed/simple;
+	bh=YtbZ81xGfiyOxFBiNUYEH130bSijS8al+NPamB3XdpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q7VjqLtG0iI76F+iLVm/r9SNA+OlHB+QWt8e6IMU8zPjS51USLQW3peTMJK3WzvyQg8cSZgpw6fOa0wlCR2p/SM/2hU6aIwsBdvNKx8MACCUbkrovHEg7jdHUMMJsDOGzGCkqYV3T2yZnp94O0phKqtYvPHzsnL6nN2IF5AeXrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=ZtgpSXN4; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6mt1eBE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05C31F000FF;
-	Wed, 16 Sep 2026 08:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789547763;
-	bh=m9RSHPDoRADSXuYYrtqZZ+/+nektvtnx5CFsLRkEbV4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G6mt1eBEv7pxLkCEPtRpMWugLbDliG5wKvAlWgh3E0WdXeBN+iJIiPmSnoFKjC1pc
-	 8l9uPs7WnTC9PA3uReN8rUbuKJha3zE1RkXbtLsW9h3j1XcBEJFOJUrJWQtaHRCAbT
-	 fK8wk5ZCn9LoebpjE3Hza8vgCbTvnVquhNm75A/06G+y6NWb8kr85SWM9FdEgJYrAG
-	 BpIXNQK9xW4Y3uO6vP87D6UgzBV76iIBw21uZMt07lgdx5+Qfy17cfhWFqmca255xm
-	 kTWuO78BWmTEhWs+1An6AcEqN4T/OOAg+q+h54LGtoxtGS+i32A6xOzty5Ls6ray0W
-	 MRHCs4q/nxgZw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 1/2] dmaengine: fsl-edma: Implement
- device_prep_peripheral_dma_vec
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
-Cc: vkoul@kernel.org, dmaengine@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260916-fsl-edma-dyn-sg-v11-1-02792de71b92@bootlin.com>
-References: <20260916-fsl-edma-dyn-sg-v11-0-02792de71b92@bootlin.com>
- <20260916-fsl-edma-dyn-sg-v11-1-02792de71b92@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 16 Sep 2026 08:36:02 +0000
-Message-Id: <20260916083602.D05C31F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="ZtgpSXN4"
+Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id 2DB851FEC6;
+	Wed, 16 Sep 2026 10:40:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1789548032;
+	bh=1jWVery/jvPjaF54+b9Mmqq0RRFOnxJSGo1ftYeFQR4=; h=From:To:Subject;
+	b=ZtgpSXN4Cd3Q0yxWwkqm/ZJ2E7QsWHxYCQYVaD0o4cf3wl8ddlH6trj7l/LYrIR92
+	 OPtoZRFRaL0hV+su+2Bdgodn1ZwnkuhxdCsq1QYea4W+fYNxR+hbyYgo6nnqM+E+bR
+	 OtHg8TNdruIqrNOR5Orit2IF4oMhaVuqPYyAYQBJyAhzSMSSut8x1h0usEvRlhGr8S
+	 3txOvmepE2W4L/QwIJf6K9dCp9CCrFXCMA6JbQWfdV1EDYVp22N2CdrI3WhWCprChG
+	 9MNaaUmmaNWNvcceYaxFAc8OJ2FrZISozgm44n04sSbcXsCZwwsjqcX4F+m1Av0IS/
+	 8dbMyGYYuLfuA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] arm64: dts: freescale: imx8m[mp]-verdin-ivy: fix DIGI_1/DIGI_2 gpio-line-names
+Date: Wed, 16 Sep 2026 10:40:21 +0200
+Message-ID: <20260916084025.274229-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] dmaengine: fsl-edma: division by zero in unaligned DMA_DEV_TO_DEV =
-transfers
-- [High] dmaengine: fsl-edma: loop mutates shared nbytes causing spurious t=
-ransfer failures
-- [High] dmaengine: fsl-edma: missing nb =3D=3D 0 guard causes out-of-bound=
-s heap read
---
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 1a23f772b7926fbde5dc0fc2476442d47898d799
-Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+gpio-line-names names the two Ivy digital inputs "DIG_1" and
+"DIG_2", while the official Ivy Carrier Board datasheet (Section 2.10,
+Table 12) names them DIGI_1 and DIGI_2, matching the
+k3-am62-verdin-ivy.dtsi variant for the same carrier board pins.
 
-dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+GPIO line names are meant to be stable across the whole Verdin family
+and its carrier boards, so userspace GPIO tooling that looks up a line
+by name works the same regardless of which Verdin SoM is fitted on
+Ivy.
 
-This commit adds the implementation of the .device_prep_peripheral_dma_vec()
-callback to setup a scatter/gather DMA transfer from an array of dma_vec
-structures. It also sets up a cyclic transfer if the DMA_PREP_REPEAT flag
-is set.
+Link: https://docs.toradex.com/116799-ivy_carrier_board_datasheet.pdf
 
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index bb7531c456dfa..8ba72b3d0e1af 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-[ ... ]
-> @@ -673,6 +674,122 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_c=
-yclic(
-[ ... ]
-> +struct dma_async_tx_descriptor *
-> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
-_vec *vecs,
-> +				 size_t nb, enum dma_transfer_direction direction,
-> +				 unsigned long flags)
-> +{
-> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
-> +	dma_addr_t src_addr, dst_addr, last_sg;
-> +	struct fsl_edma_desc *fsl_desc;
-> +	u16 soff, doff, iter;
-> +	u32 nbytes;
-> +	int i;
-> +
-> +	if (!is_slave_direction(direction))
-> +		return NULL;
-> +
-> +	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
-> +		return NULL;
-> +
-> +	fsl_desc =3D fsl_edma_alloc_desc(fsl_chan, nb);
-> +	if (!fsl_desc)
-> +		return NULL;
+Francesco Dolcini (2):
+  arm64: dts: freescale: imx8mm-verdin-ivy: fix DIGI_1/DIGI_2
+    gpio-line-names
+  arm64: dts: freescale: imx8mp-verdin-ivy: fix DIGI_1/DIGI_2
+    gpio-line-names
 
-[Severity: High]
-Does this code allow an out-of-bounds heap read if `nb` is 0?
+ arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-If `nb =3D=3D 0` is passed, fsl_edma_alloc_desc() will allocate a descripto=
-r with a
-0-length flexible array of TCDs. The setup loop `for (i =3D 0; i < nb; i++)=
-` is
-skipped entirely, and the empty descriptor is directly submitted to the vir=
-tual
-channel.
+-- 
+2.47.3
 
-When the DMA engine tasklet processes this descriptor via
-fsl_edma_xfer_desc(), it unconditionally executes fsl_chan->edesc->tcd[0].v=
-tcd,
-dereferencing an out-of-bounds heap address. Should there be a check for
-`!nb` before allocating?
-
-> +	fsl_desc->iscyclic =3D flags & DMA_PREP_REPEAT;
-> +	fsl_desc->dirn =3D direction;
-[ ... ]
-> +	for (i =3D 0; i < nb; i++) {
-> +		if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +			src_addr =3D vecs[i].addr;
-> +			dst_addr =3D fsl_chan->dma_dev_addr;
-> +			soff =3D fsl_chan->cfg.dst_addr_width;
-> +			doff =3D 0;
-> +		} else if (direction =3D=3D DMA_DEV_TO_MEM) {
-> +			src_addr =3D fsl_chan->dma_dev_addr;
-> +			dst_addr =3D vecs[i].addr;
-> +			soff =3D 0;
-> +			doff =3D fsl_chan->cfg.src_addr_width;
-> +		} else {
-> +			/* DMA_DEV_TO_DEV */
-> +			src_addr =3D fsl_chan->cfg.src_addr;
-> +			dst_addr =3D fsl_chan->cfg.dst_addr;
-> +			soff =3D 0;
-> +			doff =3D 0;
-> +		}
-> +
-> +		/*
-> +		 * Choose the suitable burst length if dma_vec length is not
-> +		 * multiple of burst length so that the whole transfer length is
-> +		 * multiple of minor loop(burst length).
-> +		 */
-> +		if (nbytes && vecs[i].len % nbytes) {
-> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
-
-[Severity: High]
-Can this result in a modulo by zero kernel panic?
-
-During DMA_DEV_TO_DEV configuration, both `soff` and `doff` are explicitly
-initialized to 0. The calculation here results in `width =3D 0`. Then the
-loop below evaluates `vecs[i].len % (j * width)`, which performs modulo by
-zero.
-
-> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
-> +						fsl_chan->cfg.src_maxburst :
-> +						fsl_chan->cfg.dst_maxburst;
-> +			int j;
-> +
-> +			for (j =3D burst; j > 1; j--) {
-> +				if (!(vecs[i].len % (j * width))) {
-> +					nbytes =3D j * width;
-
-[Severity: High]
-Does this loop mutate the shared `nbytes` variable causing spurious transfer
-failures?
-
-The `nbytes` variable is used to define the optimal burst length for the en=
-tire
-transfer. Inside the loop, if an early vector is misaligned, the code
-permanently shrinks `nbytes` (e.g., to 1 or a smaller factor) to fit that
-specific vector without restoring it for the next loop iteration.
-
-This degraded `nbytes` value leaks to all subsequent loop iterations. Large,
-perfectly aligned vectors later in the array will incorrectly use the shrun=
-ken
-`nbytes`.
-
-> +					break;
-> +				}
-> +			}
-> +			/* Set burst size as 1 if there's no suitable one */
-> +			if (j =3D=3D 1)
-> +				nbytes =3D width;
-> +		}
-> +
-> +		if (!nbytes || vecs[i].len / nbytes > FIELD_MAX(EDMA_TCD_ITER_MASK))
-
-[Severity: High]
-Does mutating `nbytes` above cause valid transfers to be rejected here?
-
-As a result of permanently shrinking `nbytes` in a previous iteration,
-`vecs[i].len / nbytes` can explode in magnitude and spuriously exceed
-`FIELD_MAX(EDMA_TCD_ITER_MASK)` for perfectly valid DMA vectors.
-
-> +			goto err_free_desc;
-> +
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260916-fsl-edma-d=
-yn-sg-v11-0-02792de71b92@bootlin.com?part=3D1
