@@ -1,136 +1,143 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058012D7817
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 13:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB20C4F6460
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 13:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.86.107.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789564613; cv=none; b=VxK5FPS/B8XLK+2gg4Pjsbv19FACbz77kQ4edvNvnC/FiRGOnGxH7GDg+XWLK2+JhFoWNWqYjA1aR1+VYNw5k3Qi/SvQNKwJ4y6b8Kn1KJEZHAkAKRQQjLiFniqSJH/JWYU0hjU6Lj1EkhEVgQG2kPtkq0W5bBS05WGP1Oy8to4=
+	t=1789566320; cv=none; b=UN6lBbilY+uLWeU/I+V581CQjZNqO/oNV4tELzBHY6C4B/pH6BfGJJAFkdW8aJOWb10tAuVGwUArgsTTTCvDaxlUkEgKjSQzeoXwJs17eT5Ah49VgtmhtL6V1H7RWrMFt12HUC+/kicRE8F+KQbrMEPX3ye05w4QQT6ytRTrmi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789564613; c=relaxed/simple;
-	bh=AxW40EfCF8iZErYl8W5+AI0CzKP1ft3cVU4kgfc4iNw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=KO6CeXxF123HSQCodT9E/Gfvene/Ujj+oRggJ8+eoXro4cRvkFbPpCoM30y8wb74WaQ5MODKbiaq/Q21pc9hXsazFsSpBRI3GtTEFymn1UQJuKsFE3HJd852KKaTLggF/wQZinzm+JsxgZNWyZYn4LiHBc4b5lGz9HWxCUDLPVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Ap2Qh3ls; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lEjeA3Ih; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1789566320; c=relaxed/simple;
+	bh=aDL43qhYHXCklvE9pktkxbZ0PKQ6z0erH/TaeHTJJak=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VLb8bnCfBmVo7XJr289qkzE9QSog54RMqwiGhatrT8gNg+gZo/VF9J+o3fScPR9pmrBoYW29xCiBNOu0tNpe3Rn71mMKaDIaPKmPcCBH5f8neey8aIt5HhBYCy0b2mZ5e6MDDgoROLpoTXxzNtkHjFFO+GwClRwu9+A3j9MFtPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net; spf=pass smtp.mailfrom=rendec.net; dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b=BLQLurJY; arc=none smtp.client-ip=80.86.107.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Ap2Qh3ls";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lEjeA3Ih"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 6A1867A0100;
-	Wed, 16 Sep 2026 09:16:48 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-01.internal (MEProxy); Wed, 16 Sep 2026 09:16:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789564607;
-	 x=1789651007; bh=jKavffle4neT9GMaTZ2rSYi6SqO6U6tssCdaO32SjGg=; b=
-	Ap2Qh3lsL4M3EfUXfTW7gVuBEpKnY3dKxMp9Z+iqyQvb4pOksZY6Z58FU6gqKOCJ
-	QWBVy2OkVnPeYuQ6V3xOe2qyL7YbAiIE9rmUMP98oQ2O79qBKDmfru8MbT4RPqLr
-	LyrzLEUUVIWfIY167OqwFgKjiCmpCBBYLvbjfUR8KJJXSW7mCgY9YnQj+cH7Wp3C
-	QkdkZiw0fwch2mBMIYSmWNX2v/ZJ/04OvS582CUIa4JNpje7DoZnQFkxsvFsFWXt
-	t1dVHoHkesB2+v+HfUtw7LiBFyhds3jBlJ2l7hXAn++Qij8jXaPAhEM/CBHKSdTW
-	w/47aBOnx0CmHMdfkwhc6w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789564607; x=
-	1789651007; bh=jKavffle4neT9GMaTZ2rSYi6SqO6U6tssCdaO32SjGg=; b=l
-	EjeA3IhxJxD4GtJ78eF/7QPZTqfE89I0Ik7Up/wEXFwjD7Evb6a1G0CXJbX2/hd0
-	pJPu1JqCjsZO9S3hfux7iJ/dUak3WjYV5z2IVU2dPrtk14UXaFyvxH/FiaDKjdQv
-	aPa5L+T6yQdXMabLfX9t3en+BnnuaDl7Tx0FEnAQWGxuHMFDAai0kB90PRg5mkp2
-	d67UVdhgcZxb7HmjrGIrlUFjJ66bMZxrQ+aKkcTE4QxuboK00cY1O2wErtd1uSD6
-	sWLmynMWKzbRiZVjpX86SJ3sKL+iDAqXdJQmo9m5TfzrFxtWF6vlaR/oPCnpGIRl
-	l1C5ZaBms3TIyPTAvkpAw==
-X-ME-Sender: <xms:uZaqakJGpMtxTFmsF-xLuuL556T16Vyl050-Z0sg_G9xgl7--AklcQ>
-    <xme:uZaqautD07o2FuDoi-W218MTavysMbqcSxLuya3QR2FHZS7yrKnM8cPcTquuqaYG6
-    SDW_oIYKN3bAPm3dsE-nXYRvUb_UHOWsMU0whQWpWei_YTaPkRMwRAv>
-X-ME-Proxy-Cause: dmFkZTFnplgyCo8M36BD8SpLaZmp7STqRcXPok5KtM5tUgC1ZV7i/mvJqoZoGQWaQj7pMw
-    0nWk/oGrv9BgYuiSHl1wpjttdvYQ/Emrd3tM8Q/TAa4EECiIC+uIQb6kmQUm3849C0kuBn
-    o8h981T+Al4QsogzbVxkXZxhOtfKS8sC8+DxyEdhnEQ8RmknuGVsYuIz9DkMGD2N4T7zxS
-    c09z2RVKAeD+VuXdhAJObk+oAxJBBp1o5bXRH23PPvWlLQw176ixJEiA5O838te8cIiRjB
-    OQa+0bLw/hqvqkB5RZsa5cHTrDUpjkgRPQCGH29/Re0FaZgGDkXClrr64kLzWTuVHtzxJ9
-    gd7Qdja1y8K25wWnQQK6ErNwxrFwNmCvvRSlIHTrPN+XHGUOp2nQwOz+5WK6l0Ye2+tXby
-    Ll2U9gqjjb/yn/Jo1ZUpz62Nc+5FXiXb+9GByAeRmxrZowwsLJ2AsTATTJPiqvLoHj5KWF
-    SvH+BRdTbkRPz+pkHDfIpSZvYFqHhqhnD5acBq0cq7cuJzKY5tU5ZwxF2BXfssS0yEaA27
-    DtEra7+7UaGjyabi/du39U+Brvp1woct6HCRh17BHE9NBuEqg9Wy0TGiYU3PIsbq88Y9/n
-    X0y5qNnIsDd8W0xwF4DHegggig6nRRJ1+5EMXvr6h9EWgcnrFNizH6HXuBSQ
-X-ME-Proxy: <xmx:vJaqat7Auk0s5H0fK7GO-3VmhZWjLEW04eSQ_S7LhXnD7H9sSjLlyQ>
-    <xmx:vJaqasiZPEgXcpVlil7GgGazN3xDpPK3DwuWqTB2sFVGI9rTf0wJfw>
-    <xmx:vJaqaogPGc-H5IOzGwSymZ2Hidd3khEc4i1RIbAvb2N4Isgdis7q-w>
-    <xmx:vJaqaslzEbmD73QVkMSNYndfj9ffJAoN5Ib4u2dDgDHIm8OpycAHlQ>
-    <xmx:v5aqamWzwoSqWPMMiWbqSdOCGAl71oBqQ3irNw_rAHx0rWjxgjIWISoM>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id BBF9D32A0084; Wed, 16 Sep 2026 09:16:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b="BLQLurJY"
+Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
+	by mail.mindbit.ro (Postfix) with ESMTPSA id 6B1CCCCDB9;
+	Wed, 16 Sep 2026 16:45:03 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 6B1CCCCDB9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
+	s=default; t=1789566305;
+	bh=Rz4lcGVbF1yUlfwUYSE8Dhf9yMKHKYOJ0oKPXz0YBxA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=BLQLurJYU6bQtoY9c8Hxq0VK8XTcKwNPQ9tskS7tPRl1NghzP/keeLoV5Uwyxl858
+	 33AJXv/Ocly7tN1PpVOMkRtOrHMCUvjjXo6UvjkHyr1RNo2pQ2b+xiI3fDCgrG8Ohm
+	 mcxDrKFuUvrkTKvL3UHaszy2sIdrk7sLHuQJK7k9YsHJ6xJRLq5RDfEaZzixRcfvUa
+	 dOk1jL584saJZk+5ajlwQwF2ddCBDIH/qucPWdOjLbqOakqDg9RvFXHyou6bOnLrsi
+	 lMOQ3gs/WaQUG7a7zM5nm4LTIDQrehzIdS6eFCqL25kyy7DC7vGeOLknKpPFlugRLh
+	 7S+UPUZnrdV6w==
+Message-ID: <73bdecf75ba186db00e559f5ff508790ca6e2362.camel@rendec.net>
+Subject: Re: [PATCH] irqchip/imx-intmux: fix runtime PM teardown on remove
+From: Radu Rendec <radu@rendec.net>
+To: Guangshuo Li <lgs201920130244@gmail.com>, Thomas Gleixner
+ <tglx@kernel.org>,  Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Joakim Zhang	
+ <qiangqing.zhang@nxp.com>, Marc Zyngier <maz@kernel.org>, Zhipeng Wang	
+ <zhipeng.wang_1@nxp.com>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, 	linux-arm-kernel@lists.infradead.org
+Date: Wed, 16 Sep 2026 09:45:01 -0400
+In-Reply-To: <20260914134211.1734163-1-lgs201920130244@gmail.com>
+References: <20260914134211.1734163-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AcI4sQW32jCJ
-Date: Wed, 16 Sep 2026 15:16:13 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: pankaj.gupta@oss.nxp.com, "Jonathan Corbet" <corbet@lwn.net>,
- "Shuah Khan" <skhan@linuxfoundation.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Frank Li" <Frank.Li@nxp.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>, "Pankaj Gupta" <pankaj.gupta@nxp.com>,
- "Randy Dunlap" <rdunlap@infradead.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Message-Id: <2034fb2f-f169-46a5-85e8-fa723ddb0360@app.fastmail.com>
-In-Reply-To: <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
-References: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
- <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
-Subject: Re: [PATCH v51 5/7] firmware: imx: adds miscdev
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 14, 2026, at 21:40, pankaj.gupta@oss.nxp.com wrote:
-> From: Pankaj Gupta <pankaj.gupta@nxp.com>
->
-> Adds the driver for communication interface to secure-enclave, that
-> enables exchanging messages with NXP secure enclave HW IP(s)
-> like EdgeLock Enclave, from:
-> - User-Space Applications via character driver.
->
-> ABI documentation for the NXP secure-enclave driver.
+On Mon, 2026-09-14 at 21:42 +0800, Guangshuo Li wrote:
+> imx_intmux_probe() enables the IPG clock and then drops its runtime PM
+> reference with pm_runtime_put(). With CONFIG_PM enabled, the runtime
+> suspend callback disables the IPG clock. With CONFIG_PM disabled, the
+> clock remains enabled after probe.
+>=20
+> imx_intmux_remove() accesses the CHANIER registers without first making
+> sure that the device is runtime active. The device may therefore be
+> runtime suspended with the IPG clock disabled when these registers are
+> accessed. In addition, the remove path only calls pm_runtime_disable()
+> and does not balance the clock enable when CONFIG_PM is disabled.
+>=20
+> Resume the device and acquire a runtime PM reference before accessing
+> the registers. If resume fails, skip the register accesses but still
+> tear down the chained handlers and IRQ domains. Disable runtime PM
+> afterwards, drop the acquired reference without triggering another
+> runtime suspend, and explicitly disable the IPG clock.
+>=20
+> This keeps the clock enabled while the hardware registers are accessed
+> and balances the clk_prepare_enable() performed during probe for both
+> CONFIG_PM configurations.
+>=20
+> This issue was found by manual code inspection.
+>=20
+> Fixes: bb403111e017 ("irqchip/imx-intmux: Implement intmux runtime power =
+management")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+> =C2=A0drivers/irqchip/irq-imx-intmux.c | 15 ++++++++++++---
+> =C2=A01 file changed, 12 insertions(+), 3 deletions(-)
+>=20
 
-I just saw this in linux-next, where it has caused a build failure
-for a missing include of linux/slab.h. I hadn't see the series
-before (even though it is a v51, which seems crazy), but I am
-curious about it now.
++ Zhipeng
 
-> User-space library using this driver:
-> - i.MX Secure Enclave library:
->   -- URL: https://github.com/nxp-imx/imx-secure-enclave.git,
-> - i.MX Secure Middle-Ware:
->   -- URL: https://github.com/nxp-imx/imx-smw.git
+The patch looks good to me but I'm wondering if it's not a better idea
+to fix it in a similar manner to the imx-irqsteer driver. Please see
+https://lore.kernel.org/all/20260821101039.4037925-7-Zhipeng.wang_1@oss.nxp=
+.com/
 
-I assume this will hit the soc tree eventually, so I want to
-make sure the reviews have covered all the important aspects here,
-and I don't see the answers in the cover letter:
+The two drivers are already similar, so I think it makes sense to keep
+them aligned. It would also address some of the issues that sashiko
+flagged (probably, I haven't looked very closely).
 
-- Who has reviewed the user interface from outside of NXP?
-  Since this is not a vendor-independent API, I think we have
-  to be extra careful and make sure this does not duplicate
-  anything that is already in the standard firmware interfaces.
+> diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-i=
+ntmux.c
+> index 47c2681d138a..de2a8f98f625 100644
+> --- a/drivers/irqchip/irq-imx-intmux.c
+> +++ b/drivers/irqchip/irq-imx-intmux.c
+> @@ -288,12 +288,16 @@ static int imx_intmux_probe(struct platform_device =
+*pdev)
+> =C2=A0static void imx_intmux_remove(struct platform_device *pdev)
+> =C2=A0{
+> =C2=A0	struct intmux_data *data =3D platform_get_drvdata(pdev);
+> -	int i;
+> +	int i, ret;
+> +
+> +	ret =3D pm_runtime_resume_and_get(&pdev->dev);
+> +	if (ret < 0)
+> +		dev_warn(&pdev->dev, "failed to resume device: %d\n", ret);
+> =C2=A0
+> =C2=A0	for (i =3D 0; i < data->channum; i++) {
+> =C2=A0		/* disable all interrupt sources of this channel */
+> -		writel_relaxed(0, data->regs + CHANIER(i));
+> -
+> +		if (ret >=3D 0)
+> +			writel_relaxed(0, data->regs + CHANIER(i));
+> =C2=A0		irq_set_chained_handler_and_data(data->irqchip_data[i].irq,
+> =C2=A0						 NULL, NULL);
+> =C2=A0
+> @@ -301,6 +305,11 @@ static void imx_intmux_remove(struct platform_device=
+ *pdev)
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	pm_runtime_disable(&pdev->dev);
+> +	if (ret >=3D 0) {
+> +		pm_runtime_put_noidle(&pdev->dev);
+> +		clk_disable_unprepare(data->ipg_clk);
+> +		pm_runtime_set_suspended(&pdev->dev);
+> +	}
+> =C2=A0}
+> =C2=A0
+> =C2=A0#ifdef CONFIG_PM
 
-- Why is there a low-level passthrough to the firmware from
-  userspace? This looks rather irregular, since it is the kernel's
-  job to abstract the platform and provide vendor-independent
-  interfaces. In particular the bit about shared memory and
-  the generic send/receiv ioctl look like they should not
-  be there, as those would allow side-channels from userspace.
-
-      Arnd
+--=20
+Regards,
+Radu
