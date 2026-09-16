@@ -1,67 +1,61 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011055.outbound.protection.outlook.com [40.107.130.55])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011000.outbound.protection.outlook.com [52.101.65.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B64D37A5
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 18:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45055495AF1
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 19:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789583035; cv=fail; b=gmLjN4ZEKSZaztkHhZxCXrBbwOAyFAfRB7ALGabfMslYr1a8qTMhrvGR99nD9hhTr5aXJDNvUn2jcGjAQNVsSQCUE8RFsdzyM6LBxo6DiRe20zdyFmeJItyAsGQJaF5L9pgvbfY4qVUMu/VabrjZHXcOU9PKtC7k5iAhgFP8/0w=
+	t=1789585875; cv=fail; b=k3c7jb3I9Zbi+C14aogek6F0ShtMkveY0/bHtNkqt4Pb3isGQa6bJziT8/JGkGDf1qTLMFYhaAal4R0YIHYzGaV6cXj438FclVhJzVCT8s3D4M//w0ukyqvJrpkywzZh82qQyn3Vf8hBvvRy141IzlOWPq/O+q52WgMa6AHqDMs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789583035; c=relaxed/simple;
-	bh=ITGuhDMQiRthZdbh7t1/iMDqz6Hm4NQ+C5NRKeL69bM=;
+	s=arc-20240116; t=1789585875; c=relaxed/simple;
+	bh=URMlqFBfzSKDbJGy9+usOIKSdYb8SdVJoG6/ZNbFd0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=b00V7ty3nMwtDEvFzXz9ODd0sSBw04kgrZeN/Nr/yDa19Ia5jm3aepJ1ueXpZ2pa2wE5p248xjVfmFy3wDBwBpf0obEccShDuzf6FEQoaHZV/XTgFk9vZjgNpJwM/wGGEzLH38RFV/5bEOANNJZCGJlRFgA4Tq+83eqmGY+MFLE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=W7yfY9SH; arc=fail smtp.client-ip=40.107.130.55
+	 Content-Disposition:In-Reply-To:MIME-Version; b=E/ypjLonZP9ry8zHTOX8cwft4OwiPPpPMt88qLg8+f9o6Cr7k+K9Sd9zkLar4LNPne8KJfsLjQkjSX17Xhu/I4zq+RThT5EyIsWLuGUVG4O/ZCnIgifW6/wP3HgPWUhVRMm1T/N6Kg8eEKJ0b46k+GH0oQDIXkj+uSVAYAZwTlc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=DzLh+S/T; arc=fail smtp.client-ip=52.101.65.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="W7yfY9SH"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="DzLh+S/T"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SPxks7+C3RfJ7Rldm/WX+iBCRXPWIuSyfpM2RBst7Xcg3g3J+RPL3oHVtYtZ5quJ+FD2UJEy23EiMITMKZmY2UQ4yC0xLIGLVEGjhpFQdqOhHmZYUKOXwHPP/O/CxymMMuzt9uzhr1IqjYkYyoaY7phVA19IpcNsrCqDOCpGajKn3X91SbeXSx6KSuYgJi9l3Ee64zTLgS3li3cUlPJ9jWh6nL8uPiWAJN+N34zjocJAWT31azdxTn9/t7NLUfdrBFXBIFrhwVY9pmpcifXNfjo+ecgIkUrMOZIg2mtu5G/Lthoe+/iGZu1UGG0UK31sEgeD0e9Q348TF2tvIEe80w==
+ b=YL9t6sQZdS6N0FkgLyeUE+babStioY4nNhnuvD2qPfDNc4mj/h90zNAh3r6JdmzRJg7K7LiE3nh8l+GLpTjZPH7WAlxqQmDycQbra4qS+QQ0KBORTWVcZuYIViUKXihoDJFCcgX3fYkD7ndI1440AdnjvplQ9hkrc0LWHYSeGO7gG0i3LB/xFGi3EQ3Ju/zFzNNKAGYq820zte1D1x3uvf5Mi4UzvJzc0mzoNrbakHBOpyDLBzUvdGuw4a5VyBfKY24QghCkPOOi8y3M406jZ1SguJzH+n2PUQZpcuEHrw/P4XPahZozg3JP557vtpYuvPl4izCTld0f1qetVhG3Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8pjYmuMFZxlU51EA7EijtKLdNUeSAhtQUsohPv++ZE4=;
- b=Rbsm+7EIyFPeOAv/k4n/+5SQi2BRjrRB+S+yZ5mXoE3q3a7ILrkVgA9AFueOETeBMlh2lkuUmBXhex1t3TAVCCMm5EYIMdL/XZXUQiYVo3JMKrCdLnyQvjCRWzAgPMPFt/pAnDOxTp7fKraaeO/t9kNSGr4sdU/achFWPu/hEfDpeNSINr2PGFX56vGrLPPwtyyjM7RBGnULDvCBQlKqSUTNh/23xif4q6Dnu6TKsT/B5/hK7XEW066haso11ZRI1QWaCrJPM7o0yMlq74vmzLQN+73Utw1Yfdd1sEhk+eEIYe99p4gf/70XRiqb0PbD9epWKQFcGkudgXriDlOC6w==
+ bh=WZzNVORegfoTQNiZ6tV62nnGNjItRm/isMEENl6kfOI=;
+ b=uQk1cNFfTXWdcDZZsc6S+lkayMk8d6fC9n4uOellcqCBelgvJxHIWG5YdGUz6kZwqSR1Of5lQQWbPVQNLFX+jQsk/UIqKKLYTjPd/gr7+43daAdhEzeQc67QyrHxjWeI+cia5n3Kc98VdmGE3HoV3ntOyOL3lu6D8VDWRU301CR/vBwcs+9ry/Cv7VOnP58eElNEbowp/UmV7gPv0FKzlp+umzI9BVBAbGSDionmxNlXwQHpU4EnGfEowLasRt48mgrmlyqLkXGdjNtP6ePg9q/17tOarIa40QJ9WfD5IIe3cDrUdDj4GWs+KkIy6aEmRMBXV5knAkgkZWkFFUO8Rw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8pjYmuMFZxlU51EA7EijtKLdNUeSAhtQUsohPv++ZE4=;
- b=W7yfY9SHiBvZdgNxwXS3rhpSHUiDOggg4MHwZFQqiV5Lyhtqkl/k9sg4WcfUwbYnL65VdUE8ADjAcJq8JkCyAlll0uayKyMyU2NtNrNsql35xLm+Ypjp+fPkSN6n3UC/BscaF+2cEgKgDsLavX9NZKUYcXDyblnOgxl5kFDiC9Kfjp4sU1cjivDEmELk+1xovAfFi79ufzmSypJURzgB4nFL4D/qrkYhNH4ioPkTJglzeVvoe153FZRbIHPyXycKhqPzAEzT1eSYydTDgHvX+yKV/Kpr8bSkgDgUW4xEt5Ge/MnGkOswIXt5gAUh24Wi8b4YzHQjRdqeUIhNDUOgYg==
+ bh=WZzNVORegfoTQNiZ6tV62nnGNjItRm/isMEENl6kfOI=;
+ b=DzLh+S/T+Or7A9BaLGTyeXdsjEVbDPBTXStiTs70xeTnLJFG48wqRbUA8Wd+23Abs++KDVxD+3ICL/okDAHuMPf9Ot6P+ZlF8YpDbFMTO/XBX7Zhc+Z6lQ97SLmhHPIh8hpQ78piQsP73NPNt4AIk6Bth7PDvF9bAp7GB+9m9i0n1wloBm5JE0LS+r2UobtkaIwInIKQrmLJ63QA5xLIccx6zR3DxKWTC9I9tG4bppLGfZS58ARlObJYjj4noycA8LF5kTCPL/BgcqXLZ4dG6pw05oo/+WwD3ZVfZ+qFgnVBCQv31GV1p5BRW3ZQ7q64vJqhHfxsHxsFersh0dfacQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by BR0PR04MB084738.eurprd04.prod.outlook.com (2603:10a6:2c8:32::18) with
+ by GVXPR04MB10046.eurprd04.prod.outlook.com (2603:10a6:150:112::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
- 2026 18:23:35 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 19:11:03 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.012; Wed, 16 Sep 2026
- 18:23:34 +0000
-Date: Wed, 16 Sep 2026 13:23:23 -0500
+ 19:11:03 +0000
+Date: Wed, 16 Sep 2026 14:10:54 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	imx@lists.linux.dev, dmaengine@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] dmaengine: fsl-edma: add per-channel IOMMU support
- via iommu-map
-Message-ID: <aqrem_EkcQM2t0IE@SMW015318>
-References: <20260916-edma-iommu-v1-0-e1731968081e@nxp.com>
- <20260916-edma-iommu-v1-2-e1731968081e@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH] spi: use dmaengine_get_dma_device() for DMA mapping
+Message-ID: <aqrpvh7gu9OZAKD6@SMW015318>
+References: <20260916-spi-dma-v1-1-2b30657d373d@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260916-edma-iommu-v1-2-e1731968081e@nxp.com>
-X-ClientProxiedBy: CY5PR19CA0017.namprd19.prod.outlook.com
- (2603:10b6:930:15::10) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260916-spi-dma-v1-1-2b30657d373d@nxp.com>
+X-ClientProxiedBy: PH8P220CA0011.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:345::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,267 +64,136 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|BR0PR04MB084738:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ccb619e-ff39-4eb3-369e-08df141f9e7e
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVXPR04MB10046:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e863774-209c-4984-6108-08df1426408f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|19092799006|10067099003|56012099006|18002099003|4143699003|11063799006|22082099003;
+	BCL:0;ARA:13230040|1800799024|19092799006|376014|366016|23010399003|18002099003|22082099003|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	tVjuEeN1ytt+sxuDInPWqKizvS4qpy99kREExQ8e/wgDbciWLrHiiU6K6wD5H6Ya5/NQeH8EqzbcBY7UoQRO4pK+aWVfC6XrDcTOfqFHqyZufarWNWevehgk5EONvealP03i/mbn2Eb90QuwNZklKaetsBHTgCUEkRn2K6vSNlYvxABqrwNyNtISRERT5D0Z4als3KGHMushvvO13aEDudyiACYE7dg4OxvGp7RWVjdqh43+v94KH94tyZ7zapWeGigPXU4ozWvB9UJGbkE00AJkaeXrAF63FQe1xNZ0PheE2a2ZRWEwnOKwxirCp3U5HbGEDcI2OjmkXM9qhxkCQYSUmSFQH0RZZnmSnGxPTfuAnjd/vMlPXZzxlAZCk45khdNLOQGL9QdgmtqWZcka4rLdv/PNgizH3/DR/ahmoUBBtfAWWW/U7qVaIuG0Rdu0wMixCauKpgretQOZ5xv6O1bNpF8TIT7cTmweW7AokMdwIJOUqx3fUitv72ZUrWEuS9E7QJiYOhyx9LNPfXVtJXmj9+bxtMQYjF1Da1dB2epGonAG1Uh0nnbpjOBUcIkZuCwIR+i4K8JJeW6h1ZGSmeKixT7leGJpcvZfVZ/cUrVNTKuTkwsaNzIjI9P7fIKE3Y6VAKsHzA1eSyqxJWzrK9wRYe8AwYdzV+UnLfRlcpI=
+	0G8Q7+qaz48R7YZQZHHADwSaGNFQKT/lqZGJtC5uy1NjUptVjTXyahj01Em2RjR+L9cTMQDoN8fnhqobPfXJX27w0VfZm5s7G7JBGrS7LWhCNLvnoo9yiwv6bqD9jXVN9tXO18fhs36I1Vw+CEIFgqWZE6djz7svW9nha71KXm3rmr71XfYayPpo49Exc5V3nSzOfLdHhaFHK8EkorjejN1Zk5+gWjHqgoucFr4qrMcKjl4Wsk6AvyN0z5QUVDJuHNL9QCqIfYqHCqGSF2qkGp4lbLLF9vCPhfaKHSxeUYT4T5ovm0PHjtYX3mUcnmlipdDy1lZoM2aVvmdYhX64qGmabAI0AQw06WDnB4jtfsMVPvAkrRwCOs52omdtRMLv126qIcMQcI+sgIEx3NpR9HbBGcOizuHesKbvNXE4by7mPQxwRQafqZxnym0x7/hDDM4H/G2GqggXwlej3o5P3mh5bNIDRCbCcCp/tBWrUsQKCtCHQmZbupOvmRAxPGhcjDBwELzpv62m+VLJBO0eyWoIJ6jtiWTfGcMgMqQphOOQrm36lOGveYrtj+XKGydyV1Vhk1C7i3F0E13Te0nQAfr3FJIFKVnAy+Dxu77PKpU0BXqg/A8YCC4Echqxv2Ur/d6FqxqRLnpeLzhwIBXmlO7FAXp0oiGEWe1fH4jrG5o=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(19092799006)(10067099003)(56012099006)(18002099003)(4143699003)(11063799006)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(366016)(23010399003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?o3GSMPutrjGzK3THVYaDlbY+e0Nn7gzCYSjpOMNAfswET3pk9bCJVuu9ixVb?=
- =?us-ascii?Q?s0jV8iwvucwzQQ4ikoMDz0RWnoVJNJy6S43b1Zk33Y/zmrXWwFJbNUiufKTd?=
- =?us-ascii?Q?fZXV1AMNOC/OAIdyzBmXVgfwN1Vj27GOCZOIuyyvumEmwEU4pw4r3s7WDV5A?=
- =?us-ascii?Q?vnPAZaJwzdwmEqd3OILzAXqg6nrRZR/7XOKPcqeh9SxoylkR6s2Zq/ERR7NC?=
- =?us-ascii?Q?5Jj9ShUqCiYFsr3vgqWiyQ7Fk7gWBrN3ZLpnnRmHV2U4BDVhhE15F8WsCdmP?=
- =?us-ascii?Q?e2ZRsOVSepKgGfvPWIyrsmLAukA8zF0R62ykNGVo5LBrSaMWkeKr+h2RDg6X?=
- =?us-ascii?Q?c9uMQ8ix/4tJnlidu72C0TBHqh5F76rawoU8rivwaIzhJPR9wyjcJfGcfYG8?=
- =?us-ascii?Q?LNwvUYUkRWXewOvYiY70a1VmPAGSOWbvM6n0I7ecSRMw8eEaa5/ppBOwIjGu?=
- =?us-ascii?Q?Gj4/tItJbvw3+OUsDI0SqZAsfSPY3tZwte4buxYbNLsBM+0Qt0TAq/o/B6Po?=
- =?us-ascii?Q?jnVtqZngORss6eFCUjM55eZWC1AIh1ZpjKCMYx9Tmv5lj2I7gd2BtPoR+qse?=
- =?us-ascii?Q?3mjaesQPwCufEYFfNqZ+0WNHbueNGjeEh3z3JIf6NNpb0iP5V9C8RXa+iw5X?=
- =?us-ascii?Q?k/57bhd4sSUwzgQJKzHDTrAxSbkXtcRbw50/vqqm9pCddj5lKKKak0oGjPaJ?=
- =?us-ascii?Q?0gVrD7dA2vHePtOdikBxcOYsBzQiFSfs9wUEqRJjkQBYqNmNFA7q7C25SAZi?=
- =?us-ascii?Q?Kl183vFfNzFzGXgF2tj3JKDHSS/g/IQCLJPsKfJj4fxYz+JDx2MaVzCZJseG?=
- =?us-ascii?Q?Vl0FImVcYpr3durS6ozIOtYNBimQB9/OVsVDlrXHFln/aEBTDBkk3we9o6hX?=
- =?us-ascii?Q?SFTT4BJ3eyLs4YWqrIE+SjCUtCnq0bdsV5exhgK2p2HDJr4YV/R6CbrGw9GR?=
- =?us-ascii?Q?PwKcCtO1EOqZ1lsKYbOfbfBsxdPsZL/K4+z0UZXrXckl60Xx3lTaJE9pcuPG?=
- =?us-ascii?Q?lRwZOLR+ud9EcpDDv9mbIUlc6x5Vm9xPQfL0r2TChcvQTkltKQwsD+EC2xro?=
- =?us-ascii?Q?tdvW5H9Uw58dcPWxMN3Jh1rWdVxfvi5zgPXQiql42YLeJ9/6TZqoVHttPaQu?=
- =?us-ascii?Q?mao/JKwAwbnLiMFq9xANaYcQhsgMIELXabFDElf5kKXUVBvHZsWLk2GOo554?=
- =?us-ascii?Q?ZhHDsfNMyGlRCANWxNSc1AdWtWHTWiZ5j+/vhJLvmEovyo56G4Vj+HHQen7C?=
- =?us-ascii?Q?It4ptkctID4q2E0Gi1gpyvAMPg4NpNUaIMUTxgLY20hZVKXwJquPeNV3lpTz?=
- =?us-ascii?Q?FolM7HCustErpt2Bt+aHX1J6TdJVi6Fb6kDFpoJKSJI7UcyO4YnuS+SGsG1s?=
- =?us-ascii?Q?5gKFa9n+95SKIDUeVw2hrOiGkykaoG95fzZ9DWRdyb2GkDwIMAlMBde5lbD9?=
- =?us-ascii?Q?dUlvS1vw4EPzYnj+xj40CnOKuj0Baqk0M8QLCmIBitVF4GPu8CaLuBMj9+LD?=
- =?us-ascii?Q?6fGU0je/kAKPfZEQmx7pEW6lUFf86sTWymGcJuw0lVWQu/nq8NzT+7gIbzXh?=
- =?us-ascii?Q?cW9eWLZ7R5X9PYTWIS0/pOovc1fl2TmOh1IrZNPAhr0kehvyW+xU3MkL2mu7?=
- =?us-ascii?Q?+oI/XRPlDRFzat6+gXmME9kZNNe77EGAQ0qpDc1rZpw51lF1P8ak9/Bx3hjw?=
- =?us-ascii?Q?wL4uMxXGRpzk0PhvyuBtL1syhGkrGZTTxcVBfEJXk0cKeQW2wfMJVn81tMJC?=
- =?us-ascii?Q?gHv7QpE6Mhzp/O7VvHLFRA4b+Hg5967qGChNP8uXfRdzmiO1WKzT?=
+	=?us-ascii?Q?7wiQnK5Rao3meqLOkl8mxYOVzAtN77G/XN+yuM1izWKe3/WtHgFpGWWye51F?=
+ =?us-ascii?Q?6lBIjpv8PpUAKgd+OinsO+PRMr82au4BfUKmzH7Eu1saKz7wQrCooxnlWuF3?=
+ =?us-ascii?Q?PNI0ZkOOZieC52inH4dXhxDi3EfB0NqfrtnjwUS4D2zgxpIwpgaBHa2K6cQD?=
+ =?us-ascii?Q?Z9YDDL36t51kNAzdrWMimWy9kYu/c7cGspK0dNi1WtENbIJthbqxqG/9D8P1?=
+ =?us-ascii?Q?m+Qz1w+I6iOYB6S2PMHq+fkaEtBobb3fQjchdGYoANSh0fEF5T3sC5Qrmaps?=
+ =?us-ascii?Q?Z/ZytkzTGHlcfQkGZ3TSMfv2StuFA43vqz7FyoQOkwN+DDnQ+WCEz/x9n+I7?=
+ =?us-ascii?Q?u5SkYg7nsXVLIfVKT/e3hEB4LrCdGSYzrVUamCEB6hLAChIEBLzqUtdFbQf+?=
+ =?us-ascii?Q?wB4poISO9qxKMZwSPhluxAgU8m2uLXCKzCMzeJlT51vA0moJrFO/FyhCBpVn?=
+ =?us-ascii?Q?XyDa0HI4pQq5Ooy+U8E6mTGALdRbDbfiUeAfA9nJz8HEBr/O+9WeSoz9He6P?=
+ =?us-ascii?Q?/rBLd0WMikmOH7cYJqSAA0DW996FYWy8wbh7ai8jk3o5EQkc1UvMPmiBhz5F?=
+ =?us-ascii?Q?BMWDQtyRsrlc6d6TMEim451MQg3A2t9pFvq6F2JPSZBz50l0ct9N+iGngUL6?=
+ =?us-ascii?Q?0EapDaKJps7hjzKd2my83q5Jt9CKlSUxdtKKp7/BnauHLDmPY6hf4qWTvhB8?=
+ =?us-ascii?Q?h6EQNzai22TEfqe4kUViqQr+EcdPiNXfNFl3HqCtY9+5kPhxOnJeDhQ0Tbv4?=
+ =?us-ascii?Q?yADmhVmGIWvU6JfTmUpN4KIFBOPUF7mjODO8r+1klV8mQc2GVNvLaHbSZakX?=
+ =?us-ascii?Q?cth0rVbjLdwtKKkeM4bbvT7+l2qAlA+dwb69C1bMnAvujbyypxcY0cw6/+sD?=
+ =?us-ascii?Q?rUq8nW98C32aeu4HS3zYUm4w1KbGDZJ9ZGx1RUMIEg04Ow6RUqosxhzLZAKq?=
+ =?us-ascii?Q?nr9z9Biaf1Fafkkn5ciEDIi/16+MWNmMe4GsAs/5aJi1fUZsCcWLavT+Xs34?=
+ =?us-ascii?Q?/VfUXtFbjav0YpdVenXwtSwthqWOdno/4BcvoPFqb8yeQNlxnDKC73ngbHc3?=
+ =?us-ascii?Q?8HeCnmmTW0R5QfM6wxfXqngDN+EH7DQ1B9A9Oyp4o51dUzr4K8IuF3qRMhSt?=
+ =?us-ascii?Q?4HHcz2u9iXnx3YjtdjoyMQj9TO00Nuzd32qBMVM2h3KaPklZbDbnEW0jFxR0?=
+ =?us-ascii?Q?Z35DwuWOXHrgIgO+i8wnaaqbWZYwWRVkBD3XHJ+7xBHX4HSiMLSIxvPiD5U8?=
+ =?us-ascii?Q?WGH0Sf9zBMGg3lrgxXbnyiqOxNPJfnYleU7Y0ZiciuIFldh5s2MCYlM9UE6k?=
+ =?us-ascii?Q?nwb/LYobhR1qmbrWoWTEZM47yVFWaJyr5sF2PeMjbJjU8L7LrxWzeU36sPHa?=
+ =?us-ascii?Q?YAxejrWKtQbMpiyWzysjCwda3Ht1FMt0zjUuamfmvS3BfDvEDN3d9/65FbSC?=
+ =?us-ascii?Q?3am4mhl/uDQOFoEuVJI3gxTRVQBhCFki7zJ5gR87QrTcQ3VkWAyiBNNXYui1?=
+ =?us-ascii?Q?atVTonT/ul9gZyJPL46MDKaPvzShgY0iUV/LCANy8DYkt2IBO1RKQ4OY8Uez?=
+ =?us-ascii?Q?S8Kxfi1nV4r+KZhHfrEMCxdCxkPmcvp+ijwank122DjlVeh6OLna6625ZaKn?=
+ =?us-ascii?Q?nUfuXoGv1O8IO/KpQxWTw2suIr7AA4B4g/nlbYTZqHspZl7vYeGYjaw7Mhs1?=
+ =?us-ascii?Q?9l+ovAnrsclzmlG8wdkiIxMo8LwGCAA+EYBGvwzw5GSe7JJKFkYOIf7yjDm1?=
+ =?us-ascii?Q?PE1XxyWXohRYx8uNkn69qlGXp5BnkVojGny02vUceEaDF6CBtdyu?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ccb619e-ff39-4eb3-369e-08df141f9e7e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e863774-209c-4984-6108-08df1426408f
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 18:23:34.8652
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 19:11:03.7781
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mes73la6dc+5WaGHOpIEEMWLk0fEHJKQS8CFeSNtMzxEG5h+x7H1hyC2mACggMAHbxHKXtx7iKTxacduUyA3YidC0m8POeI+siz+hk47EP/KoPC/crHFQVoiwQby7mLN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB084738
+X-MS-Exchange-CrossTenant-UserPrincipalName: CeY2dpaSgzz+TINypes4PVzmw7IWvKygy0fUhe1MWHlJaUg1UBFsjHgAL1pzqach6O7MtEuQScsu7rv+q4uW66PZxLnpgALLsPablOTP8l+kE3GXlmDfu4aDx6FnK3Nf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10046
 
-On Wed, Sep 16, 2026 at 11:55:26PM +0800, Peng Fan (OSS) wrote:
+On Wed, Sep 16, 2026 at 11:30:55PM +0800, Peng Fan (OSS) wrote:
 > From: Peng Fan <peng.fan@nxp.com>
 >
-> Add iommu-map support so that each eDMA channel can be individually
-> mapped to an IOMMU stream ID.
->
-> At probe time, fsl_edma_init_chan_iommu() prepares per-channel devices
-> by initializing DMA masks and bus pointers so of_dma_configure_id()
-> can be called later.
->
-> At xlate time, fsl_edma_chan_configure_iommu() looks up the allocated
-> channel index in iommu-map. If an entry exists, it calls
-> of_dma_configure_id() to attach the IOMMU domain and sets chan_dma_dev
-> so dmaengine_get_dma_device() returns the per-channel device.
-> Channels without a matching entry operate in bypass mode.
->
-> Also switch fsl_edma_prep_slave_dma() and fsl_edma_unprep_slave_dma()
-> to use dmaengine_get_dma_device() for DMA resource mapping.
+> Replace chan->device->dev with dmaengine_get_dma_device(chan) in the
+> SPI core (spi.c) and SPI mem (spi-mem.c) DMA mapping helpers so that
+> DMA mapping goes through the correct device when the DMA controller
+> has per-channel IOMMU domains (chan_dma_dev=true).
 >
 > Assisted-by: Claude:claude-opus-4-6
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  drivers/dma/fsl-edma-common.c |  6 ++--
->  drivers/dma/fsl-edma-common.h |  1 +
->  drivers/dma/fsl-edma-main.c   | 76 ++++++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 80 insertions(+), 3 deletions(-)
+
+Thank you for these, it is on my todo list.
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  drivers/spi/spi-mem.c | 8 ++++----
+>  drivers/spi/spi.c     | 4 ++--
+>  2 files changed, 6 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index bb7531c456dfa..58a92ff4ddbe7 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -283,8 +283,10 @@ int fsl_edma_resume(struct dma_chan *chan)
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index 94d122be1c930..b94680b60af95 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+> @@ -46,9 +46,9 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
+>  		return -EINVAL;
 >
->  static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
->  {
-> +	struct device *dev = dmaengine_get_dma_device(&fsl_chan->vchan.chan);
-> +
->  	if (fsl_chan->dma_dir != DMA_NONE)
-> -		dma_unmap_resource(fsl_chan->vchan.chan.device->dev,
-> +		dma_unmap_resource(dev,
->  				   fsl_chan->dma_dev_addr,
->  				   fsl_chan->dma_dev_size,
->  				   fsl_chan->dma_dir, 0);
-> @@ -294,7 +296,7 @@ static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
->  static bool fsl_edma_prep_slave_dma(struct fsl_edma_chan *fsl_chan,
->  				    enum dma_transfer_direction dir)
->  {
-> -	struct device *dev = fsl_chan->vchan.chan.device->dev;
-> +	struct device *dev = dmaengine_get_dma_device(&fsl_chan->vchan.chan);
->  	enum dma_data_direction dma_dir;
->  	phys_addr_t addr = 0;
->  	u32 size = 0;
-> diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
-> index 205a964890948..85487763e05ab 100644
-> --- a/drivers/dma/fsl-edma-common.h
-> +++ b/drivers/dma/fsl-edma-common.h
-> @@ -264,6 +264,7 @@ struct fsl_edma_engine {
->  	int			txirq_16_31;
->  	int			errirq;
->  	bool			big_endian;
-> +	bool			has_iommu_map;
->  	struct edma_regs	regs;
->  	u64			chan_masked;
->  	struct fsl_edma_chan	chans[] __counted_by(n_chans);
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index d9fb717b5b53c..eabb0086fc9de 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -16,6 +16,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/clk.h>
->  #include <linux/of.h>
-> +#include <linux/of_device.h>
->  #include <linux/of_dma.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/pm_runtime.h>
-> @@ -24,6 +25,7 @@
+>  	if (op->data.dir == SPI_MEM_DATA_OUT && ctlr->dma_tx)
+> -		dmadev = ctlr->dma_tx->device->dev;
+> +		dmadev = dmaengine_get_dma_device(ctlr->dma_tx);
+>  	else if (op->data.dir == SPI_MEM_DATA_IN && ctlr->dma_rx)
+> -		dmadev = ctlr->dma_rx->device->dev;
+> +		dmadev = dmaengine_get_dma_device(ctlr->dma_rx);
+>  	else
+>  		dmadev = ctlr->dev.parent;
 >
->  #include "fsl-edma-common.h"
+> @@ -92,9 +92,9 @@ void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+>  		return;
 >
-> +static int fsl_edma_chan_configure_iommu(struct fsl_edma_chan *fsl_chan);
-
-is possible move function here to avoid forware declear?
-
->  static void fsl_edma_synchronize(struct dma_chan *chan)
->  {
->  	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
-> @@ -298,7 +300,7 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
->  	struct dma_chan *chan, *_chan;
->  	struct fsl_edma_chan *fsl_chan;
->  	bool b_chmux;
-> -	int i;
-> +	int i, ret;
+>  	if (op->data.dir == SPI_MEM_DATA_OUT && ctlr->dma_tx)
+> -		dmadev = ctlr->dma_tx->device->dev;
+> +		dmadev = dmaengine_get_dma_device(ctlr->dma_tx);
+>  	else if (op->data.dir == SPI_MEM_DATA_IN && ctlr->dma_rx)
+> -		dmadev = ctlr->dma_rx->device->dev;
+> +		dmadev = dmaengine_get_dma_device(ctlr->dma_rx);
+>  	else
+>  		dmadev = ctlr->dev.parent;
 >
->  	if (dma_spec->args_count != 3)
->  		return NULL;
-> @@ -332,6 +334,12 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
->  		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
->  		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 172141650b648..4f9f34b798b66 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1456,14 +1456,14 @@ int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+>  		return 0;
 >
-> +		if (fsl_edma->has_iommu_map) {
-
-should has_iommu_map be per channel? How about some channel use iommu
-but some not?
-
-> +			ret = fsl_edma_chan_configure_iommu(fsl_chan);
-> +			if (ret)
-> +				return NULL;
-> +		}
-> +
->  		chan = dma_get_slave_channel(chan);
->  		chan->device->privatecnt++;
->  		return chan;
-> @@ -695,6 +703,70 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
->  	return -EINVAL;
->  }
+>  	if (ctlr->dma_tx)
+> -		tx_dev = ctlr->dma_tx->device->dev;
+> +		tx_dev = dmaengine_get_dma_device(ctlr->dma_tx);
+>  	else if (ctlr->dma_map_dev)
+>  		tx_dev = ctlr->dma_map_dev;
+>  	else
+>  		tx_dev = ctlr->dev.parent;
 >
-> +/**
-> + * fsl_edma_init_chan_iommu - prepare per-channel devices for IOMMU
-> + * @pdev: the eDMA platform device
-> + * @fsl_edma: the eDMA engine instance
-> + *
-> + * Must be called after dmaenginem_async_device_register() so that each
-> + * channel's chan->dev->device is already registered.
-> + *
-> + * Initialize DMA mask and bus on each channel device so that
-> + * of_dma_configure_id() can be called later at xlate time.
-> + */
-> +static void fsl_edma_init_chan_iommu(struct platform_device *pdev,
-> +				    struct fsl_edma_engine *fsl_edma)
-> +{
-> +	int i;
-> +
-> +	if (!of_property_present(pdev->dev.of_node, "iommu-map"))
-> +		return;
-> +
-> +	for (i = 0; i < fsl_edma->n_chans; i++) {
-> +		struct fsl_edma_chan *fsl_chan = &fsl_edma->chans[i];
-> +		struct device *dev;
-> +
-> +		if (fsl_edma->chan_masked & BIT(i))
-> +			continue;
-> +
-> +		dev = &fsl_chan->vchan.chan.dev->device;
-
-use new API vchan_chan_dev()
-
-> +		dev->coherent_dma_mask = pdev->dev.coherent_dma_mask;
-> +		dev->dma_mask = &dev->coherent_dma_mask;
-> +		dev->bus = pdev->dev.bus;
-
-I think these information should be set even without iommu.
-
-> +	}
-> +
-> +	fsl_edma->has_iommu_map = true;
-> +}
-> +
-> +static int fsl_edma_chan_configure_iommu(struct fsl_edma_chan *fsl_chan)
-> +{
-> +	struct device *dev = &fsl_chan->vchan.chan.dev->device;
-
-use new API vchan_chan_dev()
-
-> +	struct device_node *np = fsl_chan->edma->dma_dev.dev->of_node;
-> +	struct of_phandle_args iommu_spec = {};
-> +	u32 chan_id = fsl_chan - fsl_chan->edma->chans;
-> +	int ret;
-> +
-> +	if (fsl_chan->vchan.chan.dev->chan_dma_dev)
-> +		return 0;
-> +
-> +	ret = of_map_iommu_id(np, chan_id, &iommu_spec);
-> +	if (ret || !iommu_spec.np)
-> +		return 0;
-> +	of_node_put(iommu_spec.np);
-> +
-> +	ret = of_dma_configure_id(dev, np, true, &chan_id);
-> +	if (ret) {
-> +		dev_err(dev, "DMA configure failed for ch%u: %d\n",
-> +			chan_id, ret);
-
-use dev_err_probe() to avoid print error when defer probe
-
-Frank
-> +		return ret;
-> +	}
-> +
-> +	fsl_chan->vchan.chan.dev->chan_dma_dev = true;
-> +	dev_dbg(dev, "ch%u: IOMMU domain configured\n", chan_id);
-> +
-> +	return 0;
-> +}
-> +
->  static int fsl_edma_probe(struct platform_device *pdev)
->  {
->  	struct device_node *np = pdev->dev.of_node;
-> @@ -882,6 +954,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
->  		return dev_err_probe(&pdev->dev, ret,
->  				     "Can't register Freescale eDMA engine.\n");
+>  	if (ctlr->dma_rx)
+> -		rx_dev = ctlr->dma_rx->device->dev;
+> +		rx_dev = dmaengine_get_dma_device(ctlr->dma_rx);
+>  	else if (ctlr->dma_map_dev)
+>  		rx_dev = ctlr->dma_map_dev;
+>  	else
 >
-> +	fsl_edma_init_chan_iommu(pdev, fsl_edma);
-> +
->  	ret = devm_of_dma_controller_register(&pdev->dev, np,
->  			drvdata->dmamuxs ? fsl_edma_xlate : fsl_edma3_xlate,
->  			fsl_edma);
+> ---
+> base-commit: e6e35979777d646fe3c7c94dca7dd32fb25d45f4
+> change-id: 20260916-spi-dma-466d0a92bd28
 >
+> Best regards,
 > --
-> 2.34.1
+> Peng Fan <peng.fan@nxp.com>
+>
 >
