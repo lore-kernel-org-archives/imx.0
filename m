@@ -1,33 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA39D478E38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B392479868
 	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 08:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789548041; cv=none; b=Dv/atCZUn/SS07aAEpRK+s90b97ofcnbVkHS7FWqGLftF6CpZmzqi1jnZZ1z0+TgtuwJsA6XuxPS+6PNrORspS4SWZzCPAQUy7Qaj8EDgIfRaTb+jeODsH2O06Aj7B3ewHsKPd0IjeH6RXSJ3giQkZfdnWGSSx3McaiLkmwE1Hc=
+	t=1789548043; cv=none; b=bFRLswEHqhl1ZMpUN/QsA1j97GS80S/iVeu3kYodExjEYBYzwzXX0zRVFvamIjwxMs0BEvqePgbzxnqzSE4IZzKe913AUIjSB3jqDYK5fn5YNfkQfe9yJypA4DEoYzlreJWO+DZ59SLWWUmAiFjmbR5Uo4FEks61PJMKSgRonUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789548041; c=relaxed/simple;
-	bh=RkS+BMB7WMX/M2CU/F+cSDmbLRAcKhvl57dIasegSwc=;
+	s=arc-20240116; t=1789548043; c=relaxed/simple;
+	bh=HQXtXr7G2xp9AelGAz3ogDvSW56fzglONu6r/udOBaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKwafvsjijIiCHXNIGDoQtG2vBvFaxgZKxiQxs5twx1sBO40sMCZnAJfLCzPUzF+2eeauwbOcLBTWhxzhDjRZVLdoidMW0pPeO3lcqA9aCoB5BX0l6D33HKs6ZpAtKHKp4btP5LwcbaAPJhs4umMewgNtw0FYD7hZaBu+Bn5F5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Mfqy4pYc; arc=none smtp.client-ip=217.194.8.81
+	 MIME-Version; b=rBkrBkd9NQJ+9AS0PMEdts8c/+rzibmhsrH9qZpXPmTwCiJvJvf5FtbQAsP6AFu2XJnR3d+hFoIos/lN7ypFRShSOIfvfSrg6YFxGWPUt39ht3A+QbYVEgjNjS+omW7kSLI5Rd8FA9Zbe/vXpIj1lilX8V/QFGJPZwSthPkRFP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=nOziChr3; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Mfqy4pYc"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="nOziChr3"
 Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 8901A1FF37;
-	Wed, 16 Sep 2026 10:40:33 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id CE6F61FF2F;
+	Wed, 16 Sep 2026 10:40:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1789548034;
-	bh=5eYBxqvQy8hvAWZmQDYiSaixg+yBCBKhpGm8smCMPHE=; h=From:To:Subject;
-	b=Mfqy4pYcGUn2b1aYTfmUL5VUBkULfLfUbc+70XN6kHqas+6AN2M5Bu7XnafcNssyR
-	 Piv02UBwN4/gHLgbXWNBjMLKaaho+eirrjOE+2b9K5g4hdJWVmFWbVlZ2BBfNTcVT4
-	 vAO8qY/C/NtXpswF6DafhO+a5LSGFe1NdQ53ynRJygAvGRmme3UWlsAevdjV8NGNbY
-	 VhQkqgQjE61vEArQ6LJVl1ZyNyXfSdx71fNjxgT5/hZCY3TqaeelGa9L3vtG1UHmmc
-	 WpaccGUUyvKpOT7pmkqQcfcL2BnfHErkTkb4T2pqelxM/23H1ogX0hxI26zKv5wQZ5
-	 OArYEWT2GHHag==
+	s=default; t=1789548033;
+	bh=zWqSKq8lxW1S1zlDmMfS7DXWWilNffxfMKmzzQZ/n4s=; h=From:To:Subject;
+	b=nOziChr3YwBuPZgHA9Hl/gMVdcT1NQx80zjZ/SlYkK/H+d68GEp7E9vPY34m4hBoE
+	 uQnqWJqd8pV5xxF1cn3tNYPZ0S1mBNuOAUxj0Gpchjf0YZtZmze5guh1RFQWzMwmJ4
+	 syxDdXOqPx1e/Yc6kM0kVNYVEAScIVUpSH5I4gaMHtwdp1/oGsBc3oEtdn0Sxh53Sh
+	 evc/ETE6e3hmBVxo280r8kdAOEWa27KxXbUCfTfkg6IOggXZ3yBO/c4cLvimyv1ZRw
+	 gZe74GUs+2aFYOraxrPgt/Fs+k7XMCr+JIOoc7ovhh+ZLBvcgdfaItEJa1vA6z0x+/
+	 5JDkisHQ8EPRw==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -42,9 +42,9 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: freescale: imx8mp-verdin-ivy: fix DIGI_1/DIGI_2 gpio-line-names
-Date: Wed, 16 Sep 2026 10:40:23 +0200
-Message-ID: <20260916084025.274229-3-francesco@dolcini.it>
+Subject: [PATCH v1 1/2] arm64: dts: freescale: imx8mm-verdin-ivy: fix DIGI_1/DIGI_2 gpio-line-names
+Date: Wed, 16 Sep 2026 10:40:22 +0200
+Message-ID: <20260916084025.274229-2-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260916084025.274229-1-francesco@dolcini.it>
 References: <20260916084025.274229-1-francesco@dolcini.it>
@@ -68,20 +68,20 @@ and its carrier boards, so userspace GPIO tooling that looks up a line
 by name works the same regardless of which Verdin SoM is fitted on
 Ivy.
 
-Fixes: b98948b04295 ("arm64: dts: freescale: imx8mp-verdin: Add Ivy carrier board")
+Fixes: adca46171ff7 ("arm64: dts: freescale: imx8mm-verdin: Add Ivy carrier board")
 Cc: stable@vger.kernel.org
 Link: https://docs.toradex.com/116799-ivy_carrier_board_datasheet.pdf
 Assisted-by: LLM
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi
-index db1b4ee7728c..bf021e85cfc9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi
-@@ -333,8 +333,8 @@ &gpio3 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi
+index 29075ff5eda6..b64751aa31d5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi
+@@ -270,8 +270,8 @@ &gpio3 {
  		"",
  		"",
  		"",
