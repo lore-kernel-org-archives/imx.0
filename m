@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A1C5221F1
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 14:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB72501F5E
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 14:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789569057; cv=none; b=rLpjTycfvWAEA0Y2Ko7jD+uk4yLXmeDvulYCWp1Yf9A01z7Xm3K3dTLpLTt3GiTK8DMSgpHrLzNDcrRZEQXT/rnkTus96xIdvCvHIFqKhCccKb6OOmFrZip7YbL/bGnjN1qxrVECnoF4Km5+pwZ8YsbXeanYy8BglopqA5f/r+k=
+	t=1789569383; cv=none; b=e/7Ei4fIm1yuPbdSh7Zsb7pXuHfgK+3Qkg/hozpN/ShUBYTY/ChOp37LHDq/hTwEAyQVhrEcHo2o6AZiEjrfkoN/0GLabeXD85/7UWHJZxu4Uf87ven57UylA56n/lm02HicUBD0TOM89EGX5sO/INkuTDBon/DjTkm//9WQVpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789569057; c=relaxed/simple;
-	bh=IAkNWSB54cPTRZlp0lr/9fg4h/scqOyu3N98Wh9R+D4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=fQDsgk8Y+ZTj+GF8UhAWCkGVEtvAWxZgkSSt5Z8ptygXc83zkjvlfgBsU8jQKn1sSE25P0aYj1la4p8TKS0cuprnON6teJs7v0Cd5cFPuc6IkDuHFEAqfT5/07woqGtSaCKEwzqzSqpPQ7gxw0CQ2WVcDX7L4iNyw+7QX7rZ3xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PAFHXDga; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1789569383; c=relaxed/simple;
+	bh=lnsiuBxb1FQpxXJWR6gPEUhDTTJH491tjHU0LVsf0Ho=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=L3hTUTL8YKhESl8whxZyU6uOEXFn7eZt65YGL2aa24ZVB1i5vevcgttPjNfYwi7S45d2uHz72mrVjlB48Mr1r/zE9Ohqsa3Au9iRE5yx1upCTI8vL1Kp3UKxPBmJJjccahQJ64Zhv6/4D+EvgLt6mKEvHd2wJF1uA9DIaKhTHag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ds77EU29; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PAFHXDga"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ds77EU29"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4D5244E40742;
-	Wed, 16 Sep 2026 14:30:51 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 19EFEC5CD64;
+	Wed, 16 Sep 2026 14:37:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1645860337;
-	Wed, 16 Sep 2026 14:30:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C273711C7B024;
-	Wed, 16 Sep 2026 16:30:38 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0FF2060337;
+	Wed, 16 Sep 2026 14:36:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0B9C411C7AFFA;
+	Wed, 16 Sep 2026 16:36:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789569045; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789569377; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ifWQ8YaMc5CQm1ni9DW+Z7Yqh55h/cFdZBqgsTVphkY=;
-	b=PAFHXDgagaMbICkI8pF/F5Nz5W1gjfLrs/YkppCqVP1pMYNSPxgzDNoh7q+DYhGicdwrYf
-	PT5MKU1C05LYJEvG7c2FAjeCDXZt49uyTEXYiGNsgQEZUIFo9Gn3dNx1y9W9wkLfU/7aPb
-	vzohVysiTuf4GVtby1VsmN8oKU9d8Q7ZUe89SyFGWHWqfmxt14PRsnXT7ywBVYdGwH5OlH
-	jqCvJ05G71TC8RvUYP+fNsTf78dwavvp6emdYAP1L54EDJ9LaoeEcGMIrOf0hq9e7O2q6s
-	lH0l7yhmzYU7wIfR98nbme6zK7TkBj3xK17AW9YJl4T1VYqxyZnDThae3cpVdw==
+	bh=lnsiuBxb1FQpxXJWR6gPEUhDTTJH491tjHU0LVsf0Ho=;
+	b=Ds77EU29hHqrCKdSyQyb13FI02+4b7AhthNJ8FvUq+cR7psCg0OyhYTZ09yjcOrloJBc2K
+	pFrwDPraez8EI+M+nueYy0ed4J1kpOJmdt6CgB4AkwbTtsoSgQwru87DZ2ldSelp/Lv8bl
+	xFlorn0U/TQc3OgOoeSvLIWx2aWitcdJIq6VI7NJrpuG78Xxh4FJ3qjjM1+2HxtHGeJWMF
+	JuhNDvZHKv8Mf1lcOU//4UL0gpW/j+oEh0Iqdv2JnhX9c4824qn9eAyzzdN9bYIceYD9nV
+	KJBU/6p6qX9sTF9MxfM+rbaiNBWXkWlRo0SLWw0ciNWLPN/g6OFlyTHUtiq+Aw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,8 +41,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Sep 2026 16:30:37 +0200
-Message-Id: <DLGTA297W2SP.36MAJCYAC9O2X@bootlin.com>
+Date: Wed, 16 Sep 2026 16:36:12 +0200
+Message-Id: <DLGTEC6QXU0E.3MF7Z33ZQD9V0@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 Subject: Re: [PATCH v4 2/4] drm: mxsfb: Add optional DPI output bus-width
  configuration
 Cc: "Marek Vasut" <marex@denx.de>, "Stefan Agner" <stefan@agner.ch>,
@@ -58,9 +59,8 @@ Cc: "Marek Vasut" <marex@denx.de>, "Stefan Agner" <stefan@agner.ch>,
  <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
  <linux-arm-kernel@lists.infradead.org>, "Alexander Stein"
  <alexander.stein@ew.tq-group.com>
-To: "Francesco Dolcini" <francesco@dolcini.it>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Francesco Dolcini"
+ <francesco@dolcini.it>
 X-Mailer: aerc 0.22.0
 References: <20260813092836.38367-1-francesco@dolcini.it>
  <20260813092836.38367-3-francesco@dolcini.it>
@@ -68,120 +68,73 @@ References: <20260813092836.38367-1-francesco@dolcini.it>
  <20260916091543.GA277833@francesco-nb>
  <DLGP7GKZJBOP.350QK94UOGRYV@bootlin.com>
  <20260916114350.GB284106@francesco-nb>
-In-Reply-To: <20260916114350.GB284106@francesco-nb>
+ <DLGTA297W2SP.36MAJCYAC9O2X@bootlin.com>
+In-Reply-To: <DLGTA297W2SP.36MAJCYAC9O2X@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed Sep 16, 2026 at 1:43 PM CEST, Francesco Dolcini wrote:
-> On Wed, Sep 16, 2026 at 01:19:08PM +0200, Luca Ceresoli wrote:
->> On Wed Sep 16, 2026 at 11:15 AM CEST, Francesco Dolcini wrote:
->> > Hello Luca,
->> >
->> > On Wed, Sep 16, 2026 at 10:42:13AM +0200, Luca Ceresoli wrote:
->> >> > LCDIF programs LCD_DATABUS_WIDTH from the selected media bus format=
-. The
->> >> > format reported by the downstream panel or bridge describes the dis=
-play
->> >> > input, but it does not describe how the LCDIF data pins are physica=
-lly
->> >> > wired on the board.
->> >> >
->> >> > These can differ. For example, a 16-bit LCDIF bus can be connected =
-to a
->> >> > 24-bit display by wiring the available color bits to the correspond=
-ing
->> >> > display inputs. In that case, using the display's 24-bit format to
->> >> > configure LCDIF selects the wrong data-bus mode and changes the ass=
-ignment
->> >> > of color bits on the LCD_DATA pins.
->> >> >
->> >> > Read the optional bus-width endpoint property from the LCDIF output=
- port
->> >> > and use it to select the media bus format used to configure LCDIF. =
-This
->> >> > allows the LCDIF bus mode to describe the physical interface
->> >> > independently of the downstream display format.
->> >> >
->> >> > When the optional property is absent, or it has an invalid value, c=
-ontinue
->> >> > using the format reported by the downstream display device, preserv=
-ing
->> >> > the existing behavior. The code is not validating the DT for
->> >> > correctness and just fall back to the previous behavior in case of
->> >> > errors.
->> >>
->> >> Why? Generally speaking errors are better spotted immediately, not ig=
-nored
->> >> silently.
->> >
->> > My understanding is that the C driver code should not validate the DT
->> > and that this is the general recommendation when parsing properties fr=
-om
->> > the DT.
->> >
->> > The DT checker is going to spot errors in the DT even earlier and in a
->> > static way.
->>
->> Drivers typically check for invalid values.
->>
->> And people writing their private dts can do mistakes and not run the sta=
-tic
->> checks. Bad on their side, sure, but having a runtime error would be use=
-ful
->> there.
->
-> Understood. I would personally not do it. I can add the required error
-> checking code. No other DRM maintainer/reviewer commented so far, so I
-> am taking this as a request.
->
-> What should I do in case there is an invalid value? Fail or have a
-> warning message?
+On Wed Sep 16, 2026 at 4:30 PM CEST, Luca Ceresoli wrote:
+> On Wed Sep 16, 2026 at 1:43 PM CEST, Francesco Dolcini wrote:
+>> On Wed, Sep 16, 2026 at 01:19:08PM +0200, Luca Ceresoli wrote:
+>>> On Wed Sep 16, 2026 at 11:15 AM CEST, Francesco Dolcini wrote:
+>>> > Hello Luca,
+>>> >
+>>> > On Wed, Sep 16, 2026 at 10:42:13AM +0200, Luca Ceresoli wrote:
+>>> >> > LCDIF programs LCD_DATABUS_WIDTH from the selected media bus forma=
+t. The
+>>> >> > format reported by the downstream panel or bridge describes the di=
+splay
+>>> >> > input, but it does not describe how the LCDIF data pins are physic=
+ally
+>>> >> > wired on the board.
+>>> >> >
+>>> >> > These can differ. For example, a 16-bit LCDIF bus can be connected=
+ to a
+>>> >> > 24-bit display by wiring the available color bits to the correspon=
+ding
+>>> >> > display inputs. In that case, using the display's 24-bit format to
+>>> >> > configure LCDIF selects the wrong data-bus mode and changes the as=
+signment
+>>> >> > of color bits on the LCD_DATA pins.
+>>> >> >
+>>> >> > Read the optional bus-width endpoint property from the LCDIF outpu=
+t port
+>>> >> > and use it to select the media bus format used to configure LCDIF.=
+ This
+>>> >> > allows the LCDIF bus mode to describe the physical interface
+>>> >> > independently of the downstream display format.
+>>> >> >
+>>> >> > When the optional property is absent, or it has an invalid value, =
+continue
+>>> >> > using the format reported by the downstream display device, preser=
+ving
+>>> >> > the existing behavior. The code is not validating the DT for
+>>> >> > correctness and just fall back to the previous behavior in case of
+>>> >> > errors.
+>>> >>
+>>> >> Why? Generally speaking errors are better spotted immediately, not i=
+gnored
+>>> >> silently.
+>>> >
+>>> > My understanding is that the C driver code should not validate the DT
+>>> > and that this is the general recommendation when parsing properties f=
+rom
+>>> > the DT.
+>>> >
+>>> > The DT checker is going to spot errors in the DT even earlier and in =
+a
+>>> > static way.
 
-Just fail. You are in the probe path, so it's OK.
+Ah, I forgot... I fully agree static build-time checks are way better than
+runtime error checking code. But they are not done as a mandatory and
+unconditional step during a build, and so not everybody runs them. Moreover
+checks are added over time, so even if all checks pass today some might
+fail in the future.
 
->> Also consider potential regressions. Say someone has an invalid value in
->> their product, say bus-width =3D <15>, which works because the default 1=
-8
->> which gets used as a fallback happens to be the correct value for their
->> hardware. Some years later we implement the new bus-width =3D <15>, and =
-then
->> that user upgrades to a newer kernel and their display won't work becaus=
-e
->> it will start using that incorrect bus-witch =3D <15>. Better stopping t=
-his
->> before it starts, IMO.
->
-> I do not see this situation honestly, if you have a wrong value, e.g. 15
-> bits, before this patch is ignored, and after this patch is also
-> ignored ...
+As a result there are plenty of devices out there with invalid dtbs, and
+they just work by chance.
 
-There is no problem with the code in this patch alone.
+It's the hard reality I'm afraid. :(
 
-The problem is when in two years in the future we do implement 15
-bits. (That's an example to explain the principle, I don't expect it to
-happen with this driver.) But imagine in the future we add:
-
-	switch (bus_width) {
-    +	case 15:
-    +		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB555_1X15;
-    +		break;
-	case 16:
-		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB565_1X16;
-		break;
-
-At that point the device in the wild with the incorrect 'bus-width =3D <15>=
-'
-will start using RGB555 and fail, because they really have a 18 bit panel
-which worked thanks to the automagic "if DT is wrong, let's go with the
-default". That's a regression for that device.
-
-Reporting an error from day 0 means 'bus-width =3D <15>' will be blocked, t=
-he
-device won't probe and the mistake in the device tree gets fixed before
-shipping.
-
-I hope it's clearer now.
-
-Cheers,
 Luca
 
 --
