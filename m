@@ -1,111 +1,224 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7438D3E1736
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 05:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C92D3E559C
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 06:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789538238; cv=none; b=YQGHh5hs2/d89rgzag02CxaFwZlnVwSSG9iXrRRnV+1P6LGAZHgNwUuuW2rYb9u/x+LkFJlCoEDpgjaXIAqUn6AyTGKOD8VXIBwbZa3FHEQVWKv1/hRnr0i5WKdypN6YwRjXhhvszNuNP25Zjhb+VpDKkmfvtv5VcUjdOV+e8wE=
+	t=1789539859; cv=none; b=kZJcRcx+Jx1scVb1VGIw6AZjhsyRyzQliukaFjnSvechSMMGLiCZABzbzcLW2zEYrMwF6BwMFdRL1sd6xl+IjwNuiJsxlRbKwXhHQPx5oTiiFIwP4zP83ofvCGV2UYBMgV9jSA24h7Bmh+d76xlaFWqZwMfLAyBjtWWpiM11KSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789538238; c=relaxed/simple;
-	bh=NKEOLgYM1d/tM4cL9HDDE/AU3aDhCHRPLf/wza+LUkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eV4qdYpMXwf2/idESy8wfUpyRqX3hr//OBLsy6IMV+WfFZQuaoerUc0B2d0TyhOBYRETsSoBSM7QP4P9kcZb+s7U//DY/t6ZIUq3BSDdJ3FSe8PabldObILP9HI/KW00VHCOMIJ4sCkYTo9/hJkTwy5+lspfde/rvFzoozjMTDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=fx9Qj3JZ; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1789539859; c=relaxed/simple;
+	bh=ssfCFsWm4R4zLnvtS9z2RFVPjbllu3VMKDKrNnNaGQE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IJpSED2sruy01630RDHSCtlfpC1okRwHWzTbsB1uLg3pNRBflTRV3No3trMsWVhEL4TAvjZNyVMMrOpM7TtnT8caNy2W907Uxrv7oF2Qu5UiUEXO3isCwUw17lnoqMXxSpgloKp9YGtfW0cRQBOuu7h5xX4mZeoMDR4Jt5yeYJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=FIez1ear; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RjL6l8c7; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HV1v3uyF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7fiYrcF9; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="fx9Qj3JZ"
-Received: from francesco-nb (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 0ED471FC29;
-	Wed, 16 Sep 2026 07:57:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1789538231;
-	bh=I+tkhFfWBsJlP15FZEQQsLoKTghh1QY7GM+Pdd6KOXw=; h=From:To:Subject;
-	b=fx9Qj3JZ2EMKzxNkjNReNY44VYRgPYzHAHBCHTH6s1fnwISrik4vk57VVsohipOia
-	 dpj8A7BVuE6jSnPeL50iZRrViP+bpLASPYVBs2dceMgORVJJerYBOpgY0J7BfaRCjv
-	 2CJqhgSgotHJmdUvRy4zKpWYUdwD51So/ALnBUNcwgZ+zSs4947ApkcuKjkmpk8qtL
-	 JJFicrOGLAd8pa0GK3uTfgFIvabqMkt4m6UESgc87jII3t9mEkCgZM/g/8menIiTO8
-	 b0hOKS2o4gNRlbTJQYYgUdrhtB+FOdTJ1NE4oXKcyMHbpCsutI07YePPnud51g7oZT
-	 6qfMbGg45nwSA==
-Date: Wed, 16 Sep 2026 07:57:06 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Franz Schnyder <franz.schnyder@toradex.com>
-Subject: Re: [PATCH v2 3/7] arm64: dts: freescale: Add Lino iMX93
-Message-ID: <20260916055706.GA20310@francesco-nb>
-References: <20260911091952.96233-1-francesco@dolcini.it>
- <20260911091952.96233-4-francesco@dolcini.it>
- <42ed88a6-d208-482b-94aa-2e45b69c173e@lunn.ch>
- <20260915132806.GA226756@francesco-nb>
- <100eef7b-e1d6-411b-bac5-98790e8f9ea7@lunn.ch>
- <aqmG91HwmKe-enfy@francesco-nb>
- <95dcbf3e-193d-460b-b6b9-cd412394e4c6@lunn.ch>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="FIez1ear";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RjL6l8c7";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HV1v3uyF";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7fiYrcF9"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9A7501FE21;
+	Wed, 16 Sep 2026 06:24:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789539850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+wG3urIqyzvutvhz3o+cV/d3V7dF1C3I+4csedxlzqA=;
+	b=FIez1earGLDGi7AqR01AuARvOdlajBp+fRMJJGGeMnoTq9dvnv8hE+2+gQMjWWcpKgyOLE
+	Rku1ObTlPRpO9d3QhfYq3w5xFrQ9UJdihQAgaVmQguhkUR0wsXjPhFE/I81McJ8toPFvxd
+	LloqQsKoLaB0OKmvT0WyzdFoTqBbWds=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789539850;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+wG3urIqyzvutvhz3o+cV/d3V7dF1C3I+4csedxlzqA=;
+	b=RjL6l8c7EsdgERq9co40eQ+Wc02hB5lJOzclY2Lh8ZiNcUBip/Y5z1vXt3Nx/OeT79fF/y
+	O2vIt8n7NWHc+ZDQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HV1v3uyF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7fiYrcF9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789539846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+wG3urIqyzvutvhz3o+cV/d3V7dF1C3I+4csedxlzqA=;
+	b=HV1v3uyFjN5zL4NWzhwKMUjp7TwlFd4m1QaG4vFm2grNfzrds33nWaEFJlTtQTTAl4D4GA
+	+/JjHPWs1MSVm5S4zSpKQSInBbt/Urj+jlb/fyMVXUDCkKku6Eqp/5k7pUSYXFx+YtZ/Yv
+	rpL8xVbpMnduyVg/dTUJUMNUFECyXN8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789539846;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+wG3urIqyzvutvhz3o+cV/d3V7dF1C3I+4csedxlzqA=;
+	b=7fiYrcF9r6CsxpTC7KA1gcliQjuqfJKzfk9I74tLP5t4YESS86eerA8R6qzTH0zULKC6v3
+	HchgkWW6EGZZFyBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC8D9136D1;
+	Wed, 16 Sep 2026 06:24:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nLZ5HgU2qmrNRQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 16 Sep 2026 06:24:05 +0000
+Message-ID: <bbf8fd0e-8e1c-4899-98f4-b8231800de8c@suse.de>
+Date: Wed, 16 Sep 2026 08:24:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95dcbf3e-193d-460b-b6b9-cd412394e4c6@lunn.ch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] drm/imx/lcdc: avoid duplicate clk_per enable
+To: Ze Huang <ze.huang@oss.qualcomm.com>,
+ Alexey Brodkin <abrodkin@synopsys.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Hans de Goede <hansg@kernel.org>, Alex Lanzano <lanzano.alex@gmail.com>,
+ Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Marian Cichy <m.cichy@pengutronix.de>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, xen-devel@lists.xenproject.org
+References: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com>
+ <20260727-drm-simple-kms-removal-v3-1-de36e534f7a1@oss.qualcomm.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260727-drm-simple-kms-removal-v3-1-de36e534f7a1@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 9A7501FE21
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,synopsys.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,jms.id.au,codeconstruct.com.au,nxp.com,pengutronix.de,epam.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,qualcomm.com:email]
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
 
-Hello Andrew,
-thanks a lot for the detailed explanation.
+Hi
 
-On Tue, Sep 15, 2026 at 09:57:56PM +0200, Andrew Lunn wrote:
-> > Would you mind to articulate in which situation such race condition can
-> > happen?
-> 
-> Most PHYs have a number of interrupt sources. Taking a random example:
-> 
-> /* DM9161 Interrupt Register */
+Am 26.07.26 um 21:42 schrieb Ze Huang:
+> The simple-KMS helper calls the pipe update after enabling the CRTC.
+> On an enable commit, imx_lcdc_pipe_enable() already programs the
+> mode and enables clk_per. The following pipe update sees the plane move
+> from no CRTC to the active CRTC, treats it as a mode update, and calls
+> imx_lcdc_update_hw_registers() again.
+>
+> That second call has no old CRTC state to disable clk_per first, but it
+> enables clk_per again at the end. The disable path only drops one
+> reference, leaving clk_per enabled after each on/off cycle.
+>
+> Skip the register update from the pipe update path when the CRTC already
+> needs a modeset. The enable path has already programmed the hardware for
+> that commit; keep the event handling in pipe update unchanged.
 
-...
+That seems reasonable. Once the driver uses regular DRM helpers instead 
+of simple_kms, it can all be untangled and this test won't be necessary 
+any longer.
 
-> The interrupt line is still low, indicating a link interrupt, but
-> without an edge, no interrupt handler is triggered. The interrupt has
-> been lost, and the link is reported down, despite being up.
-> 
-> If however you are using level interrupts, as soon as the interrupt
-> handler exits, and reenables the interrupt in the parent interrupt
-> controller, it fires again, and the link interrupt is handled.
-> 
-> If you have multiple interrupts indicated by a single line, you should
-> use level handling in the parent interrupt controller.
+>
+> Fixes: c87e859cdeb5 ("drm/imx/lcdc: Implement DRM driver for imx25")
+> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
 
-I looked into the specific ethernet phy used here, TI DP83867, and
-I would say that the falling edge interrupt should be safe on this
-specific board/phy.
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-There is a single ISR register, and it's a single read/clear atomic
-operation (MII_DP83867_ISR 0x13, dp83867_ack_interrupt).  This is done
-before doing any access to any other register, so the interrupt will
-just fires again if anything happen. I do not see the race condition window.
+> ---
+>   drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> index f52832b43aca..81024f7d9e96 100644
+> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> @@ -311,7 +311,8 @@ static void imx_lcdc_pipe_update(struct drm_simple_display_pipe *pipe,
+>   	else if (old_crtc != crtc)
+>   		mode_changed = true;
+>   
+> -	imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+> +	if (!drm_atomic_crtc_needs_modeset(crtc->state))
+> +		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+>   
+>   	if (event) {
+>   		crtc->state->event = NULL;
+>
 
-I know it is not conclusive, but we have multiple boards with the
-same edge interrupt configuration and the same ethernet phy (the
-interrupt is wired directly to a TI SoC, that supports only edge
-interrupt, not to a gpio expander) and we never had any failure. Our
-test coverage is quite good IMO, commit 91a7cda1f4b8 ("net: phy: Fix
-race condition on link status change") is something I did because our
-testing had some sporadic failures for a different race condition.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
-What do you think? *IF* my reasoning is correct I would suggest to keep
-the code as it is now.
-
-Francesco
 
