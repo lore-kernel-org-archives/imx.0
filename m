@@ -1,83 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-94.mta0.migadu.com [91.218.175.94])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133813033CB;
-	Wed, 16 Sep 2026 05:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFFB3C4554
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 05:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789536514; cv=none; b=t+OWu2FTW1pLg0Q3DLHzQULmyZrBVSrU5Eo9GPjgW4xKSvjNVTMiMvXfRnKowrvFwLRPknYA6s6l/rOif4u37oEhwTVv55hGOk7eRTQJ5cnIX67LY5RROHAhKMnFAYdY24+ZRtGUBjp9g6+ROROC9lhWbpy0OeXrrQ18NYO/9jA=
+	t=1789537338; cv=none; b=OW4TJM2j4lY0E5NAFcXJU+YpYIDd6mDobkW83FWK/6lTYHWUHoKwfvbl41a6E2U2u/Jv14pBGHc9xRpjK9EJS4tbD2d9rujV7zWuFqYRwXGzd8fzG9I1OTYNqPrgUShXaXtpk8nPpTnySrxo3b5G6rd2jT+je+m5RgPMOz9DBb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789536514; c=relaxed/simple;
-	bh=dkdkd8Lu7qc8W7cHI2YtShJG+Cb5ARVQPtCg3mYi46M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBcVpunFSOrv3LzytRjVJ15dHjjQYREngIt2SyJxNFmC+Npxw7NAbdeZ2DC7V4uK6geWKmQLlNeq5v7heec1akE16SubxwUvEJAsnOXxjUeaTgaDgTxYJxx8CbC+k20g0pV4VlfB8QRAPPSEeXzhoA95iJMrFeSB38bVm59Czm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYZzAj5z; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYZzAj5z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5301F000FF;
-	Wed, 16 Sep 2026 05:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789536512;
-	bh=66PyGPF5wXahXxW5sg6wPuZ0lhWWMmXUKvHfOKoSdYs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AYZzAj5zgFh920pxLpGKuWZ8NFaBVz6NPYkQGl1EIBxUvvkhG8GyY4i53xxm/U6nQ
-	 nLyVV6jbYqY0XmojBX/9D/t9eC1msZQsf/q4508X9g/8PdkVHRolfaIm5e0QrGF7EL
-	 3fqdQ9bNXEh7n6NKwybOOZTqlxm1zGMv+JGQDkGihNzMxVOViYveQL+vR4+/SLbL7k
-	 yZ+nGRgE8+lk3izvSS+jxsbLmCmo7JRkzZOPJeSeWDQvVkOCLWuuS7MvAv59frQu10
-	 WHbdydez2ikJiB0FxpPkRuLPnwAmi9t3ebrIFneJqse6qS+boNZlphsRvVITCnmJjp
-	 mVh4BnFZtNlvA==
-Date: Wed, 16 Sep 2026 07:28:28 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, Gao Pan <b54642@freescale.com>, 
-	Fugang Duan <B38611@freescale.com>, Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: imx: disable autosuspend on remove
-Message-ID: <aqoolBhfLIG1hK8h@zenone.zhora.eu>
-References: <20260914091544.1667137-1-lgs201920130244@gmail.com>
+	s=arc-20240116; t=1789537338; c=relaxed/simple;
+	bh=k8Dc0+A0B6aL6BeFh7GgattWFUtlcp0PgVCqEKrbTEI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Rrt6+knJYON/yeaI3IThT4p78zvsAG8igzdBl4lE43zcaaPHpKjH9Q9QoNMLm+LWjcmf2A21ccFQNI0O5OeJcEwsWrnBV40kSTzlXW7Sa4cXxqSvBS0rqm9DGjVoTpT3jxILAqENUaLRKraEQm5L+QZZt0qRWgCPMCKoZYxYDdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=91.218.175.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: imx@lists.linux.dev
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 43fd191bf00716f2;
+	Wed, 16 Sep 2026 05:42:13 +0000
+X-Mizu-Trace-ID: 43fd191bf00716f2
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914091544.1667137-1-lgs201920130244@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Sep 2026 13:42:07 +0800
+Message-Id: <DLGI1ERWQ7ZU.2LGBZDSYVJUC9@oss.qualcomm.com>
+Cc: <sashiko-reviews@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <Frank.Li@kernel.org>, <imx@lists.linux.dev>
+Subject: Re: [PATCH v2] drm/imx: replace struct drm_simple_display_pipe with
+ regular atomic helpers
+From: "Ze Huang" <ze.huang@oss.qualcomm.com>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>, "Ze Huang"
+ <ze.huang@oss.qualcomm.com>, "Maxime Ripard" <mripard@redhat.com>
+X-Mailer: aerc 0.21.0-146-gb5c16ebe1835
+References: <20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com> <20260716091459.1D8101F000E9@smtp.kernel.org> <DK1XPK73QJHC.JWFUMTTLOD1D@oss.qualcomm.com> <63cca05a-ec83-430c-abcf-c2f0b508446f@suse.de> <20260720-bold-jasmine-goldfish-d979e5@penduick> <DK45JBYJ8H1N.27UGNR6GBI6J5@oss.qualcomm.com> <c8e76f8f-aa64-44f1-93ad-b998c03ea731@suse.de>
+In-Reply-To: <c8e76f8f-aa64-44f1-93ad-b998c03ea731@suse.de>
 
-Hi Guangshuo,
+On Mon Sep 14, 2026 at 8:11 PM CST, Thomas Zimmermann wrote:
+> Hi
+>
+> Am 21.07.26 um 11:46 schrieb Ze Huang:
+>> On Mon Jul 20, 2026 at 10:08 PM CST, Maxime Ripard wrote:
+>>> On Mon, Jul 20, 2026 at 02:36:19PM +0200, Thomas Zimmermann wrote:
+>>>> Hi
+>>>>
+>>>> Am 18.07.26 um 21:12 schrieb Ze Huang:
+>>>> [...]
+>>>>>>> -	if (event) {
+>>>>>>> -		crtc->state->event =3D NULL;
+>>>>>>> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *pl=
+ane,
+>>>>>>> +					      struct drm_atomic_commit *commit)
+>>>>>>> +{
+>>>>>>> +	struct drm_plane_state *plane_state =3D drm_atomic_get_new_plane_=
+state(commit, plane);
+>>>>>>> +	struct drm_crtc *crtc =3D plane_state->crtc;
+>>>>>>> +	struct drm_crtc_state *crtc_state =3D NULL;
+>>>>>>> -		spin_lock_irq(&crtc->dev->event_lock);
+>>>>>>> +	if (crtc)
+>>>>>>> +		crtc_state =3D drm_atomic_get_new_crtc_state(commit, crtc);
+>>>>>>> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) =3D=3D 0)
+>>>>>>> -			drm_crtc_arm_vblank_event(crtc, event);
+>>>>>>> -		else
+>>>>>>> -			drm_crtc_send_vblank_event(crtc, event);
+>>>>>>> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_stat=
+e,
+>>>>>> [Severity: High]
+>>>>>> Can fetching the CRTC state this way cause a kernel panic in the cor=
+e atomic
+>>>>>> helpers?
+>>>>>>
+>>>>>> If userspace submits a commit that modifies only plane properties wi=
+thout
+>>>>>> affecting the CRTC, the CRTC is not implicitly added to the atomic c=
+ommit
+>>>>>> state.
+>>>>>>
+>>>>>> In this scenario, drm_atomic_get_new_crtc_state() returns NULL. Pass=
+ing this
+>>>>>> NULL pointer directly to drm_atomic_helper_check_plane_state() cause=
+s a crash
+>>>>>> when it dereferences crtc_state->enable.
+>>>>>>
+>>>>>> Could this use drm_atomic_get_crtc_state() instead to ensure the sta=
+te is
+>>>>>> brought into the commit if it is missing?
+>>>>> I think it is fine here; I'll just copy the pattern from [1].
+>>>>>
+>>>>> [1] https://elixir.bootlin.com/linux/v7.1.2/source/drivers/gpu/drm/mg=
+ag200/mgag200_mode.c#L487
+>>>> It could be that there's a long standing problem in the overall logic.=
+ Not
+>>>> having a CRTC (and hence crtc_state) should also mean !fb, so we'd ret=
+urn at
+>>>> [1]. If we have a CRTC on the plane but pass a crtc_state of NULL, we =
+could
+>>>> get a panic at [2], where it does crtc_state->crtc.=C2=A0 I'm not awar=
+e of any
+>>>> bug reports about this problem, but it's still an issue.
+>>>>
+>>>> A number of drivers get this wrong by using
+>>>> drm_atomic_helper_get_new_crtc_state(). The bot suggests to use
+>>>> drm_atomic_helper_get_crtc_state() instead.=C2=A0 This helper also ret=
+urns the
+>>>> new state. But=C2=A0 if there's no new state, it duplicates the CRTC's=
+ existing
+>>>> state. That's a bit of an overhead, but probably not an issue.=C2=A0 S=
+everal
+>>>> drivers use this helper, but also get it wrong. They tend to return ea=
+rly in
+>>>> the case of !crtc or !fb without calling _check_plane_state(). See [3]=
+ and
+>>>> [4] for examples.
+>>>>
+>>>> I think, going with the bot's suggestion to use
+>>>> drm_atomic_helper_get_crtc_state() might be the best resolution for no=
+w. It
+>>>> still needs a crtc pointer, so the pattern is
+>>>>
+>> Thank you Thomas and Maxime for the detailed explanations.
+>>
+>> I will follow the suggested pattern here:
+>>
+>>>> crtc_state =3D NULL
+>>>> if (plane_state->crtc)
+>>>>  =C2=A0 =C2=A0 crtc_state =3D drm_atomic_helper_get_crtc_state(plane_s=
+tate->crtc)
+>>>>
+>>>> _check_plane_state(plane_state, crtc_state);
+>
+> Is there an update to this patch available?
 
-On Mon, Sep 14, 2026 at 05:15:44PM +0800, Guangshuo Li wrote:
-> i2c_imx_probe() enables runtime PM autosuspend with
-> pm_runtime_use_autosuspend(). The probe error path correctly undoes
-> this setting with pm_runtime_dont_use_autosuspend(), but the normal
-> remove path only disables runtime PM.
-> 
-> The runtime PM API requires pm_runtime_use_autosuspend() to be undone
-> with pm_runtime_dont_use_autosuspend() at driver exit unless runtime PM
-> was enabled with devm_pm_runtime_enable(). Leaving the autosuspend flag
-> set therefore leaves the runtime PM state incompletely cleaned up after
-> the driver is unbound.
-> 
-> Add the missing pm_runtime_dont_use_autosuspend() call to the remove
-> path.
-> 
-> This issue was found by manual code inspection.
-> 
-> Fixes: 588eb93ea49f ("i2c: imx: add runtime pm support to improve the performance")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Yes, here:
 
-merged to i2c/i2c-fixes.
+https://lore.kernel.org/all/20260727-drm-simple-kms-removal-v3-0-de36e534f7=
+a1@oss.qualcomm.com/
 
-I applied this patch only because someone spent some time to
-review it.
+>
+>> IIUC, atomic_check is the last stage where valid to extend commit state.
+>> After that, the state is fixed and helpers should only use
+>> get_new_crtc_state() or get_old_crtc_state().
+>>
+>> My only remaining question is about the doc warning [1]:
+>>
+>>    * WARNING: Drivers may only add new CRTC states to a @state if
+>>    * drm_atomic_state.allow_modeset is set, or if it's a driver-internal
+>>    * commit not created by userspace through an IOCTL call.
+>
+> I don't think this affects your work. If you just inline the existing=20
+> simple-pipe it should be all good. (Or you duplicated existing bugs, but=
+=20
+> that doesn't make it worse either. :)
+>
+> Best regards
+> Thomas
 
-Please, follow Krzysztof advice. group all the patches together,
-version them and add a changelog.
+Thanks :)
 
-Andi
+>
+>>
+>> if we end up adding the CRTC state for a userspace non-modeset commit,
+>> it could hit the requested/affected CRTC warning in
+>> drm_atomic_check_only() [2]. That would still be more acceptable than
+>> crashing, though.
+>>
+>> [1] https://elixir.bootlin.com/linux/v7.1.3/source/drivers/gpu/drm/drm_a=
+tomic.c#L355
+>> [2] https://elixir.bootlin.com/linux/v7.1.3/source/drivers/gpu/drm/drm_a=
+tomic.c#L1746
+>>
+>> Thanks,
+>> Ze
+>>
+>>>> And in this case, _check_plane_state() should work correctly. But you =
+can
+>>>> only use _get_crtc_state() in the atomic_check helpers! In the
+>>>> atomic_update, atomic_enable, etc helpers, it's too late for the helpe=
+r to
+>>>> copy the CRTC state.
+>>>>
+>>>> I think some other DRM dev should look over this as well. It's one of =
+the
+>>>> trickier things in DRM to get right.
+>>> drm_atomic_helper_get_crtc_state is safe in atomic_check. It's
+>>> everything after that must use either get_new_crtc_state or
+>>> get_old_crtc_state, as the global state cannot be modified anymore.
+>>>
+>>> Maxime
+>>
