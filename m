@@ -1,133 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2062E4AE135;
-	Wed, 16 Sep 2026 22:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEBA4A1DF3;
+	Wed, 16 Sep 2026 22:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789596466; cv=none; b=grEWIpeiZpbiSVFJfqGKdYg+SyI8oKz6SUVbYi98yB+jD1ADjv7CopCdVo3bwbe9g1K8mroQiodpjyyQ6t4gA5aTlcfGTFLqUBBWsC1nx20kLB+/Oc6Y1L6SnzkD5Nkcyo/uW7p1nGaikS1NM1RDnGtA5gFDA9NN74iFK0+unL0=
+	t=1789597695; cv=none; b=JaLeL4o28JyAGAaxJl86UBCKKMjygLBHjeJc6/2ByfTUGuk1OcxOZC0JqYyqohvg/j+ukxOoxJ9hu66Pn5v8XLm1/2J3hZdfcDayvGxxFcAnh++HqnbWSm2mAOhqlpVKh8GgZtF7i2NlRtl99BXLZBtW5aadBMWjADj3HQHQB50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789596466; c=relaxed/simple;
-	bh=r/4mJPmvpkVyqlS+cYIm9RB7ZB+wg63qbCevPs4CilA=;
+	s=arc-20240116; t=1789597695; c=relaxed/simple;
+	bh=HHKQ6CBtvJDmqbgQ6t8Hb0cGsRqcpDUTFidk8ov9ZA4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kFf+W5yKvNa24mwUK+VNQktbeRQG/ta6oo+GtcKAtIy035nZ6QSTBdXqTXm3T+/KVbKkICAJUK34KiUCqvGnjlIO3itxsn+MRrmHKc9l28yhEHOII61ziv58fE9VY0KLOapvurMvCJVE8D+X7KEbJq7JB3ibmFvRL/5Amp0feo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dh7WgpO4; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=jtCz+o6vUL3k/UZK3qayRk38OPNNrEARaDVzafGtKd6bZTyu4kU3ryuhAp30bI6SUJaNk5l+ZecZskssy4gTk9imbJyQ8B7xAmRPNr3Cb5pUkn2+0zX8ouYqP6l0eSn9g1PsQmyfzqjsGy5lYdrIekH8gFYBeZRKzWe3lQGwYHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1Vphd3W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dh7WgpO4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D73D1F000FF;
-	Wed, 16 Sep 2026 22:07:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1Vphd3W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6011F1F00893;
+	Wed, 16 Sep 2026 22:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789596455;
-	bh=qpobW0ldlnumVACiaPcj06j6cP1uhzx6fkmN8a2srUQ=;
+	s=k20260515; t=1789597686;
+	bh=SA6eiXyyw9ug5Q9Uaa3JLyoTAoBrERjeBPO1IJBNWnY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Dh7WgpO4bqEy2D53dzXkBlp+Ue1PRUZLusYeEcFPDAGUG7TrYCY88cmSFkIePaoyc
-	 yQeVUhtBJp2TTqdQ+OgO083tBengSBiWiJeRrKkQ0yCJ6C7HivYKo812hSWVDTUWCx
-	 OBiPPkSlw53xd5IwS7P1s+TrHiMW1DPipagWrhO80Gb0ceaLIYgRTy6L4VfEXS3a6W
-	 Sgj1IHDHNDMk9r9I0r6RnHvEoBLxywcvm7s/UK4d//mL+zc0lXKcvAzwIzuzHpRMQi
-	 p+1dHH1I6CWdMsfHwRF+A9k9SrIzvyL/KXr34EnanrOXnxjaw3VnzzEOFAlBY0gqZ8
-	 qafRDq3h4dUrA==
+	b=E1Vphd3WfGqLxx3Bnq/8z5X77duw5bb8+9VnhEv6wqoTs5f3ENENpqkjZn+YGvSVG
+	 pAXXS4cWd8/y4GosX4mDuG+rn8NtI+2HTk3Qi/lu9mtislCG5MJtUA0dRoeJ0GzKzu
+	 iWawR70xz217d9AO+D4ggFmPdEgt6ttYY+PJV+8TfTAvkxrvDI5JbcmGhSDqQtzNZ+
+	 umk0r5h8q0S/WzrHNZd//KFPI/jtsSyFYH1XUElXM+dtSRI5Kj2LSYK5fp7T+X7fm/
+	 /GnxZJSo00/zE7zCVisc/6dN+3x4sxpv5uK/E4+vpmwiQfbeYya9BbCf8N/7/e30GL
+	 LlD4QfWzIJAvw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 12/12] PoC: arm64: dts: imx93-11x11-frdm: add
- multiple vdevs
+Subject: Re: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
+ enetc_update_tx_ring_tail()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Francesco Valla" <francesco@valla.it>
-Cc: "Eugenio Perez" <eperezma@redhat.com>, imx@lists.linux.dev, virtualization@lists.linux.dev, Frank.Li@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, "Michael
- S. Tsirkin" <mst@redhat.com>
-In-Reply-To: <20260916-remoteproc_virtio_map-v1-12-dac8c5eb4aa9@valla.it>
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-12-dac8c5eb4aa9@valla.it>
+To: vladimir.oltean@nxp.com
+Cc: bpf@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260915222735.1016937-3-vladimir.oltean@nxp.com>
+References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
+ <20260915222735.1016937-3-vladimir.oltean@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 16 Sep 2026 22:07:34 +0000
-Message-Id: <20260916220735.4D73D1F000FF@smtp.kernel.org>
+Date: Wed, 16 Sep 2026 22:28:06 +0000
+Message-Id: <20260916222806.6011F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] dts: virtio device nodes are ignored due to missing of_node linkag=
-e in remoteproc
-- [Medium] Process: Patch is a Proof-Of-Concept and not meant for integrati=
-on
+- [High] net: enetc: missing XDP_XMIT_FLUSH doorbell when k=3D0
 --
 
-commit a7b0e29a0ba6644ce08c06f5c058683c28280b67
-Author: Francesco Valla <francesco@valla.it>
+commit d8271163a46118cc9a3212492775857b3ece7ba0
+Author: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-PoC: arm64: dts: imx93-11x11-frdm: add multiple vdevs
+net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
 
-This commit adds rings for multiple vdevs and the required virtio nodes for
-I2C, SPI, and GPIO functionalities to the imx93-11x11-frdm devicetree. It
-also includes example peripherals to demonstrate these virtio interfaces.
+This commit modifies enetc_xdp_xmit() to fix the condition that triggers
+the TX doorbell. It removes the redundant xdp_tx_frm_cnt variable and
+updates the check to verify if at least one frame was sent along with
+flush requests.
 
->     NOTE: this is a Proof-Of-Concept, not meant to be integrated!
-
-[Severity: Medium]
-Since this patch is explicitly marked as a Proof-Of-Concept and not meant f=
-or
-integration, should it be dropped from the queue to prevent merging unstable
-or incomplete code?
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/ar=
-m64/boot/dts/freescale/imx93-11x11-frdm.dts
-> index bd14ba28690c0..dfa3b122ac5f4 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> @@ -53,6 +53,32 @@ button-k3 {
->  		};
->  	};
-> =20
-> +	gpio-keys-virtio {
-> +		compatible =3D "gpio-keys-polled";
-> +		poll-interval =3D <100>;
-> +
-> +		button-v1 {
-> +			label =3D "Button V1";
-> +			linux,code =3D <BTN_3>;
-> +			gpios =3D <&v_gpio 23 GPIO_ACTIVE_LOW>;
-> +		};
-
-[Severity: High]
-Will the v_gpio phandle fail to resolve because the v_gpio node is not
-recognized as a valid OF GPIO controller by the system?
-
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/e=
+thernet/freescale/enetc/enetc.c
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
 [ ... ]
-
-> @@ -149,8 +200,67 @@ &cm33 {
->  		 <&mu1 3 1>;
->  	mbox-names =3D "tx", "rx", "rxdb";
->  	memory-region =3D <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-> -			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-> +			<&vdev1vring0>, <&vdev2vring0>, <&vdev2vring1>,
-> +			<&vdev3vring0>, <&vdev4vring0>,
-> +			<&vdev5vring0>, <&vdev5vring1>, <&vdev5vring2>;
->  	status =3D "okay";
-> +
-> +	virtio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +
-> +		vdev@2 {
-> +			reg =3D <2>;
-> +
-> +			v_gpio: gpio {
-> +				compatible =3D "virtio,device29";
+> @@ -1845,19 +1844,17 @@ int enetc_xdp_xmit(struct net_device *ndev, int n=
+um_frames,
+>  						    &xdp_redirect_arr[i]);
+>  			break;
+>  		}
+> -
+> -		xdp_tx_frm_cnt++;
+>  	}
+> =20
+> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k !=3D xdp_tx_frm_cnt))
+> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
 
 [Severity: High]
-Will these virtio subnodes remain unlinked to the actual devices?
+Does the addition of the k && condition block the mandatory XDP_XMIT_FLUSH
+doorbell if the current transmission call fails to enqueue any frames?
 
-virtio_device_of_init() attempts to match devicetree nodes by checking
-dev_of_node(dev->dev.parent). For remoteproc-created virtio devices, the
-parent is the dynamically created rproc-virtio platform device (created in
-rproc_handle_vdev()), which is never assigned an of_node.
+If the devmap subsystem enqueues a full batch of frames with flags=3D0
+(no flush), enetc_xdp_xmit() successfully enqueues them but skips the
+doorbell because k =3D=3D num_frames and flags=3D0.
 
-Does this result in the devicetree matching failing silently, causing
-dependent peripheral drivers (e.g., gpio-keys) to defer probing indefinitel=
-y?
+Subsequently, devmap calls __dev_flush() which invokes enetc_xdp_xmit()
+with flags=3DXDP_XMIT_FLUSH to ring the doorbell. If the hardware TX ring
+is now full, this call fails to enqueue its pending frames, resulting in
+k=3D0.
+
+Since the modified condition evaluates to false when k=3D0, wouldn't this
+skip the doorbell entirely and leave the previously enqueued XDP frames
+permanently stuck in the hardware TX ring?
+
+>  		enetc_update_tx_ring_tail(tx_ring);
+> =20
+> -	tx_ring->stats.xdp_tx +=3D xdp_tx_frm_cnt;
+> -	tx_ring->stats.xdp_tx_drops +=3D num_frames - xdp_tx_frm_cnt;
+> +	tx_ring->stats.xdp_tx +=3D k;
+> +	tx_ring->stats.xdp_tx_drops +=3D num_frames - k;
+> =20
+>  	enetc_unlock_mdio();
+> =20
+> -	return xdp_tx_frm_cnt;
+> +	return k;
+>  }
+>  EXPORT_SYMBOL_GPL(enetc_xdp_xmit);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260916-remoteproc=
-_virtio_map-v1-0-dac8c5eb4aa9@valla.it?part=3D12
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915222735.1016=
+937-1-vladimir.oltean@nxp.com?part=3D2
