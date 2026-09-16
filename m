@@ -1,205 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010050.outbound.protection.outlook.com [52.101.84.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9678837204D;
-	Wed, 16 Sep 2026 16:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789574769; cv=none; b=QVoxJt+XfoH3lLnMN9FlV2i5Ekl+Zms554fVxGicDZ8SKeLmrjy4OvrYdqTsx4+NGalyWh3skY6k6aD+btt36GxHDBBB5/JXGa7unpsXA8FXfq0nW4826nfZNLPt/N+PIPDO1j/CaAIpW3hxCrzBWCIT0O+aP8W/XKZ1XnlccbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789574769; c=relaxed/simple;
-	bh=Qj5+127DNCzkqzuGszQrzjZHHjYHFiRkVcP+p8nkCgM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Zz0z7fwbbCROCtojewZAnUqEpdWyzhIY0lDq0uKHJAyESOMgMhDkHX8feidNkK9DzJ+NZTGa+/iUvIf2lzeNmMv0Hn3RGvGqSNLhfnO/96YwCcjsTJ7bFs1glAwcNzzeuNudE+g7R7UfNx+h6FiQfE64y4O8j5KjyuCa3Qs8+NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NVsZDh9W; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8429B4D6C42
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 16:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789575131; cv=fail; b=rTsHIXoLPw0GqXdSzfr9yTaWPTxuvzALbn7OqGaTnz78HPWF/7Xg3bDj0KFLPOb6b1mCScc16FkITbbCuxJ7aWeLDS30Q/F+f3HnWSh+XhXyx1P7D1tK+kA0VQj8XLRMxgVQexRycYiNpfVdPC103FWRhsTUqvYjngpATi1MlaM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789575131; c=relaxed/simple;
+	bh=jg/pzyTPl79+MMeWDBpnzJRqR1XwrDtvboCtGFWVvTA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bLtGoZ45GSW1TBSHy1pt4DtoDretEX9f7e/E/WYHvt8cQL436hKk94gtrQlhPEWzeShzNzQ7sCFVlBU6oOSKPTwrnhmCKuPfO+oKJySYFJnLgLvTnsi/zHgivPnwzsodhUfm6PZC18CIkLqhZN9SYqGFXf3XavkCOBpHBg/dSrQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wHKnTocl; arc=fail smtp.client-ip=52.101.84.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NVsZDh9W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099201F000FF;
-	Wed, 16 Sep 2026 16:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789574768;
-	bh=bSsGmSvnVHVpXDKo8RRXMT5lZT++LQtq9ySeurTXxjI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NVsZDh9WkmzuwKmrumd1EVQHYa9Hql/X8kpfqLXCSXw+dlYlIYOykg0O//h02Wrig
-	 P9ulmS6CyKHE1ptwtn20AT5j3eyzo3cJAufJNn4VqWqTlbQZD8L1B9mYbyOHjn6/AO
-	 u7D0r2+sPJtv7lGNZoGlPk9S1R/z8udvEmhi5FaY5qSZS0X1i4tdLwfzLIgAWWiYYN
-	 4SuXCqzrIx61FaUg/BNX6I/zIAt45uZDrZhxecDj26nHwcEBiCO9+HMR1Yr6JPmhsp
-	 MJl3vVXCa9jB68PVlZWlfVB1zI5uV1E2+OoZHNXNz6GfDz7vLAF1z4/SSLA8iBSIDF
-	 SGim6ZmKGoRJQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] dmaengine: fsl-edma: add per-channel IOMMU support
- via iommu-map
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
-Cc: dmaengine@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, vkoul@kernel.org
-In-Reply-To: <20260916-edma-iommu-v1-2-e1731968081e@nxp.com>
-References: <20260916-edma-iommu-v1-0-e1731968081e@nxp.com>
- <20260916-edma-iommu-v1-2-e1731968081e@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 16 Sep 2026 16:06:07 +0000
-Message-Id: <20260916160608.099201F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wHKnTocl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bFghNSQGGekJwiOlDVN5vgMEfHTKnrGCMV9mQrt+eYvhXid4gE3VQHHSErknUVDpimzWcBC6bivLmUltaBRcRYtelK64C7FnQkZ/p+ZNnS2n7Tat+agRPpI7I+dceRAeZY5BldT3tHfbYKSkiYxELNPS2Aa2jb/VAkuv1XUrMS9j4xX6HSjdoLBR225FA0J2DcR5Ujx8cEpXCURhHmyyI+IfWbwz/HQ/+B1qzxSyeC/T5OsDGOlpcR1idw5vgSezZuafK0Z8bJxwK3a5EqQp1j27zvnPD3ucd7IchaZlE9/zX3j41VBz5SPa+NF8mQQbQ2g4wwRKO2Hm4tNN342/kQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jg/pzyTPl79+MMeWDBpnzJRqR1XwrDtvboCtGFWVvTA=;
+ b=R1rFxhk0xNL1Xv8nJTV90i7DWE8e1RWzCZn05+J+sQDL52oNfSL/UDMSvWzkuRV0FJuPSlJDSRmUMsXz7W1tCaeD4cVTIRP6v/Qgvrz++2Kt/9rfC7svG5TYMM6DafLstcuh7sfK48Qc+pWcQoLfW9UFBwZvpivz16D8aYhH/q0Rs3ko7BruQBqzLp+SeWqQpUIWaRB9OKQl4HWziJOsTlerb2RASBtWZ0kpdu9m0jtNzC8dpMEzIcDJF/4sRBaTaTyFqBesNsu3n/WSSWMCGJ9dBqJy1bsuAAvnqm61yiqe4YYtEYZk942xjrnKs+QSim+rELFn4Oj6cff9hVaIsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jg/pzyTPl79+MMeWDBpnzJRqR1XwrDtvboCtGFWVvTA=;
+ b=wHKnToclUJBh4Y2JcaeMxTPRC9N4MoGs3K+DT7nT0H4mSt1HbRJnaTtsqP44vKgyBN5e1VfURIPay2vroaikZ3HgL+2VbH//AmGQtI1nbOxMQ8Pg/ByPPW3rFPDLXQhYObxhVjHQB2oAveao4f74Kfz2KJAusheyTjOaoON1usXlSEnWTp3y9u6Xz4jwdmYaajqyp7qdnEfcjVYOOM1rD4LKHpgqZ+tXU3t3fNWRgXGUh1jEH8M3NooZ14/e/bVixTf7KydW34eVWi9rK/0bi+ykmVFwRNorRenQtwUYyoKm1G+IFOwqKdiB9Tyc59+jQBOgLJagMWsXVYLphJmlVA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by MIWPR04MB166472.eurprd04.prod.outlook.com (2603:10a6:290:d9::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 16:12:05 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.012; Wed, 16 Sep 2026
+ 16:12:04 +0000
+Date: Wed, 16 Sep 2026 11:11:54 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Joshua Crofts <joshua.crofts1@gmail.com>,
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] clk: imx: add missing
+ pm_runtime_dont_use_autosuspend() calls
+Message-ID: <aqq_ymTi1I951uQp@SMW015318>
+References: <20260915103345.1334-1-joshua.crofts1@gmail.com>
+ <aqpgUPWUGZp5Cjzt@hovoldconsulting.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqpgUPWUGZp5Cjzt@hovoldconsulting.com>
+X-ClientProxiedBy: PH7P220CA0029.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:326::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MIWPR04MB166472:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7d8c1a9b-40e9-4ad4-b736-08df140d3fb3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|7416014|366016|23010399003|1800799024|4143699003|11063799006|56012099006|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	+bl5gTm5T7RaxfHwoMjh5uFCJoKlxmotHwWPz4KZ29kt44iNcKSW6XsNiFmjfUMcGpGHE+5GTA4laKw1Scq0JAu/cPLeoLAd81tJ6Pt/q6LB9xcEDLZXk/ODw9bfNtcE//5NINTTIwusuBAyLNSMizCyaw1Re18Ow+0PrjjAUv4hP0TNJveLth75YBhyrEbb3NogFmoHmeRI5aAh0GKTrnZfvsFF+K1+KaZrhmCeG7P3Fuh3Uy8HD8VebnOMjpPjNPiiGucIrMtb78GQgTAjzsQ8lYh5DttSfoVMYo9qqd5RNru1uYkw8az735/XN61Ny3BkuuaLv2SaB3j11tXzxFe8mMgdrDFciQxMYUTUm+aonSzvz+FiOSzJWlx3f1ee1Yuu6P+ZZgKJFeA3UfjjLrAqhj4lfYQVqeWGoIWU1cv1XhjnNq3ntZ3ydpfw/1L4/5EdLH64TxyNcqQlJIj/OUYi7iIWUCQoIuzulr9/Qu2JmtmYu257/RrNidnUadQoVCHPYbLQXdBOjHuVjv3G2CphQhh3hwuoCkHddGB3zDFF5K0mhDITJXZP4hK/As4OlDQaFOuv4rkh5DmuUZwFUi8LhMysdtyjkVL4HcT37BMg5ghdCYHxf8vKgfODFR0xHarMhqTUI5k+NQX0o9RP142Kw/s4S++AyYz8cyzCLhA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(7416014)(366016)(23010399003)(1800799024)(4143699003)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0m2E6CSQ8o+mBEzTJoH26QtPdFKqZoJDgb3lzoW6cvKSM5sGCNjHrbBr1esJ?=
+ =?us-ascii?Q?lPsmg/pPewGGQmguS7MxPguLTH2NB6XEhYwJURAvDFZZUOk4X7o+TXCpRKbu?=
+ =?us-ascii?Q?Vpv/UrAbTBf0j7UgCdL8y1wqKFDZ70LYZiIW1Z427cwuoumZhLdewvzQJDSo?=
+ =?us-ascii?Q?ZeM8kV4YyaLwhw44qhUpomq8GwPp1+GAU2OhG5Fmv+Ig8ywjvAz3xUi5jivH?=
+ =?us-ascii?Q?6u6dbxrIkAbKAVjc3WK6S9P5DFJHH6Zf/zsnJHhai3On9Hr+R7M7xqPLVoFr?=
+ =?us-ascii?Q?s7rcizTPzb7LUyS6uv1hzkuzhsWbmfujDlONC2YEVqeIunoVkImWozfnlEEJ?=
+ =?us-ascii?Q?GzmEqUbNqZJhhEOxAZMn7aTBuqQ0dTYCyS8cRo0peEoKLiKYOBdN2+V8Abzh?=
+ =?us-ascii?Q?t+Z4F1TmCNVnobvczW96Wt12H75o258SWOk86W1hiN0vzyGnMPMHOzcG0NhK?=
+ =?us-ascii?Q?QB3Dmo17904RSmnvhXTIg77F9KK1vENQI6oXb/pP2fkdyVIrQ3XPe4KBG4T1?=
+ =?us-ascii?Q?Kheb3UK7xa8tpwqMIRhvtjLrWv8rikvUSdAgZGJBRzKeblLsjTAa8Hw7m8MC?=
+ =?us-ascii?Q?lv/Ecr5QRqAdpKQZsfbodvS/bg7g8YItETX8Jnf0VpnirJpPCj0WVQwTSGfB?=
+ =?us-ascii?Q?zvh2fuGmnGjfBevBsEkyqqxQ5VzLuyZaRS/4WyZR27t3Gvb/bPNElzl5UNjL?=
+ =?us-ascii?Q?TAqsmNhZtvj6Hs2KO6bOXhKHBKaXR5NaUbVtTzAgG2zcCZsfNQqPvbs9d6tq?=
+ =?us-ascii?Q?nLsNiFNJEHcoMat0zxCALvDgTDQgtX7eKrLJa/9RFQ/wf4/mmH378LUQUXAs?=
+ =?us-ascii?Q?d/CGLkbcpPrF2pw6eX4BcS++DXRF2QvtSEDIh3PUC8O/jkNtWVOoP44wpvQh?=
+ =?us-ascii?Q?rFDKKdDfyAQt3hFYsf81/5qT4Wvb8wB9h84JmMf2vRi3soi5mbG9KnWcUQr7?=
+ =?us-ascii?Q?QosiDwyUz6vfy3haZ18R5qVzeW5GE0PxxSFzVX5aewiq0iVuepwP1gMSdHnd?=
+ =?us-ascii?Q?bm7j3gmgj7tRyXdeYogMRlTqNrIQM79eOBvc0zHmHPN4dpv3YKKF+eSMD5qT?=
+ =?us-ascii?Q?cKEsg+WvJsOW9dZjZRq/j2vyDOhVDj+Al92Q0kqmRoCLhExsvbfqR4VZIebk?=
+ =?us-ascii?Q?kbehWzDjA/TIiPnZQbcOXqZ9Xg3dBxTt0JrMIExeFZLj3in4HhBNun+kRuHw?=
+ =?us-ascii?Q?e+RIdQl8nwW0s3M/D/TQRO8VRO8dkaq7ts/byf3LJYkn9zXYCtkyTBnAMP/j?=
+ =?us-ascii?Q?PptRkKUVqlzHazokTdK7Aez6ZcHa5vlPkhhpfDuZ0ihyvpboScKajgk2Kl+n?=
+ =?us-ascii?Q?0qRiHbLizHycYbt3vP39URA8KUj5eiAl2qtnKowuHVvSjjf63kQRL4Yvzcej?=
+ =?us-ascii?Q?lW/wO1lj+xTD3+WZdRFOowMa8sTUVRe6fePiU+yUFbkFnJX4FjmHH6NlPqXt?=
+ =?us-ascii?Q?FlIPhQek9/Icu6gj0jabLLzWhN7q+Lx32n2qTQ0uy5RFdF7GA3f3XkVmqmSR?=
+ =?us-ascii?Q?V/Qg86e+9Ykw7jHmL3MCQCt2hSqRjdnEPhoOJaBaFqt/lKHdsqrpjAVB9MHT?=
+ =?us-ascii?Q?VM+3v6b/qZf6ojc8kLPByhrjer0eN0uiy8Pdp0s0SJ4Vyars5kfCTWN8X/Uz?=
+ =?us-ascii?Q?cZXliKZdyfT5ye/fs2O0lIGsywXMpIGdfQx+uam3NFSKJQdJy/pu8tF2X/+W?=
+ =?us-ascii?Q?0Qfm/eHLNZKHy8V58gNukluk0VxB/qgc/VVhn/wxsnym7Ig5qmYY594D0ZTq?=
+ =?us-ascii?Q?zONAuDvSjWrjJxdMbkw1p0B2+kf+rQr7Qk3Uky2deswj7C9WZ+UG?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d8c1a9b-40e9-4ad4-b736-08df140d3fb3
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 16:12:04.8756
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y7ly/FCtWtauukEpiceuKX/YHDHjrCDJ0gg0USTVZ+IXtqZiq7AgT1LUaenKUHZwlhJU+J+10IfpEQuBvdax5nZS7CmwIVAK3ZclHLI8S4YGkOCNxXU0kq9ouG3e1XZs
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MIWPR04MB166472
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [High] dmaengine: fsl-edma: TCD pool mapped to parent device causing IOMM=
-U faults
-- [High] dmaengine: fsl-edma: masking -EPROBE_DEFER in xlate breaks deferre=
-d probe
-- [High] dmaengine: fsl-edma: late modification of dev->bus causes refcount=
- underflow
-- [High] dmaengine: fsl-edma: DMA_MEMCPY channels bypass IOMMU configuration
-- [High] dmaengine: fsl-edma: missing IOMMU configuration in fsl_edma_xlate
-- [High] dmaengine: fsl-edma: dirty srcid state on error path blocks future=
- requests
---
+On Wed, Sep 16, 2026 at 11:24:32AM +0200, Johan Hovold wrote:
+> On Tue, Sep 15, 2026 at 10:33:43AM +0000, Joshua Crofts wrote:
+> > Several drivers in the clk subsystem forget to call dont_use_autosuspend()
+> > on teardown or error, causing potential resource leaks. This series adds
+> > the missing calls.
+>
+> No, as I've explained repeatedly elsewhere, it does not cause any
+> resource leaks. [1][2]
+>
+> The autosuspend setting leaks if you will, but that only matters in the
+> theoretical corner case of someone rebinding a different driver (which
+> will soon also taint the kernel).
+>
+> So don't exaggerate the impact, this is essentially just a cleanup,
+> which is fine in itself.
 
-commit 94975a647e48c96637ca91c3ba2539ad15656ede
-Author: Peng Fan <peng.fan@nxp.com>
+Is it possilbe to create/improve runtime pm API, let runtime_pm enable/disable
+include these pair functions.
 
-dmaengine: fsl-edma: add per-channel IOMMU support via iommu-map
+I get many similar patches since scan tools is more powerful now.
 
-This patch adds iommu-map support so each eDMA channel can be individually
-mapped to an IOMMU stream ID. At probe time, per-channel devices are
-initialized, and at xlate time the IOMMU domain is configured.
+Frank
 
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index bb7531c456dfa..58a92ff4ddbe7 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -283,8 +283,10 @@ int fsl_edma_resume(struct dma_chan *chan)
-> =20
->  static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
->  {
-[ ... ]
-> @@ -294,7 +296,7 @@ static void fsl_edma_unprep_slave_dma(struct fsl_edma=
-_chan *fsl_chan)
->  static bool fsl_edma_prep_slave_dma(struct fsl_edma_chan *fsl_chan,
->  				    enum dma_transfer_direction dir)
->  {
-> -	struct device *dev =3D fsl_chan->vchan.chan.device->dev;
-> +	struct device *dev =3D dmaengine_get_dma_device(&fsl_chan->vchan.chan);
->  	enum dma_data_direction dma_dir;
->  	phys_addr_t addr =3D 0;
->  	u32 size =3D 0;
-
-[Severity: High]
-Since the new per-channel IOMMU feature maps channel devices differently fr=
-om
-the parent controller, does the hardware TCD pool allocation in
-fsl_edma_alloc_chan_resources() also need to be updated?
-
-It currently maps the TCD pool using the parent controller device:
-
-	fsl_chan->tcd_pool =3D dma_pool_create("tcd_pool", chan->device->dev, ...
-
-If the pool uses the parent device, won't its DMA addresses be invalid in
-the channel's hardware IOMMU domain, causing translation faults when fetchi=
-ng
-the TCDs?
-
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index d9fb717b5b53c..eabb0086fc9de 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-[ ... ]
-> @@ -332,6 +334,12 @@ static struct dma_chan *fsl_edma3_xlate(struct of_ph=
-andle_args *dma_spec,
->  		fsl_chan->is_remote =3D dma_spec->args[2] & FSL_EDMA_REMOTE;
->  		fsl_chan->is_multi_fifo =3D dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
-> =20
-> +		if (fsl_edma->has_iommu_map) {
-> +			ret =3D fsl_edma_chan_configure_iommu(fsl_chan);
-> +			if (ret)
-> +				return NULL;
-> +		}
-> +
-
-[Severity: High]
-If fsl_edma_chan_configure_iommu() fails and returns -EPROBE_DEFER because =
-the
-IOMMU driver is not yet probed, this drops the valid error code and returns
-NULL. Will this mislead the core DMA engine (which treats NULL as 'channel =
-not
-found') and break deferred probing for client devices?
-
-[Severity: High]
-If fsl_edma_chan_configure_iommu() fails and returns an error, returning NU=
-LL
-here does not roll back the state assignments made just above
-(e.g., fsl_chan->srcid =3D dma_spec->args[0]). Because the channel wasn't
-successfully allocated, fsl_edma_free_chan_resources() will never be called=
- to
-clear it. Will this leave a dirty srcid state that permanently locks out
-future client requests for this hardware signal due to fsl_edma_srcid_in_us=
-e()?
-
-[Severity: High]
-Because this IOMMU configuration logic is placed exclusively inside the DT
-xlate function, does it completely bypass non-DT channel allocations? If a
-client driver requests a channel for DMA_MEMCPY, memory will be mapped using
-the parent controller device while the channel hardware fetches using its
-hardwired Stream ID. Won't this cause IOMMU translation faults for non-DT
-channels?
-
->  		chan =3D dma_get_slave_channel(chan);
->  		chan->device->privatecnt++;
->  		return chan;
-[ ... ]
-> +static void fsl_edma_init_chan_iommu(struct platform_device *pdev,
-> +				    struct fsl_edma_engine *fsl_edma)
-> +{
-[ ... ]
-> +	for (i =3D 0; i < fsl_edma->n_chans; i++) {
-> +		struct fsl_edma_chan *fsl_chan =3D &fsl_edma->chans[i];
-> +		struct device *dev;
-> +
-> +		if (fsl_edma->chan_masked & BIT(i))
-> +			continue;
-> +
-> +		dev =3D &fsl_chan->vchan.chan.dev->device;
-> +		dev->coherent_dma_mask =3D pdev->dev.coherent_dma_mask;
-> +		dev->dma_mask =3D &dev->coherent_dma_mask;
-> +		dev->bus =3D pdev->dev.bus;
-
-[Severity: High]
-Does this illegally modify the bus type of an already-registered device?
-
-This is executed after dmaenginem_async_device_register() has already called
-device_add(). Since bus_add_device() is never executed, won't device_del()
-invoke bus_remove_device() during driver unbinding or removal, causing a fa=
-tal
-reference count underflow and use-after-free on the global platform_bus_type
-subsystem?
-
-> +	}
-> +
-> +	fsl_edma->has_iommu_map =3D true;
-> +}
-[ ... ]
-> @@ -882,6 +954,8 @@ static int fsl_edma_probe(struct platform_device *pde=
-v)
->  		return dev_err_probe(&pdev->dev, ret,
->  				     "Can't register Freescale eDMA engine.\n");
-> =20
-> +	fsl_edma_init_chan_iommu(pdev, fsl_edma);
-> +
->  	ret =3D devm_of_dma_controller_register(&pdev->dev, np,
->  			drvdata->dmamuxs ? fsl_edma_xlate : fsl_edma3_xlate,
->  			fsl_edma);
-
-[Severity: High]
-Since the per-channel IOMMU configuration was only added to fsl_edma3_xlate=
-(),
-does this entirely omit configuration for hardware variants relying on
-fsl_edma_xlate()? Will controller variants using fsl_edma_xlate bypass the
-IOMMU configuration and cause hardware translation faults?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260916-edma-iommu=
--v1-0-e1731968081e@nxp.com?part=3D2
+>
+> Johan
+>
+> [1] https://lore.kernel.org/all/aqpd3viN1UoZBkgL@hovoldconsulting.com/
+> [2] https://lore.kernel.org/linux-iio/aow51Nk-cet9qaUQ@hovoldconsulting.com/
+>
