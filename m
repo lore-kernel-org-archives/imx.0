@@ -1,85 +1,138 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A14938888E
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 09:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7ED4A64CF
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 09:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789550893; cv=none; b=F/2al5v99VpCnkBImzzCHHoL+O91p+fQ8juA2GtsFWqTg6FgDtidmVOE5k5hKoPF2BvVdFxqav+2rRhOfbmg6JN1+R3e6PIWRKzQ5rHqi0w8/XUR/LsKD3UcyfQXBFaijIIyjGwCANo7BLtSqfMqClJVkEbT5/e8MsgTtA0P13E=
+	t=1789551016; cv=none; b=dKICht+yPcDsKZpwXxsEWxjpWrNjuj2rZGivqyIFZE8qfynFQe8e0fy3El5rcSYQwPZUUMW1I4tB6ntySZbbjHFYmVGKUuP+WGtifkJP9lTgFdCTbza5EZS/WHSRTy5C0z7vHLo/rBrx1A0ZlT0LinGiBvrCV6GmWYfavCkARhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789550893; c=relaxed/simple;
-	bh=e0CSG2BEu5l9qTKF+UJxzpJzGObsgBtEZ/67en5f4fI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KX3yOhveJ+Mc5TBh9vS2OT4bQUckeP+RZmhd4ODSNop367HJ1DTfi1LCab/agFuKnME6iAPwPtNCQK+qmYP5lA+Xni0PYJiVfp+W2nBoebnGyfN5eVbhRL4IAMdBw0fVtlugK5tyIaBme0+mTBIi794/Vuj724HnBcEtSAqjQwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowACnqTchYapqrFPgBw--.42435S2;
-	Wed, 16 Sep 2026 17:28:01 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Frank.Li@nxp.com
-Cc: dmaengine@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	vkoul@kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] dmaengine: fsl-edma: Fix channel leak in fsl_edma_xlate()
-Date: Wed, 16 Sep 2026 09:27:33 +0000
-Message-Id: <20260916092733.2002700-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1789551016; c=relaxed/simple;
+	bh=rVlNPjI4P2z37o7qE9/JXBSWEwGmZChcHXGnM7D9n6c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZVKnw7ZKhp08qL60m0Bw311awprEqDAYDdQud/kUPi70hJXn8Hl70ykRopAmW2Sn2GKxeexQqntd+yZkMuTXn/6sFAKGJuyOSIdJJ28bW9P59TANQ5nePftxpdhCsXdZ073dKwcY5U7yKfYMGdNCiHCSgLW/pcuwIPpC4OFzOK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YCaIdDCy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YCaIdDCy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789550997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pLJ3zniryXoIXYXj2kORk+UpoeKS9R6ImYDJyVbdKgw=;
+	b=YCaIdDCyoE93yZmBAfESVoajo49TPwa7hyUImgklXjgAUauE0Chzl86f50GNoG1YHkECbX
+	uKOo7D/Pns4ekjXFNcSGeDA73JAlN9XoMn0nntR3B7692bbvQVsqyPCtGxslQ+DCgKEJnz
+	UEYk9QAiKvMY6GLKrQa4HtfSFvVHLhs=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-39-R1frZppLMTmBZMe5FY49zQ-1; Wed, 16 Sep 2026 05:29:56 -0400
+X-MC-Unique: R1frZppLMTmBZMe5FY49zQ-1
+X-Mimecast-MFC-AGG-ID: R1frZppLMTmBZMe5FY49zQ_1789550995
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2db22383e8fso28716415ad.1
+        for <imx@lists.linux.dev>; Wed, 16 Sep 2026 02:29:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789550995; x=1790155795;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pLJ3zniryXoIXYXj2kORk+UpoeKS9R6ImYDJyVbdKgw=;
+        b=BoklSAusEygv17uZZF4Ch/7CLe90KMBcFed37KiaESGh1SittVGEnFeUAtrPW+YnjD
+         YkzfmaNdDdsQg3162wYqTcp3BB7YrrftX01fnWma9NTATwMaVhv8dKlW8l5VuN63F2oS
+         k0043SCq29REEfIHNwlhepGSV9kkWr8w+BqihRP9HpEO4OZC3wLHnGFEWrVvL7DbENb1
+         72iXlcqKgUP4Bsii6ecxL09afpn90nL8ER+lf20VRNNPb4421ubc5XEk9SS6WDHTCD5k
+         914YAfnhED9gL5lYTYhQU+i/TglQleQnc3Ygie8gjttbf1KFSZn2eFbVAU7fUFhiQYjs
+         ZrYQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy2CH2Cu+PZofk6dYooHm/37z0lpziNveU3CJKNPuM2Fs59/i80AY18wAqUxpFftl3Ke5o=@lists.linux.dev
+X-Gm-Message-State: AFuF++nPID8RREb/gD7Rk3RKrG980vVBM+8NmB0tjUIyeCJKrTzJqLml
+	Ut3X621md07M7JeI+QqsDPE81FTUqqaCR18P5TRLQGcpToaYf8jmc//+qjwydLoDOsqQ2wdbrCU
+	+OmCT89dVbReeDCUeKjFmCoqBaIiIcGDMt1BcZFNfTUvUB5/BM+9v380BIuMtQwXFnWcbRQbFlx
+	WNP2RzmxveGvCQM50RA8lTDl2YxYBw
+X-Gm-Gg: AYBFou0MCV49hThvwpxRqaommmILscc1c6Om4Top560ihhaBbnjIxzkWbhTsWU5Sd19
+	qtnS38n6h4eKSOXAs80kYei9owI/Dh+D+MhhyuNzvhC5r4tNB9DoUCuz01GjmA1s0Qs0iq8NTg8
+	knpQ+xgfvWJ+AN/gwiEEsPlh1WL8uFdqAIWxLdTeEWn+5K+wobl7GJs1lK
+X-Received: by 2002:a17:903:3b8f:b0:2d7:4bc8:41a4 with SMTP id d9443c01a7336-2dd8ea1cd1dmr23798625ad.10.1789550995058;
+        Wed, 16 Sep 2026 02:29:55 -0700 (PDT)
+X-Received: by 2002:a17:903:3b8f:b0:2d7:4bc8:41a4 with SMTP id
+ d9443c01a7336-2dd8ea1cd1dmr23798155ad.10.1789550994573; Wed, 16 Sep 2026
+ 02:29:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnqTchYapqrFPgBw--.42435S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKr1rJF1fAr47Jw1fJw1DZFb_yoWDuwb_W3
-	4DGr93Zr1DCry7Cr18Krs8ZrWv9rWqgayfuw1qy39Iqas8Aw13Xryjqwn5Xr1UWFW7CFZ8
-	t3WUZ345Zr1fWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbxxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
-	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267
-	AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j
-	6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUO2
-	NtDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwIMA2qqQJWI5gAAsx
+References: <20260911124540.279841-1-tzimmermann@suse.de> <20260911124540.279841-3-tzimmermann@suse.de>
+In-Reply-To: <20260911124540.279841-3-tzimmermann@suse.de>
+From: Javier Martinez Canillas <javierm@redhat.com>
+Date: Wed, 16 Sep 2026 11:29:42 +0200
+X-Gm-Features: AcwNN1VjQRR608PaSU5v9yXg9eP7o3aE9lu55JInhqrDujLUhvS3kxSMIUXF4N0
+Message-ID: <CAFOAJEfWX09ZvnQvn1+SBeW4_MaSRO2JNLfoJRGYS4jXGr-09w@mail.gmail.com>
+Subject: Re: [PATCH v5 02/14] drm/panic: Test address from kmap op for NULL
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: jfalempe@redhat.com, airlied@gmail.com, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, geert@linux-m68k.org, rdunlap@infradead.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev, 
+	sashiko-reviews@lists.linux.dev, stable@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: iHinQFIul0i2GZysEzn11tWutnlEnMWz1Amggqu-eSg_1789550995
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-fsl_edma_xlate() grabs a channel with dma_get_slave_channel() before
-validating the requested srcid. If the srcid turns out to be invalid,
-the function just returns NULL, leaving the channel with its client
-count elevated and marked private, so it can never be requested again.
+Hello Thomas,
 
-Release the channel with dma_release_channel() before returning NULL.
+On Fri, Sep 11, 2026 at 2:46=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+>
+> Do nothing if kmap_local_page_try_from_panic() returns NULL. This is
+> not likely to hapen, as the previous page from the same memory area
+> has been mapped successfully.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 23437509a694 ("drm/panic: Fix 24bit pixel crossing page boundaries=
+")
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Jocelyn Falempe <jfalempe@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.18+
+> ---
+>  drivers/gpu/drm/drm_panic.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+> index ba21df4be338..d28ce8878e05 100644
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -178,6 +178,8 @@ static void drm_panic_write_pixel24_xpage(void *vaddr=
+, struct page *next_page,
+>         u8 *p =3D vaddr + offset;
+>
+>         vaddr2 =3D kmap_local_page_try_from_panic(next_page);
+> +       if (!vaddr2)
+> +               return;
+>
+>         *p++ =3D color & 0xff;
+>         color >>=3D 8;
+> --
+> 2.55.0
+>
 
-Fixes: 6aa60f79e679 ("dmaengine: fsl-edma: add safety check for 'srcid'")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/dma/fsl-edma-main.c | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 36155ab1602a..11fbf6b1609b 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -279,6 +279,7 @@ static struct dma_chan *fsl_edma_xlate(struct of_phandle_args *dma_spec,
- 				if (!fsl_chan->srcid) {
- 					dev_err(&fsl_chan->pdev->dev, "Invalidate srcid %d\n",
- 						fsl_chan->srcid);
-+					dma_release_channel(chan);
- 					return NULL;
- 				}
- 
--- 
-2.34.1
+--=20
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
