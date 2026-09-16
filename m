@@ -1,138 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7ED4A64CF
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 09:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8654A92F1
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 09:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789551016; cv=none; b=dKICht+yPcDsKZpwXxsEWxjpWrNjuj2rZGivqyIFZE8qfynFQe8e0fy3El5rcSYQwPZUUMW1I4tB6ntySZbbjHFYmVGKUuP+WGtifkJP9lTgFdCTbza5EZS/WHSRTy5C0z7vHLo/rBrx1A0ZlT0LinGiBvrCV6GmWYfavCkARhI=
+	t=1789551750; cv=none; b=CCjWRbJFyzvT7iLMWig1cuOEs7GES6jxdoG9caPTWpIgCdEeXVYCsK8Qq0KG67NK8/TPezyx7ag9ChKpOtU8qF+wZymmpPB0xa1vFvjkByngvfni2XgICqk/sir9BK9mmfauFSW5mRkwihBuuku6XpEovQRxEczWfdGcddsdGu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789551016; c=relaxed/simple;
-	bh=rVlNPjI4P2z37o7qE9/JXBSWEwGmZChcHXGnM7D9n6c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZVKnw7ZKhp08qL60m0Bw311awprEqDAYDdQud/kUPi70hJXn8Hl70ykRopAmW2Sn2GKxeexQqntd+yZkMuTXn/6sFAKGJuyOSIdJJ28bW9P59TANQ5nePftxpdhCsXdZ073dKwcY5U7yKfYMGdNCiHCSgLW/pcuwIPpC4OFzOK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YCaIdDCy; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789551750; c=relaxed/simple;
+	bh=OAYn1OR/urJcX7Y1PYkiEnveKTXrW8w2C8NfOif91L8=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ig8390v+6SbidRjNKwV3Awlph5l6bOv16C7CE29Uv4IhZYXCGMGJAuaFUQimwiCn4qo9xV4haXpu9RR1HqD5vj28sr9vEtuGSI0qZN8iguSKP41Nr2hlE86v71FtwfGhdIQDR/NnoLitvmLuZffemEHmtCXDdmUT9Lb4rMjuack=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIBXyWb7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YCaIdDCy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789550997;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pLJ3zniryXoIXYXj2kORk+UpoeKS9R6ImYDJyVbdKgw=;
-	b=YCaIdDCyoE93yZmBAfESVoajo49TPwa7hyUImgklXjgAUauE0Chzl86f50GNoG1YHkECbX
-	uKOo7D/Pns4ekjXFNcSGeDA73JAlN9XoMn0nntR3B7692bbvQVsqyPCtGxslQ+DCgKEJnz
-	UEYk9QAiKvMY6GLKrQa4HtfSFvVHLhs=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-39-R1frZppLMTmBZMe5FY49zQ-1; Wed, 16 Sep 2026 05:29:56 -0400
-X-MC-Unique: R1frZppLMTmBZMe5FY49zQ-1
-X-Mimecast-MFC-AGG-ID: R1frZppLMTmBZMe5FY49zQ_1789550995
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2db22383e8fso28716415ad.1
-        for <imx@lists.linux.dev>; Wed, 16 Sep 2026 02:29:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789550995; x=1790155795;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pLJ3zniryXoIXYXj2kORk+UpoeKS9R6ImYDJyVbdKgw=;
-        b=BoklSAusEygv17uZZF4Ch/7CLe90KMBcFed37KiaESGh1SittVGEnFeUAtrPW+YnjD
-         YkzfmaNdDdsQg3162wYqTcp3BB7YrrftX01fnWma9NTATwMaVhv8dKlW8l5VuN63F2oS
-         k0043SCq29REEfIHNwlhepGSV9kkWr8w+BqihRP9HpEO4OZC3wLHnGFEWrVvL7DbENb1
-         72iXlcqKgUP4Bsii6ecxL09afpn90nL8ER+lf20VRNNPb4421ubc5XEk9SS6WDHTCD5k
-         914YAfnhED9gL5lYTYhQU+i/TglQleQnc3Ygie8gjttbf1KFSZn2eFbVAU7fUFhiQYjs
-         ZrYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy2CH2Cu+PZofk6dYooHm/37z0lpziNveU3CJKNPuM2Fs59/i80AY18wAqUxpFftl3Ke5o=@lists.linux.dev
-X-Gm-Message-State: AFuF++nPID8RREb/gD7Rk3RKrG980vVBM+8NmB0tjUIyeCJKrTzJqLml
-	Ut3X621md07M7JeI+QqsDPE81FTUqqaCR18P5TRLQGcpToaYf8jmc//+qjwydLoDOsqQ2wdbrCU
-	+OmCT89dVbReeDCUeKjFmCoqBaIiIcGDMt1BcZFNfTUvUB5/BM+9v380BIuMtQwXFnWcbRQbFlx
-	WNP2RzmxveGvCQM50RA8lTDl2YxYBw
-X-Gm-Gg: AYBFou0MCV49hThvwpxRqaommmILscc1c6Om4Top560ihhaBbnjIxzkWbhTsWU5Sd19
-	qtnS38n6h4eKSOXAs80kYei9owI/Dh+D+MhhyuNzvhC5r4tNB9DoUCuz01GjmA1s0Qs0iq8NTg8
-	knpQ+xgfvWJ+AN/gwiEEsPlh1WL8uFdqAIWxLdTeEWn+5K+wobl7GJs1lK
-X-Received: by 2002:a17:903:3b8f:b0:2d7:4bc8:41a4 with SMTP id d9443c01a7336-2dd8ea1cd1dmr23798625ad.10.1789550995058;
-        Wed, 16 Sep 2026 02:29:55 -0700 (PDT)
-X-Received: by 2002:a17:903:3b8f:b0:2d7:4bc8:41a4 with SMTP id
- d9443c01a7336-2dd8ea1cd1dmr23798155ad.10.1789550994573; Wed, 16 Sep 2026
- 02:29:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIBXyWb7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946121F0089C
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 09:42:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789551737;
+	bh=OAYn1OR/urJcX7Y1PYkiEnveKTXrW8w2C8NfOif91L8=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=DIBXyWb7UH5fiTMzXNE37a2F+G9RIUwumVarRFiKNAZBsd99X6vZXzaa9EATH9e0P
+	 /+ofei18bmy0VfPJC4iHaMTvZnQs6kyqXxu/UUHKaK385/aV7yYjBIl+xBhHJ2mGIE
+	 14L0i49LA/xQPxgMOQ2waI9AzgehLyjrTCAln0GBeyyu6a3JEZhq2sW6VblSycwkn4
+	 T1zQS4e1h7dc7R123LzQUJzZgyqxLihnLBPKyg7YHcpmc2prefCKoozmsXKfkTlZNT
+	 D1iTlKgwEuKzjP413TGKYMB8MMlQq79pjYd/phOTBhUcUZgVzzlHRBvpGchaO5BRPV
+	 581T61ApkigvQ==
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a306a4f797so5548461fa.1
+        for <imx@lists.linux.dev>; Wed, 16 Sep 2026 02:42:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwtefwSRWqnF9qEE+EWn6BRfv+t4zukumq6kj1bQX5LxHZNil5i8DtNo1VQV+C1SwwF7Lo=@lists.linux.dev
+X-Gm-Message-State: AFuF++n3hwZXi4ynzN+e4qUGiP8POvyicT1E31VaetNuHcGxkD08KGHL
+	Bx2DybMPz6iCmosqwUoC7Utl+X5Mcgf6nfzkW4SEaaOxans/qJdUxLet3lRojbhvvN3mhUn3QtH
+	zk30l9EW3zt4LJV+wvtiPKaDtLPw2CTam/GeESEr8CQ==
+X-Received: by 2002:a05:651c:2107:b0:3a5:bb28:3324 with SMTP id
+ 38308e7fff4ca-3a5dca282a3mr3987981fa.28.1789551736240; Wed, 16 Sep 2026
+ 02:42:16 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 16 Sep 2026 09:42:15 +0000
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 16 Sep 2026 09:42:15 +0000
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260915080501.329424-1-mehmet.fide@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260911124540.279841-1-tzimmermann@suse.de> <20260911124540.279841-3-tzimmermann@suse.de>
-In-Reply-To: <20260911124540.279841-3-tzimmermann@suse.de>
-From: Javier Martinez Canillas <javierm@redhat.com>
-Date: Wed, 16 Sep 2026 11:29:42 +0200
-X-Gm-Features: AcwNN1VjQRR608PaSU5v9yXg9eP7o3aE9lu55JInhqrDujLUhvS3kxSMIUXF4N0
-Message-ID: <CAFOAJEfWX09ZvnQvn1+SBeW4_MaSRO2JNLfoJRGYS4jXGr-09w@mail.gmail.com>
-Subject: Re: [PATCH v5 02/14] drm/panic: Test address from kmap op for NULL
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: jfalempe@redhat.com, airlied@gmail.com, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, geert@linux-m68k.org, rdunlap@infradead.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org, 
-	linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev, 
-	sashiko-reviews@lists.linux.dev, stable@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iHinQFIul0i2GZysEzn11tWutnlEnMWz1Amggqu-eSg_1789550995
-X-Mimecast-Originator: redhat.com
+References: <20260915080501.329424-1-mehmet.fide@gmail.com>
+Date: Wed, 16 Sep 2026 09:42:15 +0000
+X-Gmail-Original-Message-ID: <CAMRc=MdmqkG02q=4_wJAVjeBzP_8KqQWNx6cBaL=FUTn_wxw-Q@mail.gmail.com>
+X-Gm-Features: AcwNN1UbxaY2LXeizQ7uYjEouexjsvFGbwv4lQlNYZHZGCxRnPnk9_dWQHfZ6g8
+Message-ID: <CAMRc=MdmqkG02q=4_wJAVjeBzP_8KqQWNx6cBaL=FUTn_wxw-Q@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] gpio: mmio: report the line direction on chips
+ without direction registers
+To: Mehmet Fide <mehmet.fide@gmail.com>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Mehmet Fide <mehmet.fide@screeningeagle.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hello Thomas,
-
-On Fri, Sep 11, 2026 at 2:46=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
-.de> wrote:
+On Tue, 15 Sep 2026 10:04:57 +0200, Mehmet Fide <mehmet.fide@gmail.com> said:
 >
-> Do nothing if kmap_local_page_try_from_panic() returns NULL. This is
-> not likely to hapen, as the previous page from the same memory area
-> has been mapped successfully.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 23437509a694 ("drm/panic: Fix 24bit pixel crossing page boundaries=
-")
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Jocelyn Falempe <jfalempe@redhat.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.18+
-> ---
->  drivers/gpu/drm/drm_panic.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-> index ba21df4be338..d28ce8878e05 100644
-> --- a/drivers/gpu/drm/drm_panic.c
-> +++ b/drivers/gpu/drm/drm_panic.c
-> @@ -178,6 +178,8 @@ static void drm_panic_write_pixel24_xpage(void *vaddr=
-, struct page *next_page,
->         u8 *p =3D vaddr + offset;
->
->         vaddr2 =3D kmap_local_page_try_from_panic(next_page);
-> +       if (!vaddr2)
-> +               return;
->
->         *p++ =3D color & 0xff;
->         color >>=3D 8;
-> --
-> 2.55.0
+> On trees: Linus offered to take patch 2 through pinctrl, and patch 1 is
+> pinctrl as well. Patch 4 gives wrong answers without patch 2 (an
+> undecoded pad register would seed every requested line as an output), so
+> I would rather the two pinctrl patches land first or in the same cycle
+> as the two gpio patches, whichever way you two prefer to split it.
 >
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Linus can put the first two on an immutable branch for me to pull.
 
---=20
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+Bart
