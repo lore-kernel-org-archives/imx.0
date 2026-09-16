@@ -1,311 +1,190 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F36B50C2B6
-	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 13:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A1C5221F1
+	for <imx@lists.linux.dev>; Wed, 16 Sep 2026 14:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789566521; cv=none; b=hvrhLeYezy1l5ZaKCuYadUlu5qKlyHwDESGD3oRhFTRBK5l0pYMGZ+NOVb9oHE3KtVvOwIC68gZpwfdBspV0iRncIEL8j5L7fOdxKS+IVBV8EjGhKWJVndduWVbRZ2iFDjTy9M7uzHwKPysMHg4gLSO9r/0hKvC+Dokt85egKcw=
+	t=1789569057; cv=none; b=rLpjTycfvWAEA0Y2Ko7jD+uk4yLXmeDvulYCWp1Yf9A01z7Xm3K3dTLpLTt3GiTK8DMSgpHrLzNDcrRZEQXT/rnkTus96xIdvCvHIFqKhCccKb6OOmFrZip7YbL/bGnjN1qxrVECnoF4Km5+pwZ8YsbXeanYy8BglopqA5f/r+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789566521; c=relaxed/simple;
-	bh=5zCJ/EGPFGROemHcudBi6o6pDtxWs0QMeETsL/EZic8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BIFQ7MsRyOsyYRYcElDhiBYVPUyhbjrq/KVxlQtRKmve8HFMqUPqlZC2/WQsMKyEdtVgOrUcH8i16SlNC4K02a3NyE83O1Y0vPUUhx4QUBBwqPz2FFVB2G13ZxeI8F+GdJUedWlVBxqtAjNrdSzUslgGUyoh51B6utGqUfbWFi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lqMs18pt; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1789569057; c=relaxed/simple;
+	bh=IAkNWSB54cPTRZlp0lr/9fg4h/scqOyu3N98Wh9R+D4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fQDsgk8Y+ZTj+GF8UhAWCkGVEtvAWxZgkSSt5Z8ptygXc83zkjvlfgBsU8jQKn1sSE25P0aYj1la4p8TKS0cuprnON6teJs7v0Cd5cFPuc6IkDuHFEAqfT5/07woqGtSaCKEwzqzSqpPQ7gxw0CQ2WVcDX7L4iNyw+7QX7rZ3xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PAFHXDga; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lqMs18pt"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PAFHXDga"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 23C4E1A08D9;
-	Wed, 16 Sep 2026 13:48:28 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4D5244E40742;
+	Wed, 16 Sep 2026 14:30:51 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E9E0B60337;
-	Wed, 16 Sep 2026 13:48:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B60B11C7B031;
-	Wed, 16 Sep 2026 15:48:15 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1645860337;
+	Wed, 16 Sep 2026 14:30:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C273711C7B024;
+	Wed, 16 Sep 2026 16:30:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789566501; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789569045; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=MD4jPpx6j1WYD4nbW7d8UqWXM8K9b2WkM/tu92eB2HU=;
-	b=lqMs18ptXF8NUeKU+aI21TpbFbBcw1SoqWE6OMCl3CiiAOPaZ2r2AkiTc2GN1UMh6yMoMd
-	nHpD4gqZRQF51T9INEtHYF9r5v8vzyhTqH/xqmOYLb7fETXdA5YkCrkhB4qiBZQTWPJkmp
-	l1epuxUJcnn5aNIYwdG9nC6z25Ty4A9I3yCUvD81EDNhoZc+bqI9TPyoT5ormKNMLFTSww
-	H9zwhIf8a62TuSAbuEYuN5gbZcwErbWDIQzjy2RUzybhp0HDVBHRJGYSrfUxwPMZyc0QTz
-	CA6oWZsWkVSOEzQmAPDLNiWz1vhVCLauw7lDX8anlUJiulXnMLM4imFm64hYgA==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 16 Sep 2026 15:45:43 +0200
-Subject: [PATCH v3 19/19] drm/bridge: analogix_dp: don't create a
- panel_bridge
+	bh=ifWQ8YaMc5CQm1ni9DW+Z7Yqh55h/cFdZBqgsTVphkY=;
+	b=PAFHXDgagaMbICkI8pF/F5Nz5W1gjfLrs/YkppCqVP1pMYNSPxgzDNoh7q+DYhGicdwrYf
+	PT5MKU1C05LYJEvG7c2FAjeCDXZt49uyTEXYiGNsgQEZUIFo9Gn3dNx1y9W9wkLfU/7aPb
+	vzohVysiTuf4GVtby1VsmN8oKU9d8Q7ZUe89SyFGWHWqfmxt14PRsnXT7ywBVYdGwH5OlH
+	jqCvJ05G71TC8RvUYP+fNsTf78dwavvp6emdYAP1L54EDJ9LaoeEcGMIrOf0hq9e7O2q6s
+	lH0l7yhmzYU7wIfR98nbme6zK7TkBj3xK17AW9YJl4T1VYqxyZnDThae3cpVdw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-drm-bridge-every-panel-v3-19-83afb4f1a707@bootlin.com>
-References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
-In-Reply-To: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
- Paul Kocialkowski <paulk@sys-base.io>, Linus Walleij <linusw@kernel.org>, 
- Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, Sean Paul <sean@poorly.run>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: Albert Esteve <aesteve@redhat.com>, 
- Anusha Srivatsa <asrivats@redhat.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-mips@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, asahi@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
- linux-tegra@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.16.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Sep 2026 16:30:37 +0200
+Message-Id: <DLGTA297W2SP.36MAJCYAC9O2X@bootlin.com>
+Subject: Re: [PATCH v4 2/4] drm: mxsfb: Add optional DPI output bus-width
+ configuration
+Cc: "Marek Vasut" <marex@denx.de>, "Stefan Agner" <stefan@agner.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Frank Li" <Frank.Li@nxp.com>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Francesco
+ Dolcini" <francesco.dolcini@toradex.com>,
+ <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, "Alexander Stein"
+ <alexander.stein@ew.tq-group.com>
+To: "Francesco Dolcini" <francesco@dolcini.it>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.22.0
+References: <20260813092836.38367-1-francesco@dolcini.it>
+ <20260813092836.38367-3-francesco@dolcini.it>
+ <178954813309.214898.6895255097019153080.b4-review@b4>
+ <20260916091543.GA277833@francesco-nb>
+ <DLGP7GKZJBOP.350QK94UOGRYV@bootlin.com>
+ <20260916114350.GB284106@francesco-nb>
+In-Reply-To: <20260916114350.GB284106@francesco-nb>
 X-Last-TLS-Session-Version: TLSv1.3
 
-Now a panel_bridge is automatically created for every drm_panel and the
-panel-bridge API is just a deprecated wrapper to access it.
+On Wed Sep 16, 2026 at 1:43 PM CEST, Francesco Dolcini wrote:
+> On Wed, Sep 16, 2026 at 01:19:08PM +0200, Luca Ceresoli wrote:
+>> On Wed Sep 16, 2026 at 11:15 AM CEST, Francesco Dolcini wrote:
+>> > Hello Luca,
+>> >
+>> > On Wed, Sep 16, 2026 at 10:42:13AM +0200, Luca Ceresoli wrote:
+>> >> > LCDIF programs LCD_DATABUS_WIDTH from the selected media bus format=
+. The
+>> >> > format reported by the downstream panel or bridge describes the dis=
+play
+>> >> > input, but it does not describe how the LCDIF data pins are physica=
+lly
+>> >> > wired on the board.
+>> >> >
+>> >> > These can differ. For example, a 16-bit LCDIF bus can be connected =
+to a
+>> >> > 24-bit display by wiring the available color bits to the correspond=
+ing
+>> >> > display inputs. In that case, using the display's 24-bit format to
+>> >> > configure LCDIF selects the wrong data-bus mode and changes the ass=
+ignment
+>> >> > of color bits on the LCD_DATA pins.
+>> >> >
+>> >> > Read the optional bus-width endpoint property from the LCDIF output=
+ port
+>> >> > and use it to select the media bus format used to configure LCDIF. =
+This
+>> >> > allows the LCDIF bus mode to describe the physical interface
+>> >> > independently of the downstream display format.
+>> >> >
+>> >> > When the optional property is absent, or it has an invalid value, c=
+ontinue
+>> >> > using the format reported by the downstream display device, preserv=
+ing
+>> >> > the existing behavior. The code is not validating the DT for
+>> >> > correctness and just fall back to the previous behavior in case of
+>> >> > errors.
+>> >>
+>> >> Why? Generally speaking errors are better spotted immediately, not ig=
+nored
+>> >> silently.
+>> >
+>> > My understanding is that the C driver code should not validate the DT
+>> > and that this is the general recommendation when parsing properties fr=
+om
+>> > the DT.
+>> >
+>> > The DT checker is going to spot errors in the DT even earlier and in a
+>> > static way.
+>>
+>> Drivers typically check for invalid values.
+>>
+>> And people writing their private dts can do mistakes and not run the sta=
+tic
+>> checks. Bad on their side, sure, but having a runtime error would be use=
+ful
+>> there.
+>
+> Understood. I would personally not do it. I can add the required error
+> checking code. No other DRM maintainer/reviewer commented so far, so I
+> am taking this as a request.
+>
+> What should I do in case there is an invalid value? Fail or have a
+> warning message?
 
-Update and simplify the code by just getting a reference to the
-already-existing bridge using of_drm_get_bridge_by_endpoint().
+Just fail. You are in the probe path, so it's OK.
 
-As of_drm_get_bridge_by_endpoint() returns a refcounted bridge, take care
-of putting the bridge reference. This is not easily done in the remove path
-due to the different probe paths of the user drivers, so add a devm action
-to ensure the reference is put only when it was taken.
+>> Also consider potential regressions. Say someone has an invalid value in
+>> their product, say bus-width =3D <15>, which works because the default 1=
+8
+>> which gets used as a fallback happens to be the correct value for their
+>> hardware. Some years later we implement the new bus-width =3D <15>, and =
+then
+>> that user upgrades to a newer kernel and their display won't work becaus=
+e
+>> it will start using that incorrect bus-witch =3D <15>. Better stopping t=
+his
+>> before it starts, IMO.
+>
+> I do not see this situation honestly, if you have a wrong value, e.g. 15
+> bits, before this patch is ignored, and after this patch is also
+> ignored ...
 
-Assisted-by: opencode:deepseek-v4-flash-0731
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/gpu/drm/bridge/analogix/Kconfig            |  1 -
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 40 +++++++++++++---------
- drivers/gpu/drm/exynos/exynos_dp.c                 | 36 ++-----------------
- drivers/gpu/drm/rockchip/analogix_dp-rockchip.c    |  9 -----
- include/drm/bridge/analogix_dp.h                   |  1 -
- 5 files changed, 25 insertions(+), 62 deletions(-)
+There is no problem with the code in this patch alone.
 
-diff --git a/drivers/gpu/drm/bridge/analogix/Kconfig b/drivers/gpu/drm/bridge/analogix/Kconfig
-index da156fd15764..5672d83cb4a1 100644
---- a/drivers/gpu/drm/bridge/analogix/Kconfig
-+++ b/drivers/gpu/drm/bridge/analogix/Kconfig
-@@ -33,7 +33,6 @@ config DRM_ANALOGIX_DP
- 	depends on DRM
- 	depends on OF
- 	select DRM_DISPLAY_DP_AUX_BUS
--	select DRM_PANEL
- 
- config DRM_ANALOGIX_ANX7625
- 	tristate "Analogix Anx7625 MIPI to DP interface support"
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 18e76d1e78e1..6df6963740d2 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -29,7 +29,6 @@
- #include <drm/drm_device.h>
- #include <drm/drm_edid.h>
- #include <drm/drm_of.h>
--#include <drm/drm_panel.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- 
-@@ -1567,15 +1566,6 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
- 	if (ret)
- 		goto err_unregister_aux;
- 
--	if (dp->plat_data->panel) {
--		dp->plat_data->next_bridge = devm_drm_panel_bridge_add(dp->dev,
--								       dp->plat_data->panel);
--		if (IS_ERR(dp->plat_data->next_bridge)) {
--			ret = PTR_ERR(dp->plat_data->next_bridge);
--			goto err_unregister_aux;
--		}
--	}
--
- 	ret = drm_bridge_attach(dp->encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 	if (ret) {
- 		DRM_ERROR("failed to create bridge (%d)\n", ret);
-@@ -1647,6 +1637,11 @@ struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp)
- }
- EXPORT_SYMBOL_GPL(analogix_dp_get_aux);
- 
-+static void analogix_dp_put_bridge(void *data)
-+{
-+	drm_bridge_put(data);
-+}
-+
- static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
- {
- 	struct analogix_dp_device *dp = to_dp(aux);
-@@ -1655,14 +1650,25 @@ static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
- 	int ret;
- 
- 	/*
--	 * If drm_of_find_panel_or_bridge() returns -ENODEV, there may be no valid panel
--	 * or bridge nodes. The driver should go on for the driver-free bridge or the DP
--	 * mode applications.
-+	 * If of_drm_get_bridge_by_endpoint() returns -ENODEV, there may be no
-+	 * valid panel or bridge nodes. The driver should go on for the
-+	 * driver-free bridge or the DP mode applications.
- 	 */
--	ret = drm_of_find_panel_or_bridge(dp->dev->of_node, port, 0,
--					  &plat_data->panel, &plat_data->next_bridge);
--	if (ret && ret != -ENODEV)
--		return ret;
-+	plat_data->next_bridge = of_drm_get_bridge_by_endpoint(dp->dev->of_node,
-+							       port, 0);
-+	if (IS_ERR(plat_data->next_bridge)) {
-+		if (PTR_ERR(plat_data->next_bridge) == -ENODEV)
-+			plat_data->next_bridge = NULL;
-+		else
-+			return PTR_ERR(plat_data->next_bridge);
-+	}
-+
-+	if (plat_data->next_bridge) {
-+		ret = devm_add_action_or_reset(dp->dev, analogix_dp_put_bridge,
-+					       plat_data->next_bridge);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	return component_add(dp->dev, plat_data->ops);
- }
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index e1c9e2946b8a..82c238829921 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -26,7 +26,6 @@
- #include <drm/drm_crtc.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_of.h>
--#include <drm/drm_panel.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/exynos_drm.h>
-@@ -147,7 +146,6 @@ static const struct component_ops exynos_dp_ops = {
- static int exynos_dp_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct device_node *np;
- 	struct exynos_dp_device *dp;
- 
- 	dp = devm_kzalloc(&pdev->dev, sizeof(struct exynos_dp_device),
-@@ -163,18 +161,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	 */
- 	platform_set_drvdata(pdev, dp);
- 
--	/* This is for the backward compatibility. */
--	np = of_parse_phandle(dev->of_node, "panel", 0);
--	if (np) {
--		dp->plat_data.panel = of_drm_find_panel(np);
--
--		of_node_put(np);
--		if (IS_ERR(dp->plat_data.panel))
--			return PTR_ERR(dp->plat_data.panel);
--
--		goto out;
--	}
--
- 	if (of_get_display_timings(dev->of_node)) {
- 		dp->plat_data.next_bridge = devm_drm_of_display_mode_bridge(dp->dev,
- 									dp->dev->of_node,
-@@ -189,19 +175,11 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	dp->plat_data.power_off = exynos_dp_poweroff;
- 	dp->plat_data.ops = &exynos_dp_ops;
- 
--out:
- 	dp->adp = analogix_dp_probe(dev, &dp->plat_data);
--	if (IS_ERR(dp->adp)) {
--		/*
--		 * The driver core does not invoke remove() for failed probes,
--		 * so release the probe-time panel reference here.
--		 */
--		if (dp->plat_data.panel)
--			drm_panel_put(dp->plat_data.panel);
-+	if (IS_ERR(dp->adp))
- 		return PTR_ERR(dp->adp);
--	}
- 
--	if (dp->plat_data.panel || dp->plat_data.next_bridge)
-+	if (dp->plat_data.next_bridge)
- 		return component_add(&pdev->dev, &exynos_dp_ops);
- 	else
- 		return analogix_dp_finish_probe(dp->adp);
-@@ -209,16 +187,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 
- static void exynos_dp_remove(struct platform_device *pdev)
- {
--	struct exynos_dp_device *dp = platform_get_drvdata(pdev);
--
--	/*
--	 * Release the probe-time reference from of_drm_find_panel(). If bind
--	 * ran, the panel_bridge holds a second reference that devm cleanup
--	 * will release when the bridge is destroyed after remove() returns.
--	 */
--	if (dp->plat_data.panel)
--		drm_panel_put(dp->plat_data.panel);
--
- 	component_del(&pdev->dev, &exynos_dp_ops);
- }
- 
-diff --git a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
-index 587e60232ec7..071d31aa5288 100644
---- a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
-@@ -28,7 +28,6 @@
- #include <drm/drm_bridge_connector.h>
- #include <drm/bridge/analogix_dp.h>
- #include <drm/drm_of.h>
--#include <drm/drm_panel.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- 
-@@ -488,14 +487,6 @@ static void rockchip_dp_remove(struct platform_device *pdev)
- {
- 	struct rockchip_dp_device *dp = platform_get_drvdata(pdev);
- 
--	/*
--	 * Release the probe-time reference from of_drm_find_panel(). If bind
--	 * ran, the panel_bridge holds a second reference that devm cleanup
--	 * will release when the bridge is destroyed after remove() returns.
--	 */
--	if (dp->plat_data.panel)
--		drm_panel_put(dp->plat_data.panel);
--
- 	component_del(&pdev->dev, &rockchip_dp_component_ops);
- }
- 
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index 0e0b87abee59..6033137b651e 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -35,7 +35,6 @@ static inline bool analogix_dp_is_rockchip(enum analogix_dp_devtype type)
- 
- struct analogix_dp_plat_data {
- 	enum analogix_dp_devtype dev_type;
--	struct drm_panel *panel;
- 	struct drm_bridge *next_bridge;
- 	struct drm_encoder *encoder;
- 	struct drm_connector *connector;
+The problem is when in two years in the future we do implement 15
+bits. (That's an example to explain the principle, I don't expect it to
+happen with this driver.) But imagine in the future we add:
 
--- 
-2.55.0
+	switch (bus_width) {
+    +	case 15:
+    +		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB555_1X15;
+    +		break;
+	case 16:
+		mxsfb->bus_format =3D MEDIA_BUS_FMT_RGB565_1X16;
+		break;
 
+At that point the device in the wild with the incorrect 'bus-width =3D <15>=
+'
+will start using RGB555 and fail, because they really have a 18 bit panel
+which worked thanks to the automagic "if DT is wrong, let's go with the
+default". That's a regression for that device.
+
+Reporting an error from day 0 means 'bus-width =3D <15>' will be blocked, t=
+he
+device won't probe and the mistake in the device tree gets fixed before
+shipping.
+
+I hope it's clearer now.
+
+Cheers,
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
