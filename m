@@ -1,95 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E486478847;
-	Wed, 16 Sep 2026 08:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D05A486640;
+	Wed, 16 Sep 2026 09:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789548401; cv=none; b=Co+Y9MfNkvFHObP0i6BvSDXYB7OfURc8ZH9dF3Zxrlf1sTchX5TbxcCB7cyIcnREd97Xoi+uNuWgoi7zEE4CLykTfn80UZsBImmxzZOvvUtxeD2QLIotev+/xNcEP78iNKCxPFCgwvNAvrFnI3b1RM/maPHUjCQ9Jq7Bzchwhsw=
+	t=1789549227; cv=none; b=FBe0LIN0bWf0A53BfxRcS8+k9VtOlfGKxZji9+G/9UTLI0hcNIkhK53xkWsGp2H7aylHhQykj53hiHOVtXIMRwB9u6Pgjz8PUXQ1UFIk1nG5p0sTSROFsIOg0qLhjtD/u+K2CG/2jjnS78J8s7m9jUA03juQ0IH9CTiSuNoFFVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789548401; c=relaxed/simple;
-	bh=hiT4Z4U5wc9lMUDgyDFcbK9cMnOXVCnssOREf+uaALE=;
+	s=arc-20240116; t=1789549227; c=relaxed/simple;
+	bh=7hjShUH8oG2qiOcGYyNttSxIxKlulyMkTIff6p+A8No=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rvAx0yEc5L902Caib9QNEataBXvgGlqOkRP7TqBpSQMjdH+qBnHvmX5TtfFMNg+fx9lj/KOY6dapdIR/X3NlAMU0YOkWtXEV/gC4IGXYV7GdPyjOHWxSzagmD74oRpM55kugOJg0kS76wcSGTfluGlAsIVbPDcHiMtPKd90Y1Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HKgt/sOA; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Pm7nfTFgVN7Xw4ZsHP4VNls0P2mDxhDjw6SZEpXLfzb7NAfBCwMm0OZH9iSwORkJZY1FVEuj1G9bOecsRD2g8DfSG2WsW6fHKsAV/yDkfARxCOAa5Us7Ua7FfBM060gLgaVoQRh8jr71Ci7cPIBvYgwvOy6no3BTkJI+Ssea1MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAU/WoCy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HKgt/sOA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7164E1F000FF;
-	Wed, 16 Sep 2026 08:46:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAU/WoCy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7111F00899;
+	Wed, 16 Sep 2026 09:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789548399;
-	bh=MqBhuarjAqb9QqIG9sMHe87n2JU863qW/QxC1vvnwjU=;
+	s=k20260515; t=1789549211;
+	bh=Ng0BJe/IEPoeGD8s9AGF/YjESKtaslK1oYhKm/z5OrY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HKgt/sOAE123KfMWWWfp1hVo/njdgPy61cR9psE/xi88kXq4vFiGYsBpAaEQ899q7
-	 n+r+c0r+TdtPEnp7VYprS45Q9AxP6J/dm3lO2gcI9Muh5vraJ4uh5g7ApHBzaOgOSa
-	 hYVk9SRywflxctYijR9STbRVlHAxE4yRNwMw3K1F8rMykQby+jkMZvjMp8R4HFF+SS
-	 /fAY7rk4lYhxCHaxiU6euopxJUlTMOC5qd1pc8j8QEQd0ik7/hMeiJXVXzHJAK9YN0
-	 mjazCzkkkG6AnTe05xXTJORRmVdFoaeArjPEjtpEp8Kiuq2XMAEhsXY54NVUmFSGR6
-	 Mt6ot+AiCyG5g==
+	b=NAU/WoCy+PNyHbj+OQ3WPb8JznVEIh0ORecyxVEfiQE+KWyB7zI93UFwrzCAxZPvy
+	 QPzJ6I5qIGgC5OWw3sIspJ632/RpvUZjFj38CSwgHf3u7J7Yd4X+xp/SmClpbxavk7
+	 Kg121fNnqrjkDGtdhcsOrGlOhKXnTWjCemQM744xcmslmWQAyfdo643lBxqZOvufDa
+	 dLCqWHOYaw2ZFmPTxIBXUfcHJdl83r1nRlAgqvAYfP3tagvtelBLFYZAWdo1YLGwNb
+	 BdP3s6ZsX+hVeQ5wCybYdBdSGtOUTGRUIodhS6ST4qTdwC7qaEL6Ti8cpG/yjFGxWC
+	 g2khCgdEq4u3A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 2/2] arm64: dts: freescale: imx8mp-verdin-ivy: fix
- DIGI_1/DIGI_2 gpio-line-names
+Subject: Re: [PATCH v3 07/10] scsi: ufs: Add NXP S32N79 UFS host controller
+ driver
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Francesco Dolcini" <francesco@dolcini.it>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260916084025.274229-3-francesco@dolcini.it>
-References: <20260916084025.274229-1-francesco@dolcini.it>
- <20260916084025.274229-3-francesco@dolcini.it>
+To: "Larisa Grigore" <larisa.grigore@oss.nxp.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, linux-scsi@vger.kernel.org
+In-Reply-To: <20260916084411.941297-8-larisa.grigore@oss.nxp.com>
+References: <20260916084411.941297-1-larisa.grigore@oss.nxp.com>
+ <20260916084411.941297-8-larisa.grigore@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 16 Sep 2026 08:46:38 +0000
-Message-Id: <20260916084639.7164E1F000FF@smtp.kernel.org>
+Date: Wed, 16 Sep 2026 09:00:09 +0000
+Message-Id: <20260916090010.6C7111F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] dts: ABI breakage by renaming gpio-line-names on stable
+- [High] pm: positive return in ufs_s32n7_link_startup_notify() causes uncl=
+ocked access
+- [Low] pm: missing pm_sleep_ptr() wrapper for .prepare and .complete callb=
+acks
 --
 
-commit 48f46109522a45af5619ecce5d2d589d31eef0e0
-Author: Francesco Dolcini <francesco.dolcini@toradex.com>
+commit 774c9ff68bb8216bae4f82205ba8ce70b0364e59
+Author: Larisa Grigore <larisa.grigore@oss.nxp.com>
 
-arm64: dts: freescale: imx8mp-verdin-ivy: fix DIGI_1/DIGI_2 gpio-line-names
+scsi: ufs: Add NXP S32N79 UFS host controller driver
 
-This commit renames the gpio3 line names from "DIG_1" and "DIG_2" to
-"DIGI_1" and "DIGI_2" to match the official carrier board datasheet. It
-also CCs stable for backporting.
+This commit adds support for the UFS host controller on the NXP S32N79 SoC,
+built on the Synopsys DesignWare (DWC) UFS architecture. It implements
+S32N79-specific initialization sequences before link startup and applies
+post-link calibration for HS operation.
 
-Link: https://docs.toradex.com/116799-ivy_carrier_board_datasheet.pdf
+> diff --git a/drivers/ufs/host/ufs-nxp-s32n7.c b/drivers/ufs/host/ufs-nxp-=
+s32n7.c
+> new file mode 100644
+> index 0000000000000..4f9a001562024
+> --- /dev/null
+> +++ b/drivers/ufs/host/ufs-nxp-s32n7.c
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi b/arch/=
-arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi
-> index db1b4ee7728c0..bf021e85cfc94 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-ivy.dtsi
-> @@ -333,8 +333,8 @@ &gpio3 {
->  		"",
->  		"",
->  		"",
-> -		"DIG_1", /* SODIMM 56 */
-> -		"DIG_2", /* SODIMM 58 */
-> +		"DIGI_1", /* SODIMM 56 */
-> +		"DIGI_2", /* SODIMM 58 */
+[ ... ]
 
-[Severity: Critical]
-Does this change break the userspace ABI?
+> +static int ufs_s32n7_link_startup_notify(struct ufs_hba *hba,
+> +			     enum ufs_notify_change_status status)
+> +{
+> +	int err;
+> +
+> +	if (status =3D=3D PRE_CHANGE) {
+> +		err =3D ufs_s32n7_link_startup_pre_change(hba);
+> +		if (err) {
+> +			dev_err(hba->dev, "MPHY setup failed (%d).\n", err);
+> +			return err;
+> +		}
+> +		return 0;
+> +	}
+> +
+> +	/* POST_CHANGE */
+> +	err =3D ufshcd_dwc_link_is_up(hba);
+> +	if (err) {
+> +		dev_err(hba->dev, "Link is not up.\n");
+> +		return err;
 
-The GPIO line names are exposed to userspace and relied upon by tooling
-(like libgpiod). Because the old names ("DIG_1" and "DIG_2") have been
-present in the kernel for some time, userspace applications may already be
-using them.
+[Severity: High]
+Could this propagate a positive return value on failure?
 
-Fixing the datasheet discrepancy by renaming established userspace-visible
-names breaks these lookups. Furthermore, backporting this change to stable
-branches will actively break existing production systems.
+When ufshcd_dwc_link_is_up() fails, it returns 1. If this positive value is
+returned here, it will propagate up through ufshcd_link_startup() and
+ufshcd_resume() to ufshcd_runtime_resume().
 
-Is there a way to support the correct names without breaking existing users
-relying on the older strings?
+The PM core's rpm_resume() will treat the positive return value as a failur=
+e,
+marking the device as RPM_SUSPENDED, but will propagate the positive 1
+back to callers of pm_runtime_get_sync().
+
+Since callers typically check for failure using a ret < 0 condition, they
+will assume the device successfully resumed and proceed to access unclocked
+or powered-off hardware registers. This can cause a system crash or bus han=
+g.
+
+> +	}
+> +
+> +	err =3D ufs_s32n7_link_startup_post_change(hba);
+
+[ ... ]
+
+> +static const struct dev_pm_ops ufs_s32n7_pm_ops =3D {
+> +	SYSTEM_SLEEP_PM_OPS(ufshcd_system_suspend, ufshcd_system_resume)
+> +	RUNTIME_PM_OPS(ufshcd_runtime_suspend, ufshcd_runtime_resume, NULL)
+> +	.prepare	=3D ufshcd_suspend_prepare,
+> +	.complete	=3D ufshcd_resume_complete,
+
+[Severity: Low]
+Should these sleep callbacks be wrapped with pm_sleep_ptr()?
+
+The power management subsystem guidelines require sleep callbacks like
+.prepare and .complete to be wrapped in pm_sleep_ptr() to prevent them
+from becoming dead code when CONFIG_PM_SLEEP is disabled.
+
+Assigning them unconditionally can cause minor memory bloat and potential
+compiler warnings due to unused symbols being retained.
+
+> +};
+> +
+> +static struct platform_driver ufs_s32n7_driver =3D {
+
+[ ... ]
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260916084025.2742=
-29-1-francesco@dolcini.it?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260916084411.9412=
+97-1-larisa.grigore@oss.nxp.com?part=3D7
