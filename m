@@ -1,86 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E7B4A9D6F;
-	Thu, 17 Sep 2026 21:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F334A3F28
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 22:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789682285; cv=none; b=DnMZllclaZzw9Ha3QRogUOHJqDO/mBXOEGjhdUTKNL0kXkez+4xEstgxjtW44TSWNawyVTreQmh+xrtDpji/qwqEiLSYyJCvA2U7L54gSN/H8uGtyA/s2RKHi6Cm86n1rCPgCcpqjPx4OskpIYF0RZKZKGjS0SHv5Bgc9ww7kuU=
+	t=1789683963; cv=none; b=Lw3rCPAmnr9IdOBBQxutWeNvFnOm1puCbj19R+p4vhM4uBHOGlVYhsZEcxKR/Co/VLbRQ6HP4DtBnU11HMCHi+hChISW9TjV5jOX+KAx0+UpKKlAlT1vll23rNDiXrRXIvZDPYUbBbhoxJEabWDVRHV0pkB8k4QyWY2htPnfRPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789682285; c=relaxed/simple;
-	bh=K01OWSwrQhLZ1I4m5H6/VZez8MW387RtFv6BpX2DCqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=sFcIxFHANUSahWJbr/SjATTvdf8WQqbgzaWtdxjGslJzO2xkb/A0domwMQJpZBjrJCd0qHKyjzziwqN22lGQRzf2sh9T25xZi5x3+kD+i3VnxZUFo7oY0k5y90EFJfoQA8MVdJ07ybqGeoSpQekJyw0wza3gili/1yU7+vv2T7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMs0O2Bc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789683963; c=relaxed/simple;
+	bh=l9/NyfXKy1WrGYxW/ylBLHr+m63MzpB0UkpPW7lkV6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hbkE0uNq9fzWKax7u8A0Bkhy5z5IL7bVHGozcQ3gq0rCaTYco6EC//tkZtRO8ZZIVxlLZFgu0hg1Q1PJFujmd2g3I2TJu8UqXKNNlnshJEfLb+9NzxbsP8BX+lnZcE+NXrHzwHTPTthZD0MMcfbib44OKeRiLUZGVWNPYFOyDJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QdRCgkwi; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMs0O2Bc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7769B1F000FF;
-	Thu, 17 Sep 2026 21:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789682283;
-	bh=OP3JYLBXOqOHgXrUVwmby9CoOJ787szehasQI38rGyQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=CMs0O2Bc4ICSa1T8bJvuWgzlf1kyPiBEEAF8YyNkZlKYj7AxxFwuNZMf3kUkq6Spa
-	 2qeDwdnLti+1xiaJ9UVSm+RmoHRrX3uzf2/IH2yZFTVvppENKWnC0ZpTieYrfRdFxR
-	 CSNdnYwPeuvBZBm3nKeHhvWK+Q4iUClTWxeQ0Oawmp32DyR1beYSUW/qKkJZ7GvprH
-	 GqeZzJlKBlIJ1lXFBksRX5HROuSwupFZSnbecaWuaYZeecNNWl9Nc+lEaSKRZjTJ3k
-	 JUckV5Lra7ixgKiCSl9YKGOc8KE0Jk+DOq5/1uERCzIaTyfo5f752rKdDTL+lqMFs1
-	 k4YU98t7DQ4FA==
-Date: Thu, 17 Sep 2026 16:58:02 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	leoreis.costa@gmail.com, fra.schnyder@gmail.com,
-	francesco@dolcini.it, frank.li@nxp.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, hongxing.zhu@oss.nxp.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: [PATCH v2] PCI: imx6: Move clock enable after core reset
- assertion
-Message-ID: <20260917215802.GA1056201@bhelgaas>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QdRCgkwi"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd4ba9f68so1607345e9.1
+        for <imx@lists.linux.dev>; Thu, 17 Sep 2026 15:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789683959; x=1790288759; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CrlZYOE4Tb+zUOHoD48b//tG3mcCRvsKdsWOXCdCJnk=;
+        b=QdRCgkwiN5xQv5jQb6tsDIIzzG86LyCl6oeFO6kdxIqr0M5gjCX0m9hdxgz1j9pJd3
+         u3wZXoeEfHVB6bgsJ3t/Jl79vCK3CTwWNDSKuLnwQ/9svNwt8/jKrfe3k1lA/esm1TK0
+         yiwf9uTENusQcos388yIBHm70Ii0CcMZAidDRS5Qx/B3m62++x7wy5Pz/dktBP/roJuI
+         ONFW5ZxWOaG24OfJr4wTaiPNSlEwhIvNghmqz/Vb36eRxgmRVrtbZgfey3iVVo2VTusW
+         xvh6dECMwqOhlErytrUSIxRNpLiZ0EnpdeLn4HyPbR9h7deoIRv/N7FqUhPnlPTjaS2c
+         Yx2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789683959; x=1790288759;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CrlZYOE4Tb+zUOHoD48b//tG3mcCRvsKdsWOXCdCJnk=;
+        b=t4PQ42RXVlyrUm1BiAKojamlQqv5l9EzCVViAQWmdo8S9BBC0uhOe6V0TV6CzwdlVt
+         LRQA5x2bjnWVrTaWm6FqWxnxsAKtQEbqUmraePwlECJTqJqU0yRpYl9aaa5WH44aFPGQ
+         gd4Ox9jRtw87OH+ea42XIp44PUm6TyZ9FFaNRnTAno707S1e5eeEJ0wrdGZY3K/ua4Ec
+         /GydMsnwGHogv0YJfAUVZyFLx3qjnVbh/q3gCcFE1VRjRy/26vT4OVvvrXdIMZCKhYd/
+         C7ICJJVDvHuremngJoiA6kJJIhcNSC4c0WKUy+3fpRQuXDv9QQ31KfxlshWLfinKLiEk
+         ZUsw==
+X-Forwarded-Encrypted: i=1; AKwUvBxYRygQI2+36HtuPO7AjhN0TH0E0I65GKAs2VellIY3m0YxkbyAEWJoUIHFUu2OZ7TESdU=@lists.linux.dev
+X-Gm-Message-State: AFuF++nEPtQ4U5OU5cjZh55ScvBnv6fT6EA+XTGWT0iH3DAIfMwjZF5+
+	QHL+kPgJBr1rH/pvhuRoW4csG+LC+GUDZ2JItIJTtt+3a9MVaJ1BbfjF
+X-Gm-Gg: AYBFou3jmdBFIo/LfyKVymXlyBu3PrxYUDqlI0rzxs/FI7Bi1WgsCn0v5rFCoQ6ye65
+	6i9DYGEqYmpOnNhP9mCeFE5Muou3TIp6xVvFaRmSEYZ/e2NdfB6kzxvdTKn+iwK3CAUQLs4wlds
+	7QvIvVYlXIjDGuhJEcLz5tiGu//30qgY3CK1kyHhAy72fCZ0wfJ02SF2sWkA4Hhkl3uidRWnZKb
+	CoU7i3wsKqFgCj4laR1b2/YWO369O15RfwSGnysCzwk7klm7cqEqwWyhWYEPd1PEf8RfwmLvn4f
+	6FPKaCj0BO5NuU91Bqf4ra6ggf7kTg608+ptskcMNyWMr7G0Yjp+/FhAFGaRNYV1qorITpLKUOE
+	Lo7SUHR1RDF5wsCaQSWVIo/ugeywPnYVmyP3to7NwHyLDjiFmn7XJrW0ZFXK66LCKFOBFczCykF
+	pdA+SS1Q+cuNT79aDQzRVZSkzj9+dxwMqoilEaH1bSV9VsxbkdYFYloGuxBYiharqQip5rvf+6J
+	koizJefdJUwuPYjXs5HwypDzH1rKWeO/pObDK8SacBrIx9CwxmkPLew8Ymum/eL8pL85DtLdI/u
+	98mKfX7kqx+0mPo7JWeKPw==
+X-Received: by 2002:a05:600c:3b17:b0:49c:fc6e:8cae with SMTP id 5b1f17b1804b1-49fc5737b80mr3154795e9.18.1789683958822;
+        Thu, 17 Sep 2026 15:25:58 -0700 (PDT)
+Received: from Lord-Beerus.station ([31.27.155.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc56aab7csm5583835e9.1.2026.09.17.15.25.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 15:25:57 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v3 0/3] arm64: dts: imx8mm-var-dart: update SoM support
+Date: Fri, 18 Sep 2026 00:25:42 +0200
+Message-ID: <cover.1789683864.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ed9e4de-2e57-4c15-875c-16512f00163f@leemhuis.info>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 17, 2026 at 01:08:03PM +0200, Thorsten Leemhuis wrote:
-> On 9/2/26 16:15, Manivannan Sadhasivam wrote:
-> > On Thu, 13 Aug 2026 17:50:03 +0800, hongxing.zhu@oss.nxp.com wrote:
-> >> Commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
-> >> inadvertently moved clock enablement before core reset assertion, breaking
-> >> PCI device initialization on i.MX6Q Apalis platforms with
-> >> ASM1061/ASM1062 SATA controllers connected.
-> >>
-> >> NOTE: It is not 100% clear if the issue is specific to the ASM1061/ASM1062
-> >> device or on the specific power-up sequence (reset vs cold-power-on).
-> >>
-> >> [...]
-> > 
-> > Applied, thanks!
-> > 
-> > [1/1] PCI: imx6: Move clock enable after core reset assertion
-> >       commit: 16929741a622eb345057e41c7b335d9b297890e1
-> Thx Mani.
-> 
-> Mani, Bjorn, what's the status of this patch? Is it heading to mainline
-> any time soon? This (unless I got confused, which is possible!) afaics
-> fixes a 7.2 regression that annoyed quite a few people -- which is why
-> it was even briefly considered to revert about a Dozent changes shortly
-> before the 7.2 final:
-> https://lore.kernel.org/all/20260811214900.GA763236@bhelgaas/
-> 
-> Didn't come to this, but it afaics would be good to finally resolve
-> this. Or am I missing/confused something?
+This series updates the Variscite DART-MX8M-MINI SoM device tree to
+better reflect the currently supported hardware configuration.
 
-It's in pci/next, but probably should be in for-linus.
+The changes configure SAI3 in synchronous RX mode, add TPM support,
+and increase the Ethernet PHY reset deassert delay to improve PHY
+detection reliability.
 
-I moved it to pci/for-linus for v7.3, thanks for the heads-up.
+v2->v3:
+ - Fixed reset-gpio polarity
+
+v1->v2:
+ - Add tpm pinctrl
+ - Add comment on tpm reset line
+
+Stefano Radaelli (3):
+  arm64: dts: imx8mm-var-dart: configure SAI3 synchronous RX mode
+  arm64: dts: imx8mm-var-dart: add TPM support
+  arm64: dts: imx8mm-var-dart: increase PHY reset deassert delay
+
+ .../boot/dts/freescale/imx8mm-var-dart.dtsi   | 21 ++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
+
+
+base-commit: 46d8fa682d263271f3ef7bf95166b124c19d6c62
+-- 
+2.47.3
+
