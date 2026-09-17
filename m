@@ -1,272 +1,205 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA53B4DBD75
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 11:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789645316; cv=none; b=dBPVrBs0NTXj2fnxOYQSNPa0Fmpl0J59T4LWNn9wQgR6ylz79cYa2j9yzduG+qwv+hy2En4gBqJGDrHcO6tHHf82ANlVFMnTZD+i9KYgtErWj0csvOu4uW+aTJJa83lmDLHJYiwwaoCp0WPh9Z8z84EPFxHzyJu2HSyDJCoQEH8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789645316; c=relaxed/simple;
-	bh=TfAZkrQyH/2Nx/S5qf316QvGg3gZJpftAEMQtTUDcT0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JIf9Af56+edbFBKRZnkqwWS2YhW89Skksg534clcVaj9gfcBjWVJdzb24iGeCb9cWefbtuArXdyndR1Gv6YmUBdYgXoO90n+bs1Ra+0miNCv4R4dwbd1ZWg6/umGzOTjdCkdyBjsNKD5tvnbq8AM+VQhTcMsxafy0nV+glRiKhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Bw3LXefj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IzAJeOxu; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52214D796B
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 11:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789645388; cv=pass; b=Y/twZWVsG6QgHdVTZLRMqWANKhKzF/WexAUb5/zIpGhsU2AudXYjCYbIWvTAa49wqbHH2UJUkmMEvErKy36zlQWetO7SuqcZ0eB71/XSFmkHt5ZfSkor8NGoHJ6r1MebsSkjQIuL3WuXtur8rFzDnUa1v0pavSbNS8sKu7zO2Sw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789645388; c=relaxed/simple;
+	bh=vbrxd5srWOipj09aXDQHzqS5lMVRJ7HAcTG0L1bqBDk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qez+Xh7m/HzOCryvyioY4m6OkKgs5Q6Gs+9t8OBKrGXpcoLx8o6TUvn8DjqSAmy/fWGLXQyDCblT8fowLkJaeO2KH1eTogzLdTigy/8eXUeyA7+yShjAw4lbbIpkuHCcWf8+C4El/CHw5lPwv7ixI8SkhC1DkwhTQJUZsgL84tI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=L7gi7nnf; arc=pass smtp.client-ip=74.125.224.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Bw3LXefj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IzAJeOxu"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H9ZWi21257756
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 11:41:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uJhXSOoOh7cjCe2q1aXhRqHQZa4x+8gunPH4pO3XSOI=; b=Bw3LXefjWBqcnrcC
-	D1ryWwZ9+kGrz8mafCIOK+YwnK1cwyAm4rORW/j/ciFFCL6z/3PGqat/fkzJqEbF
-	2pi9eKkfSbGDRNJSw+HXwkysURTY0qm5d+MIAPH8Kl64bfmyR42mYJBk1uB/J8En
-	Lv5xysA7hn6OfVT6r6NuWURpvfwRb/5NsKxPWPCAyd9uta6Tm2tVTrPBBz9mdnki
-	y8SrDuyD295mqGWbnsATCPiy542QhsIP1RVKONF74tFauP9WXB7cvdnS1EL98VsK
-	QKRGWH2j6PKXCi7/DkKeLiaLpcwdD69yxk+AWDWurRu9yU36ctsm2dDBrh7Ft/H1
-	UsvOJw==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grdftgj9d-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 11:41:51 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbedbd182f5so658584a12.1
-        for <imx@lists.linux.dev>; Thu, 17 Sep 2026 04:41:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="L7gi7nnf"
+Received: by mail-yx2-f43.google.com with SMTP id 956f58d0204a3-66e56a1fe3fso623250d50.3
+        for <imx@lists.linux.dev>; Thu, 17 Sep 2026 04:42:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789645372; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LPLGg4D76WAO38noFAnTwyxQDMOvCUzQCDRgrLRgtrIOcdUBFCCxIOTrW+2f8BLW10
+         3M4BaieDOqOYIoeT0Szig7xH2YqZpTFNEAOUZoGkgiXLXmA7FOScLmY3Jgf6oiVZS0Ic
+         DIqUpb5DfvpKckb9MvNAP5E9+DhNxra9Q5msZzSYj+fxF8FIIeAan6Naxk5U30IJGRdL
+         vOzqsasfHIsUvApru3Kv7rwjd+ialb0WCiPd9tqqOoDA8q7t21ynF0tHvvahBBO6CLJX
+         L1OnHmKgdsUUjGLNn5Xx8KyiiwVwHaloT7cSHQkAAL4mXynQydx1aF2RswZNvCTbrGDX
+         veew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=glNGbXLPG/pOAS+pJMdVn3sfq0+G6eulTKEjqN2qPww=;
+        fh=I9Lpbe5pM8NR2YXFLv+u/Fj+EXoC1ShDyQHUGvN9dZ4=;
+        b=Q67iZttASLLotDd8wUMHhhDWKQILnoaIow3M3Ps8wuds7UmQuWuLbpMwyVQ4vLxVnp
+         A8fPYxGvNBK9rf14o0Mv+QcXuW7QAHQf6QO6z5WJpbci4J5a0TjKZ84WDYK4CVXlekcx
+         JX73XWtWvzxYgFu4N/Lt9PwVFSKgGXObNLIbT/Y3iYHaty5UOozFkrtkdaJ7F7l/YIFN
+         Y9SuTV4wAFCvtoyDLx7xXTBWuISnokePzTHb0dZVYQjigy8TYIt/Ouleuz+i7PR8ccjX
+         qMJsNxfzyTy/l3iRg7XFaCtbdK8Pk9qNbnpGYb6MeKPMuUwPrwyCZ/h8y3SjIxPcVQzt
+         47Eg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789645311; x=1790250111; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uJhXSOoOh7cjCe2q1aXhRqHQZa4x+8gunPH4pO3XSOI=;
-        b=IzAJeOxuL5K+hBSVy2pIrZDQ2I3Nuz3Qn1bkgVmH3PI/PQrX35aPclj8l+fpRdoGfE
-         avCdlg3147j8f7GcDd9E6EbIH5Hm/KiD30cVarJh4MgmeGyeHOyNtwTU0saZ0nrdCRa3
-         l02q/Hcg3pAwiONSmBJrcA0RXv1dBJGtiYQu2Utn+42jTov32Sl7axpT54CiOeQzyc8t
-         NUIr5zgZnsJDYb0qh+kHe2lcC++1VQL5H7cTM7tt+HtmjO9qPfBhjyvzUw3GGEH8C74u
-         MG+JBtja0YIZF+gWFGE3UdOZV9i9WZXshmCXCCVYoc1gHAWKz3NOLV2XqB7CozfwWekr
-         ZoGg==
+        d=chromium.org; s=google; t=1789645372; x=1790250172; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=glNGbXLPG/pOAS+pJMdVn3sfq0+G6eulTKEjqN2qPww=;
+        b=L7gi7nnfZppgwD2qjz5Ad7tRbxH5hIwL/Q6sCAyf2Ylq0qdrUv4xGyq2dfAVq5CBko
+         7y/MbQOBQiiIII+E1rdYurmkRzxLwwgb011NsmzLefGr5raYeTZHqQavqjvRO/YBAYq4
+         CB51O94imJPhsD4olXHWrlTO0Sdxi+MlsK9OA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789645311; x=1790250111;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1789645372; x=1790250172;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uJhXSOoOh7cjCe2q1aXhRqHQZa4x+8gunPH4pO3XSOI=;
-        b=IA43O/IbUps1SFGllKBI6fMRTgHXYmq4AqAY0yMcrcriac4gVCMbe/y1oN6U3yY6b2
-         nNsfex0Y06tflA5BAXsZ23YzDFPQ7/1ZpywpYGHzvQJnB+kAnLHoGr8hL8HjkpquhYPk
-         Ylqxg4zrIA/aYz1ltez+fJen6AefZd2vwix3URcFzjzo7Qvk9XMqRPkDUX5ZNqZ81PL0
-         EJBzelp6OvF+nQLgEODeWJ8eh2e8MJXhA8xFL0q/KMwK7gLYB3pUsLPfdFhrSQ6rzEGh
-         Vu9hXGhRchm44sb4xuHDF/2UEKoZp/3Aly+OtgYEUISBv1TV0LeEVO5k+/9OgnQuHBLF
-         Eg/g==
-X-Forwarded-Encrypted: i=1; AKwUvBxy6sr4eH8iJxzABd2DtwbqQ2Lp5Lx31kBVnvHsaZInwrHkk7vlPVoQ6eKp1tEN5BtKBhg=@lists.linux.dev
-X-Gm-Message-State: AFuF++lA84sroWRyIhyfHrZAa0xCfxVCLII7v/7y4gDqdc12R524rVVc
-	zuhIEzxFwvi+ZXREoreXtovuKP1WNx9Ecvg9dXYdTTXgviAO70i4yfdzdGxiPwI+Q8s0P/0ug9Q
-	ztB1IfUjjl20EDzL1DEASnxZpuKWyCesn4oK7iJyncdzuwf1EPzd2ChI=
-X-Gm-Gg: AYBFou3oWoPaNTe9F75NpA5ssyT/x86eOHFu31wjK2K2mSyBWA7VLV6xpUcD7Q47VA+
-	IA3z14UfwtDKHhGxK6PcuA2ko3NbSuVrmhQB28ZdosdGJJQ3AKhvAJsqroSeRZBZ+QZTB3AsQiT
-	OxEbJNjjn/nMPNcP9998xnQ/QTHqMeBFeyhpAvbePVq7YBjSgtoxuTfohlJRRhAyrA2YNnCEceI
-	B5u2xZriApqBWsTa40exfGq7gI0I6DDIQnLdFy+YljyBQ5+EAiBAUtrBzWNcPXgp2sNEj0ZhN4S
-	WZLxDqot9Rxg6eDVgeiaQt0wAMLB3aDafe324JKGXFYqEQd2EZoO7Z/6B9Me3cnm5F4bx2bdSrd
-	tkcs+/ZMZT41SOPPQnBunJswwSYq1BQ==
-X-Received: by 2002:a05:6a21:9185:b0:3da:3401:c13b with SMTP id adf61e73a8af0-3dd7256f000mr5385387637.7.1789645310613;
-        Thu, 17 Sep 2026 04:41:50 -0700 (PDT)
-X-Received: by 2002:a05:6a21:9185:b0:3da:3401:c13b with SMTP id adf61e73a8af0-3dd7256f000mr5385340637.7.1789645310168;
-        Thu, 17 Sep 2026 04:41:50 -0700 (PDT)
-Received: from hu-nihalkum-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50acc1178sm3066557a12.30.2026.09.17.04.41.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 04:41:49 -0700 (PDT)
-From: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Date: Thu, 17 Sep 2026 17:11:04 +0530
-Subject: [PATCH v8 5/5] arm64: dts: qcom: shikra-iqs-evk-imx577-camera: Add
- DT overlay for Shikra
+        bh=glNGbXLPG/pOAS+pJMdVn3sfq0+G6eulTKEjqN2qPww=;
+        b=TMz97FxUBdieetzkyVMbg4yEj0BFkFQVdXuEyM2ePiR1CimFnONWlqmIC+HhVu4EhO
+         Gwpm9S47YmDm0lPcrqAd605o5RnMjkJSuIewpPbtHSbgCvBd4XT03jFC7OInKMjIVqWw
+         VbPrPD2LicwAjsmkpy/6rctRHAiSweNcvuWBCehqBhVmyhCCVSleJ/VoRgZOW9X/83uC
+         OMouuUpnw+rpAU724NhM2UKjMU0R1VtLWUIzGtmwKUMfPjt6HKTHPwAeSoO4gdWxX83b
+         ujjp6CzWLFxfaUYT3jqzdylbf4hc9BRM4AVswfREQNgcPjZeJsr2pCXOWCq2PweuxhJN
+         sB6A==
+X-Forwarded-Encrypted: i=1; AKwUvBzylosusUB2RlWI+tx4W4XLVi1OviRchhfyvdJt9AK42wlrP56umatUFgC19wjCqZlfszM=@lists.linux.dev
+X-Gm-Message-State: AFuF++lV+smccde9qjqLV+sNPT4c/0+oFMlvMleQwKu7G1K4r5qTfZmP
+	Mqg3+9/MPpW2FgkkKW1suSllc3sFoD/eZxe9pxIyMtc8uQLPP895kpz9WYiqvlVgAVV6V3GglTM
+	8+iQaJpi0Rrnu+73wcvCZW5vliWNr80ragfbbxs6Y
+X-Gm-Gg: AYBFou1fJmB++fVIo5qgmJXrw40npmu1Lbw5M6hQHyvumfWVPtfqw5Felgbd9mqSdwO
+	NWtcPzZYIPTu4Zehs78eZdjbGGA7+E07i9tpMCX1THAHbvPvXOldOGKK+3JYfmwfwgnQi6s5jgi
+	mY5pyCwe9vzjU94YKyMZwLhi+hYUWKluIB4xtRq2vJh7FHsAhlkJs4Hix2d2ZFdXqCEK/6WXl/n
+	y3+3SJeyFUZrQVlCjK/85FpToXX2ExolCkjAKJJGVCRUqNfV/ftmrQyRKZP7zM06C8BALGbUSp0
+	0xZ+CJ0EjDMvBLYHIGDMhNSAm+acdNsogJhg8z7TQJzMWod9ABsuvEa5PZqvbWMk/YGqw4hB0bb
+	f0sYWGOzw
+X-Received: by 2002:a05:690e:1181:b0:66e:54a0:cdd3 with SMTP id
+ 956f58d0204a3-6717724501emr313133d50.42.1789645371777; Thu, 17 Sep 2026
+ 04:42:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-shikra-camss-review-v8-5-9b9596221cfa@oss.qualcomm.com>
-References: <20260917-shikra-camss-review-v8-0-9b9596221cfa@oss.qualcomm.com>
-In-Reply-To: <20260917-shikra-camss-review-v8-0-9b9596221cfa@oss.qualcomm.com>
-To: Bryan O'Donoghue <bod@kernel.org>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        Suresh Vankadara <quic_svankada@quicinc.com>,
-        Vikram Sharma <vikram.sharma@oss.qualcomm.com>,
-        Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789645263; l=3663;
- i=nihal.gupta@oss.qualcomm.com; s=20260608; h=from:subject:message-id;
- bh=TfAZkrQyH/2Nx/S5qf316QvGg3gZJpftAEMQtTUDcT0=;
- b=WQuOMChYboYzEnDWR8vQ0V5Mji2g2iiMArZvPnPifQnM8Pl/TdWMIoI2xXqDjPWAWlMMlS+RH
- fJwv+ka64QVAKicEOjKcPDbcpJwRImTlYzMaz9iNMcEJWYxz5p1+tVN
-X-Developer-Key: i=nihal.gupta@oss.qualcomm.com; a=ed25519;
- pk=DIbyFMNwqU/iMvU/0pCQp2wmRVgtHFBT3PcSu+A+Ncw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDE2MiBTYWx0ZWRfX4VVuWslB10On
- EFrgoSta7iSdF2g0GdZR33/xKP2VWvZNGdV+w+3DElBnK0MM5SLl7/3SNil8UGWQrJA+Obg3tMZ
- MGfTE/dOVdjAAlqgHBNDzPOTuI1Ngk1u0lstE6yh+XYyYvOWesSKbzU6TDCE8EDH8LozipHAPjC
- WW+ofZGH9C9+7SlC3/BMv6K1XECKUsb70XPCCIyWOAaeDuVhyb9otCCgfwzcHTkMkjwZ1b5Y6ec
- Bh9fXqIU0unWcwtrKgAkq9OuWkK6zwJBbP/2+rNpsPhk11BRQKxC+dNrC8WgMfOdiNDA+Zzp+9e
- LlzO9CZR5vwNget+Fo8z3bDe8mXcz0/hk+UehbTGhur0Ns1XenW6ybIYtFZTOWwDoZ8KkJ+l/jb
- 0VMDavayFwf0ku8JHTf1uDnMIbTPZdYOpt/xNgaDRT9qYTI87UG2JeIYaeRzN3CBTCM3/gYRT4h
- 2BtXt5XtD74NemPXgNA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDE2MiBTYWx0ZWRfX4UFwx5qtQtdY
- GbUli0BNmqm0jbkSj0tY6msm01NnC5dGNqX33e4IaNpgQAV7mgEYWoM1pt7PmPEqqORVqzMxG3J
- 7XJtYE6R/UrnbfUVzwMIVUnFmbH4oj8=
-X-Proofpoint-GUID: VAejvI66toGbNhUtIjQ4YIBDOFsK46gM
-X-Proofpoint-ORIG-GUID: VAejvI66toGbNhUtIjQ4YIBDOFsK46gM
-X-Authority-Analysis: v=2.4 cv=K+W3jCWI c=1 sm=1 tr=0 ts=6aabd1ff cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=OGCdAuOInqFJiNoUztwA:9 a=QEXdDO2ut3YA:10
- a=x9snwWr2DeNwDh03kgHS:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 suspectscore=0 clxscore=1015 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170162
+References: <20260916033327.3054126-1-wenst@chromium.org> <6d21e808d343283264665ec16d297317000fdf4d.camel@icenowy.me>
+In-Reply-To: <6d21e808d343283264665ec16d297317000fdf4d.camel@icenowy.me>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Thu, 17 Sep 2026 19:42:39 +0800
+X-Gm-Features: AcwNN1UiSWBQWxLfTBKkSaF0uFiyhB3L4EIUoSHVNJlTekBmF6uuJ4F5EBEDj-E
+Message-ID: <CAGXv+5FHiW8umZ=wLLb5wK5Qz3hf-mbxC_zH5v+pwxxyUNTwew@mail.gmail.com>
+Subject: Re: [PATCH RFT v2 0/5] drm: Add and use drm_fb_dma_get_gem_clipped_addr()
+ helper
+To: Icenowy Zheng <uwu@icenowy.me>
+Cc: Liu Ying <victor.liu@nxp.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	linux-sunxi@lists.linux.dev, imx@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Shikra IQS is an industrial-grade variant using PM8150 PMIC, requiring
-different CSIPHY and sensor supply rails compared to the retail boards
-(CQM and CQS) which use PM4125.
+On Thu, Sep 17, 2026 at 7:16=E2=80=AFPM Icenowy Zheng <uwu@icenowy.me> wrot=
+e:
+>
+> =E5=9C=A8 2026-09-16=E4=B8=89=E7=9A=84 11:33 +0800=EF=BC=8CChen-Yu Tsai=
+=E5=86=99=E9=81=93=EF=BC=9A
+> > Hi,
+> >
+> > This is v2 of my drm_fb_dma_get_gem_clipped_addr() series.
+> >
+> > Changes since v1:
+> > - Add and use new drm_framebuffer_get_block_offset() helper (Thomas)
+> >
+> >
+> > This series adds a helper to retrieve the buffer starting address of
+> > a
+> > "clipped" framebuffer. This contrasts with drm_fb_dma_get_gem_addr(),
+> > which gives the address of the full buffer.
+>
+> Should vs_fb_get_dma_addr() in verisilicon/vs_plane.c be replaced with
+> this helper too?
+>
+> I implemented manual framebuffer offset addition here.
 
-Add a dedicated overlay for optional IMX577 integration via CSIPHY1.
+Didn't I replace vs_fb_get_dma_addr() with drm_fb_dma_get_gem_addr()
+already? At the time only primary and cursor planes were supported by
+the driver. The primary plane can't be clipped, and the cursor plane
+had some custom clipping, but seemed to want the unclipped address.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
----
- arch/arm64/boot/dts/qcom/Makefile                  |  2 +
- .../dts/qcom/shikra-iqs-evk-imx577-camera.dtso     | 79 ++++++++++++++++++++++
- 2 files changed, 81 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 02f340aaa2ca542d0d175ff965198b29ac48772f..c59f0e2231b57b1dd1975c189820cd703d4d5d48 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -363,9 +363,11 @@ dtb-$(CONFIG_ARCH_QCOM)	+= shikra-iqs-evk.dtb
- 
- shikra-cqm-evk-imx577-camera-dtbs	:= shikra-cqm-evk.dtb shikra-cqm-cqs-evk-imx577-camera.dtbo
- shikra-cqs-evk-imx577-camera-dtbs	:= shikra-cqs-evk.dtb shikra-cqm-cqs-evk-imx577-camera.dtbo
-+shikra-iqs-evk-imx577-camera-dtbs	:= shikra-iqs-evk.dtb shikra-iqs-evk-imx577-camera.dtbo
- 
- dtb-$(CONFIG_ARCH_QCOM)	+= shikra-cqm-evk-imx577-camera.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= shikra-cqs-evk-imx577-camera.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= shikra-iqs-evk-imx577-camera.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm4450-qrd.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-fxtec-pro1x.dtb
-diff --git a/arch/arm64/boot/dts/qcom/shikra-iqs-evk-imx577-camera.dtso b/arch/arm64/boot/dts/qcom/shikra-iqs-evk-imx577-camera.dtso
-new file mode 100644
-index 0000000000000000000000000000000000000000..d8c968a918c67cdebc0e7c6fc14ef820c97ecb75
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/shikra-iqs-evk-imx577-camera.dtso
-@@ -0,0 +1,79 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/qcom,shikra-gcc.h>
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&camss {
-+	vdd-csiphy-1p2-supply = <&pm8150_l11>;
-+	vdd-csiphy-1p8-supply = <&pm8150_l12>;
-+
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@1 {
-+			reg = <1>;
-+
-+			csiphy1_ep: endpoint {
-+				data-lanes = <0 1 2 3>;
-+				remote-endpoint = <&imx577_ep1>;
-+			};
-+		};
-+	};
-+};
-+
-+&cci {
-+	status = "okay";
-+};
-+
-+&cci_i2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	camera@1a {
-+		compatible = "sony,imx577";
-+		reg = <0x1a>;
-+
-+		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
-+		pinctrl-0 = <&cam_mclk1_default &cam1_reset_default>;
-+		pinctrl-names = "default";
-+
-+		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-+		assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-+		assigned-clock-rates = <24000000>;
-+
-+		/*
-+		 * avdd and dvdd are supplied by on-board regulators on the
-+		 * IMX577 module from the connector's 3.3 V rail; they are
-+		 * not SoC-controlled. dovdd (1.8 V) powers the carrier board
-+		 * level-shifter that translates CCI I2C and reset lines
-+		 * between the SoC and the connector.
-+		 */
-+		dovdd-supply = <&pm8150_l15>;
-+
-+		port {
-+			imx577_ep1: endpoint {
-+				link-frequencies = /bits/ 64 <600000000>;
-+				data-lanes = <1 2 3 4>;
-+				remote-endpoint = <&csiphy1_ep>;
-+			};
-+		};
-+	};
-+};
-+
-+&tlmm {
-+	cam1_reset_default: cam1-reset-default-state {
-+		pins = "gpio33";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+};
+ChenYu
 
--- 
-2.34.1
-
+> Thanks,
+> Icenowy
+>
+> >
+> > Some drivers program their hardware with clipped dimensions, so they
+> > should be using the clipped buffer address as well, unless the
+> > hardware
+> > can advance the scanout directly. (Side note: many drivers still use
+> > the non-clipped dimensions.)
+> >
+> > While at it, also pull out the offset calculation of
+> > drm_fb_dma_get_gem_addr()
+> > into a separate helper in drm_framebuffer.[ch], thereby separating
+> > responsibilities.
+> >
+> > The sun4i driver was recently incorrectly converted to use the
+> > unclipped
+> > drm_fb_dma_get_gem_addr() helper. This broke offsets into subsampled
+> > pixel groups, but also exposed the mismatch between the dimensions
+> > used
+> > vs the buffer address. Two other drivers were also touched.
+> >
+> >
+> > Patch 1 adds a new helper to return the byte offset into a
+> > framebuffer
+> > for the start of the pixel block of the given pixel coordinates.
+> >
+> > Patch 2 adds the new helper to return the buffer address based on
+> > clipped coordinates.
+> >
+> > Patch 3 switches the sun4i driver to the new helper, and fixes the
+> > luma plane buffer address offset for subsampled YUV formats.
+> >
+> > Patch 4 converts the imx/dc driver to use the new helper. This fixes
+> > a
+> > mismatch between the programmed coordinates and the buffer address.
+> >
+> > Patch 5 replaces the open coded buffer address calculation in the
+> > imx/dcss driver with the new helper. Existing behavior, which might
+> > be
+> > wrong, is preserved.
+> >
+> >
+> > Please help test. The series is only compile tested on my end. The
+> > sun4i
+> > changes should revert its behavior to before the
+> > drm_fb_dma_get_gem_addr()
+> > was adopted. The imx/dcss changes should not have any behavioral
+> > difference.
+> >
+> >
+> > Thanks
+> > ChenYu
+> >
+> > Chen-Yu Tsai (5):
+> >   drm: Split framebuffer pixel offset calculation from
+> >     drm_fb_dma_get_gem_addr()
+> >   drm/fb-dma-helper: Add drm_fb_dma_get_gem_clipped_addr()
+> >   drm/sun4i: layers: Fix VI buffer address for clipped offsets
+> >   drm/imx/dc: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+> >   drm/imx/dcss: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+> >
+> >  drivers/gpu/drm/drm_fb_dma_helper.c    | 61 ++++++++++++++----------
+> > --
+> >  drivers/gpu/drm/drm_framebuffer.c      | 45 +++++++++++++++++++
+> >  drivers/gpu/drm/imx/dc/dc-plane.c      |  4 +-
+> >  drivers/gpu/drm/imx/dcss/dcss-plane.c  | 34 ++++++--------
+> >  drivers/gpu/drm/sun4i/sun8i_ui_layer.c |  2 +-
+> >  drivers/gpu/drm/sun4i/sun8i_vi_layer.c | 16 ++++++-
+> >  include/drm/drm_fb_dma_helper.h        |  4 ++
+> >  include/drm/drm_framebuffer.h          |  3 ++
+> >  8 files changed, 118 insertions(+), 51 deletions(-)
