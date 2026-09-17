@@ -1,63 +1,65 @@
 Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F334A3F28
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 22:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892144AA1FA
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 22:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789683963; cv=none; b=Lw3rCPAmnr9IdOBBQxutWeNvFnOm1puCbj19R+p4vhM4uBHOGlVYhsZEcxKR/Co/VLbRQ6HP4DtBnU11HMCHi+hChISW9TjV5jOX+KAx0+UpKKlAlT1vll23rNDiXrRXIvZDPYUbBbhoxJEabWDVRHV0pkB8k4QyWY2htPnfRPs=
+	t=1789683965; cv=none; b=fAg76wLmb9WdO7wSoaSdve+SynpdjDh1VY6p9Nb2N7QktzcYPLcgT5OYx4dAj4X/CancTSd6OAg+mfcj3yQDPpo8C+WUbn9rBLqK+8I5DitULAN8nAKm8KYNLhyDqAIRq3S0kVMit/+JLWT8BTs8qpU4/IE36Z7AZHP37kI4Gyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789683963; c=relaxed/simple;
-	bh=l9/NyfXKy1WrGYxW/ylBLHr+m63MzpB0UkpPW7lkV6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hbkE0uNq9fzWKax7u8A0Bkhy5z5IL7bVHGozcQ3gq0rCaTYco6EC//tkZtRO8ZZIVxlLZFgu0hg1Q1PJFujmd2g3I2TJu8UqXKNNlnshJEfLb+9NzxbsP8BX+lnZcE+NXrHzwHTPTthZD0MMcfbib44OKeRiLUZGVWNPYFOyDJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QdRCgkwi; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1789683965; c=relaxed/simple;
+	bh=PPUQzK5TqVbrrNTNE0CnhEJ8m/zbeT/JzkU4m//5RaI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OxzefUaCi/nRun3J7/DrLVYOQuRU3d6c6ixYIX8HMBVsaUmQO5jNataWtPv/6mH5o4z1oB2vtYShGpuP4qIsePIMcXBr2AXwDjmNlcRm9SSLkWTX9plav49qW69Hy6GubWewFPwvLlsvEkoMoCY8950MB5eKq+rEDN8alOcmlMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DjbEolJe; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QdRCgkwi"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd4ba9f68so1607345e9.1
-        for <imx@lists.linux.dev>; Thu, 17 Sep 2026 15:26:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DjbEolJe"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccfd61ecaso1080745e9.3
+        for <imx@lists.linux.dev>; Thu, 17 Sep 2026 15:26:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789683959; x=1790288759; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CrlZYOE4Tb+zUOHoD48b//tG3mcCRvsKdsWOXCdCJnk=;
-        b=QdRCgkwiN5xQv5jQb6tsDIIzzG86LyCl6oeFO6kdxIqr0M5gjCX0m9hdxgz1j9pJd3
-         u3wZXoeEfHVB6bgsJ3t/Jl79vCK3CTwWNDSKuLnwQ/9svNwt8/jKrfe3k1lA/esm1TK0
-         yiwf9uTENusQcos388yIBHm70Ii0CcMZAidDRS5Qx/B3m62++x7wy5Pz/dktBP/roJuI
-         ONFW5ZxWOaG24OfJr4wTaiPNSlEwhIvNghmqz/Vb36eRxgmRVrtbZgfey3iVVo2VTusW
-         xvh6dECMwqOhlErytrUSIxRNpLiZ0EnpdeLn4HyPbR9h7deoIRv/N7FqUhPnlPTjaS2c
-         Yx2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789683959; x=1790288759;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789683961; x=1790288761; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CrlZYOE4Tb+zUOHoD48b//tG3mcCRvsKdsWOXCdCJnk=;
-        b=t4PQ42RXVlyrUm1BiAKojamlQqv5l9EzCVViAQWmdo8S9BBC0uhOe6V0TV6CzwdlVt
-         LRQA5x2bjnWVrTaWm6FqWxnxsAKtQEbqUmraePwlECJTqJqU0yRpYl9aaa5WH44aFPGQ
-         gd4Ox9jRtw87OH+ea42XIp44PUm6TyZ9FFaNRnTAno707S1e5eeEJ0wrdGZY3K/ua4Ec
-         /GydMsnwGHogv0YJfAUVZyFLx3qjnVbh/q3gCcFE1VRjRy/26vT4OVvvrXdIMZCKhYd/
-         C7ICJJVDvHuremngJoiA6kJJIhcNSC4c0WKUy+3fpRQuXDv9QQ31KfxlshWLfinKLiEk
-         ZUsw==
-X-Forwarded-Encrypted: i=1; AKwUvBxYRygQI2+36HtuPO7AjhN0TH0E0I65GKAs2VellIY3m0YxkbyAEWJoUIHFUu2OZ7TESdU=@lists.linux.dev
-X-Gm-Message-State: AFuF++nEPtQ4U5OU5cjZh55ScvBnv6fT6EA+XTGWT0iH3DAIfMwjZF5+
-	QHL+kPgJBr1rH/pvhuRoW4csG+LC+GUDZ2JItIJTtt+3a9MVaJ1BbfjF
-X-Gm-Gg: AYBFou3jmdBFIo/LfyKVymXlyBu3PrxYUDqlI0rzxs/FI7Bi1WgsCn0v5rFCoQ6ye65
-	6i9DYGEqYmpOnNhP9mCeFE5Muou3TIp6xVvFaRmSEYZ/e2NdfB6kzxvdTKn+iwK3CAUQLs4wlds
-	7QvIvVYlXIjDGuhJEcLz5tiGu//30qgY3CK1kyHhAy72fCZ0wfJ02SF2sWkA4Hhkl3uidRWnZKb
-	CoU7i3wsKqFgCj4laR1b2/YWO369O15RfwSGnysCzwk7klm7cqEqwWyhWYEPd1PEf8RfwmLvn4f
-	6FPKaCj0BO5NuU91Bqf4ra6ggf7kTg608+ptskcMNyWMr7G0Yjp+/FhAFGaRNYV1qorITpLKUOE
-	Lo7SUHR1RDF5wsCaQSWVIo/ugeywPnYVmyP3to7NwHyLDjiFmn7XJrW0ZFXK66LCKFOBFczCykF
-	pdA+SS1Q+cuNT79aDQzRVZSkzj9+dxwMqoilEaH1bSV9VsxbkdYFYloGuxBYiharqQip5rvf+6J
-	koizJefdJUwuPYjXs5HwypDzH1rKWeO/pObDK8SacBrIx9CwxmkPLew8Ymum/eL8pL85DtLdI/u
-	98mKfX7kqx+0mPo7JWeKPw==
-X-Received: by 2002:a05:600c:3b17:b0:49c:fc6e:8cae with SMTP id 5b1f17b1804b1-49fc5737b80mr3154795e9.18.1789683958822;
-        Thu, 17 Sep 2026 15:25:58 -0700 (PDT)
+        bh=qZ47DVQmyZYVdJhDE2+Awlch6+GR0MpCzXRi8vv+3B0=;
+        b=DjbEolJe8s9k3L48BGmWgXMRy2SJZh0On7rwxo4EckCmK+l9ttSGs8YqJBFLr61DtI
+         EbrWadWGxpbboht9zixvJKK2dHZsDUr+f2cE21koS5X0LzAYlGXtG1brS8mjHVLkvJ5E
+         dB7H+2Pf2Jsc/jaC7aDnsBIp/fTfUpKSPGcGyOhXz+Oguz22YGc5yczVZWTnquqzfjIO
+         taUmcm1Cay/q9ikBFYanfoDG2tsFx2ls2C8iRDWNGxqiVA4mQ12nvmObLjbDysxvCt/U
+         2P87O7uH2FGO7hMfH5PEQBs6iIuJPC9KURAmO+MYPTEMKxuw+MpD9HAC02mW8sXTGAKq
+         Gz/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789683961; x=1790288761;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qZ47DVQmyZYVdJhDE2+Awlch6+GR0MpCzXRi8vv+3B0=;
+        b=PRTb630va0K/gTeVcNYwKFJJ4tiXwEAq87oSEiZnzyk3JTJkuxrY4IxpIlT45XeL+L
+         Z/Yitd7hIscDX4OidaBd7GCMdXwj0KZ1Aop+Aw/J6nGI9RCKlqflua5Ec7XI0O+n2OCy
+         zbAowW/UgYy8j/4TTOE5xZkoIsG2qQMb/laBsEXt5sbwp/z97kNLIOIjy//92L/UQORL
+         38FPFWdZqthm/z9p5OTvIfVgAo9mQlSqRo40KVBart8ntsvpNdLH86aCUMZS4T8lYOZa
+         5nG+IoQsuA/zD0/3I2utlpGCfr6MSLlE/yu2XXXECBldn+m+2s4NRQcJzoH2OM30lH5l
+         mSZw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/l2b5pIkINMGyKkRlhzzie+xv14QlxYGITHee/u6nMv1BBhaTeyM0pzzFWiYmCemeom4=@lists.linux.dev
+X-Gm-Message-State: AFuF++moNoNguCl0IJKBMA307hURE+x0jl07uZmhsGVyfN5NAGPHqIRC
+	+zPjpuXY0YFb5hsRRa1C35i2I7pWmsKBaTjxzJQoZ1woQAwab8Lp/C5O
+X-Gm-Gg: AYBFou2ntnlElQ5/Gwjg3ilRh8WhLiy9rZ4l6St19s9f/UuyvMyqYYKjAAfQgg2jFkm
+	oYQ0GXQAJW8TgBWyZH7VLeLYS136vbAT0oLM3eibBMjbLJSHin2NvlTiT/3YSYaPkrdDKybZ8Xw
+	4UeOv3qUwpefxkoy1U/nWn4UhbTABmRUYhCo40YFZTJylrZQd7ZMha1YbEpZ2EhEaD/vejO8YI3
+	u3XbVM9POi0sgGC3AMwHy0xbVGEAyVAu1Cw5MAx/3G+xqdg82Cl6v9FF9LhOztw8RR+ledvepKV
+	Weve2j260+gTGWhlCtHWMyl2a+O6Gd7No/VrDptxuOXdFvDFITy2G893VTF6Y14f2BIaohKDDm9
+	lNcBpXBtL9xQDmZFtfVRy171ZEtNvrXFCvuhZMUaye2I/WkaKMdzcFVYZXrYYevMLfXlpW3SAhL
+	/hpCBC71KAst1dcBza8adRSH2XGRzSCpV17y6+3TGWfPxjhq0vR/iMDgb8tqgdIVhLlNBUWaGck
+	R0QSUkSlD16UxdbOA7tjdEAQ/2CruFCUqXw9Ij4zniz3RX6sdtaTzKzYqwewVjZPW8OQjq7brS7
+	TUm/ba7HUZmTCA5aqlNv9A==
+X-Received: by 2002:a05:600c:4e53:b0:49e:715e:ec1f with SMTP id 5b1f17b1804b1-49fc5757378mr3630865e9.30.1789683961158;
+        Thu, 17 Sep 2026 15:26:01 -0700 (PDT)
 Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc56aab7csm5583835e9.1.2026.09.17.15.25.56
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc56aab7csm5583835e9.1.2026.09.17.15.25.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 15:25:57 -0700 (PDT)
+        Thu, 17 Sep 2026 15:26:00 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -72,11 +74,14 @@ Cc: pierluigi.p@variscite.com,
 	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v3 0/3] arm64: dts: imx8mm-var-dart: update SoM support
-Date: Fri, 18 Sep 2026 00:25:42 +0200
-Message-ID: <cover.1789683864.git.stefano.r@variscite.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Ferraro <francesco.f@variscite.com>
+Subject: [PATCH v3 1/3] arm64: dts: imx8mm-var-dart: configure SAI3 synchronous RX mode
+Date: Fri, 18 Sep 2026 00:25:43 +0200
+Message-ID: <f155648a50185df5d273f697f10fcd7efb154364.1789683864.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1789683864.git.stefano.r@variscite.com>
+References: <cover.1789683864.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,30 +90,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series updates the Variscite DART-MX8M-MINI SoM device tree to
-better reflect the currently supported hardware configuration.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-The changes configure SAI3 in synchronous RX mode, add TPM support,
-and increase the Ethernet PHY reset deassert delay to improve PHY
-detection reliability.
+Configure SAI3 to operate in synchronous RX mode, so that the trasmit
+path uses the receive bit clock and frame sync signals.
 
+Remove the TX_SYNC and TX_BCLK pinmux entries, as these signals are not
+used in this configuration.
+
+Co-developed-by: Francesco Ferraro <francesco.f@variscite.com>
+Signed-off-by: Francesco Ferraro <francesco.f@variscite.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
 v2->v3:
- - Fixed reset-gpio polarity
+ - 
 
 v1->v2:
- - Add tpm pinctrl
- - Add comment on tpm reset line
+ - 
 
-Stefano Radaelli (3):
-  arm64: dts: imx8mm-var-dart: configure SAI3 synchronous RX mode
-  arm64: dts: imx8mm-var-dart: add TPM support
-  arm64: dts: imx8mm-var-dart: increase PHY reset deassert delay
+ arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- .../boot/dts/freescale/imx8mm-var-dart.dtsi   | 21 ++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
-
-base-commit: 46d8fa682d263271f3ef7bf95166b124c19d6c62
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
+index 2324063f8fd9..c7a9eb23e5e8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
+@@ -305,6 +305,7 @@ &sai3 {
+ 	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+ 	assigned-clock-rates = <1536000>;
+ 	fsl,sai-mclk-direction-output;
++	fsl,sai-synchronous-rx;
+ 	status = "okay";
+ };
+ 
+@@ -446,8 +447,6 @@ pinctrl_sai3: sai3grp {
+ 			MX8MM_IOMUXC_SAI3_RXFS_SAI3_RX_SYNC		0xd6
+ 			MX8MM_IOMUXC_SAI3_RXC_SAI3_RX_BCLK		0xd6
+ 			MX8MM_IOMUXC_SAI3_RXD_SAI3_RX_DATA0		0xd6
+-			MX8MM_IOMUXC_SAI3_TXFS_SAI3_TX_SYNC		0xd6
+-			MX8MM_IOMUXC_SAI3_TXC_SAI3_TX_BCLK		0xd6
+ 			MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0		0xd6
+ 			MX8MM_IOMUXC_SAI3_MCLK_SAI3_MCLK		0xd6
+ 		>;
 -- 
 2.47.3
 
