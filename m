@@ -1,96 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA954A7C89
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 21:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E7B4A9D6F;
+	Thu, 17 Sep 2026 21:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789681341; cv=none; b=SbzQ5Evsn/vFEn6qb1KvAOYEc9llCt8xP2Cw+2BTI4xV3axP2hZjhC0WfIyphEAJ1L3E/p3cI2/j+2suqaOm8n0X0W0pwrhe40sawPZZPomPxFu+fbcWFavTrKJWCbBmLLDyL1HZoEp78Of3ZivT8Yr8dbyF1rq7NbJY/VrAfyw=
+	t=1789682285; cv=none; b=DnMZllclaZzw9Ha3QRogUOHJqDO/mBXOEGjhdUTKNL0kXkez+4xEstgxjtW44TSWNawyVTreQmh+xrtDpji/qwqEiLSYyJCvA2U7L54gSN/H8uGtyA/s2RKHi6Cm86n1rCPgCcpqjPx4OskpIYF0RZKZKGjS0SHv5Bgc9ww7kuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789681341; c=relaxed/simple;
-	bh=J08RF0JippXzOPX16V0ztB6TMUEWSeMwnzGLCutLPYE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K0bcMqHpKaa2txVPm4kEkoFTUctZwMve2EhHW0dWRcKpfJNeWJGRDhmccIL0jwymqQW+W0Ml1secBSDD/9DqYBSOu6Ck/0nUza9gJ4/SegvSG49XfcjgV1dHZrrkmc7uHvqoBuJvbSvFrp24La1XzVshEjxmGerOjMkMIdpcaJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BtJsgdiv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789682285; c=relaxed/simple;
+	bh=K01OWSwrQhLZ1I4m5H6/VZez8MW387RtFv6BpX2DCqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=sFcIxFHANUSahWJbr/SjATTvdf8WQqbgzaWtdxjGslJzO2xkb/A0domwMQJpZBjrJCd0qHKyjzziwqN22lGQRzf2sh9T25xZi5x3+kD+i3VnxZUFo7oY0k5y90EFJfoQA8MVdJ07ybqGeoSpQekJyw0wza3gili/1yU7+vv2T7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMs0O2Bc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BtJsgdiv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2D51F0089B
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 21:42:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMs0O2Bc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7769B1F000FF;
+	Thu, 17 Sep 2026 21:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789681337;
-	bh=+Vd37vlqPgoR34jGq+5SarCAahPWAWe4kwjRPQidlrk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BtJsgdiv4lMiFIQVgmdR8uPTGBE3SksCFUE0VRGf/7plR5BsKss0wk44kg/IGESuy
-	 5o+jLQ+1nk25fhFU9JgEkagFuLHUQ8UYBIQQX/A5gtdGuybvyN6BKeNY1tB+Qos5n/
-	 nGQbSEqmvaOlUery2nP3gouw25q/6al1JCWu3lbTAgXC+ezfwSYIy0IPnOSUBIcIsC
-	 7HGmzNbbxOTFkYectDy6svosEuc4md1omiI9N8nRk0Ji7lc/KSfNfeuBrdx/80t0Gr
-	 7NEdQOOCzJWxZ08qaZHCoePZWUF1GKnLJHqiDEdXlhu+8H2B8syRuqxpDHTKVGx5gz
-	 vtOhO9zii+3zA==
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b7be8dbabfso74215e87.2
-        for <imx@lists.linux.dev>; Thu, 17 Sep 2026 14:42:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxCIRoWsymjTCL61x1vIQk7JpUcPi+ZagWHKEfuS1DaKI1cvGvqsDuT0vR+n7m6mcFHh4A=@lists.linux.dev
-X-Gm-Message-State: AFuF++kgbgu0S6iwY/La+jD9MQhNKtZpdwUZT20JOmqND47aPkA36QUN
-	jqYuTAMSAM+JqD552ufbS/uJjyWTM6/Q9ZO97wLuqxIN8mixe+87mnp9aNp2neHimP9cQbvgCem
-	ysC+8125kb+BwvdpZ4Eom50OqhXHNsf4=
-X-Received: by 2002:a05:6512:3baa:b0:5b6:4ae:3ff7 with SMTP id
- 2adb3069b0e04-5b8c18449abmr61087e87.31.1789681336165; Thu, 17 Sep 2026
- 14:42:16 -0700 (PDT)
+	s=k20260515; t=1789682283;
+	bh=OP3JYLBXOqOHgXrUVwmby9CoOJ787szehasQI38rGyQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=CMs0O2Bc4ICSa1T8bJvuWgzlf1kyPiBEEAF8YyNkZlKYj7AxxFwuNZMf3kUkq6Spa
+	 2qeDwdnLti+1xiaJ9UVSm+RmoHRrX3uzf2/IH2yZFTVvppENKWnC0ZpTieYrfRdFxR
+	 CSNdnYwPeuvBZBm3nKeHhvWK+Q4iUClTWxeQ0Oawmp32DyR1beYSUW/qKkJZ7GvprH
+	 GqeZzJlKBlIJ1lXFBksRX5HROuSwupFZSnbecaWuaYZeecNNWl9Nc+lEaSKRZjTJ3k
+	 JUckV5Lra7ixgKiCSl9YKGOc8KE0Jk+DOq5/1uERCzIaTyfo5f752rKdDTL+lqMFs1
+	 k4YU98t7DQ4FA==
+Date: Thu, 17 Sep 2026 16:58:02 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	leoreis.costa@gmail.com, fra.schnyder@gmail.com,
+	francesco@dolcini.it, frank.li@nxp.com, l.stach@pengutronix.de,
+	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
+	robh@kernel.org, bhelgaas@google.com, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, hongxing.zhu@oss.nxp.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org,
+	Linux kernel regressions list <regressions@lists.linux.dev>
+Subject: Re: [PATCH v2] PCI: imx6: Move clock enable after core reset
+ assertion
+Message-ID: <20260917215802.GA1056201@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260917204240.1284796-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20260917204240.1284796-1-Frank.Li@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 17 Sep 2026 23:42:04 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=uWFLWB_8T_q9UwbY1KzB+tcjJwOo4GheRF-72eU59Sg@mail.gmail.com>
-X-Gm-Features: AcwNN1UfNjWV7KrU9iWOWhdNsDlRn7O6RazPK4CNMASiCssILCbrQZDav7Nv7A0
-Message-ID: <CAD++jL=uWFLWB_8T_q9UwbY1KzB+tcjJwOo4GheRF-72eU59Sg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mmc: use dmaengine_get_dma_device() instead of chan->device->dev
-To: Frank.Li@oss.nxp.com
-Cc: Aubin Constans <aubin.constans@microchip.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Paul Cercueil <paul@crapouillou.net>, Russell King <linux@armlinux.org.uk>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Jesper Nilsson <jesper.nilsson@axis.com>, 
-	Lars Persson <lars.persson@axis.com>, Fan Wu <fanwu01@zju.edu.cn>, Frank Li <Frank.Li@nxp.com>, 
-	Rosen Penev <rosenp@gmail.com>, Pengpeng Hou <pengpeng@iscas.ac.cn>, 
-	Zhan Xusheng <zhanxusheng1024@gmail.com>, Pan Chuang <panchuang@vivo.com>, 
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Rakuram Eswaran <rakuram.e96@gmail.com>, Khalid Aziz <khalid@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Runyu Xiao <runyu.xiao@seu.edu.cn>, 
-	"open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." <linux-mmc@vger.kernel.org>, 
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:INGENIC JZ47xx SoCs" <linux-mips@vger.kernel.org>, 
-	"open list:OMAP HS MMC SUPPORT" <linux-omap@vger.kernel.org>, 
-	"open list:TMIO/SDHI MMC DRIVER" <linux-renesas-soc@vger.kernel.org>, 
-	"open list:ARM/ARTPEC MACHINE SUPPORT" <linux-arm-kernel@axis.com>, imx@lists.linux.dev, vkoul@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ed9e4de-2e57-4c15-875c-16512f00163f@leemhuis.info>
 
-On Thu, Sep 17, 2026 at 10:42=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
+On Thu, Sep 17, 2026 at 01:08:03PM +0200, Thorsten Leemhuis wrote:
+> On 9/2/26 16:15, Manivannan Sadhasivam wrote:
+> > On Thu, 13 Aug 2026 17:50:03 +0800, hongxing.zhu@oss.nxp.com wrote:
+> >> Commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
+> >> inadvertently moved clock enablement before core reset assertion, breaking
+> >> PCI device initialization on i.MX6Q Apalis platforms with
+> >> ASM1061/ASM1062 SATA controllers connected.
+> >>
+> >> NOTE: It is not 100% clear if the issue is specific to the ASM1061/ASM1062
+> >> device or on the specific power-up sequence (reset vs cold-power-on).
+> >>
+> >> [...]
+> > 
+> > Applied, thanks!
+> > 
+> > [1/1] PCI: imx6: Move clock enable after core reset assertion
+> >       commit: 16929741a622eb345057e41c7b335d9b297890e1
+> Thx Mani.
+> 
+> Mani, Bjorn, what's the status of this patch? Is it heading to mainline
+> any time soon? This (unless I got confused, which is possible!) afaics
+> fixes a 7.2 regression that annoyed quite a few people -- which is why
+> it was even briefly considered to revert about a Dozent changes shortly
+> before the 7.2 final:
+> https://lore.kernel.org/all/20260811214900.GA763236@bhelgaas/
+> 
+> Didn't come to this, but it afaics would be good to finally resolve
+> this. Or am I missing/confused something?
 
-> Replace direct dma_chan::device::dev access with the proper
-> dmaengine_get_dma_device() for consumer API
->
-> chan->device->dev is not always the device used for DMA mapping.
-> Some DMA engines support per-channel IOMMU mappings, so different
-> channels may use different DMA devices.  dmaengine_get_dma_device()
-> returns the correct device for each channel.
->
-> This also prepares for making the DMA engine provider data structures
-> private. DMA consumers should not access DMA engine internals directly.
->
-> Assisted-by: LLM
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+It's in pci/next, but probably should be in for-linus.
 
-This looks good to me. Thanks for fixing all the sites!
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-
-Yours,
-Linus Walleij
+I moved it to pci/for-linus for v7.3, thanks for the heads-up.
