@@ -1,158 +1,132 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012017.outbound.protection.outlook.com [52.101.66.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9053840BCCB
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 20:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789678597; cv=fail; b=Szgac+UzKgDySWq3fLPmUx2LCk3lDA6QCj7l9wUi1hiZhs9Lg0o4YdbTW31nkB8UIetzhPYFjKD9zOhWnCWu3IaSzjP55iHzX+BTX9KMtxfG8AoUnGz0PGD/DUc7PuJI+kXKWpe9AuywMEgd7oPBF1kkTWds8DxIlZNvVX+NFvQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789678597; c=relaxed/simple;
-	bh=dl8Gc0XTvuu++2s6xk622o0wrCyiyfnJ9VhCyfvrqYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jXTE0Im+V3KaSSoPnSITzmW9QkPI3fVB5hqpPLbgLyDRlnDMt9VhKkN7FEflbk+gJ4Y8Zk6FTFtZGMDAGhqH4VVe0UBPTedwoQnbLymT8M1oVFq6ISoje+1NDS/hPntg64uDk+TnlinNfJCut83mbwUrM2EJDK2FDLBtfE0i8rM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lUxSSv63; arc=fail smtp.client-ip=52.101.66.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F003A7D91
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 20:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789678726; cv=none; b=c5ZRG3vNAMsAXssvqq9FTrvaH/O7/o9qWkMHlm/jP0n98Z0ZwYyF2OxznkQenkJJWxFfWmcCy2NxnDIxYwrFkmLkL81Jjk+Ats5VvyM+YMoepT9BDoUxgTNKbT0ZFB+c/Y5H3rqky0SlWAZVq22pNm3lsncdYXs90fqwSvO6R4k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789678726; c=relaxed/simple;
+	bh=mS3BOK4VI2FemnyIYV4k4zI22Td7wyg7fA4zUIYn4SE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=NvVG21D4aHEJN3jFm8jfoNP6PcMDpdROB2zetj0CCNM/vW7h6BdGuh5wOZ9AF97y051HJEOMF9HnLyucep65M1UvzXroQwx0Z24HoaWqwwGmsTWMH3DY+CfMKQD6oWYU42ucq0lH51LRrHufA5/nsLV3MWLvVr0RSnBuKCE7NyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XY62b89d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lUxSSv63"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OnKTOnoNz0LErOuDCBZRoDRwGRLP+ud/A9lQW4IElNNAQVTWrjMY0EzEEEFHe68CCuxhkveYMySBOu7Y91Cu4d6dauzDHJW4rDZwnFIChiFKUXVtZJgQ8fwP6XGYQjnLQLZHdkKc3qTL47toc/fEW7pybhpcIp8O228ppXQQtK9bllzJpO0k1eiOp0Bnr+U8Zlm5WVdTNzcOP6DYrik4EkcpPw7jFNP4me8kBOOxPPhnkxXWgsi7Y+aHlm2S4TK0Kfly2VPH16HeOi7w7pQU895KmfZOUiR1TG05wfmFExeBrtU3u4ByRMUbcVCIpp8eJN/uPE8ijyIYFhzKvdyWeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T/5lz8YT1SJwbMKqWTLbkjlkXpluM6MbpXfMaEtHabA=;
- b=ImxI1E/JqAzYdpKYCduNg2XwM3MOHQd8NixwDvykGPC9LOl326Dr5dyD2oeRDC5RvNe5YpQG5rUhiZplMS/I5UF7BWSWAD/kz8vv3MB2MMGRL3CWOqRk3Hd18vix3g9Kn4lOuqTez5V8nn8+G9+wMufhstRCtIhOp6PsTzW7VIeNiMRuCu8fzy5fO8QzHtBFKxUjiFaNQ9yRU80Yti3iwKwHsimeCfx44+QQVTZu16kCADdaKbLYSptu5ZnANP9AQjnhez39sPODunP6NSu56tcWcV864IW1PtNJANiqpCS2Ajgw+mAKUfrFJIJ2FfupASte2QE06fq1KMFc0M8BJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T/5lz8YT1SJwbMKqWTLbkjlkXpluM6MbpXfMaEtHabA=;
- b=lUxSSv63HU+7Ku4qNiiei6aCWAc/TqS+QHbbJ20z/VkD51aEKgpquBEeht1IamhbxhE6J8r6HCcz9LAC7GX/4gNEVWpKW9R4vntXERgAAoXsyhvIWfvKRXRiL1sjdfhB2Dh6PT7+I+OjKQx1fcKHuQ9zEjEiG6t2duKvqpnZlMFRmRDSGkr5yE1pfv3xd7WvhQ6L9IUKvt+GTHjwcC8sVaiPt5EJtZ+fY+OAmAsv89Rfti4s49NJ5GbP5OGgcWZR1e7TQOwsvxfVD+0OBsFOGpRhdDRBwo5N9f5kCZrfB+ycWe83yvd2upWct/R6jz2BlOGAyKrDpYgjxwZV5MSYsw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU4PR04MB11791.eurprd04.prod.outlook.com (2603:10a6:10:623::11)
- by PAWPR04MB11572.eurprd04.prod.outlook.com (2603:10a6:102:50d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Thu, 17 Sep
- 2026 20:56:32 +0000
-Received: from DU4PR04MB11791.eurprd04.prod.outlook.com
- ([fe80::11ca:6b74:3234:d7de]) by DU4PR04MB11791.eurprd04.prod.outlook.com
- ([fe80::11ca:6b74:3234:d7de%5]) with mapi id 15.21.0428.011; Thu, 17 Sep 2026
- 20:56:32 +0000
-From: Frank.Li@oss.nxp.com
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev,
-	vkoul@kernel.org
-Subject: [PATCH 1/1] usb: use dmaengine_get_dma_device() instead of chan->device->dev
-Date: Thu, 17 Sep 2026 16:56:20 -0400
-Message-ID: <20260917205625.1299375-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CY5PR15CA0075.namprd15.prod.outlook.com
- (2603:10b6:930:18::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XY62b89d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4C51F000FF;
+	Thu, 17 Sep 2026 20:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789678724;
+	bh=AZzsJc2mzRixYXx+ipRPQr7MTRu00JD/Y1XHYQB0gxE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XY62b89dNHle+roZsr0uF3Z+zOjYK/b61OhjHt6yfYOGD93VulToEBsvMNN5Gqbk6
+	 +bYElS76STXjjTJduJ2Gu42hcss4pWhCHUTRStv9C04n/eBqK42uPfYJyR5b72l9Ov
+	 waMB45C0Vpayk+jxQu+D0Y2NfDyhEt4qCHKYcPtL9b3YNc6dJXexK5vqHudQfaXdiz
+	 y2XZ4cTo4w1OidWZwQwszCX/NMAJRvNL6+8NCw8wqgS5xRe/AQgw0EqyeN1ID9OTzD
+	 vBF3Q14K88Fi0ZwlLXrTwFgKwxvHd2/vzZONLzA5MN1U5VBERvE2TY60smT43/Dz3l
+	 PPHyzawM/JTlw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/1] mtd: use dmaengine_get_dma_device() instead of
+ chan->device->dev
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260917204724.1289912-1-Frank.Li@oss.nxp.com>
+References: <20260917204724.1289912-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 17 Sep 2026 20:58:43 +0000
+Message-Id: <20260917205843.BF4C51F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU4PR04MB11791:EE_|PAWPR04MB11572:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74649f19-d0cb-45a3-a0b4-08df14fe2704
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|376014|366016|18002099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	2pZr7ZSjb2xmX2R6Pv6BlM9I/rBdELJRXeGcZWx2nICrdmE5maqKZbnZjb3yNXLyg911she3ZgMpFVgpSTXjSvmwR+lz/+h+sK5aeIsvYmW9y2ZZ79cnl382b3MrcQk/eKB5j1MhqRoeYW2a5aj7sSXNegAofZxvAO1w0qqD3g6pbP27209j+NE2OK79okPJwbe/w8tS/ccaYoxBO/RiklyXVvylkqMDy0On+K+YBPh52VEmxmt09qScL6VnBvE/QR23+lc5fCmnPtkf6OgwuUfBuYcK7ScrpFGSjgOumIzJTHnr91NQw1J8baR3YVR+e17E+EQGi3tCErQxfIqHt+Q/qqowS4DQS/PyYJjbE0K/iHIfnWAggzw9DoE3egw2wq861+j3AItg0/qyee8+umfwIXc7tfPr7AE26Lmi9f0BULcisxgtF8aCZ6fhoqwqIzKzHNYZy1ZrJJpKJ9o61EUbz1fCjLpKlGZ/iJmsDyiLRKXVl8ao/wCAvcJjAJrFnV4rKKP99piBV5EGumuDl7fC5iR1RC1oG9dJmYneYwaCE/O8w5YC6jugflMX0ntjpHU4ZcK8VGr9xkZ01gQV9XPj7rHrd41RYw0MekkHfAsKJiAx3Ngw6O/Di7gmWQa64698QkNbx3StBw17M6NrqpP3m9WQluoHKrzgGbohhjw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR04MB11791.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(376014)(366016)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3FLATqYN/UDB7gwtloXW6zhH9wNgBf1LStgOAcSowmaDceM1DR4++s6bMDmM?=
- =?us-ascii?Q?Wk1RY+vgy7Oj4NAAdk1JmvlVujYcccweFxSsOvB9vGlpJ9TraZX9ndmYwLBM?=
- =?us-ascii?Q?NTeCYYFqdTgJbZOSYxrOiD/3mbWmNv6gANE4HQ7U8e3q0dkWF2FOv8tgYMKs?=
- =?us-ascii?Q?M3/Ox9sSERCPx84+GXeWIquU9a8YYENoAzMcomHtD2T4QbSWL7s3JSG8W+11?=
- =?us-ascii?Q?GtPFCbliW54l75iKj3aK4LsG9SHqjuteUh3pwHhpqAOn8VuS856L0xzyRE+u?=
- =?us-ascii?Q?2e0J0hWYrOeyz6nI/XTxoh4mhIhEPmE0/wyw74oQoQ9Ax/huuW0zj3EeqH1K?=
- =?us-ascii?Q?aIDoTW8M6jpoIDijHTpOdPieErxgPz1Hqt64jWIyKv8wAoXf+Dmp2b87Iqgx?=
- =?us-ascii?Q?DKAdTE/r57vojKP2IdSePeYun6dNsEpJQe1jHDgVYG2cMpO+9a04b2Q647pK?=
- =?us-ascii?Q?/Y6D1Sod9M/T8QhJrkf7nOR6BLsQWAjKvFPKovu9vld2Vbdm5phcWukOceY6?=
- =?us-ascii?Q?0CHHdj+GAYSNkClBdF+71dTJnEQ7b7W332uPuDlBy+hKZ+13qw+ekAHeMFdj?=
- =?us-ascii?Q?9A6sXh0shjXag5XPMMKnq1VhVM+NkikyCiEK87EY4j2ckfogSC8bMUDX1cUX?=
- =?us-ascii?Q?KPFfX+9IS1YWtwQeIHCQKgeKi7Qs3fNJcBRZcIDmQCkC7wvYRnPfBKFnc5pG?=
- =?us-ascii?Q?O6nqvvU7y4hlPvK31bjrPDnpjuKg7NOHcNJ+o/6ZQb+BLCDT7rGQDoF4d0dX?=
- =?us-ascii?Q?XWWYbuuOXbwlH0ogF5fCXPkkrnFaqSoJKqns8/Irw+sstEOM5pbDpvUBTfJF?=
- =?us-ascii?Q?SY902TjSsBD7cUGKfPT+tvOaJ9rEqvxzbMhFEa5tTj6GBSgHERDvimWLmcFa?=
- =?us-ascii?Q?wEzZZHsltGM80s5U2aOkYfS8aukJ8V34uphoOJlb96sT25qknehZ5ocdhBIM?=
- =?us-ascii?Q?R7Z4JopfcaZS8qn61OiQQj7RE0BIu5YKbODxe/k0Tvr/udhKNMq6PsJd7512?=
- =?us-ascii?Q?CE/M9GpEGxO8OlxHhirkJRsdGlFsMn3dD300sHYte1reJ5WBKmPVjUlg1vd0?=
- =?us-ascii?Q?2Eef2byJYj7R05i0Zlbi4P8IMbU2zdjAOkFDeIc9I0G+1RrBm8TSroYHZUwq?=
- =?us-ascii?Q?dieS/FhZwe8IoQhcIupXiN+byFEeWMLvB0/992TvjX5Ct5KNZ349wWL15/vD?=
- =?us-ascii?Q?tjVc8+BwKeI8ZyD0oUvWlqFKQgwm6KPCSWQPR7m3JH6w+le3cSwebNkXVFrQ?=
- =?us-ascii?Q?EJ6bD2vypLpmCbDA0aG8bNcsbqDFidOBWCOWgHltUyH2eOOyI9AbhM0ie6k5?=
- =?us-ascii?Q?+yUXBCvTX4l8CDjZ6huC2xH0U7qI8S1ZwsN+e+j3gWvn2mJ3HOBlVHT23T6R?=
- =?us-ascii?Q?ShBXxZfVDfnAcopORAuZMhF2gNPkR7gx45zwfzY0VzjQqPkcC+liQhVhyQG4?=
- =?us-ascii?Q?IOzjgrVsekEu1mkWhCAwf2kh7lt1lQndzIYpdlsygBIh+Ki2EdqAZ7MWC4yr?=
- =?us-ascii?Q?gvxCpLpAjof+eXF1s8S81jyCNTsmLMEe4R+4ISt9yAaasmOc2APN8TixPGo4?=
- =?us-ascii?Q?lwf8JGnLsVfxWypk2vqsyxBZWj/ZSfpxO63VhdG4mnO3HYv68EBzQS6sg/V5?=
- =?us-ascii?Q?+bKEoePmjaDW8wEcL+INFtnSde/P8vJIYC/prswf0U+Y6XTiGEvcF6w0yL4Y?=
- =?us-ascii?Q?buFPpeiab+tQXs3hGQAkGKtSOJ9CEM2QTUC/RKadIFYlldCzBDAll8K5vk8d?=
- =?us-ascii?Q?q0AKsyDT6CvuAEdWrreWwa9IDza7lspJ6CqcJoQQxoSAvypSm6XK?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74649f19-d0cb-45a3-a0b4-08df14fe2704
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 20:56:32.6480
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tea3jg9JtrIwYCbxfiEiP6k7eMh5OnUH+F5km9s7hIViy3pLkDS7FTiOe7As2NAa3DBtOZFylHZnhzSUufNEA81teFOIJRo1HiKRel2x2xBA7ELyegcA6vZHOU7rhGXl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11572
 
-From: Frank Li <Frank.Li@nxp.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] mtd: NULL pointer dereference in am654_hbmc_dma_read
+- [Medium] mtd: Asymmetric DMA mapping and unmapping in cadence-nand-contro=
+ller
+--
 
-Replace direct dma_chan::device::dev access with the proper
-dmaengine_get_dma_device() for consumer API.
+commit c06f81e901974be1dc19c7a1842c1db726a5fe88
+Author: Frank Li <Frank.Li@nxp.com>
 
-chan->device->dev is not always the device used for DMA mapping.
-Some DMA engines support per-channel IOMMU mappings, so different
-channels may use different DMA devices.  dmaengine_get_dma_device()
-returns the correct device for each channel.
+mtd: use dmaengine_get_dma_device() instead of chan->device->dev
 
-This also prepares for making the DMA engine provider data structures
-private. DMA consumers should not access DMA engine internals directly.
+This commit replaces direct dma_chan device struct access with the proper
+dmaengine_get_dma_device() consumer API across multiple MTD drivers. It
+returns the correct device for each channel when DMA engines support
+per-channel IOMMU mappings, and prepares for making provider structures
+private.
 
-Assisted-by: LLM
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Cc: imx@lists.linux.dev
-Cc: vkoul@kernel.org
----
- drivers/usb/renesas_usbhs/fifo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbm=
+c-am654.c
+> index 9d31464046b22..8a14e908d0b53 100644
+> --- a/drivers/mtd/hyperbus/hbmc-am654.c
+> +++ b/drivers/mtd/hyperbus/hbmc-am654.c
+> @@ -78,14 +78,15 @@ static int am654_hbmc_dma_read(struct am654_hbmc_devi=
+ce_priv *priv, void *to,
+>  	struct dma_chan *rx_chan =3D priv->rx_chan;
+>  	struct dma_async_tx_descriptor *tx;
+>  	dma_addr_t dma_dst, dma_src;
+> +	struct device *rx_dev =3D dmaengine_get_dma_device(rx_chan);
 
-diff --git a/drivers/usb/renesas_usbhs/fifo.c b/drivers/usb/renesas_usbhs/fifo.c
-index bac6f8fd0055e..d6fa436112aba 100644
---- a/drivers/usb/renesas_usbhs/fifo.c
-+++ b/drivers/usb/renesas_usbhs/fifo.c
-@@ -810,7 +810,7 @@ static int __usbhsf_dma_map_ctrl(struct usbhs_pkt *pkt, int map)
- 	struct usbhs_fifo *fifo = usbhs_pipe_to_fifo(pipe);
- 	struct dma_chan *chan = usbhsf_dma_chan_get(fifo, pkt);
- 
--	return info->dma_map_ctrl(chan->device->dev, pkt, map);
-+	return info->dma_map_ctrl(dmaengine_get_dma_device(chan), pkt, map);
- }
- 
- static void usbhsf_dma_complete(void *arg,
--- 
-2.43.0
+[Severity: High]
+If rx_chan is NULL, will this cause an immediate NULL pointer dereference?
 
+Based on the driver implementation, rx_chan can be NULL if the DMA fallback
+to PIO is taken. The new dmaengine_get_dma_device() function will dereferen=
+ce
+the channel pointer unconditionally:
+
+include/linux/dmaengine.h:dmaengine_get_dma_device() {
+    if (chan->dev->chan_dma_dev)
+...
+
+Should rx_dev be initialized after the if (!priv->rx_chan) check below?
+
+>  	dma_cookie_t cookie;
+>  	int ret;
+> =20
+>  	if (!priv->rx_chan || !virt_addr_valid(to) || object_is_on_stack(to))
+>  		return -EINVAL;
+> =20
+
+[ ... ]
+
+> diff --git a/drivers/mtd/nand/raw/cadence-nand-controller.c b/drivers/mtd=
+/nand/raw/cadence-nand-controller.c
+> index 2085632631c02..4f5e6d2b128c7 100644
+> --- a/drivers/mtd/nand/raw/cadence-nand-controller.c
+> +++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+> @@ -3229,7 +3229,7 @@ static void cadence_nand_remove(struct cdns_nand_ct=
+rl *cdns_ctrl)
+>  {
+>  	cadence_nand_chips_cleanup(cdns_ctrl);
+>  	if (cdns_ctrl->dmac)
+> -		dma_unmap_resource(cdns_ctrl->dmac->device->dev,
+> +		dma_unmap_resource(dmaengine_get_dma_device(cdns_ctrl->dmac),
+>  				   cdns_ctrl->io.iova_dma, cdns_ctrl->io.size,
+>  				   DMA_BIDIRECTIONAL, 0);
+
+[Severity: Medium]
+Does this introduce an asymmetric DMA mapping and unmapping mismatch?
+
+The original mapping in cadence_nand_init() still uses the old pattern:
+
+cdns_ctrl->io.iova_dma =3D dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
+    cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
+
+If a provider uses per-channel devices, these pointers could differ,
+potentially causing resource leaks or kernel warnings on device unbind.
+Should cadence_nand_init() also be updated to use dmaengine_get_dma_device()
+to maintain symmetry?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260917204724.1289=
+912-1-Frank.Li@oss.nxp.com?part=3D1
