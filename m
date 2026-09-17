@@ -1,92 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442354EDCD2;
-	Thu, 17 Sep 2026 20:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB133DE447
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 20:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789676346; cv=none; b=TDx4vYi2+QyPxd1lq07SKc+lknwkHsjXx2U85y2H2soIsKQNc2Vazn03qOXSYw7rpqi9qyDkyzj2hPI/ztR6ggJD2UQTifltF8he/SAhEddIFAOOs8pd3hXf40Nkrqx8Hnu78ev20YTRCM4vUBtzzvbAaVI1t53cD6gAdJKIGJQ=
+	t=1789676979; cv=none; b=H7cyQobPRhMc/flV7LAeqHBehPWLRCdjn74sUQK/wkKgVbiDW6gM5OBfHqIrKWBQZx2sRjcgow3X2EFIFTUeeSoHg0eab3j74uMm2TyaJSF++J3R2TrbqM/38mJctZc4c6P7fC1/+mJltC6+awZLPR35OYnxwJo+3VifqgN4VmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789676346; c=relaxed/simple;
-	bh=1jD9l88UysJOW4QXtC9rJ7BTDu3h+25PTPjbHKaOD5U=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UFSNUwV5RVjlaBpS2Sqq003qXUB0QGNrkwppqerb7Q/HMraxNu5W0tkDxO8ZqM3laPPZTEan4UD+leUMtExGkA5azeME6mu1wCWkyLyKlq47k4VCTsteJaWMF/5jDWDQ/tlivtZDF3MyEz/3Iz0WDsEaze+3eh02j7sl5QWj3nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cB54TKf6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789676979; c=relaxed/simple;
+	bh=C95ZpaNXQil564v6Jf4y2JHkz7kV++idLTYEGq4ilS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oluCX5su2ye8Fu4YcbW7k2M7kZFOGeLg1so9RPONPBzkrMMMvuYMH64Bl/4HDDfiVH1JgyThqCl1d69ZJbTIowxTxKwDH+4j4Zow/HiHQ8Ltl+/Rd1Y44nKv7OhXV62A4MW4CLS9qfvMr9E20KIJ41Vjh6SbmP8OzkNP5o5GVw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=thDW76Vl; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cB54TKf6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F6B1F000FF;
-	Thu, 17 Sep 2026 20:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789676344;
-	bh=IKXo5yabTUWdhBjpPbiBNR1U6f4LrOuF0hESsdk9420=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=cB54TKf6WHRUIdMnPiTi/biotMG39LWDwVYubNRGRTYjy3O9qM/vIVqwPiLUbFP4C
-	 hq73aU0F0wcyATXkFNirOd04SgKh8eHL5M/l54ZATzwkHggk+djlK6V/gf57PDajII
-	 AxPjGgi3PD0O+EBySCYncbrimfGZjXs3pffgpPhCSqNdWcgMsWkYNxnHlsXBtxM3Yw
-	 nEWA5nUg019ipYHQ7IyHOK2RUesEgSgJwHPC+MXwJWdad9RH/AtdETmjGeD0nT+e4X
-	 1h8Izxd78WNYy/MeNuov2SwpTfjGQmLcScCC3kBOy3NXTmb00UOPVo8ozaXcaQnIxs
-	 xVD9fkG+ZUPQg==
-From: Mark Brown <broonie@kernel.org>
-To: Han Xu <han.xu@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
- Frieder Schrempf <frieder@fris.de>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- Frieder Schrempf <frieder.schrempf@kontron.de>, stable@vger.kernel.org
-In-Reply-To: <20260917-fsl-qspi-freq-op-fix-v1-1-5fbe6b02f738@kontron.de>
-References: <20260917-fsl-qspi-freq-op-fix-v1-1-5fbe6b02f738@kontron.de>
-Subject: Re: [PATCH] spi: fsl-qspi: Reprogram the clock rate when the
- operation frequency changes
-Message-Id: <178967118348.285745.5749858167489960674.b4-ty@b4>
-Date: Thu, 17 Sep 2026 19:53:03 +0100
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="thDW76Vl"
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2BADB2C6;
+	Thu, 17 Sep 2026 22:27:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1789676871;
+	bh=C95ZpaNXQil564v6Jf4y2JHkz7kV++idLTYEGq4ilS0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=thDW76VlkjlTAqhJBPyQY6geW4IM7KQS8xz3Dpk2Rdjfsc+yWnKAppBwP6BJxi4pp
+	 gnRevtmbIejJa3Y6QE/ePVfFYhDQTloMHOjZFrtIHBTd/3acI72jnL4+51+/bOmyHq
+	 MTkW31QC3kKWzaWd+PlkNKfJZnA3EFi41O5LCo9Q=
+Date: Thu, 17 Sep 2026 23:29:31 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank.Li@oss.nxp.com
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Frank Li <Frank.Li@nxp.com>, Xu Rao <raoxu@uniontech.com>,
+	Kees Cook <kees@kernel.org>,
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
+	vkoul@kernel.org
+Subject: Re: [PATCH 1/1] media: m2m-deinterlace: replace direct
+ ->device_prep*() calls with standard DMA engine API
+Message-ID: <20260917202931.GA59058@killaraus.ideasonboard.com>
+References: <20260917190420.1189246-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1170; i=broonie@kernel.org;
- h=from:subject:message-id; bh=1jD9l88UysJOW4QXtC9rJ7BTDu3h+25PTPjbHKaOD5U=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqrEs0rKueolVC/E8/0BKAmXXRPhCgzcjkjYpU7
- 6C6abxQqyaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaqxLNAAKCRAk1otyXVSH
- 0LdRB/9RkRnqXku/IcRxJKxmrhN6Ygpzlg3+iQDVokZLquHU9yYT6RtHaVx8A4nqasMpG+IZIIu
- u8P9P7Bbabim0msIZyq9lQb40etlU0cdh9mxcL4DRoN69zfgrumjNgnf3ExK1j2m77NrzBvOTod
- DWx4CySHMK9Dhqb845FMnxfaXjEnGxNiz0IpqqDDBgTo9bvjdnffokz+HH8FtXmO1HPvN7mu+gc
- x5nHOIYtSTgNx8MWX7H7WUUVW16LSpzblmZsH1LvfaQHjkjuZE2PoeaZhABP4KHZ26rAn+E7dDd
- Y+dM54t6aEbHbXkOjt996C1eu4TXhcTO+Jx02/7BU7xnaPr6
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260917190420.1189246-1-Frank.Li@oss.nxp.com>
 
-On Thu, 17 Sep 2026 16:10:15 +0200, Frieder Schrempf wrote:
-> spi: fsl-qspi: Reprogram the clock rate when the operation frequency changes
+On Thu, Sep 17, 2026 at 03:04:16PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> DMA engine consumers must not call the channel's device_prep_*() function
+> pointers directly. Use the standard dmaengine wrapper APIs instead.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Applied to
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+I've checked the other DMA operations, and there are a few direct
+callers of .device_prep_dma_memcpy() and .device_prep_slave_sg(). The
+former should be easy to address, as the dmaengine_prep_dma_memcpy()
+wrapper is a drop-in replacement. The latter may be a bit more
+complicated.
 
-Thanks!
+Any volunteer to send patches ? :-)
 
-[1/1] spi: fsl-qspi: Reprogram the clock rate when the operation frequency changes
-      https://git.kernel.org/broonie/spi/c/3d743adf090c
+> ---
+>  drivers/media/platform/m2m-deinterlace.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/platform/m2m-deinterlace.c b/drivers/media/platform/m2m-deinterlace.c
+> index 9dcc4bd6cbdd5..57a91ff2269f2 100644
+> --- a/drivers/media/platform/m2m-deinterlace.c
+> +++ b/drivers/media/platform/m2m-deinterlace.c
+> @@ -330,7 +330,7 @@ static void deinterlace_issue_dma(struct deinterlace_ctx *ctx, int op,
+>  	ctx->xt->dst_sgl = true;
+>  	flags = DMA_CTRL_ACK | DMA_PREP_INTERRUPT;
+>  
+> -	tx = dmadev->device_prep_interleaved_dma(chan, ctx->xt, flags);
+> +	tx = dmaengine_prep_interleaved_dma(chan, ctx->xt, flags);
+>  	if (tx == NULL) {
+>  		v4l2_warn(&pcdev->v4l2_dev, "DMA interleaved prep error\n");
+>  		return;
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Regards,
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Laurent Pinchart
