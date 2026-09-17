@@ -1,215 +1,302 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010047.outbound.protection.outlook.com [52.101.84.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFB63890E0;
-	Thu, 17 Sep 2026 06:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789626915; cv=none; b=qF2ck8Vp+al/DIuls4wV8CjIN3peVMX3EimflrCJEyu66Fz58VhrckpDgdNo5IatRMkQyAHxUi1bjSNOYhtR97oum3GTw7i6dM9yoAJfGwMCVWHRG1lMx5t6kgTfA63nTjGfq5zzVKeB6zjrDiy9WJHzEG7BzEaJua9MtDxl02c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789626915; c=relaxed/simple;
-	bh=bSmaI2+HFWQxshGzhZWPbljQi3lzKl3AOepYBgSz3io=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mMCYY+vN9iANf9WDY/vAJK6S5UrxMmcuzg76P8Bb2vrAA7CKB00184l9EdDPRjUD+Agr/BZym+DhWUMkKT3ql4uadpWM7Zt0Bn5+veQ2D8xRkn+HqRU4GOGQVdauTUgcYVLKUlsmE3M/mYsVToL7GnJVAEnL+vHKdkl1CreTprQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxOi0XoT; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B1C3A8FEE
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 07:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789628895; cv=fail; b=NSKE/pvW+H9dtPNGCnB51nwuaGEKygabdfQt6LZo8OgN4f1Hq+AbzumiuZ4u/g1+q2n9cQhPIhgx3FBSWSTXfATSulBBQgIzP9Mojk8E/B62kDTz4mjYJXLxSa0yWYuYqB5Ze/CDK1Vjz0KNySm1wRlqwEcnyFisd+upLOuY5Ss=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789628895; c=relaxed/simple;
+	bh=OdtstjUTKym58CQvg6zCrPbChcbAseotgwPu39r/z1I=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=mR8i5HCCjmN8Bz9elOrOjxUVEtngK4M4E0VJM0mBcFcZFvSfIyRWSJjS5SY3HPe2jdagmDi92g7wiZqYbBy3mX/nqfj6mqzOFPJ26VqJUsvi9fAlFkfmCXuS0gXTjkZgKPT3wLWKYYGj39Hfun+dHaYSAHVJb3Yg4arSUB8CvwE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Wx6m6EL6; arc=fail smtp.client-ip=52.101.84.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxOi0XoT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71F51F000FF;
-	Thu, 17 Sep 2026 06:35:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789626913;
-	bh=PMDK7TB5HfWVLg6lD3UjTTfs3B8FmEoYUHC9kOLxNog=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FxOi0XoTxbICn6TfFF/9janR+LxcVn1wOAnegNL8i2yLPDHaxegcsegHGY2It0jdq
-	 Bn/QEfInH31CGG9kGh3EjyQOOWe0cE2f1kYTrM6ZxYbS8yYetVfGmFEq9jq+BQ9eD0
-	 PfbXI4z8BpnmOWOU5rciNSYRMHWHfrataq6ysfS+WbRf0UJEIcj/rhOb8vI5TBxwGQ
-	 11a1vn9+7OzoI1zJ/KL1uIp3+LLLJTKj9ny2EGTwTMDKfcLnEYOOQFkG5RLRofosSi
-	 pj6oK4U/z/8/vvvX6HanzTZEYc+nHoiqkdRAqvPmIv/NeOp6RX+TO/nl4Q1nFech74
-	 o4pddr4HjKcMQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 3/3] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: "Marc Kleine-Budde" <mkl@pengutronix.de>, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, "Oliver
- Hartkopp" <socketcan@hartkopp.net>, "Oleksij Rempel" <o.rempel@pengutronix.de>, linux-can@vger.kernel.org, "Vincent
- Mailhol" <mailhol@kernel.org>, devicetree@vger.kernel.org
-In-Reply-To: <20260917062543.534416-3-marex@nabladev.com>
-References: <20260917062543.534416-1-marex@nabladev.com>
- <20260917062543.534416-3-marex@nabladev.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 17 Sep 2026 06:35:12 +0000
-Message-Id: <20260917063512.C71F51F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Wx6m6EL6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oIehevAkIYvlLuJmWSTJ6zbkHtLiE99arcmYwpBc7WsaBM8cOjAyEB7Degy5NJKW1xywHA13wJFImlhsrz2Ng/D2vg+nMNXulvvepY6ijchLhQ4vYAJCHm4cUzOhpc7E1E8pjkPE/mnIdN/oiuhGnZPky9Izz885R18L8igRu4EciXH7kNgUvZTeGZsJWcP9eRN3oIbZ3ksQ+NO88uKaG5LgTY90FuLYcsmBV4I9DAeh/PJqocKE+o+Nom0mtZVR+OaBGAWAaUTfHNuPoHIm491xMcim71hjbPMv2uX0eyqitxDk33XSOyJLFVFBuxiiYMXiFz915bDKRIOahCSFJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hRpOXH60BHyzsWr977I5r448Wmo4G3kZBAbQ0HK4E+M=;
+ b=kZ5dtPZU3trjrR6YZndJAB0igiITgAz1n0Emnki2FwYBJUrtdo1C3JNF/VsF81lTjO6IO1oGseDsgdQk4mXorEoPQbnvmSnRG2XvvwX1T4iuDxa9HlBVm/TsC+Lr6AExktn91bnHQ5aM+o3ADR1m9P8+/e4X5CIOQJfDid3vFpDl7ayxIWnI9VKi4577gqOkt1jSWiUlU3lEBhES1S8VB4iEUmiv+dPcB+D7n29txa6KlP3MMzF0DAfgcDSX058AzYfJmqHs+Ffvmz5zot9FOEdQXkZbFyIkSuYHhAx6kuYEyD5X3ivKsNo2ROHf6Tbc6g5zV7ItnB/POwgyteMAcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hRpOXH60BHyzsWr977I5r448Wmo4G3kZBAbQ0HK4E+M=;
+ b=Wx6m6EL61xGdAcKOCOO8v3shm3yiIHxhjl4EPJA6SEKWKz1yULYUBRG5KmwLpsPrvmHKE1CYO2hqDx+P/fxYd1sM82YoKrvZHift1OcETuL6gq2QEmkSRDXH7g+DqPjVZkzWrd3KMl2EdWkqfWVgX12neDF5MKssgkYTSN6q9EnnvVixMMtjw0zU3lYajTaR7irnaLp26j69LlUUvFPiY+cFNQjYSJqXCGp7eNTG/VsBnTxaI7PopR9/xkJYTGNXt+v4+kcc9PkUcw51hzGl0PgdB+NN90wrCry2sPObppM9Ii97PUejmNHYACmWiQ66064wDaaNgwhO+b4Vey5Fvg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB7PR04MB4698.eurprd04.prod.outlook.com (2603:10a6:10:1c::21)
+ by BR2PR04MB562213.eurprd04.prod.outlook.com (2603:10a6:2c8:5::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Thu, 17 Sep
+ 2026 07:08:11 +0000
+Received: from DB7PR04MB4698.eurprd04.prod.outlook.com
+ ([fe80::c571:bdf2:afe7:c03c]) by DB7PR04MB4698.eurprd04.prod.outlook.com
+ ([fe80::c571:bdf2:afe7:c03c%4]) with mapi id 15.21.0428.009; Thu, 17 Sep 2026
+ 07:08:11 +0000
+From: Ming Qian <ming.qian@oss.nxp.com>
+Date: Thu, 17 Sep 2026 16:07:54 +0900
+Subject: [PATCH v2] pmdomain: imx8m-blk-ctrl: Serialize power on/off across
+ sibling domains
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260917-imx8mp-blk-ctrl-v2-1-81d29e907a5d@oss.nxp.com>
+X-B4-Tracking: v=1; b=H4sIAMmRq2oC/2WNQQ6CMBBFr0Jm7RBasEVW3sOwsHWQUaCkRYIh3
+ F3AuHL5kvffnyGQZwpQRDN4Gjmw61aQhwhsfe3uhHxbGWQiVXISArmd8rZH0zzRDr5Bm6lKKp2
+ niU5hXfWeKp724qX8cniZB9lhy2xGzWFw/r1fjmLzfvXjX30UKNCkJiNFmpRWZxdC3E19bF0L5
+ bIsHwbkLtPCAAAA
+X-Change-ID: 20260911-imx8mp-blk-ctrl-c46f26783073
+To: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Peng Fan <peng.fan@nxp.com>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Zhou Peng <eagle.zhou@nxp.com>, Xiahong Bao <xiahong.bao@nxp.com>, 
+ Ming Zhou <ming.zhou@nxp.com>, Ming Qian <ming.qian@oss.nxp.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: MA0PR01CA0032.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::19) To DB7PR04MB4698.eurprd04.prod.outlook.com
+ (2603:10a6:10:1c::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4698:EE_|BR2PR04MB562213:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e277066-93e7-45b0-f44d-08df148a6ef4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|7416014|376014|366016|6133799003|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	smYSV1O4RN8IRKA3rMYHDRVaZlODiw+MJuWCaKDt0hL7AO8F+lTUj34tAY5nS2EoNrS7VGMfI0J5AU5OnrRkCRtcjvTP7ShjWjECfKk0CGuIq1oQ1jU+J8SC9UHLU+fZcARuJt4vF3NzM8Y4lamnO9uOpIW2jYYH4CZbYKYO2tw8ZbtfWQec1TlN2JyTsuUzGVLFql2SfYc8bdwlTF1ENtMK/0Bqvn9jW/Z4wDm6hph7yPGVpKQdmGxI4JbMzn+uuhuIFsURbI/qjNVLOQJXytEA/0BG64RSeNPCZo7Pt+hFCHzcq8QUcZJPvGCCNBB+srOgxtwwQqdX3z/rQgLaNaxm01pn8edqNESN+hOuC20JP//8i08wdEcqrwqdYEnBK++mAvJj5nnb0epZ1WI+dCIXf8QDIlAgeWEfVr0EODgJPV1hB+kdMbttwm10j1PTRAAfWiBihI5CTSsFjdTKV2WzrgyoHoCLuEOFwx8yQer7KgTzcHsreuFs1d7dUf/7eL/suxmiutJ0aPqOIMKUnIjV/vI+YFicp7aOEay59h8P/UeIxwICLvWMMnNokisNe4v/go/rlomAb/wyvToN6YB35FvAxGI57oFakl9IpTbD8tcQaNstPtJp6u8iEr23
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4698.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(7416014)(376014)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TG1UdG1Bc1N5eHBkb1ZWTEpPd25WTm9OQWYwMDNEbTBTcVdiSWYwUDdWSW1G?=
+ =?utf-8?B?dTJMMVpvVWxPR3YvU3Q1ZTBNRFVWOGZMOWdMbEZ6b2Rza2ZzZjR4R1h2MWs5?=
+ =?utf-8?B?bUhQWVVnekc0U2tDdFF1UEJtK3JzbXBtT3AwVE1qemVNMm5NVlljbmltdjRJ?=
+ =?utf-8?B?VDVRK2NSbEVndmE1ZVo0MmdKQWI3bTJjNitaOG14bnhua0tnQXBqSGh0RC95?=
+ =?utf-8?B?eWV5NjhKWWVxR0ZNdWMvSGY2eDNQSWFMem1HVlFzejBzOVU3djl6NUhhZVRn?=
+ =?utf-8?B?S05FSkhub3F4cHlCZGdTU0RoU1RwSkVTRFBCK1krQWRpS0tpTkFOaWFJZVpL?=
+ =?utf-8?B?SElLQzRNaVozQ1dtTXRpTmFESVk1V0h3SjFXQ0FFY1pGZ3JGSWNSNm84VTMw?=
+ =?utf-8?B?WXVmRjU1RjlIaE9hN0ZzUGJtZldJNndNdEVFQ2crY1V1Z3h3VGNWWHhFYmhL?=
+ =?utf-8?B?a1JibURLSFZkMnU4eThYNUMySU9keWtTSzBwb2VTbVdnamlBMmp6LzRaRVpR?=
+ =?utf-8?B?Z0wyQXRrRTRocFdieEhnT3BBdG95dFFpbk9sOHdaKzZTODIwUzFJMDR0L1lC?=
+ =?utf-8?B?ZmZBQmJISEVneE9TYVhyL29ZblNKM0hWOGg2Sko0M2g3aTJnWVZyRTR5UlR1?=
+ =?utf-8?B?ZGlPWXFMTjFLY3JXVkRtQ0lkVm5ySVlOZlNKNW1sRCt5VHRabHMwUi9sc3J3?=
+ =?utf-8?B?cVNxd1BGZGdKM2xNYkJaUGQxUjB6Z0p3TDMrYzdGT25kRVNLTzBpNzlJV2pW?=
+ =?utf-8?B?aGVhc1ROWW5sa3E4c2dOdG9WNDZYS2tyOHJGU3pCTE9NakIwR1dmSi8rOVZT?=
+ =?utf-8?B?WjNBbDM2YTZRMXRkemJXY2NKYm0xU2YxbEtQUkk0aEdrUEkrQm41ZnNtY29w?=
+ =?utf-8?B?eEFsa25XUjV5ZzBLaEE0ZklsT3FVVFlvVGtCRmxFY0ZqVlp6TGlvWlVqbk1v?=
+ =?utf-8?B?dzJUZWxRMkU4b2FVVG44YlY0UHBWcE1hR05CZGx6bjdackwycnZDTWxIQzMw?=
+ =?utf-8?B?N1J1Q0Y3aS8yUXBYengrdzBqM2RIbVMxUUpVakNTSVI1Z0pmdmxJQlpjTDl6?=
+ =?utf-8?B?RnJONlg5d1Y5Yno4YVVSNmNTazhCSSsxWkZZOEpxb3Rac1RvUi9SQmZiV0Zz?=
+ =?utf-8?B?L0pZeTNwanRPV2I4OVlkb1B0VE9Yd3pMcDlwOXQzSmZSdmYzTlhwS1hqa2NQ?=
+ =?utf-8?B?RTZqMHdmNzhhdTJhcGRzR2llTlhSQzBxZVFXQmg1bWZObHBzdHk2Q1QxMnVC?=
+ =?utf-8?B?Y05meVp6VENSb2d6eVcwYWRuem9FdTF5THpCZXhmN1Y0emFjVWNTeitTN2cv?=
+ =?utf-8?B?QU9BQndtYVBnNkJ2RWNOS2ZyMU56MUhTLzQrSFZORS9vbFpuUG1WZHNWYmxS?=
+ =?utf-8?B?MmxqTU0vTDhDeG1oZ0w0UDFPYXhoNm15cURMWFFpZ1NTY1FTdElGdG0zMitY?=
+ =?utf-8?B?MmttOUNpdE9FOWlQSVJJVU5XYXNQSUFJUHlQa1hsU2QrTG1LdnFnbFdkOXpk?=
+ =?utf-8?B?NXBNUWVpL2tqQlVXKy9PQ01hQ2tZTjZyQ2x6M2t3K2pBMGN3TTl4SVNDSzRX?=
+ =?utf-8?B?ckk1MUY4T0UzNWJ2VllOS0VyeDEvMDFPRHNOaG9CUzRQRWluN3k2Ry9HekJl?=
+ =?utf-8?B?YTBoOEp1RjB4ZDRZVzBybE5UK1UzZXZ4Z0M5dis1VE1FcG80R0IvY3VtZVF4?=
+ =?utf-8?B?cTRnUWt6WlJQZXIrYVZMc1RZcFc3Znc2bm1sL0UxREszSXRaakZVMHpoTjRs?=
+ =?utf-8?B?QXE1VEFWSzIxa29hZ2laSGJENFR6TzBWYnVBMENJcnV2U3FvdlB5MXNyMEln?=
+ =?utf-8?B?em8wMlJSNHZGSkE1SEVNck9vTHhhbG10YkwyS1laemhxdGN6MUI5clI3bXFI?=
+ =?utf-8?B?WGRTdmlneFp5RHpIa3ZTeXlWZmo3ajhNLzlnVDlNak9zZjZURzVldUxvOGtG?=
+ =?utf-8?B?UC9WYVg3ajB2VDFnRmRpSUdldndFdXBTSG9xQzI5eU5WUzRMR3p3R1lSbzly?=
+ =?utf-8?B?enJVempVTFlrVkVKNk9CUGR3RCtFdTNKalN5SytSSEwzS0ozQkZBa1JZM2lK?=
+ =?utf-8?B?WmUwZE1xS2xQNTl1bzRGcUg2QWlyTDdaaHdmRXp2eXV1QTYrTjNJVXRRVEZx?=
+ =?utf-8?B?ZWFlZGVqVHFlRXZYNUhkMFFoeFlQR3p1VTIxc3FkSytoS09TelNmeVJKRFFT?=
+ =?utf-8?B?b2pIci9rQ1J1aGNIZUk1U3VFbjZySUt5V3hxYkxROG4rczFXV2lTbnNXbGtP?=
+ =?utf-8?B?TGVBL0NtRWJXeHlVdVFnQU1oRS9aam9lT2RmSXJ3aTNBckpFdDFpVG9kOVRB?=
+ =?utf-8?B?bFdHaHpVRlZZTmM4U1FQM3R0OVlGOUtzRllQRmFSTDF1NHo5SHJsMUswVm5a?=
+ =?utf-8?Q?dXSMnxWzRuanfINwMCb8C9/M60lSUiymwyhah?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e277066-93e7-45b0-f44d-08df148a6ef4
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4698.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 07:08:11.2179
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e/Qiwhvs0DdxUq/YyYkFB+L1qYtztmWXPwxa5vuxxASNqCr02bxnxWkf4k4gi4NajvW8CFaJX/mC49xvkNdaBPRDPMjKazUVqp5QuKH0SyB1yIDkZ3mwngw8eTSVUHJb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR2PR04MB562213
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [High] dts: pcal6524 interrupt polarity is incorrectly set to LEVEL_HIGH
-- [Medium] dts: Ethernet PHY reset-gpios configured with wrong polarity
-- [Medium] dts: eMMC reset GPIO defined but unused in usdhc1
-- [Medium] dts: reg_panel_vcc regulator missing enable-active-high property
-- [Medium] dts: M.2 Key-E (usdhc3) slot missing power regulator
-- [Low] dts: tas2552 codec uses deprecated enable-gpio instead of enable-gp=
-ios
---
+On i.MX8MP the VPU blk-ctrl exposes G1, G2 and VC8000E as three separate
+genpds, each serialized only by its own genpd lock, so their power_on and
+power_off callbacks can run concurrently on SMP.
 
-commit 5792bafb068af6288c67560ae9fb90a4c34326af
-Author: Marek Vasut <marex@nabladev.com>
-arm64: dts: imx95: Add support for Data Modul i.MX95 eDM SBC
+The sequences are not independent: they share the VPUMIX bus domain, the
+VPU_NOC and the ADB400 handshake. On power up the GPC cannot ack-verify
+the ADB400 handshake - the ack only completes once blk-ctrl sets the bus
+clk-en bit - so it just waits a fixed delay instead of polling hskack. A
+sibling transition landing inside another domain's reset window disturbs
+that shared clock and handshake timing, the victim's reset does not take
+effect, and its block registers read back all zeros: the decoder times
+out or the encoder fails its format check.
 
-This commit adds support for the Data Modul i.MX95 eDM SBC evaluation board,
-enabling various peripherals like serial console, ethernet, eMMC, SD,
-SPI NOR, USB, and PCIe.
+Serialize the blk-ctrl reset sequence with a per-blk-ctrl mutex; the
+driver deliberately avoids a genpd hierarchy, so the genpd core gives no
+cross-sibling serialization.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts b=
-/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
-> new file mode 100644
-> index 0000000000000..0181262eb8a98
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
+Fixes: a1a5f15f7f6c ("soc: imx: imx8m-blk-ctrl: add i.MX8MP VPU blk ctrl")
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+---
+Problem:
+On i.MX8MP, running the VC8000E encoder and the G1/G2 decoders
+concurrently rarely and non-deterministically leaves a VPU stuck in
+reset: its block registers read back all zeros. A decoder then times out
+or the encoder fails its format check.
 
-[ ... ]
+Root cause:
+The VPU blk-ctrl exposes G1, G2 and VC8000E as three separate genpds,
+serialized only by the per-genpd lock, so on SMP their power_on/power_off
+callbacks can run concurrently. The sequences share the VPUMIX bus
+domain, the VPU_NOC and the ADB400 handshake. On power up the GPC does
+not ack-verify the ADB400 handshake - the ack only completes once
+blk-ctrl sets the bus clk-en bit - so it just waits a fixed delay. A
+sibling transition landing inside another domain's reset window disturbs
+that shared clock and handshake timing, the victim's reset fails to take
+effect, and its block is left in reset with registers reading zero.
 
-> +	reg_panel_vcc: regulator-panel-vcc {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
-> +		regulator-name =3D "PANEL_VCC";
-> +		gpios =3D <&i2c2_gpio_expander_20 17 0>;
-> +		/* Disabled by default, unless display board plugged in. */
-> +		status =3D "disabled";
-> +	};
+Fix:
+Serialize the blk-ctrl reset sequence with a per-blk-ctrl mutex, so a
+sibling domain cannot run its sequence while another is inside its reset
+window. The driver deliberately avoids a genpd hierarchy, so the genpd
+core provides no cross-sibling serialization.
 
-[Severity: Medium]
-Does reg_panel_vcc need an enable-active-high property? Without it, the
-regulator defaults to active-low logic, which will drive the panel VCC low
-when the regulator is enabled.
+Test:
+i.MX8MP, Android 6.18 kernel, concurrent H.264 decode and encode. Without
+this patch the failure reproduces within one to two hours. With it the
+same test ran overnight, over 14 hours, without a single occurrence.
+---
+Changes in v2:
+- Replace guard(mutex) with explicit mutex_lock()/mutex_unlock():
+  power_on() already unwinds errors with goto, and cleanup.h asks not to
+  mix goto and scope-based cleanup in one function (sashiko-bot).
+- Shorten the commit message to the essentials and move the detailed
+  hardware analysis into this cover letter (Frank Li).
+- Link to v1: https://patch.msgid.link/20260915-imx8mp-blk-ctrl-v1-1-b3b4e6e7e676@oss.nxp.com
 
-[ ... ]
+To: Ulf Hansson <ulfh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: linux-pm@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-> +	i2c2_gpio_expander_20: gpio@20 {	/* U12 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x20>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 479789009c7f..270f43229fe7 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -15,6 +15,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
+ #include <linux/clk.h>
++#include <linux/mutex.h>
+ 
+ #include <dt-bindings/power/imx8mm-power.h>
+ #include <dt-bindings/power/imx8mn-power.h>
+@@ -34,6 +35,12 @@ struct imx8m_blk_ctrl {
+ 	struct regmap *regmap;
+ 	struct imx8m_blk_ctrl_domain *domains;
+ 	struct genpd_onecell_data onecell_data;
++	/*
++	 * Serializes the blk-ctrl reset/clock sequence across sibling domains;
++	 * their transitions interact through the shared VPUMIX bus domain,
++	 * VPU_NOC and the not-ack-verified ADB400 handshake (ERR050531).
++	 */
++	struct mutex power_lock;
+ };
+ 
+ struct imx8m_blk_ctrl_domain_data {
+@@ -98,12 +105,14 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 	struct imx8m_blk_ctrl *bc = domain->bc;
+ 	int ret;
+ 
++	mutex_lock(&bc->power_lock);
++
+ 	/* make sure bus domain is awake */
+ 	ret = pm_runtime_get_sync(bc->bus_power_dev);
+ 	if (ret < 0) {
+ 		pm_runtime_put_noidle(bc->bus_power_dev);
+ 		dev_err(bc->dev, "failed to power up bus domain\n");
+-		return ret;
++		goto unlock;
+ 	}
+ 
+ 	/* put devices into reset */
+@@ -148,12 +157,16 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 	/* disable upstream clocks */
+ 	clk_bulk_disable_unprepare(data->num_clks, domain->clks);
+ 
++	mutex_unlock(&bc->power_lock);
++
+ 	return 0;
+ 
+ clk_disable:
+ 	clk_bulk_disable_unprepare(data->num_clks, domain->clks);
+ bus_put:
+ 	pm_runtime_put(bc->bus_power_dev);
++unlock:
++	mutex_unlock(&bc->power_lock);
+ 
+ 	return ret;
+ }
+@@ -164,6 +177,8 @@ static int imx8m_blk_ctrl_power_off(struct generic_pm_domain *genpd)
+ 	const struct imx8m_blk_ctrl_domain_data *data = domain->data;
+ 	struct imx8m_blk_ctrl *bc = domain->bc;
+ 
++	mutex_lock(&bc->power_lock);
++
+ 	/* put devices into reset and disable clocks */
+ 	if (data->mipi_phy_rst_mask)
+ 		regmap_clear_bits(bc->regmap, BLK_MIPI_RESET_DIV, data->mipi_phy_rst_mask);
+@@ -177,6 +192,8 @@ static int imx8m_blk_ctrl_power_off(struct generic_pm_domain *genpd)
+ 	/* allow bus domain to suspend */
+ 	pm_runtime_put(bc->bus_power_dev);
+ 
++	mutex_unlock(&bc->power_lock);
++
+ 	return 0;
+ }
+ 
+@@ -202,6 +219,10 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ 
+ 	bc->dev = dev;
+ 
++	ret = devm_mutex_init(dev, &bc->power_lock);
++	if (ret)
++		return ret;
++
+ 	bc_data = of_device_get_match_data(dev);
+ 
+ 	base = devm_platform_ioremap_resource(pdev, 0);
 
-[Severity: High]
-Will triggering interrupts-extended on IRQ_TYPE_LEVEL_HIGH cause an interru=
-pt
-storm? The PCAL6524 INT output is an open-drain, active-low signal, so the
-line will idle high.
+---
+base-commit: 27953c044974baf7e24dee3e9342fe0103dea80c
+change-id: 20260911-imx8mp-blk-ctrl-c46f26783073
 
-[ ... ]
-
-> +	i2c2_gpio_expander_21: gpio@21 {	/* U14 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x21>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-Could this IRQ_TYPE_LEVEL_HIGH configuration also lead to an interrupt
-storm for i2c2_gpio_expander_21?
-
-[ ... ]
-
-> +	i2c2_gpio_expander_22: gpio@22 {	/* U13 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x22>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-Does i2c2_gpio_expander_22 similarly need to be configured for an active-low
-interrupt instead of IRQ_TYPE_LEVEL_HIGH?
-
-[ ... ]
-
-> +	tas2552: audio-codec@40 {
-> +		compatible =3D "ti,tas2552";
-> +		reg =3D <0x40>;
-> +		#sound-dai-cells =3D <0>;
-> +		avdd-supply =3D <&reg_1p8v>;
-> +		iovdd-supply =3D <&reg_3p3v>;
-> +		vbat-supply =3D <&reg_5p0v>;
-> +		enable-gpio =3D <&i2c2_gpio_expander_20 23 GPIO_ACTIVE_HIGH>;
-
-[Severity: Low]
-This isn't a bug, but should tas2552 be using the enable-gpios property name
-instead of the deprecated enable-gpio? The patch changelog mentions replaci=
-ng
-gpio with gpios DT properties.
-
-[ ... ]
-
-> +	ethphy0: ethernet-phy@1 {	/* KSZ9131RNXI U20 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <1>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 4 GPIO_ACTIVE_HIGH>;
-
-[Severity: Medium]
-Will ethphy0 be held in reset permanently? The KSZ9131RNXI RESET_N signal is
-active-low, so defining reset-gpios with GPIO_ACTIVE_HIGH will drive the li=
-ne
-high to assert reset.
-
-> +	};
-> +
-> +	ethphy1: ethernet-phy@2 {	/* KSZ9131RNXI U22 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <2>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 5 GPIO_ACTIVE_HIGH>;
-
-[Severity: Medium]
-Does ethphy1 also suffer from the incorrect GPIO_ACTIVE_HIGH reset polarity?
-
-[ ... ]
-
-> +&usdhc1 {	/* eMMC */
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>;
-
-[Severity: Medium]
-Could usdhc1 be missing its reset sequence configuration? The hardware
-provides an eMMC_RESET line on the I2C GPIO expander, but it isn't consumed
-via mmc-pwrseq or reset-gpios. This might cause the eMMC to fail to initial=
-ize
-during warm reboots.
-
-[ ... ]
-
-> +&usdhc3 {	/* M.2 Key-E */
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-
-[Severity: Medium]
-Does the usdhc3 node need a vmmc-supply? The VDD_3V3_M2-E_EN pin is defined=
- on
-the expander but there is no fixed regulator defined to power the M.2 Key-E
-slot, which might leave peripherals undetectable.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260917062543.5344=
-16-1-marex@nabladev.com?part=3D3
