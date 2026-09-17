@@ -1,48 +1,48 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013056.outbound.protection.outlook.com [40.107.162.56])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013020.outbound.protection.outlook.com [40.107.159.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18C34DDB2E
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 15:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891894E4C54
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 16:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789660742; cv=fail; b=sAqa1Nr7aDLB80+fOYpxo9L8Wr7QKH5uiRwUG2v5xe+RYv8U4JcVMOW5qZmqerLc2KpcglUkeHUzICmW+JquHmmpmqEABVObkDKTTpaqbILvgVrSsqG7m96tlEM4t5zPF+ThHUgFBinLr3EVJB8vUe3k7QebjnXiZvqumB0iBJk=
+	t=1789661044; cv=fail; b=KthrsodUyT3rM45dpbOoU3NbtEMUGXHDDX8lE4S6EadklKWVqTk/Ip85RM0ZYVYP79w5dzhIJXn3OjP5vYbcDnHup+6PEKmlYjXEC+yLT0xzOQ/FA/H+o5LjQp1+MgcjLoEODlSSrNj89aIYJSb0vYp9iwJPFYEq02p8E3vUbGo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789660742; c=relaxed/simple;
-	bh=Xx+nk6Mu6QmeuF7YcJ3QwpQ9nAiinYfM3BFyO5IXqiQ=;
+	s=arc-20240116; t=1789661044; c=relaxed/simple;
+	bh=A+MtAbFH8dSljJDOMQCNyo8tBJ/EZ/AobCxaPFHoOiY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AltxY3cDjsH4xONeBWNPf/GoJWPKlOqkPXzuZ9spbIJIzte0Hp8MJRyV8yKp0R4Tkxeij0pSuqyx5xoj3ii/i3pFz7av0kZpMO/wFJFkF37EzmSrXHZvo/dsvxUZs8SPaX7Fo1E2wKTK+RxxtL2edZPs1z3x+NdeGm3rqG+PLhk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XSMgIoEH; arc=fail smtp.client-ip=40.107.162.56
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JUvIirYoLIhqjBn540Gs7/n2Kpdni/FsZDw4Gh9/T+Gi6IXKTk56L4D20bGztNjtG1G6WSU6M/rYplTYwDqgKezPcrXOeytm+cZVHOPZyZ6WOqHmex8iAJpTtxwnFuEaHl+/HEMR9FKLg0Prj7MnleiyXxiawFhQ+SUDkbresu4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=UNhpCiy3; arc=fail smtp.client-ip=40.107.159.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XSMgIoEH"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="UNhpCiy3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D5f5CpI0AH1b+oQqdxEEySlt2A68tMS3WqBpcl/Z8IMkX/JkHfroi3OarKR1m71Aphu91WX3l8rFckl8wNrH7aUJqdkX9UaotUP49NqhWsWRD2K8QlIFkCHRBaaWkViLe6oZT0d4XZDl1ziTu+4y9EZo8+XvUOC0YeUt70Bps60N/1f1gK1JTOT44jFIlJb0xYH1WHsGaNKUZVJdvtXDMNQze7AMfcMagTiQprAYQSaNDmvIbui/m6WbW6b92JYA5HrzG10bqv7D/CesLcZ+fIiGCqR1Hvj+iW7jFYmu8eyxsvYRVuyMoQ7aNIRS8znhHlQHpgwNugzkFkHWgdnqVA==
+ b=VEOZXICsd8MwhWXqzMp/wfher43TmDxi0thfTn9ctqpoS2/10URXHUEogqadPD0bth6A94ykzuaD+HPv2z4cnMjz0Lz6pAwVFX5Nu3aWb0VrlEZzEp8uAaKiuiewV+6/jmOjFjC63C5avXfImPflqlfNA/14809aLQNTXf0SqH+GjikunM1Z8gamwAds31Pd9Tazg7pdh2ENl0GBQ0eBZgRnog1vFOPjG/90V5sYhWfC1OX0NZxMFBO6sPVl1BBkBjtOEFrA1giegAjgYui9I6Zbkz6SAWNsX477hiol1io8U/SaYb0iv92+VUfhpCdLNJoL1b4m40X7fo8mi/qmeA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZIQkpC2Tc5dGnS+74/8Rg0wbiWIcwbXb3bajmCsOd64=;
- b=roLXVdjnkdvo655W9sgYjnhnZ0Ph+AXtudYsXmVtRkD1wySj5sbcRMX3xXwJFPj8IX0vDuAUmcH82jg+j3ZmT2MluvH4F0o36ct79jCciwf35d/Msd0doLqDOE7zMMDRTyZPmLVeTz1NC8eMPc4Kl0MAVShunZgkqt/G/vHmIiuwrRRlFbzSZTyA/pF/c5uco9G0G4/ISFvq/DQS0oRo0G7HhgQ+/6j4VsoMrPP4BNYo2u186oD+ibVjDaq7PC8/trVDCdYuEh7ZDIUXZzlJZEegoC1QLIf+LKvkHXBfDojaVOWKqxa/qo7yLLZ+xZxKTSadV/zmqLw4NFugZbGWIg==
+ bh=3pVuUX6eWjeFkXe2CNgyoAyvhETAc5N0ln0OmGsf5bI=;
+ b=NeRovmchWR06msF5WcJlvePy3+/p5ZVNQv1fhvpKHYHCsO0btpPC73OZi3k84TlNq9I/PmvKG2IJsRACs2Syu5/fgr0XeA8t45DVbKtunH1TDsNe9N6DY5TR9cbidDGLRuprwt42OUoPzcaww/AloPopA5DADuY9RDHqKVlzxaPyfFBeSNh0R/QFM6ytU83zFaDPUkS5qbXAk7kiIKWFDY+sWEbPG6gqGQ4kwmvO9sc35CBlBa41gEP/4+VNM4lNJeXBJQ+HOOnP9SQfozQOWAQr2JKe49p4vgaYvnn+i3v2T9SevKdGe6WIifZhDEg/Fl6IxBEEIJhFT+f1WaPSrg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZIQkpC2Tc5dGnS+74/8Rg0wbiWIcwbXb3bajmCsOd64=;
- b=XSMgIoEHmNLWp+bJvpDAcy8fDWsVNE59Zj2LLZ3yssredHgmKGe9Ob8kyNwKgJxuiqzZRq+Bx1VAjM8WIXd5GWSzTuCG306Y+tEPnh37Ydv+SxKkibcAyEyl2kdwCTIDrM2RXZ8ZegPQZORlJnwIO0WPBf9gabQCjvuLPkvVyVvKlPIZBtUX2E89LFTZfBFsQ7Y5Ui7ma2DQJ90dy3KCbJ74SVyBlvA9z9zvc5Pa/G3o+CgCIi0vggIK5NJ1TqNdyo1xZSYub4u9O08nnhdhazwjko+RRXMh+733U9jLakUAF9NFOmL4AKtQbWFej7LXs4d9uYCVC2H48lF7bsvKJw==
+ bh=3pVuUX6eWjeFkXe2CNgyoAyvhETAc5N0ln0OmGsf5bI=;
+ b=UNhpCiy3PmfNWO7S6cslgSzw08kVUdbc3PGC7YTeTepQvC/QjZhn/uHDqwElDjMBI+P58GxbSTTRmzX73cA9rTjlp7+QfThzZxY4k0Adq1pVA/QQ2vxgyS3+7282VLStzJJF5T43zQShVw8lS6Xh0CANsqOPlvq2frBmMYNWFHy4WU+8EL6TvPgS1JEU/ToJJZR++0bI3LW+VXAJlB4BZ2lZF6HyQSnjG1CgiOctL+fgN9zidRjmS6l2yyICN20qs1tzZBQpIpTV9mPSHShGsWPZBJqqEBRIzi8nohTaBaiPg+Pl4RICj9CnlV87xbn+uTtuJVDpbKCUOxK8NtVHkQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
  by GV2PR04MB12338.eurprd04.prod.outlook.com (2603:10a6:150:321::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Thu, 17 Sep
- 2026 15:58:54 +0000
+ 2026 16:03:57 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.012; Thu, 17 Sep 2026
- 15:58:54 +0000
-Date: Thu, 17 Sep 2026 10:58:42 -0500
+ 16:03:57 +0000
+Date: Thu, 17 Sep 2026 11:03:44 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Larisa Grigore <larisa.grigore@oss.nxp.com>
 Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
@@ -63,16 +63,16 @@ Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-arm-msm@vger.kernel.org, clizzi@redhat.com,
 	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com
-Subject: Re: [PATCH v4 01/11] scsi: ufs: dwc: Return a negative error if the
- link is down
-Message-ID: <aqwOMoHrxaWXoQUX@SMW015318>
+Subject: Re: [PATCH v4 04/11] ufs: host: Add common Hibern8 TX FSM polling
+ helper
+Message-ID: <aqwPYEvGiamxNW3T@SMW015318>
 References: <20260917091555.1443076-1-larisa.grigore@oss.nxp.com>
- <20260917091555.1443076-2-larisa.grigore@oss.nxp.com>
+ <20260917091555.1443076-5-larisa.grigore@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917091555.1443076-2-larisa.grigore@oss.nxp.com>
-X-ClientProxiedBy: CYZPR17CA0007.namprd17.prod.outlook.com
- (2603:10b6:930:8c::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260917091555.1443076-5-larisa.grigore@oss.nxp.com>
+X-ClientProxiedBy: PH8PR22CA0012.namprd22.prod.outlook.com
+ (2603:10b6:510:2d1::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -82,108 +82,320 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB12338:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce925355-6361-467b-e92d-08df14d492d4
+X-MS-Office365-Filtering-Correlation-Id: 299f4c8b-b0ee-4444-0835-08df14d54792
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
  BCL:0;ARA:13230040|7416014|1800799024|19092799006|376014|366016|23010399003|11063799006|18002099003|22082099003|10067099003|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
- O1sZgCe1Bn+lOrlt6EUB4yG0G5Hz5EDpouts/hYIborHb/+BxDEL17eJ6RDxM685+JWIozx/rQTux410W21JhGwT9ahWZXazUG3jt+U7DHxa2w48EAKq46iEMjnnRxrFxA7hLnVDJ90S0X4qOJOb9LPnGY6fFZrlhCMGWD4ModvJ2et6K2TrSZzrgmzpE76lU3kQtB2mzor5FhnEJQ/8OUqUiXnR0XQrk4ujbQ+2xmlFjGPjntrK779AyenZWCDQM8FicGC80eKdIRwjkAaYgwiWnzFDR1kvj16mLOL4VWbg9+DVZEokXuNC+oUcb1mYbf+1rs26e023bWhwhouqYWOTlBSBGPeOlTKOX8nfDZyMjk3T2G7mkLYftBhBpbZJj507wUOCbQdB5elaelG3+7xsHVZLxb0h2/4O0BToBsrNO+ZeAdoq7PVKxyinCGPoDCzmUSiqtssXLlH+30KGQBKqyEvd6w7bY9ZybbEevYD7aIO77zjzrUIA69FPGBK+Wv/QA/V7+Y0M567UhlJryR5KWGagruUAlunqCGDblGLvA4KA+r54I7IxHx9QUMhIG3bGTWrG8Xt5rJyAlJzIsdKSzWiJkcrsvWCvehCoMwAn+A22SJBuFPFxANQw5wE4Saq637r4hgNbe2upf2FxrgRbIs+niXF3OUkb7RuVhPY=
+ c6KYmnsYBEyMGLmrgsdUXvaDo78yuJmy4rfIp4h7qgzWNiiwd21ylXvgUclRcSRLSEo69qGgbqPofLNu1Z8PpXbNFOPwXqOTpr19UAJ1WYNWbFlOVww9zaJAWTmI/kGu5zIIBn0BjnDY+Z15RVrnoe3RklXjgtzDHCQRD59rA8yqBqzMRdQYuVllm3Sw6+7wxpb/VBfWDedvIqR6qvVwzH2/VLXL6kMhz1C+HEnY8ICgZQtFAsKsX9PiVbaY2fGXK7Oh9hCC175oM9sBaAwalYOmBNwqA8phs3bEw3d1gtu+ArV/B/ek1wmowvJ3x0Qh+ea/xf6T2jFtStvd/pZCg8bAVB0JnH3GC68fTBuEhR9g+b5VKcgE05nDVuhhff92amD1H+ppRZKFEnCWE3PGIjGkmGfANgMSm1PEAzrwefaPjrDR7XqM+DktwRsNLy7YZmEfUdbzW9Gvd0zfVW2PiE4RJIdqiYw5fzZRlk5FKFpLQ2hY9jZ0CuTJH199VrH2PvO2ckSXFl9Pq/hz0VFj54PM+ykRY7XJdGmFp5Iui3uR5vhv4cdZN39cFdBAgaf8Q19zj0khbUG3VbQZC4DmpnjxbenHckDvLEhYRjqLdduVZYeZDEenRw3u3rKleKjfB8vAV5LsiEtwJjklVOMw3nqPS60icSUyk/YGvoVrIRM=
 X-Forefront-Antispam-Report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(19092799006)(376014)(366016)(23010399003)(11063799006)(18002099003)(22082099003)(10067099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?VJamgko31pDWPYmaxecJvLnn4I5zy9Ea50h7CLD0m0Lh21M0alpH9in1MP+/?=
- =?us-ascii?Q?/mo9QRXYOizWOHeuU85vWlaVu/fERDf5mdh+9Z6FgNJYhBaE5v1Ja1SYVkN+?=
- =?us-ascii?Q?gxePg7acikPiNJ0P13bZd8WUCR+LIvQqbAG7uXukIAsVfFzBaKFEkhVd40of?=
- =?us-ascii?Q?GjJh0K5RFOeDsPycJ7hkBuvRFi+1bYUl+VaX464uBnhGChE3ASp2jk7At/Sx?=
- =?us-ascii?Q?euLxQckt/pT0mBdDUvhtKrqKMQIDm9GtV7fZYMVc/ix1L31+x/4fZH7QyCKg?=
- =?us-ascii?Q?ha9qGieHyiij+8oIdzjbzqqxOZYS7p737QG1fG74iihObclE1DKTx2PO5my/?=
- =?us-ascii?Q?WMHljHjqx+7qdgAPvlkiyqNE8xRBgV80xayrR1jCASsqbqkAFBDjHm2owuaw?=
- =?us-ascii?Q?7pp8ujqevAic3PuDmmXNXlxmXU5p9+gDlvj0HXClx0m0kCK9llMskdE0ZEpi?=
- =?us-ascii?Q?3dT8aTMDLRtWaVjjQWma2t/1xIos/yulG4Wjrl81znk1tB6SST2XnavcFdql?=
- =?us-ascii?Q?GzUecth8y396ZZ6CJ9S3Bvwvyp9SC6OKy8jfY7zlKVf8oqe/X7aNOIXE4nXT?=
- =?us-ascii?Q?7jrNyPgIaZKKBxJuRBABFX+2SQrHojeHr+2IQBrSNlYUFQ6V0Mm0G/90aNw6?=
- =?us-ascii?Q?LLT5PDnNMY3zIKUJpVhGFg/JjIhlI4tAvXnRO9LtojpChLRqc7khr7YDz9S6?=
- =?us-ascii?Q?qaVEp0E0C0rUcIFcwjOWEyvuf0GDip5pLnlC8iqx2YDTIKyAUIfEtlCJePHi?=
- =?us-ascii?Q?riR5iPhCKnA8DXALxQwdUjjg7mswmkaSFRHg3h+Pjdzi5yFc2y1LZNAiB+Ia?=
- =?us-ascii?Q?fqsfX2NrjJPmZQnH8eVtMOvj38z2gKosU1Clo6IL+G1FqFnL1iS3XjTs6lGI?=
- =?us-ascii?Q?Vf2vT5FgIMFnCrXZYJwUTHnHPXALsVebG1Fbcd7/SV+Xnx1rkufdAGlBu1WT?=
- =?us-ascii?Q?NR6cC9JQPrYNU47U432k7QJMfCHZ+Cw+Ut4FF5OPgW8+WhB+C5wc/8kzLtkZ?=
- =?us-ascii?Q?J2x28+wtsAYqZP/GgiAoO4P5euMB6/cmvX8Zk3xEqbnvM4np3+2inb65zr/O?=
- =?us-ascii?Q?IltJXY6Ydm39KqvxbHlClua2SLxw8AQEmVF5mYfLzJzjkV6gRyLoqM7uhJ/W?=
- =?us-ascii?Q?FORfUs3MRA58gZYFvNCsRUi3m1dCRELAT1ASPKjEe2XcvLMTbdyWxjEOJNyA?=
- =?us-ascii?Q?WVAik7DhYPeBiq8NozzElRdNuHLyrv+rkiOae6SFWVDMx5LkLiiIWYug+i5S?=
- =?us-ascii?Q?mVrxbkGu+q7CUZb1bKPmDI8yNAwNiPcp7qCPgPTg4Op1JqPsL4wL74ukqKiQ?=
- =?us-ascii?Q?rNMUKDJy8zqqhOOY7LOLHsW0RMoYRH+FUMQLoEh3hHqME2J9BzbI5HXLA+Nm?=
- =?us-ascii?Q?9sULcA94wOJLkYm26ZCmy/7OASi93pqFbDgfoMR9+wD8sJD6mCEzNFfORuXR?=
- =?us-ascii?Q?4XcbDmE4cIRTm/syPhoYuBBdrll1PTn0SRG8DU+5hwZ23n/onYuhZzXQkjAV?=
- =?us-ascii?Q?20DrkVoiTZG5fpFtL9Qbapu1ReaIrf2YASxRkYIgN3Qlge5xfhpBPGRUDqka?=
- =?us-ascii?Q?7Aq74wARvUbkW32co0iAI2maB+sVPMZSdrknONsBiLX6Ya5xdwSFE6NxSjfw?=
- =?us-ascii?Q?Rf34zpJIgARjXiSKzHb4izui2ro/vMBb6cdMbwlh/Xt1LZljZJRPJwqYs+ZT?=
- =?us-ascii?Q?Fcp+Eq05Oxrm7/acbyiyxMg/PXa5biXHtysh6+ZaYRZqXYEC5vYJDOInfJ3m?=
- =?us-ascii?Q?3O12+et44//5R034aEk2BI5Q9S49kd25GtMkeyGQONiyn7t0gwyE?=
+ =?us-ascii?Q?vgll2SUJiEDORxpvk4GaHWau4VRQCnkjGA19TuILvijJmZm8r4v5mK9+kLN0?=
+ =?us-ascii?Q?xt1J1QG0/STJPyaM92xx1Pn/lVD5d62TZBX90rsMk6zemjVxb+/nkwfarooX?=
+ =?us-ascii?Q?jyhayK+x3fdxSNC8vbMUgZAO3jEirdTTHY0XghjSwH1zqyAJ/uSQZJYfsnNG?=
+ =?us-ascii?Q?vMeEPZxqxKqFDwe+nNzU7ncZHm7MmMGqo5KEWqlOYUIG/Ps6pz/PzRRRX+Yn?=
+ =?us-ascii?Q?ZeN5Ugk7B5EzS+rFIiJgoYuL+Ek/byf1lM8fKy0G2eNVzolV5kv2hw48Uktq?=
+ =?us-ascii?Q?Pbba2UKfqcLh5ar1qsNZwPZEHqDjqtdDufmKU/+2DNyjYr0CRta4rKE0sPRF?=
+ =?us-ascii?Q?O/8cM/1NXXglaIqxOSvnqEylzxuKvHNs+VyCKhiYxuuAK7EQGt68UW8G+6nu?=
+ =?us-ascii?Q?/i+vFYtvPIgM8mqPq4/kITfxeH6s8c2cmDjo7nbKltp4HsR3h+qIL3h1Nqp4?=
+ =?us-ascii?Q?Ufey3zmvjzqmiM4sgdRB6ZBy51MRMVfnS5Xz07NGNpoGdIHgTFa8LUf8kvLq?=
+ =?us-ascii?Q?NAVyUuqfeFhaVbZqfJ/Hi28TlKB+5LpcJT7bHk6lAPS/+FAY52fY4jv/EYu6?=
+ =?us-ascii?Q?RSHGaMIfJeEAzhzTRQl+ZiCeCFcbuXOPN/j6aLCqEQp1Xa1XdyIphmapuDm6?=
+ =?us-ascii?Q?xNHjXHzcSgZF9VcB8ipaHDzzl2MUIgwhrvUYgGxY326+TRC8bQyO7DmdPoGG?=
+ =?us-ascii?Q?w+1v2t78rbtjGtgRTxI2cKDLKBYFsjtnuga4/Gp6TSA/+2ioY4eb81uox679?=
+ =?us-ascii?Q?fD91R7KJpm5YU1oFgPMpmVed4ZBjpuTvJsyEyEYEKRA8egGsN7Su1CMTij0X?=
+ =?us-ascii?Q?ZKU3PTmMIdoKnuRFTzCJXCCXyV9pHyAh9PRm2h0rx9Em8NyNuhggEeldBzXX?=
+ =?us-ascii?Q?JBqh/pHphyA8JU4L7DudGMMefFiS8gEswoX+FH/fUon6tseIKBMSnnTrz14x?=
+ =?us-ascii?Q?AEx7ODXwyFm3Pfk4kFbgloH8lPmdJrmj+PdFK2Vc4W+uDPtAHkF8UBoqASFj?=
+ =?us-ascii?Q?aPtUIzpuIj0u9vgmyt5uJMUIPZCkt2hPapu6xQp7jQMvUE5tSG5IFA9TQL1L?=
+ =?us-ascii?Q?26P8WMlQe8QzJjt5xqvjAIQ92FWLki+yh3mRM2e5ywTxLgc8ju0R/yT9BRsU?=
+ =?us-ascii?Q?4pyUM3NqMrWc4MdKWRGJ5WHn8tYFXF77qq5T0sJt0A1CtKgC8+Nu9Y/jlI7k?=
+ =?us-ascii?Q?5oUvSTu/QjmRDt2gB9LhNLkPCmnqRJoIRlFGVHLSQg5fxskvLi7sq8MMrI1e?=
+ =?us-ascii?Q?/Wyc88ibnMMmLaSAJRHlsvUgp5TXi6mjtozvp133UppTuJV5ZayeAfywTD9M?=
+ =?us-ascii?Q?mKQRTSx03O2uMq1OGX2HkB4HyjRE1CuhEEJ6ikhwp6OFUxrjavJY3DXBCOrr?=
+ =?us-ascii?Q?NHCtvZBeD17toAmmA80rq3Tv0jjHnHx+oQ+HH7411YE3RGiOhXAtcpQVfenZ?=
+ =?us-ascii?Q?WeSSAdiIIDptZCN0bnh3+XQyJ3CGxYMgKOqZ5SyVqwCGxPKLtEP7i2NXiwgq?=
+ =?us-ascii?Q?t9qbqFMlRx+Uj8BEln192KR3WtHXXumcreWU2+nSDGKnBUsks6lhU3T1K8W8?=
+ =?us-ascii?Q?1/qyP4YufKvR3BgWzguR3YpuAJcRLgFdrPgCDDtxP07OqzJk/FN7/Yq+Nt/b?=
+ =?us-ascii?Q?bMYIdsvRhJhR05M4sKKV65AEYZlAvSkEjdzeiyhPRDK7BWpwPy+jdl7tIlC9?=
+ =?us-ascii?Q?LFa8vHDgKFnK64WDoxX7Rrk4q+Y0B/uCAjtXR2sgnV6mdCTQgI/8fSxVN6MU?=
+ =?us-ascii?Q?ySMOjCl3TsuY9BcRwGsS6BQehc0dJP139ekyGsqayWCFJnNnPYpo?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce925355-6361-467b-e92d-08df14d492d4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 299f4c8b-b0ee-4444-0835-08df14d54792
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 15:58:54.2315
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 16:03:57.4363
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ploeEGj9+PWpXYtu8ylum7L0Gbg6yVr59nFbm8bC+0F6v5xGI4N1L4rllaFgE4Xn8W1tR2eAPgWHupY6GZATYbGSu3ZIKgxp8RXXnX8tJ24ZlR6ytHyPIfvRAz3xgz59
+X-MS-Exchange-CrossTenant-UserPrincipalName: sQ8HRffxVBK1yqCNDyIa3io5EwtJLjgVWRf0fkxG6qj3sroInDDUYTcUIeC325t8Mi+9vj/bpxpWSN68OD69hrFz93tFR/lwCbnZpUAT+0e5IYf4F06e5hv1q57S3uBr
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12338
 
-On Thu, Sep 17, 2026 at 11:15:45AM +0200, Larisa Grigore wrote:
-> ufshcd_dwc_link_is_up() returns 1 when the UniPro link is not up. The
-> value may propagate through callers that expect failures to be reported as
-> negative errno values.
+On Thu, Sep 17, 2026 at 11:15:48AM +0200, Larisa Grigore wrote:
+> Factor out the common logic used to poll TX_FSM_STATE until the TX lanes
+> enter Hibern8 into ufshcd_check_hibern8().
 >
-> Return -ENOLINK when the link is down and propagate errors returned by
-> ufshcd_dme_get().
+> The HiSilicon and Qualcomm drivers currently implement similar checks
+> using the UniPro TX_FSM_STATE attribute after link/PHY bring-up. Move
+> this logic to a common helper in ufshcd so it can be shared across host
+> controller drivers.
 >
-> Fixes: 4b9ffb5a353b ("ufs: add support for DesignWare Controller")
+> Switch the HiSilicon and Qualcomm drivers to use the new helper and drop
+> their local implementations. While at it, normalize the "TX lane failed to
+> reach Hibern8" error path to return -ETIMEDOUT instead of the raw
+> TX_FSM_STATE value (qcom) or -1 (hisi), so all callers get a proper errno.
+> This is an intentional, harmless change of the returned error value; the
+> pass/fail behaviour at the call sites is unchanged.
+>
+> Unlike the initial implementation, the timeout error is now reported only
+> once by ufshcd_dme_check_tx_hibern8() after its final check, instead of
+> per lane.
+>
+> This also prepares for reusing the same UniPro-specific Hibern8 check in
+> a subsequent commit.
+>
 > Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
 > ---
+>  drivers/ufs/core/ufshcd.c   | 73 +++++++++++++++++++++++++++++++++++++
+>  drivers/ufs/host/ufs-hisi.c | 48 +-----------------------
+>  drivers/ufs/host/ufs-qcom.c | 42 +--------------------
+>  include/ufs/ufshcd.h        |  3 ++
+>  4 files changed, 78 insertions(+), 88 deletions(-)
+>
+> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+> index 2ba244cf40ac..c1c61377e28a 100644
+> --- a/drivers/ufs/core/ufshcd.c
+> +++ b/drivers/ufs/core/ufshcd.c
+> @@ -4448,6 +4448,79 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
+>  }
+>  EXPORT_SYMBOL_GPL(ufshcd_dme_get_attr);
+>
+> +/**
+> + * ufshcd_poll_tx_hibern8_lanes - Check TX_FSM_STATE of all TX lanes once
+> + * @hba: host controller instance
+> + * @num_lanes: number of TX lanes to check
+> + *
+> + * Read TX_FSM_STATE for every lane and verify it reached Hibern8.
+> + *
+> + * Return: 0 if all lanes are in Hibern8, -EAGAIN if any lane is not (yet)
+> + * in Hibern8, or a negative errno (e.g. -ETIMEDOUT from a hard UIC command
+> + * timeout) if the attribute read fails.
+> + */
+> +static int ufshcd_poll_tx_hibern8_lanes(struct ufs_hba *hba,
+> +					unsigned int num_lanes)
+> +{
+> +	u32 tx_fsm_val = 0;
+> +	unsigned int i;
+> +	int err;
+> +
+> +	for (i = 0; i < num_lanes; i++) {
+> +		err = ufshcd_dme_get(hba,
+> +				UIC_ARG_MIB_SEL(TX_FSM_STATE,
+> +					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(i)),
+> +				&tx_fsm_val);
+> +		if (err) {
+> +			dev_err(hba->dev,
+> +				"%s: unable to get TX_FSM_STATE for lane %u, err %d\n",
+> +				__func__, i, err);
+> +			return err;
+> +		}
+> +
+> +		if (tx_fsm_val != TX_STATE_HIBERN8)
+> +			return -EAGAIN;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * ufshcd_dme_check_tx_hibern8 - Check if all TX lanes entered Hibern8 state
+> + * @hba: host controller instance
+> + * @num_lanes: number of TX lanes to check
+> + * @timeout_ms: overall timeout in milliseconds shared by all lanes
+> + *
+> + * Return: 0 on success, negative errno on failure.
+> + */
+> +int ufshcd_dme_check_tx_hibern8(struct ufs_hba *hba, unsigned int num_lanes,
+> +				unsigned int timeout_ms)
+> +{
+> +	int err, ret;
+> +
+> +	if (!num_lanes)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * Poll every lane until ufshcd_poll_tx_hibern8_lanes() stops returning
+> +	 * -EAGAIN, i.e. all lanes reached HIBERN8 (err == 0) or a real error
+> +	 * was hit.
+> +	 */
+> +	ret = read_poll_timeout(ufshcd_poll_tx_hibern8_lanes, err,
+> +				err != -EAGAIN, 200,
+> +				(u64)timeout_ms * USEC_PER_MSEC, false,
+> +				hba, num_lanes);
+> +	if (ret) {
+> +		dev_err(hba->dev,
+> +			"%s: timeout waiting for TX lanes to enter HIBERN8\n",
+> +			__func__);
+> +		return -ETIMEDOUT;
+
+nit: return ret;
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  drivers/ufs/host/ufshcd-dwc.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+> +	}
+> +
+> +	return err;
+> +}
+> +EXPORT_SYMBOL_GPL(ufshcd_dme_check_tx_hibern8);
+> +
+>  /**
+>   * ufshcd_dme_rmw - get modify set a DME attribute
+>   * @hba: per adapter instance
+> diff --git a/drivers/ufs/host/ufs-hisi.c b/drivers/ufs/host/ufs-hisi.c
+> index bd223bda1ce2..b84075dfe00d 100644
+> --- a/drivers/ufs/host/ufs-hisi.c
+> +++ b/drivers/ufs/host/ufs-hisi.c
+> @@ -22,50 +22,6 @@
+>  #include <ufs/ufshci.h>
+>  #include <ufs/ufs_quirks.h>
 >
-> diff --git a/drivers/ufs/host/ufshcd-dwc.c b/drivers/ufs/host/ufshcd-dwc.c
-> index 21b1cf912dcc..ccf785fce6cc 100644
-> --- a/drivers/ufs/host/ufshcd-dwc.c
-> +++ b/drivers/ufs/host/ufshcd-dwc.c
-> @@ -48,20 +48,23 @@ static void ufshcd_dwc_program_clk_div(struct ufs_hba *hba, u32 divider_val)
->   * ufshcd_dwc_link_is_up() - check if link is up.
->   * @hba: private structure pointer
->   *
-> - * Return: 0 on success, non-zero value on failure.
-> + * Return: 0 on success, a negative errno value on failure.
->   */
->  static int ufshcd_dwc_link_is_up(struct ufs_hba *hba)
+> -static int ufs_hisi_check_hibern8(struct ufs_hba *hba)
+> -{
+> -	int err = 0;
+> -	u32 tx_fsm_val_0 = 0;
+> -	u32 tx_fsm_val_1 = 0;
+> -	unsigned long timeout = jiffies + msecs_to_jiffies(HBRN8_POLL_TOUT_MS);
+> -
+> -	do {
+> -		err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(TX_FSM_STATE, 0),
+> -				      &tx_fsm_val_0);
+> -		err |= ufshcd_dme_get(hba,
+> -		    UIC_ARG_MIB_SEL(TX_FSM_STATE, 1), &tx_fsm_val_1);
+> -		if (err || (tx_fsm_val_0 == TX_STATE_HIBERN8 &&
+> -			tx_fsm_val_1 == TX_STATE_HIBERN8))
+> -			break;
+> -
+> -		/* sleep for max. 200us */
+> -		usleep_range(100, 200);
+> -	} while (time_before(jiffies, timeout));
+> -
+> -	/*
+> -	 * we might have scheduled out for long during polling so
+> -	 * check the state again.
+> -	 */
+> -	if (time_after(jiffies, timeout)) {
+> -		err = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(TX_FSM_STATE, 0),
+> -				     &tx_fsm_val_0);
+> -		err |= ufshcd_dme_get(hba,
+> -		 UIC_ARG_MIB_SEL(TX_FSM_STATE, 1), &tx_fsm_val_1);
+> -	}
+> -
+> -	if (err) {
+> -		dev_err(hba->dev, "%s: unable to get TX_FSM_STATE, err %d\n",
+> -			__func__, err);
+> -	} else if (tx_fsm_val_0 != TX_STATE_HIBERN8 ||
+> -			 tx_fsm_val_1 != TX_STATE_HIBERN8) {
+> -		err = -1;
+> -		dev_err(hba->dev, "%s: invalid TX_FSM_STATE, lane0 = %d, lane1 = %d\n",
+> -			__func__, tx_fsm_val_0, tx_fsm_val_1);
+> -	}
+> -
+> -	return err;
+> -}
+> -
+>  static void ufs_hisi_clk_init(struct ufs_hba *hba)
 >  {
->  	int dme_result = 0;
-> +	int ret;
+>  	struct ufs_hisi_host *host = ufshcd_get_variant(hba);
+> @@ -224,9 +180,7 @@ static int ufs_hisi_link_startup_pre_change(struct ufs_hba *hba)
 >
-> -	ufshcd_dme_get(hba, UIC_ARG_MIB(VS_POWERSTATE), &dme_result);
-> +	ret = ufshcd_dme_get(hba, UIC_ARG_MIB(VS_POWERSTATE), &dme_result);
-> +	if (ret)
-> +		return ret;
+>  	/* Unipro VS_mphy_disable */
+>  	ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(0xD0C1, 0x0), 0x0);
+> -	err = ufs_hisi_check_hibern8(hba);
+> -	if (err)
+> -		dev_err(hba->dev, "ufs_hisi_check_hibern8 error\n");
+> +	err = ufshcd_dme_check_tx_hibern8(hba, 2, HBRN8_POLL_TOUT_MS);
 >
->  	if (dme_result == UFSHCD_LINK_IS_UP) {
->  		ufshcd_set_link_active(hba);
->  		return 0;
->  	}
->
-> -	return 1;
-> +	return -ENOLINK;
+>  	if (!(host->caps & UFS_HISI_CAP_PHY10nm))
+>  		ufshcd_writel(hba, UFS_HCLKDIV_NORMAL_VALUE, UFS_REG_HCLKDIV);
+> diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+> index 1e492dac8d93..815ca82a0878 100644
+> --- a/drivers/ufs/host/ufs-qcom.c
+> +++ b/drivers/ufs/host/ufs-qcom.c
+> @@ -382,46 +382,6 @@ static int ufs_qcom_init_lane_clks(struct ufs_qcom_host *host)
+>  	return 0;
 >  }
 >
->  /**
+> -static int ufs_qcom_check_hibern8(struct ufs_hba *hba)
+> -{
+> -	int err;
+> -	u32 tx_fsm_val;
+> -	unsigned long timeout = jiffies + msecs_to_jiffies(HBRN8_POLL_TOUT_MS);
+> -
+> -	do {
+> -		err = ufshcd_dme_get(hba,
+> -				UIC_ARG_MIB_SEL(TX_FSM_STATE,
+> -					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(0)),
+> -				&tx_fsm_val);
+> -		if (err || tx_fsm_val == TX_STATE_HIBERN8)
+> -			break;
+> -
+> -		/* sleep for max. 200us */
+> -		usleep_range(100, 200);
+> -	} while (time_before(jiffies, timeout));
+> -
+> -	/*
+> -	 * we might have scheduled out for long during polling so
+> -	 * check the state again.
+> -	 */
+> -	if (time_after(jiffies, timeout))
+> -		err = ufshcd_dme_get(hba,
+> -				UIC_ARG_MIB_SEL(TX_FSM_STATE,
+> -					UIC_ARG_MPHY_TX_GEN_SEL_INDEX(0)),
+> -				&tx_fsm_val);
+> -
+> -	if (err) {
+> -		dev_err(hba->dev, "%s: unable to get TX_FSM_STATE, err %d\n",
+> -				__func__, err);
+> -	} else if (tx_fsm_val != TX_STATE_HIBERN8) {
+> -		err = tx_fsm_val;
+> -		dev_err(hba->dev, "%s: invalid TX_FSM_STATE = %d\n",
+> -				__func__, err);
+> -	}
+> -
+> -	return err;
+> -}
+> -
+>  static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
+>  {
+>  	ufshcd_rmwl(host->hba, QUNIPRO_SEL, QUNIPRO_SEL, REG_UFS_CFG1);
+> @@ -607,7 +567,7 @@ static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
+>  		break;
+>  	case POST_CHANGE:
+>  		/* check if UFS PHY moved from DISABLED to HIBERN8 */
+> -		err = ufs_qcom_check_hibern8(hba);
+> +		err = ufshcd_dme_check_tx_hibern8(hba, 1, HBRN8_POLL_TOUT_MS);
+>  		ufs_qcom_enable_hw_clk_gating(hba);
+>  		ufs_qcom_ice_enable(host);
+>  		ufs_qcom_config_ice_allocator(host);
+> diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+> index dfd302f2dc7c..0d9d0a26eb20 100644
+> --- a/include/ufs/ufshcd.h
+> +++ b/include/ufs/ufshcd.h
+> @@ -1556,6 +1556,9 @@ extern int ufshcd_dme_set_attr(struct ufs_hba *hba, u32 attr_sel,
+>  			       u8 attr_set, u32 mib_val, u8 peer);
+>  extern int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
+>  			       u32 *mib_val, u8 peer);
+> +extern int ufshcd_dme_check_tx_hibern8(struct ufs_hba *hba,
+> +				       unsigned int num_lanes,
+> +				       unsigned int timeout_ms);
+>  extern int ufshcd_change_power_mode(struct ufs_hba *hba,
+>  				    struct ufs_pa_layer_attr *pwr_mode,
+>  				    enum ufshcd_pmc_policy pmc_policy);
 > --
 > 2.43.0
 >
