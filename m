@@ -1,32 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1213FE65F
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 09:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD741C2FB
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 09:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789638167; cv=none; b=GUDvP9FVrg2QssCLOmKndy7Gq4odobgdyNGChABi/0qWQiTtju0vKEy+JOINsEZ4UnXyO4FCe0KCjH0t0p2sSckcX3rLJHRJccOTCYAwdMNmCpJsHidL+Xwo6YhiVVY3TV2Kx/lcJkGlhXyrIaA9/V2iZ6ydQCdK48Lwh1CIJNc=
+	t=1789638168; cv=none; b=g1lujmLpeoagf3O40dv088KOrQrcj7aGBQmFKmte6W5h0B617gE+KnMQoZJAMyPYAoXyTjJGH/KA8S4pff/jdlNHi7F/2bMjNwPjQKMbRmKTwaVNc9SIGcetekugagmTfpKe6q7/xgjUw1ujj/40AXYo+iBZHWRU3dFjjHYtr3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789638167; c=relaxed/simple;
-	bh=DaB5zuAPaemeoO6Zw0IM5AV7dY/kS+zsYeI+JxbPowY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gf8DOc/Ex/42y/Dkq7VzcoBgZM2DaTVETXoiJg21fsQvlfSI4EKvWWp3qMu/hCFhh9vxdEwDCKBzSRaqXw+qpqLLorHrL2xjOSqVA6bScXH/QbB+99tp4/tzRsvFo+33ElJazRF39riicow+AUPMkd32E6DqmSWmUuK62UBd5wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=EEE1jeZr; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1789638168; c=relaxed/simple;
+	bh=ahjJkDQiVsFvT1v7PZsRsJvaWJJO4CtS+VbDhaL8asM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OOpm5/QiegSS6JFsIf+RkiL7ewmNZ4MsA5u4GfAfBGBsjjwS9nBlxJZVivNL2ab0xIz5A6Gxm0nP0WdVGJc0KU/Rh9modPBn4WOsbl5JSYiTdlhPFkdBgTKxCHeZNdULSvy90VmBoLikRzyEOuT+EUFt8nCSAr5HRvduNpJ86uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Nu9KQPMy; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="EEE1jeZr"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Nu9KQPMy"
 Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id AD9B11F8D0;
-	Thu, 17 Sep 2026 11:42:23 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 5F59A1FCA4;
+	Thu, 17 Sep 2026 11:42:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
 	s=default; t=1789638144;
-	bh=GrKwQSnBM5TlJwrXeIy0ESWxGzkPY7jGMX9Hplkjm+I=; h=From:To:Subject;
-	b=EEE1jeZrGpYBbkm7jBaZiYUVn3vsNzRXoUuZhAf67BVk3zc5f9yRT5a8E/Y2PUF/c
-	 he/WR0tgGu6vRr6nutCipM6oltnj0DBJGkCJrWiyKJUdCPNDLZJmBc0nUaT5PKhJwi
-	 gVDukL/i1IFT7q1lcdTTs++m54HtxP9w9geGUHGYbYzhpJaEGnPaisMIoSID4DU1Dm
-	 KiKLuDXtbTJkPWU4duiRl/tO+bgAQrr7aYqW8nAp1SrmH4V/1duZ5+GVwfTkpuBfqX
-	 Vm5Kw+9dztp+nvB6kk0H3WiOybZcPIX12ZTfUIzKANJ7wlOBKb2OtWQ63m6RmdfseZ
-	 JJvaEhK/jFNZg==
+	bh=oqLenxL/19HM/21oW+/2Rvt5NkH8DxDP5vg8uKDbrNU=; h=From:To:Subject;
+	b=Nu9KQPMyGvEnRxMmeqBlI2wIctwrE5oIuzPKfWniQ2FyhzhEFWZ+xoFy2uhCjxQzr
+	 CLfdSnZJlQ5pKcY64xTrirR8JOaonblRZ459PQVDxWj68RXdgKi3ty94dcS/GhTBB/
+	 QNMVD9ktzYf/r/GDtRxtJvK+Kz8I9GZOm+ZaIp6kSsDa2Kmcmatxvf5I1ArKWtVbeZ
+	 AmrrlBs7EmF33AZXHYiDkuIUd35ygYBGj8rAE4xCPrvZ//j06i1k0LJUIs9iburs1n
+	 RIXPYaKvJkeBpY8KKzmL43+jH2caQG3XjjJNbaYMvno36XQLRD/lLn5GGHVCjY68Dw
+	 mQrqnDw1crT3A==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -36,15 +37,18 @@ To: Rob Herring <robh@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+Cc: Antoine Gouby <antoine.gouby@toradex.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v1 0/2] arm64: dts: freescale: Add Toradex OSM iMX95
-Date: Thu, 17 Sep 2026 11:42:13 +0200
-Message-ID: <20260917094217.59508-1-francesco@dolcini.it>
+	linux-arm-kernel@lists.infradead.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v1 1/2] dt-bindings: arm: fsl: Add Toradex OSM iMX95
+Date: Thu, 17 Sep 2026 11:42:14 +0200
+Message-ID: <20260917094217.59508-2-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260917094217.59508-1-francesco@dolcini.it>
+References: <20260917094217.59508-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,30 +57,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Antoine Gouby <antoine.gouby@toradex.com>
 
-This patch series adds support for the Toradex OSM iMX95 SoM and its OSM
-Development Board.
+Add Toradex OSM iMX95 SoM and the Toradex OSM development carrier board
+it can be combined with.
 
 The Toradex OSM iMX95 is a SoM compliant with the OSM V1.2 specification
-from SGET, based on the NXP i.MX95 SoC and available in Size L
-(45x45 mm).
+from SGET using the NXP i.MX95 SoC and is available in Size L (45x45 mm).
 
 Link: https://www.toradex.com/computer-on-modules/osm-arm-family/nxp-imx95
-Link: https://www.toradex.com/products/carrier-board/osm-development-board
+Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Antoine Gouby (2):
-  dt-bindings: arm: fsl: Add Toradex OSM iMX95
-  arm64: dts: freescale: Add Toradex OSM iMX95
-
- .../devicetree/bindings/arm/fsl.yaml          |    6 +
- arch/arm64/boot/dts/freescale/Makefile        |    1 +
- .../dts/freescale/imx95-toradex-osm-dev.dts   |  404 +++++++
- .../boot/dts/freescale/imx95-toradex-osm.dtsi | 1036 +++++++++++++++++
- 4 files changed, 1447 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-osm-dev.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-osm.dtsi
-
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 36e28e0e4ad9..9413c3e225ea 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1578,6 +1578,12 @@ properties:
+           - const: toradex,aquila-imx95     # Aquila iMX95 Module
+           - const: fsl,imx95
+ 
++      - description: Toradex Boards with OSM iMX95 Modules
++        items:
++          - const: toradex,osm-imx95-dev # Toradex OSM iMX95 Module on Toradex OSM Development Board
++          - const: toradex,osm-imx95     # Toradex OSM iMX95 Module
++          - const: fsl,imx95
++
+       - description: Toradex Boards with SMARC iMX95 Modules
+         items:
+           - const: toradex,smarc-imx95-dev # Toradex SMARC iMX95 on Toradex SMARC Development Board
 -- 
 2.47.3
 
