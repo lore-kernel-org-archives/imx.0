@@ -1,107 +1,167 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.107])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC254A689C;
-	Thu, 17 Sep 2026 11:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.107
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789643739; cv=none; b=OI8j17tb4KEbbOKAh2Givgq3LjdK7g9rB7GRmfwzApZxgfei+dENytzmqQYDMoz9zCssuxrdBGjqmrAKV1J8YL1jfXEWhlKexTtX5wydzjnDog+r8I7HMnMHup8p9o0oH5FlTiTbvw6W9xBFYK0CNlVgnBTRC3RRjNCFZtzaeqs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789643739; c=relaxed/simple;
-	bh=s6JLaKIpJHfSw6tJIYCGWUMDmPnQK3gLe1l887AEFbc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HHoPOcNQg+9L/883FLlRP9h/tRR7dGSfMF50IsRfuKpxiGUpxEFylCUmhDZiL5z+XjpnFo6BqLjteu+9rVxLmZUqLVWnTED3Si00QmO0XaV4wHaIr89aTjJdRFq50dvEO2PIJPIvl3fchfBXnhYp7JMRc7V9ZyaFWsGUaYZ6OIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=GwEHIHeI; arc=none smtp.client-ip=188.68.61.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8404C2257;
+	Thu, 17 Sep 2026 11:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789643791; cv=pass; b=qrsje8txDpPrrrb4q8UrZuhqJ/umQD1DvOSaeNtlUyT/5PS1hqxW0AZ7vgITKiCpPe5W96XJ2fe+W0wpSD7ej7DEJEKQWJlfF1BcqkrJo2rgxBzZHoFNe58zKpU8UsdeTyFp6qqNl2brdOVxkAsOR+PeIEAl2hgOW9Vbd2YZAXU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789643791; c=relaxed/simple;
+	bh=L+7jrrmM1xceNH5ZDG2/Kd0WCxATH/Vel0IisJNbBPA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dWD/OFdIdL67Zl0o4jD2G37G8aUjQ59/y2qV341n6EDB5tdxa/wQZy95ymAbBichItA/bQNlg6tOvmp8QoxdgsnzefMw1n0s/OviLLz4XCGcBGooZxOtM3GqwoTCJNi9P08T7eYnBtBkk66h3eQXUIpV43vq8xl88yAqScLCIe0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me; spf=pass smtp.mailfrom=icenowy.me; dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b=fHCW3CnH; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icenowy.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="GwEHIHeI"
-Received: from mors-relay-8405.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8405.netcup.net (Postfix) with ESMTPS id 4hltK458JLz78Lb;
-	Thu, 17 Sep 2026 13:08:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1789643288;
-	bh=s6JLaKIpJHfSw6tJIYCGWUMDmPnQK3gLe1l887AEFbc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GwEHIHeINfVJYeWge68Jh6ImmWDsr9UN4ZWKb83TYYSp5KUlAlwiIwfYGUGrb7zQs
-	 4DfVUo0bMi/IkBTdUOkXYTedcwSrUv5aNLbflagY0NYLjagoeLkQ/M54PK5Ie8Rg/1
-	 PBYyAyVPwgSAmWmIhtjAQA3io19iLtOHNDwArwu4PBixjLNNP6CsASUfY/Akozx+M5
-	 GxV1ic1Ncsm409yGEZPPDOrETPwMFeLiRUZTl7v+vEZXM3oAlMdXNLBjjdgVmjVevd
-	 XRWntb2WMv0q1xnC5YvH49m64iTkyM1ApKN1sr2uIgbD/XUuzj63P2j6dsyO6guU++
-	 +PtiWy0SC0EBg==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8405.netcup.net (Postfix) with ESMTPS id 4hltK44Q0Bz77bD;
-	Thu, 17 Sep 2026 13:08:08 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hltK14fFFz8sbH;
-	Thu, 17 Sep 2026 13:08:05 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 42AB85F936;
-	Thu, 17 Sep 2026 13:08:04 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <7ed9e4de-2e57-4c15-875c-16512f00163f@leemhuis.info>
-Date: Thu, 17 Sep 2026 13:08:03 +0200
+	dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b="fHCW3CnH"
+ARC-Seal: i=1; a=rsa-sha256; t=1789643753; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=eULJmLEuwv9sBnXxHcwQJE5HTxIvPrHEhvJn0UJbP4WaF1WdxZdpQJc9fKmAmuaelKDU6MFEG/h5tsTjevVaGUNEwuYtNcvqrAlts861YcCabnEHeMEoT5SkIlVE33tEnV/ge01RoIcI1zIbNpAatIhwVyIxBTVn+hlAHJPIAg0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1789643753; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=L+7jrrmM1xceNH5ZDG2/Kd0WCxATH/Vel0IisJNbBPA=; 
+	b=FJQRfbqRm+mJMKFxD43UkwdtEzpJplzRD8xuPnh99zhoizTulrC5T94tolYsVrylH4Pey/lwBj9zb4b59+5goqOe+x8l24CjhGEnBAId9WT+kffG16BDyoD9c29Wxuaa400DRT8W+sBP22yPbiCQCLb+wT0K+tFPItczLxXkoxs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=icenowy.me;
+	spf=pass  smtp.mailfrom=uwu@icenowy.me;
+	dmarc=pass header.from=<uwu@icenowy.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789643753;
+	s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=L+7jrrmM1xceNH5ZDG2/Kd0WCxATH/Vel0IisJNbBPA=;
+	b=fHCW3CnHaIVW1eDh1hW7EoqdMjqgwzdh4TzthQw+wJ2ld3pis1jC9rGYkaXvI1jO
+	v2jjHF+FVy+1tWxxU0PGAxbaivcUqoiu5ArVgRveLZBopeji1tZNGSgMH/RR7GMibtf
+	XZt7iboMb6hXhInrcdzUtOP7Vy85ef4UYHVvM50TeYa1x52kJzifPNXUvmKAYytiIl/
+	ymfuJlGampHWZyp9CGJVhJ8k1XXJDMZQ296Mjb3/v0kLDgLsgNP1LLf75mkFPr4kDIu
+	hkiZWncWDpvinCFqTsD6t27GUiQmoOV9cmSTiTubOZUR8CAGyYaZZtWbJ2mAY9PlBtF
+	qLCHwHRk2w==
+Received: by smtp.zohomail.com with SMTPS id 1789643751945368.595441490814;
+	Thu, 17 Sep 2026 04:15:51 -0700 (PDT)
+Message-ID: <6d21e808d343283264665ec16d297317000fdf4d.camel@icenowy.me>
+Subject: Re: [PATCH RFT v2 0/5] drm: Add and use
+ drm_fb_dma_get_gem_clipped_addr() helper
+From: Icenowy Zheng <uwu@icenowy.me>
+To: Chen-Yu Tsai <wenst@chromium.org>, Liu Ying <victor.liu@nxp.com>, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, Lucas Stach
+ <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>,  Jernej Skrabec
+ <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, Maarten
+ Lankhorst	 <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>,  Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	linux-sunxi@lists.linux.dev, imx@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 17 Sep 2026 19:15:45 +0800
+In-Reply-To: <20260916033327.3054126-1-wenst@chromium.org>
+References: <20260916033327.3054126-1-wenst@chromium.org>
+Organization: Anthon Open-Source Community
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] PCI: imx6: Move clock enable after core reset
- assertion
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- leoreis.costa@gmail.com, fra.schnyder@gmail.com, francesco@dolcini.it,
- frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
- kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
- bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, hongxing.zhu@oss.nxp.com
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20260813095003.356062-1-hongxing.zhu@oss.nxp.com>
- <178835852653.83808.12038237867062064510.b4-ty@b4>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <178835852653.83808.12038237867062064510.b4-ty@b4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <178964328505.1084770.8025952656757850710@mxe9fb.netcup.net>
-X-NC-CID: pLA65dobhYpQq9Ud69Psw9ByXz+UBnTvrXYVrT91lPvHENB8w9I=
+X-ZohoMailClient: External
 
-On 9/2/26 16:15, Manivannan Sadhasivam wrote:
-> 
-> On Thu, 13 Aug 2026 17:50:03 +0800, hongxing.zhu@oss.nxp.com wrote:
->> Commit 610fa91d9863 ("PCI: imx6: Assert PERST# before enabling regulators")
->> inadvertently moved clock enablement before core reset assertion, breaking
->> PCI device initialization on i.MX6Q Apalis platforms with
->> ASM1061/ASM1062 SATA controllers connected.
->>
->> NOTE: It is not 100% clear if the issue is specific to the ASM1061/ASM1062
->> device or on the specific power-up sequence (reset vs cold-power-on).
->>
->> [...]
-> 
-> Applied, thanks!
-> 
-> [1/1] PCI: imx6: Move clock enable after core reset assertion
->       commit: 16929741a622eb345057e41c7b335d9b297890e1
-Thx Mani.
+=E5=9C=A8 2026-09-16=E4=B8=89=E7=9A=84 11:33 +0800=EF=BC=8CChen-Yu Tsai=E5=
+=86=99=E9=81=93=EF=BC=9A
+> Hi,
+>=20
+> This is v2 of my drm_fb_dma_get_gem_clipped_addr() series.
+>=20
+> Changes since v1:
+> - Add and use new drm_framebuffer_get_block_offset() helper (Thomas)
+>=20
+>=20
+> This series adds a helper to retrieve the buffer starting address of
+> a
+> "clipped" framebuffer. This contrasts with drm_fb_dma_get_gem_addr(),
+> which gives the address of the full buffer.
 
-Mani, Bjorn, what's the status of this patch? Is it heading to mainline
-any time soon? This (unless I got confused, which is possible!) afaics
-fixes a 7.2 regression that annoyed quite a few people -- which is why
-it was even briefly considered to revert about a Dozent changes shortly
-before the 7.2 final:
-https://lore.kernel.org/all/20260811214900.GA763236@bhelgaas/
+Should vs_fb_get_dma_addr() in verisilicon/vs_plane.c be replaced with
+this helper too?
 
-Didn't come to this, but it afaics would be good to finally resolve
-this. Or am I missing/confused something?
+I implemented manual framebuffer offset addition here.
 
-Ciao, Thorsten
+Thanks,
+Icenowy
+
+>=20
+> Some drivers program their hardware with clipped dimensions, so they
+> should be using the clipped buffer address as well, unless the
+> hardware
+> can advance the scanout directly. (Side note: many drivers still use
+> the non-clipped dimensions.)
+>=20
+> While at it, also pull out the offset calculation of
+> drm_fb_dma_get_gem_addr()
+> into a separate helper in drm_framebuffer.[ch], thereby separating
+> responsibilities.
+>=20
+> The sun4i driver was recently incorrectly converted to use the
+> unclipped
+> drm_fb_dma_get_gem_addr() helper. This broke offsets into subsampled
+> pixel groups, but also exposed the mismatch between the dimensions
+> used
+> vs the buffer address. Two other drivers were also touched.
+>=20
+>=20
+> Patch 1 adds a new helper to return the byte offset into a
+> framebuffer
+> for the start of the pixel block of the given pixel coordinates.
+>=20
+> Patch 2 adds the new helper to return the buffer address based on
+> clipped coordinates.
+>=20
+> Patch 3 switches the sun4i driver to the new helper, and fixes the
+> luma plane buffer address offset for subsampled YUV formats.
+>=20
+> Patch 4 converts the imx/dc driver to use the new helper. This fixes
+> a
+> mismatch between the programmed coordinates and the buffer address.
+>=20
+> Patch 5 replaces the open coded buffer address calculation in the
+> imx/dcss driver with the new helper. Existing behavior, which might
+> be
+> wrong, is preserved.
+>=20
+>=20
+> Please help test. The series is only compile tested on my end. The
+> sun4i
+> changes should revert its behavior to before the
+> drm_fb_dma_get_gem_addr()
+> was adopted. The imx/dcss changes should not have any behavioral
+> difference.
+>=20
+>=20
+> Thanks
+> ChenYu
+>=20
+> Chen-Yu Tsai (5):
+> =C2=A0 drm: Split framebuffer pixel offset calculation from
+> =C2=A0=C2=A0=C2=A0 drm_fb_dma_get_gem_addr()
+> =C2=A0 drm/fb-dma-helper: Add drm_fb_dma_get_gem_clipped_addr()
+> =C2=A0 drm/sun4i: layers: Fix VI buffer address for clipped offsets
+> =C2=A0 drm/imx/dc: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+> =C2=A0 drm/imx/dcss: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+>=20
+> =C2=A0drivers/gpu/drm/drm_fb_dma_helper.c=C2=A0=C2=A0=C2=A0 | 61 ++++++++=
+++++++----------
+> --
+> =C2=A0drivers/gpu/drm/drm_framebuffer.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4=
+5 +++++++++++++++++++
+> =C2=A0drivers/gpu/drm/imx/dc/dc-plane.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 4 +-
+> =C2=A0drivers/gpu/drm/imx/dcss/dcss-plane.c=C2=A0 | 34 ++++++--------
+> =C2=A0drivers/gpu/drm/sun4i/sun8i_ui_layer.c |=C2=A0 2 +-
+> =C2=A0drivers/gpu/drm/sun4i/sun8i_vi_layer.c | 16 ++++++-
+> =C2=A0include/drm/drm_fb_dma_helper.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 4 ++
+> =C2=A0include/drm/drm_framebuffer.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 3 ++
+> =C2=A08 files changed, 118 insertions(+), 51 deletions(-)
