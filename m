@@ -1,96 +1,91 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98013501F26
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 15:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691074DDB21
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 15:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789659121; cv=none; b=ZB5ue4ezSR9QnIsw+pOgEVqSkDmUT0medmR14FlVHwJLD2oGx0LiroDY6bXYmhqJZNAT5VudMm8ZWo7ovz8yXDlR4Vn28bVtadU+k9YD9P5Pvlly3W4DdVZQQy2oHer9qD29JFijSTFuldzfRt4F4w4X5hdLejmN7ne2NVzLv24=
+	t=1789659449; cv=none; b=XebBxYAX6D8CZ+UyH88V2XINLvlPlel9UQAwpaJ3k8TSkN80M/c7ecADoza0WvEJ8iPBabKwJ+N+U/BiM9x0uNuvqzwJZJsR9WbVxQGkk7wS1KzWzdCGjVGsXxnm7ScbhbeM0B6PoROesLtPU32LDPMVpium2fT+nsCCuvFM4F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789659121; c=relaxed/simple;
-	bh=y4rW0+iTuHqQYiPqvhew4HLaTLfoEXjeW9ZziEhZT3M=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=TEid5Q+YjLQkX2eQjq9jK9Hk5f8rXvtJm6nPv3KOLFBogZ55FohmfnLnj0qe//h1ol+jarhnEtOOSA16kYXVUvRsXKWoloFPMuXttCvZJdqaXZsm5bo0L5KxA5ydworXagKQKL9m1rMHCVa4vIZ8P5yfl+KZ4zSxaa57zjX/MfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VV7lnBEb; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VV7lnBEb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id AB113C5CD78;
-	Thu, 17 Sep 2026 15:32:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 348755FAA3;
-	Thu, 17 Sep 2026 15:31:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 33CAB11C7B08C;
-	Thu, 17 Sep 2026 17:31:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789659104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=O/UhMYfdk2U4n2hFq6QKqBP9YQQubGPiuAzVZ40AtnY=;
-	b=VV7lnBEbBtQc754RGNtkKA7EeCaVJLqlaGng8lA/GrVM9zrw0j4DRXIa+E7JiMbnhip5Zy
-	Cs5vT2XdBwJsE8+03hr60NhdfRUjHehiO54hqB+UOReIPC9u4cEiyWlPuqkxu4553b56v3
-	2CAQ9UWfH+VmE2qIcDndOeMoRL8gdUWbyPJg/xoG1Ld5iGNKnA6CocLs+Pi6cechDCKwvt
-	aRK2RIT85js5Lrp/TBVFb5auVQkTIYUfv2nXwLZNtAQuDJxZMDYpZWv+wDuXElsidjZEU5
-	JMy1Ky0/OOW6kes0rtW2LF1YBXsYYuaVc1hbpFHqYv3VMRa1rAKVfxwSSR67sQ==
+	s=arc-20240116; t=1789659449; c=relaxed/simple;
+	bh=vWycF/OkNIdJPdWa6/e7T0fw4fZdq7rOwCWBikgklag=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n83xUKtjQccj2YAhYZVSUqrciMSEcZYiGfijQHCKLcWGdweWU/GEgaamaHG3UpU0KtasztgwX+qXsi/t935poz/YTAmDF4aZerPu+qYXYI1703l4w4glrH7e7CuNb5pfhyVczp0eIkLdBx+QQEtcd2F71+Aqp46gioAI7O0O6CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowABHtD4pCaxqLrCDCA--.5904S2;
+	Thu, 17 Sep 2026 23:37:14 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: broonie@kernel.org
+Cc: haibo.chen@nxp.com,
+	han.xu@nxp.com,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	yogeshgaur.83@gmail.com,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] spi: nxp-fspi: Fix runtime PM leak in nxp_fspi_probe()
+Date: Thu, 17 Sep 2026 15:37:13 +0000
+Message-Id: <20260917153713.2160743-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 2/4] drm: mxsfb: Add optional DPI output bus-width
- configuration
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Alexander Stein <alexander.stein@ew.tq-group.com>
-In-Reply-To: <20260917140042.118181-3-francesco@dolcini.it>
-References: <20260917140042.118181-1-francesco@dolcini.it>
- <20260917140042.118181-3-francesco@dolcini.it>
-Date: Thu, 17 Sep 2026 17:31:33 +0200
-Message-Id: <178965909367.1648606.14106712106252415784.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABHtD4pCaxqLrCDCA--.5904S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKrW7ZFWfZr17ZryfAFWkJFb_yoWkXFg_C3
+	WUuF97WrWUKr4ktFnxKr13Zr92vrZxXF1xWr4qyFWSy3yDAF1Fv3y8Zrn8Ar4xuw48Cr1D
+	uF1kta47Zr1akjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfAYjsxI4VWDJwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
+	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
+	Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq62Iq12xI8VA0II8E6IAqYI8I648v4I1lc7Cj
+	xVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr
+	1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_GcCE3sUvcSsGvfC2KfnxnUUI43ZEXa7IU1ID73UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwUNA2qr9tgrPAAAs0
 
-On Thu, 17 Sep 2026 16:00:37 +0200, Francesco Dolcini <francesco@dolcini.it> wrote:
-> LCDIF programs LCD_DATABUS_WIDTH from the selected media bus format. The
-> format reported by the downstream panel or bridge describes the display
-> input, but it does not describe how the LCDIF data pins are physically
-> wired on the board.
-> 
-> These can differ. For example, a 16-bit LCDIF bus can be connected to a
-> 24-bit display by wiring the available color bits to the corresponding
-> display inputs. In that case, using the display's 24-bit format to
-> configure LCDIF selects the wrong data-bus mode and changes the assignment
-> of color bits on the LCD_DATA pins.
-> 
-> [...]
+pm_runtime_get_sync() increments the runtime PM usage counter even when
+it fails.  If it returns an error, nxp_fspi_probe() returns without
+dropping that reference, so the counter stays unbalanced.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Balance the counter with pm_runtime_put_noidle() before returning, as
+nxp_fspi_remove() already does.
 
+Fixes: 97be4b919a60 ("spi: spi-nxp-fspi: enable runtime pm for fspi")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/spi/spi-nxp-fspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 1e36ae084dd8..9883e5149dc4 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1351,8 +1351,10 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 
+ 	/* enable clock */
+ 	ret = pm_runtime_get_sync(f->dev);
+-	if (ret < 0)
++	if (ret < 0) {
++		pm_runtime_put_noidle(f->dev);
+ 		return dev_err_probe(dev, ret, "Failed to enable clock");
++	}
+ 
+ 	/* Clear potential interrupts */
+ 	reg = fspi_readl(f, f->iobase + FSPI_INTR);
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
