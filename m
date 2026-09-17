@@ -1,106 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6950F35C699;
-	Thu, 17 Sep 2026 06:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1823890E0;
+	Thu, 17 Sep 2026 06:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789626666; cv=none; b=NimM57o8VR7WdnalAO+TKUEqmu9aB/b22nizFHf8dPoa67LhFEmXaX92RcVZGeMR05FDJjqZuwx2SK9SjtYqAdSZqW9QKJ/iWDyqtwMqsYlXbSuBQztlZtikkWSqRdMEfiiipEsZswnS3Soxcoe9HmJODQQzNVx/g+ry5g9Tg5M=
+	t=1789626898; cv=none; b=Wus/hBP6dA/QV90EWzN7JW+jhgXP5DkSN4g3kR/D3zWosMvlZnj40lcSgKbpR7H/VSoxr/Z/UTafKA5GAiLEGbUhHPTfs5NwibvhcUyRQjTXhk3KXqe5JDueZXboIyonzbadP1yqCCYM8dX29jlJWQ07YfgnAgni8VQHd0Ch75k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789626666; c=relaxed/simple;
-	bh=tTVM1jLfRNY37fl5JvEzSfDoHNbkv1u/f/ZS0UGevr0=;
+	s=arc-20240116; t=1789626898; c=relaxed/simple;
+	bh=Pel8NccN5e6LgcDmBLjFjb1oYPKYLZap4kl1H554C8M=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Tv7C4D8HkB8NMW0sfxDNlErd4w3lmjoqxZcukQhVxDWH5qPiisN8abRK7fof1eMrqys0lAnHrSA+ugL4+8V4pt8QoLmuJIIQtOZsWNTEsaBODHZ6J/cgAYnA6QbEECKGr1QL29C2B0sgbQZqHlNGCQvgE23Yvnsbs73stcYLKdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7CoEPiG; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=atL7bYcFkbF63KWM0TYt3hjNsCPTYcWG6Ui+kNqmqNzalCH9YFSOvjE6yeO8fcs9C0RadjkbbeUjYs8hq0gJib3kRTYEiklGOE1rbsxhg5S+oVCDBsHIxyQlwCEjxi0ebukRa/ll1i0o0vy9Hv7DRzABmPv5HQ/ynhtgaEWCVNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iu5JjWtK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7CoEPiG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4C11F000FF;
-	Thu, 17 Sep 2026 06:31:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iu5JjWtK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6AA1F000FF;
+	Thu, 17 Sep 2026 06:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789626665;
-	bh=lZ0P7JoG/WX4jFFjip5SEmtVz8eifXIGiKCOcQKKBOc=;
+	s=k20260515; t=1789626897;
+	bh=Pel8NccN5e6LgcDmBLjFjb1oYPKYLZap4kl1H554C8M=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P7CoEPiG2h+BsAnh1drpXOUaFrA7WVKnHJ74S/VavvrfPm7iZ2Ki1WqNXIjsWIe9g
-	 UXRnnFOX/VyHwGnWN6aqZf1mY9jAyvsT2fW4dRt8wgrorT1hPQaDf3O8jmMZFw2SNg
-	 Yys9kbQQu7NPjOfQxRA2dgTCSkmfkp2eqDuN0vEwGZHtx7X1bsTkcuTSsPwWXQu9vj
-	 XBVbTzaU4UjIf7g0GwakPHfJxEVX+Y2DOKhO2WiSVHHYnAcvQgizbj4NATEuQ91bZm
-	 ugWkepQ3nZYcZDI51dSDHMXnkkRUU3nzprVDwUxltnhvrN+NrlerWmOIKMvQDxkKRB
-	 TiXe4ZZ7bw6Uw==
+	b=iu5JjWtK9417blIcOrgXFHVDv1k+Mef5SiOhjKP7qCO65KVQVQfB4YysmQm1ymbO6
+	 Jun73aGV9g3uRJgI4rP2fw4xtexfVHo+OZf6dl9muYMtK6PjQtM4x1T2SrnLTPN+nZ
+	 CBEnZrHzGflh/ifRcNvP0nJThCkEWzlFTLjLA38BD0pYsaspGeW1Jm3vjVxEsKlaDL
+	 9yHp9UrGhGCM7+VZusq+L1nJ6KymffWMa2wYb2FMsho3AJ0dtAunR267GJ7Hpl2xO1
+	 8n183iL5wDxqu15ooKndhdALpTMIF2+hCEeWORyRgaxs+A2MD/Sqn54tsib3mBwKMX
+	 E4jdlz8bE22mQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: phy: ti,tcan104x-can: Document
- Microchip ATA6563
+Subject: Re: [PATCH v3] PCI: dwc: Add suspend_poweroff flag for platforms
+ with RC power loss
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: conor+dt@kernel.org, "Vincent Mailhol" <mailhol@kernel.org>, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, linux-can@vger.kernel.org, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, "Oliver
- Hartkopp" <socketcan@hartkopp.net>, devicetree@vger.kernel.org
-In-Reply-To: <20260917062543.534416-1-marex@nabladev.com>
-References: <20260917062543.534416-1-marex@nabladev.com>
+To: hongxing.zhu@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, linux-pci@vger.kernel.org
+In-Reply-To: <20260917063322.4102035-1-hongxing.zhu@oss.nxp.com>
+References: <20260917063322.4102035-1-hongxing.zhu@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 17 Sep 2026 06:31:03 +0000
-Message-Id: <20260917063104.7B4C11F000FF@smtp.kernel.org>
+Date: Thu, 17 Sep 2026 06:34:56 +0000
+Message-Id: <20260917063457.0C6AA1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] dt-bindings: phy: incomplete schema validation for microchip,ata=
-6563
---
+> From: Richard Zhu <hongxing.zhu@nxp.com>
+>=20
+> Some platforms like i.MX power off their PCIe RC controllers during
+> system suspend, requiring full re-initialization on resume. These
+> platforms need to enter L2 state to properly notify endpoints before
+> power loss.
+>=20
+> According to PCIe base spec r7.0, sec 5.2, the system software should
+> transition the device into D3Hot before broadcasting the PME_Turn_Off
+> message to initiate L2 entry. In practice, endpoint drivers properly
+> put their devices into D3hot during the suspend flow. However, some
+> wakeup-capable endpoint devices that don't support PME from D3cold
+> fail the D3cold capability check in pci_host_common_d3cold_possible(),
+> which currently prevents L2 entry even though the devices are already
+> in the required D3hot state.
+>=20
+> For platforms where the RC loses power during suspend, L2 entry is
+> essential regardless of D3cold support, as the link will be lost anyway
+> when the RC powers off. Without L2 entry, endpoints are not properly
+> notified before power loss, which can cause issues during resume and
+> reinitialization.
+>=20
+> Add a suspend_poweroff flag to allow L2 entry for devices that are in
+> D3hot but fail the D3cold capability check, and enable it for i.MX PCIe
+> controllers that lose power during suspend.
+>=20
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 
-commit e1e7d148b2a5e6742f485d13055f3692d10dbf6a
-Author: Marek Vasut <marex@nabladev.com>
-
-dt-bindings: phy: ti,tcan104x-can: Document Microchip ATA6563
-
-Microchip ATA6563 is High-Speed CAN Transceiver with Standby Mode.
-It is pin-compatible with TI TCAN1042 and has a compatible programming
-model, therefore use ti,tcan1042 as fallback compatible.
-
-> diff --git a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml b=
-/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> index 9f5c37ca6496a..75c276548e122 100644
-> --- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> +++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> @@ -18,6 +18,7 @@ properties:
->        - items:
->            - enum:
->                - microchip,ata6561
-> +              - microchip,ata6563
->                - ti,tcan1051
->            - const: ti,tcan1042
-
-[Severity: Medium]
-Will this compatible string bypass the constraints enforced in the allOf bl=
-ock
-below?
-
-Since microchip,ata6563 is defined as an array item here, the compatible
-property will be an array at runtime (e.g. ["microchip,ata6563",
-"ti,tcan1042"]).
-
-Looking at the allOf conditional block for ti,tcan1042:
-
-allOf:
-  - if:
-      properties:
-        compatible:
-          enum:
-            - nxp,tjr1443
-            - ti,tcan1042
-            - ti,tcan1043
-
-This block uses an exact enum match. In JSON Schema, an array value will not
-match this enum of single strings.=20
-
-Does this need to use contains: enum or contains: const to properly apply
-constraints (like #phy-cells: const: 0) when a fallback array is used?
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260917062543.5344=
-16-1-marex@nabladev.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260917063322.4102=
+035-1-hongxing.zhu@oss.nxp.com?part=3D1
+
