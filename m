@@ -1,112 +1,144 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A61F568548
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 14:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598C25908A8
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 14:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789653661; cv=none; b=jb8PMowg0cKiqEGQXgQw4J/oqZkJndQ+kxMBpr0+D5LK2fuHhq2vFuUBrPwtt5+VoxtjHLGA1MbjTZRedLv5hAx5/vRWKncYmJgtl38bNrfU1mzavtcKWbkL3MKd815AuzJPCOz6FbJqaaVJ+5bojFDXEcEM08u8zlAXgHadQYA=
+	t=1789654139; cv=none; b=u6fc0H6QQ97Ek1p7Dvleh0wa2IIpj8zHVOlfloOJ1JPxvBZwnRf9zH65lW9Peg/ro/0YrMhocIGh58cKgWIbKWWVoZ7oN++/X/yMCv9UCQq0jOumDgBFei7YEa3Xj3477LLQOFp7rM1e+9ssHZoAMBX4YnO/U/qJtfUzfUhhr1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789653661; c=relaxed/simple;
-	bh=qr4ZMoF0xnAVzuY6CyLri6Kg+fDyZQ33aAoaaVdMcvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaqOZGbCP10RNcQlAZZpnXglSXv2JHsS3LtKVX6VWTZMArQjlQeR971bPIagSzSkBmq7UL3p34XufpvV18pAiSBJhgWM1yPRJZyhLxJDyG6tQobPnNARVM5T97CGoSAtjCbHzPaf4n5nq7I7RN88963gcrg47vuBmSrfaG6Ez7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TtipBJko; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1789654139; c=relaxed/simple;
+	bh=t6XrF1X5QM2mzrSJfZxp0KiKTO5w2G6nGOk7OrNjfuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PTPa07j02xyBVIWRRBaAE4bq34cWGLjxcVqHG8lc+9tGYEsaBH3zA/dUpSYJ158e6gxY4exLJLFxGH79GyUdOSOKV/wId/+TjoS3dQ4zpO0McZLO9uLhsn+6RbhCV5EQaYWpOJNP1+fmSYcxRHVJc4GjXZHAnYHGX3bwhorvccc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WC3Jbluy; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TtipBJko"
-Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 282F622817;
-	Thu, 17 Sep 2026 16:00:53 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WC3Jbluy"
+Received: from francesco-nb (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id DADEA227EA;
+	Thu, 17 Sep 2026 16:08:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1789653654;
-	bh=PFbHrnCbgfpqZStiZJ8Sb/nHDFg7+/3mGwQ68I1HP3A=; h=From:To:Subject;
-	b=TtipBJkoMi6cb3iVLiD7pa++jODJA5EF5UJJPbuB9G6kDhgrasJYojd+g6IDXKSFf
-	 u7BGs/ZojQDywBeGS0BBpSeSaMlGYE3MXoYcuYNvRL+yMMYRjF8ED2I3jNt8J9rYiy
-	 uJHbWWqGoEcb88/dq1g8IzYQG+wWNizk5rBGXEEm8/4yILdEneOa584tOTyz7Y1SDm
-	 HXxHTw7d23EXswFiPYpgDJjH6UJro2SqFlktKmRtDlpc+NWA639jJFdfECov5xzc11
-	 cGJJUFBwQXHI63P3x0zuSBVHpicWZrhQTL9qso4uu66THawaE32dNtIiS0i8dBzzyT
-	 p2aZV/IBs/LeA==
+	s=default; t=1789654120;
+	bh=04sGXrdIwPyZcUs1Jy4idOXaBQa8m7ARyP/sXMKY+Ns=; h=From:To:Subject;
+	b=WC3Jbluydah594rbdqN0S7h5hmk27BYCVaKXWLXc4MwHJbWaqWuZ99DmAd6TcDQEv
+	 Qi6K9EaajyTsBzNtbAFBWeJjEGQwsqgy3jjkRN7IoazC/WzjS9yoFDUBBPHcQiTbAN
+	 24bGCyieBr7tmrjAT6FJqo+i3WJE5ZiLgKZB+1bhbzy6vjmL3mWruLcf1jL+iukI8c
+	 uAlwYAV07d7A9iuxUD4+onViwCVUm03Yt/SYhUqOpXD7lYQnuxwhjYXwo+IrmkqbwW
+	 8zU8JXtamiiPZrtTe03/p1AE4p+CNnF6NBLB+cIRK4bQ8Uom1+s+Qb6h8yJfUvjGtI
+	 IcCwwbNwWStVg==
+Date: Thu, 17 Sep 2026 16:08:36 +0200
 From: Francesco Dolcini <francesco@dolcini.it>
-To: Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
+To: Frank Li <Frank.li@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH v5 3/4] ARM: dts: imx6ull-colibri: Set LCDIF bus width
-Date: Thu, 17 Sep 2026 16:00:38 +0200
-Message-ID: <20260917140042.118181-4-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260917140042.118181-1-francesco@dolcini.it>
-References: <20260917140042.118181-1-francesco@dolcini.it>
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Franz Schnyder <franz.schnyder@toradex.com>
+Subject: Re: [PATCH v2 3/7] arm64: dts: freescale: Add Lino iMX93
+Message-ID: <20260917140836.GA119572@francesco-nb>
+References: <20260911091952.96233-1-francesco@dolcini.it>
+ <20260911091952.96233-4-francesco@dolcini.it>
+ <aqQQjCW1xaGfPdss@SMW015318>
+ <20260914054214.GA19835@francesco-nb>
+ <aqgEfRl9INLZ-DWM@SMW015318>
+ <aqgGgxzqiIbF66DX@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqgGgxzqiIbF66DX@francesco-nb>
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Hello Frank,
 
-The Colibri family standard defines an 18-bit parallel RGB interface on
-the edge connector. The additional six LCDIF data signals required for a
-24-bit interface are mapped to module-specific pins whose location is not
-fixed across the Colibri family and which may not be available at all.
+On Mon, Sep 14, 2026 at 04:36:51PM +0200, Francesco Dolcini wrote:
+> On Mon, Sep 14, 2026 at 09:28:13AM -0500, Frank Li wrote:
+> > On Mon, Sep 14, 2026 at 07:42:14AM +0200, Francesco Dolcini wrote:
+> > > Hello Frank,
+> > >
+> > > On Fri, Sep 11, 2026 at 09:30:36AM -0500, Frank Li wrote:
+> > > > On Fri, Sep 11, 2026 at 11:19:46AM +0200, Francesco Dolcini wrote:
+> > > > > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > > >
+> > > > > Add support for the Lino iMX93 SoM, its Verdin adapter and development
+> > > > > carrier board.
+> > > > >
+> > > > > The SoM is available in two variants, with i.MX91 or i.MX93 SoC, using
+> > > > > the same PCB (the two chips are pin to pin compatible), to avoid
+> > > > > duplication create a common dtsi to share commonalities.
+> > > > >
+> > > > > Link: https://www.toradex.com/computer-on-modules/lino-arm-family/nxp-imx93
+> > > > > Link: https://www.toradex.com/accessories/lino-verdin-adapter
+> > > > > Link: https://www.toradex.com/products/carrier-board/verdin-development-board-kit
+> > > > > Co-developed-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > > > > Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > > > > Co-developed-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > > Co-developed-by: Franz Schnyder <franz.schnyder@toradex.com>
+> > > > > Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
+> > > > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > >
+> > > ...
+> > >
+> > > > > +&gpio1 {
+> > > > > +	gpio-line-names =
+> > > > > +		"LINO_P18",
+> > > > > +		"LINO_P16",
+> > > > > +		"PMIC_I2C_SCL",
+> > > > > +		"PMIC_I2C_SDA",
+> > > > > +		"",
+> > > > > +		"",
+> > > > > +		"",
+> > > > > +		"",
+> > > > > +		"",
+> > > > > +		"",
+> > > > > +		"LINO_P65", /* 10 */
+> > > > > +		"LINO_S18",
+> > > > > +		"LINO_S24",
+> > > > > +		"LINO_S20",
+> > > > > +		"LINO_S22",
+> > > > > +		"";
+> > > >
+> > > > Can you wrap to 4 names pre line
+> > > >
+> > > > 	gpio-line-names = "LINO_P18", "LINO_P16", "PMIC_I2C_SCL", "PMIC_I2C_SDA",
+> > > > 			  "", "", "", "",
+> > > >
+> > > > Reduce LOC, and easy to locate number, such gpio 13,  second of 3rd line
+> > >
+> > > I already replied on the v1 that I disagree on your request.
+> > 
+> > Your v2 sent too quick before I read v1.
+> > 
+> > > To me it is
+> > > just more readable the way it is now and I do not see minimizing the
+> > > lines of code something that is bringing any kind of benefit on its own.
+> > 
+> > The major concern is that it makes code read harder and lost focus by long
+> > lines.
+> 
+> Understood, we do disagree on this.
+> 
+> > > Is this blocking this from being picked up?
+> > > Is there any other concern on this series?
+> 
+> Can you answer these two questions?
 
-Generic Colibri carrier boards can therefore only rely on an 18-bit
-interface. Set the LCDIF bus-width property accordingly.
+Please let me know if it is a requirement to have the gpio line names
+wrapped with 4 elements per row or not. I am waiting on your answer on
+this.
 
-A 24-bit interface can still be used by a specific carrier and module
-combination by overriding the property in the carrier board device tree.
-
-Link: https://docs.toradex.com/104446-colibri-arm-som-imx6ull-datasheet.pdf
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-v5: improved commit message, added rev-by
-v4: no changes
-v3: no changes
-v2: use the common bus-width property instead of the legacy interface-pix-fmt
----
- arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
-index ec3c1e7301f4..1eb1cf2d7395 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
-@@ -229,6 +229,7 @@ &lcdif {
- 
- 	port {
- 		lcdif_out: endpoint {
-+			bus-width = <18>;
- 			remote-endpoint = <&lcd_panel_in>;
- 		};
- 	};
--- 
-2.47.3
+Thanks,
+Francesco
 
