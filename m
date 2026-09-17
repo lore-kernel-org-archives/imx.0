@@ -1,85 +1,97 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38AA282F1C
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 01:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F07A36E478
+	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 01:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789608823; cv=none; b=Ihpb1yW7S5xEVW6HCCfslzY707JKEmAX6JCC4piAdWyRTGGZHCYr7ecy9s5kmLqlICUAvMn49UdPlZRcogYEH/vuu3sZgLRoUNdH5gBCcRRAiQvrtl3pYXm/kKZ9Z0ABb3RjlscJUaIj9QRn34QL0i/vY1f/dtSo4cvdBBsWkJc=
+	t=1789609404; cv=none; b=AjPZn7sWYBye7ceuPp7pdGJ6gqr94v7SowhI/gcM6HzjMX+1lSOE/9XkjRAzhkN4YPe+rw/1tZAcr4MrNJflQSian3cBM/gEnGhYxQtWRaXmh6dDRRtpRmLoiCXV/kDFV4L3ighiaHnbnPZU1LZMs1Z9kNxx0qxWTGlaY8QhX5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789608823; c=relaxed/simple;
-	bh=gcr6vV++R9V3z9Z89ksXwA+Wy120Z7I0sjFQuUmErr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MyMSr1FNAOvVveLKkeuQkDJNeSQH5DjRvK3W+cI361j+JrT2k+XKl5Uw+cbobbAR1oD/Bv1tigJrrJtS91tyyTb2Ida5N+DgaWjzaJZc3sJEvBcmj6sEYayFpI5MnRjjEpHbtSMgwwdDmqDVwLRrkPFoa4Vb+/KL/nNFv1CQqx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=ff5jO7lD; arc=none smtp.client-ip=178.251.229.89
+	s=arc-20240116; t=1789609404; c=relaxed/simple;
+	bh=HOtqRB/0P7U9cqQmNO4qGjIdVFF32r05Vl2V38LbD+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oTJTs8I7y8Nt8xknTMKjkmpsl5mstgm6cIZcO6oR1rfK4p+HDYV7egIgmfbwWuGPQ/Ar/c5yv5PAk0+aqaJKIXmi8youHABNCXVMNs5cu8lq2UxmgcDXCL3X/92Eb7LsPPofDvzGmGQjCqeMsNMCwxrXwiCPWUO7tOZSd6+W/xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=OpwCBQBF; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="ff5jO7lD"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFA9F1048A4;
-	Thu, 17 Sep 2026 03:33:38 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="OpwCBQBF"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0848010490C;
+	Thu, 17 Sep 2026 03:43:20 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1789608819;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=gcr6vV++R9V3z9Z89ksXwA+Wy120Z7I0sjFQuUmErr8=;
-	b=ff5jO7lDfNgSyyIFZ014HjYUQ3zRKemOgGAaPm2Wqbjh9t7wp76y8AP9XludetJErQxdZf
-	dRIC8/0LMzsJvQ8OYYi7fJ4XGZTecuP6XJTCE9GuYFdI6FIV/eNZzadSxn69OSaSDxVA7b
-	A9kMGrV3aKaH9ttnk/02w3rdLi6DrGyUr9VjjTqmZ5459wmEQJR385iw078/TSeSqxQPsR
-	Aw0DcOAduWpPhabKKOgJS2a5fjR5WoxIeEWoQM2jOp16QlU0J92vB6Imrki5hkWypEwcft
-	HEbgGbWyId2VCL0wbNqsBO7KbnwZol7HNWai5jh1hJ7y/J2rzs22HjiECxLwVg==
-Message-ID: <d300a86a-2704-41cd-8848-6b0871037ede@nabladev.com>
-Date: Thu, 17 Sep 2026 03:33:37 +0200
+	s=dkim; t=1789609401; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4nTVWx1eFMoMCmrlcVKbyFxDZNBr92/ao7gbE5buu7E=;
+	b=OpwCBQBFIiri9GHPnf1Y1IJTEd66iRc5r9T/KE4/kNi1aG+Eubnsi66WIgkNQA2u0eslfw
+	PtMxd3+lnqDBJXCpFQ5nC865dFwQAWsEPSbgqNilo2ZzWlIanQYeq1/eBWc0biaOkfe5PT
+	cXzqmt7NvEFO+seOiU+mp5Gp5LiPfz7fPRADV0PODlbivwkaDcFx8RQprvIbozzeOyOI5h
+	QYPSr0kefQkXzEYIwLiuLCv6Xl+hUTw1rPU8yH9dft4k+Q0W/oVopMBO409UfsLBUHkhyo
+	5bCNmjkzrVX89rdmLJfyV6BqItx4mK71RFhpqSEX0WkAuvAGpRzeMZ/HidDyWQ==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/3] dt-bindings: arm: fsl: Document Data Modul i.MX95 eDM SBC
+Date: Thu, 17 Sep 2026 03:43:03 +0200
+Message-ID: <20260917014314.472079-2-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260917014314.472079-1-marex@nabladev.com>
+References: <20260917014314.472079-1-marex@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: imx95: Add support for Data Modul i.MX95
- eDM SBC
-To: Frank.Li@kernel.org
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- Oliver Hartkopp <socketcan@hartkopp.net>,
- Vincent Mailhol <mailhol@kernel.org>, robh@kernel.org,
- Marc Kleine-Budde <mkl@pengutronix.de>, imx@lists.linux.dev,
- Oleksij Rempel <o.rempel@pengutronix.de>, linux-can@vger.kernel.org
-References: <20260917010906.424049-1-marex@nabladev.com>
- <20260917010906.424049-3-marex@nabladev.com>
- <20260917012032.982291F000FF@smtp.kernel.org>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20260917012032.982291F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/17/26 3:20 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 7 potential issue(s) to consider:
-> - [High] dts: imx95: I2C expanders stuck in reset due to gpio-hog mismatch
+Document Data Modul i.MX95 eDM SBC board. This is an evaluation
+board for various custom display units. Currently supported are
+serial console, ethernet, eMMC, SD, SPI NOR, USB host and PCIe.
 
-This is valid.
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Aswath Govindraju <a-govindraju@ti.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-can@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: No change
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-> - [Medium] dts: imx95: Incorrect PCAL6524 interrupt polarity
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 36e28e0e4ad99..04abae2018043 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1548,6 +1548,7 @@ properties:
+       - description: i.MX95 based Boards
+         items:
+           - enum:
++              - dmo,imx95-data-modul-edm-sbc # i.MX95 eDM SBC
+               - fsl,imx95-15x15-ab2       # i.MX95 15x15 Audio Board V2
+               - fsl,imx95-15x15-evk       # i.MX95 15x15 EVK Board
+               - fsl,imx95-15x15-frdm      # i.MX95 15x15 FRDM Board
+-- 
+2.53.0
 
-No, Hardware has inverter.
-
-> - [Medium] dts: imx95: Ethernet PHY reset held active due to wrong polarity
-
-No, inverter.
-
-> - [Medium] dts: imx95: Missing pinctrl for Ethernet PHY interrupt
-
-No, GPIO1 pinmux is set by SM.
-
-> - [Medium] dts: imx95: M.2 Key-E (usdhc3) slot left unpowered
-
-No.
-
-> - [Medium] dts: imx95: reg_panel_vcc inverted polarity missing enable-active-high
-
-No, Controlled via DTO.
-
-> - [Low] dts: imx95: reg_pcie1 misnamed as Key-E instead of Key-M
-This is valid.
