@@ -1,165 +1,242 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011065.outbound.protection.outlook.com [52.101.65.65])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6494E2F31
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789740162; cv=fail; b=hrD6z/E+cdObHWNTVnLDx0V3J2dt+doOf+MyeYl4iPp7Bq9mnesyTLOtP5FgP5qx5EZRnnrl8QWLNtsRjYimEkK66d3LyneE8JQbIrUtPu5pwyOgtE0Xb6pcd46BavjcBHzBpo94oOJVjNRI4wZ26WMkEjLZdKGs7tVtaCEBeb8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789740162; c=relaxed/simple;
-	bh=RbjgzDazudQ3V8Hl+lENRJSaPny2sw07N22eNegz9mk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=uyMWeREGbc8E2k4D1MYlAxFQJqKbSJ2H9RhFXQ8sKYzUV8LGHUreLOXLq/rqEAsL3dmTYq08cTf3vbPkXPc+8SgcO0IITIxnj6dVswFusr7Q6wEK6c2ed7x/Wp0ujMTXtV9XVRWEvRVDIEYMJ/qTj6SzrP/lw2TFLBgRjU/ME/I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OH0I1bRA; arc=fail smtp.client-ip=52.101.65.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB9838CFE4
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789740583; cv=none; b=eoo9GHQIOyFJSfUNbT8XZVpZpZqTrYvlidk3oVo3/mXLtP4yYQ3zLBtLIbv0VL6WxmJQi9S0RAK7MbOuL504cZBsKkkufpVHiedBMK0YFDJXc7Yf6hC3j1TcNNdiTIQvi4L+In5TEg0y1lAAgEN4Syf67N6bPqpGs/K683t2KG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789740583; c=relaxed/simple;
+	bh=cnZiEV9qRv1m/yHobliIfyHOjF7ER5ZdH2Zqgn45D0E=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Yyb59a6ElgjL9ohKHDPobbAyghYOA0qF0CAacFUzWnvOQClLFZnJRMIY6GgYwXBJK4psL1Cu26oSj4qjIO0khblTbeLPtOmlrQ3zmJL/IQf9dFPc2aJ8LC78cP7Z5nTqUvyQoUNC1OFXruA7f4aeVVelMUhl1Qc8/wlzQkpw1c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=k2LhjmS5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hXwVq47Y; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OH0I1bRA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d4LEXzfsb/fi9ou0iecO/59j2aexHTKcFPq2APkEbD8oRimDRjKd3oXSCu6zZzK++tYLN1vmYWd31rn4HKx/cFYPxBKY6RePM576ldiMpgex6p7nh9qyYoSmWuFHpXjbph74BSB2WHbbOysQd/fX7CubiZBa0dhH1CRLmmGlWX7MFBL97pMLN/Re2RVglTap0FaFtIGJxQ3ysqKfPHUUYUkex/3qlDv40+Fm3MiHt67Hzh/LBM/KTlh8zLd7FlVe3ylwmiAIrBdz7iHH9EtHZi2WGNYZ5wXG3LWwCI2n4YK4xARU+FfdRfxJC19l116+HwZNNCcG81pDhjGgCxYuDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3YJYAuZsJdj+D89MfChAUXskVnTFhIaE8CFzqT5faxs=;
- b=BkGi9QeSGntgOdSdNWo0ZJ2Cf1YsEJvqirfLvWT9pdIfoRgZC0ynVLlEZon3PGDnJGyEYHHp3KT4wZot3jJX7/CvLhF/TtOcUe2x+JjReuQ9dBaKByYCglA1peFgSiEqFGwMCNUiruKd4hSaz8zp1bQwhK6otwjQTa3izS51Rf6Cav72mMgNYo1+Wh/a0bvlLFK/rxdwS9eaz7Y0oFVXzRBe52d6qFmPj010/P56+VnhXqCfe5rwtM6BdFriy+pZ2y0ctL1csIG5m6dlYIoTJIKu4ZEuMAvATqNll8ZeyF6SEJQKOuKwBegYnwrD11p0wC6Z+e37W6U/2qYiFlHRpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3YJYAuZsJdj+D89MfChAUXskVnTFhIaE8CFzqT5faxs=;
- b=OH0I1bRA+JQkY15ARzDYNsiCdwKfN8yY+ztWkPJ/xl2NxUC6PxSqWVIEbWzyi9tKl4BjhIvheu8eyICs4ze0rp4E7fTBKWUS+jefzd4nkz3FdH7TaDH8rIuDsIf8EhS1Rf5CCHK8fKem+6jtJcf/hPXEdjw/HBQuStgLhSAkr1lKdnA/4IBV+Hqb0zOVnLD8CDtHKOS1MszIpP1VPDhAlHD3FPV3jJlhDFGHlpFY89+p+v0Z3wmNq4jPIgfp93uWA/OeEI3VQ1fs94uoYdJddZeXHljkHZ8jYopqwksIvqdXqtCRCdD1bk9hvX3rrr7mKHtLOF4FBslS3YrH4cMX2w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB7575.eurprd04.prod.outlook.com (2603:10a6:20b:29c::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
- 2026 14:02:37 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 14:02:35 +0000
-From: Frank.Li@oss.nxp.com
-To: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Kees Cook <kees@kernel.org>,
-	Xu Rao <raoxu@uniontech.com>,
-	linux-media@vger.kernel.org (open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev,
-	vkoul@kernel.org
-Subject: [PATCH v2 1/1] media: m2m-deinterlace: replace direct ->device_prep*() calls with standard DMA engine API
-Date: Fri, 18 Sep 2026 10:02:21 -0400
-Message-ID: <20260918140225.2027053-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH7PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:510:339::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="k2LhjmS5";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hXwVq47Y"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDOrA3746129
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:09:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4SEZETyE0PARh6/jC3pFbG8uSXzUDG4JFO/9Ng3zjDc=; b=k2LhjmS5ACIvI3NX
+	unsTFOy+rADBx+5G3nXHA0JV0jlaGnpZWpyp9ueVVrR94fWvvh550HL57gV+PIzW
+	9jn+4LTQyoqQ7+v9sYn99cdpqsD6x40N6ccYcxvGX8kEHQ0RhaIYdgUpqWEhyY+d
+	0hD0E52MCW3XfUrrSHMujLsnI1+qEs4XnQtXD/V7BKsWd+MqH19iAOiQzx1VFWzd
+	ubVnbwrCmRJmbYPuxGgopGA7kn1SYxBefIOIn9Gc8r5XoKDY9VqKGFAeX0dZQfNK
+	UzTWUpJqYW602hTtFERrNhlz1HcZxhgEv86Gt8Y6Bwa63x2cx70qmRqZGWsApQdS
+	XUuqEg==
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com [209.85.222.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs239183r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:09:40 +0000 (GMT)
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-98087b0c5deso532174241.2
+        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789740579; x=1790345379; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4SEZETyE0PARh6/jC3pFbG8uSXzUDG4JFO/9Ng3zjDc=;
+        b=hXwVq47Yy3OX0Iwq0n7Bs188RJ+ziiAETi3W/uFgsm9f8/8g2gnvAwS99o8s0BN/eQ
+         QG5Ed/uu/HVDmDFaWUV/p9Xlxz0txxd8RtoiBlNKK+HRRa2pvyi6F7qS/mg+RYz11vVi
+         6L3fJRqEJWc3B8lIszxX9o0JrXDLXz/h67s5+3IiAKO+/nkXH5L3a/Pp07OgPZCNGV+2
+         xdmYPXSP8RYqI5tHIqD22IiV6QAr622Byy9vJw0atS1yZj9d/aSiwPM3hoaHTE6KMY/H
+         um6GgDoY8aa85IfsWtA+yME+P0NU091meJwKQ/UCl9vJiBaYP5aiEu3MruBVCnPypgUZ
+         An4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789740579; x=1790345379;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4SEZETyE0PARh6/jC3pFbG8uSXzUDG4JFO/9Ng3zjDc=;
+        b=OXZg/44FP0XLaBEuIFXEtK4Z7aVTtzEKZJ25TDeL2q0OKgpGwcoXQPauWz/sYUZawM
+         ufgQOgq2O5wtCzUQKOWGrGLeJbVH/Ahqxr1x4AThOFKUj2eknEAHZ+O4PE4Alei7862P
+         ZHqnfZ+eoa9YregV8gSQ5VHD895drsQGnRiPN4GKMfeM8nccDFmVaTamLKpcYTn+VGaZ
+         KXqBnAp7pz90QtKLYQECo+aNmmu/tuIVFQUnWFN8v1VoTbq2ias+EcPUWzHCSUwVDVQs
+         wO1aJSAtb5q41gcpHuVm69JVLI2VHmqnt8btCxUCiG0Gs/Iboeq2kcGIUiEUpAylsK2j
+         R3KQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzQFz0H3D6D1r3NGYZj1WpQ/bJ5h4vWbyJRDGlhIgtCoeYRNq42pdBFdDB+yZqmh0Cejks=@lists.linux.dev
+X-Gm-Message-State: AFuF++nd4Ja0dJg0pri2FwtsTQf2zB5Vp2KwYkPmo3CAC0KmcUco3tvK
+	fU2Bhhiu2ltAEMNt8Q0OT+Nwdcpnzwq5GqskfSxfLIF4A61WixOBBZ0ZE6l8/UzeqNK3zsH7/KL
+	t9nyr6lVemQMKvrLNaky+7fllYonOc22+aLQOInnBV9DW9J9lPGUmchs=
+X-Gm-Gg: AYBFou0RiyFNlrlSeXEtA34GGMJGJhJ5sFnBJvzOaWWct/V0j7Ssoc+DOGNFniBnEJs
+	VEfk79IY4YipuleomnLP6Rbkj8/R6qwUkbfa4zVY+l/PIEuNOei4PR3qmNQF5aET1AexIB0okwg
+	pa0JZBpCvO3fXBbTC1739gflI+2o5g5OvbNxoHa2zPQNwiJ7bpsxXf4JF2U3rHWxasMif05ZS01
+	xejESS/kxuzUVOutJJubDvLSBZMNwIhw+9+PgkBkbqHtGGY+s97PBctVApHSGqfJ2t2syxCDrDB
+	R7J4a9/4wH+g+CmRdtkKAZorc+flSoBbI1Aho/girXARvVDK/iuMC/9Ai41ssWcMpm17xMzclQ0
+	kL76VKw5z6o/LsujzCZ3CdoMAHb2MkHHEjdnU2AbbmDDaNRKlGmr5O33+rM/Di3XLiPL+GpX6Ut
+	qtTneVE9GHWRMHJ11E7tieT2e6aaWu+o7XdOWomfQNAkFw3KcwvTZqxeHU43KBIxVUXw==
+X-Received: by 2002:a05:6102:578e:b0:7a2:2a6d:2d7e with SMTP id ada2fe7eead31-7a55b1407dcmr1308028137.8.1789740579195;
+        Fri, 18 Sep 2026 07:09:39 -0700 (PDT)
+X-Received: by 2002:a05:6102:578e:b0:7a2:2a6d:2d7e with SMTP id ada2fe7eead31-7a55b1407dcmr1307923137.8.1789740578364;
+        Fri, 18 Sep 2026 07:09:38 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a1b7a3a06sm58558766b.2.2026.09.18.07.09.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Sep 2026 07:09:37 -0700 (PDT)
+Message-ID: <dca62a09-2af7-463e-9ba0-1be935a95502@oss.qualcomm.com>
+Date: Fri, 18 Sep 2026 16:09:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB7575:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1eee6c0f-ad42-4402-3a77-08df158d7d62
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|19092799006|1800799024|23010399003|11063799006|56012099006|6133799003|18002099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	goXnb6fimCgxZtjhVzS2xlmQAuq1pZuppjMROkPvB1rXnvrJePjMfwFFpx5j5r9aGvWBdYGd1R9E+dXIrQy74oewQ98Oi2BepYzs27d7t8l4UHw1nsF91xYPm40RyROMZNAoIDnH0MRBDdwUeRXCVzLiSR8de9yn8JRmWzFBT9zGXVOwsByIY6n1QAzTRuNaVSkHr6bhGOVJ8Kuchn/np68eBmhHZOk72PWkTQyfjOniKMaKK51uAn613hClFs7J4RySloP3Pm6zbV1uRdJGoUP0pFbfEXcRc03bXt21r8psl0GxTZcwnrD26FqpiSkM5gUrW1aiso4hfGRpqdkOm1FIcgC3DzBWr/kH8M9IbAqDD3yxRWuAw6zFD/Q12jgnnXTokdOPMXxv9wV6zlYYrLKzeVszidXnU78T3xyek/cJFg/EN52Cht84QaIa9XBoVvBBkzBBzQ8uPbCotDtTB8gV4XvFzvHSiStDmPpIg6KX03gHxIH8u8+LW3FmO+Rj3+s2XZnRB8u851dvylhsLYhHJxFVfjCQd2w59NRaLHy/368tjDgcLD7eKNzcK37SORIHSGCGjtMHPRZLon8f4ayJWAmzDe/dgneRzF2kO9EK1MOE02+rXdnOREeg5gCuuHiVr/JcYN2H2xqhS1JsvHECjPwkcVGl1mFoxljpMWI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(1800799024)(23010399003)(11063799006)(56012099006)(6133799003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jCazPxVoYEF+wjrVPfQDCI0Lf7/o8X4p+MkSi4bxpyWU7nqJOdCPKHZryDM7?=
- =?us-ascii?Q?ZHylpvRpsRNf6CB3tH5lI7qmUUQWv2/wV624PV7V5oF8UxKjKVgwQwbBBTyH?=
- =?us-ascii?Q?j/QCs5AGplFc7bf20XeipZnZk97TIpBRO/WuvzBvRjolcW2/Fz4iScaU94GJ?=
- =?us-ascii?Q?IVZ+PXh/i+R73u2t8qAnLUdjhVjIyiSpyXvu0q0RmhernbIdt+jb1uEg4/nY?=
- =?us-ascii?Q?7OdnOXirI8uBZvhHutqfsRQZqrD7+D9VK3uiy7tVnpK7siNinsopegSXM1nG?=
- =?us-ascii?Q?19+crKiFMqvzU99KBmuwRcR9EK04m5e1YTh1f9/csmmAP+KcXrZraKcrZq3P?=
- =?us-ascii?Q?WT7m0ltPZQTBIZNnF/MVPnAefZJ9mDL0O0kw9fUdjtzSsETzHC9reGjDl5+m?=
- =?us-ascii?Q?qoGUB0biSlFMoBGbr9ly+fzM/drKA8ClfM0PQCSSo/JsSEQ8yBSh5XXm9pDX?=
- =?us-ascii?Q?gVAY4KQJ7udtSjOb78vgzg1N1Ke9YESNxAk0+dgSyoeOoNgvx327ooUminAB?=
- =?us-ascii?Q?IV1HWXcAIG8s0PMqb1MPxPMF6JDCAQSQWyKFOXz9WM/gB2hQSDYenMan13jF?=
- =?us-ascii?Q?7VvzDXhnLI47wwMxWfQstkFIMD1vVC4fpLnHrpnyJusgEm3E7gVB4+qs0pCa?=
- =?us-ascii?Q?iIFBmD5ajbVqO2wN+bfHuX7tTikLFLbIEgBQ3LK8497BRgCwx/juMegWzoqX?=
- =?us-ascii?Q?6weOF+KvRBmamHW158ZgDHrV6vyaJGlcBSmd5v0ITbeAL3t29dpAWjDKzu6j?=
- =?us-ascii?Q?ydObsrg//eaYK9wScaZuCz6PE0DVPlOSGOxF4jeJYOgsW4UX/JV0l/CQapJw?=
- =?us-ascii?Q?xI4Vc3hWtn5hLOqHLHkUMIFs/7WGxpFulc4UuWwflSUKEKNqCVYNdJEZedM6?=
- =?us-ascii?Q?3AscnRt4uEC+ECtpDrLafvy6sq89JncxL8atKqmnKaagR5tBQxqe8Sa1xOiA?=
- =?us-ascii?Q?RbTjahof0P7ZV6dBcdbY8odCzS2oUuzd9YZkijUKIe0IbYfB86V33MkiLpS1?=
- =?us-ascii?Q?esDuLfars28rUwpDRdcr3/fQ5dP6LPiU/tPVoGpvGfeEDswS3SKC7NlFJvU4?=
- =?us-ascii?Q?n2YiuVTH0DOBoKhn31CPG7atZSHDzginjPipIMZ4vjbWMXYGAV3iKedY60hm?=
- =?us-ascii?Q?5PLG72HjlJNJl689SEGj3YAGS+ADqSDJGrUBAbOKxcQX93uWZ5Mv/GG6hXsg?=
- =?us-ascii?Q?ndIZTcBhkWzFt0sK32dnn82EK/73qrYwhaQqaUEIioE3LoRu6PljYC2/FIea?=
- =?us-ascii?Q?wRhRe0nov+a5nTAi4Te3wbvKrz8rVXNnsHsw4+L3sd8bCO6g2rj4W+PiTdtN?=
- =?us-ascii?Q?qIkATKSgrqPGFrshsva872KQuHsYXIF/JFOFtSETuO+BeKocSzwm83eWnCrH?=
- =?us-ascii?Q?guy1zyMSTceoAOljfimQQT0QkKUWgKhtAZcYeYe80a09Zh73tOBgjfGLHloL?=
- =?us-ascii?Q?KdufGNUN/C7k6YNv7jVvy8o2aTrjN2LVCDZyPbYUZs3Zd/Visj8WVpEkiDoN?=
- =?us-ascii?Q?60qtQ6GWnZdiuvQzR0XFRplJdAKYFo4hsZmeLkd10TZSeQOrJP6qteHC0Btd?=
- =?us-ascii?Q?SciJjV0sZj3vhToHKDElbAtS/uTqaQ6awaCfDMHXnpebAdqWD4FULZeY2Kkm?=
- =?us-ascii?Q?nhz5o11NUWGb+TVe0fVbnRv1TxAbaSg6R+2IVjwBVMuSteh68qNEwnA4I1hB?=
- =?us-ascii?Q?m7e37ULl3Veic7i4at0spMSXVsaLsUlZz7GuTrI3fa0YjHR4Gu0JzG/b2gxa?=
- =?us-ascii?Q?3f9OOkpZDJafgXknGyF0BKpOjJnS3JpusRIWVosl086nibVt4d68?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1eee6c0f-ad42-4402-3a77-08df158d7d62
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 14:02:35.0254
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +sLRqa6OsGKDYP0mlYGc7IaSiEfnmT/s3DEPaanS4ASrE01ExI37uDymy38+7Dvv07CEhUtUVNoeN4kE3DjB+g50KqUAG0zfG8R9gZ/esWOD5RGoHiPvhvY/G2PWawB2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7575
+User-Agent: Mozilla Thunderbird
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
+To: Sudeep Holla <sudeep.holla@kernel.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
+ <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
+ <20260918-impetuous-daring-barnacle-1ea4d0@sudeepholla>
+Content-Language: en-US, nl
+In-Reply-To: <20260918-impetuous-daring-barnacle-1ea4d0@sudeepholla>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIwMSBTYWx0ZWRfX5Y59RdShLBAa
+ Sc+5MzauFjAwHP5ecOUFR3PtjPZTxdkp7hts99FtrR2xCP//Fdc/yoKO/Eph53ZQjQ126yO7NUw
+ M+9swG5ihR2oY84dqs8TWOBcixsc0cI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIwMSBTYWx0ZWRfX4WkkZbTotfVg
+ OFIkeRUj3PlpoCosdj2VJgW8VAGoH0WkWmv8vxYhl+tG2glMNSxJ1Tk/0pImHUGZCJZx74mNY9N
+ CkSa3MjaT+qpCpTfNYyGdWI+rFNvUBDzaWiEiXWOXxfu+YhIWxgs8gOA6HWdw6rGeWX2sYeyDGT
+ kf5N+RBQJ5ubEWO2UWu5Di8NuIVaZu6D/dDSSIBWkCSexUiIVb+rqX2Xv0tFJcnYUo7mFazw2xc
+ NoXUuHfz99D0s3vVygQjMDfMbRs7SJso2Jp+EYt/DJArOrOt3OD/gJdr/XrYA5fPK+gKRFoN3ks
+ 5T1xBnFEvGHP1woX8iKJOHeWn5X0Mj6sWDcvDebQnKnBmxEelUeUtYb1fNkhWH6LQkjtwn0EIMG
+ /U+zUjscl1zQVvXRL6vt/RNS0q+zXndp2HjJZdioAa/gf3P1zsKyOyuy+DgTVaEfcTXCibKCKDB
+ 9kqUDqj334Au3QI8l0Q==
+X-Proofpoint-ORIG-GUID: NnaMlVAgIaJIAVfYEwkT5crcVFNvDFRi
+X-Authority-Analysis: v=2.4 cv=I7zw19gg c=1 sm=1 tr=0 ts=6aad4624 cx=c_pps
+ a=R6oCqFB+Yf/t2GF8e0/dFg==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=VwQbUJbxAAAA:8
+ a=vTr9H3xdAAAA:8 a=2jV7UpksSA8eYliVEwMA:9 a=QEXdDO2ut3YA:10
+ a=TD8TdBvy0hsOASGTdmB-:22
+X-Proofpoint-GUID: NnaMlVAgIaJIAVfYEwkT5crcVFNvDFRi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0
+ priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180201
 
-From: Frank Li <Frank.Li@nxp.com>
+Hi Sudeep,
 
-DMA engine consumers must not call the channel's device_prep_*() function
-pointers directly. Use the standard dmaengine wrapper APIs instead.
+On 18-Sep-26 15:32, Sudeep Holla wrote:
 
-Assisted-by: LLM
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- Add Laurent Pinchart review tags
-- Remove unused varible dma_dev (sashiko)
----
- drivers/media/platform/m2m-deinterlace.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+[...]
 
-diff --git a/drivers/media/platform/m2m-deinterlace.c b/drivers/media/platform/m2m-deinterlace.c
-index 9dcc4bd6cbdd5..6b07018614894 100644
---- a/drivers/media/platform/m2m-deinterlace.c
-+++ b/drivers/media/platform/m2m-deinterlace.c
-@@ -211,7 +211,6 @@ static void deinterlace_issue_dma(struct deinterlace_ctx *ctx, int op,
- 	struct vb2_v4l2_buffer *src_buf, *dst_buf;
- 	struct deinterlace_dev *pcdev = ctx->dev;
- 	struct dma_chan *chan = pcdev->dma_chan;
--	struct dma_device *dmadev = chan->device;
- 	struct dma_async_tx_descriptor *tx;
- 	unsigned int s_width, s_height;
- 	unsigned int s_size;
-@@ -330,7 +329,7 @@ static void deinterlace_issue_dma(struct deinterlace_ctx *ctx, int op,
- 	ctx->xt->dst_sgl = true;
- 	flags = DMA_CTRL_ACK | DMA_PREP_INTERRUPT;
- 
--	tx = dmadev->device_prep_interleaved_dma(chan, ctx->xt, flags);
-+	tx = dmaengine_prep_interleaved_dma(chan, ctx->xt, flags);
- 	if (tx == NULL) {
- 		v4l2_warn(&pcdev->v4l2_dev, "DMA interleaved prep error\n");
- 		return;
--- 
-2.43.0
+>> diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/scmi.h
+>> new file mode 100644
+>> index 000000000000..1b4ccfa9dcc5
+>> --- /dev/null
+>> +++ b/include/linux/device-id/scmi.h
+>> @@ -0,0 +1,17 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +#ifndef LINUX_DEVICE_ID_SCMI_H
+>> +#define LINUX_DEVICE_ID_SCMI_H
+>> +
+>> +#ifdef __KERNEL__
+>> +#include <linux/types.h>
+>> +#endif
+>> +
+>> +#define SCMI_NAME_SIZE		32
+>> +#define SCMI_MODULE_PREFIX	"scmi:"
+>> +
+>> +struct scmi_device_id {
+>> +	__u8 protocol_id;
+>> +	char name[SCMI_NAME_SIZE];
+>> +};
+>> +
+>> +#endif /* ifndef LINUX_DEVICE_ID_SCMI_H */
+> 
+> You need to include this above file in include/linux/mod_devicetable.h
+> to avoid duplication of its inclusion elsewhere. That's the pattern followed
+> I see.
+
+That is what I did for v3, but Uwe, who is leading the splitting
+of mod_devicetable.h from one large monster include to smaller
+per subsystem/bus includes explicitly requested me to follow this
+pattern, see:
+
+https://lore.kernel.org/arm-scmi/aow2GFAfy84k-N2B@monoceros/
+
+[...]
+
+>> diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable-offsets.c
+>> index b4178c42d08f..91ec3704ee2b 100644
+>> --- a/scripts/mod/devicetable-offsets.c
+>> +++ b/scripts/mod/devicetable-offsets.c
+>> @@ -1,5 +1,6 @@
+>>  // SPDX-License-Identifier: GPL-2.0
+>>  #define COMPILE_OFFSETS
+>> +#include <linux/device-id/scmi.h>
+> 
+> Drop this for above mentioned reason.
+
+This was explictly added at request of Uwe because the goal is to
+get rid of mod_devicetable.h including all the device-id headers
+in a big single catch-all include. This is done because currently
+many files include mod_devicetable.h and then if any of the device-id
+headers changes everything needs to be rebuild, making incremental
+kernel builds much slower.
+
+(and the same for the second include you point out)
+
+Also replying to your other question here:
+
+> Not related to above topic, but just wanted to check with Daniel if this
+> solves module auto-loading for you. Was there someone else who was testing
+> this series and was having issue with earlier versions or its you only
+> Hans de Goede and it was with v1/v2 when Bjorn posted them. I remember
+> something vaguely and couldn't trace back all the versions easily.
+
+I tested Bjorn's original patch-series but since that makes the kernel
+call modprobe it does not work when the scmi bus is enumerated during
+the initramfs phase and the modules are only part of the rootfs.
+
+So I've replaced this with a rewrite of Christian's approach to always
+instantiate standard protocol devices. The rewrite was done because
+of various lifetime management issues with Cristian's original approach
+found by Shashiko.
+
+Note that Bjorn's modprobe approach also only used the protocol id
+as modalias, which means that if a vendor protocol id of say 0x80
+were used and we have multiple vendor protocol drivers in kernel
+which share 0x80 as id, modules from both vendors would get loaded.
+This is something which I did not realize at the time, but this is
+another good reason to go with the new approach from this version
+of the series.
+
+As for testing, I was the main reporter of this issue since I'm
+trying to get Qualcomm Snapdragon laptops to work OOTB with standard
+unmodified Fedora aarch64 live/installer media and scmi_cpufreq
+needs a workaround to be manually loaded there, see:
+
+https://fedoraproject.org/wiki/Snapdragon_WoA_Laptop_Install_(Fedora_Beta)
+
+As you can see only a few workarounds are still necessary and
+manual SCMI auto-loading is one of them. So I really hope that we
+can get this series merged in time for 7.4 .
+
+Regards,
+
+Hans
+
+
 
