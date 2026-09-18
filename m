@@ -1,318 +1,167 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011040.outbound.protection.outlook.com [52.101.65.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABA74A2048
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789716329; cv=fail; b=nKGLZtqz7entz6uZmgi3hpkJ6Q23radZtg85WQJprKSQStpnbkHdbIa0pVy6yBPur8NQaWlbldvRUcbmf2gtSbyC3HpnVn5qZ3BQFUnbKCCp0g8je/wicUGrSeeH0MjFicCR6pjQz4yixsK54lAKp2Rf1MmwN5Fdl/nApLIxVdg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789716329; c=relaxed/simple;
-	bh=+nhvuyCYvOuAI0YUhfpAjP3KGTBhciqdXMIpfHVRDo4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fWH01x6LDvfCBa7uW095uO3htpC6SC86+HHvbIVNXCvPjMcQA3uFqLRLSqk1d1gLMfOYk6TEpIuagSDnj0ibJtMXgm/kH2LbTIjExJyiYh58nWSBuKjOW3ZsRYlkvX+d01nrG2b7djrG4MG0vKGevBvjYepC5F4MOcYAy+38PmY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wr+nGMW/; arc=fail smtp.client-ip=52.101.65.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5094A0937
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789716350; cv=none; b=NrcJadfa/dxH4Gyb1HvmZ1HnUGDMoUEDwAOXMoBoSGhER95GLi8vd45Jftdfy6mn5Wyh1XbnvyMHn0yTT7PviRfQ3OJGar/R9fUk0uSNn9f3EHlTXjo6TC4FTgb1JgGAo32/Xa5JtR979u6H8fPwedP9kFSGujgBuqMct+DqIGc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789716350; c=relaxed/simple;
+	bh=Sbz7BcqVKJ42/8y+BPUpR0K8j+ChkS6WaFPNfZpm+dM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Pv0XRvswmKcy4lcPsQiQU0IThgwNFE9dpWCyED64CW6JYty6Kwbl6yrks/zfYYzNZnRf5QlWL/LjQbYLuAaZD+RqjDM+0rwQmvgJdqdh/AFm10v+MuPuS7WdwxVaFyKTMJSnuDuJdp45T7dGlRIyCLUQXpfQWWXNgHSv9TjdyE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ejJW1wTc; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wr+nGMW/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A1o+ThfwUQ5d8vyY8+/5W0whlEvCyuP4fBMbrKEr76Tm/hQ3tHrr8kkob3STwXu2wb253VkXKXJZZVmwFVd3NA/8TmDOpe3wbpDF3PoB7aLi3JtAajV5LZDiZea+Gqc2MxCaKKo73rAm1lET/0jVKwJbWCDqpNhgaU6QfALoXdFk5wmKh4ucn+D1sftTJbmzLa38Cl2KoIQrQyXxHQbTA16kCpZWwcf2VtxicDuEZUJ/IwYxFJQotdVhLRzxru7iZcBdVITlMAywC9zoTjO1VdrmzSmhcGn18ojZbA+pbORdD9O9qXCQcuUJmOGkwhS7g5uKnqCgshvrQetjxAaHpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xBNu4d4lW8JNdOMXyOlzIZh3nYkLcbs2j9n9UXCwh8w=;
- b=FUA9phsU47KXa3U2GbMB7gRXZylI+3818234Rt0TtkXE8haRvHM9EMPwP77pT42Kwvh04qXzggSM2T9bph8JbITcLD5xa04AiT9T9RHc4ypbb66DbfiwkbLlwtdNo2f5pT5/fck9VFgmfqPE+swQgQl5qQBnHPGTW+SxeRno7dso11WNI1VJlugrNjbCe64Bx1YNA65RUscNkh0CJONdipSViLNCxhOvTi6la4/9Qbocuh5a3YmCaB7TkWZ1w/bxOgEjJFr920/HgK/L19xL4pVKiuze7cYqYY8irmxlFsldgZ8TH5qIsc0p35YBg+4BNF3WaHCP42tMFKK0Vs4LNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xBNu4d4lW8JNdOMXyOlzIZh3nYkLcbs2j9n9UXCwh8w=;
- b=wr+nGMW/2fwDfsMkNud/Sm5tyg5oxz/7LZcxWInuXtjyQj2kCFIL+7vU6vVAZk/eH5nVgDbboQjv8eqO3Rk+7t+s46gSBTR1z0U+/gKLQrQkkicI3aUJM1M/Lz2LuoODZRWN9I7PNO2OhW3xdvXOGVoPzvQ9YiMLmFH1wHejtFJ0Tloz2tctkT5JtiAv6EzYmoeqEHf2vt+nUkBdwHWu7fv4z/fg1YTU+t7q/6qW0GlxYGnCdAJSea/P9NG5GEmlw2oHnzNUd3u6yFVSX4gHdbzlFt5ol1zEdUIfwkyrxBY/ZxwtAz8PnV3Jplx/FlHRgjrvdbEVECOVjxBXIU+A/A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by AS8PR04MB7541.eurprd04.prod.outlook.com (2603:10a6:20b:29a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Fri, 18 Sep
- 2026 07:25:15 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 07:25:15 +0000
-From: wei.fang@oss.nxp.com
-To: xiaoning.wang@nxp.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	richardcochran@gmail.com,
-	linusw@kernel.org,
-	linux@armlinux.org.uk
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 net-next 5/8] net: dsa: netc: check return value of ntmp_ipft_delete_entry()
-Date: Fri, 18 Sep 2026 15:28:49 +0800
-Message-Id: <20260918072852.501420-6-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260918072852.501420-1-wei.fang@oss.nxp.com>
-References: <20260918072852.501420-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5P287CA0046.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:175::12) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejJW1wTc"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912e2406so1995235e9.1
+        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 00:25:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789716336; x=1790321136; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ukkkk1BOu2H2mNX0r4yxWxK0V7RNJdbdGm1o4o23Fno=;
+        b=ejJW1wTc4xTjwiYXfBB73IfaBha5bY1IxeU7C5mHJmihoRrAIobFoBeX6z+By7tWza
+         yhxyD/sfMZMDQdFFr8++eCOSk9KwKwr4vu88VSpfP9V3rdnE8QJuHh+m/87hD3rm8egy
+         nYPLvpqbxVD5z3Le07Acmry3fjEAzsIRlqym17RTM/LIlcgOHKAz3QzGx8hUWbQUuxZs
+         bsaTJluPr+1DrdG2HlhOpYG4a/troSlgvpHuzDR4X6M+iubBvN6v0nrBAcR4fqWTf3b+
+         ue9SNQZstUFCOiiHCSmtBNM1O31iKfYVo+4cQ37bcoSXcCQQq41yoR+z28TCQ7FKrSKf
+         9txg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789716336; x=1790321136;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ukkkk1BOu2H2mNX0r4yxWxK0V7RNJdbdGm1o4o23Fno=;
+        b=xrl2DLgCkDIS372ECcbfQB0+a5t7ewatOuSx7rLpWleMe8NQs7DHNg4kS6x+B0X49T
+         lPkwoPbIzKksVpvIo9YdFSutUe9kQgbJ03EWQXZBwL3YU3S8RmYFOgoS03pJUedFnz7l
+         1JnLoWuqrTH3WFFHG/R3ut3rBAFP43/SV1Hp3K56zljQDe5RSMacNx2LMNgNel8c9QFm
+         BG0NEOW6DBOD1m6xwtgvp/B/OvedCmvJvjVoNkXRhVB4NyCk+Bb/Sopaa4TG26zxrUyl
+         KG5uF2OsdXt4iNNOYHqh27nNZHc0Lihh/0cCd40IgTu53oRft56XodZ9ffSpA93g5DnY
+         YPog==
+X-Forwarded-Encrypted: i=1; AKwUvBxhFg7cfkyg24AEPFhvbs8PhY/DACVQvaEG24bmbB6Rr8V86Si42TJ0VBkCiAD6UOvdkFY=@lists.linux.dev
+X-Gm-Message-State: AFuF++kGb3AKObAGJcGI7SYFHo5eDtaXe5eHgCMlhD2UrTCP8sG1atX6
+	4mFB33AFb6d76OHM3UL7s0xvYX8Hf+UhYHYmcykEKRkWGiYtlA48oFk9
+X-Gm-Gg: AYBFou1utgGMnlaO7DF6EyjbSgl9zmjQt37//wKcK5LUh6h/4+/cr4MneQEPhz0CBT8
+	qsY1TjKep51iawpCP2MHEl53s7IGEDa9iBJDM6Sbq4jVCKI7CfK2e6xIaJK9C281bvGO/0GnSIa
+	8dDXgusdgr4c3XvFYc8IdYM6T1DnZRJ8B8cavCHWNL/a738QfkLb+63tGgnrkKVP1OFqZj2Duax
+	9lCRlyrEYfU0IL1Z0qNrDtOo9wxdUT82AV/ES5/jLsDf/EmxohwhJjb07/xaYXdhMWyRt5GE7NR
+	oQVcvs4SihQ46IH5LFbXAcW+oUCubPEtSQ99juX5VMt1CRnLYQXweuztAoz11RfLVRgBf9DefWo
+	yRN3r2+l2xwbC4+QfUmMDtRqzt5D7N3ipLgOmYR/9n9mwHt+cuaA6gA9E+lI1GqxQPrXPn1EE0C
+	t1g5yKFz6VeX/+cpjhGicm713lBKDABIJ8dORTY26r/xI7J59dQqux1MpZWbbUrcBskqH9xb1Uh
+	ztI9PhfLgEt5Ez1BC0dfa0NEoakWbJLiZib4JHxf5LbCv+GfczwXRfEOKjA+s1xpyqOxuDURdy9
+	EcNFDAP4E8pAvUYS8DZQ0WRleeHj9qY+Hty+MMqXSODmG+r0iJVGcrBxgm1FyPGJMmOnXUfVEa4
+	6MFFfwPMPG3+wz3Sebpezn4CE9ZPcQAelE8ZEu9RHc6EDeVzBwNt+eWQ/vO+seh8uKbXQ5sx+pj
+	jtQIe5
+X-Received: by 2002:a05:600c:1d06:b0:49e:8222:3451 with SMTP id 5b1f17b1804b1-49fc5001358mr21569505e9.14.1789716335748;
+        Fri, 18 Sep 2026 00:25:35 -0700 (PDT)
+Received: from localhost (90-182-112-124.rcp.o2.cz. [90.182.112.124])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc6ca43edsm33027395e9.0.2026.09.18.00.25.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 00:25:35 -0700 (PDT)
+Date: Fri, 18 Sep 2026 09:25:33 +0200
+From: Joshua Crofts <joshua.crofts1@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Johan Hovold <johan@kernel.org>, Abel Vesa <abelvesa@kernel.org>, Peng
+ Fan <peng.fan@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Brian Masney
+ <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, Frank
+ Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] clk: imx: add missing
+ pm_runtime_dont_use_autosuspend() calls
+Message-ID: <20260918092533.00004dcc@gmail.com>
+In-Reply-To: <aqwzG_24bZSSQhTS@SMW015318>
+References: <20260915103345.1334-1-joshua.crofts1@gmail.com>
+	<aqpgUPWUGZp5Cjzt@hovoldconsulting.com>
+	<aqq_ymTi1I951uQp@SMW015318>
+	<20260917102429.00002faf@gmail.com>
+	<20260917104233.00007a85@gmail.com>
+	<aqwUky1jSMGbiXCf@SMW015318>
+	<CALoEA-zMXhy1VX1MLVCy3d9pmC0fx22sJULamLhMmBX6xHutwg@mail.gmail.com>
+	<aqwzG_24bZSSQhTS@SMW015318>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|AS8PR04MB7541:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34814992-1f69-4665-cf54-08df1555fbc2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|7416014|376014|1800799024|366016|921020|10067099003|56012099006|11063799006|3023799007|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Y8vEG3b1YS+nlNFSLj3Y28Ny1cx4DaeFboxFSFl1XuIzOzw/YAeRPjXWkgWU0dwNTS1oRPBeI8SgH01z9sXLfommJM/mcWcMZ/Qw+PC5omJ8jxLmpdArs5Vb6chKUxEDkpQuv2jppCKOovZeRnE3irhImYdq66bN4kWTusY+JjaftFXE59YLzHunwrPYUE+5/6LW00qFl3ZfCS3h8S406F8vsQzNQDfPIz4aOjoAiX46uNeL0laxZDSqy0QR9fRde/Vtwu6A4KUKH12h7pNdNdVnycwxEdBNy3ldB1yDFqkofbL+MkSubBkii8BZQmdH+G7k0MPtWLndjpCGTbeW7tzPq1YkgFY/qgQ/u0y21sxk8BKfQwYz2ARdOYQXq22Fin5myHIXGtU7THMFByx4JksTdXlpeNk01ZgcB3Jk65nzC0wERQVu4t+4W8Kbw4nrAPwD5F90ezCH3VuZckJQcJj3FPjMnmGp4k3jDJnkpk7gL0Kvo4KONBcrmI3gML41/2Br9jcJYhbTOvLTFaW0/ODKrAHiWw+oacxjTD4K+VoB1mIFEpUsnOyNvjYoGvu5kfMtQRgLHiQX4Vs+UIT7VzMSPFTQAn+DohJdQlzg1j86m7QolC5YOI5QC+DE6uSL0+KHTTwQceqsntJWmo49jal6SBI7+afB/nYHPClxgagBqWFng7PypMMONXnQDyKgT+u7kxR353zuiZo2N3CtPw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(376014)(1800799024)(366016)(921020)(10067099003)(56012099006)(11063799006)(3023799007)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gXGswaLhaJdjMDTR7h5d8C9qP1lzSYVT9oKdja7GnwcfjhYtC27wGmIoAbkg?=
- =?us-ascii?Q?dIVlbuoxbYgoiwTjat7BIqoE8cXxYpJL1v3XbHYpmUaLIv2MxmGGiR2CD4mL?=
- =?us-ascii?Q?e6Gu8W5IjZwimQ0mT1p7bahNRQlnAvljLuJHOkfMgv2Y/hO+DhJctKe5ll1r?=
- =?us-ascii?Q?Uz2+FTJOiv2VLt6X2dkEYTL46XmBT6riRkcstOcMz+se1nnFSA0s+EhPJvqE?=
- =?us-ascii?Q?B/f5J3giZMp6L9uujT6/mbxff3x6rZVtUEVWNBLjEd6GhyBzLaXiLfMQxMeV?=
- =?us-ascii?Q?zJv1rIVgHfgx+PLCIip/OniUQZdZ+TbTC9YpMzf9ftKCOBpXum4gn4KGLSgi?=
- =?us-ascii?Q?raJ9idHb7RluYVN7ndUYQli868BlBPg7UpjI1Mv0d3afiyR6H/k+Z3FELp1B?=
- =?us-ascii?Q?GZKnacnMY5CHzm6bLT75b0CYWy+KxjVuiFb4qu7rtbLAxUjG4nDgRa004GP/?=
- =?us-ascii?Q?DW6Rw1w4PDtChS/tDCTw2WvXA2utmR1YOsN8p4FNMY0Ez7zaQM8+8U3+krBU?=
- =?us-ascii?Q?+FhtyEghijzN9caP1gHiPooZ6KEa+OESN/41j3jaIJqDpFPkVpyHHcrfH63j?=
- =?us-ascii?Q?PH77tSGbGpd+KaE6zYVQMppRfTvfddZVsPaaqeF0hMAr+m78NdMQp/+U0E60?=
- =?us-ascii?Q?szDS8G+odJjTUqFsMW13kAnpXqFJ9OfxBdokiZlBZRo3AtinJ4K3YKw2ZsHv?=
- =?us-ascii?Q?Zq6K1dQYlgjaSzAlPL0dqRXJqbbG8HnoKRmFnd/QUxcgxmGMAQYU0HQlnPdN?=
- =?us-ascii?Q?a5uFUXXQJLGxKT2TV4764vbWGSm+VIivEJO2M1Dj4vjY0kZt9+uxa4NuXriJ?=
- =?us-ascii?Q?/rTVKfAoxBs3KnlpgrrU5283XWkoQIVZDMXD5ZmOZSEF8ELVCoWsM5sQxsOt?=
- =?us-ascii?Q?aLdJSNdnOILbD72cYbxUkqjDLXYUQ6OqIaLMK8oqsj07qbWcRzEM4Cs3YtX8?=
- =?us-ascii?Q?MWVYeWuHuEK/QRHUEZ0Cd7tRkgS+rrqNln0oorbUCVJvSqtfb/Y0OM8d1TXK?=
- =?us-ascii?Q?zuhM4T2nyK8ntcMZ8awbzc+2AxCAR+TGTvUB5ZtQ+EaSSMSIIuKs0LKfqh8x?=
- =?us-ascii?Q?uiBH+1BaOEKo7Duz0kGukJ1dC4y/ZodRlf+5zPETVJwAXcv++HqLy/sg9q22?=
- =?us-ascii?Q?KLrUla7zm4z0YMHTpbP5CsqHIsvad9iThLlBFLQHAaQJsPlOw7Gf0TbEIkRZ?=
- =?us-ascii?Q?txUMM9F4FCUbhsAeQvP2UO2lX+w0rHSBo5VQoRQ0IMMVxPJtzFjhWe/ub7E3?=
- =?us-ascii?Q?Zgn/pU87onhYE3DNKFou+zMVz6GqdqP/GZZx45kr5+udHXXpx3YNvYUvsGEF?=
- =?us-ascii?Q?VAqvrvww4SpwwUY5WQM/LRnVGOi96MVI9E3x+iZJbXApXeTCx4lG3PZ6wwsQ?=
- =?us-ascii?Q?U34jNDEzw0XwNxIWBjXmwwseK58MBBQERxJExnm++759RfVlxPBv5IuRN1Uh?=
- =?us-ascii?Q?hxGyftlZJJPokZ50+HEnkc1aLFh5v80y/YYocqzg6wRIEONDoc753jyfhIJH?=
- =?us-ascii?Q?TxoAMfBEf+ZWuKBb1HBcIQmmOVMEOdbuoyxM0ZFdfi/KjZHZo/BYlP18DTg/?=
- =?us-ascii?Q?ogy91OQnAnHJGIaNzarVD03RuyZ5nH6qpwcayTku9qHtN0YzwRAW/Wbn/C1L?=
- =?us-ascii?Q?+BOXARaqkd9UtT2hbajjrV5B/RFGbl7vcV/i6GcFLIMz4HqbdrdMFbzAzcpr?=
- =?us-ascii?Q?ovEwKfWsIKkWH1qNbC/SmGTx/3oThUSLlLkebzzUwZ1tTCJvFNn6k9Ff2Lfk?=
- =?us-ascii?Q?eg/2HJ0093GahYEH+4KoWi+b/Ko7+Wkd7tmzgwJeEN5nXVDiC4oQ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34814992-1f69-4665-cf54-08df1555fbc2
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 07:25:15.4285
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BiMLR+HAzt7R9C+RuvJ5wSaclMDYW39aKo7NPQ5aZL6+SSSeLFCv/z8IONZlj2C2ewVPnfCdJXy/9L5reN+fqIT5jfvBVt83JuvMlEflWIEvzDw5qnN7rcaCZ2Qoh1Pl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7541
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Wei Fang <wei.fang@nxp.com>
+On Thu, 17 Sep 2026 13:36:11 -0500
+Frank Li <Frank.li@oss.nxp.com> wrote:
 
-ntmp_ipft_delete_entry() may fail, but the driver ignored its return
-value, so a failed deletion left the IPFT entry untracked and
-impossible to clean up later. This is harmless today because the port
-also disables its ingress port filter table lookup, so the leftover
-entry is never matched. However, IPFT is going to serve other features,
-such as trapping PTP packets and flow policing, for which disabling the
-lookup of the whole port is no longer an option. Note that the operation
-to disable IPFT lookup in netc_port_remove_host_flood() will be removed
-in a subsequent patch.
+> On Thu, Sep 17, 2026 at 07:15:29PM +0200, Joshua Crofts wrote:
+> > On Thu, 17 Sept 2026 at 18:26, Frank Li <Frank.li@oss.nxp.com> wrote:  
+> > >
+> > > On Thu, Sep 17, 2026 at 10:42:33AM +0200, Joshua Crofts wrote:  
+> > > > On Thu, 17 Sep 2026 10:24:29 +0200
+> > > > Joshua Crofts <joshua.crofts1@gmail.com> wrote:
+> > > >  
+> > > > > On Wed, 16 Sep 2026 11:11:54 -0500
+> > > > > Frank Li <Frank.li@oss.nxp.com> wrote:
+> > > > >  
+> > > > > > On Wed, Sep 16, 2026 at 11:24:32AM +0200, Johan Hovold wrote:  
+> > > > > > > On Tue, Sep 15, 2026 at 10:33:43AM +0000, Joshua Crofts wrote:  
+> > > > > > > > Several drivers in the clk subsystem forget to call dont_use_autosuspend()
+> > > > > > > > on teardown or error, causing potential resource leaks. This series adds
+> > > > > > > > the missing calls.  
+> > > > > > >
+> > > > > > > No, as I've explained repeatedly elsewhere, it does not cause any
+> > > > > > > resource leaks. [1][2]
+> > > > > > >
+> > > > > > > The autosuspend setting leaks if you will, but that only matters in the
+> > > > > > > theoretical corner case of someone rebinding a different driver (which
+> > > > > > > will soon also taint the kernel).
+> > > > > > >
+> > > > > > > So don't exaggerate the impact, this is essentially just a cleanup,
+> > > > > > > which is fine in itself.  
+> > > > > >
+> > > > > > Is it possilbe to create/improve runtime pm API, let runtime_pm enable/disable
+> > > > > > include these pair functions.
+> > > > > >
+> > > > > > I get many similar patches since scan tools is more powerful now.  
+> > > > >
+> > > > > I suppose that could work. One would still have to scrub the kernel of legacy
+> > > > > use/dont_use_autosuspend() calls though, so it could end up being a large
+> > > > > patchset.
+> > > > >  
+> > > >
+> > > > On second thought, some drivers do tend to disable PM runtime system sleep
+> > > > etc. so it probably isn't as simple as adding the autosuspend stuff to
+> > > > enable/disable.  
+> > >
+> > > if runtime pm disable, does autosuspend still work? suppose it should be
+> > > disable also  
+> >
+> > If we add dont_use_autosuspend to disable then every time the system suspends
+> > and resumes we lose the autosuspend config, meaning it will never autosuspend
+> > again.
+> >
+> > I guess adding dont_use manually to the driver's remove() function is the only
+> > way (which according to my cocci script it's 195 drivers that should be patched)  
+> 
+> Extend with exist pm_runtime_enable() and passdown delay value. if delay
+> value is 0, actually it is no autosuspend version.
+> 
+> and merge dont_use_autosuspend() into disable function. And actually
+> I don't understand why need two varible autosuspend_delay and use_autosuspend.
+> 
+> when autosuspend_delay 0, means take action immediately.
 
-Propagate the error to the callers and only update the driver state
-once the entry has really been deleted. Since IPFT does not support
-in-place updates to the KEYE element, netc_port_set_host_flood() now
-deletes the old entry before adding the new one, instead of adding the
-new entry first and deleting the old one afterwards. Otherwise, if the
-deletion of the old entry failed, each port would have to track two or
-more host flood rules, which complicates the logic for little benefit.
+Actually, what about putting dont_use_autosuspend() in pm_runtime_reinit()?
+https://elixir.bootlin.com/linux/v7.3-rc3/source/drivers/base/power/runtime.c#L1865
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/dsa/netc/netc_main.c | 76 +++++++++++++++++++-------------
- 1 file changed, 45 insertions(+), 31 deletions(-)
+driver core calls this in device_unbind_cleanup(), meaning driver core would
+just handle it.
 
-diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-index c590931a4e1b..082ed9405868 100644
---- a/drivers/net/dsa/netc/netc_main.c
-+++ b/drivers/net/dsa/netc/netc_main.c
-@@ -1706,14 +1706,8 @@ static int netc_port_add_host_flood_rule(struct netc_port *np,
- 	u32 cfg;
- 	int err;
- 
--	if (!uc && !mc) {
--		/* Disable ingress port filter table lookup */
--		netc_port_wr(np, NETC_PIPFCR, 0);
--		np->uc = false;
--		np->mc = false;
--
-+	if (!uc && !mc)
- 		return 0;
--	}
- 
- 	host_flood = kzalloc_obj(*host_flood);
- 	if (!host_flood)
-@@ -1761,32 +1755,31 @@ static int netc_port_add_host_flood_rule(struct netc_port *np,
- 	return err;
- }
- 
--static void netc_port_remove_host_flood(struct netc_port *np, u32 entry_id)
-+static int netc_port_remove_host_flood(struct netc_port *np)
- {
- 	struct netc_switch *priv = np->switch_priv;
--	bool disable_host_flood = false;
-+	u32 entry_id = np->ipft_hf_eid;
-+	int err;
- 
- 	if (entry_id == NTMP_NULL_ENTRY_ID)
--		return;
-+		return 0;
- 
--	if (np->ipft_hf_eid == entry_id)
--		disable_host_flood = true;
-+	err = ntmp_ipft_delete_entry(&priv->ntmp, entry_id);
-+	if (err)
-+		return err;
- 
--	ntmp_ipft_delete_entry(&priv->ntmp, entry_id);
-+	np->ipft_hf_eid = NTMP_NULL_ENTRY_ID;
-+	np->uc = false;
-+	np->mc = false;
-+	netc_port_wr(np, NETC_PIPFCR, 0);
- 
--	if (disable_host_flood) {
--		np->ipft_hf_eid = NTMP_NULL_ENTRY_ID;
--		np->uc = false;
--		np->mc = false;
--		netc_port_wr(np, NETC_PIPFCR, 0);
--	}
-+	return 0;
- }
- 
- static void netc_port_set_host_flood(struct dsa_switch *ds, int port,
- 				     bool uc, bool mc)
- {
- 	struct netc_port *np = NETC_PORT(ds, port);
--	u32 old_entry_id;
- 
- 	/* Do not add host flood rule to ingress port filter table when
- 	 * the port has joined a bridge. Otherwise, the ingress frames
-@@ -1794,7 +1787,12 @@ static void netc_port_set_host_flood(struct dsa_switch *ds, int port,
- 	 * will be redirected directly to the CPU port.
- 	 */
- 	if (dsa_port_bridge_dev_get(np->dp)) {
--		netc_port_remove_host_flood(np, np->ipft_hf_eid);
-+		if (!netc_port_remove_host_flood(np))
-+			return;
-+
-+		dev_err(ds->dev,
-+			"Failed to delete host flood rule on bridge port %d\n",
-+			port);
- 
- 		return;
- 	}
-@@ -1803,19 +1801,24 @@ static void netc_port_set_host_flood(struct dsa_switch *ds, int port,
- 		return;
- 
- 	/* IPFT does not support in-place updates to the KEYE element,
--	 * we need to add a new entry and then delete the old one. So
--	 * save the old entry ID first.
-+	 * we need to delete the old one and then add the new rule. If
-+	 * the deletion fails, return immediately.
- 	 */
--	old_entry_id = np->ipft_hf_eid;
--
--	if (netc_port_add_host_flood_rule(np, uc, mc)) {
--		dev_err(ds->dev, "Failed to add host flood rule on port %d\n",
-+	if (netc_port_remove_host_flood(np)) {
-+		dev_err(ds->dev,
-+			"Failed to delete old host flood rule on port %d\n",
- 			port);
-+
- 		return;
- 	}
- 
--	/* Remove the old host flood entry */
--	netc_port_remove_host_flood(np, old_entry_id);
-+	/* Restoring the previous configuration is pointless because
-+	 * .port_set_host_flood() returns void, so the upper layer cannot
-+	 * detect the error and the RX flags have changed.
-+	 */
-+	if (netc_port_add_host_flood_rule(np, uc, mc))
-+		dev_err(ds->dev,
-+			"Failed to add host flood rule on port %d\n", port);
- }
- 
- static int netc_single_vlan_aware_bridge(struct dsa_switch *ds,
-@@ -1980,6 +1983,8 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- 	struct netc_port *np = NETC_PORT(ds, port);
- 	struct netc_switch *priv = ds->priv;
- 	u16 vlan_unaware_pvid;
-+	bool uc = np->uc;
-+	bool mc = np->mc;
- 	int err;
- 
- 	if (!bridge.num) {
-@@ -1991,6 +1996,12 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- 	if (err)
- 		return err;
- 
-+	err = netc_port_remove_host_flood(np);
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack, "Failed to delete host flood rule");
-+		return err;
-+	}
-+
- 	netc_port_set_mlo(np, MLO_NOT_OVERRIDE);
- 
- 	if (br_vlan_enabled(bridge.dev))
-@@ -2004,8 +2015,6 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- 	netc_port_set_pvid(np, vlan_unaware_pvid);
- 
- out:
--	netc_port_remove_host_flood(np, np->ipft_hf_eid);
--
- 	if (atomic_inc_return(&priv->br_cnt) == 1)
- 		schedule_delayed_work(&priv->fdbt_ageing_work,
- 				      READ_ONCE(priv->fdbt_ageing_delay));
-@@ -2015,6 +2024,11 @@ static int netc_port_bridge_join(struct dsa_switch *ds, int port,
- disable_mlo:
- 	netc_port_set_mlo(np, MLO_DISABLE);
- 
-+	if (netc_port_add_host_flood_rule(np, uc, mc))
-+		dev_err(ds->dev,
-+			"Failed to restore host flood rule on port %u\n",
-+			port);
-+
- 	return err;
- }
- 
 -- 
-2.34.1
-
+Kind regards,
+Joshua Crofts
