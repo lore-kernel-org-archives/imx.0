@@ -1,159 +1,87 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD484F3EA3
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 10:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DF154705D;
+	Fri, 18 Sep 2026 10:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789726588; cv=none; b=EJ11Mp5B2gz2VCzjfx2aAtpg8Tab3+/Y95kIRiKbUqjzgz1Z9dcL+u5JIfUlH9JcPej14YpwcjQq2XAa7YM8KglU38bpJ6lYhEixdUgR9yILyoW5MuMSXeI9NT4AXvHWB6t/OMfklNkIZyC3WDqr4ZJuAOGE8v/vQyG2Mzbnf10=
+	t=1789726752; cv=none; b=mTkpKrk1zn+uU7zGmYqlOXaB/RqbxRSNUh33rzBTZtI9Le3BmY5f/3myALk6zXa99S/rWHyVZdsjLsYnTYrwzlvHb3psdEY91Rxt5qNqepyslTg/rrCixz7iq08e5JZlc78DRj0gFzpJtbeoDCyr2AFx0MMzM4VIJNRR3DW1zuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789726588; c=relaxed/simple;
-	bh=GKSirKHvfn9lZan03ZeAgUC1tA3Nnr12Pp3mvCfeg8I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kDhWkm7TWMM74SjThUzJVZHFaCZ1KJOzMQrfcQhjWMEArCDiOrdZ9JC2LZkvnPB3zeD91uD7SY4BICPRo8FD7v8fWCGhky9rqobpuSuEq6LJ3MAUyXx5OlFVTEWi4Z3MOvguceW8RncCgqs94fsbP4jIKLtj9pddcpble6ZTVBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=m62CTU1Y; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cth6II5y; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789726752; c=relaxed/simple;
+	bh=ReI/5bdtZ2277fpeNjtnStQnH+LxBZibQL7zdu5ONHA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=QGJvH9mGqbHqEuN9N8BPlASfiXb3/s+jjZEX15TbBErgmIAfoW6LNze0qBSzhh5IO5///QQl1sAMybSocVtGR/REFtwrIiA4LZnPR1JbEtxnuIcke4tVSuscJwK5CleWTXsDe8HBpw3Owf+wCRCN2Ijhu6c4ZD/WOocJ4a5dFz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIvCn62/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="m62CTU1Y";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cth6II5y"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I9daDJ385312
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 10:16:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	lkWvd6wXs7ggjF+yLAJdymgWMfkLNdqnHiJr+Shk/Qk=; b=m62CTU1YnGapAeDc
-	+qy7Soc6UKFvvtv+bZtezgCUvRpCy7x9WoLiUAuzSwXaLcsIs2vpyBQiqiD1qxlg
-	4gu7HD2oaZnE2c7oBLTBTO+ZWNzFqctmWuwsEiFldYgdTJI1Rc94jm1zTORMfwdN
-	Enz3kgmWZ7vAm8RKEXb5U1ZAo6GvmEqCjfSiyLzXlWYp9N82JQ0iDG1ZmXKQAU1S
-	k92qUVLmxi8kWdJo5RtKARbqTr9LqLWILs3fYPDOjPlkn2jQ4D/Y3XpEGvCNjPOp
-	IX43ijDUmFzVlZqdhl1kH0lIZtaqNdTTlzNNRRWDhO1K3MV6JGS43+G8Zm/8vCwc
-	aiiiwQ==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grwxrsdux-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 10:16:20 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90cdc69a7b5so13333286d6.2
-        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 03:16:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789726579; x=1790331379; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lkWvd6wXs7ggjF+yLAJdymgWMfkLNdqnHiJr+Shk/Qk=;
-        b=cth6II5yk/2ZVrcPqfpZhyV9wAK8vhSFc8O2Je1t0tljtfkF+QQoBRLLI4y5Kn01Fm
-         Ipn8g/FufFLUJ+8d6iOO9sJLlmDolCdwLW7KzypJ8TGC7EsVFdaJsTUlZ38nIB57CQPY
-         /VljeyFyayFHvUEz714OJ/ym28T1s/G65jZ6nO+MLgjk4VpSrdFeQ4cXwOw1HD9bv3GG
-         IkFjtK/ZplR2J9SpmsGNWelCDjq4bzrZ52Z66ZvIRUzxac/dNlypAr8Ny2cO2V06SufH
-         muvzfhmK/lvIIW1HaK9BdZbG2nCLESW81GAw9cX95UKa5GnHvcURofI6dDvPRg7SJikL
-         3yKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789726579; x=1790331379;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lkWvd6wXs7ggjF+yLAJdymgWMfkLNdqnHiJr+Shk/Qk=;
-        b=tnl83oNCN/nU1JCk1ZwxG82/7lPHrER/yxPwNgoK5uq95a/gmWCJOqin3F4j2I2lLY
-         CtgeH1Bt5flblDMGkhnbrJuj1OIP7/k4ANgTvBN8eSMA8aPfNK8W9mFvrv4TpLcPkdhz
-         XkH15lU0zzzyOK9MmmVFOIxTuuhkn8w4M10g5HAhC1puliRKD+aIY3yb7w03N7UCwSXg
-         7v5LheHykTIoX67H73Q7B7ofg9dv0ZrxDB8TjvtnXWyQGrldyACrko2nKtLNmMQ0vqsC
-         4MkxbzEItb6RKvaUckTvX1DUvZDm+4BdIuS4KLiG84icQyl37nyOI2TnTdTDho3xjXpW
-         B9HA==
-X-Forwarded-Encrypted: i=1; AKwUvBzxO7LyHTQ4P5q5K7IWGLx7SSQ5OnKASR6fyRl1pj7x45h4fsl/IcpcIp5NFWvb+BhhcRk=@lists.linux.dev
-X-Gm-Message-State: AFuF++nbIxwnCiDH0lxXcf61l/OMZHFQFUCgu8DK9ReZe3Eh+dso85HP
-	KSuwyuRPqjVGRm0ddzfNrcGDYShdNXtj3NGtTByPDwr0R8ikSVr0BauLt5snOU/m4tLe5AXCyky
-	ci+sHb9rwhR4tldAbUyVlhmBaqgAAr0nAjawJswKV59V35A5gh4wejMI=
-X-Gm-Gg: AYBFou3x+CER+kbTg5FfXExMTKxYr/9onlNWCCaEUWNH3N08R4Wk6gXSLiFQXBFFcJx
-	AYN4SeC+CP26fhu2LzPSbkfMoVoXUDO+RZBPvyexUQLiaT2yppvCTbKWA26lHuvbt3wZdLDkiQb
-	lp1xKQY0gtKRQ+kJsxZ/1Q6X2fwIvhptjvXRq2Uwi4zzSeQg3HxH9nC2dyZq41r/iLyHMXSaeZT
-	papA4cfqlpMM97vAjDZJqa1DmasdAmWKrXJkrdY9Cg2VN3WpnUTfJsnK7Jh+SLP8H3rJvcDmpnw
-	Psbc5nn41av6yaevKgVDmpUKdA7XVC2y6sc8xKXYeOJeO0AZcFvojZmQ47gG7hKj+nXiqSOiVzS
-	hz5DxC8wc9ISpZlFk8Lai0v+spkLmbLGF1k17VA/1OXkVnzjIP7preD3bHylckvg=
-X-Received: by 2002:a05:620a:2b96:b0:930:f337:ebeb with SMTP id af79cd13be357-93bdc6d5ad6mr217943785a.12.1789726578888;
-        Fri, 18 Sep 2026 03:16:18 -0700 (PDT)
-X-Received: by 2002:a05:620a:2b96:b0:930:f337:ebeb with SMTP id af79cd13be357-93bdc6d5ad6mr217940385a.12.1789726578407;
-        Fri, 18 Sep 2026 03:16:18 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:82ae:cd75:d970:e66f? ([2a05:6e02:1041:c10:82ae:cd75:d970:e66f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd17051fsm147325645e9.0.2026.09.18.03.16.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 03:16:17 -0700 (PDT)
-Message-ID: <dcf28454-a583-4f6b-a11e-483d63be3bae@oss.qualcomm.com>
-Date: Fri, 18 Sep 2026 12:16:16 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIvCn62/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5E71F00893;
+	Fri, 18 Sep 2026 10:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789726743;
+	bh=eLu0OL+aI6fE/xNf2p/advQtFn+ljCa4K7T0GFa9Qnk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FIvCn62/tvtpf8fREbg82nY3eokAudGYvNGOwIv18Hx9yQzZXwkflqG2mdPi2J5Y1
+	 dJSvWSmC5VssJWsCVKHBxIWbdwLn/h9K9J7uYjsH8RL5zQHU4EqNLwC02j6DmSG6Rq
+	 RlEJvWETsC3XZi0768E7fhK1A2Z2mAFt/tKCSRtaSGLigw0HY6vSvFw2s7JLjve/vf
+	 2Due+4cn+bGtdhWU6hWRQ3NrKoduw4/eM7572eLbFhez3XMAxFVC/RJfACHtY+BUXf
+	 IXNuil0tVXNkEzHq0BHns/8XhzK+Y4/OpAHDH2LHL5Ab+PFgiUH1ADvpPJNPz83xot
+	 Q9+0/AAf3AzOA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 6/6] dt-bindings: media: i2c: himax,hm1246: Use
+ video-interface-devices
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kieran Bingham" <kieran.bingham@ideasonboard.com>
+Cc: wsa+renesas@sang-engineering.com, devicetree@vger.kernel.org, media-ci@linuxtv.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260918-kbingham-orientation-v5-6-e1a134326988@ideasonboard.com>
+References: <20260918-kbingham-orientation-v5-0-e1a134326988@ideasonboard.com>
+ <20260918-kbingham-orientation-v5-6-e1a134326988@ideasonboard.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Sep 2026 10:19:02 +0000
+Message-Id: <20260918101903.7B5E71F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] thermal/drivers/imx9: Constify struct
- thermal_zone_device_ops
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-pm@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org
-References: <5cce9ea713edcf2aa3c0efd5d31e9d9fd9f40a88.1786220585.git.christophe.jaillet@wanadoo.fr>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-In-Reply-To: <5cce9ea713edcf2aa3c0efd5d31e9d9fd9f40a88.1786220585.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=EMWTQFZC c=1 sm=1 tr=0 ts=6aad0f74 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=_H6WjYdI7YG0SsD1Ov0A:9
- a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10 a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDE0MiBTYWx0ZWRfX2uXDWKcDGv+7
- ToXOMYNpkOvvnEs+mFT+QiJAXlIfWEypvXBKfagiS5Y7n7zMf811h3fUfX2HLAdBFlUoWhOKuDD
- TtBsScEzDXsX4WbsWb2tZFYVtOkFv2v3AIEK9zRKGFXEJf0C4kj55syl0TNc3QOmY78RzJYfjnX
- fZKeId1NhyeYMxA3uVpiWgkKIWQzgGbbtaAkT/j56oe2UQnwzX3NlHobWhknqRLibMEodrHOEaj
- fENRKLPTneHu6S07dXdapKhi1pvvdcOStlrhkHWrS28hV6l0XkzA16VH+uZkpMFsxEeABcWUPdy
- GSVs3AUJOW9Ot3ad4rLigbv0TBAxfTCMTq4kaRkoqmXhw5N3olGNpcYd4XltCKHgSofx8uUq9B/
- 9FHzAE7dRFgdEnjlM2NKFF9rr5RELv4qokU+UWSEh3apoDpnMTarNm8I0bWXijuANtuWjQdIsQZ
- Hl3tXAqKHtjlcK73MfQ==
-X-Proofpoint-GUID: 5iTw4CqUjeFoVAx9vKWgUu-9Vpmb6-vJ
-X-Proofpoint-ORIG-GUID: 5iTw4CqUjeFoVAx9vKWgUu-9Vpmb6-vJ
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDE0MiBTYWx0ZWRfX5fEPAS0wfCMF
- 1j9notxZrDDMNX1RSAReo3IXx0Uhgawi1F/IIVNgSXJK0GEWLRYKEv6Px3eYs6H14uyT7FkQHv5
- qKzNlqnaW50fYc0HLkwKLB1DhUVCjlY=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_03,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
- spamscore=0 malwarescore=0 impostorscore=0 phishscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180142
 
-On 8/8/26 22:23, Christophe JAILLET wrote:
-> 'struct thermal_zone_device_ops' is not modified in this driver.
-> 
-> Constifying this structure moves some data to a read-only section, so
-> increases overall security, especially when the structure holds some
-> function pointers.
-> 
-> On a x86_64, with allmodconfig:
-> Before:
-> ======
->     text	   data	    bss	    dec	    hex	filename
->     8567	   2144	      0	  10711	   29d7	drivers/thermal/imx91_thermal.o
-> 
-> After:
-> =====
->     text	   data	    bss	    dec	    hex	filename
->     8695	   2016	      0	  10711	   29d7	drivers/thermal/imx91_thermal.o
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] dt-bindings: incorrect macro substitution for orientation
+--
 
-Applied, thanks
+commit 009f981811cc18f443edfd8ba45e1a412697cced
+Author: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 
+dt-bindings: media: i2c: himax,hm1246: Use video-interface-devices
+
+This commit updates the himax,hm1246 device tree binding example to use
+the new video-interface-devices definitions for the orientation property,
+replacing the previous hardcoded integer values.
+
+> diff --git a/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yam=
+l b/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
+> index a65488fcc643f..ca5817684e1e2 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
+[ ... ]
+> @@ -103,7 +104,7 @@ examples:
+>              iovdd-supply =3D <&hm1246_iovdd>;
+>              dvdd-supply =3D <&hm1246_dvdd>;
+> =20
+> -            orientation =3D <2>;
+> +            orientation =3D <MEDIA_ORIENTATION_FRONT>;
+
+[Severity: Low]
+Does this mistakenly change the orientation value in the example?
+
+In dt-bindings/media/video-interface-devices.h, MEDIA_ORIENTATION_FRONT=20
+is defined as 0, while MEDIA_ORIENTATION_EXTERNAL is defined as 2.
+
+Replacing <2> with <MEDIA_ORIENTATION_FRONT> alters the actual value from
+External (2) to Front (0) in the device tree example. Should this use=20
+<MEDIA_ORIENTATION_EXTERNAL> instead to maintain a direct macro replacement?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918-kbingham-o=
+rientation-v5-0-e1a134326988@ideasonboard.com?part=3D6
