@@ -1,378 +1,220 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013004.outbound.protection.outlook.com [52.101.72.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBE533F58D
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC2B3C8700
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789715848; cv=pass; b=ixjcI+Yc2Pgnfp8xKe3jAAND/GSkgIxkONdAXUPSl6B5f7Mi6v0nl9hOl9MLZkN76ZFxPJrJug9Dvs4Ti1nE0CB5apF2dsQcVLpoZqpI0+gaZYlLDGzc8VWdf9XOn9mUvsaRDTQCNlZLkA2yAlAKLJiJLjh/1v7eY0WrUzQxf+k=
+	t=1789716291; cv=fail; b=bxwL1pg2obAazE35FpIPSoEoveI2xNVzWUriMFJl8zakvVlT3PAgzP8x072L1/pWE9xRDWM40KJgqrVk+EbCEjsb3WaHli/p3weviFP8qH7jSfTHsTXuKbvLBbFR/2Wt1wSSNaHBG11dPA0zJPsPnFUzDgdrGouI7y3z28kW0G0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789715848; c=relaxed/simple;
-	bh=2Bm3gAwazjbLTUFW3jtpTEj1rRnxPSASuhBdBF/Mong=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=En3UI5snrHhmqu6stfKtOgm9+/aIkzyM5VettQuZScjX8FRZVZ4RvyMr3FoHkd8D7xhp/C7trF8Mn3xpxmbEo6fjgllvhXLzDaIAuRe5FgxGRQ13mv5qZid/rL8hotO9cqXSUexNIJeLg+uY6Qrue8ieJdYtZnGijaDyO6beK80=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=XAn5n73i; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1789716291; c=relaxed/simple;
+	bh=5QKdSGDGFlyJlOkxdqWZYN2Hp2RIVvaXSK9q/r9/GHY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=LXX9dwaq5UPGfNRZDgQZt9jX0XjdX/PxxbxQ9gkg6FvbqtVoAHieHj+ka6q+LD0HX6MjO+428erZbqEwZbiByd31g1ZZoOHSFpmQhj5HA0ZDTjO6Hu7+Mho1hsW/xo5c/HV60BV0vSnZ+y717HL0nXobl9UlnMMpBAdX3vMpfTQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ch0BPnSZ; arc=fail smtp.client-ip=52.101.72.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="XAn5n73i"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-670fee39d73so441676d50.3
-        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 00:17:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789715844; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RTowCOHs+5X5+KCetdIeIImriGKGTLTEHD+1UZatS3GSTAQ0IKAjsX993G6ERghKhe
-         dtTydgsWdo+QDP0bmGQJB1SvGAs5qxarT1k36YTdkiif16ErdYyIP1UauTCIh0tTyah/
-         /hqDaB8LAAYwSWCdcXVimu5GsNMVTC5SvjwDlPtbYrPio/CoAzij/p8vgQvqae3mnk+l
-         pUjzXxir+vd0H/1omu7yELxnYDglos0O2PyMXFR8A6mVAl/EJ88y9EvtL8y0C6GBE2dh
-         NLp9lPEh7H3C4DPMZMPpYJn3PMBD+kpxYdk8938YqPEu+wB+DS4Qf5/HgLv+XB1sE5ww
-         Yijw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ITqNY912hHAbwc9T2h8ninUwVl/brEY9TWjcH5XDilY=;
-        fh=IY1mgvwvVa9WX7uba7u/VKFe9ITZAX/BF8+lOGDibuA=;
-        b=bWFqBaiR0snbWPsXOCIHYFuEP9ADEipFv0cV5W9mvKXn8Z2IpCzcIoymhdTAMzSnq/
-         OMoaY1y0XzgyZUvSbzzHFsaOv5jdFLu+gn0VcE2jJeQ9th6b8tdi7+MIeR3vk+OFubnT
-         BOkAawGF2uYLW71XR98veTKvttzVk3Ig/mPFyNRTGH1szgZG5VUP2X1JHbiM83gK7GL7
-         Fff3CYG/YwFaGCW6sEA/u6SLuOkFyhhwiXNjB3y+DJf+s1dvDUQQSUpvmdF7SeWBM6Lz
-         YQs1EuF7yIEAewewxYUpW+QGGfPdKJo8/ao47O3bNv1asZ5nYk/Hk9+c8K4nw/P26j7t
-         TVQQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1789715844; x=1790320644; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ITqNY912hHAbwc9T2h8ninUwVl/brEY9TWjcH5XDilY=;
-        b=XAn5n73iXr4C96IgXMKiwpFKuQrhBb7UkOGmm2R8LXfiAknF7cR2qMkiRaxBeC6py8
-         VX9MkYKNXuyqp4w6uPWPFNwvRZRmCyaC9dXYatiVNPinvJrczWr5TEBBc97uzeifEWT2
-         Q9n9eua0onNI+IHKNBC6Ui12gUKeGT72n+aVI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789715844; x=1790320644;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ITqNY912hHAbwc9T2h8ninUwVl/brEY9TWjcH5XDilY=;
-        b=tpcejZ8MjdKEuWEuAVoR3tCCaJhYjx+PwLFGU995xpHJSYAlrZMKx3N8nuFZlqGQoe
-         QKzE6tJ7wb3AprG93DWkRKHFwEUn6Qsb+14I58bbYZJZteTqM3YgEt50iY1n0lIGoit2
-         XYUk3RkYh949hdEEED3zE3jzmoI6zrfcoP62ouRD/UQQhRseBTuNrzq/pL0LEpNcFdKC
-         7JtJWC8CseZvIKcacsL5n41GjFOEEMJl7CoQaK9+UurT4WcNVedI3KZgwGskSUc2mkHE
-         3Er/DcPZgkMdDAtzLXKMRitA4uH0IRp7ESuILfQ+0wOpWS7fFi3Gjpeovi6ST+nxR+63
-         rwZg==
-X-Forwarded-Encrypted: i=1; AKwUvBwRXilc+fw7qraTmZ7qOeb70LwrJlmzIbcNuQxtvt5aV0uuWnqDxzjTWt1oLxK9byCoF6w=@lists.linux.dev
-X-Gm-Message-State: AFuF++mwmU1GsMeYief0SM/YWhILsz5cXkulHwp0Ec7G51aoHhph9gDq
-	XCQjOXLF6sA1UIPojj0UlLQLjgd2HOFi1olkH1aoVy/6/lCDM2Sqlm6a+z8B0Vttdoo+cCyeCdT
-	RmSTsHIPHDN4VTFnpfJwIhV/JSf6aLxBsW/+qZVs7
-X-Gm-Gg: AYBFou2MScsA93dhWQHV3yML6ntYcsbTL/bqN7dR3Ud7aQUYia216ZdmIIZhtN2dKer
-	Eqx/QKF5H1+xLTBDmRolVZlxPjT+Tk/dK6ld5ZhJhaNbDMxum4c19tAUBqErExeWsMijR7FLLvG
-	2ohxW8NGVwUKhUcDp0TKz6mxujovOzm91pAEYFa+CHCy5eJ3VXwZqJmSgv6FCsd4e+1eUma0W/n
-	Lz0QfvuG61379T+1RJDXMZ2Hx6No+ZXhqb/0zuM1vZPI/SqUx6/l2J2VNY7bHD8lWO+64TWQdYs
-	0X4APSHlVr4Y/5voA1yMAEvp9wqlKdF0G0oEm9W9w8/jUQ5GItxb/G8xl9sO8rhhoDCUgZnv/eJ
-	YYP8aAJNPNQ==
-X-Received: by 2002:a05:690e:1244:b0:667:ba34:51e2 with SMTP id
- 956f58d0204a3-6717fc73f18mr528044d50.13.1789715844017; Fri, 18 Sep 2026
- 00:17:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ch0BPnSZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b4i+hBTGCMhvKnALyCok3PJQr2cHzKt1gWO54rqniZbclPywSXHHuzrAE8yVcz+wRGt7fjU2UMRdnoS2fCsS6rFUmWZgC+AWuaUO08XezUZbAjsEANjV9zC7FQvcRCBX+QK5dDxui93cx/hli9mkMaOeoIyljkrWdF0sp8h5fL+BrxNoKHT1wrd9onnd+M/1oqngZ9w0uO8fJyO8WPJiI67bjXEVCjjayWaToc4RpzQx1euItfF9KVlMpJVfYA2w0js+O/GgazHjUWKsJw+szyHg+YcXaabV4G+SZrYLpOCKmQa4TNLQWU2rFopQdQIzNuc9KgdKfYGyGiHyHjeOeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Ecu4EJjHFCxonSu4eJAz70syYBGylSzs3FP9bv3q7k=;
+ b=h3YdDLxuI3lpBIlx6q0FM1myfqYLQ8XiQjuE8lz1QqrgKjy1RXSqRjCCJp/oAlTbyh3sbhl5/wzOVfWkZvXBtpVy7/KausY5YX0GAcaPf3LHeJInW+Pb1qZdKa7p34qNZ2OqYkcdjnlZi1PsR2w7eLqF72SjKMpa9I2/dFo7MVaPq58Cr3iwegSs6stRIVFsHWjYWUQN5rFkzp4n9zkin27PIvo8MyvxWBB3LClqtkoQTyVe4gQRLtDn1QQP5HlEM91f8dnLZOMAXsTeW7k/r+BMZlt20ZI3RRE/ZB9t21sf/zAposXc1mMC0rsdpINwGNecc1NAiC227CWwyGi1Pw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Ecu4EJjHFCxonSu4eJAz70syYBGylSzs3FP9bv3q7k=;
+ b=Ch0BPnSZhlkcXVj5SMy5pJ3tcfj3WGGKydZzjzcdB21wABNaj7JF6AngH+OIuny3GwxaLfZUFavYV0ArSR1F6iiYcuicSwDI5JMabR5oRriNLRcDKNsAS746o5Qo94+sYK5brzJwCvreF+CvlNk2G9qrKpx63u0tAzv3GHYZw9GM+SA2V0KerhyNIVwlGWj4vYuH3JTafvXJlPozl8jJOsUOIEn9dbdUvBpCTr38/S7JHIPzmHJHZVOqVnGYpADZODxdCEOxm0vmh+9LaE8/OSebLsBP7TkscIqIr5CNQB0LDmFAWKfavDJ1juppiedk7oAUi8jf4Xqa0A4CgDhJYA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by AS8PR04MB7541.eurprd04.prod.outlook.com (2603:10a6:20b:29a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Fri, 18 Sep
+ 2026 07:24:42 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
+ 07:24:42 +0000
+From: wei.fang@oss.nxp.com
+To: xiaoning.wang@nxp.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	richardcochran@gmail.com,
+	linusw@kernel.org,
+	linux@armlinux.org.uk
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 net-next 0/8] net: dsa: netc: add PTP support for NETC switch
+Date: Fri, 18 Sep 2026 15:28:44 +0800
+Message-Id: <20260918072852.501420-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0P287CA0008.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::19) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260916033327.3054126-1-wenst@chromium.org> <20260916033327.3054126-2-wenst@chromium.org>
- <f6ace486-70d8-4e81-89cb-e9d55ad9ac8b@suse.de> <CAGXv+5ErgWVNtnRiW+QA7+Mzh=W_Y+HGL_iRa1fOaXCYSoAwMA@mail.gmail.com>
- <f7fa4c4c-bc59-4822-94bb-6e9d68f8f0ca@suse.de> <CAGXv+5GNjKxzHuBn28PbRtbFA1yuJ7h02xDpght4add3emuKJg@mail.gmail.com>
-In-Reply-To: <CAGXv+5GNjKxzHuBn28PbRtbFA1yuJ7h02xDpght4add3emuKJg@mail.gmail.com>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Fri, 18 Sep 2026 15:17:12 +0800
-X-Gm-Features: AcwNN1VfNznx-wGfs8r_CeKKtrEj641j8sqUrt8qB1yK2OIkZ-fPkbPmzPQcswY
-Message-ID: <CAGXv+5FOB9Y3HCt=ydrcUPdo7S92MiJRqsjXAZiW99-3NfYECQ@mail.gmail.com>
-Subject: Re: [PATCH RFT v2 1/5] drm: Split framebuffer pixel offset
- calculation from drm_fb_dma_get_gem_addr()
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Liu Ying <victor.liu@nxp.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-sunxi@lists.linux.dev, 
-	imx@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|AS8PR04MB7541:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff6ad185-ee70-4911-9ac2-08df1555e7d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|7416014|376014|1800799024|366016|921020|10067099003|56012099006|11063799006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	YekhbAqBkS4Glfx0AXmUotkay77KAJk8+/5hfDJR0MPEWM06VSbkQQQNMovY47CpbsaqbXcLM9CH7oN/5v3fgxhll5afyVNpDz1Rqau9SqFccvjAXluNKgyTZZs9WeNNCFX+AnWWTHCj1/+3zFR0HRnY9wEH3mjjgzn2Royh/Buw1eHMCoJBy32yMAJ4IK/NLu4T8GKJ0Urwq7nGs9kOqsPUBTWbvTyP+28n/eUIndvQbPM8mC8baMbYVa/S5/6KlCFBRIWIC2heWnzvoBs2HDp3IF3yZ85WZ3+/YUq9uxpcabiJsJudjec8bgBUCWN+L/V8a5zQh44+mkfOgw2H37sjkQBjclU2VRVavb6vbhhlXwcmBOV3WLLE8jr0YToff7AahA+ZJLXKjaKpZW3AyynKZIkAp/gj47bopX+ctN6peHeGWtLXuATcYl1fZfwsJMKxlQx03wu3RuaMBdJjozq47RT3weLUuVMk+kif+D0pPPKDkmExbuNoISF+RuTg6+GoHHhsPVSSNEMLth+3m5e0UmG4VDg4/IJ7kr+xPwunIGawiLTZ+J9uNzhc9Q3Yg0orlGo1/0Vo94WRRHBtRc6fu15GrGz2ERNYATL26P1q76LBUbrBOM3S9NPGCEEZUZGh1TNLi9pLHomNaVhyMx1OsPPSvIEJBuC2iHGsNG/kc809F4NR6hgCMB7B55MJmNinZs2O7naVHj0Z///N4A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(376014)(1800799024)(366016)(921020)(10067099003)(56012099006)(11063799006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GEUr6c5A1Wclw5WATLpuIOVs7Pr3+6rN1E6HFmyyK36dwG1YjsM1MxeU6n6U?=
+ =?us-ascii?Q?3q9wjNkSx4BcaOZrbIzzL+X0cZycayo9tMKbs+fbzNKm9BF4bTDkly59///c?=
+ =?us-ascii?Q?NTY/zfGd+NPGiSVjIjt31wVYQzVYOQfYSmB0GiIzrX3+b+MSO3alCfU7M9CO?=
+ =?us-ascii?Q?y2J88wBVz1+cS08gzfwgva4AGGE/c2hvI+nh0/DLeX/YBSOgUsGzF8Uagbs9?=
+ =?us-ascii?Q?PYiBsAL2qctpaycMFl9sQZ+C7reMTXUP4FA70WbnZmwTT6/fQHJb2n1SzYSB?=
+ =?us-ascii?Q?CW92o93N45YQlt9sg12AC5JVT0VhXVzvxPbG0D8a0N7ic2VJ0Zzri1gGQaG8?=
+ =?us-ascii?Q?puaqj74s20NRQpTdd+ySqcteAmGBtJiaBdyzfv73IYjmc+AjHkSzCmkI2JXp?=
+ =?us-ascii?Q?kOCwDGJJzcg9ykRKtDU9NLnzgQlEOPWWdj7iws4a+wNlitODuwPZ3KbBoo9+?=
+ =?us-ascii?Q?oQ84sn7DNSUb7ukbdFwfpitOjcSpvYxbQ6fjF9swIFFuaRZH3ZDEgVK5TWZO?=
+ =?us-ascii?Q?Drl0KkWCyyxyHccB54SWTN3szRgoT1wOy958CDIK9cZqMHeU/L82CQfwPqwL?=
+ =?us-ascii?Q?ZZfx2q+zGt+lFGnbzDLjsnZwuw6DXtTwfZ/DYEV2BoHmf9ILyYZTNFvuhGSd?=
+ =?us-ascii?Q?vlE2f3y66wLAeizOgkuLFaYZJrnTUmf7+/btaivt8cWxeG5QEpqIP7312qVY?=
+ =?us-ascii?Q?9u04Kqj3u3ipnXpT+7QSwrN1zSQosZ6somPH+FIzqh2hPx+dfM64IvfCXNgq?=
+ =?us-ascii?Q?sElwG7Zh5zE4KecNHcN4aEH/KQUYhDp26onB9XoDGN/Jub+/cqX1nov5ekRD?=
+ =?us-ascii?Q?JP5ltQyk/02E2C/Pr4obIXg3j0rbhZvrTiU9s05Cn7f+oyjsaQOS0KQluXuV?=
+ =?us-ascii?Q?tSD/XEx27q9b6vnEDMxub82/UV5TB84Z9SM0SwjB1C3GJO5owJMB4vvXoaGz?=
+ =?us-ascii?Q?HheUQLNrdlNIhpGI6FwUJbYQNm8pgnVINc6ugmtuXc7dVC0UFGhWLHmhyZAN?=
+ =?us-ascii?Q?bQboyS/m0s9InqM7poXk5ySFMmy3Wil9TLU5o/JrbFrGbdzIbGypHF5Z4VRd?=
+ =?us-ascii?Q?0qagQ9tCAuNui6PTk/0MShGiOblSzgWqoSRyjlGpd4Azuc/fGYwI1wxBZXeJ?=
+ =?us-ascii?Q?9WVrg9KMzRe/OdLUxZCedGbB7mcdq6KqfK5Os+SpsCBy6cEXfV/3vV92WFve?=
+ =?us-ascii?Q?wdKPHBo2srA8RSEbbGf3gf9bTgjXoQaUgdK+/WPkIq7ckdx/NptCy53op33v?=
+ =?us-ascii?Q?o4TDstnlGnA/6QqaW0a06cJntwmY47mwM5Lm6OtSq7btem5iN3CUi51L6ESo?=
+ =?us-ascii?Q?UAcBYABYQyGf6kKowNu/wKk9BqbT18xQFUzoeu5mLlbJpwff2cnqWG+4xbN/?=
+ =?us-ascii?Q?bdX+LIV08UH5SmbwCBiXSdhSfkQfNeZ/MjLX1GMXHTCydMTWcRq8oVaiikRX?=
+ =?us-ascii?Q?EX6RiZ5l7tGGk1kSOOdKYPPO5mLOmWwa63GaRc85MqvAl8jU71PtszxagjQo?=
+ =?us-ascii?Q?UzsLdIlRwx91ojMf/z23bGw+H244eZzl2zi276ZjNOALrYwCBOx4ksMfM0/k?=
+ =?us-ascii?Q?sm0XG/3Jd0ilnAuF8VqF8KhLqzUT3g4SOC7e51vDspgB5bU3QT1BsgBGMcDw?=
+ =?us-ascii?Q?Nef6+Ta0dJtl6F2gKQ7m0cWG+pNoo4fgTuOLWDfohhNnGdC4AkgHh4ZXiOD5?=
+ =?us-ascii?Q?67lTqlkyvPnuKfWFlUI64b9gQOXGrEl+CkYDOONNmG0S660mQri5xO29l+6W?=
+ =?us-ascii?Q?Z6tni66DzwrGFaFLGUwVBZyBesO4kErSCqB5kFYA/mdj83Hl3g2y?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff6ad185-ee70-4911-9ac2-08df1555e7d4
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 07:24:41.9741
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /DGVCy0/0Xg9nDiwHFknPBO5m6+I3qYs4LRz35+yMJCNtkRRzZ3NrU9CNH61c5MR0J8ygUen12IimZIjg8ghMKV4X/3xL+83NX95HYfHsq2qQxEQ7msXBUX8MDsbleMe
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7541
 
-On Fri, Sep 18, 2026 at 3:06=E2=80=AFPM Chen-Yu Tsai <wenst@chromium.org> w=
-rote:
->
-> On Fri, Sep 18, 2026 at 2:41=E2=80=AFPM Thomas Zimmermann <tzimmermann@su=
-se.de> wrote:
-> >
-> > Hi
-> >
-> > Am 18.09.26 um 06:16 schrieb Chen-Yu Tsai:
-> > > On Thu, Sep 17, 2026 at 11:20=E2=80=AFPM Thomas Zimmermann <tzimmerma=
-nn@suse.de> wrote:
-> > >> Hi
-> > >>
-> > >> Am 16.09.26 um 05:33 schrieb Chen-Yu Tsai:
-> > >>> Currently drm_fb_dma_get_gem_addr() calculates the offset into the
-> > >>> framebuffer memory for the framebuffer's unclipped source coordinat=
-es,
-> > >>> adds that to the framebuffer's backing storage, and returns the res=
-ult.
-> > >>>
-> > >>> We are about to add a variant that uses the clipped source coordina=
-tes,
-> > >>> so there is already some reuse of code. However, calculating the da=
-ta
-> > >>> offset for a given pixel is not specific to the DMA FB helpers. The
-> > >>> offset is only related to the framebuffer.
-> > >>>
-> > >>> Split out the offset calculation into a new framebuffer helper so t=
-hat
-> > >>> non-DMA users can also reuse the same code.
-> > >>>
-> > >>> Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > >>> Cc: <stable@vger.kernel.org> # dependency for next patch
-> > >>> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-> > >>> ---
-> > >>> Changes since v1:
-> > >>> - New patch
-> > >>> ---
-> > >>>    drivers/gpu/drm/drm_fb_dma_helper.c | 28 ++----------------
-> > >>>    drivers/gpu/drm/drm_framebuffer.c   | 45 +++++++++++++++++++++++=
-++++++
-> > >>>    include/drm/drm_framebuffer.h       |  3 ++
-> > >>>    3 files changed, 51 insertions(+), 25 deletions(-)
-> > >>>
-> > >>> diff --git a/drivers/gpu/drm/drm_fb_dma_helper.c b/drivers/gpu/drm/=
-drm_fb_dma_helper.c
-> > >>> index fd71969d2fb1..ab0f37d8a5ff 100644
-> > >>> --- a/drivers/gpu/drm/drm_fb_dma_helper.c
-> > >>> +++ b/drivers/gpu/drm/drm_fb_dma_helper.c
-> > >>> @@ -75,36 +75,14 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_f=
-ramebuffer *fb,
-> > >>>                                   unsigned int plane)
-> > >>>    {
-> > >>>        struct drm_gem_dma_object *obj;
-> > >>> -     dma_addr_t dma_addr;
-> > >>> -     u8 h_div =3D 1, v_div =3D 1;
-> > >>> -     u32 block_w =3D drm_format_info_block_width(fb->format, plane=
-);
-> > >>> -     u32 block_h =3D drm_format_info_block_height(fb->format, plan=
-e);
-> > >>> -     u32 block_size =3D fb->format->char_per_block[plane];
-> > >>> -     u32 sample_x;
-> > >>> -     u32 sample_y;
-> > >>> -     u32 block_start_y;
-> > >>> -     u32 num_hblocks;
-> > >>>
-> > >>>        obj =3D drm_fb_dma_get_gem_obj(fb, plane);
-> > >>>        if (!obj)
-> > >>>                return 0;
-> > >>>
-> > >>> -     dma_addr =3D obj->dma_addr + fb->offsets[plane];
-> > >>> -
-> > >>> -     if (plane > 0) {
-> > >>> -             h_div =3D fb->format->hsub;
-> > >>> -             v_div =3D fb->format->vsub;
-> > >>> -     }
-> > >>> -
-> > >>> -     sample_x =3D (state->src_x >> 16) / h_div;
-> > >>> -     sample_y =3D (state->src_y >> 16) / v_div;
-> > >>> -     block_start_y =3D (sample_y / block_h) * block_h;
-> > >>> -     num_hblocks =3D sample_x / block_w;
-> > >>> -
-> > >>> -     dma_addr +=3D fb->pitches[plane] * block_start_y;
-> > >>> -     dma_addr +=3D block_size * num_hblocks;
-> > >>> -
-> > >>> -     return dma_addr;
-> > >>> +     return obj->dma_addr + drm_framebuffer_get_block_offset(fb, p=
-lane,
-> > >>> +                                                             state=
-->src_x >> 16,
-> > >>> +                                                             state=
-->src_y >> 16);
-> > >>>    }
-> > >>>    EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_addr);
-> > >>>
-> > >>> diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/dr=
-m_framebuffer.c
-> > >>> index d32aceb6ca9b..9e1231162047 100644
-> > >>> --- a/drivers/gpu/drm/drm_framebuffer.c
-> > >>> +++ b/drivers/gpu/drm/drm_framebuffer.c
-> > >>> @@ -1208,6 +1208,51 @@ void drm_framebuffer_print_info(struct drm_p=
-rinter *p, unsigned int indent,
-> > >>>        }
-> > >>>    }
-> > >>>
-> > >>> +/**
-> > >>> + * drm_framebuffer_get_block_offset() - Get offset to start of pix=
-el block for
-> > >>> + * the given framebuffer and coordinates.
-> > >>> + * @fb: The framebuffer
-> > >>> + * @plane: Which plane
-> > >>> + * @x: x coordinate for pixel
-> > >>> + * @y: y coordinate for pixel
-> > >>> + *
-> > >>> + * This function will usually be called from the PLANE callback fu=
-nctions,
-> > >>> + * or from one of the helpers that calculates the framebuffer's DM=
-A address.
-> > >>> + *
-> > >>> + * Return: offset from start of framebuffer to start of pixel bloc=
-k
-> > >>> + */
-> > >>> +u32 drm_framebuffer_get_block_offset(struct drm_framebuffer *fb, u=
-nsigned int plane,
-> > >>> +                                  unsigned int x, unsigned int y)
-> > >> Better use u64 as return type.
-> > > To avoid overflow? Not sure who would use crazy large framebuffers, b=
-ut
-> > > doesn't hurt to play it safe.
-> >
-> > I'd be worried about a malicious user space that tries to access OOB.
-> >
-> > Apart from that, we use u64 for other framebuffer-related sizes like
-> > pitch calculations or dma addresses. Using u64 here would keep that
-> > consistent.
->
-> Indeed. It seemed weird that the helper originally used u32. Maybe it
-> was carried over from CMA on ARMv7, which predominantly only had
-> 32-bit address space data busses?
->
-> >
-> > >
-> > >>> +{
-> > >>> +     u8 h_div =3D 1, v_div =3D 1;
-> > >>> +     u32 block_w =3D drm_format_info_block_width(fb->format, plane=
-);
-> > >>> +     u32 block_h =3D drm_format_info_block_height(fb->format, plan=
-e);
-> > >>> +     u32 block_size =3D fb->format->char_per_block[plane];
-> > >>> +     u32 sample_x;
-> > >>> +     u32 sample_y;
-> > >>> +     u32 block_start_y;
-> > >>> +     u32 num_hblocks;
-> > >>> +     u32 offset;
-> > >>> +
-> > >>> +     offset =3D fb->offsets[plane];
-> > >>> +
-> > >>> +     if (plane > 0) {
-> > >>> +             h_div =3D fb->format->hsub;
-> > >>> +             v_div =3D fb->format->vsub;
-> > >>> +     }
-> > >>> +
-> > >>> +     sample_x =3D x / h_div;
-> > >>> +     sample_y =3D y / v_div;
-> > >>> +     block_start_y =3D (sample_y / block_h) * block_h;
-> > >>> +     num_hblocks =3D sample_x / block_w;
-> > >>> +
-> > >>> +     offset +=3D fb->pitches[plane] * block_start_y;
-> > >>> +     offset +=3D block_size * num_hblocks;
-> > >> User space controls the values in fb->offsets and fb->pitches.  I'm =
-not
-> > >> sure how well they have been validated already at this point. Did yo=
-u
-> > >> investigate this?
-> > > It wouldn't be worse than before, since this changes is purely code m=
-ovement.
-> > >
-> > > There are minimal sanity checks done by drm_internal_framebuffer_crea=
-te()
-> > > in framebuffer_check(), such as offset overflow or pitch size too sma=
-ll,
-> > > but that's about it. It would be up to individual drivers to perform =
-more
-> > > checks that match their hardware limitations.
-> >
-> > Right, makes sense. Looking through the framebuffer validation, a
-> > buffer-size check could be done in framebuffer_check().  But that's
-> > another patch series.
->
-> That's further covered by drm_gem_fb_init_with_funcs(), which
-> drm_gem_fb_create*() goes into. I didn't check all the drivers that
-> implemented their own .fb_create callback though.
->
-> - rockchip uses the GEM FB helpers
-> - MSM reimplements the GEM FB helpers, but does have proper size checks
-> - nouveau has size checks
-> - omap has size checks
+From: Wei Fang <wei.fang@nxp.com>
 
-Side note: it seems that the drivers that reimplement
-drm_gem_fb_init_with_funcs() do so because they need to do additional
-checks on the (sub-classed) GEM objects. Perhaps exporting drm_gem_fb_init(=
-)
-or deconstructing drm_gem_fb_init_with_funcs() could allow more of them
-to use common helpers for things like size checks.
+This patch set adds PTP timestamping support to the NETC switch, so that
+the switch ports can be used for IEEE 1588 PTP synchronization.
 
-> > >
-> > > What sort of issues are you thinking about?
-> >
-> > Again, I'm thinking of malicious user space that crafts these values to
-> > force an OOB access.
->
-> I think we're covered.
->
->
-> Thanks
-> ChenYu
->
-> > Best regards
-> > Thomas
-> >
-> >
-> > >
-> > >
-> > > ChenYu
-> > >
-> > >> Best regards
-> > >> Thomas
-> > >>
-> > >>
-> > >>> +
-> > >>> +     return offset;
-> > >>> +}
-> > >>> +EXPORT_SYMBOL(drm_framebuffer_get_block_offset);
-> > >>> +
-> > >>>    #ifdef CONFIG_DEBUG_FS
-> > >>>    static int drm_framebuffer_info(struct seq_file *m, void *data)
-> > >>>    {
-> > >>> diff --git a/include/drm/drm_framebuffer.h b/include/drm/drm_frameb=
-uffer.h
-> > >>> index 38b24fc8978d..c07aea1cc59f 100644
-> > >>> --- a/include/drm/drm_framebuffer.h
-> > >>> +++ b/include/drm/drm_framebuffer.h
-> > >>> @@ -220,6 +220,9 @@ void drm_framebuffer_remove(struct drm_framebuf=
-fer *fb);
-> > >>>    void drm_framebuffer_cleanup(struct drm_framebuffer *fb);
-> > >>>    void drm_framebuffer_unregister_private(struct drm_framebuffer *=
-fb);
-> > >>>
-> > >>> +u32 drm_framebuffer_get_block_offset(struct drm_framebuffer *fb, u=
-nsigned int plane,
-> > >>> +                                  unsigned int x, unsigned int y);
-> > >>> +
-> > >>>    /**
-> > >>>     * drm_framebuffer_get - acquire a framebuffer reference
-> > >>>     * @fb: DRM framebuffer
-> > >> --
-> > >> --
-> > >> Thomas Zimmermann
-> > >> Graphics Driver Developer
-> > >> SUSE Software Solutions Germany GmbH
-> > >> Frankenstr. 146, 90461 N=C3=BCrnberg, Germany, www.suse.com
-> > >> GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG N=C3=BCrnberg)
-> > >>
-> > >>
-> >
-> > --
-> > --
-> > Thomas Zimmermann
-> > Graphics Driver Developer
-> > SUSE Software Solutions Germany GmbH
-> > Frankenstr. 146, 90461 N=C3=BCrnberg, Germany, www.suse.com
-> > GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG N=C3=BCrnberg)
-> >
-> >
+The NETC switch has no time registers of its own and instead shares the
+PTP time of the NETC Timer, which is a separate PCIe function driven by
+its own driver. The first 3 patches prepare the Timer driver for this
+role: tidy up its 64-bit register access, drop an ineffective reset, and
+export netc_timer_get_current_time() so the switch driver can read the
+current PTP time across the driver boundary in a race-free way.
+
+The switch redirects PTP frames to the CPU through the ingress port
+filter table (IPFT). A few patches harden and simplify the existing IPFT
+and host flood handling first, then enable the ingress port filtering
+lookup by default so PTP filter rules take effect without extra software
+tracking.
+
+On top of that groundwork, the switch driver gains RX timestamping and
+both flavours of TX timestamping. Timestamps are carried between the
+hardware and the driver through dedicated switch tags: the ingress and
+transmit timestamps ride in To_Host tags, and per-frame requests ride in
+To_Port tags. Two-step TX matches a queued skb clone against the
+timestamp response echoed back by the hardware. One-step TX defers the
+Sync frame to a per-port work, where the driver reads a fresh PTP time
+and writes it into the Sync frame's timestamp field, then programs the
+single-step register and transmits the frame so the hardware can add the
+residence time to the correction field on the wire.
+
+Together these changes let standard user-space PTP stacks drive hardware
+timestamping on the NETC switch ports.
+
+---
+v4 changes:
+1. Patch 3: read the PTP time under a module-private timer list guarded
+   by a spinlock instead of the per-device lock, so the getter is
+   softirq-safe and races against Timer unbind are avoided.
+2. Patch 4: initialize ipft_hf_eid in the common per-port init path and
+   shorten the related comment.
+3. Patch 5: drops the rollback. netc_port_set_host_flood() returns void,
+   so the upper layer can't act on failure anyway; just deletes the old
+   entry first, then adds the new one, logging an error if it fails.
+   Commit message expanded to explain why the leak was harmless today
+   but matters for future IPFT users (PTP trap, flow policing).
+4. Patch 7: rename the tstamp handler/queue/helpers consistently, use
+   64-bit jiffies for the timeout, track RX timestamp validity with an
+   explicit flag, reject PTP v1 on TX, and check the tag type before
+   dispatching the two-step response.
+5. Patch 8: rework one-step Sync. Replace the reference-counted onestep
+   context and its skb-destructor scheme with simple per-port state, and
+   drive frame completion from the hardware response frame (To_Port
+   subtype 3) that echoes the request ID, reusing the two-step ID
+   allocator and timeout work.
+6. Improve some commit messages.
+v3 link: https://lore.kernel.org/imx/20260831082335.1184605-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260808032146.2335723-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260728104548.3301214-1-wei.fang@oss.nxp.com/
+---
+
+Wei Fang (8):
+  ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi for 64-bit register
+    access
+  ptp: netc: remove unnecessary pcie_flr() call in probe
+  ptp: netc: export netc_timer_get_current_time() for cross-driver use
+  net: dsa: netc: use entry ID instead of pointer to track host flood
+    rule
+  net: dsa: netc: check return value of ntmp_ipft_delete_entry()
+  net: dsa: netc: enable ingress port filtering lookup by default
+  net: dsa: netc: add PTP two-step timestamping support
+  net: dsa: netc: add PTP one-step timestamping support
+
+ drivers/net/dsa/netc/Kconfig          |   2 +
+ drivers/net/dsa/netc/Makefile         |   3 +-
+ drivers/net/dsa/netc/netc_main.c      | 187 ++++--
+ drivers/net/dsa/netc/netc_platform.c  |   1 +
+ drivers/net/dsa/netc/netc_ptp.c       | 849 ++++++++++++++++++++++++++
+ drivers/net/dsa/netc/netc_switch.h    |  67 +-
+ drivers/net/dsa/netc/netc_switch_hw.h |   5 +
+ drivers/ptp/ptp_netc.c                | 136 +++--
+ include/linux/dsa/tag_netc.h          |  38 ++
+ include/linux/fsl/netc_global.h       |  10 +
+ net/dsa/tag_netc.c                    | 228 ++++++-
+ 11 files changed, 1402 insertions(+), 124 deletions(-)
+ create mode 100644 drivers/net/dsa/netc/netc_ptp.c
+
+-- 
+2.34.1
+
