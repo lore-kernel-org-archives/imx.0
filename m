@@ -1,123 +1,129 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A814A7CB8
-	for <imx@lists.linux.dev>; Thu, 17 Sep 2026 23:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A26514A60F
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 01:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.86.107.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789687794; cv=none; b=WrEXTed+Rok3IpN0YI0hpbFbulCSbWFTxBOj7b8gZUaer4h3cQyYbDnBcKlwekTLNQ0dLVkidx1qqlM5PwC2/xn4pRvMRwo7T6fTH9k9HJCi69ikImFTGut6o+fHUaKq65XwmDiMP4AtYMWHrKvOld3RDReMPxOqO8MEe4Vytqw=
+	t=1789693421; cv=none; b=Hhzq9W2M1Flryyvx5SthqlUU7IS6++vcyEJOyqbzyAfbGjpd2e9+nNIdzS3kPIigHDo3ECc2KWuui/lXUVuGtrr8pASy8I3aibK9LEwcVctPt8f6gJZI6Z43Xt1ID9urbfVVSNOs3nF94FEkLePzgN4JVES6EC+WIR/BhQea0Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789687794; c=relaxed/simple;
-	bh=+wThaceYaumvqrlLGJjmaCxwCmZqb2Yg8iLHvDJDlWs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DUJ6CYa4EcDNbcYhjJ3Cdnjra1N4jfk/4ScF8DdzydaK24QL0jxrhKpG+zAC/VlUPbkGphfFPb/JihPvQM8SUJrDWzbK05VoLfRzlUKwm4rwaOuXH7QwccSidf6qxdGNemg52c/1ihEIWd8OMhChtiSL11h58RcP5dDq8PIqSH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=B5p+Xnzi; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1789693421; c=relaxed/simple;
+	bh=yN5/puUu5kAn5/8diA4dXdaq6UeSbdmNGtqMTj4BKlM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BsM0dE8nLPzw1J5gTBFRhDk/o9MVvVrlnoTr4IkIpysnIADg8RnDGaOdahVFsuii0OwRqZBKDIT5/Kl5+4mb1NtlhWGqcFKDxyYlIg/QGAZBLwoIKecZL/CbSSX5doma9LJsdUaGGmgKugNLrq+lDlNaKX86cLynECIvZvbhF8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net; spf=pass smtp.mailfrom=rendec.net; dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b=x84tZeJv; arc=none smtp.client-ip=80.86.107.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="B5p+Xnzi"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B7772104FC5;
-	Fri, 18 Sep 2026 01:29:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1789687779;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=jb9kTzrVW1dq0qOxk5XiOXPRymJIq91r5cgA7YkMm+E=;
-	b=B5p+Xnzi4qADShABAWEd3PEzfS9gkwIDd+59N4VPaniiqPy/VFxBgd66qYcg6beuNcMME7
-	BIcBBzPE0j/deTNpIB23YuOBllZDNcnCO1SD2MQjGzVcVSseOjaW9IdWKT2ff5HB8e165h
-	e6SZe2d0WHus7klHCkcFDvc1fU7HI0iZPLB/hYeLYxvJAqs2/PZq6HRss3xDgjAECMBFB4
-	1y7r6ot4gs83AX2A0CRRIbNLoPIjy8V2PM0AFpDEGBQikXbufe1YQ6AJ7kMFLyJ/EtCQ7C
-	NttVKw4HqNRWRbThJQ5gyAv0Oe1Uu2QYOpjN5c+DCeHw5fBEto+WaznvKd3Rjg==
-Message-ID: <c1197d8e-add5-48b7-b0ba-a5a91379ab04@nabladev.com>
-Date: Thu, 17 Sep 2026 20:55:56 +0200
+	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.b="x84tZeJv"
+Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
+	by mail.mindbit.ro (Postfix) with ESMTPSA id D0074CFAD5;
+	Fri, 18 Sep 2026 04:03:27 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro D0074CFAD5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
+	s=default; t=1789693409;
+	bh=X57XoeYxAuPO1Rrv4CMmFF0duv/vOAGxDNYQKdW8eSM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=x84tZeJvg2/bP+YV0TWLLo2a+HMmQS0shAdbmLy7WjiyfmXp/JEbmzciziIYf0Uzx
+	 qKiWFBpjBme2qQ2fKKuuPe/0LW7Uz6NCApknqbrqASBFCyjsO7BXZXVPYaF0AuV6Wk
+	 tfOC8jN4EZcwVU7MLFuwXKhLykB0ybPmkzSL8iwviZbNofLXGEMIbDjoDKbXDFSR9K
+	 0BVQcrAnIweawx+JtNy+t5XvXak/ZEK8A/jQMvWX5QFDZiyCh6eypGY74bgX3PYlEI
+	 gCohEVwtpcTUlYtfIhAqGYzZ4QKAqj7Mg7wMPLOQa5qk7EAL+UjBkr6MRdBwD2y38g
+	 +YdPz+laH/Mmw==
+Message-ID: <9501485b133250d9041d90dbd2c6d6deb2aaf3e9.camel@rendec.net>
+Subject: Re: [PATCH] irqchip/imx-intmux: fix runtime PM teardown on remove
+From: Radu Rendec <radu@rendec.net>
+To: Guangshuo Li <lgs201920130244@gmail.com>, Thomas Gleixner
+ <tglx@kernel.org>,  Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Joakim Zhang	
+ <qiangqing.zhang@nxp.com>, Marc Zyngier <maz@kernel.org>, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Cc: stable@vger.kernel.org
+Date: Thu, 17 Sep 2026 21:03:25 -0400
+In-Reply-To: <20260914134211.1734163-1-lgs201920130244@gmail.com>
+References: <20260914134211.1734163-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, robh@kernel.org,
- Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org,
- Oliver Hartkopp <socketcan@hartkopp.net>,
- Oleksij Rempel <o.rempel@pengutronix.de>, linux-can@vger.kernel.org,
- Vincent Mailhol <mailhol@kernel.org>, devicetree@vger.kernel.org
-References: <20260917062543.534416-1-marex@nabladev.com>
- <20260917062543.534416-3-marex@nabladev.com>
- <20260917063512.C71F51F000FF@smtp.kernel.org> <aqwbBQUSfd60nVeI@SMW015318>
- <384c5f71-d5ab-4990-9567-027605457439@nabladev.com>
- <aqw1agBrSjYoy71_@SMW015318>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <aqw1agBrSjYoy71_@SMW015318>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/17/26 8:46 PM, Frank Li wrote:
+On Mon, 2026-09-14 at 21:42 +0800, Guangshuo Li wrote:
+> imx_intmux_probe() enables the IPG clock and then drops its runtime PM
+> reference with pm_runtime_put(). With CONFIG_PM enabled, the runtime
+> suspend callback disables the IPG clock. With CONFIG_PM disabled, the
+> clock remains enabled after probe.
+>=20
+> imx_intmux_remove() accesses the CHANIER registers without first making
+> sure that the device is runtime active. The device may therefore be
+> runtime suspended with the IPG clock disabled when these registers are
+> accessed. In addition, the remove path only calls pm_runtime_disable()
+> and does not balance the clock enable when CONFIG_PM is disabled.
+>=20
+> Resume the device and acquire a runtime PM reference before accessing
+> the registers. If resume fails, skip the register accesses but still
+> tear down the chained handlers and IRQ domains. Disable runtime PM
+> afterwards, drop the acquired reference without triggering another
+> runtime suspend, and explicitly disable the IPG clock.
+>=20
+> This keeps the clock enabled while the hardware registers are accessed
+> and balances the clk_prepare_enable() performed during probe for both
+> CONFIG_PM configurations.
+>=20
+> This issue was found by manual code inspection.
+>=20
+> Fixes: bb403111e017 ("irqchip/imx-intmux: Implement intmux runtime power =
+management")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+> =C2=A0drivers/irqchip/irq-imx-intmux.c | 15 ++++++++++++---
+> =C2=A01 file changed, 12 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-i=
+ntmux.c
+> index 47c2681d138a..de2a8f98f625 100644
+> --- a/drivers/irqchip/irq-imx-intmux.c
+> +++ b/drivers/irqchip/irq-imx-intmux.c
+> @@ -288,12 +288,16 @@ static int imx_intmux_probe(struct platform_device =
+*pdev)
+> =C2=A0static void imx_intmux_remove(struct platform_device *pdev)
+> =C2=A0{
+> =C2=A0	struct intmux_data *data =3D platform_get_drvdata(pdev);
+> -	int i;
+> +	int i, ret;
+> +
+> +	ret =3D pm_runtime_resume_and_get(&pdev->dev);
+> +	if (ret < 0)
+> +		dev_warn(&pdev->dev, "failed to resume device: %d\n", ret);
+> =C2=A0
+> =C2=A0	for (i =3D 0; i < data->channum; i++) {
+> =C2=A0		/* disable all interrupt sources of this channel */
+> -		writel_relaxed(0, data->regs + CHANIER(i));
+> -
+> +		if (ret >=3D 0)
+> +			writel_relaxed(0, data->regs + CHANIER(i));
+> =C2=A0		irq_set_chained_handler_and_data(data->irqchip_data[i].irq,
+> =C2=A0						 NULL, NULL);
+> =C2=A0
+> @@ -301,6 +305,11 @@ static void imx_intmux_remove(struct platform_device=
+ *pdev)
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	pm_runtime_disable(&pdev->dev);
+> +	if (ret >=3D 0) {
+> +		pm_runtime_put_noidle(&pdev->dev);
+> +		clk_disable_unprepare(data->ipg_clk);
+> +		pm_runtime_set_suspended(&pdev->dev);
+> +	}
+> =C2=A0}
+> =C2=A0
+> =C2=A0#ifdef CONFIG_PM
 
-Hello Frank,
-
-[...]
-
->>>>> +	reg_panel_vcc: regulator-panel-vcc {
->>>>> +		compatible = "regulator-fixed";
->>>>> +		regulator-min-microvolt = <3300000>;
->>>>> +		regulator-max-microvolt = <3300000>;
->>>>> +		regulator-name = "PANEL_VCC";
->>>>> +		gpios = <&i2c2_gpio_expander_20 17 0>;
->>>
->>> gpio third arg 0, means GPIO_ACTIVE_HIGH
->>>
->>> 	so need enable-active-high
->>>
->>> if your boards have invertor should use GPIO_ACTIVE_LOW
->>
->> I already went through all that, please see "Re: [PATCH 3/3] arm64: dts:
->> imx95: Add support for Data Modul i.MX95 eDM SBC" .
-> 
-> at https://lore.kernel.org/imx/f4dbeaac-ab10-4980-9fc5-533907be223c@nabladev.com/
-> 
-> <&i2c2_gpio_expander_20 17 0>;
->                             ^
-> 
-> 0 should use predefine MACRO, after I check 0 means GPIO_ACTIVE_HIGH.
-> 
-> so need enable-active-high for regulator.
-
-This is extended via a DTO, so no, I must not use a macro because I do 
-not know the polarity of this signal, that is why there is 0 here.
-
-The enable-active-high DT property must explicitly NOT be here, because 
-the DTO can not remove properties from the base DT. Adding 
-enable-active-high here would make the DTO unable to operate this signal 
-as active-low .
-
->>>>> +	tas2552: audio-codec@40 {
->>>>> +		compatible = "ti,tas2552";
->>>>> +		reg = <0x40>;
->>>>> +		#sound-dai-cells = <0>;
->>>>> +		avdd-supply = <&reg_1p8v>;
->>>>> +		iovdd-supply = <&reg_3p3v>;
->>>>> +		vbat-supply = <&reg_5p0v>;
->>>>> +		enable-gpio = <&i2c2_gpio_expander_20 23 GPIO_ACTIVE_HIGH>;
->>>>
->>>> [Severity: Low]
->>>> This isn't a bug, but should tas2552 be using the enable-gpios property name
->>>> instead of the deprecated enable-gpio? The patch changelog mentions replacing
->>>> gpio with gpios DT properties.
->>>
->>> Please fix this one.
->>
->> No, this is correct, see
->>
->> Documentation/devicetree/bindings/sound/ti,tas2552.yaml:  enable-gpio:
-> 
-> It is fine now, I suggest update bindings to allow both. which convert
-> by Rob at Jan 2026. I think Rob may miss it.
-> 
-> kernel hack code covert -gpio to -gpios
-I'll add that into my todo, but that is a separate fix from this DT.
+Reviewed-by: Radu Rendec <radu@rendec.net>
