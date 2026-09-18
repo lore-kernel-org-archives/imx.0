@@ -1,125 +1,87 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247E44D0CE4
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 10:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2094D6C57;
+	Fri, 18 Sep 2026 10:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789728281; cv=none; b=BgHHJJkzI3f6OdOreIXSQqEOCBn/NeeMNXm5rn7T02rPvsyUayTo5xqMHarjeZ2yYsmzA9hHEgLW2oSyjoMVjpEeUFCHU5/HvbCTIi5RI5jnJekdiodKdWIp4O/8ETRkJtOK2heImxuTn/e7e7DvdQ2vVkcP10kYNV3EoZMcWJ0=
+	t=1789728779; cv=none; b=r+uM5DvDmcCvMUuEECr+6SDkG49iKXkg0LHvpccjtC0Ai9jahI7pP6oj7VMIpnQxLVGJO+dOx+p/yqSLmF1c7ybtW2/osxtEIrjl6GbEekRODInVGew5vZp+hZgOlrkIvaqMmyrCZKlypUAN8+oxZbkCFVM4GV8SCycuaL0myFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789728281; c=relaxed/simple;
-	bh=F6TvpcEVosqVPYmYYk2zyN5vocsuBaY0vDUb/g4fM9Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nK/6ZBsKqQTJdJwvry+nowrCFSjwzOQ/Raz51SaS8A7PMa3mUJq0u1YjfSK4z1TyGZd2zhVPyqj4v9PNQVytQlMwBYrGMFp0tIVDsvWEipKapOzE2pAg2UHnctNC2kZRagsaaJHNnVHtb3bgHjJSxyXyWYIV5pBL+erW2F4fTjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AnhH/oE2; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1789728779; c=relaxed/simple;
+	bh=8LjUBctDOdkqwNy5lqShtcRqVEPWpZfDy1VVDCImrDU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=YCr2fAObXUHmHKEwK8E2sFEq6YUW/Yk3zyYjTyaOi+CK02ziiIo4GOe7XeYdpBmWuV7mEaw5fiestCgdT60iAXs+Lh5dRqOY+FJ/5GH2TBR6KbTz9XeOwFrV7TGUbKpO+QbSD+X1YB1DJ3oCcg60W6k8gKTC779tJPMCckruxjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGEaFveR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AnhH/oE2"
-Received: from ping.linuxembedded.co.uk (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2A7564F07;
-	Fri, 18 Sep 2026 12:42:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1789728165;
-	bh=F6TvpcEVosqVPYmYYk2zyN5vocsuBaY0vDUb/g4fM9Y=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=AnhH/oE2XOJ3Jhxmu7HdEKMMIjTcKMzZsrzIasIBLMSNJCv9a1rw2L1pXeSnEOMTp
-	 n6mE/tLr3BZdQ0OVugoqrdxvGd3KB33cpBo8CdMP+6qZAiWZfztFctaBWT/KZeYnWa
-	 X/ilA5/ogcWIMR7qu/AKEGD/uwbyfANa4JkzrXlY=
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Date: Fri, 18 Sep 2026 11:44:18 +0100
-Subject: [PATCH v6 6/6] dt-bindings: media: i2c: himax,hm1246: Use
- video-interface-devices
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGEaFveR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840A11F000FF;
+	Fri, 18 Sep 2026 10:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789728777;
+	bh=UCFl7Vnd1+TIKP75zGllFhcSMQBL7lUR2IPGdFHAkHg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OGEaFveRjTUS0XmF9WxCnBcdbgmaX6A+EWZQfAWHwxf2Yeq6Aa+TzmcXs7PlWzb5f
+	 tA3zyGAJWI684you92cFJp+zjbzqjLXIholmfBAjINma1SiKNcKvg8B8qF1ASFhG4f
+	 4u/1LLhF3Ut47ghU+/fm80ou9ic9fNN1K4v1dksqIynhYNubVXNaIURd2UOICD8J8n
+	 neoQ1a7W52JjN5+xQk63DeJVUfWvx1vdg8u31NIcw1Zn7HO5FoGiYYrNdf054lOLkF
+	 z/bsly/CtJYZ6WPtJ/7T2w+yrQVHoCtpqGfxx8hbKKtFUiIzCh59iTiBacSlmhd8Zm
+	 s9l7b3c6FEQYQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 2/6] arm64: dts: qcom: Convert to new media
+ orientation definitions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kieran Bingham" <kieran.bingham@ideasonboard.com>
+Cc: wsa+renesas@sang-engineering.com, imx@lists.linux.dev, media-ci@linuxtv.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org
+In-Reply-To: <20260918-kbingham-orientation-v6-2-5e8b1f01be29@ideasonboard.com>
+References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
+ <20260918-kbingham-orientation-v6-2-5e8b1f01be29@ideasonboard.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Sep 2026 10:52:55 +0000
+Message-Id: <20260918105256.840A11F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-kbingham-orientation-v6-6-5e8b1f01be29@ideasonboard.com>
-References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
-In-Reply-To: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>, 
- Matthias Fend <matthias.fend@emfend.at>, 
- Mikhail Rudenko <mike.rudenko@gmail.com>, 
- Daniel Scally <dan.scally@ideasonboard.com>, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
- Michael Riesch <michael.riesch@collabora.com>, 
- Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
- Sylvain Petinot <sylvain.petinot@foss.st.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Paul Elder <paul.elder@ideasonboard.com>, 
- Martin Kepplinger <martin.kepplinger@puri.sm>, 
- Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
- Tommaso Merciai <tomm.merciai@gmail.com>, 
- Svyatoslav Ryhel <clamor95@gmail.com>, 
- Richard Acayan <mailingradian@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux@ew.tq-group.com, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-tegra@vger.kernel.org, 
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789728257; l=1278;
- i=kieran.bingham@ideasonboard.com; s=20260207; h=from:subject:message-id;
- bh=zj0TRPd2r+l+CPw8KXOYUgmrO4GRMVVMAHrTLWUo4iY=;
- b=Hr6H/4uJ2Ofm5pjTJhZRU6jZzp9KXp8SsSLerp3e166U5M1d90/cFvvGs5guDRBlHx+joE/ec
- nf3mQVJ4lxnBPnrBMrnIqA9Yx+RgDsgC3UQc+I8me1Uv3ykqmv5j6Z/
-X-Developer-Key: i=kieran.bingham@ideasonboard.com; a=ed25519;
- pk=FVXKN7YuwHc6UtbRUeTMAmranfsQomA+vnilfglWdaY=
 
-From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] dts: qcom: missed orientation refactoring in sm8250-xiaomi-elish-co=
+mmon.dtsi
+--
 
-The orientation property for video interface devices now has definitions
-to prevent hardcoded integer values for the enum options.
+commit 118cb3cedc7acc66e33f7606b5faf0d2f7c8525a
+Author: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 
-Update the example binding documentation.
+arm64: dts: qcom: Convert to new media orientation definitions
 
-Signed-off-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+This commit updates users throughout the Qualcomm device trees to use the n=
+ew
+media orientation definitions. It replaces hardcoded integer values with the
+new enum options.
 
----
-v6:
- - Actually use the correct orientation!
----
- Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Update the users throughout the qualcomm device trees to use the new
+> definitions.
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml b/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
-index a65488fcc643..9994105552e7 100644
---- a/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
-@@ -86,6 +86,7 @@ examples:
-   - |
-     #include <dt-bindings/gpio/gpio.h>
-     #include <dt-bindings/media/video-interfaces.h>
-+    #include <dt-bindings/media/video-interface-devices.h>
- 
-     i2c {
-         #address-cells = <1>;
-@@ -103,7 +104,7 @@ examples:
-             iovdd-supply = <&hm1246_iovdd>;
-             dvdd-supply = <&hm1246_dvdd>;
- 
--            orientation = <2>;
-+            orientation = <MEDIA_ORIENTATION_EXTERNAL>;
-             rotation = <0>;
- 
-             port {
+[Severity: Low]
+Does this refactoring miss the orientation property in arch/arm64/boot/dts/=
+qcom/sm8250-xiaomi-elish-common.dtsi?
 
--- 
-2.52.0
+arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi:camera_front {
+    ...
+		pinctrl-0 =3D <&cam_mclk3_default &camera_front_active>;
+		pinctrl-names =3D "default";
 
+		orientation =3D <0>; /* Front facing */
+		rotation =3D <270>;
+    ...
+}
+
+It looks like this file still uses the hardcoded integer instead of the new=
+ly
+introduced MEDIA_ORIENTATION_FRONT definition.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918-kbingham-o=
+rientation-v6-0-5e8b1f01be29@ideasonboard.com?part=3D2
