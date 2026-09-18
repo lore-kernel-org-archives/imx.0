@@ -1,126 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6108550B404
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 15:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D28650E58C
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 15:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789746494; cv=none; b=uKijgKhc74VBk6xPOyLCiZCDHPpCJMFR9rfMODBKEdEmTWPx/a32ofdbgb4o520I616px+UogUz0Pit0wpgn86NMXsruKXbhcSLjE8YzY3uiQf89FmPfkWvoDcoUDoKH1+zDz2pdZB2SIG2jatNqe0C5w96SJvu4E+b5JLHoO2o=
+	t=1789746878; cv=none; b=BPCrV+Q9tRSb3K5+6Ipwo4Vv6oUFWBGT3NT/6uqJsl1oPn/p0egyfPvAavxtZcGyg4ERwh6TGZlxwdE1Xi8GItLA4bOmq6aLjf5UroztFDVZbvLp+hfvy5/HWtAnoyVfVxADijVVe0rBVweeCzi3jg+QrClbcJdXnJerEWRHtRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789746494; c=relaxed/simple;
-	bh=Jk7UIenqndZsnauLbZWAcWqUs+CZ5N7UY9oT1SDo7Ww=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Xkh8WDzHbXkvfXr+ht+uwUZqqg1F3XKVyF8AtljW/UjrMzYUJX1ZZDtLZAhhpH3vnsK+ZrYTBVzioXMHD4V5xvwyORYEILcWdL82kFLcBvN1B8ol77ZlRcn7TFYim2CqgWRp5iHhjiL7hOHwT7tfM9ZMh9sxzRJJQtrsiS1fPJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsLxb4Pr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789746878; c=relaxed/simple;
+	bh=vnibq2jyCCC3IOg4Uxm2dHT0eG7ETbRhFgTe5l/Ddz4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MhsSlQdkmnIqGWCOn7G8f3JrrJBTVB1MsAnYO8PMHBFjOAHbcIBdyAHDsRWN9YQ8jETC8uLpIb9BNG21uzDFTdF94oXIUBDJ+ganU4O0kVJo2KwUK/S743kP1wfU+KQsD8KFoxvcRxpm3VqAvF/30CDBEsW5gQiT/LUEpI0cPSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNY2knEj; arc=none smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsLxb4Pr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05EE1F000FF;
-	Fri, 18 Sep 2026 15:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789746493;
-	bh=EjZhqzJyQhMArQYgh9iNLy7YBgaRjJ7zTswjN7I8TEY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XsLxb4PrwqnYsA95adorC9nH0eHagfZY70RbUw61e8GfMfwJtGe6absHoqe7NaJ5H
-	 fm4WFk9QJa/7dy7RIU9r2fjKPBugQeDiGbbOMtxoFwsc9PNTij13MxizouhmLw4lU/
-	 IWGJplkieuUfkwBhGvxnXKYxTny83QAvTULLkF/UiNEgohSFK5ZHZDYDIjuHRYCFCh
-	 2vCmpyDaNiOYMJ6kBAxNJbEClbM1S1JopgpG7/bxPrDE3NTHSExjxfrXO0jfJC2EmL
-	 kLQEeqagjSN6cbYsjE0+7zrh0ZqYQ6XBDa7VrkqmhiZD4K747GIsVh2le1DwVpyRzf
-	 WwWQwmHSEPC3A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/1] mmc: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20260918152349.2101305-1-Frank.Li@oss.nxp.com>
-References: <20260918152349.2101305-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 15:48:12 +0000
-Message-Id: <20260918154812.C05EE1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNY2knEj"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-868cfc5c244so573285b3a.3
+        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 08:54:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789746877; x=1790351677; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gkZT5+6MT1neXTSrRW8cuNq+wdvBlgmd5gXT5DoC4rY=;
+        b=GNY2knEjNWLEnBy0HccxITNjpdyGpmutV+amkEt6fksrSarmSaLeA348ns89NBVqP6
+         Kut/29Vc614MD+7mXOeoTg7DCqDCpTthDvKC+RKP4F7pIFHkI2kYYoJvs6plTesbTgVo
+         f518R09wXviEdclcGUPfW64MBORFo/9FAhYoTYKg2YXAO1axrxBL5poF36JvGTC5vp6h
+         r0TOQLgPEA5Odi1+deub/NfRuibAajRHywI/ljJksunayRRbEgcxCX0wA1jQ55tvLk8g
+         1oH3MGNWkoANDeCkSywyOPCMozuRFaey9r2u/5VsX2pMSVmGeHmhhCJ7hisfdlBhczSw
+         ET5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789746877; x=1790351677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gkZT5+6MT1neXTSrRW8cuNq+wdvBlgmd5gXT5DoC4rY=;
+        b=dE2bqgLaDzz8JXkUhCAU7DoiYa5a5RjdxKLu+ZnIILxvYi/VdW/xMrbMxLxVwmq8/K
+         dkVzvvCEEX9WsgPKjifCG7XZe/CUiCCTjujTYYTR5vdkJPW8R6HmPAvsC6Liq9PahK7K
+         Lzy9QfbpAgKcFRzEEy0YGkxDP2laEagtO5dTXruqG/2g1XJAlO+yWdTSSqiR4v5kkrk3
+         tShb3F3o3ZHImi4rLvv4qCYjSjZBfuiLLBlknwag/uXtDMQUMtAkpFp39sceWdgOgepL
+         FjAsAsfEVhKf5O5/yXYv5M45A7cg8fWOiKH8qg3Zi/Uvd4hukQDaMaEdtPtObrsG+ynU
+         QH0g==
+X-Forwarded-Encrypted: i=1; AKwUvByQrvzqbsPEzHFL6YHHYBkPHCxLoR3EZw1O1Jxfs3LJoGKbDcsEVSwE4e9ErVQ4ILmnIjY=@lists.linux.dev
+X-Gm-Message-State: AFuF++mj/8gbqfoONgNL+jk2ho+gZEWyiB2GpdjB4R431sSnaGGDWf+3
+	n2qJXafQ4qHBjUuJuPQB5gcezq971++zH/y+7Ltt9dlQPRWJrtICC2EK
+X-Gm-Gg: AYBFou397MWCPOjcax6a9gJXI9kwo+DejjKb8ddDVPixzZotdYk1C+BtGenATecEOVK
+	sukthQYeLh46lvZrS+2/yw7Db46h2O60/nPoLFw0NiExageXNVnvxiYVivYTPz3PjOFdU3HYH2L
+	Nn98OHYAYJre4VQQ5qVU3YycbLaHiyTfOVAHdGmSOasts/Ymz9iuy/jyPqR33PsPHoCH7agirvz
+	a2M9nxKJkdk0CX+CS3ezMOL5/BiT+7VU0OcnUQQvTGWxCk8cT1Xo0qL1FmExbKK07iZ06FFGMHd
+	y+xpB+XjEMgKt8vXYxSXXgvsZbOVetSc+TjqVgf+saBVakB5qyMA4W54tGHYFNZAWFXKPeQ3Tye
+	wumZDmf4HxDt4glKPgzR1OMzlbjIpUBpZoM2OX/CxTx63NT95uKJZTlLx4Evv7YD4lFXHUUVX6B
+	AvppV4QnDh7X7uuRPsO3N8D8ablUCVn/HucNoIFM8jg8e8l4m+mlUJ7nue3WZh+y+6y+rbpPUfz
+	Q7ItpNupHSSXC4o
+X-Received: by 2002:a05:6a00:90a9:b0:874:705d:f64a with SMTP id d2e1a72fcca58-874decf71f5mr5476461b3a.44.1789746876763;
+        Fri, 18 Sep 2026 08:54:36 -0700 (PDT)
+Received: from SGN-LDSENG.tasernet.com ([2405:4800:5cc3:11a:1ac0:4dff:fe8b:4a69])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-875dd8dfa1csm1091058b3a.46.2026.09.18.08.54.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 08:54:36 -0700 (PDT)
+From: Cong Nguyen <congnt264@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-rtc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rtc: mxc_v2: fix wake IRQ leak on probe failure and remove()
+Date: Fri, 18 Sep 2026 22:54:29 +0700
+Message-Id: <20260918155429.2549137-1-congnt264@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] mmc: mxcmmc: NULL pointer dereference in mxcmci_setup_data fallbac=
-k to PIO
-- [Medium] mmc: missed device->dev conversions in omap.c and mxs-mmc.c
---
+dev_pm_set_wake_irq() in probe has no matching dev_pm_clear_wake_irq()
+anywhere -- not on later probe-failure paths, not in remove(). Switch
+to devm_pm_set_wake_irq(), which registers the clear automatically on
+every exit path.
 
-commit fac187edba18928bfcb50c068ba67dea2103d2aa
-Author: Frank Li <Frank.Li@nxp.com>
-Subject: mmc: use dmaengine_get_dma_device() instead of chan->device->dev
+Fixes: fbc5ee9a6955 ("rtc: mxc_v2: use dev_pm_set_wake_irq() to simplify code")
+Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/r/20260914134826.EC26D1F000FF@smtp.kernel.org
+Assisted-by: LLM
+Signed-off-by: Cong Nguyen <congnt264@gmail.com>
+---
+ drivers/rtc/rtc-mxc_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch replaces direct dma_chan::device::dev access with the=20
-dmaengine_get_dma_device() macro across the MMC subsystem. This change=20
-prepares the subsystem for making the DMA engine provider data structures=20
-private.
+diff --git a/drivers/rtc/rtc-mxc_v2.c b/drivers/rtc/rtc-mxc_v2.c
+index a07acbbcfaeb..7080aaf9ffa0 100644
+--- a/drivers/rtc/rtc-mxc_v2.c
++++ b/drivers/rtc/rtc-mxc_v2.c
+@@ -302,7 +302,7 @@ static int mxc_rtc_probe(struct platform_device *pdev)
+ 		return pdata->irq;
+ 
+ 	device_init_wakeup(&pdev->dev, true);
+-	ret = dev_pm_set_wake_irq(&pdev->dev, pdata->irq);
++	ret = devm_pm_set_wake_irq(&pdev->dev, pdata->irq);
+ 	if (ret)
+ 		dev_err(&pdev->dev, "failed to enable irq wake\n");
+ 
+-- 
+2.25.1
 
-> mmc: use dmaengine_get_dma_device() instead of chan->device->dev
->
-> Replace direct dma_chan::device::dev access with the proper
-> dmaengine_get_dma_device() for consumer API
->
-> chan->device->dev is not always the device used for DMA mapping.
-> Some DMA engines support per-channel IOMMU mappings, so different
-> channels may use different DMA devices.  dmaengine_get_dma_device()
-> returns the correct device for each channel.
->
-> This also prepares for making the DMA engine provider data structures
-> private. DMA consumers should not access DMA engine internals directly.
->
-> Assisted-by: LLM
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->
-> ---
-> Change in v2
-> - find more place, which use device->dev for dma mapping. This time should
-> clean all.
-
-[Severity: Medium]
-Does this patch catch all instances across the MMC subsystem?
-
-The commit message mentions this should clean all occurrences, but there
-appear to be remaining direct chan->device->dev accesses in
-drivers/mmc/host/omap.c (e.g., c->device->dev in mmc_omap_prepare_data())
-and drivers/mmc/host/mxs-mmc.c (ssp->dmach->device->dev in mxs_mmc_probe()).
-These will likely cause compilation failures when the DMA engine fields are
-actually made private.
-
-[ ... ]
-> diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
-> index 097498a3f8ff4..c20cff770395e 100644
-> --- a/drivers/mmc/host/mxcmmc.c
-> +++ b/drivers/mmc/host/mxcmmc.c
-> @@ -290,6 +290,7 @@ static int mxcmci_setup_data(struct mxcmci_host *host=
-, struct mmc_data *data)
->  	unsigned int datasize =3D nob * blksz;
->  	struct scatterlist *sg;
->  	enum dma_transfer_direction slave_dirn;
-> +	struct device *dma_dev =3D dmaengine_get_dma_device(host->dma);
-
-[Severity: High]
-Will this cause a NULL pointer dereference if the driver falls back to=20
-PIO mode?
-
-In mxcmci_probe(), if dma_request_chan() fails, host->dma is set to NULL to
-fallback to PIO mode. However, in mxcmci_setup_data(), we now unconditional=
-ly
-initialize dma_dev by calling dmaengine_get_dma_device(host->dma) before the
-!mxcmci_use_dma(host) check happens. This macro dereferences the channel
-pointer to access chan->chan_dev->chan_dma_dev, which will crash upon the=20
-first PIO data transfer if host->dma is NULL.
-
->  	int i, nents;
-> =20
->  	host->data =3D data;
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918152349.2101=
-305-1-Frank.Li@oss.nxp.com?part=3D1
