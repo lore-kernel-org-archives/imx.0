@@ -1,153 +1,185 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC59D44237B
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 20:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51396522EFA
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 20:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789762522; cv=none; b=PMCVZQgGh+kw3cVgGF3ozUFBNuoTdXENjIoO0f4J8Tf2vCOVsocro5WXi+/47apOAq/LJL0+YRqsD4XgvgqvszS71tjoX8f4cKiD7/U0TZwD+o0koYmqdoo8v1I3ht25DlAue8CjjbMuUWvtPrajGtH2Ds0X31EcZexhmx+sNfM=
+	t=1789763994; cv=none; b=K05RYIVIo5b62iFaIDdyL3eFYncAJEpa6WvGmuKXYOQqGaE4RDmuQ8V0Yl750KXh63Aiofi38g05nBAE1NWnZ9CX7p6+jhpxmOPA5SCh6SC6lAuiFYq2hYBklpQ0CQd0lvx25crNojEizCG+/YdJ8PF/cyW93elEPWWHpJNX2iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789762522; c=relaxed/simple;
-	bh=IihQtvlu3mM7DoVd4/V7ME+mCuTIcJBZbRiO8v34YNE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mBVMkQ700TvCZs+Hd8mPS8dE8ZCb/2eHnQ2cJ1/fBTcHvdNi5NJp1XGA+DhB2rUuJuf6Vqoia8EBrx5UM7FczOjDIEkMYUYzYsVoI2FE4lC3CJlVe+70fJcP8v1frscJKr28ZGR/ciEOBIf+4c3mga1gyocvsTiBUMI45rCHfhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fD+GOeD7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bjsRXnv8; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789763994; c=relaxed/simple;
+	bh=xFO/erSL5qG8LKEuVyvicNu8e6xbhP4+3KYp7hnLEXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=byAYdTx9chtIl0Fagwb+Vadt4upPETMswWcv2tfyscaI2TV8/JhzU7dfXgScuqKLRExoLXCtMoSwTT1+ddxGAufGLDwfw9LDXK84JXmDx5187CV9wYQDuJjHKbvArf+/mj8AxtKjveWlZXHBZNx3vF/GmuYcWXw1cUt+v15myHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=i+epxSX7; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fD+GOeD7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bjsRXnv8"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IKEqKP1660671
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 20:15:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4fphhkzCia/0/dPRwk/cb2MyHyGqohOAAxhBw9rbGd8=; b=fD+GOeD71lokuXXG
-	oJyTKl62II+bfiT3x5V68weBwsLkg9k0od+HRHDm4+GZPneZ0rSVR3w2QUOH7/pw
-	UNWejuimY6L0ZLLOeESBh50eAYjFNfHe3zXTwhOZP1teCpiEJouwTj8EGHL+Qdrh
-	RMVz/5TxpvNsuqI8wUqK/nhIHybVDHbECqwV6i5UopMmYUHa+WXWSsTJKITIBDoy
-	J43SqZyKNI4Ha47J3UAMB2X5473TXYAcCHjWOvProVmHTJZ4IbW4pi9G7Hk7AzN/
-	c3svFtW3XkzaM/ld+k00yhCe2xKa+ZG3Iddv2wTj+6RaugeS9ztWVNOzGN/e52eD
-	O/3zpg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs2392ujx-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 20:15:19 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a0b66ecd9so151753485a.2
-        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 13:15:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="i+epxSX7"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so6619785e9.1
+        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 13:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789762518; x=1790367318; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4fphhkzCia/0/dPRwk/cb2MyHyGqohOAAxhBw9rbGd8=;
-        b=bjsRXnv8TwWrfgeV792+uxWB/MC5y5cOtFgCv6vv32utQ8LVDig45/2XvAjPGelAC8
-         aJYPcVEh8RtfF4yC5UPllrqNXH4T77+8zXWJwTjuc3mjpcjsxLVhwN0zXQ2rNTwZTRyk
-         HZqGY3fUo0RIARZvRi2r2Z8R7juZG7I8J6fFP1PauEIIU1NFj48xDq/Y8xb3V7aln1HT
-         I+YPwK4tNx/buyk+Sp4Ow62ZbULjw4ESz+34rYgkS9SdByThyH+MQNiyZOvvH3J0usdK
-         7t4bwdQ2LsCFGRxJrB9ePLmvKx74zVJpf6HUvllm58gNvpOsNdqATtLC+LwgMz3SDTR5
-         UeAQ==
+        d=baylibre.com; s=google; t=1789763989; x=1790368789; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SrF5NSzar5jv65m2jp9XTBtvCU5/5PF93POgQGb8pAQ=;
+        b=i+epxSX7cbRBVaOrM3DRyVXtXDdbbB92Zb3qINDQWoQq8oo1EoQ2ciDHmZIRWuDc/l
+         UwR6UT5hY97QryCJconGelfOE577+L3eiFvkPHQS8BsadGyoHzn/7EMcXhbdkaafCTZg
+         6dnb2Yh+yqW6fbcJG5/qF3+hu02zvAajbFPqO5I9f/ZfucNLpBFftMVStzeEtPHt3uRx
+         k4P9QqD0Hyzxefm+H+HvXy7TiQHCJOp0XmJYWNlBLLR8XEvssMkv/iF2y8gAZbKsEpFH
+         2qP1AkYQ+VIgyXIchcQwycUPnUTbk1rOpWjv2HI2wOK/CulebgRJFzzlOM4JBsMgnmYa
+         vlCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789762518; x=1790367318;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4fphhkzCia/0/dPRwk/cb2MyHyGqohOAAxhBw9rbGd8=;
-        b=gdeZs7uVPyNHEp98XOS9NE6r9pSmo2B3U11WXZpG6Uf23i0USjj0ivsNEKXs3A9VFF
-         9DXZB9AYX/hb1BhIXGj3XkQXcOa1bYqa3xm5NB1f7xNj1o+WGGkCFb9yVQO1NsbdxRdM
-         FO+zIoy21ust4SBJculYpzht8qhaPFrPrPirFZl45Bzjade5abhl/1nMzm70WGFF0fFX
-         sS9HqhhkVuQawN1E4o2b6vRMhJDd5yXHtXcHzMez3gkw7gAUwjw4YrvLLNKXQuq1NTR3
-         atCfNzDtrMOAky9mC+ZaZmBL0+bXbCGyu2ATVHjqlWHYp0AWL6xZl04xqMG9x80Rh/un
-         5p0A==
-X-Forwarded-Encrypted: i=1; AKwUvBxLm9qEpszSJLwr85YDAfYfGqo+aAZBiKo2TjE8WAOgoyu1CTZymuG/PKbOo/EH7Ic5aE0=@lists.linux.dev
-X-Gm-Message-State: AFuF++ljInr8XWCocxpqEKydXCpYWD53algp1F6w5Wx1f9kKXh6IZ5X0
-	h7mNlnxOQ9u2E2qT4oFZ+Y/uBXVIrN3KQglrysZbJ7YRpJj+tU7sC1Q9u3CPKdvqbB6HJnbk5BH
-	pL/cXx5aNLpZujBMK35iG/T8oXYAU+GqWucmq81dIm5sGKaN6mdMgcVc=
-X-Gm-Gg: AYBFou0pKWkqVyyA3gW/uBREzxUROlRxlLihscjQZPD4uIc2etUkP+NlWsAGy1s71mh
-	VNYKUpohyuIwsoP9L3U0e+w6W954IICagO36ZxViqREn2Nfhy/+gVnCpAVi4F9ddMPYYIU4v18s
-	4NkMKdBScO1qNtE08n9LhvgRdoEqAFJFR8TMFXCcPzT2WHTnIjC2XSjCipOEGUfN5rkoq/yoklw
-	avFUKBnKHOnvK2XQm167A9n0QMQUntI6OqtmEp07OSwRUiNYQD3YSrpcGu3xbMd894NggD3bZsZ
-	yDs6pTD7Kg1uYZyrXYB6GgpnIdjTRupZu8XrlUcNALNl6gxny1o/1ld1LNwKDehzNzL4NOuLukh
-	S+22L6OvgztWRI7dWHTaUxi8BoB07cxPhzze9SndNLqNnHmxgGFfZ7JayY7im
-X-Received: by 2002:a05:620a:8909:b0:93b:c537:fdb8 with SMTP id af79cd13be357-93bdc6d5b54mr581374385a.6.1789762518459;
-        Fri, 18 Sep 2026 13:15:18 -0700 (PDT)
-X-Received: by 2002:a05:620a:8909:b0:93b:c537:fdb8 with SMTP id af79cd13be357-93bdc6d5b54mr581369285a.6.1789762517999;
-        Fri, 18 Sep 2026 13:15:17 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:bb0:6e51:d247:d411? ([2a05:6e02:1041:c10:bb0:6e51:d247:d411])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724460978sm1103863f8f.11.2026.09.18.13.15.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 13:15:17 -0700 (PDT)
-Message-ID: <4189b4c4-3544-4602-b1c5-f298e033c17c@oss.qualcomm.com>
-Date: Fri, 18 Sep 2026 22:15:16 +0200
+        d=1e100.net; s=20260707; t=1789763989; x=1790368789;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SrF5NSzar5jv65m2jp9XTBtvCU5/5PF93POgQGb8pAQ=;
+        b=iPmbquGihtmqve/e42H6U68cIxP6qkRbn1PYVE+8z16oiLiPK6DXppTWaCSdlqbZdQ
+         6eSFrmsWxnbIWZjmjpk8iP6SitBS409aB3jMU4UeybZmE7tIfPA4XEy1QxCdRX7H5mFQ
+         +ZY1t48sv4zekEkBiwhcWwkH8AlQqwo/pEWNqWYpylRQ6zq7wGE3QYdBqt2jHxOHOsOA
+         qfINMpGuODKQgNEzI/fQMlocWWLkYw+Ic/eC7uXFct+Rl0rG32X7s/Eukef+gMefnZHD
+         f8ZiA+8FOCVlHTb9xNiH5ABm2Fr8AJajxiRr85PcyuXTuAY9x2H5u818wk4hZ17goQ40
+         I/dQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxwD1DTb+k+hXjocLeBC1lWL+iPP4llW992cVUyR2h3z80aneLd7aMpkBLtTSn0Ka10Z1E=@lists.linux.dev
+X-Gm-Message-State: AFuF++mLvhkYgSBeOZNMxWPX51ZAzjScNoCiUMXJ9/nOdfOc86Rs+t3n
+	6ZacTy4VCH8rAb4iIQoOKpOV2nym5gSqMDQMtiK47gEVxvYgKBU+zzX28n7hWQaUYTY=
+X-Gm-Gg: AYBFou1ZFzGiXx7Q0DBgUS6A3scXtxsL7mMi6Q8pSsZPrhu6EYo7aPL41cq4zHlETpG
+	3MPeL502sJLmFMssHiLWo4gd28YmUVNHyVt1mAKAqSll5cUZAnkQiQJ9IQsDr8DiUmBo8xdSUI/
+	l7EPO2CKveFjwS/xuRcUMDuxzT49NomoS3wK6tSx1IkItsFLNwwp9wKN7bCU616IyfSBCiG9lgr
+	PfS2lM4csYzd6bg92jwm6w21LwUw6O1Ly4ywCAGijhJSlRHrc4ubXFC+15O5GBu8CqkIJMPQGFg
+	50FPlyAT1AUnU/7Ht0w5C6bbTIHzs1jySckFqx8Or/oyxmnxpYGTU75AuwRpzVSHL8G39ebXQCq
+	jgzE22+TfnVBgiVyp6LIPtX2KBKXtY9ROY4K/QWtEkKCI8AGEcK/OlSxbBq4qeJ2H8tBxWM/apt
+	rSFP4x2umLdkBpkP98qpYs5UM7cpmVbl0DgSfKoLVboWjjEWvPCjFFjUj1Rb9cGdon8nSUKhoJu
+	VY=
+X-Received: by 2002:a05:600c:c0c3:10b0:49e:823a:9dec with SMTP id 5b1f17b1804b1-49fc5a10b5fmr75871985e9.3.1789763989396;
+        Fri, 18 Sep 2026 13:39:49 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fcd8bf159sm4358055e9.10.2026.09.18.13.39.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 13:39:48 -0700 (PDT)
+Date: Fri, 18 Sep 2026 22:39:46 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
+	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>, Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
+	Frank.Li@kernel.org, arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
+Message-ID: <aq2g9otvja7xQqJ_@monoceros>
+References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
+ <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
+ <20260918-impetuous-daring-barnacle-1ea4d0@sudeepholla>
+ <dca62a09-2af7-463e-9ba0-1be935a95502@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fq4cwhvzzcfekf2h"
+Content-Disposition: inline
+In-Reply-To: <dca62a09-2af7-463e-9ba0-1be935a95502@oss.qualcomm.com>
+
+
+--fq4cwhvzzcfekf2h
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
-To: Sudeep Holla <sudeep.holla@kernel.org>
-Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
- <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
- <2104f437-e960-4e55-b0e1-2b37126e8c2f@oss.qualcomm.com>
- <82a72918-7bc7-4e2c-892c-0dcdd6dd5548@oss.qualcomm.com>
- <3f51bf6c-5318-4e32-a1ca-3ce8cf8c4ceb@oss.qualcomm.com>
- <20260918-roaring-bee-of-acceptance-50a8a9@sudeepholla>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-In-Reply-To: <20260918-roaring-bee-of-acceptance-50a8a9@sudeepholla>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDI5MiBTYWx0ZWRfX0Kgq9cTtv59k
- URSTxo9T7ryTdh34ItavgghN9UySc1WuRxDCn8CMLVVwxg2RwsQAesOTR9aioucqV18Cjdyj1oF
- A8vFg3zlsQJwQVP+kfU5q0MlCaOezgo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDI5MiBTYWx0ZWRfXzLmOfWybsScJ
- e3K8GBborZ3cn94XxrYnyY0PGnlxO+4bbBQrS1ocgqFO3xi64TJ5B8nmY9W9PXX/rFyqy74beTm
- i4KWeTa7fpyWKaRsqRKRdscFN8GEbD1wO15WXnpbBCy2MeoD2k4H+7vi5l9aI4lyzBeTSjY9WY7
- /BhKHwZckaNGXBfqF95QMl3D6NWqSTaUD3TeA8ZWWuOyN0BIgICDQ+L//zUwDDj/LP3g5VNUK0z
- 9jD5WCsxTZm/zPKf3L4a8ex2OTgNv7wvctiRO5qeh9ef+BmZgVrZR9AubJKRhGGFgozgFGs41qL
- 8cfuFMhPeIahwoifjwDOCpzn2LJyU7HzQii9aTVrv8dQvAoBa3YuqRbrTqITuKLUAndv4DQ/XcT
- R/zMDY5zXN5WSIia/D9A32GLkKcYgqqFkzo4svmw3LfyBXz4uf+Qez6beljFdL+5I0dLnx/D/j0
- yNQsTXxUal+eKoKVppQ==
-X-Proofpoint-ORIG-GUID: lxF7_9KtFvbX_rYqtR2G4Wgx0H3YyEk1
-X-Authority-Analysis: v=2.4 cv=I7zw19gg c=1 sm=1 tr=0 ts=6aad9bd7 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=pMJ2f0pklUtnlmghVxoA:9 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: lxF7_9KtFvbX_rYqtR2G4Wgx0H3YyEk1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_06,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180292
+MIME-Version: 1.0
 
-On 9/18/26 15:38, Sudeep Holla wrote:
+On Fri, Sep 18, 2026 at 04:09:36PM +0200, Hans de Goede wrote:
+> Hi Sudeep,
+>=20
+> On 18-Sep-26 15:32, Sudeep Holla wrote:
+>=20
+> [...]
+>=20
+> >> diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/=
+scmi.h
+> >> new file mode 100644
+> >> index 000000000000..1b4ccfa9dcc5
+> >> --- /dev/null
+> >> +++ b/include/linux/device-id/scmi.h
+> >> @@ -0,0 +1,17 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0-only */
+> >> +#ifndef LINUX_DEVICE_ID_SCMI_H
+> >> +#define LINUX_DEVICE_ID_SCMI_H
+> >> +
+> >> +#ifdef __KERNEL__
+> >> +#include <linux/types.h>
+> >> +#endif
+> >> +
+> >> +#define SCMI_NAME_SIZE		32
+> >> +#define SCMI_MODULE_PREFIX	"scmi:"
+> >> +
+> >> +struct scmi_device_id {
+> >> +	__u8 protocol_id;
+> >> +	char name[SCMI_NAME_SIZE];
+> >> +};
+> >> +
+> >> +#endif /* ifndef LINUX_DEVICE_ID_SCMI_H */
+> >=20
+> > You need to include this above file in include/linux/mod_devicetable.h
+> > to avoid duplication of its inclusion elsewhere. That's the pattern fol=
+lowed
+> > I see.
+>=20
+> That is what I did for v3, but Uwe, who is leading the splitting
+> of mod_devicetable.h from one large monster include to smaller
+> per subsystem/bus includes explicitly requested me to follow this
+> pattern, see:
+>=20
+> https://lore.kernel.org/arm-scmi/aow2GFAfy84k-N2B@monoceros/
+>=20
+> [...]
+>=20
+> >> diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetab=
+le-offsets.c
+> >> index b4178c42d08f..91ec3704ee2b 100644
+> >> --- a/scripts/mod/devicetable-offsets.c
+> >> +++ b/scripts/mod/devicetable-offsets.c
+> >> @@ -1,5 +1,6 @@
+> >>  // SPDX-License-Identifier: GPL-2.0
+> >>  #define COMPILE_OFFSETS
+> >> +#include <linux/device-id/scmi.h>
+> >=20
+> > Drop this for above mentioned reason.
+>=20
+> This was explictly added at request of Uwe because the goal is to
+> get rid of mod_devicetable.h including all the device-id headers
+> in a big single catch-all include. This is done because currently
+> many files include mod_devicetable.h and then if any of the device-id
+> headers changes everything needs to be rebuild, making incremental
+> kernel builds much slower.
+>=20
+> (and the same for the second include you point out)
 
-[ ... ]
+FTR: That all sounds right.
 
-> Not related to above topic, but just wanted to check with Daniel if this
-> solves module auto-loading for you. Was there someone else who was testing
-> this series and was having issue with earlier versions or its you only
-> Hans de Goede and it was with v1/v2 when Bjorn posted them. I remember
-> something vaguely and couldn't trace back all the versions easily.
+Let's not add the the dependency mess that is mod_devicetable.h.
 
-The scmi-cpufreq driver loads automatically now.
+Best regards
+Uwe
 
-Tested-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com> # Lenovo 
-T14s Hamoa
+--fq4cwhvzzcfekf2h
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqtoY8ACgkQj4D7WH0S
+/k5r0Qf8De3R8/xBOJ/3LeAPH4UFuVBKGGI19ecvA8OulWQaGdttHVOB4PnQgqqI
+zr/VQpCTb0UsY22b7aTRkbE+WpDtBA1glRTMwymtj8USz80zQa5+7SjfjrWcBpLt
+CvSb/wjcEMfFDbN9cDw9J0WsUZhuALKA5oZW/kybeJxaLWF3pafGwaSZ8eCC/Ohl
+au0Sk7ctvGaQOlJqXEuEqcRubWvFyRDmdgkfTXzJukqSdKh8Zlatdd7IWvSyT5KL
+RdGlPH5frkEDcB+9Wu3HXANsWdZIe8FsrozPlGoF+7TgbayKM83MOuglXb0/lTJE
+NwVV+Boz1Okzu1j4XOq114FfH2ZSaQ==
+=ekEU
+-----END PGP SIGNATURE-----
+
+--fq4cwhvzzcfekf2h--
