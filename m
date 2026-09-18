@@ -1,195 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B0A50AC38;
-	Fri, 18 Sep 2026 13:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AC84FC8F9
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 13:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738336; cv=none; b=c4yWRg8uSTLPunoIrOysNqdTXsESldNBd41h/TvXyB+Wza8YUws2JW00zyMO1GT6jXepVXrT1DATzAb25XexECoMI1Yi7ZKfMaO0bGpiv73Apvey0WTsSpEXRrO4lnUF4VQyY+7iMpNlp9WB5VPks5oLpurD6kSpwW5tB3Yk+N8=
+	t=1789738428; cv=none; b=C/DlHPWs29Fk9jSyHMtDS0JYrMVPPQB7gTZ44UxwPFps92abzfejGY3H1wzvEvSfrkbxr2LEexTVAlrEETTQ0rIDY1eYjXSAO8cNv1Z6iXVr1UGX52HIi/PI7njvHWXIUlcg3Ts6PCKilfoAcPbRJkwZEMlhGcOr7ksS9aGjY0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738336; c=relaxed/simple;
-	bh=eeXFZp1Ow+hjFsG2ohtQcE9sG4CIuFQ8OZ64ILIzSEc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KQDpUYZZHn0ix9tYILfVuhlNCOdnZR8K6BIydeYDeOWrCvqKaHFwNyl+BpQys/MTfOKo1i3N+cysayQzbsMm3VBPp4b67BfNzgMQF4wd4y0rpILKEjst4gKJuzARRMpZmrA4oA2k9LfpLo26s1s/olLn7vnn5U6AEKZwdNqctio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgoKnDJT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789738428; c=relaxed/simple;
+	bh=82Mn9uZcABYJuJY9Ja/otiQ81SD5L074KXYkhdIuJ6I=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=c5Gmy+AJUX13j5mSiiQf/6taRQMakU0omPrgseKgEJpWx9tysnWzjylUxcnbMjWiNyFconW0h+UlF4lqCyomkAHd9gt2zxok+w7AkS52XgnYmV1weXtlI4/dXFdUr1UjnJAqZhxT1yhQJSaJEoJ3zkVS+N7nvKgxuZuF5wHhEEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=sSs1i0F9; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgoKnDJT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2851F000FF;
-	Fri, 18 Sep 2026 13:32:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789738330;
-	bh=SBA0E8AODEBadx1kh06AjWaY/QYpRulbt0rkULl2OkQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JgoKnDJTFyKqWWSymRW9iF2B8lN//StBJtI/lM5LftfwpC/oAuS2Fg0k/8O4JRcwf
-	 Tl7mBtu4h+LQRuWG0cPoWRV1dBwXHLGe9mclufmEq3resy0LAp8ku49P2lG5/qU+9e
-	 ydZZbffbURfmQDXNwMq0V4Po/IbbKyQUdkGQBwmX7YWlrVsKOoIh8QXofE1j20kVxQ
-	 PHx54Jc/GgLFS7u/pPAOhPkRtNTOFFSFIvRrcpilGtw/NeSRLgfZxxB5B91F+sdb54
-	 VOw5poxNzPjxBrYZUU/iqcRsR5EqZii55rwBeRJr2ZsWYHJILgt1L+1x/ZGFD2RFe8
-	 0wa6jemDP32qQ==
-Date: Fri, 18 Sep 2026 14:32:06 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
-Message-ID: <20260918-impetuous-daring-barnacle-1ea4d0@sudeepholla>
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
- <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="sSs1i0F9"
+Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7AD234F05;
+	Fri, 18 Sep 2026 15:31:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1789738313;
+	bh=82Mn9uZcABYJuJY9Ja/otiQ81SD5L074KXYkhdIuJ6I=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=sSs1i0F90LIHx/AZUsiKA+YnwsGpLmBo4KVoj+4PCYr811SKW5YYmJfzvEQ+leTOG
+	 VCaTQT21x5BR83STKDA30U4LByAcaDz/jNhdEjxPUk9zaNjq9ie6lUfcemA34CJvoF
+	 NZ/sE+F0CEFUVp37+OhHkPGXGNYIHHWb0YThntK4=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260918132013.GG59058@killaraus.ideasonboard.com>
+References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com> <20260918-kbingham-orientation-v6-2-5e8b1f01be29@ideasonboard.com> <178972979131.1723501.9444120486527129452@ping.linuxembedded.co.uk> <20260918132013.GG59058@killaraus.ideasonboard.com>
+Subject: Re: [PATCH v6 2/6] arm64: dts: qcom: Convert to new media orientation definitions
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Benjamin Mugnier <benjamin.mugnier@foss.st.com>, Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Daniel Scally <dan.scally@ideasonboard.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Geert Uytterhoeven <geert+renesas@glider.be>, Heiko Stuebner <heiko@sntech.de>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>, Jacopo Mondi <jacopo@jmondi.org>, Jimmy Su <jimmy.su@intel.com>, Jonathan Hunter <jonathanh@nvidia.com>, Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, Martin Kepplinger <martin.kepplinger@puri.sm>, Matthias Fend <matthias.fend@emfend.at>, Mauro Carvalho Chehab <mchehab@kernel.org>, Michael Riesch <michael.riesch@collabora.com>, Mikhail Rudenko <mike.rudenko@gmail.com>, Paul Elder <paul.elder@ideasonboard.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Quentin Schulz <quentin.schulz@theobroma-systems.com>, Richard Acayan <mailingradian@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, Svyatoslav Ryhel <clamor95@gmail.com>, Sylvain Petinot <sylvain.petinot@foss.st.com>, Thierry Reding <thierry.reding@kernel.org>, Tommaso Merciai <tomm.merciai@gmail.com>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux@ew.tq-group.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, David Heidelberg <david@ixit.cz>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Fri, 18 Sep 2026 14:33:34 +0100
+Message-ID: <178973841405.1723501.9051265194315500867@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 
-On Fri, Sep 18, 2026 at 11:29:50AM +0200, Hans de Goede wrote:
-> From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> 
-> SCMI client drivers already describe their bus match data with
-> MODULE_DEVICE_TABLE(scmi, ...), but modpost does not know how to consume
-> SCMI device tables. As a result, SCMI modules do not get generated module
-> aliases from their id tables.
-> 
-> Move struct scmi_device_id to mod_devicetable.h so it has a fixed layout
-> visible to modpost, add the corresponding generated offsets and teach
-> file2alias to emit scmi:<protocol>:<name> aliases.
-> 
-> Use the same stable alias format for SCMI device uevents and sysfs
-> modaliases. The previous string included the instance-specific device
-> name, which is not useful for matching modules.
-> 
-> Assisted-by: Codex:GPT-5.5
-> Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> Tested-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> ---
-> Changes in v7:
-> - Rebase on top of v7.3-rc3
-> 
-> Changes in v4:
-> - Drop unused driver_data member from struct scmi_device_id (Uwe)
-> - Drop device-id/scmi.h include from mod_devicetable.h (Uwe)
-> - Add device-id/scmi.h to devicetable-offsets.c and file2alias.c (Uwe)
-> 
-> Changes in v3:
-> - Adjust for ad428f5811bd ("mod_devicetable.h: Split into per subsystem
->   headers")
-> - Add '\n' to modalias_show() output, matching other subsystems' modalias
-> 
-> Changes in v2:
-> - Drop #include <linux/mod_devicetable.h> from scmi_protocol.h
-> - Link to v1: https://patch.msgid.link/20260616-scmi-modalias-v1-0-662b8dd52ab2@oss.qualcomm.com
-> ---
->  MAINTAINERS                       |  1 +
->  drivers/firmware/arm_scmi/bus.c   | 21 ++++++++++-----------
->  include/linux/device-id/scmi.h    | 17 +++++++++++++++++
->  include/linux/scmi_protocol.h     |  6 +-----
->  scripts/mod/devicetable-offsets.c |  5 +++++
->  scripts/mod/file2alias.c          | 12 ++++++++++++
->  6 files changed, 46 insertions(+), 16 deletions(-)
->  create mode 100644 include/linux/device-id/scmi.h
-> 
+Quoting Laurent Pinchart (2026-09-18 14:20:13)
+> On Fri, Sep 18, 2026 at 12:09:51PM +0100, Kieran Bingham wrote:
+> > Quoting Kieran Bingham (2026-09-18 11:44:14)
+> > > From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+> > >=20
+> > > The orientation property for video interface devices now has definiti=
+ons
+> > > to prevent hardcoded integer values for the enum options.
+> > >=20
+> > > Update the users throughout the qualcomm device trees to use the new
+> > > definitions.
+> > >=20
+> > > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> > > Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> > > Reviewed-by: David Heidelberg <david@ixit.cz>
+> >=20
+> > Sashiko has noted that there is another new dts added in dts/qcom since
+> > I wrote this patch.
+> >=20
+> > I don't want to invalidate the above reviews by adding another change,
+> > so I will send the single update to the new file separately as the core
+> > definitions are already accepted now.
+> >=20
+> > If someone /really/ wants me to add the change to
+> > arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi in this patch,
+> > please let me know.
+> >=20
+> > it looks like this:
+> >=20
+> > ----------- arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi --=
+---------
+> > index 945127dacc82..f86d3e0d51a6 100644
+> > @@ -3,10 +3,11 @@
+> >   * Copyright (c) 2022-2024 Jianhua Lu <lujianhua000@gmail.com>
+> >   */
+> >=20
+> >  #include <dt-bindings/arm/qcom,ids.h>
+> >  #include <dt-bindings/media/video-interfaces.h>
+> > +#include <dt-bindings/media/video-interface-devices.h>
+> >  #include <dt-bindings/phy/phy.h>
+> >  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> >  #include <dt-bindings/usb/pd.h>
+> >  #include "sm8250.dtsi"
+> >  #include "pm8150.dtsi"
+> > @@ -571,11 +572,11 @@ camera_front: camera@10 {
+> >               reset-gpios =3D <&tlmm 109 GPIO_ACTIVE_LOW>;
+> >=20
+> >               pinctrl-0 =3D <&cam_mclk3_default &camera_front_active>;
+> >               pinctrl-names =3D "default";
+> >=20
+> > -             orientation =3D <0>; /* Front facing */
+> > +             orientation =3D <MEDIA_ORIENTATION_FRONT>;
+> >               rotation =3D <270>;
+> >=20
+> >               port {
+> >                       ov8856_front_ep: endpoint {
+> >                               data-lanes =3D <1 2>;
+>=20
+> I don't mind either way, and I think you can keep the existing R-b tags
+> if you add that hunk.
 
-[...]
+As noticed by Thierry, it will also impact things depending on who
+applies this patch and where.
 
-> diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/scmi.h
-> new file mode 100644
-> index 000000000000..1b4ccfa9dcc5
-> --- /dev/null
-> +++ b/include/linux/device-id/scmi.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef LINUX_DEVICE_ID_SCMI_H
-> +#define LINUX_DEVICE_ID_SCMI_H
-> +
-> +#ifdef __KERNEL__
-> +#include <linux/types.h>
-> +#endif
-> +
-> +#define SCMI_NAME_SIZE		32
-> +#define SCMI_MODULE_PREFIX	"scmi:"
-> +
-> +struct scmi_device_id {
-> +	__u8 protocol_id;
-> +	char name[SCMI_NAME_SIZE];
-> +};
-> +
-> +#endif /* ifndef LINUX_DEVICE_ID_SCMI_H */
+It seems like the headers used appear in linux-next already now that
+Sakari has merged them, but this hunk won't apply on
+media-committers/next ... so I'll keep it separate until we can let the
+dust settle.
 
-You need to include this above file in include/linux/mod_devicetable.h
-to avoid duplication of its inclusion elsewhere. That's the pattern followed
-I see.
+--
+Kieran
 
-> diff --git a/include/linux/scmi_protocol.h b/include/linux/scmi_protocol.h
-> index 5ab73b1ab9aa..ba53302d95f5 100644
-> --- a/include/linux/scmi_protocol.h
-> +++ b/include/linux/scmi_protocol.h
-> @@ -9,6 +9,7 @@
->  #define _LINUX_SCMI_PROTOCOL_H
->  
->  #include <linux/bitfield.h>
-> +#include <linux/device-id/scmi.h>
->  #include <linux/device.h>
->  #include <linux/notifier.h>
->  #include <linux/types.h>
-> @@ -951,11 +952,6 @@ struct scmi_device {
->  
->  #define to_scmi_dev(d) container_of_const(d, struct scmi_device, dev)
->  
-> -struct scmi_device_id {
-> -	u8 protocol_id;
-> -	const char *name;
-> -};
-> -
->  struct scmi_driver {
->  	const char *name;
->  	int (*probe)(struct scmi_device *sdev);
-> diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable-offsets.c
-> index b4178c42d08f..91ec3704ee2b 100644
-> --- a/scripts/mod/devicetable-offsets.c
-> +++ b/scripts/mod/devicetable-offsets.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #define COMPILE_OFFSETS
-> +#include <linux/device-id/scmi.h>
-
-Drop this for above mentioned reason.
-
->  #include <linux/kbuild.h>
->  #include <linux/mod_devicetable.h>
->  
-> @@ -144,6 +145,10 @@ int main(void)
->  	DEVID(rpmsg_device_id);
->  	DEVID_FIELD(rpmsg_device_id, name);
->  
-> +	DEVID(scmi_device_id);
-> +	DEVID_FIELD(scmi_device_id, protocol_id);
-> +	DEVID_FIELD(scmi_device_id, name);
-> +
->  	DEVID(i2c_device_id);
->  	DEVID_FIELD(i2c_device_id, name);
->  
-> diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-> index 8d36c74dec2d..5379b1def07b 100644
-> --- a/scripts/mod/file2alias.c
-> +++ b/scripts/mod/file2alias.c
-> @@ -121,6 +121,7 @@ typedef struct {
->  /* Big exception to the "don't include kernel headers into userspace, which
->   * even potentially has different endianness and word sizes, since
->   * we handle those differences explicitly below */
-> +#include "../../include/linux/device-id/scmi.h"
-
-Drop this for above mentioned reason.
-
--- 
-Regards,
-Sudeep
+>=20
+> > > Signed-off-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.co=
+m>
+> > > ---
+> > >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts         | 3 ++-
+> > >  arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 3 ++-
+> > >  arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi         | 3 ++-
+> > >  3 files changed, 6 insertions(+), 3 deletions(-)
+> > >=20
+> > > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arc=
+h/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > > index f41ad446a39e..e2b7f1bd05ab 100644
+> > > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > > @@ -13,6 +13,7 @@
+> > >  #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
+> > >  #include <dt-bindings/leds/common.h>
+> > >  #include <dt-bindings/media/video-interfaces.h>
+> > > +#include <dt-bindings/media/video-interface-devices.h>
+> > >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> > >  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> > >  #include <dt-bindings/sound/qcom,q6asm.h>
+> > > @@ -701,7 +702,7 @@ camera@10 {
+> > >                 pinctrl-0 =3D <&cam_mclk3_default>;
+> > >                 pinctrl-names =3D "default";
+> > > =20
+> > > -               orientation =3D <0>; /* Front facing */
+> > > +               orientation =3D <MEDIA_ORIENTATION_FRONT>;
+> > >                 rotation =3D <270>;
+> > > =20
+> > >                 port {
+> > > diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.d=
+ts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+> > > index 218573a97785..3b5f6a29e969 100644
+> > > --- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+> > > +++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+> > > @@ -11,6 +11,7 @@
+> > >  #include <dt-bindings/input/gpio-keys.h>
+> > >  #include <dt-bindings/input/input.h>
+> > >  #include <dt-bindings/leds/common.h>
+> > > +#include <dt-bindings/media/video-interface-devices.h>
+> > >  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> > > =20
+> > >  #include "sc8280xp.dtsi"
+> > > @@ -683,7 +684,7 @@ camera@10 {
+> > > =20
+> > >                 clocks =3D <&camcc CAMCC_MCLK3_CLK>;
+> > > =20
+> > > -               orientation =3D <0>;      /* Front facing */
+> > > +               orientation =3D <MEDIA_ORIENTATION_FRONT>;
+> > > =20
+> > >                 avdd-supply =3D <&vreg_l6q>;
+> > >                 dvdd-supply =3D <&vreg_l2q>;
+> > > diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi b/arc=
+h/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+> > > index b4854801a5f5..7880d85b52fe 100644
+> > > --- a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+> > > +++ b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+> > > @@ -9,6 +9,7 @@
+> > >  #include <dt-bindings/gpio/gpio.h>
+> > >  #include <dt-bindings/input/input.h>
+> > >  #include <dt-bindings/leds/common.h>
+> > > +#include <dt-bindings/media/video-interface-devices.h>
+> > >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> > >  #include <dt-bindings/power/qcom-rpmpd.h>
+> > >  #include "sdm670.dtsi"
+> > > @@ -460,7 +461,7 @@ camera@1a {
+> > >                 pinctrl-names =3D "default";
+> > > =20
+> > >                 rotation =3D <270>;
+> > > -               orientation =3D <0>;
+> > > +               orientation =3D <MEDIA_ORIENTATION_FRONT>;
+> > > =20
+> > >                 port {
+> > >                         cam_front_endpoint: endpoint {
+> > >=20
+>=20
+> --=20
+> Regards,
+>=20
+> Laurent Pinchart
