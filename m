@@ -1,97 +1,176 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FDD3AFB07;
-	Fri, 18 Sep 2026 10:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29614BF94F
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 10:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789727906; cv=none; b=K/BRSnpuBVTs8g5ITK6PfGgt8MViwcmuY3UPuZVuumubgyuDVcNekuEN6HjpcroHYVLrL6oSzTlGWTPWaKvhL+0L8doYOA740GMekIJko8aI7CBiNxCldp6juXHb57bJUSJuLmVtoVWZY7NIPfR+ARTlzEixtCxfz/IGQPx5Ilw=
+	t=1789728266; cv=none; b=l10kKkdY83Pmdlp7DdYkBLWqmamyypl+nQGbYuhkE11xgt0aROpjp7kQTXcCD4ZvR4yIJWbrLM6fT/U+ru7yT5iNIzZw9VtAj0VyF+Abv/9dVOUjf/ENjL9Ad5Go4YmBjr6e0BCMeZBmlshDuko/CRYZpoSxdfOFIMXbj26x0S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789727906; c=relaxed/simple;
-	bh=E3WtwFd5Ad5TETS6xL4EwW3ODO/fN0e9kLu9lDjxPeQ=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=VSi0vmp4DLuMmFNEyf45zDS5IXJ+bEsBR3T/cPKVxlDT1VNHNcNZihMRFSdlJ/+KDi1qRcCHAonsuBi2nu7lL8N+cT/ue5RYw3OpcYg24qjmblTWr1vzSSVvWh40R0rWPtNyntLh/wI6rOcXgQyevpeShydLRgqitLHK+1t0ILA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AwOlt38w; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1789728266; c=relaxed/simple;
+	bh=ILvl/y5sag2JhhGEy9CngiSkng7+/GuEan+czF6epJE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GblIuVKcjncnoRAF7X5zQxE0Cv40y4t1CgZTF1gwjFz/ZCZzb2uaMsI6Xs7st+vapbwoxIf/HzJV5pMj1m/J+DJYeC52YKDBHoE9ImRtfUUQP9p25JbopAfN7OqaCj82D8IEivNPdQcmQyCav/swaJnrRx1YUT/E2Ty/RlErHe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=iAVGcdDj; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AwOlt38w"
-Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6EDFD2835;
-	Fri, 18 Sep 2026 12:36:39 +0200 (CEST)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="iAVGcdDj"
+Received: from ping.linuxembedded.co.uk (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 114004D3A;
+	Fri, 18 Sep 2026 12:42:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1789727799;
-	bh=E3WtwFd5Ad5TETS6xL4EwW3ODO/fN0e9kLu9lDjxPeQ=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=AwOlt38wTYdNWFzEOIWWT1qKJJg2c9RYyk+Ugw7oZOxxMIOcC0Am5GDDtUDGKfiHo
-	 wA6h66ULtjw7M5PL5HCWLNdKJaAn5B22riV6JRW99Bddu8Vc0kuwggSeOrEy8PDJWa
-	 r9WcToCvHa9Wr+U6CaNTLA4GBlDJkj4wLsHnmioI=
-Content-Type: text/plain; charset="utf-8"
+	s=mail; t=1789728156;
+	bh=ILvl/y5sag2JhhGEy9CngiSkng7+/GuEan+czF6epJE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=iAVGcdDjAmFpEsC9Td2frqmEvWpKTMW3EQaCb57qiLWT4gLDoCiNu0+TZM7NqQQHI
+	 TzjeRyqjdYCFjbloJLdlVGFwt+tWvmao2xLzdNtxerqd8uetQMiAHpy4NWHucZ6N+K
+	 OFiO0qaI2HrDAvx0Kzs3LWbKePWhuVp7pJHHKI8Y=
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Subject: [PATCH v6 0/6] dt-bindings: Orientation defines
+Date: Fri, 18 Sep 2026 11:44:12 +0100
+Message-Id: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260918101903.7B5E71F00893@smtp.kernel.org>
-References: <20260918-kbingham-orientation-v5-0-e1a134326988@ideasonboard.com> <20260918-kbingham-orientation-v5-6-e1a134326988@ideasonboard.com> <20260918101903.7B5E71F00893@smtp.kernel.org>
-Subject: Re: [PATCH v5 6/6] dt-bindings: media: i2c: himax,hm1246: Use video-interface-devices
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: wsa+renesas@sang-engineering.com, devicetree@vger.kernel.org, media-ci@linuxtv.org, imx@lists.linux.dev, conor+dt@kernel.org, robh@kernel.org, Frank.Li@kernel.org
-To: sashiko-bot@kernel.org, sashiko-reviews@lists.linux.dev
-Date: Fri, 18 Sep 2026 11:38:19 +0100
-Message-ID: <178972789913.1723501.14514853233712550168@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPwVrWoC/3XP3wqDIBgF8FcJr+cwNf/sau8xdqFpJSMdGrIRv
+ fssBt3U5fng/A7fDJKNziZwq2YQbXbJBV8Cu1SgHZTvLXSmZIARZoghAV/a+X5QIwyl5yc1lQL
+ ESHUt6jSTDQel+o62c5+NfTxLHlyaQvxuKxmv1z+I2TGYMUSQ8poLbSXmmt6dsSoFr4OK5tqGE
+ axuprslED2xaLEIYVIKYxg5tZrdkvXJo7kplq1VTSjBTApxYC3L8gN/cymVVwEAAA==
+X-Change-ID: 20260608-kbingham-orientation-20afc0fb6957
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jimmy Su <jimmy.su@intel.com>, 
+ Matthias Fend <matthias.fend@emfend.at>, 
+ Mikhail Rudenko <mike.rudenko@gmail.com>, 
+ Daniel Scally <dan.scally@ideasonboard.com>, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+ Michael Riesch <michael.riesch@collabora.com>, 
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
+ Sylvain Petinot <sylvain.petinot@foss.st.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Paul Elder <paul.elder@ideasonboard.com>, 
+ Martin Kepplinger <martin.kepplinger@puri.sm>, 
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
+ Tommaso Merciai <tomm.merciai@gmail.com>, 
+ Svyatoslav Ryhel <clamor95@gmail.com>, 
+ Richard Acayan <mailingradian@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux@ew.tq-group.com, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-tegra@vger.kernel.org, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ David Heidelberg <david@ixit.cz>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789728257; l=4409;
+ i=kieran.bingham@ideasonboard.com; s=20260207; h=from:subject:message-id;
+ bh=ILvl/y5sag2JhhGEy9CngiSkng7+/GuEan+czF6epJE=;
+ b=3/FgQrQgkYY9+ZjpzZq1dETbFJvszDKs87yfCdXr2I0lYwhXFsJToiHbUXijlDMrTaFlD+xlf
+ s5fOZcP1vEtBidRUHLxo4Vz0vOlwKNShbAwoZ8nArFmRvis50UNKWa4
+X-Developer-Key: i=kieran.bingham@ideasonboard.com; a=ed25519;
+ pk=FVXKN7YuwHc6UtbRUeTMAmranfsQomA+vnilfglWdaY=
 
-Quoting sashiko-bot@kernel.org (2026-09-18 11:19:02)
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Low] dt-bindings: incorrect macro substitution for orientation
-> --
->=20
-> commit 009f981811cc18f443edfd8ba45e1a412697cced
-> Author: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
->=20
-> dt-bindings: media: i2c: himax,hm1246: Use video-interface-devices
->=20
-> This commit updates the himax,hm1246 device tree binding example to use
-> the new video-interface-devices definitions for the orientation property,
-> replacing the previous hardcoded integer values.
->=20
-> > diff --git a/Documentation/devicetree/bindings/media/i2c/himax,hm1246.y=
-aml b/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
-> > index a65488fcc643f..ca5817684e1e2 100644
-> > --- a/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
-> > +++ b/Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml
-> [ ... ]
-> > @@ -103,7 +104,7 @@ examples:
-> >              iovdd-supply =3D <&hm1246_iovdd>;
-> >              dvdd-supply =3D <&hm1246_dvdd>;
-> > =20
-> > -            orientation =3D <2>;
-> > +            orientation =3D <MEDIA_ORIENTATION_FRONT>;
->=20
-> [Severity: Low]
-> Does this mistakenly change the orientation value in the example?
->=20
-> In dt-bindings/media/video-interface-devices.h, MEDIA_ORIENTATION_FRONT=20
-> is defined as 0, while MEDIA_ORIENTATION_EXTERNAL is defined as 2.
->=20
-> Replacing <2> with <MEDIA_ORIENTATION_FRONT> alters the actual value from
-> External (2) to Front (0) in the device tree example. Should this use=20
-> <MEDIA_ORIENTATION_EXTERNAL> instead to maintain a direct macro replaceme=
-nt?
+Add a new dt-bindings/media/video-interface-devices.h header that
+initially supports the Orientation types and convert existing users
+throughout the code base.
 
-Dammit. I'm an idiot.
+v3 collects tags, and fixes the typo, but drops all hunks that do not
+apply on the media-next tree so that these changes can be merged. Once
+the core feature is accepted a second sweep will convert remaining (new)
+additions of the orientation field.
 
-I even remember checking thorugh when I did this, and I must have been
-looking at a different part.
+v2:
+ - Now expands from the original v1 "dt-bindings: media: Add macros for
+   video interface devices" to update
+   Documentation/devicetree/bindings/media/video-interface-devices.yaml
+   and extend to actually change all users to the new types.
+ - Link to v2: https://lore.kernel.org/r/20260626-kbingham-orientation-v2-0-47178be927b4@ideasonboard.com
 
-Anyway, thanks Sashiko - update coming.
+v3:
+ - Fix the arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+   MEDIA_ORIENTATION_REAR to MEDIA_ORIENTATION_BACK
+   - Though this patch is dropped from this series to post the main
+     integration through the media tree.
+ - Drop (temporarily) changes to:
+    - arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+    - arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+    - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtso
+    - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtso
+ - Non applying changes will be re-posted after the core feature
+   lands in linux-next, or after those changes appear in media-next.
 
+-v4:
+ - Rebased media-committers/next (v7.2-rc1)
+ - Reintroduced updates to:
+   - arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi
+   - arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+   - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtso
+   - arch/arm64/boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtso
+ - Squash header introduction and bindings updates
+ - Link to v4: https://lore.kernel.org/r/20260804-kbingham-orientation-v4-0-336998dd63b4@ideasonboard.com
 
->=20
-> --=20
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918-kbingham=
--orientation-v5-0-e1a134326988@ideasonboard.com?part=3D6
+-v5:
+ - Definitions now accepted in linux-media, rebased to get conversions in.
+ - Converts new himax,hm1246 binding
+ - Link to v5: https://lore.kernel.org/r/20260918-kbingham-orientation-v5-0-e1a134326988@ideasonboard.com
+
+-v6:
+ - Keep himax,hm1246 example as MEDIA_ORIENTATION_EXTERNAL
+
+---
+Kieran Bingham (6):
+      arm64: dts: freescale: Convert to new media orientation definitions
+      arm64: dts: qcom: Convert to new media orientation definitions
+      arm64: dts: renesas: Convert to new media orientation definitions
+      arm64: dts: rockchip: Convert to new media orientation definitions
+      ARM: tegra: Convert to new media orientation definitions
+      dt-bindings: media: i2c: himax,hm1246: Use video-interface-devices
+
+ Documentation/devicetree/bindings/media/i2c/himax,hm1246.yaml        | 3 ++-
+ arch/arm/boot/dts/nvidia/tegra30-asus-nexus7-grouper-common.dtsi     | 3 ++-
+ arch/arm/boot/dts/nvidia/tegra30-asus-transformer-common.dtsi        | 3 ++-
+ arch/arm/boot/dts/nvidia/tegra30-lg-p895.dts                         | 4 +++-
+ arch/arm/boot/dts/nvidia/tegra30-lg-x3.dtsi                          | 3 ++-
+ .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso    | 3 ++-
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi                    | 3 ++-
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts                   | 3 ++-
+ arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts           | 3 ++-
+ arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi                   | 3 ++-
+ .../boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso     | 3 ++-
+ .../boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso     | 3 ++-
+ .../boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso     | 3 ++-
+ .../boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso     | 3 ++-
+ arch/arm64/boot/dts/rockchip/px30-pp1516.dtsi                        | 3 ++-
+ arch/arm64/boot/dts/rockchip/px30-ringneck-haikou-video-demo.dtso    | 3 ++-
+ arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts                | 5 +++--
+ .../boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtso      | 3 ++-
+ .../boot/dts/rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtso      | 3 ++-
+ 19 files changed, 40 insertions(+), 20 deletions(-)
+---
+base-commit: aedd77ea8168f00687c1248cdf115071e869cf93
+change-id: 20260608-kbingham-orientation-20afc0fb6957
+
+Best regards,
+-- 
+--
+Kieran
+
