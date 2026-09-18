@@ -1,341 +1,212 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010061.outbound.protection.outlook.com [52.101.69.61])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E784F68B4
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789743165; cv=fail; b=LY4I3xdHc9wsTO74ItMFBQL8VjjwEz5O+5/SLmAxYZySr2nn62NgJlvJLHmFNFM8jk3ic/XtOkvqmCKMix/EaEghM3OIsLDssKPVleoFUjBEMx+F8H9HbRBenaj2AyukE9XMvHfeMMb4BiwyC/9QMpl3D96rdbGt+HjwP7/T4QE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789743165; c=relaxed/simple;
-	bh=PRByG5sxTaunBRg7B6hqrmK1PTDtfcDSM7xkbkcB1jA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tyqQMY5BCG64WJ9CNoav73RLXiKIdB0OHtj4GK51D9BZb8wNo7Cl6r77QeU+1UC6uIIXhypR2KIov6GtCdwVCoIRl55/87viYH/K50MtWURvJx9Vm51p6jmm6WqG11WJFLWZ2IWrwrsemVFWJGDjU2GEBfa6GYyHwo3r1inpYx4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=o7cF4AoZ; arc=fail smtp.client-ip=52.101.69.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C31A2D9780
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 15:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789744505; cv=none; b=BS0O1Rd6j2S7XRpYbEN7dmV5I2DVT9RovXPg7D7wyW15Oj7uxT5p9X6ljiP18dpYS2HFbb70OY8CCTmqQmG6GXimfqxNEkhH6v5YjZLh9ccofGSGqDff+z1Amql2eNFKXyKFN4tXkURnEvydk6c5iDtsS5CkQWhEF9vGEqv5Wlw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789744505; c=relaxed/simple;
+	bh=8pH0+8dNkwSaqoyWPEEKbvS/EjWssTuyZ3oG+ok9uR8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=rTmV5Bq3ngYotivxqe5AFnqpEZNmrZPn69JLnwua+LvF0SGsiVNq2nUiN1XsHUBZdCOjmNcGf6M98HFV/6xLyTO1zJMTM4KWxEoSAUamB9opFaUgx/Oez+Hni68mKGZnyECh9D6Xeh4olwq2u41USOHdRjgFg4qrhchZF8laFAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DTqEyIFw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Pv4L4kmh; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="o7cF4AoZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t6kBEoXjSnu67q6lYjwIGncvELHByZLPu//wDQphZgPsJmZvgpdzukGph4gJ4cB/LzFAoDr3mD07IpB5wQZBnUm1UZqf5KRRuCBy+zvQR+IfhwrwUT/i9mNEmWzO5N6RRjPuOsbMef1WGXoBCxZ/BZeZAdVb/Rdv/STUYoxZrvZ/xvM+3yg3fNIupXVi71MtEayHgrePTrqVlBRiuz/6zDp26PvOQjEHVAOWOmwT83pr42N3Ad3JBeBpIprPDCMlqUduv9TEmZ4MrmJ8AorVA4HS2ceGmTtUImXOndhR3KuC62dxB2nahQ9nca9cTfUIOip28og7Ub/awwAesnVUdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uZBdSvEW3nA8W18mYzFaVqXGJb3q3bjw0DazXvHmoi0=;
- b=ctMnCCwvEBarzJDBfyWagXHyicE4Wd3autcGq/lKWKqOfd2PZ1zLtnIt6c64x+zioAQuPmUiTIgJWZXltMGf/v5j1KSOYyBG1l6g9q4arIE1Ly0Wiz3wjQDvN5WRRIvAXQvJLDPuMPbzT8THbB3fU/VuxSiWcVsTNj+UkiMTwpQta4D3CCYK/B+SB/JqQpMQMI0w8AiP5aJhbU8dyqMbLa+qbLaY/7Tr2JaWmYBIBJew2/0dpLoglGnjqR+RL3jqWHx1JzbbcBUFUjFRoVL6yV1TDUotvMmKd3xym+t9uF3SiA/vZi1PIWIS2kIHl87IjjceNkJ4YTuoI8VlIl2t2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uZBdSvEW3nA8W18mYzFaVqXGJb3q3bjw0DazXvHmoi0=;
- b=o7cF4AoZYLy5rrhAhUI0nXsI09ZtSbYM+JKkUWCUWR6z0XtPQRkJt3Ij60ehdW0TpYYtmS52BgdENkLwr4uSfD7uomLxvkC9abGFsWY1cep1ehAZLHHwKkUILEPmfxksGlC2FQxE7Fnwmz57QYree19qgFl1ftze+tuIzcuZiK/xw5WLIkeDc9ktQ9g9RKBI6WHuEcRtZ+RXPsjZ1mSiub19NUMmaTcgnJbO5R6rw97uI66Tx7fpKJc8XZK3EwBNGwTU2lf+iJuFqqQ0mX9vZbkn+CXd3y2cvX7Fm7uK5fI8RB7HiNJO3qwjwOBlZHKp8wKcLT9hhO8G8tLqdc2xUg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS1PR04MB9653.eurprd04.prod.outlook.com (2603:10a6:20b:475::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
- 2026 14:52:32 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 14:52:32 +0000
-Date: Fri, 18 Sep 2026 09:52:22 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
-	linux-pm@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Zhou Peng <eagle.zhou@nxp.com>, Xiahong Bao <xiahong.bao@nxp.com>,
-	Ming Zhou <ming.zhou@nxp.com>
-Subject: Re: [PATCH v2] pmdomain: imx8m-blk-ctrl: Serialize power on/off
- across sibling domains
-Message-ID: <aq1QJmhK9c3wwFZ-@SMW015318>
-References: <20260917-imx8mp-blk-ctrl-v2-1-81d29e907a5d@oss.nxp.com>
- <aqwYbhghBVb1fwdy@SMW015318>
- <aqycJQHcR9bqwXKr@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqycJQHcR9bqwXKr@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-X-ClientProxiedBy: CY5PR14CA0005.namprd14.prod.outlook.com
- (2603:10b6:930:2::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DTqEyIFw";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Pv4L4kmh"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDOowR1354156
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 15:15:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	klACuV7fdAYuSy7gHXP/AwNMnEDjRFePgshatLjHrOQ=; b=DTqEyIFwhXRJLNu9
+	IeYZsHOrKbXijwmdqq+ZxiPvyfet/fCUB0waQ1XFZArweh0RjYYUmoxq7nl/JEN1
+	Uy5NmhOd1qusEnfpTpqRg8agzbrAvS7pZSvHR/ylobOfF2XYjSV1/YXA1xxh8us/
+	0WSRuT7kO6kdLHoxx0I2EyTlfaVrjEBLOT5OPcRGUnOIkfZCR1Q/Gs7QFtUyIHF/
+	pYQtElGkrqyBwxzixxweaHTo1wj2rjXG06RAMMI+IEvfVga5JiRCPKr59GAZzH1x
+	JMF+HWQl287jMZVbazg42u8QTxVQ95BPg7psGMdFhgyAH+3PsFf8v+fRdN7V6mJV
+	VeUpRg==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs2hv9c5u-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 15:15:02 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d959904658so15126445ad.2
+        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 08:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789744502; x=1790349302; darn=lists.linux.dev;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=klACuV7fdAYuSy7gHXP/AwNMnEDjRFePgshatLjHrOQ=;
+        b=Pv4L4kmhSa2WSncR4SHhcP2Fe3qHUVsBEfIZtYjaJIPo/Y63TSxjMSL47VQ5pzXIGl
+         jtzYFKbuTDuS+i8foFeiftKVc3n35y1iUx1AqLwkqSaC5OeZ108L2oQZ8tpKm06umQfx
+         5I1luMUEvt7bl9axsjcOgR/1QXrrl5FB4Oi7Y0OKLim+nYfkVsFN4yiKIF2VhoLuUZ+4
+         VTA0ao4BlpDYmSxb3MkCVsbv5hlWaHsY0GI7apdBzDumZCmoqQJgvTIUcfZmqZ6pQQ6T
+         yK5GI90jjekWopN4w6oVjr1QJu5Xc30tId3NP1Wk80W+m8ZZtv60702MSNaWjfcHpbKX
+         FkdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789744502; x=1790349302;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=klACuV7fdAYuSy7gHXP/AwNMnEDjRFePgshatLjHrOQ=;
+        b=QkEOhIXEH/csPJOT2DrHgwkSV7s+GjX+aSKf2gHik5uBlrUT+IT1yixhdJEdv7FLg2
+         in163tQZUgkWAgWw73U/2qlIFb6qT6NSFPqPwJUbb3F4aMLsvOHNFt4nF3+VxYwaKWPu
+         szlulcB5Xvd+BwkcHtNMZ91sQabReSbUSMMbfZ8lmGu39vU8Fk1t5l63OBLs8epPNTE5
+         ESlSN99EZsI3kd15s3/Yx8nW+9v93InDCYGcwRqJfhjxRy+5WpYiMrJljEVWZBAshMGD
+         aDrPe0V/1jXvmKPYWgZEM7cWEzAYt8pmksCheuwhOsx4PlO/2rA+r1E8vLMDNnzKiLGU
+         ERZA==
+X-Forwarded-Encrypted: i=1; AKwUvBwf3LdUSqEvS/BSvnjHbtIYl6FTrCj7wlxmAbHZO2J1s9xFtx+vvYORbFvUDmcC0DOFHfY=@lists.linux.dev
+X-Gm-Message-State: AFuF++kJ13m9aciji8ExFj3d3BQ16s/6SpMkScES5Vs5UGiZDARBuJ7u
+	OcfFW2OMbXF7oCIBNJfi6CjrARV9RbtfONKb/88Bc0y3flv/alGm/+sf9NrDl6FqHTRfvMALJvS
+	VzIkGNN1ViD10y4K3g6+O1XHKAR34jzIoO/TCYgLp9SUY6Z4OaqPE7sc=
+X-Gm-Gg: AYBFou3euQ0tljRslUTBdvlV6Ue7fBYtbXnOoZ0L4twLwb9vB/KvWJuKT9DC9L1x5fI
+	Nglnw9RZcUrUlH+sy5zpBIWfvBx6w9Q86rZKF678lf5/shwjTANIhwmQcbPDNDxfONz41L/nW/b
+	v9w9S+mP5vh6gBIW281CQtTpBbssuUJERChVOXmRU8C+spw0OYQY6n8RCddAIoz9aauxlPi7eYe
+	aKdyrSwtGB7kcfFPm1Lw39G89DvjkmM+quuXffdcRyX0i8EWLAg9YDsEBwNP1u1a9KsSG06ZYGE
+	aTRFtay4KWYTf5WbIBGPxZpOs680PQ/mdsymLG/tokEZ6uCEm77HjpT7nvuLm/PtCriM+7YrgtL
+	uzOTcdQ==
+X-Received: by 2002:a17:903:906:b0:2dd:c053:e669 with SMTP id d9443c01a7336-2ddc053e6a2mr4634935ad.47.1789744501626;
+        Fri, 18 Sep 2026 08:15:01 -0700 (PDT)
+X-Received: by 2002:a17:903:906:b0:2dd:c053:e669 with SMTP id d9443c01a7336-2ddc053e6a2mr4634335ad.47.1789744501092;
+        Fri, 18 Sep 2026 08:15:01 -0700 (PDT)
+Received: from localhost ([143.246.51.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb73db302sm10267015ad.2.2026.09.18.08.14.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Sep 2026 08:15:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS1PR04MB9653:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81b5693e-4323-4b96-ed1a-08df159477e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|7416014|1800799024|23010399003|6133799003|10067099003|5023799004|11063799006|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Fo91ytMOEihwE78uwhRM9iDguepVE6IVIBVQrggRusbef5InmeHh358XyUa9cpFd5iqQrckB2wwbZS2CLpR+bXrmziKQBYx7YiWeOkkWGatmKichkROC4A5Nyw2OLY3Rpqk8DcjF0nes9Km7NcsRsuhwNek/8CxxYGThexjeRE9DqHisCTy4Tv0cX2+MMx9wEqOxNXrmrcuvd0LII5Qdm/bQV7D485FvuUXAoHSrpgxAidenEMYfZERWsthrlRA6448PKBDJMgW6d/H3bCoJLrkY29NqtObpbHzHLa3n/C0AVebomxWoGmE4ETuYA4mOPzsbhQBBVu8fjVPjfLL2XtgfzXap5wUZA0agXG7up9T0xEzwzzDZ+2lTnnsnn/yK9gQVnbRKgYg3cWx9tRCOLCNHrpGIflHgPuZ627zCvo+eaBBGPosFWv4mMSuF98tFtC7AWN4O4HefOUmxg1mOogcc3V0S3yH4M7w40qmDrAG2rwOzE431niLcTC0wMggZJDb4baPV1glAfiGvsQ6dKONPUpmhB1uKHgYvUG7Xoddcg0vMk4t/upnZCt6yZKSmOSpoaoat2EH3ho6N6cbHoEm58Sp2CwTNdDQCe7dQkhBJSSBgyHX2ehsJBLmxViPe
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(1800799024)(23010399003)(6133799003)(10067099003)(5023799004)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L3Hf5UiYLMsBONam6ovXufMjFKMkkib5I5WWBk+EAdIPfDitpEcv3CWoKirI?=
- =?us-ascii?Q?WGNpq+qD5QsTMRElyNtm0E53JQZyiy+uugRtoMIzXqbbe16/qtIeWtKX8Lmb?=
- =?us-ascii?Q?EEAw21oAS6zrCjE3pL6x7M76jx4sdRdIvTXLeoSM/aEHE1TdG5M3BVAxMc8E?=
- =?us-ascii?Q?yNMIePDVP5Z78LHFIFBuwnL92zIjI9PJOZTTyKXcgeJIhK7/jLml5qSz/9KS?=
- =?us-ascii?Q?vMFu7ByCE4Lac2Kv+K9iFljAwOMvzF9f2IDSb8sRam9ot6To9XzDzy8HWmJq?=
- =?us-ascii?Q?LAyF5E4bPI/U0OKh95FdYvHWo++qxBzcZ31CB7n1H6hPrpSFdmY7p0sAa/sG?=
- =?us-ascii?Q?BIkhprHXkUyul0ewIHtfp3+7v3OaKoI+bffMwly7iKQQC1BjSVlvBE2tPq8h?=
- =?us-ascii?Q?l59AgyW3JaSZHnVAX1WEroophnjbC0gbpEAVIgH3F2VZp9uwjfCS7QmLEEwj?=
- =?us-ascii?Q?9pgxyKd1Do9yMriiCkM7UKRjydT1GctiwF5ijsS1orE2SRdz2WdYOrAr6Wb/?=
- =?us-ascii?Q?mmP6eMtgXJ3OBCEixpgGigbt/jntW6SR02h0DIn3K/BtjkqQWFYwLwFUtHG0?=
- =?us-ascii?Q?tcQD7lQERaMmUIU4/i8AnL5tK1kVD49WiEFwZpYYEMqSVmdmYb4MYhal6PsB?=
- =?us-ascii?Q?3i09T1FljqxAPPKtoF/ViLqOH6MLvBOyIAduduQC8qUZIPcl+jpDTbKuM2xP?=
- =?us-ascii?Q?pcI8nbU12QM2nvgo6OIUlJhpX5d2wZegQOp+yAiHtfwuZTREcblUoXfRQQeS?=
- =?us-ascii?Q?73Zvqork2dRK2/bteDC1NjVmjA/1UCZiR7irUj/poF57QJs77d4hs3mKGg+y?=
- =?us-ascii?Q?c8nimHGZUkeMZ+wLIdV51eVbLR322PTknrghc1gjAfjB5Uco04UBWkVU4Jc0?=
- =?us-ascii?Q?B5MyuT2I9AMl+eXCX3BLsVl7X3lgAn3dVKS4plZ5dcf6l8hZYWgJtGBX3M4z?=
- =?us-ascii?Q?A/A46C3btCeJwH0mK13SmrugGXE6fWTwbkTH4rGq10jC2G1lGla1VLijfpxk?=
- =?us-ascii?Q?cdEVoFozGmi0J2EGwU9pAXr0f6qqlAnNchc/fk1rNpXNuunTHrGJ34heg7rd?=
- =?us-ascii?Q?CogyNyNtCV+5yVcmFX/SYVPpGS+2Pba1OxPrIfMhm2BVbZThwa6vIpzVJptv?=
- =?us-ascii?Q?8sBXPhb4WtYppP+6BUA9iwzD3rW0p7f+p2O2Fbkev6tewYUypwjchhGy0z/R?=
- =?us-ascii?Q?r5RefdLBhAeLaW/mJEJv/6ANmhCn9evx8hSeSYauUPA7Gk8WB701iM+Ih86C?=
- =?us-ascii?Q?/PpE63nBQnkagTm8gfCF5nvlJUQx7oprbH/MGgSRS4o2yc3l1si6PTjK8D1i?=
- =?us-ascii?Q?lUvZEZcSPISOhEdxZciEjx+2FWeZUCLPEoKRfr8m7/dZaI5kFEafbb2KAbAt?=
- =?us-ascii?Q?XJwuFN7+7CEAAO5RVsp/SZRPL4o/kN1zm37+N56uq7Kxp4LuL3CYyzzNi5DZ?=
- =?us-ascii?Q?bGoFXAHRYyBumA27ZDWx0IZpaQMTNq4WToxQgOM4h1lnNV3iZKMm2mN5OZMw?=
- =?us-ascii?Q?T9TNtrpwKCpWUH2yj2qG5rg+qqjmJTJeUuE4gsG801B4BRbyewDGfh3O+sQ7?=
- =?us-ascii?Q?vbhTU/UMpmb2NVYJFqlanR1wOJnDQPmBR0EAGxEwIBtnmfcPe9wsFNmWu8nr?=
- =?us-ascii?Q?hzpLpj4IkAhocGCnW/scz6ZhkH+p9zmevTOr6hXakUftO2HrQbb8jNvGJ4rf?=
- =?us-ascii?Q?RLZDis3zIuZwkdRKxZfX4sUHxo0fzIjUvqW0UUy7khtbywaJNBlxzsZfDe72?=
- =?us-ascii?Q?SKIP0aBUMHXluo01cMEXOwRKUzb+P4wdGZtyYfDBCs0gl9n1oWVH?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81b5693e-4323-4b96-ed1a-08df159477e3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 14:52:32.4307
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NMjE4zu62DZZ4+G397NgQTAH+6Gzp8WbiG5BUFKv271Dx3ZqQBuBMslk+XM+cXbUyh8UdhGil8jb6H0AyKpOFWY4IxvX0onhnYyyahih3QKahI3WRupDD8tson6nOCkn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9653
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 18 Sep 2026 23:14:35 +0800
+Message-Id: <DLIJGTK5M3G0.2PNROS5SMQWNF@oss.qualcomm.com>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <linux-aspeed@lists.ozlabs.org>,
+        <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
+        <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH v3 2/2] drm/imx: replace struct drm_simple_display_pipe
+ with regular atomic helpers
+From: "Ze Huang" <ze.huang@oss.qualcomm.com>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>,
+        "Ze Huang"
+ <ze.huang@oss.qualcomm.com>,
+        "Alexey Brodkin" <abrodkin@synopsys.com>,
+        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+        "Maxime Ripard"
+ <mripard@kernel.org>,
+        "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>,
+        "Joel Stanley" <joel@jms.id.au>,
+        "Andrew Jeffery"
+ <andrew@codeconstruct.com.au>,
+        "Frank Li" <Frank.Li@nxp.com>,
+        "Sascha
+ Hauer" <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>,
+        "Fabio Estevam" <festevam@gmail.com>,
+        "Linus
+ Walleij" <linusw@kernel.org>,
+        "Hans de Goede" <hansg@kernel.org>,
+        "Alex
+ Lanzano" <lanzano.alex@gmail.com>,
+        "Oleksandr Andrushchenko"
+ <oleksandr_andrushchenko@epam.com>,
+        "Philipp Zabel"
+ <p.zabel@pengutronix.de>,
+        =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=
+ <u.kleine-koenig@pengutronix.de>,
+        "Marian Cichy" <m.cichy@pengutronix.de>
+X-Mailer: aerc 0.22.0.r10.g73f20125
+References: <20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com> <20260727-drm-simple-kms-removal-v3-2-de36e534f7a1@oss.qualcomm.com> <8e4c84be-5c89-4d84-adda-aad4c7de0c8a@suse.de>
+In-Reply-To: <8e4c84be-5c89-4d84-adda-aad4c7de0c8a@suse.de>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIxNyBTYWx0ZWRfXyeJwcKoMPTle
+ GD3XB3+oLSpH9jVQW9oYTMUJGsgJqlVF61AD3G7KKGDS9T66nynLtVSYqCKtzqB/COWhguCuGOF
+ shzTPzqEK7S44tfad2AOilSbVrQ7L7w=
+X-Authority-Analysis: v=2.4 cv=IOWXmQvG c=1 sm=1 tr=0 ts=6aad5576 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=LNnhWNgewsfctp/cwirQdA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=P-IC7800AAAA:8 a=EUspDBNiAAAA:8 a=nI5uWgR6GCbiVoZM8DwA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIxNyBTYWx0ZWRfX7gXusn4a5cPL
+ EANQxkNIPIHyWMGD5HqolDvqS0MEkCyE0WspONsX7ssndUQGR4X6FfqkL8BFA8WUjJmG46d8mQz
+ LeXbBlxRpRdyIm8sEQXG021OGLgNSYR/9fxSGlYY8H7uvgKghb3+pV591CJn/vrJc9+MYiJmAMN
+ Je0FDBlv+36Tbnx14zTK8WW+QL4NQptT2NtSGMBGvVsV+PoI8P8j8kzOKUA1DwvrPclCm7NAlZM
+ iPd5O/KohsZcNGh5WFXkohmJg9FALLC0lrmimybnqKX7PKrqxFtTrW15UcsQ4C63YFqPmh7HJ3J
+ nD8to/zJTyyULLsoP81L+mQ9Up69DjMQ7ovyT9aqIKO3ysGOkQC39mG4/K27sDtB2OXNGt+/OG1
+ +DlMiU8zGr0nYmBH62qXia4o7JNIjJEq0fc25hnFVg9bovD+y7ZzUNmhbWyqItwNz3Aw499GM/n
+ 7dZ93ZfW+1ia3x5bH4w==
+X-Proofpoint-ORIG-GUID: 4ZSl9fVQRHB3IBzRpwesFXJn-UpPQJnp
+X-Proofpoint-GUID: 4ZSl9fVQRHB3IBzRpwesFXJn-UpPQJnp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ suspectscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609180217
 
-On Fri, Sep 18, 2026 at 11:08:06AM +0900, Ming Qian(OSS) wrote:
-> Hi Frank,
+On Wed Sep 16, 2026 at 2:50 PM CST, Thomas Zimmermann wrote:
+> Hi
 >
-> On Thu, Sep 17, 2026 at 11:42:22AM -0500, Frank Li wrote:
-> > On Thu, Sep 17, 2026 at 04:07:54PM +0900, Ming Qian wrote:
-> > > On i.MX8MP the VPU blk-ctrl exposes G1, G2 and VC8000E as three separate
-> > > genpds, each serialized only by its own genpd lock, so their power_on and
-> > > power_off callbacks can run concurrently on SMP.
-> > >
-> > > The sequences are not independent: they share the VPUMIX bus domain, the
-> > > VPU_NOC and the ADB400 handshake. On power up the GPC cannot ack-verify
-> > > the ADB400 handshake - the ack only completes once blk-ctrl sets the bus
-> > > clk-en bit - so it just waits a fixed delay instead of polling hskack. A
-> > > sibling transition landing inside another domain's reset window disturbs
-> > > that shared clock and handshake timing, the victim's reset does not take
-> > > effect, and its block registers read back all zeros: the decoder times
-> > > out or the encoder fails its format check.
-> > >
-> > > Serialize the blk-ctrl reset sequence with a per-blk-ctrl mutex; the
-> > > driver deliberately avoids a genpd hierarchy, so the genpd core gives no
-> > > cross-sibling serialization.
-> > >
-> > > Fixes: a1a5f15f7f6c ("soc: imx: imx8m-blk-ctrl: add i.MX8MP VPU blk ctrl")
-> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > > ---
-> > > Problem:
-> > > On i.MX8MP, running the VC8000E encoder and the G1/G2 decoders
-> > > concurrently rarely and non-deterministically leaves a VPU stuck in
-> > > reset: its block registers read back all zeros. A decoder then times out
-> > > or the encoder fails its format check.
-> > >
-> > > Root cause:
-> > > The VPU blk-ctrl exposes G1, G2 and VC8000E as three separate genpds,
-> > > serialized only by the per-genpd lock, so on SMP their power_on/power_off
-> > > callbacks can run concurrently. The sequences share the VPUMIX bus
-> > > domain, the VPU_NOC and the ADB400 handshake. On power up the GPC does
-> > > not ack-verify the ADB400 handshake - the ack only completes once
-> > > blk-ctrl sets the bus clk-en bit - so it just waits a fixed delay. A
-> > > sibling transition landing inside another domain's reset window disturbs
-> > > that shared clock and handshake timing, the victim's reset fails to take
-> > > effect, and its block is left in reset with registers reading zero.
-> > >
-> > > Fix:
-> > > Serialize the blk-ctrl reset sequence with a per-blk-ctrl mutex, so a
-> > > sibling domain cannot run its sequence while another is inside its reset
-> > > window. The driver deliberately avoids a genpd hierarchy, so the genpd
-> > > core provides no cross-sibling serialization.
-> > >
-> > > Test:
-> > > i.MX8MP, Android 6.18 kernel, concurrent H.264 decode and encode. Without
-> > > this patch the failure reproduces within one to two hours. With it the
-> > > same test ran overnight, over 14 hours, without a single occurrence.
-> > > ---
-> > > Changes in v2:
-> > > - Replace guard(mutex) with explicit mutex_lock()/mutex_unlock():
-> > >   power_on() already unwinds errors with goto, and cleanup.h asks not to
-> > >   mix goto and scope-based cleanup in one function (sashiko-bot).
-> > > - Shorten the commit message to the essentials and move the detailed
-> > >   hardware analysis into this cover letter (Frank Li).
-> > > - Link to v1: https://patch.msgid.link/20260915-imx8mp-blk-ctrl-v1-1-b3b4e6e7e676@oss.nxp.com
-> > >
-> > > To: Ulf Hansson <ulfh@kernel.org>
-> > > To: Frank Li <Frank.Li@nxp.com>
-> > > To: Sascha Hauer <s.hauer@pengutronix.de>
-> > > To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > > To: Fabio Estevam <festevam@gmail.com>
-> > > To: Shawn Guo <shawnguo@kernel.org>
-> > > To: Peng Fan <peng.fan@nxp.com>
-> > > Cc: linux-pm@vger.kernel.org
-> > > Cc: imx@lists.linux.dev
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > ---
-> > >  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 23 ++++++++++++++++++++++-
-> > >  1 file changed, 22 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > > index 479789009c7f..270f43229fe7 100644
-> > > --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > > +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > > @@ -15,6 +15,7 @@
-> > >  #include <linux/pm_runtime.h>
-> > >  #include <linux/regmap.h>
-> > >  #include <linux/clk.h>
-> > > +#include <linux/mutex.h>
-> > >
-> > >  #include <dt-bindings/power/imx8mm-power.h>
-> > >  #include <dt-bindings/power/imx8mn-power.h>
-> > > @@ -34,6 +35,12 @@ struct imx8m_blk_ctrl {
-> > >  	struct regmap *regmap;
-> > >  	struct imx8m_blk_ctrl_domain *domains;
-> > >  	struct genpd_onecell_data onecell_data;
-> > > +	/*
-> > > +	 * Serializes the blk-ctrl reset/clock sequence across sibling domains;
-> > > +	 * their transitions interact through the shared VPUMIX bus domain,
-> > > +	 * VPU_NOC and the not-ack-verified ADB400 handshake (ERR050531).
-> > > +	 */
-> > > +	struct mutex power_lock;
-> > >  };
-> > >
-> > >  struct imx8m_blk_ctrl_domain_data {
-> > > @@ -98,12 +105,14 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
-> > >  	struct imx8m_blk_ctrl *bc = domain->bc;
-> > >  	int ret;
-> > >
-> > > +	mutex_lock(&bc->power_lock);
-> > > +
-> > >  	/* make sure bus domain is awake */
-> > >  	ret = pm_runtime_get_sync(bc->bus_power_dev);
-> > >  	if (ret < 0) {
-> > >  		pm_runtime_put_noidle(bc->bus_power_dev);
-> > >  		dev_err(bc->dev, "failed to power up bus domain\n");
-> > > -		return ret;
-> > > +		goto unlock;
-> >
-> > can you use auto cleanup guard()
-> >
-> > Frank
-> >
->
-> v1 did exactly that, and sashiko-bot flagged it, because
-> imx8m_blk_ctrl_power_on() unwinds its errors with goto:
->
->   https://patch.msgid.link/20260915102028.2CFFD1F000FF@smtp.kernel.org
->
-> According to the cleanup subsystem guidelines (include/linux/cleanup.h),
-> using goto and scope-based cleanup helpers shouldn't be mixed in the same
-> function:
->
->    * Lastly, given that the benefit of cleanup helpers is removal of
->    * "goto", and that the "goto" statement can jump between scopes, the
->    * expectation is that usage of "goto" and cleanup helpers is never
->    * mixed in the same function. I.e. for a given routine, convert all
->    * resources that need a "goto" cleanup to scope-based cleanup, or
->    * convert none of them.
->
-> So v2 changed imx8m_blk_ctrl_power_on() back from guard() to
-> mutex_lock(), and imx8m_blk_ctrl_power_off() follows the same style for
-> consistency.
+> Am 26.07.26 um 21:42 schrieb Ze Huang:
+>> Convert i.MX LCDC to explicit primary plane, CRTC and encoder objects.
+>> Keep no-scaling plane check and GEM framebuffer prepare callback from
+>> simple-KMS path.
+>>
+>> Wire the vblank lifecycle explicitly with CRTC vblank callbacks and
+>> drm_crtc_vblank_on()/drm_crtc_vblank_off(). Use the old CRTC state in th=
+e
+>> disable path for clock unwinding so the clock reference count remains
+>> paired with the previous active state.
+>>
+>> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
+>> ---
+>> +
 
-include/linux/cleanup.h, the description is not exactly correct. The major
-means is avoid goto back to cleanup scope, which will cause scope's cause.
+[ ... ]
 
-err:
+>> +static void imx_lcdc_crtc_helper_atomic_flush(struct drm_crtc *crtc,
+>> +					      struct drm_atomic_commit *commit)
+>> +{
+>> +	struct drm_crtc_state *new_crtc_state =3D drm_atomic_get_new_crtc_stat=
+e(commit, crtc);
+>> +	struct drm_pending_vblank_event *event =3D new_crtc_state->event;
+>> +
+>> +	if (!event)
+>> +		return;
+>> +
+>> +	new_crtc_state->event =3D NULL;
+>> +
+>> +	spin_lock_irq(&crtc->dev->event_lock);
+>> +	if (new_crtc_state->active && drm_crtc_vblank_get(crtc) =3D=3D 0)
+>> +		drm_crtc_arm_vblank_event(crtc, event);
+>> +	else
+>> +		drm_crtc_send_vblank_event(crtc, event);
+>> +	spin_unlock_irq(&crtc->dev->event_lock);
+>>   }
+>
+> Please use drm_crtc_vblank_atomic_flush(). [1]
+>
+> [1]=20
+> https://elixir.bootlin.com/linux/v7.2.5/source/drivers/gpu/drm/drm_vblank=
+_helper.c#L51
 
-guard()
-goto err
-
-sashiko mark feedback as low. I think it is fine by use guard, if your goto
-to do tear down work.
-
-Frank
+Thanks! will follow
 
 >
-> Regards,
-> Ming
+> Best regards
+> Thomas
 >
-> > >  	}
-> > >
-> > >  	/* put devices into reset */
-> > > @@ -148,12 +157,16 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
-> > >  	/* disable upstream clocks */
-> > >  	clk_bulk_disable_unprepare(data->num_clks, domain->clks);
-> > >
-> > > +	mutex_unlock(&bc->power_lock);
-> > > +
-> > >  	return 0;
-> > >
-> > >  clk_disable:
-> > >  	clk_bulk_disable_unprepare(data->num_clks, domain->clks);
-> > >  bus_put:
-> > >  	pm_runtime_put(bc->bus_power_dev);
-> > > +unlock:
-> > > +	mutex_unlock(&bc->power_lock);
-> > >
-> > >  	return ret;
-> > >  }
-> > > @@ -164,6 +177,8 @@ static int imx8m_blk_ctrl_power_off(struct generic_pm_domain *genpd)
-> > >  	const struct imx8m_blk_ctrl_domain_data *data = domain->data;
-> > >  	struct imx8m_blk_ctrl *bc = domain->bc;
-> > >
-> > > +	mutex_lock(&bc->power_lock);
-> > > +
-> > >  	/* put devices into reset and disable clocks */
-> > >  	if (data->mipi_phy_rst_mask)
-> > >  		regmap_clear_bits(bc->regmap, BLK_MIPI_RESET_DIV, data->mipi_phy_rst_mask);
-> > > @@ -177,6 +192,8 @@ static int imx8m_blk_ctrl_power_off(struct generic_pm_domain *genpd)
-> > >  	/* allow bus domain to suspend */
-> > >  	pm_runtime_put(bc->bus_power_dev);
-> > >
-> > > +	mutex_unlock(&bc->power_lock);
-> > > +
-> > >  	return 0;
-> > >  }
-> > >
-> > > @@ -202,6 +219,10 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
-> > >
-> > >  	bc->dev = dev;
-> > >
-> > > +	ret = devm_mutex_init(dev, &bc->power_lock);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > >  	bc_data = of_device_get_match_data(dev);
-> > >
-> > >  	base = devm_platform_ioremap_resource(pdev, 0);
-> > >
-> > > ---
-> > > base-commit: 27953c044974baf7e24dee3e9342fe0103dea80c
-> > > change-id: 20260911-imx8mp-blk-ctrl-c46f26783073
-> > >
-> > >
