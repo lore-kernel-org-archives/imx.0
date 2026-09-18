@@ -1,66 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0804A689C
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F27F4A3D52
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789717203; cv=none; b=FFAsuAPy2xTG0zZ7C/SawzQprR4IzwhP/GIZHmyua6YtVcjJ7XdsLGGgFsie69tt2tRavlF26LDQpg2zSOlTU4hJVz50PFreAwsGpL6xA+n2mhW92kl2j/Vgga9OUcuqVYPvJ3kP55uPkY9hsCTpCFB6b6K69vwXN78pxD1DjHk=
+	t=1789718002; cv=none; b=QWgzL62OkkFTQq/JomNmATlMMep3At4jXGkQMRazwlw2jtOZRAN17bEvV+yKRVMdXtPKiE7LUmE8D7vqDmpnPp7bgGEANH2vsBF5eVSGuJ/E4Vp5wfonPIwmTCactaUhsM7BqzKb3z38MQt8T9D3061WgDhtnRT/3OqDdZFHsiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789717203; c=relaxed/simple;
-	bh=9HjgM9JbkGt1A3yefJhN4x6xA3Vg7LoR3hGeySb0Qow=;
+	s=arc-20240116; t=1789718002; c=relaxed/simple;
+	bh=1kalJkD2AC88fzQVG0vNoQck71hbfcCsC1uiYAkmkE0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f6oUFq/uLJb2nmQt6gpv+18CAeMS6ikZ2T5pQmN52xImHZHoeOjLoRuG5CIm93uWnBpQSjaM0rTJehbVjB+7KDlVjSRGU+WDRhIG/whc7jChA5U6Ynq3hDaW5fUBMVbBvBHrQRUERdyEGFK+T3cI+6bquE8uVBSTedXVYCHLbJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QRyltiK/; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=iBorHifmZigkxvc03xnejzpjo52ZtqSUxRdEm0jFNfnHbeT7Uuot5zndWZnq21EosulKfSKkPXW/AoGHayfs8BRH7hruEIGj7rzwWCK3RsoefmT/N6fh04+WLnqXPzCNJoqd9pBLIeqGYgBec7zn3N1CKJj2pHgpbirsIwu8Hdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LV6beOBw; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QRyltiK/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LV6beOBw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789717199; x=1821253199;
+  t=1789718001; x=1821254001;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=9HjgM9JbkGt1A3yefJhN4x6xA3Vg7LoR3hGeySb0Qow=;
-  b=QRyltiK/8VXtmYoDNqHqSA6+r/9gYRqGlcGdjn5gfRAhfQYAn5XrGY+x
-   /+35p6LcSwkm7LHxQ0H0T7RP61tFADN8S0MIQBnpTXmqy1wJlBfBetV8D
-   M0sM5sNh7CvD6aBqts1P3nYb3nGLGHE4yU652I33CC3bngi3TQwFTcxAM
-   pP7c2U8bSt06+1+1/MKj2IhZGMSCRZDLIqtfLwiyHZoMUaLXo/e34lt73
-   3eMaFW6VmLVdJy13a1YgT2W8h/AwUBXpEMCyuMjYl9a4V6QWavGhOpmcL
-   LT+mt+THYI+YR8kQ1SogLaARS2dQsaUtbsHxCqQ4tDduzF5sjo4nlVIAA
-   Q==;
-X-CSE-ConnectionGUID: xFn7SRQqRtGR0V3gDxrjqg==
-X-CSE-MsgGUID: vxTF3VXaTReT97Gy3JjlUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89340114"
+  bh=1kalJkD2AC88fzQVG0vNoQck71hbfcCsC1uiYAkmkE0=;
+  b=LV6beOBwiiaV9JZWHkuOJsGX2P8EI3B5Bl2pwrefuOzovYtkNaCK9NGN
+   4xPidkOIFhG4dnEC6C5WQC/5g2Zg8BE94uVrTZQX8d2dhLdhXWYgqEKi0
+   tWcC3cN1kunUvoW7Cl0l9kGDNXp61PKh2EejQVEbFvUTtG+6cCQMpe12X
+   L2AMlJ2LoFP/htfLbxWgjil+ZHW6Rt6vqWW1JdBIzlWG93g8L0dK1asCZ
+   Ya1piXd57HSuyKB8vQmLIzOa4Pl0WwhnWzo7GVcpLaIDZHCpD2ETMGNKA
+   C0k8BlcYaFIPHEAZfq/j/6ZCbdFAroPxf/iBVmcmgHXovoW7vDWkU02f5
+   w==;
+X-CSE-ConnectionGUID: JkY9fE4wTKex8TAcc8A+VQ==
+X-CSE-MsgGUID: YLw1I0QJRtCGqUpWGINQNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100803042"
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="89340114"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 00:39:52 -0700
-X-CSE-ConnectionGUID: EQSigIixQTGHBye9zTlPZA==
-X-CSE-MsgGUID: SCwZTKvvQfmatyBz20cYNw==
+   d="scan'208";a="100803042"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 00:53:20 -0700
+X-CSE-ConnectionGUID: RiNtwVriQZaCxAyHeSuvCg==
+X-CSE-MsgGUID: oJy3azIKS/6kIjzAeA2nzQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="297731196"
-Received: from carterle-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.170])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 00:39:47 -0700
-Date: Fri, 18 Sep 2026 10:39:41 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Wentao Liang <vulab@iscas.ac.cn>, Miaoqian Lin <linmq006@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Dong Aisheng <aisheng.dong@nxp.com>, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pmdomain: imx: gpc: remove all initialized power domains
-Message-ID: <aqzqvfbeh653jUce@ashevche-desk.local>
-References: <20260918031323.3376849-1-lgs201920130244@gmail.com>
+   d="scan'208";a="299371428"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa001.fm.intel.com with ESMTP; 18 Sep 2026 00:53:18 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 2178F99; Fri, 18 Sep 2026 09:53:17 +0200 (CEST)
+Date: Fri, 18 Sep 2026 09:53:17 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@oss.nxp.com>
+Cc: badhri@google.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: typec: tcpm: advance vdm_discovery_state on
+ Discover Identity Not_Supported
+Message-ID: <aqzt7dDNdHd22rY3@black.igk.intel.com>
+References: <20260914093828.1910201-1-xu.yang_2@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,70 +63,62 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918031323.3376849-1-lgs201920130244@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20260914093828.1910201-1-xu.yang_2@oss.nxp.com>
 
-On Fri, Sep 18, 2026 at 11:13:22AM +0800, Guangshuo Li wrote:
-> imx_gpc_old_dt_init() initializes all power domains described by
-> of_id_data->num_domains. Its probe failure path removes all of these
-> domains, but imx_gpc_remove() only removes the PU and ARM domains.
+On Mon, Sep 14, 2026 at 05:38:28PM +0800, Xu Yang wrote:
+> From: Xu Yang <xu.yang_2@nxp.com>
 > 
-> On SoCs with more than two domains, such as i.MX6SL and i.MX6SX, the
-> additional DISPLAY and PCI generic power domains can remain registered
-> after the GPC driver is removed.
+> Commit fa4d0a7cd036 ("usb: typec: tcpm: fix Discover Identity retry loop
+> on Control Message reject") advances vdm_discovery_state to
+> VDM_DISCOVERY_COMPLETE when a CMDT_RSP_NAK is received, but it does not
+> advance the state when a non-modal port returns PD_CTRL_NOT_SUPP.
 > 
-> Remove all initialized power domains in reverse order. Keep releasing
-> the PU clocks immediately after the PU domain has been successfully
-> removed.
+> This can re-arm another vdm_discovery_work if the port is going to
+> respond with PD_CTRL_NOT_SUPP to the partner.
 > 
-> This issue was found by manual code inspection.
+>   tcpm_pd_handle_msg(port, PD_MSG_CTRL_NOT_SUPP, NONE_AMS);
+>     tcpm_queue_message();
+>       mod_tcpm_delayed_work();
+>         tcpm_state_machine_work()
+>           tcpm_send_queued_message()  -> send PD_MSG_CTRL_NOT_SUPP
+>           run_state_machine()
+>             case SRC_READY:
+>             case SNK_READY:
+>               mod_vdm_discovery_delayed_work(port, 0);
+> 
+> If both the port and its partner do not support modal operation, they
+> will send DISCOVER_IDENTITY to each other infinitely.
+> 
+> Advance vdm_discovery_state to VDM_DISCOVERY_COMPLETE in this path as
+> well, mirroring the existing handling for the SVDM CMDT_RSP_NAK case.
+> 
+> Fixes: fa4d0a7cd036 ("usb: typec: tcpm: fix Discover Identity retry loop on Control Message reject")
 
-...
+I can't find that commit from anywhere?
 
->  static void imx_gpc_remove(struct platform_device *pdev)
->  {
-> +	const struct imx_gpc_dt_data *of_id_data =
-> +		device_get_match_data(&pdev->dev);
+Thanks,
 
-No...
-
->  	struct device_node *pgc_node;
-> -	int ret;
-> +	int i, ret;
-
-...and no.
-
-The result of the device_get_match_data() better to be checked, in some cases
-it might lead to NULL dereference.
-
-It's better to split semantically different variables, also naming 'i' is not
-good, num_domains is better. Besides that, why is it signed?
-
-...
-
-> +		for (i = of_id_data->num_domains - 1; i >= 0; i--) {
-
-What you are doing here can be written in a shorter form
-
-		num_domains = of_id_data->num_domains;
-		while (num_domains--) {
-
-> +			ret = pm_genpd_remove(&imx_gpc_domains[i].base);
-> +			if (ret) {
-> +				dev_err(&pdev->dev,
-> +					"Failed to remove %s power domain (%pe)\n",
-> +					imx_gpc_domains[i].base.name,
-> +					ERR_PTR(ret));
-> +				return;
-> +			}
->  
-> +			if (i == GPC_PGC_DOMAIN_PU)
-> +				imx_pgc_put_clocks(&imx_gpc_domains[i]);
->  		}
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 2d6b14aa2085..cc9ea5d5e78a 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -3891,6 +3891,9 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
+>  		case SRC_READY:
+>  		case SNK_READY:
+>  			if (port->vdm_state > VDM_STATE_READY) {
+> +				if (port->ams == DISCOVER_IDENTITY)
+> +					tcpm_update_vdm_discovery_state(port,
+> +									VDM_DISCOVERY_COMPLETE);
+>  				port->vdm_state = VDM_STATE_DONE;
+>  				if (tcpm_vdm_ams(port))
+>  					tcpm_ams_finish(port);
+> -- 
+> 2.34.1
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+heikki
