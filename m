@@ -1,120 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010068.outbound.protection.outlook.com [52.101.84.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6801E98EF;
-	Fri, 18 Sep 2026 23:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789772419; cv=none; b=FwX8aP9qP6TNvkc99SNYrQOehmJFzTAapdi6Gk5lAMppo6Vli4tonJzY/2H5cJkLq3U0rIHkLM7P01XOsnGXwu9TenkgwozAGzuUYUzfMFUuqCpyOxXnVGnK+CE85HbHtLDu3Us605cHUjX8I5fai9Id+O0ZHyUfMVHpYdtWjgM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789772419; c=relaxed/simple;
-	bh=soRR53JeLr5E9sO4bwIPbK6EtttDoUxkkFFZYgNvOok=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Jnw9FKeDRW5eHedG7r3JTs4Ld7zArG2UaTcRZaC4qvchRyjX8acCgdBzQaFtpgi73X+O7loDlgqpRP0ilL2O/mWTehVwfRQDptclOR6RLf8osewIiqwn+ZacUgKKeVx6BgsvsSCMpxGwn371woBsrmcPqSjHW0eo+2pqYULoRQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLTy+OD6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E57A2E229F;
+	Fri, 18 Sep 2026 23:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789772764; cv=fail; b=lyF/BlhIsMKmx12RSzBBzbK+6pLAo/bhBJGn+IVC3S3w8kNIxnOhTOK/ibxCk0BWgu6yHLEW77ZoidRFF/eUEPHJh1/hzLxhcLt6YTDhm6oKlGybr2WPVzTaoKz4Y0+ZJutI1NX1ZDvWBhJwopUr4Xk7S/QnHXvUZFIJ7/HqtGE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789772764; c=relaxed/simple;
+	bh=gSy+MmdqA6tQGOOqT6nYkooAb6G/XgnspV+ACxmqcIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NhSzFeHLAFNRT2fgYQ2kp0i1hamJY5tTX6Q9n/ixuhyBa2ysvduXUMk72cjqP0YAjziIj2+GouyCksIO1moTxphM+IZtFf9662sv52vKdk57rbAQvNtQP4dWCtxIutOTJOTRSOQB7oTYmwpz4oYyVuKaqhfk8MfsXt1O/Dp7l3g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nVfCCy+a; arc=fail smtp.client-ip=52.101.84.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLTy+OD6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1276C1F000FF;
-	Fri, 18 Sep 2026 23:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789772417;
-	bh=ODTQrY0Jnry0Dfu3UICCoe8mZrLfiMVB8y8nz6T8EQE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=oLTy+OD6g/37bVTLXaNX0EZiObFu59/4XeOqEG62ekDkw/ztpvQkkogMu189UZa7A
-	 mGAad6qFw8J/sUBL9JZHnmtiLhuTzCDdPozJbGAVl7PiUaz4gWMCu7JiMlVKkTSCaw
-	 +YfAVpn4M2CC19X1EXCEgBJ2RMIa3bPCqaWnXUHfb8r05WrHiq67rxJmMA5R1quXqf
-	 htus6gV7Jv7wOGz27XSMw+2vCB5eEI1b0CDjDKwE5vcn+GBLvq6Y16oHmM/JMM0Hn/
-	 1twk7jc9DlL+zhdgbFzx11yGaXOz6Lws0Pjj3ixaVzWTLEIHLJqmucY6rMEhuWPfGE
-	 mpNZFawkau82Q==
-Date: Fri, 18 Sep 2026 18:00:15 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Soeren Moch <smoch@web.de>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
-Message-ID: <20260918230015.GA1205610@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nVfCCy+a"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wTqt/3uRPfY36W9XWLI1ZILMB9OPwIuTPd4VBsasQQ25NNdqjBnxq3HWgky+hjmn1irmlphcpyUc7J0VpnAUsMfTuY0EWqudwXI2KpKDAJ09vA5Xt6PAFdSZ7tXR9G9CddwZ9eJwh5gimmCEnyAGX6axFSGss0vl9NupJMEXeH69v62dKR4LYtoURgBzSOg7KF73viPxigg9AIr2RzU0uP+mYFSBy5mav1Oqre5412Ma8zXwPOqXCAOv9bS45Al237JYa+ZV0LbTtAOX7/WQBX59HhNp6KqSRoZid/5jqZ4dvP1Xs1nmyvF5dRZLTkXr7yhUVxhoxVuRrn+XoOkukA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8sTEfqgMvYS8IC5fCum30cXAo5VrL2JqJnun2gOhdcU=;
+ b=GU0+yc4Hz8e2YuHhyQY0Ljx/nFYF3XipSF/2azpk9tj1X7qLgIRTk5x9EjXtOARYVDuIygFXVeiayUIudKjcnNsUZw67DLdDnw1t0mj1jSpdorehF1wDDjH0KPzGpGlfgpejVc+1BXixFsZl4gMo3PA4H2h/9RJi+/wRDNFjt8SzYEj8M9CbjbEi0pBznQe5Zpq1N2zxRWeQabrZGayNZNdtAUEPPjpOF+fi9E3cLDvb2dD3MuJ3h2znVDZMyF9iRS4DSUYHytX7toya6epdqsHNF0DX6oYnCBXTmHn+3fGSU8FWmWdhbOWvEYTK/lVwAW98AXQDXZaO08Vauvj6nQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8sTEfqgMvYS8IC5fCum30cXAo5VrL2JqJnun2gOhdcU=;
+ b=nVfCCy+azGTZt67UKNdBvRgI5hqq3Q6YpdBos3J/h0Bn/A5C5TNO5dHoWIySv7I483GJ/5VEnNeoO048pt4HQUvxhcrYfx5jZhzsypIV/dSaxJd8Rt5scUvcDW7497i33eDoCjd/X9JCn1w7RYPEaAcsGZGz5ldhISZvcUlwpyEg/ZR2htjGwtV0FR+czH6FWL2HEl1U8/z/pZEP37wc2uTd+X9PQHOvAWxfYVuSZ0fXHJYFUNlwBdiyAa9NvQgm3zOzfz4fzHHKiRWzvSfOySt41VLSSgzle59ta/6059QB/jYikEIAG4UV2U7KGZEdw7P2d1gCeHVtrpWZFziDmA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by AM8PR04MB7906.eurprd04.prod.outlook.com (2603:10a6:20b:24e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.14; Fri, 18 Sep
+ 2026 23:06:00 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
+ 23:06:00 +0000
+Date: Sat, 19 Sep 2026 02:05:57 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: bpf@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
+ enetc_update_tx_ring_tail()
+Message-ID: <20260918230557.bzboccc22ku7bzhx@skbuf>
+References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
+ <20260915222735.1016937-3-vladimir.oltean@nxp.com>
+ <20260916222806.6011F1F00893@smtp.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260916222806.6011F1F00893@smtp.kernel.org>
+X-ClientProxiedBy: VI1P191CA0010.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:800:1ba::18) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427115804.134231-1-smoch@web.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AM8PR04MB7906:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9630d5a-dfdc-4310-06ef-08df15d967a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|376014|19092799006|366016|10067099003|5023799004|11063799006|56012099006|4143699003|3023799007|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	tfs4v+Fbt5vCIuiNzRSiQGuOVpalfBJK5YGuF9wD85ZDIhsXSt0efMD6WXe262RQkjCksWjURJW++EjDm014CrNkTYVZRVKA7XPchg3DqWNtVNwViRKiBISHa8JStDpZkEhJ9C9BCB616uXIBYkiUxDnzVG6gm6iLhcnaRgzlNKrZWsr7O7G6esrFSPqftMPoquckdnlYKcsVhtgU3cnx5EClRZySw/Poo9Mf9D6CrFFEBg0FCBhSUNMv2qUrdMNs2C6hkmCGzPvrK2JnjJLIEXaefNKtt/r22PLc/Zpw7d8gd10XbzWcha7axw70VYZsvI7CvrgEbW4qb94bwv8KmMF0aWO+13AwyoN11EsusNie98DmHN4R0ZXEgENlUqk8eTn+wBN9pWpwK/a3vXrPT3vWlNZXZ3VgVgod2aBjVrk7ylLeTh0duGFSnttX0WYlsypAG5pyU/ytEeFJ9ByXZOxNycyMUMpr4KcbyhoV5dom643kHyLlnu54jdVYF8GPx+3aXqX6o0ao8xcICbTYpgkQ8ItSBaVkMDmYCSqtBViCzFd+7N9NYyzirggTwcjjGC0pxKwUvbaDhf8n3gGnyTKMTj/vEy7QOROUmIqmyxMDUoZOE9UJkwj3DO6DDrrunlGJTEFZVGhL0Ezl/oSBxRBjiMQnke4XSbHyiWzGso=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(376014)(19092799006)(366016)(10067099003)(5023799004)(11063799006)(56012099006)(4143699003)(3023799007)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3vJ5Jk7neJMHhmHGN2BpcFrvV6SSVz6DQc4BBw879u5RkJgHT/8dNvJMyzPD?=
+ =?us-ascii?Q?VrdZZe7LXEaQhGSnB+CS9kuNzzSqCPqfbBiMvCGLUlRNvuyY74G09EwGinV3?=
+ =?us-ascii?Q?z4Xdr7WFGQd+d+A7VIMFdk2KYW+CTasQrvBLIqkGm45zf8KCraC0KQkR3uSp?=
+ =?us-ascii?Q?FsWN7H/AxMmqUGCwFbzX2+sh3H7P3gTXZITn/8lT7ANYldRtsjH4zONnL/bh?=
+ =?us-ascii?Q?C96craNi0Lz35rG5aRtac/d9eY7sBUoP1/tV8nVhFj8m43IDc2q+lqFNL69v?=
+ =?us-ascii?Q?nlHV5BORZoISGEwql2MtPqgHJQXX9fo/xGXN7ukUh2jiKlMYrQa97SQsNLc+?=
+ =?us-ascii?Q?tmMZL+Pli8D2o8lhDATY/z2de95WnFcgRizMinkcl1NNhhIkb69xZCmkaChN?=
+ =?us-ascii?Q?iK2kS4HtLiWTvsf0EDYSpVLpnhHndC4g6FjvgoQ+PhD8O6SD80yGrBFfwDOf?=
+ =?us-ascii?Q?fPzp+7cV8Y+Yj2GxMmj6NnnDJx8JJpxOgnxm5hUIgNqbmiluA/HvzN9LL2l0?=
+ =?us-ascii?Q?G2m2tp+cNvB+U+J2bhTWZmqDw7b1gdEeNK53bglgNS+JWJ4XunXIXZEfR4at?=
+ =?us-ascii?Q?CgmBfjvfsGKa29DBJu6tiBzjNFIMRCNoiv+Jd0YBP+fd/N/BP3MjdK+4+rMZ?=
+ =?us-ascii?Q?MamiFE4VRhh0bI0AZKQqg5aeI5ux3FmwwXtKxwMBK/d3mdaYXIXmfyk941E/?=
+ =?us-ascii?Q?rL91K7PEsHdWsYTahUP3DyynUiD41G6JT9N6qrF0JoybIml5kXSUedZyJPBj?=
+ =?us-ascii?Q?Yz4xD942N+DsRrW8aMvU+6TK8md7OCH2YwBiu+30ufSqeBtzD/eAmKo+vKSF?=
+ =?us-ascii?Q?nhIvjX7MZzBQBfoGPXO+4iMxBX7CHzFDbc0j1VgskX6HxkON0y/uogp4r/Go?=
+ =?us-ascii?Q?C6/u++bEO+Lfqk5Iup30xeiBzH1sZQYi09pM6fTtY3nWjEsQacoSC0zXQ1S1?=
+ =?us-ascii?Q?HDcQ7ekU9lVqB3Sn9v/gYxd+lT+I0mPmyOSGly8H3td0jF0RVvckSN3uCVMg?=
+ =?us-ascii?Q?xC+qOmJCCMssgu7QD8Xoz4o9ntLUsE2kcuv9S3WfGWv1tp1z5daYGi6S8l4W?=
+ =?us-ascii?Q?OLoeK7caEVpjIor6dsMgBKmNaz7WEzMn4nBOuq1jEUdNJmD0nLsKcf/IlnD3?=
+ =?us-ascii?Q?vMOd8tEgbsmP1mbYWE2R94Yn9pWXd/DQKZsZhgk562lJWlAfzUy/nvxB3KnO?=
+ =?us-ascii?Q?M0p9KzbgG1oTWTf//9rlrSpQF01KdmGYxvxt0Rj/W77Dvh72JKGYkZv11ohr?=
+ =?us-ascii?Q?j7H9oa0yXlgz59aL+8YwVjhITZGE6ynr8GYixeyAHrPNb0QyJVa8eREgo0Lr?=
+ =?us-ascii?Q?Ra9JALECLiOc07Wz7UtjXrrGnUMXC9YzUaqzRElAH65JnV3I5PTNAU85RtvM?=
+ =?us-ascii?Q?mFhpo94PdwdB0QmpetT367SxEw2nE+5kkvcewTNTxSmdEBKSskWNCari4V7L?=
+ =?us-ascii?Q?Y3obZsFXLzXeFZqGcunOP9BWjAyUw7j+01MoiMb7iF5BwxlbxGY96C2co7bl?=
+ =?us-ascii?Q?Dtf+pREyz64ld6LqkP7jhQKKk9gb09RjyPbbdgUCtAVZRvN9wxCmd7qV5VI/?=
+ =?us-ascii?Q?BOtZgwqXnOk0w6OulEWI+2aYotzK/roOxDQE838OCuyJ8Q2cz7mFAvREzRl7?=
+ =?us-ascii?Q?fFe/2ljDTWC0LclyayQjD7DzCrxWxVYW4drvekTzipAjAM9a23x3giU5XcZ/?=
+ =?us-ascii?Q?DOzbJ9sIxcJBjc5xGzYx3MzUPySvZNRMWidB6N7xWEN5SQ3e8dCwi7bd14v7?=
+ =?us-ascii?Q?0lQhjLaJM7EGM3HbfoK8FWtZmV4gkDNLkOP63QxyhXKr7lv7I5TqYvbI41Pv?=
+X-MS-Exchange-AntiSpam-MessageData-1: I0H+vCW/KrCWOFTc7ipzelrZvaKH2vL8y60=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9630d5a-dfdc-4310-06ef-08df15d967a8
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 23:06:00.3088
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: askH326jMxhL/7AnU6bAOkLT3mD2qbtMbur5EVH/MsFdJGhQn3eTV9PlpHkQESjrBhn79LX4QgXkjFg4/cVxXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7906
 
-[+cc Thorsten, possible regzbot confusion?]
-
-On Mon, Apr 27, 2026 at 01:58:04PM +0200, Soeren Moch wrote:
-> Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
-> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
+On Wed, Sep 16, 2026 at 10:28:06PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] net: enetc: missing XDP_XMIT_FLUSH doorbell when k=0
+> --
 > 
-> Even though the Root Port MSIs won't be received by the iMSI-RX controller
-> due to design, this chipset has some weird hardware bug that prevents
-> the endpoint MSIs from reaching when the Root Port MSI capability is
-> disabled.
+> commit d8271163a46118cc9a3212492775857b3ece7ba0
+> Author: Vladimir Oltean <vladimir.oltean@nxp.com>
 > 
-> Hence, always keep the Root Port MSI capability for this chipset.
+> net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
 > 
-> Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
-> PME and others won't be received by default. So users need to use
-> workarounds such as passing 'pcie_pme=nomsi' cmdline param.
+> This commit modifies enetc_xdp_xmit() to fix the condition that triggers
+> the TX doorbell. It removes the redundant xdp_tx_frm_cnt variable and
+> updates the check to verify if at least one frame was sent along with
+> flush requests.
 > 
-> Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug")
-> Cc: <stable@vger.kernel.org> # 7.0.x
-> Signed-off-by: Soeren Moch <smoch@web.de>
-
-This thread is still listed as a regression:
-https://linux-regtracking.leemhuis.info/regzbot/regression/lore/20260427115804.134231-1-smoch@web.de/
-
-But I *think* it's been resolved by:
-
-  b4bee12ebecc ("PCI: imx6: Keep i.MX6 Root Port MSI/MSI-X Capabilities with iMSI-RX to work around hardware bug")
-
-Can you confirm?
-
-Maybe regzbot is confused by the fact that the regression was first
-attributed to 3a4e8302e72f, and then later attributed to
-f5cd8a929c825?
-
-> ---
-> Cc: Manivannan Sadhasivam <mani@kernel.org>
-> Cc: Richard Zhu <hongxing.zhu@nxp.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Frank Li <Frank.Li@nxp.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: linux-pci@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-kernel@vger.kernel.org
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> [ ... ]
+> > @@ -1845,19 +1844,17 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
+> >  						    &xdp_redirect_arr[i]);
+> >  			break;
+> >  		}
+> > -
+> > -		xdp_tx_frm_cnt++;
+> >  	}
+> >  
+> > -	if (unlikely((flags & XDP_XMIT_FLUSH) || k != xdp_tx_frm_cnt))
+> > +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
 > 
-> Tested on a tbs2910 board [1]
-> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> [Severity: High]
+> Does the addition of the k && condition block the mandatory XDP_XMIT_FLUSH
+> doorbell if the current transmission call fails to enqueue any frames?
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 6d6a1688e7eb..3d461bdef967 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.flags = IMX_PCIE_FLAG_IMX_PHY |
->  			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
->  			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
-> -			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
-> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
-> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
->  		.dbi_length = 0x200,
->  		.gpr = "fsl,imx6q-iomuxc-gpr",
->  		.ltssm_off = IOMUXC_GPR12,
-> -- 
-> 2.43.0
+> If the devmap subsystem enqueues a full batch of frames with flags=0
+> (no flush), enetc_xdp_xmit() successfully enqueues them but skips the
+> doorbell because k == num_frames and flags=0.
 > 
+> Subsequently, devmap calls __dev_flush() which invokes enetc_xdp_xmit()
+> with flags=XDP_XMIT_FLUSH to ring the doorbell. If the hardware TX ring
+> is now full, this call fails to enqueue its pending frames, resulting in
+> k=0.
+> 
+> Since the modified condition evaluates to false when k=0, wouldn't this
+> skip the doorbell entirely and leave the previously enqueued XDP frames
+> permanently stuck in the hardware TX ring?
+
+This is fun. The LLM has no idea what it's saying, but it's saying the
+words that are gravitating in the right direction anyway (kind of).
+
+Specifically, it's unable to articulate "the original code was
+functionally correct, it just needs some cleanup".
+
+All other drivers only ring the doorbell if the XDP_XMIT_FLUSH bit is
+set in 'flags', and I wasn't able to understand why that is correct/
+sufficient, either when I wrote the original commit, or this 'fix'.
+
+My concern was: "if a full batch with flags=0 fails to be completely
+enqueued, don't I need to ring the doorbell anyway? what if another
+ndo_xdp_xmit() call never comes?" and as a result, I remained under the
+impression that this is condition that needs handling.
+
+But the answer is "it _will_ come; the only reason why you got an
+ndo_xdp_xmit() call with flags=0 is because there's even more data to
+send, it's just that there's no more room to store it in bq->count,
+so let's first send what we gathered thus far". The remainder _will_
+result in another ndo_xdp_xmit() call, which (if terminal) _will_ have
+the XDP_XMIT_FLUSH flag.
+
+What is even more interesting is that, after dead code elimination,
+enetc _does_ behave like every other driver, and there is no bug, just
+misunderstanding. Because as identified, "k != xdp_tx_frm_cnt" is always
+false, we have "if (A || false)" which simplifies to "if (A)". So enetc
+flushes the doorbell based on the same 'if (flags & XDP_XMIT_FLUSH)'
+condition as everybody else.
+
+I will remove this patch from this series, and resubmit the cleanup part
+only to net-next.
