@@ -1,210 +1,235 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011065.outbound.protection.outlook.com [52.101.70.65])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327BC4848AC
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EA44E50BA
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789742593; cv=fail; b=SZWaTojrQonYdnbZ7x/Y9G5iwBvjapYG+nOUAKUKo1HPxJmGEcue7vMMYP2C6mj1fOYUnG03YdkO/6FozobKBXO1kP8tYoCsMui3y9VqfQHbJKWDYXeMICxbt4QEQx0/tOyTdl5o0aSEIfZpndb/bSmDZ7z1cDrfofU9hdjxLwg=
+	t=1789742643; cv=pass; b=qz53TpAwX3lsrPJVIGUNpCsk3W3BngJ5piLaZgYqD1GvsMo3ip33toyCnS8M2f8O9IuY6918okjGD4KFa///n7VTkvCKVIz7Z8FcBbsYao0wpOKKjivhlJFhirLeqn8KNuD/IGjsWgh/OyQxpaQKgrcXd+Q/vc5D5kEf5uVilH0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789742593; c=relaxed/simple;
-	bh=S5+S21k1uWsfsG6FqAhtOSiCrwD/Oj7wqTaFFBHJPO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=C9IEkO/qVjfgw41jbaWM0ivbsbluN2TdP2n8I2Q6p0YJ0HbBD5pEt1GvkWznEpvZahIZwisB5LNWkBu+bXkJz9+e/e0PM5/pmIdRIUwDuUfrvt4KlsRiKmM0BOZXyuzVEUWJ072/vofrgctXxNKw0YwX3k22OlcHEN5a6pKtg5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NVtwigzB; arc=fail smtp.client-ip=52.101.70.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1789742643; c=relaxed/simple;
+	bh=AcIVnsv8+2abkkPu8NU5Qxz7g11MxL22mpLiDkD0gKw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q3FDp8oN/r6pPHK8t701vS6ofYQsU5e1KG7sAFDxjatfuNlSCteJDtNbqmNuQtofl/BGX75/vCPA9ydwk2Yy4wqVLGtp0gkM+QpAEbOHIx6pAkrAYoaY+3qDwt2yfmFZwoqbhj7gqr0B1oZ1m1DsiWgLDA5WnVpwhzNRdYEONhI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ev7OIqCy; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PPkfIcpi; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NVtwigzB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bKJM0p7ILtXHctNzyDh2BXI5DMeGK4X2mbUOvGOaCXzrHqlLVwtpJVSkxz9esi4unLGWiITiJVB/DULCdyYa8J/iwwV9egeJSNaLBVdBps+TNORc6itnHl+84AG0lABNwT8GLsXG4zv53gNX7VsGtSvYWdYS8+PJr+p/hd4WkVjn99ES7rePTyYfhaZvDhlw+d/glEZHUVF6JiK0RY6+bXfHAA1reeCwqbaNuPvZBqg2xU04Y3AfC0rHi/fCBjLWWZklDoa9Wiin89OclQKrtJsbfI72kzIb9IWaV7biRrH/EcNZZT0ou4BhvtuXcWTS67es+1g5fFBE3n3/1gHb7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S5+S21k1uWsfsG6FqAhtOSiCrwD/Oj7wqTaFFBHJPO8=;
- b=gFup/Z1PKh1t4IgsuoRv3e62m9kr2HEJHXCpxfj2fCIKMSbzH70bQpbMu4Dt7Qra8aRYK9M9f/8jpxYLDXThX382NB17xQBvMHEoko1IfJ8C9wuOs9aMSdqRo4Pugl/FmpJQiuQeIhzL0zu6re4z+I5O0A8lFthvIGqSUJlcH2bfP9AAs1Tgs2PNVW+OKSHr5ER9fE4HBOMFFqL/nVaK/2kW3OKwn4iPFsFTNxOptBskcY5p8v3NN5Y/VO50catV5Z+T5pFSZGQLC552YCsaehQhIKEB1UaR5zKda57BP2cSixVhJgRYdqEzTjmZBRekjMHlvXLA4hqOjHZLhsiVHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S5+S21k1uWsfsG6FqAhtOSiCrwD/Oj7wqTaFFBHJPO8=;
- b=NVtwigzBfde7qL7e49z2AJnkDsib+p4rY/Yd7hRQy7gcgiP595qzVa7GDNVebuSw0U2prkuMeE9/0XuLLkOGUmmZ45HsSz85HLpjzoYxuo73Ki/mVNEAyC7akHwSqB9PB6bQkHWo/qyo/2XkXRsTy/ADHvJm9mZr4TFpZAh4o0Emk5zDySFpLfAeIybhthIdIvTqjVxYmRr37WAqy1k9tj30qZ+/P6BlUuH8JZ9YrXELFzu+KYlH3axcZn7fjJxh07rGSnbx7u/PxaCLdICExqdCuErf1ZKZCIPHiH+xALk43M/6/IYILz24Yl2q16CuHff/NfzugpDStgm7Akg81A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM8PR04MB7796.eurprd04.prod.outlook.com (2603:10a6:20b:243::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
- 2026 14:43:09 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 14:43:09 +0000
-Date: Fri, 18 Sep 2026 09:42:59 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Joshua Crofts <joshua.crofts1@gmail.com>
-Cc: Johan Hovold <johan@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>, Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] clk: imx: add missing
- pm_runtime_dont_use_autosuspend() calls
-Message-ID: <aq1N863eJpD_ZrLU@SMW015318>
-References: <20260915103345.1334-1-joshua.crofts1@gmail.com>
- <aqpgUPWUGZp5Cjzt@hovoldconsulting.com>
- <aqq_ymTi1I951uQp@SMW015318>
- <20260917102429.00002faf@gmail.com>
- <20260917104233.00007a85@gmail.com>
- <aqwUky1jSMGbiXCf@SMW015318>
- <CALoEA-zMXhy1VX1MLVCy3d9pmC0fx22sJULamLhMmBX6xHutwg@mail.gmail.com>
- <aqwzG_24bZSSQhTS@SMW015318>
- <20260918092533.00004dcc@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918092533.00004dcc@gmail.com>
-X-ClientProxiedBy: CY5PR15CA0124.namprd15.prod.outlook.com
- (2603:10b6:930:68::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ev7OIqCy";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PPkfIcpi"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDOowS1202115
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:44:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=
+	qcppdkim1; bh=W6tY/LrwQ6+wUFwfZF6CF5RRZwGXtm3/veslsZpmF+Q=; b=Ev
+	7OIqCyObUjNIYqgsGclT+aFxz83DUJ5JXZT1YC6XQjxLTh3EEaGOdepPGd12JWPt
+	sZhx4jpPGdr+yz3nJlvsx6/AXs0kGN8dhvgOuJnVPciG6jzrsoJWgWWnPhPsIxf6
+	3GiYTYXTEMqGC4s8SoIIlq2bZTOOD8HFMPeqkNED+u/EX62sCxUgBWabe5hWda6H
+	D5yQZU2fp7T/7D8zGS2ZTco/Dqz5b6+B/Nn00miVFLDHq46FqHcbpzmLl2uA82CZ
+	m68Mrfof4f/gOFIrxUyH/q02GBWfffLXvKzCw+6k1RwHJBACJHECKXRIR8CaSl8z
+	3WGR4a2+Km/YB2IyJF7Q==
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grxp2t8fp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 14:44:00 +0000 (GMT)
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-6c1b24c4d0bso1103008eaf.1
+        for <imx@lists.linux.dev>; Fri, 18 Sep 2026 07:44:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789742640; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MDSvdcbPD1gT0qxKIXhcAC2iWnfvLwvHJ7hSNo/zoutLyu5VLUewCTI5KpIwvTdtl7
+         boxlF9lGblToQcWlYXwyTI7KUxDJ0v53YpDscpjxhSn8jiHiwtNGWx21ddecISDON85E
+         TC0gtxnEuYUVq1YgCBh7XYC46vVXdd8USUVQmYLcScnn5Hh9xWfF10joAygP8iBah7kz
+         xDe23K3A1VIuEuyREIAIv+2Mk8Ee8Klcy5U0Bj/JXF/l3NY+kOK9qvCowg7W7214A7y8
+         lsOl/iChaORckV0PsTB5oGhn5cG0gwqAwP47Jomwh9MgTiuiz9/hmYKZKpyafhonWkL3
+         2AwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=W6tY/LrwQ6+wUFwfZF6CF5RRZwGXtm3/veslsZpmF+Q=;
+        fh=vxvQ/h9mJfhfahW9bQN82axeG2augYaemfOJ8788VsU=;
+        b=bjAP8tYyn073teC97uVrk/5Kr/Yrq0FbUPPMjxhFAUAAfrkX/46pkFF530tYUgR+5F
+         8YRUuOIu9GMOx4PpFzfN/nRpNKlzpA8RvtZLq+FX9rkHCdOf9JxcjnDUvAGetuMHbUnt
+         o8tJqLEH0G6FYkkKIC4MGyV0o00Cea/Ukff0cDK3fE9hzx/g3ofWbQe4SFU68Sal4xzJ
+         H35hL7HnhJOn/xXCEwFowxYzGXykgbKgaK0S0/YcigALSbjwfsbwFTw80TOmh09DEJHB
+         hOVgh0uF+d5NH+JybnieTIVbVxXgxh9JFEgVLLqMFVGs5IkZiat4KR1fqSzkbFSDMJZx
+         9D2w==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789742640; x=1790347440; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=W6tY/LrwQ6+wUFwfZF6CF5RRZwGXtm3/veslsZpmF+Q=;
+        b=PPkfIcpiBMwEJlFTyhwyqo7SaRUyoQs/R+YxZSAGBj8/5XR4X+1n5+dHvFDSLBcV2I
+         aS84IFQadVLeG+FA1itNE4xSt6G5qgoq36IOZfX0h4u+iIXbK7XqGf+8/XQsWMqQXKmm
+         jpZWGxpJdJNaAQ6uzs5zbHqV7t1zjSMHJ/JD2q37Ac1+hfnMR/JXt5EOPNGjvl+qEXZ6
+         98hO83Tm34APrtCp5V7QCy9yLNBoBNeS8zf4Eo1s4kqbSFMi9Wal+ndyU0pv5j7CsatW
+         Ep/cl9DIYqlEvWYXHj2RppMPDokpJpqklIF2WRiOx57jmr+HN0Uzx6lfESB0dGzYAGcr
+         iLVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789742640; x=1790347440;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W6tY/LrwQ6+wUFwfZF6CF5RRZwGXtm3/veslsZpmF+Q=;
+        b=zqVqpkREqWXScgk+tYXrO7l2U/LwXa9h7+35+COAXm1JGPxqTu4tafNkQfH3ZDlXhX
+         GdOYb3HNncTsUMIUYcmI47Y6AXcZ/Rx3LPPBGKPEFq3o1vhUUzhnvHt5Qjop043zmEyJ
+         m8ryfbGTOPXd3bHYZ6Mz5pdJz0dvCj5RSCSpp0mILSwMVddPc5jNOF0e9yXIVA8Gp5w8
+         wY+415cUOkV1fxvYkkb9annCka8/o2JyjLXUkuWBdmbxiyTuvp/D/deSuN2U/vPQKsBx
+         /8Df/U/lB3hJF1uEsMBVI17sXH87dv8F/XLn6WGahm3vrpg7huzADiQGMqbKJeiZ6qeP
+         9nqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwU4qED2sZKQZAggXFoI+iMjkVVFyPKX5tP1D1dpg8lFHzBsF9PH9tjh0+kDEhPT7qfXLg=@lists.linux.dev
+X-Gm-Message-State: AFuF++nPSaeBgIhWpxyXfHvc2qA0F7NHdSuf0zNLU29IYCxzJUGP8/s9
+	Owa4RiU8Jqj9yLtjNZ9SNijS3ZBLIvjBVp0e3MvdqHwe14/tYNS1KI/vX7jrEc6KH90dac3R3IJ
+	zlZSFIDjueiXjarclSaYGsAKme4ndBHXjyyZ071FuGrXwIwCapPpksBSo1RzQzbaq1dpw7KdfmI
+	NgTDL1fM3lunbXVb7oM+SeyxnZQh0d3g==
+X-Gm-Gg: AYBFou3Eecf8WuTX5mwMzhGhhm1LFJS1/+6bWELi+wnHeNibjny1TSpT0RTT1HSpJbk
+	Dv2HK2P6xOgPk89D9evX+DhT+nANGOMR1gJiP0+fVM3Z+TzhmRe5gVfV0O4jGcVEe/ZglvUygdY
+	cvuwEAu7efANnBQcg4JeWCYd3Wi3ypaljxZhybAeiARkNaM3O7fGPeNbmL
+X-Received: by 2002:a4a:e908:0:b0:6c3:42eb:ec22 with SMTP id 006d021491bc7-6ca9a74fec8mr2397343eaf.23.1789742639911;
+        Fri, 18 Sep 2026 07:43:59 -0700 (PDT)
+X-Received: by 2002:a4a:e908:0:b0:6c3:42eb:ec22 with SMTP id
+ 006d021491bc7-6ca9a74fec8mr2397308eaf.23.1789742639405; Fri, 18 Sep 2026
+ 07:43:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM8PR04MB7796:EE_
-X-MS-Office365-Filtering-Correlation-Id: bcffe56a-2723-41cf-7537-08df15932813
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|19092799006|23010399003|376014|1800799024|56012099006|4143699003|11063799006|6133799003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Gs23HfPtrW5MNw2q3kmhBlvBr3x+D/xaUyex/sxhVXz3FsRCR4T99ER2pJiiR1sbi2OaJJV4ORbo6jKRUgzeCHtBNJpwy41OZMR5bBj/O4BXpi792NMLQIR4FpufcDCdJMbYXj9aV33DmO3j0KNKXmIY+51D40lhuvKEBlkSr6+8dm+b4qh40kxJF3dGgaNmQMKNIw9crduACKDZkaeW8zC6kUYQ/QyOG0EdX79AKcpSNdANrqn/evZd/kACpeHfYyycpUdEeoajGRaEdoDKXylpqQQIDQsxh3K8FX9RC/QXktRdEwUWaTjeL/+A5FQnHLzSjSHLdrfPJZF5iJ6KKRDjqbYKjCpS18BPsOwbuiW3v225qpr7K8Gq/aN/3XxFpFBJY+PaQedM4Mzvy6O3F8ZSfZQcg9dJeQwnw3LCOysPFxNbZ51IDYv4CkWA3FtW+7A0yK2cI0hjQ6glwiByVgPkNipxBOHut2e59hBINvJhwzukt7w3DTOPAk4nwxM0S7cQ9QhPvpgxR1mh2wPlD0MnYa8UfPM8hDkGtIUv86kM5v7+HI0VHfzIGGtytRuIEOkbM+w/X+4lIizMt22/htf9AK+JUGmuPaBkm2FTp7x/xdMI2dts9+Ut7rAYX9xj
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(19092799006)(23010399003)(376014)(1800799024)(56012099006)(4143699003)(11063799006)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xcbJ0XFejIf7KllTwt9dPvX0dTmoxDRgRP0V3WXjt76xcV0NNzBs0zH73J6X?=
- =?us-ascii?Q?0UJeQatyvZqtsD1fcFweLfmEW3WoWS66qqDPXSzLbOqaMQkVZ/ZiGKlYCZFZ?=
- =?us-ascii?Q?zvFxYvtggE1ZpCxkjIUhhTaq2vXYHEtX6u2/WXGq0pv+MwI8JJXfIAxpBiLI?=
- =?us-ascii?Q?bDr8UPh4z5drJQsZ4kRw4f/zdvbx9CCUy4NtBvmv4+JETBK25ltMPSSSzQjl?=
- =?us-ascii?Q?/IfdRvcrW/rDFbotrM8zVBSRDehnUciYdfy1686Hzl4nPFnmeufkQtuJZAtO?=
- =?us-ascii?Q?lMGXHLsuWezw8RdDJzhGV2Oxl8Ssz3rO9Tqcj0huOkdmzy1ArF+eYGBeUiJN?=
- =?us-ascii?Q?SYFURy54qZTrFEhwiBlDIaXNz6gYzduLIqO/YT5lr5+j+kYsmMvI/bsQjQbk?=
- =?us-ascii?Q?Iw9EYq8E/xi+sqPuUKmslh+g4Yilv5gNMQxZYEK6Nuh6HzYfIQD6HSKQEgUX?=
- =?us-ascii?Q?5YPEzFjG/FnufXOd4RA2/tv3ofd2jgpxmIoEc4dYofik8+rJlElRAagIQsgc?=
- =?us-ascii?Q?EsrSp5VW9aOLo3lwqmblqTGx6Td7goGaZaZ2OgBFdF2/I/jO1x3iESHGj+pJ?=
- =?us-ascii?Q?W1vuJ7kFFrACTHXe2/ou8Orjm6G7Q4NSbRzxiHcnDoEarhhV3UA+eR6nnAlL?=
- =?us-ascii?Q?/ezg8S1tOdQX01AOAi62WaUXf8P/rhGfcAzG+Agtg1CzvqOKNoYLas692Owi?=
- =?us-ascii?Q?1K4nnYqXihTGopsrtJEhdbt5sLH2Lrp4UI4Iz3Xu4jz12oXzA8zZ9n2HHrVs?=
- =?us-ascii?Q?gNkoUWQkr18IAj9K3GKdPuINKqWuxALZUtPzU/cRtv+sTYKSZ8RaDl+V5WI2?=
- =?us-ascii?Q?8mmWVwp25uObXgA5KDtaAsgftcfT43HAVd+XNEK1PWI+jy63Adf/iT/9h7J6?=
- =?us-ascii?Q?5Znq+Xm1kfXsvtLnazabq3kPDTuwbctcZR0C4i3+hzd0z7KclHZF4KsuE2uh?=
- =?us-ascii?Q?QOEuLKiNQoNAGOXRf0VesyQOsJ4Kpe2prj/iRjZrwaVyGBXVTyOay0ogWxU/?=
- =?us-ascii?Q?zLZIEzqIBkhp6uX9jTlk3RGtED/ncGgWNcBF9MJRM182JVIvC3bWyoiGWBJL?=
- =?us-ascii?Q?1XL9oe0cx97+vU1plIC6vX1wDns8g7c5lQ16B6N26OjJhB0BZ/hret9dHd/r?=
- =?us-ascii?Q?LQT1Iw7Cu/VppnnWRb8EWLlD6fszSObgcz00MTsuz2vmkIw7KgX8ouVT8aFQ?=
- =?us-ascii?Q?Q5b6ea2VT/nT7I0rrCvL+UDYJLHE1sU0heIRq1qy3bNkWUDkCeNOnR5/elUX?=
- =?us-ascii?Q?4bIyPcg62fUUEpXzrKi0cuyzmCrxytWyyJtdnaa/fiWTQ3XgvW1GqR0s80lv?=
- =?us-ascii?Q?XmpNd0KneGbxy50kh/sVwiDLkCxWXlfH94mnFwZbuKnUXOkhEy7Kpm3ZKZEs?=
- =?us-ascii?Q?qCmyfGqWsqszuZQEuySkcTHs9VAbDBifVP7YgWbdBx9vw0P/KLOxR9G7DRso?=
- =?us-ascii?Q?aXRuIGURB0H3NAhv1PNWy3Qro3zj78WGwodsLJLYAHplkDeOvLtGJZJcC3CR?=
- =?us-ascii?Q?J6Uqz4/S31v9LXz7RWvYVse4Q10+dmpAS3ygbUy+Py8hXgBjV68LeVRPZp9L?=
- =?us-ascii?Q?UVW9gnoeRo76HXRDL+r/9Yn27YoB9nudS7Vw5yFsodu7JQ1JMggRHy60brIS?=
- =?us-ascii?Q?ewItiL5sBH6u1IlJeGr7ucm2mjTNVCa+/oxMBxNv04kOb20Luz4aYyySLbUu?=
- =?us-ascii?Q?RHFTCsV8lgQn/sdyS53Q6x0UjoiudAGLEE1TpktLw98cPQT5hcUqk7ncAGVK?=
- =?us-ascii?Q?wZ8yQr6apCItmG4eqn8o1XlhcCx4Q3RmFsifufx0pd1E75dRRuQJ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcffe56a-2723-41cf-7537-08df15932813
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 14:43:08.9582
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yUCB46l8z1hA+ZQKXhGf+r1skqZpYkbxKa/40YJcL5ESdAfeStSRJPpPzzwI979WocEmEea5RTJcnwfyaTmDkRj2DdHvjC4TBDkkvrw1AFpHkYHwcPSeV/vZ35BTb4vE
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7796
+References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
+ <20260918092951.5656-2-johannes.goede@oss.qualcomm.com> <2104f437-e960-4e55-b0e1-2b37126e8c2f@oss.qualcomm.com>
+ <82a72918-7bc7-4e2c-892c-0dcdd6dd5548@oss.qualcomm.com> <3f51bf6c-5318-4e32-a1ca-3ce8cf8c4ceb@oss.qualcomm.com>
+ <20260918-roaring-bee-of-acceptance-50a8a9@sudeepholla>
+In-Reply-To: <20260918-roaring-bee-of-acceptance-50a8a9@sudeepholla>
+Reply-To: rob.clark@oss.qualcomm.com
+From: Rob Clark <rob.clark@oss.qualcomm.com>
+Date: Fri, 18 Sep 2026 07:43:47 -0700
+X-Gm-Features: AcwNN1XOxS8g7aUV7HRRWF2PBl79h7D0NcKpS9p8imqdtEwjj4hgkc90NvRmmmI
+Message-ID: <CACSVV01N8v4kfC0S8YZVUmyOvWcSKX0jFax4_S6vTpbB11X4HA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
+To: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
+        Hans de Goede <johannes.goede@oss.qualcomm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIwOSBTYWx0ZWRfX/b5nhacMq8+k
+ O+viGQQtBkiSBbWp0vkNYG9gNFQO2Blvhjxcgf93G9stN/XgT2jPb2c7+Onmuwu0mVf7Tshighi
+ U4g9exz8Z21m5TAS1SO5HpMcoe5Jxac=
+X-Proofpoint-GUID: KkAMR50H0CThgDw-WdtAnELlI4vFkUBG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIwOSBTYWx0ZWRfX1zgOz61cs5x7
+ BelazFM9tLFoyia3vgg/1wzrh3gPmVEDjSfR2urZWvR3PoXACIdOOnjFv2luRUTxwvZKtSWMjiX
+ ZU3cCoENG8Iw3pNTLFJQJnxvFrMdycyhsXREZUahYT9vyyl22SSfVpRWv0JZ6D/al/0qdo/risb
+ tHioAk/wAG9KcqBEheSEG+GS1zMfv406QN/jk0yYEWF2SsoFBL7XGYMYS1nIDD75q1Jb8kBezYe
+ ejUoJ14tlpCwrByg+zR86FKKmdOaJPFyy9olGZvysccunzUYsdlYt9ABij6/L4SkikS7dRTeevI
+ Ufip8chWaUZXBIvzux0ioSqRPGDf81aha3SYXwT2g4TAQuM7SlcbAmeupmrR6tffy0HhXYs2H+2
+ AJeUClgE4CSYo1Rla2ntiKhv9TEJ9dZwR0r9J3hrcHJcIifKkrOpLZde8oX+eDWR2Gr47ZjkK+I
+ fphpB6F06HQRMZrcQjA==
+X-Proofpoint-ORIG-GUID: KkAMR50H0CThgDw-WdtAnELlI4vFkUBG
+X-Authority-Analysis: v=2.4 cv=cNF1IVeN c=1 sm=1 tr=0 ts=6aad4e30 cx=c_pps
+ a=lkkFf9KBb43tY3aOjL++dA==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=CY0cOUppvrph7IambT4A:9 a=QEXdDO2ut3YA:10 a=k4UEASGLJojhI9HsvVT1:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180209
 
-On Fri, Sep 18, 2026 at 09:25:33AM +0200, Joshua Crofts wrote:
-> On Thu, 17 Sep 2026 13:36:11 -0500
-> Frank Li <Frank.li@oss.nxp.com> wrote:
+On Fri, Sep 18, 2026 at 7:10=E2=80=AFAM Sudeep Holla <sudeep.holla@kernel.o=
+rg> wrote:
 >
-> > On Thu, Sep 17, 2026 at 07:15:29PM +0200, Joshua Crofts wrote:
-> > > On Thu, 17 Sept 2026 at 18:26, Frank Li <Frank.li@oss.nxp.com> wrote:
-> > > >
-> > > > On Thu, Sep 17, 2026 at 10:42:33AM +0200, Joshua Crofts wrote:
-> > > > > On Thu, 17 Sep 2026 10:24:29 +0200
-> > > > > Joshua Crofts <joshua.crofts1@gmail.com> wrote:
-> > > > >
-> > > > > > On Wed, 16 Sep 2026 11:11:54 -0500
-> > > > > > Frank Li <Frank.li@oss.nxp.com> wrote:
-> > > > > >
-> > > > > > > On Wed, Sep 16, 2026 at 11:24:32AM +0200, Johan Hovold wrote:
-> > > > > > > > On Tue, Sep 15, 2026 at 10:33:43AM +0000, Joshua Crofts wrote:
-> > > > > > > > > Several drivers in the clk subsystem forget to call dont_use_autosuspend()
-> > > > > > > > > on teardown or error, causing potential resource leaks. This series adds
-> > > > > > > > > the missing calls.
-> > > > > > > >
-> > > > > > > > No, as I've explained repeatedly elsewhere, it does not cause any
-> > > > > > > > resource leaks. [1][2]
-> > > > > > > >
-> > > > > > > > The autosuspend setting leaks if you will, but that only matters in the
-> > > > > > > > theoretical corner case of someone rebinding a different driver (which
-> > > > > > > > will soon also taint the kernel).
-> > > > > > > >
-> > > > > > > > So don't exaggerate the impact, this is essentially just a cleanup,
-> > > > > > > > which is fine in itself.
-> > > > > > >
-> > > > > > > Is it possilbe to create/improve runtime pm API, let runtime_pm enable/disable
-> > > > > > > include these pair functions.
-> > > > > > >
-> > > > > > > I get many similar patches since scan tools is more powerful now.
-> > > > > >
-> > > > > > I suppose that could work. One would still have to scrub the kernel of legacy
-> > > > > > use/dont_use_autosuspend() calls though, so it could end up being a large
-> > > > > > patchset.
-> > > > > >
-> > > > >
-> > > > > On second thought, some drivers do tend to disable PM runtime system sleep
-> > > > > etc. so it probably isn't as simple as adding the autosuspend stuff to
-> > > > > enable/disable.
-> > > >
-> > > > if runtime pm disable, does autosuspend still work? suppose it should be
-> > > > disable also
+> On Fri, Sep 18, 2026 at 12:13:10PM +0200, Daniel Lezcano wrote:
+> > On 9/18/26 12:02, Hans de Goede wrote:
+> > > Hi Daniel,
 > > >
-> > > If we add dont_use_autosuspend to disable then every time the system suspends
-> > > and resumes we lose the autosuspend config, meaning it will never autosuspend
-> > > again.
+> > > On 18-Sep-26 11:53, Daniel Lezcano wrote:
+> > > >
+> > > > Hi Hans,
+> > > >
+> > > > thanks for taking care of that
+> > > >
+> > > >
+> > > > On 9/18/26 11:29, Hans de Goede wrote:
+> > > > > From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> > > > >
+> > > > > SCMI client drivers already describe their bus match data with
+> > > > > MODULE_DEVICE_TABLE(scmi, ...), but modpost does not know how to =
+consume
+> > > > > SCMI device tables. As a result, SCMI modules do not get generate=
+d module
+> > > > > aliases from their id tables.
+> > > > >
+> > > > > Move struct scmi_device_id to mod_devicetable.h so it has a fixed=
+ layout
+> > > > > visible to modpost, add the corresponding generated offsets and t=
+each
+> > > > > file2alias to emit scmi:<protocol>:<name> aliases.
+> > > > >
+> > > > > Use the same stable alias format for SCMI device uevents and sysf=
+s
+> > > > > modaliases. The previous string included the instance-specific de=
+vice
+> > > > > name, which is not useful for matching modules.
+> > > > >
+> > > > > Assisted-by: Codex:GPT-5.5
+> > > > > Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> > > > > Tested-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> > > > > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> > > > > Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> > > > > ---
+> > > >
+> >
+> > [ ... ]
+> >
+> > > > >    #include <linux/bitfield.h>
+> > > > > +#include <linux/device-id/scmi.h>
+> > > > >    #include <linux/device.h>
+> > > > >    #include <linux/notifier.h>
+> > > > >    #include <linux/types.h>
+> > > > > @@ -951,11 +952,6 @@ struct scmi_device {
+> > > > >      #define to_scmi_dev(d) container_of_const(d, struct scmi_dev=
+ice, dev)
+> > > > >    -struct scmi_device_id {
+> > > > > -    u8 protocol_id;
+> > > > > -    const char *name;
+> > > > > -};
+> > > > > -
+> > > >
+> > > > What is the reason of converting the char * to a fixed array? That =
+limits the name and may result in truncation and potentially name collision=
+, no ?
 > > >
-> > > I guess adding dont_use manually to the driver's remove() function is the only
-> > > way (which according to my cocci script it's 195 drivers that should be patched)
-> >
-> > Extend with exist pm_runtime_enable() and passdown delay value. if delay
-> > value is 0, actually it is no autosuspend version.
-> >
-> > and merge dont_use_autosuspend() into disable function. And actually
-> > I don't understand why need two varible autosuspend_delay and use_autosuspend.
-> >
-> > when autosuspend_delay 0, means take action immediately.
+> > > Because of how modpost works to generate modaliases inside the .ko
+> > > any string buffers in device_id structs need to have a fixed length.
+> > >
+> > > So the truncation / name collision issue pretty much applies to all
+> > > foo_device_id structs in the kernel. People should now to make sure
+> > > that any strings used will fit inside the fixed string. And I would
+> > > expect the compiler to warn for overly long strings.
+> > Ok, thanks for the clarification
 >
-> Actually, what about putting dont_use_autosuspend() in pm_runtime_reinit()?
-> https://elixir.bootlin.com/linux/v7.3-rc3/source/drivers/base/power/runtime.c#L1865
->
-> driver core calls this in device_unbind_cleanup(), meaning driver core would
-> just handle it.
+> Not related to above topic, but just wanted to check with Daniel if this
+> solves module auto-loading for you. Was there someone else who was testin=
+g
+> this series and was having issue with earlier versions or its you only
+> Hans de Goede and it was with v1/v2 when Bjorn posted them. I remember
+> something vaguely and couldn't trace back all the versions easily.
 
-Yes, much better.
+I'm using v7 on glymur slim7x, and it solves the scmi-cpufreq autoloading
 
-Frank
->
-> --
-> Kind regards,
-> Joshua Crofts
+Tested-by: Rob Clark <rob.clark@oss.qualcomm.com>
