@@ -1,182 +1,120 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013037.outbound.protection.outlook.com [40.107.159.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F01E282F3F;
-	Fri, 18 Sep 2026 21:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789765598; cv=fail; b=sIF5BG71QUnu1i7TsTFgamdvC0fpfenj9bSTN8qkbYn51zuK/K9OObLVl1vO5kawYZGHHDPou7rkAsKqYMX186cqkFCn1VguQtOXyO4Jo1gkTpp/WjElVIYZBI7z8PoO5n0pmabE9kpT1VtUfUcCQSdzKAKM9+198/czbDNSEhw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789765598; c=relaxed/simple;
-	bh=Y/5jB9MDbBn8naoE4xdqdUXXuq8WToyN66iNSdFvAEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CoaXM4mjGyuAGPP8zArci4WsCnxWbiqEdgQTgCNFbQAijHRzPPstx29ch3TrD1snCYsh3GhENra+HT8omrMMGWtk32jbJPemf6fbCN+5P1YnqkMAtQCrgZ+50L9MJQ/C57xcVPWvtGt/R00yy416hM7Rf36srqPVIh4uzi8ovYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Sd6Ejupl reason="signature verification failed"; arc=fail smtp.client-ip=40.107.159.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6801E98EF;
+	Fri, 18 Sep 2026 23:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789772419; cv=none; b=FwX8aP9qP6TNvkc99SNYrQOehmJFzTAapdi6Gk5lAMppo6Vli4tonJzY/2H5cJkLq3U0rIHkLM7P01XOsnGXwu9TenkgwozAGzuUYUzfMFUuqCpyOxXnVGnK+CE85HbHtLDu3Us605cHUjX8I5fai9Id+O0ZHyUfMVHpYdtWjgM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789772419; c=relaxed/simple;
+	bh=soRR53JeLr5E9sO4bwIPbK6EtttDoUxkkFFZYgNvOok=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Jnw9FKeDRW5eHedG7r3JTs4Ld7zArG2UaTcRZaC4qvchRyjX8acCgdBzQaFtpgi73X+O7loDlgqpRP0ilL2O/mWTehVwfRQDptclOR6RLf8osewIiqwn+ZacUgKKeVx6BgsvsSCMpxGwn371woBsrmcPqSjHW0eo+2pqYULoRQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLTy+OD6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Sd6Ejupl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DjKJbVXzldQ+vdgulCcFNzYv0dT7Fn0If5U09CtcAu4IoCPjQL8fUZZDr79YfSjdfVn0jyj7FyOL/564Qp4kD6sfuljRuzklbqXnVRygosNVx0xLtiHOoWamieVf3igdeHUAgXrrZZ4jCdb3GiaZlUPHdEgBVe581/W+YjGso8ue7fVe2pPHx2eOmkoBhn2dLBwTiAQdPao3RtM4OmSFX6wmSl74bSlvpACt54cD2OMBk+1QQB3Y2/Ov4tW6zpdRPRH040TVsl8vvQT5tFBIBZTcbS/JLqfmWTQlIEObDdYXqWPVAXByHt8LxVksUlXIfpgRWn1YZjcgZ3qOBdBXpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VPCfvR16/Yu7Htelf8aooSGaPdjDLxOupNbsuW2vTPA=;
- b=q3dMMw+se1Zap6Dv4TXprGhaQMsHqtte+/9X4VAe4m1S0ASIoQ6f7dX8IGg/EyfFAiX6uCEiFCMzcHh3OftB3SSpwhQnXU1E+Xd4yMtQJrAnxx6vZnoO8AW+AvKfAVbdHOFm7Y2hkPPKyhkcyThD+EuIr3QszLBdfOMmgWJes2dVCMJipG9JoIW811LoCkp0nbkrJZiQBI6ENMGapj3wRWpM385w16cHDmmyp00xFHypbu5kSW0mPM3QXUdPmrJ+jveGr7oFRkryYd90RdVMP+NxEY9g/tA7mrdt4SPT+dnFiAt/c3w/OM8RRKB41uyWwvlFvWaLGxMITytHOfQFRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VPCfvR16/Yu7Htelf8aooSGaPdjDLxOupNbsuW2vTPA=;
- b=Sd6EjuplKx9UmTQPEKtvSPVaGXwsQLrnpGcTESXca/6dsEMMtYfSxZS8HH5IKmjoNjfiv+0mogafwcIy8S3TWyE77quIbrigjInZy/md5Fo/orxxJMr1NxBqqEvyr0SVpHRy4cT1A9SEEs8AkO+ObjrKx82kIH11REQop4+N8CrQ8KEobsXOEGMV7hZxse7Zrubd3IzNU7MhZd3/kZ5+xDaD9NfHlW2YDoa2czTPubmDURqYDjOcceEucXNSDQtdtJiV0f38uHIWxFEN+2i5E5xpqcXKnHTBfkkVrW7vqpgYhuXVSdOY0FzgDme+jhkON/9aXI48Slgqa6IITXBGPg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PAXPR04MB8240.eurprd04.prod.outlook.com (2603:10a6:102:1c5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.16; Fri, 18 Sep
- 2026 21:06:32 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 21:06:32 +0000
-Date: Fri, 18 Sep 2026 16:06:24 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, ntb@lists.linux.dev
-Subject: Re: [PATCH 1/1] ntb: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Message-ID: <aq2n0JLhTJucd0kt@SMW015318>
-References: <20260918204152.2364336-1-Frank.Li@oss.nxp.com>
- <20260918205324.3CC7D1F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260918205324.3CC7D1F000FF@smtp.kernel.org>
-X-ClientProxiedBy: PH1PEPF000132E6.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:518:1::26) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLTy+OD6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1276C1F000FF;
+	Fri, 18 Sep 2026 23:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789772417;
+	bh=ODTQrY0Jnry0Dfu3UICCoe8mZrLfiMVB8y8nz6T8EQE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=oLTy+OD6g/37bVTLXaNX0EZiObFu59/4XeOqEG62ekDkw/ztpvQkkogMu189UZa7A
+	 mGAad6qFw8J/sUBL9JZHnmtiLhuTzCDdPozJbGAVl7PiUaz4gWMCu7JiMlVKkTSCaw
+	 +YfAVpn4M2CC19X1EXCEgBJ2RMIa3bPCqaWnXUHfb8r05WrHiq67rxJmMA5R1quXqf
+	 htus6gV7Jv7wOGz27XSMw+2vCB5eEI1b0CDjDKwE5vcn+GBLvq6Y16oHmM/JMM0Hn/
+	 1twk7jc9DlL+zhdgbFzx11yGaXOz6Lws0Pjj3ixaVzWTLEIHLJqmucY6rMEhuWPfGE
+	 mpNZFawkau82Q==
+Date: Fri, 18 Sep 2026 18:00:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Soeren Moch <smoch@web.de>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
+Message-ID: <20260918230015.GA1205610@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8240:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11ef9fad-cd7f-4a54-d9cf-08df15c8b770
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|19092799006|366016|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	Iwid0n8AQ4l3r/O7n/mJSJqNbd9Q5tBNtqip6icjsDwGOm2WkzECJN6LfihGap8ZQjaVLogfPS/9F7+/nROcRjoaVhpSdfwwV1jKgvPXrwAqpKC5Bzwy/Vamz/KuM5pq8IrBUmbWqOQgsI3MBj+neH/yviINcspNCf3nkvvjHDVWwISSNIee/HK2H4ihTwvjU/T4G9uZPtWVaB8YtklRlmOi8ghe++vqbsOPSvQ3Ih+k06hvx4MoCrdzhl66KypKQMwl8AG8UjXmhBNyGbyeNTVB/FtV8AI2MVcApxYBqpkbd7a2zEdIw/ridYdzBFnD5l1k5QrSYdedNxmOP8Q2Hl07Ky/TljLhjsxSTNRQVgfMfOpjT3u9CLPRGl0SunMrm/Pm6rAb843o+OzkACBKd2wD2Z698wSqalroMSDZWMqf6YlekK9dCzP+I54+cQdP5DtObhPsJ/pR7/N9amVIMU/Tv6HdApDSpP1IMvv/JS7stOSifZ9akYs++uHZjPdnHQtHq5HlaC4/uSf60+2zC8y6Mxqs9XLkDCb5ksDdixjBf3HKlo3mkLImKzKTGZn7gZlNOaqYLPdjhByjHZ4TwhuB/qKbWcoLaKZeOwJVYFc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(366016)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?r+0OjlBj0mzgGtGifsjskcG7DwWbtyf9cfyjbhl2/Jye1spXacLfxBh70t?=
- =?iso-8859-1?Q?3kIxtNl0QGTg2H5uDEzqTH7g45g0MibjbhByyFPkT42ACvne9u57h/bzuz?=
- =?iso-8859-1?Q?x3cZcJlDuFGXDey92A6RT0H5pcW/qjKBnH8wPQbKhDXaNz8+TnnF4ziX1L?=
- =?iso-8859-1?Q?r0SjNBgFgSw8+RE/ppZSsKTm6fpGMr0KMfn2n4JyL+Reu9Pe/21KkgYqVt?=
- =?iso-8859-1?Q?/U0NhPHVy9PRTDGV3PMM9//3gmsLFFTKwy34jBIMDmeryncaghHFvNzo6Q?=
- =?iso-8859-1?Q?8By7XUZoZ3wvLmFeENRp4K+BNPrneqq5hiDG8FABK/Rv5dbD1DQH7jMndx?=
- =?iso-8859-1?Q?Pr6d8qk3UH7HHkRtm5t4tL8NQ5sIjX/9fa1hPyZcEjjjkByBA6zjjn4Ppc?=
- =?iso-8859-1?Q?uBczTAglviUBKBuRqp7+Eh2pX/mWJDMoH5aTDV9dmQyiGByD5P0YrXpcUP?=
- =?iso-8859-1?Q?YJjb4WyGwT1Q3pDIhu2vH61SckChYgcaUhX36rdXlmQCyV84If16X3Wzir?=
- =?iso-8859-1?Q?/6/RmPwAYu3kjXOKScebfK9yDNknlZboqcJ48tWbrqlbcNaP+Pf0M1mrX6?=
- =?iso-8859-1?Q?8RXYfiyAzIAbJK11SqPuZgqMviaTZ6PiX4I+/nAztXRY+TKC+PFmei9UE9?=
- =?iso-8859-1?Q?nDtl9KCXS5Gw5Xs2fTvwRqOrbZ2UfuP1uKDxJV2LOFypazRM20UF1CViE5?=
- =?iso-8859-1?Q?Jz9tps9tbRmHRSNo/UzMbEQasHOvWXzJo7EgGMpmigHEeIRcLsN9ZbCHT0?=
- =?iso-8859-1?Q?4MTzdtyv0XewAdvw5NwnK9rQIQ8FgIFZigY+8RxOdhKlFVNCXAstaHFiRF?=
- =?iso-8859-1?Q?2Tk7FY9n2G6za7x02kVz670WWXDj1s/inattaPUdS19ogdHj9/SalCscvI?=
- =?iso-8859-1?Q?1lRGixQcCFiUoM6JgP8YrWDU5ux1DsQkck4mLbG7Lwf8HWI5Ssj8d3nMgv?=
- =?iso-8859-1?Q?GJBXpT8Jsg/9e/y3fl1oXu7Tjo1xEyQrCokZ1BnoTWZUl9grtX11pPIWPB?=
- =?iso-8859-1?Q?o3jGCcFEmu1Ilsgadnj1aWJ2afjVN632Ejml4goMLY/8dN1AmrAkbAREth?=
- =?iso-8859-1?Q?L1j0a4SfgsJUiKCrSvK/WgLnwaDuX2Yv1H6U6NrErLAO7N+AcYV1sR6lQE?=
- =?iso-8859-1?Q?RpaFFYfuhtQK3M4dmf4bHnQDh7oFNbnKQ/fQjoczXc3eRDukAyLjRSdRJZ?=
- =?iso-8859-1?Q?JUaHapbsV/A2oHePeMrAQoYeqISLU5fVvPRVoWw3eCk3zXX0WAGqyNQk+O?=
- =?iso-8859-1?Q?XWQt6IqCtv3ghhYU0RfQtL1VzpPOHRyJ2/bS8E/F1BmdZ+dw/aYrIUorLS?=
- =?iso-8859-1?Q?jtfKDOXY9O9iUL7K1xP9dFeNufV5bRI1hstTytafhLO5m0D0S2JdatbZ5q?=
- =?iso-8859-1?Q?lo1hT9z0kaff4X6TbUEExVi5bPAp2BtJSCshMx0GfQJ+XWGxoBkyj9gB6u?=
- =?iso-8859-1?Q?+2GrqlC2wCnAZFuhNPl0XPvdi/9103hd2ZWlgB4Zr2HHICnBoQZ43YR0AQ?=
- =?iso-8859-1?Q?lLFc2kewNIjS+JCgl4oBhtOdp5IAvVlJcouZWl3PIMUh6SAh2UZJJhofSV?=
- =?iso-8859-1?Q?YunvpqaJqfkPa6egmZxPXzt4TP3Q2wVYgNcwKjBTHZruSKcjI/cmDaYNTx?=
- =?iso-8859-1?Q?jtnjQsfHdIdEJABB6ZEkdqcwLtYuPuNWj9bMuw8TsiuQ8PYOm0fCXUocNS?=
- =?iso-8859-1?Q?EFKNV/8w1If8eQO9gB7p+sZKdgskg24WobVsrVUGPd49mpLYRY6W2xWsLz?=
- =?iso-8859-1?Q?8KJoQZ/7Mrvpd++7JXZH+m1b0SPePE0J4wQEiH3LUtrOcIth7EGN7e/S7O?=
- =?iso-8859-1?Q?8G3Ns3lf2mOisWA+3Ul53IEm6gPveu5US9T6kTreyWeKcPhvglU2?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11ef9fad-cd7f-4a54-d9cf-08df15c8b770
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 21:06:32.7948
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 28Unmot9DkOhcBFRu/JVA0UI6wpIZnvXZ3TJUKL2igU3uGMiUkvI66Cq0pXJYZaHawMC9otWCduWPy0VSHrtsVAkBKvAiag8kNgoE1QYsxQAlVbFz9W6YnSkCL/XnG8H
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8240
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427115804.134231-1-smoch@web.de>
 
-On Fri, Sep 18, 2026 at 08:53:23PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] ntb: missed replacing chan->device->dev in perf_dma_filter()
-> - [Low] ntb: commit message incorrectly mentions IIO instead of NTB
-> --
->
-> commit 00ad86ab4ff3c677b79412d332638c7a5186dbbe
-> Author: Frank Li <Frank.Li@nxp.com>
->
-> ntb: use dmaengine_get_dma_device() instead of chan->device->dev
->
-> This commit replaces direct chan->device->dev access with the proper
-> dmaengine_get_dma_device() accessor in NTB DMA consumers. It prepares
-> for making the DMA engine provider data structures private.
->
-> >     Replace direct dma_chan::device::dev access with the proper
-> >     dmaengine_get_dma_device() accessor in IIO DMA consumers.
->
-> [Severity: Low]
-> This isn't a bug, but the commit message incorrectly mentions IIO DMA
-> consumers instead of NTB DMA consumers.
->
-> > diff --git a/drivers/ntb/test/ntb_perf.c b/drivers/ntb/test/ntb_perf.c
-> > index dfd175f79e8f0..b936f15079df2 100644
-> > --- a/drivers/ntb/test/ntb_perf.c
-> > +++ b/drivers/ntb/test/ntb_perf.c
-> [ ... ]
-> > @@ -869,6 +869,7 @@ static bool perf_dma_filter(struct dma_chan *chan, void *data)
-> >  static int perf_init_test(struct perf_thread *pthr)
-> >  {
-> >  	struct perf_ctx *perf = pthr->perf;
-> > +	struct device *dma_dev;
->
-> [Severity: Medium]
-> Does this patch miss a replacement in perf_dma_filter()?
->
-> Right above this hunk, perf_dma_filter() still accesses chan->device->dev
-> directly:
->
-> drivers/ntb/test/ntb_perf.c:perf_dma_filter() {
->     ...
->     return node == NUMA_NO_NODE || node == dev_to_node(chan->device->dev);
-> }
+[+cc Thorsten, possible regzbot confusion?]
 
-Can't simple replace it here. Following patch will handle it by add
-new DMA Engine API.
+On Mon, Apr 27, 2026 at 01:58:04PM +0200, Soeren Moch wrote:
+> Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
+> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
+> 
+> Even though the Root Port MSIs won't be received by the iMSI-RX controller
+> due to design, this chipset has some weird hardware bug that prevents
+> the endpoint MSIs from reaching when the Root Port MSI capability is
+> disabled.
+> 
+> Hence, always keep the Root Port MSI capability for this chipset.
+> 
+> Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
+> PME and others won't be received by default. So users need to use
+> workarounds such as passing 'pcie_pme=nomsi' cmdline param.
+> 
+> Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug")
+> Cc: <stable@vger.kernel.org> # 7.0.x
+> Signed-off-by: Soeren Moch <smoch@web.de>
 
-which require dma provider device to get dma channel. if return per channel
-device, will fail to get dma chan.
+This thread is still listed as a regression:
+https://linux-regtracking.leemhuis.info/regzbot/regression/lore/20260427115804.134231-1-smoch@web.de/
 
-Frank
+But I *think* it's been resolved by:
 
->
-> Since the goal is to prepare for making DMA engine structures private by
-> abstracting chan->device->dev behind dmaengine_get_dma_device(chan), will
-> leaving this direct access cause a build failure once the structure is made
-> private?
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260918204152.2364336-1-Frank.Li@oss.nxp.com?part=1
+  b4bee12ebecc ("PCI: imx6: Keep i.MX6 Root Port MSI/MSI-X Capabilities with iMSI-RX to work around hardware bug")
+
+Can you confirm?
+
+Maybe regzbot is confused by the fact that the regression was first
+attributed to 3a4e8302e72f, and then later attributed to
+f5cd8a929c825?
+
+> ---
+> Cc: Manivannan Sadhasivam <mani@kernel.org>
+> Cc: Richard Zhu <hongxing.zhu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Tested on a tbs2910 board [1]
+> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 6d6a1688e7eb..3d461bdef967 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
+>  			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
+>  			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
+> -			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
+>  		.dbi_length = 0x200,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+>  		.ltssm_off = IOMUXC_GPR12,
+> -- 
+> 2.43.0
+> 
