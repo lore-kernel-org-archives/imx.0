@@ -1,76 +1,45 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F62551CF44
-	for <imx@lists.linux.dev>; Fri, 18 Sep 2026 19:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACC549739C;
+	Fri, 18 Sep 2026 19:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789758247; cv=none; b=K87fPnQB/v4rqYPkfIG9wz+Pm/Uon2PQcXyuJx5T0gGzEJUeoIFQy24PLSGLYl9wKuZAzAOnJDAGkXRaeJwZiatjmRqxMnLkqr/LI6PZXYATUaOxcTHgQQGaH8fMYQKHRlZ4S+LsbukoDnDaFYH9HNlqjjhGuMo+2gM7i2cTkQs=
+	t=1789758976; cv=none; b=PPv6mrWdJqWJMc0kHzIlhnJIAsN54XTXrzVV/qcZ4P6k54zMU2ZS/xyMeli9DtJ2QpTqpEZA1gnbQsZHCZdARUBUwWaajPYmV9aQiN1lVTfwjYwA0jK4i+b6vK2xNdXU1ZqjGaANyFpFoOMyAIZ2209NFKk2aAZE9fzWvbQdYsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789758247; c=relaxed/simple;
-	bh=UzAcr4zFNpEWR8QoTd198zq5n4ye3nqQ50yJoiCIYaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nqcRzt/JEYwK1cws1e9cmQp6H4fJjjbkP3DdEp+zoClCXgqevUik/rRzp7HaQdMt1rL06vQaao8TER8lJzIFn8DhBnCkHggmPXcQXNGkc0jYVJOhohlORVe5MDyNAFE4WeWbmuNibJTCwJ18vQ9Qh2tlwbAn4Ejy/9QdGcCzLSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=PtVookg5; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1789758976; c=relaxed/simple;
+	bh=r3M4Ou+K5ururZWI+eRPUASdXzJVa0NcV8LVcX9hylk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qq+HcLha1KuTRTqJBsXdQkF3QunOySLpmegsRM2fGUu5BAvoQdsB+kxuZxhlZ7AnrXUphtnW1c9aNuT4J8saAJiPhd8IkjHxRlB8jyxJeVsLG7usDKHUQKmcf4gBCoK7HL96x5g8kHXH/tceztzhf36MmLcBSzrZl2MxQDovO8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mklsk72c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="PtVookg5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=x4+D
-	9upuaenjWjZ0/dtM41htolecou62jNr6QYJiyhE=; b=PtVookg5iQKTKvaqLg/V
-	le9n4Ya6+P6oMAJIDLz7bwQHYOWPNA+2BRkNCTXsIkSwGLgpNiBURb38I31E11/v
-	wyApEEHsdo1fn8cJKwT3btI/SLa9ITzwA+nuo3Wnpm2lp1XdBgpsiwQAenbKBIrM
-	QG8Xc6p4pZ8059h82svBVX81BzDkOzmualYyeh1bukez1x+Lj8oR+hNVvnetHebd
-	qm5aXERfgaHfZGipLKRi7Mzmpmd1dPZmUL6XhA3fWHbO3QPjSnRsKui0Phql/nit
-	S6c5I0LjoAkrm47LrwHgp2QV5H/Ux0w6/9+KzOexRguOi8dpJZQEf8n8IpxP89o9
-	WA==
-Received: (qmail 2660367 invoked from network); 18 Sep 2026 21:03:46 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Sep 2026 21:03:46 +0200
-X-UD-Smtp-Session: l3s3148p1@raRWj8ZbuqC57tsJ
-Date: Fri, 18 Sep 2026 21:03:46 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Frank.Li@oss.nxp.com
-Cc: Aubin Constans <aubin.constans@microchip.com>,
-	Ulf Hansson <ulfh@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mklsk72c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED41E1F000FF;
+	Fri, 18 Sep 2026 19:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789758966;
+	bh=f6Nzj72Zu8RZnooG6kDU/HmWZJYUx/sbSbmT6+PQ3Hk=;
+	h=Date:From:To:Cc:Subject;
+	b=Mklsk72c8seKxLlIGfJjnrCKvXABm+IPNp1sZNQrU7PjhoxNqHSQsDH1NzWMqoNQh
+	 7rxtqJqmbHE+PGlWYXHaUR19MJ27rP7Pfvc9yLk8Yra/i+PG6mMLEI4p/jrJan01mj
+	 eBQzn2WS5gtcjjLvb+l096uO5l73cuZcEXHC7bLDv2YduTBJ1UWv2Yp39pdtvAmAoz
+	 HFCQ68RSNOtH1oBhywuzdlkVMht08cNp1FCkk90+8GYn9B8rPuB1D4O3hBzfhFfkhP
+	 h7PbmBENdEaENpmJ0HApe4btB3gMYmlKcwNMK0kpZ07pdyfOVubWljJDlldgB06C6K
+	 tBhSeugEwbn4g==
+Date: Fri, 18 Sep 2026 14:16:04 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Manivannan Sadhasivam <mani@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Lars Persson <lars.persson@axis.com>,
-	Linus Walleij <linusw@kernel.org>, Fan Wu <fanwu01@zju.edu.cn>,
-	Rosen Penev <rosenp@gmail.com>, Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	Zhan Xusheng <zhanxusheng1024@gmail.com>,
-	Pan Chuang <panchuang@vivo.com>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Rakuram Eswaran <rakuram.e96@gmail.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." <linux-mmc@vger.kernel.org>,
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:INGENIC JZ47xx SoCs" <linux-mips@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <imx@lists.linux.dev>,
-	"open list:OMAP HS MMC SUPPORT" <linux-omap@vger.kernel.org>,
-	"moderated list:ARM/ACTIONS SEMI ARCHITECTURE" <linux-actions@lists.infradead.org>,
-	"open list:TMIO/SDHI MMC DRIVER" <linux-renesas-soc@vger.kernel.org>,
-	"open list:ARM/ARTPEC MACHINE SUPPORT" <linux-arm-kernel@axis.com>,
-	vkoul@kernel.org
-Subject: Re: [PATCH v2 1/1] mmc: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Message-ID: <aq2LEtdAVJ58mpMr@shikoro>
-References: <20260918152349.2101305-1-Frank.Li@oss.nxp.com>
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Leonardo Costa <leoreis.costa@gmail.com>,
+	Franz Schnyder <fra.schnyder@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev
+Subject: [GIT PULL] PCI fixes for v7.3
+Message-ID: <20260918191604.GA1177751@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,14 +48,31 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918152349.2101305-1-Frank.Li@oss.nxp.com>
 
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
->  drivers/mmc/host/renesas_sdhi_sys_dmac.c |  8 ++++----
->  drivers/mmc/host/sh_mmcif.c              |  8 ++++----
->  drivers/mmc/host/usdhi6rol0.c            |  6 +++---
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
-For these Renesas drivers:
+are available in the Git repository at:
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+  git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git tags/pci-v7.3-fixes-1
 
+for you to fetch changes up to c9dc7d730319ad64b51570c5387f1fee7b07b510:
+
+  PCI: imx6: Move clock enable after core reset assertion (2026-09-17 16:54:34 -0500)
+
+(Sorry if you saw an empty message from me; I fat-fingered something
+when editing the request)
+
+----------------------------------------------------------------
+
+  - Enable clock after core reset is asserted to fix enumeration regression
+    on i.MX6Q Apalis platforms with ASM1061/ASM1062 SATA controllers
+    (Richard Zhu)
+
+----------------------------------------------------------------
+Richard Zhu (1):
+      PCI: imx6: Move clock enable after core reset assertion
+
+ drivers/pci/controller/dwc/pci-imx6.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
