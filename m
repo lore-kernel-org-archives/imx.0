@@ -1,200 +1,218 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010068.outbound.protection.outlook.com [52.101.84.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E57A2E229F;
-	Fri, 18 Sep 2026 23:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789772764; cv=fail; b=lyF/BlhIsMKmx12RSzBBzbK+6pLAo/bhBJGn+IVC3S3w8kNIxnOhTOK/ibxCk0BWgu6yHLEW77ZoidRFF/eUEPHJh1/hzLxhcLt6YTDhm6oKlGybr2WPVzTaoKz4Y0+ZJutI1NX1ZDvWBhJwopUr4Xk7S/QnHXvUZFIJ7/HqtGE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789772764; c=relaxed/simple;
-	bh=gSy+MmdqA6tQGOOqT6nYkooAb6G/XgnspV+ACxmqcIM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NhSzFeHLAFNRT2fgYQ2kp0i1hamJY5tTX6Q9n/ixuhyBa2ysvduXUMk72cjqP0YAjziIj2+GouyCksIO1moTxphM+IZtFf9662sv52vKdk57rbAQvNtQP4dWCtxIutOTJOTRSOQB7oTYmwpz4oYyVuKaqhfk8MfsXt1O/Dp7l3g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nVfCCy+a; arc=fail smtp.client-ip=52.101.84.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE0E1DF748;
+	Sat, 19 Sep 2026 06:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789800882; cv=none; b=WlYVYrsV7poHxcJJf+jUR210/jglsTxHQjlcNIBf0fG1vZaYLLh9mp2QZGoIopsEjGu+TDsOuXP3GlK2xaS6uxikIShLPNzG8SBe25lqXvy9VvCf1mL1Rf+oKV2Xzub/RgbS2Do8Mu6CDusxvh2isXDzU6p/sbHwqziC7CsDAdA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789800882; c=relaxed/simple;
+	bh=B0bGHXVmsabhCJwTaoYe1xZvYfRlznf5vkJN3+gI+kI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Zdf/8ziNAfHfaWF8qt+oQFZgtttkj9ipPH4ALbJ14VsrKehXDohm1IuJ8R9mU6i37iS1V+uHhqrNC9Nq44DNdSUBa81rGWbP2oWo5/vg3cXsC8TxnItzV4aurX882HAiadIAVO0RoYfjyuE601aS6PzGT6plNR31owAKlk1sMdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxPNzRFu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nVfCCy+a"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wTqt/3uRPfY36W9XWLI1ZILMB9OPwIuTPd4VBsasQQ25NNdqjBnxq3HWgky+hjmn1irmlphcpyUc7J0VpnAUsMfTuY0EWqudwXI2KpKDAJ09vA5Xt6PAFdSZ7tXR9G9CddwZ9eJwh5gimmCEnyAGX6axFSGss0vl9NupJMEXeH69v62dKR4LYtoURgBzSOg7KF73viPxigg9AIr2RzU0uP+mYFSBy5mav1Oqre5412Ma8zXwPOqXCAOv9bS45Al237JYa+ZV0LbTtAOX7/WQBX59HhNp6KqSRoZid/5jqZ4dvP1Xs1nmyvF5dRZLTkXr7yhUVxhoxVuRrn+XoOkukA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8sTEfqgMvYS8IC5fCum30cXAo5VrL2JqJnun2gOhdcU=;
- b=GU0+yc4Hz8e2YuHhyQY0Ljx/nFYF3XipSF/2azpk9tj1X7qLgIRTk5x9EjXtOARYVDuIygFXVeiayUIudKjcnNsUZw67DLdDnw1t0mj1jSpdorehF1wDDjH0KPzGpGlfgpejVc+1BXixFsZl4gMo3PA4H2h/9RJi+/wRDNFjt8SzYEj8M9CbjbEi0pBznQe5Zpq1N2zxRWeQabrZGayNZNdtAUEPPjpOF+fi9E3cLDvb2dD3MuJ3h2znVDZMyF9iRS4DSUYHytX7toya6epdqsHNF0DX6oYnCBXTmHn+3fGSU8FWmWdhbOWvEYTK/lVwAW98AXQDXZaO08Vauvj6nQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8sTEfqgMvYS8IC5fCum30cXAo5VrL2JqJnun2gOhdcU=;
- b=nVfCCy+azGTZt67UKNdBvRgI5hqq3Q6YpdBos3J/h0Bn/A5C5TNO5dHoWIySv7I483GJ/5VEnNeoO048pt4HQUvxhcrYfx5jZhzsypIV/dSaxJd8Rt5scUvcDW7497i33eDoCjd/X9JCn1w7RYPEaAcsGZGz5ldhISZvcUlwpyEg/ZR2htjGwtV0FR+czH6FWL2HEl1U8/z/pZEP37wc2uTd+X9PQHOvAWxfYVuSZ0fXHJYFUNlwBdiyAa9NvQgm3zOzfz4fzHHKiRWzvSfOySt41VLSSgzle59ta/6059QB/jYikEIAG4UV2U7KGZEdw7P2d1gCeHVtrpWZFziDmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by AM8PR04MB7906.eurprd04.prod.outlook.com (2603:10a6:20b:24e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.14; Fri, 18 Sep
- 2026 23:06:00 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 23:06:00 +0000
-Date: Sat, 19 Sep 2026 02:05:57 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: bpf@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
- enetc_update_tx_ring_tail()
-Message-ID: <20260918230557.bzboccc22ku7bzhx@skbuf>
-References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
- <20260915222735.1016937-3-vladimir.oltean@nxp.com>
- <20260916222806.6011F1F00893@smtp.kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916222806.6011F1F00893@smtp.kernel.org>
-X-ClientProxiedBy: VI1P191CA0010.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:800:1ba::18) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxPNzRFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C1AE3C2BCB9;
+	Sat, 19 Sep 2026 06:54:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789800881;
+	bh=B0bGHXVmsabhCJwTaoYe1xZvYfRlznf5vkJN3+gI+kI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=JxPNzRFuNeSV3qeFQVSOei2UFEJZjzZZTMnzXgxjNwdp/oxlzZqSB8j1qEaC7tIKH
+	 s/2N0qgYKfCoTcN7pf8LFDf07RfI2j9Wbr+tFleuKzGRHXJCNL6Vu5ANDIU+6Cqm16
+	 kS+PDuJacRwSsTzVb40RYIyy+R5Lhzt2rrGXSGNDPDGkmtkogN37KCXSNYroLJRBAk
+	 xk4ugI65D+bIFv99FKUXmXV06tg9scs2EZ+mvp9QG+j+VcPHQKMXv8R9AmQoMpKdMA
+	 S8IWp45PTwM9NB95rS/xB7PTRulTGn9fJqrSApw2pCxQLFzcneZKGDMgzyx2vMTU0Q
+	 hFmmz0hp61KXA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97BF7C982D7;
+	Sat, 19 Sep 2026 06:54:41 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH RFC v3 00/12] Add support for the NXP S32G SerDes subsystem
+Date: Sat, 19 Sep 2026 08:54:28 +0200
+Message-Id: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AM8PR04MB7906:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9630d5a-dfdc-4310-06ef-08df15d967a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|376014|19092799006|366016|10067099003|5023799004|11063799006|56012099006|4143699003|3023799007|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	tfs4v+Fbt5vCIuiNzRSiQGuOVpalfBJK5YGuF9wD85ZDIhsXSt0efMD6WXe262RQkjCksWjURJW++EjDm014CrNkTYVZRVKA7XPchg3DqWNtVNwViRKiBISHa8JStDpZkEhJ9C9BCB616uXIBYkiUxDnzVG6gm6iLhcnaRgzlNKrZWsr7O7G6esrFSPqftMPoquckdnlYKcsVhtgU3cnx5EClRZySw/Poo9Mf9D6CrFFEBg0FCBhSUNMv2qUrdMNs2C6hkmCGzPvrK2JnjJLIEXaefNKtt/r22PLc/Zpw7d8gd10XbzWcha7axw70VYZsvI7CvrgEbW4qb94bwv8KmMF0aWO+13AwyoN11EsusNie98DmHN4R0ZXEgENlUqk8eTn+wBN9pWpwK/a3vXrPT3vWlNZXZ3VgVgod2aBjVrk7ylLeTh0duGFSnttX0WYlsypAG5pyU/ytEeFJ9ByXZOxNycyMUMpr4KcbyhoV5dom643kHyLlnu54jdVYF8GPx+3aXqX6o0ao8xcICbTYpgkQ8ItSBaVkMDmYCSqtBViCzFd+7N9NYyzirggTwcjjGC0pxKwUvbaDhf8n3gGnyTKMTj/vEy7QOROUmIqmyxMDUoZOE9UJkwj3DO6DDrrunlGJTEFZVGhL0Ezl/oSBxRBjiMQnke4XSbHyiWzGso=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(376014)(19092799006)(366016)(10067099003)(5023799004)(11063799006)(56012099006)(4143699003)(3023799007)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3vJ5Jk7neJMHhmHGN2BpcFrvV6SSVz6DQc4BBw879u5RkJgHT/8dNvJMyzPD?=
- =?us-ascii?Q?VrdZZe7LXEaQhGSnB+CS9kuNzzSqCPqfbBiMvCGLUlRNvuyY74G09EwGinV3?=
- =?us-ascii?Q?z4Xdr7WFGQd+d+A7VIMFdk2KYW+CTasQrvBLIqkGm45zf8KCraC0KQkR3uSp?=
- =?us-ascii?Q?FsWN7H/AxMmqUGCwFbzX2+sh3H7P3gTXZITn/8lT7ANYldRtsjH4zONnL/bh?=
- =?us-ascii?Q?C96craNi0Lz35rG5aRtac/d9eY7sBUoP1/tV8nVhFj8m43IDc2q+lqFNL69v?=
- =?us-ascii?Q?nlHV5BORZoISGEwql2MtPqgHJQXX9fo/xGXN7ukUh2jiKlMYrQa97SQsNLc+?=
- =?us-ascii?Q?tmMZL+Pli8D2o8lhDATY/z2de95WnFcgRizMinkcl1NNhhIkb69xZCmkaChN?=
- =?us-ascii?Q?iK2kS4HtLiWTvsf0EDYSpVLpnhHndC4g6FjvgoQ+PhD8O6SD80yGrBFfwDOf?=
- =?us-ascii?Q?fPzp+7cV8Y+Yj2GxMmj6NnnDJx8JJpxOgnxm5hUIgNqbmiluA/HvzN9LL2l0?=
- =?us-ascii?Q?G2m2tp+cNvB+U+J2bhTWZmqDw7b1gdEeNK53bglgNS+JWJ4XunXIXZEfR4at?=
- =?us-ascii?Q?CgmBfjvfsGKa29DBJu6tiBzjNFIMRCNoiv+Jd0YBP+fd/N/BP3MjdK+4+rMZ?=
- =?us-ascii?Q?MamiFE4VRhh0bI0AZKQqg5aeI5ux3FmwwXtKxwMBK/d3mdaYXIXmfyk941E/?=
- =?us-ascii?Q?rL91K7PEsHdWsYTahUP3DyynUiD41G6JT9N6qrF0JoybIml5kXSUedZyJPBj?=
- =?us-ascii?Q?Yz4xD942N+DsRrW8aMvU+6TK8md7OCH2YwBiu+30ufSqeBtzD/eAmKo+vKSF?=
- =?us-ascii?Q?nhIvjX7MZzBQBfoGPXO+4iMxBX7CHzFDbc0j1VgskX6HxkON0y/uogp4r/Go?=
- =?us-ascii?Q?C6/u++bEO+Lfqk5Iup30xeiBzH1sZQYi09pM6fTtY3nWjEsQacoSC0zXQ1S1?=
- =?us-ascii?Q?HDcQ7ekU9lVqB3Sn9v/gYxd+lT+I0mPmyOSGly8H3td0jF0RVvckSN3uCVMg?=
- =?us-ascii?Q?xC+qOmJCCMssgu7QD8Xoz4o9ntLUsE2kcuv9S3WfGWv1tp1z5daYGi6S8l4W?=
- =?us-ascii?Q?OLoeK7caEVpjIor6dsMgBKmNaz7WEzMn4nBOuq1jEUdNJmD0nLsKcf/IlnD3?=
- =?us-ascii?Q?vMOd8tEgbsmP1mbYWE2R94Yn9pWXd/DQKZsZhgk562lJWlAfzUy/nvxB3KnO?=
- =?us-ascii?Q?M0p9KzbgG1oTWTf//9rlrSpQF01KdmGYxvxt0Rj/W77Dvh72JKGYkZv11ohr?=
- =?us-ascii?Q?j7H9oa0yXlgz59aL+8YwVjhITZGE6ynr8GYixeyAHrPNb0QyJVa8eREgo0Lr?=
- =?us-ascii?Q?Ra9JALECLiOc07Wz7UtjXrrGnUMXC9YzUaqzRElAH65JnV3I5PTNAU85RtvM?=
- =?us-ascii?Q?mFhpo94PdwdB0QmpetT367SxEw2nE+5kkvcewTNTxSmdEBKSskWNCari4V7L?=
- =?us-ascii?Q?Y3obZsFXLzXeFZqGcunOP9BWjAyUw7j+01MoiMb7iF5BwxlbxGY96C2co7bl?=
- =?us-ascii?Q?Dtf+pREyz64ld6LqkP7jhQKKk9gb09RjyPbbdgUCtAVZRvN9wxCmd7qV5VI/?=
- =?us-ascii?Q?BOtZgwqXnOk0w6OulEWI+2aYotzK/roOxDQE838OCuyJ8Q2cz7mFAvREzRl7?=
- =?us-ascii?Q?fFe/2ljDTWC0LclyayQjD7DzCrxWxVYW4drvekTzipAjAM9a23x3giU5XcZ/?=
- =?us-ascii?Q?DOzbJ9sIxcJBjc5xGzYx3MzUPySvZNRMWidB6N7xWEN5SQ3e8dCwi7bd14v7?=
- =?us-ascii?Q?0lQhjLaJM7EGM3HbfoK8FWtZmV4gkDNLkOP63QxyhXKr7lv7I5TqYvbI41Pv?=
-X-MS-Exchange-AntiSpam-MessageData-1: I0H+vCW/KrCWOFTc7ipzelrZvaKH2vL8y60=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9630d5a-dfdc-4310-06ef-08df15d967a8
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 23:06:00.3088
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: askH326jMxhL/7AnU6bAOkLT3mD2qbtMbur5EVH/MsFdJGhQn3eTV9PlpHkQESjrBhn79LX4QgXkjFg4/cVxXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7906
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKQxrmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDS0ML3WJjo/R4oKaU1GJdcwsDcyBMSQXSSkAdBUWpaZkVYNOilYLcnJV
+ ia2sBuam+6GIAAAA=
+To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Bogdan Hamciuc <bogdan.hamciuc@nxp.com>, 
+ Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Clark Wang <xiaoning.wang@nxp.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
+ netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ imx@lists.linux.dev, linux-pci@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>, 
+ Ionut Vicovan <Ionut.Vicovan@nxp.com>, 
+ Bogdan Roman <bogdan-gabriel.roman@nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789800879; l=6250;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=B0bGHXVmsabhCJwTaoYe1xZvYfRlznf5vkJN3+gI+kI=;
+ b=1yvMr9hjZ/knlaYPjq/Du80xtRHyTiYfNcQvgHSiDW0xchVS+JYmlGZx3hOKvZleunJQVmoZu
+ Zj9MGuRWAYsCYyMJUnOdjhiwwp4WjxVMRAWsS+eW3V1rfYL7P9+lbC1
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Wed, Sep 16, 2026 at 10:28:06PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] net: enetc: missing XDP_XMIT_FLUSH doorbell when k=0
-> --
-> 
-> commit d8271163a46118cc9a3212492775857b3ece7ba0
-> Author: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
-> 
-> This commit modifies enetc_xdp_xmit() to fix the condition that triggers
-> the TX doorbell. It removes the redundant xdp_tx_frm_cnt variable and
-> updates the check to verify if at least one frame was sent along with
-> flush requests.
-> 
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> [ ... ]
-> > @@ -1845,19 +1844,17 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
-> >  						    &xdp_redirect_arr[i]);
-> >  			break;
-> >  		}
-> > -
-> > -		xdp_tx_frm_cnt++;
-> >  	}
-> >  
-> > -	if (unlikely((flags & XDP_XMIT_FLUSH) || k != xdp_tx_frm_cnt))
-> > +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
-> 
-> [Severity: High]
-> Does the addition of the k && condition block the mandatory XDP_XMIT_FLUSH
-> doorbell if the current transmission call fails to enqueue any frames?
-> 
-> If the devmap subsystem enqueues a full batch of frames with flags=0
-> (no flush), enetc_xdp_xmit() successfully enqueues them but skips the
-> doorbell because k == num_frames and flags=0.
-> 
-> Subsequently, devmap calls __dev_flush() which invokes enetc_xdp_xmit()
-> with flags=XDP_XMIT_FLUSH to ring the doorbell. If the hardware TX ring
-> is now full, this call fails to enqueue its pending frames, resulting in
-> k=0.
-> 
-> Since the modified condition evaluates to false when k=0, wouldn't this
-> skip the doorbell entirely and leave the previously enqueued XDP frames
-> permanently stuck in the hardware TX ring?
+This series continues the S32G SerDes/XPCS upstreaming started by Vincent
+Guittot. The effort has moved in-house at NXP and I am carrying it
+forward from his v2 [v2] below, rather than restarting from scratch.
+Authorship of the patches originating from his series is preserved
+through Co-developed-by and his Signed-off-by; the rest builds on top.
+Thanks to Vincent for the v1 -> v2 groundwork.
 
-This is fun. The LLM has no idea what it's saying, but it's saying the
-words that are gravitating in the right direction anyway (kind of).
+The S32G SoC family integrates two SerDes subsystems. Each one is built
+from a DesignWare PCIe controller, two DesignWare Ethernet XPCS
+instances and a shared two-lane combo PHY (PMA). The two lanes are
+multiplexed between the PCIe controller and the XPCS instances, so a
+given SerDes instance can run PCIe only, SGMII only, or a combination of
+both, depending on the selected subsystem working mode.
 
-Specifically, it's unable to articulate "the original code was
-functionally correct, it just needs some cleanup".
+This series adds the device tree bindings, the SerDes subsystem PHY
+driver that owns the shared PMA and sequences the bring-up, a
+transport-agnostic XPCS PCS core shared with i.MX, the S32G XPCS glue,
+the SGMII support in the dwmac-s32 MAC glue, and the device tree nodes
+for S32G2 and S32G3 including two routing variants for the
+S32G3-VNP-RDB3 board.
 
-All other drivers only ring the doorbell if the XDP_XMIT_FLUSH bit is
-set in 'flags', and I wasn't able to understand why that is correct/
-sufficient, either when I wrote the original commit, or this 'fix'.
+The lane multiplexing is the reason the XPCS is not a self-contained PCS
+platform device: in the mixed PCIe+SGMII modes both XPCS instances share
+the PMA with the PCIe lane, so the reset and bring-up ordering has to be
+driven by the SerDes PHY driver, which owns the shared resources. The
+MAC obtains its phylink PCS from the SerDes subsystem through the
+standard pcs-handle property.
 
-My concern was: "if a full batch with flags=0 fails to be completely
-enqueued, don't I need to ring the doorbell anyway? what if another
-ndo_xdp_xmit() call never comes?" and as a result, I remained under the
-impression that this is condition that needs handling.
+Only the 1.25 Gbit/s (1000BASE-X / SGMII) working modes are wired up
+here. The 2500BASE-X register paths are present in the PCS but are not
+enabled, as there is no in-tree consumer yet; they are added by a
+follow-up series together with the per-lane capability the binding would
+need to describe them.
 
-But the answer is "it _will_ come; the only reason why you got an
-ndo_xdp_xmit() call with flags=0 is because there's even more data to
-send, it's just that there's no more room to store it in bq->count,
-so let's first send what we gathered thus far". The remainder _will_
-result in another ndo_xdp_xmit() call, which (if terminal) _will_ have
-the XDP_XMIT_FLUSH flag.
+Tested on an S32G3-VNP-RDB3 board, in SerDes mode 1 (SGMII alongside two
+active PCIe root complexes) and in SerDes mode 3.
 
-What is even more interesting is that, after dead code elimination,
-enetc _does_ behave like every other driver, and there is no bug, just
-misunderstanding. Because as identified, "k != xdp_tx_frm_cnt" is always
-false, we have "if (A || false)" which simplifies to "if (A)". So enetc
-flushes the doorbell based on the same 'if (flags & XDP_XMIT_FLUSH)'
-condition as everybody else.
+Compared to v2 this series is rebased onto current mainline master
+(see base-commit at the end of this cover letter) instead of the tree
+the previous revision was generated against.
 
-I will remove this patch from this series, and resubmit the cleanup part
-only to net-next.
+Changes since v2:
+- Restructured the series: the single "serdes subsystem" driver has been
+  split into the SerDes PHY driver (drivers/phy/freescale) and the PCS
+  side (drivers/net/pcs), and the PCS side is further split into a
+  transport-agnostic XPCS core shared with i.MX plus the S32G-specific
+  glue. The core operates on regmaps supplied by the platform glue, so
+  the S32G indirect memory-mapped transport and the i.MX Clause 45 MDIO
+  transport can share it.
+- Binding: dropped the vendor nxp,sys-mode property. The
+  SS_RW_REG_0[SUBSYS_MODE] value is now derived from the lane child
+  nodes and the nxp,xpcs-instance routing, since each described working
+  mode has a unique lane mux. The reference-clock rate is validated
+  against the derived mode instead of selecting it.
+- Binding: S32G2 and S32G3 now use distinct compatibles without
+  fallback, because the reference-manual mode tables differ per SoC and
+  per SerDes instance.
+- Binding: only the PCIe lane child carries '#phy-cells'; an XPCS lane
+  is referenced by the MAC through pcs-handle rather than as a generic
+  PHY provider.
+- Documented pcs-handle for nxp,s32-dwmac and fixed the SerDes PHY
+  phandle in the nxp,s32g-pcie example.
+- Added SGMII support to the dwmac-s32 glue (pcs_init / select_pcs) and
+  fixed the PHY interface selector to handle SGMII, RGMII, RMII and MII.
+- Converted the vendor driver busy-waits to read_poll_timeout().
+- Added the S32G2/S32G3 SerDes, PCIe and SCMI reset controller DT nodes
+  and the S32G3-RDB3 SerDes routing overlays.
+
+Link: https://lore.kernel.org/all/20260203161917.1666696-1-vincent.guittot@linaro.org/ [v2]
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+Clark Wang (1):
+      net: pcs: add NXP SerDes XPCS shared core
+
+Jan Petrous (OSS) (8):
+      dt-bindings: phy: Add NXP S32G SerDes subsystem
+      dt-bindings: net: nxp,s32-dwmac: Document pcs-handle
+      dt-bindings: PCI: nxp,s32g-pcie: Fix SerDes PHY phandle in example
+      net: stmmac: dwmac-s32: Add SGMII support
+      arm64: dts: s32g: Add SCMI reset controller
+      arm64: dts: s32g: Add SerDes controller nodes
+      arm64: dts: s32g: Add PCIe controller nodes
+      arm64: dts: s32g: Add S32G3-RDB3 SerDes routing variants
+
+Vincent Guittot (3):
+      net: pcs: Add NXP S32G XPCS driver
+      phy: freescale: s32g: Add SerDes subsystem PHY
+      MAINTAINERS: Add NXP S32G SerDes and SerDes xPCS core entries
+
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     |   11 +-
+ .../devicetree/bindings/pci/nxp,s32g-pcie.yaml     |    3 +-
+ .../devicetree/bindings/phy/nxp,s32g-serdes.yaml   |  258 +++++
+ MAINTAINERS                                        |   23 +
+ arch/arm64/boot/dts/freescale/Makefile             |    6 +
+ arch/arm64/boot/dts/freescale/s32g2.dtsi           |  118 +++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi           |  118 +++
+ .../dts/freescale/s32g399a-rdb3-serdes-mode1.dtso  |  111 ++
+ .../dts/freescale/s32g399a-rdb3-serdes-mode3.dtso  |   60 ++
+ drivers/net/ethernet/stmicro/stmmac/Kconfig        |    6 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    |   74 +-
+ drivers/net/pcs/Kconfig                            |   25 +
+ drivers/net/pcs/Makefile                           |    2 +
+ drivers/net/pcs/pcs-nxp-s32g-xpcs.c                |  947 ++++++++++++++++++
+ drivers/net/pcs/pcs-nxp-serdes-xpcs.c              |  853 ++++++++++++++++
+ drivers/phy/freescale/Kconfig                      |    9 +
+ drivers/phy/freescale/Makefile                     |    1 +
+ drivers/phy/freescale/phy-nxp-s32g-serdes.c        | 1057 ++++++++++++++++++++
+ include/linux/pcs/pcs-nxp-s32g-xpcs.h              |   48 +
+ include/linux/pcs/pcs-nxp-serdes-xpcs.h            |  100 ++
+ include/linux/phy/nxp-s32g-serdes.h                |   25 +
+ 21 files changed, 3850 insertions(+), 5 deletions(-)
+---
+base-commit: 5dd1818b15d98d4a20806cd00b1b40320b06004f
+change-id: 20260918-s32g_serdes-7807070de807
+
+Best regards,
+-- 
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
+
