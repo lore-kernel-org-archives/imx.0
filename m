@@ -1,137 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CBC37268C
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 07:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789802783; cv=none; b=RWf7PAqDNCdC+TSuCRQq4MDZ+A7vNnNe6pfhdqp01pLbgmydk9Xn3BGbeQS37matuBBf3ROPGH9qoEqdOPU5SLnZwbPR42eNNxXL21lDqqkrz+YMXGXNgptxmoFGhhgI3s7l9GE7xXThcoMFBzFAyh5bbmh/2jH7fzJna8+IFe0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789802783; c=relaxed/simple;
-	bh=vtgG66TNzf0ddHtc5zE8W/6a4AZcjJ/2njWo+n7RPyQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Bf4aqaa1POBuP2P4g4GAj8BGVc+Vv2Jg5h/NcgYTCBer9IhKLGyu+MSj4g92JyXvVQuVp5ujB/CEBKKuuuZKczd5gv78AaJSXPeqmHOZAGEq0YCbfW8G4wf8uodrVYsjINir/2erE1M6UvhJYBfAXy2YcfrcBw6Y16OaIBD6wOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQvRxrVi; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DA07083C;
+	Sat, 19 Sep 2026 07:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789803251; cv=pass; b=nP5MJZ800sGQ94/gaPHr8auDTd+TWP8L9WFPM85WE2a7YZmXqxESQwf8l2RFT/mmfmiai4T11KDkpAluktJbGC0nSgc1rk6DbjynO4793GqIBlclDPFmotedLcLApK1DjQpxfu4HPnMul7sgE/EyD2EtVhTOmxDvzNuIa8VEZno=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789803251; c=relaxed/simple;
+	bh=llg/PF8nMnnpezaHPpy9KBWeZf3PiiHR8A/GPkRQCtQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HWj/pp3tGWuDjIS8U4sw+bvkS6glp/91kwJoSmJGv4K6Z11/DXf9Tc1bTADDDFGQES+ZltW4vgXwSy+1BAUCTVAWuVzWU8b7gn3dV6itoF7wTE87alYid1+Hao9e2NRtnjQ5PRc30ftRITA/loTznc8RGar+rDCAgFXLhDixfTY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=QM7y3zqc; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=UpO1qiOn; arc=pass smtp.client-ip=185.56.87.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQvRxrVi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09DE1F000FF;
-	Sat, 19 Sep 2026 07:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789802782;
-	bh=Gunvwuc1PgmqhhjySXxjr19alfnc7iMV2bja3z8gUiI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eQvRxrViFtPen+f2soYUS00XZZRgKeYxoYt8/Q/l4Jl1nK4IAnIpOPL1qAwdxN148
-	 gcn2kcnSosZs6KtjYJYnbYhGXr+iMitoiP7nhVBTVquxvxKV9f20o5+eroqdmgITCc
-	 fDNpiBKrm2YGJXSB8uPKI0cUYOuGeKxjHAjv90Hx4fImGQPz+sQ3yMGtkI+O853x/d
-	 vZn4rfEmg2jlEa2+ITUwF8rqIwA/wjlGrkUT78TxCEKHyYkEURiMXps9mBfjerGObu
-	 AO2nxb5qBhoSMNILqXawot/lnd7pw53syAMC6UAdvCxclDEY1TAJzSmSw77SGBXw86
-	 msCV65AJ6xqbA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net-next 8/8] net: dsa: netc: add PTP one-step
- timestamping support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: wei.fang@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260918072852.501420-9-wei.fang@oss.nxp.com>
-References: <20260918072852.501420-1-wei.fang@oss.nxp.com>
- <20260918072852.501420-9-wei.fang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 19 Sep 2026 07:26:21 +0000
-Message-Id: <20260919072621.D09DE1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="QM7y3zqc";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="UpO1qiOn"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com; s=arckey; t=1789803248;
+	 b=OhJk+gykLbfnab+nyPQc2vU/jzqdQkiQDSZoxgRJOXAxk7Cfm2yDGsUSFhFr9Nh3li5SgocvPD
+	  ToWZ3IRmeMvl3KiFIYSw+lvVuTnXpffVfMLZ6dUho6HC6c97DVgybZqgG+Z0ACeWziTj8H8KHy
+	  R79V1TwIBIRaBe78nv9iSaMt0kEYRyfYBULCIjJGeCpEGwcTXFH/AXTvPBiNu+lxDfm7xhrdly
+	  oMJjo/J9hEpx7L9FlHAE8XAt29mhybxzWT/y0MloPgpKP3LbQsK6IhXk4FS2X2BOav+vwSHQOH
+	  bwx8+JuufmQO20T8AJI4R6oYaRR91FrzsHM+qBeM30d+Hg==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com; s=arckey; t=1789803248;
+	bh=llg/PF8nMnnpezaHPpy9KBWeZf3PiiHR8A/GPkRQCtQ=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=V4Njr3XNcf0x5fLmZHSqFsD9oy06ks50IBpkf5zZoOsvO013o4hXE24dIIeJcDxC9sET9Nu6+4
+	  tSSgdwgsC6PBUJL4yKNAYlcwAH713KHQhI2NZtSAjlybVk23a0JmRZqqVMTFpySyPtex/UxVKi
+	  PYWMoUivTFZ+olfUbK7mdq/O3LNtpzOxbtrjodg2iT8xV79skrx6rEmsSGWBz1rDlYrmKPoKJu
+	  e7awLOauUAq/rjYlL+qLvo9Hupmft3dPjdUa8TXyrjZTiOQM3VuuDchUtvmvGcg8M4hnE91R9Y
+	  oeodhBF2VweBLYKP/tuTZbUEYKCm85L6tTas5o+BQxL0JA==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=1CgMYzN7u/XA+bnop2JDgsNdowKH5ww277Ab2jeFzYI=; b=QM7y3zqcSH2FlgocRfPPmbaMad
+	3V+YineFUsBAjj1eS9GdJ5apHLMBjN2XESzhZZzeglXvSZlp1iwbuSFkPcJILFAkxbV9CdUCplI1I
+	HOeFBUHCnmKQNRSUp1Hw+yuMYuCnn53BsjWpBoQNXfoISQWUSqwSJpAa9EzYGeterYoo=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x7pa8-00000005bxU-2Wr0;
+	Sat, 19 Sep 2026 07:33:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=1CgMYzN7u/XA+bnop2JDgsNdowKH5ww277Ab2jeFzYI=; b=UpO1qiOnq7xdcWjgHZmVoz6PH6
+	qnX8EWkbIbCQnHos0YlsXjQrPVX98//3jAxv0fogZLwImFWx8HL4sgPGe3Cd6N7yD0LUfSxLJvPzr
+	CCHTUlfULmZRgWrMaDWDzF0qYbREJFaOi177rp4/VFmpRK+nl7GD9XvXkPWjmtJwzthc=;
+Received: from [95.75.45.71] (port=45394 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x7pZp-000000006o5-4BDY;
+	Sat, 19 Sep 2026 07:33:38 +0000
+Date: Sat, 19 Sep 2026 09:33:36 +0200
+From: Francesco Valla <francesco@valla.it>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC 00/12] remoteproc: add support for any virtio device
+Message-ID: <aq453yukMHiNb1jp@bywater>
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <aq1sooGCYUiWbhMH@p14s>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq1sooGCYUiWbhMH@p14s>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 8e767977f36cde42fc16bbf5074ec7b6
+X-AntiAbuse: ID - 8e767977f36cde42fc16bbf5074ec7b6
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1x7pa8-00000005bxU-2Wr0-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] net: dsa: netc: skb_clone causes downstream buffer unsharing pen=
-alties and ownership violation
---
+Hi Mathieu,
 
-commit e1617e58a8399b2727842b7a8a9daba5929f414b
-Author: Wei Fang <wei.fang@nxp.com>
+On Fri, Sep 18, 2026 at 10:53:54AM -0600, Mathieu Poirier wrote:
+> Hi Francesco,
+> 
+> I have started reviewing this set but given the size and implications, it will
+> take me a few days to get through.
 
-net: dsa: netc: add PTP one-step timestamping support
+I'm going through the review done by sashiko - would you prefer me
+sending a v2 with the trivial errors already ironed out before doing
+a complete review?
 
-This commit adds one-step Sync offload for NETC switch ports and advertises
-HWTSTAMP_TX_ONESTEP_SYNC. It uses a deferred work mechanism and queue to
-transmit one-step Sync frames, allowing hardware to compute the correction
-field.
+> 
+> Thanks,
+> Mathieu
+> 
 
-> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_=
-ptp.c
-> index 2e743443ca030..1bc0f09562062 100644
-> --- a/drivers/net/dsa/netc/netc_ptp.c
-> +++ b/drivers/net/dsa/netc/netc_ptp.c
+Thank you!
 
-[ ... ]
+Regards,
+Francesco
 
-> @@ -68,12 +77,276 @@ static int netc_get_ts_req_id(struct netc_port *np)
-
-[ ... ]
-
-> +static void netc_port_program_onestep(struct netc_port *np,
-> +				      struct sk_buff *skb)
-> +{
-
-[ ... ]
-
-> +		old_sec_h =3D __get_unaligned_t(__be16, hdr + tstamp_offset);
-> +		old_sec_l =3D __get_unaligned_t(__be32, hdr + tstamp_offset + 2);
-> +		old_ns =3D __get_unaligned_t(__be32, hdr + tstamp_offset + 6);
-> +		inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-> +					 new_sec_h, false);
-
-[Severity: Medium]
-Does modifying the payload of a cloned SKB here violate the networking core=
- SKB
-buffer ownership guidelines?
-
-The original SKB was cloned earlier in netc_port_onestep_work(), making its
-data buffer shared (skb_cloned(skb) evaluates to true). Bypassing standard
-buffer ownership rules and directly modifying the shared payload triggers an
-expensive reallocation and copy (pskb_expand_head) in downstream conduit dr=
-ivers
-that check skb_cloned() before padding or modifying the frame, which could
-severely degrade one-step PTP performance.
-
-[ ... ]
-
-> +static void netc_port_onestep_work(struct work_struct *work)
-> +{
-> +	struct netc_port *np =3D container_of(work, struct netc_port,
-> +					    onestep_work);
-
-[ ... ]
-
-> +skb_dequeue:
-> +	skb =3D __skb_dequeue(&np->onestep_queue);
-> +	if (!skb)
-> +		goto set_onestep_state_idle;
-> +
-> +	/* Clone is a ts_req_id token only; its payload is never read, so
-> +	 * sharing the buffer with the mutated original is fine.
-> +	 */
-> +	clone =3D skb_clone(skb, GFP_ATOMIC);
-
-[Severity: Medium]
-Could this clone operation lead to the downstream buffer unsharing penalties
-described above?
-
-Since the clone is only used as a timeout token and its payload is never re=
-ad,
-would allocating a dummy lightweight SKB via alloc_skb(0, GFP_ATOMIC)
-exclusively to hold the token avoid these performance penalties and
-architectural ownership violations?
-
-> +	if (unlikely(!clone)) {
-> +		kfree_skb(skb);
-> +		goto skb_dequeue;
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918072852.5014=
-20-1-wei.fang@oss.nxp.com?part=3D8
