@@ -1,244 +1,252 @@
-Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818CE14A60F
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 09:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB130397949
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 11:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789809667; cv=none; b=olo73Tru7eiI7NfWjB3Xk3tXXBIfCWBmsIoalYDGkmHZSf+A9ACUtipqCY+CKMXaN7raA5WVfMH1uoInT0/sul2hcriugf+LrcFoTDT94pDXZt3roZwO2T23raESlCDIuMEvsdZ3qZ7WX/9lDPDOdpJnnELMuafLz9dCMtu7Jms=
+	t=1789817086; cv=none; b=AqCMOdIn3y7Mi9uyB++4lXfNP8pWlItTPtQx210NokvLx2TeJ6Anp2/pjWKJS6DqFkK5vSQosctWX7cEHwIIkLZMF6gXZrgWhYRMXRyv2r/FgV7fRfx3rHaZTUgW/ERAFDsjk7z8t6oz0v5Nb8LzKZlTurYIuR6LHF96Sv5c/3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789809667; c=relaxed/simple;
-	bh=pzApuuerjL8qD/Zos8LlmaW4d6yJGkOH9sOp2iu4cVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HlhxLc1bj0Nun5m3Sg1RAQumlysf99mNLERuEZRC/VMs4bZE74kWnVrjVptrGUlkNxtVNRTqvNRzw88S+XTYp+Syyp7C0DLtqCR8+j0Mro7ui0zDcdGGtSpRKhoIrmxR6z+7TqnXhgH/XFtdhMskvoB4P7OLQncoPYlIkPwEKA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=KKJxgAPq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wLA7xh2o; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	s=arc-20240116; t=1789817086; c=relaxed/simple;
+	bh=Z8wkPmQUbHgQBu1B/ph7jlE+wdo/SOJNVn6V4NgjmD0=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:To:
+	 Cc:Date:Message-ID; b=DwJo8ZaA7uvitTqQE6UzeTmSWeA4tmV6ydsoCKZqwJ4pbKrJ8bpD1T0PxbvRI6hetY/aibEuLEIAFzrG9mbfXsWKnOkYx9pq/8dM1B5yZOKK15wT0zqemCLB2dumYy/i/LRFpQj4h8IR/0+fHENn1NFmOE0rx8nZ5U9VW4Gcj8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=E54UYq9R; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="KKJxgAPq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wLA7xh2o"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id 7A4A71380CC3;
-	Sat, 19 Sep 2026 05:21:04 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Sat, 19 Sep 2026 05:21:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789809664;
-	 x=1789816864; bh=MGYptzQitBqvlBeqfLUR1pvxKBwqhA+k9O947J2Uzs4=; b=
-	KKJxgAPqGf8ffn9cEzGN/lmRPaI84KnadpYFXzKCX9hE2ejUIq68mi4u49PvWfgc
-	Itlb19ZH3qr7BojbMyQRo+ba2NPVuxshKxNHPNc1n0WoFm2P82SdvXVe/ozusaqU
-	UUuNFmN3pT+MAIOXefE4Sv9U8sKTnAH69sCP1ZzXN2aKc8adbqjGCZ5y3vHL5yUn
-	DebvNQKunanNCX2bmcP83jS/V3bgaOaMTSMerlAWCQ2EgFBXQ1ZRTTrcYTU71eEv
-	lbzAJDJUW1lP7r0QDdMJOaObYpwLv8jsh3ZCwwwsKuWBDf/iXMBIEia/Vxnb/8S7
-	nxGJsoWmFpCeajtr5MutCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789809664; x=
-	1789816864; bh=MGYptzQitBqvlBeqfLUR1pvxKBwqhA+k9O947J2Uzs4=; b=w
-	LA7xh2o3RY19SYTpHtjFoN2bWuBr9Jl0X822TEzfg09UxehR9IxivJ/PPDbEq5vh
-	xknj+g7mVbq0BrIyxwjz7mQPl76Es0GLU76nsl2Jc5PWQZ2aYnu4tSWX2U+CEbOU
-	duXnb8byYslI35rhb9G1P41C+PXcxQA0LTyXYnfwnUdPfuutf27xS+i0HNDcYlJc
-	mgqWClJS3odJaqniOPApq6NW3P2YBAq8VK9RlSsIgQ3yQUFHVbKCGOJnK9XiOEZD
-	XKwatuiR9o5xSppMVRA8v/P+uFKq6qikqTrSgLJnHtuSO/CDe3DZZJW23Dy/fkvD
-	ZW547r14CEX+ogHG402fg==
-X-ME-Sender: <xms:_VOuaoMc3T-ITDLbcqgHBdCUnJzWxvJ2B31OHOBqLt2R6J_GHk_kgg>
-    <xme:_VOuaqs_CdaHWRrECVh8zBB_Oyed8sjnn2zi8cyFPVs8HxgcW-AM-CDenZ6BvPCg9
-    zlQ4TZCJOVtaZNgCLdbweoHYhCfqfMC5hHqD0aLFaBIweeaNQUjKTmY>
-X-ME-Received: <xmr:_VOuan099myfjV70XEVtLI9rCteLcp3wwc72aBYnA1KSo0aM_0JVaFlzyhM1LK5r-Kar73jmByYogctH37tNWYeVENTK3UI>
-X-ME-Proxy-Cause: dmFkZTEHzaPBOkzhEZKtlcJiHuaR/8A9YwcvLFmST50NgBICej+vTp5vMhNNvAsQoG90/2
-    Jm0kDSLPlHjTl32jVWjbcwmLDSqw4GyHFeDhV0053Ev7hF2r8HtYhx1OQFrcFYUvp22zhD
-    bwa3p77dJnCDUtHCllEbqhJvrcmU7/C1lASmVI5bvK/T4qtdpnBur25H1DkP7UkKXPQC/j
-    elUdagyi5wVvBIc8Nks2/9BjgcJJqa08jQYX7fGyZhY2tU8D8FNMzrqNvQRW4UOnqv29DO
-    Z3Z15oIGz+UspWal/6k8HrhYZj+XVKhxeKCuy8RhfhaOSuu8zlDB0q69H/9Oe3rv7hs/Wn
-    ZGWF+6lY0YfPnQu0pkLeDFn6uVWRwRv3tWt2cnBI8Mig3THTVbziWZT3hx0FavRU1Rblw2
-    5GJ1NCrct8YFcaHTUsLESEIG9dn4bGZyc3OuX6C4ucocsN5peK2laUn1i/p649xuZe4yDu
-    V9gsVPzHsvP7DCumtstJA6KfKFLICxe7Ru/+RiSUSIleLOGD4tyf6+IMKgLo2rk4eyaZo+
-    A7NyVb8ONLKLmtm+YaDKnf1kykpl1RplpJr0gIHd9q1fENpv+FWekqgFQI2/j8Oy2+G7o+
-    pftD3dpMRQhb9hVe3tAsXetfhuC7wxDXeMfAKz0fypwUl3oZ3oPUXI0wHjNg
-X-ME-Proxy: <xmx:_VOuah2y4LFz1PpadpumYBxfc98D0-tdHUeGo910UPdHnB2MAwoLcw>
-    <xmx:_VOuaqq125S6Unzcn9Y0ECrr5LgGIJIXBZEy27KqgbK5ukiGRB_g-w>
-    <xmx:_VOuai0UYZvkkFR3qjdiC9hpdOm_mE8nabOFF-wFotoZzh3c314HmA>
-    <xmx:_VOuaj0j1IjBEGZ5neb_ubNG80H_nWXeTS--3M-4wyMouLo54xV9WA>
-    <xmx:AFSuakOZvT35vQTN-w2q-qm0NMqiAOAQOnWSEbPNjOLlAV8dYkNEXA1S>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 19 Sep 2026 05:21:00 -0400 (EDT)
-Date: Sat, 19 Sep 2026 11:20:57 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,	Jacopo Mondi <jacopo@jmondi.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jimmy Su <jimmy.su@intel.com>,	Matthias Fend <matthias.fend@emfend.at>,
-	Mikhail Rudenko <mike.rudenko@gmail.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Sylvain Petinot <sylvain.petinot@foss.st.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Martin Kepplinger <martin.kepplinger@puri.sm>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Richard Acayan <mailingradian@gmail.com>,	Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,	Heiko Stuebner <heiko@sntech.de>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,	linux-rockchip@lists.infradead.org,
- linux-tegra@vger.kernel.org,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH v6 3/6] arm64: dts: renesas: Convert to new media
- orientation definitions
-Message-ID: <20260919092057.GA1099675@ragnatech.se>
-References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
- <20260918-kbingham-orientation-v6-3-5e8b1f01be29@ideasonboard.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="E54UYq9R"
+Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B9A561CF5;
+	Sat, 19 Sep 2026 13:22:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1789816977;
+	bh=Z8wkPmQUbHgQBu1B/ph7jlE+wdo/SOJNVn6V4NgjmD0=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=E54UYq9RUqmFHOocoYsZKlZvDH7Nbztbu9QniuXOze6Pmwl2qh/MSaUbG+hg9/O6C
+	 p+Amtq/VmdsBU/NaCNpo2P7WPLWQPqbBXoEy2sXATTTPe8CSggBRmLqFE7XV0Ov9/d
+	 YgcIvT2PQZrrwwjZHyjz/rFHxkBAp2oDAxg3kCvM=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260918-kbingham-orientation-v6-3-5e8b1f01be29@ideasonboard.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260918192447.GB1465432-robh@kernel.org>
+References: <20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com> <20260910-verdin-imx8mp-hmp-camera-ready-v1-3-3c9349ecdb9f@toradex.com> <aqLaLmz7n31P6igy@SMW015318> <prwghb3ftrz5xd3hapxtlv2o2gm5xmuapnpz2h7fqulf75phqz@lk4yiaepormb> <aqLif2zrrsbYd5sM@SMW015318> <aqLk5UAv-j39Jxd3@francesco-nb> <20260918192447.GB1465432-robh@kernel.org>
+Subject: Re: [PATCH 3/6] dt-bindings: connector: Add Toradex camera connector
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+To: Francesco Dolcini <francesco.dolcini@toradex.com>, Rob Herring <robh@kernel.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
+Cc: Frank Li <Frank.li@oss.nxp.com>, Ernest Van Hoecke <ernestvanhoecke@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+Date: Sat, 19 Sep 2026 12:24:38 +0100
+Message-ID: <178981707848.1761404.17065871878122418287@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 
-Hi Kieran,
+Hi all,
 
-Thanks for your work.
++Dave @ Rpi
 
-On 2026-09-18 11:44:15 +0100, Kieran Bingham wrote:
-> From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-> 
-> The orientation property for video interface devices now has definitions
-> to prevent hardcoded integer values for the enum options.
-> 
-> Update the users throughout the renesas device trees to use the new
-> definitions.
-> 
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Reviewed-by: David Heidelberg <david@ixit.cz>
-> Signed-off-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Quoting Rob Herring (2026-09-18 20:24:47)
+> On Thu, Sep 10, 2026 at 07:12:05PM +0200, Francesco Dolcini wrote:
+> > On Thu, Sep 10, 2026 at 12:01:51PM -0500, Frank Li wrote:
+> > > On Thu, Sep 10, 2026 at 06:39:30PM +0200, Ernest Van Hoecke wrote:
+> > > > Hi Frank,
+> > > >
+> > > > Thanks for reviewing this so quickly.
+> > > >
+> > > > On Thu, Sep 10, 2026 at 11:26:22AM -0500, Frank Li wrote:
+> > > > > On Thu, Sep 10, 2026 at 05:37:59PM +0200, Ernest Van Hoecke wrote:
+> > > > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > > >
+> > > > > > Toradex boards route the sideband signals of their 24-pin camera
+> > > > > > connectors to different GPIO controllers. Camera overlays which=
+ name
+> > > > > > those controllers directly must therefore be duplicated for eac=
+h host
+> > > > > > board.
+> > > > > >
+> > > > > > Describe reset, power-down, detection and power-control as
+> > > > > > connector-local GPIO functions. This lets an accessory overlay =
+remain
+> > > > > > independent of the host wiring. MIPI CSI-2, I2C, clocks and sup=
+plies
+> > > > > > remain described separately because the GPIO nexus does not abs=
+tract
+> > > > > > them.
+> > > > > >
+> > > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > > > ---
+> > > > > >  .../connector/toradex,camera-connector.yaml        | 86 ++++++=
+++++++++++++++++
+> > > > > >  1 file changed, 86 insertions(+)
+> > > > > >
+> > > > > > diff --git a/Documentation/devicetree/bindings/connector/torade=
+x,camera-connector.yaml b/Documentation/devicetree/bindings/connector/torad=
+ex,camera-connector.yaml
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..06e6836e1aa6
+> > > > > > --- /dev/null
+> > > > > > +++ b/Documentation/devicetree/bindings/connector/toradex,camer=
+a-connector.yaml
+> > > > > > @@ -0,0 +1,86 @@
+> > > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > > > +%YAML 1.2
+> > > > > > +---
+> > > > > > +$id: http://devicetree.org/schemas/connector/toradex,camera-co=
+nnector.yaml#
+> > > > > > +$schema: http://devicetree.org/meta-schemas/base.yaml#
+> > > > > > +
+> > > > > > +title: Toradex camera connector GPIO nexus
+> > > > > > +
+> > > > > > +maintainers:
+> > > > > > +  - Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > > > +  - Toradex Linux BSP Team <linux-bsp@toradex.com>
+> > > > > > +
+> > > > > > +description: |
+> > > > > > +  Toradex boards provide 24-pin camera connectors carrying MIP=
+I CSI-2, I2C,
+> > > > > > +  clock, power, and sideband GPIO signals. This binding descri=
+bes the sideband
+> > > > > > +  signals as a GPIO nexus. The other connector resources remai=
+n described by
+> > > > > > +  the surrounding board device tree.
+> > > > > > +
+> > > > > > +  The nexus exposes connector-local GPIO function numbers to c=
+amera overlays
+> > > > > > +  and maps the functions wired by a carrier board to their GPI=
+O controllers.
+> > > > > > +  GPIO specifiers contain a function number followed by standa=
+rd GPIO flags.
+> > > > > > +  A board may omit functions which it does not wire.
+> > > > > > +
+> > > > > > +  The function numbers are:
+> > > > > > +    - 0: Camera reset, connector pin 11
+> > > > > > +    - 1: Camera power-down, connector pin 22
+> > > > > > +    - 2: Camera identification, connector pin 23
+> > > > > > +    - 3: Camera power control, connector pin 24
+> > > > > > +
+> > > > > > +properties:
+> > > > > > +  compatible:
+> > > > > > +    const: toradex,camera-connector
+> > > > >
+> > > > > Name is too generally, suggest use board name, we got similar com=
+ments at
+> > > > >
+> > > > > https://lore.kernel.org/imx/20260629074734.3643227-2-chancel.liu@=
+oss.nxp.com/
+> > > >
+> > > > I saw that and it made me reconsider this name.
+> > > >
+> > > > However, I believe that in our case it is specific enough. It is re=
+ally
+> > > > the same on all our carrier boards, and Toradex specific. It's also=
+ only
+> > > > for cameras, which is more defined than just "io". Curious to see if
+> > > > others agree or if we should come up with a name for this.
+> > >=20
+> > > If some days later, you update hardware connector to 30pin from 24pin=
+s.
+> >=20
+> > That connector is there since years, not days.
+> >=20
+> > We have multiple cameras, designed to mate with it.
+> >=20
+> > If tomorrow we will define a new camera connector (that is absolutely
+> > possible), the new connector will get its name, maybe
+> > toradex,camera-connector-v2, or toradex,camera-connector-22pin or
+> > whatever that connector would be named, not just in the DT, but also as
+> > a product and on the actual HW.
+>=20
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Diving in because, cameras :D
 
-> ---
->  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso | 3 ++-
->  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso | 3 ++-
->  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso | 3 ++-
->  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso | 3 ++-
->  4 files changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso
-> index 3acaf714cf24..b816382bba0a 100644
-> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso
-> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso
-> @@ -12,6 +12,7 @@
->  
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/media/video-interfaces.h>
-> +#include <dt-bindings/media/video-interface-devices.h>
->  
->  &{/} {
->  	clk_cam_j1: clk-cam-j1 {
-> @@ -44,7 +45,7 @@ cam@10 {
->  		VDIG-supply = <&reg_cam_j1>;
->  		VDDL-supply = <&reg_cam_j1>;
->  
-> -		orientation = <2>;
-> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
->  		rotation = <0>;
->  
->  		port {
-> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso
-> index a19bc0840392..4019b80a88b7 100644
-> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso
-> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso
-> @@ -12,6 +12,7 @@
->  
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/media/video-interfaces.h>
-> +#include <dt-bindings/media/video-interface-devices.h>
->  
->  &{/} {
->  	clk_cam_j1: clk-cam-j1 {
-> @@ -46,7 +47,7 @@ cam@1a {
->  		vdda-supply = <&reg_cam_j1>;
->  		vddd-supply = <&reg_cam_j1>;
->  
-> -		orientation = <2>;
-> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
->  		rotation = <0>;
->  
->  		port {
-> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso
-> index 512810b861aa..fea1ef4a1178 100644
-> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso
-> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso
-> @@ -12,6 +12,7 @@
->  
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/media/video-interfaces.h>
-> +#include <dt-bindings/media/video-interface-devices.h>
->  
->  &{/} {
->  	clk_cam_j2: clk-cam-j2 {
-> @@ -44,7 +45,7 @@ cam@10 {
->  		VDIG-supply = <&reg_cam_j2>;
->  		VDDL-supply = <&reg_cam_j2>;
->  
-> -		orientation = <2>;
-> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
->  		rotation = <0>;
->  
->  		port {
-> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso
-> index a31524b59834..177201a8a6d2 100644
-> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso
-> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso
-> @@ -12,6 +12,7 @@
->  
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/media/video-interfaces.h>
-> +#include <dt-bindings/media/video-interface-devices.h>
->  
->  &{/} {
->  	clk_cam_j2: clk-cam-j2 {
-> @@ -46,7 +47,7 @@ cam@1a {
->  		vdda-supply = <&reg_cam_j2>;
->  		vddd-supply = <&reg_cam_j2>;
->  
-> -		orientation = <2>;
-> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
->  		rotation = <0>;
->  
->  		port {
-> 
-> -- 
-> 2.52.0
-> 
-> 
 
--- 
-Kind Regards,
-Niklas Söderlund
+> I for one hate 'v2' naming.
+>=20
+
+Me too. I wouldn't ever call it v2, but a future
+toradex,camera-connector-24pin might be appropriate.
+
+Note that I specifically said 24 as an example because there is already
+a 22 pin Raspberry Pi connector.
+
+If Toradex were to produce boards with a 22 pin connector, I would
+anticipate it to be the same pinout as the Raspberry Pi connector.
+
+Raspberry Pi camera connectors have already somewhat become a defacto
+standard (albeit for both positives and negatives there).
+
+So I would imagine if a 22 pin layout were ever made it would be
+compatible with RPi 22. And if Toradex ever make a 22 pin connector
+which is not RPi compatible ... well I might scream into the void ;-)
+but then it would have a toradex prefix I guess!
+
+
+Equally we have other vendors who have 30 pin connectors (There are
+quite a few, so I have myself a research project to go find out how
+{in,}compatible they all are here ...)
+
+So, I would imagine if we're giong to name connectors we should set out
+an expectation to start with
+
+  toradex,camera-connector-30pin
+  raspberrypi,camera-connector-15pin
+  raspberrypi,camera-connector-22pin
+
+And if Toradex were to make a *different* 22 pin connector then it would
+be:
+
+  toradex,camera-connector-22pin,
+
+But if it's RPi layout, then it would be defined as such.
+
+
+All that to say - I think Toradex certainly warrant a specific
+
+  toradex,camera-connector
+
+But I think specifiying the pin count already could be useful (but not
+essential).
+
+It's a bit like Raspberry Pi's original 15 pin connector. If we wound
+the clock back 15 years and tried this with RPi we'd have:
+
+  raspberrypi,camera-connector
+  raspberrypi,camera-connector-22pin
+
+I mean that's fine too - but if we're specifying the pin in one we may
+as well do it in all...
+
+
+> I agree the name seems a bit generic, but if you really can't come up=20
+> with something better, then fine. The next connector name just has to be =
+
+> something different.
+
+Indeed.
+
+I'm very happy that we have actual progress on how we might handle
+camera connectors though!
+
+I'm going to have to try to do the same proposal for RPi connectors
+aren't I ;-)
+
+If I post patches, I'll use the full form:
+
+=20
+  raspberrypi,camera-connector-15pin
+  raspberrypi,camera-connector-22pin
+
+
+I'm curious if anyone at RPi has any opinion, given it's 'their' standard.
+
+Dave? any thoughts here ?
+
+--
+Kieran
+
+
+>=20
+> Rob
