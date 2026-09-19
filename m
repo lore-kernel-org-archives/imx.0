@@ -1,252 +1,303 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB130397949
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 11:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7456A2EC083
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 12:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789817086; cv=none; b=AqCMOdIn3y7Mi9uyB++4lXfNP8pWlItTPtQx210NokvLx2TeJ6Anp2/pjWKJS6DqFkK5vSQosctWX7cEHwIIkLZMF6gXZrgWhYRMXRyv2r/FgV7fRfx3rHaZTUgW/ERAFDsjk7z8t6oz0v5Nb8LzKZlTurYIuR6LHF96Sv5c/3c=
+	t=1789819509; cv=none; b=LyIS3Th8J5Nel24l6hW9l/o3jn3tmEqFjr6P4Gp8KPz8fuSeYZouD8wAc/nlcwKv0mXni9dYqgZLK79aS0f4YZpGZCFVg0Jkxqsix1YEFGPtRTtrevBmn+u0EUgJnw8/0d4UFlFtruDpvf+HBdEYDKvQ+ie9BUmGAvkZ4I64BDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789817086; c=relaxed/simple;
-	bh=Z8wkPmQUbHgQBu1B/ph7jlE+wdo/SOJNVn6V4NgjmD0=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:To:
-	 Cc:Date:Message-ID; b=DwJo8ZaA7uvitTqQE6UzeTmSWeA4tmV6ydsoCKZqwJ4pbKrJ8bpD1T0PxbvRI6hetY/aibEuLEIAFzrG9mbfXsWKnOkYx9pq/8dM1B5yZOKK15wT0zqemCLB2dumYy/i/LRFpQj4h8IR/0+fHENn1NFmOE0rx8nZ5U9VW4Gcj8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=E54UYq9R; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1789819509; c=relaxed/simple;
+	bh=qT0uHq50xuDhbsDO5hHlQBOwDv2Zr0eCRbEkzMG7I3A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rxk3rLX8x8njHUjzAfCqwdQr0Icovbg83fCJvHgYgmVlN+FNGPdAofmt2CCA2qh8w89yIe7fSOq4XzQrLHM7rakxWQCN8JoGRTBMmmXRHUaIck/Wt+z4KUXF8LakFYpwDMvM5V6NsFJaX4R2AiHhXv5BkIIBveMw87fCYih0i3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i6MQZccq; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="E54UYq9R"
-Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B9A561CF5;
-	Sat, 19 Sep 2026 13:22:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1789816977;
-	bh=Z8wkPmQUbHgQBu1B/ph7jlE+wdo/SOJNVn6V4NgjmD0=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=E54UYq9RUqmFHOocoYsZKlZvDH7Nbztbu9QniuXOze6Pmwl2qh/MSaUbG+hg9/O6C
-	 p+Amtq/VmdsBU/NaCNpo2P7WPLWQPqbBXoEy2sXATTTPe8CSggBRmLqFE7XV0Ov9/d
-	 YgcIvT2PQZrrwwjZHyjz/rFHxkBAp2oDAxg3kCvM=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i6MQZccq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7F2831A09D0;
+	Sat, 19 Sep 2026 12:05:04 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DB431606CA;
+	Sat, 19 Sep 2026 12:05:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1195E1032802B;
+	Sat, 19 Sep 2026 14:04:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789819500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=SFMPcolUh4zpvmGrKEAW5fnqAUuQ8Gy43QODCsF/j7o=;
+	b=i6MQZccqtvleTOJOc2xjeW74ER3MJIHhkShL13MtzMohMMbitlY+MYOeRapQZv1FRiszrs
+	zsf1Pv/lOh5OT6jSrSMJ4+EokPhsjhR2nNW0DzbFOFsB7Cz6h7q8KceiPVEr8c/hVjzTQE
+	nqWaJ3jUnxndGN+Av5Y/zTKlPIozQ9H0inoQiaosndiodGrV9KAbI4uoJd7zMc8ncYo6Zk
+	P6PzdTlsRqie0aGyDM4ExXIMsVaonLvOTTS6NvT3XEezxcxgwTD/wUnrR/f5DLEmh6snZn
+	cRuCQZNwoa0sUcWwmZASNz92J0cRcRQihCO++rAu2wDZgfruuPhVucTt1phM4g==
+Message-ID: <7b0a957d-f770-4bad-b3b9-aeb7a61bfb49@bootlin.com>
+Date: Sat, 19 Sep 2026 14:04:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260918192447.GB1465432-robh@kernel.org>
-References: <20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com> <20260910-verdin-imx8mp-hmp-camera-ready-v1-3-3c9349ecdb9f@toradex.com> <aqLaLmz7n31P6igy@SMW015318> <prwghb3ftrz5xd3hapxtlv2o2gm5xmuapnpz2h7fqulf75phqz@lk4yiaepormb> <aqLif2zrrsbYd5sM@SMW015318> <aqLk5UAv-j39Jxd3@francesco-nb> <20260918192447.GB1465432-robh@kernel.org>
-Subject: Re: [PATCH 3/6] dt-bindings: connector: Add Toradex camera connector
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-To: Francesco Dolcini <francesco.dolcini@toradex.com>, Rob Herring <robh@kernel.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
-Cc: Frank Li <Frank.li@oss.nxp.com>, Ernest Van Hoecke <ernestvanhoecke@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-Date: Sat, 19 Sep 2026 12:24:38 +0100
-Message-ID: <178981707848.1761404.17065871878122418287@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 07/12] net: stmmac: dwmac-s32: Add SGMII support
+To: jan.petrous@oss.nxp.com,
+ Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+ NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Bogdan Hamciuc
+ <bogdan.hamciuc@nxp.com>, Ionut Vicovan <ionut.vicovan@nxp.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Clark Wang <xiaoning.wang@nxp.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ imx@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Vincent Guittot <vincent.guittot@linaro.org>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-7-9d68868c1e89@oss.nxp.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260919-s32g_serdes-v3-7-9d68868c1e89@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi all,
+Hi Jan,
 
-+Dave @ Rpi
+On 9/19/26 08:54, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> Wire the NXP S32G SerDes XPCS PCS into the dwmac-s32 glue layer so the
+> MAC can run SGMII over a SerDes lane.
+> 
+> Changes:
+> - s32_gmac_write_phy_intf_select: replace the hard-coded RGMII selector
+>   with a switch on phy_interface so SGMII (0x01), RGMII, RMII and MII
+>   all programme the SoC control register correctly.
+> - Add s32_gmac_pcs_init: obtain the phylink_pcs handle from the SerDes
+>   subsystem via s32g_serdes_pcs_create(), keyed by the standard
+>   pcs-handle property on the GMAC node pointing at the SerDes XPCS lane
+>   child. Propagates -EPROBE_DEFER if the SerDes driver has not probed
+>   yet. There is no matching exit hook: the device link created by
+>   s32g_serdes_pcs_create() covers the lifetime.
+> - Add s32_gmac_select_pcs: return the stored PCS handle when the
+>   negotiated interface is SGMII.
+> - Hook pcs_init and select_pcs into plat_stmmacenet_data.
+> 
+> Note that installing a select_pcs callback suppresses the core's
+> integrated_pcs fallback, because stmmac treats a NULL return from
+> select_pcs as "no PCS" rather than "fall through". This matches what
+> dwmac-rzn1 and dwmac-intel already do.
+> 
+> Both negotiation modes are supported by the PCS. The board device
+> trees added later in this series describe the MAC-side link as fixed,
+> so they exercise the out-of-band path.
+> 
+> The XPCS header guards its s32g_serdes_pcs_create() declaration with
+> IS_REACHABLE(CONFIG_PHY_S32G_SERDES) and provides a static-inline stub
+> returning -ENODEV otherwise. IS_REACHABLE is false both when the SerDes
+> driver is disabled and in the built-in-consumer / modular-provider case
+> (DWMAC_S32=y with PHY_S32G_SERDES=m), so this driver links in all four
+> combinations of the two symbols.
+> 
+> Linking is not sufficient on its own, though. In the DWMAC_S32=y with
+> PHY_S32G_SERDES=m case the stub makes s32_gmac_pcs_init() return
+> -ENODEV, and stmmac treats a failing plat->pcs_init() as fatal, so a
+> built-in MAC would refuse to probe on any device tree describing
+> pcs-handle. Add a Kconfig dependency forbidding that combination
+> rather than letting it build into a MAC that cannot probe.
+> 
+> Tested on an S32G3-VNP-RDB3 board: GMAC0 links at 1G over SGMII and
+> passes traffic, both in SerDes mode 1 (alongside two active PCIe root
+> complexes) and in mode 3.
+> 
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/Kconfig     |  6 ++
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 74 ++++++++++++++++++++++++-
+>  2 files changed, 78 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> index e3dd5adda5ac..1443ff4149b4 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> @@ -192,6 +192,12 @@ config DWMAC_S32
+>  	tristate "NXP S32G/S32R GMAC support"
+>  	default ARCH_S32
+>  	depends on OF && (ARCH_S32 || COMPILE_TEST)
+> +	# SGMII needs the PCS from the SerDes driver. The header falls back
+> +	# to a stub returning -ENODEV when that driver is not reachable, and
+> +	# stmmac makes a failing plat->pcs_init() fatal, so a built-in MAC
+> +	# with a modular SerDes would refuse to probe on any DT describing
+> +	# pcs-handle. Forbid that combination instead.
+> +	depends on PHY_S32G_SERDES || PHY_S32G_SERDES=n
 
-Quoting Rob Herring (2026-09-18 20:24:47)
-> On Thu, Sep 10, 2026 at 07:12:05PM +0200, Francesco Dolcini wrote:
-> > On Thu, Sep 10, 2026 at 12:01:51PM -0500, Frank Li wrote:
-> > > On Thu, Sep 10, 2026 at 06:39:30PM +0200, Ernest Van Hoecke wrote:
-> > > > Hi Frank,
-> > > >
-> > > > Thanks for reviewing this so quickly.
-> > > >
-> > > > On Thu, Sep 10, 2026 at 11:26:22AM -0500, Frank Li wrote:
-> > > > > On Thu, Sep 10, 2026 at 05:37:59PM +0200, Ernest Van Hoecke wrote:
-> > > > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > >
-> > > > > > Toradex boards route the sideband signals of their 24-pin camera
-> > > > > > connectors to different GPIO controllers. Camera overlays which=
- name
-> > > > > > those controllers directly must therefore be duplicated for eac=
-h host
-> > > > > > board.
-> > > > > >
-> > > > > > Describe reset, power-down, detection and power-control as
-> > > > > > connector-local GPIO functions. This lets an accessory overlay =
-remain
-> > > > > > independent of the host wiring. MIPI CSI-2, I2C, clocks and sup=
-plies
-> > > > > > remain described separately because the GPIO nexus does not abs=
-tract
-> > > > > > them.
-> > > > > >
-> > > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > > ---
-> > > > > >  .../connector/toradex,camera-connector.yaml        | 86 ++++++=
-++++++++++++++++
-> > > > > >  1 file changed, 86 insertions(+)
-> > > > > >
-> > > > > > diff --git a/Documentation/devicetree/bindings/connector/torade=
-x,camera-connector.yaml b/Documentation/devicetree/bindings/connector/torad=
-ex,camera-connector.yaml
-> > > > > > new file mode 100644
-> > > > > > index 000000000000..06e6836e1aa6
-> > > > > > --- /dev/null
-> > > > > > +++ b/Documentation/devicetree/bindings/connector/toradex,camer=
-a-connector.yaml
-> > > > > > @@ -0,0 +1,86 @@
-> > > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > > > +%YAML 1.2
-> > > > > > +---
-> > > > > > +$id: http://devicetree.org/schemas/connector/toradex,camera-co=
-nnector.yaml#
-> > > > > > +$schema: http://devicetree.org/meta-schemas/base.yaml#
-> > > > > > +
-> > > > > > +title: Toradex camera connector GPIO nexus
-> > > > > > +
-> > > > > > +maintainers:
-> > > > > > +  - Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > > +  - Toradex Linux BSP Team <linux-bsp@toradex.com>
-> > > > > > +
-> > > > > > +description: |
-> > > > > > +  Toradex boards provide 24-pin camera connectors carrying MIP=
-I CSI-2, I2C,
-> > > > > > +  clock, power, and sideband GPIO signals. This binding descri=
-bes the sideband
-> > > > > > +  signals as a GPIO nexus. The other connector resources remai=
-n described by
-> > > > > > +  the surrounding board device tree.
-> > > > > > +
-> > > > > > +  The nexus exposes connector-local GPIO function numbers to c=
-amera overlays
-> > > > > > +  and maps the functions wired by a carrier board to their GPI=
-O controllers.
-> > > > > > +  GPIO specifiers contain a function number followed by standa=
-rd GPIO flags.
-> > > > > > +  A board may omit functions which it does not wire.
-> > > > > > +
-> > > > > > +  The function numbers are:
-> > > > > > +    - 0: Camera reset, connector pin 11
-> > > > > > +    - 1: Camera power-down, connector pin 22
-> > > > > > +    - 2: Camera identification, connector pin 23
-> > > > > > +    - 3: Camera power control, connector pin 24
-> > > > > > +
-> > > > > > +properties:
-> > > > > > +  compatible:
-> > > > > > +    const: toradex,camera-connector
-> > > > >
-> > > > > Name is too generally, suggest use board name, we got similar com=
-ments at
-> > > > >
-> > > > > https://lore.kernel.org/imx/20260629074734.3643227-2-chancel.liu@=
-oss.nxp.com/
-> > > >
-> > > > I saw that and it made me reconsider this name.
-> > > >
-> > > > However, I believe that in our case it is specific enough. It is re=
-ally
-> > > > the same on all our carrier boards, and Toradex specific. It's also=
- only
-> > > > for cameras, which is more defined than just "io". Curious to see if
-> > > > others agree or if we should come up with a name for this.
-> > >=20
-> > > If some days later, you update hardware connector to 30pin from 24pin=
-s.
-> >=20
-> > That connector is there since years, not days.
-> >=20
-> > We have multiple cameras, designed to mate with it.
-> >=20
-> > If tomorrow we will define a new camera connector (that is absolutely
-> > possible), the new connector will get its name, maybe
-> > toradex,camera-connector-v2, or toradex,camera-connector-22pin or
-> > whatever that connector would be named, not just in the DT, but also as
-> > a product and on the actual HW.
->=20
+select PHY_S32G_SERDES ? This is what other glues that require PCS do,
+or there's a catch that prevents using it ?
 
-Diving in because, cameras :D
+>  	help
+>  	  Support for ethernet controller on NXP S32CC SOCs.
+>  
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> index 024d8e10e918..a3a56b21181a 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> @@ -16,12 +16,14 @@
+>  #include <linux/of_mdio.h>
+>  #include <linux/of_address.h>
+>  #include <linux/phy.h>
+> +#include <linux/phy/nxp-s32g-serdes.h>
+>  #include <linux/phylink.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/regmap.h>
+>  #include <linux/stmmac.h>
+>  
+>  #include "stmmac_platform.h"
+> +#include "stmmac.h"
+>  
+>  #define GMAC_INTF_RATE_125M	125000000	/* 125MHz */
+>  
+> @@ -40,23 +42,89 @@ struct s32_priv_data {
+>  	phy_interface_t *intf_mode;
+>  	struct clk *tx_clk;
+>  	struct clk *rx_clk;
+> +	/* SGMII PCS provided by the SerDes subsystem (NULL if not SGMII) */
+> +	struct phylink_pcs *pcs;
 
+There's already a phylink_pcs pointer in priv->hw, you shouldn't have to
+store your own here.
 
-> I for one hate 'v2' naming.
->=20
+>  };
+>  
+>  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+>  {
+> +	u32 intf_sel;
+>  	int ret = 0;
+>  
+> +	switch (*gmac->intf_mode) {
+> +	case PHY_INTERFACE_MODE_SGMII:
+> +		intf_sel = S32_PHY_INTF_SEL_SGMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RGMII:
+> +	case PHY_INTERFACE_MODE_RGMII_ID:
+> +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> +		intf_sel = S32_PHY_INTF_SEL_RGMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RMII:
+> +		intf_sel = S32_PHY_INTF_SEL_RMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_MII:
+> +		intf_sel = S32_PHY_INTF_SEL_MII;
+> +		break;
+> +	default:
+> +		dev_err(gmac->dev, "Unsupported phy interface mode: %s\n",
+> +			phy_modes(*gmac->intf_mode));
+> +		return -EINVAL;
+> +	}
 
-Me too. I wouldn't ever call it v2, but a future
-toradex,camera-connector-24pin might be appropriate.
+We go from supporting RGMII only to RGMII + RMII + MII + SGMII.
 
-Note that I specifically said 24 as an example because there is already
-a 22 pin Raspberry Pi connector.
+Are RMII and MII actually supported on that platform ? if so, can you split
+that into 2 commits : one for proper inft_sel support with RMII + MII added,
+the another one for SGMII ? 
 
-If Toradex were to produce boards with a 22 pin connector, I would
-anticipate it to be the same pinout as the Raspberry Pi connector.
+> +
+>  	if (gmac->ctrl_sts)
+> -		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> +		writel(intf_sel, gmac->ctrl_sts);
+>  	else
+>  		ret = regmap_write(gmac->sts_regmap, gmac->sts_offset,
+> -				   S32_PHY_INTF_SEL_RGMII);
+> +				   intf_sel);
+>  
+>  	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
+>  
+>  	return ret;
+>  }
+>  
+> +static int s32_gmac_pcs_init(struct stmmac_priv *priv)
+> +{
+> +	struct s32_priv_data *gmac = priv->plat->bsp_priv;
+> +	struct device_node *pcs_node;
+> +
+> +	/*
+> +	 * pcs-handle points at the SerDes XPCS lane child node; its
+> +	 * nxp,xpcs-instance property is what identifies the XPCS instance.
+> +	 */
+> +	pcs_node = of_parse_phandle(gmac->dev->of_node, "pcs-handle", 0);
+> +	if (!pcs_node) {
+> +		dev_dbg(gmac->dev, "no 'pcs-handle' property, SGMII PCS unavailable\n");
+> +		return 0;
+> +	}
+> +
+> +	gmac->pcs = s32g_serdes_pcs_create(gmac->dev, pcs_node);
+> +	of_node_put(pcs_node);
+> +
+> +	if (IS_ERR(gmac->pcs)) {
+> +		int err = PTR_ERR(gmac->pcs);
+> +
+> +		gmac->pcs = NULL;
+> +		/* SerDes may not be probed yet - defer probe. */
+> +		return err;
+> +	}
+> +
+> +	dev_dbg(gmac->dev, "SGMII PCS created via SerDes XPCS\n");
+> +	return 0;
+> +}
+> +
+> +static struct phylink_pcs *s32_gmac_select_pcs(struct stmmac_priv *priv,
+> +					       phy_interface_t interface)
+> +{
+> +	struct s32_priv_data *gmac = priv->plat->bsp_priv;
+> +
+> +	if (interface == PHY_INTERFACE_MODE_SGMII && gmac->pcs)
+> +		return gmac->pcs;
 
-Raspberry Pi camera connectors have already somewhat become a defacto
-standard (albeit for both positives and negatives there).
+No need for the && gmac->pcs here, if it's NULL we return NULL anyway so you
+can return priv->hw->phylink_pcs
 
-So I would imagine if a 22 pin layout were ever made it would be
-compatible with RPi 22. And if Toradex ever make a 22 pin connector
-which is not RPi compatible ... well I might scream into the void ;-)
-but then it would have a toradex prefix I guess!
+> +
+> +	return NULL;
+> +}
+> +
+>  static int s32_gmac_init(struct device *dev, void *priv)
+>  {
+>  	struct s32_priv_data *gmac = priv;
+> @@ -204,6 +272,8 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+>  
+>  	plat->init = s32_gmac_init;
+>  	plat->exit = s32_gmac_exit;
+> +	plat->pcs_init = s32_gmac_pcs_init;
+> +	plat->select_pcs = s32_gmac_select_pcs;
+>  
+>  	plat->clk_tx_i = gmac->tx_clk;
+>  	plat->set_clk_tx_rate = stmmac_set_clk_tx_rate;
+> 
 
+Thanks,
 
-Equally we have other vendors who have 30 pin connectors (There are
-quite a few, so I have myself a research project to go find out how
-{in,}compatible they all are here ...)
-
-So, I would imagine if we're giong to name connectors we should set out
-an expectation to start with
-
-  toradex,camera-connector-30pin
-  raspberrypi,camera-connector-15pin
-  raspberrypi,camera-connector-22pin
-
-And if Toradex were to make a *different* 22 pin connector then it would
-be:
-
-  toradex,camera-connector-22pin,
-
-But if it's RPi layout, then it would be defined as such.
-
-
-All that to say - I think Toradex certainly warrant a specific
-
-  toradex,camera-connector
-
-But I think specifiying the pin count already could be useful (but not
-essential).
-
-It's a bit like Raspberry Pi's original 15 pin connector. If we wound
-the clock back 15 years and tried this with RPi we'd have:
-
-  raspberrypi,camera-connector
-  raspberrypi,camera-connector-22pin
-
-I mean that's fine too - but if we're specifying the pin in one we may
-as well do it in all...
-
-
-> I agree the name seems a bit generic, but if you really can't come up=20
-> with something better, then fine. The next connector name just has to be =
-
-> something different.
-
-Indeed.
-
-I'm very happy that we have actual progress on how we might handle
-camera connectors though!
-
-I'm going to have to try to do the same proposal for RPi connectors
-aren't I ;-)
-
-If I post patches, I'll use the full form:
-
-=20
-  raspberrypi,camera-connector-15pin
-  raspberrypi,camera-connector-22pin
-
-
-I'm curious if anyone at RPi has any opinion, given it's 'their' standard.
-
-Dave? any thoughts here ?
-
---
-Kieran
-
-
->=20
-> Rob
+Maxime
