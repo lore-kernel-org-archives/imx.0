@@ -1,167 +1,137 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFDB382F1F
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 06:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CBC37268C
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 07:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789801031; cv=none; b=VfWgg4exgdp1x461Uv86ZbuCxMoxmkR5weiUoGj/HvgxV1iSFkHmGQM8f8c6SaHH3tsqe1K+ExhC4su9jnZHDm1IaotQOPcA841Sz1H/CiAbsQA+32kUio3Ofhm0o9AI9/h+/reWikkd3UflqIPo8iIpezDTvYSSkKEEBQL1Zgw=
+	t=1789802783; cv=none; b=RWf7PAqDNCdC+TSuCRQq4MDZ+A7vNnNe6pfhdqp01pLbgmydk9Xn3BGbeQS37matuBBf3ROPGH9qoEqdOPU5SLnZwbPR42eNNxXL21lDqqkrz+YMXGXNgptxmoFGhhgI3s7l9GE7xXThcoMFBzFAyh5bbmh/2jH7fzJna8+IFe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789801031; c=relaxed/simple;
-	bh=45MegNFsAtWYZexybcxxREXKZcERntxf2K3y+Plbqwg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fpJCCQbGJ4fOR6MBDPWo3hm6D9jJnjqanQjTaN86R71K9RRaGM1PkWrFKuw8+fLcmOWahXKplOmA3ol7AqR27RrF4RA6EqkkQ9oeuo5EhyD+HwnFoydjlKfU+MjVd50MtfMjAqM71MDssNXZ+7AaB5z46246PICCbPyv2pdxmg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=U/CB9llW; arc=none smtp.client-ip=188.68.63.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1789802783; c=relaxed/simple;
+	bh=vtgG66TNzf0ddHtc5zE8W/6a4AZcjJ/2njWo+n7RPyQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Bf4aqaa1POBuP2P4g4GAj8BGVc+Vv2Jg5h/NcgYTCBer9IhKLGyu+MSj4g92JyXvVQuVp5ujB/CEBKKuuuZKczd5gv78AaJSXPeqmHOZAGEq0YCbfW8G4wf8uodrVYsjINir/2erE1M6UvhJYBfAXy2YcfrcBw6Y16OaIBD6wOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQvRxrVi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="U/CB9llW"
-Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hn0fT5GN9z4Hxr;
-	Sat, 19 Sep 2026 08:57:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1789801025;
-	bh=45MegNFsAtWYZexybcxxREXKZcERntxf2K3y+Plbqwg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U/CB9llWNSX1S9/H1CeQaSFueCxQ7sLv0IYESdRM5+9dlWxE366shfod4dIM71S2x
-	 FWGB/buUtdsU18ZfaUlORZ8Sihx2tJuDp9hNTgbTCvwo8dJoyBDpZIoe36NRFX9hgs
-	 YhoUwtz2AjdhEuo387ng5Qn2YfFIQH5aMMGU9eOsr3sFY/GItlvuBSTBVvqATv6rlC
-	 iV9pZsGYpY6h63uL1svqQAPNA3efL+tQpbduO8G4G8oowwJTQ8Qme7I5EEM24iaAfC
-	 0V1+U/m5JRtRry1IBIFmNK3+iZ1H+eWrETQaLG7UuA4lN4waVfdqMJGA3roSClErkd
-	 VF/kj0rhM5lyw==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hn0fT4Xccz4HxW;
-	Sat, 19 Sep 2026 08:57:05 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.898
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4hn0fR751Sz8tg2;
-	Sat, 19 Sep 2026 08:57:03 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 24A405FA32;
-	Sat, 19 Sep 2026 08:57:03 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <344d9e26-769e-4551-9dba-f48ccbd6793b@leemhuis.info>
-Date: Sat, 19 Sep 2026 08:57:02 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQvRxrVi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09DE1F000FF;
+	Sat, 19 Sep 2026 07:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789802782;
+	bh=Gunvwuc1PgmqhhjySXxjr19alfnc7iMV2bja3z8gUiI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eQvRxrViFtPen+f2soYUS00XZZRgKeYxoYt8/Q/l4Jl1nK4IAnIpOPL1qAwdxN148
+	 gcn2kcnSosZs6KtjYJYnbYhGXr+iMitoiP7nhVBTVquxvxKV9f20o5+eroqdmgITCc
+	 fDNpiBKrm2YGJXSB8uPKI0cUYOuGeKxjHAjv90Hx4fImGQPz+sQ3yMGtkI+O853x/d
+	 vZn4rfEmg2jlEa2+ITUwF8rqIwA/wjlGrkUT78TxCEKHyYkEURiMXps9mBfjerGObu
+	 AO2nxb5qBhoSMNILqXawot/lnd7pw53syAMC6UAdvCxclDEY1TAJzSmSw77SGBXw86
+	 msCV65AJ6xqbA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 net-next 8/8] net: dsa: netc: add PTP one-step
+ timestamping support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: wei.fang@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260918072852.501420-9-wei.fang@oss.nxp.com>
+References: <20260918072852.501420-1-wei.fang@oss.nxp.com>
+ <20260918072852.501420-9-wei.fang@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 19 Sep 2026 07:26:21 +0000
+Message-Id: <20260919072621.D09DE1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
-To: Bjorn Helgaas <helgaas@kernel.org>, Soeren Moch <smoch@web.de>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org,
- Manivannan Sadhasivam <mani@kernel.org>, Lucas Stach
- <l.stach@pengutronix.de>, Bjorn Helgaas <bhelgaas@google.com>,
- Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260918230015.GA1205610@bhelgaas>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260918230015.GA1205610@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <178980102368.147768.7933732274283946620@mxe9fb.netcup.net>
-X-NC-CID: sWpGcjgseDQL8M6+YmxU2Mdbf5E3igADS7Oh7gQWPZPo/0Cxv9Y=
 
-On 9/19/26 01:00, Bjorn Helgaas wrote:
-> [+cc Thorsten, possible regzbot confusion?]
-> 
-> On Mon, Apr 27, 2026 at 01:58:04PM +0200, Soeren Moch wrote:
->> Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
->> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
->>
->> Even though the Root Port MSIs won't be received by the iMSI-RX controller
->> due to design, this chipset has some weird hardware bug that prevents
->> the endpoint MSIs from reaching when the Root Port MSI capability is
->> disabled.
->>
->> Hence, always keep the Root Port MSI capability for this chipset.
->>
->> Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
->> PME and others won't be received by default. So users need to use
->> workarounds such as passing 'pcie_pme=nomsi' cmdline param.
->>
->> Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug")
->> Cc: <stable@vger.kernel.org> # 7.0.x
->> Signed-off-by: Soeren Moch <smoch@web.de>
-> 
-> This thread is still listed as a regression:
-> https://linux-regtracking.leemhuis.info/regzbot/regression/lore/20260427115804.134231-1-smoch@web.de/
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] net: dsa: netc: skb_clone causes downstream buffer unsharing pen=
+alties and ownership violation
+--
 
-My fault, afaics; sorry.
+commit e1617e58a8399b2727842b7a8a9daba5929f414b
+Author: Wei Fang <wei.fang@nxp.com>
 
-> But I *think* it's been resolved by:
-> 
->   b4bee12ebecc ("PCI: imx6: Keep i.MX6 Root Port MSI/MSI-X Capabilities with iMSI-RX to work around hardware bug")> 
-> Can you confirm?
->
-> Maybe regzbot is confused by the fact that the regression was first
-> attributed to 3a4e8302e72f, and then later attributed to
-> f5cd8a929c825?
+net: dsa: netc: add PTP one-step timestamping support
 
-The main problem is something different: Sometimes one commit causes
-multiple issues that in rare cases might even be reported by the same
-person -- and regzbot needs to keep them and fixes for them apart. Which
-is why it is cautions and will only auto-close a tracked regressions
-when a Link:/Closes: tags points to what regzbot considers the report,
-as Linus demands those anyway. And b4bee12ebeccfc didn't to that. No
-problem, happens all the time, normally I notice these things and tell
-regzbot manually. And I kinda did when I noticed that a fix was in the
-works, but then the subject of the fix changed later -- and I missed that.
+This commit adds one-step Sync offload for NETC switch ports and advertises
+HWTSTAMP_TX_ONESTEP_SYNC. It uses a deferred work mechanism and queue to
+transmit one-step Sync frames, allowing hardware to compute the correction
+field.
 
-These things happen and in a ideal world regzbot should be little more
-gentle and likely auto-close tracked regressions when a Fixes: tag
-combined with a Reported-by: or Tested-by: matches. That is kinda on the
-todo list, but not near the top (wait for by LPC talk). Anyway, thx for
-mentioning it and let me update regzbot:
+> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_=
+ptp.c
+> index 2e743443ca030..1bc0f09562062 100644
+> --- a/drivers/net/dsa/netc/netc_ptp.c
+> +++ b/drivers/net/dsa/netc/netc_ptp.c
 
-#regzbot fix: b4bee12ebecc
+[ ... ]
 
-Ciao, Thorsten
->> ---
->> Cc: Manivannan Sadhasivam <mani@kernel.org>
->> Cc: Richard Zhu <hongxing.zhu@nxp.com>
->> Cc: Lucas Stach <l.stach@pengutronix.de>
->> Cc: Bjorn Helgaas <bhelgaas@google.com>
->> Cc: Frank Li <Frank.Li@nxp.com>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: linux-pci@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-kernel@vger.kernel.org
->>
->> Tested on a tbs2910 board [1]
->> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
->> ---
->>  drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
->> index 6d6a1688e7eb..3d461bdef967 100644
->> --- a/drivers/pci/controller/dwc/pci-imx6.c
->> +++ b/drivers/pci/controller/dwc/pci-imx6.c
->> @@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
->>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
->>  			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
->>  			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
->> -			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
->> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
->> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
->>  		.dbi_length = 0x200,
->>  		.gpr = "fsl,imx6q-iomuxc-gpr",
->>  		.ltssm_off = IOMUXC_GPR12,
->> -- 
->> 2.43.0
->>
+> @@ -68,12 +77,276 @@ static int netc_get_ts_req_id(struct netc_port *np)
 
+[ ... ]
+
+> +static void netc_port_program_onestep(struct netc_port *np,
+> +				      struct sk_buff *skb)
+> +{
+
+[ ... ]
+
+> +		old_sec_h =3D __get_unaligned_t(__be16, hdr + tstamp_offset);
+> +		old_sec_l =3D __get_unaligned_t(__be32, hdr + tstamp_offset + 2);
+> +		old_ns =3D __get_unaligned_t(__be32, hdr + tstamp_offset + 6);
+> +		inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
+> +					 new_sec_h, false);
+
+[Severity: Medium]
+Does modifying the payload of a cloned SKB here violate the networking core=
+ SKB
+buffer ownership guidelines?
+
+The original SKB was cloned earlier in netc_port_onestep_work(), making its
+data buffer shared (skb_cloned(skb) evaluates to true). Bypassing standard
+buffer ownership rules and directly modifying the shared payload triggers an
+expensive reallocation and copy (pskb_expand_head) in downstream conduit dr=
+ivers
+that check skb_cloned() before padding or modifying the frame, which could
+severely degrade one-step PTP performance.
+
+[ ... ]
+
+> +static void netc_port_onestep_work(struct work_struct *work)
+> +{
+> +	struct netc_port *np =3D container_of(work, struct netc_port,
+> +					    onestep_work);
+
+[ ... ]
+
+> +skb_dequeue:
+> +	skb =3D __skb_dequeue(&np->onestep_queue);
+> +	if (!skb)
+> +		goto set_onestep_state_idle;
+> +
+> +	/* Clone is a ts_req_id token only; its payload is never read, so
+> +	 * sharing the buffer with the mutated original is fine.
+> +	 */
+> +	clone =3D skb_clone(skb, GFP_ATOMIC);
+
+[Severity: Medium]
+Could this clone operation lead to the downstream buffer unsharing penalties
+described above?
+
+Since the clone is only used as a timeout token and its payload is never re=
+ad,
+would allocating a dummy lightweight SKB via alloc_skb(0, GFP_ATOMIC)
+exclusively to hold the token avoid these performance penalties and
+architectural ownership violations?
+
+> +	if (unlikely(!clone)) {
+> +		kfree_skb(skb);
+> +		goto skb_dequeue;
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918072852.5014=
+20-1-wei.fang@oss.nxp.com?part=3D8
