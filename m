@@ -1,86 +1,87 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E61E3644C5
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 15:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E38368D70
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 15:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789830128; cv=none; b=YSMphF066jJFbPIAgsUz0qqoX6OkGcIx1WQF9CxEqjEgfMIaVdPh6weqOPWHnHTP5eOtdHIhGWqfZvYU/QD6ihgLPMzWjCrnc/Pfgw1Pzxslkx8jN4luTiPvJo7GFx8Wi4FoPlHFZxYK6kn/q78wddEDsfGTQdyNQWb7bhNc6pI=
+	t=1789830132; cv=none; b=sZDI52dghHWbmdQ95V8HnK3MvLdj3iOjiB1poBnGekapoJiJOD8YT8+Pv+MuZh5Bwcwstd5lg9SRozt02CNuwd3vsAtPWRK0yK0AiPJr4YVzaEmDpmgDQRG+um75pLB+k4jEp66LSsMpeEPn98oN/okKzOTFQBWnpbMpavqM7Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789830128; c=relaxed/simple;
-	bh=FwgAkT7vXYpMEUDhLztQnsJ8fy9xLWh5iCZsQn17vBk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=By6MZb5/VMfEiKwsvrTvTs1C0/EmU/enygafxzlJq8wKU7CnMNOQhGGlcNg17iYcI5l5rLr/Y7FfUXjE4LFpvVDEjUigFlia5zrvjbhpWI97GpRPrQDZduh+jVjFHbVWtrMyEr73iS2K2GLRkGO6d3ZMbazzWqdQnDTMJhsZEwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=J0aFroRq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GDJqKW+l; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1789830132; c=relaxed/simple;
+	bh=Iq5wCYI4y0W4CO8EIKI1BJMBBMwBjbLDSVf3wHXjWNQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WkQM9Nh9X8kqPJpE6GN+PQw8KjhdH9K+yHsWIZUNNZsnapulqtpct8lWD45O3k9fhq8xfbpiFhB6muHd3v2lhkefKQfAGo3OEQbkCREiGLeTw0o2vOfkjnLD8WpPKj2fiIMCHEGRkCpbH4XwfgGlG8lprQQ0sXIjWSc/4htdYUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=f7ZY0YhU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kgcmoKKk; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="J0aFroRq";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GDJqKW+l"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68JDJNPc738170
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 15:02:04 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="f7ZY0YhU";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kgcmoKKk"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68JDJvu33674439
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 15:02:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=/JPecf7NdB7Oi+h+e8Dqtg
-	FkYD6pxOWeXw7A/ixHGwY=; b=J0aFroRqEzc2UShDfGRB0yl9dUn6bPGokZ3Wq8
-	J4mHn/OcfHlnmeTUKYYzJsbI0mX2ewbe8xAu4tLe0DAEy49VCTjKFaHxeyt/saVk
-	zrEwd1xn0vjTvp1mowyjjH3SeVKLs+ZN6seYsYyyGUbaySTNexu6HRTxQrxGTL2h
-	Z0DUMZeFbnyo62nByFulKrG/mwLTYe80gR5zH/0N8A0SdK+REXWPGj9tfbTwSgQh
-	QZy6J1eQcZPoPjQjtGiJJjDGsCoVHC4Tn8gyCLfMPL6lDTW2rTTvyVqN9iyhURIa
-	FI8wzHMHJWsBCBM4f5CQsxOBbuPYJLPqasSHz/c7tadJw2sg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gsg3f1ek2-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	1hfwXULKbsk4d4JT441CnqKGFUUFVn3mbcsujz6vsww=; b=f7ZY0YhUSOf0HpjX
+	ctTCgwiYIP7vPW0r+GlufaGoFYZ+HV/3MvVfAGAdURU77H52IW909HGdolkoRK3q
+	K1uXFKJA89mO6aghfcXYO4FkgWwjGTn8ISPsBIOZqrzdgASwLHKECgr/Uh7w1iCv
+	d0sUMJWZGpwXPlwaiSoSn6sHKcoKovL8Vr2UeXApyJfryd70gFW4E2tohizGuNd1
+	wtAOmPl7tRCSJVvrOBSGy5BlOJ7RXsXPk8tcqbqifVts6/p+tNhjeswj+3U3JYAr
+	MTB55XZE0FNwyjj4Iw2e1UqZQH1/Nmun2WUm44HYuQIdcCThNZ3y6DGWcWEYnbDY
+	CijVJw==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gshqfs6uy-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 15:02:04 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39e18af9f48so2613470a91.1
-        for <imx@lists.linux.dev>; Sat, 19 Sep 2026 08:02:04 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 15:02:09 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-398d0010cfaso2909848a91.3
+        for <imx@lists.linux.dev>; Sat, 19 Sep 2026 08:02:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789830124; x=1790434924; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=/JPecf7NdB7Oi+h+e8DqtgFkYD6pxOWeXw7A/ixHGwY=;
-        b=GDJqKW+l8RLgSAW3bzASAL1eyMESTLTxBLdMbF2bPQYUhB/iKb4s70jLdqdh+VIHAg
-         X9hYpERauNKLKKOVsLC6ap7Ysli8Gp5XUGIa9mdW9y280oNqUr93kJJ7dO/RCy9FMMzu
-         2LFYxNsp/ijt8WWZVM3Kxan92dnC2DpaTSh+Jk2s+wbQ776J6pm75rpY14tSr7NKbE/m
-         BJ8i2sZRCuqq/j/76107DQj7aoRcbL5Z087o6oyOnOa0kxAS0G62nttLhr+uwQoW6fnv
-         PMEQy3OIN1arFmGl7JHUYuWCx8oSHxgMuW5F5u/XCoBoD9nPe728J/mcp7Vfp85kYz7t
-         Wv9w==
+        d=oss.qualcomm.com; s=google; t=1789830129; x=1790434929; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1hfwXULKbsk4d4JT441CnqKGFUUFVn3mbcsujz6vsww=;
+        b=kgcmoKKk2O5+8G7JikthtfW48qeagXxjPEM8fz89J7tdAjtiS/WtqIlyXBEiRVpDwZ
+         exrS1t4d8g/GZcBoqp9OAggX+G6zSj55bK3ZrKTZl0c3tGE1oBQyNE8xhe3kHMVaW77p
+         xw9lRuHLj3mls6k0KXaiabC/HZB/cBMtI6uLMkpjgLDAlV3EOANj7392vm4PVC993cDI
+         GaxRlqJElctVIwFgf4dvhjNd3c47oBZnmCR8xH8qfJw9fLxLQxU/57k+FuG/ht42LOiq
+         QYgIfDGWfnnonWxFhJIie9NV/USEjcHS2ClLkdVR2inuyNnqOr9ugRiJbdCtOf3wgBDH
+         np4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789830124; x=1790434924;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/JPecf7NdB7Oi+h+e8DqtgFkYD6pxOWeXw7A/ixHGwY=;
-        b=Hus0BNKDB3vlH1q9a7XLPr3h5kdBm/VB9rmaPY7dca8fYUuopQtJBi3yipfRTCJtSD
-         gisf61cU1hUkeMCIRlGtVxEJ3dZph2Rm+SMEhdv4WzBgMns1CgOzoKh546YTSaEuPPh2
-         EFOItVPAs9YPYpw3vzGJO+HV2QXiAlljF5ZQjTf/odmpdZMMzZ9q0ZapQCWugsQ66UFQ
-         wiVdgrsqDX2Ud2mVydmUh6UeJHcQZ/F5Rlg2VIF2xhhbr+ZHduwN0DkR4VY0S9Y8APbF
-         219dY6/PVGOf7wrCi7c7fb/RNVFwCn2lhDUiTliy+0URq2ePnQEt0ynYCOGwseU86Y+3
-         YYag==
-X-Forwarded-Encrypted: i=1; AKwUvBwnNyyDRDAYeWSqAQp4s+5G4y8ciE12xHB/MmZbqeKXv09QssinW1MROCAKvh52vDfqTE0=@lists.linux.dev
-X-Gm-Message-State: AFuF++nonhmmCWLjP26GGJzjjskMe/3cAs5enyldRNYvtjTmZxhr1wJd
-	DL0xVQVpy7PeZNNN2iveKjKO/EsDegxUDQa74USMlvr55PIM2ld6ImEUo1REOmO27zDXks9H5xD
-	ExI0c4IV/2lMJfW45HqWwAoy9pKCk/LAsk4/Sp3aEr55A1ezqBUo6nH0=
-X-Gm-Gg: AYBFou3AEfVLfLJ1PkuitMKJIC3oo5uT9YD0yFUlPV1WtbnEpu7IYginNxbbKwrxNKg
-	Cy2zl3xzyvGqHNkOytTTw4N1CG9nSsHeI2yMIJbZWTm2OCXP4mEREaDSd+md8jjRGpZdLkpvS+R
-	RKjizNx9r9Nq8qW01COVXBEzkD2N5Tz0Mb8gG7kEx8WKiGjYIMwfmhxfm96XaNHfROPHwCkfdgI
-	mH9HMWLwKttf10OnHnkTO+FM0qXPSIF1oPUJYpPPnqX4dQgDGq7YvOIF/383CzM2tusGt6zI6ei
-	jK6TQktr2pMLFvSqT9U4EBIBXgrMsNzSfEsWCcURodBEEzdpI3LLyRsiaT/EAb/zjMh3cAWXyIB
-	c/l1qhvkGUeDw
-X-Received: by 2002:a17:90a:a82:b0:39e:6c66:cbdd with SMTP id 98e67ed59e1d1-39e6c66d00bmr2140341a91.21.1789830123696;
-        Sat, 19 Sep 2026 08:02:03 -0700 (PDT)
-X-Received: by 2002:a17:90a:a82:b0:39e:6c66:cbdd with SMTP id 98e67ed59e1d1-39e6c66d00bmr2140317a91.21.1789830123079;
-        Sat, 19 Sep 2026 08:02:03 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789830129; x=1790434929;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1hfwXULKbsk4d4JT441CnqKGFUUFVn3mbcsujz6vsww=;
+        b=wfRc8bNJZkE6gRUcfLIcUHueUgfI9FUhbmYUETt3dXLGguMIi0va8HAd33KR7UChnN
+         iFWeCdhm7B2SMdHqIhZPWSIILxbsdDxEPrWBTSV6ykl9pkhyDXWv3gzWUcSPlJJWLnQ6
+         6UCv3kOxuxhhnbR8lMdzkpIO1nIfiEZ2nhoPQz8fqCLYn1WqovC8XWHkIY3O9kN3iHUH
+         mCN5uUO6mCrVh+RN1KjVzF0+m/yf1tjyNf7hebG2FE+qzXOOasMYeFQw0v694+77Kiaj
+         kCvJ/2BLkOWyRBYaFl1oqLwImU0kIROsCRgYxMqOVaVd8oyQQ2qF/8PCwnIJKZOQRz/C
+         TqYw==
+X-Forwarded-Encrypted: i=1; AKwUvByp/4wVQhlChGY2HqVUfC7HG9a+nwY6fKboe50JMmUF9ZQKCOVgb9HwDKEwaBoxc2XXoAY=@lists.linux.dev
+X-Gm-Message-State: AFuF++kfBOyvhgBN2P9I1ilOdbosYtLyfqcfKU39Lmavg6bjsU89HuzI
+	ucgWhuUBr8UE/zgMoCmYvOcam3S6KbosMUQPLXKjVKlA00bcgYO1IDUJB+TdGToZxSShW1ipnAK
+	ITNPg8EEJO67kGGwTf9I957s9IovKOWQbFcyPY/cBRsMC/5RWpiHJnIo=
+X-Gm-Gg: AYBFou0KVDCMY/b2JrJegbRuNCXb+lm2xkcjsBC2KPRUerpq/MyeB8ZSAv+zErh5xAf
+	lDD16FPWqPDEM/imJYVde79gzRhs/0499rLo7uaeMxiyjJv6bUixv4cSlfY8UPAQ/NufNK2kM0R
+	2rDSdLUezbr5pGErUbiVQVAmPaH8hCIRz+VxRHuGPs72vvcWFDfj1Wz8nE9/SeM3B/Y3cxrF55W
+	CIPURiJ4xGbVeJmE+VovrIci8vXdE4ITiXc3UveEUhHBiGX+AZFGnRTkoezjlBCk7H6YNDlBK+c
+	DBjBwo3ngvAEC1Q4/Uigrff2HDrSwTsHIMmuctNBnofQP3F7QFTH0MP6a0JhhNydhYKc66B1dMF
+	ObVwFcI9uWqVX
+X-Received: by 2002:a17:90b:380b:b0:39e:4fec:d6e5 with SMTP id 98e67ed59e1d1-39e550707e6mr12911315a91.16.1789830128705;
+        Sat, 19 Sep 2026 08:02:08 -0700 (PDT)
+X-Received: by 2002:a17:90b:380b:b0:39e:4fec:d6e5 with SMTP id 98e67ed59e1d1-39e550707e6mr12911270a91.16.1789830127971;
+        Sat, 19 Sep 2026 08:02:07 -0700 (PDT)
 Received: from [192.168.19.100] ([155.117.96.35])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cb400c3sm5045206a91.17.2026.09.19.08.01.58
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cb400c3sm5045206a91.17.2026.09.19.08.02.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 08:02:02 -0700 (PDT)
+        Sat, 19 Sep 2026 08:02:07 -0700 (PDT)
 From: Ze Huang <ze.huang@oss.qualcomm.com>
-Subject: [PATCH v4 0/2] drm/imx: replace simple display pipe with atomic
- helpers
-Date: Sat, 19 Sep 2026 22:59:34 +0800
-Message-Id: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
+Date: Sat, 19 Sep 2026 22:59:35 +0800
+Subject: [PATCH v4 1/2] drm/imx/lcdc: avoid duplicate clk_per enable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,11 +89,10 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NQQ6CMBBFr9LM2jFQqghXMSxoGXTUAnaAkBDub
- hWXL3n//RWEApNAqVYINLNw30UwBwXuXnc3Qm4ig070OSnSAq1B9gsK++FF+PSCs8GszZtMU5q
- fzAXidAjU8vLLXqudZbIPcuO39TcCvaf4N+4a2FoIXe89j6Wa82OGwWmotu0DuCn45KQAAAA=
-X-Change-ID: 20260919-b4-imx-simple-kms-v4-3f7d32e17548
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260919-b4-imx-simple-kms-v4-v4-1-53b1fdf4589e@oss.qualcomm.com>
+References: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
+In-Reply-To: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
         Thomas Zimmermann <tzimmermann@suse.de>,
@@ -107,131 +107,77 @@ Cc: Ze Huang <ze.huang@oss.qualcomm.com>, dri-devel@lists.freedesktop.org,
         imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789830097; l=3680;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789830097; l=1626;
  i=ze.huang@oss.qualcomm.com; s=20260704; h=from:subject:message-id;
- bh=FwgAkT7vXYpMEUDhLztQnsJ8fy9xLWh5iCZsQn17vBk=;
- b=ez3NB94NNPCCw9UcFT/TzMXQw7u69SqVzKn52XcrA93gdpD8t7O/9tyNAg+8L/AzlGwMYCKov
- Vh64qoEZhKIAEzD6EmmOWhjd6MlCzLdXEaeEgPumzGP8e9PFho612je
+ bh=Iq5wCYI4y0W4CO8EIKI1BJMBBMwBjbLDSVf3wHXjWNQ=;
+ b=tmqa4fZQfIDCN/GOTkNIfTyEWA8UTbv055ypJ64BGtdU8/5Urz4AvTiLV2g1hJeags1QTwq3Q
+ 58mlELqcocmBR6MCKokP5AWbZEcfz6PmdURks+gKVIxWlxkwIohtakU
 X-Developer-Key: i=ze.huang@oss.qualcomm.com; a=ed25519;
  pk=pSsISLZF2ubEjJRmslsa6Ps4W3yAuPY7yaircQTlQQU=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDIxOCBTYWx0ZWRfX+rYzShRTFLgs
- 634SMOwe4PMzcS0DGZ/Oy51kXD7xIElnVgjdg+LBUndVeZw1r/EEy34wrBiNv60+W1+Sp3uK01K
- C2ENLcK1IqqwkQ4cSi9VYHuUSlq2GoI=
-X-Proofpoint-ORIG-GUID: herxl12b8ujAjWbExMI1fW_sxCjIRNQq
-X-Proofpoint-GUID: herxl12b8ujAjWbExMI1fW_sxCjIRNQq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDIxOCBTYWx0ZWRfX8jsgtEDW4gd8
- TCMGWIgWvs5dnCsIdkauqvnyXwpanu97E+B/AtIFogDHM0yCJ/hYOnzSMVckeHolkdMhDXSk1cp
- UMdCjyJ9mhCbN6zGflWsMUTu6VoXwId/wC0JYozW0z/RDViTFQLMUHm3MxbqggDmDPHp9T44Oy/
- qpeWyEohRJZIJfTJXvfPxkkHKhWh6d+4Xq7FBevkvtQgZ2pZWCqh4flFb7MrrKLRacEjU2gmUNY
- ZF+RsIDfYcPUI97l3yKFlZfpZsNMhr7AfwPrZpX/CHe3feAEY4AjX4GUi3VQqMSswzZdvYmgQQB
- bhbpW7rQi2Dd9aQRzmYZ6VanZcMlRMOcFCD7DOim3sWadgLl++YRA18vXV/OUpBQRhQenhwsp4f
- tSBXcR2RIpoQu8j2u8TrU761M7/f322ZJh20jG6lMPSAnlkrVc6xXxcTUttl9HPAQjriL5bLoVE
- xrKZssn2Ci9RY3YqiXg==
-X-Authority-Analysis: v=2.4 cv=N6S8hG9B c=1 sm=1 tr=0 ts=6aaea3ec cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=Ilsi1XWDFcrB9FjxRIUvHg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDIxOCBTYWx0ZWRfX7VPGtgF3NIjf
+ MRrC/J/0rg4+4804cPOPyQmSeCne6KmBaT1oNbGGjB4TZmFlO4Klqxe9V3jrix4FjYv09qzwC7c
+ BqbOVjhLMkZ72tc6qqptXfNkIWDrpsZ6euZCd7WONhcGEt+KcJizbmGURjBJi8XSVgdqVATRYdC
+ KsW7qvNu9lHM+IM/iyi4vIZzBlmNZCCWYwQdUiNqt3STUGqLFR8NSUfgU+DZw5yLK38mF2Jyay2
+ 4lO/aMWA/0P7l7vnxavRLiT0nEM/ByV9FZx+NZhNBSlz6beloZ64jnQ32Kf1dB0Ag6ek0fDiyfg
+ cqkbq7UwbiJb/GTh/tu/MeVexIXVnaNAXXltu3FioLq6KftPouzevOwCFbaCU9nzGY7vyzAq/ay
+ hjECsPIgsjg2Sd215YZSOevDuyh3qYye0pD2/s5V6SkL+q8kycVu560s7lbv/wt7E9plc4uabPQ
+ fiJfcjmGFIQk7AxZ35g==
+X-Proofpoint-GUID: 2eHr0iq5iDwYcdikenNwl1zWAiSfIzeY
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDIxOCBTYWx0ZWRfXyfz849cegkF2
+ UB1ir4z/chr9c0/ndkjhNEYtk8zeHAWspsm8kma63JOymYQfvmdMdAtbqB9/jAwKmZzlXHTZXPD
+ Uvwu+bchtYWCDf11/a6ulbQ52fkvTPM=
+X-Proofpoint-ORIG-GUID: 2eHr0iq5iDwYcdikenNwl1zWAiSfIzeY
+X-Authority-Analysis: v=2.4 cv=XegcX455 c=1 sm=1 tr=0 ts=6aaea3f1 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=Ilsi1XWDFcrB9FjxRIUvHg==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=bC-a23v3AAAA:8 a=QyXUC8HyAAAA:8
- a=pGLkceISAAAA:8 a=8AirrxEcAAAA:8 a=e5mUnYsNAAAA:8 a=JfrnYn6hAAAA:8
- a=xr7AMzENiZYFrh3GPJEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=mQ_c8vxmzFEMiUWkPHU9:22 a=FO4_E8m0qiDe52t0p3_H:22 a=ST-jHhOKWsTCqRlWije3:22
- a=Vxmtnl_E_bksehYqCbjh:22 a=1CNFftbPRP8L7MoqJWF3:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=EUspDBNiAAAA:8 a=xnl2VaEmiNnR3tlLptkA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-19_04,2026-09-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 adultscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609190218
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190218
 
-struct drm_simple_display_pipe was meant to simplify simple DRM
-drivers, but instead adds an extra wrapper around normal DRM atomic
-helper setup. As noted in Documentation/gpu/todo.rst, remaining users
-should be converted to regular atomic helpers and stop depending on the
-simple-KMS interfaces.
+The simple-KMS helper calls the pipe update after enabling the CRTC.
+On an enable commit, imx_lcdc_pipe_enable() already programs the
+mode and enables clk_per. The following pipe update sees the plane move
+from no CRTC to the active CRTC, treats it as a mode update, and calls
+imx_lcdc_update_hw_registers() again.
 
-The series replaces drm_simple_display_pipe_init() with explicit
-primary plane, CRTC and encoder setup, and moves the old simple-pipe
-callbacks into regular plane and CRTC helper callbacks named according
-to local driver conventions.
+That second call has no old CRTC state to disable clk_per first, but it
+enables clk_per again at the end. The disable path only drops one
+reference, leaving clk_per enabled after each on/off cycle.
 
-The conversion preserves helper behavior that used to be implicit in
-drm_simple_kms_helper.c, including plane-state validation, CRTC
-primary-plane checks, affected-plane propagation, framebuffer prepare
-handling, and existing event/vblank flow where applicable.
+Skip the register update from the pipe update path when the CRTC already
+needs a modeset. The enable path has already programmed the hardware for
+that commit; keep the event handling in pipe update unchanged.
 
-Result is less helper indirection and more explicit driver-side atomic
-wiring, with no remaining simple-KMS dependency in this driver.
-
-Changes are build-tested only. No hardware testing has been performed.
-
-The patches are based on v7.3-rc2.
-
-AI usage disclosure:
-- AI tools were also used to review the code and suggest code changes for
-  the DRM atomic conversion.
-
-Thanks,
-Ze Huang
-
+Fixes: c87e859cdeb5 ("drm/imx/lcdc: Implement DRM driver for imx25")
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
 Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
 ---
-Changes in v4:
-- Use drm_crtc_vblank_atomic_flush() instead of the driver's own flush
-  callback.
-- Replace the reset callbacks with the atomic_create_state helpers and use
-  drm_mode_config_create_initial_state() in probe.
-- Link to v3: https://lore.kernel.org/all/20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com/
+ drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Changes in v3:
-- Add a new preparatory patch to avoid duplicate clk_per enables in
-  imx-lcdc pipe update after CRTC enable.
-- Use commit-local atomic state in enable/update/check paths.
-- Link to v2: https://patch.msgid.link/20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com/
+diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+index c67fe80b8115..e00e52c1c46e 100644
+--- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
++++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+@@ -310,7 +310,8 @@ static void imx_lcdc_pipe_update(struct drm_simple_display_pipe *pipe,
+ 	else if (old_crtc != crtc)
+ 		mode_changed = true;
+ 
+-	imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
++	if (!drm_atomic_crtc_needs_modeset(crtc->state))
++		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+ 
+ 	if (event) {
+ 		crtc->state->event = NULL;
 
-Changes in v2:
-- use 'commit' as name of struct drm_atomic_commit in atomic helpers
-- improve control flow in *_crtc_helper_atomic_check() and
-  *_plane_helper_atomic_check()
-- Moved page-flip/vblank event handling out of plane update paths and into
-  CRTC atomic_flush(), using atomic_flush and disable paths
-- decide clock disable by old crtc state
-- add calls to drm_crtc_vblank_on() and drm_crtc_vblank_off() in crtc
-  atomic_enable() and atomic_disbale()
-- test crtc_state->enable before mode size check
-- Link to v1: https://patch.msgid.link/20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com
-
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: Maxime Ripard <mripard@kernel.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-To: David Airlie <airlied@gmail.com>
-To: Simona Vetter <simona@ffwll.ch>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-To: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-To: Marian Cichy <m.cichy@pengutronix.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-
----
-Ze Huang (2):
-      drm/imx/lcdc: avoid duplicate clk_per enable
-      drm/imx: replace struct drm_simple_display_pipe with regular atomic helpers
-
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 249 +++++++++++++++++++++++++-----------
- 1 file changed, 175 insertions(+), 74 deletions(-)
----
-base-commit: 5e036ce12de91c6fd674dad33b169c6150be2a7a
-change-id: 20260919-b4-imx-simple-kms-v4-3f7d32e17548
-
-Best regards,
---  
-Ze Huang <ze.huang@oss.qualcomm.com>
+-- 
+2.55.0
 
