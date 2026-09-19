@@ -1,132 +1,244 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.2])
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DA07083C;
-	Sat, 19 Sep 2026 07:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789803251; cv=pass; b=nP5MJZ800sGQ94/gaPHr8auDTd+TWP8L9WFPM85WE2a7YZmXqxESQwf8l2RFT/mmfmiai4T11KDkpAluktJbGC0nSgc1rk6DbjynO4793GqIBlclDPFmotedLcLApK1DjQpxfu4HPnMul7sgE/EyD2EtVhTOmxDvzNuIa8VEZno=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789803251; c=relaxed/simple;
-	bh=llg/PF8nMnnpezaHPpy9KBWeZf3PiiHR8A/GPkRQCtQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818CE14A60F
+	for <imx@lists.linux.dev>; Sat, 19 Sep 2026 09:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789809667; cv=none; b=olo73Tru7eiI7NfWjB3Xk3tXXBIfCWBmsIoalYDGkmHZSf+A9ACUtipqCY+CKMXaN7raA5WVfMH1uoInT0/sul2hcriugf+LrcFoTDT94pDXZt3roZwO2T23raESlCDIuMEvsdZ3qZ7WX/9lDPDOdpJnnELMuafLz9dCMtu7Jms=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789809667; c=relaxed/simple;
+	bh=pzApuuerjL8qD/Zos8LlmaW4d6yJGkOH9sOp2iu4cVY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HWj/pp3tGWuDjIS8U4sw+bvkS6glp/91kwJoSmJGv4K6Z11/DXf9Tc1bTADDDFGQES+ZltW4vgXwSy+1BAUCTVAWuVzWU8b7gn3dV6itoF7wTE87alYid1+Hao9e2NRtnjQ5PRc30ftRITA/loTznc8RGar+rDCAgFXLhDixfTY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=QM7y3zqc; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=UpO1qiOn; arc=pass smtp.client-ip=185.56.87.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=HlhxLc1bj0Nun5m3Sg1RAQumlysf99mNLERuEZRC/VMs4bZE74kWnVrjVptrGUlkNxtVNRTqvNRzw88S+XTYp+Syyp7C0DLtqCR8+j0Mro7ui0zDcdGGtSpRKhoIrmxR6z+7TqnXhgH/XFtdhMskvoB4P7OLQncoPYlIkPwEKA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=KKJxgAPq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wLA7xh2o; arc=none smtp.client-ip=103.168.172.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="QM7y3zqc";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="UpO1qiOn"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com; s=arckey; t=1789803248;
-	 b=OhJk+gykLbfnab+nyPQc2vU/jzqdQkiQDSZoxgRJOXAxk7Cfm2yDGsUSFhFr9Nh3li5SgocvPD
-	  ToWZ3IRmeMvl3KiFIYSw+lvVuTnXpffVfMLZ6dUho6HC6c97DVgybZqgG+Z0ACeWziTj8H8KHy
-	  R79V1TwIBIRaBe78nv9iSaMt0kEYRyfYBULCIjJGeCpEGwcTXFH/AXTvPBiNu+lxDfm7xhrdly
-	  oMJjo/J9hEpx7L9FlHAE8XAt29mhybxzWT/y0MloPgpKP3LbQsK6IhXk4FS2X2BOav+vwSHQOH
-	  bwx8+JuufmQO20T8AJI4R6oYaRR91FrzsHM+qBeM30d+Hg==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com; s=arckey; t=1789803248;
-	bh=llg/PF8nMnnpezaHPpy9KBWeZf3PiiHR8A/GPkRQCtQ=;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
-	  From:Date:DKIM-Signature:DKIM-Signature;
-	b=V4Njr3XNcf0x5fLmZHSqFsD9oy06ks50IBpkf5zZoOsvO013o4hXE24dIIeJcDxC9sET9Nu6+4
-	  tSSgdwgsC6PBUJL4yKNAYlcwAH713KHQhI2NZtSAjlybVk23a0JmRZqqVMTFpySyPtex/UxVKi
-	  PYWMoUivTFZ+olfUbK7mdq/O3LNtpzOxbtrjodg2iT8xV79skrx6rEmsSGWBz1rDlYrmKPoKJu
-	  e7awLOauUAq/rjYlL+qLvo9Hupmft3dPjdUa8TXyrjZTiOQM3VuuDchUtvmvGcg8M4hnE91R9Y
-	  oeodhBF2VweBLYKP/tuTZbUEYKCm85L6tTas5o+BQxL0JA==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=1CgMYzN7u/XA+bnop2JDgsNdowKH5ww277Ab2jeFzYI=; b=QM7y3zqcSH2FlgocRfPPmbaMad
-	3V+YineFUsBAjj1eS9GdJ5apHLMBjN2XESzhZZzeglXvSZlp1iwbuSFkPcJILFAkxbV9CdUCplI1I
-	HOeFBUHCnmKQNRSUp1Hw+yuMYuCnn53BsjWpBoQNXfoISQWUSqwSJpAa9EzYGeterYoo=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <francesco@valla.it>)
-	id 1x7pa8-00000005bxU-2Wr0;
-	Sat, 19 Sep 2026 07:33:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=1CgMYzN7u/XA+bnop2JDgsNdowKH5ww277Ab2jeFzYI=; b=UpO1qiOnq7xdcWjgHZmVoz6PH6
-	qnX8EWkbIbCQnHos0YlsXjQrPVX98//3jAxv0fogZLwImFWx8HL4sgPGe3Cd6N7yD0LUfSxLJvPzr
-	CCHTUlfULmZRgWrMaDWDzF0qYbREJFaOi177rp4/VFmpRK+nl7GD9XvXkPWjmtJwzthc=;
-Received: from [95.75.45.71] (port=45394 helo=bywater)
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <francesco@valla.it>)
-	id 1x7pZp-000000006o5-4BDY;
-	Sat, 19 Sep 2026 07:33:38 +0000
-Date: Sat, 19 Sep 2026 09:33:36 +0200
-From: Francesco Valla <francesco@valla.it>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 00/12] remoteproc: add support for any virtio device
-Message-ID: <aq453yukMHiNb1jp@bywater>
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <aq1sooGCYUiWbhMH@p14s>
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="KKJxgAPq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wLA7xh2o"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 7A4A71380CC3;
+	Sat, 19 Sep 2026 05:21:04 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Sat, 19 Sep 2026 05:21:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789809664;
+	 x=1789816864; bh=MGYptzQitBqvlBeqfLUR1pvxKBwqhA+k9O947J2Uzs4=; b=
+	KKJxgAPqGf8ffn9cEzGN/lmRPaI84KnadpYFXzKCX9hE2ejUIq68mi4u49PvWfgc
+	Itlb19ZH3qr7BojbMyQRo+ba2NPVuxshKxNHPNc1n0WoFm2P82SdvXVe/ozusaqU
+	UUuNFmN3pT+MAIOXefE4Sv9U8sKTnAH69sCP1ZzXN2aKc8adbqjGCZ5y3vHL5yUn
+	DebvNQKunanNCX2bmcP83jS/V3bgaOaMTSMerlAWCQ2EgFBXQ1ZRTTrcYTU71eEv
+	lbzAJDJUW1lP7r0QDdMJOaObYpwLv8jsh3ZCwwwsKuWBDf/iXMBIEia/Vxnb/8S7
+	nxGJsoWmFpCeajtr5MutCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789809664; x=
+	1789816864; bh=MGYptzQitBqvlBeqfLUR1pvxKBwqhA+k9O947J2Uzs4=; b=w
+	LA7xh2o3RY19SYTpHtjFoN2bWuBr9Jl0X822TEzfg09UxehR9IxivJ/PPDbEq5vh
+	xknj+g7mVbq0BrIyxwjz7mQPl76Es0GLU76nsl2Jc5PWQZ2aYnu4tSWX2U+CEbOU
+	duXnb8byYslI35rhb9G1P41C+PXcxQA0LTyXYnfwnUdPfuutf27xS+i0HNDcYlJc
+	mgqWClJS3odJaqniOPApq6NW3P2YBAq8VK9RlSsIgQ3yQUFHVbKCGOJnK9XiOEZD
+	XKwatuiR9o5xSppMVRA8v/P+uFKq6qikqTrSgLJnHtuSO/CDe3DZZJW23Dy/fkvD
+	ZW547r14CEX+ogHG402fg==
+X-ME-Sender: <xms:_VOuaoMc3T-ITDLbcqgHBdCUnJzWxvJ2B31OHOBqLt2R6J_GHk_kgg>
+    <xme:_VOuaqs_CdaHWRrECVh8zBB_Oyed8sjnn2zi8cyFPVs8HxgcW-AM-CDenZ6BvPCg9
+    zlQ4TZCJOVtaZNgCLdbweoHYhCfqfMC5hHqD0aLFaBIweeaNQUjKTmY>
+X-ME-Received: <xmr:_VOuan099myfjV70XEVtLI9rCteLcp3wwc72aBYnA1KSo0aM_0JVaFlzyhM1LK5r-Kar73jmByYogctH37tNWYeVENTK3UI>
+X-ME-Proxy-Cause: dmFkZTEHzaPBOkzhEZKtlcJiHuaR/8A9YwcvLFmST50NgBICej+vTp5vMhNNvAsQoG90/2
+    Jm0kDSLPlHjTl32jVWjbcwmLDSqw4GyHFeDhV0053Ev7hF2r8HtYhx1OQFrcFYUvp22zhD
+    bwa3p77dJnCDUtHCllEbqhJvrcmU7/C1lASmVI5bvK/T4qtdpnBur25H1DkP7UkKXPQC/j
+    elUdagyi5wVvBIc8Nks2/9BjgcJJqa08jQYX7fGyZhY2tU8D8FNMzrqNvQRW4UOnqv29DO
+    Z3Z15oIGz+UspWal/6k8HrhYZj+XVKhxeKCuy8RhfhaOSuu8zlDB0q69H/9Oe3rv7hs/Wn
+    ZGWF+6lY0YfPnQu0pkLeDFn6uVWRwRv3tWt2cnBI8Mig3THTVbziWZT3hx0FavRU1Rblw2
+    5GJ1NCrct8YFcaHTUsLESEIG9dn4bGZyc3OuX6C4ucocsN5peK2laUn1i/p649xuZe4yDu
+    V9gsVPzHsvP7DCumtstJA6KfKFLICxe7Ru/+RiSUSIleLOGD4tyf6+IMKgLo2rk4eyaZo+
+    A7NyVb8ONLKLmtm+YaDKnf1kykpl1RplpJr0gIHd9q1fENpv+FWekqgFQI2/j8Oy2+G7o+
+    pftD3dpMRQhb9hVe3tAsXetfhuC7wxDXeMfAKz0fypwUl3oZ3oPUXI0wHjNg
+X-ME-Proxy: <xmx:_VOuah2y4LFz1PpadpumYBxfc98D0-tdHUeGo910UPdHnB2MAwoLcw>
+    <xmx:_VOuaqq125S6Unzcn9Y0ECrr5LgGIJIXBZEy27KqgbK5ukiGRB_g-w>
+    <xmx:_VOuai0UYZvkkFR3qjdiC9hpdOm_mE8nabOFF-wFotoZzh3c314HmA>
+    <xmx:_VOuaj0j1IjBEGZ5neb_ubNG80H_nWXeTS--3M-4wyMouLo54xV9WA>
+    <xmx:AFSuakOZvT35vQTN-w2q-qm0NMqiAOAQOnWSEbPNjOLlAV8dYkNEXA1S>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 19 Sep 2026 05:21:00 -0400 (EDT)
+Date: Sat, 19 Sep 2026 11:20:57 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,	Jacopo Mondi <jacopo@jmondi.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jimmy Su <jimmy.su@intel.com>,	Matthias Fend <matthias.fend@emfend.at>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Richard Acayan <mailingradian@gmail.com>,	Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,	Heiko Stuebner <heiko@sntech.de>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,	linux-rockchip@lists.infradead.org,
+ linux-tegra@vger.kernel.org,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH v6 3/6] arm64: dts: renesas: Convert to new media
+ orientation definitions
+Message-ID: <20260919092057.GA1099675@ragnatech.se>
+References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
+ <20260918-kbingham-orientation-v6-3-5e8b1f01be29@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aq1sooGCYUiWbhMH@p14s>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 8e767977f36cde42fc16bbf5074ec7b6
-X-AntiAbuse: ID - 8e767977f36cde42fc16bbf5074ec7b6
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1x7pa8-00000005bxU-2Wr0-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-h0bm.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260918-kbingham-orientation-v6-3-5e8b1f01be29@ideasonboard.com>
 
-Hi Mathieu,
+Hi Kieran,
 
-On Fri, Sep 18, 2026 at 10:53:54AM -0600, Mathieu Poirier wrote:
-> Hi Francesco,
+Thanks for your work.
+
+On 2026-09-18 11:44:15 +0100, Kieran Bingham wrote:
+> From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 > 
-> I have started reviewing this set but given the size and implications, it will
-> take me a few days to get through.
-
-I'm going through the review done by sashiko - would you prefer me
-sending a v2 with the trivial errors already ironed out before doing
-a complete review?
-
+> The orientation property for video interface devices now has definitions
+> to prevent hardcoded integer values for the enum options.
 > 
-> Thanks,
-> Mathieu
+> Update the users throughout the renesas device trees to use the new
+> definitions.
+> 
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Reviewed-by: David Heidelberg <david@ixit.cz>
+> Signed-off-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+
+> ---
+>  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso | 3 ++-
+>  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso | 3 ++-
+>  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso | 3 ++-
+>  .../arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso | 3 ++-
+>  4 files changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso
+> index 3acaf714cf24..b816382bba0a 100644
+> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso
+> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx219.dtso
+> @@ -12,6 +12,7 @@
+>  
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/media/video-interfaces.h>
+> +#include <dt-bindings/media/video-interface-devices.h>
+>  
+>  &{/} {
+>  	clk_cam_j1: clk-cam-j1 {
+> @@ -44,7 +45,7 @@ cam@10 {
+>  		VDIG-supply = <&reg_cam_j1>;
+>  		VDDL-supply = <&reg_cam_j1>;
+>  
+> -		orientation = <2>;
+> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>  		rotation = <0>;
+>  
+>  		port {
+> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso
+> index a19bc0840392..4019b80a88b7 100644
+> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso
+> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j1-imx462.dtso
+> @@ -12,6 +12,7 @@
+>  
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/media/video-interfaces.h>
+> +#include <dt-bindings/media/video-interface-devices.h>
+>  
+>  &{/} {
+>  	clk_cam_j1: clk-cam-j1 {
+> @@ -46,7 +47,7 @@ cam@1a {
+>  		vdda-supply = <&reg_cam_j1>;
+>  		vddd-supply = <&reg_cam_j1>;
+>  
+> -		orientation = <2>;
+> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>  		rotation = <0>;
+>  
+>  		port {
+> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso
+> index 512810b861aa..fea1ef4a1178 100644
+> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso
+> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx219.dtso
+> @@ -12,6 +12,7 @@
+>  
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/media/video-interfaces.h>
+> +#include <dt-bindings/media/video-interface-devices.h>
+>  
+>  &{/} {
+>  	clk_cam_j2: clk-cam-j2 {
+> @@ -44,7 +45,7 @@ cam@10 {
+>  		VDIG-supply = <&reg_cam_j2>;
+>  		VDDL-supply = <&reg_cam_j2>;
+>  
+> -		orientation = <2>;
+> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>  		rotation = <0>;
+>  
+>  		port {
+> diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso
+> index a31524b59834..177201a8a6d2 100644
+> --- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso
+> +++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-camera-j2-imx462.dtso
+> @@ -12,6 +12,7 @@
+>  
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/media/video-interfaces.h>
+> +#include <dt-bindings/media/video-interface-devices.h>
+>  
+>  &{/} {
+>  	clk_cam_j2: clk-cam-j2 {
+> @@ -46,7 +47,7 @@ cam@1a {
+>  		vdda-supply = <&reg_cam_j2>;
+>  		vddd-supply = <&reg_cam_j2>;
+>  
+> -		orientation = <2>;
+> +		orientation = <MEDIA_ORIENTATION_EXTERNAL>;
+>  		rotation = <0>;
+>  
+>  		port {
+> 
+> -- 
+> 2.52.0
+> 
 > 
 
-Thank you!
-
-Regards,
-Francesco
-
+-- 
+Kind Regards,
+Niklas Söderlund
