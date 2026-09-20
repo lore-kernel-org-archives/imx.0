@@ -1,114 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from v54.v54282eed.euw1.send.eu.mailgun.net (v54.v54282eed.euw1.send.eu.mailgun.net [185.250.239.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4C23F58CC
-	for <imx@lists.linux.dev>; Sun, 20 Sep 2026 11:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72411445AD3
+	for <imx@lists.linux.dev>; Sun, 20 Sep 2026 13:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.250.239.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903433; cv=none; b=BidSduw3b5y+XTMCVEiMeqypdTMg4GqRjmXT9LWVgMbNsnEFmdFRtxtihiClEQ8R5vjkGwCVGgZleGgcOQG5lCss176R1GEey8Phq6V2qQ/+6lneMpcWHqyO4AIqMF7PEeBdH+vDwZLOJUqXssBoZ2xBltQEGyOCEBiTtKTOkwQ=
+	t=1789912407; cv=none; b=G/yszHYXgBEFoSamDGYQj6qiLMWf9oPwgYveIdx48x+B2ZdNbzG/UqkciWtjNwlYDKw2F3t7y4qj5PkgJB/EQM7U6pOnuJb8p/mVYSd46GUsJVY7qkpvozbVEguOKCFPNlAamICJvgrWB4by2u6Zc8m9xKzTGCfkHtodtXrVkhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903433; c=relaxed/simple;
-	bh=WSc3+yvS9JOo9D3z/dB6wPmzDHMJHC0bGLZ/juFAuYs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=UtONGYru89Fm8lnv1q7BTFI6j7mdEZpWs1DFGt33gyBfPT588006B7IL000l0aGp8FPJwkjePK2UARC5CdFp8K71lweTizNcySgG6siuHIPicXRxG7picFVdFIBs0dhcNHfusghsiIraPjIDVvvGzjsGsYzCZxEZdltR3HycOMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQzW4zNO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789912407; c=relaxed/simple;
+	bh=Yg1O8JfavL0PxQY5ZIpw2vJ2G6ywFz5YqPaYS+C76uw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R+vzr51A64EaU3hTCLhvsk1KPiQUlafEiWvZRr9jqc+SnmzRiR/hmY4qQqgTtwr8FM/uU7vzB82vi5ckANFTtu05hHFCiIL9aHEylwJa8RzB1RFFNNzBCr7EyvAVJ+ygurqhPgHVqO1PbuQwVTY7tO3jC17qzsMfLrIptYA/GFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=plajta.eu; spf=pass smtp.mailfrom=plajta.eu; dkim=pass (2048-bit key) header.d=plajta.eu header.i=@plajta.eu header.b=AmcAHMFi; arc=none smtp.client-ip=185.250.239.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=plajta.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plajta.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQzW4zNO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67771F000FF;
-	Sun, 20 Sep 2026 11:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789903432;
-	bh=yTChrhpeZ39+OM+x/SzyBKVkct9L7PNwz1loHtHe8i0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dQzW4zNO8v/DJLquoxSJR+8PqnY3Gt7rEOIJB1eB3Q3kSzSh2hmLTwk+US2yEaYMU
-	 E3isJUQpTnZCazk9F5cs11g2uQGoxMo0Tb0RkPdPpBipTurWk8q/p8+qGIjopNe/4c
-	 W/PFRO3nybNVhQ5J/ot5P6+9H+HdiJayldAYkDrNhVUfaBxzvMDlR5X7+0fB8jQqmV
-	 h9mHTa6UCLqHvKHpns/28hTgJsR4bXSY6ng231vJx5RnYaA41Rveduk4b1SahCfqJ6
-	 bMFxL+hGeLZMfNwLpaCb1+1LIjVFDuhgmIdyM5xBwAwxYl62M2tmSdKMoU/JGtsmWH
-	 7+fG1aCfYjJuQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 4/4] nvmem: enable COMPILE_TEST for more drivers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Link Mauve" <linkmauve@linkmauve.fr>
-Cc: linux-amlogic@lists.infradead.org, ojeda@kernel.org, gary@garyguo.net, Frank.Li@kernel.org, imx@lists.linux.dev, neil.armstrong@linaro.org
-In-Reply-To: <20260920111000.2404131-5-linkmauve@linkmauve.fr>
-References: <20260920111000.2404131-1-linkmauve@linkmauve.fr>
- <20260920111000.2404131-5-linkmauve@linkmauve.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 20 Sep 2026 11:23:51 +0000
-Message-Id: <20260920112351.E67771F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=plajta.eu header.i=@plajta.eu header.b="AmcAHMFi"
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=plajta.eu; q=dns/txt; s=s1; t=1789912401; x=1789919601;
+ h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To: Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender;
+ bh=mWi2Y+lw/Zrz8B6jaQqE6k/WaWueM2GgF0q6mxDBWnE=;
+ b=AmcAHMFismmVLBGZoC7iPFdSojmImKCNix9VlV7Wh2keEklkKzFY4e/Ey7d89lil494Xmoc6k2mErtCKmXWrNLHMRtG9e00EodegELgm+RDihLKo/Qc3scMIw3NVccmR6IOa4qVIAasTqqalv9Be738qjTPPOXzcuKYY3G9RXwLUnR52SAmfsF4QFXGSU1fq1/NJFqakZKpdH02S6EVAa+wAcUxpuUPzO6mLw7WuEcu5i4J/uawb0kzA0S1c7x71QpqjLm+cbXGfJiwuwAIXPe80rIg2qww7hSbhaLsWlFL186ogjyz4B91mE+QkDKsxpZpZ8PCYmdeDVpRVnL69zw==
+X-Mailgun-Sid: WyJlMTA5ZCIsImlteEBsaXN0cy5saW51eC5kZXYiLCJhOTI0YiJd
+Received: from tensor.lan (ip-86-49-238-222.bb.vodafone.cz [86.49.238.222]) by
+ 62dde763711f91b09babc141eb112fb8433c3bdf14f6a1f222f9cb9a27a17a83 with SMTP id
+ 6aafe551d0b56df3ba42d2f4 (version=TLS1.3, cipher=TLS_AES_128_GCM_SHA256);
+ Sun, 20 Sep 2026 13:53:21 GMT
+X-Mailgun-Sending-Ip: 185.250.239.4
+Sender: andrijsalivon@plajta.eu
+From: Andrii Salivon <andrijsalivon@plajta.eu>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Andrii Salivon <andrijsalivon@plajta.eu>
+Subject: [PATCH 1/2] dt-bindings: arm: fsl: add Amazon Kindle 4 (Yoshi)
+Date: Sun, 20 Sep 2026 15:53:13 +0200
+Message-ID: <20260920135314.3191171-2-andrijsalivon@plajta.eu>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260920135314.3191171-1-andrijsalivon@plajta.eu>
+References: <20260920135314.3191171-1-andrijsalivon@plajta.eu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] kconfig: missing HAS_IOMEM dependency for MMIO nvmem drivers under =
-COMPILE_TEST
---
+Add the amazon,yoshi compatible string for the Amazon Kindle 4
+non-touch e-reader to the i.MX50 board list.
 
-commit 0ff6b9a5ebbc0d11589f22b1d652ffd1483b0718
-Author: Link Mauve <linkmauve@linkmauve.fr>
-nvmem: enable COMPILE_TEST for more drivers
+Signed-off-by: Andrii Salivon <andrijsalivon@plajta.eu>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-This commit enables COMPILE_TEST for three nvmem drivers (NVMEM_S32G_OCOTP,
-NVMEM_SUNXI_SID, and NVMEM_ZYNQMP) that previously depended strictly on the=
-ir
-target architectures. This allows the drivers to be built for coverage test=
-ing
-across different architectures.
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 656f2596e1d5..ec61f45c351c 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -188,6 +188,7 @@ properties:
+           - enum:
+               - fsl,imx50-evk
+               - kobo,aura
++              - amazon,yoshi
+           - const: fsl,imx50
+ 
+       - description: i.MX51 based Boards
+-- 
+2.55.0
 
-> diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-> index c36c2a4c2a0b7..d38097d6648bd 100644
-> --- a/drivers/nvmem/Kconfig
-> +++ b/drivers/nvmem/Kconfig
-> @@ -354,7 +354,7 @@ config NVMEM_NINTENDO_OTP
-> =20
->  config NVMEM_S32G_OCOTP
->  	tristate "S32G SoC OCOTP support"
-> -	depends on ARCH_S32
-> +	depends on ARCH_S32 || COMPILE_TEST
-
-[Severity: Low]
-Does adding COMPILE_TEST here expose this driver to build errors on=20
-architectures without HAS_IOMEM?
-
-Because config NVMEM_S32G_OCOTP exposes MMIO operations, a user configuring
-the kernel with COMPILE_TEST enabled on an architecture that does not select
-HAS_IOMEM (such as User Mode Linux) will encounter linker errors. Adding a
-dependency on HAS_IOMEM would prevent this build failure.
-
->  	help
->  	  This is a driver for the 'OCOTP' peripheral available on S32G
->  	  platforms.
-
-[ ... ]
-
-> @@ -518,7 +518,7 @@ config NVMEM_SUNPLUS_OCOTP
-> =20
->  config NVMEM_SUNXI_SID
->  	tristate "Allwinner SoCs SID support"
-> -	depends on ARCH_SUNXI
-> +	depends on ARCH_SUNXI || COMPILE_TEST
-
-[Severity: Low]
-Can this cause an undefined reference to __ioread32_copy during the build?
-
-The NVMEM_SUNXI_SID driver calls __ioread32_copy() in sunxi_sid.c. This
-function is implemented in lib/iomap_copy.c, which is only compiled if
-CONFIG_HAS_IOMEM is set. Compiling this driver under COMPILE_TEST on
-architectures without HAS_IOMEM results in a linker error. Should this
-config also depend on HAS_IOMEM?
-
->  	help
->  	  This is a driver for the 'security ID' available on various Allwinner
->  	  devices.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920111000.2404=
-131-1-linkmauve@linkmauve.fr?part=3D4
