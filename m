@@ -1,185 +1,104 @@
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17C1406261;
-	Sun, 20 Sep 2026 11:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5ED7402B99
+	for <imx@lists.linux.dev>; Sun, 20 Sep 2026 11:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903131; cv=none; b=jEMJn7oVCsWvXe59YUi79YtQKO3SwMdrCANjG89XdoGbpi6gK+Iepsd0tZm9cWq1U+RFRCXousn5HiX2xQx+CkPCgHZjJdrXQaEzGpzmBQtohBi1ndMlGvnOktU0td79+z/Rc9B9wOJsHSwgXqlyxRxuOCJ6qgVX4VU/8EbuYK4=
+	t=1789903204; cv=none; b=r81s9vnyvHbR5YIo1256lUwXTJbD2QTfNlby4lcg0jY7NQ/uRxcT+BTOSBL9u9Knrcdft2JTrzBq21IAARMeI/yyskRMPuZzAImozhYDVrnlwVuejJFYxfPIB+n5pBzmuVXk59HneEEqxoAws6f1l5LadyIPxzdfPNpS6rhSA/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903131; c=relaxed/simple;
-	bh=YHFSIfa4pVKxrlhxSffj9dcUAOSEVU/P5QMiQksQiaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYhXxh90nTqUAcGxjBW4J5A2MMJlI35nxKILPZp3prV7CWVJjMNDbmFZhrVzn66geoOYo22vD4WoL6EX3VYY65VYheyftXrgjUxYQ1iyaRHBA97/ZchFwTzEWolTJvPYiWJSC4eJ4glX/1n5wMYvySRBvTqEenKvZu18pMUvJms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 8CCBF7189A90; Sun, 20 Sep 2026 13:18:45 +0200 (CEST)
-Date: Sun, 20 Sep 2026 13:18:45 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] nvmem: migrate to const void * in reg_write
-Message-ID: <aq_BFQ4wgnJqGngQ@desktop>
+	s=arc-20240116; t=1789903204; c=relaxed/simple;
+	bh=Aj3GJXPp5u3IS4krE9w69UFet4NubEFzHkC6TE5bA4c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=mIlAJ1ixlbpC05F0jEGIU+0QXSqz6kFxQYtqvp5kRYF8IyoFhBWHUldp8GYJwCw6EccUcJRreIjI88KzZNbjKL/mYDlDU0m1ITIDMSMbWKrCtDVllVSGpqYA04d1LjDEJ6ma9d82I9PHTHXyW1TMQFRO7C46Jstxks/w4O4e7q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLLCmqME; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLLCmqME"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957A51F00893;
+	Sun, 20 Sep 2026 11:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789903200;
+	bh=343/Db1Z8S17ssk821pz0Ch5sbEg1jnS5AmNrMg2Re0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fLLCmqME9mXuW6pALNbtZP1fybu4xfooXafACBbeTqWFPHvxM3Rw4zUR7EmM88WF+
+	 kmReu3VZkYMvYuG2nW5NE9AlEVlSbbybeE9MksDTig9OrZhgbaemiPhNba6ns3oDNM
+	 sTEwfjdYrcS6NivXxSgBefGrv7qPMdmI6a23FJ7VyURwGATioxwL1/7KoSDrtaHnyh
+	 nf+Eu2TXGh/I1Pny8Dg95shsRPLuXTGua6S+bRhccDfFjwH4eCcI4gK9VOri1jWK2M
+	 +YGZddoDnY25JfVZNlO8xcXYgpL5Z5UxEjcB6Dc9iLeNbBh67zFb2+6Sw0VVz3xyze
+	 uEycDd0O6sLLA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 2/4] nvmem: core: deprecate reg_write callback with
+ reg_write_const
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Link Mauve" <linkmauve@linkmauve.fr>
+Cc: neil.armstrong@linaro.org, ojeda@kernel.org, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, imx@lists.linux.dev, gary@garyguo.net
+In-Reply-To: <20260920111000.2404131-3-linkmauve@linkmauve.fr>
 References: <20260920111000.2404131-1-linkmauve@linkmauve.fr>
+ <20260920111000.2404131-3-linkmauve@linkmauve.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 20 Sep 2026 11:19:59 +0000
+Message-Id: <20260920111959.957A51F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260920111000.2404131-1-linkmauve@linkmauve.fr>
-Jabber-ID: linkmauve@linkmauve.fr
 
-Oops, I forgot to carry the tag I got in v5…
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] nvmem: dev_warn uses uninitialized device name in nvmem_register()
+--
 
-Here it is:
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+commit 77653927bdf19b36c155e416a676051598da0213
+Author: Link Mauve <linkmauve@linkmauve.fr>
 
-On Sun, Sep 20, 2026 at 01:09:53PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
-> 
-> This was found while drafting the nvmem-provider Rust abstraction.
-> 
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
-> 
-> Changes since v5:
-> - Link to v5:
->   https://lore.kernel.org/rust-for-linux/20260804135940.2378737-1-linkmauve@linkmauve.fr/T/
-> - Add a dev_warn() when registering a nvmem driver with a deprecated
->   reg_write callback.
-> - Add a fourth patch enabling COMPILE_TEST on three more nvmem drivers,
->   which forgot to depend on that config.
-> - Remove a few unneeded (void *) and (const void *) casts in core.c.
-> 
-> Changes since v4:
-> - Link to v4:
->   https://lore.kernel.org/rust-for-linux/20260726131724.15299-1-linkmauve@linkmauve.fr/T/
-> - Rebase on top of linux-next 20260803, the previous series didn’t apply
->   any more due to changes in core.c.
-> - Also convert the at24, at25, eeprom_93xx46 and m24lr drivers to the
->   new reg_write_const callback, these were missed because they got moved
->   to the nvmem directory in linux-next between v3 and v4.
-> 
-> Changes since v3:
-> - Link to v3:
->   https://lore.kernel.org/rust-for-linux/20260716142415.28718-1-linkmauve@linkmauve.fr/T/
-> - Drop Apple SPMI patch, which had already been independently included
->   in linux-next as 7089170e1df160f5f8fb395bc5aa2e2697b4e896.
-> - Reword the cover letter’s subject.
-> - Reorder the meson firmware patch before the other ones, so that every
->   commit is always working correctly.
-> 
-> Changes since v2:
-> - Link to v2:
->   https://lore.kernel.org/rust-for-linux/aljAqBNVXV1aVJqx@luna/T/
-> - Rebase on top of linux-next/master.
-> - Fix logic error which made all devices read-only.
-> - Remove a blanket cast of function pointers to void * in
->   apple-spmi-nvmem (patch 3).
-> - Also fix constness of write buffer in firmware: meson, which is used
->   exclusively by meson-efuse (patch 4).
-> - Re-review all changes to make sure the passed types are more correct
->   than they were before.
-> - Actually test with COMPILE_TEST, which I forgot to enable before…
-> 
-> Changes since v1:
-> - Link to v1:
->   https://lore.kernel.org/rust-for-linux/20260715175229.24672-1-linkmauve@linkmauve.fr/
-> - Removed all changes to other subsystems than nvmem.
-> - Added a new reg_write_const callback instead of changing the exisitng
->   reg_write.
-> - Deprecated the existing reg_write callback, it will get removed once
->   all users in the kernel will be done migrating to the new one.
-> 
-> Link Mauve (4):
->   firmware: meson: pass a const buffer to meson_sm_call_write()
->   nvmem: core: deprecate reg_write callback with reg_write_const
->   nvmem: make all reg_write callbacks take const void *
->   nvmem: enable COMPILE_TEST for more drivers
-> 
->  drivers/firmware/meson/meson_sm.c       |  2 +-
->  drivers/nvmem/Kconfig                   |  6 +++---
->  drivers/nvmem/apple-spmi-nvmem.c        |  4 ++--
->  drivers/nvmem/at24.c                    |  6 +++---
->  drivers/nvmem/at25.c                    |  4 ++--
->  drivers/nvmem/bcm-ocotp.c               |  8 ++++----
->  drivers/nvmem/core.c                    | 26 ++++++++++++++++---------
->  drivers/nvmem/eeprom_93xx46.c           |  6 +++---
->  drivers/nvmem/imx-ocotp-scu.c           |  6 +++---
->  drivers/nvmem/imx-ocotp.c               |  6 +++---
->  drivers/nvmem/internals.h               |  1 +
->  drivers/nvmem/lan9662-otpc.c            |  6 +++---
->  drivers/nvmem/lpc18xx_eeprom.c          |  6 +++---
->  drivers/nvmem/m24lr.c                   |  4 ++--
->  drivers/nvmem/max77759-nvmem.c          |  4 ++--
->  drivers/nvmem/meson-efuse.c             |  8 ++++----
->  drivers/nvmem/qcom-spmi-sdam.c          |  6 +++---
->  drivers/nvmem/qfprom.c                  |  6 +++---
->  drivers/nvmem/rave-sp-eeprom.c          |  6 +++---
->  drivers/nvmem/snvs_lpgpr.c              |  4 ++--
->  drivers/nvmem/sprd-efuse.c              |  6 +++---
->  drivers/nvmem/stm32-bsec-optee-ta.c     |  2 +-
->  drivers/nvmem/stm32-bsec-optee-ta.h     |  4 ++--
->  drivers/nvmem/stm32-romem.c             | 10 +++++-----
->  drivers/nvmem/zynqmp_nvmem.c            |  6 +++---
->  include/linux/firmware/meson/meson_sm.h |  2 +-
->  include/linux/nvmem-provider.h          |  6 +++++-
->  27 files changed, 87 insertions(+), 74 deletions(-)
-> 
-> 
-> base-commit: 3f2425f5b5bbbdd991ca9cdfd5502e68d8895998
-> -- 
-> 2.55.0
-> 
+nvmem: core: deprecate reg_write callback with reg_write_const
 
--- 
-Link Mauve
+This commit deprecates the reg_write callback in favor of reg_write_const,
+which takes a const pointer for the value buffer. It also adds a deprecation
+warning in nvmem_register() for drivers still using the old callback.
+
+> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+> index 0556d140170a4..a484d424119f9 100644
+> --- a/drivers/nvmem/core.c
+> +++ b/drivers/nvmem/core.c
+
+[ ... ]
+
+> @@ -937,6 +940,11 @@ struct nvmem_device *nvmem_register(const struct nvm=
+em_config *config)
+> =20
+>  	ops->reg_read =3D config->reg_read;
+>  	ops->reg_write =3D config->reg_write;
+> +	ops->reg_write_const =3D config->reg_write_const;
+> +
+> +	if (ops->reg_write)
+> +		dev_warn(&nvmem->dev, "Usage of reg_write in nvmem is deprecated, plea=
+se "
+> +		                      "migrate to reg_write_const.\n");
+
+[Severity: Low]
+Will this dev_warn() print an uninitialized device name, since dev_set_name=
+()
+hasn't been called on &nvmem->dev yet?
+
+Looking further down in nvmem_register(), the device name is assigned later
+in the switch block:
+
+	switch (config->id) {
+	case NVMEM_DEVID_NONE:
+		rval =3D dev_set_name(&nvmem->dev, "%s", config->name);
+		break;
+	...
+
+Could this result in the log message printing an uninitialized name like
+(null) or (unnamed), making it difficult to identify which driver triggered
+the deprecation warning?
+
+Would it make sense to use config->dev (the parent device) for the warning,
+or move this check below the dev_set_name() block?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920111000.2404=
+131-1-linkmauve@linkmauve.fr?part=3D2
