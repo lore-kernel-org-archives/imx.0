@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF9746E005;
-	Sun, 20 Sep 2026 17:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE63D3D11;
+	Sun, 20 Sep 2026 18:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789924061; cv=none; b=ioQYfqSNKCB9SJ2tmaUXr1jgT+NMalrmreWxWdVRjjacExqpld3O/5PzNbzzJtyuUjykPu/y0JPpL5uud11eFq7ECKRl6VSrcx+Q7EIJA9dr7QYpShe6J6LlvdCMpLWPw/NZ/lBLGLgzmzrgQcCj1l+7zXMuBuOPwnx3dfCTgGc=
+	t=1789929590; cv=none; b=F9s5OmOwfs5ZBiXas2tGezgBSLx4iPdr9wb+h6RGBLydGse887h1yOskLBbuVtjm69TQTBENfTb5ZERGofg0X4F2i7X34eFG7i8ZJ6IUyCD0LUCPzUC/mlEQDUQCnlMcRHsXzSyglMb/KGVqjkAc5GofDoJ6wiP8+AzzkxtFCG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789924061; c=relaxed/simple;
-	bh=++7cKn5dPLEoCOGhGWoB/T8i+KYlJXPfpJyNEaynf8g=;
+	s=arc-20240116; t=1789929590; c=relaxed/simple;
+	bh=XsddRJKzdkiZUyWrpHpYyW361f4IBlV6GQp+muynYOg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N6pXj6xHJUcMeoz3fNeHN0LDQo+dHy7EWitRleDhQa79rbAmWoQaEvwyVCETQOxi9Wlz6W+5QwbS3L2Dyxa0tLpWzbXxbr2Y5I5pEUxrKTNSktj/n2dYgZy46UdjppeHnbwEwuSKZPVc+wFnW82qg6nT9D3XkhmREVtpozk1E+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LswdCCLG; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5zMsuffSTo3voBoa8CpAraVvTc8qweXt3ObHjhAaLhfPblBYKXU7H2W9WHJO4hV6gzykm4+sTsv/Xitl4PBlaui2KgVW89nbN7heJrba6eL4efv6+KGA8g3NdW17BmBISCUIrcoPrLnRtzlKq6xTNemKdVy1S2FZZ43ktJJZBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=nzvzsbyS; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LswdCCLG"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nzvzsbyS"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SRR6GWm8VvaCpKgQykY2MiSoqyYUd1GFMV1rrWkJ4JI=; b=LswdCCLGZ/fMTQ3fP37RE0xKmP
-	tWLPS26CI1aHU7OSJLo4czeq1buGrq1SP4843QH/8q7GydxdJRJ5FarpIzBqSKJ98gU2TQc0oQwGy
-	FY+BYRxWt7Lee6y7s9AFMUxX5aVGPlNmmDATqZIjBxpHEmBB2Dit1Azv1/G9/Qn+g4cQ=;
+	bh=PGAGqvFCwHGZEk2NRMEY90gRI3koAV1XWGGTvnMRxnw=; b=nzvzsbySuWS+Cjkysz0gvo9x8A
+	eFoyFLn9Vu+yHmiXhkGUXAdnng8/b8TpZl6eDNE11GUy7ArHm2wCTXud+T/QqXAAMbxZRy747HVCX
+	tgMMMjg9k4X9uehfknX8sZcYVaQVhDX352A9jRHw2DL++Ylhn785LLuj8zgZBnuyhP9w=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1x8L0d-006BGL-FN; Sun, 20 Sep 2026 19:07:23 +0200
-Date: Sun, 20 Sep 2026 19:07:23 +0200
+	id 1x8MRi-006BXd-VL; Sun, 20 Sep 2026 20:39:26 +0200
+Date: Sun, 20 Sep 2026 20:39:26 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: jan.petrous@oss.nxp.com
 Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
@@ -68,13 +68,11 @@ Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
 	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
 	imx@lists.linux.dev, linux-pci@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>,
-	Bogdan Roman <bogdan-gabriel.roman@nxp.com>
-Subject: Re: [PATCH RFC v3 05/12] net: pcs: Add NXP S32G XPCS driver
-Message-ID: <c2c4dbc4-e6b4-47a0-9852-d116c6d21f89@lunn.ch>
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 04/12] net: pcs: add NXP SerDes XPCS shared core
+Message-ID: <07c5ed86-755a-4094-b45a-6316d10f4515@lunn.ch>
 References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
- <20260919-s32g_serdes-v3-5-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,44 +81,21 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260919-s32g_serdes-v3-5-9d68868c1e89@oss.nxp.com>
+In-Reply-To: <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com>
 
-> +#define SR_MII_CTRL				0x1f0000
+On Sat, Sep 19, 2026 at 08:54:32AM +0200, Jan Petrous via B4 Relay wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
+> 
+> The SerDes subsystems found on NXP S32G and i.MX SoCs integrate a
+> Synopsys DesignWare Ethernet XPCS and an Ethernet PHY (PMA) with an
+> identical register layout. Only the register transport differs: indirect
+> memory mapped access on S32G, Clause 45 MDIO on i.MX.
+> 
+> Add a transport agnostic phylink PCS core which operates on regmaps
+> provided by the platform glue.
 
-This is 0x1f0000 + MII_BMCR
+What is not transport agnostic with the current code.
 
-> +#define   SS13					BIT(13)
+Think carefully about that, before you answer.
 
-#define BMCR_SPEED100           0x2000  /* Select 100Mbps              */
-
-> +#define   AN_ENABLE				BIT(12)
-
-#define BMCR_ANENABLE           0x1000  /* Enable auto negotiation     */
-
-> +#define   RESTART_AN				BIT(9)
-
-#define BMCR_ANRESTART          0x0200  /* Auto negotiation restart    */
-
-> +#define   DUPLEX_MODE				BIT(8)
-
-#define BMCR_FULLDPLX           0x0100  /* Full duplex                 */
-
-> +#define   SS6					BIT(6)
-
-#define BMCR_SPEED1000          0x0040  /* MSB of Speed (1000)         */
-
-> +#define SR_MII_STS				0x1f0001
-
-This is 0x1f0000 + MII_BMSR
-
-> +#define   LINK_STS				BIT(2)
-
-#define BMSR_LSTATUS            0x0004  /* Link status                 */
-
-Please go through all these register definitions and throw out all the
-ones which follow 801.3 and use the values from include/uapi/linux/mii.h
-
-    Andrew
-
----
-pw-bot: cr
+	Andrew
