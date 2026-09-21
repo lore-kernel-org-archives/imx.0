@@ -1,157 +1,252 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011005.outbound.protection.outlook.com [52.101.65.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677F845FFBB
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 09:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789982189; cv=none; b=dxC3em2Dmb6HaMRnpUKMwa2huhaLJNkn21bfZZKkeDppWxFPGW5uHz6QK+D8FgsrbRVsHOmTn0u+2AmGN2XqMWClYAyOnbMYsniJnGArrNra1r+C3qNaY/jbowl6CVtKFz+cfafvvUkM3tfqL/og1w7/NWbbk9nFnZw3uiYJRCI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789982189; c=relaxed/simple;
-	bh=gARbVD09EARrYQ4UKtDL6tThF4d9UKCxBmg0cLWL/2E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FMBAujXIxoh9zw623wRjk327SBZZPTjPlDh6HkvW5ez/4geTgoiLS1Kh81GP9lE3Cp/Ur9oJC2qkQvtCsG+6dt4HsV5MluSUHTtKDcKTneP6imNHzHQUz6/3Dz8Yyu9MzknF3SPDFExiHOulcWK5OJpTsuFpTAxcm7cbT71pQxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fGRvcwqC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RJ3oTVK2; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AA1368964
+	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 09:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789982715; cv=fail; b=u4X6kyQ7JmBITSdOTn5VSqZ1/e5U7XBtnCeTqLtr0wFKjS70fzKWiUxLKxfJfvB7dH/+LqWyVHI3XbU0WFWtJjlaphuK2wQyDB/Ra7iRZZ2EUWgHoGfvIWM3Wuds94lPdYlu9E//78bSN58/7nlCTl877+f4SdvmE2DEyEjf0Yc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789982715; c=relaxed/simple;
+	bh=GZdaH+9yKYYUQD7j7kX0S2q8MbOEG8/EMS+CYBdX2A4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dIHpzsi5sGVuLeNVhOOraivyrdKqkPnMS9VcV9esjXGZ7/VOYxmZ1wvT7gBud+KGTe0tNr8wkGvL+2vIUtjPLTQkdrDDzn0kca6wFFM1t7HlKTmFpWEx1Yzr7ZOmPiOzZ8z6rJSeX3m7uwMqZ2wdaJGGgqOYoB8JThqAKNO2rHc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=vOWS1hAy; arc=fail smtp.client-ip=52.101.65.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fGRvcwqC";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RJ3oTVK2"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L79kIZ1458257
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 09:16:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	isR6N7oua6mI9Dmgnu3gC3e9cJewlveSIcCXH4NLuyY=; b=fGRvcwqCJZhEzECr
-	FMHMTJce9NFzwUvxWQ9gGKTW3DUJEGaQ1KF0J8jMmimCE9ZT/u/lAmXKztrw+ffc
-	/lIaNgUuReSay/rwbgpEy7V/gt76GmmTMWBd10wd1HKxcCz7L5EAfrf9Py7qvNck
-	Pb+fYUcZnBKC++yTEitn5OptTABxkyNDs0CVaw8mqAxJ7osuvCr6lHf+H5wL2OQw
-	ko38k0RtZUDBQSwnnLEyLV0wBWSssLZdIKeMF6Ht/IQJVH8TJQHYywFLsEIG6LNE
-	gj/L9EeSmpDg0iFknUlOqPj0UWZ2aB0S6j019gNx4sJqhaaQWhX+HnsXHVGHP7PA
-	g0CYXA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gtt3v9msk-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 09:16:26 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-939f925ba4eso386704585a.3
-        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 02:16:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789982185; x=1790586985; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=isR6N7oua6mI9Dmgnu3gC3e9cJewlveSIcCXH4NLuyY=;
-        b=RJ3oTVK27Yh/kGuki+wa50q54Y43Qt8kzloJ3xuMWzukTLePdJsuqDKmoNkv3BJw9N
-         s1wxelBR0vvByxmROS0YdkOETGY+sm9KndFUmxztuym/5j582bbCKh5nrgk7luWEi+/P
-         8u1L4YbnWeoeN1+nu16aQP4Inkib3WVYGgIHkWmJ7X40kTtc7weXOU1EVabgvyKe0WCb
-         AWCxdLaf5QVoRafpKD3uW/ovxIMVC4U5L2isSoYpbmE8MQ3xW/gtGy1V7fCDPStuT2A/
-         f2CJh7p1meYt1LlMMeDEBrn0g27NnhD/v429zzyXT+U4NUGiw2QjnAmRcCvhEN4x8jen
-         ns8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789982185; x=1790586985;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=isR6N7oua6mI9Dmgnu3gC3e9cJewlveSIcCXH4NLuyY=;
-        b=iZfDCQjP0sTGfGny6FG7rXba24HPLbrjCvBqu5TRijTqXj5Y73r/URy1kNhz5mAtpM
-         yDWHh4tg/IoCcwVYcUyokTLsMN60Bafw26JzfklxwGejr8YvW036PCZCK8Ybg0obDZk4
-         +GnJsatM0XLHQkblRafpATqMfbhGsKtUdrKydlv5nB9/2obNmqvpYybc/WfBTcBXKRqz
-         MV8MrYSeaLasSmdx8RbETvX5/WtxC9rcqbYc5wRVm0VmnSuxE2nalWEqt+LtUlxYDVy2
-         wSFG5kPVWSmk9pv4jyaYokTu8tyLA+dQw5Ge/RUrcShozDR6ABRVOMEDIY9DqRLJetge
-         Docg==
-X-Forwarded-Encrypted: i=1; AKwUvBxVC+gTwJXjG4rAaFZb7VCGElStIMohM6aa3e6C3LVwT5lFLhYU0LVUbRtoY802H3+IIMw=@lists.linux.dev
-X-Gm-Message-State: AFuF++mtPzP4XrhsYUAE+4o455D/MS0yxz118Q+A1RONpCURMiIjR730
-	+BG9MPz2G05bIPeA2R7jjSkH85K++SgCnIzpRRnwKDvAKVkrvhpYM+FpfaCkX8cmkzY5gnGSXAe
-	fDNAeuFn2o8VPmEabp3f4Jv5uaol7NTjzbaGIThJiqWs94BzsgaYEAsI=
-X-Gm-Gg: AYBFou00Z31py++B+PJa1dH4hdhsH81kMRDZX3M1azNr8k00W/ihdI0th0lVTor1LUw
-	ypFJ4sSVz6/Evmx6T8AYx03WwcX622DILJ2JUrId+0cWxvR/iD8qcsz2SAEUtfI/c1VnPq4NJG1
-	LU/NWhwhIuQbzoGiEuynYYcDYxrPHgOthhmReL05cZDxt5LSwuqXMx8dLDb03Sny2yBzojJr7FL
-	8mjSS4dr/sY2XKZtidUOLr6YrVUupal9mRl4SGPOrdf3GpdvuEmU2W1V7bzgihJQw4YvipExnht
-	SSgWkwpe/RdD33qYHZjaBlrO4nSa8z+LBE2ZqMbLyeTmPRbXT8lVLKerLR5sNHn+29Md7hGxGwe
-	qdDrAy3eW44EZjQ81VsoULw49wg==
-X-Received: by 2002:a05:620a:2810:b0:939:5ba5:28c5 with SMTP id af79cd13be357-93bf5564a5fmr817540185a.17.1789982185262;
-        Mon, 21 Sep 2026 02:16:25 -0700 (PDT)
-X-Received: by 2002:a05:620a:2810:b0:939:5ba5:28c5 with SMTP id af79cd13be357-93bf5564a5fmr817538385a.17.1789982184876;
-        Mon, 21 Sep 2026 02:16:24 -0700 (PDT)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:d04:d483:faad:1e4e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-487243cede9sm23544040f8f.0.2026.09.21.02.16.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 02:16:23 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Mehmet Fide <mehmet.fide@gmail.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        Haibo Chen <haibo.chen@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-        Jacky Bai <ping.bai@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
-        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Mehmet Fide <mehmet.fide@screeningeagle.com>
-Subject: Re: (subset) [PATCH v6 0/4] gpio: mmio: report the line direction on chips without direction registers
-Date: Mon, 21 Sep 2026 11:16:21 +0200
-Message-ID: <178998209530.39208.11869939955617063502.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260915080501.329424-1-mehmet.fide@gmail.com>
-References: <20260915080501.329424-1-mehmet.fide@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="vOWS1hAy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JoX3I7i1Bx3JeNVCE9xSq09FEjYAlhqjJoLHzzd0XYJmsWH2nnqQqXE/Rdm3QN4+W0lOfY9fXFrPq9UzAhwRIlh0XhT9s3exGMjMFXlyAOK1Xl+qcz9wylKPWJUAHzTUHqhB41UNDuUkO8tpF6YcxRlazC1Orv4+q2PD1u5zBdN8h0jy9JRG4D9zeKDPXN8IzpBGIOAXu01EDhYFjAkauicNw9F+R56z5iNm+FGuX9W/fii5pj7P4F8FyVHfmrXEatF3ONZmp/mRzAo11qSjLJT9Mf3U7hkdpklQWEUceDAdn8nH583xw2o7uGmiPwivfmDM/5QqPvTCSk/nQ/xC6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AFVWKrhPbwSnEyDc8bnTKPyGJTHU0RsVYpSYucpsuWE=;
+ b=dXvomnL8IEZHEyevP4nFFfWHxbHmkG9I0fcBwi1TSzjQYwSAgkzmbjkIjtS/tGH56PJVEOm8LUJMMeELegY8UceGl2WOyWV6qqaxLBUJ1kERp9FL1gC44zLUEGKvYBS5CzUtC26zFDAkD8Muqk4vk1C8OmXSSEdFSiTxS1x3q7M3OiQbb3zz9sfe2Rfx12SLdYe4MQuJueLcihgPStfL+STt3i9oy/0+Ae2vGjeeXF6ggjziBg7LVNdEy2GrKKNsXQiGJ2DQQkZxWZM9hSs5aBtUmDaO40piNvUSXY5Ql+sgKQKNOhx0yBwahjyOo5przJFDCN/x4uir48bN9A5Grg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AFVWKrhPbwSnEyDc8bnTKPyGJTHU0RsVYpSYucpsuWE=;
+ b=vOWS1hAyUgMmHXsXXNErE7x7zk7HW2zg7UqF8bP1Y4mHW0uafSxj70mH9ZXGR4JpRuwZ0fe2tHHOpafiEn0Tns2qsJ4wPBTDgoRqQCA/1z4seJkDw3Dh/V/SXEL6zMsemhTmkg3Su7HSPzvPgoRSnCDRsFejI/xYyC+xTr6b0aeM55S9ZJRRpb/VbiydDp0B+ncK+6JmQ+YmOh4xjOu90Tc3U39hub6l748z6OSRg8L8CTPTEeBG2EuhSORsZE2KgpwyIvG7kmqGBu2oIOlVidb/yOQJJK1oKt8DZFJ+RdVLmceJrOZDgH4O13IAKJW+8LwhtpFSRE8REJUie4q3CQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22) by PAXPR04MB9595.eurprd04.prod.outlook.com
+ (2603:10a6:102:23d::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Mon, 21 Sep
+ 2026 09:25:04 +0000
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 09:25:02 +0000
+Date: Mon, 21 Sep 2026 17:29:23 +0800
+From: Bough Chen <haibo.chen@oss.nxp.com>
+To: chunyuzhiqiang <chunyuzhiqiang@yinhe.ht>
+Cc: imx@lists.linux.dev, shawnguo@kernel.org, mkl@pengutronix.de
+Subject: Re: [PATCH] can: flexcan: fix synchronous external abort in
+ flexcan_get_berr_counter()
+Message-ID: <20260921092923.jwyluujse2uet3js@shlinux89>
+References: <20260915063522.3010750-1-chunyuzhiqiang@yinhe.ht>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915063522.3010750-1-chunyuzhiqiang@yinhe.ht>
+X-ClientProxiedBy: SI3PR01CA0004.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::15) To PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Ytia1IYX c=1 sm=1 tr=0 ts=6ab0f5ea cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=VwQbUJbxAAAA:8
- a=anw-P6zLAAAA:8 a=EUspDBNiAAAA:8 a=niCvQgg7AacVuODDKsUA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=7_zPmhNiJtJTypZd5sO0:22
-X-Proofpoint-ORIG-GUID: TkLzjUAsSSLA8GSbozUK09Nr8w3OgEbT
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEzMSBTYWx0ZWRfXzjyz+lM/Kzo1
- PNFmeJtfo4DOA8O2AGJYcEFG5R90nF4Lg5ElmEqjTOBgSB0c7uI8YS8UMyxaixqtOpAqCa+48zF
- IBX1gax8vs8WhE1uRNcmBYnblhJpPOY=
-X-Proofpoint-GUID: TkLzjUAsSSLA8GSbozUK09Nr8w3OgEbT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEzMSBTYWx0ZWRfX0zK8u9bIfalv
- 0W32G8p3QxtxwzxA7HBSRV/4SvYNR78h+ZhMu07OAJz9AZ8AhhJe7wW56Kd8qRHivM0uJk6tnGH
- SkysDVH7Zu45nrymQy5+u3H78bwd7+RHQ+yWtsXwKbueydrRtdkWse6g+mWSdGBARbvkH2IUPC/
- omL3YfZr3Equ4Ih1D4Ib5zc0V0q13s2avPyC7dY9/g4TrpwIvhkrN+1WVPbBnt2A+n8p114/NSf
- oQcylNHKFyw5LSDNidVT3h/aZCROsZJA4jGdObq0H5OubunsF/5oyGNgIrvtnnl5KDUo+yUz//k
- 00Yxa1ru93/GA+FoU44kvDiS/IJ09BzbQEYQaNYbq9x6hQvRQNB5H+J17uerpf9Bc89lTBnDIne
- vO4sJvHeCWk6/YdOiTfeYGWv4KtZaFK0IoONHmygUfS9o4KYUM/e6HbWcixr+a6jnDAB0UkVPZv
- Uz9nHMwnWzsBTc7hMyQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_03,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0
- clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210131
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|PAXPR04MB9595:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56d0f478-e46d-4b9d-d0ec-08df17c236c1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|376014|23010399003|1800799024|6133799003|3023799007|10067099003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	eZf2TZwkfPfGLMYkTAzGCH8VBqRNOHR0rkJUdSzGW/ziwNWjDKOtLO0+KVR87FirD6FAQEjeT9dOt09xA2DDQLa3xHIdFUOL8mJuGgUHz8o7AdcVMj8VvvaAbIrvi5WeuGdiijHSpsC23Uz/QEpPOxOwsE01NSwYb3e6sQhvGlSZZ9+e7eiTfYHSdvpAFkthavMyNNfaDSHZ02SxQvnbNmONTlztG45RWsaPyppiZFEJB943RxiXKtzRxc/S4T4HUsLVEFnDBI9pWkOmhnwwiTfZfqTApRQcBHWf2vhwV0xq7ni8flAHGG/635SeNiLT6DuxyTrBpiS4q7X4BrkmREJBlz4NrAMD3wtqr85JoCe3SaBt1FwJXIRtpp/0bgiNJvnI3Xphf1iLuk/lOIJmiflrOqRatAUULIYqDuwLMFRbGZmUwGyHyHYshhwTYGSNKTzfOfpYSMfe63pkdkZD61CyPHlJq4PO0CLB5plk7FKNUMgitggK9xGtN87MUZsm6EjiZdMj5aK6XjIJcaZq3x7rm2WYqiYbmWG4QTREM4+wAfT3S/PHkcKJXJULH0hbHAqg5SweyJK7l/VZ24N1ZZ6f4/vZ0Bm3p1BtZsMV1vxcWyc17JAfol2rliWF111gYGRc7iwU9lG6m5+5LFM7zj/IkswWMdkVF60pBz9da7s=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(23010399003)(1800799024)(6133799003)(3023799007)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OXQmWupdtNkPHUgohBjn/JBQoSUArwl/MM0VSsdudlWrHBx2YxVrjcTOooHt?=
+ =?us-ascii?Q?8/cweF994QVQb02QtQS8fWtPQz7qMJN5cj5iGTm3eYElxNiX64A5bP2xnurQ?=
+ =?us-ascii?Q?+xY6a3VgopcUf9JvKZqO0ABg/MFAtRQO5OfZKYCh55HycJr+m/v/uF6MOAp4?=
+ =?us-ascii?Q?O9837QNDMOjpPXjD7GCjn6VpgysaEBW3ruaumEssTo52Atw6MgtkVC58Y7Zl?=
+ =?us-ascii?Q?GqcLzGdmoEOdx9EB1yMVyN02JbyzxgXQsaLlDhte799RXR/NhoD5Y4ouEBEu?=
+ =?us-ascii?Q?8rCG2Zu5ixKwPVts2JJuOUfFhdJ0UVNioym/OhDYcWdAiozPJ7oWvf9SZX/G?=
+ =?us-ascii?Q?n+RYpd7V1Io6Er/6oQsDaZxmwzruu6kIvLz34yNxZTPYECuHquCWGkR/JZWn?=
+ =?us-ascii?Q?GeKGFCXBcyx7ml9Q9H0VeVEpLVoAcFekacb8La1iGCjIqKuXOaEIyYwO7PmT?=
+ =?us-ascii?Q?Dx+ymPnaiKqx+Of6NCE1NAyacV8iRoKlO5uoiAOtt8Eod3grHu056qTWiN2k?=
+ =?us-ascii?Q?IqdKwg1TRQobkomjrvnWEvzyz4lwF5/Q++WbWcVDUdXEB7HgPwxea55YwUyl?=
+ =?us-ascii?Q?TzgchNBBWEJhIE7T5n2VVYgkLKyPY3qpSJA5FeFFNHnXDMhA+1YHhBnSqHZI?=
+ =?us-ascii?Q?BcH4kyTjiQPYcyiB6rpz2tON/KjCDPTP2GR4//4YVl+pIYH0Dl71Nvn2y1eK?=
+ =?us-ascii?Q?IH+FI3OayZ9Z22b1sdkci5PC/Mc3oTBlCazb62aa0HLPuLWd+6RKubud4+nh?=
+ =?us-ascii?Q?D42beQxm4vvdUGbzJuD8o3sT3qc3+7Hg8qgTD5tMg+NbBHc8nNgrxqUcZthb?=
+ =?us-ascii?Q?sgcMLbmspwl9Ph4JAP67w0eDRSfpQIyo1J2iX2fgmbvjAMQbnovYd/IqdycX?=
+ =?us-ascii?Q?H4CHBrt7BgycEXDabVv6F+PBSIBbPuVHI+hFgqf1EpEad20YsImyqtbNks2j?=
+ =?us-ascii?Q?DpuYNTwN2Ck7yoXYj6leYVR4k/JrB7tyJ18wxlS7n/qSr8B/xlqs3bXvdJj4?=
+ =?us-ascii?Q?io9RIvP0D/3KhDYB87Z2f/4HMliwAOv7XPu9UQKFhIFJb5nLAlrDORp6aQ3A?=
+ =?us-ascii?Q?K95P6d7eIfDvt2hi9A466lOd/zFjOPutDph6feX6IThnaJ6vNkrdz4IaALUn?=
+ =?us-ascii?Q?tQjVSTyqG2gpZfLOBmX6vq7qX5yJKGttZuAnUDP6uKiuL6bQxo18y0tFuTV8?=
+ =?us-ascii?Q?ohrVaS0piVJAbw+UU+eP36i86p0drILJdHDkcmFDh1TUiQXE1Riz3001hRer?=
+ =?us-ascii?Q?hhez/EJaKOW9pbgIEzEu7Ovx3stTJajMTGhUWxpsW8XPGD9Je4dbNclhActx?=
+ =?us-ascii?Q?kvxSXlvUDlQyr/u9SWMt5/QGlezeIuQ/v6tWDjoG82Q/rlmLNmFBtfTZdvsF?=
+ =?us-ascii?Q?uU1mMybweRTcVPqZTIVhLFHBK+1X7gktPNRu98Q1CSK73KSJPyhmCnUOR+Gf?=
+ =?us-ascii?Q?weeDTFSW1BqXY8BJ7WNVRAimhb9dOgmj04FmqQSMpm0+dtPzEnGvXu5nmiTg?=
+ =?us-ascii?Q?KA6Gaok9Pnzaz56bvjvLwf5r+d6i404poj510waaVjOrKi6hYDeC5GJw9M7n?=
+ =?us-ascii?Q?Fi6KeNOxNg9AcMvKU7orgmq8SI+iebAJZugKswqaX6GymTWDLpnckM+uonW4?=
+ =?us-ascii?Q?MXRBQs8gxK7vw3+wmZm8BE2AwaLCMO9GVyZBq+gXXKIA9XJYQIYwOrvHWsPy?=
+ =?us-ascii?Q?HyXRuCqOMFobeMUF6dmHsFftXcwG5vedtgUoGqT4R/RYktZ2+0z/KBk3phSD?=
+ =?us-ascii?Q?YhqLTgeuLw7cFq57NWcEKwwFdm9dePNsoDRtdrdNnjL7Yxu4H/Ol?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56d0f478-e46d-4b9d-d0ec-08df17c236c1
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 09:25:02.5435
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iirtv6XHe/aE9j5hjdzUynvLxo79rtH81NMDZ8nQ/5pKJtGr/IxaY1kFE6EHWj3bASbrMD6KblKYgyCJX2JD5VxT2inOkGdY0h6jYht8BDc4ZTcyFsgvKcMX7yO7d6SV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9595
 
-
-On Tue, 15 Sep 2026 10:04:57 +0200, Mehmet Fide wrote:
-> From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+On Tue, Sep 15, 2026 at 02:35:22PM +0800, chunyuzhiqiang wrote:
+> From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 > 
-> Hi Bartosz, Linus,
+> When the FlexCAN interface is down, can_fill_info() still calls
+> flexcan_get_berr_counter() to fill the error counters for a netlink
+> dump. This function calls pm_runtime_resume_and_get(), which only
+> enables the clocks via flexcan_runtime_resume(), but does not clear
+> the MCR[MDIS] bit. Since the interface has never been opened, the
+> FlexCAN module is still disabled (MDIS=1) from register_flexcandev().
+> Accessing the ECR register then triggers a synchronous external abort.
 > 
-> this replaces the gpiolib guard patch [1], along the lines Bartosz
-> suggested there: instead of teaching gpiod_get_direction() to stay quiet
-> when a chip has no get_direction(), give gpio-mmio one and let the pin
-> controller tell it what the pad does.
+
+Hi ChunYuZhiQiang,
+
+Thanks for the patch. The fix direction is correct, but I think the
+root-cause description needs to be corrected before this goes upstream.
+
+The MDIS explanation doesn't hold. Setting MCR[MDIS]=1 only puts the CAN
+protocol engine into disable/low-power state; it does *not* make the
+register slave interface stop responding to bus accesses. Reading ECR
+with MDIS=1 on a powered, clocked FlexCAN module does not raise a
+synchronous external abort. In fact register_flexcandev() reads and
+writes MCR (and toggles MDIS via flexcan_chip_disable()/
+flexcan_chip_enable()) throughout probe without ever aborting. So "the
+module is still disabled (MDIS=1), therefore accessing ECR triggers a
+SEA" is not the actual mechanism.
+
+The real trigger is platform-specific: the register target is not truly
+clocked/powered when the access is issued. On i.MX8QXP the CAN clocks
+are gated through the SCU LPCG and the whole subsystem shares the
+IMX_SC_R_CAN_0 power domain. flexcan_runtime_resume() only calls
+flexcan_clks_enable(); combined with the LPCG e10858 synchronization
+erratum, there is a window where pm_runtime_resume_and_get() has
+returned but the clock has not actually reached the module yet. The
+immediate readl(&regs->ecr) in that window hits an un-clocked target and
+faults with the external abort (0x96000210, abort on load).
+
+This is why the abort is not reproducible on i.MX95 / i.MX952. Those
+SoCs use SCMI-based centralized clocking (IMX95_CLK_CANx /
+IMX952_CLK_CANx with BUSWAKEUP/BUSAON), have no LPCG e10858 erratum, and
+do not share one power domain across CAN instances. There, after
+pm_runtime_resume_and_get() returns the registers are genuinely
+accessible, so reading ECR is safe even with MDIS=1. This actually
+disproves the MDIS theory: if MDIS were the cause, i.MX95/i.MX952 would
+abort too, since MDIS=1 there as well.
+
+So the underlying issue is a logic flaw common to all platforms -
+can_fill_info() unconditionally calls do_get_berr_counter() regardless
+of interface state - but the SEA only manifests on topologies like
+i.MX8QXP. This is the same class of problem that was already fixed for
+m_can:
+
+  commit 91a55c72a821d ("can: m_can: m_can_get_berr_counter(): don't
+  wake up controller if interface is down")
+
+Suggestions for v2:
+
+1. Reword the commit message: drop the MDIS reasoning and instead state
+   that when the interface is down the controller may be unpowered / its
+   clock not yet settled (e.g. the i.MX8QXP SCU+LPCG topology), so
+   resuming and immediately accessing ECR can trigger an external abort.
+   Reference the m_can precedent above.
+
+2. Add a Fixes: tag (the runtime-PM introduction, or ec56acfef2af1 which
+   first added the clock enable in flexcan_get_berr_counter()).
+
+
+Thanks,
+Bough
+
+> This can be reproduced on an i.MX8QXP board by simply running
+> `ip link show` without ever bringing the CAN interface up:
 > 
-> [...]
-
-Applied, thanks!
-
-[3/4] gpiolib: add get_config() and gpiochip_generic_get_config()
-      https://git.kernel.org/brgl/c/fc291104d01a4e42b44132925c46655d4be5ed13
-[4/4] gpio: mmio: track the direction of chips without direction registers
-      https://git.kernel.org/brgl/c/b5c26686305e070ecb8a4af3acbc4aa92266029e
-
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+>     Internal error: synchronous external abort: 0000000096000210 [#1] PREEMPT SMP
+>     pc : flexcan_read_le+0x0/0x18
+>     lr : flexcan_get_berr_counter+0x4c/0x8c
+>     Call trace:
+>      flexcan_read_le+0x0/0x18
+>      can_fill_info+0x1f8/0x434
+>      rtnl_fill_ifinfo+0x8fc/0xbb4
+>      rtnl_dump_ifinfo+0x364/0x448
+>      ...
+> 
+> ftrace shows the exact path:
+> 
+>   can_fill_info() {
+>     flexcan_get_berr_counter() {
+>       __pm_runtime_resume() {
+>         rpm_resume()
+>           rpm_callback()
+>             __rpm_callback()
+>               pm_generic_runtime_resume()
+>                 flexcan_runtime_resume()
+>                   flexcan_clks_enable() {
+>                     clk_prepare(); clk_enable();
+>                     ...
+>                   }
+>       }
+>       do_mem_abort() {
+>         do_sea()
+>         ...
+>       }
+>     }
+>   }
+> 
+> Fix this by returning early if the interface is not running.
+> 
+> Tested on i.MX8QXP: after the patch, `ip link show` no longer triggers
+> the abort.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+> ---
+>  drivers/net/can/flexcan/flexcan-core.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+> index 06d5d35fc..b08779ee2 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+> @@ -765,6 +765,9 @@ static int flexcan_get_berr_counter(const struct net_device *dev,
+>  	const struct flexcan_priv *priv = netdev_priv(dev);
+>  	int err;
+>  
+> +	if (!netif_running(dev))
+> +		return 0;
+> +
+>  	err = pm_runtime_resume_and_get(priv->dev);
+>  	if (err < 0)
+>  		return err;
+> -- 
+> 2.47.3
+> 
