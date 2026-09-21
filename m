@@ -1,35 +1,67 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs2-f40.google.com (mail-vs2-f40.google.com [74.125.227.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C084FD78C
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 18:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4914501F3E
+	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 19:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790016224; cv=none; b=j5kZZ6PZ5Z/A2Hg8VLZOE2wbmeG48XkRvH03DNjp9nQb5lABPTrqdWY7OG1MEE0de9x/t+Oup/dpVW1ItasLsDhtPqF3oAd1phDgNGHHM8J96WDWuq8cPfBlREKNBqyU4DmvazHQBw/H6i1yADVOxOYdOmEdU/LTLkXiiijJKAE=
+	t=1790017346; cv=none; b=dMvzxZ7ZaHk1/Ynrzm3jltTzXnRJKUht0RkdxJJXuSGhBpRmj1jB5rPF4sV1vXY6SpExojRqIlz+hy5HA7NmU+77PtpXcLcFAnSXCHIGPMaQuJ6Ai0UQgKZumSTQodV+2FQIVHAPb243YfNVr8j2xCot+5vAivshjsSSp0OXnK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790016224; c=relaxed/simple;
-	bh=79Td6Ow26+fiN1SQqDAZSqIZfz1xoZOl3K2f9eaBKG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UJRyoVXwhlybTKKlnh1UXyl4Hz+mOLSmav4IPPWfPiVvhyn0D3Lo3x0YA8u8ACGZP5cLJhmzPisSyYHmz26B70kSXQi55h/jQFRBhSJ9sR5kPKHhagJH4CkNsXvyO9k+CRDx0YZMsi6WA0dMpld5HHKEYBWDQTCtY3euArZnYQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=aN2nhgCo; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1790017346; c=relaxed/simple;
+	bh=Xt2My9d1ZnGzWqEb1isRLvU2Ix5KpWtA+uFdwmPk1pc=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=T3GW1MAdJRpbj+PhE/qiQRDk0qyms4/TCdnIOqqsVCFRws3VDvGrrAkZlN1NVCOtyLDWs7XJldePR1UwxTaFmqxlSkkozRW35tD/C5+SbpIdnGgBKIv/tBOXoaZN+SLZRdJG5GOYWhukcEw+Nzg//t9p9qYGycm3NNWYl+eCqF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=brivo.com; spf=pass smtp.mailfrom=brivo.com; dkim=pass (2048-bit key) header.d=brivo.com header.i=@brivo.com header.b=kxemZmZN; arc=none smtp.client-ip=74.125.227.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=brivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=brivo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="aN2nhgCo"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 352B51054BC;
-	Mon, 21 Sep 2026 20:43:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790016216;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Tx0BYBtzpR8M6ka00ktkwTGv2KodO45+NTWRQQO4iZo=;
-	b=aN2nhgCoSHJcpEueADAneHbrnmsARAzMi9G22VnUtge0hhR3S1J+imwNCdMWEd2j96t1g8
-	LgvDr9b42AFmm/5vXdcB7T0VgeoFKUaoWrL2G3lJ2bhlgcHjYcCLmHDXrZNXIlDGDrGR2o
-	unBTqt0yh4+JtRAH7I8cIk3DtdECBcOCk+OlNKYavJBaTvKGo7eClKXI5GXl3YeE0Gshca
-	3/3Rw4mcm65n1tJkv20nMCfwlKod3HTc9DX3SMwhdTa7CVyfZw1DwP8IyRk+uFE0nwXSln
-	Bq6D9kp2MkFwbnBNGtro2GiRdIBfeoRY4bs5FZKaTZ0VEF/N8mD3umDtYoKfFw==
-Message-ID: <abd334fb-22d4-4b71-9d44-4aa3c2789b79@nabladev.com>
-Date: Mon, 21 Sep 2026 20:43:35 +0200
+	dkim=pass (2048-bit key) header.d=brivo.com header.i=@brivo.com header.b="kxemZmZN"
+Received: by mail-vs2-f40.google.com with SMTP id ada2fe7eead31-7a05d236f53so1850942137.1
+        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 12:02:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brivo.com; s=google; t=1790017341; x=1790622141; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:subject:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GFcZ8v2IrQlVXsS28/gxish2Yf7RjcBy4ak1q2e8MoU=;
+        b=kxemZmZNZNCIM/kFVAUUqW6I6/yRmEbB1z2gfGR2EZgBKqfplXjd7hqAsG8K9L2COK
+         YBGxG59A5+fHVEdzQyULw0kpxWkLbt3hD8z1UwcnoWl47ZZIYMUV3VcPFMo8fmZRlFpn
+         sSdZX3V23z5s3KkC/NYb11hnPG6uH/Zc0HOul+D5RUckwghgha14fmLpIaF4nAkLIMC6
+         8zOUxE5y3R4xv4A8JPDJCx77CjWTzEYGiogc6VuG9TBxvYF5Rpkd1aN1SozoyQZpktbS
+         dqNK+UpDIs5H6CAz5BikrcTVJNBDUPsCMS3Oh57EruSdTLWoXCEQd9kZtLlRJ148aVeT
+         ajgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790017341; x=1790622141;
+        h=content-transfer-encoding:content-type:subject:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GFcZ8v2IrQlVXsS28/gxish2Yf7RjcBy4ak1q2e8MoU=;
+        b=0jlVYh/VKQVzLf3L2YLEP24KFTOZdQoUuOQO809HM6VuIlXaYlajVmEKO7l+iOyUAQ
+         Ygx+Ipj6+sYt4CYpgHDG09peqmpb1FVc0yzI1xuuhBUOf58oyp3KA3+TkSR8E+1pDywu
+         N3Pnf8mDZyaZfWAbKnryyYxV+dBJ59WpR4/N0OA+vu7DX0Fq5TqUHBDzZt0BqcU8X/aC
+         /os4oaaS4A3l3g0XQ7D1KVNe5SL5KkqkKGWgFeDb+Qt5u1224dTsX9fC4Xdc1CeJ+tXo
+         ko45SQSIbO0jGXJjXXxnqgVx2UUhNk4p0+ORLB6ex44uEUIlYytR1O792hgRKZO1q+il
+         W5uQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzQN6hZBrzrKKkGWpzt24Z0f6tUBU2wncbftQ09haLor1d9Z3gD1MIwL+0O2v+sECReGtw=@lists.linux.dev
+X-Gm-Message-State: AFuF++l21koSNDHwuxIP4vYCdYzuiZ9kojzx/TB+JgcQxxyCLI8YvSyC
+	zVo9OlSakbaBeNbt8BQf4ZFT04FXHQmyOZYTTDrVO425MWuhWi6Kk+y/5qL0pPWZToHjFLQkcVQ
+	jtJeUR6bPjg0wz8aqsyzxIIJfp+3JgeSZ/VRDxJ1tYmEk4P4=
+X-Gm-Gg: AYBFou3agLttNDNlbcNNQNlHdwLqjVTYGWUNn4BWKXxYTOez0TqUJ0U6REWfCJXcM47
+	LOj/tOmyl5Z1JJDr5FP8p2xfzBlsVbcuRG1Q9Y2YRzG8L8VFsmmu6TdFRlNLwVO4rX4ZWCr+qGQ
+	HBe2N4StBMBr1Uv89TX1D3+fpq5d6p9WLDCqG3A5zZbHXHCV54qM/PVIafts2DJ8BdWWy905j2b
+	lwM5CFDoHhlpPy9MTQQQZvcjIML/fWV7LLJuT1p65ll90qKxAREjtqr1IAwNmP7njx8m9OK1oHW
+	iQ83lZoQVENRDHzEoMvkbAM8xTfMjR/TmQ2/Kcsqab4ek5gIlzY8sRxr5Jg0t7S0R50X/HfNAkc
+	1am8NruC6v4WgnW7VKKXiSFdpq8UlEwTkQzyx3FxKeVoN0vHdqEb95W1cqUYEdF3Nxplm/5arpK
+	MMRRz8S5h9CEbRN5ddLSNLjtVSrCumWPWI1deKpJ6+iiyXz6pPDx+zaX3zCrOpvn7nAH5BcK6Qg
+	UXs
+X-Received: by 2002:a05:6102:2922:b0:7a3:4e75:d1f0 with SMTP id ada2fe7eead31-7a55d38b2b7mr6284952137.23.1790017341074;
+        Mon, 21 Sep 2026 12:02:21 -0700 (PDT)
+Received: from [10.200.233.210] ([71.163.254.246])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7aad2e36ea7sm8429137.4.2026.09.21.12.02.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 12:02:20 -0700 (PDT)
+Message-ID: <d90c0eec-728b-4607-b480-86b2534559c4@brivo.com>
+Date: Mon, 21 Sep 2026 15:02:19 -0400
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,74 +69,192 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, robh@kernel.org,
- Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org,
- Oliver Hartkopp <socketcan@hartkopp.net>,
- Oleksij Rempel <o.rempel@pengutronix.de>, linux-can@vger.kernel.org,
- Vincent Mailhol <mailhol@kernel.org>, devicetree@vger.kernel.org
-References: <20260917062543.534416-3-marex@nabladev.com>
- <20260917063512.C71F51F000FF@smtp.kernel.org> <aqwbBQUSfd60nVeI@SMW015318>
- <384c5f71-d5ab-4990-9567-027605457439@nabladev.com>
- <aqw1agBrSjYoy71_@SMW015318>
- <c1197d8e-add5-48b7-b0ba-a5a91379ab04@nabladev.com>
- <aq1DnBkxgF49QLwa@SMW015318>
- <bca6ea91-297b-4316-b5db-74636593b084@nabladev.com>
- <arFaPA6aeFey9WlI@SMW015318>
- <c43d3f57-8268-45f2-a654-a11ee4adb72d@nabladev.com>
- <arFlScBqnMDmJi2O@SMW015318>
 Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <arFlScBqnMDmJi2O@SMW015318>
+From: Sean Anderson <sanderson@brivo.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ linux-pwm@vger.kernel.org
+Cc: Brian Masney <bmasney@redhat.com>, linux-kernel@vger.kernel.org,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org
+Subject: Potential deadlock in clk-pwm
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/21/26 7:11 PM, Frank Li wrote:
+Hi,
 
-Hello Frank,
+I found a potential deadlock in clk-pwm with lockdep. The problem occurs
+when a multi-channel PWM calls a clock function (such as clk_get_rate) in
+its apply callback. If one channel of the PWM is used for a clk-pwm, and
+another channel is used for some other purpose, then the following deadlock
+can occur:
 
->>>>> But why DTO need update regulator-panel-vcc's gpio informaiton. I suppose
->>>>> it is fixed when board design.
->>>>
->>>> It is just a GPIO, it can have either polarity depending on the regulator
->>>> that it controls.
->>>
->>> Understand, But the problem is why polarity change after board design?
->>>
->>> If reg_panel_vcc is on added on boards,  should it be in dtso file also to
->>> match your hardware design correctly?
->>
->> We want to avoid duplication in the DTOs files, do we not ?
-> 
-> Yes, but there are not dtso file yet, I don't know how to share it yet.
+CPU0                        CPU1
+====================== =========================
+pwm_get_state_hw(chip)
+  guard(pwmchip)(chip)
+		       clk_get_scaled_duty_cycle(clkb)
+		        clk_prepare_lock()
+		        clk_pwm_get_duty_cycle(clkb)
+		         pwm_get_state_hw(chip)
+		          guard(pwmchip)(chip)
+  chip->get_state()
+   clk_get_rate(clka)
+    clk_prepare_lock()
 
-Yes, there is no DTSO, because there is no DPU support for MX95, so 
-display support in upstream is missing (check with Victor Liu, they 
-might know more about the current state).
+The same scenario can play out with apply instead of get_state.  I don't
+think this can really be fixed in clk-pwm. That driver doesn't have control
+over whether it's called with prepare_lock held or not, and it has to call
+into the PWM API in order to do anything.
 
->> Hence, base common stuff in the base DT, stuff that changes in the DTOs.
-> 
-> Idea is good, but avoid hack stuff. Can you show me what's plan use
-> reg_panel_vcc in dtso and how to share it.
-See above, currently I cannot really use the regulator, because of the 
-missing DPU support. The only DTO I temporarily have in tree (used with 
-my DPU patchset) is for the RPi 7" display 2, which does not use this 
-regulator.
+One approach could be to convert the PWM drivers to avoid calling any
+(sleeping) clock functions from apply. Fortunately, it seems like there are
+not that many drivers used in-tree:
 
-The plan is to use it the same way as on the MX8MM/MX8MP eDM SBC in the DTO:
+- pwm-imx27
+- pwm-meson (by far the most prolific user)
+- pwm-renesas-tpu
+- pwm-tiecap (doesn't call any clock functions from apply/get_state)
 
-&reg_panel_vcc {
-   gpios = <&i2c2_gpio_expander_20 17 GPIO_ACTIVE_HIGH>;
-   enable-active-high;
-   status = "okay";
-};
+and none of the in-tree users use any of the other channels AFAICT.
 
-or
+Unfortunately, converting these drivers to be atomic is non-trivial.
+All of them enable/prepare their parent clock only when necessary to save
+power. Converting them to prepare/disable in request/free could result
+in increased power usage if the parent turns on in prepare instead of
+enable. Additionally, pwm-meson also sets the clock rate for improved
+accuracy, and this would have to be removed.
 
-&reg_panel_vcc {
-   gpios = <&i2c2_gpio_expander_20 17 GPIO_ACTIVE_LOW>;
-   status = "okay";
-};
+I suspect that removing these features to fix a bug that can't occur on
+existing hardware would be well-received. On the other hand, pwms are
+exposed to userspace, so I think a privileged user could deadlock the
+system just by reading /sys/kernel/debug/pwm and
+/sys/kernel/debug/clk/<name>/clk_duty_cycle repeatedly.
+
+Does anyone have better ideas? I don't know if there's a way to catch this
+bug at runtime without lockdep. Non-atomic drivers are still OK as long as
+they don't take prepare_lock.
+
+--Sean
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.18.52-yocto-standard-00169-gbc0cb063dbe7-dirty #1 Not tainted
+------------------------------------------------------
+kworker/u16:2/47 is trying to acquire lock:
+ffff8000827d8968 (prepare_lock){+.+.}-{4:4}, at: clk_prepare_lock (drivers/clk/clk.c:228)
+
+but task is already holding lock:
+c5ff000002bc77c8 (&chip->nonatomic_lock){+.+.}-{4:4}, at: pwm_apply_might_sleep (drivers/pwm/core.c:43 drivers/pwm/core.c:54 drivers/pwm/core.c:747)
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&chip->nonatomic_lock){+.+.}-{4:4}:
+        __mutex_lock (kernel/locking/mutex.c:598 kernel/locking/mutex.c:760)
+        mutex_lock_nested (kernel/locking/mutex.c:812 (discriminator 1))
+        pwm_get_state_hw (drivers/pwm/core.c:43 drivers/pwm/core.c:54 drivers/pwm/core.c:812)
+        clk_pwm_get_duty_cycle (drivers/clk/clk-pwm.c:71)
+        clk_core_update_duty_cycle_nolock (drivers/clk/clk.c:3095)
+        __clk_register (drivers/clk/clk.c:4032 drivers/clk/clk.c:4380)
+        devm_clk_hw_register (drivers/clk/clk.c:4460 (discriminator 1) drivers/clk/clk.c:4684 (discriminator 1))
+        clk_pwm_probe (drivers/clk/clk-pwm.c:152)
+        platform_probe (drivers/base/platform.c:1377)
+        really_probe (drivers/base/dd.c:640 drivers/base/dd.c:718)
+        __driver_probe_device (drivers/base/dd.c:880)
+        driver_probe_device (drivers/base/dd.c:910)
+        __device_attach_driver (drivers/base/dd.c:1038)
+        bus_for_each_drv (drivers/base/bus.c:462)
+        __device_attach (drivers/base/dd.c:1110)
+        device_initial_probe (drivers/base/dd.c:1159)
+        bus_probe_device (drivers/base/bus.c:583)
+        deferred_probe_work_func (drivers/base/dd.c:124)
+        process_one_work (kernel/workqueue.c:3294)
+        worker_thread (kernel/workqueue.c:3377 kernel/workqueue.c:3458)
+        kthread (kernel/kthread.c:432)
+        ret_from_fork (/usr/src/debug/linux-yocto/6.18.52+git/arch/arm64/kernel/entry.S:860)
+
+-> #0 (prepare_lock){+.+.}-{4:4}:
+        __lock_acquire (kernel/locking/lockdep.c:3167 kernel/locking/lockdep.c:3286 kernel/locking/lockdep.c:3910 kernel/locking/lockdep.c:5239)
+        lock_acquire (kernel/locking/lockdep.c:5872 kernel/locking/lockdep.c:5829)
+        __mutex_lock (kernel/locking/mutex.c:598 kernel/locking/mutex.c:760)
+        mutex_lock_nested (kernel/locking/mutex.c:812 (discriminator 1))
+        clk_prepare_lock (drivers/clk/clk.c:228)
+        clk_set_rate (drivers/clk/clk.c:2592 drivers/clk/clk.c:2584)
+        meson_pwm_enable.isra.0 (drivers/pwm/pwm-meson.c:235)
+        meson_pwm_apply (drivers/pwm/pwm-meson.c:328)
+        __pwm_apply (drivers/pwm/core.c:707)
+        pwm_apply_might_sleep (drivers/pwm/core.c:761)
+        pwm_adjust_config (drivers/pwm/core.c:897)
+        pwm_regulator_probe (drivers/regulator/pwm-regulator.c:403)
+        platform_probe (drivers/base/platform.c:1377)
+        really_probe (drivers/base/dd.c:640 drivers/base/dd.c:718)
+        __driver_probe_device (drivers/base/dd.c:880)
+        driver_probe_device (drivers/base/dd.c:910)
+        __device_attach_driver (drivers/base/dd.c:1038)
+        bus_for_each_drv (drivers/base/bus.c:462)
+        __device_attach_async_helper (drivers/base/dd.c:1067)
+        async_run_entry_fn (kernel/async.c:129)
+        process_one_work (kernel/workqueue.c:3294)
+        worker_thread (kernel/workqueue.c:3377 kernel/workqueue.c:3458)
+        kthread (kernel/kthread.c:432)
+        ret_from_fork (/usr/src/debug/linux-yocto/6.18.52+git/arch/arm64/kernel/entry.S:860)
+
+other info that might help us debug this:
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(&chip->nonatomic_lock);
+                                lock(prepare_lock);
+                                lock(&chip->nonatomic_lock);
+   lock(prepare_lock);
+
+  *** DEADLOCK ***
+
+4 locks held by kworker/u16:2/47:
+  #0: 81ff0000003dc948 ((wq_completion)async){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3268)
+  #1: 02ff800083a37d10 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3269 (discriminator 1))
+  #2: afff000000a57140 (&dev->mutex){....}-{4:4}, at: __device_attach_async_helper (include/linux/device.h:1013 drivers/base/dd.c:1053)
+  #3: c5ff000002bc77c8 (&chip->nonatomic_lock){+.+.}-{4:4}, at: pwm_apply_might_sleep (drivers/pwm/core.c:43 drivers/pwm/core.c:54 drivers/pwm/core.c:747)
+
+stack backtrace:
+CPU: 3 UID: 0 PID: 47 Comm: kworker/u16:2 Not tainted 6.18.52-yocto-standard-00169-gbc0cb063dbe7-dirty #1 PREEMPT
+Hardware name: Blaze Edge 3.0 (DT)
+Workqueue: async async_run_entry_fn
+Call trace:
+  show_stack (arch/arm64/kernel/stacktrace.c:499) (C)
+  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+  dump_stack (lib/dump_stack.c:129)
+  print_circular_bug (kernel/locking/lockdep.c:2045)
+  check_noncircular (kernel/locking/lockdep.c:2177)
+  __lock_acquire (kernel/locking/lockdep.c:3167 kernel/locking/lockdep.c:3286 kernel/locking/lockdep.c:3910 kernel/locking/lockdep.c:5239)
+  lock_acquire (kernel/locking/lockdep.c:5872 kernel/locking/lockdep.c:5829)
+  __mutex_lock (kernel/locking/mutex.c:598 kernel/locking/mutex.c:760)
+  mutex_lock_nested (kernel/locking/mutex.c:812 (discriminator 1))
+  clk_prepare_lock (drivers/clk/clk.c:228)
+  clk_set_rate (drivers/clk/clk.c:2592 drivers/clk/clk.c:2584)
+  meson_pwm_enable.isra.0 (drivers/pwm/pwm-meson.c:235)
+  meson_pwm_apply (drivers/pwm/pwm-meson.c:328)
+  __pwm_apply (drivers/pwm/core.c:707)
+  pwm_apply_might_sleep (drivers/pwm/core.c:761)
+  pwm_adjust_config (drivers/pwm/core.c:897)
+  pwm_regulator_probe (drivers/regulator/pwm-regulator.c:403)
+  platform_probe (drivers/base/platform.c:1377)
+  really_probe (drivers/base/dd.c:640 drivers/base/dd.c:718)
+  __driver_probe_device (drivers/base/dd.c:880)
+  driver_probe_device (drivers/base/dd.c:910)
+  __device_attach_driver (drivers/base/dd.c:1038)
+  bus_for_each_drv (drivers/base/bus.c:462)
+  __device_attach_async_helper (drivers/base/dd.c:1067)
+  async_run_entry_fn (kernel/async.c:129)
+  process_one_work (kernel/workqueue.c:3294)
+  worker_thread (kernel/workqueue.c:3377 kernel/workqueue.c:3458)
+  kthread (kernel/kthread.c:432)
+  ret_from_fork (/usr/src/debug/linux-yocto/6.18.52+git/arch/arm64/kernel/entry.S:860)
