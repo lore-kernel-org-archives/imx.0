@@ -1,131 +1,108 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EFB331EB5
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 03:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CB8207DF7;
+	Mon, 21 Sep 2026 04:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789961865; cv=none; b=GVPAO6pdo2u2SrJLoELdmG/wdtG54BkHh00+cXSWto+DNnVPYYayTBxtW1B04dAjcALzZKa5rDmGlSCxWBHBnhSKHkKIR1osLV8NWaYmCoOGcSbuulnCIOJm6f8wEXwyGMc73vLtvKNg4zW9am/RNd9opFJbLm6x1zdZt4aAMt8=
+	t=1789966210; cv=none; b=bJWyv7ZKj6kgHjaPQG4e/0bCxV1b9liDI8HlXy0WokORDqE97QH6CO1hybR7sfzymsuDp7G79GaOxs7B8G+ajiycRFiyXd1fRKnc0AGs9WGs8TK0tT4npEfw0EweOtjdDXz3vBlj9FhHTiGIe0w09NACM8u31oqBfs8Kvtmbzls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789961865; c=relaxed/simple;
-	bh=k13YmX7qihqE61VqxeV0hzmnuwQKmXHbWHJrlo38j/E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1BgMerHG1OPwtPXbRkIttjl6gv7cUVsrii7Xa9G0FsJYCpYblybPD3CGz0DjJwO3Rk2f9v+aYG+lwz2GqJs8PuYQsRCToo+LyzJp0//w2bpB9UWw/tcN4HrWvZ87hwinUniqxkiSRSkuloy8SXIQXRwtUHUoVNIhRz6QxVimMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4k36522; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789966210; c=relaxed/simple;
+	bh=j/KDQ7bOWT0f2Mzsl08+HcCJ5z+z/Gk9uDtBHhO1UuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dsjMIQ/7GpeYE0yu5YaYmsNcwy3XQ/M7ggRwY2KqiXvIjBcKxf2Kze9LTusKetvd2gbh9f2w06c4ViHR58NcpnC7bYj2YNnqDWOQKXNHBmLoosnNOZ1LE06u1KLC7z1eSspo41lLhgOAXV114g3HeY0uyj2WqNSb+wdI3hHng+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nZKNbYm6; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4k36522"
-Received: by mail-pj2-f42.google.com with SMTP id d9443c01a7336-2df4c9d14b8so752545ad.0
-        for <imx@lists.linux.dev>; Sun, 20 Sep 2026 20:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789961863; x=1790566663; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2A7bjFDm34OFInSMA2wk1n5UqXeKw0k+y9VVpS6ySqY=;
-        b=G4k36522bSzL6YnodYi0ZsowqH/JmNKZtftzSR26GVeYpMp0bXO4qgH9n0CneO/BEn
-         i8EyZ8VLqWTU+yVLkWoLN7QLx5p0vN00w6RjR1D3/w6T2Jw4HlD6hy9EgAcJ0LPHlW24
-         +rhR8GIsCaQa+ybtPYI9B8uhVnpN13FfVSZ3DsWYmrSy4Bd682gvGKdA58Km2c3Tdtt+
-         hKW686uX4+tf4J987m+iRcp2uKIy+ee6I56wm5HlwIC8iYmgwGn7I58YmySMRUEswgSj
-         xr1yLJDj0zvRwRhQGm6iYK4CZmNWg2mS73mwkXdnTcheqEYrAPiVc3bcNahyIo9iCDPe
-         W5Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789961863; x=1790566663;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2A7bjFDm34OFInSMA2wk1n5UqXeKw0k+y9VVpS6ySqY=;
-        b=kA1+JKJLOWaxfSRr96NXmLst9x1SxLGG+nZXNEMuX9Me0f1IyTjO27eBn9Bv5rxi4V
-         sgF2xzDYhQblF12XH5njXEzb4zj0phWB6PpP0Fg58/jfvgc7++PwIzzematM4iSv/5wU
-         1XTVr35FSnzf3PpUWsRHN6QQntJ4CsrmQd1LpcsHbpEMvjaBbmi2jCJufeY5aTQR4Uip
-         O7bwpZJHprdzUq1cMLB4frWibAG63sJwImqt6fkeXGWOiHbqrgCrDYws4MXjc7R0mkl3
-         1S4IJ6K9ZXQwH9w2YNa8lSicirWlW8grtt/2IEJJ3Q04SIYaljAYeTUo3f++0PV/dqAV
-         VoEg==
-X-Forwarded-Encrypted: i=1; AKwUvBxtkDEOWVg57rpK3opQfJMni2XOnvLcNJFcXOz+TqJP7N4CtpshLtai2ysiH/7xbTfZyhE=@lists.linux.dev
-X-Gm-Message-State: AFuF++k18H4YO5I+UNXoIbXANMGJRCnrmHoFZlD8fRCnBsrQqIa0njq7
-	ZSU6ye0bxMmWz+hVyiYunpctNjuw7uD0zZ2FcRTnpFwTcxye9jdOL5d4
-X-Gm-Gg: AYBFou3+ic/PnQxIb8XVZ7vYO714UMhc9/u59OxBGXOb2nAVTZ1MjdFyd+lyN+urq19
-	+MyifZUT/Ao4CpiJo0dV96FbXpwoheqHQhN3JVIstE9ssjSgjPKYenyWTpcqfwZF6RWLsFAeNRk
-	EePzTKZRxfNv+Nbey37icQS/a7ni9xfYClf5XwHAoVLROKQsZ0GtFu65HUbfuwDUJAobuzdvvm1
-	Xy0EMO3W0O+Bxp4mwCVD5lDTeLszKlcOk+Mq+Zygd+F2jITNKZh6YJ4akZvJoReqU9MwHZBI4kY
-	d1bJP4RRZ/Z7o7hlMCOLzhnPcpTIa/FWTzPwzltmV7749XdnrSIhw53RwDsVcLvp4YNwm0OTxu3
-	euV5HIYS4CO6c+1t+MNVma1lPiHZfgF9VTtgHUibLR5n9q4cYfiQDTT4n0ls0jZSppF87gS2/zu
-	iJ1Gk2vWTF/zcJgxpMn8XZp3NVV9X7Pfj8NixVN31gSuOUkczDyysHDTmrvGbBsIlT7JISHROB5
-	o7gGx+udMkM/U1iGz+cx5OF7pgY9FPo+gwRjsG/LvHIUyNApj6grAuxYwdmX+Z+mg25tE8vLoy5
-	XGB/wmoqvmBxak0=
-X-Received: by 2002:a17:903:38c7:b0:2dd:c100:2517 with SMTP id d9443c01a7336-2ddc10025aemr64473935ad.32.1789961863038;
-        Sun, 20 Sep 2026 20:37:43 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc18032d5sm25966515ad.83.2026.09.20.20.37.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 20:37:42 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Ulf Hansson <ulfh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nZKNbYm6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789966208; x=1821502208;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=j/KDQ7bOWT0f2Mzsl08+HcCJ5z+z/Gk9uDtBHhO1UuM=;
+  b=nZKNbYm67lgUsURa+sjuqmANXOmNcLnxVFqnY/2NC7r/XM8axTZL1RNi
+   LaqYlksd5ZqS2Myf9hTgMUDjFGI9EXAGThN9QnrCby/+MFVL2pP7WCPCO
+   dmwku9Xq5mo42PHfMX+j05Z18jAFYQX2OnL6wyG2ztfs7WSsHouYkcWgp
+   hASecek6mEg7x6d+Vv+zEsC38lQvH03UmeFayLfENbri4EvrRTG2f4FQs
+   5i3YNXPqPntTq1PyGrLXXTSXIwg6krCcwbKWLXcBA3TW+u2dPReXB610J
+   z8lcfpz8c9uhCWY9xmEPgZM+l63PLmRiquu2sRTpmo9dKWKu4Jy+1OFCk
+   Q==;
+X-CSE-ConnectionGUID: LyVtH3UXTSWfd/Tcri4HDA==
+X-CSE-MsgGUID: S+PAUES+QvuCWvrDJx/U8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="101804486"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="101804486"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 21:50:04 -0700
+X-CSE-ConnectionGUID: PqLy8kP3Tn2HzljFuWvJTw==
+X-CSE-MsgGUID: voYTxHdSSH+0L+7g4NUM9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="271633218"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa010.fm.intel.com with ESMTP; 20 Sep 2026 21:49:56 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 791E599; Mon, 21 Sep 2026 06:49:55 +0200 (CEST)
+Date: Mon, 21 Sep 2026 06:49:55 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Mika Westerberg <westeri@kernel.org>,
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+	Elie Morisse <syniurge@gmail.com>,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Devyn Liu <liudingyuan@h-partners.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	rafael.j.wysocki@intel.com,
-	Jacky Bai <ping.bai@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	u.kleine-koenig@baylibre.com,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 3/3] pmdomain: imx93-blk-ctrl: Use pm_runtime_resume_and_get()
-Date: Mon, 21 Sep 2026 10:37:08 +0700
-Message-ID: <20260921033708.14433-4-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260921033708.14433-1-phucduc.bui@gmail.com>
-References: <20260921033708.14433-1-phucduc.bui@gmail.com>
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Khalil Blaiech <kblaiech@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Israel Cepeda <israel.a.cepeda.lopez@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Hu <hanshu@zhaoxin.com>, George Cherian <gcherian@marvell.com>,
+	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH 1/2] i2c: i2c-core-acpi: use named initializers for
+ acpi_device_id
+Message-ID: <20260921044955.GK106095@black.igk.intel.com>
+References: <20260918-acpi-i2c-v1-0-caf4bea4886c@thegoodpenguin.co.uk>
+ <20260918-acpi-i2c-v1-1-caf4bea4886c@thegoodpenguin.co.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260918-acpi-i2c-v1-1-caf4bea4886c@thegoodpenguin.co.uk>
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+On Fri, Sep 18, 2026 at 02:01:50PM +0100, Pawel Zalewski wrote:
+> Use a designated initializer for the acpi_device_id fields which makes the
+> code more readable and consistent with how lists are initialized in the
+> rest of the kernel code base. Also drop explicitly setting fields to 0
+> where it is redundant.
+> 
+> Unify the list terminator to have a single space between the brackets and
+> no trailing comma.
+> 
+> Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
 
-Replace the open-coded pm_runtime_get_sync() + pm_runtime_put_noidle()
-error handling pattern with pm_runtime_resume_and_get(), which already
-does this internally.
-
-No functional change.
-
-Found by manual code inspection.
-
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
- drivers/pmdomain/imx/imx93-blk-ctrl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-index 243ce939ba68..6d4c55a85c64 100644
---- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-@@ -152,9 +152,8 @@ static int imx93_blk_ctrl_power_on(struct generic_pm_domain *genpd)
- 		return ret;
- 	}
- 
--	ret = pm_runtime_get_sync(bc->dev);
-+	ret = pm_runtime_resume_and_get(bc->dev);
- 	if (ret < 0) {
--		pm_runtime_put_noidle(bc->dev);
- 		dev_err(bc->dev, "failed to power up domain\n");
- 		goto disable_clk;
- 	}
--- 
-2.43.0
-
+Acked-by: Mika Westerberg <westeri@kernel.org>
