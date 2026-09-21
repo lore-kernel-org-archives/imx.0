@@ -1,65 +1,65 @@
 Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D7A339370
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 03:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8603385A5
+	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 03:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789961855; cv=none; b=X6EFXq33f4M3XEYW9lmtODOUGOaOjZuDwGUafyw7XfeOgABiqaHoBE1GjmfjMLnqhU+Frb+z/ErUuDBTktHFlXlKS8tf5IN79m+Nddf2YkuBE6ZSaQV7qabIVaZzywC53E0LaVk9U4JjOOdXzXxqXO21qVSHfWXbXKkpLmaxoyo=
+	t=1789961860; cv=none; b=OrzOA3MA2i0Qs6Xaucm82SLjhjOa+LMDwygUOHTbqtLRxJJyfF6N+9QigykuVfu0abHqHKkjbuWaO/ctVep5jwN6KYosrCqdjK8ycQ3acJMxmj53xsS+pbqR95cu9m14bh0xzEqURAahlwY0Ec3I54JHDLLBZpt6d+hVJwMRKTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789961855; c=relaxed/simple;
-	bh=RcS/Z7aQh0jY4Fp12QLKegu31U4ADuLak7CwB6A2Qnw=;
+	s=arc-20240116; t=1789961860; c=relaxed/simple;
+	bh=AlzIW28Y5xD5eAX4CX9xsq0gjSAmNnpDF69Est26CwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCYtnB7dM/U0ZBTVQfFMzKXgxQcgdp+Q6gCkfUMmncMeYsElX4K9d6MQUBpFSbg/NTFnJIRivu9bvWCXO2dpekAuyaLJSekCKRL9s7Ucds8ZF6Fam4Sl3eb3ZYY+yp9JspjHZmNwswTZ2AxQiogNA5LEatz2CPWLvYGSgN1SpS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=boBJSG1n; arc=none smtp.client-ip=74.125.227.140
+	 MIME-Version; b=C7Fa4c2wFeItIGdUv/QpPgv6/rS6DhteDPZSgRt/lIdQ4rC2Azlf+h8J2F1hTxbj8gv7bcwIhglN5ZymKWwY149GZFCj3Et5i5QbIn1FYDcNk1LpeW5wNCTKNjMgjVHVOwH/1v3pdAp6xJjH47Tuv096SHorsvRnzKXFHoY7g+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVbiyucn; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="boBJSG1n"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d91c22d27dso14058755ad.1
-        for <imx@lists.linux.dev>; Sun, 20 Sep 2026 20:37:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVbiyucn"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d91ede8035so29739525ad.3
+        for <imx@lists.linux.dev>; Sun, 20 Sep 2026 20:37:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789961853; x=1790566653; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1789961858; x=1790566658; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EBiZyYVBdz7e8MBo8dJNsuvO53JvDE+I2EWijeaOzYI=;
-        b=boBJSG1nXEhzAFmh2Tp3XukeUD38japtzdLhCy0zo8xPIbZykAU9h0nfkGn7IlyVdO
-         5FTEssYHSpdAyoCQ/5USwmVh+Qs28ZcePjbBC89nLk0MMeNAq1QNWK/Fchv1myxMVbE4
-         wJhYV6BsKn+PV4SwUnfqKNz65no3OWm7EaX2/Wk2MLoR6GPrpKLgKTToplS1yIkBiWk2
-         XxY+KP8NOnOg9Zs8bjFw136o02jr4AtbVFo9QOocDWv9UnWBNAiclJxOn6+jia4ST1tr
-         WRb9odTOtXbk7KzxgUjOHjavmkfC/BFxvkqwOfItFPuzW1UWeuMn5lvdmEK1kgel0P1Q
-         WS9Q==
+        bh=m+un6tjUHLWmwcQGwEsJ9cbCIh8rw9QkbUaL8mBGbKQ=;
+        b=KVbiyucn+EzYrnRTBQHRHmu8PLkwJnMp3S9qQA6ed7sO5ZfFIjyRarM6TgA2RamD39
+         CTo6VqNPMWMeQV+ELvpmJuuahV5Lww26r5KW96YckOnQhC1xw2QJJHCfGnbBXyTiQzDE
+         CVgtnf8rfmyU7TfFiGYw+qniR52plS/Hv+9DttepnIU5mYswLNXSN5M254Ierhp1NuHn
+         K9+/ujauzb0CWVOubEHND/wadj2rIwS3Wv/Z013yhVDdxTujjuxBBde1GwibFbGWGesU
+         fEVkvjMB4w5KMhToBYQEExJXuobKomR8JEENSZCTJ6U+l4GXYd3YcrAsmPBSqG/mjiAY
+         /SJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789961853; x=1790566653;
+        d=1e100.net; s=20260707; t=1789961858; x=1790566658;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EBiZyYVBdz7e8MBo8dJNsuvO53JvDE+I2EWijeaOzYI=;
-        b=mVAs6tT45Rb3B3fJNopyalFGsJuVT122DK+CZa5t9N3q/j4PyhV6u+Rt48rkQQn7ue
-         obsvTppKpUYNTLktnHmcwmD9xYk8/kBoDEff8Gc6O/fpGPtGIlrgJgk76cXGP+dteWuT
-         j3kLodGIbZG6SAv7VCnAVGdso97gHD3MtcAFzeDcWwg5DHP0Ys4UorXMG91JsQOPr+5D
-         iO9S2/171U7sCFxKvVq0cnmpDzjubdCvWxdSOyd8r6PD9LXPfIEzQrPQ3At5Ld/0IMPF
-         ChlIiEAS4N4kzP4oziXncPCyRaDH7CnZtgJ8uQmIP/TR41AcE5LKWAaRU8LjC/Vbqddo
-         9oaA==
-X-Forwarded-Encrypted: i=1; AKwUvBzVr6sImqDIOXm8bkOkLSvXNF5l8uDfH4kZRZQ/Q7MU3W1wXMSPOteTvM96HSv01pvxPt8=@lists.linux.dev
-X-Gm-Message-State: AFuF++m3xAAY2XI92rBT5d9OuHH7PmLFhXuEHsG9YbniFSoIhMnUFSSy
-	jlTFrUp4RV/hGFG7pYQMb3yDxu7fWMoLopLQ2pM52keAye4F6y+IiSue
-X-Gm-Gg: AYBFou17WSX94fsP1jV1UPHhWz4jidjMU3IDt/SWQhl69sfpPLr21AiOvAaLK1L4uBg
-	FDiTaHTwKyisF+FaOokx+I3xhalz7ZXzNoSsFJxph06ONpJeFCpejchMjRfY//IMcqjNWmpI+Vd
-	3psJ8KjOar8BAZuPfMdoU7G1KofSEWQKYCnGofLO+VLn2gLg0KfdAkZLlVSFf1aoNCxWZemSoFI
-	t5O7SvZWjIywDR5H488fCkgVCNVgqOgQjGuSlsvubMYl1dROrYxPxOTu2jzfzOdzkvN/d4gSkok
-	THiSBNWh2bfrTr4r7bm7PoWU7tjIxsBv/GbdZySrHYGL5m0gWTGw5H5pKx8bqkWFoG8RafyAoVm
-	rz2PIxhnUzhyKyqkrTSAAtlyBfeubYcRq6EMXAjm7dfu+QTYUtc3Z8J7E2zs+uBTYetWKdk9Xot
-	FCCRJAsXi59+XACNPnLQdDTnk8oMhT8fITyhmNkTyId3edInkfJskHpVje6DmkJBp2w8ECnDVES
-	JgQeV6l2Gj7XtxQELTd84kDSc7ifBovnhh/4WN9nIXl3dkx2SF/ZDgFHSGCKTIGxH5jyWyb67cZ
-	uDycKUHLY0K5FA==
-X-Received: by 2002:a17:903:468e:b0:2dd:c100:4b81 with SMTP id d9443c01a7336-2ddc1005f8cmr84060475ad.56.1789961852965;
-        Sun, 20 Sep 2026 20:37:32 -0700 (PDT)
+        bh=m+un6tjUHLWmwcQGwEsJ9cbCIh8rw9QkbUaL8mBGbKQ=;
+        b=icBA/ha1yM3nMZUaKNovwLGANT93XFUrkW3ZMXcRcQdbXGgzY7rkMs85SMFt+bKMHk
+         eBsyFcfYaCFCJAMdYPLId6S0suDv9cEHzbiI0AMM18+yzVkxuSKMg8r3QrkIGG/LbXfm
+         gtUkXHdNmJD2aZj3eRy4URyAUSKX4LdqEM1Tx1AkAcfmhIqyWkuBkWkzAi0mbwyFP43N
+         seAnhD+zEtTdm3agVi4b6J01vgApv9m3IhDa7yKEPBBv1RREwvAIJf0EmCUZoFHRGUea
+         FrAMCzDLINRbsxMqFlyDfFq7Z2i5xAxyLrr8tnRxqVfVjcEEZgdOR16f2CkFSj5lMGf1
+         c44Q==
+X-Forwarded-Encrypted: i=1; AKwUvByJva8SxmACMH7oVPJ8n6kGsveQfpE2xW3APfDFkSeC+eZp+MOyO0LKnHOrLIcVhHG6zso=@lists.linux.dev
+X-Gm-Message-State: AFuF++kWiDlq84A+7UqLUErOI3efWwpwie9kXHL7zoTJRhN43sIqwb+l
+	RkzTVj5viXuaKpetcByI22o0nnAVf9TzC7TTeKDGnRYYpMeQ6VbzRJpo
+X-Gm-Gg: AYBFou090izXF4+ZVkSoOzyyRfO/LYpELdlht5q/ZOitj2O9tThS0EjjioWCdM0SGz3
+	3OBWKtIUd2jSyz+yv1MS3HYuKt2FhON1CuA7dkOD1rgFeXqxtrCkyGWLvrBCkGn9EH+/4Nf0Pnm
+	ZDWxznfgCGDUCFO5jVrP+F/tyr/DFtwZBPSb9pE2Ot0WqodO/bNmh83O3bQndT9Z+Wu03iveaB/
+	G9B56kGW3+p8oDRKaERG6aU98zOiyJZw0AeDvEleXKFuwVB2qcAR/msiZ7HdK3mB88baqf8VymK
+	RfZQSPT5T1n/mnts4navxa52HZGV1nqF/frv7IKdvh+LH9odTzApnwf6K/+DQ//ILKW0DjZd6sL
+	SmefdP0gpNOjCb8XbCz7EELnse1pKIEPkHoysG/FjMrTESMqkWYZYOMikQ7F56lyWhG+5MImUHl
+	fsR7MiuieqjUWeOHPNQwiiUv7jztOCXlFoNJtZ2Ip/aof+pKfV29S2Zruy0kyvgoxYp5ju861ej
+	HYgnK0uskE7heg3s2sxSsHq548dsNCI00/HNi3IhHMtl76wlv9IQRALoLi+dO688OkpfbNyIufV
+	kTk1ED5m+RJ7IA==
+X-Received: by 2002:a17:903:324f:b0:2dd:c053:9c6c with SMTP id d9443c01a7336-2ddc0539d9cmr89231915ad.34.1789961858000;
+        Sun, 20 Sep 2026 20:37:38 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc18032d5sm25966515ad.83.2026.09.20.20.37.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc18032d5sm25966515ad.83.2026.09.20.20.37.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 20:37:32 -0700 (PDT)
+        Sun, 20 Sep 2026 20:37:37 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Ulf Hansson <ulfh@kernel.org>,
 	Frank Li <Frank.Li@nxp.com>,
@@ -82,9 +82,9 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 1/3] pmdomain: imx: gpcv2: Use pm_runtime_resume_and_get()
-Date: Mon, 21 Sep 2026 10:37:06 +0700
-Message-ID: <20260921033708.14433-2-phucduc.bui@gmail.com>
+Subject: [PATCH 2/3] pmdomain: imx8m-blk-ctrl: Use pm_runtime_resume_and_get()
+Date: Mon, 21 Sep 2026 10:37:07 +0700
+Message-ID: <20260921033708.14433-3-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260921033708.14433-1-phucduc.bui@gmail.com>
 References: <20260921033708.14433-1-phucduc.bui@gmail.com>
@@ -108,50 +108,49 @@ Found by manual code inspection.
 
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- drivers/pmdomain/imx/gpcv2.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-index a829f8da5be7..6a54ee734514 100644
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -317,11 +317,9 @@ static int imx_pgc_power_up(struct generic_pm_domain *genpd)
- 	u32 reg_val, pgc;
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 479789009c7f..fe083b1e7251 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -99,9 +99,8 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
  	int ret;
  
--	ret = pm_runtime_get_sync(domain->dev);
+ 	/* make sure bus domain is awake */
+-	ret = pm_runtime_get_sync(bc->bus_power_dev);
++	ret = pm_runtime_resume_and_get(bc->bus_power_dev);
+ 	if (ret < 0) {
+-		pm_runtime_put_noidle(bc->bus_power_dev);
+ 		dev_err(bc->dev, "failed to power up bus domain\n");
+ 		return ret;
+ 	}
+@@ -382,20 +381,16 @@ static int imx8m_blk_ctrl_suspend(struct device *dev)
+ 	 * in the system suspend/resume paths due to the device parent/child
+ 	 * hierarchy.
+ 	 */
+-	ret = pm_runtime_get_sync(bc->bus_power_dev);
 -	if (ret < 0) {
--		pm_runtime_put_noidle(domain->dev);
-+	ret = pm_runtime_resume_and_get(domain->dev);
+-		pm_runtime_put_noidle(bc->bus_power_dev);
++	ret = pm_runtime_resume_and_get(bc->bus_power_dev);
 +	if (ret < 0)
  		return ret;
 -	}
  
- 	if (!IS_ERR(domain->regulator)) {
- 		ret = regulator_enable(domain->regulator);
-@@ -1397,21 +1395,13 @@ static void imx_pgc_domain_remove(struct platform_device *pdev)
- #ifdef CONFIG_PM_SLEEP
- static int imx_pgc_domain_suspend(struct device *dev)
- {
--	int ret;
--
- 	/*
- 	 * This may look strange, but is done so the generic PM_SLEEP code
- 	 * can power down our domain and more importantly power it up again
- 	 * after resume, without tripping over our usage of runtime PM to
- 	 * power up/down the nested domains.
- 	 */
--	ret = pm_runtime_get_sync(dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(dev);
--		return ret;
--	}
--
--	return 0;
-+	return pm_runtime_resume_and_get(dev);
- }
+ 	for (i = 0; i < bc->onecell_data.num_domains; i++) {
+ 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
  
- static int imx_pgc_domain_resume(struct device *dev)
+-		ret = pm_runtime_get_sync(domain->power_dev);
+-		if (ret < 0) {
+-			pm_runtime_put_noidle(domain->power_dev);
++		ret = pm_runtime_resume_and_get(domain->power_dev);
++		if (ret < 0)
+ 			goto out_fail;
+-		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
