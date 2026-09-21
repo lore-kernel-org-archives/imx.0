@@ -1,70 +1,70 @@
-Received: from mail-vs2-f41.google.com (mail-vs2-f41.google.com [74.125.227.41])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6CD3905F8
-	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 07:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E42B3AE715
+	for <imx@lists.linux.dev>; Mon, 21 Sep 2026 07:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789974360; cv=none; b=AQ9+/17E/IOZFA2+3MPi+KPI5NukGEmZ2SAC6sLV6edcMJ3mkdHXxgeSL8r4jiCvXzYFsOtaPpUSczxf3QlAVvK85H4jXvSeF6cmZN7Uv1xtjiRx9JhrwxUho3YJTf0DzsgdlgLFiL3FLJgRzvwo5u+KFKWpI5l4rpg3Ci/6YC4=
+	t=1789974821; cv=none; b=H6xqFIk8S9jMttB4phe5y3v7u4Lcjh8u2BZ6NQ3dSahm2DQb09VCdhEXYVcsMcNyINkrWkLyDPVbhLd6dTpP9vBBjhK0+2VwARkKbvwoebJWNedi19wVWdL1bQHJv+710lejNxMZZv+QgioxCY2dnKgLccIvDqk0p2qA8YNocJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789974360; c=relaxed/simple;
-	bh=IWy4s88MhDwNpHOdGe3jP1qXGMxg1e08ypz8dpiL9Dc=;
+	s=arc-20240116; t=1789974821; c=relaxed/simple;
+	bh=mlXvSVm/Lq7qa7w+AV7HA/L3OjWuvTwojTve2NS37ys=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=svchXI/iMj04tsIAVUqmHVw7ydbmva8vB2jO6UE4kGKjSRWBZhurO6UmT1G57z0DeXW0VS4Mi5gUCbCSImT2CJSeeTCNZ+PoHjEJpMglp+tIYEQgt6ilv8VpP2BuGL55kbe716uVOAqdcvC/JmLEmFEH/CXUOFh6BUg1Fv2EB40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.227.41
+	 To:Cc:Content-Type; b=qy45d3ds/E2a+WYPVZVH0jsb9F/AOhcS+HnarIOvqCt8NfKSlqYPgQyGQbby+qTxHmSpu0vxt2+YvcBWEY2sK8PH/QHJLRgRKaqChpEzfUORzN8Rq442N5CkrfrEJ1oYKpcE+h1R04jYps+fc5C/PrQHQl18/qJRf+wupzxtYU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.230.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs2-f41.google.com with SMTP id 71dfb90a1353d-5c82bb05ddaso1890385e0c.3
-        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 00:05:57 -0700 (PDT)
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910c9ff1cso218300585a.3
+        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 00:13:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789974356; x=1790579156;
+        d=1e100.net; s=20260707; t=1789974817; x=1790579617;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=kOgPfCklfblv+g6nVV8jDyWvhZtKrbscHFmS476/ss4=;
-        b=In4dR61xSojs9I8oToqkWc/rgOC3R1tpZnnCvOVXB+JF6SFHLYMoMAOHyBk4lIbXZX
-         8xX4n22cDK/20zcaJi0T7AtJTyKPrXK1P2T47h/uWjOkNkNmeaTjaThkoPPTb5O2rPuI
-         OTj0CJ+T/uEI2vE1IMxo6roIsz+zKIVfsDBsClRJfEkCiD5iUomZoV1lP1vrzjBiS+BG
-         s2www6mHfaHm9P7pPvh9xkYEJ5rUnrPBJY4aJif7fiAiquxGdqvWRmZYeWhJH/jLoftf
-         twTZeC+FD2d2T1PkV6voMjeTSIVC/xiyN2MIIiSiGT4n8Qd9rX/Z/sLLiHK8u1llp2jH
-         4erQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxMO1fukz+CQpRXftemvUShhhlFUOywVkNEdgKjDuObd/PmUKZXu77Jdv4lpYUq1fEKT1E=@lists.linux.dev
-X-Gm-Message-State: AFuF++nn7kMu3Al9EL7oYkLjg/kUDWG4njrrC1utQUjkYF2l0o6NeNRc
-	yNDWFfKIets8UvM91x7dn7Hb10cB1SQVGnR84/b30tBwcQICEAqq34iaUiDSobN8
-X-Gm-Gg: AYBFou24MlMFD+GWIxpLY4WfWLEZ+hLFDv0FZtYiWdCDA+fi9Ajq9ieSPPKznzEK9oU
-	SuO4Sm7t1Ut3s5UMVrb2eswvxyxOuRUf2HjBox2ofcZm/fl6X4ZRmn4gOd0Cyk+798ITc68HBh9
-	MFihUTqjY7pspYjhIr+KiDP+ssAe75tSKrWTMlKL+5lalPOQ7GbXTblsDa5dAKeYDqdIeFWAa9j
-	b3uergBHnfgy/xIAiE0KfS2phRYUkVybqReiOAib+2QECYgytUA+F03pVGHTAzIu/8557WwcG3t
-	pSGmslyLWFVfL48U5tIWZWKoQZ5+bzs1H27eg26ZYFhlW2PLDTW8bUJMqLvFGimcfn5+N0OzmY/
-	Sod8Yq1olCbcI2+jlnSh7Wh1ZQLsV2rWdiRAq2Ep8Rb8P94iSUF5PFEujPaCckMjvGwQFhwZd8j
-	Cb9AJQ+Fs2TnmuLB70xZmJoSmoPl4H7KK+v6S0irB+zcvuTlpAe5hWs8Fz4u1hBgxblhuiF//qj
-	vsbVYGnbnIqgBnvF4sLSCx27D3nJ9S2w7uv
-X-Received: by 2002:a05:6122:390f:b0:5c9:a60b:e5a9 with SMTP id 71dfb90a1353d-5c9b5977db0mr4405058e0c.11.1789974356305;
-        Mon, 21 Sep 2026 00:05:56 -0700 (PDT)
-Received: from mail-vs2-f41.google.com (mail-vs2-f41.google.com. [74.125.227.41])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c9c17a96c3sm6266965e0c.1.2026.09.21.00.05.54
+        bh=HB8j5/kP2XPOkdK+SCbhJLf9Uj+WB32C7OC3D9kNjGQ=;
+        b=GfMRBm8VdbLXdumSZ3YWxw7SJPWzRcYsdIjyBwdOzoy9PYX1Inyj9MsG6o8pBNCvi5
+         rOAJhy4rcXhBE/jCy5dOnfUvCrzzgCnvYtzNX9JAwBAUza944iHRQ5WzM3JrINq4TUPz
+         KNLye/eIe1GsDcD5iYqqrUw63JKO41dg4O0tgRsVD6zMELN2N/JPGBY+C+yrvPlmIqje
+         Li4fyB/dpmziLCVUJIIg0mI3qhTk+QRe0ZS/+pbKLNC9C1aVWYYFePOD6Eadpn1w00S/
+         hWsIDdnTp8VUaG1HqARub8PJPkY3ggmevhdnzs48jte3JGEIc0SmEdEQdAhZpFI1UoNQ
+         dUhA==
+X-Forwarded-Encrypted: i=1; AKwUvBwmLtCXFQYTCq2paW07imvyzvi6Eb9hdHJ5WXdjQaHX8/4kOhXV+4PZC1TwXzu+6DMGDag=@lists.linux.dev
+X-Gm-Message-State: AFuF++mjbAQ1U6qnzQw8DQWwgmxt50uzC23GWgZEHs05TjdwVYrki3Uk
+	/v38ufvcS4YKxpBRwRLdrS3R6p6Vj9TNl6EkDM7uP3CCv7jStwyAYJ3vUDxDhpM9
+X-Gm-Gg: AYBFou0gnMf5PI4333U+EfeBfblqiIbhi/z/pB6loR2sNLSU5yElp3aEggNEKRNIIhW
+	8xBt3H94B3lxB0XJg6uZzIJhV1ImVgiFeVqH8D3UrEo5JP5YNwkogXbUV1DNteX2h9CdAujO9O7
+	+sl0B408ku0XfHy4P6SsQoh4g9eQ2+SwutjG/kP2VB+JRy0bmRkDSDIgfkyr808Au62anuSb+pS
+	D5OikggQBHrO71NvZTigSkMZ72evTgivW7aKQJC4k5Ok9Op+Ie1CqYBIqXs91r9YtNG1MaARCME
+	dtuSe8I1LpE2i8FaZQlk92ddzPmPeF992jIgdNsZI8Em27keyATtaT2IFT4CuVouQHtpiPUXLQK
+	/wcgAxLB2pKNlvcYzeKTjsSefwOSSYt4JPTp+2rOD1jODPGhXAFVd0QzthiyJTjnw93R02QRwTV
+	k3Qwl74oe7wE6xnkmOAdnXRob/+bauSrMxEBc+QKiWSRAjDmsyH3bYr/hiO8n7D1XVCKJR/dQ0c
+	t17834OhG0H2gyKr8fl6Yi4Wxnf6gQMfys0EQ==
+X-Received: by 2002:a05:620a:2699:b0:939:de6c:cb45 with SMTP id af79cd13be357-93bf572993bmr893330385a.47.1789974817263;
+        Mon, 21 Sep 2026 00:13:37 -0700 (PDT)
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com. [74.125.230.140])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260a878absm60592016d6.31.2026.09.21.00.13.37
         for <imx@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Sep 2026 00:05:54 -0700 (PDT)
-Received: by mail-vs2-f41.google.com with SMTP id ada2fe7eead31-79189dbfb32so518529137.1
-        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 00:05:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByBi8qwE4nWsu65Zprj3E36UQu5VRUnFGvCOoP0YYYrC4ZDRrCpcXkNThYEDPyLyonwaGA=@lists.linux.dev
-X-Received: by 2002:a05:6102:c4f:b0:7a7:198b:674e with SMTP id
- ada2fe7eead31-7a7198b70eemr2080779137.35.1789974354429; Mon, 21 Sep 2026
- 00:05:54 -0700 (PDT)
+        Mon, 21 Sep 2026 00:13:37 -0700 (PDT)
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-910537b51a0so23781336d6.3
+        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 00:13:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBztCnLwWYmYvBGthLabfpLvxsF0x3bXaV+9hA8UxokkgfKtUJkrtDn0DCD4fqYTf6ZFu2Y=@lists.linux.dev
+X-Received: by 2002:a05:6102:b02:b0:7a4:da60:acfb with SMTP id
+ ada2fe7eead31-7a55af3177fmr4503081137.8.1789974432591; Mon, 21 Sep 2026
+ 00:07:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
-In-Reply-To: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
+References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com> <CAMuHMdWWOB48AUCbXh=9ZGCK2qZyVH06kJ2paRY-wxkq5NC16A@mail.gmail.com>
+In-Reply-To: <CAMuHMdWWOB48AUCbXh=9ZGCK2qZyVH06kJ2paRY-wxkq5NC16A@mail.gmail.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 21 Sep 2026 09:05:42 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWWOB48AUCbXh=9ZGCK2qZyVH06kJ2paRY-wxkq5NC16A@mail.gmail.com>
-X-Gm-Features: AcwNN1WjYVMR8LtQc9Hk29H2mvcKQfYOy_09b_XHHWkw76vwCkEFuElZphsH01o
-Message-ID: <CAMuHMdWWOB48AUCbXh=9ZGCK2qZyVH06kJ2paRY-wxkq5NC16A@mail.gmail.com>
+Date: Mon, 21 Sep 2026 09:07:01 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVhK0vm_Ksze_=jG8D_=8Q45v+ezNbxwL7JntTt_v_fkg@mail.gmail.com>
+X-Gm-Features: AcwNN1XBDwh6z17IsaQFiDrYFydSgUDFMGU_5lJeAdoD724Pjbvrq8QmlAe59_g
+Message-ID: <CAMuHMdVhK0vm_Ksze_=jG8D_=8Q45v+ezNbxwL7JntTt_v_fkg@mail.gmail.com>
 Subject: Re: [PATCH v6 0/6] dt-bindings: Orientation defines
 To: Kieran Bingham <kieran.bingham@ideasonboard.com>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -99,45 +99,49 @@ Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
 	Quentin Schulz <quentin.schulz@cherry.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Kieran,
+On Mon, 21 Sept 2026 at 09:05, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi Kieran,
+>
+> On Fri, 18 Sept 2026 at 12:55, Kieran Bingham
+> <kieran.bingham@ideasonboard.com> wrote:
+> > Add a new dt-bindings/media/video-interface-devices.h header that
+> > initially supports the Orientation types and convert existing users
+> > throughout the code base.
+>
+> Just noticed these are already in since commit 6ab5acfb8dd38729
+> ("dt-bindings: media: Add macros for video interface devices") in
+> media/master (next-20260903 and later)?
+>
+> > v3 collects tags, and fixes the typo, but drops all hunks that do not
+>
+> [...]
+>
+> > v2:
+>
+> Interesting changelog order ;-)
+>
+> [...]
+>
+> > v3:
+>
+> [...]
+>
+> > -v4:
+>
+> [...]
+>
+>
+> > -v5:
+> >  - Definitions now accepted in linux-media, rebased to get conversions in.
+>
+> Oh, you say so here ;-)
+>
+> >       arm64: dts: renesas: Convert to new media orientation definitions
+>
+> So it's been safe for me to pick this up since v5?
 
-On Fri, 18 Sept 2026 at 12:55, Kieran Bingham
-<kieran.bingham@ideasonboard.com> wrote:
-> Add a new dt-bindings/media/video-interface-devices.h header that
-> initially supports the Orientation types and convert existing users
-> throughout the code base.
-
-Just noticed these are already in since commit 6ab5acfb8dd38729
-("dt-bindings: media: Add macros for video interface devices") in
-media/master (next-20260903 and later)?
-
-> v3 collects tags, and fixes the typo, but drops all hunks that do not
-
-[...]
-
-> v2:
-
-Interesting changelog order ;-)
-
-[...]
-
-> v3:
-
-[...]
-
-> -v4:
-
-[...]
-
-
-> -v5:
->  - Definitions now accepted in linux-media, rebased to get conversions in.
-
-Oh, you say so here ;-)
-
->       arm64: dts: renesas: Convert to new media orientation definitions
-
-So it's been safe for me to pick this up since v5?
+No it's not, there is a hard dependency.
 
 Gr{oetje,eeting}s,
 
