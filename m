@@ -1,44 +1,44 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011043.outbound.protection.outlook.com [52.101.65.43])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011022.outbound.protection.outlook.com [40.107.130.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3314078F1
-	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 09:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A204EE866
+	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 10:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790070533; cv=fail; b=pZq0qRAoKlwlGAB1noQjybMJHNxxthwbA+wblnqZ9nWyHJKS5cG7zdG/lazA+VzA7MHR4hwZrwLU2dYiMC0PcSLUcWeGy8TBIQKV3V5OdSJOIWovjkD15BGsIpbC9oDyTkT968Xjazn37+t1GBD4/F8hhzxO3JDwbYEgoDDzFSU=
+	t=1790073299; cv=fail; b=bEQS32R46M61sA1b96upNhpJP0dikqw8h5xBKZRhG49/USCZNRBA8YxNVFYAzRyAEi2D2fd7Maqd5pXB7qtRd8yrmwv6I0jjHQ0xmpf2oE0wzaxFuZ6KWYFF6i/DrJ9KkkFbJPeSq3nnW1lkQp/DH70SKakNyNSLkdTwol8bdXg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790070533; c=relaxed/simple;
-	bh=DP13UdsQatTDwqK4G6BVRWG5HI99WwD17mH18rC2PLE=;
+	s=arc-20240116; t=1790073299; c=relaxed/simple;
+	bh=VdZYHRLCApqzIlARUIIlZ9CN40tLpwsQXt6uKK/+0Ss=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jubok6lbsLokfjrU+vurknchxnvdQy0P3+eZj+r5Ue27LyOtLrWgidz3nEXobBQDBQXOW+ygmoVJGGkyeEZRZaW3cvJtMMOCSYsohhDOagemcQQ06WdGVOa0N6f3k+irTS3+jYUHP1OshX1xcGyHWiZPKBQSF8C+bctg8mSCXuM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iZS060jM; arc=fail smtp.client-ip=52.101.65.43
+	 Content-Type:MIME-Version; b=DCvRsGCw+eperbx8MzWMJDDK9/eTlqMsZqOlzVvU/B2SNYu5ADCkO+JdhaeNVCixoSX6rgbRmjLYjPrG4aCquFYEu76SneHcS0azxJenFFcgdQcwSiedJ1divHaF8L2C6PW4LMi7MwpJJ9qaL74xWwW3DrtrBZAkk0LVtOtcGiQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QgWmjR4c; arc=fail smtp.client-ip=40.107.130.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iZS060jM"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QgWmjR4c"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xew6tIi/m/DfIjwZM7ab41pTjBok2Jbb7+od1eZeCbWFgP3jdP+N+3kvTNDQB4h7s5KKksjMCzJNUbASKXfjRED7S0QWJ8nLi47JLmSxWoFBTJ17SKn07yP2b+nFY7I+P5ahnSvkToor9CXNLIF0tth17gK9gxLM0XhMWLrfwbWdu6jkPyJCorgmHpnVM2OvET2eB4TetblSmbkbg/36fGwZEi/++wCKzlkCLBA1+UT2myvwNUr+8YQS0mQrwC5iF92L5pM5cM4ArtOMVJau8LJE4sMoBUlwykGFczn/DnyWDyQc/9B6Km9FPkreseZBsSkkXiUCMZjnbdzc8RjY+g==
+ b=bMxq6rOAfCAilMqn06rlKmQFxm0C16VVNnFzwwrL6yKi2a0t0P8gmF+RAbeBPjkM2SgN+yqonGxHrnnVjaXpTCthV3GzimPDLraRkbnVkgDslJpuDizSgv0adl72KMX0HQzxWp5IbL/o7oKhdhJw8sZgYz/I6Vm1LEqbtEjDYi06C0K+QOkjK/qyFf93gcKdvFfCOu+wNpJvDu5Kw4GTeLhNV8HpdWtEI54w/eV4R9s9Pd6ktxI1z1Gg5NsUSXRGU8xMKIv/NgkD27icKUuJ4VLwQFfDCO6nHxyF7zorKlvAcVKiFIRiP+MhjZUOYdmNikQjKqrYb/XzIND/fTp03w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K0P4oWAXQMf88uI5Q8WmLMtZZD/4YBrWdfLznYrJigE=;
- b=grmVmNKkuyMVj9J8eymfAePvkYpT24JOIyIkmxvgu02bvg1UjOYjEa/zyuur2yx3r+O/VLUHcBNSnZkfY7qPXhlH8umMb6VJfv0O35HIecKbyrTsugWc7s6WUjfVlIKtxzygO5zFwLuDckaGpjyJEvOA22u8CiSE7R76P4SLIXO4aIt13/NHUXrJdL+rBmMpYzOaeJpjEp6odiybExwjEQ2E3GiI1p99Dt5weXu7gqwtCZastXM4fYKB0s+nRM0e8IhWf46SCZsKpGO+BlkVcxtVNusZN60alt+6KMfOf++31W11/EUdHoEbdsNfy4HEluCACvLQJXWyQcMsR+yYAg==
+ bh=a8tNNnkZ/m1cx3dyVgQ2tecPL9EX8kBmQqkLFAkQtFM=;
+ b=luzKoPCXW09y6CRIMn9rv+BW0lHVRqzjKulN7aXcoNlVNC2FHj7IqKqTwWNu/k7GvvHcTNvBN4TXDEy1V2dh9zNj+5qpuBC8YyDQdaabqEzBzDQB0s5SAd/rvLuiwtn8oyrg/esN2DkSIddf8f13VzAaurktBOl8DdEypSc5N9Zw+Wn//y1ep/xMFkiMnAepQrqxNu0cyumVk6h8qdsEr2D4rMHXRfMnx4kId9ZmXrJqLruWAngi5D/gESF0LBLMt2WkePIHARCciRcU4f4Oq343slw8CbclPtysF4KOeUWuBX69GRFtMiNdYkgET00UMnvwM9W3ZT2TO3KY4GyCcg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K0P4oWAXQMf88uI5Q8WmLMtZZD/4YBrWdfLznYrJigE=;
- b=iZS060jMxgqSL9j/5IkocghiC5YOHfnmln6TirNKBtd8U2b9cam2S+dFP3STeNh4qzG2tI8KgYzTdGmYxLlIOnZIVLd9uDiy2b6cT7gQGteZzHa6irlLU4A+ksebIes24htz9ERq8m9xmqE2ocD0zSH9jB0A/U2oN+LKTRcPDZZCmqbGuB1mZ/ay7HABNYBuLIlffeSTb0NZw+qpGPFOIf9lBz6yIG5IvJOWaWK4atosh8OkIBBsXlMWW2bI9v61M12FSJgyNIGmh36GjxG8HZ4+UTvo8RqzSi0+vOyWImd5QzRz+V6NSWVQDy1X7PztmZznwYN7Ad3j4vsFGmST6Q==
+ bh=a8tNNnkZ/m1cx3dyVgQ2tecPL9EX8kBmQqkLFAkQtFM=;
+ b=QgWmjR4cu9tFsGDp3HmMhshHWtidD5KVu1WAajqJ+WvO0WOHmMUDdfJJk5ybhYslyxeZqmwV0CGWp9pOpq99NcBE+ixp6HZHTePAf27Sd2JV2RT5fyrmyl+mhG+KLSm1XAPANDRS5sFBZ3luzv9XNvUKKF12fxYZwQDNC1+Gawg6ZlLtwd26cLPycBesxmfpOCHylwNM2oB801BfCZsx/cJhcPZSS/iQ/js480EwSWA+kzieETAXgVJpulW862q0h1JvKOSC0z3uLaFk0xXqKaURfiEQkWpQuO+GIc/LSW6Mnc0/jw/CMeSHZUuHGKorh3xhuOj88fhUTEg9Vni7Dw==
 Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by DBBPR04MB8028.eurprd04.prod.outlook.com (2603:10a6:10:1e0::23) with
+ by VI1PR04MB7197.eurprd04.prod.outlook.com (2603:10a6:800:129::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
- 2026 09:48:46 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
+ 2026 10:34:49 +0000
 Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
  ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
  ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0428.015; Tue, 22 Sep 2026
- 09:48:46 +0000
+ 10:34:49 +0000
 From: Wei Fang <wei.fang@nxp.com>
 To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
  (OSS)" <wei.fang@oss.nxp.com>
@@ -54,17 +54,17 @@ CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
 	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v4 net-next 3/8] ptp: netc: export
- netc_timer_get_current_time() for cross-driver use
-Thread-Topic: [PATCH v4 net-next 3/8] ptp: netc: export
- netc_timer_get_current_time() for cross-driver use
-Thread-Index: AQHdRz7S22iPk+jFYkOuk2Znvrfaz7baSXoAgAANDmA=
-Date: Tue, 22 Sep 2026 09:48:46 +0000
+Subject: RE: [PATCH v4 net-next 5/8] net: dsa: netc: check return value of
+ ntmp_ipft_delete_entry()
+Thread-Topic: [PATCH v4 net-next 5/8] net: dsa: netc: check return value of
+ ntmp_ipft_delete_entry()
+Thread-Index: AQHdRz7atl5Aa7Z4IEGFbkUNOuNk1LbaSXwAgAAcwWA=
+Date: Tue, 22 Sep 2026 10:34:49 +0000
 Message-ID:
- <AS4PR04MB93381E4945132FDFFDD7E4E088832@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20260918072852.501420-4-wei.fang@oss.nxp.com>
- <179006555469.2160803.8873313402765313889@kernel.org>
-In-Reply-To: <179006555469.2160803.8873313402765313889@kernel.org>
+ <AS4PR04MB93384B139F7957A2755DB00E88832@AS4PR04MB9338.eurprd04.prod.outlook.com>
+References: <20260918072852.501420-6-wei.fang@oss.nxp.com>
+ <179006555627.2160803.12045711758819504557@kernel.org>
+In-Reply-To: <179006555627.2160803.12045711758819504557@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -73,47 +73,47 @@ msip_labels:
 authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|DBBPR04MB8028:EE_
-x-ms-office365-filtering-correlation-id: 7671edf4-42f0-49a1-03b4-08df188eb262
+x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|VI1PR04MB7197:EE_
+x-ms-office365-filtering-correlation-id: 9d605d4d-89dc-468d-0a17-08df189520f4
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|7416014|376014|1800799024|23010399003|366016|6133799003|22082099003|18002099003|38070700021|56012099006|11063799006|5023799004|4143699003|10067099003|3023799007;
+ BCL:0;ARA:13230040|19092799006|1800799024|23010399003|376014|7416014|366016|38070700021|6133799003|10067099003|5023799004|11063799006|4143699003|56012099006|18002099003|22082099003;
 x-microsoft-antispam-message-info:
- wdpIkaKaVhXuUFiBDNSf4Yn/rNfHMd7B5PKWKSDQl0aQN6ZkyyYsjgc6EmM1km28ewz7+/P+wBXf7BUfe4tovL33ow7l/rWJ21+Bg1zTxZ84Cw4zEkK8ctKahbpr4HqQtsPwznwcGjHhaKHGcsVc7x+eRo0zrgXjHu3i/jE3rHAD2OuiZ24pBnFO62gx4m883Mu9+XTzROemZh6FuJLLswNUZauoY/qj7zvnxYiy2Gg2jA6G7S23upFdQLgsHbZRkbiKovT9ejvgSKNuky3tYF6FlWLWzumEEm7kD2MQtDSbz6qg2VWbUUqFSH1GCdgrRMRStvDh5bH/mSGK7IBTQL3sxJovF+EiRPF4aaV+Q8sFEUUOAML5vRmvl5HPzPY9LR9OAkU5lBczJAaL7lsdBlYy0GXBGKms7xWII77dlbu7JkV/RnQ+JFBsJD3q9DQXiZEqADRdcDf5tTBcKI27X02R+RVXhJ7zeJPd+oCtr94/NCaufCTb6cBUei3FlxdYzviLHErTePj/YONQa2RI7ElTLC1BOMqL79nn0M7/+0+OjtxHfPSmWKDlI0Gceu8s+4TnaIIr4/0BmfenDlvIUUzUiErqcc8kzdJYNDIh4t7ZS8Amc5bWv9xejGqW1ZE0Bgebj8U4Zwp5skqGjOYaY6tFQwunlDjn0xKqcXN+yN3UCRoNXVh6BzNGDsUck6SLQa4Mq8rZhQnM4nniy/xo5sCHRa+x3WreLDHLCMykkYg=
+ Gz7C88pVMcXYaM/zAKNl056R3XfN+RGsUarto8IXYJ4LZAfw28/jxXMnu2mUk2+qpHLDki3MMqZU6Lb5ebf7L7Ca8Yh1/PAwZtIRiK8u4nYH/9i3fPxeAMwXcG6KIzl9CYtndaZtrDiNbn4YVxOy4KciYhTSSy+lusycIWGE/hiMDUt0htV+aPJ14CkNUXK3ay7J2Wktq3nP9tVJdwwF6kK/v6XW5VJSuRmSSxHUurPNPlIx7C1y5rVB3lnizkmXrze6KAkLB0rxYSbbatnq4aCri+18KBWhKQCoht/5Pguni9OFyvE048gTFnjN7/pB1ocB7TQu1YZmE1ULhsrVsJVgWKLrRlE0z0BnbwCcjiBxnJV4nCfVoaLcTZ7PbMoXH0hHqah8t4w+WVgr2WqzjFepSFdy4a5L6J/UV5F+IMZJEP/UfiMu9q/tVV1bxom6rNhLguvQgqOMhH6C6m00pzVGKRBVO/f/cqgO0BvAQ6ApfffAM1L+tXUrJavjLsTTFCg9S6bJkNMV5JW54nWZZjEPGXI6/fvQ8fXFE9POACNWhF1NABb7LyKqz1CsMagL+kdycjZP9nbyr2J/C9TLLhJToZrXHFv76B2C4N1IxNcODJIwKFdoF5szMlmGg/OpyWzD865dzPuYw0jHhGGX9AFwh4g4UvSBDlEtEbNclN0N0LmUscWvpA0HMikunkVh8X1GMk0UHfONI61AdwMhugcq5Wn+HipFWK/Kx8GTUhs=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(38070700021)(56012099006)(11063799006)(5023799004)(4143699003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(23010399003)(376014)(7416014)(366016)(38070700021)(6133799003)(10067099003)(5023799004)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?YU78MGgmR9C0hVZylAO60FyHfYLN8VyO1kf+fQV6SdkXShIA8Oa3OdBGNHai?=
- =?us-ascii?Q?3Vwq7MgMrS2wuQfPpNI5W9FIXVp095OhO0i3nYzwx4OrxGVr8bovnKk0fFGo?=
- =?us-ascii?Q?3Rb821BBvuItBeG+lis5F5TWTNFceO6q8zlri4nTXL/UuG534Y5RytJHyaIf?=
- =?us-ascii?Q?DcIf+FPYeBH9cIRR6ee2Hn/AZ+7o0qOlX12Q+HhMcyzCdimyTh0hhSGdcpev?=
- =?us-ascii?Q?OFRxs5CisxVdw48Ic+uYqJha94jMcfRCqQrsycc9XxD4XNuFwhwZDNAu8zLw?=
- =?us-ascii?Q?BOeDYHGj/RpWdOssJkdkHePH1bYim93RLzee18pBxGnauGj2mhbLgxJi/uEl?=
- =?us-ascii?Q?MAm/4MCqAYMB11cgR90Ha86AAaBSaZR9mPkbPLs/9clQ5TCNIOr98mdf44pf?=
- =?us-ascii?Q?tfmFqUPlZQBeIGN8ujj+LVORBshdMeOA86P9CcEv73Na2rLpYRDBrS5nKRYh?=
- =?us-ascii?Q?JJVaBQv9MVNHPWzFMfw5r7iYi3rhuHs3BRtg7JqwxM51+5Cp6r5H2IeQVyp+?=
- =?us-ascii?Q?mNIoVHaMJvdJI5UecyClvGKMVfu9UWI1j8LivvXy0MQ+BtjuRiI1Ea4sOFGS?=
- =?us-ascii?Q?MW3gtEQgMMzYwfuKmjth8tTlE17Lc3a3HTmgJRGf2hNoDbJIyjr6px4fCdDC?=
- =?us-ascii?Q?9n2pBXAFAbjE/HNCEu/oVhn0YypU5sMIqf6AMvD6BS2Jg/QF+r010ybSCzkO?=
- =?us-ascii?Q?Ib/FtFBz1rwwj2rpJ0gLd8zKfh3NuLodhswyktuT2hONyIorsLqc/HHhsq1V?=
- =?us-ascii?Q?VXofshDbvV9Yyut2y7oNKWt4Ku9eG1eOkK/dmbRkcFqDEubfuNEcmqLqIyLs?=
- =?us-ascii?Q?F7RKa8CW9xFz8eaJXRtjDKAv8QHx/3TkD0OGgnUj/Yav5d+frujQ+2BdQ4mK?=
- =?us-ascii?Q?qlOnLE/t5rS/w7CdI6DyJo0JSsfLDfyn8wR+ytZ7UF6Y/gx2jEMqsgB7hyfC?=
- =?us-ascii?Q?87/+tnaMxspsNw4zIqxoJUYvdlod1nTEVbHq9U1r986HjH0vzVUSlxMUVbBu?=
- =?us-ascii?Q?EN6jnrBdD3fIn2HHumPN0B3iVqRQUhXNPJ4o/ttGs9KHv17KRpdbUhfxkEKq?=
- =?us-ascii?Q?50ZNFZPsXq1ZT0fGvaNepM8fzJ/igW1Rv++zu6GNRrDs9T5f00lWaWyOC2g0?=
- =?us-ascii?Q?OKbQovqumcHKx3Eu8t3bZNEOMI5rscvOFVJmWkLD6LsAYqBDGNC7UbS2hUk1?=
- =?us-ascii?Q?VC9FIBcpAzUAYZ6HZrmsLXnMuxhZZKluFeX9wI6y85ZwImwGIiUF4CKnbiVD?=
- =?us-ascii?Q?rbP6gL6PPWZr9DRuE72xicpaQmG4p+dtJIDt9YIDpCDXVjREcv/7IEUAXjdy?=
- =?us-ascii?Q?bGfBMLFUGdzcT1u182YsWfU5Gnuply2+Axb+cjThfkFQlW01SFbMZiXNFHg9?=
- =?us-ascii?Q?JgRJicwXMe1oFM2RP2bKmQ0DwsnUELJhytr7gqWubBFEGBedqEbMVX7z0jNY?=
- =?us-ascii?Q?qa16AdtGO+KtpjG3L4HTrK3NRTYEwMJThlsYQLdaEqRZF655mddovhDjVrIl?=
- =?us-ascii?Q?QSNWxewEpTvRRYNPx7KYVaPzV3YcWO3kPXWe9V7vW5rHmBa5wipb2gksdtIC?=
- =?us-ascii?Q?ATdiFewXz0THmToEsj05PgdN0sEAhTITnxfzkdhbp7Aq5K2pcJwkd3g0a03c?=
- =?us-ascii?Q?NfmwX/+Dl/BcpvShsjbH+/dju95sSmN96XC7vQgo5sZXE9xUQ38jXqq/RCyH?=
- =?us-ascii?Q?K0hIG/W6Z+geYZoGqqgfhzO10U/loK/32akUJ9+LLhCUzg2g?=
+ =?us-ascii?Q?SvrnGP9UVzP1i96E5qxRqLG8eXiIikQWEGJ/YRVYznVmiwRIMVkkCdVnrGYp?=
+ =?us-ascii?Q?f1JIT2baVB2+m+IF5bVumaFZd8YFKabO3wKAZ0hsdrYTiMIyZ4TW0shHH58G?=
+ =?us-ascii?Q?YE6eHRMw9Thf28qqjr7cwmTJHM80/kWwGp8k3DSQRdKfkl+m8tM/FXGt0ni1?=
+ =?us-ascii?Q?RjWmPQzv7Bp2yyAhAMbnjZe6+ZwWM6xK1wpup0iWs9WjVOtcN85yZc9iIXls?=
+ =?us-ascii?Q?Aas3MXFaQy9mJX9Nn/mCyAo39u+8uSCPZBeSexV3vrudxRz1rl0kQ4S4/H65?=
+ =?us-ascii?Q?szltgK5yWc4/384YybdFLrLKkc0j3bBy1J/CWkHcDNTqFH3VONCusn4kJzRn?=
+ =?us-ascii?Q?n+YKe3azNz2kdaVXw2LjodI9058bXKD6C+oeFL0/bG4FFsDKluBjWv7Ix6hd?=
+ =?us-ascii?Q?odH4qGwICAvShjzcl4TTaRAHPIBcvtACtzd/e6pn9jkdQzYHTX51zKOWWGfz?=
+ =?us-ascii?Q?DOL2yVKdLCW3o6nQnvZ67SwjTFdVFiOCiCcgsrH8lJO+aDEXpuwM4gbLHns3?=
+ =?us-ascii?Q?5qwIbbgW/YDItD/fTILGsbluS+/3C/G3QrtuLGxCg+qncLRlYc1+Gau9WH1c?=
+ =?us-ascii?Q?KDEAYH0wRcYG6+CXHNaaI9ssG4PuVoEYRJ+mSfP/jtC1Fp0Q9v/6c/vkzb5c?=
+ =?us-ascii?Q?NTilnyY2PSSNY8YFfwADnvfGVSoPaEpwuXm/S16UU5wEmhoVPgSwNNzKUStj?=
+ =?us-ascii?Q?yqcTtOgtL7BU4HFtzfoAFusYoHy+BjhrVXhu/LlNewXq86XYeAYkSe7hinbq?=
+ =?us-ascii?Q?eXhQVI+ih9i+yIJVjGJazYpEoKFh7Y05dlBC/aDCTOgEQ0e9/WTcUAk5F+oN?=
+ =?us-ascii?Q?Q3IRx0wgnUV7G2PKaPurVIjvvi7ZAjARn9FBGXlSqbVt8JebBVfl6HH2vXE2?=
+ =?us-ascii?Q?VD7Rx4JBfppiX9uZt444zHQpyQytYcrm8d36Iz8Z7Nkk6RZZQj/Oqcoa96rN?=
+ =?us-ascii?Q?7R3jj6vsXzMgBFgXkhBwbAoxd68uG0z8NQ+9g0MhG9i7FznhkNocHn38CXvo?=
+ =?us-ascii?Q?d7h7q1PcIzFtxnILd4uinjiVGgupW7WeP1SzmXfsD3YZUJZk/DGn2DmFllgx?=
+ =?us-ascii?Q?3IkOdaBzN8mBXo2cwqfSVHd5YioXLW+3lsC98dfhwJSVFvYTptr0avosXKs6?=
+ =?us-ascii?Q?dpv90Q9RPouxJa3fvkFLbUU8T1NwuE+tAUht5ABcHCNrX4l1afGE2DkJSz1h?=
+ =?us-ascii?Q?w5OkZzSGKt8FnDAN1dxk8qXnwCBArSC2DKbcHUgKJ+m/by71LP3O/WHj9Rda?=
+ =?us-ascii?Q?6/Sq5e+SN6Tnldytu4DWxXKRh+fT7vk5HkMhFJ08ld6wE+RpfW+l0NJYZlsC?=
+ =?us-ascii?Q?78fHNk4sS391tH1kx7q/0ac6S6K3bjns+prw9hN8s/MVW3ElR2qb/o4k8ZsP?=
+ =?us-ascii?Q?oKyRAfcsOkrckWYSUrJBkDMn8VMM4reb9tYZoMWDI+aIzTRMJ+JVjBeb+jfR?=
+ =?us-ascii?Q?c2KFxuqAlF4AONriUDdAf8tqeQrEfqiCMSJWydhfwr5716P1EBkEVzJ9j0wd?=
+ =?us-ascii?Q?E1FlH49ECwwcBYRG1wUBj6MS18wvlRsXaHHdJHsLIpV1dwxwAoax4gT6vX/c?=
+ =?us-ascii?Q?naKx47J8ArX2u34cBDR0/Hg7DigTL6fDcW3b1LVybHhcSxftAKURoYb+XHym?=
+ =?us-ascii?Q?pE/tDNIsNrV3jc5kLDyEMtUxl/3q52mJxlyXZw1I4nZbaLJNw3uYcjTHSFfn?=
+ =?us-ascii?Q?jIBaMWbNQHQFRvEAXHoQWnf5NPMgidpLc3SySdWcrOiVAd1M?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -125,179 +125,255 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7671edf4-42f0-49a1-03b4-08df188eb262
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2026 09:48:46.6581
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d605d4d-89dc-468d-0a17-08df189520f4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2026 10:34:49.1846
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wpAHmlwYLDeBBkL/DfYIS86blRqjuXNTKYkt6dDpHTbBDIOncM8ERtZcloHjpfGD0BIBnYCbKfVln+LISxVhaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8028
+X-MS-Exchange-CrossTenant-userprincipalname: 8MQytAxI0BLZN5iyyYYNdoYOfV/0U+sbhmSMKBCvoFky0Vn3DG/XSbZVV+B5Q9ha0wWgCxaPj8+bQVOGIVZMSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7197
 
-> > +int netc_timer_get_current_time(struct pci_dev *pdev, u64 *ns)
-> > +{
-> > +	struct netc_timer *priv =3D NULL;
-> > +	struct netc_timer *tmp;
-> > +	unsigned long flags;
-> > +	int err =3D 0;
-> > +
-> > +	/* Serialize against driver unbind, so holding it here ensures that
-> > +	 * priv remains valid for the entire duration of the register read.
-> > +	 */
-> > +	spin_lock_bh(&netc_timer_list_lock);
+> > ntmp_ipft_delete_entry() may fail, but the driver ignored its return
+> > value, so a failed deletion left the IPFT entry untracked and
+> > impossible to clean up later. This is harmless today because the port
+> > also disables its ingress port filter table lookup, so the leftover
+> > entry is never matched.
 >=20
 > [Severity: Medium]
-> Is it necessary to hold the module-global netc_timer_list_lock across the
-> MMIO access, rather than only across the lookup?
->=20
-> priv->lock is taken from hardirq context with a plain spin_lock() in
-> netc_timer_isr(), and that handler can spin in the register drain loop in
-> netc_timer_handle_etts_event():
->=20
-> drivers/ptp/ptp_netc.c:netc_timer_handle_etts_event() {
-> 	while (netc_timer_rd(priv, NETC_TMR_STAT) & TMR_STAT_ETS_VLD(index))
-> 		etts =3D netc_timer_rd64(priv, NETC_TMR_ETTS_L(index));
-> }
->=20
-> So while CPU A sits in netc_timer_get_current_time() waiting on
-> spin_lock_irqsave(&priv->lock) with softirqs disabled and the global list=
- lock
-> held, CPU B can be inside netc_timer_isr() holding priv->lock for a perio=
-d
-> bounded only by hardware. During that window every other Timer's probe(),
-> remove() and every other time query is serialized behind
-> netc_timer_list_lock. The same applies if the target function is unreacha=
-ble
-> and the non-posted read stalls until the PCIe completion timeout.
->=20
-> Would an RCU-protected lookup (with the priv free deferred in remove()), =
-or
-> taking a reference on the Timer, give the same lifetime guarantee without
-> holding a global lock across the register access?
->=20
-> Related to that: the BH-only requirement makes the exported symbol illega=
-l
-> from hardirq or with interrupts disabled, but that constraint appears onl=
-y in
-> the kerneldoc and is not visible at the prototype in
-> include/linux/fsl/netc_global.h, and nothing but an eventual WARN from
-> __local_bh_enable_ip() catches a violation. Is there a reason not to drop=
- the
-> context restriction by using a lookup scheme that does not disable BH?
->=20
+> Is the "harmless today" statement accurate for the replacement path that
+> this patch reorders?
 
-There is effectively no contention on the global lock. NETC has at most 3 T=
-imer
-instances, and the Switch can only use Timer0. netc_timer_get_current_time(=
-)
-is used solely by the Switch driver - the ENETC driver never calls it. At r=
-untime,
-only the Switch driver ever takes netc_timer_list_lock; the other Timer ins=
-tances
-take it only during their own probe()/remove(). So in practice the lock has=
- no
-competing runtime users. On top of that, the drain loop in
-netc_timer_handle_etts_event() is bounded - the hardware time-stamp FIFO
-holds at most 16 entries, so the ISR holds priv->lock for at most 16 regist=
-er reads,
-not an unbounded time.
+The harmless meaning here is that when host flooding is disabled, even if
+hardware entries are not deleted, the flooding rules that have not been
+deleted will not take effect because IPFT lookup is disabled. I will improv=
+e
+the commit message to make it clear.
 
-With no real contender for the lock, switching to RCU would only add comple=
-xity
-without a meaningful gain.
-
-> > +
-> > +	list_for_each_entry(tmp, &netc_timer_list, node) {
-> > +		if (tmp->pdev =3D=3D pdev) {
-> > +			priv =3D tmp;
-> > +			break;
-> > +		}
-> > +	}
+>=20
+> In the pre-patch netc_port_set_host_flood(), the new rule was added
+> first, which sets np->ipft_hf_eid to the new entry ID and writes
+> NETC_PIPFCR =3D PIPFCR_EN, and only afterwards was the old ID deleted:
+>=20
+> 	old_entry_id =3D np->ipft_hf_eid;
+>=20
+> 	if (netc_port_add_host_flood_rule(np, uc, mc)) {
+> 	...
+> 	/* Remove the old host flood entry */
+> 	netc_port_remove_host_flood(np, old_entry_id);
+>=20
+> The old helper only disabled the lookup when the deleted ID matched the
+> tracked one:
+>=20
+> 	if (np->ipft_hf_eid =3D=3D entry_id)
+> 		disable_host_flood =3D true;
+>=20
+> Since np->ipft_hf_eid had already been updated to the new entry, that
+> condition was false here, so NETC_PIPFCR =3D 0 was never written.  Doesn'=
+t
+> that mean a failed delete left an active, untracked IPFT redirect entry
+> with the lookup still enabled, rather than an entry that "is never
+> matched"?
+>=20
+> For the promisc to allmulti-only transition (uc=3D1,mc=3D1 to uc=3D0,mc=
+=3D1) the
+> stale entry has an empty DMAC mask, so it matches every frame from that
+> source port and redirects it to the host.  Would the port then stay
+> effectively promiscuous after userspace disabled promiscuous mode, with
+> the ternary IPFT entry leaked permanently because its ID is no longer
+> recorded anywhere?
+>=20
+> The delete can fail in practice: ntmp_ipft_delete_entry() ->
+> ntmp_delete_entry_by_id() -> ntmp_alloc_data_mem() can return -ENOMEM
+> from dma_alloc_coherent(GFP_KERNEL), and netc_xmit_ntmp_cmd() can
+> return
+> -EBUSY, -ETIMEDOUT (read_poll_timeout() on cbdr->regs.cir) or -EIO.
+>=20
+> Could the changelog be updated to describe the actual impact?
+>=20
+> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
 >=20
 > [Severity: Low]
-> This isn't a bug, but the lookup is a bare pointer comparison on a
-> caller-supplied struct pci_dev *, so its soundness depends on the caller
-> holding a reference on @pdev. The in-tree consumer does hold one
-> (netc_get_ptp_timer() obtains it with pci_get_domain_bus_and_slot() and
-> drops it with pci_dev_put()), so nothing is broken today.
->=20
-> Could the kerneldoc and the exported prototype state that the caller must
-> hold a reference on @pdev? Without it, a future caller that caches a raw
-> pci_dev pointer has no hint that a freed and recycled pointer could match=
- a
-> different Timer's entry.
+> Should this carry a Fixes: tag?  The ignored return value together with
+> the add-before-delete ordering came in with commit
+> 46d6407692c80b258ecba3af831130a6f6e2feea ("net: dsa: netc: add FDB,
+> STP, MTU, port setup and host flooding support"), which is already in
+> the tree, and the effect described above (a port keeping a redirect the
+> current RX flags no longer request, plus a leaked TCAM entry) is user
+> visible.
 
-The only caller is the NETC switch driver, I do not think we need to update=
-=20
-the kernel-doc.
+This is only a theoretical issue; we haven't encountered this problem in
+practice. I think it's acceptable as an improvement rather than a bug fix.
 
 >=20
+> > diff --git a/drivers/net/dsa/netc/netc_main.c
+> b/drivers/net/dsa/netc/netc_main.c
+> > index c590931a4e1b..082ed9405868 100644
+> > --- a/drivers/net/dsa/netc/netc_main.c
+> > +++ b/drivers/net/dsa/netc/netc_main.c
+>=20
+> [ ... ]
+>=20
+> > @@ -1761,32 +1755,31 @@ static int netc_port_add_host_flood_rule(struct
+> netc_port *np,
+> >  	return err;
+> >  }
+> >
+> > -static void netc_port_remove_host_flood(struct netc_port *np, u32 entr=
+y_id)
+> > +static int netc_port_remove_host_flood(struct netc_port *np)
+> >  {
+> >  	struct netc_switch *priv =3D np->switch_priv;
+> > -	bool disable_host_flood =3D false;
+> > +	u32 entry_id =3D np->ipft_hf_eid;
+> > +	int err;
+> >
+> >  	if (entry_id =3D=3D NTMP_NULL_ENTRY_ID)
+> > -		return;
+> > +		return 0;
+> >
+> > -	if (np->ipft_hf_eid =3D=3D entry_id)
+> > -		disable_host_flood =3D true;
+> > +	err =3D ntmp_ipft_delete_entry(&priv->ntmp, entry_id);
+> > +	if (err)
+> > +		return err;
+> >
+> > -	ntmp_ipft_delete_entry(&priv->ntmp, entry_id);
+> > +	np->ipft_hf_eid =3D NTMP_NULL_ENTRY_ID;
+> > +	np->uc =3D false;
+> > +	np->mc =3D false;
+> > +	netc_port_wr(np, NETC_PIPFCR, 0);
+>=20
+> [ ... ]
+>=20
+> > @@ -1803,19 +1801,24 @@ static void netc_port_set_host_flood(struct
+> dsa_switch *ds, int port,
+> >  		return;
+> >
+> >  	/* IPFT does not support in-place updates to the KEYE element,
+> > -	 * we need to add a new entry and then delete the old one. So
+> > -	 * save the old entry ID first.
+> > +	 * we need to delete the old one and then add the new rule. If
+> > +	 * the deletion fails, return immediately.
+> >  	 */
+> > -	old_entry_id =3D np->ipft_hf_eid;
+> > -
+> > -	if (netc_port_add_host_flood_rule(np, uc, mc)) {
+> > -		dev_err(ds->dev, "Failed to add host flood rule on port %d\n",
+> > +	if (netc_port_remove_host_flood(np)) {
+> > +		dev_err(ds->dev,
+> > +			"Failed to delete old host flood rule on port %d\n",
+> >  			port);
 > > +
-> > +	if (!priv) {
-> > +		err =3D -ENODEV;
-> > +		goto netc_timer_list_unlock;
-> > +	}
-> > +
-> > +	spin_lock_irqsave(&priv->lock, flags);
-> > +	*ns =3D netc_timer_cur_time_read(priv);
-> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> >  		return;
+> >  	}
+> >
+> > -	/* Remove the old host flood entry */
+> > -	netc_port_remove_host_flood(np, old_entry_id);
+> > +	/* Restoring the previous configuration is pointless because
+> > +	 * .port_set_host_flood() returns void, so the upper layer cannot
+> > +	 * detect the error and the RX flags have changed.
+> > +	 */
+> > +	if (netc_port_add_host_flood_rule(np, uc, mc))
+> > +		dev_err(ds->dev,
+> > +			"Failed to add host flood rule on port %d\n", port);
 >=20
 > [Severity: Medium]
-> Can this return 0 together with a meaningless timestamp when the Timer
-> function is not accessible?
+> With the new ordering, what happens to host flooding when the add fails?
 >=20
-> List membership only proves the pci_dev is bound to this driver: the entr=
-y is
-> added at the end of netc_timer_probe() and removed only in
-> netc_timer_remove(). netc_timer_driver registers no PM callbacks, so syst=
-em
-> suspend takes the PCI core default path and the function is disabled and =
-put
-> into D3 while the list entry stays live, and nothing re-programs
-> TMR_CTRL[TE], CK_SEL, TMR_ADD or TMR_CNT on resume. The driver already
-> documents the constraint in netc_timer_init():
+> netc_port_remove_host_flood() has already deleted the entry and cleared
+> the tracked state:
 >=20
-> drivers/ptp/ptp_netc.c:netc_timer_init() {
-> 	/* Software must enable timer first and the clock selected must be
-> 	 * active, otherwise, the registers which are in the timer clock
-> 	 * domain are not accessible.
-> 	 */
-> }
+> 	np->ipft_hf_eid =3D NTMP_NULL_ENTRY_ID;
+> 	np->uc =3D false;
+> 	np->mc =3D false;
+> 	netc_port_wr(np, NETC_PIPFCR, 0);
 >=20
-> The same holds for a surprise-removed function or one contained by DPC/AE=
-R,
-> where the read returns all-ones. In those cases the helper still reports
-> success, and the switch side consumes the value verbatim as the one-step =
-Sync
-> originTimestamp in netc_port_onestep_work():
+> netc_port_add_host_flood_rule() can then fail on kzalloc_obj() returning
+> NULL, or on ntmp_ipft_add_entry() returning -ENOMEM/-EBUSY/-ETIMEDOUT/
+> -EIO from the command BD transaction.  In that case the port ends up
+> with no host flood entry at all while the netdev still has IFF_PROMISC
+> or IFF_ALLMULTI set, and only a dev_err() is emitted.
 >=20
-> drivers/net/dsa/netc/netc_ptp.c:netc_port_onestep_work() {
-> 	NETC_SKB_CB(skb)->tstamp =3D tstamp;
-> }
+> Before this change the add ran first, so an add failure left the
+> previous working rule installed and np->uc/np->mc untouched.
 >=20
-> Would it make sense to gate the read on pdev->current_state =3D=3D PCI_D0=
- and
-> !pci_channel_offline(pdev), or on TMR_CTRL[TE], and return an error inste=
-ad
-> of a successful-looking value? The missing PM support is not introduced b=
+> Since .port_set_host_flood() is void and is only reached from
+> dsa_user_change_rx_flags() -> dsa_user_manage_host_flood(), nothing
+> reports or retries the failure.  Does host unicast/multicast flooding
+> for that port then stay silently off until userspace toggles the RX
+> flags again?
+>=20
+> The comment says restoring the previous configuration is pointless.  For
+> the common promisc to allmulti transition the old rule is a superset of
+> what is now requested, so wouldn't keeping it still satisfy the new
+> request and be better than delivering nothing?
+
+The failure mode you describe is real, but it's a deliberate trade-off:
+
+IPFT does not support in-place updates to the KEYE element, so the old
+entry must be deleted before the new one is added. Keeping the "add-first,
+delete-later" order would force each port to track two or more host flood
+rules when the old deletion fails, which this patch intentionally moves awa=
 y
-> this patch, but the new export is what turns an inaccessible-device read =
-into
-> a timestamp handed to another driver.
+from - especially since IPFT will soon serve other features (PTP trapping,
+flow policing) where disabling the port's whole lookup is no longer accepta=
+ble.
+
+The impact is bounded. An add failure only happens under memory pressure
+or a command-BD error (rare), and the effect is that the port's host floodi=
+ng is
+temporarily off until userspace toggles the RX flags again - a recoverable
+functional degradation, not a memory-safety issue.
+
 >=20
+> [Severity: Low]
+> Separately, is the window with no rule installed a concern even when
+> both operations succeed?  Between the delete and the add the port has no
+> host flood redirect, and the gap covers a full synchronous NTMP command
+> BD transaction for the delete (dma_alloc_coherent(GFP_KERNEL) plus
+> netc_xmit_ntmp_cmd() polling through read_poll_timeout()), a
+> kzalloc_obj() that may enter direct reclaim, and a second command BD
+> transaction for the add, which only re-arms the redirect at the end:
+>=20
+> 	err =3D ntmp_ipft_add_entry(&priv->ntmp, host_flood);
+> 	if (err)
+> 		goto free_host_flood;
+> 	...
+> 	/* Enable ingress port filter table lookup */
+> 	netc_port_wr(np, NETC_PIPFCR, PIPFCR_EN);
+>=20
+> During that interval, frames that only reach the CPU through the host
+> flood redirect (multicast under IFF_ALLMULTI when going from
+> (uc=3D0,mc=3D1) to (uc=3D1,mc=3D1), or unknown-DA unicast under IFF_PROMI=
+SC)
+> are dropped.  The old add-then-delete ordering kept a matching entry
+> armed at every instant.
 
-NETC is a Root Complex integrated Endpoint (RCiEP). The Switch, ENETC and
-Timer are all on-chip integrated functions with no external PCIe link and n=
-o
-physical connector. So surprise removal and AER/DPC containment simply
-cannot occur here.
+Yes, the window is real, but I suppose it is acceptable when switching the
+configuration. As stated above, the "delete-first, add-later" order is a
+trade-off. Otherwise, each port may need to track two or more host flood
+rules when the old deletion fails.
 
-Suspend/resume is not supported anywhere in the NETC subsystem - the Switch=
-,
-ENETC and Timer drivers have no PM callbacks. When PM support is added late=
-r,
-it will guarantee that the Timer suspends after the Switch and resumes befo=
-re it,
-so the Timer is always programmed and accessible whenever the Switch may
-query it.=20
+>=20
+> [ ... ]
+>=20
+> > @@ -2015,6 +2024,11 @@ static int netc_port_bridge_join(struct
+> dsa_switch *ds, int port,
+> >  disable_mlo:
+> >  	netc_port_set_mlo(np, MLO_DISABLE);
+> >
+> > +	if (netc_port_add_host_flood_rule(np, uc, mc))
+> > +		dev_err(ds->dev,
+> > +			"Failed to restore host flood rule on port %u\n",
+> > +			port);
+>=20
+> [Severity: Low]
+> This isn't a bug, but port is declared int by the .port_bridge_join
+> prototype, and the two other messages added by this patch use %d for
+> the same value ("Failed to delete old host flood rule on port %d" and
+> "Failed to add host flood rule on port %d").  Should this one use %d as
+> well?
+
+Yes, this should be improved.
 
