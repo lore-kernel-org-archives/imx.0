@@ -1,98 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503E12580F2
-	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 00:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8338F345749;
+	Tue, 22 Sep 2026 00:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790037641; cv=none; b=i/Q/2Lhewg36m6tPOg5yhxFzdhWNH9YHtq2qEh67RBMYeHRcCKY2S7KlCEFYDZPYfEiVG25Gvxx5KGV+1jh/IsqfVN4iC0DVqJ53yknlLC8WNlY6HEs6949vHMvcwV/1yJYdK4IcYFZVWfaQjC499WRgdZ530zCE2hLE7srDA2M=
+	t=1790038297; cv=none; b=bBlagHUP/4imXwWlSZkn4d34Mysyu44lejUvaPLIb2tfsuJ/MshAVhpy1NdgFBQILZr5IhJ/leOWoPKXy2Uj10dTmOnAy95HOVBy/L0MOz2E9sNyXrUPdoLnhGNaHj8D4BflS+cRgy5mHsia3bdQTKrdnxpkUd0SPAn09pzEcM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790037641; c=relaxed/simple;
-	bh=7ISat5d9FjXsUnnsNwSeYeA2t+9URkhh6P+2aO3auaQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q/4copN0USiryl9dp5B12cjS0kZMgHsTqOmnb5dYMGl5mXPyOfOdPki7trkrajMJzc1J6sjpuCP7tnGDAnsCkAPJVtX1JfkvhdwwX7Ge/+cpe3Bzg/EZQ9I8xUGd+S5HM+zNSI0s0WVuKRBl+6eI8owGtRA5C3YH+lSbQdEHWIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPVj0naZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790038297; c=relaxed/simple;
+	bh=sjTzPZ23cOtybM3XpWOTk3CKoukFSTFblLLpPxdGHE0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rGcxy9YdKAPjvGtZvijWx72HuCjWsNpCjHiLSzYPD2QjvMfqAWjcl3R2Aeqnr0vXLdi4eicIA3mspNDdLw4/G3Xk9h2OJZH5Jn7c6p/5e58+wxoFR2LvAlW2Bd43vXnl/Jd025Y+6HEQzwGi1jJbs4+dsjCFI6MJz5kYy+/d644=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pc+uVTBh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPVj0naZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB35B1F000FF;
-	Tue, 22 Sep 2026 00:40:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790037640;
-	bh=OocHG7kGWztX+Objxys0i/VZBHzIZVAbwIOTvoXRGKE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iPVj0naZ4wQigEuvdOpUvJ83OkzZJ4eKweXPM4oKu+XHyV/FTJSE+K/W8gzSzT/LF
-	 JdPWAjKUZbu2g4J2qs1Q0J98xCxMq25DAl56OGfuNVIjyrGC70QndB8KKKRqv3sStH
-	 XEl6eB3ZKOAlBiW6Zl11SvsyLIYfmvsUh2zbA39lS4R60Nps92By4nEW67ikP8vxpL
-	 8Zjhr+2R6rMBz8JSYbawgt2NPQXp1PnVeYmSogMCKlFhj1zR7exDXNaUlL3RkeyHgV
-	 +cdJQxjuI89v60YrjG5dKrUF5RVBd7G7fiu8GaKqGAHrTjf/spBAbc+gSLhqOQ252m
-	 I4kH9zsEVIgLQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] firmware: imx: sm: publish the protocol handle after
- the ops pointer
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jaidev Shastri" <jaidevshastri@vt.edu>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260921-mb-imx-sm-v1-1-39f17526d253@vt.edu>
-References: <20260921-mb-imx-sm-v1-1-39f17526d253@vt.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 00:40:39 +0000
-Message-Id: <20260922004039.BB35B1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pc+uVTBh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2AF38C2BCB3;
+	Tue, 22 Sep 2026 00:51:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790038297;
+	bh=sjTzPZ23cOtybM3XpWOTk3CKoukFSTFblLLpPxdGHE0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Pc+uVTBhqnbi/FuhYYO+WQNqvJMVN+CYjR3GU+5gHoIw+Qov2XAIkVNDqseIrQ254
+	 8Tz0AOwqsil8VQMjXowO1UwukHK56wmLYzlYTE6JhYKEHtB81+mUfC+VeZ15h3HxES
+	 cpkEXXAXnw310UJIL8Hlgf3XP6X24zgqCWdLU/ZKuiKvPPImq5tBip67ZHb97p2BVl
+	 FJuTZUz21EmA7hgo6RDGaYe/nF1qqQYw6Qc944SqorQs0E26QS7Q6bNJst4LRYP5Xx
+	 QUYUJ/ASaSJ5czqvFr9IgQ6HCTD+vDJ1hwfo7R2nlJHrdZrjxxK0HCwTHMRz6qh1O4
+	 vpvEk4xGGT0uw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01FA0C982F0;
+	Tue, 22 Sep 2026 00:51:36 +0000 (UTC)
+From: Jaidev Shastri via B4 Relay <devnull+jaidevshastri.vt.edu@kernel.org>
+Date: Mon, 21 Sep 2026 20:51:35 -0400
+Subject: [PATCH] firmware: imx: scu: publish the SCU IPC handles with
+ release semantics
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260921-mb-imx-scu-v1-1-2e2eae4246dd@vt.edu>
+X-B4-Tracking: v=1; b=H4sIABbRsWoC/yXMwQ6CMBAE0F8he3YNLUqDv0I8tMsqa0I1XSEkh
+ H+3xeObzMwGyklY4VZtkHgRlXfMMKcKaPTxyShDNtjatnVnDU4BZVpRaUYeXNe0xnpnr5AHn8Q
+ PWY+z/v63zuHF9C0PpRG8MobkI40lOri4c4OJLrDvPx8cMMGOAAAA
+X-Change-ID: 20260921-mb-imx-scu-ed793612a725
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Jaidev Shastri <jaidevshastri@vt.edu>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790038296; l=4658;
+ i=jaidevshastri@vt.edu; s=20260921; h=from:subject:message-id;
+ bh=0RORvg2PXLot2bwSJtUZCYO8QEXAWE0X1XX02gJE4Rc=;
+ b=5B0OQ62kUCr6hzg4bQqVlmfOATttk1UYAXWkEske9/yWnUbQhqgjPXSDLgw9da8Q6JzILEn/v
+ Z5LqaULjNDHD5N38U9jhSWj37uA7QYbPqurec/7H5tiAxmtfOm7QaUV
+X-Developer-Key: i=jaidevshastri@vt.edu; a=ed25519;
+ pk=J7+xYJRlTPds+pv5hbqFFRqGCpDeJDzmZT1ggRwj7/0=
+X-Endpoint-Received: by B4 Relay for jaidevshastri@vt.edu/20260921 with
+ auth_id=1044
+X-Original-From: Jaidev Shastri <jaidevshastri@vt.edu>
+Reply-To: jaidevshastri@vt.edu
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Concurrency: discarded smp_load_acquire result creates TOCTOU do=
-uble-fetch
---
+From: Jaidev Shastri <jaidevshastri@vt.edu>
 
-commit bbaeb64e803a74302b103407c87f99c75c2cbd83
-Author: Jaidev Shastri <jaidevshastri@vt.edu>
+imx_scu_probe() fills struct imx_sc_ipc with the mailbox channels, the
+fast_ipc flag, the mutex and the completion, then stores its address to
+imx_sc_ipc_handle with a plain store. The clk, pinctrl, nvmem, rtc,
+thermal, gpio, reset, pmdomain, remoteproc, fec, flexcan and SOF drivers
+fetch it through imx_scu_get_handle() from their own probe and pass it
+to imx_scu_call_rpc(). Most are not children of the SCU node, so they
+probe from the deferred probe worker or a module load on another CPU
+while imx_scu_probe() is still running.
 
-firmware: imx: sm: publish the protocol handle after the ops pointer
+The publication store is not ordered after the stores that built the
+object, so a consumer that passes the NULL check can dereference
+uninitialised channel pointers. The address dependency on the consumer
+side orders its own loads but says nothing about the producer.
 
-This commit resolves an un-ordered initialization issue by publishing the
-protocol handle ph only after the ops pointer is set. It uses
-smp_store_release() during probe and smp_load_acquire() in the exported
-helpers to ensure memory consistency.
+imx_sc_irq_ipc_handle has the same shape:
+imx_scu_enable_general_irq_channel() publishes it with a plain store and
+imx_scu_irq_group_enable() uses it as an -EPROBE_DEFER gate for the rtc,
+key and watchdog drivers.
 
-> --- a/drivers/firmware/imx/sm-cpu.c
-> +++ b/drivers/firmware/imx/sm-cpu.c
-[ ... ]
-> @@ -26,7 +27,8 @@ EXPORT_SYMBOL(scmi_imx_cpu_reset_vector_set);
-> =20
->  int scmi_imx_cpu_start(u32 cpuid, bool start)
->  {
-> -	if (!ph)
-> +	/* Pairs with the smp_store_release() in the probe function. */
-> +	if (!smp_load_acquire(&ph))
->  		return -EPROBE_DEFER;
-> =20
->  	if (start)
->  		return imx_cpu_ops->cpu_start(ph, cpuid, true);
+Publish both handles with smp_store_release() and read them with
+smp_load_acquire().
 
-[Severity: Medium]
-Does discarding the result of smp_load_acquire(&ph) create a
-Time-of-Check to Time-of-Use (TOCTOU) double-fetch race?
+Found with MBCheck, a static herd7-based memory consistency checker.
 
-In scmi_imx_cpu_start() in drivers/firmware/imx/sm-cpu.c, the result of the
-safe smp_load_acquire(&ph) fetch is only used for the NULL check. The global
-ph is then read a second time from memory when it is passed into
-imx_cpu_ops->cpu_start(ph, cpuid, true).
+Signed-off-by: Jaidev Shastri <jaidevshastri@vt.edu>
+---
+ drivers/firmware/imx/imx-scu-irq.c | 18 +++++++++++++++---
+ drivers/firmware/imx/imx-scu.c     | 14 +++++++++++---
+ 2 files changed, 26 insertions(+), 6 deletions(-)
 
-If ph were cleared concurrently (such as during driver unbind or probe error
-rollback), this second load could fetch NULL and potentially cause a crash.
+diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
+index a68d38f89..4f24e3c08 100644
+--- a/drivers/firmware/imx/imx-scu-irq.c
++++ b/drivers/firmware/imx/imx-scu-irq.c
+@@ -143,9 +143,12 @@ int imx_scu_irq_group_enable(u8 group, u32 mask, u8 enable)
+ {
+ 	struct imx_sc_msg_irq_enable msg;
+ 	struct imx_sc_rpc_msg *hdr = &msg.hdr;
++	struct imx_sc_ipc *ipc;
+ 	int ret;
+ 
+-	if (!imx_sc_irq_ipc_handle)
++	/* Pairs with the smp_store_release() in imx_scu_enable_general_irq_channel(). */
++	ipc = smp_load_acquire(&imx_sc_irq_ipc_handle);
++	if (!ipc)
+ 		return -EPROBE_DEFER;
+ 
+ 	hdr->ver = IMX_SC_RPC_VERSION;
+@@ -158,7 +161,7 @@ int imx_scu_irq_group_enable(u8 group, u32 mask, u8 enable)
+ 	msg.mask = mask;
+ 	msg.enable = enable;
+ 
+-	ret = imx_scu_call_rpc(imx_sc_irq_ipc_handle, &msg, true);
++	ret = imx_scu_call_rpc(ipc, &msg, true);
+ 	if (ret)
+ 		pr_err("enable irq failed, group %d, mask %d, ret %d\n",
+ 			group, mask, ret);
+@@ -201,6 +204,7 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 	struct of_phandle_args spec;
+ 	struct mbox_client *cl;
+ 	struct mbox_chan *ch;
++	struct imx_sc_ipc *ipc;
+ 	int ret = 0, i = 0;
+ 
+ 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+@@ -215,10 +219,18 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 
+ 	mu_resource_id = IMX_SC_R_MU_0A + i;
+ 
+-	ret = imx_scu_get_handle(&imx_sc_irq_ipc_handle);
++	ret = imx_scu_get_handle(&ipc);
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * imx_scu_irq_group_enable() tests imx_sc_irq_ipc_handle from other
++	 * drivers' probe paths and then passes it to imx_scu_call_rpc().
++	 * Publish it with release semantics so that the SCU state it points
++	 * to is visible to them.
++	 */
++	smp_store_release(&imx_sc_irq_ipc_handle, ipc);
++
+ 	cl = devm_kzalloc(dev, sizeof(*cl), GFP_KERNEL);
+ 	if (!cl)
+ 		return -ENOMEM;
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index 203aac421..e1b9d51a5 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -105,10 +105,13 @@ static inline int imx_sc_to_linux_errno(int errno)
+  */
+ int imx_scu_get_handle(struct imx_sc_ipc **ipc)
+ {
+-	if (!imx_sc_ipc_handle)
++	/* Pairs with the smp_store_release() in imx_scu_probe(). */
++	struct imx_sc_ipc *sc_ipc = smp_load_acquire(&imx_sc_ipc_handle);
++
++	if (!sc_ipc)
+ 		return -EPROBE_DEFER;
+ 
+-	*ipc = imx_sc_ipc_handle;
++	*ipc = sc_ipc;
+ 	return 0;
+ }
+ EXPORT_SYMBOL(imx_scu_get_handle);
+@@ -345,7 +348,12 @@ static int imx_scu_probe(struct platform_device *pdev)
+ 		return ret;
+ 	init_completion(&sc_ipc->done);
+ 
+-	imx_sc_ipc_handle = sc_ipc;
++	/*
++	 * Consumers fetch the handle from their own probe, possibly on
++	 * another CPU, and then use the channels, the mutex and the completion
++	 * initialised above. Publish it with release semantics.
++	 */
++	smp_store_release(&imx_sc_ipc_handle, sc_ipc);
+ 	ret = devm_add_action_or_reset(dev, imx_scu_clear_handle, sc_ipc);
+ 	if (ret)
+ 		return ret;
 
-While this bug might currently be latent if the driver lacks a teardown path
-that clears ph, this double-fetch usage bypasses the acquire semantics.
+---
+base-commit: 93f51579e7df248780214094418f205253383cc5
+change-id: 20260921-mb-imx-scu-ed793612a725
 
-Could we store the acquired handle in a local variable and use that local
-variable for both the NULL check and the function call?
+Best regards,
+--  
+Jaidev Shastri <jaidevshastri@vt.edu>
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260921-mb-imx-sm-=
-v1-1-39f17526d253@vt.edu?part=3D1
+
