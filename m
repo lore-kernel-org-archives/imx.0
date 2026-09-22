@@ -1,121 +1,138 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C5A48F02F
-	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 06:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790056956; cv=none; b=VpboVnvmlKiPCxwayJ8He/jTqNcwrO1ocZGtYo9Ykd1vVKNlU2Gy0ZzMKuzFInY5moM/Sl0JRT14IwcAtzTfKiNQLeF+0A9kc83aehaHvRp2/Ek5D9Yb/hI4wvrWMWNZ2G9Gog7HD1e4yC1ESUDlNUmxH6FxQj58PAQ5q+p2rtY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790056956; c=relaxed/simple;
-	bh=UTGrp+lZOAxLFmkLKsLGysXMTNUwZ9BjO56kp90DTuQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YfIrVPo6EI0JPFrr4kDLEBI9Bc5NNrey4L8i0gGFW6yXOgHFRxbOIZOPDtvPKniUrpeMMVfiaqIb2tdRDc5wGnYHk+PhXrHVk1H4ynhemNqMOyQYOlqnwl95TzhwEG9iidb6PpdJOV4oQyIFwZFLIDdo7N13IoVDuWZ5WQHOxTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C/glr1/a; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB2A4C77C8;
+	Tue, 22 Sep 2026 06:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790058597; cv=pass; b=VmaoYJ98aj56z4Bx49Q0djSM7rbPL/vGCix4DG6Ewc+W9zmsEo0Z7Dt3/cSAX7mMP/7/NqoQmG0N0u0jATeIlRQIEOwkUuxSKZMGSzzY2+dXaUg+eecdBDRAwmRqpELT0U+0DttSPaOXUQ1siEuz4xPwVco1BMzCAlO3rEVvtrk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790058597; c=relaxed/simple;
+	bh=0Y/NG4nMOalFGTSNp/BfF0N3WtHCZpwOLy9J6i30EqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E5bGmmAh/VVtZNoOFyu1GvSH2YQQm6JvELO2NZ/yl11aZCS4R7NU41SwwchY5I6cHnUTzu8RIN8rr9x6v/Z6cCR39g9M1LkoFmMW4+ahzY239tDjIaSFp9eZtuRxb8Bx3hjr8Bv5i7Tyba+s2c/zDjKH9SSawODYo3SqqB13bSc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=2S39SToW; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=T5UqOveD; arc=pass smtp.client-ip=185.56.87.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C/glr1/a"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3a02551822eso634018a91.1
-        for <imx@lists.linux.dev>; Mon, 21 Sep 2026 23:02:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790056953; x=1790661753; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uQ3bgQN5Dp8+Qvmy62hDVi5O4cZCEw7wjVOCUUXKBjk=;
-        b=C/glr1/atbUj8gyxNNtBW51pFZFwt6FlTSUix1Ynao3INFEVAoGCMD/oIx+XlPV1fJ
-         S3hx6+IfMiXikhamvsDiVFDHi0fWOPEjYli2DSa4C64CtHFpAbqOE20vLHzam6RmYRcJ
-         s5BvN4hbC16FQkQU7ek60jXT8K+vuKMlbNr//zjiVLQKTC6JgUlrSFmF9z6mUQzrdSeQ
-         lEzuYR2FsxBcm6x4+sbUM8hfjC6DNt4I4zgTKuRSMELne282jAMOAAO0jZQr6xIX3UX1
-         KDV1yMn/Ck1OJDVjI4ZKtKWx3UUEhpK3VosHNW0qPV54uOJbEptwBVivsY5plldtl5C7
-         0ybQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790056953; x=1790661753;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uQ3bgQN5Dp8+Qvmy62hDVi5O4cZCEw7wjVOCUUXKBjk=;
-        b=meGdtLZcDnsQ0ikc0DG6uqSzEsCfu/FBnmHEFkzCU5bnNSVYCWdG3VwxeEJUrVQVaU
-         YwN12q+enBp5zcL+3lg4wRA4BuctZgbXPxUn5exixviutV98VrZc9BvVTbfmHpnjNVKv
-         19DopUfO1KJtzkicGLTiBUuXfETpDcwLh+gQYP7eKXO9aPngoJLlnlJz6hqwztadRWLa
-         68CIO0BfXoE8vzI4Kkzdnj9d4FPOoiLZiiqOvsD+nkm6bA9Cnmzh76TGYO7Q599hR0rW
-         w92pP8wC+fDHG1eGiH/3qf4RwzY554mC1tCm1OiuSL33kuc2UmZeXFmIZCOClG7LH7mQ
-         toag==
-X-Forwarded-Encrypted: i=1; AKwUvBwBvb405X6EXutO/Y34Rv4CnQ4ZqKXBCc18dcaQMYSeUOentIifC0kgwA1hJGu7QklRMvk=@lists.linux.dev
-X-Gm-Message-State: AFuF++l8tweJPh4GxTjZgNgnaGu1WOW2DGV12GX64Q/M9jfBw1SK3gyX
-	LFlZRvGh85aY9m2+4lgjQ9wHAS+WY6NRj+uvPoP41eBR4kW1eEYN/5RL
-X-Gm-Gg: AYBFou33NtXu7WlQUdLpzMAwvpN1nbCLkmh988pMLATTS2NvWLZPoqaUDg+yWbrOJfB
-	77sWAevDzVUicICxLJzv9wi5HMY/o7nbgHVB+B9+9yPc6t87xgjHprHw4vc/N6rQhdaZZvvtY/0
-	GPWNsgihmfAAOv6qcjdYOqBRJcXNuJeDPNYXd2oqEcd/isI3XmFmFkfPTodCL4wyzTvnnF8TtJX
-	FWXV06fEUeuZnBbB9RuMbRd89n+Ib5Pt9sO9dCJVwcSocW6BEkoIonBAR2nltoC+kZvJpdNof3/
-	vwykq4tYnmf4Ya3BkYpaUyDEm2DZ6RAGQdZg+x1PtwzNsv2YodZ8eeCR1iHzIWXeQ2C6/Fj+hfH
-	dUmsRtMHgFKDIT0dv6pQIjY+LjzY9XJmsk2vsg5si/LKYn5iyn6Rt0fOWMjnbFbNd0fuRYugUPu
-	8RrcbFyd7chjChZajyWwKqBMxD31ytH2oJC1DjuYCch3mrmBb/jKihNsSV65yb05fSB6iX2hW8+
-	NuJYta2LQeMMERD2XY=
-X-Received: by 2002:a17:90b:3fcc:b0:39d:e78d:32d2 with SMTP id 98e67ed59e1d1-3a0730cbed4mr111836a91.13.1790056953102;
-        Mon, 21 Sep 2026 23:02:33 -0700 (PDT)
-Received: from [10.25.133.25] ([165.85.205.162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e61340e56sm3366245eec.30.2026.09.21.23.02.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 23:02:32 -0700 (PDT)
-Message-ID: <976f828a-bf48-4788-adb1-7204c27dda60@gmail.com>
-Date: Tue, 22 Sep 2026 14:02:24 +0800
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="2S39SToW";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="T5UqOveD"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-xhtg.prod.antispam.mailspamprotection.com; s=arckey; t=1790058596;
+	 b=SYSo5LeOU/TUDjRWeiCRSNrsJY1RdtonEuXcO0Tp8EThLegw/7o7Nsk38Yi9nEndGhkEvgDsE7
+	  4vmwQiGlcDZor+XHnaz4jHofwNxUW+OaLLyHlgIya6KAFXOdB7rc07/MAGjqKn9bvEkWBOXWWP
+	  fA9Z0FWVaz26IdtnN9oALEAF2NVau15byp5pBkdp5pSq3BNlOZbOr5BhhAB9LbiTIxpSWe2Aqi
+	  i/eVB0qt3EIEkk3iFlPS2rE7WmTWQ1g283kIlybyZND97Em3BVCJoR2l6W6gjEBlyCm4htdE3i
+	  CcvVkUYV/p1vRAhgEKiTSq+IhB0IaWs77jAbaddngqqsrg==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-xhtg.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-xhtg.prod.antispam.mailspamprotection.com; s=arckey; t=1790058596;
+	bh=0Y/NG4nMOalFGTSNp/BfF0N3WtHCZpwOLy9J6i30EqE=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=nLFwcEVeCnhiaR+v4C5ZsFuOYlE6TsLkutfp1JjEQ2VISzagLPHESw79VGfPrh11+YS3bY9SZF
+	  dm0uRq/P/leXrUfW16Vcx0LrY2B49pwiSEpgdUx2Ql8IBZO8exoJd/VXwwc4zC+ORkeWxINdXi
+	  q7JTesk6UF7mUnF3xjxNHn4bHyY5nsVCQBx/5DwRiGaqIaqvdFoHmuRIwnIFEvWrkzKoWtrXu6
+	  M13rfQfA3HM5b8IgKEsj2NVjO9ROPOv7z1L5yrEpWvh+dbrqTZNHHU7DsBQsm19apO3yf8/cyc
+	  C4C6PV4NBHSGEphjeqinovdCXgjh/vEmJK9TwRj9rpvW5A==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=5TziHwaXDLNZErCA1Nv3YhRq2q9+6p4PN2Do0dxKr38=; b=2S39SToWOKjfbbp0s7YU0bl5MS
+	x/R8aAYJwtb3PD2w1cX53X+suRYOf9Kn31WHJMc16CV8hLsNo7DTafmNJ7hOUOxHjDsJ+5kuqfvF9
+	rQHzL3FcYmA2O40pil5CadpUofVAbiKwFLKNsabSmkt8j8XzIbsaHm2BhQ2w/J/lvWX8=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-xhtg.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x8u08-0000000H2ur-0gFT;
+	Tue, 22 Sep 2026 06:29:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=5TziHwaXDLNZErCA1Nv3YhRq2q9+6p4PN2Do0dxKr38=; b=T5UqOveDeSk52U3za0f9ytME7m
+	zSVTX1ALLKtdubMCZNXtEZz3wf/27Dn9KwpzimGgCV3BJ9XriUrJYEKbSc+CYOb6rZxWE4+/+xnTL
+	Vlfj3qwDvFZqXE45GDc0jKkhkeLenT+u4HxOrUuAXVusycaW9qvA1txxbpcC7QJPHlAM=;
+Received: from [79.43.46.244] (port=63244 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x8tzG-00000000GBl-2f8i;
+	Tue, 22 Sep 2026 06:28:18 +0000
+Date: Tue, 22 Sep 2026 08:28:16 +0200
+From: Francesco Valla <francesco@valla.it>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC 00/12] remoteproc: add support for any virtio device
+Message-ID: <arIfj-1Ji6HEBHLJ@bywater>
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <aq1sooGCYUiWbhMH@p14s>
+ <aq453yukMHiNb1jp@bywater>
+ <CANLsYkySF+eF-FURnnT6UJv7P5Sg2HdfMSBZnZy_BLyCMvuofw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v5 5/5] ASoC: fsl_easrc: expose individual DAIs per
- conversion path
-To: shengjiu.wang@oss.nxp.com, lgirdwood@gmail.com, broonie@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- shawnguo@kernel.org, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com,
- perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
-References: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
- <20260922033428.1690822-6-shengjiu.wang@oss.nxp.com>
-Content-Language: en-US
-From: Chancel Liu <chancel.liu@gmail.com>
-In-Reply-To: <20260922033428.1690822-6-shengjiu.wang@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANLsYkySF+eF-FURnnT6UJv7P5Sg2HdfMSBZnZy_BLyCMvuofw@mail.gmail.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: d55d3712a4d35f3ccddf463955b8e99e
+X-AntiAbuse: ID - d55d3712a4d35f3ccddf463955b8e99e
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1x8u08-0000000H2ur-0gFT-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-xhtg.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-On 9/22/2026 11:34 AM, shengjiu.wang@oss.nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+On Sun, Sep 20, 2026 at 09:31:11PM -0600, Mathieu Poirier wrote:
+> On Sat, 19 Sept 2026 at 01:33, Francesco Valla <francesco@valla.it> wrote:
+> >
+> > Hi Mathieu,
+> >
+> > On Fri, Sep 18, 2026 at 10:53:54AM -0600, Mathieu Poirier wrote:
+> > > Hi Francesco,
+> > >
+> > > I have started reviewing this set but given the size and implications, it will
+> > > take me a few days to get through.
+> >
+> > I'm going through the review done by sashiko - would you prefer me
+> > sending a v2 with the trivial errors already ironed out before doing
+> > a complete review?
+> >
 > 
-> The i.MX EASRC hardware supports four independent conversion contexts
-> (A, B, C, D). The driver previously registered a single DAI with generic
-> stream names "ASRC-Playback" and "ASRC-Capture", which prevents
-> multiple independent conversion paths from being used simultaneously.
+> We can wait if the errors are trivial.
 > 
-> Replace the single fsl_easrc_dai instance with an array of four DAI
-> drivers to allow up to four independent conversion paths to be active
-> at the same time:
-> 
->   easrc-0 -- ASRC-Playback / ASRC-Capture (backward compatible)
->   easrc-1 -- ASRC1-Playback / ASRC1-Capture
->   easrc-2 -- ASRC2-Playback / ASRC2-Capture
->   easrc-3 -- ASRC3-Playback / ASRC3-Capture
-> 
-> easrc-0 retains the original generic stream names to preserve backward
-> compatibility with existing machine drivers and board configurations.
-> Each DAI retains the same channel, rate and format capabilities as the
-> original, including IEC958 subframe support on the capture side. Update
-> the devm_snd_soc_register_component() call to register all four DAIs.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Reviewed-by: Chancel Liu <chancel.liu@gmail.com>
+Not all of them are. I have been a bit to naive about the bounce buffer
+management w.r.t. what can happen if a memory area is not specified and
+I will need to rethink/rework that part.
 
-Regards,
-Chancel Liu
+Regrads,
+Francesco
 
