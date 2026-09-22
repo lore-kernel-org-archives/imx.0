@@ -1,137 +1,121 @@
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B106154B1C6
-	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 13:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790085203; cv=pass; b=U2qwMmzDDZCi4SV/7nPiEVt+fM36NGX3jsmXDHXI1FMVXBBsCSK4gFstCajPvtyauyWQ/0aA1g7nX8Bm8GdNvtSJ/CTV3dvHgcW81wDMsr86mZjuBFtzffQ0Kl50xOqnrDmvoeSJBnqlyGTC72OImUX6qiiloUwI7pVgc8OMZU8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790085203; c=relaxed/simple;
-	bh=0hurBNTkrVz1B/9TW5ipWegr4/ZEEZE2GB3faJsOdT4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rveZ5qudHfNHc8PBETWiX+y3rAadG0G95jfJrv4JAmujlWEkQStxLeAu0M4wYv+6GPJY8Xjy4UrKnAFtmSj4H4uU8RSMPW9bnS3HQegkUl3VMWA/YZWkWF6CYywSCOvPZeTRpH/ImlvCgFohRUbX0V52SqvfmOo02tNWPRyIxng=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xJfQrXKj; arc=pass smtp.client-ip=74.125.228.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE928379EE7
+	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 14:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790087647; cv=none; b=uAYU4JaF5mE68LUNOaQfi7Yc3Zg7FsGblivgBYMOiqiJK7k5n8pvuJ7BgFHjBbGb43Al/mn8PX6QXyEvX2BiC+Lid5wJhCIqHqZQfajrOQgIq09Cl4R0dR4sooguvUdbhSfwrp9oamOVEOvvvR8MX2ECqUILRzbYf1E1cD4dE7w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790087647; c=relaxed/simple;
+	bh=HTxXW1i80xc/5ySMCXcIlhCujaED7RaMVu0HGBcwOTk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TGZh5axxeeqDfqN1S01WKWIl5BFobNISXWDRYrN6z5Lp7py0+cWsHUgW/e2qFnoOShkzwso0x+IfEkHj4ugZVvsVEPTvkTy8sVeTQJ6CncPaiK099Lj3AMnh6R2uZK8r2yTIHH++wB78fX6+BCBY6l4/TVXEdqEv54JYUxem+Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bc65KoaD; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xJfQrXKj"
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa1da63791so5253651a12.1
-        for <imx@lists.linux.dev>; Tue, 22 Sep 2026 06:53:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790085200; cv=none;
-        d=google.com; s=arc-20260327;
-        b=j3K0lBdejye2RQ84ljWSrzkxm1WmoZ0bk9/isk3WetpKx4Q1l40uXaPw07djH931SN
-         ckhnd8+YPGZtNxTt7yw6it0EM1XjJhiNoT2z8J8C2jtxFXnCvloww6X6cZ6BUmQ61sUk
-         tdfYHt/+O7vJOI1yOq23S8+b1OeOSQk9sdczA5ZnduQbwm9ubT5FeyjTUER64RXh8mZR
-         dvbgkTd027zwLCwdmxpUYHgjY1UrNoxLc7jrVlyAmEeQ4oQ9/v7RujQm6xpTKeA0fMGj
-         wq4NyuyAV+BMVo/9Qic+IePV/aZVZsyhfckKN12+04/V+hucfosBjqMj41BjH0BxjANb
-         A5aQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=awCRBzfBSO0cm9zEvmZIeCCRXLT0QzBOpw1tpjmmlbQ=;
-        fh=2nkqHUvAfEYfO3/sdtc9orXA+RS6oMJyiwGaaEjKESY=;
-        b=SON0OixDU1De1wqlO9rpx16le33h8TR1TCPJLP5cYWxX/nHRuLnJx5b3avXvqigoBa
-         8LYQSy9SQbrkJSET8+20BGvfnpSe4wx9jiZ9kGeBoGo1KUj2qhpCk52rfC37honsM6BR
-         tCIjIUygNkRYsrZtRMxjXq235uaRcGDQaEln4pL/plfzG62B/BQB255chJi/km+5NcMm
-         FOxyCKr9JQFOQ/bYQyYXhdCr/ifOVq0pmNHqODe0tVAitZXzPwo3eXxZPEbcnWL86UaQ
-         ReWYogXn+27MEWyoTG4YLlohIoM6I3vAFuWuj2ZWgpaeiBrjJ3XzLsKKTPaq/sZl647O
-         PN6A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bc65KoaD"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f7dbfso472068166b.2
+        for <imx@lists.linux.dev>; Tue, 22 Sep 2026 07:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1790085200; x=1790690000; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=awCRBzfBSO0cm9zEvmZIeCCRXLT0QzBOpw1tpjmmlbQ=;
-        b=xJfQrXKjUWONG38womQya5smAp9gsRcpsxsyRwgvpI5Dp7ZDiAkkzhfhHut7wFte5B
-         vQdLlY797vE0NiHcp7Y35lRyoX1wo+MTiIN/rdxz6CfM3J8VNvty72SPio8AFDVBzwtt
-         BscQFUVPPVojZdoPhHUwDSyS6OYnVOUkLIZCS67aPx1uYCD1YPVUGkaoqPaYqjPZ3igp
-         AqQTgK3EhsTKkNywF3NQRTaobCOmXVWantfAtBgIo9TiOY/5HUx3kLdx3v1v1zanCfet
-         kCeqGTws8GhEDy/4evDN5CNx8PM9QuvWGdT+culDnAwwW1Cqvu6e2RPdBe03ClsLJsRc
-         VDNQ==
+        d=gmail.com; s=20251104; t=1790087644; x=1790692444; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Ba3ecdPg+nXAggAkyJWYjwGlyNmLO+sGERFOk7ut8Ms=;
+        b=Bc65KoaDeb+9xPpomdRY2UuacUXrJl60kypi41GN+zL9JSFuMn8jc83KeEcZk+IBD+
+         AQKMFKMuhSannBghDuHWxQolSyiISLD/tqUVYCkMiYVurZV3/V1YJOXri+SA/nlyo3aX
+         EEkM/lELCL3DM7Ns2gqsEXpR6wVQkUzg5YZHnj1vwhepGqA2wltGLQ1nFwCa92SQCM7t
+         cLun+vQG9F290lZWxKeZ/vpbP3TzrBQKnIaYlur+NxiZfTlElERlO++n49jRROVJ2nVH
+         c0nxmQajtZ+DzdvhsVXwUWXRG+Kz5QfDf0XqJ9VW0LRIXJjWUwc3/195jESRqSMsLD0I
+         /XnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790085200; x=1790690000;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20260707; t=1790087644; x=1790692444;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=awCRBzfBSO0cm9zEvmZIeCCRXLT0QzBOpw1tpjmmlbQ=;
-        b=P+UlR2y08R2rTqlmJGnt4sKmFeSPnyI99OtJqShU9jA/iIJaYTrk1/tQInSJLQ7tva
-         sLhYJ4RgExihoXtBdgfjlrw6S0xx9z2+OxnynQUhOAxS8S4TFYILt4LaOIhIEHG1cAXK
-         XMjj2Cpt+w7QleRHlHEYOi+hbvCjFiK0e5y7EO9R6MFafs3WzVJ9Y+qzHLuAMh5OnZaL
-         yF5MDRSA5c7YKPY0k49JcpHM9bzrDidcZwen1pXhJvv7yt1WI8Z1xIi9BmJTZxiTB/9Y
-         vxyK//m/ZjTFN6eHdZNO/AydvVmc956DdpPKa8GzH8DeiXGU4RRwl1rM5FmOdCoM6Hmg
-         p00A==
-X-Forwarded-Encrypted: i=1; AKwUvByY/DUsyWKk7USiQm5XOKBjAUsx/PsDYLCM9FpngeDKzLJ4r3uE3AjeaQ45k/jamSa+Mls=@lists.linux.dev
-X-Gm-Message-State: AFuF++m9bnUGyfIm/V7pMzF9/5WdQNFDRRkwBwZGuCj+o1HChXA08A48
-	/PhhMYqYtrqgEbuPNRt7Wlk+Y9NX80cEJ7A9zy2ZhaSMxoYoKlwau5ei0/wFvp/uyJj/wcISMp9
-	sJzlmgRSkYHktuJav+iNS5wdzyw82rf/uJICKlplhgA==
-X-Gm-Gg: AYBFou1akbFqb2s0/CLfKCuLL0Wxs5CnLcif40Qn2W9+YjTTchguYwcq5uo44SPDaih
-	mZsFarX1qpXpFgvZxlCteHNIzSq73iuNxNqVo8nI1Wk0RyQ6s8sYW+H+zEAnNpRJyAkFycpTSDO
-	uFynVRpHXXOD6bja2v9KT17m4XAWp7CMQRMuLyIYc0yIep2yFGeZfcDtXlqvw1y9nxTxqrIZbJc
-	a1q5z/DN3EyKkTM2mrRZbvGMCwWqAJBlKPRb78EmH2xV4kcKYxi7cBuq+DeHTF4RqwOczy0+CFC
-	bkdYszW1oX6AV0agKxEoN19C7aqtByTa6AHDZNeERmxZ+pYGeiWq7acHarTuD7gbsV/9tyXIXTZ
-	wNB5vcD2kN2HG
-X-Received: by 2002:a05:6402:20c3:20b0:6aa:9210:262 with SMTP id
- 4fb4d7f45d1cf-6aa92100342mr3351155a12.22.1790085199929; Tue, 22 Sep 2026
- 06:53:19 -0700 (PDT)
+        bh=Ba3ecdPg+nXAggAkyJWYjwGlyNmLO+sGERFOk7ut8Ms=;
+        b=2AuK6yfw3S4eRerulCJ/5Sfduq0KD5XO+9ay7WNPvbjqVvef4N1+NQsGTTeQG1MYmF
+         bMwh0iAHouX7Y7DY8IdKLwScudVyoWN7aYEMTdKT3cZ6e5fKvui0tqCeiEwDWXkYYhhW
+         50rWtjuMEr5+01lkWthtnE5HJMWM7goIWoNJ8ewx1O1E215qZ19VGtPrDOYh8zpZVpJn
+         fbSpYFBWcVduDtULTdFbCe48YgLnR/F+6bwv3DP1gg/RfemadlwYY/gaEP3YoXN5hH8e
+         EcRKVXqhvAPNTLcsMc7145qGdA2DCnxk8fAGTqXXp+GRRNVow59RHPl0TSje1N/Jlx5r
+         I2RA==
+X-Gm-Message-State: AFuF++lBf5vqOj300jvIjT1yfFyHBo6zsnHYJ4LLCDn3f/qaz15wxm4i
+	M6lAQRLCZnJg26E1y8+GDJQUum3Kr4s+4TynPyk/lOJLDP5WPbKMEEHD
+X-Gm-Gg: AYBFou0iOB4aMaKGnKMElyzqCmkQcevv+wwU/b6qVRUqjU7HUMLjx8lTBq77GkjWGp4
+	7INipyN3/UeDil3y5E4GTyEd8pJeZ0mGRYoUCWwBz54B4yiOm63o2jEX79CqP1yGkSWFvQah00d
+	7x14jcHBMtyxE2+W7pibICTgpj7pbl0/V8nZgY8t7IB+iK5cgQiDgvKwGzcPUhlWchyAarUwu5d
+	owWjkrmTm9EzmJt+1udMpgrmWM/5+V4YgHnYvWT5TIyCTKfGO6YQdnST+lgqLt4nZOiUufUK3mQ
+	xOYXEz2fAgTdYDlkNYUwvdTMNyBl4BBQY9md4tXsPPvraqVbsOJkxSzh4tfCcdgJf0Ff+E5ifCF
+	ZIATaI3ztNhytqwaE4SRtivZ4PFIsrYj02WlQsV7sYlK/dmTBGMr1lmVkjum3ER0egTZgoifKXw
+	fVd6NXAOa5fkCw23c9L6Pdbo0dlEj9c34U5LinXuBhHr9+NKfvZzHZTZdX3crnBgpTV1uZXuNrI
+	zGjmpwYcnvFcnVlgN+r1h29PEFJI4i1TiQoZdfUlhyI3AOp+akzc0ifaQOjnUgyEH3u04+bgFRl
+	U3otL12U
+X-Received: by 2002:a17:907:3cc1:b0:c27:d84e:ebd6 with SMTP id a640c23a62f3a-c2a157fcf13mr1269533666b.25.1790087643972;
+        Tue, 22 Sep 2026 07:34:03 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a9c5814e2sm103469966b.27.2026.09.22.07.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 07:34:03 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Subject: [PATCH 0/4] arm64: dts: freescale: Add Toradex iMX95 overlays
+Date: Tue, 22 Sep 2026 16:33:45 +0200
+Message-Id: <20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <aq1sooGCYUiWbhMH@p14s> <aq453yukMHiNb1jp@bywater> <CANLsYkySF+eF-FURnnT6UJv7P5Sg2HdfMSBZnZy_BLyCMvuofw@mail.gmail.com>
- <arIfj-1Ji6HEBHLJ@bywater>
-In-Reply-To: <arIfj-1Ji6HEBHLJ@bywater>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Tue, 22 Sep 2026 07:53:08 -0600
-X-Gm-Features: AcwNN1V0zenE0U1QivuzVoqHQLJIIYIxl9SSuy2ocYOHZBqajP-1AfG4uh0OqKk
-Message-ID: <CANLsYkzaxwx8NJAOki_wkzauL68ourd12qF8PzzVKW++PJXZfw@mail.gmail.com>
-Subject: Re: [PATCH RFC 00/12] remoteproc: add support for any virtio device
-To: Francesco Valla <francesco@valla.it>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, virtualization@lists.linux.dev, 
-	imx@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMmRsmoC/x3MTQqAIBBA4avErBtIw2i6SrSwmmqgPxTEkO6et
+ PwW7yXw7IQ9dEUCx0G8XGeGKguYNnuujDJng650U5HWGBTKEcngFdjt9vHY0lhbUq0ZqYbc3Y4
+ Xif+zH973A8LiKiNjAAAA
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-On Tue, 22 Sept 2026 at 00:29, Francesco Valla <francesco@valla.it> wrote:
->
-> On Sun, Sep 20, 2026 at 09:31:11PM -0600, Mathieu Poirier wrote:
-> > On Sat, 19 Sept 2026 at 01:33, Francesco Valla <francesco@valla.it> wrote:
-> > >
-> > > Hi Mathieu,
-> > >
-> > > On Fri, Sep 18, 2026 at 10:53:54AM -0600, Mathieu Poirier wrote:
-> > > > Hi Francesco,
-> > > >
-> > > > I have started reviewing this set but given the size and implications, it will
-> > > > take me a few days to get through.
-> > >
-> > > I'm going through the review done by sashiko - would you prefer me
-> > > sending a v2 with the trivial errors already ironed out before doing
-> > > a complete review?
-> > >
-> >
-> > We can wait if the errors are trivial.
-> >
->
-> Not all of them are. I have been a bit to naive about the bounce buffer
-> management w.r.t. what can happen if a memory area is not specified and
-> I will need to rethink/rework that part.
->
+This series adds device tree overlays for the Toradex Verdin, Aquila,
+and SMARC iMX95 SoMs.
 
-Ok, I'll keep an eye out for that.  I'm already halfway through your
-work, so there's no need for a new version now.
+The series adds support for:
+- NAU8822 Bridge Tied Load configuration on the Verdin Development Board
+- UART_4 reservation for Cortex-M7 firmware on Verdin and Aquila
+- SER0 reservation for Cortex-M7 firmware on SMARC
 
-> Regrads,
-> Francesco
->
+The UART overlays mark the port as reserved so Linux does not claim it.
+Firmware remains responsible for configuring the UART and its pads.
+
+The Makefile entries build standalone DTBOs and ready-to-use composed
+DTBs for the corresponding Development Boards.
+
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+---
+Ernest Van Hoecke (4):
+      arm64: dts: freescale: imx95-verdin: Add NAU8822 Bridge Tied Load
+      arm64: dts: freescale: imx95-verdin: Add Cortex-M7 UART_4 overlay
+      arm64: dts: freescale: imx95-aquila: Add Cortex-M7 UART_4 overlay
+      arm64: dts: freescale: imx95-toradex-smarc: Add Cortex-M7 SER0 overlay
+
+ arch/arm64/boot/dts/freescale/Makefile                    | 15 +++++++++++++++
+ arch/arm64/boot/dts/freescale/imx95-aquila-uart4-mcu.dtso | 14 ++++++++++++++
+ .../boot/dts/freescale/imx95-toradex-smarc-ser0-mcu.dtso  | 14 ++++++++++++++
+ .../boot/dts/freescale/imx95-verdin-dev-nau8822-btl.dtso  | 14 ++++++++++++++
+ arch/arm64/boot/dts/freescale/imx95-verdin-uart4-mcu.dtso | 14 ++++++++++++++
+ 5 files changed, 71 insertions(+)
+---
+base-commit: 478f68c644732750f8386e4de7c909c5ffb26ab2
+change-id: 20260922-v1-imx95-overlays-89b3a9185b93
+
+Best regards,
+-- 
+Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+
