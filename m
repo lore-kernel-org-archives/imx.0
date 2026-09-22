@@ -1,79 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEF8569F29;
-	Tue, 22 Sep 2026 16:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB9C56C63E
+	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 16:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790095005; cv=none; b=Occ9tEetWBnLH80+WYxUmtItYkYI0CpUy28rOWzijMTnmuskds7cNRkPl9KpeM15cdK81QIXJO2JNMcREotQY1S/6cpY44I4g5SS1JKtkcltYTTnpWoaeEWeVkjfjwwJZFqGh4C4CwCaRKADWK/4hBi9GVYME8ujtUSzKLL1MGo=
+	t=1790096336; cv=none; b=TOBTVqc1o91/PGd0rB5EJvj3Ru0+dDxlxXhGW3iItlAi3f2FCB/FOgdJ6R1Dz/bey6b0wVQlQB4kh+iElNCr3sIaXIdFEVA6NEBOHqQ20bLh+Gwpi+pRazQAUmvtR+ZpzH9NrkiFKQCYzYoO4BiLQneAA/kcjWeCozA1b8i4mFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790095005; c=relaxed/simple;
-	bh=JHTB8sd6jNyQ9p+FEIjv2G6LlQH34g4QS0KCiAaClPo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Oa7hmOD+sDrCEPG329loP4MnetrbWIovfucQwYmKHuvpPCWWk85zCbeigNa4tAd3sCEiCrpVO0fyy5YP0mHRv1wkUn+8HKk4UkDsbIT+0/Ise4rL6bnT8ACI6U/gm32xsP29SR+9Ump0TPDQ3kN4b2I+jIGeoaFhPwu08On+27Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fw6YGeVH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790096336; c=relaxed/simple;
+	bh=Dh3gVNvsShHLYZ2R3IBbPYFe236jglPvZeCVZsmWgmA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NYT7J7xuGCkz+qKmLAYiHnrY6JfJd6UULPxY1uU58GoNIPinvXVe3s6V0uNRiIMrEXGFRUPplHn/mEvOinrGqIqQKZ139jJiWv9+kqvcjUyqhTooAr1trKT9GU1pZcoeMMuOberqu3Pz/+Z+G9+9O01fuPhYoj09GbXXyxJn6gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Lzr3Wnjz; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fw6YGeVH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F9B1F000FF;
-	Tue, 22 Sep 2026 16:36:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790094998;
-	bh=B8Z0pD/ma+V7F4Eb4/a1KsfqWZzZZ+OZaCFFfV1XhxM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=fw6YGeVHDr+R7SgoWSTXATTIo3hYzUfkKsXg9gozGxvpBk4fzqwDtW5xZnYvALi+5
-	 N7duEStGtOqQUVhgiX8MuNIotF6nGA0Q/56T5fAX+IVHayaO0G7F1qd6FPPCvSVDTN
-	 LttD++0jR62WFI5Ch4mugFQ6CylKkGUXDYoU786+XfvsHdod9mMCzaUn4ikL52Kgyr
-	 iD/vawBxb6FPf2FyybYsSBmUWTAfdlJxpv1EFfqidT1r1MNQHnKVE96m2ffQd7C+L5
-	 p0qKaqdbcJEIYBnYbD+61T5dQPBwSKaKRkG+thtm2FasTkHB3uF4/kFuYx2DK/2TB+
-	 ZvDuh+UY5I1QQ==
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Zhijian Han <hanzhijian1991@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, sashiko-bot@kernel.org
-In-Reply-To: <20260904012307.3434449-1-hanzhijian1991@gmail.com>
-References: <20260904012307.3434449-1-hanzhijian1991@gmail.com>
-Subject: Re: [PATCH v7] PCI: imx6: fix resource leaks in probe error paths
-Message-Id: <179009499346.50213.9073558313167610848.b4-ty@b4>
-Date: Tue, 22 Sep 2026 18:36:33 +0200
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Lzr3Wnjz"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 0AA241F92A;
+	Tue, 22 Sep 2026 18:58:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790096330;
+	bh=epLKlfGDykDfXkk+Y0D/AaucwRf+XcEMpU10b13wknc=; h=From:To:Subject;
+	b=Lzr3WnjzMEoqpcPP57y5SsFciig28SHwKyy+I6I+JDMjQoaef6jD15UUc8J1C7Br/
+	 TMy/3GQIVQIrl/hTL65VS6e+OdSpjnBibdwoD+ctPBMHpOYJHFSJHkvbuwYU3ahAW8
+	 3vgXewCPty8SG1LcqN8fEy1M5f6tfpGRURU6yzlglWVjqmWbFzd8nbT2jAXoTFeKRp
+	 i21MRpZPpGSVssTEjR0rNi2iAqiRkl6MfCpBnHHa4syn5U9Iw8YePqJ/3WHj3K4r50
+	 uDRo+tKf+gOtUABO/RGmJwfGtPTK9gLUhRDscWU1sE4NnX/5lfTWg+bc3bVVEv7a7R
+	 cqxo4wUbYVVIw==
+Date: Tue, 22 Sep 2026 18:58:46 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH 0/4] arm64: dts: freescale: Add Toradex iMX95 overlays
+Message-ID: <20260922165846.GA290956@francesco-nb>
+References: <20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com>
+ <arKn0LhC5fty7dHN@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arKn0LhC5fty7dHN@SMW015318>
 
-
-On Fri, 04 Sep 2026 09:23:07 +0800, Zhijian Han wrote:
-> imx_pcie_probe() leaks both pwrctrl devices and power domains on failure:
+On Tue, Sep 22, 2026 at 11:07:44AM -0500, Frank Li wrote:
+> On Tue, Sep 22, 2026 at 04:33:45PM +0200, Ernest Van Hoecke wrote:
+> > This series adds device tree overlays for the Toradex Verdin, Aquila,
+> > and SMARC iMX95 SoMs.
+> >
+> > The series adds support for:
+> > - NAU8822 Bridge Tied Load configuration on the Verdin Development Board
+> > - UART_4 reservation for Cortex-M7 firmware on Verdin and Aquila
+> > - SER0 reservation for Cortex-M7 firmware on SMARC
+> >
+> > The UART overlays mark the port as reserved so Linux does not claim it.
+> > Firmware remains responsible for configuring the UART and its pads.
+> >
+> > The Makefile entries build standalone DTBOs and ready-to-use composed
+> > DTBs for the corresponding Development Boards.
+> >
+> > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > ---
+> > Ernest Van Hoecke (4):
+> >       arm64: dts: freescale: imx95-verdin: Add NAU8822 Bridge Tied Load
+> >       arm64: dts: freescale: imx95-verdin: Add Cortex-M7 UART_4 overlay
+> >       arm64: dts: freescale: imx95-aquila: Add Cortex-M7 UART_4 overlay
 > 
-> - imx_pcie_attach_pd() attaches the "pcie" and "pcie_phy" power domains
->   and adds device links to them, but nothing detaches the domains or
->   removes the links on probe failure or deferral, so they leak.
-> 
-> - A failure of devm_pm_runtime_set_active_enabled() returns directly
->   without destroying the pwrctrl devices.
-> 
-> [...]
+> both reserved lpuart2, can you share one dtso?
 
-Applied, thanks!
+The comment in the DT file must be different because it's important to
+reference the actual board it applies to.
 
-[1/1] PCI: imx6: fix resource leaks in probe error paths
-      commit: 3e7a0a4f2aa5e8392f005d7ea1c8e783e90453cd
+So to fulfill this request we would need to add a common dtsi, include
+it from two different dtso files.
 
-Best regards,
--- 
-மணிவண்ணன் சதாசிவம்
+This to save 2 lines of duplicated code, `&lpuart2 { status = "reserved"; };`.
+
+To me this is just worst than the current proposal.
+
+Francesco
 
 
