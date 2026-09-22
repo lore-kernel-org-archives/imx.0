@@ -1,150 +1,157 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012012.outbound.protection.outlook.com [52.101.66.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898895349B7
-	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 14:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087652; cv=none; b=VcsD+ZVAHe2BMd1e3Ww+UmAzxQxxgNJpYHUTnxgdkaZyc5kqpOE9C7ZwofShI2R9A+mS1wT3D8UMJeXZ2G/gCZAYl7TrrggejnR84EzHYzysYX3BLhe/Vxil1LdF3k0wXdL9/VJJSLN8thVSrvn4uIoG5E4wpcWrxinbEX0b89s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087652; c=relaxed/simple;
-	bh=V8m5/G0gsUE3E0r8Gud6pXvk5HrB0GOT32fRWrpmLec=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BKB/JtlqYhA9i9wHkAXtgXvZgl00NpyBBmT/4qi3mOsghnVoWF4agyAFWY6M8LIvTXKkcvegVUWpsUds3tbqsx6N3NwU/KsrqaOAJnifKrp99xxGgspXHiUyB3+jqbj+dUL2A93d6gW8mfVdy/5b9XjjV4QKKlHjU21DvhDceGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c7M6Ullq; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4E1518159
+	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 14:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790088976; cv=fail; b=MjNSMCBoY4bEbk3dQan1Cp31FwpGcKbwKqjOoZ++yjrvVFmo68qTyCNvCPUrqWonMZrtccn4F/7n3MLnxFRnwSV3/AYZM1XZ7GlpT+a1nrehaImnS9l7s/jw4e7gyMJUOJtd9tkQntxfxU5r67aXferxMFc2DuFhK+kNH37dOig=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790088976; c=relaxed/simple;
+	bh=2Qq9GnDnIs+uGh05jZ+UoqfZV7o9Dxp6+azpsx1xOGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CNgAT9mCz//rVrk5A6LubRysOkXxI1r/rPTsj0Q5Vh3H8WHe+Kk6ZMfLeAjM+cittaIjLt6/GvdRclVCY64DQACioPEk5Z2BRMRswx9+5e6acGAiYqZPQx9eM06oOUPsGuUQYrzDRT4rlqgqI10H32ICrb3Myj/hHcDofAR1eUQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AXRReQDp; arc=fail smtp.client-ip=52.101.66.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c7M6Ullq"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c294af0caa8so539090566b.1
-        for <imx@lists.linux.dev>; Tue, 22 Sep 2026 07:34:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790087648; x=1790692448; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o4lRt2va1gWTtMW/M8nVRxRv+uN2TcEpeTG/w57BdiI=;
-        b=c7M6UllqwRifGg4Lt/rNWIiCkIpgTc/AWPpHob9p+zMDRqqQGD4f6Hnww91aDqLic+
-         76xy+C34pEfCYrK9KLJiiyWszxezwFOdmNpwgIj+kbInhK3u03vx215HgxJKfighE1KC
-         IPOPpUASN09q3p4P5c7jdAIQDJDGfVaE0GmyT0JCs+DnN0NJJ18dzgeJObcQl+lBWw+j
-         OOhnXSz8NWz2odp9yHaZZexRqgG5FLz3QVNzhy5mxdVkjqwlXWuVJprgI0qY6pDHpRvz
-         pGWPCnHOgrYjYr2dW1H/KS37wyrNC11wHcWB92rX7xI2VWPgsPhVR2LgINZFTbBTpaid
-         dqDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790087648; x=1790692448;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o4lRt2va1gWTtMW/M8nVRxRv+uN2TcEpeTG/w57BdiI=;
-        b=Xrlsg68Jq9UbJMQE9x1XYZpjTCbjaCLXWnG65wn7JQ573mT3WNQQuv28KR5A+e7peP
-         B6B8fgG541U/iBLfeqb+i0zV/Ejpf3yfx+gBlFYyHZFnGNkyPT2aWOaBtYTL3LLum+Hy
-         enPN6RlDB6tCrAV2k+cmELktER7c4Ge/zoc32G17uDANyxQmbfR1iwJoAqjvSb9RzXYn
-         NEL1u7d7i+CzNa/shqfNNwrCi2mQsdcOaaaJ7rO+Nz6zVxGkwVjUYf/mjnPKZsHKCpbj
-         BNyODZ7X5ynnGOPagAquzFQeTNg7VI8hkULVj16XKcMyWXQdyRnIXuO9A5K8Cnmgclht
-         yV8g==
-X-Gm-Message-State: AFuF++lyQDX6fhCWMxJAgN915J6/I93WWJt7R1qJq99+wI38g9BCTO/7
-	Dgkjib7c/RuBv9catAhdctMRQMzxkizhMH2g7DcUBcWS0QrHcbypZlm0
-X-Gm-Gg: AYBFou2f+svuFyX4H+OCJ8E03ccQEY1PDYD4AbNB0wIskT4Pl41iFDJd2NX1bxlNvPa
-	NgneNFxf1KiPcUDMSDjIg/qBDT8BakmNj1kAzucGbH06ya2RWdy1/5f3piy5UCtWYOkyVKxzJQ8
-	UH3vKReH6ucOP6gcwvsZ1Rmj2J3ZsScVcYeDQINSrc5bNai3l48EgdlTPQpqX2f7Xd0mv+nnTwH
-	TdHDGXKuVTbtTW1I7HXhnM9aNTlLnTl0seK2kFajBAeN/mCXhPCF3kQ3H6OAlTvG2F0WMd1zekY
-	bI5haoA0CQeuFT+wv3qKGPnGynnlsNaR3pcT2zy+LdX210WFnXYx5JLIq7LYOxmtC1mVp9Zq40o
-	CRcXbp4Tc66P0YHd7kX1CjgGvYHS/JZOlMD785Zh7tvfHgAyHB/EYJtOjFvtqbUM/nRnh4DNKfe
-	G6XgqFJlmBv92SiWnepVMg9p3JeruNQFGk6exvc9okbqhD6D4YEgNwDG4mERYdAPifmVpHd/7SO
-	gwLSRFWYaxwOmTXyWte2ZU76VLRFB6mSjwe6AjAcsLQF3So1ZBgtgRKpiJFotSmIOAlYcb4Tw==
-X-Received: by 2002:a17:906:ef02:b0:c26:19de:9aec with SMTP id a640c23a62f3a-c2a15877713mr1237309166b.43.1790087648344;
-        Tue, 22 Sep 2026 07:34:08 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a9c5814e2sm103469966b.27.2026.09.22.07.34.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 07:34:07 -0700 (PDT)
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Tue, 22 Sep 2026 16:33:49 +0200
-Subject: [PATCH 4/4] arm64: dts: freescale: imx95-toradex-smarc: Add
- Cortex-M7 SER0 overlay
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AXRReQDp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iPZbNMDC91VZjobim8OqcLqSWIlVSaBvNjDBhMPmEospd/yjaMl3D13dI28y2c9RvHusaN3Em8v3WWe8EH3Us2XT3es/QRZ0WjcSu7hSDuHZH5rW474coJsIk37G/au3+adgKwWml4hiKMopKyntT41IfbMo+ld4W2NJHvVeXKuOhYO+RcZnC6k6IYR2Gd52EJQLRXeXvSwZ+k6VqpPXrC9ENlhRopKTZ2Jof+iRrhfEzccpGLQHym3dC0YY6ob88CvvLmD/IwZs0YcRRxD9wvWQ3oj1H3ywQV3rC5c2lTNMAa1yi07kTVUnCZXhLTwCgXhJuC2Z476AYz1RlQMq/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w5kdI1ZCWVWioI3fnPr4kUKevXHYurIMQ79y+mAHCK8=;
+ b=dpveeVKxVrks0GqRV/6JW4L3LkQFMfTu8SGFwxISe2tM6iUN7HTOdKHCs0M2Xhawt2po++eElcjnqQIuQrKE3dgNOx0wz0EDdN0B/RndWWrhv79TYU102KxGoJDNgxbHHo3cU+UwURI4sJGiKRysJOf/pn97UE0Y/dumt5LtoSKgHN3Cj6g569TywhmtdYyR5KNp+pEvV2AdRAhPttC5iWNJJONoAJgZYCbGN2woS0eyzbMAxw+2cFGdVLA0C01hKsPuZ0T8uZYJG/ZvqVZfyioi2bFTwuSsD+UHqjbkQ+Df3antn9UR2TpNFEhYWYMevrDZvgoxkldwES3wTqPPCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w5kdI1ZCWVWioI3fnPr4kUKevXHYurIMQ79y+mAHCK8=;
+ b=AXRReQDpO62X+mobGkv9StO3AlDrJpxAVC/UwuNw1gLSc0jlBwDo3D7ggTj0ZbcQMD79vXDsnaLXEoh9fVoVB/jyDnIZvZ2DPhwQj0hCqQz5zrhRAOlk/tw2NpdfzGZfwpIzSo/29e0WT5sBfljNk5CordQXyZ4PI6EIlN4rZbMiwacOsuf6BE8Vm7fB9Ffd7blx0MdE7AHrzNZdiSfpYAaZHJ08pE7vR6ZWQPlXsthMLFRR2W/ZYbWsq2Jajps1QovRumNy467fpAWaS7c0dV6pkA4bfiNoIzmCdGsRPBxAuqP2Bp5K34Bn8+uE+bmIl8W6W/gFeyJZv6kCpcX+dQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GVXPR04MB9994.eurprd04.prod.outlook.com (2603:10a6:150:11a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
+ 2026 14:56:10 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Tue, 22 Sep 2026
+ 14:56:10 +0000
+From: Frank.Li@oss.nxp.com
+To: soc@kernel.org
+Cc: Frank.Li@nxp.com,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	stefano.r@variscite.com,
+	vjardin@free.fr
+Subject: [GIT PULL v2] iMX fixes for 7.3
+Date: Tue, 22 Sep 2026 10:55:59 -0400
+Message-ID: <20260922145600.2249087-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7P221CA0058.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:33c::28) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-v1-imx95-overlays-v1-4-694100afb4bc@toradex.com>
-References: <20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com>
-In-Reply-To: <20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com>
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-X-Mailer: b4 0.13.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVXPR04MB9994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4419fe9c-406f-42d4-0a97-08df18b9a388
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|23010399003|11063799006|56012099006|10067099003|18002099003|41080700001;
+X-Microsoft-Antispam-Message-Info:
+	QF9Vq9WhFqsbmoadoTQf/0Lw17ee+Iqu3FrD1Qh97qKE3u7Ewt67GL+95xQw6782SGgxMAqaT6afMqYPxRWjYyQQ8RYq0QNFknMkIKMuWgsX2HbUSFSFJ8UEp3uOtOaBUZAz54Ua58QXpb6qYwhmjQlQF8Wh5G9ALYv6nc0gFaXcrFWhMPU9SMhqvaig/cYt9CRyyeN3J9t5yJO+Jx9aF/V0d9EuDNBLBtA/wCBvuBdeA+pfuVR1M4bDGneB9N+tqapL84ZtfseYbWepN9MYwMTNPOIZIDHIrCwqRSHxU+7DWHbZ5yWaKvNAjAw09xl0LF/6l18ZTlXZzeUhlc4BGkQb9ksUsRAmLQYiWOm3TT5OnDCxROmJ7qzDED18uZfRyn1V7vaCS7uNO3cKbMjiAn45qhpSlugyLAI8f+/bb+VbOkWOajYKeQZwA1XgeopFGQ79T0q3jSsqHV4jyMgCWR3JTd/JKTSiZ6szAnRggq9ANiZ3W5Bv5L3gAYf/Ae23cMwOJiXti5Ud57NbwTDHU6hSotrG1IWYkGFt0FhK2ZHCFCXqaRQTIHIECtWE3mlQOwso7XyoMNHs1gKLp1RTgbbuGbovqZCiIJXTe6vJMb9kPgfszDVUEVQJCNLFtp9nE4GQHj8C0z5p8MM/HwmDUeEnWSlrzptdJFlzYKbzVI0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(23010399003)(11063799006)(56012099006)(10067099003)(18002099003)(41080700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DK0TOiTuVHPwwGrMlMrx4mjPmMnYnJo4wq2saMLD/sb1R75Zm0iKKMlenpDn?=
+ =?us-ascii?Q?tJp5n7sLL207xe944q1dDsbyB+RZNx1vIV4oKeFUT3zYFw8YM8CnzvVN+sCn?=
+ =?us-ascii?Q?ZNMFsGS+pI5Wo8JK1VNc9PVEyJ8zrxgtYmbfmbG6xuNx62lvo1MHmK65CvHP?=
+ =?us-ascii?Q?6dF626HnP2rPgTM/hh/Xnzk+DK7DT7FcRLGKdWubqPfiSB0syLW1VVlVcOZW?=
+ =?us-ascii?Q?68kGsncI0nLkgzvFVWgdrvo8i9eq0ZXGw6iwYarRQDKgTUO2cm8o0hI6frWK?=
+ =?us-ascii?Q?T8gb/ILG+dPsgqpVP/2QG8S+T8LkcD74ooA19Oyo0yVwF1vBxaA50aHch1Kg?=
+ =?us-ascii?Q?yhJg8ANhZXWtm2RksbboKWnrllBghDgoV1GVNbif+pJqy4trN3Ne5aTlEyjG?=
+ =?us-ascii?Q?6l5zJ/XoFrH3ubDc5D9/M8MgvPqPlAa9wF5VfhjYAtNJNMd3jTLDpptPmT8T?=
+ =?us-ascii?Q?b7GEVgoe0DP28F5nkEbE1LrjWHps+JatZwRp4Kk82OmUkR3kJISycHk7QuBK?=
+ =?us-ascii?Q?sinRA6W7Cs67Ih/VhoFgivF6WDrODmYetf9Z5+R+CXkpghM25+ipJQNNfJcm?=
+ =?us-ascii?Q?2GzIWh4GLVZernv+q4NdLFcaacydOkYvqr9mgcwq8yYrn6RFnHJ2c1mFMlTK?=
+ =?us-ascii?Q?rvIEKb6sTXr/e+jnMAIABo+97osvO1X9KroWjNfcoiycSteePWjXmOc2hjJe?=
+ =?us-ascii?Q?JT5R5pHUid/b6WRVy8TtL94gij7Q1xiSYCyHebDvD2fGHDF+enZT9aNof+9Z?=
+ =?us-ascii?Q?oVtaMbpT4Ju9To0fKWuWoMPheOjvGZceaIW5jk+neRpDC0c+r+Lqwtq6cJhs?=
+ =?us-ascii?Q?iB+S2LhdDst/6RmRV19JdmGoi3p6tdh86Z36U56wBLz1IEP1sRpp0m+3QOWo?=
+ =?us-ascii?Q?nOTTOWy3Nd58GIGdm4CmZBSP0i6qhW9k1qaEPRTWrFw7SGca8kVzlg/TrtWN?=
+ =?us-ascii?Q?OufMpGArNFf7mHjl3gEGnPCBywD5a7sWUho/6m/0HOdrD/fcS/0gUBhuzkQL?=
+ =?us-ascii?Q?dedszEIF/dAK2PFWxA/p8pxbFNm5BWYeqOXYHYF2fqu3GUQvKUao9zFqZUuT?=
+ =?us-ascii?Q?jwgdpHfC+rggeYv0tQBEkyuBZKD+qJSE2kVNGyUsBF/R4b/q+7L+PlV42NEv?=
+ =?us-ascii?Q?rxUbc9m6/esumiZSVZ4rp51Jexqmr3DUfoiWO7nN65fn30JXYKE0l1VEtf25?=
+ =?us-ascii?Q?CrfnKDsSj77UgQnSwHWc2T8Rq1iKgOPuuHX51RhmAlpvtWue5BxNSjbRcr1k?=
+ =?us-ascii?Q?omjmrDUWbzeRpVDOaTUlAO3RNlmLC5i6vKZrSiOzgPfXTDUOdxm/wYAuM56x?=
+ =?us-ascii?Q?XiMR9l9bH3LrfxQPLPwDEtkmHA4I7hvh+UsvaGR8MYgOur36h5e8kYGdDi1L?=
+ =?us-ascii?Q?+9rACAGpj6R3tJpIE50D5LSLIPq/od4KJagzRTxIkZvHuKcXXGpKZWJqFY9J?=
+ =?us-ascii?Q?Adt4MvkgntTPsviox2IMOH6PIbdVJSE+G63UM5NLQyWgjJwTU2SEhSCfNFq/?=
+ =?us-ascii?Q?5pew5e7EYlCbc+LPFAWvYu9YZMav27r0BWbZ+44o5J6IUunzmGOdwmACMXts?=
+ =?us-ascii?Q?wZudKvt62qljSH2hcD9n+rSlVtqg5sldJx8l0oz8Nf81nfhJDRLAgODxz/Y6?=
+ =?us-ascii?Q?7rOrAipQKriyczblSwkljrsdiMxQCJu7s1ohhU/7sIONWeXFrYwl9kvDHcq/?=
+ =?us-ascii?Q?eFp9f3q9qh/w75j8hcs0qNl5N/opu0FzJtkTSOetSdD3HyZUHTuS9WSnK2tK?=
+ =?us-ascii?Q?XAloArdDWN//16wWh3jn5k21lvEY8UaBEDhdrVoycFPGvHeGh3+0?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4419fe9c-406f-42d4-0a97-08df18b9a388
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 14:56:10.3754
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZwLIhbR1GAojKKAivny+k1KuEIZJk4KnjbeM0Z9mw4nzSmE33bvLcddaNP+Rgs8PuRr08cCOg+qzRMhbkamY6Mw3NSvAdX/S4NSNsnHS8ZdQJfB+ren5tjXCBxm3SvP5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9994
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+From: Frank.Li@nxp.com
 
-SMARC SER0 can be assigned to Cortex-M7 firmware. Add an overlay that
-reserves LPUART2 so Linux does not claim the port. On the Development
-Board this removes the Linux RS485 port on SER0, while the console on
-SER1 (LPUART1) remains available. Firmware must configure the UART and
-its pads for the intended MCU application.
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
-The overlay is also combined with the Toradex SMARC iMX95 Development
-Board device tree to provide a ready-to-use DTB.
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
-Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-fixes-7.3
+
+for you to fetch changes up to 7ba5290db6bf365e46fb70bf13dc2a47048165ea:
+
+  arm64: dts: imx8mp-var-dart-sonata: Fix Sonata SD I/O supply (2026-09-11 14:50:09 -0400)
+
 ---
- arch/arm64/boot/dts/freescale/Makefile                     |  4 ++++
- .../boot/dts/freescale/imx95-toradex-smarc-ser0-mcu.dtso   | 14 ++++++++++++++
- 2 files changed, 18 insertions(+)
+v2 fix tag name, for 7.3, not for 7.2
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index b17fd5b067de..489da1fb0012 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -957,7 +957,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-aquila-clover.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-aquila-dev-uart4-mcu.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-aquila-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-aquila-uart4-mcu.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev-ser0-mcu.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-ser0-mcu.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596la-mba95xxca.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596sa-mb-smarc-2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-var-dart-sonata.dtb
-@@ -980,6 +982,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-zinnia.dtb
- 
- imx95-aquila-dev-uart4-mcu-dtbs := imx95-aquila-dev.dtb imx95-aquila-uart4-mcu.dtbo
- 
-+imx95-toradex-smarc-dev-ser0-mcu-dtbs := imx95-toradex-smarc-dev.dtb imx95-toradex-smarc-ser0-mcu.dtbo
-+
- imx95-verdin-wifi-dev-nau8822-btl-dtbs := imx95-verdin-wifi-dev.dtb imx95-verdin-dev-nau8822-btl.dtbo
- imx95-verdin-wifi-dev-uart4-mcu-dtbs := imx95-verdin-wifi-dev.dtb imx95-verdin-uart4-mcu.dtbo
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc-ser0-mcu.dtso b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc-ser0-mcu.dtso
-new file mode 100644
-index 000000000000..cbc58f1af41d
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc-ser0-mcu.dtso
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Toradex SMARC iMX95 SER0 for Cortex-M7
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/* SMARC SER0 */
-+&lpuart2 {
-+	status = "reserved";
-+};
+----------------------------------------------------------------
+iMX fixes for 7.3
 
--- 
-2.43.0
+- Fix incorrect pinmux values for LX2160A.
+- Fix Sonata SD I/O supply to avoid filesystem I/O errors because the kernel
+  was disabling LDO5 during late init.
 
+----------------------------------------------------------------
+Stefano Radaelli (1):
+      arm64: dts: imx8mp-var-dart-sonata: Fix Sonata SD I/O supply
+
+Vincent Jardin (3):
+      arm64: dts: lx2160a: fix incorrect pinmux
+      arm64: dts: lx2160a: fix IIC1 pinmux submask rejected by pinctrl-single
+      arm64: dts: lx2160a: fix the iic5 spi3 pinmux offset and value
+
+ arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi         | 19 +++++++++++++------
+ .../boot/dts/freescale/imx8mp-var-dart-sonata.dts     |  1 +
+ 2 files changed, 14 insertions(+), 6 deletions(-)
