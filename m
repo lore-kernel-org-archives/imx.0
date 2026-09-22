@@ -1,196 +1,209 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8338F345749;
-	Tue, 22 Sep 2026 00:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790038297; cv=none; b=bBlagHUP/4imXwWlSZkn4d34Mysyu44lejUvaPLIb2tfsuJ/MshAVhpy1NdgFBQILZr5IhJ/leOWoPKXy2Uj10dTmOnAy95HOVBy/L0MOz2E9sNyXrUPdoLnhGNaHj8D4BflS+cRgy5mHsia3bdQTKrdnxpkUd0SPAn09pzEcM0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790038297; c=relaxed/simple;
-	bh=sjTzPZ23cOtybM3XpWOTk3CKoukFSTFblLLpPxdGHE0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rGcxy9YdKAPjvGtZvijWx72HuCjWsNpCjHiLSzYPD2QjvMfqAWjcl3R2Aeqnr0vXLdi4eicIA3mspNDdLw4/G3Xk9h2OJZH5Jn7c6p/5e58+wxoFR2LvAlW2Bd43vXnl/Jd025Y+6HEQzwGi1jJbs4+dsjCFI6MJz5kYy+/d644=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pc+uVTBh; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036C637E5F1
+	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 03:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790047785; cv=fail; b=u8jdm9DHuxuO6Val61TdMshQg/7mng9ycscV1Ipb9V032hRGLLpkY84yqkXvC3T9GpfwUXTL8OO2Zmo4aW1xK3FmQbWE+J2HF5BlXZg25O9vjiyRWjVnKw/S9e3jECUlFQc57vZAfZvzWpd4E4M87/4s40skPvJHkPDy8t9VX7E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790047785; c=relaxed/simple;
+	bh=h+dR2jd9pdQNcUREAyAISUsBNqNe4lcm4RDxZN8Ky9k=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sFD+A2pUCOevAEvBdI/60aRaMR4t9KUL9RiDrgTw7b4oTb7O6m0749Qw3JqYENb4oZsoXTYD8UOB7VIEoIvjnSOqGnkJDsnSwv3ZhMPRBIu2frCTMwmNjsIgfoGaErghu7cnFZuo11AH1CYTdc+R8bEAqrSEqHjbF4pJfVJNOG0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Pbu3zxKV; arc=fail smtp.client-ip=40.107.159.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pc+uVTBh"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2AF38C2BCB3;
-	Tue, 22 Sep 2026 00:51:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790038297;
-	bh=sjTzPZ23cOtybM3XpWOTk3CKoukFSTFblLLpPxdGHE0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Pc+uVTBhqnbi/FuhYYO+WQNqvJMVN+CYjR3GU+5gHoIw+Qov2XAIkVNDqseIrQ254
-	 8Tz0AOwqsil8VQMjXowO1UwukHK56wmLYzlYTE6JhYKEHtB81+mUfC+VeZ15h3HxES
-	 cpkEXXAXnw310UJIL8Hlgf3XP6X24zgqCWdLU/ZKuiKvPPImq5tBip67ZHb97p2BVl
-	 FJuTZUz21EmA7hgo6RDGaYe/nF1qqQYw6Qc944SqorQs0E26QS7Q6bNJst4LRYP5Xx
-	 QUYUJ/ASaSJ5czqvFr9IgQ6HCTD+vDJ1hwfo7R2nlJHrdZrjxxK0HCwTHMRz6qh1O4
-	 vpvEk4xGGT0uw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01FA0C982F0;
-	Tue, 22 Sep 2026 00:51:36 +0000 (UTC)
-From: Jaidev Shastri via B4 Relay <devnull+jaidevshastri.vt.edu@kernel.org>
-Date: Mon, 21 Sep 2026 20:51:35 -0400
-Subject: [PATCH] firmware: imx: scu: publish the SCU IPC handles with
- release semantics
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Pbu3zxKV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kHzC8AarB49qv6kI69323cZeo23vy7Q1CDxlZqPPP6gZZAJIzO4Ryovby3WK+uR6lehm8BvzKhoPmOwgs0Kg7sJ3UwIxMOdw1JpF8f+tdgSMUrIE86ck5yTeg37nONdgMwGkHJAk4n68FWZJ88UdCWk9n+qrxTqB0f4ZREc3PheuxcBsby2MIQQnmjBp+5u+8U5AZsmSC9NvH6pSa8Q1MtMPbU7IgnCtSMwhR49iwWDs7UVPS+MEugUJCaaaeBW5X5hFWUVI1BbzhoujsfJbny3GU23qw3a3/Wq2Yk2vElHmgfuVeBgVRV96uvcLaYGlJh5A0K+gln4x6OY1tRyMAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GKYfn+QTFMKSxRRGZOhU1Q1saK+2DGd+mdOZM0oSkjo=;
+ b=AI49SiA6I96sZP5ni9INVbcPNqCbbNA/1K9dl/UYeh/4Bq4/L7l2STlhUNrpmokhjIiOzgiBJS9wzY/I4zJADZAOiQoMVeUqeW0gBsVt7pVuPdsV4KsyIwoRjwRbQUMnX+I9QLNSfM5I2bByHFP2xsE579RcNRYbJNvtvF6XAdbPMSv/H24raV5Yp8aAXCFFm5fBFKKnYhccY5RYy8xAoCnrrCydTfqUSsjEI691Xm+rhuvBa84WtC28Bn1M6RgBD88tjebsu5mSH6n+J0Qs/noATCTYgCMNT0st8ShxwarGZ8FCBIyB1+gB/sgZtewWuC+e0qkxwZI4U+mGUIz2Pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GKYfn+QTFMKSxRRGZOhU1Q1saK+2DGd+mdOZM0oSkjo=;
+ b=Pbu3zxKVr0SU9CnpSj7m1tlxmTVOEUEdkrM/WFv+I0ag4YrLgHxOWjcW5U5izrMyKdYBsmyeVQslCuVW3fJWzWOYfWstwcGtZDrHKW9hcMQsUYTP/O/fGmoD7w9lXJntQqFIeS0WOVZl8qZrAWh+dVhMoBiHB3qkm3PiIfS1AwX9lkIla/B6XEM4NSXg0VJNbPNkU33retaqJa3OQ3Msz6xoQmh6h4CYmZvo5CnvYTAxvfAP3ycXsrgIFi+T4j3WVzQGpcKbmBGfANQqYW5gBUgzdQpTRXlWfkvRQ88BIywtEKmBlAB2vt13Q6R+KfGY9kISKl8evtt6sG/v8vW41w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9351.eurprd04.prod.outlook.com (2603:10a6:102:2b6::17)
+ by GV1PR04MB10941.eurprd04.prod.outlook.com (2603:10a6:150:201::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
+ 2026 03:29:40 +0000
+Received: from PAXPR04MB9351.eurprd04.prod.outlook.com
+ ([fe80::1058:a430:52c1:5aa]) by PAXPR04MB9351.eurprd04.prod.outlook.com
+ ([fe80::1058:a430:52c1:5aa%6]) with mapi id 15.21.0428.011; Tue, 22 Sep 2026
+ 03:29:39 +0000
+From: shengjiu.wang@oss.nxp.com
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	shawnguo@kernel.org,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	nicoleotsuka@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linuxppc-dev@lists.ozlabs.org
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: [RESEND PATCH v5 0/5] ASoC: fsl_asrc/fsl_easrc: expose per-pair/context DAIs and fix DMA race
+Date: Tue, 22 Sep 2026 11:34:23 +0800
+Message-Id: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0001.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::14) To PAXPR04MB9351.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b6::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-mb-imx-scu-v1-1-2e2eae4246dd@vt.edu>
-X-B4-Tracking: v=1; b=H4sIABbRsWoC/yXMwQ6CMBAE0F8he3YNLUqDv0I8tMsqa0I1XSEkh
- H+3xeObzMwGyklY4VZtkHgRlXfMMKcKaPTxyShDNtjatnVnDU4BZVpRaUYeXNe0xnpnr5AHn8Q
- PWY+z/v63zuHF9C0PpRG8MobkI40lOri4c4OJLrDvPx8cMMGOAAAA
-X-Change-ID: 20260921-mb-imx-scu-ed793612a725
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Jaidev Shastri <jaidevshastri@vt.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790038296; l=4658;
- i=jaidevshastri@vt.edu; s=20260921; h=from:subject:message-id;
- bh=0RORvg2PXLot2bwSJtUZCYO8QEXAWE0X1XX02gJE4Rc=;
- b=5B0OQ62kUCr6hzg4bQqVlmfOATttk1UYAXWkEske9/yWnUbQhqgjPXSDLgw9da8Q6JzILEn/v
- Z5LqaULjNDHD5N38U9jhSWj37uA7QYbPqurec/7H5tiAxmtfOm7QaUV
-X-Developer-Key: i=jaidevshastri@vt.edu; a=ed25519;
- pk=J7+xYJRlTPds+pv5hbqFFRqGCpDeJDzmZT1ggRwj7/0=
-X-Endpoint-Received: by B4 Relay for jaidevshastri@vt.edu/20260921 with
- auth_id=1044
-X-Original-From: Jaidev Shastri <jaidevshastri@vt.edu>
-Reply-To: jaidevshastri@vt.edu
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9351:EE_|GV1PR04MB10941:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19aad4ce-38b4-4309-1f3e-08df1859bbd9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|19092799006|366016|23010399003|921020|6133799003|10067099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	1GUwtuXSRNlTb729gWrSb19E/NLmyUweY26jDBUfvFPIrWXC5cZiK6TPSnqKv7AkHhNh+uQOxPYEEa4JDr9i1GpkgO22Jy6JY8aE9JuidtHsruJ3QHyV6Wa1HsQAT/2Q7evRVsEUEFnLgRTl6qLU7k81rzO0+aUMDaLHpAY7vaYoLWD1t4RTEU+VMH35VVdchiYh/5cgwy4Ht0HVe09TpV0uHmVtO8b7FpjxRiOqQidgQ4iqhtzQaPq+aRLMwiz773iVbRqH4kz/jqgzJuIhJGt0zVfxxdWmmbCopGFPX3cM2/sF/BNha6a8tHs0rU1gw/jqa0ttnYxkKosjl/kxCMUVNTQjW5klGDmrdixmRAhCwRACVK2xR79RyulPSEX1K301seaCItjGe/sjmGBf4OJgxi0dWKSWnds5ytZCRMCx6m8efq4bSWft0Z/w5qsHF9V2bKDz9hQvEer5E2qTsFgpaopU/TUjCpoE3tXosJL9XUj4V0auqghBIYMlD3maxtq6TpgZqteKMU0AhpwHCCGyBIr2+gB/iQzBWz+QEk73iQSdW4dND6udzxpnRZcjpbRsVt53AUtaTejoeXl3963PqQrdgCs4jGX34iJo3OthxcJmlFyeDVBAEaueaQYrsvrO19RTA7/vuu1nPlpVh4qLPDvwp7rhRzAPZJ99TImRtgnZblH2BQbnQ38QG4PFPdf5J4/PcgWMelGmUFQTDA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9351.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(19092799006)(366016)(23010399003)(921020)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?YpYLMkxSupYpBJ8UXqRmqAZers1qZxHdx0BaeQHjr50xlluNY+FOfeS4dTDa?=
+ =?us-ascii?Q?zTU5DCvfXletjgIMiF7X23z2uDQMV3q4e4lCfTT2tPo+Q6JpdF74qm70FoWC?=
+ =?us-ascii?Q?EdN92sXstA/mSowXy6/qkQSF/L5vmBwsWFj7c2HeHl+Svm3bf1eDjFCfWaM8?=
+ =?us-ascii?Q?xhGLotF4e5GK4aCL8V15F4q9z2BlwZMWFr27zDyQqnfhkyARn6tXDEtRiiXT?=
+ =?us-ascii?Q?JpLLbWITMJ0aC/B9CFcEOCohduyDn2By9m5uOLn0BnNSFEnsq+X5U1i1tYg/?=
+ =?us-ascii?Q?1cYQRo7NJzyuhMXcZMYlnA636sSHOS16W8MQwCOakXUkYTItPqg0N2cXpNqn?=
+ =?us-ascii?Q?BedWYAnDAZkVCfbRpxKuT4Z3+hwH+qGz/+L2xsaVTS52+s+UVX5etKYNSeVN?=
+ =?us-ascii?Q?7LGorKcaMv7NZdQhPyFhBSj/RCs4xD/7zjesFmITY6fMqx6xyso8vB1moV2t?=
+ =?us-ascii?Q?YqNzCYy1r/pa2rk97RpNN7W7Rm+xaj1KDjx2S3WLFk8tYgcylV0ZexzpCERK?=
+ =?us-ascii?Q?WUUye0QegBXYKV2RCG3XBmvmdMRZaQZCW0Gr/L3tlQLMA16eFrvW4qe2gJ3p?=
+ =?us-ascii?Q?2o7PmYCDZmTyrFCGBGBUDTh8delT8Dq3LjeNs9mpAP7Bfe30I0nW7vZt1LAQ?=
+ =?us-ascii?Q?/JV/3/E7UZsAbX8CSFfzM2LDDeMvnElMUZvDeJTlZrVTGXF/3jLQYEhYQwPH?=
+ =?us-ascii?Q?DRKMgVSGAR/DfLKAcNcJRQGQYuTDOvdHw3xZTt+fVLMQANThkKj/HTJOQCVO?=
+ =?us-ascii?Q?FRGKXq61Wadk2MYIGo66LuCbiNThYFLf6VdjJMrOcbiEbwRmQzNugYl7tAmq?=
+ =?us-ascii?Q?nGHJiRYK/naogEM3yU9SWfmBAXGyJ6qaJTPX0f9LFMf8RpwaPEmF+6AAkD2a?=
+ =?us-ascii?Q?PSsCeHty1bQJMmR1AIhC27ALxghugooHtIeGxRm76SRJ5NhCZQMGxwEHe/qg?=
+ =?us-ascii?Q?yWbReC1iFytwZoPC3gp9WW9u3D+J70/Ln6oVmvkYOREAvAoP7BoQOeAxkrmN?=
+ =?us-ascii?Q?1slPzyFNYZCuWQZFRieXYoZTTM03G4FUQttIovvaIw2MA4HY8RNeMV+MwDqC?=
+ =?us-ascii?Q?WnZiVQhlJuN/1HS45mhaMUofWbUDZASsAabcOlc9/bmg3My93pBD6MYhVbPF?=
+ =?us-ascii?Q?zG7tN6cx4Ezgs+ZoMOUZSsN0MhsbdBEPRvexNwtwKQKdcih8kJkIWD2IMqY9?=
+ =?us-ascii?Q?hw++BFGdvDg9xih2UhtYswpVZuo89ttJ+oPBKQqY9ncIipeES59xsKAjtBQ7?=
+ =?us-ascii?Q?0akBoVYboDLrL8s75PHAynmKeQ8G7F+4A6e9IjwJRuFmjOwR1WM6bIm4kZzQ?=
+ =?us-ascii?Q?AM3P4crYcrjOnqjEbES39FtbwoJBfNbZYSwIoIJWNnrFhxNOLeR9YHkE4xMF?=
+ =?us-ascii?Q?Zf3do7+ZVHnLpMbXiSN5rce/6C/nbgF34rojFv/Xf9jGmdIAcSuEgqIwdEwt?=
+ =?us-ascii?Q?gn6MlLQYMvWyElLvD5ia5LpGA6pSz911JF1yDonT0f6bZemHBljv176aIyy7?=
+ =?us-ascii?Q?SGTwZDd/jJycaYgc7NtYXkI9oRHfkKNzUIDZYLCX548Q08haUB/3fHUHsgob?=
+ =?us-ascii?Q?guarz9sooIlAYDQ56qxXg36EUYh+rg8gnPgUiMBUnwLtNYS1fnRrZu6JXy2G?=
+ =?us-ascii?Q?RV/cXVFP14jXIFeJtuzfSp4rT1hGTA2yoK0GshGVeSD/O9m76z39Q1dTJ80a?=
+ =?us-ascii?Q?qnhcl7leIUzYgVEAJO5FzwBdI0WEAYv/5/szRmb6tNRgMH/gjr/DrxBarVmv?=
+ =?us-ascii?Q?OM+8KVNbvZAKoQSZ9ZgE6KLKglV16MAKC+7yfke51eplbRbShMQw?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19aad4ce-38b4-4309-1f3e-08df1859bbd9
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9351.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 03:29:39.7848
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JgICph/gxR5IJplABVu37LocXn+VTvFPl4O9jB3YDWkFjASs2wV5TO1euFI0BPERFiUq6yQMOvj6nLeNALD8DryLHlS02GEOz/J1HxUnDt5CSzoVlqV3/AgsyISUJDSk
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10941
 
-From: Jaidev Shastri <jaidevshastri@vt.edu>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-imx_scu_probe() fills struct imx_sc_ipc with the mailbox channels, the
-fast_ipc flag, the mutex and the completion, then stores its address to
-imx_sc_ipc_handle with a plain store. The clk, pinctrl, nvmem, rtc,
-thermal, gpio, reset, pmdomain, remoteproc, fec, flexcan and SOF drivers
-fetch it through imx_scu_get_handle() from their own probe and pass it
-to imx_scu_call_rpc(). Most are not children of the SCU node, so they
-probe from the deferred probe worker or a module load on another CPU
-while imx_scu_probe() is still running.
+This series extends the i.MX ASRC and EASRC drivers to expose one DAI
+per hardware conversion pair/context, allowing multiple independent
+conversion paths to be active simultaneously.
 
-The publication store is not ordered after the stores that built the
-object, so a consumer that passes the NULL check can dereference
-uninitialised channel pointers. The address dependency on the consumer
-side orders its own loads but says nothing about the producer.
+Patches 1-2 update the DT bindings to add a ports container so each
+conversion path can be wired independently in the audio graph.  The old
+single port property is kept but marked deprecated.
 
-imx_sc_irq_ipc_handle has the same shape:
-imx_scu_enable_general_irq_channel() publishes it with a plain store and
-imx_scu_irq_group_enable() uses it as an -EPROBE_DEFER gate for the rtc,
-key and watchdog drivers.
+Patch 3 moves dma_params into struct fsl_asrc_pair so each pair owns its
+own copy, and registers it with the cpu DAI using per-direction setters in
+fsl_asrc_dma_startup().  This removes the per-DAI probe callbacks from
+fsl_asrc.c and fsl_easrc.c, which are no longer needed.
 
-Publish both handles with smp_store_release() and read them with
-smp_load_acquire().
+Patches 4-5 expose the individual DAIs: fsl_asrc registers three DAIs
+(asrc-0/1/2) and fsl_easrc registers four (easrc-0/1/2/3).  The first
+DAI in each driver retains the original generic stream names for
+backward compatibility with existing machine drivers.
 
-Found with MBCheck, a static herd7-based memory consistency checker.
+Changes since v5:
+- rebase to latest master of linux-next
 
-Signed-off-by: Jaidev Shastri <jaidevshastri@vt.edu>
----
- drivers/firmware/imx/imx-scu-irq.c | 18 +++++++++++++++---
- drivers/firmware/imx/imx-scu.c     | 14 +++++++++++---
- 2 files changed, 26 insertions(+), 6 deletions(-)
+Changes since v4:
+- update commit message of Patch 1/5 to add all variants
+- add Frank's review tag in Patch 3/5
+- add Krzysztof's review tag in Patch 2/5
 
-diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
-index a68d38f89..4f24e3c08 100644
---- a/drivers/firmware/imx/imx-scu-irq.c
-+++ b/drivers/firmware/imx/imx-scu-irq.c
-@@ -143,9 +143,12 @@ int imx_scu_irq_group_enable(u8 group, u32 mask, u8 enable)
- {
- 	struct imx_sc_msg_irq_enable msg;
- 	struct imx_sc_rpc_msg *hdr = &msg.hdr;
-+	struct imx_sc_ipc *ipc;
- 	int ret;
- 
--	if (!imx_sc_irq_ipc_handle)
-+	/* Pairs with the smp_store_release() in imx_scu_enable_general_irq_channel(). */
-+	ipc = smp_load_acquire(&imx_sc_irq_ipc_handle);
-+	if (!ipc)
- 		return -EPROBE_DEFER;
- 
- 	hdr->ver = IMX_SC_RPC_VERSION;
-@@ -158,7 +161,7 @@ int imx_scu_irq_group_enable(u8 group, u32 mask, u8 enable)
- 	msg.mask = mask;
- 	msg.enable = enable;
- 
--	ret = imx_scu_call_rpc(imx_sc_irq_ipc_handle, &msg, true);
-+	ret = imx_scu_call_rpc(ipc, &msg, true);
- 	if (ret)
- 		pr_err("enable irq failed, group %d, mask %d, ret %d\n",
- 			group, mask, ret);
-@@ -201,6 +204,7 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 	struct of_phandle_args spec;
- 	struct mbox_client *cl;
- 	struct mbox_chan *ch;
-+	struct imx_sc_ipc *ipc;
- 	int ret = 0, i = 0;
- 
- 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
-@@ -215,10 +219,18 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 
- 	mu_resource_id = IMX_SC_R_MU_0A + i;
- 
--	ret = imx_scu_get_handle(&imx_sc_irq_ipc_handle);
-+	ret = imx_scu_get_handle(&ipc);
- 	if (ret)
- 		return ret;
- 
-+	/*
-+	 * imx_scu_irq_group_enable() tests imx_sc_irq_ipc_handle from other
-+	 * drivers' probe paths and then passes it to imx_scu_call_rpc().
-+	 * Publish it with release semantics so that the SCU state it points
-+	 * to is visible to them.
-+	 */
-+	smp_store_release(&imx_sc_irq_ipc_handle, ipc);
-+
- 	cl = devm_kzalloc(dev, sizeof(*cl), GFP_KERNEL);
- 	if (!cl)
- 		return -ENOMEM;
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index 203aac421..e1b9d51a5 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -105,10 +105,13 @@ static inline int imx_sc_to_linux_errno(int errno)
-  */
- int imx_scu_get_handle(struct imx_sc_ipc **ipc)
- {
--	if (!imx_sc_ipc_handle)
-+	/* Pairs with the smp_store_release() in imx_scu_probe(). */
-+	struct imx_sc_ipc *sc_ipc = smp_load_acquire(&imx_sc_ipc_handle);
-+
-+	if (!sc_ipc)
- 		return -EPROBE_DEFER;
- 
--	*ipc = imx_sc_ipc_handle;
-+	*ipc = sc_ipc;
- 	return 0;
- }
- EXPORT_SYMBOL(imx_scu_get_handle);
-@@ -345,7 +348,12 @@ static int imx_scu_probe(struct platform_device *pdev)
- 		return ret;
- 	init_completion(&sc_ipc->done);
- 
--	imx_sc_ipc_handle = sc_ipc;
-+	/*
-+	 * Consumers fetch the handle from their own probe, possibly on
-+	 * another CPU, and then use the channels, the mutex and the completion
-+	 * initialised above. Publish it with release semantics.
-+	 */
-+	smp_store_release(&imx_sc_ipc_handle, sc_ipc);
- 	ret = devm_add_action_or_reset(dev, imx_scu_clear_handle, sc_ipc);
- 	if (ret)
- 		return ret;
+Changes since v3:
+- Update commit message of Patch 1/5 to remove reduntant sentence.
+- add Frank's review tag in Patch 2/5
 
----
-base-commit: 93f51579e7df248780214094418f205253383cc5
-change-id: 20260921-mb-imx-scu-ed793612a725
+Changes since v2:
+- add ports example to original example case in yaml file as port is
+  deprecated
+- remove the label in example.
 
-Best regards,
---  
-Jaidev Shastri <jaidevshastri@vt.edu>
+Changes since v1:
+- Patch 3 is new: moves dma_params into struct fsl_asrc_pair (one per pair)
+- Per-direction snd_soc_dai_dma_data_set_playback/capture used instead
+  of snd_soc_dai_init_dma_data to avoid clearing the other direction
+- dma_params_tx/rx removed from struct fsl_asrc; single dma_params per
+  pair suffices because each pair is unidirectional
+- per-DAI probe callbacks removed (startup now sets dma_data)
+- Cover letter and commit messages updated to reflect the above
+- DAI names changed: paira/pairb/pairc -> asrc-0/asrc-1/asrc-2,
+  ctxa/ctxb/ctxc/ctxd -> easrc-0/easrc-1/easrc-2/easrc-3; use index-based
+  naming consistent with port@N in the DT binding
+- Stream names changed: ASRCB/ASRCC/ASRCD -> ASRC1/ASRC2/ASRC3; align with
+  the index-based DAI names above
+- Binding port descriptions updated: pair A/B/C -> conversion path 0/1/2;
+  hardware-agnostic wording to match port@N numbering
 
+Shengjiu Wang (5):
+  ASoC: dt-bindings: fsl,imx-asrc: update port binding to support
+    multiple paths
+  ASoC: dt-bindings: fsl,easrc: add ports binding for multiple
+    conversion paths
+  ASoC: fsl_asrc/fsl_easrc: move DMA params into pair/context struct
+  ASoC: fsl_asrc: expose individual DAIs per conversion path
+  ASoC: fsl_easrc: expose individual DAIs per conversion path
+
+ .../devicetree/bindings/sound/fsl,easrc.yaml  |  45 +++++++
+ .../bindings/sound/fsl,imx-asrc.yaml          |  43 +++++-
+ sound/soc/fsl/fsl_asrc.c                      | 100 +++++++++-----
+ sound/soc/fsl/fsl_asrc_common.h               |   7 +-
+ sound/soc/fsl/fsl_asrc_dma.c                  |  14 ++
+ sound/soc/fsl/fsl_easrc.c                     | 123 +++++++++++++-----
+ 6 files changed, 262 insertions(+), 70 deletions(-)
+
+-- 
+2.34.1
 
