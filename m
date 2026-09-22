@@ -1,804 +1,449 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010013.outbound.protection.outlook.com [52.101.84.13])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7D0483BCB
-	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 18:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911E9272816;
+	Tue, 22 Sep 2026 19:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790103099; cv=fail; b=p6o0r2pizRyJUVeAlGzqu0PQltlct8535LTYpQOaa9gYEmSL+5dRjafqjuThI0aAqDIUs+jL8iwJRdXCC2vzArLOEDYQR+tGTNviXENLcRyGQIDKqH1iVONKD7NKPvF4e31DiqHpRR0uzv3P4N+pIOlZHcAl7PfZhFiDqkhesEk=
+	t=1790106008; cv=pass; b=p0vrVE5QxDllXnDKc+6euhltsVCVJYmfMG9ML1yPwbrQfDFp+xvjfUKmXxHT0OGG+WxVAsj2SEwRiiEA//Y+sY03BaDej3cvNtTUL1FeuHWXBJYDU3HK0s3Q43mStkOzPCiubRcAX8V3eY5e6HtUMioakZEUkt+ZsOHHjHIiTIk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790103099; c=relaxed/simple;
-	bh=uGXdg2KYj9YrR65Ym59eACJ/jeEv/Wwq6kktinlhMtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lq3Af6d5R/JyV20nOfngxUfVW8ZO67+T0fQsgJGhyG3nnMy+p4bnWNgnKqIwwG6x/X9Evtz+bmqpxsOL7xqJ40su27xR/LHgQvyNWhOqJOQMFDPAkHA7TFTbqdtHEtwVihqyNOo650ecl0EkfFkX0GYXeRCDlaHobleNVaJVtPM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mQPpAsLI; arc=fail smtp.client-ip=52.101.84.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790106008; c=relaxed/simple;
+	bh=8NMs8SB1sdPboxqnoQlVUSrFwxOWYz6MOmmk18xtLCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=flKZ0fLUrBRhfTbJmwi83Ffe9B1sInob7J28FW3VRNvD1tNHFRvnMvOqf/PugRgo5SR1wVyo6BumUCQSYfIUgZsYAyB0p9+cDeK8V4mbQfD9PuOuem3aKktxVmfcG4fXt9QyHk+bZ+iapv+xcn1oQDGclwF+KHSjyvE1YdbrUCA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=foi6NZWU; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=SvVNZfIO; arc=pass smtp.client-ip=185.56.87.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mQPpAsLI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dk33vYzCKBnNIwZ05hXQb2VuFqoaZZ3c00ESac6zzxnl/Iuw8UTZy6oO+zlEQ1KtLxmbuJDE8kmorPUz1MgVoldJSTV5ymbuzLEpamHIbkzXOCCDa0K4aI7gVQOJGNi8jRt4K/ET0kkFRQ9thRbSPUvjkHb4fgH/umrcJCyE/UoKbaG9+U5O4iZJGjcYu9hbxWI1ALc+Xz8+S8PHN8XPfq+ehb2yCVtXzUridW9Axk3Hz9ZqFiSij4jIDUC+r45jkyeYkiCVMNczUlao5NK5obCR08Paogzw2/J/zzO4WnLv4XlnPekgDgHOxxqscVXWtMVb29lzI/sogLehwEHeUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9Sambif4iduCFAYS9Exo3Oyz7NjUJYhf0fD/+9xgC24=;
- b=Y5EqOvzys2Yy6AgrZr/lAht+bLT3UCoL6QkrgdauL+QU9ZJmhA+mY6frWzEfLsGa96BORa7iEANV5kd+hggz5VV9oHlr0Eg7Us0eFq/VGeXGzxklx1cVryolCVPPWE7WoA18cNw5ukcSSkGg2raotw20t7kL3pyiunaPM8+pzw8yJA7CLF9YifDyvifMMKTiVKnDVT4if4zRmK8ZwkTuYGG/+HxOx2ydNEunwCEpr/dw+lcsxFDBawYUiCNo8F1fFv+gLcZo02oXxjom93ilFEnEKbGTNQoAJiY5epm7pCEZRPU/fzsXsZ6Wo3e1Cxf107OOneSMrFAqIWP5sHv5Gw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9Sambif4iduCFAYS9Exo3Oyz7NjUJYhf0fD/+9xgC24=;
- b=mQPpAsLIcwnjiNxYr2oHw/eoV9hoyVil/tIPP4kbjjUTEr8wuRpueBJDhJdc0fcEcM1VDIpQ+miAO8X/aYFAogwreHriH5oSPoGe8wFnzzru7gnkr/YZbcPoXK3JWdhocgKprRIQxf1MLl6WQKEFi0CUMkn+5amojLA6VFbAg+nTYI3PVB1iITGG+/k319v51YRWZ7AX8QC+B0q2aVNtf4kLTICLINJipJ8FGXtX/0CQ5vaYW4aks9zz4jXFLTtkqgoqreoLBDCCVLI+NhFCzFxR/fVSkngfbIwRgRDRHoXqVj6CCnv6f1POIKK2UKvsYBJmTk7N3d9FuI8j6ieivQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GVXPR04MB9757.eurprd04.prod.outlook.com (2603:10a6:150:115::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.13; Tue, 22 Sep
- 2026 18:51:32 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Tue, 22 Sep 2026
- 18:51:32 +0000
-Date: Tue, 22 Sep 2026 13:51:11 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>
-Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
-	Ajay Neeli <ajay.neeli@amd.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Pedro Sousa <pedrom.sousa@synopsys.com>,
-	Hannes Reinicke <hare@suse.de>,
-	Joao Pinto <Joao.Pinto@synopsys.com>, linux-scsi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, clizzi@redhat.com,
-	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com
-Subject: Re: [PATCH v5 09/12] scsi: ufs: Add NXP S32N79 UFS host controller
- driver
-Message-ID: <arLOH4buRKhPOD0T@SMW015318>
-References: <20260922073009.1449688-1-larisa.grigore@oss.nxp.com>
- <20260922073009.1449688-10-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260922073009.1449688-10-larisa.grigore@oss.nxp.com>
-X-ClientProxiedBy: PH1PEPF00013316.namprd07.prod.outlook.com
- (2603:10b6:518:1::5) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="foi6NZWU";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="SvVNZfIO"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-n5kd.prod.antispam.mailspamprotection.com; s=arckey; t=1790106005;
+	 b=LCfXCm8c3MgdMqPZC3bCCt7VBwPBhW/RHSoHKLzteHygMqX9BEDCh4II/3nYHOJahCW/vRMWz9
+	  nhO3H7JMx4Al1lQqDkftyYtVj6e9gZBpHVpjiKxevQhe0AHCacpZDVwZ3WDyF4ZmhWKg26OLcp
+	  truXichzVKWkeDZ48RcErsvnX7DUjYwlpWh6FcfjRNa3/bNJn4ja/dLTR4nVnGdS//5UrWvCfz
+	  QbWrKKDzUMhgyIutKytfVua33b4gvzX2PKzwd2gOQ1JkEG6hC/2tBTnnEIt6bqWpd6+CxYZyFX
+	  8HutKFZTvtQbViVu1ofEqPjpOMPYdiqzdeyazn4P7kjkvA==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-n5kd.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-n5kd.prod.antispam.mailspamprotection.com; s=arckey; t=1790106005;
+	bh=8NMs8SB1sdPboxqnoQlVUSrFwxOWYz6MOmmk18xtLCY=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=nQBExSQmRFWiOPn+UoNbRY+VstO84/vNzr7X4Q5IqbcVkVNXPIHDwvcXy44lRQSrV8WEOS6dG9
+	  gcUJqpmhaPWBfwZG4JDIHDG2MUFQAesT/x/mchUxXCCd7hWXNcdJhSnf6xUzJT+rJ9r4myQRxV
+	  vpDJPob1ZfUii2DpF2rkCDgV5JU+WxZSvkuKC/lnbiGw1GRAsXXn0uebKVz5Haui2RHOWmvRA0
+	  jdOY5XutIXXd9Y+wfKX4k/qc2UIpU9sD+fJjPqYbT+Pl7Hnmex5vHWbWyDdE84+DEZBdFmIU0t
+	  AXuCQA75F3uMCuqnyq4NM3RS1RBsjCd+kfZbMU/g286PmQ==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=T2eLmgVZefecU/pTIkEn3jiZi3KwYbQMRJO/PHSRntY=; b=foi6NZWUOD/oh4jAKCqSBuWqxt
+	ThjD8vvoAJnnIgxTvnE0fEKVY66pdJjqd8L1MVXLeQS3y7k57apc8blrWGoxvnPvCIa6TjHOHWwxA
+	MZgX/e/IYpoR3vGBiNBW0mUFBfhOy9DsU1fu5dpHccOD60YwN8U2+Kv102Pnh7kUASzo=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-n5kd.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x96LM-00000007bOr-1ad5;
+	Tue, 22 Sep 2026 19:39:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=T2eLmgVZefecU/pTIkEn3jiZi3KwYbQMRJO/PHSRntY=; b=SvVNZfIOY9NWsp+KfKmmm5nv1Q
+	GbMij94Qjo5jk8NIfoCGK5leBchQYd0VwCEJsoa8N9wVARel1alZpCIE4w5Nmgzoc+CwwWDIZO5Pq
+	UXyADO8Qwn/3gqBCa3/PWcwyF9UvEpIGRqafpBY4nkgUgbinPLwdW/YM1ZgonF7cB/rg=;
+Received: from [79.43.46.244] (port=62406 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x96L0-00000000DJl-0LPt;
+	Tue, 22 Sep 2026 19:39:34 +0000
+Date: Tue, 22 Sep 2026 21:39:31 +0200
+From: Francesco Valla <francesco@valla.it>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC 06/12] remoteproc: virtio: add bounce buffering for
+ data buffers
+Message-ID: <arLXthhYbKkwZ9zY@bywater>
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <20260916-remoteproc_virtio_map-v1-6-dac8c5eb4aa9@valla.it>
+ <arKlvZGqu2nt6Ci0@p14s>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVXPR04MB9757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d801e07-5212-4d63-13d6-08df18da84c3
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|19092799006|7416014|23010399003|376014|1800799024|6133799003|3023799007|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- HTeJppPuC7dE0v7irPPR8dUmi7k2a7QV2ZrZGsUwLbNvYrJcI4CR4RURlCOofyCCOjTiP/IjNRyJ5g+5Ezuy3/Y0clORIDFs0/6QU2Orf+juJyFlR+dPa7AA49RKsqJtoQYyV7tN4bAgPsQBOp/a+2oaK2XtsHZIETRXDj1fhsIfvKrFME3jm5JXAtjIcQXwKfqMQ7gcGOoZSyIiHs1fdR11lTvbHn5GXH34n8awHfg7pPydD7OYLXKa2tMTS6j3YKzo9lOHEm2YMtK1KK2OZRKTIKqx9XadkGhLDyCTvkyjNAYcKyOqVRvetBdN/BQvtQIlFfVVc6jfAbnsBWX3JZRSPI6z1J5jZZgSdEI2gnBHweVAcD63AzbKiYi2NkW9ACKRcQbRovF3IzfHKOrPCagfjnszh8WPY4cTWDS5K4XJ11mooVLhU6jQKFQlTz6xxJ4uF2SZkMyRPKEOhsbw2O92OHfy6dngfCDhl5060w9tCVN60Px1bZEa/C3dVAY24LAEXxlLR075LAGdpS0uk8s+QU134n6rvuETd0pSwYhg1f/YVSp3lVqHoIXcqAfEfh1CZ2KN+dDTA5xbmu/JnHLLldIVizzHbCK7E87yk8vDqTBCN2hBTb1a34TB8y2VMzl/2vN33LzYrdOUk4ruGW3vQ0LfvWMcdq6mRXHyQmg=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(23010399003)(376014)(1800799024)(6133799003)(3023799007)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?fAHfn8wNR/x3eBnG6mBlWVJa99wyAB8RxASrw8bDYp7AW0dArV16OtZtUSF5?=
- =?us-ascii?Q?VbE+iWm/3L1gtdMPkMhA/y46PGZNaeN0FBrmZr5DaToYnbTTj0EKVldhO/zp?=
- =?us-ascii?Q?yGFLj+twLVYEqNLsv+zTaeQPHLLftGAMh1BOltX9fHXxll1Wx/lrdpqBYhoY?=
- =?us-ascii?Q?yHlr8l/GJvxqZUjcSLLN0FV3x3sgZAmoXoFQjreKdjUBZGmtYkChV0C/3BUc?=
- =?us-ascii?Q?K2mnGjK9fk0u+aLl0OFfplQY6nH993+kzkHB4EzTKE+4PxZyBFkNqwa44R8H?=
- =?us-ascii?Q?Lw1qh+t8QMCe37RQKHjHbbkavw0E+SLjiXtI/8MnUeHswTlC0Q4QeEl18mLm?=
- =?us-ascii?Q?4jrGLcsUZ3Ucvs1pJPwsa/hzrs6tQilLzu2zhnwlA29Kg5d8GFSYEWOS62sA?=
- =?us-ascii?Q?Bxu+/mOZve8esAjbv2Uzpw36GSTH6e/I+aBrjzTojKAwLHEYrmbEUVXTNjlH?=
- =?us-ascii?Q?yWp1/XEcRnfyMe4emYquN98ETNeh+CsGOyjtKVrqrH2pzUjqnZqesOpu4PKe?=
- =?us-ascii?Q?5YzO68Dc1OZy/UbUhW9F/xV4FdW7ObhlFaKGyVaRaZnkUnFeuhKZJyyMvLp/?=
- =?us-ascii?Q?PUibRqWUPS88CWwSK53GUeaHoCU3lsM60UzpECnGfVZB6rhGDzRzGhzgpeYz?=
- =?us-ascii?Q?Kc/QodQgf7BU3QuI0IxvfqOKgjCz+n8/jHHFdI28c6nqE99CIqAtQBOdinit?=
- =?us-ascii?Q?Mk77dAVJXhrkHaoieSZS1jIryBDyuTWwVR3AcytM4CBREHeTTAkdvyyk8PRg?=
- =?us-ascii?Q?72euRp2V5YmhCT5duJ/oy59tDXWjeL8dRUp5iCBNZ3PZgkWqb+Mv7xMrPL+A?=
- =?us-ascii?Q?Yn43F+PM1T5t0codZz+2HzjDBFwsCf7vmeNuqBqduFgTO0klbPzY5XtCmsPT?=
- =?us-ascii?Q?aP429AT220o2RvkwkOCbtR2AVbudkws2aylqt9u7HZOztUn20HApPO/qriLs?=
- =?us-ascii?Q?YcqByOax8skMo012iHsM2tlI+CKf0oghdOBO8n5O1N1sNTHIlcdRkFFYDXnN?=
- =?us-ascii?Q?LEurOLpgjW8yfNkiaQw+tWxt4Liymfvr6vLjT3xbFqZXHROWSOVTCnoNT6gN?=
- =?us-ascii?Q?cUqA/z2oJ/j0amjlsIGCZJcwG7UFZUVPMIGEX30fVAsTuFvN6fxD6VxG6ebP?=
- =?us-ascii?Q?R2Yi0yMkUU7fTviTIEaY9qC+abDAgd+xrcH3F3PPzYU9sAMPyzQORrEyguA5?=
- =?us-ascii?Q?E3bzfLer5OmWjhzpYghzVOJ8b14CF7wPKS1yEHw8ZKi6d8NgL2zep/+q/PU4?=
- =?us-ascii?Q?CnVyUEzhgA3qtRU1QNgnc5sHEwN6cQBV8qoVKdyWD1EfNkbNdZ28a0jd2abJ?=
- =?us-ascii?Q?3SMEEfsc6G7Q9qFTezb2ywD0A0E6+rhCiuj1NS+k2iqhPZbHHz5qQBGL3mW4?=
- =?us-ascii?Q?NpomY/DDf1qVfwSfc2eWGRSRXxrra8PmooPi4M5oLIbLcM+RiB0NJPdCtRUU?=
- =?us-ascii?Q?vFdsjhQjwn7f7Kn5cYRsp9Mmt6FyeNcs0q1qqfbHM4AtlPMETfAgkhDrFiSQ?=
- =?us-ascii?Q?AEToNb+VxvxfDq93k60WXyK292aVddow7Cy7q1KS066mOHLqgbXhhFnY9wyD?=
- =?us-ascii?Q?w8/ebu6f3Bcw7b7xhIemJXWVeUH2HpXGojxxeNZ2DxWONCEkG9dUaOCC/Yfx?=
- =?us-ascii?Q?G/hBjYdmRIknmko70Kx8APlrDDYeW4YIbalVThNGFtyVRFMDSHg10wIcfLLE?=
- =?us-ascii?Q?eEdOKLMzCXJ98THi9Wd91Uz9x5pg/wYPAj0PZmt1xezHfV1wTtO1tJwaBP/7?=
- =?us-ascii?Q?Yn0QuxftdPOS462Teu4iriEW2JjGh0+r1qWCUysT2QtWjJRevpRF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d801e07-5212-4d63-13d6-08df18da84c3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 18:51:32.1541
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PNjOaFG2qyL3Fd7vVkQStU/C9IgY41mCMTjXvrgWSsHq8tSU38vzvftiSV54mGwHqiQQ5mgP1xh2Nvo5qcEmJvZAwV3HMwFrhOc1/KTofJrIY75+PEMditTydOggF9qM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9757
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arKlvZGqu2nt6Ci0@p14s>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 403a50c9c22bfe794ee973065cfa18c6
+X-AntiAbuse: ID - 403a50c9c22bfe794ee973065cfa18c6
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1x96LM-00000007bOr-1ad5-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-n5kd.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-On Tue, Sep 22, 2026 at 09:30:06AM +0200, Larisa Grigore wrote:
-> Add support for the UFS host controller on the NXP S32N79 SoC, built on
-> the Synopsys DesignWare (DWC) UFS architecture, using the UFSHCD DWC and
-> UFSHCD platform glue.
+On Tue, Sep 22, 2026 at 09:58:53AM -0600, Mathieu Poirier wrote:
+> On Wed, Sep 16, 2026 at 11:10:51PM +0200, Francesco Valla wrote:
+> > Depending on the driver originating them, data buffers used for virtio
+> > communication can either:
+> > 
+> >   - already be allocated from the coherent memory area that is
+> >     accessible by the remote processor; this is the case of rpmsg
+> >     and the rproc flavor of virtio-console;
+> >   - be allocated from generic kmem, and thus not accessible directly by
+> >     the remote processor.
+> > 
+> > Exploiting the map operations, which are used by the virtio framework
+> > when VIRTIO_F_ACCESS_PLATFORM is part of a vdev's feature flags, add
+> > bounce buffering for the second case: when the map() callback is called
+> > for a buffer, one or more pages of coherent memory are allocated and
+> > data is copied to them, then they are exposed to the remote processor;
+> > the data is  then bounced back on unmap().
+> > 
+> > The first case is not impacted, since buffers already suitable for
+> > remote transmission are passed through.
+> > 
+> > With the bounce buffering in place, any kind of virtio device can be
+> > supported through the remoteproc-virtio transport, at least from a
+> > data exchange standpoint.
+> 
+> Is this _necessary_ for the imx93 platform you are implementing feature for?
 >
-> This controller requires S32N79-specific initialization prior to
-> UIC_LINKSTARTUP, including:
->   - programming SCM.ONE_US_TICK and HC.HCLKDIV based on the core clock,
->   - applying the vendor-defined M-PHY calibration sequence, and
->   - performing post-link calibration steps needed for HS operation.
->
-> The M-PHY supports several boot modes for loading its firmware. Only the
-> mode where the firmware runs from the internal ROM is supported for now.
->
-> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
-> ---
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+If I don't want to fundamentally change how the remoteproc integration
+works (i.e.: using buffers only from a pre-shared area), yes. While in
+my test environment the Cortex-M33 serving as remoteproc is able to
+access the whole RAM space, that is not always the case.
+This is even more important for mixed-criticality-ready processors (say:
+i.MX95), where access to different memory areas si defined even before
+the various application cores are started.
 
->  drivers/ufs/host/Kconfig         |  12 +
->  drivers/ufs/host/Makefile        |   1 +
->  drivers/ufs/host/ufs-nxp-s32n7.c | 546 +++++++++++++++++++++++++++++++
->  drivers/ufs/host/ufshcd-dwc.h    |  10 +
->  drivers/ufs/host/ufshci-dwc.h    |   6 +
->  5 files changed, 575 insertions(+)
->  create mode 100644 drivers/ufs/host/ufs-nxp-s32n7.c
->
-> diff --git a/drivers/ufs/host/Kconfig b/drivers/ufs/host/Kconfig
-> index ff170c0b6da0..e8ee7dd05f1a 100644
-> --- a/drivers/ufs/host/Kconfig
-> +++ b/drivers/ufs/host/Kconfig
-> @@ -168,3 +168,15 @@ config SCSI_UFS_AMD_VERSAL2
->
->  	  Select this if you have UFS controller on AMD Versal Gen 2 SoC.
->  	  If unsure, say N.
-> +
-> +config SCSI_UFS_S32N7
-> +	tristate "NXP S32N7 platform driver"
-> +	depends on SCSI_UFSHCD_PLATFORM && (ARCH_S32 || COMPILE_TEST)
-> +	help
-> +	  This selects the S32N7 specific additions on top of the UFSHCD DWC
-> +	  and UFSHCD platform driver. UFS host on S32N79 needs some vendor
-> +	  specific configurations like PHY and vendor specific register accesses
-> +	  before accessing the hardware.
-> +
-> +	  Select this if you have UFS controller on an S32N7 based board.
-> +	  If unsure, say N.
-> diff --git a/drivers/ufs/host/Makefile b/drivers/ufs/host/Makefile
-> index 7d8db67eb23c..a2f4a1d0b3ae 100644
-> --- a/drivers/ufs/host/Makefile
-> +++ b/drivers/ufs/host/Makefile
-> @@ -4,6 +4,7 @@ CONTEXT_ANALYSIS := y
->
->  obj-$(CONFIG_SCSI_UFS_DWC_TC_PCI) += tc-dwc-g210-pci.o ufshcd-dwc.o tc-dwc-g210.o
->  obj-$(CONFIG_SCSI_UFS_DWC_TC_PLATFORM) += tc-dwc-g210-pltfrm.o ufshcd-dwc.o tc-dwc-g210.o
-> +obj-$(CONFIG_SCSI_UFS_S32N7) += ufs-nxp-s32n7.o ufshcd-dwc.o
->  obj-$(CONFIG_SCSI_UFS_CDNS_PLATFORM) += cdns-pltfrm.o
->  obj-$(CONFIG_SCSI_UFS_QCOM) += ufs-qcom.o
->  obj-$(CONFIG_SCSI_UFS_EXYNOS) += ufs-exynos.o
-> diff --git a/drivers/ufs/host/ufs-nxp-s32n7.c b/drivers/ufs/host/ufs-nxp-s32n7.c
-> new file mode 100644
-> index 000000000000..f7a017a6d9ae
-> --- /dev/null
-> +++ b/drivers/ufs/host/ufs-nxp-s32n7.c
-> @@ -0,0 +1,546 @@
-> +// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
-> +/*
-> + * Copyright 2026 NXP
-> + *
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/device.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm.h>
-> +
-> +#include "ufshcd-pltfrm.h"
-> +#include "ufshcd-dwc.h"
-> +#include "ufshci-dwc.h"
-> +
-> +/* SCM Register Offsets. */
-> +#define SCM_ONE_US_TICK			0x2CU
-> +#define SCM_STATUS			0x30
-> +
-> +/* SCM_ONE_US_TICK Register. */
-> +#define SCM_ONE_US_TICK_MASK		GENMASK(8, 0)
-> +
-> +/* SCM_MPHY_RAM_CONFIG_STATUS Register Fields. */
-> +#define SCM_STATUS_PHY_RESET_MASK		BIT(0)
-> +#define SCM_STATUS_SRAM_BYPASS_MASK		BIT(1)
-> +#define SCM_STATUS_SRAM_INIT_DONE_MASK		BIT(16)
-> +
-> +#define SCM_STATUS_PHY_RESET(val)		\
-> +	FIELD_PREP(SCM_STATUS_PHY_RESET_MASK, val)
-> +
-> +#define SCM_STATUS_SRAM_BYPASS(val)		\
-> +	FIELD_PREP(SCM_STATUS_SRAM_BYPASS_MASK, val)
-> +
-> +/* Driver-defined upper bound for the M-PHY SRAM init to complete: 3 s. */
-> +#define CFG_MPHY_INIT_TIMEOUT_VALUE_US	3000000
-> +/* Driver-defined poll interval while waiting for SRAM_INIT_DONE: 1 ms. */
-> +#define CFG_MPHY_INIT_POLL_INTERVAL_US	1000
-> +
-> +/* Clock validation limits. */
-> +#define MAX_VALID_ONE_US_TICK		SCM_ONE_US_TICK_MASK
-> +
-> +/* CPort definitions */
-> +#define CPORT_0				0
-> +
-> +/* Driver-defined upper bound for completing a Hibern8 transition: 1 s. */
-> +#define HBRN8_POLL_TOUT_MS		1000
-> +
-> +/**
-> + * struct s32n7_phy_reg - PHY CR (config-register) write entry
-> + * @reg: Register offset/address
-> + * @val: Value to write
-> + */
-> +struct s32n7_phy_reg {
-> +	u32 reg;
-> +	u32 val;
-> +};
-> +
-> +/**
-> + * struct s32n7_soc_data - SoC-specific configuration data
-> + * @vops: UFS host controller variant operations
-> + * @reset_config: MPHY reset DME attributes (programmed while PHY held in reset)
-> + * @reset_config_count: number of entries in @reset_config
-> + * @calib_mphy_disabled: CR calibration writes performed while the MPHY is disabled
-> + * @calib_mphy_disabled_count: number of entries in @calib_mphy_disabled
-> + * @calib_mphy_enabled: CR calibration writes performed while the MPHY is enabled
-> + * @calib_mphy_enabled_count: number of entries in @calib_mphy_enabled
-> + */
-> +struct s32n7_soc_data {
-> +	const struct ufs_hba_variant_ops *vops;
-> +	const struct ufshcd_dme_attr_val *reset_config;
-> +	size_t reset_config_count;
-> +	const struct s32n7_phy_reg *calib_mphy_disabled;
-> +	size_t calib_mphy_disabled_count;
-> +	const struct s32n7_phy_reg *calib_mphy_enabled;
-> +	size_t calib_mphy_enabled_count;
-> +};
-> +
-> +/**
-> + * struct s32n7_ufs - S32N7 UFS host controller data
-> + * @hba: UFS host controller instance
-> + * @reg_scm: SCM register base address
-> + * @core_clk: core reference clock used to derive ONE_US_TICK/HCLKDIV
-> + * @soc_data: SoC-specific configuration data
-> + */
-> +struct s32n7_ufs {
-> +	struct ufs_hba *hba;
-> +	void __iomem *reg_scm;
-> +	struct clk *core_clk;
-> +	const struct s32n7_soc_data *soc_data;
-> +};
-> +
-> +/**
-> + * ufs_s32n7_phy_write_sequence - Write a sequence of PHY registers
-> + * @hba: UFS host controller instance
-> + * @cfg: Array of register configurations
-> + * @count: Number of entries in the array
-> + *
-> + * Return: 0 on success, error code on failure
-> + */
-> +static int ufs_s32n7_phy_write_sequence(struct ufs_hba *hba,
-> +				       const struct s32n7_phy_reg *cfg,
-> +				       size_t count)
-> +{
-> +	int ret;
-> +	size_t i;
-> +
-> +	for (i = 0; i < count; i++) {
-> +		ret = ufshcd_dwc_phy_reg_write(hba, cfg[i].reg, cfg[i].val);
-> +		if (ret) {
-> +			dev_err(hba->dev,
-> +				"Failed to write PHY reg 0x%x = 0x%x (step %zu)\n",
-> +				cfg[i].reg, cfg[i].val, i);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static unsigned long ufs_s32n7_calculate_us_tick(unsigned long clk_rate)
-> +{
-> +	return clk_rate / USEC_PER_SEC;
-> +}
-> +
-> +static int ufs_s32n7_configure_clocks(struct ufs_hba *hba)
-> +{
-> +	struct s32n7_ufs *ufs = ufshcd_get_variant(hba);
-> +	struct device *dev = hba->dev;
-> +	unsigned long clk_rate = 0;
-> +	unsigned long one_us_tick;
-> +
-> +	clk_rate = clk_get_rate(ufs->core_clk);
-> +	if (!clk_rate) {
-> +		dev_err(dev, "Failed to get valid clock rate.\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	one_us_tick = ufs_s32n7_calculate_us_tick(clk_rate);
-> +	if (one_us_tick == 0 || one_us_tick > MAX_VALID_ONE_US_TICK) {
-> +		dev_err(dev, "Invalid one_us_tick value: %lu (clk_rate: %lu Hz).\n",
-> +			one_us_tick, clk_rate);
-> +		return -EINVAL;
-> +	}
-> +
-> +	dev_dbg(dev, "Core clock rate: %lu Hz, one_us_tick = %lu.\n",
-> +		 clk_rate, one_us_tick);
-> +
-> +	/*
-> +	 * Configure the micro-second tick rate generator based on core
-> +	 * clock rate.
-> +	 */
-> +	writel(one_us_tick, ufs->reg_scm + SCM_ONE_US_TICK);
-> +	ufshcd_dwc_program_clk_div(hba, one_us_tick);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ufs_s32n7_hce_enable_notify(struct ufs_hba *hba,
-> +				      enum ufs_notify_change_status status)
-> +{
-> +	u32 reg;
-> +
-> +	if (status != POST_CHANGE)
-> +		return 0;
-> +
-> +	/*
-> +	 * Clear the DWC low-power gating (BUSTHRTL) so a doorbell write can
-> +	 * wake the link out of hibernate. LP_PGE (generic low-power) and
-> +	 * LP_AH8_PGE (Auto-Hibern8) both reset to 1.
-> +	 */
-> +	reg = ufshcd_readl(hba, DWC_UFS_REG_BUSTHRTL);
-> +	reg &= ~(DWC_UFS_BUSTHRTL_LP_PGE | DWC_UFS_BUSTHRTL_LP_AH8_PGE);
-> +	ufshcd_writel(hba, reg, DWC_UFS_REG_BUSTHRTL);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ufs_s32n7_phy_initial_calib(struct ufs_hba *hba)
-> +{
-> +	struct s32n7_ufs *ufs = ufshcd_get_variant(hba);
-> +	int ret;
-> +
-> +	/* Calibrations that must run while the MPHY is disabled. */
-> +	ret = ufs_s32n7_phy_write_sequence(hba, ufs->soc_data->calib_mphy_disabled,
-> +					  ufs->soc_data->calib_mphy_disabled_count);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(VS_MPHYCFGUPDT, 0), 0x1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(VS_MPHYDISABLE, 0), 0x0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Calibrations that must run while the MPHY is enabled. */
-> +	ret = ufs_s32n7_phy_write_sequence(hba, ufs->soc_data->calib_mphy_enabled,
-> +					  ufs->soc_data->calib_mphy_enabled_count);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(VS_MPHYCFGUPDT, 0), 0x1);
-> +}
-> +
-> +static int ufs_s32n7_link_startup_pre_change(struct ufs_hba *hba)
-> +{
-> +	struct s32n7_ufs *ufs = ufshcd_get_variant(hba);
-> +	struct device *dev = hba->dev;
-> +	int ret;
-> +	u32 reg;
-> +
-> +	ret = ufs_s32n7_configure_clocks(hba);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Reset SCM.MPHY_RAM_CONFIG_STATUS to default value; keep MPHY in reset. */
-> +	writel(SCM_STATUS_PHY_RESET(1), ufs->reg_scm + SCM_STATUS);
-> +
-> +	/*
-> +	 * The M-PHY firmware runs from the internal ROM:
-> +	 *  MPHY_RAM_CONFIG_STATUS.SRAM_BYPASS = 1
-> +	 *  MPHY_RAM_CONFIG_STATUS.SRAM_EXT_LD_DONE = 0
-> +	 */
-> +	writel(SCM_STATUS_PHY_RESET(1) | SCM_STATUS_SRAM_BYPASS(1),
-> +	       ufs->reg_scm + SCM_STATUS);
-> +
-> +	/* MPHY reset configuration: vendor attributes set while PHY in reset. */
-> +	ret = ufshcd_dwc_dme_set_attrs(hba, ufs->soc_data->reset_config,
-> +				       ufs->soc_data->reset_config_count);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(VS_MPHYCFGUPDT, 0), 0x1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Release PHY_RESET. */
-> +	writel(readl(ufs->reg_scm + SCM_STATUS) & ~SCM_STATUS_PHY_RESET_MASK,
-> +	       ufs->reg_scm + SCM_STATUS);
-> +
-> +	/* Wait until SRAM_INIT_DONE = 1. */
-> +	ret = readl_poll_timeout(ufs->reg_scm + SCM_STATUS, reg,
-> +			reg & SCM_STATUS_SRAM_INIT_DONE_MASK,
-> +			CFG_MPHY_INIT_POLL_INTERVAL_US,
-> +			CFG_MPHY_INIT_TIMEOUT_VALUE_US);
-> +	if (ret) {
-> +		dev_err(dev, "UFS MPHY init not done!\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Start of initial calibration */
-> +	ret = ufs_s32n7_phy_initial_calib(hba);
-> +	if (ret) {
-> +		dev_err(dev, "UFS MPHY initial calibration failed!\n");
-> +		return ret;
-> +	}
-> +
-> +	/* End of Gear1 settings */
-> +
-> +	return ufshcd_dme_check_tx_hibern8(hba, hba->lanes_per_direction,
-> +					   HBRN8_POLL_TOUT_MS);
-> +}
-> +
-> +static int ufs_s32n7_link_startup_post_change(struct ufs_hba *hba)
-> +{
-> +	static const struct ufshcd_dme_attr_val cport_setup[] = {
-> +		{ UIC_ARG_MIB_SEL(T_CONNECTIONSTATE, CPORT_0),
-> +				CPORT_IDLE, DME_LOCAL },
-> +		{ UIC_ARG_MIB_SEL(T_CPORTFLAGS, CPORT_0),
-> +				CPORT_DEF_FLAGS, DME_LOCAL },
-> +		{ UIC_ARG_MIB_SEL(T_CONNECTIONSTATE, CPORT_0),
-> +				CPORT_CONNECTED, DME_LOCAL },
-> +	};
-> +	unsigned int data = 0;
-> +	int ret;
-> +
-> +	/* Network layer: set Local DeviceID. */
-> +	ret = ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(N_DEVICEID, 0), 0x0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Set Connection State to IDLE (it allows CPort Attributes to be set). */
-> +	ret = ufshcd_dwc_dme_set_attrs(hba, cport_setup, ARRAY_SIZE(cport_setup));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ufshcd_dme_get(hba, UIC_ARG_MIB_SEL(T_CONNECTIONSTATE, CPORT_0), &data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (data != CPORT_CONNECTED)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ufs_s32n7_link_startup_notify(struct ufs_hba *hba,
-> +			     enum ufs_notify_change_status status)
-> +{
-> +	int err;
-> +
-> +	if (status == PRE_CHANGE) {
-> +		err = ufs_s32n7_link_startup_pre_change(hba);
-> +		if (err) {
-> +			dev_err(hba->dev, "MPHY setup failed (%d).\n", err);
-> +			return err;
-> +		}
-> +		return 0;
-> +	}
-> +
-> +	/* POST_CHANGE */
-> +	err = ufshcd_dwc_link_is_up(hba);
-> +	if (err) {
-> +		dev_err(hba->dev, "Link is not up.\n");
-> +		return err;
-> +	}
-> +
-> +	err = ufs_s32n7_link_startup_post_change(hba);
-> +	if (err)
-> +		dev_err(hba->dev, "Connection setup failed (%d).\n", err);
-> +
-> +	return err;
-> +}
-> +
-> +static int ufs_s32n7_pwr_change_pre_change(struct ufs_hba *hba,
-> +					  const struct ufs_pa_layer_attr *pwr)
-> +{
-> +	/*
-> +	 * RX rate-select override sequence: assert the override, then deassert
-> +	 * the value, then drop the override enable so normal operation resumes.
-> +	 */
-> +	static const struct s32n7_phy_reg pwr_change_phy_regs[] = {
-> +		{ RX_OVRD_IN_1(0), 0xc },
-> +		{ RX_OVRD_IN_1(1), 0xc },
-> +		{ RX_OVRD_IN_1(0), 0x8 },
-> +		{ RX_OVRD_IN_1(1), 0x8 },
-> +		{ RX_OVRD_IN_1(0), 0x0 },
-> +		{ RX_OVRD_IN_1(1), 0x0 },
-> +	};
-> +	u32 rate;
-> +	int ret;
-> +
-> +	/* Rate change only applies to the HS power modes. */
-> +	if (!ufshcd_is_hs_mode(pwr))
-> +		return 0;
-> +
-> +	/*
-> +	 * Select the M-PHY rate (rate series) that matches the mode the core
-> +	 * has negotiated with the device.
-> +	 */
-> +	rate = (pwr->hs_rate == PA_HS_MODE_B) ? CB_RATE_B : CB_RATE_A;
-> +
-> +	ret = ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(CBRATESEL, 0), rate);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ufshcd_dme_set(hba, UIC_ARG_MIB_SEL(VS_MPHYCFGUPDT, 0), 0x1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Apply the RX rate-select override now that the target rate is set. */
-> +	return ufs_s32n7_phy_write_sequence(hba, pwr_change_phy_regs,
-> +					   ARRAY_SIZE(pwr_change_phy_regs));
-> +}
-> +
-> +static int ufs_s32n7_pwr_change_notify(struct ufs_hba *hba,
-> +				      enum ufs_notify_change_status status,
-> +				      struct ufs_pa_layer_attr *pwr)
-> +{
-> +	int err = 0;
-> +
-> +	if (status == PRE_CHANGE) {
-> +		err = ufs_s32n7_pwr_change_pre_change(hba, pwr);
-> +		if (err)
-> +			dev_err(hba->dev, "Power mode pre-change failed (%d).\n",
-> +				err);
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +static int ufs_s32n7_init(struct ufs_hba *hba)
-> +{
-> +	struct device *dev = hba->dev;
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct s32n7_ufs *ufs;
-> +
-> +	ufs = devm_kzalloc(dev, sizeof(*ufs), GFP_KERNEL);
-> +	if (!ufs)
-> +		return -ENOMEM;
-> +
-> +	ufs->hba = hba;
-> +	ufs->soc_data = device_get_match_data(dev);
-> +	if (!ufs->soc_data)
-> +		return -ENODEV;
-> +
-> +	hba->quirks |= UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE;
-> +	hba->spm_lvl = UFS_PM_LVL_5;
-> +
-> +	ufs->reg_scm = devm_platform_ioremap_resource_byname(pdev, "scm");
-> +	if (IS_ERR(ufs->reg_scm))
-> +		return dev_err_probe(dev, PTR_ERR(ufs->reg_scm),
-> +				     "ioremap failed for SCM registers.\n");
-> +
-> +	/*
-> +	 * The core reference clock is not managed by the UFS core (the DT node
-> +	 * has no clock-names/freq-table-hz, so it is never added to
-> +	 * hba->clk_list_head).
-> +	 */
-> +	ufs->core_clk = devm_clk_get_enabled(dev, NULL);
-> +	if (IS_ERR(ufs->core_clk))
-> +		return dev_err_probe(dev, PTR_ERR(ufs->core_clk),
-> +				     "Failed to get and enable core clock.\n");
-> +
-> +	ufshcd_set_variant(hba, ufs);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct ufs_hba_variant_ops ufs_hba_s32n79_vops = {
-> +	.name = "s32n79",
-> +	.init = ufs_s32n7_init,
-> +	.link_startup_notify = ufs_s32n7_link_startup_notify,
-> +	.hce_enable_notify = ufs_s32n7_hce_enable_notify,
-> +	.pwr_change_notify = ufs_s32n7_pwr_change_notify,
-> +};
-> +
-> +/*
-> + * MPHY reset configuration: vendor DME attributes programmed while the PHY is
-> + * held in reset. Programs the reference-clock, RX squelch, RX Rhold and
-> + * CR-parallel control attributes.
-> + */
-> +static const struct ufshcd_dme_attr_val s32n79_reset_config[] = {
-> +	/*
-> +	 * Disable reference clock gating support and override the UniPro and
-> +	 * application reference clock enable inputs to 0.
-> +	 */
-> +	{ UIC_ARG_MIB_SEL(CBREFCLKCTRL2, 0), 0x8A, DME_LOCAL },
-> +	/* RX squelch control. */
-> +	{ UIC_ARG_MIB_SEL(RXSQCONTROL, SELIND_LN0_RX), 0x1, DME_LOCAL },
-> +	{ UIC_ARG_MIB_SEL(RXSQCONTROL, SELIND_LN1_RX), 0x1, DME_LOCAL },
-> +	/* RX Rhold control option. */
-> +	{ UIC_ARG_MIB_SEL(RXRHOLDCTRLOPT, SELIND_LN0_RX), 0x2, DME_LOCAL },
-> +	{ UIC_ARG_MIB_SEL(RXRHOLDCTRLOPT, SELIND_LN1_RX), 0x2, DME_LOCAL },
-> +	/* CR parallel selection. */
-> +	{ UIC_ARG_MIB_SEL(CBCRCTRL, 0), 0x1, DME_LOCAL },
-> +};
-> +
-> +/* Calibrations that must run while the MPHY is disabled. */
-> +static const struct s32n7_phy_reg s32n79_calib_mphy_disabled[] = {
-> +	/* Bypass RX AFE calibration. */
-> +	{ FAST_FLAGS(0), 0x4 },
-> +	{ FAST_FLAGS(1), 0x4 },
-> +};
-> +
-> +/* Calibrations that must run while the MPHY is enabled. */
-> +static const struct s32n7_phy_reg s32n79_calib_mphy_enabled[] = {
-> +	/* Write ATT offset compensation code to internal DAC. */
-> +	{ RX_DAC_CTRL_OVRD(0), 0x1 },
-> +	{ RX_DAC_CTRL_OVRD(1), 0x1 },
-> +	{ RX_DAC_CTRL(0), 0x8E },
-> +	{ RX_DAC_CTRL(1), 0x91 },
-> +	{ RX_DAC_CTRL_SEL(0), 0x1 },
-> +	{ RX_DAC_CTRL_SEL(1), 0x1 },
-> +	{ RX_DAC_CTRL_EN(0), 0x1 },
-> +	{ RX_DAC_CTRL_EN(1), 0x1 },
-> +	{ RX_DAC_CTRL_OVRD(0), 0x0 },
-> +	{ RX_DAC_CTRL_OVRD(1), 0x0 },
-> +	/* Write CTLE offset compensation code to internal DAC. */
-> +	{ RX_DAC_CTRL_OVRD(0), 0x1 },
-> +	{ RX_DAC_CTRL_OVRD(1), 0x1 },
-> +	{ RX_DAC_CTRL(0), 0x71 },
-> +	{ RX_DAC_CTRL(1), 0x7F },
-> +	{ RX_DAC_CTRL_SEL(0), 0x2 },
-> +	{ RX_DAC_CTRL_SEL(1), 0x2 },
-> +	{ RX_DAC_CTRL_EN(0), 0x1 },
-> +	{ RX_DAC_CTRL_EN(1), 0x1 },
-> +	{ RX_DAC_CTRL_OVRD(0), 0x0 },
-> +	{ RX_DAC_CTRL_OVRD(1), 0x0 },
-> +	/* FW Calibration configuration. */
-> +	{ FW_CALIB_CCFG(0), 0x100 },
-> +	{ FW_CALIB_CCFG(1), 0x100 },
-> +};
-> +
-> +static const struct s32n7_soc_data s32n79_soc_data = {
-> +	.vops = &ufs_hba_s32n79_vops,
-> +	.reset_config = s32n79_reset_config,
-> +	.reset_config_count = ARRAY_SIZE(s32n79_reset_config),
-> +	.calib_mphy_disabled = s32n79_calib_mphy_disabled,
-> +	.calib_mphy_disabled_count = ARRAY_SIZE(s32n79_calib_mphy_disabled),
-> +	.calib_mphy_enabled = s32n79_calib_mphy_enabled,
-> +	.calib_mphy_enabled_count = ARRAY_SIZE(s32n79_calib_mphy_enabled),
-> +};
-> +
-> +static const struct of_device_id ufs_s32n7_match[] = {
-> +	{
-> +		.compatible = "nxp,s32n79-ufshc",
-> +		.data = &s32n79_soc_data,
-> +	},
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, ufs_s32n7_match);
-> +
-> +static int ufs_s32n7_probe(struct platform_device *pdev)
-> +{
-> +	const struct s32n7_soc_data *soc_data;
-> +
-> +	soc_data = device_get_match_data(&pdev->dev);
-> +	if (!soc_data)
-> +		return -ENODEV;
-> +
-> +	return ufshcd_pltfrm_init(pdev, soc_data->vops);
-> +}
-> +
-> +static void ufs_s32n7_remove(struct platform_device *pdev)
-> +{
-> +	ufshcd_pltfrm_remove(pdev);
-> +}
-> +
-> +static const struct dev_pm_ops ufs_s32n7_pm_ops = {
-> +	SYSTEM_SLEEP_PM_OPS(ufshcd_system_suspend, ufshcd_system_resume)
-> +	RUNTIME_PM_OPS(ufshcd_runtime_suspend, ufshcd_runtime_resume, NULL)
-> +	.prepare	= pm_ptr(ufshcd_suspend_prepare),
-> +	.complete	= pm_ptr(ufshcd_resume_complete),
-> +};
-> +
-> +static struct platform_driver ufs_s32n7_driver = {
-> +	.probe = ufs_s32n7_probe,
-> +	.remove = ufs_s32n7_remove,
-> +	.driver	= {
-> +		.name	= "ufs-s32n7",
-> +		.pm	= pm_ptr(&ufs_s32n7_pm_ops),
-> +		.of_match_table	= ufs_s32n7_match,
-> +	},
-> +};
-> +
-> +module_platform_driver(ufs_s32n7_driver);
-> +
-> +MODULE_AUTHOR("Larisa Grigore <larisa.grigore@oss.nxp.com>");
-> +MODULE_DESCRIPTION("NXP S32N7 UFS Host Controller platform driver");
-> +MODULE_LICENSE("Dual BSD/GPL");
-> diff --git a/drivers/ufs/host/ufshcd-dwc.h b/drivers/ufs/host/ufshcd-dwc.h
-> index 1abf2b1deac4..d62cd4c085ba 100644
-> --- a/drivers/ufs/host/ufshcd-dwc.h
-> +++ b/drivers/ufs/host/ufshcd-dwc.h
-> @@ -13,6 +13,8 @@
->  #include <ufs/ufshcd.h>
->
->  /* RMMI Attributes */
-> +#define RXSQCONTROL		0x8009
-> +#define RXRHOLDCTRLOPT		0x8013
->  #define CBC10DIRECTCONF2	0x810E
->  #define CBRATESEL		0x8114
->  #define CBCREGADDRLSB		0x8116
-> @@ -27,7 +29,15 @@
->
->  #define CBREFREFCLK_GATE_OVR_EN		BIT(7)
->
-> +/* CBRATESEL: 0 - rate A, 1 - rate B. */
-> +#define CB_RATE_A		0x0
-> +#define CB_RATE_B		0x1
-> +
->  /* M-PHY registers */
-> +#define RX_DAC_CTRL(n)		(0x10AF + ((n) * 0x100))
-> +#define RX_DAC_CTRL_OVRD(n)	(0x10B0 + ((n) * 0x100))
-> +#define RX_DAC_CTRL_SEL(n)	(0x10B1 + ((n) * 0x100))
-> +#define RX_DAC_CTRL_EN(n)	(0x10B8 + ((n) * 0x100))
->  #define RX_OVRD_IN_1(n)		(0x3006 + ((n) * 0x100))
->  #define RX_PCS_OUT(n)		(0x300F + ((n) * 0x100))
->  #define FAST_FLAGS(n)		(0x401C + ((n) * 0x100))
-> diff --git a/drivers/ufs/host/ufshci-dwc.h b/drivers/ufs/host/ufshci-dwc.h
-> index 6c290e272106..c66f33391b65 100644
-> --- a/drivers/ufs/host/ufshci-dwc.h
-> +++ b/drivers/ufs/host/ufshci-dwc.h
-> @@ -12,9 +12,15 @@
->
->  /* DWC HC UFSHCI specific Registers */
->  enum dwc_specific_registers {
-> +	DWC_UFS_REG_BUSTHRTL	= 0xC0,
->  	DWC_UFS_REG_HCLKDIV	= 0xFC,
->  };
->
-> +/* Low-Power Power Gating Enable. */
-> +#define DWC_UFS_BUSTHRTL_LP_PGE		BIT(16)
-> +/* Low Power - AH8 Power Gating Enable. */
-> +#define DWC_UFS_BUSTHRTL_LP_AH8_PGE	BIT(17)
-> +
->  /* Clock Divider Values: Hex equivalent of frequency in MHz */
->  enum clk_div_values {
->  	DWC_UFS_REG_HCLKDIV_DIV_62_5	= 0x3e,
-> --
-> 2.43.0
->
->
+For the sake of completeness, there *might be* a completely different
+approach that would work: modify every virtio driver to make sure they
+allocate buffers from the pre-shared memory area (that is, the coherent
+memory pool). That approach would even avoid the bounce buffering and
+allow for zero-copy transmission. I even started working on that,
+defining virtio helpers to do the allocations instead of using raw
+kmallocs, but then I dropped the idea because of the magnitude of the
+changes required.
+
+> > 
+> > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > ---
+> >  drivers/remoteproc/remoteproc_virtio.c | 182 +++++++++++++++++++++++++++++++--
+> >  include/linux/remoteproc.h             |  14 +++
+> >  2 files changed, 190 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+> > index cfd66d9d1c9e..d21b3b8044df 100644
+> > --- a/drivers/remoteproc/remoteproc_virtio.c
+> > +++ b/drivers/remoteproc/remoteproc_virtio.c
+> > @@ -241,7 +241,14 @@ static void rproc_virtio_reset(struct virtio_device *vdev)
+> >  	dev_dbg(&vdev->dev, "reset !\n");
+> >  }
+> >  
+> > -/* provide the vdev features as retrieved from the firmware */
+> > +/* Provide the vdev features as retrieved from the firmware, plus the following
+> > + * additional ones:
+> > + *   - VIRTIO_F_VERSION_1 that is required by some non-rpmsg virtio devices
+> > + *   - VIRTIO_F_ACCESS_PLATFORM to force usage of the map operations
+> > + */
+> > +#define RPROC_VIRTIO_STATIC_FEATURES \
+> > +	((1ULL << VIRTIO_F_VERSION_1) | (1ULL << VIRTIO_F_ACCESS_PLATFORM))
+> > +
+> >  static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+> >  {
+> >  	struct rproc_vdev *rvdev = vdev_to_rvdev(vdev);
+> > @@ -249,7 +256,7 @@ static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+> >  
+> >  	rsc = (void *)rvdev->rproc->table_ptr + rvdev->rsc_offset;
+> >  
+> > -	return rsc->dfeatures | (1ULL << VIRTIO_F_VERSION_1);
+> > +	return rsc->dfeatures | RPROC_VIRTIO_STATIC_FEATURES;
+> >  }
+> >  
+> >  static void rproc_transport_features(struct virtio_device *vdev)
+> > @@ -275,16 +282,16 @@ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+> >  	/* Give virtio_rproc a chance to accept features. */
+> >  	rproc_transport_features(vdev);
+> >  
+> > -	/* Make sure we don't have any features > 32 bits except VIRTIO_F_VERSION_1 */
+> > +	/* Make sure we don't have any features > 32 bits */
+> >  	if (WARN_ON_ONCE((u32)vdev->features !=
+> > -			 (vdev->features & ~(1ULL << VIRTIO_F_VERSION_1))))
+> > +			 (vdev->features & ~RPROC_VIRTIO_STATIC_FEATURES)))
+> >  		return -1;
+> >  
+> >  	/*
+> >  	 * Remember the finalized features of our vdev, and provide it
+> >  	 * to the remote processor once it is powered on.
+> >  	 */
+> > -	rsc->gfeatures = vdev->features & ~(1ULL << VIRTIO_F_VERSION_1);
+> > +	rsc->gfeatures = vdev->features & ~RPROC_VIRTIO_STATIC_FEATURES;
+> >  
+> >  	return 0;
+> >  }
+> > @@ -337,6 +344,151 @@ static const struct virtio_config_ops rproc_virtio_config_ops = {
+> >  	.set		= rproc_virtio_set,
+> >  };
+> >  
+> > +static inline unsigned int rproc_virtio_bounce_slot(struct device *dma_dev,
+> > +						    dma_addr_t dma_handle)
+> > +{
+> > +	const dma_addr_t dma_base = dma_dev_coherent_base(dma_dev);
+> > +
+> > +	return (dma_handle - dma_base) >> PAGE_SHIFT;
+> > +}
+> > +
+> > +static dma_addr_t rproc_virtio_map_page(union virtio_map map, struct page *page,
+> > +					unsigned long offset, size_t size,
+> > +					enum dma_data_direction dir,
+> > +					unsigned long attrs)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +	struct rproc_vdev *rvdev = dev_get_drvdata(dev);
+> > +	dma_addr_t dma_base = dma_dev_coherent_base(dev);
+> > +	size_t dma_size = dma_dev_coherent_size(dev);
+> > +	phys_addr_t paddr = page_to_phys(page) + offset;
+> > +	void *vaddr = page_to_virt(page) + offset;
+> > +	struct rproc_map_record *record;
+> > +	dma_addr_t map_handle;
+> > +	void *bounce;
+> > +
+> > +	// No need to allocate a bounce buffer if the memory to map is already
+> > +	// part of the device's coherent pool.
+> > +	if (paddr >= dma_base && paddr < (dma_base + dma_size)) {
+> > +		// The allocation details will be recorded also in this case,
+> > +		// indicating that no bounce buffer was allocated.
+> > +		map_handle = (dma_addr_t)paddr;
+> > +		bounce = NULL;
+> > +	} else {
+> > +		// Allocate bounce buffer from device coherent memory
+> > +		bounce = dma_alloc_coherent(dev, size, &map_handle, GFP_KERNEL | __GFP_ZERO);
+> > +		if (!bounce)
+> > +			return DMA_MAPPING_ERROR;
+> > +
+> > +		// Copy data to bounce buffer
+> > +		memcpy(bounce, vaddr, size);
+> > +	}
+> > +
+> > +	// Save bounce details
+> > +	record = &rvdev->map_records[rproc_virtio_bounce_slot(dev, map_handle)];
+> > +
+> > +	record->original = vaddr;
+> > +	record->size = size;
+> > +	record->bounce = bounce;
+> > +
+> > +	return map_handle;
+> > +}
+> > +
+> > +static void rproc_virtio_unmap_page(union virtio_map map, dma_addr_t map_handle,
+> > +				    size_t size, enum dma_data_direction dir,
+> > +				    unsigned long attrs)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +	struct rproc_vdev *rvdev = dev_get_drvdata(dev);
+> > +	unsigned int slot = rproc_virtio_bounce_slot(dev, map_handle);
+> > +	struct rproc_map_record *record = &rvdev->map_records[slot];
+> > +
+> > +	WARN_ON(size != record->size);
+> > +
+> > +	// If a bounce buffer was used, copy data back to original one
+> > +	if (record->bounce) {
+> > +		memcpy(record->original, record->bounce, record->size);
+> > +
+> > +		dma_free_coherent(dev, record->size, record->bounce, map_handle);
+> > +	}
+> > +
+> > +	record->original = NULL;
+> > +	record->size = 0;
+> > +	record->bounce = NULL;
+> > +}
+> > +
+> > +static void rproc_virtio_sync_single_for_cpu(union virtio_map map,
+> > +					     dma_addr_t map_handle,
+> > +					     size_t size,
+> > +					     enum dma_data_direction dir)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +
+> > +	dma_sync_single_range_for_cpu(dev, (map_handle & PAGE_MASK),
+> > +				      offset_in_page(map_handle), size, dir);
+> > +}
+> > +
+> > +static void rproc_virtio_sync_single_for_device(union virtio_map map,
+> > +						dma_addr_t map_handle,
+> > +						size_t size,
+> > +						enum dma_data_direction dir)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +
+> > +	dma_sync_single_range_for_device(dev, (map_handle & PAGE_MASK),
+> > +					 offset_in_page(map_handle), size, dir);
+> > +}
+> > +
+> > +static void *rproc_virtio_alloc(union virtio_map map, size_t size,
+> > +				dma_addr_t *map_handle, gfp_t gfp)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +
+> > +	return dma_alloc_coherent(dev, size, map_handle, gfp);
+> > +}
+> > +
+> > +static void rproc_virtio_free(union virtio_map map, size_t size, void *vaddr,
+> > +			      dma_addr_t map_handle, unsigned long attrs)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +
+> > +	dma_free_coherent(dev, size, vaddr, map_handle);
+> > +}
+> > +
+> > +static bool rproc_virtio_need_sync(union virtio_map map, dma_addr_t map_handle)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +
+> > +	return dma_need_sync(dev, map_handle);
+> > +}
+> > +
+> > +static int rproc_virtio_mapping_error(union virtio_map map, dma_addr_t map_handle)
+> > +{
+> > +	if (unlikely(map_handle == DMA_MAPPING_ERROR))
+> > +		return -ENOMEM;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static inline size_t rproc_virtio_max_mapping_size(union virtio_map map)
+> > +{
+> > +	struct device *dev = map.dma_dev;
+> > +
+> > +	return dma_dev_coherent_size(dev);
+> > +}
+> > +
+> > +static const struct virtio_map_ops rproc_virtio_map_ops = {
+> > +	.map_page = rproc_virtio_map_page,
+> > +	.unmap_page = rproc_virtio_unmap_page,
+> > +	.sync_single_for_cpu = rproc_virtio_sync_single_for_cpu,
+> > +	.sync_single_for_device = rproc_virtio_sync_single_for_device,
+> > +	.alloc = rproc_virtio_alloc,
+> > +	.free = rproc_virtio_free,
+> > +	.need_sync = rproc_virtio_need_sync,
+> > +	.mapping_error = rproc_virtio_mapping_error,
+> > +	.max_mapping_size = rproc_virtio_max_mapping_size,
+> > +};
+> > +
+> >  /*
+> >   * This function is called whenever vdev is released, and is responsible
+> >   * to decrement the remote processor's refcount which was taken when vdev was
+> > @@ -355,6 +507,8 @@ static void rproc_virtio_dev_release(struct device *dev)
+> >  	of_reserved_mem_device_release(&rvdev->pdev->dev);
+> >  	dma_release_coherent_memory(&rvdev->pdev->dev);
+> >  
+> > +	kvfree(rvdev->map_records);
+> > +
+> >  	put_device(&rvdev->pdev->dev);
+> >  }
+> >  
+> > @@ -429,13 +583,29 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
+> >  		of_reserved_mem_device_init_by_idx(dev, np, 0);
+> >  	}
+> >  
+> > +	/* Allocate one tracking record for each page of the device reserved
+> > +	 * memory. Contiguous memory is not required for this array, which can
+> > +	 * also be quite big (depending on the size of the coherent memory), so
+> > +	 * let's use vmalloc for this allocation.
+> > +	 */
+> > +	rvdev->map_records = kvcalloc(dma_dev_coherent_size(dev) >> PAGE_SHIFT,
+> > +				      sizeof(*rvdev->map_records),
+> > +				      GFP_KERNEL);
+> > +	if (!rvdev->map_records) {
+> > +		dev_err(dev, "failed to allocate memory for map records\n");
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> >  	/* Allocate virtio device */
+> >  	vdev = kzalloc_obj(*vdev);
+> > -	if (!vdev)
+> > +	if (!vdev) {
+> > +		kvfree(rvdev->map_records);
+> >  		return -ENOMEM;
+> > +	}
+> >  
+> >  	vdev->id.device = id;
+> >  	vdev->config = &rproc_virtio_config_ops;
+> > +	vdev->map = &rproc_virtio_map_ops;
+> >  	vdev->dev.parent = dev;
+> >  	vdev->dev.release = rproc_virtio_dev_release;
+> >  
+> > diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+> > index c3ba51fe9e54..2ff48b505ac0 100644
+> > --- a/include/linux/remoteproc.h
+> > +++ b/include/linux/remoteproc.h
+> > @@ -339,10 +339,23 @@ struct rproc_vring {
+> >  	struct virtqueue *vq;
+> >  };
+> >  
+> > +/**
+> > + * struct rproc_map_record - remoteproc map record
+> > + * @original:	original virtual address
+> > + * @num: allocation size
+> > + * @bounce: bounce buffer virtual address (NULL if not used)
+> > + */
+> > +struct rproc_map_record {
+> > +	void *original;
+> > +	size_t size;
+> > +	void *bounce;
+> > +};
+> > +
+> >  /**
+> >   * struct rproc_vdev - remoteproc state for a supported virtio device
+> >   * @subdev: handle for registering the vdev as a rproc subdevice
+> >   * @pdev: remoteproc virtio platform device
+> > + * @map_records: array of map records
+> >   * @id: virtio device id (as in virtio_ids.h)
+> >   * @node: list node
+> >   * @rproc: the rproc handle
+> > @@ -358,6 +371,7 @@ struct rproc_vdev {
+> >  	unsigned int id;
+> >  	struct list_head node;
+> >  	struct rproc *rproc;
+> > +	struct rproc_map_record *map_records;
+> >  	u32 rsc_offset;
+> >  	u32 index;
+> >  	unsigned int num_vrings;
+> > 
+> > -- 
+> > 2.55.0
+> >
+
+Regards,
+Francesco
+
