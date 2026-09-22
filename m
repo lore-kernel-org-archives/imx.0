@@ -1,121 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B85F2DC79B;
-	Tue, 22 Sep 2026 07:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C604052C9
+	for <imx@lists.linux.dev>; Tue, 22 Sep 2026 08:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790063283; cv=none; b=Rx6aIKeslgmHrSJUTNwjFwXT9/wx72HXFgjZ3xrS0TV5twN1i0x0GzZKcmFWdvUhZraB2k9AWHg1O/v95vUw1I7DqZbo/+HeFxe5Cr+7DKkvZiOlp9SiwwBPzOY2eHFHYBXd9C4Gqkrfuuykz6UbRr3SutWP4kYrumsWEiG/vWQ=
+	t=1790064494; cv=none; b=ISlxmMdDffYdsi63Nvy8aijUZRRsZn36yvHSnYjHlaX9yauaFqT0f69QldyUQuxrkt5wm07BcviFfumXYKo2mUnMbjvbtnaTThds6gGJA5jihF6NNeVCHHKVBvtjjhWOrNwf5eVzfkeFkqK7cPf/Afhq8si3RqVa3aDl/fPlMuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790063283; c=relaxed/simple;
-	bh=lQsPYsbAPQ5pDzOqviHpFXvEmk6EvwmhbDS5PIp+ylM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nN6/Gc0lrPCIYbwK6k2JVo3ULQEquKgPsKNlWiMwUNWfp3wOQ+nizmDOk+JTbyfTXIcheC30o1Jz0UE/iHAW6DHF4NQr4TuQQOo1Ekw8CaAQHwWqqQXGTVBrQRBODvEfFzQZmNoCs582G8OtYQxWt6hHYLVr7Dd+qYNHNfRFTRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpJwJ95R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790064494; c=relaxed/simple;
+	bh=zcp8tcZsfdsmxUcen5sJupr/nyZnxY5fTXf1NQWKnsw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=BJFoiZgK+LB+pEPFHNyACQVip9IUjrOJjJ4+ZZCH2zuMC0gJBUOcW7nkSu7/MIP7ierYF0j2YjsLnaCiDk6EVCK8mT6PDuge/uD+OwTPI/ugk7czgiE2kTtclh5gkpmSnb8FBxcXyF5jpR64ErO1zQijUDeCaoMnNcfnMXNiMVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FGUyk9MH; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpJwJ95R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264A51F000FF;
-	Tue, 22 Sep 2026 07:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790063277;
-	bh=71BnTTBfDHUjWPKQkT4aD/X5LnAp5WIflUcNL5vzZuA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CpJwJ95RVd8Nj3Kb59r5Cj/9R19uj5XmD8hy40byF3h8SkL0b08jwriUrhhs2H+0p
-	 yIZs4sn81BtCu0dIzkIrK7QeLCd6t0gplU/Koe+LUeCczb+BmD3a221eUzBtPGqaT1
-	 e3Tsg/Y/fzeYGuO4HRYGV/Vpf22R2c7Vcl+gWxBYT2XcuP7Lz1LEKG4oiYpbdkbcG5
-	 zhKzJ8ztiT8A4f4s2Qq2UuRlnFAByGVQu5EQi+RqyW0+D4h07cHv7b+2b41Lle13MH
-	 2SlRML0CaNOoV9l7BVzJkgfxAHhoXuH/splGzdzOm1KKOiTAFlhP0ixfXwuWgQF71v
-	 fngyMkxY/TlLA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 01/12] scsi: ufs: dwc: Return a negative error if the
- link is down
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Larisa Grigore" <larisa.grigore@oss.nxp.com>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, linux-scsi@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260922073009.1449688-2-larisa.grigore@oss.nxp.com>
-References: <20260922073009.1449688-1-larisa.grigore@oss.nxp.com>
- <20260922073009.1449688-2-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 07:47:56 +0000
-Message-Id: <20260922074757.264A51F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FGUyk9MH"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7663D1A0FBC;
+	Tue, 22 Sep 2026 08:08:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 468C860580;
+	Tue, 22 Sep 2026 08:08:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4056C1032925B;
+	Tue, 22 Sep 2026 10:07:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790064477; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zcp8tcZsfdsmxUcen5sJupr/nyZnxY5fTXf1NQWKnsw=;
+	b=FGUyk9MHJzJ0m0z8YAThEo2DOBHDLTsuC25rLZr2qIfJay2Q0I+gVCvTxsv2nvY/dDnJb9
+	IgXAUJLDLFyWtCu0gq4m+hX3dLL+xecsNJ8WJa5QPeWS1Zy6AUoS89OPdFALC8X5Qo/SYt
+	P+8Axb3+Z77DYvypZw+Bo1A5RcA0P5rB/gomubC1yCw1+sui5hmFk5wLv6D9zSGNbH/9I3
+	BDo6gZcaNWSmUaB3MSGwrUc50FkG95rYvnEytrHx7tFcZXjfqgUddfJurME6kZVkekBte7
+	SOpxzk5wN3ckVBb+KRlg6NycfNY3+6MfShb4b9lHPUZw9BG8DyTys0vA4UWL/w==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 22 Sep 2026 10:07:36 +0200
+Message-Id: <DLLOW2ROGP6L.3GTVT76VYPGAU@bootlin.com>
+Subject: Re: [PATCH v3 19/19] drm/bridge: analogix_dp: don't create a
+ panel_bridge
+Cc: "Albert Esteve" <aesteve@redhat.com>, "Anusha Srivatsa"
+ <asrivats@redhat.com>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>,
+ "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-mips@vger.kernel.org>,
+ <linux-rockchip@lists.infradead.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, <asahi@lists.linux.dev>,
+ <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+ <linux-tegra@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-samsung-soc@vger.kernel.org>, "Heiko Stuebner" <heiko@sntech.de>
+To: "Damon Ding" <damon.ding@rock-chips.com>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jessica Zhang"
+ <jesszhan0024@gmail.com>, "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>,
+ "Lucas Stach" <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Paul
+ Cercueil" <paul@crapouillou.net>, "Paul Kocialkowski" <paulk@sys-base.io>,
+ "Linus Walleij" <linusw@kernel.org>, "Inki Dae" <inki.dae@samsung.com>,
+ "Jagan Teki" <jagan@amarulasolutions.com>, "Marek Szyprowski"
+ <m.szyprowski@samsung.com>, "Sean Paul" <sean@poorly.run>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.22.0
+References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
+ <20260916-drm-bridge-every-panel-v3-19-83afb4f1a707@bootlin.com>
+ <975a4d45-9a61-4858-b498-8bc0a1e44746@rock-chips.com>
+ <96882735-091f-49c6-a47b-5da8be711818@rock-chips.com>
+In-Reply-To: <96882735-091f-49c6-a47b-5da8be711818@rock-chips.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] scsi: ufs: dwc: ufshcd_dwc_link_is_up() propagates positive error v=
-alues
+Hello Damon,
+
+On Mon Sep 21, 2026 at 8:34 AM CEST, Damon Ding wrote:
+> On 9/21/2026 11:07 AM, Damon Ding wrote:
+>> Hi Luca,
+>>
+>> On 9/16/2026 9:45 PM, Luca Ceresoli wrote:
+>>> Now a panel_bridge is automatically created for every drm_panel and the
+>>> panel-bridge API is just a deprecated wrapper to access it.
+>>>
+>>> Update and simplify the code by just getting a reference to the
+>>> already-existing bridge using of_drm_get_bridge_by_endpoint().
+>>>
+>>> As of_drm_get_bridge_by_endpoint() returns a refcounted bridge, take ca=
+re
+>>> of putting the bridge reference. This is not easily done in the remove
+>>> path
+>>> due to the different probe paths of the user drivers, so add a devm
+>>> action
+>>> to ensure the reference is put only when it was taken.
+>>>
+>>> Assisted-by: opencode:deepseek-v4-flash-0731
+>>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>>> ---
+>>> =C2=A0 drivers/gpu/drm/bridge/analogix/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 -
+>>> =C2=A0 drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 40 ++++++++=
+++++
+>>> +---------
+>>> =C2=A0 drivers/gpu/drm/exynos/exynos_dp.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 36 +
+>>> +-----------------
+>>> =C2=A0 drivers/gpu/drm/rockchip/analogix_dp-rockchip.c=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 9 -----
+>>> =C2=A0 include/drm/bridge/analogix_dp.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 1 -
+>>> =C2=A0 5 files changed, 25 insertions(+), 62 deletions(-)
+>>>
+>
+> [snip]
+>
+>>> @@ -488,14 +487,6 @@ static void rockchip_dp_remove(struct
+>>> platform_device *pdev)
+>>> =C2=A0 {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct rockchip_dp_device *dp =3D platfo=
+rm_get_drvdata(pdev);
+>
+> The above unused &rockchip_dp_device could be also remved.
+
+Ah, indeed!
+
+I guess I can keep your review tags if applying this patch with only this
+line removed. Correct?
+
+Luca
+
 --
-
-commit bbaf6092d07a94b81e19b83041bbd45bc5f8771f
-Author: Larisa Grigore <larisa.grigore@oss.nxp.com>
-
-scsi: ufs: dwc: Return a negative error if the link is down
-
-This commit updates ufshcd_dwc_link_is_up() to return -ENOLINK when the link
-is down, rather than returning 1. It also propagates any errors returned by
-ufshcd_dme_get() to the caller.
-
-> diff --git a/drivers/ufs/host/ufshcd-dwc.c b/drivers/ufs/host/ufshcd-dwc.c
-> index 21b1cf912dcc6..ccf785fce6cc6 100644
-> --- a/drivers/ufs/host/ufshcd-dwc.c
-> +++ b/drivers/ufs/host/ufshcd-dwc.c
-> @@ -48,20 +48,23 @@ static void ufshcd_dwc_program_clk_div(struct ufs_hba=
- *hba, u32 divider_val)
->   * ufshcd_dwc_link_is_up() - check if link is up.
->   * @hba: private structure pointer
->   *
-> - * Return: 0 on success, non-zero value on failure.
-> + * Return: 0 on success, a negative errno value on failure.
->   */
->  static int ufshcd_dwc_link_is_up(struct ufs_hba *hba)
->  {
->  	int dme_result =3D 0;
-> +	int ret;
-> =20
-> -	ufshcd_dme_get(hba, UIC_ARG_MIB(VS_POWERSTATE), &dme_result);
-> +	ret =3D ufshcd_dme_get(hba, UIC_ARG_MIB(VS_POWERSTATE), &dme_result);
-> +	if (ret)
-> +		return ret;
-
-[Severity: Low]
-Are we propagating a positive error code here?
-
-Looking at ufshcd_wait_for_uic_cmd() in drivers/ufs/core/ufshcd.c, when a D=
-ME
-hardware command fails, it extracts the positive error code from the UIC
-registers:
-
-	ret =3D uic_cmd->argument2 & MASK_UIC_COMMAND_RESULT;
-
-Since this value propagates up through ufshcd_dme_get(), returning it direc=
-tly
-means ufshcd_dwc_link_is_up() can still return positive error codes. Does t=
-his
-violate the updated API contract to return a negative errno value on failur=
-e?
-
-While upstream callers evaluate the result as a truthy value (if (err)) and=
- the
-probe safely fails without crashing, returning positive error codes violates
-standard Linux driver conventions.
-
-> =20
->  	if (dme_result =3D=3D UFSHCD_LINK_IS_UP) {
->  		ufshcd_set_link_active(hba);
->  		return 0;
->  	}
-> =20
-> -	return 1;
-> +	return -ENOLINK;
->  }
-> =20
->  /**
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922073009.1449=
-688-1-larisa.grigore@oss.nxp.com?part=3D1
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
