@@ -1,368 +1,310 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED18C4A68A4;
-	Tue, 22 Sep 2026 20:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108464; cv=pass; b=A1Cp44LcozyXplCK59wSeH1jjx8RlrF5a/JuV3jfNog7VhWOtb8qYxWwVhBdjO6scjoQ5ygq4h3KhzgUfITArF9GMcAotYPg1+ObMQgu/Oddl/pm9msxVibTXgQdePSp1kFvQGkYmIiYNZv+09pyaXWlOI1J8BG0noUdJzO8bdw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108464; c=relaxed/simple;
-	bh=0WVIKbcOsdwoXz5omIyem/bJ7sFg+LvjnvYwgCd83rQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gvsPDPx55AclLh7XrHzdYXTAIW16Y9xYCByOks7Oddr94yLybzymCD0okFRdKPriGOFYOzRFTzuP82B9fFc3U4+6ZLDt/NHqRw7hiV9ZKniV9KsdFQLApT+TXkXSduPodKnBnsebUr2jXANfvP7TIwT06uUH9B4dICAJq2lbDLI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=nQZoE4Jj; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=EpfMWehE; arc=pass smtp.client-ip=185.56.87.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E280A517BB8;
+	Tue, 22 Sep 2026 23:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790118561; cv=none; b=AsvMt16xzPXR8w70Q9x3QGDQ9cDtcExUmeNn5o2hT8wiv3Jnh7CxqDjSoMgh++8wGGZwavYmXVv7Plz5iQ5reutLZ7VjEdqI5el7TZsF8hHbcEIrTWtEYhoy+JQoF25tNw08pWaKhPgdYZ5VrXIL8rxvRjLPli7CzA0sbMtSvug=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790118561; c=relaxed/simple;
+	bh=1TOAMxqkO48nfNBJrJSPoy218qnCyaKxgthTx2KtYZE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qKO3Rgp+eH9BJQoYl5+7JjmgExlW5If5+KZxGtvS0JFxNtlBGH19KYa7r9PgIF7OKkmkaEOFHCj/FC7re0PARSf5qVa/2rvjt4xaYdGocqCiUhfj+e0S12HG9N0tlDhNwd9m/lS+ftTiEASNiGTT9TI+2mvvceEPwNPagr+hi30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n3zp+/j3; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="nQZoE4Jj";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="EpfMWehE"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-gcsk.prod.antispam.mailspamprotection.com; s=arckey; t=1790108432;
-	 b=pcRRbPVKZJIXja2U2gfESEhEielTadnMe5oS4Lsic0ihCNlIWehNBhwTk2wS8Hp7qN9J4ca/0o
-	  YTZ5MkgGW5TkaOdCcQ5QPncYRrWwMfgPZY/WxVT9GkQdbBbkKwJJMTRiRFx/MbcoruOK3vOTKe
-	  1Vem8b8YbcEK7Uw5J2r/RIqTv+KnL8natMtaygHexhjp81cpwKEoeKsPjg/6SQdUSFFNcwG17j
-	  zP0EBc1MLHiPEWlDaMtMEUCINPdmkJEX2ANeEpHkN109TakXv2qupip+aUPSNkn0+vMFK/OXBu
-	  dpRgCpokVfUPQ4HX63q3YMGxSOnBQFpKWmheiXSYOXUjow==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-gcsk.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-gcsk.prod.antispam.mailspamprotection.com; s=arckey; t=1790108432;
-	bh=0WVIKbcOsdwoXz5omIyem/bJ7sFg+LvjnvYwgCd83rQ=;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
-	  From:Date:DKIM-Signature:DKIM-Signature;
-	b=CUxW8E+Ke3UpYppDIqiTR/29o3v9fvpL3HQfdU7oM+23DXslL5JDWT8wAz9vgNM9ptL0V/RLoB
-	  ZDuFqG3p4VyZltVnwy1N4BcS8m3xsSXV7sPq0QAv0fJMCM0bxkKDGMADu1cHCzQ5LPjJ6X+VyG
-	  UlWl232UcvYPQbgCw94HxR/NmbPBV/bEk9zQ/yTIiFf89tTwfBx5yi2fz8rn9EOLdXLNigUCxH
-	  nbv+IEbJujKIizYmJ2zftFZlRg/Bqj5VBJSxlybignVmSc8hw7puOG7rW1R2YiaQLY5EwID5+J
-	  oFeO2HBSQXqeXSdmZaF2hk5dm9R5+qB3m/pvEy0b+QQd0g==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=eKnrLV23HgV/Tt/v6XD8WD1ByL0WlpYBpZXbv5lCaho=; b=nQZoE4Jj37RSYtL8GhXgR9HPqi
-	lTGTfRzdX1vF6gsX+Yk1o2YVs7o4xIokfKEj3/9H+3YOND9yOZ0pOtDV28kgDM8zkktXbzJh/y5ab
-	5HTEklbGItgkq5o0MxLmmE0pCqGKpPBQq90E5HFWu98rMTSl8Fp7ErJJyuHyi9KTRmVg=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-gcsk.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <francesco@valla.it>)
-	id 1x96yR-0000000DOAJ-08iR;
-	Tue, 22 Sep 2026 20:20:20 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=eKnrLV23HgV/Tt/v6XD8WD1ByL0WlpYBpZXbv5lCaho=; b=EpfMWehEBuPf3r4MM/IaAgqfdL
-	vt5NbMHtSb89q+lrYJjXn+wXkZtPuUlklXIMYNDeID8m8kSGbs0RtfVQm5Fvy/JydWJpS6pmLQpUY
-	0UQBM3zyxD3O9XzFYG+D5rR24UPr2Wxf5g2AY0BoWJIIicCE4puC96gknCoAF51ur4Wk=;
-Received: from [79.43.46.244] (port=63142 helo=bywater)
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <francesco@valla.it>)
-	id 1x96xy-00000000NML-2uZM;
-	Tue, 22 Sep 2026 20:19:50 +0000
-Date: Tue, 22 Sep 2026 22:19:48 +0200
-From: Francesco Valla <francesco@valla.it>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 12/12] PoC: arm64: dts: imx93-11x11-frdm: add
- multiple vdevs
-Message-ID: <arLawAw6kgFT2e0W@bywater>
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-12-dac8c5eb4aa9@valla.it>
- <arKiOCGrWAKyc-bc@p14s>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n3zp+/j3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790118560; x=1821654560;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1TOAMxqkO48nfNBJrJSPoy218qnCyaKxgthTx2KtYZE=;
+  b=n3zp+/j3fyKvVbWJZ7v/5s868VoU9J5VplcYL3I5HjBdJ7Ypp3gPH7vj
+   r6G7/Zsjos7ttVuftx1jokUOzWkUkE3M4p6S8+D7LE4o1Ptcnkf7Au8YS
+   jx2IcVvh3QoR5iaRawgXsZe7mu0bVM/voTmkL0rHETgaBziNJ5WIftnsI
+   JEfqw5SXx2BITEJRMBa2uSwmtMlcoRx2y/KL4lfDGU9v4MkbphcGp/jMP
+   8a9Ow55CgTLadj+4nXXdrCJK+axzfq8XQulRrynALJcuGDF5WELfS/ka8
+   zXsZ7hh//MPGkYw3j4JStYnQrl+pB//UJSlMJnanCFcjNEspp8TT0dYZm
+   A==;
+X-CSE-ConnectionGUID: S1sj1qUwRyesV3TY2aCZxA==
+X-CSE-MsgGUID: q5M/5bqJTgei0p99N2uNRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="89686416"
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="89686416"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 16:09:19 -0700
+X-CSE-ConnectionGUID: 4U5aPbVoQqmx97Dc4s1tUQ==
+X-CSE-MsgGUID: zzMGiacpS9mQiph3S0ldXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="4634624"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.110.50]) ([10.125.110.50])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 16:09:18 -0700
+Message-ID: <b40fa0d7-fbd0-4ee8-b99c-781d08c18838@intel.com>
+Date: Tue, 22 Sep 2026 16:09:16 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arKiOCGrWAKyc-bc@p14s>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 9c99f88c77eeafcb81f84f34bee45c22
-X-AntiAbuse: ID - 9c99f88c77eeafcb81f84f34bee45c22
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1x96yR-0000000DOAJ-08iR-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-gcsk.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dmaengine: change dmaengine_get_unmap_data() first
+ arg to dma_chan
+To: Frank.Li@oss.nxp.com, Dan Williams <djbw@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
+ Frank Li <Frank.Li@kernel.org>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Eric Biggers
+ <ebiggers@kernel.org>, "open list:CRYPTO API"
+ <linux-crypto@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
+ <dmaengine@vger.kernel.org>, "open list:NTB DRIVER CORE"
+ <ntb@lists.linux.dev>
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+References: <20260922184527.2414043-1-Frank.Li@oss.nxp.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260922184527.2414043-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 09:43:52AM -0600, Mathieu Poirier wrote:
-> On Wed, Sep 16, 2026 at 11:10:57PM +0200, Francesco Valla wrote:
-> > Add rings for multiple vdevs, as well as the required virtio nodes for
-> > I2C, SPI and GPIO functionalities. On top of that, add example
-> > peripherals using all of them.
-> > 
-> > NOTE: this is a Proof-Of-Concept, not meant to be integrated!
-> > 
-> > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 128 +++++++++++++++++++--
-> >  1 file changed, 119 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> > index bd14ba28690c..dfa3b122ac5f 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> > @@ -53,6 +53,32 @@ button-k3 {
-> >  		};
-> >  	};
-> >  
-> > +	gpio-keys-virtio {
-> > +		compatible = "gpio-keys-polled";
-> > +		poll-interval = <100>;
-> > +
-> > +		button-v1 {
-> > +			label = "Button V1";
-> > +			linux,code = <BTN_3>;
-> > +			gpios = <&v_gpio 23 GPIO_ACTIVE_LOW>;
-> > +		};
-> > +
-> > +		button-v2 {
-> > +			label = "Button V2";
-> > +			linux,code = <BTN_4>;
-> > +			gpios = <&v_gpio 24 GPIO_ACTIVE_LOW>;
-> > +		};
-> > +	};
-> > +
-> > +	leds {
-> > +		compatible = "gpio-leds";
-> > +
-> > +		led {
-> > +			gpios = <&v_gpio 18 GPIO_ACTIVE_HIGH>;
-> > +			label = "LED V";
-> > +		};
-> > +	};
-> > +
-> >  	reg_usdhc2_vmmc: regulator-usdhc2 {
-> >  		compatible = "regulator-fixed";
-> >  		off-on-delay-us = <12000>;
-> > @@ -89,11 +115,6 @@ linux,cma {
-> >  			linux,cma-default;
-> >  		};
-> >  
-> > -		rsc_table: rsc-table@2021e000 {
-> > -			reg = <0 0x2021e000 0 0x1000>;
-> > -			no-map;
-> > -		};
-> > -
+
+
+On 9/22/26 11:45 AM, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> Why is the resource table removed?  There is no mention of that in the
-> changelog...
->
-
-You are obviously right, the commit message here should have been a
-poem, not a form of hermetic poetry. My bad.
-
-The resource table here is causing problems with how Zephyr is managing
-it at its side. If it is kept in a separate memory location and copied
-there at runtime by the remote processor firmware during its startup
-(which is the current Zephyr behavior), then there might be a race
-condition when the aforesaid firmware is loaded and started by Linux
-*and* at least one of the vdev drivers (here including rpmsg_bus) is
-built-in. In this case, the copy of the resource table done by the
-remote processor might - depending on the async execution of the two
-processors - overwrite the status bit set by the Linux driver:
-
-  Firmware load and startup (echo start > /sys/.../state)
-                           |
-			   |
-			   V
-  The vdev devices get registered (by register_virtio_device())
-                           |
-			   |
-			   V
-  If a driver is built-in, it probes and sets the vdev status
-  inside the resource table @rsc-table.
-                           .
-			   . (in the mean time)
-			   .
-  The remote processor starts up and copies the resource table from its
-  dedicated section to @rsc-table.
-
-Depending on the system load and the complexity of the firmware, the two
-operations can happen in whatever sequence, causing a race condition.
-
-This is somewhat masked if vdev drivers are built as modules, as the
-devices does not probe immediately but only after the modules have been
-loaded, giving the remote processor time to start. Note that this is not
-a solution! but a workaround.
-
-If the rsc-table node is not there, the startup logic falls back to the
-classic rproc_elf_find_loaded_rsc_table().
-
-This is specific to i.MX platforms [1] and is probably not normally an
-issue because - as stated in [1] - the offical SDK from NXP seems not
-to check the status inside the resource table.
-
-> >  		vdev0vring0: vdev0vring0@a4000000 {
-> >  			reg = <0 0xa4000000 0 0x8000>;
-> >  			no-map;
-> > @@ -105,12 +126,42 @@ vdev0vring1: vdev0vring1@a4008000 {
-> >  		};
-> >  
-> >  		vdev1vring0: vdev1vring0@a4010000 {
-> > -			reg = <0 0xa4010000 0 0x8000>;
-> > +			reg = <0 0xa4010000 0 0x1000>;
-> > +			no-map;
-> > +		};
-> > +
-> > +		vdev2vring0: vdev2vring0@a4011000 {
-> > +			reg = <0 0xa4011000 0 0x2000>;
-> > +			no-map;
-> > +		};
-> > +
-> > +		vdev2vring1: vdev2vring1@a4013000 {
-> > +			reg = <0 0xa4013000 0 0x2000>;
-> > +			no-map;
-> > +		};
-> > +
-> > +		vdev3vring0: vdev3vring0@a4015000 {
-> > +			reg = <0 0xa4015000 0 0x2000>;
-> > +			no-map;
-> > +		};
-> > +
-> > +		vdev4vring0: vdev4vring0@a4017000 {
-> > +			reg = <0 0xa4017000 0 0x4000>;
-> > +			no-map;
-> > +		};
-> > +
-> > +		vdev5vring0: vdev5vring0@a401B000 {
-> > +			reg = <0 0xa401B000 0 0x2000>;
-> > +			no-map;
-> > +		};
-> > +
-> > +		vdev5vring1: vdev5vring1@a401D000 {
-> > +			reg = <0 0xa401D000 0 0x2000>;
-> >  			no-map;
-> >  		};
-> >  
-> > -		vdev1vring1: vdev1vring1@a4018000 {
-> > -			reg = <0 0xa4018000 0 0x8000>;
-> > +		vdev5vring2: vdev5vring2@a401F000 {
-> > +			reg = <0 0xa401F000 0 0x1000>;
-> >  			no-map;
-> >  		};
-> >  
-> > @@ -149,8 +200,67 @@ &cm33 {
-> >  		 <&mu1 3 1>;
-> >  	mbox-names = "tx", "rx", "rxdb";
-> >  	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-> > -			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-> > +			<&vdev1vring0>, <&vdev2vring0>, <&vdev2vring1>,
-> > +			<&vdev3vring0>, <&vdev4vring0>,
-> > +			<&vdev5vring0>, <&vdev5vring1>, <&vdev5vring2>;
+> Replace the struct device *dev argument with struct dma_chan *chan so
+> callers do not need to reach into the dma_device internals to obtain
+> the device pointer.  The implementation now derives the device via
+> dmaengine_get_dma_device(chan), which correctly handles the per-channel
+> IOMMU mapping case.
 > 
-> Who is using vdev5 vrings?  
+> Prepare to make dma_device private and make dmaengine API consistent.
 > 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Another thing that should have been in the commit message. Vdevs are
-defined, in the Zephyr application I am using as PoC, as follows:
-
- - vdev0: RPMSG (tx and rx vrings)
- - vdev1: entropy (single request vring)
- - vdev2: GPIO (request and event vrings)
- - vdev3: I2C (single request vring)
- - vdev4: SPI (single request vring)
- - vdev5: CAN (tx, rx and control vrings)
-
-vdev5 is not represented inside the devicetree because the can-virtio
-driver registers a single CAN network device and has thus no need for
-such representation.
-
-> >  	status = "okay";
-> > +
-> > +	virtio {
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
-> > +
-> > +		vdev@2 {
-> > +			reg = <2>;
-> > +
-> > +			v_gpio: gpio {
-> > +				compatible = "virtio,device29";
-> > +				gpio-controller;
-> > +				#gpio-cells = <2>;
-> > +				interrupt-controller;
-> > +				#interrupt-cells = <2>;
-> > +			};
-> > +		};
-> > +
-> > +		vdev@3 {
-> > +			reg = <3>;
-> > +
-> > +			i2c {
-> > +				compatible = "virtio,device22";
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +
-> > +				eeprom@50 {
-> > +					compatible = "atmel,24c1025";
-> > +					reg = <0x50>;
-> > +				};
-> > +			};
-> > +		};
-> > +
-> > +		vdev@4 {
-> > +			reg = <4>;
-> > +
-> > +			spi {
-> > +				compatible = "virtio,device2d";
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +
-> > +				sram@0 {
-> > +					compatible = "microchip,mchp23k256";
-> > +					reg = <0>;
-> > +					spi-max-frequency = <20000000>;
-> > +				};
-> > +
-> > +				lcd@1 {
-> > +					compatible = "adafruit,yx240qv29", "ilitek,ili9341";
-> > +					reg = <1>;
-> > +					spi-max-frequency = <10000000>;
-> > +					dc-gpios = <&v_gpio 21 GPIO_ACTIVE_HIGH>;
-> > +					reset-gpios = <&v_gpio 20 GPIO_ACTIVE_HIGH>;
-> > +					rotation = <90>;
-> > +				};
-> > +			};
-> > +		};
-> > +	};
-> >  };
-> >  
-> >  &eqos {
-> > 
-> > -- 
-> > 2.55.0
-> >
-
-Thank you!
-
-Regards,
-Francesco
+For the NTB bits:
+Acked-by: Dave Jiang <dave.jiang@intel.com>
 
 
-[1] https://lore.kernel.org/all/20240719-imx_rproc-v2-2-10d0268c7eb1@nxp.com/
+> ---
+>  crypto/async_tx/async_memcpy.c      | 4 ++--
+>  crypto/async_tx/async_pq.c          | 4 ++--
+>  crypto/async_tx/async_raid6_recov.c | 4 ++--
+>  crypto/async_tx/async_xor.c         | 8 ++++----
+
+Maybe one day Dan's wishes will become true and someone will finally deprecate async_tx....
+
+DJ>  drivers/dma/dmaengine.c             | 4 ++--
+>  drivers/dma/dmatest.c               | 2 +-
+>  drivers/dma/mv_xor.c                | 4 ++--
+>  drivers/ntb/ntb_transport.c         | 4 ++--
+>  drivers/ntb/test/ntb_perf.c         | 2 +-
+>  include/linux/dmaengine.h           | 4 ++--
+>  10 files changed, 20 insertions(+), 20 deletions(-)
+> 
+> diff --git a/crypto/async_tx/async_memcpy.c b/crypto/async_tx/async_memcpy.c
+> index 323152c89b3a1..d03e9a9bc1e2d 100644
+> --- a/crypto/async_tx/async_memcpy.c
+> +++ b/crypto/async_tx/async_memcpy.c
+> @@ -39,8 +39,8 @@ async_memcpy(struct page *dest, struct page *src, unsigned int dest_offset,
+>  	struct dma_async_tx_descriptor *tx = NULL;
+>  	struct dmaengine_unmap_data *unmap = NULL;
+>  
+> -	if (device)
+> -		unmap = dmaengine_get_unmap_data(device->dev, 2, GFP_NOWAIT);
+> +	if (chan)
+> +		unmap = dmaengine_get_unmap_data(chan, 2, GFP_NOWAIT);
+>  
+>  	if (unmap && dmaengine_is_copy_aligned(chan, src_offset, dest_offset, len)) {
+>  		unsigned long dma_prep_flags = 0;
+> diff --git a/crypto/async_tx/async_pq.c b/crypto/async_tx/async_pq.c
+> index fcc8d9ebc0fec..6a31271852cd4 100644
+> --- a/crypto/async_tx/async_pq.c
+> +++ b/crypto/async_tx/async_pq.c
+> @@ -188,7 +188,7 @@ async_gen_syndrome(struct page **blocks, unsigned int *offsets, int disks,
+>  	BUG_ON(disks > MAX_DISKS || !(P(blocks, disks) || Q(blocks, disks)));
+>  
+>  	if (device)
+> -		unmap = dmaengine_get_unmap_data(device->dev, disks, GFP_NOWAIT);
+> +		unmap = dmaengine_get_unmap_data(chan, disks, GFP_NOWAIT);
+>  
+>  	/* XORing P/Q is only implemented in software */
+>  	if (unmap && !(submit->flags & ASYNC_TX_PQ_XOR_DST) &&
+> @@ -310,7 +310,7 @@ async_syndrome_val(struct page **blocks, unsigned int *offsets, int disks,
+>  	BUG_ON(disks < 4 || disks > MAX_DISKS);
+>  
+>  	if (device)
+> -		unmap = dmaengine_get_unmap_data(device->dev, disks, GFP_NOWAIT);
+> +		unmap = dmaengine_get_unmap_data(chan, disks, GFP_NOWAIT);
+>  
+>  	if (unmap && disks <= dma_maxpq(device, 0) &&
+>  	    is_dma_pq_aligned_offs(chan, offsets, disks, len)) {
+> diff --git a/crypto/async_tx/async_raid6_recov.c b/crypto/async_tx/async_raid6_recov.c
+> index 27909afda694a..5055531145bd2 100644
+> --- a/crypto/async_tx/async_raid6_recov.c
+> +++ b/crypto/async_tx/async_raid6_recov.c
+> @@ -29,7 +29,7 @@ async_sum_product(struct page *dest, unsigned int d_off,
+>  	u8 *a, *b, *c;
+>  
+>  	if (dma)
+> -		unmap = dmaengine_get_unmap_data(dma->dev, 3, GFP_NOWAIT);
+> +		unmap = dmaengine_get_unmap_data(chan, 3, GFP_NOWAIT);
+>  
+>  	if (unmap) {
+>  		struct device *dev = dma->dev;
+> @@ -97,7 +97,7 @@ async_mult(struct page *dest, unsigned int d_off, struct page *src,
+>  	u8 *d, *s;
+>  
+>  	if (dma)
+> -		unmap = dmaengine_get_unmap_data(dma->dev, 3, GFP_NOWAIT);
+> +		unmap = dmaengine_get_unmap_data(chan, 3, GFP_NOWAIT);
+>  
+>  	if (unmap) {
+>  		dma_addr_t dma_dest[2];
+> diff --git a/crypto/async_tx/async_xor.c b/crypto/async_tx/async_xor.c
+> index 4ed9d3196fc46..9ed331d9b8e64 100644
+> --- a/crypto/async_tx/async_xor.c
+> +++ b/crypto/async_tx/async_xor.c
+> @@ -178,8 +178,8 @@ async_xor_offs(struct page *dest, unsigned int offset,
+>  
+>  	BUG_ON(src_cnt <= 1);
+>  
+> -	if (device)
+> -		unmap = dmaengine_get_unmap_data(device->dev, src_cnt+1, GFP_NOWAIT);
+> +	if (chan)
+> +		unmap = dmaengine_get_unmap_data(chan, src_cnt + 1, GFP_NOWAIT);
+>  
+>  	if (unmap && dma_xor_aligned_offsets(chan, offset, src_offs,
+>  					     src_cnt, len)) {
+> @@ -310,8 +310,8 @@ async_xor_val_offs(struct page *dest, unsigned int offset,
+>  
+>  	BUG_ON(src_cnt <= 1);
+>  
+> -	if (device)
+> -		unmap = dmaengine_get_unmap_data(device->dev, src_cnt, GFP_NOWAIT);
+> +	if (chan)
+> +		unmap = dmaengine_get_unmap_data(chan, src_cnt, GFP_NOWAIT);
+>  
+>  	if (unmap && src_cnt <= device->max_xor &&
+>  	    dma_xor_aligned_offsets(chan, offset, src_offs, src_cnt, len)) {
+> diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> index cc1c0a7c9f33d..4585ebcd2e8cd 100644
+> --- a/drivers/dma/dmaengine.c
+> +++ b/drivers/dma/dmaengine.c
+> @@ -1474,7 +1474,7 @@ static int __init dmaengine_init_unmap_pool(void)
+>  }
+>  
+>  struct dmaengine_unmap_data *
+> -dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags)
+> +dmaengine_get_unmap_data(struct dma_chan *chan, int nr, gfp_t flags)
+>  {
+>  	struct dmaengine_unmap_data *unmap;
+>  
+> @@ -1484,7 +1484,7 @@ dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags)
+>  
+>  	memset(unmap, 0, sizeof(*unmap));
+>  	kref_init(&unmap->kref);
+> -	unmap->dev = dev;
+> +	unmap->dev = dmaengine_get_dma_device(chan);
+>  	unmap->map_cnt = nr;
+>  
+>  	return unmap;
+> diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
+> index 2ae3469397f37..043bb065dd68a 100644
+> --- a/drivers/dma/dmatest.c
+> +++ b/drivers/dma/dmatest.c
+> @@ -748,7 +748,7 @@ static int dmatest_func(void *data)
+>  			filltime = ktime_add(filltime, diff);
+>  		}
+>  
+> -		um = dmaengine_get_unmap_data(dma_dev, src->cnt + dst->cnt,
+> +		um = dmaengine_get_unmap_data(chan, src->cnt + dst->cnt,
+>  					      GFP_KERNEL);
+>  		if (!um) {
+>  			failed_tests++;
+> diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+> index c4e0dce3ca64e..dec01b6264d7a 100644
+> --- a/drivers/dma/mv_xor.c
+> +++ b/drivers/dma/mv_xor.c
+> @@ -794,7 +794,7 @@ static int mv_chan_memcpy_self_test(struct mv_xor_chan *mv_chan)
+>  		goto out;
+>  	}
+>  
+> -	unmap = dmaengine_get_unmap_data(dma_chan->device->dev, 2, GFP_KERNEL);
+> +	unmap = dmaengine_get_unmap_data(dma_chan, 2, GFP_KERNEL);
+>  	if (!unmap) {
+>  		err = -ENOMEM;
+>  		goto free_resources;
+> @@ -927,7 +927,7 @@ mv_chan_xor_self_test(struct mv_xor_chan *mv_chan)
+>  		goto out;
+>  	}
+>  
+> -	unmap = dmaengine_get_unmap_data(dma_chan->device->dev, src_count + 1,
+> +	unmap = dmaengine_get_unmap_data(dma_chan, src_count + 1,
+>  					 GFP_KERNEL);
+>  	if (!unmap) {
+>  		err = -ENOMEM;
+> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> index b8f8b333b89eb..e9e1506df71d6 100644
+> --- a/drivers/ntb/ntb_transport.c
+> +++ b/drivers/ntb/ntb_transport.c
+> @@ -1532,7 +1532,7 @@ static int ntb_async_rx_submit(struct ntb_queue_entry *entry, void *offset)
+>  	if (!dmaengine_is_copy_aligned(chan, pay_off, buff_off, len))
+>  		goto err;
+>  
+> -	unmap = dmaengine_get_unmap_data(dma_dev, 2, GFP_NOWAIT);
+> +	unmap = dmaengine_get_unmap_data(chan, 2, GFP_NOWAIT);
+>  	if (!unmap)
+>  		goto err;
+>  
+> @@ -1871,7 +1871,7 @@ static int ntb_async_tx_submit(struct ntb_transport_qp *qp,
+>  	if (!dmaengine_is_copy_aligned(chan, buff_off, dest_off, len))
+>  		goto err;
+>  
+> -	unmap = dmaengine_get_unmap_data(dma_dev, 1, GFP_NOWAIT);
+> +	unmap = dmaengine_get_unmap_data(chan, 1, GFP_NOWAIT);
+>  	if (!unmap)
+>  		goto err;
+>  
+> diff --git a/drivers/ntb/test/ntb_perf.c b/drivers/ntb/test/ntb_perf.c
+> index 774e643c9f4c6..1cb991e2f0cf7 100644
+> --- a/drivers/ntb/test/ntb_perf.c
+> +++ b/drivers/ntb/test/ntb_perf.c
+> @@ -809,7 +809,7 @@ static int perf_copy_chunk(struct perf_thread *pthr,
+>  	dst_vaddr = dst;
+>  	dst_dma_addr = peer->dma_dst_addr + (dst_vaddr - vbase);
+>  
+> -	unmap = dmaengine_get_unmap_data(dma_dev, 1, GFP_NOWAIT);
+> +	unmap = dmaengine_get_unmap_data(pthr->dma_chan, 1, GFP_NOWAIT);
+>  	if (!unmap)
+>  		return -ENOMEM;
+>  
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index fc661e76de84d..c8ecf80288f13 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -656,7 +656,7 @@ static inline void dma_set_unmap(struct dma_async_tx_descriptor *tx,
+>  }
+>  
+>  struct dmaengine_unmap_data *
+> -dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags);
+> +dmaengine_get_unmap_data(struct dma_chan *chan, int nr, gfp_t flags);
+>  void dmaengine_unmap_put(struct dmaengine_unmap_data *unmap);
+>  #else
+>  static inline void dma_set_unmap(struct dma_async_tx_descriptor *tx,
+> @@ -664,7 +664,7 @@ static inline void dma_set_unmap(struct dma_async_tx_descriptor *tx,
+>  {
+>  }
+>  static inline struct dmaengine_unmap_data *
+> -dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags)
+> +dmaengine_get_unmap_data(struct dma_chan *chan, int nr, gfp_t flags)
+>  {
+>  	return NULL;
+>  }
+
