@@ -1,257 +1,250 @@
-Received: from mail-ed2-f41.google.com (mail-ed2-f41.google.com [74.125.228.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011049.outbound.protection.outlook.com [52.101.70.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C4B542EE8
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052A1535FB0
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 15:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790175413; cv=pass; b=IDhIIyDF2rt9O89I0HUqzUrnM87ydVLhOxPx6LIOuTt6ZDhjIHf0HA3fpEpJNlEyRtbikhas6YO+Oy6/wyxY1XV22eZxvSrcFS9lBrxU7byCDXxx+vj2YuileaVJLWNoacv96ezdaGFlF+wzU2d3CUgXUk3peq2E3OY8dpZk5/E=
+	t=1790176031; cv=fail; b=GtngIhFni0YXSyNbc8Q0grxlQaCtTtgtE3ebfa7eVxUNJ0tBVG10kCLX8QTU1qBRO0Dzh/OIwFkD9VpxhWHXj6Pz7DRikSkQWY00pE22bKl1ckVe7DVnOCoJJcEyuRBwSAC7PJAqtz9DePZPtShEDXm26p3RLyn3kyNRGcUuRpk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790175413; c=relaxed/simple;
-	bh=UyMSLBvW9tmyx5OoI5WsB7xjvglDq4V9P7yAbnK27AA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ubq6UG07d2MrHlJbZ7I2FP2wB2krG2Y5jBCjneqHqx+zpGroFwc2/aEaYxgHwMvr9QkKOot8gLmdytHte3kC7NRtafhRk2eWC/hdxRABW6zgCSXV7zvbOqWaNuNhLjJ90AYgpnXoXkaAzq1UqCktJ72LHtcJnkVQCe4c5TpACGg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oyHvfVm0; arc=pass smtp.client-ip=74.125.228.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1790176031; c=relaxed/simple;
+	bh=vuDByPh6lMGcdhCvFeJG1ZV0B8sY7pMTrMhL/Q2qAc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pmvuycBmisWDZB4QUDcIlEAUz4PG/iQ3EGY7pYnt7IODjfWTRtTjrs/j0BAdEMmueDE1CPZm2h5mluVGyIORuLmYfxWJlyTdQpsQFqGsaI9wD3e/ORU0VtxM2hbDnADDsIbVa/orUE9m2Ly1eSbVg8NO2HIhoHPHa2rFU3T2pig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=whkjFuls; arc=fail smtp.client-ip=52.101.70.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oyHvfVm0"
-Received: by mail-ed2-f41.google.com with SMTP id 4fb4d7f45d1cf-6a99391ffb2so1875543a12.0
-        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:56:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790175410; cv=none;
-        d=google.com; s=arc-20260327;
-        b=F3LZDuiKf77yk1Ehj/v2sS6Ru6JQWrs406OVhxFsWQvUr2pG7e3KMDuqJ9z9JLFXOc
-         9c80jZyuZ1UCFlVuNIvMxtT63lELvTo8aNFRiG/ydn9C247pWM54I36k9OTSvXCXGQoa
-         IhQIqabAQt8vEg5bHhkalafmgM/ajohaApt85419qJLiQTfKL8pX6VsDURi8dC3fn16o
-         qRkGIuBD09LPjhOrgg2O8MwPhHHiq3sUSDRwipNdvIIYd+1Vo39aO+37dfhCyGTJZ9/g
-         4IwTn1oLS8DPu3cnqo+r2UR9v0XfLEWj7HAWl1mddH6I2QutB5x7EU3SWssVAwjE8/a7
-         f6vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=80Q/UmLn++8SJbn/lU8/3FTYgpvMd1cRbPxOu7j8FDU=;
-        fh=9SwSdYihNkHpH0KdkscdlYN/2dF/LDmqdw9O9131u4Y=;
-        b=c/st/FjKCoSreqkrAIT962WSdn5yNSKZOfwGZ3+tsTYRa6sT2L3HVxPpdEU5qeMPy/
-         akQnfJG2NMZBQZbfrWy1p0QRrjlwRYa0jD0XwNr63V+Doob2gsFPUz46LHvJGlEbm4Ca
-         iQT2FhtGEhdSusHrRWnF7SQaCsMsB5y7YWfFV/kyEj8MhCBN0IGXiqrWz0NOthhYFEPS
-         X8gaklu+AnK1Y9Z671KgQMbyiVMeaQ6qbRFXr0O12ic2yfJqTTyigNYU4aZIUO4uM7wb
-         GV3sxlNNm99KRKWFCEdREA71YqYqlpSkpiH3QkTyaKHUUypax/kxZU9Rr6xINJlDWRw5
-         P1Iw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1790175410; x=1790780210; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=80Q/UmLn++8SJbn/lU8/3FTYgpvMd1cRbPxOu7j8FDU=;
-        b=oyHvfVm07uVv6wAvcM3rC8TuEXaCrxYgYS59IpqZOpwyRDUa0tp5JK50mzUuSpiEzV
-         X+mTdKH8nKMvYvJHPGJtpiYbKpTcCMu7YMpHkPrNACNC9RF9UQgLmXoHbOqsKd9BQlK6
-         7/AyW9GSIAawe1FaNfSkuXMpb3JV9TbaEW06aCABr/BetDCcBg5x3xndQ01BQmD8u/W1
-         BHc8jRtJE8XStDIZ4sMj8U9ra3+njoOeDxx9XGhxJendEyP4Rd5SfdaDDmwOTawwNUmY
-         7pIeH7Shq1tZYDAeBSmiJTTlkaFEDCAipuaST3/TpYT2cPl8UkzBkfvodNZRtnqGpcAZ
-         APZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790175410; x=1790780210;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=80Q/UmLn++8SJbn/lU8/3FTYgpvMd1cRbPxOu7j8FDU=;
-        b=ho/Zg6Wfi5Sv6yZtAaumT3Z8q5MlOH2sv/IJs4FXEj/tirfGO9SCtvIff7rRdwhUEC
-         YsVLYmieAfHfsYwGxcu+pVjSo53C1YZHARhMzOmgWSfekf8jJ3uzpvF43HVhDmgPTOT5
-         Xztyd8ErSR96bM8Sf88zkRQ4atNDqHPL6Vsa/h8cuVkRguf8bbKUaGLSlws46AdCYgW9
-         rhggesxv119Lx9MG4UNHzfhY1UL9fysdnsGcrLsnpseM4YOfX+8fS/zzFXSn0FZcZpfr
-         yw9Eihuz/7vZrK/8HjWUhjXzVtaIqmTqfJJKhvQ2joRfFtBqHOsTQpLhGodAZ5QDxpVo
-         +LQg==
-X-Forwarded-Encrypted: i=1; AKwUvBzT+0ydPuD6nyoAGQD/D07BhxWqAYP0cA7hoKh2qq79ZqU4GfavwkAP6DH9P7gPee3SUNw=@lists.linux.dev
-X-Gm-Message-State: AFuF++ntotdeyy1oKMnktpGtOElW5KOy3Ddch9P+EHzd6DbN/gQPcUNQ
-	U1AI99KATWwvxw41x9F3Uql3RgbO8ANUmna6NGYaBWDColPslgEMC/v+2M5hKcZLgx20lsTgcfn
-	Yr9/JrXzvYBlh5cCdknNUSG3/gejzZ9nZW/FLdNcXCg==
-X-Gm-Gg: AYBFou2YL6o23JTw3HAqNxBxB+kn/06QNvsC+xkhqGEvrC/PAQNA6Qw7XmCgdJMOQhA
-	XIZzjTZ5SLEtomXm4nsEW1xruDyolK92lEmvwaB1O/yLOhyshFctye9Fku7y7SrAw8gSUsFBxtD
-	lsWyW0rAuETLcr9QTpeIOwcEfQsJb4SRPbGTp55xski6I+0kfWV+4ad+eIQYNFa3PGxHY0ya/3d
-	ogfn4mrDRJn0Tr1n4ftGZ9qGSR6aG8O5DqqPfduAvCKionrKBlsczPQH4OUx/t6cvPBBJcuARy6
-	YdcSqxZnJE7KsOJznYynk4od5c+JEHDOeSzuWzn+D/y1W8uUOie/av9pnLd55uJn6Ma4IaBhCyu
-	2sBKQuGRo8jw=
-X-Received: by 2002:a05:6402:5514:b0:6aa:129a:1f70 with SMTP id
- 4fb4d7f45d1cf-6aab3b647e8mr2420276a12.43.1790175409790; Wed, 23 Sep 2026
- 07:56:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="whkjFuls"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CzRQ0GSrwnu++yiNyy7N9sGI8KtvwJNN9l9t69VvXsE6jbwYAyzDkBklLApr0a8shNTGml6c+pedK0pVTycT6h524mL6G/JH1UkAbwyhH/63nfhz1JG1E35kKPwCANf1ftpN0I3v8q772HMzINA4Pwx6LG+5GyKNWh2K9eiZQVmiV+I8dSBf9ZliqoviWNb0gOtQXrIJN4KpfSZ8SHIMRlPk512G/6iCItK2STIObffJZ4IOmPVvBiwfr1grLWYHjmfSgyArq5vJFplpwgqXUz+xYbnRPLwLYqvIPEkqNtz4rzmDKbGpvVNkPOTd2MuZcZ30i9sJKnSAndIXcDS8Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k4xt8dytREu6Oj1MEQQx+92BgL6dyuVDGsTWP+RR3Gw=;
+ b=BZFi67Rh6n+FmqL9NdR4GpiwRUuwz8XdGpwwjpFKFByXSyzcXfYhUpt2Dqel6X2kIP05+rF9DR2nNUZZEmvWuBk5mgazHM6g/ct7wdIgxelk122pQa1cIZgY5JxmVCDZpPg92Rm9eHdRoFQ8PYaow1t3lIByHw/lVsbLLO1bbH/yb/0gh70Cczoj1jbfm36izGxwEHwrC1RanXgS4jxrT0NwieXtbgn3wTue5Q1vrsi7v/dLWLpi7TQvE8DtNnSozym3QX7epQVk2QvJXPhDVC8yUZ/yUP225SxC4dXuReCoHCvVecLJLpPFSOdVD2zs8zogehAoSbCbGMqoIk4UpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k4xt8dytREu6Oj1MEQQx+92BgL6dyuVDGsTWP+RR3Gw=;
+ b=whkjFulsIhOmB7Yqo4JnTkHRZwrMUIhigHdguLtddyuzVICRshOuVkIYQYDub+ejnID5KBN7ykpP9BgBRZHsSW5yKjOi9h9d5KNqs5mizqjonyg2MVh4cNKalU8Uf1NTBBuRgV+ZWoMBn5op+y3YWswCcLRlatziCIE8LZ/xBxLp6n5EuozSVQvFwXSZg0zT1OWzTS86n2pJwcdZAjpW8f6T33Wyj65gCmxn4ZWBXGmiVTShtEa7N54ZZHO3kM6ojXMSiQB85YlAn5bUWUER3JvG9ZrhatJYeUgVrOqUGZ9LfxeIklZ+7nRVB05kQNioVcXtPXE8FQe3huWNNEzlDQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by MI3PR04MB12657.eurprd04.prod.outlook.com (2603:10a6:290:81::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Wed, 23 Sep
+ 2026 15:07:06 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
+ 15:07:05 +0000
+Date: Wed, 23 Sep 2026 10:06:55 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH 0/4] arm64: dts: freescale: Add Toradex iMX95 overlays
+Message-ID: <arPrD4TDYhjYxFGJ@SMW015318>
+References: <20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com>
+ <arKn0LhC5fty7dHN@SMW015318>
+ <20260922165846.GA290956@francesco-nb>
+ <arLJl3jyyytfS_Qw@SMW015318>
+ <20260923084111.GA460930@francesco-nb>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923084111.GA460930@francesco-nb>
+X-ClientProxiedBy: PH8PR21CA0008.namprd21.prod.outlook.com
+ (2603:10b6:510:2ce::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-8-dac8c5eb4aa9@valla.it>
- <arKhbxi3Snbt1_Mn@p14s> <arLZj2DxBazf3wMd@bywater>
-In-Reply-To: <arLZj2DxBazf3wMd@bywater>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Wed, 23 Sep 2026 08:56:38 -0600
-X-Gm-Features: AclHuK883D6T5DYJIUEwz22c4TjWkQLK7CcGTqdjz7jqNMirfKCdfrjOT14z4v4
-Message-ID: <CANLsYkzC5DU8j_QJLkuUcV2tYb=G86L_G4yiBZTePKSqiRdd6w@mail.gmail.com>
-Subject: Re: [PATCH RFC 08/12] dt-bindings: remoteproc: add remoteproc-virtio
-To: Francesco Valla <francesco@valla.it>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, virtualization@lists.linux.dev, 
-	imx@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MI3PR04MB12657:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7db5c433-b197-4965-ae51-08df19845491
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|19092799006|7416014|376014|10067099003|56012099006|4143699003|6133799003|22082099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	0sKiH0bqu/K/4v4EIwKAbwhmub2Kkp1yGbxmRuw1nx3SrHTLCkI+Wo6I2iMxcw9XoGD/VIRk2iom9OivcX24eCRw8mM2maYTDGDsSzurYW757txu150m9kIcEXYdi3PJg6gIm3YkmshuEBNcluNMN7klkA9hsvFClIyZOqa138yJBqqNufC10E+AvPR8j/iBiQu1xhJnvGGi3DwbU19uN3V6GNO9fVvMbuvdY8IiZFoSn4B/oEPNGaBKj1js/+8+cByRrD3VTtLjlIGGn7bfBAbb1kp5HPJbXPU8Qa30yVyK1ff/XuwRcnp7hInewzdjPaJkF8BbepVUIAf/Jm/XDOHg507PzYU9wW9w4SV90bV8Ir2xZvdOF8v9hiXZlhjeI+IdZmZgabqfMvhD6gB2GZVGo1GK1BCSRdWlSlw6VnXZRMQt13q4+p17kNjxSJ6PmDJ+ZxtfuL4stb+YPuJ4dcl9uc7AURdgMkvaCobxGK13kbozSMDvMiBdK5mAmLa+Lh2Jd5SSca3whdxSyLxRAXcykLwnktK0ZizpJjaWcH/2C6y9UefHvUBXcsD03i1gQWwS2iQHjG9MVvGZcN436hGn//+1UmalZRrWlMoAioBKL7XCZToBoURUilwPjAnG
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(19092799006)(7416014)(376014)(10067099003)(56012099006)(4143699003)(6133799003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?i8JOUBY317HgLpmXNnUK6wYaDLnrWEtlYDAXtGoU3DYi62WPSO8Z/G7N2nIC?=
+ =?us-ascii?Q?bhYYa4uL42906KGLJ2R3fYDDG6IhJQ2af8ImT7IuNwbXVyYlsU3abmVnD9se?=
+ =?us-ascii?Q?8dp7lrCKeTR1OeRGWhCnURo2V47+clzK7odujU4ECAWtP2fc2kGuK+2/23My?=
+ =?us-ascii?Q?MCxEGQVi8VuHOw1TN80pg+2KSry2w4k2vBZi7+V59aUklBF8t5krOh1wwXMY?=
+ =?us-ascii?Q?zoosxcp7TE4/lMwrMuW6r3dgpVCKoPPgEJQCIcrVJIER3TKbgkX4FyI6liVi?=
+ =?us-ascii?Q?eMOOVrjjhmxaejw0i3MMNQZ2GNDxJSbTNJsYB+eojwFqaXTKIcWlSM1TXWBK?=
+ =?us-ascii?Q?1Cm9oyUl4jsZQNYStcPuxRNHW9OSak1F9+m1QhCcxgjimxwxb3dOjCtzWMiB?=
+ =?us-ascii?Q?K7Einqgxv2n9tchkUBBvo6WqOKuCruApeUbV/67N61zCfaIc/mGcZCIJ4+rR?=
+ =?us-ascii?Q?R1ZA4DU3gQNMbs2pId+rXRCaeJgnNGdegkrKl9CUvJth3mk58HMeYZpPS5pt?=
+ =?us-ascii?Q?LO0/xjX+JTHcid7WgQD0lAHWnBJXTgdhiDhpbsM3LTvy7HQrzMUmiSU2wdSF?=
+ =?us-ascii?Q?inCdEUlt67urM8ZbRirwLt8sYaT7zWW111CUlt/xzkPa3CRdgRpLEEesrLqe?=
+ =?us-ascii?Q?+n1BaqLjhfyBLB3LJN0nfSJkHoU8P/81DEN7jBeKjjx9DQ1IAMkIPhHR2AO1?=
+ =?us-ascii?Q?9Wc4i5NaSLB7Ri+yAnOzPz86X4aAFjGVNe7ub490sB0iOO/WKPLxH26hxw5c?=
+ =?us-ascii?Q?D76dGP6HnRUU71I00htPyJOYqPSNkJMrKbhq+21diKdKECW1mwwuQLhSzo+N?=
+ =?us-ascii?Q?Il5XDHp5a0briUWeubTqarUUQuxnXdrRB4+D0Qp0vdNIBGjigKKqDw8GaN4Q?=
+ =?us-ascii?Q?F4GE55ELhmlIUruLskgZ2xyHe/EE/wj/+49gxhVKabJa8+H352LzBlTQlzlC?=
+ =?us-ascii?Q?RFCGGso7KcZMatsSaTfFAwuEMdD/RKOihOKqfjnL394gNo5741GNZJx7s073?=
+ =?us-ascii?Q?s/jE7yKKa33CY0/ttnkDXbl/HlgfFFiWZ/XRAPobFdNg9TPvTNwEdRHcAuK0?=
+ =?us-ascii?Q?vN/kP+hef1Ab2XWc1jp2TmpUQQpjiuK/k4P4lLS9d+j817KoAOohSzPvpXYA?=
+ =?us-ascii?Q?L+5QerkSEw/AAMrSVG75LSworrAUmWyPn2gz6L3GXIFn2aFVzWh8sHfJNA+7?=
+ =?us-ascii?Q?sJD1v8E3rO2dHG+0DS3rE5JdCTZzmz5uYSj1ynK5dDmq9ey9SDHrPJLs61kM?=
+ =?us-ascii?Q?1ZoN6SdJ7ah0kJzujy1bL7L+5SPfLQjmE3pmcdigW34wO7je/mh3ZPoNp8zh?=
+ =?us-ascii?Q?nsOkrG3EOWiXNuiJLVyFi8GMPVdbKLk9w5NSEQOUo6pERQgpZMy/f3ioyH4e?=
+ =?us-ascii?Q?Vc0YI6G/MaBBj6H8WD9qYz2fIpkL8UfxsNZTW2vC2Uhi+z+2uLSESyF5M3Or?=
+ =?us-ascii?Q?v6dOf3APm9uAjmi2XY59QYLcdYiHD2ZxKnOY83cdQY2JbwHzuazm3h5yH35Z?=
+ =?us-ascii?Q?13YohLhLOvvZrdddJCRW2Mofx6ZxM9HdrzDdzEZF3kaMGoyh6tGackHecClm?=
+ =?us-ascii?Q?CSUv6Se2h8J9/hKIgl0YGuJ7YiBQyWP7j/TlYkaysr8FMPtJSEjFnApfhJfL?=
+ =?us-ascii?Q?FD4WK0GoSzj1sGq9V1qqe3LyZvhCqyNLw25o2QYdDmGjdXa+PwtYK7YSwaMQ?=
+ =?us-ascii?Q?z/8mvIUXfIu810BXrq8T+nTYYb8ATSH5XYxgK/++JXvutooKVeGcgm1eV/Bp?=
+ =?us-ascii?Q?q5SYpIuNRdsvj1b5uG4T4JSxUQSzaoan62zF9Sfub4Nui2qKe0iG?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7db5c433-b197-4965-ae51-08df19845491
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 15:07:05.8682
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7yDc+fQus7NdSMBAEeLgNRmSKMAI/rlFs1W9vHwAluoW+PDT8q1qVfseYO2joabswkMMbfDFR1N3GpSN+LreDhBgYK8MvtmwpH1JQyNDPKaRcOLvGraH9WpZ1s9IyWGw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI3PR04MB12657
 
-On Tue, 22 Sept 2026 at 13:44, Francesco Valla <francesco@valla.it> wrote:
+On Wed, Sep 23, 2026 at 10:41:11AM +0200, Francesco Dolcini wrote:
+> Hello Frank,
 >
-> On Tue, Sep 22, 2026 at 09:40:31AM -0600, Mathieu Poirier wrote:
-> > On Wed, Sep 16, 2026 at 11:10:53PM +0200, Francesco Valla wrote:
-> > > Add a new binding to describe remoteproc-provided virtio devices; while
-> > > these are discovered through a resource table parsed by the remoteproc
-> > > infrastructure at runtime, their description can be needed to probe
-> > > non-discoverable buses (such as I2C) or to link consumers and suppliers.
+> On Tue, Sep 22, 2026 at 01:31:51PM -0500, Frank Li wrote:
+> > On Tue, Sep 22, 2026 at 06:58:46PM +0200, Francesco Dolcini wrote:
+> > > On Tue, Sep 22, 2026 at 11:07:44AM -0500, Frank Li wrote:
+> > > > On Tue, Sep 22, 2026 at 04:33:45PM +0200, Ernest Van Hoecke wrote:
+> > > > > This series adds device tree overlays for the Toradex Verdin, Aquila,
+> > > > > and SMARC iMX95 SoMs.
+> > > > >
+> > > > > The series adds support for:
+> > > > > - NAU8822 Bridge Tied Load configuration on the Verdin Development Board
+> > > > > - UART_4 reservation for Cortex-M7 firmware on Verdin and Aquila
+> > > > > - SER0 reservation for Cortex-M7 firmware on SMARC
+> > > > >
+> > > > > The UART overlays mark the port as reserved so Linux does not claim it.
+> > > > > Firmware remains responsible for configuring the UART and its pads.
+> > > > >
+> > > > > The Makefile entries build standalone DTBOs and ready-to-use composed
+> > > > > DTBs for the corresponding Development Boards.
+> > > > >
+> > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > > > ---
+> > > > > Ernest Van Hoecke (4):
+> > > > >       arm64: dts: freescale: imx95-verdin: Add NAU8822 Bridge Tied Load
+> > > > >       arm64: dts: freescale: imx95-verdin: Add Cortex-M7 UART_4 overlay
+> > > > >       arm64: dts: freescale: imx95-aquila: Add Cortex-M7 UART_4 overlay
+> > > >
+> > > > both reserved lpuart2, can you share one dtso?
 > > >
-> > > Each vdev is described by a dedicated "group" node, which then includes
-> > > a virtio-device node, which binding is already existent and used by
-> > > virtio-mmio. Each vdev shall be stattically linked to a "group" node
-> > > using its index inside the resource table as the reg property of the
-> > > node; this permits to have multiple instances of the same type of
-> > > device.
+> > > The comment in the DT file must be different because it's important to
+> > > reference the actual board it applies to.
 > > >
-> > > The binding is intended to be generic and adopted by any remoteproc
-> > > provider.
-> > >
-> > > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > > ---
-> > >  .../bindings/remoteproc/remoteproc-virtio.yaml     | 89 ++++++++++++++++++++++
-> > >  1 file changed, 89 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
-> > > new file mode 100644
-> > > index 000000000000..c4a0d84b1460
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
-> > > @@ -0,0 +1,89 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/remoteproc/remoteproc-virtio.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Virtio devices over remoteproc
-> > > +
-> > > +description: |
-> > > +  Virtio devices ("vdevs") can be exposed using the remoteproc infrastructure
-> > > +  and its resource table. For some of them, a device tree node might be needed
-> > > +  to describe remote undiscoverable hardware and/or connect consumers and
-> > > +  providers.
-> > > +
-> > > +maintainers:
-> > > +  - Francesco Valla <francesco@valla.it>
-> > > +
-> > > +properties:
-> > > +  virtio:
-> > > +    description: Contains a group of Virtio devices exposed by the remoteproc.
-> > > +
-> > > +    properties:
-> > > +      '#address-cells':
-> > > +        const: 1
-> > > +
-> > > +      '#size-cells':
-> > > +        const: 0
-> > > +
-> > > +    patternProperties:
-> > > +      "^vdev@[0-9a-f]+$":
-> > > +        type: object
-> > > +
-> > > +        properties:
-> > > +          reg:
-> > > +            description: Virtio device index inside the resource table.
-> > > +            maxItems: 1
-> > > +
-> > > +        additionalProperties:
-> > > +          type: object
-> > > +          $ref: /schemas/virtio/virtio-device.yaml
-> > > +          maxItems: 1
-> > > +
-> > > +        required:
-> > > +          - reg
-> > > +
-> > > +    additionalProperties: false
-> > > +
-> > > +    required:
-> > > +      - '#address-cells'
-> > > +      - '#size-cells'
-> > > +
-> > > +additionalProperties: true
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    remoteproc-cm33 {
-> > > +      virtio {
-> > > +          #address-cells = <1>;
-> > > +          #size-cells = <0>;
-> > > +
-> > > +          vdev@0 {
-> > > +              reg = <0>;
-> > > +
+> > > So to fulfill this request we would need to add a common dtsi, include
+> > > it from two different dtso files.
 > >
-> > Do we need the 'reg' since we already have vdev@X?  I'll let the DT people
-> > provide their input on this.
+> > No, direct use one dtso. see
 > >
->
-> AFAIK yes, because the rproc_get_vdev_fwnode() helpers search for indexed
-> child nodes using the 'reg' property, not the node name. This I believe
-> is the preferred way of doing things.
->
-> > > +              gpio {
-> > > +                  compatible = "virtio,device29";
-> > > +
-> > > +                  gpio-controller;
-> > > +                  #gpio-cells = <2>;
-> > > +              };
-> > > +          };
-> > > +
-> > > +          vdev@1 {
-> > > +              reg = <1>;
-> > > +
-> > > +              i2c {
-> > > +                  compatible = "virtio,device22";
-> > > +
-> > > +                  #address-cells = <1>;
-> > > +                  #size-cells = <0>;
-> > > +
-> > > +                  eeprom@50 {
-> > > +                      compatible = "atmel,24c1025";
-> > > +                      reg = <0x50>;
-> > > +                  };
+> > https://elixir.bootlin.com/linux/v7.3-rc3/source/arch/arm64/boot/dts/freescale/imx-pcie0-ep.dtso
 > >
-> > The previous patch introduced bindings for virtio SPI while the above two are
-> > for GPIO and I2c, which is very confusing.  I suggest you pick one and apply
-> > everywhere.
-> >
+> > And makefile to check how apply the same dtso for difference boards
 >
-> This is because both GPIO and I2C bindings are already defined - even if
-> not used in the devicetree files part of the kernel tree.
+> imx-pcie0-ep.dtso works as a single shared file because its content is
+> generic, there is no board name anywhere in it, and nobody needs to
+> apply that specific dtbo by hand to know what it is for.
 >
-> Moving forward, I plan to submit at least the spi-virtio bindings as a
-> separate patch set, as they can be used independently of this one.
+> These overlays are different: they are meant to be picked up and applied
+> directly by the end user, in addition to also being combined in-tree
+> into a ready DTB. Put yourself in that user's shoes: they have a Verdin
+> board, they want to free up UART_4 for their Cortex-M7 firmware, and
+> they go looking in arch/arm64/boot/dts/freescale/ for the overlay that
+> does that for their board. What they need at that point is a file name
+> that says "this is for Verdin" and "this is the UART_4 one", and once
+> they open it, a comment that confirms both: which board and which
+> specific UART. That is the whole point of shipping the overlay
+> separately from a combined DTB: it is meant to be readable and
+> applicable on its own by someone who is not a DT expert.
 
-I suggest you leave spi-virtio out of this patchset.  That way we can
-concentrate on doing only one thing.
+If someone is not DT expert, most likely direct use your prebuild dtbs,
+not apply dtso theyself.
 
 >
-> > > +              };
-> > > +          };
-> > > +      };
-> > > +    };
-> > > +...
-> > >
-> > > --
-> > > 2.55.0
-> > >
+> There is also a second, even more constrained user: the one who never
+> looks at the kernel sources at all, and only gets the compiled .dtbo as
+> deployed on their distribution, e.g. under /boot/overlays/ on the
+> target, or the more generic paths used by distributions like Debian
+> (/boot/firmware/overlays/) or Armbian (user_overlays= in
+> armbianEnv.txt), picking it by name from an overlay list or a U-Boot
+> env variable. Comments do not survive dtc compilation, so for that user
+> the file name is the only information available, there is no comment to
+> fall back on.
 >
-> Regards,
+> A single dtso shared between Verdin and Aquila fails that on both
+> counts: the name has to become something generic like
+> imx95-verdin-aquila-uart4-mcu.dtso (immediately confusing: which board
+> is it really for? can I use it on either?), and the comment inside can
+> no longer say which board it targets either. That is worse for the
+> person using it, for the sake of avoiding 2 lines of duplication:
+>
+>   &lpuart2 {
+>   	status = "reserved";
+>   };
+>
+> It also does not reduce the Makefile churn: we need the same number of
+> Makefile lines/combos either way, one dtso reused for two boards or two
+> dedicated ones. And this file will not change once merged, so there is
+> no maintenance overhead from keeping it per board.
+>
+> We agree that avoiding duplication is generally the right call. When
+> there is real, growing duplication across dtso files, the right fix is
+> a shared dtsi included by the dtso files, not merging them into one. In
+> this case the duplication is 2 lines that will not change, so it does
+> not meet that bar either way.
+
+It is not exactly true. include dtsi only one method. Basic there are two
+kind type overy all files
+
+- one is for addtional boards.
+- change configuration.
+
+You provide difference configuration, basically it is developping boards.
+The real productions is fixed.
+
+Your uboot scripts or other manually should hide complex. like PC grub
+menu, just choose 1,2,3...
+
+If someone like advance, he need know more knowledge.
+
+Makefile show how to apply dtso to correct dtb.  filename rule can't
+resolve problems without know detail.
+
+The put lpuart2 as reserved also used by other boards, not only verdin
+and aquila.
+
+Frank
+
+>
+> We would like to keep the two dedicated dtso files.
+>
 > Francesco
->
