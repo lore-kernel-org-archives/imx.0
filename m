@@ -1,182 +1,257 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f41.google.com (mail-ed2-f41.google.com [74.125.228.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C809C53B5EE
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790175113; cv=none; b=O/IQlGxUbCFL0J5w45w6QLUQChka4birx/VroYKihCdqsJ9hWmXHDleyOmsclxrd8CVKm3L11emN/a7o/KB4P12NGpkSPG26xHDBygJ/R4nOAHPFmQyn//5ArswHAeBEWNFfBYNmVK3SYlp6lIulPQz78ZYSGXSHrWeNHp4IAEY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790175113; c=relaxed/simple;
-	bh=tUeK7QUj2IKE2uFCeChn1ygOQ/iJBXWinQo0JAkeZD8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=KBB07OQF3Z5TkgF73DPRZXP7J5ym4IyyHo5TlyEk3N/DrJbt7Y9QryfMyI8UZy6ATSulXopIVlN/6ZrB6imZZ6yHJRA14WVtCUkYddbmcvXnwwfhcxPptPB/fqWZh/fEsnWhHaijtg72iA+Nkh2z72f5/zHd7OFJ4NIny+mcEEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YDPluFm0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=S0NeJXiR; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C4B542EE8
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.105
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790175413; cv=pass; b=IDhIIyDF2rt9O89I0HUqzUrnM87ydVLhOxPx6LIOuTt6ZDhjIHf0HA3fpEpJNlEyRtbikhas6YO+Oy6/wyxY1XV22eZxvSrcFS9lBrxU7byCDXxx+vj2YuileaVJLWNoacv96ezdaGFlF+wzU2d3CUgXUk3peq2E3OY8dpZk5/E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790175413; c=relaxed/simple;
+	bh=UyMSLBvW9tmyx5OoI5WsB7xjvglDq4V9P7yAbnK27AA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ubq6UG07d2MrHlJbZ7I2FP2wB2krG2Y5jBCjneqHqx+zpGroFwc2/aEaYxgHwMvr9QkKOot8gLmdytHte3kC7NRtafhRk2eWC/hdxRABW6zgCSXV7zvbOqWaNuNhLjJ90AYgpnXoXkaAzq1UqCktJ72LHtcJnkVQCe4c5TpACGg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oyHvfVm0; arc=pass smtp.client-ip=74.125.228.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YDPluFm0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="S0NeJXiR"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NBbTWq3027920
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:51:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+R3bZnXxOWTMbKlDYq2yQXXsxhWIpfAOq8VfoVqcl9c=; b=YDPluFm0OahNv9wZ
-	cGvj+KSuUHVh95uSwMdsn3P3kJhzwjTDpi43NkpI/2SoCSI3jul35+60XSfNXhW2
-	DzV4vf0pvvgcKlCUDELPwYzEuKHTJUDAgYnveKZy01SSwovXfd4dcd7ms1k+G0Q1
-	DR544JEiBRHK5KLhHhHmydrvQ4mAx8IUEG2OSl/q1jOdNUBZrV7yzIvJJYIFO7Hn
-	hNlyLG/AFRFUoIuH5dHrj50WnXxxxrN8G7TM50Rg+kYg9zpFKAMvfLYSGHWTOZwN
-	+JuCpav51YiRfNXP8SN7C9RDlzxtfrlLvwFyC2iiFGL6nmABaZXj253uamIf9KuC
-	98et3w==
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvbwasdrd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:51:50 +0000 (GMT)
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-97e99615e0dso821578241.1
-        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:51:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oyHvfVm0"
+Received: by mail-ed2-f41.google.com with SMTP id 4fb4d7f45d1cf-6a99391ffb2so1875543a12.0
+        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:56:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790175410; cv=none;
+        d=google.com; s=arc-20260327;
+        b=F3LZDuiKf77yk1Ehj/v2sS6Ru6JQWrs406OVhxFsWQvUr2pG7e3KMDuqJ9z9JLFXOc
+         9c80jZyuZ1UCFlVuNIvMxtT63lELvTo8aNFRiG/ydn9C247pWM54I36k9OTSvXCXGQoa
+         IhQIqabAQt8vEg5bHhkalafmgM/ajohaApt85419qJLiQTfKL8pX6VsDURi8dC3fn16o
+         qRkGIuBD09LPjhOrgg2O8MwPhHHiq3sUSDRwipNdvIIYd+1Vo39aO+37dfhCyGTJZ9/g
+         4IwTn1oLS8DPu3cnqo+r2UR9v0XfLEWj7HAWl1mddH6I2QutB5x7EU3SWssVAwjE8/a7
+         f6vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=80Q/UmLn++8SJbn/lU8/3FTYgpvMd1cRbPxOu7j8FDU=;
+        fh=9SwSdYihNkHpH0KdkscdlYN/2dF/LDmqdw9O9131u4Y=;
+        b=c/st/FjKCoSreqkrAIT962WSdn5yNSKZOfwGZ3+tsTYRa6sT2L3HVxPpdEU5qeMPy/
+         akQnfJG2NMZBQZbfrWy1p0QRrjlwRYa0jD0XwNr63V+Doob2gsFPUz46LHvJGlEbm4Ca
+         iQT2FhtGEhdSusHrRWnF7SQaCsMsB5y7YWfFV/kyEj8MhCBN0IGXiqrWz0NOthhYFEPS
+         X8gaklu+AnK1Y9Z671KgQMbyiVMeaQ6qbRFXr0O12ic2yfJqTTyigNYU4aZIUO4uM7wb
+         GV3sxlNNm99KRKWFCEdREA71YqYqlpSkpiH3QkTyaKHUUypax/kxZU9Rr6xINJlDWRw5
+         P1Iw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790175109; x=1790779909; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:to:subject:from:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+R3bZnXxOWTMbKlDYq2yQXXsxhWIpfAOq8VfoVqcl9c=;
-        b=S0NeJXiRyfzIvun/pP+YIBUDDOb0BDou/IW7a+eBLFLZ2tc6TLy9k1UIg1jfvBcWV/
-         E7fwgd/UYrn6kVG1/u9gmPib+VokgS9x18vCD2mooY/5Mm8p1f5zK39Z4OFx//MpGfsK
-         KMapU1g3uyReCqIpAxO2YxlmTGmGr5r0Zxp5JepUsw+bKJmAxatmt0a1CUBmMyC6iVrx
-         ynQaj+AFwkXyNIr563BW+a+qMlLty1Pe2Xl24FxIHLUYEyUKL+gv8GgjQ4d1oM/kdlSN
-         69lX4xaSf2R4LE+GDNv93me+bH+ZXaays8KTAZnTGQXIaYDQsePnl1KVY3hR582NFEkl
-         C0pA==
+        d=linaro.org; s=google; t=1790175410; x=1790780210; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=80Q/UmLn++8SJbn/lU8/3FTYgpvMd1cRbPxOu7j8FDU=;
+        b=oyHvfVm07uVv6wAvcM3rC8TuEXaCrxYgYS59IpqZOpwyRDUa0tp5JK50mzUuSpiEzV
+         X+mTdKH8nKMvYvJHPGJtpiYbKpTcCMu7YMpHkPrNACNC9RF9UQgLmXoHbOqsKd9BQlK6
+         7/AyW9GSIAawe1FaNfSkuXMpb3JV9TbaEW06aCABr/BetDCcBg5x3xndQ01BQmD8u/W1
+         BHc8jRtJE8XStDIZ4sMj8U9ra3+njoOeDxx9XGhxJendEyP4Rd5SfdaDDmwOTawwNUmY
+         7pIeH7Shq1tZYDAeBSmiJTTlkaFEDCAipuaST3/TpYT2cPl8UkzBkfvodNZRtnqGpcAZ
+         APZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790175109; x=1790779909;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+R3bZnXxOWTMbKlDYq2yQXXsxhWIpfAOq8VfoVqcl9c=;
-        b=148C6WlF0ZYNhmbPYruuiiN+11XaZ+DeIZglJLg5kbIPfKrdOB3MwSi9GsAThuk+s2
-         LNZW/QRPbuwPgevQJ6aqO9PVYC51Hn99DeLXT6neKozemLuChpFHYycebpSQo/9Mlg/k
-         xvL6UzqgW8Q8LwkNUrhBugGYahG5K/ZAeOtB86bsG5+0V9ZVLAnujobIU6AJ8xP8k27T
-         edPae95pxo8NkRNxeWiCX2QCDMd8U1L1PnBoS1vA5bkihYnMT4/OlhQ5Aa3THKQbC0m2
-         NFQJCtDrzTVG5LxmtnzrF7s2cQ9EqeTldhACw226KixUuIlWu6AlmK6kEv878qqgZRpT
-         M1pA==
-X-Forwarded-Encrypted: i=1; AKwUvBzfWqQ5RPqEyorDMfvp9d2VLiT6FzI6AGz6hgjiZdLzyNjmRFHfbAr4lZfSBvJP4wNCBfw=@lists.linux.dev
-X-Gm-Message-State: AFuF++k8pslvXUPtMIEF20SY1oGATC9lee9Egvsj/YxyGGqvUDvjkeyr
-	nWCkY+7u9ns2HM/zc67C2F3DPXM0gWG7Qalmgd31ReTg0D1o3shvW2sszMyaSLkLWBe1+gRTjSB
-	3Zh4mw8a5/a2kNemJYxetl26NOwajGslE5ASyNErB9nt0JNFtAqOCeCA=
-X-Gm-Gg: AYBFou3gFV6Ht17YIkj5dETVV4qfnEXwiBk3YYlUIetlki0gz36HGOjTOYY3/VSoTwd
-	zivflpdT4Lnj7hnbx0Ljq5GDHMw05tAahOh0uTkUYPIHqcdnLK0TUyDAq470cWkC0ZRmm/7qxHn
-	CGZMUZSevzo8gxVHccxvVJ+Tz+G6iiHqA1mWzKNpWDM0uCGlpb1iGjGMWJaEO2tP8pb4tckJGy9
-	Q1yqG+QkmZ39aIQNHOsyY+KC4hM7oe3OZ6BKWiq8NYyeRoLBCciswO4fgyZOszmvnNkW7oN0D+j
-	daFHyTnRzcthNuld76/tPPvvqhftJszCiVugujAzt4xw0SqH97NM2WH2xsW77SIH2Bvy3QYL4g8
-	hOPE8ecKA4SxfGugvGKH5+pMhplsQrTjtmzaD4HH/L1lby11270P30Us/rSr8vFgq0GMwYXkEbC
-	9EdFcIELHhVUMq0HuGL4D+CA3XCZynPj/1PFdv4C66G7qYijubgvNjqvQY+qvc6TGJDkk=
-X-Received: by 2002:a67:fa46:0:b0:7ab:45e4:9479 with SMTP id ada2fe7eead31-7ab45e49664mr3196575137.16.1790175109608;
-        Wed, 23 Sep 2026 07:51:49 -0700 (PDT)
-X-Received: by 2002:a67:fa46:0:b0:7ab:45e4:9479 with SMTP id ada2fe7eead31-7ab45e49664mr3196561137.16.1790175109223;
-        Wed, 23 Sep 2026 07:51:49 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae60a04csm143005866b.23.2026.09.23.07.51.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 07:51:48 -0700 (PDT)
-Message-ID: <50b27e3b-729b-428d-a903-b118a5bfa249@oss.qualcomm.com>
-Date: Wed, 23 Sep 2026 16:51:47 +0200
+        d=1e100.net; s=20260707; t=1790175410; x=1790780210;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=80Q/UmLn++8SJbn/lU8/3FTYgpvMd1cRbPxOu7j8FDU=;
+        b=ho/Zg6Wfi5Sv6yZtAaumT3Z8q5MlOH2sv/IJs4FXEj/tirfGO9SCtvIff7rRdwhUEC
+         YsVLYmieAfHfsYwGxcu+pVjSo53C1YZHARhMzOmgWSfekf8jJ3uzpvF43HVhDmgPTOT5
+         Xztyd8ErSR96bM8Sf88zkRQ4atNDqHPL6Vsa/h8cuVkRguf8bbKUaGLSlws46AdCYgW9
+         rhggesxv119Lx9MG4UNHzfhY1UL9fysdnsGcrLsnpseM4YOfX+8fS/zzFXSn0FZcZpfr
+         yw9Eihuz/7vZrK/8HjWUhjXzVtaIqmTqfJJKhvQ2joRfFtBqHOsTQpLhGodAZ5QDxpVo
+         +LQg==
+X-Forwarded-Encrypted: i=1; AKwUvBzT+0ydPuD6nyoAGQD/D07BhxWqAYP0cA7hoKh2qq79ZqU4GfavwkAP6DH9P7gPee3SUNw=@lists.linux.dev
+X-Gm-Message-State: AFuF++ntotdeyy1oKMnktpGtOElW5KOy3Ddch9P+EHzd6DbN/gQPcUNQ
+	U1AI99KATWwvxw41x9F3Uql3RgbO8ANUmna6NGYaBWDColPslgEMC/v+2M5hKcZLgx20lsTgcfn
+	Yr9/JrXzvYBlh5cCdknNUSG3/gejzZ9nZW/FLdNcXCg==
+X-Gm-Gg: AYBFou2YL6o23JTw3HAqNxBxB+kn/06QNvsC+xkhqGEvrC/PAQNA6Qw7XmCgdJMOQhA
+	XIZzjTZ5SLEtomXm4nsEW1xruDyolK92lEmvwaB1O/yLOhyshFctye9Fku7y7SrAw8gSUsFBxtD
+	lsWyW0rAuETLcr9QTpeIOwcEfQsJb4SRPbGTp55xski6I+0kfWV+4ad+eIQYNFa3PGxHY0ya/3d
+	ogfn4mrDRJn0Tr1n4ftGZ9qGSR6aG8O5DqqPfduAvCKionrKBlsczPQH4OUx/t6cvPBBJcuARy6
+	YdcSqxZnJE7KsOJznYynk4od5c+JEHDOeSzuWzn+D/y1W8uUOie/av9pnLd55uJn6Ma4IaBhCyu
+	2sBKQuGRo8jw=
+X-Received: by 2002:a05:6402:5514:b0:6aa:129a:1f70 with SMTP id
+ 4fb4d7f45d1cf-6aab3b647e8mr2420276a12.43.1790175409790; Wed, 23 Sep 2026
+ 07:56:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
-To: Sudeep Holla <sudeep.holla@kernel.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
- <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
- <arFKVhlgJge5EZyj@monoceros>
- <20260923-sceptical-mauve-firefly-f5456d@sudeepholla>
- <6b5a8300-ebf9-4717-bd39-952e89fc5e78@oss.qualcomm.com>
- <20260923-snake-of-magic-satiation-c3b857@sudeepholla>
- <a5e56180-b96f-4fac-980e-e837e84cd5a5@oss.qualcomm.com>
- <20260923-calculating-positive-inchworm-28d3cc@sudeepholla>
- <arPMAXs4jjUeu1DE@monoceros>
- <20260923-groovy-airborne-rook-e1efc6@sudeepholla>
-Content-Language: en-US, nl
-In-Reply-To: <20260923-groovy-airborne-rook-e1efc6@sudeepholla>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1OSBTYWx0ZWRfXzarEe5ZgfL2g
- nXuJK17j0GgKva7/vkj4FTSZf49fPwsle20tMBE/vUDlEp2dYsST4bNfDQIZxP8ks2ONujDuFgG
- lzldTfYInJMP7pS7U42NwS4rkD7XBc0S8PlRBAv9asceYX+7KeaFjPXXezpKkVu+LEo5ODEj/tK
- jLldhf7mB4NGYhZEjD2oY8mNzPF84/UKVfNba5g9JpWc1YHj1Se5h0uRgkfQcR1ip7vf+AA+zdu
- BwrfRfIrFLaoUzxrm/gm5/MZVoVwo02oUCUGvRuXnBTcFPNcm3fpEr5sTJVgthkF1jekoAK+l7L
- HN1XNenzdhyqe82Dg8KlHyqi5ZyDZjWvO9k8QuxBct9W9bqVu5F0ZkD3IOtcthHAMZtr0bs/msE
- 96PitSkm9pYekv9o6mNTyiC35nBdOR9MH3QUwdIIk8Rgu5B7IEIYCYyFsV8vC1d/i9swYTmG9e9
- E9Df+BzfM6Tn45rTlJw==
-X-Authority-Analysis: v=2.4 cv=HfuB3SE8 c=1 sm=1 tr=0 ts=6ab3e786 cx=c_pps
- a=UbhLPJ621ZpgOD2l3yZY1w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=IpJZQVW2AAAA:8
- a=wmcOPm1-qqoyX47EQMsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TOPH6uDL9cOC6tEoww4z:22 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-GUID: 8kd-EicTqTNjY41BFkqkrj-O_9cZ86da
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1OSBTYWx0ZWRfX5JsCPrmFMsV8
- Fje6FafHZum8XKtfHgo3muGid/AI7bRrL8qe2+SBte+QVexRMSEsMX+JV/auDcMh59yXveod7zj
- tSg1DOC4ZECX4/4gK5E6tDl5xWsN5Xc=
-X-Proofpoint-ORIG-GUID: 8kd-EicTqTNjY41BFkqkrj-O_9cZ86da
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230059
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <20260916-remoteproc_virtio_map-v1-8-dac8c5eb4aa9@valla.it>
+ <arKhbxi3Snbt1_Mn@p14s> <arLZj2DxBazf3wMd@bywater>
+In-Reply-To: <arLZj2DxBazf3wMd@bywater>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Wed, 23 Sep 2026 08:56:38 -0600
+X-Gm-Features: AclHuK883D6T5DYJIUEwz22c4TjWkQLK7CcGTqdjz7jqNMirfKCdfrjOT14z4v4
+Message-ID: <CANLsYkzC5DU8j_QJLkuUcV2tYb=G86L_G4yiBZTePKSqiRdd6w@mail.gmail.com>
+Subject: Re: [PATCH RFC 08/12] dt-bindings: remoteproc: add remoteproc-virtio
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, virtualization@lists.linux.dev, 
+	imx@lists.linux.dev, iommu@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Tue, 22 Sept 2026 at 13:44, Francesco Valla <francesco@valla.it> wrote:
+>
+> On Tue, Sep 22, 2026 at 09:40:31AM -0600, Mathieu Poirier wrote:
+> > On Wed, Sep 16, 2026 at 11:10:53PM +0200, Francesco Valla wrote:
+> > > Add a new binding to describe remoteproc-provided virtio devices; while
+> > > these are discovered through a resource table parsed by the remoteproc
+> > > infrastructure at runtime, their description can be needed to probe
+> > > non-discoverable buses (such as I2C) or to link consumers and suppliers.
+> > >
+> > > Each vdev is described by a dedicated "group" node, which then includes
+> > > a virtio-device node, which binding is already existent and used by
+> > > virtio-mmio. Each vdev shall be stattically linked to a "group" node
+> > > using its index inside the resource table as the reg property of the
+> > > node; this permits to have multiple instances of the same type of
+> > > device.
+> > >
+> > > The binding is intended to be generic and adopted by any remoteproc
+> > > provider.
+> > >
+> > > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > > ---
+> > >  .../bindings/remoteproc/remoteproc-virtio.yaml     | 89 ++++++++++++++++++++++
+> > >  1 file changed, 89 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
+> > > new file mode 100644
+> > > index 000000000000..c4a0d84b1460
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
+> > > @@ -0,0 +1,89 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/remoteproc/remoteproc-virtio.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Virtio devices over remoteproc
+> > > +
+> > > +description: |
+> > > +  Virtio devices ("vdevs") can be exposed using the remoteproc infrastructure
+> > > +  and its resource table. For some of them, a device tree node might be needed
+> > > +  to describe remote undiscoverable hardware and/or connect consumers and
+> > > +  providers.
+> > > +
+> > > +maintainers:
+> > > +  - Francesco Valla <francesco@valla.it>
+> > > +
+> > > +properties:
+> > > +  virtio:
+> > > +    description: Contains a group of Virtio devices exposed by the remoteproc.
+> > > +
+> > > +    properties:
+> > > +      '#address-cells':
+> > > +        const: 1
+> > > +
+> > > +      '#size-cells':
+> > > +        const: 0
+> > > +
+> > > +    patternProperties:
+> > > +      "^vdev@[0-9a-f]+$":
+> > > +        type: object
+> > > +
+> > > +        properties:
+> > > +          reg:
+> > > +            description: Virtio device index inside the resource table.
+> > > +            maxItems: 1
+> > > +
+> > > +        additionalProperties:
+> > > +          type: object
+> > > +          $ref: /schemas/virtio/virtio-device.yaml
+> > > +          maxItems: 1
+> > > +
+> > > +        required:
+> > > +          - reg
+> > > +
+> > > +    additionalProperties: false
+> > > +
+> > > +    required:
+> > > +      - '#address-cells'
+> > > +      - '#size-cells'
+> > > +
+> > > +additionalProperties: true
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    remoteproc-cm33 {
+> > > +      virtio {
+> > > +          #address-cells = <1>;
+> > > +          #size-cells = <0>;
+> > > +
+> > > +          vdev@0 {
+> > > +              reg = <0>;
+> > > +
+> >
+> > Do we need the 'reg' since we already have vdev@X?  I'll let the DT people
+> > provide their input on this.
+> >
+>
+> AFAIK yes, because the rproc_get_vdev_fwnode() helpers search for indexed
+> child nodes using the 'reg' property, not the node name. This I believe
+> is the preferred way of doing things.
+>
+> > > +              gpio {
+> > > +                  compatible = "virtio,device29";
+> > > +
+> > > +                  gpio-controller;
+> > > +                  #gpio-cells = <2>;
+> > > +              };
+> > > +          };
+> > > +
+> > > +          vdev@1 {
+> > > +              reg = <1>;
+> > > +
+> > > +              i2c {
+> > > +                  compatible = "virtio,device22";
+> > > +
+> > > +                  #address-cells = <1>;
+> > > +                  #size-cells = <0>;
+> > > +
+> > > +                  eeprom@50 {
+> > > +                      compatible = "atmel,24c1025";
+> > > +                      reg = <0x50>;
+> > > +                  };
+> >
+> > The previous patch introduced bindings for virtio SPI while the above two are
+> > for GPIO and I2c, which is very confusing.  I suggest you pick one and apply
+> > everywhere.
+> >
+>
+> This is because both GPIO and I2C bindings are already defined - even if
+> not used in the devicetree files part of the kernel tree.
+>
+> Moving forward, I plan to submit at least the spi-virtio bindings as a
+> separate patch set, as they can be used independently of this one.
 
-On 23-Sep-26 16:25, Sudeep Holla wrote:
-> On Wed, Sep 23, 2026 at 02:55:26PM +0200, Uwe Kleine-König wrote:
->> On Wed, Sep 23, 2026 at 01:01:44PM +0100, Sudeep Holla wrote:
->>> If Uwe is fine, yes I can take v7 as is.
->>
->> Fine for me.
->>
->> Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
->>
-> 
-> Thanks Uwe!
-> 
->> The nice thing is that the device_id structs are not API, so this can
->> also be addressed later if someone comes up with a clever idea how to
->> implement it.
->>
-> 
-> Agreed.
-> 
-> Hans,
-> 
-> There were other changes in bus.c that conflicted with this. I have
-> resolved the conflicts and pushed to my for-next/scmi/updates[1]
-> 
-> If anything is wrong or if you prefer, you can post a rebased version
-> that I can pick up.
+I suggest you leave spi-virtio out of this patchset.  That way we can
+concentrate on doing only one thing.
 
-Thank you, the fixed up commit looks good to me. I'll try to also give
-this new version a test spin soon-ish.
-
-Regards,
-
-Hans
-
-
-
+>
+> > > +              };
+> > > +          };
+> > > +      };
+> > > +    };
+> > > +...
+> > >
+> > > --
+> > > 2.55.0
+> > >
+>
+> Regards,
+> Francesco
+>
