@@ -1,273 +1,452 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010069.outbound.protection.outlook.com [52.101.69.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE0D47F3C0
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0871C53B346
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 14:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790173799; cv=fail; b=U/47xkja7QXsjFvMyJhA/ni4aEjWeNDaHCjux1W/bmqmQqt8D3thra6u00IioI5vF+8yZqA86g68bin53Yxqa4xHMEtjuRWY1j2dmCPUq78VewlicALvnZj+fFQIr/u7WvXNcrs1KbO7DSZ9DESWuzeMFs0qywEKGexV5Q8Q8YQ=
+	t=1790174699; cv=pass; b=WCp/X1KerjLkaqqu9LvkGRHUiVtNHfgcC3crW6XTF8jQ+LfOz2rJ3qNLbU7G3yrR8tAI2hAXKpOjc9sHOZuSYT0SMuIuQKpHAPthSqCcA8oFyF+5smxNHEMdck6fZj/NOIIzvxSuXWfyeycQ8/WbbXY5IGoNesaWz+aaULyq6g8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790173799; c=relaxed/simple;
-	bh=sviNLgpq/N3byt76idbuBtIeLBte3smNtCiY39vXZMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tcXuxIDsXLjziDZW72Y3xvwCB+Fxdn6T+uFhd3ofubMKIgCnn/P9YtUwitY+f/xwpOTg/g4potaXeYJtbRYh0FjrfLdwWhTyjgrWFRNhBGdLkpmEQST3ODQrr3TrpMF5V6seEyPJ2G57I2rXAMIloV74dS8/ErHLG7HpjNFvXUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=R9KR3wtq; arc=fail smtp.client-ip=52.101.69.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790174699; c=relaxed/simple;
+	bh=I4CXC8CBXPsAi9J4cmSHK94u4GgKkC4ll7iirgr4BVU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mDnJGjvVh+EjjWcijREr+qoDH/nOooNWVT3Qmf8wxMn3gMSilyuWjpFaYWWnmJTvVBE3AGoSSnpWR47pQLPyEaUmL0RZCuuOhMQRPQbnnkVdwtA4cIT5f4bW/jHg1Of4pCR+ZI8R968ZyIcJa+z2lL888SPu1t9JKYJfyw9VVrc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jWR6db+e; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="R9KR3wtq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yjSFpi1xChEyJkdesCV6TQ5ZRua2QpSFLbSmy41gA7wWgOPgoIwI9UvaNHADEle8slnbk+kTr/sRJFUkBBaKiHXYG76o9fV1dfSB8OhliRbgCQTa49P3x90vugmAYKghUOVu2ByX1qLyM+IxLdwIE5iZTeCSqfUtnn6FmZ+3y2zI+ozTzZ6o7Mqy7h5mnEUFUH31D5XuMOJN2RPOE8stY+BisD9iQ2f3Re2xllKsIolX5hhzcJ0BmxuIMxB5orjTBxDMHwyaIrYxoWq1XxSCiBfqVV6g3ksjsxGaOKigdmozdWdUET8gkk/MoB8/Yqo6SuJTs2Gf9zRDtl5yRvIb2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J2o2r5Cp9tnxXwIsrRRMBz/IUuGsuEpfXEe4V/dJzyw=;
- b=PNw/pr+vACqWGl4vDEdfBV3q1pS1dPQ+eG+2oqk/1DoKunrPVvqbBSFblpBQPRRoSPBtUmdnFXJLR4Ig/00x75we5NfnXgW1oGsPHaIRZVJpWsOLxiAqrtyAUS8z/oFpQAA72brYt3ScsXkgSKmEikkQrhT9Ahy9l3LkItsGeidKns4IKnos0tGqAdo/ne3HTxVIU2YYq/kMNLwQyPnNhbgs+C9yfX/VTUtt3A5nP6NHCgSA5keqx04fvMkIF12HVuFf+7xCfpyuE6NkhswFFgQUew3/Hy46MfFk7yU8s9+xKGmtLx+L0iFpt1RtObqx0Lym4I+Ukez3vdSO7tNM7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J2o2r5Cp9tnxXwIsrRRMBz/IUuGsuEpfXEe4V/dJzyw=;
- b=R9KR3wtqtuC/pwBDEAKO0Ot2hNp0BwIQLmGl/P6+MDv6jehcaprUmhr3EKqwIeRYA7s36/UyD+FjhFep7LRpYrBdl5oy7U0b2bMlGqjXM3qBZj72/yYBVbJvTsTEDsLL3zXs7OagzfA6QZ08GbXwKy1safJVBpDwlzswEY8WJpx6YOhvga18/B1QncBTqEdidEtmu8lErK3yFalt7o+C5ZjJzgWp9+nz5HZrKSVh+MXxpH+ts/tpUMAzE881m6N70Alx6vTm2X8ao5njTMDKGRyQixllujZbmX7mss+9K0DysZXoNNLsTUIfOGJLUV8wNwfgn3kb5UrNvaE5cL3mMg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV2PR04MB11882.eurprd04.prod.outlook.com (2603:10a6:150:2f2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 14:29:50 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 14:29:50 +0000
-Date: Wed, 23 Sep 2026 09:29:40 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: nicolas.dufresne@collabora.com, p.zabel@pengutronix.de,
-	mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@collabora.com
-Subject: Re: [PATCH 1/2] media: verisilicon: Remove deprecated variant
-Message-ID: <arPiVEc-SCYrtuNA@SMW015318>
-References: <20260923090307.49959-1-benjamin.gaignard@collabora.com>
- <20260923090307.49959-2-benjamin.gaignard@collabora.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923090307.49959-2-benjamin.gaignard@collabora.com>
-X-ClientProxiedBy: PH7P220CA0125.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::18) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jWR6db+e"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a803458ba0so1388446a12.0
+        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:44:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790174695; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Zi3XkVPL7NBHaMvth86zZTyjoVxLuezZJ5iOYlH19L4ls1JsVBNnT1iZd1k9Pqwijr
+         qt2AEv6B5kKWp3kVTRF+DrnpKL2axjZ38WyIfY+cCGI7NDZQj6CuX5NQPkBQIXNz4YRE
+         ITSfzZu3gmt2GblKrcCHO8UpAX9HfgE/SizB5YmJhGKUo1/kGbuXw1ZlhIlVkcgU1LkY
+         Z6u5D4ReW0Ow15uT6F6OHyP0klzdkef9EYhLlHPHVFVGqMVsFi3CEtRuc77aq5bnhftl
+         cB0fGtS6Dqjvty1wXEyf9mnh0IOWc/FomZg8qiPdSk4QpdYhT7ypk1eYJqEqhZpHU0T9
+         CAEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=M4aBOtPsfRM3OiglhHgFceP8oaWfGnoSKrcjXOznF1Q=;
+        fh=WXRBTzYryGPf4cKjJWfUti7+w8E+KP1aAiwvYZSu8W8=;
+        b=NNqIlXUfhSvkA56q7bJnv3nipQy56h9j2lM0oJ9/WOTnDt71wjZEBDzYmLfwcHY0DS
+         cHY98fqsCWJ39c30XQkLB+WYbMxcEv4sfLaO2RG3tQib3iXtmcXlbxSUhZeVVcZ71XDb
+         +dJaKxDdCVyAejAqj5v1IymT96P7eLD7QprliUUcpljnyJmImnJqrNAEAePabamJ8UTr
+         yHhGP4nIR73uhSHH7Tc4IRBJs8C7Xq1KpftIzUJK3Sc1/tVYqWkszXePIJ8GF/DnCMrw
+         aFBpViNewnANaEikeOwlXvRXoaJZ34GHeZwSiI7n1T0x8sP+HEbZQCjh/2y7PJZlSemz
+         Bs/Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1790174695; x=1790779495; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=M4aBOtPsfRM3OiglhHgFceP8oaWfGnoSKrcjXOznF1Q=;
+        b=jWR6db+ebQKcLO9lauw8yoYCYQxh0vf9MCDt5IzAgoY1qWAMpPyHpko+4MgpHgFj+5
+         ZfTfZmuRwLqLG9a9ZPfpIpIbN6WkhfuyIdPvo1FxLrycM2zGAe/yHBVMDLQVvh8fLUre
+         lxTUrqyyn7MmdltJUUbWCxdJ6d/wrgML5qnd2VVa9/RJCCBZcVwo8ZiUteEOy+oLx4vC
+         QJcyjs+Ju9ZKaO+u4v9vViFG60028eLAZT7C+fJ2URQoZmYGcZ1RrThZC2odldv2gp5t
+         U97sUHtjX7/HMLlwJNh6tPKNYTsQ2DOgsCTJ5gRQXZ7S4dFSOIk0qjeYsffRQZXSSPvj
+         kq0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790174695; x=1790779495;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=M4aBOtPsfRM3OiglhHgFceP8oaWfGnoSKrcjXOznF1Q=;
+        b=u2ZHpfzqU44S4dHs2ErQfBOd+wrutThd2LZiA0hg0ttlaa2jsmewZ6LGbW8xBVt/9i
+         T/jrlKBVhS4nAfbRG2qs0b8uLe3ztySxfqjpuEnfvehN3o4vrYwVsZ2SksqzLnPOlMcZ
+         tSrVUVpRlZMWvECUAGamiDuZLCAhK04Ddnwp8WcGW59fAX/zSpmPO9aOkojyemmv4YOp
+         fnjOwy1gmpGVwbmB+nFdU0T0djhL5WRC48IvMff4482vqLimiNC5M8J8P4NG9CSAb8ts
+         PFOR/85jVMiQ0RPGrDHmkFKA9i6mQ/hmLapKmNoDC1fz1b1MmgJbdM3pBVwCnXHrETHd
+         WXjg==
+X-Forwarded-Encrypted: i=1; AKwUvBx5LS5AgiDM1C212i8wOoUtZS3HoAO2Vc4dkNjrJkjMHglXjf0+xIMdytRoyBrnHEj8Fl4=@lists.linux.dev
+X-Gm-Message-State: AFuF++nknFC30olo+T3a+P5QeSNAUUqTTwRWc1sgu9/XKB2ZwexFp3o4
+	/G4EBDXExaXBhJzbuDvGCMwvg3BozJWrfSlrbW4paNhig3dX6gmmqLpulLiof+ewKW7BwvYR5E9
+	/VPbo4wrK8ne10Be9UXP5qtU1wrPUdJNe8OGvq3CJ8g==
+X-Gm-Gg: AYBFou13gyRQW5NRC4ruPvUZWcdXHUkho9icjuvZFBhltBKjM4XF5B1YiXQfSfDidWw
+	zeujHmZ3rG9AtNfESKOF5h9Bq2B65yJqsoLjYYmOOkJ6U9HPU9wZGn89r6G9u7sdGcBapdb9NI0
+	PU5Y0QXPq+FFig8z2eBGNVNqXI/M01ATYrcYjnduXEDDZjf1oTNcixOXRJyHBPzgumZCX47N6/Q
+	T7ZhBOO1314Uhbd04K86+7CAtopuhkKRy6Mz8/EcFD7NVtHctAaWBMFsqUBRdfXcY7P6JeDeomy
+	VO7DQq+wwVdLhFurKfOu2bNyY2q4tIE/q+0mb3w393egoTjMhqFKoph/tdtxekkbK/0O2QWS2Kj
+	saRzs8bsMHKM=
+X-Received: by 2002:a05:6402:378a:b0:6aa:9851:6d5c with SMTP id
+ 4fb4d7f45d1cf-6aab3b2954fmr2562437a12.19.1790174694197; Wed, 23 Sep 2026
+ 07:44:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB11882:EE_
-X-MS-Office365-Filtering-Correlation-Id: a33d64ab-3d3d-494f-aaa6-08df197f201f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|19092799006|23010399003|11063799006|56012099006|10067099003|22082099003|18002099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	5FGPV0FGhJpCgl8z2nYON32R13g+bTSBFYuIpmvndepylM8K/TMhOWjjW0S5JIdnWL4X9caocRljzs1iu/vkEYIJPnJNOQeAmjduPNjXIz2j7Ll0hhDa8MXbSpQ0GJYjyJAqcBs0TNEbDc3v5M+z8gsan8LFUD3jGB6QeXjtnREykLycPjKMzCAMbD91nLiTL8RjctEwoej/ruHWtU+Rk7AhqTNBpctm+utSOhmxicy37fI1vB3Z1FS1lBBb7gwVyxaLpy2amG8beitH0A9QPPk+wEdrN+cKPylf16hCRaNPyV2aZZDo33/xRjduIDYWce0SmnxfeayPFKuRmQJiEQo5jASnJH0m3hJpD9k/j0UaHA7OgPo4exi0rhMugQTMu7sgt5nzyZPnzRgdcg5wWyE5rP8xk9rg9oTCrjrb2RKTC0OqWbR2QeyrTVFn1mZEaHDrJg7fPfyUdofve9RbaYRdN1+ipwK7XZz4AbWetQNOiAg+KjpeqnYpC2UzIIuNfehSdFtuawuJ2fKkjbC4w6S37coTMyc4yqAR7sGUIMArLZKsHSIiMu3CbeYxxEgimBdk2y6SythORnxK/+E+QM4/rEy38ZQSpecbnZJnyxpxFZ1LIOIMGGHUCuf/8YtYzmTQ458qboZ2mlSapdXatHCnH8Y6hbemTgv11WzCKpc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(19092799006)(23010399003)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Sp+RqVjO9NbPY7lyi1/r+h4hU+KOMYsGoLSm6EB4haPDJDj8oznAdeL9MuLs?=
- =?us-ascii?Q?uaDrfrniJQA6ddqNn4TUjI2Bu51lvhbde5MByrWgTaOoOkSnL6Tcwj71BNLa?=
- =?us-ascii?Q?8x0w31zrod+zzcIhUYKg1mQPkxFBDGh37ynTHSRNyx/gdo2+gLfmrFOOlLBZ?=
- =?us-ascii?Q?gknq/fXPYfcGKc2s9o4lDPRF5nKV+5FRUpWJexLMUBWlT89a3XvNvZbX1W83?=
- =?us-ascii?Q?3ow1AVkD24fHQkne+ic1cOPTLGQipAM2/MTMX7H7HyRokAjDsGYZgXE7ub6C?=
- =?us-ascii?Q?FbWXI0obDJzpSyFtxED6jx3mDFV/l/TwPOLdBZqzDGdxLGDDnESTefjtuuNp?=
- =?us-ascii?Q?AD9oU+7Z31XieUPuHHeHv5LpivFkyPnkDFsexnWHRsrv1iYYAz4ON1gq2+Ka?=
- =?us-ascii?Q?JVyWF29JZRyRHXeAHoslmwXTPKlfnJfo0V1B8FPd/rShWfQfIAHtbdPjOPre?=
- =?us-ascii?Q?VV/TbkKfUm+JvEtzwDas2h7ma3XAXphtBh/uc92C79pxDpXL7R4bzlaBPr0o?=
- =?us-ascii?Q?4IssWhvLS0zmsuPNCS6NPniPV6Wqs4xIg+ELeilt1X7FhFzr5wJHpwWubi/z?=
- =?us-ascii?Q?9/MBR4ZC67RCgPZ1V8po1p2NJed5C7rXFl/V7s2TrCJe8j6s4r7oxj/y/oD+?=
- =?us-ascii?Q?axL9VAc+XrHSo1BLnMRa5GNayJl6n+IC55jeHOZPw+lxwRLmSEM+YociMvQB?=
- =?us-ascii?Q?Ju1B7IfQg/E8HVWY2vX5HD+QwKvlnbByq1y8REkpuQfDf83NbT9pOriI7p/V?=
- =?us-ascii?Q?+gNxKvTLuQfIIUi+zlWwSW2eqxFcsTrUheMQNzbdXzUyRNo1MXTa/OYRmdPg?=
- =?us-ascii?Q?CBzNZTvZY5CqiA0uxcQ1ctyCUjjrB3f8FJc2fknOQJ78NE8Aid5Pa1C4CSZf?=
- =?us-ascii?Q?f4zGibzcU12maqjSKXkX1sox0u7UxFr9scmjOz3FPVrqOApBP94W5tuXSweJ?=
- =?us-ascii?Q?tPDrt3RlP8WyT7LStapZDrPZzxn111twooTpkgCntWNJ8HqjuEt9gocqSUuZ?=
- =?us-ascii?Q?YLHU5l8jqpYdzVY1Ty/1cPOs5AYSu+pJZ4PscQoFG+e4GVcc8ZjE7DD3aabB?=
- =?us-ascii?Q?eP4oDoHy3kZejJZ1MTl04sujLFjIIU6LW6wMU2P+j30k3DsXCGalbv+b4a5a?=
- =?us-ascii?Q?uKiSMDn5ZNpJkGZi0tsRSJOAYyFL4xSoHjysqEPfQAi7TgeRQKLUu+9tHqY5?=
- =?us-ascii?Q?jI33yBDbPnrIsDMSgI6CJmsaqnyq5d3rfe97q/ycO+6oTQ5lkOE9l1peQTAi?=
- =?us-ascii?Q?Cg8rzQLQziaM9JgbLoDgcjqXisseFcsBZhsLF88VMzB0WNqTruvuLHVhUi5w?=
- =?us-ascii?Q?lVjV1yDL75Zj0HLZtJEdZK9C+soeGRBIMiv0+iGrFnvjYXZ/Nt70cBsmDAfM?=
- =?us-ascii?Q?aANvSZfN7XhXDRcdcQpRzAIn6xxdVQhtIa0Tuc/4l7bvJMEXKGBPZ5zVQyUh?=
- =?us-ascii?Q?KdrnF7oBqdQ1gvkC4OPFul7Z986t/4E0Gect+pr/uL5OY6mW3lIlb2UQwrkP?=
- =?us-ascii?Q?Px5SKQRcMXKS4r2vHHYUrXv+LsoeW5D1RxLuZymL6qIP59dNhsDCWvR9abC0?=
- =?us-ascii?Q?m8SDfgJsJAobc+nhkaUise4kjN3ekZtSS2k+XvA+yyOOjLKunARXdDlgux2T?=
- =?us-ascii?Q?+S7LCsJIdqsIEsR4DFzrZWoQMbmA9ol4ns4Dyfxgxol9lcDac1U02YUGKUxX?=
- =?us-ascii?Q?HvHeC5+bXLrs0M1huUJRJbT6EmFNDEYXCFIma2BoY7z2r42GV0RP1LoW33EJ?=
- =?us-ascii?Q?OxabMyzeKSyWfhRfxsiBgILoIPCpy0XkWzr2nXf4hdaw56Qr2UOv?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a33d64ab-3d3d-494f-aaa6-08df197f201f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 14:29:50.3947
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qdcP40TQqU1v6g2kC97ETaySObTSmEI7C1BwYRR6oRKJLKZ4URQO1EMYfPNEA7jUo6WePp6Bj+QoTElRIeiPyCLAjgQs6zV+QZs/U5U6ZciiQdCDCGJbzrFqAaorvxzr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11882
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <20260916-remoteproc_virtio_map-v1-6-dac8c5eb4aa9@valla.it>
+ <arKlvZGqu2nt6Ci0@p14s> <arLXthhYbKkwZ9zY@bywater>
+In-Reply-To: <arLXthhYbKkwZ9zY@bywater>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Wed, 23 Sep 2026 08:44:41 -0600
+X-Gm-Features: AclHuK98k2uTxSqJLFP90Hvvkb8R20Qb9iAi3e_cMJ5VQjy6TOoZ99TlQSDABtg
+Message-ID: <CANLsYkwNOukGX68=NVvwNP7iudP3EcKN6C2L2o9nVCTRxFVxFg@mail.gmail.com>
+Subject: Re: [PATCH RFC 06/12] remoteproc: virtio: add bounce buffering for
+ data buffers
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, virtualization@lists.linux.dev, 
+	imx@lists.linux.dev, iommu@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 23, 2026 at 11:03:06AM +0200, Benjamin Gaignard wrote:
-
-suggest subject:  Remove deprecated nxp,imx8mq-vpu nxp variant
-
-> "nxp,imx8mq-vpu" is tagged as deprecated since:
-> commit f3116f2e52e6 ("media: dt-bindings: media: nxp, imx8mq-vpu: Split G1 and G2 nodes")
-> merged since v5.17-rc1.
-> There is more reference to it since that.
-> Remove for driver and Documentation to clean up the code.
+On Tue, 22 Sept 2026 at 13:39, Francesco Valla <francesco@valla.it> wrote:
 >
-> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-> ---
->  .../bindings/media/nxp,imx8mq-vpu.yaml        |  2 -
-
-I am not sure if it is okay to combine bindng doc into one patch.
-
-Generally remove driver code, then remove binding doc.
-
->  .../media/platform/verisilicon/hantro_drv.c   |  1 -
->  .../media/platform/verisilicon/imx8m_vpu_hw.c | 60 -------------------
->  3 files changed, 63 deletions(-)
+> On Tue, Sep 22, 2026 at 09:58:53AM -0600, Mathieu Poirier wrote:
+> > On Wed, Sep 16, 2026 at 11:10:51PM +0200, Francesco Valla wrote:
+> > > Depending on the driver originating them, data buffers used for virtio
+> > > communication can either:
+> > >
+> > >   - already be allocated from the coherent memory area that is
+> > >     accessible by the remote processor; this is the case of rpmsg
+> > >     and the rproc flavor of virtio-console;
+> > >   - be allocated from generic kmem, and thus not accessible directly by
+> > >     the remote processor.
+> > >
+> > > Exploiting the map operations, which are used by the virtio framework
+> > > when VIRTIO_F_ACCESS_PLATFORM is part of a vdev's feature flags, add
+> > > bounce buffering for the second case: when the map() callback is called
+> > > for a buffer, one or more pages of coherent memory are allocated and
+> > > data is copied to them, then they are exposed to the remote processor;
+> > > the data is  then bounced back on unmap().
+> > >
+> > > The first case is not impacted, since buffers already suitable for
+> > > remote transmission are passed through.
+> > >
+> > > With the bounce buffering in place, any kind of virtio device can be
+> > > supported through the remoteproc-virtio transport, at least from a
+> > > data exchange standpoint.
+> >
+> > Is this _necessary_ for the imx93 platform you are implementing feature for?
+> >
 >
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> index 19528262810a5..504ea45355dbc 100644
-> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> @@ -15,8 +15,6 @@ description:
->  properties:
->    compatible:
->      oneOf:
-> -      - const: nxp,imx8mq-vpu
-> -        deprecated: true
->        - const: nxp,imx8mq-vpu-g1
->        - const: nxp,imx8mq-vpu-g2
->        - const: nxp,imx8mm-vpu-g1
+> If I don't want to fundamentally change how the remoteproc integration
+> works (i.e.: using buffers only from a pre-shared area), yes. While in
+> my test environment the Cortex-M33 serving as remoteproc is able to
+> access the whole RAM space, that is not always the case.
 
-Rob bot suggest change to use
-	enum
-	  - nxp,imx8mq-vpu-g1
-	  ...
+The first sentence tells me it is mandatory while the second says it
+is not.  I understand the use case but don't want to bloat the
+subsystem with code that is trying to address a problem you currently
+don't have.
 
-Frank
 
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-> index ad71c0402ef3b..70de47ddb023b 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -725,7 +725,6 @@ static const struct of_device_id of_hantro_match[] = {
->  #endif
->  #ifdef CONFIG_VIDEO_HANTRO_IMX8M
->  	{ .compatible = "nxp,imx8mm-vpu-g1", .data = &imx8mm_vpu_g1_variant, },
-> -	{ .compatible = "nxp,imx8mq-vpu", .data = &imx8mq_vpu_variant, },
->  	{ .compatible = "nxp,imx8mq-vpu-g1", .data = &imx8mq_vpu_g1_variant },
->  	{ .compatible = "nxp,imx8mq-vpu-g2", .data = &imx8mq_vpu_g2_variant },
->  #endif
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> index fa4224de4b996..3b63f626d33f2 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> @@ -42,38 +42,6 @@ static void imx8m_soft_reset(struct hantro_dev *vpu, u32 reset_bits)
->  	writel(val, vpu->ctrl_base + CTRL_SOFT_RESET);
->  }
+> This is even more important for mixed-criticality-ready processors (say:
+> i.MX95), where access to different memory areas si defined even before
+> the various application cores are started.
 >
-> -static void imx8m_clk_enable(struct hantro_dev *vpu, u32 clock_bits)
-> -{
-> -	u32 val;
-> -
-> -	val = readl(vpu->ctrl_base + CTRL_CLOCK_ENABLE);
-> -	val |= clock_bits;
-> -	writel(val, vpu->ctrl_base + CTRL_CLOCK_ENABLE);
-> -}
-> -
-> -static int imx8mq_runtime_resume(struct hantro_dev *vpu)
-> -{
-> -	int ret;
-> -
-> -	ret = clk_bulk_prepare_enable(vpu->variant->num_clocks, vpu->clocks);
-> -	if (ret) {
-> -		dev_err(vpu->dev, "Failed to enable clocks\n");
-> -		return ret;
-> -	}
-> -
-> -	imx8m_soft_reset(vpu, RESET_G1 | RESET_G2);
-> -	imx8m_clk_enable(vpu, CLOCK_G1 | CLOCK_G2);
-> -
-> -	/* Set values of the fuse registers */
-> -	writel(0xffffffff, vpu->ctrl_base + CTRL_G1_DEC_FUSE);
-> -	writel(0xffffffff, vpu->ctrl_base + CTRL_G1_PP_FUSE);
-> -	writel(0xffffffff, vpu->ctrl_base + CTRL_G2_DEC_FUSE);
-> -
-> -	clk_bulk_disable_unprepare(vpu->variant->num_clocks, vpu->clocks);
-> -
-> -	return 0;
-> -}
-> -
->  /*
->   * Supported formats.
->   */
-> @@ -234,13 +202,6 @@ static const struct hantro_fmt imx8m_vpu_g2_dec_fmts[] = {
->  	},
->  };
+> For the sake of completeness, there *might be* a completely different
+> approach that would work: modify every virtio driver to make sure they
+> allocate buffers from the pre-shared memory area (that is, the coherent
+> memory pool). That approach would even avoid the bounce buffering and
+> allow for zero-copy transmission. I even started working on that,
+> defining virtio helpers to do the allocations instead of using raw
+> kmallocs, but then I dropped the idea because of the magnitude of the
+> changes required.
 >
-> -static int imx8mq_vpu_hw_init(struct hantro_dev *vpu)
-> -{
-> -	vpu->ctrl_base = vpu->reg_bases[vpu->variant->num_regs - 1];
-> -
-> -	return 0;
-> -}
-> -
->  static void imx8m_vpu_g1_reset(struct hantro_ctx *ctx)
->  {
->  	struct hantro_dev *vpu = ctx->dev;
-> @@ -319,30 +280,9 @@ static const struct hantro_irq imx8mq_g2_irqs[] = {
->  	{ "g2", hantro_g2_irq },
->  };
+> > >
+> > > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > > ---
+> > >  drivers/remoteproc/remoteproc_virtio.c | 182 +++++++++++++++++++++++++++++++--
+> > >  include/linux/remoteproc.h             |  14 +++
+> > >  2 files changed, 190 insertions(+), 6 deletions(-)
+> > >
+> > > diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+> > > index cfd66d9d1c9e..d21b3b8044df 100644
+> > > --- a/drivers/remoteproc/remoteproc_virtio.c
+> > > +++ b/drivers/remoteproc/remoteproc_virtio.c
+> > > @@ -241,7 +241,14 @@ static void rproc_virtio_reset(struct virtio_device *vdev)
+> > >     dev_dbg(&vdev->dev, "reset !\n");
+> > >  }
+> > >
+> > > -/* provide the vdev features as retrieved from the firmware */
+> > > +/* Provide the vdev features as retrieved from the firmware, plus the following
+> > > + * additional ones:
+> > > + *   - VIRTIO_F_VERSION_1 that is required by some non-rpmsg virtio devices
+> > > + *   - VIRTIO_F_ACCESS_PLATFORM to force usage of the map operations
+> > > + */
+> > > +#define RPROC_VIRTIO_STATIC_FEATURES \
+> > > +   ((1ULL << VIRTIO_F_VERSION_1) | (1ULL << VIRTIO_F_ACCESS_PLATFORM))
+> > > +
+> > >  static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+> > >  {
+> > >     struct rproc_vdev *rvdev = vdev_to_rvdev(vdev);
+> > > @@ -249,7 +256,7 @@ static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+> > >
+> > >     rsc = (void *)rvdev->rproc->table_ptr + rvdev->rsc_offset;
+> > >
+> > > -   return rsc->dfeatures | (1ULL << VIRTIO_F_VERSION_1);
+> > > +   return rsc->dfeatures | RPROC_VIRTIO_STATIC_FEATURES;
+> > >  }
+> > >
+> > >  static void rproc_transport_features(struct virtio_device *vdev)
+> > > @@ -275,16 +282,16 @@ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+> > >     /* Give virtio_rproc a chance to accept features. */
+> > >     rproc_transport_features(vdev);
+> > >
+> > > -   /* Make sure we don't have any features > 32 bits except VIRTIO_F_VERSION_1 */
+> > > +   /* Make sure we don't have any features > 32 bits */
+> > >     if (WARN_ON_ONCE((u32)vdev->features !=
+> > > -                    (vdev->features & ~(1ULL << VIRTIO_F_VERSION_1))))
+> > > +                    (vdev->features & ~RPROC_VIRTIO_STATIC_FEATURES)))
+> > >             return -1;
+> > >
+> > >     /*
+> > >      * Remember the finalized features of our vdev, and provide it
+> > >      * to the remote processor once it is powered on.
+> > >      */
+> > > -   rsc->gfeatures = vdev->features & ~(1ULL << VIRTIO_F_VERSION_1);
+> > > +   rsc->gfeatures = vdev->features & ~RPROC_VIRTIO_STATIC_FEATURES;
+> > >
+> > >     return 0;
+> > >  }
+> > > @@ -337,6 +344,151 @@ static const struct virtio_config_ops rproc_virtio_config_ops = {
+> > >     .set            = rproc_virtio_set,
+> > >  };
+> > >
+> > > +static inline unsigned int rproc_virtio_bounce_slot(struct device *dma_dev,
+> > > +                                               dma_addr_t dma_handle)
+> > > +{
+> > > +   const dma_addr_t dma_base = dma_dev_coherent_base(dma_dev);
+> > > +
+> > > +   return (dma_handle - dma_base) >> PAGE_SHIFT;
+> > > +}
+> > > +
+> > > +static dma_addr_t rproc_virtio_map_page(union virtio_map map, struct page *page,
+> > > +                                   unsigned long offset, size_t size,
+> > > +                                   enum dma_data_direction dir,
+> > > +                                   unsigned long attrs)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +   struct rproc_vdev *rvdev = dev_get_drvdata(dev);
+> > > +   dma_addr_t dma_base = dma_dev_coherent_base(dev);
+> > > +   size_t dma_size = dma_dev_coherent_size(dev);
+> > > +   phys_addr_t paddr = page_to_phys(page) + offset;
+> > > +   void *vaddr = page_to_virt(page) + offset;
+> > > +   struct rproc_map_record *record;
+> > > +   dma_addr_t map_handle;
+> > > +   void *bounce;
+> > > +
+> > > +   // No need to allocate a bounce buffer if the memory to map is already
+> > > +   // part of the device's coherent pool.
+> > > +   if (paddr >= dma_base && paddr < (dma_base + dma_size)) {
+> > > +           // The allocation details will be recorded also in this case,
+> > > +           // indicating that no bounce buffer was allocated.
+> > > +           map_handle = (dma_addr_t)paddr;
+> > > +           bounce = NULL;
+> > > +   } else {
+> > > +           // Allocate bounce buffer from device coherent memory
+> > > +           bounce = dma_alloc_coherent(dev, size, &map_handle, GFP_KERNEL | __GFP_ZERO);
+> > > +           if (!bounce)
+> > > +                   return DMA_MAPPING_ERROR;
+> > > +
+> > > +           // Copy data to bounce buffer
+> > > +           memcpy(bounce, vaddr, size);
+> > > +   }
+> > > +
+> > > +   // Save bounce details
+> > > +   record = &rvdev->map_records[rproc_virtio_bounce_slot(dev, map_handle)];
+> > > +
+> > > +   record->original = vaddr;
+> > > +   record->size = size;
+> > > +   record->bounce = bounce;
+> > > +
+> > > +   return map_handle;
+> > > +}
+> > > +
+> > > +static void rproc_virtio_unmap_page(union virtio_map map, dma_addr_t map_handle,
+> > > +                               size_t size, enum dma_data_direction dir,
+> > > +                               unsigned long attrs)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +   struct rproc_vdev *rvdev = dev_get_drvdata(dev);
+> > > +   unsigned int slot = rproc_virtio_bounce_slot(dev, map_handle);
+> > > +   struct rproc_map_record *record = &rvdev->map_records[slot];
+> > > +
+> > > +   WARN_ON(size != record->size);
+> > > +
+> > > +   // If a bounce buffer was used, copy data back to original one
+> > > +   if (record->bounce) {
+> > > +           memcpy(record->original, record->bounce, record->size);
+> > > +
+> > > +           dma_free_coherent(dev, record->size, record->bounce, map_handle);
+> > > +   }
+> > > +
+> > > +   record->original = NULL;
+> > > +   record->size = 0;
+> > > +   record->bounce = NULL;
+> > > +}
+> > > +
+> > > +static void rproc_virtio_sync_single_for_cpu(union virtio_map map,
+> > > +                                        dma_addr_t map_handle,
+> > > +                                        size_t size,
+> > > +                                        enum dma_data_direction dir)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +
+> > > +   dma_sync_single_range_for_cpu(dev, (map_handle & PAGE_MASK),
+> > > +                                 offset_in_page(map_handle), size, dir);
+> > > +}
+> > > +
+> > > +static void rproc_virtio_sync_single_for_device(union virtio_map map,
+> > > +                                           dma_addr_t map_handle,
+> > > +                                           size_t size,
+> > > +                                           enum dma_data_direction dir)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +
+> > > +   dma_sync_single_range_for_device(dev, (map_handle & PAGE_MASK),
+> > > +                                    offset_in_page(map_handle), size, dir);
+> > > +}
+> > > +
+> > > +static void *rproc_virtio_alloc(union virtio_map map, size_t size,
+> > > +                           dma_addr_t *map_handle, gfp_t gfp)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +
+> > > +   return dma_alloc_coherent(dev, size, map_handle, gfp);
+> > > +}
+> > > +
+> > > +static void rproc_virtio_free(union virtio_map map, size_t size, void *vaddr,
+> > > +                         dma_addr_t map_handle, unsigned long attrs)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +
+> > > +   dma_free_coherent(dev, size, vaddr, map_handle);
+> > > +}
+> > > +
+> > > +static bool rproc_virtio_need_sync(union virtio_map map, dma_addr_t map_handle)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +
+> > > +   return dma_need_sync(dev, map_handle);
+> > > +}
+> > > +
+> > > +static int rproc_virtio_mapping_error(union virtio_map map, dma_addr_t map_handle)
+> > > +{
+> > > +   if (unlikely(map_handle == DMA_MAPPING_ERROR))
+> > > +           return -ENOMEM;
+> > > +
+> > > +   return 0;
+> > > +}
+> > > +
+> > > +static inline size_t rproc_virtio_max_mapping_size(union virtio_map map)
+> > > +{
+> > > +   struct device *dev = map.dma_dev;
+> > > +
+> > > +   return dma_dev_coherent_size(dev);
+> > > +}
+> > > +
+> > > +static const struct virtio_map_ops rproc_virtio_map_ops = {
+> > > +   .map_page = rproc_virtio_map_page,
+> > > +   .unmap_page = rproc_virtio_unmap_page,
+> > > +   .sync_single_for_cpu = rproc_virtio_sync_single_for_cpu,
+> > > +   .sync_single_for_device = rproc_virtio_sync_single_for_device,
+> > > +   .alloc = rproc_virtio_alloc,
+> > > +   .free = rproc_virtio_free,
+> > > +   .need_sync = rproc_virtio_need_sync,
+> > > +   .mapping_error = rproc_virtio_mapping_error,
+> > > +   .max_mapping_size = rproc_virtio_max_mapping_size,
+> > > +};
+> > > +
+> > >  /*
+> > >   * This function is called whenever vdev is released, and is responsible
+> > >   * to decrement the remote processor's refcount which was taken when vdev was
+> > > @@ -355,6 +507,8 @@ static void rproc_virtio_dev_release(struct device *dev)
+> > >     of_reserved_mem_device_release(&rvdev->pdev->dev);
+> > >     dma_release_coherent_memory(&rvdev->pdev->dev);
+> > >
+> > > +   kvfree(rvdev->map_records);
+> > > +
+> > >     put_device(&rvdev->pdev->dev);
+> > >  }
+> > >
+> > > @@ -429,13 +583,29 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
+> > >             of_reserved_mem_device_init_by_idx(dev, np, 0);
+> > >     }
+> > >
+> > > +   /* Allocate one tracking record for each page of the device reserved
+> > > +    * memory. Contiguous memory is not required for this array, which can
+> > > +    * also be quite big (depending on the size of the coherent memory), so
+> > > +    * let's use vmalloc for this allocation.
+> > > +    */
+> > > +   rvdev->map_records = kvcalloc(dma_dev_coherent_size(dev) >> PAGE_SHIFT,
+> > > +                                 sizeof(*rvdev->map_records),
+> > > +                                 GFP_KERNEL);
+> > > +   if (!rvdev->map_records) {
+> > > +           dev_err(dev, "failed to allocate memory for map records\n");
+> > > +           return -ENOMEM;
+> > > +   }
+> > > +
+> > >     /* Allocate virtio device */
+> > >     vdev = kzalloc_obj(*vdev);
+> > > -   if (!vdev)
+> > > +   if (!vdev) {
+> > > +           kvfree(rvdev->map_records);
+> > >             return -ENOMEM;
+> > > +   }
+> > >
+> > >     vdev->id.device = id;
+> > >     vdev->config = &rproc_virtio_config_ops;
+> > > +   vdev->map = &rproc_virtio_map_ops;
+> > >     vdev->dev.parent = dev;
+> > >     vdev->dev.release = rproc_virtio_dev_release;
+> > >
+> > > diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+> > > index c3ba51fe9e54..2ff48b505ac0 100644
+> > > --- a/include/linux/remoteproc.h
+> > > +++ b/include/linux/remoteproc.h
+> > > @@ -339,10 +339,23 @@ struct rproc_vring {
+> > >     struct virtqueue *vq;
+> > >  };
+> > >
+> > > +/**
+> > > + * struct rproc_map_record - remoteproc map record
+> > > + * @original:      original virtual address
+> > > + * @num: allocation size
+> > > + * @bounce: bounce buffer virtual address (NULL if not used)
+> > > + */
+> > > +struct rproc_map_record {
+> > > +   void *original;
+> > > +   size_t size;
+> > > +   void *bounce;
+> > > +};
+> > > +
+> > >  /**
+> > >   * struct rproc_vdev - remoteproc state for a supported virtio device
+> > >   * @subdev: handle for registering the vdev as a rproc subdevice
+> > >   * @pdev: remoteproc virtio platform device
+> > > + * @map_records: array of map records
+> > >   * @id: virtio device id (as in virtio_ids.h)
+> > >   * @node: list node
+> > >   * @rproc: the rproc handle
+> > > @@ -358,6 +371,7 @@ struct rproc_vdev {
+> > >     unsigned int id;
+> > >     struct list_head node;
+> > >     struct rproc *rproc;
+> > > +   struct rproc_map_record *map_records;
+> > >     u32 rsc_offset;
+> > >     u32 index;
+> > >     unsigned int num_vrings;
+> > >
+> > > --
+> > > 2.55.0
+> > >
 >
-> -static const char * const imx8mq_clk_names[] = { "g1", "g2", "bus" };
-> -static const char * const imx8mq_reg_names[] = { "g1", "g2", "ctrl" };
->  static const char * const imx8mq_g1_clk_names[] = { "g1" };
->  static const char * const imx8mq_g2_clk_names[] = { "g2" };
->
-> -const struct hantro_variant imx8mq_vpu_variant = {
-> -	.dec_fmts = imx8m_vpu_dec_fmts,
-> -	.num_dec_fmts = ARRAY_SIZE(imx8m_vpu_dec_fmts),
-> -	.postproc_fmts = imx8m_vpu_postproc_fmts,
-> -	.num_postproc_fmts = ARRAY_SIZE(imx8m_vpu_postproc_fmts),
-> -	.postproc_ops = &hantro_g1_postproc_ops,
-> -	.codec = HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
-> -		 HANTRO_H264_DECODER,
-> -	.codec_ops = imx8mq_vpu_codec_ops,
-> -	.init = imx8mq_vpu_hw_init,
-> -	.runtime_resume = imx8mq_runtime_resume,
-> -	.irqs = imx8mq_irqs,
-> -	.num_irqs = ARRAY_SIZE(imx8mq_irqs),
-> -	.clk_names = imx8mq_clk_names,
-> -	.num_clocks = ARRAY_SIZE(imx8mq_clk_names),
-> -	.reg_names = imx8mq_reg_names,
-> -	.num_regs = ARRAY_SIZE(imx8mq_reg_names)
-> -};
-> -
->  static const struct of_device_id imx8mq_vpu_shared_resources[] = {
->  	{ .compatible = "nxp,imx8mq-vpu-g1", },
->  	{ .compatible = "nxp,imx8mq-vpu-g2", },
-> --
-> 2.53.0
->
+> Regards,
+> Francesco
 >
