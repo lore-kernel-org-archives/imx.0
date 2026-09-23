@@ -1,296 +1,245 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010035.outbound.protection.outlook.com [52.101.69.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6083531603
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 15:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790176243; cv=fail; b=cbu50gySs6G/sJBr8DebaJ/ezxYWDtG1IYF7i6H/kPumXDB2PsQ89xbX/z8XXbPFVllpBWW9WEmPcE9oz7DQuSt7cEGYBdtWuFmbScxTmYup4Ebdj1B7mTtcaQ62dlwhscqCwQzBic5Ud/+tmeMsmd85/tsT/E08y55mSWd3i2U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790176243; c=relaxed/simple;
-	bh=tmaHVQo3KCGU/9bOM6eLFmueok5trKOYUV6h3UvhHso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SmrSu+vdcPf0l6uWZ37nxoVhGzNkGzuLl0vfR+fmSZ+97tsLuviUh3wrh3O5HDLbbMtw+Mm+hkz2P9NaqolALis4HlQ5ojdjcr/wZjW9iAnrFsZV9rX0SxlIIzfAouoYrkvPlW4BTYSsKYP1QTCiikSsG3wg/CpPxcgwXoAw4w4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=nTrtQf5E; arc=fail smtp.client-ip=52.101.69.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5157935E93B;
+	Wed, 23 Sep 2026 15:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790176407; cv=none; b=jlBwIVLPhZMsimyocCqwQZYif55XwkGZIb5Kx05q7k0P5FmL960EnJtSYsN1zID1T/pDeUW7MlWpsywiLwphWqj24Mi3anZjFf15EchoKSM4KgMnTcZsj5Fhp+EV/DATD2zdDFG4+zdQf+yR/jpBiAOm6MJbWOqq7Iw8scp3Soc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790176407; c=relaxed/simple;
+	bh=phoCjmKpgbmmjwB/TcyzDXeAvmM89UaYWapuOmD6GO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f1BkdoSdIxIU5A9hrJ+BIKRza8qrQylUosu7+GAKOBUI0sLbVuNmVh0yDr7F+aP5g2RUgOGzADP2Ov6sYAM8JecPcL4+zZRcmou4wb8d/5a7P2HK7ueR0dxq/ldoAMsPfsHDjakAjzaoUgb1ZXw8Bpu/zdTLzk1gRJwbqHfshkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lT0HrR7d; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="nTrtQf5E"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WV+Acti90leYTR3ti5lWYOqqNovkHWImBYcrqPu8znoBwrjCVy9Nl4QzWc0fe7HPHz6L8evSMqSSM011xXbP8sUyLDIsGpx2nfoWj4LQMVNLmQKkZUpJRjbFOuCa6PesktNFbulIH8eiQt+fyaKKpK2Ui0JO8AalpCZ1+zyWO9F0D8vAZhCBep2+a+PAR1IsxUApT5yCBFwDKfhHW1baIv4NfiwBEQaxcntfFtC7WK8OiWAXzd2xbhDK30N9fsIvD9Lv+ouEN7N1f4q/48qVJuWRSh6JIsuCnlQqn+n2XUr5xir4gRduWZoHnN4mgfEUiB+hAkkRiJ4RHoQzxdK9iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=szuavJgdiAHXIZylIJ7/GuO29imw5mxqqNiL18haC0k=;
- b=wp1lBkYF+ZL304Ee4NeOb6P8NBr+14jasM9nlffpDg3BJN/PESSRO4dsYq2GyEqNoqIlIN7PZsUlGkmdnzvjPm00urJKLJ2+1kYJh6F5ekifckTIyQU2szMI84LtK/zgsFI13TQO2CX3GoHZ6+Kcz3npyF85YTV17vBYjkvHBLXeZuoMwXtirruyg/NmO8eN3NJka31mlBwydoA8+qwNfHEKYvXj7m1D2V69H5g6XHltqHRhCU5xUegWisZMszevZS2xZT6yILX+mm9CQ43ntnUV4ITzQuGKiQXNjUaP7nO3QcdM8FuoF+E574rLuLDnLSH9HoTv4uYrCMyYSWoUYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=szuavJgdiAHXIZylIJ7/GuO29imw5mxqqNiL18haC0k=;
- b=nTrtQf5EkHijqxW6Iwv0HbomyccUpyjvRBLGyegUly9eNnfMRR84g/MMlsrdeXVNfqYbXec/+gwi1shoooxrXctiApfn02ZKvQtK4bL/Z8fat+OEEMgLcJeTSS52UQyouFxUib1oq3qczyJYSJkfOxtgoOsaB0KQH6NZFqe8R/GJwmvuA+ak8JRlnBv6bnNP7oFqKgc1l943kUqEKA8X3jXp0igGD69POd3lOrms9cw4frhIUKuy9dVaXRSTTpRFTjoz2ro2MvSkZGl+lOqZ0aezgls1tpYX/+M6A18bCS3INq6CEYMx+KXg2UBpN96SNfeotik4O2f0QXLvT+ErBA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBBPR04MB7962.eurprd04.prod.outlook.com (2603:10a6:10:1e7::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 15:10:37 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 15:10:36 +0000
-Date: Wed, 23 Sep 2026 10:10:25 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: shengjiu.wang@oss.nxp.com
-Cc: lgirdwood@gmail.com, broonie@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	shawnguo@kernel.org, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
-	nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com,
-	linuxppc-dev@lists.ozlabs.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [RESEND PATCH v5 5/5] ASoC: fsl_easrc: expose individual DAIs
- per conversion path
-Message-ID: <arPr4ftU4XuYUzDi@SMW015318>
-References: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
- <20260922033428.1690822-6-shengjiu.wang@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260922033428.1690822-6-shengjiu.wang@oss.nxp.com>
-X-ClientProxiedBy: CY5PR15CA0118.namprd15.prod.outlook.com
- (2603:10b6:930:68::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lT0HrR7d"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2367F1A32;
+	Wed, 23 Sep 2026 08:13:20 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9DE43F86F;
+	Wed, 23 Sep 2026 08:13:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790176403; bh=phoCjmKpgbmmjwB/TcyzDXeAvmM89UaYWapuOmD6GO4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lT0HrR7dE1KrdfZA5B71p57+NqXyZadFCb7ajyLoJVdE7kZMh3rZ3Jd0t7uUp8jnW
+	 fLqDM7jtOQPyRFFDJI03lMKNhDcWBWt6MltdUDqXOiaZKTfjhdEkEyRFSF66Rbvbq/
+	 Yjv8PK7Ahg6Cgu2DicOgJTx/pdIes/7CME0K6SuM=
+Message-ID: <37174cd4-95c0-4350-aeb2-b1b6abaccbff@arm.com>
+Date: Wed, 23 Sep 2026 16:13:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBBPR04MB7962:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a8f7ba0-c064-4a9a-d506-08df1984d236
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|23010399003|376014|10067099003|56012099006|11063799006|6133799003|22082099003|18002099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	1P4Pe0OpYdVhGmdrxWS5o4H5zhZOsvlvveUwYOnMnELALkfnx/ZCv1Pa8J562UHG171d2gk6ACr0cP1v8goj/8oZmOEMSaneevwrwqGEL4hgwYQGsCIZE9U21U+LOJn2MT78jaodcFx2h6ag5L8O0EldvfI4e6sZ58kMwRhAuyVrlfBc0VBTRo73CpmcJIswhxkLeOEu7xxNGKZLpyJyzWrDYpEicsnWyjMYQzbJzAWvnTOxu/eF4J8bWXWifXR9hiUpr1uXUCFZl4YN2iEkmioCjq4ZMk6amdD57QuzxRvt9F0+cZEnTPwlh6tHNiEjiYuG3wcxnMw5Y+SoDv1aZAaBG5+nHQy2j4MLaJR6vMAht/01BJOSh6D4VfuaKeUBeI+2dp/pyCYejFnmxgScpZ2rqOy0cJ3EDlerIaw0xN81O41tcF96Aeslup6mcshS0d+HbflnSY1Nu3Eb3Nl6JGECZ1YWnAxjJaRA7bG18TYaTLjJ9egdK2ojrVxbUj01gd8NSUE5k0fLMi7FWTqdxaidwPnoxmZasPu6hWrUCzZbmyjfTp5eCqEcokvfcQ8nVsyAiVCCBh98mq3pm4lA+AHjvrXogO8QJv7k9capWkpjQv7DEIw8EpfwX8Mrf76fBPt1WD/z2GOI0hWNPa7snirvHGdyXLYGE83JNnDSbM8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(23010399003)(376014)(10067099003)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nyh3VrFdcyx4EPS4dpM+ls+yFAiYs4wrtv4t0j+F69MJSJCX0A4teqHDunRq?=
- =?us-ascii?Q?/Y0ukZLf4/d8lV+aiye54rD/s3y4np0gGbAp1dQPo4zhcuUk2XWnQx1DfPik?=
- =?us-ascii?Q?PBJ5I1SeD0SWB6Q3DBBEqB/dCsIdY0QWHb+F0KvpZpgMvYgiqUZLnu1VQcsc?=
- =?us-ascii?Q?7qMOjTlcEVIxwISoDKopDDgUilhu2De3+ZMz6xM4HSpY3qNt/f6yDQFsKj+1?=
- =?us-ascii?Q?NJOjP4OZpmE6xdSrdnWSmFWR2V6zmlOo3s7W0myyXV+s+8DemXE5Y+xKUZkl?=
- =?us-ascii?Q?oM5heWKGVXVD82z/5G9xskxYtuRoVPO+HQMF7IShiTt1KHE/eWmMuoGz5WtJ?=
- =?us-ascii?Q?jnOXKmdp0h1eB4XriZbjyuchc84ZMDGoLzs5g5CyNfm9qJ4cof97rfmnFv0H?=
- =?us-ascii?Q?pXJyDhrwwGsGJDzk+jNJaoeupefRDGKj775LYuQevMePziHuu5FcbJFyTFFU?=
- =?us-ascii?Q?7I15eenLEwVxQqZyGwgDu+l3xOwE6EXY5ViCIbkHtA7G9aT/hLsMz7FRVI02?=
- =?us-ascii?Q?16EbhGxZ8ywGIvr851uyeRiRkg/MbsjBrVnW1LdEf9acobNve4tUTtlwu8L0?=
- =?us-ascii?Q?H2K+LS1Kmf1aofJG7HD6uFGyhhZRrFjFMA+U/BDAB2nNty9wOSLYUN9yvmnb?=
- =?us-ascii?Q?hEiK0GeOhzKl8dnzjpZonV7h3FmWRjTYyaQ+P2I1tTYC6Q6mshyWI5OTAd4n?=
- =?us-ascii?Q?cHcU3/QD3+aaJZWUHFgg8K09I/ZcEiakjfA2sxyVYsD6k8RuxvN7Hqj3Rh0Q?=
- =?us-ascii?Q?BQJ1wSATtmPKhVhFu/IqU9Q57t6xQi3itz3YZ9G5CfPW6lgnDyUVDThSzwDw?=
- =?us-ascii?Q?wo4SZ2FwZ7WeSzs6EWw5Tmp+h78P8avjk1S7vJaQrZ3iffkkqeSJHrwteQ/U?=
- =?us-ascii?Q?/2jUw7WqRkofhr5U7RYV+s8Q6H8uNffi+P3KC5obkL/vz1IwkQnpsAkzQTyj?=
- =?us-ascii?Q?TTCaUeQLe0xys8pPQIWB48KNLg4gPSve3knalyQurSFvjNZU8VmbP0+QnQfY?=
- =?us-ascii?Q?J54fQFNp7qaE1VitlV6o+8NP9DR43mG1zik8dgFYsWGHQGMJjQtmjjUzpjbT?=
- =?us-ascii?Q?fYC0iEkQ/GHVH6LulAJMa3qy1EvLmkBe4FhtckfzWvjRgB8tzVB5C0gBPle2?=
- =?us-ascii?Q?Q9dJVpFqmealdIS2l5pGlSMWbEDiJwl9hqnxuxFSsF21b/cwWtnpI3CFngaD?=
- =?us-ascii?Q?FsZiFeqIhC1VBG3J7TPtB9msyBURh4Va9AsuKtFDKQug8sxt/u7vm5DkLhfo?=
- =?us-ascii?Q?dpPxtRV+c9AyREfp4KLhmMlnDDdyckiMi0CobqVaKAiEz/ZeDf8bFiTWbYPD?=
- =?us-ascii?Q?pog6PgDylBxFwqdPUIKVYSa9piZDcODhsyDmC/PnkHQqNu1VpCC8vQWP551M?=
- =?us-ascii?Q?tDgRWa9iZy82xF24XNX+N8AOQMf4qrwfRDuhlrb+XXDrdIDOuMyGyQQRlLOr?=
- =?us-ascii?Q?ABTA7koOOzZRSCe8xqBKPex4guznQlDyDnL6wo1lK8K/Gl7ZY1FwbFS249E3?=
- =?us-ascii?Q?Jnt7RLoRJyHzAxMBezJ8eS17bhEL7JDVxDRVAkQ/IbRCo2rVIhqgtIBdtTBi?=
- =?us-ascii?Q?9dlGX0REIHV20O/20Y+oI6UsmuH7R8SABawqKHsHZpt5mY70BM6f1swcy37r?=
- =?us-ascii?Q?oFuGLZ5ekyP1o6Rw1dqvEMrkbKdbO6NmMrIRQCqP21sNsYmVzSMaJrxkW/Av?=
- =?us-ascii?Q?Syc3bLdX+3+GRWtRczS22KYjvdWfFLZHi1e2OuT4JhymrJiL9h+ZGnL3Oc4j?=
- =?us-ascii?Q?CxnScsa6stK96zXjZRe5gubLnawlkV+MAwX34ZocAt/v9k1OIotl?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a8f7ba0-c064-4a9a-d506-08df1984d236
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 15:10:36.6324
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mbevDbFGivY3pOVf0L0yxRe5VYV8QLJlem9+6DwND3rTN84Dzk8XB/5sIerlSrMyYNyGFtANdqEFmYupPj3VhF7qPtGvbbNVcq4zV+ncSJuzaDrMLerGUHfvpKh5EPQm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7962
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/12] remoteproc: add support for any virtio device
+To: Francesco Valla <francesco@valla.it>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Mark Brown
+ <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, virtualization@lists.linux.dev,
+ imx@lists.linux.dev, iommu@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 11:34:28AM +0800, shengjiu.wang@oss.nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
->
-> The i.MX EASRC hardware supports four independent conversion contexts
-> (A, B, C, D). The driver previously registered a single DAI with generic
-> stream names "ASRC-Playback" and "ASRC-Capture", which prevents
-> multiple independent conversion paths from being used simultaneously.
->
-> Replace the single fsl_easrc_dai instance with an array of four DAI
-> drivers to allow up to four independent conversion paths to be active
-> at the same time:
->
->   easrc-0 -- ASRC-Playback / ASRC-Capture (backward compatible)
->   easrc-1 -- ASRC1-Playback / ASRC1-Capture
->   easrc-2 -- ASRC2-Playback / ASRC2-Capture
->   easrc-3 -- ASRC3-Playback / ASRC3-Capture
->
-> easrc-0 retains the original generic stream names to preserve backward
-> compatibility with existing machine drivers and board configurations.
-> Each DAI retains the same channel, rate and format capabilities as the
-> original, including IEC958 subframe support on the capture side. Update
-> the devm_snd_soc_register_component() call to register all four DAIs.
->
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+On 16/09/2026 10:10 pm, Francesco Valla wrote:
+> Hello,
+> 
+> this patch series introduces the possibility to support generic virtio
+> devices over the remotepoc transport, whereas today only rpmsg and
+> virtio-console are supported.
+> 
+> == Introduction ==
+> 
+> Support for devices other than rpmsg was originally planned [1] and is
+> declared inside the documentation [2], but is in practice not there for
+> the majority of (if not all) the platforms that provide remoteproc
+> capabilities due to memory allocation.
+> 
+> While vrings are pre-allocated in an area that is reachable by both the
+> local (i.e.; Linux) and remote processors, buffers produced by virtio
+> drivers aren't, since they typically get allocated through kmalloc.
+> The aforementioned rpmsg and virtio-console drivers instead use a trick
+> to overcome this limitation and allocate these buffers directly from
+> the remoteproc device's coherent memory area, somewhat breaking the
+> separation between the driver and the underlying transport.
+
+This sounds very much like needlessly reinventing restricted-dma-pool, 
+with even the same underlying motivation, more or less...
+
+Thanks,
+Robin.
+
+> 
+> == Well, nice, but why? ==
+> 
+> Main usecase is sharing/virtualization of devices in hypervisor-less
+> mixed-criticality contexts, where a subset of peripherals are controlled
+> by a "safety" real-time processor but still need to be used by the Linux
+> world. Several solutions have been / are being proposed [3] [4], but
+> none of them re-uses the existing, standardized virtio specifications.
+> 
+> == The proposal ==
+> 
+> The proposed approach is to introduce a bounce buffering mechanism that
+> is transparent to the drivers and can expose to remoteproc devices only
+> memory areas they can access. This is obtained by defining the .map
+> memeber of each registered vdev and use the map() and unmap() callback
+> to bounce data to and from the remote processor, just like the swiotlb
+> framework is doing in other contexts, using the device's coherent memory
+> area and the associated functions to allocate the bounce buffers.
+> 
+> During the map() callback the address of the incoming buffer is compared
+> against the coherent memory address base and size, to pass through
+> buffers already suitable for remoteproc usage (e.g.: the ones allocated
+> by the rpmsg framework).
+> 
+> == Status and open points ==
+> 
+> The series was tested against a custom Zephyr application [5] running on
+> the Cortex-M33 processor of an i.MX93 and exposing six different virtio
+> devices:
+> 
+>    - rpmsg
+>    - entropy (rng)
+>    - gpio
+>    - i2c
+>    - spi
+>    - can
+> 
+> On top of three of them (unsurprisingly: i2c, spi, and gpio) several
+> devices where declared inside Linux devicetree and successfully used
+> (well, technically I'm still experiencing difficulties with gpio
+> interrupts not firing on the M33, but that's not really related to the
+> series).
+> 
+> Several open points are still present, and needs to be either
+> investigated or discussed:
+> 
+>    - for each bounce buffer an entire page is allocated from the coherent
+>      memory pool; this is a waste for most of the allocations, which take
+>      on average 32 to 64 bytes. An option can be to initialize a DMA pool
+>      on one page and allocate small buffers from it?
+> 
+>    - the support in its current form allocates more memory than before
+>      (for bounce buffer tracking) also for existing usecases (i.e.,
+>      mainly rpmsg).
+> 
+>    - an additional issue still exist - and is not solved by this series -
+>      for a subset of virtio devices: communication through the device's
+>      config space. The remoteproc transport expects this config space to
+>      be somewhat constant, and there is no provision to sync changes made
+>      by the driver with the remote device. This prevents e.g.
+>      virtio-input to work.
+> 
+>    - device de-registration on remoteproc stop is causing oopses (under
+>      investigation - might no be strictly tied to the series)
+> 
+> == Patches breakdown ==
+> 
+> Patches 1 and 2 are cleanups to the remoteproc-virtio driver and could
+> be applied independently of this series.
+> 
+> Patch 3 was submitted a couple of months ago [6] and paves the road for
+> the actual support of generic virtio devices, removing the fixed number
+> of 2 for the vrings associated to a vdev.
+> 
+> Patch 4 introduces two new APIs for coherent memory areas associated to
+> devices that are used later.
+> 
+> Patch 5 might somewhat be controversial, as it unconditionally defines
+> the VIRTIO_F_VERSION_1 feature for all vdevs. This is required to
+> support some virtio device types, and there is no other mean of
+> defining it, since the field reserved for features inside the resource
+> table is limited to 32 bits. Given that the 1.x virtio specifications
+> are ~10 years old this still seems reasonable.
+> 
+> Patch 6 is were the bounce buffering mechanism is introduced; another
+> feature (VIRTIO_F_ACCESS_PLATFORM) is there unconditionally defined to
+> force the virtio framework to use the new map APIs.
+> 
+> Patches 7 and 8 are new devicetree bindings, the first for spi-virtio
+> (modelled against the existing ones for gpio-virtio and i2c-virtio) and
+> the second for declaring virtio device inside a devicetree. This is not
+> required for some devices (e.g.: can, net, gpu), but for others is
+> necessary to declare child devices and link them.
+> 
+> Patch 9 is used to convince the remoteproc-virtio transport to parse the
+> bindings just defined; it is worth noting that the virtio framework
+> already has the support for devicetree declarations and this adds only
+> the glue between the existing support and remoteproc.
+> 
+> Patches 10 and 11 are i.MX-specific and enable the usage of the newly
+> introduced support on this family of platforms. The first one might
+> probably be sumbitted as-is independently of the series, as it aligns
+> the behavior of imx-rproc to the other platforms in relation to mailbox
+> usage.
+> 
+> Finally, patch 12 is the PoC that has been used to develop and test the
+> series and shall not be merged.
+> 
+> ======
+> 
+> Thank you in advance for any comment you may want to leave.
+> 
+> Regards,
+> Francesco
+> 
+> [1] https://lore.kernel.org/all/1330589497-4139-1-git-send-email-ohad@wizery.com/
+> [2] https://elixir.bootlin.com/linux/v7.2.5/source/Documentation/staging/remoteproc.rst#L26
+> [3] https://lore.kernel.org/linux-remoteproc/20260721204704.400781-1-shenwei.wang@oss.nxp.com/
+> [4] https://cfp.embedded-recipes.org/er2026/talk/PCYPJP/
+> [5] https://github.com/WallaceIT/zephyr/tree/multi_vdev
+> [6] https://lore.kernel.org/all/20260621-vring_flex-v1-1-c6c582fbe94b@valla.it/
+> 
+> Signed-off-by: Francesco Valla <francesco@valla.it>
 > ---
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
->  sound/soc/fsl/fsl_easrc.c | 112 +++++++++++++++++++++++++++++++-------
->  1 file changed, 92 insertions(+), 20 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-> index a6ac94055b17..cd22ea3e03bc 100644
-> --- a/sound/soc/fsl/fsl_easrc.c
-> +++ b/sound/soc/fsl/fsl_easrc.c
-> @@ -1589,27 +1589,99 @@ static const struct snd_soc_dai_ops fsl_easrc_dai_ops = {
->  	.hw_free	= fsl_easrc_hw_free,
->  };
->
-> -static struct snd_soc_dai_driver fsl_easrc_dai = {
-> -	.playback = {
-> -		.stream_name = "ASRC-Playback",
-> -		.channels_min = 1,
-> -		.channels_max = 32,
-> -		.rate_min = 8000,
-> -		.rate_max = 768000,
-> -		.rates = SNDRV_PCM_RATE_KNOT,
-> -		.formats = FSL_EASRC_FORMATS,
-> +static struct snd_soc_dai_driver fsl_easrc_dai[] = {
-> +	{
-> +		.name = "easrc-0",
-> +		.playback = {
-> +			.stream_name = "ASRC-Playback",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS,
-> +		},
-> +		.capture = {
-> +			.stream_name = "ASRC-Capture",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS |
-> +				   SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE,
-> +		},
-> +		.ops = &fsl_easrc_dai_ops,
->  	},
-> -	.capture = {
-> -		.stream_name = "ASRC-Capture",
-> -		.channels_min = 1,
-> -		.channels_max = 32,
-> -		.rate_min = 8000,
-> -		.rate_max = 768000,
-> -		.rates = SNDRV_PCM_RATE_KNOT,
-> -		.formats = FSL_EASRC_FORMATS |
-> -			   SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE,
-> +	{
-> +		.name = "easrc-1",
-> +		.playback = {
-> +			.stream_name = "ASRC1-Playback",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS,
-> +		},
-> +		.capture = {
-> +			.stream_name = "ASRC1-Capture",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS |
-> +				   SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE,
-> +		},
-> +		.ops = &fsl_easrc_dai_ops,
-> +	},
-> +	{
-> +		.name = "easrc-2",
-> +		.playback = {
-> +			.stream_name = "ASRC2-Playback",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS,
-> +		},
-> +		.capture = {
-> +			.stream_name = "ASRC2-Capture",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS |
-> +				   SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE,
-> +		},
-> +		.ops = &fsl_easrc_dai_ops,
-> +	},
-> +	{
-> +		.name = "easrc-3",
-> +		.playback = {
-> +			.stream_name = "ASRC3-Playback",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS,
-> +		},
-> +		.capture = {
-> +			.stream_name = "ASRC3-Capture",
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +			.rate_min = 8000,
-> +			.rate_max = 768000,
-> +			.rates = SNDRV_PCM_RATE_KNOT,
-> +			.formats = FSL_EASRC_FORMATS |
-> +				   SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE,
-> +		},
-> +		.ops = &fsl_easrc_dai_ops,
->  	},
-> -	.ops = &fsl_easrc_dai_ops,
->  };
->
->  static const struct snd_soc_component_driver fsl_easrc_component = {
-> @@ -2234,7 +2306,7 @@ static int fsl_easrc_probe(struct platform_device *pdev)
->  	regcache_cache_only(easrc->regmap, true);
->
->  	ret = devm_snd_soc_register_component(dev, &fsl_easrc_component,
-> -					      &fsl_easrc_dai, 1);
-> +					      fsl_easrc_dai, ARRAY_SIZE(fsl_easrc_dai));
->  	if (ret) {
->  		dev_err(dev, "failed to register ASoC DAI\n");
->  		goto err_pm_disable;
+> Francesco Valla (12):
+>        remoteproc: virtio: cleanup rproc_add_virtio_dev error path
+>        remoteproc: virtio: replace commas with semicolons
+>        remoteproc: virtio: support dynamic number of vrings
+>        dma-coherent: add base and size APIs
+>        remoteproc: always report VIRTIO_F_VERSION_1 feature
+>        remoteproc: virtio: add bounce buffering for data buffers
+>        dt-bindings: spi: add bindings for spi-virtio
+>        dt-bindings: remoteproc: add remoteproc-virtio
+>        remoteproc: search for a fwnode during vdev registration
+>        remoteproc: imx_rproc: always use non-blocking mailboxes
+>        dt-bindings: remoteproc: imx-rproc: support virtio
+>        PoC: arm64: dts: imx93-11x11-frdm: add multiple vdevs
+> 
+>   .../bindings/remoteproc/fsl,imx-rproc.yaml         |   3 +-
+>   .../bindings/remoteproc/remoteproc-virtio.yaml     |  89 +++++++++
+>   .../devicetree/bindings/spi/spi-virtio.yaml        |  52 +++++
+>   arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 128 +++++++++++-
+>   drivers/remoteproc/imx_rproc.c                     |  49 +----
+>   drivers/remoteproc/imx_rproc.h                     |   1 -
+>   drivers/remoteproc/remoteproc_core.c               |  43 +++-
+>   drivers/remoteproc/remoteproc_virtio.c             | 222 ++++++++++++++++++---
+>   include/linux/dma-map-ops.h                        |  10 +
+>   include/linux/remoteproc.h                         |  24 ++-
+>   kernel/dma/coherent.c                              |  34 ++++
+>   11 files changed, 562 insertions(+), 93 deletions(-)
+> ---
+> base-commit: 9b87fdc9af2fbfcdb5c24a64139685ef80f6573f
+> change-id: 20260915-remoteproc_virtio_map-bcf32a5fab54
+> 
+> Best regards,
 > --
-> 2.34.1
->
->
+> Francesco Valla <francesco@valla.it>
+> 
+
