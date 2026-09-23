@@ -1,164 +1,109 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
+Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BDF57F758
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 20:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790194260; cv=fail; b=IZlBNkqXQuWC8IVG1UDBD6yaeCcSxyhcAJHeQCF/cixUfXN2XZnwxP8IH1n7aWG0BuIP56jfbfqRCjDIjwuVafPEwbGqAKMN520sLyJvwU8h9O8DlqXwlMNpOfE20yGFVVdr2cERIEKl93uNSAIpvpI6tTyuaUlGYHXtp1372qU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790194260; c=relaxed/simple;
-	bh=3saJVCwAC087Wpt3upYvuiO3oANGjS8Gf3QCu+u11t0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VNFz2I0wZ9Fqshm7ty2i+iMZKPKQpOF2onYts+AQr+PSpA6Mwm9CtkKzboHSrkppfxYP5GgOxZzfDVoPkQPDOfNSOCV4zeXIKSWdUP1TE5xoBspCVdskVBlRKFrsk3ZnXed7s0vDXt2nuWeR1LHmxhIWXGVoGuKwr7g7mfwjs14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NnoccR5o; arc=fail smtp.client-ip=40.107.159.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NnoccR5o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=slyb4W0iiUtA42qnv5rT4WeYbHFLx3XpvdxqZljUpmPMPGY5xUkVsp0BBvDWT/16qiB/BndjMp92uKms7tF5bM6bypgu0xvx2PZIzARb+mPMuLpBKKkGgH8VCKc2cSV7aPwRYYIfEMWiTGfjprMWqcBsaRhglcwYMqOJzXvS6AGexaZLWscKyTnz91AFPemZeYkU89hOPsH/FBIqdjXMq1raAVQPIaROWOMKGNZVq9RJXGYwejH+Ze4M8Uz+Kxf7sAJAxZNEUC5gDyi3NS/A++Ebxi8ZyNgJrwwd7LdFEt9r/PZ+4kU6kK7GykbVN2DdBkvislaqHO5NKaoloy119w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zZ6Utr1X2hiwrDQrOHZGIZI/jjFAEh3VK8g8U2qXsvo=;
- b=gQt+89S1RScmYKEJ8Kr8yOYdRWXVgK8ucBM2Yynih+JfMpsLFakSy+oE+8d14rXMWES3L9hWZYDTRhE1SIyfdVwXtxIZ1240dbvw5uuqGTulrchL4pGfoHMdbm9N6cLj3JxjsKaWFNE9dn1iTN5qXhaYTfNxtnzfU76/+uYzppK/uVv65mx9Rce/J1gDDVhxlYlDWitPHFtvxrv+fajQHtYaAs3/CGqL9QilrVB4avSRIQPuLq0DoPe+PbBpuDpADUIKfXx0jOp5HmwDII28JGxgGhF+xuQfMOYYJO630s9Rau4va1+KbM34/hs8QS3aX3kXI4nntVBFpUvX0lucAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zZ6Utr1X2hiwrDQrOHZGIZI/jjFAEh3VK8g8U2qXsvo=;
- b=NnoccR5otGeXPkvr6YqDCMDNKWKxzQl+YMyYrtptBeYjhafRYwwE7MkEiYHZOkdC0T6dzigUCiO0aBQ852ilN1jrA0MuNlnIQBYKdXvk8BJA5ppwurSe4IsNAKPjhEKx5laFWTfbitbJFMIDwel196Cbo8jjvp74RteDHdJoWyWHR9mSU9mplpHRIplBbSilks6bCSyI1YxOOFlh/B+6x5PiviVKamEyI5NGNGcwnEY5VCyR+A3RwsMQ06vDIhfwHkjVBvm7JrnWjoeiEdOkZIO5pZcBFtShq//by2miUy0JzXHh9Xd0XZIb6amg92+6U3hJ6OPv2JmlS98iX6Soug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI2PR04MB10715.eurprd04.prod.outlook.com (2603:10a6:800:277::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 20:10:40 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 20:10:40 +0000
-From: Frank.Li@oss.nxp.com
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCFE57F73D
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 20:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790194513; cv=none; b=WQBowlv38f2JWd0ERRIIucSxFVFzZBTSbHrByQy/hY0fftNAi+8XLoIUVgxOdEsLmFO+mo9DZzx2yeNk2mbOLrDzGsZS2oHjqXyJJGb7/ITx+MCjIsn+tZsujWINBxB6ZMIqyUyKN9QYYPw0uV16hgWU6d3PQ3O7WVe3huoab0o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790194513; c=relaxed/simple;
+	bh=JmYOP4c+ppHWZuCNjkFN4BLZ0XGCSmx7SrEAzuxj6XM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QK5pLfhfi8owWvGFubOeDfCnfxnG5SqRC3Njv17bwdCChM4/RwvF85/lckgFBJNmnethyoekZZmqBRyShgOmLeF7BAr9bHB/y1xZaJ32XKKx4JGHbleg1LP1kHbi5jvYECe39Hc6Kv2juKPDfQ3U+034NMJIbZcLc2EjhyKz3H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
+Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
+	by leonov.paulk.fr (Postfix) with ESMTPS id 613A23700ED8
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 20:05:37 +0000 (UTC)
+Received: by laika.paulk.fr (Postfix, from userid 65534)
+	id A0471B648EF; Wed, 23 Sep 2026 20:05:35 +0000 (UTC)
+X-Spam-Level: 
+Received: from collins (unknown [192.168.1.1])
+	by laika.paulk.fr (Postfix) with ESMTPSA id 821CCB648ED;
+	Wed, 23 Sep 2026 20:05:34 +0000 (UTC)
+Date: Wed, 23 Sep 2026 22:05:32 +0200
+From: Paul Kocialkowski <paulk@sys-base.io>
+To: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Natasha Kovalenko <natasha.k@variscite.com>
-Subject: Re: [PATCH v1 1/1] arm64: dts: imx95-var-dart-sonata: correct UART8 header pins
-Date: Wed, 23 Sep 2026 16:10:32 -0400
-Message-ID: <179019422287.3742204.18120428206043977139.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260914125311.8354-1-stefano.r@variscite.com>
-References: <20260914125311.8354-1-stefano.r@variscite.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0123.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH 00/14] media: Add V4L2 H.264 stateless encode and VC8000E
+ support
+Message-ID: <arQxC3DmDyVIGdqq@collins>
+References: <20260522101653.2565125-1-paulk@sys-base.io>
+ <ad9788bba0851dcb86c22f40c2562f2a57ac8e6c.camel@collabora.com>
+ <CAOf5uwktfp0a3Vi5Jd8Zw5knGMHd_FH=iusRX1NgHYC4VSuzBA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI2PR04MB10715:EE_
-X-MS-Office365-Filtering-Correlation-Id: 978d995f-9211-4043-0326-08df19aebd86
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|19092799006|11063799006|6133799003|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- XN/AyHsdgFOpehCBbRtpMzs2oUuFbgn0H/aXah/UlXt0euq1m6PRY7Ub2HePSR9NypOj+dhlwy5Lk0HyLbpT2lid7YlISb8v8P8EJk/Q/3auTGvUab8aNSo2OReIZYT/Vb4rfwYyjZOXb3bGU0gvuNAEO2tLJT8e7iohXW5Lt2IcXnOCdghWEVlxGzOoE40t5Itb5AYKeNJcyPvQnBwaeCvyvnb6omX5whNoHyXU9ppqmvga0Iov1sCMB8h1zcm/S93qEW5YbXntTqxl7NlyTofyAUiiVBEAQ1Hb779ZpEYB7bAwVqL9uPDvnanVqbUXdtvCOKX5vbmvFg8dDx979961QxMQFKGQvHJsCY7PyoFs7AAWt2FUEtYvm3LQ/AX0n53mkDA7jxe0qxaTFkJ+4dQhDQvH65hhzhZfVDxjdXP3VsFTu6Inr2vlDWm31dvASjBt1kI+4rT9f8clC9mAZeCyCKnUEoN+TEqtzWIZgq8Xvgrpp1SrYFuGlHMcQ1qX0/63w5eHnj7rTN7ePkFxmCBuOIy1RTfnqo2dIxW6QoUMXPfTk4uzv9KxohnTYOiLJonytx7M6iDGPuSO7MDiBygng7gbjNO8kxBAZfKIKFM6nRwLkcWXwt7yZHS/5zwDl5junTE1wlRIX6GWBYT1dY3+ZX6pDjPr6xNu/JZ+T1o=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(19092799006)(11063799006)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?MG1VMFRIbjBrK0tXdlhSYjRkUHZYVWZEY3RrZGdCMHBhUmcwcDRGdVY2eXlF?=
- =?utf-8?B?a2FvU1EzVWprM0lZczMzbHI1ZnpMY2I0d1pKTjhNajdzQjRDaVI5cTFIOEZx?=
- =?utf-8?B?TExOcHZFd2tZdWJsTTd0MVVVeDV0Y1U1YVpkSExBRnF3eXVDZDZjS0JnTTB1?=
- =?utf-8?B?OUU1dEN5WHp6aExIaG5oLzhlb1Z5bm9qYnhOMWZjd1VoRWxsZ0RIOXpHbm04?=
- =?utf-8?B?UVo2U0ZnU2lZV1BGQkFZRVlsK0pIUm0vMlVFSVNFUENUYXIvQjNDSUc4cVJh?=
- =?utf-8?B?ZUh6Z3pFTEVCbWdsSU1GUTdHRVJJL0Jrd1RocEk1MDRaMGJFZGNLb1JaVEtY?=
- =?utf-8?B?SEQ1cGhXbHRWM283SWMyWTVGcHlnMjE5WG1LSUNyRVVybko1bFA4amdYS0lX?=
- =?utf-8?B?QlEralpWZDRvV01pQVNoZVVRUWRjZDRPRGFsc1JmQWZ2dEZ4TkdMMVArK1ox?=
- =?utf-8?B?VXArY0ZVcTRQcVNUR0VvdVM2azBybFVUWGNWb0xwZlZ5TlhJOWcrSWpDTmJX?=
- =?utf-8?B?TlVYTWRyS1ZSWHdNeGxKMTRKVXlyRnYxNnhhSGNhRlk0SDRFaS9SbkZsZ2F5?=
- =?utf-8?B?MmEyQS9QVC9ydWt2KzVlRXFtem8wQmZHdEJ0QTFMaWI5TUNibUR3YXR0OExG?=
- =?utf-8?B?TDJoMFZIWGd3cnZzem81NkljWng4U0l3bzNHN2lUbmlyRjI4KzQydWNpNjEx?=
- =?utf-8?B?TkNIUnhLS2lDYjJOenZUeUVUc1FHdDZncnpyQW1jL2ZkekdJN3lzVGxsTTZ4?=
- =?utf-8?B?akJ3K1diYW40KzhTK2dwdzN2VGJ5SG5OWDdzU2dzMXVxUHhLVzJUeVMxSW5u?=
- =?utf-8?B?MWRUTkhadmxBTmU4VkxNWXUxVWtrOUY4cHhXMlo2Vk0ra2pJYXpUdzEzTmlN?=
- =?utf-8?B?MExURWdLWGJ3V21GOHdhU3JpL0h0VEJGYVN5UmVwRTM4ZTJkZGNob1lmSmlp?=
- =?utf-8?B?ajhQZ0lUQmprU0FaL29EZmNJY0xlbnMranp2RUtyQjZ3emNNNGZoZ2Z4U1F2?=
- =?utf-8?B?Zmo1VEF3OHpRNGNXSjFUTGhicDA4QUJOT2FYblRkc2lZeDBDSzFnTytGL1BU?=
- =?utf-8?B?eGVrOEo5aUwxWDY2d1kyVW9UemxzdXhWZS9pRUM3TXVWNUd1a0dXUUgvTVZx?=
- =?utf-8?B?Nzl4dUJrMkJ4aWRDdVoyMS9qdzZmTXRrZldLYUN4L3h5TzlNVnVvZWtod3Jk?=
- =?utf-8?B?YmNlSDh0KzY2TGVNRk9kMC85YTljMElBOGVvblUrZDU5UVZQMW12LzBtL3B0?=
- =?utf-8?B?d090Q2JEc1pWL3M5OW91Z0NYeDdvTDB2NlZHRnppYVpZODcwNFFITnZ4V3NV?=
- =?utf-8?B?dUI5NE1kejZndVR1b09SS3h1MmVhQXlVV1FwMFF6Y0U2NWtkQ2p6MkxpUnlZ?=
- =?utf-8?B?UUVpaEExYnZ6NnIzQVJvZXJlNDRJV0I1Q0dseE41SUZEdW1XZWFxTlZOb0Nx?=
- =?utf-8?B?b2tyNmVNVGxOZ0lReWlqRkxVMmJTZ3I5MzQxYVNzeCtrRklBaVBRaXhlVEVs?=
- =?utf-8?B?dTBTRks4NHNHQ1NoNDZZYm42UGVSYUlLKy9Gam9tVkNWRlZwRWpPVUF2dzlM?=
- =?utf-8?B?cTc1MjU5RUg4U2kzWmN1eFJHWk5qOElmTGNuYXNLMXR3Zkd6SFpUcE85MFBJ?=
- =?utf-8?B?WnR4ZDF1eHNuVkNzWk5IU3I5QTgwdGg2SVRiRnZsblJlYW8raUZRNC9wS1lK?=
- =?utf-8?B?UzRNelRtSGhzYVROQXMzRnhoT2lzS25zVHZXOTFCK3d3TEcwWTNvcXYzV1Y4?=
- =?utf-8?B?NklqVHBMWU5BSFFPR1JhQU5KSGNRMXZ1TXNRVmM1MG5kSm5JVkVGU213WDVR?=
- =?utf-8?B?aWtaVzNRbVgza1dwcXU4K1FLV2lEZll4UUpzbVMwenhEcTFPNU5JYVpWVFNU?=
- =?utf-8?B?REplZnhlVUw0bDl1d1F1bWZSR1dDZzlGV09FT3VmR2tYQVJiSk1jYU9SVzRo?=
- =?utf-8?B?RWpNTWVzcVNLQ2VZbkVJcmIyemdnRXRMOFZWa1F0bXA4SGVwWGo2UWZTUEVR?=
- =?utf-8?B?bjY4cURIQWZaOUxNUEEvZHcxLzA5YmFkbTNPTHRNbFFMNzdtZVJQSXpMa1RQ?=
- =?utf-8?B?UzhYRTYxTEFBVFBveHRvcGFTTDJGMW9OYnR0aUhybkFFMWwzU2I2aWhXTm1H?=
- =?utf-8?B?SDJmYWUwS0s2ZHhDcmpMZDI4WTRURkJSdnpSQURsT0gzNlBrUFlUQkh2Vndq?=
- =?utf-8?B?RkVEQnpZSXhQMU5zOUFlRE1TTUFZTkdOSHhDZFo0T3l3bG9QRjU1Qk5kbHJK?=
- =?utf-8?B?NmplelZnZXRyYk9kNUFZQ2xnRnY4bENmM3dQUVI5NHRvU2cvTWR0SlJlRnRp?=
- =?utf-8?B?Y3F2SFlPdU1lakFSZkI0L01ESmdoNHpvT1NXRWVQT1ArZEJhSE5sTVlETXVv?=
- =?utf-8?Q?m2rMB3cMbZ+iR3H6uRliZse9KlOg2wKrsICpN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 978d995f-9211-4043-0326-08df19aebd86
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 20:10:40.6695
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4k/ywipXMQeP3Dtu9h8Qefa9Gw7kl81O4kh3ovwx0OHPsYNOdcxZOQGVvvoj47UYF9FIq4EjDW21NgyNButugXQB0Gq/5gg79LGxPD7EjFj9/uVCHea3Qqpb5/A60qC/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10715
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YpsFhTt6LiRNuQKC"
+Content-Disposition: inline
+In-Reply-To: <CAOf5uwktfp0a3Vi5Jd8Zw5knGMHd_FH=iusRX1NgHYC4VSuzBA@mail.gmail.com>
 
-From: Frank Li <Frank.Li@nxp.com>
+--YpsFhTt6LiRNuQKC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi Michael,
 
-On Mon, 14 Sep 2026 14:53:11 +0200, Stefano Radaelli wrote:
-> Correct the UART8 header reference from J12 to J6 on the DART-MX95
-> Sonata carrier board.
-> 
-> This is a documentation-only fix and does not change the hardware
-> configuration.
-> 
-> 
-> [...]
+Le Wed 23 Sep 26, 14:10, Michael Nazzareno Trimarchi a =C3=A9crit :
+> I tested on px30 and achieved working H.264 encoding with some small chan=
+ges
 
-Applied, thanks!
+That is a bit surprising, the Rockchip PX30 should come with a Hantro H1
+(using a modified register layout) while this driver is for the
+Hantro VC8000E, which is a newer generation with very different registers.
 
-[1/1] arm64: dts: imx95-var-dart-sonata: correct UART8 header pins
-      commit: 8912bc10501ddb0d9b9ad450b21f42110b6bc619
+Maybe you ended up using CPU-based decoding when testing?
 
-Best regards,
--- 
-Frank Li <Frank.Li@nxp.com>
+All the best,
+
+Paul
+
+--=20
+Paul Kocialkowski,
+
+Independent contractor - sys-base - https://www.sys-base.io/
+Free software developer - https://www.paulk.fr/
+
+Expert in multimedia, graphics and embedded hardware support with Linux.
+
+--YpsFhTt6LiRNuQKC
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmq0MQsACgkQhP3B6o/u
+lQzbyw/+JH2RNX4Kk6NdjJGNFdRjLhYBLJnKUnz2uM6eXMwFt15zNIpFBI0ZT4bq
+zCuPHz7SWLYYx5ZZw4svtA/I5qKT6rCXL5YkoO68/vdPg6g2lMqi+4ebUh50MtUg
+il1jhBcRPKEIm/J3WwdPj0KWgV4TCiOU2jOqzHHADtPsec1nMw2pswsE7Y8F84tK
+P0gBcsej7mQ52N/hoKBIFIqA76jgHv8WhdueJAQ+KN2miFQsLFh6BgdZKATAK7uL
+131FKYzgkZlFAcgPUxVOCS8jJ34D5S9T+tkcgzDOFM5GcwpDOXyXBwtPe9q/CgEA
+KXN+h/fAiQAUrQsIS1s7C1JQYT5c6Ax3dTqMzMkVusd464Az6fyy/JNpEKLjblou
+T4u2oLA0dW/kBDUzmMle0IS/d3DJ+IoGkrjy4OaViVXtK3t0FmT3RhNbmbDssrzy
+NciorGD2EhSmyrCTS2JKSyXHXGM2Q9jFsSe0LBsmSBHEkMEvA/aTHcl8Jvo3hv29
+QzMCH4UeWzDSQKAEgQb+Rv0NnWQjpNJq5w8gRyomdHiPzReaPy3DpA2DVXoNkxq1
+g8+QEVaDWo4Ov1D/+TzIsqw8kG5CbgcuhfmACnD9UHt8sOvR6rQD5cTghJcUHKrd
+J1WCWIcYp88yfa7ayCxI5jfpRofBO5OsFxsyHOGbi+c9/w9n6I0=
+=Plja
+-----END PGP SIGNATURE-----
+
+--YpsFhTt6LiRNuQKC--
