@@ -1,158 +1,100 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011033.outbound.protection.outlook.com [40.107.130.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7583BCD21
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 21:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790198022; cv=fail; b=sgVOftMcfni/HDA/qS+cpy3nT9KJZVofLMdn6Q6Pwm9NeNpEptLRU54Jly0mVJR6uni/8eq7ni+CKASgn0ZmJS+oSZJ9bOaDvl+3gr+V5kAI7jPZ3P9NN2kDku2oflIASnBcS1uH8G6T8glj1e7+NzlugMWR0ncUGANkcIqZL/c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790198022; c=relaxed/simple;
-	bh=R9Mo/8vJhnOAGnTqg9pyscdIzttXhMLdZgmVz9Fcf2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hdEPl2BKsGhOmprfl6KMl0YqSSgCHpz/412yrdAt++Yeoze3I/w6zJakKO1t1ggr8S5nSJroL7s+MHg0L8ckmz0hslrgoqb86s2+Up7HpjdxQjvDTKvjrCwt9mQY8VPd2QDK1tCnSarAxLjJrGqM5HQxrAJSTp8gejwLE2ja2D8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ffm9SWBl; arc=fail smtp.client-ip=40.107.130.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD664570FF;
+	Wed, 23 Sep 2026 21:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790199115; cv=none; b=NPS395FlX4LXZhQjUDB2ACfL7PLEoNz/rqDyQGO1t+sGPkVQO/9mUNTIH2X7iK5/3E623jGQoLgn3oxiBkkk/0wvsMdivpGcBfhg/4vElTPr0nI11/62SOaJ61vy67uTaoLTEdhk4cHR1XyLLizGGbRvHo+ZCUy7A0/iys9Y6dk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790199115; c=relaxed/simple;
+	bh=5SAVxGmg7GnelrcPsgVtt3W2kFmCd8Tt9b2GZLTh4zY=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=gWkwzSCl8dGSf28b0Bqfk1VHlzPp4s5JT9FLFTRmZyLYTZSuKQYzXYzM2LF7DZI/6QelMNR0vT5t5OfC2WOm8cSMZ4uEOvEv17Jn6mDiBeHEMA00zrICWlrxcsZ5+nnzax6cEJqBByxu8CrMfM9ESTDoRulJWYEEGuwEZSfMNAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRHixrlv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ffm9SWBl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xZgAUs4FQ/Rb41k69e/5v+oOwDSnqzgS22+FWQZBf7WGvF+B6elyO0iMUI4V/4rNNLgrCXMF3mhk9+VNgqoEhf3W6ATMvKzbQv8N/vukZXVKn4HWJWT+cmOOPYg+LX/d83AvMINDsGZsjodxP3GBiT8YTtpbqcCqRscHxWiA+HXolzXEM51stsft68Eei2GDh52JRnBFgzKIsif88m81bcEeUOHe9xfaTBrE6TRt4ngBXu/v09hiP8kmhEL+oRRX/LuXeCJNa0UtBOWXlTR09TbjwYWIHkekvRGsI1RSZZHfadm6MASRo/Q3T6wrsl293AsxRJQGg7EMoOods/K2Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6SBwHJ5b2pPYOYCxoaAOZ3J23d9m9AQx4Pow/VjU41c=;
- b=xPmifqcdRcBfoflaeUBZ6oYCISGPSbpgQV2sj/c+aE3uX7rgs3gdvN6dz7ZEKPEMm5ZcPuVB3RH2CLppgELb3uxquY8GnAUFDZvVfOCxYJS5u4j9uJJ0STD7L1sW9MRs2VUQJa6YKdotWkhyAAnyOZaNz764JJVMtroyX37GeKGfsRF6VgoUclJu5o0Av1RmLCDrb9Vs3Bz1GkvwA3LCZXymU6FhwEC6riBIPOgvosupCYq/Kw87i33LOkgCxRouucC931NSLZag16JMx5m1fcpPB5e+zpttDpHkDROf3TicIPf4U8M915WbcqQBRhXpC60Pda5gXOzQCwskYwOyPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6SBwHJ5b2pPYOYCxoaAOZ3J23d9m9AQx4Pow/VjU41c=;
- b=Ffm9SWBlPGWaENX8aHkPnkQwvH8WsVnutPn10lw3uA7/6jDPzd7GQyQKHWkjmXLupeotAXm+gTXYlAmapLAi0LZBaxZLiJUOdUC1lZXXxc5yY0fsqMMdaqaBNaqG2zaPK2ewjuelWHX3CEDmmf817zeqdR0PJKFC65juegnLXe9Xp7Gg2PJVV5yuVAL4EsFy8BgjHRhEbWZd7vBvDOreJh25bEJ+51RZ8WMSj67YRosMcXz0mWkt9HVFr+GiVaFY23oCAZxk5md6X8e6vCL+O4sbxoXBXVQpOCaKxI9rbW6UFAiKz8vk4iM5RkYfWaBc+7/qiv0ZgxeVHnE8y8z1YQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by BR0PR04MB396449.eurprd04.prod.outlook.com (2603:10a6:2c8:5c::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.17; Wed, 23 Sep
- 2026 21:13:34 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 21:13:34 +0000
-From: Frank.Li@oss.nxp.com
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>
-Subject: [PATCH 1/1] arm64: dts: imx8mn-solidsense-n8-compact: drop undocumented adi,led-polarity
-Date: Wed, 23 Sep 2026 17:13:11 -0400
-Message-ID: <20260923211312.3793073-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CY8P220CA0034.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:930:47::15) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRHixrlv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63031F000FF;
+	Wed, 23 Sep 2026 21:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790199113;
+	bh=5SAVxGmg7GnelrcPsgVtt3W2kFmCd8Tt9b2GZLTh4zY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=LRHixrlvCqA4DP04Yj/XSkiBYsMMYZlDbXvmoCxrq1HDhPJtk+LVGKjcQSv7tmDqO
+	 4fYu7FUCBiTYhpeMS/6aQbisEdSFCiopAELkp7kujX5ljUdBHIg7ra/pgY6Nb3uNeZ
+	 LgvJ+iXkvU8D6SJJSUEboJH6S6ui2qK1RaEyLRzEAHSBh6mcIUJNgybbpnfp4J88ce
+	 NoHfjItL+pt4PGXQ6KO1Ix1Jcwo/Y0/SmjC6WGZTwfCf92OYBXA+pauq7J8WzQjXYa
+	 b4+rkxY6ZtM6QZqyS6rRdFBv5RhKkBtHHEo4oQ0+2vLuUDgL/byVCRaddIYLm3POVd
+	 mcv758lKIjMtA==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 18D991980059;
+	Wed, 23 Sep 2026 17:31:50 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Wed, 23 Sep 2026 17:31:50 -0400
+X-ME-Sender: <xms:Q0W0aqgh93mvqMIz3Y4uAkRvcFCMlSrZJvQLJNS7bPVxk3BwqtGw6Q>
+    <xme:Q0W0al0Y5YiwqMZgHtmMwm84QKmHbvGj-nO-rK_go5KYC5df5DmtZZPq6X2YcRPsp
+    ETeCwEl9OTwP4CNXkEpyJX1Obt0gdOG2A3OBjnagcgh1jFZMAsG0ujt>
+X-ME-Proxy-Cause: dmFkZTGpc2w2ufMjmJ0kap8IYjs9DfPrMkSQFlAOzp0sPrwE/vrB6G6LACcNgsecPhcLyl
+    /g20MmAILQDVu0ZlSW7Lo9cigxl3519OTOgyM8UAyR1qlsSJMvP2OLuBuCYEy8vwV9/bNQ
+    WQh7FLbGr62pkxIMcPm4sXkf+skT0hS8S8/4fyusGJg9XxMo6tfZoxf/yeVuvn1UVSKtK+
+    yjpDxHjNgfv6GXN8E2hYbkrxiDycjOFqxFyHgKgVwyw2yLOS7dg0qc1A0/3PCZ0TVcW9qF
+    a8vS5CuOnbW9yqpETq/JNukDtE0dez70dGFdfo8YR4EcapOfSiMdt0JJhH/CoQYunZXEkx
+    4y7dbz0FO1BNf2ZSmwjaC1o72nLr4BOeYMmL5fn/EJxQkBS8ykwEjFHn3vNe6FqNtH7zih
+    4Qo6NHaODC5piVE+bwEL1bQ/GGvg5rPtcRTTRPeIGoCiRmmv4LJIk6tRJVtMquknDVezHJ
+    vWQbLQgtDaQvlrTFNM2YyIStqkeNju5IKd4OSczUWM7kL87z7nG7Z+zbUwMIv7rlagqy1v
+    /jnU8At4jogCsmDlfPrvmrtUXUie/We54VcYHwH0jNEnOLdUNAej1KTGMPyThdfDPqpXE9
+    L6tBNGaVbNgPTadl+LKcwDhKPMUp35itFGnikWAMDTXsn5WTXQrxO+n6zalA
+X-ME-Proxy: <xmx:RkW0atFaMfzn3umDR1s9bs-Kk3MkgaNPoyM6LolyQEp-hCjgS5FgNA>
+    <xmx:RkW0arEMcEzOzSkta4DLZ7mtyUwSqEAIzP5_zYGHmpBP5xNdZhf89Q>
+    <xmx:RkW0at2M57JbrSZQWBwlJEfJ3-I2xW3WcKTqGPE7WInrBOK5vBEe-g>
+    <xmx:RkW0alcf_Bhjxlov46iFTQW11wgGbri_oCK0uu0iVIKNEl4uzXKfgQ>
+    <xmx:RkW0anJBbBkol_rpPInw8zj5v303xcyAaRVcunZlrAoMOBChhJT4Rxg4>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 3BD3932A0087; Wed, 23 Sep 2026 17:31:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|BR0PR04MB396449:EE_
-X-MS-Office365-Filtering-Correlation-Id: b2e37753-0980-4e73-ef73-08df19b786c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|19092799006|921020|10067099003|11063799006|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	SOiETzwCWu3HUPLwI1M8DZUEZMMRWmosQ90outXbCcT0qX9owMfk+Csv7OI9BfoTeQSrL6gFgxfpHh6px/wcOpp0NXzGnMEP8vDi4nxTgbcX37h5frXUka7beJsdlKC7HEciYEUSgxAfDlTN68ou+uyMtWwwM5GJy088QmLoPTUjmx+V85BaSp3rW5OteQz/UzFvFYU0AF/lnp9SrUF5Q6RLEejjAxMv7Ks/zxEcKFXVUsPbk9VdSO2ZLObH9K4LLHcpcb7zyr67QiyvszRZI1oIHzlLSlV4RdGlamaSp/a2D4/WB6zWE6WHBiHNtsCSX0cTMSnfWxbsS1+9u+qw4XkCpMug3vjd79szkM3/mjsnV9TbkJxldigoti/3ME2I06KHRt6iGTe7vmFYGU0xh/DRjrbbyyNJomvvKOz2Etd5GKFDDj/O0+j9CvX3V6hEJv2d9Gj1pCSkjNvS+rVHMpfJ612B07TlvGniEuCfv0yKzFyTj+zGh6LaKwPm/Qclvd/5VP8Bv0wpncbXnksiedzUBaxxaQZtQOAL8jV0ZTibEVmqOu0XY5YsAVdQVBxbnOWVa4IlZ4pQ/CiMCIQkGzNVNTiy3KL7X6/Em/fS7SYRY6ADGGo57UkM1mokhlSTMSviWpfbJrQnNGw5Zob6//bXqscQRy9QpszEtyaleQASMjD49db8qogBidfMkwcrByscgSe9Z6memQz7ZX0PEg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(19092799006)(921020)(10067099003)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NM9d6036QFnkphYOkty2HqtPJnVjjFF9o4+BX6YKKQ0NmcxT0C6DdYp9eHn1?=
- =?us-ascii?Q?384CPuCTNnS66GYBIJ3pxBKWK5Dg5Dg/lgupNAs4WXbITPXx4g3hj6Wjjesh?=
- =?us-ascii?Q?HvFmVuwgRldXiEPe2i0hlowRwboeM9SA+Swzx9PX1FvPJbeI/fT9ynzkcnw2?=
- =?us-ascii?Q?YIfYT1FfjOyrZ15OPqyhgM7m1sG7uMT59uqUChx6xBwlGYUsP3zc6Wjjn1Qo?=
- =?us-ascii?Q?f5TE6hdvXcZyRCpLXDW4Sm3fyuYWZvP/eLcrLRONzjsADnRUtIw6wPTMtRbP?=
- =?us-ascii?Q?0rn6QgBkfTVl994muuVxEnKahZYGztEChH7llCLuE8XRFgb0JerxIc8Paj6n?=
- =?us-ascii?Q?ZWUkXVIjj4r7UlbzXnCLcCbNnsvWFwdjtuUvb1Uqp2dgQrTE2/ZGEdoBBDUY?=
- =?us-ascii?Q?ypnR1AwAMOWEW5j7V8VISFGJv1KYA3vAR0eNM0EKdFHpYXL58RS8NurzP4UZ?=
- =?us-ascii?Q?xejmTwP08RBqmxXh9AeblGDOiK/kqaCklUdnZvZX0loqpdU8Pj3SY59UfNyP?=
- =?us-ascii?Q?7tgKosBZ6IzXRiG/XsoYYPnGBTfJOTF9HJTNrKUggMtj2VqMXQhUQCYv52h5?=
- =?us-ascii?Q?OvmU3b7kk3XhXmBxUWb049bwft6RuuJIkHyIExpPuTKXrkgsP1itwrprFnKM?=
- =?us-ascii?Q?9yzirjnXTElhpzpDdcfRNSRMPdREFCVwxkR+zHVyjN3yTkkTa+Kwut3rTXjj?=
- =?us-ascii?Q?txGpas6OJNJG/6FA8P1cqHW2oSAV1QsUhrQuVCoI5UIUj47jUquxYyUBWl8V?=
- =?us-ascii?Q?FU4BA9DexCLYJXiuiIhkRBP9wJjJWdcIL1RNW/PVMpTTZHfUUIlofP+a/Svs?=
- =?us-ascii?Q?ZizrC1zyKEuq6wY1Kc+xO7LgiPly7AnQIE6dzXlZmC7jBQeMe8lMYRfhz46k?=
- =?us-ascii?Q?6Q7s4/BNzCVJKDbXLCZaOvaI1I5eVqbVd2bUrbELMLBxnXTVMCj7W2r4BAjF?=
- =?us-ascii?Q?e5PqtW+4gmJkDgZYyCB8t9xYonLaUwyV/XPIGQbUTTXoWu0pNK7p8N/Vi2bF?=
- =?us-ascii?Q?myL25H+GxzBgJtPwHgOMRqGxWnpJ7iHmNeb8bf9klUMxsaheBxa0KdSp3NuX?=
- =?us-ascii?Q?A8odYrEAm2TW/acdkWhYc6fAdmggEq4rdpqkD5yx2HqH88F3ZFTU5ENzgd36?=
- =?us-ascii?Q?LMWseJHxWsmFmWvbXP5MBn45gf+apMDWtWBAGYQTFRyow3lBG26KVv63HLKC?=
- =?us-ascii?Q?OecVE/siUWGwoa8UQLqbn4vG2b5etZGcMDdo58tNQH0QgpWlts7prtGTTcM9?=
- =?us-ascii?Q?j5B7ZvSHMSzZalQu2PY15J2k56xiE4FudMPR3HdFYzYhTgOzhiZbHIICtORf?=
- =?us-ascii?Q?yiZr0K1PWAqWprxWGQPTChAbO/L2fKU5Z2suZc6znq/bYmsVe72teucrqT3R?=
- =?us-ascii?Q?FbI5D2KUgOBtvBt9TiofMY85/vrKmFySyXygyoel5dwLVDB/ZFMmyWF0sSYb?=
- =?us-ascii?Q?o7ce2FHFuKNeRxIx7vxUNZHVkog8TRFYvmfhcBMi3Q869gTdNywQWe5yLhxW?=
- =?us-ascii?Q?CPRul1oaGU6cHeghNBSoL5sDXHoGgQt3+xYu3isYWj2S+fAS9yff2EP76P4S?=
- =?us-ascii?Q?pTmsYdss5j/Mxug39iNCSC3IKIBOeqMbWjalU0ju8hYmIa6mtgehyt/lQft8?=
- =?us-ascii?Q?4FQJBvXnq92A2OPYFJJ9bszDOuCdHzBfdEcC7eCaguKKrDEbpZymt0hcbyP5?=
- =?us-ascii?Q?RSX+rOHN96N3dsY/8P9cnnnxhTTaSxl8Xm+4w209o8p7MvAO09DUc4tM0E+E?=
- =?us-ascii?Q?PgOUkPH/4H5w5KKM1bAsmXiV8FCRdsMQrE9Pj3BRll7rkbYo+lrF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2e37753-0980-4e73-ef73-08df19b786c5
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 21:13:34.2872
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yvqKfCsQT3A3Y6S8ZDnm2Nh99hiDs6rl01j7TQp9sjU0ZUAjb83WadOu5zKn+bUC+wP23CHEt1iFDaiSyWpxnVUWhTcWyQd80iTnULzT+/tevNIEk6m9358jqqxvcUDN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB396449
+X-ThreadId: AZl98to-mMhc
+Date: Wed, 23 Sep 2026 23:31:25 +0200
+From: "Arnd Bergmann" <arnd@kernel.org>
+To: "Greg Ungerer" <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, "Wei Fang" <wei.fang@nxp.com>,
+ "Frank Li" <frank.li@nxp.com>, "Shenwei Wang" <shenwei.wang@nxp.com>,
+ imx@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ "Nicolas Pitre" <nico@fluxnic.net>, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, "Vladimir Oltean" <olteanv@gmail.com>,
+ andrew+netdev@lunn.ch, "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>
+Message-Id: <b6135a85-1f05-4ec4-a283-60e8dbcf0437@app.fastmail.com>
+In-Reply-To: <20260907134037.1855408-3-gerg@linux-m68k.org>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-3-gerg@linux-m68k.org>
+Subject: Re: [PATCHv3 2/3] net: smc91x: do not use readw()/writew() on ColdFire
+ platforms
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-From: Frank Li <Frank.Li@nxp.com>
+On Mon, Sep 7, 2026, at 15:37, Greg Ungerer wrote:
+> Modify the access macros and functions used to access the smsc hardware
+> registers when used on ColdFire SoC platforms so they do not use readw()
+> or writew(), or derived functions like ioread16be() and iowrite16be().
+>
+> The current set of readX()/writeX() access methods for ColdFire have
+> historically been non-standard, in that they mostly access memory
+> big-endian instead of the expected little-endian. Before fixing the
+> ColdFire readX() and writeX() supporting code to properly work with
+> little-endian data existing driver uses need to be fixed. Convert the
+> smsc driver ColdFire uses of these to use the raw access macros - which
+> are well defined to be (native) big-endian on ColdFire. This change
+> requires some byte swapping at time of access to retain existing correct
+> behavior.
+>
+> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
 
-Drop undocument property adi,led-polarity and adi,link-st-polarity.
-ethernet-phy@0 status is disabled and no in tree overlay file to enable it.
-
-Fixed below DTB_CHECK warnings:
-  arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dtb: ethernet-phy@0: adi,led-polarity: b'\x00\x00\x00\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-cc: Josua Mayer <josua@solid-run.com>
----
- arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dts | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dts b/arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dts
-index c8c6760524dbe..9b8b971c1a5c2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dts
-@@ -226,8 +226,6 @@ phy0: ethernet-phy@0 {
- 			reset-assert-us = <10>;
- 			reset-deassert-us = <5000>;
- 			reset-gpios = <&gpio3 19 GPIO_ACTIVE_LOW>;
--			adi,led-polarity = <GPIO_ACTIVE_LOW>;
--			adi,link-st-polarity = <GPIO_ACTIVE_LOW>;
- 			status = "disabled";
- 
- 			leds {
--- 
-2.43.0
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
