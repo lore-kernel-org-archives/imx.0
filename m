@@ -1,181 +1,365 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAD753A3B2
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 15:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA95484226
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 15:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790178143; cv=none; b=G6xIdDNkUo5+o3XAJrvnF+7wNVT3leyk6Sft5WKMEubsv/oG8jnS4gwRZKsXrbTmRF33lhS/WkHv0usRXfCcEUpwLT/FzXGseb1mfhjNRP7eZE0cWhq7wRHRfs+RkdOXPzuPG2Iaqm7kv2ki6yCg7w0HUJIZbS5Noa4nlvoKD6o=
+	t=1790178551; cv=none; b=dxxmAdoPhupQJrKgBv2Oj51aexS4jj1JARD3ulxPWoAB4nkGMbnnnGD9s5WzBJqXigc7AOVDzT+yZX7zClR/7pKGX14WdZWAP2Snm+8MIt3mI/hbjU4ziRTn0xvmwvqy1pgNOUx/xB7tbjK/4GGsmKgbSHkilRn8MrpkrP8UwBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790178143; c=relaxed/simple;
-	bh=m4SroQDjW8TNwKldqJ7a93glAT68I1794bo+GHS0J6c=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=uyuJpdRHzk/aiitWW/gtd0/xtW/QytuqXF90wP4DAW9wqc509pZAUMUucwoLuMMuJ4Kc7zFVZDPWFQf+SL4YLxsrLZKdgLbIUQan3kRGLNOBzeJDcyeHz4b8REVe4HMa6Cfwko30YB3zOncYlSUm3y8XdYCkfBSKWlsq1O6MnnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jHOVjEwh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gSQGq/5p; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790178551; c=relaxed/simple;
+	bh=D7cyQBV9qs11eHhXM8csmYcI53GAL/ttmttLP1deXns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E6ek4QraEX3Ms8ODOMamhzqc+VTBJfZSXBzOAORZ5ep9Ur+UZCTnEy65nBwmfc5/LXLv7rob1Kd0eL0GjRc/yjFFvp+hoEndseQ68DOGzi9V5idQM4ePDVRDm3UvVbJhwD/kpWlSDLPUKn6qCSPy7OI/QXA4qDlT6ByoBHCV+tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rIXtHkSp; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jHOVjEwh";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gSQGq/5p"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NDKfQ0322165
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 15:42:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	lAmI+4l4jOMpvFGgOUL3UKDgOJQ+P1Ua774K7isTWf8=; b=jHOVjEwh4O5Fd5TV
-	s1O4AgA/k83pSLHZXHr4MCtkqPzjalzaR8gQnJeLLql8C+fZtkxV5fSBROrqZowY
-	cn+WqQCfLkPs+qAkMBFHpsXVb4suhO0wkNo5plb4HeT3ekACo8kX5EkTKwTcRaD7
-	i27vMDQbe9PEwDgFw2ya9MQLbOzGboRY7T53860rPRLuEMLzPHzLguhtRTO7zp5N
-	/fQIW77qNgZ1zdmnlCoqOfSckoEUM7WVxtkKUyTejkRA9dHpV9udyaVR7bBs3Vb1
-	XVCpdlCsR41bs8ksQZKG1mmZtcgwtI+Ev7GECaO1PCmZB47sPGE1z0db2gDkcZcc
-	5H1h8A==
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvfjsgng9-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 15:42:20 +0000 (GMT)
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-982a39e0c4dso273199241.3
-        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 08:42:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rIXtHkSp"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa663bfso187070666b.1
+        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 08:49:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790178140; x=1790782940; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:to:subject:from:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lAmI+4l4jOMpvFGgOUL3UKDgOJQ+P1Ua774K7isTWf8=;
-        b=gSQGq/5pSfAeycTZu4HKqEPysJjNwoP4CknQszSGA9ddWX8AmSi0tCZikeTPymlK6T
-         nk3bHa+JwC/8mzxFr1HbNEQOC6LZ0aAYNIrrgrlpP/cSE7ohP/vfjyseU8e71yHRuTrw
-         LruiEhn2FkiJ0EnazRHk16lYX/N84qhu/ypMYnBW3JLYf29WJudcWEf3iMVV+xnQp4oF
-         q5dJKiOa2oqDAeKtez/6jqlzq7XliSodou5eiC50ksrWE3ULduxJLpDUC86iyIAGRNnr
-         xtNbT14ePmxPsDNRUS9VKy3wty8/zip0j/luSGhhNxu4f5h3kjQHeSyVv8CCSVOvTHe9
-         WFqQ==
+        d=linaro.org; s=google; t=1790178547; x=1790783347; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AC1V7c4WU6arvaHg1fiICTCR6GKg0EaeyLEpLHxpNDY=;
+        b=rIXtHkSp4PT4kXhxCGvxCbVTBWeF1pVAoUT/du7qkvK/Nld3L/1JdEt6zmfQlGDXhs
+         JNOrf2kVSx+o2s7j4U/bb3f6vRVf626LyPEG/lRXqnEHdQClEJ5mDPhmPGW/LNQlJIH8
+         9vvmSeUXH4CzmTmumjxzLEQAJ2DsF2lt5DqaaKyzIKvU5CTa0NHtEAdccCZ6J/RmV9k/
+         7szfwwK+dsHjAoQyihDLSNW4ML4ajZ+U4BxA/N0d7s0OPbRj3zr5MeqOX+dNiiNyfW0C
+         xE9wGxYYDeDkF1d+MDJaTQ5YlBfVKct0siwuTrZyzsqdTzt8Dj6c2qItsxyLT0rvKm2Q
+         eesg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790178140; x=1790782940;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=lAmI+4l4jOMpvFGgOUL3UKDgOJQ+P1Ua774K7isTWf8=;
-        b=0K7qUIzaSa+tjuisGJrdpGsfVkqzPhEXOCDJjoVTnm56Yqe9zBgz44xGZ9AZdienNh
-         9emtNHxWx0yf+ALYvexzRt91EieLuZbRIJdiuJM0xrweCYmO4LL5xitBgYAmX894jSim
-         tC4VD7syA/JXdd/w7VecyWlmC/MbAhX0gfNVlKcpYUaSXjNq0gKoQe1fGvSohQwPOiMB
-         pqk0NTUFyQD1p8LLt+cqK6X2LnBA3D0bIiwBUDnKC91OB2wGj7vatKSXN3TYtD0lSnna
-         KJGETIEJl4jU7xKLCubc7yWlalc9KvD8EwIqnYhveVp/xOuPxSbQAyQiCnIbIvILMSWA
-         DAtA==
-X-Forwarded-Encrypted: i=1; AKwUvBza4AK9euuTjEGDEfPQukn4GGdn0MbTrpwJWo1TPLWT5nGbeHoxSvJVxb6tqRB9QAnMiY4=@lists.linux.dev
-X-Gm-Message-State: AFuF++mHSGEKhrwtQ+BidU836ueeNf4bxYHOokn0EBI7mpWQ3aoVV2hi
-	8dBXHI3Hqs5gs6Nf85xaj4235+PTmFvjDmfjmbgh7ylDv9H0mvLEENW3JztxzrmZ4PQrbTb5Vrx
-	7vMDwC++ihxun0/kR+cea+asJ6YoGgCo4McpwGuRA5XkdnIQr4om40qQ=
-X-Gm-Gg: AYBFou33bB+97sgaWzrAG91LogedGQj80wBy5YNbsMBMnaLiEPBYhn9oX7Dn/JD5bTR
-	B/pxi7hm1PRqCYjrO9jrfUzzLH6hHCLhqychFX6pSyYOU8c7wTSjQDEXU7JlL0gETiDHmAqxbAm
-	BdCBLsrrmS36Or/o0RkcsfSmrDrA/xgL9mlA99P9B+Ki+16CFzCc5dFn11iNBOwMlwZfLhePa6w
-	iY4CYJ/CQH9ffvl0wMdZImqt+ABJ6Rs4Rknzzs6Gu7zvba8ZJmijp3nRxFCBqx2PNRwr/OqE/Iz
-	4iz5yvM/Ez8SDU3sZa4ZXPd9GkEKnhT7ldBFuo+Wb3VZGKlx2LkRH30mg5Ipjgrurq2tI+G+9LK
-	kGgN5yBbNsb9ZipL50p83JFr1zEifvNRb+1aJ3setEwc+Na/cfbZL+g11yaFohnDfY+ULSQRW3i
-	1LwCpLr35IcFGoTvAePKZomfeD1eBbzdWC8cyMZnZooRee2wor/kuuyCSa7yHCWba1nQ==
-X-Received: by 2002:a05:6102:951:b0:7a5:213f:9a1f with SMTP id ada2fe7eead31-7ac1db33a7amr2601060137.18.1790178137722;
-        Wed, 23 Sep 2026 08:42:17 -0700 (PDT)
-X-Received: by 2002:a05:6102:951:b0:7a5:213f:9a1f with SMTP id ada2fe7eead31-7ac1db33a7amr2601039137.18.1790178137281;
-        Wed, 23 Sep 2026 08:42:17 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae5c6022sm144907666b.14.2026.09.23.08.42.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 08:42:16 -0700 (PDT)
-Message-ID: <839b884b-9db0-4215-9715-40549d1c6a26@oss.qualcomm.com>
-Date: Wed, 23 Sep 2026 17:42:15 +0200
+        d=1e100.net; s=20260707; t=1790178547; x=1790783347;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AC1V7c4WU6arvaHg1fiICTCR6GKg0EaeyLEpLHxpNDY=;
+        b=rUjgArJFQdz1oO5ViTLi3vqNmx+1eCtxgN2NXqwbiYhxL0hqAL1QuSWbajbd4XMIql
+         K0/G9eFHmc1535O0Z34lugCIhczpHty/m53aSUoarPAqwo+teHK1N5s/og2Bsmvx89PF
+         4WcSxSmUmEK7y8Mb0bIjS7qFFCRTOr3sFWvHPn6YrvVNcWqI3L1/bIOeX+h/zwuLcpy7
+         5Pbw9431hJoiu1b58nU/pvWgc9D3ev43NFyVZ0wsrpaih4m1G/veRYMDnHzhNi6CPsPK
+         V+dX2U7CVRKW+/m+Svkw2VXmG9SmTL8cxpVbRwP2mgEMnKq4u3JhJKCia4JYcAModVXY
+         Ywug==
+X-Forwarded-Encrypted: i=1; AKwUvBwgsEcLCa572KjbASgeoJUw0gCCqdNxxaM2gC2BJfaIzm2H2Df3nvDCWn/mG+eBreWzrtQ=@lists.linux.dev
+X-Gm-Message-State: AFuF++m+HD1jeHBZO8r0iUhSQxNBf1v8k7Q9F/MjJ8ksWwBm6raFdu/Q
+	vVYBBTYstZtb7+C1F597u/6N/L2nflSULYgYWyFbRY+007tsSD6FheQCerih722Mcb8=
+X-Gm-Gg: AYBFou0yVsEuQ9njaTxrKGWJu86QZZ/uCf8vPTNXW2/hANeJPrspNWrBMVMP6O8en5l
+	d3mtwdLtTIFRIS8jbkO0yaU8wT+JmTbOpDI+2AfPdpq7T63poNTsWxu6Hg+gBtsui6gQgU4VVK4
+	oiKmocOOR3Cvj5XehGY6z/nNF6gUFaBly/BtdeuI/6r9aenkvh+8Y94ck/3Gf4q3rSTBZZ9Q4DD
+	NrXFP358zHyjxDgDi/x5C7DhPvdKNEGJYdYFZHwo+XduV5RGuCKZZ9q/cvl1S8uRyCaZ01qJ7og
+	UO/SYY8RQuhoA7Jcbbi5Svy9LcAxbih9HibK6oaxOrbeTMZAWaVzw+Sn5tI8JyDkV3qRxw65H80
+	bB1PVbSk0lcqY7uJFYq5peFc7K7gFTtkP9Rmw+/m3rbubi+rzI7RW5WwTR7/t7mO70+15y5GoFe
+	cDXyRpuvQZv6QYjotgx0b0CCLWyadofDYZqmyjO1p4ckq5zmxmL4E5LgR2wn3H7C7fVwNWfJk=
+X-Received: by 2002:a17:907:c02:b0:c25:c67d:53cc with SMTP id a640c23a62f3a-c2aadeb4e22mr229458566b.8.1790178546725;
+        Wed, 23 Sep 2026 08:49:06 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:b4a:dc6a:68e:2592])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae687318sm152318266b.44.2026.09.23.08.49.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 08:49:06 -0700 (PDT)
+Date: Wed, 23 Sep 2026 09:48:58 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, virtualization@lists.linux.dev,
+	imx@lists.linux.dev, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC 12/12] PoC: arm64: dts: imx93-11x11-frdm: add
+ multiple vdevs
+Message-ID: <arP06mWDehsIDh5s@p14s>
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <20260916-remoteproc_virtio_map-v1-12-dac8c5eb4aa9@valla.it>
+ <arKiOCGrWAKyc-bc@p14s>
+ <arLawAw6kgFT2e0W@bywater>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
-To: Sudeep Holla <sudeep.holla@kernel.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
- <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
- <arFKVhlgJge5EZyj@monoceros>
- <20260923-sceptical-mauve-firefly-f5456d@sudeepholla>
- <6b5a8300-ebf9-4717-bd39-952e89fc5e78@oss.qualcomm.com>
- <20260923-snake-of-magic-satiation-c3b857@sudeepholla>
- <a5e56180-b96f-4fac-980e-e837e84cd5a5@oss.qualcomm.com>
- <20260923-calculating-positive-inchworm-28d3cc@sudeepholla>
- <arPMAXs4jjUeu1DE@monoceros>
- <20260923-groovy-airborne-rook-e1efc6@sudeepholla>
-Content-Language: en-US, nl
-In-Reply-To: <20260923-groovy-airborne-rook-e1efc6@sudeepholla>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA2MiBTYWx0ZWRfX9V6e/0FN+dC9
- 6A4UI/p32ngyLfHSSFRsJbKnmhfN+gH5ni9taybsVLFW16B4ofOGS36gGIecfZ6rEycih6ZYw5z
- OyZKQgxpYOUZMZHTTy2xp/q/x72Rk53PV945LFE09kI5AEwU/l6t9DhlmYJqAnMiuohs4bPrTgg
- I5e56Dw8I7bpDe4Ba4CSS6VDU5iFhyXOkhw1Uj8xE7oJyC0kqrj8KQ+haX9Mft6jdw6FZ1zLkH2
- 1t0ka9ZsnpvykZOyeHqNUPI4SrhW6FBfXmi48M8dHj0NQEkrbpdBIPPSm1t68OpdDtRLO32PBZ0
- 0ZFZae4aZ9HLuQXAixwnR2NKZ1tK1lTIlxCr76oG7sNVIMzNxV59ymqvQOuhaK2a42zvFxB3eKV
- YM/qlcfyE07kwc8jPocKcJm0hBqzMKUmiTh05KDvLXH3gBXsJm5yy3Yudb7DdTBCB7maOLyS691
- tGrGxljIV1AkmEU5FHg==
-X-Proofpoint-GUID: LOhTjJG3YW7eAaFPoao8gSc7uF4rS8hD
-X-Proofpoint-ORIG-GUID: LOhTjJG3YW7eAaFPoao8gSc7uF4rS8hD
-X-Authority-Analysis: v=2.4 cv=K4+3jCWI c=1 sm=1 tr=0 ts=6ab3f35c cx=c_pps
- a=UbhLPJ621ZpgOD2l3yZY1w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=IpJZQVW2AAAA:8
- a=wmcOPm1-qqoyX47EQMsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TOPH6uDL9cOC6tEoww4z:22 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA2MiBTYWx0ZWRfX9za7+DDUy6Kn
- 4OpWmP6HqUJYpu4Oj7TySj/Nb1e+q/l8O8piuD3p24blO/FsU6Fc5j6lPiaGldTHkjYkjDdqoqF
- e2cl6cbOKyW2aaV6iV9luOYHvy7dCyY=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 suspectscore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arLawAw6kgFT2e0W@bywater>
 
-Hi,
+On Tue, Sep 22, 2026 at 10:19:48PM +0200, Francesco Valla wrote:
+> On Tue, Sep 22, 2026 at 09:43:52AM -0600, Mathieu Poirier wrote:
+> > On Wed, Sep 16, 2026 at 11:10:57PM +0200, Francesco Valla wrote:
+> > > Add rings for multiple vdevs, as well as the required virtio nodes for
+> > > I2C, SPI and GPIO functionalities. On top of that, add example
+> > > peripherals using all of them.
+> > > 
+> > > NOTE: this is a Proof-Of-Concept, not meant to be integrated!
+> > > 
+> > > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 128 +++++++++++++++++++--
+> > >  1 file changed, 119 insertions(+), 9 deletions(-)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> > > index bd14ba28690c..dfa3b122ac5f 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> > > +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> > > @@ -53,6 +53,32 @@ button-k3 {
+> > >  		};
+> > >  	};
+> > >  
+> > > +	gpio-keys-virtio {
+> > > +		compatible = "gpio-keys-polled";
+> > > +		poll-interval = <100>;
+> > > +
+> > > +		button-v1 {
+> > > +			label = "Button V1";
+> > > +			linux,code = <BTN_3>;
+> > > +			gpios = <&v_gpio 23 GPIO_ACTIVE_LOW>;
+> > > +		};
+> > > +
+> > > +		button-v2 {
+> > > +			label = "Button V2";
+> > > +			linux,code = <BTN_4>;
+> > > +			gpios = <&v_gpio 24 GPIO_ACTIVE_LOW>;
+> > > +		};
+> > > +	};
+> > > +
+> > > +	leds {
+> > > +		compatible = "gpio-leds";
+> > > +
+> > > +		led {
+> > > +			gpios = <&v_gpio 18 GPIO_ACTIVE_HIGH>;
+> > > +			label = "LED V";
+> > > +		};
+> > > +	};
+> > > +
+> > >  	reg_usdhc2_vmmc: regulator-usdhc2 {
+> > >  		compatible = "regulator-fixed";
+> > >  		off-on-delay-us = <12000>;
+> > > @@ -89,11 +115,6 @@ linux,cma {
+> > >  			linux,cma-default;
+> > >  		};
+> > >  
+> > > -		rsc_table: rsc-table@2021e000 {
+> > > -			reg = <0 0x2021e000 0 0x1000>;
+> > > -			no-map;
+> > > -		};
+> > > -
+> > 
+> > Why is the resource table removed?  There is no mention of that in the
+> > changelog...
+> >
+> 
+> You are obviously right, the commit message here should have been a
+> poem, not a form of hermetic poetry. My bad.
+> 
+> The resource table here is causing problems with how Zephyr is managing
+> it at its side. If it is kept in a separate memory location and copied
+> there at runtime by the remote processor firmware during its startup
+> (which is the current Zephyr behavior), then there might be a race
+> condition when the aforesaid firmware is loaded and started by Linux
+> *and* at least one of the vdev drivers (here including rpmsg_bus) is
+> built-in. In this case, the copy of the resource table done by the
+> remote processor might - depending on the async execution of the two
+> processors - overwrite the status bit set by the Linux driver:
+> 
+>   Firmware load and startup (echo start > /sys/.../state)
+>                            |
+> 			   |
+> 			   V
+>   The vdev devices get registered (by register_virtio_device())
+>                            |
+> 			   |
+> 			   V
+>   If a driver is built-in, it probes and sets the vdev status
+>   inside the resource table @rsc-table.
+>                            .
+> 			   . (in the mean time)
+> 			   .
+>   The remote processor starts up and copies the resource table from its
+>   dedicated section to @rsc-table.
+> 
+> Depending on the system load and the complexity of the firmware, the two
+> operations can happen in whatever sequence, causing a race condition.
 
-On 23-Sep-26 16:25, Sudeep Holla wrote:
-> On Wed, Sep 23, 2026 at 02:55:26PM +0200, Uwe Kleine-König wrote:
->> On Wed, Sep 23, 2026 at 01:01:44PM +0100, Sudeep Holla wrote:
->>> If Uwe is fine, yes I can take v7 as is.
->>
->> Fine for me.
->>
->> Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
->>
-> 
-> Thanks Uwe!
-> 
->> The nice thing is that the device_id structs are not API, so this can
->> also be addressed later if someone comes up with a clever idea how to
->> implement it.
->>
-> 
-> Agreed.
-> 
-> Hans,
-> 
-> There were other changes in bus.c that conflicted with this. I have
-> resolved the conflicts and pushed to my for-next/scmi/updates[1]
-> 
-> If anything is wrong or if you prefer, you can post a rebased version
-> that I can pick up.
+This would happen regardless of this patchset.
 
-I've given your for-next/scmi/updates branch a test run and
-the scmi-cpufreq module autuloads correctly, so everything is looking
-good from my pov.
+> 
+> This is somewhat masked if vdev drivers are built as modules, as the
+> devices does not probe immediately but only after the modules have been
+> loaded, giving the remote processor time to start. Note that this is not
+> a solution! but a workaround.
+> 
+> If the rsc-table node is not there, the startup logic falls back to the
+> classic rproc_elf_find_loaded_rsc_table().
 
-Regards,
+We can't remove @rsc-table to make a problem go away.  
 
-Hans
+> 
+> This is specific to i.MX platforms [1] and is probably not normally an
+> issue because - as stated in [1] - the offical SDK from NXP seems not
+> to check the status inside the resource table.
+> 
+> > >  		vdev0vring0: vdev0vring0@a4000000 {
+> > >  			reg = <0 0xa4000000 0 0x8000>;
+> > >  			no-map;
+> > > @@ -105,12 +126,42 @@ vdev0vring1: vdev0vring1@a4008000 {
+> > >  		};
+> > >  
+> > >  		vdev1vring0: vdev1vring0@a4010000 {
+> > > -			reg = <0 0xa4010000 0 0x8000>;
+> > > +			reg = <0 0xa4010000 0 0x1000>;
+> > > +			no-map;
+> > > +		};
+> > > +
+> > > +		vdev2vring0: vdev2vring0@a4011000 {
+> > > +			reg = <0 0xa4011000 0 0x2000>;
+> > > +			no-map;
+> > > +		};
+> > > +
+> > > +		vdev2vring1: vdev2vring1@a4013000 {
+> > > +			reg = <0 0xa4013000 0 0x2000>;
+> > > +			no-map;
+> > > +		};
+> > > +
+> > > +		vdev3vring0: vdev3vring0@a4015000 {
+> > > +			reg = <0 0xa4015000 0 0x2000>;
+> > > +			no-map;
+> > > +		};
+> > > +
+> > > +		vdev4vring0: vdev4vring0@a4017000 {
+> > > +			reg = <0 0xa4017000 0 0x4000>;
+> > > +			no-map;
+> > > +		};
+> > > +
+> > > +		vdev5vring0: vdev5vring0@a401B000 {
+> > > +			reg = <0 0xa401B000 0 0x2000>;
+> > > +			no-map;
+> > > +		};
+> > > +
+> > > +		vdev5vring1: vdev5vring1@a401D000 {
+> > > +			reg = <0 0xa401D000 0 0x2000>;
+> > >  			no-map;
+> > >  		};
+> > >  
+> > > -		vdev1vring1: vdev1vring1@a4018000 {
+> > > -			reg = <0 0xa4018000 0 0x8000>;
+> > > +		vdev5vring2: vdev5vring2@a401F000 {
+> > > +			reg = <0 0xa401F000 0 0x1000>;
+> > >  			no-map;
+> > >  		};
+> > >  
+> > > @@ -149,8 +200,67 @@ &cm33 {
+> > >  		 <&mu1 3 1>;
+> > >  	mbox-names = "tx", "rx", "rxdb";
+> > >  	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+> > > -			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
+> > > +			<&vdev1vring0>, <&vdev2vring0>, <&vdev2vring1>,
+> > > +			<&vdev3vring0>, <&vdev4vring0>,
+> > > +			<&vdev5vring0>, <&vdev5vring1>, <&vdev5vring2>;
+> > 
+> > Who is using vdev5 vrings?  
+> > 
+> 
+> Another thing that should have been in the commit message. Vdevs are
+> defined, in the Zephyr application I am using as PoC, as follows:
+> 
+>  - vdev0: RPMSG (tx and rx vrings)
 
+To be backward compatible, there has to be a way to make vdev0 defaulting to
+RPMSG.  It would also be nice if bindings were define for RPMSG so that it can
+show up in the list of remoteproc-virtio devices like i2c, gpio and others.
+
+
+>  - vdev1: entropy (single request vring)
+>  - vdev2: GPIO (request and event vrings)
+>  - vdev3: I2C (single request vring)
+>  - vdev4: SPI (single request vring)
+>  - vdev5: CAN (tx, rx and control vrings)
+> 
+> vdev5 is not represented inside the devicetree because the can-virtio
+> driver registers a single CAN network device and has thus no need for
+> such representation.
+
+Then why is it part of the remoteproc's memory-regions?
+
+> 
+> > >  	status = "okay";
+> > > +
+> > > +	virtio {
+> > > +		#address-cells = <1>;
+> > > +		#size-cells = <0>;
+> > > +
+> > > +		vdev@2 {
+> > > +			reg = <2>;
+> > > +
+> > > +			v_gpio: gpio {
+> > > +				compatible = "virtio,device29";
+> > > +				gpio-controller;
+> > > +				#gpio-cells = <2>;
+> > > +				interrupt-controller;
+> > > +				#interrupt-cells = <2>;
+> > > +			};
+> > > +		};
+> > > +
+> > > +		vdev@3 {
+> > > +			reg = <3>;
+> > > +
+> > > +			i2c {
+> > > +				compatible = "virtio,device22";
+> > > +				#address-cells = <1>;
+> > > +				#size-cells = <0>;
+> > > +
+> > > +				eeprom@50 {
+> > > +					compatible = "atmel,24c1025";
+> > > +					reg = <0x50>;
+> > > +				};
+> > > +			};
+> > > +		};
+> > > +
+> > > +		vdev@4 {
+> > > +			reg = <4>;
+> > > +
+> > > +			spi {
+> > > +				compatible = "virtio,device2d";
+> > > +				#address-cells = <1>;
+> > > +				#size-cells = <0>;
+> > > +
+> > > +				sram@0 {
+> > > +					compatible = "microchip,mchp23k256";
+> > > +					reg = <0>;
+> > > +					spi-max-frequency = <20000000>;
+> > > +				};
+> > > +
+> > > +				lcd@1 {
+> > > +					compatible = "adafruit,yx240qv29", "ilitek,ili9341";
+> > > +					reg = <1>;
+> > > +					spi-max-frequency = <10000000>;
+> > > +					dc-gpios = <&v_gpio 21 GPIO_ACTIVE_HIGH>;
+> > > +					reset-gpios = <&v_gpio 20 GPIO_ACTIVE_HIGH>;
+> > > +					rotation = <90>;
+> > > +				};
+> > > +			};
+> > > +		};
+> > > +	};
+> > >  };
+> > >  
+> > >  &eqos {
+> > > 
+> > > -- 
+> > > 2.55.0
+> > >
+> 
+> Thank you!
+> 
+> Regards,
+> Francesco
+> 
+> 
+> [1] https://lore.kernel.org/all/20240719-imx_rproc-v2-2-10d0268c7eb1@nxp.com/
