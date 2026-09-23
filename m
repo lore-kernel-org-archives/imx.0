@@ -1,95 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA732EEE75;
-	Wed, 23 Sep 2026 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4940751FCA9;
+	Wed, 23 Sep 2026 12:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790167530; cv=none; b=cAJbKwI8Plbx42mTu97tDgubfpXnsfwqAS0cHj1l8XhrtYulcYiGkkDxrEeog/5EyoixqTpypLNLq5q/Ah4lhoRFMfrzpWqihG8SlpOsT0kN6pQdscBLf5ZVAsG5bl9yiQmiLVLI9O6vjOFhkyjPdPwnQF1FBwOvJ2f0ZiiPLEI=
+	t=1790168041; cv=none; b=M8Uvf1kbZUgiwVW9v6fBj28XWkQMbB7rqNdJz3lqKWmw+iTIErtZiL6K5zdYkAOe5MagrIqoUnX4Lye9bDOSHExNNv/01AD4o4cMmZG/YiJYRUeaVmrqyPrNxiyBd4uHoAAy/oyWgQnJuKkbneKi53Z46Dj1G8Dinnj2qKr4n1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790167530; c=relaxed/simple;
-	bh=2xYqGn83p9qDa8rjkaGXNiskpOimnDMl27ZssfNfI1M=;
+	s=arc-20240116; t=1790168041; c=relaxed/simple;
+	bh=lu2KEldYMIdJTY5gnGXrBRBbFD5hcsupirC5fYEC6Ko=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eUCMfJjNaS/0eAZnueCehtFpi4qdZeDoXYhhvfkt+GkYa9sID8EpOuUHUIeVj51wO+nCU4YnyPI39v5R/uIU2Tf7QjoSqWt5RtnncbEo1a62lrEN2I0exKECZfnjN9TFRC5saQP+1jxBfMsMAHl9aLJV8rNzstHVwpfJuH5GOJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8NAhJ7w; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=oLRYND+LyP8N8JDAA0Z5RGPPYJXZIlWRyNiRw1GAVJQu+7VEFoACPvzfrGSXFIHPsfF5MUZ3zw3I8ES1eyrutuUGogbEWi55SFzvIOtGgYolXOc7OzoGfXyIvpvObsYPU1+uGE2sZuLngEtbp1g0evR0BkyYfR4V4kdLuEfgIwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMepWDPv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8NAhJ7w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C161F000FF;
-	Wed, 23 Sep 2026 12:45:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790167529;
-	bh=EmefoQc4jPjF+J0TGd7A2/RbBqOLDCX0rbqb1Fx0Osg=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMepWDPv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEEE1F00898;
+	Wed, 23 Sep 2026 12:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1790168030;
+	bh=ZVEp2JvfuWHOXzAbrzSivpd316nYEBNph4i0Xb5Vdlk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U8NAhJ7wizrCzNw6S0+XjZ1LdYSxSz93GWHotpuZo7QUlcz6vhwmTjfSEiG5Uqeqn
-	 zFaQALfsTmT5mf4AwYG5kgzRKHOsWc23QV/Ro9KjCsUN/dN4YNr8j5l457yvNOf9li
-	 qpEI7Ocq9DL7NisThDaoRbYRVhYmYVimGeaG/vxCBQQuL+gERUmRZ6ur5+Xw/CX4Td
-	 9plBepGYn8qKYsIhKwJGZuAJBLceN7NcrjbiSxl9EoKRow/ojrlyzZTY0n4MuS1cmU
-	 lJ9UXUcwVAvCr+zBR82RGBkfQVVqH86sJX/TdkuLyWIsPvc8lc6oQWVHcE2OaeYwvi
-	 CjKXwYJHikDVA==
-Date: Wed, 23 Sep 2026 18:15:25 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Stefan Wahren <wahrenst@gmx.net>, Frank Li <Frank.Li@nxp.com>,
-	Christoph Stoidner <c.stoidner@phytec.de>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>, devicetree@vger.kernel.org,
-	linux-can@vger.kernel.org, linux-phy@lists.infradead.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Rob Herring <robh@kernel.org>, Vincent Mailhol <mailhol@kernel.org>,
-	Aswath Govindraju <a-govindraju@ti.com>
-Subject: Re: [PATCH V5 0/4] arm64: dts: freescale: Add chargebyte Charge
- Control Y
-Message-ID: <arPJ5TUZEeb2SAV3@parshuram>
-References: <20260907150420.18787-1-wahrenst@gmx.net>
- <9cb548d3-f3cf-4757-a9ff-5f878479c7d7@gmx.net>
- <arFDUby0v52HSNnU@SMW015318>
+	b=VMepWDPvZu/ik3daLuc0FSklE+OTbuVfCYzqYoNySa2nQ7Fx93ZSCSqzi/4F5TDqD
+	 lM5XxJFf2Ud3zXQoolVuS6w4WxII/7xpvxOOjMoj/Y+CkJQsbURHvX+UiG67ZXUGsB
+	 Rt4ktykr3Zyb1HerdpCGsw75Ea74KSn+Rx9ZvShA=
+Date: Wed, 23 Sep 2026 14:53:46 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?Jo=E3o?= Loureiro <joaofl@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <frank.li@nxp.com>, Alexander Dahl <ada@thorsis.com>,
+	linux-serial@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial: fsl_lpuart: add support for GPIO-controlled
+ modem lines
+Message-ID: <2026092313-snare-goggles-ed1c@gregkh>
+References: <20260819144458.253967-1-joaofl@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <arFDUby0v52HSNnU@SMW015318>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260819144458.253967-1-joaofl@gmail.com>
 
-On 21-09-26, 09:46, Frank Li wrote:
-> On Mon, Sep 21, 2026 at 03:09:23PM +0200, Stefan Wahren wrote:
-> > Hi Frank,
-> >
-> > Am 07.09.26 um 17:04 schrieb Stefan Wahren:
-> > > This series adds support for the chargebyte Charge Control Y, which is
-> > > an Electrical Vehicle Supply Equipment (EVSE) for MCS (Megawatt
-> > > Charging System) charging stations.
-> > >
-> > > sashiko reported in the first version of the series [1] that X_nRST_LAN
-> > > is available via GPIO line names, but there is no reset mechanismn in the
-> > > device tree. This finding is valid. Since the reset line feature isn't
-> > > implemented for LAN8651 driver yet, I like to proceed with the current
-> > > version. The LAN8651 handles reset via SPI commands and in rare cases
-> > > we still have the possibility to control the reset from userspace.
-> > > Btw the pin has a pull resistor in hardware, so it's not floating.
-> > >
-> > > sashiko complained in the fourth version of the series [2] about the
-> > > reset polarity of ethphy2 and the different drive strength across the
-> > > data lines. Both is intended.
-> > >
-> > > [1] - https://lore.kernel.org/linux-devicetree/20260818093147.E556C1F000E9@smtp.kernel.org/
-> > > [2] - https://lore.kernel.org/linux-devicetree/20260903082122.A777C1F000E9@smtp.kernel.org/
-> > >
-> > > Changes in V5:
-> > > - fix delete-node for pinctrl_leds (reported by sashiko)
-> > > - add Krzysztof's Reviewed-by
-> > I didn't received any feedback for V5 yet. Do you have any comments or could
-> > it be merged?
+On Wed, Aug 19, 2026 at 04:44:53PM +0200, João Loureiro wrote:
+> LPUART has no register bit to drive RTS to a chosen level: UARTMODIR only
+> offers receiver-driven auto-RTS (RXRTSE) and RTS-during-transmit (TXRTSE).
+> Consequently lpuart_set_mctrl() and lpuart32_set_mctrl() ignore TIOCM_RTS,
+> and their get_mctrl() counterparts report a hardcoded
+> TIOCM_CAR | TIOCM_DSR | TIOCM_CTS.
 > 
-> Wait for vinod pick phy binding part.
+> That makes it impossible to talk to a peripheral which is driven by a
+> software controlled RTS strobe and answers on CTS.  TIOCMBIS/TIOCMBIC
+> silently do nothing, and because CTS always reads back as asserted, a
+> userspace handshake that waits for CTS to follow RTS can never complete:
+> de-asserting RTS and waiting for CTS to drop times out every time.  Boards
+> that route the two pins to plain GPIOs cannot work around it either, since
+> the driver never looks at rts-gpios/cts-gpios.
+> 
+> Wire the driver up to the serial_mctrl_gpio helpers, as imx.c and
+> atmel_serial.c already do.  set_mctrl() forwards the state to
+> mctrl_gpio_set(), and get_mctrl() runs the flags through mctrl_gpio_get()
+> so that a described cts-gpios overrides the assumed-asserted default.
+> Boards without such a description keep the previous behaviour.  Modem
+> status interrupts are enabled from startup() and disabled from shutdown(),
+> with a .enable_ms callback for the serial core.
+> 
+> The same limitation was reported for an i.MX 8XLite board that needs RS-485
+> with a GPIO RTS [1].  This change was developed and tested on an i.MX95
+> board whose barcode scanner is driven over LPUART with a manual RTS strobe;
+> with it, RTS toggles as requested and CTS is reported from the real pin.
+> 
+> [1] https://lore.kernel.org/all/20260210-rearview-hungrily-536a95fc3385@thorsis.com/
+> 
+> Signed-off-by: João Loureiro <joaofl@gmail.com>
+> ---
+>  drivers/tty/serial/Kconfig      |  1 +
+>  drivers/tty/serial/fsl_lpuart.c | 35 +++++++++++++++++++++++++++++++--
+>  2 files changed, 34 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+> index 4f57833e3ec7..a173eaf769ff 100644
+> --- a/drivers/tty/serial/Kconfig
+> +++ b/drivers/tty/serial/Kconfig
+> @@ -1301,6 +1301,7 @@ config SERIAL_FSL_LPUART
+>  	tristate "Freescale lpuart serial port support"
+>  	depends on HAS_DMA
+>  	select SERIAL_CORE
+> +	select SERIAL_MCTRL_GPIO if GPIOLIB
 
-Done now
+Why not depends?
 
--- 
-~Vinod
+thanks,
+
+greg k-h
