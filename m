@@ -1,774 +1,623 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012008.outbound.protection.outlook.com [52.101.66.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6F43F888A
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 06:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790143927; cv=fail; b=XLrzNlhVyjV65Q0p/hZnl8FYHI75uQlsnWvyGhzzjG/u1yAzEWuRq/Qjw4p3q0FzBXgt0pgih9HJ+spJ+ziZi6tyQVgSiVBtLsHNYDJPkgCvYk9tk3Lh92/RVKUJT72Jd6PTngKi3HQWQ3ybcLLgU+/kvnIR/Dq5y1FYBryrFE4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790143927; c=relaxed/simple;
-	bh=0O0lxQCNQyGIfbJx8HgfDDkD2deLylh20gzEOtMGBxc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EIiWPdBe1XcdOVu1db3PQWRpEMzf2ovIVVHB1WjHZJ7vioM3BYzKjPq4raEaF7mk0SPcPXw2EuAP7hOC8UYNxxCpMvnB1pEDwER0rpriuaWheARrn3ObPj3+hrbEJ6ZPD6p+RhKzSAIvLO0OI/TlodTx+3znlpg/FVJvFJ0Sphc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BBBbWMca; arc=fail smtp.client-ip=52.101.66.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A9243CECB
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790147538; cv=none; b=Enjg8YwaRtKDtpLi5G+hACfiy1fFCAr7Qq7ZQrWfbk/e0xvKKMjqvQdsrRFZUQqBStRUxQK7x7PS4Ubibab6GZzUl4GXCBUzqEa31rjGZPmC+aSXR4jpEnyJLpS7g3v5UpKVB3Dve/ZewZ0j4MwuPjlNiEAmeXRfn6mbsBcBabo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790147538; c=relaxed/simple;
+	bh=Rn/fWr7N4uS2vOOqUOXGB/w0WgpXu2u6ai/D6IvPJtc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U2er7POjizt5KG7/JTeO5rN7GkhZnr7Uaa3+uA5UveQrvv+E9jl/G5XUy8xizlEyJHqCWtsDsNfkejENt0O4xcK29Y01eHe2TEwKVRHFWsWP8xuPvQEEd7VMYksT+vb9GwNOSYdfkI8zWGZQt0q6Y3TbnrsCPrQNAMI3wY1aTOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zvW+mF4e; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=X3nGbstk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AcCwPvTv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6mvWZqFo; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BBBbWMca"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YtyUSA1TOvG3M7UQtRTrqEOsJbrQcHOxl+yEuhdcAAawumb/IdtsDjz5bRfz5gZRxZoBfqhJGT8iCB1Z/XWAgcUNqmgDRPtp4+bJ69qU4BBEJP+zXhnYNCLDZfaRVXSG7YwbDQo9hMO0SID6WRXs4pvnKWKOdf7VoVYqVC2ImAl1tEFkK9vRnqyU2WS5b/lcSh6BiRvlYGQjKyv9t4U9a0/3G537HbmKD6c7/MtmadLMIS4BecFn3m8miDoOK//szLWKXRZmqdql9auaCxQSCuP7qJxY7WQUrH1MH2uIS40abLlaXvhSYs0dYvdNhRz7wzy6GzaEu5Bwqo4d9NCKdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iQbEdxHK+Cx8f+Fpy98onb8+B0McGTZq5BkbddEj9uA=;
- b=jBz/Ibug7Ft8J7dMZ4kUpBmKtwQx/DMkMIoAilLvc3UtmJRfOQuz5gVCVqppgciZwtb0hrlzZ535CSTiLeMXmCsBqT1QcpV98Q6qFWxrvCQPAIQoukved/EdZrfa3J1V8n38ZeKO5O0AEhDODfyzOMXjjWM7pNjnTuDD6A7PwidNIph4zOZhINHj+/kuyfUDTbRcH+ab2mKpanjAGiSsarqt9YOQleOpwFoO/oAX2Cjuru+JI/Sj6Zwp+Z8WehhyaTnl18WRcCF0M4DZYqHP6GJcdsIagYWNZKImmrwRXn+iqRt6xzyGRLBZsGIA0TaNLVCV8oo1V4sYuWqOLZcW6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iQbEdxHK+Cx8f+Fpy98onb8+B0McGTZq5BkbddEj9uA=;
- b=BBBbWMcaIzY0Ux737sRg2x3Rbv3TDdi8JnNDmBR4LbDriSwFjrOc8DmySgZ1+Z29G7ZndpB7zlFuKCJMCscafNCW4A+BK88SlyiUR5dsRik3qqyQs4v0hFO2WOuAfwjTHoN94lRLzaWt9/qiYXM4hY/K9B0x7JAixacVR48fWIqfml57e9JsktC3p5pusgQc0lUp8wexxp4OM9hpO4t58kv11FrJvDncCV0zJm0EK/UBMeIvOqNSus9hznxKu2O1xpPAGgYawhs8kE43qr/sH3tEjK4bVBsDng1oKS1QRPSsYySIPhQfzaJAUccBZjKLp/soDNpw2ohwo2Zqmny9bg==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by AS5PR04MB9894.eurprd04.prod.outlook.com (2603:10a6:20b:655::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 06:11:57 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 06:11:57 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
- (OSS)" <wei.fang@oss.nxp.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, "linusw@kernel.org" <linusw@kernel.org>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v4 net-next 8/8] net: dsa: netc: add PTP one-step
- timestamping support
-Thread-Topic: [PATCH v4 net-next 8/8] net: dsa: netc: add PTP one-step
- timestamping support
-Thread-Index: AQHdRz7mJNvdwL5OkEKz7kxCT3KMQbbaSYCAgAE/EDA=
-Date: Wed, 23 Sep 2026 06:11:56 +0000
-Message-ID:
- <AS4PR04MB9338EB87E61CBBF0C797E85688822@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20260918072852.501420-9-wei.fang@oss.nxp.com>
- <179006555987.2160803.11394642259806679085@kernel.org>
-In-Reply-To: <179006555987.2160803.11394642259806679085@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|AS5PR04MB9894:EE_
-x-ms-office365-filtering-correlation-id: 42ce5146-3445-42a5-0b3d-08df19399266
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|7416014|1800799024|366016|376014|19092799006|10067099003|3023799007|6133799003|56012099006|11063799006|4143699003|18002099003|22082099003|5023799004|38070700021;
-x-microsoft-antispam-message-info:
- Do1BNmTZ9kzZ8yH6ft2m1ENajvMhmg04FULpoqKc5TfnhEbqTDG8l0HK0I7KMRpTNIK3QnZLoQd/XgPRFtbh48n9G2MsgNmX2U2BDtJjX1FZQrhq21qBvf8mkJAsDKpuKfnyqCNIG5MhCeKmIz9H+jcOgWjsVN/wzrSQX/LQYQTBGt2y4gUKyLET+YulKvcnH4q5vPy7OfUL3T21ibaohMoa+4npuli92jl85+i/d0E7fiH8+OR5n7fLxXj2qdS/BxMXIbcgqbx2iexEJpScMcPW9hG2Fj84c7D9A0ri4iNUQ9R3NmwtE7kibEm0zBHIqxCO8yD5G5LHqg6JZ1NFmRgd4jZSicxCbjW3KiCX3Z+BOxZm+gnMfIvn0XYn3E5ipR5cr9gTrnQ21xolVnm/Mxr1we/2VYzGMzQ8acDfAierdpNGoeT6JjbDtmWlIyCnmtq5woYjoA3wmNSoiwUDV0m1S1+a8nFYd0whVZNq/Ia7+VJ9BHNbXBRPzQxeZh+cBP0f85HIHj++jXLSYiJjn8ABZLGJLN7fn/qOol20dKQGUWGqiCP820G4y9eU+s0jHFOWhTKJ9qXEVKwsBTxhExLGnXC1XJU+ZITfbcOSHj0tkF+A/DWcC19tkf96tM3QFUQGClNUlcXBoy7SW5vKM2+3i/AObbugDffjlI4zWMMWVHLb2hkpy2i/xfTovQNSnR9xkew0Ca/67mU1m47C5ESzVcQHigfSv0Wdgzny3ZU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(366016)(376014)(19092799006)(10067099003)(3023799007)(6133799003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003)(5023799004)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?IlRSe9C8ZO0vo6DMN1bkOxjH582pIQUuAA3QurS3u+/yhbluiOg6tIzWcksA?=
- =?us-ascii?Q?Qh5s7LZ3vv4Iad1xyyH/OOeV1WMBuWSu3Pfa37M+JPauWcekLw8huJTS2Pji?=
- =?us-ascii?Q?6Wp3Lni5NXBlu4quX9xRy+8NpTCDVEzp4FCNLCdi39GLF9H1ZgYuCOs/wUTI?=
- =?us-ascii?Q?Im4AKsJonDs5Nr8KLYzNcNP80yuYu0edB5ECCPav9V4bbbfN5NwEN6eXveFy?=
- =?us-ascii?Q?zDZY1upnBtj5m2U2vpj53/ryUGypU/r6VoW/h+WRezVd/dlRCHJltwEuOnOw?=
- =?us-ascii?Q?0aJp4EOToyaaq2KPRu1WC7exRUG9vQf2g7tV9KM5TfCafEYV3MRxPbQeRPUz?=
- =?us-ascii?Q?UidZBTBoGvxfuDmBAWwWEmRCrMGLnBXm0ZT78L4QIveQ/dblW+CAz/evn5tr?=
- =?us-ascii?Q?SA8fWK+uhisHLCTLZfcAmyFcWA3r0LeQFoEnKxfTuQbE+FgcKf4pGs+e+KlW?=
- =?us-ascii?Q?sIAKu8cVzHWgXWCULhh8mdF63XasOADPG7XlhBf5WfjULJVjeYYtt8+eZuZg?=
- =?us-ascii?Q?lX8Y69V3YAfdU68uOPWMd2U/3/7zO8ufjYSjBkhODH3d7+Ui3PYh5cWzagJe?=
- =?us-ascii?Q?QdG0quKbl1t0wD65UKqoJwvBWVzS5fPW/0vjCDsARaQOgYyTTyqc+IffT47U?=
- =?us-ascii?Q?m4D1qMjATfO/utdVIOy7ybB1SvHkaImerytDZdp+PuC1T9xDXVb/kBuBvRhS?=
- =?us-ascii?Q?p8N3U9GKhXNGq+ZRUw9nOInvdCpihXHh7+deQdaOVzWHb3v4B4nxOxnGUVci?=
- =?us-ascii?Q?aZfHnmadmfUIkVRnlYIFGHrVqsSoe4iROZ4A6JuGOb5G4hecgY/RCL9T3sCf?=
- =?us-ascii?Q?WIx+guY4jG7gKQ4fELVZmAk+noiz5bnx2WtFbHG5Ly7J4PEKZOshJTYSF4mt?=
- =?us-ascii?Q?JWXb1bea1emqiFbxN2ahH/fYKOhvrcwi2astX6PD5G/H37as6mh3mcQwYdFZ?=
- =?us-ascii?Q?7xXJxmxMLZbbcFClpitdhPPvm46OufAc0XqAV1YStdVnwZ48Rg7q2aVeGY17?=
- =?us-ascii?Q?QCN4eQDXSXn+qoRPteQGuZeAk12L4UqFElUyoex8qO+mAEXjDHuBG5KDFNhD?=
- =?us-ascii?Q?a6SrQ9zvOXvzfSNLev45KUFwiiuoqMJCyxcmrSIpT7GelmcE+2a30gy+rukT?=
- =?us-ascii?Q?ZK7qSTN0PcVGmjTnTjKhKCmK0aulWGZQTKxMsWnoU8gZp/AbSqhfg1cWcAbP?=
- =?us-ascii?Q?KfjJrMsYMgKhK6ZCVz/Flb7GGXlrSdjanOJbuX3wRBVU4hKks876c4EF9k1M?=
- =?us-ascii?Q?6h6uhPhhC2RBW6CdZYud0LJxx/Rm5XmJVfa1XePce44qp8X+bflcKxpz2/dy?=
- =?us-ascii?Q?8UBkalDkqgmpkC1zAkDDpmyx4K94QrL4nQMGeDOCM8fTCXBbcAXPe88FyoLi?=
- =?us-ascii?Q?4qGaPJ3Rvc/qmnHOA3jH3YKD63RWZPoBos/TOuC2Y/xLpB/5u5w2PT17Yx2t?=
- =?us-ascii?Q?4pgwCErv47UEV/fkdI6o88gyQYnT2Ld2TtAOsXrGuZjf5LXmkgoy92c0Iop7?=
- =?us-ascii?Q?Fi50raDIH1cztpkrvc5uFVJtXQxcGQMLesNTTzwszr8bgn9X2unG7KGZNMva?=
- =?us-ascii?Q?c+a5r4l4MJDeuJncMmBDQuVyWDJMjdEbrElv8bR4ZrzVHdGqkMt4w8TZtABA?=
- =?us-ascii?Q?z1aMjIXMFStJWAP+vhAlWX/NVkg7IdDzT35AN1ygn+/BJerAsRYeqWoQcnzD?=
- =?us-ascii?Q?/rv9GZ2Nhg3qH36Yju+2cx8Q9rUovM8y+5Gdexd51B9KXgiB?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zvW+mF4e";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="X3nGbstk";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AcCwPvTv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6mvWZqFo"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 292041FFA4;
+	Wed, 23 Sep 2026 07:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790147528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
+	b=zvW+mF4esVnryVOvXFNcX1b2hOy4+/k+kyyWkOh/9sTbvFzqKvRxlDrMLzsuk4Dy9HDqIC
+	FPLBrb9Dz1npiwBHiLnaQXkkBDq3hvlD63QbC3MtZAOGVQodIBlrK2Kg9gVp8zl9fk4DZa
+	gLTkzqd7BkoC585fLCEArg7zTBfyiRw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790147528;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
+	b=X3nGbstk4Bu3KlYVSrN92Ig725rmcYPGPRBM6cua+4bSdiFzuVhLQ2wonMJYd5mzpbj32d
+	9bg78+mICo+v+7BQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790147524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
+	b=AcCwPvTvcD5Xn4YcJgn3+3+e/HOcK3nEXYO/V0hYF+oJXOIRFPzld/8cZwxUMvjdUiAtjb
+	9KB5ZYhDH3WjgNMwrRc0h8ew5R+tKMu3IMutizDfREOCwcjpnP3SVDZca9mlLOltaKnX4u
+	ga8eXDjLZwrXRvdoJ3qZy9JXIuU4QCQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790147524;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
+	b=6mvWZqFohn2mlq/x75DedDq6f5HxZm/PZ+VJG3nZH6fg3kCWxT+eH8UUXxZbX7lOm7iFT2
+	jer++8/HP2x1uhBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 920CD13432;
+	Wed, 23 Sep 2026 07:12:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Hyj6EsN7s2pwUgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 23 Sep 2026 07:12:03 +0000
+Message-ID: <c78f7466-72f1-4d39-81cd-8e48364cfcf1@suse.de>
+Date: Wed, 23 Sep 2026 09:12:02 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42ce5146-3445-42a5-0b3d-08df19399266
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 06:11:56.9454
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3U6IVoQteFCaMlcjnTFcXU5dsHGKItDEg7s2S3NjjeylQW3DETBSEuhSAviUK//y+SF7NDgG1OY6bg7AIVOUmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9894
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] drm/imx: replace struct drm_simple_display_pipe
+ with regular atomic helpers
+To: Ze Huang <ze.huang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Marian Cichy <m.cichy@pengutronix.de>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
+ <20260919-b4-imx-simple-kms-v4-v4-2-53b1fdf4589e@oss.qualcomm.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260919-b4-imx-simple-kms-v4-v4-2-53b1fdf4589e@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,nxp.com,pengutronix.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,suse.com:url]
+X-Spam-Flag: NO
 
-> > diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/net=
-c_ptp.c
-> > index 2e743443ca03..1bc0f0956206 100644
-> > --- a/drivers/net/dsa/netc/netc_ptp.c
-> > +++ b/drivers/net/dsa/netc/netc_ptp.c
-> > @@ -11,6 +11,15 @@
-> >
-> >  #define NETC_NUM_TS_REQ_ID		16
-> >  #define NETC_TSTAMP_TIMEOUT		(5 * HZ)
-> > +#define NETC_MAX_STEP_OFFSET		0x1ff
-> > +#define NETC_ONESTEP_QTH		512
-> > +/* The 30-bit timestamp of the To_Port subtype 3 tag lets the hardware
-> > + * account for a single wrap, so the correction field of a one-step Sy=
-nc
-> > + * frame is only correct if it is sent out within 2^30 ns after the
-> > + * software timestamp is read. Past this window the frame is beyond
-> > + * repair, and PM_SINGLE_STEP becomes safe to reprogram.
-> > + */
->=20
-> [Severity: Medium]
-> This comment argues that the correction value is beyond repair after 2^30=
- ns,
-> but PM_SINGLE_STEP also carries the correction-field offset and the
-> "update UDP checksum" bit, which the hardware still applies at SFD time t=
-o
-> whatever frame is being transmitted.
->=20
-> If the previously programmed frame is still sitting in the switch or port
-> egress path (egress congestion, flow control, TAS gating), the next
-> netc_port_set_onestep_control() call can change offset and CH under it.  =
-For
-> an L2 PTP frame the correction offset is around 22, for UDP/IPv6 around 7=
-4,
-> so the MAC would write 8 bytes of correction data at the wrong position
-> inside the pending frame and may recompute its UDP checksum.
->=20
-> The "no ts_req_id available" branch of netc_port_onestep_work() has the s=
-ame
-> shape: it overwrites np->onestep_state with NETC_ONESTEP_SCHEDULED,
-> which
-> erases the record that a frame is in flight at all.
->=20
-> Would it be safer to only reprogram the register when the new frame's
-> offset/CH match the pending one, or to hold off until the pending frame i=
-s
-> known to be gone?
+Hi
 
-As stated in the comment, "Past this window the frame is beyond repair",
-that is to say, when the sync frame leaves the port, the correction field
-is not correct. When PM_SINGLE_STEP is programmed after a timeout,
-there are essentially two possibilities: either the value of PM_SINGLE_STEP
-remains unchanged, with no impact; or PM_SINGLE_STEP changes, in this
-case the frame will be corrupted and either discarded by the sender or
-receiver, which is as expected.
+Am 19.09.26 um 16:59 schrieb Ze Huang:
+> Convert i.MX LCDC to explicit primary plane, CRTC and encoder objects.
+> Keep no-scaling plane check and GEM framebuffer prepare callback from
+> simple-KMS path.
+>
+> Wire the vblank lifecycle explicitly with CRTC vblank callbacks and
+> drm_crtc_vblank_on()/drm_crtc_vblank_off(). Use the old CRTC state in
+> the disable path for clock unwinding so the clock reference count
+> remains paired with the previous active state.
+>
+> Use the atomic_create_state helpers with
+> drm_mode_config_create_initial_state() in probe, and
+> drm_crtc_vblank_atomic_flush() for the flush callback.
+>
+> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
 
->=20
-> > +#define NETC_ONESTEP_VALID_WINDOW	0x40000000 /* ns */
-> >
-> >  static void netc_port_tstamp_timeout_work(struct work_struct *work)
-> >  {
-> > @@ -68,12 +77,276 @@ static int netc_get_ts_req_id(struct netc_port *np=
-)
-> >  	return ts_req_id;
-> >  }
-> >
-> > +static int netc_get_phc_time(struct netc_switch *priv, u64 *ns)
-> > +{
-> > +	if (unlikely(!priv->tmr_dev))
-> > +		return -ENODEV;
-> > +
-> > +	return netc_timer_get_current_time(priv->tmr_dev, ns);
-> > +}
-> > +
-> > +static void netc_port_set_onestep_control(struct netc_port *np,
-> > +					  bool csum_update, int offset)
-> > +{
-> > +	u32 val;
-> > +
-> > +	val =3D PM_SINGLE_STEP_EN | FIELD_PREP(PM_SINGLE_STEP_OFFSET,
-> offset);
-> > +	if (csum_update)
-> > +		val |=3D PM_SINGLE_STEP_CH;
-> > +	netc_mac_port_wr(np, NETC_PM_SINGLE_STEP(0), val);
->=20
-> [Severity: Low]
-> This isn't a bug on today's hardware, but netc_mac_port_wr() returns with=
-out
-> touching the register when is_netc_pseudo_port(np) is true, and it report=
-s
-> nothing back to the caller.
->=20
-> The one-step machinery is gated only on dsa_port_is_user(), and
-> netc_get_ts_info() advertises HWTSTAMP_TX_ONESTEP_SYNC unconditionally,
-> so a
-> user port with caps.pseudo_link set would get its originTimestamp rewritt=
-en
-> and a subtype-3 tag attached while the MAC single-step engine was never
-> enabled.
->=20
-> That combination looks impossible right now: imx94_switch_phylink_get_cap=
-s()
-> only marks port 3 (the CPU port) as internal, and the binding requires
-> ethernet-port@3 to carry the ethernet =3D <&enetc3> phandle.  Would it st=
-ill be
-> worth refusing one-step on pseudo-link ports explicitly so a future platf=
-orm
-> cannot silently drop the register write?
+IDK how well (or if) this driver is still maintained. I'd give it the 
+benefit of the doubt to make progress with the DRM cleanup. If there's a 
+bug in this patch, users will report it quickly.
 
-Currently, for i.MX94 only the CPU port is pseudo MAC, so no need to add
-a such check in this stage. It is better to be added when future NETCs supp=
-ort
-pseudo MAC on user port.
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
->=20
-> > +}
-> > +
-> > +static void netc_port_program_onestep(struct netc_port *np,
-> > +				      struct sk_buff *skb)
-> > +{
-> > +	u16 correction_offset =3D NETC_SKB_CB(skb)->correction_offset;
-> > +	u16 tstamp_offset =3D NETC_SKB_CB(skb)->timestamp_offset;
-> > +	u64 tstamp =3D NETC_SKB_CB(skb)->tstamp;
-> > +	u8 *hdr =3D skb_mac_header(skb);
->=20
-> [ ... ]
->=20
-> > +	if (NETC_SKB_CB(skb)->is_udp) {
-> > +		__be32 old_sec_l, old_ns;
-> > +		struct udphdr *uh;
-> > +		__be16 old_sec_h;
-> > +
-> > +		if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) {
-> > +			csum_update =3D true;
-> > +			goto update_timestamp;
-> > +		}
-> > +
-> > +		if (unlikely(!skb_transport_header_was_set(skb)))
-> > +			uh =3D (struct udphdr *)(hdr + tstamp_offset -
-> > +					       sizeof(struct ptp_header) -
-> > +					       sizeof(struct udphdr));
-> > +		else
-> > +			uh =3D udp_hdr(skb);
->=20
-> [Severity: High]
-> Can udp_hdr(skb) be trusted here?  netc_port_prepare_onestep_sync() deriv=
-es
-> and bounds-checks the PTP offsets itself:
->=20
-> 	if (unlikely(tstamp_offset + 10 > skb_headlen(skb) ||
-> 		     correction_offset > NETC_MAX_STEP_OFFSET))
-> 		goto set_ptp_flag_drop;
->=20
-> but skb->transport_header is never validated against skb_headlen(), and t=
-he
-> safe computed expression is only used when the transport header was not s=
-et.
-> The code then reads uh->check at offset 6 and writes 2 bytes there throug=
-h
-> inet_proto_csum_replace2()/inet_proto_csum_replace4().
->=20
-> Two AF_PACKET paths can leave transport_header at or past the tail while =
-the
-> frame still parses as a valid PTPv2 Sync over UDP with ip_summed =3D=3D
-> CHECKSUM_NONE:
->=20
-> packet_snd()
->   packet_parse_headers()
->     skb_probe_transport_header()
->       __skb_flow_dissect()
->         key_control->thoff =3D min_t(u16, nhoff, skb ? skb->len : hlen);
->=20
-> The dissector runs with skb->protocol taken from the user-supplied
-> sll_protocol and nhoff =3D 0, so a frame whose declared ethertype disagre=
-es
-> with its real headers can walk attacker-chosen IPv6 option hdrlen bytes a=
-nd
-> end with thoff clamped to skb->len, i.e. transport_header =3D=3D tail.
->=20
-> The other path is PACKET_VNET_HDR:
->=20
-> virtio_net_hdr_to_skb()
->   skb_partial_csum_set()   /* csum_start =3D headlen - 2 accepted */
-> ...
-> skb_checksum_help()        /* flips ip_summed to CHECKSUM_NONE,
->                               transport_header left as-is */
->=20
-> With the frame length tuned so tailroom is under 8 bytes, wouldn't the
-> uh->check read go past skb_tail_pointer() and the csum-replace write land
-> inside struct skb_shared_info (flags/meta_len/nr_frags/tx_flags/gso_size)=
-?
->=20
-> Since the validated expression is already computed just above, could it b=
-e
-> used unconditionally instead of udp_hdr(skb)?  The same udp_hdr() pattern
-> exists in drivers/net/ethernet/freescale/enetc/enetc.c, but this path is =
-new
-> here.
+Best regards
+Thomas
 
-The AF_PACKET + flow-dissector path is real (transport_header can be clampe=
-d
-to tail), but the OOB write can't happen:
 
-All real reads/writes are mac-header relative, not transport_header relativ=
-e.
-ptp_parse_header() + ptp_classify_raw() work on actual content, and
-tstamp_offset + 10 > skb_headlen() after skb_linearize_cow() bounds the who=
-le
-region. The correct UDP header is at ptp_hdr - sizeof(udphdr), so uh->check=
- is
-always in-bounds.
+> ---
+>   drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 250 +++++++++++++++++++++++++-----------
+>   1 file changed, 175 insertions(+), 75 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> index e00e52c1c46e..8f0a0d4cf61a 100644
+> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> @@ -2,6 +2,7 @@
+>   // SPDX-FileCopyrightText: 2020 Marian Cichy <M.Cichy@pengutronix.de>
+>   
+>   #include <drm/clients/drm_client_setup.h>
+> +#include <drm/drm_atomic.h>
+>   #include <drm/drm_bridge.h>
+>   #include <drm/drm_bridge_connector.h>
+>   #include <drm/drm_damage_helper.h>
+> @@ -14,10 +15,11 @@
+>   #include <drm/drm_gem_dma_helper.h>
+>   #include <drm/drm_gem_framebuffer_helper.h>
+>   #include <drm/drm_of.h>
+> +#include <drm/drm_plane_helper.h>
+>   #include <drm/drm_print.h>
+>   #include <drm/drm_probe_helper.h>
+> -#include <drm/drm_simple_kms_helper.h>
+>   #include <drm/drm_vblank.h>
+> +#include <drm/drm_vblank_helper.h>
+>   #include <linux/bitfield.h>
+>   #include <linux/clk.h>
+>   #include <linux/dma-mapping.h>
+> @@ -101,7 +103,9 @@
+>   
+>   struct imx_lcdc {
+>   	struct drm_device drm;
+> -	struct drm_simple_display_pipe pipe;
+> +	struct drm_plane plane;
+> +	struct drm_crtc crtc;
+> +	struct drm_encoder encoder;
+>   	struct drm_connector *connector;
+>   	void __iomem *base;
+>   
+> @@ -134,14 +138,15 @@ static unsigned int imx_lcdc_get_format(unsigned int drm_format)
+>   	}
+>   }
+>   
+> -static void imx_lcdc_update_hw_registers(struct drm_simple_display_pipe *pipe,
+> -					 struct drm_plane_state *old_state,
+> +static void imx_lcdc_update_hw_registers(struct drm_crtc *crtc,
+> +					 struct drm_crtc_state *old_crtc_state,
+> +					 struct drm_crtc_state *new_crtc_state,
+> +					 struct drm_plane_state *new_state,
+>   					 bool mode_set)
+>   {
+> -	struct drm_crtc *crtc = &pipe->crtc;
+> -	struct drm_plane_state *new_state = pipe->plane.state;
+> +	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(crtc->dev);
+> +	const struct drm_display_mode *mode = &new_crtc_state->mode;
+>   	struct drm_framebuffer *fb = new_state->fb;
+> -	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(pipe->crtc.dev);
+>   	u32 lpcr, lvcr, lhcr;
+>   	u32 framesize;
+>   	dma_addr_t addr;
+> @@ -154,24 +159,24 @@ static void imx_lcdc_update_hw_registers(struct drm_simple_display_pipe *pipe,
+>   		return;
+>   
+>   	/* Disable PER clock to make register write possible */
+> -	if (old_state && old_state->crtc && old_state->crtc->enabled)
+> +	if (old_crtc_state && old_crtc_state->enable)
+>   		clk_disable_unprepare(lcdc->clk_per);
+>   
+>   	/* Framesize */
+> -	framesize = FIELD_PREP(IMX21LCDC_LSR_XMAX, crtc->mode.hdisplay >> 4) |
+> -		FIELD_PREP(IMX21LCDC_LSR_YMAX, crtc->mode.vdisplay);
+> +	framesize = FIELD_PREP(IMX21LCDC_LSR_XMAX, mode->hdisplay >> 4) |
+> +		FIELD_PREP(IMX21LCDC_LSR_YMAX, mode->vdisplay);
+>   	writel(framesize, lcdc->base + IMX21LCDC_LSR);
+>   
+>   	/* HSYNC */
+> -	lhcr = FIELD_PREP(IMX21LCDC_LHCR_HFPORCH, crtc->mode.hsync_start - crtc->mode.hdisplay - 1) |
+> -		FIELD_PREP(IMX21LCDC_LHCR_HWIDTH, crtc->mode.hsync_end - crtc->mode.hsync_start - 1) |
+> -		FIELD_PREP(IMX21LCDC_LHCR_HBPORCH, crtc->mode.htotal - crtc->mode.hsync_end - 3);
+> +	lhcr = FIELD_PREP(IMX21LCDC_LHCR_HFPORCH, mode->hsync_start - mode->hdisplay - 1) |
+> +		FIELD_PREP(IMX21LCDC_LHCR_HWIDTH, mode->hsync_end - mode->hsync_start - 1) |
+> +		FIELD_PREP(IMX21LCDC_LHCR_HBPORCH, mode->htotal - mode->hsync_end - 3);
+>   	writel(lhcr, lcdc->base + IMX21LCDC_LHCR);
+>   
+>   	/* VSYNC */
+> -	lvcr = FIELD_PREP(IMX21LCDC_LVCR_VFPORCH, crtc->mode.vsync_start - crtc->mode.vdisplay) |
+> -		FIELD_PREP(IMX21LCDC_LVCR_VWIDTH, crtc->mode.vsync_end - crtc->mode.vsync_start) |
+> -		FIELD_PREP(IMX21LCDC_LVCR_VBPORCH, crtc->mode.vtotal - crtc->mode.vsync_end);
+> +	lvcr = FIELD_PREP(IMX21LCDC_LVCR_VFPORCH, mode->vsync_start - mode->vdisplay) |
+> +		FIELD_PREP(IMX21LCDC_LVCR_VWIDTH, mode->vsync_end - mode->vsync_start) |
+> +		FIELD_PREP(IMX21LCDC_LVCR_VBPORCH, mode->vtotal - mode->vsync_end);
+>   	writel(lvcr, lcdc->base + IMX21LCDC_LVCR);
+>   
+>   	lpcr = readl(lcdc->base + IMX21LCDC_LPCR);
+> @@ -183,19 +188,20 @@ static void imx_lcdc_update_hw_registers(struct drm_simple_display_pipe *pipe,
+>   	writel(new_state->fb->pitches[0] / 4, lcdc->base + IMX21LCDC_LVPWR);
+>   
+>   	/* Enable PER clock */
+> -	if (new_state->crtc->enabled)
+> +	if (new_crtc_state->enable)
+>   		clk_prepare_enable(lcdc->clk_per);
+>   }
+>   
+> -static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
+> -				 struct drm_crtc_state *crtc_state,
+> -				 struct drm_plane_state *plane_state)
+> +static void imx_lcdc_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+> +					       struct drm_atomic_commit *commit)
+>   {
+>   	int ret;
+>   	int clk_div;
+>   	int bpp;
+> -	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(pipe->crtc.dev);
+> -	struct drm_display_mode *mode = &pipe->crtc.mode;
+> +	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(crtc->dev);
+> +	struct drm_crtc_state *cstate = drm_atomic_get_new_crtc_state(commit, crtc);
+> +	struct drm_plane_state *pstate = drm_atomic_get_new_plane_state(commit, &lcdc->plane);
+> +	struct drm_display_mode *mode = &cstate->mode;
+>   	struct drm_display_info *disp_info = &lcdc->connector->display_info;
+>   	const int hsync_pol = (mode->flags & DRM_MODE_FLAG_PHSYNC) ? 0 : 1;
+>   	const int vsync_pol = (mode->flags & DRM_MODE_FLAG_PVSYNC) ? 0 : 1;
+> @@ -206,7 +212,7 @@ static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
+>   
+>   	clk_div = DIV_ROUND_CLOSEST_ULL(clk_get_rate(lcdc->clk_per),
+>   					mode->clock * 1000);
+> -	bpp = imx_lcdc_get_format(plane_state->fb->format->format);
+> +	bpp = imx_lcdc_get_format(pstate->fb->format->format);
+>   
+>   	writel(FIELD_PREP(IMX21LCDC_LPCR_PCD, clk_div - 1) |
+>   	       FIELD_PREP(IMX21LCDC_LPCR_LPPOL, hsync_pol) |
+> @@ -230,40 +236,46 @@ static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
+>   
+>   	ret = clk_prepare_enable(lcdc->clk_ipg);
+>   	if (ret) {
+> -		dev_err(pipe->crtc.dev->dev, "Cannot enable ipg clock: %pe\n", ERR_PTR(ret));
+> +		dev_err(crtc->dev->dev, "Cannot enable ipg clock: %pe\n", ERR_PTR(ret));
+>   		return;
+>   	}
+>   	ret = clk_prepare_enable(lcdc->clk_ahb);
+>   	if (ret) {
+> -		dev_err(pipe->crtc.dev->dev, "Cannot enable ahb clock: %pe\n", ERR_PTR(ret));
+> +		dev_err(crtc->dev->dev, "Cannot enable ahb clock: %pe\n", ERR_PTR(ret));
+>   
+>   		clk_disable_unprepare(lcdc->clk_ipg);
+>   
+>   		return;
+>   	}
+>   
+> -	imx_lcdc_update_hw_registers(pipe, NULL, true);
+> +	imx_lcdc_update_hw_registers(crtc, NULL, cstate, pstate, true);
+>   
+>   	/* Enable VBLANK Interrupt */
+>   	writel(INTR_EOF, lcdc->base + IMX21LCDC_LIER);
+> +
+> +	drm_crtc_vblank_on(crtc);
+>   }
+>   
+> -static void imx_lcdc_pipe_disable(struct drm_simple_display_pipe *pipe)
+> +static void imx_lcdc_crtc_helper_atomic_disable(struct drm_crtc *crtc,
+> +						struct drm_atomic_commit *commit)
+>   {
+> -	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(pipe->crtc.dev);
+> -	struct drm_crtc *crtc = &lcdc->pipe.crtc;
+> +	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(commit, crtc);
+> +	struct drm_crtc_state *new_crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
+> +	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(crtc->dev);
+>   	struct drm_pending_vblank_event *event;
+>   
+> +	drm_crtc_vblank_off(crtc);
+> +
+>   	clk_disable_unprepare(lcdc->clk_ahb);
+>   	clk_disable_unprepare(lcdc->clk_ipg);
+>   
+> -	if (pipe->crtc.enabled)
+> +	if (old_crtc_state->enable)
+>   		clk_disable_unprepare(lcdc->clk_per);
+>   
+>   	spin_lock_irq(&lcdc->drm.event_lock);
+> -	event = crtc->state->event;
+> +	event = new_crtc_state->event;
+>   	if (event) {
+> -		crtc->state->event = NULL;
+> +		new_crtc_state->event = NULL;
+>   		drm_crtc_send_vblank_event(crtc, event);
+>   	}
+>   	spin_unlock_irq(&lcdc->drm.event_lock);
+> @@ -272,66 +284,132 @@ static void imx_lcdc_pipe_disable(struct drm_simple_display_pipe *pipe)
+>   	writel(0, lcdc->base + IMX21LCDC_LIER);
+>   }
+>   
+> -static int imx_lcdc_pipe_check(struct drm_simple_display_pipe *pipe,
+> -			       struct drm_plane_state *plane_state,
+> -			       struct drm_crtc_state *crtc_state)
+> +static int imx_lcdc_crtc_helper_atomic_check(struct drm_crtc *crtc,
+> +					     struct drm_atomic_commit *commit)
+>   {
+> +	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
+> +	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(commit, crtc);
+>   	const struct drm_display_mode *mode = &crtc_state->mode;
+> -	const struct drm_display_mode *old_mode = &pipe->crtc.state->mode;
+> +	const struct drm_display_mode *old_mode = &old_crtc_state->mode;
+> +	int ret;
+> +
+> +	if (crtc_state->enable) {
+> +		ret = drm_atomic_helper_check_crtc_primary_plane(crtc_state);
+> +		if (ret)
+> +			return ret;
+> +	}
+>   
+> -	if (mode->hdisplay < LCDC_MIN_XRES || mode->hdisplay > LCDC_MAX_XRES ||
+> -	    mode->vdisplay < LCDC_MIN_YRES || mode->vdisplay > LCDC_MAX_YRES ||
+> -	    mode->hdisplay % 0x10) { /* must be multiple of 16 */
+> -		drm_err(pipe->crtc.dev, "unsupported display mode (%u x %u)\n",
+> +	if (crtc_state->enable &&
+> +	    (mode->hdisplay < LCDC_MIN_XRES || mode->hdisplay > LCDC_MAX_XRES ||
+> +	     mode->vdisplay < LCDC_MIN_YRES || mode->vdisplay > LCDC_MAX_YRES ||
+> +	     mode->hdisplay % 0x10)) { /* must be multiple of 16 */
+> +		drm_err(crtc->dev, "unsupported display mode (%u x %u)\n",
+>   			mode->hdisplay, mode->vdisplay);
+>   		return -EINVAL;
+>   	}
+>   
+> -	crtc_state->mode_changed =
+> -		old_mode->hdisplay != mode->hdisplay ||
+> -		old_mode->vdisplay != mode->vdisplay;
+> +	if (old_mode->hdisplay != mode->hdisplay ||
+> +	    old_mode->vdisplay != mode->vdisplay)
+> +		crtc_state->mode_changed = true;
+>   
+> -	return 0;
+> +	return drm_atomic_add_affected_planes(commit, crtc);
+>   }
+>   
+> -static void imx_lcdc_pipe_update(struct drm_simple_display_pipe *pipe,
+> -				 struct drm_plane_state *old_state)
+> +static void imx_lcdc_plane_helper_atomic_update(struct drm_plane *plane,
+> +						struct drm_atomic_commit *commit)
+>   {
+> -	struct drm_crtc *crtc = &pipe->crtc;
+> -	struct drm_pending_vblank_event *event = crtc->state->event;
+> -	struct drm_plane_state *new_state = pipe->plane.state;
+> +	struct drm_plane_state *old_state = drm_atomic_get_old_plane_state(commit, plane);
+> +	struct drm_plane_state *new_state = drm_atomic_get_new_plane_state(commit, plane);
+> +	struct drm_crtc *crtc = new_state->crtc;
+> +	struct drm_crtc_state *old_crtc_state = NULL;
+> +	struct drm_crtc_state *new_crtc_state;
+>   	struct drm_framebuffer *fb = new_state->fb;
+>   	struct drm_framebuffer *old_fb = old_state->fb;
+>   	struct drm_crtc *old_crtc = old_state->crtc;
+>   	bool mode_changed = false;
+>   
+> +	if (!fb || !crtc)
+> +		return;
+> +
+> +	if (old_crtc)
+> +		old_crtc_state = drm_atomic_get_old_crtc_state(commit, old_crtc);
+> +
+> +	new_crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
+> +	if (!new_crtc_state)
+> +		return;
+> +
+>   	if (old_fb && old_fb->format != fb->format)
+>   		mode_changed = true;
+>   	else if (old_crtc != crtc)
+>   		mode_changed = true;
+>   
+> -	if (!drm_atomic_crtc_needs_modeset(crtc->state))
+> -		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
+> +	if (!drm_atomic_crtc_needs_modeset(new_crtc_state))
+> +		imx_lcdc_update_hw_registers(crtc, old_crtc_state, new_crtc_state,
+> +					     new_state, mode_changed);
+> +}
+>   
+> -	if (event) {
+> -		crtc->state->event = NULL;
+> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *plane,
+> +					      struct drm_atomic_commit *commit)
+> +{
+> +	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(commit, plane);
+> +	struct drm_crtc_state *crtc_state = NULL;
+>   
+> -		spin_lock_irq(&crtc->dev->event_lock);
+> +	if (plane_state->crtc) {
+> +		crtc_state = drm_atomic_get_crtc_state(commit, plane_state->crtc);
+> +		if (IS_ERR(crtc_state))
+> +			return PTR_ERR(crtc_state);
+> +	}
+>   
+> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) == 0)
+> -			drm_crtc_arm_vblank_event(crtc, event);
+> -		else
+> -			drm_crtc_send_vblank_event(crtc, event);
+> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_state,
+> +						   DRM_PLANE_NO_SCALING,
+> +						   DRM_PLANE_NO_SCALING,
+> +						   false, false);
+> +}
+>   
+> -		spin_unlock_irq(&crtc->dev->event_lock);
+> -	}
+> +static const struct drm_plane_helper_funcs imx_lcdc_plane_helper_funcs = {
+> +	.prepare_fb	= drm_gem_plane_helper_prepare_fb,
+> +	.atomic_check	= imx_lcdc_plane_helper_atomic_check,
+> +	.atomic_update	= imx_lcdc_plane_helper_atomic_update,
+> +};
+> +
+> +static const struct drm_plane_funcs imx_lcdc_plane_funcs = {
+> +	.update_plane		= drm_atomic_helper_update_plane,
+> +	.disable_plane		= drm_atomic_helper_disable_plane,
+> +	.destroy		= drm_plane_cleanup,
+> +	.atomic_create_state	= drm_atomic_helper_plane_create_state,
+> +	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
+> +	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
+> +};
+> +
+> +static const struct drm_crtc_helper_funcs imx_lcdc_crtc_helper_funcs = {
+> +	.atomic_check	= imx_lcdc_crtc_helper_atomic_check,
+> +	.atomic_enable	= imx_lcdc_crtc_helper_atomic_enable,
+> +	.atomic_disable	= imx_lcdc_crtc_helper_atomic_disable,
+> +	.atomic_flush	= drm_crtc_vblank_atomic_flush,
+> +};
+> +
+> +static int imx_lcdc_crtc_enable_vblank(struct drm_crtc *crtc)
+> +{
+> +	return 0;
+>   }
+>   
+> -static const struct drm_simple_display_pipe_funcs imx_lcdc_pipe_funcs = {
+> -	.enable = imx_lcdc_pipe_enable,
+> -	.disable = imx_lcdc_pipe_disable,
+> -	.check = imx_lcdc_pipe_check,
+> -	.update = imx_lcdc_pipe_update,
+> +static void imx_lcdc_crtc_disable_vblank(struct drm_crtc *crtc)
+> +{
+> +}
+> +
+> +static const struct drm_crtc_funcs imx_lcdc_crtc_funcs = {
+> +	.atomic_create_state	= drm_atomic_helper_crtc_create_state,
+> +	.destroy		= drm_crtc_cleanup,
+> +	.set_config		= drm_atomic_helper_set_config,
+> +	.page_flip		= drm_atomic_helper_page_flip,
+> +	.atomic_duplicate_state	= drm_atomic_helper_crtc_duplicate_state,
+> +	.atomic_destroy_state	= drm_atomic_helper_crtc_destroy_state,
+> +	.enable_vblank		= imx_lcdc_crtc_enable_vblank,
+> +	.disable_vblank		= imx_lcdc_crtc_disable_vblank,
+> +};
+> +
+> +static const struct drm_encoder_funcs imx_lcdc_encoder_funcs = {
+> +	.destroy = drm_encoder_cleanup,
+>   };
+>   
+>   static const struct drm_mode_config_funcs imx_lcdc_mode_config_funcs = {
+> @@ -369,7 +447,7 @@ MODULE_DEVICE_TABLE(of, imx_lcdc_of_dev_id);
+>   static irqreturn_t imx_lcdc_irq_handler(int irq, void *arg)
+>   {
+>   	struct imx_lcdc *lcdc = arg;
+> -	struct drm_crtc *crtc = &lcdc->pipe.crtc;
+> +	struct drm_crtc *crtc = &lcdc->crtc;
+>   	unsigned int status;
+>   
+>   	status = readl(lcdc->base + IMX21LCDC_LISR);
+> @@ -387,6 +465,9 @@ static int imx_lcdc_probe(struct platform_device *pdev)
+>   	struct imx_lcdc *lcdc;
+>   	struct drm_device *drm;
+>   	struct drm_bridge *bridge;
+> +	struct drm_plane *plane;
+> +	struct drm_crtc *crtc;
+> +	struct drm_encoder *encoder;
+>   	int irq;
+>   	int ret;
+>   	struct device *dev = &pdev->dev;
+> @@ -428,23 +509,40 @@ static int imx_lcdc_probe(struct platform_device *pdev)
+>   	if (ret)
+>   		return dev_err_probe(dev, ret, "Cannot initialize mode configuration structure\n");
+>   
+> -	/* CRTC, Plane, Encoder */
+> -	ret = drm_simple_display_pipe_init(drm, &lcdc->pipe,
+> -					   &imx_lcdc_pipe_funcs,
+> -					   imx_lcdc_formats,
+> -					   ARRAY_SIZE(imx_lcdc_formats), NULL, NULL);
+> +	plane = &lcdc->plane;
+> +	ret = drm_universal_plane_init(drm, plane, 0,
+> +				       &imx_lcdc_plane_funcs,
+> +				       imx_lcdc_formats,
+> +				       ARRAY_SIZE(imx_lcdc_formats),
+> +				       NULL,
+> +				       DRM_PLANE_TYPE_PRIMARY, NULL);
+> +	if (ret < 0)
+> +		return dev_err_probe(drm->dev, ret, "Cannot initialize primary plane\n");
+> +	drm_plane_helper_add(plane, &imx_lcdc_plane_helper_funcs);
+> +
+> +	crtc = &lcdc->crtc;
+> +	ret = drm_crtc_init_with_planes(drm, crtc, plane, NULL,
+> +					&imx_lcdc_crtc_funcs, NULL);
+> +	if (ret < 0)
+> +		return dev_err_probe(drm->dev, ret, "Cannot initialize CRTC\n");
+> +	drm_crtc_helper_add(crtc, &imx_lcdc_crtc_helper_funcs);
+> +
+> +	encoder = &lcdc->encoder;
+> +	ret = drm_encoder_init(drm, encoder, &imx_lcdc_encoder_funcs,
+> +			       DRM_MODE_ENCODER_NONE, NULL);
+>   	if (ret < 0)
+> -		return dev_err_probe(drm->dev, ret, "Cannot setup simple display pipe\n");
+> +		return dev_err_probe(drm->dev, ret, "Cannot initialize encoder\n");
+> +	encoder->possible_crtcs = drm_crtc_mask(crtc);
+>   
+>   	ret = drm_vblank_init(drm, drm->mode_config.num_crtc);
+>   	if (ret < 0)
+>   		return dev_err_probe(drm->dev, ret, "Failed to initialize vblank\n");
+>   
+> -	ret = drm_bridge_attach(&lcdc->pipe.encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+> +	ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>   	if (ret)
+>   		return dev_err_probe(drm->dev, ret, "Cannot attach bridge\n");
+>   
+> -	lcdc->connector = drm_bridge_connector_init(drm, &lcdc->pipe.encoder);
+> +	lcdc->connector = drm_bridge_connector_init(drm, encoder);
+>   	if (IS_ERR(lcdc->connector))
+>   		return dev_err_probe(drm->dev, PTR_ERR(lcdc->connector), "Cannot init bridge connector\n");
+>   
+> @@ -483,7 +581,9 @@ static int imx_lcdc_probe(struct platform_device *pdev)
+>   	drm->mode_config.funcs = &imx_lcdc_mode_config_funcs;
+>   	drm->mode_config.helper_private = &imx_lcdc_mode_config_helpers;
+>   
+> -	drm_mode_config_reset(drm);
+> +	ret = drm_mode_config_create_initial_state(drm);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Cannot create initial state\n");
+>   
+>   	irq = platform_get_irq(pdev, 0);
+>   	if (irq < 0) {
+>
 
-Hitting the udp_hdr(skb) branch as an exploit needs a frame that both passe=
-s
-the mac-header bounds check and has transport_header at tail with a non-zer=
-o
-uh->check - mutually inconsistent. So: not a High OOB write.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
-That said, your suggestion is right. The skb_transport_header_was_set() bra=
-nch
-is redundant and trusts an unvalidated transport_header. I'll drop it and u=
-se the
-already-validated expression unconditionally.
-
->=20
-> > +
-> > +		/* For IPv4, a UDP checksum of zero on the wire means "no
-> > +		 * checksum". For IPv6, its UDP checksum is mandatory and
-> > +		 * never zero.
-> > +		 */
-> > +		if (!uh->check)
-> > +			goto update_timestamp;
-> > +
-> > +		old_sec_h =3D __get_unaligned_t(__be16, hdr + tstamp_offset);
-> > +		old_sec_l =3D __get_unaligned_t(__be32, hdr + tstamp_offset + 2);
-> > +		old_ns =3D __get_unaligned_t(__be32, hdr + tstamp_offset + 6);
-> > +		inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-> > +					 new_sec_h, false);
-> > +		inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
-> > +					 new_sec_l, false);
-> > +		inet_proto_csum_replace4(&uh->check, skb, old_ns,
-> > +					 new_ns, false);
-> > +		csum_update =3D true;
-> > +	}
-> > +
-> > +update_timestamp:
->=20
-> [ ... ]
->=20
-> > +static void netc_port_onestep_work(struct work_struct *work)
-> > +{
->=20
-> [ ... ]
->=20
-> > +skb_dequeue:
-> > +	skb =3D __skb_dequeue(&np->onestep_queue);
-> > +	if (!skb)
-> > +		goto set_onestep_state_idle;
-> > +
-> > +	/* Clone is a ts_req_id token only; its payload is never read, so
-> > +	 * sharing the buffer with the mutated original is fine.
-> > +	 */
-> > +	clone =3D skb_clone(skb, GFP_ATOMIC);
-> > +	if (unlikely(!clone)) {
-> > +		kfree_skb(skb);
-> > +		goto skb_dequeue;
-> > +	}
-> > +
-> > +	spin_lock_bh(&np->tstamp_lock);
-> > +	ts_req_id =3D netc_get_ts_req_id(np);
-> > +	if (unlikely(ts_req_id < 0)) {
-> > +		spin_unlock_bh(&np->tstamp_lock);
-> > +
-> > +		/* Re-queuing the frame and immediately rescheduling the work
-> > +		 * would busy-loop on system_percpu_wq and burn CPU until an
-> > +		 * ID is freed, so drop this frame and move on to the next one
-> > +		 * in the queue instead.
-> > +		 */
-> > +		np->onestep_state =3D NETC_ONESTEP_SCHEDULED;
-> > +		schedule_work(&np->onestep_work);
-> > +
-> > +		goto onestep_unlock;
-> > +	}
->=20
-> [Severity: Medium]
-> The comment says re-queuing plus rescheduling would busy-loop, but the wo=
-rk
-> does reschedule itself here unconditionally, and each pass destroys one
-> queued one-step Sync frame at onestep_unlock.  With NETC_ONESTEP_QTH at
-> 512,
-> can this discard the entire backlog in quick succession?
-
-That is intention if there is no available ts_req_id. If we do not discard =
-the skb,
-the work will be busy-loop until there is an available ts_req_id. But the i=
-ssue is
-that we do not know how long it will take to an available ts_req_id. So dro=
-p the
-skb is a better choice.
-
->=20
-> The 16-entry ts_req_id pool is shared with the two-step path:
-> netc_port_prepare_twostep() takes an ID for every PTP frame that is not a
-> one-step Sync (Announce, Follow_Up, Delay_Resp still flow in one-step mod=
-e),
-> and holds it for up to NETC_TSTAMP_TIMEOUT when a response is lost.  So a
-> burst of two-step requests can drive this branch.
->=20
-> The only trace is the dev_dbg_ratelimited() inside netc_get_ts_req_id().
-> Should ID exhaustion apply backpressure (leave the frame queued and arm a
-> delayed retry) rather than dropping frames, and should the changelog ment=
-ion
-> that exhaustion means one-step Sync frames are discarded?
-
-I don't think this makes much sense. Under normal circumstances, the frame =
-is
-sent out quickly, and if a situation arises where ts_req_id is unavailable,=
- it will
-recover quickly. Discarding the sync frame won't cause any problems, and
-subsequent sync frames will still maintain PTP synchronization. If a timeou=
-t
-occurs, PTP synchronization is already affected, so discarding the message =
-is
-even less of a problem.
-
->=20
-> > +
-> > +	/* PHC is unavailable, drop the whole queue */
-> > +	if (unlikely(netc_get_phc_time(priv, &tstamp))) {
-> > +		spin_unlock_bh(&np->tstamp_lock);
-> > +		goto set_onestep_state_idle;
-> > +	}
-> > +
-> > +	NETC_SKB_CB(skb)->tstamp =3D tstamp;
-> > +	NETC_SKB_CB(skb)->ts_req_id =3D ts_req_id;
-> > +	NETC_SKB_CB(skb)->ptp_flag =3D NETC_PTP_FLAG_ONESTEP;
-> > +	NETC_SKB_CB(clone)->ts_req_id =3D ts_req_id;
-> > +	NETC_SKB_CB(clone)->ptp_tx_time =3D jiffies_64;
-> > +	NETC_SKB_CB(clone)->ptp_flag =3D NETC_PTP_FLAG_ONESTEP;
-> > +	np->onestep_tx_time =3D NETC_SKB_CB(clone)->ptp_tx_time;
-> > +	np->onestep_ts_req_id =3D ts_req_id;
-> > +
-> > +	__skb_queue_tail(&np->tstamp_queue, clone);
-> > +	if (!delayed_work_pending(&np->tstamp_timeout_work))
-> > +		schedule_delayed_work(&np->tstamp_timeout_work,
-> > +				      NETC_TSTAMP_TIMEOUT);
-> > +
-> > +	spin_unlock_bh(&np->tstamp_lock);
-> > +
-> > +	np->onestep_state =3D NETC_ONESTEP_IN_FLIGHT;
-> > +	spin_unlock_bh(&np->onestep_lock);
-> > +
-> > +	netc_port_program_onestep(np, skb);
-> > +	tagger_data =3D priv->ds->tagger_data;
-> > +	tagger_data->onestep_sync_xmit(skb, np->dp->user);
-> > +
-> > +	return;
-> > +
-> > +set_onestep_state_idle:
-> > +	np->onestep_state =3D NETC_ONESTEP_IDLE;
-> > +purge_onestep_queue:
-> > +	__skb_queue_purge(&np->onestep_queue);
-> > +onestep_unlock:
-> > +	spin_unlock_bh(&np->onestep_lock);
-> > +	kfree_skb(skb);
-> > +	kfree_skb(clone);
-> > +}
-> > +
-> > +static bool netc_onestep_timeout(struct netc_port *np)
-> > +{
-> > +	u64 expire_time;
-> > +
-> > +	/* Use monotonic jiffies_64, as the PHC may be stepped backwards.
-> > +	 * Add one tick since the ns-to-jiffies conversion rounds down, so
-> > +	 * the software window is never shorter than the hardware window.
-> > +	 */
-> > +	expire_time =3D np->onestep_tx_time + 1 +
-> > +		      nsecs_to_jiffies64(NETC_ONESTEP_VALID_WINDOW);
-> > +	if (np->onestep_state =3D=3D NETC_ONESTEP_IN_FLIGHT &&
-> > +	    time_after64(jiffies_64, expire_time))
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> > +void netc_port_onestep_sync_enqueue(struct dsa_switch *ds, int port,
-> > +				    struct sk_buff *skb)
-> > +{
-> > +	struct netc_port *np =3D NETC_PORT(ds, port);
-> > +
-> > +	spin_lock_bh(&np->onestep_lock);
-> > +	if (unlikely(np->onestep_state =3D=3D NETC_ONESTEP_PORT_INACTIVE)) {
-> > +		kfree_skb(skb);
-> > +		goto onestep_unlock;
-> > +	}
-> > +
-> > +	if (unlikely(skb_queue_len(&np->onestep_queue) >=3D NETC_ONESTEP_QTH)=
-)
-> {
-> > +		dev_dbg_ratelimited(np->switch_priv->dev,
-> > +				    "The onestep_queue of port %d is full\n",
-> > +				    port);
-> > +		kfree_skb(skb);
-> > +		goto onestep_unlock;
-> > +	}
-> > +
-> > +	__skb_queue_tail(&np->onestep_queue, skb);
-> > +	if (likely(np->onestep_state =3D=3D NETC_ONESTEP_IDLE) ||
-> > +	    netc_onestep_timeout(np)) {
-> > +		np->onestep_state =3D NETC_ONESTEP_SCHEDULED;
-> > +		schedule_work(&np->onestep_work);
-> > +	}
-> > +
-> > +onestep_unlock:
-> > +	spin_unlock_bh(&np->onestep_lock);
-> > +}
->=20
-> [Severity: High]
-> Can the port get stuck in NETC_ONESTEP_IN_FLIGHT forever?
-
-Yes, this is a potential issue, I will fix it.
-
->=20
-> Once netc_port_onestep_work() sets IN_FLIGHT and hands the frame to
-> onestep_sync_xmit(), only three things can resume the drain:
->=20
->   1. a matching response in netc_port_txtstamp_handler()
->   2. netc_onestep_timeout(), which is evaluated only from
->      netc_port_onestep_sync_enqueue()
->   3. the ts_req_id exhaustion self-reschedule
->=20
-> The changelog says:
->=20
->     A dropped frame produces no response, so reuse tstamp_timeout_work to
->     reclaim its request ID after 5 seconds
->=20
-> but netc_port_tstamp_timeout_work() only unlinks and frees the timed-out
-> clone:
->=20
-> 	__skb_unlink(skb, &np->tstamp_queue);
-> 	__skb_queue_tail(&free_list, skb);
-> 	...
-> 	if (!skb_queue_empty(&np->tstamp_queue))
-> 		schedule_delayed_work(&np->tstamp_timeout_work,
-> 				      NETC_TSTAMP_TIMEOUT);
->=20
-> It never touches np->onestep_state and never schedules np->onestep_work.
-> And once the clone has been reaped, a late response takes the !skb_match
-> early return in netc_port_txtstamp_handler(), so it cannot clear IN_FLIGH=
-T
-> either.
->=20
-> Concretely: frame A goes IN_FLIGHT with id X, frame B is enqueued inside =
-the
-> window and only appended, A is dropped in the switch so no response arriv=
-es,
-> 5 seconds later the timeout work frees A's clone and leaves IN_FLIGHT set=
-.
-> If the sender then stops, or falls below one frame per window, doesn't B =
-and
-> everything behind it stay queued and unfreed until link-down, port disabl=
-e
-> or a hwtstamp reconfiguration?  These are the original TX skbs and still
-> hold skb->sk, so the owning socket stays charged.
->=20
-> The queue-full branch above also returns before the netc_onestep_timeout(=
-)
-> check, so once 512 frames have accumulated even continued traffic can no
-> longer recover the port.
->=20
-> Would it work to reset onestep_state and schedule onestep_work from the
-> timeout path, or to arm a delayed work for the validity deadline, so
-> recovery does not depend on new traffic arriving?
->=20
-> Separately, the changelog says the work is scheduled "when the PTP time h=
-as
-> advanced beyond NETC_ONESTEP_VALID_WINDOW", while
-> netc_onestep_timeout()
-> compares monotonic jiffies_64 and only at enqueue time.
->=20
-> [ ... ]
->=20
-> > @@ -395,6 +673,66 @@ int netc_port_hwtstamp_get(struct dsa_switch *ds,
-> int port,
-> >  	return 0;
-> >  }
-> >
-> > +static void netc_port_prepare_onestep_sync(struct netc_port *np,
-> > +					   struct sk_buff *skb,
-> > +					   u32 ptp_class, bool *twostep)
-> > +{
->=20
-> [ ... ]
->=20
-> > +	if (unlikely(skb_linearize_cow(skb)))
-> > +		goto set_ptp_flag_drop;
-> > +
-> > +	ptp_hdr =3D ptp_parse_header(skb, ptp_class);
-> > +	if (unlikely(!ptp_hdr))
-> > +		goto set_ptp_flag_drop;
-> > +
-> > +	msg_type =3D ptp_get_msgtype(ptp_hdr, ptp_class);
->=20
-> [ ... ]
->=20
-> > +set_ptp_flag_drop:
-> > +	/* Drop instead of falling back to two-step: if it is a Sync,
-> > +	 * one-step offload will not be executed, the timestamp in the
-> > +	 * frame is inaccurate, which may affect PTP synchronization.
-> > +	 */
-> > +	NETC_SKB_CB(skb)->ptp_flag =3D NETC_PTP_FLAG_DROP;
-> > +	dev_dbg_ratelimited(priv->dev,
-> > +			    "Port %d: PTP frame dropped in error\n",
-> > +			    np->dp->index);
-> > +}
->=20
-> [Severity: Medium]
-> The skb_linearize_cow() failure is evaluated before the message type is
-> known, so a plain ENOMEM destroys any PTP frame on the port, including a
-> Delay_Req that this code would otherwise have sent two-step.  Should the
-> linearize failure fall back to two-step, or at least be handled after the
-> Sync check?
-
-No, first, the frame might be a sync frame, if fall back to two-step, that =
-means
-one-step offload will not take effect, so the timestamp of the sync frame i=
-s not
-correct. If the PTP clocks are already synced, a frame with an incorrect ti=
-mestamp
-may cause the clocks desynchronization. In this case, drop the frame is bet=
-ter
-than sending it.
-
-Second, the purpose of skb_linearize_cow() is to ensure that the required
-data is in the linear buffer. If a check is performed first, it defeats the=
- purpose
-of using skb_linearize_cow(), because it cannot be guaranteed that the
-required data is in the linear buffer at this time.
-
->=20
-> None of the new drop paths are accounted anywhere.  dsa_user_xmit() has
-> already counted the frame as transmitted via dev_sw_netstats_tx_add() bef=
-ore
-> the tagger frees it, so from userspace the frames just vanish:
->=20
->   netc_port_prepare_onestep_sync() -> NETC_PTP_FLAG_DROP -> kfree_skb()
-> in
->     netc_xmit()                               (linearize/parse/offset
-> checks)
->   netc_port_onestep_sync_enqueue()            (queue full, port inactive)
->   netc_port_onestep_work()                    (clone failure, no
-> ts_req_id,
->                                                PHC read failure
-> purges all)
->   netc_port_purge_onestep_queue()             (hwtstamp
-> reconfiguration)
->=20
-> netc has no .get_stats64, so dsa_user_get_stats64() falls back to
-> dev_get_tstats64(), which folds dev->stats into rtnl_link_stats64 - could
-> these paths bump dev->stats.tx_dropped?
->=20
-> The changelog only says "Frames that are not one-step Sync still fall bac=
-k
-> to two-step timestamping", which does not tell a reader that enabling
-> one-step turns a degraded timestamp into a frame that is never transmitte=
-d.
->=20
-> [ ... ]
->=20
-> > @@ -449,6 +787,21 @@ void netc_port_txtstamp_handler(struct dsa_switch
-> *ds, int port,
-> >  		dev_dbg_ratelimited(np->switch_priv->dev,
-> >  				    "Port %d ts_req_id %u which seems lost\n",
-> >  				    port, ts_req_id);
-> > +
-> > +		return;
-> > +	}
-> > +
-> > +	if (NETC_SKB_CB(skb_match)->ptp_flag =3D=3D NETC_PTP_FLAG_ONESTEP) {
-> > +		spin_lock_bh(&np->onestep_lock);
-> > +		if (likely(np->onestep_state =3D=3D NETC_ONESTEP_IN_FLIGHT &&
-> > +			   np->onestep_ts_req_id =3D=3D ts_req_id) ||
-> > +		    np->onestep_state =3D=3D NETC_ONESTEP_IDLE) {
-> > +			np->onestep_state =3D NETC_ONESTEP_SCHEDULED;
-> > +			schedule_work(&np->onestep_work);
-> > +		}
-> > +		spin_unlock_bh(&np->onestep_lock);
-> > +		consume_skb(skb_match);
-> > +
-> >  		return;
-> >  	}
->=20
-> [Severity: Medium]
-> Can the ts_req_id comparison here match a different frame?  The clone is
-> unlinked from np->tstamp_queue under tstamp_lock earlier in this function=
-,
-> which immediately makes the 4-bit id reusable, and onestep_lock is only
-> taken afterwards:
->=20
-> CPU0 (work, frame A response overdue past the window)
->   netc_port_onestep_sync_enqueue()
->      netc_onestep_timeout() -> true, schedule_work()
->   netc_port_onestep_work()
->      spin_lock_bh(&np->onestep_lock);
->=20
-> CPU1 (A's response arrives)
->   netc_port_txtstamp_handler()
->      __skb_unlink(clone_A, &np->tstamp_queue);   /* id X now free */
->      spin_unlock_bh(&np->tstamp_lock);
->      spin_lock_bh(&np->onestep_lock);            /* blocks */
->=20
-> CPU0 continues
->      netc_get_ts_req_id() -> X again for frame B
->      np->onestep_ts_req_id =3D X;
->      np->onestep_state =3D NETC_ONESTEP_IN_FLIGHT;
->      spin_unlock_bh(&np->onestep_lock);
->      onestep_sync_xmit(B)
->=20
-> CPU1 then sees IN_FLIGHT with onestep_ts_req_id =3D=3D X and treats A's
-> response as B's completion, sets SCHEDULED and re-arms the work, which ca=
-n
-> transmit frame C and reprogram PM_SINGLE_STEP while B is still pending in
-> hardware.  Workqueue non-reentrancy serializes the worker, not frame
-> completion.
->=20
-> Would retiring the id and moving the one-step state under a single lock
-> order (onestep_lock then tstamp_lock), or matching on a generation counte=
-r
-> instead of the reusable 4-bit id, close this?
->=20
-
-This is a hardware limitation, the response frame only contains ts_req_id
-and timestamp. the driver can only use the ts_req_id to match the skb from
-the queue. The incorrect matches can occur, but only in the event of a
-timeout. In the event of a timeout, PTP synchronization has already been
-affected, so incorrect matches will not cause any worse consequences.
-Once the link recovers, the timeout disappears, and subsequent PTP
-synchronization resumes. Therefore, it's a trade-off.
 
