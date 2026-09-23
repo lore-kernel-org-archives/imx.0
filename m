@@ -1,137 +1,292 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB143DFC7F;
-	Wed, 23 Sep 2026 09:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790155153; cv=none; b=Mcq43a2GFiuFUwcTfZhxdFbuZQ5sZ7Uq3cWLd7UH8MLgK3xO7JOJeL52nU/FcKmWgboYauwxz6IR0PHy4yebb7sYxRsCvgFFeRePIr+hiODFxIDzz0pUJZp4OU9CvHkESwrj8IyhBbGIj9Rq3sL1KPdVpEyQwD7csU88NsOKab8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790155153; c=relaxed/simple;
-	bh=fHXLnsaV4217rJ3eTgNhzJd30l0kZykDDlpU3cD8hj8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BByus57Z6kTHxWBvVs9ScmDFGgxISWjaOHVH14n6QVS0v8Lqv46AC4gTLJqhKWHR4b/x1aOUWwzCawyK36DZyaYwTQKj2JtKPCbeW6TQbKaN4cWdaCNREU3BcCAIDIndPXOLk7GA1V8c+yU++nvOv18vp68Rz1Od5DOMURnueNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhPR/8+X; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B953B3BEC
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 09:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790156153; cv=fail; b=BACtFl3VxjCkm3n8SeuqHli6Ff5rQx7F3RU+Pqv8opwxJbs80vJ6t+oA9n/JrPgHLVDEvTkUOmfeFu75gz//YvP3RO2TKJfRvtmwIFLpF3YTt2Az5gs4iiT4azTqvcr5yht6f2WBOVg/2GqYPD+/AU29mSmWivgS7lpQRieCYac=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790156153; c=relaxed/simple;
+	bh=hXI5sTCAjcSOqmP24E5oPoK26EvSgtInVsfsL7TEb4U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=h7bmwlEfvczGjtT3Ia1l3pEBGB+VXjR0MBY5HLj53I+aePRleuw0eeJVsfWTpvcOjHx7FIrmqcOSjVCcs/+C9V71cjkaa6AO7JNIuUeOD5eYCbX/tHvOEbXrrHB/gJbCXiNL+mpRyZKNi+uoHNZykSNEa70Y9AjyysML2SqPbmQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=H/qKRjbD; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MiygARRk; arc=fail smtp.client-ip=148.163.154.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhPR/8+X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0E41F000FF;
-	Wed, 23 Sep 2026 09:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790155152;
-	bh=czzPD8aYwks3LsRaDX71YQneXA1l8gtK4kodfrpUAJE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZhPR/8+XvwfRFXkVzf9vchxhvsuC6LB3ucGEci3tcK16FQUHuZ14typGFzbGPejga
-	 rWArf2Uf9ji0j6/u8u33kgy5WGOOZV/COkqXs7QHho9Qw/RlU/xPNJb73ScHT+M1ut
-	 kl2FJy8j0b0OBMVL/bF5zRsgGUPXaoCMjta0CafibOnw2SoO/OHs/pOzwgbCADdSOI
-	 vAdyv6MK38Q7Ca7XQLF7lKHIRMJhJOhByPpztP5G6S3908EJR3p2jQ3euDULKCxj9C
-	 P5EToK9q9WhKlzk0o0eGCKG7ZsO9tjVqw/ObXKT7kUfz2z+w/6s7UVPuw2wQYrvANE
-	 Ahl0QnaRUnHWg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] media: verisilicon: Remove useless internal fields
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Benjamin Gaignard" <benjamin.gaignard@collabora.com>
-Cc: devicetree@vger.kernel.org, robh@kernel.org, media-ci@linuxtv.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260923090307.49959-3-benjamin.gaignard@collabora.com>
-References: <20260923090307.49959-1-benjamin.gaignard@collabora.com>
- <20260923090307.49959-3-benjamin.gaignard@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 09:19:10 +0000
-Message-Id: <20260923091911.4B0E41F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="H/qKRjbD";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MiygARRk"
+Received: from pps.filterd (m0374955.ppops.net [127.0.0.1])
+	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8JCN5775594;
+	Wed, 23 Sep 2026 04:35:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=proofpoint-05-2026; bh=aoEsTTOZ1buZG
+	/6gQ8Y6aKuF1l92vTo/SLxEKOz3Wj8=; b=H/qKRjbDtYMr4pOpQz7Z1yx0FYPfp
+	Nr6uJgmHMtn9K6ICUSlJkwtKy8KHmUNKXemFfLy3NG4085BXsYYwkxpXO4o2M1Ua
+	rLlrgmucuA1uZeu9kWDqU7byIf4uR/M16RUYDRKTUiwPn1N4KldLtCBojr8WxBt0
+	lT6dFpRnVHByaGNfi00jIMY4QGKsKCQVONZY5C+rm9ug7hF8RQ2lutDMcmcfKm7T
+	B82SQOERsYqJtZOPlBaQHThS1mQIw9VFN/qpZ7amjMHKu4Yd3/zmp4tkpjfObVjL
+	2H62g4W3HQfkocAnHESMqJRVK2OnMOKbUkV/xqoWwiA3fSyF3Xz2WIWKw==
+Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
+	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4gv2ycu2by-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 23 Sep 2026 04:35:35 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QsOak9gVCBvWSH+XphVrDhDSdRVJiTPBDlifFnvhBEAcvQ01j/2IJ94mPumGvAprwqaW92B0oCD6laH3+8DozVpoOJUX8BZhiPu8OIDsUSv+8B3M64sufZaWLyUoKWBlUtXJaTTBnSbptt+T5c26Dyv88TMLFH1sRXsgls3LUfNmYnKpeLr+fUTVmFbSxHH2A2s1xZriYS+SkP3YUSf1M+QmXXoR2nUZY4vtLeT5zz/4+FeNdIvRe8N99Z6ghsGI0pgN642FMwAJhjQpcBNgTndrc7IVamFVd/MRqdx5pZmIiaJ5uzMtgRwTEwQ8bO2plI8RqVP11oHiwkVlSiehZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aoEsTTOZ1buZG/6gQ8Y6aKuF1l92vTo/SLxEKOz3Wj8=;
+ b=MyQpPomo8v+U9Rra5sl/UmHmnQX6KG6QQWQAIhTI9YmlwkKSWjALxbUbS0QE1274RHuHMiIrTiinWz15nhZbt0mCabPQf8G3Y9odvGl7w8YgK8JBuFUh/mcoctLyKho5g2YVxyGVe0kwHdfF4Aqj7y33LNVxTL1VVD+5YrX0SJRDhgQYFBJX536NlFk7YjPC+zmJyKv77Yu/rCC7vSLvWUuYn0HiPL3kBhcGEvapCtYQufs6jukGWKMI6+KXr4PW5LPPnQKJOoUs+4wMM8Twws4tHP/5FtojgZTkL3CzcyP7Ld8FWyjHrSUmVe+G7lKCDhMKZlWeQPTY0R12AYqufw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aoEsTTOZ1buZG/6gQ8Y6aKuF1l92vTo/SLxEKOz3Wj8=;
+ b=MiygARRksuTXxwRzlHFT0mqBItp+DQpLCBRpOHbperCMBQMce+mYFokgn4ekchnFdWL1AcG1oaqpJA6m6Agcm3t0OHuaU00jPgAeFozxMKdBVvzzS6vbBhbpSb6HLIGVKmv8Vmff53QQ1W8z0//MnHkDU3fbbNV6fo9WWwZzPsk=
+Received: from PH8PR21CA0007.namprd21.prod.outlook.com (2603:10b6:510:2ce::13)
+ by IA3PR10MB8662.namprd10.prod.outlook.com (2603:10b6:208:570::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.13; Wed, 23 Sep
+ 2026 09:35:26 +0000
+Received: from SN1PEPF000397B1.namprd05.prod.outlook.com
+ (2603:10b6:510:2ce:cafe::ae) by PH8PR21CA0007.outlook.office365.com
+ (2603:10b6:510:2ce::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.15 via Frontend Transport; Wed,
+ 23 Sep 2026 09:35:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ SN1PEPF000397B1.mail.protection.outlook.com (10.167.248.55) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Wed, 23 Sep 2026 09:35:25 +0000
+Received: from DLEE215.ent.ti.com (157.170.170.118) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 23 Sep
+ 2026 04:35:10 -0500
+Received: from DLEE210.ent.ti.com (157.170.170.112) by DLEE215.ent.ti.com
+ (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 23 Sep
+ 2026 04:35:10 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE210.ent.ti.com
+ (157.170.170.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
+ Transport; Wed, 23 Sep 2026 04:35:10 -0500
+Received: from abhilash-HP.dhcp.ti.com (abhilash-hp.dhcp.ti.com [10.24.51.219])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 68N9Z3WO1760658;
+	Wed, 23 Sep 2026 04:35:04 -0500
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+To: <nm@ti.com>, <vigneshr@ti.com>, <kristo@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>
+CC: <Frank.Li@nxp.com>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+        <festevam@gmail.com>, <andersson@kernel.org>, <geert@linux-m68k.org>,
+        <dmitry.baryshkov@oss.qualcomm.com>, <arnd@arndb.de>,
+        <ebiggers@kernel.org>, <luca.weiss@fairphone.com>,
+        <michal.simek@amd.com>, <sven@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+        <r-donadkar@ti.com>, <devarsht@ti.com>, <u-kumar1@ti.com>
+Subject: [PATCH v3 00/18] Add DT support for CSI2RX multi-stream
+Date: Wed, 23 Sep 2026 15:04:41 +0530
+Message-ID: <20260923093459.28125-1-y-abhilashchandra@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397B1:EE_|IA3PR10MB8662:EE_
+X-MS-Office365-Filtering-Correlation-Id: f12ecac9-f8b9-4b8b-270e-08df1955ff48
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|36860700016|7416014|376014|1800799024|10067099003|3023799007|18002099003|56012099006|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	W06WVSBPAwFdsukGgOwvuqfohZ/ka9JaOGLIEEDRmrFRxsrY65Wo6Yq5SWymc7ISLVts+BwNIiP1ykwWeQzGSU/ipvxQYCYtCmA/aQ242eHrB8e62l6gdH7fGQqG60dj7SL+iCM64MXGMHnl46TUMJ5EvfYOO9bThoQ12jiWKU6e7Xr9KpSy5JsQOASzgAL4i5NhoRkYdKv4EnYSiJPGtnVGXB4nwZ3xHVib5jweGtA0Ec2JWdC2ycSI1/bYItcGpIiLh/JCNW2zRCWqRBJh7Uo4ejMdn+JMMrJz4xjX+2ISfW2zuZ1KZsihIUzAFhinb+D5hqUAxK4RQRkPlmaJ5OEw9+cRkz8eKvD7kImqULgUlTp8Pb4sYSVGXb7QVUZbdxVH6lATDkg7Z+gmc/twzQGVfUUSqBw9KIhpbKuGsDwtXqqN+HhtEx8vRIs7qLgX4VDy7hW4UQFEAhXaPHmJgvYq/1Tu0JoYsTlVFWVEPtKHvevbzbcodL4/W4zpn2TUF9Ss7P8CS+0xjfXV1cIhlNX9Ej+sHFFQ83xPmOs8giS2Njd/Ct/w2LL0M0Zf2x9chCYR4nUVHT2VVvPhBlRD8qRAstgxoEKng9n/rbkYlvx90D7wHb88wv4+N98uEV5xB1TpOxQrp7GFN8Imrf9uGNQsNTRt+0y4BIV6sYmIBMWuXpY3sOU+6KRO5actWVp3S0D/gh9xFVMK4NhOQV3FJw==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(36860700016)(7416014)(376014)(1800799024)(10067099003)(3023799007)(18002099003)(56012099006)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	1grKHlrXFNPmI3JhQikxpEmUArHQAFXkJlDBDRI77YSQDpVpvDibsqV7t79QsrriTzN2h7db2Gyk/5amsfh/mhfN0xxl0hy1HQ4F8lXHArDlDzygizLB2kejzvT00RhGj3GCOMeiMVS79XGIYU2+JETHIF7RumhisG9sUe7f4NShT6MOEcFlQmmM0hrBW142SBckJ2zrN56ZD/vMLhe1ei3K5feALCYEZpFpAGbmISfckoirbd2F3mzBAfEjakaCMf+ea8EEF89igvrL8vJHA8i+mYh1oKIqzzZtqYDzv8cdKZ/JE551chiNWuuWUo9g0eU82zbaXjDAm32ipuXFp6S3RBgwOlb+Ykj2/uW9GjiuFwdHSdqTA/1Al0hwpVlC/nAfoxP2qguvJZVw9QwklOPjEsbTSPde0FEMFlwmC2OkwI2TV+fVG0zf+iy9TgNA
+X-Exchange-RoutingPolicyChecked:
+	CNPBQdLBfPFoQZREwq3tu7//Xhtz2+fjVmuavrjjN9KStEbaDoIa/f0I0gKMxJYMlhBPJb9tU3I+JMiuJUBGt6neGK68LPZmGoNPRgqj8FiqGZLfbpExNIzdaZ4ks4efI7TgK1LM4o2WAX8z7Gr8+XojMNQ6wTVW0ECasQIlxOjNGvuX7Z/S27BcjQf5NLZlrd8nmjEr13Fw9e02RHXE+5GGylD/vQfO21fEjSdR1ovLmBiZEK054UA6vDSxtUaxFsS3G7Nhhbw0hLPXG06BRFEe+NTRIrBVO6FkUQSXcUKAh9Jvj2ZekCLHSqQjDiCEaris+fQtXXB6Kz0cR0bj0A==
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 09:35:25.4983
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f12ecac9-f8b9-4b8b-270e-08df1955ff48
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397B1.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8662
+X-Proofpoint-GUID: T5rKv8nV-h-s2XXwiFSqN0JMPxSgs3Jm
+X-Authority-Analysis: v=2.4 cv=WZKZ+EhX c=1 sm=1 tr=0 ts=6ab39d67 cx=c_pps
+ a=wVrytDogCwW2gNy9sPioUw==:117 a=f+v6EHfkeJbVwR46tk4DMg==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=VdqzKS8jKosA:10 a=s63m1ICgrNkA:10
+ a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22
+ a=fPAWb5peG099m5CrUpKH:22 a=VwQbUJbxAAAA:8 a=sozttTNsAAAA:8 a=NEAV23lmAAAA:8
+ a=ahRiOtByQLOieAtbN_QA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAzOCBTYWx0ZWRfX0sMjhGFxBKp4
+ 2uX65w+4X+IwS3zEh4Nqdm3xH8wB4cCtsopPv32pz1QIN85IXxrFh6jPXVAIDn7FuwApWTnLAzA
+ KKPfEicJ2mG2rV6JiH8qG6YBoKCYWjZBp4qZ1cxlPdSIvsxEZzO5+6e5pkeDkJ7zhJKVjoSxFqG
+ zEUJ+l5eV9vdszqEAx8ZpTHOPbXASisBgaoOcDdW+wZow47MqVqSp5DiZveGyC6vc5wNkVPM7vt
+ nhj1J0hhVFVUJDTdYA3MiU+cN2vYzcEPYvsrx7pie1Npk5YRmKQyS2S9Rl84eXQSB30OFSZxcSl
+ WU/PiF9+uZpWpxGUadgZQTrNzTl2n8R3SjVDA0TuO8j4mEJ3Bk7TiEP38+khqC9f+gOSWxDsUTF
+ iUd9Trp0vI5q5AJ2AnUm7lW2MLpo9G/a1gcH7px3itTri1gNJMwzum+/IbvibWQzKd+Ee5OaHKV
+ NvvWH8+AWheJWTFfoxg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAzOCBTYWx0ZWRfXzqhb3/J4o1hF
+ QNjRA6CKIfUw6bxncr/q2IyIu/QnPQFGn77JEYfT+5z+DV2rE9ztI4ktjP/IGiyIbJSIptVdph7
+ qM73XA5/NCoq8cBZbHFU3MNWtDh9qjk=
+X-Proofpoint-ORIG-GUID: T5rKv8nV-h-s2XXwiFSqN0JMPxSgs3Jm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609230038
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] media: hantro: orphaned deprecation check prints incorrect warni=
-ngs
-- [Low] media: hantro: dead code and uninitialized ctrl_base leftover
---
+Support for multi-stream in j721e-csi2rx.c driver was merged recently [0].
+Therefore this series adds the corresponding device tree support.
 
-commit 92c1741f69ee792773b715ddb2cdc5d557c1656f
-Author: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Patch 1 is a cleanup fixing indentation in the existing CSI2RX nodes.
 
-media: verisilicon: Remove useless internal fields
+The next few patches i.e. (Patch 2 to Patch 6) add the additional DMA
+channels required for CSI2RX multi-stream capture.
 
-This commit removes the reg_names and num_regs fields from struct
-hantro_variant and simplifies the register mapping in hantro_probe(). It
-replaces the array of reg_bases with a single reg_base pointer since
-multiple register regions are no longer used.
+Multi-stream capture uses a SERDES pair based on the FPD-Link or
+V3Link protocol. The serializer takes the input from a camera sensor
+and converts it to the FPD-Link standard, while the deserializer
+aggregates streams from multiple serializers and sends them over the
+CSI-2 RX interface. Each CSI2RX instance therefore indirectly receives
+input from multiple sensors.
 
-> diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/=
-platform/verisilicon/hantro.h
-> index 0353de154a1ec..20c3afb3b8176 100644
-> --- a/drivers/media/platform/verisilicon/hantro.h
-> +++ b/drivers/media/platform/verisilicon/hantro.h
-[ ... ]
-> @@ -204,7 +200,7 @@ struct hantro_dev {
->  	struct device *dev;
->  	struct clk_bulk_data *clocks;
->  	struct reset_control *resets;
-> -	void __iomem **reg_bases;
-> +	void __iomem *reg_base;
->  	void __iomem *enc_base;
->  	void __iomem *dec_base;
->  	void __iomem *ctrl_base;
+The remaining patches add overlays for various deserializer boards,
+and for the UB953 serializer with the IMX219 sensor. Finally, patch 18
+enables the DS90UB960 deserializer and DS90UB953 serializer drivers
+in the arm64 defconfig.
 
-[Severity: Low]
-Is this ctrl_base field still needed?
+Changes in v3:
+- Rename fixed-clock nodes to the generic clock-<frequency> form (Krzysztof)
+- Also rename fixed-clock labels to lowercase
+- Reword defconfig commit message to explicitly mention the target vendor
+  and upstream boards using these drivers (Krzysztof)
+- Override CSI2RX ports using &csiN_port0 labels instead of the full
+  &cdns_csi2rxN node path, and drop duplicated properties (Krzysztof)
+- Drop underscores from regulator node names to follow upstream dts style (Krzysztof)
+- Fix minor DTS coding style issues in overlays (Sashiko and Krzysztof)
+- Use GPL-2.0-only OR MIT license in all overlays for consistency
+- Update copyright year to 2026 in all overlays (Udit)
+- Use board names such as J721E-EVM and J721S2-EVM instead of J721E, J721S2
+  in commit messages (Udit)
+- Collect Reviewed-by tags from Udit (Patches 01, 17) and Rishikesh
+- Rebase on next-20260918
 
-With the removal of imx8mq_vpu_variant and imx8mq_vpu_hw_init in a prior
-patch, vpu->ctrl_base is no longer initialized. This leaves dead code in
-imx8m_soft_reset() which attempts to read from it:
+Link to v2: https://lore.kernel.org/all/20260713113423.2310443-1-y-abhilashchandra@ti.com/
 
-drivers/media/platform/verisilicon/imx8m_vpu_hw.c:imx8m_soft_reset() {
-	...
-	val =3D readl(vpu->ctrl_base + CTRL_SOFT_RESET);
-	...
-}
+Testlogs:
+J721E-EVM + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/61597b1106a9dd42a94fa5c2e682f37f
+J721S2-EVM + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/46f79a6ef97fa44ceb988344047bf6f7
+J784S4-EVM + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/1b3b9a974f57f762aa3491dc3f9d461b
+AM68-SK + Fusion application daughter board: https://gist.github.com/Yemike-Abhilash-Chandra/e79ed27e4af8eadcdc7494d8bdbafaf7
 
-This is now mathematically unreachable because the only caller,
-imx8m_vpu_g1_reset(), is referenced by imx8mq_vpu_codec_ops, which is also
-orphaned. Could ctrl_base and the associated dead code be removed?
+J721E + DS90UB954-Q1EVM: https://gist.github.com/Yemike-Abhilash-Chandra/b3207c78de752dae26861a30e94d2f7a
+J721S2 + DS90UB954-Q1EVM: https://gist.github.com/Yemike-Abhilash-Chandra/b53e0760303f8c749ec75cd24670b4e0
 
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
-dia/platform/verisilicon/hantro_drv.c
-> index 70de47ddb023b..f418b04279856 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -1080,7 +1080,6 @@ static int hantro_probe(struct platform_device *pde=
-v)
->  {
->  	const struct of_device_id *match;
->  	struct hantro_dev *vpu;
-> -	int num_bases;
->  	int i, ret;
-> =20
->  	vpu =3D devm_kzalloc(&pdev->dev, sizeof(*vpu), GFP_KERNEL);
+J784S4 + J7EXPA01EVM Fusion2: https://gist.github.com/Yemike-Abhilash-Chandra/680ea528e5f73e3ba3987b6ca1705d16
 
-[Severity: Medium]
-Since a prior patch in this series removed "nxp,imx8mq-vpu" from
-of_hantro_match, will the deprecation check further down in hantro_probe()
-print incorrect warnings?
+AM68 + Arducam V3link: https://gist.github.com/Yemike-Abhilash-Chandra/14d4cc7dd00857ca55f7f888ac89decb
+J722S + Arducam V3link: https://gist.github.com/Yemike-Abhilash-Chandra/da498ef321b13ac6f9331de0bd0d9185
 
-If a device tree node contains both the new "nxp,imx8mq-vpu-g1" and the
-old "nxp,imx8mq-vpu" compatibles, it will probe successfully with the new
-compatible. However, the check in hantro_probe():
+(grep for "ds90ub960" for the deserializer logs and "ds90ub953" for the serializer.
+ grep for "running tests" to see the actual test pattern generation capture logs from
+ the sensor over the SERDES)
 
-drivers/media/platform/verisilicon/hantro_drv.c:hantro_probe() {
-	...
-	if (of_device_is_compatible(pdev->dev.of_node, "nxp,imx8mq-vpu"))
-		dev_warn(&pdev->dev, "%s compatible is deprecated\n",
-			 match->compatible);
-	...
-}
+dtbs_check: make CONFIG_OF_ALL_DTBS=y dtstree=arch/arm64/boot/dts/ti dtbs_check W=1
+No new warnings or errors are introduced by this series.
 
-will still trigger because the old string is in the fallback list. It then
-prints match->compatible (which resolves to "nxp,imx8mq-vpu-g1") as
-deprecated, which is factually incorrect.
+Branch: https://github.com/Yemike-Abhilash-Chandra/linux/tree/CSI_MT_DT_AC_V3
 
-Could this orphaned check be removed to avoid misleading kernel logs?
+[0]: https://lore.kernel.org/all/20260520120022.539913-1-r-donadkar@ti.com/
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923090307.4995=
-9-1-benjamin.gaignard@collabora.com?part=3D2
+Jianzhong Xu (1):
+  arm64: dts: ti: k3-v3link: Add overlay for IMX219+UB953 serializer
+
+Vaishnav Achath (13):
+  arm64: dts: ti: k3-{j721e/j721s2}-main: Fix indentation in CSI2RX node
+  arm64: dts: ti: k3-j721e-main: Add multiple channels for CSI2RX DMA
+  arm64: dts: ti: k3-j721s2-main: Add multiple channels for CSI2RX DMA
+  arm64: dts: ti: k3-j784s4-j742s2-main-common: Add multiple channels
+    for CSI2RX DMA
+  arm64: dts: ti: k3-am62p-j722s: Add multiple channels for CSI2RX DMA
+  arm64: dts: ti: k3-j722s-main: Add multiple channels for CSI2RX DMA
+  arm64: dts: ti: k3-j721e: Add overlay for fusion application daughter
+    board
+  arm64: dts: ti: k3-j721s2: Add overlay for fusion application daughter
+    board
+  arm64: dts: ti: k3-j721e-sk: Add overlay for fusion application
+    daughter board
+  arm64: dts: ti: k3-j722s-evm: Add overlay for fusion application
+    daughter board
+  arm64: dts: ti: k3-am68-sk: Add overlay for dual Arducam V3link fusion
+  arm64: dts: ti: k3-j722s-evm: Add overlay for dual Arducam V3link
+    fusion
+  arm64: dts: ti: k3-j784s4-evm: Add overlay for J7EXPA01EVM Fusion2
+
+Yemike Abhilash Chandra (4):
+  arm64: dts: ti: k3-j722s-evm: Add overlay for J7EXPA01EVM Fusion2
+  arm64: dts: ti: k3-j721s2: Add overlay for DS90UB954-Q1EVM
+  arm64: dts: ti: k3-j721e: Add overlay for DS90UB954-Q1EVM
+  arm64: defconfig: Enable DS90UB960 deserializer and DS90UB953
+    serializer
+
+ arch/arm64/boot/dts/ti/Makefile               |  83 ++++++
+ .../dts/ti/k3-am62p-j722s-common-main.dtsi    |   6 +-
+ .../boot/dts/ti/k3-am68-sk-v3link-fusion.dtso | 184 ++++++++++++
+ .../boot/dts/ti/k3-j721e-evm-fusion.dtso      | 172 +++++++++++
+ .../arm64/boot/dts/ti/k3-j721e-evm-ub954.dtso |  83 ++++++
+ arch/arm64/boot/dts/ti/k3-j721e-main.dtsi     |  24 +-
+ .../dts/ti/k3-j721e-sk-fpdlink-fusion.dtso    | 172 +++++++++++
+ .../boot/dts/ti/k3-j721s2-evm-fusion.dtso     | 172 +++++++++++
+ .../boot/dts/ti/k3-j721s2-evm-ub954.dtso      |  83 ++++++
+ arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi    |  22 +-
+ .../dts/ti/k3-j722s-evm-fpdlink-fusion.dtso   | 179 ++++++++++++
+ .../ti/k3-j722s-evm-fpdlink-iv-fusion.dtso    | 275 ++++++++++++++++++
+ .../dts/ti/k3-j722s-evm-v3link-fusion.dtso    | 197 +++++++++++++
+ arch/arm64/boot/dts/ti/k3-j722s-main.dtsi     |  15 +-
+ .../ti/k3-j784s4-evm-fpdlink-iv-fusion.dtso   | 257 ++++++++++++++++
+ .../dts/ti/k3-j784s4-j742s2-main-common.dtsi  |  21 +-
+ .../boot/dts/ti/k3-v3link-imx219-0-0.dtso     | 128 ++++++++
+ arch/arm64/configs/defconfig                  |   2 +
+ 18 files changed, 2047 insertions(+), 28 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am68-sk-v3link-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j721e-evm-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j721e-evm-ub954.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j721e-sk-fpdlink-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j721s2-evm-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j721s2-evm-ub954.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-evm-fpdlink-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-evm-fpdlink-iv-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-evm-v3link-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j784s4-evm-fpdlink-iv-fusion.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-v3link-imx219-0-0.dtso
+
+-- 
+2.34.1
+
