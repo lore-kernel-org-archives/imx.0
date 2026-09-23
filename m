@@ -1,133 +1,155 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F1C476CE7;
-	Wed, 23 Sep 2026 09:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA523AA1B6;
+	Wed, 23 Sep 2026 09:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790154455; cv=none; b=iUCBICDZFO9nG6iWJWFxChJ+eah1X0+0EW5dYPsCS+LcbBnCAIUgW9DZITVctOBPluPGxVD+cmb7fkw7skgZkdSA8l290CjQnYpOU6YuEPx2+HeBtT1cr3IRWut74KIh4rRnIvbHgOpv20gajCNHuhHccLtAg3IW3WcAEtP7GK8=
+	t=1790154965; cv=none; b=cyO9vPd2H2vWGF3Cx+0U1rZ5cQB9f+ZQLTbhF9dBh79+aZHbDd9xwXxe2AbJceD9fIG0JjVgiUZ6yqhBQm40nPoichxV605V6tTNTJWWUUjNn7TagTsMwgQA2RCf7C/nZb57o8Leyflv7Cl7i7PMq5QT+kva73bXaaWYXw3ecQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790154455; c=relaxed/simple;
-	bh=ydjqv+vhCg/bF+IeIDvGwKCcrZqtPWRIkTwkdhYtCGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1Fzbe3M8ER/GRvsvjwQgXvdToCjRpq8Ju7dSpduLBWehhghKvkmsy84T/dCLldis4zmxsDO7muSTPKQDw5WQoW4oScRSuYLwd17UTLY0RcQKs9bmYG0CyyxCjOlFndxekcL+6eLT+MrcZFNZRyalpXubnx0K8xWsqOTtcNh80Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KflVallC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790154965; c=relaxed/simple;
+	bh=ZnKl80xOrL1laez0ASshl03/WC1Y8tQqBTbVlzrrf5Y=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=seE7uFzr9lEdO5tfbPNw3KGUsmPFN6RIn65xRm/lQ/K4OdByLJ/LFo/NK7SIEBuv0L9wGg9yzVme5fhafSxsTotfu16kCOmQL4p4slFggd6NZjxnLuVKUJhtg51/KmxuY9H4RagxW/puVEdegA46G+xgoD4OreoG85PTUI4Tzgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZCPp5om; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KflVallC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91061F000FF;
-	Wed, 23 Sep 2026 09:07:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZCPp5om"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47F41F000FF;
+	Wed, 23 Sep 2026 09:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790154453;
-	bh=8qYfBP3l0bIaYYx9lxJyE2I7qM/U4w1XTrG1Nu4ZagQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KflVallCyNsdpqhTOTGscBnbizb4oRfsGlcpFCeI0AItfzqu1DZ1WGdshpUeWaBC7
-	 0xjv55o/CEsYZL32mmIn6crZRcelbeZH7S+aQ4ffKsBi89PbqTi+8HSTTzaucjqAkI
-	 sX2Y9Hh3F0QoEn/gL1OCwDXOB5u330/fkg1Pzcs1B89uNDT7mHiMoOHs19i5nFtsqg
-	 EiY5oFDN5gwX24GflFiL7jk/m5AfS83xahfSpjeHjSvUUnSbWboOEX6gGG6TTlu3YE
-	 /l9bsljv1N2Dl2nRvH1KG8JtnYqIWHfhknp9zhF5NqOwnZ8xecGKRf0x7nQv/s7vh6
-	 ZrOgieiDoTbOw==
-Date: Wed, 23 Sep 2026 10:07:29 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
-Message-ID: <20260923-sceptical-mauve-firefly-f5456d@sudeepholla>
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
- <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
- <arFKVhlgJge5EZyj@monoceros>
+	s=k20260515; t=1790154964;
+	bh=wxHg8lksQHbSVOS9YhQsANAr09ELJVVLEJJUfC/jOmQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mZCPp5omBT5ithCXGxi3zdyw4JmbyuahR4oTwQFWIjTWTo5CCtiTLk2vAkbaYt2Md
+	 oZdZaFNGXst9NvQIBH/RA8MLXLKFQl/3qbhPLMettDB1R5rjCWA2U/+rwngBDG8/Fr
+	 LT4zNdq7XebrSlDy6cH3koo2ZMndsnxRM5vkCmRF+7d3hR8Olljlh5AaEuYm2sPDca
+	 HxjFW6UTKQv8iC79AFXXHvltcUhcP+bvSyCC0vJqHhNq2M8nn4lacD9xVo2ELFMt+L
+	 KG+/fkLTQJ4DN0z1kF/D8QvyXWP4ckod5WrfAq7Lu1MQWMtf9ntOowx4thgprT+SZx
+	 UiQtAKIzLAuEw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] media: verisilicon: Remove deprecated variant
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Benjamin Gaignard" <benjamin.gaignard@collabora.com>
+Cc: imx@lists.linux.dev, robh@kernel.org, media-ci@linuxtv.org, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260923090307.49959-2-benjamin.gaignard@collabora.com>
+References: <20260923090307.49959-1-benjamin.gaignard@collabora.com>
+ <20260923090307.49959-2-benjamin.gaignard@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 23 Sep 2026 09:16:03 +0000
+Message-Id: <20260923091603.E47F41F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <arFKVhlgJge5EZyj@monoceros>
 
-On Mon, Sep 21, 2026 at 05:19:45PM +0200, Uwe Kleine-König wrote:
-> On Fri, Sep 18, 2026 at 11:29:50AM +0200, Hans de Goede wrote:
-> > From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> > 
-> > SCMI client drivers already describe their bus match data with
-> > MODULE_DEVICE_TABLE(scmi, ...), but modpost does not know how to consume
-> > SCMI device tables. As a result, SCMI modules do not get generated module
-> > aliases from their id tables.
-> > 
-> > Move struct scmi_device_id to mod_devicetable.h so it has a fixed layout
-> > visible to modpost, add the corresponding generated offsets and teach
-> > file2alias to emit scmi:<protocol>:<name> aliases.
-> > 
-> > Use the same stable alias format for SCMI device uevents and sysfs
-> > modaliases. The previous string included the instance-specific device
-> > name, which is not useful for matching modules.
-> > 
-> > Assisted-by: Codex:GPT-5.5
-> > Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> > Tested-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> > Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] media: verisilicon: Removing DT compatible string breaks backward =
+compatibility
+- [Low] media: verisilicon: Dead and misleading backward compatibility bloc=
+k in hantro_probe()
+- [Low] media: verisilicon: Incomplete removal of imx8mq_vpu_variant leaves=
+ dead code
+--
 
-[...]
+commit 1f4bbb2a1b7cf6366695f8a3ceae88b4f0b1e95c
+Author: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-> > diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/scmi.h
-> > new file mode 100644
-> > index 000000000000..1b4ccfa9dcc5
-> > --- /dev/null
-> > +++ b/include/linux/device-id/scmi.h
-> > @@ -0,0 +1,17 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +#ifndef LINUX_DEVICE_ID_SCMI_H
-> > +#define LINUX_DEVICE_ID_SCMI_H
-> > +
-> > +#ifdef __KERNEL__
-> > +#include <linux/types.h>
-> > +#endif
-> > +
-> > +#define SCMI_NAME_SIZE		32
-> > +#define SCMI_MODULE_PREFIX	"scmi:"
-> > +
-> > +struct scmi_device_id {
-> > +	__u8 protocol_id;
-> > +	char name[SCMI_NAME_SIZE];
-> 
-> I wonder if you tried to keep this a char *. ISTR someone did something
-> similar recently and they claimed it worked. That would get rid of the
-> artificial name size limit and simplify this patch.
-> 
+media: verisilicon: Remove deprecated variant
+   =20
+"nxp,imx8mq-vpu" is tagged as deprecated since:
+commit f3116f2e52e6 ("media: dt-bindings: media: nxp, imx8mq-vpu: Split G1 =
+and G2 nodes")
+merged since v5.17-rc1.
+There is more reference to it since that.
+Remove for driver and Documentation to clean up the code.
 
-I agree with this. 
+> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
+dia/platform/verisilicon/hantro_drv.c
+> index ad71c0402ef3b..70de47ddb023b 100644
+> --- a/drivers/media/platform/verisilicon/hantro_drv.c
+> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
+> @@ -725,7 +725,6 @@ static const struct of_device_id of_hantro_match[] =
+=3D {
+>  #endif
+>  #ifdef CONFIG_VIDEO_HANTRO_IMX8M
+>  	{ .compatible =3D "nxp,imx8mm-vpu-g1", .data =3D &imx8mm_vpu_g1_variant=
+, },
+> -	{ .compatible =3D "nxp,imx8mq-vpu", .data =3D &imx8mq_vpu_variant, },
 
-[...]
+[Severity: High]
+Does removing this compatible string break backward compatibility for older
+device trees? The driver will silently fail to probe for the VPU on systems
+using older Device Tree Blobs that only use the nxp,imx8mq-vpu compatible
+string.
 
-> > @@ -1491,6 +1502,7 @@ static const struct devtable devtable[] = {
-> >  	{"virtio", SIZE_virtio_device_id, do_virtio_entry},
-> >  	{"vmbus", SIZE_hv_vmbus_device_id, do_vmbus_entry},
-> >  	{"rpmsg", SIZE_rpmsg_device_id, do_rpmsg_entry},
-> > +	{"scmi", SIZE_scmi_device_id, do_scmi_entry},
-> >  	{"i2c", SIZE_i2c_device_id, do_i2c_entry},
-> >  	{"i3c", SIZE_i3c_device_id, do_i3c_entry},
-> >  	{"slim", SIZE_slim_device_id, do_slim_entry},
-> 
-> I wonder if this is supposed to be ordered alphabetically ...
-> 
+[Severity: Low]
+Since nxp,imx8mq-vpu is removed from the match table, does this leave a dead
+backward compatibility block in hantro_probe()?
 
-This may be hard, just the best effort unless it is cleaned up first.
+drivers/media/platform/verisilicon/hantro_drv.c:hantro_probe() {
+	...
+	/*
+	 * Support for nxp,imx8mq-vpu is kept for backwards compatibility
+	 * but it's deprecated. Please update your DTS file to use
+	 * nxp,imx8mq-vpu-g1 or nxp,imx8mq-vpu-g2 instead.
+	 */
+	if (of_device_is_compatible(pdev->dev.of_node, "nxp,imx8mq-vpu"))
+		dev_warn(&pdev->dev, "%s compatible is deprecated\n",
+			 match->compatible);
+	...
+}
 
-Anyways, I plan to send PR by end of the week, so I really need this
-in by tomorrow worst case. I am bit worried if there will conflict all
-over the place in this file as I know couple of other patches that may
-come via other trees touching same entries(one is SMCCC)🤞.
+If an older DTB with only nxp,imx8mq-vpu is used, the device won't probe and
+the block is never reached. If a node happens to include both the new valid
+string and the deprecated one, the driver will probe via the valid string, =
+but
+this block will execute and incorrectly print that the valid string is
+deprecated.
 
--- 
-Regards,
-Sudeep
+>  	{ .compatible =3D "nxp,imx8mq-vpu-g1", .data =3D &imx8mq_vpu_g1_variant=
+ },
+>  	{ .compatible =3D "nxp,imx8mq-vpu-g2", .data =3D &imx8mq_vpu_g2_variant=
+ },
+>  #endif
+
+> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
+media/platform/verisilicon/imx8m_vpu_hw.c
+> index fa4224de4b996..3b63f626d33f2 100644
+> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+[ ... ]
+> -const struct hantro_variant imx8mq_vpu_variant =3D {
+> -	.dec_fmts =3D imx8m_vpu_dec_fmts,
+> -	.num_dec_fmts =3D ARRAY_SIZE(imx8m_vpu_dec_fmts),
+> -	.postproc_fmts =3D imx8m_vpu_postproc_fmts,
+> -	.num_postproc_fmts =3D ARRAY_SIZE(imx8m_vpu_postproc_fmts),
+> -	.postproc_ops =3D &hantro_g1_postproc_ops,
+> -	.codec =3D HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
+> -		 HANTRO_H264_DECODER,
+> -	.codec_ops =3D imx8mq_vpu_codec_ops,
+> -	.init =3D imx8mq_vpu_hw_init,
+> -	.runtime_resume =3D imx8mq_runtime_resume,
+> -	.irqs =3D imx8mq_irqs,
+> -	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
+> -	.clk_names =3D imx8mq_clk_names,
+> -	.num_clocks =3D ARRAY_SIZE(imx8mq_clk_names),
+> -	.reg_names =3D imx8mq_reg_names,
+> -	.num_regs =3D ARRAY_SIZE(imx8mq_reg_names)
+> -};
+> -
+
+[Severity: Low]
+Does the removal of imx8mq_vpu_variant leave behind unreferenced variables
+and functions?
+
+The imx8mq_vpu_codec_ops array, imx8m_vpu_g1_reset(), and imx8m_soft_reset()
+are no longer used anywhere. Additionally, the ctrl_base member in
+struct hantro_dev is never assigned anymore, and the extern declaration of
+imx8mq_vpu_variant in hantro_hw.h still exists.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923090307.4995=
+9-1-benjamin.gaignard@collabora.com?part=3D1
