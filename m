@@ -1,147 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC3B49D5A3;
-	Wed, 23 Sep 2026 10:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39343382FC
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 10:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790160611; cv=none; b=J6xCJTuaP77EiJQC92Jaq3SxQO1+I8rIrMgTCMg8UucScz2EU9LR2IMhEQbptFRbP8wqqvxfpZbq4tbEj3P1ZwThJXx2x1bPXvnPLVB31IObgLLiUzJ0v0VuhI+yFD87+x3eJNN6i/R/AK95Ug9lh/xmWPSRI2/Q8523fPObP/E=
+	t=1790160726; cv=none; b=a3lBAuWZKfk21ZD411sbsAn3he9vBm2IOJNzGiK5s1TnmRRQYsHUUfRWDAvLqIV+1rGiiAvAVk3Kon09adunSk9ZTfrPn95FiAHHAJ8q8sutuiPiSecHHiYYLbLrmleSvx+ZB9jJoKIgc4AK/4e4xJu/1seNBxgdzP220MSuYoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790160611; c=relaxed/simple;
-	bh=fe2Be574znYaJhn5KcQG9t5eDv/cCcGyQskQTpJ670A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nT22mYPWwlk2si3h/IvzsHA7QvLzKNLiCPR9YNomFezuQGXRH2NBzegxtds70YJsQ9qeAFqluE/KBS5PWUeu8Po6LWQ1KrraC3mfMBYyl5IHxN5zooXna7QZKRlnpiCpM/ZmW1s3S17LryJJNl3g5a8Muy+u4ZH16R8XkiHxlqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7zQ4UMF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790160726; c=relaxed/simple;
+	bh=xpc14qQQ0c11zfGueBHwpU9GA8G+uaCygZ4QiH4Swlk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DGb1XzdkrCGNRaPLibb8UM4+jj141YF0+HJIb165/fzN6b7oEwBvk2eIR5NsRT6WIciY4gviLGszsialqZV8rLXoLq3tys7zpAJAOeHexlSIyY/W2UN3si6bZEDXTgVdpWzlXP9XfbV2XzCrg918X6vVucH1iDIIRjJRUKRXOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1Ooyzsv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7zQ4UMF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958D31F000FF;
-	Wed, 23 Sep 2026 10:49:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1Ooyzsv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC731F000FF;
+	Wed, 23 Sep 2026 10:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790160594;
-	bh=4TNTZUCyt+nYb86hesWCgcuezHWkYRWLREOW42Tf/CM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m7zQ4UMFe+ukGceYuiH955FOdy0QKHYeoWa0yC22y3jlrRmNNI2wdT7zLOBQqNWhG
-	 Hby41LB74rkVFIaMWn0O6rNmalZN2lvD/LR5Q8slMaZCdXRbWiHHwxWp7wKC0KpdIj
-	 s6KeeFHdGyVdjqRZXcQHns0YpHK8Fes68MeEMmOsM9afUqMX7G/kKeCXUOvWELTtSK
-	 Gi3DwUH1XPS0NqyUweQeDXzAy4Cwlq6KWzdntKptrTVdlMvGr1rBp/7xOmmdbM+qvN
-	 8O+zQaD/CuWBHX6+PE749Vrvu5i/3O+s0V6uPrEIDsNDkLicxp9robhaufiPBxQ5Lx
-	 hSowP9phV3gpQ==
-Date: Wed, 23 Sep 2026 11:49:50 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Frank.Li@kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/2] module: add SCMI device table alias support
-Message-ID: <20260923-snake-of-magic-satiation-c3b857@sudeepholla>
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
- <20260918092951.5656-2-johannes.goede@oss.qualcomm.com>
- <arFKVhlgJge5EZyj@monoceros>
- <20260923-sceptical-mauve-firefly-f5456d@sudeepholla>
- <6b5a8300-ebf9-4717-bd39-952e89fc5e78@oss.qualcomm.com>
+	s=k20260515; t=1790160716;
+	bh=eBe1CyLdMBcjGc83p4ByaiACDzy1YBo2ao2cLpFgCk8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=E1Ooyzsv3+uvNrRPlQ+hmmqEV80zj+WhvFkUdcyQEqDJgNykdSxJYqx/ZQBqD3W3d
+	 MPe28JuFDck2KOjHK7SwVIDUh7YI831fwSRRCCpeAB5UAOhxF6bHaFq9T1VngO62n7
+	 y4VZ71VGCH+SCUIuqT3c9L5vHDzu9DrVUeqZxI6kT5MhwIIM6axwvRCjWbKRswAhdB
+	 TXFCVoubzXHulCjMvtkPQInC1pc/GGTZwJ+H82NJUcVTdCe1vtmm/a18G2JRW5EbXF
+	 gw1YkWOxn9t5FtXi7woVfm+YZyT/3sOtSXaqSUa5HdXl7f8Z+Zl7g4UrMjg17AV+YD
+	 /LOaT9F3VMAnw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] usb: gadget: uvc: refactor video cleanup into
+ uvcg_video_deinit()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xu Yang" <xu.yang_2@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260923-usb-uvc-fixes-v2-2-844e04a4a4b7@nxp.com>
+References: <20260923-usb-uvc-fixes-v2-0-844e04a4a4b7@nxp.com>
+ <20260923-usb-uvc-fixes-v2-2-844e04a4a4b7@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 23 Sep 2026 10:51:55 +0000
+Message-Id: <20260923105156.5DC731F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6b5a8300-ebf9-4717-bd39-952e89fc5e78@oss.qualcomm.com>
 
-On Wed, Sep 23, 2026 at 12:23:50PM +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 23-Sep-26 11:07, Sudeep Holla wrote:
-> > On Mon, Sep 21, 2026 at 05:19:45PM +0200, Uwe Kleine-König wrote:
-> >> On Fri, Sep 18, 2026 at 11:29:50AM +0200, Hans de Goede wrote:
-> >>> From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> >>>
-> >>> SCMI client drivers already describe their bus match data with
-> >>> MODULE_DEVICE_TABLE(scmi, ...), but modpost does not know how to consume
-> >>> SCMI device tables. As a result, SCMI modules do not get generated module
-> >>> aliases from their id tables.
-> >>>
-> >>> Move struct scmi_device_id to mod_devicetable.h so it has a fixed layout
-> >>> visible to modpost, add the corresponding generated offsets and teach
-> >>> file2alias to emit scmi:<protocol>:<name> aliases.
-> >>>
-> >>> Use the same stable alias format for SCMI device uevents and sysfs
-> >>> modaliases. The previous string included the instance-specific device
-> >>> name, which is not useful for matching modules.
-> >>>
-> >>> Assisted-by: Codex:GPT-5.5
-> >>> Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> >>> Tested-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> >>> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> >>> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> > 
-> > [...]
-> > 
-> >>> diff --git a/include/linux/device-id/scmi.h b/include/linux/device-id/scmi.h
-> >>> new file mode 100644
-> >>> index 000000000000..1b4ccfa9dcc5
-> >>> --- /dev/null
-> >>> +++ b/include/linux/device-id/scmi.h
-> >>> @@ -0,0 +1,17 @@
-> >>> +/* SPDX-License-Identifier: GPL-2.0-only */
-> >>> +#ifndef LINUX_DEVICE_ID_SCMI_H
-> >>> +#define LINUX_DEVICE_ID_SCMI_H
-> >>> +
-> >>> +#ifdef __KERNEL__
-> >>> +#include <linux/types.h>
-> >>> +#endif
-> >>> +
-> >>> +#define SCMI_NAME_SIZE		32
-> >>> +#define SCMI_MODULE_PREFIX	"scmi:"
-> >>> +
-> >>> +struct scmi_device_id {
-> >>> +	__u8 protocol_id;
-> >>> +	char name[SCMI_NAME_SIZE];
-> >>
-> >> I wonder if you tried to keep this a char *. ISTR someone did something
-> >> similar recently and they claimed it worked. That would get rid of the
-> >> artificial name size limit and simplify this patch.
-> >>
-> > 
-> > I agree with this. 
-> 
-> Ok, so I checked and no other include/linux/device-id/*.h file
-> defines a foo_device_id field with a type of "char *" and
-> then uses that field in scripts/mod/devicetable-offsets.c /
-> scripts/mod/file2alias.c .
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] usb: gadget: uvc: missing mutex in unbind causes UAF in uvcg_video=
+_deinit()
+--
 
-I looked at hda_device_id and its uses. It looks like it does use
-char * and there were loads of drivers initialising the string. I must
-be missing something then ?
+commit 5b750200592f725e55689646ba5d3a79912818ba
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-> 2 device-id/foo.h headers (dmi, pcmcia) do define a "char *"
-> field, but then do NOT use that to generate a modalias.
-> 
-> So scmi_device_id would be the first to do this.
-> 
+usb: gadget: uvc: refactor video cleanup into uvcg_video_deinit()
 
-Your response made me dig further and I found snd_hdac_codec_modalias()
-which seems to do the magic there.
+This commit consolidates the teardown logic for the UVC gadget's async
+workqueue and kworker into a new uvcg_video_deinit() helper to prevent
+resource leaks during bind failures and unbind. It also changes the unbind
+sequence to tear down these resources after unregistering the V4L2 device.
 
-> Despite that I still gave this a try. Things do compile,
-> but it results in a modalias for the scmi-cpufreq driver
-> of: scmi:13:(null) and auto-loading unsurprisingly does
-> not work.
-> 
+> diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/fun=
+ction/f_uvc.c
+> index a4fb2790f4ffe..fa2f9d0e4ce0b 100644
+> --- a/drivers/usb/gadget/function/f_uvc.c
+> +++ b/drivers/usb/gadget/function/f_uvc.c
+[ ... ]
+> @@ -1048,6 +1044,7 @@ static void uvc_function_unbind(struct usb_configur=
+ation *c,
+> =20
+>  	device_remove_file(&uvc->vdev.dev, &dev_attr_function_name);
+>  	video_unregister_device(&uvc->vdev);
+> +	uvcg_video_deinit(video);
 
-Fair enough, looking at snd_hdac_codec_modalias() it sounds right.
+[Severity: High]
+Can this cause a use-after-free if an ioctl is currently executing?
 
-Uwe, do you think we need to follow something like snd_hdac_codec_modalias()
-or this size limit is okay ?
+When uvc_function_unbind() calls video_unregister_device(), it clears
+the registered flag but does not wait for active ioctls to complete. Since
+uvc_function_unbind() does not hold video->mutex, an in-flight
+VIDIOC_STREAMON ioctl could concurrently be executing uvcg_video_enable().
 
--- 
-Regards,
-Sudeep
+Meanwhile, uvc_function_unbind() proceeds to call uvcg_video_deinit()
+without any locks.
+
+>  	v4l2_device_unregister(&uvc->v4l2_dev);
+> =20
+>  	scoped_guard(mutex, &uvc->lock)
+> diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget=
+/function/uvc_video.c
+> index 9ba09118bb74a..002afca9141ee 100644
+> --- a/drivers/usb/gadget/function/uvc_video.c
+> +++ b/drivers/usb/gadget/function/uvc_video.c
+[ ... ]
+> @@ -841,3 +841,18 @@ int uvcg_video_init(struct uvc_video *video, struct =
+uvc_device *uvc)
+>  	return uvcg_queue_init(&video->queue, uvc->v4l2_dev.dev->parent,
+>  			V4L2_BUF_TYPE_VIDEO_OUTPUT, &video->mutex);
+>  }
+> +
+> +void uvcg_video_deinit(struct uvc_video *video)
+> +{
+> +	kthread_cancel_work_sync(&video->hw_submit);
+> +
+> +	if (!IS_ERR_OR_NULL(video->kworker)) {
+> +		kthread_destroy_worker(video->kworker);
+> +		video->kworker =3D NULL;
+> +	}
+
+[Severity: High]
+Does destroying the kworker here locklessly open a race window?
+
+If uvcg_video_enable() is executing concurrently under video->mutex, it cal=
+ls
+kthread_queue_work(video->kworker, &video->hw_submit).
+
+If uvcg_video_deinit() frees video->kworker before the ioctl finishes,
+will uvcg_video_enable() dereference freed memory and crash the kernel?
+
+> +
+> +	if (video->async_wq) {
+> +		destroy_workqueue(video->async_wq);
+> +		video->async_wq =3D NULL;
+> +	}
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923-usb-uvc-fi=
+xes-v2-0-844e04a4a4b7@nxp.com?part=3D2
