@@ -1,107 +1,103 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2268450416
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40C33AB47A;
+	Wed, 23 Sep 2026 07:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790148844; cv=none; b=XZFwL9yTiLQ9+P7adYDGxANMQ7RcayXAeemdsS48ssToV40R05CUAiLz7o5vaf1MfBle+Vxp/lOT50e71JmLyRVBvLrwexqiou/S2BB2I9/+1nAc12kCs/a3fbQTMADhOXgJDhkJVQTZ5AWtPVTemfDvTwBPy+FwMA+yMI7j+QM=
+	t=1790149522; cv=none; b=FY66Bz0CgTAzm8y6ZUn4xQZ/oAbWge4pREfFKrAKWwjlGjkGu413rqCwSfIRnqHLyw3Qzngedl9HfpEOwbftXEHkkVeTa580LEHe/S1SS1xoup7+0BwCrydK2pATaiZTHoFtWKnXSUr62YDVFD8iwp3qK6imHchDID7Zq/hfxHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790148844; c=relaxed/simple;
-	bh=jyIUsqld6shd2NWiEvRlNWYJOZn9XbwoKpzwEcfVTvU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BIXsJbdKPxg3rLTpnUK3dmth4SbbC3bQE+NeL5RxN1IBwqU0ztJN3eRDds3vNhIclT+g5eeM3Qd5aFrtCJbqvC4Ge6bkmxXVAg/HymxKQtcGOvDdZq2+gyo6RlinXg2I1YKmAjs3GmGAHJ+vRPq6nrjw+YhfW5Ro3phSqVsqw68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=TpYJ+srk; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1790149522; c=relaxed/simple;
+	bh=sOcJ+pckBpXMKqOtYbfzLWqnJmtVJaQomk47lK2jRRA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=PkSb/UjDki9HS9ET2EbJ4HStcfGotWBVEglSl9YSgz2Edb7KuXe/MJG07PrqlXLSA6NuPXDMO1FD08SWkW8gIsZd5jyRJH2dk5kOx0dVkVroJebzDgsnx5xSkQJdQUo+Jm6wkMSIB5ngdwSl/K2cUOGv4Z9cwQaduaqHDO/jnyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1dVmZWb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="TpYJ+srk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0YJbhOWQ6P/BFcdb7ioetfj13r5KZyDInuOILu/nbQo=; b=TpYJ+srkLVbZQR1ayxWpydpWJ7
-	rxlQ2Xs+uNUK1QTBRYSAOvsrAeyp/P673JfUNytwVGGjk8tOuCeDIMHzq1yP4+lnfCyTBXJ5IoZQR
-	f1rVeEzvmU1Jaearlv3k8S7B9dP4kRGAyQZcy6ThwD5zh9G0TWxsxjp1RL9hP5ChZDpJJfNtQ9hC6
-	nH68fVaxlqc/N6OZzH2pmDLOgZYj6yhCUhU0Pt0EZTL+ntl8yTsRrMHHIjY3/xlmiRuBt8e1rT8jU
-	9Y+TFNVFZP9qwK9ThmqeB/BKjGJ97FbpzaaWEQidCCEsB13TJa3qvy3PNSTSH2mzBZp9JGRFIyQwe
-	olLOmtiA==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:33340 helo=localhost.localdomain)
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1x9H2S-00000009mhH-1tJA;
-	Wed, 23 Sep 2026 09:05:06 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de,
-	Yunus Bas <y.bas@phytec.de>
-Subject: [PATCH 0/2] ARM: dts: phyCORE-i.MX6 custom OPP table
-Date: Wed, 23 Sep 2026 09:05:03 +0200
-Message-Id: <20260923070505.494949-1-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1dVmZWb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3633C1F000FF;
+	Wed, 23 Sep 2026 07:45:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790149520;
+	bh=7EkzHJVdRiY+gMlohbYZbH//kpa0TK3dKCSopfPqvbY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=n1dVmZWbx7HN9FIPL0ejI6en3ir14h4v+yx+zVLezHmHfsLBScg6YYu2Cm4+Rz0G5
+	 +Sr4WgTLZlSpOzdVuWBZVwpVNCwz0t92w4uM8ByftAGcFZK7MN7PPohV/JzsxY7hLh
+	 h9ggX9TZ/gWOHoYywVljQLl6BBtC0dHpuHaQ+w+ubOsizoyPuUnuOiskAicSgHWztY
+	 EhNjnoVE9AQqG4EdJ/ldgwlJNztoya+Y74FhN3uLVQvloFP+3N1OlZr2u+mexCp5ug
+	 Dhdn4VHrCGVE8uk7g3YEewrQniBBJdlS5Cw4qFv4hTxozqIyvNNuDZMwcxgxv2PNJ5
+	 sKLwJQV8czoyQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] ARM: dts: imx6qdl: phycore-som: Add custom
+ volt/freq table
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Primoz Fiser" <primoz.fiser@norik.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260923070505.494949-3-primoz.fiser@norik.com>
+References: <20260923070505.494949-1-primoz.fiser@norik.com>
+ <20260923070505.494949-3-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 23 Sep 2026 07:45:19 +0000
+Message-Id: <20260923074520.3633C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-This is a revival of a series originally posted by Yunus Bas in
-February 2022 [1][2]. It adds a label to the imx6dl cpu1 node and
-introduces phyCORE-i.MX6 SOM specific operating-points tables, since
-the phyCORE modules run at slightly different voltage/frequency values
-than the generic i.MX6Q/DL tables.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] dts: imx6dl: missing fsl,soc-operating-points violates hardware co=
+nstraint
+--
 
-[1] https://lore.kernel.org/all/20220209223258.1672425-1-y.bas@phytec.de/
-[2] https://lore.kernel.org/all/20220209223258.1672425-2-y.bas@phytec.de/
+commit a3b6d4e5af39862c78043d8917ba381472b78ee4
+Author: Yunus Bas <y.bas@phytec.de>
 
-Changes to original series:
+    ARM: dts: imx6qdl: phycore-som: Add custom volt/freq table
 
-Patch #1:
- - update path to nxp/imx
- 
-Patch #2:
- - update path to nxp/imx
- - reformat operating-points/fsl,soc-operating-points as a proper
-   uint32-matrix, addressing Shawn Guo's review original remark.
+The PHYTEC phyCORE-i.MX6QDL SOM-modules are operating with slightly differe=
+nt
+voltage and frequency values. Introduce imx6q- and imx6dl-phycore dtsi files
+with the modified power tables to achieve stable condition.
 
-Yunus Bas (2):
-  ARM: dts: imx6dl: Add a label to cpu1 node
-  ARM: dts: imx6qdl: phycore-som: Add custom volt/freq table
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi b/a=
+rch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
+> new file mode 100644
+> index 0000000000000..de85c084ac8d3
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
+> @@ -0,0 +1,23 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2021 PHYTEC Messtechnik GmbH
+> + * Author: Yunus Bas <y.bas@phytec.de>
+> + */
+> +
+> +#include "imx6qdl-phytec-phycore-som.dtsi"
+> +
+> +&cpu0 {
+> +	operating-points =3D
+> +		/* kHz    uV */
+> +		<996000 1275000>,
+                ^^^^^^^^^^^^^^^^
+[Severity: High]
+This overrides the operating-points to increase VDD_ARM to 1.275V for the
+996MHz tier, but lacks a corresponding fsl,soc-operating-points override.
 
- .../nxp/imx/imx6dl-phytec-mira-rdk-nand.dts   |  2 +-
- .../nxp/imx/imx6dl-phytec-phycore-som.dtsi    | 23 ++++++
- arch/arm/boot/dts/nxp/imx/imx6dl.dtsi         |  2 +-
- .../nxp/imx/imx6q-phytec-mira-rdk-emmc.dts    |  2 +-
- .../nxp/imx/imx6q-phytec-mira-rdk-nand.dts    |  2 +-
- .../dts/nxp/imx/imx6q-phytec-phycore-som.dtsi | 75 +++++++++++++++++++
- 6 files changed, 102 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi
+Without it, VDD_SOC will inherit the default 1.175V from imx6dl.dtsi.
 
--- 
-2.34.1
+The NXP i.MX6 DualLite hardware datasheet specifies that VDD_ARM_IN must not
+exceed VDD_SOC_IN by more than 50mV to prevent latch-up and instability.
 
+Does this 100mV gap risk system instability or hardware damage by violating
+this constraint? Note that the newly added imx6q-phytec-phycore-som.dtsi
+correctly includes the fsl,soc-operating-points property.
+
+> +		<792000 1175000>,
+> +		<396000 1150000>;
+> +};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923070505.4949=
+49-1-primoz.fiser@norik.com?part=3D2
