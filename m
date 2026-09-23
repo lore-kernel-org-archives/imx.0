@@ -1,623 +1,246 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A9243CECB
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E989386562
+	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 07:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790147538; cv=none; b=Enjg8YwaRtKDtpLi5G+hACfiy1fFCAr7Qq7ZQrWfbk/e0xvKKMjqvQdsrRFZUQqBStRUxQK7x7PS4Ubibab6GZzUl4GXCBUzqEa31rjGZPmC+aSXR4jpEnyJLpS7g3v5UpKVB3Dve/ZewZ0j4MwuPjlNiEAmeXRfn6mbsBcBabo=
+	t=1790148797; cv=none; b=qcfZUoKrFsMoAR+up3mj/5ZqLkYBHTUsZKHkyrbCH82z+Ko+tfwoQ4jdPrKaqxTGQJPiqSzX2mmcI74UwjrbEcyceW2y6Vuw3kVRRMo2xY+bJlugDTvdxEXW7l2snTufxUGc8BlEJR8/wL/vwrvrWuDKtELgwiMPZSpL/PQ+eiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790147538; c=relaxed/simple;
-	bh=Rn/fWr7N4uS2vOOqUOXGB/w0WgpXu2u6ai/D6IvPJtc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U2er7POjizt5KG7/JTeO5rN7GkhZnr7Uaa3+uA5UveQrvv+E9jl/G5XUy8xizlEyJHqCWtsDsNfkejENt0O4xcK29Y01eHe2TEwKVRHFWsWP8xuPvQEEd7VMYksT+vb9GwNOSYdfkI8zWGZQt0q6Y3TbnrsCPrQNAMI3wY1aTOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zvW+mF4e; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=X3nGbstk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AcCwPvTv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6mvWZqFo; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1790148797; c=relaxed/simple;
+	bh=H/i46ZEr3cYoPOmosotiIgTDsLWT65bU2imKwJrUMSc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gmNjkWTVbNocvnpHnAMFogYZAsEQh3Sg/26w9hElDz9GmS3jSC8WormtE7j7fCAvUA7EU93zXhHyTgV9Qo1qiOO/b8XqguIcdJAkRXt/kEqbrLsmNTTskeUscXg7OQVgO5eGb/LtnGHcIFJFj9ZEooK9y4gzDLW3RXQe5MJ5idY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=KMn/hMXt; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zvW+mF4e";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="X3nGbstk";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AcCwPvTv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6mvWZqFo"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 292041FFA4;
-	Wed, 23 Sep 2026 07:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790147528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
-	b=zvW+mF4esVnryVOvXFNcX1b2hOy4+/k+kyyWkOh/9sTbvFzqKvRxlDrMLzsuk4Dy9HDqIC
-	FPLBrb9Dz1npiwBHiLnaQXkkBDq3hvlD63QbC3MtZAOGVQodIBlrK2Kg9gVp8zl9fk4DZa
-	gLTkzqd7BkoC585fLCEArg7zTBfyiRw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790147528;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
-	b=X3nGbstk4Bu3KlYVSrN92Ig725rmcYPGPRBM6cua+4bSdiFzuVhLQ2wonMJYd5mzpbj32d
-	9bg78+mICo+v+7BQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790147524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
-	b=AcCwPvTvcD5Xn4YcJgn3+3+e/HOcK3nEXYO/V0hYF+oJXOIRFPzld/8cZwxUMvjdUiAtjb
-	9KB5ZYhDH3WjgNMwrRc0h8ew5R+tKMu3IMutizDfREOCwcjpnP3SVDZca9mlLOltaKnX4u
-	ga8eXDjLZwrXRvdoJ3qZy9JXIuU4QCQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790147524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=efMVPgm6+0XSeW0sitHcd4Xplq9NHsjfGrf1OMkuzVQ=;
-	b=6mvWZqFohn2mlq/x75DedDq6f5HxZm/PZ+VJG3nZH6fg3kCWxT+eH8UUXxZbX7lOm7iFT2
-	jer++8/HP2x1uhBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 920CD13432;
-	Wed, 23 Sep 2026 07:12:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Hyj6EsN7s2pwUgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 23 Sep 2026 07:12:03 +0000
-Message-ID: <c78f7466-72f1-4d39-81cd-8e48364cfcf1@suse.de>
-Date: Wed, 23 Sep 2026 09:12:02 +0200
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="KMn/hMXt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=MefAjguMbqQ4/viHTQJIbvUgPj897M2EuwzDxdNr95o=; b=KMn/hMXtPGfonS1QS5B20jknRO
+	5q5v7AaLz+/jIFTFVp+vZi2xp19OVBF7sjE7Khal3U84guLs7ucgbvbDeo2A2Whh2Zsv9u4Dy1+KZ
+	IfwtIVwr0yuteFNs9K3jFT/oLmcfY3ugTILr7qFSG5yW+//G66We7sWrrQMueZMtuGaZgzBnWqdeV
+	j5zgtN4QKpBYRhGcvkERzUFkWKijt2YolTWDmVPUp4+4L3BMN0zCZaulCMTDU1ZUNS6iueB5Zk4r2
+	d7s1u3bF+TEq9Wi2JUT3hygmNDkSf/zDZv8UP0VfvVwWxJFJshRZBB4Yt8Zo/eylaYfvT4m26fR80
+	MKit3r4A==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:33340 helo=localhost.localdomain)
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1x9H2S-00000009mhH-2s1H;
+	Wed, 23 Sep 2026 09:05:07 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de,
+	Yunus Bas <y.bas@phytec.de>
+Subject: [PATCH 2/2] ARM: dts: imx6qdl: phycore-som: Add custom volt/freq table
+Date: Wed, 23 Sep 2026 09:05:05 +0200
+Message-Id: <20260923070505.494949-3-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260923070505.494949-1-primoz.fiser@norik.com>
+References: <20260923070505.494949-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] drm/imx: replace struct drm_simple_display_pipe
- with regular atomic helpers
-To: Ze Huang <ze.huang@oss.qualcomm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Marian Cichy <m.cichy@pengutronix.de>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
- <20260919-b4-imx-simple-kms-v4-v4-2-53b1fdf4589e@oss.qualcomm.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260919-b4-imx-simple-kms-v4-v4-2-53b1fdf4589e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,nxp.com,pengutronix.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,suse.com:url]
-X-Spam-Flag: NO
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi
+From: Yunus Bas <y.bas@phytec.de>
 
-Am 19.09.26 um 16:59 schrieb Ze Huang:
-> Convert i.MX LCDC to explicit primary plane, CRTC and encoder objects.
-> Keep no-scaling plane check and GEM framebuffer prepare callback from
-> simple-KMS path.
->
-> Wire the vblank lifecycle explicitly with CRTC vblank callbacks and
-> drm_crtc_vblank_on()/drm_crtc_vblank_off(). Use the old CRTC state in
-> the disable path for clock unwinding so the clock reference count
-> remains paired with the previous active state.
->
-> Use the atomic_create_state helpers with
-> drm_mode_config_create_initial_state() in probe, and
-> drm_crtc_vblank_atomic_flush() for the flush callback.
->
-> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
+The PHYTEC phyCORE-i.MX6QDL SOM-modules are operating with a slightly
+different voltage and frequency values in contrast to the generic
+i.MX6Q/DL tables. The values have been adjusted to achieve the most
+stable condition for the PHYTEC-modules. Introduce imx6q- and
+imx6dl-phycore dtsi files with the modified power tables.
 
-IDK how well (or if) this driver is still maintained. I'd give it the 
-benefit of the doubt to make progress with the DRM cleanup. If there's a 
-bug in this patch, users will report it quickly.
+Signed-off-by: Yunus Bas <y.bas@phytec.de>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ .../nxp/imx/imx6dl-phytec-mira-rdk-nand.dts   |  2 +-
+ .../nxp/imx/imx6dl-phytec-phycore-som.dtsi    | 23 ++++++
+ .../nxp/imx/imx6q-phytec-mira-rdk-emmc.dts    |  2 +-
+ .../nxp/imx/imx6q-phytec-mira-rdk-nand.dts    |  2 +-
+ .../dts/nxp/imx/imx6q-phytec-phycore-som.dtsi | 75 +++++++++++++++++++
+ 5 files changed, 101 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Best regards
-Thomas
-
-
-> ---
->   drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 250 +++++++++++++++++++++++++-----------
->   1 file changed, 175 insertions(+), 75 deletions(-)
->
-> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> index e00e52c1c46e..8f0a0d4cf61a 100644
-> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> @@ -2,6 +2,7 @@
->   // SPDX-FileCopyrightText: 2020 Marian Cichy <M.Cichy@pengutronix.de>
->   
->   #include <drm/clients/drm_client_setup.h>
-> +#include <drm/drm_atomic.h>
->   #include <drm/drm_bridge.h>
->   #include <drm/drm_bridge_connector.h>
->   #include <drm/drm_damage_helper.h>
-> @@ -14,10 +15,11 @@
->   #include <drm/drm_gem_dma_helper.h>
->   #include <drm/drm_gem_framebuffer_helper.h>
->   #include <drm/drm_of.h>
-> +#include <drm/drm_plane_helper.h>
->   #include <drm/drm_print.h>
->   #include <drm/drm_probe_helper.h>
-> -#include <drm/drm_simple_kms_helper.h>
->   #include <drm/drm_vblank.h>
-> +#include <drm/drm_vblank_helper.h>
->   #include <linux/bitfield.h>
->   #include <linux/clk.h>
->   #include <linux/dma-mapping.h>
-> @@ -101,7 +103,9 @@
->   
->   struct imx_lcdc {
->   	struct drm_device drm;
-> -	struct drm_simple_display_pipe pipe;
-> +	struct drm_plane plane;
-> +	struct drm_crtc crtc;
-> +	struct drm_encoder encoder;
->   	struct drm_connector *connector;
->   	void __iomem *base;
->   
-> @@ -134,14 +138,15 @@ static unsigned int imx_lcdc_get_format(unsigned int drm_format)
->   	}
->   }
->   
-> -static void imx_lcdc_update_hw_registers(struct drm_simple_display_pipe *pipe,
-> -					 struct drm_plane_state *old_state,
-> +static void imx_lcdc_update_hw_registers(struct drm_crtc *crtc,
-> +					 struct drm_crtc_state *old_crtc_state,
-> +					 struct drm_crtc_state *new_crtc_state,
-> +					 struct drm_plane_state *new_state,
->   					 bool mode_set)
->   {
-> -	struct drm_crtc *crtc = &pipe->crtc;
-> -	struct drm_plane_state *new_state = pipe->plane.state;
-> +	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(crtc->dev);
-> +	const struct drm_display_mode *mode = &new_crtc_state->mode;
->   	struct drm_framebuffer *fb = new_state->fb;
-> -	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(pipe->crtc.dev);
->   	u32 lpcr, lvcr, lhcr;
->   	u32 framesize;
->   	dma_addr_t addr;
-> @@ -154,24 +159,24 @@ static void imx_lcdc_update_hw_registers(struct drm_simple_display_pipe *pipe,
->   		return;
->   
->   	/* Disable PER clock to make register write possible */
-> -	if (old_state && old_state->crtc && old_state->crtc->enabled)
-> +	if (old_crtc_state && old_crtc_state->enable)
->   		clk_disable_unprepare(lcdc->clk_per);
->   
->   	/* Framesize */
-> -	framesize = FIELD_PREP(IMX21LCDC_LSR_XMAX, crtc->mode.hdisplay >> 4) |
-> -		FIELD_PREP(IMX21LCDC_LSR_YMAX, crtc->mode.vdisplay);
-> +	framesize = FIELD_PREP(IMX21LCDC_LSR_XMAX, mode->hdisplay >> 4) |
-> +		FIELD_PREP(IMX21LCDC_LSR_YMAX, mode->vdisplay);
->   	writel(framesize, lcdc->base + IMX21LCDC_LSR);
->   
->   	/* HSYNC */
-> -	lhcr = FIELD_PREP(IMX21LCDC_LHCR_HFPORCH, crtc->mode.hsync_start - crtc->mode.hdisplay - 1) |
-> -		FIELD_PREP(IMX21LCDC_LHCR_HWIDTH, crtc->mode.hsync_end - crtc->mode.hsync_start - 1) |
-> -		FIELD_PREP(IMX21LCDC_LHCR_HBPORCH, crtc->mode.htotal - crtc->mode.hsync_end - 3);
-> +	lhcr = FIELD_PREP(IMX21LCDC_LHCR_HFPORCH, mode->hsync_start - mode->hdisplay - 1) |
-> +		FIELD_PREP(IMX21LCDC_LHCR_HWIDTH, mode->hsync_end - mode->hsync_start - 1) |
-> +		FIELD_PREP(IMX21LCDC_LHCR_HBPORCH, mode->htotal - mode->hsync_end - 3);
->   	writel(lhcr, lcdc->base + IMX21LCDC_LHCR);
->   
->   	/* VSYNC */
-> -	lvcr = FIELD_PREP(IMX21LCDC_LVCR_VFPORCH, crtc->mode.vsync_start - crtc->mode.vdisplay) |
-> -		FIELD_PREP(IMX21LCDC_LVCR_VWIDTH, crtc->mode.vsync_end - crtc->mode.vsync_start) |
-> -		FIELD_PREP(IMX21LCDC_LVCR_VBPORCH, crtc->mode.vtotal - crtc->mode.vsync_end);
-> +	lvcr = FIELD_PREP(IMX21LCDC_LVCR_VFPORCH, mode->vsync_start - mode->vdisplay) |
-> +		FIELD_PREP(IMX21LCDC_LVCR_VWIDTH, mode->vsync_end - mode->vsync_start) |
-> +		FIELD_PREP(IMX21LCDC_LVCR_VBPORCH, mode->vtotal - mode->vsync_end);
->   	writel(lvcr, lcdc->base + IMX21LCDC_LVCR);
->   
->   	lpcr = readl(lcdc->base + IMX21LCDC_LPCR);
-> @@ -183,19 +188,20 @@ static void imx_lcdc_update_hw_registers(struct drm_simple_display_pipe *pipe,
->   	writel(new_state->fb->pitches[0] / 4, lcdc->base + IMX21LCDC_LVPWR);
->   
->   	/* Enable PER clock */
-> -	if (new_state->crtc->enabled)
-> +	if (new_crtc_state->enable)
->   		clk_prepare_enable(lcdc->clk_per);
->   }
->   
-> -static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
-> -				 struct drm_crtc_state *crtc_state,
-> -				 struct drm_plane_state *plane_state)
-> +static void imx_lcdc_crtc_helper_atomic_enable(struct drm_crtc *crtc,
-> +					       struct drm_atomic_commit *commit)
->   {
->   	int ret;
->   	int clk_div;
->   	int bpp;
-> -	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(pipe->crtc.dev);
-> -	struct drm_display_mode *mode = &pipe->crtc.mode;
-> +	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(crtc->dev);
-> +	struct drm_crtc_state *cstate = drm_atomic_get_new_crtc_state(commit, crtc);
-> +	struct drm_plane_state *pstate = drm_atomic_get_new_plane_state(commit, &lcdc->plane);
-> +	struct drm_display_mode *mode = &cstate->mode;
->   	struct drm_display_info *disp_info = &lcdc->connector->display_info;
->   	const int hsync_pol = (mode->flags & DRM_MODE_FLAG_PHSYNC) ? 0 : 1;
->   	const int vsync_pol = (mode->flags & DRM_MODE_FLAG_PVSYNC) ? 0 : 1;
-> @@ -206,7 +212,7 @@ static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
->   
->   	clk_div = DIV_ROUND_CLOSEST_ULL(clk_get_rate(lcdc->clk_per),
->   					mode->clock * 1000);
-> -	bpp = imx_lcdc_get_format(plane_state->fb->format->format);
-> +	bpp = imx_lcdc_get_format(pstate->fb->format->format);
->   
->   	writel(FIELD_PREP(IMX21LCDC_LPCR_PCD, clk_div - 1) |
->   	       FIELD_PREP(IMX21LCDC_LPCR_LPPOL, hsync_pol) |
-> @@ -230,40 +236,46 @@ static void imx_lcdc_pipe_enable(struct drm_simple_display_pipe *pipe,
->   
->   	ret = clk_prepare_enable(lcdc->clk_ipg);
->   	if (ret) {
-> -		dev_err(pipe->crtc.dev->dev, "Cannot enable ipg clock: %pe\n", ERR_PTR(ret));
-> +		dev_err(crtc->dev->dev, "Cannot enable ipg clock: %pe\n", ERR_PTR(ret));
->   		return;
->   	}
->   	ret = clk_prepare_enable(lcdc->clk_ahb);
->   	if (ret) {
-> -		dev_err(pipe->crtc.dev->dev, "Cannot enable ahb clock: %pe\n", ERR_PTR(ret));
-> +		dev_err(crtc->dev->dev, "Cannot enable ahb clock: %pe\n", ERR_PTR(ret));
->   
->   		clk_disable_unprepare(lcdc->clk_ipg);
->   
->   		return;
->   	}
->   
-> -	imx_lcdc_update_hw_registers(pipe, NULL, true);
-> +	imx_lcdc_update_hw_registers(crtc, NULL, cstate, pstate, true);
->   
->   	/* Enable VBLANK Interrupt */
->   	writel(INTR_EOF, lcdc->base + IMX21LCDC_LIER);
-> +
-> +	drm_crtc_vblank_on(crtc);
->   }
->   
-> -static void imx_lcdc_pipe_disable(struct drm_simple_display_pipe *pipe)
-> +static void imx_lcdc_crtc_helper_atomic_disable(struct drm_crtc *crtc,
-> +						struct drm_atomic_commit *commit)
->   {
-> -	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(pipe->crtc.dev);
-> -	struct drm_crtc *crtc = &lcdc->pipe.crtc;
-> +	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(commit, crtc);
-> +	struct drm_crtc_state *new_crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
-> +	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(crtc->dev);
->   	struct drm_pending_vblank_event *event;
->   
-> +	drm_crtc_vblank_off(crtc);
-> +
->   	clk_disable_unprepare(lcdc->clk_ahb);
->   	clk_disable_unprepare(lcdc->clk_ipg);
->   
-> -	if (pipe->crtc.enabled)
-> +	if (old_crtc_state->enable)
->   		clk_disable_unprepare(lcdc->clk_per);
->   
->   	spin_lock_irq(&lcdc->drm.event_lock);
-> -	event = crtc->state->event;
-> +	event = new_crtc_state->event;
->   	if (event) {
-> -		crtc->state->event = NULL;
-> +		new_crtc_state->event = NULL;
->   		drm_crtc_send_vblank_event(crtc, event);
->   	}
->   	spin_unlock_irq(&lcdc->drm.event_lock);
-> @@ -272,66 +284,132 @@ static void imx_lcdc_pipe_disable(struct drm_simple_display_pipe *pipe)
->   	writel(0, lcdc->base + IMX21LCDC_LIER);
->   }
->   
-> -static int imx_lcdc_pipe_check(struct drm_simple_display_pipe *pipe,
-> -			       struct drm_plane_state *plane_state,
-> -			       struct drm_crtc_state *crtc_state)
-> +static int imx_lcdc_crtc_helper_atomic_check(struct drm_crtc *crtc,
-> +					     struct drm_atomic_commit *commit)
->   {
-> +	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
-> +	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(commit, crtc);
->   	const struct drm_display_mode *mode = &crtc_state->mode;
-> -	const struct drm_display_mode *old_mode = &pipe->crtc.state->mode;
-> +	const struct drm_display_mode *old_mode = &old_crtc_state->mode;
-> +	int ret;
-> +
-> +	if (crtc_state->enable) {
-> +		ret = drm_atomic_helper_check_crtc_primary_plane(crtc_state);
-> +		if (ret)
-> +			return ret;
-> +	}
->   
-> -	if (mode->hdisplay < LCDC_MIN_XRES || mode->hdisplay > LCDC_MAX_XRES ||
-> -	    mode->vdisplay < LCDC_MIN_YRES || mode->vdisplay > LCDC_MAX_YRES ||
-> -	    mode->hdisplay % 0x10) { /* must be multiple of 16 */
-> -		drm_err(pipe->crtc.dev, "unsupported display mode (%u x %u)\n",
-> +	if (crtc_state->enable &&
-> +	    (mode->hdisplay < LCDC_MIN_XRES || mode->hdisplay > LCDC_MAX_XRES ||
-> +	     mode->vdisplay < LCDC_MIN_YRES || mode->vdisplay > LCDC_MAX_YRES ||
-> +	     mode->hdisplay % 0x10)) { /* must be multiple of 16 */
-> +		drm_err(crtc->dev, "unsupported display mode (%u x %u)\n",
->   			mode->hdisplay, mode->vdisplay);
->   		return -EINVAL;
->   	}
->   
-> -	crtc_state->mode_changed =
-> -		old_mode->hdisplay != mode->hdisplay ||
-> -		old_mode->vdisplay != mode->vdisplay;
-> +	if (old_mode->hdisplay != mode->hdisplay ||
-> +	    old_mode->vdisplay != mode->vdisplay)
-> +		crtc_state->mode_changed = true;
->   
-> -	return 0;
-> +	return drm_atomic_add_affected_planes(commit, crtc);
->   }
->   
-> -static void imx_lcdc_pipe_update(struct drm_simple_display_pipe *pipe,
-> -				 struct drm_plane_state *old_state)
-> +static void imx_lcdc_plane_helper_atomic_update(struct drm_plane *plane,
-> +						struct drm_atomic_commit *commit)
->   {
-> -	struct drm_crtc *crtc = &pipe->crtc;
-> -	struct drm_pending_vblank_event *event = crtc->state->event;
-> -	struct drm_plane_state *new_state = pipe->plane.state;
-> +	struct drm_plane_state *old_state = drm_atomic_get_old_plane_state(commit, plane);
-> +	struct drm_plane_state *new_state = drm_atomic_get_new_plane_state(commit, plane);
-> +	struct drm_crtc *crtc = new_state->crtc;
-> +	struct drm_crtc_state *old_crtc_state = NULL;
-> +	struct drm_crtc_state *new_crtc_state;
->   	struct drm_framebuffer *fb = new_state->fb;
->   	struct drm_framebuffer *old_fb = old_state->fb;
->   	struct drm_crtc *old_crtc = old_state->crtc;
->   	bool mode_changed = false;
->   
-> +	if (!fb || !crtc)
-> +		return;
-> +
-> +	if (old_crtc)
-> +		old_crtc_state = drm_atomic_get_old_crtc_state(commit, old_crtc);
-> +
-> +	new_crtc_state = drm_atomic_get_new_crtc_state(commit, crtc);
-> +	if (!new_crtc_state)
-> +		return;
-> +
->   	if (old_fb && old_fb->format != fb->format)
->   		mode_changed = true;
->   	else if (old_crtc != crtc)
->   		mode_changed = true;
->   
-> -	if (!drm_atomic_crtc_needs_modeset(crtc->state))
-> -		imx_lcdc_update_hw_registers(pipe, old_state, mode_changed);
-> +	if (!drm_atomic_crtc_needs_modeset(new_crtc_state))
-> +		imx_lcdc_update_hw_registers(crtc, old_crtc_state, new_crtc_state,
-> +					     new_state, mode_changed);
-> +}
->   
-> -	if (event) {
-> -		crtc->state->event = NULL;
-> +static int imx_lcdc_plane_helper_atomic_check(struct drm_plane *plane,
-> +					      struct drm_atomic_commit *commit)
-> +{
-> +	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(commit, plane);
-> +	struct drm_crtc_state *crtc_state = NULL;
->   
-> -		spin_lock_irq(&crtc->dev->event_lock);
-> +	if (plane_state->crtc) {
-> +		crtc_state = drm_atomic_get_crtc_state(commit, plane_state->crtc);
-> +		if (IS_ERR(crtc_state))
-> +			return PTR_ERR(crtc_state);
-> +	}
->   
-> -		if (crtc->state->active && drm_crtc_vblank_get(crtc) == 0)
-> -			drm_crtc_arm_vblank_event(crtc, event);
-> -		else
-> -			drm_crtc_send_vblank_event(crtc, event);
-> +	return drm_atomic_helper_check_plane_state(plane_state, crtc_state,
-> +						   DRM_PLANE_NO_SCALING,
-> +						   DRM_PLANE_NO_SCALING,
-> +						   false, false);
-> +}
->   
-> -		spin_unlock_irq(&crtc->dev->event_lock);
-> -	}
-> +static const struct drm_plane_helper_funcs imx_lcdc_plane_helper_funcs = {
-> +	.prepare_fb	= drm_gem_plane_helper_prepare_fb,
-> +	.atomic_check	= imx_lcdc_plane_helper_atomic_check,
-> +	.atomic_update	= imx_lcdc_plane_helper_atomic_update,
-> +};
-> +
-> +static const struct drm_plane_funcs imx_lcdc_plane_funcs = {
-> +	.update_plane		= drm_atomic_helper_update_plane,
-> +	.disable_plane		= drm_atomic_helper_disable_plane,
-> +	.destroy		= drm_plane_cleanup,
-> +	.atomic_create_state	= drm_atomic_helper_plane_create_state,
-> +	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
-> +	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
-> +};
-> +
-> +static const struct drm_crtc_helper_funcs imx_lcdc_crtc_helper_funcs = {
-> +	.atomic_check	= imx_lcdc_crtc_helper_atomic_check,
-> +	.atomic_enable	= imx_lcdc_crtc_helper_atomic_enable,
-> +	.atomic_disable	= imx_lcdc_crtc_helper_atomic_disable,
-> +	.atomic_flush	= drm_crtc_vblank_atomic_flush,
-> +};
-> +
-> +static int imx_lcdc_crtc_enable_vblank(struct drm_crtc *crtc)
-> +{
-> +	return 0;
->   }
->   
-> -static const struct drm_simple_display_pipe_funcs imx_lcdc_pipe_funcs = {
-> -	.enable = imx_lcdc_pipe_enable,
-> -	.disable = imx_lcdc_pipe_disable,
-> -	.check = imx_lcdc_pipe_check,
-> -	.update = imx_lcdc_pipe_update,
-> +static void imx_lcdc_crtc_disable_vblank(struct drm_crtc *crtc)
-> +{
-> +}
-> +
-> +static const struct drm_crtc_funcs imx_lcdc_crtc_funcs = {
-> +	.atomic_create_state	= drm_atomic_helper_crtc_create_state,
-> +	.destroy		= drm_crtc_cleanup,
-> +	.set_config		= drm_atomic_helper_set_config,
-> +	.page_flip		= drm_atomic_helper_page_flip,
-> +	.atomic_duplicate_state	= drm_atomic_helper_crtc_duplicate_state,
-> +	.atomic_destroy_state	= drm_atomic_helper_crtc_destroy_state,
-> +	.enable_vblank		= imx_lcdc_crtc_enable_vblank,
-> +	.disable_vblank		= imx_lcdc_crtc_disable_vblank,
-> +};
-> +
-> +static const struct drm_encoder_funcs imx_lcdc_encoder_funcs = {
-> +	.destroy = drm_encoder_cleanup,
->   };
->   
->   static const struct drm_mode_config_funcs imx_lcdc_mode_config_funcs = {
-> @@ -369,7 +447,7 @@ MODULE_DEVICE_TABLE(of, imx_lcdc_of_dev_id);
->   static irqreturn_t imx_lcdc_irq_handler(int irq, void *arg)
->   {
->   	struct imx_lcdc *lcdc = arg;
-> -	struct drm_crtc *crtc = &lcdc->pipe.crtc;
-> +	struct drm_crtc *crtc = &lcdc->crtc;
->   	unsigned int status;
->   
->   	status = readl(lcdc->base + IMX21LCDC_LISR);
-> @@ -387,6 +465,9 @@ static int imx_lcdc_probe(struct platform_device *pdev)
->   	struct imx_lcdc *lcdc;
->   	struct drm_device *drm;
->   	struct drm_bridge *bridge;
-> +	struct drm_plane *plane;
-> +	struct drm_crtc *crtc;
-> +	struct drm_encoder *encoder;
->   	int irq;
->   	int ret;
->   	struct device *dev = &pdev->dev;
-> @@ -428,23 +509,40 @@ static int imx_lcdc_probe(struct platform_device *pdev)
->   	if (ret)
->   		return dev_err_probe(dev, ret, "Cannot initialize mode configuration structure\n");
->   
-> -	/* CRTC, Plane, Encoder */
-> -	ret = drm_simple_display_pipe_init(drm, &lcdc->pipe,
-> -					   &imx_lcdc_pipe_funcs,
-> -					   imx_lcdc_formats,
-> -					   ARRAY_SIZE(imx_lcdc_formats), NULL, NULL);
-> +	plane = &lcdc->plane;
-> +	ret = drm_universal_plane_init(drm, plane, 0,
-> +				       &imx_lcdc_plane_funcs,
-> +				       imx_lcdc_formats,
-> +				       ARRAY_SIZE(imx_lcdc_formats),
-> +				       NULL,
-> +				       DRM_PLANE_TYPE_PRIMARY, NULL);
-> +	if (ret < 0)
-> +		return dev_err_probe(drm->dev, ret, "Cannot initialize primary plane\n");
-> +	drm_plane_helper_add(plane, &imx_lcdc_plane_helper_funcs);
-> +
-> +	crtc = &lcdc->crtc;
-> +	ret = drm_crtc_init_with_planes(drm, crtc, plane, NULL,
-> +					&imx_lcdc_crtc_funcs, NULL);
-> +	if (ret < 0)
-> +		return dev_err_probe(drm->dev, ret, "Cannot initialize CRTC\n");
-> +	drm_crtc_helper_add(crtc, &imx_lcdc_crtc_helper_funcs);
-> +
-> +	encoder = &lcdc->encoder;
-> +	ret = drm_encoder_init(drm, encoder, &imx_lcdc_encoder_funcs,
-> +			       DRM_MODE_ENCODER_NONE, NULL);
->   	if (ret < 0)
-> -		return dev_err_probe(drm->dev, ret, "Cannot setup simple display pipe\n");
-> +		return dev_err_probe(drm->dev, ret, "Cannot initialize encoder\n");
-> +	encoder->possible_crtcs = drm_crtc_mask(crtc);
->   
->   	ret = drm_vblank_init(drm, drm->mode_config.num_crtc);
->   	if (ret < 0)
->   		return dev_err_probe(drm->dev, ret, "Failed to initialize vblank\n");
->   
-> -	ret = drm_bridge_attach(&lcdc->pipe.encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-> +	ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
->   	if (ret)
->   		return dev_err_probe(drm->dev, ret, "Cannot attach bridge\n");
->   
-> -	lcdc->connector = drm_bridge_connector_init(drm, &lcdc->pipe.encoder);
-> +	lcdc->connector = drm_bridge_connector_init(drm, encoder);
->   	if (IS_ERR(lcdc->connector))
->   		return dev_err_probe(drm->dev, PTR_ERR(lcdc->connector), "Cannot init bridge connector\n");
->   
-> @@ -483,7 +581,9 @@ static int imx_lcdc_probe(struct platform_device *pdev)
->   	drm->mode_config.funcs = &imx_lcdc_mode_config_funcs;
->   	drm->mode_config.helper_private = &imx_lcdc_mode_config_helpers;
->   
-> -	drm_mode_config_reset(drm);
-> +	ret = drm_mode_config_create_initial_state(drm);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Cannot create initial state\n");
->   
->   	irq = platform_get_irq(pdev, 0);
->   	if (irq < 0) {
->
-
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+index d906a7f05aaa..8ec27080ca1e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+@@ -6,7 +6,7 @@
+ 
+ /dts-v1/;
+ #include "imx6dl.dtsi"
+-#include "imx6qdl-phytec-phycore-som.dtsi"
++#include "imx6dl-phytec-phycore-som.dtsi"
+ #include "imx6qdl-phytec-mira.dtsi"
+ #include "imx6qdl-phytec-mira-peb-eval-01.dtsi"
+ #include "imx6qdl-phytec-mira-peb-av-02.dtsi"
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
+new file mode 100644
+index 000000000000..de85c084ac8d
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
++ * Author: Yunus Bas <y.bas@phytec.de>
++ */
++
++#include "imx6qdl-phytec-phycore-som.dtsi"
++
++&cpu0 {
++	operating-points =
++		/* kHz    uV */
++		<996000 1275000>,
++		<792000 1175000>,
++		<396000 1150000>;
++};
++
++&cpu1 {
++	operating-points =
++		/* kHz    uV */
++		<996000 1275000>,
++		<792000 1175000>,
++		<396000 1150000>;
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-emmc.dts b/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-emmc.dts
+index 322f071d972f..7d947762f3b9 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-emmc.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-emmc.dts
+@@ -6,7 +6,7 @@
+ 
+ /dts-v1/;
+ #include "imx6q.dtsi"
+-#include "imx6qdl-phytec-phycore-som.dtsi"
++#include "imx6q-phytec-phycore-som.dtsi"
+ #include "imx6qdl-phytec-mira.dtsi"
+ #include "imx6qdl-phytec-mira-peb-eval-01.dtsi"
+ #include "imx6qdl-phytec-mira-peb-av-02.dtsi"
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-nand.dts b/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-nand.dts
+index 3f13726c8058..afbb6681a6b5 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-nand.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-phytec-mira-rdk-nand.dts
+@@ -6,7 +6,7 @@
+ 
+ /dts-v1/;
+ #include "imx6q.dtsi"
+-#include "imx6qdl-phytec-phycore-som.dtsi"
++#include "imx6q-phytec-phycore-som.dtsi"
+ #include "imx6qdl-phytec-mira.dtsi"
+ #include "imx6qdl-phytec-mira-peb-eval-01.dtsi"
+ #include "imx6qdl-phytec-mira-peb-av-02.dtsi"
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi
+new file mode 100644
+index 000000000000..ebe05d764357
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
++ * Author: Yunus Bas <y.bas@phytec.de>
++ */
++
++#include "imx6qdl-phytec-phycore-som.dtsi"
++
++&cpu0 {
++	operating-points =
++		/* kHz    uV */
++		<1200000 1300000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1175000>,
++		<396000  1075000>;
++	fsl,soc-operating-points =
++		/* ARM kHz  SOC-PU uV */
++		<1200000 1275000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1250000>,
++		<396000  1250000>;
++};
++
++&cpu1 {
++	operating-points =
++		/* kHz    uV */
++		<1200000 1300000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1175000>,
++		<396000  1075000>;
++	fsl,soc-operating-points =
++		/* ARM kHz  SOC-PU uV */
++		<1200000 1275000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1250000>,
++		<396000  1250000>;
++};
++
++&cpu2 {
++	operating-points =
++		/* kHz    uV */
++		<1200000 1300000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1175000>,
++		<396000  1075000>;
++	fsl,soc-operating-points =
++		/* ARM kHz  SOC-PU uV */
++		<1200000 1275000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1250000>,
++		<396000  1250000>;
++};
++
++&cpu3 {
++	operating-points =
++		/* kHz    uV */
++		<1200000 1300000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1175000>,
++		<396000  1075000>;
++	fsl,soc-operating-points =
++		/* ARM kHz  SOC-PU uV */
++		<1200000 1275000>,
++		<996000  1250000>,
++		<852000  1250000>,
++		<792000  1250000>,
++		<396000  1250000>;
++};
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
-
+2.34.1
 
