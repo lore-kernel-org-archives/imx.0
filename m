@@ -1,196 +1,111 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8B62DFF3F
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 05:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790227835; cv=pass; b=Jy1RlFhPaqZ297aaBpHnFCeR/UCHLouqg9mBJGSWblCRxH7gI7L5N11LeyK24Nx5VCA65n1DjITeX6EJHPgLxgZbH2Z9hewatcyD+gMWzRK5Uvl0oHe3Hq/QTvvYwxcXD7VhiRz0O59VVKtCaKslXTncYqm6pFTvHev9gluP1uE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790227835; c=relaxed/simple;
-	bh=Y6lfdMzfxBrctx+JVGwRqRWinjsXPeJStQCGnizzDN0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kWKvFMDXZqPYdqLDyIp5WqVNkPK/czUZc4N6QzW1wWRP2wW7yjbXeNR28TutziFP8VOGpzYfG+Luf4ysW4cuqJWE/r4fJYdNQn85RLdDOddI2eV/dh++Uuw2gsiqsQAmmxW4CRorR/pIKlMvIGwhtEDwOC6j+sBb4OtS/gSxDOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=mhG3g99K; arc=pass smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE4B410D36;
+	Thu, 24 Sep 2026 06:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790232652; cv=none; b=tXTvqKCj6MKVMBDpqpXD3bDRrLMGt8n+BRfM/sv7dWGSP9Uo4HCyffMkKLGEuabcwLLQDGu7GeuH7f/LJpJ/WnkBXNgNi5GrOiQweSQSsBgcarWr2eTN3cRa9ZAIeYP4qL1nuHiu59PvpZIOhOSiwzyVr4hON0vewun0IgWYPbM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790232652; c=relaxed/simple;
+	bh=doDoEBGfoxvceTgdKjzjgnlDn5bb+/y/L5Syb3W+v48=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jszQiqOtXDS/6AOeolO7jOaQGrzc6lK2CYDt6BlGwEeJy1NKhp5aZZa0WQzXb0MBnCpvKlTtjx/xWywEDWKOURrqY6RxiC1d36ormWV7iVStZbf6l5Bs4EA59SEY4AD1NvRfALdxmMAarUGuhj3EYzR7xah1Umg7ZgT7XO7YKJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=WXFLPzEM; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="mhG3g99K"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33b9e805130so1268542eec.1
-        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 22:30:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790227834; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RpirNKhmmWXDLvVKuBGZey1yOoMJScn88hWmDnZcVK/JaR/jA53LPkcUSMZY5k5Pfj
-         OErbeZjmbsYDxNFi8LWjcx9oSm3NtU/K4SnpVjesZVBdAm1l9pM4kekDqVqLBxoIxFHi
-         hca0nTttyFEEMJCGI92h9zc9xlMu/jI7rgxdrfXpcyXo9XzYLQm3K9/7KSAcA9LFhq5Q
-         NceDzhKKhL5h48WipM1reeSUu+mKWbBXSZ0mO3l8dLLf7BNc7etsDKPRIUNplas8xxEO
-         /gelAOUoL3ZKVt6EJUm6wYIWypr9cDSEeZ7lfg4So+z+as0yoaD25ZLzQCzYWHg+wZls
-         z3JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g/rW7+9DYBHHx7/UU3/p+sXhhnDN4m/dqMHLzOkRYuw=;
-        fh=1u+xMyYajF5L16dhOfo7SAioOtbYkjpEaQPpd2fqYtU=;
-        b=o58GXzJ8m1w/i3XgyDOufVU8lseoMYqQuqSa3fBAnEKu7sDVQL/oMe/xIgX9rZoTJy
-         7PPGO6zypAqz+0YCRdpP0TwyjDTrLtdKZ5/lvi3wx9BDAKt67TGzep1X0TCPFjus+rjE
-         Rxi9s41N4LT/KcRPg2pa728qqQGNxUdemkCzYM1VkMtfrfzZD1ZeeQCVDvj6oaCK76mN
-         NRuxbAnrgJWAvbxmXuUtnyjHA4FwMbCBt/YdtNs6Xybba611bsUSvbg7s1tGW5DA4uPL
-         CB7CCCSM62GlN0EHcGH4EsoZhSyCq0Akruw6hC0ZdgoreJz7cMe3q/felNdnVYlxqkpa
-         0+zA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1790227834; x=1790832634; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g/rW7+9DYBHHx7/UU3/p+sXhhnDN4m/dqMHLzOkRYuw=;
-        b=mhG3g99KxovoqQrbP/Ms4wnp1vZvOQwfKb26YDwYT0WUsDZ8VpMVONLeZoq7flqUAF
-         /wCLbDKj2AonQPBosYpk4Hx1/Uj0gznuRPEpm8PuTKZ71zeg1PJuA3gxaE0sxsPHZQ3j
-         CnBBwk3nRoJNzdNE3nBLngIfO+EPoSlSZDfvg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790227834; x=1790832634;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g/rW7+9DYBHHx7/UU3/p+sXhhnDN4m/dqMHLzOkRYuw=;
-        b=RzWCO5L0iAVmFROvp6E4XrZLSwGOSfQWpp1A5zBr6C4uEDf3+2jlwLMh6HqguasSLq
-         XaJlNCxUooEJ1ceqfxudUZ7sN0YuujQwUJkYbnC+2H1k8+ni7MHTiV2Cwik7tYAdeiXq
-         YnjoCoaO7+ekd9EcypcrLttsGpjMSwmXXhHoYroTqPhowtqimXe1tG9tkD6jlipCci1m
-         G06mGwf07cT7/6vbobJbnFi5uNKgNihaVz58HnEVrUR9b8pUMgufyn2gXfSx5awlceKA
-         hLL+6Rz4ic3CIGapVpcFXMi3XQEslWZV7Z2EBzA4Fnu2wPrxf1jaIOHSlUX+yZIReTq+
-         7t9A==
-X-Forwarded-Encrypted: i=1; AKwUvBzWCRFvLWSKij9uAcIUPgD+4ZlYZH1LYlMhjPpqsZLumXNybAFtYk57XKqWWiEy3OIa2JQ=@lists.linux.dev
-X-Gm-Message-State: AFuF++mcbGGnEPcpWZ9kQqoNqoZ/bAwaIBQ+ds95I5W+R2GsALrKSezt
-	RN9H+Mkf3BHq7cBJPcSVJHsOHn8L1o1fzUj6lYq1FRUvEP1rmg9nLkUawWNIjz2rYOim3jOxiPd
-	VubzbBE5+Fbd0qD6AUMR5p2vBOXao1OwfV5wJnGe2Yg==
-X-Gm-Gg: AYBFou0RRMP2Z0ynLNiOdaWuaYsLgceJH/TiG5jCbMEhZLKb+yeq8kE9NorKmsj7Zz9
-	swH8YIOWm4AEnCkZREG/fO9eKHz4ZWrgouQhpJ4AslmgLWq2BDNdC4As3MthYZD0LNEggHfOO8F
-	xDllQDIUOdEAVesSD4yOs65tnqBuEZOqG9fiXLKP+PxfR+JMLaRS+1MG1ay2mxtMxLvqSwnsGHT
-	oRb58TS1DK6TTWExcpKsCL+vxoynjZDIQ6pXwqqF22iQ7kEeIpUntRzczAGnAhxFIAO8/wR9Gjd
-	xkaStM3RWn6z/STV0+GospSAzkohBSiuLzmfhJJRYG5aG8rPbxYwNTDeps6YZn7iR38hBG2iIf9
-	bdeADCZUrUw==
-X-Received: by 2002:a05:7300:8d14:b0:33b:e264:362a with SMTP id
- 5a478bee46e88-34004a89a19mr1123625eec.13.1790227832039; Wed, 23 Sep 2026
- 22:30:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="WXFLPzEM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5tCA3MpugcvamtC2m19lgcfPbZXndx2JkhzDnbI/5+s=; b=WXFLPzEMsM7F53cl819dPWHDlR
+	C1E4XVN5ZoCDHHYoTAnn4ZnUsXGOFbOGBSHXTAeHCYaF6tsqV1fDpdwZk/PkANrVGAQDAdsR+fAEa
+	HEMFApMD55iF4Nl40tievej1PPlAXGIpoTGzZvsgbCu9KRYjO1V132qZZ8fyYaElD58/CmhM3RfTP
+	pv3dmpF9e4MrC8ymW8BJfMeXPPjMgh9ji/2Pfnl0ZGwNXjP7EcU1zCP5pCG5ZX+l7TlVGHKOnyaKc
+	zuEIQzwqRIDgF1Mo5Izq+NtaoOcDl/65haqFhVPt0Jl6F0eVKE0G2j2T3sisoPkRUqfrScDurDPDb
+	pq8cwgjA==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:54176 helo=localhost.localdomain)
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1x9dI7-0000000AyGs-3EKx;
+	Thu, 24 Sep 2026 08:50:48 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Lee Jones <lee@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	mfd@lists.linux.dev,
+	linux-watchdog@vger.kernel.org,
+	upstream@lists.phytec.de,
+	andrej.picej@norik.com
+Subject: [PATCH v2 2/4] mfd: da9061: Make register CONFIG_I writable
+Date: Thu, 24 Sep 2026 08:50:42 +0200
+Message-Id: <20260924065044.368341-3-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260924065044.368341-1-primoz.fiser@norik.com>
+References: <20260924065044.368341-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260522101653.2565125-1-paulk@sys-base.io> <ad9788bba0851dcb86c22f40c2562f2a57ac8e6c.camel@collabora.com>
- <CAOf5uwktfp0a3Vi5Jd8Zw5knGMHd_FH=iusRX1NgHYC4VSuzBA@mail.gmail.com> <arQxC3DmDyVIGdqq@collins>
-In-Reply-To: <arQxC3DmDyVIGdqq@collins>
-From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date: Thu, 24 Sep 2026 07:30:20 +0200
-X-Gm-Features: AclHuK9fIcxWA7Sv69t_uK1zMqbihMAU90hONvsInRjWG6YY9lFMwau8XYvA7qg
-Message-ID: <CAOf5uw=SeHZSnYjPOptAGYwPkQc7L7gDpOrDWJH3UF0r1qdrtg@mail.gmail.com>
-Subject: Re: [PATCH 00/14] media: Add V4L2 H.264 stateless encode and VC8000E support
-To: Paul Kocialkowski <paulk@sys-base.io>
-Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>, devicetree <devicetree@vger.kernel.org>, 
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-media <linux-media@vger.kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Hans Verkuil <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, 
-	Michael Tretter <m.tretter@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Paul
+From: Andrej Picej <andrej.picej@norik.com>
 
+Make the config register CONFIG_I writable to change the watchdog mode.
 
-On Wed, Sep 23, 2026 at 10:05=E2=80=AFPM Paul Kocialkowski <paulk@sys-base.=
-io> wrote:
->
-> Hi Michael,
->
-> Le Wed 23 Sep 26, 14:10, Michael Nazzareno Trimarchi a =C3=A9crit :
-> > I tested on px30 and achieved working H.264 encoding with some small ch=
-anges
->
-> That is a bit surprising, the Rockchip PX30 should come with a Hantro H1
-> (using a modified register layout) while this driver is for the
-> Hantro VC8000E, which is a newer generation with very different registers=
-.
->
-> Maybe you ended up using CPU-based decoding when testing?
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Reviewed-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+Changes in v2:
+- capitalize subject description
 
-Using
->
-> All the best,
->
-> Paul
->
-> --
-> Paul Kocialkowski,
->
-> Independent contractor - sys-base - https://www.sys-base.io/
-> Free software developer - https://www.paulk.fr/
->
-> Expert in multimedia, graphics and embedded hardware support with Linux.
+ drivers/mfd/da9062-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I have added your patch to gstreamer
+diff --git a/drivers/mfd/da9062-core.c b/drivers/mfd/da9062-core.c
+index 32dd24483ee0..c987e533824d 100644
+--- a/drivers/mfd/da9062-core.c
++++ b/drivers/mfd/da9062-core.c
+@@ -427,7 +427,7 @@ static const struct regmap_range da9061_aa_writeable_ranges[] = {
+ 	regmap_reg_range(DA9062AA_VBUCK1_B, DA9062AA_VBUCK4_B),
+ 	regmap_reg_range(DA9062AA_VBUCK3_B, DA9062AA_VBUCK3_B),
+ 	regmap_reg_range(DA9062AA_VLDO1_B, DA9062AA_VLDO4_B),
+-	regmap_reg_range(DA9062AA_CONFIG_J, DA9062AA_CONFIG_J),
++	regmap_reg_range(DA9062AA_CONFIG_I, DA9062AA_CONFIG_J),
+ 	regmap_reg_range(DA9062AA_GP_ID_0, DA9062AA_GP_ID_19),
+ };
+ 
+-- 
+2.34.1
 
-v4l2codecs: add the stateless H.264 and VP8 encoder elements
-
-Backport of the encoder work from the branch v4l2codecs/h264enc of
-https://github.com/paulkocialkowski/gstreamer (commit f59de5779ef1, based
-on release 1.26.0) onto the gstreamer1.0-plugins-bad 1.28.5 this build
-uses.
-
-Generate the right element and encode stream:
-
-gst-launch-1.0 videotestsrc num-buffers=3D100 !
-video/x-raw,width=3D720,height=3D576 !  v4l2slh264enc ! h264parse !
-matroskamux ! filesink location=3D/tmp/t2.mkv
-
-And playback over Wayland.
-
-Solve some problem. I have implemented:
-
-const struct hantro_variant px30_vpu_variant =3D {
-        .enc_offset =3D 0x0,
-        .enc_fmts =3D rockchip_vpu_enc_fmts,
-        .num_enc_fmts =3D ARRAY_SIZE(rockchip_vpu_enc_fmts),
-        .dec_offset =3D 0x400,
-        .dec_fmts =3D rockchip_vdpu2_dec_fmts,
-        .num_dec_fmts =3D ARRAY_SIZE(rockchip_vdpu2_dec_fmts),
-        .codec =3D HANTRO_JPEG_ENCODER | HANTRO_H264_ENCODER |
-                 HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
-                 HANTRO_H264_DECODER,
-        .codec_ops =3D px30_vpu_codec_ops,
-        .irqs =3D rockchip_vpu2_irqs,
-        .num_irqs =3D ARRAY_SIZE(rockchip_vpu2_irqs),
-        .init =3D rk3036_vpu_hw_init,
-        .clk_names =3D rockchip_vpu_clk_names,
-        .num_clocks =3D ARRAY_SIZE(rockchip_vpu_clk_names)
-};
-
-I have advertised the:
-
-       {
-                .fourcc =3D V4L2_PIX_FMT_H264_SLICE,
-                .codec_mode =3D HANTRO_MODE_H264_ENC,
-                .max_depth =3D 2,
-                .header_size =3D H264_ENC_HEADER_SIZE,
-                .frmsize =3D {
-                        .min_width =3D FMT_MIN_WIDTH,
-                        .max_width =3D FMT_FHD_WIDTH,
-                        .step_width =3D MB_DIM,
-                        .min_height =3D FMT_MIN_HEIGHT,
-                        .max_height =3D FMT_FHD_HEIGHT,
-                        .step_height =3D MB_DIM,
-                },
-        },
-
-Create the rockchip_vpu_hw_h264_enc.c. I need to test this on rk3399
-
-I have a small change only in the common part. Hope that it's a bit clear.
-
-Michael
