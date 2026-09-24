@@ -1,178 +1,260 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013055.outbound.protection.outlook.com [52.101.83.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954724A0926
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 18:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354054AD4D7
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 19:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790273593; cv=pass; b=SROV/heUQtDvSu7Wa3U8pQ1+JUQsXDMQS86FubbFqYf+6svMAH/saqZP7M0wk+sH7EffLna1EIvk/0MLs1/v5prJjMigl9Cl+Ath31CiufbZpM87Hi3sBo6TRYQUVTVvhI1zS48XHTm3xpZik/JbJluz3dAXyj4V4qjPKbnS6Ks=
+	t=1790278235; cv=fail; b=upbKWbdvNZqEBsxaMoInGHmSTqLUGoX7DxOFDlIG9WFAPCQO3CploiKRBaXJRJGTEXN3MvYztIXeMSj6pHFM2oY9OgQbHLAGGO9yhSZ6YoRAAz+Ctwq/Ndzgt/reoNRoP/lUgvLeYkVcTwsIV6xVrZd3Kp6P+hLP3zuJRBnTvZM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790273593; c=relaxed/simple;
-	bh=obM89duV/YDQdOLprqIx6ewSPHAr0cjoNZPC7dSU81A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IEU4YtnVSvrLrjDcefUywZaMxaZom+A/mEKPnGOZL3LYE06EkqZrSDxM49KEVag9/UCoFeDeF/ORTKP4RZDakg+ha29x7Pige0NsAeFB+uGj4C1ky36ry/++jqgEN9fqukpJMhd2ck4g0yipAphuPMSoWZ5VITC0YSMUad+iZp0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZvKx9ZT; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790278235; c=relaxed/simple;
+	bh=BWF2+jhRkI4rhfYd3mLALq7K9EybspeXg8DRS/i2OgI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gxkj3TZpwA4dTM2TzneWnxbOZF8Ad+O6M2JoTPNZcxutcyibLgrEs7Owzmw71Wd91IyNbGjPMX189YSWzZNJ6esZJISDOtsmItx46PBuaQYpa8p59VVrmD1ofCrvS6Cp0I5ShuKEpzjVyGjOObmkg1xeouPqtPIc46S2JvG13hU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bVjXqC5R; arc=fail smtp.client-ip=52.101.83.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZvKx9ZT"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66f7f72a284so313953d50.2
-        for <imx@lists.linux.dev>; Thu, 24 Sep 2026 11:13:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790273590; cv=none;
-        d=google.com; s=arc-20260327;
-        b=I7jKyeBRlyxdm2468yF0+/i/a74gIcPdxcvFNCU2yv4kiy4ycOBlQ6SGAzOY+doyFo
-         WacFUAS10IXx9uNYf4pOai/Jc2F5qskK89HokiKrcFQgTCRHSCB5WdB1PrgGQORvd9kG
-         tbP0Sc+qU1ms+pDgAUBqmyt7+E+fuecbxfPC6hlttsWOyfuLCSWetDjQncxUiyplXC5S
-         PQ2jOb2xQhOVIZ33kP8cveOC5iSKq6411FDOyPrtaRN9pIwD6g4FBjdL+DKx2fo8H6BQ
-         sxN8i91ReKIOV6vp8wLEccQBA8fAuli3wk71Zn9NLgVBO1RJBJ1ExCS35J7x/NFtaXH6
-         keIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K5/HMVOS3XLD3/CmnfQQxYp5K4Q9PjCgcZilabgKRo8=;
-        fh=Ztj+bbUvRv8V/EfBgQBrW/dgcV7h+uoLTY1Tvhfcb+g=;
-        b=mtkpRlfTWIi47f/BNSLns1kxfqt96kk8671d2fMBl51sgI2gOF4EYwVOgKfRd+vuIt
-         /sFoeIb12ZCM1Mc4jEgU82Sp+YuLkkciz9I+rXEvXv91jRNFPgBsfTX+qn5BbWzaN6G2
-         OhoHrJABqK171J5HbnvdfYHO9YsT/yaThOcKFI69pN0KMUEo7gA/H+vX67Uzpq/mWIIw
-         oekB8P/aPnQFAlw3vA9RiCgyYavJZhyvA2Btz+ReGILSpSInR4XdxKVdHw9MxDjjUWLf
-         lHZs/juy4xX/zwMc43yG2dbFi5fJwzV+N1/3DGRFLId9vKN0b/tvlZOLVY7HvNOzHzYE
-         4u3g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790273590; x=1790878390; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K5/HMVOS3XLD3/CmnfQQxYp5K4Q9PjCgcZilabgKRo8=;
-        b=iZvKx9ZTJyWXcKPKbqaLjjezCYi6MFgl9FKDGZdIhZp5Ij9yWTOjeAL3xT1FQSV56C
-         YqakQVb1dtvwfF7OTx7DseoluZb0GT8L2UXx0sCghXrawYFhQkfzTfCL7kOSJnBUbNZ2
-         gHlM3hvEVAQgiZfZTXwqjNx4XtWKMhQuRqb7YvKplRb9r2b9nNcdGerlsB0eAycyoeoD
-         92Z4cQMSSL8dpN7i4bHW/fSaeEPcsj9ylQ/5qPUCBN9MxtWPx++bFgGt6DCH1Y++mLfv
-         SntCmwVF3/OysTBNm/MZ6EaazzRo5HwjWJRXPWoLEpMSwfYypSmF9DOVJSOv/ZJOdPGP
-         kC9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790273590; x=1790878390;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K5/HMVOS3XLD3/CmnfQQxYp5K4Q9PjCgcZilabgKRo8=;
-        b=JyMe747hnYI3tuNABnKYEIY7Mnvn1pXv4P5abqsF/NfbQbiXGx91AY6+M1vqaXtn7d
-         9N68p24DYMfAF4PyPdlGx0hiy3skzwOPzCNqbBZ0qgpCMXAz7IZyYk8E6JSrgLkcPRMb
-         hEIc+SHRKtFR532T/raSn6pOeXo5HiC86TdrCXNkEFFoDeOPXpJQh51YW9NuzQwdgKPJ
-         t7IXHioyGjUaSWDkjuh9U5uLi5uxSsQUQvOGr5qBtAduKtepR4DBtw+TNnbxkfIN2v5f
-         QmFyd97eapi4+MRIC+Pf4gBPFOfoxJzD0SuLTpLQMprV7WDNKmvP8cGxV1xe8TQfcYhs
-         P9dQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzOZoOnCkk8nfytPValEYZAQEF2we6atuEC3sWvFcDFuxvnwHdfkMwPEbw4zn/N9BUhmVg=@lists.linux.dev
-X-Gm-Message-State: AFuF++mnuNpMO7Sac69IxhjX6TIDIa+8pGQJTT3vGB/sSW56Bew85EVc
-	ufXZwfc/faOIBl0EGS6y2sUItjrQbr80HCsRe0ZwJexXSpVJuT7PrYvWNi9Ij6kDCLBa9IEmxY2
-	CX2ChSktaANP0KG0BVb5TBfye06m22rc=
-X-Gm-Gg: AYBFou1UUNWIS8E2hOOIxCFFBUycsZjbF8AcfADEOo9BWKZEBA0lRnluZFO4WFhhADt
-	rCqy8pRXF5jxTt/ZfWyth9iuc+lwfhCMOCfbYhleq5r3E3pULc1m8nF3qLrTxF0xMhpUeZ4Nlah
-	1mATe66RkpEswoeEItnFGJry4i7aaUMnmEi8kYXzXAiSZ98qPMcJ1uhMuCDviZdL1fEU9/9o9ii
-	lyU8CdMSpDOJyPr+dlYlhAD0WVJz+dqbtyRjcmqajd2c1LtnoyHbMTGvYdVqrgNQ8N05XnLM3Zg
-	AJuzAltT+w+mU3oPSAo1nzlbR2LO/UGHm3m1JU+6ybYgn8KNswGBzwJf
-X-Received: by 2002:a05:690e:418b:b0:671:5ede:96e2 with SMTP id
- 956f58d0204a3-672ed2603d0mr2064645d50.8.1790273590483; Thu, 24 Sep 2026
- 11:13:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bVjXqC5R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r1J1HzfVnxARkyVuWND+3Fta3irsmXldRHT01CdcKM4QF+7Eo+hePp7sJ+M3qdTuxHPBKxYwb//7swDEUBq0T6ISt5pQbKXupBZ2ZJXgnyM77ZNKIMGuMddeAe/GDmBPZjld4JjuM0sCodiu0uB5yRLFNSKNEwKaNP9pgo4e+Uxh+8JOqJzwiAh57/ahepmM4RlrWe/8ESCiUg4Hg/577lsydaG9or15Uvhvipk1+/fqeyyYezJvOC7RmpxkoJasF4UGNH01B2HLQdehKUC4lSOgmwYYF+wdTxfsdIyrAqpBHtpXNDtg3RsbQV8QG/+BCrU5ZgNOtCqrxz5RZTSLYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8JEmmtJBMSckDkNQCyrsw0PRf8xs15H3lSvTN4RBQgc=;
+ b=Unb1kP2JP2+UDcbB3VD1nXLDZ+qVCy7lSfr4z3XiNP8IFMlek4YAqALKT/i1pmqT/eV8UVZJ/lIjIrKnlkoJEBio8mFDPp3l/aJ55UTgnEkGT6uP+G/0U2jey+ya5FSAc2qYLqLItWarfAAeW+m0HPjF75M2jfIc8DRp1JQhts4eb7cc5hxmOG6Fx4BoCIfqJ2pVobSJMz6i+KyJZH6s/9QmXl2pd1FUsoPHTfZ1+PTnca+536fx2tmRxUMpqMlOB7paWGXcJZNgCzjbTT0j1O7Beo136v+Ohatl8kHWL10hwqay9ZW9pE8EbvPmuLIpQj+kN1THZtjWUEkFuwie7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8JEmmtJBMSckDkNQCyrsw0PRf8xs15H3lSvTN4RBQgc=;
+ b=bVjXqC5Rd1C28d0k9XqB/2Lvl5D3r9RJdEz5o7xmrO5bAnFCU3uIJWQuLoqrO4+JKXAkomIFvMPSSP2YaOaCehfeO66wdburUBjgeNFd10QNJ1+acp5OztOAOm+27ePQXU1QO3qaF+jty+aBFo1NMrG7tr5V2I0nqNkjYR3IAMS626sHgyeE7DepFf4Y1YNuMPOFINOXdqADU93CvIMsMgacpWW+GhsV93lLOUwBX7u815Xg7EwQLzA2AkvKooQv+rMDIVKOJL6KMVed/niww56hZwPZH+tb5gxchLx63mf0+o7KgiEIApvwOw8qwFbzQi4PzqBBBfjlCrNJP9KtUw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DBAPR04MB7317.eurprd04.prod.outlook.com (2603:10a6:10:1b3::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 19:30:27 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 19:30:27 +0000
+Date: Thu, 24 Sep 2026 15:30:19 -0400
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dmaengine: use assign_bit() where applicable
+Message-ID: <arV6S-U-ArZubwka@lizhi-Precision-Tower-5810>
+References: <20260918141622.3022876-1-peng.fan@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918141622.3022876-1-peng.fan@oss.nxp.com>
+X-ClientProxiedBy: CY5PR15CA0089.namprd15.prod.outlook.com
+ (2603:10b6:930:18::35) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260912191156.185448-1-sumeet4linux@gmail.com>
-In-Reply-To: <20260912191156.185448-1-sumeet4linux@gmail.com>
-From: Sumeet Pawnikar <sumeet4linux@gmail.com>
-Date: Thu, 24 Sep 2026 23:42:59 +0530
-X-Gm-Features: AclHuK9xd3dlB_Cgp98d7h2ns81HK8suGpMur6yXKcYJOLZ9LOtfHEkjox28BFY
-Message-ID: <CAJ9orWTDrTTRLqwnwu9YMQQKt0k2g7qZEpH6fDcMFcTbTs55KA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] PM: Use %pe to print error pointers symbolically
-To: rafael@kernel.org, krzk@kernel.org, amit.kachhap@gmail.com, 
-	daniel.lezcano@kernel.org, thara.gopinath@gmail.com, talel@amazon.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, mmayer@broadcom.com, 
-	viresh.kumar@linaro.org, sumitg@nvidia.com, peter.griffin@linaro.org, 
-	myungjoo.ham@samsung.com, kyungmin.park@samsung.com, cw00.choi@samsung.com, 
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, sven@kernel.org, j@jannau.net, 
-	marcan@marcan.st, casey.connolly@linaro.org, sre@kernel.org, wens@kernel.org, 
-	t.schramm@manjaro.org
-Cc: bcm-kernel-feedback-list@broadcom.com, linux-samsung-soc@vger.kernel.org, 
-	kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBAPR04MB7317:EE_
+X-MS-Office365-Filtering-Correlation-Id: 273d1b0f-ed85-465e-ce21-08df1a7249a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|19092799006|1800799024|7416014|376014|11063799006|3023799007|56012099006|22082099003|18002099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	kMIno/5bz5CxcUJsyo7rBLbCzq8XlM/Hm1Avs3yuf7fM6Ji1yAcfswrdvP4bnxFai0L4UaTZ6JS8/UMboZPLI1T2irisy6wnkDc6VUCnvQSPzm/RzzEbwuqDpcYCZsSFGTXEBXRL1VPXze71euS0aFOZki5VufK2RwdM4nZPY10O8ZG53zp+4gEumYj5SDYGgppEzF1e3+TLFJ2TotYViGSTop1d37BsNnoF+ZJ3i+YQGeuNrv6qbNBdTLnqjNAPIBlX/wOV2Qs3vwwerA3xl86lCfu9xAr44NNefw/w4i3J8ftLgGhqR9X6kOfbfA5BlksAufp+becQnXzixP8IYaxpTcByS0ZwfRWakbEJEw+CX8SvQdomwH82LDYQ9l0Z6pDEF8z7ke+WY6SB7/gOnU9UQk9lOkDSBbkHK66Sm8bX2hZKiea8+HLweuRLt1RsoeKHOrDaY6PHkLVgN09VVF3XQqJhbG5t82TUaidxjKlB7ZwC3ZMT70619d+CO2qc3xsGjeuePb+BOZXltCBPNVSAErnDOeJFFGeg8QCp5Yfk6TTrKIQqfHALxcRBU8uf+3ds006RPL43+imzOdaSUQ/HymeGj5lPfb2YHHkLPbf9iVnCw5u9AmANpp5D3vF/WfcfCH2IMFyUP8qzGXsW2GicptGhDXX0/wuj8C+0Gog=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(1800799024)(7416014)(376014)(11063799006)(3023799007)(56012099006)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xG38F++ZsGT6w0Ipb4kyR94CkXCnWKNeZ0t+es69Q1PUMCr69IN1yHKy0T/q?=
+ =?us-ascii?Q?Z6DOj1w7U5pNbXynkWzvfMWyyfyzd14QcUHs3FV82P2P9jrib7IbucOAAA6d?=
+ =?us-ascii?Q?lrw89LnWYJr+Rl4Y5WAebFtWwXVcj8ys/hXxPiugVOglbkhg389d9E3a36XG?=
+ =?us-ascii?Q?l15C3tMAVYov/rrRpCTm0g4qCnNoHuuGcEmIbGu2X3PgXAo8F9jYxJ6OPOLQ?=
+ =?us-ascii?Q?qgyBqIhlFxJyLvl8gaYEOpPFzDcplJcfs7udZfsaDyJUA2Va6M6RKH1MENm3?=
+ =?us-ascii?Q?jC5SRW85dXn8tqXilcy8mjWRGYDiq6haRmru16yFzi00galq1S6/L+foYzzV?=
+ =?us-ascii?Q?jzrFj+pjaMiD+521uSYyd+nknbomIceghpUt3qJnHlrEmRA0BXRg67VdsEFM?=
+ =?us-ascii?Q?XZzUH92f4+6r2yILPHVa87FfvQMT6JaSpChNE+yt7VtD9b7ATMbAoqFCsCOg?=
+ =?us-ascii?Q?hmrPT6fdv+Yc6gXKIm36xkuAM2QOUHhKF6kwSw0oWMb9UcTyvD240bRokkYw?=
+ =?us-ascii?Q?W83HBs8WxiJV5QTgaAhLAcU6K2TnT55PLcsaLBrB8OTaUuujt8B4QtAiVgGz?=
+ =?us-ascii?Q?CW19cMUREK9sNZA+ONONkExmfnZVKz4tcimhWvl/Fi8SAZViotByS/yqkI4z?=
+ =?us-ascii?Q?UDE4J2TaVC0i8gyU48QOwkQpmHwOVkR48YLhVOz/kJZfQKYZgtslQEArWiit?=
+ =?us-ascii?Q?6uvqAq9GzSuMTbMtlcOHwyHSaqEYTVe8+33WgTTNvBlBO54CmalcEQ+6WuZU?=
+ =?us-ascii?Q?SPY0M1qDjzyGHIrESoAsl0IvYqVl7VkMW3knAwmNDj9pkdTI04msKmklDAA9?=
+ =?us-ascii?Q?hAsAJKR7q0ndBcZmOhS09R52Ud/3SjP/4TmVg+FYLtmgiwv7rTWbkOSRHEHT?=
+ =?us-ascii?Q?K7gJso0tghYfvz3sVdnHybyeV/9+YAkl00CCaf4M/4VY89EYz6un15nGfM6i?=
+ =?us-ascii?Q?XqNytH1AB25XiEnnsXIpAMau9GpPBxLQ/klQqtv7izYqz33P32dAmXUfZCeD?=
+ =?us-ascii?Q?LUCB2vaPWbXfs6nQXOpHZOwhUhwbnBkpzQZepairZZr0zUPb6ByTP0ROVsKz?=
+ =?us-ascii?Q?wDJurk03qX7pzxqhrnKYOZdpdKQUrqynw59gnUF7ImlSX9qvrxRm7hqYP7zT?=
+ =?us-ascii?Q?sVpBmliCe7EHyWjrEXsuskZ/D7V7oO/5WZfdGEsoXYJhOcIIFghr4oFsFsDO?=
+ =?us-ascii?Q?BXy1/lUEE7zMqns2aWPQR+Gacipob71f3J/1/ne46OB7Sd4xzSRsDtQN8eZe?=
+ =?us-ascii?Q?9mY9kqd2bcGK8grZz/OUgebXH0BdgsPAongoK/1/4mNgBh1i8VkhwUcn53QU?=
+ =?us-ascii?Q?I/YPnMoI4KRwchzX21oz8ZQx/eEZbBp+d/A24rjY/l9ohcBNaeLy1O6i2yn4?=
+ =?us-ascii?Q?TkT+RzcIexBmGY99ZKNqKEnBCmwfZarWonsjoaGhCCjsPZv6u7fTRBmOPe2l?=
+ =?us-ascii?Q?Ek3QpNWwIFFwgZTBaBQLwhYowTt0dxe4quyZ/b+7iOwSKvcbQqRHhYKcVjN6?=
+ =?us-ascii?Q?mEUMTX6Qz6LGQqozm+Z71qn2eFcYlatFtJl1OYAgGDcikct9iH6FdJGjrwBK?=
+ =?us-ascii?Q?fUw/mq6IYJhs4k7j97j3vDn75WA9GQ8DBJC25U9KT6VNQbxuf6I94v9Ru5oo?=
+ =?us-ascii?Q?kLEqC21tgD6k44r8fkfrljgPBzSUQskSpkvn4V0xB6knxoTqt0WX04c8A6t8?=
+ =?us-ascii?Q?rI2EE44nTYhAKkKfiOINO0Pe8/n9yhrHzhhPgmkNQV0266mHVFvRGQslv0ip?=
+ =?us-ascii?Q?SVD3zbdyLwR6gln90aykuOrujJx0TfFkf7MtlYpS6RHdFA+xyFdU?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 273d1b0f-ed85-465e-ce21-08df1a7249a2
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 19:30:27.6304
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7irn/9DGI+7tLgzhrnLSMqTKDwwLTSdjqiC/Y0zA3g6KhVWxDimSMk7m2lFvjWM7PXYwx5LvDLBKWJEYUcLQo+a6uGXZFe/eUhsjmc4CVuBfvOirL+hy77kV/oivcCxb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7317
 
-On Sun, Sep 13, 2026 at 12:42=E2=80=AFAM Sumeet Pawnikar <sumeet4linux@gmai=
-l.com> wrote:
+On Fri, Sep 18, 2026 at 10:16:17PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> This patch series is a cleanup for subsystems under power management
-> (linux-pm) that converts several instances of error pointer printing
-> to use the `%pe` format specifier instead of explicitly casting with
-> `PTR_ERR()`.
+> Convert open-coded if/else with set_bit/clear_bit and their
+> non-atomic __set_bit/__clear_bit variants to the assign_bit/__assign_bit
+> API.
 >
-> Currently, many drivers use `PTR_ERR()` paired with `%ld` or `%li` to
-> print error codes returned as pointers. By switching to `%pe` and passing
-> the error pointer directly, the logging subsystem will automatically
-> print the symbolic error name (e.g., `-ENOMEM`, `-EPROBE_DEFER`) when
-> `CONFIG_SYMBOLIC_ERRNAME` is enabled, and gracefully fall back to the
-> numeric value otherwise.
+> Done with Coccinelle semantic patch.
 >
-> This change significantly improves the readability of kernel logs and
-> dmesg traces during debugging, without introducing any functional changes
-> or side effects.
->
-> The cleanup has been applied across the following PM subsystems/drivers:
-> * powercap (intel_rapl_msr)
-> * thermal (cpufreq_cooling, devfreq_cooling, qcom)
-> * cpufreq (bmips, cppc, qoriq, s3c64xx)
-> * devfreq (imx-bus, imx8m-ddrc)
-> * power/supply (various battery and charger drivers)
->
-ping for review request on above listed changes in this v2 series.
-
-Thanks,
-Sumeet.
-
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
-> changes in v2:
->  - Krzysztof kozlowski suggested to use dev_err_probe instead of dev_err
->    for *_probe() functions during review of v1 series. This will be done
->    in different patch series.
->  - Here in v2, reverted the changes for dev_err under *_probe() functions=
-.
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  drivers/dma/idxd/sysfs.c  |  5 +----
+>  drivers/dma/imx-sdma.c    | 15 +++------------
+>  drivers/dma/ppc4xx/adma.c | 29 +++++++++--------------------
+>  3 files changed, 13 insertions(+), 36 deletions(-)
 >
->  - Link to v1: https://lore.kernel.org/all/20260906061755.5103-1-sumeet4l=
-inux@gmail.com/
+> diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+> index 6d251095c350..2b0524324089 100644
+> --- a/drivers/dma/idxd/sysfs.c
+> +++ b/drivers/dma/idxd/sysfs.c
+> @@ -1095,10 +1095,7 @@ static ssize_t wq_ats_disable_store(struct device *dev, struct device_attribute
+>  	if (rc < 0)
+>  		return rc;
 >
-> ---
+> -	if (ats_dis)
+> -		set_bit(WQ_FLAG_ATS_DISABLE, &wq->flags);
+> -	else
+> -		clear_bit(WQ_FLAG_ATS_DISABLE, &wq->flags);
+> +	assign_bit(WQ_FLAG_ATS_DISABLE, &wq->flags, ats_dis);
 >
-> Sumeet Pawnikar (5):
->   power: Use %pe to print error pointers symbolically
->   devfreq: Use %pe to print error pointers symbolically
->   cpufreq: Use %pe to print error pointers symbolically
->   thermal: Use %pe to print error pointers symbolically
->   powercap: intel_rapl: Use %pe to print error pointers symbolically
+>  	return count;
+>  }
+> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+> index 36368835a845..b8a91a0343b5 100644
+> --- a/drivers/dma/imx-sdma.c
+> +++ b/drivers/dma/imx-sdma.c
+> @@ -710,20 +710,11 @@ static int sdma_config_ownership(struct sdma_channel *sdmac,
+>  	mcu = readl_relaxed(sdma->regs + SDMA_H_HOSTOVR);
+>  	dsp = readl_relaxed(sdma->regs + SDMA_H_DSPOVR);
 >
->  drivers/cpufreq/bmips-cpufreq.c            | 4 ++--
->  drivers/cpufreq/cppc_cpufreq.c             | 4 ++--
->  drivers/cpufreq/qoriq-cpufreq.c            | 4 ++--
->  drivers/cpufreq/s3c64xx-cpufreq.c          | 5 ++---
->  drivers/devfreq/imx-bus.c                  | 4 ++--
->  drivers/devfreq/imx8m-ddrc.c               | 3 +--
->  drivers/power/reset/macsmc-reboot.c        | 4 ++--
->  drivers/power/supply/cpcap-charger.c       | 4 ++--
->  drivers/power/supply/intel_dc_ti_battery.c | 2 +-
->  drivers/power/supply/qcom_smbx.c           | 2 +-
->  drivers/powercap/intel_rapl_msr.c          | 4 ++--
->  drivers/thermal/cpufreq_cooling.c          | 4 ++--
->  drivers/thermal/devfreq_cooling.c          | 4 ++--
->  drivers/thermal/qcom/qcom-spmi-adc-tm5.c   | 4 ++--
->  14 files changed, 25 insertions(+), 27 deletions(-)
+> -	if (dsp_override)
+> -		__clear_bit(channel, &dsp);
+> -	else
+> -		__set_bit(channel, &dsp);
+> +	__assign_bit(channel, &dsp, !dsp_override);
 >
+> -	if (event_override)
+> -		__clear_bit(channel, &evt);
+> -	else
+> -		__set_bit(channel, &evt);
+> +	__assign_bit(channel, &evt, !event_override);
+>
+> -	if (mcu_override)
+> -		__clear_bit(channel, &mcu);
+> -	else
+> -		__set_bit(channel, &mcu);
+> +	__assign_bit(channel, &mcu, !mcu_override);
+>
+>  	writel_relaxed(evt, sdma->regs + SDMA_H_EVTOVR);
+>  	writel_relaxed(mcu, sdma->regs + SDMA_H_HOSTOVR);
+> diff --git a/drivers/dma/ppc4xx/adma.c b/drivers/dma/ppc4xx/adma.c
+> index 279a431ccae3..39b1c4fd9ca5 100644
+> --- a/drivers/dma/ppc4xx/adma.c
+> +++ b/drivers/dma/ppc4xx/adma.c
+> @@ -350,10 +350,8 @@ static void ppc440spe_desc_init_dma01pq(struct ppc440spe_adma_desc_slot *desc,
+>  			 * of the transaction (src, dst, ...)
+>  			 */
+>  			iter->hw_next = NULL;
+> -			if (flags & DMA_PREP_INTERRUPT)
+> -				set_bit(PPC440SPE_DESC_INT, &iter->flags);
+> -			else
+> -				clear_bit(PPC440SPE_DESC_INT, &iter->flags);
+> +			assign_bit(PPC440SPE_DESC_INT, &iter->flags,
+> +				   flags & DMA_PREP_INTERRUPT);
+>  		}
+>  	}
+>
+> @@ -508,10 +506,7 @@ static void ppc440spe_desc_init_memcpy(struct ppc440spe_adma_desc_slot *desc,
+>  	desc->src_cnt = 1;
+>  	desc->dst_cnt = 1;
+>
+> -	if (flags & DMA_PREP_INTERRUPT)
+> -		set_bit(PPC440SPE_DESC_INT, &desc->flags);
+> -	else
+> -		clear_bit(PPC440SPE_DESC_INT, &desc->flags);
+> +	assign_bit(PPC440SPE_DESC_INT, &desc->flags, flags & DMA_PREP_INTERRUPT);
+>
+>  	hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
+>  }
+> @@ -2136,10 +2131,8 @@ static struct ppc440spe_adma_desc_slot *ppc440spe_dma01_prep_mult(
+>  					chain_node);
+>  		memset(iter->hw_desc, 0, sizeof(struct dma_cdb));
+>  		iter->hw_next = NULL;
+> -		if (flags & DMA_PREP_INTERRUPT)
+> -			set_bit(PPC440SPE_DESC_INT, &iter->flags);
+> -		else
+> -			clear_bit(PPC440SPE_DESC_INT, &iter->flags);
+> +		assign_bit(PPC440SPE_DESC_INT, &iter->flags,
+> +			   flags & DMA_PREP_INTERRUPT);
+>
+>  		hw_desc = iter->hw_desc;
+>  		hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
+> @@ -2221,10 +2214,8 @@ static struct ppc440spe_adma_desc_slot *ppc440spe_dma01_prep_sum_product(
+>  		iter->hw_next = list_entry(iter->chain_node.next,
+>  					   struct ppc440spe_adma_desc_slot,
+>  					   chain_node);
+> -		if (flags & DMA_PREP_INTERRUPT)
+> -			set_bit(PPC440SPE_DESC_INT, &iter->flags);
+> -		else
+> -			clear_bit(PPC440SPE_DESC_INT, &iter->flags);
+> +		assign_bit(PPC440SPE_DESC_INT, &iter->flags,
+> +			   flags & DMA_PREP_INTERRUPT);
+>
+>  		hw_desc = iter->hw_desc;
+>  		hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
+> @@ -2246,10 +2237,8 @@ static struct ppc440spe_adma_desc_slot *ppc440spe_dma01_prep_sum_product(
+>  					chain_node);
+>  		memset(iter->hw_desc, 0, sizeof(struct dma_cdb));
+>  		iter->hw_next = NULL;
+> -		if (flags & DMA_PREP_INTERRUPT)
+> -			set_bit(PPC440SPE_DESC_INT, &iter->flags);
+> -		else
+> -			clear_bit(PPC440SPE_DESC_INT, &iter->flags);
+> +		assign_bit(PPC440SPE_DESC_INT, &iter->flags,
+> +			   flags & DMA_PREP_INTERRUPT);
+>
+>  		hw_desc = iter->hw_desc;
+>  		hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
 > --
-> 2.43.0
+> 2.51.0
 >
