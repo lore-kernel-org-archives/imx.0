@@ -1,116 +1,196 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F8F3AA9D8
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 02:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790217195; cv=none; b=PyUZ16snFg+cQkgNReJy5uFp4iokl0Q9VlvpfkL35dV5M1wjDH+ce2c8FY7W1CR6xHPnXjb8Fn38Q2FtxkCYjyeQmKITfIRq5BHYdMm9QxcxAwS+ubYTxlUYemOW43CXB3wmyqoum0A+MuZ9Ch9/t6iT0uv/jaCwRoQ7JLAgpG8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790217195; c=relaxed/simple;
-	bh=0jewx94Aol1IKcOojWLEYdfUZw5SFvsaq76oQocjly4=;
-	h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=o0P4nd/tmJsSuGzY/tfUkVvP0ts2DFbv4NsRKYg+i7X+zgESuWwbGHJ0PyZvCn/uz8NlvTr5fYP4ZF32lWHoMxQiew+3HtElshUiS7XUjaRXehR59uU819wLO5P4kZXp/YEopUmALojQ0U8wrO0ydSJvjHBR2ZWaCd2GIIjwxd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeKH0wsm; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8B62DFF3F
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 05:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790227835; cv=pass; b=Jy1RlFhPaqZ297aaBpHnFCeR/UCHLouqg9mBJGSWblCRxH7gI7L5N11LeyK24Nx5VCA65n1DjITeX6EJHPgLxgZbH2Z9hewatcyD+gMWzRK5Uvl0oHe3Hq/QTvvYwxcXD7VhiRz0O59VVKtCaKslXTncYqm6pFTvHev9gluP1uE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790227835; c=relaxed/simple;
+	bh=Y6lfdMzfxBrctx+JVGwRqRWinjsXPeJStQCGnizzDN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kWKvFMDXZqPYdqLDyIp5WqVNkPK/czUZc4N6QzW1wWRP2wW7yjbXeNR28TutziFP8VOGpzYfG+Luf4ysW4cuqJWE/r4fJYdNQn85RLdDOddI2eV/dh++Uuw2gsiqsQAmmxW4CRorR/pIKlMvIGwhtEDwOC6j+sBb4OtS/gSxDOc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=mhG3g99K; arc=pass smtp.client-ip=74.125.229.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeKH0wsm"
-Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc515bef69dso779290a12.2
-        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 19:33:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="mhG3g99K"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33b9e805130so1268542eec.1
+        for <imx@lists.linux.dev>; Wed, 23 Sep 2026 22:30:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790227834; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RpirNKhmmWXDLvVKuBGZey1yOoMJScn88hWmDnZcVK/JaR/jA53LPkcUSMZY5k5Pfj
+         OErbeZjmbsYDxNFi8LWjcx9oSm3NtU/K4SnpVjesZVBdAm1l9pM4kekDqVqLBxoIxFHi
+         hca0nTttyFEEMJCGI92h9zc9xlMu/jI7rgxdrfXpcyXo9XzYLQm3K9/7KSAcA9LFhq5Q
+         NceDzhKKhL5h48WipM1reeSUu+mKWbBXSZ0mO3l8dLLf7BNc7etsDKPRIUNplas8xxEO
+         /gelAOUoL3ZKVt6EJUm6wYIWypr9cDSEeZ7lfg4So+z+as0yoaD25ZLzQCzYWHg+wZls
+         z3JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g/rW7+9DYBHHx7/UU3/p+sXhhnDN4m/dqMHLzOkRYuw=;
+        fh=1u+xMyYajF5L16dhOfo7SAioOtbYkjpEaQPpd2fqYtU=;
+        b=o58GXzJ8m1w/i3XgyDOufVU8lseoMYqQuqSa3fBAnEKu7sDVQL/oMe/xIgX9rZoTJy
+         7PPGO6zypAqz+0YCRdpP0TwyjDTrLtdKZ5/lvi3wx9BDAKt67TGzep1X0TCPFjus+rjE
+         Rxi9s41N4LT/KcRPg2pa728qqQGNxUdemkCzYM1VkMtfrfzZD1ZeeQCVDvj6oaCK76mN
+         NRuxbAnrgJWAvbxmXuUtnyjHA4FwMbCBt/YdtNs6Xybba611bsUSvbg7s1tGW5DA4uPL
+         CB7CCCSM62GlN0EHcGH4EsoZhSyCq0Akruw6hC0ZdgoreJz7cMe3q/felNdnVYlxqkpa
+         0+zA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790217192; x=1790821992; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:mime-version
-         :user-agent:date:message-id:from:cc:references:to:subject:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=z/L1hXpzWJJQOqyHxMdxo06cE7DFt8m14lGkwmdYDss=;
-        b=NeKH0wsmPIYu5aVFM1wkJ9W5LJ82om9eRuJDH/vQIqNoRNwthIpozphwrb3XEbi0db
-         wv47Vd8QvI/WVJqB1MC/rrDRUSVLAl0tH9u3+evsSnBBRMZ5179N1N+DTaLkyVkQxJDB
-         wCZQgHjlcRnj4OufhPS1ETIUTqu9C+b7ZhnUQQgWeSExutfKv+l4lzh9iaw351Dn3xZ6
-         Qlf9djWtXs3wR7CYsHW8MP/lfkNtOjx/kCrDQ8KHwrwgAhRbrz9REcWaS5n6KvVCrHZM
-         oHzyo9Ehax67vosKDgcD3vGODLIQE3ywvpuZ9/q3p/NyBsmuSxI1TIZvihBYM+oMhAPC
-         ouxA==
+        d=amarulasolutions.com; s=google; t=1790227834; x=1790832634; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=g/rW7+9DYBHHx7/UU3/p+sXhhnDN4m/dqMHLzOkRYuw=;
+        b=mhG3g99KxovoqQrbP/Ms4wnp1vZvOQwfKb26YDwYT0WUsDZ8VpMVONLeZoq7flqUAF
+         /wCLbDKj2AonQPBosYpk4Hx1/Uj0gznuRPEpm8PuTKZ71zeg1PJuA3gxaE0sxsPHZQ3j
+         CnBBwk3nRoJNzdNE3nBLngIfO+EPoSlSZDfvg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790217192; x=1790821992;
-        h=content-transfer-encoding:content-type:in-reply-to:mime-version
-         :user-agent:date:message-id:from:cc:references:to:subject:x-gm-gg
+        d=1e100.net; s=20260707; t=1790227834; x=1790832634;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=z/L1hXpzWJJQOqyHxMdxo06cE7DFt8m14lGkwmdYDss=;
-        b=O/WDziixyy6+pWHBZxX5p/8uquQ7NcbtkNvG2J+a9hfuJIErCh0apfJyqvYWxY4AqW
-         IIOpEg+BpFnNq0+HJ8n/Of38cT3+mrWqA2yCw/82rYlQce+8Z/DAeJJ8w3Gvk1Yhag0u
-         0HcfZfH3AsOhEk5uDP2TEKKPcA2zf4MQlyIgxkXuJs4XGbPNlr8ip+ukDcDtvft5brRX
-         qSXxRyzcCr6OA5n8L/ymhXGvB53k3tryKRLKfp/CFlSUOmFjkAi+IOOmUdryHTr9zaAX
-         MOLST2t0mJDDcHXFsolba+thDxC7iUsHRU1uWn/VnR9dMxYyRSAL9lLo3xg1lMktAuz/
-         JZhw==
-X-Forwarded-Encrypted: i=1; AKwUvBw2CjUfECp5iyWSGxtb2TKBNwy3nOBpPqmpWic6wwQzwUnRYjUjGjHVXDioo+ETEI5v8yo=@lists.linux.dev
-X-Gm-Message-State: AFuF++n5Z0bVCG8JtGymAvQ2Rw2KUX2ryPWTWEplPXrH/BLCtU/YjbFW
-	5ltb1e84Aq6HnVQ2zFFGiu6QYQeKmT9uf9pd42FM89LF7m2ecQ9L+DFy
-X-Gm-Gg: AYBFou053fk0aaR6xFPLP8FZ5AYIv4vYYHL/TmydWFV/6N+nGuHLVVh2mrpmpcZWt1F
-	3PBfcY94jH9W+aV9ixy45xuIzo3DyM79tQX0lVhW+p69a8Pd1722Y1fjY18ntWmTnJ8ns9rbY1v
-	D7ahX6fqCN6N+DezM3GH4ncFRuSsmzxZZEeWzqJ88WIkNsT7rEoAAP9G9EZ+uJi5FrIBIGBS/Ev
-	4oo5OnSgggUlyh+DDy77fh5hXfUPwlbUlexcIlOQqnZ07q38Vo1uZSb+Th17ytOUcf4/Huddf5a
-	GHO+Z6fOqoHrlMjz9XOwJREC0/t4EiN9fhG02LTV2InO36ae8AbEudQXuYgg5NE3KGOBuCzXAtk
-	WcsEMzYd8xFDi7tBma2Wk+VIPYqN0pgg7nfIUylGKdDilL6mD2r3rmtpzWUuLIQrrwLm63utRtr
-	yUX2WZOnbnw0m/EurVOkSEQPTd43CmlYCQCA9hCZ8+0GMYYNah+wXyuZ3Nlpq5ziL/By55wQupS
-	2k8+M6F6JjNapzBjiDl7QW9s/nkFK9/xCrjXDdS
-X-Received: by 2002:a05:6300:68c1:20b0:3de:1526:4602 with SMTP id adf61e73a8af0-3de15264efamr5628637.59.1790217192226;
-        Wed, 23 Sep 2026 19:33:12 -0700 (PDT)
-Received: from [10.1.1.24] (122-59-250-182-adsl.sparkbb.co.nz. [122.59.250.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1dad4e06sm2075342b3a.41.2026.09.23.19.32.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 23 Sep 2026 19:33:11 -0700 (PDT)
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-To: Andrew Lunn <andrew@lunn.ch>, Greg Ungerer <gerg@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
- <20260907134037.1855408-2-gerg@linux-m68k.org>
- <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org>
- <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
- <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
- <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-From: Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <3cc86de9-9007-42af-7291-70e52f6b0dd7@gmail.com>
-Date: Thu, 24 Sep 2026 14:32:54 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        bh=g/rW7+9DYBHHx7/UU3/p+sXhhnDN4m/dqMHLzOkRYuw=;
+        b=RzWCO5L0iAVmFROvp6E4XrZLSwGOSfQWpp1A5zBr6C4uEDf3+2jlwLMh6HqguasSLq
+         XaJlNCxUooEJ1ceqfxudUZ7sN0YuujQwUJkYbnC+2H1k8+ni7MHTiV2Cwik7tYAdeiXq
+         YnjoCoaO7+ekd9EcypcrLttsGpjMSwmXXhHoYroTqPhowtqimXe1tG9tkD6jlipCci1m
+         G06mGwf07cT7/6vbobJbnFi5uNKgNihaVz58HnEVrUR9b8pUMgufyn2gXfSx5awlceKA
+         hLL+6Rz4ic3CIGapVpcFXMi3XQEslWZV7Z2EBzA4Fnu2wPrxf1jaIOHSlUX+yZIReTq+
+         7t9A==
+X-Forwarded-Encrypted: i=1; AKwUvBzWCRFvLWSKij9uAcIUPgD+4ZlYZH1LYlMhjPpqsZLumXNybAFtYk57XKqWWiEy3OIa2JQ=@lists.linux.dev
+X-Gm-Message-State: AFuF++mcbGGnEPcpWZ9kQqoNqoZ/bAwaIBQ+ds95I5W+R2GsALrKSezt
+	RN9H+Mkf3BHq7cBJPcSVJHsOHn8L1o1fzUj6lYq1FRUvEP1rmg9nLkUawWNIjz2rYOim3jOxiPd
+	VubzbBE5+Fbd0qD6AUMR5p2vBOXao1OwfV5wJnGe2Yg==
+X-Gm-Gg: AYBFou0RRMP2Z0ynLNiOdaWuaYsLgceJH/TiG5jCbMEhZLKb+yeq8kE9NorKmsj7Zz9
+	swH8YIOWm4AEnCkZREG/fO9eKHz4ZWrgouQhpJ4AslmgLWq2BDNdC4As3MthYZD0LNEggHfOO8F
+	xDllQDIUOdEAVesSD4yOs65tnqBuEZOqG9fiXLKP+PxfR+JMLaRS+1MG1ay2mxtMxLvqSwnsGHT
+	oRb58TS1DK6TTWExcpKsCL+vxoynjZDIQ6pXwqqF22iQ7kEeIpUntRzczAGnAhxFIAO8/wR9Gjd
+	xkaStM3RWn6z/STV0+GospSAzkohBSiuLzmfhJJRYG5aG8rPbxYwNTDeps6YZn7iR38hBG2iIf9
+	bdeADCZUrUw==
+X-Received: by 2002:a05:7300:8d14:b0:33b:e264:362a with SMTP id
+ 5a478bee46e88-34004a89a19mr1123625eec.13.1790227832039; Wed, 23 Sep 2026
+ 22:30:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260522101653.2565125-1-paulk@sys-base.io> <ad9788bba0851dcb86c22f40c2562f2a57ac8e6c.camel@collabora.com>
+ <CAOf5uwktfp0a3Vi5Jd8Zw5knGMHd_FH=iusRX1NgHYC4VSuzBA@mail.gmail.com> <arQxC3DmDyVIGdqq@collins>
+In-Reply-To: <arQxC3DmDyVIGdqq@collins>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Thu, 24 Sep 2026 07:30:20 +0200
+X-Gm-Features: AclHuK9fIcxWA7Sv69t_uK1zMqbihMAU90hONvsInRjWG6YY9lFMwau8XYvA7qg
+Message-ID: <CAOf5uw=SeHZSnYjPOptAGYwPkQc7L7gDpOrDWJH3UF0r1qdrtg@mail.gmail.com>
+Subject: Re: [PATCH 00/14] media: Add V4L2 H.264 stateless encode and VC8000E support
+To: Paul Kocialkowski <paulk@sys-base.io>
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>, devicetree <devicetree@vger.kernel.org>, 
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, 
+	linux-media <linux-media@vger.kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, 
+	Michael Tretter <m.tretter@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andrew,
+Hi Paul
 
-Am 24.09.2026 um 02:15 schrieb Andrew Lunn:
->> The driver will always need to support big and little endian hardware, so I
->> am not sure how to avoid some abstraction like this.
+
+On Wed, Sep 23, 2026 at 10:05=E2=80=AFPM Paul Kocialkowski <paulk@sys-base.=
+io> wrote:
 >
-> I was wondering if there is a linux standard set of macros which is
-> supposed to handle this big/little difference, the macro knows the
-> architecture and does the correct thing?
+> Hi Michael,
+>
+> Le Wed 23 Sep 26, 14:10, Michael Nazzareno Trimarchi a =C3=A9crit :
+> > I tested on px30 and achieved working H.264 encoding with some small ch=
+anges
+>
+> That is a bit surprising, the Rockchip PX30 should come with a Hantro H1
+> (using a modified register layout) while this driver is for the
+> Hantro VC8000E, which is a newer generation with very different registers=
+.
+>
+> Maybe you ended up using CPU-based decoding when testing?
 
-Knowing the architecture may not be enough - there may be multiple 
-platforms within one architecture that need different address 
-translation, different endianness, access quirks, the lot.
+Using
+>
+> All the best,
+>
+> Paul
+>
+> --
+> Paul Kocialkowski,
+>
+> Independent contractor - sys-base - https://www.sys-base.io/
+> Free software developer - https://www.paulk.fr/
+>
+> Expert in multimedia, graphics and embedded hardware support with Linux.
 
-We'd need a 'bus' parameter in all these macros to avoid what's in 
-current use in arch specific code (take a look at 
-arch/m68k/include/asm/io_mm.h for what may be the worst case example. 
-Don't do that on an empty stomach though...).
+I have added your patch to gstreamer
 
-Like, use arch supplied functions if needed, fall through to the 
-standard macros if no special handling required.
+v4l2codecs: add the stateless H.264 and VP8 encoder elements
 
-Cheers,
+Backport of the encoder work from the branch v4l2codecs/h264enc of
+https://github.com/paulkocialkowski/gstreamer (commit f59de5779ef1, based
+on release 1.26.0) onto the gstreamer1.0-plugins-bad 1.28.5 this build
+uses.
 
-	Michael
+Generate the right element and encode stream:
+
+gst-launch-1.0 videotestsrc num-buffers=3D100 !
+video/x-raw,width=3D720,height=3D576 !  v4l2slh264enc ! h264parse !
+matroskamux ! filesink location=3D/tmp/t2.mkv
+
+And playback over Wayland.
+
+Solve some problem. I have implemented:
+
+const struct hantro_variant px30_vpu_variant =3D {
+        .enc_offset =3D 0x0,
+        .enc_fmts =3D rockchip_vpu_enc_fmts,
+        .num_enc_fmts =3D ARRAY_SIZE(rockchip_vpu_enc_fmts),
+        .dec_offset =3D 0x400,
+        .dec_fmts =3D rockchip_vdpu2_dec_fmts,
+        .num_dec_fmts =3D ARRAY_SIZE(rockchip_vdpu2_dec_fmts),
+        .codec =3D HANTRO_JPEG_ENCODER | HANTRO_H264_ENCODER |
+                 HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
+                 HANTRO_H264_DECODER,
+        .codec_ops =3D px30_vpu_codec_ops,
+        .irqs =3D rockchip_vpu2_irqs,
+        .num_irqs =3D ARRAY_SIZE(rockchip_vpu2_irqs),
+        .init =3D rk3036_vpu_hw_init,
+        .clk_names =3D rockchip_vpu_clk_names,
+        .num_clocks =3D ARRAY_SIZE(rockchip_vpu_clk_names)
+};
+
+I have advertised the:
+
+       {
+                .fourcc =3D V4L2_PIX_FMT_H264_SLICE,
+                .codec_mode =3D HANTRO_MODE_H264_ENC,
+                .max_depth =3D 2,
+                .header_size =3D H264_ENC_HEADER_SIZE,
+                .frmsize =3D {
+                        .min_width =3D FMT_MIN_WIDTH,
+                        .max_width =3D FMT_FHD_WIDTH,
+                        .step_width =3D MB_DIM,
+                        .min_height =3D FMT_MIN_HEIGHT,
+                        .max_height =3D FMT_FHD_HEIGHT,
+                        .step_height =3D MB_DIM,
+                },
+        },
+
+Create the rockchip_vpu_hw_h264_enc.c. I need to test this on rk3399
+
+I have a small change only in the common part. Hope that it's a bit clear.
+
+Michael
