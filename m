@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2088472528;
-	Thu, 24 Sep 2026 11:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEFD3A1A23;
+	Thu, 24 Sep 2026 11:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790249124; cv=none; b=Nq+R1GUlij9Uin4J6JDqxrO4Sfb3/nWeO7uaCl5h2cxY6fkRWs7h6FV0Oco2KfoAVxMWS70zhsb/KrHykGkr0wmYlJgox1UE65qAMzowHTQsd7WS4bSlqwcTjrZnV8mF6FQVBX4jA3dmhhrkxkaQZ8s7flDgP03q2ZWN/6Mj4K0=
+	t=1790249146; cv=none; b=RkgmRqllYO8rXOlGQr8pZv9szjvpXZ8c5HQ0xc6xCSl+0W23H1EBwcs1HNxZQwMc9ljf9HZn9BEZeM87Su8YlGHQFi1AZyUMkpzcwtvU/xSxj8X+2SQmUI40JXP6nBFmDrMrnfD5WH7qMTotO9Xfv0msQawCXaFX83JyV6P0pTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790249124; c=relaxed/simple;
-	bh=eJOdCEsYlwDThtrxqDsfJirkmtqvdpzuwi+/SDW1KVM=;
+	s=arc-20240116; t=1790249146; c=relaxed/simple;
+	bh=A6aVWw4SIKR0gHcNSoIXvDt0KKKmtBXwQ7exjKTbTYk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=S4rg92Je53doGbMg4u7cJxOHihxHQxLuf63BzzXEVKd0YK11zlEUyyb70PLgSyYNxk6SQkOIpnB8ev57MVoLIVGVYFeFSWhrnGqs2mnV+u1mtXFfzOFAc89/IjhX2XghrNRwmMviN5I3UQohL2aPGjifqn3vNeIdEaMmuBjlS64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2+RwysB; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ptRos4yfMqCWFtMU4dbjgVWSaaMZYrdbTN+r/5V/Z8FJYUTA989tgEiubAXk4Y0uo4AKRYZg95kDlccE365zDiYZPHEVLnHyLcUMgQ9VSTy3C0CKy0clz68qd5fzyjkYsjzw2xKcCU95bz7tsSYypAgTi+rjUBCtZm4QwZzAmXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYwbnRYQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2+RwysB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8BF1F00893;
-	Thu, 24 Sep 2026 11:25:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYwbnRYQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606D31F000FF;
+	Thu, 24 Sep 2026 11:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790249122;
-	bh=wQC1qYQ+HvboutA58g1+VRYRdb3EC1oRAwyJzyk80Pk=;
+	s=k20260515; t=1790249138;
+	bh=2ABm4SyvuJZ/84FIc2LYh7DCE6LYjzt2jaq+g9mFUSI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=g2+RwysBwZLQ/wJ6McdNXPOJiVsLprN+T2/D1Q1HGYHYK5VkF48PmH8MfatRTn6fG
-	 SoAYCqdKPzmWhrcobmkUPGEzZE9DpzpIaBew3+qm9n2puups1Qq+VRy8eXIs9XlN3V
-	 CfIfzMis9qEoQxVqm6VeXDCxlIcmUb41Ux6FVZQVRC7d07qcx35cvuTURBv2VERO6X
-	 Tka0+0QGYOdiNZMbbeKVEGN54e1bdLipowR3ALuu9IEG90rFN5CzjR0sF/YuwlVBtb
-	 KEowYx4T8cJsmTb3g7HQpQG0ljJOAtaooMFF/JX/1NEV9z7bpAQ2luQ+q9/kwEY4ii
-	 5qn4S1JUCI0gg==
+	b=OYwbnRYQldkFd9I8svwGWYXb2agkWZSFqbD/8CYCPVcEkXT8x/sXCR2xg6W/mS33Q
+	 Ur36Ojdbel77GgkMqw1JHtVYfe5p4YUAkIemeB7XjSMpxzO8ZSqYwU0MfPHicb4bB0
+	 ybdXKuIxYOAgs6XK8grOeMTmG5a1arBcMf98vfDtgVJ3JUL2pRV9lz2QeDaWJ5lc8S
+	 HZhOsL6891Yx2x09GdT/9oJR2fI7C9c4ab0QtmCYVW8ez7rqzgFaDDoJdyhEknfVJ2
+	 s/v3VEh/lNpOL8zL8H9C4HmeC+l90mcEgabE0DmyMW8lbG5LLTAmuogoZZPIuOymfV
+	 R65XNgH71hqLQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] media: verisilicon: Remove deprecated variant
+Subject: Re: [PATCH v2 3/3] media: verisilicon: Remove useless internal
+ fields
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Benjamin Gaignard" <benjamin.gaignard@collabora.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20260924110825.166238-2-benjamin.gaignard@collabora.com>
+Cc: conor+dt@kernel.org, media-ci@linuxtv.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260924110825.166238-4-benjamin.gaignard@collabora.com>
 References: <20260924110825.166238-1-benjamin.gaignard@collabora.com>
- <20260924110825.166238-2-benjamin.gaignard@collabora.com>
+ <20260924110825.166238-4-benjamin.gaignard@collabora.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 24 Sep 2026 11:25:22 +0000
-Message-Id: <20260924112522.6C8BF1F00893@smtp.kernel.org>
+Date: Thu, 24 Sep 2026 11:25:37 +0000
+Message-Id: <20260924112538.606D31F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,123 +47,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] media: verisilicon: DT ABI breakage and unreachable deprecation =
-warning
-- [Low] media: verisilicon: unused codec ops and reset functions left as de=
-ad code
+- [High] media: hantro: break backward compatibility by removing DT compati=
+ble string
+- [Low] media: hantro: dead code and uninitialized pointer ctrl_base left b=
+ehind
 --
 
-commit bd50c02dbeb6cf3a61e4c9cb1e9948505f4bb9e8
+commit c57de89560179f851e42f6a6ea8c48063d12e4c8
 Author: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Subject: media: verisilicon: Remove deprecated variant
 
-This commit removes the deprecated "nxp,imx8mq-vpu" compatible string
-and its associated variant data structure from the hantro driver to clean
-up the code. The variant has been deprecated since v5.17-rc1.
+media: verisilicon: Remove useless internal fields
+   =20
+No more variants are using multiple registers regions.
+Remove the useless fields and simplify driver code.
+
+> diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/=
+platform/verisilicon/hantro.h
+> index 0353de154a1ec..20c3afb3b8176 100644
+> --- a/drivers/media/platform/verisilicon/hantro.h
+> +++ b/drivers/media/platform/verisilicon/hantro.h
+[ ... ]
+> @@ -204,7 +200,7 @@ struct hantro_dev {
+>  	struct device *dev;
+>  	struct clk_bulk_data *clocks;
+>  	struct reset_control *resets;
+> -	void __iomem **reg_bases;
+> +	void __iomem *reg_base;
+>  	void __iomem *enc_base;
+>  	void __iomem *dec_base;
+>  	void __iomem *ctrl_base;
+
+[Severity: Low]
+Does this struct still need the ctrl_base pointer?
+
+The initialization of vpu->ctrl_base was removed when the multi-base mapping
+was dropped, leaving this field uninitialized.
+
+Additionally, imx8mq_vpu_codec_ops in imx8m_vpu_hw.c and its associated res=
+et
+function imx8m_soft_reset() still unconditionally dereference this pointer.
+Since imx8mq_vpu_variant was removed, they appear to be dead code.
+
+Could these orphaned structures and the ctrl_base field be removed?
 
 > diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
 dia/platform/verisilicon/hantro_drv.c
-> index ad71c0402ef3b..70de47ddb023b 100644
+> index 70de47ddb023b..f418b04279856 100644
 > --- a/drivers/media/platform/verisilicon/hantro_drv.c
 > +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -725,7 +725,6 @@ static const struct of_device_id of_hantro_match[] =
-=3D {
->  #endif
->  #ifdef CONFIG_VIDEO_HANTRO_IMX8M
->  	{ .compatible =3D "nxp,imx8mm-vpu-g1", .data =3D &imx8mm_vpu_g1_variant=
-, },
-> -	{ .compatible =3D "nxp,imx8mq-vpu", .data =3D &imx8mq_vpu_variant, },
+> @@ -1080,7 +1080,6 @@ static int hantro_probe(struct platform_device *pde=
+v)
+>  {
+>  	const struct of_device_id *match;
+>  	struct hantro_dev *vpu;
+> -	int num_bases;
 
-[Severity: Medium]
-Does removing this compatible string completely break backward compatibility
-for systems booting with older Device Trees containing only nxp,imx8mq-vpu?
+[Severity: High]
+Does the removal of the nxp,imx8mq-vpu compatible string in this series bre=
+ak
+backwards compatibility for older Device Trees?
 
-Since the driver no longer matches this string, hantro_probe() is never
-invoked for it. This renders the backwards compatibility check and dev_warn=
-()
-further down in hantro_probe() completely unreachable:
+Because the driver no longer matches that string, it will completely fail to
+probe on systems booting with older DTBs, rendering the hardware unusable.
 
-drivers/media/platform/verisilicon/hantro_drv.c:hantro_probe() {
-    ...
-	/*
-	 * Support for nxp,imx8mq-vpu is kept for backwards compatibility
-	 * but it's deprecated. Please update your DTS file to use
-	 * nxp,imx8mq-vpu-g1 or nxp,imx8mq-vpu-g2 instead.
-	 */
-	if (of_device_is_compatible(pdev->dev.of_node, "nxp,imx8mq-vpu"))
-		dev_warn(&pdev->dev, "%s compatible is deprecated\n",
-			 match->compatible);
-    ...
-}
+Additionally, since the string is missing from of_hantro_match, the driver
+will not probe at all, which makes the existing fallback warning inside
+hantro_probe() unreachable dead code:
 
-Is it intentional to prevent the driver from binding entirely instead of ju=
-st
-warning about the deprecation? If so, should the unreachable warning block
-in hantro_probe() also be removed?
+    if (of_device_is_compatible(pdev->dev.of_node, "nxp,imx8mq-vpu"))
+            dev_warn(&pdev->dev, "%s compatible is deprecated\n",
+                     match->compatible);
 
->  	{ .compatible =3D "nxp,imx8mq-vpu-g1", .data =3D &imx8mq_vpu_g1_variant=
- },
->  	{ .compatible =3D "nxp,imx8mq-vpu-g2", .data =3D &imx8mq_vpu_g2_variant=
- },
->  #endif
-
-[ ... ]
-
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
-media/platform/verisilicon/imx8m_vpu_hw.c
-> index fa4224de4b996..3b63f626d33f2 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-
-[ ... ]
-
-> @@ -319,30 +280,9 @@ static const struct hantro_irq imx8mq_g2_irqs[] =3D {
->  	{ "g2", hantro_g2_irq },
->  };
-> =20
-> -static const char * const imx8mq_clk_names[] =3D { "g1", "g2", "bus" };
-> -static const char * const imx8mq_reg_names[] =3D { "g1", "g2", "ctrl" };
->  static const char * const imx8mq_g1_clk_names[] =3D { "g1" };
->  static const char * const imx8mq_g2_clk_names[] =3D { "g2" };
-> =20
-> -const struct hantro_variant imx8mq_vpu_variant =3D {
-> -	.dec_fmts =3D imx8m_vpu_dec_fmts,
-> -	.num_dec_fmts =3D ARRAY_SIZE(imx8m_vpu_dec_fmts),
-> -	.postproc_fmts =3D imx8m_vpu_postproc_fmts,
-> -	.num_postproc_fmts =3D ARRAY_SIZE(imx8m_vpu_postproc_fmts),
-> -	.postproc_ops =3D &hantro_g1_postproc_ops,
-> -	.codec =3D HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
-> -		 HANTRO_H264_DECODER,
-> -	.codec_ops =3D imx8mq_vpu_codec_ops,
-> -	.init =3D imx8mq_vpu_hw_init,
-> -	.runtime_resume =3D imx8mq_runtime_resume,
-> -	.irqs =3D imx8mq_irqs,
-> -	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
-> -	.clk_names =3D imx8mq_clk_names,
-> -	.num_clocks =3D ARRAY_SIZE(imx8mq_clk_names),
-> -	.reg_names =3D imx8mq_reg_names,
-> -	.num_regs =3D ARRAY_SIZE(imx8mq_reg_names)
-> -};
-> -
-
-[Severity: Low]
-Does the removal of imx8mq_vpu_variant leave several other functions and
-declarations orphaned as dead code?
-
-By removing the variant, there are no remaining references to the static
-array imx8mq_vpu_codec_ops. That array is the only caller of imx8m_vpu_g1_r=
-eset,
-which in turn uniquely calls imx8m_soft_reset.
-
-Should these unused declarations, along with the extern declaration for
-imx8mq_vpu_variant in drivers/media/platform/verisilicon/hantro_hw.h,
-also be removed to prevent compiler warnings about unused variables and
-functions?
-
->  static const struct of_device_id imx8mq_vpu_shared_resources[] =3D {
->  	{ .compatible =3D "nxp,imx8mq-vpu-g1", },
->  	{ .compatible =3D "nxp,imx8mq-vpu-g2", },
+Since kernel policy strictly maintains DT ABI compatibility, should this
+deprecated string be restored to the match array so existing systems contin=
+ue
+to boot and the warning mechanism works as intended?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924110825.1662=
-38-1-benjamin.gaignard@collabora.com?part=3D1
+38-1-benjamin.gaignard@collabora.com?part=3D3
