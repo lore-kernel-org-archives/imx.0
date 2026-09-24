@@ -1,175 +1,100 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098534B5156
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 17:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A10D3C13EC
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 18:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790272280; cv=none; b=QBCoXaAXreYZGFMiAaFOFQgA61Mv9rXcR6GTZYUdJkO/BmG64hWp9q0PvRJhnqRdEX2CCKYrZJ9OJ7eFmHxSNG7G06thxDzsO6UKLQqHaVICPvQSH2T+OqzQTxOpG+ZHF4FoFhmdiap0dC1Y8xocEyIBli96DkNM1NmnzPcSTpw=
+	t=1790273180; cv=none; b=ZHdn7dX+pMyfnJUkf5zbGlUKTbVKQ88HTUwLF5OLNfOvLAdz1syPqQdodYdG5HhI9BSLWxlv5OlSEYf35si44lPreJmKPv7Crj4frlIvo4v/+GiOSTG8UmUUl5BhPCuFbJuiQJbMZ/BddIdGucjyNWT2kknOCpPNBIuG3V7AB+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790272280; c=relaxed/simple;
-	bh=E5sOGZv4PsnQ9lebGLSxJFxuo51klyzvMHE8CDz7Q9Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TzVLDt4EyCOKqar+SiKbQsJSSbOJcX4X+odNHb2txikvOHE2mIn71IUbwtIu5DPEAA+8cmNuJOx1X4PH8FQ5iPpPGJdTN44Q4cZBaTWRA2fgcC+TUZwTyIqQAgYLAlLGqOFI6PquBlgSzTUKuRinsr63xcPQtge5si/IQ2w9PAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=kE0AuB1U; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1790273180; c=relaxed/simple;
+	bh=Y1+7dQfnBLtpJ3fUnh6CVR+XPKnQosCyu5Oy87/d99k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S/gmhtUHZ3hcF3dVhpVEMJOtltjT3ZEVytwzUCN9K3LwcCpG4x+CFlHWJMuMj4QL7gp4VqaVC0iA6dMP5HCQSi4vxF6oOHXVlfO1pp4ucyNZAQunwms8yuFURYFUjTkpRyW6JPK+aupNGISxgab/byY4P4r8uw2tvFlMwgUh0j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=KFuaBJLH; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="kE0AuB1U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1790272277;
-	bh=E5sOGZv4PsnQ9lebGLSxJFxuo51klyzvMHE8CDz7Q9Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=kE0AuB1UulmjZhIOgwAwnOV/ZisIZPnLZDoiyztMOMVPai48Y0BDuo/TRzky24oKV
-	 BlU9BEI4mZqG1Zlw1mVvQIYMrua6m3+ZB4SMpqjomLxLwKxRnKZD1aJegtjVBwx6+z
-	 CbIEHai48Yp7bNY3Wlw8r8I7ChBrePh90mWCOnUqe1hGHc0NEZpFj2u4M8Xuv35hKu
-	 nV4vHYIOyCRKaJw/bW5OtsrBhJZSmMtHVTM+IQYaLzYHuLYpQNSOD16EHKVWFW4+fe
-	 2Jm8pc6q3POOIqco4Mrd2T6Z8VABOLfb10GpZzShkUCYPUDWri0vL3v/ckrSFN85F8
-	 XqipsgWgav70A==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2567017E0082;
-	Thu, 24 Sep 2026 19:51:15 +0200 (CEST)
-Message-ID: <518ec010db104f6f0e7c85607a97af408da44eed.camel@collabora.com>
-Subject: Re: [PATCH v3 2/3] media: dt-bindings: media: nxp, imx8mq-vpu:
- Remove nxp,imx8mq-vpu
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Conor Dooley <conor@kernel.org>, Benjamin Gaignard
-	 <benjamin.gaignard@collabora.com>
-Cc: p.zabel@pengutronix.de, mchehab@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
- linux-media@vger.kernel.org, 	linux-rockchip@lists.infradead.org,
- devicetree@vger.kernel.org, 	imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, 	linux-kernel@vger.kernel.org,
- kernel@collabora.com
-Date: Thu, 24 Sep 2026 13:51:13 -0400
-In-Reply-To: <20260924-compare-useable-3e2863b66924@spud>
-References: <20260924130453.196299-1-benjamin.gaignard@collabora.com>
-	 <20260924130453.196299-3-benjamin.gaignard@collabora.com>
-	 <20260924-compare-useable-3e2863b66924@spud>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-ufgeUgCb5bgTB+Z5csz7"
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="KFuaBJLH"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 72E9310495D;
+	Thu, 24 Sep 2026 20:06:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1790273171; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=yZbG7EDxzq6EGbpOvn4qy5pdZdFyqtMwIGB/4X51pHQ=;
+	b=KFuaBJLHZPeIjv3ft2tLNGCSGeUhpOZab326Cp0yiKKhSEWcrZCkVQOrTk8EtbwBAn8Kgp
+	cr9GXMjb8i1dc0ma068vKW84KNTUKmjMcNqZOgCB9w+EGo1c0UZsBSsslswK2PbYEkKSZj
+	Alz4ykJgn/V0SXGoqrALhu6UP8/Dvu+1Knmnu1fDFDPVeTpzWRS5N83lUjJHBmQL+iZxUq
+	eCSrrfOgTyhkVEZ6BToKhNfA/VLHG9/bVzd6oumzx0vFJLk5B+n7kqmnBNJKy99TTw4QAR
+	4uD6iFIaCsYAmlCgTiM7URpaPxnPGg0TLIqQdRB2PFZm686Liy1RhykXH4j6nA==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+Date: Thu, 24 Sep 2026 20:05:19 +0200
+Message-ID: <20260924180607.60932-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
+but also very compatible. However, for example NXP TJA1120 PHY needs
+at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
 
---=-ufgeUgCb5bgTB+Z5csz7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+As a minimum change, increase the MDC clock to 2.5 MHz which matches
+the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
+DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
+NXP TJA1120 as well. There is no known rationale for why the 558 kHz
+was picked when the eMDIO driver was added.
 
-Hi Conor,
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Clark Wang <xiaoning.wang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+V2: Use 2.5 MHz per 802.3 spec, update commit message
+---
+ drivers/net/ethernet/freescale/enetc/enetc_mdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Le jeudi 24 septembre 2026 =C3=A0 17:55 +0100, Conor Dooley a =C3=A9crit=C2=
-=A0:
-> On Thu, Sep 24, 2026 at 03:04:52PM +0200, Benjamin Gaignard wrote:
-> > nxp,imx8mq-vpu has been tagged has deprecated since a while.
-> > After driver clean up it is time to remove it.
->=20
-> No users in linux doesn't mean no users, but I am guessing that there's
-> genuinely no users elsewhere and anyone using out of tree devicetrees
-> should have updated due to the warning at runtime?
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+index 998aaa394e9c4..a90a04a47befd 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+@@ -24,7 +24,7 @@
+ 
+ #define ENETC_EMDIO_CFG \
+ 	(MDIO_CFG_HOLD(2) | \
+-	 MDIO_CFG_CLKDIV(258) | \
++	 MDIO_CFG_CLKDIV(66) | \
+ 	 MDIO_CFG_NEG)
+ 
+ #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
+-- 
+2.53.0
 
-I've checked the vendor DT before they moved to the mainline driver, and th=
-ey
-never used this binding (actually they never made bindings).=20
-Here's what the DT was:
-
-		vpu: vpu@38300000 {
-			compatible =3D "nxp,imx8mq-hantro";
-			reg =3D <0x38300000 0x200000>;
-			reg-names =3D "regs_hantro";
-			interrupts =3D <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 8 IRQ_TYPE_LEVE=
-L_HIGH>;
-			interrupt-names =3D "irq_hantro_g1", "irq_hantro_g2";
-			clocks =3D <&clk IMX8MQ_CLK_VPU_G1_ROOT>, <&clk IMX8MQ_CLK_VPU_G2_ROOT>,=
- <&clk IMX8MQ_CLK_VPU_DEC_ROOT>;
-			clock-names =3D "clk_hantro_g1", "clk_hantro_g2", "clk_hantro_bus";
-			assigned-clocks =3D <&clk IMX8MQ_CLK_VPU_G1>, <&clk IMX8MQ_CLK_VPU_G2>, =
-<&clk IMX8MQ_CLK_VPU_BUS>;
-			assigned-clock-parents =3D <&clk IMX8MQ_VPU_PLL_OUT>, <&clk IMX8MQ_VPU_P=
-LL_OUT>, <&clk IMX8MQ_SYS1_PLL_800M>;
-			assigned-clock-rates =3D <600000000>, <600000000>, <800000000>;
-			power-domains =3D <&pgc_vpu>;
-			status =3D "disabled";
-		};
-
-I've not aware of any other OS or booloader that offers media capabilities =
-using
-Linux mainline DT. The now deprecated nxp,imx8mq-vpu compatible had a short=
- live
-in the Linux tree if my memory is correct. Hope this is enough justificatio=
-n.
-
-regards,
-Nicolas
-
->=20
-> >=20
-> > Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-> > ---
-> >  .../devicetree/bindings/media/nxp,imx8mq-vpu.yaml      | 10 ++++------
-> >  1 file changed, 4 insertions(+), 6 deletions(-)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yam=
-l b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> > index 19528262810a..69619d2c86fa 100644
-> > --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> > +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> > @@ -14,12 +14,10 @@ description:
-> > =20
-> >  properties:
-> >    compatible:
-> > -    oneOf:
-> > -      - const: nxp,imx8mq-vpu
-> > -        deprecated: true
-> > -      - const: nxp,imx8mq-vpu-g1
-> > -      - const: nxp,imx8mq-vpu-g2
-> > -      - const: nxp,imx8mm-vpu-g1
-> > +    enum:
-> > +      - nxp,imx8mq-vpu-g1
-> > +      - nxp,imx8mq-vpu-g2
-> > +      - nxp,imx8mm-vpu-g1
-> > =20
-> >    reg:
-> >      maxItems: 1
-> > --=20
-> > 2.53.0
-> >=20
-
---=-ufgeUgCb5bgTB+Z5csz7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCarVjEQAKCRDZQZRRKWBy
-9C4tAQD1qA+Ux1mXqgQgjzQg11/HgxYGtNNRdQM1ljOMoDXTQgD+IP4kVkw14aJT
-a6/hPh+9+Z/YwRaFTKestaGBrvZAkgI=
-=UaxT
------END PGP SIGNATURE-----
-
---=-ufgeUgCb5bgTB+Z5csz7--
