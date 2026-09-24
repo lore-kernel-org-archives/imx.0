@@ -1,88 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011059.outbound.protection.outlook.com [52.101.70.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65A3D953F;
-	Thu, 24 Sep 2026 17:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269406; cv=none; b=ZwpQPlfOnMEDGkIXw6h8M2EdbY7a56ywyi8H59x0aWvpnSWiYhseB/uS7hZyG5J9uKG/adN+/t8T+BLvNyh44s1sAAv4PPF7LpuxTuRPcqHmicZQl7iGo9hs65kC6yh8eZnaRw/6slAxp//HhTgFCknFwHkPKt66Yewfe4WJepI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790269406; c=relaxed/simple;
-	bh=GRYhMLA42NBei7YREWiLPxZRkNEQ5hzK4zvgTmWJl+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=awQkGoyApD7whpL0x/Id7JEC26JkRp9km3VOvtSfTjkgd+IHaBpwyhQvJzJXAh6MztqSMGLCj7O5MsOR/4BCbIP3tDwq/elBVXEYGoG8vqFXkC+JivK7xl/gRH5+Y0romn3U1oW7vgiqTEuR1WG+nllmJJYYpVinZlhzn+WstJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8sPSa+p; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD23D401A21
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 17:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790269460; cv=fail; b=YtK15M12j1iA90jsSuu1ZY8UxdkUM6fGxkyN2/k01x+tYiZXLwZ5KxqWj+JNhb24nDYoX6m8oYxIef5DpO3KwXBShEOO4Dh5mtRYyLXW4e0raTn9C+X1/PXgYw6au7DurxgkWPl2S0GZJkOpQqMt3Lm3+x9340qnHMLfYdqCQKU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790269460; c=relaxed/simple;
+	bh=0nbjkgTcOZOX+leJqt4I7uvz17mKMkI8mFaLdy/wghc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kSd0WxEBPCvVJxlEyk/lJHsQ412l74iEbCHUnLFAhXvOfjfOfkrEEv6GMqgN9Z72YrCz+NHXWvQf29ZU11kXJm4U1jw8ZqizDjbXWsuEBkAiIHRsZAJDMMBbEHBPNP4kL1JG5+W/268rxsuej+zxsXPmDa1MggidX25TUbSg4GU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NZEnWzdD; arc=fail smtp.client-ip=52.101.70.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8sPSa+p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA6A1F000FF;
-	Thu, 24 Sep 2026 17:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790269405;
-	bh=WUIXMGlF00n/an+XIpdJzwcraIyNlcy2fVXrbp/3+vI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C8sPSa+pp//4QY0n2InsviILwO2ANC2TmhgCzyKFTFL88X1OA1rd8piCZ75I9NYuf
-	 fEC4gZaibZp2Mu+2cnaTVOycqGqUN+E9Ir2xIWEGVyYNu6SlG/wx/nOI6//uR1xuM4
-	 SzEUnwUkjRl2qhzU1qZe9tmBaUl+HYwW3ds7tqxVGzCfdWyeX7dlIOsyUE70XAxjMu
-	 a1FMvSAzwEYZrtkuHzbC+3WNlKr6kjS85sdATWW8JqrBJCfxxFOzOz+bs56EPWukLg
-	 Caw4bVrWp2lhFZChfGOJzssdpZ7QUgtYQEDQOIS3Fyfy1xEhSduphAsxvK/HcrHISG
-	 ZL+oTMyBJa+Ig==
-Date: Thu, 24 Sep 2026 18:03:18 +0100
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@oss.nxp.com
-Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
-	tiwai@suse.com, linuxppc-dev@lists.ozlabs.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [RESEND PATCH v5 0/5] ASoC: fsl_asrc/fsl_easrc: expose
- per-pair/context DAIs and fix DMA race
-Message-ID: <744ce325-9d2e-45c7-b7d6-15ec7558dc83@sirena.org.uk>
-References: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NZEnWzdD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j/pWnUbTioozyOZjsQC6ruyM/ipmNVPvCSdWNlnsTTUz6iJNgAxez5EWaNNRQgnPEfJkFDjOwxZAhIL7/TK+xrbfghVhSj4tmLZ/ZnlsAv6Db1uQzaIDm5ZKG1MItpLzVvSkx4oaQ2qypGc3ksE6VWY0bZVf68Y55Y3O/MlqCL2DfIpZNrgbjMYqNDL3goBRqNhcAV2y3f++F2BTlb9+mUtLWXWu4arfIaaXNZVse8KeDJOPeJ5PkKzkcFuqbWi+f7pmnxKM8Le0mJCggSxE804E59iSEBJUIDDCEhyrkvXfGUkhCDDv9X1Cxs322MS25lEhAX37i7TM+wTZ1PVBgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iFSfCf364HDDIbyy0n5mTLmrRpPAAe1jnyBrMQQjCF4=;
+ b=XQoqHCTjxfb57We/GLcH8WbvtCvlI0G7NqrVPhj+uSrjDyiTx2zKknm051WzJpadD3fTLYYd4nuKJLxs2ifoFR1m79vMhrXvjCsxRRZWTrwmbLRWB6KR6gHqtfOsi+RJ6/5sBTyw+vpcIcx7+JP1AhM+mV4ZnmY37GqrQmu+QSe6SH9egDYmL6LAoFafNZaehIq+wOjPInuZF6EtKccXjXxZCMuJL7UEP26fF5Iq+X2JDB82G7gfTBedua3TbFSIf2IUxgxHRLDqJIt2IDxjTj7drzij38iQ/KN1QQrQwy6HxLLaZNKDXXniKe42SnWE6eU21zt4Do2+qkkVcujAhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iFSfCf364HDDIbyy0n5mTLmrRpPAAe1jnyBrMQQjCF4=;
+ b=NZEnWzdDDgLd/Zkffzu8EKNTJjAfE/ZjMxS1QN46HIUOkipPw8jvf8MZG7rU4BwyjEHtPWjfG7n0PQcke4iBRbxeiE1JcYjqTOcOJNXDgB982m4pZ4sx1e4hJ7dewQ55vHL3iApALEQGl9iVBD2YID03+y+yJVZLY7Jf9GbDm0ZjYDrMMDG9jhloq60IrLWBF7O8lz3bx5/uXg3GbsYm5Id2+YV7RFo6ojagzaLdtJnms+yXoBkcPNbadxt31Cze1dqacTsfdNQwxy/g3xlFTbmaL6BO2xnYhZjf47WL5b5g5QVIeI26N0m6BHkCgYOfQvSVtLbV5t2HC53+jR+H7g==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV1PR04MB10198.eurprd04.prod.outlook.com (2603:10a6:150:1a2::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.22; Thu, 24 Sep
+ 2026 17:04:13 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 17:04:13 +0000
+Date: Thu, 24 Sep 2026 12:04:04 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH] PCI: dwc: imx6: use regmap_assign_bits() for conditional
+ set/clear
+Message-ID: <arVYBC5N4PCETEGH@SMW015318>
+References: <20260924083429.461746-1-peng.fan@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924083429.461746-1-peng.fan@oss.nxp.com>
+X-ClientProxiedBy: PH7P220CA0003.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:326::25) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="thyvYpNwRTH7ReUZ"
-Content-Disposition: inline
-In-Reply-To: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
-X-Cookie: What's so funny?
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10198:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f09a538-8884-46e1-e644-08df1a5ddbf3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	s+GJ6Zpnd5baPAb18TmYKdhKRYYzwrLUNqE+RoHLuczbvfJq+Cs2lHBrfVGxRbCq06L1jQ857fw2adAMIlbReb76fbOBiDB6TzeljG+BU7rStcC+khKXyY0Ee5x/hxnRsM4eWY/cCPkstFqzrF83mqGFgOS5zajqDWmps3/kFYjfQaabwbXWG0U363vGutAKP7zgBbVvB2LvYdxlKaCtdwBHmPjuFrGfZySLQlj7eJ/vU6otvNhkZOI+KHa/8aPTxNJhYBrinrRjecY3W6CwwjU3ASX4uX3RA5IaX0Ow4XadeUQ/rC/NPUGkA3lcLhL4IB2FuZbYHrKIHdGAxeaYXh3qi289WxYQCr92K/eYyAW1/5TIGA+YoW3kEdgs+gBSOQVh7xffENNlvkDvYzxsaOmlqpyIbEWvYy9QVaZsaDTRLgYIpH4QZFN93oT8Z+BRBLhN7oQcvbATWRaSrML9O6bI2wIyLMoF/3Z3yn4vgU5fYWPR8HOp0qaTo6eQ+p26Kht3WkPXpIfXLXxbNw2xHe9dl2gbd/mNNbwVHEK7byOTxrv8aPf3oKPub0w5ktL81UUxsmh21E3z18qP3+r5yQ30+oUi+nT35TkefdlRUUQGveAj375G10RuV6bERKI126sGoDHicfF7LKxTPns9hGuyQ6recvGxGF8KSvgHugI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XmX/LE0M7TwN8UZFUnO7cihPb2X9P6n/aQPrupFKhj3TFBIwcsvney2lGe3Y?=
+ =?us-ascii?Q?LswfnP7POpuYS3SouZrTWrRnccAVY154LqoKNcO4CAnG/w4zTiyOnsielptV?=
+ =?us-ascii?Q?IXmL51ANu+N6Vmcf7chwf1r1qiWEYdY9A43iKG9tvZ3hmaIQeA9LVj/i3Ud8?=
+ =?us-ascii?Q?opr/FzsaozkLtcbKuO6DmxStDXFeCZwJn7fW2u9IPlXU+hf3bpiUxdzVv0kY?=
+ =?us-ascii?Q?hRI+fUx3xEol+nUZvJr4A7M3u/g34wtkGbvWU97jgNwpu/YQabMM6TIybI22?=
+ =?us-ascii?Q?p7QTLO9IF/N5NYuD5QRGJFoGei+ZDxJ8bnxz/xMStOqL8rFJApbNOfYIAM9v?=
+ =?us-ascii?Q?9Daali3BmwQs5f/tP/6Syn57+V3+sUW0ksFpTl5L/KMRxQW374c7F8Q10cQH?=
+ =?us-ascii?Q?/NAzwweHqneYoM2FT31730ELGl60Ob/UReY+6flFRhPWeZVCBNsauIp8cFcw?=
+ =?us-ascii?Q?sRh3JPUtVj+AQZbOlaLjeeoruTt7uxQ1a59U3OiRhNjKBMuZOgTPDm60K0Gw?=
+ =?us-ascii?Q?dq1ziIEc5MsfbN8annIBeF6HVwB3LErEQOcp/OE2nu0JByo2CgCN2SRYfp3Z?=
+ =?us-ascii?Q?qk26hnrINMVE94TRMYvj+sJEzSKahRwmaPJ4MOM1f7fuGVzuerXpta6JGVzh?=
+ =?us-ascii?Q?p4944ffcgpw4RqcFJ6w/5jhskLn/J9Ly1jU60Obq23K0FDjD0Fa03g2FF0WH?=
+ =?us-ascii?Q?F+xvocyh3zdGzQdcrwuZF7A9LYIUkgAPJ2MnTWVzCc8CKwbwFghxumqDKNSL?=
+ =?us-ascii?Q?/6oWtg5KZuPesdkYTFxzd37o6ChzB4y6Tx9q2f73mxgyD1SzlpGKcsPsShWH?=
+ =?us-ascii?Q?nnbLBacfAs50iS7w9cG2qCXQQr6hzbqR7DFhMAAc/dVQbih1r0n87jy3pt8j?=
+ =?us-ascii?Q?U/ULZRXDF4EgCvMQyT8jMGHI9Y+ftPbAhFTgv4b2cNo2vMNgYds1t3oFTcUR?=
+ =?us-ascii?Q?Ee3+mgFPUq1Rsrxdk/dwgYg47ZuHMMhId8pj/FYl4vgpWgr0W7N0Mb2BP8Ji?=
+ =?us-ascii?Q?zy9u5TuU1hUYc1HR7D/OI2THv3EIIasoAVQuNwcLYpCl8DZQy6AXI0JZMWq3?=
+ =?us-ascii?Q?kYusJSYT9iKYiVgSi6Kc+KMneCU7wIbxwz4hvkpnNslS1jp8U8japCOCBSf/?=
+ =?us-ascii?Q?QffqrDvXbzgMv0iM0QlKzJDjx7YiuPZS40Qzt8Ne/wbWfnFPlLB6w1BA13cZ?=
+ =?us-ascii?Q?jppfCywl8jzcT/+7sxyHyLSjHq+f1OlpkMpWXBV6O8lnGF0/0f4Y0YOCCBRP?=
+ =?us-ascii?Q?BzWdkT8GZwz6qXll9kjOnkikmdZywRCMdWuk0gEMkycdRAJjSfUnZs7EiVWs?=
+ =?us-ascii?Q?31PO13nvbBlxFax/gJLNUlP7XwQsTPCJOouqN8EzVjmw4LzEcbXLr0ZmzFhO?=
+ =?us-ascii?Q?XeZj5ppq5OFzY4UUrDmcAkghOIHRnItlwh3Y4Zj1nZ6c+kVgcFdIx0WFDqyf?=
+ =?us-ascii?Q?VgQEX3XeEd8rGbQxIcM3YUxuugxumVxf3jKRhq9r9teEJAJTkwbGxvhMSOq+?=
+ =?us-ascii?Q?sOk9XUMCvQpAFMEk5BHeqhbIf5UGB4HeBj17ZPMo6Yt+P07/uBuuwi6D85M4?=
+ =?us-ascii?Q?m4PhKhaWjxk2Fswq5csn9wikxnqLwiu6r8hSKtb6P2njsiCBo+p282xSKXzP?=
+ =?us-ascii?Q?ZrRwMqlda8yU8UyncNVf2tamHWZ7CHOJHOF6fpBmEwzbYdFkGFfov7EODk5d?=
+ =?us-ascii?Q?UF8Km7Yvf73NTCawz/cdSagloQDmPN7zBriuWbLQ7pB2ZiGRSbMl4ZBOp5RX?=
+ =?us-ascii?Q?pNyzSAvQ3enpfSVlrIUcOayoDZHm5ozong+Ty+09/wKI5Hp8T5vI?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f09a538-8884-46e1-e644-08df1a5ddbf3
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 17:04:13.7553
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TzttnULstgaa2dAnCSJUfQDH5M2xLvX1JPz22YqzaTbjjwGP+kIGVRgsVU/T9IxGrsaanutBMdu8SJEZ/P4d2msGZfMItD86ci6Vdqr+1m5z95UclKMWKpbMHF3IBPqb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10198
 
+On Thu, Sep 24, 2026 at 04:34:28PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Replace multiple if/else blocks using regmap_set_bits()/regmap_clear_bits()
+> with the simpler regmap_assign_bits() calls.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
---thyvYpNwRTH7ReUZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for clean up this. It is much better.
 
-On Tue, Sep 22, 2026 at 11:34:23AM +0800, shengjiu.wang@oss.nxp.com wrote:
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> Changes since v5:
-> - rebase to latest master of linux-next
-
-That's not a resend, a rebase is a new version.  This is all confusing
-b4 badly, it's not picking up any of the reviews as being attached to
-the v5 that already exist and doesn't even look at the new version since
-it sees that it already has v5.  Can you please send a v6 with all the
-reviews pulled in?
-
---thyvYpNwRTH7ReUZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq1V9UACgkQJNaLcl1U
-h9BVcwf7BCet5mcdSMq0zC0cNsA9teLN9+P2zlswGHdgRRU40PVwEFizlbbS7wZl
-DOt1x1P94upHDBxOIj1BQlE2NH0CCx1Ndmd+GoJ0iq+zvPD+6wWhehE1HJyf1odN
-tHP8B7rCqkWXpKyWwPhWuQ7K6CjRo524433hqpLMfwEwIi4cRw2AIDPEJZEDxe4G
-YVIw8Rs1M9mOcSeAW1AcEx6zW8ZRr9Fcsl1ZL4z5iOj7rBRVLjfy6AKbM+Xkekpf
-3JcHWVENhCGh1J2m2PHfK3X4eKOJzRY/QJozB9KyoB75lQHUiYpC9msiJ+F4IN2J
-2IKKSaDZ354mcPpf2uwWiGkUJN/bEw==
-=1Dsv
------END PGP SIGNATURE-----
-
---thyvYpNwRTH7ReUZ--
+>  drivers/pci/controller/dwc/pci-imx6.c | 32 +++++++--------------------
+>  1 file changed, 8 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 28fed010b503f..e2e55a88e0132 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -747,12 +747,8 @@ static int imx_pcie_attach_pd(struct device *dev)
+>
+>  static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> -	if (enable)
+> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				IMX6Q_GPR1_PCIE_REF_CLK_EN);
+> -	else
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				  IMX6Q_GPR1_PCIE_REF_CLK_EN);
+> +	regmap_assign_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> +			   IMX6Q_GPR1_PCIE_REF_CLK_EN, enable);
+>
+>  	return 0;
+>  }
+> @@ -868,12 +864,8 @@ static void imx_pcie_clk_disable(struct imx_pcie *imx_pcie)
+>
+>  static int imx6sx_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>  {
+> -	if (assert)
+> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+> -	else
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+> +	regmap_assign_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> +			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN, assert);
+>
+>  	/* Force PCIe PHY reset */
+>  	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR5, IMX6SX_GPR5_PCIE_BTNRST_RESET,
+> @@ -883,12 +875,8 @@ static int imx6sx_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>
+>  static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>  {
+> -	if (assert)
+> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				IMX6Q_GPR1_PCIE_TEST_PD);
+> -	else
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				  IMX6Q_GPR1_PCIE_TEST_PD);
+> +	regmap_assign_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> +			   IMX6Q_GPR1_PCIE_TEST_PD, assert);
+>
+>  	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_SW_RST,
+>  			   assert ? IMX6Q_GPR1_PCIE_SW_RST : 0);
+> @@ -901,12 +889,8 @@ static int imx6qp_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>
+>  static int imx6q_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>  {
+> -	if (assert)
+> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				IMX6Q_GPR1_PCIE_TEST_PD);
+> -	else
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				  IMX6Q_GPR1_PCIE_TEST_PD);
+> +	regmap_assign_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> +			   IMX6Q_GPR1_PCIE_TEST_PD, assert);
+>
+>  	if (!assert)
+>  		usleep_range(200, 500);
+> --
+> 2.50.1
+>
+>
