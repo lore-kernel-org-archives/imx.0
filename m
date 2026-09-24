@@ -1,260 +1,214 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013055.outbound.protection.outlook.com [52.101.83.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f36.google.com (mail-yx2-f36.google.com [74.125.224.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354054AD4D7
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 19:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5234C8C53
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 19:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.164
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790278235; cv=fail; b=upbKWbdvNZqEBsxaMoInGHmSTqLUGoX7DxOFDlIG9WFAPCQO3CploiKRBaXJRJGTEXN3MvYztIXeMSj6pHFM2oY9OgQbHLAGGO9yhSZ6YoRAAz+Ctwq/Ndzgt/reoNRoP/lUgvLeYkVcTwsIV6xVrZd3Kp6P+hLP3zuJRBnTvZM=
+	t=1790278718; cv=pass; b=PXGFx9ciJCURDwS29FbR01IXoL0dT7HCpNla547+7K9mAziwr1E+JyfbsskcHvytL44g0dHCCUx2Ye8UiBeDGv8zuI7NCHMCXuMgyrCZTF+HpUPdjxy3/DFGQO8w7LleR6huiGpq7/DEGtYPozf+l5p+Ms3gNa7mweNYfwQsvj8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790278235; c=relaxed/simple;
-	bh=BWF2+jhRkI4rhfYd3mLALq7K9EybspeXg8DRS/i2OgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gxkj3TZpwA4dTM2TzneWnxbOZF8Ad+O6M2JoTPNZcxutcyibLgrEs7Owzmw71Wd91IyNbGjPMX189YSWzZNJ6esZJISDOtsmItx46PBuaQYpa8p59VVrmD1ofCrvS6Cp0I5ShuKEpzjVyGjOObmkg1xeouPqtPIc46S2JvG13hU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bVjXqC5R; arc=fail smtp.client-ip=52.101.83.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790278718; c=relaxed/simple;
+	bh=kRmPVZ4kecfhKStpwP/qseJ7BCFTN/An8sItpAF8EtU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oo5GyLhAzaVJqEsPKTKBkXTY9bB3CXgG7+DDhGrUdauzldXcoSSoDbh+249+gNr/H3/uA6DZQ9LaRmauLmd8KPps1RLiYeWJJyL1M8t0AfIM4RqUCbggUw1aWypF48pYqno80gPaSS4CBNdWw5v10W0XLBfCJ67W39WYJGgGK/0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=UkWjU9Rq; arc=pass smtp.client-ip=74.125.224.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bVjXqC5R"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r1J1HzfVnxARkyVuWND+3Fta3irsmXldRHT01CdcKM4QF+7Eo+hePp7sJ+M3qdTuxHPBKxYwb//7swDEUBq0T6ISt5pQbKXupBZ2ZJXgnyM77ZNKIMGuMddeAe/GDmBPZjld4JjuM0sCodiu0uB5yRLFNSKNEwKaNP9pgo4e+Uxh+8JOqJzwiAh57/ahepmM4RlrWe/8ESCiUg4Hg/577lsydaG9or15Uvhvipk1+/fqeyyYezJvOC7RmpxkoJasF4UGNH01B2HLQdehKUC4lSOgmwYYF+wdTxfsdIyrAqpBHtpXNDtg3RsbQV8QG/+BCrU5ZgNOtCqrxz5RZTSLYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8JEmmtJBMSckDkNQCyrsw0PRf8xs15H3lSvTN4RBQgc=;
- b=Unb1kP2JP2+UDcbB3VD1nXLDZ+qVCy7lSfr4z3XiNP8IFMlek4YAqALKT/i1pmqT/eV8UVZJ/lIjIrKnlkoJEBio8mFDPp3l/aJ55UTgnEkGT6uP+G/0U2jey+ya5FSAc2qYLqLItWarfAAeW+m0HPjF75M2jfIc8DRp1JQhts4eb7cc5hxmOG6Fx4BoCIfqJ2pVobSJMz6i+KyJZH6s/9QmXl2pd1FUsoPHTfZ1+PTnca+536fx2tmRxUMpqMlOB7paWGXcJZNgCzjbTT0j1O7Beo136v+Ohatl8kHWL10hwqay9ZW9pE8EbvPmuLIpQj+kN1THZtjWUEkFuwie7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8JEmmtJBMSckDkNQCyrsw0PRf8xs15H3lSvTN4RBQgc=;
- b=bVjXqC5Rd1C28d0k9XqB/2Lvl5D3r9RJdEz5o7xmrO5bAnFCU3uIJWQuLoqrO4+JKXAkomIFvMPSSP2YaOaCehfeO66wdburUBjgeNFd10QNJ1+acp5OztOAOm+27ePQXU1QO3qaF+jty+aBFo1NMrG7tr5V2I0nqNkjYR3IAMS626sHgyeE7DepFf4Y1YNuMPOFINOXdqADU93CvIMsMgacpWW+GhsV93lLOUwBX7u815Xg7EwQLzA2AkvKooQv+rMDIVKOJL6KMVed/niww56hZwPZH+tb5gxchLx63mf0+o7KgiEIApvwOw8qwFbzQi4PzqBBBfjlCrNJP9KtUw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DBAPR04MB7317.eurprd04.prod.outlook.com (2603:10a6:10:1b3::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 19:30:27 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
- 19:30:27 +0000
-Date: Thu, 24 Sep 2026 15:30:19 -0400
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
-	dmaengine@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] dmaengine: use assign_bit() where applicable
-Message-ID: <arV6S-U-ArZubwka@lizhi-Precision-Tower-5810>
-References: <20260918141622.3022876-1-peng.fan@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918141622.3022876-1-peng.fan@oss.nxp.com>
-X-ClientProxiedBy: CY5PR15CA0089.namprd15.prod.outlook.com
- (2603:10b6:930:18::35) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="UkWjU9Rq"
+Received: by mail-yx2-f36.google.com with SMTP id 956f58d0204a3-66e4aaf2ecfso310997d50.1
+        for <imx@lists.linux.dev>; Thu, 24 Sep 2026 12:38:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790278708; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sV2mouQ5WJudNKUHk36mQMm4nbORxyANZrfKWiRggMhAltbWgydX+kTyLjLx+INKbl
+         BVhftkVfYOtSMPa10DYgCkSeCPKkrMaqdjoESbNhRelNxi5WAjHBT9pTwa1vfQgzLfjZ
+         jV3JH6ONAOPfDqxLMFUaiewKjTVS+qx/x47vb/Bai+ZEWn3FBMsJGY/bliAMnrbm1r8C
+         Ap7sVF3mmNPg0RQCTtwOgd+upkWXScv8D4zyfseGFFYsC2L1T/vWlBGLHZz2heTPK7yB
+         ItZ4fzhQ+If0Hy/Nk0w30V6uceaLb2ysLFyob5qqmp/nS8ch+Nf497iD5FVay62w56Ir
+         Y3VQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NVqptNo8neXdqpn4T2EkAUKxv7O1l9NSFa3yzxG78T4=;
+        fh=bD4k3RIAtbXoNzSfLjyRdrmo/L8c8IdAc6F3h9uJxCU=;
+        b=LdbRwIW3gBdRa0SrBDulV1dEdGhBblKhc2jA0fj2Fpf4ko4Fsj4yDrgiakcxgmrCvi
+         i9RXkmywP/Kecft5PbKbX+Uik3+Y1yTR5lA2M6fMAy9G9B3HwZQj2hIlG8XH06c4i2EI
+         I34XZAybbfFb96dK0RQ0TQdT7E9k9iXGHVaNnezYDvLNsf56ykD7Phf59WrhOyMvifgk
+         e4H/7t4WnFlC2jYNwCqV4R6CZTUUkpvpzaWZNZyrOawEVUHBwHl0jnx2NLvwfE9QWp02
+         zCUdfdCNXpcx+6but01zjnipxfyNboEp08mzfDvjAlrrHhkYfdYYj/1QzbgrltAyrlOt
+         8Gpg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1790278708; x=1790883508; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NVqptNo8neXdqpn4T2EkAUKxv7O1l9NSFa3yzxG78T4=;
+        b=UkWjU9RqzU9jk4FFGcdMVc7HXfdpXqFmZ5KnftX0PCxHWCmiqdvOW3Ph/sac8jQLpR
+         HtfrCcUi9Zk2dNP/5aLett43OJHrJw11ylZ/ylfuuSEEwy5qQNblkhE5XHFazEEpU0xU
+         F0rOGj7CDLVxeL99k3vpbZiVCmQra3EdHX1dw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790278708; x=1790883508;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NVqptNo8neXdqpn4T2EkAUKxv7O1l9NSFa3yzxG78T4=;
+        b=s422ZvJX2dDPzhMg1M5CIrZy8hmCH8X3tRE+wfPJUdV3X5PL1gPG8QGL8aAwrym1WI
+         6sFmPRdCzmt61t0fwExQpGHhF6buGxsElC+fz1NZx666hUnuxB8bF7/t6PwjwLUCYIwE
+         n/we7yLkyx/SEVm/ZmGGUZEopJJ+mdpOAOuSqzqLyzsz6Cz5TdXituIziVq6280o34de
+         r9Nwf4l7zAzr4L7XD7QfnluHWyyFdiYUe6B0n2myOeJ/utqkz+liEQHRNT5oxasyi0s4
+         LveRMqKjTXDAPC0ISYfkm/Jy1n3isrnRhl8FX2bO2HVF3E8nCBmYK4gy1mLiQ5bxbNrk
+         cpAQ==
+X-Forwarded-Encrypted: i=1; AKwUvByaTLzR88YVg1+hXXYz2JwvZAJftQBy4fKQkeCt1WmZfWi/4xgSALZBg37YkeUD4ZUIx1I=@lists.linux.dev
+X-Gm-Message-State: AFuF++mO9RtmMZQ066nTstLzrah/eoK8IL6Gjxuco3c9uXdLU20ErPAR
+	BoGb0EpQbQCmIjcVGOCmLJyZVdOyzw6+wft5QINUk+oO+Cu+C8VzpyZXxKsYQfQCbKr0ZmyNoOJ
+	d32QcOSFx/dkoJigjIBNPrONLeT746SW0z3eDGF8Ti2vJb998S7NDjt8=
+X-Gm-Gg: AYBFou0FELzLtv6xsiKYXJquf+DNbHRRUne5cfYY//78ul7TBxLTvnA/dUeOp8J6423
+	6u5ASRywnGUH/Msy5idosrnsQkgDI3fGiKbeUJm0y56SBVVxRVa7nrMS/5cI7qi08ni+5tat8/v
+	19HBDaDAAb5LJuwrsr+JNYIc9Yilzv3k6axmp9Sp1ifVTcNc1nmoIfLf2RAVewwWYbeA4AIikKS
+	RdS6Jyt4pL7crI/WuUR0IwvgzR1gO5Yd4Skl8i91p/B2+kvNmJOsoLSjpeg9Jpyfj1cBdXmSRvQ
+	3arvwx3By8NzjUsRDv9e7kxnD/5AN3CYw4SiawaqymAnwB6rlGS7hwLowFEj/rUxwWqwAk1MQC7
+	AciEj53hC8Q==
+X-Received: by 2002:a05:690e:d56:b0:671:4d9c:91bc with SMTP id
+ 956f58d0204a3-672ed3b8549mr1938576d50.78.1790278708232; Thu, 24 Sep 2026
+ 12:38:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DBAPR04MB7317:EE_
-X-MS-Office365-Filtering-Correlation-Id: 273d1b0f-ed85-465e-ce21-08df1a7249a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|19092799006|1800799024|7416014|376014|11063799006|3023799007|56012099006|22082099003|18002099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	kMIno/5bz5CxcUJsyo7rBLbCzq8XlM/Hm1Avs3yuf7fM6Ji1yAcfswrdvP4bnxFai0L4UaTZ6JS8/UMboZPLI1T2irisy6wnkDc6VUCnvQSPzm/RzzEbwuqDpcYCZsSFGTXEBXRL1VPXze71euS0aFOZki5VufK2RwdM4nZPY10O8ZG53zp+4gEumYj5SDYGgppEzF1e3+TLFJ2TotYViGSTop1d37BsNnoF+ZJ3i+YQGeuNrv6qbNBdTLnqjNAPIBlX/wOV2Qs3vwwerA3xl86lCfu9xAr44NNefw/w4i3J8ftLgGhqR9X6kOfbfA5BlksAufp+becQnXzixP8IYaxpTcByS0ZwfRWakbEJEw+CX8SvQdomwH82LDYQ9l0Z6pDEF8z7ke+WY6SB7/gOnU9UQk9lOkDSBbkHK66Sm8bX2hZKiea8+HLweuRLt1RsoeKHOrDaY6PHkLVgN09VVF3XQqJhbG5t82TUaidxjKlB7ZwC3ZMT70619d+CO2qc3xsGjeuePb+BOZXltCBPNVSAErnDOeJFFGeg8QCp5Yfk6TTrKIQqfHALxcRBU8uf+3ds006RPL43+imzOdaSUQ/HymeGj5lPfb2YHHkLPbf9iVnCw5u9AmANpp5D3vF/WfcfCH2IMFyUP8qzGXsW2GicptGhDXX0/wuj8C+0Gog=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(1800799024)(7416014)(376014)(11063799006)(3023799007)(56012099006)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xG38F++ZsGT6w0Ipb4kyR94CkXCnWKNeZ0t+es69Q1PUMCr69IN1yHKy0T/q?=
- =?us-ascii?Q?Z6DOj1w7U5pNbXynkWzvfMWyyfyzd14QcUHs3FV82P2P9jrib7IbucOAAA6d?=
- =?us-ascii?Q?lrw89LnWYJr+Rl4Y5WAebFtWwXVcj8ys/hXxPiugVOglbkhg389d9E3a36XG?=
- =?us-ascii?Q?l15C3tMAVYov/rrRpCTm0g4qCnNoHuuGcEmIbGu2X3PgXAo8F9jYxJ6OPOLQ?=
- =?us-ascii?Q?qgyBqIhlFxJyLvl8gaYEOpPFzDcplJcfs7udZfsaDyJUA2Va6M6RKH1MENm3?=
- =?us-ascii?Q?jC5SRW85dXn8tqXilcy8mjWRGYDiq6haRmru16yFzi00galq1S6/L+foYzzV?=
- =?us-ascii?Q?jzrFj+pjaMiD+521uSYyd+nknbomIceghpUt3qJnHlrEmRA0BXRg67VdsEFM?=
- =?us-ascii?Q?XZzUH92f4+6r2yILPHVa87FfvQMT6JaSpChNE+yt7VtD9b7ATMbAoqFCsCOg?=
- =?us-ascii?Q?hmrPT6fdv+Yc6gXKIm36xkuAM2QOUHhKF6kwSw0oWMb9UcTyvD240bRokkYw?=
- =?us-ascii?Q?W83HBs8WxiJV5QTgaAhLAcU6K2TnT55PLcsaLBrB8OTaUuujt8B4QtAiVgGz?=
- =?us-ascii?Q?CW19cMUREK9sNZA+ONONkExmfnZVKz4tcimhWvl/Fi8SAZViotByS/yqkI4z?=
- =?us-ascii?Q?UDE4J2TaVC0i8gyU48QOwkQpmHwOVkR48YLhVOz/kJZfQKYZgtslQEArWiit?=
- =?us-ascii?Q?6uvqAq9GzSuMTbMtlcOHwyHSaqEYTVe8+33WgTTNvBlBO54CmalcEQ+6WuZU?=
- =?us-ascii?Q?SPY0M1qDjzyGHIrESoAsl0IvYqVl7VkMW3knAwmNDj9pkdTI04msKmklDAA9?=
- =?us-ascii?Q?hAsAJKR7q0ndBcZmOhS09R52Ud/3SjP/4TmVg+FYLtmgiwv7rTWbkOSRHEHT?=
- =?us-ascii?Q?K7gJso0tghYfvz3sVdnHybyeV/9+YAkl00CCaf4M/4VY89EYz6un15nGfM6i?=
- =?us-ascii?Q?XqNytH1AB25XiEnnsXIpAMau9GpPBxLQ/klQqtv7izYqz33P32dAmXUfZCeD?=
- =?us-ascii?Q?LUCB2vaPWbXfs6nQXOpHZOwhUhwbnBkpzQZepairZZr0zUPb6ByTP0ROVsKz?=
- =?us-ascii?Q?wDJurk03qX7pzxqhrnKYOZdpdKQUrqynw59gnUF7ImlSX9qvrxRm7hqYP7zT?=
- =?us-ascii?Q?sVpBmliCe7EHyWjrEXsuskZ/D7V7oO/5WZfdGEsoXYJhOcIIFghr4oFsFsDO?=
- =?us-ascii?Q?BXy1/lUEE7zMqns2aWPQR+Gacipob71f3J/1/ne46OB7Sd4xzSRsDtQN8eZe?=
- =?us-ascii?Q?9mY9kqd2bcGK8grZz/OUgebXH0BdgsPAongoK/1/4mNgBh1i8VkhwUcn53QU?=
- =?us-ascii?Q?I/YPnMoI4KRwchzX21oz8ZQx/eEZbBp+d/A24rjY/l9ohcBNaeLy1O6i2yn4?=
- =?us-ascii?Q?TkT+RzcIexBmGY99ZKNqKEnBCmwfZarWonsjoaGhCCjsPZv6u7fTRBmOPe2l?=
- =?us-ascii?Q?Ek3QpNWwIFFwgZTBaBQLwhYowTt0dxe4quyZ/b+7iOwSKvcbQqRHhYKcVjN6?=
- =?us-ascii?Q?mEUMTX6Qz6LGQqozm+Z71qn2eFcYlatFtJl1OYAgGDcikct9iH6FdJGjrwBK?=
- =?us-ascii?Q?fUw/mq6IYJhs4k7j97j3vDn75WA9GQ8DBJC25U9KT6VNQbxuf6I94v9Ru5oo?=
- =?us-ascii?Q?kLEqC21tgD6k44r8fkfrljgPBzSUQskSpkvn4V0xB6knxoTqt0WX04c8A6t8?=
- =?us-ascii?Q?rI2EE44nTYhAKkKfiOINO0Pe8/n9yhrHzhhPgmkNQV0266mHVFvRGQslv0ip?=
- =?us-ascii?Q?SVD3zbdyLwR6gln90aykuOrujJx0TfFkf7MtlYpS6RHdFA+xyFdU?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 273d1b0f-ed85-465e-ce21-08df1a7249a2
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 19:30:27.6304
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7irn/9DGI+7tLgzhrnLSMqTKDwwLTSdjqiC/Y0zA3g6KhVWxDimSMk7m2lFvjWM7PXYwx5LvDLBKWJEYUcLQo+a6uGXZFe/eUhsjmc4CVuBfvOirL+hy77kV/oivcCxb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7317
+References: <20260522101653.2565125-1-paulk@sys-base.io> <ad9788bba0851dcb86c22f40c2562f2a57ac8e6c.camel@collabora.com>
+ <CAOf5uwktfp0a3Vi5Jd8Zw5knGMHd_FH=iusRX1NgHYC4VSuzBA@mail.gmail.com>
+ <arQxC3DmDyVIGdqq@collins> <CAOf5uw=SeHZSnYjPOptAGYwPkQc7L7gDpOrDWJH3UF0r1qdrtg@mail.gmail.com>
+ <arVnQmik-CveaAkY@collins>
+In-Reply-To: <arVnQmik-CveaAkY@collins>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Thu, 24 Sep 2026 21:38:16 +0200
+X-Gm-Features: AclHuK_bBSWqL6tBSki95SII0DxHlrmdAk4MDI9hfl1lTZlay91QzSspJUrifKY
+Message-ID: <CAOf5uw=K5tWiodM0SEP_nFn0vBv3=YRFWrY1Bd-1jPmZtM7G4A@mail.gmail.com>
+Subject: Re: [PATCH 00/14] media: Add V4L2 H.264 stateless encode and VC8000E support
+To: Paul Kocialkowski <paulk@sys-base.io>
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>, devicetree <devicetree@vger.kernel.org>, 
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, 
+	linux-media <linux-media@vger.kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, 
+	Michael Tretter <m.tretter@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 18, 2026 at 10:16:17PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Convert open-coded if/else with set_bit/clear_bit and their
-> non-atomic __set_bit/__clear_bit variants to the assign_bit/__assign_bit
-> API.
->
-> Done with Coccinelle semantic patch.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
+HI Paul
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Thu, Sep 24, 2026 at 8:09=E2=80=AFPM Paul Kocialkowski <paulk@sys-base.i=
+o> wrote:
+>
+> Hi Michael,
+>
+> Le Thu 24 Sep 26, 07:30, Michael Nazzareno Trimarchi a =C3=A9crit :
+> > I have added your patch to gstreamer
+> >
+> > v4l2codecs: add the stateless H.264 and VP8 encoder elements
+> >
+> > Backport of the encoder work from the branch v4l2codecs/h264enc of
+> > https://github.com/paulkocialkowski/gstreamer (commit f59de5779ef1, bas=
+ed
+> > on release 1.26.0) onto the gstreamer1.0-plugins-bad 1.28.5 this build
+> > uses.
+>
+> Yes this is the right gstreamer branch to use here.
+>
+> > Generate the right element and encode stream:
+> >
+> > gst-launch-1.0 videotestsrc num-buffers=3D100 !
+> > video/x-raw,width=3D720,height=3D576 !  v4l2slh264enc ! h264parse !
+> > matroskamux ! filesink location=3D/tmp/t2.mkv
+> >
+> > And playback over Wayland.
+> >
+> > Solve some problem. I have implemented:
+> >
+> > const struct hantro_variant px30_vpu_variant =3D {
+> >         .enc_offset =3D 0x0,
+> >         .enc_fmts =3D rockchip_vpu_enc_fmts,
+> >         .num_enc_fmts =3D ARRAY_SIZE(rockchip_vpu_enc_fmts),
+> >         .dec_offset =3D 0x400,
+> >         .dec_fmts =3D rockchip_vdpu2_dec_fmts,
+> >         .num_dec_fmts =3D ARRAY_SIZE(rockchip_vdpu2_dec_fmts),
+> >         .codec =3D HANTRO_JPEG_ENCODER | HANTRO_H264_ENCODER |
+> >                  HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
+> >                  HANTRO_H264_DECODER,
+> >         .codec_ops =3D px30_vpu_codec_ops,
+> >         .irqs =3D rockchip_vpu2_irqs,
+> >         .num_irqs =3D ARRAY_SIZE(rockchip_vpu2_irqs),
+> >         .init =3D rk3036_vpu_hw_init,
+> >         .clk_names =3D rockchip_vpu_clk_names,
+> >         .num_clocks =3D ARRAY_SIZE(rockchip_vpu_clk_names)
+> > };
+> >
+> > I have advertised the:
+> >
+> >        {
+> >                 .fourcc =3D V4L2_PIX_FMT_H264_SLICE,
+> >                 .codec_mode =3D HANTRO_MODE_H264_ENC,
+> >                 .max_depth =3D 2,
+> >                 .header_size =3D H264_ENC_HEADER_SIZE,
+> >                 .frmsize =3D {
+> >                         .min_width =3D FMT_MIN_WIDTH,
+> >                         .max_width =3D FMT_FHD_WIDTH,
+> >                         .step_width =3D MB_DIM,
+> >                         .min_height =3D FMT_MIN_HEIGHT,
+> >                         .max_height =3D FMT_FHD_HEIGHT,
+> >                         .step_height =3D MB_DIM,
+> >                 },
+> >         },
+> >
+> > Create the rockchip_vpu_hw_h264_enc.c. I need to test this on rk3399
+>
+> Then I guess this is using register configuration from the earlier H.264
+> encoding work that I've done at Bootlin, adapted for the new stateless
 
->  drivers/dma/idxd/sysfs.c  |  5 +----
->  drivers/dma/imx-sdma.c    | 15 +++------------
->  drivers/dma/ppc4xx/adma.c | 29 +++++++++--------------------
->  3 files changed, 13 insertions(+), 36 deletions(-)
+I need to check mpp code too
+
+> encode helpers? That part is probably not quite trivial, which is why I
+> was a bit surprised.
 >
-> diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-> index 6d251095c350..2b0524324089 100644
-> --- a/drivers/dma/idxd/sysfs.c
-> +++ b/drivers/dma/idxd/sysfs.c
-> @@ -1095,10 +1095,7 @@ static ssize_t wq_ats_disable_store(struct device *dev, struct device_attribute
->  	if (rc < 0)
->  		return rc;
+
+I would like to clean up the patches before sending, and check all the code=
+ to
+not make trivial mistakes. I'm not persistent, so if we aren't, one of
+my colleagues will take over.
+
+> > I have a small change only in the common part. Hope that it's a bit cle=
+ar.
 >
-> -	if (ats_dis)
-> -		set_bit(WQ_FLAG_ATS_DISABLE, &wq->flags);
-> -	else
-> -		clear_bit(WQ_FLAG_ATS_DISABLE, &wq->flags);
-> +	assign_bit(WQ_FLAG_ATS_DISABLE, &wq->flags, ats_dis);
+> Yes in comparison to the register configuration code, the platform
+> changes are rather small indeed.
 >
->  	return count;
->  }
-> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> index 36368835a845..b8a91a0343b5 100644
-> --- a/drivers/dma/imx-sdma.c
-> +++ b/drivers/dma/imx-sdma.c
-> @@ -710,20 +710,11 @@ static int sdma_config_ownership(struct sdma_channel *sdmac,
->  	mcu = readl_relaxed(sdma->regs + SDMA_H_HOSTOVR);
->  	dsp = readl_relaxed(sdma->regs + SDMA_H_DSPOVR);
+
+I wrote this email to state that this change would be impossible
+without your work.
+I'm currently working on other things, but I had some spare time. Now
+apart from that,
+I would like to ask about the status of the entire proposal and uapi change=
+.
+
+Michael
+
+> All the best,
 >
-> -	if (dsp_override)
-> -		__clear_bit(channel, &dsp);
-> -	else
-> -		__set_bit(channel, &dsp);
-> +	__assign_bit(channel, &dsp, !dsp_override);
+> Paul
 >
-> -	if (event_override)
-> -		__clear_bit(channel, &evt);
-> -	else
-> -		__set_bit(channel, &evt);
-> +	__assign_bit(channel, &evt, !event_override);
->
-> -	if (mcu_override)
-> -		__clear_bit(channel, &mcu);
-> -	else
-> -		__set_bit(channel, &mcu);
-> +	__assign_bit(channel, &mcu, !mcu_override);
->
->  	writel_relaxed(evt, sdma->regs + SDMA_H_EVTOVR);
->  	writel_relaxed(mcu, sdma->regs + SDMA_H_HOSTOVR);
-> diff --git a/drivers/dma/ppc4xx/adma.c b/drivers/dma/ppc4xx/adma.c
-> index 279a431ccae3..39b1c4fd9ca5 100644
-> --- a/drivers/dma/ppc4xx/adma.c
-> +++ b/drivers/dma/ppc4xx/adma.c
-> @@ -350,10 +350,8 @@ static void ppc440spe_desc_init_dma01pq(struct ppc440spe_adma_desc_slot *desc,
->  			 * of the transaction (src, dst, ...)
->  			 */
->  			iter->hw_next = NULL;
-> -			if (flags & DMA_PREP_INTERRUPT)
-> -				set_bit(PPC440SPE_DESC_INT, &iter->flags);
-> -			else
-> -				clear_bit(PPC440SPE_DESC_INT, &iter->flags);
-> +			assign_bit(PPC440SPE_DESC_INT, &iter->flags,
-> +				   flags & DMA_PREP_INTERRUPT);
->  		}
->  	}
->
-> @@ -508,10 +506,7 @@ static void ppc440spe_desc_init_memcpy(struct ppc440spe_adma_desc_slot *desc,
->  	desc->src_cnt = 1;
->  	desc->dst_cnt = 1;
->
-> -	if (flags & DMA_PREP_INTERRUPT)
-> -		set_bit(PPC440SPE_DESC_INT, &desc->flags);
-> -	else
-> -		clear_bit(PPC440SPE_DESC_INT, &desc->flags);
-> +	assign_bit(PPC440SPE_DESC_INT, &desc->flags, flags & DMA_PREP_INTERRUPT);
->
->  	hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
->  }
-> @@ -2136,10 +2131,8 @@ static struct ppc440spe_adma_desc_slot *ppc440spe_dma01_prep_mult(
->  					chain_node);
->  		memset(iter->hw_desc, 0, sizeof(struct dma_cdb));
->  		iter->hw_next = NULL;
-> -		if (flags & DMA_PREP_INTERRUPT)
-> -			set_bit(PPC440SPE_DESC_INT, &iter->flags);
-> -		else
-> -			clear_bit(PPC440SPE_DESC_INT, &iter->flags);
-> +		assign_bit(PPC440SPE_DESC_INT, &iter->flags,
-> +			   flags & DMA_PREP_INTERRUPT);
->
->  		hw_desc = iter->hw_desc;
->  		hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
-> @@ -2221,10 +2214,8 @@ static struct ppc440spe_adma_desc_slot *ppc440spe_dma01_prep_sum_product(
->  		iter->hw_next = list_entry(iter->chain_node.next,
->  					   struct ppc440spe_adma_desc_slot,
->  					   chain_node);
-> -		if (flags & DMA_PREP_INTERRUPT)
-> -			set_bit(PPC440SPE_DESC_INT, &iter->flags);
-> -		else
-> -			clear_bit(PPC440SPE_DESC_INT, &iter->flags);
-> +		assign_bit(PPC440SPE_DESC_INT, &iter->flags,
-> +			   flags & DMA_PREP_INTERRUPT);
->
->  		hw_desc = iter->hw_desc;
->  		hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
-> @@ -2246,10 +2237,8 @@ static struct ppc440spe_adma_desc_slot *ppc440spe_dma01_prep_sum_product(
->  					chain_node);
->  		memset(iter->hw_desc, 0, sizeof(struct dma_cdb));
->  		iter->hw_next = NULL;
-> -		if (flags & DMA_PREP_INTERRUPT)
-> -			set_bit(PPC440SPE_DESC_INT, &iter->flags);
-> -		else
-> -			clear_bit(PPC440SPE_DESC_INT, &iter->flags);
-> +		assign_bit(PPC440SPE_DESC_INT, &iter->flags,
-> +			   flags & DMA_PREP_INTERRUPT);
->
->  		hw_desc = iter->hw_desc;
->  		hw_desc->opc = DMA_CDB_OPC_MV_SG1_SG2;
 > --
-> 2.51.0
+> Paul Kocialkowski,
 >
+> Independent contractor - sys-base - https://www.sys-base.io/
+> Free software developer - https://www.paulk.fr/
+>
+> Expert in multimedia, graphics and embedded hardware support with Linux.
