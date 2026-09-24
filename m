@@ -1,38 +1,39 @@
 Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB603E1696;
-	Thu, 24 Sep 2026 06:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97230414A21;
+	Thu, 24 Sep 2026 06:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790232653; cv=none; b=OeEDV4DwPZHkXbof5HEKIUR8AUlCOFJs+eqluNA7z71zLYWW+ZVRH2jE0inJuNlp9+8VRTr8T0q6njQCCQDaLhyAVID/UcSU7xGV3+Y5unRe/+TXDsPfMiz+3HR7BOlqdQpWSB6TtKBHRPCUJG/jTBIgyc6UqoFnZV0+JK3l/9E=
+	t=1790232662; cv=none; b=UxpWBuoDK2kF/9LZP2BDof7aA1HaTGlYLnKma/2VA9CZFTe5Szxuz2Fzp6lnqBm11mzDEiHMReMqBCN57lMCnWNbVBaZ68nj3oNgoXw44ZYndvorTwMxPlv4Bad3EJZtfeK2qDQCy5mY281S1oDic+HGL5SDA/ach4p7BXP3W5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790232653; c=relaxed/simple;
-	bh=j9r8nxSCTkvsmoiSxE6YtZBoJ5am0XO19M3F5XYzwck=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ldjx+zY4zmbfd9QFQwG4imDRng8Uf/Pezdz4NoY8o7/8gD30RE6mw65t5QQvQytvPUzy7q+zo3Vswv6Z6raYDnjnFTd+mbildzCm9naguf1Osdb+nl1jINgwzdCHPXffoky6i4T1xmH16BEcUz97tNoZjc2o8zRedBbSOHLWrVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Dfru81rG; arc=none smtp.client-ip=46.19.12.180
+	s=arc-20240116; t=1790232662; c=relaxed/simple;
+	bh=Ldy0dghHUspWo/aoWJHuHlbxNdPA6YLRheUKh+TIIIw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=X+52AF3mU9o58z5VKxfpSrhz3HtqUbVu8awAwKtSMifb/tMiahDpIn/LGGa6bNKI9B5urQWS27EKjp239CX23Rx67p20QBzXIE8dWgKMNVBrLLUGEF4V4CJkTZj5MRaAQy2ZUDDjPyAbSpCVE/wppovunybr5Gm915ewvZ9Pka8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ECp9ei6N; arc=none smtp.client-ip=46.19.12.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Dfru81rG"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ECp9ei6N"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Pvbg/dxk+AXCSTE+uheu6nRjPFHJfcJOZt8KrB0ENwM=; b=Dfru81rGkINwCO7B3gaN4M5uo3
-	YPXIChLRXufB1ejedu9Ey8Hs1FFFMo66uR7DMJjv7zcY9BCkvDa8+RVQhP8zBCJggH0+TiOp4cw9p
-	9f6ldBzPmo5bw+CrGYDWebflmzupkpjnNNqWSHmDxdeGxNhZ6FWkv7QVr5xqJFs7GKFid1Fb7w2uS
-	hnmAoFVaECVzrdN7R1duCNppMKN9RzfmSHY3bSdrtCyOIMZaDvbCXxb2vL4eCpudnxf3/5gGdSlf2
-	c0mTgjMj9eubZoM8CRMGJSiuR1MeV+i+Td4ok3seYRZwSSQwV1YQP4HFNS4Zx1Blga0vUaYS5iPB5
-	1UITnEGA==;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=BgH9aXwvqgfqbqezs3KUQvOw/Zu0xUnKdvawEIlUNtQ=; b=ECp9ei6N6YRHLwj95m2VaDTIoO
+	IdqjibPUVsmmX5uU8pHRbxnMhaqbu2O0XjNvqb/HzuffyThK/ecGy4EzkkbNGx78pbt9zGd2CFsx8
+	dbKbXNnUAM1l22oQjBk1tlBYL9U0Ag01iy8bvlCUsAHwnCU0amB1ztjXdwPd9lprc6TovJ2orVCDo
+	u/uYxP+VHPIMv2RsY3+aObMqBW/dxQFAxo8Y9V+Kyr0Vj56c8puwXj5ties3/HnWPKzF4xsX/fyNG
+	n98iqWirfFEq/osG6hiLrkHC5FCjGoxABJMRJJXy/nj5cjnR4ejqbI/FqyL/yJJB/XrpsjyU6ZUHF
+	gZrrAhdA==;
 Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:54176 helo=localhost.localdomain)
 	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1x9dI7-0000000AyGs-1v6y;
-	Thu, 24 Sep 2026 08:50:48 +0200
+	id 1x9dID-0000000AyGs-0pX7;
+	Thu, 24 Sep 2026 08:50:53 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -53,10 +54,12 @@ Cc: devicetree@vger.kernel.org,
 	linux-watchdog@vger.kernel.org,
 	upstream@lists.phytec.de,
 	andrej.picej@norik.com
-Subject: [PATCH v2 0/4] da9062/da9061 watchdog timeout mode
-Date: Thu, 24 Sep 2026 08:50:40 +0200
-Message-Id: <20260924065044.368341-1-primoz.fiser@norik.com>
+Subject: [PATCH v2 4/4] ARM: dts: imx6: phycore-som: Set watchdog timeout mode to shutdown
+Date: Thu, 24 Sep 2026 08:50:44 +0200
+Message-Id: <20260924065044.368341-5-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260924065044.368341-1-primoz.fiser@norik.com>
+References: <20260924065044.368341-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,60 +78,32 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-This is a revival of a series originally posted by Andrej Picej in              
-December 2021 [1]. It lets the DA9061/2 PMIC watchdog be configured via         
-the "dlg,wdt-sd" DT property, to trigger a full SHUTDOWN instead of the         
-default POWERDOWN on watchdog timeout, and enables that on the PHYTEC           
-phyCORE-i.MX6 SOM.                                                              
-                                                                                
-From v5 of original series this resend drops patch 4/5 ("dt-bindings:           
-watchdog: da9062: add watchdog timeout mode") because it already landed         
-upstream as commit 382256b219fb, later converted from .txt to YAML by           
-bd888a4377ae. Thus dlg,da9062-watchdog.yaml already documents dlg,wdt-sd        
-property.                                                                       
-                                                                                
-Patches 1 and 2 (the mfd prerequisites making register CONFIG_I                 
-writable) needed a rebase: an unrelated commit has since added                  
-CONFIG_J, the register immediately adjacent to CONFIG_I, to the same            
-writeable-range tables. Rather than reapplying the original single-             
-register insert next to it, these merge CONFIG_I and CONFIG_J into one          
-range, matching the existing CONFIG_G-CONFIG_K style already used in            
-this file.                                                                      
-                                                                                
-Patch 3 (the watchdog driver support) still applies unmodified.                 
-                                                                                
-Patch 4 only needed its target path updated for the arch/arm/boot/dts           
-vendor sub-directory move (imx6qdl-phytec-phycore-som.dtsi is now under         
-nxp/imx/); its content is unchanged.
+From: Andrej Picej <andrej.picej@norik.com>
 
+Enable system restart when the watchdog timeout occurs.
+
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Reviewed-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
 Changes in v2:
-
-Patch 1 and 2: 
 - capitalize subject description
+
+ arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+index 85e278eb2016..ddbfecd591f5 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+@@ -115,6 +115,7 @@ da9062_onkey: onkey {
+ 		watchdog {
+ 			compatible = "dlg,da9062-watchdog";
+ 			dlg,use-sw-pm;
++			dlg,wdt-sd = <1>;
+ 		};
  
-Patch 3:
-- implement Guenter's remarks (code refactor and update commit message)
-
-Patch 4:
-- capitalize subject description
-
-Link to v1: https://lore.kernel.org/all/20260923111719.2032012-1-primoz.fiser@norik.com/                                         
-                                                                                
-[1] https://lore.kernel.org/all/20211206064732.280375-1-andrej.picej@norik.com/
-
-Andrej Picej (3):
-  mfd: da9061: Make register CONFIG_I writable
-  watchdog: da9062: Add support for dlg,wdt-sd property
-  ARM: dts: imx6: phycore-som: Set watchdog timeout mode to shutdown
-
-Stefan Christ (1):
-  mfd: da9062: Make register CONFIG_I writable
-
- .../nxp/imx/imx6qdl-phytec-phycore-som.dtsi    |  1 +
- drivers/mfd/da9062-core.c                      |  4 ++--
- drivers/watchdog/da9062_wdt.c                  | 18 ++++++++++++++++++
- 3 files changed, 21 insertions(+), 2 deletions(-)
-
+ 		thermal {
 -- 
 2.34.1
 
