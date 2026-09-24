@@ -1,61 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C4D41D10D;
-	Thu, 24 Sep 2026 06:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEB5332EC5
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 06:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790233083; cv=none; b=dY5AQTYyS+JZQiNcqobqMnpDRYLhGVIny5UkA2Q52QkLM8Z8aa/mmsM0TKFWaoKVWVFzc9o6IJG1B6IXosC3Q53edEqeMPEYvm2QFFtQ5qka0jwluB4GXD+OISp1iMlrxCR9ZVFDVMPTwD3DaM/Uw2Nzv3j0XrQkJvDF4azGTso=
+	t=1790233084; cv=none; b=gQX9BKKg5saokmUmCOV5LrrLYBrZzNZ5OT5DoFCG3N0y0voOv/LYqPVmX7xT3f8nZfdnHi30rgpkQQ/894LhbuXfDzcuv0TGtF3GTpkW8kC8Bwfcm+mfICgDcbQ87ZyBF4J5ezMMj8ghEHUHXXD7VINq3eXOmwSBYygMkrDlbUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790233083; c=relaxed/simple;
-	bh=r1cV9iFWeLaIVES256JEiZk7naRcBDBiUEQPITwNAXU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=W5TGDS3ZFUbaSlM5QRUmAACVLfjxjkHl6FZ9yWOveQ+fWn6sF/RxDYnwSHTLc7yLzGIqOH7QuGN+ZifkfhDNPrfUiDXAYu9puvwTqNWwRMTCaNduQAD2Q6sd+UE598v6G8LRTDvng3XPhZd8vfrseNxY4blkaP5Qq5whr2FV9nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUmL382Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790233084; c=relaxed/simple;
+	bh=iqCe5C8lOZ/zYi4WI8Dp1cLEbo7dXTITBB4PNEZXRTc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GlcFgkytBWdE5IB6Pt9zWH0C3DUD/2qQV58HqC1SJkoPmDyTz8/6jRqw2DDyzgJ43+57mIcBv61En85s+Ini9ms890T3yiWn5azGxGGty3S7oRKj4UkLdKnhPf8DXs7sqqNqGfYV30eM51jkfmyE2SgU38LVBmfMJSX05CR2ah0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=XPwKEaA/; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUmL382Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43311F00893;
-	Thu, 24 Sep 2026 06:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790233071;
-	bh=r1cV9iFWeLaIVES256JEiZk7naRcBDBiUEQPITwNAXU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hUmL382ZCWUYGmowzK5ZyzpoJ6tjZxXr2nFf2806wpeg7zU6yrHLbSub+sjte5S5g
-	 MzNhLaVYrX5rXVWAmogkeracXCTiJtHRZmqKGiqTTOxdbwV+M8K9iBbDZuIkpZZWt4
-	 LYjevtCtpMNMuVBwcF8QdF87VYtkerKuFjOvmcjmGpsnO6fQqUNBdex3HBffAc9RMm
-	 0e7Rw6jlolCipnR5TucgV5AQYrdrRWHgF96//0+IFFd1wwEaLpK4ofn9JIQDJdB2SB
-	 cBpczPDnGmOFEk2xOnPBIm9l0aqIBfJpFcHjCY7SM/bfsdciGSskPbXOz3nIBrCeaI
-	 Y5lBqHRUXFEOg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/4] ARM: dts: imx6: phycore-som: Set watchdog
- timeout mode to shutdown
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Primoz Fiser" <primoz.fiser@norik.com>
-Cc: conor+dt@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, mfd@lists.linux.dev, linux-watchdog@vger.kernel.org, robh@kernel.org, lee@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260924065044.368341-5-primoz.fiser@norik.com>
-References: <20260924065044.368341-1-primoz.fiser@norik.com>
- <20260924065044.368341-5-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 24 Sep 2026 06:57:50 +0000
-Message-Id: <20260924065750.A43311F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="XPwKEaA/"
+Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 8B3712020D;
+	Thu, 24 Sep 2026 08:57:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790233067;
+	bh=9imW1wh7P5NcD6+FCFtASpqY9fQcjduq5Jb0jSIcZCk=; h=From:To:Subject;
+	b=XPwKEaA/+oTj2IDcyMNLsr7qvw5nGGrHYPG1V2WEYtUm/nT4Yvj4Roa0AuLBD7VJK
+	 XUJHj2Fh1U2rD0XNwsIdamM122hqQlFPOUCcTFcDEkGqbZm8hdRJAf8hZ+DS/a7al5
+	 zfAeGxCpokrGKObCw7Yf/ZW+96l+xvEBWuS3coi/IxvSghh9EN1IvCWwzizDRw4hy3
+	 Y5vZMjaLNPXmtmNglg1QVvbOMp+ZnzMDsV5yGyj+y2it6nYfBAszRjCfHlgzNgaY3A
+	 uUM9Z+E1lMVfrh42e7quGI/bATET4zNpx+dTTc2HnyhMp8kcsJ0FIPvgvPQvhWJswW
+	 RCuD/UlPhJKWQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v3 1/7] dt-bindings: arm: fsl: Add Lino iMX91/iMX93
+Date: Thu, 24 Sep 2026 08:57:27 +0200
+Message-ID: <20260924065735.17678-2-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260924065735.17678-1-francesco@dolcini.it>
+References: <20260924065735.17678-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-> From: Andrej Picej <andrej.picej@norik.com>
->=20
-> Enable system restart when the watchdog timeout occurs.
->=20
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> Reviewed-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Add bindings for the Toradex Lino iMX91 and Lino iMX93 SoMs, based on
+the NXP i.MX91 and i.MX93 SoCs, respectively.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924065044.3683=
-41-1-primoz.fiser@norik.com?part=3D4
+Lino SoMs use two board-to-board connectors to interface with a carrier
+board. They can also be mounted on the Lino-Verdin Adapter, which
+converts the Lino interface to the Toradex Verdin family pinout and
+allows the SoM to be used with Verdin-compatible carrier boards.
+
+The Lino-Verdin Adapter also provides a Wi-Fi/Bluetooth module, an
+Ethernet PHY and a GPIO expander.
+
+Add compatibles for systems consisting of a Lino SoM mounted on a
+Lino-Verdin Adapter and connected to either a Verdin Development Board
+or a Dahlia carrier board.
+
+Link: https://www.toradex.com/computer-on-modules/lino-arm-family/nxp-imx91
+Link: https://www.toradex.com/computer-on-modules/lino-arm-family/nxp-imx93
+Link: https://www.toradex.com/accessories/lino-verdin-adapter
+Link: https://www.toradex.com/products/carrier-board/dahlia-carrier-board-kit
+Link: https://www.toradex.com/products/carrier-board/verdin-development-board-kit
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+---
+v3: rebased
+v2:
+ - add acked-by
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index adf209b3b7cf..f3c73510c18b 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1528,6 +1528,15 @@ properties:
+               - fsl,imx91-11x11-frdm-s    # FRDM i.MX91S Development Board
+           - const: fsl,imx91
+ 
++      - description: i.MX91 boards with Toradex Lino Modules and Verdin Adapter
++        items:
++          - enum:
++              - toradex,lino-imx91-verdin-dahlia # Lino iMX91 Module on Verdin Dahlia Board
++              - toradex,lino-imx91-verdin-dev    # Lino iMX91 Module on Verdin Dev Board
++          - const: toradex,lino-imx91-verdin     # Lino iMX91 Module on Verdin Adapter
++          - const: toradex,lino-imx91
++          - const: fsl,imx91
++
+       - description: i.MX93 based Boards
+         items:
+           - enum:
+@@ -1539,6 +1548,15 @@ properties:
+               - fsl,imx93-wireless-frdm   # i.MX93 and IW610G WLCSP (Wi-Fi + BLE + 802.15.4) SiP FRDM Board
+           - const: fsl,imx93
+ 
++      - description: i.MX93 boards with Toradex Lino Modules and Verdin Adapter
++        items:
++          - enum:
++              - toradex,lino-imx93-verdin-dahlia # Lino iMX93 Module on Verdin Dahlia Board
++              - toradex,lino-imx93-verdin-dev    # Lino iMX93 Module on Verdin Dev Board
++          - const: toradex,lino-imx93-verdin     # Lino iMX93 Module on Verdin Adapter
++          - const: toradex,lino-imx93
++          - const: fsl,imx93
++
+       - description: i.MX94 based Boards
+         items:
+           - enum:
+-- 
+2.47.3
 
