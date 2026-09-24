@@ -1,148 +1,102 @@
-Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444CA3ACA41
-	for <imx@lists.linux.dev>; Wed, 23 Sep 2026 23:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78CF2C11E7
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 00:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790204544; cv=none; b=Lq/caPhKSKeQmUqlaKaNiWjs3gu+rJKDDgstQv9RyxvouH6C6GKciP0BpNsmy9lcyUC2xOFmFMUzmLsgtvYTL3uU2Cicq52gxjQzQSjvwU0xwcTcwN3bT6UolRocDHJqL9oMYBcCGNw89uU02duT5LZfFJvSzID86Xlejam9Mvg=
+	t=1790209919; cv=none; b=lkQuC9UZQXTJPBwhlts5UEMVxUNvDn6RB1JrSHH+3zBy0EFcK+V6EF6CFVXX333ZXeO6/R8dhGySwXHiz7tbZ+UWUZyAi7VO5B71QicKTUZLsbleLhFEUz/cRacQZnmXiyyVoQdKlF0H8/o/kln4/SS6oygHUABxDtoFwqke6zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790204544; c=relaxed/simple;
-	bh=zLkeA/VJAlS2a5vQvC1klLtpgc16NtrWTK0y5HZgLv8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=pc7v5LshIhd21dE+KDhYSAm1zRljINrUjF0f5ikZC9k4H1xJwdFbkqFWf24Il/S1X9svD/1HtT2vMJPqTqiVzhDEFwh7eIa/mBisSInWThmviopq2zRSIvM6AJ4V3lTGDy8AbICIu55HVtaLtPYXQ4zmJgM+injtQfnUbyF8fcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=D00YtSQc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YeVLzyte; arc=none smtp.client-ip=202.12.124.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1790209919; c=relaxed/simple;
+	bh=DCMEs3W/VY9ntGtGNtRm+QaGtpqva0uHRx6sySBE5DY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n7tEJ1pvrj3GoIRprNFQMPrM+XR4qA6eacffHu9h5qQSRJmDzEjI2KxEc/EtdAgs4eADDVAiPEa8mGg76Ee2EVEzLDj9YcG3jI2xbcSQMUHuluMYOSPH3klVJhryG6N60yBMYXqb1Bghu8g1gGXAaD3rQnTjqeb8veBRKgMg4Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=AaFv279O; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="D00YtSQc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YeVLzyte"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailflow.stl.internal (Postfix) with ESMTP id EF3A01300061;
-	Wed, 23 Sep 2026 19:02:15 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 23 Sep 2026 19:02:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790204535;
-	 x=1790211735; bh=j7u5tOwELlIMPfVVHAV+QU27fl4XVUJkgaxfyoSmFW0=; b=
-	D00YtSQcfkwYLg7smsLbBZtdZkZ1CYMeeNEMOYM2pxmNaG/vP0Xm5TgrL0hfLGYq
-	Sgj0eWd0dzijyk8lO66N/wmliLYC5JM9Ec/q4urlezxSVGnjKmSYJD+4SIZxAvak
-	VqBtlhvgQyr37vwsupp2o0Y7GZxK61aGNfLecrKMcxk+3FAVs1eX9wHXKXTNDJ6f
-	RdlkHBdw+CwJClYLLfqOSJrviqrBN2MOdc+ZkxVHkDeyA9iXXJejklJVLrJBsNCz
-	WVnxMR9uV7vjVZyGrz0DkWfWv0zqFlv120GLsbBRoPTI+hNKiGsKaxIJpM2kyl58
-	00TaQvZ4+Kkz1TQwGhS8XA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790204535; x=
-	1790211735; bh=j7u5tOwELlIMPfVVHAV+QU27fl4XVUJkgaxfyoSmFW0=; b=Y
-	eVLzyteJc5tMldl8xML6NOqBdv5rbTfLP4bVabHLIRuZnRgenwZjpY8ytnO609iR
-	pNNpkxpOwTpv7zBFsE8Y3TtpgLMK3joR2UnJQO4mdtSK0Ahxk+wbJQrDolwkAKBo
-	9BbHjY2UYLUO0Xe6XijrqURK7JpWyVqB3SvEjqwP4itUaZBRmr8Q4jmY96zTtLNf
-	W3eocUkBdf3fT1DxDpa2fE6Q06/B5QZmnWZiJamYq7+CqIuMY6GD+BuTf6g1P6Ca
-	TcS5nP4+K6lKm6GNwZO+RnL4Hpqlo1ZNXjoIFvzXXrGvK4Bx9Yr5H9e/P8s5R1vs
-	mbrh02Mzh1qPYUyppwxcA==
-X-ME-Sender: <xms:ZFq0arhH_lToFXDi_IRFMERM21IBzm7q2mhZaS6hATYp-mdh0N6TNg>
-    <xme:ZFq0ai2t4i2fIPkxethDjnw-vViZcn11tOGFWzW9PgX6hIKslpReBibKgK1Z10SDE
-    qSX-WnHXJ4hmYOJisHkUmL1bVQ4eU-12k4r_A99LPXJmImhifVQNtsE>
-X-ME-Proxy-Cause: dmFkZTEkKM4ETCxSerEyDHeVt40vy9DtePqrvMOPsb0ZZk+82eF5HeEURM+7fpRUtYqXv4
-    8NtvKSdyqnluNU/39Ouji4Iiwoo6OfRFvDjGW2pNLygO40R8oZQf0C71d+mps2BY2GtPxG
-    DzrsERYcSMvKR72+F+OYjJ96KPPUqAoi0SpTVfeBPjczHROOvfziEplohX389sf+01ChRD
-    K6bMZgHuf3Xu8WU7rjgxiTUsuuWF4e2Cecj7AwODXlOoh43GdODI2dqSpU22RJEcF4N4aS
-    kCHlZEUDbAwW8hPar5VBkxiQq+sp3ePCgAHzX3jWcVkZStVeYgKIHHiKR2Osib42UBvuZP
-    oXZhfzJH/iuOskrvAlHvSnBzl7uRsasPaJuF2bGDWu1C7oHdlzK+lGYgdNdYk9SshId/yP
-    2t3E+lUnC9FojivDTPhHQSNc8DCcuu+KQ08Qjemi8oKLJtPv4seXMMyq+58nNmkuqJUeYa
-    I4BhI1IpATtt9Mf4+a033zhZsWqvoTfWh2OmAlxcJi+oZOrDDNax9uHfmhsn27V1B3jznk
-    16ViRtovpCfbd3bvcbl/Bf7bP0iA4fygFs89MS+/SqML0jQM1SCVvJe21Gl8pjHcREa7t2
-    aW52nvviTQFZHJs8AMGVSxK8v1z/TFPVmzZBFgzK9TM1zVwxxBR0m9rMt/mw
-X-ME-Proxy: <xmx:bFq0ao4tR8DZwxiYCJJsI2Bs2W3sKLsCIbHjvSCZIUFe6SN_YRHx8g>
-    <xmx:bFq0akyuXqZMNAkEtrdT_YHOy_KJW0I_DSCLn8fR-MrvBaqjU7ye5Q>
-    <xmx:bFq0aqWa3J5IqC6sruiXSk01XNyfZYw0pEQi_oN_orbDd8jjVwCE-A>
-    <xmx:bFq0am3Lm0ejSmkrPPAfUu3v_l7vM8L0g6A15Gd5CWIEL86QMMvJQw>
-    <xmx:d1q0aveAcJg0t45_AVTbsPTxC7wj2Qywc52rkYQCCQ2cJ0jGOuMF1uQc>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id CD07532A008A; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="AaFv279O"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B0F49105B30;
+	Thu, 24 Sep 2026 02:31:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1790209908; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=bIla9WS4q+EH9bLUK0Yr9DxP2K0ikL42KF8TxnynahA=;
+	b=AaFv279O1b+ULW+bBqdyq61KQtVnenL1ph3J2jqSt/cCwSHMDFPNlRUVxucWK/3m6WmELU
+	wKeKNoeMBKChrJgNqj8VJGVsH5d44g1rwJ+xy7GCNS3z03zAVo0PjNRBFcYwkj11+Jhl5T
+	vnW9IU7uLENe4rkH9+o1hxTgDBuDF/JhNynmw9ktP/48th9pQa8ehYsNdFZAaMIrIWw6ju
+	4Db34FzzCPnjCp4+FpG9N4HFcZlLx9WoUkwUmAtE77Pk/rYp4plPPxWF1iHrW8/qTNRUxg
+	hCs1mJSJY72sqptLSRsuFRLXuHIy9/SsP7Z4rzl0TREBokgqMIKu4zjJpceB3Q==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [net-next,PATCH v1] enetc: Increase eMDIO MDC rate to 1.2 MHz
+Date: Thu, 24 Sep 2026 02:30:59 +0200
+Message-ID: <20260924003132.580306-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: ARoswzXc42gB
-Date: Thu, 24 Sep 2026 01:01:35 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Frank Li" <Frank.li@oss.nxp.com>
-Cc: "Ulf Hansson" <ulfh@kernel.org>,
- "Aubin Constans" <aubin.constans@microchip.com>,
- "Nicolas Ferre" <nicolas.ferre@microchip.com>,
- "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
- "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
- "Paul Cercueil" <paul@crapouillou.net>,
- "Russell King" <linux@armlinux.org.uk>, "Frank Li" <Frank.Li@nxp.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Aaro Koskinen" <aaro.koskinen@iki.fi>,
- =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
- "Manivannan Sadhasivam" <mani@kernel.org>,
- "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
- "Jesper Nilsson" <jesper.nilsson@axis.com>,
- "Lars Persson" <lars.persson@axis.com>,
- "Johan Hovold" <johan@kernel.org>, "gordon.ge" <gordon.ge@bst.ai>,
- "Vinod Koul" <vkoul@kernel.org>,
- "yangzh0906@thundersoft.com" <yangzh0906@thundersoft.com>,
- "Jared Kangas" <jkangas@redhat.com>, "Brian Masney" <bmasney@redhat.com>,
- "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
- "Linus Walleij" <linusw@kernel.org>, "Fan Wu" <fanwu01@zju.edu.cn>,
- "Rosen Penev" <rosenp@gmail.com>, "Pengpeng Hou" <pengpeng@iscas.ac.cn>,
- "Marco Crivellari" <marco.crivellari@suse.com>,
- "Pedro Demarchi Gomes" <pedrodemargomes@gmail.com>,
- "Zhan Xusheng" <zhanxusheng1024@gmail.com>,
- "Pan Chuang" <panchuang@vivo.com>, "Khalid Aziz" <khalid@kernel.org>,
- "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
- "Rakuram Eswaran" <rakuram.e96@gmail.com>,
- "Takashi Sakamoto" <o-takashi@sakamocchi.jp>,
- "Runyu Xiao" <runyu.xiao@seu.edu.cn>,
- "Matthew Wilcox" <willy@infradead.org>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
- "open list" <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/Microchip (AT91) SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- "open list:INGENIC JZ47xx SoCs" <linux-mips@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..."
- <imx@lists.linux.dev>, Linux-OMAP <linux-omap@vger.kernel.org>,
- "moderated list:ARM/ACTIONS SEMI ARCHITECTURE"
- <linux-actions@lists.infradead.org>,
- Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
- "open list:ARM/ARTPEC MACHINE SUPPORT" <linux-arm-kernel@axis.com>
-Message-Id: <67966b47-22cb-4b07-80c7-2044f557dbcb@app.fastmail.com>
-In-Reply-To: <arRHOJXxexYgKbPQ@lizhi-Precision-Tower-5810>
-References: <20260923184612.3583132-1-Frank.Li@oss.nxp.com>
- <eebb66fa-12e2-4553-8edf-d131b84a8aba@app.fastmail.com>
- <arQpj-pn15NRgSh8@SMW015318> <arRHOJXxexYgKbPQ@lizhi-Precision-Tower-5810>
-Subject: Re: [PATCH v4 1/1] mmc: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Sep 23, 2026, at 23:40, Frank Li wrote:
-> On Wed, Sep 23, 2026 at 02:33:35PM -0500, Frank Li wrote:
->> On Wed, Sep 23, 2026 at 08:57:04PM +0200, Arnd Bergmann wrote:
+The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
+but also very compatible. However, for example NXP TJA1120 PHY needs
+at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
 
-> after enhancement
-> 	consumer just need call
->
-> 	dmaengine_prep_slave_sg(chan, data->sg, data->sg_len, slave_dirn,
-> 			        DMA_PREP_INTERRUPT | DMA_CTRL_ACK |
-> 				DMA_PREP_MAP)
+As a minimum change, increase the MDC clock to 1.2 MHz which should be
+equally very compatible, since even old PHYs like LAN8210Ai, KSZ8794,
+DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
+NXP TJA1120 as well. There is no known rationale for why the 558 kHz
+was picked when the eMDIO driver was added.
 
-If that works, I think that would be perfect, good idea!
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Clark Wang <xiaoning.wang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+NOTE: Alternatively, I can either add a DT property to configure the
+      clock rate, or model the clock as clock hw divider and then use
+      assigned-clock-rates DT property to configure the desired rate?
+---
+ drivers/net/ethernet/freescale/enetc/enetc_mdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-       Arnd
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+index 998aaa394e9c4..30ea91cea00e5 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+@@ -24,7 +24,7 @@
+ 
+ #define ENETC_EMDIO_CFG \
+ 	(MDIO_CFG_HOLD(2) | \
+-	 MDIO_CFG_CLKDIV(258) | \
++	 MDIO_CFG_CLKDIV(138) | \
+ 	 MDIO_CFG_NEG)
+ 
+ #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
+-- 
+2.53.0
+
