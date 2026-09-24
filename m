@@ -1,164 +1,163 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013049.outbound.protection.outlook.com [40.107.159.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33228357CF8
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 14:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790259615; cv=fail; b=fxwOpPIXWRW2Q21pk+HNB61hpJZRFeLKssEFKSCJIA+86hNElUD4b/MqTf8I1QxcZRDA0+NMNuEE6z/8cTSCBaxLVtKxErsCVkwDjfJl0vOaAv+EuzY0o6JZqQi0k6gxSTQe/33HIoeUymrI6GZSYEXZhEMyMAXPvJErVx9FM/0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790259615; c=relaxed/simple;
-	bh=4TwaLy9D3KjGiXXZ6WC2wxXnFQDL8yYoisf5nZgCw+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UGfgV3od4VlYl3naTcGk6QrA5ApRss4KeZ1s7F4UVj7V215An77e8PtPa/K6NBRM4Wy0oiHZwdWTXHr9k7tuOlg7TUhZL/hueW4HRRCATfmS6bzJt/LmZYU8sctC79idxJpqdszFt0MI5m1Jiy3H1jM/CJZ7pLLQPPzFc7liZGU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=oZJTvpW9; arc=fail smtp.client-ip=40.107.159.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6148A3B4407
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 14:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790259932; cv=none; b=IrOsj5edVteBF9dNLm1CvAEBhhdRdFHXQBpPvLtC6y2xE3kH71UwFoH1moVBC0VC1jGUYpr7EphR2OcAKNsTf/gJu/MkfvzLECzJV8HR+xwbtM8SEI8rXFaoFqCTgNbp6ntq28epvDQHOEHoFMN4YlW/zILO0tMrPwm7ApM56YU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790259932; c=relaxed/simple;
+	bh=PCceAyxaZLKgL8goEMDQOo0fDMqrsGEIZWywwLaroIg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bs413TvNdqRzSs5Ct1WxY5EtXBxgfGJcNFQAdV+HRCHigkIoH3SEYqo/9QfOcJgSS5BJskYMR3Mh8uYunNLpGPA/fYdOmSrBvWRVsjwNZw9RS17VKRyHtduiV2TLnSp/0OrH45/dRRiH3FmUfg8q7aWHOUoH6Lei/k6Mw06JR2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V9h3mRzd; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="oZJTvpW9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zAwMWyaLB064dmgP010inJPIbO1DQtBIA8kPZIpO3m+nNFbceKDA4eO/tXZ2cvAHGCKycgpD3fXYjvyH8BUh2LVdhzzuVS9yWFEzKCTClrgj9IH/vdh9Q5HyPCob2lg1zBc68gXf72Rz5YPIleTdfpBUHda2YdjqONxI0i6lLkwPrg2yCIagdpSWpz9uQGSZXlOK0zo7LM1EJ4IuHQv6sF8EX3HTYwcPN0WXEKVJfmNefgNtw36QHZijpZWgr4+nDEXT+/ehy2ZL6m18pTys4s8dtHHE3wKdkq73wsT9KsHBr1M0B1p1+bEh7Jeoc+mrGVBFG2QVsZXxJH/RKrcpmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6pJHQs1U0YvgAycUyy7C4gMYdKpEuhTjgvchaA4KM1I=;
- b=YvMZpJiDul8D1fgUcq2YoD9g+e/tfXsIe6dIDFruBNHHFzQOXf2Zsd5EEojyOG3iYs48sYevz4SzRlh3BlwRY8ukFR+L1N+hgQm8OugHw92oH48wXbI7FHj17gkLuNsbk194UhV6UbCiKN/ooJYhjltOtr699vKGPKpw8MAlj8BHLczfY8UNyzN10BWJ/9KFmHqfglC9g1VAap0er1wY/CeBf+7QTPDgA4IEPHmQNj3K/1aV0awvo8RrzkbyVqkRpY4xjw5inFy70I8YQRclfYMTTwySNQm83SQBrYGnSlXFoob2kqUGqWtjZFfn9ZZkwzAoxQvmG3gY74gktDAFcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6pJHQs1U0YvgAycUyy7C4gMYdKpEuhTjgvchaA4KM1I=;
- b=oZJTvpW96qcsy7bJZZVc0pOBPqK5jKjJQ5b7OwWR88stDyxNwmntOXG0XWlUMRzqcc+HTRGldS6wQgPsDU3pJ/1vX4yP7Q06otHkFjzzLYx8opD5LOSkmmeaS39HUJcoodhF4qI/Nc5xm522ork7N5FnKT80IraW5YiaueEeppVxjSMwJC8Y8lo5wbon8ChRNGrqE7tOnXyLxI+hs2mkhF/rOHgs9WgvV2lPGYZJTLrBczK6q+O8UsDWiGouO5aFIsfQUcQrLDOf6VWxzup0uJNV1qg6ZlOXT7Lno0cDwCfHnQlJCvZNAwteHrYMcnaPkZgGOTz5zn6ImX6Xr4m1lg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM7PR04MB6775.eurprd04.prod.outlook.com (2603:10a6:20b:102::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Thu, 24 Sep
- 2026 14:20:06 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
- 14:20:06 +0000
-Date: Thu, 24 Sep 2026 09:19:56 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: nicolas.dufresne@collabora.com, p.zabel@pengutronix.de,
-	mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@collabora.com
-Subject: Re: [PATCH v3 2/3] media: dt-bindings: media: nxp, imx8mq-vpu:
- Remove nxp,imx8mq-vpu
-Message-ID: <arUxjHjr99jGBmzj@SMW015318>
-References: <20260924130453.196299-1-benjamin.gaignard@collabora.com>
- <20260924130453.196299-3-benjamin.gaignard@collabora.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924130453.196299-3-benjamin.gaignard@collabora.com>
-X-ClientProxiedBy: PH5P222CA0004.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:34b::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9h3mRzd"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc52c1b8286so473699a12.1
+        for <imx@lists.linux.dev>; Thu, 24 Sep 2026 07:25:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790259930; x=1790864730; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MaWkFoUOQ+u9WS91tjqMuEOPGp9Db2ThXslkCbREcik=;
+        b=V9h3mRzdO35gGpe3OoPQSi/1BBB4dkJ3HnHuzthCRNkY0jzvmDWDBbJ7qP+0ORprIj
+         qOlr6IgxVkNw3THVuPF9W6vozjPwuyWj3R+aYsp4lbzLjygk1IFn2IyhYQWOPal9azkJ
+         wsL33RScJkvUPxNeaShmpo00Z8Ylt1TjwPCAKUxTZgT4eznBRXYA0wTs++v4Bixet/VQ
+         8YbQojZsN6l+C1uFv4mKq9mVhTecpJmnwaDVTq2D3VUsLsW4Z/aavPdhE54IlneBIBTE
+         tK0lu6aVwlnc7e2qOGq+dQZ+yI1+SmTsBsoHrz018lUnbNa1cPDk0HtInlTnZo4w13Na
+         amzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790259930; x=1790864730;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MaWkFoUOQ+u9WS91tjqMuEOPGp9Db2ThXslkCbREcik=;
+        b=hcRbmSOHQ2sEqhQ7oxD0Uhpcq5U+Tc5eF5kcq7acXVkfQCmwePsGgjSh9N4ZF5YY9i
+         gVFXLL+Bw7tX5MrLSsfOTMAbTR8K67PiSpNL10cnlO59NxO43OYCElp0th09Y4VAGLn+
+         HlSRYaMwqTZV/oZcU8rZBKQg+NwtesaFphoGvkSRawwBE3WkexncqBe1Pbu143IGB3TJ
+         bLlsp6V123PhqXSIPjerUtMcHdd+/vispOfkSLDP/MibdwTs7eccZ8Cl47J7AEltsOl0
+         clTaMYXpWuISxQ8FzW+kH0MeF9tbVAbvWr/pUqi9pmRsbPL+mPI+ukTMeLjg+jyE2a+v
+         3JBw==
+X-Forwarded-Encrypted: i=1; AKwUvBw85cX1TzZrUkBxQMp9CVUJhWYoPRori5qdhPyZWNPtEjN4Wa9hnKNn69iZOqbDnb0djlo=@lists.linux.dev
+X-Gm-Message-State: AFuF++lv9qQNixPmoAvCMpYjvgETGecXCkkxpWCLYgRYUgjeNDzcAhKa
+	Bx0IH6M7R0YAyp4ZF6fSTchEDIvWZsalCR00wEIPabWo4LpvimSYkOMN
+X-Gm-Gg: AYBFou0mxNl4m+nHzyFH/wUBNkliPusapqTGRG8VERlsG60dU7yClbeQiCLpXdNGRWi
+	X6cx1tkYkrNrdNUhYIK5EJbW61FyUUIq8S2EiBRp+v6nbtVHHQr7Z2ZkPupLyUWMrfQiVaw3zCC
+	dgrE8rjxIZZd3QUMM6aP2JoP3uQJy2Rr/NC3UHqw6+K4sXFPbJL4XuiEMByMDiB2pS1oz6tYbGG
+	SLJAbIlSisG3diyys8hxfmlgCmSTCrFoQznEBctEAiTqsMCZek0wYrfcePkCGaYFC0kQP9Pibrl
+	VlRjarGg4GyYDnb7tjb6tDQJ9MVgwi0g9g8nAUUDHTicd+RqOMcpcHp0JfR5Uon6xnvZQbpdIYU
+	030Xj7D23AQjz3JpAWAwrwpiucsHP8IUm34ce/RxCAdkQ2q/Ju6XsPEW/tVtFncx/h3BCLxTs8+
+	NTvw6N8ym4UhiRdEDIjjXin4JiW/5IhhS641VxzH9mdLPJPRqG8u0BRQ==
+X-Received: by 2002:a05:6a00:1c8a:b0:87c:f3e5:ebda with SMTP id d2e1a72fcca58-87e99e3efcemr1451856b3a.0.1790259930408;
+        Thu, 24 Sep 2026 07:25:30 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1002::de93])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1afb99f0sm3157310b3a.6.2026.09.24.07.25.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 07:25:29 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Ulf Hansson <ulfh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] pmdomain: imx: gpc: remove all initialized power domains
+Date: Thu, 24 Sep 2026 22:25:20 +0800
+Message-ID: <20260924142520.1594149-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM7PR04MB6775:EE_
-X-MS-Office365-Filtering-Correlation-Id: b306a56b-9f97-4884-49d5-08df1a46ee31
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|7416014|19092799006|10067099003|56012099006|4143699003|22082099003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	jsYZulL+bcJ5tbqWtEKTeS+K3t60W7k84Rn6HjdkdcFgNlUeWKAQGPPVc/k+tiKYhOvgdoca4FO8b0+W+LripsHJl90/W9LA9mlQbInj4Gj3W3LhjNpE6D5traQ+4ydCq280ikqLIJNgEiKn5b1LFmaxDeUt1xCnjWaMdpXTC4gmK8p1GKcjZsDmcSJD/bYQr4wJfJDsMcCWFYmjmZuyMsaiUika3D68OxFCh1XeW1Q2rpqptSSOqIZOI9WVsP8p/z6T1iD7DhIakLgRbhi7s6cwHT1NL1g5cDCYE6JSWDdV/+R3p6/nzu1kkApfn4TgQaRjma62rToxkL3z6KESZO+H0+q3ONbYSLQngXJAeeN5DG+Vi9mU+MUuPEf26QtMZxe4+xbSZy5fqqZh4qxEvBynlI56wux0vrFKGQzr20txSOZRJaNwA+bXHDSd+n+plzx3rEi50c6AArL3jXuDDZ/Pm6wCmpSSdTNAGAFJXZNKgJEerKaeQUGh2q2Vpn3wAEJ8Vdj7M+qcRRZB2X3/omX1EuHpOkmVyKykREACRyupzaCB5BlWQOf5hM7aWWauyfHt7Ma0C8ERiV01MrhnW+CGo+q8GdRb+CH/28UTA37T591yJ/9FtEMoILe0dGl1S/9WOYd60ypxCt9qq2W/ieZGFPpDkUGmX0KYChhlHr8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(7416014)(19092799006)(10067099003)(56012099006)(4143699003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NSbJ/qOmYMFJ+vIQSj2n3UvfdYzTV7tSIRMeSQrnuxtLIalUqPSKeRiRTdO+?=
- =?us-ascii?Q?KIcvPv/M9FOEYX2OvFrbAk1N5a8s/fxB9DHKcWOpLpbLmV4o7oyvizhJZAZs?=
- =?us-ascii?Q?HAc6mMkl4ZjRtdcDXjMLu1eAvQefcVbrUiZ4AqVlUxGmdLf4GzIBwGTon9j+?=
- =?us-ascii?Q?PsNHbGRwlk/hQJJnTBZ9Ncx+VWt3WoM7XDvinqL5SVk0LSLoFTqaUFAjGMpf?=
- =?us-ascii?Q?VUg+W+h9ZojWZkl9kbssyuG71zXgGcxLRzU6vSWMGrIQg9FrIP03rt3IhWM4?=
- =?us-ascii?Q?34AYkLk6iZlYxkLA/qp6klbXuQNy8QM6Apkbe+99LXKNrPB8/Y54LhPYL1H7?=
- =?us-ascii?Q?B8YfYB0XiT11oZ3wsWA7Ce4p1r8fC9JnvAZl5OqcMbX66/QMd/sgGckMdEsB?=
- =?us-ascii?Q?70eYK99Eg3aYjztIZnXplbfxFgDVwLgIogzGNzE/NiEiwbanEGZPHV60HVHC?=
- =?us-ascii?Q?HVsteeQ9a1hYQMok6JaFu5kQ4PbsLYwwdyu2SoEMOkRjEbMPCFYSkl86qFdS?=
- =?us-ascii?Q?8VgobTMvovANe4tM1LjuyeF8Gh7ftHH9q5GJFDjZfNnpZA9BkBS6b+bawSEa?=
- =?us-ascii?Q?QqBqjkVYY6sucMV2pchspOgfW8wh15a5oIg1eTghpwJDECpChTJpvgda/LNA?=
- =?us-ascii?Q?ovjDHYGQ6wAlBtqsaS/d1S5DXQNR9MJwITx85OnRL4zt6nTz9tMxkHjC9Ohs?=
- =?us-ascii?Q?bjEw6NElSM4g1OiA9fzwMqtoFL1kmq5Jrxj4XbzXYVIZACvFFDQbWDupEcho?=
- =?us-ascii?Q?JO6EeJE8EtVYgmM/J0r5SXAxHugM3knOIQFYR8bhWeqCL0Nbsv4L88ykMcl5?=
- =?us-ascii?Q?Nlitybmy701r7Zf6VmDC+SKZdi6ZmunPeNbda7ZsoajNS7uQ+YpGVFWuDoP8?=
- =?us-ascii?Q?9YuNqsmEnQh9QLlgnKWyEBPhdpw7x+RCQW9Y57VAiiteqhl3lVHrq8NiH/VK?=
- =?us-ascii?Q?I73Y1ob76odnwsysZ4U2QKUheANr+2t7MKpzrxPeXEM1JLf0A6W4IeP9fBCR?=
- =?us-ascii?Q?q68IkECnBKvyo7Kjmxd4Zn875pYd4QakrKqmx6Lxq9GrCaglFhNBEGOKDgoo?=
- =?us-ascii?Q?SP3FxEU+ttpEcySdNbAe/j1XpRn2cDauve2LF86JMsC0O/vhgna/jQSKbu9C?=
- =?us-ascii?Q?98gyvXrO+dZ27lnvfZ/Mea+PPP1Zl/5KOL4zZ0PRN1hz+DqFWuP+2XDa9Vhe?=
- =?us-ascii?Q?EQLKGYPtcBPwppuWt72qVVBpnzJuWTLGYCP2LCC1cQxddcWsQpq7h4aYa5Gg?=
- =?us-ascii?Q?+4JRX8IqKRFtky+rovEecO1U4jlMpWhAkNHJZ5eUrgY1AUZxellrMyND/UFo?=
- =?us-ascii?Q?eNjyGrFlpd1EhmYINreXo01Rdn+WLR+I228Bdndl8ymeuiW1cVYfBbYLVb/u?=
- =?us-ascii?Q?L1UI5UihNgQOB6Sh/R7x2Phk1/19l5z2heHTaRYnx1hD7lNMWpuuqGR55xFh?=
- =?us-ascii?Q?dRooNXqGBn1+P1tlrvPcc9O9GYepev8GM2OzZo+uLtBYDG4FcZ6AkG+lvr8A?=
- =?us-ascii?Q?/T8HZVIsOhR6qVFwkwmH20afV2TvHGlwyI6Um14fPhzpPOd+Uj1xks62nifY?=
- =?us-ascii?Q?KLX2zbow1/vH0RUiCUwSLqCeDZ9cX5cHImv5osc9efpJ/icrowmzL2PV7BhX?=
- =?us-ascii?Q?nqy/Ib6pNc4WeO5zAYYgejP/+F6OPZvlwHvvbq2knoZkPR4NLll2HMyJ8+x8?=
- =?us-ascii?Q?sKy12alSnajzTapPYl24lP9Xb7oneDtRO0IL86hrM0DszUT9xRDsp9R4O6z/?=
- =?us-ascii?Q?i0hK0k6nqxYnSx95vzCUTQbUbLB789yI9q3l6agHEvkm36dVRdty?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b306a56b-9f97-4884-49d5-08df1a46ee31
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 14:20:06.0069
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y7BKvAMJVeWo5W78QPHoAxSNmwLJ9pZw3+sOvGBeU4amTZCBD4n/tdCVLY6sx//u4LmNOo2HxYRvwKWGPshk823bmjbkJPjxGdNs9dbHifRoQ/wMa8C0AlMlPaWGQQF3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6775
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 03:04:52PM +0200, Benjamin Gaignard wrote:
-> nxp,imx8mq-vpu has been tagged has deprecated since a while.
-> After driver clean up it is time to remove it.
->
-> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-> ---
+imx_gpc_old_dt_init() initializes all power domains described by
+of_id_data->num_domains, while imx_gpc_remove() only removes the PU and
+ARM domains.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Use the match data to remove all initialized power domains in reverse
+order. Release the PU clocks after the PU domain is removed.
 
->  .../devicetree/bindings/media/nxp,imx8mq-vpu.yaml      | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> index 19528262810a..69619d2c86fa 100644
-> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> @@ -14,12 +14,10 @@ description:
->
->  properties:
->    compatible:
-> -    oneOf:
-> -      - const: nxp,imx8mq-vpu
-> -        deprecated: true
-> -      - const: nxp,imx8mq-vpu-g1
-> -      - const: nxp,imx8mq-vpu-g2
-> -      - const: nxp,imx8mm-vpu-g1
-> +    enum:
-> +      - nxp,imx8mq-vpu-g1
-> +      - nxp,imx8mq-vpu-g2
-> +      - nxp,imx8mm-vpu-g1
->
->    reg:
->      maxItems: 1
-> --
-> 2.53.0
->
->
+This issue was found by manual code inspection.
+
+Fixes: 5a42d1198901 ("soc: imx: gpc: fix imx6sl gpc power domain regression")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v2:
+  - Check the result of device_get_match_data() before using it.
+  - Use an unsigned num_domains variable and a decrementing while loop,
+    as suggested by Andy Shevchenko.
+
+ drivers/pmdomain/imx/gpc.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index abca5f449a22..d83fb37e2297 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -502,7 +502,9 @@ static int imx_gpc_probe(struct platform_device *pdev)
+ 
+ static void imx_gpc_remove(struct platform_device *pdev)
+ {
++	const struct imx_gpc_dt_data *of_id_data;
+ 	struct device_node *pgc_node;
++	unsigned int num_domains;
+ 	int ret;
+ 
+ 	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
+@@ -519,20 +521,23 @@ static void imx_gpc_remove(struct platform_device *pdev)
+ 	if (!pgc_node) {
+ 		of_genpd_del_provider(pdev->dev.of_node);
+ 
+-		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_PU].base);
+-		if (ret) {
+-			dev_err(&pdev->dev, "Failed to remove PU power domain (%pe)\n",
+-				ERR_PTR(ret));
++		of_id_data = device_get_match_data(&pdev->dev);
++		if (!of_id_data)
+ 			return;
+-		}
+-		imx_pgc_put_clocks(&imx_gpc_domains[GPC_PGC_DOMAIN_PU]);
+ 
+-		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_ARM].base);
+-		if (ret) {
+-			dev_err(&pdev->dev, "Failed to remove ARM power domain (%pe)\n",
+-				ERR_PTR(ret));
+-			return;
+-		}
++		num_domains = of_id_data->num_domains;
++		while (num_domains--) {
++			ret = pm_genpd_remove(&imx_gpc_domains[num_domains].base);
++			if (ret) {
++				dev_err(&pdev->dev,
++					"Failed to remove %s power domain (%pe)\n",
++					imx_gpc_domains[num_domains].base.name,
++					ERR_PTR(ret));
++				return;
++			}
++
++		if (num_domains == GPC_PGC_DOMAIN_PU)
++			imx_pgc_put_clocks(&imx_gpc_domains[num_domains]);
+ 	}
+ 
+ 	of_node_put(pgc_node);
+-- 
+2.43.0
+
