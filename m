@@ -1,128 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEFD3A1A23;
-	Thu, 24 Sep 2026 11:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B72377EC7;
+	Thu, 24 Sep 2026 12:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790249146; cv=none; b=RkgmRqllYO8rXOlGQr8pZv9szjvpXZ8c5HQ0xc6xCSl+0W23H1EBwcs1HNxZQwMc9ljf9HZn9BEZeM87Su8YlGHQFi1AZyUMkpzcwtvU/xSxj8X+2SQmUI40JXP6nBFmDrMrnfD5WH7qMTotO9Xfv0msQawCXaFX83JyV6P0pTA=
+	t=1790253656; cv=none; b=SoPq7AUuGwiP0+JWBjL9tXv5WSJt0yYy54Y8kX0pXT7C4mPdKm42uzH7y08TIXUcf0FrPaIKmA/+ldKLLNcNTho51N00/YDLHRmPkDxp7Pco2+cA+4UnbHlX5IJpFmEYJ669xm61SZynmomqpOp3xZKuMJT9TF89awvlG23VKvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790249146; c=relaxed/simple;
-	bh=A6aVWw4SIKR0gHcNSoIXvDt0KKKmtBXwQ7exjKTbTYk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ptRos4yfMqCWFtMU4dbjgVWSaaMZYrdbTN+r/5V/Z8FJYUTA989tgEiubAXk4Y0uo4AKRYZg95kDlccE365zDiYZPHEVLnHyLcUMgQ9VSTy3C0CKy0clz68qd5fzyjkYsjzw2xKcCU95bz7tsSYypAgTi+rjUBCtZm4QwZzAmXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYwbnRYQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790253656; c=relaxed/simple;
+	bh=ZcNh+l6SeSrEevzUyaiIbHJKDijrGi3F9DOB0SBLJpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ptMOMmF6xAJ2N1jcI4IEOdL38V6cw/pDgLCrIFCg5/XCKJkJ9AQ55G1o0FHvB0qIEB4DEmyXO04RtY2PYztlf11kc2cxzL9eKf/dyrU/QMfziIOmdektC1Zn1hmOqqN9N0EtMOMynLUOuhmUnYRtSJMIGnYfUmJilRZx9y0rf98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eEpIPmlD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYwbnRYQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606D31F000FF;
-	Thu, 24 Sep 2026 11:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790249138;
-	bh=2ABm4SyvuJZ/84FIc2LYh7DCE6LYjzt2jaq+g9mFUSI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OYwbnRYQldkFd9I8svwGWYXb2agkWZSFqbD/8CYCPVcEkXT8x/sXCR2xg6W/mS33Q
-	 Ur36Ojdbel77GgkMqw1JHtVYfe5p4YUAkIemeB7XjSMpxzO8ZSqYwU0MfPHicb4bB0
-	 ybdXKuIxYOAgs6XK8grOeMTmG5a1arBcMf98vfDtgVJ3JUL2pRV9lz2QeDaWJ5lc8S
-	 HZhOsL6891Yx2x09GdT/9oJR2fI7C9c4ab0QtmCYVW8ez7rqzgFaDDoJdyhEknfVJ2
-	 s/v3VEh/lNpOL8zL8H9C4HmeC+l90mcEgabE0DmyMW8lbG5LLTAmuogoZZPIuOymfV
-	 R65XNgH71hqLQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/3] media: verisilicon: Remove useless internal
- fields
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Benjamin Gaignard" <benjamin.gaignard@collabora.com>
-Cc: conor+dt@kernel.org, media-ci@linuxtv.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260924110825.166238-4-benjamin.gaignard@collabora.com>
-References: <20260924110825.166238-1-benjamin.gaignard@collabora.com>
- <20260924110825.166238-4-benjamin.gaignard@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 24 Sep 2026 11:25:37 +0000
-Message-Id: <20260924112538.606D31F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eEpIPmlD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=LlhL8lPQK+mGmThvRzcBFWd03/EYCS0ROgcvO+lg6ns=; b=eEpIPmlDWOZam71wIcPWwH/Ioz
+	eo5DxMECgO/mlGeLs861lSC0kURUaOMryIZVvkatNfERA1W5avV/zuuPs4N1UW7n9eXUEsiJ/lhTN
+	yHa8qqjgAawkok0KNH0/I2quTGeu2QdlYVO8+6ZpDh3Poqa49od5rLEnxgCcHVjF1s4M=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9iks-006zVy-Nh; Thu, 24 Sep 2026 14:40:50 +0200
+Date: Thu, 24 Sep 2026 14:40:50 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aldo Ariel <qwe.aldo@gmail.com>
+Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net v2] net: fec: reject oversized fragments before
+ bounce-buffer memcpy
+Message-ID: <a230cd62-db31-4128-acfa-93501d30aa39@lunn.ch>
+References: <20260923203738.1583735-1-qwe.aldo@gmail.com>
+ <f3c05fe4-b90a-484b-8b3f-0cf0b101a20a@lunn.ch>
+ <CAP48Hfto4qc285B3Jw7ZRuC-wGf57JOBPZOdrrAt-aDfGcas8Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP48Hfto4qc285B3Jw7ZRuC-wGf57JOBPZOdrrAt-aDfGcas8Q@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] media: hantro: break backward compatibility by removing DT compati=
-ble string
-- [Low] media: hantro: dead code and uninitialized pointer ctrl_base left b=
-ehind
---
+On Wed, Sep 23, 2026 at 06:22:01PM -0300, Aldo Ariel wrote:
+> Hi Andrew,
+> 
+> PKT_MAXBUF_SIZE = round_down(2048 - 64, 64) = 1984
+> max_mtu (non-jumbo) = 1984 - VLAN_ETH_HLEN - ETH_FCS_LEN = 1962
+> 
+> So for standard MTU, max_mtu < FEC_ENET_TX_FRSIZE and individual
+> fragments should not exceed the bounce buffer.
+> 
+> However, when the device supports jumbo frames,
+> max_buf_size = MAX_JUMBO_BUF_SIZE (~16256) and max_mtu reaches ~16234.
+> Scatter-gather fragments in that case can exceed FEC_ENET_TX_FRSIZE
+> while still needing the bounce path for alignment or byte-swap.
+> 
+> Should I respin with a check only for the jumbo path, or is the
+> unconditional guard acceptable?
 
-commit c57de89560179f851e42f6a6ea8c48063d12e4c8
-Author: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Can bounce buffers and jumbo be used at the same time?
 
-media: verisilicon: Remove useless internal fields
-   =20
-No more variants are using multiple registers regions.
-Remove the useless fields and simplify driver code.
+How is the scatter-gather size determined? Maybe the better fix is to
+set the fragment size based on the size of the bounce buffer when it
+is in use?
 
-> diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/=
-platform/verisilicon/hantro.h
-> index 0353de154a1ec..20c3afb3b8176 100644
-> --- a/drivers/media/platform/verisilicon/hantro.h
-> +++ b/drivers/media/platform/verisilicon/hantro.h
-[ ... ]
-> @@ -204,7 +200,7 @@ struct hantro_dev {
->  	struct device *dev;
->  	struct clk_bulk_data *clocks;
->  	struct reset_control *resets;
-> -	void __iomem **reg_bases;
-> +	void __iomem *reg_base;
->  	void __iomem *enc_base;
->  	void __iomem *dec_base;
->  	void __iomem *ctrl_base;
-
-[Severity: Low]
-Does this struct still need the ctrl_base pointer?
-
-The initialization of vpu->ctrl_base was removed when the multi-base mapping
-was dropped, leaving this field uninitialized.
-
-Additionally, imx8mq_vpu_codec_ops in imx8m_vpu_hw.c and its associated res=
-et
-function imx8m_soft_reset() still unconditionally dereference this pointer.
-Since imx8mq_vpu_variant was removed, they appear to be dead code.
-
-Could these orphaned structures and the ctrl_base field be removed?
-
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
-dia/platform/verisilicon/hantro_drv.c
-> index 70de47ddb023b..f418b04279856 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -1080,7 +1080,6 @@ static int hantro_probe(struct platform_device *pde=
-v)
->  {
->  	const struct of_device_id *match;
->  	struct hantro_dev *vpu;
-> -	int num_bases;
-
-[Severity: High]
-Does the removal of the nxp,imx8mq-vpu compatible string in this series bre=
-ak
-backwards compatibility for older Device Trees?
-
-Because the driver no longer matches that string, it will completely fail to
-probe on systems booting with older DTBs, rendering the hardware unusable.
-
-Additionally, since the string is missing from of_hantro_match, the driver
-will not probe at all, which makes the existing fallback warning inside
-hantro_probe() unreachable dead code:
-
-    if (of_device_is_compatible(pdev->dev.of_node, "nxp,imx8mq-vpu"))
-            dev_warn(&pdev->dev, "%s compatible is deprecated\n",
-                     match->compatible);
-
-Since kernel policy strictly maintains DT ABI compatibility, should this
-deprecated string be restored to the match array so existing systems contin=
-ue
-to boot and the warning mechanism works as intended?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924110825.1662=
-38-1-benjamin.gaignard@collabora.com?part=3D3
+	Andrew
