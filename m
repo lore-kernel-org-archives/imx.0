@@ -1,61 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97203426D0A;
-	Thu, 24 Sep 2026 06:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE3E3E120B
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 07:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790233167; cv=none; b=m4FkkC67SOc0eFkyG2hT9hfg+zfKeEWZF1wuVdrN1/LBLe4UEW0ff74oz9sjs9hfOwq1bAkQhpI+Z8vJtITL22SVoAF6HK9PceuCqH5LBC4sRTBRztDMLJPwV3kYw4CxCd7QlCwjJU/w9pkr84enL0zoO0uYqMVJXFftlOYcBGI=
+	t=1790233318; cv=none; b=fcqtZA7xSzgNPt1nQIXgbI9zrQBzHJdBxd2Z+YJSrcTzPSvOYYWLe5LrVZ/p/sTh0P3wGA6uCqur1CCjoSVgA/7YLXpBWJRv2PgEMweGmlgCoBaFY1B61ld1+zJhm9OKI5xsXKZn1VikYx1kRdWm34IOCs0dIYbgWtbaYK/BpJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790233167; c=relaxed/simple;
-	bh=6kqLVuMTkJMTqDTEpBxXxO4MeaXZjz1G7lVpuMoCXME=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ek4j4zYVSnuXMkDka7t+7CWaEg6HUwT9KYDxCk7uQuMO0zrYpEcmrNuIVNpqRaPSbqHflc2CcMGRGnoUSVsPUpojRWtacg/HMrADTgRgJBWMaiJTvWsvlaUlH/myPLSP3xrRO8iogN4LhiEBVKh36nRKvDeoharPBlxA1O8XcMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRJchEsD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790233318; c=relaxed/simple;
+	bh=21vHPs+cccmI0GIDrI9wBRtngdr4EBlpl0EvM5Z31P0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=qglOjOenMk/gTyHV1D3TdTJAS2HhV8/qfH0aiD583TY4Z4prcPSee2mIeH88QHGj9V2JvwPPJ5e9bJMRdXLZ6pAAnX7qbuSVSel+h+bcLrwOCTFrB+H3baRP1YyXNJIQjWFN9SfhxczozMm3uaOFHBUgb+K+/62yDaYg6bVG51I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VfDv7S7f; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRJchEsD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9549E1F000FF;
-	Thu, 24 Sep 2026 06:59:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790233153;
-	bh=6kqLVuMTkJMTqDTEpBxXxO4MeaXZjz1G7lVpuMoCXME=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GRJchEsDLRVWka3Id2YYpHNjmXaWNbvtqvPRsOhbteqQ45O7HHnWbUALkudCug+lN
-	 AJkeVPv9kEUgOqXDxddo8QrGHQAom7zPGa1347hV8POfYYugf9b2AKtCjKNvtB6Uou
-	 8skP2QvilRN2m3JFAHrgkh+NGEfOiqRIsUAx/UZKZhHzUM8w2IZlm/BTISxl5wPX2j
-	 w6aw6S2iUlqyqCm7t7t2V1aOSSUzIepK/kV8UXiAprwGUD8cvbuLJrmTyFVo8IMXci
-	 fbzPTfG9vW9Zzrw9UgiErGPHgvo3X+ODSFVeLWKpWbDNkZDnap6Zv/ucjb94IsZwEI
-	 X7ST2Xb1U/lmQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/4] mfd: da9061: Make register CONFIG_I writable
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Primoz Fiser" <primoz.fiser@norik.com>
-Cc: lee@kernel.org, devicetree@vger.kernel.org, linux-watchdog@vger.kernel.org, Frank.Li@kernel.org, mfd@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260924065044.368341-3-primoz.fiser@norik.com>
-References: <20260924065044.368341-1-primoz.fiser@norik.com>
- <20260924065044.368341-3-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 24 Sep 2026 06:59:12 +0000
-Message-Id: <20260924065912.9549E1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VfDv7S7f"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 417994E41055;
+	Thu, 24 Sep 2026 07:01:44 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EA2AA5FB45;
+	Thu, 24 Sep 2026 07:01:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2EEF103294A6;
+	Thu, 24 Sep 2026 09:01:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790233298; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3oGwBuyJVzkAjrauN/FxJTxwMCY3sLnXn9ixXjUrD2A=;
+	b=VfDv7S7faDApBOx+DPqMCyWHBKUPlODcB1xuNfsFjM3RNlzyRMcdJhIP0bigttbKx1o5jy
+	+B3mEF8B/s9ysd2wfnmGpCg4NZheR3VGvS94Ic0SKnLPviSK0O4PMC4viKTqfmdCj+9vMX
+	uaR7ncMHlkENvjrtg1sfppR2+2rB1w3yNHl15P3vTuCFyK7Bv7Ut1MV2dfvSol7696XXmK
+	vqgt//ttjMMGzJqmyWKqUW/+naiLm3TqTzPFnvGHAOfowEfbjOv664AYGg+P4m03YFGXZS
+	W/ZrKJoYs3u+wZqS+nmUIHWaVMRI8biPPQkNoSk2GzQUV+7Bbe8V7J315PgOJg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 09:01:18 +0200
+Message-Id: <DLNCQEG62F5N.O98WAO4U2FJO@bootlin.com>
+Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Jessica Zhang" <jesszhan0024@gmail.com>, "Laurentiu
+ Palcu" <laurentiu.palcu@oss.nxp.com>, "Lucas Stach"
+ <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Paul
+ Cercueil" <paul@crapouillou.net>, "Paul Kocialkowski" <paulk@sys-base.io>,
+ "Linus Walleij" <linusw@kernel.org>, "Inki Dae" <inki.dae@samsung.com>,
+ "Jagan Teki" <jagan@amarulasolutions.com>, "Marek Szyprowski"
+ <m.szyprowski@samsung.com>, "Sean Paul" <sean@poorly.run>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Albert Esteve" <aesteve@redhat.com>,
+ "Anusha Srivatsa" <asrivats@redhat.com>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>,
+ "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-mips@vger.kernel.org>,
+ <linux-rockchip@lists.infradead.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, <asahi@lists.linux.dev>,
+ <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+ <linux-tegra@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-samsung-soc@vger.kernel.org>
+To: "Maxime Ripard" <mripard@kernel.org>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v3 12/19] drm/mcde: dsi: don't create a panel_bridge
+X-Mailer: aerc 0.22.0
+References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
+ <20260916-drm-bridge-every-panel-v3-12-83afb4f1a707@bootlin.com>
+ <arInho2bsfJiCgjV@houat>
+In-Reply-To: <arInho2bsfJiCgjV@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-> From: Andrej Picej <andrej.picej@norik.com>
->=20
-> Make the config register CONFIG_I writable to change the watchdog mode.
->=20
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> Reviewed-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
-> Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Hi Linus, Maxime,
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+On Tue Sep 22, 2026 at 9:09 AM CEST, Maxime Ripard wrote:
+> On Wed, Sep 16, 2026 at 03:45:36PM +0200, Luca Ceresoli wrote:
+>> Now a panel_bridge is automatically created for every drm_panel and the
+>> panel-bridge API is just a deprecated wrapper to access it.
+>>
+>> Update and simplify the code by just getting a reference to the
+>> already-existing bridge using of_drm_find_and_get_bridge().
+>>
+>> Also keep the "connected to non-panel bridge (unsupported)\n" error logi=
+c
+>> by using the drm_bridge_is_panel() function.
+>>
+>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924065044.3683=
-41-1-primoz.fiser@norik.com?part=3D2
+[...]
 
+>> @@ -1102,40 +1100,21 @@ static int mcde_dsi_bind(struct device *dev, str=
+uct device *master,
+>>
+>>  	/* Look for a panel as a child to this node */
+>>  	for_each_available_child_of_node_scoped(dev->of_node, child) {
+>> -		panel =3D of_drm_find_panel(child);
+>> -		if (IS_ERR(panel)) {
+>> -			dev_err(dev, "failed to find panel try bridge (%ld)\n",
+>> -				PTR_ERR(panel));
+>> -			panel =3D NULL;
+>> -
+>> -			bridge =3D of_drm_find_and_get_bridge(child);
+>> -			if (!bridge) {
+>> -				dev_err(dev, "failed to find bridge\n");
+>> -				return -EINVAL;
+>> -			}
+>> +		bridge =3D of_drm_find_and_get_bridge(child);
+>> +		if (!bridge) {
+>> +			dev_err(dev, "failed to find bridge\n");
+>> +			return -EINVAL;
+>>  		}
+>>
+>> -		if (panel || bridge)
+>> -			break;
+>> +		break;
+>>  	}
+>> -	if (panel) {
+>> -		bridge =3D drm_panel_bridge_add_typed(panel,
+>> -						    DRM_MODE_CONNECTOR_DSI);
+>> -		drm_panel_put(panel);
+>> -		if (IS_ERR(bridge)) {
+>> -			dev_err(dev, "error adding panel bridge\n");
+>> -			return PTR_ERR(bridge);
+>> -		}
+>> -		drm_bridge_get(bridge);
+>> -		dev_info(dev, "connected to panel\n");
+>> -		d->panel =3D panel;
+>> -	} else if (bridge) {
+>> +	if (!bridge) {
+>> +		dev_err(dev, "no bridge\n");
+>> +		return -ENODEV;
+>> +	} else if (!drm_bridge_is_panel(bridge)) {
+>>  		/* TODO: AV8100 HDMI encoder goes here for example */
+>>  		dev_info(dev, "connected to non-panel bridge (unsupported)\n");
+>>  		return -ENODEV;
+>
+> I wonder if we still need that branch. Every panel is a bridge now, and
+> it looks like we don't have any specific panel handling in this driver,
+> so I guess it supports bridges already?
+>
+> Linus, do you know why this condition was here in the first place?
+
+I had the same thought while writing the patch, but I chose to be
+conservative.
+
+Linus, unless you have more info I'm going to apply the patch as
+is. Removing this special case would be welcome as a later patch.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
