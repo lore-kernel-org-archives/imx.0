@@ -1,163 +1,100 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6148A3B4407
-	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 14:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C620A3C09FB
+	for <imx@lists.linux.dev>; Thu, 24 Sep 2026 14:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790259932; cv=none; b=IrOsj5edVteBF9dNLm1CvAEBhhdRdFHXQBpPvLtC6y2xE3kH71UwFoH1moVBC0VC1jGUYpr7EphR2OcAKNsTf/gJu/MkfvzLECzJV8HR+xwbtM8SEI8rXFaoFqCTgNbp6ntq28epvDQHOEHoFMN4YlW/zILO0tMrPwm7ApM56YU=
+	t=1790260312; cv=none; b=JDQ95CRINpOHEDRF85atHtTnfPg4Zr/4OYpc+/X9W0+vB3nF0hoC8rMTBs2ZGrXuf7tONSUppTDiWHE09B0ebPJQqpVBfDEiucIubbrV1spa88qbp5avjnAD6pvC9MDjJcy594De8acURSziW5Ek1HnLu74WzytgCQD3zLfysy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790259932; c=relaxed/simple;
-	bh=PCceAyxaZLKgL8goEMDQOo0fDMqrsGEIZWywwLaroIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bs413TvNdqRzSs5Ct1WxY5EtXBxgfGJcNFQAdV+HRCHigkIoH3SEYqo/9QfOcJgSS5BJskYMR3Mh8uYunNLpGPA/fYdOmSrBvWRVsjwNZw9RS17VKRyHtduiV2TLnSp/0OrH45/dRRiH3FmUfg8q7aWHOUoH6Lei/k6Mw06JR2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V9h3mRzd; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790260312; c=relaxed/simple;
+	bh=Ee9g0R6zb7Rj5ojaxcfqHgIUshiy5vtwOAeLhGeYw7s=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=pfWhDle+CTc6d8DlJg621dj3w458Lj0i6heVax7ebCFsQw82L6f7fMeHl9HRZIPPWviLhByVHVntVo7sfixcGqxfCtS35JnWwKgWutPL6bFli3X7SDRuXKv3Wvvp/A8I/Xlt8D+OGmL6gRtXpsPJ3wqE0U+laHUmNRDA2/i6ExM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EA8Vecy+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9h3mRzd"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc52c1b8286so473699a12.1
-        for <imx@lists.linux.dev>; Thu, 24 Sep 2026 07:25:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790259930; x=1790864730; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MaWkFoUOQ+u9WS91tjqMuEOPGp9Db2ThXslkCbREcik=;
-        b=V9h3mRzdO35gGpe3OoPQSi/1BBB4dkJ3HnHuzthCRNkY0jzvmDWDBbJ7qP+0ORprIj
-         qOlr6IgxVkNw3THVuPF9W6vozjPwuyWj3R+aYsp4lbzLjygk1IFn2IyhYQWOPal9azkJ
-         wsL33RScJkvUPxNeaShmpo00Z8Ylt1TjwPCAKUxTZgT4eznBRXYA0wTs++v4Bixet/VQ
-         8YbQojZsN6l+C1uFv4mKq9mVhTecpJmnwaDVTq2D3VUsLsW4Z/aavPdhE54IlneBIBTE
-         tK0lu6aVwlnc7e2qOGq+dQZ+yI1+SmTsBsoHrz018lUnbNa1cPDk0HtInlTnZo4w13Na
-         amzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790259930; x=1790864730;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MaWkFoUOQ+u9WS91tjqMuEOPGp9Db2ThXslkCbREcik=;
-        b=hcRbmSOHQ2sEqhQ7oxD0Uhpcq5U+Tc5eF5kcq7acXVkfQCmwePsGgjSh9N4ZF5YY9i
-         gVFXLL+Bw7tX5MrLSsfOTMAbTR8K67PiSpNL10cnlO59NxO43OYCElp0th09Y4VAGLn+
-         HlSRYaMwqTZV/oZcU8rZBKQg+NwtesaFphoGvkSRawwBE3WkexncqBe1Pbu143IGB3TJ
-         bLlsp6V123PhqXSIPjerUtMcHdd+/vispOfkSLDP/MibdwTs7eccZ8Cl47J7AEltsOl0
-         clTaMYXpWuISxQ8FzW+kH0MeF9tbVAbvWr/pUqi9pmRsbPL+mPI+ukTMeLjg+jyE2a+v
-         3JBw==
-X-Forwarded-Encrypted: i=1; AKwUvBw85cX1TzZrUkBxQMp9CVUJhWYoPRori5qdhPyZWNPtEjN4Wa9hnKNn69iZOqbDnb0djlo=@lists.linux.dev
-X-Gm-Message-State: AFuF++lv9qQNixPmoAvCMpYjvgETGecXCkkxpWCLYgRYUgjeNDzcAhKa
-	Bx0IH6M7R0YAyp4ZF6fSTchEDIvWZsalCR00wEIPabWo4LpvimSYkOMN
-X-Gm-Gg: AYBFou0mxNl4m+nHzyFH/wUBNkliPusapqTGRG8VERlsG60dU7yClbeQiCLpXdNGRWi
-	X6cx1tkYkrNrdNUhYIK5EJbW61FyUUIq8S2EiBRp+v6nbtVHHQr7Z2ZkPupLyUWMrfQiVaw3zCC
-	dgrE8rjxIZZd3QUMM6aP2JoP3uQJy2Rr/NC3UHqw6+K4sXFPbJL4XuiEMByMDiB2pS1oz6tYbGG
-	SLJAbIlSisG3diyys8hxfmlgCmSTCrFoQznEBctEAiTqsMCZek0wYrfcePkCGaYFC0kQP9Pibrl
-	VlRjarGg4GyYDnb7tjb6tDQJ9MVgwi0g9g8nAUUDHTicd+RqOMcpcHp0JfR5Uon6xnvZQbpdIYU
-	030Xj7D23AQjz3JpAWAwrwpiucsHP8IUm34ce/RxCAdkQ2q/Ju6XsPEW/tVtFncx/h3BCLxTs8+
-	NTvw6N8ym4UhiRdEDIjjXin4JiW/5IhhS641VxzH9mdLPJPRqG8u0BRQ==
-X-Received: by 2002:a05:6a00:1c8a:b0:87c:f3e5:ebda with SMTP id d2e1a72fcca58-87e99e3efcemr1451856b3a.0.1790259930408;
-        Thu, 24 Sep 2026 07:25:30 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1afb99f0sm3157310b3a.6.2026.09.24.07.25.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 07:25:29 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Ulf Hansson <ulfh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2] pmdomain: imx: gpc: remove all initialized power domains
-Date: Thu, 24 Sep 2026 22:25:20 +0800
-Message-ID: <20260924142520.1594149-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EA8Vecy+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD721F000FF;
+	Thu, 24 Sep 2026 14:31:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790260310;
+	bh=tDOsuF6hpllZJhIYq537DIMjzSlLMOAPOrQ0lF7djv0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EA8Vecy+K8zseTFA+A60zbRbF2SBii2yfcFKHT86dNw3pkV9NiRQG5eJdR+59KAXI
+	 fFGxRPZ50qeLfIpudDwiO3+01fYJmM2h10bzOwYA6EzAgPuaSdJmhFomae31OuswXo
+	 BkabvwZvl1gkbXKf4D3KvzTLhG/OF2o1QyOad+gBJXb2pYda1wIc7TA5HQgvDXR9Mt
+	 3gK/UuBGwT9KJWrtYj+VaxcMeYD7wzU4ZaV/PsUT+J7KUB/bdXwmVYWWIdbJlv9HXA
+	 9bgo8wS/DT0hYdVQ1ca9pOjrqARwePk9dg+ynbt02k0hsKuzhGxDTD5JYU/TCiIDen
+	 D/0XPHOcd+Y6w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] pmdomain: imx: gpc: remove all initialized power
+ domains
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guangshuo Li" <lgs201920130244@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260924142520.1594149-1-lgs201920130244@gmail.com>
+References: <20260924142520.1594149-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 24 Sep 2026 14:31:49 +0000
+Message-Id: <20260924143150.1CD721F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-imx_gpc_old_dt_init() initializes all power domains described by
-of_id_data->num_domains, while imx_gpc_remove() only removes the PU and
-ARM domains.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] imx_gpc_remove: syntax error due to missing closing brace
+--
 
-Use the match data to remove all initialized power domains in reverse
-order. Release the PU clocks after the PU domain is removed.
+commit 8c74b27165f06b794b40a774855d31374a0b317d
+Author: Guangshuo Li <lgs201920130244@gmail.com>
 
-This issue was found by manual code inspection.
+pmdomain: imx: gpc: remove all initialized power domains
 
-Fixes: 5a42d1198901 ("soc: imx: gpc: fix imx6sl gpc power domain regression")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v2:
-  - Check the result of device_get_match_data() before using it.
-  - Use an unsigned num_domains variable and a decrementing while loop,
-    as suggested by Andy Shevchenko.
+This commit updates imx_gpc_remove() to use match data to iterate
+and remove all initialized power domains in reverse order. It also
+ensures the PU clocks are released when the PU domain is removed.
 
- drivers/pmdomain/imx/gpc.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+> index abca5f449a226..d83fb37e22974 100644
+> --- a/drivers/pmdomain/imx/gpc.c
+> +++ b/drivers/pmdomain/imx/gpc.c
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index abca5f449a22..d83fb37e2297 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -502,7 +502,9 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 
- static void imx_gpc_remove(struct platform_device *pdev)
- {
-+	const struct imx_gpc_dt_data *of_id_data;
- 	struct device_node *pgc_node;
-+	unsigned int num_domains;
- 	int ret;
- 
- 	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
-@@ -519,20 +521,23 @@ static void imx_gpc_remove(struct platform_device *pdev)
- 	if (!pgc_node) {
- 		of_genpd_del_provider(pdev->dev.of_node);
- 
--		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_PU].base);
--		if (ret) {
--			dev_err(&pdev->dev, "Failed to remove PU power domain (%pe)\n",
--				ERR_PTR(ret));
-+		of_id_data = device_get_match_data(&pdev->dev);
-+		if (!of_id_data)
- 			return;
--		}
--		imx_pgc_put_clocks(&imx_gpc_domains[GPC_PGC_DOMAIN_PU]);
- 
--		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_ARM].base);
--		if (ret) {
--			dev_err(&pdev->dev, "Failed to remove ARM power domain (%pe)\n",
--				ERR_PTR(ret));
--			return;
--		}
-+		num_domains = of_id_data->num_domains;
-+		while (num_domains--) {
-+			ret = pm_genpd_remove(&imx_gpc_domains[num_domains].base);
-+			if (ret) {
-+				dev_err(&pdev->dev,
-+					"Failed to remove %s power domain (%pe)\n",
-+					imx_gpc_domains[num_domains].base.name,
-+					ERR_PTR(ret));
-+				return;
-+			}
-+
-+		if (num_domains == GPC_PGC_DOMAIN_PU)
-+			imx_pgc_put_clocks(&imx_gpc_domains[num_domains]);
- 	}
- 
- 	of_node_put(pgc_node);
--- 
-2.43.0
+[ ... ]
 
+> @@ -519,20 +521,23 @@ static void imx_gpc_remove(struct platform_device *=
+pdev)
+>  	if (!pgc_node) {
+>  		of_genpd_del_provider(pdev->dev.of_node);
+
+[ ... ]
+
+> +		num_domains =3D of_id_data->num_domains;
+> +		while (num_domains--) {
+> +			ret =3D pm_genpd_remove(&imx_gpc_domains[num_domains].base);
+> +			if (ret) {
+> +				dev_err(&pdev->dev,
+> +					"Failed to remove %s power domain (%pe)\n",
+> +					imx_gpc_domains[num_domains].base.name,
+> +					ERR_PTR(ret));
+> +				return;
+> +			}
+> +
+> +		if (num_domains =3D=3D GPC_PGC_DOMAIN_PU)
+> +			imx_pgc_put_clocks(&imx_gpc_domains[num_domains]);
+>  	}
+
+[Severity: Low]
+Is this while loop missing a closing brace?
+
+Because there is no closing brace added for the new while loop, it appears
+the closing brace at the end of this block will close the while loop instead
+of the outer if (!pgc_node) statement. Will this cause unbalanced braces
+and a build failure?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924142520.1594=
+149-1-lgs201920130244@gmail.com?part=3D1
