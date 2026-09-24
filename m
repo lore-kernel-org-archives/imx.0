@@ -1,89 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A9536A37F;
-	Thu, 24 Sep 2026 16:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240E13E3D80;
+	Thu, 24 Sep 2026 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790268455; cv=none; b=NZ3V4D2145E7tfEBtBKSQ5MRK2cjpQJjGG6ngPFXZ/mMK5XWceQixV30lwPAkjqKOxFoHRzp8SlzLNkPc3MhywAdv8dKT1lMysyrKaRM89uP9YQRSa3mPhWwfxj6AI97craRfyr5DCkhkniWrZ310TlZEYIiIVRpTUsF5kZoCs8=
+	t=1790268934; cv=none; b=TQUbvNSAoqJmbPbilSvqdhgZKVFx+23sSnZa/2fY63ktT5WdMYoWTa49+dasqH8fejmLs7SHrl+dtX8GT9sFUkixnq2fpTGe4YgvDtd4Mkby4U794s54B1SWaCeGrCeSXv64UnrvWm+2HY/vd329EJevVnmVlXMLVFxi2DJ50QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790268455; c=relaxed/simple;
-	bh=lYyah1hDuQZOEsTqm+q31m9h+3STEU5oM5cnqNTIbJU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=soluZqBEr/zhfjLCy7rauoFtTx3gkR5LG7qdLWqw0GqKQUP2rvGyKPLsBugVame/0IseVX+kuHPNqetZmnuAx/1w3tm8GV63qhsrk63aq0FAZhM2j4bY9m4u/3mGlgbaW6feJgf7FSNk5ZpCyorviW2LoyA4pxkQeYf/GZnZ3zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QcQIFSt7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790268934; c=relaxed/simple;
+	bh=y2cl3GUnRqWPP5br27Yo1EHhLrOsRQAml+dpchk9zAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PJ+ba0Ded7tuKhz42INDkC20nrDrj0FMveiGbjrnbfgNs2d3t7F3cmugjl2ZzDJW83TUYSTqswGdvA+o47QA3nwqV7GJTVRW4JV29hvh0dBBvgQYd/hbRX5jzUpl/ZidCeOCQ7HUqhIqKeHgJf0TCEYgPpHukWUa13oF+FVtOZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8jyjQG5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcQIFSt7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298021F000FF;
-	Thu, 24 Sep 2026 16:47:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8jyjQG5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D951F000FF;
+	Thu, 24 Sep 2026 16:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790268454;
-	bh=JxHQ5khFYb09ykclMWE/AKm/CGVEPpleCd+ucxmPXQk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=QcQIFSt7l8g7QdaBXdJF3SxjnGyiUxvAds3cuZOLBUk8UeglKgaeDYYXT0EUrJbDg
-	 fViUeQKh9hUa6Ak8ysvU0CuoplWdU/5aq8FqTxdfErGO3ak2fMGM6xiI4LcHauNIxj
-	 tP6LOZTjRGYvdKejkaU98bieQT5RZmZ/D0fNtaEOzWcvzpLZDn3sdnm1KI3KNQI0k1
-	 ngL9iatwu7EWW2aeaPJ9XkhQsjGtD8/Fn6DeLJVWAAWsiRxsrYzwmFVJ5eh0SWkA9C
-	 +lrtefIx089beHN1EsZoc9VrxO1b3T3PnLahoFR0jniErWghbjs++ICfgFywM3j7wi
-	 KfJh4B8g8z1vw==
-From: Mark Brown <broonie@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: imx@lists.linux.dev, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-In-Reply-To: <20260916-spi-dma-v1-1-2b30657d373d@nxp.com>
-References: <20260916-spi-dma-v1-1-2b30657d373d@nxp.com>
-Subject: Re: [PATCH] spi: use dmaengine_get_dma_device() for DMA mapping
-Message-Id: <179026829086.149798.15115655452552448631.b4-ty@b4>
-Date: Thu, 24 Sep 2026 17:44:50 +0100
+	s=k20260515; t=1790268932;
+	bh=fq72bTv0aDg8FP/1veCJLfYhWi+ANAEEZ3M/sgNIuzQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X8jyjQG5wgjV3njzYK5bFpjnqGZC1M20JAXdKp9H0BJ2imlh+/DPGGmFmM4ki+co4
+	 k+OyAK/d4VWEP+/AxAqhE1w3+QSxvKozoMFwSBG3txdgWQlyQhMSczIN8hj2zkKZ79
+	 ySKIcaOGnKWJi1eoCtoooaoyG13R5c/9C1aGRSaNvERVUX1qpCqEl5XsuqzDFRXomz
+	 Icy/rFVg6U0+gL/QgdEWvPqTzDcCwPILCuEfN3z6KJmA2i18cStbLj8Qa7Z1nUdv19
+	 dlGshJAyfLYAZ0ZKR6kPdeX959KosICrTQdt/YXLA9BdsQbSA6I3I/6mFwHHDZzZfl
+	 B2EQW6jDQU5XA==
+Date: Thu, 24 Sep 2026 17:55:27 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: nicolas.dufresne@collabora.com, p.zabel@pengutronix.de,
+	mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@collabora.com
+Subject: Re: [PATCH v3 2/3] media: dt-bindings: media: nxp, imx8mq-vpu:
+ Remove nxp,imx8mq-vpu
+Message-ID: <20260924-compare-useable-3e2863b66924@spud>
+References: <20260924130453.196299-1-benjamin.gaignard@collabora.com>
+ <20260924130453.196299-3-benjamin.gaignard@collabora.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1118; i=broonie@kernel.org;
- h=from:subject:message-id; bh=lYyah1hDuQZOEsTqm+q31m9h+3STEU5oM5cnqNTIbJU=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqtVQirb9ifQFsihKFH9arGDlW4Uo/yNa33ZEvU
- xa1cvnsdX2JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarVUIgAKCRAk1otyXVSH
- 0BwTCACCpw3pLwe0RMw1kJmhl0161LU+D51ddxeVSu+8vT2r7fhkeSWwf2mYt0/vgeuun1N9MSN
- uXpiSxjOMW9Np34XvpDO8ucConLURd37CjEEemGW3XE40Azgrkw2rTBIJsJprVQE3wsqFMPSrAt
- JuYuiwPSFP9zfLIf4UxPR8pkailbLx4FtXjHVAcMWUeHPhQBSLB9IdEMysJZl3m3JSL0QOBV3R2
- zePsc5FxgU2Xlru/vw4aEdsZSp9yAX+l9WVVuj6hDNudtXY8vQtD3C+QUjU4Kp1oPfeyFcyqo1k
- zEPNL+7j4nakl5u0HvE9mustzCTi1qZK3wzQwI1dKjQEJWKK
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="GsCwYJZyFBXDIRyI"
+Content-Disposition: inline
+In-Reply-To: <20260924130453.196299-3-benjamin.gaignard@collabora.com>
 
-On Wed, 16 Sep 2026 23:30:55 +0800, Peng Fan (OSS) wrote:
-> spi: use dmaengine_get_dma_device() for DMA mapping
+--GsCwYJZyFBXDIRyI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied to
+On Thu, Sep 24, 2026 at 03:04:52PM +0200, Benjamin Gaignard wrote:
+> nxp,imx8mq-vpu has been tagged has deprecated since a while.
+> After driver clean up it is time to remove it.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+No users in linux doesn't mean no users, but I am guessing that there's
+genuinely no users elsewhere and anyone using out of tree devicetrees
+should have updated due to the warning at runtime?
 
-Thanks!
+>=20
+> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+> ---
+>  .../devicetree/bindings/media/nxp,imx8mq-vpu.yaml      | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml =
+b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+> index 19528262810a..69619d2c86fa 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+> @@ -14,12 +14,10 @@ description:
+> =20
+>  properties:
+>    compatible:
+> -    oneOf:
+> -      - const: nxp,imx8mq-vpu
+> -        deprecated: true
+> -      - const: nxp,imx8mq-vpu-g1
+> -      - const: nxp,imx8mq-vpu-g2
+> -      - const: nxp,imx8mm-vpu-g1
+> +    enum:
+> +      - nxp,imx8mq-vpu-g1
+> +      - nxp,imx8mq-vpu-g2
+> +      - nxp,imx8mm-vpu-g1
+> =20
+>    reg:
+>      maxItems: 1
+> --=20
+> 2.53.0
+>=20
 
-[1/1] spi: use dmaengine_get_dma_device() for DMA mapping
-      https://git.kernel.org/broonie/spi/c/cb5a15943d7d
+--GsCwYJZyFBXDIRyI
+Content-Type: application/pgp-signature; name=signature.asc
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarVV/wAKCRB4tDGHoIJi
+0o8JAP9bPWkftttTcroD/Ebf05mqIGTFa7OMd08w4VwH1mEEgQD+LPTr10IFTyQQ
+y//zL0pKXfEzCfB463vA15kwJ030OAg=
+=7zii
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--GsCwYJZyFBXDIRyI--
