@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240E13E3D80;
-	Thu, 24 Sep 2026 16:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65A3D953F;
+	Thu, 24 Sep 2026 17:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790268934; cv=none; b=TQUbvNSAoqJmbPbilSvqdhgZKVFx+23sSnZa/2fY63ktT5WdMYoWTa49+dasqH8fejmLs7SHrl+dtX8GT9sFUkixnq2fpTGe4YgvDtd4Mkby4U794s54B1SWaCeGrCeSXv64UnrvWm+2HY/vd329EJevVnmVlXMLVFxi2DJ50QA=
+	t=1790269406; cv=none; b=ZwpQPlfOnMEDGkIXw6h8M2EdbY7a56ywyi8H59x0aWvpnSWiYhseB/uS7hZyG5J9uKG/adN+/t8T+BLvNyh44s1sAAv4PPF7LpuxTuRPcqHmicZQl7iGo9hs65kC6yh8eZnaRw/6slAxp//HhTgFCknFwHkPKt66Yewfe4WJepI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790268934; c=relaxed/simple;
-	bh=y2cl3GUnRqWPP5br27Yo1EHhLrOsRQAml+dpchk9zAA=;
+	s=arc-20240116; t=1790269406; c=relaxed/simple;
+	bh=GRYhMLA42NBei7YREWiLPxZRkNEQ5hzK4zvgTmWJl+M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PJ+ba0Ded7tuKhz42INDkC20nrDrj0FMveiGbjrnbfgNs2d3t7F3cmugjl2ZzDJW83TUYSTqswGdvA+o47QA3nwqV7GJTVRW4JV29hvh0dBBvgQYd/hbRX5jzUpl/ZidCeOCQ7HUqhIqKeHgJf0TCEYgPpHukWUa13oF+FVtOZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8jyjQG5; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=awQkGoyApD7whpL0x/Id7JEC26JkRp9km3VOvtSfTjkgd+IHaBpwyhQvJzJXAh6MztqSMGLCj7O5MsOR/4BCbIP3tDwq/elBVXEYGoG8vqFXkC+JivK7xl/gRH5+Y0romn3U1oW7vgiqTEuR1WG+nllmJJYYpVinZlhzn+WstJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8sPSa+p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8jyjQG5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D951F000FF;
-	Thu, 24 Sep 2026 16:55:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8sPSa+p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA6A1F000FF;
+	Thu, 24 Sep 2026 17:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790268932;
-	bh=fq72bTv0aDg8FP/1veCJLfYhWi+ANAEEZ3M/sgNIuzQ=;
+	s=k20260515; t=1790269405;
+	bh=WUIXMGlF00n/an+XIpdJzwcraIyNlcy2fVXrbp/3+vI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X8jyjQG5wgjV3njzYK5bFpjnqGZC1M20JAXdKp9H0BJ2imlh+/DPGGmFmM4ki+co4
-	 k+OyAK/d4VWEP+/AxAqhE1w3+QSxvKozoMFwSBG3txdgWQlyQhMSczIN8hj2zkKZ79
-	 ySKIcaOGnKWJi1eoCtoooaoyG13R5c/9C1aGRSaNvERVUX1qpCqEl5XsuqzDFRXomz
-	 Icy/rFVg6U0+gL/QgdEWvPqTzDcCwPILCuEfN3z6KJmA2i18cStbLj8Qa7Z1nUdv19
-	 dlGshJAyfLYAZ0ZKR6kPdeX959KosICrTQdt/YXLA9BdsQbSA6I3I/6mFwHHDZzZfl
-	 B2EQW6jDQU5XA==
-Date: Thu, 24 Sep 2026 17:55:27 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: nicolas.dufresne@collabora.com, p.zabel@pengutronix.de,
-	mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	b=C8sPSa+pp//4QY0n2InsviILwO2ANC2TmhgCzyKFTFL88X1OA1rd8piCZ75I9NYuf
+	 fEC4gZaibZp2Mu+2cnaTVOycqGqUN+E9Ir2xIWEGVyYNu6SlG/wx/nOI6//uR1xuM4
+	 SzEUnwUkjRl2qhzU1qZe9tmBaUl+HYwW3ds7tqxVGzCfdWyeX7dlIOsyUE70XAxjMu
+	 a1FMvSAzwEYZrtkuHzbC+3WNlKr6kjS85sdATWW8JqrBJCfxxFOzOz+bs56EPWukLg
+	 Caw4bVrWp2lhFZChfGOJzssdpZ7QUgtYQEDQOIS3Fyfy1xEhSduphAsxvK/HcrHISG
+	 ZL+oTMyBJa+Ig==
+Date: Thu, 24 Sep 2026 18:03:18 +0100
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@oss.nxp.com
+Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@collabora.com
-Subject: Re: [PATCH v3 2/3] media: dt-bindings: media: nxp, imx8mq-vpu:
- Remove nxp,imx8mq-vpu
-Message-ID: <20260924-compare-useable-3e2863b66924@spud>
-References: <20260924130453.196299-1-benjamin.gaignard@collabora.com>
- <20260924130453.196299-3-benjamin.gaignard@collabora.com>
+	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
+	tiwai@suse.com, linuxppc-dev@lists.ozlabs.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [RESEND PATCH v5 0/5] ASoC: fsl_asrc/fsl_easrc: expose
+ per-pair/context DAIs and fix DMA race
+Message-ID: <744ce325-9d2e-45c7-b7d6-15ec7558dc83@sirena.org.uk>
+References: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,64 +49,40 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GsCwYJZyFBXDIRyI"
+	protocol="application/pgp-signature"; boundary="thyvYpNwRTH7ReUZ"
 Content-Disposition: inline
-In-Reply-To: <20260924130453.196299-3-benjamin.gaignard@collabora.com>
+In-Reply-To: <20260922033428.1690822-1-shengjiu.wang@oss.nxp.com>
+X-Cookie: What's so funny?
 
---GsCwYJZyFBXDIRyI
+
+--thyvYpNwRTH7ReUZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 24, 2026 at 03:04:52PM +0200, Benjamin Gaignard wrote:
-> nxp,imx8mq-vpu has been tagged has deprecated since a while.
-> After driver clean up it is time to remove it.
+On Tue, Sep 22, 2026 at 11:34:23AM +0800, shengjiu.wang@oss.nxp.com wrote:
 
-No users in linux doesn't mean no users, but I am guessing that there's
-genuinely no users elsewhere and anyone using out of tree devicetrees
-should have updated due to the warning at runtime?
+> Changes since v5:
+> - rebase to latest master of linux-next
 
->=20
-> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-> ---
->  .../devicetree/bindings/media/nxp,imx8mq-vpu.yaml      | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml =
-b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> index 19528262810a..69619d2c86fa 100644
-> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-> @@ -14,12 +14,10 @@ description:
-> =20
->  properties:
->    compatible:
-> -    oneOf:
-> -      - const: nxp,imx8mq-vpu
-> -        deprecated: true
-> -      - const: nxp,imx8mq-vpu-g1
-> -      - const: nxp,imx8mq-vpu-g2
-> -      - const: nxp,imx8mm-vpu-g1
-> +    enum:
-> +      - nxp,imx8mq-vpu-g1
-> +      - nxp,imx8mq-vpu-g2
-> +      - nxp,imx8mm-vpu-g1
-> =20
->    reg:
->      maxItems: 1
-> --=20
-> 2.53.0
->=20
+That's not a resend, a rebase is a new version.  This is all confusing
+b4 badly, it's not picking up any of the reviews as being attached to
+the v5 that already exist and doesn't even look at the new version since
+it sees that it already has v5.  Can you please send a v6 with all the
+reviews pulled in?
 
---GsCwYJZyFBXDIRyI
-Content-Type: application/pgp-signature; name=signature.asc
+--thyvYpNwRTH7ReUZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarVV/wAKCRB4tDGHoIJi
-0o8JAP9bPWkftttTcroD/Ebf05mqIGTFa7OMd08w4VwH1mEEgQD+LPTr10IFTyQQ
-y//zL0pKXfEzCfB463vA15kwJ030OAg=
-=7zii
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq1V9UACgkQJNaLcl1U
+h9BVcwf7BCet5mcdSMq0zC0cNsA9teLN9+P2zlswGHdgRRU40PVwEFizlbbS7wZl
+DOt1x1P94upHDBxOIj1BQlE2NH0CCx1Ndmd+GoJ0iq+zvPD+6wWhehE1HJyf1odN
+tHP8B7rCqkWXpKyWwPhWuQ7K6CjRo524433hqpLMfwEwIi4cRw2AIDPEJZEDxe4G
+YVIw8Rs1M9mOcSeAW1AcEx6zW8ZRr9Fcsl1ZL4z5iOj7rBRVLjfy6AKbM+Xkekpf
+3JcHWVENhCGh1J2m2PHfK3X4eKOJzRY/QJozB9KyoB75lQHUiYpC9msiJ+F4IN2J
+2IKKSaDZ354mcPpf2uwWiGkUJN/bEw==
+=1Dsv
 -----END PGP SIGNATURE-----
 
---GsCwYJZyFBXDIRyI--
+--thyvYpNwRTH7ReUZ--
