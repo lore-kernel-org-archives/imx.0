@@ -1,107 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABBE38D407
-	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 17:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30B03AAF70
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 18:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790357454; cv=none; b=o+Ivi9EoxjwgJIXG07s2TrTjTlstILIfwnzhBy7bK/Sfgx/k7smlHWOG6GIiB0ljWtxgpXFb+ubMMPZPVElXEuJHK6FxZy4ktXRy4EwVMEMjDJEAeEzzwB4dk0fSXBVKRnUZ3hKhczrtKVfNzVeCJ/kT+iVSQxtHGB+XVO7G6ks=
+	t=1790359593; cv=none; b=MliMMFDUXdtKczP4qm9pnva59JZxt5vO1DjZC1eNH/Ig4mjkePlWPaeGBnH1C/+qb32OxWBFPJ308ap7CbVocFqQLemkvLbZ1eaWaT43HcLCEDI1w8fsyy77J9eJV3OJvHckNLQ3vHGbLkN8TiigxuqOqpAlASEHmV9NAJ0tp40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790357454; c=relaxed/simple;
-	bh=tMANEnh28G4gjKICJ4CJmZpedyKfSj78ViMvzrZBw1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kr7aAI2U5FERC82in8msBVcdYZFB5MFEaiRLbCgA10Ikv6xkhSqEAzMdmxSmte+ZH7U5v9MC4ROCy6RfyHWM3mdGkfu5la9vuz6YJPMsv9RGxqm2m4Lhuu5Z8ffgRPfTT2hLiYWuqZnl7Jq7V/DxA0AcW5qci+VNwVL20X70mgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/XUqu53; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790359593; c=relaxed/simple;
+	bh=Y/L61sWGjPg+MvteaLeIOYzgWgBq4TGUrIseBygRxEQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rFkvjbqwLVEdQfsnKog78+Zr/iqtwNfJlKa8cFANgOzCeOU+hByCCfqGnnp6tQArDJCvmlobRTf8uHThGTmEvaipSImVBkabjnsaDH4Ans0Ke7xYBDvhkk636U9rLTGhk1RgrmbuGeRa1qfOOIlPMc6apQo2fLpAhVY9XTO4Vh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOwiosR+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/XUqu53"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C404E1F008A7
-	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 17:30:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOwiosR+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EF21F000FF;
+	Fri, 25 Sep 2026 18:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790357452;
-	bh=Epk7UhZ5gcKRlHUrHbKgkjCtg/Lgn+z/n5ZSjQcdqpg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Y/XUqu531F/cGxWNwQZP2KG77Zo/WMA+a2WvMMRbN7BfMI9PrV3w2grWHN7FeDQ3P
-	 V6H1WGyGtemPdDpa86l7/FirJmYdVcLZ0afDSQpWpcaagB9mIMo/4IimSgl+irC+Ba
-	 7Uwoa8O/oiLOgSfajuan9d0VUnzxBFnHegatmVAc08ehBPOnl/k7CrIF5FSxYGlwcI
-	 qbUaMkE0+tJgd54/hu7JN0b8vSKyHceLGyOzCKk/ZGOcik/F3I/rchZ8mJt16+4dqM
-	 CRH8mXtTHa/HDfUQiyO8mONN560pa+TrMq2oukgjlnIkhq8Y4dwiri294Ymt7GhEjZ
-	 1Q3lnD9Gbf4OQ==
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a5e548cd7dso8804391fa.3
-        for <imx@lists.linux.dev>; Fri, 25 Sep 2026 10:30:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw1EOdlqPHN2HOTk9GyJ8Q6XMHHa2/iniVmXwyvj4YVLJ6iRCPBpLr493xASLl5UVP86p0=@lists.linux.dev
-X-Gm-Message-State: AFuF++nC8lfpaHxvdP/ssjpcuZZzQlAnQoDjzSX3KjbGBjxtz1JsGk/9
-	GWGGsHIe6uSgzdYAILztXIeV5iTFuU0DQfeaDgEHD0UcXDgGF5BZuEX3q5hl75OmKtS5sOQ+1Yn
-	bHvs7lnNVQJlCysExF8oEtYyS8iTaHZU=
-X-Received: by 2002:a05:651c:b1e:b0:3a5:f041:d7c9 with SMTP id
- 38308e7fff4ca-3a63c2fbe45mr14867181fa.22.1790357451157; Fri, 25 Sep 2026
- 10:30:51 -0700 (PDT)
+	s=k20260515; t=1790359591;
+	bh=M6k9XbBoO70odRmuehry5qLnBC8B3rQ9R1lT4geLtIE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WOwiosR+RGgxy5tqLKGnCV9y27kmsShsiFXiyvhZmo1u3GXBfy8Ni5HrnWagKxRN9
+	 fsOlEwtzpB9N2lp3WFtC5KsBGX2/djfBkJ/0avQ+mR5sd+utgILY8BHE//6F0Ud49H
+	 T8OC9950SCJdRhnwlu/iANJWD/REWM8++LYbd9XPChvHUWZYbVd7ns0DHYq8Cwr1Do
+	 Iadd2T3VgRY/64VT+AjcmD1jelXBpZI73ZYVTb1ayS/MKT75ya6enaLaT0h8PxGvhO
+	 qQI1itx5yw89N6TbGUbOTGIUhfISM1NAqyaTxbl/1NKrKHI5v7X2UlWk61WxUjUBkF
+	 /15pq4a9GT9qA==
+From: sashiko-bot@kernel.org
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marek Vasut" <marex@nabladev.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260924180607.60932-1-marex@nabladev.com>
+References: <20260924180607.60932-1-marex@nabladev.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 25 Sep 2026 18:06:30 +0000
+Message-Id: <20260925180631.58EF21F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260912191156.185448-1-sumeet4linux@gmail.com> <20260912191156.185448-6-sumeet4linux@gmail.com>
-In-Reply-To: <20260912191156.185448-6-sumeet4linux@gmail.com>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Fri, 25 Sep 2026 19:29:14 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j49-yEYmZXm8-2xWzy9OV7-8dUEwMonzPjbscgGd+6qg@mail.gmail.com>
-X-Gm-Features: AclHuK-XXXjTpNVDNNDdptaZZX-F6i5Cfcawa8JfiTGZUJ-XQXiTSEwpAEK52uE
-Message-ID: <CAJZ5v0j49-yEYmZXm8-2xWzy9OV7-8dUEwMonzPjbscgGd+6qg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] powercap: intel_rapl: Use %pe to print error
- pointers symbolically
-To: Sumeet Pawnikar <sumeet4linux@gmail.com>
-Cc: rafael@kernel.org, krzk@kernel.org, amit.kachhap@gmail.com, 
-	daniel.lezcano@kernel.org, thara.gopinath@gmail.com, talel@amazon.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, mmayer@broadcom.com, 
-	viresh.kumar@linaro.org, sumitg@nvidia.com, peter.griffin@linaro.org, 
-	myungjoo.ham@samsung.com, kyungmin.park@samsung.com, cw00.choi@samsung.com, 
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, sven@kernel.org, j@jannau.net, 
-	marcan@marcan.st, casey.connolly@linaro.org, sre@kernel.org, wens@kernel.org, 
-	t.schramm@manjaro.org, bcm-kernel-feedback-list@broadcom.com, 
-	linux-samsung-soc@vger.kernel.org, kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 12, 2026 at 9:13=E2=80=AFPM Sumeet Pawnikar <sumeet4linux@gmail=
-.com> wrote:
->
-> Replace PTR_ERR() and %ld with %pe and pass the original pointer directly
-> to pr_debug(). The %pe format specifier prints a symbolic error name
-> (e.g. -ENOMEM) when CONFIG_SYMBOLIC_ERRNAME is enabled, otherwise it fall=
-s
-> back gracefully and prints the raw integer value. This makes messages mor=
-e
-> readable without any functional change.
->
-> Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-> ---
->  drivers/powercap/intel_rapl_msr.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_r=
-apl_msr.c
-> index a34543e66446..46972ee1ff84 100644
-> --- a/drivers/powercap/intel_rapl_msr.c
-> +++ b/drivers/powercap/intel_rapl_msr.c
-> @@ -582,8 +582,8 @@ static int intel_rapl_msr_init(void)
->         rapl_msr_platdev =3D platform_device_register_data(NULL, "intel_r=
-apl_msr", 0, def,
->                                                          sizeof(*def));
->         if (IS_ERR(rapl_msr_platdev))
-> -               pr_debug("intel_rapl_msr device register failed, ret:%ld\=
-n",
-> -                        PTR_ERR(rapl_msr_platdev));
-> +               pr_debug("intel_rapl_msr device register failed, ret:%pe\=
-n",
-> +                        rapl_msr_platdev);
->
->         return 0;
->  }
-> --
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] enetc: hardcoded MDIO clock divider change overclocks MDC on faste=
+r platforms
+--
 
-Applied as 7.4 material, thanks!
+commit f8edf987f57daf3802702cc91c7af187a4c08ef1
+Author: Marek Vasut <marex@nabladev.com>
+
+enetc: Increase eMDIO MDC rate to 2.5 MHz
+
+This commit lowers the global MDIO clock divider from 258 to 66 to increase
+the MDC rate to 2.5 MHz for the i.MX95 B0 platform.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/=
+net/ethernet/freescale/enetc/enetc_mdio.c
+> index 998aaa394e9c4..a90a04a47befd 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+> @@ -24,7 +24,7 @@
+> =20
+>  #define ENETC_EMDIO_CFG \
+>  	(MDIO_CFG_HOLD(2) | \
+> -	 MDIO_CFG_CLKDIV(258) | \
+> +	 MDIO_CFG_CLKDIV(66) | \
+         ^^^^^^^^^^^^^^^^^^^^
+
+[Severity: High]
+Does hardcoding this lower divider overclock the MDC frequency on platforms
+with a faster base clock?
+
+The enetc_mdio.c driver is also used on other platforms like the LS1028A,
+which typically run the ENETC system clock at a much faster rate (e.g.,
+333 - 400 MHz).
+
+Applying a divider of 66 on a 400 MHz clock yields an MDC frequency of
+~6.06 MHz. This exceeds the IEEE 802.3 Clause 22 maximum MDC frequency of
+2.5 MHz (400 ns minimum period).
+
+Will this break MDIO communication with PHYs on these existing boards?
+Should the driver dynamically calculate the divider based on the platform's
+actual clock rate rather than hardcoding a value tailored only for the
+i.MX95?
+
+>  	 MDIO_CFG_NEG)
+> =20
+>  #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924180607.6093=
+2-1-marex@nabladev.com?part=3D1
