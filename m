@@ -1,110 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C31D46EF64;
-	Fri, 25 Sep 2026 11:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C802649BD74
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 13:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790337525; cv=none; b=SoSIyCSTBPem275BhMZq6e6pA/4GOGXpTIH0yZK9jHqP5OYCg0ck3e5sfUNLe8N5M6gOIxm33iPsXzaVRWX4RW9W3pDmH71TcA2szjzMUjDR3khuhkXO7yRlLU4Vb9wtyAxPe47Hrvb/255TMiilAWuE2LzImblRHzMehxMxCio=
+	t=1790343025; cv=none; b=rudqJMe/l71U2JEsyO/3Qyy6U5kl5e1Dw6Yb35d2fJn/Bz/w8lKKxRgOrTlSdlsDqPwT62nQgWI4+L8VCl+2KChhE9JZkYEDQMi30cIPiuH5jd3HxOFwIXimudnA1Psip5bnM0hyNLvydu6WgaSWXOUyy7BApEo6j2QWmeTu8zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790337525; c=relaxed/simple;
-	bh=hTbBWgRszq9ScA6H2Snmf/3kW+YO4cqGk/yT0SbRa/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GQm+i7TS03MaTdsrjE10TIT3fsNCJuFBc/PRfZrMUFVPTOQZ/GG6Qsf7f+pqvBy+2tilVSOJVnnINeSPlNZTnPt/0i17jOpIIUVobu/Of9uzauOhU/fwvs5jyGV5AMLYUONC6Xh/EXgGA3takMMC9XwQm6un7I+xm9wIDdgM7WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Em87CarA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790343025; c=relaxed/simple;
+	bh=/jFCjg6nDyLS94dvgK/EEMc/s+8n2QPDNYXmC3S7fXI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eCszByYCgD2Ypu6QRjBEN1d8fkkI4s2QNB4CGYewt62prE2gGdEOkPZpcmPvmKINHXZlIC2jfZzQ1fyEErFDo1ST/pJLXGvgdvzhx/ONN6rssVpTCtmSaUTzcA9XztF4m4and0J+uj9eN/X6Ob3/emDW51KMXSCK9gPZDsHJqpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLJ6EOp3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Em87CarA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225451F000FF;
-	Fri, 25 Sep 2026 11:58:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLJ6EOp3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61AF1F0089D
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 13:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790337521;
-	bh=i++aeiwkX5qCkyfP2sYNezlmPhBYAeBC7if6vewcr7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Em87CarAuF/uh4LnbTroxQKzJScL78hqmC6g/z4IWkD+Imd+NHq25I5v1Cco2JA/o
-	 FnZBOGlf753Tc4x3asT3ID+TMBwUI0q9uY1Cfy68IbI/39ELe/w+kipZnz1epPwHsi
-	 jOwPzCmagHFq6tMnPYmb79xWl/tA+MfiEXAD3jIn78TfOKX7Uy2Wq/3knLU+ZrwyIv
-	 josmf812wU03Up3nVP+FaOPKt++n+Afx3moLfGIS/2xSPO+dIaagWUOmNfwIHF+0AL
-	 5NPpM4DlDD1nmQ9JwPzJ+goS97g3kbdBSbmhoo4tYBZuDbNUEPaWjZcRX5SaM8Rtfz
-	 bJdxybvlMuteg==
-Date: Fri, 25 Sep 2026 06:58:39 -0500
-From: Rob Herring <robh@kernel.org>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Frank Li <Frank.li@oss.nxp.com>,
-	Ernest Van Hoecke <ernestvanhoecke@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH 3/6] dt-bindings: connector: Add Toradex camera connector
-Message-ID: <20260925115839.GA677989-robh@kernel.org>
-References: <20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com>
- <20260910-verdin-imx8mp-hmp-camera-ready-v1-3-3c9349ecdb9f@toradex.com>
- <aqLaLmz7n31P6igy@SMW015318>
- <prwghb3ftrz5xd3hapxtlv2o2gm5xmuapnpz2h7fqulf75phqz@lk4yiaepormb>
- <aqLif2zrrsbYd5sM@SMW015318>
- <aqLk5UAv-j39Jxd3@francesco-nb>
- <20260918192447.GB1465432-robh@kernel.org>
- <178981707848.1761404.17065871878122418287@ping.linuxembedded.co.uk>
- <arDZoulyKIzVj-73@francesco-nb>
- <179023382707.1723501.12070631258057963152@ping.linuxembedded.co.uk>
+	s=k20260515; t=1790343020;
+	bh=hjEFWSQNzvV2cy7ibgDjEb2o00pPnzmhtpFfAirbXj0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=BLJ6EOp3/teQGF4Z82GqbDk1ISdqixvgqoFpvboexYsyn0LdOG9ImSBQvSVdscpVx
+	 wD3YnH6iTcML4IJrMqZVmmfdAnmj1OZe0hqQlgp3r+FlQV4DHqarG1wTok/jG1HK/7
+	 NcevHggAYLOOLsKswOtKUIhp2nGkGdtWs1LFIpThudzx0DqAa+ukcUHGgdge7rAISq
+	 OSTdJRe3EaqHD/pmiV7E67uuOBvLsCE7MV83veEncrzzwVjtoAPczPmD2vf18mLKEX
+	 n3iHAnAI1BkabQPxBZgX15nKh8j2vOq10iMHmBClPLb8O210D0EX6GZJWVEcDyD9Gn
+	 TftJhpnZpKauQ==
+Received: by mail-oo2-f41.google.com with SMTP id 006d021491bc7-6b1ae7166edso663754eaf.3
+        for <imx@lists.linux.dev>; Fri, 25 Sep 2026 06:30:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxKr5E67R4rzW87CRaR4fEM2YyQU8RwxyOzDRKWSPH0lmDB83nABYsfykZW7TbGHb31lik=@lists.linux.dev
+X-Gm-Message-State: AFuF++lu+saWw8KIF75ErP1teupDOQE2GVZHXcLOdu1WqPGna1CLB93p
+	j1AN/LPlqlebxge8y9kIUjVednYA1r+bJx9rXimr2ZsU7kzfyzdcT09SYGEkmJ1K0tdCXtL6axS
+	V5gKIJUWr4NBk5FijipMetCDjRaiJjeA=
+X-Received: by 2002:a05:6820:818f:b0:6cd:3ffc:ad01 with SMTP id
+ 006d021491bc7-6d441c7de80mr5856938eaf.81.1790343019904; Fri, 25 Sep 2026
+ 06:30:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179023382707.1723501.12070631258057963152@ping.linuxembedded.co.uk>
+References: <20260914140821.1805449-1-arnd@kernel.org> <17a74e90-27d1-4954-86a8-491267f00cb8@gmail.com>
+In-Reply-To: <17a74e90-27d1-4954-86a8-491267f00cb8@gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 25 Sep 2026 15:30:05 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=VJsnk-GzAvR4oR8oKJayQzq9Oes+ZW7K=iHGrQ1jh0w@mail.gmail.com>
+X-Gm-Features: AclHuK_tdwElKKmMYGPFlmZM1P8fO1IIRCqgIQbs7o9aMikBwWdJXpQ3EUUcqPA
+Message-ID: <CAD++jL=VJsnk-GzAvR4oR8oKJayQzq9Oes+ZW7K=iHGrQ1jh0w@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] ARM: deprecated platform removal
+To: Yoshifumi SHU <envzhu@gmail.com>
+Cc: arnd@kernel.org, Frank.Li@nxp.com, aaro.koskinen@iki.fi, 
+	alexander.sverdlin@siemens.com, alexandre.belloni@bootlin.com, 
+	alexandre.torgue@foss.st.com, andreas@kemnade.info, andrew@lunn.ch, 
+	arnd@arndb.de, claudiu.beznea@tuxon.dev, conor+dt@kernel.org, 
+	david@kernel.org, devicetree@vger.kernel.org, enelsonmoore@gmail.com, 
+	festevam@gmail.com, geert@linux-m68k.org, gregory.clement@bootlin.com, 
+	imx@lists.linux.dev, kernel@pengutronix.de, khilman@baylibre.com, 
+	kmehltretter@gmail.com, kristoffer.ericson@gmail.com, krzk@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux@armlinux.org.uk, 
+	liviu.dudau@arm.com, lpieralisi@kernel.org, mcoquelin.stm32@gmail.com, 
+	nicolas.ferre@microchip.com, npitre@baylibre.com, robert.jarzmik@free.fr, 
+	robh@kernel.org, rogerq@kernel.org, s.hauer@pengutronix.de, 
+	sebastian.hesselbarth@gmail.com, shawnguo@kernel.org, soc@lists.linux.dev, 
+	stefan@agner.ch, sudeep.holla@kernel.org, tony@atomide.com, vz@mleia.com, 
+	thehajime@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 24, 2026 at 08:10:27AM +0100, Kieran Bingham wrote:
-> Hi Francesco,
-> 
-> Quoting Francesco Dolcini (2026-09-21 08:15:46)
-> > Hello Kieran,
-> > 
-> > On Sat, Sep 19, 2026 at 12:24:38PM +0100, Kieran Bingham wrote:
-> > > Quoting Rob Herring (2026-09-18 20:24:47)
-> > > > On Thu, Sep 10, 2026 at 07:12:05PM +0200, Francesco Dolcini wrote:
-> > > > > On Thu, Sep 10, 2026 at 12:01:51PM -0500, Frank Li wrote:
-> > > > > > On Thu, Sep 10, 2026 at 06:39:30PM +0200, Ernest Van Hoecke wrote:
-> > > > > > > Hi Frank,
-> > > > > > >
-> > > > > > > Thanks for reviewing this so quickly.
-> > > > > > >
-> > > > > > > On Thu, Sep 10, 2026 at 11:26:22AM -0500, Frank Li wrote:
-> > > > > > > > On Thu, Sep 10, 2026 at 05:37:59PM +0200, Ernest Van Hoecke wrote:
-> > > > > > > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > > > > >
-> > > > > > > > > Toradex boards route the sideband signals of their 24-pin camera
-> > > > > > > > > connectors to different GPIO controllers. Camera overlays which name
-> > > > > > > > > those controllers directly must therefore be duplicated for each host
-> > > > > > > > > board.
-> > > > > > > > >
-> > > > > > > > > Describe reset, power-down, detection and power-control as
-> > > > > > > > > connector-local GPIO functions. This lets an accessory overlay remain
-> > > > > > > > > independent of the host wiring. MIPI CSI-2, I2C, clocks and supplies
-> > > > > > > > > remain described separately because the GPIO nexus does not abstract
-> > > > > > > > > them.
-> 
-> Will it be possible to extend this to add the mapping for MIPI data and
-> clock lanes and regulator supplies?
-> 
-> I.e. does this do anything that would push us down a hole that stops us
-> mapping those signals?
-> 
-> What do we need to do next to be able to map I2C/CSI/Regulators through
-> a 'nexus' ?
+On Mon, Sep 21, 2026 at 1:06=E2=80=AFPM Yoshifumi SHU <envzhu@gmail.com> wr=
+ote:
 
-A nexus only works on certain bindings. I2C is a bus and has child 
-nodes, so it needs something different. CSI works using the graph 
-binding, so we'd have to make the graph work thru the connector. Every 
-binding has to be figured out.
+> I would like to request that the core Arm Cortex-M support be retained, s=
+pecifically for v8-M.
+(...)
+> I am willing to help maintain this support, including modernizing the rel=
+evant code. I can regularly test kernels on real Armv8-M hardware.
+> If an active maintainer is required to keep the support, I am willing to =
+take on that responsibility.
+> Please let me know how I can help keep the support.
 
-Rob
+All right, now we're talking! Could you test and review this patch:
+https://lore.kernel.org/linux-arm-kernel/20260910-arm-generic-irq-entry-v7-=
+1-v3-1-5fd90f6859e1@kernel.org/
+
+I do avoid touching the v7m path and it worked last time I tested
+it  (on an STM32) but I'd like to see your take on it, AFAICT generic
+entry is not really possible (easily) on v7m because of the
+pendable service call mechanism but maybe we can think of a
+really complicated solution? ;)
+
+Yours,
+Linus Walleij
