@@ -1,162 +1,272 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07113783D5
-	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 02:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790301824; cv=pass; b=frUzNw8/PRbL9sEvOb8DBKorCBUo3T2Z8LG1erUe7rIUFmLdaJb7sSgU3UYLXcUYGUhAIlYy+Hi8Jof4pH4c/OkupJegSjngqP4YtNrbvFxABwkQQ64MMUh60pegxUrzF8sGo+fFUyelJzCV6nQCh9OoyPwnT6Yl5/uMfWyLah0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790301824; c=relaxed/simple;
-	bh=I74p1TPOpyMN5eN8javYXxz6OzoRysS3odlBNtVBa6U=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=aCOEI9nagMAIapXh5q9sesInusEI1jPFGlJkrkpt6BhsmEDUZ63fBku9aGEAJyhIlA/6lAIn+94mX7C8MgSaJCX+S7MMUrePD7K9rD21FRONwl/UiiYh9L0qu9DDtCh2tIs/K79Az4+5DAEFyoviBrefPlKWtg9AK2TmEOFV0t4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ohp4Wija; arc=pass smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AC042122E;
+	Fri, 25 Sep 2026 08:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790325601; cv=none; b=nxeHgqmzKSf8ucH6Bn4zLZebh1VxTrfZ2gCvB2mHFciM3klQMb6B4s1jSdlB4mUetMo548oIwUFYfbumOX8a6un0N1BvHeSwHr9Xyfqhqvw8RRoiKkl64eNpxUqFoge+b5gU31D3gL2wZCn2pfsTKZ774Yb0cBk9DZg+hCY8KNc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790325601; c=relaxed/simple;
+	bh=pRxtOPD+wTV723hRSqUjEY+Db9xDhxf+jC0XKAhT/pg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OB9i0lIG0HkYs7N6dtIm/ppdk8F2YW+vM+ZQkolsLcOOl0EgSZMkYr801LORebk07kkacE+ZCc3jdtl1/VUWFXlGt+14CqVI6CQKZz1j4aOWwglfGUTyGeIeE1s7OEEqTSNXl7nHIHyFv08qEw+tecVcAddeo6VfLpP2qCxiIAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jmfWB1hk; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ohp4Wija"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a60590a85cso880296a12.0
-        for <imx@lists.linux.dev>; Thu, 24 Sep 2026 19:03:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790301820; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rLIEDyL+IsR+zMRBwtX1aoBFru53e0Xme8r5POASGMY2+ie6DWBA9egKHU42yECAfV
-         YcR+hOCViUOdCLKFw8k7t6vbHbVDy+aFqXoHSxTdSpsVL+JgIBcGifFQDpqjJLEVCecK
-         2/CDVhoMwuBCHSMQlg6to14XAJDwFQ49xaOToZ1liIv+UznJ9RWtm4P+FQfWhWicXdW/
-         g6JVvmQwT59+kGbiL1tHFdMsj7IXJYup0nRVHmb9blP3iVRuefyz8K3sW/6CcWIl2eZx
-         H0jUmRe42SWxAzS2e3ieOgAMFcVGFBOZpNQNKTL7SR09UqYXkMZWD/CM/ScXkWJgSgVN
-         X9fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
-        fh=yXjkw9tWe8Eaf7jAJrqCT+6fgtA6HoJB4e3BoGu77UM=;
-        b=RHo86PGbji8M1eT2CRxv0N61Z5I7WSmqLf9tfISpqPJhcGBIPZ2S5O5+PGnklcXQxb
-         I1KH+VsdKvrQfwdg5WZuMwN6fTiyvTTg0dcYTUiGiN7T27eWUZDVqzuPOC0bzY4GNpv6
-         AxFqg7faK4tigbvFJkhd6WiSR9u9jCsv+hrNBrBNbjfb7WYhXDdFnu5kZOfsr7tTMAvy
-         nUJkTUUW6AVJmcQsr3bqDVsgTffgvr1Z05D9h/WOnr5vI6SojG7TQ4qWM2aB1bIqdo/e
-         U0TTEWGJl6CRF0Lo0FbBtnyxzkyrM8cGsLknjmiQPQdf1tKo/vn0ezJpgyrMZuVf44Ux
-         PGAQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790301820; x=1790906620; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
-        b=Ohp4WijaOqoQYE4121fxDVRXQm0sDuElT/nOH3b66ZmtOS32PP0+DB+Y6b3W3XnGWD
-         T1+m4tjwGDWFRbCPOGxHHlRdEzcetHDmycCNExYyo5/bgryIjQvI5YIncq2ColZqDVlK
-         Wp8KvXEPz/oS3O2LyRJNohNNSYIP8pGuT42WyAmOtlu5zmes/Xjqs/uPMhTv150ir+WX
-         b3qqDoI7UDwZyX03FUrFvSDgaKYmXynLUO65PE3uKCpmw+JRdm+szeDgRfd75nAd3Hkz
-         7WXuttx66vEsQs9STIlfy2OUil1uZcICupH6xLO3Pd60jiIzKAEHAhQiQo3tadDgK5/U
-         yCXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790301820; x=1790906620;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
-        b=RoLD5n92AkcrJeHyl3O6gJ+xMfhDxmKhTFa84EzD0ztjMcXt6OECY2IGG5MlHjxRUK
-         GyV3rVZXN3PqmPbEgn97ZWp5bkudjLWPjUQHAaAmJmWDUhtTiDK6bLEuH2+H6qmpFjVU
-         9Qz1BOxCGXDH1p27h1DiCIwlkrf3CewvMX8+ol1dZMDgMpH5Ym/ymfWIIlHifV5/l5WP
-         voeLfx/JXqnMZSkIfkm8CenswLG8BWAa2jtjl9wibJZVX87tLysdtzFTsGWLF4duw7x8
-         sHr/37dsNDVbglqZmZjP1XYKokJCTjmxkjlx1fk/PqungCIxHGJ4XfbVa+02fSjPY0L/
-         v2Sw==
-X-Forwarded-Encrypted: i=1; AKwUvByBdjeM2rt3cwsRwnRl43Axh15FAGcbOO2n+Ts57cm3qDkbrMlLizI+1N4q0Y5VZ6ds6QI=@lists.linux.dev
-X-Gm-Message-State: AFuF++mT0ig0QtaZ5ws9VhX2Cnl9wCct6dugGPdypQtPN8t5N1K668Pi
-	dmF0AWWYG8+7gWAdWW5fjjkAFVQ9f6/cRAxuYV//ZPvTrdlXgwQEXMK2T5ofTUd6g7t3x3VyGhZ
-	ypofdq0oJvXZK19CR+X7rM8fmr3wYDQ==
-X-Gm-Gg: AYBFou1kVMbJd9ccxz3+lOyEpNicOkVNiAhKCn/4DUu9F9e9pqbsS54K6j2GRaB6qzd
-	o5vJJXAAdPeYYt8Xo9KVML0RHeKBcLztjLMFYZxsrMEgVGVGsB5zBGgmbkAjfAZH0TElR4P+y0V
-	PDZ3c6+B2FbwZtD9zUXBMyIZSBfYhTLoH0JsDoAQHNtcgTnh3bnfEVSjdo1A2TwRgrv4cpi9tJ3
-	QUysh84hLVJ9eIc+9nQX8k3jP/xZ+W14/7QAiH6r//c+AVCudUsNaJ4CzWAbJyetyjnczrdxHPa
-	2P4xCQrvcDijDaQVDIws4mBW9SXv+aNVk3V75mB3JIdj2FSqHFgDL/VUt9jbAs7Q3HKAeZNZw+u
-	5bcbadiyktJ2DEBDFaQ6F2iAFz9wzjE/JxZWTYTV3UFa6FC65txkEQz60Xc1/RS1mWA==
-X-Received: by 2002:a17:907:e918:b0:c26:19de:913a with SMTP id
- a640c23a62f3a-c2ac2674c23mr365071766b.45.1790301819967; Thu, 24 Sep 2026
- 19:03:39 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 24 Sep 2026 21:03:39 -0500
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 24 Sep 2026 21:03:39 -0500
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jmfWB1hk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=mnnEVurKsE39VK48mQRlSprYtzG3NdBD2JmMXmTnB9A=; b=jmfWB1hkHhyIf1MLqAlKpJjFjG
+	rmnnv+vQotGLnRkpPJh52dMym9rkzC6XYqlHzjlwIRg08yVmmNdLHFMCUxroFesYd8ge4/19dFnuN
+	9HjCYm0JH44xF8zk4699EQvaPbYkEMB+aycSf7u8M/rITLODvn/JYfoWuEeN3L0X0921LhuHSFJ9C
+	/332+AGH7lx+e/XCnGRBXN/eFIQ9IcqrudFH7SB7w6I1VahvisI3oOPp/UWgVecK55RTDee9GTCC8
+	FNigEuRr4aR9hDC6hioDoa60v9rNgzL0cAu8K4NMFWCWOdjGMLtP//A8aEHXCxwubtImSDlueMU7K
+	r82OMMxg==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xA1TA-000Ccs-2S;
+	Fri, 25 Sep 2026 10:39:48 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xA1T9-000Dnx-2R;
+	Fri, 25 Sep 2026 10:39:48 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, virtualization@lists.linux.dev,
+ imx@lists.linux.dev, iommu@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Francesco Valla <francesco@valla.it>,
+ Francesco Valla <francesco@valla.it>
+Subject:
+ Re: [PATCH RFC 12/12] PoC: arm64: dts: imx93-11x11-frdm: add multiple vdevs
+Date: Fri, 25 Sep 2026 10:39:46 +0200
+Message-ID: <3065678.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260916-remoteproc_virtio_map-v1-12-dac8c5eb4aa9@valla.it>
+References:
+ <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <20260916-remoteproc_virtio_map-v1-12-dac8c5eb4aa9@valla.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: mhun512@gmail.com
-Date: Thu, 24 Sep 2026 21:03:39 -0500
-X-Gm-Features: AclHuK-CLL4CN-iwpmzU09ZJTyaHPdgpyfiVO316kD74pCcGmQ449hidnQgH-fE
-Message-ID: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
-Subject: [PATCH net] net: fec: drain PEROUT requests before canceling the timer
-To: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org
-Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28134/Fri Sep 25 08:25:58 2026)
 
-fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
-A PEROUT ioctl can set perout_enable, release the driver's locks and
-then be preempted before hrtimer_start(). The unregister path waits for
-that ioctl, which can rearm the timer after it was canceled. Removal
-then frees the netdev containing the still-armed timer.
+Am Mittwoch, 16. September 2026, 23:10:57 CEST schrieb Francesco Valla:
+> Add rings for multiple vdevs, as well as the required virtio nodes for
+> I2C, SPI and GPIO functionalities. On top of that, add example
+> peripherals using all of them.
+>=20
+> NOTE: this is a Proof-Of-Concept, not meant to be integrated!
+>=20
+> Signed-off-by: Francesco Valla <francesco@valla.it>
 
-Unregister the PTP clock first so all in-flight ioctls have returned
-before canceling the timer. Clear the PEROUT state and compare channel
-afterward, then disable PPS. Serialize the channel write with PTP clock
-shutdown and skip it when that clock is off.
+Just a general question, unrelated to virtio, but related to AMP: How do you
+manage the clocks, so that Linux doesn't disable clocks needed by the
+Cortex-M?
 
-This issue was identified during our ongoing static-analysis research
-while reviewing kernel code.
+Best regards
+Alexander
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+> ---
+>  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 128 +++++++++++++++=
+++++--
+>  1 file changed, 119 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/ar=
+m64/boot/dts/freescale/imx93-11x11-frdm.dts
+> index bd14ba28690c..dfa3b122ac5f 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> @@ -53,6 +53,32 @@ button-k3 {
+>  		};
+>  	};
+> =20
+> +	gpio-keys-virtio {
+> +		compatible =3D "gpio-keys-polled";
+> +		poll-interval =3D <100>;
+> +
+> +		button-v1 {
+> +			label =3D "Button V1";
+> +			linux,code =3D <BTN_3>;
+> +			gpios =3D <&v_gpio 23 GPIO_ACTIVE_LOW>;
+> +		};
+> +
+> +		button-v2 {
+> +			label =3D "Button V2";
+> +			linux,code =3D <BTN_4>;
+> +			gpios =3D <&v_gpio 24 GPIO_ACTIVE_LOW>;
+> +		};
+> +	};
+> +
+> +	leds {
+> +		compatible =3D "gpio-leds";
+> +
+> +		led {
+> +			gpios =3D <&v_gpio 18 GPIO_ACTIVE_HIGH>;
+> +			label =3D "LED V";
+> +		};
+> +	};
+> +
+>  	reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		compatible =3D "regulator-fixed";
+>  		off-on-delay-us =3D <12000>;
+> @@ -89,11 +115,6 @@ linux,cma {
+>  			linux,cma-default;
+>  		};
+> =20
+> -		rsc_table: rsc-table@2021e000 {
+> -			reg =3D <0 0x2021e000 0 0x1000>;
+> -			no-map;
+> -		};
+> -
+>  		vdev0vring0: vdev0vring0@a4000000 {
+>  			reg =3D <0 0xa4000000 0 0x8000>;
+>  			no-map;
+> @@ -105,12 +126,42 @@ vdev0vring1: vdev0vring1@a4008000 {
+>  		};
+> =20
+>  		vdev1vring0: vdev1vring0@a4010000 {
+> -			reg =3D <0 0xa4010000 0 0x8000>;
+> +			reg =3D <0 0xa4010000 0 0x1000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev2vring0: vdev2vring0@a4011000 {
+> +			reg =3D <0 0xa4011000 0 0x2000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev2vring1: vdev2vring1@a4013000 {
+> +			reg =3D <0 0xa4013000 0 0x2000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev3vring0: vdev3vring0@a4015000 {
+> +			reg =3D <0 0xa4015000 0 0x2000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev4vring0: vdev4vring0@a4017000 {
+> +			reg =3D <0 0xa4017000 0 0x4000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev5vring0: vdev5vring0@a401B000 {
+> +			reg =3D <0 0xa401B000 0 0x2000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev5vring1: vdev5vring1@a401D000 {
+> +			reg =3D <0 0xa401D000 0 0x2000>;
+>  			no-map;
+>  		};
+> =20
+> -		vdev1vring1: vdev1vring1@a4018000 {
+> -			reg =3D <0 0xa4018000 0 0x8000>;
+> +		vdev5vring2: vdev5vring2@a401F000 {
+> +			reg =3D <0 0xa401F000 0 0x1000>;
+>  			no-map;
+>  		};
+> =20
+> @@ -149,8 +200,67 @@ &cm33 {
+>  		 <&mu1 3 1>;
+>  	mbox-names =3D "tx", "rx", "rxdb";
+>  	memory-region =3D <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+> -			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
+> +			<&vdev1vring0>, <&vdev2vring0>, <&vdev2vring1>,
+> +			<&vdev3vring0>, <&vdev4vring0>,
+> +			<&vdev5vring0>, <&vdev5vring1>, <&vdev5vring2>;
+>  	status =3D "okay";
+> +
+> +	virtio {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		vdev@2 {
+> +			reg =3D <2>;
+> +
+> +			v_gpio: gpio {
+> +				compatible =3D "virtio,device29";
+> +				gpio-controller;
+> +				#gpio-cells =3D <2>;
+> +				interrupt-controller;
+> +				#interrupt-cells =3D <2>;
+> +			};
+> +		};
+> +
+> +		vdev@3 {
+> +			reg =3D <3>;
+> +
+> +			i2c {
+> +				compatible =3D "virtio,device22";
+> +				#address-cells =3D <1>;
+> +				#size-cells =3D <0>;
+> +
+> +				eeprom@50 {
+> +					compatible =3D "atmel,24c1025";
+> +					reg =3D <0x50>;
+> +				};
+> +			};
+> +		};
+> +
+> +		vdev@4 {
+> +			reg =3D <4>;
+> +
+> +			spi {
+> +				compatible =3D "virtio,device2d";
+> +				#address-cells =3D <1>;
+> +				#size-cells =3D <0>;
+> +
+> +				sram@0 {
+> +					compatible =3D "microchip,mchp23k256";
+> +					reg =3D <0>;
+> +					spi-max-frequency =3D <20000000>;
+> +				};
+> +
+> +				lcd@1 {
+> +					compatible =3D "adafruit,yx240qv29", "ilitek,ili9341";
+> +					reg =3D <1>;
+> +					spi-max-frequency =3D <10000000>;
+> +					dc-gpios =3D <&v_gpio 21 GPIO_ACTIVE_HIGH>;
+> +					reset-gpios =3D <&v_gpio 20 GPIO_ACTIVE_HIGH>;
+> +					rotation =3D <90>;
+> +				};
+> +			};
+> +		};
+> +	};
+>  };
+> =20
+>  &eqos {
+>=20
+>=20
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-b/drivers/net/ethernet/freescale/fec_ptp.c
-index 56801c2009d5..67901e036ac3 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct
-fec_enet_private *fep, uint channel)
 
- 	hrtimer_cancel(&fep->perout_timer);
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-+	mutex_lock(&fep->ptp_clk_mutex);
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 	fep->perout_enable = false;
--	writel(0, fep->hwp + FEC_TCSR(channel));
-+	if (fep->ptp_clk_on)
-+		writel(0, fep->hwp + FEC_TCSR(channel));
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+	mutex_unlock(&fep->ptp_clk_mutex);
 
- 	return 0;
- }
-@@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-
--	if (fep->pps_enable)
--		fec_ptp_enable_pps(fep, 0);
--
- 	cancel_delayed_work_sync(&fep->time_keep);
--	hrtimer_cancel(&fep->perout_timer);
- 	if (fep->ptp_clock)
- 		ptp_clock_unregister(fep->ptp_clock);
-+
-+	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
-+	fec_ptp_pps_disable(fep, fep->pps_channel);
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
- }
--- 
-2.53.0
