@@ -1,138 +1,121 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108BF3AD538;
-	Fri, 25 Sep 2026 16:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF0F3B14D6;
+	Fri, 25 Sep 2026 16:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790354918; cv=none; b=utmtaOl1dHvK1k7J2QwtBP7FRSN+Oc7k4OGGCSSs0MxQsWQb4HaRBbV9ZjdKVE38fwTAys6tz6oyfoIeqWNUCZeJ4FxluzBJS65vc7XVCwB6TESqXLXTJ2PWq+wxNXQqAX4VgJYc6Mz7EsnGnN+TLuX7IPr/V7ZWp4F2Mt7CR8Q=
+	t=1790355091; cv=none; b=N5LtX11HH76KgeMEKbLbcOK7wOc/Or8j6zukJzktohHU4y7NpD8iAM9wSqw4MMzA90Evk/JWc2yNYtWjIJ/rLRsXmdk2TnDrentqN9r5QxX8wZ2RQzftiwAWOaGJPy+ilHOMg6lZUWiesOi+zBVZH4bsVeZrCs9uj+PWHfL+AsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790354918; c=relaxed/simple;
-	bh=TzUGic9pMOny7EGR5g7usgpgx797/IJRE1u9ts1Wm0g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PYaDOq2pH2g7tjofFCXb3aJkCvgujZzZohgKz/IbVq+kxKKDXcmbpxdQiNI43k3q/wvWjjTbBtoBMsDD69QGQLVTJ/uhtVr41wgA1sLlXMhirsZ7pAAicB9L9yAdDiSvx3EygrtG6QTVdem3zJsK45vQYm1QHtcCwcg+g+gxUSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ofYM+MpN; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790355091; c=relaxed/simple;
+	bh=Z3fUZTE3iejd1JSQJvpyR4fIcnwo5FtiwrpLJ4h08/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TFoZ8bTuYJ61kcijzNiSNKvR/EMiZUyWrGhEqorc2ylWcZE+/NHdH/gzM89x2ogNcHPAWhuJXCyjzEznacrr6SgXkwTmFSF8duckKwV8cQrDM8Z340hUpB6o42SanUt7InhYexINpGmdCp4gR+QaZ2xsCWxi2DZj9Eh3OKayCCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ff4ROM4K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ofYM+MpN"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02AD4169C;
-	Fri, 25 Sep 2026 09:48:26 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22A6D3F86F;
-	Fri, 25 Sep 2026 09:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790354909; bh=TzUGic9pMOny7EGR5g7usgpgx797/IJRE1u9ts1Wm0g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ofYM+MpN4pf0AQiHkEr6+VnR19TayQDECqyBJXDP5SqIguchrv1aGdXz4dXVLNmhb
-	 dfFleGp0EeFmpr1ed3q40j4OQLi8cop06TNfATdKAfliLLJDCFKwbpMmZn39nVKi1m
-	 Qn97RoWBgt5cO39iAOiYsEnFxJY7QXFKUVOFe83M=
-Message-ID: <1b55f680-2413-4db1-b928-ed5741696d07@arm.com>
-Date: Fri, 25 Sep 2026 17:48:25 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ff4ROM4K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F3F1F00893;
+	Fri, 25 Sep 2026 16:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790355082;
+	bh=uTN2gUGLfjEmLI+kfBb4qKSBquVXwsBhaTfbpY2NRrY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ff4ROM4KRn94F3daBy8gUc+QsXb8btPOPmOKC3Kv/YBuIY+QMg624xqfPAFN3I33m
+	 t6SIDlDUtS2ifLCzs4Pi9sCZ03jW1xYlboCpY+JFD7BkO7P9At90Alwz3kQFDla8GL
+	 JmN/1pvjr9C4zEqapYWo5EvdFYdNuBC7LREsNebx3fD/NFAQZ+PZjOB8lH2d2kmc4x
+	 BhBbYyxRSXazwrYJ2ycjkxDVxR9w2cwGvK8OU5JNb/cPY87FDgxsmsnSWG+PK1IKuz
+	 WHO4RJ1IWJ2FNakGrl34eJUYtq2UOa3xiswvAbGEbazt9+0GmcePAmkaSeW5KWDFFP
+	 EjW22VqTYhlHg==
+Date: Fri, 25 Sep 2026 17:51:17 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	p.zabel@pengutronix.de, mchehab@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@collabora.com
+Subject: Re: [PATCH v3 2/3] media: dt-bindings: media: nxp, imx8mq-vpu:
+ Remove nxp,imx8mq-vpu
+Message-ID: <20260925-generous-overbill-e5fa75aec1e7@spud>
+References: <20260924130453.196299-1-benjamin.gaignard@collabora.com>
+ <20260924130453.196299-3-benjamin.gaignard@collabora.com>
+ <20260924-compare-useable-3e2863b66924@spud>
+ <518ec010db104f6f0e7c85607a97af408da44eed.camel@collabora.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 06/12] remoteproc: virtio: add bounce buffering for
- data buffers
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
- Francesco Valla <francesco@valla.it>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Mark Brown
- <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, virtualization@lists.linux.dev,
- imx@lists.linux.dev, iommu@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-6-dac8c5eb4aa9@valla.it>
- <arKlvZGqu2nt6Ci0@p14s> <arLXthhYbKkwZ9zY@bywater>
- <CANLsYkwNOukGX68=NVvwNP7iudP3EcKN6C2L2o9nVCTRxFVxFg@mail.gmail.com>
- <arP38OEaabFFu8lJ@bywater> <araOI_duKIAbphq6@p14s>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <araOI_duKIAbphq6@p14s>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mC0ZFJQ+JqSh31eF"
+Content-Disposition: inline
+In-Reply-To: <518ec010db104f6f0e7c85607a97af408da44eed.camel@collabora.com>
 
-On 25/09/2026 4:07 pm, Mathieu Poirier wrote:
-> On Wed, Sep 23, 2026 at 06:05:35PM +0200, Francesco Valla wrote:
->> On Wed, Sep 23, 2026 at 08:44:41AM -0600, Mathieu Poirier wrote:
->>> On Tue, 22 Sept 2026 at 13:39, Francesco Valla <francesco@valla.it> wrote:
->>>>
->>>> On Tue, Sep 22, 2026 at 09:58:53AM -0600, Mathieu Poirier wrote:
->>>>> On Wed, Sep 16, 2026 at 11:10:51PM +0200, Francesco Valla wrote:
->>>>>> Depending on the driver originating them, data buffers used for virtio
->>>>>> communication can either:
->>>>>>
->>>>>>    - already be allocated from the coherent memory area that is
->>>>>>      accessible by the remote processor; this is the case of rpmsg
->>>>>>      and the rproc flavor of virtio-console;
->>>>>>    - be allocated from generic kmem, and thus not accessible directly by
->>>>>>      the remote processor.
->>>>>>
->>>>>> Exploiting the map operations, which are used by the virtio framework
->>>>>> when VIRTIO_F_ACCESS_PLATFORM is part of a vdev's feature flags, add
->>>>>> bounce buffering for the second case: when the map() callback is called
->>>>>> for a buffer, one or more pages of coherent memory are allocated and
->>>>>> data is copied to them, then they are exposed to the remote processor;
->>>>>> the data is  then bounced back on unmap().
->>>>>>
->>>>>> The first case is not impacted, since buffers already suitable for
->>>>>> remote transmission are passed through.
->>>>>>
->>>>>> With the bounce buffering in place, any kind of virtio device can be
->>>>>> supported through the remoteproc-virtio transport, at least from a
->>>>>> data exchange standpoint.
->>>>>
->>>>> Is this _necessary_ for the imx93 platform you are implementing feature for?
->>>>>
->>>>
->>>> If I don't want to fundamentally change how the remoteproc integration
->>>> works (i.e.: using buffers only from a pre-shared area), yes. While in
->>>> my test environment the Cortex-M33 serving as remoteproc is able to
->>>> access the whole RAM space, that is not always the case.
->>>
->>> The first sentence tells me it is mandatory while the second says it
->>> is not.  I understand the use case but don't want to bloat the
->>> subsystem with code that is trying to address a problem you currently
->>> don't have.
->>>
->>
->> Let me rephrase: while on i.MX93 the Cortex-M33 can theoretically access
->> the whole RAM space, that is not a good idea from a security point of
->> view and can be the source of a number of bugs. The target is to
->> statically define a static shared memory area (as I am doing on i.MX95)
->> and only use that.
-> 
-> As Robin pointed out, have you looked at using a restricted-dma-pool for that?
-> Note that I am not familiar with the concept but open to go that way if it can
-> work for us.
-> 
-> Robin, can you point us to a simple example we could look at?
-The only in-tree example is mt8192-asurada.dtsi, but even there the 
-fundamental principle seems exactly the same - the system interconnect 
-is locked down such that there's only a particular region of "shared" 
-memory that PCIe DMA can access, so the restricted pool is placed there, 
-and in that case can occupy the entire region since the wifi adapter 
-only really does streaming DMA - restricted pools have some limited 
-ability to act as a fallback for coherent allocations, which won't work 
-for everything, but does happen to be enough for that wifi driver.
+--mC0ZFJQ+JqSh31eF
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Here it would be a case of reserving some of the shared region for a 
-restricted pool alongside the "vdevbuffer" coherent pool, adding it to 
-the memory-region list of the relevant device(s), and usually that would 
-then just work, since the setup is all done automatically by the core DT 
-code. However I know remoteproc does some funky stuff with child 
-devices, so it's quite possible there might need to be something more 
-done there. But still far, far less than reimplementing a whole other 
-bounce-buffering system.
+On Thu, Sep 24, 2026 at 01:51:13PM -0400, Nicolas Dufresne wrote:
+> Hi Conor,
+>=20
+> Le jeudi 24 septembre 2026 =E0 17:55 +0100, Conor Dooley a =E9crit=A0:
+> > On Thu, Sep 24, 2026 at 03:04:52PM +0200, Benjamin Gaignard wrote:
+> > > nxp,imx8mq-vpu has been tagged has deprecated since a while.
+> > > After driver clean up it is time to remove it.
+> >=20
+> > No users in linux doesn't mean no users, but I am guessing that there's
+> > genuinely no users elsewhere and anyone using out of tree devicetrees
+> > should have updated due to the warning at runtime?
+>=20
+> I've checked the vendor DT before they moved to the mainline driver, and =
+they
+> never used this binding (actually they never made bindings).=20
+> Here's what the DT was:
+>=20
+> 		vpu: vpu@38300000 {
+> 			compatible =3D "nxp,imx8mq-hantro";
+> 			reg =3D <0x38300000 0x200000>;
+> 			reg-names =3D "regs_hantro";
+> 			interrupts =3D <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 8 IRQ_TYPE_LE=
+VEL_HIGH>;
+> 			interrupt-names =3D "irq_hantro_g1", "irq_hantro_g2";
+> 			clocks =3D <&clk IMX8MQ_CLK_VPU_G1_ROOT>, <&clk IMX8MQ_CLK_VPU_G2_ROOT=
+>, <&clk IMX8MQ_CLK_VPU_DEC_ROOT>;
+> 			clock-names =3D "clk_hantro_g1", "clk_hantro_g2", "clk_hantro_bus";
+> 			assigned-clocks =3D <&clk IMX8MQ_CLK_VPU_G1>, <&clk IMX8MQ_CLK_VPU_G2>=
+, <&clk IMX8MQ_CLK_VPU_BUS>;
+> 			assigned-clock-parents =3D <&clk IMX8MQ_VPU_PLL_OUT>, <&clk IMX8MQ_VPU=
+_PLL_OUT>, <&clk IMX8MQ_SYS1_PLL_800M>;
+> 			assigned-clock-rates =3D <600000000>, <600000000>, <800000000>;
+> 			power-domains =3D <&pgc_vpu>;
+> 			status =3D "disabled";
+> 		};
+>=20
+> I've not aware of any other OS or booloader that offers media capabilitie=
+s using
+> Linux mainline DT. The now deprecated nxp,imx8mq-vpu compatible had a sho=
+rt live
+> in the Linux tree if my memory is correct. Hope this is enough justificat=
+ion.
 
-Thanks,
-Robin.
+Yeah, and this kind of detail (plus the fact that the driver emitted a
+warning) are very helpful in the commit message for patches like this.
+Hint hint Benjamin!
+
+--mC0ZFJQ+JqSh31eF
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaramhQAKCRB4tDGHoIJi
+0vuwAP97l8f+kng/LRWQUycXlp59bH1E1WLY6HcLhXhNVw5eZQD+M4FadnRs+7cb
+V/japjgTQ7Y+cGI9P1+T2PE+6OiOpgA=
+=dwjl
+-----END PGP SIGNATURE-----
+
+--mC0ZFJQ+JqSh31eF--
