@@ -1,188 +1,162 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013033.outbound.protection.outlook.com [40.107.159.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F170F217723
-	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 01:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07113783D5
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 02:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790300854; cv=fail; b=LkVFCcYYFJgLQub6PtbmFlmU0JimSohV6Z80t4oG+b3SwDKi8P8cfDhHUZYmy9CkmqgNgZHz5X34ycmFQA0nDgdCcpd0gn+TiJDHtkBOzF3aOc2+RaiLoamVyhjskfDMN3xZN+Uc2xa1A6Wqjb9PtGKJAZiMqgI2Ogd/C7MKyqY=
+	t=1790301824; cv=pass; b=frUzNw8/PRbL9sEvOb8DBKorCBUo3T2Z8LG1erUe7rIUFmLdaJb7sSgU3UYLXcUYGUhAIlYy+Hi8Jof4pH4c/OkupJegSjngqP4YtNrbvFxABwkQQ64MMUh60pegxUrzF8sGo+fFUyelJzCV6nQCh9OoyPwnT6Yl5/uMfWyLah0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790300854; c=relaxed/simple;
-	bh=BQ039dmGEZBoXlmvmOa6S2HBxExHGEeLeXh1XaRBRNk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ahDK2lL6e7+XwI3W8KyXZ28Q5XPpDWrP7falDP8rR74y71rzy8bgkggyT0NXzqdnK0soMInECJsMShG9gpgy1CYaXhh5sxBjWoo8mdr0fmFVHdaM3Ki/7Ap8/CBaqvSgA1GyyOVczT2LfHm2ANBEd1RwOUUI4YZyiPDNdDOplxo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EAHhwFZR; arc=fail smtp.client-ip=40.107.159.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790301824; c=relaxed/simple;
+	bh=I74p1TPOpyMN5eN8javYXxz6OzoRysS3odlBNtVBa6U=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=aCOEI9nagMAIapXh5q9sesInusEI1jPFGlJkrkpt6BhsmEDUZ63fBku9aGEAJyhIlA/6lAIn+94mX7C8MgSaJCX+S7MMUrePD7K9rD21FRONwl/UiiYh9L0qu9DDtCh2tIs/K79Az4+5DAEFyoviBrefPlKWtg9AK2TmEOFV0t4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ohp4Wija; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EAHhwFZR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lCecZ9CtpnEc7vBD/g4dD1zrkH3BYGMx7f4HL1aiyuQcb+ybHhfStDZJseAzGRffexM0iKxdcNZ1GvREL2hREDHdn+qfBLYhF2XmgZtOe5BmU81j1vMP7QSCbjIGnvPlMr056EvPzvSX9yTw3DOe182iXqlb8p3W7Xq6W1/EQFmSpUtfErCj4Qm4AhNLTN8vAZJKWKx8x2gRWxHK+Y4Ys3eLPZMVzYOUwPMc8x0Bc/kMIB8eqxofM5JY44FbQzzvMUT+LQYO5cGXCkUQ7Fiy16JlE8aXG4ph6aybSje3fT4puFshf0wwWM4TjkMyrmpOFTMQ9az7tljTv1e3d1fS3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1LpgHrRnJnI2I5GlqoOwrsqUlD08PGb1FxWLCkR/D4w=;
- b=s+AqzwiUoaBxBoGiWdQcWpZ2ckLSKAJ0UxLM9wG2y1TEx3t4huHhNLAmRkTL7cPXiZGxQ54vNozkklAmpI+qHWMBtE14fGuWiqLkDj+JmnMB/INfMjIL3wDtdX/wFv8ABOOQyihBheF3MzYCTIlJa1qQYaRuvod5hMPhxX5mkYY6xhI8yRhB1X1vbea9Emu3z4oSXw+eMEStne0wa+qx2w/qjBhNRsEo0vIw/qAjcOAN25mrTkOjBSeuV6PXIV8hvBKLAKzJB3iONthKy4ypK3i5xrgrZCuxqOMakLlZ8ve2EjB4id8RHosa5KpQdfity2x2L8ZLl5QRnpElg7zUOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1LpgHrRnJnI2I5GlqoOwrsqUlD08PGb1FxWLCkR/D4w=;
- b=EAHhwFZRGA1kwcYUpU9p9Pmv94cIqxhYWfy6ALcQLAkJ9oqR+tsg6v3PWENbQwm+K7qFJ8HBr4iwxYcb72oywZXiqlzZPBSWN2Itzwwxk/9WquhJPJA25/bxNAnDGewvQPei9U9ZXyLeOCB52bTjDu4vlPcYaKD2lTCQLA9Hj11zRUHGPS/NgFxdRnqXmIclugGh2rrvTE2ODQ1T3h9KBO/7sPmB4gtD4YKdrCZKB2xV8nB1yZYvBk/loIWaimB10vS4wilNxQcyggjL8xXEwtLS6Rzf5SUvtGTGmc5EFemmxskiBeG91bR52T0ZjzEZ8gnQ8loMNLUkDUTCeaZnTw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by DU4PR04MB10646.eurprd04.prod.outlook.com (2603:10a6:10:58e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
- 2026 01:47:29 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
- 01:47:29 +0000
-Date: Fri, 25 Sep 2026 09:45:01 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 3/3] dmaengine: imx-sdma: Use __assign_bit() for
- ownership configuration
-Message-ID: <arXSHcT8uVF8Aw3d@nxa18884-linux-1.ap.freescale.net>
-References: <20260903-dma-mask-v1-0-211ffd12c236@nxp.com>
- <20260903-dma-mask-v1-3-211ffd12c236@nxp.com>
- <arWJBi8iHhaeNfcr@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arWJBi8iHhaeNfcr@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SG2P153CA0002.APCP153.PROD.OUTLOOK.COM (2603:1096::12) To
- AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ohp4Wija"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a60590a85cso880296a12.0
+        for <imx@lists.linux.dev>; Thu, 24 Sep 2026 19:03:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790301820; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rLIEDyL+IsR+zMRBwtX1aoBFru53e0Xme8r5POASGMY2+ie6DWBA9egKHU42yECAfV
+         YcR+hOCViUOdCLKFw8k7t6vbHbVDy+aFqXoHSxTdSpsVL+JgIBcGifFQDpqjJLEVCecK
+         2/CDVhoMwuBCHSMQlg6to14XAJDwFQ49xaOToZ1liIv+UznJ9RWtm4P+FQfWhWicXdW/
+         g6JVvmQwT59+kGbiL1tHFdMsj7IXJYup0nRVHmb9blP3iVRuefyz8K3sW/6CcWIl2eZx
+         H0jUmRe42SWxAzS2e3ieOgAMFcVGFBOZpNQNKTL7SR09UqYXkMZWD/CM/ScXkWJgSgVN
+         X9fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
+        fh=yXjkw9tWe8Eaf7jAJrqCT+6fgtA6HoJB4e3BoGu77UM=;
+        b=RHo86PGbji8M1eT2CRxv0N61Z5I7WSmqLf9tfISpqPJhcGBIPZ2S5O5+PGnklcXQxb
+         I1KH+VsdKvrQfwdg5WZuMwN6fTiyvTTg0dcYTUiGiN7T27eWUZDVqzuPOC0bzY4GNpv6
+         AxFqg7faK4tigbvFJkhd6WiSR9u9jCsv+hrNBrBNbjfb7WYhXDdFnu5kZOfsr7tTMAvy
+         nUJkTUUW6AVJmcQsr3bqDVsgTffgvr1Z05D9h/WOnr5vI6SojG7TQ4qWM2aB1bIqdo/e
+         U0TTEWGJl6CRF0Lo0FbBtnyxzkyrM8cGsLknjmiQPQdf1tKo/vn0ezJpgyrMZuVf44Ux
+         PGAQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790301820; x=1790906620; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
+        b=Ohp4WijaOqoQYE4121fxDVRXQm0sDuElT/nOH3b66ZmtOS32PP0+DB+Y6b3W3XnGWD
+         T1+m4tjwGDWFRbCPOGxHHlRdEzcetHDmycCNExYyo5/bgryIjQvI5YIncq2ColZqDVlK
+         Wp8KvXEPz/oS3O2LyRJNohNNSYIP8pGuT42WyAmOtlu5zmes/Xjqs/uPMhTv150ir+WX
+         b3qqDoI7UDwZyX03FUrFvSDgaKYmXynLUO65PE3uKCpmw+JRdm+szeDgRfd75nAd3Hkz
+         7WXuttx66vEsQs9STIlfy2OUil1uZcICupH6xLO3Pd60jiIzKAEHAhQiQo3tadDgK5/U
+         yCXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790301820; x=1790906620;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
+        b=RoLD5n92AkcrJeHyl3O6gJ+xMfhDxmKhTFa84EzD0ztjMcXt6OECY2IGG5MlHjxRUK
+         GyV3rVZXN3PqmPbEgn97ZWp5bkudjLWPjUQHAaAmJmWDUhtTiDK6bLEuH2+H6qmpFjVU
+         9Qz1BOxCGXDH1p27h1DiCIwlkrf3CewvMX8+ol1dZMDgMpH5Ym/ymfWIIlHifV5/l5WP
+         voeLfx/JXqnMZSkIfkm8CenswLG8BWAa2jtjl9wibJZVX87tLysdtzFTsGWLF4duw7x8
+         sHr/37dsNDVbglqZmZjP1XYKokJCTjmxkjlx1fk/PqungCIxHGJ4XfbVa+02fSjPY0L/
+         v2Sw==
+X-Forwarded-Encrypted: i=1; AKwUvByBdjeM2rt3cwsRwnRl43Axh15FAGcbOO2n+Ts57cm3qDkbrMlLizI+1N4q0Y5VZ6ds6QI=@lists.linux.dev
+X-Gm-Message-State: AFuF++mT0ig0QtaZ5ws9VhX2Cnl9wCct6dugGPdypQtPN8t5N1K668Pi
+	dmF0AWWYG8+7gWAdWW5fjjkAFVQ9f6/cRAxuYV//ZPvTrdlXgwQEXMK2T5ofTUd6g7t3x3VyGhZ
+	ypofdq0oJvXZK19CR+X7rM8fmr3wYDQ==
+X-Gm-Gg: AYBFou1kVMbJd9ccxz3+lOyEpNicOkVNiAhKCn/4DUu9F9e9pqbsS54K6j2GRaB6qzd
+	o5vJJXAAdPeYYt8Xo9KVML0RHeKBcLztjLMFYZxsrMEgVGVGsB5zBGgmbkAjfAZH0TElR4P+y0V
+	PDZ3c6+B2FbwZtD9zUXBMyIZSBfYhTLoH0JsDoAQHNtcgTnh3bnfEVSjdo1A2TwRgrv4cpi9tJ3
+	QUysh84hLVJ9eIc+9nQX8k3jP/xZ+W14/7QAiH6r//c+AVCudUsNaJ4CzWAbJyetyjnczrdxHPa
+	2P4xCQrvcDijDaQVDIws4mBW9SXv+aNVk3V75mB3JIdj2FSqHFgDL/VUt9jbAs7Q3HKAeZNZw+u
+	5bcbadiyktJ2DEBDFaQ6F2iAFz9wzjE/JxZWTYTV3UFa6FC65txkEQz60Xc1/RS1mWA==
+X-Received: by 2002:a17:907:e918:b0:c26:19de:913a with SMTP id
+ a640c23a62f3a-c2ac2674c23mr365071766b.45.1790301819967; Thu, 24 Sep 2026
+ 19:03:39 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 24 Sep 2026 21:03:39 -0500
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 24 Sep 2026 21:03:39 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|DU4PR04MB10646:EE_
-X-MS-Office365-Filtering-Correlation-Id: 144858ab-c24f-4a4f-1790-08df1aa6f53d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|376014|366016|1800799024|3023799007|10067099003|22082099003|56012099006|11063799006|4143699003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	fqSSqn//xtgbptliEu6OaVdSBMK6aeXUn61yxI29OoY85eGYPtals+0NvOryaHK2LmPIeu9H8O3FPBEpsFaVw8dAqf+PlTFWyliFC6COITSWijY6eP8LJ0cW9bsDwghlQMBDOpsUyXNNnXzeELd+6r7BVz3g7/RgOdOrECD4DRVvTq9bZSITnU/LuVMNULSmasNn/D5aVQLQSnH7cfBPLl9QdHFXeFTQVysU5OGhbz0/YXjNECZg+tzg/4ugfG1Fc6sedZytDWZb9sMO08T5wgoq9x+1Yz1j7HlQpSrdT04Rzv8Wx7KwUawH457+K1K/bbzCmQR1pLx8OLSaO0geYjNXB61ya7XuGG2IfgksnETQaf+pTWgOrySYeHvSfyCyXqgQ0/8it+hQvURnF9KdlQr2oobXuXCc1nTFAnGs/TyF3cpcHSvl7OTnPkoa3q57ro9DjMFPosJ2sIUdXmxJHXVRwyy61dxgDNWEr016NSwup7MEvH7UIqurxTmpV020geGjYLbz0RYrO3CxOGBmFdUPFG9wR0YliaD9+Q10Ehu5TGVjOCnQ58R9yrI+WjujFXl3UjF7zKvW4P4/5p6yqhPnWJNsPznKRKELoMhlJFBynFQ1Nca/Vyt8nK+fVtPo
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(366016)(1800799024)(3023799007)(10067099003)(22082099003)(56012099006)(11063799006)(4143699003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MUEzSwBpMBVnmjP9gAIoSczYMxfQZatKBA6KZXc+Ou3UEFqts3skhZN95BC1?=
- =?us-ascii?Q?/aIIkMUwTHP1Xex++X7v4C/A0hfPpINIaGPJRuvGwjn/iM+ET19WTA/b8Rbk?=
- =?us-ascii?Q?GddQzgREE5Pyj00KuTNvlvvUGtszrLjbAQG/WcaUHpqneB0HDMlQVRh2MGOq?=
- =?us-ascii?Q?U44pz99cMyX/XejGK5j3Yut+hkgvCm7zuXsbd3t9beJdUXr0iUzqjC/SB0F5?=
- =?us-ascii?Q?mliW5CeGH3d3eYdh92yQ4IyS3BZebyOO9a5MEYQt/xFjZ517gtDsjC4JIb7z?=
- =?us-ascii?Q?HOsOmukz8EhfgbT5uBT+jfOae0+f/yIKfg1qQMYxs3EzVJi3oKdyO8lDtZml?=
- =?us-ascii?Q?5qygkTw1JPm399ZmQPlAe/f7IeZUdAFr0uNiKsWkAMwAwH/v1qA+AB57uj2y?=
- =?us-ascii?Q?JRpn7iH2roZPaggvY9gmmPPyCOEsDP51zfkcFNwqSCO0+aCymM2f+2E81UTq?=
- =?us-ascii?Q?RdeY9oZxl2nW8245FkkbYDPnAz2EpdZPp0ToDROS142UBPw5AvYtvX72/ZZa?=
- =?us-ascii?Q?h1K2oQv+ibGCgzbc6Wr2sdKxYlTkRhob1BPMestfwNXn9Hxvcen9jFOQRKQi?=
- =?us-ascii?Q?R3wxC4rdf6mdf/Jh4DOe3GrcaG7Wu6ILmHn3unieRwaaymHBN0TZWy2I7rfv?=
- =?us-ascii?Q?9S2odf5nsI2MuIJt6Lhj5kAbOUW70UKJ6FP0+dLJuQwC8o9Q6WcqbnH+Gjs9?=
- =?us-ascii?Q?oMEGWg4biAYd8aYKgeQfQuAujjd15dEzdv3a053UN3NI+gmdcXBkXNI15lPb?=
- =?us-ascii?Q?rDtZQbVZrb86l5T/hZh4oogyXR4uZQTxvP/Z6JZL64kIot+++xjFIGpjwIWD?=
- =?us-ascii?Q?D63AaDYJp/PurWeWZokZeHVYdm3ps9eTxN9CNetmfUN9+Yd5CFmgenmFCwPE?=
- =?us-ascii?Q?IaMAl6kse/BCqFjv+LUjeKgDZVf5sTvXh8VgbSMNoTzsA4vSc2oK+iBGm4HN?=
- =?us-ascii?Q?57MNyr45rg5igyTvQVSRwVMILNLG5JDrdvDs1RUNQsguRwr6k8GJ1VsIIvme?=
- =?us-ascii?Q?qxggndTj/xHktRygmd1sTgnHZ3n3HeZhE/gepY/bLomzt2SOPuhJj8oNJXH2?=
- =?us-ascii?Q?05Q1B2zcTy9eCYMLt4H3U71u+5m99O501noVxhlVsa0yf45DkPC0FJvOAelb?=
- =?us-ascii?Q?BBJ2gpXyG5/Y1/Dq3arQZrrKOUYvMYKyYdgJi1nK9WPIXw9GEJ38D1xvd0wH?=
- =?us-ascii?Q?Zaz8Tc+KJl3QaOOkdwlg+j2qg7R20wcuNCYpo45ZgxAeIICddbgEFcd/x0KU?=
- =?us-ascii?Q?X9aABZqbahbDAp+eqKki61fubmj+8QuCsk6aybmWVSkFZltmpqsgmnbPo4rM?=
- =?us-ascii?Q?O8MOInHBen95uNL7pXbx3buv+9F6J97ZjdyyLYeSOS9o1uFQhs+EIWMnHax2?=
- =?us-ascii?Q?RxQ54Led2rXhoTrkMhzenRqd/47QYG+mCM4p/xsrTCxftqbzN+htFJZRWMsD?=
- =?us-ascii?Q?C7TityahWmVkr3EI86IPxuVr5hQUKtF6QPeBTlbe2B3JJUnHLX60hX4XiRlg?=
- =?us-ascii?Q?6Efbn3JrY501KCrU4Bw/bvM4j7p9MEzleHBrJsZQuc5GW2J79YAStz5INYk2?=
- =?us-ascii?Q?2yKBtWQU89hdFP3ztvWT3j2KyryifNcQoLCr4vevQ8OFslV+nfR+ObOCjoZi?=
- =?us-ascii?Q?+1fKD7i66rUq7H+9Oy587t9rIy9dpAfVizGKvIOd+XyYg0OTAEyfdyJI2sV7?=
- =?us-ascii?Q?JRPmEODKwM2602MGjMtFmJgrQlaClz2MWuCOoG3TaQnkhAM3UBFepHf3sC4+?=
- =?us-ascii?Q?mbeSJers98+erdYa7XEUqMJ87vVvMbVSACOPOA2gs4AdWQ2b5t4s?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 144858ab-c24f-4a4f-1790-08df1aa6f53d
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 01:47:29.2518
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xxCiJjD5xd3M4mmUkSmjKLpsY48dWoETKD1QjHZcLupjN65K5QXbGhwKvua12czUUEtUsisQ1Ejh35z4vtXPcqP35Uz88CWU2gdVMeeafCRw+D3TrafT2bfqAHmgtR81
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10646
+From: mhun512@gmail.com
+Date: Thu, 24 Sep 2026 21:03:39 -0500
+X-Gm-Features: AclHuK-CLL4CN-iwpmzU09ZJTyaHPdgpyfiVO316kD74pCcGmQ449hidnQgH-fE
+Message-ID: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
+Subject: [PATCH net] net: fec: drain PEROUT requests before canceling the timer
+To: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org
+Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Frank,
+fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
+A PEROUT ioctl can set perout_enable, release the driver's locks and
+then be preempted before hrtimer_start(). The unregister path waits for
+that ioctl, which can rearm the timer after it was canceled. Removal
+then frees the netdev containing the still-armed timer.
 
-On Thu, Sep 24, 2026 at 04:33:10PM -0400, Frank Li wrote:
->On Thu, Sep 03, 2026 at 10:16:14PM +0800, Peng Fan (OSS) wrote:
->> From: Peng Fan <peng.fan@nxp.com>
->>
->> Replace the if/else pairs of __set_bit()/__clear_bit() in
->> sdma_config_ownership() with __assign_bit(), which does exactly the
->> same conditional set-or-clear in a single call.
->>
->> No functional change.
->>
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->
->Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Unregister the PTP clock first so all in-flight ioctls have returned
+before canceling the timer. Clear the PEROUT state and compare channel
+afterward, then disable PPS. Serialize the channel write with PTP clock
+shutdown and skip it when that clock is off.
 
-Drop this patch.
+This issue was identified during our ongoing static-analysis research
+while reviewing kernel code.
 
-[1] is the new patch to cover all in dmaengine subsystem.
+Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-[1] https://lore.kernel.org/all/arV6S-U-ArZubwka@lizhi-Precision-Tower-5810/
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
+b/drivers/net/ethernet/freescale/fec_ptp.c
+index 56801c2009d5..67901e036ac3 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct
+fec_enet_private *fep, uint channel)
 
-Thanks
-Peng
+ 	hrtimer_cancel(&fep->perout_timer);
 
->
->>  drivers/dma/imx-sdma.c | 17 +++--------------
->>  1 file changed, 3 insertions(+), 14 deletions(-)
->>
->> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
->> index 63261ab6402b9..da565409beaaa 100644
->> --- a/drivers/dma/imx-sdma.c
->> +++ b/drivers/dma/imx-sdma.c
->> @@ -710,20 +710,9 @@ static int sdma_config_ownership(struct sdma_channel *sdmac,
->>  	mcu = readl_relaxed(sdma->regs + SDMA_H_HOSTOVR);
->>  	dsp = readl_relaxed(sdma->regs + SDMA_H_DSPOVR);
->>
->> -	if (dsp_override)
->> -		__clear_bit(channel, &dsp);
->> -	else
->> -		__set_bit(channel, &dsp);
->> -
->> -	if (event_override)
->> -		__clear_bit(channel, &evt);
->> -	else
->> -		__set_bit(channel, &evt);
->> -
->> -	if (mcu_override)
->> -		__clear_bit(channel, &mcu);
->> -	else
->> -		__set_bit(channel, &mcu);
->> +	__assign_bit(channel, &dsp, !dsp_override);
->> +	__assign_bit(channel, &evt, !event_override);
->> +	__assign_bit(channel, &mcu, !mcu_override);
->>
->>  	writel_relaxed(evt, sdma->regs + SDMA_H_EVTOVR);
->>  	writel_relaxed(mcu, sdma->regs + SDMA_H_HOSTOVR);
->>
->> --
->> 2.34.1
->>
->
++	mutex_lock(&fep->ptp_clk_mutex);
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 	fep->perout_enable = false;
+-	writel(0, fep->hwp + FEC_TCSR(channel));
++	if (fep->ptp_clk_on)
++		writel(0, fep->hwp + FEC_TCSR(channel));
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
++	mutex_unlock(&fep->ptp_clk_mutex);
+
+ 	return 0;
+ }
+@@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+
+-	if (fep->pps_enable)
+-		fec_ptp_enable_pps(fep, 0);
+-
+ 	cancel_delayed_work_sync(&fep->time_keep);
+-	hrtimer_cancel(&fep->perout_timer);
+ 	if (fep->ptp_clock)
+ 		ptp_clock_unregister(fep->ptp_clock);
++
++	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
++	fec_ptp_pps_disable(fep, fep->pps_channel);
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
+ }
+-- 
+2.53.0
