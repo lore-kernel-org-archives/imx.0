@@ -1,79 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014B73AFD07;
-	Fri, 25 Sep 2026 09:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB7D3CC9F6
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 11:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790329055; cv=none; b=VGzD7gAEgPao5hTD0Mcnl0iKMZBHceWuPo6LAvyjW9thieJm4Rt39jV9vIZnBVugl8JsZeV1tIDcohJIjrGs/7FHF1OoR01yFL26lhCKzw88MHF6rOp9unVPmtHFHq9hiTPNCh/SrmSNVry0eWxXKIOBwPfN6AwslneJ29HStO8=
+	t=1790336808; cv=none; b=Zjm0SZF53u2/bfbiDm5BvT2rIONwwof5wWSPq6WRkQ7FThxUtdDrmjAPNZmOxUgmTcQnzlG6TzjnJvYzFw0uQWAqvAzicsC3dc3pm1jINulAKuwFcxw3SS11uGpFmuJmdKa1Bbv+BPO0aUOOMhOSAp0NQn2ZT7f+N4lzrebGQOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790329055; c=relaxed/simple;
-	bh=AiPeJaCw/oKB/0faifguNooWgbZkiYIxdVZ8UOUDVUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VUWv9nliywzzh2rlbrOUWgTTr3LCwbJG3/L5PHrptGycjEbWufTBvLiL2zwADniys/k7U7vzQivAqE0W184XufwDjJQBDFSuFwNUfaCEx8Swa67Xt4g6RLA9Jt39gBw3iZCv4jFkfuy9RSY0WBjtBfFdlq3gfx2F5LQzuctNozY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CVRtW7Fv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790336808; c=relaxed/simple;
+	bh=MzxytXur9WLf3A2pht3GHrIFSKif0MmfcShH+hRjUuo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZEDFjs5E6sReWmRVMjjDzn+HRJdRjpXUy0JbmqRAGYeZSMg51hKtGyvKBp6fT7RcKv0F9Q1SHIAXhfIhuSejL+NzyKUCp0RBAImSCAoEwwiBeSSUAUopONnf9mJjum40PNYMmxFRoDmu2ZGiiyIu8nZ0tDS9r93tCNPtNM434Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XqzLrXCA; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CVRtW7Fv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE971F000FF;
-	Fri, 25 Sep 2026 09:37:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790329053;
-	bh=S8rbBY7tOZS1I6xbunY/ZVWqlDUxt7wQouXNVOazbTE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CVRtW7FvQnz7sJUapIeWFHWtBZxeNPl06POWsm3SXZLQ7JECJhstj6KdcqV2+f1QZ
-	 /rstgiDLOxl3XA6skseO//CDvsWpCbbftmBGo12Q3AtMvv4enKR7vEHrB+C9904Ryu
-	 fe1BKW6hMtPKxkihTRYeiHeULSe6N2JPKOeBx+MESgwnX7NQwE8w426Z4AmdMy6vLQ
-	 +Gbxe5UcX/JlWt/5UcldQKFv518kXmXlv1NTV1u5q+Zw2lqbLc2fzTjY13atj32s5N
-	 +PclzoZvBEICCrq+GXb5loNgNgLVUAt1TST32633kOb/kmJ1uT5GNySwcDWYYY/OIC
-	 vJvFo81AzG21Q==
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Frank.Li@kernel.org,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/2] firmware: arm_scmi: fix module auto-loading
-Date: Fri, 25 Sep 2026 10:37:26 +0100
-Message-ID: <179032900575.1420945.238832920241309403.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
-References: <20260918092951.5656-1-johannes.goede@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XqzLrXCA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790336807; x=1821872807;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MzxytXur9WLf3A2pht3GHrIFSKif0MmfcShH+hRjUuo=;
+  b=XqzLrXCAAd880vftDKmAaAb2a6r7BzqPqVy1tGe5kh9rAt3n5q8E/9n5
+   hsPfhbgTaZYDd44gkHfgLcbg7tWuiy88KXi0DUlXIxK2bSsHjAeCsD5u1
+   ipYxAIBX9EJWregbjpGPylaAG/5Hs8dgIck6NOzbORi36OpsvCUJeJKWZ
+   AwdMXHwyu6BLiVukcrYuIlVXJp0M5hCGbUAfz2YMS8oJnj85vb5KD81OB
+   uA+4JG6qoxmXrFKCL3vOdddxlxHfv2ytQQC9IGD/13Sf7jWLq/9F+q1Fn
+   q2CfYFaW8X0mFt9gMQk8T15mDPi9+jBceqaVDrDU9lGkdw+dJr273+Vpy
+   g==;
+X-CSE-ConnectionGUID: iiGY9oclTzGoanUmgSoT0w==
+X-CSE-MsgGUID: vH9zoPhaSDq13mL9k4rt/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="101294065"
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
+   d="scan'208";a="101294065"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 04:46:46 -0700
+X-CSE-ConnectionGUID: zsABext2RMS632XbvRUi2Q==
+X-CSE-MsgGUID: biDbQJztS8CW1MOilcY0yw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
+   d="scan'208";a="274485235"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.84])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 04:46:36 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 28C66121182;
+	Fri, 25 Sep 2026 14:46:37 +0300 (EEST)
+Date: Fri, 25 Sep 2026 14:46:37 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jacopo Mondi <jacopo@jmondi.org>, Jimmy Su <jimmy.su@intel.com>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Richard Acayan <mailingradian@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jonathan Hunter <jonathanh@nvidia.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	David Heidelberg <david@ixit.cz>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>
+Subject: Re: [PATCH v6 0/6] dt-bindings: Orientation defines
+Message-ID: <arZfHdZS8U6MltVz@kekkonen.localdomain>
+References: <20260918-kbingham-orientation-v6-0-5e8b1f01be29@ideasonboard.com>
+ <CAMuHMdWWOB48AUCbXh=9ZGCK2qZyVH06kJ2paRY-wxkq5NC16A@mail.gmail.com>
+ <CAMuHMdVhK0vm_Ksze_=jG8D_=8Q45v+ezNbxwL7JntTt_v_fkg@mail.gmail.com>
+ <20260921073538.GA1466037@killaraus.ideasonboard.com>
+ <arEVs0FDleyHeeLj@orome>
+ <178999124332.1723501.13535584681937232110@ping.linuxembedded.co.uk>
+ <arEeG06MiZ_97uzH@orome>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arEeG06MiZ_97uzH@orome>
 
-On Fri, 18 Sep 2026 11:29:49 +0200, Hans de Goede wrote:
-> Here is v7 of the patch series fixing arm_scmi module autoloading this
-> combines:
-> 
-> 1. Patch 1/2 from Bjorn to add support for scmi bus modaliases to modpost:
-> https://lore.kernel.org/all/20260618-scmi-modalias-v2-1-8c7547c1be21@oss.qualcomm.com/
-> 
-> 2. A new patch 2/2 to always create devices for standard protocols,
-> replacing Cristian's patch to pre-register the standard protocol device-ids
-> from v4.
-> 
-> [...]
+Hi folks,
 
-Applied to sudeep.holla/linux (for-next/scmi/updates), thanks!
+On Mon, Sep 21, 2026 at 02:10:17PM +0200, Thierry Reding wrote:
+> > > If all platform maintainers Ack this series, they could go through the
+> > > media tree where the shared include was already merged. Alternatively
+> > > the media maintainers could provide a shared branch for everyone to pull
+> > > into their platform trees.
+> > > 
+> > > But given that this is simply replacing a literal with a preprocessor
+> > > macro, maybe not worth the extra hassle.
+> > 
+> > Indeed, I'm not personally worried here. I thought that because Sakari
+> > had accepted the main patches these could go in now, so I refreshed the
+> > series.
+> > 
+> > I don't really care which route they go, or when. I'd rather not have to
+> > re-re-rebase again in two months ... but I can cope whatever :D There's
+> > certainly no urgency here.
+> 
+> You already have my Acked-by and I'm fine with anyone picking up the
+> Tegra DT changes. I don't think there's going to be any conflict with
+> any other work in the Tegra tree. If they don't get applied, I'll pick
+> it up for the next release.
 
-[1/2] module: add SCMI device table alias support
-      https://git.kernel.org/sudeep.holla/c/d59717cfbe1e
-[2/2] firmware: arm_scmi: Always create devices for standard protocols
-      https://git.kernel.org/sudeep.holla/c/aac4e67d6eb9
+The patches seem to apply nicely to the media tree so I'll just merge them.
+
 -- 
 Regards,
-Sudeep
 
+Sakari Ailus
