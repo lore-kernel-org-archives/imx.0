@@ -1,210 +1,515 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.2])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011068.outbound.protection.outlook.com [40.107.130.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A4D4E66C0;
-	Fri, 25 Sep 2026 19:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCB830EF6C
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 20:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790364781; cv=pass; b=C7lJGJPekDqOPSQ/V1na3tILAi2yQz7aAdyeDSIDlZ6rYy+31hBFVt5Q99DL2ILaekyzTE5VJZNp9Z1F2DVohjCwykr0Zwg2sPYjIm55N084R6DqgDBw9NijNpcJvk/3LhMD9O+O1wsN2uA2EhF6WHC9CrthACw9f8Z5Wsn1V8E=
+	t=1790366954; cv=fail; b=bZzH9soZEqZkhGOCivSJudNTxUyj5AoZsOc96eaCHeARFAnc30jAYfNU5vrsIvL1ltmlBph4a+UVBtWZh5Am9NvliUXZ6KxNWFMhpvSJ2AADzDuZwiYN3OrlrHbtsJ+w3ibCNDbxPE/MIW96a7g4RZv5dOX9QXEDE9HXDv3XB78=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790364781; c=relaxed/simple;
-	bh=pfEa9sDfSqmUqAkVSivfg+jwsPnAd7JEdfM7bR8Kono=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PN4nmJbkfiUeiYZF6FkHWLOkHp/02OfOb25jF5ONNlqVMwoGHTFg0pPF5NrnmnGe6u0kIm3HsxGmN8NnaEPSOeFCzmytJRG4wgYQNS/fCV1+h9+wMwqGoh17JjXpQdMw/lidoM/5pncjJAhinTdvNjbfjUuI2tSBY/z94Fnx8+M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=WWs9S7hX; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=u7hR3YJo; arc=pass smtp.client-ip=185.56.87.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	s=arc-20240116; t=1790366954; c=relaxed/simple;
+	bh=w0EHt8ZYtDKxAXbLOonoWCl3hFfwd9qGx6fxl9LOGpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=thICmPVDHTZSPr0rjPGPmYzCWmQyFVA1JSWnbMJOLIKqremciQ/lQ9Dj62t0ZNf/5LXbHLRYECQuHlmM6S6ZUc121mygLk60A5O8yMjGyMjfYdoczmoFg9evYwNhsZL/OMmxwSg+YUdneJwm+4T6cdvh+t+1TBIyu+LyFiJcWlA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=x0cyYGLg; arc=fail smtp.client-ip=40.107.130.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="WWs9S7hX";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="u7hR3YJo"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-97jw.prod.antispam.mailspamprotection.com; s=arckey; t=1790364779;
-	 b=aFKo8KGCTzLifXlM+Yv7AqCEoJL4FAo3saj3zmdzydYlPWXEdiefT2Hv7mlTY7AAHPd0kZVLvf
-	  FvHxJxjxDkWrB6m77TwNLyCgU+q7OgAsMgfSxzTzpJjcnayYohtmEZ1XDCdFZVgW02yIbGCQ1/
-	  UrbtHY4qMVDQG/uDLpJQuOHThP4hRBBaZT6OmBgCSvDa3tAgDjhbIjmGY29lQ5gmSYJRo3xWXL
-	  sTCn4Ht77/wLYJVgg1O7TI0RnRmfefxxpG8UU5GAMZ15vLNbDAcQI1DbUsMSeCN/me8YUFUWTc
-	  pJD6A5oVu0vACY0sxkdUaNhqXbleDLc8PFiWoIRUTyolNA==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-97jw.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-97jw.prod.antispam.mailspamprotection.com; s=arckey; t=1790364779;
-	bh=pfEa9sDfSqmUqAkVSivfg+jwsPnAd7JEdfM7bR8Kono=;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
-	  From:Date:DKIM-Signature:DKIM-Signature;
-	b=Ewr6xcrlR2o+qBXHsHFjN1/QDm//fp8MEMwjLckJwpEnBiQDnFBrFFIYBvjjVvlwOqhgCutXF1
-	  OyveQAM40EUUp9q55FZYYTtfyIseWzAYd0SX1LPBl2F5eDk21UFIkJQZs8HXXuSlPC0LRN4fEn
-	  VH/HZmLa1be4o0LFKmBhulr1wIciMXpYxRHsEuWPuv8d4SZlIfwBUByzndG93s3A2DgcfLmekW
-	  uVEafh0tS7u5ZH0aSOBfuCVPnc3ws6dNYateArFsTKFxh7ynkcZBb11Hqg5SQebPTHj225IZW9
-	  QtN0i1azPW20mc4EVRI2F4Jy0BsNrwnu44QWQFRNDIMZTA==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=jhm3OuOGKpGPipHzsmUmu5dKRRI8/O+LClIrmyA+BRg=; b=WWs9S7hXbU0FcUbna1yXYO/XWr
-	TqyY8eR9fnbfIG13WbABmMOfa/vCHBXhzDuh+IwQaQcDLytEdr3xo+Mybjp9mzYRJKi4oh0AefOGH
-	hSihEP651R4W0imta//zlE/syy2/2Q9Fg0ZTkJprLjiRE1nGRkuudcVg0SisUa7W9qnM=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-97jw.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xABFA-0000000479C-2lWN;
-	Fri, 25 Sep 2026 19:06:16 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=jhm3OuOGKpGPipHzsmUmu5dKRRI8/O+LClIrmyA+BRg=; b=u7hR3YJo8ZSr2SisSaLcNNA9di
-	zA3XUxiLlksid/DDe+DIdECQZUJAVZ8/bjoeEVS6W00sscP2aJdJg+YMk9CymkCki0s+B2TN9sXUw
-	6yvzhxIdhakmJQceVp/tAluydMOcnP4JJIpwNXm+4k/TQhLzQ89o8WJWqAP4miEIjMK0=;
-Received: from [79.45.60.29] (port=64306 helo=bywater)
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xABEv-00000000KZm-1aVj;
-	Fri, 25 Sep 2026 19:05:45 +0000
-Date: Fri, 25 Sep 2026 21:05:43 +0200
-From: Francesco Valla <francesco@valla.it>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 06/12] remoteproc: virtio: add bounce buffering for
- data buffers
-Message-ID: <arbEmz1jy0V7gjrU@bywater>
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-6-dac8c5eb4aa9@valla.it>
- <arKlvZGqu2nt6Ci0@p14s>
- <arLXthhYbKkwZ9zY@bywater>
- <CANLsYkwNOukGX68=NVvwNP7iudP3EcKN6C2L2o9nVCTRxFVxFg@mail.gmail.com>
- <arP38OEaabFFu8lJ@bywater>
- <araOI_duKIAbphq6@p14s>
- <1b55f680-2413-4db1-b928-ed5741696d07@arm.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="x0cyYGLg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cG7j4Pt6s7q2xscBhfOlLDl/Hr4gGD5JBxo5ydcsblWd2z1RFssarFhVXKpiuK0i6p8sJFC9FgqAQPldDxnUuFHsrL0hv2bBESEvzLjGb3nxw+fhE//JLg8Jy2OvrlLX381bz0baozaQC227YOj1uPGFW1ZbRdzPSc+lMrKef1DPBnR1rSEkH+DuzMORn/anrkDSvZXdbNVYGdUUvXI1lFIjCdLcAQFVVthdZUprD67BeLPVLpAd8qlBI2Q5k8GBbO8L0vIdJ+FneZskT/dqnz/+Qs/JPS2uif9/W22JTNtp0SczXrIdvshN0cZcATG5Dezgrv5G0IV0jV28WbfYbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H7EjYyotsXIBmjrdrIh0zUAPbe/C/Q6QJHJbi4UIdkg=;
+ b=Gvc8huO1X7lGdayTPntmjpdAjeicBu1lHWqtH+3GAmjhuyNS/PPU/tD88N5Rww3Qk/mF0TOwViTBlVp8hZy4fLxuJ/UWibCCAC/ORA+dhjQCEqEkG/7aW4CpdwEpV+f642m+ho7T9S+byTxgjHVkk1xIof4OoruEKubn+i+7Bk/kpYxnigtm0/wr1z8TZ7uHmvjHoLC3698thpn9vvI/pwYC4b36G9mXHIIhuD0gfYxEdh7b8Eq3CyQuE/4OSdx2cNLxCpgEwahkeqWiKej/E1/QiODy1atKvgYmjIw0jyvxtS71TneOL6ba9iRdMLBRl1e7ifBF9Uotj2uV2+JtDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H7EjYyotsXIBmjrdrIh0zUAPbe/C/Q6QJHJbi4UIdkg=;
+ b=x0cyYGLgJyiwTIRbA9R0b1VKASI56jtWlNBsjailI+pUwQhnH6/kT5UmFGNJm4taJGKMJh8LfPsisA5NUIp2UIngKYPYSRH2rfZ/e09dUp54E2GbuH2fvyCajAL160MWHJ4iynFVMuJmV3tHlZAOF3AMOI/1QCqKbyDSffGB4W6r6Eyp1ODbFP6kQqzCPQwkhiudrqZX83u+1pcBEZr4919kQEwPJgL1k7krZvM+DXM7epNqvYAtJDeKL0llPzuhxLo/1cmRqia47FeYt5THJoymV3q7sV+5KkJYIJySymFPHQSWPkYrKBinEQHyx19S8p9/dj2JRMdo4CtKCJDPww==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI0PR04MB12352.eurprd04.prod.outlook.com (2603:10a6:800:322::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
+ 2026 20:09:08 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 20:09:07 +0000
+From: Frank.Li@oss.nxp.com
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Cunhao Lu <1579567540@qq.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Moteen Shah <m-shah@ti.com>,
+	Kendall Willis <k-willis@ti.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Matthias Feser <mfe@KBSgmbhfr.onmicrosoft.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	=?UTF-8?q?Stefan=20D=C3=B6singer?= <stefandoesinger@gmail.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Zhaoyang Yu <2426767509@qq.com>,
+	Kees Cook <kees@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	linux-kernel@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
+	linux-serial@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES),
+	linux-samsung-soc@vger.kernel.org (open list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH 1/2] serial: use dmaengine_get_dma_device() instead of chan->device->dev
+Date: Fri, 25 Sep 2026 16:08:30 -0400
+Message-ID: <20260925200850.1678179-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY5PR13CA0008.namprd13.prod.outlook.com (2603:10b6:930::26)
+ To GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1b55f680-2413-4db1-b928-ed5741696d07@arm.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: b4b494bfe2759520406af1bea050b67f
-X-AntiAbuse: ID - b4b494bfe2759520406af1bea050b67f
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1xABFA-0000000479C-2lWN-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-97jw.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB12352:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2f1b205-d60b-46e7-becb-08df1b40dae0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|19092799006|921020|6133799003|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	IosuMMYKujRudtFLRImfdw1bxe6HJ7cj2Fw4mMPIeuneAKWJCN6pKBBHfrIhSw1BO0qOgWDfNTOdQ2mR1cPalNdGctNd+f8CnBOuFlAwnuxLARyZrtXe3NYK6Psx7XqeR8HPQNjb+bAPG2SpHT4csUlQDymukHT0nut9PNnD6Q7wHRYgX3v5sEJP2HFF2mqs88J1yNMhA7wzJdbIhprsGtCW3yGpzLdN2THIMa5gETNVZ812PW7Rs6P0+wl6OXB5xHM+wQNeh3fz/xFaCD7eM3ABqUPNjUYHxLxz2iqLkgVXFrvq8N31iYQl8uDY3PIqCr4ywR8ZugKZi2RR6+U1PoP6LXwC23ymxnC/7PvWYRIJvs4IqaymsJtfsnsHK1ddZ5bukVgyF0SVLLwDmL99cyYJjj6+5cIHUViWpjjB8TfoIQu6/BF2AmrFNFneaNh4Mx90T9hY7km5Qxxe5BYgKbVIbFB+6Nk1aw35525pRLQnl7Ghw2dcnhhzBYy3Nl5O+xEibV/7QgT9yBNpjqs4h6Ok2pssiRBmk03cY5Dd2EvAqihg/hztKj3Ty3ABd8MFpsDSSZE26t0yrR6il+QD9GEvCuW1tUpRSSxaMJGJ2KEfB+QGhJefBqHnfwN9tm9uPmtpKWGNk7TodaA8Pqy9is5cNq49+rPydmuoj+ingPk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(19092799006)(921020)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qlQtk4P5+PsYwkifG2MLRTrCXZE+pJ7cyC0hP4En78/Jf0E1Q0nTv6aM7vMu?=
+ =?us-ascii?Q?XthD8UzeKsb/xSfJTuavWNKUHRTqvMfjtNToqBlfkW3wa7i0Sfr0PJ9rUdHS?=
+ =?us-ascii?Q?sMLCv6deVRrVVUDecr+NJwJCj8M20tuRnB5AFclU8b6k9jOtA31vq6gLuGre?=
+ =?us-ascii?Q?zpL2jzBIQ5MYZbzX18kIAhqRY1WR2BDGCTnYmpop04Y3aFE94DyKMS6hPQ5Y?=
+ =?us-ascii?Q?RF/R1tz1W1bC61uRIqShmJtn4RjL7O16A/AG+GUyoT6oRlbUR950RRV9NSZW?=
+ =?us-ascii?Q?2h3IxTvgmWQeHZMkKky5fybZzpngHs16ReMh/uGyKiEghWYcs9biFHCDzXMX?=
+ =?us-ascii?Q?6eZ1upnj2xtLW+2QDX45/PHFqsqkarSI5J65uOihvEePr7elbzQvjtKpdaex?=
+ =?us-ascii?Q?T8PM+IiIdNCyoTwl6iAlCwhDnlHAYcT/y8VBL3vgokVccNJQhnvQ8F+0XQPx?=
+ =?us-ascii?Q?eNxCSa8azAL+B75E3pYf7ylgVO+g8gu1bWVolAriRtByqmZ5AWS7IrftaGMA?=
+ =?us-ascii?Q?HD8lUhOxsGqC4nRyTuDcHi4GGIIFUiApWSBziHKXiWzAsRwZywXpHVijACFC?=
+ =?us-ascii?Q?IIx+NOIuclZmYjOPM7SZbZkH9CqskO9UxBKNLo07YqBWZSzR5N8V7/Z7rzOk?=
+ =?us-ascii?Q?YTe53/WqjrveAWiXPk6daG9z1p59R3i29ixonfjlSIan11g18DKmrC+0vFmg?=
+ =?us-ascii?Q?hUnXp5WqaQwTaFEvi3b78KM7pZqnaNt6393ate1vKjDu+95FpfgpEuKicI7s?=
+ =?us-ascii?Q?Jt6KahYXinugUFUkuZ5Jj8Ei4s5FNecPP60BSEe8ydgxRGyG+4IilVcQDHX0?=
+ =?us-ascii?Q?R8PjK/tT6f+S/N9DPREhn0Uvb6bXj0dSz/fqbu+d3MUQmhtMS3aSljD2mARX?=
+ =?us-ascii?Q?OJrE1zpb1ZYhFRN0gzsW6QoP8iEiFq9c++dRBVIgapmvfFzCca4bi464S3KK?=
+ =?us-ascii?Q?tn0OvnZ1A98yMJskZ+fblWtS/WAbgga34xY3lJrYXkfrAL/dzXA2Jf7/OE7v?=
+ =?us-ascii?Q?C8hhEO9gQO7btEBENw9pNoG59eSxWNFM4PyW8vRySgy8fTA8lzl5uNnScFRJ?=
+ =?us-ascii?Q?LxQuhLlV10nDwp6EkQevAVP4zgx5ESz2X1goAczBSY7WLcSiRgTN7BbGCwTl?=
+ =?us-ascii?Q?0mEI1igPF9VzmPWi2BuonqwO7dt3KYB7Ld6IHtwkZYdDSMxgZCspOpPNM7vE?=
+ =?us-ascii?Q?3S9k0Nv95OtfmWXNRU3IxiZv1UK67WsXSil73Zw2WiEmxXB9m5/QssuEg+gX?=
+ =?us-ascii?Q?ERMNwTVki93I9pgCsT8yLqRlqxK4YAHY1qd6LvUxbzcYLlvLvOB3LauvlI7i?=
+ =?us-ascii?Q?wy3C3KVxM9w3rzQTl5/HEr2UuELgXaZzKus48Y0d4AnlE9HTyfWzjf9oNBv9?=
+ =?us-ascii?Q?HsiAZuGCMOigBBw2vQieBnOhDFwZ1/dIcGIvWUf38bnpCqA/vCey+IBjNQfY?=
+ =?us-ascii?Q?hu7VaBeR8/LrIW20nuBoJgkfxkLSkAixXnIUjWvQfZqzLbS7bxnCNj3zMxwH?=
+ =?us-ascii?Q?5X0mW8PuqMzxjmOPoyQGTYaj8gM07mIAldwWiI1d7JiwzCk16ONDNxR/NtaW?=
+ =?us-ascii?Q?bQiC8RPbJwtkuCch02LHoQhm9CZF5zM7v5nG5CSSyd6/8BUKUJj35SiRkURe?=
+ =?us-ascii?Q?R2Y4lxJ75sHKy5RL3PlW6kFxOkPgkjciwSsCBj6ksKpIiJzqtzXccd33YlhF?=
+ =?us-ascii?Q?wS6amyvva777bZOWNB81tFdPEV1CPI7JCOHejAp/buUTgsQZXPkizgioBvxl?=
+ =?us-ascii?Q?e3XFrAD7dHWZCQ5GOeGDLrZEGdKbrXVEOvdDDS7Aw2IdiksZT/zN?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2f1b205-d60b-46e7-becb-08df1b40dae0
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 20:09:07.5875
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 42RDZ/bEjne9JkJGtavjlJnpYxYwbVCHE+th6qrvQ+9PVfhG97XVAKHa5zh4e8efM81ohPZ/N5W6R4KQXc7JSmTwAChZSLrSXoFgPmf+euL0ps21YGM7T7fQzhuQOfZN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12352
 
-Hi Robin, Mathieu,
+From: Frank Li <Frank.Li@nxp.com>
 
-On Fri, Sep 25, 2026 at 05:48:25PM +0100, Robin Murphy wrote:
-> On 25/09/2026 4:07 pm, Mathieu Poirier wrote:
-> > On Wed, Sep 23, 2026 at 06:05:35PM +0200, Francesco Valla wrote:
-> > > On Wed, Sep 23, 2026 at 08:44:41AM -0600, Mathieu Poirier wrote:
-> > > > On Tue, 22 Sept 2026 at 13:39, Francesco Valla <francesco@valla.it> wrote:
-> > > > > 
-> > > > > On Tue, Sep 22, 2026 at 09:58:53AM -0600, Mathieu Poirier wrote:
-> > > > > > On Wed, Sep 16, 2026 at 11:10:51PM +0200, Francesco Valla wrote:
-> > > > > > > Depending on the driver originating them, data buffers used for virtio
-> > > > > > > communication can either:
-> > > > > > > 
-> > > > > > >    - already be allocated from the coherent memory area that is
-> > > > > > >      accessible by the remote processor; this is the case of rpmsg
-> > > > > > >      and the rproc flavor of virtio-console;
-> > > > > > >    - be allocated from generic kmem, and thus not accessible directly by
-> > > > > > >      the remote processor.
-> > > > > > > 
-> > > > > > > Exploiting the map operations, which are used by the virtio framework
-> > > > > > > when VIRTIO_F_ACCESS_PLATFORM is part of a vdev's feature flags, add
-> > > > > > > bounce buffering for the second case: when the map() callback is called
-> > > > > > > for a buffer, one or more pages of coherent memory are allocated and
-> > > > > > > data is copied to them, then they are exposed to the remote processor;
-> > > > > > > the data is  then bounced back on unmap().
-> > > > > > > 
-> > > > > > > The first case is not impacted, since buffers already suitable for
-> > > > > > > remote transmission are passed through.
-> > > > > > > 
-> > > > > > > With the bounce buffering in place, any kind of virtio device can be
-> > > > > > > supported through the remoteproc-virtio transport, at least from a
-> > > > > > > data exchange standpoint.
-> > > > > > 
-> > > > > > Is this _necessary_ for the imx93 platform you are implementing feature for?
-> > > > > > 
-> > > > > 
-> > > > > If I don't want to fundamentally change how the remoteproc integration
-> > > > > works (i.e.: using buffers only from a pre-shared area), yes. While in
-> > > > > my test environment the Cortex-M33 serving as remoteproc is able to
-> > > > > access the whole RAM space, that is not always the case.
-> > > > 
-> > > > The first sentence tells me it is mandatory while the second says it
-> > > > is not.  I understand the use case but don't want to bloat the
-> > > > subsystem with code that is trying to address a problem you currently
-> > > > don't have.
-> > > > 
-> > > 
-> > > Let me rephrase: while on i.MX93 the Cortex-M33 can theoretically access
-> > > the whole RAM space, that is not a good idea from a security point of
-> > > view and can be the source of a number of bugs. The target is to
-> > > statically define a static shared memory area (as I am doing on i.MX95)
-> > > and only use that.
-> > 
-> > As Robin pointed out, have you looked at using a restricted-dma-pool for that?
-> > Note that I am not familiar with the concept but open to go that way if it can
-> > work for us.
-> > 
-> > Robin, can you point us to a simple example we could look at?
-> The only in-tree example is mt8192-asurada.dtsi, but even there the
-> fundamental principle seems exactly the same - the system interconnect is
-> locked down such that there's only a particular region of "shared" memory
-> that PCIe DMA can access, so the restricted pool is placed there, and in
-> that case can occupy the entire region since the wifi adapter only really
-> does streaming DMA - restricted pools have some limited ability to act as a
-> fallback for coherent allocations, which won't work for everything, but does
-> happen to be enough for that wifi driver.
-> 
-> Here it would be a case of reserving some of the shared region for a
-> restricted pool alongside the "vdevbuffer" coherent pool, adding it to the
-> memory-region list of the relevant device(s), and usually that would then
-> just work, since the setup is all done automatically by the core DT code.
-> However I know remoteproc does some funky stuff with child devices, so it's
-> quite possible there might need to be something more done there. But still
-> far, far less than reimplementing a whole other bounce-buffering system.
-> 
-> Thanks,
-> Robin.
+Replace direct dma_chan::device::dev access with the proper
+dmaengine_get_dma_device() for consumer API
 
-I took a look at the restricted-memory-pool - with which I wasn't
-familiar - and seems exactly what is needed here.
+chan->device->dev is not always the device used for DMA mapping.
+Some DMA engines support per-channel IOMMU mappings, so different
+channels may use different DMA devices.  dmaengine_get_dma_device()
+returns the correct device for each channel.
 
-I am working on a new prototype with it - if everything works as
-expected (I still did not have time to try it) it should only need some
-very limited glue code, cutting the modifications in the
-remoteproc_virtio driver by 95%. I'll let you knwow.
+This also prepares for making the DMA engine provider data structures
+private. DMA consumers should not access DMA engine internals directly.
 
-Thank you for the hint!
+Assisted-by: LLM
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Check all unders driver/tty/ by rename device to _device in dma_chan struct
+with all yes config.
 
-Regards,
-Francesco
+Still few left, one for copy_align access, which need new API. some filter
+DMA channel, need new API to get provider devices.
 
+In https://lore.kernel.org/imx/67966b47-22cb-4b07-80c7-2044f557dbcb@app.fastmail.com/
+There are better idea to move map singe/sg into dma prep functions.
+
+But it takes more times, not straightforward works. Let replace this firstly,
+---
+ drivers/tty/serial/8250/8250_dma.c  | 21 +++++++++++++--------
+ drivers/tty/serial/8250/8250_omap.c |  4 ++--
+ drivers/tty/serial/amba-pl011.c     | 10 +++++-----
+ drivers/tty/serial/pch_uart.c       |  2 +-
+ drivers/tty/serial/samsung_tty.c    | 27 +++++++++++++++------------
+ drivers/tty/serial/sh-sci.c         | 14 ++++++++------
+ 6 files changed, 44 insertions(+), 34 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250/8250_dma.c
+index 5a83e5269b415..dc7fb3db1584d 100644
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -19,7 +19,7 @@ static void __dma_tx_complete(void *param)
+ 	unsigned long	flags;
+ 	int		ret;
+ 
+-	dma_sync_single_for_cpu(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	uart_port_lock_irqsave(&p->port, &flags);
+@@ -136,7 +136,7 @@ int serial8250_tx_dma(struct uart_8250_port *p)
+ 
+ 	dma->tx_cookie = dmaengine_submit(desc);
+ 
+-	dma_sync_single_for_device(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				   UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	dma_async_issue_pending(dma->txchan);
+@@ -223,6 +223,8 @@ EXPORT_SYMBOL_GPL(serial8250_rx_dma_flush);
+ int serial8250_request_dma(struct uart_8250_port *p)
+ {
+ 	struct uart_8250_dma	*dma = p->dma;
++	struct device *rx_dev;
++	struct device *tx_dev;
+ 	phys_addr_t rx_dma_addr = dma->rx_dma_addr ?
+ 				  dma->rx_dma_addr : p->port.mapbase;
+ 	phys_addr_t tx_dma_addr = dma->tx_dma_addr ?
+@@ -282,11 +284,14 @@ int serial8250_request_dma(struct uart_8250_port *p)
+ 
+ 	dmaengine_slave_config(dma->txchan, &dma->txconf);
+ 
++	rx_dev = dmaengine_get_dma_device(dma->rxchan);
++	tx_dev = dmaengine_get_dma_device(dma->txchan);
++
+ 	/* RX buffer */
+ 	if (!dma->rx_size)
+ 		dma->rx_size = PAGE_SIZE;
+ 
+-	dma->rx_buf = dma_alloc_coherent(dma->rxchan->device->dev, dma->rx_size,
++	dma->rx_buf = dma_alloc_coherent(rx_dev, dma->rx_size,
+ 					&dma->rx_addr, GFP_KERNEL);
+ 	if (!dma->rx_buf) {
+ 		ret = -ENOMEM;
+@@ -294,12 +299,12 @@ int serial8250_request_dma(struct uart_8250_port *p)
+ 	}
+ 
+ 	/* TX buffer */
+-	dma->tx_addr = dma_map_single(dma->txchan->device->dev,
++	dma->tx_addr = dma_map_single(tx_dev,
+ 					p->port.state->port.xmit_buf,
+ 					UART_XMIT_SIZE,
+ 					DMA_TO_DEVICE);
+-	if (dma_mapping_error(dma->txchan->device->dev, dma->tx_addr)) {
+-		dma_free_coherent(dma->rxchan->device->dev, dma->rx_size,
++	if (dma_mapping_error(tx_dev, dma->tx_addr)) {
++		dma_free_coherent(rx_dev, dma->rx_size,
+ 				  dma->rx_buf, dma->rx_addr);
+ 		ret = -ENOMEM;
+ 		goto err;
+@@ -326,14 +331,14 @@ void serial8250_release_dma(struct uart_8250_port *p)
+ 	/* Release RX resources */
+ 	dmaengine_terminate_sync(dma->rxchan);
+ 	dma->rx_running = 0;
+-	dma_free_coherent(dma->rxchan->device->dev, dma->rx_size, dma->rx_buf,
++	dma_free_coherent(dmaengine_get_dma_device(dma->rxchan), dma->rx_size, dma->rx_buf,
+ 			  dma->rx_addr);
+ 	dma_release_channel(dma->rxchan);
+ 	dma->rxchan = NULL;
+ 
+ 	/* Release TX resources */
+ 	dmaengine_terminate_sync(dma->txchan);
+-	dma_unmap_single(dma->txchan->device->dev, dma->tx_addr,
++	dma_unmap_single(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 			 UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 	dma_release_channel(dma->txchan);
+ 	dma->txchan = NULL;
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index ceecb39fb82da..3a1473bf54d0f 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1076,7 +1076,7 @@ static void omap_8250_dma_tx_complete(void *param)
+ 	bool			en_thri = false;
+ 	struct omap8250_priv	*priv = p->port.private_data;
+ 
+-	dma_sync_single_for_cpu(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	guard(uart_port_lock_irqsave)(&p->port);
+@@ -1193,7 +1193,7 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
+ 
+ 	dma->tx_cookie = dmaengine_submit(desc);
+ 
+-	dma_sync_single_for_device(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				   UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	dma_async_issue_pending(dma->txchan);
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index c4824c201e1c3..86729ddbdadc8 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -435,7 +435,7 @@ static int pl011_fifo_to_tty(struct uart_amba_port *uap)
+ static int pl011_dmabuf_init(struct dma_chan *chan, struct pl011_dmabuf *db,
+ 			     enum dma_data_direction dir)
+ {
+-	db->buf = dma_alloc_coherent(chan->device->dev, PL011_DMA_BUFFER_SIZE,
++	db->buf = dma_alloc_coherent(dmaengine_get_dma_device(chan), PL011_DMA_BUFFER_SIZE,
+ 				     &db->dma, GFP_KERNEL);
+ 	if (!db->buf)
+ 		return -ENOMEM;
+@@ -448,7 +448,7 @@ static void pl011_dmabuf_free(struct dma_chan *chan, struct pl011_dmabuf *db,
+ 			      enum dma_data_direction dir)
+ {
+ 	if (db->buf) {
+-		dma_free_coherent(chan->device->dev,
++		dma_free_coherent(dmaengine_get_dma_device(chan),
+ 				  PL011_DMA_BUFFER_SIZE, db->buf, db->dma);
+ 	}
+ }
+@@ -609,7 +609,7 @@ static void pl011_dma_tx_callback(void *data)
+ 
+ 	uart_port_lock_irqsave(&uap->port, &flags);
+ 	if (uap->dmatx.queued)
+-		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
++		dma_unmap_single(dmaengine_get_dma_device(dmatx->chan), dmatx->dma,
+ 				 dmatx->len, DMA_TO_DEVICE);
+ 
+ 	dmacr = uap->dmacr;
+@@ -867,7 +867,7 @@ __acquires(&uap->port.lock)
+ 	dmaengine_terminate_async(uap->dmatx.chan);
+ 
+ 	if (uap->dmatx.queued) {
+-		dma_unmap_single(uap->dmatx.chan->device->dev, uap->dmatx.dma,
++		dma_unmap_single(dmaengine_get_dma_device(uap->dmatx.chan), uap->dmatx.dma,
+ 				 uap->dmatx.len, DMA_TO_DEVICE);
+ 		uap->dmatx.queued = false;
+ 		uap->dmacr &= ~UART011_TXDMAE;
+@@ -1249,7 +1249,7 @@ static void pl011_dma_shutdown(struct uart_amba_port *uap)
+ 		/* In theory, this should already be done by pl011_dma_flush_buffer */
+ 		dmaengine_terminate_sync(uap->dmatx.chan);
+ 		if (uap->dmatx.queued) {
+-			dma_unmap_single(uap->dmatx.chan->device->dev,
++			dma_unmap_single(dmaengine_get_dma_device(uap->dmatx.chan),
+ 					 uap->dmatx.dma, uap->dmatx.len,
+ 					 DMA_TO_DEVICE);
+ 			uap->dmatx.queued = false;
+diff --git a/drivers/tty/serial/pch_uart.c b/drivers/tty/serial/pch_uart.c
+index db5c62b0322f6..5e8540e835351 100644
+--- a/drivers/tty/serial/pch_uart.c
++++ b/drivers/tty/serial/pch_uart.c
+@@ -656,7 +656,7 @@ static bool filter(struct dma_chan *chan, void *slave)
+ 	struct pch_dma_slave *param = slave;
+ 
+ 	if ((chan->chan_id == param->chan_id) && (param->dma_dev ==
+-						  chan->device->dev)) {
++						  dmaengine_get_dma_device(chan))) {
+ 		chan->private = param;
+ 		return true;
+ 	} else {
+diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
+index 63d0232dffc20..640f85e2d636b 100644
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -300,7 +300,7 @@ static void s3c24xx_serial_stop_tx(struct uart_port *port)
+ 		dmaengine_pause(dma->tx_chan);
+ 		dmaengine_tx_status(dma->tx_chan, dma->tx_cookie, &state);
+ 		dmaengine_terminate_all(dma->tx_chan);
+-		dma_sync_single_for_cpu(dma->tx_chan->device->dev,
++		dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->tx_chan),
+ 					dma->tx_transfer_addr, dma->tx_size,
+ 					DMA_TO_DEVICE);
+ 		async_tx_ack(dma->tx_desc);
+@@ -333,7 +333,7 @@ static void s3c24xx_serial_tx_dma_complete(void *args)
+ 	count = dma->tx_bytes_requested - state.residue;
+ 	async_tx_ack(dma->tx_desc);
+ 
+-	dma_sync_single_for_cpu(dma->tx_chan->device->dev,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->tx_chan),
+ 				dma->tx_transfer_addr, dma->tx_size,
+ 				DMA_TO_DEVICE);
+ 
+@@ -435,7 +435,7 @@ static int s3c24xx_serial_start_tx_dma(struct s3c24xx_uart_port *ourport,
+ 	dma->tx_size = count & ~(dma_get_cache_alignment() - 1);
+ 	dma->tx_transfer_addr = dma->tx_addr + tail;
+ 
+-	dma_sync_single_for_device(dma->tx_chan->device->dev,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->tx_chan),
+ 				   dma->tx_transfer_addr, dma->tx_size,
+ 				   DMA_TO_DEVICE);
+ 
+@@ -509,7 +509,7 @@ static void s3c24xx_uart_copy_rx_to_tty(struct s3c24xx_uart_port *ourport,
+ 	if (!count)
+ 		return;
+ 
+-	dma_sync_single_for_cpu(dma->rx_chan->device->dev, dma->rx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 				dma->rx_size, DMA_FROM_DEVICE);
+ 
+ 	ourport->port.icount.rx += count;
+@@ -631,7 +631,7 @@ static void s3c64xx_start_rx_dma(struct s3c24xx_uart_port *ourport)
+ {
+ 	struct s3c24xx_uart_dma *dma = ourport->dma;
+ 
+-	dma_sync_single_for_device(dma->rx_chan->device->dev, dma->rx_addr,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 				   dma->rx_size, DMA_FROM_DEVICE);
+ 
+ 	dma->rx_desc = dmaengine_prep_slave_single(dma->rx_chan,
+@@ -1101,20 +1101,23 @@ static int s3c24xx_serial_request_dma(struct s3c24xx_uart_port *p)
+ 		goto err_release_tx;
+ 	}
+ 
+-	dma->rx_addr = dma_map_single(dma->rx_chan->device->dev, dma->rx_buf,
++	struct device *rx_dev = dmaengine_get_dma_device(dma->rx_chan);
++	struct device *tx_dev = dmaengine_get_dma_device(dma->tx_chan);
++
++	dma->rx_addr = dma_map_single(rx_dev, dma->rx_buf,
+ 				      dma->rx_size, DMA_FROM_DEVICE);
+-	if (dma_mapping_error(dma->rx_chan->device->dev, dma->rx_addr)) {
++	if (dma_mapping_error(rx_dev, dma->rx_addr)) {
+ 		reason = "DMA mapping error for RX buffer";
+ 		ret = -EIO;
+ 		goto err_free_rx;
+ 	}
+ 
+ 	/* TX buffer */
+-	dma->tx_addr = dma_map_single(dma->tx_chan->device->dev,
++	dma->tx_addr = dma_map_single(tx_dev,
+ 				      p->port.state->port.xmit_buf,
+ 				      UART_XMIT_SIZE,
+ 				      DMA_TO_DEVICE);
+-	if (dma_mapping_error(dma->tx_chan->device->dev, dma->tx_addr)) {
++	if (dma_mapping_error(tx_dev, dma->tx_addr)) {
+ 		reason = "DMA mapping error for TX buffer";
+ 		ret = -EIO;
+ 		goto err_unmap_rx;
+@@ -1123,7 +1126,7 @@ static int s3c24xx_serial_request_dma(struct s3c24xx_uart_port *p)
+ 	return 0;
+ 
+ err_unmap_rx:
+-	dma_unmap_single(dma->rx_chan->device->dev, dma->rx_addr,
++	dma_unmap_single(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 			 dma->rx_size, DMA_FROM_DEVICE);
+ err_free_rx:
+ 	kfree(dma->rx_buf);
+@@ -1143,7 +1146,7 @@ static void s3c24xx_serial_release_dma(struct s3c24xx_uart_port *p)
+ 
+ 	if (dma->rx_chan) {
+ 		dmaengine_terminate_all(dma->rx_chan);
+-		dma_unmap_single(dma->rx_chan->device->dev, dma->rx_addr,
++		dma_unmap_single(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 				 dma->rx_size, DMA_FROM_DEVICE);
+ 		kfree(dma->rx_buf);
+ 		dma_release_channel(dma->rx_chan);
+@@ -1152,7 +1155,7 @@ static void s3c24xx_serial_release_dma(struct s3c24xx_uart_port *p)
+ 
+ 	if (dma->tx_chan) {
+ 		dmaengine_terminate_all(dma->tx_chan);
+-		dma_unmap_single(dma->tx_chan->device->dev, dma->tx_addr,
++		dma_unmap_single(dmaengine_get_dma_device(dma->tx_chan), dma->tx_addr,
+ 				 UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 		dma_release_channel(dma->tx_chan);
+ 		dma->tx_chan = NULL;
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 50ae9aae6b614..bd58bbfa65aa7 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1495,7 +1495,7 @@ static void sci_dma_rx_release(struct sci_port *s)
+ 	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	dmaengine_terminate_sync(chan);
+-	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
++	dma_free_coherent(dmaengine_get_dma_device(chan), s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
+ 	dma_release_channel(chan);
+ }
+@@ -1591,7 +1591,7 @@ static void sci_dma_tx_release(struct sci_port *s)
+ 	s->chan_tx_saved = s->chan_tx = NULL;
+ 	s->cookie_tx = -EINVAL;
+ 	dmaengine_terminate_sync(chan);
+-	dma_unmap_single(chan->device->dev, s->tx_dma_addr, UART_XMIT_SIZE,
++	dma_unmap_single(dmaengine_get_dma_device(chan), s->tx_dma_addr, UART_XMIT_SIZE,
+ 			 DMA_TO_DEVICE);
+ 	dma_release_channel(chan);
+ }
+@@ -1676,7 +1676,7 @@ static void sci_dma_tx_work_fn(struct work_struct *work)
+ 		goto switch_to_pio;
+ 	}
+ 
+-	dma_sync_single_for_device(chan->device->dev, buf, s->tx_dma_len,
++	dma_sync_single_for_device(dmaengine_get_dma_device(chan), buf, s->tx_dma_len,
+ 				   DMA_TO_DEVICE);
+ 
+ 	desc->callback = sci_dma_tx_complete;
+@@ -1832,12 +1832,13 @@ static void sci_request_dma(struct uart_port *port)
+ 	chan = sci_request_dma_chan(port, DMA_MEM_TO_DEV);
+ 	dev_dbg(port->dev, "%s: TX: got channel %p\n", __func__, chan);
+ 	if (chan) {
++		struct device *dma_dev = dmaengine_get_dma_device(chan);
+ 		/* UART circular tx buffer is an aligned page. */
+-		s->tx_dma_addr = dma_map_single(chan->device->dev,
++		s->tx_dma_addr = dma_map_single(dma_dev,
+ 						tport->xmit_buf,
+ 						UART_XMIT_SIZE,
+ 						DMA_TO_DEVICE);
+-		if (dma_mapping_error(chan->device->dev, s->tx_dma_addr)) {
++		if (dma_mapping_error(dma_dev, s->tx_dma_addr)) {
+ 			dev_warn(port->dev, "Failed mapping Tx DMA descriptor\n");
+ 			dma_release_channel(chan);
+ 		} else {
+@@ -1853,12 +1854,13 @@ static void sci_request_dma(struct uart_port *port)
+ 	chan = sci_request_dma_chan(port, DMA_DEV_TO_MEM);
+ 	dev_dbg(port->dev, "%s: RX: got channel %p\n", __func__, chan);
+ 	if (chan) {
++		struct device *dma_dev = dmaengine_get_dma_device(chan);
+ 		unsigned int i;
+ 		dma_addr_t dma;
+ 		void *buf;
+ 
+ 		s->buf_len_rx = 2 * max_t(size_t, 16, port->fifosize);
+-		buf = dma_alloc_coherent(chan->device->dev, s->buf_len_rx * 2,
++		buf = dma_alloc_coherent(dma_dev, s->buf_len_rx * 2,
+ 					 &dma, GFP_KERNEL);
+ 		if (!buf) {
+ 			dev_warn(port->dev,
+-- 
+2.43.0
 
