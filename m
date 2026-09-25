@@ -1,399 +1,514 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013036.outbound.protection.outlook.com [40.107.162.36])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013027.outbound.protection.outlook.com [40.107.162.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C860472F6D
-	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 14:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A754BB26C
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 14:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790347580; cv=fail; b=tDUbZ2W6ydIqFK2rFd3WmMAaDFm5/gpwu8BXHlUIrxOIOQpFZfnr3tsqCwwhbGb5uTy28VRkOQAQdhZdmsuYm7TnxmXEjQIH+dluJHasl5T5FRCoqidYNKUkeIL34+JgLt5yWqwBnmAdviUEaZzsIdHeICBJE1Rwdw9/LNHyuCY=
+	t=1790348358; cv=fail; b=Rt7EucXO44Adau+FhnFLrHq5PoNXImENPPhokeOowGrL2VULco+ldjLDwIzLkMgPUQt6sjbNj34PWDmpe8s6pLZnVe9IWaR+ce5feEhjyPbwbBNXW00uzQIRNPh6AB6nR46skOzUCrj9cf8ucV+7otL5R8BwhxDlmmfihUMum0s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790347580; c=relaxed/simple;
-	bh=H3jIpGSesEg6QH0wEUsZY6zC+lfqp08P0G3mptfimAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GIPicQh+SHkXCz6I74pO9ggXpfH3O9pZC3RZ77upGFFSMUwTwA1kWAYeSOgh+7zkzBvKyQYrX6jgsQRmzCbElhXD1D9A1Ez6kZ7y+l5d945G+4ZY0qvyltWC/4NXEF3I4EViomoRTtu1umMVWFKSMfqrgVue9MwUkH8fYMdMLgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kfKSI4FS; arc=fail smtp.client-ip=40.107.162.36
+	s=arc-20240116; t=1790348358; c=relaxed/simple;
+	bh=8/UAaanSxe+xF0AJUWxMA41uCeUJwCrnpTizb13AhEs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tCQ0ZUDjcsUEzrpNG4YV3MKfeQCEVfqzs/AfrJ8XVXssJmlke3SPohj5eqJFIk97Lp/XBkqMwUE82U4unKii3+BbvBd6hSVQVruyhi89dNi5CPGUYxhkml2BfXnZ8KuXjJVBAb6gTWVCVs6Md3lxgd3XEvFGjs/kwBNxlPsMKJs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dtKQH6Y5; arc=fail smtp.client-ip=40.107.162.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kfKSI4FS"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dtKQH6Y5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MOtVYR8axunJARy8TJ18xelU+e5FVfC+RF4SGLRPn4g+PFtD5hQN2oFbQLj0cuhSOyUHEdIYzSlnQbrw1NZnw7vdlGbDUDmlOHmxfOxHbFU/kAX+Z1UN23vU2HXg7VjsAJ5Lotf4oaSiDliAgfwDH/E6+eqjnaxyFeePGBQ1/kSiwV9NnssjJza5BIGhlYh5+u7WC6j6SWZhEQ/8s7ffdOuBtpejCaU3YpbHYn0IIknt3EspjdOhFTXIY6frKUjXoSvrIfvVdTQncwgQeb2KDLxh3VhZ2I6qGl9kgPE+40EiyGqPYZePNYJAs8eyzFyMVpphy+Ck5lqPa1ELkrwiKw==
+ b=hQFNy0+aY6aghlmTQDpST/99LZI5d0ju3KsHH0dRHJyyz51MS7I6XDREAEbzXj4I97JEbXrDoP9/qLTGBu6lKJsfzEGiGMc4N/ObY1LRxs3cd3QUSQEhPcKXTzqnxKD2akKiI9VjQREmZj8pACYpMALiGpjc0lrGhkEoLdQrIKf22T65mBSsB0lI26Jhap9O0FND0KejuS3hy0qcBhvDF1Qt1Bp9tHXddPy1upe/bG6xNXPLfpTjzXFZRO6WBPpG2T0rEDiYRCcTqRpAl3fqW2ncEbfYMeBB8yya7Z/N3XV2MxUQuLZSzoY7UJ8jl+n/hFEl5BpQuGC3C9C0ccBlQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4shnvH4TRc/wXpWLdni5SzELRxw7eDYg39GVC+dKmKk=;
- b=XWS03jkAJUEC+iZWAFEbtZHkjzWhIOk8mLF1Q7RdL2kk4GVNyj3hZw1bY8FnmaT7j4LRZFsJNzp9wn2JRyNSjrhl36EQ00c/OOoSJFD5OPLy441tzmpm1/c1bmSL22xnUJg85goWGg2hlIGHu//HMa1YsX8cJZ8DggINPR7skzXyqCWvoG7M8eNgvh/HWYq+s+WL25BlIdZdMZ/K9r1HBONm74a+T5lFPkR1sCrbniNyNTIesy8o2wOMc5kTOStbMNw8/1fhbTsWkLe/xVDsq26P9/VBC++aS15UWuwS4gEpzR1KDBHwCh0dyPjctjSoSVHWq/N5Erl6su6pE6WoJw==
+ bh=c1N/qcMgnVn7IsG/YL8A09rGizz8bLVOS8maSiHpFXE=;
+ b=Dey1qsnsYSg1U32GD/wGzffhSvS1ROeQuk1GldpyJJUy/diVFjiC3bRifH/rU3tMGW/DLRXTMpSFfO0CHeWJaRkR/jyTUJEplEAPvVdrKhF6uP378Yrqcpwn++jIceybTsbLE/lEYvTinXvk2NZRMFbrQIE++qGoo2fqUKZylovFS3aDzRGU2e2bTwj7ffTAqd7aue9PjwDitjb50MYHP1qnuLCt+a6WlAVuOkYoATpbupcIm5Xmx3JUBfWZsagvJeaAUGYvSPlC/FDRhgSaXPKMhOsF7s73BuMDZKKIVPTyKolAcsuP/iJz2TSPpB6xySiT1rVgE7y4TF+K9K+t3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4shnvH4TRc/wXpWLdni5SzELRxw7eDYg39GVC+dKmKk=;
- b=kfKSI4FSoQift/koSTV3xpc2KnmI2xho+a/c1s9nSuvGOuHEDP44lbXAQxetYaaRh66ehStEqpVJi3u5BCbA7TuOfX8I3UC5helZI6bil2WXE0C/HM8ksGCquLVUaDZfMOcJcGKZSktukThmziIYHUUETXPxTwvW/Bn1F2wpQ2s4o6eElxe3aEiU7OfHmxaNcMR5ix0/jrw9ZEUPsEYL+oOPcxWBqrxAUfjG8zT5jVxUpTjxH9pzyCEUiBVlbEaGAwOaS0o9Tfpl4IOill4AV7gQg0w7/zcoI7mVMhx3POdXwi9kB0C70o1mWhvAGKGY1ZxyXeizf92juFJRePRBJQ==
+ bh=c1N/qcMgnVn7IsG/YL8A09rGizz8bLVOS8maSiHpFXE=;
+ b=dtKQH6Y5bQRyDwDv3nl66LFvfBVE4TsMY9SM7HpJYBHJQ9AduObF3KRyig+wyWoRa9sy6N6spZ1JfVfKDk/faVPbqML/pxRhDDRiZttosDdfOJaPz+A1HhCSXiZLGJdqsWpIsCk5NO+lP4VnbapIMKVR36elJpiik9sfxJDn/ouSExd5mItJUcX3i72l/tayXX4vpR7jy33qkZi28Ts/T75sBEyHp1MhRGjEya862PWKp2znOJboE33Ikitnda6ur4ap1Efi2vJvvuFgbTcOpBTdabnlPosyqeDea7oLpH9YAv1lwqlgAk4Qyv12CDtPNNtn/a67J/I+qM5N999puA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB5858.eurprd04.prod.outlook.com (2603:10a6:208:132::23)
- by BR0PR04MB337759.eurprd04.prod.outlook.com (2603:10a6:2c8:60::21) with
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV1PR04MB9214.eurprd04.prod.outlook.com (2603:10a6:150:29::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
- 2026 14:46:05 +0000
-Received: from AM0PR04MB5858.eurprd04.prod.outlook.com
- ([fe80::bdf4:c9d1:4e3f:68c6]) by AM0PR04MB5858.eurprd04.prod.outlook.com
- ([fe80::bdf4:c9d1:4e3f:68c6%3]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
- 14:46:05 +0000
-From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Max Staudt <max@enpas.org>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Ming Yu <tmyu0@nuvoton.com>
-Cc: kernel@pengutronix.de,
-	linux-can@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	imx@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Subject: [PATCH v6 3/3] can: flexcan: use one rx-offload context per IRQ line
-Date: Fri, 25 Sep 2026 16:45:58 +0200
-Message-ID: <20260925144558.2909639-4-ciprianmarian.costea@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260925144558.2909639-1-ciprianmarian.costea@oss.nxp.com>
-References: <20260925144558.2909639-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR5P281CA0010.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f2::11) To AM0PR04MB5858.eurprd04.prod.outlook.com
- (2603:10a6:208:132::23)
+ 2026 14:58:57 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 14:58:57 +0000
+Date: Fri, 25 Sep 2026 09:58:44 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 04/11] ARM: dts: imx6ul: Add Variscite audio codec
+ files
+Message-ID: <araMJFirhP86Dcb6@SMW015318>
+References: <cover.1790344389.git.stefano.r@variscite.com>
+ <ef56f98137eb9d1e0af3aa1b801186d829dba521.1790344389.git.stefano.r@variscite.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef56f98137eb9d1e0af3aa1b801186d829dba521.1790344389.git.stefano.r@variscite.com>
+X-ClientProxiedBy: PH7P220CA0144.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:327::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB5858:EE_|BR0PR04MB337759:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41c7d159-b340-4059-d66a-08df1b13ba6c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB9214:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5618963-de98-40d9-0692-08df1b15865a
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|23010399003|376014|7416014|366016|921020|11063799006|6133799003|10067099003|56012099006|22082099003|18002099003;
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006|23010399003|10067099003|56012099006|3023799007|22082099003|18002099003|11063799006|4143699003|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	82Wo45hjKpdl/VhJ+qR+DZ8MEgPTrJN158tjXmuPC5ti1kXXFgM1GzIH+2ITGymwTzXlTH5Vm+nRGh9m3ydZxwoCoFn/qpaWkLUCyXGHh1KWlE13KZxYkg07tBz+hPuPpIyzv6iFBLg8wsYGMlnxCsagdsUnJpnbmUD/8lwtzgZnhQP2uPZyEggF5CvxXs6eVl1e8fvNn/f5jt5+PNDs2pGPpvE8+X6DNFwdcXIlyNh/NrwqIM02pr5AI1ON1CRxUz3hCwhkohkdZxxyBsDhkhGcGQflFwHlKdUENrdK3cHts0iGvYfCsafLwUXP3nN3pTQkH+oMLLEy1/mNOha7Qb50V5BOHQae2bSMvsEXPiOWQw8f5xHZBQeykBpMp6xdl/8BGzkSWLtfZKdzlxYOVWC+vVJ+sPg8FD3BnedZSOFi93FAB1ZEv4jV6ndxVUAyD4VscrSLPEaU6f4/Li9WHqIM4oOnAxcfvcUK0HBT2F4d26cTw+kpZa9HyPBwLJuSxaETbjbISNLe6sFtVl/HmQ963333VailmehrBadH9D/QteX+rAeV+PIKISlc8Q2Yh0lUx06GVxQmG4LpuqCu7r6eURa3hRU0y12vaC7O7diNcEyjPlYtSxkbV1SunlT4Ds6d44z0dlqUtnu5dQK9m6NONyY0E+XoTVWRtCW9X6OSGRgJKSYt4WIKz8gpnXAHAjOkbQm/qg9Buh+6Bpu0GA==
+ WlOLTSuKhGABnJvFrKlo1yvHj936OMZMqSWskYuokMHsgrfWst8+mKdHV20cUDqn74F45nKg8/njcubS6zS03O9KXzV6l5ZWKr55baelgeWdKAkRpKtXzsZ3t7i9RjJnH6Ojk0a3h1nnp+Vfb2gM0EzpoQvZ6jjjQbBwTczxMG04BsOcGAse8aowDjblhYP6WXQBqBQJUuSRJ7ZJdQS8TssUksNTOAf8DwFjUsmcddvhg08QFBMKBTlS6tJex1lkIlauyub3aQYTQVwHHgNlsV7f7i07USvFQgjF0LzsegdYB2FVEHFolxH+mWPZl3YSMkEAQ3PwEtE5kctG7AJhv/aRrwCX09mxdu00Y0X1Iu2EKdnWfBnKVgxChu22fVDjxaO6kCegXrFGARPUYvy6hsiaHUijU5cYvy+Odv24U1k7+VXW4ZCIsZVOThtkveh214HpwIPVlMcivvuWKRKHSMCDPa6W9t2Za2vXJuBKz5b8Melcx+ebam8sGr4oyWT3DSPjkPLmq/+hDcq9UVbn79q0tIsYG0Qd4rco3umuT2kWMWWOrdJV7WSOkAYF0ij5p7bm9kS4shIoG0PrFBUP+QOOhxyzvX/TxZcoLWuKTZI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(23010399003)(376014)(7416014)(366016)(921020)(11063799006)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006)(23010399003)(10067099003)(56012099006)(3023799007)(22082099003)(18002099003)(11063799006)(4143699003)(13003099007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YkVObFNpaDk3eWEwLzBWWldtUGxQNDZPcm9DdGhYbmQ0T3JiRTdDT3MyRWlx?=
- =?utf-8?B?LzVJMVhFbGJmTG9Ub0I2VFVVSUpJMGJWbjRGbnFVSnV0NURyV3RSdENVdy92?=
- =?utf-8?B?UXU3S2x3WnhQWUw4OG1nR3Y0M2VXeGJNeEN1TEVKeXo5M1hvYTF3ZGtCWDFU?=
- =?utf-8?B?ODY1empKNVdQWitzSGZTeC9WMFdZUnBlZUVSWnlxQWZzUytxM1p0OEhubGJN?=
- =?utf-8?B?SXBUWGd4SlI5dVdqTTJkNkN3ZTUzc3NmYTc2dVNZS3NGZHFXSGlNY1ZyV3dT?=
- =?utf-8?B?d0VPbHpIZjQzcitXT1EzcWFLdW03Mno2WmphL0xOMzBhcWd6cHlURm5jVG8v?=
- =?utf-8?B?cU9YcWZ4cXpIS0ZCTjNSQzdkQTlhdElXeDdtL1VqSk5lQWdUMy9jenhMMWZn?=
- =?utf-8?B?VGJvWWViV3lEaHRPdEtmeGh2OFZQb0FNWklZZjhJdkdZN3pnQ1NwSVIrYnJE?=
- =?utf-8?B?R0ZXS3ZUMmFtOWh2QU15M2llTHJiVVhwUGZGVDJ5Z1AzNkMyV1gvNG9Sa3dC?=
- =?utf-8?B?M1RsSTAvYXNGelB6QmlzTzc3V1JmdmV3TXM5eFRyUkE2MVlKOGlBQ1ZmWUUy?=
- =?utf-8?B?QndPRExYRXNvRUFMU05iUS9RRVlvcklOMW4rbzIwR3ZIYjEvS0lKbUxRUlpn?=
- =?utf-8?B?cjZ6a2xGbGtlQXhrODFvNVJ2ekJ6S1YyekMrT0cwMzd4Y3FIcW1aZzJDSDVC?=
- =?utf-8?B?QjF4U0drNWN2bUcwTEVHQWI4TU9vMzlrRDN5djhJOEhrRlA1R2ZpajQ1TlFW?=
- =?utf-8?B?RGUxekdBNG91cS9LdHdIR0ZqWHN3d1JSc2FVNksybUhvNWY4dHpuWHNzUm1Q?=
- =?utf-8?B?K3BuQ05xMFNKNkI3TEovc2pOeXdvanlUcnFHK1NKcElaQlltdUxVRTZsMkdG?=
- =?utf-8?B?SHVkKzZvYjFDdXhTRXZmbk1zMmJ3TWJpNXoyYjZxK25TQ0JlakdONFl5TUhp?=
- =?utf-8?B?YkJaNEVJamRncDdRb2JDMm9jVVFhY04wS053a2x3RDlZZ0Rlc05xSmM2QUda?=
- =?utf-8?B?RldFY1ZTNSttamhjcE5xL0EvUGl2MzhyanZGYzNuWHUyanBrOE1oOTNVVzha?=
- =?utf-8?B?WitZUlpRdVZVK1JvcG5nTFhjT240TzRUa1lJTzdXL3daVHk4azhMNExyNE5S?=
- =?utf-8?B?czJIUzBRZnJPL2N5UHRDZWtaVVZwQmo4dVdLNTJTUGcydjVGanhNUWVuSmkv?=
- =?utf-8?B?bkFsc0paMjAxdWtnTm8wbk14djVOSWNXNTJFbXpKUlE4ZEZlcCtpYlF0YVdv?=
- =?utf-8?B?TE02d0hBZWJxOXVNN3VsajdrbWFuQ1IyaE83dStGU3FzdFlnQnNJRFRDbGZQ?=
- =?utf-8?B?YXhFSEpmMTBLNW9FK2Q1NE5JWjNVZ3IzNnV4ZHhxanpJdE1hcUEyeWtJN0xR?=
- =?utf-8?B?NTJYZGhERHZtZ3cxRENKTkZhdUFvRysxWmxPZUtSU09sQ28wcDNMT0JUNjYy?=
- =?utf-8?B?ZGNBU0Q0aVdSbnpMZ2lCam90RVRpV1dxRnRUcFNaZ0R6TFUrZ3VjVVVkNStX?=
- =?utf-8?B?NDJEQ284YVJSUXVWQzk3dkRKOVdXYTdVN0lUMnhSODJMMEltTTZxQWlnN3pM?=
- =?utf-8?B?ZDlxMmNCUXg3bkJ0SGtmdlRTZE5aTTZFSXdTcUIydnJveTNaRjEwTFptSEQ4?=
- =?utf-8?B?c2E1ZjZYalIxSGV2VjRkaGpsdVAxb2pKTXFyajlKRUtNcUN4WXN0Y25yb2cr?=
- =?utf-8?B?VkNOajJiYVFpYXpIc0ljMENac1h4aVk3cjBPb1BDR29iT0Y0QkE1ZEg4Y2k4?=
- =?utf-8?B?RnJjTERPUlpnWll6aXRjdXhGeHlpQ2s5TXZ1UlM5aE45VmdxMTlJS1lTRDhP?=
- =?utf-8?B?VkI3YVNJT243VkhhV2oxUHVLT1Vya1JROHZYbEwxc1FuRlNJRGh3VVFnc2VN?=
- =?utf-8?B?Z1BBbW9UUlU3OUlNY1NqRVNlTVJ3WmJkTmYvSldqTnpQRE9vdGJFT1FQTHBP?=
- =?utf-8?B?OGI2Ujd1eHE2bGNBQ0VGODYyZGw5dXAwb1VvM1ZhYUMxczJhTmFMbCs5SVBH?=
- =?utf-8?B?MC9vcmZJVDkzRGE2UEVNRUs4eG8za2p2c1pLdDdVSmd5Rm1aVmx6OURQOHRG?=
- =?utf-8?B?TEorbUhTZ0FRR2d3L3ptOUp2QitHNjhzby9Oc1VnWUgyTTYwRDU1ZnhISjdE?=
- =?utf-8?B?UUhQTGRDcW5MVkdsdDlMd1FvTWVXc2gzZjZsMWhKMHVFd0ZHSkQrNjhsMEF5?=
- =?utf-8?B?VGRGQVhXeDQyTVBHbmh1ekhNeDNMeWJCVHFVTVUvT1dONFdWR3MvanVUOSs1?=
- =?utf-8?B?b2VyTExiWTFPSjZPL3JvOXFlU2t6ZmFGNzB6cEdIVjQ3SWRSOE80cnM3emxx?=
- =?utf-8?B?bTg5cVJWdmQ3MnNqMERsTUl2ZWV1MHU2WEJuaFp1d0JOaHdqWWNlU3Rxb3Zu?=
- =?utf-8?Q?gZaQgbmCqndKu4U0=3D?=
+ =?us-ascii?Q?u8FjSSpAu69/bTZuBYtR5tfnyR4j2n1rBZRHLaFv5X/P8nwiOkYCkEU1xvPt?=
+ =?us-ascii?Q?rOcxJ0JHM8KinysQrjuFa42CUlM4mFNHt4Z2zFAJpOtudsZS+kBpRbz8j4u6?=
+ =?us-ascii?Q?YrO391wJHd+IXuS0dQ8FbvKVawFd5p8ivDZmTb7i3Ak0mBwmKEy9xzfkyKJV?=
+ =?us-ascii?Q?Mcqd5vYOx+k9ls64WlNkOLw/H3z1y8IEGdDFcE0mf8wQRyTgWRnUQU+hSFiX?=
+ =?us-ascii?Q?uz3y8hQI9SSYRyMU/npqf1LLuxON7UBVVs7Uagf66NK9f8GP+At4ExgtjEfq?=
+ =?us-ascii?Q?sE+HKxqzvXpwf8M97OhvMSnYTf6hHZc7dyd0Wf0cZ38dO1U7oyRv5fOtrzYr?=
+ =?us-ascii?Q?u5gJIOCZ6irbUleArxQ0BMDO934xFSe64MD8lF2ROFIpgRm09Hjkd8jwj2J3?=
+ =?us-ascii?Q?Z2yL7H0AX1IIqPgkCIkf6zXDA0Zb96TT+5FY4w/FSFiRtuxh4vMf+U4Bq3M6?=
+ =?us-ascii?Q?+xq05DWUSQWHlMdNLTQHeOyWp/m5x4kjmyIN8LpUAa0VOZzjIvRvBOciz4br?=
+ =?us-ascii?Q?Z9uFIr1MQ602u5eSZW7rqqj/IzW8SvGHKWayuhYmWUC7K3KwiaUT0Aa6sP7m?=
+ =?us-ascii?Q?GKBsU7ArQouNCRI9uMFMZLlbx5kWsAeZXCaXHqRpVjBFaCzzRSAfnYnatwux?=
+ =?us-ascii?Q?IIYIZiomu2WPz5N645uOSg1tLGLcx0K8SF1Rj83+g8fMMnFhEFFy8BqvGiQW?=
+ =?us-ascii?Q?SmEplvFYvD4aE3hBY6olzM/ULpfHdozy4PavxA7XFVDxvetIT/nfVGU2Zeff?=
+ =?us-ascii?Q?UXSLblGnDvSSu6z6HWmspBBMx3sbDJYRrgTgMIJQcXPzXySjAGuxK7QjiuG/?=
+ =?us-ascii?Q?h48MXsCFaXbk2JfHA/3H0QiNnZB9W0p1M889vGhF0cjzi7swLaucLHPA2vaa?=
+ =?us-ascii?Q?EMccRBkHCHuSFOb0G6QqBQC56MSR55wV2HCfwUsrvKAAcbVY+wNkDCvYVr+r?=
+ =?us-ascii?Q?JYQ63SjWgEa6XnF4z2lRUaoc+Bt8SVewpTv7AvJC8DOBYOGHa26X7PaItDhT?=
+ =?us-ascii?Q?JCVnUk0e2JABxhjp/OyyCtFcC8kMZBD1j/oIyNCI3prpCNClbhsyUxAV7s8B?=
+ =?us-ascii?Q?P6F/B9jvY9wHUNVY8Ne9J5W8/PPTVE0HQfN1F5Z9k/fiPcX38jpO5W3GprvN?=
+ =?us-ascii?Q?hrxrA7auFFeZT818JCnZkwE2KT7SouwU+wYldRoUNNFQSTo2uyLVi0kakTIj?=
+ =?us-ascii?Q?0hcQS2npscjD/PnBzCJqf/pxHt1dRz4ML8i/oIILiB2bDVFFtG9IlUNDE3ib?=
+ =?us-ascii?Q?L8idDpBYiGeBXUpTDOhvFlUAt6EsMF2MoJAVDzhIoodexR/nSZdjwoPrNaNC?=
+ =?us-ascii?Q?0JWv+VPUZhV/cS8rybyDAMEKvAvIx/66IwUURwLoU0PY3mQiPAPP4Tk/r0h+?=
+ =?us-ascii?Q?yWrjOaQrOL6fSIybKJ3dg/OHzqcS4oo+DQoreYyB28lB5QBmlpDRjvDs3/kl?=
+ =?us-ascii?Q?Rv3J1rgx2ldg0WgN43XI5tD39qFdob6Siq0kDStOIqytIzmGATtE/eg/cGR+?=
+ =?us-ascii?Q?SdTcLVEc+ACGvKMV0kAQo/6AUHvUSfZqHbOIWTd6iKsoU/a6vO5gxSt8uZYV?=
+ =?us-ascii?Q?Ci9M6JOUii3sVitLLKbMyUoqFdqURHkz8eF2GTxzwFl9Y9wD5s3aOURUBAvD?=
+ =?us-ascii?Q?d3qjX5rfrDd//aBpMzf5NJB9UVT8V10p3cXEsOpawipBZGr//nHJMBsNby9T?=
+ =?us-ascii?Q?ntq4nPDv+MkGZyG9o2BefUQfKG3ypC02Bd7VPK1uZ95SY/qEBReuZz72aqib?=
+ =?us-ascii?Q?KIcuSiZulLIR/WHPqVa1srMLyuw8fKqAkU8XO7rHHtZzfEVGM2kf?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41c7d159-b340-4059-d66a-08df1b13ba6c
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5858.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5618963-de98-40d9-0692-08df1b15865a
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 14:46:05.7260
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 14:58:57.4594
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I/fHhVsH799mQpYc1CsycF0PVuHNXc1a0JK9t7OChhHP7dUqgEyWZCND/8lU5nPMU7mf/N/r0butJnxIQ49jR0iyxttiUYzcZXOyCCxCYt0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB337759
+X-MS-Exchange-CrossTenant-UserPrincipalName: lb7wFIba18dINvg7Zegnpr636YVSTxtjY+tmV82GSMrjmbSAmiYOrgQXr8IvbCBOuOKDKepy2vOI/QaFNOrKq1ZsEk+GxLDswz9MynTVMsBRsONRRJK02eICrWwcK1mu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9214
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On Fri, Sep 25, 2026 at 04:02:21PM +0200, Stefano Radaelli wrote:
+> From: Stefano Radaelli <stefano.r@variscite.com>
+>
+> Add separate DTSI files for the WM8904 and WM8731 audio options on
+> VAR-SOM-6UL and DART-6UL modules.
+>
+> Put each codec node, the SAI2 setup and its pinctrl in the selected
+> audio DTSI. This makes the WM8904 option explicit instead of placing
+> it in the shared module base.
+>
+> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+> ---
+>  .../imx/imx6ul-imx6ull-var-dart-wm8731.dtsi   | 71 +++++++++++++++
+>  .../imx/imx6ul-imx6ull-var-dart-wm8904.dtsi   | 88 +++++++++++++++++++
+>  .../imx/imx6ul-imx6ull-var-som-wm8731.dtsi    | 71 +++++++++++++++
+>  .../imx/imx6ul-imx6ull-var-som-wm8904.dtsi    | 85 ++++++++++++++++++
 
-flexcan_irq() is requested on every IRQ line of the controller: the
-mailbox line, the bus off and error lines (FLEXCAN_QUIRK_NR_IRQ_3) and a
-second mailbox line (FLEXCAN_QUIRK_SECONDARY_MB_IRQ). On NXP S32G2, which
-has all four, the handlers can run at the same time on different CPUs and
-corrupt the rx-offload queue they share.
+what's difference between imx6ul-imx6ull-var-som-wm8904.dtsi and
+imx6ul-imx6ull-var-dart-wm8904.dtsi?
 
-Add a struct can_rx_offload_irq for each line, pick it in flexcan_irq()
-based on the IRQ number and pass it to the functions that queue skbs.
+Frank
 
-This only fixes the queue corruption. All handlers still process the
-whole mailbox range and the same ESR events. A dedicated handler per line
-and splitting the mailbox range between the two mailbox lines will follow
-in a separate series, which also removes the lookup added here.
-
-Fixes: 8503a4b1a24d ("can: flexcan: add NXP S32G2/S32G3 SoC support")
-Assisted-by: LLM
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
----
- drivers/net/can/flexcan/flexcan-core.c | 109 ++++++++++++++++++++-----
- drivers/net/can/flexcan/flexcan.h      |   3 +
- 2 files changed, 90 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index a81132d3afa8..b600680ed983 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -828,7 +828,9 @@ static netdev_tx_t flexcan_start_xmit(struct sk_buff *skb, struct net_device *de
- 	return NETDEV_TX_OK;
- }
- 
--static void flexcan_irq_bus_err(struct net_device *dev, u32 reg_esr)
-+static void flexcan_irq_bus_err(struct net_device *dev,
-+				struct can_rx_offload_irq *offload_irq,
-+				u32 reg_esr)
- {
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	struct flexcan_regs __iomem *regs = priv->regs;
-@@ -885,12 +887,14 @@ static void flexcan_irq_bus_err(struct net_device *dev, u32 reg_esr)
- 	if (tx_errors)
- 		dev->stats.tx_errors++;
- 
--	err = can_rx_offload_queue_timestamp(&priv->offload_irq, skb, timestamp);
-+	err = can_rx_offload_queue_timestamp(offload_irq, skb, timestamp);
- 	if (err)
- 		dev->stats.rx_fifo_errors++;
- }
- 
--static void flexcan_irq_state(struct net_device *dev, u32 reg_esr)
-+static void flexcan_irq_state(struct net_device *dev,
-+			      struct can_rx_offload_irq *offload_irq,
-+			      u32 reg_esr)
- {
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	struct flexcan_regs __iomem *regs = priv->regs;
-@@ -932,7 +936,7 @@ static void flexcan_irq_state(struct net_device *dev, u32 reg_esr)
- 	if (unlikely(new_state == CAN_STATE_BUS_OFF))
- 		can_bus_off(dev);
- 
--	err = can_rx_offload_queue_timestamp(&priv->offload_irq, skb, timestamp);
-+	err = can_rx_offload_queue_timestamp(offload_irq, skb, timestamp);
- 	if (err)
- 		dev->stats.rx_fifo_errors++;
- }
-@@ -1070,11 +1074,35 @@ static struct sk_buff *flexcan_mailbox_read(struct can_rx_offload *offload,
- 	return skb;
- }
- 
-+/* The same handler is requested on every IRQ line, so the line it was
-+ * called for selects the rx-offload context to queue into.
-+ */
-+static struct can_rx_offload_irq *
-+flexcan_get_offload_irq(struct flexcan_priv *priv, int irq)
-+{
-+	const u32 quirks = priv->devtype_data.quirks;
-+
-+	if (quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ &&
-+	    irq == priv->irq_secondary_mb)
-+		return &priv->offload_irq_secondary_mb;
-+
-+	if (quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
-+		if (irq == priv->irq_boff)
-+			return &priv->offload_irq_boff;
-+		if (irq == priv->irq_err)
-+			return &priv->offload_irq_err;
-+	}
-+
-+	return &priv->offload_irq;
-+}
-+
- static irqreturn_t flexcan_irq(int irq, void *dev_id)
- {
- 	struct net_device *dev = dev_id;
- 	struct net_device_stats *stats = &dev->stats;
- 	struct flexcan_priv *priv = netdev_priv(dev);
-+	struct can_rx_offload_irq *offload_irq =
-+		flexcan_get_offload_irq(priv, irq);
- 	struct flexcan_regs __iomem *regs = priv->regs;
- 	irqreturn_t handled = IRQ_NONE;
- 	u64 reg_iflag_tx;
-@@ -1088,7 +1116,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
- 
- 		while ((reg_iflag_rx = flexcan_read_reg_iflag_rx(priv))) {
- 			handled = IRQ_HANDLED;
--			ret = can_rx_offload_irq_offload_timestamp(&priv->offload_irq,
-+			ret = can_rx_offload_irq_offload_timestamp(offload_irq,
- 								   reg_iflag_rx);
- 			if (!ret)
- 				break;
-@@ -1099,7 +1127,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
- 		reg_iflag1 = priv->read(&regs->iflag1);
- 		if (reg_iflag1 & FLEXCAN_IFLAG_RX_FIFO_AVAILABLE) {
- 			handled = IRQ_HANDLED;
--			can_rx_offload_irq_offload_fifo(&priv->offload_irq);
-+			can_rx_offload_irq_offload_fifo(offload_irq);
- 		}
- 
- 		/* FIFO overflow interrupt */
-@@ -1120,7 +1148,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
- 
- 		handled = IRQ_HANDLED;
- 		stats->tx_bytes +=
--			can_rx_offload_get_echo_skb_queue_timestamp(&priv->offload_irq, 0,
-+			can_rx_offload_get_echo_skb_queue_timestamp(offload_irq, 0,
- 								    reg_ctrl << 16, NULL);
- 		stats->tx_packets++;
- 
-@@ -1143,12 +1171,12 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
- 	if ((reg_esr & FLEXCAN_ESR_ERR_STATE) ||
- 	    (priv->devtype_data.quirks & (FLEXCAN_QUIRK_BROKEN_WERR_STATE |
- 					   FLEXCAN_QUIRK_BROKEN_PERR_STATE)))
--		flexcan_irq_state(dev, reg_esr);
-+		flexcan_irq_state(dev, offload_irq, reg_esr);
- 
- 	/* bus error IRQ - handle if bus error reporting is activated */
- 	if ((reg_esr & FLEXCAN_ESR_ERR_BUS) &&
- 	    (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING))
--		flexcan_irq_bus_err(dev, reg_esr);
-+		flexcan_irq_bus_err(dev, offload_irq, reg_esr);
- 
- 	/* availability of error interrupt among state transitions in case
- 	 * bus error reporting is de-activated and
-@@ -1189,7 +1217,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
- 	}
- 
- 	if (handled)
--		can_rx_offload_irq_finish(&priv->offload_irq);
-+		can_rx_offload_irq_finish(offload_irq);
- 
- 	return handled;
- }
-@@ -1381,6 +1409,23 @@ static void flexcan_ram_init(struct net_device *dev)
- 	priv->write(reg_ctrl2, &regs->ctrl2);
- }
- 
-+static int flexcan_rx_offload_add(struct net_device *dev,
-+				  struct can_rx_offload_irq *offload_irq)
-+{
-+	struct flexcan_priv *priv = netdev_priv(dev);
-+
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX) {
-+		offload_irq->mb_first = FLEXCAN_RX_MB_RX_MAILBOX_FIRST;
-+		offload_irq->mb_last = priv->mb_count - 2;
-+
-+		return can_rx_offload_add_timestamp(dev, &priv->offload,
-+						    offload_irq);
-+	}
-+
-+	return can_rx_offload_add_fifo(dev, &priv->offload, offload_irq,
-+				       FLEXCAN_NAPI_WEIGHT);
-+}
-+
- static int flexcan_rx_offload_setup(struct net_device *dev)
- {
- 	struct flexcan_priv *priv = netdev_priv(dev);
-@@ -1409,22 +1454,42 @@ static int flexcan_rx_offload_setup(struct net_device *dev)
- 
- 	priv->offload.mailbox_read = flexcan_mailbox_read;
- 
--	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX) {
--		priv->offload_irq.mb_first = FLEXCAN_RX_MB_RX_MAILBOX_FIRST;
--		priv->offload_irq.mb_last = priv->mb_count - 2;
--
--		priv->rx_mask = GENMASK_ULL(priv->offload_irq.mb_last,
--					    priv->offload_irq.mb_first);
--		err = can_rx_offload_add_timestamp(dev, &priv->offload,
--						   &priv->offload_irq);
--	} else {
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX)
-+		priv->rx_mask = GENMASK_ULL(priv->mb_count - 2,
-+					    FLEXCAN_RX_MB_RX_MAILBOX_FIRST);
-+	else
- 		priv->rx_mask = FLEXCAN_IFLAG_RX_FIFO_OVERFLOW |
- 			FLEXCAN_IFLAG_RX_FIFO_AVAILABLE;
--		err = can_rx_offload_add_fifo(dev, &priv->offload,
--					      &priv->offload_irq,
--					      FLEXCAN_NAPI_WEIGHT);
-+
-+	err = flexcan_rx_offload_add(dev, &priv->offload_irq);
-+	if (err)
-+		return err;
-+
-+	/* Every IRQ line queues into its own context, the shared skb_queue is
-+	 * only touched by can_rx_offload_irq_finish().
-+	 */
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
-+		err = flexcan_rx_offload_add(dev,
-+					     &priv->offload_irq_secondary_mb);
-+		if (err)
-+			goto out_can_rx_offload_del;
- 	}
- 
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
-+		err = flexcan_rx_offload_add(dev, &priv->offload_irq_boff);
-+		if (err)
-+			goto out_can_rx_offload_del;
-+
-+		err = flexcan_rx_offload_add(dev, &priv->offload_irq_err);
-+		if (err)
-+			goto out_can_rx_offload_del;
-+	}
-+
-+	return 0;
-+
-+out_can_rx_offload_del:
-+	can_rx_offload_del(&priv->offload);
-+
- 	return err;
- }
- 
-diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
-index 90f9c2b9fed8..443ad5237ba0 100644
---- a/drivers/net/can/flexcan/flexcan.h
-+++ b/drivers/net/can/flexcan/flexcan.h
-@@ -89,6 +89,9 @@ struct flexcan_priv {
- 	struct can_priv can;
- 	struct can_rx_offload offload;
- 	struct can_rx_offload_irq offload_irq;
-+	struct can_rx_offload_irq offload_irq_secondary_mb;
-+	struct can_rx_offload_irq offload_irq_boff;
-+	struct can_rx_offload_irq offload_irq_err;
- 	struct device *dev;
- 
- 	struct flexcan_regs __iomem *regs;
--- 
-2.43.0
-
+>  4 files changed, 315 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi
+> new file mode 100644
+> index 000000000000..7d74fc3b7014
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
+> + */
+> +
+> +/ {
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,bitclock-master = <&sound_master>;
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,frame-master = <&sound_master>;
+> +		simple-audio-card,name = "wm8731audio";
+> +		simple-audio-card,routing =
+> +			"Headphone Jack", "RHPOUT",
+> +			"Headphone Jack", "LHPOUT",
+> +			"LLINEIN", "Line Jack",
+> +			"RLINEIN", "Line Jack",
+> +			"MICIN", "Mic Bias",
+> +			"Mic Bias", "Mic Jack";
+> +		simple-audio-card,widgets =
+> +			"Headphone", "Headphone Jack",
+> +			"Line", "Line Jack",
+> +			"Microphone", "Mic Jack";
+> +
+> +		sound_master: simple-audio-card,cpu {
+> +			sound-dai = <&sai2>;
+> +		};
+> +
+> +		simple-audio-card,codec {
+> +			sound-dai = <&codec>;
+> +			system-clock-frequency = <12288000>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	codec: audio-codec@1a {
+> +		compatible = "wlf,wm8731";
+> +		reg = <0x1a>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clks IMX6UL_CLK_SAI2>;
+> +		clock-names = "mclk";
+> +		AVDD-supply = <&reg_3p3v>;
+> +		DBVDD-supply = <&reg_3p3v>;
+> +		DCVDD-supply = <&reg_3p3v>;
+> +		HPVDD-supply = <&reg_3p3v>;
+> +	};
+> +};
+> +
+> +&sai2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_sai2>;
+> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
+> +			  <&clks IMX6UL_CLK_SAI2>;
+> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
+> +	assigned-clock-rates = <0>, <12288000>;
+> +	fsl,sai-mclk-direction-output;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_sai2: sai2-grp {
+> +		fsl,pins = <
+> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
+> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
+> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
+> +		>;
+> +	};
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
+> new file mode 100644
+> index 000000000000..1e1ff8c6d7b5
+> --- /dev/null
+/809> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
+> @@ -0,0 +1,88 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
+> + */
+> +
+> +/ {
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,bitclock-master = <&sound_master>;
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,frame-master = <&sound_master>;
+> +		simple-audio-card,name = "wm8904audio";
+> +		simple-audio-card,routing =
+> +			"Headphone Jack", "HPOUTL",
+> +			"Headphone Jack", "HPOUTR",
+> +			"IN1L", "Line In Jack",
+> +			"IN1R", "Line In Jack",
+> +			"IN2L", "Microphone Jack",
+> +			"IN2R", "Microphone Jack",
+> +			"Microphone Jack", "MICBIAS";
+> +		simple-audio-card,widgets =
+> +			"Microphone", "Microphone Jack",
+> +			"Headphone", "Headphone Jack",
+> +			"Line", "Line In Jack";
+> +		simple-audio-card,mclk-fs = <256>;
+> +
+> +		simple-audio-card,cpu {
+> +			sound-dai = <&sai2>;
+> +		};
+> +
+> +		sound_master: simple-audio-card,codec {
+> +			sound-dai = <&codec>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	codec: audio-codec@1a {
+> +		compatible = "wlf,wm8904";
+> +		reg = <0x1a>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clks IMX6UL_CLK_SAI2>;
+> +		clock-names = "mclk";
+> +		AVDD-supply = <&reg_3p3v>;
+> +		CPVDD-supply = <&reg_3p3v>;
+> +		DBVDD-supply = <&reg_3p3v>;
+> +		DCVDD-supply = <&reg_3p3v>;
+> +		MICVDD-supply = <&reg_3p3v>;
+> +		wlf,drc-cfg-names = "default", "peaklimiter", "tradition",
+> +				    "soft", "music";
+> +		/*
+> +		 * Config registers per name, respectively:
+> +		 * KNEE_IP = 0,   KNEE_OP = 0,     HI_COMP = 1,   LO_COMP = 1
+> +		 * KNEE_IP = -24, KNEE_OP = -6,    HI_COMP = 1/4, LO_COMP = 1
+> +		 * KNEE_IP = -42, KNEE_OP = -3,    HI_COMP = 0,   LO_COMP = 1
+> +		 * KNEE_IP = -45, KNEE_OP = -9,    HI_COMP = 1/8, LO_COMP = 1
+> +		 * KNEE_IP = -30, KNEE_OP = -10.5, HI_COMP = 1/4, LO_COMP = 1
+> +		 */
+> +		wlf,drc-cfg-regs = /bits/ 16 <0x01af 0x3248 0x0000 0x0000>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x0408>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0028 0x0704>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0018 0x078c>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x050e>;
+> +	};
+> +};
+> +
+> +&sai2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_sai2>;
+> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
+> +			  <&clks IMX6UL_CLK_SAI2>;
+> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
+> +	assigned-clock-rates = <0>, <11565177>;
+> +	fsl,sai-mclk-direction-output;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_sai2: sai2-grp {
+> +		fsl,pins = <
+> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
+> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
+> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
+> +		>;
+> +	};
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi
+> new file mode 100644
+> index 000000000000..7d74fc3b7014
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
+> + */
+> +
+> +/ {
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,bitclock-master = <&sound_master>;
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,frame-master = <&sound_master>;
+> +		simple-audio-card,name = "wm8731audio";
+> +		simple-audio-card,routing =
+> +			"Headphone Jack", "RHPOUT",
+> +			"Headphone Jack", "LHPOUT",
+> +			"LLINEIN", "Line Jack",
+> +			"RLINEIN", "Line Jack",
+> +			"MICIN", "Mic Bias",
+> +			"Mic Bias", "Mic Jack";
+> +		simple-audio-card,widgets =
+> +			"Headphone", "Headphone Jack",
+> +			"Line", "Line Jack",
+> +			"Microphone", "Mic Jack";
+> +
+> +		sound_master: simple-audio-card,cpu {
+> +			sound-dai = <&sai2>;
+> +		};
+> +
+> +		simple-audio-card,codec {
+> +			sound-dai = <&codec>;
+> +			system-clock-frequency = <12288000>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	codec: audio-codec@1a {
+> +		compatible = "wlf,wm8731";
+> +		reg = <0x1a>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clks IMX6UL_CLK_SAI2>;
+> +		clock-names = "mclk";
+> +		AVDD-supply = <&reg_3p3v>;
+> +		DBVDD-supply = <&reg_3p3v>;
+> +		DCVDD-supply = <&reg_3p3v>;
+> +		HPVDD-supply = <&reg_3p3v>;
+> +	};
+> +};
+> +
+> +&sai2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_sai2>;
+> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
+> +			  <&clks IMX6UL_CLK_SAI2>;
+> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
+> +	assigned-clock-rates = <0>, <12288000>;
+> +	fsl,sai-mclk-direction-output;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_sai2: sai2-grp {
+> +		fsl,pins = <
+> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
+> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
+> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
+> +		>;
+> +	};
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi
+> new file mode 100644
+> index 000000000000..72a73011af6f
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi
+> @@ -0,0 +1,85 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
+> + */
+> +
+> +/ {
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,bitclock-master = <&sound_master>;
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,frame-master = <&sound_master>;
+> +		simple-audio-card,name = "wm8904audio";
+> +		simple-audio-card,routing =
+> +			"Headphone Jack", "HPOUTL",
+> +			"Headphone Jack", "HPOUTR",
+> +			"IN1L", "Line In Jack",
+> +			"IN1R", "Line In Jack";
+> +		simple-audio-card,widgets =
+> +			"Microphone", "Microphone Jack",
+> +			"Headphone", "Headphone Jack",
+> +			"Line", "Line In Jack";
+> +		simple-audio-card,mclk-fs = <256>;
+> +
+> +		simple-audio-card,cpu {
+> +			sound-dai = <&sai2>;
+> +		};
+> +
+> +		sound_master: simple-audio-card,codec {
+> +			sound-dai = <&codec>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	codec: audio-codec@1a {
+> +		compatible = "wlf,wm8904";
+> +		reg = <0x1a>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clks IMX6UL_CLK_SAI2>;
+> +		clock-names = "mclk";
+> +		AVDD-supply = <&reg_3p3v>;
+> +		CPVDD-supply = <&reg_3p3v>;
+> +		DBVDD-supply = <&reg_3p3v>;
+> +		DCVDD-supply = <&reg_3p3v>;
+> +		MICVDD-supply = <&reg_3p3v>;
+> +		wlf,drc-cfg-names = "default", "peaklimiter", "tradition",
+> +				    "soft", "music";
+> +		/*
+> +		 * Config registers per name, respectively:
+> +		 * KNEE_IP = 0,   KNEE_OP = 0,     HI_COMP = 1,   LO_COMP = 1
+> +		 * KNEE_IP = -24, KNEE_OP = -6,    HI_COMP = 1/4, LO_COMP = 1
+> +		 * KNEE_IP = -42, KNEE_OP = -3,    HI_COMP = 0,   LO_COMP = 1
+> +		 * KNEE_IP = -45, KNEE_OP = -9,    HI_COMP = 1/8, LO_COMP = 1
+> +		 * KNEE_IP = -30, KNEE_OP = -10.5, HI_COMP = 1/4, LO_COMP = 1
+> +		 */
+> +		wlf,drc-cfg-regs = /bits/ 16 <0x01af 0x3248 0x0000 0x0000>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x0408>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0028 0x0704>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0018 0x078c>,
+> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x050e>;
+> +	};
+> +};
+> +
+> +&sai2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_sai2>;
+> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
+> +			  <&clks IMX6UL_CLK_SAI2>;
+> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
+> +	assigned-clock-rates = <0>, <11565177>;
+> +	fsl,sai-mclk-direction-output;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_sai2: sai2-grp {
+> +		fsl,pins = <
+> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
+> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
+> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
+> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
+> +		>;
+> +	};
+> +};
+> --
+> 2.47.3
+>
+>
