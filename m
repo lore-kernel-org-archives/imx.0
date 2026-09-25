@@ -1,112 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C6746AA8C;
-	Fri, 25 Sep 2026 20:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244104FB9BD
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 21:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790367604; cv=none; b=oYDx84HFMIuQhAyQ+MXIrfyO4abgdOpJkUxgp8KSUdhgMZXkU9wwD1EouTaqXqsmQwSMB0sentDYTaf+0n8zAApPfwzjBHa0O9Bfy5dUJb/QRnTaSjgMy03Dx98MQ2g8/0EqGpIoFhU0BOq9bQsqLEMPgFHVTVBBZWRIwEZNovg=
+	t=1790370971; cv=none; b=eioOQq0n5wnXyEqijiygfrKALHoysj7E1Fcrc5ESrot0udujH9OC0u4gWKeE5j3BW2CX3NthI/TVZOBDXK8XFCFPHa03CH1LcmTAzJ/cORt3c2765W/Me+KvIxy0dX8nzzAPTSve9Acq2BnFRLfZcghRzPDu7wu6Hb3zF6810oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790367604; c=relaxed/simple;
-	bh=HHoxvicqfZA+n2pKkHHOA7vzW00hj15zOu3veVA/Gp0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uQ1zuhhcZk2jv0TKdgs5KnLpU+Lu29HtadRj80bwSEBVfIHGDIKD/vrE9wV5BumBTRCvSZRsMeTFbMvffyA1f/a01dGlQAojvQoMYvpPFSE4/caL96dEFwlvhuqN8H4i+U+GSYOVE41FKnSMQNY/Wy61RCrBg5tRtdg59IZpjQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f8YY9oYI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790370971; c=relaxed/simple;
+	bh=IiOuPbtnCcIY+LvqnlYO+tAjpv2SzZg8BQjeknfXbdc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oj9GEwy7fWksamt00M7KSVXX5hdkuWBDRmkoO66OcMxNm8XZPaVXLQKaGCiHo8IIl+/WMlSKYP48hX+j1sTryy1XdtVQMFutHKDprfyYGLi6oc1iQAp3JZ9hYLXL2ckkVZ6SQS1yvhpmdUIoGSq4gDD1R9Kkhv9B5tQgxPJT6sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdyNDN3G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8YY9oYI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC1A1F000FF;
-	Fri, 25 Sep 2026 20:19:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdyNDN3G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15F71F00893
+	for <imx@lists.linux.dev>; Fri, 25 Sep 2026 21:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790367598;
-	bh=b01Hf4th/bG4IK5EwrBUNtUAGx8dHBa8rLXmm7+ryHM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f8YY9oYI1fPfHZRqkxr2oGaz7y+r7i+el2YgT5XmhSjE9coECnpt15BeF+Xrxlhxo
-	 ecL1NFGULQYPV924BIhFN2bVxj3mSwOHd3lC+SbHfDGKwRulE0TZln0R1hZGy/rPrQ
-	 zzfYYldVCTGmvTy+XhQkMxcLRg9lJuSkQ60hmTpPF2q3ovx7/X8lJAYtclhdUig23i
-	 Vlo9+DJO59fwfD7+5+UrkzOt33r9ZT8paeN+6vehtSS5EditSHxxKjAw4EzeapnTX4
-	 Mb3PQm+WtaLDFRoHhnLUrDn22ZWgAM5A92zD/qmv4U/GGL8P36b0w8ZmcJ7s1RRG3G
-	 J2vEhqBZo5L5w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] serial: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, linux-serial@vger.kernel.org
-In-Reply-To: <20260925200850.1678179-1-Frank.Li@oss.nxp.com>
-References: <20260925200850.1678179-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 25 Sep 2026 20:19:57 +0000
-Message-Id: <20260925201958.2FC1A1F000FF@smtp.kernel.org>
+	s=k20260515; t=1790370968;
+	bh=o7vv2zCnn+8YFHVHlCAGyM9+OpN94jh7Pzu1l+wtiw0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TdyNDN3G70qnR90wz9poIu0G3/yuYQ2Og3m0yLnaVSDlUswTRq9W4a0vGyiZ1jRAk
+	 pWgltJ87NiUOJR3liXOk0uX9GXKhWY8ejJkk9VA6SZVZnb5lo+MMBdAPVgpCA0u77T
+	 1rUavcxAvXe7OonnMHM3PYzctZCNiXdI9RM7gtkcXZljk0YcBlno827Tt4k5V4uLjX
+	 hiccwL69s0XCS6sw1W5sYmidXGKw/+o8suurGtmQDa/5E1XrASKng99N9iQq5/V/P2
+	 nazgmd2Pohgq2fpwQnR6V384oMkPWXW1g6hgTyEJ2B9NZ3oGok1i9DqaDSlMRg8y3S
+	 bYA5p6+tn0p0Q==
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af3a4f193so106182466b.3
+        for <imx@lists.linux.dev>; Fri, 25 Sep 2026 14:16:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBziS2w03P++tTKeQR38Nwg2bqKj6hZmMx1IrNe36FGZJ/aOLa023AEuAa189K+4IWkuRvE=@lists.linux.dev
+X-Gm-Message-State: AFuF++kk7JfVRyWBANe0lZLAbBXgl5LdAMiQ3vc19UfimdfrEodx+9rK
+	pi5NmwB9LokhMBkIUjk8W3ROJPO4zLgY1lsjalDOutKBiC15S46ZNJX/KS28MBFexttyqwiWXYp
+	S6ju1DCNHycHlaKr5zD/hFAAp++xAtw==
+X-Received: by 2002:a17:907:a68b:b0:c29:6400:ef8e with SMTP id
+ a640c23a62f3a-c2ac262e026mr623148866b.42.1790370967328; Fri, 25 Sep 2026
+ 14:16:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260923211312.3793073-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260923211312.3793073-1-Frank.Li@oss.nxp.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 25 Sep 2026 16:15:55 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLKjc2KVbnj=Tyq2Vk_KRV-M3REv3TvwfA_D2R8CU91vg@mail.gmail.com>
+X-Gm-Features: AclHuK-zZXzRBN60UkCEC4cL7VJx068Csh0ck7YdxPUbq_OiVD3z-aiLcwOJiIg
+Message-ID: <CAL_JsqLKjc2KVbnj=Tyq2Vk_KRV-M3REv3TvwfA_D2R8CU91vg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mn-solidsense-n8-compact: drop
+ undocumented adi,led-polarity
+To: Frank.Li@oss.nxp.com
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <imx@lists.linux.dev>, 
+	"moderated list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, Josua Mayer <josua@solid-run.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] dma-mapping: asymmetric dma_map_single/unmap pair in pl011
---
+On Wed, Sep 23, 2026 at 4:13=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
+>
+> From: Frank Li <Frank.Li@nxp.com>
+>
+> Drop undocument property adi,led-polarity and adi,link-st-polarity.
+> ethernet-phy@0 status is disabled and no in tree overlay file to enable i=
+t.
+>
+> Fixed below DTB_CHECK warnings:
+>   arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dtb: etherne=
+t-phy@0: adi,led-polarity: b'\x00\x00\x00\x01' is not of type 'object', 'in=
+teger', 'array', 'boolean', 'null'
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> cc: Josua Mayer <josua@solid-run.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mn-solidsense-n8-compact.dts | 2 --
+>  1 file changed, 2 deletions(-)
 
-commit fb77536d75ed603638aebc851f73960ddf8efe10
-Author: Frank Li <Frank.Li@nxp.com>
-
-serial: use dmaengine_get_dma_device() instead of chan->device->dev
-
-This commit replaces direct access to chan->device->dev with the
-dmaengine_get_dma_device() API across multiple serial drivers. This correct=
-ly
-handles per-channel IOMMU mappings and prepares for making DMA engine
-provider structures private.
-
-Link: https://lore.kernel.org/imx/67966b47-22cb-4b07-80c7-2044f557dbcb@app.=
-fastmail.com/
-
-> diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl=
-011.c
-> index c4824c201e1c3..86729ddbdadc8 100644
-> --- a/drivers/tty/serial/amba-pl011.c
-> +++ b/drivers/tty/serial/amba-pl011.c
-
-[ ... ]
-
-> @@ -609,7 +609,7 @@ static void pl011_dma_tx_callback(void *data)
-> =20
->  	uart_port_lock_irqsave(&uap->port, &flags);
->  	if (uap->dmatx.queued)
-> -		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
-> +		dma_unmap_single(dmaengine_get_dma_device(dmatx->chan), dmatx->dma,
-
-[Severity: High]
-Does this change create an asymmetric map/unmap pair in the PL011 driver?
-
-By updating pl011_dma_tx_callback() to use dmaengine_get_dma_device() for t=
-he
-unmap operation, it appears to no longer match the map operation in
-pl011_dma_tx_refill() which was not updated in this patch:
-
-drivers/tty/serial/amba-pl011.c:pl011_dma_tx_refill() {
-    ...
-	dmatx->dma =3D dma_map_single(dma_dev->dev, dmatx->buf, count,
-				    DMA_TO_DEVICE);
-    ...
-}
-
-The DMA API requires the exact same device pointer to be used for both
-mapping and unmapping. On platforms where the DMA engine provides per-chann=
-el
-devices, dmaengine_get_dma_device() will return a different device pointer
-than the raw device pointer used during mapping.
-
-Could this break DMA tracking or cause IOMMU faults during standard TX
-operations? Should the map operation in pl011_dma_tx_refill() be updated to
-use the new API as well?
-
->  				 dmatx->len, DMA_TO_DEVICE);
-> =20
->  	dmacr =3D uap->dmacr;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260925200850.1678=
-179-1-Frank.Li@oss.nxp.com?part=3D1
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
