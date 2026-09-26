@@ -1,65 +1,65 @@
-Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFEE421259
-	for <imx@lists.linux.dev>; Sat, 26 Sep 2026 11:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF89F42AFBE
+	for <imx@lists.linux.dev>; Sat, 26 Sep 2026 11:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790420755; cv=none; b=JDrLpxkI/4+cno+DhTdEOs0fNFJxlonXLkCAUkDIPbWtgRPSBdYLgeAEtWHRYoluFrWJikylMC4FBIo2jZzfSFXucRy7Fxw/YE6v2BNOqohwVTDDsIYrdOkeJwf8YDIlHQUDyQHOXd7dTClYv+5WIZuFyJs0w0uMISmihX5bFhE=
+	t=1790420757; cv=none; b=oyjcpzL5191xWDusHSDgKUY5ZMpaLS2UXHYB8tfwV9Bkqrtj0vlnfmS1MvIbm1QO/6xM2qC5jYytN62JiGohK1U4Smeqy8ILHK7hpCY6HYzcQ8Sp3lkrt/7J+mtKlp6MSP8SfQapC2lGPmoiFzJspvhymh+CWIIQGaCVCPzikm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790420755; c=relaxed/simple;
-	bh=0KV6yZrMOb34HddcsQaySZL3qBeGcHkwL/KjgerzBiE=;
+	s=arc-20240116; t=1790420757; c=relaxed/simple;
+	bh=GSQ3hDWXYSkg8hP0PKeLVBE+MKKwYtIsOLRtw6mZj1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7fuhBob/IyJsvUW/U8XwPnnC4KX45zCft8jEb39OzZCiHcZaZzzqQukTz+xuHMpRCdgdFctNCE6qLWHlGKGH3GWje9Pe51ZoCxMaevq2Jl02+eP8FcBTUR6tIBzeXPT0JLWlCC2e8p6DhGhEbbXTCHs2H5xgVSwwimjtN6bV5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6CICQKn; arc=none smtp.client-ip=74.125.225.98
+	 MIME-Version; b=mey70Jhqu1UVyi5FDT+AgprdVdBL5e3fcVxhIbhRuy1+t6Cal9YWCtU1JXrQmlqMUUWmxJPSH03mN5DCipFSgnixhtDeS1/BOEdgY2D9PD5xfYN96k59P57ks0xK8s2+lTR+H0LayUUWMRO7XETO9tIQtQMePm3FV2EzXny65NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhtGmRNu; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6CICQKn"
-Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48884b0219bso411550f8f.2
-        for <imx@lists.linux.dev>; Sat, 26 Sep 2026 04:05:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhtGmRNu"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d391aso11770105e9.2
+        for <imx@lists.linux.dev>; Sat, 26 Sep 2026 04:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790420752; x=1791025552; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1790420754; x=1791025554; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=A49IC4jwcPtvEVxNEJzMAk93sgVIidkdmlhwkTx4aBc=;
-        b=U6CICQKn/Zsh146Usi5lEIUB4ikztrSbJ++SHromqxAWF2u2V9qSsuJcrVxxuxBRQh
-         HRTUb4/Re/LkD8SgkS7A9lOY+3Q4SsVVGRBZnYdD7uR5NVYtu9yM9QBELY5cXNkmsN8X
-         FiOcgrMH2xYn6MAFc22Cmw5WYfz6rqXnTmeeRAWCkNmHy0SObA9aJfu2dBMvEutZ9cPd
-         Vjsa+ZkNtunOWV678FNufO09HRN9vYSoNBwGugG7gOAerk6sDTIwXothLo8wtAtx4XWj
-         SVWUakb6407gos6i5j+FuCGFl+fyzMWAfNwGKPUmYphcTMEwk06qVY73NhpoZCnZPK2x
-         mCGw==
+        bh=OuCfL206+SFfyH6z1qMo483rq8R+i1flYwR2z4BngNg=;
+        b=NhtGmRNu2/RJo4NVgwTEsC9hFG3qyOQTB/WEqtpKg+CxsYxcxn1THaZm2lXlSI5/Hn
+         eZndzgTwWRVu4vXB+hHZBxCeOQv4LVatKmn9ani7AAkngJ2WNajYWNcTvIzMdVPeSHmW
+         xm3fsleC4OeQ95PKsQeIQ/8k0Z/HojF1pS9AOSnFvPqwKj05eljMmeS0MtPEskZpn9dv
+         9PqdXhTxzD811TozZNm3UKd/RqdF/fUYLuyGtN/HdvqygAlKx225GElEODJVgbX3Ssmk
+         FHq80sJAifa1uB6lhP99mkur6SlJg/IHzAJB1hPmVCAMKXV0qboj4z+jcvND3NxGhm5u
+         PNow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790420752; x=1791025552;
+        d=1e100.net; s=20260707; t=1790420754; x=1791025554;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A49IC4jwcPtvEVxNEJzMAk93sgVIidkdmlhwkTx4aBc=;
-        b=jOg1jtsoSPufnhr5gb3md8gzsFDRfyHvoMx6pdby8NuV4gVzziqz4I91EUObxfXBHn
-         WRRFKy3QhAeVSp6p5KFB9jtc6jFKM9MbVe29ya8o7xlPM/5k8Xm8rYGTAJ3leREhf0Tg
-         mKKhR0Jl5PQieJrYFdbn7ZNEbA1T15XZ8mTgVrnzGBcAvJ2g3is4tspG3HJEFfM5/Jcv
-         s+xutqy+n/ujQ0JDcV7fB9MYKx7Df8Y7XhmMBuMenc2jJ2DhFR0NDHcXnj6KbpQko/I0
-         Ew8IfI+2Hq3izV4pEW36ptZVy9ZBxlYmHCbsyUak/X7oL0UiSt3Ythpeezi0hK3vJvhv
-         bYxw==
-X-Forwarded-Encrypted: i=1; AKwUvBy+FtV3Cqvt2yXSGDAcPnpKm8pMWPCzBHtDeXzjk7Py6qLa1lSJxVpH+Xtk9j9Y3Lxb67w=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLgdwwxmel0WmY9SeN1EzqBPqpVQyKayPqXvwEOkvbvrF5sHdy1
-	OYhDklBTHl+xDJrO8KEfLCdbNO+7NqIksK5/lM+fXEATTh3kZ9LMPD/E
-X-Gm-Gg: AYBFou0yDlKZJh7EWUherJ9itYQ5W4dEZ/1r3SXEfKHiaMJS6oCSArND9L+kUDjjA+R
-	3r8fUWXlLazDOBGk2Z6r/W+TacrgO0osC6Mgypipf7NiNkSZYJHYywBRppLjKzTIE4WLBm4AdMy
-	1S8VnvL4ZsTV2OxCBCTGLBX2UKXjHxw22leHPP/2Sc5YSSN2mGk0thKTUtNACKNB4YXLTlOx73U
-	NZsyrj0pj8UTm7k0OtfxU+bXp31L4YliZy7fUJEz00N/Hd+wqu3VxYwNLbizLx13Z8MNW0Xy5mr
-	B1W5sbzWY6CnJGqCpkMV8faeOwSZDd2uEL1oM0bYzjhopo3BRr5Cm1mNXyFNBMH/EyYDsps8E60
-	pQWCTcZza315H8/RgGtrnB6VxGKN6koCV8CQ5qysMFgp/3b4jeqYOGCh12/PCltJ5IA9iyzoi8h
-	zhYPSSHUsFoiL+bYGtJxUpsJ2n79M0ye8wXgwB0bgKIIth8lVVNSV6Xm1pS8qe3P+rhEoBat7/P
-	UKlNJLd7K8kBldTVWjFnCWZMbZqBi3kOx3UM0L2ZDehTme0IpkrB2AFMfld/gHyzf+5P0EltQvd
-	ZpmDLzC6xYIA27c40zyqHQ==
-X-Received: by 2002:adf:e192:0:b0:485:8c17:9764 with SMTP id ffacd0b85a97d-4887db39ab3mr8077508f8f.38.1790420752005;
-        Sat, 26 Sep 2026 04:05:52 -0700 (PDT)
+        bh=OuCfL206+SFfyH6z1qMo483rq8R+i1flYwR2z4BngNg=;
+        b=bJ+ZKLwnOA4wyZB3P1KmF3owRDSw6C6cepA6j3UZqQ9/5G+vzeUCmLMGPhXuQKTBCM
+         O6qvEoclPG5HYrl5vgx07tUqqoPzaf5kUaeBjt0rL0A2F7gs+LiVSQ7WTCxsbPgQNFE6
+         qjug5761fnACuAA1iOJM+ctQhBu/1LTBAR54+uDS3F+vG2N0nYUf9bXtBXb0gOgyrJoj
+         oK9/lzu40IPtYogZ5aA7CW+nj+kFApNe23h7lLQLSd/OZS9BbSEE3/GvTX9RizIS66lJ
+         18yEOG416NLlha49Y97pjwiWHev9iNlnDGtRLdUMAEutd/lVPxKNoycpN2DQEEuxCy28
+         WJGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzqOY+45QxDQyUfKncNs0P69ufsAv6Wyp2jQQ0Jt9ZlCasmXHZNzDlw3v+T3zhggO3BlEo=@lists.linux.dev
+X-Gm-Message-State: AFuF++nqJz+OPnGOuXTEWuYGdOuhDpvazA+bBeKx324i5P05LLoaZ0W/
+	B2I0KrAamveI91bzWyJ9+npyKiMvZW6vGtsShDt0D/0m1l2RjOy1x17R
+X-Gm-Gg: AYBFou2ZQxwKtlVCoaqxbGhgCwKvzIQ3FAV1NCUloqtyXcqQVZTaP03sT4kIen49UIV
+	vdULbQfRUosCZhZc6h9ml5caviL2WSkegKdL5yNyVXYY2MLTiwoT9KygZyvY6dLTmfSBW1PyHQb
+	GJLRgwhB5auae8gkLJbSE4tKRmXHk6zFhTTAgY6tvldj3ccRb33g6lG/t5Iyr2WosJLm0EPcoi5
+	t67BXMP9Plo6sZzGkXqoQEJ2Covgwgb3PAfDqYXF1CrjOUNmvrqIOtOLHnB8E8IPz9mAO87IvGw
+	KYjHin9yv9kSvanvrdNG8mle4MNS5drnlyTvLlm7E0sHVnMJ2zoxY/kcpTJs/QNE+xHqMtNPOkI
+	1uGUmB3pvw6RQmVF80iNYbXnPTgOM/8YOagI4PQl2RXwbo68xWaVhTzZ+9htgFLIMZuEe/WpzRa
+	COBXwmr1wKb+YycTNqtY4ZAzp9MKSQ/mfPXfyWXHpf3VzsniTCysblRne+yLGqKWYtSHwRdrj9F
+	eb6LuOWAaTRLOZGYrG5q0Vg++JHAmC3ZvQrwRoDaOoLBhmOT+2f0lZYdqi/kWF7k5nOyBTuEzWO
+	qAWlk3VOn+nEpDRNTaXYQA==
+X-Received: by 2002:a05:600c:4754:b0:49c:c96a:d36b with SMTP id 5b1f17b1804b1-49fe66d1663mr148201725e9.12.1790420753924;
+        Sat, 26 Sep 2026 04:05:53 -0700 (PDT)
 Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64f795sm12124664f8f.31.2026.09.26.04.05.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64f795sm12124664f8f.31.2026.09.26.04.05.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 04:05:51 -0700 (PDT)
+        Sat, 26 Sep 2026 04:05:53 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -92,9 +92,9 @@ Cc: pierluigi.p@variscite.com,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Stefan Eichenberger <eichest@gmail.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH v2 01/11] dt-bindings: arm: fsl: Document Variscite i.MX6UL boards
-Date: Sat, 26 Sep 2026 13:05:29 +0200
-Message-ID: <2174558b519394111c2cdb7986aafcd6f151c5f3.1790413032.git.stefano.r@variscite.com>
+Subject: [PATCH v2 02/11] dt-bindings: net: micrel: Fix RMII clock select property type
+Date: Sat, 26 Sep 2026 13:05:30 +0200
+Message-ID: <6580cb8231c0ccada44d3e510374f6c21b65d283.1790413032.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1790413032.git.stefano.r@variscite.com>
 References: <cover.1790413032.git.stefano.r@variscite.com>
@@ -108,194 +108,76 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Document the existing VAR-SOM-6UL Concerto compatibles and the new
-VAR-SOM-6UL and DART-6UL board variants based on i.MX6UL, i.MX6ULL
-and i.MX6ULZ.
+The binding describes micrel,rmii-reference-clock-select-25-mhz as a
+boolean. dt-schema requires properties ending in -mhz to contain an
+unsigned integer value. A bare property therefore produces a
+property-units.yaml type warning.
 
-Add specific compatibles for the storage, wireless, audio and
-carrier combinations while retaining the legacy Concerto strings.
+Describe 25 MHz selection as <1> and keep the property restricted to
+KSZ8021, KSZ8031, KSZ8081 and KSZ8091 PHYs, which have the RMII
+reference clock select bit. The driver checks only for the property
+presence, so this does not change runtime behavior.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
 v1->v2:
  - 
 
- .../devicetree/bindings/arm/fsl.yaml          | 148 ++++++++++++++++--
- 1 file changed, 138 insertions(+), 10 deletions(-)
+ .../devicetree/bindings/net/micrel.yaml       | 27 ++++++++++++++-----
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 36e28e0e4ad9..726d563d1482 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -688,11 +688,51 @@ properties:
-           - const: phytec,imx6ul-pcl063   # PHYTEC phyCORE-i.MX 6UL
-           - const: fsl,imx6ul
+diff --git a/Documentation/devicetree/bindings/net/micrel.yaml b/Documentation/devicetree/bindings/net/micrel.yaml
+index 6fa568057b92..a1f876dc00de 100644
+--- a/Documentation/devicetree/bindings/net/micrel.yaml
++++ b/Documentation/devicetree/bindings/net/micrel.yaml
+@@ -63,6 +63,14 @@ properties:
+     minimum: 0
+     maximum: 3
  
--      - description: i.MX6UL Variscite VAR-SOM-6UL Boards
--        items:
--          - const: variscite,mx6ulconcerto
--          - const: variscite,var-som-imx6ul
--          - const: fsl,imx6ul
-+      - description: i.MX6UL Variscite VAR-SOM-6UL and DART-6UL Boards
-+        oneOf:
-+          - items:
-+              - enum:
-+                  - variscite,mx6ulconcerto
-+                  - variscite,var-som-imx6ul-emmc-sd-card-wm8731-concerto-board
-+                  - variscite,var-som-imx6ul-emmc-sd-card-concerto-board
-+                  - variscite,var-som-imx6ul-emmc-wifi-brcm-wm8731-concerto-board
-+                  - variscite,var-som-imx6ul-emmc-wifi-brcm-concerto-board
-+                  - variscite,var-som-imx6ul-emmc-wifi-iw61x-concerto-board
-+                  - variscite,var-som-imx6ul-nand-sd-card-wm8731-concerto-board
-+                  - variscite,var-som-imx6ul-nand-sd-card-concerto-board
-+                  - variscite,var-som-imx6ul-nand-wifi-brcm-wm8731-concerto-board
-+                  - variscite,var-som-imx6ul-nand-wifi-brcm-concerto-board
-+                  - variscite,var-som-imx6ul-nand-wifi-iw61x-concerto-board
-+              - const: variscite,var-som-imx6ul
-+              - const: fsl,imx6ul
-+          - items:
-+              - enum:
-+                  - variscite,var-som-imx6ul-emmc-sd-card-wm8731-symphony-board
-+                  - variscite,var-som-imx6ul-emmc-sd-card-symphony-board
-+                  - variscite,var-som-imx6ul-emmc-wifi-brcm-wm8731-symphony-board
-+                  - variscite,var-som-imx6ul-emmc-wifi-brcm-symphony-board
-+                  - variscite,var-som-imx6ul-emmc-wifi-iw61x-symphony-board
-+                  - variscite,var-som-imx6ul-nand-sd-card-wm8731-symphony-board
-+                  - variscite,var-som-imx6ul-nand-sd-card-symphony-board
-+                  - variscite,var-som-imx6ul-nand-wifi-brcm-wm8731-symphony-board
-+                  - variscite,var-som-imx6ul-nand-wifi-brcm-symphony-board
-+                  - variscite,var-som-imx6ul-nand-wifi-iw61x-symphony-board
-+              - const: variscite,var-som-imx6ul
-+              - const: fsl,imx6ul
-+          - items:
-+              - enum:
-+                  - variscite,dart-6ul-imx6ul-emmc-sd-card-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-emmc-sd-card-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-emmc-wifi-brcm-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-emmc-wifi-brcm-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-emmc-wifi-iw61x-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-nand-sd-card-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-nand-sd-card-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-nand-wifi-brcm-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-nand-wifi-brcm-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ul-nand-wifi-iw61x-6ulcustomboard
-+              - const: variscite,dart-6ul-imx6ul
-+              - const: fsl,imx6ul
- 
-       - description: Kontron BL i.MX6UL (N631X S) Board
-         items:
-@@ -797,11 +837,51 @@ properties:
-           - const: phytec,imx6ull-pcl063        # PHYTEC phyCORE-i.MX 6ULL
-           - const: fsl,imx6ull
- 
--      - description: i.MX6ULL Variscite VAR-SOM-6UL Boards
--        items:
--          - const: variscite,mx6ullconcerto  # Variscite VAR-SOM-6UL dev kit board
--          - const: variscite,var-som-imx6ull # Variscite VAR-SOM-6UL SoM (6ULL variant)
--          - const: fsl,imx6ull
-+      - description: i.MX6ULL Variscite VAR-SOM-6UL and DART-6UL Boards
-+        oneOf:
-+          - items:
-+              - enum:
-+                  - variscite,mx6ullconcerto
-+                  - variscite,var-som-imx6ull-emmc-sd-card-wm8731-concerto-board
-+                  - variscite,var-som-imx6ull-emmc-sd-card-concerto-board
-+                  - variscite,var-som-imx6ull-emmc-wifi-brcm-wm8731-concerto-board
-+                  - variscite,var-som-imx6ull-emmc-wifi-brcm-concerto-board
-+                  - variscite,var-som-imx6ull-emmc-wifi-iw61x-concerto-board
-+                  - variscite,var-som-imx6ull-nand-sd-card-wm8731-concerto-board
-+                  - variscite,var-som-imx6ull-nand-sd-card-concerto-board
-+                  - variscite,var-som-imx6ull-nand-wifi-brcm-wm8731-concerto-board
-+                  - variscite,var-som-imx6ull-nand-wifi-brcm-concerto-board
-+                  - variscite,var-som-imx6ull-nand-wifi-iw61x-concerto-board
-+              - const: variscite,var-som-imx6ull
-+              - const: fsl,imx6ull
-+          - items:
-+              - enum:
-+                  - variscite,var-som-imx6ull-emmc-sd-card-wm8731-symphony-board
-+                  - variscite,var-som-imx6ull-emmc-sd-card-symphony-board
-+                  - variscite,var-som-imx6ull-emmc-wifi-brcm-wm8731-symphony-board
-+                  - variscite,var-som-imx6ull-emmc-wifi-brcm-symphony-board
-+                  - variscite,var-som-imx6ull-emmc-wifi-iw61x-symphony-board
-+                  - variscite,var-som-imx6ull-nand-sd-card-wm8731-symphony-board
-+                  - variscite,var-som-imx6ull-nand-sd-card-symphony-board
-+                  - variscite,var-som-imx6ull-nand-wifi-brcm-wm8731-symphony-board
-+                  - variscite,var-som-imx6ull-nand-wifi-brcm-symphony-board
-+                  - variscite,var-som-imx6ull-nand-wifi-iw61x-symphony-board
-+              - const: variscite,var-som-imx6ull
-+              - const: fsl,imx6ull
-+          - items:
-+              - enum:
-+                  - variscite,dart-6ul-imx6ull-emmc-sd-card-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-emmc-sd-card-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-emmc-wifi-brcm-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-emmc-wifi-brcm-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-emmc-wifi-iw61x-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-nand-sd-card-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-nand-sd-card-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-nand-wifi-brcm-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-nand-wifi-brcm-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ull-nand-wifi-iw61x-6ulcustomboard
-+              - const: variscite,dart-6ul-imx6ull
-+              - const: fsl,imx6ull
- 
-       - description: i.MX6ULL Boards with Toradex Colibri iMX6ULL Modules
-         items:
-@@ -870,6 +950,54 @@ properties:
-           - const: fsl,imx6ull # This seems odd. Should be last?
-           - const: fsl,imx6ulz
- 
-+      - description: i.MX6ULZ Variscite VAR-SOM-6UL and DART-6UL Boards
-+        oneOf:
-+          - items:
-+              - enum:
-+                  - variscite,var-som-imx6ulz-emmc-sd-card-wm8731-concerto-board
-+                  - variscite,var-som-imx6ulz-emmc-sd-card-concerto-board
-+                  - variscite,var-som-imx6ulz-emmc-wifi-brcm-wm8731-concerto-board
-+                  - variscite,var-som-imx6ulz-emmc-wifi-brcm-concerto-board
-+                  - variscite,var-som-imx6ulz-emmc-wifi-iw61x-concerto-board
-+                  - variscite,var-som-imx6ulz-nand-sd-card-wm8731-concerto-board
-+                  - variscite,var-som-imx6ulz-nand-sd-card-concerto-board
-+                  - variscite,var-som-imx6ulz-nand-wifi-brcm-wm8731-concerto-board
-+                  - variscite,var-som-imx6ulz-nand-wifi-brcm-concerto-board
-+                  - variscite,var-som-imx6ulz-nand-wifi-iw61x-concerto-board
-+              - const: variscite,var-som-imx6ulz
-+              - const: fsl,imx6ull
-+              - const: fsl,imx6ulz
-+          - items:
-+              - enum:
-+                  - variscite,var-som-imx6ulz-emmc-sd-card-wm8731-symphony-board
-+                  - variscite,var-som-imx6ulz-emmc-sd-card-symphony-board
-+                  - variscite,var-som-imx6ulz-emmc-wifi-brcm-wm8731-symphony-board
-+                  - variscite,var-som-imx6ulz-emmc-wifi-brcm-symphony-board
-+                  - variscite,var-som-imx6ulz-emmc-wifi-iw61x-symphony-board
-+                  - variscite,var-som-imx6ulz-nand-sd-card-wm8731-symphony-board
-+                  - variscite,var-som-imx6ulz-nand-sd-card-symphony-board
-+                  - variscite,var-som-imx6ulz-nand-wifi-brcm-wm8731-symphony-board
-+                  - variscite,var-som-imx6ulz-nand-wifi-brcm-symphony-board
-+                  - variscite,var-som-imx6ulz-nand-wifi-iw61x-symphony-board
-+              - const: variscite,var-som-imx6ulz
-+              - const: fsl,imx6ull
-+              - const: fsl,imx6ulz
-+          - items:
-+              - enum:
-+                  - variscite,dart-6ul-imx6ulz-emmc-sd-card-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-emmc-sd-card-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-emmc-wifi-brcm-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-emmc-wifi-brcm-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-emmc-wifi-iw61x-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-nand-sd-card-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-nand-sd-card-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-nand-wifi-brcm-wm8731-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-nand-wifi-brcm-6ulcustomboard
-+                  - variscite,dart-6ul-imx6ulz-nand-wifi-iw61x-6ulcustomboard
-+              - const: variscite,dart-6ul-imx6ulz
-+              - const: fsl,imx6ull
-+              - const: fsl,imx6ulz
++  micrel,rmii-reference-clock-select-25-mhz:
++    enum: [ 1 ]
++    description: |
++      RMII Reference Clock Select bit selects 25 MHz mode.
 +
-       - description: i.MX7S based Boards
-         items:
-           - enum:
++      Setting the RMII Reference Clock Select bit enables 25 MHz rather
++      than 50 MHz clock mode.
++
+ allOf:
+   - $ref: ethernet-phy.yaml#
+   - if:
+@@ -90,6 +98,18 @@ allOf:
+     then:
+       properties:
+         micrel,led-mode: false
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - ethernet-phy-id0022.1555
++                - ethernet-phy-id0022.1556
++                - ethernet-phy-id0022.1560
++    then:
++      properties:
++        micrel,rmii-reference-clock-select-25-mhz: false
+   - if:
+       properties:
+         compatible:
+@@ -105,13 +125,6 @@ allOf:
+           description:
+             The RMII reference input clock. Used to determine the XI input
+             clock.
+-        micrel,rmii-reference-clock-select-25-mhz:
+-          type: boolean
+-          description: |
+-            RMII Reference Clock Select bit selects 25 MHz mode
+-
+-            Setting the RMII Reference Clock Select bit enables 25 MHz rather
+-            than 50 MHz clock mode.
+ 
+ dependentRequired:
+   micrel,rmii-reference-clock-select-25-mhz: [ clock-names ]
 -- 
 2.47.3
 
