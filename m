@@ -1,219 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC580463B89;
-	Sat, 26 Sep 2026 14:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8876B4252D5;
+	Sat, 26 Sep 2026 14:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790432015; cv=none; b=tsAoYzpzz+02+8kgexrxoaKQfh4OhTtJngUQYYoYh92xQdiITMFt7Lm9JuoHVjE3m5htzE+ZtY837V4V7eAaKvTZdkdy7+4bBtkklkZqR90ptHHchyY/4Xca7r+v+z91aSS14wZw8wkzAeO3YLmCsebzAhW7L8wFuE8cZZGQbK0=
+	t=1790432015; cv=none; b=n8Ibe4kkUXGK7kDslcIsKHOBizAGDZUl55p284crfzgjMGuX8ArjNqp+gEYxT+14Yyh5tkMAek8G8uIRjvTcrhhvMBEv+pwQPe2bKk5sf4zDIqYGk5dJDlRWSmTm2WGOC1+27w9yfDmyypR7yrO6NqxmddAP5Ce85PzORZ9FNWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790432015; c=relaxed/simple;
-	bh=/cIwmyDyOk3uv2kESLu+/iUBmNNuBxN3PzvAl3u5UUA=;
+	bh=cWpSC1bYdy2IZFzXrLFf9z8njgNqfso69NQzpTJOzo4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ECJvxz8JfxMoy+n0Rw6aPdkit5V6mIN41DZTTn8P6VSjpfmNO3pNT73w+DellRxSjQrZ50BrlbcFj6kcsK6ImlokvKsXhugTZe9Ad2yRvAmkNvrEWyXeI4dFNdx+Dvz3Adq0muZulOXGoNhwVzppkW2ZAoL5qaWM3NwhEPfmjj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEF1MYHi; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=LP8j5R9srI3HL0STkEnJXq5BFreXnMLbJ8OhRVkwuzTWJHIVUn/nWZMVWqKquMuMDxuSzV2oxgR++naUKdCE0dn8IK2DRBiI0Y015VSeuv6uaDXddgxiH+DwGNdW8C1HdeS0b+23hM8hQe7UiDDPguA1rojq1iaUg9Tlj0dMitg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqCx0Q+A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEF1MYHi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212921F00898;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqCx0Q+A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF93B1F000FF;
 	Sat, 26 Sep 2026 14:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790432013;
-	bh=sxLy17oBDekk7izYlePTkx26ixmTqwIiVNenWHIKaVQ=;
+	s=k20260515; t=1790432014;
+	bh=j2jTuU/A2SWgToaDtg1QtQoIMliEjRv+yJ2QBn3Ihhs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OEF1MYHiJemxiyLHrbjmOofe+AwIsApOrOLGZQ7i1sNkfXxWZeqnD2tG8WG25e/hv
-	 YbqSTTE7jVmeQfDXdmiNzMulBKdAFQdpleo54ol3+CJ9iLnS4zRor2gR2TiuTnesXn
-	 r/9iDk6V2pdJLBiH4EFnI04noxLWE6Cwc2WEZYTSsgyKHxc6rJ7cgHQQllYQnorMBC
-	 HN2Pzw7+Tet/xgzNSuatdxcnm2lLyojW5Szt1DfhJkYxoCsSbuPeHEpavr3h7fM4SZ
-	 1xhA/yCix6IG6TWkb4PqhWI4uQ6fO+KtWtfjqsZ162e+HDXg35wdcIQaascPHiVq2B
-	 HVsvCFhQrGa0w==
+	b=EqCx0Q+A+NvAGjENHz5NjiFOTuSy6Y/456BDi/xojZQLMRS/muv1kXpoB3TP14/ri
+	 IFOwP6Ui+WYeIJYwYNaqapGy88W+fquJmUO2cciJtZ75lZGJ3XmV6lvbGiIhCar09W
+	 TT3AEFqOspwH7zzpay+M1slUbUbTZmEj+ZrucREhRVQbFVsFRv0UH6G5lZTNzrFP2N
+	 rcr5coGWflsd4whBw/6AZ8m7NYdZHF1n4HrWgcy2Aj33Kt2FVEppXWAtOeeAHMmH5e
+	 Ia/gpgZq6I92vyrYg1zkdepwz/e9SE6qaLQJMKUE84dQevW69fQRqKrSPpmw+vr1p9
+	 sbOL3X4bhE7Bw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 06/11] ARM: dts: imx6ul: Add Variscite carrier board
- files
+Subject: Re: [PATCH v1 05/11] ARM: dts: imx6ul: Add Variscite storage and
+ wireless files
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <cb4e36a01f0e6dbbcebe86fff78686934dd845c6.1790344389.git.stefano.r@variscite.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <778be59a32afc9054147fc40143b502d49d37ffb.1790344389.git.stefano.r@variscite.com>
 References: <cover.1790344389.git.stefano.r@variscite.com>
- <cb4e36a01f0e6dbbcebe86fff78686934dd845c6.1790344389.git.stefano.r@variscite.com>
+ <778be59a32afc9054147fc40143b502d49d37ffb.1790344389.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 26 Sep 2026 14:13:32 +0000
-Message-Id: <20260926141333.212921F00898@smtp.kernel.org>
+Date: Sat, 26 Sep 2026 14:13:33 +0000
+Message-Id: <20260926141333.DF93B1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] fec1 Ethernet broken on i.MX6ULZ due to shared MDIO bus disabled w=
-ith fec2
-- [Medium] extcon SNVS pin configured in main IOMUXC on i.MX6ULL/ULZ Sympho=
-ny boards
-- [Low] SD card fixed regulator defined but not assigned via vmmc-supply
-- [Low] Backlight disablement override fails on i.MX6ULZ Concerto due to no=
-de name mismatch
+- [High] dts: BRCM Wi-Fi fails to enumerate due to missing non-removable pr=
+operty
+- [High] dts: IW61X Wi-Fi power enable pin lacks pinctrl configuration
+- [Low] dts: unnecessary address and size cells in IW61X usdhc node
 --
 
-commit 4d8151d793ce057a2bcfb49c31175fc33cfe60f1
+commit 7bf945c5fafb3aee26ff8892a479bb36b844b74e
 Author: Stefano Radaelli <stefano.r@variscite.com>
+ARM: dts: imx6ul: Add Variscite storage and wireless files
 
-ARM: dts: imx6ul: Add Variscite carrier board files
+This patch adds reusable DTSI files for eMMC, NAND, Broadcom Wi-Fi, and
+NXP IW61x options on VAR-SOM-6UL and DART-6UL modules. Keeping the module
+options independent of the carrier board allows each board DTS to select
+its assembled storage and wireless devices.
 
-Add DTSI files for the Concerto-Board, Symphony-Board and VAR-6ULCustomBoard
-carriers used with VAR-SOM-6UL and DART-6UL. This shares common carrier wir=
-ing
-across the SoC variants and keeps SoC-specific connections in separate wrap=
-per
-files.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcustomb=
-oard-sd-card.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcu=
-stomboard-sd-card.dtsi
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x=
+.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x.dtsi
 > new file mode 100644
-> index 0000000000000..f6cec58f5a4e4
+> index 0000000000000..4d47cea982ec4
 > --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcustomboard-sd=
--card.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x.dtsi
 [ ... ]
-> +/ {
-> +	reg_sd1_vmmc: regulator-sd1-vmmc {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "VSD_3V3";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
+> +	iw61x_pwrseq: mmc-pwrseq {
+> +		compatible =3D "mmc-pwrseq-simple";
+> +		post-power-on-delay-ms =3D <100>;
+> +		power-off-delay-us =3D <10000>;
+> +		reset-gpios =3D <&gpio5 6 GPIO_ACTIVE_LOW>, /* WIFI_RESET */
+> +			      <&gpio5 2 GPIO_ACTIVE_LOW>; /* WIFI_PWR_EN */
 > +	};
-> +};
-> +
-> +&usdhc1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
-> +	cd-gpios =3D <&gpio4 19 GPIO_ACTIVE_LOW>;
-> +	no-1-8-v;
-> +	keep-power-in-suspend;
-> +	wakeup-source;
-> +	status =3D "okay";
-> +};
-
-[Severity: Low]
-Does this node miss a vmmc-supply property referencing the reg_sd1_vmmc
-regulator defined above? Without it, the MMC controller is unaware of the
-voltage constraints.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-concerto-bo=
-ard-sd-card.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-concert=
-o-board-sd-card.dtsi
-> new file mode 100644
-> index 0000000000000..a6a3f417ca5e6
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-concerto-board-sd-=
-card.dtsi
-[ ... ]
-> +/ {
-> +	reg_sd1_vmmc: regulator-sd1-vmmc {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "VSD_3V3";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
-> +	};
-> +};
-> +
-> +&usdhc1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
-> +	cd-gpios =3D <&gpio1 0 GPIO_ACTIVE_LOW>;
-> +	no-1-8-v;
-> +	keep-power-in-suspend;
-> +	wakeup-source;
-> +	status =3D "okay";
-> +};
-
-[Severity: Low]
-Is this usdhc1 node also missing the vmmc-supply property to utilize the
-reg_sd1_vmmc regulator?
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-symphony-bo=
-ard.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-symphony-board.=
-dtsi
-> new file mode 100644
-> index 0000000000000..070011d37205f
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-symphony-board.dtsi
-[ ... ]
-> +	pinctrl_extcon: extcon-grp {
-> +		fsl,pins =3D <
-> +			MX6UL_PAD_SNVS_TAMPER3__GPIO5_IO03		0x1b0b0
-> +		>;
-> +	};
-
-[Severity: Medium]
-Will this SNVS pinmux group inadvertently write to the main IOMUXC controll=
-er
-instead of the iomuxc_snvs controller on i.MX6ULL/ULZ Symphony boards? Since
-it is placed in the common &iomuxc node, it could leave the SNVS TAMPER3 pin
-unconfigured and break Type-C extcon interrupts.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-6ulcustomboard.dt=
-si b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-6ulcustomboard.dtsi
-> new file mode 100644
-> index 0000000000000..a421888663a51
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-6ulcustomboard.dtsi
-[ ... ]
-> +&fec2 {
-> +	status =3D "disabled";
-> +};
 
 [Severity: High]
-Does disabling the fec2 interface here also disable its child mdio bus? If =
-so,
-could this prevent fec1 from probing properly on the i.MX6ULZ DART board si=
-nce
-its ethphy0 relies on that mdio bus?
+This references &gpio5 2 as the power enable pin (WIFI_PWR_EN), but is the
+corresponding pinmux configuration missing from the pinctrl_wifi group?
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-concerto-board.dts=
-i b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-concerto-board.dtsi
-> new file mode 100644
-> index 0000000000000..377715fb4d78e
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-concerto-board.dtsi
-> @@ -0,0 +1,44 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +#include "imx6ul-imx6ull-var-som-concerto-board.dtsi"
-> +
-> +/ {
-> +	backlight {
-> +		status =3D "disabled";
-> +	};
-> +};
+Since pinctrl_wifi (defined in imx6ul-var-som.dtsi and imx6ul-var-dart.dtsi)
+only configures GPIO5_IO04 and GPIO5_IO06, GPIO5_IO02 appears to be omitted
+from the pinmux configuration.
+
+Will this leave the pad in its default hardware reset state, preventing the
+GPIO from toggling the Wi-Fi power enable line and leaving the module power=
+ed
+off?
+
+[ ... ]
+> +&usdhc1 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
 
 [Severity: Low]
-Will this override fail to disable the backlight because the original node =
-in
-imx6ul-imx6ull-var-som-concerto-board.dtsi is named "lcd-backlight"? It app=
-ears
-this creates an empty unused "backlight" node while leaving the PWM backlig=
-ht
-enabled.
+Are these address and size cells necessary here?
 
-> +
-> +&can1 {
-> +	status =3D "disabled";
-> +};
-> +
-> +&fec2 {
-> +	status =3D "disabled";
-> +};
+Unlike the BRCM equivalent which defines a child wifi node, there are no ch=
+ild
+nodes under this SDIO controller in the IW61X implementation. Defining addr=
+ess
+and size cells without any children will trigger avoid_unnecessary_addr_size
+devicetree warnings when compiled with dtc.
+
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_wifi>;
+[ ... ]
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.d=
+tsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.dtsi
+> new file mode 100644
+> index 0000000000000..d7952233a1ee9
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.dtsi
+[ ... ]
+> +&usdhc1 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_32k_clk>, <&pinctrl_wifi>;
+> +	pinctrl-1 =3D <&pinctrl_usdhc1_100mhz>, <&pinctrl_32k_clk>, <&pinctrl_w=
+ifi>;
+> +	pinctrl-2 =3D <&pinctrl_usdhc1_200mhz>, <&pinctrl_32k_clk>, <&pinctrl_w=
+ifi>;
+> +	keep-power-in-suspend;
+> +	vmmc-supply =3D <&reg_sd1_vmmc>;
+> +	status =3D "okay";
 
 [Severity: High]
-Does disabling fec2 here break the fec1 Ethernet interface on the i.MX6ULZ
-Concerto board by also disabling the shared mdio bus that hosts ethphy0?
+Does this node need the non-removable property to properly enumerate the
+Broadcom Wi-Fi module?
+
+Since the module is permanently soldered onto the SOM and does not have a
+physical card detect mechanism, omitting non-removable causes the kernel
+MMC core to wait indefinitely for a card detect interrupt. Consequently,
+the SDIO bus probe might never complete and the Wi-Fi hardware could remain
+unusable.
+
+> +
+> +	brcmf: wifi@1 {
+> +		compatible =3D "brcm,bcm4329-fmac";
+> +		reg =3D <1>;
+> +	};
+> +};
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790344389.gi=
-t.stefano.r@variscite.com?part=3D6
+t.stefano.r@variscite.com?part=3D5
