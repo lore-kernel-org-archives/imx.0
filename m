@@ -1,151 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8876B4252D5;
-	Sat, 26 Sep 2026 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B9F46EC64;
+	Sat, 26 Sep 2026 14:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790432015; cv=none; b=n8Ibe4kkUXGK7kDslcIsKHOBizAGDZUl55p284crfzgjMGuX8ArjNqp+gEYxT+14Yyh5tkMAek8G8uIRjvTcrhhvMBEv+pwQPe2bKk5sf4zDIqYGk5dJDlRWSmTm2WGOC1+27w9yfDmyypR7yrO6NqxmddAP5Ce85PzORZ9FNWc=
+	t=1790432016; cv=none; b=M6kxkPmWaRezuS7PN56JIVnl0J21/dNAuj//4EoVO39CJFtOF7u+vvn4B6CVRIEiXyy6HnII9tmGYlxO3P7tzxokygIVv/862Kzk+HwsMhXR9whU5hMmBDrsmogbZkU3/91GadujBIJ09Kk63hl6uRu3bvUPj2CwDHo1jpwO15A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790432015; c=relaxed/simple;
-	bh=cWpSC1bYdy2IZFzXrLFf9z8njgNqfso69NQzpTJOzo4=;
+	s=arc-20240116; t=1790432016; c=relaxed/simple;
+	bh=BJ4kqKPcIZklLy+IYA8QPmgsHGGwBRgsaEzeNA3bRus=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LP8j5R9srI3HL0STkEnJXq5BFreXnMLbJ8OhRVkwuzTWJHIVUn/nWZMVWqKquMuMDxuSzV2oxgR++naUKdCE0dn8IK2DRBiI0Y015VSeuv6uaDXddgxiH+DwGNdW8C1HdeS0b+23hM8hQe7UiDDPguA1rojq1iaUg9Tlj0dMitg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqCx0Q+A; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=f8tnf8nk6XtnQoxzmjSbpndBajm8FyY+Q24ilOx/YY7kSA9Q+/IjRgcBLZuoRNCV8H1HoOeLZCB79SoutdNfQkSWNkICqJm2+3vUcDE1GThnt8flkX4PQcfOVWpdTOaOxPCE5KCWSKn/ZxRXwzl1Gls1tlK1dFE3HQ0M6za8VJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dec9+5zb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqCx0Q+A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF93B1F000FF;
-	Sat, 26 Sep 2026 14:13:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dec9+5zb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DED1F00893;
+	Sat, 26 Sep 2026 14:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790432014;
-	bh=j2jTuU/A2SWgToaDtg1QtQoIMliEjRv+yJ2QBn3Ihhs=;
+	s=k20260515; t=1790432015;
+	bh=VlMyjR3mrcWPjZFJCyEx/M/CNCgzarORf8yFFTLgFKA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EqCx0Q+A+NvAGjENHz5NjiFOTuSy6Y/456BDi/xojZQLMRS/muv1kXpoB3TP14/ri
-	 IFOwP6Ui+WYeIJYwYNaqapGy88W+fquJmUO2cciJtZ75lZGJ3XmV6lvbGiIhCar09W
-	 TT3AEFqOspwH7zzpay+M1slUbUbTZmEj+ZrucREhRVQbFVsFRv0UH6G5lZTNzrFP2N
-	 rcr5coGWflsd4whBw/6AZ8m7NYdZHF1n4HrWgcy2Aj33Kt2FVEppXWAtOeeAHMmH5e
-	 Ia/gpgZq6I92vyrYg1zkdepwz/e9SE6qaLQJMKUE84dQevW69fQRqKrSPpmw+vr1p9
-	 sbOL3X4bhE7Bw==
+	b=Dec9+5zb4ghxqmrCFcRIjKX0i/o4FyP+XUxkRqgx8y87Fwt2/V8Otw2eySJ6L8GWj
+	 DDhkCee2R7YsFWesoeKM/ngaXbEd8GFh5stYsURyIhcExbRcwFF3JmJof9JoghDcqD
+	 6mBTNt+/S8m71drHcxKxUkbu7dnPtEU0Ucho8xmzBNyKLrnwaBpQckZAwGyAIBA34/
+	 +WhlqibfdDJm7VVng9Ac2jHnFrOzsCPDq5hcsUnL+qIRUKF4DYCtX/sa/hfbODGZUG
+	 jJLUfScLr4huXR82ybKt0EB4m/o6NwRMumBwB8WOBKI7GmcHSMwP2+f9dCDAKs4I3T
+	 K2WHJg95Mln2w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 05/11] ARM: dts: imx6ul: Add Variscite storage and
- wireless files
+Subject: Re: [PATCH v1 07/11] ARM: dts: imx6ul: Reuse Variscite DTSI files
+ for Concerto
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <778be59a32afc9054147fc40143b502d49d37ffb.1790344389.git.stefano.r@variscite.com>
+Cc: Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <305bd230d96770d84ff0e9395fe92fe7ab39bc3f.1790344389.git.stefano.r@variscite.com>
 References: <cover.1790344389.git.stefano.r@variscite.com>
- <778be59a32afc9054147fc40143b502d49d37ffb.1790344389.git.stefano.r@variscite.com>
+ <305bd230d96770d84ff0e9395fe92fe7ab39bc3f.1790344389.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 26 Sep 2026 14:13:33 +0000
-Message-Id: <20260926141333.DF93B1F000FF@smtp.kernel.org>
+Date: Sat, 26 Sep 2026 14:13:34 +0000
+Message-Id: <20260926141334.B8DED1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] dts: BRCM Wi-Fi fails to enumerate due to missing non-removable pr=
-operty
-- [High] dts: IW61X Wi-Fi power enable pin lacks pinctrl configuration
-- [Low] dts: unnecessary address and size cells in IW61X usdhc node
+- [High] Devicetree ABI breakage: removal of Wi-Fi pwrseq and Bluetooth nod=
+es
+- [High] Hardware regression: missing no-1-8-v and non-removable on Wi-Fi S=
+DIO
 --
 
-commit 7bf945c5fafb3aee26ff8892a479bb36b844b74e
+commit c9f442e674490d5de5d44643de9d80e88f35d5fe
 Author: Stefano Radaelli <stefano.r@variscite.com>
-ARM: dts: imx6ul: Add Variscite storage and wireless files
 
-This patch adds reusable DTSI files for eMMC, NAND, Broadcom Wi-Fi, and
-NXP IW61x options on VAR-SOM-6UL and DART-6UL modules. Keeping the module
-options independent of the carrier board allows each board DTS to select
-its assembled storage and wireless devices.
+ARM: dts: imx6ul: Reuse Variscite DTSI files for Concerto
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x=
-.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x.dtsi
-> new file mode 100644
-> index 0000000000000..4d47cea982ec4
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x.dtsi
-[ ... ]
-> +	iw61x_pwrseq: mmc-pwrseq {
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		post-power-on-delay-ms =3D <100>;
-> +		power-off-delay-us =3D <10000>;
-> +		reset-gpios =3D <&gpio5 6 GPIO_ACTIVE_LOW>, /* WIFI_RESET */
-> +			      <&gpio5 2 GPIO_ACTIVE_LOW>; /* WIFI_PWR_EN */
-> +	};
+This commit converts the i.MX6UL and i.MX6ULL Concerto boards to use shared
+module and carrier DTSI files. It removes the old LVDS graph and drops the
+kernel-managed Wi-Fi and Bluetooth nodes in favor of userspace control.
+
+> The old Wi-Fi power sequence and Bluetooth nodes modeled enable and
+> reset control in the kernel. On these SoMs those controls are handled
+> in userspace, so use the shared Broadcom Wi-Fi description without the
+> old kernel-managed nodes.
 
 [Severity: High]
-This references &gpio5 2 as the power enable pin (WIFI_PWR_EN), but is the
-corresponding pinmux configuration missing from the pinctrl_wifi group?
+Does removing the hardware description of the Wi-Fi power sequence and
+Bluetooth nodes break devicetree ABI compatibility?
 
-Since pinctrl_wifi (defined in imx6ul-var-som.dtsi and imx6ul-var-dart.dtsi)
-only configures GPIO5_IO04 and GPIO5_IO06, GPIO5_IO02 appears to be omitted
-from the pinmux configuration.
-
-Will this leave the pad in its default hardware reset state, preventing the
-GPIO from toggling the Wi-Fi power enable line and leaving the module power=
-ed
-off?
+Devicetree is meant to describe the physical hardware wiring (e.g., reset a=
+nd
+enable GPIOs), rather than userspace software policy. Without these nodes,
+will standard upstream kernel drivers like mmc-pwrseq-simple and hci_uart
+fail to probe and manage the hardware for users relying on a standard
+mainline kernel?
 
 [ ... ]
-> +&usdhc1 {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
 
-[Severity: Low]
-Are these address and size cells necessary here?
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi b/arch/ar=
+m/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
+> deleted file mode 100644
+> index 6d16ff7909dab..0000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
+> +++ /dev/null
 
-Unlike the BRCM equivalent which defines a child wifi node, there are no ch=
-ild
-nodes under this SDIO controller in the IW61X implementation. Defining addr=
-ess
-and size cells without any children will trigger avoid_unnecessary_addr_size
-devicetree warnings when compiled with dtc.
-
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_wifi>;
 [ ... ]
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.d=
-tsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.dtsi
-> new file mode 100644
-> index 0000000000000..d7952233a1ee9
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.dtsi
-[ ... ]
-> +&usdhc1 {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_32k_clk>, <&pinctrl_wifi>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc1_100mhz>, <&pinctrl_32k_clk>, <&pinctrl_w=
-ifi>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc1_200mhz>, <&pinctrl_32k_clk>, <&pinctrl_w=
-ifi>;
-> +	keep-power-in-suspend;
-> +	vmmc-supply =3D <&reg_sd1_vmmc>;
-> +	status =3D "okay";
+
+> -&usdhc1 {
+> -	#address-cells =3D <1>;
+> -	#size-cells =3D <0>;
+> -	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> -	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_32k_clk>;
+> -	pinctrl-1 =3D <&pinctrl_usdhc1_100mhz>, <&pinctrl_32k_clk>;
+> -	pinctrl-2 =3D <&pinctrl_usdhc1_200mhz>, <&pinctrl_32k_clk>;
+> -	no-1-8-v;
+> -	non-removable;
 
 [Severity: High]
-Does this node need the non-removable property to properly enumerate the
-Broadcom Wi-Fi module?
+Does the new imx6ul-imx6ull-var-som-wifi-brcm.dtsi file missing these
+no-1-8-v and non-removable properties cause a hardware regression?
 
-Since the module is permanently soldered onto the SOM and does not have a
-physical card detect mechanism, omitting non-removable causes the kernel
-MMC core to wait indefinitely for a card detect interrupt. Consequently,
-the SDIO bus probe might never complete and the Wi-Fi hardware could remain
-unusable.
+Without no-1-8-v, if the Wi-Fi chip advertises UHS support, the MMC core
+will attempt to switch the bus to 1.8V, which will fail if there is no 1.8V
+regulator configured.
 
-> +
-> +	brcmf: wifi@1 {
-> +		compatible =3D "brcm,bcm4329-fmac";
-> +		reg =3D <1>;
-> +	};
-> +};
-[ ... ]
+Additionally, without non-removable and a cd-gpios property, will the MMC
+core treat the soldered chip as a removable card and fall back to
+continuously polling it, repeatedly waking the CPU?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790344389.gi=
-t.stefano.r@variscite.com?part=3D5
+t.stefano.r@variscite.com?part=3D7
