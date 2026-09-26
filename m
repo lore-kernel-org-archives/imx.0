@@ -1,95 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF29E207E00;
-	Sat, 26 Sep 2026 16:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F038F399354
+	for <imx@lists.linux.dev>; Sat, 26 Sep 2026 19:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790439732; cv=none; b=i7CoL0U3eUlPpi4VZAYjKShfEr1oO1o3A17po5ragpoNp7wDekuRCYlWiQ6ka+foSWs6YAemGAKwkorjuYABVe7AepwO0lnx1FykNJTvxVL7hSfF/YGlI5xS3KQYGfP0vGG985Dzpz17oPltrY+6eozKaupk/vNo0TTCR60+pQs=
+	t=1790450978; cv=none; b=i6POMshoaUxgH1AIHVjc9h6kr3CmxHjQUSfuq2/C8mKOPWqqZiCqA98j/NYgWzjMlAjSgdoNTcZPttSCIpYkHc43F/VQrOH1+8gOi6x4Fuc5ZHvdSTDZS3hJ6Qa4c0kQ8PQdv1oRijzL5/34I1S0X225BVnJGIXUL7luKMvORrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790439732; c=relaxed/simple;
-	bh=9uFUYyle1YFb+YdZaC78mZ0aDMo/wx/Y+4R23X9phkc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uf97qC4RPi4vlPNaKl1ETOh34scgvf7ETtLMLi5hoWbbbiqqiS478fK0iiW7tArsQb6CT8epLPPWak+H/IV9HBllcOohAhC4NyesSkZ6I5i8yeJhWU3QF4SY06Wtnav3gAKmIChAUsI1gs40poBoQg9yLC5GCAtZgkKUCvfNGJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iwqgmk1e; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790450978; c=relaxed/simple;
+	bh=1ebgJkP09GKvWRwvK5F2YFranzNOE8JKc24FCxtrAac=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=gbQ3QeHwxSU25H4pJ7Ma4sfWOd0DM8f7iLcC5wjnVgMdYvb8Emg3sUq927/EAcL8TQygLTDuDP56wWM2zWTrd/+HiHqMtGxni4DlUivT9Gv5YcpZAhugdPG5vk1ve16H/5gAo8CrpoO/LLycJhM1HMA+FZ4MzwYoNSo7tnL1QTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nbxb1bxA; arc=none smtp.client-ip=74.125.227.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iwqgmk1e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BC1F000FF;
-	Sat, 26 Sep 2026 16:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790439730;
-	bh=e+Qr2230Lu2sLj4UI5sDrSPVvb8HYtybN1/cvDBHd3E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Iwqgmk1eeGsFzySD6F5rYQQm0GYO9bhJEDdTKXHL+KDOeEGVPhqLg6jpSECUfNFSy
-	 RcOKPRYvZpmct50+ddgzN1AxWj9Z72FyGrgvSSUMrlgIDSKJnxCyzMmF2UsXXYIAfm
-	 lsr9PYToJNmEVdq0pXZC/i5cAFYE6xCWacnYCdkjOSqBmsO2UEMP/VNKrpiWoY7dgP
-	 Rz35fK/GVLjQ8M4WDRknNgYl97xk1Roqh0UMU5/6OPDzEWgM7Flgzlk1m0LoTK4hIx
-	 obDD/DdCPWABEi+agrwAbRFoIlEiNFtz/RCRNcooqw9PJ+88VTpV6UcIVpOMKmhHPh
-	 cM/zPICs+2+Hw==
-Date: Sat, 26 Sep 2026 17:22:05 +0100
-From: Simon Horman <horms@kernel.org>
-To: mhun512@gmail.com
-Cc: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org,
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: fec: drain PEROUT requests before canceling the
- timer
-Message-ID: <20260926162205.GX13925@horms.kernel.org>
-References: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nbxb1bxA"
+Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0abca97c0so989816a91.1
+        for <imx@lists.linux.dev>; Sat, 26 Sep 2026 12:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790450976; x=1791055776; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RII7KH71ddmT/n6y6BydIJU7a3otHfuo1n/mYhsl0VA=;
+        b=Nbxb1bxAUyXRrrYdhlNPhFgBMWW8zcLTp9xzS2TNiLG5pfuG81VjqioJa12Qgc9gJL
+         LUjuF7Y991eBPbbbwF1LL8O3PvKS04ZWwP1xwkjhWJskAw/IQF/EzaXD/WLsdKyQmX3h
+         YXqbtxiuCB7bqyMYvBv8e2a0OmrvHiA4Nxce8soPgFBQol4zxKXWBRZXlcEq/F0EUrF9
+         HadfN1y+R1mCAPVM5SEA2immHOa5y7ImygsH60er5bF0+hNpFpKR6T+3SNYJ2iBbCXvJ
+         x20hY9boMzz798HTjMEB+PS298sc5Kug7PH1si6JmHAJBGrJBVlO4b5EJRiodHeoM6F7
+         MMZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790450976; x=1791055776;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RII7KH71ddmT/n6y6BydIJU7a3otHfuo1n/mYhsl0VA=;
+        b=AY6ENB9USIZn1om0/QPXAhLwujgbENSwHGAcfILMLFdyHkKY+cBTp97aUkdAaJ6rzy
+         q59zly2W15fsq5bLfyEA5q2Xly8ug2NIZso3qxJO8jIfBuDoam6FiDDrtja46Fqh1iqA
+         yq4mnU7f8gp7hPJ8yNz4O2GJqwJz91qbPtEVFiTOM7iUdPxFyIOnN8/OEs/5OltBrg+r
+         youf4qNpZ7UWWy/nwxIAZ0b64Lhycb0axMBzcIdlDLFiKoOWXnPGAOOcAP7fwdqEgmGt
+         5bR1dDeFSjWZ2pk7819tlUKpNCa6ARafxZTJPcN9FrqB61DEJ5ij6EvPmBtVOrdvFHWm
+         JW/g==
+X-Forwarded-Encrypted: i=1; AKwUvByz2a6QjugVF/HHbHNQ36udyInN+BHHVzKcFutEhAi/rPGWGydtYhEuFOPw2Fb2pldQFIU=@lists.linux.dev
+X-Gm-Message-State: AFq9FYICyzcbMpp7lTI94wHEvGtBUuhqbRSI+pVZr77Xj5U8i87sopsG
+	ShZegZVTgB0TicGThDNv7MhIkYnjjY8KtRlXNdfK9cN+ayBLYcFUuAle
+X-Gm-Gg: AYBFou2Vq05kG4lUuPgtJY7/g9oupgMeaLkBz5VnamSylEB/m/82BZM6tElGcAxqWT2
+	97vfv70TM4Sb+f6tMTlxmrhILjSclsidIkvpj4ffRBh0Kkf5nm/Z/WF1+HupEM9kFhzaweX7MWZ
+	WIZp0D+tNntJtN5Rt8XGNnc0SEUJreMGzkkiTzh7o2DD0op5m4IZK4Ax/gHT8xwfrnr+kKznYTv
+	orASuBsowNFQwBQ7kaFyNF8X5XO7YTtU+ZKENmCqv82WZuf3g06D9cWUlaTf9x00iVVV82vGZbf
+	H+MvSmZiVD7SYoDZHl00VPafx7W4nxlJa5FpFBbUcjg3Jo2uHcfkMj988TRSbPb0wOl+6c/4Ugz
+	yTQWm8LmnE9ftf5S4MyMUX66kw3RI7mHHEojxWIu34aekFcqSm3VZMiQEDH/nuHR1dRNrqzECCQ
+	nHSfY8ooDLhodZlxnvM/+cxSa71CIHZhi49AvxZZyq28B1JPTbsXQLT6+U0zAckjNo2yI8h5umK
+	zdTZuRRAQ6Fhm4xHceCOQAIM8AXgZjeS+UiRFjkV+Q=
+X-Received: by 2002:a17:90a:e7d2:b0:3a0:eb54:2e60 with SMTP id 98e67ed59e1d1-3a0eb543751mr1574379a91.31.1790450976021;
+        Sat, 26 Sep 2026 12:29:36 -0700 (PDT)
+Received: from [192.168.11.3] (215.96.231.218.rev.ocx2915.net. [218.231.96.215])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0ba31f408sm3564492a91.3.2026.09.26.12.29.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Sep 2026 12:29:35 -0700 (PDT)
+Message-ID: <df064f9e-ad54-43fb-9b25-9e2869506732@gmail.com>
+Date: Sun, 27 Sep 2026 04:29:26 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+From: Yoshifumi SHU <envzhu@gmail.com>
+Subject: Re: [PATCH v2 00/14] ARM: deprecated platform removal
+To: Linus Walleij <linusw@kernel.org>
+Cc: arnd@kernel.org, Frank.Li@nxp.com, aaro.koskinen@iki.fi,
+ alexander.sverdlin@siemens.com, alexandre.belloni@bootlin.com,
+ alexandre.torgue@foss.st.com, andreas@kemnade.info, andrew@lunn.ch,
+ arnd@arndb.de, claudiu.beznea@tuxon.dev, conor+dt@kernel.org,
+ david@kernel.org, devicetree@vger.kernel.org, enelsonmoore@gmail.com,
+ festevam@gmail.com, geert@linux-m68k.org, gregory.clement@bootlin.com,
+ imx@lists.linux.dev, kernel@pengutronix.de, khilman@baylibre.com,
+ kmehltretter@gmail.com, kristoffer.ericson@gmail.com, krzk@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux@armlinux.org.uk,
+ liviu.dudau@arm.com, lpieralisi@kernel.org, mcoquelin.stm32@gmail.com,
+ nicolas.ferre@microchip.com, npitre@baylibre.com, robert.jarzmik@free.fr,
+ robh@kernel.org, rogerq@kernel.org, s.hauer@pengutronix.de,
+ sebastian.hesselbarth@gmail.com, shawnguo@kernel.org, soc@lists.linux.dev,
+ stefan@agner.ch, sudeep.holla@kernel.org, tony@atomide.com, vz@mleia.com,
+ thehajime@gmail.com
+References: <20260914140821.1805449-1-arnd@kernel.org>
+ <17a74e90-27d1-4954-86a8-491267f00cb8@gmail.com>
+ <CAD++jL=VJsnk-GzAvR4oR8oKJayQzq9Oes+ZW7K=iHGrQ1jh0w@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAD++jL=VJsnk-GzAvR4oR8oKJayQzq9Oes+ZW7K=iHGrQ1jh0w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 24, 2026 at 09:03:39PM -0500, mhun512@gmail.com wrote:
-> fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
-> A PEROUT ioctl can set perout_enable, release the driver's locks and
-> then be preempted before hrtimer_start(). The unregister path waits for
-> that ioctl, which can rearm the timer after it was canceled. Removal
-> then frees the netdev containing the still-armed timer.
-> 
-> Unregister the PTP clock first so all in-flight ioctls have returned
-> before canceling the timer. Clear the PEROUT state and compare channel
-> afterward, then disable PPS. Serialize the channel write with PTP clock
-> shutdown and skip it when that clock is off.
-> 
-> This issue was identified during our ongoing static-analysis research
-> while reviewing kernel code.
-> 
-> Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> ---
->  drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-> b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 56801c2009d5..67901e036ac3 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct
-> fec_enet_private *fep, uint channel)
+On 2026/09/25 22:30, Linus Walleij wrote:
+> All right, now we're talking! Could you test and review this patch:
+> https://lore.kernel.org/linux-arm-kernel/20260910-arm-generic-irq-entry-v7-1-v3-1-5fd90f6859e1@kernel.org/
 
-Hi Myeonghun, all,
+Thanks! I'll take a closer look at the patch and the discussion thread.
 
-This patch does not apply because the two lines above should be a single line.
-Unfortunately this means that CI did not run on this patch.
+> I do avoid touching the v7m path and it worked last time I tested
+> it  (on an STM32) but I'd like to see your take on it, AFAICT generic
+> entry is not really possible (easily) on v7m because of the
+> pendable service call mechanism but maybe we can think of a
+> really complicated solution? ;)
 
-Please repost after figuring out what went wrong here.
+I have experience wrestling with a PendSV-related problem in an RTOS kernel,
+so I believe I can contribute to that part!
 
--- 
-pw-bot: changes-requested
+Best regards,
+Yoshifumi SHU
