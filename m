@@ -1,99 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068833BE632;
-	Sun, 27 Sep 2026 11:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755FE3D5221
+	for <imx@lists.linux.dev>; Sun, 27 Sep 2026 11:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790507185; cv=none; b=vAqsvj0hGB6Y+cAV5/kS+z98VcmA+CrTbmhxXZoz3bOGLZFDoUexFPWXPz8cednDdwNedK8vpLiak3I45Vizl18X84t7R9tsipZ1WSCOx3A6y4j9Ai6M9EQ+uObygadAFstKN8D+YEbgDD+Q7k3xcjn2N3zKaZxpczTON6T2qns=
+	t=1790507514; cv=none; b=jX74JgItkqHxDHdL70mIAGk2csS6tCAhA/eWcBiLbWWY1UruAriaUi95ugVdOhISvgEDEKWO1iIPRXzCSl4O8BEsX3UpIxPMsSJ1RnoUo+dnqnfozIPtovmb8VcOQDlC7Ty0069fV3v3tZjsrI8587oUeUYgfwN5w520bYOoox4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790507185; c=relaxed/simple;
-	bh=KXLoC4LL1mPpUPnQSzg21e6mwJ/w5N1jBOm/WEkstvI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EjC7UqAVjr67XvvvMNSRdr8keGoGOHQvpcv5f0KEBlTmaS29Wfw9Ep5I+dFeekMT9GObSwmwX/ZVHVettdKOSF3g0zgyFo10b9njtD1naR/CoWLDz318m9rAKGQLMiaim1pp+cOzdVEbAgmmh8Ujm+NvxRKyFEZlK8NILM0CBNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j54nFOQv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790507514; c=relaxed/simple;
+	bh=HolQLVpDIvaICvH6EklsF3sLiuPfGnUvjiP6g7MUWaU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CuG3wFKKZ77s2qJhq0qG/lhdqjuUBurT9M+DC4t2Gl0Wk+qwxFCu6Pcpb7p3wBYUjVyuR+KnFHRQ1j4rJY6D9SDdXaAaEE4rqQ/bcmH+xlH2UqE5oNsvc3RSrCDMpq00Ao6MCSlx/FV60E41C++4HSpUeFeu7bxh/Z3+vagEOcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Vl7Ygofv; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j54nFOQv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEC71F000FF;
-	Sun, 27 Sep 2026 11:06:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790507183;
-	bh=cA45nWXK+4irbOr+Tv+2K7NBQOJpA0Z2nsd1r3vo7I4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j54nFOQvAmiY1crsGT1wOC+iO5Mqy9xuK9DgnmGeBLXXmV0i/7IHGQeSy85FmVKFY
-	 s1YcJGTDGJtwXEdtZMLUcufyIUweYiyGnZTMg/0QITeAUxylaW3ga/091N2auvgyZl
-	 P2uiCVuTOWOVslgQSRjdvRGHmTLRHZEUXCeQJRjC8rHK2GoUtQ4Lc4F5iHcZrOkAaW
-	 Wk/UyBJX5hsBDTnATUBciLQiGpis2eorBxg+F36eUBRy54sG++aWfW97vUrFv0ySL1
-	 h8IVnyzlTzpqS29kixAu4GPRDyIG6YRt9GjM7xK713eaDTREjyttUv9hcC5LqHan/H
-	 CyqnOrz8RA3/A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 11/11] ARM: dts: imx6ul: Enable Variscite i.MX6UL
- board DTBs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <18c922ead3419fbc68e88d3ce1233faa9b1a2e63.1790413032.git.stefano.r@variscite.com>
-References: <cover.1790413032.git.stefano.r@variscite.com>
- <18c922ead3419fbc68e88d3ce1233faa9b1a2e63.1790413032.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 27 Sep 2026 11:06:23 +0000
-Message-Id: <20260927110623.8AEC71F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Vl7Ygofv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ax
+	rklA1m8y12PQjg+uXAzie8haQnXslHN47pj2/k+qg=; b=Vl7YgofvKvEdpRMVqY
+	YpxHzh8oCw1D4+khWC22SEaSj0PSEpQsqnY4407C16mtTqRXsj2UXBaU0JP43ogc
+	QcrpesxaeUWKDBahhEPV990oLuspotgJaoYACqJ1H6MNwrs5/vqDkNAhoAlR6RyK
+	/0nPra6DyrCoopuisUAHwPO9g=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3_92P+bhqB9V5BA--.4648S4;
+	Sun, 27 Sep 2026 19:10:12 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
+To: Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Fabio Estevam <fabio.estevam@freescale.com>,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/7] net: fec: manage the netdev lifetime with devres
+Date: Sun, 27 Sep 2026 19:09:59 +0800
+Message-Id: <20260927111005.1035089-3-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260927111005.1035089-1-yaojiale02@163.com>
+References: <20260927111005.1035089-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_92P+bhqB9V5BA--.4648S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tFW3GF1ftw15JrW7uFy7trb_yoW8Wry5pF
+	WDJay09rykGr17W3WDJr48AFy5C3y7t34DW3yxK3yfZ3s0yr1qgr1kXFWj9r4rZrW8uF1S
+	gw4jvryfZ3Z8XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zNNtcXUUUUU=
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC7xRspmq4+ZT3eQAA3A
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] build: Combinatorial explosion of static DTB variants instead of=
- using overlays
-- [Low] build: Makefile DTB targets are not sorted alphabetically
---
+fec_drv_remove() frees the netdev before devres releases the managed
+IRQs whose handlers use it as their data pointer. A late interrupt can
+therefore access the freed netdev.
 
-commit 811039deaa62a10ae4930e5cd0e5773613e884fb
-Author: Stefano Radaelli <stefano.r@variscite.com>
-Subject: ARM: dts: imx6ul: Enable Variscite i.MX6UL board DTBs
+Allocate the netdev with devres so that the later IRQ registrations are
+released first during teardown.
 
-Add Makefile targets for the VAR-SOM-6UL and DART-6UL board variants based
-on i.MX6UL, i.MX6ULL and i.MX6ULZ. Keep the existing Concerto DTB targets
-enabled alongside the new carrier, storage, wireless and audio combinations.
+Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/i=
-mx/Makefile
-> index c5caca92ea10c..cdca939b10a96 100644
-> --- a/arch/arm/boot/dts/nxp/imx/Makefile
-> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-> @@ -377,6 +377,36 @@ dtb-$(CONFIG_SOC_IMX6UL) +=3D \
->  	imx6ul-tx6ul-mainboard.dtb \
->  	imx6ul-var-som-concerto.dtb \
->  	imx6ul-var-som-concerto-full.dtb \
-> +	imx6ul-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dtb \
-> +	imx6ul-var-dart-emmc-sd-card-6ulcustomboard.dtb \
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-[Severity: Low]
-Do these newly added targets skip strict alphabetical sorting within the
-dtb-$(CONFIG_SOC_IMX6UL) Makefile group?
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 794ec427b0ee..23e794a31ce8 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -5219,8 +5219,9 @@ fec_probe(struct platform_device *pdev)
+ 	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
+ 
+ 	/* Init network device */
+-	ndev = alloc_etherdev_mqs(sizeof(struct fec_enet_private) +
+-				  FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
++	ndev = devm_alloc_etherdev_mqs(&pdev->dev,
++				       sizeof(struct fec_enet_private) +
++				       FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
+ 	if (!ndev)
+ 		return -ENOMEM;
+ 
+@@ -5480,8 +5481,6 @@ fec_probe(struct platform_device *pdev)
+ failed_phy:
+ 	dev_id--;
+ failed_ioremap:
+-	free_netdev(ndev);
+-
+ 	return ret;
+ }
+ 
+@@ -5522,7 +5521,6 @@ fec_drv_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	fec_enet_deinit(ndev);
+-	free_netdev(ndev);
+ }
+ 
+ static int fec_suspend(struct device *dev)
+-- 
+2.34.1
 
-For instance, the dart variants are appended after the som variants, and
-longer feature strings with w appear before shorter ones with 6. Could this
-increase the likelihood of merge conflicts?
-
-[Severity: Medium]
-Does compiling all these base, module, and carrier board variants as distin=
-ct
-static blobs cause unnecessary bloat to the kernel install and Makefile?
-
-Building the dtbs for i.MX6UL, i.MX6ULL, and i.MX6ULZ currently generates
-around 90 distinct static blobs for all the combinations of eMMC/NAND,
-SD/WiFi, and audio codecs.
-
-Would it be more aligned with standard upstream practices to provide base d=
-tb
-files and build the optional modules as Device Tree Overlays (.dtbo) to be
-applied at runtime by the bootloader?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790413032.gi=
-t.stefano.r@variscite.com?part=3D11
