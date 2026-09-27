@@ -1,65 +1,65 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646673E63A2
-	for <imx@lists.linux.dev>; Sun, 27 Sep 2026 12:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253593EDE6E
+	for <imx@lists.linux.dev>; Sun, 27 Sep 2026 12:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790513200; cv=none; b=hjp9wnZLfGCFKkWik8zRWU5fGCk2dFDImgjjvxWUfOffqlMO3CsD56X57M6fnUWgDTbqjXeERGZNcaCJDvjvF+U8XIYiBrHYiK8WASHQYuKF1dXzg39n++KUmNh1/+l9yQhZojm8ajCxdiAzayLvaYms0ikwxdTU9qFXDDW4Ggg=
+	t=1790513201; cv=none; b=YEu2UFrnxdx30ChpdGSO6+ZR1vyXwnr3r9ECM7SiqlMu9LgVWvVAPXyI7+EivUP5XhxikFhs8QQlfdo4gS3NUN3LslHXl7SLlTpvqbn6a/TkB72KIzlhK74ZSSKOo096tD1yMHu7T6IVImyXVjS3jfqbvWeTX+cKMZHjoOtE6mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790513200; c=relaxed/simple;
-	bh=xG8fQs+Nv8hzYaB47vBOWqr+MR+BJEmuFuZwRxqnET0=;
+	s=arc-20240116; t=1790513201; c=relaxed/simple;
+	bh=5T+a23aIGmK2iqABM7bsnn+JBjwEBOQqZO+RU3YCAIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCPl7U31x0Tvay3k9LIlxcGjrl2bgVg3LZj4e/Lgsyj+pFRtMNacwZSDxNMlJ+QsI1qFvyT18Gy6zp1VXQaQEECOvXETVhhBS2ZYlQFLQ/l+s7+rxi787oeyUJfd2ElFH0wE/hzXUdfi9jj15Pd23+irdmPYAsE4WjrsQcexlRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ntbeLXBy; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=RYIbylbFJmvCbYOsQyXbsg5xWLxpG8u39aWBx3rpacEqNskOldcHzyeLPfWrVN0ysTWT1p2AF9F3sUTSrJNen+V079HwmK0BrG6NmwVyA/a/oX4voxwh8V5U8isYtGfR/L/8tey245rJHqq74+haUiXjEo7znmOcGtFWCza1oH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmrNP+65; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ntbeLXBy"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so16093135e9.2
-        for <imx@lists.linux.dev>; Sun, 27 Sep 2026 05:46:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmrNP+65"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e83a388f8so16269725e9.1
+        for <imx@lists.linux.dev>; Sun, 27 Sep 2026 05:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790513195; x=1791117995; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1790513197; x=1791117997; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6TBF9avaY/bTBgvPOC6p2G/lL798dgydRUW2YJl/tA8=;
-        b=ntbeLXByxcZdVeQCPrBeEAD2nEMfrIc9rOKArkkU8cXnj3pUVPQw6PiwLLP5bTAQ9+
-         4YIyKiTmcWyCykuyItComjibZg2uuqlfgBzA8ryPC8HxHR8WyqKygEifjrpKvnxQ9tTf
-         HZ1aOPvW7HMojx96Q6D0/eO45A8aycm8RFwpk4Qw9Dw18axPpHMBvXHtYFa9FwRAwHTI
-         xGpmYTBneUMt74F0TrOS915f7TVUNOVkVoAnXpJ7laU+/YO3JGNdC0WhqV/h6tqA07qY
-         QOLQiqUUzGmta3gQuHcl1FpkJ5Vw4pKRNTPvhVAxixVyxee/ALyn0vXypV25/6GHjxC9
-         Ij3g==
+        bh=YshmIf8br7QZ8gBxtu/Vo13g09V/Sk1mprmtIBCHo2o=;
+        b=cmrNP+65NyaisO9RQHYn3U9+sXsUg0OLDpCL/0DLpT+3BmTIgewlIGe58D5c13eab8
+         x29Y2GpB0cpARvDJo8YrmnfqsOFBNzKHQMf9mO23YlXlcLf6/TZXKMK5BWH6lEpSBZew
+         pExYMRyOvJH72XJzwssnUVwSbhamJ3/dlV++cvX3U6x4tsQHj1gZWRO3SfW/fz0l1a9L
+         cFCXltmFXzm/c2JK/4paYGSMabaAHbHPoE2OANHYpv8PxpgYNrp6/W70PyN1JNF7RMDE
+         IWC4JdzbXfpsQD4tid3qKKrUxoP9I/LEDjuOxoVe2ZqYAZbngEnI/2v/zluomO8OFp4y
+         4Uww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790513195; x=1791117995;
+        d=1e100.net; s=20260707; t=1790513197; x=1791117997;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6TBF9avaY/bTBgvPOC6p2G/lL798dgydRUW2YJl/tA8=;
-        b=whVQ8Jk83Ya9brqdcaypCou+eyOMnsxywm4IZdZev3DrYeHfsQd+pfWhJ0aY9YWx16
-         Sw+JPdzNysAP3TjP19iHSJijgYxpkRRiUTp8xneaXSasgY7jK17b50CGF9kjTluwyYaf
-         6Rjm04a1M+Jc1Tse9eMamkiTMOf2bDvEFDxO2A27J2U2p+4JK8JP8qjSeB5jK89K7jhH
-         6oMZf9R5YDEli9ZDSpajzxiB0GrBxl/XQa4ru6e8cJ7I+v7A59XJMXviWT12UtbmYFHH
-         RAkEsSNUACsluQj1MTgpMRXnTkkDUUKZbPYT0GuvMosrrVeGgwmf6Ts1nxoLzXHoSZAl
-         qtjg==
-X-Forwarded-Encrypted: i=1; AKwUvBwY1AEcbKRI8YE7EaJphOKrOcJ7Rl7PJyfvVO0OZYSVyKp8BP9DG+pgEAJNFdXukexURAA=@lists.linux.dev
-X-Gm-Message-State: AFuF++nA4Gu8NS+4E2VrQ06vDO5gzFXvpAQfvocuBSEuMl3R5J5OtrP+
-	ztZiTG5yV4YaIk808Hu5T4c3wrqFi8g8WfBaBXso/uYAV+uXleV5CiQX
-X-Gm-Gg: AYBFou2/YjYy3UiMDEujz/EaKw+BAg4MeL7sPuXSpOHxpx28x+h+yfsvow5fmXs3rQC
-	BuEYm6+z2ymuFrOZFD0uMrx8AFkNd2eZDfbKKr09ARBfar3M8J4j/BLB03lR6mi//3CniqAavGN
-	C0+PktU1bH4TLYv8vBFTr5Bb17dzChZT0abGebxI3fQdXbjTrmqvYq9pScUzeri7OJCEO6+clBd
-	JD4Ooi6Hm3S2is6CKZFPFSjACjsqP0H8rUOy6ZGZmTaL/ioXCyh4Vu0O+NyUtysW/HpYCwo7PwF
-	Sya05BCz9GRlHvqsFbUdgOt8SoxhBEF5/o20F+7cjocJISfbRFU+c3lSinsSSt66DctMmwtB/hl
-	jqYu86OTCWNrbf1D1n+gRNHUdVYfXYn2TjXLEnKyv/ipu6WDj4SZfEbJqYLfmmwhtufprdBzWP2
-	WaVc+PFNld26uH4AbQEyFNWIRNvZUm4xlL9i5EicOSfq6Gb64/SGN85cBpjvgDXZeQArvLR40io
-	tqz9mdwLPZ7nSLUd7M2DAkB4AgfihC6FSw5/JmhAEG4VzT3iJSJzep8VsYiAZjFrfGxe81ABkzJ
-	9CrouJlfuHU4v0REPH1d1/B20NfvkRiw
-X-Received: by 2002:a05:600c:8b34:b0:4a0:b6:4619 with SMTP id 5b1f17b1804b1-4a000b647f1mr30425705e9.0.1790513195410;
-        Sun, 27 Sep 2026 05:46:35 -0700 (PDT)
+        bh=YshmIf8br7QZ8gBxtu/Vo13g09V/Sk1mprmtIBCHo2o=;
+        b=11jnztpMveI1ZN5/Eomse5KTXPkutiGhozbOIdfaS8UjYLOH8W04EAircYqMY2f4dm
+         pU3ujHkCm/7YFTFvyEJawQSbFiTtyvg++Xbbk9+t/xeDYm2RVRqKJRn7QFu8v7T5StJf
+         /vRM5pmsg3vbz4LmwLCmPsFZ684VGyniv3SNdMRxihVsyX6WxhDP6x/bo4Kwdvo4iplM
+         YblLRY+ElbrTHPQWe1JlN+uJ3peEMeO6Pw4V3g96vJitf3kcm73lH5zhd1RvguXUCXHZ
+         5+nDVFrCvEtBCIZ7G8eG32JALXf+CjF7L/6QOmFy03vDqWR+rDhxwwCw+8ebfMi0Bh8d
+         TqtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzt906YgFCVeGImtcPNvmB8OLYvLPU2u6OfnZJ7oXzpNY5CHnoq+KPdrgZtvnROqmTzPyA=@lists.linux.dev
+X-Gm-Message-State: AFuF++lNj4gpq12Q+rsY/gQjlAbTcc0ja1Y4RSNX35dguSJbdsF++gdf
+	nfZMGAQntM2D4vuNxFBRwgJRXpH8OAHmqn60tpvc4JNM03mS7S1Gj0u4
+X-Gm-Gg: AYBFou2GbS695Hx4Q9Fj8ic9Rx0jfKi6fXNGttf8QyZxhLxYKR8EKLh4xXb0zDdzVFm
+	SPu3jwVHgFFM5IK1ZZetksbnxtn+7JFIL91UVsXRCxV9UDaiP8e/ShB1HCB88RaXdX7gWok7wkK
+	HTFTRP1Ev7/R0dk6XZHS4UwcAFmMKTArUOsz4RRCYAz4tMeFTGX1SYAXWnlZ2tvtV27XGuusVXR
+	2iY5u1uYei9+ibdsg6U8YDa9eKUuvGefaZBp9qb7sVWqW41qpE2ASz0yMbrDgbzZ8GXfWoo1hV6
+	ErdRJaoWT1DIeGxrQxRa1g3ct+2VjUBUNyjcswqCgYHa6+CFYUbOcJ+9Sl4k7tJoO7n22lA+wAB
+	a4voibqgou+qOb+61hbTcWDrxSJAvJSoX95KEq2UH889RSJ/w0tUaqBlmTq6JpobJ/WHbzhI4WI
+	AdvBG+LrzJgd4k2fxajPfwQY2YWI9uLjRxyY/uuLeHGQS1bzuyNagdnmj0uIJR0y1TMPvMaaKFl
+	iylwciVTcRQmmcP2Z1bzEhAXshG+rbloKKolI1mlLP6Buq5B7k7E+ZwFtsBqnoI00LFmSrE/hzE
+	q2Ohc9G44/l+/nW/WuIgxg==
+X-Received: by 2002:a05:600c:4ecc:b0:4a0:174:579e with SMTP id 5b1f17b1804b1-4a001745829mr23006575e9.28.1790513197048;
+        Sun, 27 Sep 2026 05:46:37 -0700 (PDT)
 Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm148440605e9.4.2026.09.27.05.46.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm148440605e9.4.2026.09.27.05.46.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 05:46:34 -0700 (PDT)
+        Sun, 27 Sep 2026 05:46:36 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -94,9 +94,9 @@ Cc: pierluigi.p@variscite.com,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Stefan Eichenberger <eichest@gmail.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH v3 02/12] net: phy: micrel: Check RMII clock select property presence
-Date: Sun, 27 Sep 2026 14:46:17 +0200
-Message-ID: <095af7bdb3b28e7776bac12bb4f3f661d057216f.1790512621.git.stefano.r@variscite.com>
+Subject: [PATCH v3 03/12] dt-bindings: net: micrel: Fix RMII clock select property type
+Date: Sun, 27 Sep 2026 14:46:18 +0200
+Message-ID: <2596c9e2fd59d04abb2eb4f4abb98767d2d2ebdb.1790512621.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1790512621.git.stefano.r@variscite.com>
 References: <cover.1790512621.git.stefano.r@variscite.com>
@@ -110,36 +110,72 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-The micrel,rmii-reference-clock-select-25-mhz property is tested
-for presence, but of_property_read_bool() warns when the property
-has a value. Encoding it as <1> to satisfy the DT schema unit check
-would therefore produce a warning at PHY probe.
+The binding describes micrel,rmii-reference-clock-select-25-mhz as a
+boolean. dt-schema requires properties ending in -mhz to contain an
+unsigned integer value. A bare property therefore produces a
+property-units.yaml type warning.
 
-Use of_property_present() for the presence test. It accepts both
-existing empty properties and the new numeric form without changing
-the RMII clock selection.
+Describe 25 MHz selection as <1> and keep the property restricted to
+KSZ8021, KSZ8031, KSZ8081 and KSZ8091 PHYs, which have the RMII
+reference clock select bit. The driver checks only for the property
+presence, so this does not change runtime behavior.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
-v2->v3:
- - New patch: use of_property_present() for the RMII clock select
-   property so its numeric form does not warn during PHY probe.
+ .../devicetree/bindings/net/micrel.yaml       | 27 ++++++++++++++-----
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
- drivers/net/phy/micrel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index ae830781824b..acb481a29c25 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2791,7 +2791,7 @@ static int kszphy_probe(struct phy_device *phydev)
+diff --git a/Documentation/devicetree/bindings/net/micrel.yaml b/Documentation/devicetree/bindings/net/micrel.yaml
+index 6fa568057b92..a1f876dc00de 100644
+--- a/Documentation/devicetree/bindings/net/micrel.yaml
++++ b/Documentation/devicetree/bindings/net/micrel.yaml
+@@ -63,6 +63,14 @@ properties:
+     minimum: 0
+     maximum: 3
  
- 		if (type)
- 			priv->rmii_ref_clk_sel = type->has_rmii_ref_clk_sel;
--		rmii_ref_clk_sel_25_mhz = of_property_read_bool(np,
-+		rmii_ref_clk_sel_25_mhz = of_property_present(np,
- 				"micrel,rmii-reference-clock-select-25-mhz");
++  micrel,rmii-reference-clock-select-25-mhz:
++    enum: [ 1 ]
++    description: |
++      RMII Reference Clock Select bit selects 25 MHz mode.
++
++      Setting the RMII Reference Clock Select bit enables 25 MHz rather
++      than 50 MHz clock mode.
++
+ allOf:
+   - $ref: ethernet-phy.yaml#
+   - if:
+@@ -90,6 +98,18 @@ allOf:
+     then:
+       properties:
+         micrel,led-mode: false
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - ethernet-phy-id0022.1555
++                - ethernet-phy-id0022.1556
++                - ethernet-phy-id0022.1560
++    then:
++      properties:
++        micrel,rmii-reference-clock-select-25-mhz: false
+   - if:
+       properties:
+         compatible:
+@@ -105,13 +125,6 @@ allOf:
+           description:
+             The RMII reference input clock. Used to determine the XI input
+             clock.
+-        micrel,rmii-reference-clock-select-25-mhz:
+-          type: boolean
+-          description: |
+-            RMII Reference Clock Select bit selects 25 MHz mode
+-
+-            Setting the RMII Reference Clock Select bit enables 25 MHz rather
+-            than 50 MHz clock mode.
  
- 		if (rate > 24500000 && rate < 25500000) {
+ dependentRequired:
+   micrel,rmii-reference-clock-select-25-mhz: [ clock-names ]
 -- 
 2.47.3
