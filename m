@@ -1,73 +1,112 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F1223C8AE
-	for <imx@lists.linux.dev>; Sun, 27 Sep 2026 14:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA53E2EC090
+	for <imx@lists.linux.dev>; Sun, 27 Sep 2026 14:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790519874; cv=none; b=WQdS5riM7aHepk4pQjEQ4/TqAS3l1GLE7wQYTLs/CKS4E6sfPW2pe/YpQUro84wjO1G3hIwXgig+GNalady/7NvPbIAl6+LcGuVY48JGFBDz/uQ4GVKXZEql40eLJ6GYoyLNSEmwaRkI5WtUHTH3lxihG7yWBI1qHK8HvPXs7bg=
+	t=1790520559; cv=none; b=CMDdX9bfcc70H3ts2BLmbEiDJlyyhFoDrdsZKwGvEpv01c/AVZD1FetVECnC/M1OqFmqRS9wNdLgec/ZWWaUcsbiJanW8+YQISreVGv2iETj7aGbx0SMA8poZQxPLtf2/UwgUx7alUeTxVAKiyyHYzDGGV/5+T+tyw3USrosYic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790519874; c=relaxed/simple;
-	bh=3kifUECnap8xTf1tSndDLZV6Gyt+fjzlJGi/q5QHSKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1BApqZKBCrHbxtDb8XKwM0DmyUHBDZlWzWORK4D67ga/a8NZB23ljABegnwaw/9PV8dG0XarVZ+QS4N5o2BB40+2XkxMItPIExoRcwiUAsnC1ugd1qPMPcX4ofMFXJ9tJ8GSNKapjIYegw3TCXsIVV47zqiSQD3OiHkf1wNO2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=u/uk/hhm; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1790520559; c=relaxed/simple;
+	bh=PUe3957DnGN33LCRPpEhFs+Radc1/nniYEfXmRNK7AQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AtmrquYyhZaTNNtAvhf0+w3eG3vnErzJN1sgZV+Pk9FOF/KJmIw0K13u5BznWZX7BOAEvg6gexMMfjhHgmkFuUHr7FNRgeAKbIkBReAF1L1ZWIJp3sEiBpDLQ/fCFZq9pmw0CkUg0Yb0IMUsZCvLWs/dmVLraXHRwXqQ2KOujkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kvp8RORE; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="u/uk/hhm"
-Received: from francesco-nb (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id E72031F92B;
-	Sun, 27 Sep 2026 16:37:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1790519869;
-	bh=KMEiirLcdmzxclUk+A6aDUXj3pkkrLYqYUw4QNelmRk=; h=From:To:Subject;
-	b=u/uk/hhmF+fA0GAC7eJcJOUjLS9OdjdqR9K5vWNptv+A8mob4mPk3jVq67IqZoW/c
-	 hjGGWdd4SzE8vM24umDs8BAeXE/3BW1Q5tl6isgfp5TuF55VC1iTMWrbhCe9ntFa3l
-	 tUI8OOgi6Mnb4MNEsGdl13MRMfb2fKMvOCHjqaNbgAdoqJZRsA8gzxAwVDjKFp/yGu
-	 w7XRiaeEC9BZFmixnljEdsUVxvZP+EQ1ja++xWB3HTcGY9uq16a1u9vPEvwmWsQGs8
-	 XvhAezA3wX6tGwh8Rv0wpWB0FJAqs7DDXlBHg3cS99RS5XFFq6JI0apF7qqHyoxTVy
-	 mPqpmHEw9P0lA==
-Date: Sun, 27 Sep 2026 16:37:45 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Jiale Yao <yaojiale02@163.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kvp8RORE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ib
+	YWpP2OD5um9Lhj3sBU8JS6T73jA2kttEYd9+/YHAU=; b=kvp8ROREZ4dZUH9+Z5
+	PAOHM7wNDyUcTpher80CVJv6EOajlX1EEbddjfk6VD2AcHXLuiEAQ7DLe9PLcijI
+	6b/HEpSMRLyKGEQS8a6DyaGjpEJMRj4T6b4Mc6XG7tkUFmL/ZQIQFluWjnopsoqo
+	/fLrjPn+YjvONPOWIVuouK87c=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD330OOLLlqjwJIBA--.47706S4;
+	Sun, 27 Sep 2026 22:47:47 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
+To: Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
 	Shenwei Wang <shenwei.wang@nxp.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Fabio Estevam <fabio.estevam@freescale.com>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Fabio Estevam <fabio.estevam@freescale.com>,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 2/7] net: fec: manage the netdev lifetime with devres
-Message-ID: <20260927143745.GA54546@francesco-nb>
-References: <20260927111005.1035089-1-yaojiale02@163.com>
- <20260927111005.1035089-3-yaojiale02@163.com>
+Subject: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
+Date: Sun, 27 Sep 2026 22:47:35 +0800
+Message-Id: <20260927144741.1320558-3-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260927144741.1320558-1-yaojiale02@163.com>
+References: <20260927144741.1320558-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260927111005.1035089-3-yaojiale02@163.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD330OOLLlqjwJIBA--.47706S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tFW3GF1ftw15JrW7uFy7trb_yoW8Wry5pF
+	WDJay09rykGr17W3WDJr48AFy5C3y7t34DW3yxK3yfZ3s0yr1qgr1kXFWj9r4rZrW8uF1S
+	gw4jvryfZ3Z8XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pKg4h7UUUUU=
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzRM4cmq5LJPHAwAA38
 
-On Sun, Sep 27, 2026 at 07:09:59PM +0800, Jiale Yao wrote:
-> fec_drv_remove() frees the netdev before devres releases the managed
-> IRQs whose handlers use it as their data pointer. A late interrupt can
-> therefore access the freed netdev.
-> 
-> Allocate the netdev with devres so that the later IRQ registrations are
-> released first during teardown.
-> 
-> Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
-> 
-remove the empty line, tags should be all together without any empty
-line in-between. same applies to the other commits.
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
+fec_drv_remove() frees the netdev before devres releases the managed
+IRQs whose handlers use it as their data pointer. A late interrupt can
+therefore access the freed netdev.
 
-Francesco
+Allocate the netdev with devres so that the later IRQ registrations are
+released first during teardown.
+
+Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 794ec427b0ee..23e794a31ce8 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -5219,8 +5219,9 @@ fec_probe(struct platform_device *pdev)
+ 	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
+ 
+ 	/* Init network device */
+-	ndev = alloc_etherdev_mqs(sizeof(struct fec_enet_private) +
+-				  FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
++	ndev = devm_alloc_etherdev_mqs(&pdev->dev,
++				       sizeof(struct fec_enet_private) +
++				       FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
+ 	if (!ndev)
+ 		return -ENOMEM;
+ 
+@@ -5480,8 +5481,6 @@ fec_probe(struct platform_device *pdev)
+ failed_phy:
+ 	dev_id--;
+ failed_ioremap:
+-	free_netdev(ndev);
+-
+ 	return ret;
+ }
+ 
+@@ -5522,7 +5521,6 @@ fec_drv_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	fec_enet_deinit(ndev);
+-	free_netdev(ndev);
+ }
+ 
+ static int fec_suspend(struct device *dev)
+-- 
+2.34.1
 
