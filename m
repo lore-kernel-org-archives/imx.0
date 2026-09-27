@@ -1,111 +1,227 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA60C370AE6;
-	Sun, 27 Sep 2026 11:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27D0325701;
+	Sun, 27 Sep 2026 11:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790507180; cv=none; b=IddV5Nv/zjs4gYiXsdH6JRSkyrG/t02E+/VKS1F557Z4MkrNAt7hbrI3iDylYUe6tlrfv/QU3xqZDjVc6L89a0Wdt5JXwYoyXhtn1mwHTvapeC8PXmSV0pJcCbv4/DjFLdEuyzcAXdlQq+Q/KVc5E3gkmh52jGzR2CpFsjG1Akk=
+	t=1790507182; cv=none; b=mdaPigdoGGLou8yGcfJlhduPI2HTIHkWSdjSIsPOGY68hYe5EbyGH34aZCxw9OiUxkDgUt/uFCRgx2SwSPkufiBijDrq2HwRXcUiaqGr5jBLfZg3Ug2xvr/+WP5C/VwumX2Vnjkl5rHBLxrmRdQ8ylmhGGuC4QITSu04X1+ldT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790507180; c=relaxed/simple;
-	bh=4h9O/mP+IHhjssNlf+JKcrJQfx57DzUQrt/uVF/HtDc=;
+	s=arc-20240116; t=1790507182; c=relaxed/simple;
+	bh=+pVA1iXSHqs9q2ZHa7xQQFkUHymXZR7IMFn0p1242qM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hg2Wio4hIloEiuEc522CJKGu/V5lUTLth46hm5079XLkd4Whho1hAB7/XHVVbLLYBpwEZW0UJSr+T5GKD64tTlF+9OjCIFTMOBGhiu933SwVPrUBS+srWgEhZk62j/q9LP31acaOg/T85sLXY6BtTGNyH1ZN92YH6ILGzxzFGL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SF2rQVJl; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=W09lCwmaw/TG86NnHC3tSQ4jXCNOwnwou5GYblf00fXTKJuolgeW2mgPlCCfRfyPev9mHKoZU1JMZKvH5gIiD4r87YlcfCjyBaVDqOBHCgONU6Z5EKB/TEsGzw1b1NSbUs80s8bfKNeXUkJ2s9rvkWEo3WanWR+bvLzOQuZyArs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lh0RL92E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SF2rQVJl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED1E1F00893;
-	Sun, 27 Sep 2026 11:06:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lh0RL92E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DE81F00898;
+	Sun, 27 Sep 2026 11:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790507179;
-	bh=eaOpQpIW0Gfz+PtwPrCaFiguwStqjzxS/FcOo31TFYw=;
+	s=k20260515; t=1790507180;
+	bh=gQQK95yTGy1FLCZhb9mK4TT47ZmE9fHzg5a6Cs51I/Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SF2rQVJlCKoA9em1N8O1yUbYMYYGXagwcKn9HVWGG/RDKSc6MDODb4Uz1/KQSunY9
-	 6iEPifw/HzEBLkLP6mM/03wwHu8I9EyDyUU3YaYKe4iMgAQZmnz9iYNUR7bq+zUVTR
-	 dVd/5C8Q4l9t08ZIQyJHokaSJ3NJDU6nVUm8tWw4RRld2Lb/aNXl8YwqynLTE40VS8
-	 FFEUWpaWyzsuNEWaZvSE+AVk2VCeAuGqFArKGi/CMFb6uiNd7Py5SF8CjHQ0ZthktK
-	 uYThfRPl54hTu9wvwwmsbKBIJVh7Piv3jEFGcZ3mLF+UwFO/K3Gvqs6ISUFeyuWAmU
-	 fjDeM3qVZBpjQ==
+	b=lh0RL92E5KVOVxH7b8CvHXMCfX3xnhbisjfwqH3D0BzwXCA360YuAmsUBoSyaMx/h
+	 DmAA53Za8/A5c0iA5kQ4PbbDNiboYuZFxYAg0qe3IXKgrGzQwAqmBc0gSSZ7BPg5/D
+	 0wz3JeL4q/xBg3YRLugLmrg5O5EGUqsWAjYAFYS1ugxMedLwk9lQ5nNqW7mNI3/atG
+	 MsUUKORRSAzg16LQvU92ZKB5rshlBtw6Xdzy7Aot3X/m3tlwp5JM13dietkU/YeJDO
+	 SEbvszUJUEBt1038J/2c7xAbe/QeZKB1GYsXFCAZWsbakxZLFzqWpmt5IdaNsp/2Db
+	 VqYr4Mi0qWS7w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 03/11] ARM: dts: imx6ul: Add Variscite SoM and DART
- base files
+Subject: Re: [PATCH v2 05/11] ARM: dts: imx6ul: Add Variscite storage and
+ wireless files
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
-In-Reply-To: <888149bd87b619a1706d3befefa5f873d746a9dc.1790413032.git.stefano.r@variscite.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <656354d10e3adb6ac84fdc0c6fa2043db7320805.1790413032.git.stefano.r@variscite.com>
 References: <cover.1790413032.git.stefano.r@variscite.com>
- <888149bd87b619a1706d3befefa5f873d746a9dc.1790413032.git.stefano.r@variscite.com>
+ <656354d10e3adb6ac84fdc0c6fa2043db7320805.1790413032.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 27 Sep 2026 11:06:18 +0000
-Message-Id: <20260927110619.2ED1E1F00893@smtp.kernel.org>
+Date: Sun, 27 Sep 2026 11:06:19 +0000
+Message-Id: <20260927110620.12DE81F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [Medium] Missing voltage constraints on touch_3v3_regulator break ADC sca=
-le
+- [High] dts: missing hardware power and reset sequence for Broadcom Wi-Fi
+- [High] dts: missing 'non-removable' property for Broadcom Wi-Fi SDIO inte=
+rface
+- [Low] dt-bindings: unnecessary #address-cells and #size-cells properties
+- [Low] dts: 100% code duplication for DART and SOM DTSI variants
+- [Low] dts: missing <dt-bindings/gpio/gpio.h> for GPIO_ACTIVE_LOW macro
 --
 
-commit 1c2bc49be02f8a5da660fe024ca1908ba6a36cd7
+commit dbf0c01eccfce8f34ad42234d4e5fd0873a0158d
 Author: Stefano Radaelli <stefano.r@variscite.com>
-ARM: dts: imx6ul: Add Variscite SoM and DART base files
 
-Add shared DTSI files for the VAR-SOM-6UL and DART-6UL modules and
-SoC-specific wrappers for i.MX6UL, i.MX6ULL and i.MX6ULZ.
+    ARM: dts: imx6ul: Add Variscite storage and wireless files
+   =20
+    Add reusable DTSI files for eMMC, NAND, Broadcom Wi-Fi and NXP IW61x
+    options on VAR-SOM-6UL and DART-6UL modules.
+   =20
+    Keep the module options independent of the carrier board so each
+    board DTS can select its assembled storage and wireless devices.
 
-Keep storage, audio and carrier options in separate DTSI files so
-board variants can include the hardware assembled on each board.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi b/arc=
-h/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-emmc.dtsi =
+b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-emmc.dtsi
 > new file mode 100644
-> index 0000000000000..3cbfea6e2b24c
+> index 0000000000000..26c8ca8f21a0c
 > --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
-> @@ -0,0 +1,205 @@
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-emmc.dtsi
+> @@ -0,0 +1,32 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+
+[Severity: Low]
+Does this file need to be separate? It is a 100% exact duplicate of
+imx6ul-imx6ull-var-som-emmc.dtsi.
+
+Could these variants be extracted into a shared file like
+imx6ul-imx6ull-var-common-emmc.dtsi to avoid duplication?
+
 [ ... ]
-> +	touch_3v3_regulator: regulator-touch-3v3 {
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-brcm.=
+dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-brcm.dtsi
+> new file mode 100644
+> index 0000000000000..d7952233a1ee9
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-brcm.dtsi
+> @@ -0,0 +1,42 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
+> + */
+> +
+> +/ {
+> +	reg_sd1_vmmc: regulator-sd1-vmmc {
 > +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "touch_3v3_supply";
-> +		regulator-always-on;
+> +		regulator-name =3D "VSD_3V3";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
 > +	};
 
-[Severity: Medium]
-Does the missing voltage constraints here break the ADC scale?
+[Severity: High]
+Does this regulator need a gpio property to drive WIFI_PWR_EN?
 
-Without regulator-min-microvolt and regulator-max-microvolt constraints,
-the voltage is unknown and regulator_get_voltage() returns -EINVAL.
+Without asserting WIFI_PWR_EN and providing an mmc-pwrseq to release
+WIFI_RESET, the SDIO interface might fail to detect the Broadcom hardware.
 
-The vf610-adc driver stores this error code in an unsigned integer variable
-(u32 vref_uv), causing an underflow to ~4.29 billion.
+Also, is the bluetooth node intended to be omitted here compared to the
+IW61X configurations?
 
-This garbage value is then exposed to userspace as the channel's scale when
-reading in_voltageX_scale sysfs attributes, breaking functional ADC
-measurements.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi b/arch=
-/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
-> new file mode 100644
-> index 0000000000000..7c778adfeb13e
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
-> @@ -0,0 +1,201 @@
 [ ... ]
-> +	touch_3v3_regulator: regulator-touch-3v3 {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "touch_3v3_supply";
-> +		regulator-always-on;
+
+> +&usdhc1 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+
+[Severity: High]
+Should this node include the 'non-removable' property?
+
+Since the Broadcom Wi-Fi chip is physically soldered onto the module, does
+the SDIO host controller need this property to properly initialize without
+falling back to spurious polling?
+
+[ ... ]
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x=
+.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x.dtsi
+> new file mode 100644
+> index 0000000000000..4d47cea982ec4
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wifi-iw61x.dtsi
+> @@ -0,0 +1,45 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+
+[ ... ]
+
+> +	iw61x_pwrseq: mmc-pwrseq {
+> +		compatible =3D "mmc-pwrseq-simple";
+> +		post-power-on-delay-ms =3D <100>;
+> +		power-off-delay-us =3D <10000>;
+> +		reset-gpios =3D <&gpio5 6 GPIO_ACTIVE_LOW>, /* WIFI_RESET */
+> +			      <&gpio5 2 GPIO_ACTIVE_LOW>; /* WIFI_PWR_EN */
 > +	};
 
-[Severity: Medium]
-Does this duplicated definition also miss the voltage constraints and break
-the ADC scale in the same way?
+[Severity: Low]
+Does this file need to explicitly include <dt-bindings/gpio/gpio.h>?
+
+Since the GPIO_ACTIVE_LOW macro is used here, missing the header might cause
+dtc build failures if a parent file does not implicitly include it.
+
+[ ... ]
+
+> +&usdhc1 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+
+[Severity: Low]
+Are these properties necessary here?
+
+Since there are no child nodes declared under usdhc1 for the iw61x variant,
+having these properties might trigger the avoid_unnecessary_addr_size dtc
+warning.
+
+[ ... ]
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.d=
+tsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.dtsi
+> new file mode 100644
+> index 0000000000000..d7952233a1ee9
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-brcm.dtsi
+> @@ -0,0 +1,42 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+
+[Severity: Low]
+Does this file need to be separate? It is a 100% exact duplicate of
+imx6ul-imx6ull-var-dart-wifi-brcm.dtsi.
+
+Could these variants be extracted into a single shared file to avoid
+code duplication?
+
+[ ... ]
+
+> +&usdhc1 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+
+[Severity: High]
+Should this node include the 'mmc-pwrseq' assignment to properly drive
+WIFI_RESET, as well as the 'non-removable' property?
+
+Since the Broadcom Wi-Fi chip is physically soldered onto the module,
+omitting these might prevent proper initialization and hardware probing.
+
+[ ... ]
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-iw61x.=
+dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-iw61x.dtsi
+> new file mode 100644
+> index 0000000000000..4d47cea982ec4
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wifi-iw61x.dtsi
+> @@ -0,0 +1,45 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+
+[ ... ]
+
+> +&usdhc1 {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+
+[Severity: Low]
+Are these properties needed?
+
+Without child nodes under this usdhc1 block, this might generate an
+avoid_unnecessary_addr_size dtc warning.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790413032.gi=
-t.stefano.r@variscite.com?part=3D3
+t.stefano.r@variscite.com?part=3D5
