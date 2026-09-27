@@ -1,102 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99483331EB9;
-	Sun, 27 Sep 2026 15:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2060A95E;
+	Sun, 27 Sep 2026 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790521606; cv=none; b=co6DGDVq8ca+Qvi0Y6MDvnDsEY5++vVSBLLWz37z7w1yorvHCXeH2ExUSEEUVUltRoxw+tAp1dcNTZMlBubak/YnPLvs3yNFLNTSckUq56X8pL9go/aBUVFrcC51mn4OwQuR9ScwHq5vz78TRvQ8MKWCwCNve0PRUyZWL7z5K0w=
+	t=1790526527; cv=none; b=QvRnTzhWYChahQoZpAr6+0lbuuHcHKGGcBmargjrZjSYqBZygKzbEf3y0woR+xduWPtH7bSxka1KHbRAzWjE+sysbvkng0SCKsBVxZmkydyji7lV5yUvsZ8i2vTlOv4AkaKavhAtfLEymfSAVTdELVzr1O+9m9OQIzjcetCN/Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790521606; c=relaxed/simple;
-	bh=xaIvBVMfsmSt9asnOfz6P8Mr2aTmlAU1GjqQl+6mpY4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KZAfSG8Kqr/NOral+Ih79226xfh9q3ZkI2kdowvGFWiGt16OMyPZex74tJFrgBQ5t+W2ioEAFm8jiq3SIS/47WMwfwcCjASNwjLXX/68sWzvdrepYgGxFr06ZGIZyi+nEicXCpdC2r4V0qMQiuUXvDzou9fT3QUvuR8AW5AyawU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZxAvyVq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790526527; c=relaxed/simple;
+	bh=GaoFGR/U8AnSRE2ORrERi1yxh49b+gMt/mOM6hnbA3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mtNpiFQlQuJ2fxlX++UofvscJDU+0zJReEOwBUtB1kqrr5/8fiUWImlLOCbwOwYEqsmqvd/G6N3Vko78Ihoo7hry08np9I1c/fmRDiEyroRwtfGejMNYULhtGyOeIaNtKnjT/AiezSCy9UeDozhy5szmIAvvMHTUG2CxlPP88gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oL9nLs4e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZxAvyVq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65E21F000FF;
-	Sun, 27 Sep 2026 15:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790521605;
-	bh=1VvCMUObEM+J7A8tDNVaIAaqxzSCAlvELO5nZQjZnPo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OZxAvyVq2XLqlaRDZAYhsOQdKPVZV8P9hCMPORi8IFuKlvO8ziVO4hhLB+HpRigy9
-	 wFzep0u08RCxqzJcb+zha8QyOuF4KTpwV06wpLHhCgiNBjO38dWd/Tq8IjTqrmImHM
-	 pR0nc8b2GYRu2dcFEFYS7VmFdMrYdMrRpr189D/5203Jd9nZRVF8HheqoU9EkBVOn+
-	 JMaCtbBWe0uOxoukaCo8bJ8R0a4u989fi71RpyLDT4JZSFSMUU0+j4lvbCxbjiFXf6
-	 yhTmPz6x4hGVTNGeKn6HEdpPXcGRpqBmEr9GBx7fUuFUlM0nTkQCUbaPEKTFpFUDHa
-	 Ah2rhmR0QLNOQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 3/4] power: supply: bq25890: Add input voltage limit
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vincent Cloutier" <vincent.cloutier@icloud.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260927145538.233548-4-vincent.cloutier@icloud.com>
-References: <20260927145538.233548-1-vincent.cloutier@icloud.com>
- <20260927145538.233548-4-vincent.cloutier@icloud.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 27 Sep 2026 15:06:44 +0000
-Message-Id: <20260927150644.D65E21F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oL9nLs4e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD55E1F000FF;
+	Sun, 27 Sep 2026 16:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1790526525;
+	bh=kDDyjoZTZprDt7lf4HgFNIEtYfMAuyIz4FaZ2Epncis=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oL9nLs4ermSQVs41sLxGo4H+/m6Gu4an7pR4I633+8wSH/ucDccrzZoszHYD7dCzL
+	 ElUMXZcx1vl1YzrSvqTTp7zLpArutUPMAXVHjC7jWn6jYWLpJ8jiXXFafJ3Hu+xfc9
+	 Vj8lHhHYI9JG1cTJJX3vKlwL4m8uZAMOQazOZnsI=
+Date: Sun, 27 Sep 2026 18:28:42 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdown
+ and remove
+Message-ID: <2026092715-deftly-strainer-c8a3@gregkh>
+References: <20260819021916.442827-1-fanwu01@zju.edu.cn>
+ <2026092332-limes-washhouse-44a5@gregkh>
+ <20260927143550.608878-1-fanwu01@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260927143550.608878-1-fanwu01@zju.edu.cn>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] power/supply: transient VINDPM limit due to write sequence
---
+On Sun, Sep 27, 2026 at 02:35:50PM +0000, Fan Wu wrote:
+> Hi Greg,
+> 
+> Honestly: when I sent the patch it was compile-tested only
+> (CONFIG_SERIAL_IMX=m, drivers/tty/serial/imx.o rebuilt with no warnings).
+> I should have said so.  There was no runtime test behind it.
 
-commit 3c4a08cfdbd118c7f60e9223379cfa47c0168057
-Author: Vincent Cloutier <vincent@cloutier.co>
+Sorry, I have no context here as you top-posted and did not include any
+context.  Please don't do that.  Remember, some of us get 1000+ emails a
+day...
 
-power: supply: bq25890: Add input voltage limit
-
-The BQ25890 family supports an absolute input voltage dynamic power
-management threshold. Read input-voltage-limit-microvolt from firmware,
-enable absolute VINDPM, and then program the requested threshold.
-
-> diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/suppl=
-y/bq25890_charger.c
-> index 741a45cc5f35d..71d6cf1796674 100644
-> --- a/drivers/power/supply/bq25890_charger.c
-> +++ b/drivers/power/supply/bq25890_charger.c
-
-[ ... ]
-
-> @@ -814,18 +818,67 @@ static int bq25890_get_chip_state(struct bq25890_de=
-vice *bq,
->  	return 0;
->  }
-> =20
-> +static int bq25890_set_vindpm(struct bq25890_device *bq)
-> +{
-> +	int ret;
-> +
-> +	if (!bq->init_data.force_vindpm)
-> +		return 0;
-> +
-> +	ret =3D bq25890_field_write(bq, F_FORCE_VINDPM, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return bq25890_field_write(bq, F_VINDPM, bq->init_data.vindpm);
-> +}
-
-[Severity: Medium]
-Does writing F_FORCE_VINDPM before F_VINDPM create a transient VINDPM limit?
-
-Because these fields are written via separate read-modify-write I2C
-transactions, enabling F_FORCE_VINDPM before setting the actual F_VINDPM
-threshold creates a brief window where the charger explicitly enforces
-whatever stale limit was previously in the register.
-
-If this stale limit is too high for the current input source, could it
-cause momentary input current throttling during device initialization,
-resume, or cable insertion?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260927145538.2335=
-48-1-vincent.cloutier@icloud.com?part=3D3
+greg k-h
