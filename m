@@ -1,84 +1,109 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58064AB3D4
-	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 11:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA694ABBCC;
+	Mon, 28 Sep 2026 11:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790595639; cv=none; b=fmFqt9d+hdOKRaUnb9Sf4x1lFSEftIxeKVca1A6vVEhFxd74yipI2rxazy748cczfDuw2fL0jT1JqOQUHIfuAZAY3lA5dC91IDvWnhSGpCkXiDV+n+0ZzhE6vMhjLNPTmZXTvabs+AsAsAVexTLJs5D6qqXGUFT1byS7JwykL4A=
+	t=1790595943; cv=none; b=SkxrcOpOGo5OxbNkeOnqwPOTSX8yRGKSvyvbQxgXKdoCwojNooVCQ828Onb3675vN42OBekjozxg4NqTNRLtGMQ3J1jd2ohGgDKZ3JO4JY+4uS63+yjODxdohD47fbOWZ0Rf/RMuF6UHshYIqA8OTghoafL1340XXoH9udbLPEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790595639; c=relaxed/simple;
-	bh=PwQabp7vFQkCJip/+vQsLqJ30uasUYxGcmKrjVXqZsk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oMEQENd63xGjVTUVpRp4oeiMFEJnzTzEgT9lZgrbppCRVPCLAyUIpwua5tvwzTunTNbtZXtIJPhn4z2tbku++fdDT8PUuGQdtetZRT0CAXM86uTIEzYDulWoliZn7JWceVbSDIL82iyEPGJ/f1YWOizfeGPl25CW15bWbDNKYr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Rxelkcja; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1790595943; c=relaxed/simple;
+	bh=e+52jJ9jaL3CmNOBgW6VBGnbc1ROvbMtnuuxRgQ5TcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GQXc6D+J4e2+AKVs83Ik4lXawyVsZGODsY1yY+UxYthI91wtgvhgCg44JbmnJFtmb/zql6a6DPLc33NZyuIMn3QHB1yk7PrwiZJi1R64AJOwd+ZuJ3bxtveVtp61wFXo/RU8HQy07pwIrcuuh1CPgbrHehzoaJlRuoV6jqldOTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=l05XfVCO; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Rxelkcja"
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 692D21FCAD;
-	Mon, 28 Sep 2026 13:40:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1790595627;
-	bh=ck+TzNVilqQY/t61zy/0IPuuHN9u4piAsUrgySTcPUs=; h=From:To:Subject;
-	b=RxelkcjaRglR3eb2moD+QraCo7PnUyVi/lf+U/cFdD3THIO9n9mylKZp73EuOyyut
-	 5ocDi2VCuvtdt7gyFEvLG5s94oX0jVT1W0rIQvqjuJw+JFGr7SbLIHDJe+zyz7p7b8
-	 JZXWmQoIQpl2WFqNOrgaQwj9I23fxizVRLlnOKq6Zxc/jr2vimC+pzQYuCWaishCCe
-	 30QxymNkbJNqitbj7E5BhLoe6NrBVDENaVe2YGhzAIJvJiQXbRNQ2ECpKYmfn4Ar5j
-	 2SI8yxIvZNRelfBXdePXtKtG4M3EI3Pg0BYZF18yyS/VKPe8DaUgLO0Yeb89aqjV8/
-	 0QdpeUkZPFlMw==
-Date: Mon, 28 Sep 2026 13:40:22 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: Re: [PATCH v5 0/4] drm: mxsfb: Support LCDIF interface bus width
-Message-ID: <20260928114022.GA67479@francesco-nb>
-References: <20260917140042.118181-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="l05XfVCO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=z2vdG/ru8rw1Y5ayEWt8P3IH0H9UUvdg+EVu0ifmHCE=; b=l05XfVCOFvsk9DdwzUCAsnavXx
+	PJO1n1k0F9xm4SEFbbmjUhhQK63SKyApZsdpzEY5RB+fpBBNxTJwzqESP6kTSv5J6N66COgaDQcfZ
+	o0vlA5aRL2RjNSwftywHozraCEogY9FOGiCmHQPbXjrbk9P73Qb+mHtufFr9AaJyUtvVcvVuPl+oF
+	QCL4awUXjwwGTDj8p4pR78dQo8TTXtkgvNaFRnNGezTpeQTJSftzaaE4mbq6mGC2fq9L1xID+ApWD
+	amIGNKryYAeC+JWIMu68jQ/jx1AqpLDyEYf8vsE+VRZpZqeabfFmHLR35EJOperLZyUQEOk2RJl91
+	HnYeO3hQ==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xB9ne-000M8U-33;
+	Mon, 28 Sep 2026 13:45:39 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xB9nd-0007Qc-1D;
+	Mon, 28 Sep 2026 13:45:38 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Krzysztof =?utf-8?B?V2lsY3p5xYRza2k=?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI: imx6: Use dev_err_probe
+Date: Mon, 28 Sep 2026 13:45:36 +0200
+Message-ID: <3441664.44csPzL39Z@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260619112535.1127850-1-alexander.stein@ew.tq-group.com>
+References: <20260619112535.1127850-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917140042.118181-1-francesco@dolcini.it>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28137/Mon Sep 28 08:24:12 2026)
 
-Hello,
+Hi,
 
-On Thu, Sep 17, 2026 at 04:00:35PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> The width of the physical LCDIF output bus can differ from the input bus
-> format advertised by the downstream panel or bridge.
+Am Freitag, 19. Juni 2026, 13:25:33 CEST schrieb Alexander Stein:
+> pci_pwrctrl_power_on_devices() might return -EPROBE_DEFER resulting in
+> an error message. Use dev_err_probe to silence this non-error message.
+>=20
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+Is there anything missing after receiving Frank's r-b?
+
+Thanks and best regards
+Alexander
+
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 98e1db751132a..b7a502e9a1c59 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1381,7 +1381,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+> =20
+>  	ret =3D pci_pwrctrl_power_on_devices(dev);
+>  	if (ret) {
+> -		dev_err(dev, "failed to power on pwrctrl devices\n");
+> +		dev_err_probe(dev, ret, "failed to power on pwrctrl devices\n");
+>  		goto err_pwrctrl_destroy;
+>  	}
+> =20
+>=20
 
 
-Can the first two patches be picked-up by some DRM bridge maintainer
-(Luca?), so that once they are in next, Frank can pick-up the two DT
-patches?
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Thanks a lot, appreciated
-Francesco
 
