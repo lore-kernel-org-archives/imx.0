@@ -1,101 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1786B4D1790;
-	Mon, 28 Sep 2026 13:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DFE1F8723;
+	Mon, 28 Sep 2026 13:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790603393; cv=none; b=U1up4hSGNmUchR6FI5oAbYieqacU/QNhwHnmhFt0hj2sid0rmsessmcTVv7G7DhtNvUD0nR2V8pL84tSlwNnncHvjkWG+z5OVFguuX4P1Xc44nJc5QD8mK1Y19ZDg5H991wo9wV9gqD5iXlRmxnxlAJ17hd3HtbcWf25vA9vnuM=
+	t=1790603706; cv=none; b=KgooLTCOecP5ulA4+eB92UCwKDk+qCihxCfOlrBNH5wC3Q/8Y+iib2KuCn0WrL9Ja6275ozV3BeqzNYXsU8NRITs6+39aNItN2DUWb8kTEXMH68HKYWp9OsyWmBtwfFHTIRwJwKK4bOMht+hhCBObcLhm5Wvl2LRrHbqAF4EoXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790603393; c=relaxed/simple;
-	bh=6c3Ov9/W6SQNfFxGr+9p4dhjPVm+YEtqa/HcaGKCd5Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Zt3Jlovg3Oxqp+ui7Td8Hbg5xb7FxgzBPTMeXMthKeXe8OId1DaoE1BwF22KBh7EGBbPmCsbek+QPO2jjjTkd+0VvGcJsZjwURLhSpF06wC1f+3oVQpempJakeGCOUIcny+xuVYKvwShIOse6jh3WDdp/ORQByCgTcWT31P4JA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7ouKAB4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790603706; c=relaxed/simple;
+	bh=YwByXUiGMAklKOA7Zjz8b+cHHloc/mFDlEje6fe+QZY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MzXZygGnb3lFcS6xf67+hBdIjBbKY/0PgtdiDuGKoRObP+n3YbRNRot0s9zVvUK/72WE8EZF+anEIipDKBgz4xyKDnZShRFPSMzQqckX2fgw1eig8s+nso6Lo4NtsdO7s1IDoqLrs3/gQ7zZuANBij9W+ESoYbQ60VNnFCNYZuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOw4exZx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7ouKAB4"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A84D2C2BCB3;
-	Mon, 28 Sep 2026 13:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790603392;
-	bh=6c3Ov9/W6SQNfFxGr+9p4dhjPVm+YEtqa/HcaGKCd5Y=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=O7ouKAB4YSDZ1dhd+C0+8bIkqBdnj1b0IyKgQC0eEtB9IpJ66VmvDHNC0OprXfPad
-	 Zc3bRNOcWpaI5CpvINTTgRDB9bb2Dzm4v/9uIoGVWAQ1WzoFlzH6f7mHWudqwdrHQh
-	 5Mkavg+jWN7LU9DVp2JItpi7CVqbyko3rcf/qNVWpz8U3RQhueU33ix56Gn9j4BISD
-	 vjUo4rCFSk/fZSzfLKJUvA1OcfEgAqOkZgNQEssEgOSPWd6U9ASBy08WyaRSWdJDHG
-	 eDVwdws6QHcmL6tNsJLVRBxCqEejDnDwaABqWKNXicTrAP+M6g/kfyxxmZ2ItVYCIF
-	 4FqD9KSi+oZ1Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91780C9833F;
-	Mon, 28 Sep 2026 13:49:52 +0000 (UTC)
-From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Mon, 28 Sep 2026 15:49:49 +0200
-Subject: [PATCH] arm64: dts: lx2160a: set #pinctrl-cells on the pinmux node
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOw4exZx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18DA1F000FF;
+	Mon, 28 Sep 2026 13:55:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790603705;
+	bh=//FSE1BSumy4RN7mFbu3/W3sCieDFRRAwnq0FJ08uDc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UOw4exZxPIy7QDvopnruO77NAj4N7kVq4LbhLQD8MLUKNMaQSxup6s6dsoa+iWSGB
+	 iO44e/q8OWtvsbwNqsMA98WrYeorlE+uEKAMQBmm80Jz4wEsdqevjdOCXvDUpM03j7
+	 C7XeJL4D67vnMAxDRBq300uTQRXhOKp2wiups+qHIkvFKqq+gvl/r27DPb/e/36VBC
+	 befUQR8j2MAHH2o32L834qbXgzLoZgDh1D6NOYtT58Jg4/e3VuUmPibEHQnXLrxPAT
+	 yUfAz+zf/ghBav5jTdZH0z0pxus7Lzu4OjTosQEaLCSbMyGDgXwHCd4I9yLW6l39pA
+	 cWE8GuKBfvmYQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] PCI: layerscape: async probe by default
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Vincent Jardin" <vjardin@free.fr>
+Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260928-for-upstream-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr>
+References: <20260928-for-upstream-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 28 Sep 2026 13:55:04 +0000
+Message-Id: <20260928135504.E18DA1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-for-upstream-lx2160a-pinctrl-cells-v1-1-4faa8a341cdd@free.fr>
-X-B4-Tracking: v=1; b=H4sIAHxwumoC/x3NwQrCMAyA4VcZORtoMzY7X0U81JppoHYlmTIYe
- 3eLx+/y/zsYq7DBpdtB+SsmS2nwpw7SK5YnozyagRyNbqKA86L4qbYqxzfmjfzoIlYpadWMiXM
- 2PNM09L0PdA8DtFBVnmX7T6634/gBemrjAXQAAAA=
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Vincent Jardin <vjardin@free.fr>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790603391; l=1124;
- i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=F0blJHgPfcv2wZhfmtzs3uZ/BwHnx9s7GUCpxGKKE58=;
- b=irunWbeaCOH99oscPjVx+F1HEvnbOdO2seB4xYU9BDCB3RpM5+MKE0iparZordCaXVEHrSPhv
- 6zGF3LvVep2Bpkr1OqmwgSdKeL9pdVIwYWpV8D1vQJ/p3nUBcRWYG5M
-X-Developer-Key: i=vjardin@free.fr; a=ed25519;
- pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
-X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
- auth_id=871
-X-Original-From: Vincent Jardin <vjardin@free.fr>
-Reply-To: vjardin@free.fr
 
-From: Vincent Jardin <vjardin@free.fr>
+> From: Vincent Jardin <vjardin@free.fr>
+>=20
+> dw_pcie_wait_for_link() polls for up to
+>   PCIE_LINK_WAIT_MAX_RETRIES x PCIE_LINK_WAIT_SLEEP_MS (10 x 90 ms)
+> per controller.
+>=20
+> The controllers are probed one after the other, so, it leads to slow
+> boot time.
+>=20
+> On an LX2160A board with 4 enabled controllers and no link on any
+> of them, ls_pcie_driver_init took almost 4s.
+>=20
+> Probing the 4 in parallel allows to have it down to 1s.
+>=20
+> The controllers are independent, other DWC based drivers are already
+> using async probing such as qcom, imx6, s32g, rcar-gen4 or stm32.
+>=20
+> Signed-off-by: Vincent Jardin <vjardin@free.fr>
 
-Currently, we have this message at boot time:
-  pinctrl-single 70010012c.pinmux: please update dts to use #pinctrl-cells = <2>
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Let's declare it in the DT instead, the value is the one the
-driver already uses, so nothing else changes.
-
-Signed-off-by: Vincent Jardin <vjardin@free.fr>
----
- arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-index bccf2d673023..2085362ab0ea 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-@@ -1536,6 +1536,7 @@ pinmux_i2crv: pinmux@70010012c {
- 			reg = <0x00000007 0x0010012c 0x0 0xc>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-+			#pinctrl-cells = <2>;
- 			pinctrl-single,bit-per-mux;
- 			pinctrl-single,register-width = <32>;
- 			pinctrl-single,function-mask = <0x7>;
-
----
-base-commit: bf184a29ad1b33bd8922029eb0ca3f2866007258
-change-id: 20260928-for-upstream-lx2160a-pinctrl-cells-729533182b85
-
-Best regards,
--- 
-Vincent Jardin <vjardin@free.fr>
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-for-upstre=
+am-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr?part=3D1
 
