@@ -1,321 +1,507 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011002.outbound.protection.outlook.com [52.101.65.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BAE4EC653
-	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 17:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790617127; cv=none; b=IsUp60R90ycCA1wW5ayy+f04VKzPd2PJhTZ198CX5UppCPA5ME/dTQrgQkm5vp4opnMgpI50TxgaiXxR2N8hiWxiU6SjD15gLHPDnFt8/nJg80wvAkf8EuSxW5j5i4qByNpo1K3yKn7rownX0JL85o47gVv9waRZMo/1bfykA3I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790617127; c=relaxed/simple;
-	bh=cm6LZOs9tdRPrtPe5gULRZnl8glTxitRamqWO2HjM6M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rCApxClvakfTIXCFQksdFHzfdwmmVJV9/2B5CgoMzkpkbyqG6UVBFak0YLCa+JtHLG1JmWdP0lKHvJ8geXPEXqAUJf57SRTqnrmGQTqTMh9Cq9B66TNSk0qn8qxR0L5LiQTYMqTceLcYlv1IAxSLf6IKEBzo+v2vf0wX/59TkWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=a+xFFDZj; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816DA377AB9
+	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 18:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790620387; cv=fail; b=rMsTOM7wQWOzk8z/dOdCC9sGgLgXZsRXnJO2TGa3t4imq4a46OIAEmH9Yv0oteFMTdxfBviRCx1aq/ciAnkk7jBEVEm633DA1VAK3FHOBC3ohpPwzhIve60hPoBVKGy02oIVesHoWxRmklKFLlvy72IBWBavMwhqbp5hXxPSPRk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790620387; c=relaxed/simple;
+	bh=wCO4tg1njNEMYwq5q88IFc5PVtb6grE15lCa6Asn9OU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LvIHfxWr1g8AURUBCJ8TbGUbH0u3IF7da5vH52fD6NXNXUt51dAeafaAZ6lYNBxZ6f7ITyznHwnoS/PCBiKBwLUJxQULX+QSM/PU2gxul0t8l9paswRTwAwY3PPGJBaQ83zluNA4yQKQtFIW8vFHJGCsDtca953ybWN07Ht3W90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=s3IeEqUi; arc=fail smtp.client-ip=52.101.65.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="a+xFFDZj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1790617123;
-	bh=cm6LZOs9tdRPrtPe5gULRZnl8glTxitRamqWO2HjM6M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=a+xFFDZjnOnyStni+kc3EARxHUeD+ZZcf1nfcaIhFDTcpkD2mKslaqK6bX5ZXQQWU
-	 Z8FKcmQtQPArlOVrR0HbBoE19w3XjgFxR5bJluabOiQbv8JqTNIjObhtUx74mNCmwg
-	 JqMH9a1arwVbdJtgmVlVWaD0I/Dn0r0JOQnXbAe/2I9iEDN+jYADmNJXheEEJLnYV5
-	 VSiOfowBoDOkU/I94ZxVIUZyN5wRIrYP67TZPr7ZZDdQTadlMZpCwp/YcK7l6nwRLe
-	 MxwEN4LmYOsfKhim3+HU9g75j2+wHRI9wTF/aYgr6LHEe69pvLHyj97/WeFV9ch6bL
-	 98s4Hi9lMrt3A==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id E12A117E007B;
-	Mon, 28 Sep 2026 19:38:41 +0200 (CEST)
-Message-ID: <7c4e321647646ee2dd15989765ce1d8260894a8f.camel@collabora.com>
-Subject: Re: [PATCH v5 1/3] media: verisilicon: Remove deprecated
- nxp,imx8mp-vpu variant
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	p.zabel@pengutronix.de, mchehab@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, 	conor+dt@kernel.org, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
- conor@kernel.org
-Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kernel@collabora.com
-Date: Mon, 28 Sep 2026 13:38:40 -0400
-In-Reply-To: <20260928080822.19553-2-benjamin.gaignard@collabora.com>
-References: <20260928080822.19553-1-benjamin.gaignard@collabora.com>
-	 <20260928080822.19553-2-benjamin.gaignard@collabora.com>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-YD8W0XNTTGrWR+Zg6iE7"
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="s3IeEqUi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M33ZweRNYTUVbzbGGeOyTuvMZXcUwwOAVN9xR4R3C44w1vM2zv6ResKr9bWWwVPToUTB8M2wWjR9uMaZ8ZJBtqoest1Lzwwsy14Cr6lO9243sPd6aezztl7toGpVtb1feh9NbhrLvwxOIRSCPpdUoV5pl40phl3PfIj0Xj47RK9nRZwX4A6P3VRinhfB+/d+Nb7xQlExZJA4mXngwwqDwJ6sEFbrlKi+HENN0Rso8f7pUyxpBePX3VH/b8rX3cyan8wPwJyGC9yvEEY5jUoXu0U/P2G6oQO+NpqHmyBC1awR6WlD42e2kviS+4OUF2dM67u761u0mouneYxPv0Slpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Usv14QyL/Dtec/T64ZW04K8J2cqw4VppuiTyKWpHrWM=;
+ b=aZqOhVNWwekvmP7glaC5uuKW+DNANanmL0emxUSn5wLHea8W409xRMSSWY5vGxWVPtbtJetqvTHLxLE+Zcj0yO7Q71iPRc5xQ9exyjZPfEijID+iUk0dToLIxM9ub/Ey9HlIqWzWtPu+Tmun0YjietRtKGz8E9dLTF52gKt+taLhYUf9NRqLEKo/4KU5i2LZ+6n7BSMRjs6IA2+JLpCgEKLJmqqQZS8YZ3zWnS6mQ+ZdYiNvy4+m5iBdCPvH7ToO7iGv+YQv+1aBnKTZyQeshLVaJ+Ck4sBXaigK4vmjpJwjYrH8HUhUc5gOupLRO6i33vHi1g8i9lYHv6sxdzh09A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Usv14QyL/Dtec/T64ZW04K8J2cqw4VppuiTyKWpHrWM=;
+ b=s3IeEqUiMgE8VaREit8s9squP4AVIIiycYouZRtDaQ0URi503rqiUBXCfsdcdE7vnDQr1sOxU5EYZv9VRq7c2W0ti0Wzz1pm4J8dKDTDmPGcxc8gSIwey/At8hLWTkYqCRK65RQyEgA2toZtd2jE9G3Qu8WRSz0iZPJ4d7N/o2BvHXFRgw+stTH/vPWmCooOgLi3tXxjzUsSpz9ddVvwsJwjwYSVoR7aHBaGWgk+Ux7RPviDBXhISGT/+Z43lDdBZ05komhJhiwyJLK+z7xpc/E9dR4al5xttfeMoGO9fPxRfg3fn/UUAv/KCc8veUSLuoVKe1zzPE3prAxf28uThg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DU6PR04MB11208.eurprd04.prod.outlook.com (2603:10a6:10:5c3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
+ 2026 18:33:01 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 18:33:01 +0000
+From: Frank.Li@oss.nxp.com
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Cunhao Lu <1579567540@qq.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Kendall Willis <k-willis@ti.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Matthias Feser <mfe@KBSgmbhfr.onmicrosoft.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	=?UTF-8?q?Stefan=20D=C3=B6singer?= <stefandoesinger@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	linux-kernel@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
+	linux-serial@vger.kernel.org (open list:TTY LAYER AND SERIAL DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES),
+	linux-samsung-soc@vger.kernel.org (open list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2 1/2] serial: use dmaengine_get_dma_device() instead of chan->device->dev
+Date: Mon, 28 Sep 2026 14:32:35 -0400
+Message-ID: <20260928183252.1965169-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CYXPR03CA0056.namprd03.prod.outlook.com
+ (2603:10b6:930:d1::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DU6PR04MB11208:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ab3de71-d7ef-45d9-540e-08df1d8eeced
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|19092799006|23010399003|18002099003|921020|6133799003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	ZwtISGOpYRAOPVKHcz5TkNJiXnx57279iZ/3dFqQr86oQoY91tIS5MwAI4izAM8TLzJSl1jnqh5YcjQ7eRQ5Jdngx6fojRS5GaNerMG/0iE/JbKNnhvhz2gpLUXQuRsS0l8qzxm4T171AoDK4/Ic/E8dM+jjV7y74s4KL47jFc+P9zVpKl/Tj1gld3qE69sY/K5Ul7ip2kAUur4REyWOA2irnmqROpga5D823qUBBKWsZMfEKTa1UtsummgQJOtDkdwlgL52OfVMynUCkC76gucs2Lu+uv0+W5TVz+oNT4nzy9Qw2/8kAt/TsWVMb4oSByls83v2IHMZHK43mSWKUOoeK7FEv0uA0dCvT0enz53W6VL5pe/x25CfLkz4wyWV5EkuK5ES/BOL0g0ZIkYNaLPm5cskdHY38YMQH5dLNJ2P5vUHxZEx2z5Tsaol5WUq4ysXyxlQ2hCPdIdLyp/yR9/Deb5h+RsrvlRYE8SNenncoZ1px88ZAJstzQ0L38+gheKS0KZSNKjjN42qWtPBkS5edCwpzMUTEyLjiRzraUImDyVXZ+9CbIAtPxSMKv4aIMNrJ5uasf6vwrUfC357C0+b7Fo6wZ4zQA3wx8uN//YQAmZ4KH/vf1zDwZwE38fgC+OTjVrbIRhP7NsmQblgaggQSjP4fd3tvABQRZ97+VM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(19092799006)(23010399003)(18002099003)(921020)(6133799003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zJx9x1r3nFyxCOE6OkQP5hj77lPUAZZDTgubmkJQigQN5HxK9zV+7/J2oZdn?=
+ =?us-ascii?Q?2XiDQVsLnk066Ti3wrO6Yi4tzLvjwJXLYXrk6BeueEIbXavfjmH9RnyYOIie?=
+ =?us-ascii?Q?A9XwCdjViRf7OEznhPhUJhotjTyQa7+A8WXiA8+q3T6h4aZnse0mUs5069rW?=
+ =?us-ascii?Q?x1fnSOFLcVFHY/7lgeLBB9rc8kwj2Fv3iQwTpxFJN/Xlzipc/osUI6vLd7o/?=
+ =?us-ascii?Q?fgRuD3nbmkgDnUppp8bC7GuD1opaSrK4FxUKsFU2sCcCeMRPgfe6XttaeJ6U?=
+ =?us-ascii?Q?9K5oB2axSE2YGPCBMtYt8y8zIB3OtYG9VIp1C8QIXBNzgmUNqFtGpG0xGCXG?=
+ =?us-ascii?Q?KaxaJGNmSd1URl4RwcM1IsMnE5Yzv93ksSR5Uc04vZDWXJR1fiJg6hmbux57?=
+ =?us-ascii?Q?xZkcO83N/Pb/c4oo0zIltNV0TLd1MqigTMg+QT6fPTd6U9WOewRu6odPiiyX?=
+ =?us-ascii?Q?OZuW9EFOVPcuw1Cl0oXit/u4ZVGhvjxYkOT2V8eO/T4TEYY7rAVUEUgSaLEm?=
+ =?us-ascii?Q?Ane84RxpiZPInG4Htzeu1RYDEK5iQioR/I2td+5GaKlPbxJlSOgniqr+UNbM?=
+ =?us-ascii?Q?U78WfIHBfnLrk3woWWx8PqgE/iDSFdSK9/pvhcMw5PM3YK5xtfsX/RpNiXia?=
+ =?us-ascii?Q?Xy7BdvWQvTbnqYdaj95J6cjolBxIiWfFEmxwAUpCVsXNy3Gd9jTux3LuOEMl?=
+ =?us-ascii?Q?pDRJ/jHjYhQDrvKUmUSQYYaeRURxIqm2lBuAFyG5GQVnpUMrmE0xC1gr4xqN?=
+ =?us-ascii?Q?CxryVxDKjYM8kZyACRbsBC1zh3s+i6EpUVAPG8CLw+a7E4+nQPJFl79uUfMt?=
+ =?us-ascii?Q?5SLbf/n0+gLHOX7CoHZq4n6YEPnkDWRkglsmkCss5IQRSBXNrjKYigRNSQzT?=
+ =?us-ascii?Q?gpq0CoAjUfFUr9VZbb0jaK4eF15/nDIg/Ei4itZ9X1QYpfYC0ZGX/NcwGDhf?=
+ =?us-ascii?Q?e0WhhY/UoAzB72y6de02wv8kiNT6lyBnCGNYlXesLRS48MITOzrSXUlXbx8j?=
+ =?us-ascii?Q?68C1dL5K0OvlrYBPh7NqGtoqBbM4JCnT92CTvn++CC60jkA49G1CJl9oPvPC?=
+ =?us-ascii?Q?r4IYu0SVxClQ3wko3tjABAWOtusNGrvy0mbyOCByifc7hUmO1PTXTceqku3w?=
+ =?us-ascii?Q?JdMv5NobCHHy2VeYIW1NVOiem2U/LB1E0Ifa3EAm7YgOBbf4VnTRzRiQlaZw?=
+ =?us-ascii?Q?AoPMqu/0ZUBrxgGCABKvzPVJfOjrHZEqIVAqa2cfdHhAQKYfnRRTWgVt6o0Z?=
+ =?us-ascii?Q?2csmH4eKVXPfxij4lGf3SBqeSjLB3UjdKcP/gpOHY22VgRRyKjkXDNTtiPt2?=
+ =?us-ascii?Q?UD+/Upp8lImPSLHOv1f3krKmJ5uV6ME8DvQp+L5NTUBE4zZPiC5lGG4+NcqV?=
+ =?us-ascii?Q?+oMvo7yDJyp/T9t33de35CYY7WvgSnx23epLGwHnA+v1E9TEwTzYIIrY0fcK?=
+ =?us-ascii?Q?aevEywZ+fag/O8OIPsIRv8wpRfkaw6Oz62/+9YpRdzZG/O4U7JY80G6GfhHM?=
+ =?us-ascii?Q?A/y3oY7HDyU/zAk7NWR7Oi1zsEQizrywmAJNGUGRz6K7lw1YlAfOymbsuDhb?=
+ =?us-ascii?Q?8OXkl0T92PjRt9sJuMhtja0xq34gaWhfCanmKy6jRMeybQZuBRsT9u6ouGtd?=
+ =?us-ascii?Q?q7fqQhNz/fsYUNSH/aVANR1wllGQaJqTtYv7kyc6m0EAnXXmxOuArTfSYVRD?=
+ =?us-ascii?Q?83ggjC8TD876fvslRd8pQ57w/D2grN3Ac6fDGjpEHYehBmVCNh4JTBA2rNLz?=
+ =?us-ascii?Q?3iwIWgSh5yn6qYsFRrPuEalxfp7FgNZzZtXaXdh+mgIB4dFLpum6?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ab3de71-d7ef-45d9-540e-08df1d8eeced
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 18:33:01.1058
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jh6SsZoQ8xVbL1I6/FLnhHawZx074oPV3jEFDrtCZZdllyYT70P5NeZswCjhvvyNUZ0Sn/jl4FF2EKDBj6jx7a/KSsUkUejaKgCDXjCXCk4ufOXcerOzGtuErzmmzEBA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11208
 
+From: Frank Li <Frank.Li@nxp.com>
 
---=-YD8W0XNTTGrWR+Zg6iE7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Replace direct dma_chan::device::dev access with the proper
+dmaengine_get_dma_device() for consumer API
 
-Hi,
+chan->device->dev is not always the device used for DMA mapping.
+Some DMA engines support per-channel IOMMU mappings, so different
+channels may use different DMA devices.  dmaengine_get_dma_device()
+returns the correct device for each channel.
 
-Le lundi 28 septembre 2026 =C3=A0 10:08 +0200, Benjamin Gaignard a =C3=A9cr=
-it=C2=A0:
-> "nxp,imx8mq-vpu" is tagged as deprecated since:
-> commit f3116f2e52e6 ("media: dt-bindings: media: nxp, imx8mq-vpu: Split G=
-1 and G2 nodes")
-> merged since v5.17-rc1. There is more reference to it since that.
-> Remove for driver to clean up the code.
+This also prepares for making the DMA engine provider data structures
+private. DMA consumers should not access DMA engine internals directly.
 
-There is not much sense to the above line, would you like to propose someth=
-ing.
->=20
-> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-> ---
->  .../media/platform/verisilicon/hantro_drv.c   |  10 --
->  .../media/platform/verisilicon/hantro_hw.h    |   1 -
->  .../media/platform/verisilicon/imx8m_vpu_hw.c | 117 ------------------
->  3 files changed, 128 deletions(-)
->=20
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
-dia/platform/verisilicon/hantro_drv.c
-> index ad71c0402ef3..12c804dcc669 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -725,7 +725,6 @@ static const struct of_device_id of_hantro_match[] =
-=3D {
->  #endif
->  #ifdef CONFIG_VIDEO_HANTRO_IMX8M
->  	{ .compatible =3D "nxp,imx8mm-vpu-g1", .data =3D &imx8mm_vpu_g1_variant=
-, },
-> -	{ .compatible =3D "nxp,imx8mq-vpu", .data =3D &imx8mq_vpu_variant, },
->  	{ .compatible =3D "nxp,imx8mq-vpu-g1", .data =3D &imx8mq_vpu_g1_variant=
- },
->  	{ .compatible =3D "nxp,imx8mq-vpu-g2", .data =3D &imx8mq_vpu_g2_variant=
- },
->  #endif
-> @@ -1100,15 +1099,6 @@ static int hantro_probe(struct platform_device *pd=
-ev)
->  	if (ret)
->  		return ret;
-> =20
-> -	/*
-> -	 * Support for nxp,imx8mq-vpu is kept for backwards compatibility
-> -	 * but it's deprecated. Please update your DTS file to use
-> -	 * nxp,imx8mq-vpu-g1 or nxp,imx8mq-vpu-g2 instead.
-> -	 */
-> -	if (of_device_is_compatible(pdev->dev.of_node, "nxp,imx8mq-vpu"))
-> -		dev_warn(&pdev->dev, "%s compatible is deprecated\n",
-> -			 match->compatible);
-> -
->  	INIT_DELAYED_WORK(&vpu->watchdog_work, hantro_watchdog);
-> =20
->  	vpu->clocks =3D devm_kcalloc(&pdev->dev, vpu->variant->num_clocks,
-> diff --git a/drivers/media/platform/verisilicon/hantro_hw.h b/drivers/med=
-ia/platform/verisilicon/hantro_hw.h
-> index 13e573f1f19d..865de26ffbce 100644
-> --- a/drivers/media/platform/verisilicon/hantro_hw.h
-> +++ b/drivers/media/platform/verisilicon/hantro_hw.h
-> @@ -405,7 +405,6 @@ enum hantro_enc_fmt {
->  extern const struct hantro_variant imx8mm_vpu_g1_variant;
->  extern const struct hantro_variant imx8mq_vpu_g1_variant;
->  extern const struct hantro_variant imx8mq_vpu_g2_variant;
-> -extern const struct hantro_variant imx8mq_vpu_variant;
->  extern const struct hantro_variant px30_vpu_variant;
->  extern const struct hantro_variant rk3036_vpu_variant;
->  extern const struct hantro_variant rk3066_vpu_variant;
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
-media/platform/verisilicon/imx8m_vpu_hw.c
-> index fa4224de4b99..0d6a71ae5f45 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> @@ -13,67 +13,6 @@
->  #include "hantro_g1_regs.h"
->  #include "hantro_g2_regs.h"
-> =20
-> -#define CTRL_SOFT_RESET		0x00
-> -#define RESET_G1		BIT(1)
-> -#define RESET_G2		BIT(0)
-> -
-> -#define CTRL_CLOCK_ENABLE	0x04
-> -#define CLOCK_G1		BIT(1)
-> -#define CLOCK_G2		BIT(0)
-> -
-> -#define CTRL_G1_DEC_FUSE	0x08
-> -#define CTRL_G1_PP_FUSE		0x0c
-> -#define CTRL_G2_DEC_FUSE	0x10
-> -
-> -static void imx8m_soft_reset(struct hantro_dev *vpu, u32 reset_bits)
-> -{
-> -	u32 val;
-> -
-> -	/* Assert */
-> -	val =3D readl(vpu->ctrl_base + CTRL_SOFT_RESET);
-> -	val &=3D ~reset_bits;
-> -	writel(val, vpu->ctrl_base + CTRL_SOFT_RESET);
-> -
-> -	udelay(2);
-> -
-> -	/* Release */
-> -	val =3D readl(vpu->ctrl_base + CTRL_SOFT_RESET);
-> -	val |=3D reset_bits;
-> -	writel(val, vpu->ctrl_base + CTRL_SOFT_RESET);
-> -}
-> -
-> -static void imx8m_clk_enable(struct hantro_dev *vpu, u32 clock_bits)
-> -{
-> -	u32 val;
-> -
-> -	val =3D readl(vpu->ctrl_base + CTRL_CLOCK_ENABLE);
-> -	val |=3D clock_bits;
-> -	writel(val, vpu->ctrl_base + CTRL_CLOCK_ENABLE);
-> -}
-> -
-> -static int imx8mq_runtime_resume(struct hantro_dev *vpu)
-> -{
-> -	int ret;
-> -
-> -	ret =3D clk_bulk_prepare_enable(vpu->variant->num_clocks, vpu->clocks);
-> -	if (ret) {
-> -		dev_err(vpu->dev, "Failed to enable clocks\n");
-> -		return ret;
-> -	}
-> -
-> -	imx8m_soft_reset(vpu, RESET_G1 | RESET_G2);
-> -	imx8m_clk_enable(vpu, CLOCK_G1 | CLOCK_G2);
-> -
-> -	/* Set values of the fuse registers */
-> -	writel(0xffffffff, vpu->ctrl_base + CTRL_G1_DEC_FUSE);
-> -	writel(0xffffffff, vpu->ctrl_base + CTRL_G1_PP_FUSE);
-> -	writel(0xffffffff, vpu->ctrl_base + CTRL_G2_DEC_FUSE);
-> -
-> -	clk_bulk_disable_unprepare(vpu->variant->num_clocks, vpu->clocks);
-> -
-> -	return 0;
-> -}
-> -
->  /*
->   * Supported formats.
->   */
-> @@ -234,45 +173,10 @@ static const struct hantro_fmt imx8m_vpu_g2_dec_fmt=
-s[] =3D {
->  	},
->  };
-> =20
-> -static int imx8mq_vpu_hw_init(struct hantro_dev *vpu)
-> -{
-> -	vpu->ctrl_base =3D vpu->reg_bases[vpu->variant->num_regs - 1];
-> -
-> -	return 0;
-> -}
-> -
-> -static void imx8m_vpu_g1_reset(struct hantro_ctx *ctx)
-> -{
-> -	struct hantro_dev *vpu =3D ctx->dev;
-> -
-> -	imx8m_soft_reset(vpu, RESET_G1);
-> -}
-> -
->  /*
->   * Supported codec ops.
->   */
-> =20
-> -static const struct hantro_codec_ops imx8mq_vpu_codec_ops[] =3D {
-> -	[HANTRO_MODE_MPEG2_DEC] =3D {
-> -		.run =3D hantro_g1_mpeg2_dec_run,
-> -		.reset =3D imx8m_vpu_g1_reset,
-> -		.init =3D hantro_mpeg2_dec_init,
-> -		.exit =3D hantro_mpeg2_dec_exit,
-> -	},
-> -	[HANTRO_MODE_VP8_DEC] =3D {
-> -		.run =3D hantro_g1_vp8_dec_run,
-> -		.reset =3D imx8m_vpu_g1_reset,
-> -		.init =3D hantro_vp8_dec_init,
-> -		.exit =3D hantro_vp8_dec_exit,
-> -	},
-> -	[HANTRO_MODE_H264_DEC] =3D {
-> -		.run =3D hantro_g1_h264_dec_run,
-> -		.reset =3D imx8m_vpu_g1_reset,
-> -		.init =3D hantro_h264_dec_init,
-> -		.exit =3D hantro_h264_dec_exit,
-> -	},
-> -};
-> -
->  static const struct hantro_codec_ops imx8mq_vpu_g1_codec_ops[] =3D {
->  	[HANTRO_MODE_MPEG2_DEC] =3D {
->  		.run =3D hantro_g1_mpeg2_dec_run,
-> @@ -319,30 +223,9 @@ static const struct hantro_irq imx8mq_g2_irqs[] =3D =
-{
->  	{ "g2", hantro_g2_irq },
->  };
-> =20
-> -static const char * const imx8mq_clk_names[] =3D { "g1", "g2", "bus" };
-> -static const char * const imx8mq_reg_names[] =3D { "g1", "g2", "ctrl" };
->  static const char * const imx8mq_g1_clk_names[] =3D { "g1" };
->  static const char * const imx8mq_g2_clk_names[] =3D { "g2" };
-> =20
-> -const struct hantro_variant imx8mq_vpu_variant =3D {
-> -	.dec_fmts =3D imx8m_vpu_dec_fmts,
-> -	.num_dec_fmts =3D ARRAY_SIZE(imx8m_vpu_dec_fmts),
-> -	.postproc_fmts =3D imx8m_vpu_postproc_fmts,
-> -	.num_postproc_fmts =3D ARRAY_SIZE(imx8m_vpu_postproc_fmts),
-> -	.postproc_ops =3D &hantro_g1_postproc_ops,
-> -	.codec =3D HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
-> -		 HANTRO_H264_DECODER,
-> -	.codec_ops =3D imx8mq_vpu_codec_ops,
-> -	.init =3D imx8mq_vpu_hw_init,
-> -	.runtime_resume =3D imx8mq_runtime_resume,
+Assisted-by: LLM
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change in v2
+- remove drivers/tty/serial/pch_uart.c param_dma->dev == chan->dev->dev
+  change, which need specific get dmaengine devices, not channel device to
+  filter channel. A new API needed, will update later.
+- fix args warp according andy's feeback.
 
-Spotted by Sashiko, the function pointer is no longer used, and
-hantro_runtime_resume() in PM OPS is now a no-op.
+Check all unders driver/tty/ by rename device to _device in dma_chan struct
+with all yes config.
 
-Nicolas
+Still few left, one for copy_align access, which need new API. some filter
+DMA channel, need new API to get provider devices.
 
-> -	.irqs =3D imx8mq_irqs,
-> -	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
-> -	.clk_names =3D imx8mq_clk_names,
-> -	.num_clocks =3D ARRAY_SIZE(imx8mq_clk_names),
-> -	.reg_names =3D imx8mq_reg_names,
-> -	.num_regs =3D ARRAY_SIZE(imx8mq_reg_names)
-> -};
-> -
->  static const struct of_device_id imx8mq_vpu_shared_resources[] =3D {
->  	{ .compatible =3D "nxp,imx8mq-vpu-g1", },
->  	{ .compatible =3D "nxp,imx8mq-vpu-g2", },
+In https://lore.kernel.org/imx/67966b47-22cb-4b07-80c7-2044f557dbcb@app.fastmail.com/
+There are better idea to move map singe/sg into dma prep functions.
 
---=-YD8W0XNTTGrWR+Zg6iE7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+But it takes more times, not straightforward works. Let replace this firstly,
+---
+ drivers/tty/serial/8250/8250_dma.c  | 29 ++++++++++++++++-------------
+ drivers/tty/serial/8250/8250_omap.c |  4 ++--
+ drivers/tty/serial/amba-pl011.c     | 12 ++++++------
+ drivers/tty/serial/samsung_tty.c    | 27 +++++++++++++++------------
+ drivers/tty/serial/sh-sci.c         | 14 ++++++++------
+ 5 files changed, 47 insertions(+), 39 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250/8250_dma.c
+index 5a83e5269b415..1da605cc86011 100644
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -19,7 +19,7 @@ static void __dma_tx_complete(void *param)
+ 	unsigned long	flags;
+ 	int		ret;
+ 
+-	dma_sync_single_for_cpu(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	uart_port_lock_irqsave(&p->port, &flags);
+@@ -136,7 +136,7 @@ int serial8250_tx_dma(struct uart_8250_port *p)
+ 
+ 	dma->tx_cookie = dmaengine_submit(desc);
+ 
+-	dma_sync_single_for_device(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				   UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	dma_async_issue_pending(dma->txchan);
+@@ -223,6 +223,8 @@ EXPORT_SYMBOL_GPL(serial8250_rx_dma_flush);
+ int serial8250_request_dma(struct uart_8250_port *p)
+ {
+ 	struct uart_8250_dma	*dma = p->dma;
++	struct device *rx_dev;
++	struct device *tx_dev;
+ 	phys_addr_t rx_dma_addr = dma->rx_dma_addr ?
+ 				  dma->rx_dma_addr : p->port.mapbase;
+ 	phys_addr_t tx_dma_addr = dma->tx_dma_addr ?
+@@ -282,24 +284,25 @@ int serial8250_request_dma(struct uart_8250_port *p)
+ 
+ 	dmaengine_slave_config(dma->txchan, &dma->txconf);
+ 
++	rx_dev = dmaengine_get_dma_device(dma->rxchan);
++	tx_dev = dmaengine_get_dma_device(dma->txchan);
++
+ 	/* RX buffer */
+ 	if (!dma->rx_size)
+ 		dma->rx_size = PAGE_SIZE;
+ 
+-	dma->rx_buf = dma_alloc_coherent(dma->rxchan->device->dev, dma->rx_size,
+-					&dma->rx_addr, GFP_KERNEL);
++	dma->rx_buf = dma_alloc_coherent(rx_dev, dma->rx_size, &dma->rx_addr,
++					 GFP_KERNEL);
+ 	if (!dma->rx_buf) {
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+ 
+ 	/* TX buffer */
+-	dma->tx_addr = dma_map_single(dma->txchan->device->dev,
+-					p->port.state->port.xmit_buf,
+-					UART_XMIT_SIZE,
+-					DMA_TO_DEVICE);
+-	if (dma_mapping_error(dma->txchan->device->dev, dma->tx_addr)) {
+-		dma_free_coherent(dma->rxchan->device->dev, dma->rx_size,
++	dma->tx_addr = dma_map_single(tx_dev, p->port.state->port.xmit_buf,
++				      UART_XMIT_SIZE, DMA_TO_DEVICE);
++	if (dma_mapping_error(tx_dev, dma->tx_addr)) {
++		dma_free_coherent(rx_dev, dma->rx_size,
+ 				  dma->rx_buf, dma->rx_addr);
+ 		ret = -ENOMEM;
+ 		goto err;
+@@ -326,14 +329,14 @@ void serial8250_release_dma(struct uart_8250_port *p)
+ 	/* Release RX resources */
+ 	dmaengine_terminate_sync(dma->rxchan);
+ 	dma->rx_running = 0;
+-	dma_free_coherent(dma->rxchan->device->dev, dma->rx_size, dma->rx_buf,
+-			  dma->rx_addr);
++	dma_free_coherent(dmaengine_get_dma_device(dma->rxchan), dma->rx_size,
++			  dma->rx_buf, dma->rx_addr);
+ 	dma_release_channel(dma->rxchan);
+ 	dma->rxchan = NULL;
+ 
+ 	/* Release TX resources */
+ 	dmaengine_terminate_sync(dma->txchan);
+-	dma_unmap_single(dma->txchan->device->dev, dma->tx_addr,
++	dma_unmap_single(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 			 UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 	dma_release_channel(dma->txchan);
+ 	dma->txchan = NULL;
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index ceecb39fb82da..3a1473bf54d0f 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1076,7 +1076,7 @@ static void omap_8250_dma_tx_complete(void *param)
+ 	bool			en_thri = false;
+ 	struct omap8250_priv	*priv = p->port.private_data;
+ 
+-	dma_sync_single_for_cpu(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	guard(uart_port_lock_irqsave)(&p->port);
+@@ -1193,7 +1193,7 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
+ 
+ 	dma->tx_cookie = dmaengine_submit(desc);
+ 
+-	dma_sync_single_for_device(dma->txchan->device->dev, dma->tx_addr,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->txchan), dma->tx_addr,
+ 				   UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 
+ 	dma_async_issue_pending(dma->txchan);
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index c4824c201e1c3..eb4ba78815028 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -435,8 +435,8 @@ static int pl011_fifo_to_tty(struct uart_amba_port *uap)
+ static int pl011_dmabuf_init(struct dma_chan *chan, struct pl011_dmabuf *db,
+ 			     enum dma_data_direction dir)
+ {
+-	db->buf = dma_alloc_coherent(chan->device->dev, PL011_DMA_BUFFER_SIZE,
+-				     &db->dma, GFP_KERNEL);
++	db->buf = dma_alloc_coherent(dmaengine_get_dma_device(chan),
++				     PL011_DMA_BUFFER_SIZE, &db->dma, GFP_KERNEL);
+ 	if (!db->buf)
+ 		return -ENOMEM;
+ 	db->len = PL011_DMA_BUFFER_SIZE;
+@@ -448,7 +448,7 @@ static void pl011_dmabuf_free(struct dma_chan *chan, struct pl011_dmabuf *db,
+ 			      enum dma_data_direction dir)
+ {
+ 	if (db->buf) {
+-		dma_free_coherent(chan->device->dev,
++		dma_free_coherent(dmaengine_get_dma_device(chan),
+ 				  PL011_DMA_BUFFER_SIZE, db->buf, db->dma);
+ 	}
+ }
+@@ -609,7 +609,7 @@ static void pl011_dma_tx_callback(void *data)
+ 
+ 	uart_port_lock_irqsave(&uap->port, &flags);
+ 	if (uap->dmatx.queued)
+-		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
++		dma_unmap_single(dmaengine_get_dma_device(dmatx->chan), dmatx->dma,
+ 				 dmatx->len, DMA_TO_DEVICE);
+ 
+ 	dmacr = uap->dmacr;
+@@ -867,7 +867,7 @@ __acquires(&uap->port.lock)
+ 	dmaengine_terminate_async(uap->dmatx.chan);
+ 
+ 	if (uap->dmatx.queued) {
+-		dma_unmap_single(uap->dmatx.chan->device->dev, uap->dmatx.dma,
++		dma_unmap_single(dmaengine_get_dma_device(uap->dmatx.chan), uap->dmatx.dma,
+ 				 uap->dmatx.len, DMA_TO_DEVICE);
+ 		uap->dmatx.queued = false;
+ 		uap->dmacr &= ~UART011_TXDMAE;
+@@ -1249,7 +1249,7 @@ static void pl011_dma_shutdown(struct uart_amba_port *uap)
+ 		/* In theory, this should already be done by pl011_dma_flush_buffer */
+ 		dmaengine_terminate_sync(uap->dmatx.chan);
+ 		if (uap->dmatx.queued) {
+-			dma_unmap_single(uap->dmatx.chan->device->dev,
++			dma_unmap_single(dmaengine_get_dma_device(uap->dmatx.chan),
+ 					 uap->dmatx.dma, uap->dmatx.len,
+ 					 DMA_TO_DEVICE);
+ 			uap->dmatx.queued = false;
+diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
+index 63d0232dffc20..640f85e2d636b 100644
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -300,7 +300,7 @@ static void s3c24xx_serial_stop_tx(struct uart_port *port)
+ 		dmaengine_pause(dma->tx_chan);
+ 		dmaengine_tx_status(dma->tx_chan, dma->tx_cookie, &state);
+ 		dmaengine_terminate_all(dma->tx_chan);
+-		dma_sync_single_for_cpu(dma->tx_chan->device->dev,
++		dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->tx_chan),
+ 					dma->tx_transfer_addr, dma->tx_size,
+ 					DMA_TO_DEVICE);
+ 		async_tx_ack(dma->tx_desc);
+@@ -333,7 +333,7 @@ static void s3c24xx_serial_tx_dma_complete(void *args)
+ 	count = dma->tx_bytes_requested - state.residue;
+ 	async_tx_ack(dma->tx_desc);
+ 
+-	dma_sync_single_for_cpu(dma->tx_chan->device->dev,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->tx_chan),
+ 				dma->tx_transfer_addr, dma->tx_size,
+ 				DMA_TO_DEVICE);
+ 
+@@ -435,7 +435,7 @@ static int s3c24xx_serial_start_tx_dma(struct s3c24xx_uart_port *ourport,
+ 	dma->tx_size = count & ~(dma_get_cache_alignment() - 1);
+ 	dma->tx_transfer_addr = dma->tx_addr + tail;
+ 
+-	dma_sync_single_for_device(dma->tx_chan->device->dev,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->tx_chan),
+ 				   dma->tx_transfer_addr, dma->tx_size,
+ 				   DMA_TO_DEVICE);
+ 
+@@ -509,7 +509,7 @@ static void s3c24xx_uart_copy_rx_to_tty(struct s3c24xx_uart_port *ourport,
+ 	if (!count)
+ 		return;
+ 
+-	dma_sync_single_for_cpu(dma->rx_chan->device->dev, dma->rx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 				dma->rx_size, DMA_FROM_DEVICE);
+ 
+ 	ourport->port.icount.rx += count;
+@@ -631,7 +631,7 @@ static void s3c64xx_start_rx_dma(struct s3c24xx_uart_port *ourport)
+ {
+ 	struct s3c24xx_uart_dma *dma = ourport->dma;
+ 
+-	dma_sync_single_for_device(dma->rx_chan->device->dev, dma->rx_addr,
++	dma_sync_single_for_device(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 				   dma->rx_size, DMA_FROM_DEVICE);
+ 
+ 	dma->rx_desc = dmaengine_prep_slave_single(dma->rx_chan,
+@@ -1101,20 +1101,23 @@ static int s3c24xx_serial_request_dma(struct s3c24xx_uart_port *p)
+ 		goto err_release_tx;
+ 	}
+ 
+-	dma->rx_addr = dma_map_single(dma->rx_chan->device->dev, dma->rx_buf,
++	struct device *rx_dev = dmaengine_get_dma_device(dma->rx_chan);
++	struct device *tx_dev = dmaengine_get_dma_device(dma->tx_chan);
++
++	dma->rx_addr = dma_map_single(rx_dev, dma->rx_buf,
+ 				      dma->rx_size, DMA_FROM_DEVICE);
+-	if (dma_mapping_error(dma->rx_chan->device->dev, dma->rx_addr)) {
++	if (dma_mapping_error(rx_dev, dma->rx_addr)) {
+ 		reason = "DMA mapping error for RX buffer";
+ 		ret = -EIO;
+ 		goto err_free_rx;
+ 	}
+ 
+ 	/* TX buffer */
+-	dma->tx_addr = dma_map_single(dma->tx_chan->device->dev,
++	dma->tx_addr = dma_map_single(tx_dev,
+ 				      p->port.state->port.xmit_buf,
+ 				      UART_XMIT_SIZE,
+ 				      DMA_TO_DEVICE);
+-	if (dma_mapping_error(dma->tx_chan->device->dev, dma->tx_addr)) {
++	if (dma_mapping_error(tx_dev, dma->tx_addr)) {
+ 		reason = "DMA mapping error for TX buffer";
+ 		ret = -EIO;
+ 		goto err_unmap_rx;
+@@ -1123,7 +1126,7 @@ static int s3c24xx_serial_request_dma(struct s3c24xx_uart_port *p)
+ 	return 0;
+ 
+ err_unmap_rx:
+-	dma_unmap_single(dma->rx_chan->device->dev, dma->rx_addr,
++	dma_unmap_single(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 			 dma->rx_size, DMA_FROM_DEVICE);
+ err_free_rx:
+ 	kfree(dma->rx_buf);
+@@ -1143,7 +1146,7 @@ static void s3c24xx_serial_release_dma(struct s3c24xx_uart_port *p)
+ 
+ 	if (dma->rx_chan) {
+ 		dmaengine_terminate_all(dma->rx_chan);
+-		dma_unmap_single(dma->rx_chan->device->dev, dma->rx_addr,
++		dma_unmap_single(dmaengine_get_dma_device(dma->rx_chan), dma->rx_addr,
+ 				 dma->rx_size, DMA_FROM_DEVICE);
+ 		kfree(dma->rx_buf);
+ 		dma_release_channel(dma->rx_chan);
+@@ -1152,7 +1155,7 @@ static void s3c24xx_serial_release_dma(struct s3c24xx_uart_port *p)
+ 
+ 	if (dma->tx_chan) {
+ 		dmaengine_terminate_all(dma->tx_chan);
+-		dma_unmap_single(dma->tx_chan->device->dev, dma->tx_addr,
++		dma_unmap_single(dmaengine_get_dma_device(dma->tx_chan), dma->tx_addr,
+ 				 UART_XMIT_SIZE, DMA_TO_DEVICE);
+ 		dma_release_channel(dma->tx_chan);
+ 		dma->tx_chan = NULL;
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 50ae9aae6b614..bd58bbfa65aa7 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1495,7 +1495,7 @@ static void sci_dma_rx_release(struct sci_port *s)
+ 	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	dmaengine_terminate_sync(chan);
+-	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
++	dma_free_coherent(dmaengine_get_dma_device(chan), s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
+ 	dma_release_channel(chan);
+ }
+@@ -1591,7 +1591,7 @@ static void sci_dma_tx_release(struct sci_port *s)
+ 	s->chan_tx_saved = s->chan_tx = NULL;
+ 	s->cookie_tx = -EINVAL;
+ 	dmaengine_terminate_sync(chan);
+-	dma_unmap_single(chan->device->dev, s->tx_dma_addr, UART_XMIT_SIZE,
++	dma_unmap_single(dmaengine_get_dma_device(chan), s->tx_dma_addr, UART_XMIT_SIZE,
+ 			 DMA_TO_DEVICE);
+ 	dma_release_channel(chan);
+ }
+@@ -1676,7 +1676,7 @@ static void sci_dma_tx_work_fn(struct work_struct *work)
+ 		goto switch_to_pio;
+ 	}
+ 
+-	dma_sync_single_for_device(chan->device->dev, buf, s->tx_dma_len,
++	dma_sync_single_for_device(dmaengine_get_dma_device(chan), buf, s->tx_dma_len,
+ 				   DMA_TO_DEVICE);
+ 
+ 	desc->callback = sci_dma_tx_complete;
+@@ -1832,12 +1832,13 @@ static void sci_request_dma(struct uart_port *port)
+ 	chan = sci_request_dma_chan(port, DMA_MEM_TO_DEV);
+ 	dev_dbg(port->dev, "%s: TX: got channel %p\n", __func__, chan);
+ 	if (chan) {
++		struct device *dma_dev = dmaengine_get_dma_device(chan);
+ 		/* UART circular tx buffer is an aligned page. */
+-		s->tx_dma_addr = dma_map_single(chan->device->dev,
++		s->tx_dma_addr = dma_map_single(dma_dev,
+ 						tport->xmit_buf,
+ 						UART_XMIT_SIZE,
+ 						DMA_TO_DEVICE);
+-		if (dma_mapping_error(chan->device->dev, s->tx_dma_addr)) {
++		if (dma_mapping_error(dma_dev, s->tx_dma_addr)) {
+ 			dev_warn(port->dev, "Failed mapping Tx DMA descriptor\n");
+ 			dma_release_channel(chan);
+ 		} else {
+@@ -1853,12 +1854,13 @@ static void sci_request_dma(struct uart_port *port)
+ 	chan = sci_request_dma_chan(port, DMA_DEV_TO_MEM);
+ 	dev_dbg(port->dev, "%s: RX: got channel %p\n", __func__, chan);
+ 	if (chan) {
++		struct device *dma_dev = dmaengine_get_dma_device(chan);
+ 		unsigned int i;
+ 		dma_addr_t dma;
+ 		void *buf;
+ 
+ 		s->buf_len_rx = 2 * max_t(size_t, 16, port->fifosize);
+-		buf = dma_alloc_coherent(chan->device->dev, s->buf_len_rx * 2,
++		buf = dma_alloc_coherent(dma_dev, s->buf_len_rx * 2,
+ 					 &dma, GFP_KERNEL);
+ 		if (!buf) {
+ 			dev_warn(port->dev,
+-- 
+2.43.0
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCarqmIAAKCRDZQZRRKWBy
-9GNDAQDi5g/izyjScUfwuU4O6Xxwh7AvWC7oaHTKLLAu6+l4FQD+NtOhbvdBfsgJ
-aBJCTXi+eGEL7YHNgbD6BylZgVF8BQo=
-=cNUk
------END PGP SIGNATURE-----
-
---=-YD8W0XNTTGrWR+Zg6iE7--
