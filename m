@@ -1,73 +1,68 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012026.outbound.protection.outlook.com [52.101.66.26])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7AD4B402E
-	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 11:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BE04B44B1;
+	Mon, 28 Sep 2026 11:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790596147; cv=fail; b=sdIkZG/zWrLjjjzGx24+kfcIIcX4ScoMu96vtRv9l21QLg/OrfY4lDC7MCjNxvZ4u5JNrq9WonFsgUOv9eof3Tp8PCwMCQk/5oV0ppYop/PXsj4fMlvB22Ed1uRsHu4hnibXqoTn2x41sA2xxFO2UXemOKDDKMTJ5KU5Kxex0hM=
+	t=1790596305; cv=fail; b=sB6upyN5Nz5ceIlcVVVxE+vi2cfaQz+CSRvt5eEUeJml3hdBkTOousF4YWi6upRXbgqQeTKl5ee8xJUJZ8lRekwf3f6bkG9ucuv0YI1zonq9zJVTnWYshQUuCVoCeyPsw56XQr+3rQz+BuM8S7GeHYC20inMvxa40OaXDr8cN0w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790596147; c=relaxed/simple;
-	bh=34UgFuUHxIwc0EcEr1RIAR5ZvYXh3YSB6axI3SVN3Ho=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=WBG903vCQD/16rOfXCrOHHK9/Alw4wJanmKx2b4KIosO+WROxRn+SMBehI4A4HlVW+lImdoRiU0h2gdnkAMtBf6fWJuXxkPSvNOH3/Ln7HO2QnOsAq3gbyS9DX6lRy3QqTmKAJYPRR0b9mcgIt2cOritUj+VeVuBVi3T+YqenyY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=o+p+4jxR; arc=fail smtp.client-ip=52.101.66.26
+	s=arc-20240116; t=1790596305; c=relaxed/simple;
+	bh=KwWgVuBCXZGkS5Z1zbRcqXA3syPh0RW9XTSTHiVwA0w=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=join2NXZZHLEZBT7k6fJDe0C6exOM8Ww1ZiR/SBfG4M7ajZPb9ZFMPRWKEOvO/4LhjzYSOgw1hSg1aFoV77RyqUh8opSnlXS592kLiiMiLyy4IlEIhmn9zuz0tUmbqzjPyx0gKzZWQdwG0YZdcqUM+/TCrSFh70LRQpL0HXnY5k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XGyoqt0L; arc=fail smtp.client-ip=52.101.65.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="o+p+4jxR"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XGyoqt0L"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=khGiMqr/GbOWFIM5gU+qmUW8ZVLCaU1690sPNG++siGSdEFdG/GNu/3hgfG0dJarKMQ6flGNBzs/H10zzEST0hTXdqDNfw2XJdHXkQQAmDQwrC9oNIVV4wE28HyHbDYgMipFBTMA88FidvbZsZQ1ojJlwubMc5EkNFZFnFGDn62dbpM5FBxkFMzB+Z9laQlFZBNYro5H6eZq+ISXocCQuVhljTlG71qHPl0EeSfcyxo32E/B7b/WkM3V8ZEoavZv+wUjY1fu73UDeFH4hO1sBk5HBYrePw/1hcMZMDCi79C1AOoD39aISQ32PMYR+LPkJoCzW9FGrcOxeDCVs/uF0Q==
+ b=L9+qz6snYShQWLovr4/GLBdFrZ9s2uFvs7NmZfuwXhBt1zDB8A3oGzDZqZpP+zcLzjZYZXSA6Pnf37qX0+QwmLDo3xefmnBIiyhxPAtnDFgdwzuQBXZQR7nEHyoQskZBBg02GgL9paxKfuCm3lBHPlMGNVBQzW/qfINRMxtJ6TP9SYVJ4UnxNVA9SLvKyxTMHsLAwvlGjx8iYkDnsLgxNAZva0ZdlHBj88z/z30p6xVmUkoe7wF6ZIeXYY/89wx+kGhj80LkmK452W/x/Nv6vR7CslmWVLvZW1DKkp0BfAh12cReuk4yRCG4fYViXLJc5uyDEoAzt3tC5H1AuBAunw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YXtuzYt/Hcb2RQYuJ5uIvJEIBHplX7EnZm5Y6FYm3ek=;
- b=To/ZXH5axreaKqgMepkxsvYkT2oh2vxPEr9b7SxiePMTFw8tnc2YtlNt/f45PLoBKu9Sm3c3fXzYCyxe/DhdJMBCOpq43QZBbllxNJue16GI9d+pAwBQNxesslw/HDp9itJLjFjQdqz0M52MELEd5MBZgXW4D8kW1EuJ3AhSj+PU+bb+wj+pR8bm3HaRE78ma9qBARrsIoLzXx1touvdqcgUfPFsp3XDKwFHc0stc0OW03WnggHBRKJrYCJae44ev+JqwJFnPb3sqDL9V0fhbbAhgq8ST7h01RdB+fUYRukNYHKJWCO27yI41jQgYPzYMp8bl291ZklPS5ixLL/LSQ==
+ bh=0eu6ylcsOt/B85XgEHYHtC5TEmFcPDxrupi//y40WRY=;
+ b=YtYMwMBK5tFBYquv59wyMcHaSDvuSaT2MrtI1bGmAKsa7DliC8dNaUqDHN/DHkR0KyUP4trxKWqV4zaFrBLr3Ls4McoZxiDBuGAHRuc4q4Al4XaGM8Vn7TkVxVTGH9Eeufd0s1ucbcRtJbwVAVMEXYSvVThTb/Li4TNG3Xd7LOGWUjLAwz9IfQR7DRXHWSGULfTqoa1ChzHVlu5U72gLfmrEWLs6ehz11wst3NEo2XTA7OUWrAHVg/JttCfjUMVjFa1f7OlixoZRnpOdiaTa1Gad1u39zR6ghz5kcQDBsQIYn9eDRmfxUZPC6DwUTh9iwKmvFNfdqU9INI4GrbdyhA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YXtuzYt/Hcb2RQYuJ5uIvJEIBHplX7EnZm5Y6FYm3ek=;
- b=o+p+4jxR36kE2e75y4TGuxnss8oBZkC8bXVBNJ7ZpyXM+/fo/ruRpYv1dRx+Q/RnTqMcvyfHLqbu2PKWi7kSgygmfWpH1Bkw9dOJcsb8XU6WtgJVz44tl4zl6VspsZpTKfaWsN86tWfjd6/EcJD7aMdEB5kcZ2m197gT1zH8/rcL1Fif3o+xIYKvawUOqyuxa2sLw1a4W5fuyikYzHSAifOTY1JQidu/pscRa6EDSv3Kilh+nXqVMh5f4gi9YL2sRpKpcmFu1vGdH1lKseFNlZFt1Cq7MCsgPRRLuUTDKL9mHGoYEqxlV4kWtV3IHO+5aI0KxcNwGu7zcENnzKNnAg==
+ bh=0eu6ylcsOt/B85XgEHYHtC5TEmFcPDxrupi//y40WRY=;
+ b=XGyoqt0Lm9uejk8wg8XHkLFMLAGiGjtpezy59nGeKl5GVUabXdbXZD5j/z4jJ1F689jm9y/gA4APdzVPQaG9tzzAFsLEW1EQ56gQIHzdNnGMP5fgOblJ80GxKhiTHgEu8LBaOHLVrqJHVNDyYclN1xn6Gq82wZiaJFuN3uJiTcBz+NnYADvfSFkwuSeGzK9AbkRLllfACTetiAZ+lckvNiSuU5du5PG1tThTVGashiTWHexlHIqCk97IfCqDaxaBKT9IjXPqfy/Fm1RfSp64mdr+v7ZUz4mBVa+czRmkOpv1RUrs63V88YlGIfwnKtIf2LF9Kp6J+mvBsBB+PieG2A==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22) by MMZPR04MB729243.eurprd04.prod.outlook.com
- (2603:10a6:190:32::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Mon, 28 Sep
- 2026 11:49:02 +0000
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
- 11:49:01 +0000
-From: haibo.chen@oss.nxp.com
-Date: Mon, 28 Sep 2026 19:53:11 +0800
-Subject: [PATCH] spi: spi-nxp-fspi: exit stop mode before waiting for DLL
- lock
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by VI1PR04MB7184.eurprd04.prod.outlook.com (2603:10a6:800:125::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 11:51:38 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 11:51:38 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Date: Mon, 28 Sep 2026 19:49:01 +0800
+Subject: [PATCH] driver core: hand off fwnode ownership when shared fwnode
+ owner is rejected
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-fspi-fix-v1-1-a0f9288cd5c8@nxp.com>
-X-B4-Tracking: v=1; b=H4sIACZVumoC/x2MQQqAIBAAvyJ7bkGXEOsr0SFqt/ZiohCB+Pek4
- wzDVCiclQvMpkLmR4vesYMbDOzXFk9GPToDWfJ2ooBSkqLoiyLiHXEgCSP0PGXu+l8ta2sfa/W
- OPVoAAAA=
-X-Change-ID: 20260928-fspi-fix-fff612e82f84
-To: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, michael@walle.cc, 
- Haibo Chen <haibo.chen@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790596406; l=3875;
- i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
- bh=JSyls9Pu9DOkXGyKOHLs3XsvDwVwu/zmwYD7l0g+80k=;
- b=H52H1DsCt0dV7Lg6r1Sb0vrNXjrAYSC46egGzHu2gM1unspL/wg40Wk8YsmLAOtea8bqj5zoI
- 7K5kjK+AfMIBZPhe8QuPxNWNJXM8K3xyjwbd5DBQPq72BG/modySPPV
-X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
- pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
-X-ClientProxiedBy: MA5P287CA0285.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:221::8) To PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22)
+Message-Id: <20260928-driver-core-v1-1-0846bb8e0f32@nxp.com>
+X-B4-Tracking: v=1; b=H4sIACxUumoC/yXMQQ5AMBBG4avIrDXRLkRdRSxof4wFMkUkjbsrl
+ t/ivUgBwghUZ5EEJwdelwSdZ+Smbhmh2CeTKUxZWFMpL3xClFsFatDewloN3xtKxSYY+PpuTfs
+ 7HP0Mt78Luu8HJBRzqm8AAAA=
+X-Change-ID: 20260928-driver-core-f1d9e991edb2
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Saravana Kannan <saravanak@kernel.org>, 
+ Sudeep Holla <sudeep.holla@kernel.org>, 
+ Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: SI3PR01CA0011.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::6) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,153 +70,260 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|MMZPR04MB729243:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe3b0435-1462-4f49-2362-08df1d567d44
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|VI1PR04MB7184:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0f5978e-a16e-4e0c-fbc1-08df1d56da7b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|19092799006|1800799024|11063799006|6133799003|10067099003|56012099006|18002099003|18092099006|3023799007;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|19092799006|1800799024|10067099003|11063799006|6133799003|3023799007|18002099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	W/LlYwV1F0vAW8Olqe3+IW/1ES/CieMAaFe/npmfVSl/R0/O6j1dmgjX1s6m6g7cytkIcVgWkEk/f8NomfZGCiiu1Sb3N0j8JTsRS+L1trtlV0aMxbJ55PfbHhajTq4NXw1DrM+vzfwOJuONqH7/eX1qKhrO65Mqblulfp+kmfT3vMl51Vip0kUExMM1KCbJy5O3+N4Fy0e86pT8+ZN45z8ULZAH25iJob3LPVm6jZWLzR+guUoZIDhuYWX//iLSSHO+oHLSdQG8SQGli3AWFqw6QericEnOTgETEsEfy2REq7CT1u65tmIz1YHYSlsRZOFCm9xuFLXaw/W1yfV+NgzxVscSiKjZMSV3PK4XAUP2iVDjbUHYtEQaiA9Iz/UtZuAKsK69MLiw0XCmdH1vfKhNLfTkDhdJq5Cdbi5wiEZr/2EhszAXyLXvlv50wPs6dTbeIXN4uX7z+bTxgABP59wvVKORcqJgfq3XgEmM3eDIKMWVyXRJOEuGgnwSPoXOR5bw6DzELsrQ5FkyZ4GJAlFdaGkD6AR9t3GdR4UIBBpUZy37gXRuUf6jq5h7MOdg44NqcXl31XVvz/TA/EfnooZBKGXmP293pl22IdDkGKO9KOlX9I/F3tMmKU3TXK2B6CGdD9wWWL715WHYtAx26dAayry6NeAsJUVOokqnhtE=
+	3uNTkV506PTK0awifC/u+1CpfmM6DLuOIHxCn7ctFy7aAm588Okh865dObT6KJYa5yA+okpcSBx26quA2Xog56FVH9hK6kDnyaFJ9ExF1ozFEG2iXBf5cNSfz1y8aCdSmMhAAEkkkWvdom7fvneVm+dnH0uGIlJjIwxQPa5eMGLCCC9bVivAwSC4SAFE7rqhXBqjhxiH06oHUDi0yLfnJriTiegjD21nK69i4/6zqtkezbaYtbt6VejcNMgU0Nhr+lK166+Cbk7zCe/+VJbR8I1GzRdegQkU8RXqW7AEbLTM9esLuJnyoPWNNHv/8EDSwcj/fLSMV7hnw3ekbHmjw1CJN3fdckITptaMTcdoPUzN/SlCusB5pxaWj11+/SnX5co9Iv2cbkOXbwUUhQF2gigsAB/IfW97cKVqndCIT0nvO49b9juciBDRj3erraOxapvucQLl7HfhqXV3q2r3F7AQ6J1VeW2lh6AQydxPEE9waCokAHUxvSNMpsVUPLAvgRd8kt2/lPwZ0MQocTzmmVgKG2OFSJerlV0GBe8DTFXjEOYPgCyQTA9wzXuFMgvrKmSyM1o49xDWhkbVrrm4BWpwDO7Na7bWXGpf7oqXQ07NapGpl8X+zdm+4X40Ldtg4u4PTzK4l2UcnuTzW0i2gLEgZ525A6BghCxa276A938=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(19092799006)(1800799024)(11063799006)(6133799003)(10067099003)(56012099006)(18002099003)(18092099006)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(19092799006)(1800799024)(10067099003)(11063799006)(6133799003)(3023799007)(18002099003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K1pIVmJ1NGpKWFNXdEd6WHh3aGo2ZHZ6RXJKUTBqNzRVek9Kc0RJYitwVGdU?=
- =?utf-8?B?VGF1Ui9BN3pEWXA4TWhBZTNKcXMzemRoNHJ0TW5CM055VjUvSkZzN1l0RmJJ?=
- =?utf-8?B?R1UrZkEvY2ovNkxPS0ZZRjFRQnFvdkFiaEdJT0ZtNHhndmp4dDlDclBVaTZt?=
- =?utf-8?B?a0VpRTk4WDVJcTAzWGxqVmZuY1ovQmRCZlFGOFdhV0VmRzV6Y2Z6bWdCQk10?=
- =?utf-8?B?TlR5cTJvQTJRblhSeWlLaHlQVy90STZDbllZVFV0bUpBTkxUZURYRmt0RUFn?=
- =?utf-8?B?eThmejJCc3VHck9hUEpnaFFTZXlhTUpUWG12OFBmdHNRRHZhUDg1T0t0RU45?=
- =?utf-8?B?ODlmdkltcE1QbTVGcEJ1NnJwdlI4K3A5SThtcG9XdVBNdkR1QWFRL0ptV2dj?=
- =?utf-8?B?bUVINXlaYk1ZSDFGdWxGQnJSRzJrMzV1cGR0cGw4Q1BwdWl0QzZGKzFZVnZu?=
- =?utf-8?B?enA2QTE1SDlVdENzZ0tpdlJocGJaRFB5SWRlQ3BRMm5SbmVIaU9kSmtJUUNj?=
- =?utf-8?B?SHhqaVN5Vm5vWHFCWW5KWFlyWWVPVUtoa1BxUmV1bVJ5V1JBcWp3K1RsMU93?=
- =?utf-8?B?Wi8zOFNRV2FKSVVORnJ4cHJyUy9oMDRSazJ4b21XR2hFVVBDUkZkOXRQRUgr?=
- =?utf-8?B?cEJXd3ZUaFN6QWh6RHlETzFuNzQxWnBqZVBhRUdIajhjVXgraDJ5UlNPYU1P?=
- =?utf-8?B?WmtXRlNYNGgzNFdjc0RFZUgvZGF2WGR5NEowYzFROXJGSmg2TnZyNy8vSHpF?=
- =?utf-8?B?QWdGLzUwOVZHOS9kaE9PMzJmVHZGR1lEdHBhb25XbFFaWDZ3c2FCc25DYXFS?=
- =?utf-8?B?K1RCSXBrTkZQUE1DNUV3dTEybWFQK1VvaGNUZVAzZXdTb0dnVVFlZ0ovZ3Iz?=
- =?utf-8?B?K041NGM0NGhsN1J4dk1PQ1FOVHg5R2ltUkdKdENUeG5RMGE3UXMwcWJ4ZEZF?=
- =?utf-8?B?NFAyMEE0Rnh4OHdIRHo4RVhUWW1IZG1ZaTA5U2xnS1l4TXZ4emh0N1ZVT2c3?=
- =?utf-8?B?RDhyNEZXOGdtVklsYXJCYVhtdFhhRVNSclhRM0NPVlNGSFlvSFRkbzVsU0Zw?=
- =?utf-8?B?QWVacVR1TGNYNGtVMU0yVnpSQzdEU2gzcmEweFp6S0JCRGVRL3diL2FWY2lE?=
- =?utf-8?B?ZkJPNFRtS3J3L2poT0xWTDZESGdoQmtwV081WEo5MW9QV2djaTNHd3ByRjVE?=
- =?utf-8?B?SlBwTGw1OENGM1JlNE53TThmOHpCZlM4a2JGeFJ2SGpjdzBNUUV4T3hKMVo3?=
- =?utf-8?B?MHcyMzdjK2hSOUpIWlJDN21aSXB3LzR2RnVQRE1jbTRvR3lBR3R3QjA5OUZX?=
- =?utf-8?B?dlA3dVhZeG5HMVJYTDQ2amJWZlVmeno3TDZpUXFuMnZtRHg2UGN6Zk9waFdo?=
- =?utf-8?B?b2pDRnl0dm1qUVFLREpuTDVRRDhQK3pFT05WWXYrOEU5L29RbFdXUmMvb0Rr?=
- =?utf-8?B?bFZyYWxRVHQwUXpCSHRPTkoyUlUxVXBYbDI0cWRsM1kvc001STBGckpCN3By?=
- =?utf-8?B?Y0dPTkZ5ZjhUTDBwajVMekUzQm9rWVJnQkVqUi91a2RRMVFNM1FVSE1rMGdG?=
- =?utf-8?B?VWI4T25IWUxMMVFXb2lWTDFiaTBuZk9aYUN5dksrYUlYakVIck9vZmM5UVFy?=
- =?utf-8?B?MFhCaWFNQWcwNjNPVGlLN1RRQkFZNXZkbnNOdXBlT0V4Y2RpeEJrNkxLeml4?=
- =?utf-8?B?ODhUYkxVUHh3QlpBRzFuZ3RKUTZTdWdqOFJxVG5qLzhtZlh1OVk4TWZKSC9M?=
- =?utf-8?B?WDdObDVQRXdJYlRRcjJDWDcvVnQ4S1o3MDhYbkRFSTRMU3VCcnVUQWNESG45?=
- =?utf-8?B?dE9PVnFhOEl5Njk2UlFvNFh1OTJ0UUN1VGgyWUV5UnFsb1NBZVdlSi9RWk1w?=
- =?utf-8?B?d2RSVUZkKzlZQ0l4TDRxanhGU1ZrVTgrUkdoTUtleUp3SDJqNUtUSWtSbldF?=
- =?utf-8?B?ZFlLZXl3MDdJNXFROUQ4bFNrdG1FT3M1dTd0bzRwRDZNL2REWG13bzJlWkZy?=
- =?utf-8?B?SWxIazVMZ0NUUDB1TTZhWTZDT1lLdkF4REk0cW9nc1hneUZFZTJhaUVvNVpI?=
- =?utf-8?B?WDR0WkYyRjB0em1vZnd6Z2Y2ZURJd2FpSFRSc2JPUVEybE0yVjduMWt0U1h0?=
- =?utf-8?B?QTdQcVY1azVRbzkxcy96TDhqa2VXTmtyS28wV1JnT2x6TUNoUUFWam1Qakps?=
- =?utf-8?B?Vkc2TllCNHpVUURPOTg1WTZZUGFmMTdqQUpHOVhBQnk5QTJ5Smt0MVBHdmNI?=
- =?utf-8?B?K0x4ckFyWi90b01nbVNLczcxWEJNTkpZRUZ1V1ZSaDA1UkdZNFV1ZXN5cGhL?=
- =?utf-8?B?NG5KWHgxWXhvaTZhaWxTdEEzdXFoNlppSUxEdGwvVVJ4WDNFeml1OWx2bk9P?=
- =?utf-8?Q?np7A3a+9C1KNArrIwtokrrokwNIZsyM5C90TX?=
+	=?utf-8?B?eWxUOHJ2bmJSUjNTeUR1b1lLRWFKTUlnTm9zdmdhNlhadTVNenVEQVVIcG1z?=
+ =?utf-8?B?WUVWOWtpM3BwY1VqbHVIc2owb1cvWjBHc3h0cWtaVU9rQ0loSys0N1lISXFn?=
+ =?utf-8?B?RHdGbU1vR2FlR09iN2FCdXNDZms3TGcveFdLY0NoaVE4SUtMWm5YeVl0ZFRO?=
+ =?utf-8?B?V1R1WGtHcVFFN0RWd2l0TllMcWhZNUJLTkJvOWs2Wkl1eGk4RFg1aTBXbVFE?=
+ =?utf-8?B?MG4wd3lXblYzdVBWS0F4NXFJb295OC9xR3l2c00xNklTbDFhbDQxNnptaU5W?=
+ =?utf-8?B?ams4WGszb2Q2RDI2QjZVdkJxaThCckRHc0RReTVJK3dubjVJTzUxdGZSakdS?=
+ =?utf-8?B?VHk3cWliU1NYZU9SS2FRZXYwMHBiL0NvZTJoanRBU2dxZGFuSlRFK2p1WXJB?=
+ =?utf-8?B?dkVoYU12V2hZVUs4Zk81bEZIRW85YTdrVlNvMDg2T2tRckhqTCtOMVdFVGJ2?=
+ =?utf-8?B?UFU4RXdyTGlzb0J5RHM2NFhCR2lQL25Ba0ZBR0IxajdEY1VYL0lnZ1NDd2Q2?=
+ =?utf-8?B?WTRuM3MzVmszekVVVWVPY1JkdEtmVEZPQWhSZXUySDlnelc3ZEw0ekpFNXBo?=
+ =?utf-8?B?VFJ3WkFqMHQ4MGFyeENBWHBTZlJzQTlVa2xVd0ZJUlFaZzV0ampFWFZ2VmtS?=
+ =?utf-8?B?U1R4OTM4OEViTkdoamdzSHk0RnVxeEx2Zm5ZZmhTdGs5Ti9UUy9YbWMzdDRi?=
+ =?utf-8?B?OS84ZjBnZWltVnhmQ1dVRU85MlVKU1VOcytoajFTOVlwSFlZUmk1dzJkU2di?=
+ =?utf-8?B?N2NOVk5Ebk9jbHBtL2R0c3Q0RXBGcFMzd2RYYW1DNEFnNWtmeVR3b2ZnWWlr?=
+ =?utf-8?B?b0lKUjJKWitIemhHdjZpTFlsQWJ3TVdJdVZUc0hXQmZnNlMyRGNtZTZ5VHow?=
+ =?utf-8?B?YnNycUNqcmhUTVhOb0FYY3NxNHNRNzFPNmROcmpGK0I3cGpHRVhhQmZQWU4v?=
+ =?utf-8?B?OXV6eXpjcjFzSzg4S1hBb0tMVVZKbkF1YVFLczRjNjZYeHBLT1ZoY1FVRk5h?=
+ =?utf-8?B?UEIxWDQxUkZveVVyVWZJeXh1Qyt4VEl6RTU2RnB5T0s0dFJpZlNwMHRZamdh?=
+ =?utf-8?B?TDdEL0p0KzB2QmNUbFBhOGp3TFo4SGE5M1AxSUphVVNwbWlnUlRLNGlOL2RY?=
+ =?utf-8?B?RGw2ZDU1elhqK1NMWWtWUmgxU0dDNGRiT3o2V3RGZ0s0ZFU1NGlVVmxWMlpY?=
+ =?utf-8?B?RXpvOXJCbHY4UXEySmROTStsQm8wQTgyc2tTeHlBc2s1K1V1UHVxQVJ1TkZE?=
+ =?utf-8?B?WG5YSDhVOWVVb0VFczJGMzZkSDJFTDZUT0lVSGRSeHpCTlRUYTZjSFF4Y01p?=
+ =?utf-8?B?MSt5TTlqSDFmM09EL1RSYStZaWtJcVdiaWdSSDd6aG9CNUdTZjgvem1USzJ0?=
+ =?utf-8?B?YnRsTXhtdzdpM2hiaGJpcWcraHhYeUdKNk1EVGF0azFTZ09aRTJMR0pqcjdY?=
+ =?utf-8?B?a0JKSDR0U0JQR3N3eWxOQ2VIMi8razVRSERmRGkyVk5lZ0QzekNNak1EdDR5?=
+ =?utf-8?B?U1VYaytEUHlWeENxSStaT0NvMDJsM1p0d05DUC9PTFkxRjl2QVhORS9LTG5S?=
+ =?utf-8?B?T0V0N2dLZWtvRGdkR20wMFRZMWtjQ1dKM1c5eVNleFpsQ3dWZnFqRlBPVFpN?=
+ =?utf-8?B?Sm8vZHJIemZhZkpMeUpvNC9uQko4aGd1VFZjZTJKTUozYW9UekgwRjdXSHJE?=
+ =?utf-8?B?TmUxNmlWQ1FPT2dobFVENm8vK3RySHhQUUwrTlppVWc5dHgwdjdQYlNpWUMv?=
+ =?utf-8?B?clVaNmtOcTBMeDZqVmFDTDdwTzhBcE0wZEIzMi9IWEtPbzRoS3RwZHBYcWYx?=
+ =?utf-8?B?SHNRaDgwTElKWm5XbUprYXdJRDZLWjgrVnlQM05pUXJHSDZ0YmoxSng3MlNY?=
+ =?utf-8?B?RkpETldOTXN5R2Q0aWZySW8wSXJYdCtITUU1KzVlZEtnRmpwQ0NpWlcvekFK?=
+ =?utf-8?B?N2VnUGY4QmhQSkdyWUhiOHJhaElUTWpVODc0MkVkbmtYSTBFQjlBSU9Sd0RE?=
+ =?utf-8?B?MWJUT0hvMTI3dTBDMFpJUXYwU1FxUEZMTUZrMUx1Z1ZVVExSdU5HZlF1Q2ww?=
+ =?utf-8?B?ZzlZKzFxKzdHMlNqY2hwN3ZmS1hnRFNGcFJjTEx1SWlxWm8xYU15ZUtSOHMv?=
+ =?utf-8?B?eWJvRVdGZ2w3TjlvL1pCN1IvOUU4VjBJT0NJTHZwMDVCSjRlQzFDVG1NeHFp?=
+ =?utf-8?B?aHk1eEcySHFLVHdFTTJwNXhYaVdBdDRwZloyWmgyNStJUk5WM0xJOGxEcDJl?=
+ =?utf-8?B?d3NsZzJXbTQyMlk1QWdUYmZ0R1V6cVFwUVNrTGlZMkV4enViQzRCWWcrNURz?=
+ =?utf-8?B?MEJYZnVqVnd4R2xBMjlqd2NRU2lmMzBoSmV0NWVXZTNLQlhJZVo3dGhxMnpL?=
+ =?utf-8?Q?zHgWE7gjPOM9d9LDesbxb6Ww3ByGg67JYfmFS?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe3b0435-1462-4f49-2362-08df1d567d44
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0f5978e-a16e-4e0c-fbc1-08df1d56da7b
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 11:49:01.9040
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 11:51:38.2072
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eNPyOfiO6JKRRN9u29EuUgwo3AqaQb343Y7k79KhM9AQP5KcC/nZEC7aH+glTHU3tXiMfc9URzx99twnkiaa45zmB5h5Fdb24LkCV7xO1lN1pyy0lJX34HSLY4BTXHjK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB729243
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6zzz3ib+FKXnGSBiXEU1g3LEj9uv4m0AaR20UrcATSsORfqT+3Cc93V3EzrOvJVbS/pVQsGbrLRh6asXSF29ZlS7RKm3THO9G/HWbbS2uE3HGss1Ju0Zu6W5URN1C/2J
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7184
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-For 8D-8D-8D (octal DTR) mode the FlexSPI samples read data using
-MCR0[RXCLKSRC] = 3 (flash-memory-provided read strobe on the DQS pad),
-which requires the DLL to be locked. Per the i.MX95 Reference Manual
-(FlexSPI chapter, "DLL configuration for sampling"), when the serial
-root clock is above 100 MHz the DLL is enabled (DLLxCR[DLLEN] = 1,
-OVRDEN = 0) and software must then wait for STS2[xREFLOCK] and
-STS2[xSLVLOCK] to be asserted before starting a read or write. This DLL
-lock is relative to the serial root clock.
+When multiple devices share the same fwnode (e.g. the SCMI bus creates
+both "pinctrl" and "pinctrl-imx" devices for SCMI_PROTOCOL_PINCTRL), only
+the first device registered becomes the fwnode owner (fwnode->dev, set in
+device_add()). If that owner never binds -- for example its driver returns
+-ENODEV because it is blocklisted on this SoC, or because its driver is
+not compiled in at all -- then driver_bound() is never called for it, so
+fwnode_links_purge_suppliers() and fw_devlink_pickup_dangling_consumers()
+are never run for the fwnode. The child fwnode supplier links (pin group
+nodes such as lpi2c3grp, uart5grp, ...) stay unsatisfied and every
+consumer of those child nodes defers probe forever.
 
-While the module is in stop mode (MCR0[MDIS] = 1) the AHB and serial
-clocks are gated off internally, so the serial root clock the DLL locks
-against is not running. nxp_fspi_dll_calibration() both programs DLLxCR
-and then polls STS2 for lock. When it runs entirely in stop mode the
-STS2 REF/SLV lock bits never assert (observed as "DLL lock failed" with
-STS2 = 0).
+On i.MX95 this manifests as a complete boot failure: the generic "pinctrl"
+SCMI device claims fwnode ownership but its driver returns -ENODEV, while
+the vendor "pinctrl-imx" device binds successfully. Because
+dev->fwnode->dev still points at the rejected "pinctrl" device,
+driver_bound() of "pinctrl-imx" skips the supplier purge and dangling
+consumer pickup, so all I2C buses, SPI, UART, MMC, USB and PCIe
+controllers wait forever for their pinctrl suppliers.
 
-The MCR0 bit fields (RXCLKSRC) and the serial root clock rate still have
-to be reconfigured in stop mode, so keep entering stop mode around that.
-Only move the exit from stop mode (clearing MCR0[MDIS]) ahead of the DLL
-calibration/override step, so that the serial root clock is running when
-the DLL is calibrated and STS2 can report lock.
+Fix this in two places:
 
-Fixes: b4bde5cfff8e ("spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+1. In really_probe() failure path: when the driver definitively rejects
+   a device (-ENODEV / -ENXIO), fw_devlink_release_shared_fwnode() is
+   called. If the rejected device is the fwnode owner, it either
+   transfers ownership to an already-bound sibling (and runs the
+   purge/pickup on its behalf) or clears ownership so the next sibling
+   to bind can re-acquire it.
+
+2. In device_links_driver_bound(): re-acquire the fwnode when it is
+   unowned (!fwnode->dev) or when the current owner has no driver at
+   all (!fwnode->dev->driver, meaning the driver was never compiled in
+   or loaded as a module). This covers the case where probe rejection
+   never happens because no driver ever matches.
+
+fwnode->dev is not serialized by a lock; instead every writer only ever
+touches a fwnode->dev it already owns (== dev, as device_del() does when
+it clears ownership) or one that is currently unowned (== NULL, as
+device_add() does when it claims ownership). This patch follows the same
+discipline: fw_devlink_release_shared_fwnode() only writes fwnode->dev
+when this device is the current owner; device_links_driver_bound() only
+claims fwnode->dev when it is NULL or when the current owner has no
+driver (and therefore cannot be in the process of binding).
+
+Fixes: f9aa460672c9 ("driver core: Refactor fw_devlink feature")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/spi/spi-nxp-fspi.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+This issue is triggered by 
+aac4e67d6eb9 ("firmware: arm_scmi: Always create devices for standard protocols")
+in linux-next next-20260925.
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 67d991dd249d283e5a7b777c3ef4a70a9af3f065..66cb58f95fdb1ce5dcd0288bbf0d473de7f9f371 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -898,10 +898,10 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+But I think this is a fix to
+f9aa460672c9 ("driver core: Refactor fw_devlink feature")
+
+Detailed information could be found in patch commit log.
+---
+ drivers/base/base.h |  1 +
+ drivers/base/core.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/base/dd.c   |  9 ++++++++
+ 3 files changed, 73 insertions(+)
+
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index a5b7abc10ff0..36d34aa328c5 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -292,6 +292,7 @@ void device_links_unbind_consumers(struct device *dev);
+ bool device_link_flag_is_sync_state_only(u32 flags);
+ void fw_devlink_drivers_done(void);
+ void fw_devlink_probing_done(void);
++void fw_devlink_release_shared_fwnode(struct device *dev);
  
- 	/*
--	 * Per the FlexSPI reference manual (initialization sequence), MCR0 and
--	 * the DLL control registers should be configured while the module is in
--	 * stop mode (MCR0[MDIS] = 1). Enter stop mode before reconfiguring the
--	 * RX sample clock source and the DLL, then exit stop mode afterwards.
-+	 * Per the FlexSPI reference manual (initialization sequence), MCR0
-+	 * should be configured while the module is in stop mode (MCR0[MDIS] = 1).
-+	 * Enter stop mode before reconfiguring the RX sample clock source, then
-+	 * exit stop mode afterwards.
- 	 */
- 	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
- 	fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-@@ -936,6 +936,16 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	if (ret)
- 		return ret;
+ #define dev_for_each_link_to_supplier(__link, __dev)	\
+ 	list_for_each_entry_srcu(__link, &(__dev)->links.suppliers, c_node, \
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 5daa88fa724a..e76153d5f124 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1376,6 +1376,20 @@ void device_links_driver_bound(struct device *dev)
+ 	struct device_link *link, *ln;
+ 	LIST_HEAD(sync_list);
  
 +	/*
-+	 * Exit stop mode before running the DLL calibration. The DLL
-+	 * reference clock is derived from the module clock domain, which is
-+	 * gated while MCR0[MDIS] = 1. Calibrating the DLL in stop mode leaves
-+	 * the STS2 lock bits stuck at 0 (the DLL never runs), so clear MDIS
-+	 * first and let the module and reference clock run.
++	 * Multiple devices may share the same fwnode (e.g. the SCMI bus
++	 * creates several devices per protocol node).  The first one
++	 * registered owns the fwnode; if that owner's driver is rejected
++	 * it relinquishes ownership (fwnode->dev == NULL, see
++	 * fw_devlink_release_shared_fwnode()).  If the owning device has
++	 * no driver at all (driver never compiled / loaded as module), it
++	 * will never bind, so it is safe to take over.  Re-acquire the
++	 * fwnode here so the purge/pickup still happens.
 +	 */
-+	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-+	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
++	if (dev->fwnode && (!dev->fwnode->dev ||
++	    (dev->fwnode->dev != dev && !dev->fwnode->dev->driver)))
++		dev->fwnode->dev = dev;
 +
  	/*
- 	 * If clock rate > 100MHz, then switch from DLL override mode to
- 	 * DLL calibration mode.
-@@ -945,10 +955,6 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	else
- 		nxp_fspi_dll_override(f);
+ 	 * If a device binds successfully, it's expected to have created all
+ 	 * the device links it needs to or make new device links as it needs
+@@ -1390,6 +1404,7 @@ void device_links_driver_bound(struct device *dev)
+ 	 * consumers to defer probe indefinitely waiting for a device for the
+ 	 * child firmware node.
+ 	 */
++
+ 	if (dev->fwnode && dev->fwnode->dev == dev) {
+ 		fwnode_links_purge_suppliers(dev->fwnode);
+ 		fw_devlink_pickup_dangling_consumers(dev);
+@@ -1474,6 +1489,54 @@ void device_links_driver_bound(struct device *dev)
+ 	device_links_flush_sync_list(&sync_list, dev);
+ }
  
--	/* Exit stop mode now that MCR0 and the DLL have been reconfigured. */
--	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
--	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
--
- 	f->pre_op_rate = op->max_freq;
- 
- 	f->selected = spi_get_chipselect(spi, 0);
++static int fwnode_shared_bound_match(struct device *dev, const void *data)
++{
++	const struct device *rejected = data;
++
++	return dev != rejected && dev->fwnode == rejected->fwnode &&
++	       device_is_bound(dev);
++}
++
++/**
++ * fw_devlink_release_shared_fwnode - Hand off a shared fwnode on probe reject.
++ * @dev: Device whose driver just definitively rejected it (-ENODEV/-ENXIO).
++ *
++ * Several devices can share one fwnode (e.g. the SCMI bus creates both a
++ * "pinctrl" and a "pinctrl-imx" device for one protocol node). Only the first
++ * one registered owns the fwnode (fwnode->dev). If that owner's driver rejects
++ * the device, driver_bound() never runs for it, so the dangling consumers of
++ * the fwnode's child nodes are never picked up and defer probe forever.
++ *
++ * When the rejected device is the fwnode owner, relinquish ownership so those
++ * consumers can be resolved by a sibling that does bind:
++ *
++ *  - If a sibling has already bound, transfer ownership to it and run the
++ *    purge/pickup the owner could not do.
++ *  - Otherwise clear ownership so the next sibling to bind re-acquires it in
++ *    device_links_driver_bound() and runs the purge/pickup there.
++ *
++ * fwnode->dev is not lock-serialized; this only ever writes it when @dev is
++ * the current owner (fwnode->dev == dev), the same ownership-gated rule
++ * device_del() uses when it clears fwnode->dev on the owner.
++ */
++void fw_devlink_release_shared_fwnode(struct device *dev)
++{
++	struct device *sibling;
++
++	if (!dev->fwnode || dev->fwnode->dev != dev)
++		return;
++
++	sibling = bus_find_device(dev->bus, NULL, dev, fwnode_shared_bound_match);
++	if (sibling) {
++		dev->fwnode->dev = sibling;
++		fwnode_links_purge_suppliers(dev->fwnode);
++		fw_devlink_pickup_dangling_consumers(sibling);
++		put_device(sibling);
++	} else {
++		dev->fwnode->dev = NULL;
++	}
++}
++
+ /**
+  * __device_links_no_driver - Update links of a device without a driver.
+  * @dev: Device without a drvier.
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index f6525a7ee8c5..e19cfc91ebe1 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -762,6 +762,15 @@ static int really_probe(struct device *dev, const struct device_driver *drv)
+ dev_groups_failed:
+ 	device_remove(dev);
+ probe_failed:
++	/*
++	 * -ENODEV/-ENXIO mean the driver definitively rejected this device
++	 * (errors are returned as positive values at this label). If it owns a
++	 * fwnode shared with sibling devices (e.g. SCMI creates several devices
++	 * per protocol node), hand the fwnode off so its dangling child
++	 * consumers can be resolved by a sibling instead of deferring forever.
++	 */
++	if (ret == ENODEV || ret == ENXIO)
++		fw_devlink_release_shared_fwnode(dev);
+ 	driver_sysfs_remove(dev);
+ sysfs_failed:
+ 	bus_notify(dev, BUS_NOTIFY_DRIVER_NOT_BOUND);
 
 ---
-base-commit: ba52b770f89bd2f3771b98edb92c4fde68ca8cc4
-change-id: 20260928-fspi-fix-fff612e82f84
+base-commit: f5f84daefcd92d7a630066635ecea1433ed5eac7
+change-id: 20260928-driver-core-f1d9e991edb2
 
 Best regards,
--- 
-Haibo Chen <haibo.chen@nxp.com>
+--  
+Peng Fan <peng.fan@nxp.com>
 
