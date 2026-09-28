@@ -1,109 +1,157 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA694ABBCC;
-	Mon, 28 Sep 2026 11:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AD24B7A30
+	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 11:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790595943; cv=none; b=SkxrcOpOGo5OxbNkeOnqwPOTSX8yRGKSvyvbQxgXKdoCwojNooVCQ828Onb3675vN42OBekjozxg4NqTNRLtGMQ3J1jd2ohGgDKZ3JO4JY+4uS63+yjODxdohD47fbOWZ0Rf/RMuF6UHshYIqA8OTghoafL1340XXoH9udbLPEQ=
+	t=1790596103; cv=none; b=VSXJ72tZMmnfu8z6YngGW8+fQeU38mat3jSdgZuRZEO7uPSrF1kHj+q6b4+0DFmNG4pL8RfpOXy5QsvO+4CiPLXwC9fM51Zv0cMy4Cb4GsiactmP3m+ZSMRxZOOvakMRyW1dYfHFMOJDzQ0R6Jgm3eqIV0SQ5IQtfbpRaozaxKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790595943; c=relaxed/simple;
-	bh=e+52jJ9jaL3CmNOBgW6VBGnbc1ROvbMtnuuxRgQ5TcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GQXc6D+J4e2+AKVs83Ik4lXawyVsZGODsY1yY+UxYthI91wtgvhgCg44JbmnJFtmb/zql6a6DPLc33NZyuIMn3QHB1yk7PrwiZJi1R64AJOwd+ZuJ3bxtveVtp61wFXo/RU8HQy07pwIrcuuh1CPgbrHehzoaJlRuoV6jqldOTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=l05XfVCO; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1790596103; c=relaxed/simple;
+	bh=EgPFAuP9qvQBrProAV6Bi/9+EkS0oVZfziknCw4Lrlg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=pstxIicdiK9nmuTHWI5wWebM4V1j0eI+ARtls6d7H+gON/PumFwOPaJVya8HRW/+C7x2LCLKhOiNBwxLrO0uVzKJ/INpvqDlNbRHWXiRRzxd/uimSoZoShMLkp0DVwQAFgA/pTvYbAAZWCvOHiyKyMpNQ73gwsqx2uzDOAdIToo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MGXKKc4c; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="l05XfVCO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=z2vdG/ru8rw1Y5ayEWt8P3IH0H9UUvdg+EVu0ifmHCE=; b=l05XfVCOFvsk9DdwzUCAsnavXx
-	PJO1n1k0F9xm4SEFbbmjUhhQK63SKyApZsdpzEY5RB+fpBBNxTJwzqESP6kTSv5J6N66COgaDQcfZ
-	o0vlA5aRL2RjNSwftywHozraCEogY9FOGiCmHQPbXjrbk9P73Qb+mHtufFr9AaJyUtvVcvVuPl+oF
-	QCL4awUXjwwGTDj8p4pR78dQo8TTXtkgvNaFRnNGezTpeQTJSftzaaE4mbq6mGC2fq9L1xID+ApWD
-	amIGNKryYAeC+JWIMu68jQ/jx1AqpLDyEYf8vsE+VRZpZqeabfFmHLR35EJOperLZyUQEOk2RJl91
-	HnYeO3hQ==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xB9ne-000M8U-33;
-	Mon, 28 Sep 2026 13:45:39 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xB9nd-0007Qc-1D;
-	Mon, 28 Sep 2026 13:45:38 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Krzysztof =?utf-8?B?V2lsY3p5xYRza2k=?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI: imx6: Use dev_err_probe
-Date: Mon, 28 Sep 2026 13:45:36 +0200
-Message-ID: <3441664.44csPzL39Z@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260619112535.1127850-1-alexander.stein@ew.tq-group.com>
-References: <20260619112535.1127850-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MGXKKc4c"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 905784E410A2;
+	Mon, 28 Sep 2026 11:48:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5AA61601BD;
+	Mon, 28 Sep 2026 11:48:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DAA5A102F2227;
+	Mon, 28 Sep 2026 13:47:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790596095; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=TR2EoUedzfwkF3107b5KNS7BcXvPvkAv8bW+yYycLg8=;
+	b=MGXKKc4c5SOmaVWp/phoair6djFZb7UjXYb4g7L1mu9HkDS45D2Mlcr5y0nCwPGAVqpsGv
+	OEyWMqiy3ker2qxJrAW/UnrGrRHX0U5FTADuUuUtmWYUjbjs5sEQnRZOMUAMqnzQlFMAjA
+	pPfwXpH8+1YUt2r57oV6Vdkon/lXPcVhV54ca8km8DMGpKDscvP2exc0uf2Nu6SDXfkR44
+	TLdVQPBbaKuqlM8N4aAFilFSY0cAFNPEgcpSiJcNTfZYNkrgZ0RKbrheWBH8E5cEAIKAjr
+	8JuIZsDLIGY++CVbtEFdbI5WenxcI1Asgjh4lbJzwiQZuHiUsB0V5sy5A7bfEQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28137/Mon Sep 28 08:24:12 2026)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 13:47:52 +0200
+Message-Id: <DLQXBZQ8KOCD.17XT73H60GTNJ@bootlin.com>
+To: "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: (subset) [PATCH 1/2] dt-bindings: display: Use consistent
+ indentation in the example
+Cc: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Chen-Yu Tsai"
+ <wens@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Samuel Holland"
+ <samuel@sholland.org>, "Liu Ying" <victor.liu@nxp.com>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Jonas Karlman" <jonas@kwiboo.se>, "Frank
+ Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Francesco Dolcini" <francesco@dolcini.it>, "Philipp
+ Zabel" <p.zabel@pengutronix.de>, "Chun-Kuang Hu" <chunkuang.hu@kernel.org>,
+ "Rob Clark" <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov"
+ <lumag@kernel.org>, "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica
+ Zhang" <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn
+ Suijten" <marijn.suijten@somainline.org>, "Marcus Folkesson"
+ <marcus.folkesson@gmail.com>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Yannick Fertre"
+ <yannick.fertre@foss.st.com>, "Raphael Gallais-Pou"
+ <raphael.gallais-pou@foss.st.com>, "Philippe Cornu"
+ <philippe.cornu@foss.st.com>, "Matthias Brugger" <matthias.bgg@gmail.com>,
+ "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
+ "Adrien Grassein" <adrien.grassein@gmail.com>, "Russell King"
+ <linux@armlinux.org.uk>, "Simha BN" <simhavcs@gmail.com>, "CK Hu"
+ <ck.hu@mediatek.com>, "Jitao shi" <jitao.shi@mediatek.com>, "Yongxing Mou"
+ <yongxing.mou@oss.qualcomm.com>, "Abel Vesa" <abelvesa@kernel.org>, "Chris
+ Morgan" <macromorgan@hotmail.com>, "Martinez Canillas"
+ <javierm@redhat.com>, <dri-devel@lists.freedesktop.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-sunxi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+ <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>
+X-Mailer: aerc 0.22.0
+References: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
+ <179057359762.92994.13773102514654073802.b4-ty@b4>
+ <8499ed1a-df9e-4e5a-b609-3da8499a47b5@oss.qualcomm.com>
+ <20260928065837.GA22609@killaraus.ideasonboard.com>
+ <ccb949ea-5fa9-47e5-be75-af8155328dc8@oss.qualcomm.com>
+ <20260928100841.GC22609@killaraus.ideasonboard.com>
+In-Reply-To: <20260928100841.GC22609@killaraus.ideasonboard.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Hello Krzysztof, Laurent,
 
-Am Freitag, 19. Juni 2026, 13:25:33 CEST schrieb Alexander Stein:
-> pci_pwrctrl_power_on_devices() might return -EPROBE_DEFER resulting in
-> an error message. Use dev_err_probe to silence this non-error message.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+On Mon Sep 28, 2026 at 12:08 PM CEST, Laurent Pinchart wrote:
+> On Mon, Sep 28, 2026 at 10:08:43AM +0200, Krzysztof Kozlowski wrote:
+>> On 28/09/2026 08:58, Laurent Pinchart wrote:
+>> > On Mon, Sep 28, 2026 at 08:03:18AM +0200, Krzysztof Kozlowski wrote:
+>> >> On 28/09/2026 07:33, Luca Ceresoli wrote:
+>> >>> On Sun, 13 Sep 2026 14:33:32 +0200, Krzysztof Kozlowski wrote:
+>> >>>> Correct indentation in the examples to consistent 2- or 4-spaces
+>> >>>> indentation to fix dt-check-style warnings ("example 0
+>> >>>> [indent-consistent] indent mismatch ...").  Preferred is 4-spaces, =
+but
+>> >>>> re-indenting entire example just for that is too much churn.
+>> >>>
+>> >>> Applied, thanks!
+>> >>>
+>> >>> [1/2] dt-bindings: display: Use consistent indentation in the exampl=
+e
+>> >>>       commit: 370c5d9004f8b754351981d59fc26851bf943e93
+>> >>
+>> >> Thanks, but I expected no one will pick it up, so I asked Rob to take
+>> >> it, thus it is already queued.
 
-Is there anything missing after receiving Frank's r-b?
+Sorry that this caused confusion.
 
-Thanks and best regards
-Alexander
+>> > Please explain your merge plans in the cover letter next time.
+>>
+>> The merge plan was this going through drm-misc. It got reviews, no one
+>> applied, even Dmitry for msm only reviewed the msm-bits (second patch),
+>> so I asked Rob to take it. This was not planned, but result of usual
+>> drm-misc inactivity for bindings (many bindings were not taken in the
+>> past or with noticeable delay/pings).
 
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
-er/dwc/pci-imx6.c
-> index 98e1db751132a..b7a502e9a1c59 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1381,7 +1381,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
-> =20
->  	ret =3D pci_pwrctrl_power_on_devices(dev);
->  	if (ret) {
-> -		dev_err(dev, "failed to power on pwrctrl devices\n");
-> +		dev_err_probe(dev, ret, "failed to power on pwrctrl devices\n");
->  		goto err_pwrctrl_destroy;
->  	}
-> =20
->=20
+My personal rule of thumb to apply patches to drm-misc is to wait at least
+(the latest of):
 
+ * 2w after the patch has been sent
+ * 1w after it's reviewed/acked
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+This is to give everyone reasonable time to chime in and nack if needed.
 
+According to that policy, which is of course debatable and not ubiquitous,
+this patch got applied timely.
 
+> If that happens again, could you please reply to the series on the
+> dri-devel list to tell it will be merged through the DT tree ? I don't
+> think there's any issue with merging patches that way, it's just
+> coordination that's lacking.
+
+I agree a ping over e-mail or on #dri-devel would be good and less noisy.
+
+But if the patch has multiple eligible branches an "applied, thanks" e-mail
+would let everyone know. I do it very cheaply with 'b4 ty'.
+
+Kind regards,
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
