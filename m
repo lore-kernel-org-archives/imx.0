@@ -1,70 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DFE1F8723;
-	Mon, 28 Sep 2026 13:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7824C6521;
+	Mon, 28 Sep 2026 14:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790603706; cv=none; b=KgooLTCOecP5ulA4+eB92UCwKDk+qCihxCfOlrBNH5wC3Q/8Y+iib2KuCn0WrL9Ja6275ozV3BeqzNYXsU8NRITs6+39aNItN2DUWb8kTEXMH68HKYWp9OsyWmBtwfFHTIRwJwKK4bOMht+hhCBObcLhm5Wvl2LRrHbqAF4EoXw=
+	t=1790604770; cv=none; b=I4Zc8yBCq6yrSMZbxDYlW+ElEW0GXfvfyIIWKPEEzOo0HXBQ5KjBRAtRWOS8NF2BLghfR4G6u2XWgwFn3uVhGi20joSiLSWTD8QUHZPh3OjBOWvYTL7fgbCTNF6ImpIbBGjHAiCNM55cUCyM+/EBiuFG4C5gCHHL9efayw/NB9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790603706; c=relaxed/simple;
-	bh=YwByXUiGMAklKOA7Zjz8b+cHHloc/mFDlEje6fe+QZY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MzXZygGnb3lFcS6xf67+hBdIjBbKY/0PgtdiDuGKoRObP+n3YbRNRot0s9zVvUK/72WE8EZF+anEIipDKBgz4xyKDnZShRFPSMzQqckX2fgw1eig8s+nso6Lo4NtsdO7s1IDoqLrs3/gQ7zZuANBij9W+ESoYbQ60VNnFCNYZuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOw4exZx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790604770; c=relaxed/simple;
+	bh=I1OkBqVPr+9G+RJLMxC5TQVtfMBI/TY4oZRVasYidvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YCU9zv84U44EyTBJaRFTFsIxNOK+plYo/JfCNLve/Fxf1Gn6wMgIn3ei2REXWGmeGXotjmgzDx6AinX6q+YPxxdDesU7YlszrUvWKBNszpd51/+c+EzLOc2rplkT0xPHNypFwOQwzsM+d7tYKmuSBrSmQhMRVBwoBM3jQ+FQUC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KCXg6xm1; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOw4exZx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18DA1F000FF;
-	Mon, 28 Sep 2026 13:55:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790603705;
-	bh=//FSE1BSumy4RN7mFbu3/W3sCieDFRRAwnq0FJ08uDc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UOw4exZxPIy7QDvopnruO77NAj4N7kVq4LbhLQD8MLUKNMaQSxup6s6dsoa+iWSGB
-	 iO44e/q8OWtvsbwNqsMA98WrYeorlE+uEKAMQBmm80Jz4wEsdqevjdOCXvDUpM03j7
-	 C7XeJL4D67vnMAxDRBq300uTQRXhOKp2wiups+qHIkvFKqq+gvl/r27DPb/e/36VBC
-	 befUQR8j2MAHH2o32L834qbXgzLoZgDh1D6NOYtT58Jg4/e3VuUmPibEHQnXLrxPAT
-	 yUfAz+zf/ghBav5jTdZH0z0pxus7Lzu4OjTosQEaLCSbMyGDgXwHCd4I9yLW6l39pA
-	 cWE8GuKBfvmYQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] PCI: layerscape: async probe by default
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vincent Jardin" <vjardin@free.fr>
-Cc: linux-pci@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260928-for-upstream-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr>
-References: <20260928-for-upstream-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 13:55:04 +0000
-Message-Id: <20260928135504.E18DA1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KCXg6xm1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=UwA7q79XkQQsz+Uy3hKsQ1FetQP83ctPZqJR3PIPVmw=; b=KCXg6xm1ncflYpI4MfnUO7xLUn
+	ciO6Y10Gasp9xt1yg2IR1zhm0Lw5Gcy5bSV/rbrr4/4W5kHmI+8HIxpqTGhLjVnCFIaduffj33eYf
+	W274KyRBodj33H3IPLyy9Rx861poUxDhk5Yxf2G9gEpDj7w68P/ngw/hEvaQgqczu9u4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xBC5y-007j7G-10; Mon, 28 Sep 2026 16:12:42 +0200
+Date: Mon, 28 Sep 2026 16:12:42 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	nico@fluxnic.net, linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org, olteanv@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
+Message-ID: <06910e8b-5717-41cd-b18a-d1c4f92fb8dc@lunn.ch>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-2-gerg@linux-m68k.org>
+ <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org>
+ <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
+ <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
+ <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
+ <b9a686cf-0d28-4feb-b971-f1bf2264964f@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b9a686cf-0d28-4feb-b971-f1bf2264964f@linux-m68k.org>
 
-> From: Vincent Jardin <vjardin@free.fr>
->=20
-> dw_pcie_wait_for_link() polls for up to
->   PCIE_LINK_WAIT_MAX_RETRIES x PCIE_LINK_WAIT_SLEEP_MS (10 x 90 ms)
-> per controller.
->=20
-> The controllers are probed one after the other, so, it leads to slow
-> boot time.
->=20
-> On an LX2160A board with 4 enabled controllers and no link on any
-> of them, ls_pcie_driver_init took almost 4s.
->=20
-> Probing the 4 in parallel allows to have it down to 1s.
->=20
-> The controllers are independent, other DWC based drivers are already
-> using async probing such as qcom, imx6, s32g, rcar-gen4 or stm32.
->=20
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
+On Mon, Sep 28, 2026 at 10:59:52PM +1000, Greg Ungerer wrote:
+> 
+> On 24/9/26 00:15, Andrew Lunn wrote:
+> >> The driver will always need to support big and little endian hardware, so I
+> >> am not sure how to avoid some abstraction like this.
+> > 
+> > I was wondering if there is a linux standard set of macros which is
+> > supposed to handle this big/little difference, the macro knows the
+> > architecture and does the correct thing?
+> 
+> There is regmap, but that is way more than just access macros.
+> At least one driver shared across big and little endian architectures
+> does use that - the freescale dspi driver (drivers/spi/spi-fsl-dspi.c).
+> There is probably others.
+> 
+> If the issue is more to do with code churn then a simpler approach here
+> might be to just essentially keep the same work around but move it locally
+> into fec.h. Something like the patch below.
+> 
+> This could be cleaned up to use ioread32be()/iowrite32be() after the final
+> readl()/writel() changes have been applied.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+The changes are fine, i just did not know all the background and
+wanted to make sure we were not missing something. Thanks for the
+explanations.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-for-upstre=
-am-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr?part=3D1
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
+    Andrew
