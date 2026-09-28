@@ -1,91 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CCA49CF2C;
-	Mon, 28 Sep 2026 11:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58064AB3D4
+	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 11:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790594809; cv=none; b=R8IJsC77d7E/5FYvjoRXu0uWkifNCjdyVpT8lVqlF5/Wt1TkfMvdyiVSrZTquW8aRRn61oj/NUSLJgKkE2bNg+iWQ4Xj4ItH4JpMYsVUcaR8A5NoshssabAJ0Osp+afzA5m0PTFAJgXshyzDAYI7s8txHOgGn3UtUEDTUOyapIE=
+	t=1790595639; cv=none; b=fmFqt9d+hdOKRaUnb9Sf4x1lFSEftIxeKVca1A6vVEhFxd74yipI2rxazy748cczfDuw2fL0jT1JqOQUHIfuAZAY3lA5dC91IDvWnhSGpCkXiDV+n+0ZzhE6vMhjLNPTmZXTvabs+AsAsAVexTLJs5D6qqXGUFT1byS7JwykL4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790594809; c=relaxed/simple;
-	bh=0nQAsdI9MKQ6bi1a3Tac1SYFqN/k0GiAZO6cdT/9jQc=;
+	s=arc-20240116; t=1790595639; c=relaxed/simple;
+	bh=PwQabp7vFQkCJip/+vQsLqJ30uasUYxGcmKrjVXqZsk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CDcc1Oxa69+IyzuZcrSvWbV+aFGUXQrepkgLmVuLSIPtSFpNYuh4FV+UQWf1azMaQgMB2xCyFEmc27YNZsE6DxzfrcUbQWm4bSZ41+IyfG1NLFumWbWsYN8Ym2Ag+AplXDyVxGSGpC4MZLGJdk3u7fCH0kDVFk5lrkJY2wptXw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahxNhXzB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=oMEQENd63xGjVTUVpRp4oeiMFEJnzTzEgT9lZgrbppCRVPCLAyUIpwua5tvwzTunTNbtZXtIJPhn4z2tbku++fdDT8PUuGQdtetZRT0CAXM86uTIEzYDulWoliZn7JWceVbSDIL82iyEPGJ/f1YWOizfeGPl25CW15bWbDNKYr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Rxelkcja; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahxNhXzB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248561F00898;
-	Mon, 28 Sep 2026 11:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790594808;
-	bh=MIgiakxNIvlbIOvXbpa9aAXTvVdIjMv2YRdjshxXmZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ahxNhXzBmiYTokoVc3H9EOIJnhTiIRXS8yTi4jkl4NBTZ/Nv4WBvbWNNickZgLD1z
-	 tNTkt7Rpv9XxkYAOXiaXinGpn1TVGBrrbxanqOu9maY5zQYsCbj2Kl2WxEpMoLo6lA
-	 HyRfdH+ObdVSBA7w4w9JV+SDdnt9JSpXYy2YAyZS9KKWJSWRd9riZxE6F0W6HOVL9X
-	 2iAWSuoOVWLw3Ct8h8c7Sh+0rVPFOiRRWCfOZjZSIp8/fNo5+a2/vmeOP2Yj4rEmOJ
-	 tDEEBitSlXsbvXPDtbXy8t1DqLoOL26HqgSKvoMF/Kp/L8ROFcPMKaTrW/S34orq3w
-	 f7DQ71vdlasSw==
-Date: Mon, 28 Sep 2026 12:26:41 +0100
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@oss.nxp.com
-Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
-	tiwai@suse.com, linuxppc-dev@lists.ozlabs.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Chancel Liu <chancel.liu@gmail.com>
-Subject: Re: [PATCH v6 4/5] ASoC: fsl_asrc: expose individual DAIs per
- conversion path
-Message-ID: <7be95093-1e29-45a7-9860-5605763baaf2@sirena.org.uk>
-References: <20260928061727.1844167-1-shengjiu.wang@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Rxelkcja"
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 692D21FCAD;
+	Mon, 28 Sep 2026 13:40:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790595627;
+	bh=ck+TzNVilqQY/t61zy/0IPuuHN9u4piAsUrgySTcPUs=; h=From:To:Subject;
+	b=RxelkcjaRglR3eb2moD+QraCo7PnUyVi/lf+U/cFdD3THIO9n9mylKZp73EuOyyut
+	 5ocDi2VCuvtdt7gyFEvLG5s94oX0jVT1W0rIQvqjuJw+JFGr7SbLIHDJe+zyz7p7b8
+	 JZXWmQoIQpl2WFqNOrgaQwj9I23fxizVRLlnOKq6Zxc/jr2vimC+pzQYuCWaishCCe
+	 30QxymNkbJNqitbj7E5BhLoe6NrBVDENaVe2YGhzAIJvJiQXbRNQ2ECpKYmfn4Ar5j
+	 2SI8yxIvZNRelfBXdePXtKtG4M3EI3Pg0BYZF18yyS/VKPe8DaUgLO0Yeb89aqjV8/
+	 0QdpeUkZPFlMw==
+Date: Mon, 28 Sep 2026 13:40:22 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Francesco Dolcini <francesco@dolcini.it>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>
+Subject: Re: [PATCH v5 0/4] drm: mxsfb: Support LCDIF interface bus width
+Message-ID: <20260928114022.GA67479@francesco-nb>
+References: <20260917140042.118181-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="agS6p3a5qSig1fa6"
-Content-Disposition: inline
-In-Reply-To: <20260928061727.1844167-1-shengjiu.wang@oss.nxp.com>
-X-Cookie: All is fear in love and war.
-
-
---agS6p3a5qSig1fa6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260917140042.118181-1-francesco@dolcini.it>
 
-On Mon, Sep 28, 2026 at 02:17:27PM +0800, shengjiu.wang@oss.nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
->=20
-> The i.MX ASRC hardware supports three independent conversion pairs
-> (A, B, C). The driver previously registered a single DAI with generic
-> stream names "ASRC-Playback" and "ASRC-Capture", which prevents
-> multiple independent conversion paths from being used simultaneously.
+Hello,
 
-This and patch 5 are not threaded with the rest of the series which
-really upsets b4 :( .  I'll fix it up but please look into your tooling
-here.
+On Thu, Sep 17, 2026 at 04:00:35PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> The width of the physical LCDIF output bus can differ from the input bus
+> format advertised by the downstream panel or bridge.
 
---agS6p3a5qSig1fa6
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+Can the first two patches be picked-up by some DRM bridge maintainer
+(Luca?), so that once they are in next, Frank can pick-up the two DT
+patches?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq6TvAACgkQJNaLcl1U
-h9AZrgf/VFOKxMUjK6hmwAHkqM+y0Ua45JlbNuxKyoHHyV84DmfhdqY51ofpXfuQ
-6N+x6DTT+UZJkw8xrPqdRMRhps2mxGnkl0FdOiqAe1dR/VuGMOAck7lF80PMIOxD
-CUljelqNF6bYnmr8MQ5qPzYIUn7VEcvZiirLFwT5OHfi5/x37fQUAFJ1YJFgq8MX
-fuuBv1DOxVGdXUD5MsFdkcMfd9617FupVjCOhrZFQpTzj1yEvuAnmnTCs02wF/3S
-QjBDyIaaTRdUFDag3qQ/tMKwfIJjvLDrHsp2iXwoQUdoL+Ga6f9W+QJUrBcoiu+B
-TkSZSFWED6F7dnYsXunQoC0iWlZFGg==
-=A3IY
------END PGP SIGNATURE-----
+Thanks a lot, appreciated
+Francesco
 
---agS6p3a5qSig1fa6--
