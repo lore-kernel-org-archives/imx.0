@@ -1,116 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BFA3CDBA5;
-	Mon, 28 Sep 2026 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB223D3CF2;
+	Mon, 28 Sep 2026 12:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790600260; cv=none; b=JQSuT+nGuwc1zx60hbCsIuPVlp0nNCKDhybYMdmN39Q/i6wofpnFQjvwQ4x5KDDMiE4Adfkc/rhXptqAau274NIL+rH9dXAMOaMo2XEKJZfd8dLHVzVUDknAO+5KEoGb6X4O+MCKrAHZuLIx35YlwZxZzjpvbypLCDcLUzmCK/A=
+	t=1790600261; cv=none; b=P895FrAwaLagNc0lu5Knw/IT5TRUKlDWaO6DV/JbIsSwH1E8R+u3Tk/WK8C7V7nvRQf+6C20ewWLzwjjO1GaBczRdx3lJGaaTrvGVcOIYY9xfw0RjXZZtcCXYZrmUt3PfGn2WxhZCEMw0goiWCx3mo3dgnBBACD0U1k5/eldR+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790600260; c=relaxed/simple;
-	bh=wY48fprBmxFUjGixhY8e8QbNM62AskOVZKVRxdR/1n8=;
+	s=arc-20240116; t=1790600261; c=relaxed/simple;
+	bh=OF0MJGctt86QaPd90bGx/r8ro69aMqarXi1CSp8f+lI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AEFEe9zzTV4ifmB3XHTE33PQf49eI6kIAJCOwlMbQCfxL+9EW8GPKnw83zM+TanrC+z4XnsMx2VAYIXXrKey8lJjFJGI7dHt6LT+WjDoN11ry0U3+zDAQUPtRY4FPr57gWR4CNvmZk0ecW417NcovY9ekSesUOb8997fYhPgExA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRTC27O3; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ToWpf9XAUIv/iTNimnOK5Tcpi2P5mqfJ66Sio2yrKNIwjz8QiV+f/jwjaSRIkydQ9xDVF1gyBzrgv9e+CBVOwi+2g2uhUwOajF4/Q/MsaWO2LCnPIolYGkQjwlCXokXXfKpCx0HQVheN5G/e//1ByFQ9jyGU0vSSD1n259pw+Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqNfOboT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRTC27O3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077401F00899;
-	Mon, 28 Sep 2026 12:57:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqNfOboT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BAD1F000FF;
+	Mon, 28 Sep 2026 12:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790600258;
-	bh=DQ3HqYrdLfB6HzLeMYtVHNklz6xWNLiz6dwKaV337Qk=;
+	s=k20260515; t=1790600259;
+	bh=kyz/LptDC/Oxey+tPdG5EwApY4LA2xEpjySSvEOhKSQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gRTC27O3kY/ZLtc2ejuuhaDkK6jqYKGTvz3T33EVDToECRtKZ2ZPznv0lY3KNyp9m
-	 hXBxUUtK2Gn26bgRzSN+x/kosIlbtwHxTaO6lhzhsDWRy6XyrevyB7styi44DfHEmI
-	 VlM0nWl9iwtBXac+pY4un0orTnHk0LNVZO931hZythxy7G8z57wTSLqHDpFsg/Ln7z
-	 eUCV2mQnTQ2AFYCGsVzw4Hv/m6uNnKCvwBhTT204OzFlCWO/0AdZxSrkqrdJ9phy91
-	 0EXp2+74h5R5nE+aquYBkeG6+0lAJ/n97KOx9yd4OFVVQJxRnli0Kb1BBnlHruervs
-	 qCr0aIYC2QvfQ==
+	b=cqNfOboTszRYNsuzONIYu1/QcHPi0HZetyj9iAvOK2vv8eG8jmujhvGYx90bmcjFM
+	 vngYSjUWbsUP0ReIZvENBUjqVOaFHt3pZL35v1yEvMzxza76an04hF3SwULp5td4Ze
+	 Khipjn3hfZFNBQ6E9JC73wks1Pu1PWSq0EmGoRptW/TOLo3AGnUNwr1E58/Pa/3foe
+	 13VDtdEu0CkjfzvwZsK/3nmLKPV1L9dgzDrNPQ9gNqnmXUkRIhJefVrmcPI7gS9s6B
+	 w3Aav4DdnnrIhbzWGi8Zo3OPPQhtfU8aEq1F8MRdtd5Rr3YqOCz+eUGv88Ufp9HPIn
+	 1AwFiAwStY0cw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 10/12] ARM: dts: imx6ull: Add Variscite i.MX6ULL
- board variants
+Subject: Re: [PATCH v3 08/12] ARM: dts: imx6ul: Reuse Variscite DTSI files
+ for Concerto
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <a9c46d096a221302c3a775ec456f104acffc161c.1790512621.git.stefano.r@variscite.com>
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <35b648b7e2b8440ddb9454bd33a441934a88e426.1790512621.git.stefano.r@variscite.com>
 References: <cover.1790512621.git.stefano.r@variscite.com>
- <a9c46d096a221302c3a775ec456f104acffc161c.1790512621.git.stefano.r@variscite.com>
+ <35b648b7e2b8440ddb9454bd33a441934a88e426.1790512621.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 12:57:37 +0000
-Message-Id: <20260928125738.077401F00899@smtp.kernel.org>
+Date: Mon, 28 Sep 2026 12:57:38 +0000
+Message-Id: <20260928125738.E2BAD1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Medium] dts: imx6ull: mismatch between WIFI_PWR_EN gpio and pinctrl in i=
-w61x
+- [High] mmc: missing non-removable and no-1-8-v in SDIO Wi-Fi node
+- [Medium] dt-bindings: removing Wi-Fi/BT hardware description for user-spa=
+ce management
+- [Medium] mmc: missing high-speed pinctrl states for eMMC and SD card
+- [Medium] ASoC: missing DAPM audio routing for the Microphone Jack
 --
 
-commit 7ecb2605fbe6b95010bccb212ceb09c1b978e781
+commit fe65cbeab7096b23be45d7585ae539a72bae3505
 Author: Stefano Radaelli <stefano.r@variscite.com>
 
-ARM: dts: imx6ull: Add Variscite i.MX6ULL board variants
-   =20
-Add i.MX6ULL board DTS files for VAR-SOM-6UL and DART-6UL with their
-carrier, storage, wireless and audio options.
+ARM: dts: imx6ul: Reuse Variscite DTSI files for Concerto
 
-Reuse the shared option and carrier descriptions with the i.MX6ULL
-SoC and module wrappers.
+This commit converts the existing i.MX6UL and i.MX6ULL Concerto boards to
+use shared module, option, and carrier DTSI files while maintaining the
+existing DTB names and compatible strings. It replaces former components
+with updated LCDIF display timings, userspace-managed Broadcom Wi-Fi
+descriptions, and folds common resources into the shared configurations.
 
-[ ... ]
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6=
-ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw=
-61x-6ulcustomboard.dts
-> new file mode 100644
-> index 0000000000000..26d266d731fb8
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6ulcusto=
-mboard.dts
-> @@ -0,0 +1,20 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "imx6ull.dtsi"
-> +#include "imx6ull-var-dart.dtsi"
-> +#include "imx6ul-imx6ull-var-emmc.dtsi"
-> +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
+> The old Wi-Fi power sequence and Bluetooth nodes modeled enable and
+> reset control in the kernel. On these SoMs those controls are handled
+> in userspace, so use the shared Broadcom Wi-Fi description without the
+> old kernel-managed nodes.
 
 [Severity: Medium]
-Does the combination of these included files create a pinmux conflict that
-breaks WiFi power control?
+Device Tree is generally meant to describe the physical hardware topology
+rather than software policy.
 
-The iw61x WiFi power sequence requests GPIO5_IO02 for WIFI_PWR_EN:
+If these pins are physically wired to the enable lines, does removing the
+physical Device Tree hardware description for the Wi-Fi reset
+(usdhc1_pwrseq), power (reg_sd1_vmmc), and Bluetooth (shutdown-gpios)
+break backward compatibility for older kernel versions expecting to
+initialize the hardware?
 
-arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wifi-iw61x.dtsi:iw61x_pwrseq {
-		reset-gpios =3D <&gpio5 6 GPIO_ACTIVE_LOW>, /* WIFI_RESET */
-			      <&gpio5 2 GPIO_ACTIVE_LOW>; /* WIFI_PWR_EN */
-}
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi b/arch/=
+arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
+> deleted file mode 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
+> +++ /dev/null
+[ ... ]
+> -&usdhc2 {
+> -	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> -	pinctrl-0 =3D <&pinctrl_usdhc2>;
+> -	pinctrl-1 =3D <&pinctrl_usdhc2_100mhz>;
+> -	pinctrl-2 =3D <&pinctrl_usdhc2_200mhz>;
 
-But the associated pinctrl_wifi group in the DART module wrapper configures
-GPIO5_IO04 instead of GPIO5_IO02:
+[Severity: Medium]
+The original configuration files explicitly defined state_100mhz and
+state_200mhz for the eMMC and SD card interfaces.
 
-arch/arm/boot/dts/nxp/imx/imx6ull-var-dart.dtsi:pinctrl_wifi {
-		fsl,pins =3D <
-			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
-		>;
-}
+The i.MX ESDHC driver typically requires these states to adjust pin drive
+strength and timing for higher-speed bus modes.
 
-Because of this mismatch, the requested GPIO5_IO02 is never properly pinmux=
-ed,
-and the configured pad is never toggled. Will this cause the IW61x WiFi
-module to fail to power on during the usdhc1 probe?
+Does the newly introduced imx6ul-imx6ull-var-emmc.dtsi truncate the
+pinctrl-names to just "default", which might artificially limit the SD and
+eMMC performance to standard speeds?
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts b=
+/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
+[ ... ]
+> -#include "imx6ul-var-som-audio.dtsi"
+> -#include "imx6ul-var-som-lvds-panel.dtsi"
+> +#include "imx6ul-imx6ull-var-emmc.dtsi"
+> +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
+> +#include "imx6ul-imx6ull-var-wm8904.dtsi"
+> +#include "imx6ul-var-som-concerto-board.dtsi"
+
+[Severity: Medium]
+The newly included imx6ul-imx6ull-var-wm8904.dtsi defines a
+simple-audio-card that lists "Microphone Jack" in its widgets.
+
+Without a logical route connecting the Microphone Jack to the WM8904
+codec's input pins, ALSA DAPM might not power up the microphone bias or
+the ADC path, rendering the microphone input unusable on these boards.
+
+Is the "Microphone Jack" missing from the simple-audio-card,routing list?
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi b/arch/ar=
+m/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
+> deleted file mode 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
+> +++ /dev/null
+[ ... ]
+> -&usdhc1 {
+> -	#address-cells =3D <1>;
+> -	#size-cells =3D <0>;
+> -	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> -	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_32k_clk>;
+> -	pinctrl-1 =3D <&pinctrl_usdhc1_100mhz>, <&pinctrl_32k_clk>;
+> -	pinctrl-2 =3D <&pinctrl_usdhc1_200mhz>, <&pinctrl_32k_clk>;
+> -	no-1-8-v;
+> -	non-removable;
+
+[Severity: High]
+Without non-removable and cd-gpios, the MMC core might wait for a card
+detect state change and fail to probe the SDIO Wi-Fi device.
+
+Furthermore, without no-1-8-v, the MMC core might attempt a 1.8V UHS
+voltage switch on a 3.3V-only bus and cause communication errors.
+
+By switching to the shared imx6ul-imx6ull-var-wifi-brcm.dtsi, does the new
+SDIO Wi-Fi node omit the non-removable and no-1-8-v properties that were
+present here?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790512621.gi=
-t.stefano.r@variscite.com?part=3D10
+t.stefano.r@variscite.com?part=3D8
