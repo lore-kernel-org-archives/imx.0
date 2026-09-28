@@ -1,218 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96C73C7DF5;
-	Mon, 28 Sep 2026 12:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3393C3792
+	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 12:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790600262; cv=none; b=MARSccpeOWOos5G8JUR4DHz+7R1NWoIqEVPD9EVUuzPXKDRM0kJdb1pXH8y6Ie3wifOthiV8kcIy9z++z4eblmitpn4SSrFvckXzHOHnqLClGd7mMpQpr4KyhN851A3BNCnPH/OD+0kt6xka7I1CA8kQvi920liL4/L5NK9OJnA=
+	t=1790600288; cv=none; b=Ap//ayvOs6onvcgJ0lItty/GjZzoF6UtMWuPbevumzj8sR8wgePp0I5cNIbP8XyjRcJmrFdBrpX0WkLQOxEBsxrVwXCwxdLlWDjrL1UKIaVzXyLf+JsWMT63zhsP+nJ5Rx3773MN4x0s2fpkJcHODv+0AkOQsbbpTpnF5/QF5Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790600262; c=relaxed/simple;
-	bh=s8BpYZHfV+Jl6Mzj13qjpN6/lBxhXRWSOLjhiMDlm0Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BIuXFMb+uWq/On29FunyAkwQlU8n1CPWTxASHJl1mBWVhqMvCxInmat2EeSrQIi4JZE+qcoHnWiC9MOOlUvFd9zhnBf8hhRJNFVRdtPLCn0Ma7CQU9vTxMI5IthPcYLHySpUNUSCnCB3q998lLyagPhk5LESOqlzVHd2GWtF16o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjCYm8v/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790600288; c=relaxed/simple;
+	bh=QGMT5e++tACn46+4FFxOLS4u0Q88D+y8NooM6+9yh5g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pjCXWJ1oleFBtxHoSn6jAi3TKLgoODAXqnMRJFeWq+xADkV/cb0VdfHkYrN6pHSGEMXb5PVQ9z8E5UsZ6nbj9SsOZTN9NeDMuqQslBKhN7McQjeyEOjLO9rILisn6ayIREil0Mp9TS7J9jXUnb9P1sauisYi+yQHi6arDb1xZNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TAI68bah; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjCYm8v/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818391F00893;
-	Mon, 28 Sep 2026 12:57:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790600260;
-	bh=MZQQkNX9ewrTt0VZpuxELaQgzkW90GGoiBgsZijt5SE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FjCYm8v/6DIkY6PBUJfIh2GVEZ4zO7isPPFQYHz5N3x7TXafV3bYErg8ZlJSIIs+n
-	 iuWVxczVmyVnQ7+HZtoQMtwCzk/VO7fvhN66oHj1oBgSVp9w73/h0KPbitt2dr3zjs
-	 AlnCt5oIGZ3qw+L2kcZu1ie/Kd5F63pXWvMMD+ww4ZuT2gi1t6enT1UwiGHUWG/JZJ
-	 0zEYbdZSIQMDq/Jlr0+5sU2mzJ2wKUXtyPL1OqePxk1aEQ/Ks+c8V9Yx+XImEpkZXN
-	 1fGyRycsVGZHJDER17rrJj0g3dDSfwIvXExcnRhrfOwfUZpGmok5jhhUBVCTepRZ4x
-	 ifyFuABIGiO4A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 04/12] ARM: dts: imx6ul: Add Variscite SoM and DART
- base files
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <113cc7361186943effcbcfe88913c6f528a54db6.1790512621.git.stefano.r@variscite.com>
-References: <cover.1790512621.git.stefano.r@variscite.com>
- <113cc7361186943effcbcfe88913c6f528a54db6.1790512621.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 12:57:40 +0000
-Message-Id: <20260928125740.818391F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TAI68bah"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790600286; x=1822136286;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QGMT5e++tACn46+4FFxOLS4u0Q88D+y8NooM6+9yh5g=;
+  b=TAI68bah7aefjnbb7Z8yIObHqWs/TtlWr1ULhvcmFLniy2tXwneBe6N2
+   1+NS9Oy+m5n2pEAKUlYMt48/Avoxph89W3cnz4FWxJ1l/bBkwceVCIyvR
+   rYLYpyktKLgU2+10+KlN/DsFF9KvRM0EaUjnpVBr0zlANPi35JmfsoyZU
+   +VK+Q8Jt2JgVJWu3qmuaCtzbKFescgYrr2eNqoFz1UmHsHsA+mBcfWO+A
+   XYrMe1tryElG2bvRRB1gDL40DgOShAexu6YIhJwmAree/EnRdDOB2kHPE
+   V48lqck7CfI5oAS9d1zgFR92gdM26M7nvoYGDxIQCpXFgRDQxRteUKZzj
+   g==;
+X-CSE-ConnectionGUID: XFtCJul5QMCM5pxcDz1yDA==
+X-CSE-MsgGUID: 7iXkIoaNSDKIyJm67Nc3vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90515601"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="90515601"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 05:58:06 -0700
+X-CSE-ConnectionGUID: wNZP/cTySYauBwzqOY5iQg==
+X-CSE-MsgGUID: Ahnhv6lMQm6R8u3d/zhx7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="271533145"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa009.fm.intel.com with ESMTP; 28 Sep 2026 05:58:03 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id D4D1C99; Mon, 28 Sep 2026 14:58:02 +0200 (CEST)
+Date: Mon, 28 Sep 2026 14:58:02 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@oss.nxp.com>
+Cc: badhri@google.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2] usb: typec: tcpm: advance vdm_discovery_state on
+ Discover Identity Not_Supported
+Message-ID: <arpkWnX7k4c45vCP@black.igk.intel.com>
+References: <20260916043957.3362995-1-xu.yang_2@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260916043957.3362995-1-xu.yang_2@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] dts: silent removal of usdhc2 node drops eMMC/NAND storage suppo=
-rt
-- [Low] build: missing base includes break dtb compilation
-- [Low] build: undefined and duplicate labels break dtb compilation
---
+On Wed, Sep 16, 2026 at 12:39:57PM +0800, Xu Yang wrote:
+> From: Xu Yang <xu.yang_2@nxp.com>
+> 
+> Commit Fixes: 205dc9cb39f5 ("usb: typec: tcpm: implement retry mechanism
+> for Discover Identity VDMs") advances vdm_discovery_state to
+> VDM_DISCOVERY_COMPLETE when a CMDT_RSP_NAK is received, but it does not
+> advance the state when a non-modal port returns PD_CTRL_NOT_SUPP.
+> 
+> This can re-arm another vdm_discovery_work if the port is going to
+> respond with PD_CTRL_NOT_SUPP to the partner.
+> 
+>   tcpm_pd_handle_msg(port, PD_MSG_CTRL_NOT_SUPP, NONE_AMS);
+>     tcpm_queue_message();
+>       mod_tcpm_delayed_work();
+>         tcpm_state_machine_work()
+>           tcpm_send_queued_message()  -> send PD_MSG_CTRL_NOT_SUPP
+>           run_state_machine()
+>             case SRC_READY:
+>             case SNK_READY:
+>               mod_vdm_discovery_delayed_work(port, 0);
+> 
+> If both the port and its partner do not support modal operation, they
+> will send DISCOVER_IDENTITY to each other infinitely.
+> 
+> Advance vdm_discovery_state to VDM_DISCOVERY_COMPLETE in this path as
+> well. In particular, update the state to VDM_DISCOVERY_COMPLETE if it comes
+> from the port partner, and to VDM_DISCOVERY_CABLE_IDENT if it comes from a
+> cable.
+> 
+> Fixes: 205dc9cb39f5 ("usb: typec: tcpm: implement retry mechanism for Discover Identity VDMs")
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-commit 48ae04371b34d465ad552c0745c3a4c8f91da9cf
-Author: Stefano Radaelli <stefano.r@variscite.com>
-ARM: dts: imx6ul: Add Variscite SoM and DART base files
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-This patch adds shared DTSI files for VAR-SOM-6UL and DART-6UL modules and
-SoC-specific wrappers for i.MX6UL, i.MX6ULL, and i.MX6ULZ. It drops and
-replaces older shared DTSI files and restructures common components.
+> ---
+> Changes in v2:
+>  - cover a cable returns PD_CTRL_NOT_SUPP case reported by sashiko
+>  - kick off vdm_discovery work to continue working
+>  - correct previous wrong fix commit id
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 2d6b14aa2085..5cea820e00c4 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -3891,6 +3891,16 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
+>  		case SRC_READY:
+>  		case SNK_READY:
+>  			if (port->vdm_state > VDM_STATE_READY) {
+> +				if (port->ams == DISCOVER_IDENTITY) {
+> +					if (rx_sop_type == TCPC_TX_SOP) {
+> +						tcpm_update_vdm_discovery_state(port,
+> +								VDM_DISCOVERY_COMPLETE);
+> +					} else if (rx_sop_type == TCPC_TX_SOP_PRIME) {
+> +						tcpm_update_vdm_discovery_state(port,
+> +								VDM_DISCOVERY_CABLE_IDENT);
+> +						mod_vdm_discovery_delayed_work(port, 0);
+> +					}
+> +				}
+>  				port->vdm_state = VDM_STATE_DONE;
+>  				if (tcpm_vdm_ams(port))
+>  					tcpm_ams_finish(port);
+> -- 
+> 2.34.1
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi b/arch/a=
-rm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
-new file mode 100644
-index 0000000000000..cd93f618e907b
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
-@@ -0,0 +1,203 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-+ */
-+
-+/ {
-+	memory@80000000 {
-+		device_type =3D "memory";
-+		reg =3D <0x80000000 0x20000000>;
-+	};
-+
-+	/* ref_clk for micrel ethernet phy */
-+	rmii_ref_clk: clock-rmii-ref {
-+		compatible =3D "fixed-clock";
-+		#clock-cells =3D <0>;
-+		clock-frequency =3D <25000000>;
-+		clock-output-names =3D "rmii-ref";
-+	};
-
-[Severity: Low]
-Does adding the rmii_ref_clk label here conflict with the existing
-rmii_ref_clk label in legacy downstream enet2.dtsi files?
-
-Since those legacy files are still included by dependent boards, redefining
-this label leads to duplicate label errors during compilation. Although this
-build regression is fixed later in the series by replacing the legacy
-components in Patch 6 and Patch 8, it breaks git bisect at this step.
-
-[ ... ]
-
-+	reg_gpio_dvfs: regulator-gpio-dvfs {
-+		compatible =3D "regulator-gpio";
-+		regulator-name =3D "gpio_dvfs";
-+		regulator-min-microvolt =3D <1300000>;
-+		regulator-max-microvolt =3D <1400000>;
-+		regulator-type =3D "voltage";
-+		gpios =3D <&gpio4 13 GPIO_ACTIVE_HIGH>;
-
-[Severity: Low]
-Will this fail to compile because GPIO_ACTIVE_HIGH is undefined?
-
-The previous includes provided standard bindings like
-<dt-bindings/gpio/gpio.h>, but the new file chain omits them. Consequently,
-downstream board .dts files like imx6ul-var-som-concerto.dts fail to
-compile due to undefined macros and missing node references.=20
-
-This build regression is fixed later in the series by Patch 8, but it
-currently breaks git bisect.
-
-[ ... ]
-
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
-+		fsl,pins =3D <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
-+		>;
-+	};
-+};
-
-[Severity: Medium]
-Does the removal of the usdhc2 node here drop eMMC/NAND storage support?
-
-The patch removes the inclusion of imx6ul-var-som-common.dtsi, which
-previously supplied the usdhc2 node for storage. By omitting it in this
-replacement file, dependent boards lose their primary storage capability.
-
-Although this regression is resolved later in the series by Patch 6
-via imx6ul-imx6ull-var-emmc.dtsi, could the storage node be preserved here
-temporarily to prevent breaking git bisect?
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi b/arch/arm/boot/=
-dts/nxp/imx/imx6ul-var-som.dtsi
-index feea24c0e0683..8e3c2d72811f0 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-@@ -2,37 +2,30 @@
- /*
-  * Support for Variscite VAR-SOM-6UL Module
-  *
-- * Copyright 2019 Variscite Ltd.
-+ * Link: https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/var-so=
-m-6ul/
-+ *
-  * Copyright 2025 Bootlin
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-  */
-=20
--/dts-v1/;
--
--#include "imx6ul.dtsi"
--#include "imx6ul-var-som-common.dtsi"
-+#include "imx6ul-imx6ull-var-som.dtsi"
-
-[Severity: Low]
-Does the deletion of the SoC includes here cause undefined node labels in t=
-he
-remainder of the build?
-
-This drops standard bindings and base SoC node labels. Downstream board fil=
-es
-fail to compile due to missing node references and macros. This build
-regression breaks git bisect, though it is fully fixed later in the series
-by Patch 8.
-
-[ ... ]
-
- &iomuxc {
--	pinctrl_brcm_bt: brcm-bt-grp {
--		fsl,pins =3D <
--			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* BT_REG_ON (BT_EN) */
--		>;
--	};
--
--	pinctrl_brcm_wifi: brcm-wifi-grp {
-+	pinctrl_enet1_gpio: enet1-gpio-grp {
- 		fsl,pins =3D <
--			MX6UL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x1b0b0	/* WL_PWR (WIFI_PWR 5G) */
--			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x1b0b0	/* WL_REG_ON (WIFI_EN) */
-+			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
- 		>;
- 	};
-=20
--	pinctrl_enet1_gpio: enet1-gpiogrp {
-+	pinctrl_wifi: wifi-grp {
- 		fsl,pins =3D <
--			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0 /* fec1 reset */
-+			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-+			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
- 		>;
- 	};
- };
-
-[Severity: Low]
-Does renaming pinctrl_brcm_wifi to pinctrl_wifi break downstream
-dependencies?
-
-Downstream legacy included files like imx6ul-var-som-wifi.dtsi still
-reference the old labels. This leads to unresolved phandle errors during
-compilation and breaks git bisect, though it is fixed later in the series by
-Patch 6 and Patch 8.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790512621.gi=
-t.stefano.r@variscite.com?part=3D4
+-- 
+heikki
