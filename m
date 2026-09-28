@@ -1,197 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0EE48C41F
-	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 08:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818E24519A3;
+	Mon, 28 Sep 2026 09:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790585510; cv=none; b=V6mtUz9SCdMIlc9jTZmlI+ntfpYQm+LB2iO1VsndpuQy/QGfphP//iTabDLjmEh3P+ZUUafRlW1IsbQN24+iInqoN1WBjJv7YG+oX9GYk3KvWoLbO+kriRqyubzuSiA/mOkB4lp5DvplUiD82ZHttezf0dNDhokExgA6hf3KUzk=
+	t=1790588590; cv=none; b=pA8T9612xKj4zw8dpb8KRj+0aZg1Fb/jC9efauf0hutn1DlEvE0jwm+D3IO6xex2CrEgLF9k+ldaNX1QTq/RpPvV21jjG5uBbEfsgKgcLz1z/ph2tqwn/3s0iKsTG7AH1nVtCwDGO5HN7NRl55YnmKdhHVLTitySE9d1n5qWLpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790585510; c=relaxed/simple;
-	bh=3vZcqVmSQEMWNm/6wA8Q5+WJp4wzHqrnz/xnjrdBwVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJpwdHuk0UfzCGtV5th5BWWV0BAPvq+F6K2qqXehgH5OVZAa+hhDNJROwisKL8QL/fZCJJiUVVsA3xglCe9jifwgQ6WOzMi6yuz4EHiYdQoC3rctXbqoWNqKKqDcD7JKbSec69lm4HcT2QcutBC6xGR1CrF5tkl4gKQdgjQUJQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QMEynwQy; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790588590; c=relaxed/simple;
+	bh=IQ89eq0DhiyChrSIM/wph876V3ryNwBJXXwlA+H2aCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AYMHPz/WqTm7mLxoWJDIxZKzHTvGvAYFnZOeE4zFdoc4psLUYjYQaFfmRQteJBvy4ZXRrWJ2tXIynQGZTtfgDtdndzBTefbHFRIe/WrZlVTMmzfgW33XZnIx+CctWT4fXfKLA3a4VQMDWct6AZ+MWCA9zcMi1L9OSlTUMQtkxBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=fOsRGqyd; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QMEynwQy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790585508; x=1822121508;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3vZcqVmSQEMWNm/6wA8Q5+WJp4wzHqrnz/xnjrdBwVI=;
-  b=QMEynwQyTtzcaiRIlAhRfZYc/pTF1W/Aa4dzt+ZC5HNA917T+jOavITE
-   3KBC3c+cfSvR3yGUUGWdN0Gyf/TF5IhvSOhkmkPkEkNsd4fMqYdTWHrNJ
-   kfc8Lk94Sg0rR8+g8TLEfJFqgFy8SFTI2QlNEOkhC4JNK3B2zFyUFwQ+J
-   LxWCim3GgpwgxKmIaYyX6EZqlPRCKvHj/CEAoLH8RNz976l2rywFTIhqP
-   tbFs8Xd+wPrZtqxTmXn5q8yICKMEdyvvhc16i/nDWK5kAbiRE2iBXvJi5
-   b6Xf+DAQgOlSs3E9PMWBoRU4NWh88ZhcpudN4iznzzlf08pmTuBLkC3AF
-   w==;
-X-CSE-ConnectionGUID: /kdXUMZpSrmdUzwpttYGsQ==
-X-CSE-MsgGUID: 2Da5vtMGR+ybilpx49nlQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90406434"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90406434"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 01:51:47 -0700
-X-CSE-ConnectionGUID: /8MRxcd/TbC4s+EB6M7Flw==
-X-CSE-MsgGUID: lQNZ3QzeRLW2dSSQDoL8wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="301275483"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.42])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 01:51:39 -0700
-Date: Mon, 28 Sep 2026 11:51:37 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Frank.Li@oss.nxp.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Cunhao Lu <1579567540@qq.com>, Frank Li <Frank.Li@nxp.com>,
-	Raul E Rangel <rrangel@chromium.org>, Moteen Shah <m-shah@ti.com>,
-	Kendall Willis <k-willis@ti.com>, Dhruva Gole <d-gole@ti.com>,
-	Matthias Feser <mfe@kbsgmbhfr.onmicrosoft.com>,
-	Kartik Rajput <kkartik@nvidia.com>, Fan Wu <fanwu01@zju.edu.cn>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Stefan =?iso-8859-1?Q?D=F6singer?= <stefandoesinger@gmail.com>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Zhaoyang Yu <2426767509@qq.com>, Kees Cook <kees@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>,
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-	"moderated list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES" <linux-arm-kernel@lists.infradead.org>,
-	"open list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES" <linux-samsung-soc@vger.kernel.org>,
-	vkoul@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] serial: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Message-ID: <aroqmVWSPd9YVDjM@ashevche-desk.local>
-References: <20260925200850.1678179-1-Frank.Li@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="fOsRGqyd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=ID7B6wbjsNNmOlQbuPS6iyOH0i0CHBvTbHBEcGBY4xo=; b=fOsRGqydo0GOhg1fGXJKGFG7+T
+	zl/gxqlyIwfiwPOJ77hcmcIgtd0MQNDA3DwOLHLehbjZHpfO1xk1O7qUoysmlJxSYWdODWXXb+LX8
+	/jY7cVUBNMNiR9HLPyDy6BuMciBs5cDX9xCzojc7tLKOK4sVJzViebHly15VasTEtP1Xw/dk9xtNz
+	34ZhJbkHjDM3zTAvPRGYD5YyvPR2kbUWza3GTTp5vmDIvu6FVE7HYVdo47033LHHHc4uRpyQP8zy2
+	D9fOzoq4Bk40fcUOHzRIVN3DH+UJS3qsDylhteJCu2bQomzXN1KerlLSSJPfPVr/fPeHD4Q7ocbrm
+	JUbJdCeA==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xB7ss-000JjN-0f;
+	Mon, 28 Sep 2026 11:42:54 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xB7sr-000A1V-2o;
+	Mon, 28 Sep 2026 11:42:53 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Guido =?ISO-8859-1?Q?G=FAnther?= <agx@sigxcpu.org>,
+ Robert Chiras <robert.chiras@nxp.com>, Tim Harvey <tharvey@gateworks.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Frank.Li@oss.nxp.com
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
+ Frank Li <Frank.Li@nxp.com>
+Subject:
+ Re: [PATCH 1/8] dt-bindings: display: remove #address-cells and #size-cells
+ off requires
+Date: Mon, 28 Sep 2026 11:42:51 +0200
+Message-ID: <5135446.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260925-cleanup_dtb_warning-v1-1-f999fafbca60@nxp.com>
+References:
+ <20260925-cleanup_dtb_warning-v1-0-f999fafbca60@nxp.com>
+ <20260925-cleanup_dtb_warning-v1-1-f999fafbca60@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925200850.1678179-1-Frank.Li@oss.nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28137/Mon Sep 28 08:24:12 2026)
 
-On Fri, Sep 25, 2026 at 04:08:30PM -0400, Frank.Li@oss.nxp.com wrote:
+Am Freitag, 25. September 2026, 18:37:50 CEST schrieb Frank.Li@oss.nxp.com:
 > From: Frank Li <Frank.Li@nxp.com>
-> 
-> Replace direct dma_chan::device::dev access with the proper
-> dmaengine_get_dma_device() for consumer API
-> 
-> chan->device->dev is not always the device used for DMA mapping.
-> Some DMA engines support per-channel IOMMU mappings, so different
-> channels may use different DMA devices.  dmaengine_get_dma_device()
-> returns the correct device for each channel.
-> 
-> This also prepares for making the DMA engine provider data structures
-> private. DMA consumers should not access DMA engine internals directly.
+>=20
+> The display panel node is not necessary located in dsi node. So remove
+> these from requires list.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-...
+Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yam=
+l b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> index 5952e6448ed47..a0c3ba9275684 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> @@ -137,8 +137,6 @@ properties:
+>        - port@1
+> =20
+>  required:
+> -  - '#address-cells'
+> -  - '#size-cells'
+>    - clock-names
+>    - clocks
+>    - compatible
+>=20
+>=20
 
->  	/* RX buffer */
->  	if (!dma->rx_size)
->  		dma->rx_size = PAGE_SIZE;
->  
-> -	dma->rx_buf = dma_alloc_coherent(dma->rxchan->device->dev, dma->rx_size,
-> +	dma->rx_buf = dma_alloc_coherent(rx_dev, dma->rx_size,
->  					&dma->rx_addr, GFP_KERNEL);
 
-Now one parameter can be moved up and positive outcome the split becomes logical
-(on a logic boundaries).
-
->  	if (!dma->rx_buf) {
->  		ret = -ENOMEM;
-
-...
-
->  	/* TX buffer */
-> -	dma->tx_addr = dma_map_single(dma->txchan->device->dev,
-> +	dma->tx_addr = dma_map_single(tx_dev,
->  					p->port.state->port.xmit_buf,
->  					UART_XMIT_SIZE,
->  					DMA_TO_DEVICE);
-
-You can fix indentation while at it.
-
-> -	if (dma_mapping_error(dma->txchan->device->dev, dma->tx_addr)) {
-> -		dma_free_coherent(dma->rxchan->device->dev, dma->rx_size,
-> +	if (dma_mapping_error(tx_dev, dma->tx_addr)) {
-> +		dma_free_coherent(rx_dev, dma->rx_size,
->  				  dma->rx_buf, dma->rx_addr);
->  		ret = -ENOMEM;
-
-...
-
->  	/* Release RX resources */
->  	dmaengine_terminate_sync(dma->rxchan);
->  	dma->rx_running = 0;
-> -	dma_free_coherent(dma->rxchan->device->dev, dma->rx_size, dma->rx_buf,
-> +	dma_free_coherent(dmaengine_get_dma_device(dma->rxchan), dma->rx_size, dma->rx_buf,
->  			  dma->rx_addr);
-
-And here the last parameter of the previous line can be moved to the next line.
-
-...
-
-> +	db->buf = dma_alloc_coherent(dmaengine_get_dma_device(chan), PL011_DMA_BUFFER_SIZE,
->  				     &db->dma, GFP_KERNEL);
-
-^^^ (1)
-
->  	if (!db->buf)
->  		return -ENOMEM;
-
-...
-
->  {
->  	if (db->buf) {
-> -		dma_free_coherent(chan->device->dev,
-> +		dma_free_coherent(dmaengine_get_dma_device(chan),
->  				  PL011_DMA_BUFFER_SIZE, db->buf, db->dma);
-
-Perhaps you want both (1) and this be consistent, either (1) be rewrapped,
-or this one
-
-		dma_free_coherent(dmaengine_get_dma_device(chan), PL011_DMA_BUFFER_SIZE,
-				  db->buf, db->dma);
-
->  	}
-
-...
-
->  	struct pch_dma_slave *param = slave;
->  
->  	if ((chan->chan_id == param->chan_id) && (param->dma_dev ==
-> -						  chan->device->dev)) {
-> +						  dmaengine_get_dma_device(chan))) {
-
-Even original code has broken indentation. What about rewrapping it?
-
-	if ((chan->chan_id == param->chan_id) &&
-	    (param->dma_dev == dmaengine_get_dma_device(chan))) {
-
->  		chan->private = param;
->  		return true;
-
--- 
-With Best Regards,
-Andy Shevchenko
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
 
