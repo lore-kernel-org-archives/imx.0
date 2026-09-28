@@ -1,228 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94DE35C1A9;
-	Mon, 28 Sep 2026 21:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D074F55C3;
+	Mon, 28 Sep 2026 21:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790629490; cv=none; b=UZCMREN08JHbTbDAZWjflzlggshC1eMA4yW0invcqD6UvAQrcAEsX/RGg6aHLyJ/uMUG7dcp8muY7/Uo9tNBT/yNzNoHtV8vw3PJoXEyIktX1Z2nHHYPrJj3vmXv5NpUNKQE0VJqZdLfK8xPyG4bWAqrNDUu8w9mSJDJFb2oaiw=
+	t=1790629713; cv=none; b=n+zxHR5sIO3GdVhdkJ/XxCDKSGtv/qho7Kv3rGebAqbMNquzwtq1xGaXtfOsxpcIN2KcDQu/kNMfmtZ1HcVehxEQ9nb/7YAtdt1OPBXBWbCGmhif3+JllxBffTl6imfgXwkEYseViLEIxRXwswpeVGADO5qTGB7ABg1CbHMaWvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790629490; c=relaxed/simple;
-	bh=4WfkTemOrC8BBo5bBRSx0nAks/yfqsLlJHoK1NSB8Hs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LrFAfQ/9Da30Umxfm8Ul8f+N/+Pkk2KFFkJAH9JpDXOKWyQKYovdNrB6RtDAbIcXIWxpNEki0NoR+DMuiZ7ATeQyxhi/UA4bjz0VulchnSWjH3ZtnfWePKDp1mLH0nkx5yCfnBzfeSbny8adzFtcXy67VxNmb3ak5s1xLonVd34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPnegzC+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790629713; c=relaxed/simple;
+	bh=ubCLZOqyKtAsDaeaTiwxQToK3l52AquCJw2Wy54Kq+w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Rl10dYh+Btyb8SCo76LWAIx6EQkrTi2PkwCdNiTD05N+L4dn7cRmKdK+GJvvKHbyMl+8bwMTAfWBB0299lJzdqj9BhRgr8ayDySGU1GABkXCrCi7F+IIbdIqbE3RLfjUDK33IBAkpgap5vj6PCRXzc0yFyZAzR08jmS4v0Wxjlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=scFcWAFP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPnegzC+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471851F000FF;
-	Mon, 28 Sep 2026 21:04:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790629488;
-	bh=tRgOEtQUjPQPcuPzvM42ONw2yxNbpimwrxls9RJW2y0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JPnegzC+PCeW5pwSWYZAJYlgXPLsCtrhYe6U68ORArI8M+g/Xi0Ooj2Tjvg9vDIx+
-	 lTQXc4U8zmKIVgJm92cdZ6Fj/aNfjZhE2T56/gqo1vgmGaNnsFuelEYhvKRqKgM+iS
-	 AwS4VpR2+N6jKl7qgHiFyvi70Mswwj6M7l0cUSuMChJt/wZDG9MYn38PAY7E12yj3F
-	 blA8aDqaP7OANVgm5rE0tFien1cTcWlvNqm/kP1V5UuiDEMnfepxBHLPWCaQdfUyx9
-	 DNEk6/2G/cp11j9a/2Q/i2M/DjzQDpjCY4HpQBi5IFSki9DDxfzEndCFdZ5Or/F5VP
-	 A11SSv4ne6IOA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/3] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: "Marc Kleine-Budde" <mkl@pengutronix.de>, "Oliver Hartkopp" <socketcan@hartkopp.net>, Frank.Li@kernel.org, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, linux-can@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, "Vincent
- Mailhol" <mailhol@kernel.org>
-In-Reply-To: <20260928204741.175754-3-marex@nabladev.com>
-References: <20260928204741.175754-1-marex@nabladev.com>
- <20260928204741.175754-3-marex@nabladev.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 21:04:47 +0000
-Message-Id: <20260928210448.471851F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="scFcWAFP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C41FCC2BCB3;
+	Mon, 28 Sep 2026 21:08:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790629712;
+	bh=ubCLZOqyKtAsDaeaTiwxQToK3l52AquCJw2Wy54Kq+w=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=scFcWAFPzVwlgk6Mfuy4dGt/T10sb3XTyF8CZvofpLpfICykWRUzpp5Nv0QPzvo5d
+	 2spSQHugSGLmjwWgUQsmrDnYCrkJiDPEYY2/oZTRMrGaQeLYWEV+22AvFUnL5X3hHj
+	 H2/xU+ojjPIcLxRjonDJN7A8Sh0xmSlEnEVdfgQ8rlk/rnt1KQLUbcdyRy29ZItgmh
+	 g6ikvlvyMCTA9y2IWYXcn+UTg5wkYrqm0WmraLOuqQgD9UUQk6F8tIX3jcNeZm8d0K
+	 SZkNDbvYk0zhz8w5TzvODjbo+7BtKL+zFUtEDyqQ7YIPl3KeOVOMG0FjWZweuT6iZZ
+	 /CWyG53GgaK7Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E792CA5FA1;
+	Mon, 28 Sep 2026 21:08:32 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Mon, 28 Sep 2026 23:08:28 +0200
+Subject: [PATCH v2] arm64: dts: lx2160a: set #pinctrl-cells on the pinmux
+ node
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260928-for-upstream-lx2160a-pinctrl-cells-v2-1-1227b2e897d3@free.fr>
+X-B4-Tracking: v=1; b=H4sIAEvXumoC/5WNSw6CMBBAr0K6dgwdPhZX3sOwqGUqk1QgUyQYw
+ t2t3MDle4v3NhVJmKK6ZpsSWjjyOCTAU6Zcb4cnAXeJFeZY5w0a8KPAe4qzkH1BWFHXuYWJBzd
+ LAEchRLhgUxWFNvgwlUqhScjzekzubeKe4zzK53gu+mf/yi8aNJTeWmOLUruuu3khOntR7b7vX
+ ySey0bSAAAA
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790629711; l=1258;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=MLG+A3X72Uzk7Ufcvox/+HKIq9Wjjn1mtqOgeCdt28M=;
+ b=Kg5Dd4el+o3eMbJo2GVlTwYzVEDdR0ZdS9fQGXKBUZ0xTpYc1C8lDtrgVM07nHcjhgFnBKUlJ
+ +PQXpdJPPEPCf6JomddSRVqbGzuQO4hkdwxruh1kqSVsU6J4+eG2jIl
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] dt: imx95-data-modul: PCAL6524 expander interrupts cause IRQ storm=
- due to active-high polarity
-- [High] dt: imx95-data-modul: KSZ9131 Ethernet PHYs permanently held in re=
-set due to active-high polarity
-- [Medium] dt: imx95-data-modul: reg_panel_vcc defaults to active-low, brea=
-king panel power
-- [Medium] dt: imx95-data-modul: M.2 Key-E slot unpowered due to missing re=
-gulator for VDD_3V3_M2-E_EN
---
+From: Vincent Jardin <vjardin@free.fr>
 
-commit 88cbe063476bce8eddcc6ed5fd22c93a72c1ced5
-Author: Marek Vasut <marex@nabladev.com>
+The below message shows at boot time:
+  pinctrl-single 70010012c.pinmux: please update dts to use #pinctrl-cells = <2>
 
-arm64: dts: imx95: Add support for Data Modul i.MX95 eDM SBC
+Add missing #pinctrl-cells = <2> to fix it.
 
-Add support for Data Modul i.MX95 eDM SBC board. This is an evaluation board
-for various custom display units.
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Changes in v2:
+- Reword the commit message (thanks Frank Li)
+- Rebased on imx/for-next
+- Link to v1: https://lore.kernel.org/r/20260928-for-upstream-lx2160a-pinctrl-cells-v1-1-4faa8a341cdd@free.fr
+---
+ arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts b=
-/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
-> new file mode 100644
-> index 0000000000000..0181262eb8a98
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
+index bccf2d673023..2085362ab0ea 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
+@@ -1536,6 +1536,7 @@ pinmux_i2crv: pinmux@70010012c {
+ 			reg = <0x00000007 0x0010012c 0x0 0xc>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
++			#pinctrl-cells = <2>;
+ 			pinctrl-single,bit-per-mux;
+ 			pinctrl-single,register-width = <32>;
+ 			pinctrl-single,function-mask = <0x7>;
 
-[ ... ]
+---
+base-commit: 5d034f17b24642b2a764c0e3a68b4c6937c9ba75
+change-id: 20260928-for-upstream-lx2160a-pinctrl-cells-729533182b85
 
-> +	reg_panel_vcc: regulator-panel-vcc {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
-> +		regulator-name =3D "PANEL_VCC";
-> +		gpios =3D <&i2c2_gpio_expander_20 17 0>;
-> +		/* Disabled by default, unless display board plugged in. */
-> +		status =3D "disabled";
-> +	};
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
 
-[Severity: Medium]
-Does this regulator invert the panel power logic?
 
-Because this fixed regulator omits the enable-active-high boolean
-property, the gpiolib-of quirk implementation specifically ignores the phan=
-dle
-polarity flag (0 / GPIO_ACTIVE_HIGH) and forces the polarity to active-low.
-This results in inverted enable logic for the display panel when it should =
-be
-on or off.
-
-[ ... ]
-
-> +	i2c2_gpio_expander_20: gpio@20 {	/* U12 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x20>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-Does this interrupt configuration cause an immediate IRQ storm?
-
-The NXP PCAL6524 INT output is an open-drain, active-low signal, and
-the expanders share the same gpio5 11 line. By configuring the interrupt
-with IRQ_TYPE_LEVEL_HIGH, the GPIO interrupt controller continuously
-perceives the natural high idle state (maintained by a pull-up) as an
-active interrupt, rendering all the GPIO expanders inoperable.
-
-> +		vcc-supply =3D <&reg_3p3v>;
-> +		/*
-> +		 * reset-gpios cannot be used because the reset
-> +		 * line is shared by multiple PCAL6524 consumers.
-> +		 */
-> +		gpio-line-names =3D
-> +			/* Port 0 */
-> +			"UART8_RS232-485_MODE0", "UART8_RS232-485_MODE1",
-> +			"UART8_RS232-485_Term_TX", "UART8_RS232-485_Term_RX",
-> +			"UART8_RS232-485_EN", "VDD_3V3_M2-E_EN",
-
-[Severity: Medium]
-Will the M.2 Key-E slot remain unpowered?
-
-The board features a dedicated power enable pin for the Key-E slot
-("VDD_3V3_M2-E_EN" here on the PCAL6524 expander). However, unlike the Key-B
-and Key-M PCIe slots, there is no fixed regulator defined for this pin, and
-the usdhc3 node has no vmmc-supply. Since the expander powers up in input
-mode, the enable pin is never actively driven high, leaving the slot unpowe=
-red
-and any SDIO device failing to initialize.
-
-[ ... ]
-
-> +	i2c2_gpio_expander_21: gpio@21 {	/* U14 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x21>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-This is a second instance of the active-high interrupt polarity issue on the
-PCAL6524 INT pin, which will also contribute to an IRQ storm on gpio5 11.
-
-[ ... ]
-
-> +	i2c2_gpio_expander_22: gpio@22 {	/* U13 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x22>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-This is a third instance of the active-high interrupt polarity issue on the
-PCAL6524 INT pin, continuing to cause an IRQ storm on the shared line.
-
-[ ... ]
-
-> +	ethphy0: ethernet-phy@1 {	/* KSZ9131RNXI U20 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <1>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 4 GPIO_ACTIVE_HIGH>;
-> +	};
-
-[Severity: High]
-Are the KSZ9131 Ethernet PHYs permanently held in reset?
-
-The KSZ9131 PHY requires an active-low reset signal (RESET_N). By
-specifying GPIO_ACTIVE_HIGH here for reset-gpios, the PHY framework will
-drive the line high to assert reset, and low during normal operation, exact=
-ly
-opposite of what the hardware expects, permanently holding the PHY in reset.
-
-> +
-> +	ethphy1: ethernet-phy@2 {	/* KSZ9131RNXI U22 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <2>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 5 GPIO_ACTIVE_HIGH>;
-> +	};
-
-[Severity: High]
-This is the second instance of the reset-gpios polarity issue on the ethern=
-et
-PHY, also holding it permanently in reset.
-
-[ ... ]
-
-> +&usdhc3 {	/* M.2 Key-E */
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> +	pinctrl-3 =3D <&pinctrl_usdhc3>;
-> +	bus-width =3D <4>;
-> +	status =3D "okay";
-> +};
-
-[Severity: Medium]
-As mentioned earlier regarding the missing regulator for VDD_3V3_M2-E_EN,
-usdhc3 misses a vmmc-supply to control the slot's power, leaving the
-M.2 Key-E slot unpowered.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928204741.1757=
-54-1-marex@nabladev.com?part=3D3
