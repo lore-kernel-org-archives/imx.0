@@ -1,130 +1,324 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011060.outbound.protection.outlook.com [52.101.65.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87D549739D;
-	Mon, 28 Sep 2026 10:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790590127; cv=none; b=aikCGmjfK6qNDEtdKgCE70fdp23q+I20HhoL9R6OrwNJPCT3l+iP+nyxoreCE7TnJpe1F9Pf+mlBHmUTDf9wWkg5neyKuQqhT7fWGmIjVMirCSYQuUmApneRpDwJq2c49z45p8TVBGDF7BeoGbmHHRp/CVt5hbJ/Hid7eqO6R1E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790590127; c=relaxed/simple;
-	bh=k6VynnZ+N0kAdeAd03ynKQPR8TBTY7wOhaOTHQKca+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d9h6VmQ4kWUyiFY/qtm60zR18nPiMxOUlZh2bwqI0EXVILJBFIx4puX6nL6LYiMfoU+w+oCVnvWiLPG76R45O2kYSnqjxvvKlznoMW6bM7nF3S/XIA36/aBmgPmP4OcJHes//9O2I4KzxPqFtyi8JK6qeQiIzPLXjrIqjCTMuaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=cYi0UKhH; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61103F483C
+	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 10:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790592139; cv=fail; b=mWreYqH73wL9ll1krYCY0BNEI3+2QDYZthXk9MajetTXqIN1TII2VFJ61+J3i8uUPp8uPagevpzijLwpKxZRXsRfRPXoJz7+xzGI+4wXej0c6s9aLR0zXvRFfSBeXreo+fQzEbIod87BAdbmVY7gn0a4WcANhGwvOYZVX/oOIos=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790592139; c=relaxed/simple;
+	bh=1WDHeJD214VRBBAXvHvhUCEKpIKXFRUqad3QrrfFtzE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ig7tbuPEevnkv5JHzojTXaSNEqrrKx/oeuSol9HBFVm/BrjNB1J5PUOAsPhyMRij8ZEJ/6FqrnOL40jODS+KO38B3gFjwC2JtJ6VHg4ZLrKghsCUft3oUDzaStNNtN9Yd7QM+baw1PYEYe0GVilBYxJwTNstWy7YgIf6W2agenQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rR2T3q+R; arc=fail smtp.client-ip=52.101.65.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="cYi0UKhH"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E36DB236;
-	Mon, 28 Sep 2026 12:06:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1790590013;
-	bh=k6VynnZ+N0kAdeAd03ynKQPR8TBTY7wOhaOTHQKca+w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cYi0UKhHY06B7Vg62VtL/Uqyke32Y27qqq3plWvR9m6EVW/CNEflE+5kqP2JeozAf
-	 o8RgWh+ZMIiO8DNusL1tMpQ7W1egqmADBEVBq6ch6vulOHK4Q1qExGccxe3mT8xLGv
-	 jVTbhMYiYuw0ld5Li3bK/+10oRYcX3LD5PSwMP9A=
-Date: Mon, 28 Sep 2026 13:08:41 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Chen-Yu Tsai <wens@kernel.org>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>, Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Philippe Cornu <philippe.cornu@foss.st.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Adrien Grassein <adrien.grassein@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, Simha BN <simhavcs@gmail.com>,
-	CK Hu <ck.hu@mediatek.com>, Jitao shi <jitao.shi@mediatek.com>,
-	Yongxing Mou <yongxing.mou@oss.qualcomm.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Martinez Canillas <javierm@redhat.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: (subset) [PATCH 1/2] dt-bindings: display: Use consistent
- indentation in the example
-Message-ID: <20260928100841.GC22609@killaraus.ideasonboard.com>
-References: <20260913123331.100293-3-krzysztof.kozlowski@oss.qualcomm.com>
- <179057359762.92994.13773102514654073802.b4-ty@b4>
- <8499ed1a-df9e-4e5a-b609-3da8499a47b5@oss.qualcomm.com>
- <20260928065837.GA22609@killaraus.ideasonboard.com>
- <ccb949ea-5fa9-47e5-be75-af8155328dc8@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rR2T3q+R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iHd6glVRCNC3Rhd5RscKE2olQS9Gg7EaLV3dFNjjeKYTdJrydFzOnSxbut5+DbqhZg9UMKZuc60SZsPV9FKgD0pJffWChuP/ln2/H+EgHeovxD+guhCYb4t2vq6TnKqXjwA48vylm55O7lKIOIxeUcIlEws6V0I6MH24hlv80lG+sxBdeXiPwBEDzba2TgG8jox+/WzaBbBFGoOfkko7p9nMb4KppX4G51Hd32nX2rx2oQ7PEXtVFyFVI8rlKDQu6a7pAReIdoa21exOWVG9vxDJ03rKm4tXT+Gze1otKMHUtPHL1ya1MUyoRsllpsfwlaMhp2QAPwpC6ePU53016A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PQeBeKSHAbushvMp+X1gKHzNUl+EgWFB1mpjfj1DYKY=;
+ b=UOswNyvsGTzBZwmZ4vQEOMYQh607gdslvIKf95FEUXxGw7jHxC6kHORCCrnjA3ClprGP9Nc+NaD+Lv621Zd8sXFihP//F8odBZbAIMZ79JLBhNEbbgZrc22aDD8dk5Q/no8QoM4zrPvUsn48PwANdDdUWxhrRv3ZLehhSnKtoh1CI5Aa89dpga9uCM86zby9QM476tTq4AhA2Md6D7DqP0mYUBkYafiPCffLGRe+//TO1btMeU+V0uZPWZncY3y1F8aq0wsJVVog37n+/IoND9o5i2pl61BmCvceEBmLAzje4zS9d9xGN9Q1sL8LGtYnmrPhq8acY06yqwW3gcJRLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PQeBeKSHAbushvMp+X1gKHzNUl+EgWFB1mpjfj1DYKY=;
+ b=rR2T3q+RHOihGXf+ZPQAb2r8aJMYr6WJX9TB15j2j41qls0BIQG7aS1xQY0Nl3E3aW2N1jdrgi1JpispJmMQIvx4H4N0zPjB97Vuf6dmQgu7q50ZQX6O+hJTOUJEp+naXi26g8exat3JEZF8Y+zP8AQHhLToTyL6BTxBpZ19+eIdEAaZFv57PFXeE7pt+vrtP2Hnlg6t+3cKyuDxi5fUc5FV5ysjhmddUP2RLmm6aIt9+ub3wmzE2l1C0H3qI6xdvNQjC0Tbz6rm5NS4kcCKI4wbqmytog+zxy+WOOo1qVw38EEm530RtV0Dq5F5vJ0JvjkN7VkNHPwazvgEeJVy8g==
+Received: from AS8PR04MB8820.eurprd04.prod.outlook.com (2603:10a6:20b:42f::13)
+ by DU6PR04MB11207.eurprd04.prod.outlook.com (2603:10a6:10:5c2::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 10:42:13 +0000
+Received: from AS8PR04MB8820.eurprd04.prod.outlook.com
+ ([fe80::35d2:bfbc:a06e:fcb]) by AS8PR04MB8820.eurprd04.prod.outlook.com
+ ([fe80::35d2:bfbc:a06e:fcb%7]) with mapi id 15.21.0451.014; Mon, 28 Sep 2026
+ 10:42:13 +0000
+From: "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>
+To: "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>, Michael Walle
+	<michael@walle.cc>, Han Xu <han.xu@nxp.com>, Yogesh Gaur
+	<yogeshgaur.83@gmail.com>, Mark Brown <broonie@kernel.org>
+CC: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Bough Chen <haibo.chen@nxp.com>
+Subject: RE: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
+ reconfiguring MCR0 and DLL
+Thread-Topic: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
+ reconfiguring MCR0 and DLL
+Thread-Index: AQHdHnn8mtV/xpfGAUqE7UZWq2EG2rbd3BGAgAAE/gCABk4EAA==
+Date: Mon, 28 Sep 2026 10:42:13 +0000
+Message-ID:
+ <AS8PR04MB88204E3900A3A9639911E178908D2@AS8PR04MB8820.eurprd04.prod.outlook.com>
+References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
+ <20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com>
+ <DLNGOZHD5KI6.26QUK1IZB7UJY@walle.cc>
+ <AS8PR04MB8820ABF469B46AD6AD36AD2490812@AS8PR04MB8820.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <AS8PR04MB8820ABF469B46AD6AD36AD2490812@AS8PR04MB8820.eurprd04.prod.outlook.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8820:EE_|DU6PR04MB11207:EE_
+x-ms-office365-filtering-correlation-id: 2055d108-792b-47c7-0af4-08df1d4d286a
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|19092799006|38070700021|4143699003|10067099003|6133799003|11063799006|56012099006|22082099003|18002099003|3023799007;
+x-microsoft-antispam-message-info:
+ 7TJx3Y+Ov6tWpC0Dv4ET9lxmzHk1VEk40dbcBrXQIOuUR//eYAeQPavhIO0UTqufBMd0B0bL1g5BUzqElFuC//SDCR91K9K8MOgKCBD7XYDJgN1hFTZZY/6blhIdN3lxQpFD3RuQjFYeEUDwCll+S7YQ03i3iyaPxR6H0TIJvauIDNiOrTrP58pO6jIbRIhG8jt67FT2hx45AcuPkLMjruyXzr32QS9H0pL+pIcz7k+k+Kj05ygDyxZyEA6YY+ytfTSSLbNC/zWrnhq+kK5NASl9Dkn1I4JHU48HCKUXhepzbiZm+JQ5vhD5sJ+UMAnu6Un9DDSFCIpCyGpH4yT9kZwu07ap2wtPJw9OirVbnu55bjmZMwnc1byWl9WoOUO/X7nBvTrkEBmqCcFpAWk6g252Qci1Xws53soZR0qyfhQBgPhK0b68JVD4rojzHTu9xAS/Xt94qstSsva9UfoVUV00M1ldALTbu0bgFsJAzVmD+IFIj1zlZJ3k6YBYeuj1L6+/u4LOUHQNtNhwaZ3gWZ/QHeijArZ9ng71FMTDG9KxEq4tSCTkv0JY7qEQ6uMVI43eJy73nT2p5yvQhmCtM9DJmoEwwUIHfrQf1CbtLrMRzRJ5gwsGdZ8P3tGGJYS2zjiBNH5PDNCV/eK/T7qsCiI0W3Ox4slT2YL+ZPvLuS8QJoEn+C/ZgsczARN6j/EacQ7COEC1K3dJYOuOA0sZW0etaHPU5Ivyp4X6FSmQN7g=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8820.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(19092799006)(38070700021)(4143699003)(10067099003)(6133799003)(11063799006)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-2022-jp?B?WmJnUE9udmliKzNwMXd6b1lRaGgyUFNwZmVkSG5xNVJvK1NDTHdJeDV2?=
+ =?iso-2022-jp?B?RlVNSzFzVXBwR3FXUCtoWEwzTm9LQnFCVzlSb0dNdU9yTjVVbytYSnA0?=
+ =?iso-2022-jp?B?alQ5TTRxWmViV1lPdG9USVV6d25wV3E1VzhTbTk1Rk9nMVFmaEFidFYz?=
+ =?iso-2022-jp?B?QytpM0o1ZGhWZzNFYWRJM3Z0OVB5NWlINjY4VWtJNmhyTGpDUEk4VDY3?=
+ =?iso-2022-jp?B?UUNHeGR5UXRnL0dydDJHQzhwdS9zdWNDRjZQb2NJaHR0dnRJSE9PbmZW?=
+ =?iso-2022-jp?B?K2hiaU1kOTU0ZkRlQmhFQ2p6MGZwUW4xNjkzbENCbXhhSnJtWU9iWk9J?=
+ =?iso-2022-jp?B?amJ5dzkyRG4yS0h3akFSdjczUjNhRFBVRHZsUGRGVFVJSEdxblE3MW9p?=
+ =?iso-2022-jp?B?NFhreVFWTmgxSXZsbWZPbnJDd25SUHd5Z0JXY3JiK0RxVEJCbWpGcWls?=
+ =?iso-2022-jp?B?UWF3MDVJTER4WllLT0VJQkFZZG5YMmJVRXpZYWJXWUd2WTYrSm9JenlH?=
+ =?iso-2022-jp?B?bWppcGVUWG5mU3VoeDg4R0FPTFl1SWdCZGFiMW5tY1dManBBY3l0M3JG?=
+ =?iso-2022-jp?B?blMwUS9NZzhuZXYrWVlDQlowWVYvRENFRCs4eWVLdnN5S2NTNmttL2tL?=
+ =?iso-2022-jp?B?WXdjY2hRR3NqaDNIQTJsZmNSSTF0SE44bVRVeDQ5SEJXNjE5RUVVa3Vi?=
+ =?iso-2022-jp?B?ZzhpUDNzWjdWclBPL204dkh2dnZRZmYraHZZY2huZFo5clUyNXhBM1NY?=
+ =?iso-2022-jp?B?dkZHQms4ditQTUtYWWhyM0hLUEd5NVJESnBrQnpYa0tqaHQwTUQwQlNG?=
+ =?iso-2022-jp?B?VUlNY1F4eDRMT05aVGk3TUoxMUlYcEhSMzIwUWRDMm9LRzduSzZyYkYz?=
+ =?iso-2022-jp?B?c29vR3NjSTRGU3dXT2tyOEZacE5qaW01dDRpNURDZzQ5NHBqT1lDVTNw?=
+ =?iso-2022-jp?B?dSt0UHp5UlExMmlaNmxVNTdzT3NTaFZoanZQZHNqSnd5RzV1YXBnNTB3?=
+ =?iso-2022-jp?B?NGw3LzJ2TFN6Y1B5OTBIWG9zSDVtb3YzU1lraHdFZEFya2xIWEszWWhp?=
+ =?iso-2022-jp?B?bHNqV0s4Z2pad0ViL0hnaG9Kc3BETllMdDhEOWhnajR1a0ZPNFZha1lX?=
+ =?iso-2022-jp?B?QlMzYVE4TERJTGxMblQ0OC8rRGp5SVJJcDRMbXpGYkl1ZCtwSzVIT1hz?=
+ =?iso-2022-jp?B?TUZMU01YdGRYZ2JYT3dobVV4NWgxc1hjdExDcko4Mk5IcFNoQ1M5TkR4?=
+ =?iso-2022-jp?B?TFBtVCs0ejhXTENqck9PUTJ2RkpxNnZhVFpFUlJ0NDFOTEIxTWw1UlZT?=
+ =?iso-2022-jp?B?YXRVZ1JSQ0w5VFBTbXg2cFE3Rm9HS1dXTzVXRGM5SHJWRVRqOFcydS9T?=
+ =?iso-2022-jp?B?WVVLMGtCWHQ0bjFRMVBhanljejk0TmQyd1lCN01QV1loMXBoSm40ZDlL?=
+ =?iso-2022-jp?B?SUxjcHJBYkhMSmRwTHZNSHI1RFBkZlJtTXE5Tk5hakdxdFJ5enhuamJm?=
+ =?iso-2022-jp?B?ZFc5K1lUaG5KNW1IRVVISi9BNDhGeTkvTkJvRXdpRUNxeDVpYjFhK3dD?=
+ =?iso-2022-jp?B?c0RDU1BhUzNtR2EyckNRN2U1RWxnSUlkYkZYczVZeHI1M2hPNzZWRzdz?=
+ =?iso-2022-jp?B?S3pPOHNoK1YxUUFPV3Q3ektvT1JxRVFvbGRtTWdzaFpXVWN3a0hUSHQx?=
+ =?iso-2022-jp?B?Sk9IRzcrNGt3S0lrWFBvaHoxMW8zZFArQ2VjNU1kQXF3OUpPMjM3N1BC?=
+ =?iso-2022-jp?B?dGlpSDFGUFF3MXJJbGZBVG1rYzZvam01Q3Z6c3FYUENFb29PWkdvL2ll?=
+ =?iso-2022-jp?B?ZDhLdjV0d0pkK3UxZE9wUWl2VW90QytQVnJHbHo0SFpRRWwram50dUhN?=
+ =?iso-2022-jp?B?RmhseU9TR0doVFpOUkpFWkNyQmJ3cE05VHVuajNwQ0NDZHluRklzVzAv?=
+ =?iso-2022-jp?B?aVlUYXNvdGVFbCt3Q0dsVjFNdER0b0dsditEV1Z4WW8rY0FtU0x5d3Er?=
+ =?iso-2022-jp?B?MFVBbFZUaEIwQk9nNDRRSUVDU04xQ3hrbGcyVmRtcWZjK0F3REJacnNT?=
+ =?iso-2022-jp?B?UzZIamxGRDFLMi9RTXVIQUh2NmI0dzB5RzgrQysyblJKUmtZdzVjTkFn?=
+ =?iso-2022-jp?B?TkliaCt5QmFqbDIwR1A4M3llSUdLbVBqb2RzSndnNHJ0VTA0RDNKdDFD?=
+ =?iso-2022-jp?B?QWNVK1ZPODFLS3JYcHhSN2g5VWQwU2hsem9NQ2s0MTJKM0c3ZkJKTHVo?=
+ =?iso-2022-jp?B?SnlBUnNKdEI4b3JrTWM0bGVQWkhUTVBUemF3aUFLOEl5Q2FiajZIMkR3?=
+ =?iso-2022-jp?B?aGtDY0hxYi9JYVNRZkVLeDVTU3VrYnJSNmdMcnZleTBlbFVrT2Y2SnE1?=
+ =?iso-2022-jp?B?WmVNem81bU1zUFlzbE5qMGhxMXJqbE14bEV1bndYaHhQZHNOeG1XQmNL?=
+ =?iso-2022-jp?B?eExyZWM4ck1hU2d3QnBGeTFhTlJzYVdKRms3aWd3blN0UFBqYUxYSXVr?=
+ =?iso-2022-jp?B?R1hzVGk0?=
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ccb949ea-5fa9-47e5-be75-af8155328dc8@oss.qualcomm.com>
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8820.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2055d108-792b-47c7-0af4-08df1d4d286a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 10:42:13.7080
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: s345em3NM4aCNBI1j/bIPYQ8VcharD9JD2C5QHhTM6E8VS0DaK5RDODplzbwQ7X1BwbBu86phjuV9fxgTj+XgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11207
 
-On Mon, Sep 28, 2026 at 10:08:43AM +0200, Krzysztof Kozlowski wrote:
-> On 28/09/2026 08:58, Laurent Pinchart wrote:
-> > On Mon, Sep 28, 2026 at 08:03:18AM +0200, Krzysztof Kozlowski wrote:
-> >> On 28/09/2026 07:33, Luca Ceresoli wrote:
-> >>> On Sun, 13 Sep 2026 14:33:32 +0200, Krzysztof Kozlowski wrote:
-> >>>> Correct indentation in the examples to consistent 2- or 4-spaces
-> >>>> indentation to fix dt-check-style warnings ("example 0
-> >>>> [indent-consistent] indent mismatch ...").  Preferred is 4-spaces, but
-> >>>> re-indenting entire example just for that is too much churn.
-> >>>
-> >>> Applied, thanks!
-> >>>
-> >>> [1/2] dt-bindings: display: Use consistent indentation in the example
-> >>>       commit: 370c5d9004f8b754351981d59fc26851bf943e93
-> >>
-> >> Thanks, but I expected no one will pick it up, so I asked Rob to take
-> >> it, thus it is already queued.
-> > 
-> > Please explain your merge plans in the cover letter next time.
-> 
-> The merge plan was this going through drm-misc. It got reviews, no one
-> applied, even Dmitry for msm only reviewed the msm-bits (second patch),
-> so I asked Rob to take it. This was not planned, but result of usual
-> drm-misc inactivity for bindings (many bindings were not taken in the
-> past or with noticeable delay/pings).
+> -----Original Message-----
+> From: Bough Chen (OSS) <haibo.chen@oss.nxp.com>
+> Sent: Thursday, September 24, 2026 6:25 PM
+> To: Michael Walle <michael@walle.cc>; Bough Chen (OSS)
+> <haibo.chen@oss.nxp.com>; Han Xu <han.xu@nxp.com>; Yogesh Gaur
+> <yogeshgaur.83@gmail.com>; Mark Brown <broonie@kernel.org>
+> Cc: linux-spi@vger.kernel.org; imx@lists.linux.dev; linux-
+> kernel@vger.kernel.org; Bough Chen <haibo.chen@nxp.com>
+> Subject: RE: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
+> reconfiguring MCR0 and DLL
+>=20
+>=20
+> > -----Original Message-----
+> > From: Michael Walle <michael@walle.cc>
+> > Sent: Thursday, September 24, 2026 6:08 PM
+> > To: Bough Chen (OSS) <haibo.chen@oss.nxp.com>; Han Xu
+> > <han.xu@nxp.com>; Yogesh Gaur <yogeshgaur.83@gmail.com>; Mark
+> Brown
+> > <broonie@kernel.org>
+> > Cc: linux-spi@vger.kernel.org; imx@lists.linux.dev; linux-
+> > kernel@vger.kernel.org; Bough Chen <haibo.chen@nxp.com>
+> > Subject: Re: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
+> > reconfiguring MCR0 and DLL
+> >
+> > On Tue Jul 28, 2026 at 12:18 PM CEST, haibo.chen wrote:
+> > > From: Haibo Chen <haibo.chen@nxp.com>
+> > >
+> > > In nxp_fspi_select_mem() the RX sample clock source (MCR0[RXCLKSRC])
+> > > and the DLL control registers (DLLxCR) are reconfigured while the
+> > > FlexSPI module is still enabled. According to the FlexSPI reference
+> > > manual initialization sequence, MCR0 and the DLL control registers
+> > > should be programmed while the module is in stop mode, i.e. with
+> > > MCR0[MDIS] set to 1, and the module re-enabled (MCR0[MDIS] =3D 0)
+> > > afterwards.
+> > >
+> > > Wrap the RX sample clock source selection and the DLL calibration/
+> > > override reconfiguration in a stop-mode window to align with the RM
+> > > and avoid reconfiguring timing-critical registers while the module
+> > > is active.
+> > >
+> > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> >
+> > This will actually cause the following error on an i.MX 95 19x19 EVK
+> > (imx95-19x19-evk.dts):
+> >
+> >   nxp-fspi 425e0000.spi: DLL lock failed, please fix it!
+> >
+> > Any ideas what causes this? I'm running the latest linux-next kernel.
+>=20
+> Hi Michael, thanks for report this issue.
+>=20
+> I can reproduce this issue on my side also, will look into it. I'll get b=
+ack to you if
+> I find anything.
 
-If that happens again, could you please reply to the series on the
-dri-devel list to tell it will be merged through the DT tree ? I don't
-think there's any issue with merging patches that way, it's just
-coordination that's lacking.
+Hi Michael,
 
--- 
-Regards,
+I find the root cause. There are 2 issues here.
 
-Laurent Pinchart
+1, for the log:  nxp-fspi 425e0000.spi: DLL lock failed, please fix it!
+    Yes, it is really involved by this patch, For DLL calibration, need to =
+be done when module enable (MCR0[MDIS] =3D 0), otherwise, DLL will not lock=
+.
+    I will do more test on other platforms like imx8ulp/imx8m/imx91.  Will =
+send one patch to fix it.
+
+2. for the dump log: WARNING: drivers/spi/spi-nxp-fspi.c:1079 at nxp_fspi_e=
+xec_op+0xd88/0xe3c, CPU#1: kworker/u24:4/64
+    After debug, I find even DLL do not lock in 8D-8D-8D mode, the first tw=
+o command also done successfully, but the third command always trigger the =
+WARN_ON(ret).
+    Here is the command information when I dump the LUT.
+[    1.887237] nxp-fspi 425e0000.spi: CMD[9f9f] lutval[0:879f879f 1:a700b31=
+0 2:00000000 3:00000000], size: 0x00000006
+[    1.897633] nxp-fspi 425e0000.spi: CMD[505] lutval[0:87058705 1:a700b310=
+ 2:00000000 3:00000000], size: 0x00000002
+[    1.907950] nxp-fspi 425e0000.spi: CMD[3535] lutval[0:87358735 1:a700b31=
+0 2:00000000 3:00000000], size: 0x00000002
+  =20
+CMD[9f9f] (RDID)=1B$B!"=1B(BCMD[505] (RDSR) can be done normally=1B$B!$=1B(=
+Bonly CMD[3535] (RDSR2)  trigger the timeout.
+the spi-nor on imx95-19x19-evk board is mt35xu512aba, and it do not support=
+ RDSR2. I add the following change then issue gone:
+
+diff --git a/drivers/mtd/spi-nor/micron-st.c b/drivers/mtd/spi-nor/micron-s=
+t.c
+index f97f2dead8c2..35bf386bb66a 100644
+--- a/drivers/mtd/spi-nor/micron-st.c
++++ b/drivers/mtd/spi-nor/micron-st.c
+@@ -180,7 +180,8 @@ static int mt35xu512aba_post_sfdp_fixup(struct spi_nor =
+*nor)
+        nor->params->cmd_ext_type =3D SPI_NOR_EXT_REPEAT;
+        nor->params->rdsr_dummy =3D 8;
+        nor->params->rdsr_addr_nbytes =3D 0;
+-
++
++       nor->params->opcodes.read_sr2 =3D 0;
+        /*
+         * The BFPT quad enable field is set to a reserved value so the qua=
+d
+         * enable function is ignored by spi_nor_parse_bfpt(). Make sure we
+
+This is involved by commit 63489002d397 ("mtd: spi-nor: Refactor Read Statu=
+s/Write Status support"), seems not only micron-st is impacted, I will find=
+ a correct method and send patch to fix it.
+
+Regards
+Haibo Chen
+
+
+>=20
+> Regards
+> Haibo Chen
+> >
+> > -michael
+> >
+> > > ---
+> > >  drivers/spi/spi-nxp-fspi.c | 14 ++++++++++++++
+> > >  1 file changed, 14 insertions(+)
+> > >
+> > > diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> > > index
+> > >
+> >
+> 6de6d432cdcb2ee383a02d72f20000045903e176..a426b8d92193a4e303f4
+> > 11cd17c1
+> > > 6cb31c3f3873 100644
+> > > --- a/drivers/spi/spi-nxp-fspi.c
+> > > +++ b/drivers/spi/spi-nxp-fspi.c
+> > > @@ -867,6 +867,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi
+> > > *f,
+> > struct spi_device *spi,
+> > >     unsigned long rate =3D op->max_freq;
+> > >     int ret;
+> > >     uint64_t size_kb;
+> > > +   u32 reg;
+> > >
+> > >     /*
+> > >      * Return when following condition all meet, @@ -896,6 +897,15
+> > > @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct
+> > > spi_device *spi,
+> > >
+> > >     dev_dbg(f->dev, "Target device [CS:%x] selected\n",
+> > > spi_get_chipselect(spi, 0));
+> > >
+> > > +   /*
+> > > +    * Per the FlexSPI reference manual (initialization sequence), MC=
+R0 and
+> > > +    * the DLL control registers should be configured while the modul=
+e is in
+> > > +    * stop mode (MCR0[MDIS] =3D 1). Enter stop mode before
+> > reconfiguring the
+> > > +    * RX sample clock source and the DLL, then exit stop mode
+> > afterwards.
+> > > +    */
+> > > +   reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
+> > > +   fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+> > > +
+> > >     nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
+> > >     rate =3D min(f->max_rate, op->max_freq);
+> > >
+> > > @@ -928,6 +938,10 @@ static void nxp_fspi_select_mem(struct nxp_fspi
+> > > *f,
+> > struct spi_device *spi,
+> > >     else
+> > >             nxp_fspi_dll_override(f);
+> > >
+> > > +   /* Exit stop mode now that MCR0 and the DLL have been
+> > reconfigured. */
+> > > +   reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
+> > > +   fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+> > > +
+> > >     f->pre_op_rate =3D op->max_freq;
+> > >
+> > >     f->selected =3D spi_get_chipselect(spi, 0);
+>=20
+
