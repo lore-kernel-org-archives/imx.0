@@ -1,139 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7020040E8FC;
-	Mon, 28 Sep 2026 08:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B5748FF99;
+	Mon, 28 Sep 2026 08:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790583597; cv=none; b=r5wTLmPA5heCMJCZtzSYK1LysySUk8+TZX+CEA0DPU1NfOGq4GH+aFbEPTWLqQBb5CoAc5kBPcZnrIFKjXUhbc7WBWmBvFFu44bFrvrq7joZEfUMOt5JLaoiRjYDhUq6w1vYxVyUMxEy9WHf54Ce9Bamb7xTHqMqe2yZE/IWDyc=
+	t=1790585327; cv=none; b=bQbPzqXKvhphJv2nFHlPRwKlvW+MLB7w6Tqw6SxZqFeIOau7vEDPpN2DsIl6T84hS8PuyNScEYOswyXVwlCwFBq8S8LWbjjHK6wshMZ8Vo9lP45ud/vup31WXALzkMH+lUFEcszrawPWxxrxJrdZT6m4tB0WpzghFuqTji49cYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790583597; c=relaxed/simple;
-	bh=k6TkmAIM+p3Zgjs7Py5EimeYdFwr0YgdRWOJLDPR7og=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Mv8y8poh2bAxkabniAHC4CB2ZbcNKYF0WndTx//XEmDVBcXjdvN7p9JJnTPUNCe8SScLkPEO81Pv8wU8uKLpofeZMAaydd7JsSESPkh8A7lvQc3NA0srPxPhVGy4HGufoxsZta4+sUvFkFjVq3clR27NLKScd3b21Cc96mtggA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cco29uaK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790585327; c=relaxed/simple;
+	bh=4TrL1LK87jREhsshgj9afbV5g3GJEMSvHjNMsw4bwYc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=rTccrh4OdeG0T6D+4+wepa51RD/XQSt/8YutBGYSHWC57bg3Up4+nqgzQdXMC+ZUakB20Xcf8w6FwUvGeH+DmPday7YRgVzJNmlDCQUMb7zH1BZXowhfxCcp0DfXrs7Bd+Uh7KRPfB58G0OYwZrRJtbObyijokIPqZUSZ48fIJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZDa58Au2; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cco29uaK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2391F000FF;
-	Mon, 28 Sep 2026 08:19:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790583596;
-	bh=Js+zyoS86enScoei6v1aInKJhGeuaYXrE65aYiOJoME=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cco29uaKX84uXievZUZX19zpvCmkU3zdPksLH4DsndiEsW1o0sOErwDjF/QJFH5Ed
-	 M7CTzqnCCrWaw7u4B9QhYTcA/MvBd8eesaMrOzjwPImrbVLeLcb1yQbKx4fVIluUvL
-	 6tgHkwy8VIKxPMkRWbfcu1dYh2T8n8dkCr/UFWHXDriRdhPFUwPpa93yqOvnbTGzK5
-	 fdagDmxFnqb4jzgMlXprJsEtrO3wzBtJt2KN2aolwZxlij2MEgit/YqQgvtnQ8SkpX
-	 P+/2B183N6+bCOCWBrx5ps1jwAYKkMgPbZrkABtyPzO4Nb5gRpBkKp/uoLuZJ3x+Ey
-	 W3DJc6SJTnSXw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/3] media: verisilicon: Remove deprecated
- nxp,imx8mp-vpu variant
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Benjamin Gaignard" <benjamin.gaignard@collabora.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, media-ci@linuxtv.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260928080822.19553-2-benjamin.gaignard@collabora.com>
-References: <20260928080822.19553-1-benjamin.gaignard@collabora.com>
- <20260928080822.19553-2-benjamin.gaignard@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 08:19:55 +0000
-Message-Id: <20260928081955.AB2391F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZDa58Au2"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id EB1EBC5CD51;
+	Mon, 28 Sep 2026 08:49:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BA3E4601BD;
+	Mon, 28 Sep 2026 08:48:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9ED0102F1EA6;
+	Mon, 28 Sep 2026 10:48:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790585317; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4TrL1LK87jREhsshgj9afbV5g3GJEMSvHjNMsw4bwYc=;
+	b=ZDa58Au2RHTizRo43gJ1JRUszIzTyZQkH6fdz231iZk+mFK47kmlmDY+0VETY5yPpnsekI
+	H2W47fDdg16ql/VlkfIClEu+3ESEBPzsHVxHQwSdkpqq7xS/LmLFAZ+c1Cwv0IKbwSw7wN
+	UNguMPFymrWlqGCyroCsOi8X9w+cBGPYBNKhNvYG1RBg11GdeNJxoWlU5ueicQVxlBuyqM
+	rssKNaxcGDmyEx8/mRYdRbY6UDDqUJjccvTKQdvCwKLp+ozx2FfNr7mFPECEsnr5mrfBuE
+	Qly9BUoYG+GYmxYZ6jpGEQOn3mIhX3sFqMhz33riAziOXByw/e3sDqg5nym3vw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 10:48:20 +0200
+Message-Id: <DLQTIJA71AQ1.1RASTM0D6GMGX@bootlin.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jessica Zhang"
+ <jesszhan0024@gmail.com>, "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>,
+ "Lucas Stach" <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Paul
+ Cercueil" <paul@crapouillou.net>, "Paul Kocialkowski" <paulk@sys-base.io>,
+ "Linus Walleij" <linusw@kernel.org>, "Inki Dae" <inki.dae@samsung.com>,
+ "Jagan Teki" <jagan@amarulasolutions.com>, "Marek Szyprowski"
+ <m.szyprowski@samsung.com>, "Sean Paul" <sean@poorly.run>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v3 00/19] drm/panel: embed a drm_bridge into every
+ drm_panel
+Cc: "Albert Esteve" <aesteve@redhat.com>, "Anusha Srivatsa"
+ <asrivats@redhat.com>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>,
+ "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-mips@vger.kernel.org>,
+ <linux-rockchip@lists.infradead.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, <asahi@lists.linux.dev>,
+ <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+ <linux-tegra@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-samsung-soc@vger.kernel.org>
+X-Mailer: aerc 0.22.0
+References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
+In-Reply-To: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] media: verisilicon: ABI breakage via removal of nxp,imx8mq-vpu
-- [Low] media: verisilicon: incomplete cleanup of runtime_resume
+On Wed Sep 16, 2026 at 3:45 PM CEST, Luca Ceresoli wrote:
+> This series embeds a drm_bridge into every drm_panel, as previously
+> discussed [1][2] and in previous iterations.
+
+Series applied to drm-misc-next.
+
+Luca
+
 --
-
-commit d5f8aa7d83409c6f9ac3f091a5c490dd769c46dc
-Author: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-
-media: verisilicon: Remove deprecated nxp,imx8mp-vpu variant
-
-This commit removes the deprecated monolithic nxp,imx8mq-vpu compatible
-string and its associated variant data from the hantro driver. This cleans
-up the code since the split G1 and G2 nodes have been preferred since
-v5.17-rc1.
-
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
-dia/platform/verisilicon/hantro_drv.c
-> index ad71c0402ef3b..12c804dcc6694 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -725,7 +725,6 @@ static const struct of_device_id of_hantro_match[] =
-=3D {
->  #endif
->  #ifdef CONFIG_VIDEO_HANTRO_IMX8M
->  	{ .compatible =3D "nxp,imx8mm-vpu-g1", .data =3D &imx8mm_vpu_g1_variant=
-, },
-> -	{ .compatible =3D "nxp,imx8mq-vpu", .data =3D &imx8mq_vpu_variant, },
-
-[Severity: Medium]
-Since Device Tree bindings are considered a stable ABI, could removing this
-compatible string cause a regression?
-
-Old DTBs with the monolithic node might fail to probe hardware video decodi=
-ng
-on new kernels, which breaks backward compatibility.
-
->  	{ .compatible =3D "nxp,imx8mq-vpu-g1", .data =3D &imx8mq_vpu_g1_variant=
- },
->  	{ .compatible =3D "nxp,imx8mq-vpu-g2", .data =3D &imx8mq_vpu_g2_variant=
- },
->  #endif
-
-[ ... ]
-
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
-media/platform/verisilicon/imx8m_vpu_hw.c
-> index fa4224de4b996..0d6a71ae5f454 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-[ ... ]
-> @@ -319,30 +223,9 @@ static const struct hantro_irq imx8mq_g2_irqs[] =3D {
->  	{ "g2", hantro_g2_irq },
->  };
-> =20
-> -static const char * const imx8mq_clk_names[] =3D { "g1", "g2", "bus" };
-> -static const char * const imx8mq_reg_names[] =3D { "g1", "g2", "ctrl" };
->  static const char * const imx8mq_g1_clk_names[] =3D { "g1" };
->  static const char * const imx8mq_g2_clk_names[] =3D { "g2" };
-> =20
-> -const struct hantro_variant imx8mq_vpu_variant =3D {
-> -	.dec_fmts =3D imx8m_vpu_dec_fmts,
-> -	.num_dec_fmts =3D ARRAY_SIZE(imx8m_vpu_dec_fmts),
-> -	.postproc_fmts =3D imx8m_vpu_postproc_fmts,
-> -	.num_postproc_fmts =3D ARRAY_SIZE(imx8m_vpu_postproc_fmts),
-> -	.postproc_ops =3D &hantro_g1_postproc_ops,
-> -	.codec =3D HANTRO_MPEG2_DECODER | HANTRO_VP8_DECODER |
-> -		 HANTRO_H264_DECODER,
-> -	.codec_ops =3D imx8mq_vpu_codec_ops,
-> -	.init =3D imx8mq_vpu_hw_init,
-> -	.runtime_resume =3D imx8mq_runtime_resume,
-
-[Severity: Low]
-With the removal of imx8mq_runtime_resume() and imx8mq_vpu_variant, there
-are no remaining users of the runtime_resume callback in struct hantro_vari=
-ant.
-
-Should the runtime_resume function pointer in struct hantro_variant and its
-wrapper hantro_runtime_resume() in hantro_drv.c also be removed to clean up
-the resulting dead code?
-
-> -	.irqs =3D imx8mq_irqs,
-> -	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
-> -	.clk_names =3D imx8mq_clk_names,
-> -	.num_clocks =3D ARRAY_SIZE(imx8mq_clk_names),
-> -	.reg_names =3D imx8mq_reg_names,
-> -	.num_regs =3D ARRAY_SIZE(imx8mq_reg_names)
-> -};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928080822.1955=
-3-1-benjamin.gaignard@collabora.com?part=3D1
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
