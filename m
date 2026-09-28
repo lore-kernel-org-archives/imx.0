@@ -1,153 +1,206 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15410329E4B
-	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 01:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790558564; cv=none; b=esRYj3ZlsvyZN/2qX1Ipej7HjmqSW+gI9mo1YPGdc7H9VH+j9MjXsfN1retjLp1cH/cO8tC69boxJlXGsGzDJ3WQgiSEiMi9UdwlEvDtfigMnFhuTgC2ryVEGg5fRUI7AOezw9Z/JQ8Ta8FWroAsSk84/AmJl63TpYwW6UiTu9I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790558564; c=relaxed/simple;
-	bh=MIkKVhn7E9BemvrlXVukR0zmhJ3p4BggWlG2NXzaC48=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QAsMOaWFHPCiu0f4TApnKYwrLmk6P5zDLoDjWb7LcUMZIPdFrFZLJ6vRP4+HnDSX0AHzsnGXIE9B6jXG7Nku5r3GBfjoieA0ti2IumYG8fmaRKHRK98A32NO+B223Q6iykWidp6gOxvf5akyriU5lAsVdX/0H7umf41HRVOvLuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDXKGRYwblqf7g_AQ--.622S3;
-	Mon, 28 Sep 2026 09:22:33 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app3 (Coremail) with UTF8SMTPA id zS_KCgDHiaVYwblqccgaAA--.21770S2;
-	Mon, 28 Sep 2026 09:22:32 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdown and remove
-Date: Mon, 28 Sep 2026 01:21:37 +0000
-Message-Id: <20260928012137.612469-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2026092715-deftly-strainer-c8a3@gregkh>
-References: <20260819021916.442827-1-fanwu01@zju.edu.cn> <2026092332-limes-washhouse-44a5@gregkh> <20260927143550.608878-1-fanwu01@zju.edu.cn> <2026092715-deftly-strainer-c8a3@gregkh>
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012051.outbound.protection.outlook.com [52.101.66.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0E82DA749
+	for <imx@lists.linux.dev>; Mon, 28 Sep 2026 02:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790564258; cv=fail; b=sx14x6QfMElGjOxNSf3cykn/QXB2gl7byA/pz8VcIGLVqSU3pKF1mRr2grqQYQ2XGBTFAe0yLaHKHyObrh6aPaFG4XAuwmwp+7Z5okOdsgqh9TcApKFafz7u17iV8jHhVp80WWyGXMSLocupzvTpm0yVG5lhj0PHmjdDStQIsR4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790564258; c=relaxed/simple;
+	bh=LIrbvkCOclnz442tubyeDPHoepObt/PBD1WJOKvxhV8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fmqIOj4TiMLjgk59TQRgYtnaQI1kWeXzIMfV368bxGVvPkTYFcx3CRphkdL8iQOZgP3QSuvBkEmqlQr1yKHhe/8SqOOEC/3XxjxMkiu3+vZP/EU5QoQW2FModLBgUeYVHRUVwwyqFuEQBb+u1eQY99oxVPEIC8B1/43J/MJaVCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fxO+YhP3; arc=fail smtp.client-ip=52.101.66.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fxO+YhP3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FJZ9kVx/LImE6rBMhx1zjIn2mU71lO5G92NFAv0sLTqgaJFddK7OfiUnnIMMLcvVSQdrQxlqHl8BTljpwUJgVe4dCxSFGxjN/lpi+I/7EpshKa6MryzauV4w59xusvCzoTtHoDcw+HAe5Ux0JSGrtDF7RgbbQHOTkbKF4KqvU28nBvbfG/h0ilqrdnkVHnU8Aqd/YpoV+8EN6NqF7rZzHz8Ngw4dwbLcbsKbSNBWmZiYuf+TnQ6ba6BKg3RYHIM5xgVpndcN95H4BZ3eb7fprmq3nz0SZUXvhNErYEePXdoHxgQFcddx4VTxX18pq5foZuLRbxzVplWiVQEf5w9I7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yrbAJopO+FRE8xxHNQAairr9TpAveIw+D06s25fOpaY=;
+ b=Xn6UM6PSzcMWDVrbhYGw5quY92/94a3I1yidHoh9KlXTmuttI+55IOK8Izt1KrDCq9EQY6vmXCnjO4xbZZQX067qO+aRoytWcA7oenHEMYjIk675G+Uk6IjzJ+sXTvCtcsdFcq5LWLkS86y886dnBTh9che98uyosQsc1d6/MYgbNvG86GpSDGrH5Bi0vJhuOfO6pGHsuA+nCm06JOOWlAW7fvB3YCHKix7YA+IJmOlo5ilM5bb7jJ/9SqrU26usLxuENqfATvEJeZly2ye08XTpen9ofARCvGMFFOlih81ebBUM4BzsY6l83Ois92rmKyTHgrre6rXovps5uabj/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yrbAJopO+FRE8xxHNQAairr9TpAveIw+D06s25fOpaY=;
+ b=fxO+YhP3UY1Sjv5n2/Z/EaT/X+/jLjGntRAh5QLprPyG6Re0ErY5la6wLIPFDZLVJSGY36ZyyS1tRyrkpzxfltBKrsuJL4aOyT1/dOToVha8HUS92Sl6vQ2U9gi8wY0I5brcXYbWU4l71yRuw8cioiqk9//lVZPCxNC7JGroOQpfk8iky5jvbz0OR9+3joNKszXnrORis3wvVNL4gBHYhqxI3sbOhrWkajQ3KPgGPHQIQc3HtMpZpfPv/UA29IfiHJe75AHmxeT4ll16zOnisXw6BRkg/KlRqJC3TUgcIZ399rAQsQRiSTXfs3AwG4UYnEfIlAdq5EYjEr9eJDinkw==
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
+ by VI0PR04MB11024.eurprd04.prod.outlook.com (2603:10a6:800:260::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 02:57:31 +0000
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 02:57:31 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jiale Yao <yaojiale02@163.com>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Frank Li
+	<frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Fabio Estevam <fabio.estevam@freescale.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
+Thread-Topic: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
+Thread-Index: AQHdTo9o+trnCymU5EaubEECaOY+dLbjRSlw
+Date: Mon, 28 Sep 2026 02:57:31 +0000
+Message-ID:
+ <AS4PR04MB9338CC981815D950C0813AB3888D2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+References: <20260927144741.1320558-1-yaojiale02@163.com>
+ <20260927144741.1320558-3-yaojiale02@163.com>
+In-Reply-To: <20260927144741.1320558-3-yaojiale02@163.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|VI0PR04MB11024:EE_
+x-ms-office365-filtering-correlation-id: 748a3d8c-8b57-4101-a1f2-08df1d0c3d48
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|23010399003|10067099003|11063799006|56012099006|22082099003|18002099003|4143699003|38070700021;
+x-microsoft-antispam-message-info:
+ X43u8PzSRbnulvMWc5d80P0y5HqBmYWlcxKMsX7Zd7sOdOvvhRyj6C50dYF7UuyrcSNPNuspomst66/u6xVrSCrMxfqWvkp5mY7UUn/SCNniQ+Mzl1n9/izHliy4mq/EQ7kTnuA9bRX/EF5DH7tnBXiXoT/NDpBmviNiUl8gkmC1j1WPJEDaevbzPF824TIEHtKt6QtVtoIWMIEQh0tufJQdx458CWQ52GN7ye4y3R2k7re07cmXjzinjhmMAp+w3RoffoeXvNZuZXrt9KCplG5fxJR9a/sZEDG2tV0ZvECLgphVmtpC67Cf54L5uyJNmuCkWWLIRMGG1vzmILGKbxol/AQL9JJ5MN/jcjNvnjNcNZDHaJvtgd9hSGOaEFP0ytH0xBXQl38hEFCJlfOft0OyEDCi7It16Yem9ibn2Q/dkfLQujRKqSbhvASCYJP/8q+o9A0uDF0IbjW2MNaMuYhqS+6gIH6VsqGua+fCIEwb99okTcFMRo3Ltj//gw0Lioq1mGUsNSY5Lvx0zjmzPEYaGLt9bkcq+r0FcFc1bmo0oofwi2L021FI2JRsa5Be/PMnHSwobwDI5h0eukX9g3a5sPK18Z+QulMNLJxnjBNxgBtaeZl+u2qSJ4EiE72nbbxCefKrvEIFERCZw0Ta9u18EXJVqUSytGLT7fAtt3g=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(23010399003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(4143699003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?cXTBSAClx5KxrNzg43VOwUqi6Sc+WoXBGx+JztCXHmMHWR8cM+VGxTz4hiXu?=
+ =?us-ascii?Q?u07MBYwUjV/6TKxG8btqh21SOqBosIdXHjkG+Y+n9ffyR0Qbku5+kXjog1aL?=
+ =?us-ascii?Q?ENl368wYz75vtXDS+LtI5OmbdX1MxBIfISqfgcIwhTzowail3S2arAvMcfF1?=
+ =?us-ascii?Q?vXgFmFnVxp3Y8i0ZIjrFWo8/9p0ugCsg3zP3O69DGivcH5azL8HFjglgal63?=
+ =?us-ascii?Q?rM1O6fpPpvemCeUZkXrPgUA3yXAbXjaIuANz5BxqL4UST5aFSGD8CffeinRj?=
+ =?us-ascii?Q?x9wYfxEMV4btiHCT55BPGhffojhs9DkAVYad+QEGvyF+LAme76vWckIct5u7?=
+ =?us-ascii?Q?oeGwmHehDHsY6MTL3NGBcG0ltLMk98qvsUQCx14Y20fmTSXh4M3dem2xe6ci?=
+ =?us-ascii?Q?x9HA6tvLD/5zwwuDDrOolw34BZfAh9+Viq6sEJe7+2A3vfwB0x8/2iXBkq4o?=
+ =?us-ascii?Q?jYpgRfqtkQjUh8M4B/9f3lwYJy2qbGXdLGYGSZ6E0zDPM4nAEUcgVUi0YNX/?=
+ =?us-ascii?Q?muG/PLu3DZ0GU0ahyZ5Pe2foJy/5pQJl1LLJqjYjUFVc/6q6gKr6DK8yBY/D?=
+ =?us-ascii?Q?6SGa5UJDIvjZpeI2jENQzB2UNi/J6ECbCnRuI3JyI7eIWVFzJNtdrcW7wdup?=
+ =?us-ascii?Q?qQITdhGhoO+uloO+xwbvVgH5rvlPaBHWKoY3DGb56O/wSYFBOg9p/T9DNUN4?=
+ =?us-ascii?Q?tfzVgdk1e/LiaYZc/UTwvmBzi+nhMMKpYAGuvk7Nl3YbptPW9UDujdjwF5//?=
+ =?us-ascii?Q?Z5Pmxk43StWGnaYKUjEeZJg9L9li/Ak2mKuX0r8GwY+9wMKa2BTgmAnN2RNy?=
+ =?us-ascii?Q?NtOEw4HQLldrxAgxuF+GdzyowN1oSzODQg4O7lq7hZCdNiD7av2ysLqtvdz4?=
+ =?us-ascii?Q?tevdrOlvOYM8oEM+cWIrnN0xXzyHjA8hEXIDkublXaTVIOPaMDeVodA/U+4a?=
+ =?us-ascii?Q?rVjlqhcj5xA9U7UFG/5nCC0S4ZWKWMEfyyWhjVzpRA23/ZB4V/JEQoZJN/jV?=
+ =?us-ascii?Q?A8A2y4Kqb1ExRIkwjt4HZGPOni340qWIeSF86QA0Sbohxrd+kR7NFlTBaU84?=
+ =?us-ascii?Q?5FUvXI9+2+ndS/7Lm+rOXzNnGDW/aZKQecLh07wrffLB/G3jCpsQaoDrgQ7T?=
+ =?us-ascii?Q?lvi9PGu8084CG8G5ShpqvffDwyRpaecU2ky7NOeI++6LYXD5hXkFhSkSota+?=
+ =?us-ascii?Q?11vafFMJf5bwzmGZH3OMmpbN+2g86DeOL4OJkTAdhwWQpis/9GOt3HIUHSqc?=
+ =?us-ascii?Q?Doiklh0S7WYeVPmY9VO32zOMrM8OoSU5kUUIWfNU5vssBfdhXKjxRdPD6dSu?=
+ =?us-ascii?Q?K/wgOeohptYIejlURsXva0wfk1zLhjK2xwRLjc4oI7ZiqdoB+4vCSWsmLBaT?=
+ =?us-ascii?Q?SmgnzqPnB4dSJZu716chmX3yIEBclXvgF4a87NOUt4zQtzVj0JrfoSjm4R00?=
+ =?us-ascii?Q?xlgQU+A6r84o9Erqg1RSVY/afjmz11HVxuHAXP/Vvv46hfkkCwyONX21SpKP?=
+ =?us-ascii?Q?KXHqAKlkx1ci+u6zhFc8vej6K+kNta5yA3/cLase6wRq2Qm2Rvee+5Ytaf8x?=
+ =?us-ascii?Q?sqBU9mH33Og5zy8RyWHgX6w+u1/7X1O22WyMCDP12TAn9laMqnfvmWvKaEvM?=
+ =?us-ascii?Q?GyAAQFq/M0e2RyQBQC3qrYPEbRy8AW+mkRfgYPPZKoVOOBCB9V7l87Fq06Pe?=
+ =?us-ascii?Q?lwFH8fDD1ny242D8eC49eQw0KCfRtbIXCmrDygZK7DWYj9o7?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zS_KCgDHiaVYwblqccgaAA--.21770S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?VpIAvQXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnbfYAegEspJ+qccDMUwRuturi5AT5DoK0eYNJyhaOWy/zrM0g3c3MjVnG8yRi+Mvb/sN
-	c6t5hI+iBeOhBNyMgpmp9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoWxGFWUXr4fury8Cw1UWFyrXwc_yoWrGF4UpF
-	WDtrZIkrWvqr4avF47AFn7WFyftws3Jry7Gr1rK3Wjv3y3CrWxtF42vFsYvFWqgw1FqFWY
-	kr48JwnxuFyUAFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 748a3d8c-8b57-4101-a1f2-08df1d0c3d48
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 02:57:31.4821
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /6PGoyhcctny7GIi38xr+XlXhjAw6E5cKXF7lpWj8Fc/HASRw+pL/sK3AyIoQ9Za1CoySUY696sehtRPSFXmzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11024
 
-On Sun, Sep 27, 2026 at 06:28:42PM +0200, Greg Kroah-Hartman wrote:
-> Sorry, I have no context here as you top-posted and did not include any
-> context.  Please don't do that.  Remember, some of us get 1000+ emails a
-> day...
+> Subject: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
 
-You are right, sorry about that.  Answering your Sep 23 question with
-context this time:
+Please add target tree to the subject. Since this is a fix, the target tree=
+ should be net.
 
-On Wed, Sep 23, 2026 at 12:17:41PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Aug 19, 2026 at 02:19:16AM +0000, Fan Wu wrote:
-> > The rs485 delay hrtimers trigger_start_tx and trigger_stop_tx are
-> > embedded in the devm allocated struct imx_port, and their callbacks
-> > reach the port through container_of() and touch registers under the
-> > port lock.  Nothing cancels them synchronously: the tx paths only call
-> > hrtimer_try_to_cancel(), which does not wait for a running callback,
-> > and the bounded wait in imx_uart_shutdown() can give up, force tx_state
-> > to OFF, and leave a timer armed.  After imx_uart_remove() returns, devm
-> > frees the port and a late callback dereferences freed memory.
-> >
-> > Cancel both timers at the end of imx_uart_shutdown(), after the port
-> > lock is dropped and before the clocks are disabled, and again in
-> > imx_uart_remove() before the devm free: serial core does not call the
-> > driver shutdown on every path that reaches remove().
-> >
-> > This issue was found by an in-house static analysis tool.
-> >
-> > Fixes: bd78ecd6056d ("serial: imx: use hrtimers for rs485 delays")
-> >
-> > Assisted-by: Codex:gpt-5.6
-> > Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-> How was this tested?
+>=20
+> fec_drv_remove() frees the netdev before devres releases the managed
+> IRQs whose handlers use it as their data pointer. A late interrupt can
+> therefore access the freed netdev.
+>=20
+> Allocate the netdev with devres so that the later IRQ registrations are
+> released first during teardown.
+>=20
+> Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
+> ---
+>  drivers/net/ethernet/freescale/fec_main.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> b/drivers/net/ethernet/freescale/fec_main.c
+> index 794ec427b0ee..23e794a31ce8 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -5219,8 +5219,9 @@ fec_probe(struct platform_device *pdev)
+>  	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
+>=20
+>  	/* Init network device */
+> -	ndev =3D alloc_etherdev_mqs(sizeof(struct fec_enet_private) +
+> -				  FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
+> +	ndev =3D devm_alloc_etherdev_mqs(&pdev->dev,
+> +				       sizeof(struct fec_enet_private) +
+> +				       FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
+>  	if (!ndev)
+>  		return -ENOMEM;
+>=20
+> @@ -5480,8 +5481,6 @@ fec_probe(struct platform_device *pdev)
+>  failed_phy:
+>  	dev_id--;
+>  failed_ioremap:
 
-When I sent the patch, it was compile-tested only (CONFIG_SERIAL_IMX=m,
-drivers/tty/serial/imx.o rebuilt with no warnings).  I should have said
-so.  There was no runtime test behind it.
+failed_ioremap is no longer needed, please remove it.
 
-After your mail I built a QEMU/KASAN reproduction (i.MX6UL EVK machine,
-armhf, kernel = this patch's base a13c140cc289 + CONFIG_KASAN).  The
-remove-side race is deterministic on the unpatched base:
+> -	free_netdev(ndev);
+> -
+>  	return ret;
+>  }
+>=20
+> @@ -5522,7 +5521,6 @@ fec_drv_remove(struct platform_device *pdev)
+>  	pm_runtime_disable(&pdev->dev);
+>=20
+>  	fec_enet_deinit(ndev);
+> -	free_netdev(ndev);
+>  }
+>=20
+>  static int fec_suspend(struct device *dev)
+> --
+> 2.34.1
 
-  - ttymxc0 is a registered console; configure RS485 via TIOCSRS485 with
-    delay_rts_after_send set (driver clamps it to 100 ms), write() - TX
-    completes and imx_uart_stop_tx() arms trigger_stop_tx
-  - with the port still open, unbind: for console ports
-    tty_port_shutdown() returns early, and serial_core_remove_one_port()
-    never calls the driver .shutdown, so nothing sync-cancels the timer
-  - imx_uart_remove() returns, devres frees struct imx_port, the queued
-    hrtimer expires and the hrtimer core walks the freed object:
+This patch just prevents the netdev from being freed in fec_drv_remove(),
+but fec_enet_interrupt() could still be called after the removal, and
+fec_enet_collect_events() will be called to access the registers, however,
+the ipg clk has been disabled, the registers are not accessible at that poi=
+nt,
+that is a problem.
 
-BUG: KASAN: slab-use-after-free in rb_erase_linked+0x54/0xa8
-Write of size 4 at addr c4046a8c by task swapper/0
-Call trace:
- rb_erase_linked from __remove_hrtimer+0x50/0x124
- __remove_hrtimer from __hrtimer_run_queues+0x198/0x25c
- __hrtimer_run_queues from hrtimer_interrupt+0x26c/0x624
- hrtimer_interrupt from arch_timer_handler_phys+0x38/0x40
- ...
-Allocated by task 1:
- devm_kmalloc+0x34/0x144
- imx_uart_probe+0x90/0xacc
- ...
-Freed by task 1:
- kfree+0xc8/0x2d8
- devres_release_all+0x100/0x18c
- device_unbind_cleanup+0x3c/0xe4
- device_release_driver_internal+0x23c/0x294
- unbind_store+0x64/0xa4
- ...
-The buggy address is located 652 bytes inside of
- freed 1024-byte region [c4046800, c4046c00)
+I think the hardware interrupts should be disabled on the removal path
+and disable_irq() should be called to disable the irqs.
 
-i.e. the expired timer is still enqueued inside the freed struct imx_port.
-A second report fires from task context via hrtimer_try_to_cancel ->
-rb_erase, same alloc/free stacks.
+BTW, do not repost a new version within 24 hours.
+https://elixir.bootlin.com/linux/v7.3-rc4/source/Documentation/process/main=
+tainer-netdev.rst#L15
 
-With the patch applied the same sequence (fd-open unbind, and the
-last-close-then-unbind variant) completes cleanly; repeated RS485
-write/close/unbind cycles on a non-console port stay clean too, with no
-new warnings or hangs.  This is QEMU only - no i.MX hardware test yet,
-so I have not added a Tested-by.  I can send the reproducer initramfs and
-the QEMU command line if that is useful.
-
-Thanks,
-Fan
+There are other upstream rules in maintainer-netdev.rst, please
+refer to them.
 
