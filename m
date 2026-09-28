@@ -1,99 +1,91 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E172849C4D0;
-	Mon, 28 Sep 2026 11:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CCA49CF2C;
+	Mon, 28 Sep 2026 11:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790594526; cv=none; b=rW953ETk3Iv6SWFbVX6qxE00+oNt74WtXSk5aVZsIS+IbdMwzeQTonKOlaN7nhvLiT5jmp/Y5j5bj2jXivLWMG9JuD70Pcg8OkKYPlzCDU+eX/nWnf2IXMWwj753SY922vKXCxPO092WFvtxt8qX7blD7y7Gff8uk4+/8KEed9s=
+	t=1790594809; cv=none; b=R8IJsC77d7E/5FYvjoRXu0uWkifNCjdyVpT8lVqlF5/Wt1TkfMvdyiVSrZTquW8aRRn61oj/NUSLJgKkE2bNg+iWQ4Xj4ItH4JpMYsVUcaR8A5NoshssabAJ0Osp+afzA5m0PTFAJgXshyzDAYI7s8txHOgGn3UtUEDTUOyapIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790594526; c=relaxed/simple;
-	bh=FeRe+FH3XUrQtvQmyWAoIqgCPVoofephEduMwOMAcTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hT3oyOR0HjiP9NlHABb9IeX9I9JgDuJbDYC8jjNdz328uD5SC8rJqhyntxMNkXQoRLcf9FEoqvlcEc1OvCcsZGuKs8UQVp0mz33xWhXyqjy295TQKCJclEpu9gcdkUtB79j/va3zipT/d54n12k202BhXABwQOZv2Oo3V3Q+OyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=IfDOZfkI; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1790594809; c=relaxed/simple;
+	bh=0nQAsdI9MKQ6bi1a3Tac1SYFqN/k0GiAZO6cdT/9jQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CDcc1Oxa69+IyzuZcrSvWbV+aFGUXQrepkgLmVuLSIPtSFpNYuh4FV+UQWf1azMaQgMB2xCyFEmc27YNZsE6DxzfrcUbQWm4bSZ41+IyfG1NLFumWbWsYN8Ym2Ag+AplXDyVxGSGpC4MZLGJdk3u7fCH0kDVFk5lrkJY2wptXw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahxNhXzB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="IfDOZfkI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=7vZK3vppnPXE9w+XkjoZFUqXpNJS9jy09Vj+8yd4Fjc=; b=IfDOZfkIlnpP7Ba5hxOdolNLjf
-	6ACdrrab22gjJo2npM95shBKfxh2L3WgvS2hg3XyTqFZqghrqhuXotZhGfgeRvv3NGWxcqG6Mdkhy
-	nCse74L7xPBEcg99GxtBZzS+/8nSys1sVMyMqwq4/OyTp/rBYIzajvoQcurMqOgFJD0CXhGeZrBf2
-	2EgwhmpDLyAFeFUGvqqQBov8y1Hnc3FoPrZuM+mCK05doRpy4O9npcatI3+C0RNj2MtQWfgZ7cZr3
-	1G42fCTEqKeIGlIQR+IusCppcrgpgzis6WbNTXwN3DteiNJGM7TyweqrTDmyjx1IfcPKpZ0KZxzUo
-	VRvDa5Ag==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xB9Qj-000GD8-24;
-	Mon, 28 Sep 2026 13:21:57 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xB9Qi-0006Dd-2h;
-	Mon, 28 Sep 2026 13:21:57 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 1/2] arm64: dts: imx95-tqma9596sa-mb-smarc-2.dts: improve SD reset pulse
-Date: Mon, 28 Sep 2026 13:21:41 +0200
-Message-ID: <20260928112143.294091-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahxNhXzB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248561F00898;
+	Mon, 28 Sep 2026 11:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790594808;
+	bh=MIgiakxNIvlbIOvXbpa9aAXTvVdIjMv2YRdjshxXmZo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ahxNhXzBmiYTokoVc3H9EOIJnhTiIRXS8yTi4jkl4NBTZ/Nv4WBvbWNNickZgLD1z
+	 tNTkt7Rpv9XxkYAOXiaXinGpn1TVGBrrbxanqOu9maY5zQYsCbj2Kl2WxEpMoLo6lA
+	 HyRfdH+ObdVSBA7w4w9JV+SDdnt9JSpXYy2YAyZS9KKWJSWRd9riZxE6F0W6HOVL9X
+	 2iAWSuoOVWLw3Ct8h8c7Sh+0rVPFOiRRWCfOZjZSIp8/fNo5+a2/vmeOP2Yj4rEmOJ
+	 tDEEBitSlXsbvXPDtbXy8t1DqLoOL26HqgSKvoMF/Kp/L8ROFcPMKaTrW/S34orq3w
+	 f7DQ71vdlasSw==
+Date: Mon, 28 Sep 2026 12:26:41 +0100
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@oss.nxp.com
+Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
+	tiwai@suse.com, linuxppc-dev@lists.ozlabs.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Chancel Liu <chancel.liu@gmail.com>
+Subject: Re: [PATCH v6 4/5] ASoC: fsl_asrc: expose individual DAIs per
+ conversion path
+Message-ID: <7be95093-1e29-45a7-9860-5605763baaf2@sirena.org.uk>
+References: <20260928061727.1844167-1-shengjiu.wang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28137/Mon Sep 28 08:24:12 2026)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="agS6p3a5qSig1fa6"
+Content-Disposition: inline
+In-Reply-To: <20260928061727.1844167-1-shengjiu.wang@oss.nxp.com>
+X-Cookie: All is fear in love and war.
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-SD card spec says that at least 1 msec of power cut is needed
-to reset an SD card. This is needed to get out of UHS-I mode.
+--agS6p3a5qSig1fa6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In fact this pulse length alone is far too short in real world
-environment due to capacitance etc. Implement a longer pulse using
-regulator settings: 200 msec as working for other SoM using MB-SMARC-2.
+On Mon, Sep 28, 2026 at 02:17:27PM +0800, shengjiu.wang@oss.nxp.com wrote:
+> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+>=20
+> The i.MX ASRC hardware supports three independent conversion pairs
+> (A, B, C). The driver previously registered a single DAI with generic
+> stream names "ASRC-Playback" and "ASRC-Capture", which prevents
+> multiple independent conversion paths from being used simultaneously.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts | 2 ++
- 1 file changed, 2 insertions(+)
+This and patch 5 are not threaded with the rest of the series which
+really upsets b4 :( .  I'll fix it up but please look into your tooling
+here.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-index 97726eded0f86..e376d3a9d6180 100644
---- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-@@ -243,6 +243,8 @@ &pcie1 {
- };
- 
- &reg_sdvmmc {
-+	startup-delay-us = <100>;
-+	off-on-delay-us = <200000>;
- 	status = "okay";
- };
- 
--- 
-2.55.0
+--agS6p3a5qSig1fa6
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq6TvAACgkQJNaLcl1U
+h9AZrgf/VFOKxMUjK6hmwAHkqM+y0Ua45JlbNuxKyoHHyV84DmfhdqY51ofpXfuQ
+6N+x6DTT+UZJkw8xrPqdRMRhps2mxGnkl0FdOiqAe1dR/VuGMOAck7lF80PMIOxD
+CUljelqNF6bYnmr8MQ5qPzYIUn7VEcvZiirLFwT5OHfi5/x37fQUAFJ1YJFgq8MX
+fuuBv1DOxVGdXUD5MsFdkcMfd9617FupVjCOhrZFQpTzj1yEvuAnmnTCs02wF/3S
+QjBDyIaaTRdUFDag3qQ/tMKwfIJjvLDrHsp2iXwoQUdoL+Ga6f9W+QJUrBcoiu+B
+TkSZSFWED6F7dnYsXunQoC0iWlZFGg==
+=A3IY
+-----END PGP SIGNATURE-----
+
+--agS6p3a5qSig1fa6--
