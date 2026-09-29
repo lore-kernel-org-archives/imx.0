@@ -1,130 +1,225 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A6A36B934
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 16:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5347F3DAAA9
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 17:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790700511; cv=none; b=MbrTKcV4T7MEk+IayxBrz//1wpWtWHPQgscz6/MI/LoOdS1GHBWti5XGd58nlintoLt/nir/Yd7Oe5TZl7Wcxujk0si/Y2GGHkXdGjiac2XLrU84qyKnnx5BassC4uJgsL+YzDj9uLIjMAaj+9w2zGLJbc/Ac0kFg2XQ1JdXIkQ=
+	t=1790703675; cv=none; b=HBWY3YtBZEuUwRwtoCzamPTPGBh4TkhoMKipY0+4IFKPLPVhmcUvXgcZzBLpAAvFwIMfwziLfDljWXXO1pmV/q/V9uPzOj3R99vFQ9ZTXVlafQwwPC5fC28tE1D1lTkJyHIlMjI2L4CSiCc2u8nhUG0WUM2LC28kZ7UvL1nz0oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790700511; c=relaxed/simple;
-	bh=gjzKEDoEc/+GLpE25sXuiGP4bdJDlHX/8bJR6oQseoU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=tiLNk5b9Yp3Y2zxsqFwOaJiFloIQtKIJaCvZcSl2x0k2ryGxBpLbyrSxLuiKmJz5o2uldGNCv71W1IbEoerc+qLUAlD03uvTFLaIsvIwwMum7hwmjyF2f9FCnCPXheblJZIy53otygItuwr2rO7HBuxXXqhzTSDulm/WKxQey2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DMxHGGXk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790703675; c=relaxed/simple;
+	bh=TYK82yEFZyTUKcvmqFCrtcuvaXuFrEA017DIBbyHshY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PXjcqcqzrnm04jUx6xkaBvKrOq0XJlj0PmQ/Fz5M6gENubfmeUtFIHuX6AZFn8v60LlgrS3LWJlab0+kSU/8kNsxqh8MHouRrgU0lmq1horXd9bsLcKdLuZJrOEIwAYH4uVkpL4wb2E1d4Nwi+6GTw9UdcXDW5rlNYVxsitr0Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KWVUbrqt; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DMxHGGXk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790700509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h7fhQ9KGGUbPPoOeQdI2Gd4sk4/oPY6yvPOncKOrRvQ=;
-	b=DMxHGGXktCZTg9vEMFxILHo8iwXL9AL/5zTm/b78fVyJMYIUzQvjwE5qfBhqgW0EauabPp
-	ZuHte2NLsv1cEQp2Ydt1UYh5u/dGm3Tut1mGeK6grtss5fjgRwcMKz4syQhYAuSmVtJTBA
-	38fSkwRnI1DdGXUmIv1Bg/NSdRipwdA=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-137-H2vKZzXNMbmnn1ZMavfLTg-1; Tue, 29 Sep 2026 12:48:27 -0400
-X-MC-Unique: H2vKZzXNMbmnn1ZMavfLTg-1
-X-Mimecast-MFC-AGG-ID: H2vKZzXNMbmnn1ZMavfLTg_1790700507
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93c614646e9so502533885a.0
-        for <imx@lists.linux.dev>; Tue, 29 Sep 2026 09:48:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KWVUbrqt"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912df756so35094475e9.3
+        for <imx@lists.linux.dev>; Tue, 29 Sep 2026 10:41:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790703671; x=1791308471; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XT6rzbwAq56nChpqUTQ2q9VsJKHTV6VFi8vBlbe3c+g=;
+        b=KWVUbrqtmUZNzFMonCNqBKUzExdpjoiJ0lH76fV83d/OAn4pAcVMutTXUbhrdy92t7
+         4DQlHUs4UId+QmwUO9c3Vg2QE/WfaYbOVEIJcfaXHnEDXVB3Huxy/NhoU4ZZ7ozYXwN7
+         VKM3bZI1aq5yroeqc5Ii6ObHOsB4O5HO3AsTk40XVkX2keT9Rs7KMLVzZNlIMNNTJ6mr
+         wzsDdXQjwkbhlwFQC9o4YxcQ/b/GIhV06RxqKLt/MEPABkixuQijDBg5KJ3We5UKPMp3
+         KExDRflAgQYiTe2DwM452OwLzpRXMxlFvTf62K9ICSaNjWhSMZSUuG+mGZifKdx97K8n
+         41fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790700507; x=1791305307;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h7fhQ9KGGUbPPoOeQdI2Gd4sk4/oPY6yvPOncKOrRvQ=;
-        b=Qh51TFU5Zir7HNCyyw6SDLS9P8XmG3w2bd9ahlcbSO4RdQJHFIKcg4yxB9+EWQAQkr
-         WYKM4kAYhopmF8hsjjKh043Z6D48VNZ8AAd6Tml/3CJtxmlIoidiaMBIh9cdKDaqsWKM
-         Xr5JhFqAWBOsQ3hVZ/HrXANc0VLmeeZtpUncjeRhmTytN6bEYI1LQn1OyZ0efGn7LC69
-         1lCHuwZUyrtujMUo3P/M3fwtAsj/dr21bU1hD/nGPmYbuq/TCtow7TM5summRuxihhS0
-         XUL62/DfE3LFADcjQXNtpHF5RvuBCO8OIK1F7QJPtfnmrSv4A/rxLopKw6kJtCFrPAGX
-         7+VA==
-X-Forwarded-Encrypted: i=1; AKwUvByf7O7pKqK1IfXoSPreh/JexaHQbxfma3Xh5kQKu7I2f2RKeYuPoWwwhpiG87K9GbGz3lQ=@lists.linux.dev
-X-Gm-Message-State: AFuF++lCiOaPdLx1TvJCQGkTgVLG4hr9KZ1/s87q6+ooA0gSG10AdpEV
-	X2lmPQbNvOPg5AWyzq9ONPlfHCF0PnnVTx0hmcRoTYQl8NzkNseiM4TZe4VN6xzjaik446LEwqI
-	X9OJipC05+GhTkeqG9wEzpjYnheFQIMR53TepCPkM/04Hf4GgG8+AcQ==
-X-Gm-Gg: AYBFou3LIdHl0QTynveSU1EHDWqW3UR7se9BQyt8ri7diBRlNEEeMDSVYxEwiWr/zYx
-	ntNJ481vWvjhttJqCpjOB7KsiaiUhOIOKtcZmPO0HIpxciT6gADexjnrDMVx1HwlqxyZtii9QAH
-	/dG2keWv+GuscH34ip8SZsF7VqNwMIhxtP8x+gCoOVLCyW85Xv3CUE8uhbBQNjlCQsY2YtcME7W
-	5GUTk7wf6qf3JxiMOAyA4GiuR0cZtw5xRApD96GGBRXYXG+sAnntTZkl3/Ud2o6fsTnp6SXBfD+
-	OqpI/BldbbxoINo27XgT91LARvJSwK79kKQlZj/Bp/EaPlJmZpsWO178osPPk+FYWrRZCYlt61e
-	pCEl+uH1hjssWk9rRoZiBXfY3vKftIQbRDrRHfXL1VgkCweVtUAE=
-X-Received: by 2002:a05:620a:700a:b0:93a:1b82:4962 with SMTP id af79cd13be357-93c9f90d39emr21399385a.47.1790700506619;
-        Tue, 29 Sep 2026 09:48:26 -0700 (PDT)
-X-Received: by 2002:a05:620a:700a:b0:93a:1b82:4962 with SMTP id af79cd13be357-93c9f90d39emr21392085a.47.1790700505852;
-        Tue, 29 Sep 2026 09:48:25 -0700 (PDT)
-Received: from bmasney-x1.rmtuswv.csb (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c9f54529asm10347985a.37.2026.09.29.09.48.23
+        d=1e100.net; s=20260707; t=1790703671; x=1791308471;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XT6rzbwAq56nChpqUTQ2q9VsJKHTV6VFi8vBlbe3c+g=;
+        b=Iyz7hbDModYGH9J4ITzuFBQ5Fd4D5jFydGQR+tKt/wcXV+JU9044S/xd1VSKwPlUth
+         Joy76WsdANzfOu18PAzW8qywD1DgnHe3gB6gacunMzSLDw9BedvYF9PqX54H+5Ayvkrd
+         T8ZbyC62b478sRRu1e29slJdGfqLmpVIX0HFZKYKlACy5DA1xLUUfDR1EjxOdNEOQtP1
+         ghXIMJL7+n50Lhne8M6Wp6oeJ6Weq6C9cdwOb939gj6JGrQO95FO7Pnv3z+s+b90SHB+
+         gdngPPC37K4XeLSDXEmPoqORAZ966VlzyQRNFErNxCyegUsos8EP0J5sndh5BGv1MCyN
+         8dxg==
+X-Forwarded-Encrypted: i=1; AKwUvBzA1hOBOAdW6lzDvCRcGKIXZ0+8aU4G64Kqx07Z6Gu3G/FT1ZW6S7e8AVtdgKe1AIYNrZk=@lists.linux.dev
+X-Gm-Message-State: AFuF++md6jkgO6QKk2kYVqomGkAs7/y/xbu3KBwZlA7okMfc6/F2Ok5H
+	CIZCVp0PxH2Z3yG7nA2GgO5kvBJOox+Iw/oLO6iTo8/2jI0UjEmicQPU
+X-Gm-Gg: AYBFou3tbZKaSYFM3D45ckQf8xTkOcBR0t+RisVvkuZvQGiTCDw7/jjjc+k9VHXYm++
+	7FeCR55/LXBOtCCfEDwzojjyEmGLLsZYAvWYUGs+WAvZV5NJTilIdQuSiJlBf9ZMyCr2EcAjtwd
+	kGlJfRKNqSwiRsDcFB7DmUZWRl+yqG8rdPUZ0b+/AId0/MfZu4oCATulxmqTia+b8h3MdDcb2gO
+	K6DO4CvqmbGYhm4WgQZm8OMt3EC2StgFcM9hU8ojMmB2t8x9NE1GLfGVT0mlqD7kw56q2CfGFW0
+	6LDVrG7/czJjBPwyjoRnPpBvsP6b2shec3B0HvSKZaE3IfuHkNJg1I2o3XYidXmEDE3uCrU/TN/
+	YpAnaMxTJ0ZDx5karf0m3vCBqQHC1kQZEdjcJd9cvI/QrLwotkm5GbbURQwz0Izv6zpokPSf75J
+	DDqFC7fp4+BQuvWLnr7PZdzonhV98xZTq4msVmmSBIvXMMHRVOMFkFOrPE4A8XGf8KHZvB40LaG
+	i0WAV/F7Zy98TSbezFr/ik/a4qeGTVsfZ1yprLuyeCJv1wxEnlNMUcfqthqVAm2MGFgSuXaiDKZ
+	msQZMPSc6KS4bhG6eYn11xdnu+Nx
+X-Received: by 2002:a05:600c:8b33:b0:49f:f9fa:fcfe with SMTP id 5b1f17b1804b1-49ff9fafdccmr177606485e9.13.1790703671207;
+        Tue, 29 Sep 2026 10:41:11 -0700 (PDT)
+Received: from Lord-Beerus.station ([31.27.155.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cfec770sm100002515e9.8.2026.09.29.10.41.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 09:48:24 -0700 (PDT)
-From: Brian Masney <bmasney@redhat.com>
-To: linux-kernel@vger.kernel.org, 
- Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: michael@amarulasolutions.com, linux-amarula@amarulasolutions.com, 
- Abel Vesa <abelvesa@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Sebin Francis <sebin.francis@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-In-Reply-To: <20260904101243.412006-1-dario.binacchi@amarulasolutions.com>
-References: <20260904101243.412006-1-dario.binacchi@amarulasolutions.com>
-Subject: Re: (subset) [PATCH v14 0/4] Support spread spectrum clocking for
- i.MX8M PLLs
-Message-Id: <179070048452.199845.10870046832708018931.b4-ty@b4>
-Date: Tue, 29 Sep 2026 12:48:04 -0400
+        Tue, 29 Sep 2026 10:41:10 -0700 (PDT)
+Date: Tue, 29 Sep 2026 19:41:07 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>, Joseph Guo <qijian.guo@nxp.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 00/13] ARM: dts: imx6ul: Add Variscite VAR-SOM-6UL and
+ DART-6UL
+Message-ID: <arv4MwHV4LntROkN@Lord-Beerus.station>
+References: <cover.1790693249.git.stefano.r@variscite.com>
+ <20260929121455.437291ea4b53130e3e19778c@hugovil.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=705; i=bmasney@redhat.com;
- s=20250903; h=from:subject:message-id;
- bh=SAHYf/h8Oe0K/ekB9Nro0D69org/h+4brL2o93Uibw4=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLJ2v75WObHBi99/6nvz91sfuy9/aBE213x2T6bCawPDb
- lVWxc/nOkpZGMS4GGTFFFmW5BoVRKSusr13R5MFZg4rE8gQBi5OAZjILQVGhi1pPpPUYzwFivpu
- 5+WFhLcrLrx2Yo2ZS3zjMwHTvjirboZ/GtcvfHvLK77mYvkzJi1D73jODRmTUlvF/1fM2lIoJ7G
- eBwA=
-X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
- fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: o3Pir27bbM9taRLq_E3rWMrLOYWgzVdB_kwmvQ5mT5o_1790700507
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260929121455.437291ea4b53130e3e19778c@hugovil.com>
 
-
-On Fri, 04 Sep 2026 12:06:29 +0200, Dario Binacchi wrote:
-> Support spread spectrum clocking for i.MX8M PLLs
+On Tue, Sep 29, 2026 at 12:14:55PM -0400, Hugo Villeneuve wrote:
+> Hi Stefano,
 > 
-> The series adds support for spread spectrum clocking for i.MX8M{M,N,P}
-> PLLs (audio, video and DRAM). It has been tested for the video PLL on
-> boards using i.MX8MN and i.MX8MP.
+> Your title seems to imply that VAR-SOM-6UL support did not
+> exist before your patch, but it did. Please rephrase that, and
+> your description accordingly.
 > 
-> While at it, it validates the spread spectrum configuration in the clk
-> core before it reaches the providers, and fixes the i.MX SCMI OEM
-> extension, which converted the spread to the wrong unit.
+
+Hi Hugo,
+You’re right that VAR-SOM-6UL already has mainline support.
+I’ll reword the title and description to distinguish the existing
+support from the new variants and DART-6UL boards.
+
 > 
-> [...]
+> On Tue, 29 Sep 2026 17:17:27 +0200
+> Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
+> 
+> > Add device trees for Variscite VAR-SOM-6UL and DART-6UL modules based on
+> > i.MX6UL, i.MX6ULL and i.MX6ULZ. VAR-SOM-6UL is supported on the
+> > Concerto-Board and Symphony-Board carriers, and DART-6UL on the
+> > VAR-6ULCustomBoard. The 90 new DTBs cover the supported combinations of
+> > storage, wireless and audio options.
+> 
+> Do they? You would need far more than 90 DTBs to support all options...
+> 
+> When I submitted the latest changes for the VAR-SOM-6UL, I did not
+> create DTBs for every available options knowing that it would lead to
+> an insane number of files. So I simply created a full DTB that
+> incorporated most of the DTSI options. And my custom boards simply
+> include only the required DTSI for their specific options.
+> 
+> Looking simply at the ENET phy level, you seem to have now removed
+> the two individual DTSI to selectively add support for ENET1 and ENET2,
+> but not all board use these, so that is why they
+> were created as individual DTSI files in the first place to make it
+> easier to create a DTB with only the required options. As an example,
+> one of my custom boards do not have ethernet at all, so i don't want
+> that support enabled by default.
+> 
+> Please keep the existing DTSI as distinct and individual files.
+> 
+> Maybe using DT overlays would be better suited if you really want to
+> support every available combinations?
+> 
 
-Applied, thanks!
+Just to be clear about the 90 DTBs: They are the minimum set of prebuilt
+DTBs for the Variscite-supported configurations that select between
+mutually exclusive hardware alternatives. Selecting an alternative changes
+the hardware described on a SoM interface and therefore requires changes
+to Device Tree nodes, pin configuration or controller properties.
+For example, the SD interface may connect to an SD card or an SDIO wireless
+module; storage, wireless-module and codec choices similarly require
+different descriptions.
 
-[2/4] clk: validate spread spectrum configuration
-      commit: 109124b8ff43fb911d5b8790bb5e4c5684f72d88
+These are not every possible combination of fitted and unfitted components.
+We do not add another DTB merely because an optional peripheral is not
+populated.
+This follows the existing VAR-SOM-MX7 mainline approach: it provides
+separate DTBs for hardware choices such as eMMC versus NAND and codec
+variants, without enumerating every optional component’s presence or
+absence.
 
-Best regards,
--- 
-Brian Masney <bmasney@redhat.com>
+> 
+> > The descriptions use shared module, option and carrier DTSI files with
+> > SoC-specific wrappers. In particular, the WM8904 and WM8731 codecs are
+> > selected explicitly instead of keeping a codec in the module base.
+> > The four existing Concerto DTBs are converted to this layout without
+> > changing their DTB names or compatible strings. This also replaces the
+> > non-working legacy LVDS panel description with the LCDIF configuration
+> 
+> Can you describe what exactly is not working? When I submitted these
+> LVDS changes I tested the LVDS panel with the Variscite concerto EVK
+> (VAR-SOM-6UL LD option) and it was working ok (also tested with two
+> custom boards).
+> 
+> If a fix is needed for this bug, this should go in a separate patch.
+> 
 
+In an initial hardware test, the display timing behavior did not appear
+to match what we observe with Variscite’s downstream configuration.
+I will repeat the test and measure the output before proposing any display
+change. If a fix is needed, I will send it as a separate patch.
+
+> 
+> > for the Variscite display. Wi-Fi and Bluetooth enable/reset sequencing
+> > on these modules is handled by userspace, so the legacy kernel-managed
+> > power-sequence and Bluetooth nodes are not carried forward.
+> 
+> That is not ok. I specifically implemented enable/reset sequencing in
+> the kernel to finally get rid of the need for external
+> proprietary userspace scripts, and it was tested ok. If somethings needs
+> to be fixed or improved in this sequencing, fine if you submit a patch
+> to do it, but certainly do not get rid of it.
+> 
+
+Calling these “external proprietary userspace scripts” misses their purpose.
+First because they are not proprietary :D. Second, because they implement
+the initialization procedure Variscite validates for the Broadcom
+modules we ship (talking about the brcm, the existing one in your DTSs)
+folowing the datasheet instructions.
+
+This is not equivalent to the sequence in the existing Concerto DT.
+For the LWB5 option, the procedure enables WIFI_PWR, waits 10 ms,
+enables WLAN_EN and BT_EN, waits 200 ms, then lowers BT_EN before
+re-enumerating the SDIO device.
+The other Broadcom option does not use the separate WIFI_PWR step.
+The existing regulator and MMC power-sequence nodes do not express that
+complete, module-dependent procedure, particularly the BT_EN step during
+Wi-Fi initialization.
+The scripts also select the Bluetooth firmware according to the detected
+SDIO device.
+
+We use that procedure to avoid sequencing-related failures for our
+customers.
+This approach is not new to Variscite’s mainline DTS files.
+
+Thank you for your time,
+Best Regards,
+Stefano
