@@ -1,120 +1,104 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE5452BE22
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 13:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A3C52CCD9
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 13:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790689264; cv=none; b=pyN/OUXgCifDKIlNENpQg5EijwHBJ58ELNsu4wynurpKE1dApjcWUwoc1j3yGdehy6a5e5SkWkvWARDP7ykOYOY3CuSD+eBAd/drV4aEfKO/Lp5RfCZjdby9kpSa+WGiwuS8RNCc4VxrlgzTKGbQu3FqEp/LsbZM1yaTzYReCD0=
+	t=1790690080; cv=none; b=BqZfDps7OBqCQ1sF3sw6u5Std2plFf8oCl26RAxOcyrJ3/z+LOwcUiLKaKg9+QQrGWEQQWx5qulPi1Bavr9Re2Bj0L7AXtW8mPsTNayhj6XJZZT8tfxiwlv1DmfQ+17/YEqwPD8F2JyN14531sWxQ1mwOMI4jC6DOFZjilMmop4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790689264; c=relaxed/simple;
-	bh=lT5vgx/mFGA/dBeL0SbpODSx7eWVFp3Ausyg3+9cyBI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WtxiEyRNpldvBqAHjDs0zkk9mXRqPYPwYJdKMSeuJv8ONNh2gONt4kZz6jFSq07NPPDHb/riYILCgh0hnxElORZKVqzz4VAe1gNmIiVj015yb4OT/sTLaahbqUzCWQgmwCw9QCY8uOxDXk/ItyJvKBNjO2KT5/AYse7u7NaiiAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mw9KHbtz; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790690080; c=relaxed/simple;
+	bh=wHOsyfpQyHe4xVn8W8V8CpD3mj7JLdLTSfgGZrndRXo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=H4tw346lRx6qQW82MK7TfAtHGB8Xd3mA8A50q/SyTQLAHWxgORtFobZzjSe3Xdt4P0nKEesEbNBw/wma5I4A/vfM3bxbr/tvhHIXhyLTK+LXFcb3CGFWDNssHyy/ctlwT4zUBnpX/wkmrtABP6DJ/4bysikNZ7ZM7PFKgTr96mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6jMg8Yu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mw9KHbtz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4FF934E410B5;
-	Tue, 29 Sep 2026 13:41:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 21A0A601BD;
-	Tue, 29 Sep 2026 13:41:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E735103297BA;
-	Tue, 29 Sep 2026 15:40:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790689258; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+Jbi3ZrbjMftX9+oR4Dt/bNs2t3qNv36/aL/DtZbOIA=;
-	b=mw9KHbtzMuNVa4Ij0ksdAIhkqT6DDh55fBMfnuOaMz1Dgrw7uTA5MLDYPmjcVHP8gBDsSc
-	fmMkHj6YzYsxESdZx0vOPYOFGR+Wnb+J9I8mOXDfVrYbGdQEnMUIBs++qI3goOFU0qLB45
-	h2w/bX1b9Kj+ldCkdHV6Vo2wqfVDhaeHhRO/MdvQYkAbKAiUltjvvZdyJGObNLQ2FQINN6
-	wX3OcTZeSbRjvV0zMN8JD1QeD0Ulo0Y9zqHRAyW26/wtlKM0hqYD+GGMBQgZZ7ogqir1CL
-	GHFzDlaEe5Wq4jwnoFYiaVSPWuaxF1Iny8s5bFCQdfeweuvHTYU6MblRpXTFlw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 29 Sep 2026 15:39:56 +0200
-Subject: [PATCH v2 7/7] drm: renesas: shmobile: stop using deprecated
- devm_drm_of_get_bridge()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6jMg8Yu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6B21F000FF;
+	Tue, 29 Sep 2026 13:54:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790690071;
+	bh=VKPVzKnYqo0bbVCgvn/jt9QsuxNgYAd7D2WGX2Kb188=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=H6jMg8YumCyAZJjIBscffb/PQgVk7SeVKy1z9xpBVt66an2NP2FWP0d5a4+rfsawr
+	 8nHU+h9GaNO3Xv2JXLlpdKScNnbD14wR8Bd1Fxt7p802WsOfDCT/or9k3YmRvHUK12
+	 JS38rkhhntGg+UihK6nEyiv5Wpf1lq9j2h3t3ED1ACmQE4qXRs3I3g1epqO+hib+Xu
+	 AU70lfNsUXYtkJv9hEPgcKkUNnToVeY/vFriB0Rd4E+TZplX3R5xwpOHStU3+8keLT
+	 VfEIDcS+V+PfFfNZrbF57DrmS5C5+d1t8n/6D8va6KgjZ3fg+D+oJ1w7fbyU/we8vH
+	 /t+SS7uJqKDxQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/7] drm/vc4: dsi: stop using deprecated
+ drmm_of_get_bridge()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Cc: imx@lists.linux.dev, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
+In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-6-6da431d8f180@bootlin.com>
+References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
+ <20260929-drm-fix-of_get_bridge-build-regression-v2-6-6da431d8f180@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 29 Sep 2026 13:54:31 +0000
+Message-Id: <20260929135431.6B6B21F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-drm-fix-of_get_bridge-build-regression-v2-7-6da431d8f180@bootlin.com>
-References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
-In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Icenowy Zheng <zhengxingda@iscas.ac.cn>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Arnd Bergmann <arnd@kernel.org>, Doug Anderson <dianders@chromium.org>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
 
-devm_drm_of_get_bridge() is deprecated, switch to
-of_drm_get_bridge_by_endpoint(). As of_drm_get_bridge_by_endpoint() returns
-a refcounted bridge, ensure it is put.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] drm/vc4: bridge reference leak on component bind failure or rebi=
+nd
+--
 
-drm_panel.h becomes unused, drop the include.
+commit 583ab26f73be63066db6ca20da5c1de3ee1767ef
+Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+drm/vc4: dsi: stop using deprecated drmm_of_get_bridge()
 
-diff --git a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-index 328a36215e39..51bae2008cc6 100644
---- a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-+++ b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-@@ -28,7 +28,6 @@
- #include <drm/drm_gem_dma_helper.h>
- #include <drm/drm_modeset_helper.h>
- #include <drm/drm_modeset_helper_vtables.h>
--#include <drm/drm_panel.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
- 
-@@ -447,7 +446,6 @@ static const struct drm_encoder_funcs shmob_encoder_funcs = {
- int shmob_drm_encoder_create(struct shmob_drm_device *sdev)
- {
- 	struct drm_encoder *encoder = &sdev->encoder;
--	struct drm_bridge *bridge;
- 	int ret;
- 
- 	encoder->possible_crtcs = 1;
-@@ -463,7 +461,8 @@ int shmob_drm_encoder_create(struct shmob_drm_device *sdev)
- 	}
- 
- 	/* Create a panel bridge */
--	bridge = devm_drm_of_get_bridge(sdev->dev, sdev->dev->of_node, 0, 0);
-+	struct drm_bridge *bridge __free(drm_bridge_put) =
-+		of_drm_get_bridge_by_endpoint(sdev->dev->of_node, 0, 0);
- 	if (IS_ERR(bridge))
- 		return PTR_ERR(bridge);
- 
+This commit replaces the deprecated drmm_of_get_bridge() with
+of_drm_get_bridge_by_endpoint() to acquire the DRM bridge. It assigns the
+returned refcounted bridge to dsi->bridge.next_bridge to rely on automatic
+cleanup upon destruction.
 
--- 
-2.55.0
+> diff --git a/drivers/gpu/drm/vc4/vc4_dsi.c b/drivers/gpu/drm/vc4/vc4_dsi.c
+> index 0148f2befed14..30598738cfcf3 100644
+> --- a/drivers/gpu/drm/vc4/vc4_dsi.c
+> +++ b/drivers/gpu/drm/vc4/vc4_dsi.c
 
+[ ... ]
+
+> @@ -1749,9 +1747,9 @@ static int vc4_dsi_bind(struct device *dev, struct =
+device *master, void *data)
+>  		return ret;
+>  	}
+> =20
+> -	dsi->out_bridge =3D drmm_of_get_bridge(drm, dev->of_node, 0, 0);
+> -	if (IS_ERR(dsi->out_bridge))
+> -		return PTR_ERR(dsi->out_bridge);
+> +	dsi->bridge.next_bridge =3D of_drm_get_bridge_by_endpoint(dev->of_node,=
+ 0, 0);
+> +	if (IS_ERR(dsi->bridge.next_bridge))
+> +		return PTR_ERR(dsi->bridge.next_bridge);
+> =20
+>  	/* The esc clock rate is supposed to always be 100Mhz. */
+>  	ret =3D clk_set_rate(dsi->escape_clock, 100 * 1000000);
+
+[Severity: Medium]
+Does this code leak the bridge reference if vc4_dsi_bind() fails here or in
+subsequent initialization steps?
+
+Since of_drm_get_bridge_by_endpoint() returns a refcounted pointer (unlike
+the previous devm-managed drmm_of_get_bridge()), if clk_set_rate() fails
+just below this hunk, the function returns without putting the newly
+acquired reference.
+
+If the aggregate DRM device defers probe and retries binding components,
+vc4_dsi_bind() could run again, overwriting dsi->bridge.next_bridge and
+permanently leaking the previous reference. The automatic cleanup of
+next_bridge only happens when dsi->bridge is destroyed, which does not
+occur during component bind failures or component unbinds.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929-drm-fix-of=
+_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com?part=3D6
