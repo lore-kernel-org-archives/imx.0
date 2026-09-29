@@ -1,598 +1,184 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010024.outbound.protection.outlook.com [52.101.69.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1AF2EEE65
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 07:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790666875; cv=none; b=Vk+3xhTtu6kBzB8mE1IjWw2vsUVqPxJVONeMy8vrqm0HoZs/mQZHHlxdf8HsdS4JXwYHU7YSO36BCcbp/R291nPj+2KeO/ygaI1R/9f5up0BmvxNzNpdvm2oC43/ri5z6gzZYHm3coPORsD5i8rm6rwqkb0V3ChaUmCmgAN8yH8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790666875; c=relaxed/simple;
-	bh=z8eAcRt4TChyHTyuUodztbeR8MepdRK0oigfLeCJ1NY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=qKbta1FoUOHiERgn3UG07S7iU4zTUOXguRUoyjMqSdZ7ufn49gvhsVvMiAR7SwqgdH4UxK9d5+qzwpMQ5nWlPFnnWRttXDuhhn8o9dRIoGeI59JWLsH9fqtWYQuZcDyTfFCVnihB5qQBWU5WF9e6F/Pooki3HpI8OxEM7z+GQyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zUtWawuc; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1783A3E8B
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 07:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790667053; cv=fail; b=AtG9C0XFaUEl5pFWVmm0A2LOmFcCOlOT7xpL1ru5l0/dbLXWiRfglpFo6EaOvS4tcH5L60EZpEVbq954Sydfa1Iof3jUULgLGpwbFCTt16+0WQA0jxQSRqPe6f8N/1Y4gFD+YTR24DPTma3nZguo7ugZto9ZsAAPf5Cu3EdfdrU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790667053; c=relaxed/simple;
+	bh=0jTMvjfhyu9pUTelspHPktt1+3URXqYGLygczZyAnAI=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=l8/jSmWQA1yCB+ZGS7Vf2g0BRI8fiAFiTmAcxct0eKhUzUNMnaPl6J7A48GCLjuZkKSjeZlBbwpXt+7dEtmPDaQrkA8VZaP8eMc6iIPpk9SffXq8Fe63dSHKrze4wrIyx5cwc9NgX356S1atPytEIl/s0ZkslROSV8C5h1uDW9o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=r8oSU2+k; arc=fail smtp.client-ip=52.101.69.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zUtWawuc"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8C3C91A1056;
-	Tue, 29 Sep 2026 07:27:49 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 56C1C601BD;
-	Tue, 29 Sep 2026 07:27:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7A173102F1E1D;
-	Tue, 29 Sep 2026 09:27:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790666865; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6z9//+D0Q6VMBTcc9ojEGZtfSdov1XXVNeeruScr3A0=;
-	b=zUtWawucfhqE9LJMaIjV23h5QqOgTgci0S2/yjUEsAvPdCO6+bcMPxKW3dwUHIgc/dlDHx
-	5I7l8Yg/Hj68EnIDUYKxmON+sEx9ElxKZIwM2kR31LlP61b/94Qkrq23jBaphNnrwKs20S
-	S+stRQckkC6yK420QjVVmcJafrgIWE3JAUWRcCkZvA422vzZSW+RfAYUzjTJFwF9VSpQa7
-	kww6z0UxwVbrMy4jFGgWYj6glw/rQUkcdAchSzs5Qhzh/QBOIjS/dgAh0Fi4oSTnV/7GHL
-	SbBfslNPDNdkpmRMeIYgidzdyu0XQ6VG0OWSxpY8ucTWEpvnzYDlSxWjUShPyQ==
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="r8oSU2+k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yIF0wBJACT/nOhA+G/9V/yuPwwgh7BvGu/+wAJZvOTQ2KAPUO83NGv9ehmr0yY75EM9e0/aEU7JJuKlAH/H/h7lsXmWrHNeFrpOgaGuxawxkw0jYkoR2U2Q7chV6pXFWBnXqF43l2Tt1c+InxNVYNoEaM9qL29J5fyTB46R+JU7KO+kmQwo0a75iW8zug+ESaycJAS4jEk/w4ywrUjcTWimmNGcmOTQIdQZk0HCNMmrt2HewS6l/QaFGBrBp8EBQd5NNqlbTpMNtQaN8ujXC0ZKe4LUtqj/imivpiwcF6LYj8I/GzpYIQGsRCQEzSV+3dXiWfYF9epHW7GQBSbi/fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sRlN/4Zd6uvtWpNC2sSCOef+x8tqwHQEgxl+zJ3J/10=;
+ b=cJSZPZ9w0a/tgPt+JD9glVH2N80NBrmX2dURxuPt4A0vSriqAGIWswpqoxd/oRZiIZHmNnZp/pDS5TP0sEOXFx5WcP80qQc7Iuum4jcAD9LLr+qxrK36k7bLkMbpZG27SaZcqFw1VEzyyq7QZ8kifnkl9v2xs5j8mSf5VjFIBpWXWdeosM67GTZCQMH0oDohOFe41XfsRkW+GNuUKnF7MhWu64XFfV2krpyB/qibtOFGXeGdiQCU+ufJu3i9qsOVN0hnQ7mk3xD+ZTyTcRSjJ5O8caQwNQHXCIU3hmxokYzvr3sLMTSBhmxCqSVF6ZFXFuj4dMYr3ylqFTOi50wdtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sRlN/4Zd6uvtWpNC2sSCOef+x8tqwHQEgxl+zJ3J/10=;
+ b=r8oSU2+kZr5dcMEmNhfdtJrBhuXV1QwA0JOm4WIVeEKpezc1alxLJ+HA8bG12G50KfHWchj9RQjpUNjwi/UlF3AxhkNBO9l7dRqcYWOQH+5CSEKqq6JV1MKIIO3Gp+sD68j6Kf9umT8rQGFtJRcrZG1k605H4Gn9IVrk03EYRmmegigiHUPFGR3jgP0I3jNZL1iI0JCrqv9/uBgkRk1FmXgrzbf+CmqNgASpQgUSySKr4XQd0ro6a0Qs7kuz0CCaLKz87KYgkqABLTewxUrf7gNig9oge7a6qrqm+5wymUQG/8yKhZum0Ut8sYB4rXdjTqjUvamU335PwbEcEF4fYw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB7PR04MB4698.eurprd04.prod.outlook.com (2603:10a6:10:1c::21)
+ by BESPR04MB299202.eurprd04.prod.outlook.com (2603:10a6:b10:13f::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 07:30:48 +0000
+Received: from DB7PR04MB4698.eurprd04.prod.outlook.com
+ ([fe80::c571:bdf2:afe7:c03c]) by DB7PR04MB4698.eurprd04.prod.outlook.com
+ ([fe80::c571:bdf2:afe7:c03c%4]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 07:30:48 +0000
+From: Ming Qian <ming.qian@oss.nxp.com>
+Date: Tue, 29 Sep 2026 16:30:28 +0900
+Subject: [PATCH v2] media: amphion: Add V4L2_FMT_FLAG_DYN_RESOLUTION for
+ VC1L
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-flag-dyn-resolution-v2-1-ef29487f7215@oss.nxp.com>
+X-B4-Tracking: v=1; b=H4sIABNpu2oC/32Nyw6DIBQFf8Ww7jVAkdiu+h+NC+ShNBYMV43G+
+ O/Fdt/lJHPm7ARt8hbJvdhJsotHH0MGfimI7lXoLHiTmXDKJZW0BjeoDswWIFmMwzxlH9z15gw
+ XiraKk7wck3V+/VafzY9xbl9WT2fqNHqPU0zb93Zhp/f/YWFAQQijZVUxyUT9iIhlWMdSxzdpj
+ uP4AEXgiOPKAAAA
+X-Change-ID: 20260608-flag-dyn-resolution-f39fd24a0ba2
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
+ Ming Qian <ming.qian@nxp.com>
+Cc: Zhou Peng <eagle.zhou@nxp.com>, Elliot Chen <elliot.chen@nxp.com>, 
+ Frank Li <Frank.Li@nxp.com>, linux-imx@nxp.com, imx@lists.linux.dev, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ming Qian <ming.qian@oss.nxp.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: JH0PR02CA0013.apcprd02.prod.outlook.com
+ (2603:1096:990:5::6) To DB7PR04MB4698.eurprd04.prod.outlook.com
+ (2603:10a6:10:1c::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Sep 2026 09:27:26 +0200
-Message-Id: <DLRMF4TI56I2.3PTB24KN9ORJ3@bootlin.com>
-Subject: Re: [PATCH] drm/bridge: add missing drm/drm_panel.h inclusions
-Cc: "Arnd Bergmann" <arnd@arndb.de>, "Sasha Finkelstein" <k@chaosmail.tech>,
- "Janne Grunau" <j@jannau.net>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Manikandan Muralidharan"
- <manikandan.m@microchip.com>, "Dharma Balasubiramani"
- <dharma.b@microchip.com>, "Nicolas Ferre" <nicolas.ferre@microchip.com>,
- "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Jagan Teki" <jagan@amarulasolutions.com>,
- "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Liu Ying"
- <victor.liu@nxp.com>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Douglas
- Anderson" <dianders@chromium.org>, "Philipp Zabel"
- <p.zabel@pengutronix.de>, "Chun-Kuang Hu" <chunkuang.hu@kernel.org>,
- "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
- <angelogioacchino.delregno@collabora.com>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
- "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica Zhang"
- <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn Suijten"
- <marijn.suijten@somainline.org>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Orson Zhai" <orsonzhai@gmail.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Chunyan Zhang" <zhang.lyra@gmail.com>,
- "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi Valkeinen"
- <tomi.valkeinen@ideasonboard.com>, "Icenowy Zheng"
- <zhengxingda@iscas.ac.cn>, <dri-devel@lists.freedesktop.org>,
- <asahi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
- <linux-mediatek@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
- <freedreno@lists.freedesktop.org>
-To: "Arnd Bergmann" <arnd@kernel.org>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.22.0
-References: <20260928161605.2271412-1-arnd@kernel.org>
-In-Reply-To: <20260928161605.2271412-1-arnd@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4698:EE_|BESPR04MB299202:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf1d48a3-2d2a-4214-b9b6-08df1dfb9507
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|19092799006|23010399003|1800799024|18002099003|3023799007|6133799003|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	/Cwr+ubGd83eD1tcVJAYJtCjylpaDjntB0Gfq51W49Gdhg6Jjtj8DC5rCyZmc2BmhG3wZ4Aw/4FBIY1vsDlj3yY7VK45FtuHfDYT6N4KeKELla3ZbOWknKNt2NMJjaZ3U3QK/nVjwYQs7Ti7tyutoZdgJRiGyq2oW+85R4CK/MQ0KoQXbfk+nX4D6dcmrPbkV96a8p4QFRiSoOI5dBnxKhKY7OAeLzQFlGasNUm/hQhcNhNs65tDqzgGMjvJ4xnjqQTtaz3yQZEO9vFDtEbQ6ZLL6U+rHrZsI3zzelGaajk+w6MK1THRHLGmfSx/RuqYdSQEUBMMbAXVxgrPyCxrj6aIMboSdcGPZE8XJ5+lsbcyf9IQOv7XLQH5tJCXyHFel4P8zinnRWqRYqbNWd5HJf7Xin0m7m5Zz3pwM8eGYMd68YGDnlxqz0FNmf9dFrJfH7hWFVNu6e7CXMYTvZZGcWK9/rXs6txYdq37UNDq4BWiH5XndBSYc6nEsYzPd/PLowBB07+97udFVza5E+63pRh9daEqHtpmX8hJ4SMIN3KkbXROOknDEJpcNYF3r6DgBj2a73w+XcZnRPYYEnCsn/dsNk31CCGR3oUWugAumaQKUkXzUGYt9wKPEkz/VN2p
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4698.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(23010399003)(1800799024)(18002099003)(3023799007)(6133799003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dnBaWkZVMTFncHc4bW0xY20wN3dJU3plbXFHZW4wUk1oeGk1ZnNVaUtjanEz?=
+ =?utf-8?B?ck1mQ1cxTVVDcXBRMHJ5RWdPeStPbFdTTk1saW4vV3VnOXdMamRqRHl4cGZF?=
+ =?utf-8?B?Sk41eWpXR09sYmVid3RUWm0xUE9NaVNRSElQYkhZNzRNOVprN2VNQzM3bFp2?=
+ =?utf-8?B?bWw4STZsVWgyTWpST3N6SVE4cWI2UmtDbmJJNStNVmx5T1BLSnhablBTMlhi?=
+ =?utf-8?B?amthd0UwbFFpVGFxSktBY1lnbDVYalErempIL29aOEFabkRRb0c3YTJ1V2Ex?=
+ =?utf-8?B?YW00V2NaRFloc3dnSC9xdTZ6ZThJeUZZOHV3eGR3ekJxKzlraEdYSllYOC92?=
+ =?utf-8?B?SGtBeE1ud0pDQ3F6ZDVzcmZybE5mWG5OQUJiUHpTNGczbklhZWcrOGlUb1Rn?=
+ =?utf-8?B?ZXpZOGttY3J1bVI3Sys4dFBaY1o0Q2pVdmNxUEFWYkRiS0kxcWhVaXFNTjRW?=
+ =?utf-8?B?MzEvUWxGZVBIYVlUL3ZiRVRpc3l0RzRJaVl6NTMvTlRoUmJrcDUwVmRnVUhS?=
+ =?utf-8?B?UExYTzNGNVZET2tBUEdpRExDUUVSVnJoYW5ISEhxeGxyTTY1aWw2TUhHNlZE?=
+ =?utf-8?B?a0hVM2VhUWU4SzVUTEVocnJpSWFDdkREV25MMXl3cVIydHNDSzVyUmZleUIy?=
+ =?utf-8?B?RU5zZkhPQ0JQWHBDeXZEZ29XSFlXNTJvY0tPZEhZY2R6QXFQcVcxaGwzQUJv?=
+ =?utf-8?B?bHdBYVRjMTZwdzZmVytIVkRUa1h0T3VXZjhiSnczWHJkY3dOd1NJemR6Q3pU?=
+ =?utf-8?B?RjlKWHdSYzljSWNVMjhHZzBBSUtGcDd4ZnJRZWFEZWZNNjJldFloT0V2QlpB?=
+ =?utf-8?B?R2RPNDZ1OWtHNVZxeWFOR08veW4rRlBBYVIzZHVML3BtS3NZUTBaUUdtSWhB?=
+ =?utf-8?B?R09qNHA2T2VlQTRhaVhDbEk2WGV5NDNvVm5QQ3p5bnIyd0MrNnU3Y3FuaE1Z?=
+ =?utf-8?B?Vk1YWVJFOE42LzQzazNZbUNzbkFrS0h4eTEwVzIyU2h6TnJoUDhWUGhMbGY1?=
+ =?utf-8?B?SlN1VmVLWkFCUTdtZ3FQcXBrMmN0WGcrWkl0RzRsTUN0N0xwM1Q5RFp5ZU5B?=
+ =?utf-8?B?ZUg5OTczcElNUU5LZS9tUURFUUtlcW1DMmlGR0d6Y1dhYkNRaXRmbzROQmFu?=
+ =?utf-8?B?VTVjdE5wb1dTSnFNcDZWS0hyU3V3T2hCYzlEVkxrWlEreHl2bU5YTXhva0lG?=
+ =?utf-8?B?azZYcXBRTG9IcFd0UFR4MGg3cFZzaUNPa1dlL1ZUWTY1ZVhneG4zeWNPanAx?=
+ =?utf-8?B?TXhyZEtDbHVvWUZyWmxMUGtzOEV6VUJEeEdob1NuZlJCcXhOZWtWOXkvV3Fp?=
+ =?utf-8?B?bUs0WWJmZkgwcUlyc05laVZtaFBYOS9xOGpFRVV6djAwblpORHFvM3V3c01O?=
+ =?utf-8?B?dVZ2R2NCbDMxL0NVQ3RtbmtkbkpyOTdEWnNka3dFSUJPbVNqUmxwdnRsTFBY?=
+ =?utf-8?B?dktGYllQbzdBWVVlSWFrVFFac21sTTA0TWRQOVZUc0NwYkVrTU02TlI2dUcw?=
+ =?utf-8?B?clNsZmc2cDdzVm0zSExkV0VOeXkzNUxWWW5VaGl0dVl5clYvd3AxemRGY2xI?=
+ =?utf-8?B?ekZZSTFWK05ORmhVaGxaQmllMDZXTGlkczBvMVFzUmJQSnFic242eEZxc0RS?=
+ =?utf-8?B?Z2tta1BVM0RJejc2OU9uR29weVJWMmRhK2txckFGNVd0Y3JGeXo1N0Ivblc5?=
+ =?utf-8?B?MEJnT0plV3l2L2Q2WVJ5eXRIYUpLVnhrT3NCUmZBR0hxS2lhVnoyUjhjbzhJ?=
+ =?utf-8?B?dVJNKzNOdGJES1haUG5nTnRobDlsOXozdk1QZ1Fqb3NYd2hpZFNaQ29PZVY5?=
+ =?utf-8?B?VERxWUZSQ1o0MG1CbldmM1cxcmxUcjM4ejZqYzVFbEs0UzdETE5NSGs3TVZZ?=
+ =?utf-8?B?a2FiV3QvRk5JY0tYcTFXK1BkSWpFZWYvZmZud3Jub2pUQXZFQUdZNHR5bWky?=
+ =?utf-8?B?UW55MzRNT20xSlp5dkVKOVhqOHpsMnhCemV0cjhhTTJyejVKNUNGaHdnMzI5?=
+ =?utf-8?B?ME1TT1lWbStoMTdiNlZMWjd3TUlUaFU5Q3VMMEVMMjNLaGhLOHVnaHdDK3pn?=
+ =?utf-8?B?NElMcjZYa2tQYmpnZWsvalJ5NUZ1N0xUWjJjcGJrTGZRTjlyUEdjeTNuMWhy?=
+ =?utf-8?B?ektXWS96K21VUlNkLzh0Z0lrM3QzRFFyUThadFlXQ3dOTXFxQ1I0SjhiNkRZ?=
+ =?utf-8?B?NGJTRHhJSFF2MVQrVXkrcjRWOU5EdzhkbWF0TmhoUTlCYmc3ZE1Kb0IxaE9L?=
+ =?utf-8?B?NFB3a3ZZRDJvaVdrK1lucG05dTFlbk85anVTVitBdXpST3hBczNMNWVzcmt4?=
+ =?utf-8?B?dU1hYnZpQlBLZXd3YVFya3NBV2lma3YyZGNQM3hpOTFtR3oyOE5XS1l4UGt5?=
+ =?utf-8?Q?YVtS4XxIwf4dVzY8uunjMX00Q54uU81znZR41?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf1d48a3-2d2a-4214-b9b6-08df1dfb9507
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4698.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 07:30:48.6761
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZVsSV0VG2ZL/njYtlBFRZZl6jw/1yP0fSNTgc82E3TJ+1uBd36JCrhpDHpvZRd5j8O8h/8T5iEysE3UNMNQLgS5Ju4XKQWnKW5wFRF9BXmdJNQEJBn0EDj7jkD4jcXFP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR04MB299202
 
-Hello Arnd,
+The amphion VPU decoder always emits an initial V4L2_EVENT_SOURCE_CHANGE
+event after parsing the resolution from the stream header for VC1 Annex
+L format. Without V4L2_FMT_FLAG_DYN_RESOLUTION, userspace (e.g.
+GStreamer) cannot determine that the driver will signal the initial
+resolution, causing it to skip waiting for the event and fail to set up
+the CAPTURE queue properly.
 
-On Mon Sep 28, 2026 at 6:04 PM CEST, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The devm_drm_of_get_bridge() declaration moved to drm_panel.h, but
-> not all callers include this, which leads to build failures in
-> some configurations:
->
-> drivers/gpu/drm/imx/lcdc/imx-lcdc.c: In function 'imx_lcdc_probe':
-> drivers/gpu/drm/imx/lcdc/imx-lcdc.c:404:18: error: implicit declaration o=
-f function 'devm_drm_of_get_bridge' [-Wimplicit-function-declaration]
->   404 |         bridge =3D devm_drm_of_get_bridge(dev, dev->of_node, 0, 0=
-);
->       |                  ^~~~~~~~~~~~~~~~~~~~~~
-> drivers/gpu/drm/verisilicon/vs_bridge.c: In function 'vs_bridge_init':
-> drivers/gpu/drm/verisilicon/vs_bridge.c:306:16: error: implicit declarati=
-on of function 'devm_drm_of_get_bridge' [-Wimplicit-function-declaration]
->   306 |         next =3D devm_drm_of_get_bridge(drm_dev->dev, drm_dev->de=
-v->of_node,
->       |                ^~~~~~~~~~~~~~~~~~~~~~
->
-> Include the new header in all files that need it.
->
-> Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to drm_panel.c")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Add V4L2_FMT_FLAG_DYN_RESOLUTION to the VC1 Annex L format entry to
+indicate that the decoder will emit the source change event during
+initialization, consistent with other coded formats supported by this
+driver.
 
-Thanks for the very quick reaction to this regression! However I think we
-should fix it differently.
+Fixes: e670f5d672ef ("media: amphion: only insert the first sequence startcode for vc1l format")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+---
+Changes in v2:
+- Drop the documentation patch. Nicolas pointed out that
+  V4L2_FMT_FLAG_DYN_RESOLUTION postdates the stateful decoder spec, so any
+  driver setting it is already required to follow that spec. The
+  non-compliant drivers (coda, s5p-mfc) are pre-spec history and not worth
+  bending the spec text around.
+- Drop the RFC prefix, as requested by Nicolas.
+- Link to v1: https://patch.msgid.link/20260608-flag-dyn-resolution-v1-0-44dc65516148@oss.nxp.com
+---
+ drivers/media/platform/amphion/vdec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I had definitely build-tested most if not all these drivers, and also
-runtime tested a few. Now I realized the build failure actually happens
-only in !OF defconfigs which I haven't build-tested (sorry about
-that!). Here's why:
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index a9f0521f2e1a..75808482d090 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -136,7 +136,7 @@ static const struct vpu_format vdec_formats[] = {
+ 		.mem_planes = 1,
+ 		.comp_planes = 1,
+ 		.type = V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE,
+-		.flags = V4L2_FMT_FLAG_COMPRESSED
++		.flags = V4L2_FMT_FLAG_DYN_RESOLUTION | V4L2_FMT_FLAG_COMPRESSED
+ 	},
+ 	{
+ 		.pixfmt = V4L2_PIX_FMT_MPEG2,
 
- * the affected drivers (all or most of them) include drm_of.h
- * drm_of.h does:
-     #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-     #include <linux/of.h>
-     #include <drm/drm_bridge.h>
-     #include <drm/drm_panel.h>
-     #endif
- * DRM_PANEL_BRIDGE is always set when DRM is set, so not a problem
- * drivers which don't depend on OF and don't include drm_panel.h now fail
+---
+base-commit: 2dcdfb625c3b8fe87454e19dfbc54b3e3f0ad70e
+change-id: 20260608-flag-dyn-resolution-f39fd24a0ba2
 
-Most of the drivers changed by this patch do 'depend on OF', so they are
-not affected. So the patch could be trimmed significantly. But still I'm
-not in favor of including drm_panel.h in the remaining drivers, because:
-
- * in the first place most/all of these drivers are now supposed to not use
-   the drm_panel API anymore; thsy should just use the drm_bridge API
-
- * devm_drm_of_get_bridge() is now a deprecated [0], complicated way of
-   calling of_drm_get_bridge_by_endpoint(), which is rightfully in
-   drm_bridge.h
-   * for this reason Documentation/drm/todo.rst says it must be removed [1]
-   * removal is easy, so I plan to do it in a few weeks globally
-   * after the removal all these #include <drm_panel.h> would have to
-     be removed, but some might easily be forgotten
-
-So I see two option for a better fix:
-
- * Option 1 -- fix the really affected drivers by switching from the
-   deprecated API to the one they recommended one. Based on quick analysis
-   there are about 6.
-
- * Option 2 -- a quick surgical fix:
-
-   In drm_of.h:
-
-     #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-      #include <linux/of.h>
-      #include <drm/drm_bridge.h>
-     -#include <drm/drm_panel.h>
-      #endif
-     +#include <drm/drm_panel.h> /* Temporary for *_of_get_bridge() */
-
-   This can easily be tracked and reverted once all
-   devm_drm_of_get_bridge() users are converted to
-   of_drm_get_bridge_by_endpoint().
-
-I'm working right now on option 1, hoping to get a series in a few hours
-from now. I can switch to option 2 in case of unexpected issues with option
-1, or if a fix "really right now" is wanted.
-
-[0] https://lore.kernel.org/lkml/20260916-drm-bridge-every-panel-v3-7-83afb=
-4f1a707@bootlin.com/
-[1] https://lore.kernel.org/lkml/20260916-drm-bridge-every-panel-v3-8-83afb=
-4f1a707@bootlin.com/
-
-Luca
-
-> ---
->  drivers/gpu/drm/adp/adp_drv.c                    | 1 +
->  drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_output.c | 1 +
->  drivers/gpu/drm/bridge/chipone-icn6211.c         | 1 +
->  drivers/gpu/drm/bridge/imx/imx-ldb-helper.c      | 1 +
->  drivers/gpu/drm/bridge/ite-it6263.c              | 1 +
->  drivers/gpu/drm/bridge/microchip-lvds.c          | 1 +
->  drivers/gpu/drm/bridge/nwl-dsi.c                 | 1 +
->  drivers/gpu/drm/bridge/nxp-ptn3460.c             | 1 +
->  drivers/gpu/drm/bridge/parade-ps8622.c           | 1 +
->  drivers/gpu/drm/bridge/parade-ps8640.c           | 1 +
->  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c    | 1 +
->  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c   | 1 +
->  drivers/gpu/drm/bridge/tc358762.c                | 1 +
->  drivers/gpu/drm/bridge/tc358764.c                | 1 +
->  drivers/gpu/drm/bridge/tc358775.c                | 1 +
->  drivers/gpu/drm/bridge/ti-dlpc3433.c             | 1 +
->  drivers/gpu/drm/bridge/ti-sn65dsi83.c            | 1 +
->  drivers/gpu/drm/bridge/ti-sn65dsi86.c            | 1 +
->  drivers/gpu/drm/drm_bridge.c                     | 1 +
->  drivers/gpu/drm/imx/ipuv3/imx-ldb.c              | 1 +
->  drivers/gpu/drm/imx/ipuv3/parallel-display.c     | 1 +
->  drivers/gpu/drm/imx/lcdc/imx-lcdc.c              | 1 +
->  drivers/gpu/drm/mediatek/mtk_dpi.c               | 1 +
->  drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c         | 1 +
->  drivers/gpu/drm/mxsfb/lcdif_drv.c                | 1 +
->  drivers/gpu/drm/sprd/sprd_dsi.c                  | 1 +
->  drivers/gpu/drm/tidss/tidss_oldi.c               | 1 +
->  drivers/gpu/drm/tilcdc/tilcdc_encoder.c          | 1 +
->  drivers/gpu/drm/verisilicon/vs_bridge.c          | 1 +
->  29 files changed, 29 insertions(+)
->
-> diff --git a/drivers/gpu/drm/adp/adp_drv.c b/drivers/gpu/drm/adp/adp_drv.=
-c
-> index fdf0e6316175..eb67c6fe9c01 100644
-> --- a/drivers/gpu/drm/adp/adp_drv.c
-> +++ b/drivers/gpu/drm/adp/adp_drv.c
-> @@ -16,6 +16,7 @@
->  #include <drm/drm_gem_dma_helper.h>
->  #include <drm/drm_gem_framebuffer_helper.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->  #include <drm/drm_vblank.h>
-> diff --git a/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_output.c b/drivers/g=
-pu/drm/atmel-hlcdc/atmel_hlcdc_output.c
-> index e8aea905fb10..d16945ebb2f5 100644
-> --- a/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_output.c
-> +++ b/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_output.c
-> @@ -15,6 +15,7 @@
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_encoder.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_simple_kms_helper.h>
->
-> diff --git a/drivers/gpu/drm/bridge/chipone-icn6211.c b/drivers/gpu/drm/b=
-ridge/chipone-icn6211.c
-> index 4ec50fb63aba..fc4a49b2b246 100644
-> --- a/drivers/gpu/drm/bridge/chipone-icn6211.c
-> +++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
-> @@ -6,6 +6,7 @@
->
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_mipi_dsi.h>
->
-> diff --git a/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c b/drivers/gpu/dr=
-m/bridge/imx/imx-ldb-helper.c
-> index 6149ba141a38..018fedb0162c 100644
-> --- a/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c
-> +++ b/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c
-> @@ -13,6 +13,7 @@
->
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #include "imx-ldb-helper.h"
-> diff --git a/drivers/gpu/drm/bridge/ite-it6263.c b/drivers/gpu/drm/bridge=
-/ite-it6263.c
-> index 21ac8e58b9d2..12a23bb45c84 100644
-> --- a/drivers/gpu/drm/bridge/ite-it6263.c
-> +++ b/drivers/gpu/drm/bridge/ite-it6263.c
-> @@ -26,6 +26,7 @@
->  #include <drm/drm_crtc.h>
->  #include <drm/drm_edid.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_probe_helper.h>
->
->  /* ---------------------------------------------------------------------=
---------
-> diff --git a/drivers/gpu/drm/bridge/microchip-lvds.c b/drivers/gpu/drm/br=
-idge/microchip-lvds.c
-> index dd4ffc9f4df3..53291cde0636 100644
-> --- a/drivers/gpu/drm/bridge/microchip-lvds.c
-> +++ b/drivers/gpu/drm/bridge/microchip-lvds.c
-> @@ -24,6 +24,7 @@
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->  #include <drm/drm_simple_kms_helper.h>
-> diff --git a/drivers/gpu/drm/bridge/nwl-dsi.c b/drivers/gpu/drm/bridge/nw=
-l-dsi.c
-> index 09992529f3d8..f7043dcd76cb 100644
-> --- a/drivers/gpu/drm/bridge/nwl-dsi.c
-> +++ b/drivers/gpu/drm/bridge/nwl-dsi.c
-> @@ -27,6 +27,7 @@
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #include <video/mipi_display.h>
-> diff --git a/drivers/gpu/drm/bridge/nxp-ptn3460.c b/drivers/gpu/drm/bridg=
-e/nxp-ptn3460.c
-> index f9eff8bfceb7..489704df6145 100644
-> --- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
-> +++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
-> @@ -15,6 +15,7 @@
->  #include <drm/drm_crtc.h>
->  #include <drm/drm_edid.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->
-> diff --git a/drivers/gpu/drm/bridge/parade-ps8622.c b/drivers/gpu/drm/bri=
-dge/parade-ps8622.c
-> index 3a2ec482037d..ff24aa647028 100644
-> --- a/drivers/gpu/drm/bridge/parade-ps8622.c
-> +++ b/drivers/gpu/drm/bridge/parade-ps8622.c
-> @@ -19,6 +19,7 @@
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_crtc.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->
-> diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bri=
-dge/parade-ps8640.c
-> index 56b48f8feab6..425985f2398d 100644
-> --- a/drivers/gpu/drm/bridge/parade-ps8640.c
-> +++ b/drivers/gpu/drm/bridge/parade-ps8640.c
-> @@ -20,6 +20,7 @@
->  #include <drm/drm_edid.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #define PAGE0_AUXCH_CFG3	0x76
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/=
-drm/bridge/synopsys/dw-mipi-dsi.c
-> index 5dd475fcaacf..11233d2d7385 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-> @@ -30,6 +30,7 @@
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_modes.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #define HWVER_131			0x31333100	/* IP version 1.31 */
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c b/drivers/gpu=
-/drm/bridge/synopsys/dw-mipi-dsi2.c
-> index c0d89dd767ce..5b4f4c823d48 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c
-> @@ -24,6 +24,7 @@
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #define DSI2_PWR_UP			0x000c
-> diff --git a/drivers/gpu/drm/bridge/tc358762.c b/drivers/gpu/drm/bridge/t=
-c358762.c
-> index 76564d5e4f69..c9e5bbc5dcd0 100644
-> --- a/drivers/gpu/drm/bridge/tc358762.c
-> +++ b/drivers/gpu/drm/bridge/tc358762.c
-> @@ -23,6 +23,7 @@
->  #include <drm/drm_crtc.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->
-> diff --git a/drivers/gpu/drm/bridge/tc358764.c b/drivers/gpu/drm/bridge/t=
-c358764.c
-> index 049215e65988..311de8797402 100644
-> --- a/drivers/gpu/drm/bridge/tc358764.c
-> +++ b/drivers/gpu/drm/bridge/tc358764.c
-> @@ -18,6 +18,7 @@
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #define FLD_MASK(start, end)    (((1 << ((start) - (end) + 1)) - 1) << (=
-end))
-> diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/t=
-c358775.c
-> index 203dc738ecef..e7ea47307a50 100644
-> --- a/drivers/gpu/drm/bridge/tc358775.c
-> +++ b/drivers/gpu/drm/bridge/tc358775.c
-> @@ -26,6 +26,7 @@
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_probe_helper.h>
->
->  #define FLD_VAL(val, start, end) FIELD_PREP(GENMASK(start, end), val)
-> diff --git a/drivers/gpu/drm/bridge/ti-dlpc3433.c b/drivers/gpu/drm/bridg=
-e/ti-dlpc3433.c
-> index c9f789e30687..21922878e60e 100644
-> --- a/drivers/gpu/drm/bridge/ti-dlpc3433.c
-> +++ b/drivers/gpu/drm/bridge/ti-dlpc3433.c
-> @@ -10,6 +10,7 @@
->
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_mipi_dsi.h>
->
-> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/brid=
-ge/ti-sn65dsi83.c
-> index eb5b249cc43c..cc6c4c89d468 100644
-> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> @@ -45,6 +45,7 @@
->  #include <drm/drm_bridge_helper.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->
-> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/brid=
-ge/ti-sn65dsi86.c
-> index 48b83df9aed6..de16afa99b91 100644
-> --- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-> @@ -32,6 +32,7 @@
->  #include <drm/drm_edid.h>
->  #include <drm/drm_mipi_dsi.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->
-> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-> index e7f9e6d58927..e50737432071 100644
-> --- a/drivers/gpu/drm/drm_bridge.c
-> +++ b/drivers/gpu/drm/drm_bridge.c
-> @@ -36,6 +36,7 @@
->  #include <drm/drm_encoder.h>
->  #include <drm/drm_file.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->
->  #include "drm_crtc_internal.h"
-> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ip=
-uv3/imx-ldb.c
-> index 63d6a1e7c1bd..317db4d9b898 100644
-> --- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-> +++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-> @@ -25,6 +25,7 @@
->  #include <drm/drm_bridge_connector.h>
->  #include <drm/drm_managed.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->  #include <drm/drm_simple_kms_helper.h>
-> diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/d=
-rm/imx/ipuv3/parallel-display.c
-> index eb75827394f8..966649bc6dc6 100644
-> --- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-> +++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-> @@ -17,6 +17,7 @@
->  #include <drm/drm_bridge_connector.h>
->  #include <drm/drm_managed.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_probe_helper.h>
->  #include <drm/drm_simple_kms_helper.h>
->  #include <drm/bridge/of-display-mode-bridge.h>
-> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lc=
-dc/imx-lcdc.c
-> index c67fe80b8115..cac50a002004 100644
-> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-> @@ -14,6 +14,7 @@
->  #include <drm/drm_gem_dma_helper.h>
->  #include <drm/drm_gem_framebuffer_helper.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_probe_helper.h>
->  #include <drm/drm_simple_kms_helper.h>
-> diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediate=
-k/mtk_dpi.c
-> index 0e4f430de983..b73d76a40c6c 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-> @@ -27,6 +27,7 @@
->  #include <drm/drm_edid.h>
->  #include <drm/drm_encoder.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->
->  #include "mtk_ddp_comp.h"
->  #include "mtk_disp_drv.h"
-> diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c b/drivers/gpu/drm/m=
-sm/disp/mdp4/mdp4_kms.c
-> index 9b1d1982e683..df5fed30718e 100644
-> --- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c
-> +++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c
-> @@ -8,6 +8,7 @@
->
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_bridge_connector.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_vblank.h>
->
->  #include "msm_drv.h"
-> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lc=
-dif_drv.c
-> index e2173c4d6fc2..ba14b20cb038 100644
-> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> @@ -27,6 +27,7 @@
->  #include <drm/drm_mode_config.h>
->  #include <drm/drm_module.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_probe_helper.h>
->  #include <drm/drm_vblank.h>
->
-> diff --git a/drivers/gpu/drm/sprd/sprd_dsi.c b/drivers/gpu/drm/sprd/sprd_=
-dsi.c
-> index 23b0e1dc547a..260d1682c8a7 100644
-> --- a/drivers/gpu/drm/sprd/sprd_dsi.c
-> +++ b/drivers/gpu/drm/sprd/sprd_dsi.c
-> @@ -12,6 +12,7 @@
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_probe_helper.h>
->
->  #include "sprd_drm.h"
-> diff --git a/drivers/gpu/drm/tidss/tidss_oldi.c b/drivers/gpu/drm/tidss/t=
-idss_oldi.c
-> index 5eb749f495d5..7e77b4af36d0 100644
-> --- a/drivers/gpu/drm/tidss/tidss_oldi.c
-> +++ b/drivers/gpu/drm/tidss/tidss_oldi.c
-> @@ -15,6 +15,7 @@
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->
->  #include "tidss_dispc.h"
->  #include "tidss_dispc_regs.h"
-> diff --git a/drivers/gpu/drm/tilcdc/tilcdc_encoder.c b/drivers/gpu/drm/ti=
-lcdc/tilcdc_encoder.c
-> index ac4b5beb2dd5..5fb0e8e1e829 100644
-> --- a/drivers/gpu/drm/tilcdc/tilcdc_encoder.c
-> +++ b/drivers/gpu/drm/tilcdc/tilcdc_encoder.c
-> @@ -10,6 +10,7 @@
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_bridge_connector.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_simple_kms_helper.h>
->
->  #include "tilcdc_drv.h"
-> diff --git a/drivers/gpu/drm/verisilicon/vs_bridge.c b/drivers/gpu/drm/ve=
-risilicon/vs_bridge.c
-> index dc7c85b07fe3..586f1bd7d7b5 100644
-> --- a/drivers/gpu/drm/verisilicon/vs_bridge.c
-> +++ b/drivers/gpu/drm/verisilicon/vs_bridge.c
-> @@ -15,6 +15,7 @@
->  #include <drm/drm_connector.h>
->  #include <drm/drm_encoder.h>
->  #include <drm/drm_of.h>
-> +#include <drm/drm_panel.h>
->  #include <drm/drm_print.h>
->  #include <drm/drm_simple_kms_helper.h>
->
-
-
-
-
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
