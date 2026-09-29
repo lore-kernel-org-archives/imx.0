@@ -1,119 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp5-g21.free.fr (smtp5-g21.free.fr [212.27.42.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8F44E3236;
-	Tue, 29 Sep 2026 21:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A976C3DB320
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 21:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790718252; cv=none; b=CqUZWMFazv0YBHANXsa1q/Ip7zqui7zkukiSTEpM9wiYqKKkc6gO9xgQX1KEJk1CmrAS7YWLv6sYQqDRf8uCXqhbvOu5e8L04BgpcGCholhRyw5J7/f7+HgA9DggpIiWRj36Iczhl/uxK6GLG6o96MuIBo8hVXZHiz5CI1qSLXE=
+	t=1790719147; cv=none; b=jiOggFY66Z/hXaDqMCLj+DP2JP7bzhSZJleJ1xGx6MEUVMe15nHe6pqSH9a0gEkKabhecNBqxa0OkTpJxfvDTnbyFFP8qx2E0B2zexdOsnaseFmcyDwnhlKY1xg+NlSNWi4ULZMNgFu4JGHFOpqNwE+paDcuTWvPruLaKgtfrXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790718252; c=relaxed/simple;
-	bh=PXjKLtYo3w8BNPEfuBgSC85hd0B07fniJvvus+kauY0=;
+	s=arc-20240116; t=1790719147; c=relaxed/simple;
+	bh=cr5V+n/greApI8Zyhw+2u0aNrf/2IvsBktudjqmiqro=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EtZ7lQu3/3iEjyGuDODEUarbJB21eL8Lp78sdBRtT8bouGpjkaqNMAU4DRMhLoWkdcG/PcszzYrFEbB/4Y60G26Xr2G6tm2F6lcpewgYumtJwCT3emGa35E+PlWpQLSid2ltK1tlgeYn0d9IyTZzSg+Cn+v0Oaj6nbv/wvdrQFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CI9qf0yY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=o4FjYxEbUIsGvLCaKY8ZuOH6dBZ21Ou23js3Bb8qKc343dYS1rgWbKHHDXG6Rsuf/oFGtXR6c/OC0xWOBsEsqDEcV6dthnyPAjgM3Z/eb4vo7+M+r7k4SvYJ2uP8WwrP2zWyINUH2bQ/BNbKOLKppMyIpUjuIJU0vwpkwzpzNH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=BNoPtG9a; arc=none smtp.client-ip=212.27.42.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CI9qf0yY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412391F00893;
-	Tue, 29 Sep 2026 21:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790718241;
-	bh=2KEhu3d6YlE+Nz+gmiCdg+VCYUQv+IGjS0LzMmdH5hA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CI9qf0yYXGBU6Acr89YrQCW2sfMzQPY5FRReCxQ6HiZpV0Is0a7X0YskUC6BzoAZR
-	 73iAv/If+qQ/na/F0HbvLGU8KHAVP/W6qhjiPVRrgL2vta2SaztgmKk6jiQnZJWPo1
-	 SKYh/RI3cebBr0iu1ObM/SDFCQU+T/gCK5HiavC3AAvBNWVI/+5SZHAk6OW9jUA4SG
-	 rovd+fCbD8cafHQpx81eQQaS0CbFQsX0LwGd9XxvJcngQbvxcHoKJ/TlW72GL0IHVe
-	 5ncObZntWs/frWOLdn5GX096bC/ZK341dhC40QgS5PVU0s/z8PKzH0uyG15mDQCXSc
-	 ib/H/Gw9SAt/A==
-Date: Tue, 29 Sep 2026 22:43:55 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Frank.Li@oss.nxp.com
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="BNoPtG9a"
+Received: from L30177.local (unknown [IPv6:2a01:e0a:ac2:22b0:fd38:7b91:be5e:6aee])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp5-g21.free.fr (Postfix) with ESMTPSA id 7B1C95FFAA;
+	Tue, 29 Sep 2026 23:58:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1790719143;
+	bh=cr5V+n/greApI8Zyhw+2u0aNrf/2IvsBktudjqmiqro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BNoPtG9afk89bIDpSSwZpYx+lHCVs9Wsyv/laS8KKM0eqRGAjxlZleqPa51jjBBU5
+	 CY7Q33HOgnqUtHj8opAsuXscshB9tSe+jXDsh+/IBv/vcGHmMqdN1bYjb4DteSNDPn
+	 B9GDCmqWXGEAaFsiqKB6SN90MGeJKcqebtZORXaAGOryOrUupiWaLlc0JY3LkixbwL
+	 ok5AJ2D+qJ/7MYK3yUMeKDeiAFz73Xpqj78QcL1TN6WCvq87mwuHEBaKYE3apNoPkK
+	 E2prVdLk25A63Wb5VrAMU4px5KRDXSwyLkmnnsoNC+U20BeWfKKrlKF+G5RXl9sj2P
+	 VzGB14XiP14Tg==
+Date: Tue, 29 Sep 2026 23:58:49 +0200
+From: Vincent Jardin <vjardin@free.fr>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
-	vkoul@kernel.org
-Subject: Re: [PATCH 2/2] spi: use dmaengine_get_dma_device() instead of
- chan->device->dev
-Message-ID: <a9a4fc5a-df79-47f7-b963-217439e0b020@sirena.org.uk>
-References: <20260929155445.3311133-1-Frank.Li@oss.nxp.com>
- <20260929155445.3311133-2-Frank.Li@oss.nxp.com>
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Haobin Jiang <lemonoutput@foxmail.com>, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
+Message-ID: <arw0mVbacAXv_1H7@L30177.local>
+References: <20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr>
+ <apcYp0Zc7CrJMiOh@lizhi-Precision-Tower-5810>
+ <aqO9SMvI89rqoEGb@L23803.iliad.fr>
+ <arMUxCW5ZTzLT3VN@L30177.local>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vrrxCsum5yX0Juyp"
-Content-Disposition: inline
-In-Reply-To: <20260929155445.3311133-2-Frank.Li@oss.nxp.com>
-X-Cookie: 1 bulls, 3 cows.
-
-
---vrrxCsum5yX0Juyp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <arMUxCW5ZTzLT3VN@L30177.local>
 
-On Tue, Sep 29, 2026 at 11:54:43AM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
->=20
-> Replace direct dma_chan::device::dev access with the proper
-> dmaengine_get_dma_device() for consumer API
+Hi Andi,
 
-> @@ -1174,16 +1177,15 @@ static int bcm2835_spi_setup_dma(struct spi_contr=
-oller *ctlr,
->  				 struct bcm2835_spi *bs,
->  				 struct bcm2835_spidev *target)
->  {
-> +	struct device *rx_dev =3D dmaengine_get_dma_device(ctlr->dma_rx);
->  	int ret;
-> =20
->  	if (!ctlr->dma_rx)
->  		return 0;
-> =20
+Sorry to ask again: could you consider this patch for i2c/i2c-next,
+so it can land into v7.4 which is coming soon ?
 
-This moves the use of dma_rx after the NULL check.  Possibly
-dmaengine_get_dma_device() will do the right thing but still there's
-more updates needed.
+It carries Carlos Song's Acked-by and Frank Li's Reviewed-by.
+It still applies cleanly on your current i2c/i2c-next.
+  https://patchwork.ozlabs.org/project/linux-i2c/patch/20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr/
+which I checked few minutes ago.
 
-> @@ -766,21 +769,21 @@ static int dspi_request_dma(struct fsl_dspi *dspi, =
-phys_addr_t phy_addr)
->  static void dspi_release_dma(struct fsl_dspi *dspi)
->  {
->  	struct fsl_dspi_dma *dma =3D dspi->dma;
-> +	struct device *tx_dev =3D dmaengine_get_dma_device(dma->chan_tx);
-> +	struct device *rx_dev =3D dmaengine_get_dma_device(dma->chan_rx);
-> =20
->  	if (!dma)
->  		return;
+Haobin Jiang's
+  "i2c: imx: honour I2C_M_IGNORE_NAK"
+v3 is based on it, and waiting for it:
+  https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com/
 
-Similar issue here, though things are a bit more involved.
+If you prefer a v3 rebased on i2c/i2c-next with both tags, I can send
+it too.
 
---vrrxCsum5yX0Juyp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq8MRoACgkQJNaLcl1U
-h9Cfqgf/XWp6benseGwKwZKeuaOsw1cBguwAfqDmvyDi7aHwm11SxEjrkzcrIm2x
-P0g7TifMKYaCXW5j0wZEdS4bDoMzROZoh7TSc8fuWGvL9ATJqgcR/rfCjuqM46no
-wO84cvU5xrXc8rK0mG99NXFqmWZE8dYzKMnTwC1aMyid3OVl/aY62R/lwHY/ouOq
-jJ5Yr7oCUxSHvpe6U2BpfaP6uAbN+KFFnCBeziNzgNgGTFvf+GnamKxlF+RwgyU5
-QgtaYx99v37Jkl7Ecu6F8xV4vsyPMffWhQLn5vL9BovFT/mQ9i7ol5bbNMj/SiV0
-Ede1lApphqMCEsoAVYigi0mIUpfoGA==
-=Qy7q
------END PGP SIGNATURE-----
-
---vrrxCsum5yX0Juyp--
+Best regards,
+  Vincent
