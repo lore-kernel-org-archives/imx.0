@@ -1,184 +1,123 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010024.outbound.protection.outlook.com [52.101.69.24])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1783A3E8B
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 07:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167A839E164
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 07:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790667053; cv=fail; b=AtG9C0XFaUEl5pFWVmm0A2LOmFcCOlOT7xpL1ru5l0/dbLXWiRfglpFo6EaOvS4tcH5L60EZpEVbq954Sydfa1Iof3jUULgLGpwbFCTt16+0WQA0jxQSRqPe6f8N/1Y4gFD+YTR24DPTma3nZguo7ugZto9ZsAAPf5Cu3EdfdrU=
+	t=1790667170; cv=pass; b=PYktpomfa/hgBjsgOBrnkcnzWA2+DpiSh+64SIWGZHFPdOBpgm6o3vDHvgmx/X8uitlq3AOzaQ+mOuS+iimrxTPOvBUtl0wVmrXzUM7CvecDzz3pRd8NFE0eMJlCo3x2X4Wf4da7DOYuQTeFXq4A2Xn4o5HHOr5396dVmLU1KIQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790667053; c=relaxed/simple;
-	bh=0jTMvjfhyu9pUTelspHPktt1+3URXqYGLygczZyAnAI=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=l8/jSmWQA1yCB+ZGS7Vf2g0BRI8fiAFiTmAcxct0eKhUzUNMnaPl6J7A48GCLjuZkKSjeZlBbwpXt+7dEtmPDaQrkA8VZaP8eMc6iIPpk9SffXq8Fe63dSHKrze4wrIyx5cwc9NgX356S1atPytEIl/s0ZkslROSV8C5h1uDW9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=r8oSU2+k; arc=fail smtp.client-ip=52.101.69.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790667170; c=relaxed/simple;
+	bh=jcEE8SweDaAwUTV27plQbR/XBKf4UiO0KhElNh8rSOc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ijp5Bd5QN2RxzGFYGknHKWUuELY9YeZ2EQ2oN2cq/rRe1zHQpmOCNt5EOasEkLcMqh63QK6HvQO3tP1v7aCGr0QnLRibsIpS+XUUO3wnOe5HwnRGqyIJ83ziwta9I362p/D29y0DKZJJcO5Ztn/1fFQKn4sW+n3cr2iH/oAfNZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=I4UlrcqX; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="r8oSU2+k"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yIF0wBJACT/nOhA+G/9V/yuPwwgh7BvGu/+wAJZvOTQ2KAPUO83NGv9ehmr0yY75EM9e0/aEU7JJuKlAH/H/h7lsXmWrHNeFrpOgaGuxawxkw0jYkoR2U2Q7chV6pXFWBnXqF43l2Tt1c+InxNVYNoEaM9qL29J5fyTB46R+JU7KO+kmQwo0a75iW8zug+ESaycJAS4jEk/w4ywrUjcTWimmNGcmOTQIdQZk0HCNMmrt2HewS6l/QaFGBrBp8EBQd5NNqlbTpMNtQaN8ujXC0ZKe4LUtqj/imivpiwcF6LYj8I/GzpYIQGsRCQEzSV+3dXiWfYF9epHW7GQBSbi/fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sRlN/4Zd6uvtWpNC2sSCOef+x8tqwHQEgxl+zJ3J/10=;
- b=cJSZPZ9w0a/tgPt+JD9glVH2N80NBrmX2dURxuPt4A0vSriqAGIWswpqoxd/oRZiIZHmNnZp/pDS5TP0sEOXFx5WcP80qQc7Iuum4jcAD9LLr+qxrK36k7bLkMbpZG27SaZcqFw1VEzyyq7QZ8kifnkl9v2xs5j8mSf5VjFIBpWXWdeosM67GTZCQMH0oDohOFe41XfsRkW+GNuUKnF7MhWu64XFfV2krpyB/qibtOFGXeGdiQCU+ufJu3i9qsOVN0hnQ7mk3xD+ZTyTcRSjJ5O8caQwNQHXCIU3hmxokYzvr3sLMTSBhmxCqSVF6ZFXFuj4dMYr3ylqFTOi50wdtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sRlN/4Zd6uvtWpNC2sSCOef+x8tqwHQEgxl+zJ3J/10=;
- b=r8oSU2+kZr5dcMEmNhfdtJrBhuXV1QwA0JOm4WIVeEKpezc1alxLJ+HA8bG12G50KfHWchj9RQjpUNjwi/UlF3AxhkNBO9l7dRqcYWOQH+5CSEKqq6JV1MKIIO3Gp+sD68j6Kf9umT8rQGFtJRcrZG1k605H4Gn9IVrk03EYRmmegigiHUPFGR3jgP0I3jNZL1iI0JCrqv9/uBgkRk1FmXgrzbf+CmqNgASpQgUSySKr4XQd0ro6a0Qs7kuz0CCaLKz87KYgkqABLTewxUrf7gNig9oge7a6qrqm+5wymUQG/8yKhZum0Ut8sYB4rXdjTqjUvamU335PwbEcEF4fYw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB7PR04MB4698.eurprd04.prod.outlook.com (2603:10a6:10:1c::21)
- by BESPR04MB299202.eurprd04.prod.outlook.com (2603:10a6:b10:13f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 07:30:48 +0000
-Received: from DB7PR04MB4698.eurprd04.prod.outlook.com
- ([fe80::c571:bdf2:afe7:c03c]) by DB7PR04MB4698.eurprd04.prod.outlook.com
- ([fe80::c571:bdf2:afe7:c03c%4]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 07:30:48 +0000
-From: Ming Qian <ming.qian@oss.nxp.com>
-Date: Tue, 29 Sep 2026 16:30:28 +0900
-Subject: [PATCH v2] media: amphion: Add V4L2_FMT_FLAG_DYN_RESOLUTION for
- VC1L
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-flag-dyn-resolution-v2-1-ef29487f7215@oss.nxp.com>
-X-B4-Tracking: v=1; b=H4sIABNpu2oC/32Nyw6DIBQFf8Ww7jVAkdiu+h+NC+ShNBYMV43G+
- O/Fdt/lJHPm7ARt8hbJvdhJsotHH0MGfimI7lXoLHiTmXDKJZW0BjeoDswWIFmMwzxlH9z15gw
- XiraKk7wck3V+/VafzY9xbl9WT2fqNHqPU0zb93Zhp/f/YWFAQQijZVUxyUT9iIhlWMdSxzdpj
- uP4AEXgiOPKAAAA
-X-Change-ID: 20260608-flag-dyn-resolution-f39fd24a0ba2
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
- Ming Qian <ming.qian@nxp.com>
-Cc: Zhou Peng <eagle.zhou@nxp.com>, Elliot Chen <elliot.chen@nxp.com>, 
- Frank Li <Frank.Li@nxp.com>, linux-imx@nxp.com, imx@lists.linux.dev, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ming Qian <ming.qian@oss.nxp.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: JH0PR02CA0013.apcprd02.prod.outlook.com
- (2603:1096:990:5::6) To DB7PR04MB4698.eurprd04.prod.outlook.com
- (2603:10a6:10:1c::21)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="I4UlrcqX"
+ARC-Seal: i=1; a=rsa-sha256; t=1790667141; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Lo0q0GcuKW7LmnzRRytJBj2qcby1rCCGeWvBPzX9eCNGwidytCt3uBJ81RfMBgwkjUv0Ou8P1b6R8VkluY/ZCM+tiPas/Cm76u9lh+gJ9jjNtU1fJAGUtWE4dsSZVuixbq3VpZdq9xIhJ5tJkM6ASWz6UEi1ttL6hGmbYdm8H1w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790667141; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=hD2niuyZYi4hGUz8wD8CQSqVmQtaAAm56xCDiCG8qiA=; 
+	b=T4YgIcP7yYbgOs1EIt5mmPQYY8qP/vVdR0NXxDlVMxOTLA1occnFWx/6Oyz49Ysw22KvDQehwxQKCx3YNYn3lFnaWlPBl5uULVrHgD945nHm2wGcF0ZUvuIjUwxNamClZ/RWUM0ywKjoLsmOYE3v1GnqsKEh0IQbVwANvaGFYE8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
+	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790667141;
+	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=hD2niuyZYi4hGUz8wD8CQSqVmQtaAAm56xCDiCG8qiA=;
+	b=I4UlrcqXdx3XBEWklwWNlyHFab9MabsOmeY2n4oePKdbfSoZzYpdpaGdKbJCdIzB
+	tT4fPsg6GKDtmM2XNymH0Rjzmxn3Kko4/te7O8lB1izBiceYSdc9Pza8LPiyn72Dcuy
+	rT/6wc+oYqqejgsUsPzJqjYw/18891pZBrghtd8k=
+Received: by smtp.zohomail.com with SMTPS id 1790667140359748.8800768409743;
+	Tue, 29 Sep 2026 00:32:20 -0700 (PDT)
+Message-ID: <4ed94c10-edc7-423b-a4db-032af5180f3f@collabora.com>
+Date: Tue, 29 Sep 2026 09:32:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR04MB4698:EE_|BESPR04MB299202:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf1d48a3-2d2a-4214-b9b6-08df1dfb9507
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|19092799006|23010399003|1800799024|18002099003|3023799007|6133799003|10067099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	/Cwr+ubGd83eD1tcVJAYJtCjylpaDjntB0Gfq51W49Gdhg6Jjtj8DC5rCyZmc2BmhG3wZ4Aw/4FBIY1vsDlj3yY7VK45FtuHfDYT6N4KeKELla3ZbOWknKNt2NMJjaZ3U3QK/nVjwYQs7Ti7tyutoZdgJRiGyq2oW+85R4CK/MQ0KoQXbfk+nX4D6dcmrPbkV96a8p4QFRiSoOI5dBnxKhKY7OAeLzQFlGasNUm/hQhcNhNs65tDqzgGMjvJ4xnjqQTtaz3yQZEO9vFDtEbQ6ZLL6U+rHrZsI3zzelGaajk+w6MK1THRHLGmfSx/RuqYdSQEUBMMbAXVxgrPyCxrj6aIMboSdcGPZE8XJ5+lsbcyf9IQOv7XLQH5tJCXyHFel4P8zinnRWqRYqbNWd5HJf7Xin0m7m5Zz3pwM8eGYMd68YGDnlxqz0FNmf9dFrJfH7hWFVNu6e7CXMYTvZZGcWK9/rXs6txYdq37UNDq4BWiH5XndBSYc6nEsYzPd/PLowBB07+97udFVza5E+63pRh9daEqHtpmX8hJ4SMIN3KkbXROOknDEJpcNYF3r6DgBj2a73w+XcZnRPYYEnCsn/dsNk31CCGR3oUWugAumaQKUkXzUGYt9wKPEkz/VN2p
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4698.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(23010399003)(1800799024)(18002099003)(3023799007)(6133799003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dnBaWkZVMTFncHc4bW0xY20wN3dJU3plbXFHZW4wUk1oeGk1ZnNVaUtjanEz?=
- =?utf-8?B?ck1mQ1cxTVVDcXBRMHJ5RWdPeStPbFdTTk1saW4vV3VnOXdMamRqRHl4cGZF?=
- =?utf-8?B?Sk41eWpXR09sYmVid3RUWm0xUE9NaVNRSElQYkhZNzRNOVprN2VNQzM3bFp2?=
- =?utf-8?B?bWw4STZsVWgyTWpST3N6SVE4cWI2UmtDbmJJNStNVmx5T1BLSnhablBTMlhi?=
- =?utf-8?B?amthd0UwbFFpVGFxSktBY1lnbDVYalErempIL29aOEFabkRRb0c3YTJ1V2Ex?=
- =?utf-8?B?YW00V2NaRFloc3dnSC9xdTZ6ZThJeUZZOHV3eGR3ekJxKzlraEdYSllYOC92?=
- =?utf-8?B?SGtBeE1ud0pDQ3F6ZDVzcmZybE5mWG5OQUJiUHpTNGczbklhZWcrOGlUb1Rn?=
- =?utf-8?B?ZXpZOGttY3J1bVI3Sys4dFBaY1o0Q2pVdmNxUEFWYkRiS0kxcWhVaXFNTjRW?=
- =?utf-8?B?MzEvUWxGZVBIYVlUL3ZiRVRpc3l0RzRJaVl6NTMvTlRoUmJrcDUwVmRnVUhS?=
- =?utf-8?B?UExYTzNGNVZET2tBUEdpRExDUUVSVnJoYW5ISEhxeGxyTTY1aWw2TUhHNlZE?=
- =?utf-8?B?a0hVM2VhUWU4SzVUTEVocnJpSWFDdkREV25MMXl3cVIydHNDSzVyUmZleUIy?=
- =?utf-8?B?RU5zZkhPQ0JQWHBDeXZEZ29XSFlXNTJvY0tPZEhZY2R6QXFQcVcxaGwzQUJv?=
- =?utf-8?B?bHdBYVRjMTZwdzZmVytIVkRUa1h0T3VXZjhiSnczWHJkY3dOd1NJemR6Q3pU?=
- =?utf-8?B?RjlKWHdSYzljSWNVMjhHZzBBSUtGcDd4ZnJRZWFEZWZNNjJldFloT0V2QlpB?=
- =?utf-8?B?R2RPNDZ1OWtHNVZxeWFOR08veW4rRlBBYVIzZHVML3BtS3NZUTBaUUdtSWhB?=
- =?utf-8?B?R09qNHA2T2VlQTRhaVhDbEk2WGV5NDNvVm5QQ3p5bnIyd0MrNnU3Y3FuaE1Z?=
- =?utf-8?B?Vk1YWVJFOE42LzQzazNZbUNzbkFrS0h4eTEwVzIyU2h6TnJoUDhWUGhMbGY1?=
- =?utf-8?B?SlN1VmVLWkFCUTdtZ3FQcXBrMmN0WGcrWkl0RzRsTUN0N0xwM1Q5RFp5ZU5B?=
- =?utf-8?B?ZUg5OTczcElNUU5LZS9tUURFUUtlcW1DMmlGR0d6Y1dhYkNRaXRmbzROQmFu?=
- =?utf-8?B?VTVjdE5wb1dTSnFNcDZWS0hyU3V3T2hCYzlEVkxrWlEreHl2bU5YTXhva0lG?=
- =?utf-8?B?azZYcXBRTG9IcFd0UFR4MGg3cFZzaUNPa1dlL1ZUWTY1ZVhneG4zeWNPanAx?=
- =?utf-8?B?TXhyZEtDbHVvWUZyWmxMUGtzOEV6VUJEeEdob1NuZlJCcXhOZWtWOXkvV3Fp?=
- =?utf-8?B?bUs0WWJmZkgwcUlyc05laVZtaFBYOS9xOGpFRVV6djAwblpORHFvM3V3c01O?=
- =?utf-8?B?dVZ2R2NCbDMxL0NVQ3RtbmtkbkpyOTdEWnNka3dFSUJPbVNqUmxwdnRsTFBY?=
- =?utf-8?B?dktGYllQbzdBWVVlSWFrVFFac21sTTA0TWRQOVZUc0NwYkVrTU02TlI2dUcw?=
- =?utf-8?B?clNsZmc2cDdzVm0zSExkV0VOeXkzNUxWWW5VaGl0dVl5clYvd3AxemRGY2xI?=
- =?utf-8?B?ekZZSTFWK05ORmhVaGxaQmllMDZXTGlkczBvMVFzUmJQSnFic242eEZxc0RS?=
- =?utf-8?B?Z2tta1BVM0RJejc2OU9uR29weVJWMmRhK2txckFGNVd0Y3JGeXo1N0Ivblc5?=
- =?utf-8?B?MEJnT0plV3l2L2Q2WVJ5eXRIYUpLVnhrT3NCUmZBR0hxS2lhVnoyUjhjbzhJ?=
- =?utf-8?B?dVJNKzNOdGJES1haUG5nTnRobDlsOXozdk1QZ1Fqb3NYd2hpZFNaQ29PZVY5?=
- =?utf-8?B?VERxWUZSQ1o0MG1CbldmM1cxcmxUcjM4ejZqYzVFbEs0UzdETE5NSGs3TVZZ?=
- =?utf-8?B?a2FiV3QvRk5JY0tYcTFXK1BkSWpFZWYvZmZud3Jub2pUQXZFQUdZNHR5bWky?=
- =?utf-8?B?UW55MzRNT20xSlp5dkVKOVhqOHpsMnhCemV0cjhhTTJyejVKNUNGaHdnMzI5?=
- =?utf-8?B?ME1TT1lWbStoMTdiNlZMWjd3TUlUaFU5Q3VMMEVMMjNLaGhLOHVnaHdDK3pn?=
- =?utf-8?B?NElMcjZYa2tQYmpnZWsvalJ5NUZ1N0xUWjJjcGJrTGZRTjlyUEdjeTNuMWhy?=
- =?utf-8?B?ektXWS96K21VUlNkLzh0Z0lrM3QzRFFyUThadFlXQ3dOTXFxQ1I0SjhiNkRZ?=
- =?utf-8?B?NGJTRHhJSFF2MVQrVXkrcjRWOU5EdzhkbWF0TmhoUTlCYmc3ZE1Kb0IxaE9L?=
- =?utf-8?B?NFB3a3ZZRDJvaVdrK1lucG05dTFlbk85anVTVitBdXpST3hBczNMNWVzcmt4?=
- =?utf-8?B?dU1hYnZpQlBLZXd3YVFya3NBV2lma3YyZGNQM3hpOTFtR3oyOE5XS1l4UGt5?=
- =?utf-8?Q?YVtS4XxIwf4dVzY8uunjMX00Q54uU81znZR41?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf1d48a3-2d2a-4214-b9b6-08df1dfb9507
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4698.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 07:30:48.6761
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZVsSV0VG2ZL/njYtlBFRZZl6jw/1yP0fSNTgc82E3TJ+1uBd36JCrhpDHpvZRd5j8O8h/8T5iEysE3UNMNQLgS5Ju4XKQWnKW5wFRF9BXmdJNQEJBn0EDj7jkD4jcXFP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR04MB299202
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/3] media: dt-bindings: media: nxp, imx8mq-vpu: Remove
+ nxp,imx8mq-vpu
+To: Conor Dooley <conor@kernel.org>
+Cc: nicolas.dufresne@collabora.com, p.zabel@pengutronix.de,
+ mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, linux-media@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, kernel@collabora.com,
+ Conor Dooley <conor.dooley@microchip.com>
+References: <20260928080822.19553-1-benjamin.gaignard@collabora.com>
+ <20260928080822.19553-3-benjamin.gaignard@collabora.com>
+ <20260928-primal-figurine-2a87db42eab0@spud>
+Content-Language: en-US
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+In-Reply-To: <20260928-primal-figurine-2a87db42eab0@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-The amphion VPU decoder always emits an initial V4L2_EVENT_SOURCE_CHANGE
-event after parsing the resolution from the stream header for VC1 Annex
-L format. Without V4L2_FMT_FLAG_DYN_RESOLUTION, userspace (e.g.
-GStreamer) cannot determine that the driver will signal the initial
-resolution, causing it to skip waiting for the event and fail to set up
-the CAPTURE queue properly.
 
-Add V4L2_FMT_FLAG_DYN_RESOLUTION to the VC1 Annex L format entry to
-indicate that the decoder will emit the source change event during
-initialization, consistent with other coded formats supported by this
-driver.
+Le 28/09/2026 à 18:31, Conor Dooley a écrit :
+> On Mon, Sep 28, 2026 at 10:08:21AM +0200, Benjamin Gaignard wrote:
+>> nxp,imx8mq-vpu has been tagged has deprecated since a while and
+>> driver emitted a warning when this bindings was used.
+>> Vendor DT use the following node before they moved to mainline driver:
+>> vpu: vpu@38300000 {
+>> 	compatible = "nxp,imx8mq-hantro";
+>> 	...
+>> };
+>> but that binding has never be documented.
+>> After driver clean up it is time to remove it.
+>>
+>> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>> pw-bot: not-applicable
+> This is not a tag that you should put in your commits btw, this was me
+> telling the dt patchwork that this patch has been handled.
 
-Fixes: e670f5d672ef ("media: amphion: only insert the first sequence startcode for vc1l format")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
----
-Changes in v2:
-- Drop the documentation patch. Nicolas pointed out that
-  V4L2_FMT_FLAG_DYN_RESOLUTION postdates the stateful decoder spec, so any
-  driver setting it is already required to follow that spec. The
-  non-compliant drivers (coda, s5p-mfc) are pre-spec history and not worth
-  bending the spec text around.
-- Drop the RFC prefix, as requested by Nicolas.
-- Link to v1: https://patch.msgid.link/20260608-flag-dyn-resolution-v1-0-44dc65516148@oss.nxp.com
----
- drivers/media/platform/amphion/vdec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It was the first time I saw this tad and I didn't know what to do of it
+but I found it in some other commit messages so I added it.
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index a9f0521f2e1a..75808482d090 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -136,7 +136,7 @@ static const struct vpu_format vdec_formats[] = {
- 		.mem_planes = 1,
- 		.comp_planes = 1,
- 		.type = V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE,
--		.flags = V4L2_FMT_FLAG_COMPRESSED
-+		.flags = V4L2_FMT_FLAG_DYN_RESOLUTION | V4L2_FMT_FLAG_COMPRESSED
- 	},
- 	{
- 		.pixfmt = V4L2_PIX_FMT_MPEG2,
-
----
-base-commit: 2dcdfb625c3b8fe87454e19dfbc54b3e3f0ad70e
-change-id: 20260608-flag-dyn-resolution-f39fd24a0ba2
-
+>
+>> ---
+>> changes in v5:
+>> - add more details in commit message
+>> - add Conor Dooley accked-by tag
+>>
+>>   .../devicetree/bindings/media/nxp,imx8mq-vpu.yaml      | 10 ++++------
+>>   1 file changed, 4 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+>> index 19528262810a..69619d2c86fa 100644
+>> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+>> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+>> @@ -14,12 +14,10 @@ description:
+>>   
+>>   properties:
+>>     compatible:
+>> -    oneOf:
+>> -      - const: nxp,imx8mq-vpu
+>> -        deprecated: true
+>> -      - const: nxp,imx8mq-vpu-g1
+>> -      - const: nxp,imx8mq-vpu-g2
+>> -      - const: nxp,imx8mm-vpu-g1
+>> +    enum:
+>> +      - nxp,imx8mq-vpu-g1
+>> +      - nxp,imx8mq-vpu-g2
+>> +      - nxp,imx8mm-vpu-g1
+>>   
+>>     reg:
+>>       maxItems: 1
+>> -- 
+>> 2.53.0
+>>
