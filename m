@@ -1,107 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA114EBAE0;
-	Tue, 29 Sep 2026 10:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ED84F6480
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 10:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790677304; cv=none; b=PN1hU+uMeIv5bF/Hn0UUNODzP5a+5b7T4Zsom+EefBqbsMvKNfoxSTbhk6+IN9wHs02FndAuWYzrHFKV+o+DfHI1Uq8zvXQS2QbdIg8Mfa1K5O3WX0/d0S7FtUPYntfeZlj0nVlLAZHgmF4TYnEmjuDPbpdgUYyrZpFxcKIVjHI=
+	t=1790678225; cv=none; b=EMhPv1s3SqoW4tD7XUOxPsaQ4GkH9tDrqdAWVuxoFQ81OZYFadnMK/RskWL9wndNm0Dd7gwiq9AcG/rMn26GBOX4P22jVTdWuvsfb8XHk4CO2qeHI0pLs80NdlipseyGxCDvwV2mVXvpUCWZe7lJfMD/NYCRUV2AUqgH+jWWiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790677304; c=relaxed/simple;
-	bh=mxf/hWbAS/t6nBfEDUIR0gDfSn1DX6nZ4eirA7URNIk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CjzUKNflvLkZMwEvw+OrDHbieQn9SAeJE0a+n68Nth7BqxqlIEuoDsWgXaC5u2RVMIicPSTw7RJR4f64Xv6fn7YQ4zkgMH5czLj7Lk/qETnwzkN2p9LBvYLKAjhc7d3X3nq4mADQcIqre59/sRRjjZDCwfAv6HFP1pe0XTl08F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZxx21c4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790678225; c=relaxed/simple;
+	bh=+q3VRW0tbQD5J7CwSEkTWOZby1Fjzfk7r/VsY7YVllY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q/s/vI/IYHAHM83MOSC9Sa+bjA5RHb0fz5sYN3e1vqu+zeh1YU8zFzahFlFbUfQ3yjYHFE8X4+9nPntDe17v2tSCChhnSwV3mdOFwaggCCkncYxIdWVhg1PkqgCsTduqLcNeAjTRqr+2qIxik+xYUkFqT29ZqUxxipv479DfFEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wCR4TJCZ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZxx21c4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35F71F00893;
-	Tue, 29 Sep 2026 10:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790677303;
-	bh=JAgXzEH3RCvnF1tk8UjPrVitXFc0UPEOfuFk6xIpceM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SZxx21c4XNdDMRQA9bIBzWjtjTTKH9lJ0XlkJ+AiVTfz1/8rivVqBtPI/CasCmrhd
-	 v6I/NxmSsY1v6q6BiLwnYRDeaM9LdgrVHwQ4ihIJrcz1oUsHYrte7Rn5n6baguf+b5
-	 sy7ltbia44gijqw4qqFRst/BejRSbBruS2FNTTZIVCSSVXOtLZrCnan/QwnTf3B+vC
-	 vOL8EyYmaM+o+FBq1JKtZdinYoTsXOShazfdEFG2GtLUVHpHh1EniZO/1aUvslUiZq
-	 GCjeAm+tP7UbwMZvyht+IwGaeZqtRuSBZqYEsU+0ACOMTjsn2oVv+3LWYTJ6Y3hcEA
-	 uweJN9hyz1a9Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 09/12] scsi: ufs: Add NXP S32N79 UFS host controller
- driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Larisa Grigore" <larisa.grigore@oss.nxp.com>
-Cc: conor+dt@kernel.org, linux-scsi@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260929100946.693962-10-larisa.grigore@oss.nxp.com>
-References: <20260929100946.693962-1-larisa.grigore@oss.nxp.com>
- <20260929100946.693962-10-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 10:21:42 +0000
-Message-Id: <20260929102142.A35F71F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wCR4TJCZ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B8DEB1A1057;
+	Tue, 29 Sep 2026 10:36:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 883CE601BD;
+	Tue, 29 Sep 2026 10:36:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5D5D8103295E3;
+	Tue, 29 Sep 2026 12:36:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790678205; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=VvnYtqd0myYRNK/90yLn0GAD8hhlBrrwU4M1ju3ptmQ=;
+	b=wCR4TJCZEG1EFZ9sAHD+M9t7myv55BOEKz3ojLI5zZT8kNCNQ69VpEl5WgAyAaIuXU8JYV
+	TnAtkjlIUsZjY6BsgZwBu46it15MdA0pkZHV4IBB0BeO6gblx+LFTsXwpwzO7lCu8zmpQq
+	RdpdBnGZQSwwdJhHENya2deNsUErubWClvCA2GbjT6k7eQEyxhhReE+7zwrqz8kPJTui1i
+	DpntxKdFxNSdU7USbUVpNAWiJ5nEf44lNvBk+ViXRvWUCSS1L4gvH2FFFn0QXCCPoEmxfg
+	ZbHJpu0Rfil2TPXIB8Jwt3ffw6lEsxzPhoMzACTwb1pHGMIbjpdV2DjJpYy0HA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 0/7] drm: remove deprecated *_of_get_bridge() from non-OF
+ drivers (fixes build regression)
+Date: Tue, 29 Sep 2026 12:36:32 +0200
+Message-Id: <20260929-drm-fix-of_get_bridge-build-regression-v1-0-ccb7e602daad@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWN0QqDMAxFf0XyvID2Ydj9yhhim7RmbDpSlYH47
+ 4vz8cC5525QWIUL3KoNlFcpMo0GzaWCOPRjZhQyBle7a+2dR9I3JvnilLrMcxdUyKSwyItQOSu
+ XI4G+Tc6ltm8oRrDYR9lW/6P74+SyhCfH+ajDvv8APlv53IoAAAA=
+X-Change-ID: 20260929-drm-fix-of_get_bridge-build-regression-98f22f8a1dcc
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Icenowy Zheng <zhengxingda@iscas.ac.cn>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Arnd Bergmann <arnd@kernel.org>, Doug Anderson <dianders@chromium.org>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] ufs: core_clk remains permanently enabled during PM suspend stat=
-es
---
+After commit Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to
+drm_panel.c") some drivers fail building:
 
-commit aea859e7e22ef8d785ddf1572d56548e903ae544
-Author: Larisa Grigore <larisa.grigore@oss.nxp.com>
-scsi: ufs: Add NXP S32N79 UFS host controller driver
+  error: implicit declaration of function 'devm_drm_of_get_bridge'
 
-This commit adds support for the UFS host controller on the NXP S32N79 SoC,
-built on the Synopsys DesignWare architecture. It introduces platform glue
-and specific initialization routines for clock scaling, M-PHY calibration,
-and device hibernation transitions.
+This is because devm_drm_of_get_bridge() (and drmm_of_get_bridge()) have
+been moved to drm-panel.h.
 
-> diff --git a/drivers/ufs/host/ufs-nxp-s32n7.c b/drivers/ufs/host/ufs-nxp-=
-s32n7.c
-> new file mode 100644
-> index 0000000000000..5374662763b6e
-> --- /dev/null
-> +++ b/drivers/ufs/host/ufs-nxp-s32n7.c
-[ ... ]
-> +static int ufs_s32n7_init(struct ufs_hba *hba)
-> +{
-[ ... ]
-> +	/*
-> +	 * The core reference clock is not managed by the UFS core (the DT node
-> +	 * has no clock-names/freq-table-hz, so it is never added to
-> +	 * hba->clk_list_head).
-> +	 */
-> +	ufs->core_clk =3D devm_clk_get_enabled(dev, NULL);
-> +	if (IS_ERR(ufs->core_clk))
-> +		return dev_err_probe(dev, PTR_ERR(ufs->core_clk),
-> +				     "Failed to get and enable core clock.\n");
-> +
-> +	ufshcd_set_variant(hba, ufs);
-> +
-> +	return 0;
-> +}
-[ ... ]
-> +static const struct dev_pm_ops ufs_s32n7_pm_ops =3D {
-> +	SYSTEM_SLEEP_PM_OPS(ufshcd_system_suspend, ufshcd_system_resume)
-> +	RUNTIME_PM_OPS(ufshcd_runtime_suspend, ufshcd_runtime_resume, NULL)
-> +	.prepare	=3D pm_sleep_ptr(ufshcd_suspend_prepare),
-> +	.complete	=3D pm_sleep_ptr(ufshcd_resume_complete),
-> +};
+The affected drivers are those which:
 
-[Severity: Medium]
-Because the core clock is unconditionally enabled via devm_clk_get_enabled()
-in ufs_s32n7_init() and is explicitly excluded from the UFS core's PM logic,
-will this clock remain permanently enabled across all low-power states?
+ * can be built without CONFIG_OF, and
+ * don't include drm_panel.h
 
-Since these power management ops map directly to the generic UFS core hooks
-and the UFS variant ops don't implement suspend or resume callbacks, there
-does not appear to be a mechanism to disable ufs->core_clk during system
-suspend or runtime idle. Could this lead to unnecessary power consumption?
+The affected drivers are 3, fix them (patches 1-3) by replacing the
+deprecated *_of_get_bridge() calls with of_drm_get_bridge_by_endpoint().
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929100946.6939=
-62-1-larisa.grigore@oss.nxp.com?part=3D9
+While there, do the same for all drivers which be built without CONFIG_OF,
+even if they don't fail (patches 4-7).
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (7):
+      drm/imx/lcdc: stop using deprecated devm_drm_of_get_bridge()
+      drm: verisilicon: stop using deprecated devm_drm_of_get_bridge()
+      drm/bridge: dw-mipi-dsi: stop using deprecated devm_drm_of_get_bridge()
+      drm/bridge: dw-mipi-dsi2: stop using deprecated devm_drm_of_get_bridge()
+      drm/vc4: dpi: stop using deprecated drmm_of_get_bridge()
+      drm/vc4: dsi: stop using deprecated drmm_of_get_bridge()
+      drm: renesas: shmobile: stop using deprecated devm_drm_of_get_bridge()
+
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c     |  9 +++------
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c    |  9 +++------
+ drivers/gpu/drm/imx/lcdc/imx-lcdc.c               |  4 ++--
+ drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c |  5 ++---
+ drivers/gpu/drm/vc4/vc4_dpi.c                     |  9 ++-------
+ drivers/gpu/drm/vc4/vc4_dsi.c                     | 10 ++++------
+ drivers/gpu/drm/verisilicon/vs_bridge.c           |  7 +++----
+ drivers/gpu/drm/verisilicon/vs_bridge.h           |  1 -
+ 8 files changed, 19 insertions(+), 35 deletions(-)
+---
+base-commit: 91ceac83e599c9d48da4c4d2d91410c588a215f7
+change-id: 20260929-drm-fix-of_get_bridge-build-regression-98f22f8a1dcc
+
+Best regards,
+--  
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
