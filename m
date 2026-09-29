@@ -1,119 +1,193 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D5351CF45
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 10:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED94951616E;
+	Tue, 29 Sep 2026 10:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790678272; cv=none; b=ZfwA1+CjlRNEIHPCq62PGAqnAzRW7hXeCp2lvvtHfZwRQmEJHLG6UANCMeTPgmVBoVFw7RdB4v40VbFKT5vvCi12V1j027LlUYhSHzp0RocARgo6kzutdoQukZqluJN2Ux4oqDCHibljwbRraHPjPg6UF95YD7sHlxH79EW4faw=
+	t=1790678387; cv=none; b=LzpoXxdFLgKnn0D/PIf0evdGNmy4vnfQ/cekeU4dIjgYmRZHUHYzBSrLON42Ml4ksOnO0N4RR7C795EciGGm56qysj9JE8VbI00Q6ymDHqhhIV5n92da/0QOTRIwiWMnf4Ft7ceERevg5HJphU4u2o4d3mlanDPWHk4hzaHD0dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790678272; c=relaxed/simple;
-	bh=kMg9CyEpRG6j7s4GHZ0KuFt0d9OuafQqS3yLuECoiB0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GPAPeJPSWK0xDrQT3iR57i2KdF79p5Xu7n5w3TWy2rSuNQ9HqxNmgQmY7Hxbds+TMF4r7J54mhSvJeSDrl2RJE9giIYZLMymZq9VSI3pImdR6wqB0wCTWxpn24o1VMDOXvjDSpL4l75MMY1vUxUd95TDHgc3m/IL1laHugvFkB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xFWWeVC+; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1790678387; c=relaxed/simple;
+	bh=6j2piQDUFgmBlu5XXZWQNNaTqk1oY46t5o3CJ2xDkg8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=DaHt0e24YBMiQxjtgIVVgizJztuk4w0aT/ABPhDUPG/TGwWRtwOB5+vXyrHo98dQu06ludBv+DUIUXElDricK52TUE50ts6TMLLq3//7bgLkgoZttXMkItcyVL+P96dcqWAxib2wnyAsS8FHniJnhvt9ZJwX0ALA7rZwH7kXi4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=y8iHsgOz; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xFWWeVC+"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="y8iHsgOz"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0AB8D1A1059;
-	Tue, 29 Sep 2026 10:37:35 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 5A6944E410B7;
+	Tue, 29 Sep 2026 10:39:29 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D24AB601BD;
-	Tue, 29 Sep 2026 10:37:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A6BBB103297AF;
-	Tue, 29 Sep 2026 12:37:28 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 22DB3601BD;
+	Tue, 29 Sep 2026 10:39:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 229EF103295E3;
+	Tue, 29 Sep 2026 12:39:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790678253; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1790678366; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Aq/miDDh+FHesOvczcSzM5kxiy3v5uRbviWlnSzPe50=;
-	b=xFWWeVC+oeNOjqXAdOi77g+AXgAib7PPbvOa6ZG181NE2dQGdrSTU4VLiyGxXRwcIlXA9a
-	IuntcrYc3PDfrZ7K8pWtNJvwhaW1jsaM0iyBAebn8La4S600cbQBhcpDfEAqvoH2kXrKct
-	/Om21RGpyULsuJKb0QZ5WVh/Phg6TO2TvMjdz5tmA7qfvwiWJ1tajgbpkHFPj/V4mmqYCo
-	d6hNljqygdk0a22n+iXBdh6I1abYB2aMR+1gQfGyVh3zP4BDdhhAuGLhMCkpkI7Il9+6KW
-	EfNXZ8ICN74ad3DTYMKCMbg2Qa7fyDRcKF1gxMxilTgUUEcnJk8YoGlO4mE+HQ==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 29 Sep 2026 12:36:39 +0200
-Subject: [PATCH 7/7] drm: renesas: shmobile: stop using deprecated
- devm_drm_of_get_bridge()
+	bh=lGp4cm2Ao4TU3TW+1e8kXshs8WwzfjIeavwApsw+nKM=;
+	b=y8iHsgOzqp61uI69hlHbnIn/SOZzJaK4I0ClIaNgnr4hF/z9198ioBh7DYqGI9U233L00z
+	ityL4ZmohA70XfIBALxxdj3B2rfdgFw5h6ES+FCV6paHkLemgBSI3x91FGgUVtPSjFQeyn
+	awOVxDv33Tk02Wpn0gJXsrG4zjWvZ7vOfP46TV0dXrZnS92da4hCDQV0ADHB2rxTk1oJIO
+	B4eczD1RtoTAsKosdL9QrrjZjQxNEXqbYrMDSlOK9ko8dO0foldA0AsPlk8HEUKI0bRVI2
+	bgZI7tvR2MpxS2FJuF8WpqbEdShvEiv9PnLK6GykO6Xvl+Ylz08gtDyawQ3+kw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-drm-fix-of_get_bridge-build-regression-v1-7-ccb7e602daad@bootlin.com>
-References: <20260929-drm-fix-of_get_bridge-build-regression-v1-0-ccb7e602daad@bootlin.com>
-In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v1-0-ccb7e602daad@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Icenowy Zheng <zhengxingda@iscas.ac.cn>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Arnd Bergmann <arnd@kernel.org>, Doug Anderson <dianders@chromium.org>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.16.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Sep 2026 12:39:09 +0200
+Message-Id: <DLRQHX9JC9YJ.1HR59B2KFZ90L@bootlin.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Arnd Bergmann"
+ <arnd@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH] drm/bridge: add missing drm/drm_panel.h inclusions
+Cc: "Arnd Bergmann" <arnd@arndb.de>, "Sasha Finkelstein" <k@chaosmail.tech>,
+ "Janne Grunau" <j@jannau.net>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Manikandan Muralidharan"
+ <manikandan.m@microchip.com>, "Dharma Balasubiramani"
+ <dharma.b@microchip.com>, "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Jagan Teki" <jagan@amarulasolutions.com>,
+ "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Douglas
+ Anderson" <dianders@chromium.org>, "Philipp Zabel"
+ <p.zabel@pengutronix.de>, "Chun-Kuang Hu" <chunkuang.hu@kernel.org>,
+ "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Rob Clark"
+ <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
+ "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica Zhang"
+ <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn Suijten"
+ <marijn.suijten@somainline.org>, "Marek Vasut" <marex@denx.de>, "Stefan
+ Agner" <stefan@agner.ch>, "Orson Zhai" <orsonzhai@gmail.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Chunyan Zhang" <zhang.lyra@gmail.com>,
+ "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi Valkeinen"
+ <tomi.valkeinen@ideasonboard.com>, "Icenowy Zheng"
+ <zhengxingda@iscas.ac.cn>, <dri-devel@lists.freedesktop.org>,
+ <asahi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
+ <linux-mediatek@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
+ <freedreno@lists.freedesktop.org>
+X-Mailer: aerc 0.22.0
+References: <20260928161605.2271412-1-arnd@kernel.org>
+ <DLRMF4TI56I2.3PTB24KN9ORJ3@bootlin.com>
+In-Reply-To: <DLRMF4TI56I2.3PTB24KN9ORJ3@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
-devm_drm_of_get_bridge() is deprecated, switch to
-of_drm_get_bridge_by_endpoint(). As of_drm_get_bridge_by_endpoint() returns
-a refcounted bridge, ensure it is put.
+Hello,
 
-drm_panel.h becomes unused, drop the include.
+On Tue Sep 29, 2026 at 9:27 AM CEST, Luca Ceresoli wrote:
+> Hello Arnd,
+>
+> On Mon Sep 28, 2026 at 6:04 PM CEST, Arnd Bergmann wrote:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> The devm_drm_of_get_bridge() declaration moved to drm_panel.h, but
+>> not all callers include this, which leads to build failures in
+>> some configurations:
+>>
+>> drivers/gpu/drm/imx/lcdc/imx-lcdc.c: In function 'imx_lcdc_probe':
+>> drivers/gpu/drm/imx/lcdc/imx-lcdc.c:404:18: error: implicit declaration =
+of function 'devm_drm_of_get_bridge' [-Wimplicit-function-declaration]
+>>   404 |         bridge =3D devm_drm_of_get_bridge(dev, dev->of_node, 0, =
+0);
+>>       |                  ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/gpu/drm/verisilicon/vs_bridge.c: In function 'vs_bridge_init':
+>> drivers/gpu/drm/verisilicon/vs_bridge.c:306:16: error: implicit declarat=
+ion of function 'devm_drm_of_get_bridge' [-Wimplicit-function-declaration]
+>>   306 |         next =3D devm_drm_of_get_bridge(drm_dev->dev, drm_dev->d=
+ev->of_node,
+>>       |                ^~~~~~~~~~~~~~~~~~~~~~
+>>
+>> Include the new header in all files that need it.
+>>
+>> Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to drm_panel.c")
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Thanks for the very quick reaction to this regression! However I think we
+> should fix it differently.
+>
+> I had definitely build-tested most if not all these drivers, and also
+> runtime tested a few. Now I realized the build failure actually happens
+> only in !OF defconfigs which I haven't build-tested (sorry about
+> that!). Here's why:
+>
+>  * the affected drivers (all or most of them) include drm_of.h
+>  * drm_of.h does:
+>      #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
+>      #include <linux/of.h>
+>      #include <drm/drm_bridge.h>
+>      #include <drm/drm_panel.h>
+>      #endif
+>  * DRM_PANEL_BRIDGE is always set when DRM is set, so not a problem
+>  * drivers which don't depend on OF and don't include drm_panel.h now fai=
+l
+>
+> Most of the drivers changed by this patch do 'depend on OF', so they are
+> not affected. So the patch could be trimmed significantly. But still I'm
+> not in favor of including drm_panel.h in the remaining drivers, because:
+>
+>  * in the first place most/all of these drivers are now supposed to not u=
+se
+>    the drm_panel API anymore; thsy should just use the drm_bridge API
+>
+>  * devm_drm_of_get_bridge() is now a deprecated [0], complicated way of
+>    calling of_drm_get_bridge_by_endpoint(), which is rightfully in
+>    drm_bridge.h
+>    * for this reason Documentation/drm/todo.rst says it must be removed [=
+1]
+>    * removal is easy, so I plan to do it in a few weeks globally
+>    * after the removal all these #include <drm_panel.h> would have to
+>      be removed, but some might easily be forgotten
+>
+> So I see two option for a better fix:
+>
+>  * Option 1 -- fix the really affected drivers by switching from the
+>    deprecated API to the one they recommended one. Based on quick analysi=
+s
+>    there are about 6.
+>
+>  * Option 2 -- a quick surgical fix:
+>
+>    In drm_of.h:
+>
+>      #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
+>       #include <linux/of.h>
+>       #include <drm/drm_bridge.h>
+>      -#include <drm/drm_panel.h>
+>       #endif
+>      +#include <drm/drm_panel.h> /* Temporary for *_of_get_bridge() */
+>
+>    This can easily be tracked and reverted once all
+>    devm_drm_of_get_bridge() users are converted to
+>    of_drm_get_bridge_by_endpoint().
+>
+> I'm working right now on option 1, hoping to get a series in a few hours
+> from now. I can switch to option 2 in case of unexpected issues with opti=
+on
+> 1, or if a fix "really right now" is wanted.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Done [0]. I found only 3 drivers affected, but I fixed all the others that
+build without OF.
 
-diff --git a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-index 328a36215e39..51bae2008cc6 100644
---- a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-+++ b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
-@@ -28,7 +28,6 @@
- #include <drm/drm_gem_dma_helper.h>
- #include <drm/drm_modeset_helper.h>
- #include <drm/drm_modeset_helper_vtables.h>
--#include <drm/drm_panel.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
- 
-@@ -447,7 +446,6 @@ static const struct drm_encoder_funcs shmob_encoder_funcs = {
- int shmob_drm_encoder_create(struct shmob_drm_device *sdev)
- {
- 	struct drm_encoder *encoder = &sdev->encoder;
--	struct drm_bridge *bridge;
- 	int ret;
- 
- 	encoder->possible_crtcs = 1;
-@@ -463,7 +461,8 @@ int shmob_drm_encoder_create(struct shmob_drm_device *sdev)
- 	}
- 
- 	/* Create a panel bridge */
--	bridge = devm_drm_of_get_bridge(sdev->dev, sdev->dev->of_node, 0, 0);
-+	struct drm_bridge *bridge __free(drm_bridge_put) =
-+		of_drm_get_bridge_by_endpoint(sdev->dev->of_node, 0, 0);
- 	if (IS_ERR(bridge))
- 		return PTR_ERR(bridge);
- 
+[0] https://lore.kernel.org/r/20260929-drm-fix-of_get_bridge-build-regressi=
+on-v1-0-ccb7e602daad@bootlin.com
 
--- 
-2.55.0
+Luca
 
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
