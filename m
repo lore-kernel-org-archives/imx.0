@@ -1,225 +1,165 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011043.outbound.protection.outlook.com [52.101.70.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5347F3DAAA9
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 17:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790703675; cv=none; b=HBWY3YtBZEuUwRwtoCzamPTPGBh4TkhoMKipY0+4IFKPLPVhmcUvXgcZzBLpAAvFwIMfwziLfDljWXXO1pmV/q/V9uPzOj3R99vFQ9ZTXVlafQwwPC5fC28tE1D1lTkJyHIlMjI2L4CSiCc2u8nhUG0WUM2LC28kZ7UvL1nz0oI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790703675; c=relaxed/simple;
-	bh=TYK82yEFZyTUKcvmqFCrtcuvaXuFrEA017DIBbyHshY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PXjcqcqzrnm04jUx6xkaBvKrOq0XJlj0PmQ/Fz5M6gENubfmeUtFIHuX6AZFn8v60LlgrS3LWJlab0+kSU/8kNsxqh8MHouRrgU0lmq1horXd9bsLcKdLuZJrOEIwAYH4uVkpL4wb2E1d4Nwi+6GTw9UdcXDW5rlNYVxsitr0Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KWVUbrqt; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C17F3FE36C
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 19:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790708783; cv=fail; b=V6b16OHYPnlsz/035TirWMhYC6RQUEfYQYCEYJ6FR6ieHfRcPWbjsKm+PJ1PO2q7o20C3xvPsMZiFqwltJkDtSiil2ZjVmNw558T3bypVobEHomh0FxQPr8Y73skq6Z/kgSqT1iS9wFto5D7yF5n0pjQ5EGXG1ct4XufeFG0t8Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790708783; c=relaxed/simple;
+	bh=vkP9KAU07WWggg251LB37O0wEpbK8G1Ub4C/MYn8lrY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=I8xU/2G6KNL/pljcuvnHPfQH9LeTMvIQCykBZXLelSB4X0GJ1GIBRTTL2HfC+cPmLBXAyE4bCE0BEnDq1DUlj3jKXnoMvYKp5u0HxLG0kJeglhIeoV/oZyeOYp6qGoZ+buvqR+ZwOlC+yIyow9W4aq6Lhn1LI97xZ1rKqLH3L4g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Pq66I8r6; arc=fail smtp.client-ip=52.101.70.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KWVUbrqt"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912df756so35094475e9.3
-        for <imx@lists.linux.dev>; Tue, 29 Sep 2026 10:41:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790703671; x=1791308471; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XT6rzbwAq56nChpqUTQ2q9VsJKHTV6VFi8vBlbe3c+g=;
-        b=KWVUbrqtmUZNzFMonCNqBKUzExdpjoiJ0lH76fV83d/OAn4pAcVMutTXUbhrdy92t7
-         4DQlHUs4UId+QmwUO9c3Vg2QE/WfaYbOVEIJcfaXHnEDXVB3Huxy/NhoU4ZZ7ozYXwN7
-         VKM3bZI1aq5yroeqc5Ii6ObHOsB4O5HO3AsTk40XVkX2keT9Rs7KMLVzZNlIMNNTJ6mr
-         wzsDdXQjwkbhlwFQC9o4YxcQ/b/GIhV06RxqKLt/MEPABkixuQijDBg5KJ3We5UKPMp3
-         KExDRflAgQYiTe2DwM452OwLzpRXMxlFvTf62K9ICSaNjWhSMZSUuG+mGZifKdx97K8n
-         41fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790703671; x=1791308471;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=XT6rzbwAq56nChpqUTQ2q9VsJKHTV6VFi8vBlbe3c+g=;
-        b=Iyz7hbDModYGH9J4ITzuFBQ5Fd4D5jFydGQR+tKt/wcXV+JU9044S/xd1VSKwPlUth
-         Joy76WsdANzfOu18PAzW8qywD1DgnHe3gB6gacunMzSLDw9BedvYF9PqX54H+5Ayvkrd
-         T8ZbyC62b478sRRu1e29slJdGfqLmpVIX0HFZKYKlACy5DA1xLUUfDR1EjxOdNEOQtP1
-         ghXIMJL7+n50Lhne8M6Wp6oeJ6Weq6C9cdwOb939gj6JGrQO95FO7Pnv3z+s+b90SHB+
-         gdngPPC37K4XeLSDXEmPoqORAZ966VlzyQRNFErNxCyegUsos8EP0J5sndh5BGv1MCyN
-         8dxg==
-X-Forwarded-Encrypted: i=1; AKwUvBzA1hOBOAdW6lzDvCRcGKIXZ0+8aU4G64Kqx07Z6Gu3G/FT1ZW6S7e8AVtdgKe1AIYNrZk=@lists.linux.dev
-X-Gm-Message-State: AFuF++md6jkgO6QKk2kYVqomGkAs7/y/xbu3KBwZlA7okMfc6/F2Ok5H
-	CIZCVp0PxH2Z3yG7nA2GgO5kvBJOox+Iw/oLO6iTo8/2jI0UjEmicQPU
-X-Gm-Gg: AYBFou3tbZKaSYFM3D45ckQf8xTkOcBR0t+RisVvkuZvQGiTCDw7/jjjc+k9VHXYm++
-	7FeCR55/LXBOtCCfEDwzojjyEmGLLsZYAvWYUGs+WAvZV5NJTilIdQuSiJlBf9ZMyCr2EcAjtwd
-	kGlJfRKNqSwiRsDcFB7DmUZWRl+yqG8rdPUZ0b+/AId0/MfZu4oCATulxmqTia+b8h3MdDcb2gO
-	K6DO4CvqmbGYhm4WgQZm8OMt3EC2StgFcM9hU8ojMmB2t8x9NE1GLfGVT0mlqD7kw56q2CfGFW0
-	6LDVrG7/czJjBPwyjoRnPpBvsP6b2shec3B0HvSKZaE3IfuHkNJg1I2o3XYidXmEDE3uCrU/TN/
-	YpAnaMxTJ0ZDx5karf0m3vCBqQHC1kQZEdjcJd9cvI/QrLwotkm5GbbURQwz0Izv6zpokPSf75J
-	DDqFC7fp4+BQuvWLnr7PZdzonhV98xZTq4msVmmSBIvXMMHRVOMFkFOrPE4A8XGf8KHZvB40LaG
-	i0WAV/F7Zy98TSbezFr/ik/a4qeGTVsfZ1yprLuyeCJv1wxEnlNMUcfqthqVAm2MGFgSuXaiDKZ
-	msQZMPSc6KS4bhG6eYn11xdnu+Nx
-X-Received: by 2002:a05:600c:8b33:b0:49f:f9fa:fcfe with SMTP id 5b1f17b1804b1-49ff9fafdccmr177606485e9.13.1790703671207;
-        Tue, 29 Sep 2026 10:41:11 -0700 (PDT)
-Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cfec770sm100002515e9.8.2026.09.29.10.41.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 10:41:10 -0700 (PDT)
-Date: Tue, 29 Sep 2026 19:41:07 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Pq66I8r6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XK7mvc6GzPwjq+POLurKmIKIvaOUsgv0jbwLSC563VamKtOGT/tks2vAI2PMV4dZC8Ch2WYotZZS46GxsugdKMAuPl3XJf+NIE5o5Y2QXFEaDCOF/xny+i6IZjZpQbfLP4+qQH3fpnaCluFaTWfGoLj7wLDa+s/m91ln/OrCcRUvO4iDn9VnU6zXc92o3uFq1h5GH0Mt1tkdElF30b4BrgWUwsqTVOCFrBZHSpqeplZSlWI3pNAiMH1BSl4Chhxlm7R6Mj8Sj9zhiRXEYfQoEDUSZdOnIu5p9gTAaZgR06tafZeVYMKW/uM2svNbaoG7Vs9DHel+4zgjatkkI3RQsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/BZnRrCw3xx5zyvxDwANSqHBJ3Jp43Yh2tibukRCdVk=;
+ b=V8ymRLdIyEGOh7ZSH454+p02wNOalSOPO4EeoQtrH/bZrNUplwiocLkPSRAQMClO6RGx7BBuVi7YziEMDvbsnZKEHN1iKqlqRI4t0gUIdXgabIZacUCpR7MLSylDMJdUSOoPhPQE6hUyl+IIYsr5VrRz6INf14XSa9h39aXgON9nYVnZJcDJXc/fZnjGwKkNdIgEWhmrbH9MFcECGdr3UbCnTYkzMhrJIWMx5wBLszV/4+w2DOe9Fh5d34zG8PkiSvt8UUIzHX69y5p75CnXhLwSWqL7VFqTjWVDNmg1bx3thlf8Z7/iPj8UPCaEsur7GoxqzAMUzF4W1q6hti1RWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/BZnRrCw3xx5zyvxDwANSqHBJ3Jp43Yh2tibukRCdVk=;
+ b=Pq66I8r6ohkWvUXN4deO8cQUlHaziu78S1gOHECz4O4JLzyl2P/MqOeMMqL8Ua+Rzfuy18/DyJyYgeFCCXZ3hJMTcCcsxQ9VP3stYtl8tnHe0+h3OoJVLmD1O1pb3NdU7RSuc3+Vm4AdcthEdN4sfHNbDdqQ7Zz97oc0hj2Yc6S7U7fc+jR/ccA/AYMTYgrs8x50NE2MprbK0eLMEdgBaJ8zV42MDJvFS8qdXGK9BhHoiJEM42QMKC878PgOXrOuYk4a5oqUaj37o//sKsTYyT2iwT/COsmf4mP5oNYjMVoDfzPYr9NyGUVcLlM0GFEOPgTF8o4tfkj4COVG5wiajg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS4PR04MB9363.eurprd04.prod.outlook.com (2603:10a6:20b:4e8::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 19:06:15 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 19:06:15 +0000
+From: Frank.Li@oss.nxp.com
+To: Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>, Joseph Guo <qijian.guo@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 00/13] ARM: dts: imx6ul: Add Variscite VAR-SOM-6UL and
- DART-6UL
-Message-ID: <arv4MwHV4LntROkN@Lord-Beerus.station>
-References: <cover.1790693249.git.stefano.r@variscite.com>
- <20260929121455.437291ea4b53130e3e19778c@hugovil.com>
+	linux-i2c@vger.kernel.org (open list:FREESCALE IMX LPI2C DRIVER),
+	imx@lists.linux.dev (open list:FREESCALE IMX LPI2C DRIVER),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
+	linux-kernel@vger.kernel.org (open list)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH 1/1] i2c: imx-lpi2c: remove dmaengine_desc_free()
+Date: Tue, 29 Sep 2026 15:06:05 -0400
+Message-ID: <20260929190605.3516147-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH1PEPF00013313.namprd07.prod.outlook.com
+ (2603:10b6:518:1::4) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260929121455.437291ea4b53130e3e19778c@hugovil.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9363:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b5a9114-72ef-4f9a-4e2a-08df1e5cbbd8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|19092799006|23010399003|10067099003|11063799006|56012099006|5023799004|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	LHy9BQd8C/vUNXfN8Z+jxh1rA58JpTsc3rtQ+vK3LEQcZvan5VgBrwIveeRrW3ly+EnTcV7oRxWwZtiuUKjKa4DJh6L5IUchDb0SkYZMXCAFLJsRvPyHMpFvMEX6GXZIWLPp0wCJ1SUXrsiLuSalzbfaZM+0mZ5SufC0GPCKhNuJ91kn/+oE0rrUp9aGOhcpHCYDHCwGj3kPz+dy5Q75HK9qCEQzzipxiO7WKSaEzmErBdMGgjWsbUFjJ1/lszweBvOzesYNLaNf6CkaF/n+vPL4Wlo+HzDK+2Z39K23YJsWFYuatAnhaYIOOCuONjyKL/TbiT5hiUqMcWor2XRIslRWyd1DO7b0Ly59yiE8vR8NV0ME4sRiRi042S1ZVNGPa1ciDhD3LNMaedV0U/1oMsdHOcItSzg/mHLNhq6wJFIS5CD4MTyZ9u8qkK4vFXTxqyaclmjAqneFj7lkhkqpYtIQXlZYQvJOheLZzyyDxiCgFFQqn5ufFfN5OADNoXw3dL0wiQAhrQiTw2FR73mB8N5CVoNnZnCOHs5R9T0V2jZMr7dNLhvn/fFkdl5k0Q7Y95dbGacKTtIuRBmrwoC+PQOYsHundeIgXLP+b2ogkdw/e1WvjddmuZ+J3P378qTdz5L3zeVfPt8m9Uq2+5aokxihC2KttoSSE8popg2l0w8oJHmqLd/EbSyBh5CH2kn3pgva5FAGl3EtEb4Z3lkvVw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(19092799006)(23010399003)(10067099003)(11063799006)(56012099006)(5023799004)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?cbuQxf0atpBKCwjJ3QhwmS35MR0CH40tLLOoqNwXH1i114vBdU0Qjg45TNdg?=
+ =?us-ascii?Q?fpXOYfSdRnqZXIkIEMYjS1gO2/DWCi4CAZbOGjmlrY2kcM5G+dmh+q8lu/Ac?=
+ =?us-ascii?Q?WfRnseoMvNC/DwtGQvU38HBDSHf+zlzQpnfd6LGCh9uVWW2QS0wBUDFNAXOj?=
+ =?us-ascii?Q?z2Bh2Dl11C8YE415nVj2ZMXTNURl5p3SM77z6zSfXCcFyOQL1FHEOkomjJp2?=
+ =?us-ascii?Q?uXfzSuJv+tKKct3gpV6shixhO8bFgttubvv39eAdsnKURVmbBst4ULm8FIZk?=
+ =?us-ascii?Q?6dafKWS3oCY3YucdNuLMTZYdCAQmOcc1GHFplp2cj3fRKMx2I/nMtFuhULtB?=
+ =?us-ascii?Q?gmBOz12eSmdaFfIl7FNB9+zIV5jdCcD2Hf8DDjliXVap6PqRRdM1oS9m+GV3?=
+ =?us-ascii?Q?annPsaSMfoC4jzVI0850T1Pb/UB4ntSQIS2DZR6UnUnDSwmKbia0Y19GqKsu?=
+ =?us-ascii?Q?5Al5ky14Vl6BAoY3Grw1BPTkUbsNB9t0C1b3hF6oS9HGyx+mn/SsH1oioTIw?=
+ =?us-ascii?Q?I98LNfzCD7jnqIchdxdzIrGAv9+JXJnkJttQ/q0/O+m7z3mfZAibBbrm1d8b?=
+ =?us-ascii?Q?bkmYLiTvG7cVkN26XEjg6DfJ+KDF6CRepZ4K+7AyW5ngkVgUDBQr8Rjw5Z4g?=
+ =?us-ascii?Q?lzK1DRn5Jw0mI3to06LBxrCuH3XLn6tPxU2V/pQkc6Lo1K/DP0gC08on79Fl?=
+ =?us-ascii?Q?3nv5o0VTGBY/jrf979c4wRBEnpDV5BmzDVkmm445+miXoH76ahZgcPGd2r2s?=
+ =?us-ascii?Q?cN6Pg/QBrRIQy2sP/TzYar0DJIpkuvbu4rArzENv4twnloCkUWkMsWBVbbx5?=
+ =?us-ascii?Q?TTXsahMkBOdO9z6qVDJ/sXMIT3uEciZE8FHpPLNnD57UlYZzDYiJsjUc7g2z?=
+ =?us-ascii?Q?wGZ28mt3M18BjbWU+XH6ZwuiyHikUDYfyrSp3vTHoOysqKtO4mRqLsQ+2KB+?=
+ =?us-ascii?Q?L64/uY59DFc8guR6uHF570aedvBUynQRpWklolfK94s0rRxJXBjHsRqAr8vX?=
+ =?us-ascii?Q?QN/9kqPNLwcLW0vSDqKiRRX9wu2eOQAG9ZyE+KB0BkhPh85ALQOhD3ghl3Za?=
+ =?us-ascii?Q?nj083c321PE7QPnc5SYv5lwX4HgSN63ucTtQ/eISzVjewQOqTzbQnV8GJ7sW?=
+ =?us-ascii?Q?V/LQLaafOWDapEAcKqvLIhPwFRPaDV/dEZ9reS8PTDycRk4izJUNH6byS1L8?=
+ =?us-ascii?Q?XramIHjr69kd0nG7kTnzKnxtTQ2LffJkfFrTgZZ/ZE+A27PUbtbjDTrGSMNO?=
+ =?us-ascii?Q?JDJmQK9I1BB4dU0fkb22Ube63Eo8bUTrR0NFpjgzkCFdOEcXAzwwAG2D681W?=
+ =?us-ascii?Q?oluV/Ze9v9Him3ielRkQyuePv3Drp7+R4P8D+cBaqAj5xb2XV1MXeKThSZvp?=
+ =?us-ascii?Q?sOL9cxg8kgfOSd32ACzWtuwcD3WCmyDTdwYWMnWINusQXBy4MEckaVZKaT4Z?=
+ =?us-ascii?Q?+uDIxcbqM5IbB6vjCJ6ExHEFR121Oh6UYvKnKpYgO7RKPNTXbtUWyPGf138z?=
+ =?us-ascii?Q?zmBVP37fngzoNayxymRfodx6sH5CPhitK/TlAN0VAXWoZLZT+MO4+RPE1bjR?=
+ =?us-ascii?Q?0gLAfGMbamdjXPAguoG0uMyqOkgRZMWfTCfInt3dRbL0DoMaG64N8LHeWFmw?=
+ =?us-ascii?Q?KBw1A8nAtfa1Vv8rl9ls4rYHx6lAfVnqI0ArxDdOO8RD2mevXAZhyumnEZgI?=
+ =?us-ascii?Q?vzPb0thyzDs91WPnvCIJRzTfdPaoUZ+sgQsnjorH2RfRovVtWn6+BRgF/k5E?=
+ =?us-ascii?Q?eWun2JKWotGSCn4K9Snza23eDAZhBspQBJF6+76Kl9+MnAWZQYaK?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b5a9114-72ef-4f9a-4e2a-08df1e5cbbd8
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 19:06:15.0235
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZtQBmMuo+Q7cHjVptlcxzTVB9TpOmlIyHGOWDiEO3eTHhR0ykUMdbB1kN+dg+jUsc5rGGF21RftaxMQrZvEKeZJSLTJhQY7iZMSE/KdLUj32lUBG4PIxYVA/2znMAQSS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9363
 
-On Tue, Sep 29, 2026 at 12:14:55PM -0400, Hugo Villeneuve wrote:
-> Hi Stefano,
-> 
-> Your title seems to imply that VAR-SOM-6UL support did not
-> exist before your patch, but it did. Please rephrase that, and
-> your description accordingly.
-> 
+From: Frank Li <Frank.Li@nxp.com>
 
-Hi Hugo,
-You’re right that VAR-SOM-6UL already has mainline support.
-I’ll reword the title and description to distinguish the existing
-support from the new variants and DART-6UL boards.
+dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
+is not set, dmaengine_desc_free() will return -EPERM.
 
-> 
-> On Tue, 29 Sep 2026 17:17:27 +0200
-> Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
-> 
-> > Add device trees for Variscite VAR-SOM-6UL and DART-6UL modules based on
-> > i.MX6UL, i.MX6ULL and i.MX6ULZ. VAR-SOM-6UL is supported on the
-> > Concerto-Board and Symphony-Board carriers, and DART-6UL on the
-> > VAR-6ULCustomBoard. The 90 new DTBs cover the supported combinations of
-> > storage, wireless and audio options.
-> 
-> Do they? You would need far more than 90 DTBs to support all options...
-> 
-> When I submitted the latest changes for the VAR-SOM-6UL, I did not
-> create DTBs for every available options knowing that it would lead to
-> an insane number of files. So I simply created a full DTB that
-> incorporated most of the DTSI options. And my custom boards simply
-> include only the required DTSI for their specific options.
-> 
-> Looking simply at the ENET phy level, you seem to have now removed
-> the two individual DTSI to selectively add support for ENET1 and ENET2,
-> but not all board use these, so that is why they
-> were created as individual DTSI files in the first place to make it
-> easier to create a DTB with only the required options. As an example,
-> one of my custom boards do not have ethernet at all, so i don't want
-> that support enabled by default.
-> 
-> Please keep the existing DTSI as distinct and individual files.
-> 
-> Maybe using DT overlays would be better suited if you really want to
-> support every available combinations?
-> 
+	if (!dmaengine_desc_test_reuse(desc))
+		return -EPERM;
 
-Just to be clear about the 90 DTBs: They are the minimum set of prebuilt
-DTBs for the Variscite-supported configurations that select between
-mutually exclusive hardware alternatives. Selecting an alternative changes
-the hardware described on a SoM interface and therefore requires changes
-to Device Tree nodes, pin configuration or controller properties.
-For example, the SD interface may connect to an SD card or an SDIO wireless
-module; storage, wireless-module and codec choices similarly require
-different descriptions.
+So calling dmaengine_desc_free() does nothing. dmaengine_terminate_(a)sync()
+will free all already allocated descriptors.
 
-These are not every possible combination of fitted and unfitted components.
-We do not add another DTB merely because an optional peripheral is not
-populated.
-This follows the existing VAR-SOM-MX7 mainline approach: it provides
-separate DTBs for hardware choices such as eMMC versus NAND and codec
-variants, without enumerating every optional component’s presence or
-absence.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-> 
-> > The descriptions use shared module, option and carrier DTSI files with
-> > SoC-specific wrappers. In particular, the WM8904 and WM8731 codecs are
-> > selected explicitly instead of keeping a codec in the module base.
-> > The four existing Concerto DTBs are converted to this layout without
-> > changing their DTB names or compatible strings. This also replaces the
-> > non-working legacy LVDS panel description with the LCDIF configuration
-> 
-> Can you describe what exactly is not working? When I submitted these
-> LVDS changes I tested the LVDS panel with the Variscite concerto EVK
-> (VAR-SOM-6UL LD option) and it was working ok (also tested with two
-> custom boards).
-> 
-> If a fix is needed for this bug, this should go in a separate patch.
-> 
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 49aabef7f115c..d6f266e2d6bea 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -851,7 +851,6 @@ static int lpi2c_dma_rx_cmd_submit(struct lpi2c_imx_struct *lpi2c_imx)
+ submit_err_exit:
+ 	dma_unmap_single(txchan->device->dev, dma->dma_tx_addr,
+ 			 dma->rx_cmd_buf_len, DMA_TO_DEVICE);
+-	dmaengine_desc_free(rx_cmd_desc);
+ 	return -EINVAL;
+ }
+ 
+@@ -910,7 +909,6 @@ static int lpi2c_dma_submit(struct lpi2c_imx_struct *lpi2c_imx)
+ 
+ submit_err_exit:
+ 	lpi2c_dma_unmap(dma);
+-	dmaengine_desc_free(desc);
+ 	return -EINVAL;
+ }
+ 
+-- 
+2.43.0
 
-In an initial hardware test, the display timing behavior did not appear
-to match what we observe with Variscite’s downstream configuration.
-I will repeat the test and measure the output before proposing any display
-change. If a fix is needed, I will send it as a separate patch.
-
-> 
-> > for the Variscite display. Wi-Fi and Bluetooth enable/reset sequencing
-> > on these modules is handled by userspace, so the legacy kernel-managed
-> > power-sequence and Bluetooth nodes are not carried forward.
-> 
-> That is not ok. I specifically implemented enable/reset sequencing in
-> the kernel to finally get rid of the need for external
-> proprietary userspace scripts, and it was tested ok. If somethings needs
-> to be fixed or improved in this sequencing, fine if you submit a patch
-> to do it, but certainly do not get rid of it.
-> 
-
-Calling these “external proprietary userspace scripts” misses their purpose.
-First because they are not proprietary :D. Second, because they implement
-the initialization procedure Variscite validates for the Broadcom
-modules we ship (talking about the brcm, the existing one in your DTSs)
-folowing the datasheet instructions.
-
-This is not equivalent to the sequence in the existing Concerto DT.
-For the LWB5 option, the procedure enables WIFI_PWR, waits 10 ms,
-enables WLAN_EN and BT_EN, waits 200 ms, then lowers BT_EN before
-re-enumerating the SDIO device.
-The other Broadcom option does not use the separate WIFI_PWR step.
-The existing regulator and MMC power-sequence nodes do not express that
-complete, module-dependent procedure, particularly the BT_EN step during
-Wi-Fi initialization.
-The scripts also select the Bluetooth firmware according to the detected
-SDIO device.
-
-We use that procedure to avoid sequencing-related failures for our
-customers.
-This approach is not new to Variscite’s mainline DTS files.
-
-Thank you for your time,
-Best Regards,
-Stefano
