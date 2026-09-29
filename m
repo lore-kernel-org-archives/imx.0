@@ -1,210 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817823CFF6F;
-	Tue, 29 Sep 2026 09:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2E04EF127
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 09:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790674500; cv=none; b=QvqTAsPCdhRq8yU0/ZQPtcpgdAIfl9yKlzBcEsz+49v/in+BsZ8Mvk72RKEFKNWuz8UJyYeo4lbCPjkOyWR7OXnHfS2e5Bqft9aPRj+ogMU2uDOeqy7f6IggA7uJDOQ9zgaorJd7+4bJB33oaNCIDDbd4tkVLctw6uf+6FBds44=
+	t=1790674916; cv=none; b=rTuA++GVuX+ZG4i9pI9Y/KImzD9FdBQ/0TvVIGwp4Z/mCtNXoO8BTYZZmfwNq3QlF75blTNHT3wr60BU9vThQVmOaite66xRXGQC8BlxEO0o4QBdySJ2qSZObKtLFl0bw/vJEp9jPBsVgMd0Iw4V6Oj51vyD1gsNKe1AwcIDhP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790674500; c=relaxed/simple;
-	bh=CYkMN7wpigkeBTDZfuR07jdkROqHbRtAu6nWG2UQUpE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LcO5zaRAQBXI00G6TFgmSLp8Ye0v8n17ZjYoB3IzcCREe4woJx8DiBb/pN4NmLZLv6vYQZFf4GN/kCDOFs6dtuuemeWfOWGQhLDGE8Q4oWfPrXyrRxfrju7ygvDcx8MJkqe89Y1yBHPMJKW4gbffdmkypn6m4esZkb5bbuuIhcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j44ZNm1C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790674916; c=relaxed/simple;
+	bh=0P2nMJyk5QJYGA4+K5hLhmxCTWy627UxvCFBI5LIYM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mzPEEIdKzoStBceZCR70ZQ+qlcv0ilvxM98Pyc+5e6zW36COAohmfeoDrcT1p75E8+aJS+DhQTmdyS/rmdhO7V+4va5cS+P7r2qBDV+YQOJYwujcOjDa/napdiQOoplHW2yPnH92qfonH/f4/bebroAFm2+WUpRO0BoS+3wCC+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=buJo3UCk; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j44ZNm1C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CB21F000FF;
-	Tue, 29 Sep 2026 09:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790674499;
-	bh=he04A6P/a+QwEvc9RQDJBgRTA1nBWEO4azPCiVTjpig=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j44ZNm1C342PQEM4Mlc6sTYkMOQ9Z77CRwD5ojnWdqRUyd4uMhhzcppbfbn8y9qpf
-	 Wt2qMZTSItSO3di8xCS4HX4Z4m4avPv92VXNbgThDcf8xlY096qZDya/VBoy4ymGvp
-	 lfAY95jinobQWoYujxhGDM+gPijb7Bf4pA67M5kFlsdwVk1beuvBgxUAcmC97LK3b2
-	 1J6TIAbWgyDH057w98yE2mI9vKKX1jc4OvlxP0ont36P0hE0WCYOWBXgOsi2cXOCOt
-	 NIJOtvsfVdM7WomlzGNLg6x9rcYjmVEPA7fI0CqBEx6tRXpm4g+U3DFOeJFbG8bzDO
-	 OkP2lXFsKgbcA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] arm: dts: nxp: imx: Add devicetree files for M48
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Petko Manolov" <petko.manolov@konsulko.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260929091811.3735201-3-petko.manolov@konsulko.com>
-References: <20260929091811.3735201-1-petko.manolov@konsulko.com>
- <20260929091811.3735201-3-petko.manolov@konsulko.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 09:34:58 +0000
-Message-Id: <20260929093458.99CB21F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buJo3UCk"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a00713639cso14227415e9.1
+        for <imx@lists.linux.dev>; Tue, 29 Sep 2026 02:41:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790674913; x=1791279713; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UhT/d71flljW9jNeqH8EFFOweIQ3C2k43Y4Y6+ueZeE=;
+        b=buJo3UCkDTgU60z3jir5k48kzf0ojlfJdumKD9XnfnTHqIAxnOgYOY/OkXO5du+IGe
+         YrWnhpONBDb4aljneJAUC1UvUg17rz+3c2Ji88IFD5kq6FdERJ0qFbVnx4ZIyHQgNPAo
+         Ic66p6GNwnH5+i5iJNBLa9sIdXroIGglPpiFHJZYHq2DNd1EKy6W6fht88DxoPnjbOTA
+         x14juJ64F8DIKVgpy4c6XlY6Sg/f6dZAbNZ4ZP3hFgIzhfitb4XJ8lymwsncd7qVgQNc
+         LsGB2QgoxWJgRM+YyBqhiJ0jnQYURnrON/VMI7FTGxfJtvrs81NEV2oliXjeDU6uqsqJ
+         QCTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790674913; x=1791279713;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=UhT/d71flljW9jNeqH8EFFOweIQ3C2k43Y4Y6+ueZeE=;
+        b=DGK0OcDwvn8kBZSGUCe2gKd0rbf48A7Ym7gYgxgIWwcughvNR/tHPud9OSS4hBwoJQ
+         Y8QoQQH/FyTAQoI7mTo0j0zxYJe/Qhd7wySJwVQhf/c2kV1B3RYOOMjIhgrXpDOEb9aI
+         Oog7NprOlna05Iwo6LMs/rXUVT/XWvPei37unoqFdPgsd/UWOJge1O/IIQ4xrbYtvznr
+         DQl4tC4mgOlnyUY6QwK24368BSZSai21sDEqihJeUebRd8vALbhp4NIK4clJ3X0kwPJ3
+         mH6yyGrrS6sDELG0cN0asgzz2+bzw/xhYO4kXVHLLGFvR1CNzS4iDeGnjKQc0pt+MK77
+         2Whw==
+X-Forwarded-Encrypted: i=1; AKwUvBzA/LSD6GpJHkfYo6nx229j3tMpK30ydRrNaLdU3d2dB0dJOb7ulT2ZsnFLGcDokT95pbk=@lists.linux.dev
+X-Gm-Message-State: AFuF++lGAD5/vMFpxSdXfxF3w3Pg591hmIek/+c5Wq5KXOhNnCZM0XOv
+	w9H/FOMZTHHhIzS89PVmKh9HEaGLKi40z4YTvsp2R5HSVOvWcHXcAq1F
+X-Gm-Gg: AYBFou0GG/X7r/wzBeUntN5a3uCpou7T/idzTS7fUue4M4ktgYA3cbQewjMJuWIH30m
+	Q3G0UNPxWQvEFpauxmU7AAu5xE6uYLjesPM2m3bhfUITcsJ/MjVowaeI6azIwwMaarZ0PkaCgY9
+	SXn2PlZqftW1nI5T+0wR6vdDIKTiIbrVFHz8FiHhSEfwHMI/49Q6dtMcGIL46NG2BlxQbERwPMk
+	AfaqIXBnCoER7f8KU1EC90hHR3F5R0q7zHV+7oY0IVqIifZlR2VKgWSt5ve/I/MjDeSZNzZteWv
+	nOAKITowi4DcO5cbo9rAYdujVzK9ZK4xW+VpAXoq0+4O4C0YraN7kNTlOGPi4ePh6Pvmk5HtesI
+	1FY+B8doNLNBJFcAXQuDHsaGpnC+ec0PSbvZD9rF0ou8aoLQStE60wB1Y2So0V4Dqu+jpK5oDfd
+	7e33XACPO9EcYmFB8syB3afUfXhQrVdmx4ynXqGls/PnbWKL3SPqt4+XGWfCfWMt3a8bfCVJMmy
+	aONN5RGUyU32XpaRC55WoX6AneipUJFYyXgYh7IraIfLpIoDvd4oDaJ4mjtLvZ6bIIcOAu1xMmm
+	icju2JXrCQ7xKFYXYzoGZP+Z6X2D
+X-Received: by 2002:a05:600d:8652:10b0:49f:feca:b3bf with SMTP id 5b1f17b1804b1-49ffecab799mr95152725e9.8.1790674912690;
+        Tue, 29 Sep 2026 02:41:52 -0700 (PDT)
+Received: from Lord-Beerus.station ([31.27.155.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cfe16a2sm64229765e9.4.2026.09.29.02.41.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 02:41:52 -0700 (PDT)
+Date: Tue, 29 Sep 2026 11:41:49 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 01/12] dt-bindings: arm: fsl: Document Variscite
+ i.MX6UL boards
+Message-ID: <aruH3VNnY8rUYJIK@Lord-Beerus.station>
+References: <cover.1790512621.git.stefano.r@variscite.com>
+ <a4e262cfb08153c23c80cd3098a684816993f1e9.1790512621.git.stefano.r@variscite.com>
+ <20260929-logical-fanatic-quail-2ff20b@quoll>
+ <art_faJ7Zx5CaWfW@Lord-Beerus.station>
+ <c97be589-45f4-422d-a4c3-e5b0a61f5b22@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c97be589-45f4-422d-a4c3-e5b0a61f5b22@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [High] pinctrl: out-of-bounds write in imx_pinctrl_parse_pin_mmio()
-- [Medium] dts: fsl,dual-channel placed in wrong node breaks lvds
-- [Medium] dts: fsl,default-data-width causes imx-ldb probe failure
-- [Low] dts: missing imx6qdl-draeger-m48-u-boot.dtsi causes build failure
-- [Low] dts: syntax error and U-Boot vars in unused LEGACY_BOOT block
-- [Low] dts: missing imx6qp-draeger-m48.dtb in Makefile
---
+On Tue, Sep 29, 2026 at 11:32:45AM +0200, Krzysztof Kozlowski wrote:
+> On 29/09/2026 11:06, Stefano Radaelli wrote:
+> >> Also, look at other examples here, like Toradex. The actual variant
+> >> should be the last.
+> >>
+> > 
+> > Could you clarify what you mean by “the actual variant should be the last”?
+> > For a board with eMMC, SD card and WM8731 mounted on SOM, would you prefer
+> > variscite,var-som-imx6ul-emmc-sd-card-wm8731-concerto or
+> > variscite,var-som-imx6ul-concerto-emmc-sd-card-wm8731?
+> > I had used the former ordering following examples such as
+> > toradex,colibri-imx6ull-emmc-aster. (som - som variants - carrier)
+> 
+> Indeed, the carrier board is the last part. Just to be sure - in your
+> case the emmc and WiFi are on the board?
+> 
 
-commit 2139bbcf28ec3b0fa1c415a8208562a20f0a76c4
-Author: Petko Manolov <petko.manolov@konsulko.com>
+Yes, eMMC, WiFi and the audio codec are configurable options on the SoM.
+The carrier boards are shared across our 32-bit and 64-bit SoM families.
 
-arm: dts: nxp: imx: Add devicetree files for M48
-
-This patch adds device tree files for Draeger M48 boards, supporting both
-i.MX6Q and i.MX6DL variants. It introduces board-specific configurations,
-pinctrl settings, and LVDS display timings.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/i=
-mx/Makefile
-> index 1a2539fa19b44..44b3932562358 100644
-> --- a/arch/arm/boot/dts/nxp/imx/Makefile
-> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-> @@ -220,6 +220,8 @@ dtb-$(CONFIG_SOC_IMX6Q) +=3D \
->  	imx6q-dmo-edmqmx6.dtb \
->  	imx6q-dms-ba16.dtb \
->  	imx6q-ds.dtb \
-> +	imx6q-draeger-m48.dtb \
-> +	imx6dl-draeger-m48.dtb \
-
-[Severity: Low]
-Does this omit imx6qp-draeger-m48.dtb? This patch introduces
-imx6qp-draeger-m48.dts, but it is not hooked up to the build system here, so
-it will be silently ignored.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts b/arch/arm/=
-boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..45809770d16f3
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-[ ... ]
-> +/* PAD config disabled in imx6qdl-draeger-m48.dtsi by setting value to 0=
-x80000000
-> + * PAD configuration register must not be 0, so it is set to 0xfff
-> + */
-> +#define MX6QDL_PAD_CTL_GRP_DDR_TYPE_RGMII        0x768 0xfff 0x000 0x000=
-C0000 0x0
-> +#define MX6QDL_PAD_CTL_GRP_RGMII_TERM            0x788 0xfff 0x000 0x000=
-00200 0x0
-
-[Severity: High]
-Does this out-of-bounds mux_reg value (0x768) cause an out-of-bounds write
-in imx_pinctrl_parse_pin_mmio()?
-
-When imx_pinctrl_parse_pin_mmio() divides this mux_reg by 4, it calculates
-pin_id as 474. Writing to the dynamically allocated ipctl->pin_regs array
-with this index overflows its bounds, leading to an out-of-bounds heap write
-that can corrupt kernel memory during device tree parsing.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts b/arch/arm/b=
-oot/dts/nxp/imx/imx6q-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..1266b8451fa15
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts
-[ ... ]
-> +/* PAD config disabled in imx6qdl-draeger-m48.dtsi by setting value to 0=
-x80000000
-> + * PAD configuration register must not be 0, so it is set to 0xfff
-> + */
-> +#define MX6QDL_PAD_CTL_GRP_DDR_TYPE_RGMII        0x790 0xfff 0x000 0x000=
-C0000 0x0
-> +#define MX6QDL_PAD_CTL_GRP_RGMII_TERM            0x7ac 0xfff 0x000 0x000=
-00200 0x0
-
-[Severity: High]
-Similarly, does this mux_reg value (0x790) evaluate to an out-of-bounds
-pin_id of 484 in imx_pinctrl_parse_pin_mmio(), resulting in another
-out-of-bounds array write?
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi b/arch/ar=
-m/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
-> new file mode 100644
-> index 0000000000000..bcfe7b2556cbd
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
-[ ... ]
-> +		pinctrl_m48_enet: enetgrp {
-> +			fsl,pins =3D <
-[ ... ]
-> +				MX6QDL_PAD_CTL_GRP_DDR_TYPE_RGMII 0x80000000
-> +				MX6QDL_PAD_CTL_GRP_RGMII_TERM 0x80000000
-> +			>;
-> +		};
-
-[Severity: High]
-Applying these macros in the fsl,pins property forces the pinctrl-imx driver
-to parse the out-of-bounds pin IDs mentioned above.
-
-[ ... ]
-> +	lvds-channel@0 {
-> +		fsl,data-mapping =3D "spwg";
-> +		fsl,default-data-width =3D <24>;
-
-[Severity: Medium]
-Will this cause the imx-ldb driver probe to fail?
-
-The imx-ldb driver strictly looks for fsl,data-width in
-of_get_bus_format(). Since it is missing, it defaults to 0, which does not
-match any valid mapping in imx_ldb_bit_mappings, returning -ENOENT and
-causing the driver probe to fail.
-
-> +		status =3D "okay";
-> +
-> +		display-timings {
-> +			native-mode =3D <&timing0>;
-> +
-> +			timing0: 1920x1080-32@60 {
-> +				fsl,dual-channel;
-
-[Severity: Medium]
-Does placing fsl,dual-channel inside the display-timings/timing0 subnode
-break LVDS output?
-
-The imx-ldb driver reads the fsl,dual-channel property from the top-level
-LDB node (lvds-channel@0), not from the timing subnodes. Without it at the
-correct level, the LDB will remain in single-channel mode.
-
-[ ... ]
-> +	config {
-> +		#ifdef LEGACY_BOOT
-> +		bootcmd =3D "startM48;errorMsg";
-> +			bootcmd =3D "startKernel;errorMsg";
-> +		#endif
-> +
-> +	};
-
-[Severity: Low]
-Does this unused LEGACY_BOOT block contain invalid device tree syntax?
-
-If LEGACY_BOOT were defined, this would fail to compile due to a duplicate
-property name error for bootcmd. Also, U-Boot variables normally do not
-belong in the Linux device tree.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qp-draeger-m48.dts b/arch/arm/=
-boot/dts/nxp/imx/imx6qp-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..ab331596abd98
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qp-draeger-m48.dts
-[ ... ]
-> +#include "imx6qdl-draeger-m48.dtsi"
-> +#include "imx6qdl-draeger-m48-u-boot.dtsi"
-
-[Severity: Low]
-Will this unconditionally cause a build failure?=20
-imx6qdl-draeger-m48-u-boot.dtsi is missing from the patchset and the
-mainline tree.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929091811.3735=
-201-1-petko.manolov@konsulko.com?part=3D2
+Thanks for clarifying,
+Best Regards,
+Stefano
