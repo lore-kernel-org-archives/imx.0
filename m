@@ -1,177 +1,148 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010048.outbound.protection.outlook.com [52.101.69.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72916442118;
-	Tue, 29 Sep 2026 19:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790708811; cv=fail; b=f49dIQOj8z8ab4gXE2wc54UdBRwr87qLcCuqg4kkSY0cju7eW041uBnbLSnG9X0LXbX5boDIKxvUKLQh/AaZgZe5GijwoZZgw/WkmhU7KFTO+UGYb50BMdHB9/loBxlWNABVAdP1FN98RKy+V5i3cmBmmN0IZ7HZiJ/YIRGoH3o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790708811; c=relaxed/simple;
-	bh=IP3Gt4np9PcFDuAnZ6bOjT8lPH3LJeu7L6Kj9Htd1E8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=YP6wTmq4kEnbLNuziY5nqwDD/XnBMWadSPiiCesf3wy6QD4vrr+KahtIu1iRGZP4sVF0HA6blUyMLcGxuAvSfw2o6+Ox0w/rQupapH+gEyZiQ2TZwZYeLvnFyOJOXNHKWObKS0G1HfVTyvIDydbBHbW37ekbC8oP3Ewn192LSlE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fWXFGd80; arc=fail smtp.client-ip=52.101.69.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B950547051
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 19:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790711037; cv=none; b=ZvtaPbvaOhNiEJFtE2ko/MqlHe2aMZ6Tl9DZECT7XfItsTNlYfZoLeqEtQoK+po+q+7g/CV3j1a2CbpRe+B+bSRoDyVxXnPfIX7MxQRTqtm1Ui24Ox5zJv9WzF0PYE1+8mDt+PfpWf/JHwdwgDuegc7kysZiTp4g2zHtM1j/PTM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790711037; c=relaxed/simple;
+	bh=M0Da55fAk3f5sg11hCY0mZN4G1cBSfd5x8sRoxUgQJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=phiPBurxFaIpvYYimRtAzPG+ORmyJtsSenQyvA9d8HX3BcDGPhZWYCjOCk3qRzBXfgSTydgOZQt26NDhAOJeNxO0164+5ruxwdHhu9YjRvv9LUj/ZEOt++l9dWNMtVMjlBrEDJHjMMY74zL17AAwrVI9uB+8QnSCoTZGRF1OqLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=X5YInvO1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fWXFGd80"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CBjPF8xjvai8+rk71VMj+ZFJAXmn20eQM/ksWpPhPWlUX+mNehiqgmW3L/u2tAsW++n8mRh3W0z0fr8wwWFw3e/8Kl2VbZ7WWP9un4vcnnaY08oplFB6XvLsamWbUErWyuSwwyFqrzhhF+ZXbnZC2V/iZOuqNOMVZw1tnvVfPlgoIcuw5+HyLGVHLjS+44grhz72GfCv8Y/MqYEhG943MPHoKXn7hCqq+ueUjgx6bDayEDltfqbrFqMsnc15fPyTNjQ8CXywQm4dHHMipUz4uwZ5kKASFl55pVvDO6wwomTD38gf0gbM346uzZPrGOgPIvTffqcxVFMtjkoP/1Dh1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HeT0xizABDVvfmPND3KOkhjqtTL/Ptu1R9Ha+08a+5Y=;
- b=YXhLt1l2kTIR+Y0Blr9Amrynf+hPNdOkYDPA9wr3DNZYjCxCPXCRannyPfYV7oAxcvSb7mzVtUdFgqxiXIJCtivK9RvTsgODEW9XCb0pseT9dA5KRHeTONWlEF2I6+TGHY1SgFGGlq19ln8STEvTI/kvNEme8GQIS8xFGYDpH/1VIcrjQ2WQrdLd8rlZpeGT6pUbh5lue7WCTLvqcCTLncSI5742OEjMfl7+tSuoTFW/NHKCnPoltjU/Q8yQb1WhKWTgVAIprMJt3U/m8o35yOmX1aG8zgCeYorTJR0mwiMojYghlVls67QePV974OzCApGp3F8rg2mUMjR+gL6DwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HeT0xizABDVvfmPND3KOkhjqtTL/Ptu1R9Ha+08a+5Y=;
- b=fWXFGd809HS9kequLTYdZXCukNcWuabLcpXtdq28DXz0VvMGMwTloIl4F6/6ffE0ZjxmLhd6k89veMJIEbBGqCymKdtbEZHx8PJDUkFN+DiCoLapTM5Pbr0z++alBr9Wivd8lhLZG5lFIcaP5++7jue9MBftS5RHY2GYLR0ySgq+dgiPZ9iwAyvoHkEK7QCbwFTVcVj98M8ku1IV55aCvbyUhZtKqlt7Z4u/ZZ02XBYXC6YvfxuCJjAqCoRVhiJ/qcQ+EQ8IMJrW+AxCxKXaqqLeDRR1d49JZrMAMW7X2NAFwe7748nK6DIeQKFCy6m11+1Zdk0+TgeQmn1Zxh3GWQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AMBPR04MB759424.eurprd04.prod.outlook.com (2603:10a6:20b:799::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Tue, 29 Sep
- 2026 19:06:46 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 19:06:46 +0000
-From: Frank.Li@oss.nxp.com
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	bui duc phuc <phucduc.bui@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <kees@kernel.org>,
-	Li Youhong <liyouhong@kylinos.cn>,
-	Frank Li <Frank.Li@nxp.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner sunXi SoC support),
-	linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support),
-	linux-kernel@vger.kernel.org (open list)
-Cc: vkoul@kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH 1/1] net: allwinner: remove dmaengine_desc_free()
-Date: Tue, 29 Sep 2026 15:06:36 -0400
-Message-ID: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="X5YInvO1"
+Received: from jeffbarnes-ThinkPad-P14s-Gen-2i.corp.microsoft.com (unknown [52.167.115.14])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8964020B7166;
+	Tue, 29 Sep 2026 12:42:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8964020B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1790710978;
+	bh=XSr/FpY6Ep2Y64lvgMS/GCnnKAwRUccneELijM9K4dk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X5YInvO10SJeiGSwh9q8U8njS2R52RaMF/ewdT7PfgPwRAcbZVaKZqEI8dRBpt8tk
+	 W0/v6GLlABhxJpjDf4l6fVWcmbSzrRS0w2C77FuwsoR69MFLHiO2PlDheP7jD1Ofny
+	 HPj5fSKCYtfmb4tA+0ZELdpJGtD2jh728EJkdGlc=
+From: jeffbarnes@linux.microsoft.com
+To: linux-pci@vger.kernel.org
+Cc: minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com,
+	roy.zang@nxp.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	Zhiqiang.Hou@nxp.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] PCI: layerscape: use default error response behavior
+Date: Tue, 29 Sep 2026 15:43:39 -0400
+Message-ID: <20260929194339.233271-1-jeffbarnes@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CYXPR02CA0073.namprd02.prod.outlook.com
- (2603:10b6:930:ce::20) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMBPR04MB759424:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f5d9efe-2c0b-4c8e-ae96-08df1e5cceb2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|23010399003|7416014|921020|5023799004|18002099003|10067099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	kYoHH08lNuxdHP/cQCIyXLxFnRb+AgBsFtZaP9X88JsO7NFhY9xgRKVn3XteWxjHaO6YABrFajF+Pke1XHAdWAnZjxoMw1QIQRIzItaoM3OnOgK6lJ35BXlktKv3uklgXfPTViTp+qA30y+3YJ06xXHDi2RV6tbq9I5uBeutlxmBqr0YgsvDgYu7kk3AQyUzpQG18CVXZvccTdcHxEX7/Pp5qAwnnoQPDfukbDz6NUPPXvaVaa0SqLzSL+B2T/ct6OG3yIwPuqrKDUJNoIBPF0qyW4kIvjfP+lYoSKc3ip6nUywT7BHpiib1FPHRhbLRiLJqIq2cZasPdX1wBlqqYmoEbwv06AtGmm1MbmVGWNrdYFS4kwEKG5uQBAtLUXxHRse1u+wVHm4P4PQI9LxyGxKZs+agA11exVP+UpB9tBvnfA7ww3Zx1xo04NP7baASGmJgZzM2Kqf51HFmm+HxqWuMzASnAL4IUm4lKhKVs921P4XogYEDcabNi+K21gJrT1/sSu3F5aQS3k+yhY4uEnmmeYPhxDN6BGctlEI8BGdaGwYvVkvBKPkShZgWcjfRvsf/icm1/k23v3yrkd737EegxgxAA0MSC6YjP9nkUHwHlUaJzHok1Kk14wn/qNDPRZKgdsCS3XdwBX9XNsmOPtPOMJMnwt1obKT8LcvsYO8H7Kaea/cbzZW2xLWZ2movZGQifYINYpxEP3uvB3IdYA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(23010399003)(7416014)(921020)(5023799004)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0x08VXYqpyU/WDK+992EPn2g86BrM83qXZp0hocK95/CSrhkUFg/RAKBhrZk?=
- =?us-ascii?Q?KV2o3smfbGPAiICxyyW4WIOP9hlyzNkggC02SO0SA1QfAfXolU06TRFJ2u6a?=
- =?us-ascii?Q?B2hFAX7P8nHCLADWeAZLV+dLCnkbIdiNRbo09AypvqF60HD768ZMSsQlDU96?=
- =?us-ascii?Q?gCB4RFFSFlu/rh4iIuhbOvAeAHysjn0L9B45zwzvMjW0UjkvefWWIQ8ZMJTz?=
- =?us-ascii?Q?8NvM4mx+kVV/9/05Lkkn3UvuzDdcozglEh1BOF06iCIyNfzZMcbIbas/eVCw?=
- =?us-ascii?Q?lndPpkgy2+PzOx3s+KCxR6syDmGbN3XK/8Zi/wrSXDOU8W3c51q27m7RVTDn?=
- =?us-ascii?Q?x/cK9nY2In1bRq8JpBbUf3bI30P/WxKY/5SYydfgRADWb5afAVUNyiVJGdr3?=
- =?us-ascii?Q?5+iL4NDOei9s81brpGVzg9dSPh4clqikYTnHh6YEnul7s/B8p5tiFMTcT77V?=
- =?us-ascii?Q?8uCk9zvJD4H+WSWt6B2UgKbtteh23HlDybQTYceexEiovXBslmalGktmeLf1?=
- =?us-ascii?Q?t5gHIaIvBFX/8xeVWaPHBcpLU4xsbYSnx7RBLMD6Jbb2SKKKdVCkHhXw1Wc4?=
- =?us-ascii?Q?gnPEt4Ed46gS45D8kKn0J+u8uE1XawglusLHvFlVNn21hewkTjYY1bF1p6qw?=
- =?us-ascii?Q?msPJwIxAN9kJju5IOQizpp2i7EBxsSwPeqq2dMUMEGN4CE/Z7ePbHZnTLKCu?=
- =?us-ascii?Q?GiORCHXsls/xGS7WVJ9RJHC1k6koVECxYy8GEM4EBND9D76rwVBzK1r48GOh?=
- =?us-ascii?Q?CQQ6LNyFsX1Hht/HlfxolBlgAB5UBarb9Tz+0umO80XicE12OoMHVsT9Frft?=
- =?us-ascii?Q?94G//hP2+tFoYw4T6z2SlVdC3Z5NwqAnwScgVScwlXciPDk80F7BUEI8TyxI?=
- =?us-ascii?Q?+LIHuSCw8tQeOmfMR7jnT/WZicJcZWHIgtCI0Xwlu3xm2pdVp2ih23uJpK/J?=
- =?us-ascii?Q?PQASbUSgl0OUZDXiNPUDnuj64fW05I1s1RaEwWDKFh+Sn2Rdbf6+18P1NswD?=
- =?us-ascii?Q?4qtKHyWnmyLTN/9rrp+xEl91eT6Fr9OBna2R4GG/qdJNYPE74Pa7nbOv3mI9?=
- =?us-ascii?Q?/s1L+Yx79f1zRvEnMDIZZYErIpTQFgUGHADFjEJBfQ2BMpjyaBy/91CXC0rr?=
- =?us-ascii?Q?enbUjzdHM34EVh32Oe3N2PM+6g+UPlLdqnrQEZecYv3z42l3sKx7yWRGwG4c?=
- =?us-ascii?Q?sPiHDRpr2yfox4SOvTGNstZitOUkob7ux1X14vPHHGzO6XfA3tJCuxnuxiaZ?=
- =?us-ascii?Q?iUSmbs7B9ZeXcWSX6LHv+/gWTs570C+LHbglmDCft2Qdx8vN6CKLa42bQ0ZM?=
- =?us-ascii?Q?Nk5DtUz+RFe63B0Hpq+pR3bSNDM/WbaKHPXb6yVa9mw58afs5u628A/lI6TF?=
- =?us-ascii?Q?O0qBrVPwFYbnFCmVY8Wvh8a4yhc5eE9jtPr/vxeDKnYsYS4CHoMl7uMPJ+F2?=
- =?us-ascii?Q?ltJAcuQpwiBxYvp89aar1IzszwxIxe2q3xtPeGIP76CJAd1B6snQdtBukh7N?=
- =?us-ascii?Q?HNNhPzE/NXNcgmCipRH4RgCvUcCSUtyqg8Df7QeDqD169yGq6kjyXn5NXJiH?=
- =?us-ascii?Q?+7EMfVBbS6oYB1AmEbL6iJ+Jfm0zaFEYbQ9Wfg40XRuVNasML32iE2ymMeMZ?=
- =?us-ascii?Q?er096qoKGaTmFFcSLVv0G+ElLut10Tom972MC09327f6wE/ewZZ1+LICrJJv?=
- =?us-ascii?Q?VeaiwG2nk8fdVJaDZ66xb9+m9ScXK4ybfTyvz1WHwrZYoWKljjS+P88v+AUf?=
- =?us-ascii?Q?CNYSB59tURnF7lubLbQLfF+KUSX56BFxIQZ4uSVEJ6/lcJWhjkDE?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f5d9efe-2c0b-4c8e-ae96-08df1e5cceb2
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 19:06:46.5203
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JoQV21bz4VITnyDUTn7hVf6kR6kc+ngHo5NlhiVuqKmsvgcIX2bpg1TKxQ7k1Yq2RzvgBHih3ss3lEjT6c8nWfVzqG2ZuQFTGpNVu/5GqdB593rlrLOThoy4LcbYmFAn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB759424
+Content-Transfer-Encoding: 8bit
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jeff Barnes <jeffbarnes@linux.microsoft.com>
 
-dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
-is not set, dmaengine_desc_free() will return -EPERM.
+The Layerscape PCIe driver programs PCIE_ABSERR to forward errors from
+outbound non-posted requests to the internal AXI interface.
 
-	if (!dmaengine_desc_test_reuse(desc))
-		return -EPERM;
+A PCI configuration access can race with the link going down after
+dw_pcie_other_conf_map_bus() checks the link but before the MMIO access
+is performed. When the resulting Completion Timeout is forwarded to
+AXI, it causes an asynchronous SError and kernel panic.
 
-So calling dmaengine_desc_free() does nothing.
-dmaengine_terminate_(a)sync() will free all already allocated descriptors.
+For example:
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+  Kernel panic - not syncing: Asynchronous SError Interrupt
+  ...
+  Call trace:
+   arm64_serror_panic+0x78/0x90
+   do_serror+0x84/0x90
+   el1h_64_error_handler+0x30/0x40
+   el1h_64_error+0x68/0x70
+   pci_generic_config_read+0x64/0xb0
+   dw_pcie_rd_other_conf+0x1c/0x68
+   pci_bus_read_config_word+0x68/0x118
+   pcie_capability_read_word+0xa8/0xd8
+   find_device_iter+0x8c/0x160
+   pci_walk_bus+0x60/0xb8
+   find_source_device+0x78/0xb0
+   aer_isr+0x1dc/0x230
+
+Restore the controller's default error response behavior instead of
+forwarding these errors to AXI.
+
+Reproduce the race by instrumenting dw_pcie_rd_other_conf() to call
+map_bus() while the link is up, then schedule a worker on another CPU
+to set PCI_EXP_LNKCTL_LD. Synchronize the CPUs immediately before the
+Link Disable DBI write, then perform readl() using the address returned
+by map_bus() concurrently with the link transition.
+
+Without this change, the overlapping configuration read results in an
+asynchronous SError and kernel panic. With this change, the same test
+returns 0xffffffff from the configuration read. In this test, AER
+reports a non-fatal Completion Timeout, and no SError or kernel panic
+occurs.
+
+This effectively reverts the error response behavior introduced by
+commit 84d897d69938
+("PCI: layerscape: Change default error response behavior").
+
+Fixes: 84d897d69938 ("PCI: layerscape: Change default error response behavior")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Barnes <jeffbarnes@linux.microsoft.com>
 ---
- drivers/net/ethernet/allwinner/sun4i-emac.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pci-layerscape.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/allwinner/sun4i-emac.c b/drivers/net/ethernet/allwinner/sun4i-emac.c
-index 0ba67a55705d6..09b2abdfc9e84 100644
---- a/drivers/net/ethernet/allwinner/sun4i-emac.c
-+++ b/drivers/net/ethernet/allwinner/sun4i-emac.c
-@@ -300,7 +300,7 @@ static int emac_dma_inblk_32bit(struct emac_board_info *db,
- 	if (!req) {
- 		dev_err(db->dev, "alloc emac dma req error.\n");
- 		ret = -ENOMEM;
--		goto alloc_req_err;
-+		goto prepare_err;
- 	}
+diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+index 14d6ac4fc53f..d333f1ae8a41 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape.c
++++ b/drivers/pci/controller/dwc/pci-layerscape.c
+@@ -28,8 +28,6 @@
  
- 	desc->callback_param = req;
-@@ -319,9 +319,6 @@ static int emac_dma_inblk_32bit(struct emac_board_info *db,
- submit_err:
- 	emac_free_dma_req(req);
+ /* PEX Internal Configuration Registers */
+ #define PCIE_STRFMR1		0x71c /* Symbol Timer & Filter Mask Register1 */
+-#define PCIE_ABSERR		0x8d0 /* Bridge Slave Error Response Register */
+-#define PCIE_ABSERR_SETTING	0x9401 /* Forward error of non-posted request */
  
--alloc_req_err:
--	dmaengine_desc_free(desc);
+ /* PF Message Command Register */
+ #define LS_PCIE_PF_MCR		0x2c
+@@ -103,14 +101,6 @@ static void ls_pcie_drop_msg_tlp(struct ls_pcie *pcie)
+ 	iowrite32(val, pci->dbi_base + PCIE_STRFMR1);
+ }
+ 
+-/* Forward error response of outbound non-posted requests */
+-static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
+-{
+-	struct dw_pcie *pci = pcie->pci;
 -
- prepare_err:
- 	dma_unmap_single(db->dev, rxbuf, count, DMA_FROM_DEVICE);
- 	return ret;
+-	iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
+-}
+-
+ static u32 ls_pcie_pf_lut_readl(struct ls_pcie *pcie, u32 off)
+ {
+ 	if (pcie->big_endian)
+@@ -180,8 +170,6 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+ 	struct ls_pcie *pcie = to_ls_pcie(pci);
+ 
+-	ls_pcie_fix_error_response(pcie);
+-
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 	ls_pcie_clear_multifunction(pcie);
+ 	dw_pcie_dbi_ro_wr_dis(pci);
 -- 
 2.43.0
 
