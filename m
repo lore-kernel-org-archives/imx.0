@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721FD502D5A
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 11:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84255513550
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 11:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790680056; cv=none; b=RRtwuc2Uw0Hb13EuSOjQxsIKFB36srCLqicsjE80frhmKy9WIcrWZV+a7Z3GcfUGbLdfZ9/G7u85R7KD5bCe4e8u9vRRY1K+ERC8yDINvcNyOdCrwPKKR+kMTeLTQ9h7wCI2Mk4MZesrYsigla7Oc+baLZrm5fJLJjU1+4jGWak=
+	t=1790680872; cv=none; b=qMS1WDtTTvgra2F+N7onWo749oQ69siExuNb7848IWBhlQua2W2BpFKcRNUwbRmPIEip2jZnqBfFJY4YzpmpLtFGIiNoROSBUK55vyCtFgFBoR6gpE8n4ZR2G6T/yYjiYK1odsDDV8LbPRCCoZw/pLR3XEIuLE4Z/bFzTmAo/Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790680056; c=relaxed/simple;
-	bh=WyS6oXrtGPf6tATAuV7YayFH5FqEDoyKW58jIgc719U=;
+	s=arc-20240116; t=1790680872; c=relaxed/simple;
+	bh=q/R73sU3HlFWsIY4lv7m5azFCJiIp0o64yNMluJbtbs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mFa3I4J0kQFEqOIPC56lTDhPLi0XgLs+az0L2AQCe7SaapggGImzuD+q+KTpQ+6IkFyUd44uyo+JUmcwJABIgrFDT/OC9DrvyNed4d69drifOzgAcB5t3vP8ytZi4YHDbRgjnFAFxKQOld+uGulOFSVJntwCjm7F5YenDTRkJZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOotmrsr; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TYXAsOqp6vEKGSTGvpn/hhnJRU3K8KRjCjG/nkcoCCP0v5hk9SC+mn7WeW43Gwff+e4tju56D/6GSmQpQpqWu6KrOWF/uib26cYa+Gl8F28wcEyJ+J/k9xj0lioiL7fgB8Ve2Fb6ldsZdcqkwV74EP7m592/AUC0ZULWk1+50Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Filmn7Gu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOotmrsr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B93C1F000FF;
-	Tue, 29 Sep 2026 11:07:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Filmn7Gu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAA51F000FF;
+	Tue, 29 Sep 2026 11:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790680055;
-	bh=xhBwNNCpXoQCpM0mTTJfiov/xOzj5LCov6hCtYp8syg=;
+	s=k20260515; t=1790680871;
+	bh=GA38cMiGogZVDgMjBn996Oc6nmpWsGsKPZoPwJ2yu78=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OOotmrsr4GWEjTGzC1JIYx/Fb6oLwJnAwWYmVYusUn9KI24/kde1kWfm3XoqqQZvF
-	 ebOezHAeqHyg4filgNhP2bHht0h1uluyj8mbdw725CdhLYHuPr/e5rASIzTfXz/vAg
-	 RWUkOW08MTfamN71QuwR6DvroMWtP4PRliRrWCjM4W/vEGal6iirhh3tuCkB5P3ae8
-	 kE3aeizeMwSOsuPl2u6zfthoNpd+DKQohGpHmEPDN2imDlxM5ATUkyw9Neot4xPlEn
-	 /6eNXEOJZw/Xo1fqWA9FmgpIsg1mBnxxXUGmwIbDRh2fOnTti5Vfv+6xNegtpuw0my
-	 LBuNvznbMIXjw==
+	b=Filmn7GufNPUoWEs25MRRYybA6DbhQ0EBHuvWXpMGi8ZxB7cKimp7zqlzHxnM4t8S
+	 8fcJlErSV4pAJZR+McC2Pd4d8ZyHl5VhfSTZDxuSzYP4vAgXNHWe7/02WhFQ45tdD8
+	 GU9ev/qpcFpi7jLTh1Nd2Zp6x+M3bjrTAK2g7lsv3x7DyHIgNJmA/qxgxeHDm72ZO1
+	 G8tgIE4mcmvZibmoMobQGI05CQRKV+0PJOMMHq6uXWxtJa5l4kF/ZjtMJxgBT9Bw0C
+	 j5PGBD+wzLhgjgXuJ0p1kcu/Fugqu8aqAqdWwha0HN1vh1uTmMzV15oQP3648q3xqD
+	 l28F7AYAfazGA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/7] drm/bridge: dw-mipi-dsi2: stop using deprecated
- devm_drm_of_get_bridge()
+Subject: Re: [PATCH 6/7] drm/vc4: dsi: stop using deprecated
+ drmm_of_get_bridge()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com
-In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v1-4-ccb7e602daad@bootlin.com>
+Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com, imx@lists.linux.dev
+In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v1-6-ccb7e602daad@bootlin.com>
 References: <20260929-drm-fix-of_get_bridge-build-regression-v1-0-ccb7e602daad@bootlin.com>
- <20260929-drm-fix-of_get_bridge-build-regression-v1-4-ccb7e602daad@bootlin.com>
+ <20260929-drm-fix-of_get_bridge-build-regression-v1-6-ccb7e602daad@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 11:07:34 +0000
-Message-Id: <20260929110734.9B93C1F000FF@smtp.kernel.org>
+Date: Tue, 29 Sep 2026 11:21:09 +0000
+Message-Id: <20260929112109.BAAA51F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,83 +47,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] drm/bridge: dw-mipi-dsi2: memory leak of downstream bridge refer=
-ence
+- [High] drm/vc4: dsi: bridge reference leak on bind failure/retry
 --
 
-commit 3a105594a4d4f8c22ed3e9167fb40a2696227085
+commit d1b5b987d3dbb5f94782b8b596d7895539b38c8d
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/bridge: dw-mipi-dsi2: stop using deprecated devm_drm_of_get_bridge()
+drm/vc4: dsi: stop using deprecated drmm_of_get_bridge()
 
-This commit replaces the deprecated devm_drm_of_get_bridge() function with
-of_drm_get_bridge_by_endpoint(), which returns a refcounted bridge. It upda=
-tes
-the code to store the acquired bridge in the next_bridge field of the
-drm_bridge structure so that the reference is automatically released when t=
-he
-parent bridge is destroyed.
+This commit replaces the deprecated devm_drm_of_get_bridge() with
+of_drm_get_bridge_by_endpoint(), storing the refcounted bridge in
+dsi->bridge.next_bridge. It also removes an unused include.
 
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c b/drivers/gpu=
-/drm/bridge/synopsys/dw-mipi-dsi2.c
-> index 7fd2f1e60654f..a008450d83aa3 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c
-> @@ -528,12 +527,12 @@ static int dw_mipi_dsi2_host_attach(struct mipi_dsi=
-_host *host,
->  	dsi2->format =3D device->format;
->  	dsi2->mode_flags =3D device->mode_flags;
-> =20
-> -	bridge =3D devm_drm_of_get_bridge(dsi2->dev, dsi2->dev->of_node, 1, 0);
-> +	bridge =3D of_drm_get_bridge_by_endpoint(dsi2->dev->of_node, 1, 0);
->  	if (IS_ERR(bridge))
->  		return PTR_ERR(bridge);
-> =20
->  	bridge->pre_enable_prev_first =3D true;
-> -	dsi2->panel_bridge =3D bridge;
-> +	dsi2->bridge.next_bridge =3D bridge;
-
-[Severity: Medium]
-Does this assignment potentially leak the bridge reference if the error pat=
-h is
-taken later in dw_mipi_dsi2_host_attach()?
-
-The DRM core automatically drops the next_bridge reference when the parent
-bridge is freed (at driver unbind). However, if pdata->host_ops->attach()
-fails later in this function, the error path calls drm_bridge_remove() but
-next_bridge is not explicitly cleared or manually put.
-
-If the DSI peripheral later triggers another attach attempt, will a new
-reference overwrite next_bridge, permanently leaking the previous one?
-
-> =20
->  	drm_bridge_add(&dsi2->bridge);
-> =20
-
+> diff --git a/drivers/gpu/drm/vc4/vc4_dsi.c b/drivers/gpu/drm/vc4/vc4_dsi.c
+> index 0148f2befed14..30598738cfcf3 100644
+> --- a/drivers/gpu/drm/vc4/vc4_dsi.c
+> +++ b/drivers/gpu/drm/vc4/vc4_dsi.c
 [ ... ]
-
-> @@ -565,8 +564,6 @@ static int dw_mipi_dsi2_host_detach(struct mipi_dsi_h=
-ost *host,
+> @@ -1749,9 +1747,9 @@ static int vc4_dsi_bind(struct device *dev, struct =
+device *master, void *data)
+>  		return ret;
+>  	}
 > =20
->  	drm_bridge_remove(&dsi2->bridge);
-> =20
-> -	drm_of_panel_bridge_remove(host->dev->of_node, 1, 0);
-> -
->  	return 0;
->  }
+> -	dsi->out_bridge =3D drmm_of_get_bridge(drm, dev->of_node, 0, 0);
+> -	if (IS_ERR(dsi->out_bridge))
+> -		return PTR_ERR(dsi->out_bridge);
+> +	dsi->bridge.next_bridge =3D of_drm_get_bridge_by_endpoint(dev->of_node,=
+ 0, 0);
+> +	if (IS_ERR(dsi->bridge.next_bridge))
+> +		return PTR_ERR(dsi->bridge.next_bridge);
 
-[Severity: Medium]
-Does this detach path also leak the downstream bridge reference if the DSI
-device is unbound and rebound?
+[Severity: High]
+Does this leak the bridge reference if a subsequent initialization step fai=
+ls?
 
-Similar to the error path in dw_mipi_dsi2_host_attach(), detaching removes =
-the
-bridge from the list but leaves the refcounted pointer in
-dsi2->bridge.next_bridge without putting it. On the next attach attempt, a =
-new
-reference will be acquired and assigned, potentially stranding the previous
+If a later call in vc4_dsi_bind() fails or returns -EPROBE_DEFER, the funct=
+ion
+exits without putting the newly acquired bridge reference. For example, fur=
+ther
+down in vc4_dsi_bind():
+
+	ret =3D drm_bridge_attach(encoder, &dsi->bridge, NULL, 0);
+	if (ret)
+		return ret;
+
+Because the component framework tears down the drm_device and its actions
+on failure, the drmm cleanup runs vc4_dsi_release_action() which drops the
+dsi->bridge refcount. However, because the refcount does not reach 0,
+__drm_bridge_free() is not called and the next_bridge pointer is never put
+or cleared.
+
+When the bind is retried, of_drm_get_bridge_by_endpoint() is called again,
+overwriting dsi->bridge.next_bridge and permanently leaking the previous
 reference.
+
+Is there a missing drm_bridge_put() or cleanup path to ensure the reference
+is dropped when vc4_dsi_bind() fails?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929-drm-fix-of=
-_get_bridge-build-regression-v1-0-ccb7e602daad@bootlin.com?part=3D4
+_get_bridge-build-regression-v1-0-ccb7e602daad@bootlin.com?part=3D6
