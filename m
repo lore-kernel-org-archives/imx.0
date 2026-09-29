@@ -1,90 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A018A4E50D4;
-	Tue, 29 Sep 2026 09:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E01C4D7D51;
+	Tue, 29 Sep 2026 09:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790673898; cv=none; b=jiaelvvJIpYuLXyG3Z9k1aowACbnQwTTuqQX+ZmpRIXXx4IjrNlO8Gm/3BvBWRT7qS/nsKNMgVW8C+1fwO6dPPnVvMO3bloD3Zc7fAN7rJ68drk0fzGrxB8TjQRDeEvX3i5sTKAdHaymtB1BzS9Zy6PPMk1vczSLJNH9u8RIWCE=
+	t=1790674380; cv=none; b=dieD84ia6GpaJwSHFE2V3/eD3ZNIEwmFZVRWLg6agk9yjCthbm+gPeQ/Bxp2nI8td7P9tCbHEC2k8JLLPsLS+OnNAmXSkPXxI/T1QdD66hTUPC+O6TyRo7+MQpK2Ih5QSdY/Ue0QNpSdBwVhha9NeRxjYgW5GqrIJ/rzc4Df7CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790673898; c=relaxed/simple;
-	bh=8BrEBN8/3CQVEAjV6H1BaOHxtnUlf00WuZ2LkyAJsXE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nNTjNCQhUZbhcXwv8xw4qiwJiUbgVTMcMryviO6z8okrBqE/g3i+3Nrk+jcsiPv8h1KP8x0FkJWeTJL4/M7DKOi2sBmwH2XP+tHArZwOWA3jfUed0enTul9suw5dRTCl41omWtbHcgR2xYomcDWTLiTHJXooIb80X/rEd1T3daQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXNkZN0/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790674380; c=relaxed/simple;
+	bh=kBDr+ZJf23/vh8n1DSnlnaIX5ncnAWXAnnruov8i9yg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G6mguCqPUDjOFIj4qQOmrgmRbSuJeyIfe5Bt6ZXDrovtyPg7ji5H3IksRsQkI/7+bg5C9gSG3ImLYQXY192sQgU6E/RND17FFkbnoLDX2071A1asUZYifjIkix/Vy3yPeXuVhlMbV1Rg0zclpIFZ5Qq3scIiLXDwT4GOwU8V5sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iU3cLlbe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXNkZN0/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049FA1F000FF;
-	Tue, 29 Sep 2026 09:24:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iU3cLlbe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5B61F000FF;
+	Tue, 29 Sep 2026 09:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790673894;
-	bh=JCytNskX7tZ5K1el9pjwkdsfGNzHyUnl2MbA1hYmx9A=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WXNkZN0//posIq+qGkJLky5cTg+iUdLZTHQnx9SaWcRTIQO0HV2ZRfUHmV05PHymn
-	 C0h7QRSkEBQDLWmvmK2LU8vCbiq8a4Qj9ER/0Tf0dxO+eSi1CIuP26Tq/Gxy+F1OhP
-	 GgREldR+yyLOhA9y6wPA3UwZtVO8mDOZDTAr+U4qoKlF7lH1zraEaT4rhjOEqwwIzW
-	 DpTj9crM7PFCla16O9ucXhEfmWk7D+O/Df7EwCiCz7+kNAvAClnta18A/NQlv9l4o9
-	 uNmKZaR/YJhjyUeq3XVLLhmEI8jrOELLMs1fXQ1B0AaqjDJ4Z+RbMqiQA8kluTExeC
-	 ZhzvqFtW4U1Ow==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: arm: fsl: add Draeger M48 dual-cpu
- board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Petko Manolov" <petko.manolov@konsulko.com>
-Cc: devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260929091811.3735201-2-petko.manolov@konsulko.com>
-References: <20260929091811.3735201-1-petko.manolov@konsulko.com>
- <20260929091811.3735201-2-petko.manolov@konsulko.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 09:24:53 +0000
-Message-Id: <20260929092454.049FA1F000FF@smtp.kernel.org>
+	s=k20260515; t=1790674378;
+	bh=++wV3Zt2udoWYiUUtrDx/gCc/FAUTtgZkZ/1rAIvgfo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iU3cLlbeFbcZlcKFHunOYFNLa6u1q6WFXU51gdk1f8hMxkM+K7i05JBWrnP4CAYaX
+	 I0A/0Q0mQSXxp6D4hPgIazjuryq5G49+ZQXd5sdHv38XGzRxngUTfn9v1dLbfe1ArL
+	 3UHQ8DOTsM4tfgIi6kSApR/1qlMpORUWbbboWCnRU55IUZhHL2MJgwO4Q29Q0dg2cW
+	 CohAT7KQuONDl90DkeWTwpLikQx1ktl6S+woRH5p1w8qSHn4ahWKhHOxOjPziFjfeh
+	 XBBxn8jssSelTB6QBQL8IfixVGxjxsN071F5auLNjap5bbotm5lhHzRXKOkKofDTVb
+	 ThSvrKTdEACPg==
+Message-ID: <c97be589-45f4-422d-a4c3-e5b0a61f5b22@kernel.org>
+Date: Tue, 29 Sep 2026 11:32:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/12] dt-bindings: arm: fsl: Document Variscite
+ i.MX6UL boards
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+ Stefano Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Joseph Guo <qijian.guo@nxp.com>,
+ Josua Mayer <josua@solid-run.com>,
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+ Mehmet Fide <mehmet.fide@screeningeagle.com>,
+ Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Maud Spierings <maudspierings@gocontroll.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+References: <cover.1790512621.git.stefano.r@variscite.com>
+ <a4e262cfb08153c23c80cd3098a684816993f1e9.1790512621.git.stefano.r@variscite.com>
+ <20260929-logical-fanatic-quail-2ff20b@quoll>
+ <art_faJ7Zx5CaWfW@Lord-Beerus.station>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <art_faJ7Zx5CaWfW@Lord-Beerus.station>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] dt-bindings: missing vendor prefix 'draeger' in registry
---
+On 29/09/2026 11:06, Stefano Radaelli wrote:
+>> Also, look at other examples here, like Toradex. The actual variant
+>> should be the last.
+>>
+> 
+> Could you clarify what you mean by “the actual variant should be the last”?
+> For a board with eMMC, SD card and WM8731 mounted on SOM, would you prefer
+> variscite,var-som-imx6ul-emmc-sd-card-wm8731-concerto or
+> variscite,var-som-imx6ul-concerto-emmc-sd-card-wm8731?
+> I had used the former ordering following examples such as
+> toradex,colibri-imx6ull-emmc-aster. (som - som variants - carrier)
 
-commit 023f077ed12c923bbdeea3fb8737b7678f238fe6
-Author: Petko Manolov <petko.manolov@konsulko.com>
+Indeed, the carrier board is the last part. Just to be sure - in your
+case the emmc and WiFi are on the board?
 
-dt-bindings: arm: fsl: add Draeger M48 dual-cpu board
-
-This commit adds device tree bindings for the Draeger M48 dual-cpu board.
-It registers compatible strings for both the imx6q and imx6dl variants
-used on the board.
-
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 656f2596e1d53..8f3a04228780a 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -260,6 +260,7 @@ properties:
->                - boundary,imx6q-nitrogen6x
->                - compulab,cm-fx6           # CompuLab CM-FX6
->                - dmo,imx6q-edmqmx6         # Data Modul eDM-QMX6 Board
-> +              - draeger,imx6q-m48         # Draeger imx6q variant of M48
-
-[Severity: Low]
-Looking at the properties definition in
-Documentation/devicetree/bindings/arm/fsl.yaml, is the new vendor prefix
-'draeger' missing an entry in the vendor prefix registry?
-
-If 'draeger' is not documented in vendor-prefixes.yaml, building the device
-tree schemas will trip a missing reference, and schema validation via
-dt_binding_check will report an undocumented vendor prefix error.
-
->                - ds,imx6q-sbc              # Da Sheng COM-9XX Modules
->                - embest,imx6q-marsboard    # Embest MarS Board i.MX6Dual
->                - emtrion,emcon-mx6         # emCON-MX6D or emCON-MX6Q SoM
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929091811.3735=
-201-1-petko.manolov@konsulko.com?part=3D1
+Best regards,
+Krzysztof
