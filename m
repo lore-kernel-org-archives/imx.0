@@ -1,176 +1,190 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013010.outbound.protection.outlook.com [52.101.83.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863193D333E
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 14:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790692711; cv=fail; b=rCinXJgXIovHOrl4e3z5ARECLFLWosFVvti58AwP4I0WpPiqNOMqZHmOBfbRk67Y+9zQ907V27b5mRJdGPXPYaCKIIbZQvxVi7IklddXZASS+xCYU2t9fpleDnvV9Tlhv9m9w50+8O8Hn5Km0PHtQMLlk8e3q8MtE/svP1m1j4c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790692711; c=relaxed/simple;
-	bh=aPM+7bH1R1EdFGJrUqsG7FjuZ/mdNIePeSpF2/VJ8Lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=W/qh7/PK20Ma91Ef38XIEITz06JEj1dQqdHJ51bz76ewJaUarZBFq+XY3MEamHYbjSZN13ry6gO6WI20OISvo9aamg6F458seP2JKKK4bSdUscBbuDoOhzqhgkpZpIBAsZhvFZp8ZtYV2ja4u3PCt5JlzXZmWBn8bhllm1dVn98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=H8qRRb4k; arc=fail smtp.client-ip=52.101.83.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="H8qRRb4k"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WhXya2emNZMVjqKQfZbnZ6qFKZ+dZ7BcjuLTvq4YxusQJWC+oO4DqGhvWFqHu+lc5Qknwdkn59wT9hAZqP0t2XsVGWXWnF9gRR46aNbkpS9IfVAXm8RW21g09/7MPyaepeO5h7Z0Zx3zLz6rI1z6YxTo0ksS4VV01mXoNAwhScWrBSjANyCMkDkCtba8pC4mIPAS/c0ncgYCQPPfyFPUGX9zQNXtaENlL+hqnPEi9GQd8FKmzJRtLg2YY38nsCbN4ZWFvqH4pHyThYrT6Q/1kiJ4hp2Un8jELcgvz7jRyZMQJpQtkmnot851y/3VBYHBg/K16sXq3CcDqYw/mILaKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hp+IRLWCM5hlZrQZwlm0ehr7Zc/WhYNBQ10bt0bMHs0=;
- b=Kgky/dG0Jz9XnrCvDojJC5YppUjsR0En8rgkVBPHMnr/T19lZ6c/FgJFPuJ3xdfxhLn8rkkOUyPmVaftfudgEcHju8gE2ePASi1amIywlPpto+Q/Xsri8Ex2xRqmlcflnTFHdR9N79lS6g6R55P/9i4550wzehWXNLjvWm3KAjBSx1RHYvP4pOR6cNBjtB2JpEPDOPP51iis0wUnf/4o4l56Et0Z8ENbS5u94wkwrRErUNFMLsNEJIvwJM8DZdgsBfdxeDH0v0TROqgzJu/jH1Id2eHCdyJg45NMB26Bc/Atd5xvlx1WZx9uhnepKpHry6aPhuurFLmsyh5EZkzoLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hp+IRLWCM5hlZrQZwlm0ehr7Zc/WhYNBQ10bt0bMHs0=;
- b=H8qRRb4k0EqZkHA0m3QQ2dIfInoz3tOwO9ydAaZaN27YbREKltoOAO3y9BxF5sYUDjJozJHRW9IlXmsIhG1u0QjPKbNDjEi40OHVJsX4NrDcRffBuAKPnejadB0FwjPh4Aqi1b7h7siuywqwMEtS9B56q65lngbk0PmpAR+EFsYCdcM6uGIGI7dujTh7i6wUP27jWa/XKcDYh+JhbKdQQw5qIP8bHqHkVIvlTtDhgBnBPPmcGi2n/4/6HuMKpI56EMXBE/P6Rl/hntrWN/ZG/rDQQBtWeUH9Sa9y31DdPiEs9ADU2kJZqEhEDXlIHLlP+8oQmRPh96KSg9wiPkaVMg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM9PR04MB8066.eurprd04.prod.outlook.com (2603:10a6:20b:3eb::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 14:38:23 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 14:38:23 +0000
-Date: Tue, 29 Sep 2026 09:38:14 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Ming Qian <ming.qian@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Ming Qian <ming.qian@nxp.com>, Zhou Peng <eagle.zhou@nxp.com>,
-	Elliot Chen <elliot.chen@nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] media: amphion: Add V4L2_FMT_FLAG_DYN_RESOLUTION for
- VC1L
-Message-ID: <arvNVv4nyXoB8iC9@SMW015318>
-References: <20260929-flag-dyn-resolution-v2-1-ef29487f7215@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929-flag-dyn-resolution-v2-1-ef29487f7215@oss.nxp.com>
-X-ClientProxiedBy: CY8PR11CA0041.namprd11.prod.outlook.com
- (2603:10b6:930:4a::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1E03C1970
+	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 14:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790692964; cv=none; b=QEvQ/hPS/5wdt39WuUKETiz/L92sE9WlTzO16X7yJ3ArWIJf3/vQ5d1bHeAY3bOvUQMIg8fF4dGCaqCbjtTkyIitOvN2ZLF7QWaEK+CAJT3hgl2OpPiX62lFiBCFa+8r72Twz0sH7VRiy5q7DesU2YF+roynC59QmoXSBk2fyaU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790692964; c=relaxed/simple;
+	bh=BWNukz3gxR4ofTYhCcg6SCY61hjz0FbNIyj2Ss/lLgs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M04KNnFuotawQu4s1DcyWn1oyURMn4KzAPHByaq8Fiv0/QNTjwCctCCbCKKe/0/gtrIUspzLdsUXhNsa68lBXwgRSP6fW/FzLpSrSoeZtXfgJ+Wt0gHJ9iO27zxFsS4ojOy9Ck6pLI4ZjC7zZZCSC0+0uczy8DHYu7sHqOLPuTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.101.54])
+	by APP-05 (Coremail) with SMTP id zQCowAC3IDtEzrtqWCqvCQ--.41306S2;
+	Tue, 29 Sep 2026 22:42:15 +0800 (CST)
+Message-ID: <e044caae8c2160d96a29073bb1e60efff5883513.camel@iscas.ac.cn>
+Subject: Re: [PATCH v2 2/7] drm: verisilicon: stop using deprecated
+ devm_drm_of_get_bridge()
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Maarten Lankhorst	
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Frank Li	 <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda	
+ <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Robert Foss <rfoss@kernel.org>, Laurent Pinchart
+ <Laurent.pinchart@ideasonboard.com>, Jonas Karlman	 <jonas@kwiboo.se>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Dave Stevenson	
+ <dave.stevenson@raspberrypi.com>, =?ISO-8859-1?Q?Ma=EDra?= Canal	
+ <mcanal@igalia.com>, Raspberry Pi Kernel Maintenance	
+ <kernel-list@raspberrypi.com>, Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Arnd Bergmann <arnd@kernel.org>, Doug Anderson <dianders@chromium.org>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni	 <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, 	imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, 	linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, kernel test robot <lkp@intel.com>
+Date: Tue, 29 Sep 2026 22:42:12 +0800
+In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-2-6da431d8f180@bootlin.com>
+References: 
+	<20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
+	 <20260929-drm-fix-of_get_bridge-build-regression-v2-2-6da431d8f180@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8066:EE_
-X-MS-Office365-Filtering-Correlation-Id: d181d1e3-3d5e-4768-9b87-08df1e37507b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|19092799006|18002099003|22082099003|3023799007|10067099003|56012099006|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	5sRX/O246OFPfjffP8RmGdYMac+ojjLBF/xSBYKN3F3AGzWYSNi3wz7dT896cUjyLRq6oPZev//oZdOHHkuTziZbcdNXY9iIGU3GjQsWw73dKtb4mNEhZ6hX66A5zvz09u1atTI7FC0NAGPRyOma4+Dp1BQb8yjGTBvTu6kPyX7lITXIZEajH87Vqgd/r/3S6lDzcRTNWBUyKTmSydRLe+of5clxyEqopYDX9r0/aERlodJ7lghCnk57LH5MLbQHyZN7zweNapdD+G1A3HXDswLaDtBiF3plbQylKBnoFJ8ZHJPl7QfKNKhePeuOkG7BCpPXypUqPhX2yODEswE8Yec2dhpw/KrbGVjFyxCbV/90kbEAjP+3E6YTAMo3Q5gatFwSi1s80Ie+pnJ4G90q9l68V/jvgJqjjjWNyGXcAP4386KMLWnPhQyPIrkdTbNYZrhzp7nAayVoW6AMkvOvPBANqcNjV/QrvteQoUHUvtr/sm2TL9dH40U4xbS0Pwvbdo26O0QNpi1xNF8DSV/f9momV1AZeaTkPzb3+7Aa5E8tzLxvZjoR95YPZhA00SkIwEsqQNshZDoDbozQqcGJBQ/iaqEF/Zi9OiVPKQ/fi9xGp/7aST5CdKUB41XmWT3P
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(19092799006)(18002099003)(22082099003)(3023799007)(10067099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uYYl82cHYuruUe2e+Ceo1S7g+R1LD+BH68R2TW8zR3iErVfzlemvOWi4H/84?=
- =?us-ascii?Q?1aZIBZ6oUrWb2YzDQhNJiQqiGJxm7hqaOttEn9JLsy3znGnUU4OnITI8d8Y+?=
- =?us-ascii?Q?iNQj7RyeIVoqL6lhWO49vqBKXL6DZ33Jz2V4d0C6CDs4n8ClD7QrRFdLeXXi?=
- =?us-ascii?Q?L7S7xcvsGl/M+kTdZ1anhe7j8V49iqT2OYNG582Pjec1vBQjDlJZuuuja4kY?=
- =?us-ascii?Q?7RlMkHBtGnpyHPcXfVjIIPk3Ot9Zri2GVch8Zzqi0Ks45acSQQgXq+bk7KGr?=
- =?us-ascii?Q?AemoR3ry+Ssuz2YTOvWHWR/7ZwJKHtxiwnwvW3wyrTpGkgt+izeJUVd4KFIh?=
- =?us-ascii?Q?PZOXzuPZPQKDrIQzKCl9+gK82vvS5gK+ySaC4sxnkJso/AYnTtJ7epwLizvu?=
- =?us-ascii?Q?N6xGK+Zft4n3Ft/JCuRwTh03qBtFCAB//WmZgMNkIN+XZj0TqPX93MYkScfF?=
- =?us-ascii?Q?NS6tRcIGNOyFvhbpCCBhyopFC7PeqjVL9j6tfAMrO2lu1BpTqGFl6ENy+K7I?=
- =?us-ascii?Q?auvg0tEW4EpZtP5QMdrTz4fgZlnFyYkxfjnyHaGljmmSblU5KF3KeXGJU3gJ?=
- =?us-ascii?Q?myEJmqNfUkJPD2L7Y0zApmhpWWMwdXkLBMKhD4NbgyIucDyHnX/osJjxusip?=
- =?us-ascii?Q?hOI4QCe4Tf77sCu+Qrrw9291sPMIykokv4qqZYYZ5lj6JezyL4OA98DVsAEO?=
- =?us-ascii?Q?0K5ugszphtHcGAXHiBnmGWnaIOONPQ2vKRGcmRz2cdDjEMNb0zLX8CdPmVH/?=
- =?us-ascii?Q?0AEN5i0qirSvKlVN+uFVFRLPhPNzn4F2KzyL5Dbp9q3aYLSs9KGsvhYmFF/7?=
- =?us-ascii?Q?0WYjbd8cHQ+epP98AYTlLSU5H6LJjpVVZm76ZsNN7I3mLR5kfjFkBLE+GZii?=
- =?us-ascii?Q?ItZbIxmk8KGkNptXC++4SHxrFoaoNpjupJMNHYf68FZ6FmFQ2JP1FpzKbnWg?=
- =?us-ascii?Q?LaG82ADjk8OTxeSQus2zVIpLiVvVI1TXl/JkfyB72SDYIc7mR69x0hNvq7gW?=
- =?us-ascii?Q?TjPN8d9HTTY09DDYZNy/LVOV/fkZV8Zp6/kf9y6ho9dF43kF0yq3LCuBOcCk?=
- =?us-ascii?Q?zxSM5FJe+sBjEQGLFmcHbtmSg5Cc4HF7kJwTAnUuFgsVHEydvms+pqdIe7lc?=
- =?us-ascii?Q?/JM0m/uW5qnsMaedacUosmiUwWutATUuncYlEQ24IPe1mULUI32KOZhhcT2Z?=
- =?us-ascii?Q?WufOF51HJMe4SSVXTXBvO2OfVq6jffRJvsirV1mjhC11ZuBls1gSFtxFicnX?=
- =?us-ascii?Q?cvIuU/D7wReo+hafOBvrG/R8kEbUcEN4qPgp7AtrP1qSkgKJUtRICbLL8Rsj?=
- =?us-ascii?Q?T2iBLmeL6LbN+BEqcszziSwV2d3Y+V+rF+huHubaiDUmY8BiIpvPV9Wz9yw3?=
- =?us-ascii?Q?cQNmA82Ky8Cil2VZel4YBhsKlNJEcW0ZwGBuSlivEXn8zUTHKvWPHE92/ap4?=
- =?us-ascii?Q?g1062zeLvKXzzV0Il4CNa5djNSiCB1sysX18t7nj/Lo/fMiap7aqq5rM/lPP?=
- =?us-ascii?Q?/CkdPEH5AQtvkK3r4YkTO54wq3Ml74fLQmuqPOb3M1TVdltHKFTSYTlHyUPJ?=
- =?us-ascii?Q?9w96/ZMz8qhY/AB4N5j/7GayRtRQEyULqorKZZMxMO8NDbAcwZjr6fgu+nDF?=
- =?us-ascii?Q?zB8eoKy/GpBeJEgrAd+hzp4wlLLt3Bv/+Xv+Aj+9EAYpEkefMRm8gMNW2chB?=
- =?us-ascii?Q?wJSViZw2ULorYpOJ9AhCb3uPg3lVwcW/2nbKAj/qD5GbNr7B8bfCASzqAe/a?=
- =?us-ascii?Q?iQMnj1lV50SZR4kyNoB0ABuXv4paGalpapaqTnbFBRvWQeRh8nny?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d181d1e3-3d5e-4768-9b87-08df1e37507b
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 14:38:23.5689
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G8AjDCGhoLkt5FQnU67b7rUbQUx6trzY6jCywHrqo7Eyi05dhKtcKNCmTPq9Dpsx6PDOTw8gIJwiEXkxamyfDMZwQ6351x4bkr1FlZIAyKGReOKkLFiBWMgEww3aWnAR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8066
+X-CM-TRANSID:zQCowAC3IDtEzrtqWCqvCQ--.41306S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAry7Jr15Kw43Cw1DZFWkZwb_yoWrJF1rpF
+	40qa98try5XrWxXw42kr4j9FyYya4Dtw4rGFWUt34Fvr1FqF4DGF1kAry5Z3W5CF17GF1r
+	tr4DtFySv3W8Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvvb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
+	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
+	1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73Uj
+	IFyTuYvjxUv4EEDUUUU
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
 
-On Tue, Sep 29, 2026 at 04:30:28PM +0900, Ming Qian wrote:
-> The amphion VPU decoder always emits an initial V4L2_EVENT_SOURCE_CHANGE
-> event after parsing the resolution from the stream header for VC1 Annex
-> L format. Without V4L2_FMT_FLAG_DYN_RESOLUTION, userspace (e.g.
-> GStreamer) cannot determine that the driver will signal the initial
-> resolution, causing it to skip waiting for the event and fail to set up
-> the CAPTURE queue properly.
->
-> Add V4L2_FMT_FLAG_DYN_RESOLUTION to the VC1 Annex L format entry to
-> indicate that the decoder will emit the source change event during
-> initialization, consistent with other coded formats supported by this
-> driver.
->
-> Fixes: e670f5d672ef ("media: amphion: only insert the first sequence startcode for vc1l format")
-> Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+=E5=9C=A8 2026-09-29=E4=BA=8C=E7=9A=84 15:39 +0200=EF=BC=8CLuca Ceresoli=E5=
+=86=99=E9=81=93=EF=BC=9A
+> devm_drm_of_get_bridge() is deprecated, switch to
+> of_drm_get_bridge_by_endpoint(). As of_drm_get_bridge_by_endpoint()
+> returns
+> a refcounted bridge, ensure it is put by using bridge.next_bridge.
+>=20
+> Fixes build failure when CONFIG_OF is disabled.
+>=20
+> Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to
+> drm_panel.c")
+> Reported-by: Arnd Bergmann <arnd@kernel.org>
+> Closes:
+> https://lore.kernel.org/r/20260928161605.2271412-1-arnd@kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes:
+> https://lore.kernel.org/oe-kbuild-all/202609291109.OIsGTysr-lkp@intel.com=
+/
+> Closes:
+> https://lore.kernel.org/oe-kbuild-all/202609290408.BOs7sk55-lkp@intel.com=
+/
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Checked the code in drm_bridge.c, and it looks like the lifetime of
+next_bridge should be indirectly managed by devm when
+devm_drm_bridge_alloc() successes and the next_bridge field assigned,
+so the only explicit put needed here should be in the alloc failure
+path.
 
+Patch is:
+
+```
+Reviewed-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+```
+
+>=20
 > ---
+>=20
 > Changes in v2:
-> - Drop the documentation patch. Nicolas pointed out that
->   V4L2_FMT_FLAG_DYN_RESOLUTION postdates the stateful decoder spec, so any
->   driver setting it is already required to follow that spec. The
->   non-compliant drivers (coda, s5p-mfc) are pre-spec history and not worth
->   bending the spec text around.
-> - Drop the RFC prefix, as requested by Nicolas.
-> - Link to v1: https://patch.msgid.link/20260608-flag-dyn-resolution-v1-0-44dc65516148@oss.nxp.com
+> - fix bridge reference leak on attach error path
+
+It should be `bridge alloc error` instead of `attach error`, but I
+don't know how to correct the error in the changelog, and anyway it
+won't be part of the final commit.
+
+Thanks,
+Icenowy
+
+> - mention lkp report
 > ---
->  drivers/media/platform/amphion/vdec.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-> index a9f0521f2e1a..75808482d090 100644
-> --- a/drivers/media/platform/amphion/vdec.c
-> +++ b/drivers/media/platform/amphion/vdec.c
-> @@ -136,7 +136,7 @@ static const struct vpu_format vdec_formats[] = {
->  		.mem_planes = 1,
->  		.comp_planes = 1,
->  		.type = V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE,
-> -		.flags = V4L2_FMT_FLAG_COMPRESSED
-> +		.flags = V4L2_FMT_FLAG_DYN_RESOLUTION | V4L2_FMT_FLAG_COMPRESSED
->  	},
->  	{
->  		.pixfmt = V4L2_PIX_FMT_MPEG2,
->
-> ---
-> base-commit: 2dcdfb625c3b8fe87454e19dfbc54b3e3f0ad70e
-> change-id: 20260608-flag-dyn-resolution-f39fd24a0ba2
->
->
+> =C2=A0drivers/gpu/drm/verisilicon/vs_bridge.c | 11 ++++++-----
+> =C2=A0drivers/gpu/drm/verisilicon/vs_bridge.h |=C2=A0 1 -
+> =C2=A02 files changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/verisilicon/vs_bridge.c
+> b/drivers/gpu/drm/verisilicon/vs_bridge.c
+> index dc7c85b07fe3..3a5091c0ac2c 100644
+> --- a/drivers/gpu/drm/verisilicon/vs_bridge.c
+> +++ b/drivers/gpu/drm/verisilicon/vs_bridge.c
+> @@ -29,7 +29,7 @@ static int vs_bridge_attach(struct drm_bridge
+> *bridge,
+> =C2=A0{
+> =C2=A0	struct vs_bridge *vbridge =3D drm_bridge_to_vs_bridge(bridge);
+> =C2=A0
+> -	return drm_bridge_attach(encoder, vbridge->next_bridge,
+> +	return drm_bridge_attach(encoder, vbridge->base.next_bridge,
+> =C2=A0				 bridge, flags);
+> =C2=A0}
+> =C2=A0
+> @@ -303,8 +303,7 @@ struct vs_bridge *vs_bridge_init(struct
+> drm_device *drm_dev,
+> =C2=A0		return NULL;
+> =C2=A0	}
+> =C2=A0
+> -	next =3D devm_drm_of_get_bridge(drm_dev->dev, drm_dev->dev-
+> >of_node,
+> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 output, intf);
+> +	next =3D of_drm_get_bridge_by_endpoint(drm_dev->dev->of_node,
+> output, intf);
+> =C2=A0	if (IS_ERR(next)) {
+> =C2=A0		ret =3D PTR_ERR(next);
+> =C2=A0		if (ret !=3D -EPROBE_DEFER)
+> @@ -321,12 +320,14 @@ struct vs_bridge *vs_bridge_init(struct
+> drm_device *drm_dev,
+> =C2=A0
+> =C2=A0	bridge =3D devm_drm_bridge_alloc(drm_dev->dev, struct
+> vs_bridge, base,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bridge_funcs);
+> -	if (IS_ERR(bridge))
+> +	if (IS_ERR(bridge)) {
+> +		drm_bridge_put(next);
+> =C2=A0		return ERR_PTR(PTR_ERR(bridge));
+> +	}
+> =C2=A0
+> =C2=A0	bridge->crtc =3D crtc;
+> =C2=A0	bridge->intf =3D intf;
+> -	bridge->next_bridge =3D next;
+> +	bridge->base.next_bridge =3D next;
+> =C2=A0
+> =C2=A0	if (intf =3D=3D VSDC_OUTPUT_INTERFACE_DPI)
+> =C2=A0		enctype =3D DRM_MODE_ENCODER_DPI;
+> diff --git a/drivers/gpu/drm/verisilicon/vs_bridge.h
+> b/drivers/gpu/drm/verisilicon/vs_bridge.h
+> index 70fee1749699..2b0ed94e4520 100644
+> --- a/drivers/gpu/drm/verisilicon/vs_bridge.h
+> +++ b/drivers/gpu/drm/verisilicon/vs_bridge.h
+> @@ -25,7 +25,6 @@ struct vs_bridge {
+> =C2=A0	struct drm_connector *conn;
+> =C2=A0
+> =C2=A0	struct vs_crtc *crtc;
+> -	struct drm_bridge *next_bridge;
+> =C2=A0	enum vs_bridge_output_interface intf;
+> =C2=A0};
+> =C2=A0
+
