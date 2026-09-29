@@ -1,74 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp5-g21.free.fr (smtp5-g21.free.fr [212.27.42.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE18569F32;
-	Tue, 29 Sep 2026 19:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E669569F1D;
+	Tue, 29 Sep 2026 19:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790711258; cv=none; b=brmCh549HawiH+fEyxF3qsP0D5+yQIYfswA1G9Hw/T7eF7/5yS7LZdCYQS+W3UkOQBK1a/m78/vSELm341t20e0wBvWddTn8cVXzdoGahoDJpAT9c4G2isQ7fcROc1C3504P73rlmZ10HeXLHtRfl/S1p/xIq0EfBZgLOzBVNs8=
+	t=1790711315; cv=none; b=NBu1EjV7gTD861B1HAlfbgfdOW1D5m4Ww86FNWp4yW2AY9TKLtBVX8q7O2eIc5y7eqq3GKes1Gv8qkgk+E5kLkASzHQUqau5vE2kkBWIOWBc3h2hCZShdlIkNbB9oHgh/MVHWyCftni7RBGbGKLDzOpA5IKIiqAZ/CVHOPj+vQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790711258; c=relaxed/simple;
-	bh=CH9vKNvR0x5N7Cb+XuIDmG08jgy9Rx3wgR1CIEuZGO0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mLM1s1JGXTQB7rVo991UVbAVr4AbkA+AT9nhqnBu7W37RefE6eTFRKYM/mAcCA0qNremlL56IRSsRiTOeqAK0e4Rirweg8fqadJx5mr3+VkWp6WS2gIqD/r44yy9OlgXXdfbOJVhC8kwwQggvU6dmwWHTXNjgvVpq8M6RTMtbgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E90jhqCK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790711315; c=relaxed/simple;
+	bh=x2HBXj7BphhLV/5zf9OMiBld4v5xmycaFT6YzFzXDOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dRLfDYA8ogRdZbCf8xDem830UJTqbxewmPQt15AagCXYxf5FBjqC5H+SuBH/BOfletzb5n+LGIWKaWnpq3JFjfb6hMOToNHQWz30TQUVGaNkArXKWpC4xx6/Lpa5NoQ3u68j8w2Oa4gP9IQBwPr2P4rH1wo5/0ONQSomzs7bZYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=nMcl27hm; arc=none smtp.client-ip=212.27.42.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E90jhqCK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9671F00893;
-	Tue, 29 Sep 2026 19:47:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790711255;
-	bh=4lTnb6dLKOMMUYniqUMDLwMAcEnotkSjXO3jVri9qCA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E90jhqCKD+YUP64S4EoVruYTvfw/rUVuZv7jPSKHTbqc4hh/Vlh8Ke5s3jXkJc8CP
-	 QY8dZ4ket7Cf8+RIh6rvr0Lzh+XIqZdfbIDGF7ajf7jIUGhIPmslhsvMlLYGOyBnaL
-	 93J6Vo68z1jLtuZ5lfrxBt5QlEZ3ZbV8nWpggPicLQhuygeVH1Tth5hUWxCRsTc35F
-	 X3ERNZZAOxpHv4SaSHOlsI6x0lbbtD5csLEEzftsZoe/ReMPjiVtsJ15kH9v6vdiAQ
-	 oympEnpu4v5GonJM2j+W9+gr5IdMV1Z1qvoxhHhp1TNC6LnNXLs1tK/3kIT3xB1/ll
-	 cky9rd5Ts16UQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] PCI: layerscape: use default error response behavior
-Reply-To: sashiko-reviews@lists.linux.dev
-To: jeffbarnes@linux.microsoft.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, linux-pci@vger.kernel.org
-In-Reply-To: <20260929194339.233271-1-jeffbarnes@linux.microsoft.com>
-References: <20260929194339.233271-1-jeffbarnes@linux.microsoft.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 19:47:35 +0000
-Message-Id: <20260929194735.AB9671F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="nMcl27hm"
+Received: from L30177.local (unknown [IPv6:2a01:e0a:ac2:22b0:fd38:7b91:be5e:6aee])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp5-g21.free.fr (Postfix) with ESMTPSA id 800125FFB1;
+	Tue, 29 Sep 2026 21:48:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1790711303;
+	bh=x2HBXj7BphhLV/5zf9OMiBld4v5xmycaFT6YzFzXDOw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nMcl27hma7267u99G1Xm803mZveu0PybXpBS8ey/9gh6wValqug61FOMWGalr5wSx
+	 L2enfpZwvY7WQ3vPjyXHO1wo56MPFtU2LQcW+cTizbhfZtqLa0oL+UUPL59IZD3/1k
+	 E6r1fkQuC5e+SwCdU0D+8Ovxi4L2QZ8RUGKQnr/ewJDmgvIgJHbJyIZpUaNllThOe1
+	 CDkJ/BYyaG1m0gxaW0VHtLRnzm0BXcENk7bf5gUyvw16wSAYDdaRjCnpWv/f2IEaUi
+	 Q11e/sBTsKEinpRdYUArHUyPaEIaEG96SroLxWPqHNFRwR674B4rvz5MIKn63/Djh+
+	 6Qjl/ucclF32A==
+Date: Tue, 29 Sep 2026 21:48:18 +0200
+From: Vincent Jardin <vjardin@free.fr>
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev
+Subject: Re: [frank-li:imx/dt64 65/103]
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtb: gpio@2310000
+ (fsl,ls2080a-gpio): 'pltrst-hog' does not match any of the regexes:
+ '^pinctrl-[0-9]+$'
+Message-ID: <arwWAqkwvlf79z45@L30177.local>
+References: <202609291726.iogWKGg7-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202609291726.iogWKGg7-lkp@intel.com>
 
-> From: Jeff Barnes <jeffbarnes@linux.microsoft.com>
->=20
-> The Layerscape PCIe driver programs PCIE_ABSERR to forward errors from
-> outbound non-posted requests to the internal AXI interface.
->=20
-> A PCI configuration access can race with the link going down after
-> dw_pcie_other_conf_map_bus() checks the link but before the MMIO access
-> is performed. When the resulting Completion Timeout is forwarded to
-> AXI, it causes an asynchronous SError and kernel panic.
->=20
-> For example:
->=20
->   Kernel panic - not syncing: Asynchronous SError Interrupt
->   ...
->   Call trace:
-> [ ... ]
-> ("PCI: layerscape: Change default error response behavior").
->=20
-> Fixes: 84d897d69938 ("PCI: layerscape: Change default error response beha=
-vior")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jeff Barnes <jeffbarnes@linux.microsoft.com>
+On Tue, Sep 29, 2026 at 05:36:04PM +0200, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git imx/dt64
+> head:   8c40f32361d566c0882e9d92abab36256b268291
+> commit: 565b6713a460126874d15654fe24d995a57c822b [65/103] arm64: dts: freescale: add Nodebox v3 CPU Module
+[...]
+> >> arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtb: gpio@2310000 (fsl,ls2080a-gpio): 'pltrst-hog' does not match any of the regexes: '^pinctrl-[0-9]+$'
+>        from schema $id: http://devicetree.org/schemas/gpio/fsl,qoriq-gpio.yaml
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+It is the dependency mentioned in the cover letter: the gpio-hog child
+nodes are allowed by
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929194339.2332=
-71-1-jeffbarnes@linux.microsoft.com?part=3D1
+  78c0baf85cd0 ("dt-bindings: gpio: fsl,qoriq-gpio: allow gpio-hog child nodes")
 
+which Bartosz applied to gpio/for-next, not to imx/dt64. The warning goes
+away once both trees are merged for v7.4-rc1, so nothing is needed on the
+imx side.
+
+Best regards,
+  Vincent
