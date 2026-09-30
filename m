@@ -1,87 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565334EDCC5
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 13:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74204D4890
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790774533; cv=none; b=GoPT9fX+VCpK4rH2IlFsgZKAooYwnT1t7VkjJtETVj+e1zCYQDrf2zhActmTbdzoSx8cnf3dhrD0WyiZD3DWvgYNjS9sI/z0syHJ8e/CutLxhyNP1s/UK/V0vEDNqOOvSMObP+reDJpZcra1/0GMD8wVcLzBV6+wjiqeyvU+HjQ=
+	t=1790774835; cv=none; b=VwYfOux1V2flq/WP9O+GBu/Uwbg1FGJUQ78FSa34ZUyIRZKrDW7OzzfRdFzROJXHV1ObNZcLRZs0ZwN/2dTfCtguMKVbR4UiLarmQegOi95h2xiI0jcY+x4NAWG9G+7JZwgkfCHl3WMsOCtzTD84RGhBxtMfLDxIxK8Zj97Qjz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790774533; c=relaxed/simple;
-	bh=wZJmLfEfCXYjoCzTqdd4D4IU51K1LeQ0vlEIkGanjNg=;
+	s=arc-20240116; t=1790774835; c=relaxed/simple;
+	bh=OpSmVL4hqTjWvE1WR/oUH8A/JGaoOj3L6zfCJwDU9FQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZIHd2ojwNkxWX0fICVx/2dJaGIbk1F5shWhrQQDjv27CpG+A8WVdF4Su8mCKJQE8c8ic7lJC+yiQFU+QPhk4WpUEp3Ex2AhQ5kpOTX64yqsXuCwzbYrX4YTO4NDMx1/zvmpaSB5jDcWg72lAm1GNgi9V81vgauZHR2JYrNv/mFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ID78kKzR; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=s6gMpwDqCI9WWSqvb00b0WUTdZntTG6RpTux83PAWxPPvpXEy3YQ6RN7ZkR/xky7yXpV33WtpruSHGjBCq0GAJO7+Bh5LOxS+Y0LXDA9IxOALusxGJ1lldUp+un9eEa1C0re0aLfyTGPOMRduV4iDgIciC3nv/hrUXdxtwumH5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=He0p0C2G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ID78kKzR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581931F0089B
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 13:21:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="He0p0C2G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B641F008A0
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 13:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790774510;
-	bh=wZJmLfEfCXYjoCzTqdd4D4IU51K1LeQ0vlEIkGanjNg=;
+	s=k20260515; t=1790774822;
+	bh=OpSmVL4hqTjWvE1WR/oUH8A/JGaoOj3L6zfCJwDU9FQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ID78kKzRdVuD0vOY0tb9F6hE5AypyIV35VXl/0TB81aW0KHwIN5+n6sU+GTCqQo22
-	 zevVzKiTAGXxkdcZw20zUWzWjtqLRox6z2840aLqZUoaSzH8+vJJ2ysDYvvmCn6JBy
-	 3+wpaJAa+8FTC6nuJsYtylLcqW2drm8hpoq4e/V3zbdfyQnfw4A6woBxpcUz9btCfZ
-	 MbSn9Ny9SeR6GSEh4orWEwKXooBbUCTwbGuUr7O3nlu7y9Is1tfmeiKtkBfY/ldlNR
-	 TqoyyV4EVgBe6EQPT8zP8LvUX2ArIjyPlchgk90p6WBk17c5Gs4NEb7L4rJcv9SVox
-	 pxYV7GOmr67og==
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a5e548cd7dso47103171fa.3
-        for <imx@lists.linux.dev>; Wed, 30 Sep 2026 06:21:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByUHUAe/3D+364Isa4fyJfCxmdz66sLH3/tWF8yRxB5dXf2k5Sir/NxrrXLtfpP7bVPqhs=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKD8bx/5VoGbUTA2NBYiieK7zULKkh3hcw74j7IME3Z2M5r+5MA
-	v+XEdsbSiw7WN8njXi1rGztIVoaVNOjZYr0EAUUww3vX9Dv0dXC6A2iAf2OaHD3bcPYAVMpbi7B
-	lhyvnLWjoHWVsOke+5zxf5fuRWWo0M4Y=
-X-Received: by 2002:a2e:a550:0:b0:3a5:b6af:2973 with SMTP id
- 38308e7fff4ca-3a779170e26mr4566541fa.5.1790774509117; Wed, 30 Sep 2026
- 06:21:49 -0700 (PDT)
+	b=He0p0C2GEmvWcs3QascPblvBjga4iuGgh4pATvGNfHJPBwXoZSz5+rXqm1bNcaurk
+	 jcIjD1SyLBjDKGPKdNFupFTAyobxtJ1EAWb2GHBrWexPkB56ZymrVpu1cd4m1O99Eq
+	 zpK2vVJRlrhk9QKePv7sYZ5pWg1Wsd/MjD5VUryPztPWjE1xViUCmtDFViUhcBKI4d
+	 JGPCyhndt1THNfsOJh4a/rteMDVrCWaWlaauLWUBKhSQacYHaRuG9cxGUxBwA61//a
+	 t9nJk4bTk+OlpGxp4AykifQhcHs3nEtC6HDj+poWtdfMuPtgDvB2RDpheI0SLu/jKq
+	 2w01hRV4BvDag==
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b8f490bb27so2873804e87.2
+        for <imx@lists.linux.dev>; Wed, 30 Sep 2026 06:27:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxj6LbWUaUS1AaOjOcT0nlThhY+wQKEc/+BFkgARpMOAlWJ3KTSG1+ZUCFuCtkoVVLHe0g=@lists.linux.dev
+X-Gm-Message-State: AFq9FYINIdyRmL9Pv1sVqSgbOe1My+Y3fv5MbUqsmvXlZ0rK1wriEyB+
+	eQZjZBG31SkqFDnURP1hGq2RtF2selP3pcG/qE4KmLLq9gLzla1EM3Wc43cxfkpq7pt3ZOVDm48
+	DV+stP5YOdcXgnln4HjOL3OS3x4v5bGQ=
+X-Received: by 2002:a05:6512:3a8a:b0:5ba:36c4:c953 with SMTP id
+ 2adb3069b0e04-5ba402b8597mr589624e87.8.1790774821501; Wed, 30 Sep 2026
+ 06:27:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260917211446.i.153-kees@kernel.org>
-In-Reply-To: <20260917211446.i.153-kees@kernel.org>
+References: <20260918072852.501420-1-wei.fang@oss.nxp.com> <20260918072852.501420-2-wei.fang@oss.nxp.com>
+In-Reply-To: <20260918072852.501420-2-wei.fang@oss.nxp.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 30 Sep 2026 15:21:37 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=TbxyEiZUhPYtqiXBJTekvE7g8uSqwLbuALj7Y1iso4A@mail.gmail.com>
-X-Gm-Features: AclHuK9we1Pkw_SnEX45VNI9ZkjWr3vMHJERGZiaBSgi6q9Y8UmCTh3tVaYbMI8
-Message-ID: <CAD++jL=TbxyEiZUhPYtqiXBJTekvE7g8uSqwLbuALj7Y1iso4A@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: imx: Remove const from group_names allocation type
-To: Kees Cook <kees@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Kees Cook <kees+treewide@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
+Date: Wed, 30 Sep 2026 15:26:48 +0200
+X-Gmail-Original-Message-ID: <CAD++jLnFo1yd2AXyu8XdZ5VV4RooXGP1xEXS9vtAsoSfwPKY=Q@mail.gmail.com>
+X-Gm-Features: AclHuK-Cq3rn8OBffcZs3OkTTOIAYyYq7qYSn2XcIAzlvfiwp3W9Cp7NWkyTaAU
+Message-ID: <CAD++jLnFo1yd2AXyu8XdZ5VV4RooXGP1xEXS9vtAsoSfwPKY=Q@mail.gmail.com>
+Subject: Re: [PATCH v4 net-next 1/8] ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi
+ for 64-bit register access
+To: wei.fang@oss.nxp.com
+Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	richardcochran@gmail.com, linux@armlinux.org.uk, wei.fang@nxp.com, 
+	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 17, 2026 at 11:14=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+On Fri, Sep 18, 2026 at 9:24=E2=80=AFAM <wei.fang@oss.nxp.com> wrote:
 
-> From: Kees Cook <kees+treewide@kernel.org>
+> From: Wei Fang <wei.fang@nxp.com>
 >
-> In preparation for making the devm_kmalloc family of allocators type
-> aware, we need to make sure that the returned type from the allocation
-> matches the type of the variable being assigned. (Before, the allocator
-> would always return "void *", which can be implicitly cast to any
-> pointer type.)
+> Replace the open-coded 64-bit register read/write sequences with
+> ioread64_lo_hi() and iowrite64_lo_hi() helpers. Introduce two new macros
+> netc_timer_rd64() and netc_timer_wr64() that wrap these helpers and use
+> them throughout the driver. This reduces boilerplate and makes the intent
+> of each operation clearer.
 >
-> The assigned type is "const char **", but the converted allocation type
-> would be "const char * const *", as the size was taken from
-> "*func->groups", whose type "const char * const" is const qualified. As
-> there is no general way to remove const qualifiers, take the size from
-> the assignment target instead. No change in allocation size results.
+> The high-half register defines (NETC_TMR_*_H) are kept to document the
+> register map; they are not used directly since netc_timer_rd/wr64()
+> address the 64-bit register pair via the low-half offset, relying on the
+> hardware layout where H is always at L + 4.
 >
-> Build tested ARCH=3Dx86_64 allmodconfig with GCC 16.2.0:
-> drivers/pinctrl/freescale/pinctrl-imx.o
->
-> Assisted-by: LLM coccinelle
-> Signed-off-by: Kees Cook <kees+treewide@kernel.org>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-Patch applied!
+That's neat.
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
 Linus Walleij
