@@ -1,112 +1,75 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEE23C1D66
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 19:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48053C3450;
+	Wed, 30 Sep 2026 20:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790796953; cv=none; b=aELuOFJmG6BkKhf2MHq6HfU3SwfSKz+GxqFX6ctJAYSXdaZLoXLJQ5lajUCf6xT9rfQFE7ZUGyNYJ6HDHp5ZEEdJ5X4popngHqCasDt1prgVhd9utrVRRyhDSs2RNE30O4VxUFS/f4IBe3vPFdsRUXjmXk2ti26S4zx1c3FJKUg=
+	t=1790801489; cv=none; b=jfI+8dF3bTjOoT78Ce4sWDIaYt9J/+gd3vZYqnUiVT1zZc1h1ZzkYYVQ12rYqvyn9LLR1PEvuRWID6A7HYGfZdJO4HbgRERxl4y4vFSx7i6yIvX3Y7X1DT8BeTIK0hNtEgC0/arEaaGeEfoEkv97RA3tIiJHu0LBh56CaihbvqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790796953; c=relaxed/simple;
-	bh=RyYgxmQTPenrP6JtQOHr/dswyrUhr6UE6WMMfi5iTFU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=Y/UQPPYsxJf4r3abNxYVhvyranY4eEx9DlSgf2MFD4obRhWWMaygFy7dxDG7+qY3FJW1xYu8QnCkkZpLq4khb9oa+UnUTzBW+yO9Byi8eusfZZdNiR720zkjB3xflhhDM/npEfi9VnitmxqOZKdCuQxe7XG89M54DUOf39kTxAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rKwk765z; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790801489; c=relaxed/simple;
+	bh=F7BNPTzA7PSKWN2FZz7t+OEbxLrR1TWY6FmIu3wZS74=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rndk97nogkfjZdpl7N4Jgh+byW59ZmUT3Yk2mb6W1IM06fCFZEOnm48Gd40hAbYUnUT0tvg1m99H+1htfpHUv1JHJk0Sk24/XL98L15wmbDdjyoQnzoBFkKMGA2SyiCPf2EUklSaSJMAuv+t34VKgK80HeqMO4u0458Q1dbT7Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TTPu7D0d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rKwk765z"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 26B7D1A1080;
-	Wed, 30 Sep 2026 19:35:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E707060749;
-	Wed, 30 Sep 2026 19:35:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 67C771032A657;
-	Wed, 30 Sep 2026 21:35:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790796942; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=vpqwVhkaQrlM436Ao8cy3FIBQzurew4N1bUjRlG3ai4=;
-	b=rKwk765zTUA62PJdK6Dbqbnq30ntX08ZMYWV9oB4Bkff4C0oXIhqhIPXhT6CRN0HsQlFU9
-	5b4bHMwIQUtwRhiCGp2C9VWPa16v0EWh84DXBgciHzslAo919sCG505Lz5Lm/udM56j5ga
-	DjrCV8uZA7AU0TUTolKn0jzNrKzHOtTxtGFhPJoMXeVkc8QWhn3SJgaZ6Ajz+G+rJJCww7
-	QEVb4SZd3TFHfpiHwuxG3e/Kzr9u7yKCf3yfyf29356z6ZU27N3kV80Ua+eSwMT1T+c/2n
-	Cznaegi02Y9iRSzMnBlRDuvPm/BoAoeakPqq9yeNPLLtS4kMMBF4Y4FIDTy3fQ==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TTPu7D0d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB481F000FF;
+	Wed, 30 Sep 2026 20:51:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790801488;
+	bh=uC+6UVM2GPZ96eFu0TIu8Pwk+9kSq3jFTix3iTNizKI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TTPu7D0diU1gmZIMhmkp2JN5ifSiExdXefd5GUcLmbtJfhI60179El7kiTNSOLOQu
+	 QVuvc5zxIS7pKqGZxgbWjdxfCyGneSefiyp2CWsTjqRwqQYf0/4Q3SlZuDgD6DW7v6
+	 SQUjqUgpfTgSm3SH4yIWe8L5f+7vH1601zJZ/mUgDII4pOjtuqsHpUL/JE9zTE3HMF
+	 WhwTaD9ymK9kQ5hM4lhpxGOy6yUEzSrE7LwM52aviyTHi1A0iJtM3eEQVK4b6RvjmA
+	 F9kiWA7g8MF4R3HzZ1G7nz/2J3CdLCZPKLpnePvxAwk9ZEN7HH+e81iONpN//OAktw
+	 rsyoVt389j/sw==
+Date: Wed, 30 Sep 2026 13:51:27 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Marek Vasut <marex@nabladev.com>
+Cc: vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, wei.fang@nxp.com,
+ claudiu.manoil@nxp.com, netdev@vger.kernel.org, davem@davemloft.net,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+Message-ID: <20260930135127.28f95804@kernel.org>
+In-Reply-To: <c3b7e841-5eea-4431-b231-44659e1605c3@nabladev.com>
+References: <20260924180607.60932-1-marex@nabladev.com>
+	<179073420852.1211220.2021094445984738152.git-patchwork-notify@kernel.org>
+	<c3b7e841-5eea-4431-b231-44659e1605c3@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 21:35:39 +0200
-Message-Id: <DLSWJ8V1AIC9.3D68VRRVHXJUF@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v2 3/7] drm/bridge: dw-mipi-dsi: stop using deprecated
- devm_drm_of_get_bridge()
-Cc: <wsa+renesas@sang-engineering.com>, <imx@lists.linux.dev>,
- <Frank.Li@kernel.org>, <dri-devel@lists.freedesktop.org>
-To: <sashiko-reviews@lists.linux.dev>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.22.0
-References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com> <20260929-drm-fix-of_get_bridge-build-regression-v2-3-6da431d8f180@bootlin.com> <20260929135537.5E85C1F00898@smtp.kernel.org>
-In-Reply-To: <20260929135537.5E85C1F00898@smtp.kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue Sep 29, 2026 at 3:55 PM CEST, sashiko-bot wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] drm: bridge reference leak on dw_mipi_dsi_host_detach early re=
-turn
-> --
->
-> commit b7207f37872ee6fe7eb2903e38f89975b930c392
-> Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
->
-> drm/bridge: dw-mipi-dsi: stop using deprecated devm_drm_of_get_bridge()
->
-> This commit switches from the deprecated devm_drm_of_get_bridge() to
-> of_drm_get_bridge_by_endpoint() to resolve a build failure when CONFIG_OF
-> is disabled. Since of_drm_get_bridge_by_endpoint() returns a refcounted
-> bridge, it adds the necessary put operations to release the reference.
->
-> Link: https://lore.kernel.org/r/20260928161605.2271412-1-arnd@kernel.org
-> Link: https://lore.kernel.org/oe-kbuild-all/202609291109.9RGna4XZ-lkp@int=
-el.com/
->
->> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu=
-/drm/bridge/synopsys/dw-mipi-dsi.c
->> index 5dd475fcaacf8..22d1b8cbe1d57 100644
->> --- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
->> +++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-> [ ... ]
->> @@ -368,9 +368,8 @@ static int dw_mipi_dsi_host_detach(struct mipi_dsi_h=
-ost *host,
->>  			return ret;
->
-> [Severity: Medium]
-> If pdata->host_ops->detach() returns a negative error code (e.g., during
-> device unbind or PHY teardown errors) and takes this early return, does t=
-his
-> leak the bridge reference acquired in the attach function?
->
-> Since the bridge is now dynamically refcounted and we skip the newly adde=
-d
-> drm_bridge_clear_and_put(&dsi->bridge.next_bridge), it looks like the
-> reference count will not be properly decremented on this error path.
+On Wed, 30 Sep 2026 04:21:19 +0200 Marek Vasut wrote:
+> On 9/30/26 4:10 AM, patchwork-bot+netdevbpf@kernel.org wrote:
+> > Hello:
+> > 
+> > This patch was applied to netdev/net-next.git (main)
+> > by Jakub Kicinski <kuba@kernel.org>:
+> > 
+> > On Thu, 24 Sep 2026 20:05:19 +0200 you wrote:  
+> >> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
+> >> but also very compatible. However, for example NXP TJA1120 PHY needs
+> >> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
+> >>
+> >> As a minimum change, increase the MDC clock to 2.5 MHz which matches
+> >> the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
+> >> DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
+> >> NXP TJA1120 as well. There is no known rationale for why the 558 kHz
+> >> was picked when the eMDIO driver was added.
+> >>
+> > Here is the summary with links:
+> >    - [net-next,v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+> >      https://git.kernel.org/netdev/net-next/c/587acb86d646  
+> This should have likely been applied only after someone from NXP looked 
+> at it.
 
-The issue was there already for drm_of_panel_bridge_remove() (here deleted)
-and drm_bridge_remove().
-
-Id say it's orthogonal, and most likely nobody has this issue in real
-life. So I took a note to fix this soon, and I'd let this patch be applied
-as is because it fixes an issue bothering people.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Maybe say that in the commit message next time.
