@@ -1,202 +1,86 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854DA5172CB
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 17:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA09651CF5E
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 17:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790787735; cv=none; b=VkUTKnKaaEECzpQhupK1H4VjXucWrx3RDb2XEL7aQ9j5el5JxgxhWH4fj9LFocCq2AD5foKH9J9u2g/X3gPYrjn0b/uqc2cc5oou1XOLvgMWXYMvDa0sdS2/s1eCC6L50JeDG9ED7Xhxlsp3VgiHKEDbwQVElwuFpx9AU0bIoUg=
+	t=1790790263; cv=none; b=knDrsLNtPgJibLGG4kPy64tFjDn89v+JrVE2mf+2oWRxxs4CqQoyxY1gUnjPTxYiWfe0LMyp8bD2YXM5PbnWoCbZtTpHHQa9C0ucqSKEUR5mDaiBNOaV0T1cpi4fgyCgB/PAA+p+EGA9sNmijx24I4ctGytM/STeDh8ev9A4CGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790787735; c=relaxed/simple;
-	bh=9lMV5dgcBCBmAm7tn/MclC+xRIeMw2vFnKEJ5c6rgFg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Disposition; b=Y5p1iYJr+kkYDxtfoE/t+t2gVaDiBItk6MTVVrJm1FzBom9jVskmUwEAtEWwp5d+FnnnBz7cZkDpIXb34RcygoXpzDSSwC7OTf0aWXWI9hFgGwp/4l5XYjFBfyTHYk6VcoD0emZl0bImsH6ieUXrb0h5bOcbJDEkJOA5svDJoFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=fqJB8AnY; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1790790263; c=relaxed/simple;
+	bh=r8g0Pz6kDEx7WyKSjnUFRLi3Uv58ds8+cyhR3KPsX34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jI4ZTIM1of7eFk1zcwbPmXoiU+/v9oFeLjMtfmO/fV++vtUuxEn1AVs7e93XsADs/Fx4J53Kz9ABRxt1gphrzqfVJTPeboBRa4kO79wHLMFKWWO2J1GL3aLd29i9asgceGyEuVeSNcluKiqSjei5+kU5tf+fq65cJjO5wLdxd20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=veOft339; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="fqJB8AnY"
-Received: from [100.96.208.60] (unknown [52.179.129.152])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3A68720B7166;
-	Wed, 30 Sep 2026 10:01:18 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3A68720B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1790787680;
-	bh=J4FHysKmL3sST3B6JYnWBExkNR6TyUEiXRkB5SFBJQA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=fqJB8AnY0C0Mq2QOcZ1YCLFv0XUWWYTx2I86zAQN0rU1/2quofja7K/tU0ZKhk715
-	 MiLXiQue02RBuXUNUXvWpKyWTl2ECXmL6J5pjVxxqDP3b8/eyTxoei4k09x29s1P6N
-	 fBYGiIrKjlCDCa6cbNAiEzSLmOrUJdKEbhL2U/YI=
-Date: Wed, 30 Sep 2026 13:02:08 -0400
-From: Jeff Barnes <jeffbarnes@linux.microsoft.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: "=?utf-8?Q?linux-pci=40vger.kernel.org?=" <linux-pci@vger.kernel.org>, 
- "=?utf-8?Q?minghuan.Lian=40nxp.com?=" <minghuan.Lian@nxp.com>, 
- "=?utf-8?Q?mingkai.hu=40nxp.com?=" <mingkai.hu@nxp.com>, 
- "=?utf-8?Q?roy.zang=40nxp.com?=" <roy.zang@nxp.com>, 
- "=?utf-8?Q?lpieralisi=40kernel.org?=" <lpieralisi@kernel.org>, 
- "=?utf-8?Q?kwilczynski=40kernel.org?=" <kwilczynski@kernel.org>, 
- "=?utf-8?Q?mani=40kernel.org?=" <mani@kernel.org>, 
- "=?utf-8?Q?robh=40kernel.org?=" <robh@kernel.org>, 
- "=?utf-8?Q?bhelgaas=40google.com?=" <bhelgaas@google.com>, 
- "=?utf-8?Q?Zhiqiang.Hou=40nxp.com?=" <Zhiqiang.Hou@nxp.com>, 
- "=?utf-8?Q?linuxppc-dev=40lists.ozlabs.org?="
- <linuxppc-dev@lists.ozlabs.org>, 
- "=?utf-8?Q?linux-arm-kernel=40lists.infradead.org?="
- <linux-arm-kernel@lists.infradead.org>, 
- "=?utf-8?Q?imx=40lists.linux.dev?=" <imx@lists.linux.dev>, 
- "=?utf-8?Q?linux-kernel=40vger.kernel.org?="
- <linux-kernel@vger.kernel.org>, "=?utf-8?Q?stable=40vger.kernel.org?="
- <stable@vger.kernel.org>
-Message-ID: <0FEA6868-5A7C-4955-9FBB-BE9A1AE8D3F7@getmailspring.com>
-In-Reply-To: <ar07ubdYLk-Tje1q@SMW015318>
-References: <ar07ubdYLk-Tje1q@SMW015318>
-Subject: Re: [PATCH] PCI: layerscape: use default error response
- behavior
-X-Mailer: Mailspring
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="veOft339"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 09C511FC00;
+	Wed, 30 Sep 2026 19:44:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790790257;
+	bh=qfsxJ44J91j2emyBCQAKF4tdn9hHzn0C18LtsrXKcnA=; h=From:To:Subject;
+	b=veOft339+be/R8+BPCsciswCSo6rkAYQ3nN0LW3Cs9JFkEs571BIjraUhyd27WeXF
+	 ZycFfsQcSronG7eSNBBmQE0rRLAvLGMBMJqxf54bxn5y8JW5A3FSzppAaiv7LwTODG
+	 xc2/UonI0PXBTShNRVjagAjc24GEuep0fhhDFKx7w6U7uRMXB9SqvtXE/fM4h98G++
+	 H+iJ0zI+onkDMKiiTH4qpSppSp5ULmEhZrO4B2DehzOw3sGjHLyR5ZefFCIrscuHzi
+	 NTykvpHeNtiDzZ+6H1GbMY0tWnbMmjvbr2zC1DDJHOUYRKgUkbiBD0m3kf73iagsta
+	 LC3pU0NtSx7nw==
+Date: Wed, 30 Sep 2026 19:44:13 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Marek Vasut <marex@nabladev.com>
+Cc: Frank Li <Frank.li@oss.nxp.com>, linux-arm-kernel@lists.infradead.org,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/3] arm64: dts: imx95: Add support for Data Modul
+ i.MX95 eDM SBC
+Message-ID: <20260930174413.GA2463938@francesco-nb>
+References: <20260928204741.175754-1-marex@nabladev.com>
+ <20260928204741.175754-3-marex@nabladev.com>
+ <arvPDq8sjjv7na01@SMW015318>
+ <49303872-5622-4e1d-8e1a-01394ec29367@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <49303872-5622-4e1d-8e1a-01394ec29367@nabladev.com>
 
-
-
-On Sep 30 2026, at 12:41 pm, Frank Li <Frank.li@oss.nxp.com> wrote:
-
-> On Tue, Sep 29, 2026 at 03:43:39PM -0400,
-> jeffbarnes@linux.microsoft.com wrote:
->> [You don't often get email from jeffbarnes@linux.microsoft.com. Learn
->> why this is important at
->> https://aka.ms/LearnAboutSenderIdentification ]
->> 
->> From: Jeff Barnes <jeffbarnes@linux.microsoft.com>
->> 
->> The Layerscape PCIe driver programs PCIE_ABSERR to forward errors from
->> outbound non-posted requests to the internal AXI interface.
->> 
->> A PCI configuration access can race with the link going down after
->> dw_pcie_other_conf_map_bus() checks the link but before the MMIO access
->> is performed. When the resulting Completion Timeout is forwarded to
->> AXI, it causes an asynchronous SError and kernel panic.
->> 
->> For example:
->> 
->>   Kernel panic - not syncing: Asynchronous SError Interrupt
->>   ...
->>   Call trace:
->>    arm64_serror_panic+0x78/0x90
->>    do_serror+0x84/0x90
->>    el1h_64_error_handler+0x30/0x40
->>    el1h_64_error+0x68/0x70
->>    pci_generic_config_read+0x64/0xb0
->>    dw_pcie_rd_other_conf+0x1c/0x68
->>    pci_bus_read_config_word+0x68/0x118
->>    pcie_capability_read_word+0xa8/0xd8
->>    find_device_iter+0x8c/0x160
->>    pci_walk_bus+0x60/0xb8
->>    find_source_device+0x78/0xb0
->>    aer_isr+0x1dc/0x230
->> 
->> Restore the controller's default error response behavior instead of
->> forwarding these errors to AXI.
->> 
->> Reproduce the race by instrumenting dw_pcie_rd_other_conf() to call
->> map_bus() while the link is up, then schedule a worker on another CPU
->> to set PCI_EXP_LNKCTL_LD. Synchronize the CPUs immediately before the
->> Link Disable DBI write, then perform readl() using the address returned
->> by map_bus() concurrently with the link transition.
->> 
->> Without this change, the overlapping configuration read results in an
->> asynchronous SError and kernel panic. With this change, the same test
->> returns 0xffffffff from the configuration read. In this test, AER
->> reports a non-fatal Completion Timeout, and no SError or kernel panic
->> occurs.
->> 
->> This effectively reverts the error response behavior introduced by
->> commit 84d897d69938
->> ("PCI: layerscape: Change default error response behavior").
+On Tue, Sep 29, 2026 at 05:20:27PM +0200, Marek Vasut wrote:
+> On 9/29/26 4:45 PM, Frank Li wrote:
 > 
-> Subject should be revert ...
+> Hello Frank,
 > 
-> I am not sure what's expect behavior by other dwc PCI controller. returns
-> 0xfffffffff or report bus error.
-> 
-> Frank
+> > > +	backlight_lvds: backlight-lvds {
+> > > +		compatible = "pwm-backlight";
+> > > +		pinctrl-names = "default";
+> > > +		pinctrl-0 = <&pinctrl_panel_backlight_lvds>;
+> > > +		brightness-levels = <0 1 10 20 30 40 50 60 70 75 80 90 100>;
+> > > +		default-brightness-level = <7>;
+> > > +		enable-gpios = <&gpio2 27 GPIO_ACTIVE_HIGH>;
+> > > +		pwms = <&tpm3 3 5000000 0>;
+> > > +		/* Disabled by default, unless display board plugged in. */
+> > > +		status = "disabled";
+> > > +	};
+> > 
+> > The both backlight is not used in this dts, can you remove it and
+> > add these when it real use.
+> It's the same thing we do on the other boards, so I would prefer to keep
+> this consistent:
 
+I agree with Marek, and I would not use the criteria about being used or
+not.
 
-Thanks, Frank.
+Francesco
 
-Agreed on the subject. This is mechanically a revert of 84d897d69938, so
-I'll change the subject to:
-Revert "PCI: layerscape: Change default error response behavior"
-
-Regarding the expected behavior on other DWC controllers, I don't have
-hardware available to test those implementations, so I don't want to speculate.
-
-What I have verified on Layerscape is that with PCIE_ABSERR programmed,
-the failed configuration access is forwarded to AXI and results in an
-asynchronous SError and kernel panic. With the controller's default
-response, the identical injected race returns 0xffffffff and the kernel survives.
-
-Please let me know if you think the behavior of other DWC
-implementations needs to be established before proceeding with this revert.
-
-Thanks, Jeff
-
-> 
->> 
->> Fixes: 84d897d69938 ("PCI: layerscape: Change default error response behavior")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Jeff Barnes <jeffbarnes@linux.microsoft.com>
->> ---
->>  drivers/pci/controller/dwc/pci-layerscape.c | 12 ------------
->>  1 file changed, 12 deletions(-)
->> 
->> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
->> index 14d6ac4fc53f..d333f1ae8a41 100644
->> --- a/drivers/pci/controller/dwc/pci-layerscape.c
->> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
->> @@ -28,8 +28,6 @@
->> 
->>  /* PEX Internal Configuration Registers */
->>  #define PCIE_STRFMR1           0x71c /* Symbol Timer & Filter Mask
->> Register1 */
->> -#define PCIE_ABSERR            0x8d0 /* Bridge Slave Error Response
->> Register */
->> -#define PCIE_ABSERR_SETTING    0x9401 /* Forward error of non-posted
->> request */
->> 
->>  /* PF Message Command Register */
->>  #define LS_PCIE_PF_MCR         0x2c
->> @@ -103,14 +101,6 @@ static void ls_pcie_drop_msg_tlp(struct ls_pcie *pcie)
->>         iowrite32(val, pci->dbi_base + PCIE_STRFMR1);
->>  }
->> 
->> -/* Forward error response of outbound non-posted requests */
->> -static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
->> -{
->> -       struct dw_pcie *pci = pcie->pci;
->> -
->> -       iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
->> -}
->> -
->>  static u32 ls_pcie_pf_lut_readl(struct ls_pcie *pcie, u32 off)
->>  {
->>         if (pcie->big_endian)
->> @@ -180,8 +170,6 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
->>         struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
->>         struct ls_pcie *pcie = to_ls_pcie(pci);
->> 
->> -       ls_pcie_fix_error_response(pcie);
->> -
->>         dw_pcie_dbi_ro_wr_en(pci);
->>         ls_pcie_clear_multifunction(pcie);
->>         dw_pcie_dbi_ro_wr_dis(pci);
->> --
->> 2.43.0
->> 
->> 
-> 
