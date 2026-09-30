@@ -1,113 +1,99 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F9E484885
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 10:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B0348F82F;
+	Wed, 30 Sep 2026 10:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790764470; cv=none; b=Sc5hNpw9UVQ4vYhMumjyhyA9G9CUzvSxClQVYBcyDiuq2wdGBWUSJzNesB5zsq4HIWrVym+9lWR+sbTJhhkzKE2BZpv5C17Kp4yf/FrurP/cW8VhDHaJbAsRJ3gBmh9PYF10SeJWCHQygWvB0ZL4jzqJDO74tDkvok7L5z+/XIk=
+	t=1790764819; cv=none; b=a6H1oSSHvZ+mRMXJGPCylqmP6/7WKFbO7rG4wlxRQ5fTon307gXx3hTXwaXgwd5/Rthwa38zIjTyPYOF+zrNO1aqvGeBKZSrsyNLi6okMJW2tqg/z6VNxHS/PHhdZBuNryCVjzDJWR28MBq7KsQkbT8xY1uO1A4b9qUAlevJwis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790764470; c=relaxed/simple;
-	bh=yZ/0NL/5QSG/cX0kPKkuJr+iGmXepoifFzPLE2xXo/Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e35gWnxs7w98xLDXE5N+w5k6ShaizmtC4Kt3i4cJT7l+XQYk+5Q31IPMuV5CokVFAsZb2fdU+MNrlZxV3Loe3bwDjq6hptMwSuv+IV4ZbMjtODCCTYPYzC77Dwoq7gqkfUzV0FSjFuob2UqcNF2ogSk7i6lSBsD7k68C1p482P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Ar0TxQoH; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1790764819; c=relaxed/simple;
+	bh=2cryMlu0Uz8VoUDOgDSC9KBNv7Etwbanof9lkDx3Q5M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CdoJhfnj9ixV8IUraoUkxk/4PlxJq7yIMZE6PIN1aAq9caj7sexKTEGZvIkzDlzEE0f9EiiJd8Epn+PxtvzPGtJX9POp0L25IDQqK+aqEMp6IWFg3MA2x4bq/hIrx3n01daVDkZ5Pt44VNPoEwTkgy+7kLzzXJXvxdwsIELU84E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWpUu1Dt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Ar0TxQoH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=z9e30zNnkd/2aGEdqLw0xnKg0Po7szNciJvZ2BImHus=; b=Ar0TxQoHRF8w7MryRBOKObDH1s
-	41jIUGrWNTTPRPkPK7DCOJS8xwcorjCbtJvF4+7dqcue0Sz9r1BeZZ9ublyUv4sArMQ6DeSn+zK1W
-	1EW5NWLHOEBJw+u86dr38uLQkP5lpEACgFTWxnerPfzgWgJPO4knU4PQqU/52BpEQfRkLGb7BXBrD
-	gBd6f60zmqwwjJHu/oDsZ+hwTUYLNsTU/ZKl7uw6XHQvDWCXFLMRIyxsroenboLxdRYj6dIfEEQeP
-	DjAAjIDYSSI/Jen/j07p5ceMWevbnW7wHWzBC3aM966bJvywdgVbYpI//+MNVc1sT2ZcB2fXOKAUn
-	rZF3xWCQ==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:46122 helo=localhost.localdomain)
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1xBrds-00000000Z3d-3fYe;
-	Wed, 30 Sep 2026 12:34:26 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH 1/2] ARM: dts: imx6dl-phytec-mira-nand: Enable all peripherals
-Date: Wed, 30 Sep 2026 12:34:24 +0200
-Message-Id: <20260930103425.2315286-2-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260930103425.2315286-1-primoz.fiser@norik.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWpUu1Dt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC64F1F00893;
+	Wed, 30 Sep 2026 10:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790764807;
+	bh=0fqBubpUTwG2KFAPSC3GSdsjlMiOxNbp+Acmpf21/pQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KWpUu1DtHsBIaRGDGIhpplg47vXKvV597TYvpm71NWabcdEmaVtEWYsbO9m3HsWLs
+	 iK13CUBmdzPvV7N6cs4IjgxBHyLIfQ4DkW6bsfOKyOyCzuaWzq8LUqw6/9Hz8pzJdG
+	 ZN6H+tWWuQAESvgHK+xwvwg3NIsBQaTjExjgqEckBf16OhijdzpEExI+PI3vuY9uW2
+	 oA7/RvGk2oTFIoNjZDN0HnZ9FBa1Qp+gKYRzB6yh1/WGkIN4L+xyEfSdcsgfD+7XDV
+	 fGJ3wZ709QuB12nnHDMhUDOIpL+0NiAdp9zaNi1XdzptCUPpDJ6dxnyBwnRVHwObIt
+	 B3NTRhVVSH66g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] ARM: dts: imx6dl-phytec-mira-nand: Enable all
+ peripherals
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Primoz Fiser" <primoz.fiser@norik.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260930103425.2315286-2-primoz.fiser@norik.com>
 References: <20260930103425.2315286-1-primoz.fiser@norik.com>
+ <20260930103425.2315286-2-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 30 Sep 2026 10:40:06 +0000
+Message-Id: <20260930104006.EC64F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-The current imx6dl-phytec-mira-rdk-nand.dts describes the LC (Low Cost)
-variant of the board. However all phyBOARD-Mira boards in-tree are
-actually the FF (Full Featured) variants. Now, sync the i.MX6 DL NAND
-variant device-tree and enable all peripherals (CAN, PCIe and no speed
-limit on Ethernet PHY) to enable all RDK board features.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] dts: imx6dl-phytec-mira: missing m25p80 SPI NOR flash enablement
+--
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
- arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+commit 1324c8cd36593c2b5134e1d0d30d31d809ac1bc1
+Author: Primoz Fiser <primoz.fiser@norik.com>
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
-index 8ec27080ca1e..c2780ecb5936 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
-@@ -22,8 +22,8 @@ chosen {
- 	};
- };
- 
--&ethphy {
--	max-speed = <100>;
-+&can1 {
-+	status = "okay";
- };
- 
- &fec {
-@@ -50,6 +50,10 @@ &i2c_rtc {
- 	status = "okay";
- };
- 
-+&pcie {
-+	status = "okay";
-+};
-+
- &uart3 {
- 	status = "okay";
- };
--- 
-2.34.1
+ARM: dts: imx6dl-phytec-mira-nand: Enable all peripherals
 
+This commit syncs the i.MX6 DL NAND variant device tree to match the Full
+Featured (FF) variants. It enables peripherals including CAN and PCIe, and
+removes the speed limit on the Ethernet PHY.
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts b/=
+arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+> index d906a7f05aaad..1f827ad2ff5ee 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+
+[ ... ]
+
+> @@ -50,6 +50,10 @@ &i2c_rtc {
+>  	status =3D "okay";
+>  };
+> =20
+> +&pcie {
+> +	status =3D "okay";
+> +};
+> +
+
+[Severity: Medium]
+Did this omit the SPI NOR flash enablement?
+
+The commit message states the intent to sync the i.MX6 DL NAND variant to
+match the Full Featured (FF) boards by enabling all peripherals.
+
+The FF Quad variant (imx6q-phytec-mira-rdk-nand.dts) enables the SPI NOR fl=
+ash
+by including &m25p80 { status =3D "okay"; };. While &can1, &pcie, and the
+unrestricted &ethphy are enabled, the &m25p80 node is missing here.
+
+Does this leave the board missing its SPI flash feature and partially
+unsynchronized compared to the other FF variants?
+
+>  &uart3 {
+>  	status =3D "okay";
+>  };
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930103425.2315=
+286-1-primoz.fiser@norik.com?part=3D1
