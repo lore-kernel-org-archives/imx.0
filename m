@@ -1,150 +1,178 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010041.outbound.protection.outlook.com [52.101.69.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E664DA9C4;
-	Wed, 30 Sep 2026 13:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790776314; cv=none; b=pGZJ3cvzO9nfBZsdH0o26XLKgH+1s9HekZHj92GSZKMieczjirCifBLFDrgDMJ/cExbqcnjc2AViAtJV1f4jCs0XSVqbKT8ayit9E5E9Tv8gzOU2xexNp75Lm2awUZYgU4F8mQMT4g0M90UQUw+F08VnM9STX4OsMSbT2jDbADk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790776314; c=relaxed/simple;
-	bh=l7abfpsRrMZ7oBWyL4FsSuaEMLrgrwqnzHPSNOOnZyY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U8ECa8YqwCajeJ+A8h5Vfx7hyaD/RllaSC7WYBpEn2Fz5Nu2V0icC2viL2PmVmVpS6bVkMxDaTcxkjCFp7wQIWPFCAmqtXvs6joDgFghs/isGqSalr5pFujAb4z0t7iMF29bAvw/Hdxas/pOy+BmqQzIxS29GH22oMCK2Le/ujE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Eees9UHh; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053114F3915
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 14:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790777011; cv=fail; b=fDRwbOl4j4NG+3RXY6BZFJVe3hZMZVU9puZ4Q8Fd9MyOUbhnv+EAMmX3oS5ETnUWtYu90DO84oeHV2dLqLUadb9r9x1wgLcllCNU+jYUlGxouCZV01bHY/2X8kgVfuD+AUZbMFEmMTnhIit5tO4b4uxV+yn1wqZuO/ABc4FO+JE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790777011; c=relaxed/simple;
+	bh=sp+9kYVvvPZXWp+MUp78lROE43PFnlHnIboADn/KbO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Cen3wxm7DWGus6gfNMbYpcgnPXGdGDKKG+bkvHSHppN92YlG/K3frTkP8ihJ2NcCXONsbBJNstYdf1j7iXNtDksfqN4v65Evta+o3NjiaznsN+H/q/jEso/3vR3XHpT+oWhI5wvWsAo1StUH/2YIct9toyb/61QIKesi1UPfGlU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jhcfHjrq; arc=fail smtp.client-ip=52.101.69.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Eees9UHh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NRkSzdr9h/KU/Gp3VjR0xCo3up6HUR7kMTPEsX5LBWI=; b=Eees9UHhgdaRBjfrs8w5185sc0
-	+uySXruUWIbz+EvffpApA8edYaeI1MSJciKCuobjYZnpyrB2sff0WHWmSdA/wyOiKsEnaj00BUXgt
-	yh1QqIhvExinYuSWiKEXmDoGkbEnIxRtY+FTYxHEWASMlP54i64pUDuH2QIFBSfEONzE8jHVmvfmo
-	rvvZYTdwU9PGemsJuYz+fUajao8SOUMEajFhs+lU4uoOPl8o0fS2GL9OXKh4S7Sq0VoWG1Muu5ZFX
-	Qy+YzGa7WNPB137wi2UT/hvk3L80S9h3H5IQd8UmcnpP4UFcKXo/5lVQ/lGxrhcXAxV6ye8TyDk/E
-	78t9YQ/w==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:50572 helo=[192.168.69.116])
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.100.1)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1xBuil-00000000l1S-1WbQ;
-	Wed, 30 Sep 2026 15:51:40 +0200
-Message-ID: <a3cf3fa9-9468-4722-a053-5bec424d5526@norik.com>
-Date: Wed, 30 Sep 2026 15:51:40 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jhcfHjrq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=voBE4/8hkoa+jiaO+HM5GMwVVT4pdm5wrJgxEvTGpuA7QNYu5QvMQI+SPkxWYCIlJkOP4RQrvFD7rSusnPUgIDaFYjCvQpRKwftd2ctcOBjKH2MlDpk9M5/ZaMG1OGUeYYfGXBPa0fWBI7AXRq2pcxwt09H0VXshoGuuk2Ehu/GKAXjK03v72x+uPBWO3agnWu2j7l+5Vk94v6LImp82qlxVzqIb9xmaR0syNoqcNr8PChz6CH/1KSPgkn0dF8dk3XOoZ3Ce+/h9oITtyUfF1ZvRMHCYaj3ClDOjqKCByrAYqlZ6vgeHjg1y1yrDoMLYX42nFa0Cyo6lkkuZEjnSsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1tqabshKn/2TTUfeeKFoMhEj238tIJRTeMERGIypjpo=;
+ b=TBoqXYTaJxjJr1m+7QXb/j5KRvBd6IfyHMsD8RR2Oi2IJeBERW14p1eJr3tyAPGc0tlUXDUEmPIC8fWuMzZasbbM+v+G6BOC2uSYzR4e0mgJPOZPCwhFF7Q9HbKrGLIgY/tS88X3P3rAB34a1CDCcU8ez2krPYOpynYuNMsNM2kGy+pgg+84F018fvq8k4YeXJ3lnUL7d7vg/jMze8wsjUj8kfsyDVshj8Mg9WvBEbqYgCVOaOo7tkj+wQ0fNr1plMo/ga4GaExyr5bhO0dGHmabXY8Ns0MqdYY5FvYKIod7M5Ye+Cy6giq0FFKxqb6CEjbLdu8MuuNV3AF1mGvzQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1tqabshKn/2TTUfeeKFoMhEj238tIJRTeMERGIypjpo=;
+ b=jhcfHjrq2tqKw0glAdIAdTzZB/1s+M5+pL8jXxOUp3uFIvmkk1/zBzVgqdjyzFlCIvEnvzvLv2T0Uk62DnwliMA6jLQ4mmuyfNo63+F0Mha1TCSDZWjh5chVhi+ZTPlOM4mmlYet4facz9bRCT1xnDGjlBPpRDgTZh9G1o+BmZnX7eRGS3pN/SEC1dtYarzkfs79Wn2x5JMQQe1jA74ePYmwvYoTwVWh2nIjseAgDpfl/gmZzFdKRNimQVb9JZSSEF5D4gZgrU3PtsdHxNx9fo9UCsBnaD6N0WNn2JDocqXKZ4L5q9dhbwrh+KKIcxvtEKtNXJI86FIPk54VEEC5Ew==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by MMZPR04MB319484.eurprd04.prod.outlook.com (2603:10a6:190:3c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Wed, 30 Sep
+ 2026 14:03:05 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
+ 14:03:04 +0000
+From: Frank.Li@oss.nxp.com
+To: Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	Mark Brown <broonie@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	linux-spi@vger.kernel.org (open list:MICROCHIP AT91 USART SPI DRIVER),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Microchip (AT91) SoC support),
+	linux-kernel@vger.kernel.org (open list)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 1/2] spi: use dmaengine public API instead of raw ops
+Date: Wed, 30 Sep 2026 10:02:54 -0400
+Message-ID: <20260930140257.490019-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH0PR07CA0099.namprd07.prod.outlook.com
+ (2603:10b6:510:4::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ARM: dts: imx6dl-phytec-mira-nand: Enable all
- peripherals
-To: sashiko-reviews@lists.linux.dev
-Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev,
- conor+dt@kernel.org, devicetree@vger.kernel.org
-References: <20260930103425.2315286-1-primoz.fiser@norik.com>
- <20260930103425.2315286-2-primoz.fiser@norik.com>
- <20260930104006.EC64F1F00893@smtp.kernel.org>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <20260930104006.EC64F1F00893@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MMZPR04MB319484:EE_
+X-MS-Office365-Filtering-Correlation-Id: e775f8ea-9ee4-43b9-c1d9-08df1efb8bec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|18002099003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	9JVjECCsO+w2hppAZB9nhLPfW04HdJEM3pPeFMDi8N8Y+TZ0Fi2fgCVN9hGH23b6+Sduw/GivymUx1Ym59IvfD4asTaXa0Lpc68zjMSljDbVBFQaVkfOmyc9q6DfYhSx0mZYIAA7zyTvQGjTiCjZ8F+ZOEpBqNkmQE24Vi8k3xi+0z6pGnDU4DO6oqYMbgjDfGYvd1Q5r4YLhBXHOJvbS2hpsnjicgxn65YPf1q6YMWC/BSVf72eGdGCLRBLL1aq8E+QaLgElXAw1wvZk71vf3beME34qmDDIIfQoe74k3Hzeobv9fWG2qe/9SleMP3NopPwFi0o2720iAnadzIOKn6TNSr62vUccRgfcvDCwDZoir5Zh02Uoc8pbkiYSq3OkvlFx4EENSa0wadbg+c3DNatkqtuS+H3IJaqo2fAkv2yJ+qgBaxGpspg3mXnhNX1edYIPwpIutAM5VIp9GtRhYbt4YUcoyp7O3k1j3g5lcqqaA3JkpZt0PDWCMgiE29hR+Pu5Ckrt9e5DcLZchrM6/upVpkVCjraomF8Mf0AjsW9Qcw4kPevZx3odzD9XQ0T/kO3h7WJUDc/Gg54JDZ/dYunV0ZDjxcA6NOcmLv+S9nkzRHn8/1V+g4Kp53G5xkHOWPU+kX5fQ/Sq7qm38b1pEYA0ahtioELixg6xTQ0K28=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(18002099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Bz/EvKesdqV/cNhWWKuL71NsR18nWfSf7enCWnSMZA2A/goHBIt1luvQry8/?=
+ =?us-ascii?Q?rj3kW5XMhVrtgw37FNJyrlx58HEQSnPQx6a7Jzvo3wzCglECFNJJTY4Ws914?=
+ =?us-ascii?Q?ySmJWFdPW3HUC1oBHuSjyM5hyocABpD1+ma4smJgcmGg8eBP6QE4RnI1pDom?=
+ =?us-ascii?Q?hFTSy2XoKexy1dzMYG2Enha8CLgYoYR3o14MPEuIyf5oi6NKfNS3y3hbf2aw?=
+ =?us-ascii?Q?8F0y/ijYewQS6MlEVRyIjUrClmGztPu15uYbbUyO6KBIJT3dG5QttTbyxsix?=
+ =?us-ascii?Q?Ps4ihM2B4avBl6UYMQuxpcZSjfo44BptW5vLQGCQ0Y2f5C2C1TA3CgZedIc7?=
+ =?us-ascii?Q?KJJ4HWAgoKd2CuhKJY3mjxUyhx0f1ZF1tpybh3w4b23UQHHr4x7OJ3GPzAuh?=
+ =?us-ascii?Q?7Dz8NWjvp7kom8/5f0JdUd0wQeY2KXdpwTJU1hhkMa3WPX7ZhmE078awtfKc?=
+ =?us-ascii?Q?9Y6PJXjKn0RC6raT7D+cPlFi7ps33Gz8/vOq6Kpa04iJou/qBePPIvrHkR7K?=
+ =?us-ascii?Q?0ZiEww4DHmaH2KMHfaDdz+TPKA74bB2ruU2MjoxDgwmbYqMPryJQBzoON4ZK?=
+ =?us-ascii?Q?HEF9sx9DaK+v//AcJU80yKrw0RTblE872OT08qwkH8NDQdnsVjnJw17RGHkv?=
+ =?us-ascii?Q?mPyc3NvvLZRPOJo3NYlE8kXwOEbsTGJtBAfpB7Je91hn51Oxud+dShpkH1mQ?=
+ =?us-ascii?Q?bwyJ3RSyq4TDsSevAplQ3cKO3ynIGFMWOPQgNhTBdOZdQktim7DGGJJT/otV?=
+ =?us-ascii?Q?VKFQ1+HDI8HKa7Vdc8cCle27QY4cgPmI45W7c4AszXdGz0sQ6pyjWT8ojKoA?=
+ =?us-ascii?Q?IwQh8cOCFN/cIGmk+LnNrCZT8HWtip0qpbBjZzaDsUZf5l+zN4Hm+5gZRW72?=
+ =?us-ascii?Q?HKu7zaJ49rODGheShEaWJIrh9EMMdQInyuotgTBqo4g2yHy/TbYSlJJ5cAcn?=
+ =?us-ascii?Q?szdVX4Yo5Q9aVJb7bdB2OJoBuZcqt8u9Qm0iN1tyhPpupHu6LuQzAf14RIpY?=
+ =?us-ascii?Q?BUG4pXEphh1YiuZNFBzF57DpFmrFDybcpC4ce8hbot5loZFs4Sld8BmaHxeA?=
+ =?us-ascii?Q?sWr7z8HQgGS9btHrhaofcnOJYHZUZIsP0qkNXktJoyF+Sp1G01gO7iGnB0AG?=
+ =?us-ascii?Q?6pDP5N6MT8ueIGokAVE4Ss3MQzeQLU3uNJxFPX8CZIbgQATRvgA+svlhl312?=
+ =?us-ascii?Q?HNnTYTnNg/r01K+anuiO9wRVqpxEUWpIK8nPZ342vOEA3XBJQlFlJxCON4/w?=
+ =?us-ascii?Q?r0p8nfreuwV4Ka+PsKUozZF/ZF2+J6fY1SjbvXJLMM94vT2dsWeV/PJ7PS7Y?=
+ =?us-ascii?Q?R05//HK+LgnuTVQqNWmBqSkVYxAhTexelGWNYnsG/ldg/H2BSHa5cCVCfco4?=
+ =?us-ascii?Q?UJQ9uDOZ/vWwMxmLO4P8KN3TlwZUNmv2+EVGiz0koyY8jw66i9PnyUZtm0n2?=
+ =?us-ascii?Q?VN2K1YrT338TFMW8YQ/fZ8FCEv0+6ADN1ihzalKb4PUFezfbTxtYmwh9xc7a?=
+ =?us-ascii?Q?42k8QowTg0xNJuDLcDhJc2RzBRZiDQHjDvZ+gjpkAQJPVKIFLmSr2gaVYwbH?=
+ =?us-ascii?Q?hwdO6cgjO4ueH25ELnO10qZ9HaPEsyGDASInhsssoWAF3Q+TII+Fd1sXrh4A?=
+ =?us-ascii?Q?tBs68jqfBmBXhqsLd6nx5c9VG6R83rtpws6643qgbXlvak+TAFl2J/Vh/9VU?=
+ =?us-ascii?Q?rai/QaHxEDixCHIjGsGLv1z0dl2wRUVjlMGnDCQmKPIqGuI1b4x5Ark5pzX4?=
+ =?us-ascii?Q?WEQjzRlp2SWTgAfrNDGoRMvzoP1HVMU=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e775f8ea-9ee4-43b9-c1d9-08df1efb8bec
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 14:03:04.5972
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ENrJ38R4lq8bNV/yMxzDaSO15BAKqlEUtgf0QZeeO74yBlOdkm4z5w/Vyzw47dWPOA08N6oXUSePHtDpQ4saBSU8LWKt7zFXYh+D5B73HU3KH4He1ACVZqPcwUdYfhYn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB319484
 
-Hi,
+From: Frank Li <Frank.Li@nxp.com>
 
-On 9/30/26 12:40, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] dts: imx6dl-phytec-mira: missing m25p80 SPI NOR flash enablement
-> --
-> 
-> commit 1324c8cd36593c2b5134e1d0d30d31d809ac1bc1
-> Author: Primoz Fiser <primoz.fiser@norik.com>
-> 
-> ARM: dts: imx6dl-phytec-mira-nand: Enable all peripherals
-> 
-> This commit syncs the i.MX6 DL NAND variant device tree to match the Full
-> Featured (FF) variants. It enables peripherals including CAN and PCIe, and
-> removes the speed limit on the Ethernet PHY.
-> 
->> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
->> index d906a7f05aaad..1f827ad2ff5ee 100644
->> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
->> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
-> 
-> [ ... ]
-> 
->> @@ -50,6 +50,10 @@ &i2c_rtc {
->>  	status = "okay";
->>  };
->>  
->> +&pcie {
->> +	status = "okay";
->> +};
->> +
-> 
-> [Severity: Medium]
-> Did this omit the SPI NOR flash enablement?
-> 
-> The commit message states the intent to sync the i.MX6 DL NAND variant to
-> match the Full Featured (FF) boards by enabling all peripherals.
-> 
-> The FF Quad variant (imx6q-phytec-mira-rdk-nand.dts) enables the SPI NOR flash
-> by including &m25p80 { status = "okay"; };. While &can1, &pcie, and the
-> unrestricted &ethphy are enabled, the &m25p80 node is missing here.
-> 
-> Does this leave the board missing its SPI flash feature and partially
-> unsynchronized compared to the other FF variants?
+Replace direct calls to the internal DMA device ops
+device->device_issue_pending() with the proper public DMA engine wrappers:
+dma_async_issue_pending().
 
-I re-checked and this patch is actually wrong.
+Drivers must not call device ops directly; the wrappers provide locking,
+debug checks, and a stable interface that hides internal implementation
+details of the DMA controller driver.
 
-There was never i.MX6DL som with NAND + FF set board.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change in v2
+- none
+---
+ drivers/spi/spi-at91-usart.c | 4 ++--
+ drivers/spi/spi-atmel.c      | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-I will drop this patch in v2.
-
-BR,
-Primoz
-
-> 
->>  &uart3 {
->>  	status = "okay";
->>  };
-> 
-
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 804f6194c830f..cdc771350db93 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -239,8 +239,8 @@ static int at91_usart_spi_dma_transfer(struct spi_controller *ctlr,
+ 	if (dma_submit_error(cookie))
+ 		goto at91_usart_spi_err_dma;
+ 
+-	rxchan->device->device_issue_pending(rxchan);
+-	txchan->device->device_issue_pending(txchan);
++	dma_async_issue_pending(rxchan);
++	dma_async_issue_pending(txchan);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index c8012c82c3a78..c04113ce17f70 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -877,8 +877,8 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_controller *host,
+ 	cookie = txdesc->tx_submit(txdesc);
+ 	if (dma_submit_error(cookie))
+ 		goto err_dma;
+-	rxchan->device->device_issue_pending(rxchan);
+-	txchan->device->device_issue_pending(txchan);
++	dma_async_issue_pending(rxchan);
++	dma_async_issue_pending(txchan);
+ 
+ 	return 0;
+ 
 -- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+2.43.0
 
