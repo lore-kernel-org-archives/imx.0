@@ -1,79 +1,79 @@
-Received: from smtp5-g21.free.fr (smtp5-g21.free.fr [212.27.42.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A976C3DB320
-	for <imx@lists.linux.dev>; Tue, 29 Sep 2026 21:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BCB32E68D;
+	Wed, 30 Sep 2026 01:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790719147; cv=none; b=jiOggFY66Z/hXaDqMCLj+DP2JP7bzhSZJleJ1xGx6MEUVMe15nHe6pqSH9a0gEkKabhecNBqxa0OkTpJxfvDTnbyFFP8qx2E0B2zexdOsnaseFmcyDwnhlKY1xg+NlSNWi4ULZMNgFu4JGHFOpqNwE+paDcuTWvPruLaKgtfrXg=
+	t=1790731214; cv=none; b=MHEzvbz+Eg4z2hJoUX5dquoSarPqRNh5zTEs9ESEUSs+yCqbeJdTM11suEWWG5YVHdo4ZJwN2mKtxmyQU7ZFT8LofboBb+xbMz8GsEZCVJNgVgXDOcRbNHkMGzuS5HoIHuSwfMAU27wp9Kjpory6nT86kl6YsFo4xrUiKdFE39I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790719147; c=relaxed/simple;
-	bh=cr5V+n/greApI8Zyhw+2u0aNrf/2IvsBktudjqmiqro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o4FjYxEbUIsGvLCaKY8ZuOH6dBZ21Ou23js3Bb8qKc343dYS1rgWbKHHDXG6Rsuf/oFGtXR6c/OC0xWOBsEsqDEcV6dthnyPAjgM3Z/eb4vo7+M+r7k4SvYJ2uP8WwrP2zWyINUH2bQ/BNbKOLKppMyIpUjuIJU0vwpkwzpzNH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=BNoPtG9a; arc=none smtp.client-ip=212.27.42.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	s=arc-20240116; t=1790731214; c=relaxed/simple;
+	bh=zoW64vxMeb/Lb5apKSU/imQicVcCqEsTmMb87Ss3pEU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=P9rkYg4uiJ+39SJPg+6x1n8mFa7b5aMw31tuCDjYCQPeJQE3IBmMc1xuyBwEPGF4oKoECYRMvERAdKBqbRQ1Fzh8Oc1QVjDgSjLkFpt6enjz6EHS7pX/16WmcgtjXiLx4YgveB6MEluuXFc16H+zoO5ZPhAWvKeMq1CCa8pZVEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVenMHhA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="BNoPtG9a"
-Received: from L30177.local (unknown [IPv6:2a01:e0a:ac2:22b0:fd38:7b91:be5e:6aee])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp5-g21.free.fr (Postfix) with ESMTPSA id 7B1C95FFAA;
-	Tue, 29 Sep 2026 23:58:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1790719143;
-	bh=cr5V+n/greApI8Zyhw+2u0aNrf/2IvsBktudjqmiqro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BNoPtG9afk89bIDpSSwZpYx+lHCVs9Wsyv/laS8KKM0eqRGAjxlZleqPa51jjBBU5
-	 CY7Q33HOgnqUtHj8opAsuXscshB9tSe+jXDsh+/IBv/vcGHmMqdN1bYjb4DteSNDPn
-	 B9GDCmqWXGEAaFsiqKB6SN90MGeJKcqebtZORXaAGOryOrUupiWaLlc0JY3LkixbwL
-	 ok5AJ2D+qJ/7MYK3yUMeKDeiAFz73Xpqj78QcL1TN6WCvq87mwuHEBaKYE3apNoPkK
-	 E2prVdLk25A63Wb5VrAMU4px5KRDXSwyLkmnnsoNC+U20BeWfKKrlKF+G5RXl9sj2P
-	 VzGB14XiP14Tg==
-Date: Tue, 29 Sep 2026 23:58:49 +0200
-From: Vincent Jardin <vjardin@free.fr>
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Haobin Jiang <lemonoutput@foxmail.com>, linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
-Message-ID: <arw0mVbacAXv_1H7@L30177.local>
-References: <20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr>
- <apcYp0Zc7CrJMiOh@lizhi-Precision-Tower-5810>
- <aqO9SMvI89rqoEGb@L23803.iliad.fr>
- <arMUxCW5ZTzLT3VN@L30177.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVenMHhA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4506C1F00898;
+	Wed, 30 Sep 2026 01:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790731211;
+	bh=c4qXAkRkFH2BrM9ich78uiUxUASD+HAZoTxvNl/Jrfc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=BVenMHhArH7UpyU20V/MTkqiwpKUFqX+i+XhopAQ4wV2P4rGs/kRBdEVxKS3jqTSG
+	 CA7UllMHePCu315J7TyWlZQBSmZVEH/8PXkHoRcc9kBl50LUfOOzw/pHqEOhmU+ud7
+	 mR3KRV1gv3g2z7EUyelGboizxilEW4h21d2tCQq3PciUqw8LbrE5ofR2n4M0ejQeL3
+	 RN1nyh5xlGKMx+OFNxdLt70QdG2JFwv4LvIk1AXzGHrnOkLJM7ohk6D7MuWC/aJt/U
+	 lm4WjaOcLqiRGlc6u64tdZ5jEfHccvm8deVwO6tevwvMs8mpg//TwBPZB6+ASGT2Eb
+	 +tqsjkYUJcvQA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A4C43924FEA;
+	Wed, 30 Sep 2026 01:20:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arMUxCW5ZTzLT3VN@L30177.local>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: enetc: document enetc_msg_vsi_send() return values
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179073120977.1194536.6526680014561695847.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 01:20:09 +0000
+References: 
+ <09f24cefc214455305543a0528ceae6349c77419.1790357822.git.error27@gmail.com>
+In-Reply-To: 
+ <09f24cefc214455305543a0528ceae6349c77419.1790357822.git.error27@gmail.com>
+To: Dan Carpenter <error27@gmail.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hi Andi,
+Hello:
 
-Sorry to ask again: could you consider this patch for i2c/i2c-next,
-so it can land into v7.4 which is coming soon ?
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-It carries Carlos Song's Acked-by and Frank Li's Reviewed-by.
-It still applies cleanly on your current i2c/i2c-next.
-  https://patchwork.ozlabs.org/project/linux-i2c/patch/20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr/
-which I checked few minutes ago.
+On Sat, 26 Sep 2026 14:56:13 +0300 you wrote:
+> Smatch combines the return values together and wants all the callers
+> to handle the positive values so it leads to static checker warnings.
+> Add a comment explaining the return values.
+> 
+> Generally functions which return non-standard values should have a
+> comment.
+> 
+> [...]
 
-Haobin Jiang's
-  "i2c: imx: honour I2C_M_IGNORE_NAK"
-v3 is based on it, and waiting for it:
-  https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com/
+Here is the summary with links:
+  - net: enetc: document enetc_msg_vsi_send() return values
+    https://git.kernel.org/netdev/net-next/c/549f5f48f10e
 
-If you prefer a v3 rebased on i2c/i2c-next with both tags, I can send
-it too.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Best regards,
-  Vincent
+
