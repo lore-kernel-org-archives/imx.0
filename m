@@ -1,158 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4303A6B6A;
-	Wed, 30 Sep 2026 22:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871BD4A499F;
+	Wed, 30 Sep 2026 23:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805734; cv=none; b=W7hfbSQQ5scU5TL8tVkZ30uF1PprFq1uqbqTa7HwcEp0S1nizXfrSp8jY4HCsetcbFIbNr5vVwqaYyUIZjsnzaGMbf/MVJGTkyJ6Dw+0RPUXF+aGR9QHSvuChp4qFcThyJ60HvVElsYRe3SqphQQGDUZJDb4X3kgRbTjEnGHxcQ=
+	t=1790811140; cv=none; b=U1CjMpMSGWbEXpiFsYw4dWqb899crKLIa94Gpa1fzCKvqZl53/LBA+QY//PM57JxgjGHQ2oIku0lMQguSituHFwX4EG3hB4BGYWmVDh6RXJDpGpVTy8a3llmpfcW2hzDej/cRuxhqPHkmejRzi1Uu37RxY4zXUw+/474OCQ5d/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805734; c=relaxed/simple;
-	bh=Zj7icooIOxEKwbYgSpgHMpBatjF6q6bSEilFzPRrbsA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=smPh1ZYCVWKUT8LCv/RGp+Z98b3uWJpRG/KtK3nUz1+3009n3pM7PZmRHXFN3105Sdqlk5ELvP79wT7raYvD7ryt87kpp+Qq8Y+vrUkUaALx52XtNVHn5R5ASuMh39FHzIcSe+7cJJhWR83FWoP4C4rh36knisJ08rXPmNGCJhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kI8RiPMW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790811140; c=relaxed/simple;
+	bh=klMsnEP+vb9DhYgoK6Y/sENCG6Q3x+RrqvetvjVh6zM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oAU44vK1MFSJHz9XgBSCO08e8oMeRsOksD9VymdgV/RBXyFb3YB7dQTyHomHO1jF72jwV61n/Y2XduHGqljMHaD7BhmAxiiAOwUNEUbcZF9pq2YJe9jg+u3uUUBfvq5HWc6hkPKi335MEvmFJzJM/F5fqURnlJqxHI/bDTxw4a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKzKQScV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kI8RiPMW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A571F000FF;
-	Wed, 30 Sep 2026 22:02:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKzKQScV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C3C1F000FF;
+	Wed, 30 Sep 2026 23:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790805732;
-	bh=NlePrylo8nhSXr6lNDaPn7efJR9sFOWtzr5CZZPPM3c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kI8RiPMWqtfIY/gwnZc+fZuaCsgUNXQB0EjSJQgZutRWByzdaPJF5cD7UmL9EEfnc
-	 +h1iMt3ODURMQY+bNCnl5KH9mzAQJTaa2uuOh6Y08FxmjH91LFQ3UYYtHc4lYxOx7X
-	 n6AhxdDSQPLuchG9ShbkcS+g1cWtnjjqmCLSPzT/SnmQKT+T9qnRHPZp3Ani8bEaIC
-	 GyhOjv8zeF+EOmCUeti8cAq5iPPxkOgRVDMjXGgrFTWh3HjKLooFZwZVTyJSRVN9gU
-	 ks8iF+oF4EnmVOraWKkebO21pZF2BfK+ZhUbk04VEEdIOp1JAESBbrHOVVQVJIqAvK
-	 kFRW3zDkR3OKA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 3/3] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, "Oliver
- Hartkopp" <socketcan@hartkopp.net>, Frank.Li@kernel.org, linux-can@vger.kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, "Oleksij Rempel" <o.rempel@pengutronix.de>, "Vincent
- Mailhol" <mailhol@kernel.org>, imx@lists.linux.dev
-In-Reply-To: <20260930214729.809649-3-marex@nabladev.com>
-References: <20260930214729.809649-1-marex@nabladev.com>
- <20260930214729.809649-3-marex@nabladev.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 30 Sep 2026 22:02:11 +0000
-Message-Id: <20260930220212.50A571F000FF@smtp.kernel.org>
+	s=k20260515; t=1790811139;
+	bh=ng115hWZ2LMwKhDc1Httr+OsIIIboQhXGl5/aPDAQoQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YKzKQScVQVhjWvsISsBvvd+RZk8usvWcSOdVDF+hEZmkCSypcdgnfyxLAOWFWnGUi
+	 QQEtlC7xApH7XqyAoqUafqECurZATIh9SGxK2FQ0WsjPQgbReJZlKuzNRlqWqi4EPw
+	 8SPR0Dl+eXnngN0zEKgnmlMMy3a9TkzwfiLB0VmPHYpMR3k8e0iCbwYDWCIiRllFh5
+	 vOckl23hCF9F09n+LN0KGaC+Y1drrkXrkVoBItWgbdX7P/CqiN3H9WihVWBbDes6E5
+	 hmQ9VdXbGtwO/GBtB/pNrkR78Ld9LQx9p6P8JW2bgZbSZTLc3hZldUygvFbZw/h2IT
+	 rp0CwiCFJHtvw==
+Date: Wed, 30 Sep 2026 16:32:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
+ <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, Giuseppe
+ Cavallaro <peppe.cavallaro@st.com>, Chen-Yu Tsai <wens@kernel.org>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
+ Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, Fabio
+ Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>,
+ s32@nxp.com, Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois
+ <romain.gantois@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Christophe Roullier <christophe.roullier@foss.st.com>, Bartosz Golaszewski
+ <brgl@kernel.org>, Radu Rendec <radu@rendec.net>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Drew Fustini
+ <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+ linux-riscv@lists.infradead.org, Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH net-next v15 3/9] phy: qcom: add the SGMII SerDes PHY
+ driver for SCMI systems
+Message-ID: <20260930163217.4003d232@kernel.org>
+In-Reply-To: <20260923-qcom-sa8255p-emac-v15-3-e82f33720737@oss.qualcomm.com>
+References: <20260923-qcom-sa8255p-emac-v15-0-e82f33720737@oss.qualcomm.com>
+	<20260923-qcom-sa8255p-emac-v15-3-e82f33720737@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] dts: imx95: incorrect PCAL6524 interrupt polarity causes IRQ storm
-- [High] dts: imx95: incorrect reset-gpios polarity holds Ethernet PHYs in =
-reset
-- [Medium] dts: imx95: missing power supply regulator for M.2 Key-E slot
-- [Low] dts: imx95: unused pinctrl_panel_backlight_lvds group left in devic=
-e tree
---
+On Wed, 23 Sep 2026 17:14:37 +0200 Bartosz Golaszewski wrote:
+> Implement support for the firmware-managed SGMII/SerDes PHY present on
+> Qualcomm platforms. Do this as a separate driver from the HLOS-managed
+> variant as they don't share almost any code.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>  drivers/phy/qualcomm/Kconfig                   |  10 +++
+>  drivers/phy/qualcomm/Makefile                  |   1 +
+>  drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c | 117 +++++++++++++++++++++++++
+>  3 files changed, 128 insertions(+)
 
-commit 7f31e6dad5b9c7665d8920ec3ddbd34978190a69
-Author: Marek Vasut <marex@nabladev.com>
-
-arm64: dts: imx95: Add support for Data Modul i.MX95 eDM SBC
-
-Add support for Data Modul i.MX95 eDM SBC board. This is an
-evaluation board for various custom display units. Currently
-supported are serial console, ethernet, eMMC, SD, SPI NOR,
-USB host and PCIe.
-
-diff --git a/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts b/a=
-rch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
-new file mode 100644
-index 0000000000000..5ca26c6ab665f
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
-@@ -0,0 +1,1079 @@
-[ ... ]
-> +	i2c2_gpio_expander_20: gpio@20 {	/* U12 */
-> +		compatible =3D "nxp,pcal6524";
-> +		reg =3D <0x20>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +		interrupts-extended =3D <&gpio5 11 IRQ_TYPE_LEVEL_HIGH>;
-
-[Severity: High]
-Is the interrupt polarity configured correctly? Since open-drain lines
-typically rest HIGH due to pull-ups and assert LOW, wouldn't setting the
-polarity to IRQ_TYPE_LEVEL_HIGH cause the interrupt controller to see the
-line as asserted immediately, leading to an interrupt storm?
-
-This same configuration is also used in i2c2_gpio_expander_21 and
-i2c2_gpio_expander_22.
-
-[ ... ]
-> +	ethphy0: ethernet-phy@1 {	/* KSZ9131RNXI U20 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <1>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 4 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	ethphy1: ethernet-phy@2 {	/* KSZ9131RNXI U22 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <2>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 5 GPIO_ACTIVE_HIGH>;
-> +	};
-
-[Severity: High]
-Will setting GPIO_ACTIVE_HIGH hold the PHYs in reset? The core drives the l=
-ine
-LOW to deassert reset when active-high is used, but the physical RESET_N pin
-is active-low, meaning a LOW signal actually holds the PHY in reset during
-normal operation.
-
-[ ... ]
-> +&usdhc3 {	/* M.2 Key-E */
-> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
-> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> +	pinctrl-3 =3D <&pinctrl_usdhc3>;
-> +	bus-width =3D <4>;
-> +	status =3D "okay";
-> +};
-
-[Severity: Medium]
-Is a regulator missing for the M.2 Key-E slot?
-
-The usdhc3 interface is enabled, but the DT lacks a regulator node for
-VDD_3V3_M2-E_EN (pin 5 of i2c2_gpio_expander_20) and lacks a vmmc-supply
-assignment. Will the slot remain physically unpowered because the enable
-GPIO is never driven active by the kernel?
-
-[ ... ]
-> +	pinctrl_panel_backlight_lvds: backlightlvdsgrp {
-> +		fsl,pins =3D <
-> +			IMX95_PAD_GPIO_IO27__GPIO2_IO_BIT27			0x31e
-> +		>;
-> +	};
-
-[Severity: Low]
-Is this pinctrl group orphaned? The backlight supply nodes were removed in
-V6 of the patch, but the associated pinctrl_panel_backlight_lvds group
-appears to have been left in the device tree.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930214729.8096=
-49-1-marex@nabladev.com?part=3D3
+Hmm, why is this here? is there a hard dependency?
+Otherwise it'd be better to send it separately out to Vinod,
+this is drivers/phy after all.
