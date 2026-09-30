@@ -1,39 +1,38 @@
 Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FED2F0C79
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 10:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F894718D4
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 10:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790763944; cv=none; b=UaiUVoGYMP+wwMzLkYywGg4wT8VnaAgy3atfdnFhQsOHJhHcrNd/4jNK3ekbbw85gq8EjR6ahpozKl9ZhEgq1KJhuO4b0BqKnrv7VOVVruDT+EeVbkuES9FQ5C8mjaC7T3cSvDxJbH2a/rTqF3VLIyXMC5jzbF5E/1JgNLTcnos=
+	t=1790764469; cv=none; b=pI+F7+Pat1PbVTxzSpH2uUbUYbJ+IWxKRoBUQRtZ5JBwDf2a+eT0Jd8iMfWHZZpNcTn/2Z6IxBRW+GoC1pOQ1ZvHAjw88LtSf5q3F33Pjlg76t+wnDPWUsCAT7Ypl7W7fPe02jwn7GEnH/ov/t4WDP9mU4zATFWS1iQ3WMNtGNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790763944; c=relaxed/simple;
-	bh=Z1n10XQpOuF7raG3CTNfEhwr+5P2EKILEeL0szwcVsk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZF3NJiI/bQblQVMA6bI1DMTmc4k8msFRs1j3VIloT2gunG/uqUSpEPG1nEczFlfrP7dRVZXZpJmv+hHVOknlkqAyPmPUfTyVX9ykQ2E/VCuOTNDAQpl1l2c0Vu8Tfl4r3W8Cz1ohNwWtqKVH6U85sIEGaO3Bzzwl407B0UucCRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Zp1tXLbE; arc=none smtp.client-ip=46.19.12.180
+	s=arc-20240116; t=1790764469; c=relaxed/simple;
+	bh=ukCCdctMkNx+zbqOAcgTBacNhDYqQTU5G7RR/j5HpZk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y3x6NkEf+UgksD4UnSPAhxFUaaoJueK39Oks48auZ57UskJMMvI8eG/b3FTTDOCpRpiuUz016tIOQqJkdWV23RIlX8LaO+7ciIOI0pvlA1DEuO5GzlfTdPr8hUv3RJ1M8vg5iE6ewhhQCBJkCFwKDs4HU7wJRQX0VQkxkLFZR6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=DeId9KKC; arc=none smtp.client-ip=46.19.12.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Zp1tXLbE"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="DeId9KKC"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bMp4aGjtzMotrnNNRsA9Kf3RK8gVan/o3dMTlpzOrv4=; b=Zp1tXLbEUuy5SFEaukag1jTfJT
-	rugtdnjEZhjAiyM9pwKPbx3XuSyM3BelvXe81o67QgAyvBBFEMp4yy2fEuseZQSFABksTAFvRcPH5
-	Tj1fn18/LgBE37BXNseiljMQmNXaU6lIzYP5D2lKjgxkOcj+zyMU3IOp4/1laAGNSWQ9tkI7Fxgdj
-	QcYPTArJoXUH1r5kaMLez+hdZVi60OMYhBt3XdUHpUUpR9sOjfTqpWP0NcY1o4uKzzxwci1eLfO8P
-	9S/Oj541VkpIxbZVi4zAdg8+jhRpUgygh7SQqwHdEptAaZVB9endm+dy4mkQrZK84y0AT2Eh3F9Zv
-	oQvoByYg==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:37230 helo=localhost.localdomain)
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=oNXoQLGJPYIyqmegQF8ZeOlBHbHDVMfq4HhnXwXvDpQ=; b=DeId9KKCEjwRWHlVV0tRxH9sYE
+	aMgzvJs8P7Ebt9EUX5mFU91NAOQbXQJLdoH0AlEFD5kOA9kUY3tiIJy9tcKftbembo2eZr8t26NuG
+	zqnLGU/1FswFRVSlOsaXty8Qe8Bpz935C35Sunz3YGuEV81UFc/7O3mliB5eMZGdZwKVxRzds4y6J
+	CAJp4SM4o7fcoqakGgv9I2s2XtaLMdriGguSWzbf+taEnGwRMYWT796MECyeHoyRMiSdm+QdGE0Kl
+	COo8k83OPWAyfN+f8BjxL8loW192l0UVKQlZrSjMMWnUasvL/rFgbGd4lQ//8mKKyM40/khOtxnJy
+	jjoEheAQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:46122 helo=localhost.localdomain)
 	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1xBrVI-00000000YWu-2a7e;
-	Wed, 30 Sep 2026 12:25:34 +0200
+	id 1xBrds-00000000Z3d-3ED7;
+	Wed, 30 Sep 2026 12:34:26 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -47,12 +46,10 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH 1/4] ARM: dts: imx6: phycore-som: Set PMIC watchdog alias as default
-Date: Wed, 30 Sep 2026 12:25:29 +0200
-Message-Id: <20260930102532.2262700-2-primoz.fiser@norik.com>
+Subject: [PATCH 0/2] ARM: dts: imx6: phytec-mira: phyBOARD-Mira fixes
+Date: Wed, 30 Sep 2026 12:34:23 +0200
+Message-Id: <20260930103425.2315286-1-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260930102532.2262700-1-primoz.fiser@norik.com>
-References: <20260930102532.2262700-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,38 +68,25 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Pin the da9062 PMIC watchdog to /dev/watchdog0 via a DT alias, instead
-of leaving it to be assigned dynamically by probe order. This SOM
-already relies on the PMIC for reset (see commit aa4f48a4e06c ("ARM:
-dts: imx6: phycore: Rely on PMIC reboot/reset handler")), so this
-makes that the predictable, fixed watchdog device node.
+Two small fixes for the PHYTEC phyBOARD-Mira-i.MX6 boards:
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+- The i.MX6DL NAND variant was still described as the LC (Low Cost)
+  board, missing CAN/PCIe and capped at 100Mbps Ethernet, while every
+  other in-tree phyBOARD-Mira .dts is the FF (Full Featured) variant.
+  Sync it to match its siblings (1/2).
+- Since commit 888e5fad9b78 ("Input: stmpe - add axis inversion and
+  swapping capability") landed, the touchscreen axis inversion these
+  boards need can be described in devicetree instead of userspace (2/2).
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
-index ddbfecd591f5..205467fd223e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
-@@ -11,6 +11,7 @@ / {
- 	aliases {
- 		rtc1 = &da9062_rtc;
- 		rtc2 = &snvs_rtc;
-+		watchdog0 = &da9062_wdog;
- 	};
- 
- 	/*
-@@ -112,7 +113,7 @@ da9062_onkey: onkey {
- 			compatible = "dlg,da9062-onkey";
- 		};
- 
--		watchdog {
-+		da9062_wdog: watchdog {
- 			compatible = "dlg,da9062-watchdog";
- 			dlg,use-sw-pm;
- 			dlg,wdt-sd = <1>;
+
+Primoz Fiser (2):
+  ARM: dts: imx6dl-phytec-mira-nand: Enable all peripherals
+  ARM: dts: imx6qdl-phytec-mira: Add touchscreen-inverted properties
+
+ arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts | 8 ++++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-mira.dtsi        | 2 ++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
 -- 
 2.34.1
 
