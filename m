@@ -1,70 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB513A6B7F;
-	Wed, 30 Sep 2026 06:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB383CEB9D;
+	Wed, 30 Sep 2026 06:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790750035; cv=none; b=T3q8jW71etYy4xrdqEnZm1WtD5/tZikHyCAKZHuVJa9PytDV0mfPW+Y/RR4s/UwDGH2pMKYkSBeNkG+R5QlvYUQqZjEq7g3FxKkOvEzf6fEFLij4RxnHuErRCw3JWM1ogJ9c0gOoDSUP9jOsvSrfOJ5Wfim3mbtMF0tFR9aPg2k=
+	t=1790750082; cv=none; b=iz+etTLQMPgqaP/NycLV+OtRrqxtUZqByjodxzUGeFQBfQn/4axvZamlL1vPMFn0TBxYSZJFSCTZ2Aj9aimki5epS99YIiTs26PqQdv/+ykBbRM1ioXoR5dshfiiNXCEHejyXSsjQtZN1g6KbiBwFc1/3S59/NNX5HkUqN/+6jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790750035; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nsLWOuDvG6gPhk1KOcOpXIoRuwdc7oE+Pi2I3D5CDnsn2nVlNm/xaPkNHmZpBJL8UC2W0kQ+zBDSEnndctziOXQRnhf0RZ58LF4DW4DwiKMyPLBbBA8ScufyFatHJWq4w7Ve+++UacNBmvPJ6faLA8cDtMxh3noF8VxW7zf2CNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chAkhc61; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790750082; c=relaxed/simple;
+	bh=baQ+2tXY9cEz4taZYGCDQ1JZXZsqMhHzq7KSOzTiTE0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=G39lGmv3WCHtFr4Ji+y1cZ+k0yBU+efO7vgZh7PLlfAQJpaZjQaJwJFBHrB25NoTERiH9r+one8uvHkruYBKRFaEDwgltGNrffFfT0FckD/yFlMkdrsuXaoIbI2r3GCjHk+EHmbxl4o/cIuECV+239hfjPYjlRRIz7pJ88aFig4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VbkaXZQW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chAkhc61"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E951F000FF;
-	Wed, 30 Sep 2026 06:33:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VbkaXZQW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FF41F000FF;
+	Wed, 30 Sep 2026 06:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790750028;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=chAkhc61vEYUyi0F4kqr7QHvc4wZwAFI9qpVJmf6A9EAmGxIwJa/LAZzjdPDSBQl8
-	 3W2UY6ZObCrwdIYFq916SgNaDdOqODjDFKcfiOkuuT7lFbLeZh4deNNENtL6uDF/N7
-	 ku1WeNBHf2REXpFuSrQgNzoqQ7BYqWJCE9K/ZYPDqoO9MvfIOI66rceRHwFnClXt2a
-	 +8DrX2zhYgjYXRU2JZgK1zdmuEXZmbcr20pYFWP1TlekN5dTh/t9fWr7ju3UVDzEIn
-	 9+TQLLKuUcGzA4wjqthbkZ+a2d9C6Bk4z3J8I+01B6mmbb1D1KbE0tidvkX6+0PkgY
-	 6YiexPI7AgAqw==
-From: netdev-bot+sinfo@kernel.org
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
- kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
- imx@lists.linux.dev
-Subject: Re: [PATCH net v3] can: flexcan: flexcan_get_berr_counter: don't
- wakeup controller if interface is down
-Date: Wed, 30 Sep 2026 06:33:47 +0000
-Message-ID: <179075002798.31693.10584366091913056693@kernel.org>
-In-Reply-To: <20260930062738.30145-1-chunyuzhiqiang@yinhe.ht>
-References: <20260930062738.30145-1-chunyuzhiqiang@yinhe.ht>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1790750075;
+	bh=XNye/AAY2IkjKhZWXcc5Z9iQogATZlPfWecUkSrhHtM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VbkaXZQWgZflb66dTt9PZyYtNmMwiZaXsi3C4wFxv4Ay9MgVCap7AOB3MvP0BqX2y
+	 V/ebEgBFHgR+by+xvu/c3SDJYCkprPLfwY3Wq05cfjQ+egH4MhlVAepLKuhrjjuTA3
+	 dYwTmhqDD+PpNZhaxEQWF4D6Xm5PrEIYsAs4W8enoAJ1jnYJvn5LxWp93n1yUXiVGk
+	 pqUyJ1FWHMhzygJZgS9ezz/xoQzc9qDzOHtCbk+eqhw5VFN89VdliT+TAiuTq7PqiC
+	 eHvhxlARilSGSoSFAmWFLhg2zT7q4e0RYu6ayZuzcL01II7DVjJkrrv0Rn32kRKxqm
+	 aGNLbftVS/Dpg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: dma: fsl,edma: add per-channel
+ child node support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev, vkoul@kernel.org, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260930-edma-iommu-v2-1-72a62bf44c74@nxp.com>
+References: <20260930-edma-iommu-v2-0-72a62bf44c74@nxp.com>
+ <20260930-edma-iommu-v2-1-72a62bf44c74@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 30 Sep 2026 06:34:34 +0000
+Message-Id: <20260930063434.93FF41F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
 
-Hi!
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] dt-bindings: fsl,edma: missing required interrupts property vali=
+dation
+--
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+commit 4f1b5be8631d1a7b37208c50010390f6dfaf3925
+Author: Peng Fan <peng.fan@nxp.com>
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+dt-bindings: dma: fsl,edma: add per-channel child node support
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Add support for optional per-channel child nodes to the fsl,edma binding
+to describe real per-channel MMIO regions. The interrupts property is
+removed from the required list to accommodate these child nodes.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Docume=
+ntation/devicetree/bindings/dma/fsl,edma.yaml
+> index f609038e35ae1..19a103baccaf4 100644
+> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+[ ... ]
+> +patternProperties:
+> +  "^dma-channel@[0-9a-f]+$":
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        maxItems: 1
+> +        description: Per-channel register region within the eDMA block.
+> +
+> +      interrupts:
+> +        maxItems: 1
+> +
+> +      iommus:
+> +        maxItems: 1
+> +
+> +      power-domains:
+> +        maxItems: 1
+> +
+> +    required:
+> +      - reg
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+[Severity: Medium]
+Does this required list fail to enforce the interrupts property when the
+new child node approach is used?
+
+>  required:
+>    - "#dma-cells"
+>    - compatible
+>    - reg
+> -  - interrupts
+>    - dma-channels
+
+[Severity: Medium]
+Does removing the interrupts property from the global required list break
+schema validation for legacy device trees (e.g., fsl,vf610-edma or
+fsl,imx7ulp-edma)?
+
+Without this enforcement, invalid device trees that completely omit
+interrupts might silently pass make dtbs_check. This could result in
+incomplete device trees failing at runtime during driver probe. Is it
+possible to preserve this in a conditional enforcement block for legacy
+hardware instead of dropping it entirely?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930-edma-iommu=
+-v2-0-72a62bf44c74@nxp.com?part=3D1
