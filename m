@@ -1,35 +1,41 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED46D4E3EEF
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 13:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E664DA9C4;
+	Wed, 30 Sep 2026 13:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790774876; cv=none; b=L/qDqVKXImlLKQeX5DEoWKtVfY11JOw+F6qGkjlakbnnGJsdW1c/JYI2yrwQ6qrypEhQp/rxn9GnDhVfA7RZfmtDLy9p3o8R/pIHoKX2hdiucYANoftF6I0cixvfBp0QVYJwTaCXNXT4yEa/TLhHuATuLpXS74M5cUVRv+b2lHE=
+	t=1790776314; cv=none; b=pGZJ3cvzO9nfBZsdH0o26XLKgH+1s9HekZHj92GSZKMieczjirCifBLFDrgDMJ/cExbqcnjc2AViAtJV1f4jCs0XSVqbKT8ayit9E5E9Tv8gzOU2xexNp75Lm2awUZYgU4F8mQMT4g0M90UQUw+F08VnM9STX4OsMSbT2jDbADk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790774876; c=relaxed/simple;
-	bh=vboSnGveW2ZsiMFFUD6YKj38UXVfjqeCSzoq0pw3aJ4=;
+	s=arc-20240116; t=1790776314; c=relaxed/simple;
+	bh=l7abfpsRrMZ7oBWyL4FsSuaEMLrgrwqnzHPSNOOnZyY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LUmG0AmmD2TBsTpAMWVMKoBtvIiJtJEQ8dYTIQHecyCE+56fIhiUaXMhF/JIFdHZpl8Bk8o8C7MmSaDjCgnmqVIrhxaMRC6hE8pzIcXZdFai2nA/PQecMpGeIzIZmVPJzImifOT6jPhpAFruCmD+HZZKCyfFmMLSD1Y5yHRU1ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=aFuSLMyS; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	 In-Reply-To:Content-Type; b=U8ECa8YqwCajeJ+A8h5Vfx7hyaD/RllaSC7WYBpEn2Fz5Nu2V0icC2viL2PmVmVpS6bVkMxDaTcxkjCFp7wQIWPFCAmqtXvs6joDgFghs/isGqSalr5pFujAb4z0t7iMF29bAvw/Hdxas/pOy+BmqQzIxS29GH22oMCK2Le/ujE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Eees9UHh; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="aFuSLMyS"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA5D9105E1A;
-	Wed, 30 Sep 2026 15:27:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790774861;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=OBei++PFaKsMbbmTFH6SGCUXPPlqHSi9qP+JnXxY1cU=;
-	b=aFuSLMySPm7G3osxABYWT0UV/BSHnPFnh0nh5k6JBPKZrU74rFStGOgqwoAb5rHFDUCbiz
-	fc9gRs9EVlrPROFwUBifU+FpYFWVU6ZUMSASYQGDkdCRadIblaiO21bAmXICLFShjB49Rs
-	ga5g1EpWoai41UEv2SWV37NBJGxbtV5Rh9P+q5DnT1hnCIitpoSdW+Rn/+2CYwCMHOg13i
-	hFNrJJu+kbWllfxPGz8q3K/c14kr6wsEIf3Mss0aMTcxJaJMZlTpfFUyk8XyG+6NZexsMK
-	ou+50BYNDVPV/jNWzXyTayHlF3TWwUh0Rp9howkKLXbN56OXwvWK1z/capMVng==
-Message-ID: <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
-Date: Wed, 30 Sep 2026 15:27:39 +0200
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Eees9UHh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NRkSzdr9h/KU/Gp3VjR0xCo3up6HUR7kMTPEsX5LBWI=; b=Eees9UHhgdaRBjfrs8w5185sc0
+	+uySXruUWIbz+EvffpApA8edYaeI1MSJciKCuobjYZnpyrB2sff0WHWmSdA/wyOiKsEnaj00BUXgt
+	yh1QqIhvExinYuSWiKEXmDoGkbEnIxRtY+FTYxHEWASMlP54i64pUDuH2QIFBSfEONzE8jHVmvfmo
+	rvvZYTdwU9PGemsJuYz+fUajao8SOUMEajFhs+lU4uoOPl8o0fS2GL9OXKh4S7Sq0VoWG1Muu5ZFX
+	Qy+YzGa7WNPB137wi2UT/hvk3L80S9h3H5IQd8UmcnpP4UFcKXo/5lVQ/lGxrhcXAxV6ye8TyDk/E
+	78t9YQ/w==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:50572 helo=[192.168.69.116])
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.100.1)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1xBuil-00000000l1S-1WbQ;
+	Wed, 30 Sep 2026 15:51:40 +0200
+Message-ID: <a3cf3fa9-9468-4722-a053-5bec424d5526@norik.com>
+Date: Wed, 30 Sep 2026 15:51:40 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,94 +43,108 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-To: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20260924180607.60932-1-marex@nabladev.com>
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
- <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH 1/2] ARM: dts: imx6dl-phytec-mira-nand: Enable all
+ peripherals
+To: sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev,
+ conor+dt@kernel.org, devicetree@vger.kernel.org
+References: <20260930103425.2315286-1-primoz.fiser@norik.com>
+ <20260930103425.2315286-2-primoz.fiser@norik.com>
+ <20260930104006.EC64F1F00893@smtp.kernel.org>
 Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <20260930104006.EC64F1F00893@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 9/30/26 8:12 AM, Wei Fang wrote:
->>>> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
->>>
->>> The system clock of i.MX95 NETC is 333MHz, AFAIU, the MDC rate should
->>> be
->>> 333/(2*258+1) = 644KHz. I'm confused that why you said the rate is 558KHz.
->>
->> That is what I observe on a scope on local MX95 board (not the EVK).
+Hi,
+
+On 9/30/26 12:40, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] dts: imx6dl-phytec-mira: missing m25p80 SPI NOR flash enablement
+> --
 > 
-> Clark helped measure the MDC rate on the 95 EVK board this morning, and the
-> result was 644KHz, which is consistent with the theoretical value. The scope's
-> accuracy or other factors may be causing you to observe a rate of 558kHz.
-
-That 644 kHz and 558 kHz differs too much to be an equipment 
-miscalibration / misuse.
-
-> But
-> anyway, the description of 558kHz is indeed confusing because it does not match
-> the theoretical value.
-
-Do you know from which clock are the MDC clock derived from on MX95 ?
-
->>>> but also very compatible. However, for example NXP TJA1120 PHY needs
->>>> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
->>>
->>> We previously used the TJA1120-SDBR daughter card to connect to the
->>> ENETC interface (RGMII) of the i.MX95 19x19 EVK board. However, we did
->>> not encounter any issues with MDIO access.
->>
->> Most PHYs are fine with the low frequency.
+> commit 1324c8cd36593c2b5134e1d0d30d31d809ac1bc1
+> Author: Primoz Fiser <primoz.fiser@norik.com>
 > 
-> Yes, but the example you gave is TJA1120, and we also connected to TJA1120
-> without this problem, so this is what puzzles me.
-
-[...]
-
->> Page 46 bottom
->> Table 37. Dynamic characteristics...continued
->> Tclk(MDC) MDC ... clock period ... Min 400 ns
->>
->> 400ns ~= 2.5 MHz .
+> ARM: dts: imx6dl-phytec-mira-nand: Enable all peripherals
 > 
-> Thanks, I find the similar context in TJA1120's datasheet. The max period is
-> 1000ns, so the min rate is 1MHz. It's weird that we did not see any MDIO
-> access issues with TJA1120. I saw a note about MDC timing: "Not measured
-> in production, guaranteed by design." It's possible that the minimum of 1MHz
-> is a theoretical value, and it may actually work even below 1MHz.
-
-I got a report it is problematic, hence this patch. But maybe this is 
-also related to the 558 kHz MDC clock I measure locally vs. 644 kHz MDC 
-clock on your end.
-
->>>> As a minimum change, increase the MDC clock to 2.5 MHz which matches
->>>
->>> The prerequisite is that NETC system clock is 333MHz, so that you can
->>> get a MDC clock rate of 2.5MHz (333/(2*66 + 1)). But unfortunately,
->>> not all NETC versions have a 333MHz system clock. For example, LS1028A
->>> is 400MHz, so the MDC rate will be 3MHz, which will be a problem.
->> Yes, this is my concern.
->>
->> Are those clock which feed MDC clock available via clock framework on LS ? If
->> so, we could calculate the divider based on those clock.
+> This commit syncs the i.MX6 DL NAND variant device tree to match the Full
+> Featured (FF) variants. It enables peripherals including CAN and PCIe, and
+> removes the speed limit on the Ethernet PHY.
 > 
-> No, we typically hardcode the clock frequency in the driver based on the NETC
-> version. Another simple method is to set the divisor to 166 instead of 66, which
-> will not cause any problems for using a 400MHz NETC.
+>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+>> index d906a7f05aaad..1f827ad2ff5ee 100644
+>> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+>> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts
+> 
+> [ ... ]
+> 
+>> @@ -50,6 +50,10 @@ &i2c_rtc {
+>>  	status = "okay";
+>>  };
+>>  
+>> +&pcie {
+>> +	status = "okay";
+>> +};
+>> +
+> 
+> [Severity: Medium]
+> Did this omit the SPI NOR flash enablement?
+> 
+> The commit message states the intent to sync the i.MX6 DL NAND variant to
+> match the Full Featured (FF) boards by enabling all peripherals.
+> 
+> The FF Quad variant (imx6q-phytec-mira-rdk-nand.dts) enables the SPI NOR flash
+> by including &m25p80 { status = "okay"; };. While &can1, &pcie, and the
+> unrestricted &ethphy are enabled, the &m25p80 node is missing here.
+> 
+> Does this leave the board missing its SPI flash feature and partially
+> unsynchronized compared to the other FF variants?
 
-Hmmmm, are those clock available on MX95 ? Maybe we can do some sort of 
-fallback -- assume 166 MHz clock on LS, and obtain the clock and clock 
-rate via clock framework on MX95 ?
+I re-checked and this patch is actually wrong.
+
+There was never i.MX6DL som with NAND + FF set board.
+
+I will drop this patch in v2.
+
+BR,
+Primoz
+
+> 
+>>  &uart3 {
+>>  	status = "okay";
+>>  };
+> 
+
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
+
