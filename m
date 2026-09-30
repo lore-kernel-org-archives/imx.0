@@ -1,71 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A013F86EF;
-	Wed, 30 Sep 2026 09:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22163B6BF0
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 10:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790762393; cv=none; b=aQXngoiIC5bnqwe3PvqA0b3AZEd/n21jgJ5H3+Z2t+s/7VGqU2JNcVSpfmF4XbaDZV+B/DlB75xu1GhWaUyXYMnBuE7wLoEmtdc1RemviuSb5kXR+wj+OJrivC8uyxfeltdWUN/7CNIKi3+ZfjNpP+Yx0MWtW0xnXQ6YNiY8aXY=
+	t=1790763943; cv=none; b=P10awNXtpL5okG6jvqJkwIv4+JQMTQX+p+ZB6bPTwvICrVUnnYYlwNw0mKTNHHTDTT1Weh3fMzTRFvfVKTvlOA2ouJm54x9EFs/2uhmku13M2Mxlp/Ys2SCPRhimvcHtnSbWR0ocYq+5+vuejGkNsDy3hjBsQiJv091nE2wc0ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790762393; c=relaxed/simple;
-	bh=mziF0FXj0213RsOYJ1FBXmK74st/TjYAJy7IhAG4w7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DYPnzi4UnIh5H2zYlKFcy4cNZyn6cdOO9RDZCQ9o4C0wxyyEIRPJdY7C/v9L6QEPsSnpJBarDfb0nLZ0qIGEEdPE8ze2QhV9q/gP3XulU630VkjTGfJjwGtW56uwDz77KJzMD1b3yGZevss8pabtIsxQ5xuqyoPDMbo35bDLPC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGCu08CW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790763943; c=relaxed/simple;
+	bh=b9Twd+DTcDUxfW6TX5RTkTpVDTwzMfueRKdSIJk+Orc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QCJ5Rhz6JWoIxdoWv9+T9eELcVDZ5wm7AnUglKciNUMg9c0H3W8dyEsxHS109hpepa+l0vTNSLRlKUhljCuMKsthYPKB2xrBUumCLiqr623FqARxHhSobQNvy5ptm8kRmogAFQzGbMSDBQi4jeSBJjm76sK099Ir3Eb+/f+CBp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Ob04HhE0; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGCu08CW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1631F000FF;
-	Wed, 30 Sep 2026 09:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790762391;
-	bh=fcZCpP6kxzypYHCcA9Y6Fe3LYElLJlu/QUBiiAX4hj4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QGCu08CWmtyZAgsSl1TpA6dkctpRNZV+QllHJYvd4QS8MUl94IqF7qEqzIWTUU1Le
-	 Ub5f1uM90s/YBo0sQ2jKgpDAnVQwU37bZJBdP7yBnFXe4I7m3pQWtauH/KAPOXntoQ
-	 e6sC+nF4CrDJWI++BYDBWYPc3+BRJmIaga7Y/jKeEqKi/DErLH9x5SMcCvKQ4lYNZL
-	 Dv9dJ7jjxyXz2E9snzDpREL6VA2pfukWkoNWxv4IiFV/Suq9FcdifrZK8f8PTWSXz1
-	 za12emyXxvN0ods8cc8s1xVz+ziAwXFLLjTnMtEuzOareEgaGXvkWrt4jKlltIqcCS
-	 xclPFzKydafrQ==
-Date: Wed, 30 Sep 2026 11:59:47 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank.Li@oss.nxp.com
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Guido =?utf-8?Q?G=C3=BAnther?= <agx@sigxcpu.org>, Robert Chiras <robert.chiras@nxp.com>, 
-	Tim Harvey <tharvey@gateworks.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 2/8] dt-bindings: embedded-controller: remove
- #address-cells and #size-cells from required
-Message-ID: <20260930-light-whippet-of-fruition-faf077@quoll>
-References: <20260925-cleanup_dtb_warning-v1-0-f999fafbca60@nxp.com>
- <20260925-cleanup_dtb_warning-v1-2-f999fafbca60@nxp.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Ob04HhE0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GBD5tDwi1mEbd9vZcLrEc6TULIMEtPFMOaUFiSR7U5k=; b=Ob04HhE0NSKubgWXAtZ6SpRi98
+	pxC67BD3FI1eow5BoD/6CogFu56m8JacHt7fZPOsqJzweO+eeJAxgIEbt11e1nLyjIEd9kQhr6tjr
+	T/BEnuHO96HGETgUbp+3Bv3icYBv+VmKy2FM7XEMM05vEA98375NosxW7pzSqLKx5aoMvSmBOCcX4
+	NFwPr+0MbW3envG3XndA/zcg7/ywZT10sKGakMl6cWKLo/wH2d3eA30BRSzRWBdbCAW4jM4ah9ZvL
+	bZNnTAmzGIKsuTbhcSvzLxB5KOylwtaSbaYbh2rnaOVH7rO6iODmkjCN8pFcOK3h9Ne1SnewXzk+a
+	ZEf3mdHQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:37230 helo=localhost.localdomain)
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1xBrVI-00000000YWu-3b9H;
+	Wed, 30 Sep 2026 12:25:34 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH 3/4] ARM: dts: imx6: phycore-som: Convert to generic PHY reset binding
+Date: Wed, 30 Sep 2026 12:25:31 +0200
+Message-Id: <20260930102532.2262700-4-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260930102532.2262700-1-primoz.fiser@norik.com>
+References: <20260930102532.2262700-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260925-cleanup_dtb_warning-v1-2-f999fafbca60@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Fri, Sep 25, 2026 at 12:37:51PM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> The "^fan-controller@[0-9a-f]+$" child node is optional, so it is not
+The phy-reset-gpios property on the FEC node is deprecated by the
+Documentation/devicetree/bindings/net/fsl,fec.yaml in favour of the
+generic reset binding on the PHY node itself, described by the
+Documentation/devicetree/bindings/net/ethernet-phy.yaml.
 
-Why is it optional? Hardware can be fan-less? This should be the reason
-here.
+Move the reset GPIO from &fec to the ethphy child node as reset-gpios.
 
-Best regards,
-Krzysztof
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+index 9070388eecb0..88eabc7af6b7 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+@@ -56,7 +56,6 @@ &fec {
+ 	phy-handle = <&ethphy>;
+ 	phy-mode = "rgmii";
+ 	phy-supply = <&vdd_eth_io>;
+-	phy-reset-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
+ 	status = "disabled";
+ 
+ 	mdio {
+@@ -65,6 +64,7 @@ mdio {
+ 
+ 		ethphy: ethernet-phy@3 {
+ 			reg = <3>;
++			reset-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
+ 			txc-skew-ps = <1680>;
+ 			rxc-skew-ps = <1860>;
+ 		};
+-- 
+2.34.1
 
