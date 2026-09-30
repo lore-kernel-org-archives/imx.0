@@ -1,38 +1,38 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70384FDA5A
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 15:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FBA4E235D
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781188; cv=none; b=uPqCXrgrGjMFs/MI0suIoKsuPFFd9MPzvM5Gl6XUf6bHrGOvArYlL4dVgzmsu9JOEysJAKqhDy0zg8AmsIXDozThYzfTxRfUKjWtVP61xkWm73ZBu8KDFjZdVKAl9J2HgdmaZsp/TdaFDQMZL6W9TUL+Behhz2VAPvKdJqSCiAA=
+	t=1790781188; cv=none; b=AMIrAjNVKxM1KiaT2aH96lvT+iLECFkO6xIAwR8t+HZF3vU9gRdxYLZt/p2t7fpSRjg9KCLA9jTA0XCvM3JnxVLwwnD+onW8A8+XLzX94rsUF83VPx2ZYbewG5RVqiJpxLmGoiCeAcvaIjZYnfOqugb31NBjGDsZ2qYO/48b+1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790781188; c=relaxed/simple;
-	bh=S0WsyTGzpzbVbWSeET0rlW9Cuja8kSc60m8JARgfnIc=;
+	bh=tElqHsQAF81nSVcFmZVlrfQ5KqZwzfeG/qXHFWZj4kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQ1wK9aadLltAXlH0ZEr7ePG9Jc0YFUNr92492JjOrqVxisZUwQ0D+I+2U1odifbKHFfArCL40IlmqUdzHqsHx0tFrCRjLi25tuV0uIY9dwE5qQgUCdCCQHOLSfobRjoGn1jlj1wUfd9sfCAH6x4qeIlHgcplMafrInbg9czw0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Q/4FdQGW; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version; b=tAgF24Q2Z4NUiwnpwxlBvyssV6qsVyO15rEuPnaKY+7kRi7l4Rwly81jWD9/XkUFU+b8Ix565lsEm1pSZX17B4FFY6g5bR+CQDoM4SaSi79zMK4GXiK6K76oakW0u7iqPTkmncDUV4QwjLqXGLF6wkfau8Or1KvE989isBd2Mvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=C37Dy2Wa; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Q/4FdQGW"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="C37Dy2Wa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
 	s=mail; t=1790781168;
-	bh=S0WsyTGzpzbVbWSeET0rlW9Cuja8kSc60m8JARgfnIc=;
+	bh=tElqHsQAF81nSVcFmZVlrfQ5KqZwzfeG/qXHFWZj4kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/4FdQGW1AXthZNYknamkkPstOSrQljxfgS/EIAUVJCc5LA6S5EMIra3QmWLjztkv
-	 r2VrcyJy6dt1hswLVLZJ+sYTx+tytPmUhj72cY42pF3HTsfYMBGoQjqcVHn/fqTnrh
-	 h8IbLBY/t4uiQf/Tdl4oqiSOSwTjbjUdo9aVo4y7+n3GkEZMYHvee/OcztttAfRMN5
-	 LLMtFkAv0LKmgAyKFzPaRBu1gThV1zjhFlDWayqdaUVAEuMb4ApqD9XUjppJ4cAxc0
-	 6PxkyBXbJHbJ7R68NBKORTbP/BTVCHkLQOYtgOQfsum6R7fWlNtVREx5azpeDFbcfp
-	 tCmPEU5+rwwww==
+	b=C37Dy2Wad9G62e0t9nbuSy6sfbTWxrv7qVmlZ9CUkOM3J9SjaPtXxwWrWXB/isdcc
+	 QQ8xOCZsxEpEPcrSnLDnCkGwTWiobf959eDy7zWkZKGHHHexI3TqvEnRWnQyWVivyZ
+	 e+KFwQUj1d2pmtFRWgJGjgcxOjzsCcAUaY3t+9uWVuKaWeMfPG3/Pqo2PM5tecprRx
+	 dnSAoZT8u+USM/rgbptmj+EuSFRL/uH7nUgowZLoSu6CUoHRbZ8oy7dKahOiUzeaIr
+	 ryUXRJNGPTtirYKjpPy0NR8XKeEAWYhx5FVTCkOafoDy2YClj3fRVoqW9PTCGlC9aD
+	 0IXLLRRUE3g2g==
 Received: from benjamin-XPS-13-9310.home (unknown [100.64.1.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: benjamin.gaignard)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CDFFE17E0D39;
-	Wed, 30 Sep 2026 17:12:47 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6C80417E0D5D;
+	Wed, 30 Sep 2026 17:12:48 +0200 (CEST)
 From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 To: nicolas.dufresne@collabora.com,
 	benjamin.gaignard@collabora.com,
@@ -52,11 +52,10 @@ Cc: linux-media@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	kernel@collabora.com,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v6 2/3] media: dt-bindings: media: nxp, imx8mq-vpu: Remove nxp,imx8mq-vpu
-Date: Wed, 30 Sep 2026 17:12:40 +0200
-Message-ID: <20260930151241.58233-3-benjamin.gaignard@collabora.com>
+	kernel@collabora.com
+Subject: [PATCH v6 3/3] media: verisilicon: Remove useless internal fields
+Date: Wed, 30 Sep 2026 17:12:41 +0200
+Message-ID: <20260930151241.58233-4-benjamin.gaignard@collabora.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260930151241.58233-1-benjamin.gaignard@collabora.com>
 References: <20260930151241.58233-1-benjamin.gaignard@collabora.com>
@@ -68,47 +67,103 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nxp,imx8mq-vpu has been tagged has deprecated since a while and
-driver emitted a warning when this bindings was used.
-Vendor DT use the following node before they moved to mainline driver:
-vpu: vpu@38300000 {
-	compatible = "nxp,imx8mq-hantro";
-	...
-};
-but that binding has never be documented.
-After driver clean up it is time to remove it.
+No more variants are using multiple registers regions so rename
+reg_bases to reg_base.
+
+Remove the useless fields and simplify driver code.
 
 Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
 ---
-changes in v6:
-- remove pw-bot tag
+ drivers/media/platform/verisilicon/hantro.h   | 10 ++--------
+ .../media/platform/verisilicon/hantro_drv.c   | 20 +++++--------------
+ 2 files changed, 7 insertions(+), 23 deletions(-)
 
- .../devicetree/bindings/media/nxp,imx8mq-vpu.yaml      | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-index 19528262810a..69619d2c86fa 100644
---- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-+++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
-@@ -14,12 +14,10 @@ description:
+diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/platform/verisilicon/hantro.h
+index 0353de154a1e..f85035a98b28 100644
+--- a/drivers/media/platform/verisilicon/hantro.h
++++ b/drivers/media/platform/verisilicon/hantro.h
+@@ -72,8 +72,6 @@ struct hantro_irq {
+  * @num_irqs:			number of irqs in the array
+  * @clk_names:			array of clock names
+  * @num_clocks:			number of clocks in the array
+- * @reg_names:			array of register range names
+- * @num_regs:			number of register range names in the array
+  * @double_buffer:		core needs double buffering
+  * @legacy_regs:		core uses legacy register set
+  * @late_postproc:		postproc must be set up at the end of the job
+@@ -97,8 +95,6 @@ struct hantro_variant {
+ 	int num_irqs;
+ 	const char * const *clk_names;
+ 	int num_clocks;
+-	const char * const *reg_names;
+-	int num_regs;
+ 	unsigned int double_buffer : 1;
+ 	unsigned int legacy_regs : 1;
+ 	unsigned int late_postproc : 1;
+@@ -184,10 +180,9 @@ hantro_vdev_to_func(struct video_device *vdev)
+  *			dev_ macros.
+  * @clocks:		Array of clock handles.
+  * @resets:		Array of reset handles.
+- * @reg_bases:		Mapped addresses of VPU registers.
++ * @reg_base:		Mapped address of VPU registers.
+  * @enc_base:		Mapped address of VPU encoder register for convenience.
+  * @dec_base:		Mapped address of VPU decoder register for convenience.
+- * @ctrl_base:		Mapped address of VPU control block.
+  * @vpu_mutex:		Mutex to synchronize V4L2 calls.
+  * @irqlock:		Spinlock to synchronize access to data structures
+  *			shared with interrupt handlers.
+@@ -204,10 +199,9 @@ struct hantro_dev {
+ 	struct device *dev;
+ 	struct clk_bulk_data *clocks;
+ 	struct reset_control *resets;
+-	void __iomem **reg_bases;
++	void __iomem *reg_base;
+ 	void __iomem *enc_base;
+ 	void __iomem *dec_base;
+-	void __iomem *ctrl_base;
  
- properties:
-   compatible:
--    oneOf:
--      - const: nxp,imx8mq-vpu
--        deprecated: true
--      - const: nxp,imx8mq-vpu-g1
--      - const: nxp,imx8mq-vpu-g2
--      - const: nxp,imx8mm-vpu-g1
-+    enum:
-+      - nxp,imx8mq-vpu-g1
-+      - nxp,imx8mq-vpu-g2
-+      - nxp,imx8mm-vpu-g1
+ 	struct mutex vpu_mutex;	/* video_device lock */
+ 	spinlock_t irqlock;
+diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
+index 12c804dcc669..6e3a24156a69 100644
+--- a/drivers/media/platform/verisilicon/hantro_drv.c
++++ b/drivers/media/platform/verisilicon/hantro_drv.c
+@@ -1080,7 +1080,6 @@ static int hantro_probe(struct platform_device *pdev)
+ {
+ 	const struct of_device_id *match;
+ 	struct hantro_dev *vpu;
+-	int num_bases;
+ 	int i, ret;
  
-   reg:
-     maxItems: 1
+ 	vpu = devm_kzalloc(&pdev->dev, sizeof(*vpu), GFP_KERNEL);
+@@ -1128,21 +1127,12 @@ static int hantro_probe(struct platform_device *pdev)
+ 	if (IS_ERR(vpu->resets))
+ 		return PTR_ERR(vpu->resets);
+ 
+-	num_bases = vpu->variant->num_regs ?: 1;
+-	vpu->reg_bases = devm_kcalloc(&pdev->dev, num_bases,
+-				      sizeof(*vpu->reg_bases), GFP_KERNEL);
+-	if (!vpu->reg_bases)
+-		return -ENOMEM;
++	vpu->reg_base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(vpu->reg_base))
++		return PTR_ERR(vpu->reg_base);
+ 
+-	for (i = 0; i < num_bases; i++) {
+-		vpu->reg_bases[i] = vpu->variant->reg_names ?
+-		      devm_platform_ioremap_resource_byname(pdev, vpu->variant->reg_names[i]) :
+-		      devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(vpu->reg_bases[i]))
+-			return PTR_ERR(vpu->reg_bases[i]);
+-	}
+-	vpu->enc_base = vpu->reg_bases[0] + vpu->variant->enc_offset;
+-	vpu->dec_base = vpu->reg_bases[0] + vpu->variant->dec_offset;
++	vpu->enc_base = vpu->reg_base + vpu->variant->enc_offset;
++	vpu->dec_base = vpu->reg_base + vpu->variant->dec_offset;
+ 
+ 	/**
+ 	 * TODO: Eventually allow taking advantage of full 64-bit address space.
 -- 
 2.53.0
 
