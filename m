@@ -1,102 +1,112 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE253E867A
-	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 19:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEE23C1D66
+	for <imx@lists.linux.dev>; Wed, 30 Sep 2026 19:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790796586; cv=none; b=nvtbNbyqrrHL7AS3XOlSQHY/ztMclQkfWmVaaJq+YiG8rAvhSBxquF4kPGS25ldkvNhDpfhwCBelujgWoycDr795UUKR9huUIsYJu3g6Nz418+t9/wQ7dq1Fhu+K9y7lhqJoxkUgxfrRtJkNjjHlWs0nfAlkwD9SYrxGyGAG66I=
+	t=1790796953; cv=none; b=aELuOFJmG6BkKhf2MHq6HfU3SwfSKz+GxqFX6ctJAYSXdaZLoXLJQ5lajUCf6xT9rfQFE7ZUGyNYJ6HDHp5ZEEdJ5X4popngHqCasDt1prgVhd9utrVRRyhDSs2RNE30O4VxUFS/f4IBe3vPFdsRUXjmXk2ti26S4zx1c3FJKUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790796586; c=relaxed/simple;
-	bh=mFHBAohtZ7YN4nog88mmrblodSh3GrnDWNSnrXiIaRY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W8Pm7Pbw5SCdqbRy3Df9O8fdaTQQC/FLnack7EELOOtt2Jua0ywO97coVf0gqEIzIE6S1WY/g1CZviN82py4QxBOCcATGEt8za0cjiZIB/vGvbDSSeXA0p1gLi1fIcfMOVmLdY3LmlZux+DANmTMxbfiAoHUThaAByIhDESUhec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=itQpGtQc; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1790796953; c=relaxed/simple;
+	bh=RyYgxmQTPenrP6JtQOHr/dswyrUhr6UE6WMMfi5iTFU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=Y/UQPPYsxJf4r3abNxYVhvyranY4eEx9DlSgf2MFD4obRhWWMaygFy7dxDG7+qY3FJW1xYu8QnCkkZpLq4khb9oa+UnUTzBW+yO9Byi8eusfZZdNiR720zkjB3xflhhDM/npEfi9VnitmxqOZKdCuQxe7XG89M54DUOf39kTxAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rKwk765z; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="itQpGtQc"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0AE1106FC1;
-	Wed, 30 Sep 2026 21:29:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790796578;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=dR7TRsCJ25q9nKc0aVFqV0DBkjf9gpIXafQpdl4hBAg=;
-	b=itQpGtQcIgyGw8VPcQ4FGKI7x/CWWKMkTXKgixCP51xt6XRKDhdqbztd3DgbcmMAv3HCJu
-	PGl0CIE9TMjyMVw0GIiS6WrK7kePbt9Z4/qhqfIJo8K7o5F7JnosFh8qId5aIKAgoxsKms
-	uP9ZSHKbJVLd30xpQOBrwmP4kMzFDDl2NliEa1QzgEkMMNR9wfK/2+oZY281MqTxbcybBK
-	i+jzt338VIohdETUZTSrPbfEXyM3EcgbNWGbSs/t4hhWS6/fUE/3LuVpBQM/WMGedAtpMM
-	iWoDG1XQTduklzEXFNRVsxPnxgdNHLOxfX3eJCipscNPT3L6xk+XiGBkUb1zbw==
-Message-ID: <17f240e5-9c65-4562-ba51-535b0c69c5fd@nabladev.com>
-Date: Wed, 30 Sep 2026 21:29:34 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rKwk765z"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 26B7D1A1080;
+	Wed, 30 Sep 2026 19:35:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E707060749;
+	Wed, 30 Sep 2026 19:35:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 67C771032A657;
+	Wed, 30 Sep 2026 21:35:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790796942; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=vpqwVhkaQrlM436Ao8cy3FIBQzurew4N1bUjRlG3ai4=;
+	b=rKwk765zTUA62PJdK6Dbqbnq30ntX08ZMYWV9oB4Bkff4C0oXIhqhIPXhT6CRN0HsQlFU9
+	5b4bHMwIQUtwRhiCGp2C9VWPa16v0EWh84DXBgciHzslAo919sCG505Lz5Lm/udM56j5ga
+	DjrCV8uZA7AU0TUTolKn0jzNrKzHOtTxtGFhPJoMXeVkc8QWhn3SJgaZ6Ajz+G+rJJCww7
+	QEVb4SZd3TFHfpiHwuxG3e/Kzr9u7yKCf3yfyf29356z6ZU27N3kV80Ua+eSwMT1T+c/2n
+	Cznaegi02Y9iRSzMnBlRDuvPm/BoAoeakPqq9yeNPLLtS4kMMBF4Y4FIDTy3fQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-To: Frank Li <Frank.li@oss.nxp.com>, Francesco Dolcini <francesco@dolcini.it>
-Cc: linux-arm-kernel@lists.infradead.org,
- Aswath Govindraju <a-govindraju@ti.com>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev, linux-can@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260928204741.175754-1-marex@nabladev.com>
- <20260928204741.175754-3-marex@nabladev.com> <arvPDq8sjjv7na01@SMW015318>
- <49303872-5622-4e1d-8e1a-01394ec29367@nabladev.com>
- <20260930174413.GA2463938@francesco-nb> <ar1bhpji35CbArtY@SMW015318>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <ar1bhpji35CbArtY@SMW015318>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Sep 2026 21:35:39 +0200
+Message-Id: <DLSWJ8V1AIC9.3D68VRRVHXJUF@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v2 3/7] drm/bridge: dw-mipi-dsi: stop using deprecated
+ devm_drm_of_get_bridge()
+Cc: <wsa+renesas@sang-engineering.com>, <imx@lists.linux.dev>,
+ <Frank.Li@kernel.org>, <dri-devel@lists.freedesktop.org>
+To: <sashiko-reviews@lists.linux.dev>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.22.0
+References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com> <20260929-drm-fix-of_get_bridge-build-regression-v2-3-6da431d8f180@bootlin.com> <20260929135537.5E85C1F00898@smtp.kernel.org>
+In-Reply-To: <20260929135537.5E85C1F00898@smtp.kernel.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/30/26 8:57 PM, Frank Li wrote:
-> On Wed, Sep 30, 2026 at 07:44:13PM +0200, Francesco Dolcini wrote:
->> On Tue, Sep 29, 2026 at 05:20:27PM +0200, Marek Vasut wrote:
->>> On 9/29/26 4:45 PM, Frank Li wrote:
->>>
->>> Hello Frank,
->>>
->>>>> +	backlight_lvds: backlight-lvds {
->>>>> +		compatible = "pwm-backlight";
->>>>> +		pinctrl-names = "default";
->>>>> +		pinctrl-0 = <&pinctrl_panel_backlight_lvds>;
->>>>> +		brightness-levels = <0 1 10 20 30 40 50 60 70 75 80 90 100>;
->>>>> +		default-brightness-level = <7>;
->>>>> +		enable-gpios = <&gpio2 27 GPIO_ACTIVE_HIGH>;
->>>>> +		pwms = <&tpm3 3 5000000 0>;
->>>>> +		/* Disabled by default, unless display board plugged in. */
->>>>> +		status = "disabled";
->>>>> +	};
->>>>
->>>> The both backlight is not used in this dts, can you remove it and
->>>> add these when it real use.
->>> It's the same thing we do on the other boards, so I would prefer to keep
->>> this consistent:
->>
->> I agree with Marek, and I would not use the criteria about being used or
->> not.
-> 
-> 
-> Others boards: some has dtso, which use it. And krzy have some concern for
-> similar case although he have not reply alex's answer.
-> 
-> https://lore.kernel.org/imx/30599533-91de-41fd-9420-3f8693ec92ac@kernel.org/
-> 
-> And it is most likely go through nexus connector node to support display
-> panel in future.
+On Tue Sep 29, 2026 at 3:55 PM CEST, sashiko-bot wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Medium] drm: bridge reference leak on dw_mipi_dsi_host_detach early re=
+turn
+> --
+>
+> commit b7207f37872ee6fe7eb2903e38f89975b930c392
+> Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>
+> drm/bridge: dw-mipi-dsi: stop using deprecated devm_drm_of_get_bridge()
+>
+> This commit switches from the deprecated devm_drm_of_get_bridge() to
+> of_drm_get_bridge_by_endpoint() to resolve a build failure when CONFIG_OF
+> is disabled. Since of_drm_get_bridge_by_endpoint() returns a refcounted
+> bridge, it adds the necessary put operations to release the reference.
+>
+> Link: https://lore.kernel.org/r/20260928161605.2271412-1-arnd@kernel.org
+> Link: https://lore.kernel.org/oe-kbuild-all/202609291109.9RGna4XZ-lkp@int=
+el.com/
+>
+>> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu=
+/drm/bridge/synopsys/dw-mipi-dsi.c
+>> index 5dd475fcaacf8..22d1b8cbe1d57 100644
+>> --- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+>> +++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+> [ ... ]
+>> @@ -368,9 +368,8 @@ static int dw_mipi_dsi_host_detach(struct mipi_dsi_h=
+ost *host,
+>>  			return ret;
+>
+> [Severity: Medium]
+> If pdata->host_ops->detach() returns a negative error code (e.g., during
+> device unbind or PHY teardown errors) and takes this early return, does t=
+his
+> leak the bridge reference acquired in the attach function?
+>
+> Since the bridge is now dynamically refcounted and we skip the newly adde=
+d
+> drm_bridge_clear_and_put(&dsi->bridge.next_bridge), it looks like the
+> reference count will not be properly decremented on this error path.
 
-I do not think nexus node will apply to this connector, no.
+The issue was there already for drm_of_panel_bridge_remove() (here deleted)
+and drm_bridge_remove().
 
-> So I suggest remove it now and add it when need.
-Can we please go with consistency between these boards from one vendor ?
+Id say it's orthogonal, and most likely nobody has this issue in real
+life. So I took a note to fix this soon, and I'd let this patch be applied
+as is because it fixes an issue bothering people.
 
-Thank you.
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
