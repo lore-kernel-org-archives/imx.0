@@ -1,16 +1,15 @@
 Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03493B95E0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D053E3C345D
 	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790838594; cv=none; b=sWVl74ZHWin54FHqZKXhIBomuHL9DD9U8zW2sSIW0B3p2tQ/FCDU54GPX/yXMbSR7/KqpgBOxUDHkH88cDwAlJWbJNjcDeGAzjAeZ2Ro6pBAuthUy3kuUYoqEC0u1MGK3zCZLHcF3PRxE18/3Ibc78leZ7ITp0vlZWGVd9+50iQ=
+	t=1790838594; cv=none; b=qT5keSv7dOQdRqbc8cLlFqcN9uSLTdZ4SyX0Nwqr9o/cGKx5DYf6myyRGJyRShs0Pqgvyk1pt1GAmkqAav8FD7wt8CMUCnSgZq/y2wjCQDFv/N2Kn3YmmgPLYd+WKZfp3HI/1MKKxe9YYk/M2Chkq71RgFUkpSwxr5qFgyZ1dK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790838594; c=relaxed/simple;
-	bh=CIpA8+WZKJEv1+WslyjE4xU69DpHqMzHgp98kIIc13I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TpgV4CAiBdclcA93UP9exLqGPcwaRNxQf+IWNGqtdjsXXj79QeWB6kbaPzgAOcbgT66LIUgssvVBGlTAIcDMbhKtbFF2VifakvrdjkufJvvb5FxBUcP3wYb6cpUeZZpzWEZ3C2Am6qVXZD4OqW37RPCzlrryR2b1G4pbRdjtV+k=
+	bh=+v3Jga9Ob8QUQLmt05TRrSn34heKO+eaOCT1t0h71kk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FMOGjIJZDIvGrhfZyIPUt/qTlfAL60ohrh06MfxSBzTOZqlXF78aXnCqTgBqVDSVvt6q8AhkFifT3kLZg3g99qtJj5k69UmJVJptnYG9aZUfw9O087mRiJ8RneRw8UomyjPtg9/ey4fg9KJM09m1sPRxiKbUloxXKKQJH1DSlRo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.12.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
@@ -18,8 +17,8 @@ Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:41660 helo=localhos
 	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1xCAvR-00000001Ztc-0zR9;
-	Thu, 01 Oct 2026 09:09:50 +0200
+	id 1xCAvR-00000001Ztc-04YD;
+	Thu, 01 Oct 2026 09:09:49 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -33,12 +32,10 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v2 1/3] ARM: dts: imx6: phycore-som: Set PMIC watchdog alias as default
-Date: Thu,  1 Oct 2026 09:09:45 +0200
-Message-Id: <20261001070947.1815279-2-primoz.fiser@norik.com>
+Subject: [PATCH v2 0/3] ARM: dts: imx6: phycore-som: PMIC and PHY fixes
+Date: Thu,  1 Oct 2026 09:09:44 +0200
+Message-Id: <20261001070947.1815279-1-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261001070947.1815279-1-primoz.fiser@norik.com>
-References: <20261001070947.1815279-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,41 +54,31 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Pin the da9062 PMIC watchdog to /dev/watchdog0 via a DT alias, instead
-of leaving it to be assigned dynamically by probe order. This SOM
-already relies on the PMIC for reset (see commit aa4f48a4e06c ("ARM:
-dts: imx6: phycore: Rely on PMIC reboot/reset handler")), so this
-makes that the predictable, fixed watchdog device node.
+A few small fixes for the PHYTEC phyCORE-i.MX6 SOM:
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
+- Pin the DA9062 PMIC watchdog to /dev/watchdog0 (1/4).
+- Raise the PMIC's SOC/ARM buck ceiling to 1.5V, needed once the
+  1.2GHz OPP tier ([1]] requests 1.3V for VDD_ARM and the anatop
+  LDO's 125mV dropout is added on top (2/4).
+- Add phy-reset-duration to fec node for more robust reset pulse (3/4)
+
+[1] https://lore.kernel.org/all/20260923070505.494949-1-primoz.fiser@norik.com/
+
+Link to v1: https://lore.kernel.org/all/20260930102532.2262700-1-primoz.fiser@norik.com/
+
 Changes in v2:
-- no changes
+- Drop patch #3 from v1 (converting to reset-gpios) due to potential
+  backwards compatibility as suggested by Frank
+- Convert patch #4 from v1 to patch #3 in v2 (use phy-reset-duration)
 
- arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Primoz Fiser (3):
+  ARM: dts: imx6: phycore-som: Set PMIC watchdog alias as default
+  ARM: dts: imx6: phycore-som: Increase PMIC max SOC and ARM voltage
+  ARM: dts: imx6: phycore-som: Add phy-reset-duration
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
-index ddbfecd591f5..205467fd223e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
-@@ -11,6 +11,7 @@ / {
- 	aliases {
- 		rtc1 = &da9062_rtc;
- 		rtc2 = &snvs_rtc;
-+		watchdog0 = &da9062_wdog;
- 	};
- 
- 	/*
-@@ -112,7 +113,7 @@ da9062_onkey: onkey {
- 			compatible = "dlg,da9062-onkey";
- 		};
- 
--		watchdog {
-+		da9062_wdog: watchdog {
- 			compatible = "dlg,da9062-watchdog";
- 			dlg,use-sw-pm;
- 			dlg,wdt-sd = <1>;
+ arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
 -- 
 2.34.1
 
