@@ -1,110 +1,78 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB443909BF
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 15:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED903DEFF3
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 15:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790869800; cv=none; b=eiQNESxguCMS7hbWZD2Wj64m9xbBFSHrVWaDhEQ4MXFmtAdDEiqStj7Tcv7ZuYJhvO/bxD+0SpjlI9NJ6dHI6jCoHVvLlW430joDuhM/xLPud36icHYuuhXucYj1OWT5klJ1nEpLTe1KDBYAMA/Y97ueZzdJ5IObhOPDRirp6BQ=
+	t=1790870059; cv=none; b=k7PBeB9FkdWdmXaBII27DPVIm45kq7Wy7ePa1nLZQQuWxYKaEeAisw+jlWyFL7Oz9fEvoesjMkOwQ7wl0xZNkg6ZHGuuzQAwxsoUEQEnWN9ws7ltNi3NdSnP+rrkigEkXDBnuqmI/ATYXg0hiLAYVA+0x3T+E96fCzBorBnRIYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790869800; c=relaxed/simple;
-	bh=d5wjsmU4iwodPmCvT+NJtftx88hL20Yv4nRXnfEGQzU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=iV5VDoLN4+mPQLcV0yDNe2kFPOHLot8LEG/IlmUAYaA3CyKaTD5bB67AoP/UIKb9H3KRn43lQg7p1BpyUP+NQ+5vde4sPg+UHFIRZH9auEetqqmEUkVUxyDOLJ7YJEcsBp2+dlxUe7BFPGVnR/IpPgkWFP23xFEjrn/6YzLzz34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ieDfAB85; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790870059; c=relaxed/simple;
+	bh=3G6MctPuFEq3MjP/UFIoNxPCj/ilxJu+9NYiVdYelYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eR6JoetWcqO58uh3Y9otSzFdzC3Hg/iYYXzIOAS76R61XmUiD1KWQAgSj3q/xheix8b2or6MJzDlHybALHL0VpG/j3SaxOX2RqTGoh5aRq/1pMBb95gxStC/yERjGZStzGw6QCVBQfAMp69Gt1QZXEp+WrF2ZePbwoSf4syiAgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=jxkKekKc; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ieDfAB85"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 29AB14E41115;
-	Thu,  1 Oct 2026 15:49:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E56BF60343;
-	Thu,  1 Oct 2026 15:49:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BAD94103282D5;
-	Thu,  1 Oct 2026 17:49:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790869792; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uGiWo6C+ycX09EU8H32CDb7AmZmrCKj9IV2lN2Mp/Hk=;
-	b=ieDfAB85stwwyZZSONxP4MucbdJVdGaD4CpTNy0XtKFsHuWU+pNP8OS+xoLFHBrWXaM/Vp
-	1WYzN+Wc8w6iie1fbCnX32LrMk6e5YzcWJnq1SKuenvHkWs0XZytGUfVprH2foGRrwKqBn
-	ZWNyWpZxptuyAsWuQ/dcVlL7W+hgLx0KBfqpf8PflbL0Np7aC6MD86rEJaMHhGC2TF9P+T
-	pzorWpQcNQpiRbvbXIEUJXHGri4D5wGd1qywEMeZGLxL3XLDuoBwXb6DIiZNK3lK0/BF0j
-	PPDx1NfHnVBER6DpUYsTEn45LfFjbpasGktZ1AsxhDb/j1/C1zMS+rJOgrwA7w==
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="jxkKekKc"
+Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id C6C8B1FA7B;
+	Thu,  1 Oct 2026 17:54:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790870048;
+	bh=nldvaWty8I5E20Jn3Utrwqefv4fix1llm1hvljMYchc=; h=From:To:Subject;
+	b=jxkKekKcuQjNzIIkOuifbqr+9Mn9hf0cPp3k36cSqiwJdeIqPzcxTstKwWCsWTF4a
+	 W2SiyfCqAMDXXWQqmXSgfASqUJ4yJtX/IPlYHdncsRRbRkk9n+3cXM/6Q+p8nNLtmW
+	 LWoElcmIZZ5taiwYEKPPxjw4POfiaDjloEXHQIcP3+tbx+fpKl755I+zuKUKe1Irlc
+	 RtQ02KUWt7DhhKeK+iqEFgWKrVZd9qtCqg/ah1Un5cwO8D5mvSp9Iyf6JTGLR51V++
+	 i8g6QfdnezHG1DvBnJP5kxnPweGzphsjYkfWIT+nKcTb6M9qkZZG+2CdJPD2XjQ0T7
+	 1ulx6gGzInDqw==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] ARM: dts: imx: enable SPI on Apalis iMX6 and Colibri iMX7
+Date: Thu,  1 Oct 2026 17:53:57 +0200
+Message-ID: <20261001155401.2584935-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 01 Oct 2026 17:49:39 +0200
-Message-Id: <DLTMCR2DR484.2J56NLPQEQO3M@bootlin.com>
-Subject: Re: [PATCH v2 0/7] drm: remove deprecated *_of_get_bridge() from
- non-OF drivers (fixes build regression)
-Cc: "Arnd Bergmann" <arnd@kernel.org>, "Doug Anderson"
- <dianders@chromium.org>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
- "kernel test robot" <lkp@intel.com>
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Dave Stevenson"
- <dave.stevenson@raspberrypi.com>, =?utf-8?q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, "Raspberry Pi Kernel Maintenance"
- <kernel-list@raspberrypi.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.22.0
-References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
-In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Sep 29, 2026 at 3:39 PM CEST, Luca Ceresoli wrote:
-> After commit Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to
-> drm_panel.c") some drivers fail building:
->
->   error: implicit declaration of function 'devm_drm_of_get_bridge'
->
-> This is because devm_drm_of_get_bridge() (and drmm_of_get_bridge()) have
-> been moved to drm-panel.h.
->
-> The affected drivers are those which:
->
->  * can be built without CONFIG_OF, and
->  * don't include drm_panel.h
->
-> The affected drivers are 3, fix them (patches 1-3) by replacing the
-> deprecated *_of_get_bridge() calls with of_drm_get_bridge_by_endpoint().
->
-> While there, do the same for all drivers which be built without CONFIG_OF=
-,
-> even if they don't fail (patches 4-7).
->
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Patches 1-4 and 7 applied to drm-misc-next. This includes all fixes to the
-known regressions.
+The SPI controllers of the Apalis iMX6 and Colibri iMX6ULL modules are
+disabled in the module device tree and no carrier board enabled them.
 
-The two missing patches (5-6) are improvements, not bugfixes, and have
-changes requested. I will send a v3 later on.
+A device can be instantiated from user space through the spi_master
+new_device sysfs interface, so enable the controllers on the carrier
+boards where the signals reach a user accessible connector.
+The Colibri iMX6 and iMX7 carrier boards and the Apalis iMX8 ones
+already do this.
 
-Luca
+Francesco Dolcini (2):
+  ARM: dts: imx6q-apalis: enable SPI1 and SPI2
+  ARM: dts: imx6ull-colibri-iris: enable SPI
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval.dtsi      | 10 ++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts | 10 ++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dts      | 10 ++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6ull-colibri-iris.dtsi   |  5 +++++
+ 4 files changed, 35 insertions(+)
+
+-- 
+2.47.3
+
