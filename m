@@ -1,294 +1,160 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBCF3BE14A
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 17:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B4642123A
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 18:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790876992; cv=none; b=ommqthTj0hMJvsI54MHE5mAr14vd6c7Td6lShef3g54bI86XoVvJoG6aGaoWdNtqrCQ5WhEJjlD78EhHBZZ+YnvAvs8kW+nYnz1fnXEN2eemN7PcVO6AYD5YKDDUgW9IX85Z3hsw16dfId93xAIcxdUZYDTfr+DKtlSrNIZWFDQ=
+	t=1790877793; cv=none; b=PkS1PectL6SHdzLP/ZZp0AaoTUMGUCzgTFCJe5Nj5ymWb8fbSbklyRLzhteOLsTDIiHB5KkJbx6NMou4/E1aTaH6NkjKN8q++IenbsPI05i06DNSOU/FgaOCTDa8WortYRjPFtM19bazHhw1eTatlcx4VnJ4/yQAvAc/ANpzq6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790876992; c=relaxed/simple;
-	bh=aJuu6oZimDQgHfnWh6s213yJHPdqpC6i8kZ9W3n4ue0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXJYdeVtVy2uFCtFLgpjKBTDTJUmljEowc/QJ9RagKIVycyVU/vAa4Njph/9lSI8xv9gjV+W2Pp8cTECo5ocR7xoS4MyF8A5WOmrudGPOYb2MJwm7e7scIre/O1mdt/2DpOUCNUyrJkJnJZoa3XMDdwHBDgMqekqlvbzD7e6EPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Az21ypb2; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1790877793; c=relaxed/simple;
+	bh=vuCy3XNQRwK2pAv8DV9ohIZ4yjPKBGFN3TicIXMmLpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ue5Xie6iE+32FqmT3G1YL2vGT9LLCX24vKa+q24oUx+PZaYqSZrzqd2rY0qfGTXv00m+p2DeNir7fWcweVfwSYp7II4nEUbDq5vYEPEGcOsLc/GIQ/NfvNFBf9gNUb64p5x/2st/2MCGwNO6Px6o71hcgJc4Pc85yonL0ehbdHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JoA8Sqcz; arc=none smtp.client-ip=74.125.224.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Az21ypb2"
-Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 985DB2039F;
-	Thu,  1 Oct 2026 19:49:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1790876976;
-	bh=TpovwenXPDOa/CzlL9Tb6pvO6bb3yMG0I4srjw+nzys=; h=From:To:Subject;
-	b=Az21ypb2ppPYsw7tCj0wC3qzExydj67M83JxIZ5X5MnuG3W8z4yhdKDgOUpQhU+Rh
-	 XKcuTKYJNLFr25o/1OTtoXX+QjY80n7S5hCnUhapChLZef34pmFGISdMsf4YLFcrPi
-	 9BZdsvSrz1TEFh4XnCPV9SLIi8b1up/q9sDIrqLnQPYYkEqiVqJZJf/4SbjXP032v3
-	 /SM8Gf/MaGAFSMoydXbubqpukR6Ol8Hz8rrWOIH/5dA9TdB/Kgda4OGPSORlh7RNE7
-	 Wk3bGcFOctVTlu3Wknkt2xsm6CScTFRM/YrUcHMObUbZDoDKa7b9hJJxytSXjx4ycy
-	 BNVxWDzArxcvQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JoA8Sqcz"
+Received: by mail-yx2-f38.google.com with SMTP id 956f58d0204a3-67561cbafd0so2857271d50.2
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 11:03:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790877785; x=1791482585; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CSRI8/Iy//RZIheBCqOOgWpv3l9S3TrqbEtSt4XD5L0=;
+        b=JoA8SqczhAKRgbLyuHyadELEOQiqIvdIJrdsr/Zt2C+73UJHArC/LJI4PJNO0ogLd6
+         TEvZi9JQp41ASU0ApnB3n3NqY/quNPDpRjU/e1wyMcdBmH/epCVcvihYukhkfOIcuFoE
+         1cTyMtnwzrOcNAbAhpu8rthVlG3V1kiPFQTd9mmipk8M9r6+EWHlvw9aiuTnQ+R9UZ/9
+         52DtIecXlG5StMMRaeLMMsX9YKU/cLZEDaLODyjAEr08Dejanzjod27RAPX6Z1oFybdo
+         BdEtVhHf7otKHKP183NqQZK6wxl2oHgi3tUGMCDVKqtW+pkhyjIw3U92riqsppIf9RDv
+         7qnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790877785; x=1791482585;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CSRI8/Iy//RZIheBCqOOgWpv3l9S3TrqbEtSt4XD5L0=;
+        b=x0W0GUCuykJ8TAyUvgVVHAeJeY+2oYK/C4x3kywjk8mmfARbs8DkQAyHtRqdIOubb4
+         Rq65B7bBTfXKmz9r8ieFuCSbdd9p4R76ux9uVUjTP09kC8Cgcm5foPMmYeF8Q+JdqDix
+         LYeJrh/yoFsgAsXMMXs/c9hX1xEa4t0YXqvComKC2lZwfbqLmfN+HK33UC9LGrJGWZD8
+         8RaXEXtc2iJF0WBM9APGPGUbIajzA7OKxW/EFSuhzkaDf6R1cVM7UBu2STVg/YOwPhvn
+         4Ki6VYwm05bWN/l4Cy3zbz6TM2OB8L0eQpYYiW2000xeERgXD8I/jL7jj0LToduO+g7O
+         3KMg==
+X-Forwarded-Encrypted: i=1; AKwUvBx/FH1XuB0JPPkiQ2y14aB1oPvYInWo+V+DCelAGfBM51fIeKVy1BRaxblJLJRg96dbHQk=@lists.linux.dev
+X-Gm-Message-State: AFuF++kepfGjJlCstw87qGLLlSEwErSL0VTpaneAsjYZ60mnWDqYLjIz
+	k7FHz+4PjOg2fWLz59fKBJs6fSg6Ez+3TG2yBWt8T6eFTT7lV38I8IY=
+X-Gm-Gg: AYBFou1BHXVu1bfaEPyPboNojcZjFpCRMs6qWputRA6fxgFHDdP50+2gLD5TB7+R1n8
+	2GKCIKNGD8RTTgP8ye3vroLHNjiMLiOHl8bxdzG7WNmIBEjOM0R4aFQvaxt20eQN+NO1MSpObSo
+	76/27FAdcUKF+Lo9hhUieONqfUQpsIi1okQgqZlGXtcit241Bujo/OUyspT8RxPM0vkOf7SWxXC
+	TlS2SDax2Mvu6xMfI2j88It6nQqC+cjz37CSSly4sJvcOUItJyfuHgjMhNXNb2zxeaFLQS0JOUB
+	cTTdPbe1cUMfIG23STlf36X6wP9u/NKlRma3jJYLg0IzgCQXI5zPDUXP7UXXyyyaSyM4LdBNbm+
+	jF7pwPHUg2r4/9lKrOgV7PRtpIoxpq8h7RvgPOqxo4KXim0+8oh16rh7wHfQExfIPyam3JGJJWU
+	qd1QfN1FrDZakbno+oGgqKbKsSGj7TpiKOcQCuiyQB6/H34WvKCVh5k7IhP3/M/37g4Sdzh8/PB
+	JHvlUtPmLLNtIxOjq2SjStj2JWfFcNFtCf+xmhzSovHjmRtyelHOYS97Kf0x+Z+iYjS+6O5pBRn
+	N8XCS8gPqjJ7Z5M5Aocj3+gzc1CJ
+X-Received: by 2002:a05:690e:1513:b0:676:858d:35d1 with SMTP id 956f58d0204a3-677ac03bb85mr68872d50.36.1790877785206;
+        Thu, 01 Oct 2026 11:03:05 -0700 (PDT)
+Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-917b200fd90sm20983806d6.37.2026.10.01.11.03.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 11:03:04 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Wei Fang <wei.fang@nxp.com>,
+	netdev@vger.kernel.org
+Cc: Myeonghun Pak <mhun512@gmail.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 7/7] ARM: dts: imx6ull-colibri-emmc: Add VGA overlay
-Date: Thu,  1 Oct 2026 19:49:16 +0200
-Message-ID: <20261001174924.3831455-8-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261001174924.3831455-1-francesco@dolcini.it>
-References: <20261001174924.3831455-1-francesco@dolcini.it>
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net RESEND] net: fec: drain PEROUT requests before canceling the timer
+Date: Thu,  1 Oct 2026 14:02:58 -0400
+Message-ID: <20261001180258.4054391-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
+A PEROUT ioctl can set perout_enable, release the driver's locks and
+then be preempted before hrtimer_start(). The unregister path waits for
+that ioctl, which can rearm the timer after it was canceled. Removal
+then frees the netdev containing the still-armed timer.
 
-Add a device tree overlay for the VGA output on the Colibri iMX6ULL eMMC
-parallel RGB LCD interface. The VGA output is driven through a
-non-programmable video DAC without VESA DDC I2C signals to a DVI
-connector. The DAC power-save input is driven by the BL_ON signal on
-SODIMM 71, like on the Colibri iMX7.
+Unregister the PTP clock first so all in-flight ioctls have returned
+before canceling the timer. Clear the PEROUT state and compare channel
+afterward, then disable PPS. Serialize the channel write with PTP clock
+shutdown and skip it when that clock is off.
 
-The overlay content is identical to the Colibri iMX7 eMMC one, only the
-GPIO driving the DAC power-save input is SoC specific. To avoid
-duplicating it, rework the Colibri iMX7 eMMC overlay moving the common
-part to a new dtsi shared between the two modules, and include it from
-both overlays.
+This issue was identified during our ongoing static-analysis research
+while reviewing kernel code.
 
-The overlay is also combined with the Aster, Evaluation Board v3, Iris
-and Iris v2 carrier board device trees to provide ready-to-use DTBs.
-
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
- arch/arm/boot/dts/nxp/imx/Makefile            | 21 +++++++
- .../dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso | 24 ++++++++
- .../dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi | 61 +++++++++++++++++++
- .../dts/nxp/imx/imx7d-colibri-emmc-vga.dtso   | 52 ++--------------
- 4 files changed, 112 insertions(+), 46 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
+Resend notes:
+- Send via git send-email over SMTP to preserve diff and hunk headers.
+- No code changes from the previous submission.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 83f65b031e55..fa2a6dd82385 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -369,6 +369,22 @@ imx6ull-colibri-emmc-eval-v3-panel-res-touch-7inch-parallel-dtbs := \
- 	imx6ull-colibri-emmc-eval-v3.dtb \
- 	imx6ull-colibri-emmc-panel-res-touch-7inch-parallel.dtbo
+Previous submission:
+https://lore.kernel.org/netdev/CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com/
+
+ drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 56801c2009d5..67901e036ac3 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
  
-+imx6ull-colibri-emmc-aster-vga-dtbs := \
-+	imx6ull-colibri-emmc-aster.dtb \
-+	imx6ull-colibri-emmc-vga.dtbo
-+
-+imx6ull-colibri-emmc-eval-v3-vga-dtbs := \
-+	imx6ull-colibri-emmc-eval-v3.dtb \
-+	imx6ull-colibri-emmc-vga.dtbo
-+
-+imx6ull-colibri-emmc-iris-vga-dtbs := \
-+	imx6ull-colibri-emmc-iris.dtb \
-+	imx6ull-colibri-emmc-vga.dtbo
-+
-+imx6ull-colibri-emmc-iris-v2-vga-dtbs := \
-+	imx6ull-colibri-emmc-iris-v2.dtb \
-+	imx6ull-colibri-emmc-vga.dtbo
-+
- dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ul-14x14-evk.dtb \
- 	imx6ul-ccimx6ulsbcexpress.dtb \
-@@ -398,15 +414,20 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ull-colibri-aster.dtb \
- 	imx6ull-colibri-emmc-aster.dtb \
- 	imx6ull-colibri-emmc-aster-panel-cap-touch-7inch-parallel.dtb \
-+	imx6ull-colibri-emmc-aster-vga.dtb \
- 	imx6ull-colibri-emmc-eval-v3.dtb \
- 	imx6ull-colibri-emmc-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
- 	imx6ull-colibri-emmc-eval-v3-panel-res-touch-7inch-parallel.dtb \
-+	imx6ull-colibri-emmc-eval-v3-vga.dtb \
- 	imx6ull-colibri-emmc-iris.dtb \
-+	imx6ull-colibri-emmc-iris-vga.dtb \
- 	imx6ull-colibri-emmc-iris-v2.dtb \
- 	imx6ull-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel.dtb \
-+	imx6ull-colibri-emmc-iris-v2-vga.dtb \
- 	imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo \
- 	imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
- 	imx6ull-colibri-emmc-panel-res-touch-7inch-parallel.dtbo \
-+	imx6ull-colibri-emmc-vga.dtbo \
- 	imx6ull-colibri-eval-v3.dtb \
- 	imx6ull-colibri-iris.dtb \
- 	imx6ull-colibri-iris-v2.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
-new file mode 100644
-index 000000000000..4ecf221de27e
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * VGA output connected to the Colibri parallel RGB LCD interface through a
-+ * non-programmable video DAC with a DVI connector.
-+ *
-+ * The VGA output is available on multiple carrier boards (including Iris,
-+ * Eval, Aster) without VESA DDC I2C signals.
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx6ull-imx7-colibri-vga.dtsi"
-+
-+&vga_encoder {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio_bl_on>;
-+	/* SODIMM 71 / BL_ON */
-+	enable-gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
-new file mode 100644
-index 000000000000..7e323698f338
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
-@@ -0,0 +1,61 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * VGA output connected to the Colibri parallel RGB LCD interface through a
-+ * non-programmable video DAC with a DVI connector, shared by the Colibri
-+ * iMX6ULL eMMC and Colibri iMX7 eMMC overlays.
-+ *
-+ * The VGA output is available on multiple carrier boards (including Iris,
-+ * Eval, Aster) without VESA DDC I2C signals.
-+ *
-+ * The DAC power-save input is driven by the BL_ON signal on SODIMM 71, the
-+ * SoC specific pinctrl and GPIO are described by the overlay including this
-+ * file.
-+ */
-+
-+&{/} {
-+	vga_encoder: vga-encoder {
-+		compatible = "dumb-vga-dac";
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				vga_enc_in: endpoint {
-+					remote-endpoint = <&lcdif_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				vga_enc_out: endpoint {
-+					remote-endpoint = <&dvi_connector_in>;
-+				};
-+			};
-+		};
-+	};
-+
-+	dvi-connector {
-+		compatible = "dvi-connector";
-+		analog;
-+
-+		port {
-+			dvi_connector_in: endpoint {
-+				remote-endpoint = <&vga_enc_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&lcdif_out {
-+	remote-endpoint = <&vga_enc_in>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
-index 363c0c2cc43e..ae3d8da02e67 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
-@@ -14,51 +14,11 @@
+ 	hrtimer_cancel(&fep->perout_timer);
  
- #include <dt-bindings/gpio/gpio.h>
++	mutex_lock(&fep->ptp_clk_mutex);
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 	fep->perout_enable = false;
+-	writel(0, fep->hwp + FEC_TCSR(channel));
++	if (fep->ptp_clk_on)
++		writel(0, fep->hwp + FEC_TCSR(channel));
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
++	mutex_unlock(&fep->ptp_clk_mutex);
  
--&{/} {
--	vga-encoder {
--		compatible = "dumb-vga-dac";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_gpio_bl_on>;
--		enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
-+#include "imx6ull-imx7-colibri-vga.dtsi"
+ 	return 0;
+ }
+@@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
  
--		ports {
--			#address-cells = <1>;
--			#size-cells = <0>;
+-	if (fep->pps_enable)
+-		fec_ptp_enable_pps(fep, 0);
 -
--			port@0 {
--				reg = <0>;
--
--				vga_enc_in: endpoint {
--					remote-endpoint = <&lcdif_out>;
--				};
--			};
--
--			port@1 {
--				reg = <1>;
--
--				vga_enc_out: endpoint {
--					remote-endpoint = <&dvi_connector_in>;
--				};
--			};
--		};
--	};
--
--	dvi-connector {
--		compatible = "dvi-connector";
--		analog;
--
--		port {
--			dvi_connector_in: endpoint {
--				remote-endpoint = <&vga_enc_out>;
--			};
--		};
--	};
--};
--
--&lcdif {
--	status = "okay";
--};
--
--&lcdif_out {
--	remote-endpoint = <&vga_enc_in>;
-+&vga_encoder {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio_bl_on>;
-+	/* SODIMM 71 / BL_ON */
-+	enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
- };
+ 	cancel_delayed_work_sync(&fep->time_keep);
+-	hrtimer_cancel(&fep->perout_timer);
+ 	if (fep->ptp_clock)
+ 		ptp_clock_unregister(fep->ptp_clock);
++
++	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
++	fec_ptp_pps_disable(fep, fep->pps_channel);
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
+ }
 -- 
-2.47.3
-
+2.53.0
