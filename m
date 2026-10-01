@@ -1,240 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA8047CC71
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 13:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E7736B912;
+	Thu,  1 Oct 2026 13:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790861508; cv=none; b=pbirEnETP3hUpryllFzK1AurvjKfLiFpOoON1X1v5pc3nPLPvqWMo9jkkIAoWHrMnGPn79pvDAWZYH2zeJ8UNfyggPlW65KcpiXLQ0+js/o+FwI2XdlvMjbYOlC06qGOItEntDAw7VOEoozUlFBXeHrq98fOaDB6L7QUsLe9oX8=
+	t=1790862817; cv=none; b=gZhLtfyNhUUMDadbpSlYuDYPfzyJfp98FGpOgoO8J3nOwgHG23cXtWpYPIxVGux8SNq4K9neCSh7bZrbs01S56Yjci7c4eES2BLDyskCKmyPthFdqgG/L3pM/4LnuPuKrhBrjU0EMxZxv4dXyN0/4+ZNkrpsyZ4IgsLQ11klbyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790861508; c=relaxed/simple;
-	bh=w4oN3R5Y2MI6qFD0mvO6A0Ahs+hq3tZwOUahHOvZSxA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WFCniXm0MmCsZec7nHyWSDnR7PAzzTh4tHRugMbQNqZePnp8rLB/Pi5bQlVmj8awFzhm8uMaJ1/K32YTcJRRAq07B9a4itB9FuWd8NLbPccrgq7Oq1wyEI0kJX6eeGKq9WUovOMeTG1DdRFBQbiOo4W3afeVfiIoQKKLNYhT7m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+XTjbJy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790862817; c=relaxed/simple;
+	bh=uCdfcz3v6mxxw3wC/s78cYO+k50sdqDfx1y0FX3fHU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IDP7hwxpw+mBFxR2GpB4aCTW6E/PSrTCWpid9i0CUl/skz22gDpw9HeAcqckuHe5w3cwMGWqKteu7V06Rw7q3366QNmJ9Q0C3z6Ffr79IREo7K3l+hNWvx08EBzGGRKj4nsKNhQuCjLCzIDMdYuHbUS3+CBO7n9cLFHpUF+fvTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=38MSYv9c; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+XTjbJy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116BE1F00899;
-	Thu,  1 Oct 2026 13:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790861500;
-	bh=YRIXMT91xwfN7EXeoTmdITQO3Y/Hp4+WgaSJVnHWCkQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=A+XTjbJyGnuqzzPTpS+JJF/gp0L1VD45EBwWvPnbI1eTNx9fOZWimAPCdLnvshpoD
-	 6o+BZWatmmdhV8x5jYlmoOIbt3MZnT5gNpF4cmS7nXtum+eU5McwOvFiE97ijK9ytt
-	 Bm2h1l9QysOzUUOBzTcCKRiygxoAUrcL8hDKo1flEL3EbfcQB2St3NZcECIPj4JYgD
-	 3PENBLAakJiyT2k8VCxWt1g44hozitW4XEiwga+O2GqL9Btr1b4dpNN4P8RGgCSsqv
-	 CXbIo5RWxD7VGTsemgYUXRHOsFsvtla7A3w97X39Pyys2+kYbC5GbLe1jT+eAFe4mq
-	 uOvAx8p1YPQHQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 23/24] drm: drm_hotplug_helper: new helper to
- implement bridge hotplug
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-In-Reply-To: <20261001-drm-bridge-hotplug-v2-23-8e34986dcb68@bootlin.com>
-References: <20261001-drm-bridge-hotplug-v2-0-8e34986dcb68@bootlin.com>
- <20261001-drm-bridge-hotplug-v2-23-8e34986dcb68@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 01 Oct 2026 13:31:39 +0000
-Message-Id: <20261001133140.116BE1F00899@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="38MSYv9c"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=o1erPuTBrPzxFY3cpm9t8CWiJEf5qm/y/ZbecFvb/I4=; b=38MSYv9cMjolrsZPutOvwHpQ/C
+	nHkJrQHZElwLnAkPVTe7mftiqo2a3ucTBylGoHT2034eodK2UDOK4gQ8cJ+9MdKMIEkcaqm2S+lw4
+	cAVlq3en0+owiy7CPjzysxOpv9ZfK9g2hUwPt4K4uO0+udJ4B3WeczZJlebtCHVfDZxs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xCHDu-008Oh1-Fw; Thu, 01 Oct 2026 15:53:22 +0200
+Date: Thu, 1 Oct 2026 15:53:22 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Marek Vasut <marex@nabladev.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+Message-ID: <0b1e6d29-5054-423c-bf7d-2206f2473579@lunn.ch>
+References: <20260924180607.60932-1-marex@nabladev.com>
+ <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
+ <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
+ <AS4PR04MB9338E76DB4A59D70F1D6AB2F888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
+ <AS4PR04MB9338B4278A2A5B94FA854056888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS4PR04MB9338B4278A2A5B94FA854056888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
-- [High] drm: NULL pointer dereferences of last_bridge and optional attach =
-callback
-- [High] drm: refcount underflow on bridge returned by drm_bridge_get_next()
-- [Medium] drm: drmm_hotplug_helper_init returns NULL on success violating =
-API contract
-- [Medium] drm: data race on hotplug_helper->connector outside of connector=
-_mutex
-- [Medium] drm: duplicate invocation of attach callback bypassing drm_bridg=
-e_attach()
-- [Medium] drm: TOCTOU race misses hotplug events due to late notifier regi=
-stration
-- [Low] drm: spurious drm_WARN_ON triggered on normal teardown of incomplet=
-e pipeline
---
+> Okay, but please consider Andrew's suggestion. Add clock-frequency
+> support for greater flexibility in adapting to different situations,
+> instead of fixing the MDC clock to 2.5MHz.
 
-commit 251bdf083a0bf54162b14a9598f43ad560284a46
-Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+I consider this nice to have. And to actually implement it, you need
+to know the base frequency in order to calculate the divider. So i
+suggest the first patches in the patchset set the clock to 2.5Mhz,
+then consider other DT requested frequencies.
 
-drm: drm_hotplug_helper: new helper to implement bridge hotplug
-
-This commit adds a new helper to support cards implementing hotpluggable
-DRM bridges. It registers to get notified of relevant events and reacts
-by creating a bridge if the pipeline is complete, and destroying it on
-bridge removal.
-
-> diff --git a/drivers/gpu/drm/display/drm_hotplug_helper.c b/drivers/gpu/d=
-rm/display/drm_hotplug_helper.c
-> index 0000000000000..1b89b14b52aa2
-> --- /dev/null
-> +++ b/drivers/gpu/drm/display/drm_hotplug_helper.c
-
-[ ... ]
-
-> +static bool drm_hotplug_helper_pipeline_is_complete(struct drm_hotplug_h=
-elper *hotplug_helper)
-> +{
-> +	struct drm_bridge *last_bridge __free(drm_bridge_put) =3D
-> +		drm_bridge_chain_get_last_bridge(hotplug_helper->encoder);
-> +
-> +	/* We expect at least one bridge */
-> +	if (!last_bridge) {
-> +		drm_dbg_driver(hotplug_helper->drm, "no bridges in pipeline (yet)\n");
-> +		return false;
-> +	}
-> +
-> +	struct drm_bridge *next_bridge __free(drm_bridge_put) =3D
-> +		drm_bridge_get_next(last_bridge);
-
-[Severity: High]
-Does this code cause a refcount underflow? The pointer returned by
-drm_bridge_get_next() directly returns the pointer from the callback without
-incrementing its kref reference count.
-
-When the function returns, drm_bridge_put() executes and decrements the
-reference count. Since a reference was never acquired, this leads to an
-underflow and a use-after-free vulnerability.
-
-[ ... ]
-
-> +static void drm_hotplug_helper_connector_remove(struct drm_hotplug_helpe=
-r *hotplug_helper)
-> +{
-> +	guard(mutex)(&hotplug_helper->connector_mutex);
-> +
-> +	if (drm_WARN_ON(hotplug_helper->drm, !hotplug_helper->connector))
-> +		return;
-
-[Severity: Low]
-Will this trigger a spurious kernel warning during normal device teardown?
-
-drmm_hotplug_helper_init() registers drm_hotplug_helper_fini() to run
-unconditionally on teardown, which calls this function. If a bridge was
-never hotplugged or the pipeline was incomplete, hotplug_helper->connector
-legitimately remains NULL.
-
-[ ... ]
-
-> +static void drm_hotplug_helper_try_complete(struct drm_hotplug_helper *h=
-otplug_helper)
-> +{
-> +	int err;
-> +
-> +	/*
-> +	 * drm_connector already present, the new bridge must be for
-> +	 * another card
-> +	 */
-> +	if (hotplug_helper->connector)
-> +		return;
-
-[Severity: Medium]
-Can this unprotected read lead to a data race on hotplug_helper->connector?
-
-The connector pointer is documented as protected by the connector_mutex.
-Since the DRM event notifier uses a blocking notifier chain, concurrent
-events could locklessly observe the connector as NULL before the addition
-path completes, potentially leading to duplicate bridge attach attempts.
-
-> +
-> +	/* Propagate the attach call chain to newly hotplugged bridge(s) */
-> +	struct drm_bridge *last_bridge __free(drm_bridge_put) =3D
-> +		drm_bridge_chain_get_last_bridge(hotplug_helper->encoder);
-> +	err =3D last_bridge->funcs->attach(last_bridge, hotplug_helper->encoder,
-> +					 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-
-[Severity: High]
-Can this code cause a NULL pointer dereference?
-
-drm_bridge_chain_get_last_bridge() returns NULL if the chain is empty,
-which can occur if an unrelated global DRM_MIPI_DSI_ATTACHED event triggers
-this on an empty pipeline. Unconditionally dereferencing last_bridge->funcs
-would crash.
-
-Additionally, the attach callback in struct drm_bridge_funcs is documented
-as optional. Unconditionally dereferencing it will crash for bridges that
-omit it.
-
-[Severity: Medium]
-Could this also lead to a duplicate invocation of the attach callback?
-
-Because last_bridge is already in the bridge chain, it has already been
-attached during initialization. Bypassing the standard drm_bridge_attach()
-API and manually calling the internal attach callback on the same bridge
-breaks driver state expectations, potentially causing memory leaks or
-hardware state corruption.
-
-[ ... ]
-
-> +struct drm_hotplug_helper *drmm_hotplug_helper_init(struct drm_device *d=
-rm,
-> +						    struct drm_encoder *encoder)
-> +{
-> +	struct drm_hotplug_helper *hotplug_helper;
-> +	int ret;
-> +
-> +	hotplug_helper =3D drmm_kzalloc(drm, sizeof(*hotplug_helper), GFP_KERNE=
-L);
-> +	if (!hotplug_helper)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	mutex_init(&hotplug_helper->connector_mutex);
-> +	hotplug_helper->drm =3D drm;
-> +	hotplug_helper->encoder =3D encoder;
-> +	hotplug_helper->drm_event_nb.notifier_call =3D drm_hotplug_helper_handl=
-e_event;
-> +
-> +	if (drm_hotplug_helper_pipeline_is_complete(hotplug_helper)) {
-> +		ret =3D drm_hotplug_helper_connector_add(hotplug_helper);
-> +		if (ret)
-> +			return ERR_PTR(ret);
-> +	}
-> +
-> +	ret =3D drmm_add_action_or_reset(drm, drm_hotplug_helper_fini, hotplug_=
-helper);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	ret =3D drm_event_notifier_register(&hotplug_helper->drm_event_nb);
-
-[Severity: Medium]
-Does the gap between evaluating pipeline completeness and registering for
-notifications create a time-of-check to time-of-use race?
-
-If a bridge is hotplugged in the exact window between the pipeline check
-above and this notifier registration, the DRM_MIPI_DSI_ATTACHED event is
-missed, leaving the pipeline permanently incomplete.
-
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	ret =3D drmm_add_action_or_reset(drm, drm_hotplug_helper_notifier_unreg=
-ister,
-> +				       &hotplug_helper->drm_event_nb);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	return 0;
-
-[Severity: Medium]
-Does returning 0 violate the API contract?
-
-The function signature and kernel-doc state it returns a struct
-drm_hotplug_helper pointer on success, or an error pointer on failure.
-The success path executes return 0, returning a NULL pointer. Callers
-correctly checking IS_ERR() will assume success and any subsequent
-dereference of the returned pointer will crash.
-
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-drm-bridge=
--hotplug-v2-0-8e34986dcb68@bootlin.com?part=3D23
+	 Andrew
