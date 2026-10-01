@@ -1,139 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6025B4D0CD4;
-	Thu,  1 Oct 2026 09:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790847514; cv=none; b=OCgg90sF9WHgLU5T3ZGdKMG1SHOk/5AMkKS0qEhdpMRXaA24xHkiCqHPBkJW6CO0ft3K2T9jO8csDWM8Kl9vG6iZbDMAN7Xagpjq7lRufB57Ng7FtEZEczJqRy7ZfWfVkjcQks/LMcemz9sPSzILnFCTwDNvsGN/fOBpDIE/fWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790847514; c=relaxed/simple;
-	bh=YEzJd/s2utTP/Of6d1YNUMxxC/W2t9qAjb2QnT/GJhc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pg7ye6waY5QX4wXd/6ZE8qz3TdmtEBfcTyVLJ0TKI0iUDtDXL8eCSmhMtRk8KxJ15cPBtYGQRilxVx/lJsCi8NExNNceMzTsmTy8rTVERXRcwZFP13B6NzpDgW9o/Q3uo2r46QBXwv9hJ9acgWY46PQw9DEw6tafTZw06nZv5jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4x8niJf; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7E64B1486
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 10:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790849710; cv=pass; b=bpQuTTFkmN9rdj/gKuApo53/0SpQ+45VPhgqRu9LKLzKkYCbI61cyAQQVoVE5rpWOm1xcrVMwv7rHf+bdDOFou0duXZK64saUTJ1Cj8G1E4NRavjOHp26Hd6RJJauD8EZPYyQLXDRDRiAY5wEt/m9IROUuqcAJxqP0s3PrgPqao=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790849710; c=relaxed/simple;
+	bh=oYWMzc7dzXRMIQ4WDnbpQus1ZRBA7rO8qi5HTtl8Bo4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LkX/X+ca3TML5rlYETn2Hbvfdn0a+MMDQkkJDWqDiYHl/RGph2QCHtcwHD9z7vegEx7P9WybTk6N+/pCZDE/zXiusqJm0mjN0hAKfpQXCR5E8KbUYNIPWrSzfw2zyVTu1MOgi3dg2pF+lyWdGv/+Slpc8SGj0rMt2O1zcAehS7g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/509uNG; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4x8niJf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083231F000FF;
-	Thu,  1 Oct 2026 09:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790847511;
-	bh=HoYdJQ/wR/FSIzYKig/dgZTQTIj5NZrPF99JqgsrSX4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=m4x8niJfwwS2Ay+QrDsyU077Ft14GTDoHqCeGRs/IwMSYTCix5IHi0CqPNrjBVXWG
-	 UXhl1zy/aSXkRclDaDfXxUEB3SDQUKFKVco+aRnyQEjZoVvm+e3jTO21nc+LgI9I8W
-	 a2SmEa4fnv4f4JUBSDZLHgArKf85JuX6lg94n9kz1ly2pA0e3fVzXYpEUUIYk+Bg1H
-	 5gMQUt3dk2wBY2pjElwUuoI/u265rKq/GciEBQo0TaLoqWOijF+vIpNn82ewUZ6cT+
-	 lREVSAJF6jphwpM3sX9nv1cfH1CNLobOSj5PuMmtwdRL5PS03Fs6mPX+4ir9HsSEqP
-	 n6TLpFQmk394g==
-Message-ID: <c329c4dd-a004-4ea7-918c-3731738e43b6@kernel.org>
-Date: Thu, 1 Oct 2026 11:38:19 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/509uNG"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f16f15so6217565e87.3
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 03:15:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790849704; cv=none;
+        d=google.com; s=arc-20260327;
+        b=B4UbC57nzIE5bzbid1RDKa35HrtZDjKwG8tbYB4uEg9e5f6nVPDv8i5IWk9Fb2B057
+         PEws84xxScT2iz8uAzUwRRbTFtJyClBWy1R84ukhF0geuHdSX+UQnPeSsqbrIJyRvl/L
+         J5ggXw7udQcUHttG8mtejDMAXzN7sAvhuAyXHGNTdoYVVxgzWQggcM7pzu8nH5JDK0tD
+         KjtYuzLCZIHj2uZ/Bq0YmKRQu9En7d9ZFO4tmTmRHv1Of8I6eqp8TUErW/iIfoTavYBN
+         cy2CLhKsOLnjbi1d/p5gwvEBZbtMB/+4U2F5wCW3VttQHmWX2poFgtb0JTS8ppSrO9AR
+         qbWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oYWMzc7dzXRMIQ4WDnbpQus1ZRBA7rO8qi5HTtl8Bo4=;
+        fh=QTn1b0/jgEkeS6Q8kPCJW7Za4QvC/lc5YE30PPeBD6E=;
+        b=SgspyL+h3T+uTqFdgMpgIXoJbouonGd4/dmAu/jusE3XBtNJ5SUkN0iXUvhp+7ZFNJ
+         Txci4j0nuxpqs4bg5Ime2ZvsEon7jj8R9deINhBn8jxR35PNSSZW9raYyrITfcQ+rpp2
+         HSY6HPF19v3hbWEVNaUA14oApIgNDnCTzPeQ2W1QRKrcNUjR3tNpqYjsvakzsfTt78bD
+         neLyANln0gvDgk750R4OzcfJAm2qw9Se4shzo8v7Fb5O+XbBh+ikZsGesqcIjYTFYtZ1
+         RWWOnUeySX2xV+z0BZz7MPkiBXlhdALsWsNhu43O4WCa6QbndpO7ZXvTQtBrXkDFq/c1
+         ao5g==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790849704; x=1791454504; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oYWMzc7dzXRMIQ4WDnbpQus1ZRBA7rO8qi5HTtl8Bo4=;
+        b=D/509uNGaqceqGdIYduWj6jrxc1tyZHKc7sDAolDO8VWx7XVLv1JIgbQTJ/uSp+1Ly
+         tV1iwtpYFswIuYqhuDEXzITxFDtHAqSq2nZgFaTqX1TKArgh6TrH1Mmz/Oj6/+H5hvXv
+         OPEgFQVmuLFGhSkGYqnu94s564FJ4mSiCzjuGgJPk28IKdSGEJ449BXhlBCkbg7wbp4H
+         L8MNDFSXdcdiwZMemIfy6og3H1hVjqE2JlqwdZt8D81Y9kZBqrukoVoI0cYVRMvBbrbi
+         fEh77UMzUqNDLxR2K/wrchXUGkGSRLbaAbX0R62MHd2k4c0JSKsO8tqnAPs+ES49INvE
+         7oSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790849704; x=1791454504;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oYWMzc7dzXRMIQ4WDnbpQus1ZRBA7rO8qi5HTtl8Bo4=;
+        b=C/Tsce9gTSC774RQm4bHW8XywqnZwNxac1ugzum0jt8U2bYLTaWvKCFnu3iSj1HlJ9
+         xYJEHXKlXxu9duJITiYduZH2BXAWrkrR+dE7F+rg0GuB5YiSrWrRabV3tFW+t0NprMUw
+         OpcQxCDnuZ2kgLLvoNzToU4oXGrfS0v3o0+zQj06CV/n/ACJYvL1Z8MfxVw3sz1q53t4
+         d0hrFyzs4/Ps0fV9FrJtBdFA/w+D0qP6TJI8LFcMkfRXDTnRvhQV/xNK8oUzvSWtomSC
+         WujKk4fHUPG37pIC1H3axHVEXuZaZNhvt5i1auk5gv4NF+yMuHVAFITfLBE3yc05MnkY
+         TYUw==
+X-Forwarded-Encrypted: i=1; AKwUvBw4ulYp1lQGanCZ0f/Q5BI+OvX2NnvoTiCczb+pd1vFuEyQeYwXP8tXlcmdTUD6PcAfbXU=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLFk4GqvgwTB/5aLSKv4zIYLPbuSOjouC3zrxaI9xEctF+yVyeg
+	d2h6SFH79cDsuOae0k+prHr2O4clQ5kwGHn/tsLp88GEE5T7QouvzmvkkdOOvMj+uAm6QeX0dPP
+	Ze+0QBNyuJsZOSsWPj4mR5CYkgd3Rg7Y=
+X-Gm-Gg: AYBFou2jjjVh4qk6+ZBF4dXR4GztIoLHe5Go9+8KWJSQXltNHLULvzxzkYvcadM2Vax
+	ms/dUOo0nnyCizummfnBQ7BkTwBWPKxIVP4xTpXp9HAAry3Wtq9tFrjBVjgs8ozxSFXjyGkVO89
+	ePnaaZ8YZJNpgZjFtokrVyK453rYjoc5xqO+f3jVbz48/D2gmgeG2CSRrBErSVSbVqgr7uB0u2i
+	D6EicNtSK5auM8JM3ZBLMCsbkcqrvVGb7kON34I0BiOHB9CKtNhiE1totvaje3VjL/tcWNdPJ8b
+	WwJOShTXSgPHTcrDpm4sEWchx7hezG3IfhJrqZ2sF8lnPg0F7r1NQvmRuP8I6N2G0qPYtbuDFXz
+	h4KG35CHfTKXxjeb2ImAJYgSc6jKoI61D5qU/mDeeaC1j
+X-Received: by 2002:a05:6512:6d2:b0:5bb:784e:3df4 with SMTP id
+ 2adb3069b0e04-5bb784e3ee0mr282162e87.46.1790849703308; Thu, 01 Oct 2026
+ 03:15:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/13] dt-bindings: arm: fsl: Add Variscite i.MX6ULZ
- board variants
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
- Stefano Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
- Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
- Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
- Mehmet Fide <mehmet.fide@screeningeagle.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Markus Niebel <Markus.Niebel@ew.tq-group.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-References: <cover.1790693249.git.stefano.r@variscite.com>
- <1e6f9e01bd9e0e0801b18ddc9eb44bde200ea984.1790693249.git.stefano.r@variscite.com>
- <20261001-immortal-wild-wallaby-23de50@quoll>
- <ar4jkNZc0eoF-EhL@Lord-Beerus.station>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <ar4jkNZc0eoF-EhL@Lord-Beerus.station>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261001081005.2209755-1-primoz.fiser@norik.com>
+In-Reply-To: <20261001081005.2209755-1-primoz.fiser@norik.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 1 Oct 2026 07:14:49 -0300
+X-Gm-Features: AclHuK-74KPyiquqCXZSrY27gWUyd7LOlkpNPte8XIS6tTUYVa6o1fJvZXPOZX8
+Message-ID: <CAOMZO5Aibmm3d=9Ucro0Tqvyh_s3EozLM25axV3XxeLuG67PCg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] ARM: dts: imx6: phytec-mira: phyBOARD-Mira fixes
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	upstream@lists.phytec.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 01/10/2026 11:10, Stefano Radaelli wrote:
-> On Thu, Oct 01, 2026 at 10:09:22AM +0200, Krzysztof Kozlowski wrote:
->> On Tue, Sep 29, 2026 at 05:17:30PM +0200, Stefano Radaelli wrote:
->>> +          - const: variscite,dart-6ul-imx6ulz
->>> +          - const: fsl,imx6ull
->>> +          - const: fsl,imx6ulz
->>
->> Is this the right order? Which one is superset of which?
->>
-> 
-> I followed the compatible order used by the existing i.MX6ULZ EVK
-> and had also noticed the comment questioning whether `fsl,imx6ull`
-> should come last.
-> On review, I agree: i.MX6ULZ is the reduced-feature variant, while
-> i.MX6ULL is the more general compatible.
-> We can use `fsl,imx6ulz` followed by `fsl,imx6ull` for the new
+Hi Primoz,
 
-Yes
+On Thu, Oct 1, 2026 at 5:10=E2=80=AFAM Primoz Fiser <primoz.fiser@norik.com=
+> wrote:
+>
+> Two small fixes for the PHYTEC phyBOARD-Mira-i.MX6 boards:
 
-> Variscite entries. I can also propose a separate patch to update
-> the existing EVK compatible order to match, what do you think?
-
-That probably should stay as is, because there could be a user checking
-last fallback. Shouldn't, but could be.
-
-Best regards,
-Krzysztof
+Shouldn't they have a Fixes tag, then?
