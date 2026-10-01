@@ -1,67 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0B5492E29;
-	Thu,  1 Oct 2026 12:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1100A494830
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 12:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790858425; cv=none; b=nPuM5ZLiRnsPdw/TCi5T9iTM3V4EBKDo38Di2zZ2Y6x0NFNEC4LQaiJklTcuTfWGXIZO3Kz+OSl21VW9yTHh557stqGTgruDLz5Z5MI4k4jsQhFmgk2V53UN3nT6GlRHkwa3/RWP5pEohOHt/6svYlGMaSwoPv9D9ZhAelntsXI=
+	t=1790858572; cv=none; b=KTDQIQdidx2vE0/0gkaw7qLYVBMdN69MhIGB9J5RSw14YXwwcn04XZMom07Qw605X3jrsN5ytC8ZE4A0K6AWLmlTRzUKn3cXd0EDJ9H2cqugkjIvl63yZisN6Z+Rh8YTAFamHcxLwwBHIUMwvH0WDTzW08S9Ke2d2VEdhIss5eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790858425; c=relaxed/simple;
-	bh=aUlHMEAl5tANrzBjM4nHfN4L9GztS/KYB/IOKuuRItk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Lv9v02d/8BqW1/tfey36CSWLYgZcgwHYtRTkMVEuY6RXHIvKHw6fB6rj+3xnh3+LzxWyfD+59DkeqHRkNcC+EEn0vbEY+V1uwGv6WyVp68+MuO6+LT0M7sFXCZFRcmXSqNmaWxYGSVI8kyh2tvih8wL0T28AZX/Kcgc/W7yBh3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCRnnyX8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790858572; c=relaxed/simple;
+	bh=4iIZM54nor2jguNAUu5OZD6AfUbUhei+uYH4/ZuIYfQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gD2/JwtqGAOpCZjIGGNVeEZHDGjQ/WMM06EOYAgqz9bpEESBjSfkXUBuP+PJjVe/yhTfVpDP2W+IGzvPBCXKEkvRGy7Mh2rMExS3du06loxSzUcqiCeb2WpiwOrR4AbT538mPYJ+uy2peY2COxQkZfcPLeBt7FeKdtht8FQSuc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YeAjWJTt; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCRnnyX8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B14C1F000FF;
-	Thu,  1 Oct 2026 12:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790858423;
-	bh=2yqV/Awvfmtsj6q/00BzdhQQlByccag34Ejy1niliro=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=ZCRnnyX8s+71IPbGhb8/YT80JuAIidJq2MhvpK0OmnrhU8tM+2O/S/Bl9VgbeSrPX
-	 3yUSMWSDbh1RXwypspIpwjZ/Z1PM3duR4aqQ5YFaM18wqtZpQby0D1EYtE8k0QSZ8e
-	 DoX3iA65giwjlB+w0u+rUBIopt0ZKF8dcOZLwjiJykmgjKICYBg4gER6dAUCEQaqZ5
-	 PZoZQFXgI1hXXsF9qPOv4feQbT7MXXMdRjvhizrHrFEkp+CUlPa5hfyyQyv7ZuAGWk
-	 2kP8fPcf8yDi1q6BuPrC+UIeF2Cb1AbHsbQvgbgAFl2g7EjyyKHiScRLdrGa3q4/RR
-	 N5Mf3T94WTuVg==
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: soc@lists.linux.dev, Arnd Bergmann <arnd@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>, 
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
- Stefan Agner <stefan@agner.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew@lunn.ch>, 
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
- Gregory Clement <gregory.clement@bootlin.com>, 
- Robert Jarzmik <robert.jarzmik@free.fr>, 
- Kristoffer Ericson <kristoffer.ericson@gmail.com>, 
- Linus Walleij <linusw@kernel.org>, 
- Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, 
- Alexander Sverdlin <alexander.sverdlin@siemens.com>, 
- Shawn Guo <shawnguo@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- Nicolas Pitre <npitre@baylibre.com>, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org
-In-Reply-To: <20260914140821.1805449-1-arnd@kernel.org>
-References: <20260914140821.1805449-1-arnd@kernel.org>
-Subject: Re: [PATCH v2 00/14] ARM: deprecated platform removal
-Message-Id: <179085840863.602414.17097032215174834953.b4-ty@b4>
-Date: Thu, 01 Oct 2026 14:40:08 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YeAjWJTt"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 068BA4E42328;
+	Thu,  1 Oct 2026 12:42:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C61B960341;
+	Thu,  1 Oct 2026 12:42:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E213103280FE;
+	Thu,  1 Oct 2026 14:42:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790858559; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=kFketbQjFOXUjzZoyDe0MakWl3/d+LeuaEIKcQrTGks=;
+	b=YeAjWJTtzK0mgeoheHoQE4I1w8iqNuG7ku5pdUyQjq+lONZ42TVvAtPZEHvQoPaVRSVHjQ
+	B2lEpNs2kRjn9374NpbFWVwAmRCbm4sMysU8UJVB6Uu9YDPDQ3K47eqKrTEbmhNXOD7WeX
+	H56ubf67yPO/tcHPAOn0k12PvRa3UvbLVzem2xuhDhJkeLj6nbxAaBtdFUIoXVeIG7fnFz
+	ayADvRCCQ1nHfmgi2WxYG0oENac3B40kCjHCAR+/KnLrNYjQ6wO3KbUgUwlWEnclM8zMir
+	9+yGJKcNIuQnOQOQQA2XyArSuQKVWz7a42j83d7uRZ30QwZdIA5eUMjQ3ANJ0Q==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH RFC v2 00/24] drm bridge hotplug
+Date: Thu, 01 Oct 2026 14:42:22 +0200
+Message-Id: <20261001-drm-bridge-hotplug-v2-0-8e34986dcb68@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,56 +42,255 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22Oyw6CMBBFf4XM2hoolKgrExM/wK1hQekAY4BiW
+ 4iG8O+Wx9LlnTlzz0xg0RBauAQTGBzJku584IcAijrvKmSkfAYe8jQUkWDKtEwaUn5Ta9c3Q8W
+ SlKdCxTkvTwL8YW+wpM9a+oTH/QbZNrSDfGHhlrodM/gevNJt7ILVZJ023/WfMVobdvX5n3qMW
+ MgSgVwqGatSJleptWuoOxa6hWye5x/+A2x14gAAAA==
+X-Change-ID: 20260515-drm-bridge-hotplug-46265d3a2f85
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hello,
 
-On Mon, 14 Sep 2026 16:08:02 +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> In the 7.3 kernel, I marked a number of platforms and features as
-> deprecated, with the plan to keep these around for the LTS kernel, but
-> remove them in 7.4, see [1].
-> 
-> Cleaning out the deprecated platform code has turned into a larger effort
-> than I expected, currently standing at 300 patches, with a lot of them
-> still in need of being split up into smaller ones, see [2] for a current
-> snapshot.
-> 
-> [...]
+this series adds support for Linux-based devices with a DRM pipeline whose
+final components, including one or more bridges, can be hot-plugged and
+hot-unplugged
 
-Applied, thanks!
+For more about the use case see the v1 cover letter:
+https://lore.kernel.org/lkml/20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com/
 
-[01/14] ARM: remove sa1100 platform
-        https://git.kernel.org/soc/soc/c/95664df86fdf6e70e411ad9e3910b402489a22c3
-[02/14] ARM: remove footbridge
-        https://git.kernel.org/soc/soc/c/21b5f207cb8b1d0a819dd1799ef8c56178d5b1d7
-[03/14] ARM: remove legacy pxa board files
-        https://git.kernel.org/soc/soc/c/538532cd1532f44e7c2519ecd3dfbcbed08061e2
-[04/14] ARM: orion/dove/mv78xx0: remove all board files
-        https://git.kernel.org/soc/soc/c/f98cb2a43e0efa32ed8723df8d687acdb69dab06
-[05/14] ARM: orion5x: fold plat-orion/pcie.c and hw_pci into pci.c
-        https://git.kernel.org/soc/soc/c/4fa61946d7c3e6da57a6db11551fa2ac17078370
-[06/14] ARM: omap2: remove omap24xx support
-        https://git.kernel.org/soc/soc/c/cbd33c61480b8fa64046d956f4f68bca5cf68fbe
-[07/14] ARM: imx: remove i.MX31 SoC support
-        https://git.kernel.org/soc/soc/c/104a7a07163962fe259a2e5272fb70446f19793b
-[08/14] ARM: versatile: remove Integrator/CM1136JF-S option
-        https://git.kernel.org/soc/soc/c/1fbbfb51f20f3d0a1da6b542d7f29acc29815403
-[09/14] ARM: imx: remove nommu support
-        https://git.kernel.org/soc/soc/c/2e1031df3c5f64f96660074f695e3b24e4bd3018
-[10/14] ARM: lpc18xx: remove entire platform
-        https://git.kernel.org/soc/soc/c/31431dc97977003efbd4fb25e77aec8744338280
-[11/14] ARM: stm32: remove stm32f4/f7/h7 MCU support
-        https://git.kernel.org/soc/soc/c/6fa463cad26fed984b62a764345e65a98fd0a30a
-[12/14] ARM: versatile: remove mps2 support
-        https://git.kernel.org/soc/soc/c/1b983b0549163d4016574b0043664cdb47eea8cd
-[13/14] ARM: at91: remove samv7 support
-        https://git.kernel.org/soc/soc/c/1b9867b95e1e4a88c80b2e5612b7092b90ae3f88
-[14/14] ARM: axxia: remove entire platform
-        https://git.kernel.org/soc/soc/c/af4f7acd7b73780c7fece5d156e7d9a7791a60af
+For reviewers with limited time for review
+==========================================
+
+These are the patches with the core changes and likely needing review and
+discussion (most relevant first):
+
+ * 23: the new drm_hotplug_helper (the main patch)
+ * 24: an example usage
+ * 5-6: the main changes to the bridge-connector
+ * 17-22: the new get_next_bridge bridge func
+
+The following can be skipped at this iteration, changes have been requested
+in the v1 discussion but not yet implemented, and these patches are not
+crucial:
+
+ * 10-12: still needs rewording
+ * 13-16: need docs, still todo
+
+Design
+======
+
+The drm_bridge_connector is nowadays the recommended way to implement DRM
+connectors when a chain of bridges is used.
+
+This series proposes a small helper (drm_hotplug_helper) which drivers can
+use to make their encoder able to:
+
+ * receive hotplug-relevant events
+ * add a drm_bridge_connector when a new bridge is added making the
+   pipeline complete in the hardware
+ * remove the drm_bridge_connector when a bridge is removed
+ 
+Series layout
+=============
+
+ A. Add a dynamic variant of drmm_connector_hdmi_init()
+    (needed for the bridge-connector to allocate the connector dynamically)
+
+      1 drm/connector: split drmm_connector_hdmi_init() in 3 parts
+      2 drm/connector: add drm_connector_hdmi_dynamic_init()
+
+ B. bridge-connector: use a dynamic drm_connector
+
+      3 drm/display: bridge-connector: split code allocation from initialization
+      4 drm/display: bridge-connector: hoist error management to common code
+      5 drm/display: bridge-connector: use a dynamic connector
+      6 drm/display: bridge-connector: add APIs to add/remove the connector dynamically
+
+ C. Misc preparation work
+
+      7 drm/bridge: samsung-dsim: move drm_bridge_add() call to probe
+      8 drm/bridge: initialize chain_node list head on allocation
+      9 drm/bridge: initialize chain_node list head on detach and attach errors
+
+ D. drm_bridge: stop pipeline when a bridge is removed
+
+     10 drm/encoder: add drm_encoder_cleanup_from()
+     11 drm/atomic: move drm_atomic_helper_disable_all() and drm_atomic_helper_shutdown() from drm_atomic_helper to drm_atomic
+     12 drm/bridge: shutdown and cleanup on bridge unplug
+
+ E. Add notifier mechanism to let common code (the bridge-connector)
+    take actions on hotplug events
+
+     13 drm/mipi-dsi: turn DRM_MIPI_DSI into a tristate
+     14 drm: event-notifier: add mechanism to notify about hotplug events
+     15 drm/bridge: notify about detached bridges
+     16 drm/mipi-dsi: notify about DSI attach
+
+ F. Let bridges return their next bridge
+    (allows to know when the pipeline is complete)
+
+     17 drm/bridge: add drm_bridge_get_next() and supporting func
+     18 drm/panel: implement .get_next_bridge
+     19 drm/bridge: display-connector: implement .get_next_bridge
+     20 drm/bridge: ti-sn65dsi83: implement .get_next_bridge
+     21 drm/bridge: ti-sn65dsi86: implement .get_next_bridge
+     22 drm/bridge: samsung-dsim: implement .get_next_bridge
+
+ G. Implement bridge hotplug in bridge-connector, enable it in a driver
+
+     23 drm: drm_hotplug_helper: new helper to implement bridge hotplug
+     24 drm/mxsfb/lcdif: enable bridge hotplug
+
+== Grand plan
+
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was initially discussed in [0].
+
+Here's the work breakdown (➜ marks the current series):
+
+ 1. … add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. … add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. ✔ protect encoder bridge chain with a mutex (v7.2)
+       7. ✔ of_drm_find_bridge
+          a. ✔ add of_drm_get_bridge() (v7.0),
+               convert basic direct users (v7.0-v7.1)
+          b. ✔ convert direct of_drm_get_bridge() users, part 2 (v7.0)
+          c. ✔ convert direct of_drm_get_bridge() users, part 3 (v7.0)
+          d. ✔ convert direct of_drm_get_bridge() users, part 4 (v7.1-v7.2)
+          e. ✔ bridge-only drm_of_find_panel_or_bridge() users (v7.2)
+       8. … panel_bridge lifetime
+          a. ✔ cleanup DRM_PANEL in bridge drivers (v7.4)
+	  b. ✔ embed a drm_bridge in every drm_panel (v7.4)
+	  c. … remove deprecated *_of_get_bridge(): non-OF drivers
+	  d.   remove deprecated *_of_get_bridge(): OF drivers
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. ✔ handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_bridge_enter/exit() to protect device resources (v7.0)
+    B. ✔ Add drm_bridge_clear_and_put() (v7.1)
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. ✔ Migrate i.MX LCDIF driver to bridge-connector (v7.2)
+ 6. ➜ DRM bridge hotplug
+    A. ➜ Bridge hotplug management in the DRM core
+       1. ✔ bridge-connector: attach encoder to the connector (v7.2)
+       2. ➜ drm bridge hotplug
+    B.   Device tree description
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+   
+
+---
+Changes in v2:
+- Rewrote: added new drm_hotplug_helper, dropped most changes to drm_bridge_connector
+- Added get_next_bridge func, dropped is_tail func
+- Rebased on drm-misc-next, which required a few reworks
+- Fix dynconn mutex locking
+- Fix sashiko-reported bugs
+- Drop "drm/display: bridge-connector: store the drm_device pointer", not
+  strongly needed, and adapt the remaining patches
+- Simplify handle_hpd code types
+- Lots of other smaller improvements
+- Link to v1: https://patch.msgid.link/20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com
+
+---
+Luca Ceresoli (24):
+      drm/connector: split drmm_connector_hdmi_init() in 3 parts
+      drm/connector: add drm_connector_hdmi_dynamic_init()
+      drm/display: bridge-connector: split code allocation from initialization
+      drm/display: bridge-connector: hoist error management to common code
+      drm/display: bridge-connector: use a dynamic connector
+      drm/display: bridge-connector: add APIs to add/remove the connector dynamically
+      drm/bridge: samsung-dsim: move drm_bridge_add() call to probe
+      drm/bridge: initialize chain_node list head on allocation
+      drm/bridge: initialize chain_node list head on detach and attach errors
+      drm/encoder: add drm_encoder_cleanup_from()
+      drm/atomic: move drm_atomic_helper_disable_all() and drm_atomic_helper_shutdown() from drm_atomic_helper to drm_atomic
+      drm/bridge: shutdown and cleanup on bridge unplug
+      drm/mipi-dsi: turn DRM_MIPI_DSI into a tristate
+      drm: event-notifier: add mechanism to notify about hotplug events
+      drm/bridge: notify about detached bridges
+      drm/mipi-dsi: notify about DSI attach
+      drm/bridge: add drm_bridge_get_next() and supporting func
+      drm/panel: implement .get_next_bridge
+      drm/bridge: display-connector: implement .get_next_bridge
+      drm/bridge: ti-sn65dsi83: implement .get_next_bridge
+      drm/bridge: ti-sn65dsi86: implement .get_next_bridge
+      drm/bridge: samsung-dsim: implement .get_next_bridge
+      drm: drm_hotplug_helper: new helper to implement bridge hotplug
+      drm/mxsfb/lcdif: enable bridge hotplug
+
+ MAINTAINERS                                    |   8 +
+ drivers/gpu/drm/Kconfig                        |   7 +-
+ drivers/gpu/drm/Makefile                       |   2 +
+ drivers/gpu/drm/bridge/display-connector.c     |   7 +
+ drivers/gpu/drm/bridge/samsung-dsim.c          |  24 ++-
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c          |   9 +
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c          |  11 +-
+ drivers/gpu/drm/display/Kconfig                |   6 +
+ drivers/gpu/drm/display/Makefile               |   2 +
+ drivers/gpu/drm/display/drm_bridge_connector.c | 172 +++++++++++------
+ drivers/gpu/drm/display/drm_hotplug_helper.c   | 243 +++++++++++++++++++++++++
+ drivers/gpu/drm/drm_atomic.c                   | 115 ++++++++++++
+ drivers/gpu/drm/drm_atomic_helper.c            |  76 +-------
+ drivers/gpu/drm/drm_bridge.c                   |  45 ++++-
+ drivers/gpu/drm/drm_connector.c                | 130 +++++++++----
+ drivers/gpu/drm/drm_encoder.c                  |  38 ++++
+ drivers/gpu/drm/drm_event_notifier.c           |  58 ++++++
+ drivers/gpu/drm/drm_mipi_dsi.c                 |   3 +
+ drivers/gpu/drm/drm_panel.c                    |   8 +-
+ drivers/gpu/drm/mxsfb/Kconfig                  |   2 +-
+ drivers/gpu/drm/mxsfb/lcdif_drv.c              |  12 +-
+ include/drm/drm_atomic.h                       |   3 +
+ include/drm/drm_bridge.h                       |  26 +++
+ include/drm/drm_bridge_connector.h             |   4 +
+ include/drm/drm_connector.h                    |   6 +
+ include/drm/drm_encoder.h                      |   1 +
+ include/drm/drm_event_notifier.h               |  38 ++++
+ include/drm/drm_hotplug_helper.h               |  13 ++
+ 28 files changed, 894 insertions(+), 175 deletions(-)
+---
+base-commit: e051645b3b4be7c8f9f77596e62f554cd52b008b
+change-id: 20260515-drm-bridge-hotplug-46265d3a2f85
 
 Best regards,
--- 
-Krzysztof Kozlowski <krzk@kernel.org>
+--  
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
