@@ -1,68 +1,68 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0A74CC610
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 08:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E5C4CCDC7
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 08:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790844202; cv=none; b=mKNj46+syth05KQAfWTaFMbulSxA9bD/6BmD/F2hr4htwdNvGUxie+SdoIjFJd1FzEOh61CrnlJMZ9fKTk8P+bMicnK8HV+7lFLOG5mRNy9lFI1337tn3CeT9A78g1KKnjcpSXpfA7nPNZGTecesXq0vPcoY12SEPL1dyejYxtI=
+	t=1790844203; cv=none; b=TW9zNPOlkjP5SVbhu2wzCio6Tx7R/X/NCuFQoOINodTq63W+UEVJ7Jp/RWppg6z7LXSlCwhONzu1izKwzVmXtD/bJkKHMG/qzNYXM3VNpc3+FxGaCA58/dgWhjH11X9z4hameICb75rhekr+ElRxPM2ClimIXAF/EYn5v0vwqP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790844202; c=relaxed/simple;
-	bh=wxElBAXB6uVNMhJYd8MDjWzdFURgnAS4XjHbavkVIDQ=;
+	s=arc-20240116; t=1790844203; c=relaxed/simple;
+	bh=wnUhyrYWheq78/htTGSabO8i37WkHuTnJpbuds4kcNg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fsv0jtxltXcLiG6wpRW1NrAeJg1yLWR4eq6WddgqRj7GBvPalyRZ7mkOw0s80fbmG6NW4xzaO22zY9mceC/pLx8I6fUXcbZ1Bq3FkqcSEoggTwmBcyF5KvQ9BVdICURSTjrru9WUveWIkF/cqISoLjnnY+TUWLmHrXem1r6Yw8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RBHuMmlA; arc=none smtp.client-ip=74.125.225.141
+	 In-Reply-To:To:Cc; b=nWT4sYtFLCr/N9Dh/XjldQvoaVY6UMQKdnJLRIRySkQKH16dWtONxf52mZ6/nnBboMr5HHdG/pHl2K/ePRDxAkYLKUuWr+dw6gO/j6gO4qDni3SP5Mgb7imyyPIoge4+b6zo29FQpGdyTflgb/2cAIqaG3YtlcSBhttiV9HPOvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oXlDFYn0; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBHuMmlA"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ccf3ca626so38305025e9.0
-        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 01:43:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oXlDFYn0"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so40425575e9.0
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 01:43:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790844198; x=1791448998; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1790844199; x=1791448999; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Atuw9lBz57e/hUpSiZ8WQ/Sj4OSIXL2+X4pHB8jkTYs=;
-        b=RBHuMmlAvwd69I9DygjSK6tZ/1XP/0tYo1D/MVPyiI6vji81Bo/WEuz9JzdPj+fygY
-         I2btQupP8KSjmm00+uHWvlHUVn09yytS8GQPAw5i2PbnBeZeZzDo/kh602ix7wjrni/G
-         wAQsCcVuI2g2nF0TsVuAS4BeaAJT2LQbNGwKXw6e3FJFViV6RJG0m6xfS27AVND/hWlO
-         c4LusoPups/ywkJb0rRGglxGX/9LqGCIfEh66ab9saFVGPaso+mdpugujOOSgyIWSbg+
-         rXiLCze4NAn68ocwgQ7Gmlcgl5AR2GvPzDlHa+642PGklVcPcx3Nhzf7cVq7BWZ9Bguj
-         wUmQ==
+        bh=5CmcYL0XK1JJEyDbPwadIyEyX0pGtm4tcAMQK4meqBo=;
+        b=oXlDFYn0tZfsFaVwwaECTrAhiKcUKVd89gXKPP/eUXwhNL23Mx5j56KkgSTLsNMG/D
+         2vIN7jG9yLHo8UjLX1u8Dxw0p1iF8Lh1V3YcQQnZMttCtSpohkv2g3kB6MBjwajsVMUc
+         18EBCcyKOgFxWdD/jW5+VYVMFXHMJJxbm8cyOgj+Z7+z6OmXeRTUS8TCh4zs3pNERAeB
+         qNf8Du0FnCryNVvNPkZVI/Sox/h+JoV+d9nYRhcJSAVUHr93JVwzkS/c/mDA2lKSfxqp
+         Mgfv6vMqMZaxqmysl4q1tWHz4N75XpXtRTW2oSvxrigNq++fQwv5ET199ZL7XvNAK7qX
+         GEog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790844198; x=1791448998;
+        d=1e100.net; s=20260707; t=1790844199; x=1791448999;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Atuw9lBz57e/hUpSiZ8WQ/Sj4OSIXL2+X4pHB8jkTYs=;
-        b=KfObX5WS4Pqoi3IuVtBczjlNSRwlvCVcIC0jvqDg+4sTecTUgO7+Cvr8SrmWGsOz/e
-         lQu9m11ff6gvaKjmxOv5pNYkaTFHtzsJJJ6O//+0c+wQjq3WzfwuJtk73ohrYI4nlwR5
-         DEAuSW7NP8nN98X39hq7UigIHAktj3S52Ca81+SdaC8t9iTNAESZmSVStd6F7tBtmFek
-         IZdMZQl2faKEQQ+tZmfhStsBDkVqFfi2Wu/V5jUIpqMSiQckbrWdvB4QrYZovO01cvN+
-         g+vINsWHGvPoCMfqspRBEQSzXe70+sXDjTDXK+KuorG0LrxQrpc2xyWYXz0Wo1NYLxRU
-         pOcw==
-X-Gm-Message-State: AFuF++lt4ZJCqj94Rjncwq4upZTuTkeDuyRw/nfXGMavAixoNEsU1HfY
-	yRh/M2tTn/qrCnZa4KNA5BvUKU4DXCVONaxKhR1dHJhgrgqQ7O2UixeJ
-X-Gm-Gg: AYBFou0EkPf7jXA1fCq43WcCHgG1Zi/DOVOKn5FYptgQFbfpO7A/xgWSPMA+qkTlSGS
-	uUHYzSliWfByTS/jB8OQ0r1C0/5mOECywKfqdbkqURRI+w55vegXhHT/b5ExnVqu0y4xIvpEM6l
-	0Su1srkuonrbzOh0+O+qjuIpj25jTk8cS8hQ7UiOlip0eidhd4MLIMEtyjrJ0qspHxS9KV3jgBq
-	wA8Ob2+XlyOCwMWunsjDUyJnI++J/b330fFkWSeUPNcix7BKeN1J+UeCMEY4YuIb257cKQYiX7q
-	THNjusfkmwi+0d5NOIriL6TTxu4Kahl7L27kKL9j/SBMYRwIr5yPv4UIVdf/HyvMz+FhmfT0iHG
-	hCyXLN17iLqrGh/IuwcGqG726sbinXcuMxBLy421bL/Nu0U1bEMdW+ZA9JQl3tMIaZuojDW/z6E
-	JeXdxmGXs6oVmR9qm7n+4NEbUioFBRQnXNPNdlcnWkZ1zqWZrG1fjZDM0S/LTmYC/6jCjGhPpQV
-	Tf1qZHBrsmMXWReDTpsQWyeQAcullMzg27Td/so/wNzK7voKAqvd9UyuCUwjDW4px1RQeuh7A==
-X-Received: by 2002:a05:600c:4445:b0:4a0:1b14:e845 with SMTP id 5b1f17b1804b1-4a01b14e85dmr65548535e9.2.1790844197683;
-        Thu, 01 Oct 2026 01:43:17 -0700 (PDT)
+        bh=5CmcYL0XK1JJEyDbPwadIyEyX0pGtm4tcAMQK4meqBo=;
+        b=BajkO+Fnhk6einAsRLaupe2E4rsNBvtYlsEKckGbxa3+W3ndWFRLSOxk3xP7RIzm03
+         inP7iVApmJuYuOsyzGBZvxodsYHu64Qg/pYgG2Nnt7obfVLQCrOK9r2yyPIxX7jNh4Gp
+         zG8QDwpQ86wjWr1AaOY8oWYKMhyX/dp1/3o1stVQ6xAg9N6RQARakRsVftaysPypfFJk
+         vqYRGTEd/KDTtwRilybENTPFaGcPinAxiank+0SxO7D24K1arfFGEXiJTCLHafClgvpE
+         uYV7WLOoeg+IZ532hhaEGfDFBhIv8O2naAKPGMKghMdh8YUcBZIKq2QkG7cZ8PJhApiF
+         FwEg==
+X-Gm-Message-State: AFuF++kCiR0HlSmVHvo071aF3ogrbc67RhX/ygZoMTg0rtALXZ5YR8oO
+	Djgns2p68vmK/GyMGfBpfnSRSNGjf2uQAihk+3+f1p+3iAIbGJXQQU5o
+X-Gm-Gg: AYBFou3beCmO+kmw7lgch9sd15/qN7IiDJcx0cjcNid0Zno7szm2mY2gzG8WP4RqJkw
+	SIFC5NatqdjpVSy7yn1Dc+ggOEfFnt0PsaXf8+q1UDFH5HmBKaSbLIOLEH6Ru2SEP5Mmb/Pqx/2
+	FBy5i57yQkuuc16VhpwrELwBq0wawz992fbGKbXU+CGyA6jAAqeTGTSC4v48LygcAO1lHOrfOAb
+	1gWkEfbwo6JCbbMR0tuV0SmU0C6FqEu7AYx/CB44T75TSg5ynjE+kTW52NzENu0wKv+erV3ahRY
+	Zb/XLYILhSoB3hTnWlUjNkcO+SmDa05nJ5ZYsEO4Ob+iV10+r/1y9LPQzxOogTmrXRbn5jIap/d
+	QMF0KdYm3FETAYqIzh2tcmSmQJ/mEMhLm4WGQhXQN5tMDuB1uWW0QrIwKifw415FMCjB46lG1ID
+	V0WpwBpkAtl5v6x7UhOF+zVdsaq89XD9MH+7J7uMTGGYILJLRlg9WaOA98rENc41syVedD2Um4X
+	aVNlPfSgSCbifuhxWOl/Y0Ork192HU9dn0pA5BLauGWC5numL0TXOVRvqBugZTVq5Kk2lGzUA==
+X-Received: by 2002:a05:600c:3b1a:b0:49f:c451:b4ab with SMTP id 5b1f17b1804b1-4a01b12b310mr67078895e9.29.1790844198541;
+        Thu, 01 Oct 2026 01:43:18 -0700 (PDT)
 Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f949709sm78177885e9.12.2026.10.01.01.43.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f949709sm78177885e9.12.2026.10.01.01.43.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 01:43:17 -0700 (PDT)
+        Thu, 01 Oct 2026 01:43:18 -0700 (PDT)
 From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Thu, 01 Oct 2026 10:43:11 +0200
-Subject: [PATCH 2/3] arm64: dts: freescale: imx8x-colibri: Add Cortex-M4
- remoteproc support
+Date: Thu, 01 Oct 2026 10:43:12 +0200
+Subject: [PATCH 3/3] arm64: dts: freescale: imx8x-colibri: Add Cortex-M4
+ UART overlay
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261001-v1-apalis-colibri-imx8-dtsos-v1-2-21881dc324c1@toradex.com>
+Message-Id: <20261001-v1-apalis-colibri-imx8-dtsos-v1-3-21881dc324c1@toradex.com>
 References: <20261001-v1-apalis-colibri-imx8-dtsos-v1-0-21881dc324c1@toradex.com>
 In-Reply-To: <20261001-v1-apalis-colibri-imx8-dtsos-v1-0-21881dc324c1@toradex.com>
 To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -86,86 +86,67 @@ X-Mailer: b4 0.13.0
 
 From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-Describe the Cortex-M4 remote processor available on the Colibri iMX8X.
-Use the same entry address and memory layout as the iMX8QXP MEK.
+Reserve the Cortex-M4 UART and its LPCG clock provider for firmware.
+The UART is already disabled in the base tree, but its clock provider
+can still probe and participate in Linux clock and power management.
+Mark both devices "reserved" rather than "disabled", as they remain
+operational but are owned by the Cortex-M4 firmware. Firmware must
+configure the UART and its pads for the intended MCU application.
+
+Add a combination with Colibri iMX8QXP on Evaluation Board V3 to
+validate the ownership changes against a supported base.
+
+The overlay supports both Colibri iMX8DX and iMX8QXP modules.
 
 Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 ---
- arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi | 47 ++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ arch/arm64/boot/dts/freescale/Makefile                 |  5 +++++
+ .../boot/dts/freescale/imx8x-colibri-uart-m4.dtso      | 18 ++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-index 2415487d3a5d..b71bffb9dad4 100644
---- a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-@@ -86,6 +86,18 @@ reg_usbh_vbus: regulator-usbh-vbus {
- 		regulator-name = "usbh_vbus";
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 2732b223eb3d..61dbab287a35 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -832,9 +832,14 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qp-apalis-v1.1-ixora-v1.2.dtb
  
-+	imx8x_cm4: remoteproc-cm4 {
-+		compatible = "fsl,imx8qxp-cm4";
-+		mbox-names = "tx", "rx", "rxdb";
-+		mboxes = <&lsio_mu5 0 1>, <&lsio_mu5 1 1>, <&lsio_mu5 3 1>;
-+		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-+				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-+		power-domains = <&pd IMX_SC_R_M4_0_PID0>,
-+				<&pd IMX_SC_R_M4_0_MU_1A>;
-+		fsl,entry-address = <0x34fe0000>;
-+		fsl,resource-id = <IMX_SC_R_M4_0_PID0>;
-+	};
+ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-ai_ml.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-colibri-aster.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8qxp-colibri-eval-v3-uart-m4.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-colibri-eval-v3.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-colibri-iris.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-colibri-iris-v2.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8x-colibri-uart-m4.dtbo
 +
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -97,6 +109,37 @@ linux,cma {
- 			reusable;
- 			size = <0 0x1a000000>;
- 		};
++imx8qxp-colibri-eval-v3-uart-m4-dtbs := imx8qxp-colibri-eval-v3.dtb imx8x-colibri-uart-m4.dtbo
 +
-+		vdev0vring0: vdev0vring0@90000000 {
-+			reg = <0 0x90000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@90008000 {
-+			reg = <0 0x90008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring0: vdev1vring0@90010000 {
-+			reg = <0 0x90010000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring1: vdev1vring1@90018000 {
-+			reg = <0 0x90018000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		rsc_table: rsc-table@900ff000 {
-+			reg = <0 0x900ff000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdev0buffer: vdev0buffer@90400000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x90400000 0 0x100000>;
-+			no-map;
-+		};
- 	};
+ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
  
- 	sound-card {
-@@ -487,6 +530,10 @@ &lsio_pwm2 {
- 	pinctrl-names = "default";
- };
- 
-+&lsio_mu5 {
-+	status = "okay";
+ imx8qxp-mek-pcie-ep-dtbs += imx8qxp-mek.dtb imx-pcie0-ep.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-uart-m4.dtso b/arch/arm64/boot/dts/freescale/imx8x-colibri-uart-m4.dtso
+new file mode 100644
+index 000000000000..c43be136a46d
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-uart-m4.dtso
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * Copyright (c) Toradex
++ *
++ * Colibri iMX8X Cortex-M4 UART, reserved for firmware and not used by Linux
++ */
++
++/dts-v1/;
++/plugin/;
++
++/* Cortex-M4 UART */
++&cm40_lpuart {
++	status = "reserved";
 +};
 +
- /* VPU Mailboxes */
- &mu_m0 {
- 	status = "okay";
++&cm40_uart_lpcg {
++	status = "reserved";
++};
 
 -- 
 2.43.0
