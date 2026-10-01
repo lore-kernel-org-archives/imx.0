@@ -1,61 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D2C4BB26E;
-	Thu,  1 Oct 2026 22:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1DE3C0A04
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 23:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790895092; cv=none; b=O9+Bg21wLO31R0utc4n7nz4k6u4rxJGfnve4tmoIx+kFe83DRhyFQFltTakSXuCm8jDnfEUG5eWhC9Mpy9l6xYh2RFQj6WJ+0jZgJNV7Zhok7VycPs6rNbdE1YXnPpcrS2a+BL+ujAQHKy4aeo/I30lgKzulIVBSCPIvAffLdwc=
+	t=1790896311; cv=none; b=Ey+8TxApu0J3UETegqHmSO8vC0SY8yT4pYDh/PNZfRXnKbk5EUJDZTLmjIYOj5eenD1G6ztR+q3dDvnPIDGkUl7k+hhZpWnJQp2JilqqfYXj/JDOONxq4V+e/ZK2Qnjjx4+IWMuOv27mm/x7psyuksdjNq/diQi3wBHd3YqbrAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790895092; c=relaxed/simple;
-	bh=n4kx9jeehwxg2SXhnRjk2B0JeREdKHfzS9FXM+qPXRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=av2mvKP1H8xtQ/AgJzpiTY1GZjB+trlowdULQ01D2gsWAp9OM/4QdjLqsieujj0zZAeRTW/f01mrofM4TOFWYINNVJiB304g12rDG5kPRrqK/PjmQ+hy7ghcOscLGeWhLw0zwY8b32y/dpd5nOwWVoAim5nRb4awlxoWM3fE+gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldjR3A7p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790896311; c=relaxed/simple;
+	bh=kNFSA9YbKim6YXQDkqz9wzqYtqo1Z8c0lWeDeMGLLh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TQCw7QS+0OnHPnOuq6yX/1PmgC53QcnqIH6Rbbvd+LEWIqjrVGoMI1SHiayjdQ4T9n8roTK/HILoydfjHmC1uFQHsY/dKFMPq3Vj8StKMGGzq7CC1bQwJimdQwKdrAc0sndUiBoORpAQsis0JPnwY5TO5uQ2GKQHHPSBu594njs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=ecCQFT7o; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldjR3A7p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2581F000FF;
-	Thu,  1 Oct 2026 22:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790895090;
-	bh=n4kx9jeehwxg2SXhnRjk2B0JeREdKHfzS9FXM+qPXRU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ldjR3A7pnRAQQQFSIBCDJJfOnukvn+v7m1w0K+PrOV6TNV4OjKiPT7LKDO51fHQOJ
-	 FY/caVymwUjpkuqIPLzfNEzQtGREVRdzVjAzyiivRzzzgJYkdtYUrz7ZeNDDwY7/ta
-	 +jorPlh1ihquMjgiT8Oo4S4O1a1KoZD61GqsLiBC33v57DyrohNTfx9py5F6KHPYcW
-	 yAZVVmNShu/kMpJDaxJueguZpb8bAkqfTnC1kq0+n+nlsXQf3nROy7Z/kdbAF/4/k+
-	 A/pK112Jz1v+DnCrUyNkocodGtiRzqRKw1Csyh++yeZ9dZWckrxZW+owUtITFxOYzj
-	 saGY9SWkuv3eA==
-Date: Thu, 1 Oct 2026 15:51:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Marek Vasut <marex@nabladev.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Claudiu
- Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Message-ID: <20261001155129.51ea9930@kernel.org>
-In-Reply-To: <e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
-References: <20260924180607.60932-1-marex@nabladev.com>
-	<AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-	<af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
-	<AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-	<b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
-	<AS4PR04MB9338E76DB4A59D70F1D6AB2F888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-	<e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="ecCQFT7o"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F91C1073CF;
+	Fri, 02 Oct 2026 01:11:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1790896302;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=rsGAq8HSvUzJC7GII4xXk2cib1xNUHDcCfOGhmM7R8w=;
+	b=ecCQFT7oep5Tubzy6dA+uBD3p67i3cFCCV3uzfe+vvz7HdkODym4wXpLPyJAHtirOIS1L8
+	OSJhhuzZL5Km52yHqQ1boi46dX/joU+VtDA7NLil3JUiIY7YFhuja9AFHU+QifS2q7HLWY
+	7fDo7/m7tUUXed2SHjenn3gxTi/9FPh2AKmnM2pDRmtO/o9qNq0+Cq4nVU+toWtZabe7ED
+	XLPUaiI5eFfWFsqb15n7Il2LTY5EWqEV/hH04sBGSjsG4z4lWCmONsjo1pXXraEHh1kT5A
+	tyCrX9WtO6ryb11hkEwVHri8CVLzA6h9Eg9nVvHZ3T08UxkqQ6i2ImO4zxXozA==
+Message-ID: <6b22d5e7-1f94-4c3c-8a0e-5c5573c4c7cb@nabladev.com>
+Date: Fri, 2 Oct 2026 01:11:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260924180607.60932-1-marex@nabladev.com>
+ <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
+ <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
+ <AS4PR04MB9338E76DB4A59D70F1D6AB2F888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
+ <20261001155129.51ea9930@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20261001155129.51ea9930@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 1 Oct 2026 03:34:09 +0200 Marek Vasut wrote:
-> Jakub, do you want a revert of this one, fix, or follow up patch ?
+On 10/2/26 12:51 AM, Jakub Kicinski wrote:
+> On Thu, 1 Oct 2026 03:34:09 +0200 Marek Vasut wrote:
+>> Jakub, do you want a revert of this one, fix, or follow up patch ?
+> 
+> FWIW the answer was follow up, thanks for sending it!
 
-FWIW the answer was follow up, thanks for sending it!
+Of course, sorry for the mess this created.
+
+I'll try to figure out some more flexible way of configuring the MDC 
+clock together with Wei, basically what Andrew suggested, in another 
+follow up patch. Hopefully there is a way to do that for all the SoCs 
+which have this IP.
