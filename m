@@ -1,88 +1,174 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15088175A85
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 22:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10537488757
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 22:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790892055; cv=none; b=u9T8WbbPbO4pMlhmQaAiFDnYhsbVHXOriH5YTkUJkm1mywIG37Cl5LFvmRZc/DLjj/LfGPDiAiVz/2BmZvFJHxNzv7vxQUOXhgLNb0FZ+kHzTRG6ineWu5Fua7VEZC9hL0dgJ7CogBnRGv1/AE4hwnP7gCwVs4j0z5y6vJ4L+4Y=
+	t=1790894400; cv=none; b=tfD5b2fEQLiQR+kD/UCrfSTTQmg5Ie5TXyc6LyGBFxgmED9O6zQROTIaXsIpH3nVFgbFywVNRvO1qRlemaTzt7gWZ9ZAYNPCnvnTSyj8f0rZXNzEFS5/cLwy2MIoif/sDHxo7qM5RjodqE1K3BSNSbnL3IwE+i2rKD939Gka3BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790892055; c=relaxed/simple;
-	bh=ELivsARhygXT/WSI2Il9Y8RftwyUPEQXL7HxEm2Xews=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fEV9BDf+hThFK7yqJzGQdMQIwihCnppU2sDaMdKNyxItnXvQoAf8d6DOd+NtXnpYDNCGM8S5LfwgjyCP9tJ07Hjx45vlyCEbwqbFp1V1hcBoWvBfjDu40wH8+34ylx7jC/n2FU57uvve0COlRXdEZ/Z3Os/by0QqXY6pBcajGtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=bWMydpux; arc=none smtp.client-ip=178.251.229.89
+	s=arc-20240116; t=1790894400; c=relaxed/simple;
+	bh=TJVSVi18BAutSUcCWkyUR64EpqcdpmJqmOn1EoIdi5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GPolBQPMwUZgrygmB7pg23q7cg64/BgZsZ+G76Gm+dHLbThvjx88azlp9qdgrqRwInj/LTmHQShg0qiyIHloKeQj7qROdZsiQEG1GOB71ZnpaNGC7hfH9X2Mde8crkBk7VqoXdGu1Eir6OIoOMwa217doWnvkLluHd/FNQ8U6PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=jXhNfWdI; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="bWMydpux"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1A4C71073A4;
-	Fri, 02 Oct 2026 00:00:31 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="jXhNfWdI"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C9571073CF;
+	Fri, 02 Oct 2026 00:39:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790892035;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=FKrxggt6tXLHGGG9Az9Ua8a0Hw1UqySB4ol4URFxVGk=;
-	b=bWMydpuxo1omedBW6n3KLeflnr/fWMnVMB5hPzZsoxMqTD+zwK+Xrv47g9qgDqjRP3LbX5
-	G32k6ed4zsJFX0CyCZiWLavUshopo5Pag6p0NJJMem6E/rQ3SueNtm2enV4DTfS+erRcif
-	+4OJ1mjCUz/LJOWBy0tW4MNjj34DgyLA+i0UsNSwlA1NwD6DxtA7VUlVxQkViPIbVMXXV+
-	oGaW9+l0HnZb9Gw8RFqVBz9KUzsAi1a4CmuX4cyh4QUMOIil3JvVvwkO6JxY6tx7GBzsS5
-	LYHM9NLyyTRhuu42nnpOQygJgg/z1xAeclSDuK6fFcMjM2TJJn2c38TcxWxK5g==
-Message-ID: <d8e72848-1611-4d6e-b3e8-17013bce7948@nabladev.com>
-Date: Fri, 2 Oct 2026 00:00:29 +0200
+	s=dkim; t=1790894390; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=z1KtkvhbsHdex4xQM2wbRp8dWV7ggUIOWI5xc9hUyq0=;
+	b=jXhNfWdI1GarFVKRdjy2fpv8YMnHSCwnfuFxzCapJLPK4bM3cqVIF06e2RMnF89lmOL3Zs
+	g52zv4/2O/9cssCb5MOQqyaDspENDcvT0W+eQMoT0vaP3NRB2vrHOSnywgYhkcd7lsorZK
+	CFSCwq+hFSDFjek/5Av5piQUtwGvsS9rvKemO7HhhXmonO4syWz5u9ueUjAaUonWsCpOLw
+	0AOJSaWmKgjbZxGnrgxJ2voJ/XKjjGxXRTnIHQRSQWeyTG8gqih27GVe1b5v78YH4235p5
+	DDcrIcT1mJce7z8rUjNd+uURgZp+fpGdSFr6XVEyslIKMiqREk4nnkZx1Sv4jg==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [net-next,PATCH] enetc: Set eMDIO MDC rate to 2.5 MHz only on i.MX95
+Date: Fri,  2 Oct 2026 00:38:52 +0200
+Message-ID: <20261001223947.60189-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-From: Marek Vasut <marex@nabladev.com>
-To: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20260924180607.60932-1-marex@nabladev.com>
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
- <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
-Content-Language: en-US
-In-Reply-To: <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/30/26 3:27 PM, Marek Vasut wrote:
+The current eMDIO MDC rate is 2.5 MHz on i.MX95 B0. It was pointed
+out by NXP, that the MDC rate is divided down from clock of different
+frequency and using different division ratio on different SoCs. The
+clock which feed the divider do not seem to be available on all SoCs
+and therefore their rate cannot be read out of clock tree. Configure
+the i.MX95 eMDIO MDC rate to 2.5 MHz to match the 802.3 specification
+and reinstate previous divider ratio for all other SoCs. This way the
+other SoCs are unaffected by the i.MX95 specific change.
 
-Hello again,
+Fixes: 587acb86d646 ("enetc: Increase eMDIO MDC rate to 2.5 MHz")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Clark Wang <xiaoning.wang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/ethernet/freescale/enetc/enetc_mdio.c    | 12 ++++++------
+ .../net/ethernet/freescale/enetc/enetc_pci_mdio.c    |  5 +++--
+ include/linux/fsl/enetc_mdio.h                       |  1 +
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
->> Clark helped measure the MDC rate on the 95 EVK board this morning, 
->> and the
->> result was 644KHz, which is consistent with the theoretical value. The 
->> scope's
->> accuracy or other factors may be causing you to observe a rate of 558kHz.
-> 
-> That 644 kHz and 558 kHz differs too much to be an equipment 
-> miscalibration / misuse.
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+index a90a04a47befd..7ed9b9120f447 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+@@ -22,9 +22,9 @@
+  /* external MDIO only - driven on neg MDC edge */
+ #define MDIO_CFG_NEG		BIT(23)
+ 
+-#define ENETC_EMDIO_CFG \
++#define ENETC_EMDIO_CFG(mdc_div) \
+ 	(MDIO_CFG_HOLD(2) | \
+-	 MDIO_CFG_CLKDIV(66) | \
++	 MDIO_CFG_CLKDIV(mdc_div) | \
+ 	 MDIO_CFG_NEG)
+ 
+ #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
+@@ -63,7 +63,7 @@ int enetc_mdio_write_c22(struct mii_bus *bus, int phy_id, int regnum,
+ 	u16 dev_addr;
+ 	int ret;
+ 
+-	mdio_cfg = ENETC_EMDIO_CFG;
++	mdio_cfg = ENETC_EMDIO_CFG(mdio_priv->mdc_div);
+ 	dev_addr = regnum & 0x1f;
+ 	mdio_cfg &= ~MDIO_CFG_ENC45;
+ 
+@@ -95,7 +95,7 @@ int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id, int dev_addr,
+ 	u32 mdio_ctl, mdio_cfg;
+ 	int ret;
+ 
+-	mdio_cfg = ENETC_EMDIO_CFG;
++	mdio_cfg = ENETC_EMDIO_CFG(mdio_priv->mdc_div);
+ 	mdio_cfg |= MDIO_CFG_ENC45;
+ 
+ 	enetc_mdio_wr(mdio_priv, ENETC_MDIO_CFG, mdio_cfg);
+@@ -133,7 +133,7 @@ int enetc_mdio_read_c22(struct mii_bus *bus, int phy_id, int regnum)
+ 	u16 dev_addr, value;
+ 	int ret;
+ 
+-	mdio_cfg = ENETC_EMDIO_CFG;
++	mdio_cfg = ENETC_EMDIO_CFG(mdio_priv->mdc_div);
+ 	dev_addr = regnum & 0x1f;
+ 	mdio_cfg &= ~MDIO_CFG_ENC45;
+ 
+@@ -176,7 +176,7 @@ int enetc_mdio_read_c45(struct mii_bus *bus, int phy_id, int dev_addr,
+ 	u16 value;
+ 	int ret;
+ 
+-	mdio_cfg = ENETC_EMDIO_CFG;
++	mdio_cfg = ENETC_EMDIO_CFG(mdio_priv->mdc_div);
+ 	mdio_cfg |= MDIO_CFG_ENC45;
+ 
+ 	enetc_mdio_wr(mdio_priv, ENETC_MDIO_CFG, mdio_cfg);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+index e108cac8288d3..6704033067ecc 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+@@ -71,6 +71,7 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 	mdio_priv = bus->priv;
+ 	mdio_priv->hw = hw;
+ 	mdio_priv->mdio_base = ENETC_EMDIO_BASE;
++	mdio_priv->mdc_div = ent->driver_data;
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
+ 
+ 	pcie_flr(pdev);
+@@ -125,8 +126,8 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
+ }
+ 
+ static const struct pci_device_id enetc_pci_mdio_id_table[] = {
+-	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
+-	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID), 0, 0, 258 },
++	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID), 0, 0, 66 },
+ 	{ 0, } /* End of table. */
+ };
+ MODULE_DEVICE_TABLE(pci, enetc_pci_mdio_id_table);
+diff --git a/include/linux/fsl/enetc_mdio.h b/include/linux/fsl/enetc_mdio.h
+index 623ccfcbf39c3..7dfd65622c95d 100644
+--- a/include/linux/fsl/enetc_mdio.h
++++ b/include/linux/fsl/enetc_mdio.h
+@@ -33,6 +33,7 @@ struct enetc_hw;
+ struct enetc_mdio_priv {
+ 	struct enetc_hw *hw;
+ 	int mdio_base;
++	int mdc_div;
+ };
+ 
+ #if IS_REACHABLE(CONFIG_FSL_ENETC_MDIO)
+-- 
+2.53.0
 
-For the sake of completeness, the MX95 B0 I have on my desk now prints 
-this in SM:
-
- >$ clock.r
-...
-097: busnetcmix           =  on,  133333333Hz
-098: enet                 =  on,  666666666Hz
-099: enetphytest200m      =  on,   24000000Hz
-100: enetphytest500m      =  on,   24000000Hz
-101: enetphytest667m      =  on,   24000000Hz
-102: enetref              =  on,  250000000Hz
-103: enettimer1           =  on,   24000000Hz
-
-And the cycle time of MDC is 1.8ms , which is some 550 kHz .
