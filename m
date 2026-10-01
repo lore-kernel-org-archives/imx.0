@@ -1,64 +1,64 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-wr2-f40.google.com (mail-wr2-f40.google.com [74.125.225.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DCC5208D8
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 15:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72CC524B18
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 15:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790870069; cv=none; b=KcFtuCRzXXtGE4PQ+QXmAECZxP3wMT1Vhd3iJ46hlhCcTy2Z+dS+rKR4bGbdtyKzI4LPtAUoEtms6PMm01ASe5+oCo+PlfWkxWz+rv3bpfAL9BtuEHsY1gb/QsbHfgSyICMuinEEaN4UAptqM6QvNwEFh6E3IDtVzg6BxV7nXVc=
+	t=1790870073; cv=none; b=gTGWsUfGvbgiSndpUMvcL6TJdVTWpZjou4/8+m74mL+V89VwDg+C1PK08x2IaS1HXbqZYYEUhPK+OyedavkHmeNL56TRMw7VFEj/W6/7h2AHPf2sIldEYKtWq1lUpawqsLVCQ/emVT14CNgdXCe21SCMe7/yc0VQ9txs6tok7Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790870069; c=relaxed/simple;
-	bh=CSaJsaAhehHpcrg1vb5EWLRi8QDNWbVA/UD7yN9V9Jc=;
+	s=arc-20240116; t=1790870073; c=relaxed/simple;
+	bh=rKlCQm13/lVSoRcoMYle6T204+/T5Pa4/yPg7USLSQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOD/GJfXDZlQEiv7t6KfsZNdWAoA3WO0HRgI2uVzvjQfSrIEDCzNu0amadBFvrHWAALm8w6Y8QTaUozNRva1VqXeFHNpP4V3D/wC5vEiwR8qXrvt6ZuuVMY1uOzPYkACbKyOwWby0XmeLSzvxBQvRNY6pd3sUQfGG+G+VQ7PY4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q9V07sic; arc=none smtp.client-ip=74.125.225.99
+	 MIME-Version; b=EfRkBDewQZqZq9LGiGFzXH/p8Uio74U8h6G789QCtipmL9WD7Miu5S9ZjXdV4ioVQcdQ3NMGtmaxchQPGy1vYFm0iVwL/B7g84c3ZE4/T/ASrVyEwKYCDywB/Lk5Ws6DJy42OR8FNdzOyumNavzCHlqCisE+HrnAvZjQo2c1v2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZkjxyFk; arc=none smtp.client-ip=74.125.225.104
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q9V07sic"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b059eae96so1110595f8f.0
-        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 08:54:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZkjxyFk"
+Received: by mail-wr2-f40.google.com with SMTP id ffacd0b85a97d-48b017a3be3so1711445f8f.2
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 08:54:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790870065; x=1791474865; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1790870067; x=1791474867; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wgvDf4RLDng0uvipLWv31zDG7gco8OVe3xdb0OyCHis=;
-        b=Q9V07sicGLTcJPifn274iLQq7xwJeaN2vNaUlByzZBxv9IeoOqBQTsAG64IpF/kMK1
-         kMghS/lIFKC/cytqFiCh9VTGYq6cFtJkafUWvoLMUpzq5poOYlnHV8IWl/Mv1Urq2e/C
-         UDFA10F5dxkDZVQ5+9NsU+E+Z9EkjwFvtuXMWPZHRM3KFwKF7s3GzChZbJs3X3LXYkZq
-         n+IPVdC20Y/0k2cYoad0igVLRpy36AsxM30Txvd+92w/pugimAVLyyj43nnio+8K1XR3
-         Ac9BdBOIVlL47iYzP1tlxbvjNARHhttNilQb+Nv1yc3sOldvD8uSieymK+qx58xTf8Rr
-         8OEw==
+        bh=Elg4CK8BHPTlS8KGlNqB5v2UOw1qnjW/5zGPlvDhyVU=;
+        b=lZkjxyFkXM0c/9eflk537DUsPUGGZ7Z5FC0dWwhV9MsqHxAyxLTNyNGR62IieOs3MI
+         yB3Z2aa9ApulkMILAeI9a44H0vO/TZtztupAD92SdOOxX7jTuCHJhY+g+l6WmLjQNwMZ
+         nSsDBiYVmVYpmFASdAq1/JCJJylFGYsCj7XvocKwAPQWtjEij4iDlfgWAZxUzXcOD954
+         W/8SLKb1MPW1z1qXSmRYh4AL65YfpiXbMnwq3Z7TnWDNT3qVF6rIh8AIuupVqiT+y0g5
+         QwCw8H+nd/8NyJcB010YItEx2Rr7b1m/Q28x8cfO+6taHFQcIIUVmI847V+HQrzvHSrf
+         IDMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790870065; x=1791474865;
+        d=1e100.net; s=20260707; t=1790870067; x=1791474867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wgvDf4RLDng0uvipLWv31zDG7gco8OVe3xdb0OyCHis=;
-        b=CJwDblt6S9Nl1tA/m04zRCjiL8vj4J8hrrcnN1Jxzuf0iRejh02UWdjDOCrJwXpodh
-         FDZCdVrXGkUpVKxKKyJ+cv3lSseJMyndEdwsFTrAc2V4WrQ+05u42+0yHXB/Zq4ZV2Wz
-         t2cjda94Pbe4xHYAheHJ28nquHMxJEyKpdWIhoXdCcskQZrAoj+n9y+Qwu5EHyUanfJu
-         pEZCnuKwYEn9T3rmlPeoBekZirg8nIA9h/s4/jiJB9XpdYDQ/ktbq9GMGnwJcZ5GjZqj
-         wsU2O/W6qYgTIDLv5xXYj6YazwCrshGdqUlnCrjlxpwISCbicFUfy0HZNgckqs/AEd/a
-         //aw==
-X-Forwarded-Encrypted: i=1; AKwUvBwu1JyWQiJDLkMV0bHM88oQmibTNZkv9aKgxNTvBFUwVLbyQQj33QSgBsfN7m47WDkKtyU=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKyMIkZZQdaARhqa8nK8iJDWrOUVwnyESCejs1ALxtYhhLxhtyi
-	VWbjU0J2mWNG8FvIrs+MMf740b2qgvpxyo3czdzwF4WlP5SxGxfbZ0LR
-X-Gm-Gg: AYBFou0t6bvt9PDvL7owZW4AwtFVDHHIgfiBLPl4xhOh30b12+ZOPUyYT1ECDyQFmzd
-	qGRHhoUrGEkMrSUG1PurCCHlqdtMGrKrovJmf+uFkZj3LeI2ednxgUJIMim/jPmTkgzmCabPFWL
-	RiZyquHYIdq9fqK+jrLkXSoIlaX1h7vIwQdTYgCQH32lB0B4IOUeoFnMWnF0Pd9LGxNN5llH0OL
-	JSti0+1RU0STmdTC1ErA6EylOpllgrs9/ifMNU5bgEhuqBOmAAkyXAp5EhASBVlfT1mRiK7WWUm
-	IvwFzcQcC2HHm3DkqFedJZs6iyc2OR/FNEjpWSZGdaMAgxEk79PCEIRA8E94Wt1fLcAtVmDEgsV
-	2ANL+1Fgt2Gaoaq6E6H2PEOJg1IUsneQv2TSMVVB1ntNCn8T9+xQZ8jL0jTOcjUyCUJ+Dc9VEiM
-	LAZnme+F03bzGRvQHvRjQw+9/iXtiGyued2gbmfyHKQiafzvuLePZs5ObWjTUBEaVQg3ecXQe66
-	K8GLnXw1hFwoEaz3vpoROVTJAX1yJJzXGRJhRfW8aWJgCch2hlDoBzAtF1yZQEnT+Jv7ep6y9SV
-X-Received: by 2002:a05:6000:469a:b0:48a:fd90:f254 with SMTP id ffacd0b85a97d-48b1272a07amr24159f8f.28.1790870065261;
-        Thu, 01 Oct 2026 08:54:25 -0700 (PDT)
+        bh=Elg4CK8BHPTlS8KGlNqB5v2UOw1qnjW/5zGPlvDhyVU=;
+        b=FUO8+9ubDRniFUE4R4esj81peVuZb8iheXXf/uRXetTb8KtRfaS4cq48ikKrrnY1+f
+         VGF8/jp83Q2vsJ1F6x10vCm+zgepUbNG8SxBppyhuzdCEafosSoA2suGssW50tpBU9Ex
+         2cEKITJzp1nAMkw400/AnP1XskHR5U4fXb7FoAj+ZWk1Rb4s0Ahx7IiVwy7Q4qA8UT4Q
+         4UKS1pB1XPa6YzQf7yCNQs3ySJJD4MnEpEHbyCPxrb9doKgFTGrCIQu1mDV+obzNIue5
+         9/p87zSNIJ1M/RDGBrX0GaVR6Jo/VVHZG75LQMmyf1DaH40X1wWjgOnY+5X9QLkmEkYj
+         vnuA==
+X-Forwarded-Encrypted: i=1; AKwUvBzABx72nsaWmZTW8iomyYbsiPeO0IgVjAikP+u6bbx9y41xFLZY0/5k2kpPuRc7wxx9r1U=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLcCcQ/COepKvhexLv619xNC2VcmEgwB2JdlQUO/oqOg+vyZJtw
+	DKtbnDyb8O4pYQu787QEswc+QxIDTe7mN9Z3bg80Og9tXYRGlExIlc8U
+X-Gm-Gg: AYBFou1S+/EzzfsbvXYW8860ipm6/lOs8O6mkCvh/u4WC8urK1kbm5s0i79Ja18LSd1
+	+sq039aedKOwAaIspGh10YBlcZsEBbjGnqSVbcm5KVUbtzyJZ5s2tR7zTMl8LvkkNJZPFipjIFp
+	WPXSEXMwrAZJ/xyZkFt0wpBU18384blzQ4fUsoKSRiMjRfFGE7s+Q0BxzBaVRhlghaCO5kqm+dJ
+	jYtbTlRgjCkcrxSADKG0LunkZwLDZ3w6hNnrQ03z4avxexme+Mv+Nk2BxEVR4PkSkXIQWShD9KG
+	A8w+AZeUBnx3Tzv82jW3Jgqgq+7c+rD0raLiZykqXYwRRiZ2ysdQpGj4EyDJllvL2H4kbslwpxL
+	iZCSDGGx/OArNG3F/9iaVyQ9Zaw9aBPXh/sXxGnXOvmglOsbF82sllgs7cvHSnP8QCH4oKO0bA4
+	MYoy9zVBdWhimD3O8IJ+CKm8QMGTtNDw+o/M/PuyLouPv90h56Dvj/ptLiom2xD1p1fVFr802v4
+	KFm9WD2Mglau2n4ozgBzk7YHoKiZKydef+89cy0/44Xgg0JW97HhYhCCUr0Yx8O+0E=
+X-Received: by 2002:adf:edc2:0:b0:488:7d08:edbc with SMTP id ffacd0b85a97d-48b127431dcmr12700f8f.24.1790870067132;
+        Thu, 01 Oct 2026 08:54:27 -0700 (PDT)
 Received: from leonardoc-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b068ff6eesm6517294f8f.11.2026.10.01.08.54.24
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b068ff6eesm6517294f8f.11.2026.10.01.08.54.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:54:24 -0700 (PDT)
+        Thu, 01 Oct 2026 08:54:26 -0700 (PDT)
 From: Leonardo Costa <leoreis.costa@gmail.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -76,9 +76,9 @@ Cc: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/7] ARM: dts: imx6q-apalis: Add HDMI Overlay
-Date: Thu,  1 Oct 2026 12:52:51 -0300
-Message-ID: <20261001155412.3177428-2-leoreis.costa@gmail.com>
+Subject: [PATCH 2/7] ARM: dts: imx6q-apalis-ixora: Add 3.3V_SW power regulator
+Date: Thu,  1 Oct 2026 12:52:52 -0300
+Message-ID: <20261001155412.3177428-3-leoreis.costa@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261001155412.3177428-1-leoreis.costa@gmail.com>
 References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
@@ -92,113 +92,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Leonardo Costa <leonardo.costa@toradex.com>
 
-Add a device tree overlay for the HDMI output on the Apalis iMX6.
-
-The overlay is also combined with the various versions of the Ixora and
-Evaluation Board carrier board device trees to provide ready-to-use
-DTBs.
+The Ixora carrier board has a switched 3.3V power lane that is used for
+powering peripherals. Add the correspondent power regulator node to the
+Ixora carrier board device trees, similarly to the already existing
+reg_3v3_sw node in imx6q-apalis-eval.dtsi, so that it can be referenced
+by peripherals that require a specified power supply.
 
 Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
 ---
- arch/arm/boot/dts/nxp/imx/Makefile            | 51 +++++++++++++++++++
- .../boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso   | 13 +++++
- 2 files changed, 64 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts | 7 +++++++
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dts      | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index c5caca92ea10c..32d77a59c4358 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -59,6 +59,46 @@ dtb-$(CONFIG_SOC_IMX53) += \
- imx53-qsb-hdmi-dtbs := imx53-qsb.dtb imx53-qsb-hdmi.dtbo
- imx53-qsrb-hdmi-dtbs := imx53-qsrb.dtb imx53-qsb-hdmi.dtbo
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
+index 3ac7a45016205..f6eb2eeee417e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
+@@ -57,6 +57,13 @@ led5-red {
+ 		};
+ 	};
  
-+imx6q-apalis-eval-hdmi-dtbs := \
-+	imx6q-apalis-eval.dtb \
-+	imx6q-apalis-hdmi.dtbo
++	reg_3v3_sw: regulator-3v3-sw {
++		compatible = "regulator-fixed";
++		regulator-max-microvolt = <3300000>;
++		regulator-min-microvolt = <3300000>;
++		regulator-name = "3.3V_SW";
++	};
 +
-+imx6q-apalis-eval-v1.2-hdmi-dtbs := \
-+	imx6q-apalis-eval-v1.2.dtb \
-+	imx6q-apalis-hdmi.dtbo
+ 	reg_3v3_vmmc: regulator-3v3-vmmc {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dts b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dts
+index f338be4352779..f015faf19199f 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dts
+@@ -55,6 +55,13 @@ led5-red {
+ 			label = "LED_5_RED";
+ 		};
+ 	};
 +
-+imx6q-apalis-ixora-hdmi-dtbs := \
-+	imx6q-apalis-ixora.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-ixora-v1.1-hdmi-dtbs := \
-+	imx6q-apalis-ixora-v1.1.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-ixora-v1.2-hdmi-dtbs := \
-+	imx6q-apalis-ixora-v1.2.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-v1.2-eval-hdmi-dtbs := \
-+	imx6q-apalis-v1.2-eval.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-v1.2-eval-v1.2-hdmi-dtbs := \
-+	imx6q-apalis-v1.2-eval-v1.2.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-v1.2-ixora-hdmi-dtbs := \
-+	imx6q-apalis-v1.2-ixora.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-v1.2-ixora-v1.1-hdmi-dtbs := \
-+	imx6q-apalis-v1.2-ixora-v1.1.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
-+imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
-+	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-+	imx6q-apalis-hdmi.dtbo
-+
- imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
- 	imx6q-dhcom-pdk2.dtb \
- 	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
-@@ -183,15 +223,26 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6dl-yapp4-phoenix.dtb \
- 	imx6dl-yapp4-ursa.dtb \
- 	imx6q-apalis-eval.dtb \
-+	imx6q-apalis-eval-hdmi.dtb \
- 	imx6q-apalis-eval-v1.2.dtb \
-+	imx6q-apalis-eval-v1.2-hdmi.dtb \
-+	imx6q-apalis-hdmi.dtbo \
- 	imx6q-apalis-ixora.dtb \
-+	imx6q-apalis-ixora-hdmi.dtb \
- 	imx6q-apalis-ixora-v1.1.dtb \
-+	imx6q-apalis-ixora-v1.1-hdmi.dtb \
- 	imx6q-apalis-ixora-v1.2.dtb \
-+	imx6q-apalis-ixora-v1.2-hdmi.dtb \
- 	imx6q-apalis-v1.2-eval.dtb \
-+	imx6q-apalis-v1.2-eval-hdmi.dtb \
- 	imx6q-apalis-v1.2-eval-v1.2.dtb \
-+	imx6q-apalis-v1.2-eval-v1.2-hdmi.dtb \
- 	imx6q-apalis-v1.2-ixora.dtb \
-+	imx6q-apalis-v1.2-ixora-hdmi.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.1.dtb \
-+	imx6q-apalis-v1.2-ixora-v1.1-hdmi.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-+	imx6q-apalis-v1.2-ixora-v1.2-hdmi.dtb \
- 	imx6q-apf6dev.dtb \
- 	imx6q-arm2.dtb \
- 	imx6q-b450v3.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso
-new file mode 100644
-index 0000000000000..592bd366d94e4
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Enable the HDMI interface on the Apalis iMX6.
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&hdmi {
-+	status = "okay";
-+};
++	reg_3v3_sw: regulator-3v3-sw {
++		compatible = "regulator-fixed";
++		regulator-max-microvolt = <3300000>;
++		regulator-min-microvolt = <3300000>;
++		regulator-name = "3.3V_SW";
++	};
+ };
+ 
+ &can1 {
