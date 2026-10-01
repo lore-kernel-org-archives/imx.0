@@ -1,117 +1,124 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9587D330B0E
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 08:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EA54CA788
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 08:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790843512; cv=none; b=GiKLBKMLjrqNlXc+8XBgFmQQj1WVRsMCzYZyFL23lE+OgXW2teVZybT6EaUXss8XM4rNRBsCSgFvl0M8BEHDBHSiSa6UtFB2F9dtiAXd02TIOmT0WLc4AYYYH4sEyFdGQCXbdJZ4Hh9+N6LjE4Zh4BEZSHdgWXVkp8z+ghVzZ0g=
+	t=1790844199; cv=none; b=Trn95+rsqQZESK6Mnepv+s1LuaSZAH9UPwgJv96Xk1Nd8qjZTbHVNSU1SAIsVY034dOqx9K5VbgdvqNB5waSIn/bTVqGbrewEOMAzSVbyRcM2pINSXa2/Vf8ZB/QT6xwzqy28rnTPc5XTcnvwxOAmBvZifDybpWbPaLpA8Zk90A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790843512; c=relaxed/simple;
-	bh=jpbVVx9QoqKKtBn74779r5rJeMJp9L3EDVWrB/wBfF8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=IyLPEymcsZa5PLJwp/LOUIb75pPQaskEM54iPF4+Jf39540keg+P8BJ7m010+G4UwKDNyxnezyFPC/D7a58fKLhjkoNiridWZAhMiNoIyZYcMWl9u3CUVMUrcIsEyvzM9NdSFshp5FUdSxbNT0B7SwF+xIWAdDYbG54ifpoTTEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sagW3Htt; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790844199; c=relaxed/simple;
+	bh=Dx7y8RK/I3gcYSQBRPLhRiEJorSzsB0ileDu744Zw0U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IzjrQ5bAYNIZd+YTr2hoYxEfqZAe8qbxe5NLLofZPeoGgsU06TujjzCBbGZHDi47OAYNs1IudtIjEVK8y3S1C2Q9yLTSeWm9unkN9ejSHcB8HswIkf1coa5JU4DrFtch2Z86Wbxrt4D5sIMatelCHuG97b6SIxb3KjPce04Yl/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjh7KrZ6; arc=none smtp.client-ip=74.125.225.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sagW3Htt"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id BD96C4E410E9;
-	Thu,  1 Oct 2026 08:31:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 81B8260341;
-	Thu,  1 Oct 2026 08:31:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F0F4103290C1;
-	Thu,  1 Oct 2026 10:31:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790843506; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=RiIDTpci/0UJ3NCrt48cxrs7UcRvkm9TcGYKchYj198=;
-	b=sagW3Htt5YQwsJod0ppAZZLVo/HIbh2Wh1p3vMtfEqB4XzuMaoD5AyK9Xuqhjsglex+M6K
-	d6GboCZyFgqJlMZx/6YAQ/YGbVbRnzF/QRgBYMIxDkxucLFdgQTFK7kiSTyH2OcmiZydOt
-	cccMEa+DX6efu2rnGF1NSYK75PUxwZe91djO9sMyVvwWqi1k3ZSaKvhvSSfS4AyzCGrV8Z
-	lzPuYHAJ/x6OL2dxv2lcoAoKWQvoySk7ekWG2AyInjDdfcaHesnl6/y18kaAcliFte1w5R
-	U/SEZR0ZuELcN7FNSCQ3LXdMRk/6JwXjyWiJuEMWoEEcGGJtD4zg1voBIxS/MA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjh7KrZ6"
+Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48aff58e6abso944276f8f.3
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 01:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790844195; x=1791448995; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XKshLF9fhce9vsuhUgrP4h0h1OGaMDienEyqXvAvOQY=;
+        b=hjh7KrZ6hq7tHX9734cmDmEtZ3PfsGDuVd7fLrzAwN/JnjWUnFlNzPuuyek5v3lCtk
+         Fy4yqWIt2frfWXudvF/TRmcT+tKbs/8MlJC/waY4or5bZAToYFf5RFXtflXFHyuEupBv
+         Vhik09boGe3+VqEFcNKben7BjaSJEMfhqtO16IFwAponE7PfWpaUp/D7x6U5Yl1mjyuw
+         Ca011BKgtTAeYD9/6ZFK79b0BHPL1R3tVhDbLDPOegwSHJzR7Q1Dj/nb4P3wV4OjEyxY
+         BCn4GE1YfnVbkt+s5CYjdpOLTZw9UJc9lBP3Cg0dyRnfonkqmlvpfXw2nsyq5xzjVhsQ
+         nblw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790844195; x=1791448995;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=XKshLF9fhce9vsuhUgrP4h0h1OGaMDienEyqXvAvOQY=;
+        b=fpILjz2dsyJcuTN3ngdtTJJvEALKJZvArX9yug4gKqKxdXEiw7G/axDIFbAMIswp6F
+         ki6eVK7vcvsRUlIwWixpVgxris/cWsoxVYjMfu6oCvJI19wJCbBCinkiXoOREzt1WF6T
+         EZw0HrCtgI5QGjZQZqoaw0TnB9/vjTL1LX8zw9Kd+eAZmnPA2SlUV6GLhBIkoIUL+n6A
+         ZvMDw1fWI4SNuhZElRRgzA57k32v0CCCNb++R9i50riCMi7M2fnbkkj06dpI2tn4/k3E
+         m6UrD0EnLGdibgw2t7uR89dEL7Wtc2l/p0Sjvx2BGvWFor9STeNDzDfN0SunvQDJfY3t
+         kx8Q==
+X-Gm-Message-State: AFuF++nnYIi84QconfzHWccKH96utk06SS+wwVbDrQ/AYuKXVLH3Imwp
+	ppXJaekPugrfv3qkqpZgO2YEX+7HSdNQRlU6hPA/HNMoA8n7DyYqemtJ
+X-Gm-Gg: AYBFou0rbvYY+5sey5l8dAHNnmJQePB1WfC2chtSeuJM83jIZrenCToP1ejxCjZ8kCZ
+	rkBP9tJOpUwsGYS1whpMOmHZ9m0eY3HeevsLXUZvrEezXWIh29tHnQTKvKDSyVbn7YdeYH4/RAZ
+	efOpg3/ZtU37nMszb8b49lDntj8/HcKytvUYUJUVEO2GvT86e3cLm3JHJ5yHiyh4m3EBlaq+1D8
+	cEYPchepfmIA+uoFKU4onEmQiQOWQ4oiqzfNtGt7MjZ5C5EvF/ceMUljplJ/hEyp9tc5NjCGBjw
+	gakuU01KP6QwwSI4gBqlGoBn82hjJqhkr6yAkEnivWYJkXhNAwXLRV2ky11JtCTKIQk8SVXvSfA
+	cj3KmcEghKqPV/PNUpkOxkJCDE93u9SYMIDGodokGJg7fkMjQpridfDE/RraWLlH7EzK7Ekfrl1
+	A6jgjK54fp4ICyfBLC3A7WeZyx4DsC2TO5W8BEt7w5lVrbvdaj2O9E0Mbft4PsdR0TQr/o6PNL2
+	aO0y35SU5uxJF4jt0rrmew3AsQDWffO1Y/dVarEpFbOwCcUCIAOPAxUxedkRhl8kSJJBSZ3Z+1L
+	04A1sMAu
+X-Received: by 2002:a05:600d:8499:10b0:49e:7c8c:361d with SMTP id 5b1f17b1804b1-4a01b11e692mr49639065e9.22.1790844195067;
+        Thu, 01 Oct 2026 01:43:15 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f949709sm78177885e9.12.2026.10.01.01.43.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 01:43:14 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Subject: [PATCH 0/3] arm64: dts: freescale: Add Apalis iMX8 and Colibri
+ iMX8X overlays
+Date: Thu, 01 Oct 2026 10:43:09 +0200
+Message-Id: <20261001-v1-apalis-colibri-imx8-dtsos-v1-0-21881dc324c1@toradex.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 01 Oct 2026 10:31:37 +0200
-Message-Id: <DLTD1D4TV8ZX.2PNM1B670T8UK@bootlin.com>
-Subject: Re: [PATCH v2 5/7] drm/vc4: dpi: stop using deprecated
- drmm_of_get_bridge()
-Cc: "Arnd Bergmann" <arnd@kernel.org>, "Doug Anderson"
- <dianders@chromium.org>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>
-To: "Paul Cercueil" <paul.cercueil@bootlin.com>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Dave Stevenson"
- <dave.stevenson@raspberrypi.com>, =?utf-8?q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, "Raspberry Pi Kernel Maintenance"
- <kernel-list@raspberrypi.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.22.0
-References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com> <20260929-drm-fix-of_get_bridge-build-regression-v2-5-6da431d8f180@bootlin.com> <accaa9f4ad05ef73071e5cfb5368fcbdd394d3ab.camel@bootlin.com>
-In-Reply-To: <accaa9f4ad05ef73071e5cfb5368fcbdd394d3ab.camel@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB4dvmoC/x3MQQqDMBBG4avIrDsQE4y2VyldpGZsf1AjGRFBv
+ LvB5QePd5BKhii9qoOybFCkuaB+VNT/w/wTRiwma6w3T2d4qzksYYRyn0Z8MxjT3nFcNSl7V6o
+ 2ets2kcpiyTJgv/fvz3lebxgdnG4AAAA=
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-Hi Paul,
+This series adds device tree overlays for the Toradex Apalis iMX8 and
+Colibri iMX8X SoMs, and describes the Cortex-M4 remote processor on
+Colibri iMX8X.
 
-On Thu Oct 1, 2026 at 10:22 AM CEST, Paul Cercueil wrote:
+The series adds support for:
+- NAU8822 Bridge Tied Load configuration on the Apalis Evaluation
+  Board V1.2
+- Cortex-M4 remote processor on Colibri iMX8X
+- Reserving the Colibri iMX8X Cortex-M4 UART for firmware
 
->> -/* Sets up the next link in the display chain, whether it's a panel or
->> - * a bridge.
->> - */
->
-> The first part of the comment is not wrong, I would keep "Sets up the nex=
-t link
-> in the display chain".
+The remote processor is described in the SoM device tree, following
+the Verdin iMX8M Mini support. It uses the same entry address, mailbox
+and RPMsg memory layout as the iMX8QXP MEK.
 
-OK, I will do it in v3. This patch is not a fix, so not urgent.
+The Makefile entries build the standalone overlays as DTBOs and add
+ready-to-use composed DTBs for the Apalis iMX8QM V1.1 on Evaluation
+Board V1.2 and the Colibri iMX8QXP on Evaluation Board V3.
 
->> =C2=A0static int vc4_dpi_init_bridge(struct vc4_dpi *dpi)
->> =C2=A0{
->> -	struct drm_device *drm =3D dpi->encoder.base.dev;
->> =C2=A0	struct device *dev =3D &dpi->pdev->dev;
->> -	struct drm_bridge *bridge;
->>
->> -	bridge =3D drmm_of_get_bridge(drm, dev->of_node, 0, 0);
->> +	struct drm_bridge *bridge __free(drm_bridge_put) =3D
->> +		of_drm_get_bridge_by_endpoint(dev->of_node, 0, 0);
->> =C2=A0	if (IS_ERR(bridge)) {
->> =C2=A0		/* If nothing was connected in the DT, that's not an
->> =C2=A0		 * error.
->
-> It could make sense to go the extra mile and just move that code back int=
-o the
-> caller function, I don't see much benefit in having it in a static functi=
-on
-> here.
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+---
+Ernest Van Hoecke (3):
+      arm64: dts: freescale: imx8-apalis: Add NAU8822 Bridge Tied Load
+      arm64: dts: freescale: imx8x-colibri: Add Cortex-M4 remoteproc support
+      arm64: dts: freescale: imx8x-colibri: Add Cortex-M4 UART overlay
 
-Why not. If no one objects I'll do it as an additional patch in v3.
+ arch/arm64/boot/dts/freescale/Makefile             | 11 +++++
+ .../imx8-apalis-eval-v1.2-nau8822-btl.dtso         | 15 +++++++
+ .../boot/dts/freescale/imx8x-colibri-uart-m4.dtso  | 18 +++++++++
+ arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi   | 47 ++++++++++++++++++++++
+ 4 files changed, 91 insertions(+)
+---
+base-commit: 39be5a7e3ecc08098c039561237499aa595700da
+change-id: 20260930-v1-apalis-colibri-imx8-dtsos-632607d6275d
 
-Cheers,
-Luca
+Best regards,
+-- 
+Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
