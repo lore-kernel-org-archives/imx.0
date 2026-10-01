@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3585C318EC5
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 13:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914483D45CF
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 13:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790861013; cv=none; b=KsRE89YG965CpIKoCwoh1vFhwpNmCGGcFZth83vQUtVPzTSBYik5YzTVZwwhFaSgu2PkWrMTN3zyan6CHqZvWlU7VbIDrYvVCRxuBO5bRVtNzHXajrzX8jYKqSMYbPNp3cg4OOpN1CPmQGF05LID7Za1snSVLfyuh7/wxM9NoCw=
+	t=1790861121; cv=none; b=uFgpN33u2zAzTfZOYXXx/c0KYeFFX87end6PPlWL3j3a4bIbfAVp6emWdv2foocZxrTY57oe48B48lPTKmO48Fcx1vx6Gt43ZBXC/6rG9eXQ1SMYVUFlrhE/kuhd41dDh4Nt8VihCzmZTd8QMTuRd73ApN0rmHAXTzkW5KfaPc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790861013; c=relaxed/simple;
-	bh=557KNANGYzATVmcfl4XH4nN4Qy+fFqLfFGNKb9zOsaI=;
+	s=arc-20240116; t=1790861121; c=relaxed/simple;
+	bh=nZG/abR5hcK+lrAMKya8hkkOZtNEMzhOzzSYEYPsu5E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cYXWt7iOW0cNPZ8ZUW0kXuObKKP7xYgpSfwwyeISUuCADJvhx/t20kBUEZBaszvVP5fbyNlQODkR4s5+WWOe+EP+AR3sPqpg0bIt6F0HwgmonbOPsIihtYlzd1BdH9S0S1gkCG5l35nSXfYqAvLb4p5uqbkJxFdKiGsZpQzbxMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YS0Q1KkA; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=eYLkncO8g/RxGhbiy2Z5Sk7TFmkXiTcOY9Px1WjI+H6uCqvxmN3R0yzGbNxXbkZiuNCCWgRLwF51LbmL+x7bbRg54v7Jp0Xpl1U8X18Zt04p7T/bQo/Y4qoTzUtoVK1B1keg6gam2sOxBXI7trDProgcTiDycWSWtxwtnk+pcJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q0pCHXCP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YS0Q1KkA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3521F000FF;
-	Thu,  1 Oct 2026 13:23:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q0pCHXCP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B421F000FF;
+	Thu,  1 Oct 2026 13:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790861011;
-	bh=1KhjO7Ve+bwC1EXPvDPnP9O0N3bQ4V/TYRMKRG3+ks4=;
+	s=k20260515; t=1790861120;
+	bh=7uDSSXgHpLPmo8DtUMbDbifSXys+MSfcOxbXoyquKd0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YS0Q1KkArPuhX28FaP5MSKeMIOxhmSz/MgC7f/XUGMCYq7AKbd51rdhaYAHfeC/LE
-	 UTxPev2x8J0uQO4f8YvbX7ffMwCNGjP6tjZr6djv4JE81b1l+YippKo4Rh8CgfzawJ
-	 l9pcva8RIALWf/df7HDoZtWbbO5y9fKGLY15HmNok+lCOCU5deHuJ7O+QE7XfUDF78
-	 w8oJGZM7o+YZBoYiRtyg0CkzHfx/YbNcTc83dXkQFxOAkYk6qLWDH8fciv+NkgTYLK
-	 kADqL3fjjxVJfSdAbJYwaLWsHa6H9zUIYYCX57PtD7HsCdlx2gx0QZop5ojRJUcdcY
-	 nf6IaBbOzg++Q==
+	b=Q0pCHXCP3dRBOSooWVpP+fIYmx5Jz9k/Rjg5H5R3aO67oua8HQL2oP6WsXEBv2aTv
+	 vEncs0fH1RmEVVlFs4xlzWeag3nNVFCQSG2gjoNIpIq3T//uJS0PBvFNwiRKJ3v7R/
+	 0/vx5wXHbF9jysZLaqpYPGtPnnnoEWF95tdst+A4I8oQb6CAh6IjbF016hfwnjHo5t
+	 knbST85GnQ2b8PgrOIvFTWNUEp00MFBV+zPltUs4wG1iusV1RdRzdDPw9G+XjL4JJU
+	 +mmlgH4BDVKDIRStE9xOsKN4Ua4qimw/b8ha93XsIpN3UuLObB6gXl7zk6ppAWqCMX
+	 dugO9ZagzDt3Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 20/24] drm/bridge: ti-sn65dsi83: implement
+Subject: Re: [PATCH RFC v2 21/24] drm/bridge: ti-sn65dsi86: implement
  .get_next_bridge
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: imx@lists.linux.dev, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org
-In-Reply-To: <20261001-drm-bridge-hotplug-v2-20-8e34986dcb68@bootlin.com>
+Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+In-Reply-To: <20261001-drm-bridge-hotplug-v2-21-8e34986dcb68@bootlin.com>
 References: <20261001-drm-bridge-hotplug-v2-0-8e34986dcb68@bootlin.com>
- <20261001-drm-bridge-hotplug-v2-20-8e34986dcb68@bootlin.com>
+ <20261001-drm-bridge-hotplug-v2-21-8e34986dcb68@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 01 Oct 2026 13:23:31 +0000
-Message-Id: <20261001132331.9D3521F000FF@smtp.kernel.org>
+Date: Thu, 01 Oct 2026 13:25:19 +0000
+Message-Id: <20261001132520.00B421F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,51 +47,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] drm/bridge: ti-sn65dsi83: missing refcount increment in get_next_b=
-ridge
+- [High] drm/bridge: refcount underflow in sn65dsi86_get_next_bridge()
 --
 
-commit cea7189b53e4a71deaaf15ff6f56ed70a0d97448
+commit ed254bdda2bfa941d8761ef842227d71a55ce971
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/bridge: ti-sn65dsi83: implement .get_next_bridge
+drm/bridge: ti-sn65dsi86: implement .get_next_bridge
 
-This commit adds the get_next_bridge callback to expose the next bridge in
-the chain for the ti-sn65dsi83 driver.
+This commit adds a get_next_callback function to expose the next bridge in =
+the
+ti-sn65dsi86 driver.
 
-> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/brid=
-ge/ti-sn65dsi83.c
-> index eb5b249cc43c7..76fc0ca8cd196 100644
-> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> @@ -295,6 +295,13 @@ static struct sn65dsi83 *bridge_to_sn65dsi83(struct =
-drm_bridge *bridge)
->  	return container_of(bridge, struct sn65dsi83, bridge);
+> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/brid=
+ge/ti-sn65dsi86.c
+> index 48b83df9aed61..e981d98a39b96 100644
+> --- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+> @@ -743,6 +743,13 @@ static int ti_sn_attach_host(struct auxiliary_device=
+ *adev, struct ti_sn65dsi86
+>  	return devm_mipi_dsi_attach(&adev->dev, dsi);
 >  }
 > =20
-> +static struct drm_bridge *sn65dsi83_get_next_bridge(struct drm_bridge *b=
+> +static struct drm_bridge *sn65dsi86_get_next_bridge(struct drm_bridge *b=
 ridge)
 > +{
-> +	struct sn65dsi83 *ctx =3D bridge_to_sn65dsi83(bridge);
+> +	struct ti_sn65dsi86 *pdata =3D bridge_to_ti_sn65dsi86(bridge);
 > +
-> +	return ctx->panel_bridge ?: ERR_PTR(-ENODEV);
-> +}
+> +	return pdata->next_bridge ?: ERR_PTR(-ENODEV);
 
 [Severity: High]
-Does this need to increment the refcount of the returned panel bridge?
+Does this callback need to call drm_bridge_get() on the next bridge before
+returning it?
 
-The API contract for the get_next_bridge callback in include/drm/drm_bridge=
-.h
-states that it must return a bridge with its refcount incremented, as calle=
-rs
-are expected to invoke drm_bridge_put() when they are done.
+The get_next_bridge API expects the returned bridge to have an incremented
+reference count. Callers of drm_bridge_get_next() will clean up the returned
+bridge using drm_bridge_put(). Because this function returns the pointer
+directly without acquiring a reference, the subsequent put operation will
+decrement a reference that was never acquired.
 
-Since ctx->panel_bridge is returned directly without calling drm_bridge_get=
-(),
-could a caller traversing the chain cause a refcount underflow? This could
-potentially lead to a use-after-free of the panel bridge object when the
-caller drops its reference.
+Could this lead to a regression involving a use-after-free of the next_brid=
+ge
+structure during pipeline initialization or hotplug events?
+
+> +}
+> +
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-drm-bridge=
--hotplug-v2-0-8e34986dcb68@bootlin.com?part=3D20
+-hotplug-v2-0-8e34986dcb68@bootlin.com?part=3D21
