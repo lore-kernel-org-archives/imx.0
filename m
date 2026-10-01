@@ -1,253 +1,114 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD05E25785C
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FF63D8908
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790839549; cv=none; b=KJUaxnzgVJHF87e7+/cZg0dJEs3xnNT7HLk2FyjxoVurOBbfmrzoMSy1Gr5DuyPW3lER6JdDFKE9xou6K5Iqod7qk4Lh0i9qOMfHClenaRnrcSg34lBmQ+3tBRB9ONf+co1brJaxvBC7+r7AUmcdFXtl+XWdakMUmjdehaXDyyE=
+	t=1790839932; cv=none; b=AzBax2WnKjmoBub+nyvH+VIU5mbY/CuZOXxKIRknSjRoyt1uKISkaa7ADJzOMY2RttGzcYYsgcObglFa2oghZGpouWLKGlvr5VZcTodqDQWRv6wi3U5znNFZGLPuXJGSP2/hJ/K1YA2j+DXdw/zVATlYMBGa/zj4kG+S4M1JGBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790839549; c=relaxed/simple;
-	bh=0ZFt3pj45ArYDUkekKfvBJuICmxz5AksGPIhin3OA38=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V27gkTIDgjcWdjkX1FQHCcwqVOfVhSwPcybdsIzh3apvsrBuWp+4GLPpdVOGP96ZpHk2tVlic5gf71Q2G0PTkW1luOKVUHXxQGIhoX9S8X+IVIZGhetDoIHzZSDtWo59aH7ir6SZFT4ARIM7TsJDoBTm+pRjnQAl78bUgelrLCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Oat2kc7c; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GaPFY4M2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cc9t1wUF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=grT5uCwJ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1790839932; c=relaxed/simple;
+	bh=ELdBCMU5f7/O4ZMIta9o4UVKjIIZnw/X5SSJeT3GM90=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f8E6jaCdXJFLgCso5Pq37yLe7Noi/eKdnWBx8HenuRnjp/f9w7GUX1mD+iMkr9wAp4j6UZofUD9gw+2s4Kwwr1HCbzuJStecFG0i/EzzG5+AcV7cyd57/GbVX796+0GTteelV+dpXzssZ6cTElEb1wghAOpXtsfRwH6/Tr8/uvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9ED6Xoy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Oat2kc7c";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GaPFY4M2";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cc9t1wUF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="grT5uCwJ"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E8C8E21F1D;
-	Thu,  1 Oct 2026 07:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790839535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8lmDrlQXdwRiUij1zDhcqVr9MCM/4m0dtendWI2HC6s=;
-	b=Oat2kc7cQOdQgPKJWR8/hEwQ8eZORgassMxE0pakHy6MJk64YCZxVebDrNsmxGDVEF43VA
-	7sQ7N6VzeUF1lR1jIttA00AR/vJV4T4xdt51l7pG8d7ssbgWkI14qibeYG9RMAxgM1LVWR
-	oToyAp7La7LY6MG9Qu/i6D9UBoFWv9E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790839535;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8lmDrlQXdwRiUij1zDhcqVr9MCM/4m0dtendWI2HC6s=;
-	b=GaPFY4M2iC7TyRoTRWDSMEuCj/mcVEr3sJKlCW8bnZU1Bia8LJ2gmfMeyeTDydCqDtWkyJ
-	bHuZCbdBoG87oZDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790839530; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8lmDrlQXdwRiUij1zDhcqVr9MCM/4m0dtendWI2HC6s=;
-	b=cc9t1wUF/J0WkIpSwpkG6LTodJj7/VlDJCUD8d5MR1Kjix+at7UIfGLZZJrhJbnqMy4/Wg
-	LQ5JOuxryEL0qFHYSziVXCX+HGlc8CZJby/GCpbwwdOdTP/UnITxkuf/PYU5WEBEQchCDw
-	FqHsEAGIQKcTU1txsEm7GNombr5CQEc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790839530;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8lmDrlQXdwRiUij1zDhcqVr9MCM/4m0dtendWI2HC6s=;
-	b=grT5uCwJepG6I7dLtNqZdpjKN+XNFmt3LLgo3E7/v4mTgnWHUFJTbpnnILD9m7MGa1udDe
-	MKVU9agYzHvG8MBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60DCE13699;
-	Thu,  1 Oct 2026 07:25:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BThUCuoKvmpSIAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 01 Oct 2026 07:25:30 +0000
-Message-ID: <76d760b8-f4b2-4198-b6b6-1051e51fbebd@suse.de>
-Date: Thu, 1 Oct 2026 09:25:29 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9ED6Xoy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885211F008A4
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:32:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790839930;
+	bh=ELdBCMU5f7/O4ZMIta9o4UVKjIIZnw/X5SSJeT3GM90=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=m9ED6XoyFU6f6NSxPdVX7ZgGtbARjsD/CvfZD8tuhOkiZ6dKnPRKSRSktb3gLidmc
+	 VPbCeYi2IKHwWOv9a94mqT6hb1QyGGIuQBER4nXjiOTZRozsX037c2spwbLmYAMdft
+	 hSocy81uy0QFI/ZtDOvX28+07QuujnXHssLX3bpIUqE7ULrFoS3pV03E333y7RCNzK
+	 HsH5YwqLVDE8Ag8eULAvrQkln7YBVbnRdOZn5XnVa80W1ViRxENJZnXfTYVrjFagcy
+	 G3vUUO2AFJbwfAf2/N1XRAUG8lpRgJF09f4ryfCh5u+wg5DjSHuu95Tq7PJHOpKRZi
+	 qrKAsvE+hguKQ==
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5bb5d3229d1so115353e87.0
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 00:32:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByRy5H5WMmBMj1UOu3muK5jNk+Xpx8qJZwpCGUryqKBYCYMkTe3r82TTx40+IWKXmJtkI4=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJO2p7uAq8+hytos1So21E4FxRSSfdArm7uBxmig2tXz0eGwh9h
+	FFX9DJXBH9NHvu/n0PzZkl0Ls/neAHnm9K95ds6Hfdeo7ALgU3JjrDM7UtOQuhF8KOGDsUmURCt
+	whqPMAa5ProY6R4bm/oaYKMLnpqf1Kg7cYeZ6ykNc9g==
+X-Received: by 2002:ac2:42d0:0:b0:5b8:f97f:7a22 with SMTP id
+ 2adb3069b0e04-5ba405ec7a1mr1161789e87.54.1790839929167; Thu, 01 Oct 2026
+ 00:32:09 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 1 Oct 2026 10:32:07 +0300
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 1 Oct 2026 10:32:07 +0300
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260930163334.60b4a88c@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] drm/imx: replace simple display pipe with atomic
- helpers
-To: Ze Huang <ze.huang@oss.qualcomm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Marian Cichy <m.cichy@pengutronix.de>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260919-b4-imx-simple-kms-v4-v4-0-53b1fdf4589e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,nxp.com,pengutronix.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,intel.com:email,msgid.link:url,infradead.org:email,linux.dev:email,qualcomm.com:email,imap1.dmz-prg2.suse.org:helo,nxp.com:email,ffwll.ch:email,pengutronix.de:email,lists.freedesktop.org:email]
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+References: <20260923-qcom-sa8255p-emac-v15-0-e82f33720737@oss.qualcomm.com>
+ <20260923-qcom-sa8255p-emac-v15-1-e82f33720737@oss.qualcomm.com> <20260930163334.60b4a88c@kernel.org>
+Date: Thu, 1 Oct 2026 10:32:07 +0300
+X-Gmail-Original-Message-ID: <CAMRc=MeUx2iHf8-d9yjZZ=n7VaG_GROvO2dW-bxavAS+XbGMFg@mail.gmail.com>
+X-Gm-Features: AclHuK8P_ZwjJ__3SNp9LNTCdpGSDaQAP4RQWoM4JsBj1lq1vbQDeX8sSTrNEMU
+Message-ID: <CAMRc=MeUx2iHf8-d9yjZZ=n7VaG_GROvO2dW-bxavAS+XbGMFg@mail.gmail.com>
+Subject: Re: [PATCH net-next v15 1/9] net: phy: aquantia: fix system interface
+ type not updated in forced mode
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Maxime Ripard <mripard@kernel.org>, Christophe Roullier <christophe.roullier@foss.st.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Radu Rendec <radu@rendec.net>, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Merged into drm-misc-next
-
-Am 19.09.26 um 16:59 schrieb Ze Huang:
-> struct drm_simple_display_pipe was meant to simplify simple DRM
-> drivers, but instead adds an extra wrapper around normal DRM atomic
-> helper setup. As noted in Documentation/gpu/todo.rst, remaining users
-> should be converted to regular atomic helpers and stop depending on the
-> simple-KMS interfaces.
+On Thu, 1 Oct 2026 01:33:34 +0200, Jakub Kicinski <kuba@kernel.org> said:
+> On Wed, 23 Sep 2026 17:14:35 +0200 Bartosz Golaszewski wrote:
+>> aqr_gen1_read_status() decodes the MDIO_PHYXS_VEND_IF_STATUS register
+>> to determine which SerDes interface the PHY is currently using on its
+>> system side and stores the result in phydev->interface. phylink relies
+>> on this value to configure the MAC.
+>>
+>> The autoneg == AUTONEG_DISABLE check is not correct:
+>> MDIO_PHYXS_VEND_IF_STATUS is set by the PHY firmware based on the
+>> negotiated link speed, not based on whether autoneg was used to reach
+>> it. When the link comes up at 1G in forced mode, the register correctly
+>> reads SGMII, but the early return prevents phydev->interface from being
+>> updated. It stays at whatever value it held before (typically 2500BASE-X
+>> from the initial autoneg run), so phylink configures the MAC for the
+>> wrong interface and the link cannot come up.
+>>
+>> Remove the autoneg guard so that the system interface type is always
+>> decoded when the link is up.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 110a2432c520 ("net: phy: aquantia: add downshift support")
+>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 >
-> The series replaces drm_simple_display_pipe_init() with explicit
-> primary plane, CRTC and encoder setup, and moves the old simple-pipe
-> callbacks into regular plane and CRTC helper callbacks named according
-> to local driver conventions.
->
-> The conversion preserves helper behavior that used to be implicit in
-> drm_simple_kms_helper.c, including plane-state validation, CRTC
-> primary-plane checks, affected-plane propagation, framebuffer prepare
-> handling, and existing event/vblank flow where applicable.
->
-> Result is less helper indirection and more explicit driver-side atomic
-> wiring, with no remaining simple-KMS dependency in this driver.
->
-> Changes are build-tested only. No hardware testing has been performed.
->
-> The patches are based on v7.3-rc2.
->
-> AI usage disclosure:
-> - AI tools were also used to review the code and suggest code changes for
->    the DRM atomic conversion.
->
-> Thanks,
-> Ze Huang
->
-> Signed-off-by: Ze Huang <ze.huang@oss.qualcomm.com>
-> ---
-> Changes in v4:
-> - Use drm_crtc_vblank_atomic_flush() instead of the driver's own flush
->    callback.
-> - Replace the reset callbacks with the atomic_create_state helpers and use
->    drm_mode_config_create_initial_state() in probe.
-> - Link to v3: https://lore.kernel.org/all/20260727-drm-simple-kms-removal-v3-0-de36e534f7a1@oss.qualcomm.com/
->
-> Changes in v3:
-> - Add a new preparatory patch to avoid duplicate clk_per enables in
->    imx-lcdc pipe update after CRTC enable.
-> - Use commit-local atomic state in enable/update/check paths.
-> - Link to v2: https://patch.msgid.link/20260716-drm-simple-kms-removal-v2-1-7e4a6b8528e6@oss.qualcomm.com/
->
-> Changes in v2:
-> - use 'commit' as name of struct drm_atomic_commit in atomic helpers
-> - improve control flow in *_crtc_helper_atomic_check() and
->    *_plane_helper_atomic_check()
-> - Moved page-flip/vblank event handling out of plane update paths and into
->    CRTC atomic_flush(), using atomic_flush and disable paths
-> - decide clock disable by old crtc state
-> - add calls to drm_crtc_vblank_on() and drm_crtc_vblank_off() in crtc
->    atomic_enable() and atomic_disbale()
-> - test crtc_state->enable before mode size check
-> - Link to v1: https://patch.msgid.link/20260705-drm-simple-kms-removal-v1-0-b4e1ca053623@oss.qualcomm.com
->
-> To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> To: Maxime Ripard <mripard@kernel.org>
-> To: Thomas Zimmermann <tzimmermann@suse.de>
-> To: David Airlie <airlied@gmail.com>
-> To: Simona Vetter <simona@ffwll.ch>
-> To: Frank Li <Frank.Li@nxp.com>
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> To: Fabio Estevam <festevam@gmail.com>
-> To: Philipp Zabel <p.zabel@pengutronix.de>
-> To: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> To: Marian Cichy <m.cichy@pengutronix.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
->
-> ---
-> Ze Huang (2):
->        drm/imx/lcdc: avoid duplicate clk_per enable
->        drm/imx: replace struct drm_simple_display_pipe with regular atomic helpers
->
->   drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 249 +++++++++++++++++++++++++-----------
->   1 file changed, 175 insertions(+), 74 deletions(-)
-> ---
-> base-commit: 5e036ce12de91c6fd674dad33b169c6150be2a7a
-> change-id: 20260919-b4-imx-simple-kms-v4-3f7d32e17548
->
-> Best regards,
-> --
-> Ze Huang <ze.huang@oss.qualcomm.com>
+> Sounds like a real regression, is it? Should we ship it to Linus
+> tomorrow so that it makes 7.3? stable + next does not compute for me
 >
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Stefan Gaiser, Jochen Jaser, Abhinav Puri, (HRB 36809, AG Nürnberg)
+Yes, this is independent from the rest of the series and a small fix. It sounds
+good to send it upstream ASAP.
 
-
+Bart
