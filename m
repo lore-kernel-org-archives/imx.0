@@ -1,224 +1,306 @@
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013036.outbound.protection.outlook.com [40.107.159.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481E8484897;
-	Thu,  1 Oct 2026 18:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790880239; cv=none; b=OodkyPK+tDwfUCHQB35fHM8AfVaUQE9pgosvcr6HF8diPSvx3B3WLvb3bG6gLvLE5hGpXaEphjla0CH9CX7brzJgLW2BPh8JOH2IlnpUV9pVqZF/MUB6046UUutVXp8kq5kCJMvNW9PgA8F8jTtfyMZIFWgSGKfugYE+SgMTINE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790880239; c=relaxed/simple;
-	bh=8VGLOCH2vYmfhlNtKPfKjmKvEN4VvXKx5xWBGfyie9w=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=WlyZ2SqM5i51IHUtwfKTBxvohdP1lBJ78Wwp565X00JpysVwV+/IWDNFMF5gtdZ8WjXD2yw2dEqt4LVM6XZDjYf5+aE7PSxnUddfPf11wUcdciSgPcPK2YYw6KAyuBJ/GM9r5M9ghMhIIJsWcJTQN2+UUFHUjqIRNFooisTSWx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=QKOmOFga; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52A33CF21F
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 18:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790880378; cv=fail; b=anNGegyGViJ81S4sFI1bhBN0l6kQaDl6Lf5v7M7R3JrAvl1rOTCs1KkPmPvZs2ntTvJC9pbiYOt0RYC6RXRHkfxTxRPAAbTAnP/mFbFqlcF1lzQKEntYa0bra7wKowCImhiVdIVUukIyhMO2tZh3r5q5SZAEkx806G+H0MH9A08=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790880378; c=relaxed/simple;
+	bh=ERs5SL3TsTTE1VhnnltM69sndrGT04JxYCOWltrat2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CNEvUWr+mMUMGxuyyyjzDRGKHV1d/ef2f8ggfumoo15gddocYlYVunabXl4gSaUh+sZf+0lL8cLFlUUTuSImc/YVjsED8I17ZIbP8oNLQ6+pLRzyqT8z7Y1dw4IN6bqnKGhOpurh4vDw7a+ZjNCbt4XzDLX7MtWgy2iTYe+KJeU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=F2NrufvC; arc=fail smtp.client-ip=40.107.159.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="QKOmOFga"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
-	To:From:Date:subject:date:message-id:reply-to;
-	bh=sPCX3mVMzNT4Z5RuBkG/Vg9y9XHCiUQQEev4rY+w3PU=; b=QKOmOFgaJLPFepX7acnZ3c1U+z
-	G1y/oRQJv2UI6RKBIpUkxLXW3fX54DHsr79QVeEihpJ0K0cgsaqV7i+KqA+KDCNoy7HOggERXPC2r
-	3YpdOQa+LRSDK2iKOJB2c5Z4OD02gSriJhJgfPDH0xvPpXUgyeMRvcHKcCE2vfyLL04Y=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.98.2)
-	(envelope-from <hugo@hugovil.com>)
-	id 1xCLku-0000000076j-3pDG;
-	Thu, 01 Oct 2026 14:43:45 -0400
-Date: Thu, 1 Oct 2026 14:43:44 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com, Stefano
- Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, Joseph Guo
- <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>, Ernest Van Hoecke
- <ernest.vanhoecke@toradex.com>, Mehmet Fide
- <mehmet.fide@screeningeagle.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>, Markus Niebel
- <Markus.Niebel@ew.tq-group.com>, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, Stefan Eichenberger <eichest@gmail.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v4 00/13] ARM: dts: imx6ul: Add Variscite VAR-SOM-6UL
- and DART-6UL
-Message-Id: <20261001144344.2100854b8f5e2d81cf87b424@hugovil.com>
-In-Reply-To: <arv4MwHV4LntROkN@Lord-Beerus.station>
-References: <cover.1790693249.git.stefano.r@variscite.com>
-	<20260929121455.437291ea4b53130e3e19778c@hugovil.com>
-	<arv4MwHV4LntROkN@Lord-Beerus.station>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="F2NrufvC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VZyottC7Vpj8W3VTpF0jNfsi2SSeDyvH+ZM+ItYepqMGNGW/cnSVnzAYblgpFU+PodriinjyGgjWk7Nlp/h4tQA6zHapQA+qTVmcdqHB21CNc8h6uobMQU4DAXKCggLmg8FTIJ4ld6kJjXAfauu4i0COpPgNHSWhPTpYFOxUaMxc5hylGORA1KwoYndtLXlcAR6u/Us7twYXM/xpDtJSsOowNcD0S+WTTbKG5FLWpGRkCLKla5JCfN+kVg/E72tURxnJ0IQNrujq/zcmrAnaepQITBY7EvORB/qawdBNhWh1xs8ytar446wYsGWlBmJWZwVRmiN/y4LuKS0l/72oWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RaDo5OWKQhwAoUGaCMcJZ0PLpU0cWGTMpXI4HjSBWNc=;
+ b=pwtgdUY7zaCO4RnIIFW65xcgJfWUafTw/zKvaTUK/8JU3Ww8hAbZnghfTZJORg6heikTnNrVmDqNsFQnAOtDF7e6+tuESkPfR2j42PjroDdoFW/B3DL2W3YFXUMz+VK/sLuaMdkV4niGdQSTbnVA5nrbRlUX/M7xgujMmmDfPJWNabW/NuTBE/hqPf77MhVupMr4HW6e0Aqhiu1pgjhZuebQuFGN4GmXawt45ZPNTW2retbAqVj+gZj7AkMGnRPzGuIAFmUHrcwbMHkqGin/NslvzZgjzcLJxTC+NB5m9z86F7zhtLoIF1ZZ7QYpM9OyzuXCKv8vvZCddxmmNjQQTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RaDo5OWKQhwAoUGaCMcJZ0PLpU0cWGTMpXI4HjSBWNc=;
+ b=F2NrufvCCkC/xQRCoXUF3mxZPEPO/BZUCOGwPuSnuI5SUIwVg/ADJbExsiTR9N1hlb9JLHR7kA4s+g/XQiK0s5SGHEnUzBwjfZ7i7m+s5ZIvIz5e5IKjKlRgznNa4gBLGGxPb/U82zx29F2Pby/rBFBxY9TJ36XkKebL2No6o4sU2gXEieMl/CKC9Peo4g+WDoAEPdr/zsk2VlkZOb8O889ebxHGzgjksMw9vg7V42YRUwmE+5QhObCXEUPUmjX9d/GUydKwa4TBLSbs2v7+mF+SbmsbjVWo7KfvgHe8dBhHtnJZo4yqLAqhLrFV1CCV05tdZmeqqAktRBPgqssijg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by MI9PR04MB750000.eurprd04.prod.outlook.com (2603:10a6:290:82::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 1 Oct
+ 2026 18:46:08 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
+ 18:46:07 +0000
+Date: Thu, 1 Oct 2026 13:45:57 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 4/7] ARM: dts: imx6ull-colibri-emmc: Add Toradex
+ Capacitive Touch Display 7" Parallel
+Message-ID: <ar6qZWSxFg1zbqKI@SMW015318>
+References: <20261001174924.3831455-1-francesco@dolcini.it>
+ <20261001174924.3831455-5-francesco@dolcini.it>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001174924.3831455-5-francesco@dolcini.it>
+X-ClientProxiedBy: CY5PR14CA0005.namprd14.prod.outlook.com
+ (2603:10b6:930:2::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam_score: -2.0
-X-Spam_bar: --
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MI9PR04MB750000:EE_
+X-MS-Office365-Filtering-Correlation-Id: abcc1cad-afe5-4c54-435f-08df1fec40e8
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|7416014|366016|376014|23010399003|10067099003|56012099006|4143699003|11063799006|6133799003|18002099003|22082099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	uRGWx6QsPOIx+QTXIghvIfJ02tt+2zGbJ6uKJt0r5DLkGvU3LmI4MuNUTCykDpw2Y4zkzShu2E0XxLYn+tww2bDEUIx+XYSazNARMojKH7Lk1+uDL7XIRhaR8CxQiGeM6ZTyYZJv99lIKs+uEq+xxlDjkj9weJA0btXHzVhDh125mkBK5YeJFOaDL58iYpaMkZPZR4sW29h0qxjCUUrxiV7neKeoUFKrnPEmweCfRCX4aDuQuscV3B4LD/qQEshd8yrOXnn0f/IfOi62alzlWfYgkxSHqRygb58MTIxapfn3Tdm5FkQLs/A0ChStpZ8HQN6z/3nJLtSrYB0c3vBp5TupIK7iah5nwoYIRL+Fbufo1FOEoUHOY+9L273/Kwzjolg1tzhvoeXVkpHipeaxYNWv4DPR0/twk2728wvOfN8c1y3AjoOYsCNZpMrT6Il8VLquVn0Ib/3q/vP7HUnZ9X1TjesJiFIO1e/gMItGCrexCxOKvW+WaV4helqwvjY3ihnq4NA+9B5Xo4Zh2dTaBUrHRBncSANoMRWpo2rswqssXJYMnD0U6qtK5Uvxt5bmkn7oPvxWP70BTdumsWrf7f2kHZ73RPt7AGmBqVV8oGJy6JUdOJAJBHj4Ssmk25hY
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(7416014)(366016)(376014)(23010399003)(10067099003)(56012099006)(4143699003)(11063799006)(6133799003)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DWR8nCzEPUn7aHn4mkIm70+u5MPsjYvCfuedU8jGRgIk8E18J16brvCKdZHX?=
+ =?us-ascii?Q?0wcpq5d36497jW2bA39IDU0YtR4cHoy9C+ISGXDVbKclNmX/SodBEcTOgZzS?=
+ =?us-ascii?Q?eMaJvuRptZshI42/Q3qk7EfebldN/u1QXE+OlFua778JplGF6z2vy/NpUa2b?=
+ =?us-ascii?Q?dZ4Y8rYxcGW7ZtGLKHOojVHbjPVAwCp7bv/wJaoQov65fN/tjrj+0Nyh8PAD?=
+ =?us-ascii?Q?fNGQoey72RM02ttkqq98g/Qu0hVgdS+nxxeq+2Cd9prtk0xVyNp9gXUcxey1?=
+ =?us-ascii?Q?465WMA/AAbdEh4luGpyl7czeI99XfwAzixONOSL4VtDW8Zy1+kAJRtyZaEGW?=
+ =?us-ascii?Q?Ogk8q+c9hg1GuuKMv8aphVLOzY+FGWhiNwWSHn9raiSxIXwai8EDUApm7BEV?=
+ =?us-ascii?Q?yV/8tAYN17pt95i43zKHh4QsZLJ32fHGKYIVPfYn10qdmtNq48lGXjUp7VXf?=
+ =?us-ascii?Q?5/k71qN0uCBkNdMVRRa0emX5EYM882l1SQOe5B0IqUeKb7fW8vum73D8FTTC?=
+ =?us-ascii?Q?NLKfb/ZsUqyno8S6eRSHv3tji/AZdkEVHdqMc2AyZ5x+9m+dDwyP3PAXINg/?=
+ =?us-ascii?Q?cvit7ollw3RYLwRdzSQh12CcHFgLDSQTkgrJz5EiHVd7tHC0KHnhez95WMBv?=
+ =?us-ascii?Q?ylVIUSrdVQl3qiCnINkxHpXw7KFImzEcDO0qf/MrrHwfHWN3fY/62uzenqHK?=
+ =?us-ascii?Q?/0PRPtmJD4fHo7YCBGSUSYuhge7SzwDp7uFCPoomlkOxrdLCDTtmqh9voXFO?=
+ =?us-ascii?Q?LDWP6H29HhESGn/2cTxfAwLKq/ovyk/ebYLOlC3VLriPixxG8LInG45X3erw?=
+ =?us-ascii?Q?Xc7WZmhXpriIdhXT2S83nr0/Moz3W+k3+4fBpXtx2mPKfh9ZD4tCE2/X7vvm?=
+ =?us-ascii?Q?kZOInPYLcegla4JBkAlozkpTX5yUkKz7W8zCoqvNvX6bS3MsLShMPsFvCeoJ?=
+ =?us-ascii?Q?xn1zTBl8yPaHEePshM9AvL1Ud/hSggJ8BleXZN2Ww+UxGl/s4BIH2NT1EbPZ?=
+ =?us-ascii?Q?zCX4H0giM2uCOZLCOAm6Bjzu3xZgz4CCpuXJ8al9A26S9dAHAsSWKnLoq4g6?=
+ =?us-ascii?Q?SRX7BTd7RtL0NWjmrj97/j3Oydqvi2DmTiWMlBIo1OxYXrHAd9laMv6P5/Xk?=
+ =?us-ascii?Q?VaxcoOk58H7T7yo2capfWQsHsOrqmkGF6Gt+XxoDGrQCYhOP2G1OVwejZEmE?=
+ =?us-ascii?Q?dGJS2gUxbMRs5r39JimEAnid5D3yUZWx/uHn0tMRkTiS/cjBerhih1XZRRnT?=
+ =?us-ascii?Q?wDxcHGiyWVzqaGUvX5WkFLBVjkvmgfjESNPZRX1979QrDpIiSm2Ri9DutZ2W?=
+ =?us-ascii?Q?/N1nl2jR0U68XIxFNhfwCGry4HpAFeyzGSu0JCCj0wemrJB7EFp+TbsghgCA?=
+ =?us-ascii?Q?gujIi7k2N/rI3TEmvjlmgE2CUItvWAg4QkX4FpSCsPV/NrE8cjXX1WIt2hhx?=
+ =?us-ascii?Q?eGCrmSfwTMRK/Mz5lFB4zAmZdWINURN6pHZoP3yg249je8tu/Bhu7u7CcDJO?=
+ =?us-ascii?Q?/nHmMP2BU/ug4RNiwmmnbAXYm+emv86iUwbFbmuqdgJ3MCRkf2hdETecDTO5?=
+ =?us-ascii?Q?MpuWZa6mvu4+Xm3qrfpUF0S9wxZBxC71WdWBzXmbjbdo61/IfuOirfbugGwl?=
+ =?us-ascii?Q?mNXresDMg1I/hVRVaMKFYHqTP63GcFd4mDbOHXkmx5UkWyb27Mnmgrn5htw9?=
+ =?us-ascii?Q?5BMqU3AgrdAYFbczZF3K5RlMqsKl7HfxiPpDdGiXE3UO4mBBOj3reoNEkkP7?=
+ =?us-ascii?Q?JZ7liet2gmIqeVIW069Ke3Wv3HcHqENZqecQCyJapX07rFRdyhT0?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abcc1cad-afe5-4c54-435f-08df1fec40e8
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 18:46:07.5293
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5qYOP546u0UnHGsFhN2bY1/mTxJsW5Qlcg4XrM9IFt/Cq5hsn3FrQq6ts1gvwS6LFcokEW0X1Hf9cmVHfkRDM8W/mlEoaqZJx/ATLUXCOAbo7yjAT/syHpxnWAs6sjdV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI9PR04MB750000
 
-Hi Stefano,
+On Thu, Oct 01, 2026 at 07:49:13PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+>
+> Add a device tree overlay for the Capacitive Touch Display 7" Parallel
+> on the Colibri iMX6ULL eMMC parallel RGB LCD interface.
+>
+> The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
+> and the touch input is provided by an Atmel MaxTouch capacitive touch
+> controller.
+>
+> The touch controller is connected to the Toradex 10-way Capacitive Touch
+> Interface connector available on Iris v2 and Aster carrier boards.
+>
+> The panel, backlight and LCDIF configuration is identical to the Colibri
+> iMX7 eMMC one, only the Atmel MaxTouch controller wiring is SoC
+> specific. To avoid duplicating it, rework the Colibri iMX7 eMMC overlay
+> moving the common part to a new dtsi shared between the two modules,
+> and include it from both overlays.
+>
+> The overlay is also combined with the Iris v2 and Aster carrier board
+> device tree to provide a ready-to-use DTB.
+>
+> Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/Makefile            | 12 +++++++
+>  ...i-emmc-panel-cap-touch-7inch-parallel.dtso | 31 +++++++++++++++++++
+>  ...olibri-panel-cap-touch-7inch-parallel.dtsi | 29 +++++++++++++++++
+>  ...i-emmc-panel-cap-touch-7inch-parallel.dtso | 16 ++--------
+>  4 files changed, 74 insertions(+), 14 deletions(-)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-panel-cap-touch-7inch-parallel.dtsi
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+> index 0aece8cc9fe4..eee3f4e8e7c0 100644
+> --- a/arch/arm/boot/dts/nxp/imx/Makefile
+> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
+> @@ -352,6 +352,15 @@ dtb-$(CONFIG_SOC_IMX6SX) += \
+>  	imx6sx-udoo-neo-basic.dtb \
+>  	imx6sx-udoo-neo-extended.dtb \
+>  	imx6sx-udoo-neo-full.dtb
+> +
+> +imx6ull-colibri-emmc-aster-panel-cap-touch-7inch-parallel-dtbs := \
+> +	imx6ull-colibri-emmc-aster.dtb \
+> +	imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
+> +
+> +imx6ull-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel-dtbs := \
+> +	imx6ull-colibri-emmc-iris-v2.dtb \
+> +	imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
+> +
+>  dtb-$(CONFIG_SOC_IMX6UL) += \
+>  	imx6ul-14x14-evk.dtb \
+>  	imx6ul-ccimx6ulsbcexpress.dtb \
+> @@ -380,9 +389,12 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
+>  	imx6ull-14x14-evk.dtb \
+>  	imx6ull-colibri-aster.dtb \
+>  	imx6ull-colibri-emmc-aster.dtb \
+> +	imx6ull-colibri-emmc-aster-panel-cap-touch-7inch-parallel.dtb \
+>  	imx6ull-colibri-emmc-eval-v3.dtb \
+>  	imx6ull-colibri-emmc-iris.dtb \
+>  	imx6ull-colibri-emmc-iris-v2.dtb \
+> +	imx6ull-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel.dtb \
+> +	imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo \
+>  	imx6ull-colibri-eval-v3.dtb \
+>  	imx6ull-colibri-iris.dtb \
+>  	imx6ull-colibri-iris-v2.dtb \
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
+> new file mode 100644
+> index 000000000000..2edf680b1884
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
+> @@ -0,0 +1,31 @@
+> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
+> +/*
+> + * Copyright (c) Toradex
+> + *
+> + * Toradex Capacitive Touch Display 7" Parallel connected through the 40-way
+> + * Unified Interface Display and 10-way Capacitive Touch Interface connectors
+> + * (as featured on Iris v2 and Aster v1.1 carrier boards).
+> + *
+> + * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
+> + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
+> + * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +#include "imx6ull-imx7-colibri-panel-cap-touch-7inch-parallel.dtsi"
+> +
+> +&atmel_mxt_ts {
+> +	pinctrl-0 = <&pinctrl_atmel_conn &pinctrl_atmel_snvs_conn>;
+> +	/* SODIMM 107 / TOUCH_INT# */
+> +	interrupt-parent = <&gpio5>;
+> +	interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+> +	/* SODIMM 106 / TOUCH_RST# */
+> +	reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+> +
+> +	status = "okay";
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-panel-cap-touch-7inch-parallel.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-panel-cap-touch-7inch-parallel.dtsi
+> new file mode 100644
+> index 000000000000..21688c63d11f
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-panel-cap-touch-7inch-parallel.dtsi
 
-On Tue, 29 Sep 2026 19:41:07 +0200
-Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
+File name include lt161010, incase there are more panel.
 
-> On Tue, Sep 29, 2026 at 12:14:55PM -0400, Hugo Villeneuve wrote:
-> > Hi Stefano,
-> > 
-> > Your title seems to imply that VAR-SOM-6UL support did not
-> > exist before your patch, but it did. Please rephrase that, and
-> > your description accordingly.
-> > 
-> 
-> Hi Hugo,
-> You’re right that VAR-SOM-6UL already has mainline support.
-> I’ll reword the title and description to distinguish the existing
-> support from the new variants and DART-6UL boards.
+Frank
 
-Great to know Variscite is adding support for the DART-6UL.
-
-
-> > On Tue, 29 Sep 2026 17:17:27 +0200
-> > Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
-> > 
-> > > Add device trees for Variscite VAR-SOM-6UL and DART-6UL modules based on
-> > > i.MX6UL, i.MX6ULL and i.MX6ULZ. VAR-SOM-6UL is supported on the
-> > > Concerto-Board and Symphony-Board carriers, and DART-6UL on the
-> > > VAR-6ULCustomBoard. The 90 new DTBs cover the supported combinations of
-> > > storage, wireless and audio options.
-> > 
-> > Do they? You would need far more than 90 DTBs to support all options...
-> > 
-> > When I submitted the latest changes for the VAR-SOM-6UL, I did not
-> > create DTBs for every available options knowing that it would lead to
-> > an insane number of files. So I simply created a full DTB that
-> > incorporated most of the DTSI options. And my custom boards simply
-> > include only the required DTSI for their specific options.
-> > 
-> > Looking simply at the ENET phy level, you seem to have now removed
-> > the two individual DTSI to selectively add support for ENET1 and ENET2,
-> > but not all board use these, so that is why they
-> > were created as individual DTSI files in the first place to make it
-> > easier to create a DTB with only the required options. As an example,
-> > one of my custom boards do not have ethernet at all, so i don't want
-> > that support enabled by default.
-> > 
-> > Please keep the existing DTSI as distinct and individual files.
-> > 
-> > Maybe using DT overlays would be better suited if you really want to
-> > support every available combinations?
-> > 
-> 
-> Just to be clear about the 90 DTBs: They are the minimum set of prebuilt
-> DTBs for the Variscite-supported configurations that select between
-> mutually exclusive hardware alternatives. Selecting an alternative changes
-> the hardware described on a SoM interface and therefore requires changes
-> to Device Tree nodes, pin configuration or controller properties.
-> For example, the SD interface may connect to an SD card or an SDIO wireless
-> module; storage, wireless-module and codec choices similarly require
-> different descriptions.
-> 
-> These are not every possible combination of fitted and unfitted components.
-> We do not add another DTB merely because an optional peripheral is not
-> populated.
-> This follows the existing VAR-SOM-MX7 mainline approach: it provides
-> separate DTBs for hardware choices such as eMMC versus NAND and codec
-> variants, without enumerating every optional component’s presence or
-> absence.
-> 
-> > 
-> > > The descriptions use shared module, option and carrier DTSI files with
-> > > SoC-specific wrappers.
-
-Please work with the existing modular DTSI files, do not simply remove
-them and reimplement them into your own files.
-
-
-> > > In particular, the WM8904 and WM8731 codecs are
-> > > selected explicitly instead of keeping a codec in the module base.
-> > > The four existing Concerto DTBs are converted to this layout without
-> > > changing their DTB names or compatible strings. This also replaces the
-> > > non-working legacy LVDS panel description with the LCDIF configuration
-> > 
-> > Can you describe what exactly is not working? When I submitted these
-> > LVDS changes I tested the LVDS panel with the Variscite concerto EVK
-> > (VAR-SOM-6UL LD option) and it was working ok (also tested with two
-> > custom boards).
-> > 
-> > If a fix is needed for this bug, this should go in a separate patch.
-> > 
-> 
-> In an initial hardware test, the display timing behavior did not appear
-> to match what we observe with Variscite’s downstream configuration.
-> I will repeat the test and measure the output before proposing any display
-> change. If a fix is needed, I will send it as a separate patch.
-
-If I compare the original panel timings with the one in this patch
-series, they are 100% identical, so please be more specific
-and double-check this.
-
-
-
-> > > for the Variscite display. Wi-Fi and Bluetooth enable/reset sequencing
-> > > on these modules is handled by userspace, so the legacy kernel-managed
-> > > power-sequence and Bluetooth nodes are not carried forward.
-> > 
-> > That is not ok. I specifically implemented enable/reset sequencing in
-> > the kernel to finally get rid of the need for external
-> > proprietary userspace scripts, and it was tested ok. If somethings needs
-> > to be fixed or improved in this sequencing, fine if you submit a patch
-> > to do it, but certainly do not get rid of it.
-> > 
-> 
-> Calling these “external proprietary userspace scripts” misses their purpose.
-> First because they are not proprietary :D. Second, because they implement
-> the initialization procedure Variscite validates for the Broadcom
-> modules we ship (talking about the brcm, the existing one in your DTSs)
-> folowing the datasheet instructions.
-> 
-> This is not equivalent to the sequence in the existing Concerto DT.
-
-I tested it and it works. But like I said, if adjustments need to be
-made, they are welcome and can be done in a separate patch to fix it.
-This sequencing is something not very well documented in Variscite
-datasheets. I asked Variscite support to improve the documentation for
-that aspect but it was not accepted.
-
-
-> For the LWB5 option, the procedure enables WIFI_PWR, waits 10 ms,
-> enables WLAN_EN and BT_EN, waits 200 ms, then lowers BT_EN before
-> re-enumerating the SDIO device.
-> The other Broadcom option does not use the separate WIFI_PWR step.
-> The existing regulator and MMC power-sequence nodes do not express that
-> complete, module-dependent procedure, particularly the BT_EN step during
-> Wi-Fi initialization.
-> The scripts also select the Bluetooth firmware according to the detected
-> SDIO device.
-
-Firmware loading is handled properly by the kernel without external
-scripts (tested with Concerto EVK).
-
-
-> We use that procedure to avoid sequencing-related failures for our
-> customers.
-> This approach is not new to Variscite’s mainline DTS files.
-
-Yes, this is an old way of doing things, which may have been
-appropriate in the past when proper support in the kernel was missing
-to achieve the proper sequencing, but no longer true these days, unless
-I am mistaken.
-
-
--- 
-Hugo Villeneuve
+> @@ -0,0 +1,29 @@
+> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
+> +/*
+> + * Copyright (c) Toradex
+> + *
+> + * Panel, backlight and LCDIF part of the Toradex Capacitive Touch Display 7"
+> + * Parallel overlays, connected through the 40-way Unified Interface Display
+> + * connector, shared by the Colibri iMX6ULL eMMC and Colibri iMX7 eMMC overlays.
+> + *
+> + * The Atmel MaxTouch controller wiring is SoC specific and is described by
+> + * the overlay including this file.
+> + *
+> + * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
+> + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
+> + * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
+> + */
+> +
+> +&backlight {
+> +	status = "okay";
+> +};
+> +
+> +&lcdif {
+> +	status = "okay";
+> +};
+> +
+> +&panel_dpi {
+> +	compatible = "logictechno,lt161010-2nhc";
+> +
+> +	status = "okay";
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
+> index f336f7b05a2b..211acf11e438 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
+> @@ -17,6 +17,8 @@
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/interrupt-controller/irq.h>
+>
+> +#include "imx6ull-imx7-colibri-panel-cap-touch-7inch-parallel.dtsi"
+> +
+>  &atmel_mxt_ts {
+>  	pinctrl-0 = <&pinctrl_atmel_connector>;
+>  	/* SODIMM 107 / TOUCH_INT# */
+> @@ -27,17 +29,3 @@ &atmel_mxt_ts {
+>
+>  	status = "okay";
+>  };
+> -
+> -&backlight {
+> -	status = "okay";
+> -};
+> -
+> -&lcdif {
+> -	status = "okay";
+> -};
+> -
+> -&panel_dpi {
+> -	compatible = "logictechno,lt161010-2nhc";
+> -
+> -	status = "okay";
+> -};
+> --
+> 2.47.3
+>
+>
