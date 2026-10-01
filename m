@@ -1,214 +1,155 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012046.outbound.protection.outlook.com [52.101.66.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508F641611D
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 10:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790852233; cv=fail; b=sqWZl7lDTZGJvcuwtUh+ATHEDbVlQgNKgH+RFrJtcwKVr7JHyix2SDo94rAmG/OxmEwWb+HYudSXH6Miz/Q0GwIlIxw3g2Dfr8nBO8+h6ZsHjiiyosi9ty3sFaT4du3XjMz3535T4BWppoAQM+8PMZKIaMaPDyJ4em++NiL/tCk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790852233; c=relaxed/simple;
-	bh=wYH2gBX6/qdqdJWXWp12gdixaxBoG4oC4/9woOe+t2o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aLMv5HLhStsJ5wAZSrcI8GAWMONIMS7ZPnjJ346hCvGJR1LKv/he8jWfbVtz0HzQncY2oxxzMTNZEnCnXvd2f5eYpgqQ35+yuK6gsoMz7LuPkrz3Pc4x5vsm3RuKSx4iV+th3V6n1tQCfXQGuB7zwy/3S/rPMcvOV1tUXEv57Kg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CRLZmmfX; arc=fail smtp.client-ip=52.101.66.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607D13D45C5
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 11:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790855063; cv=none; b=EQKLcm2foh3wr7U0t2xOrYUW2IiOT+0qGkxywUBbIHzbeiJIDHFdHvjSu20TBLf0+Ex9ea8RdAGoebJtyVlqwOO3ys7ZyKRFazJ+8qe+FmTLy6YaSai6ksMiteZByH7Ybv9bGvFYoF92ntf5a6+hdOLP+zNv89zH2hf5djXBvJ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790855063; c=relaxed/simple;
+	bh=TrTvDfFn/k4uiEHyffaC4IKdjtst9K0k0gvyN6WQHvg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qoB/iLO6wc3T3/LMwJswdzY+rbkHYsI8NJ+IAkzHdJStvmjYRzUn6U19S0k0tZpLOrBKTi/ItDW3u8HOn8GSzr0dJKUlso/9oI0mfokY16gCWG6WaGHC7OU62yspCCNBPf+n95JhURGOuiezmkVGwdiTYOtszgfYMHA+20ZKeI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h21+6H9d; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CRLZmmfX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I48MGvbpjSV0DPgINdlwmN/O9wtz4pG9UoD0t4frUvn+LwUsBBbub8/wZxjS11sata2l3Kcktm46eSI8DMDkrMfrNt+bhk51upTWQwyD/JpKbOtmjzYV/SKzA0zV8eKja9TVblLKucrKV4waho/Fi6/eLuJe9kmPtTaMc3eZ18HMgE/E+Db2Xw6Fq7Zq/eom9OfQiHii5qpb3hOnjB72BivnQn0yD0udC/A/Hqfp2qu1RCYFaOJp94TfmtBsMaEY62d/jRWMcHIEiRJQ6PipEh6l6aoTDjMoHZMSUzKmkWmgs1ovoha3lyOgRGRY2oiA34K8i8gKC7LYIrTx2ev0QQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wYH2gBX6/qdqdJWXWp12gdixaxBoG4oC4/9woOe+t2o=;
- b=urgHceGoSLcWRZEcbtzqgz2JFrDOkschCMh3H/xZo/+H3UO8dIuZ7MLZh3E3OaYfionfC6Nf1xm9VC1c+H+4qmHOp8xa1oDBId5XpewrRhfOGNpgspWhsFU5PbKU1Bp2d1DsN9vKK0CiOynPBqrGuwqQPB5c9GgbvzK/TX1eIsEymqFDUICpl1kMJFqrCwchBrL/rRJ4xTsxGT/S74G3GbgNRHliOEUg3U1Ab1erX1bthT2EdWmRleMynh5mSD339dbo/x4PfdptodwXfrv4trNkfOECpxfEBforgClmlz3v+l/O1jx8UCf41dTr1y1Gf3evuj+TmIsKq5Ccd7wx7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wYH2gBX6/qdqdJWXWp12gdixaxBoG4oC4/9woOe+t2o=;
- b=CRLZmmfXJ/o0xctF9bcLk6XqD5hq6LVcNRItXjy1v9OeSS9F4Yz+zgREGqbrsAtCOynvcqHKP9YjCQATEN4ZhOsTkL7nLcQx9j9UU16y7Onw8pquCZIP2xpQ8aivJf+CmqHB28k74irtNeeb/1IpfOy7O8gk+fnhPtrdAfU6n02lTY9V4CfqEDUF0hsHSvkXrp5teM0xLtCGJfFGOTpGX56uFnTYkXD6zvh/65ntUtQmkr8IiqxVYBqDGeQM/HCwcLiGAIVkIxI+rkCbVnNy5tEa3xB3qnAESRfywMbS/8Vzo6+GteWd8owwYWco3YpCTZ71YKShb5LbFr8i9I8CJg==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by PA4PR04MB7949.eurprd04.prod.outlook.com (2603:10a6:102:cc::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Thu, 1 Oct
- 2026 10:57:07 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
- 10:57:07 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Marek Vasut <marex@nabladev.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>
-CC: "David S. Miller" <davem@davemloft.net>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Thread-Topic: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Thread-Index:
- AQHdTE9m1hutRzwLFUKmfktoRBJfE7bmds5AgAAWOgCAABaJ8IAAgr2AgACyLoCAABjNgIAAnAsA
-Date: Thu, 1 Oct 2026 10:57:07 +0000
-Message-ID:
- <AS4PR04MB9338B4278A2A5B94FA854056888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20260924180607.60932-1-marex@nabladev.com>
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
- <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
- <AS4PR04MB9338E76DB4A59D70F1D6AB2F888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
-In-Reply-To: <e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|PA4PR04MB7949:EE_
-x-ms-office365-filtering-correlation-id: 27162961-ccb0-4f6f-e431-08df1faabc58
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|23010399003|38070700021|4133799003|4143699003|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- 0OME0gEk9O85LVsqg/2SRosuv+vgDgvVVd3vCKmfe2vSyeoNmmdFQY2uHSc0ONsFHdpR9Nyhp2c1MUHB2Am7aocuAviXy9o+V/ax98lBgL4RaNpJRaagHhh9uVnCnAasuimoYoUN7J9Lkn4IjHBEJuvLu8NJ+la4HGjw4mD9Kd23Vgp7AKf+vVlBWeem6UmVnLH1bBvoxKqjb1UEFjCjQKvlTlhB0dR+54lg0d09t0qrSplFp0ToYxvQDTj3XVb7CVgtTr9UWudg5RZv6dOf5DIE0ST/JIQz4jarjtCwEihsveViRmBMMeomj0T7occIsGgH73Ro73LgDiNdiTShy6FCDyO3cfQZNKoGygc8VRpPAzHnIjvTYUhtc/RS/IJ2zoLjhscKeZ9j9zR5EtLTv0IhCiQwJPJRWoykkXfgOwO8UBcUxL7JvGjr+llOfimCqcMpFzfE63ZZ5FuuhcpWkqN5NBIpRFC82r1LKK+nDdpE+Zcx9YzK6IpRzdyErYLOVE7vvsLHj1nUFLQeOLsOI5x5K0iR2CAtwsuBBBqNg3wn7HokKGvtKIq6w6jbYZasboy87dKb9x3PewYK49yuRiyxqmEhNsMLEqAOs2SB4NVDWlVE0ltqmWdlSt519i647HgHlaNoPtwAmB1Z3sKdf5LBbXHnJ10Rm38cNXNhTxw=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(23010399003)(38070700021)(4133799003)(4143699003)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?TNMZjFEUMmKEPJZymdDICOExtUVkc4J/J2rCtrRfyZ/ywbRSqkpOGkjQvwYh?=
- =?us-ascii?Q?jxFtP13pcCSg1ecBubGwjvbdLoOHBgtzVS85+4QFR27Re26FRjeBhms+Bh8b?=
- =?us-ascii?Q?k+JwCoq2G4gK3qAwwIkQFr8NsvRZ7JWOoIfoBXRy3dIOKSTL2jk7CHMjocaY?=
- =?us-ascii?Q?vM5WwFUHHBrWpTpUNPKNg31XIZQUUkmd1KYzLvPWt8wpTWcs220rhA+Ix0BJ?=
- =?us-ascii?Q?vuKArwIeX3jISpuDmQerzxNH/te5E42VOmFbQJluHf/ZS/kBVALNlK2YB2kU?=
- =?us-ascii?Q?QN6IzQ/fnIvNFY7bHOb+PfMpI6LsqeMuwK/chVuJnclb3rm71VAsGw5RAgM3?=
- =?us-ascii?Q?8lCcVcnyjKtPhRmF4DxygT4iBDrpYTRgIIhtW/UCx9J5ByWdGRHRVo3jb4Da?=
- =?us-ascii?Q?ppKknuLXyBPEimlC6/Q4VU5FzuSiaqt7siQDIue979VbnZMKw8JtwSCm1p9Q?=
- =?us-ascii?Q?165fiGuOgoYl6c1P2OFVySjJeeAp84Jb77EELpEcBKsAGz7tiCXUP41/nzXJ?=
- =?us-ascii?Q?5KeDf1gER3cWW0GVd5dagw7IPuOSsJC4FBQ3kNWOXeMm776SpmuoZu2+iksf?=
- =?us-ascii?Q?97yM/fF5HP/IgkqvnMF2c1hunYRf9jjg9KRBbIN+daqHemF3olRH9yS/vGhB?=
- =?us-ascii?Q?9rFXYknm1DWna+NepQ+zl0ZIOqHEfWiqQJDlb5kkpZhPdKb0YF1b0F2HQhyx?=
- =?us-ascii?Q?/Wp4I0UxKowpxHEnSSU0+2iU8bOfyFCLwYK77MsfLpcR8Sc0gTWxDX4ACTaA?=
- =?us-ascii?Q?vAbDCf93ZRLeeOFynvQQNfJA8Y+vIwZQXZgwo/N5LY7l2bwweS4wIBdOGS5+?=
- =?us-ascii?Q?ahrYslj++us8EEWYGg7oxMlO8iD4OgPpH9dQ2k3uFf0Lart9ZJRkIfOasTaC?=
- =?us-ascii?Q?OhzeWrbBOZkAzBYKDjCuX3xYloKpjyuJdRv2fFsBID1bZ2lt9rzykrMsjCGI?=
- =?us-ascii?Q?2z9x3pyrs2pSR/eEibutrjSV1eJ+UhQlXCR+Ajd7ucSo9fOt4MLhSsg4hEWc?=
- =?us-ascii?Q?iFoyxC4YFZEl7Ai7Plcb/Lo+QcfO8fIO29cIPtHIAqc4OXMUigquOLHvmob3?=
- =?us-ascii?Q?ddNox1q2/WzwRv+OVzzAZ9sbTMjJUfKvioT92XNmj6RYOmda9btGU3IOSwzH?=
- =?us-ascii?Q?tZh5MU+2icxSp5kQb3FUgRLO88/61r0LlfM2JHKvP3p5FY+4e8qgqcM4C89m?=
- =?us-ascii?Q?yEPexMldHpwxD7eC/E/mc9N2w67ePJVaMA13Ykf7gDlvYMQM2BAUg660Iqmb?=
- =?us-ascii?Q?f5E5WUAWJZjfNCWV6cOzfJtK03xqnjtvEj83mn5DJ101NET5ZsH7vg5ZgHMv?=
- =?us-ascii?Q?fjD2qLPPw4uERWY1L226Tz3BtmC3ZuaOFH8cYE+m8Gy4OVjixmjhs2+xhj7r?=
- =?us-ascii?Q?AhDZ9eGG19E76Wjz5Pf+8LmHUKE6sbFmj6gpTN8DWFcokXjEqChXuD8C6GBJ?=
- =?us-ascii?Q?u8BSIZ9lYCLqsptzln0IrD21XC3BDJiSeuVgGpHKLEwiBe5HbTh2YkkE4jbq?=
- =?us-ascii?Q?mCUoBTNujvvwjXKh0srHPttWEzqmS97XkebMB0tf4ppb++Z+8olxG56LLuC2?=
- =?us-ascii?Q?W0lJqfTu8tE9y7lXb9Rhhs5dTqLUbGoChuwyaVb/sgzjYdNYzXLJBM7Kq1u/?=
- =?us-ascii?Q?O0sHSUwin1EI81PdNMF6qtWbRRF5ID+jQFj6pj1OlDnH3AztQujG4kCZ5YNC?=
- =?us-ascii?Q?k6kQXpvfKeagkK9dtZdJdvsQsqfbet9C/uKcv/D8cXr8dzNn?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h21+6H9d"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so4993110f8f.1
+        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 04:44:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790855056; x=1791459856; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oHoaVug1Lx4d7NCtEru06mZWP8AQ/VN7bfbLwwo+zA8=;
+        b=h21+6H9dDUtd8DnitYxtUsUWUuHY1tdTFfas/IPQx/nQCp44Trq3BAl6hrZQ/oJG3R
+         g/uQquq3QghZ03OplgzI6BQ/jSc1KFxj3SESkSatfuU3mZSnj+YGUCCJh0qGzJDky8uz
+         0VMZC2BVnXBb22XvHgGVAE9vHcxINDDVqDQ1Usya1TYbzJ21E0RU9CzBduHi4UoWaGMA
+         oP+r4hnIWF4JFryskrHD/pVGvfGbIcLHXDehQMh7bYu/KwrzCv9Y6z5rbo8C0NXWTlE5
+         dSn5jYh/PMAMQ/l4SnFQi7FkGK3CHliUHjsQz9DVVpZB4UBcRmWeb9Un2tvqKKiBfxHV
+         UGKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790855056; x=1791459856;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oHoaVug1Lx4d7NCtEru06mZWP8AQ/VN7bfbLwwo+zA8=;
+        b=gVbrq/eP11blrIKm0Wo5MBGzPj3Hk0koYkwNZj0wYU27mePQt2ZPQaDjKPWnI1h6mC
+         4Mc1acB5dTgaR96n5SvW1cURPJqFR8JSdcfbG3sIjl8aWrEZJv4sG1wfbaLTnXLy2haa
+         G0VW3IyV9LEYqXVlRSs3i2sPZa6YCafh7xH3ewnR8bt3CLiwVyiPx4KvfhnCgTxBt1Pm
+         VcqhdH6po3tkEsIuDaRO/pFflTLFc85FvhnG9qIVaA9n04DaFgFQFLHPJ3TWgplwgzOJ
+         R6VyB7M2aPXHxp2rbG+yxpvcO4AlsadsnxzzR9rDxo7AwWzVn0eauaLpGmMQkXSM8pOK
+         gAxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBykPiAlhMoywcV4weA7Ygcfdg+vEwzjURiqikxI41PMqcd8aC3Bc9kyRFHywVjgen/tX4Q=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLLqTK4S6d7ClMZo7FNJVOg+0cIwVJ921esjZW1wZHpqlVn+JQp
+	oahEAiJV330bBtqwJY09EJ3F6r+kkUgq6kWsxOu2+lrxcAUGUr+9Oaiz
+X-Gm-Gg: AYBFou2YT/lR69lQnEX9awXtxYt57qDKOdvOplQcFn99WK7uag7AA9/tqEWCSGIUY7a
+	czBZ3esCD5kHLI8anQ79r6f09+H3TKQWa78hxOQM0ZqcTzUsfKSqe4o6+s+bnEvmTctmz1giPLV
+	Zb/ynrIJhPbPBDXt6xoYIPkVJ130Qpg+/lY8fN9bthmm4TqQkejZCC8SIGJw1b0Rh5ol+XYC4KU
+	SiLhaY90NGc/NrgSvwknHmTMuvgM515WOt/dVnTWKh02iNjhr0AMCflWYHrvVE78RUtsZZPnVUW
+	3oFBN4sJKgQEg6qXMYrHCiRXWkLTsWD3QN1hNIMYmCEnrpL7l6YSxaPapkk6g7bNJPK47/DDO7t
+	2BTKDGlBLVYP3xjIlqEbbv40VkzzTcwCwzjtfBv5LXEiAsw0r4TZwYlt17eMVu6wV8jLJpaOEUx
+	gGFRAJlWv2vu1NexPV3rNWnaRtxiQIi75ckJTSdcdJoX1SdT2QyxkXEoTl0djx7vAXfCMJnmHCN
+	UF7lsuIDGMkyIErck7hC9pNpZlDpiR9Q79rvW1wZS/5GPjeX5yR2e5h6BLlR/gUuDL961HYz8Q=
+X-Received: by 2002:a05:6000:4b18:b0:487:14b6:b1be with SMTP id ffacd0b85a97d-48b024d523amr7320787f8f.25.1790855056060;
+        Thu, 01 Oct 2026 04:44:16 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b1035eff8sm1243705f8f.7.2026.10.01.04.44.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 04:44:15 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Date: Thu, 01 Oct 2026 13:44:09 +0200
+Subject: [PATCH v2 1/6] arm64: dts: freescale: imx8mp-verdin: Add Cortex-M7
+ remoteproc
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27162961-ccb0-4f6f-e431-08df1faabc58
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2026 10:57:07.4473
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rPZHqKS7TS3zcxFJVdynTn7RY7LX/gx8l1IQ0yYIPAj2tMbEOG1XmH5ot5tzDKoGb555ERmnVTXPdXKnUZghng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7949
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261001-verdin-imx8mp-hmp-camera-ready-v2-1-7d1343ecd3ec@toradex.com>
+References: <20261001-verdin-imx8mp-hmp-camera-ready-v2-0-7d1343ecd3ec@toradex.com>
+In-Reply-To: <20261001-verdin-imx8mp-hmp-camera-ready-v2-0-7d1343ecd3ec@toradex.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-> >> Hmmmm, are those clock available on MX95 ? Maybe we can do some sort
-> of
-> >> fallback -- assume 166 MHz clock on LS, and obtain the clock and clock
-> >> rate via clock framework on MX95 ?
-> >
-> > The MDC clock is derived from the NETC system clock. For iMX platforms,=
- the
-> > system clock is controlled by system manager (M33 core), Linux cannot
-> > configure it.
->
-> That is probably still fine, as long as the clock are available via SCMI
-> and their clock frequency can be read (not written/set), we can use them.
+From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-Yes, SCMI can read the clock frequency. However, because some platforms
-have a divisor between the clock source and NETC, we also need special
-handling in DTS - for example, a fixed-factor-clock. In addition, some
-platforms do not expose a clock provider at all (e.g. LS1028A, and likely
-S32N7), so they would require adding a fixed-clock in DTS.
+Describe the Cortex-M7 remote processor available on the Verdin iMX8M
+Plus SoM.
 
-All of these extra DTS modifications exist solely to obtain the clock
-frequency - yet for a given NETC version, that frequency is effectively
-a constant. Whether we put it in a fixed-clock/fixed-factor-clock in DTS
-or in the driver, we are hard-coding the same constant; the only
-difference is where it lives.
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 33 ++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-For these reasons, I believe hard-coding the per-version frequency
-in the driver is the simpler and more efficient approach, rather than
-introducing this extra DTS complexity just to read a constant.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+index 9fee2cf9ef54..45a4713c260f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+@@ -77,6 +77,18 @@ key-wakeup {
+ 		};
+ 	};
+ 
++	imx8mp-cm7 {
++		compatible = "fsl,imx8mp-cm7";
++		clocks = <&clk IMX8MP_CLK_M7_DIV>;
++		mbox-names = "tx", "rx", "rxdb";
++		mboxes = <&mu 0 1
++			  &mu 1 1
++			  &mu 3 1>;
++		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
++				<&rsc_table>;
++		syscon = <&src>;
++	};
++
+ 	sound_hdmi: sound-hdmi {
+ 		compatible = "fsl,imx-audio-hdmi";
+ 		model = "audio-hdmi";
+@@ -185,6 +197,27 @@ reserved-memory {
+ 
+ 		/* Use the kernel configuration settings instead */
+ 		/delete-node/ linux,cma;
++
++		vdev0vring0: vdev0vring0@55000000 {
++			reg = <0 0x55000000 0 0x8000>;
++			no-map;
++		};
++
++		vdev0vring1: vdev0vring1@55008000 {
++			reg = <0 0x55008000 0 0x8000>;
++			no-map;
++		};
++
++		rsc_table: rsc-table@550ff000 {
++			reg = <0 0x550ff000 0 0x1000>;
++			no-map;
++		};
++
++		vdev0buffer: vdev0buffer@55400000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x55400000 0 0x100000>;
++			no-map;
++		};
+ 	};
+ };
+ 
 
->
-> > Moreover, the actual situation is a bit complicated. For iMX95, the
-> > system clock source provided by the SoC to NETC is IMX95_CLK_ENET, whic=
-h
-> is
-> > 666MHz. There is a 1/2 divisor in NETCMIX, so the clock input to NETC i=
-s
-> 333MHz.
-> > Therefore, to obtain the actual system clock from the clock framework, =
-we
-> need
-> > to add a fixed-factor clock to the DTS as the NETC's system clock. Some
-> platforms
-> > do not have this divisor. So we do not add the system clock to the
-> binding-doc of
-> > both emdio and enetc.
->
-> This is something which can still be handled by a compatible string match=
-.
->
-> > In addition, the NETC is also used on S32 platforms, that might be anot=
-her
-> story
-> > altogether.
-> >
-> > Therefore, hardcoding the clock frequency according to the NETC revisio=
-n in
-> > the driver is a simple and quick method, just like we did in the enetc =
-driver.
-> >
-> https://elixir.bo/
-> otlin.com%2Flinux%2Fv7.3-rc5%2Fsource%2Fdrivers%2Fnet%2Fethernet%2Ffr
-> eescale%2Fenetc%2Fenetc.c%23L3770&data=3D05%7C02%7Cwei.fang%40nxp.c
-> om%7C5cf4fb9826954a20a0bf08df1f5c1ab2%7C686ea1d3bc2b4c6fa92cd99c
-> 5c301635%7C0%7C0%7C639264152594829487%7CUnknown%7CTWFpbGZs
-> b3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIk
-> FOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DC8sTNGPtiqsUqz
-> 1eXYif8deaG1R1e%2BEjcpzGHnkR16k%3D&reserved=3D0
->
-> Let me try something better, give me a day or two.
+-- 
+2.43.0
 
-Okay, but please consider Andrew's suggestion. Add clock-frequency
-support for greater flexibility in adapting to different situations,
-instead of fixing the MDC clock to 2.5MHz.
-
-BTW, I'm currently OOO until next Thursday, so I won't be able to
-reply to emails during that time. Sorry.
-
->
-> Jakub, do you want a revert of this one, fix, or follow up patch ?
