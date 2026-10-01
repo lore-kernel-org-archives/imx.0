@@ -1,67 +1,66 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013013.outbound.protection.outlook.com [40.107.162.13])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013063.outbound.protection.outlook.com [40.107.162.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FE377034
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 16:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E6A424655
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 16:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790871983; cv=fail; b=mFf38FySLo7lt87wWmwiHEm8RadNXJXv74ajcUkWp8xnb+cIOpjDT2sHMW5MiDXxPfK2GYbNpccWd5Bo98lf7idYDdyOyIciVKltIWtnkWFm29T9uRL/mgz5srjVJSBh8vS4UDy8ka0o3YaOMVoYpzUtf2ffZqLTm8PH/OzvpVI=
+	t=1790872249; cv=fail; b=TGna5aeVQdhVZG8HNSYBXaSaG3+zvKXpd2VJpinSLEPLnjc+fmkZrNEGZF4wPnqBTbi5HTAkHiOOcMnmtzzXyFQBeUMEhyJL5/yvG5+pgiG3i2ANce9k6hof1SFbIzchYn4kAusUfiJmpWsWw9d7FeUi1qktGcen8F4yNdJbWws=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790871983; c=relaxed/simple;
-	bh=SeI3X48NIFTRXyZOUHoO/onQjGEOGV2HISdwdtfcVIs=;
+	s=arc-20240116; t=1790872249; c=relaxed/simple;
+	bh=kVuVaCSuph03tcWmEhvtMmBsmZREXeKqd3yu6s3RiQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BLH7Y0kFsmQiX8hXRd91inWQdRirC6RJ1EH2QK/xhufrQ7QmePr55elP4j+jg/KCeSQpyi8Ds5QwgU+Fo+F8pqm8iOgolf61JriAKCFehx2MTLV/gn/D+tSmMFBw5XKC0OGjxRTvFgawCebvVbu/rRrjWLOOf0R9yP4YaD1A5DQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gZvYaEPJ; arc=fail smtp.client-ip=40.107.162.13
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RMITC2amOCmZXAqQSaNDPq8Jzq6FYVxWZTBcf3E2F1dbnTzOjNITxYFnZwLSM4pIz31fOE3oWjMsrcZvOtupmvE3J2xzgjJN84JHc9ffC8Ly1ZD91PpTPrZcgPZ8jaw8iH8Y0hRcUQOXBKmKu9gUF03GULxtc3slUk8I7JdIUCc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=hcr0bLn4; arc=fail smtp.client-ip=40.107.162.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gZvYaEPJ"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="hcr0bLn4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V5WyG2T5ta0TxoZOzVw2VKp8HT61Z1/W8HsxIQuxLbJgbsv8d70JytH6au+xfTLEUBxMt3wRT9UWz9XXsUGHwy3fkWpNzTd4fqXiLmUaOqPubEw5Bc6ryL6YJEKX44SKrqKrLmX1HxOjxrUkDo72mzX1AH96k6JWV5J/qfb6QiyyQtxwDNPevj4fu5ahO89FKVYccQmAMP844KYeT/rO/iKUmOCIox+6mAfXMy3WZU+yBnlqqyU7ZBSuDOJBdqyQnIkdGZwCLXyqxf6nDlD8ESGF/E8K6wFBER0lxB+VAhpqDK1YHFduVSVKLLoqdola/uSHXqCeAKsjL40c+ZSeOQ==
+ b=T15+XZmvr4uLsqX+N7gVcAxmeqRUMl68e7+p2MzrxY5zXE7vRSad7myZaNrWtTXy47Qb9+b6sjgaS1R8JUwfFGiho06rAMWrjSRHex25Vw7VkWqjCMBSNDZrLVE0GEVIr5CKUmSZP2IabPsob+klgA0TmuX/ZhqKIALFUf+AWCHYSsQg9MuieHqeqOac0fxCvzS6rmaHg1MCIymWMb0lA+0+WRISjiTQc9AgLMOFE/2V7KIkLdRsqNkDe5brCAGyZpG+fCwYTbUv3nO2whNWOe0Cp4xD8dvJWG6YWGYHoz9As37/1nIVz/fo4bHKds4/sNCzb8Viqex5a3xwCRyq2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TOgZd6VLdZnRsvYndlXC8GHgusDHdMdjS+sKtbYYN6s=;
- b=L2zqS8/gu0vkEf55I97yX04zI9ZquqHVIKIfUBjYIXqGYvCxEQxHUr9EuH0YS0BehvtUatSeHJHR0HjpeUJa8AVP54SGwN10TTROJVSaVHge9aDXhklx9Z52HVeDVnI7fpabof0WVS3poLnwGUzYrraHm6gRLce+/mkfYtbITRfIPh/YS669HGDOqRLlWeXzXsu7bjiiFubcjjsdSMFu+60+i1ZbjAURRvniJQmfJSqXHPQFA7PcaS7+45wYo84ej2Ad7pTDBKucdTUSxDJKxC8Fj2cC4JIfQbmhyw/ZM6Axp5AyFkCk39mBZVmqMcC19EqeLS5tlWrgfOAVW7it7Q==
+ bh=pPdsI+9ngxx/DXb9f5gVXjmuXNqPHX2f9c4dLhBsLJU=;
+ b=hc+cwVYHwtDZCYkD0RJpT0ORBjPd77+NZs23lYsy4k1uvmQnTYHIsAxjKLfmuG1Zcpr/KwiD1DDdXAFJKwYISMFcfbZMBhZerBesHh1f/zHD/ue38ALBMA9w35pLHkuz/QBEFDwd54CzHrd8KpcczHKEZRYLpF4FN0GUWQp7h4y3jfER4OpRTv7BV4rBTJp8h1DVkRNlUdKfBroAlmOEzD3j/WlEakUrgtkMy5gUcmedm+tFtk2Sgqs1TitIIc6QJw1KpghJp60mWCadnpkBcNoIk4uvXfFc1V0NzY9Va1MLQO1DYybeWN35g0sGF6I42+bsoZ+qzznwbhD7JuFfLw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TOgZd6VLdZnRsvYndlXC8GHgusDHdMdjS+sKtbYYN6s=;
- b=gZvYaEPJs82gq7xaDWujoE2fRGMStq5GZ69ZnWj9mzX6nTjaz4OBBfhLKMaiX+GJ5AfJpwsANhuBfL0UOJPhL3sDQXTm64JhgtPGT4/rDCny6B8rzM0cJRrGPAQikVOehKpU1OwWmri4xjn78nr4WV7+lVBqduD7d8TeKj478+9tQ9O0wmPJvqfyP0FlnxcM5YyiIUzL3XNBBha/IbD8nR9bOgEwPxCTjqiHl1FoBIXzc4m144DI1WenlmkOSTnXxw0w30iH7kgXNBT3uJh/6G4XOIA8Eg9BFt6sUOIE6ljr53EVA2KKbQGFssrWYLnpUuiKV6d5DQcP2qymVr/z2A==
+ bh=pPdsI+9ngxx/DXb9f5gVXjmuXNqPHX2f9c4dLhBsLJU=;
+ b=hcr0bLn4JALeIIeHc2VrgKXepxWg7kIklJH67mYsg0IfTcvyV18Kr+W8qhcBGbzWnawVGY+6iqOHqmA5V2ebAMjLadWaq8QInBkAqzXmChEJZ0rPHQ1CnuG1G/AVAFie8BPeCgZgUgaRC6vCvKUzMyDAq+dj+yaCKB/WOWiTtx7yzte9gvZq0h7BaREiktv8RR/4+hSPBjzSnHpQF8+vJD7vGi1FK8IR1+q6vz8shUdxkKdo8se3oMZmigRhMK5DkM7LJpo/N9zEsE5bOnQAUYDk0GSjJpNtNL2OZTQ2HE7SkM60eVTSCcDzAcwL1uhSpSGIELzpd/2mylDngjMM4A==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
  by AS8PR04MB9045.eurprd04.prod.outlook.com (2603:10a6:20b:440::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 1 Oct
- 2026 16:26:16 +0000
+ 2026 16:30:44 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
- 16:26:16 +0000
-Date: Thu, 1 Oct 2026 11:26:05 -0500
+ 16:30:44 +0000
+Date: Thu, 1 Oct 2026 11:30:34 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Leonardo Costa <leoreis.costa@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, francesco.dolcini@toradex.com,
-	leonardo.costa@toradex.com, hvilleneuve@dimonoff.com,
-	marex@nabladev.com, stefano.r@variscite.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
- Display 10.1" LVDS
-Message-ID: <ar6JnZp1jBvlc8bx@SMW015318>
-References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
- <20261001155412.3177428-4-leoreis.costa@gmail.com>
+To: Jeff Barnes <jeffbarnes@linux.microsoft.com>
+Cc: linux-pci@vger.kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
+	roy.zang@nxp.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	Zhiqiang.Hou@nxp.com, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] Revert "PCI: layerscape: Change default error
+ response behavior"
+Message-ID: <ar6KqnfQ4S5jtqeI@SMW015318>
+References: <0FEA6868-5A7C-4955-9FBB-BE9A1AE8D3F7@getmailspring.com>
+ <20261001153323.1965074-1-jeffbarnes@linux.microsoft.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261001155412.3177428-4-leoreis.costa@gmail.com>
-X-ClientProxiedBy: CY8P222CA0013.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:930:6b::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20261001153323.1965074-1-jeffbarnes@linux.microsoft.com>
+X-ClientProxiedBy: CYXPR03CA0009.namprd03.prod.outlook.com
+ (2603:10b6:930:d0::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,214 +70,157 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB9045:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e8ce04c-4560-49ee-9759-08df1fd8b745
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Office365-Filtering-Correlation-Id: 2cc219e2-0c43-4506-9a17-08df1fd95703
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|366016|1800799024|376014|7416014|18002099003|22082099003|13003099007|4143699003|10067099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|23010399003|19092799006|366016|1800799024|376014|7416014|18002099003|22082099003|4143699003|6133799003|3023799007|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	83hZjgUj/LY5WXlTYNe9LckLS9MmPS40adl37Z/9e8+lYGwVG9W3VAcdfso1k16cpGtWmltUqtoYdgy3WBh4ruJx6sq5R4rTbjqRMbesOAIEJwNVum6dLKlsaBF49lWTtdnpmgVyPFn2yy/deMuVuULFH/olkG8QeB0lPx6BxCDhHk5tRMNd//LdX9RMft7gdAEOiPmIFP1GsNEhrBoZhl2NC7+7YHHaqB2QuAVrXjjx2KHiadBT3E+j27LPzk2vjdc6l83ZxTJ0gsXasubN4w5NHweG7MxiwO7F87MhUiSfu0HdKsWx3pc9GFf9rvOAh+kQQWovR8ddcL7nK7bi521aDf6uky2fc0f6eykXxhsgkjCMvS+x0MGPg0bokdATf1hlOAVdjVuYNqLK3yDxEPtOv6fG5VfRGpWLFJqKQIcLJITV3A/8rH3AAusDEoJl8TCuNIC6bzrDigqAXyagamdvIElp7UZYQMYPBxcLyD365DB7QuQi8wigFjxsiPTCMqMhoO4ti39tYUv8kK9gfCsFPcXxscoB9uMqGkU2WAm+qSiybHKw6B+BRHPcVuep1PtjGxErQNuDS/ZkPEEaZ0nQvJt5LbLXxec9WM1knpriSgdHuT4wpGrzkUNXGuTT
+	/6Q2+5SvetV9WkKkOdD7GlRfqExjzU3H9D0A5xy3GiCchYM1VycmU+yvPHGYznmVlGkGI8zA0sD2RuuxgE7aSOxI5M7GAWsoIlJBIZQp+6494z0jyorD6yQAcPSclQWPTFfLeVB8OwX+akbeO2yQhaOFVtZcjBezH9rD9UjWQVpZyoJSSXyF/NEyR+6FmyrfwhXMMNafrY0Gh637ifsMYWvWh2TbLKsXlQXnAfXPUlDbzFJNQagxmTmCh1AVueoX2KVXxZ3xzD7mSZwTjcIikMhzKo++b2u4pES7/RYOO+SbeKMaDG9Q/8jbCd39I6LLRO3BnRq8rWg3YzJjlWe2spA0dGQTXYBJSX8+h1+D0h3QSlQv565Ad9XLYTUTtqQph1imbmJQ58ENeAvxxx4KwDXkvOhhlT2N9BJ+7AsnQQDZnz62jb0ejVpMRrHaPw+zC9xAWflC0tKU8m5bepE55/BjA2WgpVSs2us+QjTdm/4xLdiSS/VpkgTbLzRPPXSKx0Jf9L5uLOmk7zx/UezvzTiZ/c+rIxErnW5KiSQrl/n/t7cSIglbFG39PrHcroPXuffixLbsG5Myh+7p6xcj0jCgvYM+5vU39Qm+5f53HQsnkKameZTb7iP0Wto27ybCNhlpoIMg8hooThU2/5QPRJf9vc5gxv80LozFaDDphNE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(13003099007)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(4143699003)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QF2QoQZazHh/6VENqMK4QOm8oaouuMURFq9NvVfEHHFKrXw2jtBkQei4FBpO?=
- =?us-ascii?Q?3JRvObOKAroMSGLlT0yB+fCpPRTGav2ZnD6unhvnzswr/PSMgWbHQg4QZd7/?=
- =?us-ascii?Q?7x3yheaGImoVhfQut3aQ6n208FTtsiIxBdAu4ZAytprzu6XiBjtD8Y6pNjw6?=
- =?us-ascii?Q?daKjOO3omP1YZO2l65JFzBfMZl2y0OFl16rvMpYS2yjVrhliFJGQ+/tko062?=
- =?us-ascii?Q?+YBUfoCM7jy4SKEkKrUxNpiAA366qXxYVz/KLmyPMadM7Bq1Tmm9ghmc/+a6?=
- =?us-ascii?Q?BYEIimtIyk8m6GnnxPMP8tG0Y5zm4M9ECPaTiU5iv/MFeo0/HhS11Dxhvkmh?=
- =?us-ascii?Q?IBTq8M5JlrJ0T3SkAAAeEtwpr/l8eX4iMNze2W4BAKQq4sFbgqQ+AdexNZ27?=
- =?us-ascii?Q?ZsFlFRq7hNpm2hg7TwC07Q4qhMUc0g4aQTdmV0LJk28eU/ja7We7W2AhNUIb?=
- =?us-ascii?Q?JdCi3jGV/1lKqMpQVbOLVP3s7YxyprAsbYurwpPFMP42aPOrjAoJAYIqqMpw?=
- =?us-ascii?Q?2A43DoMMZZgn+xJFjjNnYyB1elUvnZfofip16Wiv9ehHl5KoK0NbR89kCVu4?=
- =?us-ascii?Q?vj7rUIoRdzm3MXGlhFYoUdM+AQD4fUJy2mC5bHpu+zvhJFzljShz9WvC/dNR?=
- =?us-ascii?Q?l6v+1cpvF6vDdtpatQ86gwGKFiHdSd5wLo2k/ddpmJkMmKArkRFBBjPaWN4r?=
- =?us-ascii?Q?VjagO+OBMbljZHPDK0VNaN1N1jl69iHBE06pE2U/Guqow70Ugg5Tg5ZEbHzK?=
- =?us-ascii?Q?7JtGqsLQyROT7ImDAoyyI+J+bUidaJz1JvYWMZPSvwz747/Qh5PC5q8UjH1A?=
- =?us-ascii?Q?2gAui/+x/GcxkXqxwtGZiNvhdK15pBpDdD0d7qVAet4ZPjj/UTP4kvEQzvPY?=
- =?us-ascii?Q?hzZOUVmjCydZpHAGTtcFuehQAED2ugQxImbhkxBbliU12TYJbddwS8b62A3K?=
- =?us-ascii?Q?Xh+bq42ZSBi8+nLABZ8Pr8JMcvqe4ekiWWA9wE76XgrFSugmRm9JioqFVipb?=
- =?us-ascii?Q?GyJZkqa3JY6emmSHLu+F0QtjwHe/8HqYf6igycgwksEQsUdrcMiaE8SAN7DG?=
- =?us-ascii?Q?+NB+3QEfI7osTixs3xeUT1eNihsIzf3VfotMVsi5a8z1MAD1yZa4r4w5M0FN?=
- =?us-ascii?Q?xO+AGZlZCTl61OOdHOoCsM0n4ZfCDxzTCh9IWKRJT8mo25LgOYqJZqE4IZjo?=
- =?us-ascii?Q?7K05dL34hXf0wbhRUSxkoMSKheBsAViOeCIYnkRu8XrrOLEOPCj5DUSF7hsG?=
- =?us-ascii?Q?1MVvhuF3k9xoWRuean179SOysM8WWXK/zPPBnfiL9PCegFK7AgWBhGX92go9?=
- =?us-ascii?Q?SdWPk1YgD52OinvNvnP0P6sX37SWpRdbUDjGQtLHiygvre1v1+NxJ8WqVtDt?=
- =?us-ascii?Q?yJH54Q3UYYsgZ06LqsWfv1u9Xg+bq94FevV8gtSXxtuD2Km9kUam6orwS+uL?=
- =?us-ascii?Q?P+2/ciWWOkh+ngQIvXTpaBvQtD00D7i2UCcnIa3NHtJjd9VO/wZajRBhgHv8?=
- =?us-ascii?Q?ThkkCIxx5OU4zPU6rp9izSpSGMEi7XuCiffUa+Ku/YjtyDhCqKo+Vq4LJ134?=
- =?us-ascii?Q?9dKt1dCT4zStTiuSBG+ko4SN3wl9A8IvwQrrit1w0uEE7oKhKB07wTbZOaR9?=
- =?us-ascii?Q?rbn9aF4qLB0A5FdFjN6vD5DU/unVJPL7DxQagDZ4FlKoU9QsH++yx2/jYz1J?=
- =?us-ascii?Q?zENKEUeV5TBrJPzRB7Ee+clKP+glp3sk20a/GqKKasU8x34pfZJTRKhzE/oS?=
- =?us-ascii?Q?X20dY7ozJlXEZdjeX9KY0R9ehK0OslTXoopukGPdGUfmIasbGZ3K?=
+	=?us-ascii?Q?hfeCt+UROdbbCQKO7Y+pCM5wQW68xsRr/MxYX4yQUC54y84ACl3OxY7dLf1U?=
+ =?us-ascii?Q?jmmLHCz5sGlaQ0P+HMFNlGSmJYsKbO6R2UWib/I00wmgtHFRQ22C/dI838uZ?=
+ =?us-ascii?Q?GkFTJdf222b/gexZYNEa5i5dVIY1RbTgGq1agw2Pm5s/kcIDVyNZNtOAmrHz?=
+ =?us-ascii?Q?zA5I1USPgOm2ImnWAcomEcnXP8YPzWZn1lYVuJ2isb9LOmboEV0cLD2H7PML?=
+ =?us-ascii?Q?ZbCedpptjOfoIH9fBEjPg1Tj1gta5fRa7pHsMcWSI0YVU20ULdtw/8eT0rJ0?=
+ =?us-ascii?Q?X17BHz+Ke7b7Mg3Vvbv+kCKf0JzmX5Z22GGBUmEbq7hI/pUUKPZgS/VeNIbz?=
+ =?us-ascii?Q?cpQVfJMWVaEQghtZS8tyKREgso9ryK37yO34bQZfULtvNkewqtu4mrKVfM5e?=
+ =?us-ascii?Q?xDC0FnBS+czojot0elQXNqSaEyd2Q64lh7tbw6SQxuuyGIzStKUy723Xh+9I?=
+ =?us-ascii?Q?yPCZle6FBszmC8kiyK8tb4lbKRBfIX47gcBPktzIyRwG4G93cR2WuUTax/YG?=
+ =?us-ascii?Q?d2CNLdFcsL2cyDoziPXmEtJBNdBVJyuN2lR5BOUYutCQ3opOH7efF+QpNGND?=
+ =?us-ascii?Q?XOWHuUcn68mVrqnwZKbcHTobIKqlrQnFaUK2vZelevbpa1yG+WOhNSC5L2tp?=
+ =?us-ascii?Q?zpP8ZU1T/87/d+MdHORg7hVWrt14ejC4PYuGlcWukW8hZ6ZF+ccvDlPugSva?=
+ =?us-ascii?Q?6k5mE+KcJxiZAjxVQelP5mzHwC8Wo6q1sqOoLtTDbvIoYBZC9qt2+OHaja9s?=
+ =?us-ascii?Q?l7VZG16cMOC0RErccaNZii242onCCFXDYZqm7CXZ4tZtW8e4AFCUhZ2P/4+a?=
+ =?us-ascii?Q?ueJQAxpW3yzs/z5+OE+W7zBAV3at9xgFvft7eUNelgwmv+UD9mXXh1Y0rXFM?=
+ =?us-ascii?Q?1pmny3p9eopG0mnj72FmFwhSYLoW64gwT82IujefCn42MPv7Y5JR5LhBkLGH?=
+ =?us-ascii?Q?W2wv92OewV8q1gf39QKMNyWunoi7ga76ofMTWg0Ml7hgF1ZQXWQk6yLkhKBf?=
+ =?us-ascii?Q?1s9hdqOK4DTOmD+8RQhuRgvLiz8X2gtadogQSnJDQcmPZuj9jj/wxJ0cLsTQ?=
+ =?us-ascii?Q?zbxtJSPka12sOhtFt3swhTrbmEQ0Ma+vOxLeZaKOK/VRnvhtI3ga2wo/yymc?=
+ =?us-ascii?Q?djfLgBsIFXVYPXeJCm++iE/ZVYXP+RTnDxmce/kIp3pDZVW6fKqJ5XOdTq9X?=
+ =?us-ascii?Q?F0DQZxaq8B8+UMQdMdZMqBmpCO/PGUw5dgWLfuCB+9HYfD9GOZIE+gHQ/2vM?=
+ =?us-ascii?Q?SJywVyTN60Zrtsb16ZWJKivML7WpkihlslmqiA0Yh5cdHGe4gs0MLRXe7g44?=
+ =?us-ascii?Q?cT3+Afj3QLkbnBK/qkuOZALPRoIiloyw946DhPk3MiaAOiHA0XSo4uDxZcHq?=
+ =?us-ascii?Q?cZXJ9QxsmgVsuq4OW3JFzsvoqUyiLOZGn44AMgIqhcVBHTUCTifjkf7lzgXI?=
+ =?us-ascii?Q?3A4LKO2d1AqC5LygW1sBYEwQaj5k6RfJMvtbdBOWitwQ1LmwM+uSa5AZV8wt?=
+ =?us-ascii?Q?3U3O0ExmxYW8bT0y26pwYaK/pixxKhzoyKn4WISxe2i0PK9WSWcn1afpgZij?=
+ =?us-ascii?Q?SotkaLd0Ahq/Cjuju3jrG6eizY8kzDTbcrShOMQ2151J3TfNty4MuWzfxBf0?=
+ =?us-ascii?Q?ewXg/nGQDYBslhAlwamBkDdCK+1BADX7fIeyOf1TsTqGtw4EfKr6Vjwxo9dS?=
+ =?us-ascii?Q?6FnzBLU4NDmgd935T2sIR9SjA1TNhYV3QeGlkD63qIXDGZGuDvDLXcK+1cSZ?=
+ =?us-ascii?Q?AVwlZJZdigSFIvrqsZc6AriwXzyYvNg4lNIRJwpqyaVzgwC8dfTF?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e8ce04c-4560-49ee-9759-08df1fd8b745
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2cc219e2-0c43-4506-9a17-08df1fd95703
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 16:26:16.1083
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 16:30:44.1603
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3CuWYJmYrRBcuQTk3Gl1StTduBeDH6SRZHf1fWnrbT7hBIVUkx5fVX0TmY1XgEdHG+7swXG0Qb8q5WTojBkaa9lLcX7sNZvjCoMJHde6k8+cYSa3iLjPzly9wqENdxVB
+X-MS-Exchange-CrossTenant-UserPrincipalName: MpCI2+HlP1dqP87RXKNomT7b31lsP5KNH/ax4pHNGCkIDvtuQS44GCReJwoKwu519A5YFS28jd23pPrsji2A2v4HroYUxbz8NfyIHGw/0X5TH7v4LxzCGYCegW1AE4hp
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9045
 
-On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
-> From: Leonardo Costa <leonardo.costa@toradex.com>
+On Thu, Oct 01, 2026 at 11:33:23AM -0400, Jeff Barnes wrote:
+> [You don't often get email from jeffbarnes@linux.microsoft.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
 >
-> Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
-> LVDS connected via the Apalis iMX6 LDB.
+> This reverts commit 84d897d69938
+> ("PCI: layerscape: Change default error response behavior").
 >
-> The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
-> touch input is provided by an Atmel MaxTouch capacitive touch
-> controller.
+> The Layerscape PCIe driver programs the DesignWare
+> AMBA_ERROR_RESPONSE_DEFAULT register at offset 0x8d0 with 0x9401.
 >
-> Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
-> external component that does not exist at the SoM level.
+> For AXI, the documented default with AMBA_ERROR_RESPONSE_GLOBAL cleared
+> returns OKAY with all-ones data for errors on non-posted requests.
+> Setting AMBA_ERROR_RESPONSE_GLOBAL causes an AXI error response instead,
+> with AMBA_ERROR_RESPONSE_MAP selecting SLVERR or DECERR for individual
+> PCIe completion errors.
 >
-> The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
-> Board V1.2 device tree to provide a ready-to-use DTB.
+> The value 0x9401 sets AMBA_ERROR_RESPONSE_GLOBAL and maps Unsupported
+> Request, Completer Abort, and Completion Timeout to SLVERR.
 >
-> Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> A PCI configuration access can race with the link going down after
+> dw_pcie_other_conf_map_bus() checks the link but before
+> pci_generic_config_read() performs the MMIO access. If the transaction
+> results in a Completion Timeout, the Layerscape error response setting
+> propagates it to AXI as SLVERR, resulting in an asynchronous SError and
+> kernel panic.
+>
+> Reproduce the race by obtaining the configuration-space mapping while
+> the link is up, then disabling the link from another CPU immediately
+> before performing the MMIO configuration read.
+>
+> With the error response override enabled, the overlapping configuration
+> read results in an asynchronous SError and kernel panic. With the
+> DesignWare default behavior restored, the same test returns 0xffffffff.
+> AER reports a non-fatal Completion Timeout, and no SError or kernel
+> panic occurs.
+>
+> Restore the documented DesignWare default error response behavior so a
+> failed non-posted PCIe transaction does not become a fatal AXI error.
+>
+> Fixes: 84d897d69938 ("PCI: layerscape: Change default error response behavior")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jeff Barnes <jeffbarnes@linux.microsoft.com>
+>
+
+---
+
+should be here, maintainer should can handle this for you.
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>.
+
+> Changes in v2:
+> - Change the subject to identify this as a revert, as requested by
+>   Frank Li.
+> - Document the DesignWare AMBA_ERROR_RESPONSE_DEFAULT behavior and
+>   decode the 0x9401 setting used by Layerscape.
+> - Clarify that the setting propagates Completion Timeout as AXI SLVERR
+>   rather than causing the underlying PCIe transaction failure.
+>
 > ---
->  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
->  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
->  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
->  3 files changed, 59 insertions(+), 13 deletions(-)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
-
-similar 7" case, add panel module name in file
-
-imx6q-apalis-lvds-panel-lt170410.dtso
-
+>  drivers/pci/controller/dwc/pci-layerscape.c | 12 ------------
+>  1 file changed, 12 deletions(-)
 >
-> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-> index 32d77a59c4358..23fcc80d7f309 100644
-> --- a/arch/arm/boot/dts/nxp/imx/Makefile
-> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-> @@ -99,6 +99,10 @@ imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
->  	imx6q-apalis-v1.2-ixora-v1.2.dtb \
->  	imx6q-apalis-hdmi.dtbo
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index 14d6ac4fc53f..d333f1ae8a41 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -28,8 +28,6 @@
 >
-> +imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds-dtbs := \
-> +	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-> +	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo
-> +
->  imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
->  	imx6q-dhcom-pdk2.dtb \
->  	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
-> @@ -233,6 +237,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
->  	imx6q-apalis-ixora-v1.1-hdmi.dtb \
->  	imx6q-apalis-ixora-v1.2.dtb \
->  	imx6q-apalis-ixora-v1.2-hdmi.dtb \
-> +	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo \
->  	imx6q-apalis-v1.2-eval.dtb \
->  	imx6q-apalis-v1.2-eval-hdmi.dtb \
->  	imx6q-apalis-v1.2-eval-v1.2.dtb \
-> @@ -243,6 +248,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
->  	imx6q-apalis-v1.2-ixora-v1.1-hdmi.dtb \
->  	imx6q-apalis-v1.2-ixora-v1.2.dtb \
->  	imx6q-apalis-v1.2-ixora-v1.2-hdmi.dtb \
-> +	imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds.dtb \
->  	imx6q-apf6dev.dtb \
->  	imx6q-arm2.dtb \
->  	imx6q-b450v3.dtb \
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
-> new file mode 100644
-> index 0000000000000..a84114e1d3fba
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
-> @@ -0,0 +1,53 @@
-> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
-> +/*
-> + * Copyright (c) Toradex
-> + *
-> + * Toradex Capacitive Touch Display 10.1" connected via Apalis iMX6 LDB
-> + * on carrier boards with a Toradex standard LVDS display connector.
-> + *
-> + * https://docs.toradex.com/105952-10-1-inch-lvds-capacitive-touch-display-1280x800-datasheet.pdf
-> + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> + * https://www.toradex.com/accessories/capacitive-touch-display-10.1-inch-lvds
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&{/} {
-> +	panel-lvds {
-> +		compatible = "logictechno,lt170410-2whc";
-> +		backlight = <&backlight>;
-> +		power-supply = <&reg_3v3_sw>;
-
-use name reg_lvds_panel, it help improve reusablity.
-
-Frank
-
-> +
-> +		port {
-> +			lvds_panel_in: endpoint {
-> +				remote-endpoint = <&lvds0_out>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&atmel_mxt_ts {
-> +	status = "okay";
-> +};
-> +
-> +&backlight {
-> +	status = "okay";
-> +};
-> +
-> +&ldb {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	status = "okay";
-> +
-> +	lvds-channel@0 {
-> +		reg = <0>;
-> +
-> +		status = "okay";
-> +	};
-> +};
-> +
-> +&lvds0_out {
-> +	remote-endpoint = <&lvds_panel_in>;
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> index 5fcd7cdb7001f..e52b55a386f7a 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> @@ -95,18 +95,6 @@ lcd_panel_in: endpoint {
->  		};
->  	};
+>  /* PEX Internal Configuration Registers */
+>  #define PCIE_STRFMR1           0x71c /* Symbol Timer & Filter Mask Register1 */
+> -#define PCIE_ABSERR            0x8d0 /* Bridge Slave Error Response Register */
+> -#define PCIE_ABSERR_SETTING    0x9401 /* Forward error of non-posted request */
 >
-> -	panel_lvds: panel-lvds {
-> -		compatible = "panel-lvds";
-> -		backlight = <&backlight>;
-> -		status = "disabled";
+>  /* PF Message Command Register */
+>  #define LS_PCIE_PF_MCR         0x2c
+> @@ -103,14 +101,6 @@ static void ls_pcie_drop_msg_tlp(struct ls_pcie *pcie)
+>         iowrite32(val, pci->dbi_base + PCIE_STRFMR1);
+>  }
+>
+> -/* Forward error response of outbound non-posted requests */
+> -static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
+> -{
+> -       struct dw_pcie *pci = pcie->pci;
 > -
-> -		port {
-> -			lvds_panel_in: endpoint {
-> -				remote-endpoint = <&lvds0_out>;
-> -			};
-> -		};
-> -	};
+> -       iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
+> -}
 > -
->  	poweroff {
->  		compatible = "regulator-poweroff";
->  		cpu-supply = <&vgen2_reg>;
-> @@ -738,7 +726,6 @@ port@4 {
->  			reg = <4>;
+>  static u32 ls_pcie_pf_lut_readl(struct ls_pcie *pcie, u32 off)
+>  {
+>         if (pcie->big_endian)
+> @@ -180,8 +170,6 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+>         struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>         struct ls_pcie *pcie = to_ls_pcie(pci);
 >
->  			lvds0_out: endpoint {
-> -				remote-endpoint = <&lvds_panel_in>;
->  			};
->  		};
->  	};
+> -       ls_pcie_fix_error_response(pcie);
+> -
+>         dw_pcie_dbi_ro_wr_en(pci);
+>         ls_pcie_clear_multifunction(pcie);
+>         dw_pcie_dbi_ro_wr_dis(pci);
+> --
+> 2.43.0
 >
