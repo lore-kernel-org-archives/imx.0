@@ -1,76 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF3B530DF0;
-	Thu,  1 Oct 2026 15:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB443909BF
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 15:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790869063; cv=none; b=Be71iC0gMTf+xS0ksPVhTc/hUr0CRYwkKQA9AXgG1QP0GBaCFz8ldGFP8hbCoRpdTBwbIttQisvAQ3qt933tqjuqzuAyclEG1rdY81y0vbjD3yqNMiB+xX2slpOlZoiyXYpcp9X3VWtNRfHDkgypF3IOATEBzlQm0WEKxrzBtSk=
+	t=1790869800; cv=none; b=eiQNESxguCMS7hbWZD2Wj64m9xbBFSHrVWaDhEQ4MXFmtAdDEiqStj7Tcv7ZuYJhvO/bxD+0SpjlI9NJ6dHI6jCoHVvLlW430joDuhM/xLPud36icHYuuhXucYj1OWT5klJ1nEpLTe1KDBYAMA/Y97ueZzdJ5IObhOPDRirp6BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790869063; c=relaxed/simple;
-	bh=SRJCKrM4BwX6GcRWBLCdTQ71h2JrYLAD4CRtmGA/Okk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=G1lfd4gJcfFEG+ZCEvhadHlGX4hSCBzxXJ0Z8HevEB3LJ1KA1UiGnakV+b6Mby7ljfNSo/eI0X8DXGVouM60s+TXcIBgLAAFUpUFaC7KTBJJW46qVHsNmiZZXxiv74gqKZ60hZEhpaf2Rd/j2BeUikf3kF6PchK/X1Z20S4dK0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fItB1hAR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790869800; c=relaxed/simple;
+	bh=d5wjsmU4iwodPmCvT+NJtftx88hL20Yv4nRXnfEGQzU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=iV5VDoLN4+mPQLcV0yDNe2kFPOHLot8LEG/IlmUAYaA3CyKaTD5bB67AoP/UIKb9H3KRn43lQg7p1BpyUP+NQ+5vde4sPg+UHFIRZH9auEetqqmEUkVUxyDOLJ7YJEcsBp2+dlxUe7BFPGVnR/IpPgkWFP23xFEjrn/6YzLzz34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ieDfAB85; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fItB1hAR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDC61F000FF;
-	Thu,  1 Oct 2026 15:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790869061;
-	bh=SRJCKrM4BwX6GcRWBLCdTQ71h2JrYLAD4CRtmGA/Okk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fItB1hARx/HtlF2lih/iGexB7xJkAEvXJlrHugbz7tiDp3EN8Cyx2SJ/DTKlcUIQG
-	 NBeWBdI6mklLntrSF8zSbUGsml/eLcJtOyjaRPNCfaipfK0+Y8RrysW2q+v7TAgNKm
-	 yRtn4rYUYlzs4ks6xJ9ZlZdX98pOlYLEY/M7IMyLSLHDU3YcowGcyXRPrLtaq7cWDW
-	 8VgqKkNzftboKRwNzqdK9vfCqCkL63ii6TXWfFgZNOX5uOudtjhvL4g8PMNsqtutkO
-	 b54ycveSBZ5ggqp5M8VW5ZpLL8It12cGMI1/3mA09bILDNJYD1hzLWtaCng9WsmTy5
-	 LA1WZrw2RJY0A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] Revert "PCI: layerscape: Change default error
- response behavior"
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jeff Barnes" <jeffbarnes@linux.microsoft.com>
-Cc: linux-pci@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261001153323.1965074-1-jeffbarnes@linux.microsoft.com>
-References: <0FEA6868-5A7C-4955-9FBB-BE9A1AE8D3F7@getmailspring.com>
- <20261001153323.1965074-1-jeffbarnes@linux.microsoft.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 01 Oct 2026 15:37:40 +0000
-Message-Id: <20261001153741.0CDC61F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ieDfAB85"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 29AB14E41115;
+	Thu,  1 Oct 2026 15:49:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E56BF60343;
+	Thu,  1 Oct 2026 15:49:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BAD94103282D5;
+	Thu,  1 Oct 2026 17:49:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790869792; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=uGiWo6C+ycX09EU8H32CDb7AmZmrCKj9IV2lN2Mp/Hk=;
+	b=ieDfAB85stwwyZZSONxP4MucbdJVdGaD4CpTNy0XtKFsHuWU+pNP8OS+xoLFHBrWXaM/Vp
+	1WYzN+Wc8w6iie1fbCnX32LrMk6e5YzcWJnq1SKuenvHkWs0XZytGUfVprH2foGRrwKqBn
+	ZWNyWpZxptuyAsWuQ/dcVlL7W+hgLx0KBfqpf8PflbL0Np7aC6MD86rEJaMHhGC2TF9P+T
+	pzorWpQcNQpiRbvbXIEUJXHGri4D5wGd1qywEMeZGLxL3XLDuoBwXb6DIiZNK3lK0/BF0j
+	PPDx1NfHnVBER6DpUYsTEn45LfFjbpasGktZ1AsxhDb/j1/C1zMS+rJOgrwA7w==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 Oct 2026 17:49:39 +0200
+Message-Id: <DLTMCR2DR484.2J56NLPQEQO3M@bootlin.com>
+Subject: Re: [PATCH v2 0/7] drm: remove deprecated *_of_get_bridge() from
+ non-OF drivers (fixes build regression)
+Cc: "Arnd Bergmann" <arnd@kernel.org>, "Doug Anderson"
+ <dianders@chromium.org>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
+ <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+ "kernel test robot" <lkp@intel.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
+ <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
+ "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Dave Stevenson"
+ <dave.stevenson@raspberrypi.com>, =?utf-8?q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, "Raspberry Pi Kernel Maintenance"
+ <kernel-list@raspberrypi.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.22.0
+References: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
+In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-> This reverts commit 84d897d69938
-> ("PCI: layerscape: Change default error response behavior").
->=20
-> The Layerscape PCIe driver programs the DesignWare
-> AMBA_ERROR_RESPONSE_DEFAULT register at offset 0x8d0 with 0x9401.
->=20
-> For AXI, the documented default with AMBA_ERROR_RESPONSE_GLOBAL cleared
-> returns OKAY with all-ones data for errors on non-posted requests.
-> Setting AMBA_ERROR_RESPONSE_GLOBAL causes an AXI error response instead,
-> with AMBA_ERROR_RESPONSE_MAP selecting SLVERR or DECERR for individual
-> PCIe completion errors.
->=20
-> The value 0x9401 sets AMBA_ERROR_RESPONSE_GLOBAL and maps Unsupported
-> Request, Completer Abort, and Completion Timeout to SLVERR.
->=20
-> [ ... ]
-> failed non-posted PCIe transaction does not become a fatal AXI error.
->=20
-> Fixes: 84d897d69938 ("PCI: layerscape: Change default error response beha=
-vior")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jeff Barnes <jeffbarnes@linux.microsoft.com>
+On Tue Sep 29, 2026 at 3:39 PM CEST, Luca Ceresoli wrote:
+> After commit Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to
+> drm_panel.c") some drivers fail building:
+>
+>   error: implicit declaration of function 'devm_drm_of_get_bridge'
+>
+> This is because devm_drm_of_get_bridge() (and drmm_of_get_bridge()) have
+> been moved to drm-panel.h.
+>
+> The affected drivers are those which:
+>
+>  * can be built without CONFIG_OF, and
+>  * don't include drm_panel.h
+>
+> The affected drivers are 3, fix them (patches 1-3) by replacing the
+> deprecated *_of_get_bridge() calls with of_drm_get_bridge_by_endpoint().
+>
+> While there, do the same for all drivers which be built without CONFIG_OF=
+,
+> even if they don't fail (patches 4-7).
+>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Patches 1-4 and 7 applied to drm-misc-next. This includes all fixes to the
+known regressions.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001153323.1965=
-074-1-jeffbarnes@linux.microsoft.com?part=3D1
+The two missing patches (5-6) are improvements, not bugfixes, and have
+changes requested. I will send a v3 later on.
 
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
