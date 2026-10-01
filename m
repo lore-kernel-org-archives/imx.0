@@ -1,87 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC3F242D97;
-	Thu,  1 Oct 2026 08:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A394AA031
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 09:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790845083; cv=none; b=qFYUHENQx/Q2VYj0INF7LhVVdVi2D2tOUeUz9JGFz36SY84vzl0y8ZcGjFvnC4dSJrnDR/4BwJwtjxWojSCY7RoMCnZaOmvh+wJsFpGxMWRTowb41k1obFOMB7lSZAoP5iHAYOJ5rh8LBPjYG0ZnWDPviYWevu+wAaEvYzGTgxA=
+	t=1790845274; cv=none; b=lA73M3NSihTvmHdQW8N2XQdwi7mN5ERL95ChwtvSmWp1j5J0DO2ExU0kq3pBjm7Ro2BOSyRtE9ss9pYTvzOPWTxBShSBGgWDcidCrJWCIkKzfug1zOTsDjseCLKoZXil/gVtTaaEsrzcTaFQySRw8Cf0hRP4gw7Ps90A45zcjms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790845083; c=relaxed/simple;
-	bh=a9uVulWxMVOXfts2Iw/5Aa1VFd+QlJbHTxq32bl3IQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XquJJpmSbLwAq4Twd/TR8v4vI4j3HKF5bQswZe4Bah/5DsiFeL23BVMrpPyJfYuB9oaokOZBDHi4i07N8GosVm/J//RTcN1GDhjqyc9NWouXFP3LHZZ/WLduC4bGt66tXTTYbnbYz+Yes7CQKlqJPAlVAv552bMjZbMYVFa+qu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvHm2OKG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790845274; c=relaxed/simple;
+	bh=pOSX/j8PxFaPmggryR7fHd8+GwlggHCzqHguU39pkiU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XmhtZAuOBsh4hNBOhCzJNSu+Mu2aHZ8m88ExAUXja+r7Pe2k/uknlK6WwZdN+DIA8ZAJ9z2HXn/Ixd0l2YkCEpaVy8T4IKWY2HDZQCa6tI4dNMIeU5DQT2O6yzG+O3hHm58vyyY9SuCPc+tmqPB8Yr6GJKEm7XixPQskMtbJFjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eFAAfenp; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvHm2OKG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7021F000FF;
-	Thu,  1 Oct 2026 08:58:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1790845082;
-	bh=RQbQe2gHs+3CDAyt3dtTz+9Qv5WQ9txPmDK/APQjSYM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VvHm2OKG7JNS2euP8edOAlfQSSi8d8RW4aTObqH6n4iGVRNmjkpKODwYJjoKATdMd
-	 U2V874xaNaeEFttu0TRF4IAxLpKpSIh6frDq7EP26ION3fsoR4bkYB62Dn0yqsqg85
-	 O6blGVh9RHIY0eS//Ieuk7SvoaIrjfmxPsSye+5k=
-Date: Thu, 1 Oct 2026 10:57:56 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Fan Wu <12321260@zju.edu.cn>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Fan Wu <fanwu01@zju.edu.cn>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] serial: imx: cancel RS485 trigger hrtimers in shutdown
- and remove
-Message-ID: <2026100149-constrict-frail-4f4e@gregkh>
-References: <20260819021916.442827-1-fanwu01@zju.edu.cn>
- <46936686-3bdd-4d36-9124-e8d3376ad5ea@kernel.org>
- <C6A3233A-A352-45AC-A498-0DED1EC57147@zju.edu.cn>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eFAAfenp"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 421BE1A109C;
+	Thu,  1 Oct 2026 09:01:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 134E260341;
+	Thu,  1 Oct 2026 09:01:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A2529103297EB;
+	Thu,  1 Oct 2026 11:00:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790845263; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=rHHej9yH4XOkeqe7HQOUFBElNtKlXqD/p/0et4Eq7R4=;
+	b=eFAAfenpgJOe2xIhdUHmHAesTdEsRZoiGi+WTbKNKG7qX7brGr4vDD4GyzKQdu0RqwZqzZ
+	zaKmMh1y8IDr6xG6DzSDzKw3BSSZ4xYxfkW1qr9fzEVtu7hrleahNhk3/q8qYdWBq/7zdr
+	8ViJ1SBMZAYskH04L4dB5FOS8P5fqKiyenKj+35uoUiGMvZxzOLygCkd9r11UakuzAqgeJ
+	HOSEmxBuMGnXf7PBafa82grUcAw34ucnCtiXwNrfbNPzt1k+giAt+pleGicJLx9+4r3Jzv
+	RLYb6FbNCHK64az4xJVPMO3MsGh8EAuecr7otze70SgsrarbcMa5Bex6sqNleQ==
+Message-ID: <78bd3e3e0fcd20f012c3b01f7f595376f7a6173d.camel@bootlin.com>
+Subject: Re: [PATCH v2 7/7] drm: renesas: shmobile: stop using deprecated
+ devm_drm_of_get_bridge()
+From: Paul Cercueil <paul.cercueil@bootlin.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Maarten Lankhorst	
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Frank Li	 <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Icenowy Zheng	
+ <zhengxingda@iscas.ac.cn>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
+ Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart	 <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Dave
+ Stevenson <dave.stevenson@raspberrypi.com>,  =?ISO-8859-1?Q?Ma=EDra?= Canal
+	 <mcanal@igalia.com>, Raspberry Pi Kernel Maintenance	
+ <kernel-list@raspberrypi.com>, Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Arnd Bergmann <arnd@kernel.org>, Doug Anderson <dianders@chromium.org>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni	 <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, 	imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, 	linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org
+Date: Thu, 01 Oct 2026 11:00:53 +0200
+In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-7-6da431d8f180@bootlin.com>
+References: 
+	<20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
+	 <20260929-drm-fix-of_get_bridge-build-regression-v2-7-6da431d8f180@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C6A3233A-A352-45AC-A498-0DED1EC57147@zju.edu.cn>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Aug 19, 2026 at 02:39:45PM +0800, Fan Wu wrote:
-> 
-> > On Aug 19, 2026, at 12:26, Jiri Slaby <jirislaby@kernel.org> wrote:
-> > 
-> >> serial core does not call the
-> >> driver shutdown on every path that reaches remove().
-> > 
-> > Could you be more specific on what path it does not?
-> > 
-> > thanks,
-> > -- 
-> > js
-> > suse labs
-> 
-> Hi Jiri
-> 
-> Yes. The relevant path is a console port whose last TTY user closes it
-> before the device is unbound.
-> 
-> tty_port_shutdown() skips port->ops->shutdown() for console ports. The
-> last close then clears the active state and dissociates the TTY, so the
-> later tty_port_tty_vhangup() in the remove path has no TTY to hang up
-> and cannot invoke the driver shutdown.  That is the path the cancel in
-> imx_uart_remove() covers.
-> 
-> trigger_stop_tx can already be pending at that point: after TXDC,
-> imx_uart_stop_tx() starts it for delay_rts_after_send, whereas the close
-> path only waits for TXDC.
-> 
-> I can add this to the changelog if you would prefer the rationale to be
-> spelled out there.
+Hi Luca,
 
-Yes, please do so.
+Le mardi 29 septembre 2026 =C3=A0 15:39 +0200, Luca Ceresoli a =C3=A9crit=
+=C2=A0:
+> devm_drm_of_get_bridge() is deprecated, switch to
+> of_drm_get_bridge_by_endpoint(). As of_drm_get_bridge_by_endpoint() retur=
+ns
+> a refcounted bridge, ensure it is put.
+>=20
+> drm_panel.h becomes unused, drop the include.
+>=20
+> Acked-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-thanks,
+Reviewed-by: Paul Cercueil <paul.cercueil@bootlin.com>
 
-greg k-h
+Cheers,
+-Paul
+
+> ---
+> =C2=A0drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c | 5 ++---
+> =C2=A01 file changed, 2 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
+> b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
+> index 328a36215e39..51bae2008cc6 100644
+> --- a/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
+> +++ b/drivers/gpu/drm/renesas/shmobile/shmob_drm_crtc.c
+> @@ -28,7 +28,6 @@
+> =C2=A0#include <drm/drm_gem_dma_helper.h>
+> =C2=A0#include <drm/drm_modeset_helper.h>
+> =C2=A0#include <drm/drm_modeset_helper_vtables.h>
+> -#include <drm/drm_panel.h>
+> =C2=A0#include <drm/drm_probe_helper.h>
+> =C2=A0#include <drm/drm_vblank.h>
+> =C2=A0
+> @@ -447,7 +446,6 @@ static const struct drm_encoder_funcs shmob_encoder_f=
+uncs
+> =3D {
+> =C2=A0int shmob_drm_encoder_create(struct shmob_drm_device *sdev)
+> =C2=A0{
+> =C2=A0	struct drm_encoder *encoder =3D &sdev->encoder;
+> -	struct drm_bridge *bridge;
+> =C2=A0	int ret;
+> =C2=A0
+> =C2=A0	encoder->possible_crtcs =3D 1;
+> @@ -463,7 +461,8 @@ int shmob_drm_encoder_create(struct shmob_drm_device
+> *sdev)
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	/* Create a panel bridge */
+> -	bridge =3D devm_drm_of_get_bridge(sdev->dev, sdev->dev->of_node, 0, 0);
+> +	struct drm_bridge *bridge __free(drm_bridge_put) =3D
+> +		of_drm_get_bridge_by_endpoint(sdev->dev->of_node, 0, 0);
+> =C2=A0	if (IS_ERR(bridge))
+> =C2=A0		return PTR_ERR(bridge);
+> =C2=A0
