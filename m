@@ -1,48 +1,48 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010014.outbound.protection.outlook.com [52.101.84.14])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013013.outbound.protection.outlook.com [40.107.162.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AABC45041A
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 16:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FE377034
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 16:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790871712; cv=fail; b=TRfB29djf3pZz0gORiTx4IoD9q3NuByehhKKk023hAKWwuc9N6tKJRP9YyqHAamMlOmzEicsIb011VdO1v4SU6KocnhqpBKokJz/1KnAyZsW1g7+/xDOeE0KWlYIs5IzOe4hf9Kbct8Ya1S7WZ6xMce0V/yM96fk8NEzh9E2qsI=
+	t=1790871983; cv=fail; b=mFf38FySLo7lt87wWmwiHEm8RadNXJXv74ajcUkWp8xnb+cIOpjDT2sHMW5MiDXxPfK2GYbNpccWd5Bo98lf7idYDdyOyIciVKltIWtnkWFm29T9uRL/mgz5srjVJSBh8vS4UDy8ka0o3YaOMVoYpzUtf2ffZqLTm8PH/OzvpVI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790871712; c=relaxed/simple;
-	bh=OphHspHcRlWZ24obVzq+iUWnxSJD2/FtvfoCVtw0Qhg=;
+	s=arc-20240116; t=1790871983; c=relaxed/simple;
+	bh=SeI3X48NIFTRXyZOUHoO/onQjGEOGV2HISdwdtfcVIs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=J0Ed7hZKqyB/cxTkgyuR/axXhZYOUDwZMpY350OA9cCnuX8Pv2VMTd8gnWEnl+xtZ3dsjET9PEZ5ntWYOGs00dRy1Qmwgyw2hUhIpfanKYw2TsXWLG4PjSD21sK3HKn9rbXKy23kViqO6XRUVOz5FEKJ/AwZe1409vIQ8xncwHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=osaipHd5; arc=fail smtp.client-ip=52.101.84.14
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BLH7Y0kFsmQiX8hXRd91inWQdRirC6RJ1EH2QK/xhufrQ7QmePr55elP4j+jg/KCeSQpyi8Ds5QwgU+Fo+F8pqm8iOgolf61JriAKCFehx2MTLV/gn/D+tSmMFBw5XKC0OGjxRTvFgawCebvVbu/rRrjWLOOf0R9yP4YaD1A5DQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gZvYaEPJ; arc=fail smtp.client-ip=40.107.162.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="osaipHd5"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gZvYaEPJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fpFh7UATOltrM+8wnnnno0haMWxS4Xr3Lvqc918silRH7JQ1M/OBkyWx/v40Tux+2e5StFNM5kVj4sta9Z302po2UPy4QeV9BDcF34aolDBVDAAxw/LvyJrFikwJWTFF3s0YDjV1lgqGeTuzl3CFOQb6UmxGPCfIg5Pv6hH8XMC/TH8IDaXU9Tfb/hKiTNx8Fi3OSvr4biYTy60d9lmvhR6b9kAVXE8/T8o0NVisyw3QLn14vZy0I2P5/mwVIRWUu2AgXJzRGMQKPSZThloe/NDt8Esze04wEr7wWk8A4ct40x9rJNCy7xzhBE+u0v3HcbD552HMf6JNI5so8vB+Ww==
+ b=V5WyG2T5ta0TxoZOzVw2VKp8HT61Z1/W8HsxIQuxLbJgbsv8d70JytH6au+xfTLEUBxMt3wRT9UWz9XXsUGHwy3fkWpNzTd4fqXiLmUaOqPubEw5Bc6ryL6YJEKX44SKrqKrLmX1HxOjxrUkDo72mzX1AH96k6JWV5J/qfb6QiyyQtxwDNPevj4fu5ahO89FKVYccQmAMP844KYeT/rO/iKUmOCIox+6mAfXMy3WZU+yBnlqqyU7ZBSuDOJBdqyQnIkdGZwCLXyqxf6nDlD8ESGF/E8K6wFBER0lxB+VAhpqDK1YHFduVSVKLLoqdola/uSHXqCeAKsjL40c+ZSeOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C5mDUU4uiGDtUy1EhCFTUpTSINDWQJ93YU/r8WQP5XQ=;
- b=wC7sP301aROD+8S6h6bpsusfd5mVaXd/qp6OXEy3FRQUNoYFWn6WyW7jahGc1fIvaicly2JAfQ9Masbrfqh6jSRuXidxLczQWUrowaOLwgkZeGo1qTcPK4FRV4r5mJu8TGw5To58TFUGSCo1RF8fIgmlAZ+IyfDio8wBZSEdBon1pqvpIg2Vc8Ultrx9dRl6Gmx/X2b+9ZNuGDcTJI+w+NTJeYJkuSk6U3tRGGcStXbMhmZmDQCyMZR8YjkIzda+C42fToMmIKsl5T9cxwDglYvKTtKCpw9TEJ8CusNNR/sj9JCrX0qDZHrtLEVHRcpsAF12En1mTHskwaT1lKcoEA==
+ bh=TOgZd6VLdZnRsvYndlXC8GHgusDHdMdjS+sKtbYYN6s=;
+ b=L2zqS8/gu0vkEf55I97yX04zI9ZquqHVIKIfUBjYIXqGYvCxEQxHUr9EuH0YS0BehvtUatSeHJHR0HjpeUJa8AVP54SGwN10TTROJVSaVHge9aDXhklx9Z52HVeDVnI7fpabof0WVS3poLnwGUzYrraHm6gRLce+/mkfYtbITRfIPh/YS669HGDOqRLlWeXzXsu7bjiiFubcjjsdSMFu+60+i1ZbjAURRvniJQmfJSqXHPQFA7PcaS7+45wYo84ej2Ad7pTDBKucdTUSxDJKxC8Fj2cC4JIfQbmhyw/ZM6Axp5AyFkCk39mBZVmqMcC19EqeLS5tlWrgfOAVW7it7Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C5mDUU4uiGDtUy1EhCFTUpTSINDWQJ93YU/r8WQP5XQ=;
- b=osaipHd58545QkSMaTRy3NnrILVUbrPkcUDEZKCzdM+sbBZaSTqxeSIY8beZ8o5JA4HhxN7dqXQr22b4XZmNqzByVwE35fO7PnE87sfgm4ELGvLiLQ/3H1xArFmaN6WNHHHJqzTumuQx5/Rwi3MNPYJlYb2OTaVfEM8hNqwasnU9bdlCpUEzWCIs/d/2rH94jqbBSVWvxefuJnzU+hWuhPim2prGOGJMNto1eEYb8rNw9f3H3gZ2d9GlhiuQugr9mOarVGx7l8sSmboI78wSA+83f8GsQWOOOZKY/S26D/g5GIPejBPSFel/Dnf5T0HK/PnpYCX5HClEDHFNGH2Kwg==
+ bh=TOgZd6VLdZnRsvYndlXC8GHgusDHdMdjS+sKtbYYN6s=;
+ b=gZvYaEPJs82gq7xaDWujoE2fRGMStq5GZ69ZnWj9mzX6nTjaz4OBBfhLKMaiX+GJ5AfJpwsANhuBfL0UOJPhL3sDQXTm64JhgtPGT4/rDCny6B8rzM0cJRrGPAQikVOehKpU1OwWmri4xjn78nr4WV7+lVBqduD7d8TeKj478+9tQ9O0wmPJvqfyP0FlnxcM5YyiIUzL3XNBBha/IbD8nR9bOgEwPxCTjqiHl1FoBIXzc4m144DI1WenlmkOSTnXxw0w30iH7kgXNBT3uJh/6G4XOIA8Eg9BFt6sUOIE6ljr53EVA2KKbQGFssrWYLnpUuiKV6d5DQcP2qymVr/z2A==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by BR0PR04MB558091.eurprd04.prod.outlook.com (2603:10a6:2c8:47::19) with
+ by AS8PR04MB9045.eurprd04.prod.outlook.com (2603:10a6:20b:440::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 1 Oct
- 2026 16:21:46 +0000
+ 2026 16:26:16 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
- 16:21:46 +0000
-Date: Thu, 1 Oct 2026 11:21:35 -0500
+ 16:26:16 +0000
+Date: Thu, 1 Oct 2026 11:26:05 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Leonardo Costa <leoreis.costa@gmail.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -52,16 +52,16 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	marex@nabladev.com, stefano.r@variscite.com,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/7] ARM: dts: imx6q-apalis: Add Toradex OV5640 CSI
- Cameras
-Message-ID: <ar6Ij7KJEPbIa2uT@SMW015318>
+Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
+ Display 10.1" LVDS
+Message-ID: <ar6JnZp1jBvlc8bx@SMW015318>
 References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
- <20261001155412.3177428-8-leoreis.costa@gmail.com>
+ <20261001155412.3177428-4-leoreis.costa@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261001155412.3177428-8-leoreis.costa@gmail.com>
-X-ClientProxiedBy: CY5PR18CA0034.namprd18.prod.outlook.com
- (2603:10b6:930:13::7) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20261001155412.3177428-4-leoreis.costa@gmail.com>
+X-ClientProxiedBy: CY8P222CA0013.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:930:6b::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,369 +70,215 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|BR0PR04MB558091:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ff8f366-1215-4592-fbec-08df1fd8163f
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB9045:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e8ce04c-4560-49ee-9759-08df1fd8b745
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|19092799006|1800799024|7416014|376014|22082099003|18002099003|13003099007|4143699003|3023799007|10067099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|23010399003|19092799006|366016|1800799024|376014|7416014|18002099003|22082099003|13003099007|4143699003|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	wQx82obHBrjXD4Fdc7QNtvFTxI52tJpqlqYsWbDA8eAN+9jx36Sz3IcbQ64YMD8mf9smg/UjBVoaKf3gxyVw4OKgqq0BEHGccbV3L/AHC2NLBXw4PVwqI2asT8m4Vv7zOpYnyiKh06PrTEweKz89ocF1abqXrOJmRJnU66Mb9yglgc2PQ0BvcyG3AfHlDyzbOteL5ctFeALoE3XKGfJIGj/9Y3G7BtOiimTZVp1AG3CQp+kLWzzziyKDGl1hN9eGGjPf4b86bVN74bfq3DTZECh07nY8tHldHKkSQtr0D880LqaJS/2VVP2y7+m35nCODsAaGfeBKJ7+ixRuSlKdLpDofkKXt/nUOArIuTnG91C6a37jPzEejO4PERmGetNuAO+oH7BJ1JdAEETHCz6l1/IC+e6Yt7tkucHlCIqsdvpxjAZ1syDSupu9/xGN/7JTj228S5Of3RHgMCZj+gnPM1SKv3YdM1NAdeqmTFlhAfRxB0KOShdGTOAoILeMS7zeJ2x1obZ/wOqgvWWN6ZM2aZy/4HX/BEnQTe3VhKCpxuEmCrXePY4DPY9WePOyBW6oRjCVUcl716a/CgRCI66+kkFHZk6D0GtggrWXTEIGytk=
+	83hZjgUj/LY5WXlTYNe9LckLS9MmPS40adl37Z/9e8+lYGwVG9W3VAcdfso1k16cpGtWmltUqtoYdgy3WBh4ruJx6sq5R4rTbjqRMbesOAIEJwNVum6dLKlsaBF49lWTtdnpmgVyPFn2yy/deMuVuULFH/olkG8QeB0lPx6BxCDhHk5tRMNd//LdX9RMft7gdAEOiPmIFP1GsNEhrBoZhl2NC7+7YHHaqB2QuAVrXjjx2KHiadBT3E+j27LPzk2vjdc6l83ZxTJ0gsXasubN4w5NHweG7MxiwO7F87MhUiSfu0HdKsWx3pc9GFf9rvOAh+kQQWovR8ddcL7nK7bi521aDf6uky2fc0f6eykXxhsgkjCMvS+x0MGPg0bokdATf1hlOAVdjVuYNqLK3yDxEPtOv6fG5VfRGpWLFJqKQIcLJITV3A/8rH3AAusDEoJl8TCuNIC6bzrDigqAXyagamdvIElp7UZYQMYPBxcLyD365DB7QuQi8wigFjxsiPTCMqMhoO4ti39tYUv8kK9gfCsFPcXxscoB9uMqGkU2WAm+qSiybHKw6B+BRHPcVuep1PtjGxErQNuDS/ZkPEEaZ0nQvJt5LbLXxec9WM1knpriSgdHuT4wpGrzkUNXGuTT
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(1800799024)(7416014)(376014)(22082099003)(18002099003)(13003099007)(4143699003)(3023799007)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(13003099007)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GagtblaN5Hel3Q8WOgnPzqbmqey1CdUKhd/GvQ0+uy+2DSqFZYTossbGYOBd?=
- =?us-ascii?Q?Yv2QHQk2ekm1k1/an7+w6rTRcLMiiKmDw3aTX9zjGEnX413BeDmaMXAI1Q3k?=
- =?us-ascii?Q?08vtV08tHK/2RriKD8oau7fXkYbvgjmoDku94Hfa4jiyoW2s7uPZbnKFJTnU?=
- =?us-ascii?Q?VMGPChiZ7Dgbf4t9Wq1lMNeuQiORlJvcpiWx0zTgOsOaaHWt8w12E6xKwRYD?=
- =?us-ascii?Q?+W0QedeY7+eWqwalhUq0rohx9bdur5UFUOuRD4GHOiNKMTErOiz2sX05GUFU?=
- =?us-ascii?Q?QqrgigNCQzQkO94YIjCUADOpbEySrdwiUQTQ3ZTrX0/HspCWr3GDc0ZxGuGN?=
- =?us-ascii?Q?Ve/p/yOyfq4WHylIpvuOJCO74h1Lx1mW5N0T5QXKQzhFrO8rCL8PAzbwzVCW?=
- =?us-ascii?Q?9Qtwjc/Ydwv6FHFAKHSkZHZ6eRpfO7BsxT+w3LgDdfuiG84BRer35edbA73A?=
- =?us-ascii?Q?S9YI/R8p8Iew4t5jHFnK3pxis1zVW/ijVldzbc2dlxTZvbDHnI03u54PgZY7?=
- =?us-ascii?Q?4D46bd2VO2wkkYrU7Dd15JF5adxkN9rf4Bs2yRIxTXMcTfNUxsGGT2yBnM5V?=
- =?us-ascii?Q?JSTyWYMZpa0rBjwD20XJ+Xx0iQRm1UljIVNHtIBtM6vARi6lKiK8SEiW1nRe?=
- =?us-ascii?Q?JUDUP81e7cRaPmCdJ9UgsGouiItjm40nsIG7TmGxwtZaVcuFHTYLB0MfGJpS?=
- =?us-ascii?Q?XTWYwMZ9EVeFcXmDhUbRr+sgJSHauxPcQCwxv6kUpvW3Gby+MW7ZLUwrlzir?=
- =?us-ascii?Q?PQzrwrUTGjQj1ZVEVJ2Se6DlkIeQcidlYuF1fA6sYXkWHeU0Ge0DH9pyMCbi?=
- =?us-ascii?Q?S71lnZPVTVw1br+DidOK7hzyjhaMLi1QXiTMWz0Lc4BGYZjkPmz2V9VXYdHF?=
- =?us-ascii?Q?M8y1a9eHkjP7Y817nBQL+/pJQQ4y/B2DR5Gr7+7T+F/WglEOJFAX9GX9KM7v?=
- =?us-ascii?Q?m8hiuHqvTo1ugtnUZCP+rdqDFaEWKVnnC8iRCPxL1e5c+j0CExoIzxMIk0lu?=
- =?us-ascii?Q?G0gj8m3YE1HYTAG5spJI7YLL0rH/4Bs979u+wvTPh+DJ0V+gGg3luIlM4RVB?=
- =?us-ascii?Q?2QTTst1aym9jr4XndMoGD564RtzxYjB6yroaL84GgDB9dY1C3955IdLhw5kY?=
- =?us-ascii?Q?qjNo2rG8D8kJuMtRvjMKoqRU+W11QH407flCUpFl73+ZGfb8E71EmjSJU5Vw?=
- =?us-ascii?Q?HY9fOYswFu7CCTfLbzFXdHCYv9D3Uo1fOOa8vStz8iTelX/p9I2ZULCpaW8a?=
- =?us-ascii?Q?Wd0y06/5qEYQzvpSg2UKdYMusWMfeSfaJfrNEab6uq9ijV+BbauX9VFZ5srB?=
- =?us-ascii?Q?F6i9OTC2sfoLd0i5pYi3YnGOnQ/fk8RoP0piVghy1/3KRPF8nZ+1TFPB/AcM?=
- =?us-ascii?Q?mdgPTpoKS3j3v48FtU2Ch0+nAyiTzXWTieM09GFRe8sXQvuRj473UH+6hZtE?=
- =?us-ascii?Q?iYFuZpJj78CYlJOZ0+cyp6lf4mxJ4Kpyetc9pRq2zhiTZoUrR7Vg7Z1huYOR?=
- =?us-ascii?Q?zcMcELcf3u95FrF+a+ta2TdwIEm9BJ5IF6aP4CBbu7T56x7AvLyay4DuZg+a?=
- =?us-ascii?Q?xheup5zWvnTsburRc4RG2nQOYnhPFPET5TN1TRaVsPDdoi9NYedL03pGKXM6?=
- =?us-ascii?Q?el9AnF6ARZJJAohIEysJiry3CSKv8CmvlemGX9/D/X/H6ygHLte1JhsIeZte?=
- =?us-ascii?Q?ZeDVJ5GjzgLvBYqp46EQijFH0f06igUS76iY0CD8U3+nZtr+y0758zBH5w8K?=
- =?us-ascii?Q?2Mwh3aO3q7afH2HMH4oRB3jpYR2p8tZX2rujNW1idVi8HohjSMUL?=
+	=?us-ascii?Q?QF2QoQZazHh/6VENqMK4QOm8oaouuMURFq9NvVfEHHFKrXw2jtBkQei4FBpO?=
+ =?us-ascii?Q?3JRvObOKAroMSGLlT0yB+fCpPRTGav2ZnD6unhvnzswr/PSMgWbHQg4QZd7/?=
+ =?us-ascii?Q?7x3yheaGImoVhfQut3aQ6n208FTtsiIxBdAu4ZAytprzu6XiBjtD8Y6pNjw6?=
+ =?us-ascii?Q?daKjOO3omP1YZO2l65JFzBfMZl2y0OFl16rvMpYS2yjVrhliFJGQ+/tko062?=
+ =?us-ascii?Q?+YBUfoCM7jy4SKEkKrUxNpiAA366qXxYVz/KLmyPMadM7Bq1Tmm9ghmc/+a6?=
+ =?us-ascii?Q?BYEIimtIyk8m6GnnxPMP8tG0Y5zm4M9ECPaTiU5iv/MFeo0/HhS11Dxhvkmh?=
+ =?us-ascii?Q?IBTq8M5JlrJ0T3SkAAAeEtwpr/l8eX4iMNze2W4BAKQq4sFbgqQ+AdexNZ27?=
+ =?us-ascii?Q?ZsFlFRq7hNpm2hg7TwC07Q4qhMUc0g4aQTdmV0LJk28eU/ja7We7W2AhNUIb?=
+ =?us-ascii?Q?JdCi3jGV/1lKqMpQVbOLVP3s7YxyprAsbYurwpPFMP42aPOrjAoJAYIqqMpw?=
+ =?us-ascii?Q?2A43DoMMZZgn+xJFjjNnYyB1elUvnZfofip16Wiv9ehHl5KoK0NbR89kCVu4?=
+ =?us-ascii?Q?vj7rUIoRdzm3MXGlhFYoUdM+AQD4fUJy2mC5bHpu+zvhJFzljShz9WvC/dNR?=
+ =?us-ascii?Q?l6v+1cpvF6vDdtpatQ86gwGKFiHdSd5wLo2k/ddpmJkMmKArkRFBBjPaWN4r?=
+ =?us-ascii?Q?VjagO+OBMbljZHPDK0VNaN1N1jl69iHBE06pE2U/Guqow70Ugg5Tg5ZEbHzK?=
+ =?us-ascii?Q?7JtGqsLQyROT7ImDAoyyI+J+bUidaJz1JvYWMZPSvwz747/Qh5PC5q8UjH1A?=
+ =?us-ascii?Q?2gAui/+x/GcxkXqxwtGZiNvhdK15pBpDdD0d7qVAet4ZPjj/UTP4kvEQzvPY?=
+ =?us-ascii?Q?hzZOUVmjCydZpHAGTtcFuehQAED2ugQxImbhkxBbliU12TYJbddwS8b62A3K?=
+ =?us-ascii?Q?Xh+bq42ZSBi8+nLABZ8Pr8JMcvqe4ekiWWA9wE76XgrFSugmRm9JioqFVipb?=
+ =?us-ascii?Q?GyJZkqa3JY6emmSHLu+F0QtjwHe/8HqYf6igycgwksEQsUdrcMiaE8SAN7DG?=
+ =?us-ascii?Q?+NB+3QEfI7osTixs3xeUT1eNihsIzf3VfotMVsi5a8z1MAD1yZa4r4w5M0FN?=
+ =?us-ascii?Q?xO+AGZlZCTl61OOdHOoCsM0n4ZfCDxzTCh9IWKRJT8mo25LgOYqJZqE4IZjo?=
+ =?us-ascii?Q?7K05dL34hXf0wbhRUSxkoMSKheBsAViOeCIYnkRu8XrrOLEOPCj5DUSF7hsG?=
+ =?us-ascii?Q?1MVvhuF3k9xoWRuean179SOysM8WWXK/zPPBnfiL9PCegFK7AgWBhGX92go9?=
+ =?us-ascii?Q?SdWPk1YgD52OinvNvnP0P6sX37SWpRdbUDjGQtLHiygvre1v1+NxJ8WqVtDt?=
+ =?us-ascii?Q?yJH54Q3UYYsgZ06LqsWfv1u9Xg+bq94FevV8gtSXxtuD2Km9kUam6orwS+uL?=
+ =?us-ascii?Q?P+2/ciWWOkh+ngQIvXTpaBvQtD00D7i2UCcnIa3NHtJjd9VO/wZajRBhgHv8?=
+ =?us-ascii?Q?ThkkCIxx5OU4zPU6rp9izSpSGMEi7XuCiffUa+Ku/YjtyDhCqKo+Vq4LJ134?=
+ =?us-ascii?Q?9dKt1dCT4zStTiuSBG+ko4SN3wl9A8IvwQrrit1w0uEE7oKhKB07wTbZOaR9?=
+ =?us-ascii?Q?rbn9aF4qLB0A5FdFjN6vD5DU/unVJPL7DxQagDZ4FlKoU9QsH++yx2/jYz1J?=
+ =?us-ascii?Q?zENKEUeV5TBrJPzRB7Ee+clKP+glp3sk20a/GqKKasU8x34pfZJTRKhzE/oS?=
+ =?us-ascii?Q?X20dY7ozJlXEZdjeX9KY0R9ehK0OslTXoopukGPdGUfmIasbGZ3K?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ff8f366-1215-4592-fbec-08df1fd8163f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e8ce04c-4560-49ee-9759-08df1fd8b745
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 16:21:45.9547
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 16:26:16.1083
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /6w1gkRfHDa7CON8gvQPAn8XM3s5DnHfUcSfMEUZo4fcnQcoKHlsDvc6vdqzoAPb8HiPJUUtaJHawOmibMdB68fUMgYajmYBiI81w0IHlCI/fbJPQZ8MtJufzF6CcTbL
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB558091
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3CuWYJmYrRBcuQTk3Gl1StTduBeDH6SRZHf1fWnrbT7hBIVUkx5fVX0TmY1XgEdHG+7swXG0Qb8q5WTojBkaa9lLcX7sNZvjCoMJHde6k8+cYSa3iLjPzly9wqENdxVB
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9045
 
-On Thu, Oct 01, 2026 at 12:52:57PM -0300, Leonardo Costa wrote:
+On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
 > From: Leonardo Costa <leonardo.costa@toradex.com>
 >
-> Add device tree overlays for the Toradex OV5640 CSI Camera on Apalis
-> iMX6 CSI.
+> Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
+> LVDS connected via the Apalis iMX6 LDB.
 >
-> The default overlay describes the current CSI Camera Set 5MP OV5640 with
-> a 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the
-> legacy camera module.
+> The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
+> touch input is provided by an Atmel MaxTouch capacitive touch
+> controller.
 >
-> Remove the ov5640_mipi node from the Apalis iMX6 dtsi, as it is an
-> external component that does not exist at the SoM level. The camera
-> modules have their own on-board oscillator, so the sensor xclk is now
-> described as a fixed clock instead of the SoC CLKO2 output.
+> Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
+> external component that does not exist at the SoM level.
 >
 > The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
 > Board V1.2 device tree to provide a ready-to-use DTB.
 >
-> Link: https://www.toradex.com/accessories/csi-camera-ov5640
-> Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam/
-> Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
+> Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
 > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
 > ---
->  arch/arm/boot/dts/nxp/imx/Makefile            | 12 +++
->  .../nxp/imx/imx6q-apalis-ov5640-24mhz.dtso    | 17 +++++
->  .../boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi | 68 +++++++++++++++++
->  .../boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso | 18 +++++
+>  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
+>  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
+>  3 files changed, 59 insertions(+), 13 deletions(-)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
 
-Please use nexus connector to share one ov5460 for all boards.
+similar 7" case, add panel module name in file
 
-https://lore.kernel.org/imx/20261001-verdin-imx8mp-hmp-camera-ready-v2-3-7d1343ecd3ec@toradex.com/
+imx6q-apalis-lvds-panel-lt170410.dtso
 
-Frank
-
->  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 73 -------------------
->  5 files changed, 115 insertions(+), 73 deletions(-)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
 >
 > diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-> index cb2ad0756e7fe..9bb3bd9756d11 100644
+> index 32d77a59c4358..23fcc80d7f309 100644
 > --- a/arch/arm/boot/dts/nxp/imx/Makefile
 > +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-> @@ -103,6 +103,14 @@ imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
+> @@ -99,6 +99,10 @@ imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
 >  	imx6q-apalis-v1.2-ixora-v1.2.dtb \
 >  	imx6q-apalis-hdmi.dtbo
 >
-> +imx6q-apalis-v1.2-ixora-v1.2-ov5640-dtbs := \
+> +imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds-dtbs := \
 > +	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-> +	imx6q-apalis-ov5640.dtbo
+> +	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo
 > +
-> +imx6q-apalis-v1.2-ixora-v1.2-ov5640-24mhz-dtbs := \
-> +	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-> +	imx6q-apalis-ov5640-24mhz.dtbo
-> +
->  imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds-dtbs := \
->  	imx6q-apalis-v1.2-ixora-v1.2.dtb \
->  	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo
-> @@ -250,6 +258,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
+>  imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
+>  	imx6q-dhcom-pdk2.dtb \
+>  	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
+> @@ -233,6 +237,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 >  	imx6q-apalis-ixora-v1.1-hdmi.dtb \
 >  	imx6q-apalis-ixora-v1.2.dtb \
 >  	imx6q-apalis-ixora-v1.2-hdmi.dtb \
-> +	imx6q-apalis-ov5640.dtbo \
-> +	imx6q-apalis-ov5640-24mhz.dtbo \
->  	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo \
->  	imx6q-apalis-panel-cap-touch-7inch-parallel.dtbo \
->  	imx6q-apalis-panel-res-touch-7inch-parallel.dtbo \
-> @@ -264,6 +274,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
+> +	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo \
+>  	imx6q-apalis-v1.2-eval.dtb \
+>  	imx6q-apalis-v1.2-eval-hdmi.dtb \
+>  	imx6q-apalis-v1.2-eval-v1.2.dtb \
+> @@ -243,6 +248,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 >  	imx6q-apalis-v1.2-ixora-v1.1-hdmi.dtb \
 >  	imx6q-apalis-v1.2-ixora-v1.2.dtb \
 >  	imx6q-apalis-v1.2-ixora-v1.2-hdmi.dtb \
-> +	imx6q-apalis-v1.2-ixora-v1.2-ov5640.dtb \
-> +	imx6q-apalis-v1.2-ixora-v1.2-ov5640-24mhz.dtb \
->  	imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds.dtb \
->  	imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-7inch-parallel.dtb \
->  	imx6q-apalis-v1.2-ixora-v1.2-panel-res-touch-7inch-parallel.dtb \
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
+> +	imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds.dtb \
+>  	imx6q-apf6dev.dtb \
+>  	imx6q-arm2.dtb \
+>  	imx6q-b450v3.dtb \
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
 > new file mode 100644
-> index 0000000000000..3e4bbb11ce203
+> index 0000000000000..a84114e1d3fba
 > --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
-> @@ -0,0 +1,17 @@
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+> @@ -0,0 +1,53 @@
 > +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 > +/*
 > + * Copyright (c) Toradex
 > + *
-> + * Legacy Toradex CSI Camera Module 5MP OV5640 on Apalis iMX6 CSI.
+> + * Toradex Capacitive Touch Display 10.1" connected via Apalis iMX6 LDB
+> + * on carrier boards with a Toradex standard LVDS display connector.
 > + *
-> + * https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640
+> + * https://docs.toradex.com/105952-10-1-inch-lvds-capacitive-touch-display-1280x800-datasheet.pdf
+> + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
+> + * https://www.toradex.com/accessories/capacitive-touch-display-10.1-inch-lvds
 > + */
 > +
 > +/dts-v1/;
 > +/plugin/;
 > +
-> +#include "imx6q-apalis-ov5640.dtsi"
-> +
-> +&clock_camera {
-> +	clock-frequency = <24000000>;
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
-> new file mode 100644
-> index 0000000000000..302f1ceb6a102
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
-> @@ -0,0 +1,68 @@
-> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
-> +/*
-> + * Copyright (c) Toradex
-> + *
-> + * Common device tree include for Toradex OV5640 CSI camera on Apalis iMX6 CSI.
-> + */
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +
 > +&{/} {
-> +	clock_camera: clock-camera {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +	};
-> +
-> +	regulator_camera: regulator-camera {
-> +		compatible = "regulator-fixed";
-> +		/* Apalis GPIO4 - CSI Camera Connector pin 24 */
-> +		gpio = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		regulator-name = "V_CSI";
-> +		startup-delay-us = <5000>;
-> +	};
-> +};
-> +
-> +&i2c3 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	camera@3c {
-> +		compatible = "ovti,ov5640";
-> +		reg = <0x3c>;
-> +		clocks = <&clock_camera>;
-> +		clock-names = "xclk";
-> +		AVDD-supply = <&regulator_camera>;
-> +		DOVDD-supply = <&regulator_camera>;
-> +		DVDD-supply = <&regulator_camera>;
-> +		/* Apalis GPIO2 - CSI Camera Connector pin 22 */
-> +		powerdown-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-> +		/* Apalis GPIO1 - CSI Camera Connector pin 11 */
-> +		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
+> +	panel-lvds {
+> +		compatible = "logictechno,lt170410-2whc";
+> +		backlight = <&backlight>;
+> +		power-supply = <&reg_3v3_sw>;
+
+use name reg_lvds_panel, it help improve reusablity.
+
+Frank
+
 > +
 > +		port {
-> +			ov5640_to_mipi_csi2: endpoint {
-> +				clock-lanes = <0>;
-> +				data-lanes = <1 2>;
-> +				remote-endpoint = <&imx6q_mipi_csi_in>;
+> +			lvds_panel_in: endpoint {
+> +				remote-endpoint = <&lvds0_out>;
 > +			};
 > +		};
 > +	};
 > +};
 > +
-> +&mipi_csi {
+> +&atmel_mxt_ts {
+> +	status = "okay";
+> +};
+> +
+> +&backlight {
+> +	status = "okay";
+> +};
+> +
+> +&ldb {
 > +	#address-cells = <1>;
 > +	#size-cells = <0>;
 > +
 > +	status = "okay";
 > +
-> +	port@0 {
+> +	lvds-channel@0 {
 > +		reg = <0>;
 > +
-> +		imx6q_mipi_csi_in: endpoint {
-> +			clock-lanes = <0>;
-> +			data-lanes = <1 2>;
-> +			remote-endpoint = <&ov5640_to_mipi_csi2>;
-> +		};
+> +		status = "okay";
 > +	};
 > +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-> new file mode 100644
-> index 0000000000000..9cf7587c263bf
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-> @@ -0,0 +1,18 @@
-> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
-> +/*
-> + * Copyright (c) Toradex
-> + *
-> + * Toradex CSI Camera Set 5MP OV5640 on Apalis iMX6 CSI.
-> + *
-> + * https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-> + * https://www.toradex.com/accessories/csi-camera-ov5640
-> + */
 > +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +#include "imx6q-apalis-ov5640.dtsi"
-> +
-> +&clock_camera {
-> +	clock-frequency = <27000000>;
+> +&lvds0_out {
+> +	remote-endpoint = <&lvds_panel_in>;
 > +};
 > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> index e52b55a386f7a..ce160fad5ee06 100644
+> index 5fcd7cdb7001f..e52b55a386f7a 100644
 > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
 > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> @@ -36,12 +36,6 @@ backlight: backlight {
->  		status = "disabled";
->  	};
->
-> -	clk_ov5640_osc: clk-ov5640-osc {
-> -		compatible = "fixed-clock";
-> -		#clock-cells = <0>;
-> -		clock-frequency = <24000000>;
-> -	};
-> -
->  	gpio-keys {
->  		compatible = "gpio-keys";
->  		pinctrl-names = "default";
-> @@ -116,26 +110,6 @@ reg_module_3v3_audio: regulator-module-3v3-audio {
->  		regulator-name = "+V3.3_AUDIO";
->  	};
->
-> -	reg_ov5640_1v8_d_o_vdd: regulator-ov5640-1v8-d-o-vdd {
-> -		compatible = "regulator-fixed";
-> -		regulator-always-on;
-> -		regulator-max-microvolt = <1800000>;
-> -		regulator-min-microvolt = <1800000>;
-> -		regulator-name = "DOVDD/DVDD_1.8V";
-> -		/* Note: The CSI module uses on-board 3.3V_SW supply */
-> -		vin-supply = <&reg_module_3v3>;
-> -	};
-> -
-> -	reg_ov5640_2v8_a_vdd: regulator-ov5640-2v8-a-vdd {
-> -		compatible = "regulator-fixed";
-> -		regulator-always-on;
-> -		regulator-max-microvolt = <2800000>;
-> -		regulator-min-microvolt = <2800000>;
-> -		regulator-name = "AVDD/AFVDD_2.8V";
-> -		/* Note: The CSI module uses on-board 3.3V_SW supply */
-> -		vin-supply = <&reg_module_3v3>;
-> -	};
-> -
->  	reg_usb_otg_vbus: regulator-usb-otg-vbus {
->  		compatible = "regulator-fixed";
->  		enable-active-high;
-> @@ -690,30 +664,6 @@ adv7280_to_ipu1_csi0_mux: endpoint {
->  			};
+> @@ -95,18 +95,6 @@ lcd_panel_in: endpoint {
 >  		};
 >  	};
-> -
-> -	ov5640_csi_cam: ov5640_mipi@3c {
-> -		compatible = "ovti,ov5640";
-> -		AVDD-supply = <&reg_ov5640_2v8_a_vdd>;
-> -		DOVDD-supply = <&reg_ov5640_1v8_d_o_vdd>;
-> -		DVDD-supply = <&reg_ov5640_1v8_d_o_vdd>;
-> -		clock-names = "xclk";
-> -		clocks = <&clks IMX6QDL_CLK_CKO2>;
-> -		pinctrl-names = "default";
-> -		pinctrl-0 = <&pinctrl_cam_mclk>;
-> -		/* These GPIOs are muxed with the iomuxc node */
-> -		powerdown-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-> -		reg = <0x3c>;
-> -		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
+>
+> -	panel_lvds: panel-lvds {
+> -		compatible = "panel-lvds";
+> -		backlight = <&backlight>;
 > -		status = "disabled";
 > -
 > -		port {
-> -			ov5640_to_mipi_csi2: endpoint {
-> -				clock-lanes = <0>;
-> -				data-lanes = <1 2>;
-> -				remote-endpoint = <&mipi_csi_from_ov5640>;
+> -			lvds_panel_in: endpoint {
+> -				remote-endpoint = <&lvds0_out>;
 > -			};
 > -		};
 > -	};
->  };
+> -
+>  	poweroff {
+>  		compatible = "regulator-poweroff";
+>  		cpu-supply = <&vgen2_reg>;
+> @@ -738,7 +726,6 @@ port@4 {
+>  			reg = <4>;
 >
->  &ipu1_di1_disp1 {
-> @@ -743,22 +693,6 @@ lvds1_out: endpoint {
+>  			lvds0_out: endpoint {
+> -				remote-endpoint = <&lvds_panel_in>;
+>  			};
+>  		};
 >  	};
->  };
->
-> -&mipi_csi {
-> -	#address-cells = <1>;
-> -	#size-cells = <0>;
-> -	status = "disabled";
-> -
-> -	port@0 {
-> -		reg = <0>;
-> -
-> -		mipi_csi_from_ov5640: endpoint {
-> -			clock-lanes = <0>;
-> -			data-lanes = <1 2>;
-> -			remote-endpoint = <&ov5640_to_mipi_csi2>;
-> -		};
-> -	};
-> -};
-> -
->  &pwm1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_pwm1>;
-> @@ -933,13 +867,6 @@ MX6QDL_PAD_DISP0_DAT23__AUD4_RXD	0x130b0
->  		>;
->  	};
->
-> -	pinctrl_cam_mclk: cammclkgrp {
-> -		fsl,pins = <
-> -			/* CAM sys_mclk */
-> -			MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 0x00b0
-> -		>;
-> -	};
-> -
->  	pinctrl_ecspi1: ecspi1grp {
->  		fsl,pins = <
->  			MX6QDL_PAD_CSI0_DAT6__ECSPI1_MISO 0x100b1
 >
