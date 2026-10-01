@@ -1,95 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1797237C0F6
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03493B95E0
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790838043; cv=none; b=eEcQ7alSt7nPeSyKsuj482JONiLEPjOntlYQFQm+YbSNIimeb+1fuY+7FWg9U+3SMzD6Pdqr+KZFtlDSmIRdMLa6SLX7727xzTBNPtwrlfqXXbok/O1ttVnDcp87t26kanwn7ljiXw44IdjiwY4iC1KgHM64CYiNkfcWpdandrM=
+	t=1790838594; cv=none; b=sWVl74ZHWin54FHqZKXhIBomuHL9DD9U8zW2sSIW0B3p2tQ/FCDU54GPX/yXMbSR7/KqpgBOxUDHkH88cDwAlJWbJNjcDeGAzjAeZ2Ro6pBAuthUy3kuUYoqEC0u1MGK3zCZLHcF3PRxE18/3Ibc78leZ7ITp0vlZWGVd9+50iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790838043; c=relaxed/simple;
-	bh=mElU9b/C7GbTRzayuEisivT56pskbTQfjgTfMpMhZqo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KPYsk6tIG0PfNHa5zTCrns3vL7VhsmhgiCTpgA0P2Y4kkG93Un7aSkp2UEjoF/M7k98pFzFmp6funqlsWoi0rlRZ8utw3Q7Dm3l5QyNZtNTu7HQyXsD/rph0zNhCB402s5o3p2tixlSOu91mT6Twxifnc941o4tD1wrgeUVCJcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lai8yV4G; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lai8yV4G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A820E1F008BD
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 07:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790838041;
-	bh=mElU9b/C7GbTRzayuEisivT56pskbTQfjgTfMpMhZqo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lai8yV4GET1ANIXcbjD6gxSIgj3Rbewk0/lu4lDjiGBK0AR2xznTwMZ8CAZDJyZ+L
-	 EsvRhzhNuZuaLDciN25FVrTaHZkxP0LHlYVvFBYK0H6yACyVsrCMUX1oTjEM7jmYTY
-	 Lml8J1D9V8IgUtC3M+fkAuJVWqFWPEeBj49DI/54rn0I8w7EvfJfGvHPCetwRZke+m
-	 Jrb5lxpINDotFvbXQ6w5GB2OIVzR4m29U2MsAoAZdl9oH5cDwh1t9GqoAezRLL1zgD
-	 8Mx7kcqUrZSvQETzlBiDJnpk2uqEDqsoQyIxANadAG7s+7/C3LEuQcMM5ylc6Q6NmT
-	 FapwKDBi/znAg==
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b5e4f16f15so6064885e87.3
-        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 00:00:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxaNk5ZVWzpC/lU9w33yvjUr9XQ5JBgtdXYVoFO4QmDFGSwxn+Do9ji0cjMWZoWRC2Z2Yc=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIrGYkalTICXUPVgeq86Ti3rr49t+f/GcULt7fH54rWN+bDiNBq
-	BKzXHACoKavolxaXn/gpY0UqXgiZXDLyHIcB4i/ZJDh58Ss+EQpcIxCcguT1M1HNoiAwMgpFl55
-	/cmJwCLp+2ogRwwho1XqYRLaRCF0Jifc=
-X-Received: by 2002:a05:651c:2212:b0:3a6:5efa:5a41 with SMTP id
- 38308e7fff4ca-3a77925f62fmr11207181fa.21.1790838040414; Thu, 01 Oct 2026
- 00:00:40 -0700 (PDT)
+	s=arc-20240116; t=1790838594; c=relaxed/simple;
+	bh=CIpA8+WZKJEv1+WslyjE4xU69DpHqMzHgp98kIIc13I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TpgV4CAiBdclcA93UP9exLqGPcwaRNxQf+IWNGqtdjsXXj79QeWB6kbaPzgAOcbgT66LIUgssvVBGlTAIcDMbhKtbFF2VifakvrdjkufJvvb5FxBUcP3wYb6cpUeZZpzWEZ3C2Am6qVXZD4OqW37RPCzlrryR2b1G4pbRdjtV+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:41660 helo=localhost.localdomain)
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1xCAvR-00000001Ztc-0zR9;
+	Thu, 01 Oct 2026 09:09:50 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v2 1/3] ARM: dts: imx6: phycore-som: Set PMIC watchdog alias as default
+Date: Thu,  1 Oct 2026 09:09:45 +0200
+Message-Id: <20261001070947.1815279-2-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261001070947.1815279-1-primoz.fiser@norik.com>
+References: <20261001070947.1815279-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com> <20260916-drm-bridge-every-panel-v3-18-83afb4f1a707@bootlin.com>
-In-Reply-To: <20260916-drm-bridge-every-panel-v3-18-83afb4f1a707@bootlin.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 1 Oct 2026 09:00:28 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=89=_vKWso6+oj08FAVUqnWbiLv-DK5tkRregOchR+7w@mail.gmail.com>
-X-Gm-Features: AclHuK8HpV3tEuh3YdZ0JhZMwoz3UMRkOP0D37dSr_O7f63FhWL-xa0BlDmYi2w
-Message-ID: <CAD++jL=89=_vKWso6+oj08FAVUqnWbiLv-DK5tkRregOchR+7w@mail.gmail.com>
-Subject: Re: [PATCH v3 18/19] drm/tve200: don't create a panel_bridge
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Paul Kocialkowski <paulk@sys-base.io>, Inki Dae <inki.dae@samsung.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Sean Paul <sean@poorly.run>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Albert Esteve <aesteve@redhat.com>, 
-	Anusha Srivatsa <asrivats@redhat.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	asahi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, Sep 16, 2026 at 3:48=E2=80=AFPM Luca Ceresoli <luca.ceresoli@bootli=
-n.com> wrote:
+Pin the da9062 PMIC watchdog to /dev/watchdog0 via a DT alias, instead
+of leaving it to be assigned dynamically by probe order. This SOM
+already relies on the PMIC for reset (see commit aa4f48a4e06c ("ARM:
+dts: imx6: phycore: Rely on PMIC reboot/reset handler")), so this
+makes that the predictable, fixed watchdog device node.
 
-> Now a panel_bridge is automatically created for every drm_panel and the
-> panel-bridge API is just a deprecated wrapper to access it.
->
-> Update and simplify the code by just getting a reference to the
-> already-existing bridge using of_drm_get_bridge_by_endpoint().
->
-> And since of_drm_find_and_get_bridge() returns a refcounted bridge, take
-> care of putting the bridge reference.
->
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+Changes in v2:
+- no changes
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+ arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Yours,
-Linus Walleij
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+index ddbfecd591f5..205467fd223e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+@@ -11,6 +11,7 @@ / {
+ 	aliases {
+ 		rtc1 = &da9062_rtc;
+ 		rtc2 = &snvs_rtc;
++		watchdog0 = &da9062_wdog;
+ 	};
+ 
+ 	/*
+@@ -112,7 +113,7 @@ da9062_onkey: onkey {
+ 			compatible = "dlg,da9062-onkey";
+ 		};
+ 
+-		watchdog {
++		da9062_wdog: watchdog {
+ 			compatible = "dlg,da9062-watchdog";
+ 			dlg,use-sw-pm;
+ 			dlg,wdt-sd = <1>;
+-- 
+2.34.1
+
