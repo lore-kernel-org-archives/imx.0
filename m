@@ -1,192 +1,93 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011034.outbound.protection.outlook.com [52.101.70.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA1C4825B1
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 06:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790835925; cv=fail; b=r6iELrn5JX/y9UbcmUOpUqCgIUbRLCHPAX7/K8syKacyip5qYcwloaEUrg0nkOot5rnV5gYPYwIQYg8cEbYZzlr8xYodUbdTpYc45yFko1az6xQYcjUmKiKBuSB8qZoJ9OB1WSTKwjFYknhslT8hoi8g8fJKWusEf+8Vb9Hs8Lc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790835925; c=relaxed/simple;
-	bh=a/Ouy8W8ssqbvFWxPQEG+khFuKistsgMbgbhZNACMg4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TU1H+aSW+oYZ/Vi2mR9MU3ey+GOd8tWw/CAVj/JYb00caKcUKOQUR8UntZDPrEt493mrJc6p/N7CgBRgxa1wF6aMj5GDqERyknUryOGifiLM+oQqMqZRJVUov1AftLBfxXK40BLc1IDpgwsfLwiYgW2Lt5CYmQba49VYjSRJ5RY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mYrwaZmz; arc=fail smtp.client-ip=52.101.70.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CA6476681
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 06:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790837967; cv=none; b=r5/yjB9dJBPxtuDX1azwlkqn6Stbdp/ewXUrDkwaHfHlmdNyGLtLANLH5g//F3ktTLbkT3WvvQjaP9LorhnMr8ow/Dae3uEAyXhIjS/Yw6dfYpooyuA4HDIQd+IgWoVsV0uAGGKoR4aqHDc9+Z8Lw1/y1txRplPPdzInjiZ3smE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790837967; c=relaxed/simple;
+	bh=adKEV0wp8fnkm3B2gVtkxUbYQ0N4xZbbOvQZcLnu0xk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OGztpxiHKGE4bSB7gP9B4EodQ4Plg1ScTDSdhcDqUMPMoQJf19NbvMqtrIO/q8Z4nza2O/26naoiU6J7J4K/otfVB/wqLofscGm/0aqXv+r0Y4lJ7bt/hvDUklVpgcSnHhvEQ6vMe4YaSYoWo/gY8EmYz4NrXAmAr/zrFMrZXxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTEqIekg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mYrwaZmz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SEgcrMdKaWm5KZIywYuMMcR+GAtMlCpvsNaZj+/sOxOehXhyBkIfngZ9Y8nt3oQnCOYGmMmtA/WCZGGzj5Ke55KmnbQi6NjQHxRd0zqFEhQJPXnTB2bRdpgJvv2Yhy6G9nqKGqV6Sf4gq8NynHaH+rssZdkiRng/ejq3PSZC6elzZwF47j2kR301NTWKhkJmH/7NzV7oW9jIGece8kE+q18S242kKaN7fM0qO1tkhn5kgCC29Zlgsvswm4OqoncG5yuMxpv7aeWnrHbpZJHaW8YIth/9KGNdMEOhOTAGnWLJVP6jjZwbBRSbWUYOsOJdqtv4U2van6UptYYIWkQqPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VRQmgk4Zgm990HGJ+inpszgpxlOhssO+EdhZ0EFhuBA=;
- b=vrJ0Qt4I1JlINsYQMjhJdl4HVnIrImwWweLwlnLKY/G2PyZVj78N2njM4zNaoQV1khoHcnm2ahtqtEZkwDliS9Ss8xj9g3sJh/9NR5Hlz6W/8vV13CDMeqre5vB8LHiCfVltVwqV3Q5FkCQnPvbHXERMZ/Kcs/vLdSUd8z3RCmt6SAKvZ9XV5tO4w/1o9KYXBJ4/hDiyfOy61B+NlKj7S3Z0AnZ32cBQlBw1aaK6+nBmEx1EN2CcEklAXcRU1Xx03gTbDRUxo2DxqxQQjEyYvE/ymjCHe4OLNNXQ8NbI0tzvxycfkl77Qy5kCHDCEepuerLDZ5tZFxdljqbowO2cLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VRQmgk4Zgm990HGJ+inpszgpxlOhssO+EdhZ0EFhuBA=;
- b=mYrwaZmztU41O2d8Z6WY+JmIT97yrAaiqy8znwVPJTdNALHm3uAV7QbhC1GbCnVrsRV8sXayhpJs26auPbPweBF8pwAQRe5QvQlocSAgDM+bZYeHqRtoxDhV/h1bYAER75QKcznRDRxRURXk1ZBTWzz44hXa4hNEUMxDfubcULRanuqkvSbpgaLaqzUhF81+mYHmNpy3dNclvI27XMdh+m/2NpN4dynFp1oUrmewWDDHHCXG7kqT4mVjgEuErE0z0EUTlWYwPDGrOErlcX4gTJ5UNsH3CbKa0gmz7+OiuGjLA/VwySpIQQrSRWat0DrhLcASBbwRhz43zko5IHwAxA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by GV4PR04MB537162.eurprd04.prod.outlook.com (2603:10a6:150:403::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
- 2026 06:25:19 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
- 06:25:19 +0000
-Message-ID: <bf5ef25f-d04b-4064-bb4a-802d80c7075e@oss.nxp.com>
-Date: Thu, 1 Oct 2026 09:28:49 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: freescale: Drop undocumented "hardware" root
- node properties
-To: "Rob Herring (Arm)" <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261001011233.1306251-1-robh@kernel.org>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20261001011233.1306251-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR02CA0177.eurprd02.prod.outlook.com
- (2603:10a6:20b:28e::14) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTEqIekg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AB31F0089C
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 06:59:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790837966;
+	bh=adKEV0wp8fnkm3B2gVtkxUbYQ0N4xZbbOvQZcLnu0xk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ZTEqIekgpZghTg8Qn8vwEmbcMeMYl2MORgJxn3aIHii9lmlTTHXZULIZaVG6qSbBU
+	 P1GpvEyVhrBhMi/mxpGoxmyOhDj0twY5/81waMYx34MNJYpyJW/LGUPeAxIk4Gb3tS
+	 291yIQxl1AzJd+hKdqlRFd6inzcyYydgb3tNfWPDRy9FVVDUzeGQbpXp2S02THGyJO
+	 cBNMWgzFXyDjGvG+KjD2jVAWTdEuZ5SPtgBv4hf/VJBW5T/eR3p7ntSCwVWjJbxHS/
+	 EtdsuoEljzPiJkqs+B/W+oywc3R6jty9xcO198geJNwEC8Z9ZM5JTuumBUxhIb+jXo
+	 21JWDU1ZRilHQ==
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5bb54bd50c2so93743e87.2
+        for <imx@lists.linux.dev>; Wed, 30 Sep 2026 23:59:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzQ4uqsAOs/OzPsTHELX9ZlRaPyAdTfXqvIlxB4ipA3/FklTkSXQWq2r71v/QvSXNTXHZA=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJTfd/zbpI+koFz9ILtJL6AW3ILygra1qmyABq4tpQtvSAkVhor
+	urBkSwKTCtvjfhwxTGdWKrHsvJzY7lIdLbHN0zbn/MtXHYJGTepzz/w++qTTBJBZHH2oWaSF/DX
+	X6DKrUkcSTGcrcp92yLno3/nC2pbtjpc=
+X-Received: by 2002:a05:6512:3ba0:b0:5ba:3b01:36a5 with SMTP id
+ 2adb3069b0e04-5ba405ee75amr1389712e87.14.1790837964923; Wed, 30 Sep 2026
+ 23:59:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|GV4PR04MB537162:EE_
-X-MS-Office365-Filtering-Correlation-Id: 024d9cb8-3e9a-4443-0733-08df1f84c3de
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|19092799006|11063799006|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	doDRNM0DiHdRt2DbvJ7WoLrZ389LzT6jJqDhPF9t8J4W4kBNrAR7IuA+zUYz0YjWfeTXYCiPUhQ0nqhDBtUWhjh/agQh0nnhqQ3zHIt4iIzZK5edYceJePE9fAdmgPWUZXYUO0KGjySbgGu/AyK6hmvHGJP/ySXfapRAJsK/mXianxZF/K5pSdLGbVZsrmtEGEerxhMVLUuCc09CJdMT0Ak2b9AQbrjdYoDdE7p9lztVf3kvnXk975NwxFCY53oHiuY4Y7ph80QRwRyBINm/JPQz6TgN6WOTqmZMxodj46Zk3ixUWFQrvnTZvBm/ZJkGzRbFP6t4tPfsN0dAiUlXFSZo+ZhHIGu+Y0QQSnmaJ0imGCmRFjBGgkOR0LCTr79JKKKozZVyG943KlaiIUtUyprwzFGiwSVeXqo3ERyXR3Dw4yhZa3HvG2TDlyjufygvYSVkIVM4pITfgh/sOm3AOS3l8H1Ir/i5g2n3/wOe4VgzJYy9wqfHDmDvEPDsPaLXSznSl8LqrKFmM5tqyuYMjUe7OuNDSeRMN/UD51VV8ulU3Ur8mSi2zQy/DKKljRvov5OXHIbTbwYFEfPO3i9TSPlmbkmZIHxed0HIxcn+wpOgI+liTY/L+JYMBoBmINY9SD5vVK3p2koAjPRNa3zTvJsscj1/byPcaxR9wd+0icg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(19092799006)(11063799006)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QXlwaDdoVVpUVlRFdEY1UUJlSGtUd1k2bUlEalRyYkxaaG9pdXY1OGR6Mmc4?=
- =?utf-8?B?NUdGVjRQeUNHenBkZkMvR043b01sU0hpcUp2anBBMG1uS3pEbW0xU25JWDBQ?=
- =?utf-8?B?b3ZaZ1FpT1A0czdOc0w1RTBjV0ZZZTNJa3RXNU1BVnhkVHhCZVllbVVQZEx1?=
- =?utf-8?B?UTNhb3dZd2ZmTk1jVjhuSy9ORlhUM1dOLzdvQXJKR2tKckErbzlGWEFWZGJN?=
- =?utf-8?B?ME1uallJK3dmNVFiY2p4M2xDT05CMUg1alpSWm5rMVJLK2ZNK3plb0FFSlkx?=
- =?utf-8?B?NGNqWmM4VWpMeHNvSmQ0OXJhMHo2cHRaVmMvMkE2VzZhcFhsTkZRV05jQmlD?=
- =?utf-8?B?L0pxcXB0ODhqWkdzeENMV01hd2kzZzhQQ0NkcUxjenFsVU1FbCtIdVhtVjBp?=
- =?utf-8?B?MmJiWjVLb0xjVU1NblNoRDN4TDdIT2ZFRStGUHY2UUdvT3VRZjkzdEdoQVpW?=
- =?utf-8?B?ZmJSMDlDQXg1RGpMRlJnMFRzRTBVbERiUHJjVEYvK01wRjNjZWxYc1U0NUFs?=
- =?utf-8?B?T3ZUL3VvMlMwQUczaXFmZHZMWVJOWWE4SzBDb0FmWWJhVG5pT2RraHcwYlNm?=
- =?utf-8?B?SDlkQ0pqRnMvSE9yVzZ2R3BoWTVMSTc3aGUzQUJWRlNzWUZ1NVEyTHpIMytl?=
- =?utf-8?B?NHFrQllxV0c5TDVkS1JPcWZETUt4OFFhVGNQRGlTMUtsdW5naE1TbGsxNk1W?=
- =?utf-8?B?ZDBhSVJ2RzNaa0crY081Mk1TOUV0NFZIUjZpWmM1ajUrQ0dCNHh6cVFpOFJj?=
- =?utf-8?B?R2V3a1ZtZVIySUhMdkF2ODlhSEdPWEhCRzI2M29TOG9ydUlzbFdKOGtXei9D?=
- =?utf-8?B?bkR4dXpVeUxMZXRuUzBNdm5jQlY5T2VYMFVoV0xxaUlnMHpTaHRTbEQ1c2VK?=
- =?utf-8?B?b21LT2ovNWV2djB3UzhVaVZBZi9tTFlHRWtCaHYxa0xxaCsrd2RXSndvaURW?=
- =?utf-8?B?M3YrcmxDK2JvemZ5Z2Q5UExzVG5rSVUydGJ6eEV3c1V1eng4b2hDRjBnbW50?=
- =?utf-8?B?UGlBKzV3OHdEK2Y0M3p0SXcrM093bFBIc3ZhS1hvQ2o4dzZmaFdoeUhGV3Fn?=
- =?utf-8?B?eVcvVEQvZ21Dc3RqaFJ0K1hqUnJQUUFNWVQwVlowSDRyaTFUOFNlb0pEb01P?=
- =?utf-8?B?VVIrTU8xWkZmbURETG15YXlyZjB2a0JXcW02QkJhMWVjczJBV2NXSlF6UHZp?=
- =?utf-8?B?YmNBNFg4SDNNRnNxYTdEV2J2RGVoeld0am02VmI4M1JIZGdJWFpCb21XUmI5?=
- =?utf-8?B?Z2hXTUpUeVNhQVFxRjBFdjZFY2JRdGdaWFRNTUthV0NPa1JYaHdXSEdCZy84?=
- =?utf-8?B?clBUZWN0d1JRSFJyeUdUeFZkNUFSZDNTeWZ4YjIxUnI2NDFibm81WnRmY2hV?=
- =?utf-8?B?MUxrcVR2UGQ1SkJzc2lray9VanBJS2JIWWhpMm5id1IzS1VleHJDWElvalRD?=
- =?utf-8?B?SkVHNW93TnpaRmdhcjhMYXMyNjk5M2g1d3ZxTkt4SjlMZXR2SmNCbFVVR3k3?=
- =?utf-8?B?MFIvS1EvWndoTTFXRFMrR05DS1ZXVDBVbHZiSWZNTTlhYUNUaFhVbG50TUNH?=
- =?utf-8?B?ZUMwY2krdHE1bXF2eFBhTWRDSThadS9WaGs1WmdVM1grSE9MODY5SERBUWhU?=
- =?utf-8?B?M1pTcHJpTUVGK3ZJS0ZoNkxkY2dEM05CQWU5RW1wTTRDMFBSOHNFNkNhOW1F?=
- =?utf-8?B?SFJrZVRSY2tFdHNMYSswL3Q0RHprRTk0dm40dG9HbmZ1ZEUrRFdLY3hCamZI?=
- =?utf-8?B?Z09sM3RBcHIweDNyclZiTWtFc21MamJiYm4ydHpxUnFUNGNKQ0xtU1RpaEpZ?=
- =?utf-8?B?WmZuYkxVNkpPUFlPaG9xT2Z6c3h1bnA0K0Izby9jNDJBSzdCdDNoTVBiN3Fw?=
- =?utf-8?B?eWdtclp2UlQ4dzh1VHQ4QUNyM3grYjV1OHNRdkdnYjRoSzg1azhWSDhhRExJ?=
- =?utf-8?B?cHR3UVhRaUUyZnd1dDIwMElvcGI0UVBtUzBrZVZhekRXQ0FLazFQTGUxYURO?=
- =?utf-8?B?R1NNS3U5ZGI0cE5qSi9FSUY3S2hWRkFqYmZyWkVwVldPZjlHY0dCdzkzMGNz?=
- =?utf-8?B?RTF2R3JSZmVzRUVJTTlEeUpiMmZKNlAzbmNoSGNkaCt3dS9LVTJJbW9wZW5S?=
- =?utf-8?B?bUIwcTZzcTBRZm9icndWY1Y1L1kyeTRITzZXVDZsT2Y3Ymw4bWE3VWxZMks2?=
- =?utf-8?B?V3h2R1NrL25wcXR0eHVHTFFsOXFXVXpnWVdHcFNoSUpUdE95NjhjRkRCZzVU?=
- =?utf-8?B?SnhCQi9HeXFLU2FmMjlQQkJad2pPbWNhM0F3WEYwY2NpanVpemdLbC9EM202?=
- =?utf-8?B?RGVHb1haRWpqWkFLWmJZaFQzdDdWVGV6UU0rVTN1TFpaOTM1eXNsdz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 024d9cb8-3e9a-4443-0733-08df1f84c3de
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 06:25:19.4615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XuloAgJlmsUnhc7ZBrlFwp0AgN+pxlirEdjQWu2OC+1Owl8Gf/ZV/c2URVW8TN+zqzWM36ZZBRa+Q4ON4IHPTQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB537162
+References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com> <20260916-drm-bridge-every-panel-v3-7-83afb4f1a707@bootlin.com>
+In-Reply-To: <20260916-drm-bridge-every-panel-v3-7-83afb4f1a707@bootlin.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 1 Oct 2026 08:59:09 +0200
+X-Gmail-Original-Message-ID: <CAD++jLkhYNZ4R4Z60zTzNoZwCtk4rcL-pCbgdHpNEzV-4oO_Wg@mail.gmail.com>
+X-Gm-Features: AclHuK8feDgrhg1tWHz9y2oJ4IDmaC5Th2MaGXRPg_l1XDpQ6IeWaj3r9RadEo0
+Message-ID: <CAD++jLkhYNZ4R4Z60zTzNoZwCtk4rcL-pCbgdHpNEzV-4oO_Wg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/19] drm/panel: deprecate panel-bridge APIs
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
+	Paul Kocialkowski <paulk@sys-base.io>, Inki Dae <inki.dae@samsung.com>, 
+	Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Sean Paul <sean@poorly.run>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Albert Esteve <aesteve@redhat.com>, 
+	Anusha Srivatsa <asrivats@redhat.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	asahi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/1/26 04:12, Rob Herring (Arm) wrote:
-> The "hardware" property in the root node on some NXP i.MX8 boards is not
-> documented. We already have both compatible and model property to
-> describe the platform.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+On Wed, Sep 16, 2026 at 3:46=E2=80=AFPM Luca Ceresoli <luca.ceresoli@bootli=
+n.com> wrote:
 
-I was looking for a fix for this, this looks good.
+> Now that a drm_bridge is embedded into every drm_panel, the panel_bridge =
+is
+> not needed anymore. Its APIs are just accessing the embedded drm_bridge
+> transparently.
+>
+> Deprecate them all, encouraging to use the drm_bridge API.
+>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-> ---
->  .../boot/dts/freescale/imx8mm-tx8m-1610-moduline-iv-306-d.dts    | 1 -
->  .../boot/dts/freescale/imx8mm-tx8m-1610-moduline-mini-111.dts    | 1 -
->  .../boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106.dts | 1 -
->  3 files changed, 3 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-iv-306-d.dts b/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-iv-306-d.dts
-> index 6cc04aa90f21..d15297a42d8f 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-iv-306-d.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-iv-306-d.dts
-> @@ -12,7 +12,6 @@
->  / {
->  	chassis-type = "embedded";
->  	compatible = "gocontroll,moduline-iv-306-d", "karo,tx8m-1610", "fsl,imx8mm";
-> -	hardware = "Moduline IV V3.06-D";
->  	model = "GOcontroll Moduline IV";
->  
->  	aliases {
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-mini-111.dts b/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-mini-111.dts
-> index 39b7d9077e8e..9148ea7c6609 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-mini-111.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610-moduline-mini-111.dts
-> @@ -12,7 +12,6 @@
->  / {
->  	chassis-type = "embedded";
->  	compatible = "gocontroll,moduline-mini-111", "karo,tx8m-1610", "fsl,imx8mm";
-> -	hardware = "Moduline Mini V1.11";
->  	model = "GOcontroll Moduline Mini";
->  
->  	aliases {
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106.dts b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106.dts
-> index 87b20b856458..206992ff9640 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106.dts
-> @@ -11,7 +11,6 @@
->  / {
->  	compatible = "gocontroll,moduline-display-106", "karo,tx8p-ml81", "fsl,imx8mp";
->  	chassis-type = "embedded";
-> -	hardware = "Moduline Display V1.06";
->  	model = "GOcontroll Moduline Display baseboard";
->  
->  	aliases {
-
+Yours,
+Linus Walleij
