@@ -1,102 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56E12D322E
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 13:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C1738F236;
+	Thu,  1 Oct 2026 13:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790859683; cv=none; b=NOzSVZk3Oev+VnPtub2bM0PnfA5ThMsKicGSldZESamOI0AHtE+5O9yysaqPfjVGw3MPp9hNbHY2xru+XEJkOn57iz5n8Jfulk+DbTxfr39odJU6RL+6I2OrcNSD7QlEt6cKhPeIVwfcyKqjbWt/rcKEs90FeAsDKmJW2t6hbdQ=
+	t=1790859736; cv=none; b=j2rGMeCOuhDcZJEcCK22VZLsKvLf+QwCE7/LP6hB6RNcizdgsCprb92TizJd9cucSldCkg/6X7wbCHkGnmTIhnLmvtJtAkev1NBRnXlEFtSsRP7LBw91gkCgLCBTTRvgaDm0ZSJkkNSH2xgg6N6WarCfNCB9ICa72IIS1bJddlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790859683; c=relaxed/simple;
-	bh=GfD165c8+hmAkxftDCKh5AaJs37A+lxBxFNOCtv10hw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h8JlKbd5WT+kl+Zob7jZrbmB9eGzOnJLG28kFXt+62jUP3hZOpJLq4wylshzr1R8x4s1fzZqzufh1o0wif9rVwutKRuuOF8AU1XZdHIL9nSEdqat3nSYhkqMrIsx0E+DJXKyxoHMjKIS5n3RqU74ViNZrY4GJ42yXbQ4KX/SzPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byQUjLMW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790859736; c=relaxed/simple;
+	bh=iKrrqFpHfYcTC/oAecNkcl5GnB3EWwTNVsYMgXOj0PI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bvrE24HoNYApgAuUyz4Y/MzI3qKBjpeeOn5Q9tgCymcjS+KWbKJS6iz3c2/tqn/Yt0xX/rPg+gPNW3HgoKOgB0P1OhjS+xR7/zUg1FtqBTDsn47bPvEU6W6huVkkxW4zBVHz6mCW9F4ECFsopM38Tljlvncx8KdcyhgbXVIGdHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Clya+pBX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byQUjLMW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585E41F000FF;
-	Thu,  1 Oct 2026 13:01:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Clya+pBX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B21F000FF;
+	Thu,  1 Oct 2026 13:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790859682;
-	bh=9E2kSyttxXvOS90cVrgaVyXoUTGZcBLnJy0WM9wTRNI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=byQUjLMWZVqfe3kYCCb5KhdRUFco1rlZGbetR4nN0AaB4Au5+ydOwIrwhbGwAsJFF
-	 3sdYhRZFWbXC2BYARJqnVjiV/+bLp/9yJAzureKLHLVZHlpGxo6rmwVBLn1v/LrbXz
-	 lcFizL1aKr5L0xRzs5P3ZEBGJ0OmeceeJaZLXQajUnBRkgX9VdajJST1GbHLMAiBRT
-	 ewaAfsabWhKEmChsPD/M+SaMLS9ETLkYKmyO4ZWQrszsttftQrttuIetO8st5JS6Mv
-	 ODMRFps2fpcFr4O5MuIruqnTONYnbF8f4CA690zTPBepruKWEotCSYInmY+7hjSkoy
-	 U2U5fq6MjiDvw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 07/24] drm/bridge: samsung-dsim: move
- drm_bridge_add() call to probe
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, dri-devel@lists.freedesktop.org
-In-Reply-To: <20261001-drm-bridge-hotplug-v2-7-8e34986dcb68@bootlin.com>
-References: <20261001-drm-bridge-hotplug-v2-0-8e34986dcb68@bootlin.com>
- <20261001-drm-bridge-hotplug-v2-7-8e34986dcb68@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 01 Oct 2026 13:01:21 +0000
-Message-Id: <20261001130122.585E41F000FF@smtp.kernel.org>
+	s=k20260515; t=1790859735;
+	bh=Eob7zzZfDEAxmFc2bmXm9vuF8tzUFFiSjg5xt3lkBag=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Clya+pBX3URzVI8t53yWg72i2FYQIIHOBZ3IhJWsCAqJKSTT6XQYq1rDt4F3aMBba
+	 r2JKUxADyaCLk93dlq93kR0Ii1+XgaR67kog+ODNq8C20K6baDKqRcS643dIssE9ZR
+	 wcPO4ra5VnkFcuVlKDOprWFcg4pB6ygHrph7hAViDzf9cCuaTphdCk6Q92wkFdM1R7
+	 scjlMHbQa/h3S1rMDhg4j5m11eN+37j5ZLJOGYdsQNX7QZm226rUyWLoPh2RlhOFFy
+	 Wn+Z1gDIfYyX8oI1oP8IM4vwK73/Pa18tikQZLGHhjL8E99ls55cfQsPiHS938gO8P
+	 GCyHCDCmKW8wg==
+Received: from johan by xi.lan with local (Exim 4.99.5)
+	(envelope-from <johan@kernel.org>)
+	id 1xCGQP-00000008QoG-0bNQ;
+	Thu, 01 Oct 2026 15:02:13 +0200
+Date: Thu, 1 Oct 2026 15:02:13 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/imx/tve: take i2c adapter module reference
+Message-ID: <ar5Z1TjIceCl-EdS@hovoldconsulting.com>
+References: <20260716131937.1564892-1-johan@kernel.org>
+ <anx_aEJGbFM6Xosx@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anx_aEJGbFM6Xosx@hovoldconsulting.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] drm/bridge: samsung-dsim: UAF in samsung_dsim_attach() due to data=
- race
---
+On Wed, Aug 12, 2026 at 04:12:56PM +0200, Johan Hovold wrote:
+> On Thu, Jul 16, 2026 at 03:19:37PM +0200, Johan Hovold wrote:
+> > The i2c subsystem currently blocks during adapter deregistration
+> > whenever there are consumers holding a reference.
+> > 
+> > Switch to using of_get_i2c_adapter_by_node() which also takes a
+> > reference to the adapter module so that an attempt to unload the module
+> > while in use fails gracefully instead of blocking uninterruptibly.
+> > 
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> 
+> Can this one be picked up for 7.3-rc1?
 
-commit c28866fd6b4a2bff1ae13053f73c850e270af34a
-Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Again, can someone please pick this one up?
 
-drm/bridge: samsung-dsim: move drm_bridge_add() call to probe
-
-This bridge driver calls drm_bridge_add() in the DSI host .attach callback
-instead of in the probe function. This looks strange, even though
-apparently not a problem for currently supported use cases.
-
-[ ... ]
-
-> diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/brid=
-ge/samsung-dsim.c
-> index 480e568dd2c9d..b2de447dc6f43 100644
-> --- a/drivers/gpu/drm/bridge/samsung-dsim.c
-> +++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-> @@ -1827,6 +1827,9 @@ static int samsung_dsim_attach(struct drm_bridge *b=
-ridge,
->  {
->  	struct samsung_dsim *dsi =3D bridge_to_dsi(bridge);
-> =20
-> +	if (!dsi->bridge.next_bridge)
-> +		return 0;
-> +
->  	return drm_bridge_attach(encoder, dsi->bridge.next_bridge, bridge,
->  				 flags);
->  }
-
-[Severity: High]
-Could this lockless read of next_bridge introduce a use-after-free
-regression due to a time-of-check to time-of-use race condition?
-
-Since drm_bridge_add() is now called in probe(), the upstream encoder can
-attach the bridge while the downstream panel is asynchronously probing.
-This allows samsung_dsim_attach() to run concurrently with
-samsung_dsim_host_detach().
-
-If the panel concurrently unbinds or detaches, samsung_dsim_host_detach()
-can clear the downstream bridge locklessly via:
-
-    drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
-
-If this concurrent clearing happens between the check here and the
-subsequent internal drm_bridge_get() call within drm_bridge_attach(),
-could the kernel execute a kref_get() on a freed bridge pointer?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-drm-bridge=
--hotplug-v2-0-8e34986dcb68@bootlin.com?part=3D7
+Johan
