@@ -1,87 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1727033BBCD;
-	Thu,  1 Oct 2026 07:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEC5440A19
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 08:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790840782; cv=none; b=GXoH5zGdeWhIXByRCKd+TESGmViT6g25rIdFkKZ/kzWWEyfbi2WiSeYprtrKqlRrLHgJYbC3Pq/A9F6Tl7Dj0lAWSVI1aPjsasq8Wdoyl08HwYyNte4x4jGnVu7g9/bWgStVPgU6mXb0lY0RaiuKXgzY894EEhrKWKdni1VOjQI=
+	t=1790841789; cv=none; b=WmP3l6kZE1pCYbr9CFz4eL+doOMeKkJyNPxUsL09XOIWICu/EtaBp+3/fi4zS6LOq3dLHbl88Szdxzy/yRouortFST2Fh8tEurQp6CCKu/1IbPzo9GI2HCFPcABImcGZsyJP2T0IaO4/Qup6u24qXaH2i1X+WlranlHfbEU/3/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790840782; c=relaxed/simple;
-	bh=AP84djVEDki0zyiBJLKdXB1AD6/h7C8uXwbwa95toeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BCiljuroNRCe9dkA0AtGFM5zbizZoP2R7GzIKS8HvnFbxeGvCV2scIPV5lPcBP9c/UhgHHHqMY8IvDbxSpzBwFFThgfYONgc1pT9+iTN3crpuke4PqufVrxX+ccuZktlPZG2xqWYbgm7C7kGrUz0UfHzJFy1s+jZLKoch6EiHOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8bK+t4n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790841789; c=relaxed/simple;
+	bh=KWtWUyO5e31E29X7kJUK67PTu3io/akqw94hdUPa2/A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=POKsJwnGud9V5ee0dDNrhxdfbsRxKvgoAV57UHaHqURFjh3vGPTfxQR0NidLbTRmTAQXf9LcYD31kCUEXnctYZ3ub0UAoWngnzdK/uG3lEPqKiNgwIlxsCvXW2w5SU9TouCFAeYgca3Z5rVM51VjChdHmhiYFJ/6f3VSVlfBGw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MG5n5IPR; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8bK+t4n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1631F000FF;
-	Thu,  1 Oct 2026 07:46:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790840780;
-	bh=E/imt2ZFR4iPgDVR5E7V1cTC9eu5GVAhLsMP8e8lZgI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C8bK+t4nuolwA6ibbwTSxvT3bxhH8MeraRDJ5AOuR/1XtYxjYfjN2MPM4gh5y8i1y
-	 uOI7lVWbTqBP2+2W1mjOJmXgSYPf1C6eURueVC6kknmNF8ZYsGnWL/mF3vTDL+CFzJ
-	 MQ62bkS5T+P8KIZGad937ZQRVK67C500Qv6ZypcZoRcCiskrgzblVpYLJBRKRSM8eH
-	 ctGFb+XLq1HTORXfSyWC3GjbB3X9SxuO5AoN06KhzWza3AeJXal+bZqIW6K0nNQho8
-	 U79KfGDNmUHKFXo9k7s6VpP2s58xGm2JPKbZ3Q67+u7IjAMjlaF40QbAzyuCx81Wzz
-	 B5vdXufloPT7g==
-Date: Thu, 1 Oct 2026 09:46:17 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, Joseph Guo <qijian.guo@nxp.com>, 
-	Josua Mayer <josua@solid-run.com>, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, 
-	Mehmet Fide <mehmet.fide@screeningeagle.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, 
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
-	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 01/13] dt-bindings: arm: fsl: Add Variscite i.MX6UL
- board variants
-Message-ID: <20261001-spiritual-mongoose-of-force-9323be@quoll>
-References: <cover.1790693249.git.stefano.r@variscite.com>
- <c547995bcb14779a5883d855137148ebddb7ef8d.1790693249.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MG5n5IPR"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3F5F04E410EE;
+	Thu,  1 Oct 2026 08:03:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0CAAB60341;
+	Thu,  1 Oct 2026 08:03:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0E319103292AE;
+	Thu,  1 Oct 2026 10:02:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790841779; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=bBnYNPx0m93XbkdYJmwrk/PdDLQ8lp47f6etNXtdmtI=;
+	b=MG5n5IPRudGzRrmo8ILDJDWYoecFzTS0SG5Pj68X1y0b04+2YpsJIH//yybBHJhI+y+AtC
+	5pMeaxML0tMeFxax6tyAu+LzwoDoQ/c/Ah0PkiwYB28ckeY49nocfOg/a/WqtSABY3QZu0
+	5dticPDGy2Um1s2hSW0775Oluy3hNAKx+IZtru3r40kkA10tbG9o3CxLOC2vH/9reQwCaE
+	foJ1gnJY4fZCSlBTVS3bJE4jECObDVBX9sCymzvRuZ8w7tT/lSd8l3M4NZ007dO41l1aHu
+	L/lIqeuW8sQ6UWKOhQ374hDboAQFhi9uYFcx5erlR0oDpCFxyNKucgPpquU6yQ==
+Message-ID: <78ca2d861e27bb5712db12de83a199b52e5dbae5.camel@bootlin.com>
+Subject: Re: [PATCH v2 1/7] drm/imx/lcdc: stop using deprecated
+ devm_drm_of_get_bridge()
+From: Paul Cercueil <paul.cercueil@bootlin.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Maarten Lankhorst	
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Frank Li	 <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Icenowy Zheng	
+ <zhengxingda@iscas.ac.cn>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
+ Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart	 <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Dave
+ Stevenson <dave.stevenson@raspberrypi.com>,  =?ISO-8859-1?Q?Ma=EDra?= Canal
+	 <mcanal@igalia.com>, Raspberry Pi Kernel Maintenance	
+ <kernel-list@raspberrypi.com>, Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Arnd Bergmann <arnd@kernel.org>, Doug Anderson <dianders@chromium.org>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni	 <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, 	imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, 	linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org
+Date: Thu, 01 Oct 2026 10:02:45 +0200
+In-Reply-To: <20260929-drm-fix-of_get_bridge-build-regression-v2-1-6da431d8f180@bootlin.com>
+References: 
+	<20260929-drm-fix-of_get_bridge-build-regression-v2-0-6da431d8f180@bootlin.com>
+	 <20260929-drm-fix-of_get_bridge-build-regression-v2-1-6da431d8f180@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c547995bcb14779a5883d855137148ebddb7ef8d.1790693249.git.stefano.r@variscite.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 29, 2026 at 05:17:28PM +0200, Stefano Radaelli wrote:
-> From: Stefano Radaelli <stefano.r@variscite.com>
-> 
-> Document new VAR-SOM-6UL configurations on the already supported
-> Concerto carrier while retaining its legacy compatible. Add
-> VAR-SOM-6UL variants on Symphony and DART-6UL variants on
-> VAR-6ULCustomBoard.
-> 
-> The new compatibles identify the SoM storage, wireless and audio
-> options followed by the carrier, module and SoC compatibles.
-> 
-> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+Hi Lucas,
+
+Le mardi 29 septembre 2026 =C3=A0 15:39 +0200, Luca Ceresoli a =C3=A9crit=
+=C2=A0:
+> devm_drm_of_get_bridge() is deprecated, switch to
+> of_drm_get_bridge_by_endpoint(). As of_drm_get_bridge_by_endpoint() retur=
+ns
+> a refcounted bridge, ensure it is put.
+>=20
+> Fixes build failure when CONFIG_OF is disabled.
+>=20
+> Fixes: aa8a8c7e4641 ("drm/bridge: panel: move all code to drm_panel.c")
+> Reported-by: Arnd Bergmann <arnd@kernel.org>
+> Link: https://lore.kernel.org/r/20260928161605.2271412-1-arnd@kernel.org
+> Acked-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+Reviewed-by: Paul Cercueil <paul.cercueil@bootlin.com>
+
+Cheers,
+-Paul
+
 > ---
-> v3->v4:
->  - Split the board binding by SoC, extend the existing VAR-SOM-6UL
->    entry with new Concerto and Symphony variants, and add DART-6UL.
->  - Drop the redundant -board suffix from the new carrier compatibles
->    and use sorted items/enum lists.
-> 
->  .../devicetree/bindings/arm/fsl.yaml          | 39 ++++++++++++++++++-
->  1 file changed, 38 insertions(+), 1 deletion(-)
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-Best regards,
-Krzysztof
-
+> =C2=A0drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 4 ++--
+> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> index c67fe80b8115..805a659e3f85 100644
+> --- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> +++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+> @@ -385,7 +385,6 @@ static int imx_lcdc_probe(struct platform_device *pde=
+v)
+> =C2=A0{
+> =C2=A0	struct imx_lcdc *lcdc;
+> =C2=A0	struct drm_device *drm;
+> -	struct drm_bridge *bridge;
+> =C2=A0	int irq;
+> =C2=A0	int ret;
+> =C2=A0	struct device *dev =3D &pdev->dev;
+> @@ -401,7 +400,8 @@ static int imx_lcdc_probe(struct platform_device *pde=
+v)
+> =C2=A0	if (IS_ERR(lcdc->base))
+> =C2=A0		return dev_err_probe(dev, PTR_ERR(lcdc->base), "Cannot get IO
+> memory\n");
+> =C2=A0
+> -	bridge =3D devm_drm_of_get_bridge(dev, dev->of_node, 0, 0);
+> +	struct drm_bridge *bridge __free(drm_bridge_put) =3D
+> +		of_drm_get_bridge_by_endpoint(dev->of_node, 0, 0);
+> =C2=A0	if (IS_ERR(bridge))
+> =C2=A0		return dev_err_probe(dev, PTR_ERR(bridge), "Failed to find
+> bridge\n");
+> =C2=A0
