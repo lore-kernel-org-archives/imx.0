@@ -1,128 +1,177 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A025049E151
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 12:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD32E3F3265
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 12:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790858937; cv=none; b=Szkgz9Sw5bujxQx0rL5+t2ms5U/W9rlP0aCLFCT9+8LdmKg8Il3X6i12qRSsJX/crqRd7zQ0ZTR0NBKiUYKRyqFyMOTzext9HnmU1k7L8JPSLJWB5mPspEJj4X5tHSVX4MxCGAckljaCiN6olw1YfHV/0M134l2Acuni+pgLiFU=
+	t=1790859363; cv=none; b=NyqE06WUhHd9u/GuyTlzXE9rjOmuhQOkZWqjJkIUW7cas6+0yqufY40cJKhzEZPt3pjtRFup4mhGl/9q0YmegYXyHgYP2YObF9KnK8m1jeBW4w7LQtvzDrcEmaBlzlrG5ORY9uwJheAKRb9UH92c5Gz9wb+2ZeBAIMuzgdI4zcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790858937; c=relaxed/simple;
-	bh=VTdr5RZWidFfPpw853q0fDtUSPF30tP2i0Slr5CW1nM=;
+	s=arc-20240116; t=1790859363; c=relaxed/simple;
+	bh=XbidRgS/+ocEKW2o84p1zPew/GG1wMgbMcvMtI3zm1k=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Jn9OnawD2hldfS4h/6dxomwOxVKDCaBTss5hOb9GAvBIWnW4ze4ibjgSl+C5aLrqhojhfEnMnt9f4lIRajqG+ibQhUQlG19R11YMLCQxYE6Ywe3ClzpfXaXca5kDhZS3gtfHocq0WGq6T7SUlh1mknFv3lAu3MLjyjtUK0PZSPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpjDlQ2p; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JaWADN7DI27dqlKJPmaSHlLD2ucthirVCHLMD4JBKpQCeZLD/ji7z+IoRSVNnxJD3BHXE9pykkqDp/m8aATjdjgrSlfofY5RldrCZ+jeFR5IT3Rhcz+ChhtZ/mCNtRZ+b9JffHrIYBVRrzNzKR3+wZc7LVMLro6OT6kzHAMpGvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcTprC6n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpjDlQ2p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2345E1F000FF;
-	Thu,  1 Oct 2026 12:48:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcTprC6n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E07C1F000FF;
+	Thu,  1 Oct 2026 12:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790858936;
-	bh=sl6TR850Fo0xRCMRojc9x6eqxqa/0pVRptThyRAvxPk=;
+	s=k20260515; t=1790859361;
+	bh=R1ksKiyF6A0GD2P1n76mqJ8HdjISxDDGz8gZgqVlGNM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gpjDlQ2pc+kU/Y6A1BMMvL9DnwwJmfuWsNJVv2Q86M2pHOZE3cpfz/htu612ckddE
-	 c3k4+onuC64J/F/Y3AuFU0YNiEGUAcz0dQT3ZKdE1lrRQZhZjPfCvp70Abk2llnZWf
-	 aYKZ8WTzTnWwew3piTB/fP44hsEVZpfCuqqln364dsxHfjDXZZo+BAqrBX2vOJ/MoO
-	 uDCIQ2TrQzKDKIChU/nwjP/SGdRYYvW0jXE0iCnu2jHkis5Nb0r6XkP1Q8GcPXPKGI
-	 X5ax9NvBW/+0ezuRD+Dr61GQtNs41SYueWvEO/b36aD9Mf5d5vtJqMlB6MDs5KsXIG
-	 5wBUTGpxCGXcA==
+	b=fcTprC6nlML/WgwMhpLLb8K2rwTNfJHDe8148cWwyMBC91n7s4dQYu0evtOy5umUv
+	 Ok0oQ5pNfFiqTHkqqxvBfLfWoa4bSPuBY+QHkHegDJpgkNeWSiGshtPLv8a0sTFv1k
+	 v/iNuX9OOejFfZ09Pf53wd9DB6z4ZwrDoWUyx8GOZWzzQEcIX5UO/Cpx3MBk/UVPNn
+	 GCihld9heHWDW0Pwtm6zeaQ5JU1F1ZyceMaCRz16riW8ibxqkGsTEStNvDS9bWmwam
+	 2iKcbEKCmrI68hqSv6sUtevvx4M/7tcgoh0I4rgDHn+wr5gT/g8j7byBRjgcnItsL5
+	 vZsgSQrGL0VTQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 02/24] drm/connector: add
- drm_connector_hdmi_dynamic_init()
+Subject: Re: [PATCH RFC v2 05/24] drm/display: bridge-connector: use a
+ dynamic connector
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, dri-devel@lists.freedesktop.org
-In-Reply-To: <20261001-drm-bridge-hotplug-v2-2-8e34986dcb68@bootlin.com>
+Cc: dri-devel@lists.freedesktop.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20261001-drm-bridge-hotplug-v2-5-8e34986dcb68@bootlin.com>
 References: <20261001-drm-bridge-hotplug-v2-0-8e34986dcb68@bootlin.com>
- <20261001-drm-bridge-hotplug-v2-2-8e34986dcb68@bootlin.com>
+ <20261001-drm-bridge-hotplug-v2-5-8e34986dcb68@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 01 Oct 2026 12:48:55 +0000
-Message-Id: <20261001124856.2345E1F000FF@smtp.kernel.org>
+Date: Thu, 01 Oct 2026 12:56:00 +0000
+Message-Id: <20261001125601.2E07C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] drm/connector: resource leak on dynamic HDMI init failure due to=
- dead code
-- [Low] drm/connector: incorrect kernel-doc function name for drm_connector=
-_hdmi_dynamic_init
+- [High] drm: NULL pointer dereference due to inverted drmm cleanup order
+- [Medium] drm: memory leak on connector initialization error paths
+- [Medium] drm: missing IS_ERR check causes invalid pointer dereference
 --
 
-commit 7682dffb42f83d7a2155ddd8d9ec5ae0bcb7425d
+commit a2cbdd2f3a09967f7b7cc240d15ab5e45033083e
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/connector: add drm_connector_hdmi_dynamic_init()
+drm/display: bridge-connector: use a dynamic connector
 
-In preparation for adding hotpluggable bridges into the
-drm_bridge_connector, we need connectors to be created dynamically, both
-regular connectors and HDMI ones. drm_connector_init() already has a
-dynamic variant, add one for HDMI connectors too.
+This commit switches the DRM bridge connector initialization from
+drmm-managed functions to dynamic variants. This prepares the driver for
+bridge hotplugging, allowing connectors to be removed without removing the
+entire card.
 
-> diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connec=
-tor.c
-> index f5bd08640d251..f264cab0d184e 100644
-> --- a/drivers/gpu/drm/drm_connector.c
-> +++ b/drivers/gpu/drm/drm_connector.c
-> @@ -708,6 +708,48 @@ int drmm_connector_hdmi_init(struct drm_device *dev,
->  }
->  EXPORT_SYMBOL(drmm_connector_hdmi_init);
-> =20
-> +/**
-> + * drmm_connector_hdmi_init - Init a preallocated dynamic HDMI connector
-
-[Severity: Low]
-This isn't a bug, but the kernel-doc header lists the function name as
-drmm_connector_hdmi_init instead of drm_connector_hdmi_dynamic_init. Could
-this cause kernel-doc validation warnings?
-
-> + * @dev: DRM device
-> + * @connector: A pointer to the HDMI connector to init
-
+> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu=
+/drm/display/drm_bridge_connector.c
+> index 2aff745f01478..1c222e27767d4 100644
+> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
 [ ... ]
-
-> +int drm_connector_hdmi_dynamic_init(struct drm_device *dev,
-> +				    struct drm_connector *connector,
-> +				    const struct drm_connector_funcs *funcs,
-> +				    const struct drm_connector_hdmi_funcs *hdmi_funcs,
-> +				    int connector_type,
-> +				    struct i2c_adapter *ddc)
-> +{
-> +	int ret;
+> @@ -1113,6 +1120,9 @@ drm_bridge_connector_initialize(struct drm_bridge_c=
+onnector *bridge_connector,
+> =20
+>  	drm_connector_helper_add(connector, &drm_bridge_connector_helper_funcs);
+> =20
+> +	if (!connector->state)
+> +		connector->state =3D drm_bridge_connector_create_state(connector);
 > +
-> +	ret =3D drm_connector_hdmi_sanity_checks(dev, connector, hdmi_funcs, co=
-nnector_type);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D drm_connector_dynamic_init(dev, connector, funcs, connector_typ=
-e, ddc);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (ret)
-> +		drm_connector_cleanup(connector);
 
 [Severity: Medium]
-Is this second if (ret) check dead code?
+Does this code assign an error pointer directly to connector->state?
 
-Since ret would have caused an early return in the previous check, this
-drm_connector_cleanup(connector) will never run.=20
+If drm_bridge_connector_create_state() returns ERR_PTR(-ENOMEM), this
+will poison the state pointer without validation, potentially leading to an
+invalid pointer dereference later.
 
-Does this leak resources (like the IDA allocation and connector name) if
-drm_connector_hdmi_initialize() fails on the next line? Should the cleanup
-instead happen on the return path if drm_connector_hdmi_initialize()=20
-encounters a failure?
-
+>  	if (bridge_connector->bridge_hpd)
+>  		connector->polled =3D DRM_CONNECTOR_POLL_HPD;
+>  	else if (bridge_connector->bridge_detect)
+[ ... ]
+> @@ -1130,9 +1140,26 @@ drm_bridge_connector_initialize(struct drm_bridge_=
+connector *bridge_connector,
+>  	if (ret)
+>  		return ERR_PTR(ret);
+> =20
+> +	ret =3D drm_connector_dynamic_register(connector);
+> +	if (ret)
+> +		return ERR_PTR(ret);
 > +
-> +	return drm_connector_hdmi_initialize(dev, connector, hdmi_funcs);
-> +}
-> +EXPORT_SYMBOL(drm_connector_hdmi_dynamic_init);
+
+[Severity: Medium]
+Does this code skip manual cleanup on this error path?
+
+Since the switch to dynamic initialization, the connector is referenced and
+has to be put if initialization fails (as noted in an earlier comment: "From
+now on the connector is referenced and has to be put"). Returning
+ERR_PTR(ret) directly skips drm_connector_put() and bridge cleanup,
+leaking the initialized dynamic connector and bridge references.
+
+This also seems to occur on earlier error paths in this function, such as
+after drm_connector_hdmi_audio_init().
+
+>  	return connector;
+>  }
+[ ... ]
+> @@ -1155,6 +1182,7 @@ struct drm_connector *drm_bridge_connector_init(str=
+uct drm_device *drm,
+>  {
+>  	struct drm_bridge_connector *bridge_connector;
+>  	struct drm_connector *connector;
+> +	int ret;
+> =20
+>  	bridge_connector =3D drmm_kzalloc(drm, sizeof(*bridge_connector), GFP_K=
+ERNEL);
+>  	if (!bridge_connector)
+> @@ -1164,6 +1192,10 @@ struct drm_connector *drm_bridge_connector_init(st=
+ruct drm_device *drm,
+>  	if (IS_ERR(connector))
+>  		return connector;
+> =20
+> +	ret =3D drmm_add_action_or_reset(drm, drmm_bridge_connector_fini, bridg=
+e_connector);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+
+[Severity: High]
+Does this inverted drmm cleanup order cause a NULL pointer dereference?
+
+This drmm action is registered after the CEC drmm action (which happens
+inside drm_bridge_connector_initialize()). Since drmm actions run in
+LIFO order, the connector is destroyed and zeroed out before the CEC
+adapter unregisters. The CEC unregister action would then dereference
+connector->cec.data, which is already NULL, leading to a crash.
+
+>  	return connector;
+>  }
+
+While reviewing this patch, I noticed a pre-existing issue in the HDMI
+dynamic initialization path that this patch calls into:
+
+drivers/gpu/drm/drm_connector.c:drm_connector_hdmi_dynamic_init()
+{
+	...
+	ret =3D drm_connector_dynamic_init(dev, connector, funcs, connector_type, =
+ddc);
+	if (ret)
+		return ret;
+
+	if (ret)
+		drm_connector_cleanup(connector);
+
+	return drm_connector_hdmi_initialize(dev, connector, hdmi_funcs);
+}
+
+[Severity: Medium]
+This is a pre-existing issue, but does this code contain a dead cleanup pat=
+h?
+
+The code evaluates if (ret) return ret; followed immediately by
+if (ret) drm_connector_cleanup(connector);. The cleanup is dead code.
+If the subsequent drm_connector_hdmi_initialize() fails, the successfully
+initialized connector is leaked.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-drm-bridge=
--hotplug-v2-0-8e34986dcb68@bootlin.com?part=3D2
+-hotplug-v2-0-8e34986dcb68@bootlin.com?part=3D5
