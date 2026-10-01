@@ -1,394 +1,248 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013013.outbound.protection.outlook.com [52.101.83.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9C85304B2
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 15:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790870081; cv=none; b=S6Qxmw5FKWvFLMwuzS7DvYbTMlPV6PhIfKnAZM+VDULy+2UTxsmitcHNzuiPSocp5bxJ2hMkno2Palv54VFR2R202vk1d675GQR869bjq0SW/6waGv8dLVnFMrHQLomynpZ0TX56LKV45iVayszQ2r/zzwMGcxs58sCaa3JrBlM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790870081; c=relaxed/simple;
-	bh=VA7Ni/F1JgzgtUh3oFMKOt21KWPWBYus5Y/t5m1o+L4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ayRhZfOvRqVCi5sX3ZXDy5CE4H7396RNNcG3cS/42TSwcr+VZEY5xK/I4m9dEno4Hyc0ThECA7YTbd01jPwe0h34AF+jxGed/hfBG+BwuRppz8afIvWjuAG/pqKgS74wpO+KRUgmg5ulpETj0djfujHY0hkxt9pOxXOhjNSRRAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DgWJxOyn; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A6E3815DE
+	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 16:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790871105; cv=fail; b=dUSzoceK3OBS+7C/wQoDNKB5uyeQy0Nx2dU6fG0Eg1o+nCyk1R+WVPdGnHLKNSrSAdEK6PS5zAuwlZb+xcsbXDxSzX2laM1gThMoGV2OnMPy1cs6K00r3mviw/LwyRINKNZNTl86qmGZJBpf5HmqmCb6thXOb4wF2sIPYHjkK6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790871105; c=relaxed/simple;
+	bh=AKZ+57HoLz2d/XmbZzcJ5PnZQRHpvnq8YLaROIyeQbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bAXJpgtSWpzzMFwUUZoTHkkQRnoL3W6wsnp1RnMxrVsTEUmuw5IY4wfZ0PhOgkL++6dxHsvVIV5mdm/A4bW+SJnNNGZZXMPcBpTJumgmAVmgZkrhRC8TjvgBwPuJb9bt+W52q7AZP3fmYP9mMGJiHMeNejNUBmoxY9qrE9mqHYo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=PeCuvLkv; arc=fail smtp.client-ip=52.101.83.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DgWJxOyn"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4887f690df6so4843860f8f.1
-        for <imx@lists.linux.dev>; Thu, 01 Oct 2026 08:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790870076; x=1791474876; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hAFC8H6SRbBYXziL4RWAUIvTgcktVHgnRCl/MLPP5e8=;
-        b=DgWJxOynXeEFyf2syKbYFGL1A5jMzUlTZNsUrSN+8KOXLjklsQm0oysrdGtIzH5s7u
-         DjeW+QxuT641k+vKO1L/FaCqivgUbs/VxRUIXvf8AVfLvgTkEQtYVhpLfXLwXa/pe86H
-         yt0b2nB7oMI0GcZBw0nIehWM14aBIsqWT0lCmQBtYe3+QkO0uXmMq9NLfj/gTRq6/Hvw
-         gGYO8NM+IwZYcyt8YyRzgyTyBfBkRNjwogfJ9/YlHMThGEIviwqHld8gLlyXlNn6aX3n
-         nk62uS+bSDth+wb7K7Yr68a5D3HxxVg8QAgByfmp6njF723e+IjyDEUCjac7xqlGO1sQ
-         zu5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790870076; x=1791474876;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hAFC8H6SRbBYXziL4RWAUIvTgcktVHgnRCl/MLPP5e8=;
-        b=GXNjaPg6HEPMZG5Zdgf+8CJtML8dyyc/XHoI4zsnM5EhCXE55/LcyCQQt6/v/4fSV+
-         b3MnFmrwjuotaUwfHYjHc7KkL1+rLPKTBsEpV63JKmxT6URJzTfOzVGLzJJRz04eOUSg
-         fjvD/K5gHc1LoL9kiSMDDY0S9yyBe5B+Yga3MDDGNOQg5ZUjC2GgbtACGfQSenSWLYE8
-         SWnTK2oTFcYNEDcD/ZUf4I86LzJilF2CndR512H1JAs6K14Qp4wOoxqrQLHluivpx8Iy
-         eNA4CruycUA66Ht5ZU54Vk8STUmMq5wqf8Ikk1Wa1PFB1BwyHy/ZTTcc6htUVJvFcyz4
-         ZsEA==
-X-Forwarded-Encrypted: i=1; AKwUvBywcs+Ni31smLVol5olnNrM+WTKwjhuf6jKFH0IgHirNNdJBFv7g4GKUVMF9qChMI4MLpQ=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJkF0CqRznbvvhvrywWcX9WKBMubD5CxZNYRrXUCTMZO8lRuc6d
-	yhxuQsxlf/3TDwV2BTIQ6vY2Z5Ft3q2X2ml9Kxb+yyeyMd2ZR4fw23d6
-X-Gm-Gg: AYBFou0ZLQQ4wPH2rFYUqtDE+MLa5Dd546+T0F/yVjbniyHxi8NZv2l7zg31GT2Zapa
-	X+P95ttBYAt/ePUaBiNmCAlhCiMjI/gHICkiD1eDp0C9oc3hkG5onMpadilZRylJKNv//D/1w9w
-	di8rGdXqR014wzaeiZnOwlieKODY/NjHpdYlH0qXBtYSC58DRxV/9gXUqHDNf5H1W6Rt3n8hC0D
-	W87Lph4qfpQT6K8oY5wQI6zvkxmJYhEOrt4rOfzACh/az0v+X1w9u8+a7WZPXdltmQ6O1LiGMUp
-	hJecaxysNufBdununItqCIfAxtBJ0ht4nVplDsI3B245+CWFFGYiPzXDb2tJzAw/9Tl34cYZU41
-	3aRNPQft3ubb4EYDQPqPdAzab/4uiCdcVkN9PmbZlnK32t+Lk8/1lCQJIab4CBgjA0wIwxmhjbm
-	8zO6yp3nlXFdX29nwYXbAIBKV8c/jCki2v2pzrOcYWnhYElkBoolH3USz5TL5YaIZo2KsOuNz9u
-	RKbgHhsiiMNfU1ZD7BBzvdAtA3iFj4qbgZ0apc9AZFr2uokx0I3K5QCriH7YmBRkTSkLQw9aDWE
-X-Received: by 2002:a05:6000:250a:b0:48b:5e2:52dd with SMTP id ffacd0b85a97d-48b12739690mr25661f8f.11.1790870076043;
-        Thu, 01 Oct 2026 08:54:36 -0700 (PDT)
-Received: from leonardoc-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b068ff6eesm6517294f8f.11.2026.10.01.08.54.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:54:35 -0700 (PDT)
-From: Leonardo Costa <leoreis.costa@gmail.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	francesco.dolcini@toradex.com,
-	leonardo.costa@toradex.com,
-	hvilleneuve@dimonoff.com,
-	marex@nabladev.com,
-	stefano.r@variscite.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] ARM: dts: imx6q-apalis: Add Toradex OV5640 CSI Cameras
-Date: Thu,  1 Oct 2026 12:52:57 -0300
-Message-ID: <20261001155412.3177428-8-leoreis.costa@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261001155412.3177428-1-leoreis.costa@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="PeCuvLkv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LX62eZmHCJmiKlMS3Fg7sAC4fypuM/WX8pRbhJn8bwJ/H7oPtn0TEv8O38nMuYRxUgm4SnmbftPWMnrk1DrBE00FN9tkXveoGKvNzB6DL5eG/s7IGZBRJDSDb6/hizbKcQJOEQXDL5osMaiRpZCzG57gOzAF7v09LXfl75EV9IU9j9YyL7TvWPFgooDObdI6IPNVKh6y4s7ImVSsCAhPWzlh1zce7W2shMADld7FeTbrQOZLV415VPH67Tzbk7fNepyv7wFXUHTlvCRK6GwVM/BMUEEbeGWskMB6MFQTauqD8mZinfM3A7+d/bZc3D9Tqp149VamfEyi1JnQq9f6XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wcMBJ1EMrXm3o67TgwSPLZ9MxI6xAN+c8oiHgNLAhqg=;
+ b=yym8T71eCSNggi5GSAJbvoT7SbtECqARK4c2mzXEud45uwPRe5Jid4gD8FxJJnfAZTA8fMjyA3+fJrypQEjWA5pLboPoER9Si3rUl42XDGXYw/6CxPAXYW8UuqLcc7hGdJOOucFhaoyVIIMsKbws0gFR08gHIn7TOIi6TaQ4hwcSZdh7iNh4wya1bH4l+XrFsk1fEx8QTOh9Klfq4H44y8p+kRhQ5t4JAOXki0QyHC+KxNqp+5aKQurB7HgoI9cUiYaFGotJX2HEWF4ph/UBJBZKV60p5T60OvFhmRk9Vwn9zWcRAH8Cb0UJEBSMrjqRrNoUAJssiloRXy2fTt0tXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wcMBJ1EMrXm3o67TgwSPLZ9MxI6xAN+c8oiHgNLAhqg=;
+ b=PeCuvLkvXK3313xBYAJFEVsw/HtKjQ+JDf6+EpHBGLRY8zuDup/Vx6gINocCcH9okxdExV+WxnwseHxZmSWO2ZdaysZXExSrswxmh6fUHKw/aRjqiToNlsQSLA9atJEZ2Nc+VSudp8nLGOIQZ07GCqJ2Q4bfMaKdpDiiFgt6rFJPAwY/eVyCHSLMzICNA4DtN0vBFTyMzupGsnLqJBeZ2y+5RwCzeRtm9vTMhX5SYwghhJBljA7Fb7/AUsDX+ZejJfOOoUjxAHEraY9azOPpaTbezA3EElOT9c0QMnthswYnVM2u/4Jqiv+HTWYqM4fDfv7Wudn7H7qJMfMRpgWV2A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by PAXPR04MB8287.eurprd04.prod.outlook.com (2603:10a6:102:1c4::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Thu, 1 Oct
+ 2026 16:11:34 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
+ 16:11:30 +0000
+Date: Thu, 1 Oct 2026 11:11:20 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Leonardo Costa <leoreis.costa@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
+	leonardo.costa@toradex.com, hvilleneuve@dimonoff.com,
+	marex@nabladev.com, stefano.r@variscite.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/7] ARM: dts: imx6q-apalis: Add HDMI Overlay
+Message-ID: <ar6GKLLRaoLocXfR@SMW015318>
 References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
+ <20261001155412.3177428-2-leoreis.costa@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001155412.3177428-2-leoreis.costa@gmail.com>
+X-ClientProxiedBy: CYZPR14CA0017.namprd14.prod.outlook.com
+ (2603:10b6:930:8f::27) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8287:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1c2e91f-2170-407c-580f-08df1fd6a776
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|376014|23010399003|366016|1800799024|22082099003|18002099003|3023799007|4143699003|11063799006|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	vi3gmti6lXgXZItKH+fg8YURE1UlIGcuzWCuYhLnA537tef3IDRNaRtUCAnzV2Pcmby0bKmjWYM6s/yP8cDOisqSPa2SzME10qx9ERciwpDbviQtptlb1jFVH1gkeR0c7bsJBZNBRLW0HkqHJE5Vhh/4JET7zVN0Rn+hQ5u+ayS8e5wgvT70wqovnOnBnZ4Yn5RZxVPT9wVhBp0InaVUz5NGOEpMS5Bp17iaVspJ0fZdsM7AovVJCE3OiySQ2o4rowZjRvG3y5fHmYBHK+CDD5xQhtcFCSDLPqUpRMCjwlyEVvljfTTpgzO932KJNIpiBiLEl7V8p19qAUA2mNe2xZWbjiOBjEeqwYunNJjHZTRcb41qa8WL7zTprlw9+iQ4m8Xb2PwaopWSqLQRpMK1wQXw3n0cwIa7WAKnAmgKUr4XQ1k8RHp3W1JVraFR482NWcrgBuIx1/V8kj7vSLu1Hak8OzfvcTOuWqedy20UTFA6jogMlh5DDe47U56dq7Y7yVV3pTS/oFxCSus+RfXSBZSUO01JFroh1DwcNixKimIDdz+yF5cliwIoikVDORe2P55+2zOwMSFRAT7Pm30O557NSllD+lStu98hfuqaOUguWKRl3RvMnfZXPJny6Sc7SH4O6y7wTKjJHoiSsRA2haNQPnX+Tc9gAbcghXNgiQs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(23010399003)(366016)(1800799024)(22082099003)(18002099003)(3023799007)(4143699003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NTjPDYBDxuhp8TRmvDCJcfmWDSsCiHT0dh3tn5DG2vJp4LWSNxCn2HqjEL5E?=
+ =?us-ascii?Q?8LtGrdeOF3s0MGs6VyawOdLAtFvht8/8wRpKfAOHnID61ZuxjsjRT83dqPkU?=
+ =?us-ascii?Q?n3Te+PjGXIA09fjcQvyEoB5wuLAU011+iAFLcRKHqy8LTPhJYQfyTSXJjJRr?=
+ =?us-ascii?Q?Df9Ew2fnU1AbEI4rGyA2X+GKe50MJy1dm3STWXrWLS9hL4Yw8c8LQl4DFkmB?=
+ =?us-ascii?Q?vYDWWx0lv/M86pT4ZEIw/f4HFk847yLnO2dEDhZBtLjMGuy5F5COvOwqCVKJ?=
+ =?us-ascii?Q?xUS1wH9cpvTtft/Qt2M4ggO5e9/dVngyuAxuVD53c/AvazM34ydEts+Fuu/S?=
+ =?us-ascii?Q?4pYww1VzNqqvfmLgrfe80Zs0rlTrMtxuOTujiNr5M6iMHVsdY5hMynZZNhFk?=
+ =?us-ascii?Q?GlNYbAbi3YLfhriDciGeutjFZyZICZCboeu0XUuXilsdUXAMsS7ZFCcigw2d?=
+ =?us-ascii?Q?TyPkOUDYpcRFGdOrCZAkUB6tuG0MZ0QhaxyqFjpER49uOjc6ew4JhhY1CfwY?=
+ =?us-ascii?Q?cLh6YoO7QdtitUObFcP3//JIBxgbSOiUX3dV80Ss+JW3sjwLgtqRBBhRHD6K?=
+ =?us-ascii?Q?R8c0S17AO1Qfn03DofFAB146VlvRt1iHA+QPBF2W5YzP5CvssbOSvT3/0P5Q?=
+ =?us-ascii?Q?hjOlZovxxmHclE9jA6a14axWriHGTQ+6hgxEhuAXDRpsJBnO00SjuFPV3ZRx?=
+ =?us-ascii?Q?JMN3+ejkEnm8ZUdWabBI82wO/hH0QEHGEJo2bEwmynOsSEsC2WxMnMpT8Oc/?=
+ =?us-ascii?Q?upqxcknpBzY8qdPSaBSE1A97REsbBDQ5bYzXLn2DgSWESMH3uOLlDQB0bUbA?=
+ =?us-ascii?Q?ZYLn3e+1PXAYhsgL1fXAtRKcqcjdyNH5u9yo3f5BgdfH/5zp4bltQe2HTyI6?=
+ =?us-ascii?Q?gEmKATqdR0moKPjvYtCKDfwizVNQbadlqFfz3vacy6eNXg4ixo0ArTyH/VhX?=
+ =?us-ascii?Q?6FeL9ijyOX3L/c71ROzM5JwJPg1UfdgvEO9l/AnnN51W/qpg8HRvwfUixOSC?=
+ =?us-ascii?Q?sH/vPoJo6fTBhifcWrO9UD0eH0/x9pFo9mowS4fvgtvD1SWUCQvRdrrlYBgw?=
+ =?us-ascii?Q?fXuX9fbhUMlr4EW4MBlxTg/1ZrOCVndODTvA03ytanQD2vftcuggoxZTY28O?=
+ =?us-ascii?Q?9vdbygTD9hrf0Tbxjpf8VnTwsN3CGfMQNpAc7p2JuLkS4XHVgiPqIFU6t93C?=
+ =?us-ascii?Q?2tqAOJu9XeVfvjYPcJmOQJ1isNpS5m9Apv9B2G0qiIxA0u8Q71FAV6vbiz7g?=
+ =?us-ascii?Q?/EPXVmF/ZDpIhk/kSShOrvecy049svJAPCrZNxd3tfUD4kIlK7Z1Z8/U7SOX?=
+ =?us-ascii?Q?wH7uUcqLnEYhg2pnfwLSE7JkW0SHwZLfEDKraOHUEKsQ0R0YHIjNsbKdiQUX?=
+ =?us-ascii?Q?Ysxqx2jus1xeUdGoHRD3ONKbRKhykYFptLU9EaANr2t/UPx3ljebko2DFgpQ?=
+ =?us-ascii?Q?uQp0KWLEReFkXw98IiBsFkyuz/6fmPvuErxU8oiX4TH5Zh4UT8wHuAi3n+N+?=
+ =?us-ascii?Q?BBb/vEQH5c8M2CSDR1/7XC/DbAUM6OUVhWMLoiOvbjRzCyxdMPXDwbiIEHfs?=
+ =?us-ascii?Q?90oUAbVFCDlyDXKlIDJ1ARFwJ2JBsSVXQzh3VMwbvdC/niCEESlBiHfnXzjq?=
+ =?us-ascii?Q?6/SJrN9YrXGkci7rF4UMTK1/qkuzqoemv5ld/HNuUgl/+S5ASoZciy9mZHJi?=
+ =?us-ascii?Q?PgsgZd+R/0fjXgJzSFd+O8Q3p98C/3LEGJL6A+tz4+xzvOopCoXpeGqtgS/d?=
+ =?us-ascii?Q?rx+FrbBvKW/R97DGmt+cCnP0OF8pxyX9Ibh4sO4YhNWopqavTTFx?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1c2e91f-2170-407c-580f-08df1fd6a776
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 16:11:30.7878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /uXXKAwT1n28aszJLyusgQu0ykdFvOTvLIyJtajk3nBYK2mqrKYXybRb6L6woITKcOx3MMitGN1AvG/CvZX9nYXjnS7G8QQw+8dTTyc5sbDJcVkuzRFmmTaiDo26bPv4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8287
 
-From: Leonardo Costa <leonardo.costa@toradex.com>
+On Thu, Oct 01, 2026 at 12:52:51PM -0300, Leonardo Costa wrote:
+> From: Leonardo Costa <leonardo.costa@toradex.com>
+>
+> Add a device tree overlay for the HDMI output on the Apalis iMX6.
+>
+> The overlay is also combined with the various versions of the Ixora and
+> Evaluation Board carrier board device trees to provide ready-to-use
+> DTBs.
+>
+> Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/Makefile            | 51 +++++++++++++++++++
+>  .../boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso   | 13 +++++
 
-Add device tree overlays for the Toradex OV5640 CSI Camera on Apalis
-iMX6 CSI.
+Thank you share one dtso for difference boards.
 
-The default overlay describes the current CSI Camera Set 5MP OV5640 with
-a 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the
-legacy camera module.
+Can you use imx-hdmi.dtso, so other boards also can share this file.
 
-Remove the ov5640_mipi node from the Apalis iMX6 dtsi, as it is an
-external component that does not exist at the SoM level. The camera
-modules have their own on-board oscillator, so the sensor xclk is now
-described as a fixed clock instead of the SoC CLKO2 output.
+Frank
 
-The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
-Board V1.2 device tree to provide a ready-to-use DTB.
 
-Link: https://www.toradex.com/accessories/csi-camera-ov5640
-Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam/
-Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
----
- arch/arm/boot/dts/nxp/imx/Makefile            | 12 +++
- .../nxp/imx/imx6q-apalis-ov5640-24mhz.dtso    | 17 +++++
- .../boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi | 68 +++++++++++++++++
- .../boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso | 18 +++++
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 73 -------------------
- 5 files changed, 115 insertions(+), 73 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index cb2ad0756e7fe..9bb3bd9756d11 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -103,6 +103,14 @@ imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
- 	imx6q-apalis-hdmi.dtbo
- 
-+imx6q-apalis-v1.2-ixora-v1.2-ov5640-dtbs := \
-+	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-+	imx6q-apalis-ov5640.dtbo
-+
-+imx6q-apalis-v1.2-ixora-v1.2-ov5640-24mhz-dtbs := \
-+	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-+	imx6q-apalis-ov5640-24mhz.dtbo
-+
- imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds-dtbs := \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
- 	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo
-@@ -250,6 +258,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6q-apalis-ixora-v1.1-hdmi.dtb \
- 	imx6q-apalis-ixora-v1.2.dtb \
- 	imx6q-apalis-ixora-v1.2-hdmi.dtb \
-+	imx6q-apalis-ov5640.dtbo \
-+	imx6q-apalis-ov5640-24mhz.dtbo \
- 	imx6q-apalis-panel-cap-touch-10inch-lvds.dtbo \
- 	imx6q-apalis-panel-cap-touch-7inch-parallel.dtbo \
- 	imx6q-apalis-panel-res-touch-7inch-parallel.dtbo \
-@@ -264,6 +274,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6q-apalis-v1.2-ixora-v1.1-hdmi.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-hdmi.dtb \
-+	imx6q-apalis-v1.2-ixora-v1.2-ov5640.dtb \
-+	imx6q-apalis-v1.2-ixora-v1.2-ov5640-24mhz.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-10inch-lvds.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-panel-cap-touch-7inch-parallel.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-panel-res-touch-7inch-parallel.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
-new file mode 100644
-index 0000000000000..3e4bbb11ce203
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Legacy Toradex CSI Camera Module 5MP OV5640 on Apalis iMX6 CSI.
-+ *
-+ * https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx6q-apalis-ov5640.dtsi"
-+
-+&clock_camera {
-+	clock-frequency = <24000000>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
-new file mode 100644
-index 0000000000000..302f1ceb6a102
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
-@@ -0,0 +1,68 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Common device tree include for Toradex OV5640 CSI camera on Apalis iMX6 CSI.
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&{/} {
-+	clock_camera: clock-camera {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
-+	regulator_camera: regulator-camera {
-+		compatible = "regulator-fixed";
-+		/* Apalis GPIO4 - CSI Camera Connector pin 24 */
-+		gpio = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-name = "V_CSI";
-+		startup-delay-us = <5000>;
-+	};
-+};
-+
-+&i2c3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	camera@3c {
-+		compatible = "ovti,ov5640";
-+		reg = <0x3c>;
-+		clocks = <&clock_camera>;
-+		clock-names = "xclk";
-+		AVDD-supply = <&regulator_camera>;
-+		DOVDD-supply = <&regulator_camera>;
-+		DVDD-supply = <&regulator_camera>;
-+		/* Apalis GPIO2 - CSI Camera Connector pin 22 */
-+		powerdown-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		/* Apalis GPIO1 - CSI Camera Connector pin 11 */
-+		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
-+
-+		port {
-+			ov5640_to_mipi_csi2: endpoint {
-+				clock-lanes = <0>;
-+				data-lanes = <1 2>;
-+				remote-endpoint = <&imx6q_mipi_csi_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&mipi_csi {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	status = "okay";
-+
-+	port@0 {
-+		reg = <0>;
-+
-+		imx6q_mipi_csi_in: endpoint {
-+			clock-lanes = <0>;
-+			data-lanes = <1 2>;
-+			remote-endpoint = <&ov5640_to_mipi_csi2>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-new file mode 100644
-index 0000000000000..9cf7587c263bf
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Toradex CSI Camera Set 5MP OV5640 on Apalis iMX6 CSI.
-+ *
-+ * https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-+ * https://www.toradex.com/accessories/csi-camera-ov5640
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx6q-apalis-ov5640.dtsi"
-+
-+&clock_camera {
-+	clock-frequency = <27000000>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-index e52b55a386f7a..ce160fad5ee06 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -36,12 +36,6 @@ backlight: backlight {
- 		status = "disabled";
- 	};
- 
--	clk_ov5640_osc: clk-ov5640-osc {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <24000000>;
--	};
--
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 		pinctrl-names = "default";
-@@ -116,26 +110,6 @@ reg_module_3v3_audio: regulator-module-3v3-audio {
- 		regulator-name = "+V3.3_AUDIO";
- 	};
- 
--	reg_ov5640_1v8_d_o_vdd: regulator-ov5640-1v8-d-o-vdd {
--		compatible = "regulator-fixed";
--		regulator-always-on;
--		regulator-max-microvolt = <1800000>;
--		regulator-min-microvolt = <1800000>;
--		regulator-name = "DOVDD/DVDD_1.8V";
--		/* Note: The CSI module uses on-board 3.3V_SW supply */
--		vin-supply = <&reg_module_3v3>;
--	};
--
--	reg_ov5640_2v8_a_vdd: regulator-ov5640-2v8-a-vdd {
--		compatible = "regulator-fixed";
--		regulator-always-on;
--		regulator-max-microvolt = <2800000>;
--		regulator-min-microvolt = <2800000>;
--		regulator-name = "AVDD/AFVDD_2.8V";
--		/* Note: The CSI module uses on-board 3.3V_SW supply */
--		vin-supply = <&reg_module_3v3>;
--	};
--
- 	reg_usb_otg_vbus: regulator-usb-otg-vbus {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
-@@ -690,30 +664,6 @@ adv7280_to_ipu1_csi0_mux: endpoint {
- 			};
- 		};
- 	};
--
--	ov5640_csi_cam: ov5640_mipi@3c {
--		compatible = "ovti,ov5640";
--		AVDD-supply = <&reg_ov5640_2v8_a_vdd>;
--		DOVDD-supply = <&reg_ov5640_1v8_d_o_vdd>;
--		DVDD-supply = <&reg_ov5640_1v8_d_o_vdd>;
--		clock-names = "xclk";
--		clocks = <&clks IMX6QDL_CLK_CKO2>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_cam_mclk>;
--		/* These GPIOs are muxed with the iomuxc node */
--		powerdown-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
--		reg = <0x3c>;
--		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
--		status = "disabled";
--
--		port {
--			ov5640_to_mipi_csi2: endpoint {
--				clock-lanes = <0>;
--				data-lanes = <1 2>;
--				remote-endpoint = <&mipi_csi_from_ov5640>;
--			};
--		};
--	};
- };
- 
- &ipu1_di1_disp1 {
-@@ -743,22 +693,6 @@ lvds1_out: endpoint {
- 	};
- };
- 
--&mipi_csi {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	status = "disabled";
--
--	port@0 {
--		reg = <0>;
--
--		mipi_csi_from_ov5640: endpoint {
--			clock-lanes = <0>;
--			data-lanes = <1 2>;
--			remote-endpoint = <&ov5640_to_mipi_csi2>;
--		};
--	};
--};
--
- &pwm1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pwm1>;
-@@ -933,13 +867,6 @@ MX6QDL_PAD_DISP0_DAT23__AUD4_RXD	0x130b0
- 		>;
- 	};
- 
--	pinctrl_cam_mclk: cammclkgrp {
--		fsl,pins = <
--			/* CAM sys_mclk */
--			MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 0x00b0
--		>;
--	};
--
- 	pinctrl_ecspi1: ecspi1grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_CSI0_DAT6__ECSPI1_MISO 0x100b1
+>  2 files changed, 64 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+> index c5caca92ea10c..32d77a59c4358 100644
+> --- a/arch/arm/boot/dts/nxp/imx/Makefile
+> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
+> @@ -59,6 +59,46 @@ dtb-$(CONFIG_SOC_IMX53) += \
+>  imx53-qsb-hdmi-dtbs := imx53-qsb.dtb imx53-qsb-hdmi.dtbo
+>  imx53-qsrb-hdmi-dtbs := imx53-qsrb.dtb imx53-qsb-hdmi.dtbo
+>
+> +imx6q-apalis-eval-hdmi-dtbs := \
+> +	imx6q-apalis-eval.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-eval-v1.2-hdmi-dtbs := \
+> +	imx6q-apalis-eval-v1.2.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-ixora-hdmi-dtbs := \
+> +	imx6q-apalis-ixora.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-ixora-v1.1-hdmi-dtbs := \
+> +	imx6q-apalis-ixora-v1.1.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-ixora-v1.2-hdmi-dtbs := \
+> +	imx6q-apalis-ixora-v1.2.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-v1.2-eval-hdmi-dtbs := \
+> +	imx6q-apalis-v1.2-eval.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-v1.2-eval-v1.2-hdmi-dtbs := \
+> +	imx6q-apalis-v1.2-eval-v1.2.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-v1.2-ixora-hdmi-dtbs := \
+> +	imx6q-apalis-v1.2-ixora.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-v1.2-ixora-v1.1-hdmi-dtbs := \
+> +	imx6q-apalis-v1.2-ixora-v1.1.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+> +imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
+> +	imx6q-apalis-v1.2-ixora-v1.2.dtb \
+> +	imx6q-apalis-hdmi.dtbo
+> +
+>  imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
+>  	imx6q-dhcom-pdk2.dtb \
+>  	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
+> @@ -183,15 +223,26 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
+>  	imx6dl-yapp4-phoenix.dtb \
+>  	imx6dl-yapp4-ursa.dtb \
+>  	imx6q-apalis-eval.dtb \
+> +	imx6q-apalis-eval-hdmi.dtb \
+>  	imx6q-apalis-eval-v1.2.dtb \
+> +	imx6q-apalis-eval-v1.2-hdmi.dtb \
+> +	imx6q-apalis-hdmi.dtbo \
+>  	imx6q-apalis-ixora.dtb \
+> +	imx6q-apalis-ixora-hdmi.dtb \
+>  	imx6q-apalis-ixora-v1.1.dtb \
+> +	imx6q-apalis-ixora-v1.1-hdmi.dtb \
+>  	imx6q-apalis-ixora-v1.2.dtb \
+> +	imx6q-apalis-ixora-v1.2-hdmi.dtb \
+>  	imx6q-apalis-v1.2-eval.dtb \
+> +	imx6q-apalis-v1.2-eval-hdmi.dtb \
+>  	imx6q-apalis-v1.2-eval-v1.2.dtb \
+> +	imx6q-apalis-v1.2-eval-v1.2-hdmi.dtb \
+>  	imx6q-apalis-v1.2-ixora.dtb \
+> +	imx6q-apalis-v1.2-ixora-hdmi.dtb \
+>  	imx6q-apalis-v1.2-ixora-v1.1.dtb \
+> +	imx6q-apalis-v1.2-ixora-v1.1-hdmi.dtb \
+>  	imx6q-apalis-v1.2-ixora-v1.2.dtb \
+> +	imx6q-apalis-v1.2-ixora-v1.2-hdmi.dtb \
+>  	imx6q-apf6dev.dtb \
+>  	imx6q-arm2.dtb \
+>  	imx6q-b450v3.dtb \
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso
+> new file mode 100644
+> index 0000000000000..592bd366d94e4
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-hdmi.dtso
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
+> +/*
+> + * Copyright (c) Toradex
+> + *
+> + * Enable the HDMI interface on the Apalis iMX6.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&hdmi {
+> +	status = "okay";
+> +};
+>
