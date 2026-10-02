@@ -1,46 +1,46 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011030.outbound.protection.outlook.com [52.101.65.30])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013009.outbound.protection.outlook.com [52.101.83.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AC742E424
-	for <imx@lists.linux.dev>; Fri,  2 Oct 2026 14:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FD22D9797
+	for <imx@lists.linux.dev>; Fri,  2 Oct 2026 14:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790950118; cv=fail; b=pngI5QLK4qgFpcYXC5m2wcdrV4sS+rVmkTThPKindLYmj72xvBcOxN/5uPQVxW+l0K+pcmM5WruMfEnkwAyvFDkHyMJ2EnwvxAg7ky+cbAmmddAMvXqMgWGz8tp+KqNAOgQG5pLek21BjtlMjAR1Xqz0yZoSQHe+gKuIRIa2t2Y=
+	t=1790951349; cv=fail; b=C+bsHNBk0uSR8BoplpnxCJ/Cgc4Pe/bCY+VP+7mwE0OFfIakV+BPZcEkv4kkthkosZaCb0k8W30cfZK1YWukOze7LAGOQ9ja9mwI61jVsWsO7Su68xL6hXpJLeRUVHJXVBiwzcTooTblSaxPBwe2KrY835oraCYtU1wT2TwL1Ic=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790950118; c=relaxed/simple;
-	bh=i1D3X8QUcI92ugrYgb9vxHDuM01421b4TEJNkUs01l0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=sZHEST0FjR97wWBOFrh1BTIrhogqbZCjt0Mvs+7BQYy5a/mrSwM9F1urOcwzMdWisf2D0CDTNV0FbHTiMowW1ab2Qu6iHgjQq3Zv60BHuUKL0rYpYV/c4cZKyyG7Cft5oEicbAKTwgZ10yiLxoWpCZOU2y48rchT2ueDXizECfs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dAJsw3um; arc=fail smtp.client-ip=52.101.65.30
+	s=arc-20240116; t=1790951349; c=relaxed/simple;
+	bh=8ZOgNRgENpAd+1CqdPpFI3VOZG5NuEgRz5i/B/ld9X8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=k/Wxq6DjJc342t5Rv5NPsyUOyKnAnXCdkbfCHXZds9Mnumtka+SskfdYljRjJpGOEzb9basTFtDPUWn1611/d5D7N0Kwsp7IdAN2WiQWHX4W2Mw8DJx3z3Mi5iMwLTby3bm8KQuPPmtc5u7OIPhoZTzhGHpr4DYFwLEDTjga3JE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=PlNA/khd; arc=fail smtp.client-ip=52.101.83.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dAJsw3um"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="PlNA/khd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dFBE+phnu5jkikgZW3H+geoLWFoC842rA21kiOK/1EN1qGJUsp1X6GAZ/S/5RbV0HqnyXpAI1RfHZwFLers7P8QxtJ0ft32AlndrzOoZraUcJIalg9rIGCMYsgzINL1nKjl8hj1ImGfLPVV0wBR9+SX5pffJNjStW9tz0aOgNaqzjJnsfLf6Hgko8DqowipaBydkSfMsKPSffUg1vF+DhtbbS+bTDH29K5odbmzBBWSXZ65GkRFZwIeoU60FV5ZqxtC3hJcePPxtotfV7SMQRdo8TerzZ3N22AalBTcpk9AZHyQnhusvQxgTVX7iFi4wGC7gjKl27gUJpEAc+nH+5A==
+ b=WUPUgwy/iS5HwheIFTk1nnpAyOqpku++8mguQQKSFDRWHNxWcFjuNm3RZ9CGtEJTh8K3VWVyy9dtp/O+tRwXFYANxPvrJxKr82cHlJmLS3a1UlShuBBO1GSGrzpv66AIAG7La2wZ76jptXtTYi04/o9sfTl5zRW0VhJULvp/9ls/yYsyoKMkQtpTSuWtU3rL5rgLUV/bT3R3Zbg8q3yH3G3lKNHGpWldGX+e/NDqMiZS9bMQ85eGWXms5ySo2PO9MvWdyS0l/mFfE32HhF+dADISjRJTgnSb8OuqGPYSQ1/w0n6LK4DE7jDTuNXCJtQ2TY7aS57jQo9gnBsvfjtnLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Ve7VB+tMulDcN/DBYp4fI3nisHsfeD0PVMfwmCylPI=;
- b=yz4Z+2A0Frg2pfnTCPvpDGgVIV7qhOU+8qj5qkOX5IqjrnqsW7aKlNDdA1VRFerc9kAD7gWFaTcLEEpj8UdYr78qVkYZny63Ff7yDy1LOYjDHriTku5zDulllW5mqbt0xb8xcZYOj5/RJURdJlDqj5Ovu1JgmHBN0H14kEDQFNAvRLE0g89EMQK2m2b2AEU1+asFyj0mcQmsgQ7SOL2PVJeb4rn6jDUfvVoLufiwR59FLCOvhcYC+rfN+beYOQZq2NgLar3V/2mEKIdth1Bod+kuzc8HmuuILij+PSJZuKgr3tkxt4e8R5PrltkLSe0dzNpyefk8A8m2GCdwXt+X2A==
+ bh=VR4vdLwurwof/MdOyBAyJqD+SUB5TvouZeMuA6zRi7Q=;
+ b=qoGdLxpMz0UCDsGCvEABqLhR6IT2d0QTwcTBtCryt769Ot1VOp2uXLzplg8r5sqIFvvbolKZryp8Ahp029O8WXGwI6mj29cFqJ+jdslh6MG3jiPysZ1icuCTPaPYcEqhb/PiINZER09gjdK0bPN9b2ViFz/sJ3cKlFakxBQdbj+3VtULcm+JFdDp/fd9+zilXPY7PGuGRchoRl/9ToJR60cD2pqICpL4uvIq9hyZEGejJOHaC3fSNb9JAgDgjEF/IZiHZlXcZs8Xp/6TtI5GlYZCS/KyCqbAbQP6j8shWNVin39TmFZr22oByr4qsAu7Sse1/Vp0xMkMGiPrMNLiCw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Ve7VB+tMulDcN/DBYp4fI3nisHsfeD0PVMfwmCylPI=;
- b=dAJsw3umJUFKLg58b66rPbV32hJWzjYxTJP+y0qIFNzawlPxiHlr2BF53zzab0WYteuiGo0hwTGHyQ7WYyoy4ux/FYBUzdx9cNtaei9LbKt9Y+lHhuQA8Ai9vun3W8RJnOUf2+WRsKOLhyKYq2Y5tsA1KihWja48F2t9clV4YRgmI86zBuAEv6n0PW/L/AOa8WDJRjTvDwwYGwLIl1dgGnK9m72vBNHfTcUtE8C0zUEa3//INZ31x98Fu1eDkfU0E571qZxBbQIZZTYvOSfmUnJxmOBJcCk3f/e35No3iKgV0HfdQF1G9ywakPYsOzS6u9a0WW9Qs8EZna1gnWYrMQ==
+ bh=VR4vdLwurwof/MdOyBAyJqD+SUB5TvouZeMuA6zRi7Q=;
+ b=PlNA/khd5DT619k3nwS2016Vctbd0wFX9rYRiJGuO/nw73kIl2Umc6nXz4e+vj3a4li0yEygmdAfmD9ZhJ0njIiKwl2wYFRpJ3iHlx2OBQK0sa2xe8M0QDqwtX+KXo9RkHO0WtcM3SuYnk2iBJx8wUorIRSAKMTT3EA0AEtceBrEPhg9sYHtFEG0cjBUIaxpxy2vgY2GeApydwo5sruTHQvLCAoD8edxusjmWPX0LHaYdL9ThcAqHXV8JcaYzfRZEqHvXGUXEr2ptMr/w1PkhKIJ9HUBPbgmK0T3qdEwvlKP30EKj8QNngGvVXjFHlu39zXfdcO+c899YYMVvZd84w==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV4PR04MB11849.eurprd04.prod.outlook.com (2603:10a6:150:2de::11) with
+ by VI0PR04MB10440.eurprd04.prod.outlook.com (2603:10a6:800:218::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Fri, 2 Oct
- 2026 14:08:33 +0000
+ 2026 14:29:01 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0472.016; Fri, 2 Oct 2026
- 14:08:32 +0000
+ 14:29:00 +0000
 From: Frank.Li@oss.nxp.com
 To: soc@kernel.org
 Cc: Frank.Li@nxp.com,
@@ -48,25 +48,37 @@ Cc: Frank.Li@nxp.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	alexander.stein@ew.tq-group.com,
-	andrijsalivon@plajta.eu,
-	eberhard.stoll@kontron.de,
+	antoine.gouby@toradex.com,
+	chancel.liu@nxp.com,
 	francesco.dolcini@toradex.com,
+	franz.schnyder@toradex.com,
+	frieder.schrempf@kontron.de,
+	haibo.chen@nxp.com,
+	hongxing.zhu@nxp.com,
+	joy.zou@oss.nxp.com,
 	krzysztof.kozlowski@oss.qualcomm.com,
-	laurent.pinchart@ideasonboard.com,
+	laurentiu.mihalcea@nxp.com,
+	marex@nabladev.com,
+	Markus.Niebel@ew.tq-group.com,
+	maud_spierings@hotmail.com,
 	mehmet.fide@screeningeagle.com,
-	nora.schiffer@ew.tq-group.com,
 	oualid.derouiche@kontron.de,
+	peng.fan@nxp.com,
 	primoz.fiser@norik.com,
+	qijian.guo@nxp.com,
+	robh@kernel.org,
+	sherry.sun@nxp.com,
 	stefano.r@variscite.com,
-	y.bas@phytec.de
-Subject: [GIT PULL] i.MX ARM dt changes for 7.4:
-Date: Fri,  2 Oct 2026 10:08:25 -0400
-Message-ID: <20261002140826.3947315-1-Frank.Li@oss.nxp.com>
+	victor.liu@nxp.com,
+	vjardin@free.fr
+Subject: [GIT PULL] i.MX arm64 dts updates for v7.4
+Date: Fri,  2 Oct 2026 10:28:50 -0400
+Message-ID: <20261002142852.3968477-1-Frank.Li@oss.nxp.com>
 X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH0PR07CA0083.namprd07.prod.outlook.com
- (2603:10b6:510:f::28) To GV2PR04MB11799.eurprd04.prod.outlook.com
+X-ClientProxiedBy: PH7P220CA0071.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32c::33) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,60 +87,60 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV4PR04MB11849:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0dbcdcc2-14e3-4ba3-c84f-08df208ea47d
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI0PR04MB10440:EE_
+X-MS-Office365-Filtering-Correlation-Id: 218afa5a-06bb-43c6-97c9-08df20918053
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|19092799006|1800799024|10067099003|56012099006|6133799003|3023799007|11063799006|18002099003;
+	BCL:0;ARA:13230040|1800799024|19092799006|23010399003|366016|7416014|376014|56012099006|18002099003|6133799003|10067099003|3023799007|11063799006|41080700001;
 X-Microsoft-Antispam-Message-Info:
-	hYxf9oacNdhNRr8ZHIVYaqjJfIe7unNpMCgjgGboxnk+1RRBTJLfzDS0VtZ7q3Y8jAjAkGFDGIlQH/mI81y/+puQUaVIB6l61DZ4lx9isVHgcvGd0fK71F42ot0maZlw5BVHdvkHpLd52+MZIg9SklLxINZ0zSJ6lmHT4kQMa0Bsyg0NbpqIK3C7lmXsji0AI5AhxjfTrJlsYXEFxgwbGsIauBW0Y/zbD6GxrworGN5FApEtqIaiCHuBbtZ01/uJTpfDdo8W0ZC9M05BSv3sygoX2GptLL4u5rfh/aSVLko0rkXBDT9QbBqKanMBnwQuedSs8RmzHwjLNit3WsrBpfK9Itd091E/dhpmD49DozG3kOOuEzQ0n/VgpfdgWkMm/Zhj4mb6l26dZSk/hgyRbDHLJzUQOsVH0bGEYxzqWskZquFsJo2ueATi/yIYGvZFguFmcOFBQisYhTulQdNxEyHp+oyBJctH/FzWF3Z0IE4kUgbuTwmc4EKqmClxuOV7hw9K5G2xhG6a2yky9Zks1bOzZTOPS0JqQFze7vvc6RZIWqkfbrFeElnQj2k1OrwZVevgz+tt5lVWhpPAmKo+8DdpCWpTeK94hFNS6BBDPfh04N8MRAbQrDDbTcK3CGv0h6KYTEmRbJp9EQbnbU5ABAcHBPa/jUjuUqdQtAXx9Po=
+	hwK0MOejtcubJiroMBY6Ac3wqi8CHLs9OndwfctgyBFeqTLYNqnLKhO7SYUgrxIsoQBvFcrabLTTcpxUc59XK10djpoMQmNEUDv6rAQzKZrVngJEGoYm2UT8HWDsCIU/G1loV51RjuL++ahZ8NKR9sZa4e8aKNoYir7dlJKedFBsS98dYQ9Yooo2SKMYojWwkg+hlzLs4Ym6DAYD+wcGxaeK3mY3s/2hkmaRibOu8L7TpVZVc9u1k9Fr8wI+QeKRdooTNdRXJN0XvQucPt3cONnibuYeC2hM/w0kb7RU5vao1KEpNnFa3JrCkObQiXhHcxrRkxNuZIirbJQaUpqYxKk5Z2FmJfYbMrwkCQQdrXfwQmvkd5vQNsHu7Y1pY8CQc+d1llThTNest1ZHX+77keCecg0CJ/A1dpyqhnvHRs2qyjUbIPGWP9PsXR03THjtWvDRj/j7PhEa9L2CHbWknFsiY+o7jlElPYGe1obcq3FiH5eKd9unkRvy4/NimzVgZ89DekJBA/FH+BQO8Mn3d1H48fxNH4iLd+tYLdR3qQiCO1xcWVZUz8wcCZIt6k2LpAIT31tx89AEuxdEEC8V03YxxwdAca19TA0n7epj/Zfxx6Pm71HX2EgjAgyZKmqx50YSlB0oy8kkHQo3bsMXxOFds6kn/sjrMUXW2gMtgC8s23ZAeC6k/CWo04F91PgxqvKwYqBxilhfRVzWFZP5GaWkQ1jT7Di5PMs/YvXuErY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(19092799006)(1800799024)(10067099003)(56012099006)(6133799003)(3023799007)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(366016)(7416014)(376014)(56012099006)(18002099003)(6133799003)(10067099003)(3023799007)(11063799006)(41080700001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DNBYKleQVACoIAVXQHq1kbToP+rvzKEgPI34UEGh+pClbZZg6qnDPZMEzXpH?=
- =?us-ascii?Q?Ql/MjuXRwEzEL5yj/DBvNUlcBZvGR5Fj0dsp5XUKqzqJbu8PmnvuyZrGWo3T?=
- =?us-ascii?Q?f4TH6Hgun9/7jSwUG0vmkJDhV1JSEe/GDp3MUQpoC4K8Z0OgzMTgKFHtBKPg?=
- =?us-ascii?Q?GGDwBiu4PZW+XmlE0DCkKjHntIpjh69DpMcOSVrIUlIuFo4G2lraa0JNczXu?=
- =?us-ascii?Q?z1l7FCOwq5x2fbyTsxvEny764t8BudUKUc7VdnYzifx//M3efOu5SD3yLqLf?=
- =?us-ascii?Q?n9BweNol7tcxXspKRD4wV+ZlRRLnADVL8B3P+rVnGU9NqX8tjQaZmVn+YKWh?=
- =?us-ascii?Q?aft4RCIjb2y6XnS6hMcoWIIQU4VIB/filfunjMedDFBgksOJA3UDavAtEHy8?=
- =?us-ascii?Q?HZKQNT3Ib46FrBRWcYxeIX4dXDHxMp2eOExuOPaeHiCibni51m0rp7itJghB?=
- =?us-ascii?Q?UE4Y/CYJV+4u+/JPUDJgMJ/fLfNZ/pXl5Y5s7zTaP3j5t0lxC5efomKURERc?=
- =?us-ascii?Q?CSSpTwm14rAtKXGPaKSpI6Tm39UBx2DvCciDmgGFDHpHwpkEQ0HTv+H9ei/M?=
- =?us-ascii?Q?ue4VGJNAvNVH7dOsiA0fEd2o5FOhFkp3c2pN++379CnFZjC9WeMhJ00RP5RP?=
- =?us-ascii?Q?4UWqDG4fh8anViIgFWjUBw2RvYhKAgeK8pprfdg2uAVYCBYvYkpN52dQBy7s?=
- =?us-ascii?Q?T4sUs1wCZMX0zqcaUOGdOEor6OQGdqZM3YaIfYd2W0Rp3UCJAStw4vocshCa?=
- =?us-ascii?Q?UJIDdeOvgR2sD5VCe82H4PbeW6W7Uv7VXyKBhy6yDHDLivuAuwobVWlkYkQq?=
- =?us-ascii?Q?/q8Ahg63lWpnd7pu8LbpUAVmpLE1P/az8P7MCLvzePivJWIpcKUQpTTnxjUA?=
- =?us-ascii?Q?Qk9NAWXMmP4k6zGo9kT+j6pLAlsTG6/xKxfLGsek60qy0pj3WMCskP0Pu+lK?=
- =?us-ascii?Q?5JvGon8CZR/1RFyG4qLbrYqVT8/yQr1yRW60AWpVkROp0sgbsnN6tUjdym1Y?=
- =?us-ascii?Q?esGlY0uiFHvpzlvF+PwAjuj2QWWTpwGQto9KjRXEtP4z0RQMIJxFvxGiDEi5?=
- =?us-ascii?Q?24bBYldNNZxYJYY1JlR5JkFYxGSNE5sdGkWT5HcqwZJ7pe4YNXEUYlA/PbIa?=
- =?us-ascii?Q?i0VYnOQIKAqrrfRsmxsNOHneeO3/gQmUysIEufXgOclBq0DMwK58gBi80wJt?=
- =?us-ascii?Q?2ewqXn0VCweYjjiV5A606Tpq7uHatpiE5w5n1qEYFuhLu5S2cWaDg7a07APl?=
- =?us-ascii?Q?te5HZAQkfSQwPxPeGAC5JFGlybUAuixcYbGiIrVjauSOM2ZxTdPqnzCaULkA?=
- =?us-ascii?Q?F1m+gTxHGDJpRQU1giyiIGpWqyYOVmoNpi15UNQlYWVGct9KI5LYE8BkZtor?=
- =?us-ascii?Q?oNmlvaUN5rWRIa5zxtGXM5ubMJ5IF4ux7po1b8zvhETso1Hush26FdpqxWvc?=
- =?us-ascii?Q?gKoYCKfj40XNOCqkYervYp2WAu7uQoUCWldP/WTqGJi9o6fM/HrzkoVGi3az?=
- =?us-ascii?Q?OHwY2GLvWCPGy7c09rEYYcHehyfwbMvXvn6+ihYctgKA8Fu9eqExKd3yZoPQ?=
- =?us-ascii?Q?6kkEUpPPSiQzNHPo31eR75K4Fx5ix8h70Na7s/MIEN6JhWyeDtzQoXtwAnMt?=
- =?us-ascii?Q?QkzN4s+5km0q0FOI+I5+/VUThgp76CcLYMJIrx/DbKQ42HBsuaBO4mv0tH+l?=
- =?us-ascii?Q?3IgT3i+jCmJ5z6xe1e4Ql/P9nxipxES01/M11b5DYw3kD8iGdu3vpBXkjKs4?=
- =?us-ascii?Q?h3iINfImcG1gvzTolMJS6PKar80hje+Qptb4I1kZLXBl8CtrrEFv?=
+	=?us-ascii?Q?JDSBLhhzntqBjyjyE87lrBTYrSA8NAOK6uZ3KJVsVP4uV7fpCg8sn+0MseNg?=
+ =?us-ascii?Q?SvIssMTeCPl7QInX/8Gy4cgg4WQC+bHIJsTKZm99ZQcJheQ8BVpARJLuxSgy?=
+ =?us-ascii?Q?D6+CoHp5r5UmShGF9uIGJC6Oqv7x4mUq9AvbXWHRCKM6Rgc80BHTRhCc2S4a?=
+ =?us-ascii?Q?dEgzUVrYpNAbaeAHsEv0ms6+Io00WorfSu51zQyq4DrqqAA1uEqN3t7Ei53b?=
+ =?us-ascii?Q?GfvoLoVT9zBgdaih0heY+STCYiTJVUM+DfV8om3DW+CUjPHZHQkcfAECgTNO?=
+ =?us-ascii?Q?LRBDBaV0tUPrO4Nq2m9BHO9/hMdVgSf7gkdxZlJPx0c1bFLS+CekQX3trtRx?=
+ =?us-ascii?Q?YeeTx5Y9E54ZW06yCrghPuBPBVfttjjzcUAiNp5Ya3EI308T490REM1J3YaZ?=
+ =?us-ascii?Q?1F7nQpNAq2TV5wsSju1GPSf9lhNgbFJx1XPTzBQxYIzvtk2ge0Irl/8igxZz?=
+ =?us-ascii?Q?Ji41eQO6VcnnGDj8wugxeTd3wtkCfrIeGbg6/pcSj5s/gc8jzvcUZW2hp6fT?=
+ =?us-ascii?Q?8QTOZczjlS1aQyH1ndxVnADVEoQ6p1oOxngu8qsmZDOouMsIO7YmLxkOsp+7?=
+ =?us-ascii?Q?CgWhQ0x3WTLM2j2JsqnJ5hHBaIE2buOFnvXMVkXLjPcklNZFUHIDKibsQhii?=
+ =?us-ascii?Q?SZWHqxr4RQd+6yp+fn02Ix2X4tW4PbOH7fgnMq94P3i6Ce6g4ltmWKTt92dK?=
+ =?us-ascii?Q?+rrhysxGaZ+u5XPfxghJLUqNkB/Z5sDIFWwgyD2+k1t8lRRPkH8lUkzyfNjV?=
+ =?us-ascii?Q?Nees/zArxwpIuG4P4TeCQbdQp9APq484z0vJEVqInGkmcMiVn06BfMmRoJuI?=
+ =?us-ascii?Q?fQkdRiap6upbA7Q1jc3zIJrvImJWsgQNRtLGKEhJTj2ZFriFkFLYo2lw7Obp?=
+ =?us-ascii?Q?U1mGKDlw73Guq7H4NGBK+V83c045f8i4EnARgbzx8XruoV3DXZ/p0jwTNsFp?=
+ =?us-ascii?Q?QyBy8xuapASdUZzDK6Qf5t7qBtph7aI2Dyh+VKnQXirA3QFhvXDhmnaZa5Bq?=
+ =?us-ascii?Q?C8BB1GkuhG/7HpuQlfGXM9+5q+UKTRs3lb+IyDxSWxEgrMs4K4UYRXm2shGm?=
+ =?us-ascii?Q?TXzibQzmmT4fV5PNxDEv/DgcYQoQHTzbiMhAu4hu9f/33PL7NYeQxkvmZAQC?=
+ =?us-ascii?Q?e0FLpRVCwHG86PL28BcbHiU/SUoCvvoAnUPdBoI2uN6DMg6LlOlf/7ZJ3xdf?=
+ =?us-ascii?Q?rd55cUetdPa1Xwiiqx/ao7uiQF0ooD7B2WlsrCTLMKxCWTnVvfRIcpvpuMH0?=
+ =?us-ascii?Q?1zlHqoBKjuUb2C+1+XMrwcfQsZc8jUGCYHsP+Gw6EZV2Jffzm5n83cBowXQ6?=
+ =?us-ascii?Q?5Z2C+wwbtrJrYvUnJOSeNmFS3xF8FUIg9eDEAOZ74R6IHAGHT2d1AeSh7du+?=
+ =?us-ascii?Q?O5wP3EZW1GOo2y4coKxCIJvPcCJJL0dwm9+DfWK1f92Mn1mRJ9eUa0YbfaQS?=
+ =?us-ascii?Q?DjC0l9Q/wdqOl2bndjyKEoRLMGjXD9DK2Ig72wnZh3UyvQVrddseLhc1Gq+V?=
+ =?us-ascii?Q?7ZwBtefYl6U/YfYW52fd+YSAbXqtT7RFe5bLT6NCNvbwRyNQSLBhoXii20zU?=
+ =?us-ascii?Q?rupv2In8bQauJdY5oRJMJ0V5wbqtRCk6t4pkEIIPtNATTcp1tyeP4Xkyust8?=
+ =?us-ascii?Q?9QtZTPvmP7TMe8Q7LNlec2LpOc5syAZ9a6iUiKbzMq5gbqYmXlvXsA169ooF?=
+ =?us-ascii?Q?G6c1K8zjbiULgt3UtwnIURM78ZewAiceDLTIQl6/n0CIgroT9Wz6rxLu/2eh?=
+ =?us-ascii?Q?GzeriC8rarj1P+qqm/0fqUJlkDzc2x8jW13z5+BzfoEYkrhSTUl+?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0dbcdcc2-14e3-4ba3-c84f-08df208ea47d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 218afa5a-06bb-43c6-97c9-08df20918053
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 14:08:32.8479
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 14:29:00.8581
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Yfo7EGAkM+XOeXPp1xSpoFJ/0KP1uFb9hmcbjYnDtU29y/SIN1VDT0JyCHwXA2/vDWxfJhS+oocRYSrL1it+edAo4QujG8+P/EfWAnn90jW0Gjh1+daSPjiHTszvUfoH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11849
+X-MS-Exchange-CrossTenant-UserPrincipalName: hkNEhgOFduLc3hN2kgt/ZNMRgP7jdfp7stAuYBd16+GhtGNbgk9YKBokuEHep4RGL+ZtDgV7ziBAdqP4fOTPN4v1t7r0BOQuBEl/H/zumsgT3FgEQ+qRnu7E8ZNk2Mod
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10440
 
 From: Frank.Li@nxp.com
 
@@ -138,209 +150,498 @@ The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-dt-7.4
+  https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-dt64-7.4
 
-for you to fetch changes up to ec7b37c768d34107d06bd629d05cde0e2218ee9a:
+for you to fetch changes up to 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9:
 
-  ARM: dts: imx6dl-phytec-mira: Add phyBOARD-Mira-i.MX6DL with eMMC (2026-10-01 11:05:32 -0400)
-
-----------------------------------------------------------------
-i.MX ARM dt changes for 7.4:
-
-- dt-bindings fixes and cleanups: allow single reg for fsl,imx6sx-ldb,
-  allow bridge@18 child in imx-iomuxc-gpr, allow display0 child for i.MX6UL
-  lcdif, add deprecated/optional properties for st,stmpe MFD.
-
-- ARM dts cleanups: whitespace/indentation fixes, drop undocumented
-  st,stmpe properties, drop fallback "dlg,da9052" compatible, remove unused
-  CSI nodes, fix/remove unrecognized PCIe/wakeup properties
-
-- ARM dts board updates:
-  - Add Variscite VAR-SOM-MX7, Colibri VF50/VF61, Amazon Kindle 4 (Yoshi)
-    board.
-  - imx7d Colibri eMMC: add Toradex Capacitive/Resistive 7" Parallel
-    displays and VGA overlay.
-  - imx7-colibri/imx6ull-colibri: set LCDIF bus width.
-  - imx7d: add Variscite VAR-SOM-MX7 and MX7CustomBoard support.
-  - imx7-tqma7: fix PMIC voltage constraints, sort I2C nodes by address.
-  - imx6ul-kontron-bl: add GPIO labels, fix USB OTG1 ID pin, replace UART3
-    with DIP switch GPIOs.
-  - imx6qdl-pico/wandboard: replace clock-frequency in camera sensor.
-  - mba6ulx: add Ethernet PHY interrupt and USB hub nodes.
-  - imx6dl-phytec-mira: add phyBOARD-Mira-i.MX6DL with eMMC.
-  - imx6qdl phycore-som: add custom volt/freq OPP table.
+  arm64: dts: imx95-tqma9596sa: Add thermal zones (2026-10-01 10:53:11 -0400)
 
 ----------------------------------------------------------------
-Alexander Stein (2):
-      ARM: dts: mba6ulx: Add Ethernet PHY interrupt support
-      ARM: dts: mba6ulx: Add USB hub node
+i.MX arm64 dts updates for v7.4
 
-Andrii Salivon (2):
-      dt-bindings: arm: fsl: add Amazon Kindle 4 (Yoshi)
-      ARM: dts: imx50: add support for Amazon Kindle 4 (Yoshi)
+New board support:
+  Add i.MX952 FRDM, i.MX93 Wireless FRDM, Toradex OSM iMX91, iMX93, iMX95,
+  Lino iMX91 and iMX93 (with dahlia), MR-NAVQ95, Free Mobile Nodebox v3 CPU
+  Module Data Modul i.MX8M Mini/Plus eDM SBC DT overlays (LVDS, HDMI, CM,
+  FIO1, FIO1-Audio, legacy board), ifm VHIP4 EvalBoard EEPROM layout DTOs
+  for i.MX8MN
 
-Eberhard Stoll (1):
-      ARM: dts: imx6ul-kontron-bl-common: Replace UART3 with DIP switch GPIOs
+MQS1 sound support:
+- Add MQS1 pinmux, clocks and board muxes on i.MX91, i.MX93, i.MX94, i.MX95
+  EVKs and FRDM boards, i.MX952 AONMIX MQS device node.
+- Add one MQS1 DT overlay shared for all i.MX9 platforms.
 
-Francesco Dolcini (7):
-      ARM: dts: imx7d-colibri-emmc: Add Toradex Capacitive Touch Display 7" Parallel
-      ARM: dts: imx7d-colibri-emmc: Add Toradex Capacitive Touch Display 7" Parallel with Touch Adapter
-      ARM: dts: imx7d-colibri-emmc: Add Toradex Resistive Touch Display 7" Parallel
-      ARM: dts: imx7d-colibri-emmc: Add VGA overlay
-      ARM: dts: imx7-colibri-iris-v2: drop no-op delete-property
-      ARM: dts: imx6ull-colibri: Set LCDIF bus width
-      ARM: dts: imx7-colibri: Set LCDIF bus width
+PCIe updates:
+- Describe PCIe M.2 Key E connector on i.MX95-19x19-EVK and i.MX943-EVK
+- Avoid 32-bit PCIe window System RAM overlap on i.MX95, i.MX94, i.MX943
+- Move PCIe PERST# and vpcie supply to Root Port node on i.MX95-15x15-FRDM
 
-Frank Li (16):
-      dt-bindings: display: bridge: ldb: allow a single reg for fsl,imx6sx-ldb
-      dt-bindings: soc: imx-iomuxc-gpr: allow bridge@18 as child node
-      dt-bindings: display: lcdif: Allow display0 child node for i.MX6UL
-      ARM: dts: imx6ul-tx6ul: rename disp0 to display0
-      ARM: dts: imx51-zii-rdu1: rename node name i2c-gpio to i2c-0
-      ARM: dts: imx6qdl-emcon: Remove unrecognized disable-gpio PCIe property
-      ARM: dts: imx7d-nitrogen7: drop unsupported wakeup-gpios from tsc2004
-      ARM: dts: imx7d-meerkat96: disable lcdif node
-      ARM: dts: imx50-kobo-aura: convert sd2_vmmc to regulator-fixed
-      ARM: dts: imx6dl-b125v2: add touchscreen-size-x/y to exc80h60 node
-      ARM: dts: imx6sll: remove unused node csi@20e8000
-      ARM: dts: imx6ul-14x14-evk: remove reduntant bus-type under csi node
-      ARM: dts: imx53: drop fallback compatible "dlg,da9052"
-      dt-bindings: mfd: st,stmpe: add deprecated properties
-      dt-bindings: mfd: st,stmpe: let interrupt property optional
-      ARM: dts: imx: remove undocument properties of st,stmpe*
+Display/media:
+- Add tianma,tm050rdh03 panel on i.MX91-9x9-QSB, Assign media_{axi,apb}_root
+  clock parents/rates on i.MX91, Override dpi_bridge compatible string on
+  i.MX91, Enable I2C_3_DSI1 on i.MX95 Aquila Clover board
 
-Krzysztof Kozlowski (2):
-      ARM: dts: nxp: Correct white-space style
-      ARM: dts: nxp: imx: Replace spaces indentation with tabs
+Fixes and cleanup:
+- Fix usbphynop2 power-domain and add #phy-cells
+- Fix reserved memory node names across i.MX93, i.MX95, i.MX8QM, i.MX8QXP,
+  i.MX8DXL, i.MX8ULP EVKs
+- Fix LVDS clock frequency for DL device on i.MX8MP Kontron
+- Fix GPIO4_IO29 usage and USB-C connector mode on i.MX93 Kontron
+- Fix gpio-line-names on i.MX95 Aquila, i.MX8MP/i.MX8MM Verdin/Toradex
+- Fix duplicated can-phy node names on i.MX95-15x15-FRDM
+- Fix RTC aliases on i.MX93-11x11-FRDM
+- Fix reserved memory node names for remoteproc (multiple boards)
+- Drop unsupported opp-hz-real in OPP tables on i.MX95
+- Drop undocumented "hardware" root node properties
 
-Laurent Pinchart (2):
-      ARM: dts: nxp: imx6qdl-pico: Replace clock-frequency in camera sensor node
-      ARM: dts: nxp: imx6qdl-wandboard: Replace clock-frequency in camera sensor node
+Other additions:
+- Add HSIC usb@5b0e0000 node and usbotg3 iommu information
+- Add Apalis i.MX8 USB HSIC support
+- Add ENETC port 2 in SGMII mode on i.MX95 Aquila and Toradex SMARC
+- Add thermal zones on i.MX95-TQMa9596SA
+- Add boot phase properties on i.MX95-15x15-FRDM
+- Add RTC1 alias for PCF2131 on i.MX91/i.MX93 EVK/QSB
+- Add PEB-WLBT-07 expansion board for i.MX8MP phyBOARD-Pollux
+- Add phyBOARD-Pollux PEB-AV-10 SAI master fix
+- Add Wi-Fi SD interface on i.MX95 Toradex SMARC
+- Add EEPROM nWP GPIO, label and layout on i.MX8MM/i.MX8MP
+- Add TPM support and SAI3 sync RX mode on i.MX8MM VAR-DART
+- Add SPI EERAM, GPIO labels, ethernet PHY LEDs on i.MX8MM Kontron
+- Set #pinctrl-cells on lx2160a pinmux node
+- ARM: vf610/vf500: describe L2 cache geometry and Cortex-A5 L1 caches
+- i.MX93-11x11-FRDM: factor out common parts into dtsi
+- i.MX8MQ-EVK: add regulator-off-in-suspend for VGEN1/VGEN6
+- i.MX8MP: add DT label to SPBA5 bus
 
-Mehmet Fide (4):
-      ARM: dts: vf-colibri: apply the EXT_IO pin group
-      ARM: dts: vf-colibri: name the SODIMM gpio lines
-      dt-bindings: arm: fsl: add the Colibri VF50 and VF61 on Iris
-      ARM: dts: vf: add Iris carrier board support for Colibri VF50 and VF61
+----------------------------------------------------------------
+Alexander Stein (1):
+      arm64: dts: imx95-tqma9596sa: Add thermal zones
 
-Nora Schiffer (2):
-      ARM: dts: imx7-tqma7: correctly specify PMIC voltage constraints
-      ARM: dts: imx7-tqma7: sort I2C device nodes by address
+Antoine Gouby (2):
+      dt-bindings: arm: fsl: Add Toradex OSM iMX95
+      arm64: dts: freescale: Add Toradex OSM iMX95
 
-Oualid Derouiche (2):
-      ARM: dts: imx6ul-kontron-bl-common: Add GPIO labels
-      ARM: dts: imx6ul-kontron-bl-common: Fix USB OTG1 ID pin configuration
+Chancel Liu (17):
+      arm64: dts: imx91_93_common: Add clock and sound-dai-cells properties for MQS
+      arm64: dts: imx91-11x11-evk: Add board muxes to select between PDM and MQS1
+      arm64: dts: imx91-11x11-evk: Add MQS1 pinmux, clocks and mark conflicting devices
+      arm64: dts: imx93-11x11-evk: Add board muxes to select between PDM and MQS1
+      arm64: dts: imx93-11x11-evk: Add MQS1 pinmux, clocks and mark conflicting devices
+      arm64: dts: imx93-14x14-evk: Add board muxes to select between FlexCAN1 and MQS1
+      arm64: dts: imx93-14x14-evk: Add MQS1 pinmux, clocks and mark conflicting devices
+      arm64: dts: imx94: Add clock and sound-dai-cells properties for MQS1
+      arm64: dts: imx943-evk: Add board muxes to select between CAN1/PDM and MQS1/MIC
+      arm64: dts: imx943-evk: Add MQS1 pinmux, clocks and mark conflicting devices
+      arm64: dts: imx95: Add clock and sound-dai-cells properties for MQS1
+      arm64: dts: imx95-15x15-evk: Add board muxes to select between PDM and MQS1
+      arm64: dts: imx95-15x15-evk: Add MQS1 pinmux, clocks and mark conflicting devices
+      arm64: dts: imx952: Add AONMIX MQS device node
+      arm64: dts: imx952-evk: Add board muxes to select between CAN1/PDM
+      arm64: dts: imx952-evk: Add MQS1 pinmux, clocks and mark conflicting devices
+      arm64: dts: fsl: Add DT overlay to build MQS1 sound cards on i.MX9 platforms
 
-Primoz Fiser (1):
-      ARM: dts: imx6dl-phytec-mira: Add phyBOARD-Mira-i.MX6DL with eMMC
+Francesco Dolcini (14):
+      arm64: dts: freescale: imx8mm-verdin-ivy: fix DIGI_1/DIGI_2 gpio-line-names
+      arm64: dts: freescale: imx8mp-verdin-ivy: fix DIGI_1/DIGI_2 gpio-line-names
+      arm64: dts: freescale: imx95-aquila: fix gpio-line-names padding
+      arm64: dts: freescale: imx8mp-toradex-smarc: fix SMARC_SLEEP# gpio-line-names typo
+      arm64: dts: freescale: imx8mp-verdin-yavia: fix external GPIOs
+      arm64: dts: freescale: imx95-toradex-smarc: enable Wi-Fi SD interface
+      dt-bindings: arm: fsl: Add Lino iMX91/iMX93
+      dt-bindings: arm: fsl: Add Toradex OSM iMX91/iMX93
+      arm64: dts: freescale: Add Lino iMX93
+      arm64: dts: freescale: imx93-lino: Add dahlia
+      arm64: dts: freescale: Add Lino iMX91
+      arm64: dts: freescale: Add Toradex OSM iMX93
+      arm64: dts: freescale: Add Toradex OSM iMX91
+      arm64: dts: freescale: imx8mm-verdin: add gpio-line-name for CTRL_SLEEP_MOCI#
 
-Stefano Radaelli (3):
-      dt-bindings: arm: fsl: add Variscite VAR-SOM-MX7 boards
-      ARM: dts: imx7d: add Variscite VAR-SOM-MX7 support
-      ARM: dts: imx7d: add Variscite MX7CustomBoard support
+Frank Li (5):
+      arm64: dts: imx8qm-ss-conn: add usbotg3 iommu information
+      arm64: dts: imx8qm-ss-conn: Add HSIC usb@5b0e0000 node
+      arm64: dts: imx8qm-ss-conn: add #phy-cells for usbphynop2
+      arm64: dts: imx8qm-ss-conn: update usbphynop2's power-domain to IMX_SC_R_USB_1_PHY
+      arm64: dts: imx8mn-solidsense-n8-compact: drop undocumented adi,led-polarity
 
-Yunus Bas (2):
-      ARM: dts: imx6dl: Add a label to cpu1 node
-      ARM: dts: imx6qdl: phycore-som: Add custom volt/freq table
+Franz Schnyder (4):
+      arm64: dts: apalis-imx8: Add USB HSIC support
+      arm64: dts: freescale: imx95-toradex-smarc: Add ENETC port 2 in SGMII mode
+      arm64: dts: freescale: imx95-aquila: Add ENETC port 2 in SGMII mode
+      arm64: dts: freescale: imx95-aquila: Enable I2C_3_DSI1 on Clover board
 
- Documentation/devicetree/bindings/arm/fsl.yaml     |  30 +-
- .../bindings/display/bridge/fsl,ldb.yaml           |  23 +-
- .../devicetree/bindings/display/fsl,lcdif.yaml     |   1 +
- .../devicetree/bindings/mfd/st,stmpe.yaml          |  25 +-
- .../bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml       |  62 +++
- arch/arm/boot/dts/nxp/imx/Makefile                 |  51 ++
- arch/arm/boot/dts/nxp/imx/e60k02.dtsi              |   8 +-
- arch/arm/boot/dts/nxp/imx/e70k02.dtsi              |   8 +-
- arch/arm/boot/dts/nxp/imx/imx50-amazon-yoshi.dts   |  59 +++
- arch/arm/boot/dts/nxp/imx/imx50-kobo-aura.dts      |   7 +-
- arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts       |   2 +-
- arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi           |   3 -
- arch/arm/boot/dts/nxp/imx/imx53-qsb.dts            |   2 +-
- .../arm/boot/dts/nxp/imx/imx53-voipac-dmm-668.dtsi |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6dl-b125pv2.dts       |   2 +
- arch/arm/boot/dts/nxp/imx/imx6dl-b125v2.dts        |   2 +
- arch/arm/boot/dts/nxp/imx/imx6dl-mamoj.dts         |   2 +-
- .../dts/nxp/imx/imx6dl-phytec-mira-rdk-emmc.dts    |  75 +++
- .../dts/nxp/imx/imx6dl-phytec-mira-rdk-nand.dts    |   2 +-
- .../dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi     |  23 +
- arch/arm/boot/dts/nxp/imx/imx6dl-plym2m.dts        |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6dl-prtvt7.dts        |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dts        |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6dl.dtsi              |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6q-bosch-acc.dts      |   4 +-
- arch/arm/boot/dts/nxp/imx/imx6q-novena.dts         |   3 -
- .../dts/nxp/imx/imx6q-phytec-mira-rdk-emmc.dts     |   2 +-
- .../dts/nxp/imx/imx6q-phytec-mira-rdk-nand.dts     |   2 +-
- .../boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi |  75 +++
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi      |   3 -
- arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi     |   3 -
- arch/arm/boot/dts/nxp/imx/imx6qdl-emcon.dtsi       |   1 -
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi      |  20 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi        |   4 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi    |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi   |   4 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-zii-rdu2.dtsi    |  10 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi             |  10 +-
- arch/arm/boot/dts/nxp/imx/imx6sl-kobo-aura2.dts    |   8 +-
- .../boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts    |   8 +-
- arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts          |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6sll.dtsi             |  11 -
- arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi    |   1 -
- .../boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi |  38 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi        |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi     |   1 +
- .../arm/boot/dts/nxp/imx/imx7-colibri-iris-v2.dtsi |   1 -
- arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi        |   1 +
- arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi          |  52 +-
- ...nel-cap-touch-7inch-parallel-touch-adapter.dtso |  58 +++
- ...olibri-emmc-panel-cap-touch-7inch-parallel.dtso |  43 ++
- ...olibri-emmc-panel-res-touch-7inch-parallel.dtso |  32 ++
- .../boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso   |  59 +++
- arch/arm/boot/dts/nxp/imx/imx7d-meerkat96.dts      |   2 +-
- arch/arm/boot/dts/nxp/imx/imx7d-nitrogen7.dts      |   1 -
- .../nxp/imx/imx7d-var-som-emmc-mx7customboard.dts  |  23 +
- .../imx7d-var-som-emmc-wm8731-mx7customboard.dts   |  23 +
- arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi  |  56 +++
- .../dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi  | 358 ++++++++++++++
- .../nxp/imx/imx7d-var-som-nand-mx7customboard.dts  |  23 +
- .../imx7d-var-som-nand-wm8731-mx7customboard.dts   |  23 +
- arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand.dtsi  |  73 +++
- .../imx/imx7d-var-som-v2-emmc-mx7customboard.dts   |  24 +
- .../imx/imx7d-var-som-v2-nand-mx7customboard.dts   |  24 +
- arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi    |  66 +++
- .../arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi | 102 ++++
- .../arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi | 118 +++++
- arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi       | 533 +++++++++++++++++++++
- arch/arm/boot/dts/nxp/imx/imx7s-warp.dts           |   2 +-
- arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi             |  36 +-
- arch/arm/boot/dts/nxp/ls/ls1021a.dtsi              |  10 +-
- arch/arm/boot/dts/nxp/vf/Makefile                  |   2 +
- arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi      | 126 +++++
- arch/arm/boot/dts/nxp/vf/vf-colibri.dtsi           |  56 +++
- arch/arm/boot/dts/nxp/vf/vf500-colibri-iris.dts    |  14 +
- arch/arm/boot/dts/nxp/vf/vf610-colibri-iris.dts    |  14 +
- 76 files changed, 2398 insertions(+), 168 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx50-amazon-yoshi.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-phytec-mira-rdk-emmc.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-phytec-phycore-som.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-phytec-phycore-som.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc-wm8731-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-emmc.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-mx7customboard.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand-wm8731-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-nand.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-emmc-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2-nand-mx7customboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-v2.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8731.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som-wm8904.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-var-som.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/vf/vf-colibri-iris.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/vf/vf500-colibri-iris.dts
- create mode 100644 arch/arm/boot/dts/nxp/vf/vf610-colibri-iris.dts
+Frieder Schrempf (2):
+      arm64: dts: imx93-kontron: Adjust GPIO4_IO29 usage
+      arm64: dts: imx8mm-kontron: Describe the ethernet PHY LEDs
+
+Haibo Chen (1):
+      arm64: dts: imx95-15x15-frdm: fix duplicated can-phy node names
+
+Joseph Guo (6):
+      arm64: dts: imx93-11x11-frdm: factor out common parts into dtsi
+      dt-bindings: arm: fsl: Add i.MX93 Wireless FRDM board
+      arm64: dts: imx93: Add i.MX93 Wireless FRDM board support
+      dt-bindings: arm: fsl: add i.MX952 FRDM board
+      arm64: dts: freescale: add i.MX952 FRDM Board support device tree
+      arm64: dts: imx95-15x15-frdm: add boot phase properties
+
+Joy Zou (3):
+      arm64: dts: imx8mq-evk: add regulator-off-in-suspend for VGEN1/VGEN6
+      arm64: dts: imx91-evk/qsb: add rtc1 alias for external PCF2131 RTC
+      arm64: dts: imx93-evk/qsb: add rtc1 alias for external PCF2131 RTC
+
+Krzysztof Kozlowski (3):
+      arm64: dts: freescale: Correct white-space style
+      arm64: dts: imx8mq: Replace spaces indentation with tabs
+      arm64: dts: imx95: Drop unsupported opp-hz-real in OPP tables
+
+Laurentiu Mihalcea (2):
+      dt-bindings: arm: fsl: add MR-NAVQ95 board
+      arm64: dts: freescale: add MR-NAVQ95 basic board support
+
+Liu Ying (3):
+      arm64: dts: imx91: Override dpi_bridge's compatible string
+      arm64: dts: imx91: Assign media_{axi,apb}_root clock parents/rates
+      arm64: dts: imx91-9x9-qsb: Add tianma,tm050rdh03 panel
+
+Marek Vasut (10):
+      arm64: dts: imx8mp: Add DT label to SPBA5 bus
+      arm64: dts: imx8mm: imx8mp: Add LVDS DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+      arm64: dts: imx8mm: imx8mp: Add legacy board DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+      arm64: dts: imx8mm: imx8mp: Add HDMI DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+      arm64: dts: imx8mm: imx8mp: Add CM DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+      arm64: dts: imx8mm: imx8mp: Add FIO1 DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+      arm64: dts: imx8mm: imx8mp: Add FIO1-Audio DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+      arm64: dts: imx8mn: Expand EEPROM description on ifm VHIP4 EvalBoard
+      arm64: dts: imx8mn: Add ifm VHIP4 EvalBoard configuration EEPROM layout DTOs
+      arm64: dts: imx8mm: imx8mp: Update EEPROM with nWP GPIO, label and layout
+
+Markus Niebel (1):
+      arm64: dts: imx95-tqma9596sa-mb-smarc-2.dts: improve SD reset pulse
+
+Maud Spierings (2):
+      arm64: dts: imx93-11x11-frdm-common: fix the rtc aliases
+      arm64: dts: imx93-11x11-frdm: add missing vcc-supply
+
+Mehmet Fide (2):
+      ARM: dts: vf500: describe the Cortex-A5 L1 caches
+      ARM: dts: vf610: describe the L2 cache geometry
+
+Oualid Derouiche (4):
+      arm64: dts: imx93-kontron: Make USB-C connector "device-only"
+      arm64: dts: imx8mm-kontron: Add GPIO labels and comments
+      arm64: dts: imx8mm-kontron: Add SPI EERAM on BL device
+      arm64: dts: imx8mp-kontron: Fix LVDS clock frequency for DL device
+
+Peng Fan (12):
+      arm64: dts: imx8dxl-evk: fix reserved memory node names for remoteproc
+      arm64: dts: imx8qm-mek: fix reserved memory node names for remoteproc
+      arm64: dts: imx8qm-mek: fix dsp reserved memory node names for remoteproc
+      arm64: dts: imx8qxp-mek: fix reserved memory node names for remoteproc
+      arm64: dts: imx8qxp-mek: fix dsp reserved memory node names for remoteproc
+      arm64: dts: imx8ulp-evk: fix reserved memory node names for remoteproc
+      arm64: dts: imx93-11x11-frdm: fix reserved memory node names for remoteproc
+      arm64: dts: imx93-14x14-evk: fix reserved memory node names for remoteproc
+      arm64: dts: imx93-9x9-qsb: fix reserved memory node names for remoteproc
+      arm64: dts: imx8dxl-sr-som: fix reserved memory node names for remoteproc
+      arm64: dts: imx93-11x11-evk: fix reserved memory node names for remoteproc
+      arm64: dts: imx95-15x15-frdm: fix reserved memory node names for remoteproc
+
+Primoz Fiser (2):
+      arm64: dts: imx8mp-phyboard-pollux-peb-av-10: Fix SAI master assignment
+      arm64: dts: imx8mp-phyboard-pollux: add PEB-WLBT-07 expansion board
+
+Richard Zhu (3):
+      arm64: dts: imx95: Avoid 32-bit PCIe window System RAM overlap
+      arm64: dts: imx94: Avoid 32-bit PCIe window System RAM overlap
+      arm64: dts: imx943: Avoid 32-bit PCIe window System RAM overlap
+
+Rob Herring (Arm) (1):
+      arm64: dts: freescale: Drop undocumented "hardware" root node properties
+
+Sherry Sun (3):
+      arm64: dts: imx95-19x19-evk: Describe the PCIe M.2 Key E connector
+      arm64: dts: imx943-evk: Describe the PCIe M.2 Key E connector
+      arm64: dts: imx95-15x15-frdm: Move PCIe PERST# and vpcie supply to Root Port node
+
+Stefano Radaelli (4):
+      arm64: dts: imx95-var-dart-sonata: correct UART8 header pins
+      arm64: dts: imx8mm-var-dart: configure SAI3 synchronous RX mode
+      arm64: dts: imx8mm-var-dart: add TPM support
+      arm64: dts: imx8mm-var-dart: increase PHY reset deassert delay
+
+Vincent Jardin (4):
+      dt-bindings: vendor-prefixes: add Free Mobile
+      dt-bindings: arm: fsl: add Free Mobile Nodebox v3 CPU Module
+      arm64: dts: freescale: add Nodebox v3 CPU Module
+      arm64: dts: lx2160a: set #pinctrl-cells on the pinmux node
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   40 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |    2 +
+ arch/arm/boot/dts/nxp/vf/vf500.dtsi                |    6 +
+ arch/arm/boot/dts/nxp/vf/vf610.dtsi                |    3 +
+ arch/arm64/boot/dts/freescale/Makefile             |  267 ++++-
+ arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi     |    2 +-
+ .../arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts |   34 +
+ .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      |  330 +++++++
+ arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi      |    1 +
+ .../arm64/boot/dts/freescale/imx8-apalis-eval.dtsi |    6 +-
+ .../boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi |    6 +-
+ .../boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi |    6 +-
+ .../arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi |   16 +-
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts      |   14 +-
+ arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi  |   14 +-
+ .../dts/freescale/imx8mm-beacon-baseboard.dtsi     |    2 +-
+ .../imx8mm-data-modul-edm-sbc-overlay-cm4.dtso     |   56 ++
+ ...odul-edm-sbc-overlay-edm-mod-imx8mm-common.dtsi |   59 ++
+ ...-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi |   99 ++
+ ...-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso |   79 ++
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi |   69 ++
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso |   59 ++
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi |   94 ++
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso |   17 +
+ ...edm-sbc-overlay-edm-mod-imx8mm-lvds-common.dtsi |  118 +++
+ ...l-edm-sbc-overlay-edm-mod-imx8mm-lvds-dual.dtsi |   32 +
+ ...sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtsi |   12 +
+ ...sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtso |    7 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtsi |   12 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtso |    7 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g121xce-l01.dtsi |   12 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g121xce-l01.dtso |    7 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtsi |   12 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtso |    7 +
+ ...sbc-overlay-edm-mod-imx8mm-lvds-g215hvn011.dtsi |   12 +
+ ...sbc-overlay-edm-mod-imx8mm-lvds-g215hvn011.dtso |    7 +
+ ...c-overlay-edm-mod-imx8mm-lvds-mi0700a2t-30.dtsi |   12 +
+ ...c-overlay-edm-mod-imx8mm-lvds-mi0700a2t-30.dtso |    7 +
+ ...verlay-edm-mod-imx8mm-lvds-mi1010z1t-1cp11.dtsi |   12 +
+ ...verlay-edm-mod-imx8mm-lvds-mi1010z1t-1cp11.dtso |    7 +
+ ...edm-sbc-overlay-edm-mod-imx8mm-lvds-single.dtsi |   20 +
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds.dtsi |   22 +
+ ...odul-edm-sbc-overlay-edm-sbc-imx8mm-rev900.dtso |   18 +
+ ...imx8mm-data-modul-edm-sbc-overlay-lvds-3v3.dtsi |   19 +
+ ...imx8mm-data-modul-edm-sbc-overlay-lvds-5v0.dtsi |   19 +
+ ...mx8mm-data-modul-edm-sbc-overlay-lvds-dual.dtsi |   29 +
+ ...data-modul-edm-sbc-overlay-lvds-g070y2-l01.dtsi |   31 +
+ ...ata-modul-edm-sbc-overlay-lvds-g101ice-l01.dtsi |   31 +
+ ...ata-modul-edm-sbc-overlay-lvds-g121xce-l01.dtsi |   31 +
+ ...ata-modul-edm-sbc-overlay-lvds-g156hce-l01.dtsi |   31 +
+ ...data-modul-edm-sbc-overlay-lvds-g215hvn011.dtsi |   30 +
+ ...ta-modul-edm-sbc-overlay-lvds-mi0700a2t-30.dtsi |   31 +
+ ...modul-edm-sbc-overlay-lvds-mi1010z1t-1cp11.dtsi |   31 +
+ ...8mm-data-modul-edm-sbc-overlay-lvds-single.dtsi |   13 +
+ .../dts/freescale/imx8mm-data-modul-edm-sbc.dts    |   64 +-
+ .../arm64/boot/dts/freescale/imx8mm-kontron-bl.dts |  107 +-
+ .../imx8mm-tx8m-1610-moduline-iv-306-d.dts         |    1 -
+ .../imx8mm-tx8m-1610-moduline-mini-111.dts         |    1 -
+ arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi |   21 +-
+ .../boot/dts/freescale/imx8mm-verdin-ivy.dtsi      |    4 +-
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi   |    2 +-
+ .../dts/freescale/imx8mn-solidsense-n8-compact.dts |    2 -
+ .../freescale/imx8mn-vhip4-evalboard-common.dtsi   |    3 +-
+ .../dts/freescale/imx8mn-vhip4-evalboard-v1.dts    |    8 +
+ .../dts/freescale/imx8mn-vhip4-evalboard-v2.dts    |   28 +-
+ .../imx8mn-vhip4-overlay-eeprom-1000.dtso          |  103 ++
+ .../imx8mn-vhip4-overlay-eeprom-1100.dtso          |  103 ++
+ .../imx8mn-vhip4-overlay-eeprom-2000.dtso          |  107 ++
+ .../imx8mp-data-modul-edm-sbc-overlay-cm7.dtso     |   57 ++
+ ...-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso |   67 ++
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso |   46 +
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso |   17 +
+ ...sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtso |    7 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtso |    7 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g121xce-l01.dtso |    7 +
+ ...bc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtso |    7 +
+ ...sbc-overlay-edm-mod-imx8mm-lvds-g215hvn011.dtso |   11 +
+ ...c-overlay-edm-mod-imx8mm-lvds-mi0700a2t-30.dtso |    7 +
+ ...verlay-edm-mod-imx8mm-lvds-mi1010z1t-1cp11.dtso |    7 +
+ ...-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds.dtsi |   35 +
+ ...sbc-overlay-edm-sbc-imx8mp-lvds-g070y2-l01.dtso |   24 +
+ ...bc-overlay-edm-sbc-imx8mp-lvds-g101ice-l01.dtso |   24 +
+ ...bc-overlay-edm-sbc-imx8mp-lvds-g121xce-l01.dtso |   24 +
+ ...bc-overlay-edm-sbc-imx8mp-lvds-g156hce-l01.dtso |   32 +
+ ...sbc-overlay-edm-sbc-imx8mp-lvds-g215hvn011.dtso |   36 +
+ ...c-overlay-edm-sbc-imx8mp-lvds-mi0700a2t-30.dtso |   24 +
+ ...verlay-edm-sbc-imx8mp-lvds-mi1010z1t-1cp11.dtso |   24 +
+ ...edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900.dtso |   41 +
+ ...edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev902.dtso |   14 +
+ ...-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds.dtsi |   79 ++
+ ...odul-edm-sbc-overlay-edm-sbc-imx8mp-rev900.dtso |   97 ++
+ ...odul-edm-sbc-overlay-edm-sbc-imx8mp-rev902.dtso |   69 ++
+ .../dts/freescale/imx8mp-data-modul-edm-sbc.dts    |  176 +++-
+ .../dts/freescale/imx8mp-icore-mx8mp-edimm2.2.dts  |    2 +-
+ .../boot/dts/freescale/imx8mp-icore-mx8mp.dtsi     |    2 +-
+ .../boot/dts/freescale/imx8mp-kontron-dl.dtso      |   11 +
+ .../imx8mp-phyboard-pollux-peb-av-10.dtsi          |    5 +-
+ .../imx8mp-phyboard-pollux-peb-wlbt-07.dtso        |   76 ++
+ .../boot/dts/freescale/imx8mp-toradex-smarc.dtsi   |    2 +-
+ ...8mp-tqma8mpqs-mb-smarc-2-lvds0-tm070jvhg33.dtso |    2 +-
+ ...8mp-tqma8mpqs-mb-smarc-2-lvds1-tm070jvhg33.dtso |    2 +-
+ .../imx8mp-tx8p-ml81-moduline-display-106.dts      |    1 -
+ .../boot/dts/freescale/imx8mp-verdin-ivy.dtsi      |    4 +-
+ .../boot/dts/freescale/imx8mp-verdin-yavia.dtsi    |    7 +-
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi          |    2 +-
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts       |    6 +
+ .../boot/dts/freescale/imx8mq-librem5-devkit.dts   |    4 +-
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi  |    4 +-
+ arch/arm64/boot/dts/freescale/imx8mq-nitrogen.dts  |    2 +-
+ .../arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi |   16 +-
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi          |  168 ++--
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts       |   32 +-
+ arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi  |   39 +
+ .../boot/dts/freescale/imx8qm-var-som-symphony.dts |    2 +-
+ arch/arm64/boot/dts/freescale/imx8qm-var-som.dtsi  |    6 +-
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts      |   20 +-
+ arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |    4 +-
+ arch/arm64/boot/dts/freescale/imx9-mqs.dtso        |   57 ++
+ arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts  |   55 +-
+ .../boot/dts/freescale/imx91-11x11-frdm-s.dts      |    2 -
+ arch/arm64/boot/dts/freescale/imx91-11x11-frdm.dts |    2 -
+ .../freescale/imx91-9x9-qsb-tianma-tm050rdh03.dtso |  104 ++
+ arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts    |   52 +
+ .../dts/freescale/imx91-lino-verdin-dahlia.dts     |   24 +
+ .../boot/dts/freescale/imx91-lino-verdin-dev.dts   |   24 +
+ arch/arm64/boot/dts/freescale/imx91-lino.dtsi      |  305 ++++++
+ .../boot/dts/freescale/imx91-toradex-osm-dev.dts   |   22 +
+ .../boot/dts/freescale/imx91-toradex-osm.dtsi      |  303 ++++++
+ arch/arm64/boot/dts/freescale/imx91.dtsi           |   11 +
+ arch/arm64/boot/dts/freescale/imx91_93_common.dtsi |    6 +
+ .../boot/dts/freescale/imx93-11x11-evk-common.dtsi |    5 +-
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts  |   54 +-
+ .../dts/freescale/imx93-11x11-frdm-common.dtsi     |  681 +++++++++++++
+ arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts |  682 +------------
+ arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts  |   59 +-
+ arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts    |    7 +-
+ .../dts/freescale/imx93-imx91-lino-common.dtsi     |  536 ++++++++++
+ .../freescale/imx93-imx91-lino-verdin-common.dtsi  |  175 ++++
+ .../imx93-imx91-lino-verdin-dahlia-common.dtsi     |  198 ++++
+ .../imx93-imx91-lino-verdin-dev-common.dtsi        |  216 ++++
+ .../freescale/imx93-imx91-toradex-osm-common.dtsi  |  526 ++++++++++
+ .../imx93-imx91-toradex-osm-dev-common.dtsi        |  324 ++++++
+ .../boot/dts/freescale/imx93-kontron-bl-osm-s.dts  |    6 +-
+ .../boot/dts/freescale/imx93-kontron-osm-s.dtsi    |   32 +-
+ .../dts/freescale/imx93-lino-verdin-dahlia.dts     |   24 +
+ .../boot/dts/freescale/imx93-lino-verdin-dev.dts   |   24 +
+ arch/arm64/boot/dts/freescale/imx93-lino.dtsi      |  359 +++++++
+ .../boot/dts/freescale/imx93-toradex-osm-dev.dts   |   22 +
+ .../boot/dts/freescale/imx93-toradex-osm.dtsi      |  357 +++++++
+ arch/arm64/boot/dts/freescale/imx93w-frdm.dts      |   23 +
+ arch/arm64/boot/dts/freescale/imx94.dtsi           |    5 +-
+ .../boot/dts/freescale/imx943-evk-sdwifi.dtso      |   25 +
+ arch/arm64/boot/dts/freescale/imx943-evk.dts       |  138 ++-
+ arch/arm64/boot/dts/freescale/imx943.dtsi          |    2 +-
+ arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts  |   48 +-
+ arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts |   38 +-
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts  |   55 +-
+ .../boot/dts/freescale/imx95-19x19-frdm-pro.dts    |    2 -
+ .../boot/dts/freescale/imx95-aquila-clover.dts     |   23 +
+ arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts |   18 +
+ arch/arm64/boot/dts/freescale/imx95-aquila.dtsi    |   15 +-
+ arch/arm64/boot/dts/freescale/imx95-navq.dts       |  228 +++++
+ .../boot/dts/freescale/imx95-toradex-osm-dev.dts   |  404 ++++++++
+ .../boot/dts/freescale/imx95-toradex-osm.dtsi      | 1032 ++++++++++++++++++++
+ .../boot/dts/freescale/imx95-toradex-smarc-dev.dts |    8 +
+ .../boot/dts/freescale/imx95-toradex-smarc.dtsi    |    8 +
+ .../dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts  |    2 +
+ .../arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi |   75 ++
+ .../boot/dts/freescale/imx95-var-dart-sonata.dts   |    2 +-
+ arch/arm64/boot/dts/freescale/imx95.dtsi           |   18 +-
+ arch/arm64/boot/dts/freescale/imx952-evk.dts       |   77 +-
+ arch/arm64/boot/dts/freescale/imx952-frdm.dts      |    9 +
+ arch/arm64/boot/dts/freescale/imx952-frdm.dtsi     |  726 ++++++++++++++
+ arch/arm64/boot/dts/freescale/imx952.dtsi          |   19 +-
+ arch/arm64/boot/dts/freescale/s32g2.dtsi           |    2 +-
+ arch/arm64/boot/dts/freescale/s32g3.dtsi           |    2 +-
+ 176 files changed, 11020 insertions(+), 1070 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-cm4.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-dual.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g121xce-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g121xce-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g215hvn011.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g215hvn011.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-mi0700a2t-30.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-mi0700a2t-30.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-mi1010z1t-1cp11.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-mi1010z1t-1cp11.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-single.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-sbc-imx8mm-rev900.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-3v3.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-5v0.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-dual.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-g070y2-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-g101ice-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-g121xce-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-g156hce-l01.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-g215hvn011.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-mi0700a2t-30.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-mi1010z1t-1cp11.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-lvds-single.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1000.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-1100.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-overlay-eeprom-2000.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-cm7.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g121xce-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g156hce-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g215hvn011.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-mi0700a2t-30.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-mi1010z1t-1cp11.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g070y2-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g101ice-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g121xce-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g156hce-l01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-g215hvn011.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-mi0700a2t-30.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-mi1010z1t-1cp11.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev900.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds-rev902.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-lvds.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev900.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-wlbt-07.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx9-mqs.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-9x9-qsb-tianma-tm050rdh03.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino-verdin-dahlia.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino-verdin-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-lino.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-toradex-osm.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-dahlia-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-lino-verdin-dev-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino-verdin-dahlia.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino-verdin-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-lino.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-toradex-osm.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93w-frdm.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-navq.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-osm-dev.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-osm.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx952-frdm.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx952-frdm.dtsi
