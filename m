@@ -1,102 +1,175 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FB841F5D4;
-	Fri,  2 Oct 2026 08:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AEA43CE66
+	for <imx@lists.linux.dev>; Fri,  2 Oct 2026 08:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790928875; cv=none; b=e1v/nne0WNpx9ToK3caPGZXnhBpULU50zCsDxI/iCfQ+JH8nFJJvViDVsb+tuHAybmfXF4HZKKQwZxWi383qU9UReBJZXZo8ky94V5P2yBX5ijcnCZVFku/15hJFgAGt0S7wbcW3NzzNrYZWj/+tRuadr3cVhLM5An1b8aJA1bU=
+	t=1790929115; cv=none; b=Yq0o9k27/cBjN8jByNj7M1XGN+8WYX0AcfzKQW7MbyE8v8pEbmfKKmNM3spN4vrVSPfs+vVd270aLF7eVASIdTa6rTmhbao5/DHqrbDPAzc8TKDDLXrRUv637l9eY8j6fhZBAA+3fmIHgtWWQbT9US+i4+Igu8S0ZSvp75zbVBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790928875; c=relaxed/simple;
-	bh=RvUwwHlHILUhqZ/Rse2eTpyAwVFg1Mv3GozMXh0MP58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2Ubtud1Qm/dAatJd3w0Cp2TjOpq2qzkXmYOdyHzKvtOqXwpN0nyo28l2lSnOiXD7ih052Kat46m/Ke5trmM1JfjPO3wR3vJmlYO2SPJHNl3b1weJjs1N/CpsF0vPl7X0DUfTKJPMPg9zofv+B8gfu24vBd65gRMJI165asClqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=PgKVStww; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1790929115; c=relaxed/simple;
+	bh=kvPqBXl3xWAhJQMCX/4ZLXrLR32rh96ebQXHfC/LA6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CAmEbegqN7caUW0rN7w3UHVERXnj9uDJ5no9kGQmeFTwewwjdRICS1QMXqr4avBhUomB49g5TmOTnufiR6lH8enWOgxDnue/dF5o3MntqhfjjkQtsVHUOVYonVpHJX8HvpMp8LULdzyX+sdx/1YS/Rwxws95GyQt2QYNI0UpRCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=GIenKlYU; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="PgKVStww"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Lkxi//m4cQN7unhMKS2YMGJHIRGKv14XHlt5WJQgGyM=; b=PgKVStwwv085KJ2eapRrBvmuCI
-	+0EVy1wnSb4k8AwFSBBLCnoYuNM3Kfma2Mq95cAzNJom2uxVfs4S2FJxktPLy7X45QCy6Bez6Gk2j
-	+7t+bD1qB/6KeaPM9m+VQWZavmfp2lmx72HitVN6/4CkoEQ9oC6PpwjGOHK1zEmb/8MnbG01mjEgn
-	Kv9mtKlPtkVSOMRJyslYOuwJJjQ58qRFvDdxjMBBzJYkEqhmTlrmAC+RhHIeB2OQDsw8De+p3z7Ha
-	DMAbkeNVy7mzRc7No9tQCTEztTI/E9dzp6FH8HQlqGDd4yz5ka+i8Kj2//wJLD9szsfI4FNxotCDv
-	kfD3Zgkw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xCYPR-0003PA-1S;
-	Fri, 02 Oct 2026 10:14:25 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xCYPR-000FgI-14;
-	Fri, 02 Oct 2026 10:14:24 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: [PATCH 8/8] ARM: dts: imx6ull: Add parallel display DT overlay for TQMa6ULLxL
-Date: Fri,  2 Oct 2026 10:14:09 +0200
-Message-ID: <20261002081417.2092471-9-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261002081417.2092471-1-alexander.stein@ew.tq-group.com>
-References: <20261002081417.2092471-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="GIenKlYU"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 654E21FCAE;
+	Fri,  2 Oct 2026 10:18:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790929109;
+	bh=sON4h7CzqIiZs4MauHtrUPsGQLkEQCz5/f7dL0338OY=; h=From:To:Subject;
+	b=GIenKlYUVzNhYHhvRD0ajo4hBCE3RANLT7YBoyN7fywSaVr62iOgWVki3nzup8Ed8
+	 gexb8Yi1IaJ6FVyGUZkx642zl5mHcAIbXYDfUuvPGx8LjHARuEX1VcX/16ddNb90bJ
+	 l+N4e8mbiOmN5dxGdbXDlf9U9cwI4mCLiSOhVnXQcZAAjXpCl9kYPZ5Fpdomw/DXQd
+	 oXQTONJFUPhev+0NwIkafWtuo61W4p1A2kV/t3R2yfdrKatbwhxkmM0rGR3mX4YtFm
+	 XgiGJTZHNItTQ0jmrxC6H8ScUps72wVnONodaM0UNr5veUnp/3WIbzKZ6yRx3X9zKL
+	 fnAGJs1Yo60cA==
+Date: Fri, 2 Oct 2026 10:18:24 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Leonardo Costa <leoreis.costa@gmail.com>, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	francesco.dolcini@toradex.com, leonardo.costa@toradex.com,
+	hvilleneuve@dimonoff.com, marex@nabladev.com,
+	stefano.r@variscite.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
+ Display 10.1" LVDS
+Message-ID: <20261002081824.GA7222@francesco-nb>
+References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
+ <20261001155412.3177428-4-leoreis.costa@gmail.com>
+ <ar6JnZp1jBvlc8bx@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28141/Fri Oct  2 08:26:12 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ar6JnZp1jBvlc8bx@SMW015318>
 
-This simply reuses the .dtso files from TQMa6ULx.
+Hello Frank,
+thanks for the review
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm/boot/dts/nxp/imx/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+On Thu, Oct 01, 2026 at 11:26:05AM -0500, Frank Li wrote:
+> On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
+> > From: Leonardo Costa <leonardo.costa@toradex.com>
+> >
+> > Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
+> > LVDS connected via the Apalis iMX6 LDB.
+> >
+> > The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
+> > touch input is provided by an Atmel MaxTouch capacitive touch
+> > controller.
+> >
+> > Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
+> > external component that does not exist at the SoM level.
+> >
+> > The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
+> > Board V1.2 device tree to provide a ready-to-use DTB.
+> >
+> > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
+> > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> > ---
+> >  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
+> >  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
+> >  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
+> >  3 files changed, 59 insertions(+), 13 deletions(-)
+> >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+> 
+> similar 7" case, add panel module name in file
+> 
+> imx6q-apalis-lvds-panel-lt170410.dtso
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 5f190900904ab..77b7aa9968c22 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -430,6 +430,8 @@ imx6ull-tqma6ull2-mba6ulx-lvds-tm070jvhg33-dtbs += imx6ull-tqma6ull2-mba6ulx.dtb
- imx6ull-tqma6ull2-mba6ulx-cdtech-dc44-dtbs += imx6ull-tqma6ull2-mba6ulx.dtb imx6ul-tqma6ul2-mba6ulx-cdtech-dc44.dtbo
- imx6ull-tqma6ull2-mba6ulx-cdtech-fc21-dtbs += imx6ull-tqma6ull2-mba6ulx.dtb imx6ul-tqma6ul2-mba6ulx-cdtech-dc44.dtbo
- imx6ull-tqma6ull2l-mba6ulx-lvds-tm070jvhg33-dtbs += imx6ull-tqma6ull2l-mba6ulx.dtb imx6ul-tqma6ul2-mba6ulx-lvds-tm070jvhg33.dtbo
-+imx6ull-tqma6ull2l-mba6ulx-cdtech-dc44-dtbs += imx6ull-tqma6ull2l-mba6ulx.dtb imx6ul-tqma6ul2-mba6ulx-cdtech-dc44.dtbo
-+imx6ull-tqma6ull2l-mba6ulx-cdtech-fc21-dtbs += imx6ull-tqma6ull2l-mba6ulx.dtb imx6ul-tqma6ul2-mba6ulx-cdtech-fc21.dtbo
- 
- dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ul-tqma6ul2-mba6ulx-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ul-tqma6ul2-mba6ulx-cdtech-dc44.dtb
-@@ -441,6 +443,8 @@ dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ull-tqma6ull2-mba6ulx-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ull-tqma6ull2-mba6ulx-cdtech-dc44.dtb
- dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ull-tqma6ull2-mba6ulx-cdtech-fc21.dtb
- dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ull-tqma6ull2l-mba6ulx-lvds-tm070jvhg33.dtb
-+dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ull-tqma6ull2l-mba6ulx-cdtech-dc44.dtb
-+dtb-$(CONFIG_SOC_IMX6UL) += 	imx6ull-tqma6ull2l-mba6ulx-cdtech-fc21.dtb
- 
- imx7d-colibri-emmc-aster-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-aster.dtb \
--- 
-2.55.0
+This does not work, sorry, the current name is the correct one, for
+various reasons:
+
+ - the product is a display made with a specific connector, touch
+   controller and display and more. The actual panel is just part of it
+ - the current name wholly describe the product, it's a public product
+   with an official name, all of that is clearly linked in the commit
+   message and comments. there is no ambiguity.
+ - the same toradex accessories are not module specific, they are used
+   across multiple families/carrier board. It is a whole ecosystem that is
+   building on top of standardized interfaces and connectors. The same
+   overlay file is available for multiple boards and in multiple SoC
+   vendor directory (as of now TI and NXP, soon we are going to have
+   also QCOM). Having a consistent naming scheme is important, we cannot
+   call the same things differently every time.
+ - there was a situation in which we did a new product revision of a
+   display, specifically the "Toradex Capacitive Touch Display 10.1"
+   LVDS" there are two versions. The official product name is the same,
+   apart an additional version number, one is version1, the other is
+   version2. They have differences, and it's not just the panel, more
+   stuff changed, so having the panel name in the filename will not
+   help. v2 support is already in [1], for reference.
+ - the toradex naming scheme is not encoding the actual part number used
+   in the product name, for example we have apalis imx6 v1.2 that uses a
+   different touch/adc than previous apalis imx v1.1. The product has a
+   different schematics, different BoM and so on, and there is no
+   reference of the difference touch/adc in the name. You can see this
+   information from the public documentation just looking at the
+   version. or you can check yourself comparing the two DTS in the linux
+   kernel tree.
+
+[1]
+ arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds.dtso
+ arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds-v2.dtso
+
+
+Frank: in general the names are clearly linked to the official product
+name, and this applies also to other patches in which you commented
+about the names, not planning to reply to every single one.
+
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+> > new file mode 100644
+> > index 0000000000000..a84114e1d3fba
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+> > @@ -0,0 +1,53 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only OR MIT
+> > +/*
+> > + * Copyright (c) Toradex
+> > + *
+> > + * Toradex Capacitive Touch Display 10.1" connected via Apalis iMX6 LDB
+> > + * on carrier boards with a Toradex standard LVDS display connector.
+> > + *
+> > + * https://docs.toradex.com/105952-10-1-inch-lvds-capacitive-touch-display-1280x800-datasheet.pdf
+> > + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
+> > + * https://www.toradex.com/accessories/capacitive-touch-display-10.1-inch-lvds
+> > + */
+> > +
+> > +/dts-v1/;
+> > +/plugin/;
+> > +
+> > +&{/} {
+> > +	panel-lvds {
+> > +		compatible = "logictechno,lt170410-2whc";
+> > +		backlight = <&backlight>;
+> > +		power-supply = <&reg_3v3_sw>;
+> 
+> use name reg_lvds_panel, it help improve reusablity.
+
+I disagree.
+
+The regulator should be the one that is physically used on
+the board. The DTS *must* describe the HW as accurately as possible, we
+are not supposed to invent non existing regulator and more in general
+non existing HW.
+
+I see your need to avoid duplication, and I agree with it. But an
+accurate HW description and the user experience trumps this need. 
+And I insist on the user experience, what we are doing is for someone to
+use, we should not make the life of people hard because we decide on
+non-descriptive or inaccurate names.
+
+
+Francesco
 
