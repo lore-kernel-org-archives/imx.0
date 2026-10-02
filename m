@@ -1,84 +1,101 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E8D405F7
-	for <imx@lists.linux.dev>; Fri,  2 Oct 2026 09:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AF9471244;
+	Fri,  2 Oct 2026 09:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790931759; cv=none; b=k4CcgsCSj7EqIB+TZQgCg1c+qb+vY40Imu+pgcOLMRozPBpvV1wx84hfr85jLa5Q4FdYIHwkJw7w8sUJAwahS5wUF2CFPI7V9B7Tlbn6mcIj00nAQfXlsSNbSp1kpVEPxwNIAXr9aNbBV94D92HJPdVCNbkrAESLVPQBjB0Nck4=
+	t=1790932228; cv=none; b=eByyw/4HDRI28BlW4QcW6fHFq/bW5R9bnFjkS4dn5u5C3SY66dcEi8K7m3BvxUl+fNEnIYbILK0crbYw5FRTFZPH97qypUGMiJQBi8uqHrjTw3bJTPsTBXErAJpkG0H2OrWu75VQ1+/V/k1yel/mbIWVOTktXgdTaoPK3JxYqf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790931759; c=relaxed/simple;
-	bh=McE9YnorQBQgu7XJjTQ1zhUZtE5g4ZLOGfzXTBBV5Mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lww6g/agbszxDlNYFPOhG5IUM07eud3eyrDmfFV5vVoHBMHyxY8qUGhDdgb97TFtBdrE+1xo3At+dM901r9HoOHD6X48g4gY3TprR/ZUIpz5tZ+jEdBqUsqhzqRngp4tcpvSmtYB+tuHJXYaJ+agjgo8WpOPVXtxL07fXEJqnW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=HD0syKCx; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1790932228; c=relaxed/simple;
+	bh=L7/L46IkndWgDw/qUmcwo+y00G6ia7esizBeW1QpjRg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rwgOO6NEwADByJnl4OX6vCKROfcycF1ZyRuoCkSDeTkYURaMBZlSVB+rl3yRZIyuEa5b0raBtYcyou5XrzR3iUyLLS0azHH0gMPmFIRRjvyc/KRchDmL24YFE5lzCWQ/GNnBFUcs1F1rlcp3qbpUpZt8i8Lel0otd0D45ZFzEk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tac8bcu8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="HD0syKCx"
-Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 4365D1FA8F;
-	Fri,  2 Oct 2026 11:02:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1790931755;
-	bh=OfgMEUF+Fw0qOI2z3NuCRJaeDMkJbrHyQvlbCPr4av4=; h=From:To:Subject;
-	b=HD0syKCxyO7pI/3K1fG+TXZMhYEcypAIjoZCL3siMyKIONN2VO6xeYJmdn6zhzsny
-	 DYgpcRHZWwbi7M5c/s0RTFY6Nz8BGRabzH88jkBZUlUxcMwvhSNBHbG5syd8OMooyi
-	 GgRd9I61fTQ6CijkphkJZdtbk4xGnZROwS8zQSsjc7R0N8Ww2JIXgNiHQHCyjB6lm6
-	 fxeAiTfHkvxQrsWkshN20MP4WIunj6ZrtnvWPN2xexwFfqJCSeDrKvFaBTVY9MMNIi
-	 urXgT7KCYO2Ri4cMyrhm36i2IaYcRi3V9rKnOxz6xAuoLcmTbog0prIccHleMaOTux
-	 FZUL37p2123vw==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: freescale: imx95-aquila: fix i3c2 pinctrl group node name
-Date: Fri,  2 Oct 2026 11:02:27 +0200
-Message-ID: <20261002090228.41445-2-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261002090228.41445-1-francesco@dolcini.it>
-References: <20261002090228.41445-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tac8bcu8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76591F000FF;
+	Fri,  2 Oct 2026 09:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790932225;
+	bh=xv3pWyeRRUFoRvp0Ps4itJ1XAqYSWp88xwFqSuNXeiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Tac8bcu8UpJqVyV+6QauKiRTO/qPA2SZax/Oq93s1CxGryBRG9pPtFssaJOsPJ5vT
+	 /YdEhDRImnbiHcrdTZW0i+TZ+OYGfSVX+VKBUwujc9/2BZdkx6FL5BBgn61eesmBS7
+	 VV1ysUOOxaH+rAPCSJozKtBsw84U9yEBxRmGNFcB+7y/Jel13tb+wCalBvzrN1MMNC
+	 UBY73LWaWYdtJYK+Mp5fNThuSzWIp3ZlFnm8Bs7itpsSrE9KmAlVzwnIf/t7Mxz8kz
+	 4IbaBD6TkCxBoRN/VMOBf4inkNQJuLfX8mE6QZtarUevACoTwkr8Tr/qfj/TvhKzI/
+	 HJoPTke3y4i4A==
+Date: Fri, 2 Oct 2026 11:10:23 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Hemanth Selam <hemanth.selam@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul@pwsan.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH] ARM: fix typos in comments
+Message-ID: <ar900Vgb1Uil-A0a@orome>
+References: <20260907064849.23086-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m5tp3jaaty7hry4a"
+Content-Disposition: inline
+In-Reply-To: <20260907064849.23086-1-hemanth.selam@gmail.com>
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The pinctrl group node for I3C2 is named "i3c2cgrp", with a stray "c".
-Rename it to "i3c2grp" to match the label and the usual naming convention.
+--m5tp3jaaty7hry4a
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] ARM: fix typos in comments
+MIME-Version: 1.0
 
-Fixes: d5c082ba23db ("arm64: dts: freescale: add Aquila iMX95 support")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx95-aquila.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Sep 07, 2026 at 12:18:49PM +0530, Hemanth Selam wrote:
+> Fix typos in comments, reported by scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Only touches comments, no code
+> changes.
+>=20
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+> ---
+>  arch/arm/mach-imx/suspend-imx6.S           | 2 +-
+>  arch/arm/mach-omap2/omap4-common.c         | 2 +-
+>  arch/arm/mach-omap2/omap_hwmod.c           | 6 +++---
+>  arch/arm/mach-omap2/powerdomains7xx_data.c | 2 +-
+>  arch/arm/mach-tegra/pm.c                   | 2 +-
+>  5 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi b/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-index c5f4cf0541f2..287b7bcebc73 100644
---- a/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-@@ -932,7 +932,7 @@ pinctrl_ctrl_gpio_exp_int: gpioexpintgrp {
- 	};
- 
- 	/* Aquila I2C_2 */
--	pinctrl_i3c2: i3c2cgrp {
-+	pinctrl_i3c2: i3c2grp {
- 		fsl,pins = <IMX95_PAD_ENET1_MDC__I3C2_SCL	0x40001186>, /* Aquila C17 */
- 			   <IMX95_PAD_ENET1_MDIO__I3C2_SDA	0x40001186>; /* Aquila C16 */
- 	};
--- 
-2.47.3
+This needs to be split up, otherwise it's very unclear who should pick
+this up.
 
+Thierry
+
+--m5tp3jaaty7hry4a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmq/dP4ACgkQ3SOs138+
+s6Gyjg//Snni+P2gN8G0V2Id4wNCmsaFFJIE2m4t6AEeKDISQJSR5XkZ3sSq+kuI
+BYKXs4jiZ+4Jrha0HNMPMWtfa94rVv0KtLJ7E99JGP8EcR+Gs0IZ3uCLXa0MbEiG
+T4F+o/JpFWOMMZnG3tpkAyBquOY2XAKv+cSOCICe188kO1sVzDer1DJLENkhUkQ7
+BG9ZNNnnyiYDrdL6dq2a04pFG6a5TrvGKO9zHv0VT/O2Yambm16Oj5l0Y+M0vtGR
+9D7qloVAKwy5GhjMk/IIiQiK5ItfnTYCm/fU0cI8oxCUPV3bQYjTJe4ZjM9jJSS+
+z5ETzCZv8Qi7QCCIjQGpvRgSLADOYLEpFDmfHzYEUrKYCvT7EJofZ7vAgnFiAiMN
+uIdv35HZ+G8FLViLjVZGL0+I4xQeSYlCsW4N/q6JWr+j2SuDtphUwTcMomOoZvQT
+/SXQkh3pUYaEme+YcR3AYnU0lfXx7R4freR4yI1fGRELxlXpIiTOMQ+ASXqfTfKf
+1bFn2KTHD21W+DzAJ0f5C7nOg5jxnVEaSzflTVMFJb11RKJbO/qdLa/AVsMU/CsK
+26usjIndk1A9GuaKyNbBVvipIxL8J1yljVUq78E4I6MUeahGWnv4lQeMAgRXAwbh
+lLKbR5DagwKOUruPvF98fjOr0FcGybMmMEw8bNZCOXuiDngifqM=
+=3/Oa
+-----END PGP SIGNATURE-----
+
+--m5tp3jaaty7hry4a--
