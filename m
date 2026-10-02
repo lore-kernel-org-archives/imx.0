@@ -1,35 +1,41 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1DE3C0A04
-	for <imx@lists.linux.dev>; Thu,  1 Oct 2026 23:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D87A3F485E
+	for <imx@lists.linux.dev>; Fri,  2 Oct 2026 06:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790896311; cv=none; b=Ey+8TxApu0J3UETegqHmSO8vC0SY8yT4pYDh/PNZfRXnKbk5EUJDZTLmjIYOj5eenD1G6ztR+q3dDvnPIDGkUl7k+hhZpWnJQp2JilqqfYXj/JDOONxq4V+e/ZK2Qnjjx4+IWMuOv27mm/x7psyuksdjNq/diQi3wBHd3YqbrAk=
+	t=1790922739; cv=none; b=AppKaa+O+jul+XXob4ftbZIVx3zO96Fhmu/F+NiCGrI3GllyICL4VaA9v29CM1f6ka7DYLZCjG4n49Or01Wi5UYwbBJ1m4Xay3sNIF/CHs8oZc8B1CvqMtWMAn+pxT5nUPNB6JzhxzFl9XqrXEyU8SZYWXfuWG4pyvtoZvgUhIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790896311; c=relaxed/simple;
-	bh=kNFSA9YbKim6YXQDkqz9wzqYtqo1Z8c0lWeDeMGLLh0=;
+	s=arc-20240116; t=1790922739; c=relaxed/simple;
+	bh=0MlqhVGlZfjV4o3jL12I5btdT7LeCX2J0S2S7sGTfRM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TQCw7QS+0OnHPnOuq6yX/1PmgC53QcnqIH6Rbbvd+LEWIqjrVGoMI1SHiayjdQ4T9n8roTK/HILoydfjHmC1uFQHsY/dKFMPq3Vj8StKMGGzq7CC1bQwJimdQwKdrAc0sndUiBoORpAQsis0JPnwY5TO5uQ2GKQHHPSBu594njs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=ecCQFT7o; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	 In-Reply-To:Content-Type; b=AwjEbbSHxgVLQFJJvcuiS0aC1xTgWNeh9P5Hcdik24L+/YfThXz1kc8dzia6DzgaiKemNtea02V1tcCemBQ+f4gJjvEKGSgxMPnEYZiEq6qFYwsFlH6o/mFqQdQ+tWHNa6dhheCtdWK9kjUDZlKuxma6jS8qpMr0OF03R5yoKs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=CO3+Tmyl; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="ecCQFT7o"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F91C1073CF;
-	Fri, 02 Oct 2026 01:11:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790896302;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=rsGAq8HSvUzJC7GII4xXk2cib1xNUHDcCfOGhmM7R8w=;
-	b=ecCQFT7oep5Tubzy6dA+uBD3p67i3cFCCV3uzfe+vvz7HdkODym4wXpLPyJAHtirOIS1L8
-	OSJhhuzZL5Km52yHqQ1boi46dX/joU+VtDA7NLil3JUiIY7YFhuja9AFHU+QifS2q7HLWY
-	7fDo7/m7tUUXed2SHjenn3gxTi/9FPh2AKmnM2pDRmtO/o9qNq0+Cq4nVU+toWtZabe7ED
-	XLPUaiI5eFfWFsqb15n7Il2LTY5EWqEV/hH04sBGSjsG4z4lWCmONsjo1pXXraEHh1kT5A
-	tyCrX9WtO6ryb11hkEwVHri8CVLzA6h9Eg9nVvHZ3T08UxkqQ6i2ImO4zxXozA==
-Message-ID: <6b22d5e7-1f94-4c3c-8a0e-5c5573c4c7cb@nabladev.com>
-Date: Fri, 2 Oct 2026 01:11:36 +0200
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="CO3+Tmyl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=T5YDiEkzPVJahns0xgVaPE73pzUnza4kSuXdfoKusdI=; b=CO3+TmylPLELsu6FKCQ9kEQ7qV
+	1ULyQy2ZQ4BMwUbWHfFbM4Ym5kZ6LrTVQH5HaKnSOHD7P6mXZe44zLci45gRQz7ZvuHIoMRmnSBSy
+	RFMRvKehOfGsOQIkgJPDxRKukF7J2GHhnrVLpBwBC77367LskiU79DkxJUIxo9ErjpkL+e5swdUYt
+	Se6lzubuVxiBxaduTY+DPKmmZS7YH+Oyx/o5HkEpvfxtZBmB4lOXUS390HXpDdRB+WgXJYL14GU9W
+	sXbYTHlZbxnQHEnIFYdG4SnJeT2d+ziiD+CPoK5FZwiEjH9XoL63VPDimlgcoDeSuHJN112g+ywzZ
+	FOO4dbOA==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:43744 helo=[192.168.69.116])
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.100.1)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1xCWoa-00000002lbS-0alD;
+	Fri, 02 Oct 2026 08:32:16 +0200
+Message-ID: <ce32d95f-8a78-486c-966a-2ea0a686bcd6@norik.com>
+Date: Fri, 2 Oct 2026 08:32:14 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,41 +43,101 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20260924180607.60932-1-marex@nabladev.com>
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
- <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
- <AS4PR04MB9338E76DB4A59D70F1D6AB2F888A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <e7f574ab-5fcf-484a-a5bf-fc94d45b2311@nabladev.com>
- <20261001155129.51ea9930@kernel.org>
+Subject: Re: [PATCH v2 0/3] ARM: dts: imx6: phycore-som: PMIC and PHY fixes
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+References: <20261001070947.1815279-1-primoz.fiser@norik.com>
+ <ar5y_StTTBYDeck3@SMW015318>
 Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20261001155129.51ea9930@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <ar5y_StTTBYDeck3@SMW015318>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 10/2/26 12:51 AM, Jakub Kicinski wrote:
-> On Thu, 1 Oct 2026 03:34:09 +0200 Marek Vasut wrote:
->> Jakub, do you want a revert of this one, fix, or follow up patch ?
+Hi Frank,
+
+On 10/1/26 16:49, Frank Li wrote:
+> On Thu, Oct 01, 2026 at 09:09:44AM +0200, Primoz Fiser wrote:
+>> A few small fixes for the PHYTEC phyCORE-i.MX6 SOM:
+>>
+>> - Pin the DA9062 PMIC watchdog to /dev/watchdog0 (1/4).
+>> - Raise the PMIC's SOC/ARM buck ceiling to 1.5V, needed once the
+>>   1.2GHz OPP tier ([1]] requests 1.3V for VDD_ARM and the anatop
+>>   LDO's 125mV dropout is added on top (2/4).
+>> - Add phy-reset-duration to fec node for more robust reset pulse (3/4)
+>>
+>> [1] https://lore.kernel.org/all/20260923070505.494949-1-primoz.fiser@norik.com/
+>>
+>> Link to v1: https://lore.kernel.org/all/20260930102532.2262700-1-primoz.fiser@norik.com/
+>>
+>> Changes in v2:
+>> - Drop patch #3 from v1 (converting to reset-gpios) due to potential
+>>   backwards compatibility as suggested by Frank
+>> - Convert patch #4 from v1 to patch #3 in v2 (use phy-reset-duration)
 > 
-> FWIW the answer was follow up, thanks for sending it!
+> What branch do you work on? I can't apply.
 
-Of course, sorry for the mess this created.
+This series depends on series [1] patch #4.
 
-I'll try to figure out some more flexible way of configuring the MDC 
-clock together with Wei, basically what Andrew suggested, in another 
-follow up patch. Hopefully there is a way to do that for all the SoCs 
-which have this IP.
+BR,
+Primoz
+
+[1]
+https://lore.kernel.org/all/20260924065044.368341-1-primoz.fiser@norik.com/
+
+
+
+> 
+> Frank
+> 
+>>
+>> Primoz Fiser (3):
+>>   ARM: dts: imx6: phycore-som: Set PMIC watchdog alias as default
+>>   ARM: dts: imx6: phycore-som: Increase PMIC max SOC and ARM voltage
+>>   ARM: dts: imx6: phycore-som: Add phy-reset-duration
+>>
+>>  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi | 8 +++++---
+>>  1 file changed, 5 insertions(+), 3 deletions(-)
+>>
+>> --
+>> 2.34.1
+>>
+>>
+
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
+
