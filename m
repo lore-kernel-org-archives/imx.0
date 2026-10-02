@@ -1,53 +1,35 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C1047FAE5
-	for <imx@lists.linux.dev>; Fri,  2 Oct 2026 10:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFA13A6EEC;
+	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790937491; cv=none; b=fLTvI6dD28M/3U009+nP6w9z655Q58a8qyNqQPnhSVETgaoE1rBamtiY0zdXzQj9eTwtbHyn113IeLHOrDQLX6L1zVoRHpWqf9pL0PZzOchb9VIQdzvk1APGbBGrz1rZ5qZJETdZ4kVbPA+klB/iPzGEgez0O0xnyU1+V6fisaU=
+	t=1790937608; cv=none; b=L3L0BMD8Ybnlx8z8Xn/ZiJQuVhRtjoxJyPwSmCNladnM7T2f8ip6Co/RzSjndChZ/l9Jn35LVx5vSKead2XSPFp0PHvSAPKO8Tq3bKAxkup5HJu8+hUp/X01NfsXsSenVBBDHaFjY4pQq8kENHBwqeJBM6e7JlR2w4gjpO/RXxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790937491; c=relaxed/simple;
-	bh=FTRCNuMzFuZZEK832Cs4MyChRZ/KDtNTj2S8f3KBqro=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgPvpJ6L5YzMCmDzVMZs2GnIGp07YSLI0Bj1fwBvePx9LQxtSo9t5NVsRThgPu+vuWUxXkxHKFgK+QSeNzUOkX+N3JleqCNggOoeFoHJVMJP12X6Nb7HCBt21/whFwNC6/BuLx7TtNqA1KSM2cJOS2JQj0+ulxoczPkwL4vEnkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=wNg+3oUh; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1790937608; c=relaxed/simple;
+	bh=KQ1HOpFFK/1H/Cdbs2aDLG+TrVClcAEG+HQZxLwdj6s=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=F7oX4NnDRxUEpTYhl4xiGJ+PrZnKjWSXo4ckeLvxq9seBk/0Qd8DVvj/MhdvEft0S2schvB2nZa3OkdUH2rGRsRbz+fo+vD+TorekrG2YiieNODUyRJzyNnXAX8meA4joaKRwdkoWhtAziNtFrCI0YW72HYbmOy8SscKCR3cm0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyCuXvLv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="wNg+3oUh"
-Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 440E120A7A;
-	Fri,  2 Oct 2026 12:38:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1790937485;
-	bh=JlF7NdCuUD9SxFNZdnddHC5tZASDCnsuSOKBzZbijdU=; h=From:To:Subject;
-	b=wNg+3oUh3giqzedDM+CozBEHa/cPAu5qroakhTOBZvRZLq2CY3P8ouYAnfF6jZUlr
-	 C82zS5g3tPrF5Gy2f2vMbD9iYBg+3Dnp7Y8bZj63CrbNXI9ywxjKOor4mNodGLloQk
-	 mxDnqYIbkTzglBYStyEZOT8+LH19D7EdyZ06TPgQ6QXsTdw7p+siWn/NxAMRZKp26Y
-	 54j2VmWnZl7WzB8zMts9UF3sKvsseiZSaffNjuyI/B/gSZqjn8mchOJ9uwO7/Lxv/6
-	 8o86avC44Mtki+jHfrPqiJYlLiX36aZq6ia1eMhp4M4EYmGHp1zPvt/E/55vZGiQpU
-	 hTqohgG1d63pA==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/3] arm64: dts: freescale: imx95-toradex-smarc: fix vdev buffer reserved memory node name
-Date: Fri,  2 Oct 2026 12:37:55 +0200
-Message-ID: <20261002103757.70065-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261002103757.70065-1-francesco@dolcini.it>
-References: <20261002103757.70065-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyCuXvLv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C041A1F000FF;
+	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790937606;
+	bh=r4INfRqpxT7YhPd+W06NysuXddY9wGvptiUPCAUf84Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=lyCuXvLvrukBpLA5Oi0fuVfgDeW7EReHHvoKZu6zcpIWq/1NDdNVlVB11rBiizCn7
+	 ULtta7vJTQso8vCLmTCzRS+obSLOuhGqjYEI2V+SXCV7vkIWWN7Rq3YtdzhcUYSPJh
+	 8d2mJlulPkrCQCG1TaesS9XxTloiQ9iL4b3PWTTgZzMn7JAj3Zcs3FvzxycawVB1lj
+	 brOGbKH8dvgzsZGDa2SemNmROVp+X1U8YPbzRDc0n3fj1DrHYhpKuF+flS9nXmzFCS
+	 A0TpJHnOHU6a6+oE1c2RhRnnJWnQNh8Oj+Sve7hRxLGqT7CS8Q6O2UbmFtFksdRlrP
+	 yW8ECfZto62Wg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B448C38119E9;
+	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,48 +37,46 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/1] net: allwinner: remove dmaengine_desc_free()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179093760553.3349832.499337152312400934.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 10:40:05 +0000
+References: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
+To: Frank Li <Frank.Li@oss.nxp.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, wens@kernel.org,
+ jernej.skrabec@gmail.com, samuel@sholland.org,
+ bartosz.golaszewski@oss.qualcomm.com, andre.przywara@arm.com,
+ phucduc.bui@gmail.com, arnd@arndb.de, kees@kernel.org, liyouhong@kylinos.cn,
+ Frank.Li@nxp.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, vkoul@kernel.org, imx@lists.linux.dev
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Hello:
 
-The imx_rproc driver uses node names to identify reserved memory regions.
-It checks for "vdev0buffer" to skip mapping and "vdev" prefix to filter
-vdev regions.
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Rename the reserved memory nodes to use the expected names so the driver
-can correctly identify and handle each region.
+On Tue, 29 Sep 2026 15:06:36 -0400 you wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
+> is not set, dmaengine_desc_free() will return -EPERM.
+> 
+> 	if (!dmaengine_desc_test_reuse(desc))
+> 		return -EPERM;
+> 
+> [...]
 
-Same as commit 5cae743b988d ("arm64: dts: imx95-15x15-frdm: fix reserved
-memory node names for remoteproc").
+Here is the summary with links:
+  - [1/1] net: allwinner: remove dmaengine_desc_free()
+    https://git.kernel.org/netdev/net/c/71a77ab76e74
 
-Fixes: 6b7a9871e171 ("arm64: dts: freescale: imx95-toradex-smarc: Support Cortex M7")
-Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-index 641573c9943e..bc54a1ad7680 100644
---- a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-@@ -151,7 +151,7 @@ remoteproc-cm7 {
- 		compatible = "fsl,imx95-cm7";
- 		mboxes = <&mu7 0 1 &mu7 1 1 &mu7 3 1>;
- 		mbox-names = "tx", "rx", "rxdb";
--		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-+		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
- 				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>, <&m7_reserved>;
- 	};
- 
-@@ -198,7 +198,7 @@ vdev1vring1: vdev1vring1@88018000 {
- 			no-map;
- 		};
- 
--		vdevbuffer: vdevbuffer@88020000 {
-+		vdev0buffer: vdev0buffer@88020000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x88020000 0 0x100000>;
- 			no-map;
+You are awesome, thank you!
 -- 
-2.47.3
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
