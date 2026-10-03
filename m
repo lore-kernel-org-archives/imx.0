@@ -1,149 +1,112 @@
-Received: from ms.puri.sm (ms.puri.sm [135.181.196.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CC933F8A6
-	for <imx@lists.linux.dev>; Sat,  3 Oct 2026 01:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.181.196.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBE4377AA6
+	for <imx@lists.linux.dev>; Sat,  3 Oct 2026 01:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790990276; cv=none; b=s4huLIblKICQjct7vjfOesR1UENaXu5NCkrjxOS1a2r4h+hwKZ8ov+EgjykR1qHGRv3BNVUAdMebzhEVQHZRcVmCdoUAdf5hssYyJv1/nwSfGBxfP0RTae9688XVFaVtZtPvKQ9MLI23ziEw1zSe7GeB58AuDOluDT6iM//pgss=
+	t=1790991206; cv=none; b=ubeQnYPjWhEoFo8s9FBCVm2v61pvIniQwibSEAOEsql98a/a3awQCWpXxBKr0NnqPQ4AYm9vCmqoadMX56bvPsZ6oaxSZ4bHmWCAyFXMh990LeayN4O/PWzxecNQubySySOu+YA+y3VssjUkoH/0P342Ctl3508K/SbNNcXazDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790990276; c=relaxed/simple;
-	bh=cCaASWiDqDydkWfC2ZpLgcqJU2sQoDOPhkCTl6TbzHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fQKyX2JI6giHSIS/lORvo03731XK3PQx8I5QRV8ZQTILGxnSinHjRaEA09OzDZmPyzAmDMTW2hWw10L4Dw/ncnPAVgb4SIW/h+EXOMYPI/cJlZbbmV8pYizzaBwqORe/NmcZsw+gHhPL3Cn6bccTIFrSMHZDBCntrCjCl5GBf0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=abgJ7qfs; arc=none smtp.client-ip=135.181.196.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
+	s=arc-20240116; t=1790991206; c=relaxed/simple;
+	bh=z1IuHZx2xy/casTgyymT+0h2WfDtqgt+jM8jXKfaapU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cK0bTljwhW7TlwilI4oLWx8x5iIHi/YeGUSk8uAYzyGedNnrjJLlUGNLvB9Pk9kMZLOd1aR4DXlGqsLA7W/ppubXVa3GiZV4sMzYSXXnCyLhr8FxnDdXECODSdgU9WS7ST/Q9kTkg+PFaHY2HE82UQ//clZek93sHnz2qGe5rRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYnBWRpl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="abgJ7qfs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=smtp2;
-	t=1790989738; bh=cCaASWiDqDydkWfC2ZpLgcqJU2sQoDOPhkCTl6TbzHs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=abgJ7qfsIMaf1tzJuhUl5U54FzfopBDpg9Mp/Ky3wj4lHSfbUbKRb62yn/2PFIwAC
-	 klU6gwn9jjoOhHEKTSrluT4vVovt5SygFMl3eHHSWfdDeko/z1l7n7fqmWYB3IYg82
-	 ZtN7YuxaFKDNOx0uAQoVbMKpmI0zCq0fN2OsqriFvybjnZf5X1rBM2+sE58k1YwdGW
-	 IQ4L15TShbSW7r8rjXzqrcraqiXw8Ztxhl+vRaWy5lTHaaWKlz7ASvRK2uU3ZHrBUz
-	 3Vj/EgzrGgVCPQwK4vPAH17IyGYNGrIQYAqOJrR8bpu7u6KNo1x2UppaSm7g5XCQ6p
-	 /F6+h40YL+LCQ==
-Received: from pliszka.localnet (83.24.12.19.ipv4.supernova.orange.pl [83.24.12.19])
-	by ms.puri.sm (Postfix) with ESMTPSA id C8D53217DC;
-	Fri, 02 Oct 2026 18:08:56 -0700 (PDT)
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-To: Vincent Cloutier <vincent.cloutier@icloud.com>
-Cc: sre@kernel.org, linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, daniel.baluta@nxp.com,
- shawnguo@kernel.org, agx@sigxcpu.org, angus@akkea.ca,
- Vincent Cloutier <vincent@cloutier.co>
-Subject:
- Re: [PATCH v1 4/4] arm64: dts: imx8mq-librem5: Set BQ25895 input voltage
- limit
-Date: Sat, 03 Oct 2026 03:08:50 +0200
-Message-ID: <TUmf9Hq_Txaw7MkIttVh3Q@puri.sm>
-In-Reply-To: <20260927145538.233548-5-vincent.cloutier@icloud.com>
-References:
- <20260927145538.233548-1-vincent.cloutier@icloud.com>
- <20260927145538.233548-5-vincent.cloutier@icloud.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYnBWRpl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACF21F00893;
+	Sat,  3 Oct 2026 01:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790991205;
+	bh=Z1PHqSSY1WlONs33XHvM6d7vgF482vtduZGB3LGKRJo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KYnBWRplWFQ8Nkng4wpp97u/41rx1w6ITppYvkgM4rtENBBwaN2UjG2tioQan+4U8
+	 PaFl7X9NmL/3/OpBt8M3BSbDKfmnMfFK6OwVJB2uBd3xxOgrisq3pwcTNdwc2DEpOt
+	 4k4E8Nn86L4YWpYHqpXklkCfr+JbWn2Nv8gXVkJk8+hENgTmnHYuydirkQfx7EjYu9
+	 uAAWBoDOipSF/MokkamoVUJPXMMoUvqLsF9mYb4/bbDTEkUP1Gm4pX2Gf99Cj05+Gs
+	 zTh/ifuucpjOwnAITOwhEPVGNs1db1hJ6KZ8CSuhcPsgjLWO1Vn3a8N3eg6xJmyqeJ
+	 wBZTFIhJ9fsOQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net RESEND] net: fec: drain PEROUT requests before
+ canceling the timer
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Myeonghun Pak" <mhun512@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261001180258.4054391-1-mhun512@gmail.com>
+References: <20261001180258.4054391-1-mhun512@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 03 Oct 2026 01:33:24 +0000
+Message-Id: <20261003013325.2ACF21F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4PRw5kfOQamMwtcngPadMA";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
 
---nextPart4PRw5kfOQamMwtcngPadMA
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-To: Vincent Cloutier <vincent.cloutier@icloud.com>
-Date: Sat, 03 Oct 2026 03:08:50 +0200
-Message-ID: <TUmf9Hq_Txaw7MkIttVh3Q@puri.sm>
-In-Reply-To: <20260927145538.233548-5-vincent.cloutier@icloud.com>
-MIME-Version: 1.0
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] net: fec: use-after-free of ptp_clock in fec_pps_interrupt
+--
 
-On niedziela, 27 wrze=C5=9Bnia 2026 16:55:38 czas =C5=9Brodkowoeuropejski l=
-etni Vincent=20
-Cloutier wrote:
-> From: Vincent Cloutier <vincent@cloutier.co>
->=20
-> Purism's production Librem 5 kernels used a 3.9 V absolute VINDPM
-> threshold for years,
+commit ab1057fad6a311f8c4eada4b450b44f774123656
+Author: Myeonghun Pak <mhun512@gmail.com>
 
-=2E..because it was (likely accidentally) left over from the devkit dts whe=
-re it=20
-was genuinely needed.
+net: fec: drain PEROUT requests before canceling the timer
 
-> from the 2019 board support through the releases
-> preceding the March 2026 charging update.
+Unregister the PTP clock first so all in-flight ioctls have returned
+before canceling the timer. Clear the PEROUT state and compare channel
+afterward, then disable PPS. Serialize the channel write with PTP clock
+shutdown and skip it when that clock is off.
 
-=2E..which is when it was changed because it was found to be the cause of i=
-ssues=20
-due to interactions between TPS65982 and BQ25895 cut-off limits observed wh=
-en=20
-used with power sources that struggle to provide the required voltage when=
-=20
-under load.
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ether=
+net/freescale/fec_ptp.c
+> index 56801c2009d59..67901e036ac32 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
 
-> Use this established board
-> setting for the BQ25895 input voltage limit.
+[ ... ]
 
-Why? What makes you want to bring the bad value upstream?
+> @@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+>  	struct net_device *ndev =3D platform_get_drvdata(pdev);
+>  	struct fec_enet_private *fep =3D netdev_priv(ndev);
+> =20
+> -	if (fep->pps_enable)
+> -		fec_ptp_enable_pps(fep, 0);
+> -
+>  	cancel_delayed_work_sync(&fep->time_keep);
+> -	hrtimer_cancel(&fep->perout_timer);
+>  	if (fep->ptp_clock)
+>  		ptp_clock_unregister(fep->ptp_clock);
+> +
+> +	/* An in-flight PEROUT ioctl can arm the timer until unregister returns=
+. */
+> +	fec_ptp_pps_disable(fep, fep->pps_channel);
+> +	if (fep->pps_enable)
+> +		fec_ptp_enable_pps(fep, 0);
 
-> Set input-voltage-limit-microvolt to 3900000 to select absolute VINDPM
-> and program the 3.9 V threshold through the generic binding.
->=20
-> Tested on Librem 5r4: REG0D remained 0x8d across an attached boot, unplug,
-> and flipped replug.
->=20
-> Assisted-by: OpenCode:gpt-5.6-sol
-> Assisted-by: OpenCode:gpt-6-astra
-> Signed-off-by: Vincent Cloutier <vincent@cloutier.co>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi index
-> 099195279e84..8badebfcdbb4 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> @@ -1195,6 +1195,7 @@ bq25895: charger@6a {
->  		pinctrl-0 =3D <&pinctrl_charger_in>;
->  		interrupt-parent =3D <&gpio3>;
->  		interrupts =3D <3 IRQ_TYPE_EDGE_FALLING>;
-> +		input-voltage-limit-microvolt =3D <3900000>;
->  		ti,battery-regulation-voltage =3D <4208000>; /* uV */
->  		ti,termination-current =3D <128000>;  /* uA */
->  		ti,precharge-current =3D <128000>; /* uA */
+[Severity: High]
+Can fec_pps_interrupt() fire after ptp_clock_unregister() but before
+fec_ptp_enable_pps() finishes?
 
+Since ptp_clock_unregister() drops the reference and frees fep->ptp_clock,
+and fep->pps_enable is still true in this window, if the hardware timer
+interrupts, fec_pps_interrupt() could execute:
 
---nextPart4PRw5kfOQamMwtcngPadMA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+drivers/net/ethernet/freescale/fec_ptp.c:fec_pps_interrupt() {
+    ...
+		if (fep->pps_enable) {
+			event.type =3D PTP_CLOCK_PPS;
+			ptp_clock_event(fep->ptp_clock, &event);
+		}
+    ...
+}
 
------BEGIN PGP SIGNATURE-----
+Would this dereference the freed fep->ptp_clock pointer causing a
+use-after-free?
 
-iQIzBAABCgAdFiEEIt2frgBqEUNYNmF86PI1zzvbw/8FAmrAVaIACgkQ6PI1zzvb
-w/9PaRAAyovF677HImIcOzNmNYk8sCgAzYbXHuXezcHn0rEHn3Ok1dsAHHjLuFyq
-5FkBbuTa04vepyenQ2hWXWR/ad7kMnUw5leMg2QXDbwjXadbUlfba2uVUlO3VS59
-k3C8RwJIQuOVxcSG1nvCUjbONw5aDzcyqiDbQe9zewCiSY6Q9MTj/wwAPTRFk1nE
-BZs5akpwi8QwoysnjS76H+I0h5iWdbUX71UG+rYn2WMKMaQ+zyaLGp0NTZ9bbwxF
-cfZQA11W+abBbvF3FKu2zPwYBt1+l1JSn3ZjnQZ/dkyMBZ7pQsID1lSKAwqj+jN7
-cAtgNNHib1ub+gGm6rJkhCckhhlUWMr0uq9xvHwyCAE80lckRoh25qPDo6Yzs1e/
-Wys9tseSOqRVsusVAZjqlmrg2jYfbE9LbdeZl1WWFoV0/yL3KTLIHGu6sSxyj2We
-F8Nyk9oZZETpOR0zNONvD7ItWTO9srw7SrhAorHnSGj3ObyUQuDAX2mld88WAfGk
-ETfMVdfqGgoyi2fhV8M0bnWX4NE2aFuokJRAc7lckf7bCIXCMS3o6FZg3RUUiK4a
-IS6WED8WVEApN6+ry1UZX5t+S1w64JiLyTZcr+hbtEUUIxwuKX5LjI4sClLpa6OR
-D2yd15HdnZvlDY+fxOxdcDxvua6h6Fd+w85n7ja7lC8Bs+miUQk=
-=parr
------END PGP SIGNATURE-----
+>  }
 
---nextPart4PRw5kfOQamMwtcngPadMA--
-
-
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001180258.4054=
+391-1-mhun512@gmail.com?part=3D1
