@@ -1,138 +1,89 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AEE2DF13F
-	for <imx@lists.linux.dev>; Sat,  3 Oct 2026 09:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551703537E8;
+	Sat,  3 Oct 2026 09:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791018112; cv=none; b=L/J48wl1U2U3HqnZb49gxyJOX4/Sm/FtlzN/hSLtP7iNAZvPLJsqz7VPjPjhHJN9Ow36/2uEX2zhZ5bZlEsIDtWtAe31uD/nXYgXfj3N4uAuAS0ZF8kQooIhF7K4EcDG0KBWWgP8oiCJ16qUQBAcvR2nNUii+awcd1H6F4PSJu4=
+	t=1791018398; cv=none; b=o9ADtmDg0kszass5yFs4M12sk/UjOl/0HNkdEBgnV0OsO61+nxhZdu7C6d+KyX6+cqT17GXBdxsxzhNZEGyOH5oxLxn7Fr/qVg9uxXx8xxzrVmZBiRRV7wYK9usyerslQLijRtPXML6txSCjTX5NbAFlIwaWnDEhBlDoulwtMRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791018112; c=relaxed/simple;
-	bh=JHIJZ+Nq4EksoDu7uv14qPjyqd+3ALfF0Tm3yKu2j1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=et5XwDQJKgRCQ5Lm8PL7HGzp4U2QYLXpmPGKosBgDfw5y1AvTxgScL+FGbUqbeGWzsxrKNh/VXKoW+jrjB6A35nedgIcnisbCYCNMmhRnj+14a5fVc7+p4A5wH/lv02C9MoXq2UkpusBV7t+lquel0cEdMhVbssEhhqEJWpIqHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OoRhdd97; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1791018398; c=relaxed/simple;
+	bh=C8hn0OmWEwKv3HFnLyhjwUesJF4WIm0deCXPX3bqI7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NJUsTWlpIlfrl9QSX6/rEFbFD1i9Cplz0u8puKXB5/wQRRUXle9og30IXDOFy6Hg3gSrY4hSYylNS2/dHg7hkOnDWGbuTJA2D7uuDBWjvjmEDZPA3n6cv0yAGqXcZB5Z+e6mACB+W6zQP5CqieOCaH9noBW/qGUn7jkacfLWGew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBGCzPG1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OoRhdd97"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=UN
-	GuWRPGKIDXpixNtRVeSpH5PE0CmbSCQDhZyyIiwMk=; b=OoRhdd97nAsPM+/cYu
-	30edtOaB7lSvmGlGp8iLk7oXaKrindg6h/uK3o1f7tVnh0bHdOAedWJOLK6TDUDS
-	EDlnpyZbwt0hQDSrPpL42GaW+yGlL3IFBJXxRN9gGQEWIlPLMN+deOUKdOHTeF/y
-	vDd1CziYPsZcZ3GsLkbP8qMhY=
-Received: from pc.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgDXP4b_w8BqInaGCg--.62290S2;
-	Sat, 03 Oct 2026 16:59:45 +0800 (CST)
-From: Jiale Yao <yaojiale02@163.com>
-To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Paul Barker <paul@pbarker.dev>,
-	Byungho An <bh74.an@samsung.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Soren Brinkmann <soren.brinkmann@xilinx.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Fabio Estevam <fabio.estevam@freescale.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	dingtianhong <dingtianhong@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>,
-	Jiancheng Xue <xuejiancheng@hisilicon.com>,
-	Dongpo Li <lidongpo@hisilicon.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vipul Pandya <vipul.pandya@samsung.com>,
-	Siva Reddy <siva.kallam@samsung.com>,
-	Girish K S <ks.giri@samsung.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-renesas-soc@vger.kernel.org
-Cc: Jiale Yao <yaojiale02@163.com>
-Subject: [PATCH net v3 0/7] net: ethernet: release managed IRQs before freeing netdevs
-Date: Sat,  3 Oct 2026 16:59:31 +0800
-Message-Id: <20261003085940.493951-1-yaojiale02@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBGCzPG1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CA61F008A0;
+	Sat,  3 Oct 2026 09:06:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791018397;
+	bh=Wv72l0hD8jDyK3VWKJExO+bl1rbU9EYOwEy7E6rmeXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZBGCzPG19VqMPJ/xEM8Kkge9Bg0ygZJ3inmdOrgAgzhyOYWy6+jmxQqIPUE0f5o+I
+	 p8BF3hziXT/Z0Y7NjBWfY6ArV8LakvLRQp9yR1vkbBYn+1XXqIur1qqKL2Ohkr3+u9
+	 7STomURNJ5izwpHrRPZ06G1UCC9UMpsUxY93RArxjW0RY/QpFba+MtYC5n1XQc//rb
+	 bV6dPQAEzoCucmBCNcGAcvjyk/HU+RrU0MkBwALYpwVaaCwZeJvysAA7XuGkwlxds2
+	 tBaQzRuHZPjIXOyOmxj8f6J7D8FFVZmyd+r4QgrdYiPYnjwy+YNnfYbWVbis9Rvx+T
+	 ZcO5L5KR192GQ==
+Date: Sat, 3 Oct 2026 11:06:33 +0200
+From: Vinod Koul <vkoul@kernel.org>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Frank Li <Frank.Li@nxp.com>, Christoph Stoidner <c.stoidner@phytec.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org,
+	linux-phy@lists.infradead.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: (subset) [PATCH V5 0/4] arm64: dts: freescale: Add chargebyte
+ Charge Control Y
+Message-ID: <asDFmf_G0v_MWY3k@parshuram>
+References: <20260907150420.18787-1-wahrenst@gmx.net>
+ <179016749941.155868.1810345055482953110.b4-ty@kernel.org>
+ <72033c48-5219-4ed4-94fd-1b7d8ef8017c@gmx.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgDXP4b_w8BqInaGCg--.62290S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZFWrXry3uFyDAF45CFW7urg_yoW5WF15p3
-	y3Ka9xur1kXr4avws3ZF40yF95ZF4fKF4Ykry7tw1rZw15Ary8Ary2gFyFvFWYyrWxA3Wj
-	qr4Yvwn3u3Z8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRaiiDUUUUU=
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzQH7NmrAxAFFUgAA35
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <72033c48-5219-4ed4-94fd-1b7d8ef8017c@gmx.net>
 
-Several Ethernet platform drivers request interrupts with
-devm_request_irq() but allocate and free their netdevs manually.
-Device-managed resources are released only after the driver's remove
-callback returns, so these callbacks can free the IRQ data while the
-interrupt handlers can still be invoked. A late or shared interrupt in
-this window can dereference freed memory.
+On 23-09-26, 18:11, Stefan Wahren wrote:
+> Hi Vinod,
+> 
+> Am 23.09.26 um 14:44 schrieb Vinod Koul:
+> > On Mon, 07 Sep 2026 17:04:16 +0200, Stefan Wahren wrote:
+> > > This series adds support for the chargebyte Charge Control Y, which is
+> > > an Electrical Vehicle Supply Equipment (EVSE) for MCS (Megawatt
+> > > Charging System) charging stations.
+> > > 
+> > > sashiko reported in the first version of the series [1] that X_nRST_LAN
+> > > is available via GPIO line names, but there is no reset mechanismn in the
+> > > device tree. This finding is valid. Since the reset line feature isn't
+> > > implemented for LAN8651 driver yet, I like to proceed with the current
+> > > version. The LAN8651 handles reset via SPI commands and in rare cases
+> > > we still have the possibility to control the reset from userspace.
+> > > Btw the pin has a pull resistor in hardware, so it's not floating.
+> > > 
+> > > [...]
+> > Applied, thanks!
+> > 
+> > [1/4] dt-bindings: phy: ti,tcan104x-can: Fix property constrains
+> >        commit: c7f2322431cb6d108b18fb4154606b49e2bc50f7
+> thanks, but what about
+> 
+> [3/4] dt-bindings: phy: ti,tcan104x-can: Document Microchip MCP2542
 
-For six drivers, make the netdev allocation device managed. Since each IRQ
-is requested after its netdev is allocated, devres ordering releases the
-IRQ before the netdev. SXGBE also keeps its hardware operations object
-alive through the same ordering because its handlers dereference that
-object directly.
-
-FEC additionally masks its hardware interrupt sources and disables the
-Linux IRQs before unregistering the netdev, preventing handlers from
-accessing registers after the clocks and other resources are released.
-
-RAVB keeps its netdev manually managed because its remove callback has an
-existing runtime PM error path which can return before unregistering it.
-Instead, place its IRQs in a dedicated devres group and release that group
-after unregistering the netdev and on probe failures. The runtime PM error
-path is intentionally left unchanged and will be addressed separately
-after this series.
-
-These issues were found by a static analysis method used in our research.
-Each patch handles one driver and is independently buildable.
-
-Changes in v3:
-- Target the net tree and document how the issues were found.
-- Mask and disable FEC interrupts before dependent resources are released,
-  and remove the obsolete failed_ioremap label.
-- Limit the RAVB change to IRQ/netdev teardown ordering, correct its Fixes
-  tag, and defer the separate runtime PM error-path change.
-
-Changes in v2:
-- Keep commit message tags together without blank lines between them, as
-  requested by Francesco.
-
-Jiale Yao (7):
-  net: macb: manage the netdev lifetime with devres
-  net: fec: release IRQs before dependent resources
-  net: hip04: manage the netdev lifetime with devres
-  net: hisi_femac: manage the netdev lifetime with devres
-  net: hix5hd2: manage the netdev lifetime with devres
-  net: ravb: release managed IRQs before freeing netdev
-  net: sxgbe: manage IRQ data lifetimes with devres
-
- drivers/net/ethernet/cadence/macb_main.c      | 17 +++++------
- drivers/net/ethernet/freescale/fec_main.c     | 28 +++++++++++--------
- drivers/net/ethernet/hisilicon/hip04_eth.c    |  4 +--
- drivers/net/ethernet/hisilicon/hisi_femac.c   | 15 ++++------
- drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 15 ++++------
- drivers/net/ethernet/renesas/ravb_main.c      | 18 +++++++++---
- .../net/ethernet/samsung/sxgbe/sxgbe_main.c   | 26 ++++++-----------
- 7 files changed, 60 insertions(+), 63 deletions(-)
+Not sure why I missed this, I have picked it now
 
 -- 
-2.34.1
-
+~Vinod
