@@ -1,171 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f31.google.com (mail-ed2-f31.google.com [74.125.228.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EE339DBF7;
-	Sat,  3 Oct 2026 17:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791050178; cv=none; b=mihhuk0eM+ZHhduUmkMyWWtUJJpuckQafOiE5KLt7yW7kovLe7U+Vz5lrXr+Chjy2eos+NKEzaxJtNvFJRwxdPUl5noTMZabulkbXUT4l5S/7TrgC1A85Hss5PS9noVARQyKzyTrsKaA22l7B11r9vUkZ1sB9E+Z5wFAHQptb+s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791050178; c=relaxed/simple;
-	bh=Yh0S7crW3O0nxvXrBBYZIO0UTgeI4NX5DbmiBQEpf0Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Wvi7suxEzfVQOgrjzbM2mNXbdDoTugB+0GupGGsFpjZY4en01AfGurmpBd5iRES+mmX4EkmTynQ0idt/6dl+fUTtdfIDEyR2ja1MhEUi3sJKGuapF/Q6hpcZ9ktecHtFW+HW3ZYmVSsO+CrwChIP2zE+5MpR39C+HJZmH6l/BqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyz+0w1o; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF17B3A453F
+	for <imx@lists.linux.dev>; Sat,  3 Oct 2026 17:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791050384; cv=pass; b=ZLQH435PGjX999f7fsfEU4R/+oeJhThk8pngiynWIU+09wsliWUHnBEKOsgrcgVv+TPTxKG/qFX7EDs/iQPt7SUKlKYX7vNPpGPzWhW7aaoywwXKevtDgaESlswAeIPfki/NKZ4cpDjloqWWOFvPfqqAeHRhFoE1MJHC0A5d5Ag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791050384; c=relaxed/simple;
+	bh=izuBF8S1Jow9r5hzBkHRDbHLg5CQ1A34xxxD1x1CJtg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h2ZBZONIah4m+V7i8QPCfXH0nvfti5J/gbaJqinC3BVDHZigs8GTKmbVZzqoSIMHMvSIMxdKcxmPDg+iLZcY7eYJZbrgBSniRh3Oe6cEKlQiTmoWNZa6KQKXLECmzdrF/YCkAkGV24PLvEFf8FrOpfxHLsRiaP3Adcn14sPDDt0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meo+MZ/V; arc=pass smtp.client-ip=74.125.228.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyz+0w1o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C0E1F0089E;
-	Sat,  3 Oct 2026 17:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791050177;
-	bh=JjDDZO/D9EHraXMlfraMy9tKVss4FlDPoB4DeSvCAbw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hyz+0w1odpBXmY2TzAuXZ4YvAvMcuHid3PUQLQHzozUGVAnMSy+4PFQjW7x6Sy0x6
-	 NiIhVNmA7Eov2jr1uVAkt7IYg5HZ9V7gJD8j6XHULnivRlgLPUmioYlUkeK/5ji4SJ
-	 jAPQAa4H5NBbLuNyQhc/H0+6S4pMxgJxHsE69q6kqTiXA6RDUQ0hQGyRoXCGa7BC/J
-	 tcMsex0zxtnvzA4v9y1ysnu9QACawUK6huAA99NzR43I4QT3T1Hsy93l0vDqqFT3iv
-	 H6NVl4sZFGkynf1SZS+IZeiqS99hcDi+uiHWLYV2g7cktfNMU5PhDIivRDUN+xS8hl
-	 t8bcQIm6RX05g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] serial: fsl_lpuart: add support for GPIO-controlled
- modem lines
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Sm/Do28gTG91cmVpcm8=?= <joaofl@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, linux-serial@vger.kernel.org
-In-Reply-To: <20261003155022.466971-1-joaofl@gmail.com>
-References: <20261003155022.466971-1-joaofl@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 03 Oct 2026 17:56:16 +0000
-Message-Id: <20261003175617.59C0E1F0089E@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meo+MZ/V"
+Received: by mail-ed2-f31.google.com with SMTP id 4fb4d7f45d1cf-6af85996a92so349950a12.1
+        for <imx@lists.linux.dev>; Sat, 03 Oct 2026 10:59:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791050381; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PSK/5DEz/VqOWm/rdF8txi/bBB78HCKiZ5eb/GadgwNXKVaTf0KyvfaXSUJ/DaKD6y
+         CO4VWY4c39TPE06EDg/9gBiPKUnxUQt3N3mcivrstE+AfhEoPOwCNZ1CXeL+kcrz4aYJ
+         1bGLGC4JU18WjXeW1kTYdGtQn7ON21ID4hRm6Npocxur37vo+auNvadYm/w4e0/mJJDz
+         Y/2n2IuoeoIYg1mCKhIzWthBDr10PookjHbcAKH7G2AVeY59u8PtAnhyeqZjLVCqsZ2x
+         vwI+9783hQEhkSFYFedXfdl79wyv5cg2Ph7/BpqtkczWrOZHWJsWtdmK2e0hDYL8jIw0
+         sB6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZZnj3SSIl2LiwkfFgN70DpIUxoFz8apLMgOo9Neg9z4=;
+        fh=w+dRsa/nuLTQGZU1oFVWui34nh0npXS4TUoP/5MyQis=;
+        b=ILTxzOob0SafDkcZHZj0BfXno0G3U8HRLSVOvUfD6HzAqIvjZmARjP/fDSLdce/AW9
+         y9gIGGFKKSUpTo+e1mjeiWPRqFReGCAMv2feibM9YbAFva+R1geZavheLIqvliX9wuky
+         mQp2rkkr3eXJijkEoT6D7IzpoOOn09I6/+OS+GLYPx4mSbFMrlWnzQ5uBAHXsfHnNSan
+         m6hOyzNiV1px69oeguMNQ7i/VV87mewvVOVK5CSAsvILo+jfVXQi7zadCgSYMefjwCY8
+         mkUQJhS+DcKZCDvClsbb4jxq1imYKCsdbtPo7bjbybvrqFQbtfzfdhclK+iefWv0XQtr
+         MqlQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791050381; x=1791655181; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZZnj3SSIl2LiwkfFgN70DpIUxoFz8apLMgOo9Neg9z4=;
+        b=meo+MZ/Vh0IvAQMH8SOOF9kdWd5xkLXo6MVX1TUBk29xC0Lo3ibzC73aqMcKPnOXAl
+         myApZYjNRcqVeOWYtsuzNGbwSv2cMm8hHtXDY1DvCm+SoFq9ZD43FqMhApU/xhu15BwC
+         vF4sbOvWkzNl3COTcfudEnpcOq4eMwIrk7SRkj20cx6b5+afwZ43KgFLCMlRJdoJ9TZG
+         ButLBB93u1L2IiN3YwvIG3T7fudOgnObD31/6vuX2OEFpppnpFKM9KgBP5kpVn3mRFt2
+         kps1+k0kYdOYutwD63AmfYRzdzd5Flpej6GB+cr4o2xDC9z+CKRlkOfLqn9WCpRl7vIO
+         Tf9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791050381; x=1791655181;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZZnj3SSIl2LiwkfFgN70DpIUxoFz8apLMgOo9Neg9z4=;
+        b=ye9UzLjBBShxN86Najhu+pidxUqtLoLUVDgV28mB/Goaj+yN+jNUxwSOhXZHBeqo4B
+         kjRBaCTdy9k69r9dVLOGm9KL+ofzCZDSpaI0McozB/OkoaMYdyrbNMjB49a6NfSKina1
+         kzYiPbE7jbEx4j1OCATMnQ6LK3+8NX0l70hZKYbEvskaYobYWy2Unvveoct8EC9e6B7C
+         AynII6pqMkGz6RQMew+iOulCIrHQDybSKZUl5dQ5sg1O1pkPhrg4uNx9r++ahUj4Nyf2
+         +Lnz6raxatu7tLyyyjw2UVRwm6/0XszgZ1uDZKgIS4sHMQW33dDu4WbIy9Tx/W2Y+eAC
+         cKgg==
+X-Forwarded-Encrypted: i=1; AKwUvBwb3oZ+OkxqX+NRSlgSX+597F9AZdObgsIFvIKF96vFknc9b2TcyOfITWp1KPdXZwGS1KQ=@lists.linux.dev
+X-Gm-Message-State: AFuF++luXiFesiKICkYyc+CyP15DJjdSuhVu4aEf91H5ibcppi9w0GyC
+	cE7ifjHXEVIHRcIDEIHBZoT7pHtgfVyOw7p8WCzVOpoD6dIIkcrrtMCoU50DVoc8XD5q4RxyuU2
+	wohVBqgkYwdqSSqdKAquOmFeRnlJqEBY=
+X-Gm-Gg: AYBFou3xfsdcP5ZdIZY0A/XeMjCRwjDxx//UGCF6+iMv1pqkPLRu93/FSqlDzg2uN7H
+	Qy/4cu23r4jRDa324gT0QH8uiKd7GHmtjLCjryZI1f2hJoxWlj3a1OiYeGE6vHClUOuyR5NiAES
+	Snh66bMxGpBiElqWlw0UFrUUiuTwqkXiRdvRk713NJN3o7kVIesOcKeC2M/zvGO0WNzulVXymTN
+	lL6ypaGPIW3NTdbh8aaltfw/r08ZNxNHIgrH83UD7lpCr8Zo/oHmYriF+ybGtsZ/qHHVndM+HHg
+	plGUli43PwpYFBIfLhncQUiqzOmn+8ya57E8UBuYHw1ZnspkhJAFQ3fI4iNrbaDwCbyik8kK57Q
+	tRj7LQbjbcXEvzNSMm3jzoVsACsWotEE50Cvz6IxZ5d1fVXJXIHNRvSZRrQWtcvQjTFGdSWrIhQ
+	kRMWQgguPQpFR2MztGxFs1YGTblu9LwuBjYs+amcSGNppOW6Eim5s=
+X-Received: by 2002:a17:907:3cc2:b0:c25:f7db:4bec with SMTP id
+ a640c23a62f3a-c2e4ad53be5mr531992466b.18.1791050380759; Sat, 03 Oct 2026
+ 10:59:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20261003-gpio-mxc-cleanup-v1-0-dad728ce27f2@nxp.com> <20261003-gpio-mxc-cleanup-v1-9-dad728ce27f2@nxp.com>
+In-Reply-To: <20261003-gpio-mxc-cleanup-v1-9-dad728ce27f2@nxp.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 3 Oct 2026 20:59:04 +0300
+X-Gm-Features: AclHuK9OR6BXTLgAb_C7YKLGSH3aGu_DtrvC657Cue-9gwAbeSx8tKkdBHiKuRM
+Message-ID: <CAHp75VcRG-LzWSsg8neDOS7qj0wfp3QMoKkDKEYhoobRbfv+VQ@mail.gmail.com>
+Subject: Re: [PATCH 9/9] gpio: mxc: simplify gpio_set_wake_irq() with
+ irq_set_irq_wake and assign_bit
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] tty: fsl_lpuart: native hardware flow control blocks TX with GPI=
-O CTS
-- [Medium] tty: fsl_lpuart: missing RTS GPIO toggle during RS-485 transmiss=
-ion
-- [Medium] tty: fsl_lpuart: modem status interrupts unconditionally enabled=
- on startup
---
+On Sat, Oct 3, 2026 at 3:10=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.com=
+> wrote:
+>
+> To simplify gpio_set_wake_irq():
+>  - Replace the enable/disable_irq_wake() if/else branches with a single
+>    irq_set_irq_wake() call which handles both directions internally.
+>  - Replace the separate set_bit()/clear_bit() calls with assign_bit()
+>    which sets or clears the bit based on the enable parameter.
 
-commit 992ffb5df51e6a0dce4af1057b32c3465f75e984
-Author: Jo=C3=A3o Loureiro <joaofl@gmail.com>
+...
 
-serial: fsl_lpuart: add support for GPIO-controlled modem lines
+> -       if (enable) {
+> -               if (port->irq_high && (gpio_idx >=3D 16))
+> -                       ret =3D enable_irq_wake(port->irq_high);
+> -               else
+> -                       ret =3D enable_irq_wake(port->irq);
+> -               if (!ret)
+> -                       set_bit(gpio_idx, &port->wakeup_pads);
+> -       } else {
+> -               if (port->irq_high && (gpio_idx >=3D 16))
+> -                       ret =3D disable_irq_wake(port->irq_high);
+> -               else
+> -                       ret =3D disable_irq_wake(port->irq);
+> -               if (!ret)
+> -                       clear_bit(gpio_idx, &port->wakeup_pads);
+> -       }
+> +       if (port->irq_high && (gpio_idx >=3D 16))
+> +               ret =3D irq_set_irq_wake(port->irq_high, enable);
+> +       else
+> +               ret =3D irq_set_irq_wake(port->irq, enable);
 
-This commit adds support for GPIO-controlled modem lines (RTS/CTS) to the
-LPUART driver by wiring it up to the serial_mctrl_gpio helpers. It aims to
-support configurations where RTS is driven by software and answers on CTS,
-or where RS-485 needs a GPIO RTS.
+> +       if (!ret)
+> +               assign_bit(gpio_idx, &port->wakeup_pads, enable);
+>
+>         return ret;
 
-Link: https://lore.kernel.org/all/20260210-rearview-hungrily-536a95fc3385@t=
-horsis.com/
+This uses an unusual pattern, we check for the error first.
+But also this part should not be ping-ponged over the series, it
+should be from the start like this, see my comment against the
+respective patch.
 
-> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpu=
-art.c
-> index c8575c9652035..909253aab2125 100644
-> --- a/drivers/tty/serial/fsl_lpuart.c
-> +++ b/drivers/tty/serial/fsl_lpuart.c
-
-[ ... ]
-
-> @@ -1844,6 +1863,8 @@ static int lpuart_startup(struct uart_port *port)
->  	lpuart_request_dma(sport);
->  	lpuart_hw_setup(sport);
-> =20
-> +	mctrl_gpio_enable_ms(sport->gpios);
-> +
->  	return 0;
 >  }
 
-[Severity: Medium]
-Does unconditionally enabling modem status interrupts here defeat the serial
-core's demand-driven .enable_ms callback design?=20
-
-This will permanently enable GPIO interrupts whenever the port is open,
-which introduces unnecessary interrupt overhead.
-
-[ ... ]
-
-> @@ -2912,6 +2939,10 @@ static int lpuart_probe(struct platform_device *pd=
-ev)
->  		sport->port.rs485_config =3D lpuart_config_rs485;
->  	sport->port.rs485_supported =3D lpuart_rs485_supported;
-> =20
-> +	sport->gpios =3D mctrl_gpio_init(&sport->port, 0);
-> +	if (IS_ERR(sport->gpios))
-> +		return PTR_ERR(sport->gpios);
-> +
-
-[Severity: Medium]
-When setting up GPIO-controlled modem lines, what happens when hardware flow
-control is enabled via standard userspace termios configuration?
-
-Looking at lpuart_set_termios():
-
-	if (termios->c_cflag & CRTSCTS)
-		modem |=3D UARTMODEM_RXRTSE | UARTMODEM_TXCTSE;
-
-And lpuart32_set_termios():
-
-	if (termios->c_cflag & CRTSCTS)
-		modem |=3D UARTMODIR_RXRTSE | UARTMODIR_TXCTSE;
-
-If cts-gpios is being used, native hardware flow control is erroneously
-enabled without checking if the CTS/RTS lines are being driven by the GPIO
-framework.=20
-
-This causes the LPUART hardware to block transmission waiting for the
-physical CTS pin, ignoring the newly added GPIO CTS line.
-
-[Severity: Medium]
-Additionally, when using RS-485 mode with a board using rts-gpios, does this
-implementation miss toggling the RTS GPIO during transmission?
-
-Looking at lpuart_config_rs485(), it only enables the hardware's auto-RTS
-feature on the dedicated physical RTS pin, which has no effect on the GPIO
-RTS:
-
-		modem |=3D UARTMODEM_TXRTSE;
-
-		/*
-		 * The hardware defaults to RTS logic HIGH while transfer.
-		 * Switch polarity in case RTS shall be logic HIGH
-		 * after transfer.
-		 */
-		if (rs485->flags & SER_RS485_RTS_ON_SEND)
-			modem |=3D UARTMODEM_TXRTSPOL;
-
-Then when starting TX in lpuart_start_tx():
-
-	if (sport->lpuart_dma_tx_use) {
-		if (!lpuart_stopped_or_empty(port))
-			lpuart_dma_tx(sport);
-	} else {
-		if (readb(port->membase + UARTSR1) & UARTSR1_TDRE)
-			lpuart_transmit_buffer(sport);
-	}
-
-And similarly in lpuart32_start_tx():
-
-	if (sport->lpuart_dma_tx_use) {
-		if (!lpuart_stopped_or_empty(port))
-			lpuart_dma_tx(sport);
-	} else {
-		ctrl =3D lpuart32_read(port, UARTCTRL);
-		lpuart32_write(port, ctrl | UARTCTRL_TIE, UARTCTRL);
-	}
-
-Because the driver relies exclusively on the native UARTMODIR_TXRTSE
-auto-RTS feature and fails to invoke mctrl_gpio_set(), the GPIO pin is never
-toggled and RS-485 transmission over an RTS GPIO fails.
-
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261003155022.4669=
-71-1-joaofl@gmail.com?part=3D1
+With Best Regards,
+Andy Shevchenko
