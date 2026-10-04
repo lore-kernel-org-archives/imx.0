@@ -1,43 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E4B470426;
-	Sun,  4 Oct 2026 17:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA78C353A6D;
+	Sun,  4 Oct 2026 22:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791136014; cv=none; b=kHGbZsVP+i41w1XvttoN1Ny3FA2EdiaFo+u7GZzlgg5kIug15kPYG1I7jWpXt4bU0VVm9H0lzG1YKdpIvNMe7sfl6ZIcQlNHMgql+eYv1PLz4mnpLk96W+hr9awKD2wYwLSZm6qkCHXeRhnY0a9bILHEMTWVWoI3X+0H1H43srA=
+	t=1791151615; cv=none; b=DBb5bq5uRxVfaJPYU6M7w9yyfZqXCvntw4V0j+TQ0hAFBZxozqz7g3ONeSPbzf9nxZrnB9/tCfJCcoTFULbO7fWPvhW5jn+SZknEojzdNb0RKaL+0iPUIXyGswpVkMi2hkUcPbmh4RrkGb8nD4Z3PxxXhGA4R504bH6ui4PsduM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791136014; c=relaxed/simple;
-	bh=ofjkt9D4k37eU5fD6ruuf9VfJsX8+1EfLO8pEpkOmDQ=;
+	s=arc-20240116; t=1791151615; c=relaxed/simple;
+	bh=0BlvP+UVoG4Ln1Pg/j68FYQ7OvnVNfsSV31y6kHStCA=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=u2hpmAC5jTj99azNj6tuiET0ZWeVjstUbahrrlsjjjLvjMAIOCbqw8YJk3qR169ajr1UFZGhk1OSjsm55B9Wfj/fTwUA6OudIRVpVkHlwuxMgCSuuiYfkri1OetGWDl1uIEjxWygY2GAta00itAMVuyqUZvM7sM3F0Un3d/cyAM=
+	 MIME-Version:Content-Type; b=pucXPGM0OCbKdYr1Y82oBx7SKhd9RS85lgpaqtcTmYx/xFMddM4rO/VIKwfOdFeqQbXR+REZOJzRq8AllM/hfPfzUZGb1F3TaqGCtXTJC4kbqxmmCiz7GymWUqWUjzEBuh0ADvaNpu57wVq6T5UF6Rx1aytq8LaqJTgnFe4Guwk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF0F1F008A1;
-	Sun,  4 Oct 2026 17:46:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5551F000FF;
+	Sun,  4 Oct 2026 22:06:54 +0000 (UTC)
 Received: by venus (Postfix, from userid 1000)
-	id 49544182ABF; Sun, 04 Oct 2026 19:46:38 +0200 (CEST)
+	id 5E6BA180A51; Mon, 05 Oct 2026 00:06:50 +0200 (CEST)
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: rafael@kernel.org, krzk@kernel.org, amit.kachhap@gmail.com, 
- daniel.lezcano@kernel.org, thara.gopinath@gmail.com, talel@amazon.com, 
- hayashi.kunihiko@socionext.com, mhiramat@kernel.org, mmayer@broadcom.com, 
- viresh.kumar@linaro.org, sumitg@nvidia.com, peter.griffin@linaro.org, 
- myungjoo.ham@samsung.com, kyungmin.park@samsung.com, cw00.choi@samsung.com, 
- Frank.Li@nxp.com, s.hauer@pengutronix.de, matthias.bgg@gmail.com, 
- angelogioacchino.delregno@collabora.com, sven@kernel.org, j@jannau.net, 
- marcan@marcan.st, casey.connolly@linaro.org, sre@kernel.org, 
- wens@kernel.org, t.schramm@manjaro.org, 
- Sumeet Pawnikar <sumeet4linux@gmail.com>
-Cc: bcm-kernel-feedback-list@broadcom.com, 
- linux-samsung-soc@vger.kernel.org, kernel@pengutronix.de, 
- imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260912191156.185448-1-sumeet4linux@gmail.com>
-References: <20260912191156.185448-1-sumeet4linux@gmail.com>
-Subject: Re: (subset) [PATCH v2 0/5] PM: Use %pe to print error pointers
- symbolically
-Message-Id: <179113599828.190565.13465201522154084612.b4-ty@b4>
-Date: Sun, 04 Oct 2026 19:46:38 +0200
+To: Samuel Kayode <samkay014@gmail.com>, Sebastian Reichel <sre@kernel.org>, 
+ Myeonghun Pak <mhun512@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>, 
+ imx@lists.linux.dev, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
+In-Reply-To: <20261004043728.1140015-1-mhun512@gmail.com>
+References: <20261004043728.1140015-1-mhun512@gmail.com>
+Subject: Re: [PATCH] power: supply: pf1550: drain IRQ work before
+ unregistering supplies
+Message-Id: <179115161036.234792.14449355885017215498.b4-ty@b4>
+Date: Mon, 05 Oct 2026 00:06:50 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,25 +39,22 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
 
 
-On Sun, 13 Sep 2026 00:41:50 +0530, Sumeet Pawnikar wrote:
-> This patch series is a cleanup for subsystems under power management
-> (linux-pm) that converts several instances of error pointer printing
-> to use the `%pe` format specifier instead of explicitly casting with
-> `PTR_ERR()`.
+On Sun, 04 Oct 2026 00:37:28 -0400, Myeonghun Pak wrote:
+> The VBUS work calls power_supply_changed(), but its managed
+> cancellation is registered before the supplies. Cleanup can therefore
+> unregister a supply while IRQ-triggered work is still pending.
 > 
-> Currently, many drivers use `PTR_ERR()` paired with `%ld` or `%li` to
-> print error codes returned as pointers. By switching to `%pe` and passing
-> the error pointer directly, the logging subsystem will automatically
-> print the symbolic error name (e.g., `-ENOMEM`, `-EPROBE_DEFER`) when
-> `CONFIG_SYMBOLIC_ERRNAME` is enabled, and gracefully fall back to the
-> numeric value otherwise.
+> Commit 838767f50747 ("power: supply: pf1550: Fix use-after-free in
+> power_supply_changed()") moved IRQ requests after supply registration,
+> but left work cancellation before the supplies. That change protects
+> the direct IRQ callbacks, while this fix drains the work they queue.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/5] power: Use %pe to print error pointers symbolically
-      commit: 8761a4577c4fd489fb7af435f4b11ab6762dab66
+[1/1] power: supply: pf1550: drain IRQ work before unregistering supplies
+      commit: 4856b49317ccd4ce96a0e8970df7d13ce8975a02
 
 Best regards,
 -- 
