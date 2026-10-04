@@ -1,320 +1,237 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010057.outbound.protection.outlook.com [52.101.69.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48E154785;
-	Sat,  3 Oct 2026 21:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791063390; cv=none; b=UvOhbOtIAuUuBGe7hkrb/ULIzGyhLeWU3HKLY41w3cx8exIAdrNCUz8uSn1nD2acmuJ1AzfZIp+0ySuoobgDGrIVgMkD3NLW2yD5ATiP1Zs1nmEl+7SG6N/UDUE8M1UX8A2W8UFpVFaAvOV8NXTj6sf8bSGQ94o7yhBF3ONcsW8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791063390; c=relaxed/simple;
-	bh=oeADwhY+ha3t1xIOj5Oi2fdV6c1SmsdT3fXI1k6tsx0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nbXzkeUScV78pt9VWPI3BlnlhjfL8mOr2ULLQYdjmxm3OH2a5CsV2rh293ERBrs10cd/CIGomdTHQS8tK+Bhqmqg/Vc53ORbaFkiPXSek9Oc9Ak0+JJNSQ/USdEaWDeWPK9AWvAWB7T8nb2U+lgK9jZ/kVLgMwigmKrkwkPi+m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=baP4vsup; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2797D27F72C
+	for <imx@lists.linux.dev>; Sun,  4 Oct 2026 03:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791082866; cv=fail; b=VaMGikJync2KENOGsoJAV2qsiYctUMc7SSNeDOIB7DmZyRA+7+rkGzDH4SgktjsEau8ZhBkkdbz94RoaHh5tiRfQ4NBdBnfFj42N+kc9Y5Y2dZ3ozVPfD1zUEn2X0tpadORHzPWgRxZtQg8BI3FsijvuA3Ht8XAz9vp/CtWhBkI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791082866; c=relaxed/simple;
+	bh=iEBCceweVaXcclJnA8jAHoYXznzYSXCjEaQ48f/62UQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=j5Rg/lbwAV9d97aquflBpfLMVvEOl5M23tXM7tX8GFz4jbFIR262KhoSduzXpSXn9djh8VzYe6/ExoiQTSWpi5FjmXkgyxf+G9+MxfeXVgD5efRPvSDWHtQLXiSt+qLfYMoHoFaCLtx2VijEPIAVMIx71QXj9alpRRIhPzhxqrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jzTKtBCg; arc=fail smtp.client-ip=52.101.69.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="baP4vsup"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB071F0089C;
-	Sat,  3 Oct 2026 21:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791063388;
-	bh=VPw9IUST4MTI4NDpxhmLwBIOZI2fEhJtaK02pXVE9+c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=baP4vsupBvKIxNxg0+cnwTt45K/cw8YIYShfomiDt5Q6hJeDI9W24iNBd2sgZhYqc
-	 wHZ/tl9h8AL8PtIGs2naElgaAKFKZWM8iRmPN6Q/rt4nTA87NmfbzviTrdFGxIXRHI
-	 +JdAHGZJ0FCObNIJIfhdxKruscmwGjOkZw3j+GXhk9/rzmPTrj5/5wUOKaKXHruLXW
-	 +nguRx+Ze2Kpp6TMv9x6pdIfW7/n/syvnDdbyvRO4A4FTVYckFMUUQx9/jRfbNyNL8
-	 eGfxsl4sSNYyXJzYA9RyA0FU/3Y2zYKxnqBa8fg3IHU5CXaYQiovmDQNRnmJN1KeP7
-	 2bODg3M90dE1A==
-Subject:
- Re: [PATCH v7 4/4] can: flexcan: use one rx-offload source per IRQ line
-From: netdev-bot+sashiko@kernel.org
-To: ciprianmarian.costea@oss.nxp.com
-Cc: mkl@pengutronix.de, mailhol@kernel.org, nicolas.ferre@microchip.com,
- alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, haibo.chen@nxp.com,
- linux-can@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, s32@nxp.com, imx@lists.linux.dev,
- eballetb@redhat.com, kuba@kernel.org
-Date: Sat, 03 Oct 2026 21:36:27 +0000
-Message-ID: <179106338718.1406898.9181099617806406362@kernel.org>
-In-Reply-To: <20261002071203.1287650-5-ciprianmarian.costea@oss.nxp.com>
-References: <20261002071203.1287650-5-ciprianmarian.costea@oss.nxp.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jzTKtBCg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JrEoBaLVMi0Bx8DDmhNupO/Eg+TpkNEjl8Eu1tN8GXhfsVl6pFI/f9fC3niKYoO2ZG+JrWTsj8aXaMoCVYFWanybwuCxEoGYtR87j3KlgCFaD3xLrCZI3CaSvO02j/FNVqmaaQ1UHt4yyebf9/H+z0Wdbgg8Wt9T8burDPBL+Lx6B0vpx5IbXPfCiFI/1jyyijmlvzhto8rtlZsxWOptHjRtGG9PCUO/jPy9VHUASTMzvUJ/yZz6vc23PhFx/qJi03nrjrpykbaD2coJ/QQ8sG+vBGO/t5sWm9Np8UBRXzuh5oBL8dJGakI5rDUQMI0cv6OZl3Ynh0ol0Jlar+A9bw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PiHZixXVix/AkBfG+gcteEQd5tg6upEzXa3Bh+o7KSc=;
+ b=RWvaqCqPVFsLaiSaiUUNMbhZBNYALpYjJhsUG9JpaJFNXt79AviPsSCOA13q3LdSZIDSYJ+a2xaQobBjW1kwABbEsDrwksuDC4ylYDniAy58uYNBuNyYyDFYXRe6Mbj0YBJAJSdOupG62DvnZx5/h4vyHCUkm49lF9pDBDmXM4CvrOKKjW4WlCq0NqjnrdMPHiRnt8lCReyeRtYVK35/u1qoLWAVbDbm8gJO3mW7x2IUKbjcGpT0x80u6oJ0YgU0Gcsa9G8Uc4I92Cz0EYRusG1ig85TjCaFLeQ9hbkLF4SkllfjCV44XKZsVmrdpHSPFximSyUPdGa/3Q1ebQHymQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PiHZixXVix/AkBfG+gcteEQd5tg6upEzXa3Bh+o7KSc=;
+ b=jzTKtBCg+uvOeoFp92NnIDJ94fm8g13JbXHpdfVY7mW8DeTlJVrvY3RgRtKTM11jbTq3YyeVfU5IJT3H6z3lqIApbJBwcWH2KQNdWDgq4pSGbZBzlIGJhiAzC1Y6fds2rwjlH6ZOq10Wl3bRCzmmb7+H7tjjtcNd/pbuvZXDOzjDUPafpuC5bBAiQ0T4RW1cra/aDB+VwRBDtP84vg5jNr/JKQQEf/IZ4wxDf18dGnRgEh4mdSCq5o1ehSnrSQIorEoySvVVzuT/cYHxFi8bbCDkZBDaXRfkIVXT6UwrB5yunCcNU61aFX2pkMuB7E02FZEwuVgQxM6kqZlG8p3lzg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by PAXPR04MB8800.eurprd04.prod.outlook.com (2603:10a6:102:20f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Sun, 4 Oct
+ 2026 03:01:00 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0472.016; Sun, 4 Oct 2026
+ 03:01:00 +0000
+Date: Sat, 3 Oct 2026 22:00:49 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 5/9] gpio: mxc: use devres-managed PM runtime and
+ dev_err_probe
+Message-ID: <asHBYaF_vpgdZXAq@SMW015318>
+References: <20261003-gpio-mxc-cleanup-v1-0-dad728ce27f2@nxp.com>
+ <20261003-gpio-mxc-cleanup-v1-5-dad728ce27f2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261003-gpio-mxc-cleanup-v1-5-dad728ce27f2@nxp.com>
+X-ClientProxiedBy: PH7P220CA0130.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:327::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8800:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfa93b9c-2dbb-45c0-1926-08df21c3b7d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|23010399003|376014|1800799024|7416014|4143699003|56012099006|11063799006|10067099003|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	JKkaOj5pB2JhALqVCCwSJ6bze/lio4Zwt/dgGQZSjTNHO77w3BN93jXG0DhlOou31J2XPtxVnZi0sA+AEkLIGqrWYgUFjFgs3AXaWDozhEE0xwW1dBb92r+T0rxGHZ+MO516m0SRBvAI2nTKOr7h9qoo3J4l/czs+2J68ugEjyNqoqIPVzpVUOH/VGsIxuAr4Zn39AVZVn7J03d6OwYgZ6UkG7RzxxuFtD84YRphEKkWQELG6qOwiHP1KG0agvSUmVI/woN1Sr+DJmdcuAP3nX0w6y77nAPVUUrXmkd+5rZcVVhTd3m6LApj3IMPLhyvq2hqWp6y4VY4p6vJWYZPloqMYCqotVTMtHsp4OXQAmQEMugLTtuANIjwHGLBZe1pn8Q0d29qy32c+ad+aHwgbsoFmOpdDpoTv+GHtF6fyjwCHfCi9AgNFMj0FNjooar/Y5Ol4h5ed0DQ5mpSWz1PPAAE87ML/ghIVatC2oQFKATv2BU0mzGjdv/cUDeBnZg97XF+4qTHNPzgGIQJRjN/Xm+vnpRf+gRFwXvCNQtwjGr2uZwJdkXDtYhc9ZU0pHlM1ryxVxzRAqoch3Rkr7zDJrRvgfwjpowe7y8PFRqW+p8RQ+Of+NSzisi92BwpLYiOj4Wm/SBN/cXtuB4iIduUzP5Q6zZLS9tYOJkUw1GvMRk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(23010399003)(376014)(1800799024)(7416014)(4143699003)(56012099006)(11063799006)(10067099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+VTsucIg+qUs/+NB9GYbhu0mrNs/MkqvIdTj033RxGdd1LAlHgsWfpNnmksO?=
+ =?us-ascii?Q?pRcs24qnUqGAMDbNDt1rQbpf8Yr463m2hbnG/jXyDWAAEWRPGDBodtda99Cl?=
+ =?us-ascii?Q?3y9lTk6QY3zPlSJ+BmCI1IfMcVAn3OTk71ihohgjePLCrqIFnjggtyqdcqU9?=
+ =?us-ascii?Q?k/bJw1We1Ue7d5lNwGq24oZ6Z9WJPeiMPkDG2KpKgxmzRFZOpF/guFgcqmOB?=
+ =?us-ascii?Q?P/7qQCYbzYQ8EyGGZMmb8PSQsmJmDFeuaTrYP9jnVeWj4CciHbBV0RCGNWkC?=
+ =?us-ascii?Q?TSyFVhMsLicddtCputFTXpmFkq5Ll8RylLtPdqLnKX0VSX47p8H/NF4+zL1l?=
+ =?us-ascii?Q?ayyuguu1qOgg4oc2rT5FH/6Ma5/qRu2Z5CRLZqyhhYOvCCAO+42yTKfKE1Kr?=
+ =?us-ascii?Q?fkNbFJu9OavzCHDG9lQISDwrDYWk8QsJGYV6e1lQO9weB3U7W3f/i99KtKMd?=
+ =?us-ascii?Q?igGAQujoO6DRv7CKR2X1nwh7Pv6cw9F2C4UJSPv7U0qgYhdh+zbGrSMzO+QB?=
+ =?us-ascii?Q?F6PkhbzPKxcRhzeXJ+BGCSCcKSazF5PqlryVjxP8SWEY5WSH6kGzTMIZ897D?=
+ =?us-ascii?Q?e2S7mWxwlGr+OHHE1hFAf+hdjcHJsV9tESFB7TtG3S80jkqQPnDSrGaQy4Fl?=
+ =?us-ascii?Q?dvgNbJW/imLt30ni5g40OGrkPV/GFwpzjOrV7N2jBOvbvh2zMdIG8I7H9Cnb?=
+ =?us-ascii?Q?8XzvcNNv5urP/UcEAF/tVuszzfZ/svf9i7A3kkATZ+q95qtnkgk0YGpi0HX9?=
+ =?us-ascii?Q?Go59ouUuDPtxT3d5FTo72XQa/kYfUqPdPuR/f4B029X3yMZ6Ytt6dt0B6f5b?=
+ =?us-ascii?Q?DkcEAU4fDDSCqLpzRd/bJtpi9h2W36JolMRwDRQY+sv8rmpVFCY84+Scg2mp?=
+ =?us-ascii?Q?xt38yUEDRVuetI6scFeIwGsxAiYTNvCmz1KeRZAqsRWn4uMufLiwniL87EwF?=
+ =?us-ascii?Q?NS2uKHii4fHu81tn8JViSe7NhkukJRd7iSzC78FDphThsuxf8AqTTx4YVS4f?=
+ =?us-ascii?Q?sdrLsSLf/NaoGr2vR9v+syUd6ZA/5RWLmSi72zghWX+vNyiH/g3OQRFz04pM?=
+ =?us-ascii?Q?66tZ12Qjj+4H9gdqFQlP7O7jpmAtxIkIiq1PpdIjJnL/Mvj3Ps2N4/sTicr7?=
+ =?us-ascii?Q?62V6aLHzPAL2g138CYpvttPa40L4X05QrwSE74v8OcqE4RNLYRHqverFojBN?=
+ =?us-ascii?Q?JmBxjBs8peJQTE30+/8DNLLPW8ivo/TWw6O+CiDavtM9m13JYs16KaxXuwkm?=
+ =?us-ascii?Q?TvOi6lbomkvHkCMEMHIZDDLPsesx+XGZQEibZ+sRSx8DtluXx8ybND5IbGVb?=
+ =?us-ascii?Q?jBqCJzh5tazVFBhmviFdoApxD4JCfDSThDNNCHiBN8Bcz5MGSMQCora7HL4k?=
+ =?us-ascii?Q?JT3MeccZf03qG8Sf8DfbmjuVIjfOOe8ZaEittfufTo8EZh34UaBEcu3h22Td?=
+ =?us-ascii?Q?BkaLhJH1o9bZWfnln66zkwIFWPAvW3SGoD/+y9AGoJ/evlajciaDBSF4BQF0?=
+ =?us-ascii?Q?sW+7l4bpi6UFRWOFBpSs8R1MBSMZ7sXwrKvxlnup/cGPOxsLd2jJEJbt3Kbm?=
+ =?us-ascii?Q?eej0irKnbg4m67daakLclVBVMCiHSa7FM7TMCdZN3mxpSjZl7gqFoF+v+1vO?=
+ =?us-ascii?Q?mAdOkf++rfZ+FrnhUrGNEyLJ0uzLUdPrC9MQDyOvc6jGV6gfcAFXAawf/LFo?=
+ =?us-ascii?Q?5zhzsYaAew/BTCD5prcx+7dmNwQ2vIyIGtvcvaVXp5gXImbEsg+RLLGyYZ1v?=
+ =?us-ascii?Q?cjp5Z5tepT8W/ErOoC3wEykYzpQFSUtAPEaDs6QrIhFO2p75Clbu?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfa93b9c-2dbb-45c0-1926-08df21c3b7d6
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 03:00:59.9672
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HBexOuFluPn05A2M5OQ+EQ0WyNHFb0PoRnsDOZ282kEZvJ1pqFDTwkkMvIp0CAUmY0nYf6sNT8GEIEZ4V6dQ08DZ2/gbxvykG1IHdw4jpHAK2iV3vMC/XAPDdqcP//3F
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8800
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Sat, Oct 03, 2026 at 08:06:47PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Switch pm_runtime_get_noresume() and pm_runtime_enable() to their
+> devm-managed variants so that pm_runtime_put_noidle() and
+> pm_runtime_disable() are handled automatically by devres on both
+> probe failure and device unbind.
+>
+> Remove the out_bgio goto label and replacing all error paths with
+> direct returns using dev_err_probe(), which provides better
+> diagnostic output and handles -EPROBE_DEFER.
+>
+> Assisted-by: LLM
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/gpio/gpio-mxc.c | 30 ++++++++++--------------------
+>  1 file changed, 10 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+> index 3c395c82d7d4..73e19d2bf235 100644
+> --- a/drivers/gpio/gpio-mxc.c
+> +++ b/drivers/gpio/gpio-mxc.c
+> @@ -474,9 +474,9 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+>  	if (of_device_is_compatible(np, "fsl,imx8qm-gpio"))
+>  		port->is_imx8qm = true;
+>
+> -	pm_runtime_get_noresume(&pdev->dev);
+> +	devm_pm_runtime_get_noresume(&pdev->dev);
+>  	pm_runtime_set_active(&pdev->dev);
+> -	pm_runtime_enable(&pdev->dev);
+> +	devm_pm_runtime_enable(&pdev->dev);
 
-Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 1
+devm_pm_runtime_set_active_enabled() can include pm_runtime_set_active()
+and need check return value here.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+And why call pm_runtime_get_noresume() before enable()?
 
-- [High] Concurrent handlers can still corrupt the shared rx-offload
-  queue through the TX-completion path, which is the bug class the…
-- [Medium] In flexcan_irq() (drivers/net/can/flexcan/flexcan-core.c), the
-  per-line source's skb_irq_queue is only flushed when `handled` is set…
-- [Low] The patch has `Fixes: 8503a4b1a24d ("can: flexcan: add NXP
-  S32G2/S32G3 SoC support")`, so stable trees that carry S32G2 support…
+Frank
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it remains
-  after it.
-- [Medium] This problem wasn't introduced by this patch, but concurrent
-  S32G2 handlers still race on shared CAN state and statistics.
-
---
-
-can: flexcan: use one rx-offload source per IRQ line
-
-This patch adds an rx-offload source with can_rx_offload_add_source() for
-each extra FlexCAN IRQ line: bus off, error and the secondary mailbox line.
-flexcan_irq() picks the source from the IRQ number and passes it to the
-functions that queue skbs, so concurrent handlers on S32G2 no longer corrupt
-the shared rx-offload queue. flexcan_mailbox_read() now gets the private
-data through netdev_priv() instead of container_of().
-
-> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-> index f5d22c61503fa..2ef06ed0c7449 100644
-> --- a/drivers/net/can/flexcan/flexcan-core.c
-> +++ b/drivers/net/can/flexcan/flexcan-core.c
-
-[ ... ]
-
-> @@ -932,7 +934,7 @@ static void flexcan_irq_state(struct net_device *dev, u32 reg_esr)
->  	if (unlikely(new_state == CAN_STATE_BUS_OFF))
->  		can_bus_off(dev);
->  
-> -	err = can_rx_offload_queue_timestamp(&priv->offload, skb, timestamp);
-> +	err = can_rx_offload_queue_timestamp(offload, skb, timestamp);
+>
+>  	/* disable the interrupt and clear the status */
+>  	writel(0, port->base + GPIO_IMR);
+> @@ -502,7 +502,7 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+>
+>  	err = gpio_generic_chip_init(&port->gen_gc, &config);
 >  	if (err)
->  		dev->stats.rx_fifo_errors++;
+> -		goto out_bgio;
+> +		return dev_err_probe(&pdev->dev, err, "Failed to init gpio chip\n");
+>
+>  	port->gen_gc.gc.request = mxc_gpio_request;
+>  	port->gen_gc.gc.free = mxc_gpio_free;
+> @@ -518,31 +518,27 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+>
+>  	err = devm_gpiochip_add_data(&pdev->dev, &port->gen_gc.gc, port);
+>  	if (err)
+> -		goto out_bgio;
+> +		return dev_err_probe(&pdev->dev, err, "Failed to add gpiochip data\n");
+>
+>  	irq_base = devm_irq_alloc_descs(&pdev->dev, -1, 0, 32, numa_node_id());
+> -	if (irq_base < 0) {
+> -		err = irq_base;
+> -		goto out_bgio;
+> -	}
+> +	if (irq_base < 0)
+> +		return dev_err_probe(&pdev->dev, irq_base, "Failed to alloc irq desc\n");
+>
+>  	port->domain = irq_domain_create_legacy(dev_fwnode(&pdev->dev), 32, irq_base, 0,
+>  						&irq_domain_simple_ops, NULL);
+> -	if (!port->domain) {
+> -		err = -ENODEV;
+> -		goto out_bgio;
+> -	}
+> +	if (!port->domain)
+> +		return dev_err_probe(&pdev->dev, -ENODEV, "Failed to create irq domain\n");
+>
+>  	err = devm_add_action_or_reset(&pdev->dev, mxc_gpio_irq_domain_remove, port->domain);
+>  	if (err)
+> -		goto out_bgio;
+> +		return dev_err_probe(&pdev->dev, err, "Failed to add irq_domain_remove\n");
+>
+>  	irq_domain_set_pm_device(port->domain, &pdev->dev);
+>
+>  	/* gpio-mxc can be a generic irq chip */
+>  	err = mxc_gpio_init_gc(port, irq_base);
+>  	if (err < 0)
+> -		goto out_bgio;
+> +		return dev_err_probe(&pdev->dev, err, "Failed mxc_gpio_init_gc\n");
+>
+>  	list_add_tail(&port->node, &mxc_gpio_ports);
+>
+> @@ -552,12 +548,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+>  	pm_runtime_put_autosuspend(&pdev->dev);
+>
+>  	return 0;
+> -
+> -out_bgio:
+> -	pm_runtime_disable(&pdev->dev);
+> -	pm_runtime_put_noidle(&pdev->dev);
+> -	dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, err);
+> -	return err;
 >  }
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch.
-Concurrent S32G2 handlers still race on the shared CAN state here.
-
-With FLEXCAN_QUIRK_BROKEN_PERR_STATE, flexcan_irq_state() runs on every
-call on every line. It compares the new_state from its own ESR snapshot
-with priv->can.state, without a lock:
-
-	/* state hasn't changed */
-	if (likely(new_state == priv->can.state))
-		return;
-
-can_change_state() then does a plain priv->state = new_state.
-
-Can two CPUs see the same transition? If so, both would queue an error
-frame, both would bump can_stats and both would call can_bus_off().
-
-Could a handler with an older ESR snapshot replace a newer
-CAN_STATE_BUS_OFF with CAN_STATE_ERROR_WARNING?
-
-The BROKEN_PERR_STATE block at the end of flexcan_irq() has a similar
-problem. It calls flexcan_error_irq_enable() or flexcan_error_irq_disable()
-based on unlocked snapshots of last_state and priv->can.state. Both
-functions write a full CTRL value built from reg_ctrl_default. Can the last
-writer leave ERR_MSK out of step with the final state?
-
-The dev->stats and can_stats counters (tx_bytes, tx_packets, rx_errors,
-rx_fifo_errors, rx_dropped, bus_error) are also plain read-modify-write
-updates from several hardirq contexts, so increments can be lost.
-
-[ ... ]
-
-> @@ -1120,7 +1141,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
->  
->  		handled = IRQ_HANDLED;
->  		stats->tx_bytes +=
-> -			can_rx_offload_get_echo_skb_queue_timestamp(&priv->offload, 0,
-> +			can_rx_offload_get_echo_skb_queue_timestamp(offload, 0,
->  								    reg_ctrl << 16, NULL);
->  		stats->tx_packets++;
->  
-
-[Severity: High]
-Can two handlers still race on the echo skb here?
-
-flexcan_open() requests flexcan_irq() on dev->irq, irq_boff, irq_err and
-irq_secondary_mb. Every call reads flexcan_read_reg_iflag_tx(). The TX
-iflag is cleared only after the echo skb has been taken:
-
-		flexcan_write64(priv, priv->tx_mask, &regs->iflag1);
-		netif_wake_queue(dev);
-
-So two handlers on different CPUs can both see the TX bit, and both go
-down this path:
-
-flexcan_irq()
-  can_rx_offload_get_echo_skb_queue_timestamp(offload, 0, ...)
-    __can_get_echo_skb(dev, 0, ...)
-
-__can_get_echo_skb() checks priv->echo_skb[idx] and clears the slot only
-later, with no lock or xchg. Both CPUs can therefore get the same skb.
-
-For a PACKET_LOOPBACK skb, each CPU adds it with __skb_queue_add_sort() to
-its own source's skb_irq_queue. can_rx_offload_move_to_skb_queue() later
-merges both into the shared queue->skb_queue. Would that link the same skb
-into one list twice, so that NAPI passes a freed skb to
-netif_receive_skb()?
-
-For an echo skb that is not PACKET_LOOPBACK, both CPUs would call
-dev_consume_skb_any() on it.
-
-There is a related interleaving. The late handler could pick up a new echo
-skb that flexcan_start_xmit() queued after the first handler's
-netif_wake_queue(). It would then write FLEXCAN_MB_CODE_TX_INACTIVE to
-tx_mb, aborting a transmission that was already reported as sent.
-
-The echo handling itself is older than this patch. However, the commit
-message says this fixes concurrent handlers corrupting the shared
-rx-offload queue. Should the TX completion handling (or the whole handler)
-be serialized across lines, rather than only splitting the staging queues?
-
-[ ... ]
-
-> @@ -1143,12 +1164,12 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
->  	if ((reg_esr & FLEXCAN_ESR_ERR_STATE) ||
->  	    (priv->devtype_data.quirks & (FLEXCAN_QUIRK_BROKEN_WERR_STATE |
->  					   FLEXCAN_QUIRK_BROKEN_PERR_STATE)))
-> -		flexcan_irq_state(dev, reg_esr);
-> +		flexcan_irq_state(dev, offload, reg_esr);
->  
-
-[ ... ]
-
-> @@ -1189,7 +1210,7 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
->  	}
->  
->  	if (handled)
-> -		can_rx_offload_irq_finish(&priv->offload);
-> +		can_rx_offload_irq_finish(offload);
->  
->  	return handled;
->  }
-
-[Severity: Medium]
-Can a state-change skb get stuck in a per-line source here?
-
-nxp_s32g2_devtype_data has FLEXCAN_QUIRK_BROKEN_PERR_STATE, so the
-flexcan_irq_state() call above runs on every call, whatever ESR contains.
-If new_state differs from priv->can.state, flexcan_irq_state() queues an
-error skb with can_rx_offload_queue_timestamp(offload, ...). It does this
-even when handled is still IRQ_NONE.
-
-handled can stay IRQ_NONE when a handler on another line has already acked
-all RX, TX and ESR interrupt bits. Two cases reach this path:
-
-  - a passive to warning/active transition, which raises no interrupt
-  - a concurrent handler that has not updated can.state yet
-
-Before this patch, the skb sat in priv->offload.skb_irq_queue, and the next
-handled interrupt on any line flushed it.
-
-Now flexcan_get_offload() sends it to offload_boff, offload_err or
-offload_secondary_mb. Only can_rx_offload_irq_finish() on that same source
-drains it, or can_rx_offload_del() purges it at close.
-
-On the bus-off or error line, could the state-change frame stay stuck for
-an arbitrarily long time? When it is finally merged, its stale timestamp
-would sort it against frames that were already delivered, so it would
-arrive out of order.
-
-can_rx_offload_irq_finish() already returns early when skb_irq_queue is
-empty. Would calling it unconditionally avoid this?
-
-[ ... ]
-
-> @@ -1381,6 +1402,15 @@ static void flexcan_ram_init(struct net_device *dev)
->  	priv->write(reg_ctrl2, &regs->ctrl2);
->  }
->  
-> +static int flexcan_rx_offload_add_source(struct flexcan_priv *priv,
-> +					 struct can_rx_offload *source)
-> +{
-> +	source->mb_first = priv->offload.mb_first;
-> +	source->mb_last = priv->offload.mb_last;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but it remains after it. Every
-extra source gets the full primary mailbox range here, and the RX loop in
-flexcan_irq() runs on every line:
-
-		while ((reg_iflag_rx = flexcan_read_reg_iflag_rx(priv))) {
-			...
-			ret = can_rx_offload_irq_offload_timestamp(offload,
-								   reg_iflag_rx);
-
-Nothing serializes flexcan_mailbox_read() between CPUs. The FlexCAN read
-sequence assumes a single reader:
-
-  - reading C/S locks the MB
-  - the ID and data are copied
-  - IFLAG is cleared
-  - reading the free running timer unlocks the MB, globally
-
-Suppose two handlers both have bit n in their IFLAG snapshot. Can both of
-them read MB n? The CODE stays RX_FULL after a read, so the second reader
-passes this check and delivers the frame a second time:
-
-		if ((code != FLEXCAN_MB_CODE_RX_FULL) &&
-		    (code != FLEXCAN_MB_CODE_RX_OVERRUN))
-			return NULL;
-
-Another CPU can read priv->read(&regs->timer) from flexcan_mailbox_read(),
-flexcan_irq_state() or flexcan_irq_bus_err(). Could that unlock the MB
-while this CPU is still copying it, so the hardware overwrites it mid-copy?
-
-Could the second reader's late clear
-
-	flexcan_write64(priv, FLEXCAN_IFLAG_MB(n), &regs->iflag1);
-
-wipe the IFLAG of a newer frame that arrived after the first reader
-unlocked the MB? Later scans would then miss that frame.
-
-The commit message defers this to a follow-up series ("All handlers still
-process the whole mailbox range"). Until then, the S32G2 support named in
-the Fixes: tag can deliver duplicated, torn or lost CAN frames.
-
-> +
-> +	return can_rx_offload_add_source(&priv->offload, source);
-
-[Severity: Low]
-can_rx_offload_add_source() only exists once these earlier patches in the
-series are applied:
-
-  can: rx-offload: move skb_queue and napi into struct can_rx_offload_queue
-  can: rx-offload: allow more than one receive source
-
-The fix also relies on two things from those patches: the per-source
-offload->queue linkage, and the locked merge in
-can_rx_offload_move_to_skb_queue().
-
-Neither of those patches has a Fixes: or Cc: stable tag. This commit has:
-
-  Fixes: 8503a4b1a24d ("can: flexcan: add NXP S32G2/S32G3 SoC support")
-
-If stable selects this patch only through the Fixes: tag, will the build
-fail? A hand backport could also leave out the merge logic that actually
-stops the corruption.
-
-Would it help to add Cc: stable@vger.kernel.org, with dependency notes for
-both rx-offload patches?
-
-> +}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002071203.1287650-1-ciprianmarian.costea%40oss.nxp.com
+>
+>  static void mxc_gpio_save_regs(struct mxc_gpio_port *port)
+>
+> --
+> 2.51.0
+>
+>
