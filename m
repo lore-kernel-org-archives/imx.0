@@ -1,313 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8393B418342;
-	Sun,  4 Oct 2026 09:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1F5394EA6
+	for <imx@lists.linux.dev>; Sun,  4 Oct 2026 14:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791104594; cv=none; b=coscG5CYof/17DLbKhA1qvumHZ48+AH6Udj0x8C/hCYDc1FRB2DHphDwQbzLaFwQ9f79Mi5X3Pu5ZSPwf937m7UyhOx8ZtSictbDqCP8IyzkKeynAGK15TsKSDTZVKrwjb2TJEz+XW8EUetJ4vyjngQNEliaBRTu2/PH7BqT6Jc=
+	t=1791122507; cv=none; b=dpUodWQiBhUllQuCdrnu3uGkVS/hu/hGJl1z0lZfORKOGZC79N2kH5xJK4Sq8o2wKoAuW4QeJqygKXNZxx3hKswuP3EZSfTO6cF1/PCEdtPFwofn0xiafQ1M2X/c5HsWgBOn2f95y0foL/0KFBAJhPpthbDXZLOM/c8G42QoCrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791104594; c=relaxed/simple;
-	bh=UiqMAjyp10FHl+89HZ71lBqlz5fX8fQd7q8QEgeWWP8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lcyG5CKCA8Iv0RJMi9GnWdQgtJMzgQ2QQG8SYSMz0Z5GjlG0ksb59uss522GSl0AzhaJ8ilHXAssOg/2RWLCsnxyzNf65g9ajO+ZfcTQS0ClLqr1UppjI2zQHqMfRjODIA5fpFZUJOfqSJ2MDBJ348giysqo52rmnrSiUeys8uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieQXcmZC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791122507; c=relaxed/simple;
+	bh=F4oGIYiE8v2ioTDCPmIs7AMx/ZHEc+hOjIor5eFOGUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=miPdx0fSpWKjtKU/8mqKnBLdbHcbEIe+duUeoON9HwtjtB83R5veQjfNV4YHryhlQdPfEwKd4Wl2XK032d2xAA0p2ByLZD3/FM0CuaHxM+wkrgW82ABp78FLyXcEFsD+IsYSIm1nW3CRdnyy+pIpXaI3u0253ykDO+3ZNv+mvU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=LNk0Tn/4; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieQXcmZC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D0B1F000FF;
-	Sun,  4 Oct 2026 09:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791104592;
-	bh=1csFcv/zpdL1/3QwbyMxAX3rqrDvcTCz439BrEOVy5U=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ieQXcmZCAl0ggJfCcKBLG+qyUQro0U7XDR/gmIOrPR4IZgaXLCic5SAJzZzlb55gY
-	 TC30DiSej/PpYUKCnDJ6nalpuXy+QrABiW+4VfkNTpqeqCj6C8McGnmLoQHDIVtY1m
-	 MVZ/mek5SxgYyXpFwdh0mW9jnrz+fU8uB8oY5sUAp/8/3jurInGnbMVPj90vS9Z6YS
-	 1yAwbxwUB9aH2NVHXF/gXjrcNZmGxHScG2xs+5bQkmaUtyd1asLkAzOtsIqwUCyd9M
-	 NiByJLnT5c9Z1lbH/Is/uv+b00OCVMAcXJNvjDPtI6J9bDxC/9zDbwbKV5rPa+ljmj
-	 f0hHnGiTGgeAQ==
-Subject:
- Re: [PATCH net v3 7/7] net: sxgbe: manage IRQ data lifetimes with devres
-From: netdev-bot+sashiko@kernel.org
-To: yaojiale02@163.com
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- shenjian15@huawei.com, shaojijie@huawei.com, niklas.soderlund@ragnatech.se,
- paul@pbarker.dev, bh74.an@samsung.com, linux@armlinux.org.uk,
- soren.brinkmann@xilinx.com, nicolas.ferre@microchip.com,
- fabio.estevam@freescale.com, arnd@arndb.de, dingtianhong@huawei.com,
- zhangfei.gao@linaro.org, xuejiancheng@hisilicon.com, lidongpo@hisilicon.com,
- s.shtylyov@omp.ru, claudiu.beznea.uj@bp.renesas.com, vipul.pandya@samsung.com,
- siva.kallam@samsung.com, ks.giri@samsung.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org
-Date: Sun, 04 Oct 2026 09:03:10 +0000
-Message-ID: <179110459004.434549.4831686330572550768@kernel.org>
-In-Reply-To: <20261003085940.493951-8-yaojiale02@163.com>
-References: <20261003085940.493951-8-yaojiale02@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="LNk0Tn/4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1791122503; x=1791727303; i=wahrenst@gmx.net;
+	bh=EphGX3kNeaybHXcJl/+8b+SXjD8MFMgKX/Ow3lvyu6w=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=LNk0Tn/4YgUOKfD/n5q2NAalJhJcf6xcUbNyvn5XjBZToIGFNmOdu6WDNcR8dJlW
+	 IN5Xjq56WKgp+Wf8zDcBVMI/rLUMs1Z9dbhTj/MbGJy7LSd2MT80kndhRdJFAcAMC
+	 eaOn6sQMqSep0Js5dzTl5HHf7ish5+0M72vSEDMhkS27NzxPaYH57b9dGhwj9fvZh
+	 8wgNGChkIBt675+CdXdsWR59yQfQvDaFk8AD8dHBcC10yMR4BZEaI+ZzeipqNGA63
+	 p5Cl/s0ALOSIE/7RcwA9ztXw6aVhmCUXILcLxuWp/XDVgaDDvudkv32SbyF4aHvVq
+	 QZj69brLy5vdrLH8mA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DNt-1xGvgg1Vhl-0057lM; Sun, 04
+ Oct 2026 16:01:43 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	Manuel Traut <manuel.traut@mt.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 0/5] ARM: dts: imx6ull-tarragon-common: Fix several issues
+Date: Sun,  4 Oct 2026 16:01:18 +0200
+Message-ID: <20261004140123.46461-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:edb8Nfij/1RMYgkiegD+OQ//Ekr+LFU2KJ3fdMRtZqp14QtVZ59
+ VYWLuC5VdCoUjU/rp8U8W9pDEhY7zwzzywtglDe2GR43xwen6UnM68gF8LaTzz9oc5CPowE
+ qem3yY8udZ+u+GGIIwdy5BsVaTggiDh3xJNOIu5vdi6ZstXZRAc9mKewgVCN2Orad1XCqte
+ WsMFgLDhiFX8y9MgkaEhw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:aEL25ehmwkc=;bqgoA7EgJKJ3zOUr4QP51iJIIun
+ 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
+ 1vHfrcJ4GM9DpdmxaXVlC5S7zU88Fjb1E1A==
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+This series addresses Ethernet and PMIC related issues on the Tarragon
+platform.
 
-Critical: 0 · High: 1 (2) · Medium: 0 (2) · Low: 0 (1)
+Stefan Wahren (5):
+  ARM: dts: imx6ull-tarragon-common: Fix Ethernet regression
+  ARM: dts: imx6ull-tarragon-common: Fix Ethernet PHY issues
+  ARM: dts: imx6ull-tarragon-common: Disable unused LDOs
+  ARM: dts: imx6ull-tarragon-common: Fix i.MX6ULL DVFS
+  ARM: dts: imx6ull-tarragon-common: Fix vmmc supply
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+ .../dts/nxp/imx/imx6ull-tarragon-common.dtsi  | 44 +++++++++++--------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
 
-- [High] The fix does not close the bug class its commit message
-  describes: IRQ handlers can still run against freed memory in the…
+=2D-=20
+2.43.0
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but any re-open of
-  the interface fails, and the MTU-change path can then wedge rtnl.
-- [High] This problem wasn't introduced by this patch, but the EEE
-  control timer can be re-armed after sxgbe_release() cancels it, and…
-- [Medium] This problem wasn't introduced by this patch, but
-  sxgbe_platform_probe() only allocates plat_dat when pdev->dev.of_node…
-- [Medium] This problem wasn't introduced by this patch, but
-  sxgbe_drv_probe() calls register_netdev(), which makes the interface…
-- [Low] This problem wasn't introduced by this patch, but init_tx_ring()
-  allocates tx_ring->tx_skbuff_dma and tx_ring->tx_skbuff with…
-
---
-
-net: sxgbe: manage IRQ data lifetimes with devres
-
-This commit switches the netdev and priv->hw allocations in the sxgbe
-driver to devres. They are then released after the devm-managed IRQs
-requested in sxgbe_open(). The goal is to close a window where an
-interrupt arriving after sxgbe_drv_remove() could dereference freed
-memory.
-
-> diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-> index 70cf3619555f9..ada851477302e 100644
-> --- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-> +++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-
-[ ... ]
-
-> @@ -2069,8 +2069,8 @@ struct sxgbe_priv_data *sxgbe_drv_probe(struct device *device,
->  	int ret;
->  	u8 queue_num;
->  
-> -	ndev = alloc_etherdev_mqs(sizeof(struct sxgbe_priv_data),
-> -				  SXGBE_TX_QUEUES, SXGBE_RX_QUEUES);
-> +	ndev = devm_alloc_etherdev_mqs(device, sizeof(struct sxgbe_priv_data),
-> +				       SXGBE_TX_QUEUES, SXGBE_RX_QUEUES);
->  	if (!ndev)
->  		return NULL;
->  
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but can priv->plat be NULL
-in sxgbe_drv_probe()?
-
-sxgbe_platform_probe() only allocates plat_dat when pdev->dev.of_node is
-set, but it always passes plat_dat to sxgbe_drv_probe():
-
-	priv = sxgbe_drv_probe(&(pdev->dev), plat_dat, addr);
-
-If a platform device without an OF node gets bound, either by name
-("sam_sxgbeeth") or through driver_override, sxgbe_drv_probe()
-dereferences the NULL pointer here:
-
-	if (!priv->plat->riwt_off) {
-
-[ ... ]
-
-> @@ -2191,11 +2191,7 @@ struct sxgbe_priv_data *sxgbe_drv_probe(struct device *device,
->  	clk_put(priv->sxgbe_clk);
->  error_napi_del:
->  	netif_napi_del(&priv->napi);
-> -error_free_hw:
-> -	kfree(priv->hw);
-> -error_free_netdev:
-> -	free_netdev(ndev);
-> -
-> +error_return:
->  	return NULL;
->  }
-
-[Severity: Medium]
-This is a pre-existing issue, but is the netdev published before its
-IRQ numbers are set?
-
-sxgbe_drv_probe() calls register_netdev() and returns. Only after that
-does sxgbe_platform_probe() fill in the IRQ numbers:
-
-	priv = sxgbe_drv_probe(&(pdev->dev), plat_dat, addr);
-	...
-	priv->irq  = irq_of_parse_and_map(node, 0);
-
-The txq/rxq structures come from devm_kmalloc() and are not zeroed. If
-udev or NetworkManager calls dev_open() in that window, sxgbe_open()
-runs with priv->irq == 0, or with uninitialized txq[i]->irq_no and
-rxq[i]->irq_no values.
-
-> @@ -2229,10 +2225,6 @@ void sxgbe_drv_remove(struct net_device *ndev)
->  	clk_put(priv->sxgbe_clk);
->  
->  	netif_napi_del(&priv->napi);
-> -
-> -	kfree(priv->hw);
-> -
-> -	free_netdev(ndev);
->  }
-
-[Severity: High]
-Does this fully close the window described in the commit message? The
-netdev and priv->hw now outlive the IRQs. However, the IRQs themselves
-stay live after the interface is closed.
-
-sxgbe_open() requests the common, LPI, per-TX and per-RX IRQs with
-devm_request_irq(priv->device, ...). Neither sxgbe_release() nor the
-sxgbe_open() error path frees, masks or synchronizes them.
-
-unregister_netdev() in sxgbe_drv_remove() runs sxgbe_release(), which
-does:
-
-	priv->hw->dma->stop_tx(priv->ioaddr, SXGBE_TX_QUEUES);
-	...
-	free_dma_desc_resources(priv);
-	...
-	clk_disable_unprepare(priv->sxgbe_clk);
-
-It never writes SXGBE_DMA_CHA_INT_ENABLE_REG and never frees the IRQs.
-The handlers stay registered until devres teardown after remove
-returns. The same state exists after every ifdown and every
-sxgbe_change_mtu().
-
-In that window, sxgbe_tx_interrupt() has no interface-up check:
-
-	if (unlikely((status & tx_hard_error)))
-		sxgbe_restart_tx_queue(priv, txq->queue_no);
-
-and sxgbe_restart_tx_queue() does:
-
-	tx_free_ring_skbufs(tx_ring);
-	...
-	priv->hw->dma->start_tx_queue(priv->ioaddr, queue_num);
-	...
-	netif_tx_wake_queue(dev_txq);
-
-Can tx_free_ring_skbufs() race with dma_free_tx_skbufs() and
-free_tx_ring() in close? That could unmap and free the same skbs twice,
-or read freed dma_tx descriptors through get_tx_len().
-
-Can start_tx_queue() set SXGBE_TX_ENABLE again on a channel whose
-descriptor base still points at the ring freed with
-dma_free_coherent()? The device could then DMA into reallocated memory.
-
-The trigger might not need a stray error. SXGBE_DMA_ENA_INT includes
-SXGBE_DMA_INT_ENA_TSE, and sxgbe_tx_dma_int_status() maps
-SXGBE_DMA_INT_STATUS_TPS to tx_hard_error. If the hardware sets TPS on
-a software stop, the stop_tx() calls in sxgbe_drv_remove() and
-sxgbe_release() could raise the very interrupt that restarts TX DMA.
-That hardware behaviour can't be confirmed from the code alone.
-
-All three handlers also access CSRs through priv->ioaddr after
-clk_disable_unprepare(). The common and LPI lines are IRQF_SHARED. So
-another device on the line, or the extra CONFIG_DEBUG_SHIRQ call in
-free_irq() during devres teardown, can run them while the clock is
-gated.
-
-Would it be better to mask the channel interrupts and free the IRQs in
-ndo_stop, before freeing the rings and gating the clock? This could use
-request_irq()/free_irq() or devm_free_irq(). That alone would also fix
-the netdev/priv->hw use-after-free, so it would replace the devres
-ordering here rather than build on it.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can the EEE control
-timer still be armed when devres frees the netdev that contains it?
-
-sxgbe_release() cancels the timer first. It then calls phy_stop() and
-phy_disconnect(), which can sleep, and only later calls napi_disable():
-
-	if (priv->eee_enabled)
-		timer_delete_sync(&priv->eee_ctrl_timer);
-	...
-	napi_disable(&priv->napi);
-
-A NAPI poll in that gap, sxgbe_poll()->sxgbe_tx_all_clean(), can re-arm
-the timer:
-
-	if ((priv->eee_enabled) && (!priv->tx_path_in_lpi_mode)) {
-		sxgbe_enable_eee_mode(priv);
-		mod_timer(&priv->eee_ctrl_timer, SXGBE_LPI_TIMER(eee_timer));
-	}
-
-sxgbe_eee_ctrl_timer() re-arms itself on every expiry, and nothing on
-the close or remove path deletes it again.
-
-After close, the timer writes MAC registers with the clock gated. After
-remove, the timer_list sits in netdev private memory that devres has
-freed, so the next expiry is a use-after-free. After module unload, it
-runs freed module text.
-
-[Severity: High]
-This is a pre-existing issue, but does every re-open of the interface
-fail because the IRQs from the previous sxgbe_open() are never freed?
-
-Consider a second sxgbe_open(), from ifdown/ifup or from
-sxgbe_change_mtu() on a running interface (which calls sxgbe_release()
-and then sxgbe_open()):
-
-- The IRQF_SHARED common and LPI requests succeed and add duplicate
-  actions with the same dev_id.
-
-- The first per-TX-queue request is exclusive (flags 0). It fails with
-  -EBUSY in __setup_irq() because the earlier action is still
-  installed:
-
-	ret = devm_request_irq(priv->device,
-			       (priv->txq[queue_num])->irq_no,
-			       sxgbe_tx_interrupt, 0,
-			       dev->name, priv->txq[queue_num]);
-
-- init_error frees the rings, disconnects the PHY and disables the
-  clock. The duplicate shared actions are left in place.
-
-After an MTU change on a running interface, the device stays IFF_UP
-with NAPI disabled and the rings freed. A later ifdown, or
-unregister_netdev() in sxgbe_drv_remove(), runs sxgbe_release() again.
-
-Would that second napi_disable() spin forever in napi_disable_locked()
-while rtnl is held, since NAPIF_STATE_SCHED is already set? Even if it
-returned, free_dma_desc_resources() would free the coherent rings and
-the rx_skbuff arrays a second time.
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but init_tx_ring() allocates
-tx_ring->tx_skbuff_dma and tx_ring->tx_skbuff with devm_kcalloc() on
-every ndo_open:
-
-	tx_ring->tx_skbuff_dma = devm_kcalloc(dev, tx_rsize,
-					      sizeof(dma_addr_t), GFP_KERNEL);
-	...
-	tx_ring->tx_skbuff = devm_kcalloc(dev, tx_rsize,
-					  sizeof(struct sk_buff *), GFP_KERNEL);
-
-free_tx_ring() only releases the coherent ring:
-
-	dma_free_coherent(dev, tx_rsize * sizeof(struct sxgbe_tx_norm_desc),
-			  tx_ring->dma_tx, tx_ring->dma_tx_phy);
-
-Does each open attempt, including the failing re-opens above, leave
-another pair of arrays attached to the device until unbind?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003085940.493951-2-yaojiale02%40163.com
