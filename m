@@ -1,73 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0164D0A04;
-	Mon,  5 Oct 2026 15:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8044E2F3B
+	for <imx@lists.linux.dev>; Mon,  5 Oct 2026 17:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791215000; cv=none; b=D+qzFwnR84E4+cMOlokzieS9J6NkPjlEPLEPgcrtWt2Wgo0qaOnd3XCemo3AvXscs/sy99UsvfOmyOmHCQmjOEwk9OUz9B/NKMhhGOeMUtI5d1PyH/4oK8dUyTC66se9EdpTbH3KjD6nrKtgBR8wj9j0+SftIXcgnRxMxQ8G46Y=
+	t=1791221194; cv=none; b=bU6UYlZI2nj8VW2Y/YGpbeVPxYdFANC35XeWerKP0YsnBVTEayliPhY/VVllaiT3ryg6Zod25UrL56Qj26p+epYUSsX8rmdKkIdIV2zfw4ZbpR+YpWswJFNy95Ew169NSmYGGAS/kGp66X3vZvvkOpqo7EfQSYHnwKnrR5WdXVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791215000; c=relaxed/simple;
-	bh=P49NR6dcRTuPbEuy8QuNgr8D2RHKrFVs6xijIMz6kbs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sX0tecw+fhXEQdD9h+c1YshoApVtoJSbvoR+H+azp0oJTqiUrMTFYmpsUNKFm6W8FpKE+SgAQKTdoEEw0wDpWwI+Qo5Jzhtq3jj9h3v9N02CNeueeP9WtOrhuIzoSaTNl/r6URdYKfB/VHuNmeB2pzCaWJAc5wDxZn2AzUa54FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQwunsMT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791221194; c=relaxed/simple;
+	bh=AxQ6T0ZhjiMUCwi95ktpW0dqw9L2u7jvJeT6sJk8hI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P7PYo8zjlBpEqlxjYascFJkbza7LVaccQkiaWXNays6BpWnu0jhlnGl5qZveruz/5ZvknpMLBF1A576aA4W3Di1eaMn1A0UchEb1/38l9MpCkPVmeKiUpcom1fxpfbJEzsGphe/05rDWH4loJHCe9CdOfFTYRWURatH8NfhXWvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WZA4Jqe4; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQwunsMT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF531F00893;
-	Mon,  5 Oct 2026 15:43:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791214998;
-	bh=0ESQITYD3rZ/xg13TMbz3+mGQE1O3MEj4TuWcylvhhs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=aQwunsMT2XLpachvExRoAYO2Yr4UUuzqwzSv02+Gqg9NJGh1ZQKDZVxyx4S4twBdd
-	 BnvANHxu3RC/8Ewsi90Xh6SnsQWJ9UvCRZ4zXGgylNlMVQ9ZtodR6inflPIIJ/nXKy
-	 JLaBoo6c12cbm5vByN99FjGs4UNs3ABtT7gvZ0mJPHcE5S8UB2sGw7JEEcb/bFH2Ts
-	 0p3qSjLFZVv9eKd3aNoGVHkDym/8EP9FiREuf7SOZDZ32Kx6cugwLd+aJXIq6Y3fat
-	 fAt5/43gDXm5tNpOoPGyCIcsQXFwbGUDoKe/nfnhEA7ael9wPZCUauqW6vlTP+C1mX
-	 /kCp8eZwLE2lQ==
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260916-fsl-edma-dyn-sg-v11-0-02792de71b92@bootlin.com>
-References: <20260916-fsl-edma-dyn-sg-v11-0-02792de71b92@bootlin.com>
-Subject: Re: [PATCH v11 0/2] dmaengine: fsl-edma: Scatter/gather
- improvements
-Message-Id: <179121499695.358863.2184122173863410504.b4-ty@kernel.org>
-Date: Mon, 05 Oct 2026 17:43:16 +0200
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WZA4Jqe4"
+Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 9A6222291E;
+	Mon,  5 Oct 2026 19:26:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1791221189;
+	bh=Vo3/R/UpUzh6/sfdwtuW9Y23N0AJmticKut7jC50Xqw=; h=From:To:Subject;
+	b=WZA4Jqe4L2sP4O+dt2hMr3GY0I9p+xGwrYYBVRk8c0bdZzNQ4QCP04V77ybzIM2bp
+	 aPQ7H81Oo8qL22pZ42aEY03qts2TDxUF7v+hGRQZ1aYY/mLBQPRveMYBIs1ioYoLks
+	 Im2LQAiL9LPFn6X3PwHCWcXVkgKVrHlyEsI8FbYWGxuuy56Is4m0M+MQlFoHpnt/gO
+	 JckwQZLRpRjenfwtCT1xJ8B5hW9Xx0prAaWld0PIPgNjysbS8AauSpCC+0WwMOGl1h
+	 Ygy0uvweR8fpgTWLtl3MhtapP1ZUKhNdI3NetyJQH/XwrvUYzJKVbINiaQhFR97aDK
+	 6FBjU5gI+5PEw==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: freescale: imx952: Add GPIO5 lines 18 to 20
+Date: Mon,  5 Oct 2026 19:26:21 +0200
+Message-ID: <20261005172622.135725-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3
 
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-On Wed, 16 Sep 2026 10:24:10 +0200, Benoît Monin wrote:
-> This series adds support for scatter/gather DMA transfers via dma_vec
-> and dynamic descriptor chaining to the Freescale eDMA controller driver.
-> 
-> The first patch implements the .device_prep_peripheral_dma_vec() callback,
-> enabling the DMA engine to accept an array of dma_vec structures. This
-> callback supports both regular and cyclic transfer modes.
-> 
-> [...]
+Add missing GPIO5 lines, GPIO_IO38, GPIO_IO39 and GPIO_IO40 are
+GPIO-only pads fixed to GPIO5[18:20], their SW_MUX_CTL registers have no
+MUX_MODE field (IMX952RM Rev.1, 2026-07-08, sections 33.3.2.44-46 and
+33.3.2.184-186).
 
-Applied, thanks!
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx952-pinfunc.h | 6 ++++++
+ arch/arm64/boot/dts/freescale/imx952.dtsi      | 4 ++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-[1/2] dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
-      commit: e2174129ddb293552ab7832439606848348f0370
-[2/2] dmaengine: fsl-edma: Support dynamic scatter/gather chaining
-      commit: 2c9f5e95f41898b506b132d7698d270ed6a13583
-
-Best regards,
+diff --git a/arch/arm64/boot/dts/freescale/imx952-pinfunc.h b/arch/arm64/boot/dts/freescale/imx952-pinfunc.h
+index debe6ede2d70..72cfe7893af8 100644
+--- a/arch/arm64/boot/dts/freescale/imx952-pinfunc.h
++++ b/arch/arm64/boot/dts/freescale/imx952-pinfunc.h
+@@ -307,6 +307,12 @@
+ #define IMX952_PAD_GPIO_IO37__WAKEUPMIX_TOP_LPUART7_RX                0x00A4 0x02D4 0x05B0 0x02 0x01
+ #define IMX952_PAD_GPIO_IO37__WAKEUPMIX_TOP_LPSPI4_SCK                0x00A4 0x02D4 0x0568 0x04 0x01
+ 
++#define IMX952_PAD_GPIO_IO38__WAKEUPMIX_TOP_GPIO5_IO_18               0x00A8 0x02D8 0x0000 0x00 0x00
++
++#define IMX952_PAD_GPIO_IO39__WAKEUPMIX_TOP_GPIO5_IO_19               0x00AC 0x02DC 0x0000 0x00 0x00
++
++#define IMX952_PAD_GPIO_IO40__WAKEUPMIX_TOP_GPIO5_IO_20               0x00B0 0x02E0 0x0000 0x00 0x00
++
+ #define IMX952_PAD_CCM_CLKO1__CCMSRCGPCMIX_TOP_CLKO_1                 0x00D4 0x0304 0x0000 0x00 0x00
+ #define IMX952_PAD_CCM_CLKO1__NETCMIX_TOP_NETC_TMR_1588_TRIG1         0x00D4 0x0304 0x0494 0x01 0x00
+ #define IMX952_PAD_CCM_CLKO1__WAKEUPMIX_TOP_FLEXIO1_FLEXIO_26         0x00D4 0x0304 0x04AC 0x04 0x00
+diff --git a/arch/arm64/boot/dts/freescale/imx952.dtsi b/arch/arm64/boot/dts/freescale/imx952.dtsi
+index 1154b66dadb2..4930e09e0206 100644
+--- a/arch/arm64/boot/dts/freescale/imx952.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx952.dtsi
+@@ -1076,8 +1076,8 @@ gpio5: gpio@43850000 {
+ 			clocks = <&scmi_clk IMX952_CLK_BUSWAKEUP>,
+ 				 <&scmi_clk IMX952_CLK_BUSWAKEUP>;
+ 			clock-names = "gpio", "port";
+-			gpio-ranges = <&scmi_iomuxc 0 103 12>, <&scmi_iomuxc 12 36 6>;
+-			ngpios = <18>;
++			gpio-ranges = <&scmi_iomuxc 0 103 12>, <&scmi_iomuxc 12 36 9>;
++			ngpios = <21>;
+ 		};
+ 
+ 		aips1: bus@44000000 {
 -- 
-~Vinod
-
+2.47.3
 
