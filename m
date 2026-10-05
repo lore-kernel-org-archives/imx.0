@@ -1,87 +1,53 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4425D1F12FB
-	for <imx@lists.linux.dev>; Mon,  5 Oct 2026 04:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B28E35E92F
+	for <imx@lists.linux.dev>; Mon,  5 Oct 2026 07:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791173284; cv=none; b=IYVincpZBvUvGOeSSFemh/mvxHEmZN/LHmwA+lqJ25qg6g/B1yxUieN029Jf4uIzGfI52ZzAiluByriq6i2Ptk+Sojuvlye2kT9vELcxYQ6+TsRndy72YBer7rhNoSc89tjLwOncH3Mo7aN8purywvwqmH2jv0AWKP9WoCgISBo=
+	t=1791186819; cv=none; b=IsoQ+k29uWntZZ3MqcdNj1TlhMynOymV+tEzgXBT4qHzNOVjBjpMumvN2Wq9XCj28wE1FiJSTGZSbSgpYnRS+BktlzLWqfWLksiag6n8kekOmA9CEKdnb+zHXMKMEP9ULiNXRGQJMueF/zmRsVcO/Kf77ErCWn2QpFCGILM+yZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791173284; c=relaxed/simple;
-	bh=LMDE8Z0gPoVrNprdeBHN/Jw/1zoG7YryqwLWnWMRDUM=;
+	s=arc-20240116; t=1791186819; c=relaxed/simple;
+	bh=R3v7hxzfchd5jXcTK5Uwr+RIKgrbMtFTqdzK7Qkbgbc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rf2S/hy0IF9IGxyTKmRUNieCRJODxRwSxVOBzMt9xpI+d+DYc+oYN1tIONh+6TJAHeVMS19o+lt9F8T+0qavjI8mMGKuAsZ8/qaS57UTNWveMpfVw6eFlhPp67ax3TKMQoi7Df9zts+b+K4IT4DjnZ1TOCDtLwOYqsjO5TpIRSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J0qG2FtK; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hq+VPEMRYJw1EJLlTv+BVxdIAVn317hrJSR+NggwrmcVt+j0xAkiFw9pzkWZWdH4GFYgXVNcIb5hPD9y4uh1ygmN6GK1ivgtBDFuOQDCcnmGGTa3xfGZs2BDd/U2ty/gJLt9WYFNeIwWVw2iBc7tBq1bT7yo/OEL3DiSFdrvqRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=h57Gf9RI; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J0qG2FtK"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c11ef641aso2280379eec.1
-        for <imx@lists.linux.dev>; Sun, 04 Oct 2026 21:08:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791173281; x=1791778081; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LoOBU3dKUoijTmAk3p1LupdivqwWNOCTytdFGuDGRd8=;
-        b=J0qG2FtKENZMiZh3Pw1BjXqRXV7D1DYet4PGTOUfLDw7zPfRd1gvr+y4drF5F3GD94
-         Qshe4XRVwncN3xPxygbSMCbppWWtjVSfYcZdzgUSHCGC+w9tnX8672w7L1cvqXAx4YrT
-         FF/Gh0wydrAQPpzXR2WbjQtbEYj47TcLCVk5Yc/h5ZThfhyLUe8+/r99L1NPxvZyumw7
-         s153ptzIX1XkGEFaKmfInT6xvFK66rth0WIztngzOdLqmnjK06AqzBfyRkU4fShuM6k0
-         /UpojLQk4JHDy0fheKMbCW5ohi4pto/j2n/6IHcXSHawXj7PTJLBiStIZD//TFQX/aTH
-         GuTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791173281; x=1791778081;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LoOBU3dKUoijTmAk3p1LupdivqwWNOCTytdFGuDGRd8=;
-        b=APuF1wK3/sYNCs833xb42KV2N0eKbEvZqeW2JNGEKGC5rAdSQuD+qG+CLYZ91Wgzsp
-         g1g9WnbNU+bhI4ktN0cOr5mSz79mOQsZ0FckIfpZ5fuYIUwyiZQ22l+Jn47J4/tJwiUy
-         vT+eN1ac8PvyWE3VRDkTkN/A3RZgTEIs/pjxdesqPgGz0iELAk7cO2tOYE2f2e7zFWqW
-         Kbn7cY53LKFlHYUVyKAaCdXUUBBjcIjACRHXsOFL3LsrHszrK3JtWbok32auOeWjNESo
-         MW/u+mdYGcSQW4d4m9nO1R1FFSFdYHUDTIfIS9eFzSH8OESreGZ1vyq8EGQjLMyImjZc
-         uIlg==
-X-Forwarded-Encrypted: i=1; AKwUvBy90pXUbqHwD8cgwC32JhkvSHd1xdXsRhHI1uoS0MjvxS+Nj/nT/ypNs5h6bomrHgJem9A=@lists.linux.dev
-X-Gm-Message-State: AFuF++nq0O52oUGyMdHLMBOEGjNk29OG9sv81MIN+0RWKypuwIN4DNAR
-	8HKtSZIa7A/OSZbv/eAlxQvvn3hefMmbpSd85guMWXnbXOvjPXvG+43AFvCm2y6XNbM=
-X-Gm-Gg: AYBFou3lphuJlpLoaGoGm7rnSy86jwZYd4kpH9AGxJlzgdcXEtgx+RAsSiAtcx2WuD/
-	5ccHlKxcFz9OcFkbCjeWzHrarlu6R38WOf3mRnooEcQVMHbtKNlYsociCQFDWcFQ6cnX6Noxa/w
-	ODp6mgNxy1RGK1Ov5JmLK6ggSNx3CwOYCjOjmohtksE7pSynzt/76oMt5j2FUWcSnaDmpgemC0s
-	78S1oRec50k3eWIXcoThHvv5+yGS8/xa8MgyZbHYMpyO3RrWGjiWH5E/SymipPzy1k+oNWKGQBE
-	iGT3P6XjOvAFKgxSHBJUj0yznW0EhA3vV2WlS6+CQPj5OTJem14Wwn2uGYUaswqOOIyhVYnYu3Y
-	MSe9yI+fgQTA3DekjkT+0Nbq8f58OhAKwZoSewmNgzJwLONN+RJ752gRaUjBTcQWGWhQuh86+tL
-	0KLbOOJ6pcipKOPhd5TkHrJuvKnAANoy818nQhaP5FUI2Ffzu5aMuqOO1r4t32EzjAKj4vzhSN
-X-Received: by 2002:a05:701b:2810:b0:149:cfa4:9b3b with SMTP id a92af1059eb24-14f58de5451mr12982932c88.3.1791173281135;
-        Sun, 04 Oct 2026 21:08:01 -0700 (PDT)
-Received: from localhost ([122.172.87.224])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-151fcec9a95sm18805270c88.15.2026.10.04.21.07.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 21:08:00 -0700 (PDT)
-Date: Mon, 5 Oct 2026 09:37:57 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Sumeet Pawnikar <sumeet4linux@gmail.com>
-Cc: rafael@kernel.org, krzk@kernel.org, amit.kachhap@gmail.com,
-	daniel.lezcano@kernel.org, thara.gopinath@gmail.com,
-	talel@amazon.com, hayashi.kunihiko@socionext.com,
-	mhiramat@kernel.org, mmayer@broadcom.com, sumitg@nvidia.com,
-	peter.griffin@linaro.org, myungjoo.ham@samsung.com,
-	kyungmin.park@samsung.com, cw00.choi@samsung.com, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, sven@kernel.org,
-	j@jannau.net, marcan@marcan.st, casey.connolly@linaro.org,
-	sre@kernel.org, wens@kernel.org, t.schramm@manjaro.org,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-samsung-soc@vger.kernel.org, kernel@pengutronix.de,
-	imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] cpufreq: Use %pe to print error pointers
- symbolically
-Message-ID: <asMinVwyd7gcvRlo@vireshk-B250M-D3H>
-References: <20260912191156.185448-1-sumeet4linux@gmail.com>
- <20260912191156.185448-4-sumeet4linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="h57Gf9RI"
+Received: from francesco-nb (93-33-55-11.ip43.fastwebnet.it [93.33.55.11])
+	by mail11.truemail.it (Postfix) with ESMTPA id 0D35F1F8C7;
+	Mon,  5 Oct 2026 09:53:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1791186805;
+	bh=dTFZ0+ppaHBeezrtAiXyT5t0v4Qt5fwZihigO50o4zQ=; h=From:To:Subject;
+	b=h57Gf9RI09DzmwL75inBBQ5foOdIGCIJSc7QKVYyYRpAJbhG31YkAMPL4Eg3RGbg+
+	 wdq4NW9Z3lNBZrjpXPrbWL4cJNnV21WAKXeEUTY1p0y0Dn9nPMUVc+Mvv1bmdYRtUR
+	 R/h+uA9QsUGCxhMB0Gzb/LgXIolV2czzzopaAzEdwppBmxqgA/0gc0ajoODJdgBTT0
+	 jn7xCCkIG9w1lr+1aGfIi3TxznGdxdMq+CksPOQoVpHnlEwuAfqKtUyRFjPhsI9oES
+	 2p7T/spnYnDrEl5dWYPpkOXY7utsl2EfsQX5GyxE6jb/Jy8hF23xElW+L/TN6Bpmke
+	 LndTKF9pg2wbg==
+Date: Mon, 5 Oct 2026 09:53:19 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Leonardo Costa <leoreis.costa@gmail.com>, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	francesco.dolcini@toradex.com, leonardo.costa@toradex.com,
+	hvilleneuve@dimonoff.com, marex@nabladev.com,
+	stefano.r@variscite.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
+ Display 10.1" LVDS
+Message-ID: <20261005075319.GA7692@francesco-nb>
+References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
+ <20261001155412.3177428-4-leoreis.costa@gmail.com>
+ <ar6JnZp1jBvlc8bx@SMW015318>
+ <20261002081824.GA7222@francesco-nb>
+ <ar_bsQbD-IbvUf86@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,92 +56,195 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260912191156.185448-4-sumeet4linux@gmail.com>
+In-Reply-To: <ar_bsQbD-IbvUf86@SMW015318>
 
-On 13-09-26, 00:41, Sumeet Pawnikar wrote:
-> Replace PTR_ERR() and %ld with %pe and pass the original pointer directly
-> to pr_err() and pr_warn(). The %pe format specifier prints a symbolic error
-> name (e.g. -ENOMEM) when CONFIG_SYMBOLIC_ERRNAME is enabled, otherwise it
-> falls back gracefully and prints the raw integer value. This makes messages
-> more readable without any functional change.
+Hello Frank,
+
+On Fri, Oct 02, 2026 at 11:28:33AM -0500, Frank Li wrote:
+> On Fri, Oct 02, 2026 at 10:18:24AM +0200, Francesco Dolcini wrote:
+> > On Thu, Oct 01, 2026 at 11:26:05AM -0500, Frank Li wrote:
+> > > On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
+> > > > From: Leonardo Costa <leonardo.costa@toradex.com>
+> > > >
+> > > > Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
+> > > > LVDS connected via the Apalis iMX6 LDB.
+> > > >
+> > > > The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
+> > > > touch input is provided by an Atmel MaxTouch capacitive touch
+> > > > controller.
+> > > >
+> > > > Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
+> > > > external component that does not exist at the SoM level.
+> > > >
+> > > > The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
+> > > > Board V1.2 device tree to provide a ready-to-use DTB.
+> > > >
+> > > > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
+> > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> > > > ---
+> > > >  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
+> > > >  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
+> > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
+> > > >  3 files changed, 59 insertions(+), 13 deletions(-)
+> > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+> > >
+> > > similar 7" case, add panel module name in file
+> > >
+> > > imx6q-apalis-lvds-panel-lt170410.dtso
+> >
+> > This does not work, sorry, the current name is the correct one, for
+> > various reasons:
+> >
+> >  - the product is a display made with a specific connector, touch
+> >    controller and display and more. The actual panel is just part of it
+> >  - the current name wholly describe the product, it's a public product
+> >    with an official name, all of that is clearly linked in the commit
+> >    message and comments. there is no ambiguity.
+> >  - the same toradex accessories are not module specific, they are used
+> >    across multiple families/carrier board. It is a whole ecosystem that is
+> >    building on top of standardized interfaces and connectors. The same
+> >    overlay file is available for multiple boards and in multiple SoC
+> >    vendor directory (as of now TI and NXP, soon we are going to have
+> >    also QCOM). Having a consistent naming scheme is important, we cannot
+> >    call the same things differently every time.
+> >  - there was a situation in which we did a new product revision of a
+> >    display, specifically the "Toradex Capacitive Touch Display 10.1"
+> >    LVDS" there are two versions. The official product name is the same,
+> >    apart an additional version number, one is version1, the other is
+> >    version2. They have differences, and it's not just the panel, more
+> >    stuff changed, so having the panel name in the filename will not
+> >    help. v2 support is already in [1], for reference.
+> >  - the toradex naming scheme is not encoding the actual part number used
+> >    in the product name, for example we have apalis imx6 v1.2 that uses a
+> >    different touch/adc than previous apalis imx v1.1. The product has a
+> >    different schematics, different BoM and so on
 > 
-> Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-> ---
->  drivers/cpufreq/bmips-cpufreq.c   | 4 ++--
->  drivers/cpufreq/cppc_cpufreq.c    | 4 ++--
->  drivers/cpufreq/qoriq-cpufreq.c   | 4 ++--
->  drivers/cpufreq/s3c64xx-cpufreq.c | 5 ++---
->  4 files changed, 8 insertions(+), 9 deletions(-)
+> Do you have schematics number to identify it?
+
+Why do you ask specifically about schematics? We have schematics and we
+have a way to identify a product to the related schematic. The way we
+identify schematics, whatever is a number, a string, or anything else
+seems not relevant to me.
+
+But yes, answering you question, we do have schematics and a unique
+way to identify them, and it's not using "numbers".
+
+What matters here, is that Toradex products have a unique number,
+and we have a way to trace product revisions.
+
+So, for each product we have
+
+<product name> <pid>
+
+and <pid> is 8 digits, the first 4 digits is the end customer product
+definition, and it matches with the product name, and the last 4 digits
+is the product revision.
+
+All of that is documented, see https://developer.toradex.com/hardware/hardware-resources/general-product-information/ordering-information-and-product-identification-pid-pid4-and-pid8/,
+and this is what is used for any kind of product traceability.
+
+Staying on our LVDS 10inch panel example
+
+Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12121000 | (version 1)
+Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12122000 | (version 2)
+
+
+> > , and there is no
+> >    reference of the difference touch/adc in the name. You can see this
+> >    information from the public documentation just looking at the
+> >    version. or you can check yourself comparing the two DTS in the linux
+> >    kernel tree.
+> >
+> > [1]
+> >  arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds.dtso
+> >  arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds-v2.dtso
 > 
-> diff --git a/drivers/cpufreq/bmips-cpufreq.c b/drivers/cpufreq/bmips-cpufreq.c
-> index a8e35bc75fb2..389fff5e6f65 100644
-> --- a/drivers/cpufreq/bmips-cpufreq.c
-> +++ b/drivers/cpufreq/bmips-cpufreq.c
-> @@ -132,8 +132,8 @@ static int bmips_cpufreq_init(struct cpufreq_policy *policy)
->  
->  	freq_table = bmips_cpufreq_get_freq_table(policy);
->  	if (IS_ERR(freq_table)) {
-> -		pr_err("%s: couldn't determine frequency table (%ld).\n",
-> -			BMIPS_CPUFREQ_NAME, PTR_ERR(freq_table));
-> +		pr_err("%s: couldn't determine frequency table (%pe).\n",
-> +			BMIPS_CPUFREQ_NAME, freq_table);
->  		return PTR_ERR(freq_table);
->  	}
->  
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 80893844353c..f767898ebfb5 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -230,8 +230,8 @@ static void cppc_fie_kworker_init(void)
->  
->  	kworker_fie = kthread_run_worker(0, "cppc_fie");
->  	if (IS_ERR(kworker_fie)) {
-> -		pr_warn("%s: failed to create kworker_fie: %ld\n", __func__,
-> -			PTR_ERR(kworker_fie));
-> +		pr_warn("%s: failed to create kworker_fie: %pe\n", __func__,
-> +			kworker_fie);
->  		fie_disabled = FIE_DISABLED;
->  		kworker_fie = NULL;
->  		return;
-> diff --git a/drivers/cpufreq/qoriq-cpufreq.c b/drivers/cpufreq/qoriq-cpufreq.c
-> index 42edb41ad459..0652e5df0278 100644
-> --- a/drivers/cpufreq/qoriq-cpufreq.c
-> +++ b/drivers/cpufreq/qoriq-cpufreq.c
-> @@ -57,8 +57,8 @@ static u32 get_bus_freq(void)
->  	/* get platform freq by its clock name */
->  	pltclk = clk_get(NULL, "cg-pll0-div1");
->  	if (IS_ERR(pltclk)) {
-> -		pr_err("%s: can't get bus frequency %ld\n",
-> -		       __func__, PTR_ERR(pltclk));
-> +		pr_err("%s: can't get bus frequency %pe\n",
-> +		       __func__, pltclk);
->  		return PTR_ERR(pltclk);
->  	}
->  
-> diff --git a/drivers/cpufreq/s3c64xx-cpufreq.c b/drivers/cpufreq/s3c64xx-cpufreq.c
-> index 9cef71528076..9a01592425ee 100644
-> --- a/drivers/cpufreq/s3c64xx-cpufreq.c
-> +++ b/drivers/cpufreq/s3c64xx-cpufreq.c
-> @@ -152,15 +152,14 @@ static int s3c64xx_cpufreq_driver_init(struct cpufreq_policy *policy)
->  
->  	policy->clk = clk_get(NULL, "armclk");
->  	if (IS_ERR(policy->clk)) {
-> -		pr_err("Unable to obtain ARMCLK: %ld\n",
-> -		       PTR_ERR(policy->clk));
-> +		pr_err("Unable to obtain ARMCLK: %pe\n", policy->clk);
->  		return PTR_ERR(policy->clk);
->  	}
->  
->  #ifdef CONFIG_REGULATOR
->  	vddarm = regulator_get(NULL, "vddarm");
->  	if (IS_ERR(vddarm)) {
-> -		pr_err("Failed to obtain VDDARM: %ld\n", PTR_ERR(vddarm));
-> +		pr_err("Failed to obtain VDDARM: %pe\n", vddarm);
->  		pr_err("Only frequency scaling available\n");
->  		vddarm = NULL;
->  	} else {
+> V2 is okay, but "panel-cap-touch-10inch-lvds" is too common. This may
+> cause naming pollution if we implement shared one panel dtso for all boards.
 
-Applied. Thanks.
+This is the product name, what is missing is the vendor. Given the
+vendor (Toradex), the product is unique.
 
--- 
-viresh
+We could rename all of our accessories dtbo adding a "tdx" prefix (when
+they are Toradex products, of course).
+
+So for example we could have
+
+k3-am625-verdin-tdx-panel-cap-touch-10inch-lvds.dtso
+k3-am625-verdin-tdx-panel-cap-touch-10inch-lvds-v2.dtso
+
+This way your concern on name pollution is solved using the vendor
+("tdx") as prefix in the accessory name.
+
+It's going to be a pain to rename this stuff, and it's going to have an
+impact on users (that as I keep writing and insisting are the one that
+matter). On the other hand, when we have a toradex product ("verdin", or
+"apalis", ...), having a matching Toradex accessory to me is the default
+and this info is not needed.
+
+When adding non-toradex accessory to a toradex board we make explicit
+the vendor of the accessory, see
+
+arch/arm64/boot/dts/ti/k3-am625-verdin-rpi-display-2-7in.dtso
+
+where we have the "rpi" prefix.
+
+So, my proposal would be to accept that for dtbo, combined with Toradex
+board, the default is to be a Toradex accessory, therefore there is no
+need of any additional string in the name. The second option, would be
+to add a redundant "tdx" prefix. It will create a rename mess and it
+will have an impact to the user, but it will not be wrong.
+
+Your proposal, onthe other hand, is not working, and not matching the
+reality of the product described by the dtbo.
+
+> > > > +/dts-v1/;
+> > > > +/plugin/;
+> > > > +
+> > > > +&{/} {
+> > > > +	panel-lvds {
+> > > > +		compatible = "logictechno,lt170410-2whc";
+> > > > +		backlight = <&backlight>;
+> > > > +		power-supply = <&reg_3v3_sw>;
+> > >
+> > > use name reg_lvds_panel, it help improve reusablity.
+> >
+> > I disagree.
+> >
+> > The regulator should be the one that is physically used on
+> > the board. The DTS *must* describe the HW as accurately as possible, we
+> > are not supposed to invent non existing regulator and more in general
+> > non existing HW.
+> 
+> It reflact hardware, it connect by a connectors HEAD. In Connect HEADER,
+> VCC for panel is fixed naming, like vcc_lcd_xxxx. Difference mainboards
+> route it to difference supply.
+> 
+> Dtso file should use name in HEADER.  The main dts descript how connect
+> it to provider, currently use additional label for it.
+
+The power supply it is not the pin number on the connector.
+
+The power supply is in the board. We have board in which the power
+supply can be controlled by a gpio, board in which it is fixed, board in
+which this power supply is shared with other peripherals. So no, the
+power supply is not the pin number in the connector. What you write here
+is wrong.
+
+> > I see your need to avoid duplication, and I agree with it. But an
+> > accurate HW description and the user experience trumps this need.
+> > And I insist on the user experience, what we are doing is for someone to
+> > use, we should not make the life of people hard because we decide on
+> > non-descriptive or inaccurate names.
+> 
+> We take an iterative approach, learning and improving as we progress. New
+> issues are addressed step by step, and better solutions are adopted
+> whenever they are identified. Once a new approach proves to be more
+> effective, we gradually transition to it, especially for new drivers and
+> DTS changes.
+
+Yes, of course. I agree. And this has nothing to do with that we are
+discussing here.
+
+Francesco
+
