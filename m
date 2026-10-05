@@ -1,166 +1,435 @@
-Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.111.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB1D4D6C5C
-	for <imx@lists.linux.dev>; Mon,  5 Oct 2026 17:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.104.111.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2292E231836;
+	Mon,  5 Oct 2026 18:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791221650; cv=none; b=S0qBDo5d8EuQz8md25wvgR/pFy0k5xcpcTbu6cemQwqBbN3/dSUogOJhTA3zWWc5EzofhE9b7i+/0odYnxgnGBGP32i0sc3vfbC9J40mLkf6sJvlBRt8WnZVy2m01+/AQDoGS6KJGuWD388tg8IHR1a2SXd+HOAD5kvW6Y/T7lE=
+	t=1791224460; cv=none; b=N9iL99NFr0emZu0vgQmbV3jvkPTZ1D2jSFu4zTpjRfXdm8fQVjk5sbU0uE7ypCirzNnEEbKLTBBTEPA/MWITXXOQq23H/Bl5SxMZTXL795DbTQSN0Uvoh2JlZd0ze2rSMoXu3y1sHg/20sPwFr/rg+vj8gBflvLBpGXSGfGbs6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791221650; c=relaxed/simple;
-	bh=M4Uj5MEonCB/vj1XCdqkFUIcJISiYy0mUruXe5m1bQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type:Content-Disposition; b=MBjFMMKjGHEclMyAKybYwf8sPlGGi3xggGmn9mUhP5su5bC4xmJYB6GKDBabmv79aT6pqvPUxSVsg/a5AKP842jiLw0djy9cavIZlTtLjXmr4JUDLwA/9szzA//SnqeGJLwXldEDHU7lLSaQmKLqO0NjUmEISeZ+EgPN8ZbMi3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com; spf=pass smtp.mailfrom=toradex.com; dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b=X8mzQIqf; arc=none smtp.client-ip=194.104.111.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
+	s=arc-20240116; t=1791224460; c=relaxed/simple;
+	bh=T+VVep/92PKjE2kTJDVWKSX/tmgRSpIQlYXRtCMUT9Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P1bdMAy7g2Y/lDVBeIiKTMlm3fTYvAfuK43Vm4eF2h7D1SQjg79QZfYSBmEHL2joV8/dp3oD4FstBMzxKQU8fmk39H4Vc7g91DOxFpv9t/g39xWb+K1m+OID0jGAIDj6tL2ti0Tps5/c7KvR3PGjFQ5gzJbsAD+cDJlt4gQVKto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgB7UOTc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b="X8mzQIqf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
-	t=1791221646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ONuAfwO9E4ixY5T7A2NxatSseTcwUzIRgeJpb2V/chQ=;
-	b=X8mzQIqfmG5dfSbZh5t7k7thtzadz+Mc/l1uPjFt1n2EZo7/hmei0z42ZrtT4DYEAl9EIy
-	yCeWbtRFK5/VmW6/hTIIs6ADNZcb5Pc9T+OlxPx0f6sw0qY+P22sEHx61dwYZdbuffK8Sa
-	wubG8oy3QcoZUCbHQXb6eKxMelniwx4=
-Received: from ZR1P278CU001.outbound.protection.outlook.com
- (mail-switzerlandnorthazon11022072.outbound.protection.outlook.com
- [40.107.168.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- de-mta-44-OEOBfRwAO1CkhYLQ2X3ayQ-1; Mon, 05 Oct 2026 19:32:53 +0200
-X-MC-Unique: OEOBfRwAO1CkhYLQ2X3ayQ-1
-X-Mimecast-MFC-AGG-ID: OEOBfRwAO1CkhYLQ2X3ayQ_1791221573
-Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
- ZR1P278MB1392.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:98::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.20; Mon, 5 Oct 2026 17:32:51 +0000
-Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- ([fe80::88:6821:13f5:a5b2]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- ([fe80::88:6821:13f5:a5b2%6]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
- 17:32:51 +0000
-Date: Mon, 5 Oct 2026 19:32:49 +0200
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
-To: Frank Li <Frank.Li@nxp.com>, Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: freescale: imx952: Add GPIO5 lines 18 to 20
-Message-ID: <asPfQZURHvVzbgVU@francesco-nb>
-References: <20261005172622.135725-1-francesco@dolcini.it>
-In-Reply-To: <20261005172622.135725-1-francesco@dolcini.it>
-X-ClientProxiedBy: MI1P293CA0024.ITAP293.PROD.OUTLOOK.COM (2603:10a6:290:3::6)
- To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgB7UOTc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9624C1F000FF;
+	Mon,  5 Oct 2026 18:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791224458;
+	bh=0jzubDrM1LBV2q2TOEssRBj48zjVZ8LqA0rRiUNuvyc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NgB7UOTcYo6hS5I89BxvF58JQ075hcU+uMWcHM8cfmgZtYHEhobSKu8ENmT2/MYMy
+	 tcS5y2wAMZTUZMYqvPwQ3TBwmhjZ4QEfLfu5wvRav44hUlk+dAA5bH5FFRgYsgkWln
+	 9tC4qOsrW98x6LHNdtHqL3WcgOv+huOdvQZ4Owz+8wHnpUuqtcgTYyXKD3WyCfTwnf
+	 m6O3ZZs0hkn9LHs6kdWWh3hbvFwUlj0eIhai4jEkPJHdwXVpZ75+aUxhFcp6EhmMnB
+	 U6ELYzNkT4gmdUwbsbrSbksX2xYZ/XpkUzvjCFscLovwIC3h24z2DB26VSLPtu7n+f
+	 QIh0vr2xdAOUQ==
+Subject: Re: [PATCH net RESEND] net: fec: drain PEROUT requests before
+ canceling the timer
+From: netdev-bot+sashiko@kernel.org
+To: mhun512@gmail.com
+Cc: wei.fang@nxp.com, netdev@vger.kernel.org, frank.li@nxp.com,
+ shenwei.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, horms@kernel.org,
+ stable@vger.kernel.org, ae878000@gmail.com
+Date: Mon, 05 Oct 2026 18:20:57 +0000
+Message-ID: <179122445706.434549.1378689403745992657@kernel.org>
+In-Reply-To: <20261001180258.4054391-1-mhun512@gmail.com>
+References: <20261001180258.4054391-1-mhun512@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZRAP278MB0495:EE_|ZR1P278MB1392:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fef649c-eee8-4d5b-6a28-08df2306ae8f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|18002099003|22082099003|10067099003|56012099006
-X-Microsoft-Antispam-Message-Info: fpZQYy0uB+OV1Dy7JBgfXyfZKI1KOdMki1LbyiwxObWoOHy3sb1kC7O4gmKeiA5by/lPvqjO33kdMx7XlwtvSKATtpmAq1NVHP93TQhOSRTApxsKaq7KgCXxBP/t8NzLE4d65R1giz4bVIieifYaHOhsXsM8PFku7L2crb2agUH13VbzJ0BUl6dAMiX5cL1YzFI7hx5wZi3KoIBb7zbP4JBX4x1VFFT7tPlRylODffCoJTveo7Di9QDSV3ZojvnpdjubfX97r+rAXxDHjp+185wo1ueSvPtj/wphICII9Wzz9ClrgcTBigiJQ55AZfnoPXRrynBNATVVqveo9StmVwYTN/OWwUCxcOovVVio4xoYQHkLDz0Yt9gtTg73xAkRYFx2YP1OMLMjmJC/rNnHXDV1vO0wdYSYbeBsM9bkuj2chLtgBuuQOFEqUgKODO68fSpbU5koCyQRpB8cKufj5gZqzwWB2LIoSgPcZH0GT5FNggcN20ZGK89h9n1VnjoHgJ+cJjxCp/ED3Zc0Uql37dhgI9iSaxCzJI4CXEPElHFabK7ZbyrJ0LcMHeBEMsy+WDD+VRU//qGiCF1t2E84dukyFalMx0IcKs2S+4S7Wml5eHq7Ul5imfVmDWD1PC/0W+Z9c/daNVkWTcuVJBdfPepL/aot7tXhr4Zi0NLOxTY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(18002099003)(22082099003)(10067099003)(56012099006);DIR:OUT;SFP:1102
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8n4rX/IXV1mqL4GVpPc1xTWNFSugcejCz+0eB9eI9oDgwiyQThT7mpkDUZx1?=
- =?us-ascii?Q?VnUjtI43xNWbrP/M+Pyux9/mRqRudvDyVSuQuq8bj2m5uuSEHxOwauhDlZHB?=
- =?us-ascii?Q?5b2GtCvArLMBHqI1Rt5tx9+A0eUx+kmbqEAtNPWxZ+Oh5aQfylrDBHvVJ0xP?=
- =?us-ascii?Q?pmB1+6BqPVnH6Qa95/xWRyt5rhvT4aWe+TL9BQKQ8mgs2w9qAvXjOtdm750D?=
- =?us-ascii?Q?lZYwdRmOzsZXIPzkRmUUcUr+dim+zUgsbJJ7/o0zuFEBnNyiFqo634tfOCEQ?=
- =?us-ascii?Q?n2l+x0kgWCCxmLOLfq18U5R7VNqdDgfieM00JnLsb4O2z0SVPxDKcM/yZI+9?=
- =?us-ascii?Q?Ow6f9KLfdQ8R8BZaV4xiUG1aOgMW+1svF9Bdr9khuVgKxVSpd32fiomDYo+k?=
- =?us-ascii?Q?ndZySlUTqTXTUR+F1mzWhQ3nblzQp+KBUajVc40d6qmkRPo9FW/Q3D1ntda9?=
- =?us-ascii?Q?bMVCRm7+QJ3SdkDvNoCSYilSbf1rUi67j8WaWRKuVUO/mcoJVKukG3jEwIVR?=
- =?us-ascii?Q?Bj+/BXYtKnAr3Uw+d147Yui4WqqPW2IEkoU6Ny2EalCZ0QxuSsaFCDPvggIU?=
- =?us-ascii?Q?qqIggs9GHKG8jvZw+RyH7cR6IMfrOgp9+halmaKYMC+5i2jFFVArWlzW/ru0?=
- =?us-ascii?Q?gI+LPJwV3/V0Ek4vvh42z2L4faLJdTK1PUH/fuYuZ/736E3NP/1zFnrLMBhr?=
- =?us-ascii?Q?/Yh5emV0Qs1+AkHj/YCC8j/dhAUO5pht6oHuL56f+lipM74lNFkgRmOzB5h7?=
- =?us-ascii?Q?jPy40T6dZuywNOvvn90pihxgpZAuSarAbFQyfkE8LazotOZfZR66LUHDQBlG?=
- =?us-ascii?Q?iEH0X2cWA+mXGzNAtog1Gh0CPqGN074HJLr3KeXQcsroLAsphiY3ttO4n0+8?=
- =?us-ascii?Q?yZFJW4mhS+ORe0yDjN0nUXBMndAnSz5cbGAtfUpcsJj1CmZmJqPFQXVO0OTY?=
- =?us-ascii?Q?zMqCNTY7u5PUO2f3mNIpTHpkhCQMC3XydnfGkBMfQJjc1VLG0RS1Oe7Y/Ojp?=
- =?us-ascii?Q?oWIpGOaZlHXwYVKdRHDYTa/qu9RK4rT6L1635nKavpL7Sve+e3YJ2P69EmTB?=
- =?us-ascii?Q?OEmiEs+MkLuYcGcs++/uU4NSqJcu/SGcFMKGevT4c0WoEUVoVw4a1v3QcWFI?=
- =?us-ascii?Q?H164Jej6YyM1yx72U4qeB4GfCCPQL885nsQYh1MwS6lEXQu/bwfOXI0BkRD9?=
- =?us-ascii?Q?lQBxxXvwG1ONjw49tsWXHO3otKIrZvc+/gHK4jaVYvi280O1+Ym89CbS5FQd?=
- =?us-ascii?Q?bYkkuy1Z2zytnXnV/5fwIIYVCH0ojpDtcsXz2hBRIKDOxVU6fX/KUg0bjEAd?=
- =?us-ascii?Q?GgvFA8dfMfI/CjMwLDC3M+0XV7Ko4OSjfEOs0jEOIxNA4oVtqXLf78GpZEmU?=
- =?us-ascii?Q?TmcdzR3be0A1Evh4HF5dgzhSl09SKvECm8nGxCDRdulZc/gZHkkvgqSAb+VV?=
- =?us-ascii?Q?Tn5IkW834EI2EFBTyJXnUjZ1QY+5e4OzNKNNy9swuiMBm7tl0hUFjb6Fpzj1?=
- =?us-ascii?Q?LJUEDCXaKz0QcEdprLfrq7Zsn9dgKLwmk023KCx51XJysFsoFYdCWSjgdmb5?=
- =?us-ascii?Q?xPjROYUxjRal53jhWz4suflOsT/HbHDnG2m2wF+rfDIejkXDH0Bkt0uE3+Qo?=
- =?us-ascii?Q?oG8ZfKmQ35HqrPHobgAgKZGIacFepJkZ87RNDUCGgSH8rZQW0VK3qNRR0ZYA?=
- =?us-ascii?Q?7rfqEjfQFSAGGGmV3iJ/rLXRNyEO3qCUZHQVyaBsU5iEs71pcXFrAJyZO8Z0?=
- =?us-ascii?Q?lRSqroWOOPE65dNZTWYSehvfKpeasJ8=3D?=
-X-Exchange-RoutingPolicyChecked: yluifC8fWzNqNph+stMVZ7TRPkk2DuqR5kQR7qSrEXWojWPlWxdnr39QRGXc6eHXz0mChKaWNKPzc+PH3hnLH6UmffsJWjW20CcjHLvCC6Ox2hWcnXipqcO9RBDQyUNjbp+Q3JRTcbfrUF/0CZbzMVK6sjBlzxkz5KdQjm3VRp2WyzIMp+F7lhjApGSGvwPjqRgwyAfADUf0upFUhgxeIlo4jNrDuHJ/FeaV9z1LFf50j/Zzq7ERDn0k+f2gW2p3gWUdI1jA3qHpHNjj2C2I0RyGWcKlsGpGToOa0u4q1efXmWsn7sPSRycRfjVZoVMiDev8jV++2BoF7QdZk5aiPg==
-X-OriginatorOrg: toradex.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fef649c-eee8-4d5b-6a28-08df2306ae8f
-X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 17:32:51.6415
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r6I5rZxKHBFG76ETuFEvLw37j5I51KKp6Hvitf49fk0AUHlgDlpQiAOI0+NYVh1ykJBVKdcldakTg1GJwxOtFAK9KiSVt6ip5djMDJFlXnQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR1P278MB1392
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: r59QcmjQo15k5IGuwNlyAuQDwPFGR3LeDYyF8x_UmA4_1791221573
-X-Mimecast-Originator: toradex.com
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hello Frank,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-On Mon, Oct 05, 2026 at 07:26:21PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->=20
-> Add missing GPIO5 lines, GPIO_IO38, GPIO_IO39 and GPIO_IO40 are
-> GPIO-only pads fixed to GPIO5[18:20], their SW_MUX_CTL registers have no
-> MUX_MODE field (IMX952RM Rev.1, 2026-07-08, sections 33.3.2.44-46 and
-> 33.3.2.184-186).
->=20
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx952-pinfunc.h | 6 ++++++
->  arch/arm64/boot/dts/freescale/imx952.dtsi      | 4 ++--
->  2 files changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx952-pinfunc.h b/arch/arm64/=
-boot/dts/freescale/imx952-pinfunc.h
-> index debe6ede2d70..72cfe7893af8 100644
-> --- a/arch/arm64/boot/dts/freescale/imx952-pinfunc.h
-> +++ b/arch/arm64/boot/dts/freescale/imx952-pinfunc.h
-> @@ -307,6 +307,12 @@
->  #define IMX952_PAD_GPIO_IO37__WAKEUPMIX_TOP_LPUART7_RX                0x=
-00A4 0x02D4 0x05B0 0x02 0x01
->  #define IMX952_PAD_GPIO_IO37__WAKEUPMIX_TOP_LPSPI4_SCK                0x=
-00A4 0x02D4 0x0568 0x04 0x01
-> =20
-> +#define IMX952_PAD_GPIO_IO38__WAKEUPMIX_TOP_GPIO5_IO_18               0x=
-00A8 0x02D8 0x0000 0x00 0x00
+Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 1 (2)
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] net: fec: use-after-free of ptp_clock in fec_pps_interrupt
+- [Medium] With the new `if (fep->ptp_clk_on)` guard,
+  fec_ptp_pps_disable() can clear `fep->perout_enable` while skipping…
+- [Low] The patch applies the new clock-off guard
+  (`mutex_lock(&ptp_clk_mutex)` + `if (fep->ptp_clk_on)`) to only one of…
+
+Pre-existing issues:
+- [High] fec_ptp_stop() runs while the netdev is still registered.
+- [High] fec_ptp_stop() unregisters the PTP clock without first draining
+  the PPS interrupt handler.
+- [Medium] The PEROUT enable path in fec_ptp_enable() publishes state
+  before arming it: - Under ptp_clk_mutex and tmreg_lock it sets…
+- [Medium] PPS and PEROUT share the same compare channel
+  (fep->pps_channel).
+- [Low] fec_ptp_enable_pps() checks `fep->perout_enable` before its
+  `pps_enable == enable` no-op check.
+- [Low] fec_ptp_init() copies `fsl,pps-channel` from the device tree
+  straight into fep->pps_channel (fec_ptp.c:753-754) without a range…
+
+--
+
+net: fec: drain PEROUT requests before canceling the timer
+
+The commit changes the order in fec_ptp_stop(). ptp_clock_unregister() now
+runs before the PEROUT hrtimer is canceled, and fec_ptp_pps_disable() and the
+PPS disable come after it. fec_ptp_pps_disable() now takes ptp_clk_mutex and
+skips the TCSR write when the PTP clock is off.
+
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 56801c2009d59..67901e036ac32 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
+>  
+>  	hrtimer_cancel(&fep->perout_timer);
+
+[Severity: Medium]
+This is a pre-existing issue, but can a concurrent PEROUT enable still arm
+the timer or the hardware after this cancel has run?
+
+In fec_ptp_enable(), the enable path sets the state and drops both locks
+before it arms anything:
+
+fec_ptp_enable() {
+    ...
+			fep->perout_enable = true;
+
+unlock:
+			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+			mutex_unlock(&fep->ptp_clk_mutex);
+    ...
+			if (delta > FEC_PTP_MAX_NSEC_COUNTER) {
+				timeout = ns_to_ktime(delta - NSEC_PER_SEC);
+				hrtimer_start(&fep->perout_timer, timeout, HRTIMER_MODE_REL);
+			} else {
+				return fec_ptp_pps_perout(fep);
+			}
+    ...
+}
+
+Suppose a PEROUT disable runs fec_ptp_pps_disable() inside that window:
+
+- hrtimer_cancel() finds nothing armed.
+- perout_enable is cleared and TCSR is zeroed.
+- The enable thread then starts the hrtimer or programs toggle mode.
+
+That leaves a live timer or periodic output while perout_enable == false. A
+later PPS enable would then pass its perout_enable check on the same
+channel.
+
+This looks reachable because period_store() in drivers/ptp/ptp_sysfs.c calls
+ops->enable() without ptp->pincfg_mux, while the chardev path holds it.
+
+With this patch's teardown order, the hrtimer is canceled only after
+ptp_clock_unregister() has drained sysfs and chardev users. So this is a
+state mismatch rather than a use-after-free.
+
+>  
+> +	mutex_lock(&fep->ptp_clk_mutex);
+>  	spin_lock_irqsave(&fep->tmreg_lock, flags);
+>  	fep->perout_enable = false;
+> -	writel(0, fep->hwp + FEC_TCSR(channel));
+> +	if (fep->ptp_clk_on)
+> +		writel(0, fep->hwp + FEC_TCSR(channel));
+
+[Severity: Medium]
+Can this leave the compare channel armed while the driver records PEROUT as
+disabled?
+
+When ptp_clk_on is false, perout_enable is cleared but the only write that
+disarms TCSR(pps_channel) is skipped. Nothing replays that write later.
+
+A possible sequence:
+
+1. PEROUT is armed. fec_ptp_pps_perout() sets toggle mode, TIE and TF in
+   TCSR.
+
+2. ip link set down. On FEC_QUIRK_HAS_MULTI_QUEUES parts (and with
+   NO_HARD_RESET plus link), fec_stop() -> fec_ctrl_reset() only writes
+   ECNTRL = 0, without FEC_ECR_RESET. fec_ptp_restore_state() only
+   reprograms PPS. fec_enet_clk_enable(false) then sets ptp_clk_on = false
+   with the channel still armed.
+
+3. A PEROUT-off request (chardev period 0, or a write to the sysfs period
+   file) reaches fec_ptp_enable() -> fec_ptp_pps_disable(). There is no
+   ptp_clk_on check on that path. perout_enable becomes false, but TCSR is
+   not written.
+
+4. ip link set up. fec_restart() again does no hard reset, and
+   fec_ptp_restore_state() does not touch TCSR for PEROUT. Once clk_ptp
+   runs, the stale channel fires and fec_pps_interrupt() keeps reloading
+   TCCR, so the output pin keeps toggling.
+
+Before this patch the write was unconditional. Whether this misbehaves
+depends on hardware: whether TCSR survives clock gating, and whether the old
+unconditional write took effect with clk_ptp gated.
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but can a PEROUT disable silently
+stop an active PPS output here?
+
+PPS and PEROUT share fep->pps_channel, but they exclude each other only on
+the enable side. In fec_ptp_enable(), a PEROUT request with on = 0 goes
+straight to:
+
+		} else {
+			fec_ptp_pps_disable(fep, fep->pps_channel);
+		}
+
+There is no pps_enable check first. This writes TCSR(pps_channel) = 0 while
+PPS is running, which clears TMODE and TIE, but fep->pps_enable stays 1.
+
+The driver then reports PPS as enabled, but the hardware no longer generates
+PPS interrupts or events.
+
+[ ... ]
+
+> @@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+>  	struct net_device *ndev = platform_get_drvdata(pdev);
+>  	struct fec_enet_private *fep = netdev_priv(ndev);
+>  
+> -	if (fep->pps_enable)
+> -		fec_ptp_enable_pps(fep, 0);
+> -
+>  	cancel_delayed_work_sync(&fep->time_keep);
+> -	hrtimer_cancel(&fep->perout_timer);
+>  	if (fep->ptp_clock)
+>  		ptp_clock_unregister(fep->ptp_clock);
+
+[Severity: High]
+Does moving the PPS disable after ptp_clock_unregister() open a
+use-after-free of fep->ptp_clock in fec_pps_interrupt()?
+
+Before this patch, fec_ptp_stop() cleared pps_enable and zeroed
+TCSR(pps_channel) before the clock was unregistered. Now the driver's
+own fec_ptp_enable_pps(fep, 0) runs only after ptp_clock_unregister()
+has done its final put_device(). That put can free the ptp_clock and
+its pps_source.
+
+The interrupt handler checks pps_enable without a lock and then uses
+the clock:
+
+	if (fep->pps_enable) {
+		event.type = PTP_CLOCK_PPS;
+		ptp_clock_event(fep->ptp_clock, &event);
+	}
+
+The irq is requested with devm_request_irq() in fec_ptp_init(), so it
+stays live until after fec_drv_remove() returns.
+
+Some trees have a ptp_clock_unregister() that does not disable PPS
+itself, and this patch is tagged for stable. There, pps_enable stays
+1 and the compare channel stays armed with TIE set for the whole
+unregister. The next compare event, at most a second or two later,
+then does:
+
+fec_pps_interrupt()
+  fep->pps_enable == 1
+  ptp_clock_event(fep->ptp_clock)   <- freed by put_device()
+
+On such a tree, the fec_ptp_enable_pps(fep, 0) call that now follows
+unregister comes too late to prevent this.
+
+Where ptp_disable_all_events() does call fec_ptp_enable_pps(fep, 0)
+from inside unregister, the window is smaller but not closed. That
+call clears pps_enable under tmreg_lock. The handler does not take
+tmreg_lock, and nothing calls synchronize_irq(). A handler that has
+already passed the check can still reach the freed clock. That part
+was already possible before this patch.
+
+The hrtimer race described in the commit message only needs the
+PEROUT cleanup to run after unregister. Could the PPS disable stay
+before ptp_clock_unregister()? It could be followed by a
+synchronize_irq() on the PPS interrupt, so the handler is quiesced
+before the clock and pps_source are released.
+
+[Severity: High]
+This is a pre-existing issue, but is the PPS interrupt handler drained before
+ptp_clock_unregister() releases the clock?
+
+fec_pps_interrupt() checks pps_enable without a lock and then uses the
+clock:
+
+		if (fep->pps_enable) {
+			event.type = PTP_CLOCK_PPS;
+			ptp_clock_event(fep->ptp_clock, &event);
+		}
+
+ptp_clock_unregister() does:
+
+	ptp_disable_all_events(ptp);
+	...
+	if (ptp->pps_source)
+		pps_unregister_source(ptp->pps_source);
+
+	/* The final put, normally here, will invoke ptp_clock_release(). */
+	put_device(&ptp->dev);
+
+A possible interleaving:
+
+CPU1 (fec_pps_interrupt)
+  passes the fep->pps_enable check
+
+CPU0 (fec_ptp_stop)
+  ptp_clock_unregister()
+    ptp_disable_all_events()
+      fec_ptp_enable_pps(fep, 0)   <- tmreg_lock does not exclude the handler
+    pps_unregister_source()
+    put_device()                   <- frees pps_device and ptp_clock
+
+CPU1
+  ptp_clock_event()
+    pps_event(ptp->pps_source)     <- takes pps->lock on freed memory
+
+The irq is requested with devm_request_irq() in fec_ptp_init(), so it stays
+live until after remove returns. Nothing calls synchronize_irq() or
+disable_irq() before the clock and PPS source are released.
+
+On PREEMPT_RT the force-threaded handler is preemptible, which widens the
+window.
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but does removal with PEROUT
+active always log a spurious "PEROUT is running" error here?
+
+The call chain is ptp_clock_unregister() -> ptp_disable_all_events() ->
+fec_ptp_enable(PTP_CLK_REQ_PPS, 0) -> fec_ptp_enable_pps(fep, 0).
+fec_ptp_enable_pps() checks perout_enable before its no-op check:
+
+	if (fep->perout_enable) {
+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+		dev_err(&fep->pdev->dev, "PEROUT is running");
+		return -EBUSY;
+	}
+
+	if (fep->pps_enable == enable) {
+
+fec_ptp_stop() clears perout_enable only after ptp_clock_unregister()
+returns. So a PPS disable that should be a no-op returns -EBUSY and logs an
+error on every such removal.
+
 > +
-> +#define IMX952_PAD_GPIO_IO39__WAKEUPMIX_TOP_GPIO5_IO_19               0x=
-00AC 0x02DC 0x0000 0x00 0x00
-> +
-> +#define IMX952_PAD_GPIO_IO40__WAKEUPMIX_TOP_GPIO5_IO_20               0x=
-00B0 0x02E0 0x0000 0x00 0x00
-> +
+> +	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
+> +	fec_ptp_pps_disable(fep, fep->pps_channel);
 
-Frank: the downstream kernel has different names, that seems not
-correct. A double check on why you have this wrong naming on your
-donwstream kernel is appreciated.
+[Severity: Low]
+This is a pre-existing issue, but fep->pps_channel comes straight from the
+device tree in fec_ptp_init() without a range check:
 
-Francesco
+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
 
+It is then used in FEC_TCSR(n), which is 0x608 + n * 0x08, while the driver
+defines MAX_TIMER_CHANNEL as 3. With this new unconditional call, a malformed
+fsl,pps-channel value would cause an MMIO write outside the timer channel
+block on every remove or probe failure, whenever ptp_clk_on is set.
+
+The same unchecked index is already used by fec_ptp_enable_pps(),
+fec_ptp_pps_perout() and fec_pps_interrupt().
+
+Should the value be checked against MAX_TIMER_CHANNEL when it is read?
+
+> +	if (fep->pps_enable)
+> +		fec_ptp_enable_pps(fep, 0);
+>  }
+
+[Severity: Low]
+Can this check ever be true on the remove path?
+
+ptp_caps.pps is set, so ptp_clock_unregister() above has already done:
+
+ptp_clock_unregister()
+  ptp_disable_all_events()
+    fec_ptp_enable(PTP_CLK_REQ_PPS, 0)
+      fec_ptp_enable_pps(fep, 0)   <- sets pps_enable = 0
+
+So pps_enable is normally 0 by the time this runs, and the "then disable
+PPS" step described in the commit message does nothing here.
+
+Related to that, the new ptp_clk_mutex / ptp_clk_on guard is only added in
+fec_ptp_pps_disable(). The disable branch of fec_ptp_enable_pps() writes the
+same register with only tmreg_lock held:
+
+	} else {
+		writel(0, fep->hwp + FEC_TCSR(fep->pps_channel));
+	}
+
+That is the write that actually runs inside ptp_clock_unregister().
+
+This looks reachable: enable PPS, run ip link set down, then remove the
+driver.
+
+- fec_stop() -> fec_ptp_restore_state() re-enables PPS, leaving
+  pps_enable = 1.
+- fec_enet_clk_enable(false) gates clk_ptp and clears ptp_clk_on.
+- fec_drv_remove() only resumes ipg/ahb through pm_runtime_get_sync().
+
+In that state, the new guard skips the PEROUT write, but the PPS write to the
+same channel still happens with clk_ptp gated.
+
+If the guard is needed, should fec_ptp_enable_pps() have it too? If it is
+not needed, is the new conditional in fec_ptp_pps_disable() necessary?
+
+[Severity: High]
+This is a pre-existing issue, but can a concurrent fec_restart() re-enable
+PPS after this one-shot check?
+
+fec_drv_remove() calls fec_ptp_stop() before unregister_netdev() and without
+rtnl:
+
+	fec_ptp_stop(pdev);
+	unregister_netdev(ndev);
+
+So fec_restart() can still run, from fec_enet_open(), link change or ethtool
+paths. fec_restart() calls fec_ptp_save_state() first and
+fec_ptp_restore_state() last, and restore_state does:
+
+	if (fep->ptp_saved_state.pps_enable) {
+		/* Re-enable PPS */
+		fec_ptp_enable_pps(fep, 1);
+	}
+
+A possible interleaving:
+
+fec_restart()                      fec_drv_remove()->fec_ptp_stop()
+  fec_ptp_save_state()
+    saved pps_enable = 1
+                                   ptp_clock_unregister()
+                                     ptp_disable_all_events()
+                                       pps_enable = 0
+                                     pps_unregister_source()
+                                     put_device()  <- may free ptp_clock
+                                   if (fep->pps_enable)  <- false
+  fec_ptp_restore_state()
+    fec_ptp_enable_pps(fep, 1)
+      pps_enable = 1, TCSR armed with TIE
+
+When the compare fires 1-2 seconds later, before close gates clk_ptp:
+
+fec_pps_interrupt()
+  ptp_clock_event(fep->ptp_clock)   <- freed
+    pps_event(ptp->pps_source)      <- freed
+
+fep->ptp_clock is never cleared after unregister, and nothing serialises
+fec_restart() against fec_ptp_stop(). The close path inside
+unregister_netdev() also goes through fec_stop() and restore_state, which
+re-arms PPS once more before clk_ptp is gated.
+
+This patch narrows one interleaving by disabling PPS again after unregister,
+but it does not seem to close the race.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001180258.4054391-1-mhun512%40gmail.com
