@@ -1,435 +1,273 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2292E231836;
-	Mon,  5 Oct 2026 18:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAAA377EB8
+	for <imx@lists.linux.dev>; Mon,  5 Oct 2026 23:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791224460; cv=none; b=N9iL99NFr0emZu0vgQmbV3jvkPTZ1D2jSFu4zTpjRfXdm8fQVjk5sbU0uE7ypCirzNnEEbKLTBBTEPA/MWITXXOQq23H/Bl5SxMZTXL795DbTQSN0Uvoh2JlZd0ze2rSMoXu3y1sHg/20sPwFr/rg+vj8gBflvLBpGXSGfGbs6k=
+	t=1791244187; cv=none; b=dh3AATidxbIAypAxfRBtoQkxypPBdgf3oRQjlqru1Q3qguIKMebi6kZM55zvAOAZSkYh/JAsquBwfkeLIe1tjYPhXjpKUewryw7LL3lNvk/Fr2LleutPmTuSys6eaAm2wY9zOy6V+LYb5blkoSIz4T9TTvKiAEfrUi/XJrtYCws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791224460; c=relaxed/simple;
-	bh=T+VVep/92PKjE2kTJDVWKSX/tmgRSpIQlYXRtCMUT9Q=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P1bdMAy7g2Y/lDVBeIiKTMlm3fTYvAfuK43Vm4eF2h7D1SQjg79QZfYSBmEHL2joV8/dp3oD4FstBMzxKQU8fmk39H4Vc7g91DOxFpv9t/g39xWb+K1m+OID0jGAIDj6tL2ti0Tps5/c7KvR3PGjFQ5gzJbsAD+cDJlt4gQVKto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgB7UOTc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791244187; c=relaxed/simple;
+	bh=YflqftK0tOs+oYdHjc0Iyq6b3erf2NCTF7El+MU1zD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qJy0ObFz7jbXd7bnOYukgJ/8WqRdtCdmgQLe/wjfpeSdyI/67yI0fWCUx5qAn7OzF5iB7H6ETSYV4IRXmZhYO52k9RQIMkhWyj+/DwnpXo3F/U4t4tvxaczmZnMxS3HaysxbDIxV9xLa/5tskAr2YKYrv/FX9RSQ3A4f2BgJ3a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V+Lq57ML; arc=none smtp.client-ip=74.125.229.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgB7UOTc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9624C1F000FF;
-	Mon,  5 Oct 2026 18:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791224458;
-	bh=0jzubDrM1LBV2q2TOEssRBj48zjVZ8LqA0rRiUNuvyc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NgB7UOTcYo6hS5I89BxvF58JQ075hcU+uMWcHM8cfmgZtYHEhobSKu8ENmT2/MYMy
-	 tcS5y2wAMZTUZMYqvPwQ3TBwmhjZ4QEfLfu5wvRav44hUlk+dAA5bH5FFRgYsgkWln
-	 9tC4qOsrW98x6LHNdtHqL3WcgOv+huOdvQZ4Owz+8wHnpUuqtcgTYyXKD3WyCfTwnf
-	 m6O3ZZs0hkn9LHs6kdWWh3hbvFwUlj0eIhai4jEkPJHdwXVpZ75+aUxhFcp6EhmMnB
-	 U6ELYzNkT4gmdUwbsbrSbksX2xYZ/XpkUzvjCFscLovwIC3h24z2DB26VSLPtu7n+f
-	 QIh0vr2xdAOUQ==
-Subject: Re: [PATCH net RESEND] net: fec: drain PEROUT requests before
- canceling the timer
-From: netdev-bot+sashiko@kernel.org
-To: mhun512@gmail.com
-Cc: wei.fang@nxp.com, netdev@vger.kernel.org, frank.li@nxp.com,
- shenwei.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, horms@kernel.org,
- stable@vger.kernel.org, ae878000@gmail.com
-Date: Mon, 05 Oct 2026 18:20:57 +0000
-Message-ID: <179122445706.434549.1378689403745992657@kernel.org>
-In-Reply-To: <20261001180258.4054391-1-mhun512@gmail.com>
-References: <20261001180258.4054391-1-mhun512@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V+Lq57ML"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34daf1b9a1fso2003695eec.2
+        for <imx@lists.linux.dev>; Mon, 05 Oct 2026 16:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791244185; x=1791848985; darn=lists.linux.dev;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jg7eC6O8sczD/5bWQmAv3EpmSexdLgJjBCRuuQxdedo=;
+        b=V+Lq57MLNMKDPP1920b8TsXbaBMoWXHAVM1m2CPNLdcQ6is/W2phA8fQ3yJC01gTUi
+         fU1qD9ry2QJNeWv9pH1yk9mgWJUH2dqW+8JLl7IyGR/JDxcQ+73MBi5ERFs/G0z0Leqb
+         qWlDtsjzmWjaaPePoqgxoGseq6mJQw00UP3zHkk2UlOk1qds5PhB6urBozt09a6bk5lm
+         bgEyKTEUqNOSUH22dq2rNcJMJev9aTx9se2Q2TE/tRE7+9zu52sWPNBmCayVOqJB62LP
+         6g5QnwzARCwYvjB/DSfYBL7dGBLIw8RAbjob44mWYx2ZnMoB7+NA7+4jW8Pbk9RbY5mr
+         l5tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791244185; x=1791848985;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jg7eC6O8sczD/5bWQmAv3EpmSexdLgJjBCRuuQxdedo=;
+        b=ZQz2NiJ8dJhtX4SIJaTcSMb+KU6W2+AtRV90J7Chkdu5/khoDB7eFmYEKOE77C+fT+
+         PRsWntG26lpWQ1A7xr+I4H1BY4Kin6bm78OVIJzy8CN0pkALAmh8sIdQwVWFAFwa1MiF
+         3XO6ff7RLyIQv4SMrGMPbmN0IHJeTDc9fE0eu3+1vdGxJOWumaHY4ZurIGxfT8naTW+9
+         3+JamloNwE5RPLK/hINVVRfN2zw2ZOzRV/rwixst1iIvZlZeIK1b6c2kofzUKB67zZnr
+         LbZk7SXPHzdU7xUoWSKxG7Sp2u4fO21eYAmUEd0skmUEKOmICt6uNtxOCnYVpHzxvEcw
+         dJnA==
+X-Gm-Message-State: AFuF++mSDoHM/MTC0L9NlZu28JSbr43+cvp+yXNKGXLxMR+M7cCy9bEK
+	j6ksjb5BvmwpzA+Q/R9U3hH7ht8wqFd2URCgT+Lk1JL24YwXCRuwfQTC
+X-Gm-Gg: AYBFou0btJC/SQDL1myE4P4DkpKqHTx/8vTFXfOPfUnKyMwPWYBO6DEHBYEyPtIHpJX
+	EnV/zFW12P05JpSXkizl8lDKOalsrEVROtGf4aq26QXZlDTShXDa+ODVah6OhKaGUhSncoopgoU
+	9dbzvMg5DjakBIJiUrykDIOKi0LoP6H2MTPPc8d0XG+Y39ACqPD371Dm1bLfguqMx2v+p0GFo5l
+	0kmTKuz/2bsBQBWRbnNDW2Du9EcQyILpT2+CeeyJwyzLrKWovLL4dSBV/yUvemXP3yA9eXFFDqY
+	XHqRx5DyLsS210C8OvDQ3rBuw/6NHVmufCtklW1jJcZr0eh6MOTq0bW6fUC9JQy6uLL9lR1PZMX
+	zNx8PgoWizCfC8/4rcA1NJmetI180eVU3Vz4voSYBhOB3u3LUWTmYZdj0llERc9xFpqPCDJakhl
+	yH1hpxRghIdOX8TLunBORn0kMay1cxs9HxcKkLH6RAmNqKgSCQ342GvJv09Dgc+nCN
+X-Received: by 2002:a05:701b:4587:b0:14b:992f:c168 with SMTP id a92af1059eb24-14f58fd2a19mr13452231c88.4.1791244184897;
+        Mon, 05 Oct 2026 16:49:44 -0700 (PDT)
+Received: from arlo ([72.235.71.10])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-15d84ec510dsm2126430c88.13.2026.10.05.16.49.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 16:49:43 -0700 (PDT)
+Date: Mon, 5 Oct 2026 13:49:40 -1000
+From: Raiden Horner <raidenhornerdev@gmail.com>
+To: slongerbeam@gmail.com, p.zabel@pengutronix.de, Frank.Li@nxp.com,
+	mchehab@kernel.org, gregkh@linuxfoundation.org
+Cc: imx@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: media: imx: Fixed depricated implementations of 80
+ char limit & open parentheses line ending
+Message-ID: <asQ3lNQ2kZ_hBHZt@arlo>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 1 (2)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net: fec: use-after-free of ptp_clock in fec_pps_interrupt
-- [Medium] With the new `if (fep->ptp_clk_on)` guard,
-  fec_ptp_pps_disable() can clear `fep->perout_enable` while skipping…
-- [Low] The patch applies the new clock-off guard
-  (`mutex_lock(&ptp_clk_mutex)` + `if (fep->ptp_clk_on)`) to only one of…
-
-Pre-existing issues:
-- [High] fec_ptp_stop() runs while the netdev is still registered.
-- [High] fec_ptp_stop() unregisters the PTP clock without first draining
-  the PPS interrupt handler.
-- [Medium] The PEROUT enable path in fec_ptp_enable() publishes state
-  before arming it: - Under ptp_clk_mutex and tmreg_lock it sets…
-- [Medium] PPS and PEROUT share the same compare channel
-  (fep->pps_channel).
-- [Low] fec_ptp_enable_pps() checks `fep->perout_enable` before its
-  `pps_enable == enable` no-op check.
-- [Low] fec_ptp_init() copies `fsl,pps-channel` from the device tree
-  straight into fep->pps_channel (fec_ptp.c:753-754) without a range…
-
---
-
-net: fec: drain PEROUT requests before canceling the timer
-
-The commit changes the order in fec_ptp_stop(). ptp_clock_unregister() now
-runs before the PEROUT hrtimer is canceled, and fec_ptp_pps_disable() and the
-PPS disable come after it. fec_ptp_pps_disable() now takes ptp_clk_mutex and
-skips the TCSR write when the PTP clock is off.
-
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 56801c2009d59..67901e036ac32 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
->  
->  	hrtimer_cancel(&fep->perout_timer);
-
-[Severity: Medium]
-This is a pre-existing issue, but can a concurrent PEROUT enable still arm
-the timer or the hardware after this cancel has run?
-
-In fec_ptp_enable(), the enable path sets the state and drops both locks
-before it arms anything:
-
-fec_ptp_enable() {
-    ...
-			fep->perout_enable = true;
-
-unlock:
-			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-			mutex_unlock(&fep->ptp_clk_mutex);
-    ...
-			if (delta > FEC_PTP_MAX_NSEC_COUNTER) {
-				timeout = ns_to_ktime(delta - NSEC_PER_SEC);
-				hrtimer_start(&fep->perout_timer, timeout, HRTIMER_MODE_REL);
-			} else {
-				return fec_ptp_pps_perout(fep);
-			}
-    ...
-}
-
-Suppose a PEROUT disable runs fec_ptp_pps_disable() inside that window:
-
-- hrtimer_cancel() finds nothing armed.
-- perout_enable is cleared and TCSR is zeroed.
-- The enable thread then starts the hrtimer or programs toggle mode.
-
-That leaves a live timer or periodic output while perout_enable == false. A
-later PPS enable would then pass its perout_enable check on the same
-channel.
-
-This looks reachable because period_store() in drivers/ptp/ptp_sysfs.c calls
-ops->enable() without ptp->pincfg_mux, while the chardev path holds it.
-
-With this patch's teardown order, the hrtimer is canceled only after
-ptp_clock_unregister() has drained sysfs and chardev users. So this is a
-state mismatch rather than a use-after-free.
-
->  
-> +	mutex_lock(&fep->ptp_clk_mutex);
->  	spin_lock_irqsave(&fep->tmreg_lock, flags);
->  	fep->perout_enable = false;
-> -	writel(0, fep->hwp + FEC_TCSR(channel));
-> +	if (fep->ptp_clk_on)
-> +		writel(0, fep->hwp + FEC_TCSR(channel));
-
-[Severity: Medium]
-Can this leave the compare channel armed while the driver records PEROUT as
-disabled?
-
-When ptp_clk_on is false, perout_enable is cleared but the only write that
-disarms TCSR(pps_channel) is skipped. Nothing replays that write later.
-
-A possible sequence:
-
-1. PEROUT is armed. fec_ptp_pps_perout() sets toggle mode, TIE and TF in
-   TCSR.
-
-2. ip link set down. On FEC_QUIRK_HAS_MULTI_QUEUES parts (and with
-   NO_HARD_RESET plus link), fec_stop() -> fec_ctrl_reset() only writes
-   ECNTRL = 0, without FEC_ECR_RESET. fec_ptp_restore_state() only
-   reprograms PPS. fec_enet_clk_enable(false) then sets ptp_clk_on = false
-   with the channel still armed.
-
-3. A PEROUT-off request (chardev period 0, or a write to the sysfs period
-   file) reaches fec_ptp_enable() -> fec_ptp_pps_disable(). There is no
-   ptp_clk_on check on that path. perout_enable becomes false, but TCSR is
-   not written.
-
-4. ip link set up. fec_restart() again does no hard reset, and
-   fec_ptp_restore_state() does not touch TCSR for PEROUT. Once clk_ptp
-   runs, the stale channel fires and fec_pps_interrupt() keeps reloading
-   TCCR, so the output pin keeps toggling.
-
-Before this patch the write was unconditional. Whether this misbehaves
-depends on hardware: whether TCSR survives clock gating, and whether the old
-unconditional write took effect with clk_ptp gated.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but can a PEROUT disable silently
-stop an active PPS output here?
-
-PPS and PEROUT share fep->pps_channel, but they exclude each other only on
-the enable side. In fec_ptp_enable(), a PEROUT request with on = 0 goes
-straight to:
-
-		} else {
-			fec_ptp_pps_disable(fep, fep->pps_channel);
-		}
-
-There is no pps_enable check first. This writes TCSR(pps_channel) = 0 while
-PPS is running, which clears TMODE and TIE, but fep->pps_enable stays 1.
-
-The driver then reports PPS as enabled, but the hardware no longer generates
-PPS interrupts or events.
-
-[ ... ]
-
-> @@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
->  	struct net_device *ndev = platform_get_drvdata(pdev);
->  	struct fec_enet_private *fep = netdev_priv(ndev);
->  
-> -	if (fep->pps_enable)
-> -		fec_ptp_enable_pps(fep, 0);
-> -
->  	cancel_delayed_work_sync(&fep->time_keep);
-> -	hrtimer_cancel(&fep->perout_timer);
->  	if (fep->ptp_clock)
->  		ptp_clock_unregister(fep->ptp_clock);
-
-[Severity: High]
-Does moving the PPS disable after ptp_clock_unregister() open a
-use-after-free of fep->ptp_clock in fec_pps_interrupt()?
-
-Before this patch, fec_ptp_stop() cleared pps_enable and zeroed
-TCSR(pps_channel) before the clock was unregistered. Now the driver's
-own fec_ptp_enable_pps(fep, 0) runs only after ptp_clock_unregister()
-has done its final put_device(). That put can free the ptp_clock and
-its pps_source.
-
-The interrupt handler checks pps_enable without a lock and then uses
-the clock:
-
-	if (fep->pps_enable) {
-		event.type = PTP_CLOCK_PPS;
-		ptp_clock_event(fep->ptp_clock, &event);
-	}
-
-The irq is requested with devm_request_irq() in fec_ptp_init(), so it
-stays live until after fec_drv_remove() returns.
-
-Some trees have a ptp_clock_unregister() that does not disable PPS
-itself, and this patch is tagged for stable. There, pps_enable stays
-1 and the compare channel stays armed with TIE set for the whole
-unregister. The next compare event, at most a second or two later,
-then does:
-
-fec_pps_interrupt()
-  fep->pps_enable == 1
-  ptp_clock_event(fep->ptp_clock)   <- freed by put_device()
-
-On such a tree, the fec_ptp_enable_pps(fep, 0) call that now follows
-unregister comes too late to prevent this.
-
-Where ptp_disable_all_events() does call fec_ptp_enable_pps(fep, 0)
-from inside unregister, the window is smaller but not closed. That
-call clears pps_enable under tmreg_lock. The handler does not take
-tmreg_lock, and nothing calls synchronize_irq(). A handler that has
-already passed the check can still reach the freed clock. That part
-was already possible before this patch.
-
-The hrtimer race described in the commit message only needs the
-PEROUT cleanup to run after unregister. Could the PPS disable stay
-before ptp_clock_unregister()? It could be followed by a
-synchronize_irq() on the PPS interrupt, so the handler is quiesced
-before the clock and pps_source are released.
-
-[Severity: High]
-This is a pre-existing issue, but is the PPS interrupt handler drained before
-ptp_clock_unregister() releases the clock?
-
-fec_pps_interrupt() checks pps_enable without a lock and then uses the
-clock:
-
-		if (fep->pps_enable) {
-			event.type = PTP_CLOCK_PPS;
-			ptp_clock_event(fep->ptp_clock, &event);
-		}
-
-ptp_clock_unregister() does:
-
-	ptp_disable_all_events(ptp);
-	...
-	if (ptp->pps_source)
-		pps_unregister_source(ptp->pps_source);
-
-	/* The final put, normally here, will invoke ptp_clock_release(). */
-	put_device(&ptp->dev);
-
-A possible interleaving:
-
-CPU1 (fec_pps_interrupt)
-  passes the fep->pps_enable check
-
-CPU0 (fec_ptp_stop)
-  ptp_clock_unregister()
-    ptp_disable_all_events()
-      fec_ptp_enable_pps(fep, 0)   <- tmreg_lock does not exclude the handler
-    pps_unregister_source()
-    put_device()                   <- frees pps_device and ptp_clock
-
-CPU1
-  ptp_clock_event()
-    pps_event(ptp->pps_source)     <- takes pps->lock on freed memory
-
-The irq is requested with devm_request_irq() in fec_ptp_init(), so it stays
-live until after remove returns. Nothing calls synchronize_irq() or
-disable_irq() before the clock and PPS source are released.
-
-On PREEMPT_RT the force-threaded handler is preemptible, which widens the
-window.
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but does removal with PEROUT
-active always log a spurious "PEROUT is running" error here?
-
-The call chain is ptp_clock_unregister() -> ptp_disable_all_events() ->
-fec_ptp_enable(PTP_CLK_REQ_PPS, 0) -> fec_ptp_enable_pps(fep, 0).
-fec_ptp_enable_pps() checks perout_enable before its no-op check:
-
-	if (fep->perout_enable) {
-		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-		dev_err(&fep->pdev->dev, "PEROUT is running");
-		return -EBUSY;
-	}
-
-	if (fep->pps_enable == enable) {
-
-fec_ptp_stop() clears perout_enable only after ptp_clock_unregister()
-returns. So a PPS disable that should be a no-op returns -EBUSY and logs an
-error on every such removal.
-
-> +
-> +	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
-> +	fec_ptp_pps_disable(fep, fep->pps_channel);
-
-[Severity: Low]
-This is a pre-existing issue, but fep->pps_channel comes straight from the
-device tree in fec_ptp_init() without a range check:
-
-	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-
-It is then used in FEC_TCSR(n), which is 0x608 + n * 0x08, while the driver
-defines MAX_TIMER_CHANNEL as 3. With this new unconditional call, a malformed
-fsl,pps-channel value would cause an MMIO write outside the timer channel
-block on every remove or probe failure, whenever ptp_clk_on is set.
-
-The same unchecked index is already used by fec_ptp_enable_pps(),
-fec_ptp_pps_perout() and fec_pps_interrupt().
-
-Should the value be checked against MAX_TIMER_CHANNEL when it is read?
-
-> +	if (fep->pps_enable)
-> +		fec_ptp_enable_pps(fep, 0);
->  }
-
-[Severity: Low]
-Can this check ever be true on the remove path?
-
-ptp_caps.pps is set, so ptp_clock_unregister() above has already done:
-
-ptp_clock_unregister()
-  ptp_disable_all_events()
-    fec_ptp_enable(PTP_CLK_REQ_PPS, 0)
-      fec_ptp_enable_pps(fep, 0)   <- sets pps_enable = 0
-
-So pps_enable is normally 0 by the time this runs, and the "then disable
-PPS" step described in the commit message does nothing here.
-
-Related to that, the new ptp_clk_mutex / ptp_clk_on guard is only added in
-fec_ptp_pps_disable(). The disable branch of fec_ptp_enable_pps() writes the
-same register with only tmreg_lock held:
-
-	} else {
-		writel(0, fep->hwp + FEC_TCSR(fep->pps_channel));
-	}
-
-That is the write that actually runs inside ptp_clock_unregister().
-
-This looks reachable: enable PPS, run ip link set down, then remove the
-driver.
-
-- fec_stop() -> fec_ptp_restore_state() re-enables PPS, leaving
-  pps_enable = 1.
-- fec_enet_clk_enable(false) gates clk_ptp and clears ptp_clk_on.
-- fec_drv_remove() only resumes ipg/ahb through pm_runtime_get_sync().
-
-In that state, the new guard skips the PEROUT write, but the PPS write to the
-same channel still happens with clk_ptp gated.
-
-If the guard is needed, should fec_ptp_enable_pps() have it too? If it is
-not needed, is the new conditional in fec_ptp_pps_disable() necessary?
-
-[Severity: High]
-This is a pre-existing issue, but can a concurrent fec_restart() re-enable
-PPS after this one-shot check?
-
-fec_drv_remove() calls fec_ptp_stop() before unregister_netdev() and without
-rtnl:
-
-	fec_ptp_stop(pdev);
-	unregister_netdev(ndev);
-
-So fec_restart() can still run, from fec_enet_open(), link change or ethtool
-paths. fec_restart() calls fec_ptp_save_state() first and
-fec_ptp_restore_state() last, and restore_state does:
-
-	if (fep->ptp_saved_state.pps_enable) {
-		/* Re-enable PPS */
-		fec_ptp_enable_pps(fep, 1);
-	}
-
-A possible interleaving:
-
-fec_restart()                      fec_drv_remove()->fec_ptp_stop()
-  fec_ptp_save_state()
-    saved pps_enable = 1
-                                   ptp_clock_unregister()
-                                     ptp_disable_all_events()
-                                       pps_enable = 0
-                                     pps_unregister_source()
-                                     put_device()  <- may free ptp_clock
-                                   if (fep->pps_enable)  <- false
-  fec_ptp_restore_state()
-    fec_ptp_enable_pps(fep, 1)
-      pps_enable = 1, TCSR armed with TIE
-
-When the compare fires 1-2 seconds later, before close gates clk_ptp:
-
-fec_pps_interrupt()
-  ptp_clock_event(fep->ptp_clock)   <- freed
-    pps_event(ptp->pps_source)      <- freed
-
-fep->ptp_clock is never cleared after unregister, and nothing serialises
-fec_restart() against fec_ptp_stop(). The close path inside
-unregister_netdev() also goes through fec_stop() and restore_state, which
-re-arms PPS once more before clk_ptp is gated.
-
-This patch narrows one interleaving by disabling PPS again after unregister,
-but it does not seem to close the race.
-
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Fixed open parentheses line ending issue & readability. 
+I presume this syntax was there to meet the old 80 char limit, and double checked the changelogs to make sure this was not already submitted.
+If not I apologize, I am still getting used to using the indexing system.
+
+Signed-off-by: Raiden Horner <raidenhornerdev@gmail.com>
+---
+ drivers/staging/media/imx/imx-ic-prpencvf.c   | 13 +++--
+ drivers/staging/media/imx/imx-media-csi.c     |  4 +-
+ .../staging/media/imx/imx-media-dev-common.c  |  2 +-
+ drivers/staging/media/imx/imx-media-fim.c     |  5 +-
+ drivers/staging/media/imx/imx-media-utils.c   | 54 +++++--------------
+ 5 files changed, 24 insertions(+), 54 deletions(-)
+
+diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/staging/media/imx/imx-ic-prpencvf.c
+index 77360bfe081a..69f5ca280454 100644
+--- a/drivers/staging/media/imx/imx-ic-prpencvf.c
++++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
+@@ -704,11 +704,11 @@ static int prp_start(struct prp_priv *priv)
+ 	}
+ 
+ 	if (ipu_rot_mode_is_irt(priv->rot_mode))
+-		priv->eof_irq = ipu_idmac_channel_irq(
+-			ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
++		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu,
++						      priv->rot_out_ch, IPU_IRQ_EOF);
+ 	else
+-		priv->eof_irq = ipu_idmac_channel_irq(
+-			ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
++		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu,
++						      priv->out_ch, IPU_IRQ_EOF);
+ 
+ 	ret = devm_request_irq(ic_priv->ipu_dev, priv->eof_irq,
+ 			       prp_eof_interrupt, 0,
+@@ -761,9 +761,8 @@ static void prp_stop(struct prp_priv *priv)
+ 	/*
+ 	 * and then wait for interrupt handler to mark completion.
+ 	 */
+-	ret = wait_for_completion_timeout(
+-		&priv->last_eof_comp,
+-		msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
++	ret = wait_for_completion_timeout(&priv->last_eof_comp,
++					  msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
+ 	if (ret == 0)
+ 		v4l2_warn(&ic_priv->sd, "wait last EOF timeout\n");
+ 
+diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+index ef22a083f8eb..4eb621ddda25 100644
+--- a/drivers/staging/media/imx/imx-media-csi.c
++++ b/drivers/staging/media/imx/imx-media-csi.c
+@@ -679,8 +679,8 @@ static void csi_idmac_wait_last_eof(struct csi_priv *priv)
+ 	/*
+ 	 * and then wait for interrupt handler to mark completion.
+ 	 */
+-	ret = wait_for_completion_timeout(
+-		&priv->last_eof_comp, msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
++	ret = wait_for_completion_timeout(&priv->last_eof_comp,
++					  msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
+ 	if (ret == 0)
+ 		v4l2_warn(&priv->sd, "wait last EOF timeout\n");
+ }
+diff --git a/drivers/staging/media/imx/imx-media-dev-common.c b/drivers/staging/media/imx/imx-media-dev-common.c
+index 0d0ee8627a2d..be445df93518 100644
+--- a/drivers/staging/media/imx/imx-media-dev-common.c
++++ b/drivers/staging/media/imx/imx-media-dev-common.c
+@@ -377,7 +377,7 @@ struct imx_media_dev *imx_media_dev_init(struct device *dev,
+ EXPORT_SYMBOL_GPL(imx_media_dev_init);
+ 
+ int imx_media_dev_notifier_register(struct imx_media_dev *imxmd,
+-			    const struct v4l2_async_notifier_operations *ops)
++				    const struct v4l2_async_notifier_operations *ops)
+ {
+ 	int ret;
+ 
+diff --git a/drivers/staging/media/imx/imx-media-fim.c b/drivers/staging/media/imx/imx-media-fim.c
+index ccbc0371fba2..9e9bacf9dcec 100644
+--- a/drivers/staging/media/imx/imx-media-fim.c
++++ b/drivers/staging/media/imx/imx-media-fim.c
+@@ -205,9 +205,8 @@ static void fim_acquire_first_ts(struct imx_media_fim *fim)
+ 	if (!fim->enabled || fim->num_skip > 0)
+ 		return;
+ 
+-	ret = wait_for_completion_timeout(
+-		&fim->icap_first_event,
+-		msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
++	ret = wait_for_completion_timeout(&fim->icap_first_event,
++					  msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
+ 	if (ret == 0)
+ 		v4l2_warn(fim->sd, "wait first icap event timeout\n");
+ }
+diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+index f119477cac6b..00cd391b5ff7 100644
+--- a/drivers/staging/media/imx/imx-media-utils.c
++++ b/drivers/staging/media/imx/imx-media-utils.c
+@@ -16,18 +16,12 @@ static const struct imx_media_pixfmt pixel_formats[] = {
+ 	/*** YUV formats start here ***/
+ 	{
+ 		.fourcc	= V4L2_PIX_FMT_UYVY,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_UYVY8_2X8,
+-			MEDIA_BUS_FMT_UYVY8_1X16
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_UYVY8_2X8, MEDIA_BUS_FMT_UYVY8_1X16),
+ 		.cs     = IPUV3_COLORSPACE_YUV,
+ 		.bpp    = 16,
+ 	}, {
+ 		.fourcc	= V4L2_PIX_FMT_YUYV,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_YUYV8_2X8,
+-			MEDIA_BUS_FMT_YUYV8_1X16
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_YUYV8_2X8, MEDIA_BUS_FMT_YUYV8_1X16),
+ 		.cs     = IPUV3_COLORSPACE_YUV,
+ 		.bpp    = 16,
+ 	}, {
+@@ -71,10 +65,7 @@ static const struct imx_media_pixfmt pixel_formats[] = {
+ 		.cycles = 2,
+ 	}, {
+ 		.fourcc	= V4L2_PIX_FMT_RGB24,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_RGB888_1X24,
+-			MEDIA_BUS_FMT_RGB888_2X12_LE
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_RGB888_1X24, MEDIA_BUS_FMT_RGB888_2X12_LE),
+ 		.cs     = IPUV3_COLORSPACE_RGB,
+ 		.bpp    = 24,
+ 	}, {
+@@ -132,55 +123,36 @@ static const struct imx_media_pixfmt pixel_formats[] = {
+ 		.bayer  = true,
+ 	}, {
+ 		.fourcc = V4L2_PIX_FMT_SBGGR16,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_SBGGR10_1X10,
+-			MEDIA_BUS_FMT_SBGGR12_1X12,
+-			MEDIA_BUS_FMT_SBGGR14_1X14,
+-			MEDIA_BUS_FMT_SBGGR16_1X16
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SBGGR12_1X12,
++				       MEDIA_BUS_FMT_SBGGR14_1X14, MEDIA_BUS_FMT_SBGGR16_1X16),
+ 		.cs     = IPUV3_COLORSPACE_RGB,
+ 		.bpp    = 16,
+ 		.bayer  = true,
+ 	}, {
+ 		.fourcc = V4L2_PIX_FMT_SGBRG16,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_SGBRG10_1X10,
+-			MEDIA_BUS_FMT_SGBRG12_1X12,
+-			MEDIA_BUS_FMT_SGBRG14_1X14,
+-			MEDIA_BUS_FMT_SGBRG16_1X16
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_SGBRG10_1X10, MEDIA_BUS_FMT_SGBRG12_1X12,
++				       MEDIA_BUS_FMT_SGBRG14_1X14, MEDIA_BUS_FMT_SGBRG16_1X16),
+ 		.cs     = IPUV3_COLORSPACE_RGB,
+ 		.bpp    = 16,
+ 		.bayer  = true,
+ 	}, {
+ 		.fourcc = V4L2_PIX_FMT_SGRBG16,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_SGRBG10_1X10,
+-			MEDIA_BUS_FMT_SGRBG12_1X12,
+-			MEDIA_BUS_FMT_SGRBG14_1X14,
+-			MEDIA_BUS_FMT_SGRBG16_1X16
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SGRBG12_1X12,
++				       MEDIA_BUS_FMT_SGRBG14_1X14, MEDIA_BUS_FMT_SGRBG16_1X16),
+ 		.cs     = IPUV3_COLORSPACE_RGB,
+ 		.bpp    = 16,
+ 		.bayer  = true,
+ 	}, {
+ 		.fourcc = V4L2_PIX_FMT_SRGGB16,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_SRGGB10_1X10,
+-			MEDIA_BUS_FMT_SRGGB12_1X12,
+-			MEDIA_BUS_FMT_SRGGB14_1X14,
+-			MEDIA_BUS_FMT_SRGGB16_1X16
+-		),
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_SRGGB10_1X10, MEDIA_BUS_FMT_SRGGB12_1X12,
++				       MEDIA_BUS_FMT_SRGGB14_1X14, MEDIA_BUS_FMT_SRGGB16_1X16),
+ 		.cs     = IPUV3_COLORSPACE_RGB,
+ 		.bpp    = 16,
+ 		.bayer  = true,
+ 	}, {
+ 		.fourcc = V4L2_PIX_FMT_GREY,
+-		.codes = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_Y8_1X8,
+-			MEDIA_BUS_FMT_Y10_1X10,
+-			MEDIA_BUS_FMT_Y12_1X12
+-		),
++		.codes = IMX_BUS_FMTS(MEDIA_BUS_FMT_Y8_1X8, MEDIA_BUS_FMT_Y10_1X10,
++				      MEDIA_BUS_FMT_Y12_1X12),
+ 		.cs     = IPUV3_COLORSPACE_RGB,
+ 		.bpp    = 8,
+ 		.bayer  = true,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001180258.4054391-1-mhun512%40gmail.com
+2.47.3
+
