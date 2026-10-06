@@ -1,75 +1,80 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75E939657A
-	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 06:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D73326C385
+	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 06:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791266501; cv=none; b=jE6g0fJRHreOBI/DFEaNzsGNvzYERkmumy/BZW7n/G5sGgAH2jqytCNtimpu+NSK+SySGAawOtLY0R9+URXElCUv8Fi2IhYIbyH6G6vOxOIHxgfguo+D22MILxPheDdXspc8GImYkGXoh3hEcomAKdlQczdaaMaC6XCBkhr/oog=
+	t=1791269536; cv=none; b=JhTyENlJq3L7XGFSyi0m5eHIobW6ImYOsmDOP71LzxtH479IWZ4ObUmad7NsKLVNFiTghBv8nWeK784qhYEhTIQ4qXPcLohWkoc4OFgsSOkeR+IuMVM0viGz5rXTuJMj8UFysy2RHXPBetRdtdF1ORh6z3WUNlSmzAwfXVkdADg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791266501; c=relaxed/simple;
-	bh=TrTox7UJAfPLlLcucglObe+/FpBLBsP1DqhZV/QtubA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rd5bXhen6XJFk+NHWI6PS8Z/53qESeGidyHJo9QRyziNFDOX4Ji3ZwTE4j2ERQ3ci5pDAMVmMtBN8qTyjnMDAvi0mWZlI05vnyczmcgMRdx44DZzp8b+1hFCooVj1tqIJE5BNdicYT83NdLtrga9TKQcOVsFaUn+2jv5WtToyag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yf6T2rUo; arc=none smtp.client-ip=74.125.82.45
+	s=arc-20240116; t=1791269536; c=relaxed/simple;
+	bh=sXEuhuPbydIc2hl07e1Bu/OzsVyrxTFy5iWRYniIZCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ivLKbBKZZFIm9anitsM92M61rIfNlbS+dGfma1igQyJKiJESNUimq6pyXmnBVCjCF9Tv7pzaBQ15eFYimPNvLSCkVwjjQu+RjbqZwepIneLqC5E/fJJGbzGSVv/lVCPVXUpS6RNVDhDBYmhy13NTwsL0Jm3OhUANMoDzUmAlKeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLdrmjJL; arc=none smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yf6T2rUo"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1433e7b057fso1464085c88.1
-        for <imx@lists.linux.dev>; Mon, 05 Oct 2026 23:01:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLdrmjJL"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-33fb4680717so7217838eec.1
+        for <imx@lists.linux.dev>; Mon, 05 Oct 2026 23:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791266499; x=1791871299; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1791269533; x=1791874333; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SS1ERV4sWn7hoBzl0f2aOYvZXShJQi98daPhEwG/R1I=;
-        b=Yf6T2rUoQo4QkiqjwXmi5fAEJuI788Htxz/mc/eq3CO/LxR4Q/JzZrSHXYohKwiLdd
-         wux3hWUQfNjBhyhvZ5tSe+kLD0fw2yjE7N7X4ziPmS9R2he/ST9lOfF+sW4teO51qVo9
-         c45WbRcB506/HAKOzznOW+ee86CD7wjP9J/+Mlr+NwoQ49N5zKNnc8bPShCWvSPlZEBX
-         Oaijid9nOmnRW+AgDvPYpHcoG2cnInDGt3LzlpXxXv6ADT1MEb+jTe7ev3GjRvisoDlz
-         ZINQArJo9COgiFQ0J1ZTMNQdA/yisGNwyPIK4wtOBqoxvs8EAh4lsv1mFpLANkfTL2c9
-         1J0w==
+        bh=ZzqvAx4iFT6Nq0wHCIP+vtsVoXt5n1py2cHhYmK9d5E=;
+        b=LLdrmjJLgE/MPj8uIpIRzalKKm88TnZQokPYC63h/OgIJ7a8TrRcC3j3aF9LzOmEIA
+         6VR2EoiSsfwrMQrlIV3OXVPHWvEkDdQ/hxqjGrcormrlkqSDhzgjJrllfTI001a8dxmp
+         dLD2NC3Gn76F740jHjfXpNof0QldG1t6292dqycF6QMD4Bs5WAxg3PjELRKz1TjvZGZr
+         lWO+3q40p16Q0+Q1j24zR3feYb5mZvCkjF5sqREKKc/cLq+FFV7Hpl7UEo8BWoVJfg1T
+         vO1psurvNXLxhwjH6nWorMjTunbVi9KYiDMwW7nq21F2lR+Tn4c695nAIlGsHO/TIsbW
+         3uMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791266499; x=1791871299;
+        d=1e100.net; s=20260707; t=1791269533; x=1791874333;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SS1ERV4sWn7hoBzl0f2aOYvZXShJQi98daPhEwG/R1I=;
-        b=wf1yjOQYVQd38xXI2uNA7rVdF9UBTz5WkgH0SB7E59uIpil0MGWPNApiUW/MEOPHW2
-         NmrkRFmUDnlBUL8bcTXPjuL9pt+5bdCkIdgVuU50UJEdjHJuEQvgOIUG1AzzVmU4V8re
-         vK6uxVeehaaZdy/xMscaoS8JigEWsU5R0JuBK5Vpgnet69cPyUCE2a5ScjfSBPcrboY4
-         zgc00pWj31R8NnzA+GAf6xyLA/0ctkn85RCWcmHGsSpxbOm5mLoffIgYp7thxqDssKEx
-         pFh9Hd8uvhtfPgN5Z/1W78b/zErOrJqzF67PsW1NSNFQAGGrUvSHlcVnBivNF1RWWfYs
-         577g==
-X-Forwarded-Encrypted: i=1; AKwUvBzqO98VvxBRY5aYxcKVCpmOdLhpGM32ZhZa1OCQH6UJPFNkbkWZjJFoxne/H7r72qGzjI4=@lists.linux.dev
-X-Gm-Message-State: AFuF++lQVgPDN1JxDEloiYJerHyNHxkgfu0t54PjEbEahBbUKHpPEb/a
-	qUgyl0K2ebrhSF2DwRcMcXGdhRiCjU3PSDquIvOnIOVKjnPTsJHeWjmP
-X-Gm-Gg: AYBFou0D+W5rf+F3YnR1H8QYdFS75h0ZrvfpLcghRpm50L1enZSi+xKJyoU8mN9z7xC
-	g0CYtEezpkYlGZN0ay71RVV+/rCfW62hd4YStcxDoLz7uuZgSEvi/Iw5WlkImWrejnXOYK1zght
-	wxScri7K2o0RVOw5oLtqN9gSJ+V8eNH+MSq9Mt673xdzzGseWQ3OaRGy1DnwUgatGpnb7jkP8az
-	QjlK6tje5C2Gg6ea0aw8iuzlTsJuKRaIdezcChqZ1X3/hFek2g3Erl/vg77bD/t3NrWbZ3Q+tS7
-	OMuDO1OvXuCPywqkOBl4Rc2Re7N9/qgeOZe7LCUpDh/sUKwCkxxc4hRdfp3tgLH2f06FCQ+1QD7
-	O+LOQ1BrmHaVhZZBkk0Zh8C5QfLcDg03uTGIx+Sixt+eJxtqTA3CPWPRYuVxCrqFrsxTuEYF1Yt
-	yam072TLGJFNEHO99GeoXRpYjclwRXTnaYIc9dckVxCv+Bx4xOwawjdZ3CpSdcDfruvZxKP66fx
-	TJTUypVvq5XoZpR2UetE+iUPQB6OS5Itw==
-X-Received: by 2002:a05:7022:f512:b0:143:8865:cca with SMTP id a92af1059eb24-15eca63fcd0mr601967c88.22.1791266498776;
-        Mon, 05 Oct 2026 23:01:38 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-15d819cbed6sm7682867c88.4.2026.10.05.23.01.35
+        bh=ZzqvAx4iFT6Nq0wHCIP+vtsVoXt5n1py2cHhYmK9d5E=;
+        b=KyykBM7mhanlKNVibUMIWFmc4AuWrAvwYfkStyMEr8i6Xcj2fAJKAuphW/L+gH9jy9
+         c58nnw647hH6qJ+QrgQKoWocM5cDi17SPAu8br0Tisog12xNNHyCbFTGl9DPqrqaht5s
+         fD2t9ErkID2xlydfZTltXwFgW9JT9Ymc71wH7guGdMvVHRUl9uQ2whw14JsBVMgVC/x+
+         5ZQb248gFO1k1ta6AOD/VjyGkoRFq20+vBgOSNLKp3SBXUhg+r1u0VhIRySl/sx9xMQ8
+         XDgzazU/TiBOI+PijsR9eqzcVNTizDzcxJsIBtsb/FZt5r+aNUmEpunbd7HZMpPGft2K
+         mOFA==
+X-Forwarded-Encrypted: i=1; AKwUvBw8IkacaI3tgZdVkZlyRZgG8Hi/Vj3dBdThpkpNvKUF0Pt6HzdUo0vUD6w4c3WuvD0ZVTQ=@lists.linux.dev
+X-Gm-Message-State: AFuF++l6lRdT+q2oIx/XEN5O8LABqM7XaQNwsnTixptt4YmPOk7I3aBP
+	59nS7/P+SdDGJir4D9ntGjToI7O5GTyDORG0+X3zKgTSJlraAV/JvbDI
+X-Gm-Gg: AYBFou3nskKFRwHDa4U8CRjadcR2cfFGlcLhJq9vAF9tkxj6Axb7LZRVLNP8CksdYJ1
+	nYwk8sWkmqbORunhtiTnHhAq843NuBjabAcYc8+GnXFhTEqHg8vhjUAZ0Y+yTzuAjdZ4pa0DMXy
+	xn9vD8sf/90rrFd3iTmw/VwvaFIKB40Shq641oeI4JkDVdhFjQ2sddPahXE7rMTprJ3ftLOY9xe
+	DacLtzqCmK9ejILQv9JfNfOflkZFqnGKUPCsnABvfPSx8csh/+xJHtrSQwWfhsSVN1moAhHwWds
+	ThZ7uM/XWtHp6UjpfVDvpmKCZveYwAeGqaoBLPUYT6YD3Z1YeeOaB/pdY6sq4rBMQWW+MREa3sk
+	jMXf/lmY0FRPr+hMShYg/Z4nbSTtlbG0azgw58krwMWe8tMJmd2HSM7iNA4b6XRIB7sisx0FWdS
+	WFQNv0AadVEBaXKtc7bxjsDHMwC5eB2Kp0IKGOoCC7fizBY84B62F+2v1/UJQO5w==
+X-Received: by 2002:a05:693c:20c8:10b0:351:4bff:6d6b with SMTP id 5a478bee46e88-3514bff6e22mr859281eec.16.1791269533292;
+        Mon, 05 Oct 2026 23:52:13 -0700 (PDT)
+Received: from gmail.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351468b2cfasm6306463eec.2.2026.10.05.23.52.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 23:01:38 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Russell King <linux@armlinux.org.uk>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
+        Mon, 05 Oct 2026 23:52:13 -0700 (PDT)
+From: pdsj2807@gmail.com
+To: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de
+Cc: Frank.Li@nxp.com,
+	mchehab@kernel.org,
+	gregkh@linuxfoundation.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
 	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ARM: imx: fix typo "interupt" in comment
-Date: Tue,  6 Oct 2026 11:31:31 +0530
-Message-ID: <20261006060133.43320-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Palak Raval <pdsj2807@gmail.com>
+Subject: [PATCH] staging: media: imx: fix function call formatting
+Date: Tue,  6 Oct 2026 12:22:00 +0530
+Message-ID: <20261006065203.3645059-1-pdsj2807@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,37 +83,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a typo in a comment, reported by scripts/checkpatch.pl using the
-misspelling list in scripts/spelling.txt.  Only a comment is touched,
-there is no code change.
+From: Palak Raval <pdsj2807@gmail.com>
 
-Assisted-by: LLM
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+Move the first argument of IMX_BUS_FMTS() to the same line as the
+opening parenthesis to address the checkpatch warning.
+
+Signed-off-by: Palak Raval <pdsj2807@gmail.com>
 ---
+ drivers/staging/media/imx/imx-media-utils.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Notes (v2):
-    v2:
-     - Split the single "ARM: fix typos in comments" patch up per platform,
-       so that each one can be picked up by its own maintainer.
-    
-    v1: https://lore.kernel.org/all/20260907064849.23086-1-hemanth.selam@gmail.com/
-
- arch/arm/mach-imx/suspend-imx6.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-imx/suspend-imx6.S b/arch/arm/mach-imx/suspend-imx6.S
-index 63ccc2d0e920..3f8670296358 100644
---- a/arch/arm/mach-imx/suspend-imx6.S
-+++ b/arch/arm/mach-imx/suspend-imx6.S
-@@ -234,7 +234,7 @@ set_mmdc_io_lpm_done:
- 	 * mask all GPC interrupts before
- 	 * enabling the RBC counters to
- 	 * avoid the counter starting too
--	 * early if an interupt is already
-+	 * early if an interrupt is already
- 	 * pending.
- 	 */
- 	ldr	r11, [r0, #PM_INFO_MX6Q_GPC_V_OFFSET]
+diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+index f119477cac6b..978770cf3907 100644
+--- a/drivers/staging/media/imx/imx-media-utils.c
++++ b/drivers/staging/media/imx/imx-media-utils.c
+@@ -16,8 +16,7 @@ static const struct imx_media_pixfmt pixel_formats[] = {
+ 	/*** YUV formats start here ***/
+ 	{
+ 		.fourcc	= V4L2_PIX_FMT_UYVY,
+-		.codes  = IMX_BUS_FMTS(
+-			MEDIA_BUS_FMT_UYVY8_2X8,
++		.codes  = IMX_BUS_FMTS(MEDIA_BUS_FMT_UYVY8_2X8,
+ 			MEDIA_BUS_FMT_UYVY8_1X16
+ 		),
+ 		.cs     = IPUV3_COLORSPACE_YUV,
 -- 
-2.47.3
+2.43.0
 
