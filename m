@@ -1,294 +1,252 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AB23DD871;
-	Tue,  6 Oct 2026 11:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791285531; cv=none; b=aD9CjFPrgoomk7NyFeoZ2UsSBOHqqGPzHx/GjOSdzTQyg1RSLKk7HRSzDZTi/2VcZVcF7cWbA7Fya0Gqb2smA80gernItJjq9A3c3bSt74FACHnJyiybomrietviC85j/yEHTg96hJHzAcRVivTQlgqzUZMvfedYDkQ7v9Q5Bmo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791285531; c=relaxed/simple;
-	bh=J0aYmzl4Bca+kxxzx5CT2dAYF56mfLYy3OaN1LrAIjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BcvN9KB4s2Px3H2TrhvEZywa7U6iQqR96gjmKrTDqEA9IX3OPxPMn/urxz46cE3uxEKRFdrd5FFdxK4hkXvqST1O8S/ncF2F/hXbV0EvE1cGoNLmT1DX0yHJQmSymeD7IwkW3agzyrOSH/MxWnEcEW5NMMHXSKHLT/XBgdRyy+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RZ5hdLhD; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058203E6DE8
+	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 11:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791287516; cv=fail; b=grPxsVrX+artaZ+7jJXEmwgcL1EMP1bpK6HAxYJpOcMs5PsalqW/8ggWX5w90osl+Wy+oZsUv1WRTt8DprBYXJVce0YQMwG3fGWXzR03gWZLgsbxEx+PHFLM7B168HL9w/gPHnTCWxgMsX8dujWYlT06WVBer+S1abbf/qEZS3g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791287516; c=relaxed/simple;
+	bh=WQ7Zqm3gLIMuorfvtpQmX9BSViOPnNnftNCswIBGYgU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=f5nGG2Weq96q4RjzURSSdOL2FR3QA4LjotK5i1TKOVjayy3QYaWhTRXF/3x9uFIFKEfZvnw98pX/0OOySTmcZ7k6hNcpW7bOb0hHSaKi3tUlM59S2+ClFmTQZdaCatFAg0stehTMnRlKfSRk92YgpDlrKLLCrudUgLaaXyG9SJs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e1X7SXL8; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RZ5hdLhD"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECE121516;
-	Tue,  6 Oct 2026 04:18:43 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A908D3F763;
-	Tue,  6 Oct 2026 04:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791285527; bh=J0aYmzl4Bca+kxxzx5CT2dAYF56mfLYy3OaN1LrAIjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RZ5hdLhDyybGfQibMShr19Huoc4OLB+eoXXlg7amCRsxzOgV1zt1dFH/S0dhFJkgc
-	 rIFYwye7wxuuF+SdCgqKHuV8+tHKURuLoG+OFSMqph64rLv2vaGBHlM7+nTnpwaXg0
-	 NO8CPkXvVECFbdhIjvjb8OSJwJynk/APt9d+RyAE=
-Date: Tue, 6 Oct 2026 12:18:42 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Frank Li <frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev, imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v4] arm64: errata: Add NXP iMX8QM workaround for A53
- cache coherency issue
-Message-ID: <asTZEhzMDs869r_n@arm.com>
-References: <20260824-imx8qm-cache-coherency-v4-v4-1-b2e528c7d05e@nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e1X7SXL8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791287514; x=1822823514;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=WQ7Zqm3gLIMuorfvtpQmX9BSViOPnNnftNCswIBGYgU=;
+  b=e1X7SXL8tahYRJCXwzhwyalpCa4onARJWPD+pNKqdAG92HgygAr31/Wp
+   1myMr9mP1h+28FZ0tahVdHeyjVKQppNE4YUbMl3LHAvklSLaLv+XHGXov
+   LUJjnZA5V9lTSjjGhAQTnrQn+vJABDEwGuLaRkz0DKbEXegoKGvwEmR1Q
+   f99OxXvJ3wHE+DkWvYs9XjG+5zgrIPQYFwdFT/JwnfMQ9J7+94P82tPYc
+   pcfNGAIIax//DhMuJnrngf/fhgD6mUgEuPWmZL26MOb6QMdyoIIlOWWbc
+   2CJK1yHEC4RvCrBtE00pyPMzJKzMqNE4eTkc6t4pX41D7SgZwHNT7dYlE
+   g==;
+X-CSE-ConnectionGUID: NTIksQYHTyyKt5DjFss5xw==
+X-CSE-MsgGUID: RdnDboxCRyyvgwOxwfi6EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="29093"
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+   d="scan'208";a="29093"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 04:51:53 -0700
+X-CSE-ConnectionGUID: /Z3fk71GRJCZkiXLxuW3UQ==
+X-CSE-MsgGUID: 5cJHlerPSnGwxN18na3WdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+   d="scan'208";a="315151489"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 04:51:53 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 04:51:52 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 04:51:52 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.2) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 04:51:52 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kdNTwBMkIEaAwD8uAjxr1YmXsz9iBxhIIOZA+F2yhlB3DX8M4BRrOkn/Lg7bq/+vKZlq6h1DL6DUPD9AICPGi/JphnDPSIAqoM1cWW29iNRiJ7CWb4GN5eNUYwF1TJ7xBR+wybKUJCIRAN7L7qmrDYDXa4D2gtn4qsivgX3E66cm55emmI3kUiCuMRV56ZYXXciOXKgWxftXsMJ48A+4QdxgHDc+oNRFza90tSZ3s6muSSkWFYj3x6ScuhnyE9AvFkRv6bp1zzQ0uT5nueloDoxglDcDjeRME1BQ6JU98GN+WRVyT3kphsCtc6s53w9RdQCuktNin9HvLJgu1EMdRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bIWJGS9u7UXs0d2xEM/4BNo4y9HrhTyCSMLXKj8YmFk=;
+ b=Ixk8AfB2j6fDTfXsJ2/5IK9VZMwPQsDLqMR69yx6MnpjfLpWQXjQrI0dsWjClhZnUHyqKVkxUvHM0Yih9trUecwrvUUaFt9b54TI8o8mOKxSeJ0Qp0Dbh7Be8jWxH+zmh+1yPLyzjqai//DrjSPoFod3Mzvq/hcW/FcKAOlBxeFMRYUrnMocSeDgcTmY7jZt5SPBb3JkiQJZ+N63cDT4bClyFry55IQKEZjHM8YCOXs3khcXCvpml5w6EI32Q0xNuxNuxyjUdZaEiDcS9j7+n9FL7P2NTE57gUgiTQe0ErM8j3euHRvwGNpTca2HVM3NyGCJaevltNIOIUoo8rH61A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
+ by SN7PR11MB6970.namprd11.prod.outlook.com (2603:10b6:806:2aa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Tue, 6 Oct
+ 2026 11:51:48 +0000
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::2c4e:e92a:4fa:a456%3]) with mapi id 15.21.0472.015; Tue, 6 Oct 2026
+ 11:51:48 +0000
+Message-ID: <13319d31-c7ac-4b78-a8d1-3f764ce57204@intel.com>
+Date: Tue, 6 Oct 2026 14:51:42 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mmc: sdhci-esdhc-imx: map unsupported driver type to
+ Type B
+To: Ian Ray <ian.ray@gehealthcare.com>, Haibo Chen <haibo.chen@nxp.com>, "Ulf
+ Hansson" <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Lin <shawn.lin@rock-chips.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>
+CC: <stable@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-mmc@vger.kernel.org>, <s32@nxp.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20261006105301.996-1-ian.ray@gehealthcare.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
+ 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
+ 4, Domiciled in Helsinki
+In-Reply-To: <20261006105301.996-1-ian.ray@gehealthcare.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DUZPR01CA0243.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b5::11) To IA1PR11MB7198.namprd11.prod.outlook.com
+ (2603:10b6:208:419::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824-imx8qm-cache-coherency-v4-v4-1-b2e528c7d05e@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|SN7PR11MB6970:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43fca1d9-fa2d-474d-8227-08df23a033b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|56012099006|11063799006|22082099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info: a19p90rFLLNgsa7OAxJKBAEt7hWMA96V+iMiDb6T7aJXH/6WrBYL3MXX73qpqvkc2ZK4t86htAuiPWSDn2r1o4oTC1pVjkqb55No7Lb31ryx7WtfGtH9CzvtV7uMTw42OvozuV4rOp/9E0bh6uQ86WbU8sIvI1mqvGjClhMHiARjBDz1LvqW8tpmOFG3LQLIhNsmK228nH3QMJFFMmNHf6iMI+zALyGkhDj5ZGp5AVlqtZ4CE4ABTT4mBbhliLU8xF1yUApfDbCpHJtW8MIDIegUmP6mVAggy5+pws77QnNX8I/vNnuZJvSyaAFw3knF9/AJy/KPBS77Mg/cHdd8U+B/FSq8uIXrqFbLYxOzl+CBjK3lvlSW6m5pI6WsifuGHr9z6b+TStcDjtwlydSIaHaO0SpatBL2Ho3H9e29ZtABqQQwCN6G+yXpkthgrJCK8pklHYU4Z1mdWITdqjQ5RE7qumNiir/Y4hHtL9bH13ghlCcOnlHOws3VwogBzfFhbWsdiNwYw/GdsFQBkmiFXzuDC1ozPrdJiwlCZN5pYobIqjCOeKtAmbadTBSWcwSnF/5MxL3l/Z7cqdKRwSyshY4wQaAuLvsX/87GTuj0Exi9uQnvqL94ssv/JiGtmjHx5OOkUeStMI/daBW8IojxKydsgs9AYXVsqzV5Z0KrHhI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(56012099006)(11063799006)(22082099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZnBkcDRvV0R0WlljZlROM3R2SEpMSEgwMVlDR2FRRkdkRHJ1TDFucGwvcFBU?=
+ =?utf-8?B?OW1ER2lsN3NGb1FkcDl1SEgxWUVkMjQzeDdFaXhTRlBXUWlFa1dQSnV6MHdI?=
+ =?utf-8?B?TU1qcmRkc1dEWHh4MWpLck1tUWl1RzdiMTJPdWlIVFpBVGxJZGc1WEpQdU00?=
+ =?utf-8?B?U3lzRlFmYzBGWTFDSmNORVVweXdRS0hOay9lbVJIcXJ5Vk0yck9WcGUxQU9n?=
+ =?utf-8?B?RUdObUd0OEhxOUlSS0FxK0pLd0dGQTFYKzIwV1FENXdGVCtjRy93TGlHd3B5?=
+ =?utf-8?B?UmZzVWN1NTFIZlJCeUxIRzhZemp5TGZEeERhK0djOVpUSkNjakV0WUx2VVNq?=
+ =?utf-8?B?aVAyMWlYMUpweE5WdHdGL0dlby9yalZFaXRvajErYXBnZko5a1hTclBJVWFl?=
+ =?utf-8?B?YW9sRkppNjlKRGNCaWZjK0oxNFd2ME9qcjcvTVJsZVJyVFFLbkl2QVZQa3hK?=
+ =?utf-8?B?ekJqdVJRWUc4Nnp3ZVZWSzFZbEdYZmpqZm1sTUxJcFRVUFpDSEQ3R1lQSGc4?=
+ =?utf-8?B?TVhrYVhtWldaQVk5VGVkVmM0Rks2TGVUcS9INEJqaEdQM3pCQkM0d1RobVVH?=
+ =?utf-8?B?VDN6aWMra0JaaDdoSEYzT283UUJWaksrNi9PWGdsWVIxbjN3M2JVRXlNZVlw?=
+ =?utf-8?B?OE9FeFYxV3F6ZXlhWktyRXNaMzJUMDN2ZHo2L29yS1AwcUhBbkRsa1NMU3kw?=
+ =?utf-8?B?MGlQTkhtdmNUSjBiZzdzdzh0ODkrZFBCbDJCYkFNd0xPdFIvYk1ITENBMVJB?=
+ =?utf-8?B?UVBLU2lwU2ZkcGp4TkduVmhDTEYrUXh4aFJYNWthZUlQcnlsYVVMUnNWY0Qr?=
+ =?utf-8?B?ZHA2aEZsSlhqWGhxZHc4Mll0S1NVTUFKcFNKbVlWTFhzSDdubll2N3FFSkNn?=
+ =?utf-8?B?Mkpsd2RtM0ZGK1c2ck9qczNVVHFUVlFqMVV6SDgyVGF3WWFuVUcvc0xTenZs?=
+ =?utf-8?B?ZGUvcEI1aXllZ3lRd0Y5L2FEVlZrM2xjLzlTSXp6QUdsT3RUTjR2dXgvSjVR?=
+ =?utf-8?B?NWdFQ2ZKaVIvWTg5RFIybFE5Zzc5Z1JpVWtoOTZ6dTdSdytrNyt2RndWaTJE?=
+ =?utf-8?B?YnQ0dTJuK0V6cVZkb0hYWEpVaGgzT01qVlN0dndqUm1UY0NSRFdjVFdiNnZZ?=
+ =?utf-8?B?WXZjbkdIZXNXYkhNUmJhbG9KR2VBMG02NDhTTmpwUFI1SmtKMlR0ZFBzOE9s?=
+ =?utf-8?B?ZUFMell4blI0V0ZwdENIN1gwNStYSzVuMWhlZktXanh4OHFrdFVKNlgrUC9t?=
+ =?utf-8?B?L2w4SGh4WWVoMWJreUZPOWsxSktuR1Jva3ZBWEdCWmZHS2VBUHZiSzFoQXBm?=
+ =?utf-8?B?aWFkUWxYa0FlWnJJTnl0cG9kSWlJU1I0dFBIMi9LQXBHTHdZWXpyUDVLbmR3?=
+ =?utf-8?B?Q1dCUkZZT2txaXJvZTFMMHVxS0pnbXgwdktGNG53YSs4R3d5Yk1WOWpJRG01?=
+ =?utf-8?B?VWdCekgwM0pNNUtRNUlydXlZR1ZIZEt6VU5SWTlydnFjMDcrTTVsS1dHc09u?=
+ =?utf-8?B?ck9wMXZNTFc3RTE1K0s4SUxla3JmUUlLeFZ0VVBNSzB2bFQvOGxXV3ArZmNU?=
+ =?utf-8?B?dTFKa01uTERnLzR5UFNDQVhKd2Q0TlUydDYxY2h2dmZrbEdqUEZ3ZzYzMWs0?=
+ =?utf-8?B?eW1OcExIY3FZYXp0ZUNlNGhhMld6V1BHUnZGUm92M1c0Rzh1eXMwamNGMEt3?=
+ =?utf-8?B?bXo4WXllU2kxUW94eXdtVlBDWFpuY0tXeERSUTBnZTdIZDE2cXNwN1FNS3FM?=
+ =?utf-8?B?cDczMVhSV29uQ1c4Sm94b1VrbVczVG1iak5tSU1GOWViUDlISW1ueEszZmlQ?=
+ =?utf-8?B?d21DQmcwNGl3Y3BiVFlEc0x6eHI2QmdsT2FJQ0Yrc0htZ0lmQXJzQ1A0MFRk?=
+ =?utf-8?B?Uk13NEhMdGRrcHZ2TFhKRnUwZnd1YkllSElwOFFQSXAyY3NXNWYrcDNaSmlI?=
+ =?utf-8?B?NW5BR2tiaUhPa3BwWlRiaGd5SDdJVU5KQ0dHZWVBNjJJUVBaY0JueTloRUtO?=
+ =?utf-8?B?NXEvVE10d1JhTFZGOFJGNnFiVDV1T2pSR0swWnJhREtoSVB0d0tyaG5CSjVR?=
+ =?utf-8?B?RkVOUmx4NU5FZmNKdmJTSGg0TG0zSU1aYXJLQUVtNStKUFQxSWFjNmhJVTM5?=
+ =?utf-8?B?cGhvTEQwUXkyOHMyQUtuZzdyTllqK2xJUDIrVFFnWmJhL0NnNm51MGNVR01a?=
+ =?utf-8?B?UVpMcFJiaVUzSzFvZk1SM1dkZEJSSjFFTkJxUVVBWU1sTGZ2bmV5RzRnY01j?=
+ =?utf-8?B?TmVyQytXZExqVUZpbW1FM0JjY1V1REs2V0FoOHNqYkZpNmdxN0lub0kvL1p6?=
+ =?utf-8?B?eWh6cEpZbVV2cnhYYW5PRXJjcEVNNkR3U1Bma0NobjJyS2VZeFhnUjhpUElu?=
+ =?utf-8?Q?nGVgJkIAZDwPz9Ko=3D?=
+X-Exchange-RoutingPolicyChecked: eej3SHAGfPhGplqcz5nXs/E9Jf9LinV3RX0ddNSYcMGos9qwybPoyFa4lNq7agR+646XR46lEggehK0CobMDM14LyZqq/Kk2kuY2YB0M9NjVc45jEtif2LRiNcxL5BpAqFA/5ZaJ6qXs6N5gkIveqYp4BZGsoWkEpa05rwSV223wzcx6FbrWqHqNTeSTGWHlcZqzLU7HGVPnJjt5Ee15TSvn3ldvDwWnwYEyKAvls0xBEsSjbFZGt1Cdr9cqxN7IfQfGFUJLZiOhIhjIJCVnEIGtcwr1dn515KbB7Bed/L3Vkbl6Tz8tkGpWcEMDegMD01qn93BF6wZzJjvSNM1ovA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43fca1d9-fa2d-474d-8227-08df23a033b7
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 11:51:48.1597
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jWhPTlGDHQH3sFvo7302Y1s1HXx+QmBam9w3cpUbgymbzy5WI+TAc2+lbo6gfaqP0Zt7m5cKBucyx9KL7dt9dw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6970
+X-OriginatorOrg: intel.com
 
-Hi Peng,
-
-On Mon, Aug 24, 2026 at 12:02:04PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On 06/10/2026 13:53, Ian Ray wrote:
+> Since commit 5a52c5701a67 ("mmc: core: Fix host controller programming
+> for fixed driver type"), the eMMC driver strength is passed directly to
+> mmc_set_driver_type(), which propagates the value through ios.drv_type
+> all the way to sdhci_set_ios().  For 40 Ohm driver strength [1], SDHCI
+> correctly warns:
 > 
-> According to NXP errata document IMX8_1N94W[1], the i.MX8QuadMax SoC
-> suffers from a cache coherency issue (ERR050104). The upper bits, above
-> bit 35, of the ARADDR and ACADDR buses within the Arm A53 subsystem
-> have been incorrectly connected. This causes some TLBI and IC
-> maintenance operations exchanged between the A53 and A72 core clusters
-> to be corrupted.
+>   mmc2: invalid driver type, default to driver type B
 > 
-> The workaround requires:
+> Hook ->set_ios() to map any driver type value outside of the SD-defined
+> range to default Type B, so that SDHCI always receives a valid value.
 > 
->   - Downgrading targeted TLBI operations to broadcast-all variants.
->     Instead of patching the low-level __TLBI_1 macro (which interferes
->     with the REPEAT_TLBI workaround and causes excessive over-
->     invalidation), redirect high-level TLB flush functions
->     (flush_tlb_mm, __do_flush_tlb_range, flush_tlb_kernel_range,
->     __flush_tlb_kernel_pgtable) to use VMALLE1IS via static key checks.
+> Tested on i.MX8MP (usdhc3, eMMC in HS400) with
+> `fixed-emmc-driver-type = <4>`: the warning is gone and the HS_TIMING
+> register contains 0x43 as expected.
 > 
->   - Upgrading IC IVAU to IC IALLUIS for both kernel (via ALTERNATIVE in
->     invalidate_icache_by_line) and EL0 userspace (via trap-and-upgrade
->     in user_cache_maint_handler with SCTLR_EL1.UCI=0).
+> [1] 'fixed-emmc-driver-type', see JESD84-B51 Table 206 and
+>     Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
 > 
->   - Disabling KVM since correct TLB maintenance cannot be guaranteed
->     for guests.
-
-Do you need virtualisation on such platform? An alternative would be for
-the guests to be aware of the erratum as well and use the right TLBI/IC
-ops. But you'd also need to upgrade the VMID-aware ops in KVM (unless
-the hardware can't work around stage 2 TLBI at all).
-
->   - No need to touch SMMU Broadcast TLB Maintenance (BTM) since i.MX8QM
->     does not support broadcast TLB.
+> Fixes: 5a52c5701a67 ("mmc: core: Fix host controller programming for fixed driver type")
+> Link: https://lore.kernel.org/all/20260926122908.866-1-ian.ray@gehealthcare.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+> ---
+> v1 -> v2: Move fix from mmc core to sdhci-esdhc-imx driver per
+>           review (see "Link:" above);
+>           always provide a valid host driver type.
 > 
-> SoC detection uses devicetree compatible string "fsl,imx8qm" or
-> "fsl,imx8qp" since the boot CPU MIDR_EL1 (0x410fd034) and AIDR_EL1 (0)
-> are not unique to this SoC.
-
-That's fine but I wonder whether your hardware implements the SoC ID
-SMCCC. That would come in handy if some future revision fixes the bug.
-The DT string doesn't tell you version/revision.
-
-> @@ -580,23 +584,28 @@ static __always_inline void __do_flush_tlb_range(struct vm_area_struct *vma,
->  
->  	asid = ASID(mm);
->  
-> -	switch (flags & (TLBF_NOWALKCACHE | TLBF_NOBROADCAST)) {
-> -	case TLBF_NONE:
-> -		__flush_s1_tlb_range_op(vae1is, start, pages, stride,
-> -					asid, tlb_level);
-> -		break;
-> -	case TLBF_NOWALKCACHE:
-> -		__flush_s1_tlb_range_op(vale1is, start, pages, stride,
-> -					asid, tlb_level);
-> -		break;
-> -	case TLBF_NOBROADCAST:
-> -		/* Combination unused */
-> -		BUG();
-> -		break;
-> -	case TLBF_NOWALKCACHE | TLBF_NOBROADCAST:
-> -		__flush_s1_tlb_range_op(vale1, start, pages, stride,
-> -					asid, tlb_level);
-> -		break;
-> +	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_NXP_ERR050104) &&
-> +	    !(flags & TLBF_NOBROADCAST)) {
-> +		__tlbi(vmalle1is);
-
-This assumes it doesn't run under any hypervisor with HCR_EL2.FB. I
-guess that's fine if this erratum renders virtualisation unusable
-anyway.
-
-> +	} else {
-> +		switch (flags & (TLBF_NOWALKCACHE | TLBF_NOBROADCAST)) {
-> +		case TLBF_NONE:
-> +			__flush_s1_tlb_range_op(vae1is, start, pages, stride,
-> +						asid, tlb_level);
-> +			break;
-> +		case TLBF_NOWALKCACHE:
-> +			__flush_s1_tlb_range_op(vale1is, start, pages, stride,
-> +						asid, tlb_level);
-> +			break;
-> +		case TLBF_NOBROADCAST:
-> +			/* Combination unused */
-> +			BUG();
-> +			break;
-> +		case TLBF_NOWALKCACHE | TLBF_NOBROADCAST:
-> +			__flush_s1_tlb_range_op(vale1, start, pages, stride,
-> +						asid, tlb_level);
-> +			break;
-> +		}
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 6ab59d3e346f..33f63c6dc8ce 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1142,6 +1142,14 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
 >  	}
->  
->  	if (!(flags & TLBF_NONOTIFY))
-
-[...]
-
-> @@ -200,6 +202,29 @@ cpu_enable_cache_maint_trap(const struct arm64_cpu_capabilities *__unused)
->  	sysreg_clear_set(sctlr_el1, SCTLR_EL1_UCI, 0);
 >  }
 >  
-> +#ifdef CONFIG_NXP_IMX8QM_ERRATUM_ERR050104
-> +static bool
-> +is_imx8qm_soc(const struct arm64_cpu_capabilities *entry, int scope)
+> +static void sdhci_esdhc_imx_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 > +{
-> +	WARN_ON(preemptible());
+> +	if (ios->drv_type > MMC_SET_DRIVER_TYPE_D)
+> +		ios->drv_type = MMC_SET_DRIVER_TYPE_B;
 
-Not needed for a DT lookup.
+Looking at esdhc_writew_le(), it seems that drv_type is not used
+at all.  I'd prefer:
+
+	/*
+	 * drv_type is not used (see esdhc_writew_le()) but SDHCI rejects
+	 * non-SDHCI values like 0x4 (eMMC 40 ohm) passed via device property
+	 * fixed-emmc-driver-type. Force drv_type to an always-valid value.
+	 */
+	ios->drv_type = MMC_SET_DRIVER_TYPE_B;
 
 > +
-> +	return of_machine_is_compatible("fsl,imx8qm") ||
-> +		of_machine_is_compatible("fsl,imx8qp");
+> +	sdhci_set_ios(mmc, ios);
 > +}
 > +
-> +static void
-> +cpu_enable_imx8qm_err050104(const struct arm64_cpu_capabilities *__unused)
-> +{
-> +	cpu_enable_cache_maint_trap(__unused);
+>  static void usdhc_init_card(struct mmc_host *mmc, struct mmc_card *card)
+>  {
+>  	struct sdhci_host *host = mmc_priv(mmc);
+> @@ -1949,6 +1957,11 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+>  		 */
+>  		host->mmc_host_ops.init_card = usdhc_init_card;
+>  
+> +		/*
+> +		 * Validate host driver type.
+
+Not really "Validate".  Perhaps "No SDHCI driver type control"
+
+> +		 */
+> +		host->mmc_host_ops.set_ios = sdhci_esdhc_imx_set_ios;
+
+Does this need to be conditional on esdhc_is_usdhc(imx_data)?
+Seems like esdhc_writew_le() is used and drv_type ignored either way.
+
 > +
-> +	/*
-> +	 * TLB maintenance cannot be guaranteed correct for guests, so
-> +	 * disable KVM as if kvm-arm.mode=none was passed on the command line.
-> +	 */
-> +	kvm_force_disabled();
-> +}
-> +#endif
-> +
->  #define CAP_MIDR_RANGE(model, v_min, r_min, v_max, r_max)	\
->  	.matches = is_affected_midr_range,			\
->  	.midr_range = MIDR_RANGE(model, v_min, r_min, v_max, r_max)
-> @@ -1030,6 +1055,15 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
->  		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
->  		.matches = has_broken_gic_v3_seis,
->  	},
-> +#ifdef CONFIG_NXP_IMX8QM_ERRATUM_ERR050104
-> +	{
-> +		.desc = "NXP erratum ERR050104",
-> +		.capability = ARM64_WORKAROUND_NXP_ERR050104,
-> +		.type = ARM64_CPUCAP_STRICT_BOOT_CPU_FEATURE,
-> +		.matches = is_imx8qm_soc,
-> +		.cpu_enable = cpu_enable_imx8qm_err050104,
-> +	},
-> +#endif
+>  		host->max_timeout_count = 0xF;
+>  	}
+>  
 
-There's a precedent with 4311569 to wire up a SoC erratum into the CPU
-errata framework. That one is a system wide feature, so only probed once
-for the CPUs coming up at boot (though still probed for each late CPUs).
-For iMX, you need this turned on early, hence the boot probing. But
-calling it a strict boot CPU feature is a bit of a stretch. It also gets
-probed on every CPU, unnecessarily.
-
-I think we could do with something like below (maybe as a preparatory
-patch). We could also add it to 4311569 even if it changes its scope
-from system to boot CPU (the early param is available).
-
-Only compile-tested and haven't tried wiring up your workaround:
-
--------------------8<-----------------------
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index 4f04ad82ea34..669f808e379e 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -266,6 +266,13 @@ extern struct arm64_ftr_reg arm64_ftr_reg_ctrel0;
- #define SCOPE_BOOT_CPU				ARM64_CPUCAP_SCOPE_BOOT_CPU
- #define SCOPE_ALL				ARM64_CPUCAP_SCOPE_MASK
- 
-+/*
-+ * matches() is called only once, when the capability is detected, and the
-+ * result applies to all CPUs. Secondary and late CPUs are not checked for
-+ * conflicts but cpu_enable() is still called on each of them. It has no
-+ * effect on SCOPE_LOCAL_CPU capabilities.
-+ */
-+#define ARM64_CPUCAP_PROBE_ONCE			((u16)BIT(3))
- /*
-  * Is it permitted for a late CPU to have this capability when system
-  * hasn't already enabled it ?
-@@ -293,6 +300,13 @@ extern struct arm64_ftr_reg arm64_ftr_reg_ctrel0;
-  */
- #define ARM64_CPUCAP_LOCAL_CPU_ERRATUM		\
- 	(ARM64_CPUCAP_SCOPE_LOCAL_CPU | ARM64_CPUCAP_OPTIONAL_FOR_LATE_CPU)
-+/*
-+ * SoC (not CPU) errata workarounds. The erratum is probed once on the boot
-+ * CPU, before the secondary CPUs are brought up, and no secondary or late CPU
-+ * can conflict with it.
-+ */
-+#define ARM64_CPUCAP_SOC_ERRATUM			\
-+	(ARM64_CPUCAP_SCOPE_BOOT_CPU | ARM64_CPUCAP_PROBE_ONCE)
- /*
-  * CPU feature detected at boot time based on system-wide value of a
-  * feature. It is safe for a late CPU to have this feature even though
-@@ -414,6 +428,12 @@ static inline bool cpucap_match_all_early_cpus(const struct arm64_cpu_capabiliti
- 	return cap->type & ARM64_CPUCAP_MATCH_ALL_EARLY_CPUS;
- }
- 
-+static inline bool cpucap_probe_once(const struct arm64_cpu_capabilities *cap)
-+{
-+	return (cap->type & ARM64_CPUCAP_PROBE_ONCE) &&
-+	       !(cap->type & ARM64_CPUCAP_SCOPE_LOCAL_CPU);
-+}
-+
- /*
-  * Generic helper for handling capabilities with multiple (match,enable) pairs
-  * of call backs, sharing the same capability bit.
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index e0c09402540c..a418e240ccce 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -986,7 +986,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- #ifdef CONFIG_ARM64_ERRATUM_4311569
- 	{
- 		.capability = ARM64_WORKAROUND_4311569,
--		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-+		.type = ARM64_CPUCAP_SOC_ERRATUM,
- 		.matches = need_arm_si_l1_workaround_4311569,
- 	},
- #endif
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 84053f0a8e01..0e4c3de78c1d 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -3695,8 +3695,11 @@ static void verify_local_cpu_caps(u16 scope_mask)
- 		if (!caps || !(caps->type & scope_mask))
- 			continue;
- 
--		cpu_has_cap = caps->matches(caps, SCOPE_LOCAL_CPU);
- 		system_has_cap = cpus_have_cap(caps->capability);
-+		if (cpucap_probe_once(caps))
-+			cpu_has_cap = system_has_cap;
-+		else
-+			cpu_has_cap = caps->matches(caps, SCOPE_LOCAL_CPU);
- 
- 		if (system_has_cap) {
- 			/*
