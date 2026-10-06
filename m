@@ -1,178 +1,294 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013013.outbound.protection.outlook.com [40.107.201.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110C83E40EB
-	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 10:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791283997; cv=fail; b=o0bAODQkDcx5dCsrSWdLZyG/LkLvozkyyN+HCAwiDa+najnHvvCMWjbZoOvoMZ5kpPTjDEFw0+OH4+aRVSjpeq57+vBKGc9xjPw8pCu9PFgyYvx/0ZKpw4lyLR8YWWPpdg4tVVHlu337yCQkVP999uS1vqP7Vw3emhe+v6uWoaQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791283997; c=relaxed/simple;
-	bh=uPZYYXf5r/uasy6gx3mXXNCWr4RoEQoYhASJoM3YLOs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TFS8kOdMxLuu2YaSQo4YDGqdMxWQYX43vf70cQpaSW9VTJk3CRy5J31YZI6luvT5C8B1f4VeZNPGAIw73GUB5p+YvWe1A6nMdMstU5R7wN9EH53CqKWDqu3wWesB2+xAE1QGVrO/Ze2Jt0sNqkewPBFSxf0nW57L+yicFqQe/FM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=gfM8Ggzc; arc=fail smtp.client-ip=40.107.201.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AB23DD871;
+	Tue,  6 Oct 2026 11:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791285531; cv=none; b=aD9CjFPrgoomk7NyFeoZ2UsSBOHqqGPzHx/GjOSdzTQyg1RSLKk7HRSzDZTi/2VcZVcF7cWbA7Fya0Gqb2smA80gernItJjq9A3c3bSt74FACHnJyiybomrietviC85j/yEHTg96hJHzAcRVivTQlgqzUZMvfedYDkQ7v9Q5Bmo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791285531; c=relaxed/simple;
+	bh=J0aYmzl4Bca+kxxzx5CT2dAYF56mfLYy3OaN1LrAIjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BcvN9KB4s2Px3H2TrhvEZywa7U6iQqR96gjmKrTDqEA9IX3OPxPMn/urxz46cE3uxEKRFdrd5FFdxK4hkXvqST1O8S/ncF2F/hXbV0EvE1cGoNLmT1DX0yHJQmSymeD7IwkW3agzyrOSH/MxWnEcEW5NMMHXSKHLT/XBgdRyy+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RZ5hdLhD; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="gfM8Ggzc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qGCIg+UAlYDxl/KlFD7DPTc1D9q8bdMleBwNumgJfwltQFNlxZtFokAjejjhNqwAMhfpC0dmQJTXgs8NYZsRitwXPpJkZO61JtpAejD/WfSyySLzf4KXqmLrbExDbAoyAOvpMU6687ijeQGUJmRF7qY8NQjOUP4B+5Qeepxl5f43+AAMDCIhidMMdzyMPuMBmKXowNFwjJBcpSTgjMeReKVDbpyCkJ+1swkfbETaYkYZY+SOyXflVWzwIwJBtPzcXJ02knL3baa9qoJfVrgX03hdGiNpH4icjljYAgwzX/JRs/2RbVSB/lOL2vVWU+Ss76NcxMDD7Mcopw8QsHiiXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mSgi5zuM2XAqa42vQT6O2w/3Bh2HnoxcNEP2kmrFSoM=;
- b=jKiTUdrKTGbaT3YPgZJiKqSMbH6Pq/hUmIpTqZ4wcodYCqfehp26tCf0cdH0fQtq7F6BIA+mpcN/PBNTYXzMjqwANHFyhAvB7lv3IoXBNdV/gZRc5841o5VDO8Q0MWy7g6lxNtFaVcLGGS9mCfEnILBu7cFREo6L8e59GY3GFnhAUnwK1M9uXJvpq7/9tQqdzMlOJIWIA6kdIUm7yts3l1PhrM8xKxVz4D/78MscMStwRtqtqcovwQLFKTPTQQYx0O2+mefVtUeABzpuEL9JLzT4/+O2/M7ulS0xYPqX0N0DlzfQeShpi0WgH35XwrIjh4OYXM97EArpxwXgV4dxCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 165.85.157.49) smtp.rcpttodomain=lists.linux.dev
- smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
- pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
- not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mSgi5zuM2XAqa42vQT6O2w/3Bh2HnoxcNEP2kmrFSoM=;
- b=gfM8GgzcuaaTCjdzI2NTgO+cQE4v2XQYBHGHuB2/CqPfuQVEETyV7ZBDaubsnxvESxSpX8DIpLeqWWMJCjoOfO1IasJ0hmPScyVKQltH51KZTtrwHTC44AV/GCmMjc1y9iBGq8ajNEih29hrXx89HXKaKyb3LAUS9BfnD9S/wWlXLGD6UpVIdQei3rUKuf8ix+s2UE3rzXekp2f6NRUvafvpj+D88I89azyWPNzVr3YyIK2uAn5r2/v6xFzNJYu3Qoy5yTw1EgNDkPxQDc88iNSZMOAMoALZ9Xv0VhXc7OMron65rt67okgTmEFou009w1uWE+ntjLlj05PA9v5eiQ==
-Received: from BN0PR04CA0039.namprd04.prod.outlook.com (2603:10b6:408:e8::14)
- by BL4PR22MB6000.namprd22.prod.outlook.com (2603:10b6:208:5aa::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
- 2026 10:53:07 +0000
-Received: from BL02EPF0002992B.namprd02.prod.outlook.com
- (2603:10b6:408:e8:cafe::a3) by BN0PR04CA0039.outlook.office365.com
- (2603:10b6:408:e8::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Tue, 6
- Oct 2026 10:53:06 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=fail (sender IP
- is 165.85.157.49) smtp.mailfrom=gehealthcare.com; dkim=none (message not
- signed) header.d=none;dmarc=fail action=quarantine
- header.from=gehealthcare.com;
-Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
- not designate 165.85.157.49 as permitted sender)
- receiver=protection.outlook.com; client-ip=165.85.157.49;
- helo=atlrelay2.compute.ge-healthcare.net;
-Received: from atlrelay2.compute.ge-healthcare.net (165.85.157.49) by
- BL02EPF0002992B.mail.protection.outlook.com (10.167.249.56) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 10:53:06 +0000
-Received: from zeus.fihel.lab.ge-healthcare.net (zoo13.fihel.lab.ge-healthcare.net [10.168.174.111])
-	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id 4BEBB1A2D0;
-	Tue,  6 Oct 2026 13:53:03 +0300 (EEST)
-From: Ian Ray <ian.ray@gehealthcare.com>
-To: Haibo Chen <haibo.chen@nxp.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulfh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Kamal Dasu <kamal.dasu@broadcom.com>
-Cc: Ian Ray <ian.ray@gehealthcare.com>,
-	stable@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-mmc@vger.kernel.org,
-	s32@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mmc: sdhci-esdhc-imx: map unsupported driver type to Type B
-Date: Tue,  6 Oct 2026 13:53:00 +0300
-Message-ID: <20261006105301.996-1-ian.ray@gehealthcare.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RZ5hdLhD"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECE121516;
+	Tue,  6 Oct 2026 04:18:43 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A908D3F763;
+	Tue,  6 Oct 2026 04:18:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791285527; bh=J0aYmzl4Bca+kxxzx5CT2dAYF56mfLYy3OaN1LrAIjc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RZ5hdLhDyybGfQibMShr19Huoc4OLB+eoXXlg7amCRsxzOgV1zt1dFH/S0dhFJkgc
+	 rIFYwye7wxuuF+SdCgqKHuV8+tHKURuLoG+OFSMqph64rLv2vaGBHlM7+nTnpwaXg0
+	 NO8CPkXvVECFbdhIjvjb8OSJwJynk/APt9d+RyAE=
+Date: Tue, 6 Oct 2026 12:18:42 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Frank Li <frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v4] arm64: errata: Add NXP iMX8QM workaround for A53
+ cache coherency issue
+Message-ID: <asTZEhzMDs869r_n@arm.com>
+References: <20260824-imx8qm-cache-coherency-v4-v4-1-b2e528c7d05e@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992B:EE_|BL4PR22MB6000:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 47af5cc9-5270-4aa2-0673-08df239800ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|82310400026|36860700016|56012099006|11063799006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	mDC1jBwK4bG3pLxYwTwfK83xpmCFXgfBbEcbtt73aXMk2v3cWwi9U3ZJAQ/lojqZAAi2ALMbRpSwffK3zNggX/SLWGB4efxNrJ/ZvA2/OwewMnE9sfgzddN+vitH8hYIMgD/eH8vmk9ca7eNx8+8DFrTbe6McPhnSVcX4TY6+7AGgQEleXS/aNVRvqvBxGP80CLhsqrcKFyIdcXWk6Njjuxiso2Uake+5t3BN+L0hUSsAbWXgG9sjMNZKOG98bK82v3vDOgyKthxory27KJNMxhiCMZtIyOxpr03Rhi8WqK95gO1ufIamqCMwErsXMWvMe0FhPNtlyYmjXBEScorMBZPmdbrr/DfBHU822SMruLKggCr0+EVhh36Hi2Y2j7iYwUJRv+ExKK1SgEfDXbSJWGWAlLIYvDzfvl3QflH480G+NZ/t5aRlY52SlXR+HS8hPUzy1Bh87yPKNOysxqr1p8v8vbgQPcVoG5odNTW+O0qGTS0S2ESOqpbPHyofuleZ90f3bk+7rD7R09mZRV0U8iporlCKsX4SpRvnyvF8Fiez2ZASjn2/kVFJ0CNVcY42FQhQjJgzQhU0zqXoSNmLPDDwuI9o7fEu22pC83/+frHEQgr2ngyFqJyWtczVji/OMJX6EkcO17mJnxrZQpIYl7DZBj4qhtjCA73c0/g7c5rLLuOF3bJxO5DhQ9voue7kX9HKhf2frVskgjlZQQNVA==
-X-Forefront-Antispam-Report:
-	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:atlrelay2.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(82310400026)(36860700016)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ZLZNZW8mTTgSbWD9FPoVNkOvz4WewCFfe/hxPoqQOBxi13LWyqo55cx+HavDpPGvPeY3/w6nPxDcPyd0iB621eVNe/YNREw/Zz17CY3dCMfL5vn3Y6uUB5XxJtIvUHS05AC9zm4cSeqGGl7LSri9314ZSrUzgNRnNXX6qw1AX3CtnNzizfSJEpvuAmmLeUw94jr/wYUrL36CQo10fB8u0MdzGRBRDioIDbldQY6v8RYe1s5/cCT2QxHdmfzC2T178QSnfkenzszQZjHNUcleVWodbsMWyn5CS3B/mtbscSUaFTWLgQhN8LqJP56FW6ywusebYAbwu+C+wXZwkyTyEXt+FCIOQEx1WVy03A+N0RkAzK0KtnQyRKiV6koMX1LtBxO9hRuulkML4ef5Chk3PdpUNhKGbz4ax9/kwpG386BlhvygFpbRZYs0Sb7QCS8Q
-X-OriginatorOrg: gehealthcare.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 10:53:06.5177
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47af5cc9-5270-4aa2-0673-08df239800ec
-X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[atlrelay2.compute.ge-healthcare.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BL02EPF0002992B.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR22MB6000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824-imx8qm-cache-coherency-v4-v4-1-b2e528c7d05e@nxp.com>
 
-Since commit 5a52c5701a67 ("mmc: core: Fix host controller programming
-for fixed driver type"), the eMMC driver strength is passed directly to
-mmc_set_driver_type(), which propagates the value through ios.drv_type
-all the way to sdhci_set_ios().  For 40 Ohm driver strength [1], SDHCI
-correctly warns:
+Hi Peng,
 
-  mmc2: invalid driver type, default to driver type B
+On Mon, Aug 24, 2026 at 12:02:04PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> According to NXP errata document IMX8_1N94W[1], the i.MX8QuadMax SoC
+> suffers from a cache coherency issue (ERR050104). The upper bits, above
+> bit 35, of the ARADDR and ACADDR buses within the Arm A53 subsystem
+> have been incorrectly connected. This causes some TLBI and IC
+> maintenance operations exchanged between the A53 and A72 core clusters
+> to be corrupted.
+> 
+> The workaround requires:
+> 
+>   - Downgrading targeted TLBI operations to broadcast-all variants.
+>     Instead of patching the low-level __TLBI_1 macro (which interferes
+>     with the REPEAT_TLBI workaround and causes excessive over-
+>     invalidation), redirect high-level TLB flush functions
+>     (flush_tlb_mm, __do_flush_tlb_range, flush_tlb_kernel_range,
+>     __flush_tlb_kernel_pgtable) to use VMALLE1IS via static key checks.
+> 
+>   - Upgrading IC IVAU to IC IALLUIS for both kernel (via ALTERNATIVE in
+>     invalidate_icache_by_line) and EL0 userspace (via trap-and-upgrade
+>     in user_cache_maint_handler with SCTLR_EL1.UCI=0).
+> 
+>   - Disabling KVM since correct TLB maintenance cannot be guaranteed
+>     for guests.
 
-Hook ->set_ios() to map any driver type value outside of the SD-defined
-range to default Type B, so that SDHCI always receives a valid value.
+Do you need virtualisation on such platform? An alternative would be for
+the guests to be aware of the erratum as well and use the right TLBI/IC
+ops. But you'd also need to upgrade the VMID-aware ops in KVM (unless
+the hardware can't work around stage 2 TLBI at all).
 
-Tested on i.MX8MP (usdhc3, eMMC in HS400) with
-`fixed-emmc-driver-type = <4>`: the warning is gone and the HS_TIMING
-register contains 0x43 as expected.
+>   - No need to touch SMMU Broadcast TLB Maintenance (BTM) since i.MX8QM
+>     does not support broadcast TLB.
+> 
+> SoC detection uses devicetree compatible string "fsl,imx8qm" or
+> "fsl,imx8qp" since the boot CPU MIDR_EL1 (0x410fd034) and AIDR_EL1 (0)
+> are not unique to this SoC.
 
-[1] 'fixed-emmc-driver-type', see JESD84-B51 Table 206 and
-    Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
+That's fine but I wonder whether your hardware implements the SoC ID
+SMCCC. That would come in handy if some future revision fixes the bug.
+The DT string doesn't tell you version/revision.
 
-Fixes: 5a52c5701a67 ("mmc: core: Fix host controller programming for fixed driver type")
-Link: https://lore.kernel.org/all/20260926122908.866-1-ian.ray@gehealthcare.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
----
-v1 -> v2: Move fix from mmc core to sdhci-esdhc-imx driver per
-          review (see "Link:" above);
-          always provide a valid host driver type.
+> @@ -580,23 +584,28 @@ static __always_inline void __do_flush_tlb_range(struct vm_area_struct *vma,
+>  
+>  	asid = ASID(mm);
+>  
+> -	switch (flags & (TLBF_NOWALKCACHE | TLBF_NOBROADCAST)) {
+> -	case TLBF_NONE:
+> -		__flush_s1_tlb_range_op(vae1is, start, pages, stride,
+> -					asid, tlb_level);
+> -		break;
+> -	case TLBF_NOWALKCACHE:
+> -		__flush_s1_tlb_range_op(vale1is, start, pages, stride,
+> -					asid, tlb_level);
+> -		break;
+> -	case TLBF_NOBROADCAST:
+> -		/* Combination unused */
+> -		BUG();
+> -		break;
+> -	case TLBF_NOWALKCACHE | TLBF_NOBROADCAST:
+> -		__flush_s1_tlb_range_op(vale1, start, pages, stride,
+> -					asid, tlb_level);
+> -		break;
+> +	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_NXP_ERR050104) &&
+> +	    !(flags & TLBF_NOBROADCAST)) {
+> +		__tlbi(vmalle1is);
 
- drivers/mmc/host/sdhci-esdhc-imx.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+This assumes it doesn't run under any hypervisor with HCR_EL2.FB. I
+guess that's fine if this erratum renders virtualisation unusable
+anyway.
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 6ab59d3e346f..33f63c6dc8ce 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1142,6 +1142,14 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
- 	}
+> +	} else {
+> +		switch (flags & (TLBF_NOWALKCACHE | TLBF_NOBROADCAST)) {
+> +		case TLBF_NONE:
+> +			__flush_s1_tlb_range_op(vae1is, start, pages, stride,
+> +						asid, tlb_level);
+> +			break;
+> +		case TLBF_NOWALKCACHE:
+> +			__flush_s1_tlb_range_op(vale1is, start, pages, stride,
+> +						asid, tlb_level);
+> +			break;
+> +		case TLBF_NOBROADCAST:
+> +			/* Combination unused */
+> +			BUG();
+> +			break;
+> +		case TLBF_NOWALKCACHE | TLBF_NOBROADCAST:
+> +			__flush_s1_tlb_range_op(vale1, start, pages, stride,
+> +						asid, tlb_level);
+> +			break;
+> +		}
+>  	}
+>  
+>  	if (!(flags & TLBF_NONOTIFY))
+
+[...]
+
+> @@ -200,6 +202,29 @@ cpu_enable_cache_maint_trap(const struct arm64_cpu_capabilities *__unused)
+>  	sysreg_clear_set(sctlr_el1, SCTLR_EL1_UCI, 0);
+>  }
+>  
+> +#ifdef CONFIG_NXP_IMX8QM_ERRATUM_ERR050104
+> +static bool
+> +is_imx8qm_soc(const struct arm64_cpu_capabilities *entry, int scope)
+> +{
+> +	WARN_ON(preemptible());
+
+Not needed for a DT lookup.
+
+> +
+> +	return of_machine_is_compatible("fsl,imx8qm") ||
+> +		of_machine_is_compatible("fsl,imx8qp");
+> +}
+> +
+> +static void
+> +cpu_enable_imx8qm_err050104(const struct arm64_cpu_capabilities *__unused)
+> +{
+> +	cpu_enable_cache_maint_trap(__unused);
+> +
+> +	/*
+> +	 * TLB maintenance cannot be guaranteed correct for guests, so
+> +	 * disable KVM as if kvm-arm.mode=none was passed on the command line.
+> +	 */
+> +	kvm_force_disabled();
+> +}
+> +#endif
+> +
+>  #define CAP_MIDR_RANGE(model, v_min, r_min, v_max, r_max)	\
+>  	.matches = is_affected_midr_range,			\
+>  	.midr_range = MIDR_RANGE(model, v_min, r_min, v_max, r_max)
+> @@ -1030,6 +1055,15 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+>  		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+>  		.matches = has_broken_gic_v3_seis,
+>  	},
+> +#ifdef CONFIG_NXP_IMX8QM_ERRATUM_ERR050104
+> +	{
+> +		.desc = "NXP erratum ERR050104",
+> +		.capability = ARM64_WORKAROUND_NXP_ERR050104,
+> +		.type = ARM64_CPUCAP_STRICT_BOOT_CPU_FEATURE,
+> +		.matches = is_imx8qm_soc,
+> +		.cpu_enable = cpu_enable_imx8qm_err050104,
+> +	},
+> +#endif
+
+There's a precedent with 4311569 to wire up a SoC erratum into the CPU
+errata framework. That one is a system wide feature, so only probed once
+for the CPUs coming up at boot (though still probed for each late CPUs).
+For iMX, you need this turned on early, hence the boot probing. But
+calling it a strict boot CPU feature is a bit of a stretch. It also gets
+probed on every CPU, unnecessarily.
+
+I think we could do with something like below (maybe as a preparatory
+patch). We could also add it to 4311569 even if it changes its scope
+from system to boot CPU (the early param is available).
+
+Only compile-tested and haven't tried wiring up your workaround:
+
+-------------------8<-----------------------
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index 4f04ad82ea34..669f808e379e 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -266,6 +266,13 @@ extern struct arm64_ftr_reg arm64_ftr_reg_ctrel0;
+ #define SCOPE_BOOT_CPU				ARM64_CPUCAP_SCOPE_BOOT_CPU
+ #define SCOPE_ALL				ARM64_CPUCAP_SCOPE_MASK
+ 
++/*
++ * matches() is called only once, when the capability is detected, and the
++ * result applies to all CPUs. Secondary and late CPUs are not checked for
++ * conflicts but cpu_enable() is still called on each of them. It has no
++ * effect on SCOPE_LOCAL_CPU capabilities.
++ */
++#define ARM64_CPUCAP_PROBE_ONCE			((u16)BIT(3))
+ /*
+  * Is it permitted for a late CPU to have this capability when system
+  * hasn't already enabled it ?
+@@ -293,6 +300,13 @@ extern struct arm64_ftr_reg arm64_ftr_reg_ctrel0;
+  */
+ #define ARM64_CPUCAP_LOCAL_CPU_ERRATUM		\
+ 	(ARM64_CPUCAP_SCOPE_LOCAL_CPU | ARM64_CPUCAP_OPTIONAL_FOR_LATE_CPU)
++/*
++ * SoC (not CPU) errata workarounds. The erratum is probed once on the boot
++ * CPU, before the secondary CPUs are brought up, and no secondary or late CPU
++ * can conflict with it.
++ */
++#define ARM64_CPUCAP_SOC_ERRATUM			\
++	(ARM64_CPUCAP_SCOPE_BOOT_CPU | ARM64_CPUCAP_PROBE_ONCE)
+ /*
+  * CPU feature detected at boot time based on system-wide value of a
+  * feature. It is safe for a late CPU to have this feature even though
+@@ -414,6 +428,12 @@ static inline bool cpucap_match_all_early_cpus(const struct arm64_cpu_capabiliti
+ 	return cap->type & ARM64_CPUCAP_MATCH_ALL_EARLY_CPUS;
  }
  
-+static void sdhci_esdhc_imx_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
++static inline bool cpucap_probe_once(const struct arm64_cpu_capabilities *cap)
 +{
-+	if (ios->drv_type > MMC_SET_DRIVER_TYPE_D)
-+		ios->drv_type = MMC_SET_DRIVER_TYPE_B;
-+
-+	sdhci_set_ios(mmc, ios);
++	return (cap->type & ARM64_CPUCAP_PROBE_ONCE) &&
++	       !(cap->type & ARM64_CPUCAP_SCOPE_LOCAL_CPU);
 +}
 +
- static void usdhc_init_card(struct mmc_host *mmc, struct mmc_card *card)
- {
- 	struct sdhci_host *host = mmc_priv(mmc);
-@@ -1949,6 +1957,11 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 		 */
- 		host->mmc_host_ops.init_card = usdhc_init_card;
+ /*
+  * Generic helper for handling capabilities with multiple (match,enable) pairs
+  * of call backs, sharing the same capability bit.
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index e0c09402540c..a418e240ccce 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -986,7 +986,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_4311569
+ 	{
+ 		.capability = ARM64_WORKAROUND_4311569,
+-		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
++		.type = ARM64_CPUCAP_SOC_ERRATUM,
+ 		.matches = need_arm_si_l1_workaround_4311569,
+ 	},
+ #endif
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 84053f0a8e01..0e4c3de78c1d 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3695,8 +3695,11 @@ static void verify_local_cpu_caps(u16 scope_mask)
+ 		if (!caps || !(caps->type & scope_mask))
+ 			continue;
  
-+		/*
-+		 * Validate host driver type.
-+		 */
-+		host->mmc_host_ops.set_ios = sdhci_esdhc_imx_set_ios;
-+
- 		host->max_timeout_count = 0xF;
- 	}
+-		cpu_has_cap = caps->matches(caps, SCOPE_LOCAL_CPU);
+ 		system_has_cap = cpus_have_cap(caps->capability);
++		if (cpucap_probe_once(caps))
++			cpu_has_cap = system_has_cap;
++		else
++			cpu_has_cap = caps->matches(caps, SCOPE_LOCAL_CPU);
  
--- 
-2.47.3
-
+ 		if (system_has_cap) {
+ 			/*
