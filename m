@@ -1,121 +1,79 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364953DD847;
-	Tue,  6 Oct 2026 10:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3FF3B8128
+	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 10:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791281650; cv=none; b=I5V+XSAI7Ik3HUgqTgHApO4V3eBbhLrbtXD43mQxGsrxyMOirlnYf0P/sBmXw8lEYXReAVJrI9RI7iFkYVcN1mqPzU8n/KFQ9j3ejcdBT0QdkwdtN7nv7+elBo6SdKqjvyjQ3ZOUy13/NAnh6RWZvapdOrF5vdoS3czTN1gWhdo=
+	t=1791281811; cv=none; b=baZfm1yqEwcr64clwSgEL3OGfX+0Vn8ouSpCY3CWLmftE2dL8FXKRzcSeig6lqhwTLzo/Pe6h3hYwc1YX4gXU08f2sdStFvFv3LY24GhzP5HTgynDDEtZ3jTf4dCXtxNo5j94XG1LwrLwhtxiyeDlIjEIhad8GbgOAz7Wg2mKtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791281650; c=relaxed/simple;
-	bh=yTvrC4MeqwfkwAzuTb0LRj5KU6peCV3xDJhCJSLOJkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/pQJ9hr8elMT8c60ganPM3ppVApCu1kMNOBjy0jLJEJVsIS9J/kLU2/KDzG0tIcnqst0mfS5Ljk4tzH9aDLavPAaF26jaFtSC2LdnWJX5qxea9TBh1Qng4sHNDCQvKWYldeaZDSBDkaWvm2pmUwT3/9vos/0glSiTiN3qIhGVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Rgkt32MF; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1791281811; c=relaxed/simple;
+	bh=/yT5544sKHRC4UJIanLDlxMS/mhmwycCyd6tuBNwVOw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pQC4mhmprK9iWh0wr3ismTcb/U1mS9JRtrBngz6QpZGZxvPnww+1RpMq4I/b/Lob+dVaVH25QGNrvpVdLuZLvNWTYV3X7IoTuIspuJpBRBKUZPdPo9s7U5IUya/GxinLfbs9Gz/7n0D9rMm3T6CD5Y1SOsEfJzWeEzp74hOlwQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHNhDMlh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Rgkt32MF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=/MKRL/nN+GnLIL3zzwMXRu+DOLGuzft8SFSZnZqTRA8=; b=Rgkt32MFona3yOqeYiq4UlK3ms
-	XxAzvieLCpDSCcosPUId9noBDM1+GROWMAAP7YNEnlW3pcgK4l2ahv5PnzAX/XFaEpG8Ja2IU4IDx
-	Tuw1OzMuWUJnz0Sp0AcmAaPd/ubBQWFoYjnI2XjNeVum23nj7fOcki8VSAkwgwpwi5OldimqGkI0D
-	3tXtKQHRzruoVe4iQ8rGXwggSbFO/g7C5yKeVI7J1I1AqKOs0fhRqASk/CAJlw97UYL4PqcuCF3En
-	I2kGWR2upk0S4Wy7rnEZWseGcz7xsTcaI9KmuMxthiGXT5i4jI6SAhZnXFsYo9WzJ4on98hVDhRdH
-	pAFis36w==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xE2BQ-000Eyk-18;
-	Tue, 06 Oct 2026 12:14:04 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xE2As-000Bni-1D;
-	Tue, 06 Oct 2026 12:14:03 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] arm64: dts: imx91-tqma9131-mba93xxca: remove pullup from CAN pins
-Date: Tue,  6 Oct 2026 12:13:46 +0200
-Message-ID: <20261006101358.2189639-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261006101358.2189639-1-alexander.stein@ew.tq-group.com>
-References: <20261006101358.2189639-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHNhDMlh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253F31F00899
+	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 10:16:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791281810;
+	bh=/yT5544sKHRC4UJIanLDlxMS/mhmwycCyd6tuBNwVOw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VHNhDMlh1OA+rNA30dbudY3rH8vebR9Wx9qabq4ztv9HecddI3IyL2Gf54ZMtQws6
+	 51w+5F1mZnbP8fsgeUx0Kbcx4j5V9GZwhWFRaAoZb+2i7YQgBUosfmC8jkXsICK3a7
+	 Zq/t2e1k/FOcPfJZeB0eChDmqPd8DflBR0GVgPmYA+Q1kfLD+NwCSomOQkl4rDWJw/
+	 X+fFmJvdT6uIgsJApSN7U5cbeoj4hNxruosOgMISqmlz9I2+f6cn8YtMQVBF4s/jTu
+	 sWiZ+0K6a//ZCrC2gqcoEuot01UkrRv2AQ3LtpJGjvcdobP8TNO45fNX56P1e1wN8y
+	 uJIhuwijJCMag==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5ba37877490so330660e87.3
+        for <imx@lists.linux.dev>; Tue, 06 Oct 2026 03:16:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx77dafBHpS0k1RT47ACibhCVzN05S0W70wUbOJXsHnnJE2bq8iq9VmPD5YPMeSuAbyxbQ=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLof33S74CitqKmVIHq2jTh5fHf3K7RORzjRj0h4fmQY51Qzds5
+	ovz2PR1tzZSHERiuF4jIXlIdTa0r+p+3KUcLSfUOEpBsheO1t3zTiNTgoN4SFR+FzsuhhXnN1JU
+	3RlzXJFGYNtDAzcH8Y6Fq3PtJ55Y1brs=
+X-Received: by 2002:a05:6512:3b8a:b0:5ba:3c46:bc40 with SMTP id
+ 2adb3069b0e04-5bccc72009fmr448959e87.63.1791281808765; Tue, 06 Oct 2026
+ 03:16:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28145/Tue Oct  6 08:26:12 2026)
+References: <20261005-gpio-mxc-cleanup-v2-0-bdc3afbb35e2@nxp.com> <20261005-gpio-mxc-cleanup-v2-9-bdc3afbb35e2@nxp.com>
+In-Reply-To: <20261005-gpio-mxc-cleanup-v2-9-bdc3afbb35e2@nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 6 Oct 2026 12:16:36 +0200
+X-Gmail-Original-Message-ID: <CAD++jLk_1xMmHBH-H31KoS1=FXhqnMNSC6=kwVDAN-9DbaDEzA@mail.gmail.com>
+X-Gm-Features: AclHuK9V7e9CfZeeOp-0WXGtKf7q_zCnp_IeV6eED5pGDx-rwyMwOeYAwsAl9Gw
+Message-ID: <CAD++jLk_1xMmHBH-H31KoS1=FXhqnMNSC6=kwVDAN-9DbaDEzA@mail.gmail.com>
+Subject: Re: [PATCH v2 9/9] gpio: mxc: use BIT() macro for single-bit operations
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+On Mon, Oct 5, 2026 at 4:25=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.com=
+> wrote:
 
-Board has external PU, so internal PU are not needed.
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Replace open-coded '1 << n' shifts with the BIT() macro throughout
+> the driver for consistency and to avoid potential signed-shift issues
+> when the bit index is 31 (1 << 31 is implementation-defined for
+> signed int).
+>
+> No functional change.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Fixes: 4d0d3a3d1993 ("arm64: dts: add devicetree for TQMa91xx on MBa93xxCA")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- .../dts/freescale/imx91-tqma9131-mba93xxca.dts   | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx91-tqma9131-mba93xxca.dts b/arch/arm64/boot/dts/freescale/imx91-tqma9131-mba93xxca.dts
-index 3fb5bb71b6225..4a98cb0789c97 100644
---- a/arch/arm64/boot/dts/freescale/imx91-tqma9131-mba93xxca.dts
-+++ b/arch/arm64/boot/dts/freescale/imx91-tqma9131-mba93xxca.dts
-@@ -715,19 +715,19 @@ MX91_PAD_CCM_CLKO2__GPIO3_IO27			0x1000
- 
- 	pinctrl_flexcan1: flexcan1grp {
- 		fsl,pins = <
--			/* HYS | PU | FSEL_0 | DSE no drive */
--			MX91_PAD_PDM_BIT_STREAM0__CAN1_RX		0x1200
--			/* PU | FSEL_3 | DSE X4 */
--			MX91_PAD_PDM_CLK__CAN1_TX			0x039e
-+			/* HYS |FSEL_0 | DSE no drive */
-+			MX91_PAD_PDM_BIT_STREAM0__CAN1_RX		0x1000
-+			/* FSEL_3 | DSE X4 */
-+			MX91_PAD_PDM_CLK__CAN1_TX			0x019e
- 		>;
- 	};
- 
- 	pinctrl_flexcan2: flexcan2grp {
- 		fsl,pins = <
--			/* HYS | PU | FSEL_0 | DSE no drive */
--			MX91_PAD_GPIO_IO27__CAN2_RX			0x1200
--			/* PU | FSEL_3 | DSE X4 */
--			MX91_PAD_GPIO_IO25__CAN2_TX			0x039e
-+			/* HYS | FSEL_0 | DSE no drive */
-+			MX91_PAD_GPIO_IO27__CAN2_RX			0x1000
-+			/* FSEL_3 | DSE X4 */
-+			MX91_PAD_GPIO_IO25__CAN2_TX			0x019e
- 		>;
- 	};
- 
--- 
-2.55.0
-
+Yours,
+Linus Walleij
