@@ -1,172 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CC94A4984;
-	Tue,  6 Oct 2026 18:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95574A1396;
+	Tue,  6 Oct 2026 18:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791311954; cv=none; b=nm7LUjcRQ/+x/hxrRUWkc0PdH6ATmUBWm/nvlqYXTGoxRE8hM+hYvCJ5AG6Khxy1vOG0WBjRyzSrkbwRF0CPlvVMU42kSccn+adPGfIe6O16ZHPJ1yB78jyPsUsjg3PsubOS99IF7sKhQN5JPgs7c4JIRLjK9ZGRROlOsGn/kJU=
+	t=1791312492; cv=none; b=kXNPnmAXhee5U9JiBgPftelte2xxDoWjE8fHX0AlnICJqyeiAN/hDxVki0quqW2CKJebChirBs+Kl1D0Blz3PmFrQQxTQtlwF8gDZ+zzDrMRMvtdmlp0Uw6ry10jxiPiuvQQYKFKwxHH7T76HG4cn5XWcKpIM8MH5H51/aaBedo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791311954; c=relaxed/simple;
-	bh=SgYVEBbK9gokPeiiA7ouZX+NAJnfVYbgExuEMlh0ws4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYyAqZgNR4BnwvmjMFdU7iO+EP07F5tQB7htZV2dcOdJZjDw4mkKjXt2AqjegrxYdcQpJWzNsTX8ZbteuAzV9alqDhWIaQqr56kNyGI5RKCkDr5z1/2xO+pQfXWy5juGDtjME0GmJxlk9cBmU74gCAn0vBSuTjUxD10TM+I281k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gk6GjwcC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791312492; c=relaxed/simple;
+	bh=atcAMD4x7FkkNbPQPT4vitA5pLXLaUOh/xm5kgjNdCs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CyqMV6oosIB05e2i4AH07QKbP2k4v2qqTWp3ahsepAYuWOxaj284S3hGkS4tAXVtUpWsPn6g2nzPGVXU5MqDcAAbP9zW7XE1gAPCv7wd+2XjznwYDkSgKswi8Kfnj7LecPIsrZyJmd75Ybm1CEUsqugbbGN8BJnfw1jL33Es+Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=MGpurnpJ; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gk6GjwcC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC881F0089B;
-	Tue,  6 Oct 2026 18:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791311951;
-	bh=YnuOeuo/LodeBx6Sgln5fFHIlb9TcaUTmkgxnYAmmVo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gk6GjwcCcwF0BnSp+fwOsMz0okjMzU7Y/H0nrSZLiq3H85mI/+8VFmvi3VKF6fyoY
-	 xBCKO+AfsNCIyiZrJyvKwJ2Xjgg//Vo+gDM/ZiDDjDJqpcPoq5IHk5OQPGy4s+9HBE
-	 NYdVEAvQ0bTbspMPorb+92ddphVavQaAi2RaT4cduu2n+oGoZVnQu/ChThV8JbTPYm
-	 ZG5v6xaNhUuSefo2vtOiUTyzvwW+IxWn6UyyGeX+JzvBf2YKiQdy92Qk/Acb3A0Snw
-	 3qRPnljHIzJY07gIvWLxtyPGT2KUMim+rkeVEqIVSZYrb0QPORNVZE8dM6HaBYnwbD
-	 aLxOhdzU0sFRA==
-Date: Tue, 6 Oct 2026 13:39:10 -0500
-From: Rob Herring <robh@kernel.org>
-To: Francesco Valla <francesco@valla.it>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, virtualization@lists.linux.dev,
-	imx@lists.linux.dev, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 08/12] dt-bindings: remoteproc: add remoteproc-virtio
-Message-ID: <20261006183910.GA2890477-robh@kernel.org>
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-8-dac8c5eb4aa9@valla.it>
- <arKhbxi3Snbt1_Mn@p14s>
- <arLZj2DxBazf3wMd@bywater>
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="MGpurnpJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
+	MIME-Version:Date:Message-ID:From:Reply-To;
+	bh=PBhPGHM3H5YMCfWnb8Woct2TK8TsNUryiGGa4HNcke8=; b=MGpurnpJfTINoiGOqysYeO3pMC
+	41zjdsvjaVfZI5RRCloPL+BW/H+HopUPQZy4cwmQ9ZoFztC3hYQkXpOKdDtB+y9nxA4O7ym6MXaEg
+	Nxm4hC8TqED0cz7SCYV7RtJIzMcwQdGcjxjhd9JRyT1iISryZH8tf9ACa3TMP00SDPAuvTZU0WgPO
+	KOIAGHTgjn+GZnV2FhLSdWKwNyfBhZPcLIC3WWPuauxq2VqWGEexnlaRIVSdnncKQBEP2uk1okB1c
+	9IjqoXJar07r1mY9wSkzo99ijrUJNS/wytNJP2IW34d+RmrzaMZH4iq25caZBNH+XDHOonj/HvKId
+	1UWUUnCw==;
+Received: from [179.105.94.163] (helo=[192.168.0.2])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1xEACY-00DZne-5z; Tue, 06 Oct 2026 20:47:46 +0200
+Message-ID: <0bb880c5-2f40-4d63-bc4c-0e4a1c5b4fa6@igalia.com>
+Date: Tue, 6 Oct 2026 15:47:39 -0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arLZj2DxBazf3wMd@bywater>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] drm: use dmaengine API instead of raw function
+ pointers
+To: Frank.Li@oss.nxp.com, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+ "open list:DRM DRIVERS FOR TI OMAP" <dri-devel@lists.freedesktop.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: vkoul@kernel.org, imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+References: <20261002200620.230735-1-Frank.Li@oss.nxp.com>
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Content-Language: en-US
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
+ /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
+ gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
+ SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
+ G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
+ AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
+ dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
+ P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
+ O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
+ GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
+ 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
+ FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
+ TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
+ Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
+ 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
+ LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
+ T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
+ wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
+ zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
+ it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
+ Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
+ uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
+ raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
+In-Reply-To: <20261002200620.230735-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 22, 2026 at 09:44:20PM +0200, Francesco Valla wrote:
-> On Tue, Sep 22, 2026 at 09:40:31AM -0600, Mathieu Poirier wrote:
-> > On Wed, Sep 16, 2026 at 11:10:53PM +0200, Francesco Valla wrote:
-> > > Add a new binding to describe remoteproc-provided virtio devices; while
-> > > these are discovered through a resource table parsed by the remoteproc
-> > > infrastructure at runtime, their description can be needed to probe
-> > > non-discoverable buses (such as I2C) or to link consumers and suppliers.
-> > > 
-> > > Each vdev is described by a dedicated "group" node, which then includes
-> > > a virtio-device node, which binding is already existent and used by
-> > > virtio-mmio. Each vdev shall be stattically linked to a "group" node
-> > > using its index inside the resource table as the reg property of the
-> > > node; this permits to have multiple instances of the same type of
-> > > device.
-> > > 
-> > > The binding is intended to be generic and adopted by any remoteproc
-> > > provider.
-> > > 
-> > > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > > ---
-> > >  .../bindings/remoteproc/remoteproc-virtio.yaml     | 89 ++++++++++++++++++++++
-> > >  1 file changed, 89 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
-> > > new file mode 100644
-> > > index 000000000000..c4a0d84b1460
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
-> > > @@ -0,0 +1,89 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/remoteproc/remoteproc-virtio.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Virtio devices over remoteproc
-> > > +
-> > > +description: |
-> > > +  Virtio devices ("vdevs") can be exposed using the remoteproc infrastructure
-> > > +  and its resource table. For some of them, a device tree node might be needed
-> > > +  to describe remote undiscoverable hardware and/or connect consumers and
-> > > +  providers.
-> > > +
-> > > +maintainers:
-> > > +  - Francesco Valla <francesco@valla.it>
-> > > +
-> > > +properties:
-> > > +  virtio:
-> > > +    description: Contains a group of Virtio devices exposed by the remoteproc.
-> > > +
-> > > +    properties:
-> > > +      '#address-cells':
-> > > +        const: 1
-> > > +
-> > > +      '#size-cells':
-> > > +        const: 0
-> > > +
-> > > +    patternProperties:
-> > > +      "^vdev@[0-9a-f]+$":
-> > > +        type: object
-> > > +
-> > > +        properties:
-> > > +          reg:
-> > > +            description: Virtio device index inside the resource table.
+Hi Frank,
 
-Who/what defines the resource table?
-
-> > > +            maxItems: 1
-> > > +
-> > > +        additionalProperties:
-> > > +          type: object
-> > > +          $ref: /schemas/virtio/virtio-device.yaml
-> > > +          maxItems: 1
-> > > +
-> > > +        required:
-> > > +          - reg
-> > > +
-> > > +    additionalProperties: false
-
-Preferred to put this before 'properties' in the indented cases. Easier 
-to see what level it belongs to.
-
-> > > +
-> > > +    required:
-> > > +      - '#address-cells'
-> > > +      - '#size-cells'
-> > > +
-> > > +additionalProperties: true
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    remoteproc-cm33 {
-> > > +      virtio {
-> > > +          #address-cells = <1>;
-> > > +          #size-cells = <0>;
-> > > +
-> > > +          vdev@0 {
-> > > +              reg = <0>;
-> > > +
-> > 
-> > Do we need the 'reg' since we already have vdev@X?  I'll let the DT people
-> > provide their input on this.
-> >
+On 02/10/26 17:06, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> AFAIK yes, because the rproc_get_vdev_fwnode() helpers search for indexed
-> child nodes using the 'reg' property, not the node name. This I believe
-> is the preferred way of doing things.
+> Replace direct calls through dma_async_tx_descriptor and
+> dma_device function pointers with the proper dmaengine API
+> wrappers in vc4_dsi and omap_dmm_tiler.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-It is either both unit-address and reg or neither. It's preferred to 
-have them unless you are just making up numbers.
+For VC4:
 
-Rob
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+
+Best regards,
+- Maíra
+> ---
+>   drivers/gpu/drm/omapdrm/omap_dmm_tiler.c | 2 +-
+>   drivers/gpu/drm/vc4/vc4_dsi.c            | 8 +++-----
+>   2 files changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c b/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
+> index a2c702b831a7c..c5dd350f937f4 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
+> @@ -87,7 +87,7 @@ static int dmm_dma_copy(struct dmm *dmm, dma_addr_t src, dma_addr_t dst)
+>   		return -EIO;
+>   	}
+>   
+> -	cookie = tx->tx_submit(tx);
+> +	cookie = dmaengine_submit(tx);
+>   	if (dma_submit_error(cookie)) {
+>   		dev_err(dmm->dev, "Failed to do DMA tx_submit\n");
+>   		return -EIO;
+> diff --git a/drivers/gpu/drm/vc4/vc4_dsi.c b/drivers/gpu/drm/vc4/vc4_dsi.c
+> index 0148f2befed14..b1626c2d3a582 100644
+> --- a/drivers/gpu/drm/vc4/vc4_dsi.c
+> +++ b/drivers/gpu/drm/vc4/vc4_dsi.c
+> @@ -628,16 +628,14 @@ dsi_dma_workaround_write(struct vc4_dsi *dsi, u32 offset, u32 val)
+>   
+>   	*dsi->reg_dma_mem = val;
+>   
+> -	tx = chan->device->device_prep_dma_memcpy(chan,
+> -						  dsi->reg_paddr + offset,
+> -						  dsi->reg_dma_paddr,
+> -						  4, 0);
+> +	tx = dmaengine_prep_dma_memcpy(chan, dsi->reg_paddr + offset,
+> +				       dsi->reg_dma_paddr, 4, 0);
+>   	if (!tx) {
+>   		drm_err(drm, "Failed to set up DMA register write\n");
+>   		return;
+>   	}
+>   
+> -	cookie = tx->tx_submit(tx);
+> +	cookie = dmaengine_submit(tx);
+>   	ret = dma_submit_error(cookie);
+>   	if (ret) {
+>   		drm_err(drm, "Failed to submit DMA: %d\n", ret);
+
