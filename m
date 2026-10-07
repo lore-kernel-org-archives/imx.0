@@ -1,96 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494B64825CB
-	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 11:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40173D812D
+	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 11:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791371876; cv=none; b=tzoz4BtUAOFacl7UgHp0Q/Mb6k3A4p+HPUHNkbfni0D80TP8XXfCMvt5Wnf+cIweIW+yuxwF3N+tshZETARSxgXeQ99f+IwYvi2yE41I6b20QYI38RDi6YuR6wUgZe4S3TMwv/Vtw79QhTbnPPkaZW2zrFJpXjvoRdhUyta9kg8=
+	t=1791372206; cv=none; b=a2qxtU5j1tqkZGKipYn6d6PJxYqt+9xhNfdE3JUP59cfqOmm0QRck1QTpuDL1+iLyEhBm/SM1cdykdZzQrDSWiWSDBZkwip8nsBFQWOXkWMTVuvdod/j/GdcKpcVJYKAHtuzDlGjpsv4pp5y+QC8e31FPZdfj3ZQgTg5sgOO3C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791371876; c=relaxed/simple;
-	bh=9iWF+2k9j/V1bncQePbeK9Xh0Y7J4Zk4ncvSD7lE4g4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZeQ+iZpdMPam1eVZ+YgpAdqWw+31bnXWZQ2fE/pTUdwzWQXnPkMRmm8kSC0vPCTMDuDXihE4h2zNMpUcNs0sPNLeywsFs1AUmoXejRsqB9GiWyFMp9wZjY9hm40KzPRCJ7WZTivSao3fpF9tdLJysiqbPx+MkZcpmUkrChq/CQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bhI/A3MF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791372206; c=relaxed/simple;
+	bh=h8d/UDxIiosp7oKyeZyf8gbt0wo0wMFoYO35PxF2CZg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PeZO7xpqkblxrDAuHkqdR8Bj9fcvDeq/8hMNu1ZB1HkWwtJAYUYnYMNYyOkRKwLSVs7YUBXyVUOSez2u9SN/Zu7SAFnT5ovDc34r0tLyiKYdXjUl7+tKMmUhdDizbA4GmgF29gKuHgdLCWNXJew/jMqSKyLoYzTfLAE2+llB4Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BX2s35zm; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bhI/A3MF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929A31F0089C
-	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 11:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791371856;
-	bh=9iWF+2k9j/V1bncQePbeK9Xh0Y7J4Zk4ncvSD7lE4g4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bhI/A3MF4J0vNjSVGIxRV/vIYHjyi3kdn07CFLD7AkEg98TtTGDtU62NJHNFEN/qm
-	 ViMZqu+R81HWoMzUo96YzsHjeHEdQWXxnGoiA7ulmQZUaYqfr0KCiheqAVOlb2TFzs
-	 hHFewDn3BzcNh+R6HvrB8nVo0r0WABmxi/GawMl0TKrA1meI2W0lo1WbNUVEdPo3/Q
-	 /fTVlavELpUnz+TxU8knbAVHhHxmQA40Q5ajHirQfN2N6jFg6LKDT26OSOk8EFDcpR
-	 ipYmllBzZdaw1ZCDhfBBlEwiQo/9pIpBGZZ35IzFaD21xZVmS1L3Q8X0CA/wHqQ+0I
-	 HZ3J7f8p2GDgA==
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-49dee4c5427so1587147fac.2
-        for <imx@lists.linux.dev>; Wed, 07 Oct 2026 04:17:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwe6qlMwr1ois+7AAHpe0rx/2KwDtixYeEza3JrQFwGKBeFxT68fggzUR9W3loEwYpPQKg=@lists.linux.dev
-X-Gm-Message-State: AFuF++kEd30FFuBuPgisJpCCOu3f693FulRfE80ZdeLYdi+a6hdAjxpD
-	IWNIizPSxlXynXK+C9GUde2Q5QYdU5grQJpGYsxptu5RV6V9L4ZEq4nFwxNmlVXHBYSQhzowdkX
-	cJVNh7DK6anTwH6VRXchrSOxemH0mHJc=
-X-Received: by 2002:a05:6870:c193:b0:49d:d2cd:67f3 with SMTP id
- 586e51a60fabf-4a2597076f5mr1839969fac.49.1791371855820; Wed, 07 Oct 2026
- 04:17:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BX2s35zm"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DC5174E41117;
+	Wed,  7 Oct 2026 11:23:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 91A8E6074B;
+	Wed,  7 Oct 2026 11:23:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90EDF11D5011B;
+	Wed,  7 Oct 2026 13:22:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791372180; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=PvKbS35WCOo741y4COP9Dw8++nPpWhukTi3m3k0URa4=;
+	b=BX2s35zmkef7Sd0hozR3MEerPUh9PNugMMxhrJSYacDtHw6B6CaRddr7h/Vj4ELoYsW2PX
+	dNfWX5KT0tPIYItO/7rQaJOqTGzOHCcAxzfznmT2WeF8PmBUBNiGlDXCjgSp7H8kba0se7
+	bAX0oUvspDTjjIc3zY6v2GBf1PMzIuzoWI/mn7RCgtg7efTOgMYjJDvHqIXA4PLsDrdOnf
+	bL/bxb7yDYjl0Gyz4KPA0uLBvD0RfrprksbARuYMz+KXXL+gvZBBDbedjC3D2MHsRrsyL1
+	QcuG5IvKuwJPX2GbuKjw74wU7rms2yhkwyB5NYbReYAdv1Lq9dJ9/ugjJqNvNw==
+Message-ID: <a259892d-1b6b-4caa-82d3-ba24efd5a409@bootlin.com>
+Date: Wed, 7 Oct 2026 13:22:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261005-scmi_bus_fixes-v2-0-34a51338875a@kernel.org> <20261005-scmi_bus_fixes-v2-3-34a51338875a@kernel.org>
-In-Reply-To: <20261005-scmi_bus_fixes-v2-3-34a51338875a@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 7 Oct 2026 13:17:18 +0200
-X-Gmail-Original-Message-ID: <CAD++jLkXDbRRCjSREYvFWy235wm3NnrJembGG=AW22ydW9o+9A@mail.gmail.com>
-X-Gm-Features: AclHuK_X36kw7cGl6aPVuSMhUZsTQjMCbHVjKMBdB6tTAhR1mtf3ophJkl6YKXA
-Message-ID: <CAD++jLkXDbRRCjSREYvFWy235wm3NnrJembGG=AW22ydW9o+9A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] pinctrl: imx: Match the standard SCMI pinctrl device
-To: Sudeep Holla <sudeep.holla@kernel.org>
-Cc: arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Cristian Marussi <cristian.marussi@arm.com>, Peng Fan <peng.fan@nxp.com>, 
-	Hans de Goede <johannes.goede@oss.qualcomm.com>, imx@lists.linux.dev, 
-	linux-gpio@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	NXP S32 Linux Team <s32@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net 0/3] net: freescale: fix PTP_EXTTS_REQUEST2 for QorIQ
+ 1588
+To: vjardin@free.fr, Yangbo Lu <yangbo.lu@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
+References: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Oct 5, 2026 at 11:06=E2=80=AFAM Sudeep Holla <sudeep.holla@kernel.o=
-rg> wrote:
 
-> Use the standard "pinctrl" SCMI device name instead of the i.MX-specific
-> "pinctrl-imx" name. Standard devices no longer have exclusive request
-> tracking, so the i.MX and generic pinctrl drivers can register for the
-> same protocol/name pair. Their probe checks select the appropriate
-> driver for the platform.
->
-> This solves the issue that occurs when both "pinmux" and "pinmux-imx"
-> devices that share the same fwnode as only the first device registered
-> is assigned as the owner of the fwnode. If this owner device fails to
-> probe (e.g., its driver is blocklisted or missing), it never reaches
-> the driver_bound() stage and the system skips cleaning up its supplier
-> links. Even if a alternative device binds successfully, the system
-> still looks to the broken original owner. As a result, all dependent
-> hardware components (I2C, SPI, UART, USB, MMC, PCIe) defer probing
-> forever, halting the boot process.
->
-> Note that the solution doesn't support same fwnode being shared by
-> multiple devices and associated fw_devlink feature.
->
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: NXP S32 Linux Team <s32@nxp.com>
-> Cc: Linus Walleij <linusw@kernel.org>
-> Reported-by: Peng Fan <peng.fan@nxp.com>
-> Closes: https://lore.kernel.org/all/20260928-driver-core-v1-1-0846bb8e0f3=
-2@nxp.com
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Tested-by: Peng Fan <peng.fan@nxp.com> #i.MX95 EVK
-> Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 
-Acked-by: Linus Walleij <linusw@kernel.org>
+On 10/6/26 15:34, Vincent Jardin via B4 Relay wrote:
+> Since commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags
+> to ptp_clock_info"), the PTP core rejects every PTP_EXTTS_REQUEST2
+> request for a driver that does not set .supported_extts_flags. The three
+> users of the QorIQ 1588 (dpaa2-ptp, enetc, ptp_qoriq),
+> so linuxptp ts2phc cannot arm their external timestamp inputs.
+> 
+> The timer timestamps the rising edge only, since ptp_qoriq_init() clears
+> ETEP1 and ETEP2. Each patch declares PTP_RISING_EDGE | PTP_STRICT_FLAGS
+> for one driver.
+> 
+> Patch 1 fixes the failure seen on an LX2160A board.
+> Patches 2 and 3 are build-tested/code review only.
 
-Yours,
-Linus Walleij
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+
+Thank you!
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
