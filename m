@@ -1,100 +1,71 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C8747988B
-	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 12:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FC4448B9D;
+	Wed,  7 Oct 2026 12:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791375145; cv=none; b=FmE52+m2+alPGNIwCSxU2oiUfnmNGedGVrFZTf7emuJX8TNoR9JYKnTfb3KqOVBNWKD85Z9le/FsXladSSABZZjTUy+7JEqeLFtQx09DQ/2pDE9BdhIF1VzHcwzv8954SbUmGec9ylJlEhntha0LZyGTYKvGL96EJ4T5rwqNJC0=
+	t=1791376057; cv=none; b=abH0f4apXQKWgCSDz/twOFoOyKLs8Y+NK3wsGlKaabx74HTnq3NYAxQOEnWJD1KkFc8ew+qzuP05KQdgj+LKdAfAoPgxumHC9Y4AlU70chkC6ytxxzR1sUoQOY+dE7uwJ3qPcM0zzJo986eu46wu8Rd6OaknzhNCKXEW4WeGeds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791375145; c=relaxed/simple;
-	bh=wRWQ7LzxR+qE9K0X/3LPbfZWgu+PU3OUzzI7kLU7aSU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OvPWhiJD9tHKP3hKQnUDJwLvHE4aNjVcK7a1YQ787Ltu2KbzRfYXYM0oYP9QmCxnMz99kON9FBFn6wj2kONP+QJoG+vSR9rxHXQiB4dyOP4M1Tc1tekJ8YAE8tz9UX64rUN65dEQ+HxZy+xdafZWSq6wUSu+rZ4auZ8PjYqhACA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CKh025rS; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791376057; c=relaxed/simple;
+	bh=U6GyF6lRYjgCEWmvhFJzyWk0fj3jt82DEmRclZ2q0GE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bnB5PsLkTbiGHThmqRnR+PXLoyGEGbCITYqBDjo+UXg1UQJTippX4LbqArh/iZntjwxtB5VxI8caGMfl/kJ0ddsPnkMqixCec1uBsU9+tRUsfcxdaY1yanNYzZKu6p4zqlTRBfMPjp2MffyrRrq1C6zsI8hFJ9fds8+Ym6MNOy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rjbxcm2+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CKh025rS"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id EDC6B4E41117;
-	Wed,  7 Oct 2026 12:12:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B0B8C6074B;
-	Wed,  7 Oct 2026 12:12:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E4F7811D5125C;
-	Wed,  7 Oct 2026 14:11:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791375124; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=GUtOegaKaEuoYIe2gUZnPLzIbi1AdAO1i885UCYWnOw=;
-	b=CKh025rStRMBgZIVwBBXXj0sJ15EK70JxNCCPgLoxkdy2JWTZb0xNXJF432x3eRKRxezBx
-	pu9f+f3RpPSPCxIlAifyuScZNFYWv4XpEAzOXBt8b+YR6coMz9qBpAmqYKPlyWWye8LCRh
-	uFycpdgAKtcSHfqntQt5C8ShN1FXT7GwuV6dC0P/Lw1aQyNebkHFwIAU5UH7bv0eTa8cVT
-	omepT2dvoc17fz/FRRRvBWgB3pJjKvF+ZkV1Cty9APpqkNbY3yd1SQ7jBQrCCc3yycqUGe
-	S47LnapQECD9rebkrfAqEtAa3J9YgJ3ls2imv7nrA+P6/kFWl4WKGMJhB72naA==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 07 Oct 2026 14:11:53 +0200
-Subject: [PATCH] drm/imx/lcdc: fix inconsistent indenting
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rjbxcm2+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dufBJ1mHa9n28EXq+40OD+8yYER3Wv9RK13RjqUDC34=; b=rjbxcm2+M8g/K9G5qLyXzzB379
+	mBG2qOMUB8XtymbdtE/8ricwS3GhO6KFjeOsRkhasqG6ARBerQaBoxHe/7fWOHvRu7U8KQZ6jJ0RI
+	JBL1CySC5s5qmEbWJruIEk13OopzQ3rV/YvYsevFmV1E4W9gDgvYmkgX42taSIg1kyo8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xEQk0-009SAY-4M; Wed, 07 Oct 2026 14:27:24 +0200
+Date: Wed, 7 Oct 2026 14:27:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aldo Ariel <qwe.aldo@gmail.com>
+Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	sashiko-bot@kernel.org
+Subject: Re: Re: [PATCH net v2] net: fec: reject oversized fragments before
+ bounce-buffer memcpy
+Message-ID: <36643418-851b-4cbf-ab73-8e3fa09f8715@lunn.ch>
+References: <a230cd62-db31-4128-acfa-93501d30aa39@lunn.ch>
+ <CAP48HfuR9_d2KZ7ygG4fMq5ekSb2zaaiEzo_fq_mOWODN5Os6A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261007-drm-bridge-imx-lcdc-indentation-v1-1-3bcf98f3951e@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWN0Q6CMBAEf4Xcs5eUihD9FcNDaVc9I9VcKyEh/
- DtFHyeTnV0oQQWJLtVCikmSvGOB+lCRf7h4B0soTNbYtjam46AjDyphN+PMLx88SwyI2eWyZXv
- uTmgauBZHKpWP4ibz7+Ha/zl9hyd83rO0rhssPO7ogwAAAA==
-X-Change-ID: 20261007-drm-bridge-imx-lcdc-indentation-2975e44ea6e3
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel test robot <lkp@intel.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP48HfuR9_d2KZ7ygG4fMq5ekSb2zaaiEzo_fq_mOWODN5Os6A@mail.gmail.com>
 
-Fix incorrect indentation introduced by mistake while fixing patch
-conflict.
+On Wed, Oct 07, 2026 at 05:17:20AM -0700, Aldo Ariel wrote:
+> Hi Andrew, Wei, Shenwei,
+> 
+> Thank you for the review. Shenwei confirmed that bounce buffers are
+> only available on i.MX28 and cannot coexist with jumbo frames. That
+> means the overflow path I described (jumbo fragments exceeding
+> FEC_ENET_TX_FRSIZE) is not reachable in practice: on i.MX28 the
+> max_mtu stays below the bounce buffer capacity.
+> 
+> Given that, should I respin as a defense-in-depth guard (with the
+> goto label fixed per Wei's note), or would you prefer I withdraw the
+> patch?
 
-Fixes: 4136a58ced8e ("drm/imx/lcdc: stop using deprecated devm_drm_of_get_bridge()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202610060513.s5yUX86m-lkp@intel.com/
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I suggest adding a comment somewhere to explain that jumbo frames and
+bounce buffers are mutually exclusive by hardware design.
 
-diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-index 0f95b5592980..30469f98acd1 100644
---- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-+++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-@@ -542,7 +542,7 @@ static int imx_lcdc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(drm->dev, ret, "Cannot attach bridge\n");
- 
--lcdc->connector = drm_bridge_connector_init(drm, encoder);
-+	lcdc->connector = drm_bridge_connector_init(drm, encoder);
- 	if (IS_ERR(lcdc->connector))
- 		return dev_err_probe(drm->dev, PTR_ERR(lcdc->connector), "Cannot init bridge connector\n");
- 
+We don't use defensive code, because that suggests we don't actually
+understand the code!
 
----
-base-commit: 5d7b464a4f517d1db533b1b231f42ddcf4e1dff4
-change-id: 20261007-drm-bridge-imx-lcdc-indentation-2975e44ea6e3
-
-Best regards,
---  
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+	   Andrew
