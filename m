@@ -1,125 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CC736F90C;
-	Wed,  7 Oct 2026 14:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1F14BD78C;
+	Wed,  7 Oct 2026 14:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791381744; cv=none; b=aMqROrHqRIDiyFyul3pB8FztjD8evZqx/R8jCyL6fUDgjOIqUJBWm5uRqeb2RFyClxZ8NrFc/QjRPpcFbtDsKCJ3o6yl0F8T3DOpCv3bUlk4up4Fm5akoD5HyHbIZRqiFNn39k4U+dHa2FBqv/0ykXVelGFjSemSmy8/0sRhWhU=
+	t=1791382947; cv=none; b=SwiOS9I6NVbHAPNojqx0cOJMSXRSa2Oddo7QhTxF4A1EXmQ57OW/wHsF48cn3pw/KLMd71yfe0cU0pNaSUG/gOVZDWfKYY/4Jm0Api37KClrcsUor/gsCUrEf4xxMU5wB1NLWL45ujmUHp5tTw/iDUCcC1m2ddDn6x2IKWG6sPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791381744; c=relaxed/simple;
-	bh=olSRUiCBtWt4Fm6jAGRods0yqX5aB1afznh1v6MYuAI=;
+	s=arc-20240116; t=1791382947; c=relaxed/simple;
+	bh=R6oSdPTY5e89KgcREP3UwqYI1AViHqSYt87uxgdvNOc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DOJSzaoE9JRxlxMfJoOOznGvA1LmFLaY4XvaAfpXp0rAgAe7mfAWT/gpno2PAcCpkl5KCc6nwS4BuRkwBi3c+tk6CcPs4erYX6XfOIrMM2ZdYXGMqMTvlHY+N1FeLfzL6Umxj9RtfSNyr6ClQXBl+rkXKSOCDV4CfQNKESc7tK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dh+P1RXb; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nlD2OvC74SV2ziSyt+Kfxxdspwg/klXbR/PRKYacrdqG7vN43qjtJc9vj7GlduuLq6TdHg6lKjqAAAyqltKFB4HKweKmJdUiw/nqgElALmqZITIgZwJA5INU0z4lY30+enEO4kgOR8VjJKp1+Ks29hyKeDotWG/qbLq68/syjuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=la54SX36; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dh+P1RXb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF1D1F0089B;
-	Wed,  7 Oct 2026 14:02:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="la54SX36"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AE71F0089B;
+	Wed,  7 Oct 2026 14:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791381735;
-	bh=Q11AWL/EPY/BIfVce6hC9e0RarRTo3nH7wZFJBgkAFk=;
+	s=k20260515; t=1791382937;
+	bh=B3TyTpfZLGpd+5ls3OsWuVN1piDNohC884542mzb1oA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dh+P1RXbYlDFbGN3suBP/RDNbylH2oJ6Gms2EMXYldoKY8E2nHzwHiFnEwdYs6W3l
-	 rzCIRKZL/2iqcKybG7RD0BwtEi/bq4DmkfqpcAlZLB4mbuYfEh1ZsU4gy05P5HOT2n
-	 NEY87qUfazr66eAYIt7kTX9znV4y6r4PtvY4BI1JE89teABSvP1yUye/8tBRlOKBS4
-	 zZ6QUo1bMqC7W/yvoZBKYDESwwmOVG8MQ6pnl/OjjxSxUYzvDH1LE7XN8/GU2GPNeS
-	 UcWsvKy6I+qmBNhd7oOvK5R+fgRjy1CWFelgmxhdKOuPc2onZzPCJxW8jy4vQhJ50K
-	 TiZM7D5W804PA==
-Date: Wed, 7 Oct 2026 15:02:08 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Ying Liu <victor.liu@nxp.com>, Frank Li <frank.li@oss.nxp.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	b=la54SX36x+HUdaXl9QXTXiJF2qnIikfyoukPUVUUes3kBSyBqvO/ylGOToiYdwwOY
+	 T6W5s2IIio08pehohBPSaXEA3RgPFTyehvxHYAbu4rS3tmFEMRvPTgbZMp+A+UTiaZ
+	 uN9BXnYJDVBZmdZdbqJr6w/o79y3obTQ5ReHBd+hLDIFqSidzH60q0HRMfdmqLDU1A
+	 6wpl2u+D7Y+DMgBJffZbSUazIPQaGlsn698Ack5f0KwH5zTrLPKznF9/PftfyihRb8
+	 hi6AICOfiJ2p6acNdxd32kqdrMIpYbU3ObK03t43kQVGL0Gh/MRsQ4ckn26/hoYOvT
+	 Bo3PS6u9lfY0A==
+Date: Wed, 7 Oct 2026 15:22:13 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Linus Walleij <linusw@kernel.org>
+Cc: arm-scmi@vger.kernel.org, Peng Fan <peng.fan@oss.nxp.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v10 6/9] dt-bindings: clock: nxp,imx95-blk-ctl: Add ldb
- child node
-Message-ID: <20261007-ebaeee3a3bbd50ebbdedcf72@squawk>
-References: <20261006-dcif-upstreaming-v10-0-bcfb28de0aae@oss.nxp.com>
- <20261006-dcif-upstreaming-v10-6-bcfb28de0aae@oss.nxp.com>
- <20261007-cb2d638508f306f3385c3799@squawk>
- <jr7zy2oxsuzfjrp4d74tl6gxiz5kg3pxl4qgigbbmtzyvjliwp@xaidoy4qvrdh>
+	NXP S32 Linux Team <s32@nxp.com>, linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 3/4] pinctrl: imx: Match the standard SCMI pinctrl device
+Message-ID: <20261007-glossy-wandering-okapi-c0cfd6@sudeepholla>
+References: <20261002-scmi_bus_fixes-v1-0-8695cbab3fe7@kernel.org>
+ <20261002-scmi_bus_fixes-v1-3-8695cbab3fe7@kernel.org>
+ <CAD++jLmm2KrsuaCPznjY-_t577D-hWZqcaafHXSeTcugBsG-yQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qfYFC1F6QFYmGCHK"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <jr7zy2oxsuzfjrp4d74tl6gxiz5kg3pxl4qgigbbmtzyvjliwp@xaidoy4qvrdh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jLmm2KrsuaCPznjY-_t577D-hWZqcaafHXSeTcugBsG-yQ@mail.gmail.com>
 
---qfYFC1F6QFYmGCHK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Oct 07, 2026 at 12:32:12PM +0200, Linus Walleij wrote:
+> On Fri, Oct 2, 2026 at 11:37 AM Sudeep Holla <sudeep.holla@kernel.org> wrote:
+> 
+> > Use the standard "pinctrl" SCMI device name instead of the i.MX-specific
+> > "pinctrl-imx" name. Standard devices no longer have exclusive request
+> > tracking, so the i.MX and generic pinctrl drivers can register for the
+> > same protocol/name pair. Their probe checks select the appropriate
+> > driver for the platform.
+> >
+> > This solves the issue that occurs when both "pinmux" and "pinmux-imx"
+> > devices that share the same fwnode as only the first device registered
+> > is assigned as the owner of the fwnode. If this owner device fails to
+> > probe (e.g., its driver is blocklisted or missing), it never reaches
+> > the driver_bound() stage and the system skips cleaning up its supplier
+> > links. Even if a alternative device binds successfully, the system
+> > still looks to the broken original owner. As a result, all dependent
+> > hardware components (I2C, SPI, UART, USB, MMC, PCIe) defer probing
+> > forever, halting the boot process.
+> >
+> > Note that the solution doesn't support same fwnode being shared by
+> > multiple devices and associated fw_devlink feature.
+> >
+> > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> > Cc: NXP S32 Linux Team <s32@nxp.com>
+> > Cc: Linus Walleij <linusw@kernel.org>
+> > Cc: linux-gpio@vger.kernel.org
+> > Cc: imx@lists.linux.dev
+> > Reported-by: Peng Fan <peng.fan@oss.nxp.com>
+> > Closes: https://lore.kernel.org/all/20260928-driver-core-v1-1-0846bb8e0f32@nxp.com
+> > Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+> 
+> Acked-by: Linus Walleij <linusw@kernel.org>
+> 
 
-On Wed, Oct 07, 2026 at 04:57:45PM +0300, Laurentiu Palcu wrote:
-> Hi Conor,
->=20
-> On Wed, Oct 07, 2026 at 02:12:52PM +0100, Conor Dooley wrote:
-> > On Tue, Oct 06, 2026 at 12:22:01PM +0000, Laurentiu Palcu wrote:
-> > > Since the BLK CTL registers, like the LVDS CSR, can be used to contro=
-l the
-> > > LVDS Display Bridge controllers, add 'ldb' child node to handle
-> > > these use cases.
-> > >=20
-> > > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> > > ---
-> > >  .../bindings/clock/nxp,imx95-blk-ctl.yaml          | 24 ++++++++++++=
-+++++++++-
-> > >  1 file changed, 23 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ct=
-l.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> > > index fbbf1b3f17904..97fe816a38f94 100644
-> > > --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> > > +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> > > @@ -51,6 +51,10 @@ patternProperties:
-> > >      $ref: /schemas/media/fsl,imx95-csi-formatter.yaml#
-> > >      unevaluatedProperties: false
-> > > =20
-> > > +  '^ldb@[0-9a-f]+$':
-> > > +    type: object
-> > > +    $ref: /schemas/display/bridge/fsl,ldb.yaml#
-> >=20
-> > The class of device is bridge, why not use that here?
->=20
-> I'm sorry, your question is a bit vague... Are you referring to renaming
-> the pattern to '^bridge@[0-9a-f]+$'? If yes, I don't have strong
-> opinions against it. I can do it in the next iteration.
+Thanks!
 
-Yes, sorry.
-That'd be great.
+> I guess it needs to go in with the rest of the patches to firmware?
+> 
+> Else tell me and I'll just apply it.
 
-Thanks,
-Conor.
+Yes for the functionality to work, it needs to be part of the series.
 
-pw-bot: changes-requested
-
-
---qfYFC1F6QFYmGCHK
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasZQ4AAKCRB4tDGHoIJi
-0vtMAP9BAzbT8CNXcasaaU+K6qO6MCMdqQyLCatmAZpSK81yRwEAudTtBZWLd7cb
-w3GYYsCuwheg3bZe3nqy+OpPtql79AY=
-=kp1o
------END PGP SIGNATURE-----
-
---qfYFC1F6QFYmGCHK--
+-- 
+Regards,
+Sudeep
