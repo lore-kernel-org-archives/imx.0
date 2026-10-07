@@ -1,52 +1,53 @@
 Received: from smtp6-g21.free.fr (smtp6-g21.free.fr [212.27.42.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C45339185A
-	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 17:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B53533938D
+	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791394753; cv=none; b=V/i3bW/fvafiOV/J1pCr37xR4DzXAj7mjs5gAwtxOUdcHLz9lW89YXHRPrv8te2xIiDuxo2M4e7DHahghUW59q7NyoMl57eencJSVxKx38eSNyZsVKx861Iy9Ggn5cbxp2sv5nqvsEJO+EFRvlbwPKuGM6RYC6qpGEM5+Dou34I=
+	t=1791394989; cv=none; b=Nfz667HUH2pYWjGIXNbHLlcvkfD2ca6vUQrsAE+ocNr74NeZRbYBpuwupfbXHIAQ7sx37SNmyBkeX78xwRxHUDM+Fi6GUL594W34Zhhg9Yp/pknox1+fKSM25WbFVxOM6XWsvS+BTRLSpw7VT5T8MGCYCzaDZ5BYX/TEx55hmQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791394753; c=relaxed/simple;
-	bh=O/57xv8xoLkRWnqnHdElm1MmZ+p6nyiKXa3vcY+o/wc=;
+	s=arc-20240116; t=1791394989; c=relaxed/simple;
+	bh=pLfXra5Jo90UbwTBsB9NGQ3f0bIBVXsiTTgt1LOnb6s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n3Ab7FsJ4cffe+GMtkGXTrCltgxRbPGJOQltB1DPX0UaZ/3yi20TcK1oLcpnsxEP0exOXiR0uBcbqzVcSFyPTfA81jFd9XhXFnqTZGqImB2fYRygvDYkf8GM2prvwfGzMWCe+eqMAsflSIvN8thlI/Jfpu5W8FBPY9Sf6oAAmcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=tpizUNvP; arc=none smtp.client-ip=212.27.42.6
+	 Content-Type:Content-Disposition:In-Reply-To; b=l3BJFOYz8AjB2oejfBI8xtkwJ3vjpToFbrfZTZUdCh5kM1fztT+BkY8xP2Mp5Af+WG57+rTGMJkdC8HGyi9lIypW50h54zwYhOvIEYqhycuHwu3g9NdTeCLDd/YHstTs85L6dBBN+6oJe3ORIdfb6KlsQllPfslCFTFvKjAb3sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=eGySEcTv; arc=none smtp.client-ip=212.27.42.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="tpizUNvP"
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="eGySEcTv"
 Received: from L30177.local (unknown [78.242.246.191])
 	(Authenticated sender: vjardin@free.fr)
-	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 6F68C780371;
-	Wed,  7 Oct 2026 19:38:49 +0200 (CEST)
+	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 1B23B780505;
+	Wed,  7 Oct 2026 19:42:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1791394749;
-	bh=O/57xv8xoLkRWnqnHdElm1MmZ+p6nyiKXa3vcY+o/wc=;
+	s=smtp-20201208; t=1791394985;
+	bh=pLfXra5Jo90UbwTBsB9NGQ3f0bIBVXsiTTgt1LOnb6s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tpizUNvPtMKaEV4wbsM4GTgWFqsNqaTVu7N5L0esAWkEb+e5ReUKaWyb8H8YEr2cV
-	 4zX97LdIRqgeQHy6I9etOl51HQDAz8g4F7Il8vnMlCqrwG2OLM/d4jNsxDJoDawAf9
-	 vhBK+WmzR8lVlnjPHPrVR1/QX9UNnbT+Tqp5JfBmuHQ0oBVfQ39EkuxMZsnGPx+lc0
-	 stFItnG0QDdJ2KYEoILf+D/8gyHD5co0NlQ74FZaWpcFf+xrGsVJpMwu2p73UjCTSj
-	 uouTZgPP35jlREN1vVa+jQxJgUt8R1HiKEtRhqasJH59er3DPJnd4jKJofY0KQ/t3Q
-	 pWq9tXUyZBiZQ==
-Date: Wed, 7 Oct 2026 19:38:47 +0200
+	b=eGySEcTvLGf1K4n+0/B5s8ni5lHAHsIVa8gSTFnQpWZoKM2Bu0g3wom+bNh55IjmH
+	 i3PPKg+dy5xd6+1NpM3E2cpVDUw7jxHsi86+3I3Ipez3E42KgssjqmXE5ggf2IBwvu
+	 D4D+vWa/TKg2wKFm61IQrLQlpjkyaPhpFiaqCdcr4e0dMNf0Dcp85Cmnx3KrSQf3HQ
+	 fjLB1VzTmpLeK47WFQPOivfQRUetQLqfl66Wm7NIplwAIzhv5SDwPPFlcC6I6GtZzB
+	 1IIiMLM0TzkX0nZiYEvyWYDozke9WLCWoqoOAW8zqR4uX1xZ/lH0AdZqaWIemBeQKg
+	 4F+zBWY+mrDLA==
+Date: Wed, 7 Oct 2026 19:42:45 +0200
 From: Vincent Jardin <vjardin@free.fr>
-To: Manivannan Sadhasivam <mani@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Cc: Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>, Rob Herring <robh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Haobin Jiang <lemonoutput@foxmail.com>, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI: layerscape: async probe by default
-Message-ID: <asaDp512mFdyCvXs@L30177.local>
-References: <20260928-for-upstream-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr>
- <arqSa0OwMd1Bx_Ex@SMW015318>
+Subject: Re: [PATCH v2] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
+Message-ID: <asaElUqBu5ht6amB@L30177.local>
+References: <20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr>
+ <apcYp0Zc7CrJMiOh@lizhi-Precision-Tower-5810>
+ <aqO9SMvI89rqoEGb@L23803.iliad.fr>
+ <arMUxCW5ZTzLT3VN@L30177.local>
+ <arw0mVbacAXv_1H7@L30177.local>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,17 +56,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arqSa0OwMd1Bx_Ex@SMW015318>
+In-Reply-To: <arw0mVbacAXv_1H7@L30177.local>
 
-Hi,
+Hi Andi,
 
-A gentle ping on this one lin paatch: is there anything else you'd need from me
-to have it applied for v7.4 ?
+Sorry for the noise and resending again: with v7.3-rc7 due this Sunday if
+I am correct, could you take this patch into i2c/i2c-next for v7.4 ?
 
-It has the Frank Li's Reviewed-by, Sashiko found no issue, and it still
-applies cleanly on the current pci/next from today.
+It carries Carlos Song's Acked-by and Frank Li's Reviewed-by and it
+still applies cleanly on today's i2c/i2c-next.
 
-  https://patchwork.kernel.org/project/linux-pci/patch/20260928-for-upstream-pci-layerscape-async-probe-v1-1-76412d887baa@free.fr/
+Haobin Jiang's "i2c: imx: honour I2C_M_IGNORE_NAK" v3 still depends on it.
+
+If anything needs to change, tell me and I will send a v3 right away.
 
 Best regards,
-  Vincent
