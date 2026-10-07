@@ -1,240 +1,91 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D1B1DDFE
-	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 00:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791334327; cv=pass; b=WWpwS9LMPtJ0oJodKlVt/r6SKxzKr3YvvV3QWnIdlPCi0UGIMN5B930IiDibtphleHWtiT4/gtOWIDomqSO1FyHkbFsj94JnApD25J76TgRo3fEKuB65XBl1nnwrjbJGDzsofeuCgF+Uw+eyO0RwbIK+DY/e3zi62a2+VsWFSg0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791334327; c=relaxed/simple;
-	bh=BX1JTxbJEXnqNqVkUffmNNj1V50eTcs9S7BDpSMKKPM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PwtRJRPTFkVTEUbC3VXvvympmIwzPfS6WdyH5KdNDrJC2wQ9WTWBH6l+DTcBwn7maMnRkhYdEq+VVZAvCAQE0ogWoNJ01YnD3MrKH4kve/742K6/Ppl31HDbdjToHlD7h7xocq/sNOmphjajAaWftC5JIMx9hbJGhPF7b2FiCuY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CIknHIIe; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2C23515F9;
+	Wed,  7 Oct 2026 02:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791339039; cv=none; b=Iy+IVysXAITwqu/ty+dfS/tYVRY2CCuLVGfTBnJkTTM14r0ijvo1szbe/oGS3Sv1alTOxXL0SoUPUQngvv+hbQLJC6ocqmhQ2fVWxLTEJJ1LLUfPUN+r9p6HHzEiWZSgBWTCtGmaT2bOmi4r2m3BIFB21aG/xnXK8krn1HiyP90=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791339039; c=relaxed/simple;
+	bh=ZSFx9e4NLCBFbnBrX/giItQeBUAw3iK1iZmuaLyAuRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BXDNR6arF071cfw5ICkVHsqNfzPEgYu6+9Wx65KHyTpKVp2xDlSwUBGoIhWzYTFlgQbEHX1DiKPRHTwEcopZpEfphQqQPztfMNEbXVhm8PuU15P44sH9hVg0FsTovWWBsM12a3gPlPApBB9q1jXmcbfexFznY6Oqxd1HSnLADeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LBAkptJd; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CIknHIIe"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6afe29c08ccso1582958a12.1
-        for <imx@lists.linux.dev>; Tue, 06 Oct 2026 17:52:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791334324; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bgBPBW7OAt95vTOaUll+BlP0oAf3wTIb9ePCTmRIwKDqMiBtg+migkQcCd2b8cy4UQ
-         /cR17HJmFKarJWNTDsevk0pLsXcq6XOSOSVwFdjOk0eqqxG+ZB4IYnt2HZUGERdcN7uw
-         kRXmJNzH24wRlbieUep6AyYOlIFAzQOSqIFI8CFlhZyeKkQzqZKGK0JZwz2tipYBhobU
-         qx4fx0SzwiAv4D8FnsHI5O2uAwM3dDp/UwDcDqC5BpVLgTTC2IWWaxn/07iovOjMfBEb
-         bYr7SSqoSvvydN+Ig2MKf9rQpqWR6SmNw+iXPaUIGhXaXRty5EiKFkuVu8XElQXlI6HS
-         wZ9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=aNKeIlua+JayoelHkZCjyJRAYpDffnOMiZGr6BfxirU=;
-        fh=HmUqZxuLA32h0yEw1bzqgT7yMzbxD1uYv10XpAWNOQw=;
-        b=VB5tnIDZn/20UnPldd8k74H3kR6E04FfqIGxRUxJx0g/i3OCvbkfhIRiWMl6h0iga2
-         /DOJVGb/hIQqyO9RHPUs/V5rTjVJFlXDVULLLUQ/PSL18IyLDa381c3hecjfeYoPQK+x
-         fA5Y5ahKg4x4M1X0h9+Jc0LCI88pUzDBCh3ohw78EXVuQmE/i8zWhVvgolHooWJlmM+s
-         10b5vptLg299YrBB+pUx/rfP3lo5+ZJ0FFldrmsm1MtiRbGLZ23vp7TMJaNyinxrKHXN
-         T0HKgYUfEm2+NfdsAzcus3wMAhDVGgrjnruEgihw0mF23HG7DKX4kM5FJI/7oWWgjveH
-         1oKw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791334324; x=1791939124; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aNKeIlua+JayoelHkZCjyJRAYpDffnOMiZGr6BfxirU=;
-        b=CIknHIIe5anjI2aJpcZ09YQgbN/KvyH3x2Fxi2VVp+n7Vn48YpRgCaEm/4gT/nYS1b
-         OA5Q+A4mSiayXAkS3FtjIn0vdyWmUfTnOUqMNA4SAFeFybi9J0zfVUl+PS4aB2WNSGrJ
-         ns/Ozf73EneaDthE1l0ugfm924W4OFm/gXJuLg8RJqdCgZqRlbEW/rKZnTBkz9mqelmE
-         Zm9kiSbJlv7myQnPhmb96PQAbAPIFrTju6LACsEq6Dy7aUVdPuRjZ6HxdBxh7qP8hBQU
-         hpPnLFSpIS/Xv0B9552+VEQ1BjRmqgafYUNXUPICFz+Q+V4Q0ZgUv6ODGwVFNUbarYYm
-         5yag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791334324; x=1791939124;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aNKeIlua+JayoelHkZCjyJRAYpDffnOMiZGr6BfxirU=;
-        b=aSa9zLPI2siYs3898eGJ3l/ZxTNitAlERhebL16LQf786ooEWgfGXn3s6MXt9LO1wb
-         ZTTcvYGTSA5l3cT1EuU3Ep+orN0qP0wJaYC34zqSW2fl3V5w9Ls89FzlQu2aDPpvDC6a
-         RtdbweXR66ASMmETpMu7NTQcUXd3im1PeoSIbldwV+9gFLQ2MgFxudNXGvFFr89iqwmi
-         j+0DYmIQME4+jWm7BraJAhWkZikR490sYyD4A/dFr9dgY8s8Itfai/NC7hbNo13JHTd3
-         SmQV2PDO95gVBX9eA1AJZ87Iwf8Sd7BJBxTrzMOYpoSrRZn4tNImbdzn1OCLeM2YH55D
-         gnwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxIEJhy7ODBI/s0uTJG0/XMfVV/TZAyA4DV5c/fAZ6UbMBRmpbuuJr6n5VGieElSpLkk3A=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIsoxKHz/kjf34wgftUIZfI43iMKnq6dSj3gTTEBiH3jJMzWqGi
-	wSmIxthp0ROf5YajblFEtLhsnYQCbH+N9uZEgqK4pguYpnpHsf3NZDASyg4sQ2YtvOrpWSL/D14
-	q/Lnwon0Bg+7rCIOzGwTAYOUianGstWoLSLZV9GaP/Q==
-X-Gm-Gg: AYBFou36p9Bsjn9QAmuL9iFjEeM/OqsqXID2LG5Iu4K2NaPcX/c8W0TuZZUyT+laHRm
-	8ubhCozYuIpxyce4OE6I5xYZCGM5aj8E5D4k5ldRBGe58xIzhUyyB6ejtY1GrsHDhO9IEou+nVw
-	6owOByQ3bI6yEftedur1q1cCUCWobxfmeT9PtWf9IoB44SFowO8Fx0xYXYXpsDu3EDGW54yyzgR
-	eycpZThKwThkgIcUfZ2m2jsdpPrh8cljbK4JVvitIYjMNrhB3uvpt1VPnpVsTCLVsyDU0xXy98L
-	T2Q1EDrfsGm5J2E6zyZlLau4dUooQSnWfE8o/AX4qdv755V4Z8VS7g==
-X-Received: by 2002:a05:6402:455a:b0:6ac:73f8:2e50 with SMTP id
- 4fb4d7f45d1cf-6aff29b8a9dmr558035a12.43.1791334323774; Tue, 06 Oct 2026
- 17:52:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LBAkptJd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=T0pC+g1pgTGn4VTUvhrGyt6O3bxv6jxRh/sbMmdk4+s=; b=LBAkptJdcri9ZWIhncMBNUYL/i
+	5DCW2dOZp9ZHE+5Ige3qM2WZ8LpCuEjasmdGGMo7LrsnOBM8j23iFpzZxW6cy+3X6smqMqV0AOX2X
+	qK8ki2us6cuk6p5e4nLusTr6cd9fEuf8SxaDsB6l+yfKw5BVngcj5iEtCBHlgubSzPU+/XTyfDfav
+	jTaIaIhYbnhJ5pLBRTYwGzXJgl4XN4IRl5gPa2QM67vc1+A3pks5ImwQitAz1FYzM54layxpvfY1l
+	iM1zSBehtzqSMC3Yil0Y1QChniwYZzYLTTmMzN4ouSYy65KrmxHeQJ4+FShmzhF3HULnqPzMFacSc
+	g64bf/Mg==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xEH72-00000001dN6-32rF;
+	Wed, 07 Oct 2026 02:10:32 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>,
+	linux-media@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] media: i2c: imx576: select VIDEO_CCS_PLL to repair build error
+Date: Tue,  6 Oct 2026 19:10:30 -0700
+Message-ID: <20261007021030.2247147-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
- <20260916-remoteproc_virtio_map-v1-8-dac8c5eb4aa9@valla.it>
- <arKhbxi3Snbt1_Mn@p14s> <arLZj2DxBazf3wMd@bywater> <20261006183910.GA2890477-robh@kernel.org>
-In-Reply-To: <20261006183910.GA2890477-robh@kernel.org>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Tue, 6 Oct 2026 18:51:52 -0600
-X-Gm-Features: AclHuK8OpBmmKBzqQvP8CWwB7vUNA7khdkA2Xv5tnX4fcSWpzyBVTx2EHup08IU
-Message-ID: <CANLsYkwhrqk0nQNFuP_5aMYQCLGsLrzm-z9YP+Fvv-C1Ug8trg@mail.gmail.com>
-Subject: Re: [PATCH RFC 08/12] dt-bindings: remoteproc: add remoteproc-virtio
-To: Rob Herring <robh@kernel.org>
-Cc: Francesco Valla <francesco@valla.it>, Bjorn Andersson <andersson@kernel.org>, 
-	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-remoteproc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, 6 Oct 2026 at 12:39, Rob Herring <robh@kernel.org> wrote:
->
-> On Tue, Sep 22, 2026 at 09:44:20PM +0200, Francesco Valla wrote:
-> > On Tue, Sep 22, 2026 at 09:40:31AM -0600, Mathieu Poirier wrote:
-> > > On Wed, Sep 16, 2026 at 11:10:53PM +0200, Francesco Valla wrote:
-> > > > Add a new binding to describe remoteproc-provided virtio devices; while
-> > > > these are discovered through a resource table parsed by the remoteproc
-> > > > infrastructure at runtime, their description can be needed to probe
-> > > > non-discoverable buses (such as I2C) or to link consumers and suppliers.
-> > > >
-> > > > Each vdev is described by a dedicated "group" node, which then includes
-> > > > a virtio-device node, which binding is already existent and used by
-> > > > virtio-mmio. Each vdev shall be stattically linked to a "group" node
-> > > > using its index inside the resource table as the reg property of the
-> > > > node; this permits to have multiple instances of the same type of
-> > > > device.
-> > > >
-> > > > The binding is intended to be generic and adopted by any remoteproc
-> > > > provider.
-> > > >
-> > > > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > > > ---
-> > > >  .../bindings/remoteproc/remoteproc-virtio.yaml     | 89 ++++++++++++++++++++++
-> > > >  1 file changed, 89 insertions(+)
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..c4a0d84b1460
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
-> > > > @@ -0,0 +1,89 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/remoteproc/remoteproc-virtio.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Virtio devices over remoteproc
-> > > > +
-> > > > +description: |
-> > > > +  Virtio devices ("vdevs") can be exposed using the remoteproc infrastructure
-> > > > +  and its resource table. For some of them, a device tree node might be needed
-> > > > +  to describe remote undiscoverable hardware and/or connect consumers and
-> > > > +  providers.
-> > > > +
-> > > > +maintainers:
-> > > > +  - Francesco Valla <francesco@valla.it>
-> > > > +
-> > > > +properties:
-> > > > +  virtio:
-> > > > +    description: Contains a group of Virtio devices exposed by the remoteproc.
-> > > > +
-> > > > +    properties:
-> > > > +      '#address-cells':
-> > > > +        const: 1
-> > > > +
-> > > > +      '#size-cells':
-> > > > +        const: 0
-> > > > +
-> > > > +    patternProperties:
-> > > > +      "^vdev@[0-9a-f]+$":
-> > > > +        type: object
-> > > > +
-> > > > +        properties:
-> > > > +          reg:
-> > > > +            description: Virtio device index inside the resource table.
->
+or1k-linux-ld: drivers/media/i2c/imx576.o: in function `imx576_probe':
+drivers/media/i2c/imx576.c:612:(.text+0xf68): undefined reference to `ccs_pll_calculate'
 
-There are 2 configurations we need to account for: (1) each device
-located behind the remote processor gets its own set of virtqueues and
-adheres to the virtio specifications.  This is the configuration
-targeted by this thread.  The other configuration (2), discussed in
-the other thread, involves virtio piggy-backed over RPMSG.  The hope
-is to represent both configurations using the same bindings.  For (1),
-virtio devices will be advertised in the resource table and for (2),
-virtio devices will be announced via the existing remoteproc namespace
-service.
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+Cc: linux-media@vger.kernel.org
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Hans Verkuil <hverkuil@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
 
-> Who/what defines the resource table?
+ drivers/media/i2c/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-The resource table is part of the firmware image and is parsed by the
-remoteproc core.  For (1), as presented in this set, "reg" links the
-entry in the resource table with the device definition in the DT.  For
-(2), the definition is also a device index, but said index is
-communicated to the remoteproc core using a namespace announcement
-rather than the resource table.
-
-I hope to establish bindings for configuration (1) and merge that work
-first.  Once that is done we can extend it to cover (2).
-
->
-> > > > +            maxItems: 1
-> > > > +
-> > > > +        additionalProperties:
-> > > > +          type: object
-> > > > +          $ref: /schemas/virtio/virtio-device.yaml
-> > > > +          maxItems: 1
-> > > > +
-> > > > +        required:
-> > > > +          - reg
-> > > > +
-> > > > +    additionalProperties: false
->
-> Preferred to put this before 'properties' in the indented cases. Easier
-> to see what level it belongs to.
->
-> > > > +
-> > > > +    required:
-> > > > +      - '#address-cells'
-> > > > +      - '#size-cells'
-> > > > +
-> > > > +additionalProperties: true
-> > > > +
-> > > > +examples:
-> > > > +  - |
-> > > > +    remoteproc-cm33 {
-> > > > +      virtio {
-> > > > +          #address-cells = <1>;
-> > > > +          #size-cells = <0>;
-> > > > +
-> > > > +          vdev@0 {
-> > > > +              reg = <0>;
-> > > > +
-> > >
-> > > Do we need the 'reg' since we already have vdev@X?  I'll let the DT people
-> > > provide their input on this.
-> > >
-> >
-> > AFAIK yes, because the rproc_get_vdev_fwnode() helpers search for indexed
-> > child nodes using the 'reg' property, not the node name. This I believe
-> > is the preferred way of doing things.
->
-> It is either both unit-address and reg or neither. It's preferred to
-> have them unless you are just making up numbers.
->
-> Rob
+--- linux-next.orig/drivers/media/i2c/Kconfig
++++ linux-next/drivers/media/i2c/Kconfig
+@@ -313,6 +313,7 @@ config VIDEO_IMX471
+ config VIDEO_IMX576
+         tristate "Sony IMX576 sensor support"
+         select V4L2_CCI_I2C
++	select VIDEO_CCS_PLL
+         help
+           This is a Video4Linux2 sensor driver for the Sony
+           IMX576 camera.
