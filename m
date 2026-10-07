@@ -1,71 +1,152 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FC4448B9D;
-	Wed,  7 Oct 2026 12:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2423914FE;
+	Wed,  7 Oct 2026 13:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791376057; cv=none; b=abH0f4apXQKWgCSDz/twOFoOyKLs8Y+NK3wsGlKaabx74HTnq3NYAxQOEnWJD1KkFc8ew+qzuP05KQdgj+LKdAfAoPgxumHC9Y4AlU70chkC6ytxxzR1sUoQOY+dE7uwJ3qPcM0zzJo986eu46wu8Rd6OaknzhNCKXEW4WeGeds=
+	t=1791378703; cv=none; b=t7pIgLFRnk1NtB8N4E3tABPBqBWSge+ZDF1fDkKcXJu8U8M6TGXVsgSFAcCdUB33y49UoS8EuwHs2StX0pK8VUdn4A7vybmjF6AFIMbmnC2n5VUuznF/gF038eWXKiHPG5Ic9+c2AjzPEINnuWs7A2k5Y5+eWB04NDYlyxA6YfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791376057; c=relaxed/simple;
-	bh=U6GyF6lRYjgCEWmvhFJzyWk0fj3jt82DEmRclZ2q0GE=;
+	s=arc-20240116; t=1791378703; c=relaxed/simple;
+	bh=41fDVbxZ9amXXnHNyo3+/lxLChs10LDalX4OlFmqo/A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bnB5PsLkTbiGHThmqRnR+PXLoyGEGbCITYqBDjo+UXg1UQJTippX4LbqArh/iZntjwxtB5VxI8caGMfl/kJ0ddsPnkMqixCec1uBsU9+tRUsfcxdaY1yanNYzZKu6p4zqlTRBfMPjp2MffyrRrq1C6zsI8hFJ9fds8+Ym6MNOy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rjbxcm2+; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=rbqRRRjnjqn1n7g7xKFG5y2O0IDFXWo+7lf2RCLQOl+PBB1CQKclcGajbGt+vtEMhAHKBK2S8CLNisuZF1pIugi/qqPEdRktA1f5xIH59F4lN+r2YbSUXHJJVx/zAFw0k0goowVYjGqX/Axl/ABW65C4Or8Op10pgzaMdWFdmNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRtCQ22f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rjbxcm2+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dufBJ1mHa9n28EXq+40OD+8yYER3Wv9RK13RjqUDC34=; b=rjbxcm2+M8g/K9G5qLyXzzB379
-	mBG2qOMUB8XtymbdtE/8ricwS3GhO6KFjeOsRkhasqG6ARBerQaBoxHe/7fWOHvRu7U8KQZ6jJ0RI
-	JBL1CySC5s5qmEbWJruIEk13OopzQ3rV/YvYsevFmV1E4W9gDgvYmkgX42taSIg1kyo8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xEQk0-009SAY-4M; Wed, 07 Oct 2026 14:27:24 +0200
-Date: Wed, 7 Oct 2026 14:27:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Aldo Ariel <qwe.aldo@gmail.com>
-Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	sashiko-bot@kernel.org
-Subject: Re: Re: [PATCH net v2] net: fec: reject oversized fragments before
- bounce-buffer memcpy
-Message-ID: <36643418-851b-4cbf-ab73-8e3fa09f8715@lunn.ch>
-References: <a230cd62-db31-4128-acfa-93501d30aa39@lunn.ch>
- <CAP48HfuR9_d2KZ7ygG4fMq5ekSb2zaaiEzo_fq_mOWODN5Os6A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRtCQ22f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5373B1F0089B;
+	Wed,  7 Oct 2026 13:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791378692;
+	bh=fU1GuLIm19BVy56Ks7brnn3nS8NIyYYLHC3fc8g43AI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VRtCQ22fEbfQ1dlzLF708OiRR5/rHAgOdNCo/U46SgQRZ9EkrZqbOU9n2X9qWbrD3
+	 D4PaJQNjeeGJRhpreBG072Pwo74Kzuemtww48AAWJUv7sP+9Rj8D8tZzEtxrzmKeXx
+	 1Vtd2/6Koyu+TUW2GmdadK4GOjIcKagf3kCpDqm1UVFSzQN5lxetDMp5W9trtkk9iC
+	 +zLjDdrEfiu6De5/INIcOCYGbA3ZwCeqbomaDfAFfOS2Mguqkp8D2MD4zUjO4E1dpR
+	 uwIDO+yEAOtxLJgiWYmEOlpWK/m9qoWzUmULSGIVvLK8hekazRyw7jgfR38rPyazQn
+	 74lxNHZi+8Kaw==
+Date: Wed, 7 Oct 2026 14:11:27 +0100
+From: Conor Dooley <conor@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, Frank.Li@kernel.org,
+	imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, conor+dt@kernel.org,
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH v10 6/9] dt-bindings: clock: nxp,imx95-blk-ctl: Add ldb
+ child node
+Message-ID: <20261007-e9f7f08f98c153f0d0c97c91@squawk>
+References: <20261006-dcif-upstreaming-v10-0-bcfb28de0aae@oss.nxp.com>
+ <20261006-dcif-upstreaming-v10-6-bcfb28de0aae@oss.nxp.com>
+ <20261006123500.94C911F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rYN3Tj1AuBnBbp+q"
 Content-Disposition: inline
-In-Reply-To: <CAP48HfuR9_d2KZ7ygG4fMq5ekSb2zaaiEzo_fq_mOWODN5Os6A@mail.gmail.com>
+In-Reply-To: <20261006123500.94C911F00893@smtp.kernel.org>
 
-On Wed, Oct 07, 2026 at 05:17:20AM -0700, Aldo Ariel wrote:
-> Hi Andrew, Wei, Shenwei,
-> 
-> Thank you for the review. Shenwei confirmed that bounce buffers are
-> only available on i.MX28 and cannot coexist with jumbo frames. That
-> means the overflow path I described (jumbo fragments exceeding
-> FEC_ENET_TX_FRSIZE) is not reachable in practice: on i.MX28 the
-> max_mtu stays below the bounce buffer capacity.
-> 
-> Given that, should I respin as a defense-in-depth guard (with the
-> goto label fixed per Wei's note), or would you prefer I withdraw the
-> patch?
+--rYN3Tj1AuBnBbp+q
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I suggest adding a comment somewhere to explain that jumbo frames and
-bounce buffers are mutually exclusive by hardware design.
+On Tue, Oct 06, 2026 at 12:34:59PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Medium] dt-bindings: missing LDB constraints for nxp,imx95-lvds-csr va=
+riant
+> --
+>=20
+> commit ef256d56e7840a3d6a825d4ac33adad77eacd513
+> Author: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+>=20
+> dt-bindings: clock: nxp,imx95-blk-ctl: Add ldb child node
+>=20
+> Since the BLK CTL registers, like the LVDS CSR, can be used to control the
+> LVDS Display Bridge controllers, add 'ldb' child node to handle
+> these use cases.
+>=20
+> > diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.=
+yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> > index fbbf1b3f17904..97fe816a38f94 100644
+> > --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> > +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> [ ... ]
+> > @@ -63,7 +67,9 @@ allOf:
+> >        properties:
+> >          compatible:
+> >            contains:
+> > -            const: nxp,imx95-camera-csr
+> > +            enum:
+> > +              - nxp,imx94-lvds-csr
+> > +              - nxp,imx95-camera-csr
+> >      then:
+> >        required:
+> >          - '#address-cells'
+>=20
+> [Severity: Medium]
+> Could this introduce a regression where device tree validation incorrectl=
+y fails
+> for i.MX95 devices that define an ldb child node under the LVDS CSR?
 
-We don't use defensive code, because that suggests we don't actually
-understand the code!
+This ldb child is new, how could there be a regression like this?
 
-	   Andrew
+>=20
+> This change restricts #address-cells and #size-cells to these two strings,
+> forcing them to false for nxp,imx95-lvds-csr. Should nxp,imx95-lvds-csr a=
+lso
+> be included in this enum?
+>=20
+> [ ... ]
+> > @@ -72,8 +78,24 @@ allOf:
+> >        properties:
+> >          '#address-cells': false
+> >          '#size-cells': false
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          not:
+> > +            contains:
+> > +              const: nxp,imx95-camera-csr
+> > +    then:
+> >        patternProperties:
+> >          '^formatter@[0-9a-f]+$': false
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          not:
+> > +            contains:
+> > +              const: nxp,imx94-lvds-csr
+> > +    then:
+> > +      patternProperties:
+> > +        '^ldb@[0-9a-f]+$': false
+>=20
+> [Severity: Medium]
+> Does this introduce a regression by preventing nxp,imx95-lvds-csr from
+> declaring an ldb child node?
+>=20
+> This explicitly forbids the ldb child node for anything other than
+> nxp,imx94-lvds-csr, thereby silently prohibiting it for nxp,imx95-lvds-cs=
+r.
+>=20
+> --=20
+> Sashiko AI review =B7 https://sashiko.dev/#/patchset/20261006-dcif-upstre=
+aming-v10-0-bcfb28de0aae@oss.nxp.com?part=3D6
+
+--rYN3Tj1AuBnBbp+q
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasZE/wAKCRB4tDGHoIJi
+0pxvAPoDgU95rPok0uGP0uVoh/Yksvh22uL6LGRHfp/ZfKppLAD8CGqFqi59wvXk
+5Bc26aOCnBFpESmlYWFOdNfSqL0pRwI=
+=NzJU
+-----END PGP SIGNATURE-----
+
+--rYN3Tj1AuBnBbp+q--
