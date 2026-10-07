@@ -1,209 +1,240 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C735A3BB665
-	for <imx@lists.linux.dev>; Tue,  6 Oct 2026 22:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D1B1DDFE
+	for <imx@lists.linux.dev>; Wed,  7 Oct 2026 00:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791326499; cv=fail; b=Sx+pmkheSpZMWkfy9JD2KUai5lx8iOgbGCzqGUBZbVijnFmXBMHGveyWrP0QFAxhW16SqStMudS+8s000W038A5HAj3vLFfny3gBJLGQhdZEecvmjHWtgfu/JG+sLjMenBvGYlXPc7MPG9KTdaIcwCPOjIu4DyQGGwiLr+u9pe0=
+	t=1791334327; cv=pass; b=WWpwS9LMPtJ0oJodKlVt/r6SKxzKr3YvvV3QWnIdlPCi0UGIMN5B930IiDibtphleHWtiT4/gtOWIDomqSO1FyHkbFsj94JnApD25J76TgRo3fEKuB65XBl1nnwrjbJGDzsofeuCgF+Uw+eyO0RwbIK+DY/e3zi62a2+VsWFSg0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791326499; c=relaxed/simple;
-	bh=YOWfV7TO65Ri57wbZhB+aa176zZ6iXOssl+DtJhEL9U=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=uyuulmF3iPW+IewpZ6QvBQalp8j1BHj5dr6dfJRGgtB/8DCek3YkiNUzD8Ik9HBAfk8DPpaI5rzmnjvQ1m5EiWx/48SRXL4QNcIEUwZchcExZSacPeD/O/mgMn1gieHY8vGh9Tv5aFC/JZB6uUTejwab53u0yRn5dQR2yZiPj2Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B8NDfx9f; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791334327; c=relaxed/simple;
+	bh=BX1JTxbJEXnqNqVkUffmNNj1V50eTcs9S7BDpSMKKPM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PwtRJRPTFkVTEUbC3VXvvympmIwzPfS6WdyH5KdNDrJC2wQ9WTWBH6l+DTcBwn7maMnRkhYdEq+VVZAvCAQE0ogWoNJ01YnD3MrKH4kve/742K6/Ppl31HDbdjToHlD7h7xocq/sNOmphjajAaWftC5JIMx9hbJGhPF7b2FiCuY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CIknHIIe; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B8NDfx9f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791326467; x=1822862467;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=YOWfV7TO65Ri57wbZhB+aa176zZ6iXOssl+DtJhEL9U=;
-  b=B8NDfx9foG5YZogm6MPpAB2JEnhFYqKkIyqNVWsJzsx4dOB2P2Bqxzeg
-   BwYkpoo2PG2ff/xiFNAWwgTicroIUNkQidtzOSBH041k4OOxhkXwK0Djs
-   GiO7e2K/hGCYiJwjalMWKkeKrvV28+Z1+T+S5CxRKPDRMDlQx2KsvBLcV
-   h7ajoQz8iHpYwY61wdL1VANVKAqyKXj5ZxF+w0GAbylF+t8lb5dAHsjk2
-   t4TV36lupzQgG4oWrvC0lB19YrdHMbYvaezLlMD2BK6rsHcQOA44/RqdL
-   76dMbw/yLU/hceSOOoDPGVmhpTEyh4DZw2e9FF8XBEUwqadq19UiDfoFC
-   A==;
-X-CSE-ConnectionGUID: J1eX61ShQlO+vvZmNC38Qg==
-X-CSE-MsgGUID: F2QQs+6QQum4lSoOHDrTSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="109523866"
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="109523866"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 15:41:05 -0700
-X-CSE-ConnectionGUID: N/EdwpUuRaeBrgFEZ5j3ew==
-X-CSE-MsgGUID: shp/hSZDRXCdi6X1rm+dMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="276387444"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 15:41:04 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 15:41:03 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 15:41:03 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.6) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 15:41:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jkGy4tJzMJr5iDW8kkvoisDuUUwapZVxZvxZ88DbaF8jomfBKHANcQ3F9+XM4qhuBpe0zwBAGNupgRqoyUGDQ5o3FAR/Rr7T5KQzCw3hvTDT5jRfFwWO9+v0i1pM3c7xqJJpIYR9a4Xfh8UfrEcSlHP05fmfe5gpYIfpWVwUlSnifaN+mF1KUd3qJrm9EhyuA8Kvt8HdO96ujDIzPAtEgNIHXjS8Ggaq2ZpJU+Va3peD6u6h9/fDBJBahuQggdCfgh5zUQPh0RMjV57bphNhRxaJ0RfAHycGEgPr/P1TULfqJ9pf8fGcVYMqmv/McvXITMGj8b0f/v4TC7XzIYgP5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=25CpMwlkkO6VBJMiXQGGnQJVngHuCKoauFpqEBdzUX8=;
- b=YCvTMn9v4jz+LA9No3KLx0TOJ3WiJe/BwAJaWsp3pQaOKlSMw5f3qZoQMJNz1LGhOmZ/L/rzEsxm0hi+tVxZgI/UcMwM15Y0D4U+K8Joo6/6LQ0NNmewU9ihPENJ3DjusrUwXSBPmAeXQoE1m9yJXRUwqWSYDarKyYgwPMthujjhIRTnoR/JQiaZVpfXjhCZhwbgDhsViFGiEs/8iPk/ZSzEDCNIKuaTEv0uyLqXb7wnxg3BTLeZBlLmo5GH3jwW1SQElPlnEfjMwr1jKWRqBZI6akaN7OlSq5DKI0uZZY31yFql14t1B3ZdlrOO2szlo5SW1P9Fw0QgdCgianC8hQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by SA1PR11MB8594.namprd11.prod.outlook.com (2603:10b6:806:3b1::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 6 Oct
- 2026 22:40:56 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0451.022; Tue, 6 Oct 2026
- 22:40:55 +0000
-Message-ID: <1c312251-d320-4de9-9466-a196de91985e@intel.com>
-Date: Tue, 6 Oct 2026 15:40:52 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/3] net: freescale: fix PTP_EXTTS_REQUEST2 for QorIQ
- 1588
-To: <vjardin@free.fr>, Yangbo Lu <yangbo.lu@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, "Kory
- Maincent" <kory.maincent@bootlin.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang
-	<wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>, Ioana Ciornei <ioana.ciornei@nxp.com>
-References: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0141.namprd04.prod.outlook.com
- (2603:10b6:303:84::26) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CIknHIIe"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6afe29c08ccso1582958a12.1
+        for <imx@lists.linux.dev>; Tue, 06 Oct 2026 17:52:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791334324; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bgBPBW7OAt95vTOaUll+BlP0oAf3wTIb9ePCTmRIwKDqMiBtg+migkQcCd2b8cy4UQ
+         /cR17HJmFKarJWNTDsevk0pLsXcq6XOSOSVwFdjOk0eqqxG+ZB4IYnt2HZUGERdcN7uw
+         kRXmJNzH24wRlbieUep6AyYOlIFAzQOSqIFI8CFlhZyeKkQzqZKGK0JZwz2tipYBhobU
+         qx4fx0SzwiAv4D8FnsHI5O2uAwM3dDp/UwDcDqC5BpVLgTTC2IWWaxn/07iovOjMfBEb
+         bYr7SSqoSvvydN+Ig2MKf9rQpqWR6SmNw+iXPaUIGhXaXRty5EiKFkuVu8XElQXlI6HS
+         wZ9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=aNKeIlua+JayoelHkZCjyJRAYpDffnOMiZGr6BfxirU=;
+        fh=HmUqZxuLA32h0yEw1bzqgT7yMzbxD1uYv10XpAWNOQw=;
+        b=VB5tnIDZn/20UnPldd8k74H3kR6E04FfqIGxRUxJx0g/i3OCvbkfhIRiWMl6h0iga2
+         /DOJVGb/hIQqyO9RHPUs/V5rTjVJFlXDVULLLUQ/PSL18IyLDa381c3hecjfeYoPQK+x
+         fA5Y5ahKg4x4M1X0h9+Jc0LCI88pUzDBCh3ohw78EXVuQmE/i8zWhVvgolHooWJlmM+s
+         10b5vptLg299YrBB+pUx/rfP3lo5+ZJ0FFldrmsm1MtiRbGLZ23vp7TMJaNyinxrKHXN
+         T0HKgYUfEm2+NfdsAzcus3wMAhDVGgrjnruEgihw0mF23HG7DKX4kM5FJI/7oWWgjveH
+         1oKw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1791334324; x=1791939124; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aNKeIlua+JayoelHkZCjyJRAYpDffnOMiZGr6BfxirU=;
+        b=CIknHIIe5anjI2aJpcZ09YQgbN/KvyH3x2Fxi2VVp+n7Vn48YpRgCaEm/4gT/nYS1b
+         OA5Q+A4mSiayXAkS3FtjIn0vdyWmUfTnOUqMNA4SAFeFybi9J0zfVUl+PS4aB2WNSGrJ
+         ns/Ozf73EneaDthE1l0ugfm924W4OFm/gXJuLg8RJqdCgZqRlbEW/rKZnTBkz9mqelmE
+         Zm9kiSbJlv7myQnPhmb96PQAbAPIFrTju6LACsEq6Dy7aUVdPuRjZ6HxdBxh7qP8hBQU
+         hpPnLFSpIS/Xv0B9552+VEQ1BjRmqgafYUNXUPICFz+Q+V4Q0ZgUv6ODGwVFNUbarYYm
+         5yag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791334324; x=1791939124;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aNKeIlua+JayoelHkZCjyJRAYpDffnOMiZGr6BfxirU=;
+        b=aSa9zLPI2siYs3898eGJ3l/ZxTNitAlERhebL16LQf786ooEWgfGXn3s6MXt9LO1wb
+         ZTTcvYGTSA5l3cT1EuU3Ep+orN0qP0wJaYC34zqSW2fl3V5w9Ls89FzlQu2aDPpvDC6a
+         RtdbweXR66ASMmETpMu7NTQcUXd3im1PeoSIbldwV+9gFLQ2MgFxudNXGvFFr89iqwmi
+         j+0DYmIQME4+jWm7BraJAhWkZikR490sYyD4A/dFr9dgY8s8Itfai/NC7hbNo13JHTd3
+         SmQV2PDO95gVBX9eA1AJZ87Iwf8Sd7BJBxTrzMOYpoSrRZn4tNImbdzn1OCLeM2YH55D
+         gnwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIEJhy7ODBI/s0uTJG0/XMfVV/TZAyA4DV5c/fAZ6UbMBRmpbuuJr6n5VGieElSpLkk3A=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIsoxKHz/kjf34wgftUIZfI43iMKnq6dSj3gTTEBiH3jJMzWqGi
+	wSmIxthp0ROf5YajblFEtLhsnYQCbH+N9uZEgqK4pguYpnpHsf3NZDASyg4sQ2YtvOrpWSL/D14
+	q/Lnwon0Bg+7rCIOzGwTAYOUianGstWoLSLZV9GaP/Q==
+X-Gm-Gg: AYBFou36p9Bsjn9QAmuL9iFjEeM/OqsqXID2LG5Iu4K2NaPcX/c8W0TuZZUyT+laHRm
+	8ubhCozYuIpxyce4OE6I5xYZCGM5aj8E5D4k5ldRBGe58xIzhUyyB6ejtY1GrsHDhO9IEou+nVw
+	6owOByQ3bI6yEftedur1q1cCUCWobxfmeT9PtWf9IoB44SFowO8Fx0xYXYXpsDu3EDGW54yyzgR
+	eycpZThKwThkgIcUfZ2m2jsdpPrh8cljbK4JVvitIYjMNrhB3uvpt1VPnpVsTCLVsyDU0xXy98L
+	T2Q1EDrfsGm5J2E6zyZlLau4dUooQSnWfE8o/AX4qdv755V4Z8VS7g==
+X-Received: by 2002:a05:6402:455a:b0:6ac:73f8:2e50 with SMTP id
+ 4fb4d7f45d1cf-6aff29b8a9dmr558035a12.43.1791334323774; Tue, 06 Oct 2026
+ 17:52:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|SA1PR11MB8594:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d7c3880-6782-407f-6816-08df23fae23d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|11063799006|10067099003|6133799003|56012099006|18002099003|22082099003|921020|41080700001|15866825006;
-X-Microsoft-Antispam-Message-Info: Ry64apGeeSlsicv1ExNpkpdxn4hsd42kJiABy0sMNBx2shT794p0SNHg3VhfQnh8ypmsTLcjN9z6NPkWXEWFAeopQsX9gwlDpKE7sZU1wf9BJIDCN858Ynfvg9ReaqzoDwHMpb7VapAcEM5XNWBrMOMm2nKqvyFtlVsQ72SHJabqzTYXg9bl+evUlqOZsyaq5/5OhwOerWv84R6/ksrwdiY4WcL7X8ZprDWkLTvip6tQmz3BtrqXRbb/A0qg7L4vM0xBjxBDcnTjtnKtaD+2K1n1TAYUfXSqnFJTpwxoWGC5VotexmzOn42kPzhX1C2Nb0KrJPHne0Zk+hA99RjJPyRxqoBsWZyJcWqrD34kiTEoytgwM4UsqBJtSnbANy3AVD/i1HFfYxWd2lzsns5ktT7pUt1vv5NMIe6YURPkzX55c750IgahaTDTLGeYU2US8roCEa9/rws5sny+3CSy8D6UMI1g7IRH/7vFbbWyooSi6uGEXmPs97ODMdZRpaEDYEu12Pnp40IP/mGbRKDUGf9XaXlLcQQNxZMCA0fAry1aFzGUOIOpHSrjJOz5s7pFetbHRW0gaW7LpfXDS6k9jOUViOXtSgxOzRLqKgxPTQA6EvA0/JBYfqmPd44dQM7NrH4xDUlforcOCoTFTs31QzI/s204IGykXuoW3SSnLnjzpr+YYB7MEOm3tkcU1EzUbalYyt1b++xbMwAUycvfx81McMF6cNalZdPoff86RSohJWZO55sosXrDJSgmnDImd413hLz+LYlErKpB56TqWg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(11063799006)(10067099003)(6133799003)(56012099006)(18002099003)(22082099003)(921020)(41080700001)(15866825006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?STJ6Mmo1Zi9KTXhIRHN6Y3JqRnpwOTFvNTlWTnF5OUszSlZWMkZBelRUVzdu?=
- =?utf-8?B?RUhsUjZ2NDViNjZNMG1iRTc3bUpXWWMvTmZ2eDhiQjN0TXo2c3owRFhLdng0?=
- =?utf-8?B?SEhMd25neVJCVHFVYkNuNTd3cGFqeklYN1U3M3FYWFliLzdUYmJta3JYdTFY?=
- =?utf-8?B?cDhpVXBQWWQvdEJBbGxhZGkzaTdYQUNUV0FDNFhWMk9GWFB1RnpWc1grWGly?=
- =?utf-8?B?bjhGK0ZDUGQrT0ovU05WYVFtMzZ4YkVlQUNKSU9UbitMM1RuUm9LWUNKVWRm?=
- =?utf-8?B?aVRia1FiRVQ2TkJKNjNTby9UMDZCZHZxT2swTUFGK0MyV3VYRTdpYUQrQU1z?=
- =?utf-8?B?aGVSNkpzQUZMUjdrRjJXc0Fsd3dWRU05K0YzM3NzaHVaSTk0ZHdQTFcyTEVr?=
- =?utf-8?B?N3JHRENPSlpOazBEQytuZmxoV1hEUWxoa2ZMZUFVSmVHMzZGeWVOMWtFZnFh?=
- =?utf-8?B?ZVFIazBISTB5SFhYTEpZUXAyUjFiN2FXdG9nTVJqZkpac0c1N2ZxTThwR3dK?=
- =?utf-8?B?YllWMG9RL2tvODA2NWd5cGFENUNmVW9aeTBJTmhOMEZONHp5SFM2cWc4ZlU2?=
- =?utf-8?B?QTZ4N2xKU3NpcytOaUtaVEh1K0duSEFyZjhLV3U5QnRvMnM4M0JSSjFTeFZD?=
- =?utf-8?B?dXFaNEMwTHRRakp6SXp3cXdRSmdHT0lWTzlOODgwYXNLdjVqM04weUVnajhK?=
- =?utf-8?B?cHpGQ29aZThYU0dXWHlkdHFKN3NtLzNvVm5tYTVXdGlPYkljdTN4Z3Nzbm83?=
- =?utf-8?B?NnNXOC9KV0p6eHJ0QlpQT1RMU1J4OE1HM0tTZjNyUUU2Z0dFeXlhcGF3SXRi?=
- =?utf-8?B?YnhuTzE4cEhIZ1UyN25SSEgyWVVnTHBXenRUSS9DQTJYRWhoYmNuYVBsNmNo?=
- =?utf-8?B?TWZhaUtiaE9FakFjZ1o2bXpENmhXQ0NPYTVwZnVjTzJ2WE1tMmpDZlZSd256?=
- =?utf-8?B?YzF1dFk5RGNtTXdQUW1ac2lzQ1gzZUVVdVB2ZEVTL1BNS04rdVJrMEJxNzhG?=
- =?utf-8?B?cmY2aHc3S3BheEp4MEtYSllnWmdhWDR4TGhMTTJaSHBPaDZQdTZhOXJYZldC?=
- =?utf-8?B?WkFRWndaRllRc2JsK3pBRENWTjR1aHFKcDM5U3FKS1NUTVRXTk90bUdGS1h0?=
- =?utf-8?B?aExPY3dmSVNxUG11OEo1Ym5qYmJUYStBMFpySTM0VlBZNXo4SU9SQmNtakF5?=
- =?utf-8?B?MWpLb1I0QUtNQURpN2daQ2RNTkErZXFzTW9DNE0yanA4Tnlrcm8ydG1TRS9Z?=
- =?utf-8?B?M0dxTTAwWnVqOHl1ZGNOQlg2WVYvT1dZaFpKK3hIbExRSTBoTm5YL1FnMk1U?=
- =?utf-8?B?TFZUUVJLNDJib1NKQkhTYWtqS2pjQ3N6YTZmWnJGQ0JRZmJYQmJnbkNTWHpY?=
- =?utf-8?B?S2VGVmU3RXlOdFJtM0dOWE5Sa0hUc1gyUm5vbC9Od1laUEZlVlhDQUQ0ZWR2?=
- =?utf-8?B?MGREWHZXTFZYREQzN2ZUOWRiY1BhQW9rK3ZjMm9TT0lBaXdqaEJLM2RERWZI?=
- =?utf-8?B?dG5kMFFqbXRVVVZmQWV4U3JvR1NmTUFBRG1YT2MxeENBQWZOYzZlM2NqMnYx?=
- =?utf-8?B?V3UxQmcyTXhBbC9lcFRnb3hiWmtyWUdQYS8xWEtmUG9UWndiWmtvdXJSMlcy?=
- =?utf-8?B?T1NYcDQrYkR4andrSjZQNmNqM0hzRE9sd3pocm0xS0RnaDQ2bG1tU1ZrV0gr?=
- =?utf-8?B?ck11eU1ZUDF4NllwMU1wU1p3THExYk53clBrZGttcHhuL1dOZGhsZ2szR1pQ?=
- =?utf-8?B?OEhQT0k3YXZDcUNVTytNcUhlTHk5VERSNkhFNngvRUpORHRyZzZtTXN3bTRm?=
- =?utf-8?B?UkRDQU10Yy8xQmFPUGtaU0FjV3pyWjI1K1hqcXRCR1FzSUhZOUNrWExBMkhp?=
- =?utf-8?B?dFBJdnVXM1V4ejdtdm9GaERPRTNNK0FTeDlSWFJZZkVWRGlKenJuZ3NhZWNu?=
- =?utf-8?B?T2RxWVMvRFZBb2o3K3pEUWV0d1prY2x0eFRpNzNja3JTdmlCZkdCdlRBbWZ2?=
- =?utf-8?B?dlZVd1ZsV3NnWFZuUDdhUitpM2xyeUZtbStqbWhQQmFjdDVaUFRHb3ZOeWVr?=
- =?utf-8?B?ZFBaaXVIV3htdXZadDlXbHpFNFpZMTc5a1QwWFBEVURVL0w1Lzk5K2lWblNw?=
- =?utf-8?B?Y1FoM1BTd3JYdHg2MUtDN01rZ3VvMWxNQi9VRG9QRDFHYm41WmtCYml6eFM1?=
- =?utf-8?B?bnVUaExmb3ZLc3I1bkZNZXYzRHRBcExXSU1EQXh2Zk14dG96VXNuVnJGQVBO?=
- =?utf-8?B?SitibHVldVJrQU5yWTlvVUhOY0dqUFBKUWFKZmtHTDdMS2IzODdqT2Z0eTBP?=
- =?utf-8?B?NmRQbk9MSGw5SjIwSTRMSjVhbVJibHZTN0IvVllqMlBtSGF4aml2NXdDWjNv?=
- =?utf-8?Q?2IcKkz7cPo9EIZI4=3D?=
-X-Exchange-RoutingPolicyChecked: 3iAz6FZ6OSXx0Pl4FSRmA2UWWFK6ZKWUY/wQVh7kuLEgKbGCr0J2Qw9WxBJ7gCH8tIkxwQDbdHNzrGR0gP4KL59JiidzQKbiDph/jB4Ijf4+znNPkPMRIlJTS2apPKUCFSgH6Ybd8HO/9Je1EJlClI0nGrVJD2OCdPZ3EgYypFY5aiKD0RnkDshAFnMD8X0DsXShNs279Y7xAI+pYqadbPVgvd9+7ZUfhteNohYiVG+sxhRN6zH3UDWzpUvHrQYZkT3NhiztGL/m/wdFfDudmfYf0Rjzca/IHuZGKBQoNfby3/npyP0jFt6wvb2oEOhAz7Pj5H09lblWN6h+sE27nw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d7c3880-6782-407f-6816-08df23fae23d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 22:40:55.7327
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZpZOUK7QTKsEFjlXA5D3KV9HzvPrPzrZskSUH9WMgGzAajisijeCwMyd+G4wSWlfP1/88Ek4n83neMMs5/kQREIUYxk5HhjBG2jtnClTd9E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8594
-X-OriginatorOrg: intel.com
+References: <20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it>
+ <20260916-remoteproc_virtio_map-v1-8-dac8c5eb4aa9@valla.it>
+ <arKhbxi3Snbt1_Mn@p14s> <arLZj2DxBazf3wMd@bywater> <20261006183910.GA2890477-robh@kernel.org>
+In-Reply-To: <20261006183910.GA2890477-robh@kernel.org>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Tue, 6 Oct 2026 18:51:52 -0600
+X-Gm-Features: AclHuK8OpBmmKBzqQvP8CWwB7vUNA7khdkA2Xv5tnX4fcSWpzyBVTx2EHup08IU
+Message-ID: <CANLsYkwhrqk0nQNFuP_5aMYQCLGsLrzm-z9YP+Fvv-C1Ug8trg@mail.gmail.com>
+Subject: Re: [PATCH RFC 08/12] dt-bindings: remoteproc: add remoteproc-virtio
+To: Rob Herring <robh@kernel.org>
+Cc: Francesco Valla <francesco@valla.it>, Bjorn Andersson <andersson@kernel.org>, 
+	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-remoteproc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	virtualization@lists.linux.dev, imx@lists.linux.dev, iommu@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/6/2026 6:34 AM, Vincent Jardin via B4 Relay wrote:
-> Since commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags
-> to ptp_clock_info"), the PTP core rejects every PTP_EXTTS_REQUEST2
-> request for a driver that does not set .supported_extts_flags. The three
-> users of the QorIQ 1588 (dpaa2-ptp, enetc, ptp_qoriq),
-> so linuxptp ts2phc cannot arm their external timestamp inputs.
-> 
-> The timer timestamps the rising edge only, since ptp_qoriq_init() clears
-> ETEP1 and ETEP2. Each patch declares PTP_RISING_EDGE | PTP_STRICT_FLAGS
-> for one driver.
-> 
-> Patch 1 fixes the failure seen on an LX2160A board.
-> Patches 2 and 3 are build-tested/code review only.
-> 
+On Tue, 6 Oct 2026 at 12:39, Rob Herring <robh@kernel.org> wrote:
+>
+> On Tue, Sep 22, 2026 at 09:44:20PM +0200, Francesco Valla wrote:
+> > On Tue, Sep 22, 2026 at 09:40:31AM -0600, Mathieu Poirier wrote:
+> > > On Wed, Sep 16, 2026 at 11:10:53PM +0200, Francesco Valla wrote:
+> > > > Add a new binding to describe remoteproc-provided virtio devices; while
+> > > > these are discovered through a resource table parsed by the remoteproc
+> > > > infrastructure at runtime, their description can be needed to probe
+> > > > non-discoverable buses (such as I2C) or to link consumers and suppliers.
+> > > >
+> > > > Each vdev is described by a dedicated "group" node, which then includes
+> > > > a virtio-device node, which binding is already existent and used by
+> > > > virtio-mmio. Each vdev shall be stattically linked to a "group" node
+> > > > using its index inside the resource table as the reg property of the
+> > > > node; this permits to have multiple instances of the same type of
+> > > > device.
+> > > >
+> > > > The binding is intended to be generic and adopted by any remoteproc
+> > > > provider.
+> > > >
+> > > > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > > > ---
+> > > >  .../bindings/remoteproc/remoteproc-virtio.yaml     | 89 ++++++++++++++++++++++
+> > > >  1 file changed, 89 insertions(+)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..c4a0d84b1460
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml
+> > > > @@ -0,0 +1,89 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/remoteproc/remoteproc-virtio.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Virtio devices over remoteproc
+> > > > +
+> > > > +description: |
+> > > > +  Virtio devices ("vdevs") can be exposed using the remoteproc infrastructure
+> > > > +  and its resource table. For some of them, a device tree node might be needed
+> > > > +  to describe remote undiscoverable hardware and/or connect consumers and
+> > > > +  providers.
+> > > > +
+> > > > +maintainers:
+> > > > +  - Francesco Valla <francesco@valla.it>
+> > > > +
+> > > > +properties:
+> > > > +  virtio:
+> > > > +    description: Contains a group of Virtio devices exposed by the remoteproc.
+> > > > +
+> > > > +    properties:
+> > > > +      '#address-cells':
+> > > > +        const: 1
+> > > > +
+> > > > +      '#size-cells':
+> > > > +        const: 0
+> > > > +
+> > > > +    patternProperties:
+> > > > +      "^vdev@[0-9a-f]+$":
+> > > > +        type: object
+> > > > +
+> > > > +        properties:
+> > > > +          reg:
+> > > > +            description: Virtio device index inside the resource table.
+>
 
-Yep. This change was intentional so that PTP_EXTTS_REQUEST2 would be
-rejected until the drivers were updated to specifically indicated which
-set of flags they actually supported.
+There are 2 configurations we need to account for: (1) each device
+located behind the remote processor gets its own set of virtqueues and
+adheres to the virtio specifications.  This is the configuration
+targeted by this thread.  The other configuration (2), discussed in
+the other thread, involves virtio piggy-backed over RPMSG.  The hope
+is to represent both configurations using the same bindings.  For (1),
+virtio devices will be advertised in the resource table and for (2),
+virtio devices will be announced via the existing remoteproc namespace
+service.
 
-Thanks for verifying which edge these drivers timestamp.
+> Who/what defines the resource table?
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+The resource table is part of the firmware image and is parsed by the
+remoteproc core.  For (1), as presented in this set, "reg" links the
+entry in the resource table with the device definition in the DT.  For
+(2), the definition is also a device index, but said index is
+communicated to the remoteproc core using a namespace announcement
+rather than the resource table.
 
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
-> ---
-> Vincent Jardin (3):
->       dpaa2-ptp: fix support for PTP_EXTTS_REQUEST2 ioctl
->       net: enetc: fix support for PTP_EXTTS_REQUEST2 ioctl
->       ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
-> 
->  drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c | 1 +
->  drivers/net/ethernet/freescale/enetc/enetc_ptp.c | 1 +
->  drivers/ptp/ptp_qoriq.c                          | 1 +
->  3 files changed, 3 insertions(+)
-> ---
-> base-commit: d5a007b9b457c915ab1a53227e8939e4018aa97a
-> change-id: 20261006-for-upstream-qoriq-ptp-extts-flags-1c6fd731d66f
-> 
-> Best regards,
+I hope to establish bindings for configuration (1) and merge that work
+first.  Once that is done we can extend it to cover (2).
 
+>
+> > > > +            maxItems: 1
+> > > > +
+> > > > +        additionalProperties:
+> > > > +          type: object
+> > > > +          $ref: /schemas/virtio/virtio-device.yaml
+> > > > +          maxItems: 1
+> > > > +
+> > > > +        required:
+> > > > +          - reg
+> > > > +
+> > > > +    additionalProperties: false
+>
+> Preferred to put this before 'properties' in the indented cases. Easier
+> to see what level it belongs to.
+>
+> > > > +
+> > > > +    required:
+> > > > +      - '#address-cells'
+> > > > +      - '#size-cells'
+> > > > +
+> > > > +additionalProperties: true
+> > > > +
+> > > > +examples:
+> > > > +  - |
+> > > > +    remoteproc-cm33 {
+> > > > +      virtio {
+> > > > +          #address-cells = <1>;
+> > > > +          #size-cells = <0>;
+> > > > +
+> > > > +          vdev@0 {
+> > > > +              reg = <0>;
+> > > > +
+> > >
+> > > Do we need the 'reg' since we already have vdev@X?  I'll let the DT people
+> > > provide their input on this.
+> > >
+> >
+> > AFAIK yes, because the rproc_get_vdev_fwnode() helpers search for indexed
+> > child nodes using the 'reg' property, not the node name. This I believe
+> > is the preferred way of doing things.
+>
+> It is either both unit-address and reg or neither. It's preferred to
+> have them unless you are just making up numbers.
+>
+> Rob
