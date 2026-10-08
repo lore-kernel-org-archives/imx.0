@@ -1,110 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73FB48986D
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791450913; cv=none; b=MxRJgWiru7x4RURBpFDXJ+ryimnRaWHNZ2Yz1mb8i4veHIacE8SQIX3JridlNriLvHkqX2PKMqXhk0L94Y/S8vnKbhdeLNBDwPuP0Q1MMxmXmEKmkLqXdTIQVjshCYLXa05Wupp2Ld5ohwK8l0cfK4lygR1WvqRRwtatkRIXNHs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791450913; c=relaxed/simple;
-	bh=DnQDNJtbMW0K4ptNTUYMvVmTqisIIfDwZrch9hpPVkE=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=X3nMzt9XP3mC/Wyp8u8OuOTXpDZlrZMVwxWmnnWjiKYLfu9oncOtaKlZ1hDcgqlYaAnhnfwUyKru9BLJOSXmGJRRWhc34v5DlmI7AFKkGcTDgm5qJ6BXcO+Hvi/eA1QrLOR7ki7AfOMkEp3KagST6EMd8EdVX36i03A4Ne8omds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2GWTZB9; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F9748EC7C
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791450983; cv=pass; b=qVHIoqA3oO2tfRP+jLNHbs8cM09wIE3BTyu11rwyLlydxqCSpLpGb9JWHNu9EFmEhDyQOidS239S8mYvLEdULtTSPDnvu3UgNp3vajXgQH4IL0dR4ExWs2Ncx6YioB+w2FuJ9PwGEQztdRrBZ5B4m4mXNMwvNmJa549UXV24GSM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791450983; c=relaxed/simple;
+	bh=8fA+PcBqCWGEj0dJDDjO6qBFZFaRQnYFP6vrrHwXRlE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nmXaKJB6Rj3zUnz7hsMi0RBHimSSYDB0eB8Qko83UpzlLF0t8q//tQkJQmM7CdyPE44EB5FY8w5bUvW8DvI6+Y4iX2ZQybIc+q77Sbm53zggbbrTzuGAqxmmXQpxnX8/xw97tH9DgKhL3jR6NSRmAfKNULGmWWzFk4jF/5wtirA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=Y1Yiio78; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2GWTZB9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1E41F000FF;
-	Thu,  8 Oct 2026 09:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791450906;
-	bh=zGb6U0Rr57mdwSh7IR44r3zCJ0J7vt1dHJDq8h8KyXg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E2GWTZB9r4UFjw75T7y3hPhmy7iigYfhG6Ohfb+LWNY+CDijau478D+Lpk8IOkaNc
-	 oUl35vLZbpyvpLNkVbohA2KefcqutUM8B0iKw3RBbTAcJP4kghC3mADKn9v1E0I2Ae
-	 dz/ZoDmy2Ji/rDTZZ60z3GeatuTPSzFo8MS6ikT0hUcC3E2AmJiUoAcHqzYLxt4VjC
-	 uSLhY67pRTkp3bEdiS8wEsKmMCdDBAWde+48CuZ7FzNM75u9XoobJCp2xEhFgJpw5e
-	 Le0Ex97oQ/W7TCfRfWm6iKO6dE2Pzjuee+3wYy/ZCuHhCFF6biPZIRipMTqLYxWaMo
-	 yqvD1KvkbsIUA==
-Message-ID: <sashiko-outbox-163909@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 9/9] irqchip/imx-irqsteer: Use
- devm_irq_domain_create_linear()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Zhipeng.wang_1@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261008090231.796511-10-Zhipeng.wang_1@oss.nxp.com>
-References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
- <20261008090231.796511-10-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 09:15:05 +0000
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="Y1Yiio78"
+Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:4b01:1e0e:d42d:4ec8:33b2])
+	(Authenticated sender: str@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0FCCF200582;
+	Thu, 08 Oct 2026 11:16:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1791450969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G4OdqquRkr6UmIvev0wHEbWO3nZAjp+PtnezGPRgzOo=;
+	b=Y1Yiio78FKUWT5PqDICsj87JHuQ/9IUnAOENLD8AkAIwceLaYGhz1uf77oxWXPiGydupND
+	o4PsYIdxkslPktgcEdnE7+rUjJblLJ5/v49kaJlUZiG4nKuXULLKyusnQPxz+Nhp1apwMM
+	sTf/mCeaalA3zdvlpXRbs8KE8AiLpeMQs71ywfRBoGNnW8lbFgajeAvtSxB7ZYc3EVgNZ0
+	wW4F/mccUsN6omzQHmvYwVc2WNrMls9xjMUsxzs8wJm1SjMgW6z9ESG685YfIcDMk2HoBl
+	xSKWFPfcUMiu5W/E+ovdvAmGFTPf1N7iImeLD1IATOiQFAOFjkrfx86ww+TXnw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791450969; a=rsa-sha256;
+	cv=none;
+	b=Avj3vfltkwy+Q+7x3yRblRREjCIDnO9u0mmbfW5a5zH+f1tHTv2adixSIGvHVnFqK0ZI8R
+	ihSFPjYJQh5xKUGoH+/0TcHV6S4apbUn0SPDRE0Wzq689LevOCY7ZrI3CiX7BaiNSnIi5+
+	2B0ZNyI/aQIwyKOi2b/sE+94YLyj1wRYt/Nv5AN42cQyo0Qe9nqxWaKvM1RK78TrC9USyx
+	I+p6dq+fBzl8FVayPBSX9P/YrSn5o+41WjmM5DTyysajLOfhoMd+kTqMqrdIedaZf/mgsP
+	bfbq8F0uHibOks5YQHJf69kvI3eaa4azIXyQNaA4Hfnqk9hr//h7JAj662cRKg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1791450969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G4OdqquRkr6UmIvev0wHEbWO3nZAjp+PtnezGPRgzOo=;
+	b=C8SABDphPBj+iChaaeaXgJjbtLHdbJLTgHUOkmp2jSL5boWe256V6ucUtBPrmgiqGHBBdF
+	+Vy1LTR8naog7qtI5bCj2EhUtu+DxcQ6OlbOtCbxhdaR48+9nb8aYMzVTJ9XttvhkWo0z8
+	7KipReyEJg3KlAaLCvTXzBmtMv8Z/kD4Mha2G5NtMFP7svxic/F93fdbYimIoDGDsvRAZu
+	5s7Bi9hnJw1lfwaNWp08gK8KF/+g7xvEIoEkfSxkXx76SRFkNWeqRuiNUaVAsu0ECawlNO
+	HW0bWEwM1si1fdZirFZZ0BqWdjSUeL/zF5EthW0Hlp1+VVGzq8JyGXi6Z2JKow==
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu, 08 Oct 2026 11:15:59 +0200
+Subject: [PATCH v9 1/3] arm64: dts: freescale: imx8mp: skov: fix sort order
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-1-11fa90f531fc@pengutronix.de>
+References: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de>
+In-Reply-To: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ =?utf-8?q?S=C3=B8ren_Andersen?= <san@skov.dk>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1163;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=8fA+PcBqCWGEj0dJDDjO6qBFZFaRQnYFP6vrrHwXRlE=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bx+AhVi/dbsy9Ffe9eaz5rafz7H/m3lJ5Vzfzv2Zl93
+ yag0Xd5RykLgxgXg6yYIovKwgo+UY8PnpHTRLhg5rAygQxh4OIUgIlwWDL8s37seuJmg7uTo46j
+ 8HplY/0oZdfiXZevztwwt7tIfP4ybYa/ckuX3tji6f50esDpHV0/U3Sv3/x9qthp4pYtBn+ur3j
+ zlBsA
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] core: code and commit message mismatch regarding old domain API
---
+The imx8mp-skov-revc-jutouch should be alphabetically before the
+imx8mp-skov-revc-tian variant.
 
-commit 05a4c59bf91334e37803afcd72a82640aa12007b
-Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Sort the entries in the correct order.
 
-irqchip/imx-irqsteer: Use devm_irq_domain_create_linear()
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm64/boot/dts/freescale/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This commit updates the imx-irqsteer driver to use the device-managed
-devm_irq_domain_create_linear() function for creating the IRQ domain. It
-also removes the manual domain removal code in the driver's remove path.
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 95ae85ab4adf5..49025ae465f22 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -475,8 +475,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-hdmi.dtb
+-dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt101tm023.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-toradex-smarc-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314.dtb
 
-> The driver open-codes an irq_domain_info and calls
-> devm_irq_domain_instantiate() only to get a linear revmap domain tied to
-> the device lifetime. Use the new devm_irq_domain_create_linear() helper
-> instead. No functional change.
+-- 
+2.51.0
 
-[Severity: Medium]
-Does this commit message accurately describe the previous state of the code?
-
-The commit message states that the driver open-codes an irq_domain_info and
-calls devm_irq_domain_instantiate(). However, the diff shows the driver was
-actually using irq_domain_create_linear() in imx_irqsteer_probe() and
-tearing it down manually with irq_domain_remove() in imx_irqsteer_remove().
-
-Could the commit message have been copied from another patch in the series?
-
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index 85edd5e33ca9c..f5601769d0363 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -246,8 +246,9 @@ static int imx_irqsteer_probe(struct platform_device =
-*pdev)
->  	if (ret)
->  		return ret;
-> =20
-> -	data->domain =3D irq_domain_create_linear(dev_fwnode(&pdev->dev), data-=
->reg_num * 32,
-> -						&imx_irqsteer_domain_ops, data);
-> +	data->domain =3D devm_irq_domain_create_linear(&pdev->dev, dev_fwnode(&=
-pdev->dev),
-> +						     data->reg_num * 32,
-> +						     &imx_irqsteer_domain_ops, data);
-
-[ ... ]
-
-> @@ -294,8 +295,6 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
->  		irq_dispose_mapping(irqsteer_data->irq[i]);
->  	}
-> =20
-> -	irq_domain_remove(irqsteer_data->domain);
-> -
->  	if (ret >=3D 0)
->  		pm_runtime_put_noidle(&pdev->dev);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008090231.7965=
-11-1-Zhipeng.wang_1@oss.nxp.com?part=3D9
