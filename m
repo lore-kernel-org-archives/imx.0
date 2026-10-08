@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D9F43846B
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 10:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17533440638
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 10:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791456851; cv=none; b=NhHaM5OCwR8i9BT/s3LQenECf4rakoDAryT18krL7pSV3qyzRmmFaLO18juCC1QBFc/KWv0q0N4Nkn7wHT/ZRWFN/ARNDtHOypdGEUB9cV40HZqKLHhikIYt8x8IcUDfkrLamCFlamTkX+IZe7dTw0rc+wL0iBEZBPIqkZzL2fw=
+	t=1791457058; cv=none; b=Efy9Qlvp8YP0KMHzpnBb050xzje66TDQuVb7GxsD9ZK4IYrMRWTr1Ruy+E5wy0ZmwzPO4NErFk97nVemh2Hsyea3NxgK4Rvysb8HwiUqCTlUhUJey6Nidw8/CuuUdSJCJ7ML/9PvMbYzivS8/iF3eZhi7S+6sAz1eJ86tkRy0VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791456851; c=relaxed/simple;
-	bh=pkdJNnt7xktewctTpcFSlLWY5BlAbfY0C4+LPGOKSvU=;
+	s=arc-20240116; t=1791457058; c=relaxed/simple;
+	bh=euFLIPTWCleIm+KG636Dc/aiq0UWj86t0hqNGjL3AJ8=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=SJ7gD7DnQ5bU8S6koMrm7J6s81BgTWQ26udQVKhQz8Vo3KTnEjmN2Qi0vXMn0/Xl5NiiMl66kMR/Wyawls+sYrio5sx1D2nchx5RgL6oNi4vYGUQluKtPUCmeqP8vNef60CLYziZ3ZrP5sojB2JRIGuQswJfXnsxKV+yy+JDz8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1qdmjBK; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=MyywShdgkalRU7yUPIShwUOfPUP25F0HUB+YkQssJnes2ifC9LZaEJWW7myU3DXiUaTaFdKGRUPfNRlrzAx65XP80fE5bdgueHrJQB/JOuqiIb+SDpd6uF8ebeeqJCFF4xpsnYP2KCLV1Q0OnrFl73bpnxWj7EKm2JNAfAsJDjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMXcE0NU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1qdmjBK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764441F000FF;
-	Thu,  8 Oct 2026 10:54:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMXcE0NU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E3C1F000FF;
+	Thu,  8 Oct 2026 10:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791456849;
-	bh=OWaSxHHkaFY5F2pk6cwtSdwyHmLQBeITO76k+NCVqm4=;
+	s=k20260515; t=1791457056;
+	bh=m9WIf2aHd30d4S04vgIjkMQUIDdt5Tcly6JZ/zaNvac=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j1qdmjBK4Un1cMFn2KN+Rad+FlMsN7mhm9rS84+tkImSmemKWSSnnPMRAWGxsqvTP
-	 oQ0vnvnqd2sZplT+Ve/A37oOO5A+gzyZbBK/XTYZj+7QERppOAF/yjk+RVtXpxipPr
-	 T8vqBlbTt4mim/TPayIjlsqYmUPC8+ynPBXCvyNIUTIxWKOLGdRIqDdWga+JNmXDXg
-	 n8YrrcZ78IXo/V8jySoqlHjL7rspgvnAvoUc/4TZmNgm6oCioSr08OszI/DkjCW7Oa
-	 uk6jLP5j3BuKoaWLs6NUX0NYVlzsgMmHDgUZMzgw/zvTWh4wCZWNsyrg0MZSqzkSBt
-	 We7ACgNIUIw7g==
-Message-ID: <sashiko-outbox-164055@kernel.org>
+	b=HMXcE0NU146AtrTm6J0wWHOCCsrm+2PrLxoOI+lSVVOct9v3pkYoTHvGVdyBYjq4J
+	 eK2nuIiIJvaXUbCxjekuJhcNMGA8VA+UmT7xdT/ckycn1hyPVjA0TA1L7cF/ZKnj3V
+	 tnYXSvOGxh8rNNLLV50NJNoHiHvvWt4DzBOPvuXT9skpuibWemOGeoZtyIctMXihiL
+	 +PZqZUHFgkgFzv8hdJKbjKjgsx+cYV/bvCCvTXeUsMMA5N4HCxwexMcjpmScaekAIg
+	 i5s8yuadeJnj9vAGa7JbdNP2Rlq1Z++PB1pA7hm+TIPB3WL451zMWA2g9WF1ZAWRQX
+	 Qgyu8lCG1ogOg==
+Message-ID: <sashiko-outbox-164068@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 06/24] ASoC: amd: vangogh: Fix acp5x_dma_close() being
+Subject: Re: [PATCH 21/24] ASoC: renesas: msiof: Fix msiof_close() being
  skipped on rollback
 Reply-To: sashiko-reviews@lists.linux.dev
 To: phucduc.bui@gmail.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261008103831.542533-7-phucduc.bui@gmail.com>
+Cc: wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20261008103831.542533-22-phucduc.bui@gmail.com>
 References: <20261008103831.542533-1-phucduc.bui@gmail.com>
- <20261008103831.542533-7-phucduc.bui@gmail.com>
+ <20261008103831.542533-22-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 10:54:09 +0000
+Date: Thu, 08 Oct 2026 10:57:36 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,87 +47,56 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] ASoC: amd: vangogh: Uninitialized i2s_instance in acp5x_dma_cl=
-ose() corrupts concurrent streams
+- [Medium] asoc: msiof: memory leak of prtd in msiof_open() error path
 --
 
-commit 0fa96f07228732634c84e9e1736847a1c270fb29
+commit d7a4f2d9645c8240b2c60d42136e3b2e4694d703
 Author: bui duc phuc <phucduc.bui@gmail.com>
 
-ASoC: amd: vangogh: Fix acp5x_dma_close() being skipped on rollback
+ASoC: renesas: msiof: Fix msiof_close() being skipped on rollback
 
-This commit explicitly returns 0 on success in acp5x_dma_open() to ensure
-ASoC correctly marks the component as opened. This prevents .close() from
-being skipped during a rollback if .open() initially returned 1 from
-snd_pcm_hw_constraint_integer().
+snd_pcm_hw_constraint_integer() may return 1, which is then returned from
+msiof_open(). ASoC only marks the component as opened when .open() returns
+0, so this patch explicitly returns 0 on success to ensure .close() isn't
+skipped on rollback.
 
-> diff --git a/sound/soc/amd/vangogh/acp5x-pcm-dma.c b/sound/soc/amd/vangog=
-h/acp5x-pcm-dma.c
-> index 831e30e9b0426..33d59d992ee0c 100644
-> --- a/sound/soc/amd/vangogh/acp5x-pcm-dma.c
-> +++ b/sound/soc/amd/vangogh/acp5x-pcm-dma.c
-> @@ -231,7 +231,7 @@ static int acp5x_dma_open(struct snd_soc_component *c=
-omponent,
->  	}
->  	i2s_data->acp5x_base =3D adata->acp5x_base;
->  	runtime->private_data =3D i2s_data;
+> diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msio=
+f.c
+> index 128543fc4fc97..9fead9a22cdc4 100644
+> --- a/sound/soc/renesas/rcar/msiof.c
+> +++ b/sound/soc/renesas/rcar/msiof.c
+> @@ -427,10 +427,12 @@ static int msiof_open(struct snd_soc_component *com=
+ponent,
+>  	ret =3D snd_pcm_hw_constraint_integer(substream->runtime, SNDRV_PCM_HW_=
+PARAM_PERIODS);
+> =20
+>  open_err_dma:
+> -	if (ret < 0)
+> +	if (ret < 0) {
+>  		dma_release_channel(chan);
+> +		return ret;
+
+[Severity: Medium]
+Does this error path leak the dmaengine_pcm_runtime_data (prtd) memory?
+
+In msiof_open(), if snd_dmaengine_pcm_open() succeeds, it allocates a prtd
+object. If the subsequent call to snd_pcm_hw_constraint_integer() fails, the
+function falls through to this open_err_dma error path.
+
+Since this path calls dma_release_channel(chan) but fails to clean up the
+PCM state via snd_dmaengine_pcm_close(substream) or
+snd_dmaengine_pcm_close_release_chan(substream), is the prtd memory
+permanently leaked when msiof_open() returns an error and the ASoC core
+aborts the open sequence?
+
+> +	}
+> =20
 > -	return ret;
 > +	return 0;
-
-[Severity: Critical]
-By ensuring acp5x_dma_open() returns 0, ALSA SoC will now call
-acp5x_dma_close() on rollback if a stream is aborted before hw_params()
-is called.
-
-Can this regression corrupt the state of concurrent streams?
-
-When acp5x_dma_open() allocates i2s_data via kzalloc(), the i2s_instance
-field is initialized to 0. It is only set to its correct value later in
-acp5x_dma_hw_params().
-
-If acp5x_dma_close() runs on rollback before hw_params() is called:
-
-sound/soc/amd/vangogh/acp5x-pcm-dma.c:acp5x_dma_close() {
-    ...
-	if (substream->stream =3D=3D SNDRV_PCM_STREAM_PLAYBACK) {
-		switch (ins->i2s_instance) {
-		case I2S_HS_INSTANCE:
-			adata->play_stream =3D NULL;
-			break;
-		case I2S_SP_INSTANCE:
-		default:
-			adata->i2ssp_play_stream =3D NULL;
-		}
-    ...
-}
-
-Because ins->i2s_instance is 0, it falls through to the default case
-and sets adata->i2ssp_play_stream =3D NULL.
-
-Since adata is shared per-device data, this incorrectly clears the stream
-tracking pointer for a completely separate, concurrently running stream.
-
-When the hardware fires a threshold interrupt for the active stream,
-the handler will fail to clear it:
-
-sound/soc/amd/vangogh/acp5x-pcm-dma.c:i2s_irq_handler() {
-    ...
-	if ((val & BIT(I2S_TX_THRESHOLD)) && vg_i2s_data->i2ssp_play_stream) {
-		acp_writel(BIT(I2S_TX_THRESHOLD),
-			   vg_i2s_data->acp5x_base + ACP_EXTERNAL_INTR_STAT);
-		snd_pcm_period_elapsed(vg_i2s_data->i2ssp_play_stream);
-		irq_flag =3D 1;
-	}
-    ...
-}
-
-Because the pointer was nullified, the interrupt remains asserted and the
-handler returns IRQ_NONE, causing an infinite hardirq loop.
-
 >  }
 > =20
->  static int acp5x_dma_hw_params(struct snd_soc_component *component,
+>  static int msiof_close(struct snd_soc_component *component,
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008103831.5425=
-33-1-phucduc.bui@gmail.com?part=3D6
+33-1-phucduc.bui@gmail.com?part=3D21
