@@ -1,138 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4607A4CC63C;
-	Wed,  7 Oct 2026 23:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4150F1DF748;
+	Thu,  8 Oct 2026 00:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791415007; cv=none; b=B102v3opBu/NM4nN0e3kEjDmDCT4Bx9fspf4WroA1OoZy8d+jfj1inmzdVmxUCUHQp9lGHNzsi5Uy300ZNXqfYz3BMy5qU7Kx8wJQuldYZSyKOlu4Zh76mQMIsYNWtpsiQ7AWPhZR7DvcxkqfD+YFPlHzFzg5NtdrMl7HfbW/Tg=
+	t=1791418953; cv=none; b=uWDEm2vTx/HXTE1ZEwlqIzjOLoerKDWM6UYbANhe455u8n3Jy1EZxFiAiArPHjBU+Nv/glft8XGd9b1rkuHbVKV+99drmFqWDxnFK8vXuj40zBb/hAqpxNiJ/RpasD+5HqyWYkogr77puigJYXCLTlJd5xSt/zKGm1KhwwVp38Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791415007; c=relaxed/simple;
-	bh=zuJeUJF/NzZSz3lqVEzrBi1UFtVpZaVXAmbRT9Q45ic=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fPQXqfhW2eCj8XwAiH76iCR0iUkCC5pRL8WhsWyjFl2xXm0QtWQaFaXcl64ICOSgKPf9nEw9kA80G875KvcaNxEShTdGOmA/4L7PY0Nliw5XjVlu/TjIaCNE0GDYrCfpC3q2kN0WR7X2RJ9QumgouyzmeC0X51ftVxzcKZ7faoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I1SWsTZa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791418953; c=relaxed/simple;
+	bh=/z6FyeObSyox00fvFAVa/G0dfkhRFZtmrIoFAREHD78=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sC5rrmNua8wzcpIBtmxgufLSc7s0DQHtbI2/z6IrN4jt0u3SGG3YxIhIC1aBjLx5Lvic+lxC6zBiMriz3GHai0fzZltpwsI9CPNkf9x7v8EAct84Ann2xqktnHcos8g25U5om9FuWhr6eDaMauzYZur3IR8oprrNGcczRtHtvYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKocWaFI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1SWsTZa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081BB1F000FF;
-	Wed,  7 Oct 2026 23:16:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKocWaFI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754781F000FF;
+	Thu,  8 Oct 2026 00:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791415005;
-	bh=yodQAvH4G4xCdufSt9BsNzOnrk4PQaCFZSm8g0XDfpU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=I1SWsTZaut1Ir1YAfwglNlk/MtpMw+340slqOL/axGmAQ6d95tGMUKha7n1lSLY7U
-	 ppBGJPAr/K4SIQ18H7Whp3UfMal6wdnKuf1u6hl9YSCmlPMJpGK5/ayxMOjKllCDMg
-	 AJ2Y4s4M4TW3gZb8NAC3m/aNcmZf25EgMTQmygJYopVRWidd4pz4sxSdD4fmJLh8pL
-	 vxfte/OZpMcYFQM1q3uKGTzTtbTiCirtDGsDHFh5nOT69ZgId0AhpqSmoTEoiTnAEN
-	 XLNKGICciAINDbPlqbgcEcsOczNVg1MZV+EQCdLli701zBbhpUEWG9rEjiaFsEmBFc
-	 kp0ZwScEysTSQ==
-Subject:
- Re: [PATCH net 3/3] ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
-From: netdev-bot+sashiko@kernel.org
-To: vjardin@free.fr
-Cc: yangbo.lu@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, jacob.e.keller@intel.com, kory.maincent@bootlin.com,
- claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, ioana.ciornei@nxp.com
-Date: Wed, 07 Oct 2026 23:16:44 +0000
-Message-ID: <179141500461.434549.18154635092466251146@kernel.org>
-In-Reply-To:
- <20261006-for-upstream-qoriq-ptp-extts-flags-v1-3-b4a161b92832@free.fr>
-References:
- <20261006-for-upstream-qoriq-ptp-extts-flags-v1-3-b4a161b92832@free.fr>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791418951;
+	bh=1PsUH/ABqcyvYmj6q4VB1BamtgWi2MZnSafY+eqOoWU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WKocWaFItHceD2ATKPCK6L9xuFQlA/kc8soJN8CjGr9lehMTuYvUyTugbgsk/oebe
+	 ZLP4yaLTHgmCt7ySAWNAG8Y34/4OCAnsEC6PEOKd7efBRoVpzASDUexYAtvSpoNFJu
+	 1RB3CGJYRu3DUT1q4qagwMEg6zjMJfLUzncEAgUBAIjCOyq5fnTT8jmvHPGBizftCc
+	 CgJsa5hilxkTuVrBHeKOklhtZsBNEuTMQesdkGXnBP4mDtZBZmYpCcBCbYNCZFX6Qs
+	 Ss/bv2vN3GFfxmhMvobZ/MSg+NTpvU9mWd/5bE0TG0I0qLJQo3muEIC4bN3L7zaE3a
+	 VlK3m0NTtkEmA==
+Date: Wed, 7 Oct 2026 17:22:30 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: marex@nabladev.com, netdev@vger.kernel.org, davem@davemloft.net,
+ andrew+netdev@lunn.ch, xiaoning.wang@nxp.com, claudiu.manoil@nxp.com,
+ edumazet@google.com, pabeni@redhat.com, vladimir.oltean@nxp.com,
+ wei.fang@nxp.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [net-next,PATCH] enetc: Set eMDIO MDC rate to 2.5 MHz only on
+ i.MX95
+Message-ID: <20261007172230.53347039@kernel.org>
+In-Reply-To: <179121421089.434549.4883192954268711704@kernel.org>
+References: <20261001223947.60189-1-marex@nabladev.com>
+	<179121421089.434549.4883192954268711704@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Mon, 05 Oct 2026 15:30:10 +0000 netdev-bot+sashiko@kernel.org wrote:
+> > -#define ENETC_EMDIO_CFG \
+> > +#define ENETC_EMDIO_CFG(mdc_div) \
+> >  	(MDIO_CFG_HOLD(2) | \
+> > -	 MDIO_CFG_CLKDIV(66) | \
+> > +	 MDIO_CFG_CLKDIV(mdc_div) | \
+> >  	 MDIO_CFG_NEG)  
+> 
+> [Severity: High]
+> What divider do the other users of these accessors get?
+> 
+> The exported enetc_mdio_read_c22(), enetc_mdio_write_c22(),
+> enetc_mdio_read_c45() and enetc_mdio_write_c45() are shared with several
+> bus constructors. Only enetc_pci_mdio_probe() sets mdc_div.
+> 
+> These constructors install the same accessors but set only hw and
+> mdio_base:
+> 
+>   enetc_mdio_probe() in enetc_pf_common.c (PF external MDIO, LS1028A
+>   and ENETC4)
+>   enetc_imdio_create() in enetc_pf_common.c (internal Lynx PCS MDIO)
+>   netc_port_create_emdio_bus() in drivers/net/dsa/netc/netc_main.c
+>   vsc9959_mdio_bus_alloc() in drivers/net/dsa/ocelot/felix_vsc9959.c
+> 
+> For example:
+> 
+> enetc_pf_common.c:enetc_mdio_probe() {
+>     ...
+>     bus = devm_mdiobus_alloc_size(dev, sizeof(*mdio_priv));
+>     ...
+>     mdio_priv->hw = &pf->si->hw;
+>     if (is_enetc_rev1(pf->si))
+>         mdio_priv->mdio_base = ENETC_EMDIO_BASE;
+>     else
+>         mdio_priv->mdio_base = ENETC4_EMDIO_BASE;
+>     ...
+> }
+> 
+> mdiobus_alloc_size() allocates the priv area with kzalloc(), so mdc_div
+> stays 0. MDIO_CFG_CLKDIV(x) is ((((x) >> 1) & 0xff) << 8).
+> 
+> As a result, every C22/C45 transaction on these buses would write a zero
+> clock divider into ENETC_MDIO_CFG. Before 587acb86d646 the value was 258,
+> and after it the value was 66.
 
-Low priority / nit picks for your consideration:
-
-- [Low] This patch sets `.supported_extts_flags = PTP_RISING_EDGE |
-  PTP_STRICT_FLAGS` in `ptp_qoriq_caps` (drivers/ptp/ptp_qoriq.c).
-
---
-
-ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
-
-The patch sets .supported_extts_flags in ptp_qoriq_caps to
-PTP_RISING_EDGE | PTP_STRICT_FLAGS. As a result, PTP_EXTTS_REQUEST2 requests
-are no longer rejected with -EOPNOTSUPP by the PTP core. It also makes the
-core reject falling edge requests, which the hardware does not support.
-
-> diff --git a/drivers/ptp/ptp_qoriq.c b/drivers/ptp/ptp_qoriq.c
-> index 76272e5ac5b85..bcd29104effe7 100644
-> --- a/drivers/ptp/ptp_qoriq.c
-> +++ b/drivers/ptp/ptp_qoriq.c
-> @@ -355,6 +355,7 @@ static const struct ptp_clock_info ptp_qoriq_caps = {
->  	.n_per_out	= 0,
->  	.n_pins		= 0,
->  	.pps		= 1,
-> +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
-
-[Severity: Low]
-Does this also change the behaviour of the legacy PTP_EXTTS_REQUEST ioctl
-on qoriq clocks? The commit message doesn't mention it.
-
-For the legacy ioctl, ptp_extts_request() in drivers/ptp/ptp_chardev.c
-masks the flags to the V1 set, which still includes PTP_FALLING_EDGE. It
-never adds PTP_STRICT_FLAGS:
-
-	} else {
-		req.extts.flags &= PTP_EXTTS_V1_VALID_FLAGS;
-		memset(req.extts.rsv, 0, sizeof(req.extts.rsv));
-	}
-
-Whether the edge bits are treated as hints depends only on what the driver
-declares, not on which ioctl was used:
-
-	if (!(supported_extts_flags & PTP_STRICT_FLAGS))
-		supported_extts_flags |= PTP_EXTTS_EDGES;
-	/* Reject unsupported flags */
-	if (req.extts.flags & ~supported_extts_flags)
-		return -EOPNOTSUPP;
-
-Before this patch, supported_extts_flags was 0. Legacy requests with
-PTP_FALLING_EDGE, or with PTP_RISING_EDGE | PTP_FALLING_EDGE to mean either
-edge, were accepted and timestamped on the rising edge.
-
-With this patch, those same legacy requests return -EOPNOTSUPP. For
-example, testptp -e N -E 2 or -E 3 in tools/testing/selftests/ptp issues
-PTP_EXTTS_REQUEST with PTP_FALLING_EDGE set. That worked on qoriq before
-this patch and fails after it.
-
-The rejection itself looks consistent with how the core treats strict
-drivers. It also matches dpaa2-ptp and enetc_ptp, which use the same flag
-set.
-
-However, the subject and first paragraph describe a PTP_EXTTS_REQUEST2-only
-fix, and present the legacy ioctl as the path that already works:
-
-    A driver that does not set
-    .supported_extts_flags still accepts the legacy PTP_EXTTS_REQUEST ioctl,
-    but every PTP_EXTTS_REQUEST2 request is rejected with -EOPNOTSUPP
-
-The last paragraph says "a falling edge request is rejected", but it doesn't
-say this also applies to legacy PTP_EXTTS_REQUEST users. It also doesn't
-mention the rising plus falling "either edge" case.
-
-The Fixes: tag makes this a likely stable backport. Could the commit message
-say explicitly that legacy PTP_EXTTS_REQUEST callers asking for a falling
-edge or both edges will now get -EOPNOTSUPP?
-
->  	.adjfine	= ptp_qoriq_adjfine,
->  	.adjtime	= ptp_qoriq_adjtime,
->  	.gettime64	= ptp_qoriq_gettime,
-
+Looks legit.
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832%40free.fr
+pw-bot: cr
