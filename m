@@ -1,203 +1,167 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012019.outbound.protection.outlook.com [52.101.66.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1603E5A2A
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 07:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791443701; cv=fail; b=srRk2Fy3G9hKHSexTucggRe7wb6eHz/ZlOUWsZs4SI2x9th55wTnYeXN3PVmmMjlDnKS2jlvbetE1317yX/t2E7pMGZsdbJq6UX9KtBYDkhF7hAT14tsIMBCHgGUAlWik3bYSjLgdGQ2kTd/gCr0n/sBfeB2nQsIxWwWfKZawzk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791443701; c=relaxed/simple;
-	bh=E0BogyLCh3FiHrG5oZQvbVfLQBy8emkGR6Q5FGe5lG0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Iy4YYXHmE7sGglh+YASe8e3Q/fzD+95Y9zjkdXblwX8NOJs06MhF0g/Z2zc8AdLe6j0t6JkgGxBRT8NJ6EHK0Ogxt1JC2sD5DdsXouP4/6njo49Mu/pSrpLUbkne50c92WLkW2wR5EEerqutwjDiNh4kdxBAoS5PvjF8KNlD5aw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JA9o+QLr; arc=fail smtp.client-ip=52.101.66.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A659622157B;
+	Thu,  8 Oct 2026 07:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791444061; cv=none; b=cchInpaH+u8O/LwpxTfpwRFqriqz0ahbOSCCxX9BYYfsxH3xx1VCUPpeYsrtD++sCnWk/3IA1oR/IvAza5gv0rIYKlmVFL+Wx9i8kT8EWMZ3Yr6YwOPiGlijunBg5eXueOXXdR84FsXJVItVPq8G0GenofEFauOhh7H8nI+qQsg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791444061; c=relaxed/simple;
+	bh=8SgSeYpFAPWI8z1DrgM4BYJmY5zBlmZdLGoqL/KmPJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kSfmF/pB0HpcvBcjycn5MtmceMCxurOkn/9dA6qXwDUddxOmbrJefB7F0nHp88fzBPqrRRVGZXQZbcRk7RNXQDUQZ+jzFH30DyGCNj03DV3JEZsGus3wEd+qGW3Ys41H07+KHay/Uw5cnf8DUt025RIqKINmBRKpcFGCi94OQVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aov+QAUV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JA9o+QLr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QTd6Jz8S9pCNqJFN7dy8qhiKZRdBXARKHEQHaBgmirihsYp6/mls0d+JiHkyXyQwRdf4+iTWlIER+SUnz1Hg9hMB6mpSw39M00TUuswcR/TVkDlOfT+1b3UZaCGm9JPsKEvxp7ZZ2ltD4XSrxvLLuz4N8klexz6APldgVVupypZYsJyIG/fJEO70E7KD5VkLg+Oyqol62bbAzojGikKR0EbHAuJnRIe4VidP8fCC0N+9t94/0HsUBj9etx0ywSy+B+pZt1vbJ3uwtfANJ8lf3tYc+JhVqserUDcE4FxBuDGaWiYAXRQ0QDo6WJyDgLBgvj3JmzAHd8wc0pZcoKtzRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0ae3cOtnz6wBJkPdiqJ3cU1XJvU2ohuv/uw5ndGjtWE=;
- b=YVaPU1HPuhrf/ybuIIr7hFNHu/PsuA2dbk/bU2SJqqAeVZ95kzR6weVkJ2QhGoPoLvDiRPsJfS9GrPmIKfxS1kozmlX++YqZkVTuIEcwbIhe60MB2qLibJz6FTdY5pcdbqlTPR+Ip8QhEylWiwZs4MsAIqL/E0LwG3cjnfLmdaeiQydqlDh2t2Eh8yNDqAmCsjwvj3bT7wYAlEGOzyLZNGvwZM0QBKIJhmiIS9Qj5R6louUBhOWOPksPLmJGNazDnWXcBMywL9og3+orfqs2tBD8/0eWWPScuPyEGBzk/bMgMo0Ja5FyJIXzPZzf+wbaesV5gQlNwLIbHpHpuScBbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0ae3cOtnz6wBJkPdiqJ3cU1XJvU2ohuv/uw5ndGjtWE=;
- b=JA9o+QLrLSuT9CNVzmKIFCbTw3rVSXBXdi0PQLJsgFMLkxkIaA1+5DQlKTzrmmQdYoK1dQfa7LQyvXRd2W4NrS1DDD2Bm+dSVCrUjjeriyZFRINkTjP9nHXGh4ixETagYP3eSO/go43/55cP/Nbyhr6JWXZPbnPW0j3QjKWaREC0tXSCl7mEYCjWog0LTEAhwVZgohVhlooHKEHcHyCud0f+z+1ud1rp+UpyIPCl+vZTMGRxhjan+ZFBVX9DN7kseQY0qX2Apd1dH6AwF7lWyVeC2exXNlkTpA3gmOMVo/t35dt+8hzFnJLra7sKD7fF35NZoZ+IVWv6Fd4fjZSS1Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
- by PAWPR04MB10054.eurprd04.prod.outlook.com (2603:10a6:102:38b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Thu, 8 Oct
- 2026 07:14:42 +0000
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85%5]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 07:14:42 +0000
-From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aov+QAUV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291AB1F000FF;
+	Thu,  8 Oct 2026 07:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791444060;
+	bh=/83kUiQUFum1L9th376sQeACfJCdpnqsAdBM11IMUR0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aov+QAUVduF9SYcLkd+BAj3hCbvQs3oKzwwFi//YGkLLCg2/h9i6Gw9/K5/sjWHnv
+	 5rja/oRq7S8u/ukpkgTHJuQ/rA4PL4hAcpXhPAbofCjqzafNo8k0SDXohfanGkGvTb
+	 0tPJ+NiXpy3HGOgDJuoxRcjlq2TKIs7/5IgLoSBMvrHjKTDjOhVIvy3zKYjT2NmL4m
+	 9FC231EIpsM77OUjQYsEt6UOyxtW1qwN9BuhD/deK+78u9KLdJmiLwV4I8s09fThzP
+	 lD9BRsFy8KqTFW7CAULhHi0iHWU+dMygm0DNWltSHouKGuFsHf8ErjKexVGExAs07U
+	 ghoDWSSryYA7A==
+Date: Thu, 8 Oct 2026 08:20:50 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Chester Lin <chester62515@gmail.com>,
 	Matthias Brugger <mbrugger@suse.com>,
 	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Lee Jones <lee@kernel.org>,
+	Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Cc: Alberto Ruiz <aruizrui@redhat.com>,
-	Christophe Lizzi <clizzi@redhat.com>,
-	devicetree@vger.kernel.org,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org,
 	Enric Balletbo <eballetb@redhat.com>,
-	Eric Chanudet <echanude@redhat.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
+	Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH 3/3] arm64: dts: s32g: map SIUL2 EIRQ register window in pinctrl node
-Date: Thu,  8 Oct 2026 09:14:36 +0200
-Message-Id: <20261008071436.596651-4-khristineandreea.barbulescu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261008071436.596651-1-khristineandreea.barbulescu@oss.nxp.com>
+Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: s32g2-siul2: describe EIRQ
+ input mux registers
+Message-ID: <20261008-1e3e0aa3fab167d544c21e68@squawk>
 References: <20261008071436.596651-1-khristineandreea.barbulescu@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0120.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a3::18) To AM9PR04MB8179.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b5::20)
+ <20261008071436.596651-2-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|PAWPR04MB10054:EE_
-X-MS-Office365-Filtering-Correlation-Id: be254694-4f3c-466b-7927-08df250bd313
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|23010399003|22082099003|18002099003|11063799006|56012099006|10067099003|921020;
-X-Microsoft-Antispam-Message-Info:
- 89YwKxPWnAUQuQUFBhOCHhqH4SLuUjR68OB2wS0tetgn+gmNetWiaLqgFgmu7ws+K9Cx7rL/UJtkT6of/kbGgmZZ5Yv8qVWYHc7zzSOnTIgmukYj1zBVbp3HAeqOWxCGDlzjG+BZYqAG4DqFpfnFQcUb0ylHVvsQtDf84zt0gHw+g61koMyqM7suOy+psow7uXop4uFPP7pnwynC964WrfdB6POy+ltJWvYRRAD7b2hOjJXY/eKh7B3P2fzJNDPXEaX1Wg/6CApesp812XIqZuAk5HVpRxPBoqw/yewkojvb3gcUWw7hj1O9BEDOjmutYcRwoDEElRZWo2GIQO2qSucCUOfZshotd5B+wdfihiCjfngfKbnXD2WPaxWYv9GAGMAO7EvvuqGfhLCKS6Q1EXvKmRfG1maaI6ZkEhCFO1J9y5hSfAxl9jHjhv5Y1GCjiObkAdWgpY6yBi1k/oeHvcDwyX7vFDHS5jwh3yWbgwIoXJcb437IZoAGAN7uQnpzjrpAsIJ/ht8jvZvjvqZy30g3zSyVwpNAMDuh9bvVmlUnwmvyMnC1FekxAmfCn2x2P9UCktEVpJbf6gZTHfyMtOxWAV+ZaO1OBdGbj0oz3heWpgXgeFvgizwb4yKSp1U41er/bxSe5VnlMXTgrOhHZBW52MwH9o3W/OCM4wvjog0ZIP4ztTromwUg7/OFDWUs+zss5gF3QzsICrbu8JLGkQ==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(23010399003)(22082099003)(18002099003)(11063799006)(56012099006)(10067099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?RFFtUTZFTnV2SmFaMTQvN05XbDFPV091QUp5b0prYjVUalM4V0IzNjFTZDJY?=
- =?utf-8?B?TE5RVTB0UlgwOVBpOTFyeEhhQ2p5NDY2NmFjV3hVMVN6ek5GT21CSFh2R1JH?=
- =?utf-8?B?YXJVYzVac1d3OTRZQTdpTzJiZ0NtVnhyM3IyaFVWU096Ni9WdGVweUNHeGFu?=
- =?utf-8?B?WVNjMmNvNHJYQmx4ZElLYUt2R3dZeFhlL1Azc3IxYllzZUw5QjBrd2ZhekM5?=
- =?utf-8?B?SUZzZFM2ZEJTZVl1dVV5dy9zcy9FeWFEM2lDOGVXRjN4SGg4NU54b1ZvQlNN?=
- =?utf-8?B?MERGaGR3cjFiWHRLS1BMSHc0QVg0UTN5bFV2d1RWbEdKcS92MEkwM1grbmlB?=
- =?utf-8?B?OVNEYlh6NjdrellPZUtFQmxsRkp3V1VoY2cwRFM5UTA0TGhyNXcrdlJhVzVU?=
- =?utf-8?B?QTliTzVHUE9mMjI2MmNsZlU1T3UxRTB3OFZnZG9SMHV2WmplTnE2V3RXaGR6?=
- =?utf-8?B?RG9jTkdlWkxNcXNZeCt0UVE2b3Bpcmo4NGtlc0FjVGdjOUN1RXlzR2NvNXNS?=
- =?utf-8?B?ZE1KNVI5OTNLMWFKN2ZGZEZoUG85SjFmeExwUHZlOHZDZm92elVRb3I0QnEz?=
- =?utf-8?B?N1JYbUVrdk5KTTVxa2ZHUDQrMkd1ZXpJK0NmUmFORGNycDdwUUdmT2ZxMWJV?=
- =?utf-8?B?eURkL1ora2lFVzJlNzk5TlJDdU9wWXZ6cE1FNGxFczcrV1lDdUEvRkVpSFBK?=
- =?utf-8?B?U3FRQ1c4TXBMMWEyd29xd094UFlJWnNRbnZPRCtqL3FnK01ETm4yQ0pMelRq?=
- =?utf-8?B?azZXSG1HcndnaVdUbmN2MkFxTC9CTmRJZjNzZ1pqUktqdFBHSHVFbXZUQlJY?=
- =?utf-8?B?VVFzRjRXTzNMMitSRnVBSlF1TEhMN3RuLzdsQituWFFNZU9PRVNhN0JCbFll?=
- =?utf-8?B?eER2VllxS1ZIeERuOFd6OUxFT1R1czJPREk5ZkcrRHF5R1hUMko3dHNuWlJi?=
- =?utf-8?B?cVVsZDVOK0xDNWZwZnlQNkdPNXkvUmpXT09WWGsrNEhrTDZrZFRuVERWcVNy?=
- =?utf-8?B?UUkyY3M3cU9CUTlaU01oRDZBeEhheHdVVVltb1NieXlFd2NCbWI3Q3pFamhx?=
- =?utf-8?B?b3hwYkZpL0Y2WTRxT1VOaDhmNDF4OVkxejRaREN1UC9GYjVBcnN1VWFsNjhG?=
- =?utf-8?B?SEZQRGdrMGJTRHZ2dTMvalJlT1VMQ0JPUXA4bHFJeXRuMlVmOFZMTHJmVGFN?=
- =?utf-8?B?RmVZd1N0NzBOQnd0aFZLUzl6SVVqOU9YeVRxS24wc25LNmhxTXNmcnN3UVdU?=
- =?utf-8?B?V0FubFZGRUtTcjV3OEF1STVQMU9rajdWV0Jwb2lTYi9sbEprcXU5dUVjU255?=
- =?utf-8?B?M1ZNYXAvcnRsMWZYMGc1bHJrK0c2UmpXbmxzZ0N6VWIzeDdoWWdLT0ZYL0E5?=
- =?utf-8?B?Vm43Y0FmbFliYjdvM1paeEZRTHZLblN1aVF3cnNxUFlManZob1lHVVFKZyt3?=
- =?utf-8?B?a0s3UUtBUWxXVUh1QXN3ODR2L0xZSEwvY1VUVG9FK0diVVBMK0h0UmRhZ1Z2?=
- =?utf-8?B?U3lmM29qUTdPeTBQR1RGMmFRM1JPVmwySWNJMDBEaDlDbDNZaUx2SVN1Y1NZ?=
- =?utf-8?B?WG9icVVzUFFaZkFSSkY3Z0drRUJXRldSL2NLOGl2YTVLeXlYUTc5V3hmc0Vq?=
- =?utf-8?B?WHd0WG94Z0tJczdKRmhORHUyZVEwM3FXeHVHOS9jb25jWW5hUDZtMVZncDRt?=
- =?utf-8?B?ZHJudFF1VWRJc2R6c3pMbXJYdU9ZQmg2N2NyRWo2MUt4US9oRGFRSHNQYW00?=
- =?utf-8?B?NVNNSmtIUHZlSVpRa0NNbWlXdmN0NDRkTTNocHM5c3VCNHlJbklPSWwyank1?=
- =?utf-8?B?bVJ6OHpRRFdRY0hidWZxck0vWGJPN0pDUVRSVC9EK2xEcWtzQVVBeWxrRXJu?=
- =?utf-8?B?YXhjRTFaYUY0MUJzL3R2NXlzc3hGWDIrMEpUbG5uejRKa1JtYUpzVUxZRzh6?=
- =?utf-8?B?MUozUmk3UjYyZWtOZmxSRzljd0l3TklOQXUyc3lvcGJQUHFtbjdVbThVcGVv?=
- =?utf-8?B?S24wOFJUSkJ5OG9UUmd0dE9BS2tQWFNjRnVTU0dMYlAya0NGWWRZRmN0OFlD?=
- =?utf-8?B?MytEbkhNVVhZS3l4dUZ4Vm9RbC9McHpRdGt0RXJCUTQzNHZRWFJEeE5veFk2?=
- =?utf-8?B?a3VzQ1lQcE5xWG4xbEh6d01lMXlOczZkYkl3d1ZEZENkNXBNTVFHQm9qbjE3?=
- =?utf-8?B?UFhGK05rUWg3T2N6NTJZZVdWZk9tQ3prQUhpKzdCQ2QwdHpaeEhUc0V0Q0xC?=
- =?utf-8?B?VHdxQ2RKekZ4QW5WeUtsUDROUksvT1lVN3A1YVR2Z1g1eUZqWVc3ekNkKzVt?=
- =?utf-8?B?QkhnRDE4d2dYS1FYek10azlTNzV2dmFsZGxpQkcyRXl3WDVtVTJvMTBIZ2hS?=
- =?utf-8?Q?Z/UxHxVGiZ3FeHUF4+9SBjFO9gXddQN5/TvaA?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be254694-4f3c-466b-7927-08df250bd313
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 07:14:42.7564
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7b1w9mOlFLOlVoE9zLSZEEOnkzk8+U13wvmVUnMIFXli3s4BWKe1u1rIRoAyExi+bbIdefbID0cNsgBfkee6ZA3pp+MxXjP+NczyueWnuIPcFE1yBtIoSLwktM9rtoJT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10054
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="NNjeP+1IwDTZ8VUp"
+Content-Disposition: inline
+In-Reply-To: <20261008071436.596651-2-khristineandreea.barbulescu@oss.nxp.com>
 
-Extend the SIUL2_1 pinctrl reg list to cover the EIRQ input-mux IMCR
-window so the EIRQ source-select (SSS) registers used to route a pad
-to an external interrupt line are reachable by the driver.
+--NNjeP+1IwDTZ8VUp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This adds the IMCR398..IMCR429 region (<0x44011078 0x80>), which holds
-the EIRQ0..EIRQ31 input multiplexers. Without it the pad-to-EIRQ
-routing write falls in an unmapped gap and the interrupt never fires.
+On Thu, Oct 08, 2026 at 09:14:34AM +0200, Khristine Andreea Barbulescu wrot=
+e:
+> The SIUL2 external interrupt lines (EIRQ0-EIRQ31) on S32G2/S32G3 are not
+> hard-wired to fixed pads. Each EIRQ line has its own input multiplexer,
+> implemented by the IMCR398-IMCR429 registers, whose Source Signal Select
+> (SSS) field selects which pad signal feeds the edge detector.
+>=20
+> These registers were previously listed as reserved and were absent from
+> the reg list. Add a dedicated entry for the IMCR398-IMCR429 EIRQ input
+> multiplexer window between the two regular IMCR groups, update the
+> example and the minimum item count for the GPIO/EIRQ variant, and drop
+> IMCR398-IMCR429 from the reserved-index note.
+>=20
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
+oss.nxp.com>
+> ---
+>  .../bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml        | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pi=
+nctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinc=
+trl.yaml
+> index 36f2393fa406..ecf6d61a80e9 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.y=
+aml
+> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.y=
+aml
+> @@ -23,7 +23,9 @@ description: |
+>    are used for external interrupt configuration.
+> =20
+>    Please note that some register indexes are reserved in S32G2, such as
+> -  MSCR102-MSCR111, MSCR123-MSCR143, IMCR84-IMCR118 and IMCR398-IMCR429.
+> +  MSCR102-MSCR111, MSCR123-MSCR143 and IMCR84-IMCR118. IMCR398-IMCR429
+> +  are not regular pin IMCRs but the EIRQ input multiplexer registers,
+> +  which select the pad signal routed to each external interrupt line.
+> =20
+>  properties:
+>    compatible:
+> @@ -53,6 +55,7 @@ properties:
+>        - description: MSCR registers group 2 in SIUL2_1
+>        - description: IMCR registers group 0 in SIUL2_0
+>        - description: IMCR registers group 1 in SIUL2_1
+> +      - description: IMCR398-IMCR429 EIRQ input multiplexer registers in=
+ SIUL2_1
 
-Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
----
- arch/arm64/boot/dts/freescale/s32g2.dtsi | 2 ++
- arch/arm64/boot/dts/freescale/s32g3.dtsi | 2 ++
- 2 files changed, 4 insertions(+)
+Isn't mid-list insertion here a compatibility break, since there's no
+reg-names property here? Seems like this can just be added at the end,
+without an impact on existing users?
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index 996494e34593..53213057120e 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -139,6 +139,8 @@ pinctrl: pinctrl@4009c240 {
- 			      <0x4009ca40 0x150>,
- 				/* IMCR119-IMCR397 registers on siul2_1 */
- 			      <0x44010c1c 0x45c>,
-+				/* IMCR398-IMCR429 (EIRQ input mux) on siul2_1 */
-+			      <0x44011078 0x80>,
- 				/* IMCR430-IMCR495 registers on siul2_1 */
- 			      <0x440110f8 0x108>,
- 				/* PGPDO registers on siul2_0 */
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index 31f7aad00b76..fda827fd3eee 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -197,6 +197,8 @@ pinctrl: pinctrl@4009c240 {
- 			      <0x4009ca40 0x150>,
- 				/* IMCR119-IMCR397 registers on siul2_1 */
- 			      <0x44010c1c 0x45c>,
-+				/* IMCR398-IMCR429 (EIRQ input mux) on siul2_1 */
-+			      <0x44011078 0x80>,
- 				/* IMCR430-IMCR495 registers on siul2_1 */
- 			      <0x440110f8 0x108>,
- 				/* PGPDO registers on siul2_0 */
--- 
-2.34.1
+>        - description: IMCR registers group 2 in SIUL2_1
+>        - description: PGPDO registers in SIUL2_0
+>        - description: PGPDI registers in SIUL2_0
+> @@ -141,7 +144,7 @@ oneOf:
+>        - interrupts
+>      properties:
+>        reg:
+> -        minItems: 11
+> +        minItems: 12
 
+Why is the new reg mandatory? I didn't catch the explanation for that.
+
+Thanks,
+Conor.
+
+> =20
+>  additionalProperties: false
+> =20
+> @@ -162,6 +165,8 @@ examples:
+>                <0x4009ca40 0x150>,
+>                /* IMCR119-IMCR397 registers on siul2_1 */
+>                <0x44010c1c 0x45c>,
+> +              /* IMCR398-IMCR429 (EIRQ input mux) on siul2_1 */
+> +              <0x44011078 0x80>,
+>                /* IMCR430-IMCR495 registers on siul2_1 */
+>                <0x440110f8 0x108>,
+>                /* PGPDO registers on siul2_0 */
+> --=20
+> 2.34.1
+>=20
+
+--NNjeP+1IwDTZ8VUp
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasdESgAKCRB4tDGHoIJi
+0juIAQCahwOFX0GTEsE66QHyW8i8E7s0krMkp322e4p5QDd4gAEAsKPhU1kHf92N
+OabgfycCywPZi9JTCX1IkwNtMB+8NQ4=
+=Y+zQ
+-----END PGP SIGNATURE-----
+
+--NNjeP+1IwDTZ8VUp--
