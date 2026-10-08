@@ -1,70 +1,67 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013060.outbound.protection.outlook.com [40.107.162.60])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010054.outbound.protection.outlook.com [52.101.84.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1728443C34
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 20:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EC43EBF02
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 20:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791491205; cv=fail; b=VSDyCSgffTAUE/YdvxCYW+CqEZoq5TiIWySvoIN3e9noHTZhDs/VTEbe5Cqa4BuHgOQWBIPnyZVyYfrW8XS6l471UR7EaZTgcNEi7LVtx66HAgoBdvgXwWGCINcgE/1swGIZjHVPFZkfsn+2SxDG9rYWu4QBRQqGrwPqapgxG2k=
+	t=1791491687; cv=fail; b=Q2IsM2Gsrw7jHOaDV1ieU3WZNpxkdnBzaOQF9gJ74j+cKfuFts2mgdjmi+jQMFciLShrelyFnK54mKwQ3+69nQHujxQXz7gmLjRKlpCKVBT4/IUce9Tnv1Au2lGscMrJK65rN/+HlcClqzrnWqNrxXYxcmlbFyLLgfKxReZn71I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791491205; c=relaxed/simple;
-	bh=JjBs0TGitRanxD6fN/xLXccrCeRw8vLkOBqqNRfyD+c=;
+	s=arc-20240116; t=1791491687; c=relaxed/simple;
+	bh=sWn3A06gNxxpjnDiZSpPbg8tTPuJneDH622fdZvFt1A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=oeBuEPhWHR0WMUkYAC4kcH0lxAK9LewavZqUrHJw6/zJwM9BchVl+GUfP5zdnR6BDddZ4R4ddisggbixWAT306cLCHWNZrE6qSBWBRp0gRxtkuxln2iRIfRYdIaCu4nHxYc9UIH5slhvh7vHUk8XxVTS1B1mjRVUeLh4Dvyses0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ns6Dfbh2; arc=fail smtp.client-ip=40.107.162.60
+	 Content-Disposition:In-Reply-To:MIME-Version; b=H3PLiZ/iBFDJesaMo5hd5fh6/ArwqkmaAnN8kJ13nGtC6++ngdZ4fEIPpd1Ncc/XdbfpA8F7iv4DasMG/F3iSfCeG8C4mMGddExaPtpxKSqGk2tYoqW/lBsrhi7slqUnwq8uHpaXE5kxDlCaNbOCYyWkHB4ZLqgLrk34Ne8iduo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Qzg2giW1; arc=fail smtp.client-ip=52.101.84.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ns6Dfbh2"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Qzg2giW1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LTYx2zYjEkVkh3v871xfQc2gFHyhZWoOgzna6nYIvvH9gHbUloI3ELCxL+SyKAJph4USki0ri5Mn0RPh+1zvmt5BdNqU8iYJGxubvIpRkip7BWysZKdH97Kow3tpQS/Xl1W25bOE0QBCb6DCPSDLwNGaRmqLCgbsOxT5+qOaLGlwwMaNlVlJa6JgrDEWez6LWTlJQR0qbMS8qUoROSxyPfW4T7c4whvQ3rpzuSISmLw7euC5BgAoUI0SJqhjMjH0Ra4PAqfzv0UsJkI41MvM52y8OnKFRiXuwUZaaOe7SLuHIhilbnRPw6mq9XBIiM1E7JlPwkU9EUnT4PAmTce8tw==
+ b=V10aj/FQy0Ex4KuMU5YF+cmUmKIQ2qAdB2mQR8urpTvx4LWFumPzClHjqrHI6jrSWPKGhOl8eLD0XWtZmynu2X4QRJLbFeDCTn9pJBk4YZcigLEWjidAWYDAichdrgjU4086Wu943JWUD+EHHFAlXyiFJper8D8PHWlsQi5mVGpG8HPyoeHW+gaDolGuImpsnadeB4ycUDKVvbxkAAxiG+XTF+9MxxugXORmRl8TUferBPMuAvun7XWFYFVku3xkgdXJWk9qE/O94kKFfg3N60lKVMsO4Uz9lM5dkiP0LIZjNmvYPZx0ZUUKX9UiBBABfKbfwWfLFzGG4fOOusYVHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n7xlQn9VqPCa0QEammaErAeYXmO8mbMfLW7eKnz0Ak0=;
- b=xb0XkRAhi0+mDdUOkYtoNBdBiFzNf6PB+PkKiTV52uEcplyqBZWct9wcBgci+IqKNpjkYwGDJJHrLmGebiuEvIbgCZ+nx7rycUTaM2jn/T/YZ4IPjyUqVS8JiOAeGQA6d7J+dVfWCVLZ+UsImnog6FmhjyRHObOMAVbEQ3lwdIRtly47erIhnrjafgLZQSfx3S87APcD9ElU3Rp+/MxUg7LbSgR/5VEDyklqI5GP/CC3rxEx2eeoerb4CxRq/G3gicQ0TG6MRcojsUggEhdhTRM81vqYPLoYj2u4WasgVvkM3OdmBpZMl85egSReuRF8ArUR/BZwD5IzjoiVOFBl8Q==
+ bh=3UgxL4mPfxJ7k1OKudGnOoRopHHF/iVpoQcXGyofftQ=;
+ b=X0Ka5n3kGIYAsru8GiNb0jlJGuI1H1Pil4iZKWSFzjj2+XDpUIVge3Ix1MaUZOSb/ucuJwr1/4cw7xDQU7jL5IYrY9jfDM969TlAIiIU7hJYdY7qkobGzv71mavwfRImsC84u2/lvRT3b/afTvQY95o/UZK3IakAPSHyr9ppj+vf5hAfGrP2kxvhbd14xze8AbRR9yMsslq2C1wS+Yj2DR5ogtF4k9RgVKBliC4/OfGOhNItIJ6ZMzWEGj4ZgF5xYuvC5XJiWqBMrolObNBHCqxfce3fehVoy0dXftwovMgUrics2xGHogYH6wBvFCNHjOoOa2KKIQBtjETLmouIxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n7xlQn9VqPCa0QEammaErAeYXmO8mbMfLW7eKnz0Ak0=;
- b=Ns6Dfbh288rX5ClbByzfKmThzSL8ho3oy9oBh9Cek+g5jE3pMXkvjM05v2OawS8tcLk9GoQxugLxEyZNXdBxgk5vcWA/4G09vwrBx3nHy2cH4CWQT8AU58MyRNBeaoRm35HJ20DW2kawP9iPfreLYSN3+xuuL9lxeUXYcBfno2SvCJZ6yNWEwNwl+JC/wnQp50XUskUdeDrhswSEzUV9g+mKyBqBXdnZhX51OQVUmLnDffYd03mP/YUitGOahXIttbkujAKpn/F8ED22FNKlIM+Vbr7KlxuOiuhVNZIgpIKIvMKQ/Vh5m+BOHLw6umz4TmB8VsoIUNZzaaikXFEm8g==
+ bh=3UgxL4mPfxJ7k1OKudGnOoRopHHF/iVpoQcXGyofftQ=;
+ b=Qzg2giW1tJf9Ixo2Yjr8gXkPDTapoqnzF5aJ3e7XvTg2Db5wv3w6pRLNaEC14erq5aBRKs1kA7VoiuRjprIfXVVD7i+YTjxjpAB/nyuastBU4evQ9lJ7Oa5+2niU3sOIT79ylqFenUgqm5JVmQl1d/au32bqbM51E/2YW2FOQzdpQJmKLJ1K50w5yfpa245DyX0f3PR2z4z9GTHozl3dlzltsNIQkmkJbP4F9el4+GoU2Ct4EEgxRcQFJ7Oo5m1cmnlRrPRDA0QfyFu/1AC3gqBi9u1uaq6JVLWRa6g5cCieuL3XLxWakxR9xQViMJBxE23FWpPwRbLMRFN3nViMyQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
  by AM9PR04MB8876.eurprd04.prod.outlook.com (2603:10a6:20b:40b::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 20:26:38 +0000
+ 2026 20:34:42 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 20:26:38 +0000
-Date: Thu, 8 Oct 2026 15:26:34 -0500
+ 20:34:42 +0000
+Date: Thu, 8 Oct 2026 15:34:38 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v4 10/10] gpio: mxc: use BIT() macro for single-bit
- operations
-Message-ID: <asf8en4oGzQ0_oPy@SMW015318>
-References: <20261007-gpio-mxc-cleanup-v4-0-c9f5a8b50df9@nxp.com>
- <20261007-gpio-mxc-cleanup-v4-10-c9f5a8b50df9@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	=?iso-8859-1?Q?S=F8ren?= Andersen <san@skov.dk>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v9 2/3] arm64: dts: imx8mp-skov-revc: convert to overlays
+Message-ID: <asf-XrI8a-M2m-Fl@SMW015318>
+References: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de>
+ <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-2-11fa90f531fc@pengutronix.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261007-gpio-mxc-cleanup-v4-10-c9f5a8b50df9@nxp.com>
-X-ClientProxiedBy: AM0P309CA0010.EURP309.PROD.OUTLOOK.COM
- (2603:10a6:20b:28f::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-2-11fa90f531fc@pengutronix.de>
+X-ClientProxiedBy: FR3P281CA0137.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:95::11) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,137 +71,352 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8876:EE_
-X-MS-Office365-Filtering-Correlation-Id: cad19d98-d3e7-4180-aa6b-08df257a746a
+X-MS-Office365-Filtering-Correlation-Id: 1b522a5a-ef59-4d29-92ed-08df257b94c5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|19092799006|6133799003|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
+	BCL:0;ARA:13230040|19092799006|7416014|376014|23010399003|366016|1800799024|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	Ntvwbxw5R5aIg02DxYTMQEAS0Y8nOV/MOwVjMW3Sb455E+5IrYT9rWZnrefOcElGcHUs5m0kDbhYq5LUXWxMifRUq5vBbhwKX5NVLwDrwRnJ5aFmcwXitdbglYpylhMJipiNGFaCGiZG2IeRuRzKhjEK1yftf50jwcPWx2pxaPVwV7gPcXjPU0qL5ajeg7wE3Rvs9ouEykisdRbQzxqxWsekIs+2xykelfnSPPnkIabF+QZ8Chm/TLuOjgv8f/rbFR0SlGCqgBNznWiGXPzS7vr4vfOfK2JNGPqO3UTWKckLY0hjfy2Bc1clh7akI8BVHGrbDAWAh6f2n9/4p/fvTuyYqNWd2ZV+PWIvOBAZ++wgDSJmJGh4UVOsvLzFcjs7XAyC6vFjQ6+5/S1Gm5WXNZy/DrwQQvJ1XT1QM9XNCu4HGFGnAoKvpcsCj3jGikm5GA6OO2m0I7/gC5tWrcfNGhOP0kOODJp4BFMAfRrJIQ27mwLwPek4PqHpPbYF8ZAF/+NfBfPX9VbJidSQe2Ea3tmIYbkYT9IFoB4oDuDRnObZmFV2aJz8SilGuv4SGGXD4r7EDmovDABvgfwMv+56erNPS/JE60VN2NhZds3qfEMuSlb0Y6RzW5VCM4OFrFEo2sBfIfPMG0SPNxSY8HGYbppxgtFCxVWLk/P07E17jBM=
+	SyLXkyURuoRTXNNZBOMPBMl05pz0lnI73BeX3UNxrCwrTBtE8bO3FHyGpGBiB8M0iBVpa7bXsB+PMmCJ3l/J5grqxW/9xmFwPOzR54tQQQtGwhiABUMr00/VW5b1ogLAVQgbp3Y/7EFjSnj8e9FtWpqFkc4TUBj3k8S+2jaQiC37NIh0UImMKS2+cVV2QpuNFNrCFOBdqVzeolg/wto3S5UPHTX/s73uCBPcTVnBbqoV9OC7sdUE70VPp1fZ75DGtnf8CiFaBbZMPUoilulNrBZdlPCLYHWHzjPwb8zAE0xJ8fEFVMN52mQP3dVkgrS6LTnpeHThhkT2TLa8oii6fXU0uMUoANFmpHx/SD5RECEKh0VfHTQfLmtRmExxNTMwtjtkkqauwbKsOu4uPrpfueFg0oUVZxwAjK7CnfX/sTAHZhVGYELUNpwWtoC6cdcR7ohH9jyBiZeMNK5uubZbrCYEbhdt1/Jvvp+Wi00QKQiVGJBn9ebBuonLZM3BQI00KIcNMsjDDmLQhI5seIaKop1SafLtaRdW/5S/f+6emSWJLECQuLjQKYWgYTLEVdSC/nBBR4iZhwJwTrbnykqGYddrXGLZ1y2uwf2sBGNdV3p1THdo+tDiDNVmHigVc/z9vuNjzs88R10HkoNI30lmFKhpw3taXJ07WWy8fzB98bo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(19092799006)(6133799003)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(23010399003)(366016)(1800799024)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6YtkOu8pheqOCEQga6WDxom1vX0ADJFK+as+dzFq9ehfqD7UI5P9cLfCdZ6i?=
- =?us-ascii?Q?JcsaMqA8rZ5y8wVIxGq1OyE9g3RXUA8lowdlRuEAqUSaenFVVLDThQWyTYVr?=
- =?us-ascii?Q?kitQpcLt17qPQsOEKteW56qs4nDoD3jEW6KCTA73nQKnpzgdiXKLKsR+MvwN?=
- =?us-ascii?Q?E1F+8Iyp5IM1N6qiD0qu71+0NPTVXsYnmwmAIQrBk1LQWppku2Sa+1VQU+bC?=
- =?us-ascii?Q?2/0gVx1539K50DF2y6vfZilvgF5cGzJ8+B1ZFO3E+iZxK7dDm0r7TI0iIjYg?=
- =?us-ascii?Q?E4iuwlw9pUpaPgFbOcd7JI5GMU8zfGiLU/yy672r/c6lI20KC3HUQi9w2lOn?=
- =?us-ascii?Q?cdZhMfZKaC+eRcyksWe++VU5G6hK0NeBf2M0EWy6jmG4WIDLgaD2TLYpEw2Z?=
- =?us-ascii?Q?NwuSynZ1/wIqR8vbCUdTDiam8JyyHszWV50l50gJfVq0psjaJJWE1orOgqmm?=
- =?us-ascii?Q?ExAV2lNh1y8+dZvzRJSb/gEQKl+P7GytCLlfk+WdZIwvl2BBaykxLH2cUiX5?=
- =?us-ascii?Q?x/e0T2BSsE1lwcjoGWYkjDI0d+3e4IGVx0iMReUynOWFk1qRfJMesR4y+Iab?=
- =?us-ascii?Q?A8meOdTqm4pEe3i+RUtl8/XoaaU5HB7wH5p79rNJQs+ZgSDSZS8u82zz1L6D?=
- =?us-ascii?Q?02x8iYqPd6fZXKrdw98utvJ2I3Brea8d9nTsS+7udk9vU8euWFoUMKVgjaCi?=
- =?us-ascii?Q?lik3z6QX8PhmLMqszMxfDESrrheqZaQTN244Dt3n4NBf5oU0cTm0M0E16BY5?=
- =?us-ascii?Q?XfwadcQ3MCdnyLcZmYH2Jhz21bO+izWoQL1G0qoqVgHhMEX08ToKc7+q3u1S?=
- =?us-ascii?Q?b74l216iZEjkSAROBcBIDaLst4qUHbsNP0Bsi58rVPaZlggrGZ0yspXDQyck?=
- =?us-ascii?Q?WPHF8XC14yHc4G61/ON3E5jgpR/bQUg3oH7yqH/V07dku4FhU/GzoReDhBo8?=
- =?us-ascii?Q?Yb5890L12XJWT850n68v1n91ViX4hwX0nBI6rgoU2DhSWK04c6FyEV9ZSkQf?=
- =?us-ascii?Q?L5kseN/HPHj9GqaY9407cMNk+r38aHdMHeaYfKmvmfdYJ/Zl+f/iW5Uh6zkb?=
- =?us-ascii?Q?elFW0AjQbt6ne61L3B6y5wxYd9/gkNubaVK/Kb1uFg8bus6oHdKurAtiC2ig?=
- =?us-ascii?Q?lEnmjW5tLs0K7nwBZ4j1KPqflw6Fa3tBk0LbHNE8mV+4xJalI8/C3+ZkfhQS?=
- =?us-ascii?Q?x3BnKXrx+1ZWhBa1n+PmkHBg/Jq98FMm5PA/DHOyodBeWJzrG1PLiAbZtKbF?=
- =?us-ascii?Q?k+wRABb/dOi74Rv+guJKp78LBf6Iih1oLA/Kjmf9qgGmI0d/73l2YviPCi9+?=
- =?us-ascii?Q?Gt5YBu8FrUrxvk1bfcwiW+F0h/NtzimyGXX1N/OSMxdaQO+yJOq9cb/d5ZL+?=
- =?us-ascii?Q?A90Wd3R/yh7wwbu7Ut3AuPa9gs0t0U9JpQRfSVVel0EuzWBGBxjpeKYr2Cgw?=
- =?us-ascii?Q?cCF0gnjlwTra7REJYdXR7EHc6qIT7VfV1txAz5xaD5EvQqqS9PvpeOMoF+hn?=
- =?us-ascii?Q?g+ufJ39zKjaaXQNAgG+onpxoDyIF5We1WkyGh7Lq06MEz0vh2SfrYiWLdDDa?=
- =?us-ascii?Q?UlmHfYEcuTS5szxVIOqukB6T5BQ389iuWLSa3ISac1s4Mm9JYjDg2RSfcl8g?=
- =?us-ascii?Q?tX1Q61X/tbrq5sqFqc8ZmgTWxy1WG19RCSrRc/oWIXLV6ZkXFQsJ1LIOHoG5?=
- =?us-ascii?Q?5y1zry0fGdCs9CKrBA8zAcEUbY9xexCDUHo/IF5QSkqrti1ebnCVaQxq8Fn6?=
- =?us-ascii?Q?/JdZ+wKQ4WkUQJ44JJmAHXUNFHCW4n7mj4mb7tiowXeAHp1zU6Q4?=
+	=?us-ascii?Q?/l0EHNW5F7TjncI6ZXh+WnOs54f943qZ7pveX+sJmbpovviAllij7VljipZp?=
+ =?us-ascii?Q?6XA3QHUcFUXWWekelsPSzxeK7xsQjwLoy6tFxYyvaHJMUBS39a+XWSFWdcmV?=
+ =?us-ascii?Q?lMww+LzdNoCuOqv+tkVe+kBWQlkE1uSw2JsP+d9DX8rr/zIiiugQ5t5l8mos?=
+ =?us-ascii?Q?eCYy+gbLr42j7ItIR4Zr63xMRJBITNJiLQ8aQWltNAb5TGV5t8dteBHDvA2M?=
+ =?us-ascii?Q?Zdf6WcJx07gs3EpRgUOtFFWFIG0jIzjkU+csFtx7y+cwGi/9IGJOJHNJQzcI?=
+ =?us-ascii?Q?RviD6Chf8ug4jXX/aJE4suDAujIdwSGIFp4WxypIhZMIkhrQE+j8gu2YZ87t?=
+ =?us-ascii?Q?4Vt0y2OMhphfE2hEeQ1xCRT/yFkYdU6kWaaTkMKZxB2AUFuQU/7c2d9vYUNK?=
+ =?us-ascii?Q?PBlSjCydyeghzL9AVeFV+c4eXGEQl5EdxJxlh6EdLBCM4wmPrGy0fNDL3Odj?=
+ =?us-ascii?Q?C7pQcHwnCD16UCjjAinxgpebcc1Fr7GZuqeRQ2ASMPQT1J+yb/yrvXsPV9j8?=
+ =?us-ascii?Q?p2N4WJiX9Lb50w4KwGD4iD7BTTPy29C8dwzTIogGUHilOzMRqX/JukbWcNoi?=
+ =?us-ascii?Q?EgWI5uqzrkKcTtpjXP4QcJByrcfv1F9RTS7UG/Yo1TGGkI9vpt3815jAr0op?=
+ =?us-ascii?Q?P5qN52S71ZqCpk4+WpfDcCBJIj4uIarFNtdX4fhRqrPmjPn56Rnfzt7iuQmz?=
+ =?us-ascii?Q?sCHeJ6uddqw5X1RnIK7V2YRNSS7d/Fnfh+MJ5ZbGg+2BYiKGKcQvRYvs5Wwx?=
+ =?us-ascii?Q?glBPCnhVqjAhuo3j6GBaJCIMjVmVDPkfwKdAvm9iaZbwpPDsKC0uM0AAN0eR?=
+ =?us-ascii?Q?WD7+RvxYX7DmHfDsKUf2w+vysvyLmygfj8Ims7EnrPZCarQVhvzNwTVHnz3b?=
+ =?us-ascii?Q?D6hghgh95N4lIRfalwdyX8a6mobK+OjUSEx/Ahc2zlI2p8K6H8fcqx05Yxti?=
+ =?us-ascii?Q?ZqmVuC07i8JylnxEiiym1JyvK03T1Dr4BavZ4X23zcm5ZDC7GG2/DU2/jLtW?=
+ =?us-ascii?Q?DL2SkN2fv3VQv+e++Nx7F8VbmED8lantn1+T9yhSIsrAmOgTEaeUi+V4JODZ?=
+ =?us-ascii?Q?JqQm4X4Gf/YaUcqr/S9ISNGj7jr03WzwUza7TxTN8aPpQ9uwEZpYxKrYUbUF?=
+ =?us-ascii?Q?ZRBkwGjXvnapuH+wjcgR0PTbUqdPoD+mNWcRtB0ugDCWawYmCJgRPncI0SAe?=
+ =?us-ascii?Q?7jBdpWPfB/TlKoWa8s53onE39tfbI51mbMFmGi3HYBaI1iRjThns5OeR+t4p?=
+ =?us-ascii?Q?zOvF2+ebFNI3RvkrAiqtAKIwGaqnDHyw2RvrncvKGy2Modv18EfYqm9Qqzi5?=
+ =?us-ascii?Q?t22WEQoyiYsgkKRgLnbZd39ndxjJcoRsgPmeD3B8vAF9u5r2b6X0dWoN2966?=
+ =?us-ascii?Q?GDpgdnBcDeDg/AWUWjJjvunsbPMXb6yIZydmb6iHGQZgvxlGm5BuacIskB+z?=
+ =?us-ascii?Q?A5MRw/E6ZuGRFmh3tIra7z++xezVd7nolb7lNFSObhjBI5tq3be52mcuRgRx?=
+ =?us-ascii?Q?i1Vugov8vuSSkpv1w48GB+KgWFOpUByGUZyKxgKDBROqOib3g3tsk38P5h7G?=
+ =?us-ascii?Q?JVaXjGYF7BuvwQervSsRCCfS6L/M8CqIK1CpfMFYZJCUfWnl0Hez0/G0CTqb?=
+ =?us-ascii?Q?nU8RHcluxMn7B72r6VYtx8sSSb4BWHXkCJEirLkiBxAVYjfccjAITQbppika?=
+ =?us-ascii?Q?JWNx8QyKFGM1jRjStcXw3o7WQuvCI2uunilFRT31WgbYt8kpjrqhc20ZQxSt?=
+ =?us-ascii?Q?azwdsgSsR+E4LkjcPnXMBtSUX55iFkKrK0tfyF8Y8QcpttE44/AI?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cad19d98-d3e7-4180-aa6b-08df257a746a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b522a5a-ef59-4d29-92ed-08df257b94c5
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 20:26:38.0943
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 20:34:41.8840
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QAoGFdperjGEXgbWVTn6qQGdkeiFPw67+ShUmCH3LYg7PBOkZCwc4k8oaUGQkoh/NMvWEgu1nQUlvbXB7M6Df6PQT3WE+ISZC52wPYUHBQsBGoUgUknuRwHwHsXbLOAj
+X-MS-Exchange-CrossTenant-UserPrincipalName: um5oEiw8Ki1IujAykv849sMuOJuT7nazhRpsWs37wzQOp9X/Kt0kvt7zJvKaLniZrsPyi+ee9UkaQIKuDzFTVI3lnInZN3LwVSZQF2GMyBYbeHi/sJSko0jZfhm4JU2Y
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8876
 
-On Wed, Oct 07, 2026 at 06:44:25PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Thu, Oct 08, 2026 at 11:16:00AM +0200, Steffen Trumtrar wrote:
+> The i.MX8MP Skov RevC jutouch 10" and Tian 7" variants are pretty
+> similar, apart from the Display and touch controller.
 >
-> Replace open-coded '1 << n' shifts with the BIT() macro throughout
-> the driver for consistency and to avoid potential signed-shift issues
-> when the bit index is 31 (1 << 31 is implementation-defined for
-> signed int).
+> Move the common bindings to imx8mp-skov-revc-touch.dts and convert both
+> variants to use overlays applied on this base version.
 >
-> No functional change.
+> Add a compatible for revC-based Skov boards with a touch panel for the
+> common dts.
 >
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Binding change need seperate patch. This is v9.
+Does rebase cause problem?
 
->  drivers/gpio/gpio-mxc.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+Frank
+
+
+>  arch/arm64/boot/dts/freescale/Makefile             |  5 ++
+>  .../imx8mp-skov-revc-jutouch-jt101tm023.dtso       | 38 ++++++++++
+>  .../dts/freescale/imx8mp-skov-revc-tian-g07017.dts | 81 ----------------------
+>  .../freescale/imx8mp-skov-revc-tian-g07017.dtso    | 40 +++++++++++
+>  ...h-jt101tm023.dts => imx8mp-skov-revc-touch.dts} | 26 +++----
+>  6 files changed, 92 insertions(+), 99 deletions(-)
 >
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 39de616cd434..ad50b602c4a1 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -209,7 +209,7 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
->  	int edge;
->  	void __iomem *reg = port->base;
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 656f2596e1d53..5599e45ffdcec 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1155,6 +1155,7 @@ properties:
+>                - skov,imx8mp-skov-revc-bd500 # SKOV i.MX8MP climate control with LED frontplate
+>                - skov,imx8mp-skov-revc-jutouch-jt101tm023 # SKOV i.MX8MP climate control with 10" JuTouch panel
+>                - skov,imx8mp-skov-revc-tian-g07017 # SKOV i.MX8MP climate control with 7" panel
+> +              - skov,imx8mp-skov-revc-touch # SKOV i.MX8MP climate control revision C with touch panel
+>                - ultratronik,imx8mp-ultra-mach-sbc # Ultratronik SBC i.MX8MP based board
+>                - ysoft,imx8mp-iota2-lumpy  # Y Soft i.MX8MP IOTA2 Lumpy Board
+>            - const: fsl,imx8mp
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 49025ae465f22..d706290b8dd02 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -475,6 +475,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-hdmi.dtb
+> +
+> +imx8mp-skov-revc-jutouch-jt101tm023-dtbs += imx8mp-skov-revc-touch.dtb \
+> +	imx8mp-skov-revc-jutouch-jt101tm023.dtbo
+> +imx8mp-skov-revc-tian-g07017-dtbs += imx8mp-skov-revc-touch.dtb \
+> +	imx8mp-skov-revc-tian-g07017.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt101tm023.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-toradex-smarc-dev.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dtso b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dtso
+> new file mode 100644
+> index 0000000000000..33ddd08a7adb5
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dtso
+> @@ -0,0 +1,38 @@
+> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +&{/} {
+> +	model = "SKOV IMX8MP CPU revC - JuTouch JT101TM023";
+> +	compatible = "skov,imx8mp-skov-revc-jutouch-jt101tm023", "fsl,imx8mp";
+> +};
+> +
+> +&{/panel} {
+> +	compatible = "jutouch,jt101tm023";
+> +};
+> +
+> +&i2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	touchscreen@2a {
+> +		compatible = "eeti,exc81w32", "eeti,exc80h84";
+> +		reg = <0x2a>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_touchscreen>;
+> +		interrupts-extended = <&gpio4 28 IRQ_TYPE_LEVEL_LOW>;
+> +		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
+> +		touchscreen-size-x = <1280>;
+> +		touchscreen-size-y = <800>;
+> +		vdd-supply = <&reg_vdd_3v3>;
+> +	};
+> +};
+> +
+> +&lvds_bridge {
+> +	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 7 */
+> +	assigned-clock-rates = <0>, <506800000>;
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dts
+> deleted file mode 100644
+> index 9a562c011f2c2..0000000000000
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dts
+> +++ /dev/null
+> @@ -1,81 +0,0 @@
+> -// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> -
+> -/dts-v1/;
+> -
+> -#include "imx8mp-skov-reva.dtsi"
+> -
+> -/ {
+> -	model = "SKOV IMX8MP CPU revC - TIAN G07017";
+> -	compatible = "skov,imx8mp-skov-revc-tian-g07017", "fsl,imx8mp";
+> -
+> -	panel {
+> -		compatible = "topland,tian-g07017-01";
+> -		backlight = <&backlight>;
+> -		power-supply = <&reg_tft_vcom>;
+> -
+> -		port {
+> -			in_lvds0: endpoint {
+> -				remote-endpoint = <&ldb_lvds_ch0>;
+> -			};
+> -		};
+> -	};
+> -};
+> -
+> -&backlight {
+> -	status = "okay";
+> -};
+> -
+> -&i2c2 {
+> -	clock-frequency = <100000>;
+> -	status = "okay";
+> -
+> -	touchscreen@38 {
+> -		compatible = "edt,edt-ft5506";
+> -		reg = <0x38>;
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_touchscreen>;
+> -		interrupts-extended = <&gpio4 28 IRQ_TYPE_EDGE_FALLING>;
+> -		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
+> -		touchscreen-size-x = <1024>;
+> -		touchscreen-size-y = <600>;
+> -		vcc-supply = <&reg_vdd_3v3>;
+> -		iovcc-supply = <&reg_vdd_3v3>;
+> -		wakeup-source;
+> -	};
+> -};
+> -
+> -&lcdif2 {
+> -	status = "okay";
+> -};
+> -
+> -&lvds_bridge {
+> -	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
+> -				 <&clk IMX8MP_VIDEO_PLL1>;
+> -	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
+> -	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
+> -	assigned-clock-rates = <0>, <358400000>;
+> -	status = "okay";
+> -
+> -	ports {
+> -		port@1 {
+> -			ldb_lvds_ch0: endpoint {
+> -				remote-endpoint = <&in_lvds0>;
+> -			};
+> -		};
+> -	};
+> -};
+> -
+> -&pwm4 {
+> -	status = "okay";
+> -};
+> -
+> -&pwm1 {
+> -	status = "okay";
+> -};
+> -
+> -&reg_tft_vcom {
+> -	regulator-min-microvolt = <3160000>;
+> -	regulator-max-microvolt = <3160000>;
+> -	voltage-table = <3160000 73>;
+> -	status = "okay";
+> -};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtso b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtso
+> new file mode 100644
+> index 0000000000000..b9781a418e4d5
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtso
+> @@ -0,0 +1,40 @@
+> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +&{/} {
+> +	model = "SKOV IMX8MP CPU revC - TIAN G07017";
+> +	compatible = "skov,imx8mp-skov-revc-tian-g07017", "fsl,imx8mp";
+> +};
+> +
+> +&{/panel} {
+> +	compatible = "topland,tian-g07017-01";
+> +};
+> +
+> +&i2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	touchscreen@38 {
+> +		compatible = "edt,edt-ft5506";
+> +		reg = <0x38>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_touchscreen>;
+> +		interrupts-extended = <&gpio4 28 IRQ_TYPE_EDGE_FALLING>;
+> +		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
+> +		touchscreen-size-x = <1024>;
+> +		touchscreen-size-y = <600>;
+> +		vcc-supply = <&reg_vdd_3v3>;
+> +		iovcc-supply = <&reg_vdd_3v3>;
+> +		wakeup-source;
+> +	};
+> +};
+> +
+> +&lvds_bridge {
+> +	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
+> +	assigned-clock-rates = <0>, <358400000>;
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-touch.dts
+> similarity index 56%
+> rename from arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dts
+> rename to arch/arm64/boot/dts/freescale/imx8mp-skov-revc-touch.dts
+> index 3e320d6dea3a2..c830f3ca8cb45 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-touch.dts
+> @@ -5,11 +5,10 @@
+>  #include "imx8mp-skov-reva.dtsi"
 >
-> -	port->both_edges &= ~(1 << gpio_idx);
-> +	port->both_edges &= ~BIT(gpio_idx);
->  	switch (type) {
->  	case IRQ_TYPE_EDGE_RISING:
->  		edge = GPIO_INT_RISE_EDGE;
-> @@ -229,7 +229,7 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
->  				edge = GPIO_INT_HIGH_LEV;
->  				pr_debug("mxc: set GPIO %d to high trigger\n", gpio_idx);
->  			}
-> -			port->both_edges |= 1 << gpio_idx;
-> +			port->both_edges |= BIT(gpio_idx);
->  		}
->  		break;
->  	case IRQ_TYPE_LEVEL_LOW:
-> @@ -246,10 +246,10 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
->  		if (GPIO_EDGE_SEL >= 0) {
->  			val = readl(port->base + GPIO_EDGE_SEL);
->  			if (edge == GPIO_INT_BOTH_EDGES)
-> -				writel(val | (1 << gpio_idx),
-> +				writel(val | BIT(gpio_idx),
->  				       port->base + GPIO_EDGE_SEL);
->  			else
-> -				writel(val & ~(1 << gpio_idx),
-> +				writel(val & ~BIT(gpio_idx),
->  				       port->base + GPIO_EDGE_SEL);
->  		}
+>  / {
+> -	model = "SKOV IMX8MP CPU revC - JuTouch JT101TM023";
+> -	compatible = "skov,imx8mp-skov-revc-jutouch-jt101tm023", "fsl,imx8mp";
+> +	model = "SKOV IMX8MP CPU revC";
+> +	compatible = "skov,imx8mp-skov-revc-touch", "fsl,imx8mp";
 >
-> @@ -259,7 +259,7 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
->  			writel(val | field_prep(MXC_ICR_MASK(gpio_idx), edge), reg);
->  		}
+>  	panel {
+> -		compatible = "jutouch,jt101tm023";
+>  		backlight = <&backlight>;
+>  		power-supply = <&reg_tft_vcom>;
 >
-> -		writel(1 << gpio_idx, port->base + GPIO_ISR);
-> +		writel(BIT(gpio_idx), port->base + GPIO_ISR);
->  		port->pad_type[gpio_idx] = type;
->  	}
+> @@ -28,18 +27,6 @@ &backlight {
+>  &i2c2 {
+>  	clock-frequency = <100000>;
+>  	status = "okay";
+> -
+> -	touchscreen@2a {
+> -		compatible = "eeti,exc81w32", "eeti,exc80h84";
+> -		reg = <0x2a>;
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_touchscreen>;
+> -		interrupts-extended = <&gpio4 28 IRQ_TYPE_LEVEL_LOW>;
+> -		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
+> -		touchscreen-size-x = <1280>;
+> -		touchscreen-size-y = <800>;
+> -		vdd-supply = <&reg_vdd_3v3>;
+> -	};
+>  };
 >
-> @@ -298,12 +298,12 @@ static void mxc_gpio_irq_handler(struct mxc_gpio_port *port, u32 irq_stat)
->  	while (irq_stat != 0) {
->  		int irqoffset = fls(irq_stat) - 1;
+>  &lcdif2 {
+> @@ -48,14 +35,17 @@ &lcdif2 {
 >
-> -		if (port->both_edges & (1 << irqoffset))
-> +		if (port->both_edges & BIT(irqoffset))
->  			mxc_flip_edge(port, irqoffset);
+>  &lvds_bridge {
+>  	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
+> -				 <&clk IMX8MP_VIDEO_PLL1>;
+> +			  <&clk IMX8MP_VIDEO_PLL1>;
+>  	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
+> -	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 7 */
+> -	assigned-clock-rates = <0>, <506800000>;
+>  	status = "okay";
 >
->  		generic_handle_domain_irq(port->domain, irqoffset);
->
-> -		irq_stat &= ~(1 << irqoffset);
-> +		irq_stat &= ~BIT(irqoffset);
->  	}
->  }
->
+>  	ports {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+>  		port@1 {
+> +			reg = <1>;
+> +
+>  			ldb_lvds_ch0: endpoint {
+>  				remote-endpoint = <&in_lvds0>;
+>  			};
 >
 > --
 > 2.51.0
