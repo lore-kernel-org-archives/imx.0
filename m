@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9707B3E9C11
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73FB48986D
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791450792; cv=none; b=SsHSyANokKZHCL7TQ52+kelNqpVwxc+HgudB2KBHvD45cqlC5rZQDSXSGLYKdeuLtl6V79eGeALAOE2O2Mvafteusf8ZAXSYvjWXGm2YTuvXnu/aET1pyE4EyHuDtr/qX6C/IqjKeSG40wpFhl94GiKaUYyjhYKRH5ekYn+N6Tg=
+	t=1791450913; cv=none; b=MxRJgWiru7x4RURBpFDXJ+ryimnRaWHNZ2Yz1mb8i4veHIacE8SQIX3JridlNriLvHkqX2PKMqXhk0L94Y/S8vnKbhdeLNBDwPuP0Q1MMxmXmEKmkLqXdTIQVjshCYLXa05Wupp2Ld5ohwK8l0cfK4lygR1WvqRRwtatkRIXNHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791450792; c=relaxed/simple;
-	bh=90n6qDxpXHXjopvZQpNCTSZGflXLuJsjQGljFL/Dcy0=;
+	s=arc-20240116; t=1791450913; c=relaxed/simple;
+	bh=DnQDNJtbMW0K4ptNTUYMvVmTqisIIfDwZrch9hpPVkE=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=i4WviJtsAx3hAybxaskdFURSZdJgfCbCQPc0c0h5aT6uYnGdP4xEW2lxK0rRNonk6g61cEUHsCoyJg5Jinkzd0P1tkKkqxWMbgCncfvk0Pg7S7kEDERaL2jfF4yFVh4DpUv4vxYduLKoecLDzy9gmcaNYebmyfpUNe+dRzdaFsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLXwu2pR; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=X3nMzt9XP3mC/Wyp8u8OuOTXpDZlrZMVwxWmnnWjiKYLfu9oncOtaKlZ1hDcgqlYaAnhnfwUyKru9BLJOSXmGJRRWhc34v5DlmI7AFKkGcTDgm5qJ6BXcO+Hvi/eA1QrLOR7ki7AfOMkEp3KagST6EMd8EdVX36i03A4Ne8omds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2GWTZB9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLXwu2pR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63D41F000FF;
-	Thu,  8 Oct 2026 09:13:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2GWTZB9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1E41F000FF;
+	Thu,  8 Oct 2026 09:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791450789;
-	bh=b0mXAItSe3POnN36gR2+lkcCIlYAJHd0GGfLooMD+BE=;
+	s=k20260515; t=1791450906;
+	bh=zGb6U0Rr57mdwSh7IR44r3zCJ0J7vt1dHJDq8h8KyXg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TLXwu2pRB4JQXVXOlNcCFNEGB5smUb2XSHbilnbFrRxnpuNlH6kndlGeiTC0tTBuw
-	 r9/OD9M39weJdX+nVLtZOJFHjQrmZNCNb9Imjb9kiJTv1mUDRy2IQqgaTJxJA9tVnI
-	 /MEj/EuHewZ8uKYkMUpOW31YX+HjP5g3E4Zv7Irk32b/esTW/40EF6c2oAzWZPXK57
-	 SgNZzthG1a/n2jWCvonOwuYhCxdaqzX+TEiYxTEty8bH8PpEKMbc5y/pugdb3G+vnh
-	 i9aNbXbEtQ+vc5bUTtNth31kVYNWxSPodDiDYZ95lkzjbaF18B9SbPYkDYMPyel126
-	 6v+Ob8ZZQ/MLA==
-Message-ID: <sashiko-outbox-163905@kernel.org>
+	b=E2GWTZB9r4UFjw75T7y3hPhmy7iigYfhG6Ohfb+LWNY+CDijau478D+Lpk8IOkaNc
+	 oUl35vLZbpyvpLNkVbohA2KefcqutUM8B0iKw3RBbTAcJP4kghC3mADKn9v1E0I2Ae
+	 dz/ZoDmy2Ji/rDTZZ60z3GeatuTPSzFo8MS6ikT0hUcC3E2AmJiUoAcHqzYLxt4VjC
+	 uSLhY67pRTkp3bEdiS8wEsKmMCdDBAWde+48CuZ7FzNM75u9XoobJCp2xEhFgJpw5e
+	 Le0Ex97oQ/W7TCfRfWm6iKO6dE2Pzjuee+3wYy/ZCuHhCFF6biPZIRipMTqLYxWaMo
+	 yqvD1KvkbsIUA==
+Message-ID: <sashiko-outbox-163909@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 6/9] irqchip/imx-irqsteer: Let devres own the clock
+Subject: Re: [PATCH v6 9/9] irqchip/imx-irqsteer: Use
+ devm_irq_domain_create_linear()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Zhipeng.wang_1@oss.nxp.com
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20261008090231.796511-7-Zhipeng.wang_1@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261008090231.796511-10-Zhipeng.wang_1@oss.nxp.com>
 References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
- <20261008090231.796511-7-Zhipeng.wang_1@oss.nxp.com>
+ <20261008090231.796511-10-Zhipeng.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 09:13:08 +0000
+Date: Thu, 08 Oct 2026 09:15:05 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,79 +47,64 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] pm: clock underflow warning on devres cleanup if pm_runtime_resu=
-me_and_get() fails
+- [Medium] core: code and commit message mismatch regarding old domain API
 --
 
-commit 7ea8370844753a72ff02a8217ace864b04cf2175
+commit 05a4c59bf91334e37803afcd72a82640aa12007b
 Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-irqchip/imx-irqsteer: Let devres own the clock
+irqchip/imx-irqsteer: Use devm_irq_domain_create_linear()
 
-This commit transitions the imx-irqsteer driver to use devm_clk_get_enabled=
-()
-for clock lifecycle management. It also limits runtime PM callbacks to
-clk_enable() and clk_disable() since preparation is handled by devres.
+This commit updates the imx-irqsteer driver to use the device-managed
+devm_irq_domain_create_linear() function for creating the IRQ domain. It
+also removes the manual domain removal code in the driver's remove path.
+
+> The driver open-codes an irq_domain_info and calls
+> devm_irq_domain_instantiate() only to get a linear revmap domain tied to
+> the device lifetime. Use the new devm_irq_domain_create_linear() helper
+> instead. No functional change.
+
+[Severity: Medium]
+Does this commit message accurately describe the previous state of the code?
+
+The commit message states that the driver open-codes an irq_domain_info and
+calls devm_irq_domain_instantiate(). However, the diff shows the driver was
+actually using irq_domain_create_linear() in imx_irqsteer_probe() and
+tearing it down manually with irq_domain_remove() in imx_irqsteer_remove().
+
+Could the commit message have been copied from another patch in the series?
 
 > diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
 -irqsteer.c
-> index fa233de9bc2b2..15ee50f65d54c 100644
+> index 85edd5e33ca9c..f5601769d0363 100644
 > --- a/drivers/irqchip/irq-imx-irqsteer.c
 > +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -246,8 +246,9 @@ static int imx_irqsteer_probe(struct platform_device =
+*pdev)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	data->domain =3D irq_domain_create_linear(dev_fwnode(&pdev->dev), data-=
+>reg_num * 32,
+> -						&imx_irqsteer_domain_ops, data);
+> +	data->domain =3D devm_irq_domain_create_linear(&pdev->dev, dev_fwnode(&=
+pdev->dev),
+> +						     data->reg_num * 32,
+> +						     &imx_irqsteer_domain_ops, data);
+
 [ ... ]
-> @@ -273,15 +266,23 @@ static int imx_irqsteer_probe(struct platform_devic=
+
+> @@ -294,8 +295,6 @@ static void imx_irqsteer_remove(struct platform_devic=
 e *pdev)
->  	platform_set_drvdata(pdev, data);
+>  		irq_dispose_mapping(irqsteer_data->irq[i]);
+>  	}
 > =20
->  	return 0;
-> -out:
-> -	clk_disable_unprepare(data->ipg_clk);
-> -	return ret;
->  }
-> =20
->  static void imx_irqsteer_remove(struct platform_device *pdev)
->  {
->  	struct irqsteer_data *irqsteer_data =3D platform_get_drvdata(pdev);
-> -	int i;
-> +	int i, ret;
-> +
-> +	/*
-> +	 * The device may be runtime-suspended here, in which case the runtime
-> +	 * suspend callback has already dropped the clock enable count. Resume
-> +	 * it so the devres clk_disable_unprepare(), which runs after remove(),
-> +	 * finds the clock enabled and stays balanced. On success drop the
-> +	 * usage count again with pm_runtime_put_noidle(): it must not trigger a
-> +	 * suspend (which would re-disable the clock) and must not leak to the
-> +	 * next probe of this persistent device.
-> +	 */
-> +	ret =3D pm_runtime_resume_and_get(&pdev->dev);
-> =20
->  	for (i =3D 0; i < irqsteer_data->irq_count; i++) {
->  		if (!irqsteer_data->irq[i])
-> @@ -294,8 +295,8 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
-> =20
->  	irq_domain_remove(irqsteer_data->domain);
-> =20
-> -	if (!pm_runtime_status_suspended(&pdev->dev))
-> -		clk_disable_unprepare(irqsteer_data->ipg_clk);
-> +	if (ret >=3D 0)
-> +		pm_runtime_put_noidle(&pdev->dev);
-
-[Severity: Medium]
-If pm_runtime_resume_and_get() fails, the device remains suspended and its
-clock remains disabled.
-
-Since devres owns the clock via devm_clk_get_enabled(), won't devres
-unconditionally call clk_disable_unprepare() after imx_irqsteer_remove()
-returns?
-
-Could this trigger a WARN(core->enable_count =3D=3D 0) in the clock framewo=
-rk and
-unbalance the clock state?
-
+> -	irq_domain_remove(irqsteer_data->domain);
+> -
+>  	if (ret >=3D 0)
+>  		pm_runtime_put_noidle(&pdev->dev);
 >  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008090231.7965=
-11-1-Zhipeng.wang_1@oss.nxp.com?part=3D6
+11-1-Zhipeng.wang_1@oss.nxp.com?part=3D9
